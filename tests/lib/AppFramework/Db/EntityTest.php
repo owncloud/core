@@ -175,7 +175,7 @@ class EntityTest extends \Test\TestCase {
 
 		$this->assertEquals($params['testId'], $entity->getTestId());
 		$this->assertEquals($params['email'], $entity->getEmail());
-		$this->assertTrue($entity instanceof TestEntity);
+		$this->assertInstanceOf(TestEntity::class, $entity);
 	}
 
 	public function testSlugify(){
@@ -220,7 +220,7 @@ class EntityTest extends \Test\TestCase {
 	public function testFieldsNotMarkedUpdatedIfNothingChanges() {
 		$entity = new TestEntity('hey');
 		$entity->setName('hey');
-		$this->assertEquals(0, count($entity->getUpdatedFields()));
+		$this->assertCount(0, $entity->getUpdatedFields());
 	}
 
 

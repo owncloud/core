@@ -98,8 +98,8 @@ class PublicCalendarRootTest extends TestCase {
 		$calendar = $this->createPublicCalendar();
 
 		$publicCalendars = $this->backend->getPublicCalendars();
-		$this->assertEquals(1, count($publicCalendars));
-		$this->assertEquals(true, $publicCalendars[0]['{http://owncloud.org/ns}public']);
+		$this->assertCount(1, $publicCalendars);
+		$this->assertTrue($publicCalendars[0]['{http://owncloud.org/ns}public']);
 
 		$publicCalendarURI = $publicCalendars[0]['uri'];
 
@@ -125,7 +125,7 @@ class PublicCalendarRootTest extends TestCase {
 		$this->publicCalendarRoot->disableListing = false;
 		$calendarResults = $this->publicCalendarRoot->getChildren();
 
-		$this->assertEquals(1, count($calendarResults));
+		$this->assertCount(1, $calendarResults);
 		$this->assertEquals(new Calendar($this->backend, $publicCalendars[0], $this->l10n), $calendarResults[0]);
 	}
 

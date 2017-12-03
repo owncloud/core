@@ -257,7 +257,7 @@ class ManagerTest extends \Test\TestCase {
 		$manager->addBackend($backend);
 
 		$groups = $manager->search('1');
-		$this->assertEquals(1, count($groups));
+		$this->assertCount(1, $groups);
 		$group1 = reset($groups);
 		$this->assertEquals('group1', $group1->getGID());
 	}
@@ -296,7 +296,7 @@ class ManagerTest extends \Test\TestCase {
 		$manager->addBackend($backend2);
 
 		$groups = $manager->search('1');
-		$this->assertEquals(2, count($groups));
+		$this->assertCount(2, $groups);
 		$group1 = reset($groups);
 		$group12 = next($groups);
 		$this->assertEquals('group1', $group1->getGID());
@@ -337,7 +337,7 @@ class ManagerTest extends \Test\TestCase {
 		$manager->addBackend($backend2);
 
 		$groups = $manager->search('1', 2, 1);
-		$this->assertEquals(2, count($groups));
+		$this->assertCount(2, $groups);
 		$group1 = reset($groups);
 		$group12 = next($groups);
 		$this->assertEquals('group1', $group1->getGID());
@@ -411,13 +411,13 @@ class ManagerTest extends \Test\TestCase {
 
 		// search without scope
 		$groups = $manager->search('1', null, null, null);
-		$this->assertEquals(1, count($groups));
+		$this->assertCount(1, $groups);
 		$group1 = reset($groups);
 		$this->assertEquals('group1', $group1->getGID());
 
 		// search with scope
 		$groups = $manager->search('1', null, null, 'sharing');
-		$this->assertEquals(2, count($groups));
+		$this->assertCount(2, $groups);
 		$group1 = reset($groups);
 		$group12 = next($groups);
 		$this->assertEquals('group1', $group1->getGID());
@@ -447,7 +447,7 @@ class ManagerTest extends \Test\TestCase {
 		$manager->addBackend($backend);
 
 		$groups = $manager->getUserGroups($this->getTestUser('user1'));
-		$this->assertEquals(1, count($groups));
+		$this->assertCount(1, $groups);
 		$group1 = reset($groups);
 		$this->assertEquals('group1', $group1->getGID());
 	}
@@ -471,7 +471,7 @@ class ManagerTest extends \Test\TestCase {
 			->getMock();
 
 		$groups = $manager->getUserGroupIds($user);
-		$this->assertEquals(2, count($groups));
+		$this->assertCount(2, $groups);
 
 		foreach ($groups as $group) {
 			$this->assertInternalType('string', $group);
@@ -649,7 +649,7 @@ class ManagerTest extends \Test\TestCase {
 		$manager->addBackend($backend2);
 
 		$groups = $manager->getUserGroups($this->getTestUser('user1'));
-		$this->assertEquals(2, count($groups));
+		$this->assertCount(2, $groups);
 		$group1 = reset($groups);
 		$group2 = next($groups);
 		$this->assertEquals('group1', $group1->getGID());
@@ -713,11 +713,11 @@ class ManagerTest extends \Test\TestCase {
 		$manager->addBackend($backend);
 
 		$users = $manager->displayNamesInGroup('testgroup', 'user3');
-		$this->assertEquals(1, count($users));
-		$this->assertFalse(isset($users['user1']));
-		$this->assertFalse(isset($users['user2']));
-		$this->assertFalse(isset($users['user3']));
-		$this->assertTrue(isset($users['user33']));
+		$this->assertCount(1, $users);
+		$this->assertArrayNotHasKey('user1', $users);
+		$this->assertArrayNotHasKey('user2', $users);
+		$this->assertArrayNotHasKey('user3', $users);
+		$this->assertArrayHasKey('user33', $users);
 	}
 
 	public function testDisplayNamesInGroupWithOneUserBackendWithLimitSpecified() {
@@ -779,12 +779,12 @@ class ManagerTest extends \Test\TestCase {
 		$manager->addBackend($backend);
 
 		$users = $manager->displayNamesInGroup('testgroup', 'user3', 1);
-		$this->assertEquals(1, count($users));
-		$this->assertFalse(isset($users['user1']));
-		$this->assertFalse(isset($users['user2']));
-		$this->assertFalse(isset($users['user3']));
-		$this->assertTrue(isset($users['user33']));
-		$this->assertFalse(isset($users['user333']));
+		$this->assertCount(1, $users);
+		$this->assertArrayNotHasKey('user1', $users);
+		$this->assertArrayNotHasKey('user2', $users);
+		$this->assertArrayNotHasKey('user3', $users);
+		$this->assertArrayHasKey('user33', $users);
+		$this->assertArrayNotHasKey('user333', $users);
 	}
 
 	public function testDisplayNamesInGroupWithOneUserBackendWithLimitAndOffsetSpecified() {
@@ -849,12 +849,12 @@ class ManagerTest extends \Test\TestCase {
 		$manager->addBackend($backend);
 
 		$users = $manager->displayNamesInGroup('testgroup', 'user3', 1, 1);
-		$this->assertEquals(1, count($users));
-		$this->assertFalse(isset($users['user1']));
-		$this->assertFalse(isset($users['user2']));
-		$this->assertFalse(isset($users['user3']));
-		$this->assertFalse(isset($users['user33']));
-		$this->assertTrue(isset($users['user333']));
+		$this->assertCount(1, $users);
+		$this->assertArrayNotHasKey('user1', $users);
+		$this->assertArrayNotHasKey('user2', $users);
+		$this->assertArrayNotHasKey('user3', $users);
+		$this->assertArrayNotHasKey('user33', $users);
+		$this->assertArrayHasKey('user333', $users);
 	}
 
 	public function testDisplayNamesInGroupWithOneUserBackendAndSearchEmpty() {
@@ -895,11 +895,11 @@ class ManagerTest extends \Test\TestCase {
 		$manager->addBackend($backend);
 
 		$users = $manager->displayNamesInGroup('testgroup', '');
-		$this->assertEquals(2, count($users));
-		$this->assertFalse(isset($users['user1']));
-		$this->assertTrue(isset($users['user2']));
-		$this->assertFalse(isset($users['user3']));
-		$this->assertTrue(isset($users['user33']));
+		$this->assertCount(2, $users);
+		$this->assertArrayNotHasKey('user1', $users);
+		$this->assertArrayHasKey('user2', $users);
+		$this->assertArrayNotHasKey('user3', $users);
+		$this->assertArrayHasKey('user33', $users);
 	}
 
 	public function testDisplayNamesInGroupWithOneUserBackendAndSearchEmptyAndLimitSpecified() {
@@ -939,11 +939,11 @@ class ManagerTest extends \Test\TestCase {
 		$manager->addBackend($backend);
 
 		$users = $manager->displayNamesInGroup('testgroup', '', 1);
-		$this->assertEquals(1, count($users));
-		$this->assertFalse(isset($users['user1']));
-		$this->assertTrue(isset($users['user2']));
-		$this->assertFalse(isset($users['user3']));
-		$this->assertFalse(isset($users['user33']));
+		$this->assertCount(1, $users);
+		$this->assertArrayNotHasKey('user1', $users);
+		$this->assertArrayHasKey('user2', $users);
+		$this->assertArrayNotHasKey('user3', $users);
+		$this->assertArrayNotHasKey('user33', $users);
 	}
 
 	public function testDisplayNamesInGroupWithOneUserBackendAndSearchEmptyAndLimitAndOffsetSpecified() {
@@ -984,11 +984,11 @@ class ManagerTest extends \Test\TestCase {
 		$manager->addBackend($backend);
 
 		$users = $manager->displayNamesInGroup('testgroup', '', 1, 1);
-		$this->assertEquals(1, count($users));
-		$this->assertFalse(isset($users['user1']));
-		$this->assertFalse(isset($users['user2']));
-		$this->assertFalse(isset($users['user3']));
-		$this->assertTrue(isset($users['user33']));
+		$this->assertCount(1, $users);
+		$this->assertArrayNotHasKey('user1', $users);
+		$this->assertArrayNotHasKey('user2', $users);
+		$this->assertArrayNotHasKey('user3', $users);
+		$this->assertArrayHasKey('user33', $users);
 	}
 
 	public function testGetUserGroupsWithAddUser() {
@@ -1027,7 +1027,7 @@ class ManagerTest extends \Test\TestCase {
 
 		// check result
 		$groups = $manager->getUserGroups($user1);
-		$this->assertEquals(1, count($groups));
+		$this->assertCount(1, $groups);
 		$group1 = reset($groups);
 		$this->assertEquals('group1', $group1->getGID());
 	}
@@ -1065,7 +1065,7 @@ class ManagerTest extends \Test\TestCase {
 		// prime cache
 		$user1 = $this->getTestUser('user1');
 		$groups = $manager->getUserGroups($user1);
-		$this->assertEquals(1, count($groups));
+		$this->assertCount(1, $groups);
 		$group1 = reset($groups);
 		$this->assertEquals('group1', $group1->getGID());
 
@@ -1196,11 +1196,11 @@ class ManagerTest extends \Test\TestCase {
 		$manager->addBackend($backend);
 
 		$users = $manager->findUsersInGroup('testgroup', 'user3');
-		$this->assertEquals(1, count($users));
-		$this->assertFalse(isset($users['user1']));
-		$this->assertFalse(isset($users['user2']));
-		$this->assertFalse(isset($users['user3']));
-		$this->assertTrue(isset($users['user33']));
+		$this->assertCount(1, $users);
+		$this->assertArrayNotHasKey('user1', $users);
+		$this->assertArrayNotHasKey('user2', $users);
+		$this->assertArrayNotHasKey('user3', $users);
+		$this->assertArrayHasKey('user33', $users);
 	}
 
 	public function testFindUsersInGroupWithOneUserBackendWithLimitSpecified() {
@@ -1262,12 +1262,12 @@ class ManagerTest extends \Test\TestCase {
 		$manager->addBackend($backend);
 
 		$users = $manager->findUsersInGroup('testgroup', 'user3', 1);
-		$this->assertEquals(1, count($users));
-		$this->assertFalse(isset($users['user1']));
-		$this->assertFalse(isset($users['user2']));
-		$this->assertFalse(isset($users['user3']));
-		$this->assertTrue(isset($users['user33']));
-		$this->assertFalse(isset($users['user333']));
+		$this->assertCount(1, $users);
+		$this->assertArrayNotHasKey('user1', $users);
+		$this->assertArrayNotHasKey('user2', $users);
+		$this->assertArrayNotHasKey('user3', $users);
+		$this->assertArrayHasKey('user33', $users);
+		$this->assertArrayNotHasKey('user333', $users);
 	}
 
 	public function testFindUsersInGroupWithOneUserBackendWithLimitAndOffsetSpecified() {
@@ -1332,12 +1332,12 @@ class ManagerTest extends \Test\TestCase {
 		$manager->addBackend($backend);
 
 		$users = $manager->findUsersInGroup('testgroup', 'user3', 1, 1);
-		$this->assertEquals(1, count($users));
-		$this->assertFalse(isset($users['user1']));
-		$this->assertFalse(isset($users['user2']));
-		$this->assertFalse(isset($users['user3']));
-		$this->assertFalse(isset($users['user33']));
-		$this->assertTrue(isset($users['user333']));
+		$this->assertCount(1, $users);
+		$this->assertArrayNotHasKey('user1', $users);
+		$this->assertArrayNotHasKey('user2', $users);
+		$this->assertArrayNotHasKey('user3', $users);
+		$this->assertArrayNotHasKey('user33', $users);
+		$this->assertArrayHasKey('user333', $users);
 	}
 
 	public function testFindUsersInGroupWithOneUserBackendAndSearchEmpty() {
@@ -1378,11 +1378,11 @@ class ManagerTest extends \Test\TestCase {
 		$manager->addBackend($backend);
 
 		$users = $manager->findUsersInGroup('testgroup', '');
-		$this->assertEquals(2, count($users));
-		$this->assertFalse(isset($users['user1']));
-		$this->assertTrue(isset($users['user2']));
-		$this->assertFalse(isset($users['user3']));
-		$this->assertTrue(isset($users['user33']));
+		$this->assertCount(2, $users);
+		$this->assertArrayNotHasKey('user1', $users);
+		$this->assertArrayHasKey('user2', $users);
+		$this->assertArrayNotHasKey('user3', $users);
+		$this->assertArrayHasKey('user33', $users);
 	}
 
 	public function testFindUsersInGroupWithOneUserBackendAndSearchEmptyAndLimitSpecified() {
@@ -1422,11 +1422,11 @@ class ManagerTest extends \Test\TestCase {
 		$manager->addBackend($backend);
 
 		$users = $manager->findUsersInGroup('testgroup', '', 1);
-		$this->assertEquals(1, count($users));
-		$this->assertFalse(isset($users['user1']));
-		$this->assertTrue(isset($users['user2']));
-		$this->assertFalse(isset($users['user3']));
-		$this->assertFalse(isset($users['user33']));
+		$this->assertCount(1, $users);
+		$this->assertArrayNotHasKey('user1', $users);
+		$this->assertArrayHasKey('user2', $users);
+		$this->assertArrayNotHasKey('user3', $users);
+		$this->assertArrayNotHasKey('user33', $users);
 	}
 
 	public function testFindUsersInGroupWithOneUserBackendAndSearchEmptyAndLimitAndOffsetSpecified() {
@@ -1467,11 +1467,11 @@ class ManagerTest extends \Test\TestCase {
 		$manager->addBackend($backend);
 
 		$users = $manager->findUsersInGroup('testgroup', '', 1, 1);
-		$this->assertEquals(1, count($users));
-		$this->assertFalse(isset($users['user1']));
-		$this->assertFalse(isset($users['user2']));
-		$this->assertFalse(isset($users['user3']));
-		$this->assertTrue(isset($users['user33']));
+		$this->assertCount(1, $users);
+		$this->assertArrayNotHasKey('user1', $users);
+		$this->assertArrayNotHasKey('user2', $users);
+		$this->assertArrayNotHasKey('user3', $users);
+		$this->assertArrayHasKey('user33', $users);
 	}
 
 }

@@ -420,7 +420,7 @@ class SecurityMiddlewareTest extends \Test\TestCase {
 		$response = $this->middleware->afterException($this->controller, 'test',
 				$this->secAjaxException);
 
-		$this->assertTrue($response instanceof JSONResponse);
+		$this->assertInstanceOf(JSONResponse::class, $response);
 	}
 
 	public function testAfterController() {

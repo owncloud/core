@@ -120,7 +120,7 @@ class UtilCheckServerTest extends TestCase {
 	public function testCheckDataDirValidityWhenFileMissing() {
 		unlink($this->datadir . '/.ocdata');
 		$result = \OC_Util::checkDataDirectoryValidity($this->datadir);
-		$this->assertEquals(1, count($result));
+		$this->assertCount(1, $result);
 
 		$result = \OC_Util::checkServer($this->getConfig([
 			'installed' => true,

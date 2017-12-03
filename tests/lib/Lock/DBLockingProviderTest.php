@@ -102,6 +102,6 @@ class DBLockingProviderTest extends LockingProvider {
 
 	protected function assertLocks(array $expected) {
 		$locks = $this->getLockEntries();
-		$this->assertEquals(count($expected), count($locks), json_encode($locks));
+		$this->assertCount(count($expected), $locks, json_encode($locks));
 	}
 }

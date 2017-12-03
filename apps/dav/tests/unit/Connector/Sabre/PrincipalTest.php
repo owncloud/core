@@ -166,7 +166,7 @@ class PrincipalTest extends TestCase {
 			->will($this->returnValue(null));
 
 		$response = $this->connector->getPrincipalByPath('principals/users/foo');
-		$this->assertSame(null, $response);
+		$this->assertNull($response);
 	}
 
 	public function testGetGroupMemberSet() {

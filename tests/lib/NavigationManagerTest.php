@@ -82,7 +82,7 @@ class NavigationManagerTest extends TestCase {
 		$this->navigationManager->add($entry);
 
 		$navigationEntries = $this->navigationManager->getAll();
-		$this->assertEquals(1, sizeof($navigationEntries), 'Expected that 1 navigation entry exists');
+		$this->assertCount(1, $navigationEntries, 'Expected that 1 navigation entry exists');
 		$this->assertEquals($expectedEntry, $navigationEntries[0]);
 
 		$this->navigationManager->clear();
@@ -110,12 +110,12 @@ class NavigationManagerTest extends TestCase {
 
 		$navigationEntries = $this->navigationManager->getAll();
 		$this->assertEquals(1, $testAddClosureNumberOfCalls, 'Expected that the closure is called by getAll()');
-		$this->assertEquals(1, sizeof($navigationEntries), 'Expected that 1 navigation entry exists');
+		$this->assertCount(1, $navigationEntries, 'Expected that 1 navigation entry exists');
 		$this->assertEquals($expectedEntry, $navigationEntries[0]);
 
 		$navigationEntries = $this->navigationManager->getAll();
 		$this->assertEquals(1, $testAddClosureNumberOfCalls, 'Expected that the closure is only called once for getAll()');
-		$this->assertEquals(1, sizeof($navigationEntries), 'Expected that 1 navigation entry exists');
+		$this->assertCount(1, $navigationEntries, 'Expected that 1 navigation entry exists');
 		$this->assertEquals($expectedEntry, $navigationEntries[0]);
 
 		$this->navigationManager->clear();

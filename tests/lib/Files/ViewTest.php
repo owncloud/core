@@ -176,7 +176,7 @@ class ViewTest extends TestCase {
 		 * foo.txt
 		 * substorage
 		 */
-		$this->assertEquals(4, count($folderData));
+		$this->assertCount(4, $folderData);
 		$this->assertEquals('folder', $folderData[0]['name']);
 		$this->assertEquals('foo.png', $folderData[1]['name']);
 		$this->assertEquals('foo.txt', $folderData[2]['name']);
@@ -194,7 +194,7 @@ class ViewTest extends TestCase {
 		 * foo.png
 		 * foo.txt
 		 */
-		$this->assertEquals(3, count($folderData));
+		$this->assertCount(3, $folderData);
 		$this->assertEquals('folder', $folderData[0]['name']);
 		$this->assertEquals('foo.png', $folderData[1]['name']);
 		$this->assertEquals('foo.txt', $folderData[2]['name']);
@@ -267,7 +267,7 @@ class ViewTest extends TestCase {
 
 		$rootView = new View('');
 		$folderContent = $rootView->getDirectoryContent('/');
-		$this->assertEquals(4, count($folderContent));
+		$this->assertCount(4, $folderContent);
 	}
 
 	public function sharingDisabledPermissionProvider() {
@@ -317,11 +317,11 @@ class ViewTest extends TestCase {
 		$rootView = new View('/incomplete');
 
 		$entries = $rootView->getDirectoryContent('/');
-		$this->assertEquals(3, count($entries));
+		$this->assertCount(3, $entries);
 
 		// /folder will already be in the cache but not scanned
 		$entries = $rootView->getDirectoryContent('/folder');
-		$this->assertEquals(1, count($entries));
+		$this->assertCount(1, $entries);
 	}
 
 	public function testAutoScan() {
@@ -356,7 +356,7 @@ class ViewTest extends TestCase {
 		$rootView = new View('');
 
 		$results = $rootView->search('foo');
-		$this->assertEquals(6, count($results));
+		$this->assertCount(6, $results);
 		$paths = [];
 		foreach ($results as $result) {
 			$this->assertEquals($result['path'], Filesystem::normalizePath($result['path']));
@@ -371,7 +371,7 @@ class ViewTest extends TestCase {
 
 		$folderView = new View('/folder');
 		$results = $folderView->search('bar');
-		$this->assertEquals(2, count($results));
+		$this->assertCount(2, $results);
 		$paths = [];
 		foreach ($results as $result) {
 			$paths[] = $result['path'];
@@ -380,7 +380,7 @@ class ViewTest extends TestCase {
 		$this->assertContains('/bar.txt', $paths);
 
 		$results = $folderView->search('foo');
-		$this->assertEquals(2, count($results));
+		$this->assertCount(2, $results);
 		$paths = [];
 		foreach ($results as $result) {
 			$paths[] = $result['path'];
@@ -388,8 +388,8 @@ class ViewTest extends TestCase {
 		$this->assertContains('/anotherstorage/foo.txt', $paths);
 		$this->assertContains('/anotherstorage/foo.png', $paths);
 
-		$this->assertEquals(6, count($rootView->searchByMime('text')));
-		$this->assertEquals(3, count($folderView->searchByMime('text')));
+		$this->assertCount(6, $rootView->searchByMime('text'));
+		$this->assertCount(3, $folderView->searchByMime('text'));
 	}
 
 	/**
@@ -861,11 +861,11 @@ class ViewTest extends TestCase {
 		$longPath = $folderName;
 		foreach (range(0, $depth - 1) as $i) {
 			$cachedFolder = $cache->get($longPath);
-			$this->assertTrue(is_array($cachedFolder), "No cache entry for folder at $i");
+			$this->assertInternalType('array', $cachedFolder, "No cache entry for folder at $i");
 			$this->assertEquals($folderName, $cachedFolder['name'], "Wrong cache entry for folder at $i");
 
 			$cachedFile = $cache->get($longPath . '/test.txt');
-			$this->assertTrue(is_array($cachedFile), "No cache entry for file at $i");
+			$this->assertInternalType('array', $cachedFile, "No cache entry for file at $i");
 			$this->assertEquals('test.txt', $cachedFile['name'], "Wrong cache entry for file at $i");
 
 			$longPath .= $ds . $folderName;

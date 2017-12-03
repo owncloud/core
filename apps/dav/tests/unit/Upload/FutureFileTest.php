@@ -52,7 +52,7 @@ class FutureFileTest extends \Test\TestCase {
 	public function testGet() {
 		$f = $this->mockFutureFile();
 		$stream = $f->get();
-		$this->assertTrue(is_resource($stream));
+		$this->assertInternalType('resource', $stream);
 	}
 
 	public function testDelete() {
@@ -108,4 +108,3 @@ class FutureFileTest extends \Test\TestCase {
 		return new \OCA\DAV\Upload\FutureFile($d, 'foo.txt');
 	}
 }
-
