@@ -30,6 +30,7 @@ use Page\OwncloudPage;
 use TestHelpers\AppConfigHelper;
 use TestHelpers\SetupHelper;
 use TestHelpers\UploadHelper;
+use TestHelpers\UserHelper;
 
 require_once 'bootstrap.php';
 
@@ -283,7 +284,11 @@ class FeatureContext extends RawMinkContext implements Context {
 	 * @throws Exception
 	 */
 	public function theGroupNamedShouldNotExist($name) {
-		if (in_array($name, SetupHelper::getGroups(), true)) {
+		$groups = UserHelper::getGroupsAsArray(
+			$this->getMinkParameter("base_url"), "admin",
+			$this->getUserPassword("admin")
+		);
+		if (in_array($name, $groups, true)) {
 			throw new Exception("group '" . $name . "' exists but should not");
 		}
 	}
