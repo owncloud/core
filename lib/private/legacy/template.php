@@ -149,6 +149,8 @@ class OC_Template extends \OC\Template\Base {
 			OC_Util::addScript('files/fileinfo');
 			OC_Util::addScript('files/client');
 
+			OC_Util::addVendorStyle('uikit/css/uikit.min', null, true);
+
 			// Add the stuff we need always
 			// following logic will import all vendor libraries that are
 			// specified in core/js/core.json

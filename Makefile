@@ -63,15 +63,16 @@ core_src_dirs=apps core l10n lib occ ocs ocs-provider resources settings
 core_test_dirs=tests
 core_all_src=$(core_src_files) $(core_src_dirs) $(core_doc_files)
 dist_dir=build/dist
+uikit_dir=$(core_vendor)/uikit
 
 #
 # Catch-all rules
 #
 .PHONY: all
-all: help-hint $(composer_dev_deps) $(core_vendor) $(nodejs_deps)
+all: help-hint $(composer_dev_deps) $(core_vendor) $(nodejs_deps) $(uikit_dir)
 
 .PHONY: clean
-clean: clean-composer-deps clean-nodejs-deps clean-js-deps clean-test clean-dist
+clean: clean-composer-deps clean-nodejs-deps clean-js-deps clean-test clean-dist clean-uikit
 
 .PHONY: help-hint
 help-hint:
@@ -170,6 +171,24 @@ update-js-deps: $(nodejs_deps)
 .PHONY: clean-js-deps
 clean-js-deps:
 	rm -Rf $(core_vendor)
+
+#
+# UI kit
+#
+
+# Symlink UIkit dir
+$(uikit_dir): $(core_vendor) $(NODE_PREFIX)/node_modules/uikit/dist
+	rm $@
+	ln -s ../../$(NODE_PREFIX)/node_modules/uikit/dist/ $@
+	touch $@
+
+# build UIkit
+$(NODE_PREFIX)/node_modules/uikit/dist: $(nodejs_deps) $(NODE_PREFIX)/node_modules/uikit/src 
+	cd $(NODE_PREFIX)/node_modules/uikit/ && npm install && npm build
+
+.PHONY: clean-uikit
+clean-uikit:
+	rm -Rf $(uikit_dir)
 
 #
 # Tests
