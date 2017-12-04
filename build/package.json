@@ -24,7 +24,8 @@
     "karma-phantomjs-launcher": "*",
     "phantomjs-prebuilt": "*",
     "sinon": "^2.0.0",
-    "uikit": "^3.0.0-beta.35"
+    "uikit": "^3.0.0-beta.35",
+    "webpack-material-design-icons": "^0.1.0"
   },
   "engine": "node >= 6.9"
 }
