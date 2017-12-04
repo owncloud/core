@@ -482,7 +482,7 @@ class OC_App {
 					"order" => 1000,
 					"href" => $urlGenerator->linkToRoute('settings_help'),
 					"name" => $l->t("Help"),
-					"icon" => $urlGenerator->imagePath("settings", "help.svg")
+					"icon" => 'help'
 				]
 			];
 		}
@@ -495,7 +495,7 @@ class OC_App {
 				"order" => 1,
 				"href" => $urlGenerator->linkToRoute('settings.SettingsPage.getPersonal'),
 				"name" => $l->t("Settings"),
-				"icon" => $urlGenerator->imagePath("settings", "admin.svg")
+				"icon" => 'person'
 			];
 
 			$hasUserManagementPrivileges = false;
@@ -512,7 +512,7 @@ class OC_App {
 					"order" => 2,
 					"href" => $urlGenerator->linkToRoute('settings_users'),
 					"name" => $l->t("Users"),
-					"icon" => $urlGenerator->imagePath("settings", "users.svg")
+					"icon" => 'people'
 				];
 			}
 

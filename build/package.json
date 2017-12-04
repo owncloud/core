@@ -25,6 +25,7 @@
     "jquery-migrate": "~1.4.0",
     "jquery-ui": "~1.10.0",
     "jstimezonedetect": "^1.0.6",
+    "material-design-icons": "^3.0.1",
     "moment": "^2.19.4",
     "select2": "ivaynberg/select2#~3.5.3",
     "showdown": "^1.8.6",
@@ -49,7 +50,9 @@
     "karma-phantomjs-launcher": "*",
     "phantomjs-prebuilt": "*",
     "sinon": "^2.0.0",
-    "webpack": "^3.10.0"
+    "uikit": "^3.0.0-beta.35",
+    "webpack": "^3.10.0",
+    "webpack-material-design-icons": "^0.1.0"
   },
   "engines": {
     "node": ">= 6.9",

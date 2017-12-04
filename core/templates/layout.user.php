@@ -38,53 +38,118 @@
 			<div id="notification"></div>
 		</div>
 		<header role="banner">
-			<div id="header">
-				<a href="<?php print_unescaped(link_to('', 'index.php')); ?>" id="owncloud" tabindex="1">
-					<h1 class="logo-icon">
-						<?php p($theme->getName()); ?>
-					</h1>
-				</a>
-				<a href="#" class="header-appname-container menutoggle" tabindex="2">
-					<button class="burger">
-						<?php echo $l->t('Menu'); ?>
-					</button>
-					<h1 class="header-appname">
-						<?php p(!empty($_['application']) ? $_['application'] : $l->t('Apps')); ?>
-					</h1>
-				</a>
-				<div id="logo-claim" style="display:none;"><?php p($theme->getLogoClaim()); ?></div>
+			<header>
+				<div class="oc-topbar uk-position-top uk-position-fixed uk-position-z-index" uk-navbar="mode: click">
+					<div class="uk-navbar-left">
+						<ul class="uk-navbar-nav">
+							<li>
+								<a href="#">
+									<i class="material-icons uk-margin-small-right uk-text-inverse">menu</i>
+									<span class="uk-text-inverse"><?php p(!empty($_['application']) ? $_['application'] : $l->t('Apps')); ?></span>
+								</a>
+								<div class="oc-app-menu" uk-dropdown="animation: uk-animation-slide-top-small; pos: bottom-left; offset: 0; delay-hide:100; mode: click">
+									<ul uk-grid class="uk-grid-medium uk-child-width-1-3">
+										<?php foreach($_['navigation'] as $entry): ?>
+											<li data-id="<?php p($entry['id']); ?>" <?php if( $entry["active"] ): ?> class="_is_active"<?php endif; ?>>
+												<!-- <a href="<?php print_unescaped($entry['href']); ?>" tabindex="3" <?php if( $entry['active'] ): ?> class="active"<?php endif; ?>> -->
+													<img src="<?php print_unescaped($entry['icon']); ?>">
+													<!-- <div class="icon-loading-dark" style="display:none;"></div> -->
+													<span>
+														<?php p($entry['name']); ?>
+													</span>
+												<!-- </a> -->
+											</li>
+										<?php endforeach; ?>
+									</div>
+								<div>
+							</li>
+						</ul>
+					</div>
+					<div class="uk-position-center">
+						<div class="uk-flex uk-flex-middle">
+							<div class="uk-width-1-2 uk-text-right">
+								<img src="/core/gfx/cloud-logo-invert.svg" alt="ownCloud" height="45" width="80">
+							</div>
+							<span class="uk-width-1-2 uk-text-left uk-text-large uk-text-inverse" href="">ownCloud</span>
+						</div>
+					</div>
+					<div class="uk-navbar-right">
+						<ul class="uk-navbar-nav">
+							<li>
+								<a href="">
+									<img alt="" width="32" height="32" src="<?php p(\OC::$server->getURLGenerator()->linkToRoute('core.avatar.getAvatar', ['userId' => $_['user_uid'], 'size' => 32]));?>" srcset="<?php p(\OC::$server->getURLGenerator()->linkToRoute('core.avatar.getAvatar', ['userId' => $_['user_uid'], 'size' => 64]));?> 2x, <?php p(\OC::$server->getURLGenerator()->linkToRoute('core.avatar.getAvatar', ['userId' => $_['user_uid'], 'size' => 128]));?> 4x">
+									<span><?php  p(trim($_['user_displayname']) != '' ? $_['user_displayname'] : $_['user_uid']) ?></span>
+								</a>
+								<div class="oc-user-menu_" uk-dropdown="animation: uk-animation-slide-top-small; pos: bottom-right; offset: 0; delay-hide:100; mode: click;">
+									<ul class="uk-nav uk-navbar-dropdown-nav">
+										<?php foreach($_['settingsnavigation'] as $entry):?>
+										<li>
+											<a href="<?php print_unescaped($entry['href']); ?>">
+												<span class="uk-flex uk-flex-middle">
+													<i class="material-icons uk-margin-small-right"><?php print_unescaped($entry['icon']); ?></i>
+													<?php p($entry['name']) ?>
+												</span>
+											</a>
+										</li>
+										<?php endforeach; ?>
+										<li>
+											<a <?php print_unescaped(OC_User::getLogoutAttribute()); ?>>
+												<span class="uk-flex uk-flex-middle">
+													<i class="material-icons uk-margin-small-right">exit_to_app</i>
+													<?php p($l->t('Log out'));?>
+												</span>
+											</a>
+										</li>
+									</ul>
+								</div>
+							</li>
+						</ul>
+					</div>
+				</div>
+			</header>
+
+			<!--
+			<ul>
+			<?php foreach($_['settingsnavigation'] as $entry):?>
+				<li>
+					<a href="<?php print_unescaped($entry['href']); ?>"
+						<?php if( $entry["active"] ): ?> class="active"<?php endif; ?>>
+						<img alt="" src="<?php print_unescaped($entry['icon']); ?>">
+						<?php p($entry['name']) ?>
+					</a>
+				</li>
+			<?php endforeach; ?>
+				<li>
+					<a id="logout" <?php print_unescaped(OC_User::getLogoutAttribute()); ?>>
+						<img alt="" src="<?php print_unescaped(image_path('', 'actions/logout.svg')); ?>">
+						<?php p($l->t('Log out'));?>
+					</a>
+				</li>
+			</ul>
+			-->
+
+			<!--
+			<div id="logo-claim" style="display:none;"><?php p($theme->getLogoClaim()); ?></div>
+			<a href="<?php print_unescaped(link_to('', 'index.php')); ?>" id="owncloud" tabindex="1">
+				<h1 class="logo-icon">
+					<?php p($theme->getName()); ?>
+				</h1>
+			</a>
+			-->
+
+			<!-- <div id="header">
 				<div id="settings">
 					<div id="expand" tabindex="6" role="link" class="menutoggle">
 						<?php if ($_['enableAvatars']): ?>
 						<div class="avatardiv<?php if ($_['userAvatarSet']) { print_unescaped(' avatardiv-shown'); } else { print_unescaped('" style="display: none'); } ?>">
 							<?php if ($_['userAvatarSet']): ?>
-								<img alt="" width="32" height="32"
-								src="<?php p(\OC::$server->getURLGenerator()->linkToRoute('core.avatar.getAvatar', ['userId' => $_['user_uid'], 'size' => 32]));?>"
-								srcset="<?php p(\OC::$server->getURLGenerator()->linkToRoute('core.avatar.getAvatar', ['userId' => $_['user_uid'], 'size' => 64]));?> 2x, <?php p(\OC::$server->getURLGenerator()->linkToRoute('core.avatar.getAvatar', ['userId' => $_['user_uid'], 'size' => 128]));?> 4x"
-								>
 							<?php endif; ?>
 						</div>
 						<?php endif; ?>
-						<span id="expandDisplayName"><?php  p(trim($_['user_displayname']) != '' ? $_['user_displayname'] : $_['user_uid']) ?></span>
+						<span id="expandDisplayName"></span>
 					</div>
 					<div id="expanddiv">
-					<ul>
-					<?php foreach($_['settingsnavigation'] as $entry):?>
-						<li>
-							<a href="<?php print_unescaped($entry['href']); ?>"
-								<?php if( $entry["active"] ): ?> class="active"<?php endif; ?>>
-								<img alt="" src="<?php print_unescaped($entry['icon']); ?>">
-								<?php p($entry['name']) ?>
-							</a>
-						</li>
-					<?php endforeach; ?>
-						<li>
-							<a id="logout" <?php print_unescaped(OC_User::getLogoutAttribute()); ?>>
-								<img alt="" src="<?php print_unescaped(image_path('', 'actions/logout.svg')); ?>">
-								<?php p($l->t('Log out'));?>
-							</a>
-						</li>
-					</ul>
+
 					</div>
 				</div>
 
@@ -96,7 +161,7 @@
 						value="" required
 						autocomplete="off" tabindex="5">
 				</form>
-			</div>
+			</div> -->
 		</header>
 
 		<nav role="navigation">

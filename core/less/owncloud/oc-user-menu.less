@@ -1,0 +1,33 @@
+@oc-user-menu-triangle-size: 10px;
+
+.oc-user-menu:extend(.uk-navbar-dropdown, .uk-background-secondary){
+	&:before {
+		content: "";
+		width: 0;
+		height: 0;
+		border-left: @oc-user-menu-triangle-size solid transparent;
+		border-right: @oc-user-menu-triangle-size solid transparent;
+		border-bottom: @oc-user-menu-triangle-size solid @global-secondary-background;
+		position: absolute;
+		top: @oc-user-menu-triangle-size * -1;
+		right: @oc-user-menu-triangle-size * 1.7;
+	}
+
+	ul:extend(.uk-nav, .uk-navbar-dropdown-nav){}
+
+	li:extend(.uk-flex, .uk-flex-middle){
+		transition: opacity 0.5s;
+		cursor: pointer;
+		opacity: 0.75;
+
+		&._is_active,
+		&:hover {
+			opacity: 1;
+		}
+
+		&:not(:last-child):extend(.uk-margin-small-bottom){}
+
+		span:extend(.uk-text-inverse){}
+		.material-icons:extend(.uk-text-inverse, .uk-margin-small-right){}
+	}
+}

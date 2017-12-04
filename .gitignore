@@ -8,6 +8,7 @@
 /assets
 /build/composer.phar
 /core/vendor
+/core/uikit
 
 # ignore all apps except core ones
 /apps*/*

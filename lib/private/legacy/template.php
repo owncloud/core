@@ -150,6 +150,11 @@ class OC_Template extends \OC\Template\Base {
 			OC_Util::addScript('files/fileinfo');
 			OC_Util::addScript('files/client');
 
+			// FIXME: load through webpack
+			OC_Util::addVendorScript('uikit/js/uikit.min', null, true);
+			OC_Util::addVendorStyle('uikit/css/uikit.owncloud.min', null, true);
+			OC_Util::addVendorStyle('material-design-icons/iconfont/material-icons', null, true);
+
 			if (\OC::$server->getRequest()->isUserAgent([\OC\AppFramework\Http\Request::USER_AGENT_IE])) {
 				// polyfill for btoa/atob for IE friends
 				OC_Util::addVendorScript('base64/base64');
