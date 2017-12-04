@@ -58,7 +58,7 @@ class Cors implements ISettings {
 	 */
 	public function getPanel() {
 		$userId = $this->userSession->getUser()->getUID();
-		$domains = json_decode($this->config->getUserValue($userId, 'core', 'domains'));
+		$domains = json_decode($this->config->getUserValue($userId, 'core', 'domains', '[]'), true);
 
 		$t = new Template('settings', 'panels/personal/cors');
 		$t->assign('user_id', $userId);
