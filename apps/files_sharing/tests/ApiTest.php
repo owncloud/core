@@ -632,7 +632,7 @@ class ApiTest extends TestCase {
 		$this->assertTrue($result->succeeded());
 
 		// test should return one share created from testCreateShare()
-		$this->assertEquals(1, count($result->getData()));
+		$this->assertCount(1, $result->getData());
 
 		$this->shareManager->deleteShare($share1);
 	}
@@ -1420,8 +1420,8 @@ class ApiTest extends TestCase {
 		// now the link share should expire because of enforced default expire date
 		// the user share should still exist
 		$result = Share::getItemShared('file', $info->getId());
-		$this->assertTrue(is_array($result));
-		$this->assertSame(1, count($result));
+		$this->assertInternalType('array', $result);
+		$this->assertCount(1, $result);
 		$share = reset($result);
 		$this->assertSame(Share::SHARE_TYPE_USER, $share['share_type']);
 

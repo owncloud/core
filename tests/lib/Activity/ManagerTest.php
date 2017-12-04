@@ -100,17 +100,17 @@ class ManagerTest extends TestCase {
 
 	public function testNotificationTypes() {
 		$result = $this->activityManager->getNotificationTypes('en');
-		$this->assertTrue(is_array($result));
+		$this->assertInternalType('array', $result);
 		$this->assertEquals(2, sizeof($result));
 	}
 
 	public function testDefaultTypes() {
 		$result = $this->activityManager->getDefaultTypes('stream');
-		$this->assertTrue(is_array($result));
+		$this->assertInternalType('array', $result);
 		$this->assertEquals(1, sizeof($result));
 
 		$result = $this->activityManager->getDefaultTypes('email');
-		$this->assertTrue(is_array($result));
+		$this->assertInternalType('array', $result);
 		$this->assertEquals(0, sizeof($result));
 	}
 
@@ -159,11 +159,11 @@ class ManagerTest extends TestCase {
 
 	public function testFilterNotificationTypes() {
 		$result = $this->activityManager->filterNotificationTypes(['NT0', 'NT1', 'NT2', 'NT3'], 'fv01');
-		$this->assertTrue(is_array($result));
+		$this->assertInternalType('array', $result);
 		$this->assertEquals(3, sizeof($result));
 
 		$result = $this->activityManager->filterNotificationTypes(['NT0', 'NT1', 'NT2', 'NT3'], 'InvalidFilter');
-		$this->assertTrue(is_array($result));
+		$this->assertInternalType('array', $result);
 		$this->assertEquals(4, sizeof($result));
 	}
 
@@ -428,7 +428,7 @@ class ManagerTest extends TestCase {
 				// The following values can not be used via publishActivity()
 				$this->assertLessThanOrEqual(time() + 2, $event->getTimestamp(), 'Timestamp not set correctly');
 				$this->assertGreaterThanOrEqual(time() - 2, $event->getTimestamp(), 'Timestamp not set correctly');
-				$this->assertSame(null, $event->getAuthor(), 'Author not set correctly');
+				$this->assertNull($event->getAuthor(), 'Author not set correctly');
 				$this->assertSame('', $event->getObjectType(), 'Object type should not be set');
 				$this->assertSame(0, $event->getObjectId(), 'Object ID should not be set');
 			});

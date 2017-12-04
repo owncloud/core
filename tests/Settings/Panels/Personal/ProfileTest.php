@@ -51,7 +51,7 @@ class ProfileTest extends \Test\TestCase {
 	}
 
 	public function testGetPriority() {
-		$this->assertTrue(is_integer($this->panel->getPriority()));
+		$this->assertInternalType('int', $this->panel->getPriority());
 		$this->assertTrue($this->panel->getPriority() > 90);
 	}
 

@@ -82,7 +82,7 @@ class DbHandlerTest extends TestCase {
 
 		$query = $this->connection->getQueryBuilder()->select('*')->from($this->dbTable);
 		$result = $query->execute()->fetchAll();
-		$this->assertSame(1, count($result));
+		$this->assertCount(1, $result);
 		$this->assertSame($expectedUrl, $result[0]['url']);
 		$this->assertSame($id, (int)$result[0]['id']);
 		$this->assertSame($expectedHash, $result[0]['url_hash']);
@@ -103,7 +103,7 @@ class DbHandlerTest extends TestCase {
 
 		$query = $this->connection->getQueryBuilder()->select('*')->from($this->dbTable);
 		$result = $query->execute()->fetchAll();
-		$this->assertSame(2, count($result));
+		$this->assertCount(2, $result);
 		$this->assertSame('server1', $result[0]['url']);
 		$this->assertSame('server2', $result[1]['url']);
 		$this->assertSame($id1, (int)$result[0]['id']);
@@ -112,7 +112,7 @@ class DbHandlerTest extends TestCase {
 		$this->dbHandler->removeServer($id2);
 		$query = $this->connection->getQueryBuilder()->select('*')->from($this->dbTable);
 		$result = $query->execute()->fetchAll();
-		$this->assertSame(1, count($result));
+		$this->assertCount(1, $result);
 		$this->assertSame('server1', $result[0]['url']);
 		$this->assertSame($id1, (int)$result[0]['id']);
 	}
@@ -131,7 +131,7 @@ class DbHandlerTest extends TestCase {
 		$id2 = $this->dbHandler->addServer('server2');
 
 		$result = $this->dbHandler->getAllServer();
-		$this->assertSame(2, count($result));
+		$this->assertCount(2, $result);
 		$this->assertSame('server1', $result[0]['url']);
 		$this->assertSame('server2', $result[1]['url']);
 		$this->assertSame($id1, (int)$result[0]['id']);
@@ -164,12 +164,12 @@ class DbHandlerTest extends TestCase {
 		$this->dbHandler->addServer('server1');
 		$query = $this->connection->getQueryBuilder()->select('*')->from($this->dbTable);
 		$result = $query->execute()->fetchAll();
-		$this->assertSame(1, count($result));
-		$this->assertSame(null, $result[0]['token']);
+		$this->assertCount(1, $result);
+		$this->assertNull($result[0]['token']);
 		$this->dbHandler->addToken('http://server1', 'token');
 		$query = $this->connection->getQueryBuilder()->select('*')->from($this->dbTable);
 		$result = $query->execute()->fetchAll();
-		$this->assertSame(1, count($result));
+		$this->assertCount(1, $result);
 		$this->assertSame('token', $result[0]['token']);
 	}
 
@@ -185,12 +185,12 @@ class DbHandlerTest extends TestCase {
 		$this->dbHandler->addServer('server1');
 		$query = $this->connection->getQueryBuilder()->select('*')->from($this->dbTable);
 		$result = $query->execute()->fetchAll();
-		$this->assertSame(1, count($result));
-		$this->assertSame(null, $result[0]['shared_secret']);
+		$this->assertCount(1, $result);
+		$this->assertNull($result[0]['shared_secret']);
 		$this->dbHandler->addSharedSecret('http://server1', 'secret');
 		$query = $this->connection->getQueryBuilder()->select('*')->from($this->dbTable);
 		$result = $query->execute()->fetchAll();
-		$this->assertSame(1, count($result));
+		$this->assertCount(1, $result);
 		$this->assertSame('secret', $result[0]['shared_secret']);
 	}
 
@@ -206,12 +206,12 @@ class DbHandlerTest extends TestCase {
 		$this->dbHandler->addServer('server1');
 		$query = $this->connection->getQueryBuilder()->select('*')->from($this->dbTable);
 		$result = $query->execute()->fetchAll();
-		$this->assertSame(1, count($result));
+		$this->assertCount(1, $result);
 		$this->assertSame(TrustedServers::STATUS_PENDING, (int)$result[0]['status']);
 		$this->dbHandler->setServerStatus('http://server1', TrustedServers::STATUS_OK);
 		$query = $this->connection->getQueryBuilder()->select('*')->from($this->dbTable);
 		$result = $query->execute()->fetchAll();
-		$this->assertSame(1, count($result));
+		$this->assertCount(1, $result);
 		$this->assertSame(TrustedServers::STATUS_OK, (int)$result[0]['status']);
 	}
 

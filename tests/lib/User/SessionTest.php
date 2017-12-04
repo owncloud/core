@@ -524,7 +524,7 @@ class SessionTest extends TestCase {
 
 		$granted = $userSession->loginWithCookie('foo', $token);
 
-		$this->assertSame($granted, true);
+		$this->assertTrue($granted);
 	}
 
 	public function testRememberLoginInvalidToken() {
@@ -557,7 +557,7 @@ class SessionTest extends TestCase {
 			$this->tokenProvider, $this->config, $this->serviceLoader);
 		$granted = $userSession->loginWithCookie('foo', 'badToken');
 
-		$this->assertSame($granted, false);
+		$this->assertFalse($granted);
 	}
 
 	public function testRememberLoginInvalidUser() {
@@ -590,7 +590,7 @@ class SessionTest extends TestCase {
 			$this->tokenProvider, $this->config, $this->serviceLoader);
 		$granted = $userSession->loginWithCookie('foo', $token);
 
-		$this->assertSame($granted, false);
+		$this->assertFalse($granted);
 	}
 
 	public function testActiveUserAfterSetSession() {
@@ -667,7 +667,7 @@ class SessionTest extends TestCase {
 			->method('getToken')
 			->with($password)
 			->will($this->throwException(new InvalidTokenException()));
-		
+
 		$this->tokenProvider->expects($this->once())
 			->method('generateToken')
 			->with($sessionId, $uid, $loginName, $password, 'Firefox');
@@ -720,7 +720,7 @@ class SessionTest extends TestCase {
 			->method('getPassword')
 			->with($token, $password)
 			->will($this->returnValue($realPassword));
-		
+
 		$this->tokenProvider->expects($this->once())
 			->method('generateToken')
 			->with($sessionId, $uid, $loginName, $realPassword, 'Firefox');
@@ -748,7 +748,7 @@ class SessionTest extends TestCase {
 			->method('get')
 			->with($uid)
 			->will($this->returnValue(null));
-		
+
 		$this->assertFalse($userSession->createSessionToken($request, $uid, $loginName, $password));
 	}
 
@@ -994,7 +994,7 @@ class SessionTest extends TestCase {
 			$event['cancel'] = $called['cancel'];
 		});
 
-		$this->assertEquals(true, $userSession->logout());
+		$this->assertTrue($userSession->logout());
 	}
 
 

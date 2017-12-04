@@ -16,15 +16,15 @@ use OC_Util;
 class UtilTest extends \Test\TestCase {
 	public function testGetVersion() {
 		$version = \OCP\Util::getVersion();
-		$this->assertTrue(is_array($version));
+		$this->assertInternalType('array', $version);
 		foreach ($version as $num) {
-			$this->assertTrue(is_int($num));
+			$this->assertInternalType('int', $num);
 		}
 	}
 
 	public function testGetVersionString() {
 		$version = \OC_Util::getVersionString();
-		$this->assertTrue(is_string($version));
+		$this->assertInternalType('string', $version);
 	}
 
 	/**
@@ -32,7 +32,7 @@ class UtilTest extends \Test\TestCase {
 	*/
 	public function testGetEditionString() {
 		$edition = \OC_Util::getEditionString();
-		$this->assertTrue(is_string($edition));
+		$this->assertInternalType('string', $edition);
 	}
 
 	function testFormatDate() {
@@ -516,7 +516,7 @@ class UtilTest extends \Test\TestCase {
 			'myApp/vendor/myFancyCSSFile2',
 		], \OC_Util::$styles);
 	}
-	
+
 	public function testGetStatusInfo() {
 		$statusInfo = \OCP\Util::getStatusInfo();
 		$this->assertArrayHasKey('productname', $statusInfo);

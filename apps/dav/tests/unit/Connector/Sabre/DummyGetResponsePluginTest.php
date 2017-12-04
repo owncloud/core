@@ -66,6 +66,6 @@ class DummyGetResponsePluginTest extends TestCase {
 			->method('setStatus')
 			->with(200);
 
-		$this->assertSame(false, $this->dummyGetResponsePlugin->httpGet($request, $response));
+		$this->assertFalse($this->dummyGetResponsePlugin->httpGet($request, $response));
 	}
 }

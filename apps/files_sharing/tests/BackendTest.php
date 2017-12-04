@@ -81,7 +81,7 @@ class BackendTest extends TestCase {
 		$backend = new \OCA\Files_Sharing\ShareBackend\Folder();
 
 		$result = $backend->getParents($fileinfo3['fileid']);
-		$this->assertSame(2, count($result));
+		$this->assertCount(2, $result);
 
 		$count1 = 0;
 		$count2 = 0;
@@ -101,7 +101,7 @@ class BackendTest extends TestCase {
 		$this->assertSame(1, $count2);
 
 		$result1 = $backend->getParents($fileinfo3['fileid'], self::TEST_FILES_SHARING_API_USER3);
-		$this->assertSame(1, count($result1));
+		$this->assertCount(1, $result1);
 		$elemet = reset($result1);
 		$this->assertSame('files' . $this->folder . $this->subfolder . $this->subsubfolder ,$elemet['path']);
 		$this->assertSame(ltrim($this->subsubfolder, '/') ,$elemet['collection']['path']);

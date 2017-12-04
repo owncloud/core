@@ -425,7 +425,7 @@ class CommentsNodeTest extends \Test\TestCase {
 			$this->assertSame($expected[$name], $value);
 			unset($expected[$name]);
 		}
-		$this->assertTrue(empty($expected));
+		$this->assertEmpty($expected);
 	}
 
 	public function readCommentProvider() {

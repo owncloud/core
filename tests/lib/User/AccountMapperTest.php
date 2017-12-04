@@ -99,7 +99,7 @@ class AccountMapperTest extends TestCase {
 	 */
 	public function testFindAll() {
 		$result = $this->mapper->find("testfind");
-		$this->assertEquals(4, count($result));
+		$this->assertCount(4, $result);
 	}
 
 	/**
@@ -107,7 +107,7 @@ class AccountMapperTest extends TestCase {
 	 */
 	public function testFindByUserId() {
 		$result = $this->mapper->find("testfind1");
-		$this->assertEquals(1, count($result));
+		$this->assertCount(1, $result);
 		$this->assertEquals("TestFind1", array_shift($result)->getUserId());
 	}
 
@@ -116,7 +116,7 @@ class AccountMapperTest extends TestCase {
 	 */
 	public function testFindByDisplayName() {
 		$result = $this->mapper->find('test find 2');
-		$this->assertEquals(1, count($result));
+		$this->assertCount(1, $result);
 		$this->assertEquals("TestFind2", array_shift($result)->getUserId());
 	}
 
@@ -135,7 +135,7 @@ class AccountMapperTest extends TestCase {
 	 */
 	public function testFindByEmail($email) {
 		$result = $this->mapper->find($email);
-		$this->assertEquals(1, count($result));
+		$this->assertCount(1, $result);
 		$this->assertEquals("TestFind3", array_shift($result)->getUserId());
 	}
 
@@ -146,7 +146,7 @@ class AccountMapperTest extends TestCase {
 	 */
 	public function testGetByEmail($email) {
 		$result = $this->mapper->getByEmail($email);
-		$this->assertEquals(1, count($result));
+		$this->assertCount(1, $result);
 		$this->assertEquals("TestFind3", array_shift($result)->getUserId());
 	}
 
@@ -155,7 +155,7 @@ class AccountMapperTest extends TestCase {
 	 */
 	public function testFindBySearchTerm() {
 		$result = $this->mapper->find('term 4 b');
-		$this->assertEquals(1, count($result));
+		$this->assertCount(1, $result);
 		$this->assertEquals("TestFind4", array_shift($result)->getUserId());
 	}
 
@@ -164,7 +164,7 @@ class AccountMapperTest extends TestCase {
 	 */
 	public function testFindLimitAndOffset() {
 		$result = $this->mapper->find('Term', 2, 2);
-		$this->assertEquals(2, count($result));
+		$this->assertCount(2, $result);
 		//results are ordered by display name
 		$this->assertEquals("TestFind3", array_shift($result)->getUserId());
 		$this->assertEquals("TestFind4", array_shift($result)->getUserId());
