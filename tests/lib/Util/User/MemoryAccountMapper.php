@@ -60,14 +60,13 @@ class MemoryAccountMapper extends AccountMapper {
 	}
 
 	public function getByUid($uid) {
-		$match = array_filter(self::$accounts, function (Account $a) use ($uid) {
-			return strtolower($a->getUserId()) === strtolower($uid);
-		});
-		if (empty($match)) {
-			throw new DoesNotExistException('');
+		foreach(self::$accounts as $account) {
+			if (strtolower($account->getUserId()) === strtolower($uid)) {
+				return $account;
+			}
 		}
 
-		return array_values($match)[0];
+		throw new DoesNotExistException('');
 	}
 
 	public function getUserCount($hasLoggedIn) {
@@ -89,5 +88,9 @@ class MemoryAccountMapper extends AccountMapper {
 				return;
 			}
 		}
+	}
+
+	public function clear() {
+		self::$accounts = [];
 	}
 }

@@ -94,6 +94,7 @@ trait GroupTrait {
 		foreach($this->groups as $group) {
 			$group->delete();
 		}
+
 		\OC::$server->getGroupManager()
 			->reset($this->previousGroupManagerInternals[0], $this->previousGroupManagerInternals[1]);
 		\OC::$server->getGroupManager()

@@ -271,19 +271,19 @@ class MembershipManagerTest extends TestCase {
 		$accounts = $this->manager->getGroupMemberAccounts($group->getGroupId(), MembershipManager::MEMBERSHIP_TYPE_GROUP_ADMIN);
 		$this->checkConsistencyAccount($accounts[0], $accountId);
 
-		$accounts = $this->manager->getGroupMembershipsByType($group->getGroupId(),
+		$accounts = $this->manager->getGroupMembershipsByType($group->getId(),
 			MembershipManager::MEMBERSHIP_TYPE_GROUP_ADMIN, MembershipManager::MAINTENANCE_TYPE_MANUAL);
 		$this->checkConsistencyAccount($accounts[0], $accountId);
 
-		$accounts = $this->manager->getGroupMembershipsByType($group->getGroupId(),
+		$accounts = $this->manager->getGroupMembershipsByType($group->getId(),
 			MembershipManager::MEMBERSHIP_TYPE_GROUP_USER, MembershipManager::MAINTENANCE_TYPE_MANUAL);
 		$this->checkConsistencyAccount($accounts[0], $accountId);
 
-		$accounts = $this->manager->getGroupMembershipsByType($group->getGroupId(),
+		$accounts = $this->manager->getGroupMembershipsByType($group->getId(),
 			MembershipManager::MEMBERSHIP_TYPE_GROUP_ADMIN, MembershipManager::MAINTENANCE_TYPE_SYNC);
 		$this->assertEmpty($accounts);
 
-		$accounts = $this->manager->getGroupMembershipsByType($group->getGroupId(),
+		$accounts = $this->manager->getGroupMembershipsByType($group->getId(),
 			MembershipManager::MEMBERSHIP_TYPE_GROUP_USER, MembershipManager::MAINTENANCE_TYPE_SYNC);
 		$this->assertEmpty($accounts);
 	}

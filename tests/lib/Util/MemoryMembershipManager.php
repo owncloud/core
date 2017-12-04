@@ -21,6 +21,7 @@
 
 namespace Test\Util;
 
+use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
 use OC\Group\BackendGroup;
 use OC\User\Account;
 use OC\MembershipManager;
@@ -116,15 +117,31 @@ class MemoryMembershipManager extends MembershipManager {
 	}
 
 	/**
-	 * @param string $gid
+	 * @param int $backendGroupId
 	 * @param int $membershipType - type of membership in the group (0 - MEMBERSHIP_TYPE_GROUP_USER, 1 - MEMBERSHIP_TYPE_GROUP_ADMIN)
 	 * @param int $maintenanceType - defines how membership is maintained (0 - MANUAL, 1 - SYNC)
 	 *
 	 * @return Account[]
 	 * @throws \Exception
 	 */
-	public function getGroupMembershipsByType($gid, $membershipType, $maintenanceType) {
-		throw new \Exception('Not implemented - getGroupMembershipsByType');
+	public function getGroupMembershipsByType($backendGroupId, $membershipType, $maintenanceType) {
+		if ($membershipType === MembershipManager::MEMBERSHIP_TYPE_GROUP_USER) {
+			if (!isset(self::$groupUsers[$backendGroupId])) {
+				return [];
+			}
+
+			$accounts = [];
+			$accountIds = self::$groupUsers[$backendGroupId];
+			foreach($accountIds as $accountId => $value) {
+				if ($value === $maintenanceType) {
+					$accounts[] = $this->getAccountByInternalId($accountId);
+				}
+			}
+
+			return $accounts;
+		} else {
+			throw new \Exception('Not implemented - MEMBERSHIP_TYPE_GROUP_ADMIN');
+		}
 	}
 
 	/**
@@ -211,20 +228,31 @@ class MemoryMembershipManager extends MembershipManager {
 	 * @param int $maintenanceType - defines how membership is maintained (0 - MANUAL, 1 - SYNC)
 	 *
 	 * @return bool
+	 * @throws UniqueConstraintViolationException
 	 */
 	public function addMembership($accountId, $backendGroupId, $membershipType, $maintenanceType) {
 		if ($membershipType === MembershipManager::MEMBERSHIP_TYPE_GROUP_USER) {
 			if (!isset(self::$groupUsers[$backendGroupId])) {
 				self::$groupUsers[$backendGroupId] = [];
 			}
-			self::$groupUsers[$backendGroupId][$accountId] = true;
+
+			if (isset(self::$groupUsers[$backendGroupId]) && isset(self::$groupUsers[$backendGroupId][$accountId])) {
+				throw new \Exception('UniqueConstraintViolationException');
+			}
+
+			self::$groupUsers[$backendGroupId][$accountId] = $maintenanceType;
 
 			return true;
 		} else {
 			if (!isset(self::$groupAdmins[$backendGroupId])) {
 				self::$groupAdmins[$backendGroupId] = [];
 			}
-			self::$groupAdmins[$backendGroupId][$accountId] = true;
+
+			if (isset(self::$groupAdmins[$backendGroupId]) && isset(self::$groupAdmins[$backendGroupId][$accountId])) {
+				throw new \Exception('UniqueConstraintViolationException');
+			}
+
+			self::$groupAdmins[$backendGroupId][$accountId] = $maintenanceType;
 
 			return true;
 		}
@@ -316,5 +344,10 @@ class MemoryMembershipManager extends MembershipManager {
 		}
 
 		return null;
+	}
+
+	public function clear() {
+		self::$groupAdmins = [];
+		self::$groupUsers = [];
 	}
 }
