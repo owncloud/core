@@ -118,14 +118,14 @@ class MembershipManager {
 	 * Return user account entities for given group (identified with gid)
 	 * of specified membership and maintenance type
 	 *
-	 * @param string $gid
+	 * @param int $backendGroupId
 	 * @param int $membershipType - type of membership in the group (0 - MEMBERSHIP_TYPE_GROUP_USER, 1 - MEMBERSHIP_TYPE_GROUP_ADMIN)
 	 * @param int $maintenanceType - defines how membership is maintained (0 - MANUAL, 1 - SYNC)
 	 *
 	 * @return Account[]
 	 */
-	public function getGroupMembershipsByType($gid, $membershipType, $maintenanceType) {
-		return $this->getAccountsSqlQuery($gid, false, $membershipType, $maintenanceType);
+	public function getGroupMembershipsByType($backendGroupId, $membershipType, $maintenanceType) {
+		return $this->getAccountsSqlQuery($backendGroupId, true, $membershipType, $maintenanceType);
 	}
 
 	/**

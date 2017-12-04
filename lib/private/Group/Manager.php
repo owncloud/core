@@ -635,6 +635,7 @@ class Manager extends PublicEmitter implements IGroupManager {
 		$return = [$this->groupMapper, $this->backends];
 		$this->groupMapper = $mapper;
 		$this->backends = $backends;
+		$this->clearCaches();
 
 		return $return;
 	}
@@ -648,6 +649,7 @@ class Manager extends PublicEmitter implements IGroupManager {
 	public function resetMembershipManager(MembershipManager $membershipManager) {
 		$return = $this->membershipManager;
 		$this->membershipManager = $membershipManager;
+		$this->clearCaches();
 
 		return $return;
 	}

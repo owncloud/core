@@ -2,7 +2,6 @@
 /**
  * @author Thomas Müller <thomas.mueller@tmit.eu>
  * @author Tom Needham <tom@owncloud.com>
-
  *
  * @copyright Copyright (c) 2017, ownCloud GmbH
  * @license AGPL-3.0

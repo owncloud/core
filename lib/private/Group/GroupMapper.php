@@ -70,4 +70,24 @@ class GroupMapper extends Mapper {
 
 		return $this->findEntities($qb->getSQL(), $qb->getParameters(), $limit, $offset);
 	}
+
+	public function callForAllGroups($callback, $search) {
+		$qb = $this->db->getQueryBuilder();
+		$qb->select(['*'])
+			->from($this->getTableName());
+
+		if ($search) {
+			$qb->where($qb->expr()->iLike('group_id',
+				$qb->createNamedParameter('%' . $this->db->escapeLikeParameter($search) . '%')));
+		}
+		$stmt = $qb->execute();
+		while ($row = $stmt->fetch()) {
+			$return =$callback($this->mapRowToEntity($row));
+			if ($return === false) {
+				break;
+			}
+		}
+
+		$stmt->closeCursor();
+	}
 }

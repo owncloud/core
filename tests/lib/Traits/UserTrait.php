@@ -26,15 +26,28 @@ trait UserTrait {
 
 	private $previousUserManagerInternals;
 
-	protected function createUser($name, $password = null) {
+	protected function createUser($name, $password = null, $backend = null) {
 		if (is_null($password)) {
 			$password = $name;
 		}
+
 		$userManager = \OC::$server->getUserManager();
+		$canBeDeleted = true;
 		if ($userManager->userExists($name)) {
-			$userManager->get($name)->delete();
+			$canBeDeleted = $userManager->get($name)->delete();
 		}
-		$user = $userManager->createUser($name, $password);
+
+		if ($canBeDeleted && !is_null($backend)) {
+			// If backend is specified, create in external backend
+			$backend->createUser($name);
+			$user = $userManager->createUserFromBackend($name, $password, $backend);
+		} else if ($canBeDeleted) {
+			// If backend is not specified, create in backend using createUser
+			$user = $userManager->createUser($name, $password);
+		} else {
+			$user = $userManager->get($name);
+		}
+
 		$this->users[] = $user;
 		return $user;
 	}

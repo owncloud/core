@@ -536,6 +536,7 @@ class Manager extends PublicEmitter implements IUserManager {
 	public function resetMembershipManager(MembershipManager $membershipManager) {
 		$return = $this->membershipManager;
 		$this->membershipManager = $membershipManager;
+		$this->cachedUsers->clear();
 
 		return $return;
 	}
