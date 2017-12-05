@@ -20,6 +20,7 @@
  */
 
 require __DIR__ . '/../../../../lib/composer/autoload.php';
+
 use GuzzleHttp\Client;
 
 trait MailTool {

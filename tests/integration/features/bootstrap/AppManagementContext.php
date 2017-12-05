@@ -18,7 +18,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>
  *
  */
- 
+
 use Behat\Behat\Context\Context;
 
 require __DIR__ . '/../../../../lib/composer/autoload.php';
