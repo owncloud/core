@@ -37,6 +37,8 @@ use OCP\Files\StorageNotAvailableException;
 use OCP\Files\External\IStoragesBackendService;
 use OCP\Files\External\NotFoundException;
 use OCP\Files\External\Service\IStoragesService;
+use OCP\Files\External\Backend\InvalidBackend;
+use OCP\Files\External\Auth\InvalidAuth;
 
 /**
  * Service class to manage external storages
@@ -307,11 +309,11 @@ abstract class StoragesService implements IStoragesService {
 	) {
 		$backend = $this->backendService->getBackend($backendIdentifier);
 		if (!$backend) {
-			throw new \InvalidArgumentException('Unable to get backend for ' . $backendIdentifier);
+			$backend = new InvalidBackend($backendIdentifier);
 		}
 		$authMechanism = $this->backendService->getAuthMechanism($authMechanismIdentifier);
 		if (!$authMechanism) {
-			throw new \InvalidArgumentException('Unable to get authentication mechanism for ' . $authMechanismIdentifier);
+			$authMechanism = new InvalidAuth($authMechanismIdentifier);
 		}
 		$newStorage = $this->createConfig();
 		$newStorage->setMountPoint($mountPoint);
@@ -389,10 +391,14 @@ abstract class StoragesService implements IStoragesService {
 		$existingMount = $this->dbConfig->getMountById($id);
 
 		if (!is_array($existingMount)) {
-			throw new NotFoundException('Storage with id "' . $id . '" not found while updating storage');
+			throw new NotFoundException('Storage config with id "' . $id . '" not found while updating storage');
 		}
 
 		$oldStorage = $this->getStorageConfigFromDBMount($existingMount);
+
+		if ($oldStorage->getBackend() instanceof InvalidBackend) {
+			throw new NotFoundException('Storage config with id "' . $id . '" and backend id "' . $oldStorage->getBackend()->getInvalidId() . '" cannot be edited due to missing backend');
+		}
 
 		$removedUsers = array_diff($oldStorage->getApplicableUsers(), $updatedStorage->getApplicableUsers());
 		$removedGroups = array_diff($oldStorage->getApplicableGroups(), $updatedStorage->getApplicableGroups());
