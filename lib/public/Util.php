@@ -748,7 +748,6 @@ class Util {
 			}
 		}
 
-
 		return $values;
 	}
 }
