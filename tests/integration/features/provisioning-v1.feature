@@ -80,6 +80,16 @@ Feature: provisioning
 		And the HTTP status code should be "200"
 		And group "España" exists
 
+	Scenario: Create a group named "0"
+		Given as an "admin"
+		And group "0" does not exist
+		When sending "POST" to "/cloud/groups" with
+			| groupid | 0 |
+			| password | 123456 |
+		Then the OCS status code should be "100"
+		And the HTTP status code should be "200"
+		And group "0" exists
+
 	Scenario: adding user to a group without sending the group
 		Given as an "admin"
 		And user "brand-new-user" exists
@@ -140,13 +150,16 @@ Feature: provisioning
 
 	Scenario: Getting all groups
 		Given as an "admin"
+		And group "0" exists
 		And group "new-group" exists
 		And group "admin" exists
+		And group "España" exists
 		When sending "GET" to "/cloud/groups"
 		Then groups returned are
 			| España |
 			| admin |
 			| new-group |
+			| 0 |
 
 	Scenario: create a subadmin
 		Given as an "admin"
