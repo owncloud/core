@@ -73,7 +73,7 @@ class ConfigTest extends TestCase {
 		$expected = "<?php\n\$CONFIG = array (\n  'foo' => 'moo',\n  'beers' => \n  array (\n    0 => 'Appenzeller',\n  " .
 			"  1 => 'Guinness',\n    2 => 'Kölsch',\n  ),\n  'alcohol_free' => false,\n  'bar' => 'red',\n  'apps' => \n " .
 			" array (\n    0 => 'files',\n    1 => 'gallery',\n  ),\n);\n";
-		$this->assertEquals($this->configFile, $expected);
+		$this->assertStringEqualsFile($this->configFile, $expected);
 	}
 
 	public function testSetValues() {

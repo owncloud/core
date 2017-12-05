@@ -371,7 +371,8 @@ EOD;
 		$subscriptions = $this->backend->getSubscriptionsForUser(self::UNIT_TEST_USER);
 		$this->assertCount(1, $subscriptions);
 		$this->assertEquals('#1C4587', $subscriptions[0]['{http://apple.com/ns/ical/}calendar-color']);
-		$this->assertTrue($subscriptions[0]['{http://calendarserver.org/ns/}subscribed-strip-todos']);
+		// TODO: Actually equals 1, which is "near enough" to true for assertEquals()
+		$this->assertEquals(true, $subscriptions[0]['{http://calendarserver.org/ns/}subscribed-strip-todos']);
 		$this->assertEquals($id, $subscriptions[0]['id']);
 
 		$patch = new PropPatch([

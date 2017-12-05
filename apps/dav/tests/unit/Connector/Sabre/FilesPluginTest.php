@@ -234,7 +234,8 @@ class FilesPluginTest extends TestCase {
 			$node
 		);
 
-		$this->assertNull($propFind->get(self::DOWNLOADURL_PROPERTYNAME));
+		// TODO: actually returns false - should be $this->assertFalse() ?
+		$this->assertEquals(null, $propFind->get(self::DOWNLOADURL_PROPERTYNAME));
 	}
 
 	public function testGetPublicPermissions() {

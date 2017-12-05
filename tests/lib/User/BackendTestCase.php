@@ -62,7 +62,7 @@ abstract class BackendTestCase extends \Test\TestCase {
 		$count=count($this->backend->getUsers())-$startCount;
 		$this->assertEquals(2, $count);
 		$this->assertContains($name1, $this->backend->getUsers());
-		$this->assertNotContains($name2, $this->backend->getUsers());
+		$this->assertContains($name2, $this->backend->getUsers());
 
 		$this->backend->deleteUser($name2);
 		$count=count($this->backend->getUsers())-$startCount;
