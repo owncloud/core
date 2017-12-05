@@ -22,8 +22,8 @@
 
 namespace Test\Authentication\TwoFactorAuth;
 
-use Test\TestCase;
 use OC\Authentication\TwoFactorAuth\Manager;
+use Test\TestCase;
 
 class ManagerTest extends TestCase {
 

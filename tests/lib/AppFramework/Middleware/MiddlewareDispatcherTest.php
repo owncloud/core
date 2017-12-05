@@ -26,8 +26,8 @@ namespace Test\AppFramework\Middleware;
 
 use OC\AppFramework\Http\Request;
 use OC\AppFramework\Middleware\MiddlewareDispatcher;
-use OCP\AppFramework\Middleware;
 use OCP\AppFramework\Http\Response;
+use OCP\AppFramework\Middleware;
 
 
 // needed to test ordering

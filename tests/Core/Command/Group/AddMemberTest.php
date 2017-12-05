@@ -25,6 +25,7 @@ use OC\Core\Command\Group\AddMember;
 use Symfony\Component\Console\Tester\CommandTester;
 use Test\TestCase;
 use Test\Traits\UserTrait;
+
 /**
  * Class AddMemberTest
  *

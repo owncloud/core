@@ -22,12 +22,12 @@
 namespace Test\Share;
 
 use OC\Share\MailNotifications;
+use OCP\Defaults;
 use OCP\IL10N;
+use OCP\ILogger;
+use OCP\IURLGenerator;
 use OCP\IUser;
 use OCP\Mail\IMailer;
-use OCP\ILogger;
-use OCP\Defaults;
-use OCP\IURLGenerator;
 use OCP\Util;
 use Test\TestCase;
 

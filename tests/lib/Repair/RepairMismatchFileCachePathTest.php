@@ -10,10 +10,10 @@ namespace Test\Repair;
 
 
 use OC\Repair\RepairMismatchFileCachePath;
+use OCP\Files\IMimeTypeLoader;
 use OCP\Migration\IOutput;
 use OCP\Migration\IRepairStep;
 use Test\TestCase;
-use OCP\Files\IMimeTypeLoader;
 
 /**
  * Tests for repairing mismatch file cache paths

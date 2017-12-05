@@ -20,7 +20,6 @@ use OC\User\Session;
 use OC\User\User;
 use OCP\IConfig;
 use OCP\IURLGenerator;
-use OCP\IUser;
 use OCP\User\IChangePasswordBackend;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Test\TestCase;

@@ -21,11 +21,11 @@
 
 namespace Test\Http\Client;
 
-use OCP\IConfig;
-use OCP\ICertificateManager;
 use OC\Http\Client\WebDavClientService;
-use Sabre\DAV\Client;
+use OCP\ICertificateManager;
+use OCP\IConfig;
 use OCP\ITempManager;
+use Sabre\DAV\Client;
 
 /**
  * Class WebDavClientServiceTest

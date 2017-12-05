@@ -22,11 +22,11 @@
 namespace Tests\Settings\Controller;
 
 use OC\Settings\Controller\AppSettingsController;
-use Test\TestCase;
-use OCP\IRequest;
-use OCP\IL10N;
-use OCP\IConfig;
 use OCP\App\IAppManager;
+use OCP\IConfig;
+use OCP\IL10N;
+use OCP\IRequest;
+use Test\TestCase;
 
 /**
  * Class AppSettingsControllerTest

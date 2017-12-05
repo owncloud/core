@@ -21,7 +21,7 @@
 
 namespace Test\Files\Type;
 
-use \OC\Files\Type\Detection;
+use OC\Files\Type\Detection;
 use org\bovigo\vfs\vfsStream;
 
 class DetectionTest extends \Test\TestCase {

@@ -10,7 +10,7 @@
 
 namespace Tests\Settings\Controller;
 
-use \OC\Settings\Application;
+use OC\Settings\Application;
 use OC\Settings\Controller\LogSettingsController;
 
 /**

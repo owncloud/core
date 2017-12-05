@@ -27,8 +27,8 @@
 namespace Test\AppFramework\Http;
 
 
-use OCP\AppFramework\Http\JSONResponse;
 use OCP\AppFramework\Http;
+use OCP\AppFramework\Http\JSONResponse;
 
 class JSONResponseTest extends \Test\TestCase {
 
