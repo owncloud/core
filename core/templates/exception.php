@@ -7,8 +7,8 @@ style('core', ['styles', 'header']);
 <span class="error error-wide">
 	<h2><strong><?php p($l->t('Internal Server Error')) ?></strong></h2>
 		<p><?php p($l->t('The server encountered an internal error and was unable to complete your request.')) ?></p>
-		<p><?php p($l->t('Please contact the server administrator if this error reappears multiple times, please include the technical details below in your report.')) ?></p>
-		<p><?php p($l->t('More details can be found in the server log.')) ?></p>
+		<p><?php p($l->t('Please contact the server administrator if this error reappears multiple times and include the technical details below in your report.')) ?></p>
+		<p><?php print_unescaped($l->t('More details can be found in the <a target="_blank" rel="noreferrer" href="%s">server log</a>.', [link_to_docs('admin-logfiles')])); ?></p>
 	<br>
 
 	<h2><strong><?php p($l->t('Technical details')) ?></strong></h2>
