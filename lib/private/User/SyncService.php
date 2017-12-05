@@ -148,7 +148,10 @@ class SyncService {
 			}
 		}
 		if ($this->backend instanceof IProvidesQuotaBackend) {
-			$a->setQuota($this->backend->getQuota($uid));
+			$quota = $this->backend->getQuota($uid);
+			if ($quota !== null) {
+				$a->setQuota($quota);
+			}
 		} else {
 			list($hasKey, $value) = $this->readUserConfig($uid, 'files', 'quota');
 			if ($hasKey) {
