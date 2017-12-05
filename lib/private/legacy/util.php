@@ -782,6 +782,7 @@ class OC_Util {
 				'DOMDocument' => 'dom',
 				'XMLWriter' => 'XMLWriter',
 				'XMLReader' => 'XMLReader',
+				'Collator' => 'intl',
 			],
 			'functions' => [
 				'xml_parser_create' => 'libxml',
