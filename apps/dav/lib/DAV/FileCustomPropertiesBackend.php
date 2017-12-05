@@ -50,11 +50,27 @@ class FileCustomPropertiesBackend extends AbstractCustomPropertiesBackend {
 	. ' WHERE `fileid` = ? AND `propertyname` = ?';
 
 	/**
+	 * @var string the source path of a move action.
+	 * This is set during a move so the delete action can know if a move has been called before
+	 * in order to not fetch the source node again (which would cause an error)
+	 */
+	private $moveSource = null;
+
+	/**
 	 * This method is called after a node is deleted.
 	 *
 	 * @param string $path path of node for which to delete properties
 	 */
 	public function delete($path) {
+		$moveSource = $this->moveSource;
+		$this->moveSource = null;
+
+		if ($moveSource === $path) {
+			// trying to delete a file that has been moved -> ignoring because the file
+			// exists in another path
+			return;
+		}
+
 		$node = $this->getNodeForPath($path);
 		if (is_null($node)) {
 			return;
@@ -77,6 +93,7 @@ class FileCustomPropertiesBackend extends AbstractCustomPropertiesBackend {
 	 */
 	public function move($source, $destination) {
 		// Part of interface. We don't care about move because it doesn't affect fileId
+		$this->moveSource = $source;
 	}
 
 	/**
