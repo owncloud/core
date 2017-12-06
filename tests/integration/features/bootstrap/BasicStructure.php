@@ -3,8 +3,8 @@
 use Behat\Gherkin\Node\PyStringNode;
 use Behat\Testwork\Hook\Scope\BeforeSuiteScope;
 use GuzzleHttp\Client;
-use GuzzleHttp\Message\ResponseInterface;
 use GuzzleHttp\Psr7\Request;
+use Psr\Http\Message\ResponseInterface;
 use TestHelpers\OcsApiHelper;
 
 require __DIR__ . '/../../../../lib/composer/autoload.php';
