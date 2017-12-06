@@ -193,18 +193,9 @@ class Factory implements IFactory {
 
 		// merge with translations from themes
 		$relativePath = substr($dir, strlen($this->serverRoot));
-
-		// legacy themes
-		$themeDir = $this->getActiveLegacyThemeDirectory();
+		$themeDir = $this->getActiveThemeDirectory();
 		if ($themeDir !== '') {
 			$themeDir .= $relativePath;
-			$available = array_merge($available, $this->findAvailableLanguageFiles($themeDir));
-		}
-
-		// merge with translations from app-theme
-		$appThemeDir = $this->getActiveAppThemeDirectory();
-		if ($appThemeDir !== '' ) {
-			$themeDir .= $this->serverRoot . '/' . $appThemeDir . $relativePath;
 			$available = array_merge($available, $this->findAvailableLanguageFiles($themeDir));
 		}
 
@@ -297,20 +288,9 @@ class Factory implements IFactory {
 
 		// merge with translations from themes
 		$relativePath = substr($transFile, strlen($this->serverRoot));
-
-		// legacy themes
-		$themeDir = $this->getActiveLegacyThemeDirectory();
+		$themeDir = $this->getActiveThemeDirectory();
 		if ($themeDir !== '') {
-			$legacyThemeTransFile = $this->serverRoot . '/themes/' . $themeDir . $relativePath;
-			if (file_exists($legacyThemeTransFile)) {
-				$languageFiles[] = $legacyThemeTransFile;
-			}
-		}
-
-		// app-themes
-		$appThemeDir = $this->getActiveAppThemeDirectory();
-		if ($appThemeDir !== '' ) {
-			$themeTransFile = $this->serverRoot . '/' . $appThemeDir . $relativePath;
+			$themeTransFile = $themeDir . $relativePath;
 			if (file_exists($themeTransFile)) {
 				$languageFiles[] = $themeTransFile;
 			}
@@ -358,6 +338,20 @@ class Factory implements IFactory {
 	}
 
 	/**
+	 * Get the currently active theme
+	 *
+	 * @return string
+	 */
+	protected function getActiveThemeDirectory() {
+		$themeDir = $this->getActiveAppThemeDirectory();
+		if ($themeDir === '') {
+			// fallback to legacy theme
+			$themeDir = $this->getActiveLegacyThemeDirectory();
+		}
+		return $themeDir;
+	}
+
+	/**
 	 * Get the currently active legacy theme
 	 *
 	 * @return string
@@ -379,7 +373,7 @@ class Factory implements IFactory {
 	protected function getActiveAppThemeDirectory() {
 		$theme = $this->themeService->getTheme();
 		if ($theme instanceof ITheme && $theme->getDirectory() !== '' ) {
-			return $theme->getDirectory();
+			return $this->serverRoot . '/' . $theme->getDirectory();
 		}
 		return '';
 	}
