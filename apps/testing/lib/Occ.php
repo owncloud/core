@@ -69,7 +69,7 @@ class Occ {
 			'php console.php ' . $args,
 			$descriptor,
 			$pipes,
-			"../"
+			realpath("../")
 		);
 		$lastStdOut = stream_get_contents($pipes[1]);
 		$lastStdErr = stream_get_contents($pipes[2]);
