@@ -410,9 +410,12 @@ class FeatureContext extends RawMinkContext implements Context {
 			//to include FilesContext
 		}
 
-		SetupHelper::setOcPath($scope);
 		$suiteParameters = SetupHelper::getSuiteParameters($scope);
 		$this->adminPassword = (string)$suiteParameters['adminPassword'];
+		SetupHelper::init(
+			"admin", $this->getUserPassword("admin"),
+			$this->getMinkParameter('base_url'), $suiteParameters['ocPath']
+		);
 		
 		$response = AppConfigHelper::getCapabilities(
 			$this->getMinkParameter('base_url'), "admin", $this->getUserPassword("admin")
