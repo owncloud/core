@@ -276,9 +276,10 @@ class SetupHelper {
 		}
 
 		$return = [];
-		$return['code'] = $result->xml()->xpath("//ocs/data/code");
-		$return['stdOut'] = $result->xml()->xpath("//ocs/data/stdOut");
-		$return['stdErr'] = $result->xml()->xpath("//ocs/data/stdErr");
+		$resultXml = simplexml_load_string($result->getBody()->getContents());
+		$return['code'] = $resultXml->xpath("//ocs/data/code");
+		$return['stdOut'] = $resultXml->xpath("//ocs/data/stdOut");
+		$return['stdErr'] = $resultXml->xpath("//ocs/data/stdErr");
 
 		if (!is_a($return['code'][0], "SimpleXMLElement")
 			|| !is_a($return['stdOut'][0], "SimpleXMLElement")
