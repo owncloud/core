@@ -334,7 +334,7 @@ class FactoryTest extends TestCase {
 		$factory->expects($this->any())
 			->method('getActiveAppThemeDirectory')
 			->with()
-			->willReturn('tests/data/apptheme');
+			->willReturn($this->serverRoot . '/tests/data/apptheme');
 
 		$availableLanguages = $factory->findAvailableLanguages($app);
 		$this->assertContains('en', $availableLanguages);
@@ -355,7 +355,7 @@ class FactoryTest extends TestCase {
 		$factory->expects($this->any())
 			->method('getActiveAppThemeDirectory')
 			->with()
-			->willReturn('tests/data/apptheme');
+			->willReturn($this->serverRoot . '/tests/data/apptheme');
 
 		$themeTranslations = $factory->getL10nFilesForApp($app, $lang);
 		$this->assertCount(1, $themeTranslations);
