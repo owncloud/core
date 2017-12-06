@@ -671,24 +671,6 @@ class OC_App {
 	}
 
 	/**
-	 * @return false|string
-	 */
-	public static function getDefaultEnabledAppTheme() {
-		$apps = self::getAllApps();
-		$parser = new InfoParser();
-		foreach ($apps as $app) {
-			$info = $parser->parse(self::getAppPath($app) . '/appinfo/info.xml');
-			if (is_array($info)) {
-				$info = OC_App::parseAppInfo($info);
-			}
-			if (isset($info['default_enable']) && in_array('theme', $info['types'])) {
-				return $app;
-			}
-		}
-		return false;
-	}
-
-	/**
 	 * Read all app metadata from the info.xml file
 	 *
 	 * @param string $appId id of the app or the path of the info.xml file
