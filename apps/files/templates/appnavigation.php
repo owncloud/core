@@ -21,7 +21,7 @@
 				<label for="showhiddenfilesToggle"><?php p($l->t('Show hidden files')); ?></label>
 			</div>
 			<label for="webdavurl"><?php p($l->t('WebDAV'));?></label>
-			<input id="webdavurl" type="text" readonly="readonly" value="<?php p(\OCP\Util::linkToRemote('webdav')); ?>" />
+			<input id="webdavurl" type="text" readonly="readonly" value="<?php p($_['webdavUrl']); ?>" />
 			<em><?php print_unescaped($l->t('Use this address to <a href="%s" target="_blank" rel="noreferrer">access your Files via WebDAV</a>', [link_to_docs('user-webdav')]));?></em>
 		</div>
 	</div>
