@@ -100,7 +100,6 @@ class UploadHelper {
 
 		//upload chunks
 		foreach ($chunks as $index => $chunk) {
-			$data = $chunk;
 			if ($chunkingVersion === 1) {
 				$filename = $destination . "-" . $chunkingId . "-" .
 					count($chunks) . '-' . ( string ) $index;
@@ -116,7 +115,7 @@ class UploadHelper {
 				"PUT",
 				$filename,
 				$headers,
-				$data,
+				$chunk,
 				null,
 				$davPathVersionToUse,
 				$davRequestType

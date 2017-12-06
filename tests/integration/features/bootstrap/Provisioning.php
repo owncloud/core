@@ -94,7 +94,7 @@ trait Provisioning {
 		];
 
 		$this->response = $client->send(new Request("POST", $fullUrl), $options);
-		if ($this->currentServer === 'LOCAL'){
+		if ($this->currentServer === 'LOCAL') {
 			$this->createdUsers[$user] = $user;
 		} elseif ($this->currentServer === 'REMOTE') {
 			$this->createdRemoteUsers[$user] = $user;
@@ -266,7 +266,7 @@ trait Provisioning {
 		];
 
 		$this->response = $client->send(new Request("POST", $fullUrl), $options);
-		if ($this->currentServer === 'LOCAL'){
+		if ($this->currentServer === 'LOCAL') {
 			$this->createdGroups[$group] = $group;
 		} elseif ($this->currentServer === 'REMOTE') {
 			$this->createdRemoteGroups[$group] = $group;
