@@ -18,6 +18,26 @@ verlt() {
 	[ "$1" = "$2" ] && return 1 || verlte $1 $2
 }
 
+#@param $1 admin password
+#@param $2 occ url
+#@param $3 command
+#sets $REMOTE_OCC_STDOUT and $REMOTE_OCC_STDERR from returned xml date
+#@return occ return code given in the xml data
+remote_occ() {
+	RESULT=`curl -s -u admin:$1 $2 -d "command=$3"`
+	RETURN=`echo $RESULT | xmllint --xpath "string(ocs/data/code)" - | sed 's/ //g'`
+	#we could not find a proper return of the testing app, so something went wrong
+	if [ -z "$RETURN" ]
+	then
+		RETURN=1
+		REMOTE_OCC_STDERR=$RESULT
+	else
+		REMOTE_OCC_STDOUT=`echo $RESULT | xmllint --xpath "string(ocs/data/stdOut)" - | sed 's/ //g'`
+		REMOTE_OCC_STDERR=`echo $RESULT | xmllint --xpath "string(ocs/data/stdErr)" - | sed 's/ //g'`
+	fi
+	return $RETURN
+}
+
 #save the current language and set the language to "C"
 #we want to have it all in english to be able to parse outputs
 OLD_LANG=$LANG
@@ -25,14 +45,21 @@ export LANG=C
 
 OCC=./occ
 
-#enable testing app
-PREVIOUS_TESTING_APP_STATUS=$($OCC --no-warnings app:list "^testing$")
-if [[ "$PREVIOUS_TESTING_APP_STATUS" =~ ^Disabled: ]]
+BASE_URL="http://$SRV_HOST_NAME"
+if [ ! -z "$SRV_HOST_PORT" ] && [ "$SRV_HOST_PORT" != "80" ]
 then
-	$OCC app:enable testing
-	TESTING_ENABLED_BY_SCRIPT=true;
-else
-	TESTING_ENABLED_BY_SCRIPT=false;
+	BASE_URL="$BASE_URL:$SRV_HOST_PORT"
+fi
+
+if [ -n "$SRV_HOST_URL" ]
+then
+	BASE_URL="$BASE_URL/$SRV_HOST_URL"
+fi
+
+OCC_URL="$BASE_URL/ocs/v2.php/apps/testing/api/v1/occ"
+if [ -z "$ADMIN_PASSWORD" ]
+then
+	ADMIN_PASSWORD="admin"
 fi
 
 # Look for command line options for:
@@ -41,6 +68,7 @@ fi
 # --suite - specify a single suite to run
 # --tags - specify tags for scenarios to run (or not)
 BEHAT_TAGS_OPTION_FOUND=false
+REMOTE_ONLY=false
 
 while [[ $# -gt 1 ]]
 do
@@ -61,6 +89,10 @@ do
 		--tags)
 			BEHAT_TAGS="$2"
 			BEHAT_TAGS_OPTION_FOUND=true
+			shift
+			;;
+		--remote)
+			REMOTE_ONLY=true
 			shift
 			;;
 		*)
@@ -89,6 +121,23 @@ else
 fi
 
 BEHAT_TAG_OPTION="--tags"
+
+#check if we can rely on a local ./occ command or if we are testing a remote instance (e.g. inside docker)
+#if we have a remote instance we cannot enable the testing app and we have to hope its enabled by other ways
+if test "$REMOTE_ONLY" = false
+then
+	#enable testing app
+	PREVIOUS_TESTING_APP_STATUS=$($OCC --no-warnings app:list "^testing$")
+	if [[ "$PREVIOUS_TESTING_APP_STATUS" =~ ^Disabled: ]]
+	then
+		$OCC app:enable testing
+		TESTING_ENABLED_BY_SCRIPT=true;
+	else
+		TESTING_ENABLED_BY_SCRIPT=false;
+	fi
+else
+	TESTING_ENABLED_BY_SCRIPT=false;
+fi
 
 #we need to skip some tests in certain browsers
 #and also skip tests if tags were given in the call of this script
@@ -125,13 +174,7 @@ else
 	fi
 fi
 
-BASE_URL="http://$SRV_HOST_NAME"
 REMOTE_FED_BASE_URL=$REMOTE_FED_SRV_HOST_NAME
-
-if [ ! -z "$SRV_HOST_PORT" ] && [ "$SRV_HOST_PORT" != "80" ]
-then
-	BASE_URL="$BASE_URL:$SRV_HOST_PORT"
-fi
 
 if [ ! -z "$REMOTE_FED_SRV_HOST_PORT" ] && [ "$REMOTE_FED_SRV_HOST_PORT" != "80" ]
 then
@@ -162,7 +205,6 @@ fi
 
 if [ -n "$SRV_HOST_URL" ]
 then
-	BASE_URL="$BASE_URL/$SRV_HOST_URL"
 	IPV4_URL="$IPV4_URL/$SRV_HOST_URL"
 	IPV6_URL="$IPV6_URL/$SRV_HOST_URL"
 fi
@@ -194,9 +236,16 @@ fi
 EXTRA_CAPABILITIES=$EXTRA_CAPABILITIES'"maxDuration":"3600"'
 
 #Set up personalized skeleton
-PREVIOUS_SKELETON_DIR=$($OCC --no-warnings config:system:get skeletondirectory)
+remote_occ $ADMIN_PASSWORD $OCC_URL "--no-warnings config:system:get skeletondirectory"
+
+PREVIOUS_SKELETON_DIR=$REMOTE_OCC_STDOUT
 export SKELETON_DIR=$(pwd)/tests/ui/skeleton
-$OCC config:system:set skeletondirectory --value="$SKELETON_DIR" >/dev/null
+remote_occ $ADMIN_PASSWORD $OCC_URL "config:system:set skeletondirectory --value=$SKELETON_DIR"
+if [ $? -ne 0 ]
+then
+	echo -e "Could not set skeleton directory. Result:\n'$REMOTE_OCC_STDERR'"
+	exit 1
+fi
 
 TEST_LOG_FILE=$(mktemp)
 
@@ -278,9 +327,9 @@ fi
 
 # Put back personalized skeleton
 if test "A$PREVIOUS_SKELETON_DIR" = "A"; then
-	$OCC config:system:delete skeletondirectory >/dev/null
+	remote_occ $ADMIN_PASSWORD $OCC_URL "config:system:delete skeletondirectory"
 else
-	$OCC config:system:set skeletondirectory --value="$PREVIOUS_SKELETON_DIR" >/dev/null
+	remote_occ $ADMIN_PASSWORD $OCC_URL "config:system:set skeletondirectory --value=$PREVIOUS_SKELETON_DIR"
 fi
 
 # Put back state of the testing app
