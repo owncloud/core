@@ -239,7 +239,11 @@ EXTRA_CAPABILITIES=$EXTRA_CAPABILITIES'"maxDuration":"3600"'
 remote_occ $ADMIN_PASSWORD $OCC_URL "--no-warnings config:system:get skeletondirectory"
 
 PREVIOUS_SKELETON_DIR=$REMOTE_OCC_STDOUT
-export SKELETON_DIR=$(pwd)/tests/ui/skeleton
+if [ -z "$SKELETON_DIR" ]
+then
+	export SKELETON_DIR=$(pwd)/tests/ui/skeleton
+fi
+
 remote_occ $ADMIN_PASSWORD $OCC_URL "config:system:set skeletondirectory --value=$SKELETON_DIR"
 if [ $? -ne 0 ]
 then
