@@ -21,8 +21,9 @@
  */
 namespace TestHelpers;
 
-use GuzzleHttp\Message\ResponseInterface;
+use Psr\Http\Message\ResponseInterface;
 use PHPUnit_Framework_Assert;
+use SimpleXMLElement;
 
 /**
  * Helper to set various configurations through the testing app
@@ -128,7 +129,19 @@ class AppConfigHelper {
 	 * @return string
 	 */
 	public static function getOCSResponse($response) {
-		return $response->xml()->meta[0]->statuscode;
+		return self::getResponseXml($response)->meta[0]->statuscode;
+	}
+
+	/**
+	 * Parses the response as XML
+	 *
+	 * @param ResponseInterface $response
+	 * @return SimpleXMLElement
+	 */
+	public static function getResponseXml($response) {
+		// rewind just to make sure we can re-parse it in case it was parsed already...
+		$response->getBody()->rewind();
+		return new SimpleXMLElement($response->getBody()->getContents());
 	}
 
 	/**
@@ -157,7 +170,7 @@ class AppConfigHelper {
 	 * @return string retrieved capabilities in XML format
 	 */
 	public static function getCapabilitiesXml($response) {
-		return $response->xml()->data->capabilities;
+		return self::getResponseXml($response)->data->capabilities;
 	}
 
 	/**

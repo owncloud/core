@@ -34,7 +34,6 @@ namespace OC\Files\Storage;
 
 use Exception;
 use GuzzleHttp\Exception\RequestException;
-use GuzzleHttp\Message\ResponseInterface;
 use OC\Files\Filesystem;
 use OC\Files\Stream\Close;
 use Icewind\Streams\IteratorDirectory;
@@ -51,6 +50,7 @@ use Sabre\HTTP\ClientException;
 use Sabre\HTTP\ClientHttpException;
 use Sabre\DAV\Exception\InsufficientStorage;
 use OCA\DAV\Connector\Sabre\Exception\Forbidden;
+use Psr\Http\Message\ResponseInterface;
 
 /**
  * Class DAV

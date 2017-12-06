@@ -22,6 +22,8 @@
 namespace TestHelpers;
 
 use GuzzleHttp\Client as GClient;
+use GuzzleHttp\Psr7\Request;
+use Psr\Http\Message\ResponseInterface;
 
 /**
  * manage Shares via OCS API
@@ -57,7 +59,7 @@ class SharingHelper {
 	 *                           in the format 'YYYY-MM-DD'.
 	 * @param int $apiVersion
 	 * @param int $sharingApiVersion
-	 * @return \GuzzleHttp\Message\FutureResponse|\GuzzleHttp\Message\ResponseInterface|NULL
+	 * @return ResponseInterface|NULL
 	 */
 	public static function createShare(
 		$baseUrl,
@@ -125,8 +127,8 @@ class SharingHelper {
 			$fd['name'] = $linkName;
 		}
 
-		$options['body'] = $fd;
+		$options['form_params'] = $fd;
 
-		return $client->send($client->createRequest("POST", $fullUrl, $options));
+		return $client->send(new Request("POST", $fullUrl), $options);
 	}
 }

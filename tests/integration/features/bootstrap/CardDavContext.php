@@ -22,7 +22,8 @@
 require __DIR__ . '/../../../../lib/composer/autoload.php';
 
 use GuzzleHttp\Client;
-use GuzzleHttp\Message\ResponseInterface;
+use Psr\Http\Message\ResponseInterface;
+use GuzzleHttp\Psr7\Request;
 
 class CardDavContext implements \Behat\Behat\Context\Context {
 	/** @var string  */
@@ -123,11 +124,17 @@ class CardDavContext implements \Behat\Behat\Context\Context {
 		$davUrl = $this->baseUrl . '/remote.php/dav/addressbooks/users/'.$user.'/'.$addressBook;
 		$password = ($user === 'admin') ? 'admin' : '123456';
 
-		$request = $this->client->createRequest(
+		$options = [
+			'auth' => [
+				$user,
+				$password,
+			],
+		];
+		$request = new Request(
 			'MKCOL',
 			$davUrl,
-			[
-				'body' => '<d:mkcol xmlns:card="urn:ietf:params:xml:ns:carddav"
+			['Content-Type' => 'application/xml;charset=UTF-8'],
+			'<d:mkcol xmlns:card="urn:ietf:params:xml:ns:carddav"
               xmlns:d="DAV:">
     <d:set>
       <d:prop>
@@ -136,18 +143,10 @@ class CardDavContext implements \Behat\Behat\Context\Context {
           </d:resourcetype>,<d:displayname>'.$addressBook.'</d:displayname>
       </d:prop>
     </d:set>
-  </d:mkcol>',
-				'auth' => [
-					$user,
-					$password,
-				],
-				'headers' => [
-					'Content-Type' => 'application/xml;charset=UTF-8',
-				],
-			]
+  </d:mkcol>'
 		);
 
-		$this->response = $this->client->send($request);
+		$this->response = $this->client->send($request, $options);
 
 		if($this->response->getStatusCode() !== (int)$statusCode) {
 			throw new \Exception(

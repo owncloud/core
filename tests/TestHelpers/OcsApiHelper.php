@@ -22,8 +22,10 @@
 namespace TestHelpers;
 
 use GuzzleHttp\Client;
-use GuzzleHttp\Message\ResponseInterface;
 use GuzzleHttp\Exception\ClientException;
+use GuzzleHttp\Psr7\Request;
+use Psr\Http\Message\ResponseInterface;
+
 /**
  * Helper to make requests to the OCS API
  * 
@@ -51,12 +53,10 @@ class OcsApiHelper {
 		if ($user !== null) {
 			$options['auth'] = [$user, $password];
 		}
-		$options['body'] = $body;
+		$options['form_params'] = $body;
 		
 		try {
-			$response = $client->send(
-				$client->createRequest($method, $fullUrl, $options)
-			);
+			$response = $client->send(new Request($method, $fullUrl), $options);
 		} catch (ClientException $ex) {
 			$response = $ex->getResponse();
 			

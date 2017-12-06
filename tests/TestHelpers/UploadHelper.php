@@ -21,9 +21,7 @@
  */
 namespace TestHelpers;
 
-use GuzzleHttp\Message\FutureResponse;
-use GuzzleHttp\Message\ResponseInterface;
-use GuzzleHttp\Stream\Stream;
+use Psr\Http\Message\ResponseInterface;
 use PHPUnit_Framework_Assert;
 
 /**
@@ -49,7 +47,7 @@ class UploadHelper {
 	 * @param int    $chunkingVersion     (1|2|null)
 	 *                                    if set to null chunking will not be used
 	 * @param int    $noOfChunks          how many chunks do we want to upload
-	 * @return FutureResponse|ResponseInterface|NULL
+	 * @return ResponseInterface|NULL
 	 */
 	public static function upload(
 		$baseUrl,
@@ -65,7 +63,7 @@ class UploadHelper {
 
 		//simple upload with no chunking
 		if (is_null($chunkingVersion)) {
-			$data = Stream::factory(fopen($source, 'r'));
+			$data = file_get_contents($source);
 			return WebDavHelper::makeDavRequest(
 				$baseUrl,
 				$user,
@@ -102,7 +100,6 @@ class UploadHelper {
 
 		//upload chunks
 		foreach ($chunks as $index => $chunk) {
-			$data = Stream::factory($chunk);
 			if ($chunkingVersion === 1) {
 				$filename = $destination . "-" . $chunkingId . "-" .
 					count($chunks) . '-' . ( string ) $index;
@@ -118,7 +115,7 @@ class UploadHelper {
 				"PUT",
 				$filename,
 				$headers,
-				$data,
+				$chunk,
 				null,
 				$davPathVersionToUse,
 				$davRequestType

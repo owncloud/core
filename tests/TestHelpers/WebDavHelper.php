@@ -23,9 +23,10 @@ namespace TestHelpers;
 
 use Exception;
 use GuzzleHttp\Client as GClient;
-use GuzzleHttp\Stream\Stream;
-use GuzzleHttp\Stream\StreamInterface;
+use GuzzleHttp\Promise\PromiseInterface;
+use GuzzleHttp\Psr7\Request;
 use InvalidArgumentException;
+use Psr\Http\Message\StreamInterface;
 use Sabre\DAV\Client as SClient;
 
 /**
@@ -51,21 +52,26 @@ class WebDavHelper {
 		$password,
 		$path
 	) {
-		$body = Stream::factory(
+		$body =
 			'<?xml version="1.0"?>
 <d:propfind  xmlns:d="DAV:" xmlns:oc="http://owncloud.org/ns">
   <d:prop>
     <oc:fileid />
   </d:prop>
-</d:propfind>'
-		);
+</d:propfind>';
 		$response = self::makeDavRequest(
 			$baseUrl, $user, $password, "PROPFIND", $path, null, $body
 		);
-		preg_match('/\<oc:fileid\>(\d+)\<\/oc:fileid\>/', $response, $matches);
+		preg_match(
+			'/\<oc:fileid\>(\d+)\<\/oc:fileid\>/',
+			$response->getBody()->getContents(),
+			$matches
+		);
+
 		if (!isset($matches[1])) {
 			throw new Exception("could not find fileId of $path");
 		}
+
 		return $matches[1];
 	}
 
@@ -80,12 +86,12 @@ class WebDavHelper {
 	 * @param string $method PUT, GET, DELETE, etc.
 	 * @param string $path
 	 * @param array $headers
-	 * @param StreamInterface $body
+	 * @param string|null|resource|StreamInterface $body
 	 * @param string $requestBody
 	 * @param int $davPathVersionToUse (1|2)
 	 * @param string $type of request
 	 * @param string $sourceIpAddress to initiate the request from
-	 * @return \GuzzleHttp\Message\FutureResponse|\GuzzleHttp\Message\ResponseInterface|NULL
+	 * @return PromiseInterface|NULL
 	 * @throws \GuzzleHttp\Exception\BadResponseException
 	 */
 	public static function makeDavRequest(
@@ -120,25 +126,20 @@ class WebDavHelper {
 				= [ 'curl' => [ CURLOPT_INTERFACE => $sourceIpAddress ]];
 		}
 
-		$request = $client->createRequest($method, $fullUrl, $options);
-		if (!is_null($headers)) {
+		if (is_null($headers)) {
+			$headers = [];
+		} else {
 			foreach ($headers as $key => $value) {
 				//? and # need to be encoded in the Destination URL
 				if ($key === "Destination") {
-					$value = str_replace($urlSpecialChar[0], $urlSpecialChar[1], $value);
-				}
-				if ($request->hasHeader($key) === true) {
-					$request->setHeader($key, $value);
-				} else {
-					$request->addHeader($key, $value);
+					$headers[$key] = str_replace($urlSpecialChar[0], $urlSpecialChar[1], $value);
 				}
 			}
 		}
-		if (!is_null($body)) {
-			$request->setBody($body);
-		}
-		
-		return $client->send($request);
+
+		$request = new Request($method, $fullUrl, $headers, $body);
+	
+		return $client->send($request, $options);
 	}
 
 	/**
