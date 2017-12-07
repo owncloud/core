@@ -236,7 +236,8 @@ With help from many libraries and frameworks including:
 	 */
 	private function getAuthors($file, $gitRoot) {
 		// only add authors that changed code and not the license header
-		$licenseHeaderEndsAtLine = \trim(\shell_exec("grep -n '*/' $file | head -n 1 | cut -d ':' -f 1"));
+		$licenseHeaderEndsAtLine = \trim(\shell_exec(\sprintf("grep -n '*/' %s | head -n 1 | cut -d ':' -f 1", \escapeshellarg($file))));
+
 		$buildDir = \getcwd();
 		if ($gitRoot) {
 			\chdir($gitRoot);
