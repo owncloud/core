@@ -32,7 +32,6 @@ use OC\Files\View;
 use OCP\Constants;
 use OCP\Files\Cache\ICacheEntry;
 use OCP\Files\FileInfo;
-use Test\Traits\UserTrait;
 
 /**
  * Class CacheTest

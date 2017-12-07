@@ -22,21 +22,21 @@
  */
 namespace OCA\Files_Sharing\API;
 
+use OCP\Files\IRootFolder;
 use OCP\Files\NotFoundException;
+use OCP\IConfig;
 use OCP\IGroupManager;
 use OCP\IL10N;
-use OCP\IUserManager;
 use OCP\IRequest;
 use OCP\IURLGenerator;
 use OCP\IUser;
-use OCP\Files\IRootFolder;
-use OCP\Lock\LockedException;
-use OCP\Share\IShare;
-use OCP\Share\IManager;
-use OCP\Share\Exceptions\ShareNotFound;
-use OCP\Share\Exceptions\GenericShareException;
+use OCP\IUserManager;
 use OCP\Lock\ILockingProvider;
-use OCP\IConfig;
+use OCP\Lock\LockedException;
+use OCP\Share\Exceptions\GenericShareException;
+use OCP\Share\Exceptions\ShareNotFound;
+use OCP\Share\IManager;
+use OCP\Share\IShare;
 
 /**
  * Class Share20OCS
