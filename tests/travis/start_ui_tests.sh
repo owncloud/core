@@ -138,6 +138,29 @@ else
 	TESTING_ENABLED_BY_SCRIPT=false;
 fi
 
+#disable firstrunwizard and notifications apps
+remote_occ $ADMIN_PASSWORD $OCC_URL "--no-warnings app:list ^firstrunwizard$"
+PREVIOUS_FIRSTRUNWIZARD_APP_STATUS=$REMOTE_OCC_STDOUT
+
+if [[ "$PREVIOUS_FIRSTRUNWIZARD_APP_STATUS" =~ ^Enabled: ]]
+then
+	FIRSTRUNWIZARD_APP_DISABLED_BY_SCRIPT=true;
+	remote_occ $ADMIN_PASSWORD $OCC_URL "--no-warnings app:disable firstrunwizard"
+else
+	FIRSTRUNWIZARD_APP_DISABLED_BY_SCRIPT=false;
+fi
+
+remote_occ $ADMIN_PASSWORD $OCC_URL "--no-warnings app:list ^notifications$"
+PREVIOUS_NOTIFICATIONS_APP_STATUS=$REMOTE_OCC_STDOUT
+
+if [[ "$PREVIOUS_NOTIFICATIONS_APP_STATUS" =~ ^Enabled: ]]
+then
+	NOTIFICATIONS_APP_DISABLED_BY_SCRIPT=true;
+	remote_occ $ADMIN_PASSWORD $OCC_URL "--no-warnings app:disable notifications"
+else
+	NOTIFICATIONS_APP_DISABLED_BY_SCRIPT=false;
+fi
+
 #we need to skip some tests in certain browsers
 #and also skip tests if tags were given in the call of this script
 if [ "$BROWSER" == "internet explorer" ] || [ "$BROWSER" == "MicrosoftEdge" ] || ([ "$BROWSER" == "firefox" ] && verlt "47.0" "$BROWSER_VERSION")
@@ -344,6 +367,15 @@ fi
 # Put back state of the testing app
 if test "$TESTING_ENABLED_BY_SCRIPT" = true; then
 	$OCC app:disable testing
+fi
+
+# Put back state of the firstrunwizard and notifications app
+if test "$FIRSTRUNWIZARD_APP_DISABLED_BY_SCRIPT" = true; then
+	remote_occ $ADMIN_PASSWORD $OCC_URL "--no-warnings app:enable firstrunwizard"
+fi
+
+if test "$NOTIFICATIONS_APP_DISABLED_BY_SCRIPT" = true; then
+	remote_occ $ADMIN_PASSWORD $OCC_URL "--no-warnings app:enable notifications"
 fi
 
 #upload log file for later analysis
