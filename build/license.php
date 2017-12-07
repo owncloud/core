@@ -227,6 +227,13 @@ With help from many libraries and frameworks including:
 		return \implode(PHP_EOL, $lines);
 	}
 
+	/**
+	 * Retrieve a list of code contributors
+	 *
+	 * @param string $file
+	 * @param string|bool $gitRoot
+	 * @return string
+	 */
 	private function getAuthors($file, $gitRoot) {
 		// only add authors that changed code and not the license header
 		$licenseHeaderEndsAtLine = \trim(\shell_exec("grep -n '*/' $file | head -n 1 | cut -d ':' -f 1"));
