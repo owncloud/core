@@ -27,12 +27,12 @@
 namespace OCA\FederatedFileSharing\Tests;
 
 use OC\Files\Filesystem;
+use OC\HTTPHelper;
 use OCA\FederatedFileSharing\DiscoveryManager;
 use OCA\FederatedFileSharing\FederatedShareProvider;
 use OCA\FederatedFileSharing\RequestHandler;
 use OCP\IUserManager;
 use OCP\Share\IShare;
-use OC\HTTPHelper;
 use Symfony\Component\EventDispatcher\GenericEvent;
 
 /**
