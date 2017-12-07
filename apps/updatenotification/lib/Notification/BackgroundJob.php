@@ -23,7 +23,6 @@ namespace OCA\UpdateNotification\Notification;
 
 
 use OC\BackgroundJob\TimedJob;
-use OC\Installer;
 use OC\Updater\VersionCheck;
 use OCP\App\IAppManager;
 use OCP\Http\Client\IClientService;
