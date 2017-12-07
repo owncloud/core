@@ -21,6 +21,7 @@
  */
 namespace TestHelpers;
 use Behat\Testwork\Hook\Scope\HookScope;
+use GuzzleHttp\Exception\ServerException;
 use Exception;
 
 /**
@@ -32,9 +33,21 @@ use Exception;
 class SetupHelper {
 
 	/**
-	 * @var boolean
+	 * @var string
 	 */
 	private static $ocPath = null;
+	/**
+	 * @var string
+	 */
+	private static $baseUrl = null;
+	/**
+	 * @var string
+	 */
+	private static $adminUsername = null;
+	/**
+	 * @var string
+	 */
+	private static $adminPassword = null;
 
 	/**
 	 * creates a user
@@ -153,23 +166,32 @@ class SetupHelper {
 
 	/**
 	 *
-	 * @param HookScope $scope
 	 * @return void
 	 */
-	public static function setOcPath(HookScope $scope) {
-		$suiteParameters = self::getSuiteParameters($scope);
-		self::$ocPath = rtrim($suiteParameters['ocPath'], '/') . '/';
+	public static function init($adminUsername, $adminPassword, $baseUrl, $ocPath) {
+		foreach (func_get_args() as $variableToCheck) {
+			if (!is_string($variableToCheck)) {
+				throw new \InvalidArgumentException(
+					"mandatory argument missing or wrong type ($variableToCheck => "
+					. gettype($variableToCheck) . ")"
+				);
+			}
+		}
+		self::$adminUsername = $adminUsername;
+		self::$adminPassword = $adminPassword;
+		self::$baseUrl = rtrim($baseUrl, '/');
+		self::$ocPath = '/' . trim($ocPath, '/');
 	}
 
 	/**
 	 *
-	 * @return string path to ownCloud folder
+	 * @return string path to the testing app occ endpoint
 	 * @throws Exception if ocPath has not been set yet
 	 */
 	public static function getOcPath() {
 		if (is_null(self::$ocPath)) {
 			throw new Exception(
-				"getOcPath called before ocPath is set by setOcPath"
+				"getOcPath called before ocPath is set by init"
 			);
 		}
 
@@ -227,39 +249,51 @@ class SetupHelper {
 	 *
 	 * @param array $args anything behind "occ".
 	 *                    For example: "files:transfer-ownership"
-	 * @param bool $escaping
 	 * @return string[] associated array with "code", "stdOut", "stdErr"
 	 */
-	public static function runOcc($args, $escaping = true) {
-		if ($escaping === true) {
-			$args = array_map(
-				function ($arg) {
-					return escapeshellarg($arg);
-				}, $args
+	public static function runOcc($args) {
+		if (is_null(self::$adminUsername)
+			|| is_null(self::$adminPassword)
+			|| is_null(self::$baseUrl)
+			|| is_null(self::$ocPath)
+		) {
+			throw new Exception(
+				"runOcc called before init"
 			);
 		}
-		$args[] = '--no-ansi';
-		$args = implode(' ', $args);
+		try {
+			$result = OcsApiHelper::sendRequest(
+				self::$baseUrl, self::$adminUsername,
+				self::$adminPassword, "POST", self::$ocPath,
+				['command' => implode(' ', $args)]
+			);
+		} catch (ServerException $e) {
+			throw new Exception(
+				"Could not execute 'occ'. " .
+				"Is the testing app installed and enabled?\n" .
+				$e->getResponse()->getBody()
+			);
+		}
 
-		$descriptor = [
-				0 => ['pipe', 'r'],
-				1 => ['pipe', 'w'],
-				2 => ['pipe', 'w'],
-		];
-		$process = proc_open(
-			'php console.php ' . $args,
-			$descriptor,
-			$pipes,
-			self::getOcPath()
-		);
-		$lastStdOut = stream_get_contents($pipes[1]);
-		$lastStdErr = stream_get_contents($pipes[2]);
-		$lastCode = proc_close($process);
-		return [ 
-			"code" => $lastCode,
-			"stdOut" => $lastStdOut,
-			"stdErr" => $lastStdErr
-		];
+		$return = [];
+		$return['code'] = $result->xml()->xpath("//ocs/data/code");
+		$return['stdOut'] = $result->xml()->xpath("//ocs/data/stdOut");
+		$return['stdErr'] = $result->xml()->xpath("//ocs/data/stdErr");
+
+		if (!is_a($return['code'][0], "SimpleXMLElement")
+			|| !is_a($return['stdOut'][0], "SimpleXMLElement")
+			|| !is_a($return['stdErr'][0], "SimpleXMLElement")
+		) {
+			throw new Exception(
+				"Could not execute 'occ'. " .
+				"Is the testing app installed and enabled?\n" .
+				$result->getBody()
+			);
+		}
+		$return['code'] = $return['code'][0]->__toString();
+		$return['stdOut'] = $return['stdOut'][0]->__toString();
+		$return['stdErr'] = $return['stdErr'][0]->__toString();
+		return $return;
 	}
 
 }
