@@ -29,8 +29,8 @@ namespace OCA\Provisioning_API\Tests;
 use OCA\Provisioning_API\Groups;
 use OCP\API;
 use OCP\IGroupManager;
-use OCP\IUserSession;
 use OCP\IRequest;
+use OCP\IUserSession;
 
 class GroupsTest extends \Test\TestCase {
 	/** @var IGroupManager|\PHPUnit_Framework_MockObject_MockObject */
