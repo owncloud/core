@@ -21,8 +21,6 @@
  *
  */
 
-use OCA\SystemTags\Activity\Extension;
-use OCA\SystemTags\Activity\Listener;
 use OCP\SystemTag\ManagerEvent;
 use OCP\SystemTag\MapperEvent;
 
