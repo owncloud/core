@@ -36,25 +36,30 @@ class SharingHelper {
 	 * @param string $user user that creates the share.
 	 * @param string $password password of the user that creates the share.
 	 * @param string $path The path to the file or folder which should be shared.
-	 * @param int $shareType The type of the share. This can be one of:
-	 *                       0 = user, 1 = group, 3 = public link,
-	 *                       6 = federated cloud share.
-	 * @param string $shareWith The user or group id with which the file should
-	 *                          be shared.
+	 * @param string|int $shareType The type of the share. This can be one of:
+	 *                              0 = user, 1 = group, 3 = public (link),
+	 *                              6 = federated (cloud share).
+	 *                              Pass either the number or the keyword.
+	 * @param string|null $shareWith The user or group id with which the file should
+	 *                               be shared.
 	 * @param boolean $publicUpload Whether to allow public upload to a public
 	 *                              shared folder.
-	 * @param string $sharePassword The password to protect the public link
-	 *                              share with.
-	 * @param int $permissions The permissions to set on the share.
-	 *                         1 = read; 2 = update; 4 = create; 8 = delete;
-	 *                         16 = share; 31 = all
-	 *                         (default: 31, for public shares: 1)
-	 * @param string $linkName A (human-readable) name for the share,
-	 *                         which can be up to 64 characters in length.
-	 * @param string $expireDate **NOT IMPLEMENTED**
-	 *                           An expire date for public link shares.
-	 *                           This argument expects a date string
-	 *                           in the format 'YYYY-MM-DD'.
+	 * @param string|null $sharePassword The password to protect the public link
+	 *                                   share with.
+	 * @param string|int|string[]|int[]|null $permissions The permissions to set on the share.
+	 *                                      1 = read; 2 = update; 4 = create;
+	 *                                      8 = delete; 16 = share; 31 = all
+	 *                                      15 = change
+	 *                                      (default: 31, for public shares: 1)
+	 *                                      Pass either the (total) number,
+	 *                                      or the keyword,
+	 *                                      or an array of keywords or numbers.
+	 * @param string|null $linkName A (human-readable) name for the share,
+	 *                              which can be up to 64 characters in length.
+	 * @param string|null $expireDate **NOT IMPLEMENTED**
+	 *                                An expire date for public link shares.
+	 *                                This argument expects a date string
+	 *                                in the format 'YYYY-MM-DD'.
 	 * @param int $apiVersion
 	 * @param int $sharingApiVersion
 	 * @return \GuzzleHttp\Message\FutureResponse|\GuzzleHttp\Message\ResponseInterface|NULL
@@ -85,17 +90,49 @@ class SharingHelper {
 				);
 			}
 		}
-		if (!in_array($shareType, [0, 1, 3, 6], true)) {
+
+		$validShareTypes = ['user' => 0, 'group' => 1, 'public' => 3, 'federated' => 6];
+		if (isset($validShareTypes[$shareType])) {
+			$shareType = $validShareTypes[$shareType];
+		}
+		if (!in_array($shareType, $validShareTypes, true)) {
 			throw new \InvalidArgumentException("invalid share type");
 		}
 		if (!is_null($permissions)) {
-			$permissions = (int) $permissions;
-			if ($permissions < 1 || $permissions > 31) {
+			if (is_numeric($permissions)) {
+				$permissionSum = (int) $permissions;
+			} else {
+				if (!is_array($permissions)) {
+					$permissions = [$permissions];
+				}
+				$validPermissionTypes =
+					[
+						'read' => 1,
+						'update' => 2,
+						'create' => 4,
+						'delete' => 8,
+						'change' => 15,
+						'share' => 16,
+						'all' => 31
+					];
+				$permissionSum = 0;
+				foreach ($permissions as $permission) {
+					if (isset($validPermissionTypes[$permission])) {
+						$permissionSum += $validPermissionTypes[$permission];
+					} elseif (in_array($permission, $validPermissionTypes)) {
+						$permissionSum += (int) $permission;
+					} else {
+						throw new \InvalidArgumentException("invalid permission type ($permission)");
+					}
+				}
+			}
+
+			if ($permissionSum < 1 || $permissionSum > 31) {
 				throw new \InvalidArgumentException(
-					"invalid permissions ($permissions)"
+					"invalid permission total ($permissionSum)"
 				);
 			}
-			$fd['permissions'] = $permissions;
+			$fd['permissions'] = $permissionSum;
 		}
 		if (!in_array($apiVersion, [1, 2], true)
 			|| !in_array($sharingApiVersion, [1,2], true)
