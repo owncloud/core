@@ -70,14 +70,20 @@ class Enable extends Command {
 			return 1;
 		}
 
-		$groups = $input->getOption('groups');
-		if (empty($groups)) {
-			\OC_App::enable($appId);
-			$output->writeln($appId . ' enabled');
-		} else {
-			\OC_App::enable($appId, $groups);
-			$output->writeln($appId . ' enabled for groups: ' . implode(', ', $groups));
+		try {
+			$groups = $input->getOption('groups');
+			if (empty($groups)) {
+				\OC_App::enable($appId);
+				$output->writeln($appId . ' enabled');
+			} else {
+				\OC_App::enable($appId, $groups);
+				$output->writeln($appId . ' enabled for groups: ' . implode(', ', $groups));
+			}
+		} catch (\Exception $e) {
+			$output->writeln($e->getMessage());
+			return 2;
 		}
+
 		return 0;
 	}
 }

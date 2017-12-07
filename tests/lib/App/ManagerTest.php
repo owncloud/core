@@ -123,11 +123,35 @@ class ManagerTest extends TestCase {
 		$this->assertEquals('yes', $this->appConfig->getValue('files_trashbin', 'enabled', 'no'));
 	}
 
+	/**
+	 * @expectedException \Exception
+	 */
+	public function testEnableSecondAppTheme() {
+		$manager = $this->getMockBuilder(AppManager::class)
+			->setMethods(['isTheme', 'getAppInfo'])
+			->setConstructorArgs([$this->userSession, $this->appConfig,
+				$this->groupManager, $this->cacheFactory, $this->eventDispatcher,
+				$this->config])
+			->getMock();
+
+		$manager->expects($this->any())
+			->method('getAppInfo')
+			->with('files')
+			->willReturn(['types'=>['theme']]);
+
+		$manager->expects($this->any())
+			->method('isTheme')
+			->willReturn(true);
+
+		$manager->enableApp('files');
+	}
+
 	public function testDisableApp() {
 		$this->expectClearCache();
 		$this->manager->disableApp('files_trashbin');
 		$this->assertEquals('no', $this->appConfig->getValue('files_trashbin', 'enabled', 'no'));
 	}
+
 	/**
 	 * @expectedException \Exception
 	 */
