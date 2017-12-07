@@ -238,9 +238,15 @@ EXTRA_CAPABILITIES=$EXTRA_CAPABILITIES'"maxDuration":"3600"'
 remote_occ $ADMIN_PASSWORD $OCC_URL "--no-warnings config:system:get skeletondirectory"
 
 PREVIOUS_SKELETON_DIR=$REMOTE_OCC_STDOUT
+
+#$SRC_SKELETON_DIR is the path to the skeleton folder on the machine where the tests are executed
+#it is used for file comparisons in various tests
+export SRC_SKELETON_DIR=$(pwd)/tests/ui/skeleton
+#$SKELETON_DIR is the path to the skeleton folder on the machine where oC runs (system under test)
+#it is used to give users a defined set of files and folders for the tests
 if [ -z "$SKELETON_DIR" ]
 then
-	export SKELETON_DIR=$(pwd)/tests/ui/skeleton
+	export SKELETON_DIR="$SRC_SKELETON_DIR"
 fi
 
 remote_occ $ADMIN_PASSWORD $OCC_URL "config:system:set skeletondirectory --value=$SKELETON_DIR"
