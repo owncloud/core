@@ -30,7 +30,7 @@
 namespace OCA\Provisioning_API;
 
 use OC\OCS\Result;
-use \OC_Helper;
+use OC_Helper;
 use OCP\API;
 use OCP\Files\NotFoundException;
 use OCP\IGroup;

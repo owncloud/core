@@ -25,7 +25,7 @@
 
 namespace OCA\Provisioning_API;
 
-use \OC_OCS_Result;
+use OC_OCS_Result;
 use OCP\IGroup;
 use OCP\IUser;
 
