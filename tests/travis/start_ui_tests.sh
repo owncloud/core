@@ -70,7 +70,7 @@ fi
 BEHAT_TAGS_OPTION_FOUND=false
 REMOTE_ONLY=false
 
-while [[ $# -gt 1 ]]
+while [[ $# -gt 0 ]]
 do
 	key="$1"
 	case $key in
@@ -93,7 +93,6 @@ do
 			;;
 		--remote)
 			REMOTE_ONLY=true
-			shift
 			;;
 		*)
 			# ignore unknown options
