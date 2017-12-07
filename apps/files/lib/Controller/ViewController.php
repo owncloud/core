@@ -27,10 +27,12 @@
 namespace OCA\Files\Controller;
 
 use OC\AppFramework\Http\Request;
+use OCP\App\IAppManager;
 use OCP\AppFramework\Controller;
 use OCP\AppFramework\Http\ContentSecurityPolicy;
 use OCP\AppFramework\Http\RedirectResponse;
 use OCP\AppFramework\Http\TemplateResponse;
+use OCP\Files\Folder;
 use OCP\Files\NotFoundException;
 use OCP\IConfig;
 use OCP\IL10N;
@@ -39,8 +41,6 @@ use OCP\IRequest;
 use OCP\IURLGenerator;
 use OCP\IUserSession;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-use OCP\Files\Folder;
-use OCP\App\IAppManager;
 
 /**
  * Class ViewController
