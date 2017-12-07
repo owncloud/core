@@ -1,0 +1,35 @@
+@oc-app-menu-triangle-size: 10px;
+
+.oc-app-menu:extend(.uk-background-secondary){
+	z-index: 51;
+
+	&:before {
+		content: "";
+		width: 0;
+		height: 0;
+		border-left: @oc-app-menu-triangle-size solid transparent;
+		border-right: @oc-app-menu-triangle-size solid transparent;
+		border-bottom: @oc-app-menu-triangle-size solid @global-secondary-background;
+		position: absolute;
+		top: @oc-app-menu-triangle-size * -1;
+		left: @oc-app-menu-triangle-size * 1.7;
+	}
+
+	ul li:extend(.uk-flex, .uk-flex-column, .uk-flex-middle){
+		transition: opacity 0.5s;
+		cursor: pointer;
+		opacity: 0.5;
+
+		&._is_active,
+		&:hover {
+			opacity: 1;
+		}
+	}
+
+	span:extend(.uk-text-inverse){}
+
+	img {
+		width: 32px;
+		height: 32px;
+	}
+}

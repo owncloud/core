@@ -9,7 +9,9 @@
   "private": true,
   "homepage": "https://github.com/owncloud/",
   "contributors": [],
-  "dependencies": {},
+  "dependencies": {
+    "material-design-icons": "^3.0.1"
+  },
   "devDependencies": {
     "bower": "~1.8.0",
     "handlebars": "^4.0.5",

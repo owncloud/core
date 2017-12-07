@@ -2,27 +2,6 @@
  This file is licensed under the Affero General Public License version 3 or later.
  See the COPYING-README file. */
 
-html, body, div, span, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address, code, del, dfn, em, img, q, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td, article, aside, dialog, figure, footer, header, hgroup, nav, section { margin:0; padding:0; border:0; outline:0; font-weight:inherit; font-size:100%; font-family:inherit; vertical-align:baseline; cursor:default; }
-html, body { height:100%; }
-article, aside, dialog, figure, footer, header, hgroup, nav, section { display:block; }
-body { line-height:1.5; }
-table { border-collapse:separate; border-spacing:0; white-space:nowrap; }
-caption, th, td { text-align:left; font-weight:normal; }
-table, td, th { vertical-align:middle; }
-a { border:0; color:#000; text-decoration:none;}
-a, a *, input, input *, select, .button span, label { cursor:pointer; }
-ul { list-style:none; }
-
-body {
-	background-color: #ffffff;
-	font-weight: 400;
-	font-size: .8em;
-	line-height: 1.6em;
-	font-family: 'Open Sans', Frutiger, Calibri, 'Myriad Pro', Myriad, sans-serif;
-	color: #000;
-	height: auto;
-}
-
 #body-login {
 	text-align: center;
 	background-image: url('../img/background.jpg');
@@ -124,7 +103,7 @@ a.two-factor-cancel {
 #controls {
 	box-sizing: border-box;
 	position: fixed;
-	top: 45px;
+	top: 60px;
 	right: 0;
 	left: 0;
 	height: 44px;
@@ -132,7 +111,6 @@ a.two-factor-cancel {
 	padding: 0;
 	margin: 0;
 	background-color: rgba(255, 255, 255, .95);
-	z-index: 50;
 	-webkit-user-select: none;
 	-moz-user-select: none;
 	-ms-user-select: none;
@@ -175,7 +153,7 @@ a.two-factor-cancel {
 	height: 100%;
 	width: 100%;
 	overflow-x: hidden; /* prevent horizontal scrollbar */
-	padding-top: 45px;
+	padding-top: 60px;
 	box-sizing:border-box;
 }
 /* allow horizontal scrollbar for personal and admin settings */
