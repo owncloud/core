@@ -152,7 +152,7 @@ class PostgreSQL extends AbstractDatabase {
 		}
 
 		if(! pg_fetch_row($result)) {
-			//user does not exists let's create it :)
+			//user does not exist, so let's create them :)
 			$query = "CREATE USER \"$e_name\" CREATEDB PASSWORD '$e_password';";
 			$result = pg_query($connection, $query);
 			if(!$result) {

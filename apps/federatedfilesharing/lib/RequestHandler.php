@@ -142,7 +142,7 @@ class RequestHandler {
 			\OCP\Util::writeLog('files_sharing', 'shareWith after, ' . $shareWith, \OCP\Util::DEBUG);
 
 			if (!\OCP\User::userExists($shareWith)) {
-				return new \OC_OCS_Result(null, 400, 'User does not exists');
+				return new \OC_OCS_Result(null, 400, 'User does not exist');
 			}
 
 			\OC_Util::setupFS($shareWith);
