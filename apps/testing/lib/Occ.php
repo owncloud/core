@@ -21,8 +21,8 @@
 
 namespace OCA\Testing;
 
-use \OCP\IRequest;
-use \OC\OCS\Result;
+use OC\OCS\Result;
+use OCP\IRequest;
 
 /**
  * run the occ command from an API call
