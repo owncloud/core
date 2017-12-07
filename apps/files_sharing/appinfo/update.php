@@ -19,6 +19,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>
  *
  */
+
 use OCA\Files_Sharing\Migration;
 
 $installedVersion = \OC::$server->getConfig()->getAppValue('files_sharing', 'installed_version');

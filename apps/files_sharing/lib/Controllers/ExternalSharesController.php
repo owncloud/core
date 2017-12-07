@@ -26,10 +26,10 @@
 namespace OCA\Files_Sharing\Controllers;
 
 use OCP\AppFramework\Controller;
-use OCP\IRequest;
+use OCP\AppFramework\Http\DataResponse;
 use OCP\AppFramework\Http\JSONResponse;
 use OCP\Http\Client\IClientService;
-use OCP\AppFramework\Http\DataResponse;
+use OCP\IRequest;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
 

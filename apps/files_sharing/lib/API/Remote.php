@@ -24,7 +24,6 @@
 namespace OCA\Files_Sharing\API;
 
 use OC\Files\Filesystem;
-use OCA\FederatedFileSharing\DiscoveryManager;
 use OCA\Files_Sharing\External\Manager;
 use Symfony\Component\EventDispatcher\GenericEvent;
 

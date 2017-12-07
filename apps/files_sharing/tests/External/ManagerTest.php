@@ -24,8 +24,6 @@
 
 namespace OCA\Files_Sharing\Tests\External;
 
-use League\Flysystem\MountManager;
-use OC\Files\Mount\MountPoint;
 use OC\Files\Storage\StorageFactory;
 use OCA\Files_Sharing\External\Manager;
 use OCA\Files_Sharing\External\MountProvider;
@@ -34,7 +32,6 @@ use OCP\Share\Events\AcceptShare;
 use OCP\Share\Events\DeclineShare;
 use OCP\Share\Events\ShareEvent;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-use Symfony\Component\EventDispatcher\GenericEvent;
 use Test\Traits\UserTrait;
 
 /**

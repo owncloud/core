@@ -35,24 +35,24 @@ namespace OCA\Files_Sharing\Controllers;
 use OC;
 use OC_Files;
 use OC_Util;
+use OCA\Files_Sharing\Activity;
 use OCP;
-use OCP\Template;
-use OCP\Share;
 use OCP\AppFramework\Controller;
-use OCP\IRequest;
-use OCP\AppFramework\Http\TemplateResponse;
-use OCP\AppFramework\Http\RedirectResponse;
 use OCP\AppFramework\Http\NotFoundResponse;
-use OCP\IURLGenerator;
+use OCP\AppFramework\Http\RedirectResponse;
+use OCP\AppFramework\Http\TemplateResponse;
+use OCP\Files\IRootFolder;
+use OCP\Files\NotFoundException;
 use OCP\IConfig;
 use OCP\ILogger;
-use OCP\IUserManager;
-use OCP\ISession;
 use OCP\IPreview;
-use OCA\Files_Sharing\Activity;
-use \OCP\Files\NotFoundException;
-use OCP\Files\IRootFolder;
+use OCP\IRequest;
+use OCP\ISession;
+use OCP\IURLGenerator;
+use OCP\IUserManager;
+use OCP\Share;
 use OCP\Share\Exceptions\ShareNotFound;
+use OCP\Template;
 
 /**
  * Class ShareController

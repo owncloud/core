@@ -30,7 +30,6 @@ use OC\Files\Filesystem;
 use OC\Files\Mount\MountPoint;
 use OC\Files\Mount\MoveableMount;
 use OC\Files\View;
-use OCP\Share\IShare;
 
 /**
  * Shared mount points can be moved by the user
