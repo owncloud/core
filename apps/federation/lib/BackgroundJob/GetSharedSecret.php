@@ -25,8 +25,8 @@
 namespace OCA\Federation\BackgroundJob;
 
 use GuzzleHttp\Exception\ClientException;
-use OC\BackgroundJob\JobList;
 use OC\BackgroundJob\Job;
+use OC\BackgroundJob\JobList;
 use OCA\Federation\DbHandler;
 use OCA\Federation\TrustedServers;
 use OCP\AppFramework\Http;
