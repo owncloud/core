@@ -788,7 +788,7 @@ class FilesContext extends RawMinkContext implements Context {
 		// The capturing group of the regex always includes the quotes at each
 		// end of the captured string, so trim them.
 		$remoteFile = $this->currentFolder . "/" . trim($remoteFile, $remoteFile[0]);
-		$originalFile = getenv("SKELETON_DIR") . "/" . trim($originalFile, $originalFile[0]);
+		$originalFile = getenv("SRC_SKELETON_DIR") . "/" . trim($originalFile, $originalFile[0]);
 		$shouldBeSame = ($shouldOrNot !== "not");
 		$this->assertContentOfRemoteAndLocalFileIsSame($remoteFile, $originalFile, $shouldBeSame);
 	}
@@ -826,7 +826,7 @@ class FilesContext extends RawMinkContext implements Context {
 		} else {
 			$subFolderPath = "";
 		}
-		$localFile = getenv("SKELETON_DIR") . "/" . $subFolderPath . $fileName;
+		$localFile = getenv("SRC_SKELETON_DIR") . "/" . $subFolderPath . $fileName;
 		$this->assertContentOfRemoteAndLocalFileIsSame($remoteFile, $localFile);
 	}
 
