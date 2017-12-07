@@ -25,7 +25,6 @@
 namespace OCA\Files_External\Tests\Controller;
 
 use OCA\Files_External\Controller\GlobalStoragesController;
-use OCP\AppFramework\Http;
 use OCP\Files\External\IStoragesBackendService;
 
 class GlobalStoragesControllerTest extends StoragesControllerTest {

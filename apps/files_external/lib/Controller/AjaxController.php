@@ -25,10 +25,10 @@
 
 namespace OCA\Files_External\Controller;
 
-use OCP\AppFramework\Controller;
-use OCP\IRequest;
-use OCP\AppFramework\Http\JSONResponse;
 use OCA\Files_External\Lib\Auth\PublicKey\RSA;
+use OCP\AppFramework\Controller;
+use OCP\AppFramework\Http\JSONResponse;
+use OCP\IRequest;
 
 class AjaxController extends Controller {
 	/** @var RSA */

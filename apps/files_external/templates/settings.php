@@ -1,7 +1,8 @@
 <?php
-	use \OCP\Files\External\Backend\Backend;
-	use \OCP\Files\External\Auth\AuthMechanism;
-	use \OCP\Files\External\IStoragesBackendService;
+
+	use OCP\Files\External\Auth\AuthMechanism;
+	use OCP\Files\External\Backend\Backend;
+	use OCP\Files\External\IStoragesBackendService;
 
 	$l->t("Enable encryption");
 	$l->t("Enable previews");

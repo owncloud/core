@@ -29,12 +29,10 @@
 
 namespace OCA\Files_External\AppInfo;
 
-use \OCP\AppFramework\App;
+use OCP\AppFramework\App;
 use OCP\AppFramework\IAppContainer;
-use \OCP\IContainer;
-use \OCP\Files\External\IStoragesBackendService;
-use \OCP\Files\External\Config\IBackendProvider;
-use \OCP\Files\External\Config\IAuthMechanismProvider;
+use OCP\Files\External\Config\IAuthMechanismProvider;
+use OCP\Files\External\Config\IBackendProvider;
 
 /**
  * @package OCA\Files_External\AppInfo

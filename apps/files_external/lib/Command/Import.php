@@ -24,9 +24,9 @@ namespace OCA\Files_External\Command;
 
 use OC\Core\Command\Base;
 use OC\User\NoUserException;
-use OCP\Files\External\IStorageConfig;
 use OCP\Files\External\IStoragesBackendService;
 use OCP\Files\External\Service\IGlobalStoragesService;
+use OCP\Files\External\Service\IStoragesService;
 use OCP\Files\External\Service\IUserStoragesService;
 use OCP\IUserManager;
 use OCP\IUserSession;
@@ -35,7 +35,6 @@ use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
-use OCP\Files\External\Service\IStoragesService;
 
 class Import extends Base {
 	/**
