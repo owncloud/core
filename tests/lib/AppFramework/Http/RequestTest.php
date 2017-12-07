@@ -13,9 +13,9 @@ namespace Test\AppFramework\Http;
 use OC\AppFramework\Http\Request;
 use OC\Security\CSRF\CsrfToken;
 use OC\Security\CSRF\CsrfTokenManager;
+use OCP\IConfig;
 use OCP\IRequest;
 use OCP\Security\ISecureRandom;
-use OCP\IConfig;
 use Test\TestCase;
 
 /**

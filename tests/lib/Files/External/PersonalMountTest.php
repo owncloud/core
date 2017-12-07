@@ -22,8 +22,8 @@
 
 namespace Test\Files\External;
 
-use OC\Files\Mount\Manager;
 use OC\Files\External\PersonalMount;
+use OC\Files\Mount\Manager;
 use Test\TestCase;
 
 class PersonalMountTest extends TestCase {

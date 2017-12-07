@@ -20,24 +20,22 @@
  */
 namespace Test\Share20;
 
+use OC\Share20\Manager;
+use OC\Share20\Share;
 use OCP\Files\IRootFolder;
+use OCP\Files\Mount\IMountManager;
+use OCP\IConfig;
+use OCP\IGroupManager;
+use OCP\IL10N;
+use OCP\ILogger;
 use OCP\IUser;
 use OCP\IUserManager;
+use OCP\Security\IHasher;
+use OCP\Security\ISecureRandom;
 use OCP\Share\Exceptions\ShareNotFound;
 use OCP\Share\IProviderFactory;
 use OCP\Share\IShare;
-use OC\Share20\Manager;
-use OC\Share20\Exception;
-
-use OC\Share20\Share;
-use OCP\IL10N;
-use OCP\ILogger;
-use OCP\IConfig;
 use OCP\Share\IShareProvider;
-use OCP\Security\ISecureRandom;
-use OCP\Security\IHasher;
-use OCP\Files\Mount\IMountManager;
-use OCP\IGroupManager;
 
 /**
  * Class ManagerTest

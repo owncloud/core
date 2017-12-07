@@ -24,16 +24,15 @@
 namespace Test\Files\External\Service;
 
 use OC\Files\Cache\Storage;
-use OC\Files\Filesystem;
-use OC\Files\External\StorageConfig;
 use OC\Files\External\Service\StoragesService;
-
-use OCP\Files\External\NotFoundException;
-use OCP\Files\External\IStoragesBackendService;
-use Test\TestCase;
-use OCP\Files\External\Backend\InvalidBackend;
+use OC\Files\External\StorageConfig;
+use OC\Files\Filesystem;
 use OCP\Files\External\Auth\InvalidAuth;
 use OCP\Files\External\Backend\Backend;
+use OCP\Files\External\Backend\InvalidBackend;
+use OCP\Files\External\IStoragesBackendService;
+use OCP\Files\External\NotFoundException;
+use Test\TestCase;
 
 /**
  * @group DB

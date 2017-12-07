@@ -23,15 +23,13 @@
  */
 namespace Test\Files\External\Service;
 
-use OC\Files\Filesystem;
-
 use OC\Files\External\Service\GlobalStoragesService;
-use OC\Files\External\Service\StoragesService;
 use OC\Files\External\Service\UserStoragesService;
 use OC\Files\External\StorageConfig;
-use Test\Traits\UserTrait;
+use OC\Files\Filesystem;
 use OCP\Files\External\IStorageConfig;
 use OCP\Files\External\Service\IStoragesService;
+use Test\Traits\UserTrait;
 
 /**
  * @group DB

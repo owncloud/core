@@ -25,7 +25,6 @@ namespace Test\Authentication\Token;
 use OC\Authentication\Token\DefaultToken;
 use OC\Authentication\Token\DefaultTokenProvider;
 use OC\Authentication\Token\IToken;
-use OCP\AppFramework\Db\DoesNotExistException;
 use Test\TestCase;
 
 class DefaultTokenProviderTest extends TestCase {

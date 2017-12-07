@@ -24,13 +24,13 @@ namespace Test\Repair;
 
 use OC\Repair\RepairUnmergedShares;
 use OC\Share\Constants;
+use OC\Share20\DefaultShareProvider;
+use OCP\IConfig;
+use OCP\IGroupManager;
+use OCP\IUserManager;
 use OCP\Migration\IOutput;
 use OCP\Migration\IRepairStep;
 use Test\TestCase;
-use OC\Share20\DefaultShareProvider;
-use OCP\IUserManager;
-use OCP\IGroupManager;
-use OCP\IConfig;
 
 /**
  * Tests for repairing invalid shares

@@ -10,7 +10,7 @@
 
 namespace Tests\Settings\Controller;
 
-use \OC\Settings\Application;
+use OC\Settings\Application;
 use OCP\AppFramework\Http;
 use OCP\AppFramework\Http\DataResponse;
 use OCP\AppFramework\Http\RedirectResponse;

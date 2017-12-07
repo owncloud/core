@@ -11,7 +11,7 @@
 namespace Tests\Settings\Controller;
 
 use OC\Group\MetaData;
-use \OC\Settings\Application;
+use OC\Settings\Application;
 use OC\Settings\Controller\GroupsController;
 use OCP\AppFramework\Http;
 use OCP\AppFramework\Http\DataResponse;

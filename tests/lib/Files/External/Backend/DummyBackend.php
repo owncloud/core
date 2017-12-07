@@ -21,9 +21,9 @@
 
 namespace Test\Files\External\Backend;
 
+use OCP\Files\External\Auth\AuthMechanism;
 use OCP\Files\External\Backend\Backend;
 use OCP\Files\External\DefinitionParameter;
-use OCP\Files\External\Auth\AuthMechanism;
 
 class DummyBackend extends Backend {
 
