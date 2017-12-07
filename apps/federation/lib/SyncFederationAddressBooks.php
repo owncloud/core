@@ -24,10 +24,6 @@ namespace OCA\Federation;
 
 use OCA\DAV\CardDAV\SyncService;
 use OCP\AppFramework\Http;
-use Symfony\Component\Console\Command\Command;
-use Symfony\Component\Console\Helper\ProgressBar;
-use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Output\OutputInterface;
 
 class SyncFederationAddressBooks {
 
