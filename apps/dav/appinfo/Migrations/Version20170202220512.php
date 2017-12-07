@@ -21,8 +21,8 @@
 
 namespace OCA\DAV\Migrations;
 
-use OCP\Migration\ISchemaMigration;
 use Doctrine\DBAL\Schema\Schema;
+use OCP\Migration\ISchemaMigration;
 
 /*
  * Drop property_index index if exists

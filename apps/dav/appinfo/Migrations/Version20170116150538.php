@@ -21,8 +21,8 @@
 
 namespace OCA\DAV\Migrations;
 
-use OCP\Migration\ISchemaMigration;
 use Doctrine\DBAL\Schema\Schema;
+use OCP\Migration\ISchemaMigration;
 
 /*
  * Create initial tables for the dav app

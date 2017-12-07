@@ -21,7 +21,7 @@
 
 namespace OCA\DAV\Migrations;
 
-use \OCP\DB\QueryBuilder\IQueryBuilder;
+use OCP\DB\QueryBuilder\IQueryBuilder;
 use OCP\Files\Node;
 use OCP\IDBConnection;
 use OCP\IUser;

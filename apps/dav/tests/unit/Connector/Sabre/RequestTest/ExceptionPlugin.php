@@ -23,8 +23,6 @@
 
 namespace OCA\DAV\Tests\unit\Connector\Sabre\RequestTest;
 
-use Sabre\DAV\Exception;
-
 class ExceptionPlugin extends \OCA\DAV\Connector\Sabre\ExceptionLoggerPlugin {
 	/**
 	 * @var \Exception[]

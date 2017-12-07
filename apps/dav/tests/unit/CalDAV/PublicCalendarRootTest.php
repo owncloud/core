@@ -21,11 +21,11 @@
  */
 namespace OCA\DAV\Tests\unit\CalDAV;
 
+use OCA\DAV\CalDAV\CalDavBackend;
 use OCA\DAV\CalDAV\Calendar;
+use OCA\DAV\CalDAV\PublicCalendarRoot;
 use OCA\DAV\Connector\Sabre\Principal;
 use OCP\IL10N;
-use OCA\DAV\CalDAV\CalDavBackend;
-use OCA\DAV\CalDAV\PublicCalendarRoot;
 use OCP\Security\ISecureRandom;
 use Test\TestCase;
 

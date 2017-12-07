@@ -21,8 +21,8 @@
 
 namespace OCA\DAV\Migrations;
 
-use OCP\Migration\ISchemaMigration;
 use Doctrine\DBAL\Schema\Schema;
+use OCP\Migration\ISchemaMigration;
 
 /*
  * Fixes missed  `publicuri` field on update from 9.1.x

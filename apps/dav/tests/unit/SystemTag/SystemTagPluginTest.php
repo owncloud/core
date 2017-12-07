@@ -27,10 +27,10 @@ namespace OCA\DAV\Tests\unit\SystemTag;
 
 use OC\SystemTag\SystemTag;
 use OCP\IGroupManager;
-use OCP\IUserSession;
-use OCP\SystemTag\TagAlreadyExistsException;
 use OCP\IUser;
+use OCP\IUserSession;
 use OCP\SystemTag\ISystemTag;
+use OCP\SystemTag\TagAlreadyExistsException;
 
 class SystemTagPluginTest extends \Test\TestCase {
 

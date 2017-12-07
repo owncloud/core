@@ -25,8 +25,8 @@
 namespace OCA\DAV\Tests\unit\Connector\Sabre;
 
 use OCP\IGroupManager;
-use \Sabre\DAV\PropPatch;
 use OCP\IUserManager;
+use Sabre\DAV\PropPatch;
 use Test\TestCase;
 
 class PrincipalTest extends TestCase {

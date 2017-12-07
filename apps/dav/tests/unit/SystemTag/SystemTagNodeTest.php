@@ -24,9 +24,9 @@
 namespace OCA\DAV\Tests\unit\SystemTag;
 
 use OC\SystemTag\SystemTag;
-use OCP\SystemTag\TagNotFoundException;
-use OCP\SystemTag\TagAlreadyExistsException;
 use OCP\SystemTag\ISystemTag;
+use OCP\SystemTag\TagAlreadyExistsException;
+use OCP\SystemTag\TagNotFoundException;
 
 class SystemTagNodeTest extends \Test\TestCase {
 
