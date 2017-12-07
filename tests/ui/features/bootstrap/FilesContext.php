@@ -24,6 +24,7 @@ use Behat\Behat\Context\Context;
 use Behat\Behat\Hook\Scope\BeforeScenarioScope;
 use Behat\Gherkin\Node\TableNode;
 use Behat\MinkExtension\Context\RawMinkContext;
+use GuzzleHttp\Exception\ClientException;
 use Page\FilesPage;
 use Page\FilesPageElement\ConflictDialog;
 use Page\OwncloudPage;
@@ -320,12 +321,39 @@ class FilesContext extends RawMinkContext implements Context {
 	public function theFollowingFilesFoldersAreDeleted(TableNode $table) {
 		foreach ($table as $file) {
 			$username = $this->featureContext->getCurrentUser();
-			DeleteHelper::delete(
-				$this->featureContext->getCurrentServer(),
-				$username,
-				$this->featureContext->getUserPassword($username),
-				$file['name']
-			);
+			$currentTime = microtime(true);
+			$end = $currentTime + (LONGUIWAITTIMEOUTMILLISEC / 1000);
+			//retry deleting in case the file is locked (code 403)
+			while ($currentTime <= $end) {
+				try {
+					DeleteHelper::delete(
+						$this->featureContext->getCurrentServer(),
+						$username,
+						$this->featureContext->getUserPassword($username),
+						$file['name']
+					);
+					break;
+				} catch (ClientException $e) {
+					if ($e->getResponse()->getStatusCode() === 423) {
+						$message = "INFORMATION: file '" . $file['name'] .
+								   "' is locked";
+						error_log($message);
+					} else {
+						throw $e;
+					}
+				}
+				
+				usleep(STANDARDSLEEPTIMEMICROSEC);
+				$currentTime = microtime(true);
+			}
+			
+			if ($currentTime > $end) {
+				throw new \Exception(
+					__METHOD__ . " timeout deleting files by WebDAV"
+				);
+			}
+
+			
 		}
 	}
 
