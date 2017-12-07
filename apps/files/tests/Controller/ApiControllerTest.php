@@ -26,16 +26,15 @@
 
 namespace OCA\Files\Controller;
 
-use OC\Files\FileInfo;
+use OCA\Files\Service\TagService;
 use OCP\AppFramework\Http;
+use OCP\AppFramework\Http\DataResponse;
 use OCP\Files\NotFoundException;
 use OCP\Files\StorageNotAvailableException;
-use Test\TestCase;
-use OCP\IRequest;
-use OCA\Files\Service\TagService;
-use OCP\AppFramework\Http\DataResponse;
-use OCP\IPreview;
 use OCP\Image;
+use OCP\IPreview;
+use OCP\IRequest;
+use Test\TestCase;
 
 /**
  * Class ApiController

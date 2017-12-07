@@ -27,19 +27,19 @@ namespace OCA\Files\Tests\Controller;
 
 use OC\L10N\L10NString;
 use OCA\Files\Controller\ViewController;
+use OCP\App\IAppManager;
 use OCP\AppFramework\Http;
-use OCP\IUser;
-use OCP\Template;
-use Test\TestCase;
+use OCP\AppFramework\Http\RedirectResponse;
+use OCP\Files\Folder;
+use OCP\IConfig;
+use OCP\IL10N;
 use OCP\IRequest;
 use OCP\IURLGenerator;
-use OCP\AppFramework\Http\RedirectResponse;
-use OCP\IL10N;
-use OCP\IConfig;
+use OCP\IUser;
 use OCP\IUserSession;
+use OCP\Template;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-use OCP\Files\Folder;
-use OCP\App\IAppManager;
+use Test\TestCase;
 
 /**
  * Class ViewControllerTest

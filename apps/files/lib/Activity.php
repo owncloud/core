@@ -23,13 +23,13 @@
 
 namespace OCA\Files;
 
-use OCP\IDBConnection;
-use OCP\L10N\IFactory;
 use OCP\Activity\IExtension;
 use OCP\Activity\IManager;
 use OCP\IConfig;
+use OCP\IDBConnection;
 use OCP\IL10N;
 use OCP\IURLGenerator;
+use OCP\L10N\IFactory;
 
 class Activity implements IExtension {
 	const APP_FILES = 'files';
