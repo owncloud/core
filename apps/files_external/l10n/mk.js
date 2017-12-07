@@ -1,6 +1,7 @@
 OC.L10N.register(
     "files_external",
     {
+    "External storage" : "Надворешна меморија",
     "Personal" : "Лично",
     "Grant access" : "Дозволи пристап",
     "Saved" : "Снимено",
@@ -18,6 +19,8 @@ OC.L10N.register(
     "Host" : "Домаќин",
     "Share" : "Сподели",
     "Name" : "Име",
+    "Storage type" : "Тип на чување",
+    "Scope" : "опсег",
     "Enable encryption" : "Овозможи енкрипција",
     "External Storage" : "Надворешно складиште",
     "Folder name" : "Име на папка",
