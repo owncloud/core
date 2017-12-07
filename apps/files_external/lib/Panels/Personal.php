@@ -21,11 +21,11 @@
 namespace OCA\Files_External\Panels;
 
 use OC\Encryption\Manager;
+use OCP\Files\External\IStoragesBackendService;
 use OCP\Files\External\Service\IUserStoragesService;
+use OCP\IConfig;
 use OCP\Settings\ISettings;
 use OCP\Template;
-use \OCP\Files\External\IStoragesBackendService;
-use OCP\IConfig;
 
 class Personal implements ISettings {
 

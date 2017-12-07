@@ -25,7 +25,7 @@
 
 namespace OCA\Files_External\Tests\Storage;
 
-use \OCA\Files_External\Lib\Storage\SFTP_Key;
+use OCA\Files_External\Lib\Storage\SFTP_Key;
 
 /**
  * Class SFTP_KeyTest
