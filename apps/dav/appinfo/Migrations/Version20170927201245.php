@@ -21,9 +21,9 @@
 
 namespace OCA\DAV\Migrations;
 
-use OCP\Migration\ISchemaMigration;
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\DBAL\Types\Type;
+use OCP\Migration\ISchemaMigration;
 
 /*
  * Create dav_properties table that stores properties

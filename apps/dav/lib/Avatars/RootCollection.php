@@ -3,7 +3,6 @@
 namespace OCA\DAV\Avatars;
 
 use Sabre\DAVACL\AbstractPrincipalCollection;
-use Sabre\DAVACL\IPrincipal;
 
 class RootCollection extends AbstractPrincipalCollection {
 

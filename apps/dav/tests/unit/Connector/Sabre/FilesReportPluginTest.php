@@ -24,17 +24,16 @@
 
 namespace OCA\DAV\Tests\unit\Connector\Sabre;
 
+use OC\Files\View;
 use OCA\DAV\Connector\Sabre\FilesReportPlugin as FilesReportPluginImplementation;
 use OCA\DAV\Files\Xml\FilterRequest;
-use OCP\SystemTag\ISystemTagObjectMapper;
-use OC\Files\View;
 use OCP\Files\Folder;
-use OCP\IGroupManager;
-use OCP\SystemTag\ISystemTagManager;
-use OCP\ITags;
-use OCP\Files\FileInfo;
-use OCP\IRequest;
 use OCP\IConfig;
+use OCP\IGroupManager;
+use OCP\IRequest;
+use OCP\ITags;
+use OCP\SystemTag\ISystemTagManager;
+use OCP\SystemTag\ISystemTagObjectMapper;
 
 class FilesReportPluginTest extends \Test\TestCase {
 	/** @var \Sabre\DAV\Server|\PHPUnit_Framework_MockObject_MockObject */

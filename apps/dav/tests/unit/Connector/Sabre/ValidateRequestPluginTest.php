@@ -23,7 +23,6 @@ namespace OCA\DAV\Tests\unit\Connector\Sabre;
 
 use OCA\DAV\Connector\Sabre\ValidateRequestPlugin;
 use Test\TestCase;
-use OCP\IConfig;
 
 /**
  * Class ValidateRequestPluginTest

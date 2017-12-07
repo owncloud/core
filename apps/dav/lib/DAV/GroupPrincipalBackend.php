@@ -24,7 +24,7 @@ use OCP\IGroup;
 use OCP\IGroupManager;
 use OCP\IUser;
 use Sabre\DAV\Exception;
-use \Sabre\DAV\PropPatch;
+use Sabre\DAV\PropPatch;
 use Sabre\DAVACL\PrincipalBackend\BackendInterface;
 
 class GroupPrincipalBackend implements BackendInterface {

@@ -24,9 +24,9 @@
 
 namespace OCA\DAV\Tests\Unit\Connector\Sabre;
 
-use OCP\Files\ForbiddenException;
 use OC\Files\FileInfo;
 use OCA\DAV\Connector\Sabre\Directory;
+use OCP\Files\ForbiddenException;
 
 class TestDoubleFileView extends \OC\Files\View {
 

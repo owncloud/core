@@ -25,6 +25,7 @@
 namespace OCA\DAV\Tests\unit\Connector\Sabre;
 
 use OC\Files\FileInfo;
+use OC\Files\Filesystem;
 use OC\Files\Storage\Local;
 use OC\Files\View;
 use OCA\DAV\Connector\Sabre\Exception\FileLocked;
@@ -40,13 +41,12 @@ use OCP\Files\NotPermittedException;
 use OCP\Files\Storage;
 use OCP\Files\StorageNotAvailableException;
 use OCP\IConfig;
+use OCP\Lock\ILockingProvider;
 use OCP\Lock\LockedException;
 use OCP\Util;
 use Sabre\DAV\Exception;
 use Sabre\DAV\Exception\BadRequest;
 use Test\HookHelper;
-use OC\Files\Filesystem;
-use OCP\Lock\ILockingProvider;
 use Test\TestCase;
 
 /**
