@@ -242,9 +242,9 @@ class FilesPlugin extends ServerPlugin {
 					Request::USER_AGENT_ANDROID_MOBILE_CHROME,
 					Request::USER_AGENT_FREEBOX,
 				])) {
-				$response->addHeader('Content-Disposition', 'attachment; filename="' . rawurlencode($filename) . '"');
+				$response->setHeader('Content-Disposition', 'attachment; filename="' . rawurlencode($filename) . '"');
 			} else {
-				$response->addHeader('Content-Disposition', 'attachment; filename*=UTF-8\'\'' . rawurlencode($filename)
+				$response->setHeader('Content-Disposition', 'attachment; filename*=UTF-8\'\'' . rawurlencode($filename)
 													 . '; filename="' . rawurlencode($filename) . '"');
 			}
 		}
