@@ -151,7 +151,7 @@ class FilesPage extends FilesPageBasic {
 			);
 		}
 		$uploadField->attachFile(getenv("FILES_FOR_UPLOAD") . $name);
-		$this->waitForAjaxCallsToStartAndFinish($session);
+		$this->waitForAjaxCallsToStartAndFinish($session, 20000);
 		$this->waitForUploadProgressbarToFinish();
 	}
 
