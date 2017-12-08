@@ -13,6 +13,7 @@ use DateTime;
 use OC\L10N\Factory;
 use OC\L10N\L10N;
 use OCP\IUserSession;
+use OCP\Theme\IThemeService;
 use Test\TestCase;
 
 /**
@@ -29,9 +30,13 @@ class L10nTest extends TestCase {
 		$config = $this->createMock('OCP\IConfig');
 		/** @var \OCP\IRequest $request */
 		$request = $this->createMock('OCP\IRequest');
+		/** @var IThemeService $themeService */
+		$themeService = $this->getMockBuilder(IThemeService::class)
+			->disableOriginalConstructor()
+			->getMock();
 		/** @var IUserSession $userSession */
 		$userSession = $this->createMock('OCP\IUserSession');
-		return new Factory($config, $request, $userSession, \OC::$SERVERROOT);
+		return new Factory($config, $request, $themeService, $userSession, \OC::$SERVERROOT);
 	}
 
 	public function testGermanPluralTranslations() {
