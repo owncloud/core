@@ -70,7 +70,7 @@ class TempManagerTest extends \Test\TestCase {
 		$this->assertTrue(is_writable($file));
 
 		file_put_contents($file, 'bar');
-		$this->assertEquals('bar', file_get_contents($file));
+		$this->assertStringEqualsFile($file, 'bar');
 	}
 
 	public function testGetFolder() {
@@ -81,20 +81,20 @@ class TempManagerTest extends \Test\TestCase {
 		$this->assertTrue(is_writable($folder));
 
 		file_put_contents($folder . 'foo.txt', 'bar');
-		$this->assertEquals('bar', file_get_contents($folder . 'foo.txt'));
+		$this->assertStringEqualsFile($folder . 'foo.txt', 'bar');
 	}
 
 	public function testCleanFiles() {
 		$manager = $this->getManager();
 		$file1 = $manager->getTemporaryFile('txt');
 		$file2 = $manager->getTemporaryFile('txt');
-		$this->assertTrue(file_exists($file1));
-		$this->assertTrue(file_exists($file2));
+		$this->assertFileExists($file1);
+		$this->assertFileExists($file2);
 
 		$manager->clean();
 
-		$this->assertFalse(file_exists($file1));
-		$this->assertFalse(file_exists($file2));
+		$this->assertFileNotExists($file1);
+		$this->assertFileNotExists($file2);
 	}
 
 	public function testCleanFolder() {
@@ -103,17 +103,17 @@ class TempManagerTest extends \Test\TestCase {
 		$folder2 = $manager->getTemporaryFolder();
 		touch($folder1 . 'foo.txt');
 		touch($folder1 . 'bar.txt');
-		$this->assertTrue(file_exists($folder1));
-		$this->assertTrue(file_exists($folder2));
-		$this->assertTrue(file_exists($folder1 . 'foo.txt'));
-		$this->assertTrue(file_exists($folder1 . 'bar.txt'));
+		$this->assertFileExists($folder1);
+		$this->assertFileExists($folder2);
+		$this->assertFileExists($folder1 . 'foo.txt');
+		$this->assertFileExists($folder1 . 'bar.txt');
 
 		$manager->clean();
 
-		$this->assertFalse(file_exists($folder1));
-		$this->assertFalse(file_exists($folder2));
-		$this->assertFalse(file_exists($folder1 . 'foo.txt'));
-		$this->assertFalse(file_exists($folder1 . 'bar.txt'));
+		$this->assertFileNotExists($folder1);
+		$this->assertFileNotExists($folder2);
+		$this->assertFileNotExists($folder1 . 'foo.txt');
+		$this->assertFileNotExists($folder1 . 'bar.txt');
 	}
 
 	public function testCleanOld() {
@@ -131,10 +131,10 @@ class TempManagerTest extends \Test\TestCase {
 
 		$manager2 = $this->getManager();
 		$manager2->cleanOld();
-		$this->assertFalse(file_exists($oldFile));
-		$this->assertFalse(file_exists($folder));
-		$this->assertTrue(file_exists($nonOcFile));
-		$this->assertTrue(file_exists($newFile));
+		$this->assertFileNotExists($oldFile);
+		$this->assertFileNotExists($folder);
+		$this->assertFileExists($nonOcFile);
+		$this->assertFileExists($newFile);
 	}
 
 	public function testLogCantCreateFile() {

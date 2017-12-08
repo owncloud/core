@@ -140,7 +140,7 @@ class ManagerTest extends TestCase {
 	public function testGetInvalidProvider() {
 		$this->prepareProviders();
 
-		$this->assertSame(null, $this->manager->getProvider($this->user, 'nonexistent'));
+		$this->assertNull($this->manager->getProvider($this->user, 'nonexistent'));
 	}
 
 	public function testGetProviders() {
@@ -164,7 +164,7 @@ class ManagerTest extends TestCase {
 			->method('remove')
 			->with('two_factor_auth_uid');
 
-		$this->assertEquals(true, $this->manager->verifyChallenge('email', $this->user, $challenge));
+		$this->assertTrue($this->manager->verifyChallenge('email', $this->user, $challenge));
 	}
 
 	public function testVerifyChallengeInvalidProviderId() {
@@ -177,7 +177,7 @@ class ManagerTest extends TestCase {
 		$this->session->expects($this->never())
 			->method('remove');
 
-		$this->assertEquals(false, $this->manager->verifyChallenge('dontexist', $this->user, $challenge));
+		$this->assertFalse($this->manager->verifyChallenge('dontexist', $this->user, $challenge));
 	}
 
 	public function testVerifyInvalidChallenge() {
@@ -191,7 +191,7 @@ class ManagerTest extends TestCase {
 		$this->session->expects($this->never())
 			->method('remove');
 
-		$this->assertEquals(false, $this->manager->verifyChallenge('email', $this->user, $challenge));
+		$this->assertFalse($this->manager->verifyChallenge('email', $this->user, $challenge));
 	}
 
 	public function testNeedsSecondFactor() {
@@ -200,7 +200,7 @@ class ManagerTest extends TestCase {
 			->with('two_factor_auth_uid')
 			->will($this->returnValue(false));
 
-		$this->assertEquals(false, $this->manager->needsSecondFactor());
+		$this->assertFalse($this->manager->needsSecondFactor());
 	}
 
 	public function testPrepareTwoFactorLogin() {

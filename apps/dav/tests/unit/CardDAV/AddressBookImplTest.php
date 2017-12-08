@@ -122,8 +122,8 @@ class AddressBookImplTest extends TestCase {
 			)->willReturn('vCard');
 
 		$result = $addressBookImpl->search($pattern, $searchProperties, [], 10, 0);
-		$this->assertTrue((is_array($result)));
-		$this->assertSame(2, count($result));
+		$this->assertInternalType('array', $result);
+		$this->assertCount(2, $result);
 	}
 
 	/**

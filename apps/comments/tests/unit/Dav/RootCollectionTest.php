@@ -168,6 +168,6 @@ class RootCollectionTest extends \Test\TestCase {
 	}
 
 	public function testGetLastModified() {
-		$this->assertSame(null, $this->collection->getLastModified());
+		$this->assertNull($this->collection->getLastModified());
 	}
 }

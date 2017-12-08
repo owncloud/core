@@ -122,7 +122,7 @@ class CleanUpTest extends TestCase {
 			$result = $query->select('user')
 				->from($this->trashTable)
 				->execute()->fetchAll();
-			$this->assertSame(5, count($result));
+			$this->assertCount(5, $result);
 			foreach ($result as $r) {
 				$this->assertSame('user1', $r['user']);
 			}

@@ -100,13 +100,13 @@ class IntegrationTest extends TestCase {
 		$file->putContent('qwerty');
 
 		$listing = $folder->getDirectoryListing();
-		$this->assertEquals(1, count($listing));
+		$this->assertCount(1, $listing);
 		$this->assertEquals($file->getId(), $listing[0]->getId());
 		$this->assertEquals($file->getStorage(), $listing[0]->getStorage());
 
 
 		$rootListing = $this->root->getDirectoryListing();
-		$this->assertEquals(3, count($rootListing));
+		$this->assertCount(3, $rootListing);
 
 		$folder->move('/asd');
 		/**

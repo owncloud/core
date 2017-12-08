@@ -122,7 +122,7 @@ class UpdaterTest extends TestCase {
 		// trashbin should contain the local file but not the mount point
 		$rootView = new \OC\Files\View('/' . self::TEST_FILES_SHARING_API_USER2);
 		$trashContent = \OCA\Files_Trashbin\Helper::getTrashFiles('/', self::TEST_FILES_SHARING_API_USER2);
-		$this->assertSame(1, count($trashContent));
+		$this->assertCount(1, $trashContent);
 		$firstElement = reset($trashContent);
 		$timestamp = $firstElement['mtime'];
 		$this->assertTrue($rootView->file_exists('files_trashbin/files/localFolder.d' . $timestamp . '/localFile.txt'));

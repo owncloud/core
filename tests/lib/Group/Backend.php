@@ -130,7 +130,7 @@ abstract class Backend extends \Test\TestCase {
 		$this->backend->createGroup($name3);
 
 		$result = $this->backend->getGroups('bar');
-		$this->assertSame(2, count($result));
+		$this->assertCount(2, $result);
 	}
 
 	public function testSearchUsers() {
@@ -146,7 +146,7 @@ abstract class Backend extends \Test\TestCase {
 		$this->backend->addToGroup($name3, $group);
 
 		$result = $this->backend->usersInGroup($group, 'bar');
-		$this->assertSame(2, count($result));
+		$this->assertCount(2, $result);
 
 		$result = $this->backend->countUsersInGroup($group, 'bar');
 		$this->assertSame(2, $result);
