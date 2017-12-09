@@ -240,7 +240,7 @@ if [ "$BROWSER" == "firefox" ]
 then
 	#set screen resolution so that hopefully dragable elements will be visible
 	#FF gives problems if the destination element is not visible
-	EXTRA_CAPABILITIES='"browserVersion":"'$BROWSER_VERSION'","screenResolution":"1920x1080",'
+	EXTRA_CAPABILITIES='"screenResolution":"1920x1080",'
 	
 	#FF 47 needs a specific selenium version
 	if verlte "$BROWSER_VERSION" "47.0"
@@ -255,7 +255,7 @@ then
 	EXTRA_CAPABILITIES='"iedriverVersion": "3.4.0","requiresWindowFocus":true,"screenResolution":"1920x1080",'
 fi
 
-EXTRA_CAPABILITIES=$EXTRA_CAPABILITIES'"maxDuration":"3600"'
+EXTRA_CAPABILITIES=$EXTRA_CAPABILITIES'"browserVersion":"'$BROWSER_VERSION'","maxDuration":"3600"'
 
 #Set up personalized skeleton
 remote_occ $ADMIN_PASSWORD $OCC_URL "--no-warnings config:system:get skeletondirectory"
