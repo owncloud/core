@@ -114,6 +114,7 @@ class HelperStorageTest extends TestCase {
 	 * Test getting the storage info, including extra mount points
 	 */
 	function testGetStorageInfoIncludingExtStorage() {
+		$this->loginAsUser($this->user);
 		$homeStorage = new Temporary([]);
 		Filesystem::mount($homeStorage, [], '/' . $this->user . '/files');
 		$homeStorage->file_put_contents('test.txt', '01234');

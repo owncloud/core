@@ -246,24 +246,28 @@ class Server extends ServerContainer implements IServerContainer, IServiceLoader
 		$this->registerService('GroupManager', function (Server $c) {
 			$groupManager = new \OC\Group\Manager($this->getUserManager());
 			$groupManager->listen('\OC\Group', 'preCreate', function ($gid) {
-				\OC_Hook::emit('OC_Group', 'pre_createGroup', ['run' => true, 'gid' => $gid]);
+				$event = new GenericEvent(null, ['run' => true, 'gid' => $gid]);
+				\OC::$server->getEventDispatcher()->dispatch('\OC\Group\Manager::preCreate_createGroup', $event);
 			});
 			$groupManager->listen('\OC\Group', 'postCreate', function (\OC\Group\Group $gid) {
-				\OC_Hook::emit('OC_User', 'post_createGroup', ['gid' => $gid->getGID()]);
+				$event = new GenericEvent(null, ['gid' => $gid->getGID()]);
+				\OC::$server->getEventDispatcher()->dispatch('\OC\Group\Manager::postCreate_createGroup', $event);
 			});
 			$groupManager->listen('\OC\Group', 'preDelete', function (\OC\Group\Group $group) {
-				\OC_Hook::emit('OC_Group', 'pre_deleteGroup', ['run' => true, 'gid' => $group->getGID()]);
+				$event = new GenericEvent(null, ['run' => true, 'gid' => $group->getGID()]);
+				\OC::$server->getEventDispatcher()->dispatch('\OC\Group\Group::predelete_delete', $event);
 			});
 			$groupManager->listen('\OC\Group', 'postDelete', function (\OC\Group\Group $group) {
-				\OC_Hook::emit('OC_User', 'post_deleteGroup', ['gid' => $group->getGID()]);
+				$event = new GenericEvent(null, ['gid' => $group->getGID()]);
+				\OC::$server->getEventDispatcher()->dispatch('\OC\Group\Group::postdelete_delete', $event);
 			});
 			$groupManager->listen('\OC\Group', 'preAddUser', function (\OC\Group\Group $group, \OC\User\User $user) {
-				\OC_Hook::emit('OC_Group', 'pre_addToGroup', ['run' => true, 'uid' => $user->getUID(), 'gid' => $group->getGID()]);
+				$event = new GenericEvent(null, ['run' => true, 'uid' => $user->getUID(), 'gid' => $group->getGID()]);
+				\OC::$server->getEventDispatcher()->dispatch('\OC\Group\Group::preadduser_addUser', $event);
 			});
 			$groupManager->listen('\OC\Group', 'postAddUser', function (\OC\Group\Group $group, \OC\User\User $user) {
-				\OC_Hook::emit('OC_Group', 'post_addToGroup', ['uid' => $user->getUID(), 'gid' => $group->getGID()]);
-				//Minimal fix to keep it backward compatible TODO: clean up all the GroupManager hooks
-				\OC_Hook::emit('OC_User', 'post_addToGroup', ['uid' => $user->getUID(), 'gid' => $group->getGID()]);
+				$event = new GenericEvent(null, ['uid' => $user->getUID(), 'gid' => $group->getGID()]);
+				\OC::$server->getEventDispatcher()->dispatch('\OC\Group\Group::postadduser_addUser', $event);
 			});
 			return $groupManager;
 		});
@@ -302,42 +306,44 @@ class Server extends ServerContainer implements IServerContainer, IServiceLoader
 				\OC_Hook::emit('OC_User', 'pre_createUser', ['run' => true, 'uid' => $uid, 'password' => $password]);
 			});
 			$userSession->listen('\OC\User', 'postCreateUser', function ($user, $password) {
-				/** @var $user \OC\User\User */
-				\OC_Hook::emit('OC_User', 'post_createUser', ['uid' => $user->getUID(), 'password' => $password]);
+				$event = new GenericEvent(null, ['uid' => $user->getUID(), 'password' => $password]);
+				\OC::$server->getEventDispatcher()->dispatch('\OC\User\Manager::post_createUser', $event);
 			});
 			$userSession->listen('\OC\User', 'preDelete', function ($user) {
-				/** @var $user \OC\User\User */
-				\OC_Hook::emit('OC_User', 'pre_deleteUser', ['run' => true, 'uid' => $user->getUID()]);
+				$event = new GenericEvent(null, ['run' => true, 'uid' => $user->getUID()]);
+				\OC::$server->getEventDispatcher()->dispatch('\OC\User\User::pre_delete', $event);
 			});
 			$userSession->listen('\OC\User', 'postDelete', function ($user) {
-				/** @var $user \OC\User\User */
-				\OC_Hook::emit('OC_User', 'post_deleteUser', ['uid' => $user->getUID()]);
+				$event = new GenericEvent(null, ['uid' => $user->getUID()]);
+				\OC::$server->getEventDispatcher()->dispatch('\OC\User\User::post_delete', $event);
 			});
 			$userSession->listen('\OC\User', 'preSetPassword', function ($user, $password, $recoveryPassword) {
 				/** @var $user \OC\User\User */
 				\OC_Hook::emit('OC_User', 'pre_setPassword', ['run' => true, 'uid' => $user->getUID(), 'password' => $password, 'recoveryPassword' => $recoveryPassword]);
 			});
 			$userSession->listen('\OC\User', 'postSetPassword', function ($user, $password, $recoveryPassword) {
-				/** @var $user \OC\User\User */
-				\OC_Hook::emit('OC_User', 'post_setPassword', ['run' => true, 'uid' => $user->getUID(), 'password' => $password, 'recoveryPassword' => $recoveryPassword]);
+				$event = new GenericEvent(null, ['run' => true, 'user' => $user ,'uid' => $user->getUID(), 'password' => $password, 'recoveryPassword' => $recoveryPassword]);
+				\OC::$server->getEventDispatcher()->dispatch('\OC\User\User::post_setPassword', $event);
 			});
 			$userSession->listen('\OC\User', 'preLogin', function ($uid, $password) {
-				\OC_Hook::emit('OC_User', 'pre_login', ['run' => true, 'uid' => $uid, 'password' => $password]);
+				$event = new GenericEvent(null, ['run' => true, 'uid' => $uid, 'password' => $password]);
+				\OC::$server->getEventDispatcher()->dispatch('\OC\User\Session::pre_login', $event);
 			});
 			$userSession->listen('\OC\User', 'postLogin', function ($user, $password) {
-				/** @var $user \OC\User\User */
-				\OC_Hook::emit('OC_User', 'post_login', ['run' => true, 'uid' => $user->getUID(), 'password' => $password]);
+				$event = new GenericEvent(null, ['run' => true, 'uid' => $user->getUID(), 'password' => $password]);
+				\OC::$server->getEventDispatcher()->dispatch('\OC\User\Session::post_login', $event);
 			});
 			$userSession->listen('\OC\User', 'preLogout', function () {
 				$event = new GenericEvent(null, []);
 				\OC::$server->getEventDispatcher()->dispatch('\OC\User\Session::pre_logout', $event);
 			});
 			$userSession->listen('\OC\User', 'logout', function () {
-				\OC_Hook::emit('OC_User', 'logout', []);
+				$event = new GenericEvent(null);
+				\OC::$server->getEventDispatcher()->dispatch('\OC\User\Session::logout', $event);
 			});
 			$userSession->listen('\OC\User', 'changeUser', function ($user, $feature, $value) {
-				/** @var $user \OC\User\User */
-				\OC_Hook::emit('OC_User', 'changeUser', ['run' => true, 'user' => $user, 'feature' => $feature, 'value' => $value]);
+				$event = new GenericEvent(null, ['run' => true, 'user' => $user, 'feature' => $feature, 'value' => $value]);
+				\OC::$server->getEventDispatcher()->dispatch('\OC\User\User::triggerChangeUser',$event);
 			});
 			return $userSession;
 		});

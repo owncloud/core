@@ -160,6 +160,7 @@ class HookConnectorTest extends TestCase {
 	 * @dataProvider viewToNodeProviderCopyRename
 	 */
 	public function testViewToNodeCopyRename(callable $operation, $expectedHook) {
+		$this->loginAsUser($this->userId);
 		$connector = new \OC\Files\Node\HookConnector($this->root, $this->view);
 		$connector->viewToNode();
 		$hookCalled = false;

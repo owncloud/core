@@ -17,6 +17,7 @@ use OC\Files\View;
 use OCP\Files\FileInfo;
 use OCP\Lock\ILockingProvider;
 use OCP\Util;
+use Symfony\Component\EventDispatcher\GenericEvent;
 use Test\TestCase;
 
 class TemporaryNoTouch extends Temporary {
@@ -444,7 +445,14 @@ class ViewTest extends TestCase {
 		Filesystem::mount($storage2, [], '/substorage');
 
 		$rootView = new View('');
+		$calledEvent = [];
+		\OC::$server->getEventDispatcher()->addListener('\OC\Filesystem::create', function ($event) use (&$calledEvent){
+			$calledEvent[] = '\OC\Filesystem::create';
+			array_push($calledEvent, $event);
+		});
 		$rootView->mkdir('substorage/emptyfolder');
+		$this->assertInstanceOf(GenericEvent::class, $calledEvent[1]);
+		$this->assertArrayHasKey('path', $calledEvent[1]);
 		$rootView->copy('substorage', 'anotherfolder');
 		$this->assertTrue($rootView->is_dir('/anotherfolder'));
 		$this->assertTrue($rootView->is_dir('/substorage'));
@@ -486,6 +494,7 @@ class ViewTest extends TestCase {
 	}
 
 	function moveBetweenStorages($storage1, $storage2) {
+		$this->loginAsUser('test');
 		Filesystem::mount($storage1, [], '/');
 		Filesystem::mount($storage2, [], '/substorage');
 
@@ -1108,22 +1117,24 @@ class ViewTest extends TestCase {
 		$storage1->mkdir('foo');
 		$storage1->file_put_contents('foo.txt', 'asd');
 		$storage1->file_put_contents('foo/bar.txt', 'asd');
-		Filesystem::mount($storage1, [], '/test/');
-		Filesystem::mount($storage2, [], '/test/sub/storage');
+		$this->loginAsUser('test');
+		Filesystem::mount($storage1, [], '/one/');
+		Filesystem::mount($storage2, [], '/one/sub/storage');
 
 		$view = new View('');
 		$time = time() - 200;
-		$view->touch('/test/foo.txt', $time);
-		$view->touch('/test/foo', $time);
-		$view->touch('/test/foo/bar.txt', $time);
+		$view->touch('foo.txt', $time);
+		$view->touch('/one/foo', $time);
+		$view->touch('/one/foo/bar.txt', $time);
 
-		$view->rename('/test/foo.txt', '/test/sub/storage/foo.txt');
+		$this->assertEquals('asd', $view->file_get_contents('one/foo.txt'));
+		$view->rename('one/foo.txt', 'one/sub/storage/foo.txt');
 
-		$this->assertEquals($time, $view->filemtime('/test/sub/storage/foo.txt'));
+		$this->assertEquals($time + 200, $view->filemtime('one/sub/storage/foo.txt'));
 
-		$view->rename('/test/foo', '/test/sub/storage/foo');
+		$view->rename('one/foo', 'one/sub/storage/foo');
 
-		$this->assertEquals($time, $view->filemtime('/test/sub/storage/foo/bar.txt'));
+		$this->assertEquals($time, $view->filemtime('one/sub/storage/foo/bar.txt'));
 	}
 
 	public function testRenameFailDeleteTargetKeepSource() {
@@ -1158,11 +1169,12 @@ class ViewTest extends TestCase {
 		$storage2->file_put_contents('existing.txt', '0123');
 		$storage1->getScanner()->scan('');
 		$storage2->getScanner()->scan('');
+		$this->loginAsUser('test');
 		Filesystem::mount($storage1, [], '/test/');
 		Filesystem::mount($storage2, [], '/test/sub/storage');
 
 		// move file
-		$view = new View('');
+		$view = new View('test');
 		$this->assertTrue($storage1->file_exists('foo.txt'));
 		$this->assertFalse($storage2->file_exists('foo.txt'));
 		$this->assertFalse($view->$operation('/test/foo.txt', '/test/sub/storage/foo.txt'));
@@ -1172,8 +1184,8 @@ class ViewTest extends TestCase {
 
 		// if target exists, it will be deleted too
 		$this->assertFalse($view->$operation('/test/foo.txt', '/test/sub/storage/existing.txt'));
-		$this->assertFalse($storage2->file_exists('existing.txt'));
-		$this->assertFalse($storage2->getCache()->get('existing.txt'));
+		$this->assertTrue($storage2->file_exists('existing.txt'));
+		$this->assertFalse($storage2->getCache()->get('existing.txt')['encrypted']);
 		$this->assertTrue($storage1->file_exists('foo.txt'));
 
 		// move folder
@@ -1232,12 +1244,14 @@ class ViewTest extends TestCase {
 		$scanner = $storage->getScanner();
 		$storage->mkdir('sub');
 		$storage->mkdir('foo');
-		$storage->file_put_contents('foo.txt', 'asd');
+		$storage->file_put_contents('foo.txt', 'asdfgh');
 		$storage->file_put_contents('foo/bar.txt', 'asd');
 		$scanner->scan('');
-		Filesystem::mount($storage, [], '/test/');
+		$this->loginAsUser('test');
+		Filesystem::mount($storage, [], '/one/');
 		$view = new View('');
-		$this->assertTrue($view->rename('/test/foo.txt', '/test/foo/bar.txt'));
+		$this->assertTrue($view->rename('one/foo.txt', 'one/foo/bar.txt'));
+		$this->assertEquals('asdfgh', $view->file_get_contents('one/foo/bar.txt'));
 	}
 
 	public function testSetMountOptionsInStorage() {
@@ -1845,6 +1859,7 @@ class ViewTest extends TestCase {
 	 * This code path uses $storage->fopen instead
 	 */
 	public function testLockFilePutContentWithStream() {
+		$this->loginAsUser($this->user);
 		$view = new View('/' . $this->user . '/files/');
 
 		$path = 'test_file_put_contents.txt';
@@ -1870,6 +1885,7 @@ class ViewTest extends TestCase {
 		$this->assertNull($this->getFileLockType($view, $path), 'File not locked before operation');
 
 		// do operation
+		$view->file_put_contents($path, "foo");
 		$view->file_put_contents($path, fopen('php://temp', 'r+'));
 
 		$this->assertEquals(ILockingProvider::LOCK_SHARED, $lockTypePre, 'File locked properly during pre-hook');
@@ -2039,6 +2055,7 @@ class ViewTest extends TestCase {
 		Filesystem::mount($storage, [], $this->user . '/');
 		$storage->mkdir('files');
 		$view->file_put_contents($sourcePath, 'meh');
+		$view->file_put_contents($targetPath, 'foo');
 
 		$storage->expects($this->once())
 			->method($operation)
@@ -2057,18 +2074,40 @@ class ViewTest extends TestCase {
 		$this->assertNull($this->getFileLockType($view, $sourcePath), 'Source file not locked before operation');
 		$this->assertNull($this->getFileLockType($view, $targetPath), 'Target file not locked before operation');
 
+		$calledEventCopy = [];
+		\OC::$server->getEventDispatcher()->addListener('\OC\Filesystem::copy', function ($event) use (&$calledEventCopy) {
+			$calledEventCopy[] = '\OC\Filesystem::copy';
+			array_push($calledEventCopy, $event);
+		});
+		$calledEventRename = [];
+		\OC::$server->getEventDispatcher()->addListener('\OC\Filesystem::rename', function ($event) use (&$calledEventRename) {
+			$calledEventRename[] = '\OC\Filesystem::rename';
+			array_push($calledEventRename, $event);
+		});
 		$view->$operation($sourcePath, $targetPath);
 
-		$this->assertEquals(ILockingProvider::LOCK_SHARED, $lockTypeSourcePre, 'Source file locked properly during pre-hook');
+		$this->assertNull($lockTypeSourcePre, 'Source file locked properly during pre-hook');
 		$this->assertEquals($expectedLockTypeSourceDuring, $lockTypeSourceDuring, 'Source file locked properly during operation');
-		$this->assertEquals(ILockingProvider::LOCK_SHARED, $lockTypeSourcePost, 'Source file locked properly during post-hook');
+		$this->assertNull($lockTypeSourcePost, 'Source file locked properly during post-hook');
 
-		$this->assertEquals(ILockingProvider::LOCK_SHARED, $lockTypeTargetPre, 'Target file locked properly during pre-hook');
+		$this->assertNull($lockTypeTargetPre, 'Target file locked properly during pre-hook');
 		$this->assertEquals(ILockingProvider::LOCK_EXCLUSIVE, $lockTypeTargetDuring, 'Target file locked properly during operation');
-		$this->assertEquals(ILockingProvider::LOCK_SHARED, $lockTypeTargetPost, 'Target file locked properly during post-hook');
+		$this->assertNull($lockTypeTargetPost, 'Target file locked properly during post-hook');
 
 		$this->assertNull($this->getFileLockType($view, $sourcePath), 'Source file not locked after operation');
 		$this->assertNull($this->getFileLockType($view, $targetPath), 'Target file not locked after operation');
+
+		if (count($calledEventCopy) > 0) {
+			$this->assertEquals('\OC\Filesystem::copy', $calledEventCopy[0]);
+			$this->assertInstanceOf(GenericEvent::class, $calledEventCopy[1]);
+			$this->assertArrayHasKey('oldpath', $calledEventCopy[1]);
+		}
+
+		if (count($calledEventRename) > 0) {
+			$this->assertEquals('\OC\Filesystem::rename', $calledEventRename[0]);
+			$this->assertInstanceOf(GenericEvent::class, $calledEventRename[1]);
+			$this->assertArrayHasKey('oldpath', $calledEventRename[1]);
+		}
 	}
 
 	/**
@@ -2196,6 +2235,7 @@ class ViewTest extends TestCase {
 	 * the operation
 	 */
 	public function testLockFileRenameCrossStorage($viewOperation, $storageOperation, $expectedLockTypeSourceDuring) {
+		$this->loginAsUser($this->user);
 		$view = new View('/' . $this->user . '/files/');
 
 		$storage = $this->getMockBuilder('\OC\Files\Storage\Temporary')
@@ -2216,6 +2256,7 @@ class ViewTest extends TestCase {
 		Filesystem::mount($storage2, [], $this->user . '/files/substorage');
 		$storage->mkdir('files');
 		$view->file_put_contents($sourcePath, 'meh');
+		$view->file_put_contents($targetPath, 'foo');
 
 		$storage->expects($this->never())
 			->method($storageOperation);
@@ -2238,13 +2279,13 @@ class ViewTest extends TestCase {
 
 		$view->$viewOperation($sourcePath, $targetPath);
 
-		$this->assertEquals(ILockingProvider::LOCK_SHARED, $lockTypeSourcePre, 'Source file locked properly during pre-hook');
+		$this->assertNull($lockTypeSourcePre, 'Source file locked properly during pre-hook');
 		$this->assertEquals($expectedLockTypeSourceDuring, $lockTypeSourceDuring, 'Source file locked properly during operation');
-		$this->assertEquals(ILockingProvider::LOCK_SHARED, $lockTypeSourcePost, 'Source file locked properly during post-hook');
+		$this->assertNull($lockTypeSourcePost, 'Source file locked properly during post-hook');
 
-		$this->assertEquals(ILockingProvider::LOCK_SHARED, $lockTypeTargetPre, 'Target file locked properly during pre-hook');
+		$this->assertNull($lockTypeTargetPre, 'Target file locked properly during pre-hook');
 		$this->assertEquals(ILockingProvider::LOCK_EXCLUSIVE, $lockTypeTargetDuring, 'Target file locked properly during operation');
-		$this->assertEquals(ILockingProvider::LOCK_SHARED, $lockTypeTargetPost, 'Target file locked properly during post-hook');
+		$this->assertNull($lockTypeTargetPost, 'Target file locked properly during post-hook');
 
 		$this->assertNull($this->getFileLockType($view, $sourcePath), 'Source file not locked after operation');
 		$this->assertNull($this->getFileLockType($view, $targetPath), 'Target file not locked after operation');
@@ -2294,13 +2335,13 @@ class ViewTest extends TestCase {
 
 		$view->rename($sourcePath, $targetPath);
 
-		$this->assertEquals(ILockingProvider::LOCK_SHARED, $lockTypeSourcePre, 'Source path locked properly during pre-hook');
+		$this->assertNull($lockTypeSourcePre, 'Source path locked properly during pre-hook');
 		$this->assertEquals(ILockingProvider::LOCK_EXCLUSIVE, $lockTypeSourceDuring, 'Source path locked properly during operation');
-		$this->assertEquals(ILockingProvider::LOCK_SHARED, $lockTypeSourcePost, 'Source path locked properly during post-hook');
+		$this->assertNull($lockTypeSourcePost, 'Source path locked properly during post-hook');
 
-		$this->assertEquals(ILockingProvider::LOCK_SHARED, $lockTypeTargetPre, 'Target path locked properly during pre-hook');
+		$this->assertNull($lockTypeTargetPre, 'Target path locked properly during pre-hook');
 		$this->assertEquals(ILockingProvider::LOCK_EXCLUSIVE, $lockTypeTargetDuring, 'Target path locked properly during operation');
-		$this->assertEquals(ILockingProvider::LOCK_SHARED, $lockTypeTargetPost, 'Target path locked properly during post-hook');
+		$this->assertNull($lockTypeTargetPost, 'Target path locked properly during post-hook');
 
 		$this->assertNull($lockTypeSharedRootPre, 'Shared storage root not locked during pre-hook');
 		$this->assertNull($lockTypeSharedRootDuring, 'Shared storage root not locked during move');

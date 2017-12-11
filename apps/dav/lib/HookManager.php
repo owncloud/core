@@ -69,22 +69,6 @@ class HookManager {
 	}
 
 	public function setup() {
-		Util::connectHook('OC_User',
-			'post_createUser',
-			$this,
-			'postCreateUser');
-		Util::connectHook('OC_User',
-			'pre_deleteUser',
-			$this,
-			'preDeleteUser');
-		Util::connectHook('OC_User',
-			'post_deleteUser',
-			$this,
-			'postDeleteUser');
-		Util::connectHook('OC_User',
-			'changeUser',
-			$this,
-			'changeUser');
 	}
 
 	public function postCreateUser($params) {

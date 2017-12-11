@@ -47,6 +47,34 @@ $eventDispatcher->addListener('OCP\Federation\TrustedServerEvent::remove',
 	}
 );
 
+$eventDispatcher->addListener('\OC\User\Manager::post_createUser',
+	function(GenericEvent $event) use ($app) {
+		$hookManager = $app->getContainer()->query(\OCA\DAV\HookManager::class);
+		$hookManager->postCreateUser($event);
+	}
+);
+
+$eventDispatcher->addListener('\OC\User\User::pre_delete',
+	function(GenericEvent $event) use ($app) {
+		$hookManager = $app->getContainer()->query(\OCA\DAV\HookManager::class);
+		$hookManager->preDeleteUser($event);
+	}
+);
+
+$eventDispatcher->addListener('\OC\User\User::post_delete',
+	function(GenericEvent $event) use ($app) {
+		$hookManager = $app->getContainer()->query(\OCA\DAV\HookManager::class);
+		$hookManager->postDeleteUser($event);
+	}
+);
+
+$eventDispatcher->addListener('\OC\User\User::triggerChangeUser',
+	function(GenericEvent $event) use ($app) {
+		$hookManager = $app->getContainer()->query(\OCA\DAV\HookManager::class);
+		$hookManager->changeUser($event);
+	}
+);
+
 $cm = \OC::$server->getContactsManager();
 $cm->register(function() use ($cm, $app) {
 	$user = \OC::$server->getUserSession()->getUser();
