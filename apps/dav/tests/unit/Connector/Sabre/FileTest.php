@@ -349,6 +349,15 @@ class FileTest extends TestCase {
 		$this->assertNotEmpty($this->doPut('/foo.txt'));
 	}
 
+	/**
+	 * Test putting a file with long name. The example name
+	 * used for testing is 249 character long name, including
+	 * '.txt'.
+	 */
+	public function testPutLongFileName() {
+		$this->assertNotEmpty($this->doPut('/hhhhhhhhhhhhhhhhhhhhhhhhheeeeeeeeeeeeeeeeeeeeeeeeeeelllllllllllllllllllllllllllllllllllloooooooooooooooooooooooooooooooooooooooooooohhhhhhhhhhhhhhhhhhhhhhhhhoooooooooooooooooooooooooooowwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwaaaaaaaaaarrrrrrrrreyoubro.txt'));
+	}
+
 	public function legalMtimeProvider() {
 		return [
 			"string" => [
