@@ -54,6 +54,13 @@ use OCA\DAV\Connector\Sabre\TagsPlugin;
 use OCA\DAV\AppInfo\PluginManager;
 use OCA\DAV\Connector\Sabre\MaintenancePlugin;
 use OCA\DAV\Connector\Sabre\ValidateRequestPlugin;
+use Sabre\HTTP\ResponseInterface;
+use Sabre\HTTP\RequestInterface;
+use OCP\Files\Folder;
+use OCP\IUserSession;
+use Sabre\DAV\Exception\NotFound;
+use Sabre\DAV\Exception\MethodNotAllowed;
+use OCP\Files\NotFoundException;
 
 class Server {
 
@@ -163,12 +170,19 @@ class Server {
 		}
 
 		// wait with registering these until auth is handled and the filesystem is setup
-		$this->server->on('beforeMethod', function () use ($root) {
+		$this->server->on('beforeMethod', function (RequestInterface $request, ResponseInterface $response) use ($root) {
 			// custom properties plugin must be the last one
 			$userSession = \OC::$server->getUserSession();
 			$user = $userSession->getUser();
 			if (!is_null($user)) {
 				$view = \OC\Files\Filesystem::getView();
+
+				// TODO: switch to LazyUserFolder
+				$userFolder = \OC::$server->getUserFolder();
+				if ($this->handleRedirectFileId($request, $response, $userSession, $userFolder) === false) {
+					return false;
+				}
+
 				$this->server->addPlugin(
 					new FilesPlugin(
 						$this->server->tree,
@@ -213,8 +227,6 @@ class Server {
 						$this->server->tree, \OC::$server->getTagManager()
 					)
 				);
-				// TODO: switch to LazyUserFolder
-				$userFolder = \OC::$server->getUserFolder();
 				$this->server->addPlugin(new SharesPlugin(
 					$this->server->tree,
 					$userSession,
@@ -250,6 +262,45 @@ class Server {
 				$root->addChild($appCollection);
 			}
 		});
+	}
+
+	private function handleRedirectFileId(RequestInterface $request, ResponseInterface $response, IUserSession $userSession, Folder $userFolder) {
+		$sections = explode('/', $request->getPath());
+		if (count($sections) < 3 || $sections[0] !== 'meta' || $sections[2] !== 'link') {
+			return;
+		}
+
+		if (count($sections) > 3) {
+			// trying to access sub-entry of link...
+			throw new NotFound();
+		}
+
+		$fileId = $sections[1];
+
+		$results = $userFolder->getById($fileId);
+		if (empty($results)) {
+			throw new NotFound('File with id ' . $fileId . ' not found');
+		}
+
+		$node = $results[0];
+		$nodePath = trim($userFolder->getRelativePath($node->getPath()), '/');
+
+		$nodePath = implode(
+			'/', array_map(
+				rawurlencode,
+				explode('/', $nodePath)
+			)
+		);
+
+		// redirect
+		$davPath = rtrim($request->getBaseUrl(), '/') . '/files/' . rawurlencode($userSession->getUser()->getUid()) . '/' . $nodePath;
+		$response->setStatus(302);
+		$response->setHeader('Location', $davPath);
+		$response->setHeader('Redirect-ref', 'URI');
+
+		$this->server->sapi->sendResponse($response);
+
+		return false;
 	}
 
 	public function exec() {
