@@ -6,6 +6,7 @@
  * @author Morris Jobke <hey@morrisjobke.de>
  * @author Robin Appelman <icewind@owncloud.com>
  * @author Thomas Müller <thomas.mueller@tmit.eu>
+ * @author Tom Needham <tom@owncloud.com>
  *
  * @copyright Copyright (c) 2017, ownCloud GmbH
  * @license AGPL-3.0
@@ -25,6 +26,10 @@
  */
 
 namespace OC\DB;
+
+use Doctrine\DBAL\Exception\DriverException;
+use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
+use Doctrine\DBAL\Platforms\OraclePlatform;
 
 /**
  * This handles the way we use to write queries, into something that can be
@@ -109,7 +114,113 @@ class Adapter {
 		}
 		$query = substr($query, 0, strlen($query) - 5);
 		$query .= ' HAVING COUNT(*) = 0';
-
 		return $this->conn->executeUpdate($query, $inserts);
 	}
+
+	/**
+	 * Inserts, or updates a row into the database. Returns the inserted or updated rows
+	 * @param $table string table name including **PREFIX**
+	 * @param $input array the key=>value pairs to insert into the db row
+	 * @param $compare array columns that should be compared to look for existing arrays
+	 * @return int the number of rows affected by the operation
+	 * @throws DriverException|\RuntimeException
+	 */
+	public function upsert($table, $input, $compare) {
+
+		$this->conn->beginTransaction();
+		$done = false;
+
+		if (empty($compare)) {
+			$compare = array_keys($input);
+		}
+
+		// Construct the update query
+		$qbu = $this->conn->getQueryBuilder();
+		$qbu->update($table);
+		foreach($input as $col => $val) {
+			$qbu->set($col, $qbu->createParameter($col))
+			->setParameter($col, $val);
+		}
+		foreach($compare as $key) {
+			if (is_null($input[$key]) || ($input[$key] === '' && $this->conn->getDatabasePlatform() instanceof OraclePlatform)) {
+				$qbu->andWhere($qbu->expr()->isNull($key));
+			} else {
+				if($this->conn->getDatabasePlatform() instanceof OraclePlatform) {
+					$qbu->andWhere(
+						$qbu->expr()->eq(
+							// needs to cast to char in order to compare with char
+							$qbu->createFunction('to_char(`'.$key.'`)'), // TODO does this handle empty strings on oracle correclty
+							$qbu->expr()->literal($input[$key])));
+				} else {
+					$qbu->andWhere(
+						$qbu->expr()->eq(
+							$key,
+							$qbu->expr()->literal($input[$key])));
+				}
+			}
+		}
+
+		// Construct the insert query
+		$qbi = $this->conn->getQueryBuilder();
+		$qbi->insert($table);
+		foreach($input as $c => $v) {
+			$qbi->setValue($c, $qbi->createParameter($c))
+				->setParameter($c, $v);
+		}
+
+		$rows = 0;
+		$count = 0;
+		// Attempt 5 times before failing the upsert
+		$maxTry = 5;
+
+		while (!$done && $count < $maxTry) {
+			// Try to update
+
+			try {
+				// Try to update
+				$rows = $qbu->execute();
+			} catch (DriverException $e) {
+				// Skip deadlock and retry
+				// @TODO when we update to DBAL 2.6 we can use DeadlockExceptions here
+				if ($e->getErrorCode() == 1213) {
+					$count++;
+					continue;
+				} else {
+					// We should catch other exceptions up the stack
+					$this->conn->rollBack();
+					throw $e;
+				}
+			}
+			if ($rows > 0) {
+				// We altered some rows, return
+				$done = true;
+			} else {
+				// Try the insert
+				$this->conn->beginTransaction();
+				try {
+					// Execute the insert query
+					$rows = $qbi->execute();
+					$done = $rows > 0;
+				} catch (UniqueConstraintViolationException $e) {
+					// Catch the unique violation and try the loop again
+					$count++;
+				}
+				// Other exceptions are not caught, they should be caught up the stack
+				$this->conn->commit();
+			}
+		}
+
+		// Pass through failures correctly
+		if ($count === $maxTry) {
+			$params = implode(',', $input);
+			$updateQuery = $qbu->getSQL();
+			$insertQuery = $qbi->getSQL();
+			throw new \RuntimeException("DB upsert failed after $count attempts. UpdateQuery: $updateQuery InsertQuery: $insertQuery");
+		}
+
+		$this->conn->commit();
+		return $rows;
+
+	}
+
 }

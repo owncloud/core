@@ -287,4 +287,5 @@ interface IDBConnection {
 	 * @since 10.0
 	 */
 	public function allows4ByteCharacters();
+
 }
