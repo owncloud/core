@@ -137,7 +137,7 @@ script('settings', 'panels/setupchecks');
 	?>
 	</ul>
 
-	<div id="postsetupchecks" data-cli-url="<?php p($_['cliUrl']) ?>" data-check-wellknown="<?php if($_['checkForWorkingWellKnownSetup']) { p('true'); } else { p('false'); } ?>">
+	<div id="postsetupchecks" data-cli-url="<?php p($_['cliUrl']) ?>" data-absolute-url="<?php p($_['absoluteUrl']) ?>" data-check-wellknown="<?php if($_['checkForWorkingWellKnownSetup']) { p('true'); } else { p('false'); } ?>">
 		<div class="loading"></div>
 		<ul class="errors hidden"></ul>
 		<ul class="warnings hidden"></ul>

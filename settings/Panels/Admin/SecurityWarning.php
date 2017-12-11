@@ -122,6 +122,7 @@ class SecurityWarning implements ISettings {
 		$template->assign('checkForWorkingWellKnownSetup', $this->config->getSystemValue('check_for_working_wellknown_setup', true));
 		$cliUrl = rtrim($this->config->getSystemValue('overwrite.cli.url'), '/');
 		$template->assign('cliUrl', $cliUrl);
+		$template->assign('absoluteUrl', $this->urlGenerator->getAbsoluteURL($this->urlGenerator->linkTo('', 'status.php')));
 		return $template;
 	}
 

@@ -318,6 +318,28 @@
 			}).then(afterCall, afterCall);
 
 			return deferred.promise();
+		},
+
+		checkAbsoluteUrl: function(url) {
+			var deferred = $.Deferred();
+			var afterCall = function(result, status) {
+				var messages = [];
+				if (status === 'error' || _.isUndefined(result.installed)) {
+					messages.push({
+						msg: t('core', 'Please check the "overwrite" settings in config.php as it is used to create absolute URLs accessible from the outside as it will be used in emails, notificactions, etc'),
+						type: OC.SetupChecks.MESSAGE_TYPE_ERROR
+					});
+				}
+				deferred.resolve(messages);
+			};
+
+			$.ajax({
+				type: 'GET',
+				url: url,
+				allowAuthErrors: true
+			}).then(afterCall, afterCall);
+
+			return deferred.promise();
 		}
 	};
 })();
