@@ -44,5 +44,11 @@ fi
 ./occ app:enable federation
 ./occ app:enable federatedfilesharing
 
+if [[ "${DB_TYPE}" == "none" || "${DB_TYPE}" == "sqlite" ]]; then
+  GROUP=""
+else
+  GROUP="--group DB"
+fi
+
 exec phpdbg -d memory_limit=4096M -rr ./lib/composer/bin/phpunit --configuration tests/phpunit-autotest.xml ${GROUP} --coverage-clover tests/autotest-clover-${DB_TYPE}.xml
 
