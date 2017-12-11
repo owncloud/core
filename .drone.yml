@@ -225,9 +225,9 @@ matrix:
     #   TEST_SUITE: phpunit
 
     # PHP 7.2
-    #- PHP_VERSION: 7.2
-    #  DB_TYPE: sqlite
-    #  TEST_SUITE: phpunit
+    - PHP_VERSION: 7.2
+      DB_TYPE: sqlite
+      TEST_SUITE: phpunit
     #- PHP_VERSION: 7.2
     #  DB_TYPE: mariadb
     #  TEST_SUITE: phpunit
