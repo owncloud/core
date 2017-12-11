@@ -44,13 +44,24 @@ class CorsPlugin extends \Sabre\DAV\ServerPlugin {
 	private $userSession;
 
 	/**
+	 * @var string[]
+	 */
+	private $extraHeaders = null;
+
+	/**
 	 * @param \OCP\IUserSession $userSession
 	 */
 	public function __construct(\OCP\IUserSession $userSession) {
 		$this->userSession = $userSession;
-		$this->extraHeaders['Access-Control-Allow-Headers'] = ["X-OC-Mtime", "OC-Checksum", "OC-Total-Length", "Depth", "Destination", "Overwrite"];
-		// TODO: use $this->server->getAllowedMethods($request->getPath()) in the right location
-		$this->extraHeaders['Access-Control-Allow-Methods'] = ["MOVE", "COPY"];
+	}
+
+	private function getExtraHeaders(RequestInterface $request) {
+		if ($this->extraHeaders === null) {
+			// TODO: design a way to have plugins provide these
+			$this->extraHeaders['Access-Control-Allow-Headers'] = ["X-OC-Mtime", "OC-Checksum", "OC-Total-Length", "Depth", "Destination", "Overwrite"];
+			$this->extraHeaders['Access-Control-Allow-Methods'] = $this->server->getAllowedMethods($request->getPath());
+		}
+		return $this->extraHeaders;
 	}
 
 	/**
@@ -85,7 +96,7 @@ class CorsPlugin extends \Sabre\DAV\ServerPlugin {
 		if ($request->getHeader('origin') !== null && !is_null($this->userSession->getUser())) {
 			$requesterDomain = $request->getHeader('origin');
 			$userId = $this->userSession->getUser()->getUID();
-			$response = \OC_Response::setCorsHeaders($userId, $requesterDomain, $response, null, $this->extraHeaders);
+			$response = \OC_Response::setCorsHeaders($userId, $requesterDomain, $response, null, $this->getExtraHeaders($request));
 		}
 	}
 
@@ -102,7 +113,7 @@ class CorsPlugin extends \Sabre\DAV\ServerPlugin {
 		if ($authorization === null || $authorization === '') {
 			// Set the proper response
 			$response->setStatus(200);
-			$response = \OC_Response::setOptionsRequestHeaders($response, $this->extraHeaders);
+			$response = \OC_Response::setOptionsRequestHeaders($response, $this->getExtraHeaders($request));
 
 			// Since All OPTIONS requests are unauthorized, we will have to return false from here
 			// If we don't return false, due to no authorization, a 401-Unauthorized will be thrown
