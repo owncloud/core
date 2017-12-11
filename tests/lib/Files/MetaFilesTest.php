@@ -31,6 +31,7 @@ use OC\Files\Node\File;
 use OC\Files\View;
 use OCA\Files_Versions\Hooks;
 use OCP\Files\Folder;
+use OCP\IImage;
 use Test\TestCase;
 use Test\Traits\UserTrait;
 
@@ -105,6 +106,8 @@ class MetaFilesTest extends TestCase {
 		$this->assertEquals($info->getMTime(), $metaNodeOfFile->getMTime());
 		$this->assertTrue(is_string($metaNodeOfFile->getEtag()));
 		$this->assertTrue(strlen($metaNodeOfFile->getEtag()) > 0);
+		$thumbnail = $metaNodeOfFile->getThumbnail([]);
+		$this->assertInstanceOf(IImage::class, $thumbnail);
 
 		/** @var MetaFileVersionNode $metaNodeOfFile */
 		$this->assertEquals('1234', $metaNodeOfFile->getContent());

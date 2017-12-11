@@ -1,6 +1,6 @@
 <?php
 /**
- * @author Olivier Paroz <github@oparoz.com>
+ * @author Thomas Müller <thomas.mueller@tmit.eu>
  *
  * @copyright Copyright (c) 2017, ownCloud GmbH
  * @license AGPL-3.0
@@ -19,14 +19,25 @@
  *
  */
 
-namespace OC\Preview;
+namespace OCP\Files;
 
-// .otf, .ttf and .pfb
-class Font extends Bitmap {
+use OCP\IImage;
+
+/**
+ * Interface IPreviewNode - a node which can generate a preview will implement
+ * this interface.
+ *
+ * @package OCP\Files
+ * @since 10.1.0
+ */
+interface IPreviewNode {
+
 	/**
-	 * {@inheritDoc}
+	 * Generates a preview image of the node
+	 *
+	 * @param array $options
+	 * @return IImage
+	 * @since 10.1.0
 	 */
-	public function getMimeType() {
-		return '/application\/(?:font-sfnt|x-font$)/';
-	}
+	public function getThumbnail($options);
 }
