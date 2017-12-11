@@ -32,14 +32,14 @@ namespace OCA\Files_Sharing\Tests\Controllers;
 use OC\Files\Filesystem;
 use OCA\FederatedFileSharing\FederatedShareProvider;
 use OCA\Files_Sharing\Controllers\ShareController;
-use OCP\Share\Exceptions\ShareNotFound;
 use OCP\AppFramework\Http\NotFoundResponse;
 use OCP\AppFramework\Http\RedirectResponse;
 use OCP\AppFramework\Http\TemplateResponse;
 use OCP\ISession;
+use OCP\IURLGenerator;
 use OCP\IUserManager;
 use OCP\Security\ISecureRandom;
-use OCP\IURLGenerator;
+use OCP\Share\Exceptions\ShareNotFound;
 
 /**
  * @group DB

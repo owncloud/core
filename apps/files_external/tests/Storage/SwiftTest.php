@@ -26,7 +26,7 @@
 
 namespace OCA\Files_External\Tests\Storage;
 
-use \OCA\Files_External\Lib\Storage\Swift;
+use OCA\Files_External\Lib\Storage\Swift;
 
 /**
  * Class SwiftTest

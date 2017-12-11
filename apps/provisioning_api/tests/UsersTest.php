@@ -32,11 +32,11 @@ namespace OCA\Provisioning_API\Tests;
 use OC\OCS\Result;
 use OCA\Provisioning_API\Users;
 use OCP\API;
+use OCP\ILogger;
 use OCP\IUserManager;
 use OCP\IUserSession;
 use PHPUnit_Framework_MockObject_MockObject;
 use Test\TestCase as OriginalTest;
-use OCP\ILogger;
 
 class UsersTest extends OriginalTest {
 	

@@ -24,8 +24,8 @@
 namespace OCA\Files_Sharing;
 
 use Doctrine\DBAL\Connection;
-use OCP\IDBConnection;
 use OC\Cache\CappedMemoryCache;
+use OCP\IDBConnection;
 
 /**
  * Class Migration

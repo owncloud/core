@@ -39,8 +39,8 @@ set_include_path(get_include_path() . PATH_SEPARATOR .
 	\OC_App::getAppPath('files_external') . '/3rdparty/aws-sdk-php');
 require 'aws-autoloader.php';
 
-use Aws\S3\S3Client;
 use Aws\S3\Exception\S3Exception;
+use Aws\S3\S3Client;
 use Icewind\Streams\IteratorDirectory;
 
 class AmazonS3 extends \OCP\Files\Storage\StorageAdapter {

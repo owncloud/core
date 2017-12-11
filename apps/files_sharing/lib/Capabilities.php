@@ -21,7 +21,7 @@
 namespace OCA\Files_Sharing;
 
 use OCP\Capabilities\ICapability;
-use \OCP\IConfig;
+use OCP\IConfig;
 
 /**
  * Class Capabilities

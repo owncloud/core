@@ -24,8 +24,8 @@ namespace OCA\Files_External\Migrations;
 
 use OC\Files\External\Service\GlobalStoragesService;
 use OC\Files\External\Service\LegacyStoragesService;
-use OCP\Migration\ISimpleMigration;
 use OCP\Migration\IOutput;
+use OCP\Migration\ISimpleMigration;
 
 /**
  * migrate mount.json mounts into the database

@@ -25,10 +25,10 @@
 namespace OCA\Files_Trashbin\Tests\Command;
 
 
-use OCA\Files_Trashbin\Command\CleanUp;
-use Test\TestCase;
 use OC\User\Manager;
+use OCA\Files_Trashbin\Command\CleanUp;
 use OCP\Files\IRootFolder;
+use Test\TestCase;
 
 /**
  * Class CleanUpTest

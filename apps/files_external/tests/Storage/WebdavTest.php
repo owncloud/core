@@ -26,7 +26,7 @@
 
 namespace OCA\Files_External\Tests\Storage;
 
-use \OC\Files\Storage\DAV;
+use OC\Files\Storage\DAV;
 
 /**
  * Class WebdavTest

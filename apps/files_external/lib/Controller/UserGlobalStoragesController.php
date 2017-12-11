@@ -25,18 +25,18 @@
 
 namespace OCA\Files_External\Controller;
 
+use OCP\AppFramework\Http;
+use OCP\AppFramework\Http\DataResponse;
 use OCP\Files\External\Auth\AuthMechanism;
 use OCP\Files\External\Auth\IUserProvided;
+use OCP\Files\External\Backend\Backend;
 use OCP\Files\External\InsufficientDataForMeaningfulAnswerException;
+use OCP\Files\External\IStorageConfig;
+use OCP\Files\External\NotFoundException;
+use OCP\Files\External\Service\IUserGlobalStoragesService;
+use OCP\IL10N;
 use OCP\ILogger;
 use OCP\IRequest;
-use OCP\IL10N;
-use OCP\AppFramework\Http\DataResponse;
-use OCP\AppFramework\Http;
-use OCP\Files\External\Service\IUserGlobalStoragesService;
-use OCP\Files\External\NotFoundException;
-use OCP\Files\External\IStorageConfig;
-use OCP\Files\External\Backend\Backend;
 use OCP\IUserSession;
 
 /**

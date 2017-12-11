@@ -28,9 +28,9 @@ namespace OCA\DAV\CardDAV;
 
 use OC\Cache\CappedMemoryCache;
 use OCA\DAV\Connector\Sabre\Principal;
-use OCP\DB\QueryBuilder\IQueryBuilder;
 use OCA\DAV\DAV\Sharing\Backend;
 use OCA\DAV\DAV\Sharing\IShareable;
+use OCP\DB\QueryBuilder\IQueryBuilder;
 use OCP\IDBConnection;
 use PDO;
 use Sabre\CardDAV\Backend\BackendInterface;

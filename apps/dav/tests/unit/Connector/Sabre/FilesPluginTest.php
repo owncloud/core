@@ -26,13 +26,13 @@
 namespace OCA\DAV\Tests\unit\Connector\Sabre;
 
 use OCA\DAV\Connector\Sabre\FilesPlugin;
+use OCP\Files\FileInfo;
 use OCP\Files\StorageNotAvailableException;
 use Sabre\DAV\PropFind;
 use Sabre\DAV\PropPatch;
 use Sabre\HTTP\RequestInterface;
 use Sabre\HTTP\ResponseInterface;
 use Test\TestCase;
-use OCP\Files\FileInfo;
 
 /**
  * Copyright (c) 2015 Vincent Petry <pvince81@owncloud.com>

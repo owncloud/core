@@ -21,7 +21,6 @@
  */
 
 use OCA\Files_Trashbin\Expiration;
-use \OCA\Files_Trashbin\Tests;
 
 class ExpirationTest extends \Test\TestCase {
 	const SECONDS_PER_DAY = 86400; //60*60*24

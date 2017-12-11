@@ -21,8 +21,8 @@
 
 namespace OCA\DAV\Connector\Sabre;
 
-use Sabre\HTTP\ResponseInterface;
 use Sabre\HTTP\RequestInterface;
+use Sabre\HTTP\ResponseInterface;
 
 /**
  * Class CorsPlugin is a plugin which adds CORS headers to the responses

@@ -22,12 +22,7 @@
 
 namespace OCA\UpdateNotification\AppInfo;
 
-use OC\AppFramework\Utility\TimeFactory;
-use OC\Updater;
-use OCA\UpdateNotification\Controller\AdminController;
-use OCA\UpdateNotification\UpdateChecker;
 use OCP\AppFramework\App;
-use OCP\AppFramework\IAppContainer;
 
 class Application extends App {
 	public function __construct (array $urlParams = []) {

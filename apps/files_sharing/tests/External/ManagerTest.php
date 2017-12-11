@@ -24,8 +24,6 @@
 
 namespace OCA\Files_Sharing\Tests\External;
 
-use League\Flysystem\MountManager;
-use OC\Files\Mount\MountPoint;
 use OC\Files\Storage\StorageFactory;
 use OCA\Files_Sharing\External\Manager;
 use OCA\Files_Sharing\External\MountProvider;

@@ -26,13 +26,13 @@
 namespace OCA\Files_External\Controller;
 
 
+use OCP\AppFramework\Http;
+use OCP\AppFramework\Http\DataResponse;
+use OCP\Files\External\NotFoundException;
+use OCP\Files\External\Service\IGlobalStoragesService;
+use OCP\IL10N;
 use OCP\ILogger;
 use OCP\IRequest;
-use OCP\IL10N;
-use OCP\AppFramework\Http\DataResponse;
-use OCP\AppFramework\Http;
-use OCP\Files\External\Service\IGlobalStoragesService;
-use OCP\Files\External\NotFoundException;
 
 /**
  * Global storages controller

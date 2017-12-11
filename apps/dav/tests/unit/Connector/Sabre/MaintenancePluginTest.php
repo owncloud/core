@@ -23,8 +23,8 @@
 namespace OCA\DAV\Tests\unit\Connector\Sabre;
 
 use OCA\DAV\Connector\Sabre\MaintenancePlugin;
-use Test\TestCase;
 use OCP\IConfig;
+use Test\TestCase;
 
 /**
  * Class MaintenancePluginTest

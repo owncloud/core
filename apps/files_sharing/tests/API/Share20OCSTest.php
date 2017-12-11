@@ -24,19 +24,19 @@
  */
 namespace OCA\Files_Sharing\Tests\API;
 
-use OCP\IL10N;
 use OCA\Files_Sharing\API\Share20OCS;
+use OCP\Files\IRootFolder;
 use OCP\Files\NotFoundException;
+use OCP\IConfig;
 use OCP\IGroupManager;
-use OCP\IUserManager;
+use OCP\IL10N;
 use OCP\IRequest;
 use OCP\IURLGenerator;
 use OCP\IUser;
-use OCP\Files\IRootFolder;
+use OCP\IUserManager;
 use OCP\Lock\LockedException;
 use OCP\Share;
 use Test\TestCase;
-use OCP\IConfig;
 
 /**
  * Class Share20OCSTest

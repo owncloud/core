@@ -22,9 +22,9 @@
 
 namespace OCA\DAV\Tests\unit\Connector\Sabre;
 
+use OC\Log;
 use OCA\DAV\Connector\Sabre\Exception\InvalidPath;
 use OCA\DAV\Connector\Sabre\ExceptionLoggerPlugin as PluginToTest;
-use OC\Log;
 use PHPUnit_Framework_MockObject_MockObject;
 use Sabre\DAV\Exception\NotFound;
 use Sabre\DAV\Server;

@@ -28,8 +28,8 @@
 
 namespace OCA\Files_Trashbin\Tests;
 
-use OC\Files\Storage\Temporary;
 use OC\Files\Filesystem;
+use OC\Files\Storage\Temporary;
 use OC\Files\View;
 use Test\TestCase;
 use Test\Traits\UserTrait;

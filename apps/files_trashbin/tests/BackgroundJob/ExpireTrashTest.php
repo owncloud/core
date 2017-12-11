@@ -23,7 +23,7 @@
 
 namespace OCA\Files_Trashbin\Tests\BackgroundJob;
  
-use \OCA\Files_Trashbin\BackgroundJob\ExpireTrash;
+use OCA\Files_Trashbin\BackgroundJob\ExpireTrash;
 
 class ExpireTrashTest extends \Test\TestCase {
 	public function testConstructAndRun() {

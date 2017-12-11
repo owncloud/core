@@ -24,7 +24,6 @@ namespace OCA\DAV\Connector\Sabre;
 use Sabre\DAV\ServerPlugin;
 use Sabre\HTTP\RequestInterface;
 use Sabre\HTTP\ResponseInterface;
-use OCA\DAV\Connector\Sabre\ObjectTree;
 
 /**
  * Automatically renames a file if the target already exists,

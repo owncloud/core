@@ -27,9 +27,7 @@ use OCP\Files\Storage\IStorageFactory;
 use OCP\IConfig;
 use OCP\ILogger;
 use OCP\IUser;
-use OCP\Share\IShare;
 use OCP\Share\IManager;
-use OCP\Files\Mount\IMountPoint;
 
 /**
  * @group DB

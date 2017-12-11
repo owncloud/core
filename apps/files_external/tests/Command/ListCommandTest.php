@@ -23,15 +23,14 @@
 
 namespace OCA\Files_External\Tests\Command;
 
-use OCA\Files_External\Command\ListCommand;
 use OC\Files\External\Auth\NullMechanism;
 use OC\Files\External\Auth\Password\Password;
 use OC\Files\External\Auth\Password\SessionCredentials;
-use OCA\Files_External\Lib\Backend\Local;
 use OC\Files\External\StorageConfig;
-use OCP\Files\External\IStorageConfig;
-use Symfony\Component\Console\Output\BufferedOutput;
+use OCA\Files_External\Command\ListCommand;
+use OCA\Files_External\Lib\Backend\Local;
 use OCP\Files\External\Backend\InvalidBackend;
+use Symfony\Component\Console\Output\BufferedOutput;
 
 class ListCommandTest extends CommandTest {
 	/**

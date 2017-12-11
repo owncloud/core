@@ -23,8 +23,8 @@
 
 namespace OCA\DAV\Tests\unit\DAV;
 
-use \OCA\DAV\DAV\MiscCustomPropertiesBackend;
-use \OCP\IUser;
+use OCA\DAV\DAV\MiscCustomPropertiesBackend;
+use OCP\IUser;
 use Sabre\CalDAV\Calendar;
 
 /**
