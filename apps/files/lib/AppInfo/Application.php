@@ -26,9 +26,9 @@ namespace OCA\Files\AppInfo;
 
 use OCA\Files\Controller\ApiController;
 use OCA\Files\Controller\ViewController;
+use OCA\Files\Service\TagService;
 use OCP\AppFramework\App;
-use \OCA\Files\Service\TagService;
-use \OCP\IContainer;
+use OCP\IContainer;
 
 class Application extends App {
 	public function __construct(array $urlParams= []) {

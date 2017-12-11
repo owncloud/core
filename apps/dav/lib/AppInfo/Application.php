@@ -27,7 +27,7 @@ use OCA\DAV\Capabilities;
 use OCA\DAV\CardDAV\ContactsManager;
 use OCA\DAV\CardDAV\SyncService;
 use OCA\DAV\HookManager;
-use \OCP\AppFramework\App;
+use OCP\AppFramework\App;
 use OCP\Contacts\IManager;
 use OCP\IUser;
 use Symfony\Component\EventDispatcher\GenericEvent;

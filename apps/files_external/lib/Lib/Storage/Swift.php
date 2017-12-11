@@ -34,15 +34,14 @@
 
 namespace OCA\Files_External\Lib\Storage;
 
-use Guzzle\Http\Url;
 use Guzzle\Http\Exception\ClientErrorResponseException;
+use Guzzle\Http\Url;
 use Icewind\Streams\IteratorDirectory;
 use OpenCloud;
 use OpenCloud\Common\Exceptions;
+use OpenCloud\ObjectStore\Resource\DataObject;
 use OpenCloud\OpenStack;
 use OpenCloud\Rackspace;
-use OpenCloud\ObjectStore\Resource\DataObject;
-use OpenCloud\ObjectStore\Exception;
 
 class Swift extends \OCP\Files\Storage\StorageAdapter {
 

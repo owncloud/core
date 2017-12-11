@@ -23,11 +23,11 @@
  */
 
 namespace OCA\Files_Sharing\Middleware;
-use OCP\AppFramework\Http\NotFoundResponse;
-use OCP\Files\NotFoundException;
-use OCP\AppFramework\Utility\IControllerMethodReflector;
 use OCA\Files_Sharing\Exceptions\S2SException;
 use OCP\AppFramework\Http\JSONResponse;
+use OCP\AppFramework\Http\NotFoundResponse;
+use OCP\AppFramework\Utility\IControllerMethodReflector;
+use OCP\Files\NotFoundException;
 
 /**
  * @package OCA\Files_Sharing\Middleware\SharingCheckMiddleware

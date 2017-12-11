@@ -21,11 +21,11 @@
 
 namespace OCA\Testing\AppInfo;
 
-use OCA\Testing\Config;
 use OCA\Testing\BigFileID;
+use OCA\Testing\Config;
 use OCA\Testing\Locking\Provisioning;
-use OCP\API;
 use OCA\Testing\Occ;
+use OCP\API;
 
 $config = new Config(
 	\OC::$server->getConfig(),

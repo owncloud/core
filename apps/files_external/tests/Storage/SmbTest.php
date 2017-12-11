@@ -27,7 +27,7 @@
 
 namespace OCA\Files_External\Tests\Storage;
 
-use \OCA\Files_External\Lib\Storage\SMB;
+use OCA\Files_External\Lib\Storage\SMB;
 
 /**
  * Class SmbTest

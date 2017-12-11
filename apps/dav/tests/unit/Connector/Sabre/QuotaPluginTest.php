@@ -23,12 +23,12 @@
  */
 namespace OCA\DAV\Tests\unit\Connector\Sabre;
 
-use Test\TestCase;
-use OCA\DAV\Connector\Sabre\File;
 use OCA\DAV\Connector\Sabre\Directory;
-use Sabre\DAV\Tree;
+use OCA\DAV\Connector\Sabre\File;
 use OCA\DAV\Connector\Sabre\QuotaPlugin;
 use OCA\DAV\Upload\FutureFile;
+use Sabre\DAV\Tree;
+use Test\TestCase;
 
 /**
  * Copyright (c) 2013 Thomas Müller <thomas.mueller@tmit.eu>

@@ -21,11 +21,11 @@
 namespace OCA\Files_External\Panels;
 
 use OC\Encryption\Manager;
-use OCP\Files\External\Service\IGlobalStoragesService;
-use OCP\Settings\ISettings;
 use OCP\Files\External\IStoragesBackendService;
-use OCP\Template;
+use OCP\Files\External\Service\IGlobalStoragesService;
 use OCP\IConfig;
+use OCP\Settings\ISettings;
+use OCP\Template;
 
 class Admin implements ISettings {
 

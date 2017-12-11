@@ -31,20 +31,20 @@ use Doctrine\DBAL\Connection;
 use OC\Core\Command\Base;
 use OC\Core\Command\InterruptedException;
 use OC\ForbiddenException;
+use OC\Migration\ConsoleOutput;
+use OC\Repair\RepairMismatchFileCachePath;
+use OCP\Files\IMimeTypeLoader;
 use OCP\Files\StorageNotAvailableException;
+use OCP\IConfig;
 use OCP\IDBConnection;
 use OCP\IUserManager;
+use OCP\Lock\ILockingProvider;
+use OCP\Lock\LockedException;
+use Symfony\Component\Console\Helper\Table;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\Console\Helper\Table;
-use OC\Repair\RepairMismatchFileCachePath;
-use OC\Migration\ConsoleOutput;
-use OCP\Lock\ILockingProvider;
-use OCP\Lock\LockedException;
-use OCP\Files\IMimeTypeLoader;
-use OCP\IConfig;
 
 class Scan extends Base {
 

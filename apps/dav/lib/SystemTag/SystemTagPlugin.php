@@ -24,16 +24,15 @@ namespace OCA\DAV\SystemTag;
 
 use OCP\IGroupManager;
 use OCP\IUserSession;
-use Sabre\DAV\PropFind;
-use Sabre\DAV\PropPatch;
+use OCP\SystemTag\ISystemTag;
+use OCP\SystemTag\ISystemTagManager;
+use OCP\SystemTag\TagAlreadyExistsException;
 use Sabre\DAV\Exception\BadRequest;
 use Sabre\DAV\Exception\Conflict;
 use Sabre\DAV\Exception\Forbidden;
 use Sabre\DAV\Exception\UnsupportedMediaType;
-
-use OCP\SystemTag\ISystemTag;
-use OCP\SystemTag\ISystemTagManager;
-use OCP\SystemTag\TagAlreadyExistsException;
+use Sabre\DAV\PropFind;
+use Sabre\DAV\PropPatch;
 use Sabre\HTTP\RequestInterface;
 use Sabre\HTTP\ResponseInterface;
 

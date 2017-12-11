@@ -20,8 +20,8 @@
  */
 namespace OCA\DAV\AppInfo;
 
-use OCP\App\IAppManager;
 use OC\ServerContainer;
+use OCP\App\IAppManager;
 use OCP\AppFramework\QueryException;
 
 /**

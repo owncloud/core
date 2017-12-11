@@ -33,6 +33,7 @@
 
 namespace OCA\DAV\Connector\Sabre;
 
+use OC\AppFramework\Http\Request;
 use OC\Files\Filesystem;
 use OC\Files\Storage\Storage;
 use OCA\DAV\Connector\Sabre\Exception\EntityTooLarge;
@@ -52,11 +53,10 @@ use OCP\Lock\LockedException;
 use Sabre\DAV\Exception;
 use Sabre\DAV\Exception\BadRequest;
 use Sabre\DAV\Exception\Forbidden;
+use Sabre\DAV\Exception\NotFound;
 use Sabre\DAV\Exception\NotImplemented;
 use Sabre\DAV\Exception\ServiceUnavailable;
 use Sabre\DAV\IFile;
-use Sabre\DAV\Exception\NotFound;
-use OC\AppFramework\Http\Request;
 
 class File extends Node implements IFile {
 

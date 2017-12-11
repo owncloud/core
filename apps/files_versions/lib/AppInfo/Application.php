@@ -23,8 +23,8 @@
 
 namespace OCA\Files_Versions\AppInfo;
 
-use OCP\AppFramework\App;
 use OCA\Files_Versions\Expiration;
+use OCP\AppFramework\App;
 
 class Application extends App {
 	public function __construct(array $urlParams = []) {

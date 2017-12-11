@@ -1,5 +1,6 @@
 <?php
 /** @var array $_ */
+
 use OCA\Federation\TrustedServers;
 
 /** @var \OCP\IL10N $l */

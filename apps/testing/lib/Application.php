@@ -22,7 +22,6 @@
 namespace OCA\Testing;
 
 use OCP\AppFramework\App;
-use OCA\Testing\AlternativeHomeUserBackend;
 
 class Application extends App {
 	public function __construct (array $urlParams = array()) {

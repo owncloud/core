@@ -24,9 +24,6 @@
 
 namespace OCA\Files\Service;
 
-use OC\Files\FileInfo;
-use OCP\Files\Node;
-
 /**
  * Service class to manage tags on files.
  */

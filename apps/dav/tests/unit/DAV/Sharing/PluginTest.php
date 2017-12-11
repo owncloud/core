@@ -23,9 +23,9 @@
 namespace OCA\DAV\Tests\unit\DAV\Sharing;
 
 
+use OCA\DAV\Connector\Sabre\Auth;
 use OCA\DAV\DAV\Sharing\IShareable;
 use OCA\DAV\DAV\Sharing\Plugin;
-use OCA\DAV\Connector\Sabre\Auth;
 use OCP\IRequest;
 use Sabre\DAV\Server;
 use Sabre\DAV\SimpleCollection;

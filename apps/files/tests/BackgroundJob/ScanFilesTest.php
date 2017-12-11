@@ -21,10 +21,10 @@
  */
 namespace OCA\Files\Tests\BackgroundJob;
 
-use Test\TestCase;
+use OCA\Files\BackgroundJob\ScanFiles;
 use OCP\IConfig;
 use OCP\IUserManager;
-use OCA\Files\BackgroundJob\ScanFiles;
+use Test\TestCase;
 
 /**
  * Class ScanFilesTest

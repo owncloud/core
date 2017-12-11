@@ -25,10 +25,10 @@
 namespace OCA\DAV\CalDAV;
 
 use Doctrine\DBAL\Connection;
-use OCA\DAV\DAV\Sharing\IShareable;
-use OCP\DB\QueryBuilder\IQueryBuilder;
 use OCA\DAV\Connector\Sabre\Principal;
 use OCA\DAV\DAV\Sharing\Backend;
+use OCA\DAV\DAV\Sharing\IShareable;
+use OCP\DB\QueryBuilder\IQueryBuilder;
 use OCP\IConfig;
 use OCP\IDBConnection;
 use OCP\Security\ISecureRandom;

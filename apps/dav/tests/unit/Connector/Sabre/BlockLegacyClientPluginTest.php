@@ -24,9 +24,9 @@
 namespace OCA\DAV\Tests\unit\Connector\Sabre;
 
 use OCA\DAV\Connector\Sabre\BlockLegacyClientPlugin;
+use OCP\IConfig;
 use PHPUnit_Framework_MockObject_MockObject;
 use Test\TestCase;
-use OCP\IConfig;
 
 /**
  * Class BlockLegacyClientPluginTest

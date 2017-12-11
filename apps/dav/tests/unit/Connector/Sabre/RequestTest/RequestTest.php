@@ -24,9 +24,9 @@
 
 namespace OCA\DAV\Tests\unit\Connector\Sabre\RequestTest;
 
+use OC\Files\View;
 use OCA\DAV\Connector\Sabre\Server;
 use OCA\DAV\Connector\Sabre\ServerFactory;
-use OC\Files\View;
 use Sabre\HTTP\Request;
 use Test\TestCase;
 use Test\Traits\MountProviderTrait;
