@@ -99,6 +99,74 @@ trait Sharing {
 	}
 
 	/**
+	 * @param string $user
+	 * @param string $path
+	 * @param boolean $publicUpload
+	 * @param string|null $sharePassword
+	 * @param string|int|string[]|int[]|null $permissions
+	 * @return void
+	 */
+	public function createAPublicShare(
+		$user, $path, $publicUpload = false, $sharePassword = null, $permissions = null
+	) {
+		$this->response = SharingHelper::createShare(
+			$this->baseUrlWithoutOCSAppendix(),
+			$user,
+			$this->getPasswordForUser($user),
+			$path,
+			'public',
+			null, // shareWith
+			$publicUpload,
+			$sharePassword,
+			$permissions,
+			null, // linkName
+			null, // expireDate
+			$this->apiVersion,
+			$this->sharingApiVersion
+		);
+
+		$this->lastShareData = $this->response->xml();
+	}
+
+	/**
+	 * @Given /^user "([^"]*)" creates a public share of (?:file|folder) "([^"]*)"$/
+	 * @param string $user
+	 * @param string $path
+	 * @return void
+	 */
+	public function userCreatesAPublicShareOf($user, $path) {
+		$this->createAPublicShare($user, $path);
+	}
+
+	/**
+	 * @When /^a public share of (?:file|folder) "([^"]*)" is created/
+	 * @param string $path
+	 * @return void
+	 */
+	public function aPublicShareOfIsCreated($path) {
+		$this->createAPublicShare($this->currentUser, $path);
+	}
+
+	/**
+	 * @Given /^user "([^"]*)" creates a public share of (?:file|folder) "([^"]*)" with (read|update|create|delete|change|share|all) permission(?:s|)$/
+	 * @param string $user
+	 * @param string $path
+	 * @return void
+	 */
+	public function userCreatesAPublicShareOfWithPermission($user, $path, $permissions) {
+		$this->createAPublicShare($user, $path, true, null, $permissions);
+	}
+
+	/**
+	 * @Given /^a public share of (?:file|folder) "([^"]*)" is created with (read|update|create|delete|change|share|all) permission(?:s|)$/
+	 * @param string $path
+	 * @return void
+	 */
+	public function aPublicShareOfIsCreatedWithPermission($path, $permissions) {
+		$this->createAPublicShare($this->currentUser, $path, true, null, $permissions);
+	}
+
+	/**
 	 * @When /^public shared file "([^"]*)" cannot be downloaded$/
 	 * @param string $path
 	 * @return void
@@ -198,6 +266,16 @@ trait Sharing {
 	}
 
 	/**
+	 * @When publicly overwriting file ":filename" with content ":body"
+	 * @param string $filename target file name
+	 * @param string $body content to upload
+	 * @return void
+	 */
+	public function publiclyOverwritingContent($filename, $body = 'test') {
+		$this->publicUploadContent($filename, '', $body, false, true);
+	}
+
+	/**
 	 * @When publicly uploading file ":filename" with password ":password" and content ":body"
 	 * @param string $filename target file name
 	 * @param string $password
@@ -241,10 +319,11 @@ trait Sharing {
 	 * @param string $password
 	 * @param string $body
 	 * @param bool $autorename
+	 * @param bool $overwriting the upload is expected to overwrite an existing file
 	 * @return void
 	 */
 	private function publicUploadContent(
-		$filename, $password = '', $body = 'test', $autorename = false
+		$filename, $password = '', $body = 'test', $autorename = false, $overwriting = false
 	) {
 		$url = substr($this->baseUrl, 0, -4) . "public.php/webdav/";
 		$url .= rawurlencode(ltrim($filename, '/'));
@@ -261,8 +340,13 @@ trait Sharing {
 		$this->response = $client->send(
 			$client->createRequest('PUT', $url, $options)
 		);
+		if ($overwriting) {
+			$expectedStatus = 204;
+		} else {
+			$expectedStatus = 201;
+		}
 		PHPUnit_Framework_Assert::assertEquals(
-			201,
+			$expectedStatus,
 			$this->response->getStatusCode()
 		);
 	}
