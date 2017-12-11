@@ -178,7 +178,6 @@ clean-js-deps:
 
 # Symlink UIkit dir
 $(uikit_dir): $(core_vendor) $(NODE_PREFIX)/node_modules/uikit/dist
-	rm $@
 	ln -s ../../$(NODE_PREFIX)/node_modules/uikit/dist/ $@
 	touch $@
 
@@ -188,7 +187,7 @@ $(NODE_PREFIX)/node_modules/uikit/dist: $(nodejs_deps) $(NODE_PREFIX)/node_modul
 
 .PHONY: clean-uikit
 clean-uikit:
-	rm -Rf $(uikit_dir)
+	-rm -Rf $(uikit_dir)
 
 #
 # Tests
@@ -252,9 +251,9 @@ clean-docs:
 #
 # Build distribution
 #
-$(dist_dir)/owncloud: $(composer_deps) $(core_vendor) $(core_all_src)
+$(dist_dir)/owncloud: $(composer_deps) $(core_vendor) $(core_all_src) $(uikit_dir)
 	rm -Rf $@; mkdir -p $@/config
-	cp -R $(core_all_src) $@
+	cp -RL $(core_all_src) $@
 	cp -R config/config.sample.php $@/config
 	rm -Rf $(dist_dir)/owncloud/apps/testing
 	find $@ -name .gitkeep -delete
@@ -303,9 +302,9 @@ clean-dist:
 #
 # Build qa distribution
 #
-$(dist_dir)/qa/owncloud: $(composer_dev_deps) $(core_vendor) $(core_all_src) $(core_test_dirs)
+$(dist_dir)/qa/owncloud: $(composer_dev_deps) $(core_vendor) $(core_all_src) $(uikit_dir) $(core_test_dirs)
 	rm -Rf $@; mkdir -p $@/config
-	cp -R $(core_all_src) $@
+	cp -RL $(core_all_src) $@
 	cp -R $(core_test_dirs) $@
 	cp -R config/config.sample.php $@/config
 	find $@ -name .gitkeep -delete
