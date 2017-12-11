@@ -37,14 +37,14 @@ define('OC_CONSOLE', 1);
 // because base.php will already use 5.6 syntax.
 if (version_compare(PHP_VERSION, '5.6.0') === -1) {
 	echo 'This version of ownCloud requires at least PHP 5.6.0'.PHP_EOL;
-	echo 'You are currently running ' . PHP_VERSION . '. Please update your PHP version.'.PHP_EOL;
+	echo 'You are currently running PHP ' . PHP_VERSION . '. Please update your PHP version.'.PHP_EOL;
 	return;
 }
 
-// Show warning if PHP 7.2 is used as ownCloud is not compatible with PHP 7.2
-if (version_compare(PHP_VERSION, '7.2.0alpha1') !== -1) {
-	echo 'This version of ownCloud is not compatible with PHP 7.2' . PHP_EOL;
-	echo 'You are currently running ' . PHP_VERSION . '.' . PHP_EOL;
+// Show warning if PHP 7.3 is used as ownCloud is not compatible with PHP 7.3
+if (version_compare(PHP_VERSION, '7.3.0alpha1') !== -1) {
+	echo 'This version of ownCloud is not compatible with PHP 7.3' . PHP_EOL;
+	echo 'You are currently running PHP ' . PHP_VERSION . '.' . PHP_EOL;
 	return;
 }
 
