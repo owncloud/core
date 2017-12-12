@@ -102,9 +102,9 @@
 }
 
 .shareTabView .shareWithList .mailNotificationSpinner {
-	position: relative;
-	vertical-align: middle;
-	margin-right: 10px;
+  position: relative;
+  vertical-align: middle;
+  margin-right: 10px;
 }
 
 .subTabHeaders .tabHeaders {
@@ -143,6 +143,7 @@
   background-position: 8px 8px;
   border-radius: 50%;
   margin-right: 10px;
+  flex-shrink: 0;
 }
 
 .link-entry--title {
@@ -169,6 +170,7 @@
 }
 
 /* -------------------------------------------------- USER & GROUP SHARES --- */
+
 .user-shares {
   margin: 20px -15px;
 }
@@ -233,47 +235,58 @@
   display: flex;
   justify-content: space-between;
 }
+
 .user-share--permission-preview {
   white-space: nowrap;
   overflow: hidden;
   -ms-text-overflow: ellipsis;
   text-overflow: ellipsis;
 }
+
 .user-share--permission-preview li {
   display: inline;
   font-size: 12px;
 }
+
 .user-share--permission-preview li:first-child:before {
   content: '(';
 }
+
 .user-share--permission-preview li:not(:last-child):after {
   content: ',';
 }
+
 .user-share--permission-preview li:last-child:after {
   content: ')';
 }
+
 .user-share--permission-list li {
   display: inline;
 }
+
 .user-share--toggle-dropdown {
   cursor: pointer;
 }
+
 /* ---------------------------------------------------- PUBLIC LINK MODAL --- */
 
 .public-link-modal--item {
   margin-bottom: 20px;
 }
+
 .public-link-modal--label,
 .public-link-modal--input {
   display: block;
   width: calc(100% - 15px) !important;
 }
+
 .minify {
   width: 1px;
   height: 1px;
   overflow: hidden;
   opacity: 0;
 }
+
 .minify input {
   font-size: 1px;
 }
