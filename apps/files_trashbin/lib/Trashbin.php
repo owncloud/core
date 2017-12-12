@@ -144,11 +144,23 @@ class Trashbin {
 		}
 	}
 
+	/**
+	 * Sets up the trashbin for the given user
+	 *
+	 * @param string $user user id
+	 * @return bool true if trashbin is setup and usable, false otherwise
+	 */
 	private static function setUpTrash($user) {
 		$view = new View('/' . $user);
 		if (!$view->is_dir('files_trashbin')) {
 			$view->mkdir('files_trashbin');
 		}
+
+		if (!$view->isUpdatable('files_trashbin')) {
+			// no trashbin access or denied
+			return false;
+		}
+
 		if (!$view->is_dir('files_trashbin/files')) {
 			$view->mkdir('files_trashbin/files');
 		}
@@ -158,6 +170,8 @@ class Trashbin {
 		if (!$view->is_dir('files_trashbin/keys')) {
 			$view->mkdir('files_trashbin/keys');
 		}
+
+		return true;
 	}
 
 
@@ -252,7 +266,14 @@ class Trashbin {
 			return true;
 		}
 
-		self::setUpTrash($user);
+		if (!self::setUpTrash($user)) {
+			// trashbin not usable for user (ex: guest), switch to owner only
+			$user = $owner;
+			if (!self::setUpTrash($owner)) {
+				// nothing to do as no trash is available anywheree
+				return true;
+			}
+		}
 		if ($owner !== $user) {
 			// also setup for owner
 			self::setUpTrash($owner);
