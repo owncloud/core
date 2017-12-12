@@ -33,6 +33,7 @@ namespace OC\App;
 use OC_App;
 use OC\Installer;
 use OCP\App\IAppManager;
+use OCP\App\AppManagerException;
 use OCP\App\ManagerEvent;
 use OCP\Files;
 use OCP\IAppConfig;
@@ -231,7 +232,7 @@ class AppManager implements IAppManager {
 	 * Do not allow more than one active app-theme
 	 *
 	 * @param $appId
-	 * @throws \Exception
+	 * @throws AppManagerException
 	 */
 	protected function canEnableTheme($appId) {
 		$info = $this->getAppInfo($appId);
@@ -243,7 +244,7 @@ class AppManager implements IAppManager {
 			$apps = $this->getInstalledApps();
 			foreach ($apps as $installedAppId) {
 				if ($this->isTheme($installedAppId)) {
-					throw new \Exception("$appId can't be enabled until $installedAppId is disabled.");
+					throw new AppManagerException("$appId can't be enabled until $installedAppId is disabled.");
 				}
 			}
 		}

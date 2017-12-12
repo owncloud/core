@@ -124,7 +124,7 @@ class ManagerTest extends TestCase {
 	}
 
 	/**
-	 * @expectedException \Exception
+	 * @expectedException \OCP\App\AppManagerException
 	 */
 	public function testEnableSecondAppTheme() {
 		$manager = $this->getMockBuilder(AppManager::class)
@@ -134,16 +134,15 @@ class ManagerTest extends TestCase {
 				$this->config])
 			->getMock();
 
-		$manager->expects($this->any())
+		$manager->expects($this->once())
 			->method('getAppInfo')
-			->with('files')
 			->willReturn(['types'=>['theme']]);
 
-		$manager->expects($this->any())
+		$manager->expects($this->once())
 			->method('isTheme')
 			->willReturn(true);
 
-		$manager->enableApp('files');
+		$manager->enableApp('dav');
 	}
 
 	public function testDisableApp() {
