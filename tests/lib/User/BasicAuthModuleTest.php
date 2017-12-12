@@ -58,7 +58,8 @@ class BasicAuthModuleTest extends TestCase {
 		$this->manager->expects($this->any())->method('getByEmail')
 			->willReturnMap([
 				['not-unique@example.com', [$this->user, $this->user]],
-				['unique@example.com', [$this->user]]
+				['unique@example.com', [$this->user]],
+				['user2', []]
 			]);
 	}
 
