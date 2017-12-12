@@ -148,11 +148,11 @@ class Route extends SymfonyRoute implements IRoute {
 	 * @return void
 	 */
 	public function actionInclude($file) {
-		$this->action(function($param){
+		$this->action(function($param) use ($file) {
 			unset($param["_route"]);
-			$_GET=array_merge($_GET, $param);
+			$_GET = array_merge($_GET, $param);
 			unset($param);
-			require_once ".$file.";
+			require_once $file;
 		});
 	}
 }
