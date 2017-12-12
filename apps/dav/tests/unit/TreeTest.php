@@ -1,10 +1,6 @@
 <?php
 /**
- * @author Joas Schilling <coding@schilljs.com>
- * @author Morris Jobke <hey@morrisjobke.de>
- * @author Robin Appelman <icewind@owncloud.com>
  * @author Thomas Müller <thomas.mueller@tmit.eu>
- * @author Vincent Petry <pvince81@owncloud.com>
  *
  * @copyright Copyright (c) 2017, ownCloud GmbH
  * @license AGPL-3.0
@@ -23,152 +19,70 @@
  *
  */
 
+
 namespace OCA\DAV\Tests\unit;
 
 
-use OC\Files\FileInfo;
-use OC\Files\Filesystem;
-use OC\Files\Storage\Temporary;
-use OC\Files\View;
-use OCA\DAV\Connector\Sabre\Directory;
-use OCA\DAV\Connector\Sabre\ObjectTree;
+use OCA\DAV\Connector\Sabre\File;
+use OCA\DAV\Tree;
+use Sabre\DAV\ICollection;
+use Sabre\DAV\IFile;
 use Test\TestCase;
 
-/**
- * Class TreeTest
- *
- * @group DB
- *
- * @package OCA\DAV\Tests\Unit
- */
-class TreeTest extends TestCase {
+class TreeTest1 extends TestCase {
 
-	/**
-	 * @dataProvider nodeForPathProvider
-	 */
-	public function testGetNodeForPath(
-		$inputFileName,
-		$fileInfoQueryPath,
-		$outputFileName,
-		$type
-	) {
-		$rootNode = $this->getMockBuilder('\OCA\DAV\Connector\Sabre\Directory')
-			->disableOriginalConstructor()
-			->getMock();
-		$mountManager = $this->createMock('\OC\Files\Mount\Manager');
-		$view = $this->createMock('\OC\Files\View');
-		$fileInfo = $this->createMock('\OCP\Files\FileInfo');
-		$fileInfo->expects($this->once())
-			->method('getType')
-			->will($this->returnValue($type));
-		$fileInfo->expects($this->once())
-			->method('getName')
-			->will($this->returnValue($outputFileName));
+	/** @var ICollection | \PHPUnit_Framework_MockObject_MockObject */
+	private $rootNode;
+	/** @var Tree | \PHPUnit_Framework_MockObject_MockObject */
+	private $tree;
 
-		$view->expects($this->once())
-			->method('getFileInfo')
-			->with($fileInfoQueryPath)
-			->will($this->returnValue($fileInfo));
-
-		$tree = new \OCA\DAV\Connector\Sabre\ObjectTree();
-		$tree->init($rootNode, $view, $mountManager);
-
-		$node = $tree->getNodeForPath($inputFileName);
-
-		$this->assertNotNull($node);
-		$this->assertEquals($outputFileName, $node->getName());
-
-		if ($type === 'file') {
-			$this->assertTrue($node instanceof \OCA\DAV\Connector\Sabre\File);
-		} else {
-			$this->assertTrue($node instanceof Directory);
-		}
-	}
-
-	function nodeForPathProvider() {
+	public function providesPaths() {
 		return [
-			// regular file
-			[
-				'regularfile.txt',
-				'regularfile.txt',
-				'regularfile.txt',
-				'file',
-			],
-			// regular directory
-			[
-				'regulardir',
-				'regulardir',
-				'regulardir',
-				'dir',
-			],
-			// regular file in subdir
-			[
-				'subdir/regularfile.txt',
-				'subdir/regularfile.txt',
-				'regularfile.txt',
-				'file',
-			],
-			// regular directory in subdir
-			[
-				'subdir/regulardir',
-				'subdir/regulardir',
-				'regulardir',
-				'dir',
-			],
+			['calendar/user1/calendar1/event1.ics'],
 		];
 	}
 
+	protected function setUp() {
+		parent::setUp();
+
+		$this->rootNode = $this->createMock(ICollection::class);
+		$this->tree = new Tree($this->rootNode);
+	}
+
 	/**
-	 * @expectedException \OCA\DAV\Connector\Sabre\Exception\InvalidPath
+	 * @throws \Sabre\DAV\Exception\NotFound
 	 */
-	public function testGetNodeForPathInvalidPath() {
-		$path = '/foo\bar';
+	public function testInFilesWithTree() {
+		$path = 'files/user1/welcome.txt';
 
+		$filesTree = $this->createMock(\Sabre\DAV\Tree::class);
+		$filesTree->expects($this->once())->method('getNodeForPath')->willReturn(5);
 
-		$storage = new Temporary([]);
-
-		$view = $this->getMockBuilder(View::class)
-			->setMethods(['resolvePath'])
-			->getMock();
-		$view->expects($this->once())
-			->method('resolvePath')
-			->will($this->returnCallback(function($path) use ($storage){
-			return [$storage, ltrim($path, '/')];
-		}));
-
-		$rootNode = $this->getMockBuilder(Directory::class)
-			->disableOriginalConstructor()
-			->getMock();
-		$mountManager = $this->createMock('\OC\Files\Mount\Manager');
-
-		$tree = new ObjectTree();
-		$tree->init($rootNode, $view, $mountManager);
-
-		$tree->getNodeForPath($path);
+		$this->rootNode->expects($this->once())->method('getChild')->willReturnMap([
+			['files', $filesTree]
+		]);
+		$node = $this->tree->getNodeForPath($path);
+		$this->assertEquals(5, $node);
 	}
 
-	public function testGetNodeForPathRoot() {
-		$path = '/';
+	/**
+	 * @throws \Sabre\DAV\Exception\NotFound
+	 */
+	public function testInFilesWithoutTree() {
+		$path = 'files/user1';
 
+		$file = $this->createMock(IFile::class);
+		$folder = $this->createMock(ICollection::class);
+		$folder->expects($this->once())->method('getChild')->willReturn($file);
 
-		$storage = new Temporary([]);
+		$this->rootNode->expects($this->once())->method('getChild')->willReturnMap([
+			['files', $folder]
+		]);
+		$node = $this->tree->getNodeForPath($path);
+		$this->assertEquals($file, $node);
 
-		$view = $this->createMock('\OC\Files\View', ['resolvePath']);
-		$view->expects($this->any())
-			->method('resolvePath')
-			->will($this->returnCallback(function ($path) use ($storage) {
-				return [$storage, ltrim($path, '/')];
-			}));
-
-		$rootNode = $this->getMockBuilder('\OCA\DAV\Connector\Sabre\Directory')
-			->disableOriginalConstructor()
-			->getMock();
-		$mountManager = $this->createMock('\OC\Files\Mount\Manager');
-
-		$tree = new \OCA\DAV\Connector\Sabre\ObjectTree();
-		$tree->init($rootNode, $view, $mountManager);
-
-		$this->assertInstanceOf('\Sabre\DAV\INode', $tree->getNodeForPath($path));
+		// second call uses the caches nodes
+		$node = $this->tree->getNodeForPath($path);
+		$this->assertEquals($file, $node);
 	}
-
 }

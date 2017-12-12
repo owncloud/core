@@ -25,13 +25,10 @@ use OCA\DAV\Connector\Sabre\ObjectTree;
 use Sabre\DAV\Exception\Forbidden;
 use Sabre\HTTP\URLUtil;
 use Sabre\DAV\ICollection;
-use OCA\DAV\Connector\Sabre\Directory;
 
 class FilesHome extends ObjectTree implements ICollection {
 
-	/**
-	 * @var array
-	 */
+	/** @var array */
 	private $principalInfo;
 
 	/**
@@ -42,11 +39,6 @@ class FilesHome extends ObjectTree implements ICollection {
 	public function __construct($principalInfo) {
 		parent::__construct();
 		$this->principalInfo = $principalInfo;
-		$view = \OC\Files\Filesystem::getView();
-		$rootInfo = $view->getFileInfo('');
-		$rootNode = new Directory($view, $rootInfo, $this);
-		$this->init($rootNode, $view, \OC::$server->getMountManager());
-
 	}
 
 	function createFile($name, $data = null) {
@@ -54,15 +46,18 @@ class FilesHome extends ObjectTree implements ICollection {
 	}
 
 	function createDirectory($name) {
-		return $this->rootNode->createDirectory($name);
+		$this->rootNode->createDirectory($name);
 	}
 
 	function getChild($name) {
 		return $this->rootNode->getChild($name);
 	}
 
-	function getChildren() {
-		return $this->rootNode->getChildren();
+	function getChildren($path = null) {
+		if ($path === null) {
+			return $this->rootNode->getChildren();
+		}
+		return parent::getChildren($path);
 	}
 
 	function childExists($name) {
@@ -73,8 +68,15 @@ class FilesHome extends ObjectTree implements ICollection {
 		return $this->rootNode->getLastModified();
 	}
 
-	function delete() {
-		throw new Forbidden('Permission denied to delete home folder');
+	/**
+	 * @param string $path
+	 * @throws Forbidden
+	 */
+	function delete($path = null) {
+		if ($path === null) {
+			throw new Forbidden('Permission denied to delete home folder');
+		}
+		parent::delete($path);
 	}
 
 	function getName() {
@@ -82,6 +84,10 @@ class FilesHome extends ObjectTree implements ICollection {
 		return $name;
 	}
 
+	/**
+	 * @param string $name
+	 * @throws Forbidden
+	 */
 	function setName($name) {
 		throw new Forbidden('Permission denied to rename this folder');
 	}

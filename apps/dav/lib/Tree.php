@@ -21,17 +21,9 @@
 
 namespace OCA\DAV;
 
-use OCA\DAV\Connector\Sabre\Exception\Forbidden;
 use OCA\DAV\Connector\Sabre\Exception\InvalidPath;
-use OCA\DAV\Connector\Sabre\Exception\FileLocked;
-use OCP\Files\ForbiddenException;
-use OCP\Files\StorageInvalidException;
-use OCP\Files\StorageNotAvailableException;
-use OCP\Lock\LockedException;
-use OC\Files\View;
 use Sabre\DAV\Exception\NotFound;
 use Sabre\DAV\ICollection;
-use OCA\DAV\Connector\Sabre\Node;
 
 /**
  * Sabre tree of nodes.
@@ -45,11 +37,7 @@ class Tree extends \Sabre\DAV\Tree {
 	 *
 	 * @param string $path
 	 * @return \Sabre\DAV\INode
-	 * @throws InvalidPath
-	 * @throws \Sabre\DAV\Exception\Locked
-	 * @throws \Sabre\DAV\Exception\NotFound
-	 * @throws \Sabre\DAV\Exception\Forbidden
-	 * @throws \Sabre\DAV\Exception\ServiceUnavailable
+	 * @throws NotFound
 	 */
 	public function getNodeForPath($path) {
 		// FIXME: remove this check when we are sure that other
