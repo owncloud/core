@@ -246,7 +246,7 @@ abstract class AbstractCustomPropertiesBackend implements BackendInterface {
 			// we catch the exception to prevent breaking the whole list with a 404
 			// (soft fail)
 			\OC::$server->getLogger()->warning(
-				'Could not get node for path: "{path}" : {$message}',
+				'Could not get node for path: "{path}" : {message}',
 				[
 					'app' => 'dav',
 					'path' => $path,
