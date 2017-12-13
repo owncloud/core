@@ -196,6 +196,21 @@ else
 	fi
 fi
 
+#skip tests tagged with the current oC version
+#one, two or three parts of the version can be used
+#e.g.
+#@skipOnOcV10.0.4
+#@skipOnOcV10.0
+#@skipOnOcV10
+
+remote_occ $ADMIN_PASSWORD $OCC_URL "config:system:get version"
+OWNCLOUD_VERSION=`echo $REMOTE_OCC_STDOUT | cut -d"." -f1-3`
+BEHAT_TAGS='~@skipOnOcV'$OWNCLOUD_VERSION'&&'$BEHAT_TAGS
+OWNCLOUD_VERSION=`echo $OWNCLOUD_VERSION | cut -d"." -f1-2`
+BEHAT_TAGS='~@skipOnOcV'$OWNCLOUD_VERSION'&&'$BEHAT_TAGS
+OWNCLOUD_VERSION=`echo $OWNCLOUD_VERSION | cut -d"." -f1`
+BEHAT_TAGS='~@skipOnOcV'$OWNCLOUD_VERSION'&&'$BEHAT_TAGS
+
 REMOTE_FED_BASE_URL=$REMOTE_FED_SRV_HOST_NAME
 
 if [ ! -z "$REMOTE_FED_SRV_HOST_PORT" ] && [ "$REMOTE_FED_SRV_HOST_PORT" != "80" ]
