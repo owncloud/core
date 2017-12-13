@@ -27,6 +27,8 @@ use OC\Authentication\Token\DefaultToken;
 use OC\Authentication\Token\DefaultTokenMapper;
 use OC\Authentication\Token\IToken;
 use OCP\DB\QueryBuilder\IQueryBuilder;
+use OCP\IDBConnection;
+use OCP\IUser;
 use Test\TestCase;
 
 /**
@@ -39,6 +41,7 @@ class DefaultTokenMapperTest extends TestCase {
 
 	/** @var DefaultTokenMapper */
 	private $mapper;
+	/** @var IDBConnection */
 	private $dbConnection;
 	private $time;
 
@@ -121,7 +124,6 @@ class DefaultTokenMapperTest extends TestCase {
 	}
 
 	public function testGetToken() {
-		$token = '1504445f1524fc801035448a95681a9378ba2e83930c814546c56e5d6ebde221198792fd900c88ed5ead0555780dad1ebce3370d7e154941cd5de87eb419899b';
 		$token = new DefaultToken();
 		$token->setUid('user2');
 		$token->setLoginName('User2');
@@ -159,6 +161,7 @@ class DefaultTokenMapperTest extends TestCase {
 	}
 
 	public function testGetTokenByUserNotFound() {
+		/** @var IUser | \PHPUnit_Framework_MockObject_MockObject $user */
 		$user = $this->createMock('\OCP\IUser');
 		$user->expects($this->once())
 			->method('getUID')
@@ -168,6 +171,7 @@ class DefaultTokenMapperTest extends TestCase {
 	}
 
 	public function testDeleteById() {
+		/** @var IUser | \PHPUnit_Framework_MockObject_MockObject $user */
 		$user = $this->createMock('\OCP\IUser');
 		$qb = $this->dbConnection->getQueryBuilder();
 		$qb->select('id')
@@ -184,6 +188,7 @@ class DefaultTokenMapperTest extends TestCase {
 	}
 
 	public function testDeleteByIdWrongUser() {
+		/** @var IUser | \PHPUnit_Framework_MockObject_MockObject $user */
 		$user = $this->createMock('\OCP\IUser');
 		$id = 33;
 		$user->expects($this->once())
@@ -194,4 +199,23 @@ class DefaultTokenMapperTest extends TestCase {
 		$this->assertEquals(3, $this->getNumberOfTokens());
 	}
 
+	/**
+	 * @expectedException \InvalidArgumentException
+	 */
+	public function testEmptyName() {
+		$token = new DefaultToken();
+		$token->setUid('user01');
+		$token->setName('');
+		$this->mapper->insert($token);
+	}
+
+	/**
+	 * @expectedException \InvalidArgumentException
+	 */
+	public function testEmptyLoginName() {
+		$token = new DefaultToken();
+		$token->setUid('user01');
+		$token->setLoginName('');
+		$this->mapper->insert($token);
+	}
 }
