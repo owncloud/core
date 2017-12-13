@@ -148,6 +148,7 @@ class OC_Template extends \OC\Template\Base {
 			OC_Util::addStyle("jquery.ocdialog");
 			OC_Util::addScript('files/fileinfo');
 			OC_Util::addScript('files/client');
+			OC_Util::addScript('autobahn');
 
 			// Add the stuff we need always
 			// following logic will import all vendor libraries that are

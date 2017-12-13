@@ -88,8 +88,10 @@ use OC\Theme\ThemeService;
 use OC\User\AccountMapper;
 use OC\User\AccountTermMapper;
 use OCP\App\IServiceLoader;
+use OCP\AppFramework\Http\ContentSecurityPolicy;
 use OCP\AppFramework\QueryException;
 use OCP\AppFramework\Utility\ITimeFactory;
+use OCP\IAutobahn;
 use OCP\IL10N;
 use OCP\ILogger;
 use OCP\IServerContainer;
@@ -748,7 +750,12 @@ class Server extends ServerContainer implements IServerContainer, IServiceLoader
 			);
 		});
 		$this->registerService('ContentSecurityPolicyManager', function (Server $c) {
-			return new ContentSecurityPolicyManager();
+			$cspManager =  new ContentSecurityPolicyManager();
+			$csp = new ContentSecurityPolicy();
+			// TODO: read from config
+			$csp->addAllowedConnectDomain('ws://localhost:8080');
+			$cspManager->addDefaultPolicy($csp);
+			return $cspManager;
 		});
 		$this->registerService('StoragesDBConfigService', function (Server $c) {
 			return new DBConfigService(
@@ -835,6 +842,9 @@ class Server extends ServerContainer implements IServerContainer, IServiceLoader
 
 		$this->registerService('ThemeService', function ($c) {
 			return new ThemeService($this->getSystemConfig()->getValue('theme'));
+		});
+		$this->registerService(IAutobahn::class, function ($c) {
+			return new Autobahn();
 		});
 		$this->registerAlias('OCP\Theme\IThemeService', 'ThemeService');
 		$this->registerAlias('OCP\IUserSession', 'UserSession');
@@ -1556,6 +1566,13 @@ class Server extends ServerContainer implements IServerContainer, IServiceLoader
 	 */
 	public function getTimeFactory() {
 		return $this->query('\OCP\AppFramework\Utility\ITimeFactory');
+	}
+
+	/**
+	 * @return IAutobahn
+	 */
+	public function getAutobahn() {
+		return $this->query(IAutobahn::class);
 	}
 
 	/**

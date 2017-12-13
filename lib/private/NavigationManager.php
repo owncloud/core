@@ -164,7 +164,7 @@ class NavigationManager implements INavigationManager {
 			}
 
 			if (is_null($iconPath)) {
-				$iconPath = $this->urlGenerator->imagePath('core', 'default-app-icon');
+				$iconPath = $this->urlGenerator->imagePath('core', 'default-app-icon.svg');
 			}
 
 			$this->add([
