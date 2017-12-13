@@ -86,6 +86,7 @@ pipeline:
     pull: true
     files:
      - tests/autotest-clover-${DB_TYPE}.xml
+     - tests/autotest-external-clover-${DB_TYPE}.xml
     when:
       event: [push, pull_request]
       matrix:
