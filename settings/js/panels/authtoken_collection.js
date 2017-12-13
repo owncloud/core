@@ -32,8 +32,8 @@
 		/**
 		 * Show recently used sessions/devices first
 		 *
-		 * @param {OC.Settigns.AuthToken} t1
-		 * @param {OC.Settigns.AuthToken} t2
+		 * @param {OC.Settings.AuthToken} t1
+		 * @param {OC.Settings.AuthToken} t2
 		 * @returns {Boolean}
 		 */
 		comparator: function (t1, t2) {
