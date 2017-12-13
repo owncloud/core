@@ -32,7 +32,7 @@ use OCP\App\IAppManager;
 use OCP\Migration\IOutput;
 use OCP\Migration\IRepairStep;
 use OCP\Util;
-use Symfony\Component\EventDispatcher\EventDispatcher;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
 use OCP\IConfig;
 
@@ -45,7 +45,7 @@ class Apps implements IRepairStep {
 	/** @var  IAppManager */
 	private $appManager;
 
-	/** @var  EventDispatcher */
+	/** @var  EventDispatcherInterface */
 	private $eventDispatcher;
 
 	/** @var IConfig */
@@ -58,11 +58,11 @@ class Apps implements IRepairStep {
 	 * Apps constructor.
 	 *
 	 * @param IAppManager $appManager
-	 * @param EventDispatcher $eventDispatcher
+	 * @param EventDispatcherInterface $eventDispatcher
 	 * @param IConfig $config
 	 * @param \OC_Defaults $defaults
 	 */
-	public function __construct(IAppManager $appManager, EventDispatcher $eventDispatcher, IConfig $config, \OC_Defaults $defaults) {
+	public function __construct(IAppManager $appManager, EventDispatcherInterface $eventDispatcher, IConfig $config, \OC_Defaults $defaults) {
 		$this->appManager = $appManager;
 		$this->eventDispatcher = $eventDispatcher;
 		$this->config = $config;

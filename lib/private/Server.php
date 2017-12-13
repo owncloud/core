@@ -41,6 +41,7 @@
 namespace OC;
 
 use bantu\IniGetWrapper\IniGetWrapper;
+use Jmikola\WildcardEventDispatcher\WildcardEventDispatcher;
 use OC\AppFramework\Http\Request;
 use OC\AppFramework\Db\Db;
 use OC\AppFramework\Utility\TimeFactory;
@@ -97,7 +98,6 @@ use OCP\ISession;
 use OCP\IUser;
 use OCP\Security\IContentSecurityPolicyManager;
 use OCP\Theme\IThemeService;
-use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use OC\Files\External\StoragesBackendService;
 use OC\Files\External\Service\UserStoragesService;
@@ -711,7 +711,7 @@ class Server extends ServerContainer implements IServerContainer, IServiceLoader
 			return $factory->getManager();
 		});
 		$this->registerService('EventDispatcher', function () {
-			return new EventDispatcher();
+			return new WildcardEventDispatcher();
 		});
 		$this->registerService('CryptoWrapper', function (Server $c) {
 			// FIXME: Instantiiated here due to cyclic dependency

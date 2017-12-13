@@ -27,7 +27,7 @@ use OC\Repair;
 use OC_App;
 use OCP\BackgroundJob\IJobList;
 use OCP\ILogger;
-use Symfony\Component\EventDispatcher\EventDispatcher;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
  * Class BackgroundRepair
@@ -42,10 +42,10 @@ class BackgroundRepair extends TimedJob {
 	/** @var ILogger */
 	private $logger;
 
-	/** @var EventDispatcher */
+	/** @var EventDispatcherInterface */
 	private $dispatcher;
 
-	public function setDispatcher(EventDispatcher $dispatcher) {
+	public function setDispatcher(EventDispatcherInterface $dispatcher) {
 		$this->dispatcher = $dispatcher;
 	}
 	/**
