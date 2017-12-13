@@ -27,6 +27,7 @@ namespace OC\Core\Command\Maintenance;
 
 use Exception;
 use OCP\IConfig;
+use OCP\Migration\IRepairStep;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Input\InputInterface;
@@ -64,6 +65,18 @@ class Repair extends Command {
 			->setName('maintenance:repair')
 			->setDescription('repair this installation')
 			->addOption(
+				'list',
+				null,
+				InputOption::VALUE_NONE,
+				'Lists all possible repair steps'
+			)
+			->addOption(
+				'single',
+				's',
+				InputOption::VALUE_REQUIRED,
+				'Run just one repair step given its class name'
+			)
+			->addOption(
 				'include-expensive',
 				null,
 				InputOption::VALUE_NONE,
@@ -71,6 +84,50 @@ class Repair extends Command {
 	}
 
 	protected function execute(InputInterface $input, OutputInterface $output) {
+
+		// Handle listing repair steps
+		$list = $input->getOption('list');
+		if ($list) {
+			$steps = array_merge(\OC\Repair::getRepairSteps(), \OC\Repair::getExpensiveRepairSteps());
+			$output->writeln("Found ".count($steps)." repair steps");
+			$output->writeln("");
+			foreach($steps as $step) {
+				$output->writeln(get_class($step) . " -> " . $step->getName());
+			}
+			return 0;
+		}
+
+		// Handle running just one repair step
+		$single = $input->getOption('single');
+		if ($single) {
+			// Check it exists
+			$steps = array_merge(\OC\Repair::getRepairSteps(), \OC\Repair::getExpensiveRepairSteps());
+			$stepNames = array_map('get_class', $steps);
+			if(!in_array($single, $stepNames, true)) {
+				$output->writeln("<error>Repair step not found. Use --list to show available steps.");
+				return 1;
+			}
+			// Find step and create repair manager
+			$repair = new \OC\Repair([], $this->dispatcher);
+			foreach($steps as $step) {
+				if(get_class($step) === $single) {
+					$repair->addStep($step);
+					break;
+				}
+			}
+			$this->progress = new ProgressBar($output);
+			$this->output = $output;
+			$this->dispatcher->addListener('\OC\Repair::startProgress', [$this, 'handleRepairFeedBack']);
+			$this->dispatcher->addListener('\OC\Repair::advance', [$this, 'handleRepairFeedBack']);
+			$this->dispatcher->addListener('\OC\Repair::finishProgress', [$this, 'handleRepairFeedBack']);
+			$this->dispatcher->addListener('\OC\Repair::step', [$this, 'handleRepairFeedBack']);
+			$this->dispatcher->addListener('\OC\Repair::info', [$this, 'handleRepairFeedBack']);
+			$this->dispatcher->addListener('\OC\Repair::warning', [$this, 'handleRepairFeedBack']);
+			$this->dispatcher->addListener('\OC\Repair::error', [$this, 'handleRepairFeedBack']);
+			$repair->run();
+			return 0;
+		}
+
 		$includeExpensive = $input->getOption('include-expensive');
 		if ($includeExpensive) {
 			foreach ($this->repair->getExpensiveRepairSteps() as $step) {
@@ -116,6 +173,10 @@ class Repair extends Command {
 		$this->config->setSystemValue('maintenance', $maintenanceMode);
 	}
 
+	private function runRepair() {
+
+	}
+
 	public function handleRepairFeedBack($event) {
 		if (!$event instanceof GenericEvent) {
 			return;
@@ -132,10 +193,10 @@ class Repair extends Command {
 				$this->output->writeln('');
 				break;
 			case '\OC\Repair::step':
-				$this->output->writeln(' - ' . $event->getArgument(0));
+				$this->output->writeln(' - Step: ' . $event->getArgument(0));
 				break;
 			case '\OC\Repair::info':
-				$this->output->writeln('     - ' . $event->getArgument(0));
+				$this->output->writeln('     - INFO: ' . $event->getArgument(0));
 				break;
 			case '\OC\Repair::warning':
 				$this->output->writeln('     - WARNING: ' . $event->getArgument(0));
