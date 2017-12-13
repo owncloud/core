@@ -71,7 +71,8 @@ class Server {
 		$dispatcher = \OC::$server->getEventDispatcher();
 
 		$root = new RootCollection();
-		$this->server = new \OCA\DAV\Connector\Sabre\Server($root);
+		$tree = new \OCA\DAV\Tree($root);
+		$this->server = new \OCA\DAV\Connector\Sabre\Server($tree);
 
 		// Backends
 		$authBackend = new Auth(
@@ -112,13 +113,19 @@ class Server {
 		$this->server->addPlugin(new \OCA\DAV\Connector\Sabre\LockPlugin());
 		$this->server->addPlugin(new \Sabre\DAV\Sync\Plugin());
 
-		// acl
-		$acl = new DavAclPlugin();
-		$acl->principalCollectionSet = [
-			'principals/users', 'principals/groups'
-		];
-		$acl->defaultUsernamePath = 'principals/users';
-		$this->server->addPlugin($acl);
+		// ACL plugin not used in files subtree, also it causes issues
+		// with performance and locking issues because it will query
+		// every parent node which might trigger an implicit rescan in the
+		// case of external storages with update detection
+		if (strpos($this->server->getRequestUri(), 'files/') !== 0) {
+			// acl
+			$acl = new DavAclPlugin();
+			$acl->principalCollectionSet = [
+				'principals/users', 'principals/groups'
+			];
+			$acl->defaultUsernamePath = 'principals/users';
+			$this->server->addPlugin($acl);
+		}
 
 		// calendar plugins
 		$this->server->addPlugin(new \OCA\DAV\CalDAV\Plugin());

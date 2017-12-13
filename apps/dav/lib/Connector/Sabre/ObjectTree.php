@@ -130,28 +130,23 @@ class ObjectTree extends \Sabre\DAV\Tree {
 			throw new \Sabre\DAV\Exception\ServiceUnavailable('filesystem not setup');
 		}
 
-		// check the path, also called when the path has been entered manually eg via a file explorer
-		if (\OC\Files\Filesystem::isForbiddenFileOrDir($path)) {
-			throw new \Sabre\DAV\Exception\Forbidden();
-		}
-
 		$path = trim($path, '/');
 
 		if (isset($this->cache[$path]) && $this->cache[$path] !== false) {
 			return $this->cache[$path];
 		}
 
-		if ($path) {
+		// check the path, also called when the path has been entered manually eg via a file explorer
+		if (\OC\Files\Filesystem::isForbiddenFileOrDir($path)) {
+			throw new \Sabre\DAV\Exception\Forbidden();
+		}
+
+		if ($path !== '') {
 			try {
 				$this->fileView->verifyPath($path, basename($path));
 			} catch (\OCP\Files\InvalidPathException $ex) {
 				throw new InvalidPath($ex->getMessage());
 			}
-		}
-
-		// check the path, also called when the path has been entered manually eg via a file explorer
-		if (\OC\Files\Filesystem::isForbiddenFileOrDir($path)) {
-			throw new \Sabre\DAV\Exception\Forbidden();
 		}
 
 		// Is it the root node?
