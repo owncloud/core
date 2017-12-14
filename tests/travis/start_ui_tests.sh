@@ -313,6 +313,11 @@ export IPV6_URL
 export REMOTE_FED_BASE_URL
 export FILES_FOR_UPLOAD="$(pwd)/tests/ui/filesForUpload/"
 
+if [ ! -w $FILES_FOR_UPLOAD ]
+then
+	echo "WARNING: cannot write to upload folder '$FILES_FOR_UPLOAD', some upload tests might fail"
+fi
+
 lib/composer/bin/behat -c $BEHAT_YML $BEHAT_SUITE_OPTION $BEHAT_TAG_OPTION $BEHAT_TAGS $BEHAT_FEATURE -v  2>&1 | tee -a $TEST_LOG_FILE
 
 BEHAT_EXIT_STATUS=${PIPESTATUS[0]}
