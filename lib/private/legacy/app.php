@@ -245,8 +245,12 @@ class OC_App {
 			\OC::$server->getLogger()->logException($ex);
 			$blacklist = \OC::$server->getAppManager()->getAlwaysEnabledApps();
 			if (!in_array($app, $blacklist)) {
-				\OC::$server->getLogger()->warning('Could not load app "' . $app . '", it will be disabled', array('app' => 'core'));
-				self::disable($app);
+				if (!self::isType($app, ['authentication', 'filesystem'])) {
+					\OC::$server->getLogger()->warning('Could not load app "' . $app . '", it will be disabled', array('app' => 'core'));
+					self::disable($app);
+				} else {
+					\OC::$server->getLogger()->warning('Could not load app "' . $app . '", see exception above', array('app' => 'core'));
+				}
 			}
 			throw $ex;
 		}
