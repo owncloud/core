@@ -63,9 +63,9 @@ class LostControllerTest extends \PHPUnit_Framework_TestCase {
 	private $secureRandom;
 	/** @var ITimeFactory | PHPUnit_Framework_MockObject_MockObject */
 	private $timeFactory;
-	/** @var IRequest */
+	/** @var IRequest | PHPUnit_Framework_MockObject_MockObject */
 	private $request;
-	/** @var ILogger */
+	/** @var ILogger | PHPUnit_Framework_MockObject_MockObject*/
 	private $logger;
 	/** @var Session */
 	private $userSession;
@@ -253,6 +253,9 @@ class LostControllerTest extends \PHPUnit_Framework_TestCase {
 				[true, $existingUser],
 				[false, $nonExistingUser]
 			]));
+		$this->userManager->expects($this->any())
+			->method('getByEmail')
+			->willReturn([]);
 
 		// With a non existing user
 		$response = $this->lostController->email($nonExistingUser);
