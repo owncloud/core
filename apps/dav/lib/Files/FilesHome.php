@@ -21,15 +21,14 @@
  */
 namespace OCA\DAV\Files;
 
-use OCA\DAV\Connector\Sabre\Directory;
+use OCA\DAV\Connector\Sabre\ObjectTree;
 use Sabre\DAV\Exception\Forbidden;
 use Sabre\HTTP\URLUtil;
+use Sabre\DAV\ICollection;
 
-class FilesHome extends Directory {
+class FilesHome extends ObjectTree implements ICollection {
 
-	/**
-	 * @var array
-	 */
+	/** @var array */
 	private $principalInfo;
 
 	/**
@@ -38,14 +37,46 @@ class FilesHome extends Directory {
 	 * @param array $principalInfo
 	 */
 	public function __construct($principalInfo) {
+		parent::__construct();
 		$this->principalInfo = $principalInfo;
-		$view = \OC\Files\Filesystem::getView();
-		$rootInfo = $view->getFileInfo('');
-		parent::__construct($view, $rootInfo);
 	}
 
-	function delete() {
-		throw new Forbidden('Permission denied to delete home folder');
+	function createFile($name, $data = null) {
+		return $this->rootNode->createFile($name, $data);
+	}
+
+	function createDirectory($name) {
+		$this->rootNode->createDirectory($name);
+	}
+
+	function getChild($name) {
+		return $this->rootNode->getChild($name);
+	}
+
+	function getChildren($path = null) {
+		if ($path === null) {
+			return $this->rootNode->getChildren();
+		}
+		return parent::getChildren($path);
+	}
+
+	function childExists($name) {
+		return $this->rootNode->childExists($name);
+	}
+
+	function getLastModified() {
+		return $this->rootNode->getLastModified();
+	}
+
+	/**
+	 * @param string $path
+	 * @throws Forbidden
+	 */
+	function delete($path = null) {
+		if ($path === null) {
+			throw new Forbidden('Permission denied to delete home folder');
+		}
+		parent::delete($path);
 	}
 
 	function getName() {
@@ -53,6 +84,10 @@ class FilesHome extends Directory {
 		return $name;
 	}
 
+	/**
+	 * @param string $name
+	 * @throws Forbidden
+	 */
 	function setName($name) {
 		throw new Forbidden('Permission denied to rename this folder');
 	}
