@@ -178,15 +178,15 @@ services:
       matrix:
         FILES_EXTERNAL_TYPE: webdav
 
-  # oracle:
-  #   image: oracle:x.x
-  #   environment:
-  #     - ORACLE_USER=owncloud
-  #     - ORACLE_PASSWORD=owncloud
-  #     - ORACLE_DB=owncloud
-  #   when:
-  #     matrix:
-  #       DB_TYPE: oracle
+  oracle:
+    image: deepdiver/docker-oracle-xe-11g
+    environment:
+       - ORACLE_USER=system
+       - ORACLE_PASSWORD=oracle
+       - ORACLE_DB=owncloud
+    when:
+      matrix:
+        DB_TYPE: oracle
 
 matrix:
   include:
@@ -203,9 +203,9 @@ matrix:
     - PHP_VERSION: 5.6
       DB_TYPE: postgres
       TEST_SUITE: phpunit
-    # - PHP_VERSION: 5.6
-    #   DB_TYPE: oracle
-    #   TEST_SUITE: phpunit
+    - PHP_VERSION: 5.6
+      DB_TYPE: oracle
+      TEST_SUITE: phpunit
 
     # PHP 7.0
     - PHP_VERSION: 7.0
