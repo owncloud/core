@@ -20,6 +20,7 @@ So that public sharing is limited according to organization policy
 		And I access the last created public link
 		Then the file "lorem.txt" should be listed
 
+	@skipOnOcV10.0.3 @feature_was_changed_in_10.0.4
 	Scenario: creating a public link with read & write permissions makes it possible to delete files via the link
 		When I create a new public link for the folder "simple-folder" with
 		| permission | Read & Write |
@@ -33,6 +34,7 @@ So that public sharing is limited according to organization policy
 		Then the deleted elements should not be listed
 		And the deleted elements should not be listed after a page reload
 
+	@skipOnOcV10.0.3 @feature_was_changed_in_10.0.4
 	Scenario: creating a public link with read permissions only makes it impossible to delete files via the link
 		When I create a new public link for the folder "simple-folder" with
 		| permission | Read |
