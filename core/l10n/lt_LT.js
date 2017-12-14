@@ -112,6 +112,7 @@ OC.L10N.register(
     "Edit" : "Redaguoti",
     "Remove" : "Pašalinti",
     "Copy to clipboard" : "Kopijuoti į talpyklę",
+    "Anyone with the link has access to the file/folder" : "Kiekvienas turintis šią nuorodą gali pasiekti failą/katalogą",
     "Copied!" : "Nukopijuota!",
     "Choose a password for the public link" : "Viešos nuorodos slaptažodis",
     "Password required" : "Reikalingas slaptažodis",
