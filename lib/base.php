@@ -580,8 +580,10 @@ class OC {
 		\OC::$server->getEventLogger()->start('init_session', 'Initialize session');
 		OC_App::loadApps(['session']);
 		if (!self::$CLI) {
+			\OC_App::loadApps(['theme']);
 			self::initSession();
 		}
+
 		\OC::$server->getEventLogger()->end('init_session');
 
 		// incognito mode for now
@@ -828,22 +830,6 @@ class OC {
 	}
 
 	/**
-	 * Enables the defaultEnabled app theme
-	 * __do not__ call this for every request, as this parses all apps info.xml
-	 * files in order to determine which app is a default enabled theme while
-	 * not accessing the database which might not be available.
-	 */
-	public static function loadDefaultEnabledAppTheme() {
-		$defaultEnabledAppTheme = \OC_App::getDefaultEnabledAppTheme();
-
-		if ($defaultEnabledAppTheme !== false) {
-			/** @var \OC\Theme\ThemeService $themeService */
-			$themeService = \OC::$server->query('ThemeService');
-			$themeService->setAppTheme($defaultEnabledAppTheme);
-		}
-	}
-
-	/**
 	 * Handle the request
 	 */
 	public static function handleRequest() {
@@ -860,8 +846,6 @@ class OC {
 			$setupHelper = new OC\Setup(\OC::$server->getConfig(), \OC::$server->getIniWrapper(),
 				\OC::$server->getL10N('lib'), new \OC_Defaults(), \OC::$server->getLogger(),
 				\OC::$server->getSecureRandom());
-
-			self::loadDefaultEnabledAppTheme();
 
 			$controller = new OC\Core\Controller\SetupController($setupHelper);
 			$controller->run($_POST);

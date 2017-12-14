@@ -31,6 +31,9 @@ use OCP\IConfig;
 use OCP\IRequest;
 use OCP\IUserSession;
 use OCP\L10N\IFactory;
+use OCP\Theme\ITheme;
+use OCP\Theme\IThemeService;
+
 
 /**
  * A factory that generates language instances
@@ -65,22 +68,28 @@ class Factory implements IFactory {
 	/** @var IUserSession */
 	protected $userSession;
 
+	/** @var IThemeService */
+	protected $themeService;
+
 	/** @var string */
 	protected $serverRoot;
 
 	/**
 	 * @param IConfig $config
 	 * @param IRequest $request
+	 * @param IThemeService $themeService
 	 * @param IUserSession $userSession
 	 * @param string $serverRoot
 	 */
 	public function __construct(IConfig $config,
 								IRequest $request,
+								IThemeService $themeService,
 								IUserSession $userSession = null,
 								$serverRoot) {
 		$this->config = $config;
 		$this->request = $request;
 		$this->userSession = $userSession;
+		$this->themeService = $themeService;
 		$this->serverRoot = $serverRoot;
 	}
 
@@ -180,32 +189,14 @@ class Factory implements IFactory {
 
 		$available = ['en']; //english is always available
 		$dir = $this->findL10nDir($app);
-		if (is_dir($dir)) {
-			$files = scandir($dir);
-			if ($files !== false) {
-				foreach ($files as $file) {
-					if (substr($file, -5) === '.json' && substr($file, 0, 4) !== 'l10n') {
-						$available[] = substr($file, 0, -5);
-					}
-				}
-			}
-		}
+		$available = array_merge($available, $this->findAvailableLanguageFiles($dir));
 
-		// merge with translations from theme
-		$theme = $this->config->getSystemValue('theme');
-		if (!empty($theme)) {
-			$themeDir = $this->serverRoot . '/themes/' . $theme . substr($dir, strlen($this->serverRoot));
-
-			if (is_dir($themeDir)) {
-				$files = scandir($themeDir);
-				if ($files !== false) {
-					foreach ($files as $file) {
-						if (substr($file, -5) === '.json' && substr($file, 0, 4) !== 'l10n') {
-							$available[] = substr($file, 0, -5);
-						}
-					}
-				}
-			}
+		// merge with translations from themes
+		$relativePath = substr($dir, strlen($this->serverRoot));
+		$themeDir = $this->getActiveThemeDirectory();
+		if ($themeDir !== '') {
+			$themeDir .= $relativePath;
+			$available = array_merge($available, $this->findAvailableLanguageFiles($themeDir));
 		}
 
 		$this->availableLanguages[$key] = $available;
@@ -295,12 +286,13 @@ class Factory implements IFactory {
 			$languageFiles[] = $transFile;
 		}
 
-		// merge with translations from theme
-		$theme = $this->config->getSystemValue('theme');
-		if (!empty($theme)) {
-			$transFile = $this->serverRoot . '/themes/' . $theme . substr($transFile, strlen($this->serverRoot));
-			if (file_exists($transFile)) {
-				$languageFiles[] = $transFile;
+		// merge with translations from themes
+		$relativePath = substr($transFile, strlen($this->serverRoot));
+		$themeDir = $this->getActiveThemeDirectory();
+		if ($themeDir !== '') {
+			$themeTransFile = $themeDir . $relativePath;
+			if (file_exists($themeTransFile)) {
+				$languageFiles[] = $themeTransFile;
 			}
 		}
 
@@ -323,6 +315,66 @@ class Factory implements IFactory {
 			return \OC_App::getAppPath($app) . '/l10n/';
 		}
 		return $this->serverRoot . '/core/l10n/';
+	}
+
+	/**
+	 * @param string $dir
+	 * @return array
+	 */
+	protected function findAvailableLanguageFiles($dir) {
+		$availableLanguageFiles = [];
+		if (is_dir($dir)) {
+			$files = scandir($dir);
+			if ($files !== false) {
+				foreach ($files as $file) {
+					if (substr($file, -5) === '.json' && substr($file, 0, 4) !== 'l10n') {
+						$availableLanguageFiles[] = substr($file, 0, -5);
+					}
+				}
+			}
+		}
+		return $availableLanguageFiles;
+	}
+
+	/**
+	 * Get the currently active theme
+	 *
+	 * @return string
+	 */
+	protected function getActiveThemeDirectory() {
+		$themeDir = $this->getActiveAppThemeDirectory();
+		if ($themeDir === '') {
+			// fallback to legacy theme
+			$themeDir = $this->getActiveLegacyThemeDirectory();
+		}
+		return $themeDir;
+	}
+
+	/**
+	 * Get the currently active legacy theme
+	 *
+	 * @return string
+	 */
+	protected function getActiveLegacyThemeDirectory() {
+		$themeDir = '';
+		$activeLegacyTheme = $this->config->getSystemValue('theme', '');
+		if ($activeLegacyTheme !== '') {
+			$themeDir = $this->serverRoot . '/themes/' . $activeLegacyTheme;
+		}
+		return $themeDir;
+	}
+
+	/**
+	 * Get the currently active app-theme
+	 *
+	 * @return string
+	 */
+	protected function getActiveAppThemeDirectory() {
+		$theme = $this->themeService->getTheme();
+		if ($theme instanceof ITheme && $theme->getDirectory() !== '' ) {
+			return $this->serverRoot . '/' . $theme->getDirectory();
+		}
+		return '';
 	}
 
 	/**

@@ -33,6 +33,7 @@ namespace OC\App;
 use OC_App;
 use OC\Installer;
 use OCP\App\IAppManager;
+use OCP\App\AppManagerException;
 use OCP\App\ManagerEvent;
 use OCP\Files;
 use OCP\IAppConfig;
@@ -217,12 +218,46 @@ class AppManager implements IAppManager {
 		if(OC_App::getAppPath($appId) === false) {
 			throw new \Exception("$appId can't be enabled since it is not installed.");
 		}
+		$this->canEnableTheme($appId);
+
 		$this->installedAppsCache[$appId] = 'yes';
 		$this->appConfig->setValue($appId, 'enabled', 'yes');
 		$this->dispatcher->dispatch(ManagerEvent::EVENT_APP_ENABLE, new ManagerEvent(
 			ManagerEvent::EVENT_APP_ENABLE, $appId
 		));
 		$this->clearAppsCache();
+	}
+
+	/**
+	 * Do not allow more than one active app-theme
+	 *
+	 * @param $appId
+	 * @throws AppManagerException
+	 */
+	protected function canEnableTheme($appId) {
+		$info = $this->getAppInfo($appId);
+		if (
+			isset($info['types'])
+			&& is_array($info['types'])
+			&& in_array('theme', $info['types'])
+		) {
+			$apps = $this->getInstalledApps();
+			foreach ($apps as $installedAppId) {
+				if ($this->isTheme($installedAppId)) {
+					throw new AppManagerException("$appId can't be enabled until $installedAppId is disabled.");
+				}
+			}
+		}
+	}
+
+	/**
+	 *  Wrapper for OC_App for easy mocking
+	 *
+	 * @param string $appId
+	 * @return bool
+	 */
+	protected function isTheme($appId) {
+		return \OC_App::isType($appId,'theme');
 	}
 
 	/**

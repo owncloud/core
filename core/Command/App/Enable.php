@@ -25,6 +25,7 @@
 namespace OC\Core\Command\App;
 
 use OCP\App\IAppManager;
+use OCP\ILogger;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -78,6 +79,7 @@ class Enable extends Command {
 			\OC_App::enable($appId, $groups);
 			$output->writeln($appId . ' enabled for groups: ' . implode(', ', $groups));
 		}
+
 		return 0;
 	}
 }

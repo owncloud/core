@@ -9,6 +9,7 @@
 namespace Test\L10N;
 
 use OC\L10N\Factory;
+use OCP\Theme\IThemeService;
 use Test\TestCase;
 
 /**
@@ -28,6 +29,9 @@ class FactoryTest extends TestCase {
 	/** @var \OCP\IUserSession|\PHPUnit_Framework_MockObject_MockObject */
 	protected $userSession;
 
+	/** @var IThemeService|\PHPUnit_Framework_MockObject_MockObject */
+	protected $themeService;
+
 	/** @var string */
 	protected $serverRoot;
 
@@ -41,6 +45,11 @@ class FactoryTest extends TestCase {
 
 		/** @var \OCP\IRequest $request */
 		$this->request = $this->getMockBuilder('OCP\IRequest')
+			->disableOriginalConstructor()
+			->getMock();
+
+		/** @var IThemeService $themeService */
+		$this->themeService = $this->getMockBuilder(IThemeService::class)
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -59,13 +68,14 @@ class FactoryTest extends TestCase {
 				->setConstructorArgs([
 					$this->config,
 					$this->request,
+					$this->themeService,
 					$this->userSession,
 					$this->serverRoot,
 				])
 				->setMethods($methods)
 				->getMock();
 		} else {
-			return new Factory($this->config, $this->request, $this->userSession, $this->serverRoot);
+			return new Factory($this->config, $this->request, $this->themeService, $this->userSession, $this->serverRoot);
 		}
 	}
 
@@ -309,6 +319,47 @@ class FactoryTest extends TestCase {
 			->willReturn('abc');
 
 		$this->assertEquals(['en', 'zz'], $factory->findAvailableLanguages($app), '', 0.0, 10, true);
+	}
+
+	public function testFindAvailableLanguagesWithAppThemes() {
+		$app = 'files';
+		$factory = $this->getFactory(['getActiveAppThemeDirectory']);
+
+		$this->config
+			->expects($this->any())
+			->method('getSystemValue')
+			->with('theme')
+			->willReturn('');
+
+		$factory->expects($this->any())
+			->method('getActiveAppThemeDirectory')
+			->with()
+			->willReturn($this->serverRoot . '/tests/data/apptheme');
+
+		$availableLanguages = $factory->findAvailableLanguages($app);
+		$this->assertContains('en', $availableLanguages);
+		$this->assertContains('zz', $availableLanguages);
+	}
+
+	public function testAppThemeTranslation() {
+		$app = 'files';
+		$lang = 'zz';
+		$factory = $this->getFactory(['getActiveAppThemeDirectory']);
+
+		$this->config
+			->expects($this->any())
+			->method('getSystemValue')
+			->with('theme')
+			->willReturn('');
+
+		$factory->expects($this->any())
+			->method('getActiveAppThemeDirectory')
+			->with()
+			->willReturn($this->serverRoot . '/tests/data/apptheme');
+
+		$themeTranslations = $factory->getL10nFilesForApp($app, $lang);
+		$this->assertCount(1, $themeTranslations);
+		$this->assertContains('zz.json', $themeTranslations[0]);
 	}
 
 	/**
