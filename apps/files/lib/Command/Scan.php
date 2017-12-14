@@ -129,7 +129,7 @@ class Scan extends Base {
 		$path = basename($fullPath);
 
 		if ($normalizedPath !== $path) {
-			$output->writeln("\t<error>Entry \"" . $fullPath . '" will not be accessible due to incompatible encoding</error>');
+			$output->writeln("\t<error>Entry \"" . $fullPath . '" will not be accessible due to incompatible encoding. Please try enabling encoding compatibility mode for this storage.</error>');
 		}
 	}
 
@@ -210,10 +210,7 @@ class Scan extends Base {
 				}
 			});
 		}
-		$scanner->listen('\OC\Files\Utils\Scanner', 'scanFile', function($path) use ($output) {
-			$this->checkScanWarning($path, $output);
-		});
-		$scanner->listen('\OC\Files\Utils\Scanner', 'scanFolder', function($path) use ($output) {
+		$scanner->listen('\OC\Files\Utils\Scanner', 'scanError', function($path) use ($output) {
 			$this->checkScanWarning($path, $output);
 		});
 

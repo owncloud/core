@@ -350,7 +350,11 @@ class Scanner extends BasicEmitter implements IScanner {
 			if (is_resource($dh)) {
 				while (($file = readdir($dh)) !== false) {
 					if (!Filesystem::isIgnoredDir($file) && !Filesystem::isForbiddenFileOrDir($file)) {
-						$children[] = trim(\OC\Files\Filesystem::normalizePath($file), '/');
+						$normalizedName = trim(\OC\Files\Filesystem::normalizePath($file), '/');
+						if ($normalizedName !== trim($file, '/')) {
+							$this->emit('\OC\Files\Cache\Scanner', 'scanError', [$file, $this->storageId]);
+						}
+						$children[] = $normalizedName;
 					}
 				}
 			}

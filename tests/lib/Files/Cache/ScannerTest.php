@@ -393,4 +393,25 @@ class ScannerTest extends \Test\TestCase {
 		$this->assertEquals($expectedThrown, $thrown);
 	}
 
+	public function testScanErrorFromEncoding() {
+		$data = "dummy file data\n";
+		// it might not look like it but these two accents have different encoding!
+		$nfcName = 'féchier.txt';
+		$nfdName = 'féchier.txt';
+
+		$eventPath = null;
+
+		$this->scanner->listen('\OC\Files\Cache\Scanner', 'scanError', function ($path) use (&$eventPath) {
+			$eventPath = $path;
+		});
+
+		$this->storage->file_put_contents($nfdName, $data);
+		$this->scanner->scan('');
+
+		$this->assertFalse($this->cache->inCache($nfcName));
+		$this->assertFalse($this->cache->inCache($nfdName));
+
+		$this->assertEquals($nfdName, $eventPath);
+	}
+
 }
