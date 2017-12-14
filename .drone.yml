@@ -58,19 +58,29 @@ pipeline:
       local: false
       event: [push]
 
-  coverage:
+  phpunit:
     image: owncloudci/php:${PHP_VERSION}
     pull: true
     group: test
     environment:
       - PHP_VERSION=${PHP_VERSION}
       - DB_TYPE=${DB_TYPE}
+      - ENABLE_COVERAGE=${ENABLE_COVERAGE}
     commands:
-      - ./tests/drone/test-coverage.sh
+      - ./tests/drone/test-phpunit.sh
     when:
       event: [push, pull_request]
       matrix:
-        TEST_SUITE: coverage
+        TEST_SUITE: phpunit
+
+  test-javascript:
+    image: owncloudci/php:${PHP_VERSION}
+    pull: true
+    commands:
+      - ./tests/drone/test-javascript.sh
+    when:
+      matrix:
+        TEST_SUITE: javascript
 
   codecov:
     image: plugins/codecov:2
@@ -82,42 +92,8 @@ pipeline:
     when:
       event: [push, pull_request]
       matrix:
-        TEST_SUITE: coverage
-
-  test-javascript:
-    image: owncloudci/php:${PHP_VERSION}
-    pull: true
-    commands:
-      - ./tests/drone/test-javascript.sh
-    when:
-      matrix:
-        TEST_SUITE: javascript
-
-  phpunit:
-    image: owncloudci/php:${PHP_VERSION}
-    pull: true
-    group: test
-    environment:
-      - PHP_VERSION=${PHP_VERSION}
-      - DB_TYPE=${DB_TYPE}
-    commands:
-      - ./tests/drone/test-phpunit.sh
-    when:
-      matrix:
         TEST_SUITE: phpunit
-
-  files_external:
-    image: owncloudci/php:${PHP_VERSION}
-    pull: true
-    group: test
-    environment:
-      - PHP_VERSION=${PHP_VERSION}
-      - DB_TYPE=${DB_TYPE}
-    commands:
-      - ./tests/drone/test-files-external.sh
-    when:
-      matrix:
-        TEST_SUITE: files_external
+        ENABLE_COVERAGE: true
 
   install-server:
     image: owncloudci/php:${PHP_VERSION}
@@ -333,16 +309,19 @@ matrix:
     # Code Coverage Computation
     - PHP_VERSION: 7.1
       DB_TYPE: sqlite
-      TEST_SUITE: coverage
+      TEST_SUITE: phpunit
+      ENABLE_COVERAGE: true
 
     - PHP_VERSION: 7.1
       DB_TYPE: mysql
-      TEST_SUITE: coverage
+      TEST_SUITE: phpunit
+      ENABLE_COVERAGE: true
 
     - PHP_VERSION: 7.1
       DB_TYPE: sqlite
-      TEST_SUITE: coverage
+      TEST_SUITE: phpunit
       FILES_EXTERNAL_TYPE: webdav
+      ENABLE_COVERAGE: true
       
     - PHP_VERSION: 7.1
       TEST_SUITE: selenium
