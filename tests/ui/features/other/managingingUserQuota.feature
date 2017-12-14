@@ -25,7 +25,13 @@ So that users can only take up a certain amount of storage space
 		|Unlimited  |5B          |5 B           |
 		|Unlimited  |55kB        |55 KB         |
 		|Unlimited  |45Kb        |45 KB         |
-		|Unlimited  |0 Kb        |0 B           |
+
+	@skipOnOcV10.0.3
+	Scenario: change quota to a valid value that do not work on 10.0.3
+		And quota of user "%regularuser%" is set to "Unlimited"
+		When quota of user "%regularuser%" is changed to "0 Kb"
+		And the users page is reloaded
+		Then quota of user "%regularuser%" should be set to "0 B"
 
 	Scenario Outline: change quota to an invalid value
 		When quota of user "%regularuser%" is changed to "<wished_quota>"
