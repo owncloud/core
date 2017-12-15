@@ -190,8 +190,8 @@ $(uikit_builder_dir): $(nodejs_deps)
 $(uikit_output_dir): $(uikit_builder_dir) $(uikit_owncloud_srcs) $(core_vendor)
 	mkdir -p $(uikit_builder_dir)/custom/
 	cp -Rvf $(uikit_owncloud_src_dir)/* $(uikit_builder_dir)/custom/
-	cd $(uikit_builder_dir)/ && npm build
-	cp -Rvu $(uikit_builder_dir)/dist $@
+	cd $(uikit_builder_dir)/ && npm run compile
+	cp -Rvu $(uikit_builder_dir)/dist/ $@
 	touch $@
 
 .PHONY: clean-uikit
