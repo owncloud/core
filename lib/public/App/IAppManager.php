@@ -166,4 +166,26 @@ interface IAppManager {
 	 * @since 10.0.3
 	 */
 	public function canInstall();
+
+	/**
+	 * Get the directory for the given app.
+	 * If the app exists in multiple directories, the most recent version is taken.
+	 * Returns false if not found
+	 *
+	 * @param string $appId
+	 * @return string|false
+	 * @since 10.0.5
+	 */
+	public function getAppPath($appId);
+
+	/**
+	 * Get the web path for the given app.
+	 * If the app exists in multiple directories, web path to the most recent version is taken.
+	 * Returns false if not found
+	 *
+	 * @param string $appId
+	 * @return string|false
+	 * @since 10.0.5
+	 */
+	public function getAppWebPath($appId);
 }

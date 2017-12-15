@@ -78,6 +78,15 @@ class AppManager implements IAppManager {
 	private $config;
 
 	/**
+	 * Apps as 'appId' => [
+	 *   'path' => '/app/path'
+	 *   'url' => '/app/url'
+	 * ]
+	 * @var string[][]
+	 */
+	private $appDirs = [];
+
+	/**
 	 * @param IUserSession $userSession
 	 * @param IAppConfig $appConfig
 	 * @param IGroupManager $groupManager
@@ -86,8 +95,8 @@ class AppManager implements IAppManager {
 	 * @param IConfig $config
 	 */
 	public function __construct(IUserSession $userSession = null,
-								IAppConfig $appConfig,
-								IGroupManager $groupManager,
+								IAppConfig $appConfig = null,
+								IGroupManager $groupManager = null,
 								ICacheFactory $memCacheFactory,
 								EventDispatcherInterface $dispatcher,
 								IConfig $config) {
@@ -215,7 +224,7 @@ class AppManager implements IAppManager {
 	 * @throws \Exception
 	 */
 	public function enableApp($appId) {
-		if(OC_App::getAppPath($appId) === false) {
+		if($this->getAppPath($appId) === false) {
 			throw new \Exception("$appId can't be enabled since it is not installed.");
 		}
 		$this->canEnableTheme($appId);
@@ -482,5 +491,98 @@ class AppManager implements IAppManager {
 
 		$appsFolder = OC_App::getInstallPath();
 		return $appsFolder !== null && is_writable($appsFolder) && is_readable($appsFolder);
+	}
+
+	/**
+	 * Get the directory for the given app.
+	 * If the app exists in multiple directories, the most recent version is taken.
+	 * Returns false if not found
+	 *
+	 * @param string $appId
+	 * @return string|false
+	 * @since 10.0.5
+	 */
+	public function getAppPath($appId) {
+		if (trim($appId) === '') {
+			return false;
+		}
+		if (($appRoot = $this->findAppInDirectories($appId)) !== false) {
+			return $appRoot['path'];
+		}
+		return false;
+	}
+
+	/**
+	 * Get the web path for the given app.
+	 * If the app exists in multiple directories, web path to the most recent version is taken.
+	 * Returns false if not found
+	 *
+	 * @param string $appId
+	 * @return string|false
+	 * @since 10.0.5
+	 */
+	public function getAppWebPath($appId) {
+		if (($appRoot = $this->findAppInDirectories($appId)) !== false) {
+			return \OC::$WEBROOT . $appRoot['url'];
+		}
+		return false;
+	}
+
+	/**
+	 * Search for an app in all app directories
+	 * Returns an app directory as an array with keys
+	 *  'path' - a path to the app with no trailing slash
+	 *  'url' - a web path to the app with no trailing slash
+	 * both are relative to OC root directory and webroot
+	 *
+	 * @param string $appId
+	 * @return false|string[]
+	 */
+	protected function findAppInDirectories($appId) {
+		$sanitizedAppId = \OC_App::cleanAppId($appId);
+		if ($sanitizedAppId !== $appId) {
+			return false;
+		}
+
+		if (!isset($this->appDirs[$appId])) {
+			$possibleAppRoots = [];
+			foreach ($this->getAppRoots() as $appRoot) {
+				if (is_dir($appRoot['path'] . '/' . $appId)) {
+					$possibleAppRoots[] = $appRoot;
+				}
+			}
+
+			$versionToLoad = [];
+			foreach ($possibleAppRoots as $possibleAppRoot) {
+				$version = $this->getAppVersionByPath($possibleAppRoot['path'] . '/' . $appId);
+				if (empty($versionToLoad) || version_compare($version, $versionToLoad['version'], '>')) {
+					$versionToLoad = array_merge($possibleAppRoot, ['version' => $version]);
+					$versionToLoad['path'] .= '/' . $appId;
+					$versionToLoad['url'] .= '/' . $appId;
+				}
+			}
+			$this->appDirs[$appId] = empty($versionToLoad) ? false : $versionToLoad;
+		}
+		return $this->appDirs[$appId];
+	}
+
+	/**
+	 * Get apps roots as an array of path and url
+	 * Wrapper for easy mocking
+	 * @return string[][]
+	 */
+	protected function getAppRoots(){
+		return \OC::$APPSROOTS;
+	}
+
+	/**
+	 * Get app's version based on it's path
+	 * Wrapper for easy mocking
+	 *
+	 * @param string $path
+	 * @return string
+	 */
+	protected function getAppVersionByPath($path) {
+		return \OC_App::getAppVersionByPath($path);
 	}
 }
