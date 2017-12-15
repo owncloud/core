@@ -45,6 +45,8 @@ $application->registerRoutes($this, [
 		['name' => 'avatar#postAvatar', 'url' => '/avatar/', 'verb' => 'POST'],
 		['name' => 'login#tryLogin', 'url' => '/login', 'verb' => 'POST'],
 		['name' => 'login#showLoginForm', 'url' => '/login', 'verb' => 'GET'],
+		['name' => 'login#tryLoginForType', 'url' => '/login/{type}', 'verb' => 'POST'],
+		['name' => 'login#showLoginFormForType', 'url' => '/login/{type}', 'verb' => 'GET'],
 		['name' => 'login#logout', 'url' => '/logout', 'verb' => 'GET'],
 		['name' => 'token#generateToken', 'url' => '/token/generate', 'verb' => 'POST'],
 		['name' => 'OC\Core\Controller\Occ#execute', 'url' => '/occ/{command}', 'verb' => 'POST'],

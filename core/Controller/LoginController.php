@@ -30,6 +30,7 @@ use OC\User\Session;
 use OC_App;
 use OC_Util;
 use OCP\AppFramework\Controller;
+use OCP\AppFramework\Http\NotFoundResponse;
 use OCP\AppFramework\Http\RedirectResponse;
 use OCP\AppFramework\Http\TemplateResponse;
 use OCP\IConfig;
@@ -251,6 +252,54 @@ class LoginController extends Controller {
 		}
 
 		return new RedirectResponse($this->getDefaultUrl());
+	}
+
+	/**
+	 * @PublicPage
+	 * @NoCSRFRequired
+	 * @UseSession
+	 *
+	 * @param string $user
+	 * @param string $redirect_url
+	 * @param string $remember_login
+	 * @param string $type
+	 *
+	 * @return TemplateResponse|RedirectResponse|NotFoundResponse
+	 */
+	public function showLoginFormForType($user, $redirect_url, $remember_login, $type) {
+		// TODO $type basically ignored for now, intended for 'basic', 'saml', ...
+		switch ($type) {
+				// TODO allow apps to register login types?
+				// TODO allow admin to configure chain of login types? or refactor two factor challenges?
+				// default would be basic only
+			case 'basic':
+				// TODO check if basic auth is allowed?
+			case 'saml':
+				// TODO check if shibboleth is enabled?
+				return $this->showLoginForm($user, $redirect_url, $remember_login);
+			default:
+				return new NotFoundResponse();
+		}
+	}
+	/**
+	 * @PublicPage
+	 * @UseSession
+	 *
+	 * @param string $user
+	 * @param string $password
+	 * @param string $redirect_url
+	 * @return RedirectResponse|NotFoundResponse
+	 */
+	public function tryLoginForType($user, $password, $redirect_url, $type) {
+		// TODO $type basically ignored for now, intended for 'basic', 'saml',
+		// TODO ... see showLoginFormForType() above
+		switch ($type) {
+			case 'basic':
+			case 'saml':
+			return $this->tryLogin($user, $password, $redirect_url);
+			default:
+				return new NotFoundResponse();
+		}
 	}
 
 	/**
