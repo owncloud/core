@@ -65,20 +65,16 @@
 							</li>
 						</ul>
 					</div>
-					<div class="uk-position-center">
-						<div class="uk-flex uk-flex-middle">
-							<div class="uk-width-1-2 uk-text-right">
-								<img src="/core/gfx/cloud-logo-invert.svg" alt="ownCloud" height="45" width="80">
-							</div>
-							<span class="uk-width-1-2 uk-text-left uk-text-large uk-text-inverse" href="">ownCloud</span>
-						</div>
-					</div>
+					<a href="/" class="uk-position-center uk-width-medium oc-logo-top">
+						<img src="/core/img/logo.svg" alt="" style="max-height: 48px;">
+					</a>
 					<div class="uk-navbar-right">
 						<ul class="uk-navbar-nav">
 							<li>
 								<a href="">
-									<img alt="" width="32" height="32" src="<?php p(\OC::$server->getURLGenerator()->linkToRoute('core.avatar.getAvatar', ['userId' => $_['user_uid'], 'size' => 32]));?>" srcset="<?php p(\OC::$server->getURLGenerator()->linkToRoute('core.avatar.getAvatar', ['userId' => $_['user_uid'], 'size' => 64]));?> 2x, <?php p(\OC::$server->getURLGenerator()->linkToRoute('core.avatar.getAvatar', ['userId' => $_['user_uid'], 'size' => 128]));?> 4x">
-									<span><?php  p(trim($_['user_displayname']) != '' ? $_['user_displayname'] : $_['user_uid']) ?></span>
+									<i class="material-icons uk-margin-small-right uk-text-inverse">account_circle</i>
+									<!-- <img alt="" width="32" height="32" src="<?php p(\OC::$server->getURLGenerator()->linkToRoute('core.avatar.getAvatar', ['userId' => $_['user_uid'], 'size' => 32]));?>" srcset="<?php p(\OC::$server->getURLGenerator()->linkToRoute('core.avatar.getAvatar', ['userId' => $_['user_uid'], 'size' => 64]));?> 2x, <?php p(\OC::$server->getURLGenerator()->linkToRoute('core.avatar.getAvatar', ['userId' => $_['user_uid'], 'size' => 128]));?> 4x"> -->
+									<span class="uk-text-inverse"><?php  p(trim($_['user_displayname']) != '' ? $_['user_displayname'] : $_['user_uid']) ?></span>
 								</a>
 								<div class="oc-user-menu_" uk-dropdown="animation: uk-animation-slide-top-small; pos: bottom-right; offset: 0; delay-hide:100; mode: click;">
 									<ul class="uk-nav uk-navbar-dropdown-nav">

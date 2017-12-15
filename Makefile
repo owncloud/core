@@ -64,16 +64,14 @@ core_test_dirs=tests
 core_all_src=$(core_src_files) $(core_src_dirs) $(core_doc_files)
 dist_dir=build/dist
 uikit_dir=$(core_vendor)/uikit
-icons_dir=$(core_vendor)/material-icons
-
 #
 # Catch-all rules
 #
 .PHONY: all
-all: help-hint $(composer_dev_deps) $(core_vendor) $(nodejs_deps) $(uikit_dir) $(icons_dir)
+all: help-hint $(composer_dev_deps) $(core_vendor) $(nodejs_deps) $(uikit_dir)
 
 .PHONY: clean
-clean: clean-composer-deps clean-nodejs-deps clean-js-deps clean-test clean-dist clean-uikit clean-icons_dir
+clean: clean-composer-deps clean-nodejs-deps clean-js-deps clean-test clean-dist clean-uikit
 
 .PHONY: help-hint
 help-hint:
@@ -179,26 +177,7 @@ clean-js-deps:
 
 # Symlink UIkit dir
 $(uikit_dir): $(core_vendor) $(NODE_PREFIX)/node_modules/uikit/dist
-	-rm $@
 	ln -s ../../$(NODE_PREFIX)/node_modules/uikit/dist/ $@
-	touch $@
-
-# build UIkit
-$(NODE_PREFIX)/node_modules/uikit/dist: $(nodejs_deps) $(NODE_PREFIX)/node_modules/uikit/src
-	cd $(NODE_PREFIX)/node_modules/uikit/ && npm install && npm build
-
-.PHONY: clean-uikit
-clean-uikit:
-	rm -Rf $(uikit_dir)
-
-#
-# Material Icons
-#
-
-# Symlink UIkit dir
-$(uikit_dir): $(core_vendor) $(NODE_PREFIX)/node_modules/material-design-icons
-	-rm $@
-	cp ../../$(NODE_PREFIX)/node_modules/material-design-icons/iconfont/ $@
 	touch $@
 
 # build UIkit
