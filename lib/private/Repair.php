@@ -32,6 +32,7 @@ namespace OC;
 use OC\Repair\Apps;
 use OC\Repair\CleanTags;
 use OC\Repair\Collation;
+use OC\Repair\DisableExtraThemes;
 use OC\Repair\DropOldJobs;
 use OC\Repair\OldGroupMembershipShares;
 use OC\Repair\RemoveGetETagEntries;
@@ -150,6 +151,11 @@ class Repair implements IOutput{
 				\OC::$server->getDatabaseConnection(),
 				\OC::$server->getUserManager(),
 				\OC::$server->getGroupManager()
+			),
+			new DisableExtraThemes(
+				\OC::$server->getAppManager(),
+				\OC::$server->getConfig(),
+				\OC::$server->getAppConfig()
 			),
 		];
 	}
