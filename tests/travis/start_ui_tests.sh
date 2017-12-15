@@ -142,6 +142,16 @@ fi
 remote_occ $ADMIN_PASSWORD $OCC_URL "--no-warnings app:list ^firstrunwizard$"
 PREVIOUS_FIRSTRUNWIZARD_APP_STATUS=$REMOTE_OCC_STDOUT
 
+#get the current backgroundjobs_mode 
+remote_occ $ADMIN_PASSWORD $OCC_URL "config:app:get core backgroundjobs_mode"
+PREVIOUS_BACKGROUNDJOBS_MODE=$REMOTE_OCC_STDOUT
+#switch to webcron
+remote_occ $ADMIN_PASSWORD $OCC_URL "config:app:set core backgroundjobs_mode --value webcron"
+if [ $? -ne 0 ]
+then
+	echo "WARNING: Could not set backgroundjobs mode to 'webcron'"
+fi
+
 if [[ "$PREVIOUS_FIRSTRUNWIZARD_APP_STATUS" =~ ^Enabled: ]]
 then
 	FIRSTRUNWIZARD_APP_DISABLED_BY_SCRIPT=true;
@@ -397,6 +407,9 @@ fi
 if test "$NOTIFICATIONS_APP_DISABLED_BY_SCRIPT" = true; then
 	remote_occ $ADMIN_PASSWORD $OCC_URL "--no-warnings app:enable notifications"
 fi
+
+# put back the backgroundjobs_mode
+remote_occ $ADMIN_PASSWORD $OCC_URL "config:app:set core backgroundjobs_mode --value $PREVIOUS_BACKGROUNDJOBS_MODE"
 
 #upload log file for later analysis
 if [ "$PASSED" = false ] && [ ! -z "$REPORTING_WEBDAV_USER" ] && [ ! -z "$REPORTING_WEBDAV_PWD" ] && [ ! -z "$REPORTING_WEBDAV_URL" ]
