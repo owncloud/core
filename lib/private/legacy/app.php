@@ -555,72 +555,29 @@ class OC_App {
 		return null;
 	}
 
-
-	/**
-	 * search for an app in all app-directories
-	 *
-	 * @param string $appId
-	 * @return false|string
-	 */
-	protected static function findAppInDirectories($appId) {
-		$sanitizedAppId = self::cleanAppId($appId);
-		if($sanitizedAppId !== $appId) {
-			return false;
-		}
-		static $app_dir = [];
-
-		if (isset($app_dir[$appId])) {
-			return $app_dir[$appId];
-		}
-
-		$possibleApps = [];
-		foreach (OC::$APPSROOTS as $dir) {
-			if (file_exists($dir['path'] . '/' . $appId)) {
-				$possibleApps[] = $dir;
-			}
-		}
-
-		if (empty($possibleApps)) {
-			return false;
-		} elseif (count($possibleApps) === 1) {
-			$dir = array_shift($possibleApps);
-			$app_dir[$appId] = $dir;
-			return $dir;
-		} else {
-			$versionToLoad = [];
-			foreach ($possibleApps as $possibleApp) {
-				$version = self::getAppVersionByPath($possibleApp['path'] . '/' . $appId);
-				if (empty($versionToLoad) || version_compare($version, $versionToLoad['version'], '>')) {
-					$versionToLoad = [
-						'dir' => $possibleApp,
-						'version' => $version,
-					];
-				}
-			}
-			$app_dir[$appId] = $versionToLoad['dir'];
-			return $versionToLoad['dir'];
-			//TODO - write test
-		}
-	}
-
 	/**
 	 * Get the directory for the given app.
-	 * If the app is defined in multiple directories, the first one is taken. (false if not found)
+	 * If the app exists in multiple directories, the most recent version is taken.
+	 * (false if not found)
 	 *
 	 * @param string $appId
 	 * @return string|false
 	 */
 	public static function getAppPath($appId) {
-		if ($appId === null || trim($appId) === '') {
-			return false;
-		}
-
-		if (($dir = self::findAppInDirectories($appId)) != false) {
-			return $dir['path'] . '/' . $appId;
-		}
-		return false;
+		return \OC::$server->getAppManager()->getAppPath($appId);
 	}
 
+	/**
+	 * Get the web path for the given app.
+	 * If the app exists in multiple directories, the most recent version is taken.
+	 * (false if not found)
+	 *
+	 * @param string $appId
+	 * @return string|false
+	 */
+	public static function getAppWebPath($appId) {
+		return \OC::$server->getAppManager()->getAppWebPath($appId);
+	}
 
 	/**
 	 * check if an app's directory is writable
@@ -631,20 +588,6 @@ class OC_App {
 	public static function isAppDirWritable($appId) {
 		$path = self::getAppPath($appId);
 		return ($path !== false) ? is_writable($path) : false;
-	}
-
-	/**
-	 * Get the path for the given app on the access
-	 * If the app is defined in multiple directories, the first one is taken. (false if not found)
-	 *
-	 * @param string $appId
-	 * @return string|false
-	 */
-	public static function getAppWebPath($appId) {
-		if (($dir = self::findAppInDirectories($appId)) != false) {
-			return OC::$WEBROOT . $dir['url'] . '/' . $appId;
-		}
-		return false;
 	}
 
 	/**
