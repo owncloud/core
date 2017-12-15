@@ -522,6 +522,69 @@ class UtilTest extends \Test\TestCase {
 		$this->assertArrayHasKey('productname', $statusInfo);
 		$this->assertEquals($statusInfo['productname'], 'ownCloud');
 	}
+
+	public function fullDomainDataProvider() {
+		return [
+			// invalid URLs
+			['this-is-no-url', false],
+			['missing-protocol:8080', false],
+			['http://', false],
+			['http://:8080', false],
+			['notsupportscheme://host.tld:port', false],
+			['http://host.tld:this-is-no-port', false],
+
+
+			// default ports
+			['http://host.tld/some/path', 'http://host.tld:80'],
+			['http://host.tld:/some/path', 'http://host.tld:80'],
+			['https://host.tld/some/path', 'https://host.tld:443'],
+
+			// normalization and specified port
+			['HTTPS://HOST.TLD:8080/SOME/path', 'https://host.tld:8080'],
+			['https://host.tld:8080/', 'https://host.tld:8080'],
+			['https://user:password@host.tld/', 'https://host.tld:443'],
+			['https://user:password@host.tld:8080/', 'https://host.tld:8080'],
+		];
+	}
+
+	/**
+	 * Test getFullDomain.
+	 *
+	 * @param string $url url to convert
+	 * @param string|bool expected url or false if expected exception
+	 * @dataProvider fullDomainDataProvider
+	 */
+	public function testGetFullDomain($url, $expectedUrl) {
+		if ($expectedUrl == false) {
+			$caught = null;
+			try {
+				\OCP\Util::getFullDomain($url);
+			} catch (\InvalidArgumentException $e) {
+				$caught = $e;
+			}
+			$this->assertNotNull($caught);
+		} else {
+			$this->assertEquals($expectedUrl, \OCP\Util::getFullDomain($url));
+		}
+	}
+
+	public function isSameDomainDataProvider() {
+		return [
+			['http://domain.tld', 'http://domain.tld', true],
+			['http://domain.tld/some/path', 'http://domain.tld:80/other/path', true],
+			['https://domain.tld:8443/some/path', 'http://domain.tld:8443/other/path', false],
+		];
+	}
+
+	/**
+	 * @param string $url1 url to compare
+	 * @param string $url2 url to compare
+	 * @param bool $expectedResult expected result
+	 * @dataProvider isSameDomainDataProvider
+	 */
+	public function testIsSameDomain($url1, $url2, $expectedResult) {
+		$this->assertEquals($expectedResult, \OCP\Util::isSameDomain($url1, $url2));
+	}
 }
 
 /**
