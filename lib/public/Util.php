@@ -749,4 +749,60 @@ class Util {
 
 		return $values;
 	}
+
+	/**
+	 * Returns the protocol, domain and port as string in a normalized
+	 * format for easier comparison.
+	 * Example: "HTTPS://HOST.tld:8080" is returned as "https://host.tld:8080"
+	 *
+	 * If no port was specified, it will add the default port
+	 * of the specified protocol (80 for http or 443 for https)
+	 *
+	 * @param string $url full url
+	 * @return string protocol, domain and port as string
+	 * @since 10.0.5
+	 */
+	public static function getFullDomain($url) {
+		$parts = parse_url($url);
+		if ($parts === false) {
+			throw new \InvalidArgumentException('Invalid url "' . $url . '"');
+		}
+		if (!isset($parts['scheme']) || !isset($parts['host'])) {
+			throw new \InvalidArgumentException('Invalid url "' . $url . '"');
+		}
+		$protocol = strtolower($parts['scheme']);
+		$host = strtolower($parts['host']);
+		$port = null;
+		if ($protocol === 'http') {
+			$port = 80;
+		} else if ($protocol === 'https') {
+			$port = 443;
+		} else {
+			throw new \InvalidArgumentException('Only http based URLs supported');
+		}
+
+		if (isset($parts['port']) && $port !== '') {
+			$port = $parts['port'];
+		}
+
+		return $protocol . '://' . strtolower($host) . ':' . $port;
+	}
+
+	/**
+	 * Check whether the given URLs have the same protocol, domain and port.
+	 * This is useful to check a browser's cross-domain situation.
+	 * If this method returns false, a browser would consider both URLs to be
+	 * a cross-domain situation and would require a CORS setup.
+	 *
+	 * @param string $url1
+	 * @param string $url2
+	 *
+	 * @return bool true if both URLs have the same protocol, domain and port
+	 *
+	 * @since 10.0.5
+	 */
+	public static function isSameDomain($url1, $url2) {
+		return self::getFullDomain($url1) === self::getFullDomain($url2);
+	}
+
 }
