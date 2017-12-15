@@ -63,16 +63,20 @@ core_src_dirs=apps core l10n lib occ ocs ocs-provider resources settings
 core_test_dirs=tests
 core_all_src=$(core_src_files) $(core_src_dirs) $(core_doc_files)
 dist_dir=build/dist
+
+# UI-kit variables
 uikit_output_dir=$(core_vendor)/uikit
 uikit_builder_dir=$(nodejs_deps)/uikit
 uikit_owncloud_src_dir=core/less
 uikit_owncloud_srcs=$(wildcard $(uikit_owncloud_src_dir)/*.less) $(wildcard $(uikit_owncloud_src_dir)/**/*.less)
 
+core_vendor_extras=$(core_vendor)/uikit
+
 #
 # Catch-all rules
 #
 .PHONY: all
-all: help-hint $(composer_dev_deps) $(core_vendor) $(nodejs_deps) $(uikit_output_dir)
+all: help-hint $(composer_dev_deps) $(core_vendor) $(core_vendor_extras) $(nodejs_deps)
 
 .PHONY: clean
 clean: clean-composer-deps clean-nodejs-deps clean-js-deps clean-test clean-dist clean-uikit
@@ -261,7 +265,7 @@ clean-docs:
 #
 # Build distribution
 #
-$(dist_dir)/owncloud: $(composer_deps) $(core_vendor) $(core_all_src) $(uikit_output_dir)
+$(dist_dir)/owncloud: $(composer_deps) $(core_vendor) $(core_vendor_extras) $(core_all_src)
 	rm -Rf $@; mkdir -p $@/config
 	cp -RL $(core_all_src) $@
 	cp -R config/config.sample.php $@/config
@@ -312,7 +316,7 @@ clean-dist:
 #
 # Build qa distribution
 #
-$(dist_dir)/qa/owncloud: $(composer_dev_deps) $(core_vendor) $(core_all_src) $(uikit_output_dir) $(core_test_dirs)
+$(dist_dir)/qa/owncloud: $(composer_dev_deps) $(core_vendor) $(core_vendor_extras) $(core_all_src) $(core_test_dirs)
 	rm -Rf $@; mkdir -p $@/config
 	cp -RL $(core_all_src) $@
 	cp -R $(core_test_dirs) $@
