@@ -91,7 +91,7 @@ class ContactsManagerTest extends \Test\TestCase {
 		$result =  $this->cm->search('');
 		$this->assertEquals($expectedResult, $result);
 	}
-	
+
 
 	public function testDeleteHavePermission(){
 		$addressbook = $this->getMockBuilder('\OCP\IAddressBook')
@@ -126,7 +126,7 @@ class ContactsManagerTest extends \Test\TestCase {
 
 		$this->cm->registerAddressBook($addressbook);
 		$result = $this->cm->delete(1, $addressbook->getKey());
-		$this->assertEquals($result, null);
+		$this->assertNull($result);
 	}
 
 	public function testDeleteNoAddressbook(){
@@ -139,7 +139,7 @@ class ContactsManagerTest extends \Test\TestCase {
 
 		$this->cm->registerAddressBook($addressbook);
 		$result = $this->cm->delete(1, 'noaddressbook');
-		$this->assertEquals($result, null);
+		$this->assertNull($result);
 
 	}
 
@@ -175,7 +175,7 @@ class ContactsManagerTest extends \Test\TestCase {
 
 		$this->cm->registerAddressBook($addressbook);
 		$result = $this->cm->createOrUpdate([], $addressbook->getKey());
-		$this->assertEquals($result, null);
+		$this->assertNull($result);
 
 	}
 
@@ -189,7 +189,7 @@ class ContactsManagerTest extends \Test\TestCase {
 
 		$this->cm->registerAddressBook($addressbook);
 		$result = $this->cm->createOrUpdate([], 'noaddressbook');
-		$this->assertEquals($result, null);
+		$this->assertNull($result);
 	}
 
 	public function testIsEnabledIfNot(){

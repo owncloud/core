@@ -115,7 +115,7 @@ class CacheTest extends TestCase {
 		);
 
 		$results = $this->cache->getFolderContentsById($dirId);
-		$this->assertEquals(1, count($results));
+		$this->assertCount(1, $results);
 		$this->assertEquals(
 			$this->remoteUser . '@example.com/owncloud',
 			$results[0]['displayname_owner']

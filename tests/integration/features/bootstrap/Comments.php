@@ -113,7 +113,7 @@ trait Comments {
 		$properties = '<oc:limit>200</oc:limit><oc:offset>0</oc:offset>';
 		try {
 			$elementList = $this->reportElementComments($user,$commentsPath,$properties);
-			PHPUnit_Framework_Assert::assertEquals($numberOfComments, count($elementList));
+			PHPUnit_Framework_Assert::assertCount((int) $numberOfComments, $elementList);
 		} catch (\GuzzleHttp\Exception\ClientException $e) {
 			$this->response = $e->getResponse();
 		}

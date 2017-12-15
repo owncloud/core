@@ -108,7 +108,7 @@ class ManagerTest extends TestCase {
 		$shareData3['token'] = 'token3';
 
 		// Add a share for "user"
-		$this->assertSame(null, call_user_func_array([$this->manager, 'addShare'], $shareData1));
+		$this->assertNull(call_user_func_array([$this->manager, 'addShare'], $shareData1));
 		$openShares = $this->manager->getOpenShares();
 		$this->assertCount(1, $openShares);
 		$this->assertExternalShareEntry($shareData1, $openShares[0], 1, '{{TemporaryMountPointName#' . $shareData1['name'] . '}}');
@@ -118,7 +118,7 @@ class ManagerTest extends TestCase {
 		$this->assertNotMount('{{TemporaryMountPointName#' . $shareData1['name'] . '}}');
 
 		// Add a second share for "user" with the same name
-		$this->assertSame(null, call_user_func_array([$this->manager, 'addShare'], $shareData2));
+		$this->assertNull(call_user_func_array([$this->manager, 'addShare'], $shareData2));
 		$openShares = $this->manager->getOpenShares();
 		$this->assertCount(2, $openShares);
 		$this->assertExternalShareEntry($shareData1, $openShares[0], 1, '{{TemporaryMountPointName#' . $shareData1['name'] . '}}');
@@ -155,7 +155,7 @@ class ManagerTest extends TestCase {
 		$this->assertNotMount('{{TemporaryMountPointName#' . $shareData1['name'] . '}}-1');
 
 		// Add another share for "user" with the same name
-		$this->assertSame(null, call_user_func_array([$this->manager, 'addShare'], $shareData3));
+		$this->assertNull(call_user_func_array([$this->manager, 'addShare'], $shareData3));
 		$openShares = $this->manager->getOpenShares();
 		$this->assertCount(2, $openShares);
 		$this->assertExternalShareEntry($shareData2, $openShares[0], 2, '{{TemporaryMountPointName#' . $shareData2['name'] . '}}-1');
@@ -282,7 +282,7 @@ class ManagerTest extends TestCase {
 		$shareData3['token'] = 'token3';
 
 		// Add a share for "user"
-		$this->assertSame(null, call_user_func_array([$this->manager, 'addShare'], $shareData1));
+		$this->assertNull(call_user_func_array([$this->manager, 'addShare'], $shareData1));
 		$openShares = $this->manager->getOpenShares();
 		$this->assertCount(1, $openShares);
 		$this->assertExternalShareEntry($shareData1, $openShares[0], 1, '{{TemporaryMountPointName#' . $shareData1['name'] . '}}');

@@ -111,7 +111,7 @@ class CardDavBackendTest extends TestCase {
 		$this->backend->createAddressBook(self::UNIT_TEST_USER, 'Example', []);
 
 		$books = $this->backend->getAddressBooksForUser(self::UNIT_TEST_USER);
-		$this->assertEquals(1, count($books));
+		$this->assertCount(1, $books);
 		$this->assertEquals('Example', $books[0]['{DAV:}displayname']);
 
 		// update it's display name
@@ -122,21 +122,21 @@ class CardDavBackendTest extends TestCase {
 		$this->backend->updateAddressBook($books[0]['id'], $patch);
 		$patch->commit();
 		$books = $this->backend->getAddressBooksForUser(self::UNIT_TEST_USER);
-		$this->assertEquals(1, count($books));
+		$this->assertCount(1, $books);
 		$this->assertEquals('Unit test', $books[0]['{DAV:}displayname']);
 		$this->assertEquals('Addressbook used for unit testing', $books[0]['{urn:ietf:params:xml:ns:carddav}addressbook-description']);
 
 		// delete the address book
 		$this->backend->deleteAddressBook($books[0]['id']);
 		$books = $this->backend->getAddressBooksForUser(self::UNIT_TEST_USER);
-		$this->assertEquals(0, count($books));
+		$this->assertCount(0, $books);
 	}
 
 	public function testAddressBookSharing() {
 
 		$this->backend->createAddressBook(self::UNIT_TEST_USER, 'Example', []);
 		$books = $this->backend->getAddressBooksForUser(self::UNIT_TEST_USER);
-		$this->assertEquals(1, count($books));
+		$this->assertCount(1, $books);
 		$addressBook = new AddressBook($this->backend, $books[0]);
 		$this->backend->updateShares($addressBook, [
 			[
@@ -147,12 +147,12 @@ class CardDavBackendTest extends TestCase {
 			]
 		], []);
 		$books = $this->backend->getAddressBooksForUser(self::UNIT_TEST_USER1);
-		$this->assertEquals(1, count($books));
+		$this->assertCount(1, $books);
 
 		// delete the address book
 		$this->backend->deleteAddressBook($books[0]['id']);
 		$books = $this->backend->getAddressBooksForUser(self::UNIT_TEST_USER);
-		$this->assertEquals(0, count($books));
+		$this->assertCount(0, $books);
 	}
 
 	public function testCardOperations() {
@@ -165,7 +165,7 @@ class CardDavBackendTest extends TestCase {
 		// create a new address book
 		$backend->createAddressBook(self::UNIT_TEST_USER, 'Example', []);
 		$books = $backend->getAddressBooksForUser(self::UNIT_TEST_USER);
-		$this->assertEquals(1, count($books));
+		$this->assertCount(1, $books);
 		$bookId = $books[0]['id'];
 
 		$uri = $this->getUniqueID('card');
@@ -177,7 +177,7 @@ class CardDavBackendTest extends TestCase {
 
 		// get all the cards
 		$cards = $backend->getCards($bookId);
-		$this->assertEquals(1, count($cards));
+		$this->assertCount(1, $cards);
 		$this->assertEquals('', $cards[0]['carddata']);
 
 		// get the cards
@@ -199,7 +199,7 @@ class CardDavBackendTest extends TestCase {
 		$backend->expects($this->once())->method('purgeProperties')->with($bookId, $card['id']);
 		$backend->deleteCard($bookId, $uri);
 		$cards = $backend->getCards($bookId);
-		$this->assertEquals(0, count($cards));
+		$this->assertCount(0, $cards);
 	}
 
 	public function testMultiCard() {
@@ -211,7 +211,7 @@ class CardDavBackendTest extends TestCase {
 		// create a new address book
 		$this->backend->createAddressBook(self::UNIT_TEST_USER, 'Example', []);
 		$books = $this->backend->getAddressBooksForUser(self::UNIT_TEST_USER);
-		$this->assertEquals(1, count($books));
+		$this->assertCount(1, $books);
 		$bookId = $books[0]['id'];
 
 		// create a card
@@ -224,14 +224,14 @@ class CardDavBackendTest extends TestCase {
 
 		// get all the cards
 		$cards = $this->backend->getCards($bookId);
-		$this->assertEquals(3, count($cards));
+		$this->assertCount(3, $cards);
 		$this->assertEquals('', $cards[0]['carddata']);
 		$this->assertEquals('', $cards[1]['carddata']);
 		$this->assertEquals('', $cards[2]['carddata']);
 
 		// get the cards
 		$cards = $this->backend->getMultipleCards($bookId, [$uri1, $uri2]);
-		$this->assertEquals(2, count($cards));
+		$this->assertCount(2, $cards);
 		foreach($cards as $card) {
 			$this->assertArrayHasKey('id', $card);
 			$this->assertArrayHasKey('uri', $card);
@@ -246,7 +246,7 @@ class CardDavBackendTest extends TestCase {
 		$this->backend->deleteCard($bookId, $uri1);
 		$this->backend->deleteCard($bookId, $uri2);
 		$cards = $this->backend->getCards($bookId);
-		$this->assertEquals(0, count($cards));
+		$this->assertCount(0, $cards);
 	}
 
 	public function testDeleteWithoutCard() {
@@ -264,7 +264,7 @@ class CardDavBackendTest extends TestCase {
 		// create a new address book
 		$this->backend->createAddressBook(self::UNIT_TEST_USER, 'Example', []);
 		$books = $this->backend->getUsersOwnAddressBooks(self::UNIT_TEST_USER);
-		$this->assertEquals(1, count($books));
+		$this->assertCount(1, $books);
 
 		$bookId = $books[0]['id'];
 		$uri = $this->getUniqueID('card');
@@ -299,7 +299,7 @@ class CardDavBackendTest extends TestCase {
 		// create a new address book
 		$this->backend->createAddressBook(self::UNIT_TEST_USER, 'Example', []);
 		$books = $this->backend->getAddressBooksForUser(self::UNIT_TEST_USER);
-		$this->assertEquals(1, count($books));
+		$this->assertCount(1, $books);
 		$bookId = $books[0]['id'];
 
 		// fist call without synctoken
@@ -318,30 +318,30 @@ class CardDavBackendTest extends TestCase {
 	public function testSharing() {
 		$this->backend->createAddressBook(self::UNIT_TEST_USER, 'Example', []);
 		$books = $this->backend->getAddressBooksForUser(self::UNIT_TEST_USER);
-		$this->assertEquals(1, count($books));
+		$this->assertCount(1, $books);
 
 		$exampleBook = new AddressBook($this->backend, $books[0]);
 		$this->backend->updateShares($exampleBook, [['href' => 'principal:principals/best-friend']], []);
 
 		$shares = $this->backend->getShares($exampleBook->getResourceId());
-		$this->assertEquals(1, count($shares));
+		$this->assertCount(1, $shares);
 
 		// adding the same sharee again has no effect
 		$this->backend->updateShares($exampleBook, [['href' => 'principal:principals/best-friend']], []);
 
 		$shares = $this->backend->getShares($exampleBook->getResourceId());
-		$this->assertEquals(1, count($shares));
+		$this->assertCount(1, $shares);
 
 		$books = $this->backend->getAddressBooksForUser('principals/best-friend');
-		$this->assertEquals(1, count($books));
+		$this->assertCount(1, $books);
 
 		$this->backend->updateShares($exampleBook, [], ['principal:principals/best-friend']);
 
 		$shares = $this->backend->getShares($exampleBook->getResourceId());
-		$this->assertEquals(0, count($shares));
+		$this->assertCount(0, $shares);
 
 		$books = $this->backend->getAddressBooksForUser('principals/best-friend');
-		$this->assertEquals(0, count($books));
+		$this->assertCount(0, $books);
 	}
 
 	public function testUpdateProperties() {
@@ -365,7 +365,7 @@ class CardDavBackendTest extends TestCase {
 		$query = $this->db->getQueryBuilder();
 		$result = $query->select('*')->from('cards_properties')->execute()->fetchAll();
 
-		$this->assertSame(2, count($result));
+		$this->assertCount(2, $result);
 
 		$this->assertSame('UID', $result[0]['name']);
 		$this->assertSame($cardUri, $result[0]['value']);
@@ -385,7 +385,7 @@ class CardDavBackendTest extends TestCase {
 		$query = $this->db->getQueryBuilder();
 		$result = $query->select('*')->from('cards_properties')->execute()->fetchAll();
 
-		$this->assertSame(1, count($result));
+		$this->assertCount(1, $result);
 
 		$this->assertSame('UID', $result[0]['name']);
 		$this->assertSame($cardUri, $result[0]['value']);
@@ -425,7 +425,7 @@ class CardDavBackendTest extends TestCase {
 
 		$query = $this->db->getQueryBuilder();
 		$result = $query->select('*')->from('cards_properties')->execute()->fetchAll();
-		$this->assertSame(1, count($result));
+		$this->assertCount(1, $result);
 		$this->assertSame(1 ,(int)$result[0]['addressbookid']);
 		$this->assertSame(2 ,(int)$result[0]['cardid']);
 
@@ -532,7 +532,7 @@ class CardDavBackendTest extends TestCase {
 		$result = $this->backend->search(0, $pattern, $properties, $limit, $offset);
 
 		// check result
-		$this->assertSame(count($expected), count($result));
+		$this->assertCount(count($expected), $result);
 		$found = [];
 		foreach ($result as $r) {
 			foreach ($expected as $exp) {
@@ -543,7 +543,7 @@ class CardDavBackendTest extends TestCase {
 			}
 		}
 
-		$this->assertSame(count($expected), count($found));
+		$this->assertCount(count($expected), $found);
 	}
 
 	public function dataTestSearch() {
@@ -603,7 +603,7 @@ class CardDavBackendTest extends TestCase {
 		}
 
 		$result = $this->backend->getContact(0, 'uri0');
-		$this->assertSame(7, count($result));
+		$this->assertCount(7, $result);
 		$this->assertSame(0, (int)$result['addressbookid']);
 		$this->assertSame('uri0', $result['uri']);
 		$this->assertSame(5489543, (int)$result['lastmodified']);

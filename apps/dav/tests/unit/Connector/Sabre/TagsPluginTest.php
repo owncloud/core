@@ -301,7 +301,7 @@ class TagsPluginTest extends \Test\TestCase {
 
 		$result = $propPatch->getResult();
 		$this->assertEquals(200, $result[self::TAGS_PROPERTYNAME]);
-		$this->assertFalse(isset($result[self::FAVORITE_PROPERTYNAME]));
+		$this->assertArrayNotHasKey(self::FAVORITE_PROPERTYNAME, $result);
 	}
 
 	public function testUpdateTagsFromScratch() {

@@ -87,7 +87,7 @@ class TagsTest extends TestCase {
 
 		$tagger = $this->tagMgr->load($this->objectType, $defaultTags);
 
-		$this->assertEquals(4, count($tagger->getTags()));
+		$this->assertCount(4, $tagger->getTags());
 	}
 
 	public function testAddTags() {
@@ -126,14 +126,14 @@ class TagsTest extends TestCase {
 		$tagMaps = $tagger->getTags();
 		$this->assertCount(4, $tagMaps, 'Not all tags added');
 		foreach($tagMaps as $tagMap) {
-			$this->assertEquals(null, $tagMap['id']);
+			$this->assertNull($tagMap['id']);
 		}
 
 		// As addMultiple has been called without $sync=true, the tags aren't
 		// saved to the database, so they're gone when we reload $tagger:
 
 		$tagger = $this->tagMgr->load($this->objectType);
-		$this->assertEquals(0, count($tagger->getTags()));
+		$this->assertCount(0, $tagger->getTags());
 
 		// Now, we call addMultiple() with $sync=true so the tags will be
 		// be saved to the database.
@@ -142,7 +142,7 @@ class TagsTest extends TestCase {
 
 		$tagMaps = $tagger->getTags();
 		foreach($tagMaps as $tagMap) {
-			$this->assertNotEquals(null, $tagMap['id']);
+			$this->assertNotNull($tagMap['id']);
 		}
 
 		// Reload the tagger.
@@ -158,12 +158,12 @@ class TagsTest extends TestCase {
 	public function testIsEmpty() {
 		$tagger = $this->tagMgr->load($this->objectType);
 
-		$this->assertEquals(0, count($tagger->getTags()));
+		$this->assertCount(0, $tagger->getTags());
 		$this->assertTrue($tagger->isEmpty());
 
 		$result = $tagger->add('Tag');
 		$this->assertGreaterThan(0, $result, 'add() returned an ID <= 0');
-		$this->assertNotEquals(false, $result, 'add() returned false');
+		$this->assertNotFalse($result, 'add() returned false');
 		$this->assertFalse($tagger->isEmpty());
 	}
 
@@ -176,13 +176,13 @@ class TagsTest extends TestCase {
 		$tagger->tagAs(2, 'Family');
 
 		$tags = $tagger->getTagsForObjects([1]);
-		$this->assertEquals(1, count($tags));
+		$this->assertCount(1, $tags);
 		$tags = current($tags);
 		sort($tags);
 		$this->assertSame(['Friends', 'Other'], $tags);
 
 		$tags = $tagger->getTagsForObjects([1, 2]);
-		$this->assertEquals(2, count($tags));
+		$this->assertCount(2, $tags);
 		$tags1 = $tags[1];
 		sort($tags1);
 		$this->assertSame(['Friends', 'Other'], $tags1);
@@ -219,20 +219,20 @@ class TagsTest extends TestCase {
 		}
 
 		$tags = $tagger->getTagsForObjects($idsArray);
-		$this->assertEquals(1500, count($tags));
+		$this->assertCount(1500, $tags);
 	}
 
 	public function testDeleteTags() {
 		$defaultTags = ['Friends', 'Family', 'Work', 'Other'];
 		$tagger = $this->tagMgr->load($this->objectType, $defaultTags);
 
-		$this->assertEquals(4, count($tagger->getTags()));
+		$this->assertCount(4, $tagger->getTags());
 
 		$tagger->delete('family');
-		$this->assertEquals(3, count($tagger->getTags()));
+		$this->assertCount(3, $tagger->getTags());
 
 		$tagger->delete(['Friends', 'Work', 'Other']);
-		$this->assertEquals(0, count($tagger->getTags()));
+		$this->assertCount(0, $tagger->getTags());
 	}
 
 	public function testRenameTag() {
@@ -255,8 +255,8 @@ class TagsTest extends TestCase {
 			$this->assertTrue($tagger->tagAs($id, 'Family'));
 		}
 
-		$this->assertEquals(1, count($tagger->getTags()));
-		$this->assertEquals(9, count($tagger->getIdsForTag('Family')));
+		$this->assertCount(1, $tagger->getTags());
+		$this->assertCount(9, $tagger->getIdsForTag('Family'));
 	}
 
 	/**
@@ -270,13 +270,13 @@ class TagsTest extends TestCase {
 		$tagger = $this->tagMgr->load($this->objectType);
 
 		foreach($objIds as $id) {
-			$this->assertTrue(in_array($id, $tagger->getIdsForTag('Family')));
+			$this->assertContains($id, $tagger->getIdsForTag('Family'));
 			$tagger->unTag($id, 'Family');
-			$this->assertFalse(in_array($id, $tagger->getIdsForTag('Family')));
+			$this->assertNotContains($id, $tagger->getIdsForTag('Family'));
 		}
 
-		$this->assertEquals(1, count($tagger->getTags()));
-		$this->assertEquals(0, count($tagger->getIdsForTag('Family')));
+		$this->assertCount(1, $tagger->getTags());
+		$this->assertCount(0, $tagger->getIdsForTag('Family'));
 	}
 
 	public function testFavorite() {

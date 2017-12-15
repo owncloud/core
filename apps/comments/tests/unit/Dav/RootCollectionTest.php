@@ -98,7 +98,7 @@ class RootCollectionTest extends \Test\TestCase {
 	public function testGetChild() {
 		$this->prepareForInitCollections();
 		$etc = $this->collection->getChild('files');
-		$this->assertTrue($etc instanceof EntityTypeCollectionImplementation);
+		$this->assertInstanceOf(EntityTypeCollectionImplementation::class, $etc);
 	}
 
 	/**
@@ -119,9 +119,9 @@ class RootCollectionTest extends \Test\TestCase {
 	public function testGetChildren() {
 		$this->prepareForInitCollections();
 		$children = $this->collection->getChildren();
-		$this->assertFalse(empty($children));
+		$this->assertNotEmpty($children);
 		foreach($children as $child) {
-			$this->assertTrue($child instanceof EntityTypeCollectionImplementation);
+			$this->assertInstanceOf(EntityTypeCollectionImplementation::class, $child);
 		}
 	}
 
@@ -168,6 +168,6 @@ class RootCollectionTest extends \Test\TestCase {
 	}
 
 	public function testGetLastModified() {
-		$this->assertSame(null, $this->collection->getLastModified());
+		$this->assertNull($this->collection->getLastModified());
 	}
 }

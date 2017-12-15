@@ -122,7 +122,7 @@ class GroupPrincipalTest extends \Test\TestCase {
 			->will($this->returnValue(null));
 
 		$response = $this->connector->getPrincipalByPath('principals/groups/foo');
-		$this->assertSame(null, $response);
+		$this->assertNull($response);
 	}
 
 	public function testGetGroupMemberSet() {

@@ -77,7 +77,7 @@ class UpdaterTest extends TestCase {
 		\OCA\Files_Trashbin\Trashbin::registerHooks();
 
 		$fileinfo = \OC\Files\Filesystem::getFileInfo($this->folder);
-		$this->assertTrue($fileinfo instanceof \OC\Files\FileInfo);
+		$this->assertInstanceOf(\OC\Files\FileInfo::class, $fileinfo);
 
 		$share = $this->share(
 			\OCP\Share::SHARE_TYPE_USER,
@@ -122,7 +122,7 @@ class UpdaterTest extends TestCase {
 		// trashbin should contain the local file but not the mount point
 		$rootView = new \OC\Files\View('/' . self::TEST_FILES_SHARING_API_USER2);
 		$trashContent = \OCA\Files_Trashbin\Helper::getTrashFiles('/', self::TEST_FILES_SHARING_API_USER2);
-		$this->assertSame(1, count($trashContent));
+		$this->assertCount(1, $trashContent);
 		$firstElement = reset($trashContent);
 		$timestamp = $firstElement['mtime'];
 		$this->assertTrue($rootView->file_exists('files_trashbin/files/localFolder.d' . $timestamp . '/localFile.txt'));
@@ -185,12 +185,12 @@ class UpdaterTest extends TestCase {
 		$afterShareDir = \OC\Files\Filesystem::getFileInfo($shareFolder);
 		$etagAfterShareDir = $afterShareDir->getEtag();
 
-		$this->assertTrue(is_string($etagBeforeShareRoot));
-		$this->assertTrue(is_string($etagBeforeShareDir));
-		$this->assertTrue(is_string($etagAfterShareRoot));
-		$this->assertTrue(is_string($etagAfterShareDir));
-		$this->assertTrue($etagBeforeShareRoot !== $etagAfterShareRoot);
-		$this->assertTrue($etagBeforeShareDir !== $etagAfterShareDir);
+		$this->assertInternalType('string', $etagBeforeShareRoot);
+		$this->assertInternalType('string', $etagBeforeShareDir);
+		$this->assertInternalType('string', $etagAfterShareRoot);
+		$this->assertInternalType('string', $etagAfterShareDir);
+		$this->assertNotSame($etagBeforeShareRoot, $etagAfterShareRoot);
+		$this->assertNotSame($etagBeforeShareDir, $etagAfterShareDir);
 
 		// cleanup
 		$this->loginHelper(self::TEST_FILES_SHARING_API_USER1);

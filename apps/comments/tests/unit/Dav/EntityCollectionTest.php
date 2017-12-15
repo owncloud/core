@@ -66,7 +66,7 @@ class EntityCollectionTest extends \Test\TestCase {
 			->will($this->returnValue($this->createMock('\OCP\Comments\IComment')));
 
 		$node = $this->collection->getChild('55');
-		$this->assertTrue($node instanceof \OCA\Comments\Dav\CommentNode);
+		$this->assertInstanceOf(\OCA\Comments\Dav\CommentNode::class, $node);
 	}
 
 	/**
@@ -90,7 +90,7 @@ class EntityCollectionTest extends \Test\TestCase {
 		$result = $this->collection->getChildren();
 
 		$this->assertSame(count($result), 1);
-		$this->assertTrue($result[0] instanceof \OCA\Comments\Dav\CommentNode);
+		$this->assertInstanceOf(\OCA\Comments\Dav\CommentNode::class, $result[0]);
 	}
 
 	public function testFindChildren() {
@@ -103,7 +103,7 @@ class EntityCollectionTest extends \Test\TestCase {
 		$result = $this->collection->findChildren(5, 15, $dt);
 
 		$this->assertSame(count($result), 1);
-		$this->assertTrue($result[0] instanceof \OCA\Comments\Dav\CommentNode);
+		$this->assertInstanceOf(\OCA\Comments\Dav\CommentNode::class, $result[0]);
 	}
 
 	public function testChildExistsTrue() {

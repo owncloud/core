@@ -90,7 +90,7 @@ class ExternalShareControllerTest extends \Test\TestCase {
 		$this->assertEquals(new JSONResponse(), $this->getExternalShareController()->create(4));
 
 		$this->assertSame('remoteshare.accepted', $called[0]);
-		$this->assertTrue($called[1] instanceof GenericEvent);
+		$this->assertInstanceOf(GenericEvent::class, $called[1]);
 	}
 
 	public function testDestroy() {
@@ -108,7 +108,7 @@ class ExternalShareControllerTest extends \Test\TestCase {
 		$this->assertEquals(new JSONResponse(), $this->getExternalShareController()->destroy(4));
 
 		$this->assertSame('remoteshare.declined', $called[0]);
-		$this->assertTrue($called[1] instanceof GenericEvent);
+		$this->assertInstanceOf(GenericEvent::class, $called[1]);
 	}
 
 	public function testRemoteWithValidHttps() {

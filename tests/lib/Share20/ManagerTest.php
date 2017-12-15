@@ -72,7 +72,7 @@ class ManagerTest extends \Test\TestCase {
 
 	public function setUp() {
 		parent::setUp();
-		
+
 		$this->logger = $this->createMock('\OCP\ILogger');
 		$this->config = $this->createMock('\OCP\IConfig');
 		$this->secureRandom = $this->createMock('\OCP\Security\ISecureRandom');
@@ -144,7 +144,7 @@ class ManagerTest extends \Test\TestCase {
 
 		$group = $this->createMock('\OCP\IGroup');
 		$group->method('getGID')->willReturn('sharedWithGroup');
-	
+
 		return [
 			[\OCP\Share::SHARE_TYPE_USER, 'sharedWithUser'],
 			[\OCP\Share::SHARE_TYPE_GROUP, 'sharedWithGroup'],
@@ -975,7 +975,7 @@ class ManagerTest extends \Test\TestCase {
 
 		$this->invokePrivate($this->manager, 'validateExpirationDate', [$share]);
 
-		$this->assertEquals(null, $share->getExpirationDate());
+		$this->assertNull($share->getExpirationDate());
 	}
 
 	/**
@@ -2734,7 +2734,7 @@ class ManagerTest extends \Test\TestCase {
 
 		$this->manager->moveShare($share, 'recipient');
 	}
-	
+
 	public function testGetSharedWith() {
 		$user = $this->createMock(IUser::class);
 

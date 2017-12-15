@@ -63,7 +63,7 @@ class RequestHandlerTest extends TestCase {
 
 	/** @var  \OCA\FederatedFileSharing\AddressHandler | PHPUnit_Framework_MockObject_MockObject */
 	private $addressHandler;
-	
+
 	/** @var  IUserManager | \PHPUnit_Framework_MockObject_MockObject */
 	private $userManager;
 
@@ -101,7 +101,7 @@ class RequestHandlerTest extends TestCase {
 		$this->addressHandler = $this->getMockBuilder('OCA\FederatedFileSharing\AddressHandler')
 			->disableOriginalConstructor()->getMock();
 		$this->userManager = $this->createMock('OCP\IUserManager');
-		
+
 		$this->registerHttpHelper($httpHelperMock);
 
 		$this->s2s = new RequestHandler(
@@ -171,7 +171,7 @@ class RequestHandlerTest extends TestCase {
 
 		$result = $this->s2s->createShare(null);
 
-		$this->assertTrue($called[1] instanceof GenericEvent);
+		$this->assertInstanceOf(GenericEvent::class, $called[1]);
 
 		$this->assertTrue($result->succeeded());
 
@@ -279,7 +279,7 @@ class RequestHandlerTest extends TestCase {
 			$remainingShares[$r['user']] = isset($remainingShares[$r['user']]) ? $remainingShares[$r['user']] + 1 : 1;
 		}
 
-		$this->assertSame($remainingUsers, count($remainingShares));
+		$this->assertCount($remainingUsers, $remainingShares);
 
 		foreach ($expected as $key => $value) {
 			if ($key === $toDelete) {
@@ -318,7 +318,7 @@ class RequestHandlerTest extends TestCase {
 		$query->execute();
 		$dummyEntries = $query->fetchAll();
 
-		$this->assertSame(10, count($dummyEntries));
+		$this->assertCount(10, $dummyEntries);
 	}
 
 	/**
@@ -381,7 +381,7 @@ class RequestHandlerTest extends TestCase {
 		if ($found) {
 			$this->assertEquals($expected, $result);
 		} else {
-			$this->assertSame(false, $result);
+			$this->assertFalse($result);
 		}
 	}
 

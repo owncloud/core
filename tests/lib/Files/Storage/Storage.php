@@ -160,7 +160,7 @@ abstract class Storage extends \Test\TestCase {
 	 */
 	public function testMimeType() {
 		$this->assertEquals('httpd/unix-directory', $this->instance->getMimeType('/'));
-		$this->assertEquals(false, $this->instance->getMimeType('/non/existing/file'));
+		$this->assertFalse($this->instance->getMimeType('/non/existing/file'));
 
 		$textFile = \OC::$SERVERROOT . '/tests/data/lorem.txt';
 		$this->instance->file_put_contents('/lorem.txt', file_get_contents($textFile, 'r'));
@@ -265,8 +265,8 @@ abstract class Storage extends \Test\TestCase {
 		$textFile = \OC::$SERVERROOT . '/tests/data/lorem.txt';
 		$this->instance->file_put_contents('/lorem.txt', file_get_contents($textFile));
 		$localFile = $this->instance->getLocalFile('/lorem.txt');
-		$this->assertTrue(file_exists($localFile));
-		$this->assertEquals(file_get_contents($textFile), file_get_contents($localFile));
+		$this->assertFileExists($localFile);
+		$this->assertFileEquals($textFile, $localFile);
 
 		$this->instance->mkdir('/folder');
 		$this->instance->file_put_contents('/folder/lorem.txt', file_get_contents($textFile));
@@ -276,15 +276,15 @@ abstract class Storage extends \Test\TestCase {
 
 		// test below require to use instance->getLocalFile because the physical storage might be different
 		$localFile = $this->instance->getLocalFile('/folder/lorem.txt');
-		$this->assertTrue(file_exists($localFile));
-		$this->assertEquals(file_get_contents($localFile), file_get_contents($textFile));
+		$this->assertFileExists($localFile);
+		$this->assertFileEquals($localFile, $textFile);
 
 		$localFile = $this->instance->getLocalFile('/folder/bar.txt');
-		$this->assertTrue(file_exists($localFile));
+		$this->assertFileExists($localFile);
 		$this->assertEquals(file_get_contents($localFile), 'asd');
 
 		$localFile = $this->instance->getLocalFile('/folder/recursive/file.txt');
-		$this->assertTrue(file_exists($localFile));
+		$this->assertFileExists($localFile);
 		$this->assertEquals(file_get_contents($localFile), 'foo');
 	}
 
