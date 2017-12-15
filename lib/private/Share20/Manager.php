@@ -872,6 +872,13 @@ class Manager implements IManager {
 		$hookParams['itemTarget'] = $hookParams['fileTarget'];
 		$hookParams['unsharedItems'] = [$hookParams];
 		\OC_Hook::emit('OCP\Share', 'post_unshareFromSelf', $hookParams);
+		$event = new GenericEvent(null, [
+			'shareRecipient' => $recipientId,
+			'shareOwner' => $share->getSharedBy(),
+			'recipientPath' => $share->getTarget(),
+			'ownerPath' => $share->getNode()->getPath(),
+			'nodeType' => $share->getNodeType()]);
+		\OC::$server->getEventDispatcher()->dispatch('fromself.unshare',$event);
 	}
 
 	/**
