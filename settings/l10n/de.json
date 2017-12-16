@@ -86,6 +86,7 @@
     "Valid until {date}" : "Gültig bis {date}",
     "Disconnect" : "Trennen",
     "Error while loading browser sessions and device tokens" : "Fehler beim Laden der Browser-Sitzungen und Gerätetoken",
+    "Empty app name is not allowed." : "Ein leerer App-Name ist nicht erlaubt.",
     "Error while creating device token" : "Fehler beim Erstellen des Gerätetokens",
     "Error while deleting the token" : "Fehler beim Löschen des Gerätetokens",
     "CORS" : "KERNE",
