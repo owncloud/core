@@ -88,6 +88,7 @@ OC.L10N.register(
     "Valid until {date}" : "E vlefshme deri më {date}",
     "Disconnect" : "Shkëputu",
     "Error while loading browser sessions and device tokens" : "Gabim gjatë ngarkimit të sesioneve të shfletuesit dhe token-ësh pajisjesh",
+    "Empty app name is not allowed." : "Nuk lejohet emër hapësire i zbrazët.",
     "Error while creating device token" : "Gabim gjatë krijimit të token-ëve të pajisjejeve",
     "Error while deleting the token" : "Gabim gjatë fshirjes së token-it",
     "CORS" : "CORS",
