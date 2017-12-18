@@ -467,24 +467,32 @@ class CardDavBackend implements BackendInterface, SyncSupport {
 	 * @return array
 	 */
 	function getMultipleCards($addressBookId, array $uris) {
-		$query = $this->db->getQueryBuilder();
-		$query->select(['id', 'uri', 'lastmodified', 'etag', 'size', 'carddata'])
-			->from('cards')
-			->where($query->expr()->eq('addressbookid', $query->createNamedParameter($addressBookId)))
-			->andWhere($query->expr()->in('uri', $query->createParameter('uri')))
-			->setParameter('uri', $uris, IQueryBuilder::PARAM_STR_ARRAY);
+		if (count($uris) <= 999) {
+			$query = $this->db->getQueryBuilder();
+			$query->select(['id', 'uri', 'lastmodified', 'etag', 'size', 'carddata'])
+				->from('cards')
+				->where($query->expr()->eq('addressbookid', $query->createNamedParameter($addressBookId)))
+				->andWhere($query->expr()->in('uri', $query->createParameter('uri')))
+				->setParameter('uri', $uris, IQueryBuilder::PARAM_STR_ARRAY);
 
-		$cards = [];
+			$cards = [];
 
-		$result = $query->execute();
-		while($row = $result->fetch()) {
-			$row['etag'] = '"' . $row['etag'] . '"';
-			$row['carddata'] = $this->readBlob($row['carddata']);
-			$cards[] = $row;
+			$result = $query->execute();
+			while ($row = $result->fetch()) {
+				$row['etag'] = '"' . $row['etag'] . '"';
+				$row['carddata'] = $this->readBlob($row['carddata']);
+				$cards[] = $row;
+			}
+			$result->closeCursor();
+
+			return $cards;
 		}
-		$result->closeCursor();
+		$chunks = array_chunk($uris, 999);
+		$results = array_map(function ($chunk) use ($addressBookId) {
+			return $this->getMultipleCards($addressBookId, $chunk);
+		}, $chunks);
 
-		return $cards;
+		return call_user_func_array('array_merge', $results);
 	}
 
 	/**
