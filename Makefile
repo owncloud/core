@@ -9,7 +9,7 @@
 #
 #  curl -sL https://deb.nodesource.com/setup_7.x | sudo -E bash -
 #  sudo apt-get install -y nodejs build-essential
-#  
+#
 # (installation from distro packages is not recommended, often old versions)
 #
 #
@@ -64,14 +64,22 @@ core_test_dirs=tests
 core_all_src=$(core_src_files) $(core_src_dirs) $(core_doc_files)
 dist_dir=build/dist
 
+# UI-kit variables
+uikit_output_dir=$(core_vendor)/uikit
+uikit_builder_dir=$(nodejs_deps)/uikit
+uikit_owncloud_src_dir=core/less
+uikit_owncloud_srcs=$(wildcard $(uikit_owncloud_src_dir)/*.less) $(wildcard $(uikit_owncloud_src_dir)/**/*.less)
+
+core_vendor_extras=$(core_vendor)/uikit
+
 #
 # Catch-all rules
 #
 .PHONY: all
-all: help-hint $(composer_dev_deps) $(core_vendor) $(nodejs_deps)
+all: help-hint $(composer_dev_deps) $(core_vendor) $(core_vendor_extras) $(nodejs_deps)
 
 .PHONY: clean
-clean: clean-composer-deps clean-nodejs-deps clean-js-deps clean-test clean-dist
+clean: clean-composer-deps clean-nodejs-deps clean-js-deps clean-test clean-dist clean-uikit
 
 .PHONY: help-hint
 help-hint:
@@ -105,7 +113,7 @@ help:
 	@echo
 	@echo -e "Tools:\n"
 	@echo -e "make update-php-license-header\tUpdate license headers"
-	
+
 
 #
 # Basic required tools
@@ -172,6 +180,30 @@ clean-js-deps:
 	rm -Rf $(core_vendor)
 
 #
+# UI kit
+#
+
+.PHONY: uikit
+uikit: $(uikit_output_dir)
+
+# build UI kit tool
+$(uikit_builder_dir): $(nodejs_deps)
+	cd $(uikit_builder_dir)/ && npm install
+
+# build ownCloud uikit styles
+$(uikit_output_dir): $(uikit_builder_dir) $(uikit_owncloud_srcs) $(core_vendor)
+	mkdir -p $(uikit_builder_dir)/custom/
+	cp -Rvf $(uikit_owncloud_src_dir)/* $(uikit_builder_dir)/custom/
+	cd $(uikit_builder_dir)/ && npm run compile
+	cp -Rvu $(uikit_builder_dir)/dist/ $@
+	touch $@
+
+.PHONY: clean-uikit
+clean-uikit:
+	-rm -Rf $(uikit_output_dir)
+	-rm -Rf $(uikit_builder_dir)/{dist,custom}
+
+#
 # Tests
 #
 .PHONY: test-php
@@ -233,9 +265,9 @@ clean-docs:
 #
 # Build distribution
 #
-$(dist_dir)/owncloud: $(composer_deps) $(core_vendor) $(core_all_src)
+$(dist_dir)/owncloud: $(composer_deps) $(core_vendor) $(core_vendor_extras) $(core_all_src)
 	rm -Rf $@; mkdir -p $@/config
-	cp -R $(core_all_src) $@
+	cp -RL $(core_all_src) $@
 	cp -R config/config.sample.php $@/config
 	rm -Rf $(dist_dir)/owncloud/apps/testing
 	find $@ -name .gitkeep -delete
@@ -284,9 +316,9 @@ clean-dist:
 #
 # Build qa distribution
 #
-$(dist_dir)/qa/owncloud: $(composer_dev_deps) $(core_vendor) $(core_all_src) $(core_test_dirs)
+$(dist_dir)/qa/owncloud: $(composer_dev_deps) $(core_vendor) $(core_vendor_extras) $(core_all_src) $(core_test_dirs)
 	rm -Rf $@; mkdir -p $@/config
-	cp -R $(core_all_src) $@
+	cp -RL $(core_all_src) $@
 	cp -R $(core_test_dirs) $@
 	cp -R config/config.sample.php $@/config
 	find $@ -name .gitkeep -delete
@@ -327,4 +359,3 @@ dist-dir-qa: $(dist_dir)/qa/owncloud
 .PHONY: update-php-license-header
 update-php-license-header:
 	php build/license.php
-

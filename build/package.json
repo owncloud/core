@@ -9,13 +9,14 @@
   "private": true,
   "homepage": "https://github.com/owncloud/",
   "contributors": [],
-  "dependencies": {},
+  "dependencies": {
+    "material-design-icons": "^3.0.1"
+  },
   "devDependencies": {
     "bower": "~1.8.0",
     "handlebars": "^4.0.5",
     "jasmine-core": "^2.5.2",
     "jasmine-sinon": "^0.4.0",
-    "sinon": "^2.0.0",
     "jsdoc": "~3.4.0",
     "karma": "^1.5.0",
     "karma-coverage": "*",
@@ -23,7 +24,10 @@
     "karma-jasmine-sinon": "^1.0.4",
     "karma-junit-reporter": "*",
     "karma-phantomjs-launcher": "*",
-    "phantomjs-prebuilt": "*"
+    "phantomjs-prebuilt": "*",
+    "sinon": "^2.0.0",
+    "uikit": "^3.0.0-beta.35",
+    "webpack-material-design-icons": "^0.1.0"
   },
   "engine": "node >= 6.9"
 }

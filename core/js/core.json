@@ -12,7 +12,8 @@
 		"es6-promise/dist/es6-promise.js",
 		"davclient.js/lib/client.js",
 		"clipboard/dist/clipboard.js",
-		"bowser/src/bowser.js"
+		"bowser/src/bowser.js",
+		"uikit/js/uikit.min.js"
 	],
 	"libraries": [
 		"jquery-showpassword.js",

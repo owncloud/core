@@ -1,5 +1,5 @@
 <div id="app-navigation">
-	<ul class="with-icon">
+	<ul class="uk-list with-icon">
 		<?php foreach ($_['navigationItems'] as $item) { ?>
 		<li data-id="<?php p($item['id']) ?>" class="nav-<?php p($item['id']) ?>">
 			<a href="<?php p(isset($item['href']) ? $item['href'] : '#') ?>"
