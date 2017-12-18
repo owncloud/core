@@ -763,19 +763,21 @@ class CalDavBackend extends AbstractBackend implements SyncSupport, Subscription
 	 * @return array
 	 */
 	function getMultipleCalendarObjects($calendarId, array $uris) {
-		$query = $this->db->getQueryBuilder();
-		$query->select(['id', 'uri', 'lastmodified', 'etag', 'calendarid', 'size', 'calendardata', 'componenttype', 'classification'])
+
+		if (count($uris) <= 999) {
+			$query = $this->db->getQueryBuilder();
+			$query->select(['id', 'uri', 'lastmodified', 'etag', 'calendarid', 'size', 'calendardata', 'componenttype', 'classification'])
 				->from('calendarobjects')
 				->where($query->expr()->eq('calendarid', $query->createNamedParameter($calendarId)))
 				->andWhere($query->expr()->in('uri', $query->createParameter('uri')))
 				->setParameter('uri', $uris, IQueryBuilder::PARAM_STR_ARRAY);
 
-		$stmt = $query->execute();
+			$stmt = $query->execute();
 
-		$result = [];
-		while($row = $stmt->fetch(\PDO::FETCH_ASSOC)) {
+			$result = [];
+			while($row = $stmt->fetch(\PDO::FETCH_ASSOC)) {
 
-			$result[] = [
+				$result[] = [
 					'id'           => $row['id'],
 					'uri'          => $row['uri'],
 					'lastmodified' => $row['lastmodified'],
@@ -785,10 +787,18 @@ class CalDavBackend extends AbstractBackend implements SyncSupport, Subscription
 					'calendardata' => $this->readBlob($row['calendardata']),
 					'component'    => strtolower($row['componenttype']),
 					'classification' => (int)$row['classification']
-			];
+				];
 
+			}
+			$stmt->closeCursor();
+			return $result;
 		}
-		return $result;
+		$chunks = array_chunk($uris, 999);
+		$results = array_map(function ($chunk) use ($calendarId) {
+			return $this->getMultipleCalendarObjects($calendarId, $chunk);
+		}, $chunks);
+
+		return call_user_func_array('array_merge', $results);
 	}
 
 	/**
