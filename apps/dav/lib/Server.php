@@ -26,7 +26,6 @@
  */
 namespace OCA\DAV;
 
-use OCA\DAV\AppInfo\PluginManager;
 use OCA\DAV\CalDAV\Schedule\IMipPlugin;
 use OCA\DAV\CardDAV\ImageExportPlugin;
 use OCA\DAV\Connector\Sabre\Auth;
@@ -39,21 +38,25 @@ use OCA\DAV\Connector\Sabre\DummyGetResponsePlugin;
 use OCA\DAV\Connector\Sabre\FakeLockerPlugin;
 use OCA\DAV\Connector\Sabre\FilesPlugin;
 use OCA\DAV\Connector\Sabre\FilesReportPlugin;
-use OCA\DAV\Connector\Sabre\MaintenancePlugin;
 use OCA\DAV\Connector\Sabre\QuotaPlugin;
 use OCA\DAV\Connector\Sabre\SharesPlugin;
-use OCA\DAV\Connector\Sabre\TagsPlugin;
-use OCA\DAV\Connector\Sabre\ValidateRequestPlugin;
+use OCA\DAV\Files\BrowserErrorPagePlugin;
+use OCA\DAV\Files\ZsyncPlugin;
 use OCA\DAV\DAV\FileCustomPropertiesBackend;
 use OCA\DAV\DAV\MiscCustomPropertiesBackend;
 use OCA\DAV\DAV\PublicAuth;
-use OCA\DAV\Files\BrowserErrorPagePlugin;
 use OCA\DAV\SystemTag\SystemTagPlugin;
 use OCA\DAV\Upload\ChunkingPlugin;
+use OCA\DAV\Upload\ChunkingPluginZsync;
 use OCP\IRequest;
 use OCP\SabrePluginEvent;
 use Sabre\CardDAV\VCFExportPlugin;
 use Sabre\DAV\Auth\Plugin;
+use OCA\DAV\Connector\Sabre\TagsPlugin;
+use OCA\DAV\AppInfo\PluginManager;
+use OCA\DAV\Connector\Sabre\MaintenancePlugin;
+use OCA\DAV\Connector\Sabre\ValidateRequestPlugin;
+use OC\Files\View;
 
 class Server {
 
@@ -175,6 +178,15 @@ class Server {
 			$userSession = \OC::$server->getUserSession();
 			$user = $userSession->getUser();
 			if (!is_null($user)) {
+				$view = new View('/'.$user->getUID());
+				$this->server->addPlugin(
+					new ChunkingPluginZsync($view)
+				);
+
+				$this->server->addPlugin(
+					new ZsyncPlugin($view)
+				);
+
 				$view = \OC\Files\Filesystem::getView();
 				$this->server->addPlugin(
 					new FilesPlugin(

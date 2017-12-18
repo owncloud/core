@@ -51,6 +51,7 @@ use Sabre\DAV\ICollection;
 use Sabre\DAV\IFile;
 use Sabre\DAV\IMoveTarget;
 use Sabre\DAV\INode;
+use OCA\DAV\Upload\FutureFileZsync;
 use Sabre\DAV\IQuota;
 use Sabre\HTTP\URLUtil;
 
@@ -147,7 +148,7 @@ class Directory extends Node implements ICollection, IQuota, IMoveTarget {
 				) {
 					throw new SabreForbidden();
 				}
-			} else if (FutureFile::isFutureFile()) {
+			} else if (FutureFile::isFutureFile() or FutureFileZsync::isFutureFile()) {
 				// Future file (chunked upload) requires fileinfo
 				$info = $this->fileView->getFileInfo($this->path . '/' . $name);
 			} else {
