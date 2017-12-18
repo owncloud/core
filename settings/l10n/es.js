@@ -88,6 +88,7 @@ OC.L10N.register(
     "Valid until {date}" : "Válido hasta {date}",
     "Disconnect" : "Desconectar",
     "Error while loading browser sessions and device tokens" : "Error al cargar sesiones de navegador y \"tokens\" de dispositivos",
+    "Empty app name is not allowed." : "No esta permitido un nombre de app en blanco",
     "Error while creating device token" : "Error al crear \"token\" de dispositivo",
     "Error while deleting the token" : "Error al detectar el \"token\"",
     "CORS" : "CORS",
