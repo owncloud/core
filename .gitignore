@@ -126,3 +126,4 @@ clover.xml
 
 # ignore build dirs
 build/dist
+apps/*/dist
