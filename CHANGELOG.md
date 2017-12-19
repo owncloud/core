@@ -6,6 +6,52 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/).
 
 ## [Unreleased]
 ### Added
+- Add php-intl as hard requirement - [#29539](https://github.com/owncloud/core/issues/29539)
+- Optionally show server hostname in status.php - [#29471](https://github.com/owncloud/core/issues/29471)
+- Add link for logfiles docs in exception page and simplify text - [#29674](https://github.com/owncloud/core/issues/29674)
+- Link to trusted domains docs in error message - [#29730](https://github.com/owncloud/core/issues/29730)
+- Add indices on share table - [#29883](https://github.com/owncloud/core/issues/29883) [#29592](https://github.com/owncloud/core/issues/29592)
+- Add dispatcher event for "unshare from self" action - [#29851](https://github.com/owncloud/core/issues/29851)
+- Works now with PHP 7.2 - [#29878](https://github.com/owncloud/core/issues/29878)
+- Added public hooks for file operations using Symfony Event Dispatcher - [#29939](https://github.com/owncloud/core/issues/29939)
+- Expose getAppPath() and getAppWebPath() on the AppManager service [#30041](https://github.com/owncloud/core/pull/30041)
+- Add warning in settings page when running in debug mode - [#29936](https://github.com/owncloud/core/issues/29936)
+
+### Changed
+- Switch Webdav URL in field in navigation panel to the new endpoint - [#29766](https://github.com/owncloud/core/issues/29766)
+- Require a minimum of 1 character for the application password name - [#29831](https://github.com/owncloud/core/issues/29831)
+- Only allow a single active theme app with no magic fallbacks to inactive app themes  - [#29854](https://github.com/owncloud/core/issues/29854)
+- Config report now hides email address from email config - [#29949](https://github.com/owncloud/core/issues/29949)
+- Switched to yarn for JS dependencies - [#30026](https://github.com/owncloud/core/issues/30026)
+
+### Removed
+- Removed old Dropbox storage backend, people should use the [files_external_dropbox app](https://github.com/owncloud/files_external_dropbox/) instead - [#29135](https://github.com/owncloud/core/issues/29135)
+- Revoke tasks.crt - [#29882](https://github.com/owncloud/core/issues/29882)
+- Remove unused composer dependency on natxet/CssMin - [#29930](https://github.com/owncloud/core/issues/29930)
+
+### Fixed
+- Fix provisioning API when dealing with group name "0" - [#30004](https://github.com/owncloud/core/issues/30004)
+- Tweak occ command help output - [#29959](https://github.com/owncloud/core/issues/29959)
+- Now using upsert instead of insertIfNotExists for file cache updates, fixes concurrency issues - [#29934](https://github.com/owncloud/core/issues/29934)
+- Only set CORS headers on Webdav endpoint when Origin header is specified - [#29874](https://github.com/owncloud/core/issues/29874)
+- Ignore broken/dead symlinks on filescan - [#28959](https://github.com/owncloud/core/issues/28959)
+- Improve performance by caching non-existing accounts - [#29866](https://github.com/owncloud/core/issues/29866)
+- Fix template location order by searching the enabled theme app first - [#29867](https://github.com/owncloud/core/issues/29867)
+- Actually log message instead of {$message} - [#29844](https://github.com/owncloud/core/issues/29844)
+- Improved performance on new DAV endpoint by skipping querying parent nodes - [#29834](https://github.com/owncloud/core/issues/29834)
+- Adjust error message about PHP compatibility to say PHP X.X like previous line. - [#29828](https://github.com/owncloud/core/issues/29828)
+- Raise more useful message when constructor are not resolvable - [#29760](https://github.com/owncloud/core/issues/29760)
+- Fix wording for versions expiration occ command - [#29671](https://github.com/owncloud/core/issues/29671)
+- Handle invalid or missing external storage backend to keep mount point visible - [#29562](https://github.com/owncloud/core/issues/29562)
+- Fix integrity check when owncloud is not installed - [#29692](https://github.com/owncloud/core/issues/29692)
+- Fix issues about unsharing with some scenarios after moving the share - [#29716](https://github.com/owncloud/core/issues/29716)
+- Allow group 0 to be created by provisioning API - [#29734](https://github.com/owncloud/core/issues/29734)
+- Do not reset quota if it was not provided - [#29673](https://github.com/owncloud/core/issues/29673)
+- Improve quota value validation - check size only if size key is set - [#29743](https://github.com/owncloud/core/issues/29743)
+- Code cleanup - [#29799](https://github.com/owncloud/core/issues/29799)
+
+## 10.0.4 - 2017-12-06
+### Added
 - Added support for eml mimetype - [#29204](https://github.com/owncloud/core/issues/29204)
 - Added "occ dav:cleanup-chunks" command to clean up expired uploads - [#29180](https://github.com/owncloud/core/issues/29180)
 - Added "occ files:scan" repair mode to repair mismatch filecache paths - [#29074](https://github.com/owncloud/core/issues/29074) [#29232](https://github.com/owncloud/core/issues/29232)
@@ -370,7 +416,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/).
 - provisioning API now also returns the user's home path: [#26850](https://github.com/owncloud/core/issues/26850)
 - web updater shows link to changelog in admin page: [#26796](https://github.com/owncloud/core/issues/26796)
 
-[Unreleased]: https://github.com/owncloud/core/compare/v10.0.3...stable10
+[Unreleased]: https://github.com/owncloud/core/compare/v10.0.4...stable10
+[10.0.4]: https://github.com/owncloud/core/compare/v10.0.3...v10.0.4
 [10.0.3]: https://github.com/owncloud/core/compare/v10.0.2...v10.0.3
 [10.0.2]: https://github.com/owncloud/core/compare/v10.0.1...v10.0.2
 [10.0.1]: https://github.com/owncloud/core/compare/v10.0.0...v10.0.1
