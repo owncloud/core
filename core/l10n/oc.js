@@ -169,7 +169,7 @@ OC.L10N.register(
     "Share details could not be loaded for this item." : "Las informacions de partiment an pas pogut èsser cargadas per aqueste element.",
     "{sharee} (group)" : "{sharee} (grop)",
     "{sharee} (at {server})" : "{sharee} (sus {server})",
-    "{sharee} (remote)" : "{sharee} (distant)",
+    "{sharee} (federated)" : "{sharee} (distant)",
     "Share" : "Partejar",
     "Resharing is not allowed" : "Lo repartiment es pas autorizat",
     "Share with people on other ownClouds using the syntax username@example.com/owncloud" : "Partejatz amb de personas sus d'autres ownClouds en utilizant la sintaxi utilizaire@exemple.com/owncloud",

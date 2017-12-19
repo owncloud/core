@@ -182,7 +182,7 @@ OC.L10N.register(
     "An error occurred. Please try again" : "Възникна грешка. Моля, опитайте отново",
     "{sharee} (group)" : "{sharee} (група)",
     "{sharee} (at {server})" : "{sharee} (на {server})",
-    "{sharee} (remote)" : "{sharee} (отдалечен)",
+    "{sharee} (federated)" : "{sharee} (отдалечен)",
     "Share" : "Споделяне",
     "Resharing is not allowed" : "Повторно споделяне не е разрешено.",
     "Share with people on other ownClouds using the syntax username@example.com/owncloud" : "Споделете с хора на други ownClouds използвайки синтаксиса username@example.com/ownCloud",

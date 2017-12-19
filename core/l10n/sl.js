@@ -200,7 +200,7 @@ OC.L10N.register(
     "An error occurred. Please try again" : "Prišlo je do napake. Poskusite znova.",
     "{sharee} (group)" : "{sharee} (skupina)",
     "{sharee} (at {server})" : "{sharee} (na {server})",
-    "{sharee} (remote)" : "{sharee} (oddaljeno)",
+    "{sharee} (federated)" : "{sharee} (oddaljeno)",
     "Share" : "Souporaba",
     "User and Groups" : "Uporabnik in skupine",
     "Public Links" : "Javne povezave",

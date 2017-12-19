@@ -200,7 +200,7 @@ OC.L10N.register(
     "An error occurred. Please try again" : "Hiba történt. Kérjük, próbálja meg újra!",
     "{sharee} (group)" : "{sharee} (csoport)",
     "{sharee} (at {server})" : "{sharee} ({server} szerveren)",
-    "{sharee} (remote)" : "{sharee} (távoli)",
+    "{sharee} (federated)" : "{sharee} (távoli)",
     "Share" : "Megosztás",
     "User and Groups" : "Felhasználó és Csoportok",
     "Public Links" : "Publikus Hivatkozások",

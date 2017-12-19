@@ -196,7 +196,7 @@
     "An error occurred. Please try again" : "Ocorreu um erro. Por favor, tente de novo.",
     "{sharee} (group)" : "{sharee} (grupo)",
     "{sharee} (at {server})" : "{sharee} (em {server})",
-    "{sharee} (remote)" : "{sharee} (remoto)",
+    "{sharee} (federated)" : "{sharee} (remoto)",
     "Share" : "Compartilhar",
     "User and Groups" : "Utilizador e Grupos",
     "Public Links" : "Ligações públicas",

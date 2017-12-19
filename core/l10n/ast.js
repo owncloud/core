@@ -178,7 +178,7 @@ OC.L10N.register(
     "An error occurred. Please try again" : "Hebo un fallu. Por favor, inténtalo de nueves",
     "{sharee} (group)" : "{sharee} (grupu)",
     "{sharee} (at {server})" : "{sharee} (en {server})",
-    "{sharee} (remote)" : "{sharee} (remotu)",
+    "{sharee} (federated)" : "{sharee} (remotu)",
     "Share" : "Compartir",
     "Resharing is not allowed" : "Recompartir nun ta permitíu",
     "Share with people on other ownClouds using the syntax username@example.com/owncloud" : "Compartir con xente d'otros ownClouds usando la sintaxis usuariu@exemplu.com/owncloud",

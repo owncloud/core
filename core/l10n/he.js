@@ -200,7 +200,7 @@ OC.L10N.register(
     "An error occurred. Please try again" : "אירעה שגיאה. יש לנסות שנית",
     "{sharee} (group)" : "{sharee} (קבוצה)",
     "{sharee} (at {server})" : "{sharee} (ב- {server})",
-    "{sharee} (remote)" : "{sharee} (מרוחק)",
+    "{sharee} (federated)" : "{sharee} (מרוחק)",
     "Share" : "שתף",
     "User and Groups" : "משתמש וקבוצות",
     "Public Links" : "קישורים ציבוריים",

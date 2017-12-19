@@ -161,7 +161,7 @@ OC.L10N.register(
     "No users found for {search}" : "沒有使用者符合 {search}",
     "{sharee} (group)" : "{sharee} （群組）",
     "{sharee} (at {server})" : "{sharee} （在 {server}）",
-    "{sharee} (remote)" : "{sharee} （遠端）",
+    "{sharee} (federated)" : "{sharee} （遠端）",
     "Share" : "分享",
     "Public Links" : "公共連結",
     "Resharing is not allowed" : "不允許重新分享",
