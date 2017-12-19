@@ -30,6 +30,7 @@
 namespace OCA\User_LDAP;
 
 use OC\ServerNotAvailableException;
+use OCP\Util;
 
 /**
  * magic properties (incomplete)
@@ -152,6 +153,7 @@ class Connection extends LDAPUtility {
 	/**
 	 * initializes the LDAP backend
 	 * @param bool $force read the config settings no matter what
+	 * @throws \OC\ServerNotAvailableException
 	 */
 	public function init($force = false) {
 		$this->readConfiguration($force);
@@ -160,6 +162,7 @@ class Connection extends LDAPUtility {
 
 	/**
 	 * Returns the LDAP handler
+	 * @throws \OC\ServerNotAvailableException
 	 */
 	public function getConnectionResource() {
 		if(!$this->ldapConnectionRes) {
@@ -457,6 +460,7 @@ class Connection extends LDAPUtility {
 	/**
 	 * Validates the user specified configuration
 	 * @return bool true if configuration seems OK, false otherwise
+	 * @throws \OC\ServerNotAvailableException
 	 */
 	private function validateConfiguration() {
 
@@ -516,49 +520,69 @@ class Connection extends LDAPUtility {
 				}
 			}
 
-			$bindStatus = false;
-			$error = -1;
 			try {
-				if (!$this->configuration->ldapOverrideMainServer
-					&& !$this->getFromCache('overrideMainServer')
+				// skip contacting main server after failed connection attempt
+				// until cache TTL is reached
+				if (trim($this->configuration->ldapBackupHost) === ""
+					|| (!$this->configuration->ldapOverrideMainServer
+					&& !$this->getFromCache('overrideMainServer'))
 				) {
-					$this->doConnect($this->configuration->ldapHost,
-						$this->configuration->ldapPort);
-					$bindStatus = $this->bind();
-					$error = $this->ldap->isResource($this->ldapConnectionRes) ?
-						$this->ldap->errno($this->ldapConnectionRes) : -1;
+					if ($this->doConnect(
+							$this->configuration->ldapBackupHost,
+							$this->configuration->ldapBackupPort)
+						&& @$this->ldap->bind(
+							$this->ldapConnectionRes,
+							$this->configuration->ldapAgentName,
+							$this->configuration->ldapAgentPassword)
+					) {
+						return true;
+					} else {
+						Util::writeLog('user_ldap',
+							'Bind failed: ' . $this->getLDAP()->errno($this->ldapConnectionRes) . ': ' . $this->getLDAP()->error($this->ldapConnectionRes),
+							Util::DEBUG); // log only in debug mod because this is triggered by wrong passwords
+						$this->ldapConnectionRes = null;
+					}
 				}
-				if($bindStatus === true) {
-					return $bindStatus;
-				}
-			} catch (\OC\ServerNotAvailableException $e) {
+			} catch (ServerNotAvailableException $e) {
 				if(trim($this->configuration->ldapBackupHost) === "") {
 					throw $e;
 				}
 			}
 
-			//if LDAP server is not reachable, try the Backup (Replica!) Server
-			if(    $error !== 0
-				|| $this->configuration->ldapOverrideMainServer
-				|| $this->getFromCache('overrideMainServer'))
-			{
-				$this->doConnect($this->configuration->ldapBackupHost,
-								 $this->configuration->ldapBackupPort);
-				$bindStatus = $this->bind();
-				if($bindStatus && $error === -1 && !$this->getFromCache('overrideMainServer')) {
+			// try the Backup (Replica!) Server
+			Util::writeLog('user_ldap',
+				'Trying to connect to backup server '.$this->configuration->ldapBackupHost.':'.$this->configuration->ldapBackupPort,
+				Util::DEBUG);
+			if ($this->doConnect(
+					$this->configuration->ldapBackupHost,
+					$this->configuration->ldapBackupPort)
+				&& @$this->ldap->bind(
+					$this->ldapConnectionRes,
+					$this->configuration->ldapAgentName,
+					$this->configuration->ldapAgentPassword)
+			) {
+				if (!$this->getFromCache('overrideMainServer')) {
 					//when bind to backup server succeeded and failed to main server,
 					//skip contacting him until next cache refresh
 					$this->writeToCache('overrideMainServer', true);
 				}
+				return true;
+			} else {
+				Util::writeLog(
+					'user_ldap',
+					'Bind to backup server failed: ' . $this->getLDAP()->errno($this->ldapConnectionRes) . ': ' . $this->getLDAP()->error($this->ldapConnectionRes),
+					Util::DEBUG);
+				$this->ldapConnectionRes = null;
 			}
-			return $bindStatus;
+			return false;
 		}
+		return null;
 	}
 
 	/**
 	 * @param string $host
 	 * @param string $port
-	 * @return false|void
+	 * @return bool|void
 	 * @throws \OC\ServerNotAvailableException
 	 */
 	private function doConnect($host, $port) {
@@ -573,36 +597,26 @@ class Connection extends LDAPUtility {
 				}
 			}
 		} else {
-			throw new \OC\ServerNotAvailableException('Could not set required LDAP Protocol version.');
+			throw new ServerNotAvailableException('Could not set required LDAP Protocol version.');
 		}
+		if (!$this->ldap->isResource($this->ldapConnectionRes)) {
+			$this->ldapConnectionRes = null; // to indicate it really is not set, connect() might have set it to false
+			throw new ServerNotAvailableException("Connect to $host:$port failed");
+		}
+		 return true;
 	}
 
 	/**
 	 * Binds to LDAP
+	 * @throws \OC\ServerNotAvailableException
 	 */
 	public function bind() {
-		static $getConnectionResourceAttempt = false;
 		if(!$this->configuration->ldapConfigurationActive) {
 			return false;
 		}
-		if($getConnectionResourceAttempt) {
-			$getConnectionResourceAttempt = false;
-			return false;
-		}
-		$getConnectionResourceAttempt = true;
+		// binding is done via getConnectionResource()
 		$cr = $this->getConnectionResource();
-		$getConnectionResourceAttempt = false;
 		if(!$this->ldap->isResource($cr)) {
-			return false;
-		}
-		$ldapLogin = @$this->ldap->bind($cr,
-										$this->configuration->ldapAgentName,
-										$this->configuration->ldapAgentPassword);
-		if(!$ldapLogin) {
-			\OCP\Util::writeLog('user_ldap',
-				'Bind failed: ' . $this->ldap->errno($cr) . ': ' . $this->ldap->error($cr),
-				\OCP\Util::WARN);
-			$this->ldapConnectionRes = null;
 			return false;
 		}
 		return true;
