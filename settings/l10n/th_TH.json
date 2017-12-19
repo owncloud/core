@@ -86,6 +86,7 @@
     "Valid until {date}" : "ใช้ได้จนถึงวันที่ {date}",
     "Disconnect" : "ตัดการเชื่อมต่อ",
     "Error while loading browser sessions and device tokens" : "ข้อผิดพลาดขณะโหลดเซสชันของเบราเซอร์และโทเค็นของอุปกรณ์",
+    "Empty app name is not allowed." : "จำเป็นต้องใส่ชื่อแอพฯ",
     "Error while creating device token" : "เกิดข้อผิดพลาดขณะที่การสร้างโทเค็นของอุปกรณ์",
     "Error while deleting the token" : "เกิดข้อผิดพลาดขณะลบโทเค็น",
     "CORS" : "CORS",
