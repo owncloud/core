@@ -355,6 +355,7 @@ class CheckSetupControllerTest extends TestCase {
 				'isCorrectMemcachedPHPModuleInstalled' => true,
 				'hasPassedCodeIntegrityCheck' => null,
 				'codeIntegrityCheckerDocumentation' => null,
+				'hasDebugMode' => null,
 			]
 		);
 		$this->assertEquals($expected, $this->checkSetupController->check());
