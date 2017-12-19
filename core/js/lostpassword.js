@@ -131,7 +131,7 @@ OC.Lostpassword = {
 
 	getResetStatusNode : function (){
 		if (!$('#lost-password').length){
-			$('<p id="lost-password"></p>').insertBefore($('#reset-password fieldset'));
+			$('<p id="lost-password"></p>').insertBefore($('#reset-password').find('fieldset'));
 		} else {
 			$('#lost-password').replaceWith($('<p id="lost-password"></p>'));
 		}
