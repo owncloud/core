@@ -4,34 +4,34 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "3d2cb15944599a6ed89cf02a3924a3eb",
+    "content-hash": "b6a304e8ab2effa3791b513007fadcbc",
     "packages": [
         {
             "name": "icewind/smb",
-            "version": "v1.1.0",
+            "version": "v2.0.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/icewind1991/SMB.git",
-                "reference": "822f924967c68228555cea84ea44765f8e85c601"
+                "reference": "8394551bf29a37b884edb33dae8acde369177f32"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/icewind1991/SMB/zipball/822f924967c68228555cea84ea44765f8e85c601",
-                "reference": "822f924967c68228555cea84ea44765f8e85c601",
+                "url": "https://api.github.com/repos/icewind1991/SMB/zipball/8394551bf29a37b884edb33dae8acde369177f32",
+                "reference": "8394551bf29a37b884edb33dae8acde369177f32",
                 "shasum": ""
             },
             "require": {
                 "icewind/streams": ">=0.2.0",
-                "php": ">=5.3"
+                "php": ">=5.4"
             },
             "require-dev": {
-                "phpunit/phpunit": "^4.8",
-                "satooshi/php-coveralls": "v1.0.0"
+                "phpunit/phpunit": "^4.8"
             },
             "type": "library",
             "autoload": {
                 "psr-4": {
-                    "Icewind\\SMB\\": "src/"
+                    "Icewind\\SMB\\": "src/",
+                    "Icewind\\SMB\\Test\\": "tests/"
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -45,7 +45,7 @@
                 }
             ],
             "description": "php wrapper for smbclient and libsmbclient-php",
-            "time": "2016-04-26T13:26:39+00:00"
+            "time": "2017-10-18T16:21:10+00:00"
         },
         {
             "name": "icewind/streams",
@@ -71,6 +71,7 @@
             "type": "library",
             "autoload": {
                 "psr-4": {
+                    "Icewind\\Streams\\Tests\\": "tests/",
                     "Icewind\\Streams\\": "src/"
                 }
             },
