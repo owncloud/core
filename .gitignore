@@ -99,6 +99,7 @@ nbproject
 /tests/phpunit.xml
 
 # Node Modules
+/build/yarn-error.log
 /build/node_modules/
 
 # nodejs
