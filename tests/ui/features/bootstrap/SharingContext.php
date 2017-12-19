@@ -282,6 +282,21 @@ class SharingContext extends RawMinkContext implements Context {
 	}
 
 	/**
+	 * @When I add the public link to :server as user :username with the password :password
+	 * @param string $server
+	 * @return void
+	 */
+	public function iAddThePublicLinkTo($server, $username, $password) {
+		if (!$this->publicLinkFilesPage->isOpen()) {
+			throw new Exception('Not on public link page!');
+		}
+		$server = $this->featureContext->substituteInLineCodes($server);
+		$this->publicLinkFilesPage->addToServer($server);
+		$this->featureContext->loginAs($username, $password);
+		$this->featureContext->setCurrentServer($server);
+	}
+
+	/**
 	 * @Then all users and groups that contain the string :requiredString in their name should be listed in the autocomplete list
 	 * @param string $requiredString
 	 * @return void
