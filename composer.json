@@ -5,7 +5,10 @@
     "config" : {
         "vendor-dir": "lib/composer",
         "optimize-autoloader": true,
-        "classmap-authoritative": false
+        "classmap-authoritative": false,
+        "platform": {
+            "php": "5.6.32"
+        }
     },
     "autoload" : {
         "psr-4": {
