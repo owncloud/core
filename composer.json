@@ -20,7 +20,7 @@
         "jakub-onderka/php-console-highlighter": "^0.3.2",
         "phpunit/phpunit": "^5.5",
         "mikey179/vfsStream": "^1.6",
-        "behat/mink-extension": "^2.2",
+        "behat/mink-extension": "^2.3",
         "behat/mink-goutte-driver": "^1.2",
         "behat/mink-selenium2-driver": "dev-master",
         "sensiolabs/behat-page-object-extension": "^2.0",
