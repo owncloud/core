@@ -15,8 +15,7 @@ So that unauthorised access is impossible
 		Then I should be redirected to a page with the title "Files - ownCloud"
 	
 	Scenario: use the webUI to create a simple user
-		Given a regular user exists
-		And I am logged in as admin
+		Given I am logged in as admin
 		And I am on the users page
 		When I create a user with the name "guiusr1" and the password "pwd"
 		And I logout
@@ -24,8 +23,7 @@ So that unauthorised access is impossible
 		Then I should be redirected to a page with the title "Files - ownCloud"
 		
 	Scenario: use the webUI to create a user with special valid characters
-		Given a regular user exists
-		And I am logged in as admin
+		Given I am logged in as admin
 		And I am on the users page
 		When I create a user with the name "@-_.'" and the password "pwd"
 		And I logout
