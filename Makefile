@@ -248,7 +248,7 @@ clean-docs:
 #
 $(dist_dir)/owncloud: $(composer_deps) $(core_all_src)
 	rm -Rf $@; mkdir -p $@/config
-	cp -R $(core_all_src) $@
+	cp -RL $(core_all_src) $@
 	cp -R $(core_config_files) $@/config
 	find $@ -name .gitkeep -delete
 	find $@ -name .gitignore -delete
