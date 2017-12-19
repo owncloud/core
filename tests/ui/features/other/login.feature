@@ -39,6 +39,14 @@ So that unauthorised access is impossible
 		Then notifications should be displayed with the text
 			|Error creating user: Only the following characters are allowed in a username: "a-z", "A-Z", "0-9", and "_.@-'"|
 		And I should be redirected to a page with the title "Users - ownCloud"
+		
+	Scenario: use the webUI to create a user with empty password
+		Given I am logged in as admin
+		And I am on the users page
+		When I create a user with the name "bijay" and the password ""
+		Then notifications should be displayed with the text
+			|Error creating user: A valid password must be provided|
+		And I should be redirected to a page with the title "Users - ownCloud"
 
 	Scenario: admin login
 		Given I am on the login page
