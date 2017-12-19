@@ -34,11 +34,53 @@ class MailSettingsControllerTest extends \Test\TestCase {
 		$this->container['MailMessage'] = $this->getMockBuilder('\OCP\Mail\IMessage')
 			->disableOriginalConstructor()->getMock();
 		$this->container['Mailer'] = $this->getMockBuilder('\OC\Mail\Mailer')
-			->setMethods(['send'])
+			->setMethods(['send', 'validateMailAddress'])
 			->disableOriginalConstructor()->getMock();
 		$this->container['Defaults'] = $this->getMockBuilder('\OC_Defaults')
 			->disableOriginalConstructor()->getMock();
 		$this->container['DefaultMailAddress'] = 'no-reply@owncloud.com';
+	}
+
+	public function testSetInvalidMail() {
+		$this->container['L10N']
+			->expects($this->exactly(2))
+			->method('t')
+			->will($this->returnValue('Invalid email address'));
+
+		$this->container['Mailer']
+			->expects($this->exactly(2))
+			->method('validateMailAddress')
+			->with('@@owncloud.com')
+			->will($this->returnValue(false));
+
+		// With authentication
+		$response = $this->container['MailSettingsController']->setMailSettings(
+			'owncloud.com',
+			'@',
+			'smtp',
+			'ssl',
+			'mx.owncloud.org',
+			'NTLM',
+			1,
+			'25'
+		);
+		$expectedResponse = ['data' => ['message' =>'Invalid email address'], 'status' => 'error'];
+		$this->assertSame($expectedResponse, $response);
+
+		// Without authentication (testing the deletion of the stored password)
+		$response = $this->container['MailSettingsController']->setMailSettings(
+			'owncloud.com',
+			'@',
+			'smtp',
+			'ssl',
+			'mx.owncloud.org',
+			'NTLM',
+			0,
+			'25'
+		);
+		$expectedResponse = ['data' => ['message' =>'Invalid email address'], 'status' => 'error'];
+		$this->assertSame($expectedResponse, $response);
+
 	}
 
 	public function testSetMailSettings() {
@@ -56,7 +98,7 @@ class MailSettingsControllerTest extends \Test\TestCase {
 			->method('setSystemValue')
 			->withConsecutive(
 				array($this->equalTo('mail_domain'), $this->equalTo('owncloud.com')),
-				array($this->equalTo('mail_from_address'), $this->equalTo('demo@owncloud.com')),
+				array($this->equalTo('mail_from_address'), $this->equalTo('demo')),
 				array($this->equalTo('mail_smtpmode'), $this->equalTo('smtp')),
 				array($this->equalTo('mail_smtpsecure'), $this->equalTo('ssl')),
 				array($this->equalTo('mail_smtphost'), $this->equalTo('mx.owncloud.org')),
@@ -73,6 +115,12 @@ class MailSettingsControllerTest extends \Test\TestCase {
 			);
 		 */
 
+		$this->container['Mailer']
+			->expects($this->exactly(2))
+			->method('validateMailAddress')
+			->with('demo@owncloud.com')
+			->will($this->returnValue(true));
+
 		/** @var \PHPUnit_Framework_MockObject_MockObject $config */
 		$config = $this->container['Config'];
 		$config->expects($this->exactly(2))
@@ -82,7 +130,7 @@ class MailSettingsControllerTest extends \Test\TestCase {
 			->withConsecutive(
 				[[
 					'mail_domain' => 'owncloud.com',
-					'mail_from_address' => 'demo@owncloud.com',
+					'mail_from_address' => 'demo',
 					'mail_smtpmode' => 'smtp',
 					'mail_smtpsecure' => 'ssl',
 					'mail_smtphost' => 'mx.owncloud.org',
@@ -92,7 +140,7 @@ class MailSettingsControllerTest extends \Test\TestCase {
 				]],
 				[[
 					'mail_domain' => 'owncloud.com',
-					'mail_from_address' => 'demo@owncloud.com',
+					'mail_from_address' => 'demo',
 					'mail_smtpmode' => 'smtp',
 					'mail_smtpsecure' => 'ssl',
 					'mail_smtphost' => 'mx.owncloud.org',
@@ -108,7 +156,7 @@ class MailSettingsControllerTest extends \Test\TestCase {
 		// With authentication
 		$response = $this->container['MailSettingsController']->setMailSettings(
 			'owncloud.com',
-			'demo@owncloud.com',
+			'demo',
 			'smtp',
 			'ssl',
 			'mx.owncloud.org',
@@ -122,7 +170,7 @@ class MailSettingsControllerTest extends \Test\TestCase {
 		// Without authentication (testing the deletion of the stored password)
 		$response = $this->container['MailSettingsController']->setMailSettings(
 			'owncloud.com',
-			'demo@owncloud.com',
+			'demo',
 			'smtp',
 			'ssl',
 			'mx.owncloud.org',

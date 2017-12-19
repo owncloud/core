@@ -4,6 +4,7 @@
  * @author Lukas Reschke <lukas@statuscode.ch>
  * @author Morris Jobke <hey@morrisjobke.de>
  * @author Thomas Müller <thomas.mueller@tmit.eu>
+ * @author Ujjwal Bhardwaj <ujjwalb1996@gmail.com>
  *
  * @copyright Copyright (c) 2017, ownCloud GmbH
  * @license AGPL-3.0
@@ -102,6 +103,15 @@ class MailSettingsController extends Controller {
 		$configs = [];
 		foreach($params as $key => $value) {
 			$configs[$key] = (empty($value)) ? null : $value;
+		}
+
+		if (!$this->mailer->validateMailAddress($mail_from_address . '@' . $mail_domain)) {
+			return ['data' =>
+				['message' =>
+					(string) $this->l10n->t('Invalid email address')
+				],
+				'status' => 'error'
+			];
 		}
 
 		// Delete passwords from config in case no auth is specified
