@@ -134,7 +134,7 @@ class OC_DB {
 		}
 		self::raiseExceptionOnError($stmt, 'Could not prepare statement');
 		if ($stmt instanceof OC_DB_StatementWrapper) {
-			$result = $stmt->execute($parameters);
+			$result = $stmt->execute($parameters === null ? [] : $parameters);
 			self::raiseExceptionOnError($result, 'Could not execute statement');
 		} else {
 			if (is_object($stmt)) {

@@ -166,6 +166,7 @@ class EncryptionTest extends Storage {
 
 		$this->mountManager = $this->getMockBuilder('\OC\Files\Mount\Manager')
 			->disableOriginalConstructor()->getMock();
+		$this->mountManager->expects($this->any())->method('findByStorageId')->willReturn([]);
 
 		$this->instance = $this->getMockBuilder('\OC\Files\Storage\Wrapper\Encryption')
 			->setConstructorArgs(

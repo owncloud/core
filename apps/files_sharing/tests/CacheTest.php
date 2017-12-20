@@ -247,7 +247,7 @@ class CacheTest extends TestCase {
 		$id2 = $this->sharedCache->get('subdir/another too.txt')['fileid'];
 		$id3 = $this->sharedCache->get('subdir/not a text file.xml')['fileid'];
 		$id4 = $this->sharedCache->get('subdir/another.txt')['fileid'];
-		$tagManager = \OC::$server->getTagManager()->load('files', null, null, $userId);
+		$tagManager = \OC::$server->getTagManager()->load('files', [], null, $userId);
 		$tagManager->tagAs($id1, 'tag1');
 		$tagManager->tagAs($id1, 'tag2');
 		$tagManager->tagAs($id2, 'tag1');
@@ -289,7 +289,7 @@ class CacheTest extends TestCase {
 			$this->sharedCache->get('subdir/emptydir')['fileid'],
 			$this->sharedCache->get('subdir/emptydir2')['fileid'],
 		];
-		$tagManager = \OC::$server->getTagManager()->load('files', null, null, $userId);
+		$tagManager = \OC::$server->getTagManager()->load('files', [], null, $userId);
 		foreach ($allIds as $id) {
 			$tagManager->tagAs($id, 'tag1');
 		}

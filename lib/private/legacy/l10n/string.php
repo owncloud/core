@@ -57,8 +57,7 @@ class OC_L10N_String implements JsonSerializable {
 		$text = $this->text;
 		if(array_key_exists($this->text, $translations)) {
 			if(is_array($translations[$this->text])) {
-				$fn = $this->l10n->getPluralFormFunction();
-				$id = $fn($this->count);
+				$id = $this->l10n->computePlural($this->count);
 				$text = $translations[$this->text][$id];
 			}
 			else{

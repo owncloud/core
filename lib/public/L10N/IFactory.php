@@ -74,6 +74,7 @@ interface IFactory {
 	 * @param string $string
 	 * @return string Unique function name
 	 * @since 9.0.0
+	 * @deprecated in 10.0.3
 	 */
 	public function createPluralFunction($string);
 }
