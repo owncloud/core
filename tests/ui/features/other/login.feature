@@ -13,7 +13,7 @@ So that unauthorised access is impossible
 		And I am on the login page
 		When I login as a regular user with a correct password
 		Then I should be redirected to a page with the title "Files - ownCloud"
-	
+
 	Scenario: use the webUI to create a simple user
 		Given a regular user exists
 		And I am logged in as admin
@@ -22,6 +22,14 @@ So that unauthorised access is impossible
 		And I logout
 		And I login with username "guiusr1" and password "pwd"
 		Then I should be redirected to a page with the title "Files - ownCloud"
+
+	Scenario: use the webUI to create a user with empty password
+		Given I am logged in as admin
+		And I am on the users page
+		When I create a user with the name "bijay" and the password ""
+		Then notifications should be displayed with the text
+			|Error creating user: A valid password must be provided|
+		And I should be redirected to a page with the title "Users - ownCloud"
 
 	Scenario Outline: use the webUI to create a user with less than 3 characters
 		Given I am logged in as admin
