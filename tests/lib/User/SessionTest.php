@@ -29,6 +29,7 @@ use OCP\IUser;
 use OCP\IUserManager;
 use OCP\Security\ISecureRandom;
 use OCP\Session\Exceptions\SessionNotAvailableException;
+use Symfony\Component\EventDispatcher\GenericEvent;
 use Test\TestCase;
 
 /**
@@ -236,7 +237,15 @@ class SessionTest extends TestCase {
 			->getMock();
 		$userSession->expects($this->once())
 			->method('prepareUserLogin');
+		$calledUserLogin = [];
+		\OC::$server->getEventDispatcher()->addListener('user.afterlogin', function (GenericEvent $event) use (&$calledUserLogin) {
+			$calledUserLogin[] = 'user.afterlogin';
+			$calledUserLogin[] = $event;
+		});
 		$userSession->login('foo', 'bar');
+		$this->assertInstanceOf(GenericEvent::class, $calledUserLogin[1]);
+		$this->assertArrayHasKey('uid', $calledUserLogin[1]);
+		$this->assertEquals('user.afterlogin', $calledUserLogin[0]);
 		$this->assertEquals($user, $userSession->getUser());
 	}
 
@@ -998,6 +1007,17 @@ class SessionTest extends TestCase {
 		});
 
 		$this->assertTrue($userSession->logout());
+
+		$calledBeforeLogout = [];
+		\OC::$server->getEventDispatcher()->addListener('user.beforelogout', function (GenericEvent $event) use (&$calledBeforeLogout) {
+			$calledBeforeLogout[] = 'user.beforelogout';
+			$calledBeforeLogout[] = $event;
+		});
+
+		$this->assertEquals(true, $userSession->logout());
+		$this->assertInstanceOf(GenericEvent::class, $calledBeforeLogout[1]);
+		$this->assertArrayHasKey('uid', $calledBeforeLogout[1]);
+		$this->assertEquals('user.beforelogout', $calledBeforeLogout[0]);
 	}
 
 
