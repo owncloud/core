@@ -34,6 +34,9 @@ class PublicLinkFilesPage extends FilesPageBasic {
 	protected $fileNameMatchXpath = "//span[@class='nametext' and .=%s]";
 	protected $fileListXpath = ".//tbody[@id='fileList']";
 	protected $emptyContentXpath = ".//div[@id='emptycontent']";
+	protected $addToYourOcBtnId = "save-button";
+	protected $remoteAddressInputId = "remote_address";
+	protected $confirmBtnId = "save-button-confirm";
 
 	/**
 	 * @return string
@@ -63,6 +66,43 @@ class PublicLinkFilesPage extends FilesPageBasic {
 		return $this->emptyContentXpath;
 	}
 
+	/**
+	 * adding public share to particular server
+	 * 
+	 * @param string $server
+	 * @throws ElementNotFoundException
+	 * @return void
+	 */
+	public function addToServer($server) {
+		$addToYourOcBtn = $this->findById($this->addToYourOcBtnId);
+		if (is_null($addToYourOcBtn)) {
+			throw new ElementNotFoundException(
+				__METHOD__ .
+				" id " . $this->addToYourOcBtnId .
+				" could not find 'add to your owncloud' button"
+			);
+		}
+		$addToYourOcBtn->click();
+		$remoteAddressInput = $this->findById($this->remoteAddressInputId);
+		if (is_null($remoteAddressInput)) {
+			throw new ElementNotFoundException(
+				__METHOD__ .
+				" id " . $this->remoteAddressInput .
+				" could not find remote address input field"
+			);
+		}
+		$remoteAddressInput->setValue($server);
+		$confirmBtn = $this->findById($this->confirmBtnId);
+		if (is_null($confirmBtn)) {
+			throw new ElementNotFoundException(
+				__METHOD__ .
+				" id " . $this->confirmBtn .
+				" could not find confirm button"
+			);
+		}
+		$confirmBtn->click();
+	}
+	
 	/**
 	 * create a folder with the given name.
 	 * If name is not given a random one is chosen
