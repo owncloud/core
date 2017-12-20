@@ -8,6 +8,7 @@ OC.L10N.register(
     "Wrong admin recovery password. Please check the password and try again." : "Netinkamas administratoriau atkūrimo slaptažodis. Prašome pasitikrinti ir bandyti vėl.",
     "Backend doesn't support password change, but the user's encryption key was successfully updated." : "Vartotojo slaptažodžio pakeitimas negalimas, bet šifravimo raktas atnaujintas sėkmingai.",
     "Unable to change password" : "Nepavyksta pakeisti slaptažodžio",
+    "%s password changed successfully" : "%sslaptažodis pakeistas",
     "Couldn't send reset email. Please contact your administrator." : "Nepavyko išsiųsti atkūrimo laiško, susisiekite su administratoriumi.",
     "cURL is using an outdated %s version (%s). Please update your operating system or features such as %s will not work reliably." : "cURL naudoja pasenusią %s versiją (%s). Pašome atnaujinti serverio operacinę sistemą arba serverio tarnybas, nes %s gali veikti netinkamai",
     "Group already exists." : "Grupė jau egzistuoja.",
