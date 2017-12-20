@@ -49,6 +49,7 @@ class CorsPlugin extends \Sabre\DAV\ServerPlugin {
 	public function __construct(\OCP\IUserSession $userSession) {
 		$this->userSession = $userSession;
 		$this->extraHeaders['Access-Control-Allow-Headers'] = ["X-OC-Mtime", "OC-Checksum", "OC-Total-Length", "Depth", "Destination", "Overwrite"];
+		// TODO: use $this->server->getAllowedMethods($request->getPath()) in the right location
 		$this->extraHeaders['Access-Control-Allow-Methods'] = ["MOVE", "COPY"];
 	}
 
@@ -65,6 +66,11 @@ class CorsPlugin extends \Sabre\DAV\ServerPlugin {
 	 */
 	public function initialize(\Sabre\DAV\Server $server) {
 		$this->server = $server;
+
+		$request = $this->server->httpRequest;
+		if (!$request->hasHeader('Origin') || \OCP\Util::isSameDomain($request->getHeader('Origin'), $request->getAbsoluteUrl())) {
+			return false;
+		}
 
 		$this->server->on('beforeMethod', [$this, 'setCorsHeaders']);
 		$this->server->on('beforeMethod:OPTIONS', [$this, 'setOptionsRequestHeaders']);
