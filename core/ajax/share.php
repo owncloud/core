@@ -142,7 +142,7 @@ if (isset($_POST['action']) && isset($_POST['itemType']) && isset($_POST['itemSo
 			} else {
 				OCP\JSON::error([
 					'data' => [
-						'message' => $l->t("Couldn't send mail to following users: %s ",
+						'message' => $l->t("Couldn't send mail to following recipient(s): %s ",
 								implode(', ', $result)
 								)
 					]
@@ -221,7 +221,7 @@ if (isset($_POST['action']) && isset($_POST['itemType']) && isset($_POST['itemSo
 				$l = \OC::$server->getL10N('core');
 				OCP\JSON::error([
 					'data' => [
-						'message' => $l->t("Couldn't send mail to following users: %s ",
+						'message' => $l->t("Couldn't send mail to following recipient(s): %s ",
 								implode(', ', $result)
 							)
 					]

@@ -28,7 +28,7 @@ describe('OC.Share.ShareDialogLinkShareView', function() {
 	var view;
 
 	var PASSWORD_PLACEHOLDER_STARS = '**********';
-	var PASSWORD_PLACEHOLDER_MESSAGE = 'Choose a password for the public link';
+	var PASSWORD_PLACEHOLDER_MESSAGE = 'Choose a password';
 
 	beforeEach(function() {
 		configModel = new OC.Share.ShareConfigModel();
@@ -367,8 +367,8 @@ describe('OC.Share.ShareDialogLinkShareView', function() {
 			beforeEach(function() {
 				publicUploadConfigStub = sinon.stub(configModel, 'isPublicUploadEnabled');
 			});
-			afterEach(function() { 
-				publicUploadConfigStub.restore(); 
+			afterEach(function() {
+				publicUploadConfigStub.restore();
 			});
 
 			var dataProvider = [
