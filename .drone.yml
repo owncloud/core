@@ -64,19 +64,11 @@ pipeline:
     when:
       event: [push, pull_request]
 
-  npm:
-    image: owncloudci/php:${PHP_VERSION}
+  yarn:
+    image: owncloudci/nodejs:latest
     pull: true
     commands:
-      - ./tests/drone/npm-install.sh
-    when:
-      event: [push, pull_request]
-
-  bower:
-    image: owncloudci/php:${PHP_VERSION}
-    pull: true
-    commands:
-      - ./tests/drone/bower-install.sh
+      - ./tests/drone/yarn-install.sh
     when:
       event: [push, pull_request]
 
