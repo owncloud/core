@@ -396,8 +396,8 @@ trait BasicStructure {
 			);
 			
 			if ($result->getStatusCode() !== 200) {
-				throw new Exception(
-					"could not delete user. "
+				error_log(
+					"INFORMATION: could not delete user. '" . $user . "'"
 					. $result->getStatusCode() . " " . $result->getBody()
 				);
 			}
@@ -412,8 +412,8 @@ trait BasicStructure {
 			);
 			
 			if ($result->getStatusCode() !== 200) {
-				throw new Exception(
-					"could not delete group. "
+				error_log(
+					"INFORMATION: could not delete group. '" . $group . "'"
 					. $result->getStatusCode() . " " . $result->getBody()
 				);
 			}
