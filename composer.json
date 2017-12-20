@@ -52,7 +52,7 @@
         "deepdiver1975/TarStreamer": "v0.1.0",
         "patchwork/jsqueeze": "^2.0",
         "symfony/polyfill-php70": "^1.0",
-        "lukasreschke/id3parser": "^0.0.1",
+        "lukasreschke/id3parser": "^0.0.3",
         "sabre/dav": "^3.2",
         "deepdiver/zipstreamer": "^1.1",
         "zendframework/zend-inputfilter": "^2.8",

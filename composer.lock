@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "5430e24421de6455bb6acfd14629374e",
+    "content-hash": "7422b75e6f873a226383bf749c6403d0",
     "packages": [
         {
             "name": "bantu/ini-get-wrapper",
@@ -1231,16 +1231,16 @@
         },
         {
             "name": "lukasreschke/id3parser",
-            "version": "v0.0.1",
+            "version": "v0.0.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/LukasReschke/ID3Parser.git",
-                "reference": "cd3ba6e8918cc30883f01a3c24281cfe23b8877a"
+                "reference": "62f4de76d4eaa9ea13c66dacc1f22977dace6638"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/LukasReschke/ID3Parser/zipball/cd3ba6e8918cc30883f01a3c24281cfe23b8877a",
-                "reference": "cd3ba6e8918cc30883f01a3c24281cfe23b8877a",
+                "url": "https://api.github.com/repos/LukasReschke/ID3Parser/zipball/62f4de76d4eaa9ea13c66dacc1f22977dace6638",
+                "reference": "62f4de76d4eaa9ea13c66dacc1f22977dace6638",
                 "shasum": ""
             },
             "require": {
@@ -1262,7 +1262,7 @@
                 "php",
                 "tags"
             ],
-            "time": "2016-04-04T09:34:50+00:00"
+            "time": "2016-09-22T15:10:54+00:00"
         },
         {
             "name": "nikic/php-parser",
