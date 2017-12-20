@@ -26,6 +26,7 @@ use Sabre\HTTP\RequestInterface;
 use Sabre\HTTP\ResponseInterface;
 use Sabre\HTTP\Sapi;
 use OCP\IConfig;
+use Sabre\DAV\ServerPlugin;
 
 class CorsPluginTest extends \Test\TestCase {
 
@@ -59,6 +60,7 @@ class CorsPluginTest extends \Test\TestCase {
 		$this->server->sapi->expects($this->once())->method('sendResponse')->with($this->server->httpResponse);
 
 		$this->server->httpRequest->setMethod('OPTIONS');
+		$this->server->httpRequest->setUrl('/owncloud/remote.php/dav/files/user1/target/path');
 
 		$this->userSession = $this->createMock(IUserSession::class);
 
@@ -66,6 +68,14 @@ class CorsPluginTest extends \Test\TestCase {
 		$this->overwriteService('AllConfig', $this->config);
 
 		$this->plugin = new \OCA\DAV\Connector\Sabre\CorsPlugin($this->userSession);
+
+		$extraMethodPlugin = $this->createMock(ServerPlugin::class);
+		$extraMethodPlugin->method('getHTTPMethods')
+			->with('owncloud/remote.php/dav/files/user1/target/path')
+			->willReturn(['EXTRA']);
+		$extraMethodPlugin->method('getFeatures')->willReturn([]);
+
+		$this->server->addPlugin($extraMethodPlugin);
 	}
 
 	public function tearDown() {
@@ -100,8 +110,10 @@ class CorsPluginTest extends \Test\TestCase {
 			'PATCH',
 			'PROPPATCH',
 			'REPORT',
-			'MOVE',
+			'HEAD',
 			'COPY',
+			'MOVE',
+			'EXTRA',
 		];
 
 		return [
