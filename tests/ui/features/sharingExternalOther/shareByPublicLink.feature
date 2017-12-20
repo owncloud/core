@@ -40,3 +40,36 @@ So that public sharing is limited according to organization policy
 		| permission | Read |
 		And I access the last created public link
 		Then it should not be possible to delete the file "lorem.txt"
+
+	Scenario: mount public link
+		Given these users exist:
+		|username|password|displayname|email       |
+		|user2   |1234    |User One   |u1@oc.com.np|
+		When I create a new public link for the folder "simple-folder"
+		And I logout
+		And I access the last created public link
+		And I add the public link to "http://%remote_server%" as user "user2" with the password "1234"
+		And the offered remote shares are accepted
+		Then the folder "simple-folder (2)" should be listed
+		When I open the folder "simple-folder (2)"
+		Then the file "lorem.txt" should be listed
+		And the content of "lorem.txt" should be the same as the original "simple-folder/lorem.txt"
+		And it should not be possible to delete the file "lorem.txt"
+
+	Scenario: mount public link and overwrite file
+		Given these users exist:
+		|username|password|displayname|email       |
+		|user2   |1234    |User One   |u1@oc.com.np|
+		When I create a new public link for the folder "simple-folder" with
+		| permission | Read & Write |
+		And I logout
+		And I access the last created public link
+		And I add the public link to "http://%remote_server%" as user "user2" with the password "1234"
+		And the offered remote shares are accepted
+		Then the folder "simple-folder (2)" should be listed
+		When I open the folder "simple-folder (2)"
+		Then the file "lorem.txt" should be listed
+		And the content of "lorem.txt" should be the same as the original "simple-folder/lorem.txt"
+		When I upload overwriting the file "lorem.txt"
+		Then the file "lorem.txt" should be listed
+		And the content of "lorem.txt" should be the same as the local "lorem.txt"
