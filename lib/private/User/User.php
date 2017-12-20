@@ -34,6 +34,7 @@ namespace OC\User;
 use OC\Files\Cache\Storage;
 use OC\Hooks\Emitter;
 use OC_Helper;
+use OCP\Events\EventEmitterTrait;
 use OCP\IAvatarManager;
 use OCP\IImage;
 use OCP\IURLGenerator;
@@ -46,6 +47,7 @@ use Symfony\Component\EventDispatcher\GenericEvent;
 
 class User implements IUser {
 
+	use EventEmitterTrait;
 	/** @var Account */
 	private $account;
 
@@ -244,27 +246,29 @@ class User implements IUser {
 	 * @return bool
 	 */
 	public function setPassword($password, $recoveryPassword = null) {
-		if ($this->emitter) {
-			$this->emitter->emit('\OC\User', 'preSetPassword', [$this, $password, $recoveryPassword]);
-			\OC::$server->getEventDispatcher()->dispatch(
-				'OCP\User::validatePassword',
-				new GenericEvent(null, ['password' => $password])
-			);
-		}
-		if ($this->canChangePassword()) {
-			/** @var IChangePasswordBackend $backend */
-			$backend = $this->account->getBackendInstance();
-			$result = $backend->setPassword($this->getUID(), $password);
-			if ($result) {
-				if ($this->emitter) {
-					$this->emitter->emit('\OC\User', 'postSetPassword', [$this, $password, $recoveryPassword]);
-				}
-				$this->config->deleteUserValue($this->getUID(), 'owncloud', 'lostpassword');
+		return $this->emittingCall(function () use (&$password, &$recoveryPassword) {
+			if ($this->emitter) {
+				$this->emitter->emit('\OC\User', 'preSetPassword', [$this, $password, $recoveryPassword]);
+				\OC::$server->getEventDispatcher()->dispatch(
+					'OCP\User::validatePassword',
+					new GenericEvent(null, ['password' => $password])
+				);
 			}
-			return !($result === false);
-		} else {
-			return false;
-		}
+			if ($this->canChangePassword()) {
+				/** @var IChangePasswordBackend $backend */
+				$backend = $this->account->getBackendInstance();
+				$result = $backend->setPassword($this->getUID(), $password);
+				if ($result) {
+					if ($this->emitter) {
+						$this->emitter->emit('\OC\User', 'postSetPassword', [$this, $password, $recoveryPassword]);
+					}
+					$this->config->deleteUserValue($this->getUID(), 'owncloud', 'lostpassword');
+				}
+				return !($result === false);
+			} else {
+				return false;
+			}
+		}, ['before' => [], 'after' => ['user' => $this, 'password' => $password, 'recoveryPassword' => $recoveryPassword]], 'user', 'setpassword');
 	}
 
 	/**
