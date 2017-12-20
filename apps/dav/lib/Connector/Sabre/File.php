@@ -287,22 +287,38 @@ class File extends Node implements IFile {
 		}
 		$hookPath = Filesystem::getView()->getRelativePath($this->fileView->getAbsolutePath($path));
 		$run = true;
+		$event = new GenericEvent(null);
 
 		if (!$exists) {
 			\OC_Hook::emit(\OC\Files\Filesystem::CLASSNAME, \OC\Files\Filesystem::signal_create, [
 				\OC\Files\Filesystem::signal_param_path => $hookPath,
 				\OC\Files\Filesystem::signal_param_run => &$run,
 			]);
+			if ($run) {
+				$event->setArgument('run', $run);
+				\OC::$server->getEventDispatcher()->dispatch('file.beforeCreate', $event);
+				$run = $event->getArgument('run');
+			}
 		} else {
 			\OC_Hook::emit(\OC\Files\Filesystem::CLASSNAME, \OC\Files\Filesystem::signal_update, [
 				\OC\Files\Filesystem::signal_param_path => $hookPath,
 				\OC\Files\Filesystem::signal_param_run => &$run,
 			]);
+			if ($run) {
+				$event->setArgument('run', $run);
+				\OC::$server->getEventDispatcher()->dispatch('file.beforeUpdate', $event);
+				$run = $event->getArgument('run');
+			}
 		}
 		\OC_Hook::emit(\OC\Files\Filesystem::CLASSNAME, \OC\Files\Filesystem::signal_write, [
 			\OC\Files\Filesystem::signal_param_path => $hookPath,
 			\OC\Files\Filesystem::signal_param_run => &$run,
 		]);
+		if ($run) {
+			$event->setArgument('run', $run);
+			\OC::$server->getEventDispatcher()->dispatch('file.beforeWrite', $event);
+			$run = $event->getArgument('run');
+		}
 		return $run;
 	}
 

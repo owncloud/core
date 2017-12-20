@@ -63,6 +63,7 @@ use OCP\Lock\ILockingProvider;
 use OCP\Lock\LockedException;
 use OCA\Files_Sharing\SharedMount;
 use OCP\Util;
+use Symfony\Component\EventDispatcher\GenericEvent;
 
 /**
  * Class to provide access to ownCloud filesystem via a "view", and methods for
@@ -99,6 +100,8 @@ class View {
 	/** @var \OC\User\Manager  */
 	private $userManager;
 
+	private $eventDispatcher;
+
 	/**
 	 * @param string $root
 	 * @throws \Exception If $root contains an invalid path
@@ -115,6 +118,7 @@ class View {
 		$this->lockingProvider = \OC::$server->getLockingProvider();
 		$this->lockingEnabled = !($this->lockingProvider instanceof \OC\Lock\NoopLockingProvider);
 		$this->userManager = \OC::$server->getUserManager();
+		$this->eventDispatcher = \OC::$server->getEventDispatcher();
 	}
 
 	public function getAbsolutePath($path = '/') {
@@ -590,21 +594,43 @@ class View {
 	 * @param bool $run
 	 */
 	protected function emit_file_hooks_pre($exists, $path, &$run) {
+		$event = new GenericEvent(null);
 		if (!$exists) {
 			\OC_Hook::emit(Filesystem::CLASSNAME, Filesystem::signal_create, [
 				Filesystem::signal_param_path => $this->getHookPath($path),
 				Filesystem::signal_param_run => &$run,
 			]);
+			if ($run) {
+				$event->setArgument('run', $run);
+				$this->eventDispatcher->dispatch('file.beforeCreate', $event);
+				if ($event->getArgument('run') === false) {
+					$run = $event->getArgument('run');
+				}
+			}
 		} else {
 			\OC_Hook::emit(Filesystem::CLASSNAME, Filesystem::signal_update, [
 				Filesystem::signal_param_path => $this->getHookPath($path),
 				Filesystem::signal_param_run => &$run,
 			]);
+			if ($run) {
+				$event->setArgument('run', $run);
+				$this->eventDispatcher->dispatch('file.beforeUpdate', $event);
+				if ($event->getArgument('run') === false) {
+					$run = $event->getArgument('run');
+				}
+			}
 		}
 		\OC_Hook::emit(Filesystem::CLASSNAME, Filesystem::signal_write, [
 			Filesystem::signal_param_path => $this->getHookPath($path),
 			Filesystem::signal_param_run => &$run,
 		]);
+		if ($run) {
+			$event->setArgument('run', $run);
+			$this->eventDispatcher->dispatch('file.beforeWrite', $event);
+			if ($event->getArgument('run') === false) {
+				$run = $event->getArgument('run');
+			}
+		}
 	}
 
 	/**
