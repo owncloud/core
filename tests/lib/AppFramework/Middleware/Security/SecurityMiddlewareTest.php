@@ -33,10 +33,12 @@ use OC\AppFramework\Middleware\Security\Exceptions\NotLoggedInException;
 use OC\AppFramework\Middleware\Security\Exceptions\SecurityException;
 use OC\AppFramework\Middleware\Security\SecurityMiddleware;
 use OC\AppFramework\Utility\ControllerMethodReflector;
+use OC\Core\Controller\LoginController;
 use OC\Security\CSP\ContentSecurityPolicy;
 use OCP\AppFramework\Http\JSONResponse;
 use OCP\AppFramework\Http\RedirectResponse;
 use OCP\AppFramework\Http\TemplateResponse;
+use OCP\ISession;
 
 
 class SecurityMiddlewareTest extends \Test\TestCase {
@@ -415,6 +417,50 @@ class SecurityMiddlewareTest extends \Test\TestCase {
 		$this->assertEquals($expected , $response);
 	}
 
+	public function testAfterExceptionReturnsLoginPageForCsrfErrorOnLogin() {
+		$this->request = new Request(
+			[
+				'server' =>
+					[
+						'HTTP_ACCEPT' => 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
+						'REQUEST_URI' => 'owncloud/index.php/apps/specialapp'
+					]
+			],
+			$this->createMock('\OCP\Security\ISecureRandom'),
+			$this->createMock('\OCP\IConfig')
+		);
+
+		$exception = new CrossSiteRequestForgeryException();
+		$sessionMock = $this->getMockBuilder(ISession::class)
+			->disableOriginalConstructor()
+			->getMock();
+
+		$this->controller = $this->getMockBuilder(LoginController::class)
+			->disableOriginalConstructor()
+			->getMock();
+
+		$this->middleware = $this->getMiddleware(false, false);
+
+		$this->logger
+			->expects($this->once())
+			->method('debug')
+			->with($exception->getMessage());
+		$this->controller
+			->expects($this->once())
+			->method('showLoginForm')
+			->with(null, null, null);
+		$this->controller
+			->expects($this->once())
+			->method('getSession')
+			->willReturn($sessionMock);
+
+		$response = $this->middleware->afterException(
+			$this->controller,
+			'tryLogin',
+			$exception
+		);
+
+	}
 
 	public function testAfterAjaxExceptionReturnsJSONError(){
 		$response = $this->middleware->afterException($this->controller, 'test',
