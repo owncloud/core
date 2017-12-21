@@ -201,7 +201,7 @@ class FilesPage extends FilesPageBasic {
 		for ($counter = 0; $counter < $maxRetries; $counter++) {
 			try {
 				$fileRow = $this->findFileRowByName($fromFileName, $session);
-				$fileRow->rename($toFileName);
+				$fileRow->rename($toFileName, $session);
 				break;
 			} catch (\Exception $e) {
 				error_log(

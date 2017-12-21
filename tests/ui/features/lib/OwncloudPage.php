@@ -432,6 +432,44 @@ class OwncloudPage extends Page {
 	}
 
 	/**
+	 * 
+	 * @param Session $session
+	 * @param string $scrolledElement jQuery identifier for the element that get scrolled
+	 * @param int $timeout_msec
+	 * @return void
+	 */
+	public function waitForScrollingToFinish(
+		Session $session, $scrolledElement,
+		$timeout_msec = STANDARDUIWAITTIMEOUTMILLISEC
+	) {
+		$session->executeScript(
+			'
+			jQuery.scrolling = 0;
+			$( "' . $scrolledElement . '" ).scroll(function() {
+							jQuery.scrolling=1;
+							clearTimeout( $.data( this, "scrollCheck" ) );
+							$.data( this, "scrollCheck", setTimeout(function() {
+								jQuery.scrolling=0;
+							}, 100) );
+						});
+			'
+		);
+		$result = 1;
+		$timeout_msec = (int) $timeout_msec;
+		$currentTime = microtime(true);
+		$end = $currentTime + ($timeout_msec / 1000);
+		while ($currentTime <= $end && $result !== 0) {
+			$result = (int)$session->evaluateScript("jQuery.scrolling");
+			$currentTime = microtime(true);
+		}
+		if ($currentTime > $end) {
+			$message = "INFORMATION: timed out waiting for scrolling to finish";
+			echo $message;
+			error_log($message);
+		}
+	}
+
+	/**
 	 * sends an END key and then BACKSPACEs to delete the current value
 	 * then sends the new value
 	 * checks the set value and sends the Escape key + throws an exception
