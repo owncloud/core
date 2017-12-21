@@ -698,7 +698,6 @@ class Trashbin {
 		$quota = \OC_Util::getUserQuota($userObject);
 		if ($quota === \OCP\Files\FileInfo::SPACE_UNLIMITED) {
 			$quota = Filesystem::free_space('/');
-			$softQuota = false;
 			// inf or unknown free space
 			if ($quota < 0) {
 				$quota = PHP_INT_MAX;
