@@ -691,7 +691,6 @@ class Trashbin {
 	 * @return int available free space for trash bin
 	 */
 	private static function calculateFreeSpace($trashbinSize, $user) {
-		$softQuota = true;
 		$userObject = \OC::$server->getUserManager()->get($user);
 		if(is_null($userObject)) {
 			return 0;
@@ -710,19 +709,15 @@ class Trashbin {
 
 		// calculate available space for trash bin
 		// subtract size of files and current trash bin size from quota
-		if ($softQuota) {
-			$userFolder = \OC::$server->getUserFolder($user);
-			if(is_null($userFolder)) {
-				return 0;
-			}
-			$free = $quota - $userFolder->getSize(); // remaining free space for user
-			if ($free > 0) {
-				$availableSpace = ($free * self::DEFAULTMAXSIZE / 100) - $trashbinSize; // how much space can be used for versions
-			} else {
-				$availableSpace = $free - $trashbinSize;
-			}
+		$userFolder = \OC::$server->getUserFolder($user);
+		if(is_null($userFolder)) {
+			return 0;
+		}
+		$free = $quota - $userFolder->getSize(); // remaining free space for user
+		if ($free > 0) {
+			$availableSpace = ($free * self::DEFAULTMAXSIZE / 100) - $trashbinSize; // how much space can be used for versions
 		} else {
-			$availableSpace = $quota;
+			$availableSpace = $free - $trashbinSize;
 		}
 
 		return $availableSpace;
@@ -794,7 +789,7 @@ class Trashbin {
 			foreach ($files as $file) {
 				if ($availableSpace < 0 && $expiration->isExpired($file['mtime'], true)) {
 					$tmp = self::delete($file['name'], $user, $file['mtime']);
-					\OCP\Util::writeLog('files_trashbin', 'remove "' . $file['name'] . '" (' . $tmp . 'B) to meet the limit of trash bin size (50% of available quota)', \OCP\Util::INFO);
+					\OCP\Util::writeLog('files_trashbin', 'remove "' . $file['name'] . '" (' . $tmp . 'B) to meet the limit of trash bin size ('.self::DEFAULTMAXSIZE.'% of available quota)', \OCP\Util::INFO);
 					$availableSpace += $tmp;
 					$size += $tmp;
 				} else {
