@@ -33,6 +33,7 @@ use OC\AppFramework\Middleware\Security\Exceptions\CrossSiteRequestForgeryExcept
 use OC\AppFramework\Middleware\Security\Exceptions\NotAdminException;
 use OC\AppFramework\Middleware\Security\Exceptions\NotLoggedInException;
 use OC\AppFramework\Utility\ControllerMethodReflector;
+use OC\Core\Controller\LoginController;
 use OC\Security\CSP\ContentSecurityPolicyManager;
 use OCP\AppFramework\Http\ContentSecurityPolicy;
 use OCP\AppFramework\Http\RedirectResponse;
@@ -201,6 +202,20 @@ class SecurityMiddleware extends Middleware {
 						]
 					);
 					$response = new RedirectResponse($url);
+				} elseif (
+					$methodName === 'tryLogin'
+					&& $exception instanceof CrossSiteRequestForgeryException
+					&& $controller instanceof LoginController
+				) {
+					$this->logger->debug($exception->getMessage());
+					$controller->getSession()->set(
+						'loginMessages',
+						[
+							['csrf_error'],
+							[]
+						]
+					);
+					return $controller->showLoginForm(null, null, null);
 				} else {
 					$response = new TemplateResponse('core', '403', ['file' => $exception->getMessage()], 'guest');
 					$response->setStatus($exception->getCode());
