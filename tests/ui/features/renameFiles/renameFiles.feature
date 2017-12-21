@@ -43,6 +43,9 @@ So that I can organise my data structure
 		When I rename the file 'no-double-quotes.txt' to "hash#And&QuestionMark?At@Filename.txt"
 		And the files page is reloaded
 		Then the file "hash#And&QuestionMark?At@Filename.txt" should be listed
+		When I rename the file 'zzzz-must-be-last-file-in-folder.txt' to "aaaaaa.txt"
+		And the files page is reloaded
+		Then the file "aaaaaa.txt" should be listed
 
 	Scenario: Rename a file using spaces at front and/or back of file name and type
 		When I rename the file "lorem.txt" to " space at start"
