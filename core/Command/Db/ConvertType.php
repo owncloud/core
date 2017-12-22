@@ -61,56 +61,56 @@ class ConvertType extends Command {
 	protected function configure() {
 		$this
 			->setName('db:convert-type')
-			->setDescription('Convert the ownCloud database to the newly configured one')
+			->setDescription('Convert the ownCloud database to the newly configured one.')
 			->addArgument(
 				'type',
 				InputArgument::REQUIRED,
-				'the type of the database to convert to'
+				'The type of the database to convert to.'
 			)
 			->addArgument(
 				'username',
 				InputArgument::REQUIRED,
-				'the username of the database to convert to'
+				'The username of the database to convert to.'
 			)
 			->addArgument(
 				'hostname',
 				InputArgument::REQUIRED,
-				'the hostname of the database to convert to'
+				'The hostname of the database to convert to.'
 			)
 			->addArgument(
 				'database',
 				InputArgument::REQUIRED,
-				'the name of the database to convert to'
+				'The name of the database to convert to.'
 			)
 			->addOption(
 				'port',
 				null,
 				InputOption::VALUE_REQUIRED,
-				'the port of the database to convert to'
+				'The port of the database to convert to.'
 			)
 			->addOption(
 				'password',
 				null,
 				InputOption::VALUE_REQUIRED,
-				'the password of the database to convert to. Will be asked when not specified. Can also be passed via stdin.'
+				'The password of the database to convert to. Will be asked when not specified. Can also be passed via stdin.'
 			)
 			->addOption(
 				'clear-schema',
 				null,
 				InputOption::VALUE_NONE,
-				'remove all tables from the destination database'
+				'Remove all tables from the destination database.'
 			)
 			->addOption(
 				'all-apps',
 				null,
 				InputOption::VALUE_NONE,
-				'whether to create schema for all apps instead of only installed apps'
+				'Whether to create schema for all apps instead of only installed apps.'
 			)
 			->addOption(
 				'chunk-size',
 				null,
 				InputOption::VALUE_REQUIRED,
-				'the maximum number of database rows to handle in a single query, bigger tables will be handled in chunks of this size. Lower this if the process runs out of memory during conversion.',
+				'The maximum number of database rows to handle in a single query, bigger tables will be handled in chunks of this size. Lower this if the process runs out of memory during conversion.',
 				1000
 			)
 		;

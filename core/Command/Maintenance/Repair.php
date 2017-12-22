@@ -62,12 +62,12 @@ class Repair extends Command {
 	protected function configure() {
 		$this
 			->setName('maintenance:repair')
-			->setDescription('repair this installation')
+			->setDescription('Repair the installation.')
 			->addOption(
 				'include-expensive',
 				null,
 				InputOption::VALUE_NONE,
-				'Use this option when you want to include resource and load expensive tasks');
+				'Use this option when you want to include resource and load expensive tasks.');
 	}
 
 	protected function execute(InputInterface $input, OutputInterface $output) {

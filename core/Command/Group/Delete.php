@@ -42,11 +42,11 @@ class Delete extends Command {
 	protected function configure() {
 		$this
 			->setName('group:delete')
-			->setDescription('deletes the specified group')
+			->setDescription('Deletes the specified group.')
 			->addArgument(
 				'group',
 				InputArgument::REQUIRED,
-				'the group name'
+				'The group name.'
 			);
 	}
 

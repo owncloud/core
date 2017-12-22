@@ -45,18 +45,18 @@ class SingleUser extends Command {
 	protected function configure() {
 		$this
 			->setName('maintenance:singleuser')
-			->setDescription('set single user mode')
+			->setDescription('Set single user mode.')
 			->addOption(
 				'on',
 				null,
 				InputOption::VALUE_NONE,
-				'enable single user mode'
+				'Enable single user mode.'
 			)
 			->addOption(
 				'off',
 				null,
 				InputOption::VALUE_NONE,
-				'disable single user mode'
+				'Disable single user mode.'
 			);
 	}
 

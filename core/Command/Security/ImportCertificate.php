@@ -43,11 +43,11 @@ class ImportCertificate extends Base {
 	protected function configure() {
 		$this
 			->setName('security:certificates:import')
-			->setDescription('import trusted certificate')
+			->setDescription('Import a trusted certificate.')
 			->addArgument(
 				'path',
 				InputArgument::REQUIRED,
-				'path to the certificate to import'
+				'Path to the certificate to import.'
 			);
 	}
 

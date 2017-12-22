@@ -85,42 +85,42 @@ class Scan extends Base {
 			->addArgument(
 				'user_id',
 				InputArgument::OPTIONAL | InputArgument::IS_ARRAY,
-				'will rescan all files of the given user(s)'
+				'Will rescan all files of the given user(s).'
 			)
 			->addOption(
 				'path',
 				'p',
 				InputArgument::OPTIONAL,
-				'limit rescan to this path, eg. --path="/alice/files/Music", the user_id is determined by the path and the user_id parameter and --all are ignored'
+				'Limit rescan to this path, e.g., --path="/alice/files/Music", the user_id is determined by the path and the user_id parameter and --all are ignored.'
 			)
 			->addOption(
 				'quiet',
 				'q',
 				InputOption::VALUE_NONE,
-				'suppress any output'
+				'Suppress any output.'
 			)
 			->addOption(
 				'verbose',
 				'-v|vv|vvv',
 				InputOption::VALUE_NONE,
-				'verbose the output'
+				"Increase the output's verbosity."
 			)
 			->addOption(
 				'all',
 				null,
 				InputOption::VALUE_NONE,
-				'will rescan all files of all known users'
+				'Will rescan all files of all known users.'
 			)
 			->addOption(
 				'repair',
 				null,
 				InputOption::VALUE_NONE,
-				'will repair detached filecache entries (slow)'
+				'Will repair detached filecache entries (slow).'
 			)->addOption(
 				'unscanned',
 				null,
 				InputOption::VALUE_NONE,
-				'only scan files which are marked as not fully scanned'
+				'Only scan files which are marked as not fully scanned.'
 			);
 	}
 

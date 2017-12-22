@@ -31,11 +31,11 @@ class GenerateChangeScript extends Command {
 	protected function configure() {
 		$this
 			->setName('db:generate-change-script')
-			->setDescription('generates the change script from the current connected db to db_structure.xml')
+			->setDescription('Generates the change script from the current connected db to db_structure.xml.')
 			->addArgument(
 				'schema-xml',
 				InputArgument::OPTIONAL,
-				'the schema xml to be used as target schema',
+				'The XML schema to be used as the target schema.',
 				\OC::$SERVERROOT . '/db_structure.xml'
 			)
 		;

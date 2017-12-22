@@ -44,11 +44,11 @@ class ListGroupMembers extends Base {
 
 		$this
 			->setName('group:list-members')
-			->setDescription('list group members')
+			->setDescription('List group members.')
 			->addArgument(
 				'group',
 				InputArgument::REQUIRED,
-				'Name of the group'
+				'The name of the group.'
 			)
 		;
 	}

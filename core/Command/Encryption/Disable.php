@@ -41,7 +41,7 @@ class Disable extends Command {
 	protected function configure() {
 		$this
 			->setName('encryption:disable')
-			->setDescription('Disable encryption')
+			->setDescription('Disable encryption.')
 		;
 	}
 

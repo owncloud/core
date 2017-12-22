@@ -63,9 +63,9 @@ class SignApp extends Command {
 		$this
 			->setName('integrity:sign-app')
 			->setDescription('Signs an app using a private key.')
-			->addOption('path', null, InputOption::VALUE_REQUIRED, 'Application to sign')
-			->addOption('privateKey', null, InputOption::VALUE_REQUIRED, 'Path to private key to use for signing')
-			->addOption('certificate', null, InputOption::VALUE_REQUIRED, 'Path to certificate to use for signing');
+			->addOption('path', null, InputOption::VALUE_REQUIRED, 'Application to sign.')
+			->addOption('privateKey', null, InputOption::VALUE_REQUIRED, 'Path to private key to use for signing.')
+			->addOption('certificate', null, InputOption::VALUE_REQUIRED, 'Path to certificate to use for signing.');
 	}
 
 	/**

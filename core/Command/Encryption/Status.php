@@ -43,7 +43,7 @@ class Status extends Base {
 
 		$this
 			->setName('encryption:status')
-			->setDescription('Lists the current status of encryption')
+			->setDescription('Lists the current encryption status.')
 		;
 	}
 

@@ -45,11 +45,11 @@ class SetDefaultModule extends Command {
 
 		$this
 			->setName('encryption:set-default-module')
-			->setDescription('Set the encryption default module')
+			->setDescription('Set the encryption default module.')
 			->addArgument(
 				'module',
 				InputArgument::REQUIRED,
-				'ID of the encryption module that should be used'
+				'The ID of the encryption module that should be used.'
 			)
 		;
 	}

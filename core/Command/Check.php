@@ -42,7 +42,7 @@ class Check extends Base {
 
 		$this
 			->setName('check')
-			->setDescription('check dependencies of the server environment')
+			->setDescription('Check the server environment\'s dependencies.')
 		;
 	}
 

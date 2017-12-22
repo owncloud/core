@@ -58,7 +58,7 @@ abstract class Base extends Command {
 		$mode = $this->getMode();
 		$this
 			->setName("background:$mode")
-			->setDescription("Use $mode to run background jobs");
+			->setDescription("Use $mode to run background jobs.");
 	}
 
 	/**

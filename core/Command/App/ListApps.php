@@ -49,17 +49,17 @@ class ListApps extends Base {
 
 		$this
 			->setName('app:list')
-			->setDescription('List all available apps')
+			->setDescription('List all available apps.')
 			->addArgument(
 				'search-pattern',
 				InputArgument::OPTIONAL,
-				'Restrict the list of apps to those whose name matches the given regular expression'
+				'Restrict the list of apps to those whose name matches the given regular expression.'
 			)
 			->addOption(
 				'shipped',
 				null,
 				InputOption::VALUE_REQUIRED,
-				'true - limit to shipped apps only, false - limit to non-shipped apps only'
+				'true - limit to shipped apps only, false - limit to non-shipped apps only.'
 			)
 		;
 	}

@@ -48,16 +48,16 @@ class Install extends Command {
 	protected function configure() {
 		$this
 			->setName('maintenance:install')
-			->setDescription('install ownCloud')
-			->addOption('database', null, InputOption::VALUE_REQUIRED, 'Supported database type', 'sqlite')
-			->addOption('database-name', null, InputOption::VALUE_REQUIRED, 'Name of the database')
-			->addOption('database-host', null, InputOption::VALUE_REQUIRED, 'Hostname of the database', 'localhost')
-			->addOption('database-user', null, InputOption::VALUE_REQUIRED, 'User name to connect to the database')
-			->addOption('database-pass', null, InputOption::VALUE_OPTIONAL, 'Password of the database user', null)
-			->addOption('database-table-prefix', null, InputOption::VALUE_OPTIONAL, 'Prefix for all tables (default: oc_)', null)
-			->addOption('admin-user', null, InputOption::VALUE_REQUIRED, 'User name of the admin account', 'admin')
-			->addOption('admin-pass', null, InputOption::VALUE_REQUIRED, 'Password of the admin account')
-			->addOption('data-dir', null, InputOption::VALUE_REQUIRED, 'Path to data directory', \OC::$SERVERROOT."/data");
+			->setDescription('Install ownCloud.')
+			->addOption('database', null, InputOption::VALUE_REQUIRED, 'Supported database type.', 'sqlite')
+			->addOption('database-name', null, InputOption::VALUE_REQUIRED, 'Name of the database.')
+			->addOption('database-host', null, InputOption::VALUE_REQUIRED, 'Hostname of the database.', 'localhost')
+			->addOption('database-user', null, InputOption::VALUE_REQUIRED, 'User name to connect to the database.')
+			->addOption('database-pass', null, InputOption::VALUE_OPTIONAL, 'Password of the database user.', null)
+			->addOption('database-table-prefix', null, InputOption::VALUE_OPTIONAL, 'Prefix for all tables (default: oc_).', null)
+			->addOption('admin-user', null, InputOption::VALUE_REQUIRED, 'User name of the admin account.', 'admin')
+			->addOption('admin-pass', null, InputOption::VALUE_REQUIRED, 'Password of the admin account.')
+			->addOption('data-dir', null, InputOption::VALUE_REQUIRED, 'Path to the data directory.', \OC::$SERVERROOT."/data");
 	}
 
 	protected function execute(InputInterface $input, OutputInterface $output) {

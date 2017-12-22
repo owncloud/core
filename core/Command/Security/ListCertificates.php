@@ -47,7 +47,7 @@ class ListCertificates extends Base {
 	protected function configure() {
 		$this
 			->setName('security:certificates')
-			->setDescription('list trusted certificates');
+			->setDescription('List trusted certificates.');
 		parent::configure();
 	}
 

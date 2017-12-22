@@ -45,11 +45,11 @@ class LastSeen extends Command {
 	protected function configure() {
 		$this
 			->setName('user:lastseen')
-			->setDescription('shows when the user was logged in last time')
+			->setDescription('Shows when the user was last logged in.')
 			->addArgument(
 				'uid',
 				InputArgument::REQUIRED,
-				'the username'
+				'The username.'
 			);
 	}
 

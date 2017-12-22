@@ -43,11 +43,11 @@ class Disable extends Command {
 	protected function configure() {
 		$this
 			->setName('user:disable')
-			->setDescription('disables the specified user')
+			->setDescription('Disables the specified user.')
 			->addArgument(
 				'uid',
 				InputArgument::REQUIRED,
-				'the username'
+				'The username.'
 			);
 	}
 
