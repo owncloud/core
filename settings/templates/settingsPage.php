@@ -20,9 +20,10 @@ style('settings', 'settings');
 
 <div id="app-navigation">
 	<ul class="with-icon">
+		<!-- Personal Navigation Settings -->
 		<li class="divider"><?php p($l->t('Personal')); ?></li>
 		<?php foreach ($_['personalNav'] as $item): ?>
-		<li>
+		<li class="<?php $item['active'] ? p(' active ') : p('') ?>">
 			<?php if (\strpos($item['icon'], '/', 1) !== false): ?>
 				<a class="svg <?php $item['active'] ? p(' active ') : p('') ?>" style="background-image: url(<?php p($item['icon']) ?>)" href='<?php p($item['link']); ?>'><?php p($item['name']) ?></a>
 			<?php else: ?>
@@ -31,10 +32,11 @@ style('settings', 'settings');
 		</li>
 		<?php endforeach; ?>
 
+		<!-- Admin Navigation Settings -->
 		<?php if (!empty($_['adminNav'])): ?>
 			<li class="divider"><?php p($l->t('Admin')); ?></li>
 			<?php foreach ($_['adminNav'] as $item): ?>
-				<li>
+				<li class="<?php $item['active'] ? p(' active ') : p('') ?>">
 					<?php if (\strpos($item['icon'], '/', 1) !== false): ?>
 						<a class="svg <?php $item['active'] ? p(' active ') : p('') ?>" style="background-image: url(<?php p($item['icon']) ?>)" href='<?php p($item['link']); ?>'><?php p($item['name']) ?></a>
 					<?php else: ?>
