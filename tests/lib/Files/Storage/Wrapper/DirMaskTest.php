@@ -7,9 +7,10 @@ namespace Test\Files\Storage\Wrapper;
 use OC\Files\Storage\Temporary;
 use OC\Files\Storage\Wrapper\DirMask;
 use OCP\Constants;
+use PHPUnit\Framework\TestCase;
 
 
-class DirMaskTest extends \PHPUnit_Framework_TestCase {
+class DirMaskTest extends TestCase {
 
 	/** @var  Temporary */
 	private $sourceStorage;

@@ -16,8 +16,9 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\EventDispatcher\Event;
 use Symfony\Component\Stopwatch\Stopwatch;
+use PHPUnit\Framework\TestCase;
 
-class TraceableEventDispatcherTest extends \PHPUnit_Framework_TestCase
+class TraceableEventDispatcherTest extends TestCase
 {
     public function testAddRemoveListener()
     {

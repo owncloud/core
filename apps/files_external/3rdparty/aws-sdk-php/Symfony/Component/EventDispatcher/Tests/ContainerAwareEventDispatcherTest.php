@@ -16,8 +16,9 @@ use Symfony\Component\DependencyInjection\Scope;
 use Symfony\Component\EventDispatcher\ContainerAwareEventDispatcher;
 use Symfony\Component\EventDispatcher\Event;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use PHPUnit\Framework\TestCase;
 
-class ContainerAwareEventDispatcherTest extends \PHPUnit_Framework_TestCase
+class ContainerAwareEventDispatcherTest extends TestCase
 {
     public function testAddAListenerService()
     {

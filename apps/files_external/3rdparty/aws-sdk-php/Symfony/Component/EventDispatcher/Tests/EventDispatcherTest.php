@@ -14,8 +14,9 @@ namespace Symfony\Component\EventDispatcher\Tests;
 use Symfony\Component\EventDispatcher\Event;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use PHPUnit\Framework\TestCase;
 
-class EventDispatcherTest extends \PHPUnit_Framework_TestCase
+class EventDispatcherTest extends TestCase
 {
     /* Some pseudo events */
     const preFoo = 'pre.foo';

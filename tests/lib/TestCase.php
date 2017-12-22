@@ -32,8 +32,9 @@ use OCP\DB\QueryBuilder\IQueryBuilder;
 use OCP\IDBConnection;
 use OCP\IL10N;
 use OCP\Security\ISecureRandom;
+use PHPUnit\Framework\TestCase as BaseTestCase;
 
-abstract class TestCase extends \PHPUnit_Framework_TestCase {
+abstract class TestCase extends BaseTestCase {
 	/** @var \OC\Command\QueueBus */
 	private $commandBus;
 
