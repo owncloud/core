@@ -53,14 +53,14 @@ class CalDavBackendTest extends AbstractCalDavBackendTest {
 		$this->backend->updateCalendar($calendarId, $patch);
 		$patch->commit();
 		$books = $this->backend->getCalendarsForUser(self::UNIT_TEST_USER);
-		$this->assertEquals(1, count($books));
+		$this->assertCount(1, $books);
 		$this->assertEquals('Unit test', $books[0]['{DAV:}displayname']);
 		$this->assertEquals('Calendar used for unit testing', $books[0]['{urn:ietf:params:xml:ns:caldav}calendar-description']);
 
 		// delete the address book
 		$this->backend->deleteCalendar($books[0]['id']);
 		$books = $this->backend->getCalendarsForUser(self::UNIT_TEST_USER);
-		$this->assertEquals(0, count($books));
+		$this->assertCount(0, $books);
 	}
 
 	public function providesSharingData() {
@@ -102,11 +102,11 @@ class CalDavBackendTest extends AbstractCalDavBackendTest {
 
 		$calendarId = $this->createTestCalendar();
 		$books = $this->backend->getCalendarsForUser(self::UNIT_TEST_USER);
-		$this->assertEquals(1, count($books));
+		$this->assertCount(1, $books);
 		$calendar = new Calendar($this->backend, $books[0], $l10n);
 		$this->backend->updateShares($calendar, $add, []);
 		$books = $this->backend->getCalendarsForUser(self::UNIT_TEST_USER1);
-		$this->assertEquals(1, count($books));
+		$this->assertCount(1, $books);
 		$calendar = new Calendar($this->backend, $books[0], $l10n);
 		$acl = $calendar->getACL();
 		$this->assertAcl(self::UNIT_TEST_USER, '{DAV:}read', $acl);
@@ -151,7 +151,7 @@ EOD;
 		// delete the address book
 		$this->backend->deleteCalendar($books[0]['id']);
 		$books = $this->backend->getCalendarsForUser(self::UNIT_TEST_USER);
-		$this->assertEquals(0, count($books));
+		$this->assertCount(0, $books);
 	}
 
 	public function testCalendarObjectsOperations() {
@@ -181,7 +181,7 @@ EOD;
 
 		// get all the cards
 		$calendarObjects = $this->backend->getCalendarObjects($calendarId);
-		$this->assertEquals(1, count($calendarObjects));
+		$this->assertCount(1, $calendarObjects);
 		$this->assertEquals($calendarId, $calendarObjects[0]['calendarid']);
 		$this->assertArrayHasKey('classification', $calendarObjects[0]);
 
@@ -219,7 +219,7 @@ EOD;
 		// delete the card
 		$this->backend->deleteCalendarObject($calendarId, $uri);
 		$calendarObjects = $this->backend->getCalendarObjects($calendarId);
-		$this->assertEquals(0, count($calendarObjects));
+		$this->assertCount(0, $calendarObjects);
 	}
 
 	public function testMultiCalendarObjects() {
@@ -252,11 +252,11 @@ EOD;
 
 		// get all the cards
 		$calendarObjects = $this->backend->getCalendarObjects($calendarId);
-		$this->assertEquals(3, count($calendarObjects));
+		$this->assertCount(3, $calendarObjects);
 
 		// get the cards
 		$calendarObjects = $this->backend->getMultipleCalendarObjects($calendarId, [$uri1, $uri2]);
-		$this->assertEquals(2, count($calendarObjects));
+		$this->assertCount(2, $calendarObjects);
 		foreach($calendarObjects as $card) {
 			$this->assertArrayHasKey('id', $card);
 			$this->assertArrayHasKey('uri', $card);
@@ -272,7 +272,7 @@ EOD;
 		$this->backend->deleteCalendarObject($calendarId, $uri1);
 		$this->backend->deleteCalendarObject($calendarId, $uri2);
 		$calendarObjects = $this->backend->getCalendarObjects($calendarId);
-		$this->assertEquals(0, count($calendarObjects));
+		$this->assertCount(0, $calendarObjects);
 	}
 
 	/**
@@ -342,18 +342,18 @@ EOD;
 
 		$calendar = new Calendar($this->backend, $calendarInfo, $l10n);
 		$calendar->setPublishStatus(true);
-		$this->assertNotEquals(false, $calendar->getPublishStatus());
+		$this->assertNotFalse($calendar->getPublishStatus());
 
 		$publicCalendars = $this->backend->getPublicCalendars();
-		$this->assertEquals(1, count($publicCalendars));
-		$this->assertEquals(true, $publicCalendars[0]['{http://owncloud.org/ns}public']);
+		$this->assertCount(1, $publicCalendars);
+		$this->assertTrue($publicCalendars[0]['{http://owncloud.org/ns}public']);
 
 		$publicCalendarURI = $publicCalendars[0]['uri'];
 		$publicCalendar = $this->backend->getPublicCalendar($publicCalendarURI);
-		$this->assertEquals(true, $publicCalendar['{http://owncloud.org/ns}public']);
+		$this->assertTrue($publicCalendar['{http://owncloud.org/ns}public']);
 
 		$calendar->setPublishStatus(false);
-		$this->assertEquals(false, $calendar->getPublishStatus());
+		$this->assertFalse($calendar->getPublishStatus());
 
 		$publicCalendarURI = md5($this->config->getSystemValue('secret', '') . $calendar->getResourceId());
 		$this->setExpectedException('Sabre\DAV\Exception\NotFound');
@@ -369,7 +369,7 @@ EOD;
 		]);
 
 		$subscriptions = $this->backend->getSubscriptionsForUser(self::UNIT_TEST_USER);
-		$this->assertEquals(1, count($subscriptions));
+		$this->assertCount(1, $subscriptions);
 		$this->assertEquals('#1C4587', $subscriptions[0]['{http://apple.com/ns/ical/}calendar-color']);
 		$this->assertEquals(true, $subscriptions[0]['{http://calendarserver.org/ns/}subscribed-strip-todos']);
 		$this->assertEquals($id, $subscriptions[0]['id']);
@@ -382,21 +382,21 @@ EOD;
 		$patch->commit();
 
 		$subscriptions = $this->backend->getSubscriptionsForUser(self::UNIT_TEST_USER);
-		$this->assertEquals(1, count($subscriptions));
+		$this->assertCount(1, $subscriptions);
 		$this->assertEquals($id, $subscriptions[0]['id']);
 		$this->assertEquals('Unit test', $subscriptions[0]['{DAV:}displayname']);
 		$this->assertEquals('#ac0606', $subscriptions[0]['{http://apple.com/ns/ical/}calendar-color']);
 
 		$this->backend->deleteSubscription($id);
 		$subscriptions = $this->backend->getSubscriptionsForUser(self::UNIT_TEST_USER);
-		$this->assertEquals(0, count($subscriptions));
+		$this->assertCount(0, $subscriptions);
 	}
 
 	public function testScheduling() {
 		$this->backend->createSchedulingObject(self::UNIT_TEST_USER, 'Sample Schedule', '');
 
 		$sos = $this->backend->getSchedulingObjects(self::UNIT_TEST_USER);
-		$this->assertEquals(1, count($sos));
+		$this->assertCount(1, $sos);
 
 		$so = $this->backend->getSchedulingObject(self::UNIT_TEST_USER, 'Sample Schedule');
 		$this->assertNotNull($so);
@@ -404,7 +404,7 @@ EOD;
 		$this->backend->deleteSchedulingObject(self::UNIT_TEST_USER, 'Sample Schedule');
 
 		$sos = $this->backend->getSchedulingObjects(self::UNIT_TEST_USER);
-		$this->assertEquals(0, count($sos));
+		$this->assertCount(0, $sos);
 	}
 
 	/**

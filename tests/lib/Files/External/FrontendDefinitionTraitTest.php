@@ -116,6 +116,6 @@ class FrontendDefinitionTraitTest extends \Test\TestCase {
 		$trait->setText('test');
 		$trait->addParameter($param);
 
-		$this->assertEquals(true, $trait->validateStorageDefinition($storageConfig));
+		$this->assertTrue($trait->validateStorageDefinition($storageConfig));
 	}
 }

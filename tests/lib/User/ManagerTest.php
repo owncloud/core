@@ -102,7 +102,7 @@ class ManagerTest extends TestCase {
 		$this->accountMapper->expects($this->once())->method('getByUid')->with('foo')->willReturn($account);
 
 		$user = $this->manager->checkPassword('foo', 'bar');
-		$this->assertTrue($user instanceof \OC\User\User);
+		$this->assertInstanceOf(\OC\User\User::class, $user);
 	}
 
 	public function testCheckPasswordNotSupported() {
@@ -130,7 +130,7 @@ class ManagerTest extends TestCase {
 	}
 
 	public function testGetOneBackendNotExists() {
-		$this->assertEquals(null, $this->manager->get('foo'));
+		$this->assertNull($this->manager->get('foo'));
 	}
 
 	public function testFind() {
@@ -141,7 +141,7 @@ class ManagerTest extends TestCase {
 		$this->accountMapper->expects($this->once())->method('find')
 			->with('fo')->willReturn([$a0, $a1]);
 		$result = $this->manager->find('fo');
-		$this->assertEquals(2, count($result));
+		$this->assertCount(2, $result);
 		$this->assertEquals('foo', array_shift($result)->getUID());
 		$this->assertEquals('foob', array_shift($result)->getUID());
 	}
@@ -154,7 +154,7 @@ class ManagerTest extends TestCase {
 		$this->accountMapper->expects($this->once())->method('search')
 			->with('user_id', 'fo')->willReturn([$a0, $a1]);
 		$result = $this->manager->search('fo');
-		$this->assertEquals(2, count($result));
+		$this->assertCount(2, $result);
 		$this->assertEquals('afoo', array_shift($result)->getUID());
 		$this->assertEquals('foo', array_shift($result)->getUID());
 	}
@@ -169,7 +169,7 @@ class ManagerTest extends TestCase {
 		$this->accountMapper->expects($this->once())->method('search')
 			->with('user_id', 'fo', 3, 1)->willReturn([$a0, $a1, $a2]);
 		$result = $this->manager->search('fo', 3, 1);
-		$this->assertEquals(3, count($result));
+		$this->assertCount(3, $result);
 		$this->assertEquals('foo1', array_shift($result)->getUID());
 		$this->assertEquals('foo2', array_shift($result)->getUID());
 		$this->assertEquals('foo3', array_shift($result)->getUID());
@@ -266,7 +266,7 @@ class ManagerTest extends TestCase {
 
 		$users = [];
 		$this->manager->callForAllUsers($function, '', true);
-		$this->assertEquals(count($usersBefore) + 3, count($users), join(', ', $usersBefore) . " !== " . join(', ', $users));
+		$this->assertCount(count($usersBefore) + 3, $users, join(', ', $usersBefore) . " !== " . join(', ', $users));
 
 		//cleanup
 		$user1->delete();
@@ -274,7 +274,7 @@ class ManagerTest extends TestCase {
 		$user3->delete();
 		$user4->delete();
 	}
-	
+
 	public function testNullUidMakesNoQueryToAccountsTable() {
 		// migration from versions below 10.0. accounts table hasn't been created yet.
 		$this->accountMapper->expects($this->never())->method('getByUid');

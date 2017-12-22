@@ -78,7 +78,7 @@ class AvatarControllerTest extends TestCase {
 		parent::setUp();
 		$this->createUser('userid', 'pass');
 		$this->loginAsUser('userid');
-		
+
 		$this->avatarManager = $this->createMock(IAvatarManager::class);
 		$this->cache = $this->getMockBuilder(\OC\Cache\File::class)->disableOriginalConstructor()->getMock();
 		$this->l10N = $this->createMock(IL10N::class);
@@ -294,7 +294,7 @@ class AvatarControllerTest extends TestCase {
 		$this->assertEquals('notsquare', $response->getData()['data']);
 
 		//File should be deleted
-		$this->assertFalse(file_exists($fileName));
+		$this->assertFileNotExists($fileName);
 	}
 
 	/**
@@ -331,7 +331,7 @@ class AvatarControllerTest extends TestCase {
 		$this->assertEquals('Unknown filetype', $response->getData()['data']['message']);
 
 		//File should be deleted
-		$this->assertFalse(file_exists($fileName));
+		$this->assertFileNotExists($fileName);
 	}
 
 	/**

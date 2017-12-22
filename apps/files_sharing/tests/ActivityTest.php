@@ -60,7 +60,7 @@ class ActivityTest extends TestCase {
 		$result = $this->activity->getDefaultTypes($method);
 
 		if (is_array($expectedResult)) {
-			$this->assertSame(count($expectedResult), count($result));
+			$this->assertCount(count($expectedResult), $result);
 			foreach ($expectedResult as $key => $expected) {
 				$this->assertSame($expected, $result[$key]);
 			}

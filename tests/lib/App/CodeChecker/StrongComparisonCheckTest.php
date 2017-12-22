@@ -27,7 +27,7 @@ class StrongComparisonCheckTest extends TestCase {
 		);
 		$errors = $checker->analyseFile(\OC::$SERVERROOT . "/tests/data/app/code-checker/$fileToVerify");
 
-		$this->assertEquals(1, count($errors));
+		$this->assertCount(1, $errors);
 		$this->assertEquals($expectedErrorCode, $errors[0]['errorCode']);
 		$this->assertEquals($expectedErrorToken, $errors[0]['disallowedToken']);
 	}
@@ -49,7 +49,7 @@ class StrongComparisonCheckTest extends TestCase {
 		);
 		$errors = $checker->analyseFile(\OC::$SERVERROOT . "/tests/data/app/code-checker/$fileToVerify");
 
-		$this->assertEquals(0, count($errors));
+		$this->assertCount(0, $errors);
 	}
 
 	public function validFilesData() {

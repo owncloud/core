@@ -45,7 +45,7 @@ class GroupTest extends \Test\TestCase {
 
 		$users = $group->getUsers();
 
-		$this->assertEquals(2, count($users));
+		$this->assertCount(2, $users);
 		$user1 = $users['user1'];
 		$user2 = $users['user2'];
 		$this->assertEquals('user1', $user1->getUID());
@@ -70,7 +70,7 @@ class GroupTest extends \Test\TestCase {
 
 		$users = $group->getUsers();
 
-		$this->assertEquals(3, count($users));
+		$this->assertCount(3, $users);
 		$user1 = $users['user1'];
 		$user2 = $users['user2'];
 		$user3 = $users['user3'];
@@ -254,7 +254,7 @@ class GroupTest extends \Test\TestCase {
 
 		$users = $group->searchUsers('2');
 
-		$this->assertEquals(1, count($users));
+		$this->assertCount(1, $users);
 		$user2 = $users[0];
 		$this->assertEquals('user2', $user2->getUID());
 	}
@@ -276,7 +276,7 @@ class GroupTest extends \Test\TestCase {
 
 		$users = $group->searchUsers('2');
 
-		$this->assertEquals(1, count($users));
+		$this->assertCount(1, $users);
 		$user2 = $users[0];
 		$this->assertEquals('user2', $user2->getUID());
 	}
@@ -293,7 +293,7 @@ class GroupTest extends \Test\TestCase {
 
 		$users = $group->searchUsers('user', 1, 1);
 
-		$this->assertEquals(1, count($users));
+		$this->assertCount(1, $users);
 		$user2 = $users[0];
 		$this->assertEquals('user2', $user2->getUID());
 	}
@@ -315,7 +315,7 @@ class GroupTest extends \Test\TestCase {
 
 		$users = $group->searchUsers('user', 2, 1);
 
-		$this->assertEquals(2, count($users));
+		$this->assertCount(2, $users);
 		$user2 = $users[0];
 		$user1 = $users[1];
 		$this->assertEquals('user2', $user2->getUID());
@@ -381,7 +381,7 @@ class GroupTest extends \Test\TestCase {
 
 		$users = $group->count('2');
 
-		$this->assertSame(false, $users);
+		$this->assertFalse($users);
 	}
 
 	public function testDelete() {

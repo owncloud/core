@@ -30,7 +30,7 @@ abstract class TestBase extends \Test\TestCase {
 		$this->instance=$this->getExisting();
 		$allFiles=$this->instance->getFiles();
 		$expected= ['lorem.txt','logo-wide.png','dir/', 'dir/lorem.txt'];
-		$this->assertEquals(4, count($allFiles), 'only found '.count($allFiles).' out of 4 expected files');
+		$this->assertCount(4, $allFiles, 'only found '.count($allFiles).' out of 4 expected files');
 		foreach($expected as $file) {
 			$this->assertContains($file, $allFiles, 'cant find '.  $file . ' in archive');
 			$this->assertTrue($this->instance->fileExists($file), 'file '.$file.' does not exist in archive');
@@ -39,14 +39,14 @@ abstract class TestBase extends \Test\TestCase {
 
 		$rootContent=$this->instance->getFolder('');
 		$expected= ['lorem.txt','logo-wide.png', 'dir/'];
-		$this->assertEquals(3, count($rootContent));
+		$this->assertCount(3, $rootContent);
 		foreach($expected as $file) {
 			$this->assertContains($file, $rootContent, 'cant find '.  $file . ' in archive');
 		}
 
 		$dirContent=$this->instance->getFolder('dir/');
 		$expected= ['lorem.txt'];
-		$this->assertEquals(1, count($dirContent));
+		$this->assertCount(1, $dirContent);
 		foreach($expected as $file) {
 			$this->assertContains($file, $dirContent, 'cant find '.  $file . ' in archive');
 		}
@@ -56,24 +56,24 @@ abstract class TestBase extends \Test\TestCase {
 		$this->instance=$this->getExisting();
 		$dir=\OC::$SERVERROOT.'/tests/data';
 		$textFile=$dir.'/lorem.txt';
-		$this->assertEquals(file_get_contents($textFile), $this->instance->getFile('lorem.txt'));
+		$this->assertStringEqualsFile($textFile, $this->instance->getFile('lorem.txt'));
 
 		$tmpFile=\OCP\Files::tmpFile('.txt');
 		$this->instance->extractFile('lorem.txt', $tmpFile);
-		$this->assertEquals(file_get_contents($textFile), file_get_contents($tmpFile));
+		$this->assertFileEquals($textFile, $tmpFile);
 	}
 
 	public function testWrite() {
 		$dir=\OC::$SERVERROOT.'/tests/data';
 		$textFile=$dir.'/lorem.txt';
 		$this->instance=$this->getNew();
-		$this->assertEquals(0, count($this->instance->getFiles()));
+		$this->assertCount(0, $this->instance->getFiles());
 		$this->instance->addFile('lorem.txt', $textFile);
-		$this->assertEquals(1, count($this->instance->getFiles()));
+		$this->assertCount(1, $this->instance->getFiles());
 		$this->assertTrue($this->instance->fileExists('lorem.txt'));
 		$this->assertFalse($this->instance->fileExists('lorem.txt/'));
 
-		$this->assertEquals(file_get_contents($textFile), $this->instance->getFile('lorem.txt'));
+		$this->assertStringEqualsFile($textFile, $this->instance->getFile('lorem.txt'));
 		$this->instance->addFile('lorem.txt', 'foobar');
 		$this->assertEquals('foobar', $this->instance->getFile('lorem.txt'));
 	}
@@ -85,7 +85,7 @@ abstract class TestBase extends \Test\TestCase {
 		$this->assertTrue((bool)$fh);
 		$content=fread($fh, $this->instance->filesize('lorem.txt'));
 		fclose($fh);
-		$this->assertEquals(file_get_contents($dir.'/lorem.txt'), $content);
+		$this->assertStringEqualsFile($dir.'/lorem.txt', $content);
 	}
 	public function testWriteStream() {
 		$dir=\OC::$SERVERROOT.'/tests/data';
@@ -96,7 +96,7 @@ abstract class TestBase extends \Test\TestCase {
 		fclose($source);
 		fclose($fh);
 		$this->assertTrue($this->instance->fileExists('lorem.txt'));
-		$this->assertEquals(file_get_contents($dir.'/lorem.txt'), $this->instance->getFile('lorem.txt'));
+		$this->assertStringEqualsFile($dir.'/lorem.txt', $this->instance->getFile('lorem.txt'));
 	}
 	public function testFolder() {
 		$this->instance=$this->getNew();
@@ -114,10 +114,10 @@ abstract class TestBase extends \Test\TestCase {
 		$this->instance=$this->getExisting();
 		$tmpDir=\OCP\Files::tmpFolder();
 		$this->instance->extract($tmpDir);
-		$this->assertEquals(true, file_exists($tmpDir.'lorem.txt'));
-		$this->assertEquals(true, file_exists($tmpDir.'dir/lorem.txt'));
-		$this->assertEquals(true, file_exists($tmpDir.'logo-wide.png'));
-		$this->assertEquals(file_get_contents($dir.'/lorem.txt'), file_get_contents($tmpDir.'lorem.txt'));
+		$this->assertFileExists($tmpDir.'lorem.txt');
+		$this->assertFileExists($tmpDir.'dir/lorem.txt');
+		$this->assertFileExists($tmpDir.'logo-wide.png');
+		$this->assertFileEquals($dir.'/lorem.txt', $tmpDir.'lorem.txt');
 		\OCP\Files::rmdirr($tmpDir);
 	}
 	public function testMoveRemove() {
@@ -129,7 +129,7 @@ abstract class TestBase extends \Test\TestCase {
 		$this->instance->rename('lorem.txt', 'target.txt');
 		$this->assertTrue($this->instance->fileExists('target.txt'));
 		$this->assertFalse($this->instance->fileExists('lorem.txt'));
-		$this->assertEquals(file_get_contents($textFile), $this->instance->getFile('target.txt'));
+		$this->assertStringEqualsFile($textFile, $this->instance->getFile('target.txt'));
 		$this->instance->remove('target.txt');
 		$this->assertFalse($this->instance->fileExists('target.txt'));
 	}

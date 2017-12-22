@@ -15,7 +15,7 @@ trait Provisioning {
 
 	/** @var array */
 	private $createdRemoteGroups = [];
-	
+
 	/** @var array */
 	private $createdGroups = [];
 

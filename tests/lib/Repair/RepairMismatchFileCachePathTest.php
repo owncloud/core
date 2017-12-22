@@ -407,7 +407,7 @@ class RepairMismatchFileCachePathTest extends TestCase {
 
 		// ref child 3 case was reparented to a new "detached" entry
 		$entry = $this->getFileCacheEntry($refChild3Id);
-		$this->assertTrue(isset($entry['parent']));
+		$this->assertArrayHasKey('parent', $entry);
 		$this->assertEquals((string)$storageId, $entry['storage']);
 		$this->assertEquals('detached/ref_child3', $entry['path']);
 		$this->assertEquals(md5('detached/ref_child3'), $entry['path_hash']);
@@ -490,7 +490,7 @@ class RepairMismatchFileCachePathTest extends TestCase {
 
 		// ref child 3 case was reparented to a new "detached" entry
 		$entry = $this->getFileCacheEntry($refChild3Id_parallel);
-		$this->assertTrue(isset($entry['parent']));
+		$this->assertArrayHasKey('parent', $entry);
 		$this->assertEquals((string)$storageId2, $entry['storage']);
 		$this->assertEquals('detached/ref_child3', $entry['path']);
 		$this->assertEquals(md5('detached/ref_child3'), $entry['path_hash']);
@@ -620,7 +620,7 @@ class RepairMismatchFileCachePathTest extends TestCase {
 
 		// non existing id exists now
 		$entry = $this->getFileCacheEntry($entry['parent']);
-		$this->assertTrue(isset($entry['parent']));
+		$this->assertArrayHasKey('parent', $entry);
 		$this->assertEquals((string)$storageId, $entry['storage']);
 		$this->assertEquals('missingdir/missingdir1', $entry['path']);
 		$this->assertEquals(md5('missingdir/missingdir1'), $entry['path_hash']);
@@ -706,7 +706,7 @@ class RepairMismatchFileCachePathTest extends TestCase {
 
 		// orphaned entry with no root reattached
 		$entry = $this->getFileCacheEntry($orphanedId);
-		$this->assertTrue(isset($entry['parent']));
+		$this->assertArrayHasKey('parent', $entry);
 		$this->assertEquals((string)$storageId, $entry['storage']);
 		$this->assertEquals('noroot', $entry['path']);
 		$this->assertEquals(md5('noroot'), $entry['path_hash']);
@@ -731,4 +731,3 @@ class RepairMismatchFileCachePathTest extends TestCase {
 		$this->assertEquals(md5(''), $entry['path_hash']);
 	}
 }
-

@@ -441,7 +441,7 @@ class CacheTest extends TestCase {
 	 * @param array $results array of files
 	 */
 	private function verifyFiles($examples, $results) {
-		$this->assertEquals(count($examples), count($results),
+		$this->assertCount(count($examples), $results,
 			'Files found: ' . implode(', ', array_map(function( $f) {
 				/** @var FileInfo | ICacheEntry $f */
 				return $f->getPath();

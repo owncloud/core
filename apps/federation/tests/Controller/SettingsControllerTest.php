@@ -71,7 +71,7 @@ class SettingsControllerTest extends TestCase {
 			->willReturn(true);
 
 		$result = $this->controller->addServer('url');
-		$this->assertTrue($result instanceof DataResponse);
+		$this->assertInstanceOf(DataResponse::class, $result);
 
 		$data = $result->getData();
 		$this->assertSame(200, $result->getStatus());
@@ -105,7 +105,7 @@ class SettingsControllerTest extends TestCase {
 		$this->trustedServers->expects($this->once())->method('removeServer')
 		->with('url');
 		$result = $this->controller->removeServer('url');
-		$this->assertTrue($result instanceof DataResponse);
+		$this->assertInstanceOf(DataResponse::class, $result);
 		$this->assertSame(200, $result->getStatus());
 	}
 

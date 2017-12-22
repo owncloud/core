@@ -54,7 +54,7 @@ class ScannerTest extends \Test\TestCase {
 		$this->storage->file_put_contents('foo.txt', $data);
 		$this->scanner->scanFile('foo.txt');
 
-		$this->assertEquals($this->cache->inCache('foo.txt'), true);
+		$this->assertTrue($this->cache->inCache('foo.txt'));
 		$cachedData = $this->cache->get('foo.txt');
 		$this->assertEquals($cachedData['size'], strlen($data));
 		$this->assertEquals($cachedData['mimetype'], 'text/plain');
@@ -64,7 +64,7 @@ class ScannerTest extends \Test\TestCase {
 		$this->storage->file_put_contents('foo.png', $data);
 		$this->scanner->scanFile('foo.png');
 
-		$this->assertEquals($this->cache->inCache('foo.png'), true);
+		$this->assertTrue($this->cache->inCache('foo.png'));
 		$cachedData = $this->cache->get('foo.png');
 		$this->assertEquals($cachedData['size'], strlen($data));
 		$this->assertEquals($cachedData['mimetype'], 'image/png');
@@ -83,11 +83,11 @@ class ScannerTest extends \Test\TestCase {
 		$this->fillTestFolders();
 
 		$this->scanner->scan('');
-		$this->assertEquals($this->cache->inCache(''), true);
-		$this->assertEquals($this->cache->inCache('foo.txt'), true);
-		$this->assertEquals($this->cache->inCache('foo.png'), true);
-		$this->assertEquals($this->cache->inCache('folder'), true);
-		$this->assertEquals($this->cache->inCache('folder/bar.txt'), true);
+		$this->assertTrue($this->cache->inCache(''));
+		$this->assertTrue($this->cache->inCache('foo.txt'));
+		$this->assertTrue($this->cache->inCache('foo.png'));
+		$this->assertTrue($this->cache->inCache('folder'));
+		$this->assertTrue($this->cache->inCache('folder/bar.txt'));
 
 		$cachedDataText = $this->cache->get('foo.txt');
 		$cachedDataText2 = $this->cache->get('foo.txt');
@@ -105,11 +105,11 @@ class ScannerTest extends \Test\TestCase {
 		$this->fillTestFolders();
 
 		$this->scanner->scan('', \OC\Files\Cache\Scanner::SCAN_SHALLOW);
-		$this->assertEquals($this->cache->inCache(''), true);
-		$this->assertEquals($this->cache->inCache('foo.txt'), true);
-		$this->assertEquals($this->cache->inCache('foo.png'), true);
-		$this->assertEquals($this->cache->inCache('folder'), true);
-		$this->assertEquals($this->cache->inCache('folder/bar.txt'), false);
+		$this->assertTrue($this->cache->inCache(''));
+		$this->assertTrue($this->cache->inCache('foo.txt'));
+		$this->assertTrue($this->cache->inCache('foo.png'));
+		$this->assertTrue($this->cache->inCache('folder'));
+		$this->assertFalse($this->cache->inCache('folder/bar.txt'));
 
 		$cachedDataFolder = $this->cache->get('');
 		$cachedDataFolder2 = $this->cache->get('folder');

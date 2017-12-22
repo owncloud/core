@@ -69,7 +69,7 @@ class ChunkLocationProviderTest extends TestCase {
 
 		$mounts = $this->provider->getMountsForUser($this->user, $this->factory);
 		$this->assertTrue($root->hasChild('user'));
-		$this->assertEquals(1, count($mounts));
+		$this->assertCount(1, $mounts);
 		$mount = $mounts[0];
 		$this->assertInstanceOf(MountPoint::class, $mount);
 		$this->assertEquals(Local::class, $this->invokePrivate($mount, 'class'));

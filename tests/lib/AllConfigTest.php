@@ -64,7 +64,7 @@ class AllConfigTest extends \Test\TestCase {
 
 		$result = $this->connection->executeQuery($selectAllSQL, ['userSet'])->fetchAll();
 
-		$this->assertEquals(1, count($result));
+		$this->assertCount(1, $result);
 		$this->assertEquals([
 			'userid'      => 'userSet',
 			'appid'       => 'appSet',
@@ -77,7 +77,7 @@ class AllConfigTest extends \Test\TestCase {
 
 		$result = $this->connection->executeQuery($selectAllSQL, ['userSet'])->fetchAll();
 
-		$this->assertEquals(1, count($result));
+		$this->assertCount(1, $result);
 		$this->assertEquals([
 			'userid'      => 'userSet',
 			'appid'       => 'appSet',
@@ -98,7 +98,7 @@ class AllConfigTest extends \Test\TestCase {
 
 		$result = $this->connection->executeQuery($selectAllSQL, ['userPreCond'])->fetchAll();
 
-		$this->assertEquals(1, count($result));
+		$this->assertCount(1, $result);
 		$this->assertEquals([
 			'userid'      => 'userPreCond',
 			'appid'       => 'appPreCond',
@@ -111,7 +111,7 @@ class AllConfigTest extends \Test\TestCase {
 
 		$result = $this->connection->executeQuery($selectAllSQL, ['userPreCond'])->fetchAll();
 
-		$this->assertEquals(1, count($result));
+		$this->assertCount(1, $result);
 		$this->assertEquals([
 			'userid'      => 'userPreCond',
 			'appid'       => 'appPreCond',
@@ -154,7 +154,7 @@ class AllConfigTest extends \Test\TestCase {
 
 		$result = $this->connection->executeQuery($selectAllSQL, ['userPreCond1'])->fetchAll();
 
-		$this->assertEquals(1, count($result));
+		$this->assertCount(1, $result);
 		$this->assertEquals([
 			'userid'      => 'userPreCond1',
 			'appid'       => 'appPreCond',
@@ -167,7 +167,7 @@ class AllConfigTest extends \Test\TestCase {
 
 		$result = $this->connection->executeQuery($selectAllSQL, ['userPreCond1'])->fetchAll();
 
-		$this->assertEquals(1, count($result));
+		$this->assertCount(1, $result);
 		$this->assertEquals([
 			'userid'      => 'userPreCond1',
 			'appid'       => 'appPreCond',
@@ -218,7 +218,7 @@ class AllConfigTest extends \Test\TestCase {
 			['userGet']
 		)->fetchAll();
 
-		$this->assertEquals(1, count($result));
+		$this->assertCount(1, $result);
 		$this->assertEquals([
 			'userid'      => 'userGet',
 			'appid'       => 'appGet',
@@ -239,7 +239,7 @@ class AllConfigTest extends \Test\TestCase {
 			['userGet']
 		)->fetchAll();
 
-		$this->assertEquals(0, count($result));
+		$this->assertCount(0, $result);
 	}
 
 	public function testGetUserKeys() {
@@ -277,7 +277,7 @@ class AllConfigTest extends \Test\TestCase {
 		$config = $this->getConfig();
 
 		$this->assertEquals('', $config->getUserValue('userGetUnset', 'appGetUnset', 'keyGetUnset'));
-		$this->assertEquals(null, $config->getUserValue('userGetUnset', 'appGetUnset', 'keyGetUnset', null));
+		$this->assertNull($config->getUserValue('userGetUnset', 'appGetUnset', 'keyGetUnset', null));
 		$this->assertEquals('foobar', $config->getUserValue('userGetUnset', 'appGetUnset', 'keyGetUnset', 'foobar'));
 	}
 

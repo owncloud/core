@@ -302,20 +302,20 @@ class CacheTest extends TestCase {
 		$this->cache->put($file2, $fileData['foobar']);
 		$this->cache->put($file3, $fileData['foo']);
 
-		$this->assertEquals(2, count($this->cache->search('%foo%')));
-		$this->assertEquals(1, count($this->cache->search('foo')));
-		$this->assertEquals(1, count($this->cache->search('%folder%')));
-		$this->assertEquals(1, count($this->cache->search('folder%')));
-		$this->assertEquals(3, count($this->cache->search('%')));
+		$this->assertCount(2, $this->cache->search('%foo%'));
+		$this->assertCount(1, $this->cache->search('foo'));
+		$this->assertCount(1, $this->cache->search('%folder%'));
+		$this->assertCount(1, $this->cache->search('folder%'));
+		$this->assertCount(3, $this->cache->search('%'));
 
 		// case insensitive search should match the same files
-		$this->assertEquals(2, count($this->cache->search('%Foo%')));
-		$this->assertEquals(1, count($this->cache->search('Foo')));
-		$this->assertEquals(1, count($this->cache->search('%Folder%')));
-		$this->assertEquals(1, count($this->cache->search('Folder%')));
+		$this->assertCount(2, $this->cache->search('%Foo%'));
+		$this->assertCount(1, $this->cache->search('Foo'));
+		$this->assertCount(1, $this->cache->search('%Folder%'));
+		$this->assertCount(1, $this->cache->search('Folder%'));
 
-		$this->assertEquals(3, count($this->cache->searchByMime('foo')));
-		$this->assertEquals(2, count($this->cache->searchByMime('foo/file')));
+		$this->assertCount(3, $this->cache->searchByMime('foo'));
+		$this->assertCount(2, $this->cache->searchByMime('foo/file'));
 	}
 
 	function testSearchByTag() {
@@ -351,7 +351,7 @@ class CacheTest extends TestCase {
 		// use tag name
 		$results = $this->cache->searchByTag('tag1', $userId);
 
-		$this->assertEquals(2, count($results));
+		$this->assertCount(2, $results);
 
 		usort($results, function($value1, $value2) { return $value1['name'] >= $value2['name']; });
 
@@ -363,7 +363,7 @@ class CacheTest extends TestCase {
 		$this->assertNotEmpty($tags);
 		$tags = array_filter($tags, function($tag) { return $tag->getName() === 'tag2'; });
 		$results = $this->cache->searchByTag(current($tags)->getId(), $userId);
-		$this->assertEquals(3, count($results));
+		$this->assertCount(3, $results);
 
 		usort($results, function($value1, $value2) { return $value1['name'] >= $value2['name']; });
 
@@ -525,7 +525,7 @@ class CacheTest extends TestCase {
 		$this->assertGreaterThan(0, $cacheMock->put('folder/' . $folderWith00F6, $data));
 
 		// this is our bug, we have two different hashes with the same name (Schön)
-		$this->assertEquals(2, count($cacheMock->getFolderContents('folder')));
+		$this->assertCount(2, $cacheMock->getFolderContents('folder'));
 	}
 
 	/**
@@ -565,7 +565,7 @@ class CacheTest extends TestCase {
 		$this->assertGreaterThan(0, $this->cache->put('folder/' . $folderWith00F6, $data));
 
 		// at this point we should have only one folder named "Schön"
-		$this->assertEquals(1, count($this->cache->getFolderContents('folder')));
+		$this->assertCount(1, $this->cache->getFolderContents('folder'));
 	}
 
 	function bogusPathNamesProvider() {

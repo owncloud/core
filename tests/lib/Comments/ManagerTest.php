@@ -112,7 +112,7 @@ class ManagerTest extends TestCase {
 		$id = strval($qb->getLastInsertId());
 
 		$comment = $manager->get($id);
-		$this->assertTrue($comment instanceof \OCP\Comments\IComment);
+		$this->assertInstanceOf(\OCP\Comments\IComment::class, $comment);
 		$this->assertSame($comment->getId(), $id);
 		$this->assertSame($comment->getParentId(), '2');
 		$this->assertSame($comment->getTopmostParentId(), '1');
@@ -154,15 +154,15 @@ class ManagerTest extends TestCase {
 		$tree = $manager->getTree($headId);
 
 		// Verifying the root comment
-		$this->assertTrue(isset($tree['comment']));
-		$this->assertTrue($tree['comment'] instanceof \OCP\Comments\IComment);
+		$this->assertArrayHasKey('comment', $tree);
+		$this->assertInstanceOf(\OCP\Comments\IComment::class, $tree['comment']);
 		$this->assertSame($tree['comment']->getId(), strval($headId));
-		$this->assertTrue(isset($tree['replies']));
+		$this->assertArrayHasKey('replies', $tree);
 		$this->assertSame(count($tree['replies']), 3);
 
 		// one level deep
 		foreach($tree['replies'] as $reply) {
-			$this->assertTrue($reply['comment'] instanceof \OCP\Comments\IComment);
+			$this->assertInstanceOf(\OCP\Comments\IComment::class, $reply['comment']);
 			$this->assertSame($reply['comment']->getId(), strval($id));
 			$this->assertSame(count($reply['replies']), 0);
 			$id--;
@@ -176,10 +176,10 @@ class ManagerTest extends TestCase {
 		$tree = $manager->getTree($id);
 
 		// Verifying the root comment
-		$this->assertTrue(isset($tree['comment']));
-		$this->assertTrue($tree['comment'] instanceof \OCP\Comments\IComment);
+		$this->assertArrayHasKey('comment', $tree);
+		$this->assertInstanceOf(\OCP\Comments\IComment::class, $tree['comment']);
 		$this->assertSame($tree['comment']->getId(), strval($id));
-		$this->assertTrue(isset($tree['replies']));
+		$this->assertArrayHasKey('replies', $tree);
 		$this->assertSame(count($tree['replies']), 0);
 
 		// one level deep
@@ -202,15 +202,15 @@ class ManagerTest extends TestCase {
 			$tree = $manager->getTree(strval($headId), 2, $offset);
 
 			// Verifying the root comment
-			$this->assertTrue(isset($tree['comment']));
-			$this->assertTrue($tree['comment'] instanceof \OCP\Comments\IComment);
+			$this->assertArrayHasKey('comment', $tree);
+			$this->assertInstanceOf(\OCP\Comments\IComment::class, $tree['comment']);
 			$this->assertSame($tree['comment']->getId(), strval($headId));
-			$this->assertTrue(isset($tree['replies']));
+			$this->assertArrayHasKey('replies', $tree);
 			$this->assertSame(count($tree['replies']), 2);
 
 			// one level deep
 			foreach ($tree['replies'] as $reply) {
-				$this->assertTrue($reply['comment'] instanceof \OCP\Comments\IComment);
+				$this->assertInstanceOf(\OCP\Comments\IComment::class, $reply['comment']);
 				$this->assertSame($reply['comment']->getId(), strval($idToVerify));
 				$this->assertSame(count($reply['replies']), 0);
 				$idToVerify--;
@@ -224,9 +224,9 @@ class ManagerTest extends TestCase {
 		$manager = $this->getManager();
 		$comments = $manager->getForObject('files', 'file64');
 
-		$this->assertTrue(is_array($comments));
+		$this->assertInternalType('array', $comments);
 		$this->assertSame(count($comments), 1);
-		$this->assertTrue($comments[0] instanceof \OCP\Comments\IComment);
+		$this->assertInstanceOf(\OCP\Comments\IComment::class, $comments[0]);
 		$this->assertSame($comments[0]->getMessage(), 'nice one');
 	}
 
@@ -244,9 +244,9 @@ class ManagerTest extends TestCase {
 		do {
 			$comments = $manager->getForObject('files', 'file64', 3, $offset);
 
-			$this->assertTrue(is_array($comments));
+			$this->assertInternalType('array', $comments);
 			foreach($comments as $comment) {
-				$this->assertTrue($comment instanceof \OCP\Comments\IComment);
+				$this->assertInstanceOf(\OCP\Comments\IComment::class, $comment);
 				$this->assertSame($comment->getMessage(), 'nice one');
 				$this->assertSame($comment->getId(), strval($idToVerify));
 				$idToVerify--;
@@ -283,12 +283,12 @@ class ManagerTest extends TestCase {
 		do {
 			$comments = $manager->getForObject('files', 'file64', 3, $offset, new \DateTime('-4 hours'));
 
-			$this->assertTrue(is_array($comments));
+			$this->assertInternalType('array', $comments);
 			foreach($comments as $comment) {
-				$this->assertTrue($comment instanceof \OCP\Comments\IComment);
+				$this->assertInstanceOf(\OCP\Comments\IComment::class, $comment);
 				$this->assertSame($comment->getMessage(), 'nice one');
 				$this->assertSame($comment->getId(), strval($idToVerify));
-				$this->assertTrue(intval($comment->getId()) >= 4);
+				$this->assertGreaterThanOrEqual(4, intval($comment->getId()));
 				$idToVerify--;
 			}
 			$offset += 3;
@@ -397,7 +397,7 @@ class ManagerTest extends TestCase {
 		$objectId = 'bielefeld';
 
 		$comment = $this->getManager()->create($actorType, $actorId, $objectType, $objectId);
-		$this->assertTrue($comment instanceof \OCP\Comments\IComment);
+		$this->assertInstanceOf(\OCP\Comments\IComment::class, $comment);
 		$this->assertSame($comment->getActorType(), $actorType);
 		$this->assertSame($comment->getActorId(), $actorId);
 		$this->assertSame($comment->getObjectType(), $objectType);
@@ -421,7 +421,7 @@ class ManagerTest extends TestCase {
 
 		$id = strval($this->addDatabaseEntry(0, 0));
 		$comment = $manager->get($id);
-		$this->assertTrue($comment instanceof \OCP\Comments\IComment);
+		$this->assertInstanceOf(\OCP\Comments\IComment::class, $comment);
 		$done = $manager->delete($id);
 		$this->assertTrue($done);
 		$manager->get($id);
@@ -440,7 +440,7 @@ class ManagerTest extends TestCase {
 		$this->assertTrue($saveSuccessful);
 		$this->assertTrue($comment->getId() !== '');
 		$this->assertTrue($comment->getId() !== '0');
-		$this->assertTrue(!is_null($comment->getCreationDateTime()));
+		$this->assertNotNull($comment->getCreationDateTime());
 
 		$loadedComment = $manager->get($comment->getId());
 		$this->assertSame($comment->getMessage(), $loadedComment->getMessage());
@@ -567,7 +567,7 @@ class ManagerTest extends TestCase {
 
 	public function testDeleteReferencesOfActorWithUserManagement() {
 		$user = $this->createUser('xenia', '123456');
-		$this->assertTrue($user instanceof \OCP\IUser);
+		$this->assertInstanceOf(\OCP\IUser::class, $user);
 
 		$manager = \OC::$server->getCommentsManager();
 		$comment = $manager->create('users', $user->getUID(), 'files', 'file64');

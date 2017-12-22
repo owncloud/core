@@ -51,7 +51,7 @@ class StreamWrappersTest extends \Test\TestCase {
 			$result[] = $file;
 			$this->assertContains($file, $items);
 		}
-		$this->assertEquals(count($items), count($result));
+		$this->assertCount(count($items), $result);
 	}
 
 	public function testCloseStream() {
@@ -59,12 +59,12 @@ class StreamWrappersTest extends \Test\TestCase {
 		$sourceFile = \OC::$SERVERROOT . '/tests/data/lorem.txt';
 		$tmpFile = \OC::$server->getTempManager()->getTemporaryFile('.txt');
 		$file = 'close://' . $tmpFile;
-		$this->assertTrue(file_exists($file));
+		$this->assertFileExists($file);
 		file_put_contents($file, file_get_contents($sourceFile));
-		$this->assertEquals(file_get_contents($sourceFile), file_get_contents($file));
+		$this->assertFileEquals($sourceFile, $file);
 		unlink($file);
 		clearstatcache();
-		$this->assertFalse(file_exists($file));
+		$this->assertFileNotExists($file);
 
 		//test callback
 		$tmpFile = \OC::$server->getTempManager()->getTemporaryFile('.txt');

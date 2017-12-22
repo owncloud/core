@@ -28,7 +28,7 @@ class EventLoggerTest extends TestCase {
 
 	/** @var \OC\Diagnostics\EventLogger */
 	private $logger;
-	
+
 	public function setUp() {
 		parent::setUp();
 
@@ -41,7 +41,7 @@ class EventLoggerTest extends TestCase {
 		$this->logger->end("test1");
 		$this->logger->log("test2", "testevent2", microtime(true), microtime(true));
 		$events = $this->logger->getEvents();
-		$this->assertSame(0, sizeof($events));
+		$this->assertCount(0, $events);
 
 		// Activate module and log some query
 		$this->logger->activate();
@@ -60,7 +60,7 @@ class EventLoggerTest extends TestCase {
 		$this->assertSame("testevent4", $events['test4']->getDescription());
 		$this->assertSame("test3", $events['test3']->getId());
 		$this->assertSame("testevent3", $events['test3']->getDescription());
-		$this->assertSame(2, sizeof($events));
+		$this->assertCount(2, $events);
 
 	}
 }
