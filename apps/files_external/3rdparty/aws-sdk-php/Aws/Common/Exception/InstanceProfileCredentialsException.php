@@ -16,7 +16,6 @@
 
 namespace Aws\Common\Exception;
 
-use Aws\Common\Exception\RuntimeException;
 
 /**
  * Exception thrown when an error occurs with instance profile credentials

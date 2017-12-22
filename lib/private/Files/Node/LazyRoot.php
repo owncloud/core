@@ -22,9 +22,7 @@
  */
 namespace OC\Files\Node;
 
-use OC\Files\Mount\MountPoint;
 use OCP\Files\IRootFolder;
-use OCP\Files\NotPermittedException;
 
 /**
  * Class LazyRoot

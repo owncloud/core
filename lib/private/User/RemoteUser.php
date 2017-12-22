@@ -23,7 +23,6 @@
 namespace OC\User;
 
 
-use OCP\IImage;
 use OCP\IUser;
 
 /**

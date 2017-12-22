@@ -49,7 +49,6 @@ use OC\App\InfoParser;
 use OC\App\Platform;
 use OC\Installer;
 use OC\Repair;
-use OC\HintException;
 
 /**
  * This class manages the apps. It allows them to register and integrate in the

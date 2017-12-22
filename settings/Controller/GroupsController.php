@@ -32,7 +32,6 @@ use OCP\IGroupManager;
 use OCP\IL10N;
 use OCP\IRequest;
 use OCP\IUserSession;
-use OCP\IUser;
 
 /**
  * @package OC\Settings\Controller
