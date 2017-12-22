@@ -23,6 +23,7 @@
 
 namespace Page\FilesPageElement;
 
+use Behat\Mink\Session;
 use Behat\Mink\Element\NodeElement;
 use Page\OwncloudPage;
 use SensioLabs\Behat\PageObjectExtension\PageObject\Exception\ElementNotFoundException;
@@ -115,15 +116,17 @@ class FileRow extends OwnCloudPage {
 	/**
 	 * opens the file action menu
 	 *
+	 * @param Session $session
 	 * @throws \SensioLabs\Behat\PageObjectExtension\PageObject\Exception\ElementNotFoundException
 	 * @return FileActionsMenu
 	 */
-	public function openFileActionsMenu() {
+	public function openFileActionsMenu(Session $session) {
 		$this->clickFileActionButton();
 		$filesPage = $this->getPage('FilesPage');
 		$actionMenuElement = $filesPage->findFileActionMenuElement();
 		$actionMenu = $this->getPage('FilesPageElement\\FileActionsMenu');
 		$actionMenu->setElement($actionMenuElement);
+		$this->waitForScrollingToFinish($session, '#app-content');
 		return $actionMenu;
 	}
 
@@ -179,10 +182,11 @@ class FileRow extends OwnCloudPage {
 	 * renames the file
 	 *
 	 * @param string $toName
+	 * @param Session $session
 	 * @return void
 	 */
-	public function rename($toName) {
-		$actionMenu = $this->openFileActionsMenu();
+	public function rename($toName, Session $session) {
+		$actionMenu = $this->openFileActionsMenu($session);
 		$actionMenu->rename();
 		$this->waitTillElementIsNotNull($this->fileRenameInputXpath);
 		$inputField = $this->findRenameInputField();
@@ -194,10 +198,11 @@ class FileRow extends OwnCloudPage {
 	/**
 	 * deletes the file
 	 *
+	 * @param Session $session
 	 * @return void
 	 */
-	public function delete() {
-		$actionMenu = $this->openFileActionsMenu();
+	public function delete(Session $session) {
+		$actionMenu = $this->openFileActionsMenu($session);
 		$actionMenu->delete();
 		$this->waitTillElementIsNull($this->fileBusyIndicatorXpath);
 	}
