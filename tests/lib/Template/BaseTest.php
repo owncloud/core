@@ -10,8 +10,6 @@ namespace Test\Template;
 
 use OC\Template\Base;
 use OCP\Theme\ITheme;
-use org\bovigo\vfs\vfsStream;
-use org\bovigo\vfs\vfsStreamWrapper;
 
 
 class BaseTest extends \Test\TestCase {

@@ -35,7 +35,6 @@ use OC\OCS\Result;
 use OC\User\LoginException;
 use Symfony\Component\Routing\Exception\ResourceNotFoundException;
 use Symfony\Component\Routing\Exception\MethodNotAllowedException;
-use OCP\Http\HttpEvents;
 
 require_once __DIR__ . '/../lib/base.php';
 

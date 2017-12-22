@@ -25,7 +25,6 @@
 namespace OC\Files\External\Service;
 
 use OC\Files\Filesystem;
-use OC\Files\External\Service\UserTrait;
 
 use OCP\Files\Config\IUserMountCache;
 use OCP\IUserSession;

@@ -22,7 +22,6 @@
 
 namespace OC\Files\External\Auth;
 
-use \OCP\IL10N;
 use \OCP\Files\External\Auth\AuthMechanism;
 
 /**

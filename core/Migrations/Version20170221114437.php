@@ -1,12 +1,10 @@
 <?php
 namespace OC\Migrations;
 
-use OC\User\Account;
 use OC\User\AccountMapper;
 use OC\User\AccountTermMapper;
 use OC\User\Database;
 use OC\User\SyncService;
-use OCP\IConfig;
 use OCP\Migration\ISimpleMigration;
 use OCP\Migration\IOutput;
 

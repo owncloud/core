@@ -18,7 +18,6 @@ namespace Aws\S3;
 
 use Aws\Common\Signature\SignatureV4;
 use Aws\Common\Credentials\CredentialsInterface;
-use Guzzle\Http\Message\EntityEnclosingRequestInterface;
 use Guzzle\Http\Message\RequestInterface;
 
 /**

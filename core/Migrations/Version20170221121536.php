@@ -22,7 +22,6 @@ namespace OC\Migrations;
 
 use OCP\Migration\ISimpleMigration;
 use OCP\Migration\IOutput;
-use OCP\IConfig;
 
 /**
  * If files_external app was disable before, set flag in app config to disable it in core.

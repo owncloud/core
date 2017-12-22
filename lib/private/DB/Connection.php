@@ -34,14 +34,12 @@ use Doctrine\DBAL\Configuration;
 use Doctrine\DBAL\Cache\QueryCacheProfile;
 use Doctrine\Common\EventManager;
 use Doctrine\DBAL\Driver\ServerInfoAwareConnection;
-use Doctrine\DBAL\Exception\ConstraintViolationException;
 use Doctrine\DBAL\Platforms\MySqlPlatform;
 use Doctrine\DBAL\Schema\Schema;
 use OC\DB\QueryBuilder\QueryBuilder;
 use OCP\DB\QueryBuilder\IQueryBuilder;
 use OCP\IDBConnection;
 use OCP\PreConditionNotMetException;
-use OCP\Util;
 
 class Connection extends \Doctrine\DBAL\Connection implements IDBConnection {
 	/**
