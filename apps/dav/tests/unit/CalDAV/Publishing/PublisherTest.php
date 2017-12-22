@@ -22,8 +22,9 @@ namespace OCA\DAV\Tests\unit\CalDAV\Publishing;
 
 use OCA\DAV\CalDAV\Publishing\Xml\Publisher;
 use Sabre\Xml\Writer;
+use PHPUnit\Framework\TestCase;
 
-class PublisherTest extends \PHPUnit_Framework_TestCase {
+class PublisherTest extends TestCase {
 
 	const NS_CALENDARSERVER = 'http://calendarserver.org/ns/';
 

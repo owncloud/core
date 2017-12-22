@@ -35,13 +35,14 @@ use OCP\IUserManager;
 use OCP\Mail\IMailer;
 use OCP\Security\ISecureRandom;
 use PHPUnit_Framework_MockObject_MockObject;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Class LostControllerTest
  *
  * @package OC\Core\Controller
  */
-class LostControllerTest extends \PHPUnit_Framework_TestCase {
+class LostControllerTest extends TestCase {
 
 	/** @var LostController */
 	private $lostController;

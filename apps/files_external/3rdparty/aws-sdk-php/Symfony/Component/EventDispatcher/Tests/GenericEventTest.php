@@ -12,11 +12,12 @@
 namespace Symfony\Component\EventDispatcher\Tests;
 
 use Symfony\Component\EventDispatcher\GenericEvent;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Test class for Event.
  */
-class GenericEventTest extends \PHPUnit_Framework_TestCase
+class GenericEventTest extends TestCase
 {
     /**
      * @var GenericEvent

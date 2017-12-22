@@ -12,8 +12,9 @@
 namespace Symfony\Component\ClassLoader\Tests;
 
 use Symfony\Component\ClassLoader\ClassMapGenerator;
+use PHPUnit\Framework\TestCase;
 
-class ClassMapGeneratorTest extends \PHPUnit_Framework_TestCase
+class ClassMapGeneratorTest extends TestCase
 {
     /**
      * @var string $workspace

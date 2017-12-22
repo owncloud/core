@@ -12,13 +12,14 @@
 namespace Symfony\Component\ClassLoader\Tests;
 
 use Symfony\Component\ClassLoader\ClassCollectionLoader;
+use PHPUnit\Framework\TestCase;
 
 require_once __DIR__.'/Fixtures/ClassesWithParents/GInterface.php';
 require_once __DIR__.'/Fixtures/ClassesWithParents/CInterface.php';
 require_once __DIR__.'/Fixtures/ClassesWithParents/B.php';
 require_once __DIR__.'/Fixtures/ClassesWithParents/A.php';
 
-class ClassCollectionLoaderTest extends \PHPUnit_Framework_TestCase
+class ClassCollectionLoaderTest extends TestCase
 {
     public function testTraitDependencies()
     {
