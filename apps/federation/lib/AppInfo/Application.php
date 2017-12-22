@@ -23,7 +23,6 @@
 
 namespace OCA\Federation\AppInfo;
 
-use OCA\Federation\API\OCSAuthAPI;
 use OCA\Federation\Controller\SettingsController;
 use OCA\Federation\DAV\FedAuth;
 use OCA\Federation\DbHandler;

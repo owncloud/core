@@ -35,7 +35,6 @@ namespace OC;
 use InterfaSys\LogNormalizer\Normalizer;
 
 use \OCP\ILogger;
-use OCP\Security\StringUtils;
 use OCP\Util;
 
 /**

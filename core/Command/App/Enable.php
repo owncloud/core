@@ -25,7 +25,6 @@
 namespace OC\Core\Command\App;
 
 use OCP\App\IAppManager;
-use OCP\ILogger;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;

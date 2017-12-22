@@ -22,7 +22,6 @@
 
 namespace OC\Files\External\Auth\Password;
 
-use OCP\IL10N;
 use OCP\Files\External\Auth\AuthMechanism;
 use OCP\Files\External\DefinitionParameter;
 

@@ -2,8 +2,6 @@
 
 namespace Guzzle\Batch;
 
-use Guzzle\Batch\BatchTransferInterface;
-use Guzzle\Batch\BatchDivisorInterface;
 use Guzzle\Common\Exception\InvalidArgumentException;
 use Guzzle\Service\Command\CommandInterface;
 use Guzzle\Service\Exception\InconsistentClientTransferException;

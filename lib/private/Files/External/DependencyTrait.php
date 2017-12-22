@@ -22,7 +22,6 @@
 
 namespace OC\Files\External;
 
-use OC\Files\External\MissingDependency;
 
 /**
  * Trait for objects that have dependencies for use

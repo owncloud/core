@@ -22,9 +22,6 @@ namespace OCA\DAV\Tests\unit\Connector\Sabre;
 
 use OCP\IUserSession;
 use OCP\IUser;
-use Sabre\HTTP\RequestInterface;
-use Sabre\HTTP\ResponseInterface;
-use Sabre\HTTP\Sapi;
 use OCP\IConfig;
 
 class CorsPluginTest extends \Test\TestCase {

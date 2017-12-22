@@ -23,9 +23,7 @@
 namespace OC\Files\External\Auth\Password;
 
 use OCP\IUser;
-use OCP\IL10N;
 use OCP\Files\External\Auth\AuthMechanism;
-use OCP\Files\External\DefinitionParameter;
 use OCP\Files\External\IStorageConfig;
 use OCP\ISession;
 use OCP\Security\ICrypto;
