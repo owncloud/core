@@ -83,6 +83,11 @@
 	opacity: 1;
 }
 
+#app-navigation .active {
+	background-color: rgba(240, 240, 240, .9);
+	font-weight: bold;
+}
+
 #app-navigation li.divider {
 	display: block;
 	width: 100%;
