@@ -62,6 +62,16 @@ then
 	ADMIN_PASSWORD="admin"
 fi
 
+if [ -z "$APPS_TO_DISABLE" ]
+then
+	APPS_TO_DISABLE="firstrunwizard notifications"
+fi
+
+if [ -z "$APPS_TO_ENABLE" ]
+then
+	APPS_TO_ENABLE=""
+fi
+
 # Look for command line options for:
 # -c or --config - specify a behat.yml to use
 # --feature - specify a single feature to run
@@ -138,11 +148,7 @@ else
 	TESTING_ENABLED_BY_SCRIPT=false;
 fi
 
-#disable firstrunwizard and notifications apps
-remote_occ $ADMIN_PASSWORD $OCC_URL "--no-warnings app:list ^firstrunwizard$"
-PREVIOUS_FIRSTRUNWIZARD_APP_STATUS=$REMOTE_OCC_STDOUT
-
-#get the current backgroundjobs_mode 
+#get the current backgroundjobs_mode
 remote_occ $ADMIN_PASSWORD $OCC_URL "config:app:get core backgroundjobs_mode"
 PREVIOUS_BACKGROUNDJOBS_MODE=$REMOTE_OCC_STDOUT
 #switch to webcron
@@ -152,24 +158,29 @@ then
 	echo "WARNING: Could not set backgroundjobs mode to 'webcron'"
 fi
 
-if [[ "$PREVIOUS_FIRSTRUNWIZARD_APP_STATUS" =~ ^Enabled: ]]
-then
-	FIRSTRUNWIZARD_APP_DISABLED_BY_SCRIPT=true;
-	remote_occ $ADMIN_PASSWORD $OCC_URL "--no-warnings app:disable firstrunwizard"
-else
-	FIRSTRUNWIZARD_APP_DISABLED_BY_SCRIPT=false;
-fi
+APPS_TO_REENABLE="";
 
-remote_occ $ADMIN_PASSWORD $OCC_URL "--no-warnings app:list ^notifications$"
-PREVIOUS_NOTIFICATIONS_APP_STATUS=$REMOTE_OCC_STDOUT
+for APP_TO_DISABLE in $APPS_TO_DISABLE; do
+	remote_occ $ADMIN_PASSWORD $OCC_URL "--no-warnings app:list ^$APP_TO_DISABLE$"
+	PREVIOUS_APP_STATUS=$REMOTE_OCC_STDOUT
+	if [[ "$PREVIOUS_APP_STATUS" =~ ^Enabled: ]]
+	then
+		APPS_TO_REENABLE="$APPS_TO_REENABLE $APP_TO_DISABLE";
+		remote_occ $ADMIN_PASSWORD $OCC_URL "--no-warnings app:disable $APP_TO_DISABLE"
+	fi
+done
 
-if [[ "$PREVIOUS_NOTIFICATIONS_APP_STATUS" =~ ^Enabled: ]]
-then
-	NOTIFICATIONS_APP_DISABLED_BY_SCRIPT=true;
-	remote_occ $ADMIN_PASSWORD $OCC_URL "--no-warnings app:disable notifications"
-else
-	NOTIFICATIONS_APP_DISABLED_BY_SCRIPT=false;
-fi
+APPS_TO_REDISABLE="";
+
+for APP_TO_ENABLE in $APPS_TO_ENABLE; do
+	remote_occ $ADMIN_PASSWORD $OCC_URL "--no-warnings app:list ^$APP_TO_ENABLE$"
+	PREVIOUS_APP_STATUS=$REMOTE_OCC_STDOUT
+	if [[ "$PREVIOUS_APP_STATUS" =~ ^Disabled: ]]
+	then
+		APPS_TO_REDISABLE="$APPS_TO_REDISABLE $APP_TO_ENABLE";
+		remote_occ $ADMIN_PASSWORD $OCC_URL "--no-warnings app:enable $APP_TO_ENABLE"
+	fi
+done
 
 #we need to skip some tests in certain browsers
 #and also skip tests if tags were given in the call of this script
@@ -399,14 +410,13 @@ if test "$TESTING_ENABLED_BY_SCRIPT" = true; then
 	$OCC app:disable testing
 fi
 
-# Put back state of the firstrunwizard and notifications app
-if test "$FIRSTRUNWIZARD_APP_DISABLED_BY_SCRIPT" = true; then
-	remote_occ $ADMIN_PASSWORD $OCC_URL "--no-warnings app:enable firstrunwizard"
-fi
+for APP_TO_ENABLE in $APPS_TO_REENABLE; do
+	remote_occ $ADMIN_PASSWORD $OCC_URL "--no-warnings app:enable $APP_TO_ENABLE"
+done
 
-if test "$NOTIFICATIONS_APP_DISABLED_BY_SCRIPT" = true; then
-	remote_occ $ADMIN_PASSWORD $OCC_URL "--no-warnings app:enable notifications"
-fi
+for APP_TO_DISABLE in $APPS_TO_REDISABLE; do
+	remote_occ $ADMIN_PASSWORD $OCC_URL "--no-warnings app:disable $APP_TO_DISABLE"
+done
 
 # put back the backgroundjobs_mode
 remote_occ $ADMIN_PASSWORD $OCC_URL "config:app:set core backgroundjobs_mode --value $PREVIOUS_BACKGROUNDJOBS_MODE"
