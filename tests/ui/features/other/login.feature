@@ -23,6 +23,17 @@ So that unauthorised access is impossible
 		And I login with username "guiusr1" and password "pwd"
 		Then I should be redirected to a page with the title "Files - ownCloud"
 
+	Scenario Outline: use the webUI to create a user with less than 3 characters
+		Given I am logged in as admin
+		And I am on the users page
+		When I create a user with the name <user> and the password <pwd>
+		Then notifications should be displayed with the text
+		|Error creating user: The username must be at least 3 characters long|
+		Examples:
+		|user|  pwd |
+		|"a" | "abc"|
+		|"a1"|"abcd"|
+
 	Scenario: admin login
 		Given I am on the login page
 		When I login with username "admin" and password "admin"
