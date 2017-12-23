@@ -12,8 +12,9 @@
 namespace Symfony\Component\ClassLoader\Tests;
 
 use Symfony\Component\ClassLoader\Psr4ClassLoader;
+use PHPUnit\Framework\TestCase;
 
-class Psr4ClassLoaderTest extends \PHPUnit_Framework_TestCase
+class Psr4ClassLoaderTest extends TestCase
 {
     /**
      * @param string $className
