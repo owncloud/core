@@ -26,11 +26,9 @@ namespace OC\Settings\Panels\Personal;
 
 use OCP\Settings\ISettings;
 use OCP\Template;
-use OCP\IUser;
 use OCP\IGroupManager;
 use OCP\IUserSession;
 use OCP\IConfig;
-use OC\Settings\Panels\Helper;
 use OCP\L10N\IFactory;
 
 class Profile implements ISettings {

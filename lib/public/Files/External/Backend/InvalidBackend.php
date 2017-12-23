@@ -21,7 +21,6 @@
 
 namespace OCP\Files\External\Backend;
 
-use \OCP\IL10N;
 
 /**
  * Invalid storage backend representing a backend
