@@ -29,7 +29,6 @@ use OC\Authentication\Token\IProvider;
 use OCP\Authentication\IAuthModule;
 use OCP\IRequest;
 use OCP\ISession;
-use OCP\IUser;
 use OCP\IUserManager;
 use OCP\Session\Exceptions\SessionNotAvailableException;
 

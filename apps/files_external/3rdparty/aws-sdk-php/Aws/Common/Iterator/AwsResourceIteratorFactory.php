@@ -3,7 +3,6 @@
 namespace Aws\Common\Iterator;
 
 use Aws\Common\Exception\InvalidArgumentException;
-use Guzzle\Common\Collection;
 use Guzzle\Service\Command\CommandInterface;
 use Guzzle\Service\Resource\ResourceIteratorFactoryInterface;
 

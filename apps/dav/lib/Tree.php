@@ -21,7 +21,6 @@
 
 namespace OCA\DAV;
 
-use OCA\DAV\Connector\Sabre\Exception\InvalidPath;
 use Sabre\DAV\Exception\NotFound;
 use Sabre\DAV\ICollection;
 

@@ -55,7 +55,6 @@ use OC\Settings\Panels\Admin\FileSharing;
 use OC\Settings\Panels\Admin\Mail;
 use OC\Settings\Panels\Admin\Logging;
 use OC\Settings\Panels\Admin\SecurityWarning;
-use OC\Settings\Panels\Admin\Updater;
 use OC\Settings\Panels\Admin\Tips;
 use OC\Settings\Panels\Admin\Status;
 

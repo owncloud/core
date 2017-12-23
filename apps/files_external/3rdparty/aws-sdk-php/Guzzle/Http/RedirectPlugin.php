@@ -4,7 +4,6 @@ namespace Guzzle\Http;
 
 use Guzzle\Common\Event;
 use Guzzle\Http\Exception\BadResponseException;
-use Guzzle\Http\Url;
 use Guzzle\Http\Message\Response;
 use Guzzle\Http\Message\RequestInterface;
 use Guzzle\Http\Message\RequestFactory;

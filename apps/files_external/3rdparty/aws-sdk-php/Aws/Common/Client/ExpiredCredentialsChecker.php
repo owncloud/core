@@ -17,7 +17,6 @@
 namespace Aws\Common\Client;
 
 use Aws\Common\Credentials\AbstractRefreshableCredentials;
-use Aws\Common\Client\AwsClientInterface;
 use Aws\Common\Exception\Parser\ExceptionParserInterface;
 use Guzzle\Http\Exception\HttpException;
 use Guzzle\Http\Message\RequestInterface;

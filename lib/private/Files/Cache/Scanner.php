@@ -39,7 +39,6 @@ use OC\Hooks\BasicEmitter;
 use OCP\Config;
 use OCP\Files\Cache\IScanner;
 use OCP\Files\ForbiddenException;
-use OCP\Files\Storage\ILockingStorage;
 use OCP\Lock\ILockingProvider;
 
 /**

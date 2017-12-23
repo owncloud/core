@@ -2,7 +2,6 @@
 
 namespace Aws\Common\Command;
 
-use Guzzle\Service\Description\Operation;
 use Guzzle\Service\Command\CommandInterface;
 use Guzzle\Http\Message\Response;
 use Guzzle\Service\Description\Parameter;

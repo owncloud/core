@@ -46,8 +46,6 @@ use OC\AppFramework\Db\Db;
 use OC\AppFramework\Utility\TimeFactory;
 use OC\Command\AsyncBus;
 use OC\Diagnostics\EventLogger;
-use OC\Diagnostics\NullEventLogger;
-use OC\Diagnostics\NullQueryLogger;
 use OC\Diagnostics\QueryLogger;
 use OC\Files\Config\UserMountCache;
 use OC\Files\Config\UserMountCacheListener;

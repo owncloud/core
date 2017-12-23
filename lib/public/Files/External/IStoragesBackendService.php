@@ -21,7 +21,6 @@
 
 namespace OCP\Files\External;
 
-use \OCP\IConfig;
 
 use \OCP\Files\External\Backend\Backend;
 use \OCP\Files\External\Auth\AuthMechanism;

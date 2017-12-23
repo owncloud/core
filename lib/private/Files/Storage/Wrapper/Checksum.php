@@ -21,10 +21,7 @@
 namespace OC\Files\Storage\Wrapper;
 
 use Icewind\Streams\CallbackWrapper;
-use OC\Cache\CappedMemoryCache;
 use OC\Files\Stream\Checksum as ChecksumStream;
-use OC\OCS\Exception;
-use OCP\ILogger;
 use OCP\Files\IHomeStorage;
 
 /**

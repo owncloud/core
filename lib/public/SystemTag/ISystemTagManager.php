@@ -23,7 +23,6 @@
 namespace OCP\SystemTag;
 
 use OCP\IUser;
-use OCP\SystemTag\ISystemTag;
 
 /**
  * Public interface to access and manage system-wide tags.

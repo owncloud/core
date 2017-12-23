@@ -27,7 +27,6 @@
  */
 namespace OC\Setup;
 
-use OC\DB\Connection;
 use OC\DB\ConnectionFactory;
 use OC\DB\MySqlTools;
 use OCP\IDBConnection;

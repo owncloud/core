@@ -23,7 +23,6 @@
 namespace OCA\DAV\Tests\unit;
 
 
-use OCA\DAV\Connector\Sabre\File;
 use OCA\DAV\Tree;
 use Sabre\DAV\ICollection;
 use Sabre\DAV\IFile;

@@ -21,8 +21,6 @@
 
 namespace OCP;
 
-use OCP\IUser;
-use OCP\IGroup;
 
 /**
  * Sub admin manager
