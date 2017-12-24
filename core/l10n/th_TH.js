@@ -333,7 +333,7 @@ OC.L10N.register(
     "App update required" : "จำเป้นต้องอัพเดทแอพฯ",
     "%s will be updated to version %s" : "%s จะถูกอัพเดทเป็นเวอร์ชัน %s",
     "These apps will be updated:" : "แอพพลิเคชันเหล่านี้จะถูกอัพเดท:",
-    "The theme %s has been disabled." : "ธีม %s จะถูกปิดการใช้งาน:",
+    "The theme %s has been disabled." : "ธีม %s ได้ถูกปิดการใช้งานแล้ว",
     "Please make sure that the database, the config folder and the data folder have been backed up before proceeding." : "โปรดตรวจสอบฐานข้อมูล การตั้งค่าโฟลเดอร์และโฟลเดอร์ข้อมูลจะถูกสำรองไว้ก่อนดำเนินการ",
     "Start update" : "เริ่มต้นอัพเดท",
     "To avoid timeouts with larger installations, you can instead run the following command from your installation directory:" : "เพื่อหลีกเลี่ยงการหมดเวลากับการติดตั้งขนาดใหญ่ คุณสามารถเรียกใช้คำสั่งต่อไปนี้จากไดเรกทอรีการติดตั้งของคุณ:",
