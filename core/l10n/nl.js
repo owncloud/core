@@ -196,6 +196,8 @@ OC.L10N.register(
     "delete" : "verwijderen",
     "access control" : "toegangscontrole",
     "Could not unshare" : "Kon delen niet ongedaan maken",
+    "Email notification was sent!" : "E-mailbericht verzonden!",
+    "Email notification not sent" : "E-mailbericht niet verzonden",
     "Share details could not be loaded for this item." : "Details van shares voor dit object konden niet worden geladen.",
     "No users or groups found for {search}" : "Geen gebruikers of groepen gevonden voor {search}",
     "No users found for {search}" : "Geen gebruikers gevonden voor {search}",

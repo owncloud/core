@@ -10,6 +10,7 @@ OC.L10N.register(
     "Close" : "Sluiten",
     "Favorites" : "Favorieten",
     "Upload timeout for file \"{file}\"" : "Upload timeout voor bestand \"{file}\"",
+    "Unknown error \"{error}\" uploading file \"{file}\"" : "Onbekende fout \"{error}\" bij uploaden bestand \"{file}\"",
     "Could not create folder \"{dir}\"" : "Kon map \"{dir}\" niet aanmaken",
     "Upload cancelled." : "Uploaden geannuleerd.",
     "Processing files..." : "Verwerken bestanden...",
