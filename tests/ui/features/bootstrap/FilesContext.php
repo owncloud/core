@@ -158,15 +158,32 @@ class FilesContext extends RawMinkContext implements Context {
 	}
 
 	/**
-	 * @When /^I create a folder with the name ((?:'[^']*')|(?:"[^"]*"))$/
+	 * @When /^I create a folder with the (invalid|)\s?name ((?:'[^']*')|(?:"[^"]*"))$/
 	 *
+	 * @param string $invalid contains "invalid"
+	 * 						  if the folder creation is expected to fail
 	 * @param string $name enclosed in single or double quotes
 	 * @return void
 	 */
-	public function iCreateAFolder($name) {
+	public function iCreateAFolder($invalid, $name) {
 		// The capturing group of the regex always includes the quotes at each
 		// end of the captured string, so trim them.
-		$this->createAFolder(trim($name, $name[0]));
+		$name = trim($name, $name[0]);
+		try {
+			$this->createAFolder($name);
+			if ($invalid === "invalid") {
+				throw new Exception(
+					"folder '$name' should not have been created but was"
+				);
+			}
+		} catch (Exception $e) {
+			//do not throw the exception if we expect the folder creation to fail
+			if ($invalid !== "invalid"
+				|| $e->getMessage() !== "could not create folder"
+			) {
+				throw $e;
+			}
+		}
 	}
 
 	/**
@@ -760,6 +777,16 @@ class FilesContext extends RawMinkContext implements Context {
 			$toolTipText,
 			$this->filesPage->getTooltipOfFile($name, $this->getSession())
 		);
+	}
+
+	/**
+	 * @Then near the folder input field a tooltip with the text :tooltiptext should be displayed
+	 * @param string $tooltiptext
+	 * @return void
+	 */
+	public function folderInputFieldTooltipTextShouldBe($tooltiptext) {
+		$createFolderTooltip = $this->filesPage->getCreateFolderTooltip();
+		PHPUnit_Framework_Assert::assertSame($tooltiptext, $createFolderTooltip);
 	}
 
 	/**
