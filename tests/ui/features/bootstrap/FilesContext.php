@@ -174,8 +174,9 @@ class FilesContext extends RawMinkContext implements Context {
 	 * @return void
 	 */
 	public function createAFolder($name) {
-		$this->filesPage->createFolder($name);
-		$this->filesPage->waitTillPageIsLoaded($this->getSession());
+		$session = $this->getSession();
+		$this->filesPage->createFolder($session, $name);
+		$this->filesPage->waitTillPageIsLoaded($session);
 	}
 
 	/**
@@ -223,7 +224,7 @@ class FilesContext extends RawMinkContext implements Context {
 		}
 
 		while ($windowHeight > $lastItemCoordinates['top']) {
-			$this->filesPage->createFolder();
+			$this->filesPage->createFolder($this->getSession());
 			$itemsCount = $this->filesPage->getSizeOfFileFolderList();
 			$lastItemCoordinates = $this->filesPage->getCoordinatesOfElement(
 				$this->getSession(),
