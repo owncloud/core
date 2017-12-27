@@ -186,11 +186,13 @@ class FeatureContext extends RawMinkContext implements Context {
 	}
 
 	/**
-	 * @Then notifications should be displayed with the text
+	 * @Then /^notifications should be displayed with the text\s?(matching|)$/
+	 * @param string $matching contains "matching" when notification text
+	 * 						   has to be checked against regular expression
 	 * @param TableNode $table of expected notification text
 	 * @return void
 	 */
-	public function notificationsShouldBeDisplayedWithTheText(TableNode $table) {
+	public function notificationsShouldBeDisplayedWithTheText($matching, TableNode $table) {
 		$notifications = $this->owncloudPage->getNotifications();
 		$tableRows = $table->getRows();
 		PHPUnit_Framework_Assert::assertGreaterThanOrEqual(
@@ -200,10 +202,16 @@ class FeatureContext extends RawMinkContext implements Context {
 
 		$notificationCounter = 0;
 		foreach ($tableRows as $row) {
-			PHPUnit_Framework_Assert::assertEquals(
-				$row[0],
-				$notifications[$notificationCounter]
-			);
+			if ($matching === "matching") {
+				if (!preg_match($row[0], $notifications[$notificationCounter])) {
+					throw new Exception($notifications[$notificationCounter] . " does not match " . $row[0]);
+				}
+			} else {
+				PHPUnit_Framework_Assert::assertEquals(
+					$row[0],
+					$notifications[$notificationCounter]
+				);
+			}
 			$notificationCounter++;
 		}
 	}
