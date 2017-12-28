@@ -79,11 +79,16 @@ class FilesPage extends FilesPageBasic {
 	 * create a folder with the given name.
 	 * If name is not given a random one is chosen
 	 *
+	 * @param Session $session
 	 * @param string $name
-	 * @throws ElementNotFoundException
+	 * @param int $timeoutMsec
+	 * @throws ElementNotFoundException|\Exception
 	 * @return string name of the created file
 	 */
-	public function createFolder($name = null) {
+	public function createFolder(
+		Session $session, $name = null,
+		$timeoutMsec = STANDARDUIWAITTIMEOUTMILLISEC
+	) {
 		if (is_null($name)) {
 			$name = substr(str_shuffle($this->strForNormalFileName), 0, 8);
 		}
@@ -131,6 +136,32 @@ class FilesPage extends FilesPageBasic {
 			// this seems to be a bug in MinkSelenium2Driver.
 			// Used to work fine in 1.3.1 but now throws this exception
 			// Actually all that we need does happen, so we just don't do anything
+		}
+		$timeoutMsec = (int) $timeoutMsec;
+		$currentTime = microtime(true);
+		$end = $currentTime + ($timeoutMsec / 1000);
+
+		while ($currentTime <= $end) {
+			$newFolderButton = $this->find("xpath", $this->newFolderButtonXpath);
+			if ($newFolderButton === null || !$newFolderButton->isVisible()) {
+				break;
+			}
+			usleep(STANDARDSLEEPTIMEMICROSEC);
+			$currentTime = microtime(true);
+		}
+		while ($currentTime <= $end) {
+			try {
+				$this->findFileRowByName($name, $session);
+				break;
+			} catch (ElementNotFoundException $e) {
+				//loop around
+			}
+			usleep(STANDARDSLEEPTIMEMICROSEC);
+			$currentTime = microtime(true);
+		}
+
+		if ($currentTime > $end) {
+			throw new \Exception("could not create folder");
 		}
 		return $name;
 	}
