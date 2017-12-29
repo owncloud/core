@@ -47,7 +47,7 @@ class SharingDialog extends OwncloudPage {
 	protected $autocompleteItemsTextXpath = "//*[@class='autocomplete-item-text']";
 	protected $shareWithCloseXpath = "//div[@id='app-sidebar']//*[@class='close icon-close']";
 	protected $suffixToIdentifyGroups = " (group)";
-	protected $suffixToIdentifyRemoteUsers = " (remote)";
+	protected $suffixToIdentifyRemoteUsers = " (federated)";
 	protected $sharerInformationXpath = ".//*[@class='reshare']";
 	protected $sharedWithAndByRegEx = "^(?:[A-Z]\s)?Shared with you(?: and the group (.*))? by (.*)$";
 	protected $thumbnailContainerXpath = ".//*[contains(@class,'thumbnailContainer')]";
