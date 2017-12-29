@@ -43,6 +43,7 @@ class FilesPage extends FilesPageBasic {
 	protected $newFileFolderButtonXpath = './/*[@id="controls"]//a[@class="button new"]';
 	protected $newFolderButtonXpath = './/div[contains(@class, "newFileMenu")]//a[@data-templatename="New folder"]';
 	protected $newFolderNameInputLabel = 'New folder';
+	protected $newFolderTooltipXpath = './/div[contains(@class, "newFileMenu")]//div[@class="tooltip-inner"]';
 	protected $fileUploadInputId = "file_upload_start";
 	protected $uploadProgressbarLabelXpath = "//div[@id='uploadprogressbar']/em";
 	private $strForNormalFileName = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890';
@@ -164,6 +165,23 @@ class FilesPage extends FilesPageBasic {
 			throw new \Exception("could not create folder");
 		}
 		return $name;
+	}
+
+	/**
+	 * 
+	 * @throws ElementNotFoundException
+	 * @return string
+	 */
+	public function getCreateFolderTooltip() {
+		$newFolderTooltip = $this->find("xpath", $this->newFolderTooltipXpath);
+		if (is_null($newFolderTooltip)) {
+			throw new ElementNotFoundException(
+				__METHOD__ .
+				" xpath $this->newFolderTooltipXpath " .
+				"could not find tooltip"
+			);
+		}
+		return $newFolderTooltip->getText();
 	}
 
 	/**
