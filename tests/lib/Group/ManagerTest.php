@@ -630,68 +630,6 @@ class ManagerTest extends \Test\TestCase {
 		$this->assertTrue($manager->isInGroup('user1', 'group1'));
 	}
 
-	public function testInGroup() {
-		/**
-		 * @var \PHPUnit_Framework_MockObject_MockObject | \OC\Group\Backend $backend
-		 */
-		$backend = $this->getTestBackend();
-		$backend->expects($this->any())
-			->method('groupExists')
-			->with('group1')
-			->will($this->returnValue(true));
-		$backend->expects($this->once())
-			->method('inGroup')
-			->will($this->returnValue(true));
-
-		/**
-		 * @var IUser
-		 */
-		$user = $this->createMock(IUser::class);
-		/**
-		 * @var \OC\User\Manager $userManager
-		 */
-		$userManager = $this->createMock(Manager::class);
-		$userManager->expects($this->once())
-			->method('get')
-			->with('user1')
-			->will($this->returnValue($user));
-		$manager = new \OC\Group\Manager($userManager);
-		$manager->addBackend($backend);
-
-		$this->assertTrue($manager->inGroup('user1', 'group1'));
-	}
-
-	public function testNotInGroup() {
-		/**
-		 * @var \PHPUnit_Framework_MockObject_MockObject | \OC\Group\Backend $backend
-		 */
-		$backend = $this->getTestBackend();
-		$backend->expects($this->any())
-			->method('groupExists')
-			->with('group1')
-			->will($this->returnValue(true));
-		$backend->expects($this->once())
-			->method('inGroup')
-			->will($this->returnValue(false));
-
-		/**
-		 * @var IUser
-		 */
-		$user = $this->createMock(IUser::class);
-		/**
-		 * @var \OC\User\Manager $userManager
-		 */
-		$userManager = $this->createMock(Manager::class);
-		$userManager->expects($this->once())
-			->method('get')
-			->with('user1')
-			->will($this->returnValue($user));
-		$manager = new \OC\Group\Manager($userManager);
-		$manager->addBackend($backend);
-
-		$this->assertFalse($manager->inGroup('user1', 'group1'));
-	}
-
 	public function testIsAdmin() {
 		/**
 		 * @var \PHPUnit_Framework_MockObject_MockObject | \OC\Group\Backend $backend

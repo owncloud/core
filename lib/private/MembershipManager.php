@@ -181,7 +181,7 @@ class MembershipManager {
 	 * @param string $pattern
 	 * @param integer $limit
 	 * @param integer $offset
-	 * @return Entity[]
+	 * @return Account[]
 	 */
 	public function find($gid, $pattern, $limit = null, $offset = null) {
 		return $this->searchAccountsSqlQuery($gid, false, $pattern, $limit, $offset);
@@ -198,7 +198,7 @@ class MembershipManager {
 	 * @param string $pattern
 	 * @param integer $limit
 	 * @param integer $offset
-	 * @return Entity[]
+	 * @return Account[]
 	 */
 	public function findById($backendGroupId, $pattern, $limit = null, $offset = null) {
 		return $this->searchAccountsSqlQuery($backendGroupId, true, $pattern, $limit, $offset);

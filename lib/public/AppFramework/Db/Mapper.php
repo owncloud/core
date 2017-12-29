@@ -26,6 +26,7 @@
 
 namespace OCP\AppFramework\Db;
 
+use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
 use OCP\DB\QueryBuilder\IQueryBuilder;
 use OCP\IDBConnection;
 use OCP\IDb;
@@ -90,6 +91,7 @@ abstract class Mapper {
 	 * Creates a new entry in the db from an entity
 	 * @param Entity $entity the entity that should be created
 	 * @return Entity the saved entity with the set id
+	 * @throws UniqueConstraintViolationException
 	 * @since 7.0.0
 	 */
 	public function insert(Entity $entity){

@@ -27,6 +27,7 @@ use OC\User\Account;
 use OC\User\AccountMapper;
 use OC\MembershipManager;
 use OC\User\AccountTermMapper;
+use OCP\AppFramework\Db\DoesNotExistException;
 use OCP\IConfig;
 use OCP\IDBConnection;
 use Doctrine\DBAL\Platforms\SqlitePlatform;
@@ -131,14 +132,17 @@ class MembershipManagerTest extends TestCase {
 		);
 		// Remove groups
 		for ($i = 0; $i <= 4; $i++) {
-			$group = self::getBackendGroup($i);
-			if (!is_null($group)) {
-				try {
-					$manager->removeGroupMembers($group->getId());
-				} catch (\Exception $e) {
-				}
-				$groupMapper->delete($group);
+			try {
+				$group = self::getBackendGroup($i);
+			} catch (DoesNotExistException $e) {
+				continue;
 			}
+
+			try {
+				$manager->removeMemberships($group->getId());
+			} catch (DoesNotExistException $e) {
+			}
+			$groupMapper->delete($group);
 		}
 		// Remove accounts
 		for ($i = 0; $i <= 4; $i++) {

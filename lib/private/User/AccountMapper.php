@@ -24,9 +24,12 @@
 namespace OC\User;
 
 
+use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
 use OC\DB\QueryBuilder\Literal;
+use OCP\AppFramework\Db\DoesNotExistException;
 use OCP\AppFramework\Db\Entity;
 use OCP\AppFramework\Db\Mapper;
+use OCP\AppFramework\Db\MultipleObjectsReturnedException;
 use OCP\IConfig;
 use OCP\IDBConnection;
 
@@ -65,6 +68,7 @@ class AccountMapper extends Mapper {
 	/**
 	 * @param Account $entity
 	 * @return Entity the saved entity with the set id
+	 * @throws UniqueConstraintViolationException
 	 */
 	public function insert(Entity $entity) {
 		// run the normal entity insert operation to get an id
@@ -120,6 +124,8 @@ class AccountMapper extends Mapper {
 	/**
 	 * @param string $uid
 	 * @return Account
+	 * @throws DoesNotExistException
+	 * @throws MultipleObjectsReturnedException
 	 */
 	public function getByUid($uid) {
 		$qb = $this->db->getQueryBuilder();
