@@ -21,6 +21,7 @@
 
 namespace Test\Group;
 
+use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
 use OC\Group\BackendGroup;
 use OC\Group\GroupMapper;
 use OCP\IConfig;
@@ -46,26 +47,6 @@ class GroupMapperTest extends TestCase {
 	/** @var GroupMapper */
 	protected $mapper;
 
-	public static function setUpBeforeClass() {
-		parent::setUpBeforeClass();
-		$mapper = new GroupMapper(\OC::$server->getDatabaseConnection());
-
-		// create test groups
-		for ($i = 1; $i <= 4; $i++) {
-			$backendGroup = $mapper->getGroup("testgroup$i");
-			if (!is_null($backendGroup)) {
-				$mapper->delete($backendGroup);
-			}
-
-			$backendGroup = new BackendGroup();
-			$backendGroup->setGroupId("testgroup$i");
-			$backendGroup->setDisplayName("TestGroup$i");
-			$backendGroup->setBackend(self::class);
-
-			$mapper->insert($backendGroup);
-		}
-	}
-
 	public function setUp() {
 		parent::setUp();
 
@@ -76,11 +57,35 @@ class GroupMapperTest extends TestCase {
 		$this->mapper = new GroupMapper(
 			$this->connection
 		);
+		// create test groups
+		for ($i = 1; $i <= 4; $i++) {
+			try {
+				$backendGroup = $this->mapper->getGroup("testgroup$i");
+				$this->mapper->delete($backendGroup);
+			} catch (DoesNotExistException $ex) {
+				$backendGroup = new BackendGroup();
+				$backendGroup->setGroupId("testgroup$i");
+				$backendGroup->setDisplayName("TestGroup$i");
+				$backendGroup->setBackend(self::class);
+
+				$this->mapper->insert($backendGroup);
+			}
+		}
 	}
 
-	public static function tearDownAfterClass () {
-		\OC::$server->getDatabaseConnection()->executeQuery('DELETE FROM `*PREFIX*backend_groups`');
-		parent::tearDownAfterClass();
+	public function tearDown() {
+		parent::tearDown();
+		$connection = \OC::$server->getDatabaseConnection();
+		$mapper = new GroupMapper(
+			$connection
+		);
+		for ($i = 0; $i <= 5; $i++) {
+			try {
+				$backendGroup = $mapper->getGroup("testgroup$i");
+				$mapper->delete($backendGroup);
+			} catch (DoesNotExistException $ex) {
+			}
+		}
 	}
 
 	/**
@@ -103,29 +108,64 @@ class GroupMapperTest extends TestCase {
 		$this->mapper->insert($backendGroup);
 		$result = $this->mapper->getGroup("testgroup5");
 		$this->assertInstanceOf(BackendGroup::class, $result);
+
+		// Cleanup
+		$this->mapper->delete($backendGroup);
+	}
+
+	/**
+	 * Insert twice the same element should cause exception
+	 */
+	public function testDoubleInsertInValid() {
+		$backendGroup = new BackendGroup();
+		$backendGroup->setGroupId("testgroup5");
+		$backendGroup->setDisplayName("TestGroup5");
+		$backendGroup->setBackend(self::class);
+
+		$this->mapper->insert($backendGroup);
+		$result = $this->mapper->getGroup("testgroup5");
+		$this->assertInstanceOf(BackendGroup::class, $result);
+
+		$exceptionRaised = false;
+		try {
+			$this->mapper->insert($backendGroup);
+		} catch (UniqueConstraintViolationException $exception) {
+			$exceptionRaised = true;
+		}
+
+		$this->assertTrue($exceptionRaised);
+
+		// Cleanup
+		$this->mapper->delete($backendGroup);
 	}
 
 	/**
 	 * find nothing because of upper case
 	 */
 	public function testGetNone() {
-		$groupBackend = $this->mapper->getGroup("TestGroup1");
-		$this->assertNull($groupBackend);
+		$exceptionRaised = false;
+		try {
+			$this->mapper->getGroup("TestGroup1");
+		} catch (DoesNotExistException $exception) {
+			$exceptionRaised = true;
+		}
+
+		$this->assertTrue($exceptionRaised);
 	}
 
 	/**
 	 * find all, use lower case
 	 */
 	public function testFindAll() {
-		$result = $this->mapper->search('group_id',"testgroup", null, null);
-		$this->assertEquals(5, count($result));
+		$result = $this->mapper->search("testgroup", null, null);
+		$this->assertEquals(4, count($result));
 	}
 
 	/**
 	 * find by userid, use lower case
 	 */
 	public function testFindByGroupId() {
-		$result = $this->mapper->search('group_id',"testgroup1", null, null);
+		$result = $this->mapper->search("testgroup1", null, null);
 		$this->assertEquals(1, count($result));
 		$group = array_shift($result);
 		$this->assertEquals("testgroup1", $group->getGroupId());
@@ -136,7 +176,7 @@ class GroupMapperTest extends TestCase {
 	 * find with limit and offset, use lower case
 	 */
 	public function testFindLimitAndOffset() {
-		$result = $this->mapper->search('group_id','Test', 2, 2);
+		$result = $this->mapper->search('TestGroup', 2, 2);
 		$this->assertEquals(2, count($result));
 		$this->assertEquals("TestGroup3", array_shift($result)->getDisplayName());
 		$this->assertEquals("TestGroup4", array_shift($result)->getDisplayName());

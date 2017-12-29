@@ -21,14 +21,14 @@
 
 namespace Test\User;
 
-
+use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
 use OC\User\Account;
 use OC\User\AccountMapper;
 use OC\User\AccountTermMapper;
+use OCP\AppFramework\Db\DoesNotExistException;
 use OCP\IConfig;
 use OCP\IDBConnection;
 use Test\TestCase;
-
 /**
  * Class AccountMapperTest
  *
@@ -47,36 +47,6 @@ class AccountMapperTest extends TestCase {
 	/** @var AccountMapper */
 	protected $mapper;
 
-	public static function setUpBeforeClass() {
-		parent::setUpBeforeClass();
-
-		$termMapper = new AccountTermMapper(\OC::$server->getDatabaseConnection());
-		$mapper = new AccountMapper(\OC::$server->getConfig(), \OC::$server->getDatabaseConnection(), $termMapper);
-
-		\OC::$server->getDatabaseConnection()->beginTransaction();
-
-		// create test users
-		for ($i = 1; $i <= 4; $i++) {
-
-			$account = $mapper->find("TestFind$i");
-			if ($account) {
-				$mapper->delete($account);
-			}
-
-			$account = new Account();
-			$account->setUserId("TestFind$i");
-			$account->setDisplayName("Test Find $i");
-			$account->setEmail("test$i@find.tld");
-			$account->setBackend(self::class);
-			$account->setHome("/foo/TestFind$i");
-
-			$mapper->insert($account);
-
-			$mapper->setTermsForAccount($account->getId(), ["Term $i A","Term $i B","Term $i C"]);
-
-		}
-	}
-
 	public function setUp() {
 		parent::setUp();
 
@@ -89,11 +59,65 @@ class AccountMapperTest extends TestCase {
 			$this->connection,
 			new AccountTermMapper($this->connection)
 		);
+
+		// create test users
+		for ($i = 1; $i <= 4; $i++) {
+
+			$account = $this->mapper->find("TestFind$i");
+			if ($account) {
+				$this->mapper->delete($account);
+			}
+
+			$account = new Account();
+			$account->setUserId("TestFind$i");
+			$account->setDisplayName("Test Find $i");
+			$account->setEmail("test$i@find.tld");
+			$account->setBackend(self::class);
+			$account->setHome("/foo/TestFind$i");
+
+			$this->mapper->insert($account);
+
+			$this->mapper->setTermsForAccount($account->getId(), ["Term $i A","Term $i B","Term $i C"]);
+
+		}
+
 	}
 
-	public static function tearDownAfterClass () {
-		\OC::$server->getDatabaseConnection()->rollBack();
-		parent::tearDownAfterClass();
+	public function tearDown() {
+		parent::tearDown();
+
+		for ($i = 0; $i <= 5; $i++) {
+			try {
+				$account = $this->mapper->getByUid("TestFind$i");
+				$this->mapper->delete($account);
+			} catch (DoesNotExistException $ex) {
+			}
+		}
+	}
+
+	/**
+	 * Insert twice the same element should cause exception
+	 */
+	public function testDoubleInsertInValid() {
+		$account = new Account();
+		$account->setUserId("TestFind5");
+		$account->setDisplayName("Test Find 5");
+		$account->setEmail("test5@find.tld");
+		$account->setBackend(self::class);
+		$account->setHome("/foo/TestFind5");
+
+		$this->mapper->insert($account);
+		$result = $this->mapper->getByUid("TestFind5");
+		$this->assertInstanceOf(Account::class, $result);
+
+		$exceptionRaised = false;
+		try {
+			$this->mapper->insert($account);
+		} catch (UniqueConstraintViolationException $exception) {
+			$exceptionRaised = true;
+		}
+
+		$this->assertTrue($exceptionRaised);
 	}
 
 	/**
@@ -102,6 +126,14 @@ class AccountMapperTest extends TestCase {
 	public function testFindAll() {
 		$result = $this->mapper->find("testfind");
 		$this->assertCount(4, $result);
+	}
+
+	/**
+	 * find all, use lower case
+	 */
+	public function testSearchAll() {
+		$result = $this->mapper->search('user_id', "testfind", null, null);
+		$this->assertEquals(4, count($result));
 	}
 
 	/**
