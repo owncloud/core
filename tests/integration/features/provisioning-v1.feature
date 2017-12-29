@@ -131,9 +131,11 @@ Feature: provisioning
 		Given as an "admin"
 		And user "brand-new-user" exists
 		And group "new-group" exists
+		And group "0" exists
 		When sending "GET" to "/cloud/users/brand-new-user/groups"
 		Then groups returned are
 			| new-group |
+			| 0 |
 		And the OCS status code should be "100"
 
 	Scenario: adding a user which doesn't exist to a group
