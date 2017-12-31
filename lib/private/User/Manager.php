@@ -185,12 +185,9 @@ class Manager extends PublicEmitter implements IUserManager {
 		}
 		try {
 			$account = $this->accountMapper->getByUid($uid);
-			if (is_null($account)) {
-				$this->cachedUsers->set($uid, null);
-				return null;
-			}
 			return $this->getUserObject($account);
 		} catch (DoesNotExistException $ex) {
+			$this->cachedUsers->set($uid, null);
 			return null;
 		}
 	}

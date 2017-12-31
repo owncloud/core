@@ -77,18 +77,14 @@ class ManagerTest extends TestCase {
 	}
 
 
-	public function testUserExistsSingleBackendExists() {
+	public function testUserExistsAccountExists() {
 		$account = $this->createMock(Account::class);
 		$this->accountMapper->expects($this->once())->method('getByUid')->with('foo')->willReturn($account);
 		$this->assertTrue($this->manager->userExists('foo'));
 	}
 
-	public function testUserExistsSingleBackendNotExists() {
+	public function testUserExistsAccountNotExists() {
 		$this->accountMapper->expects($this->once())->method('getByUid')->with('foo')->willThrowException(new DoesNotExistException(''));
-		$this->assertFalse($this->manager->userExists('foo'));
-	}
-
-	public function testUserExistsNoBackends() {
 		$this->assertFalse($this->manager->userExists('foo'));
 	}
 
@@ -142,14 +138,15 @@ class ManagerTest extends TestCase {
 		$this->assertFalse($this->manager->checkPassword('foo', 'bar'));
 	}
 
-	public function testGetOneBackendExists() {
+	public function testGetAccountExists() {
 		$account = new Account();
 		$account->setUserId('foo');
 		$this->accountMapper->expects($this->once())->method('getByUid')->with('foo')->willReturn($account);
 		$this->assertEquals('foo', $this->manager->get('foo')->getUID());
 	}
 
-	public function testGetOneBackendNotExists() {
+	public function testGetAccountNotExists() {
+		$this->accountMapper->expects($this->once())->method('getByUid')->with('foo')->willThrowException(new DoesNotExistException(''));
 		$this->assertNull($this->manager->get('foo'));
 	}
 
