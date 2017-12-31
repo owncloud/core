@@ -11,6 +11,7 @@ OC.L10N.register(
     "Unable to upload {filename} as it is a directory or has 0 bytes" : "امکان آپلود {filename} وجود ندارد، پوشه‌ای با این نام یا فایلی با حجم 0 بایت با این نام وجود دارد",
     "Not enough free space, you are uploading {size1} but only {size2} is left" : "ظرفیت لازم وجود ندارد، شما آپلودی با حجم {size1}  را انجام میدهید اما تنها {size2} فضا باقی مانده است",
     "Uploading..." : "درحال بارگذاری...",
+    "..." : "...",
     "File upload is in progress. Leaving the page now will cancel the upload." : "آپلودکردن پرونده در حال پیشرفت است. در صورت خروج از صفحه آپلود لغو میگردد. ",
     "Actions" : "فعالیت ها",
     "Download" : "دانلود",
