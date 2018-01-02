@@ -114,22 +114,28 @@ Feature: provisioning
 		Then the OCS status code should be "997"
 		And the HTTP status code should be "401"
 
-	Scenario: adding user to a group
+	Scenario Outline: adding a user to a group
 		Given as an "admin"
 		And user "brand-new-user" exists
-		And group "new-group" exists
+		And group "<group_id>" exists
 		When sending "POST" to "/cloud/users/brand-new-user/groups" with
-			| groupid | new-group |
+			| groupid | <group_id> |
 		Then the OCS status code should be "100"
 		And the HTTP status code should be "200"
+		Examples:
+			| group_id  |
+			| new-group |
+			| 0         |
 
 	Scenario: getting groups of an user
 		Given as an "admin"
 		And user "brand-new-user" exists
 		And group "new-group" exists
+		And group "0" exists
 		When sending "GET" to "/cloud/users/brand-new-user/groups"
 		Then groups returned are
 			| new-group |
+			| 0 |
 		And the OCS status code should be "100"
 
 	Scenario: adding a user which doesn't exist to a group
@@ -191,15 +197,19 @@ Feature: provisioning
 			| groupid | not-group |
 		Then the OCS status code should be "102"
 
-	Scenario: removing a user from a group
+	Scenario Outline: removing a user from a group
 		Given as an "admin"
 		And user "brand-new-user" exists
-		And group "new-group" exists
-		And user "brand-new-user" belongs to group "new-group"
+		And group "<group_id>" exists
+		And user "brand-new-user" belongs to group "<group_id>"
 		When sending "DELETE" to "/cloud/users/brand-new-user/groups" with
-			| groupid | new-group |
+			| groupid | <group_id> |
 		Then the OCS status code should be "100"
-		And user "brand-new-user" does not belong to group "new-group"
+		And user "brand-new-user" does not belong to group "<group_id>"
+		Examples:
+			| group_id  |
+			| new-group |
+			| 0         |
 
 	Scenario: create a subadmin using a user which does not exist
 		Given as an "admin"

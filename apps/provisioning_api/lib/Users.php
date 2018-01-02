@@ -475,8 +475,8 @@ class Users {
 			return new Result(null, API::RESPOND_UNAUTHORISED);
 		}
 
-		$groupId = !empty($_POST['groupid']) ? $_POST['groupid'] : null;
-		if($groupId === null) {
+		$groupId = isset($_POST['groupid']) ? $_POST['groupid'] : null;
+		if (($groupId === '') || ($groupId === null) || ($groupId === false)) {
 			return new Result(null, 101);
 		}
 
@@ -511,8 +511,8 @@ class Users {
 			return new Result(null, API::RESPOND_UNAUTHORISED);
 		}
 
-		$group = !empty($parameters['_delete']['groupid']) ? $parameters['_delete']['groupid'] : null;
-		if($group === null) {
+		$group = isset($parameters['_delete']['groupid']) ? $parameters['_delete']['groupid'] : null;
+		if (($group === '') || ($group === null) || ($group === false)) {
 			return new Result(null, 101);
 		}
 
