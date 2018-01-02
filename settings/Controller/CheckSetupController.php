@@ -328,6 +328,7 @@ Raw output
 				'isCorrectMemcachedPHPModuleInstalled' => $this->isCorrectMemcachedPHPModuleInstalled(),
 				'hasPassedCodeIntegrityCheck' => $this->checker->hasPassedCheck(),
 				'codeIntegrityCheckerDocumentation' => $this->urlGenerator->linkToDocs('admin-code-integrity'),
+				'hasDebugMode' => $this->config->getSystemValue('debug', false),
 			]
 		);
 	}
