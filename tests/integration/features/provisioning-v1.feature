@@ -133,6 +133,8 @@ Feature: provisioning
 		And user "brand-new-user" exists
 		And group "new-group" exists
 		And group "0" exists
+		And user "brand-new-user" belongs to group "new-group"
+		And user "brand-new-user" belongs to group "0"
 		When sending "GET" to "/cloud/users/brand-new-user/groups"
 		Then groups returned are
 			| new-group |
@@ -182,7 +184,7 @@ Feature: provisioning
 		And user "brand-new-user" exists
 		And group "new-group" exists
 		And user "brand-new-user" belongs to group "new-group"
-		And user "brand-new-user" is subadmin of group "new-group"
+		And assure user "brand-new-user" is subadmin of group "new-group"
 		And as an "brand-new-user"
 		When sending "GET" to "/cloud/users"
 		Then users returned are
@@ -234,6 +236,7 @@ Feature: provisioning
 		Given as an "admin"
 		And user "brand-new-user" exists
 		And group "new-group" exists
+		And assure user "brand-new-user" is subadmin of group "new-group"
 		When sending "GET" to "/cloud/users/brand-new-user/subadmins"
 		Then subadmin groups returned are
 			| new-group |
@@ -252,6 +255,7 @@ Feature: provisioning
 		Given as an "admin"
 		And user "brand-new-user" exists
 		And group "new-group" exists
+		And assure user "brand-new-user" is subadmin of group "new-group"
 		When sending "GET" to "/cloud/groups/new-group/subadmins"
 		Then subadmin users returned are
 			| brand-new-user |
@@ -270,7 +274,7 @@ Feature: provisioning
 		Given as an "admin"
 		And user "brand-new-user" exists
 		And group "new-group" exists
-		And user "brand-new-user" is subadmin of group "new-group"
+		And assure user "brand-new-user" is subadmin of group "new-group"
 		When sending "DELETE" to "/cloud/users/brand-new-user/subadmins" with
 			| groupid | new-group |
 		Then the OCS status code should be "100"
