@@ -39,6 +39,7 @@ trait Provisioning {
 	 */
 	public function userAlreadyExists($user) {
 		PHPUnit_Framework_Assert::assertTrue($this->userExists($user));
+		$this->rememberTheUser($user);
 	}
 
 	/**
@@ -55,6 +56,7 @@ trait Provisioning {
 	 */
 	public function groupAlreadyExists($group) {
 		PHPUnit_Framework_Assert::assertTrue($this->groupExists($group));
+		$this->rememberTheGroup($group);
 	}
 
 	/**
@@ -79,6 +81,14 @@ trait Provisioning {
 		PHPUnit_Framework_Assert::assertFalse($this->userExists($user));
 	}
 
+	public function rememberTheUser($user) {
+		if ($this->currentServer === 'LOCAL') {
+			$this->createdUsers[$user] = $user;
+		} elseif ($this->currentServer === 'REMOTE') {
+			$this->createdRemoteUsers[$user] = $user;
+		}
+	}
+
 	public function creatingTheUser($user) {
 		$fullUrl = $this->baseUrl . "v{$this->apiVersion}.php/cloud/users";
 		$client = new Client();
@@ -93,11 +103,7 @@ trait Provisioning {
 							];
 
 		$this->response = $client->send($client->createRequest("POST", $fullUrl, $options));
-		if ($this->currentServer === 'LOCAL') {
-			$this->createdUsers[$user] = $user;
-		} elseif ($this->currentServer === 'REMOTE') {
-			$this->createdRemoteUsers[$user] = $user;
-		}
+		$this->rememberTheUser($user);
 
 		//Quick hack to login once with the current user
 		$options2 = [
@@ -249,6 +255,17 @@ trait Provisioning {
 	}
 
 	/**
+	 * @param string $group
+	 */
+	public function rememberTheGroup($group) {
+		if ($this->currentServer === 'LOCAL') {
+			$this->createdGroups[$group] = $group;
+		} elseif ($this->currentServer === 'REMOTE') {
+			$this->createdRemoteGroups[$group] = $group;
+		}
+	}
+
+	/**
 	 * @When /^creating the group "([^"]*)"$/
 	 * @param string $group
 	 */
@@ -265,11 +282,7 @@ trait Provisioning {
 							];
 
 		$this->response = $client->send($client->createRequest("POST", $fullUrl, $options));
-		if ($this->currentServer === 'LOCAL') {
-			$this->createdGroups[$group] = $group;
-		} elseif ($this->currentServer === 'REMOTE') {
-			$this->createdRemoteGroups[$group] = $group;
-		}
+		$this->rememberTheGroup($group);
 	}
 
 	/**
