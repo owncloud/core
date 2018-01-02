@@ -210,7 +210,7 @@ trait Provisioning {
 		$this->response = $client->get($fullUrl, $options);
 		$respondedArray = $this->getArrayOfGroupsResponded($this->response);
 
-		if (array_key_exists($group, $respondedArray)) {
+		if (in_array($group, $respondedArray)) {
 			return True;
 		} else {
 			return False;
