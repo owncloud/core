@@ -285,22 +285,13 @@ class FilesPage extends FilesPageBasic {
 		$toMoveFileRow = $this->findFileRowByName($name, $session);
 		$destinationFileRow = $this->findFileRowByName($destination, $session);
 
-		$session->executeScript(
-			'
-			jQuery.countXHRRequests = 0;
-			(function(open) {
-				XMLHttpRequest.prototype.open = function(method, url, async, user, pass) {
-					jQuery.countXHRRequests++;
-					open.call(this, method, url, async, user, pass);
-				};
-			})(XMLHttpRequest.prototype.open);
-			'
-		);
-
+		$this->initAjaxCounters($session);
+		$this->resetSumStartedAjaxRequests($session);
+		
 		for ($retryCounter = 0; $retryCounter < $maxRetries; $retryCounter++) {
 			$toMoveFileRow->findFileLink()->dragTo($destinationFileRow->findFileLink());
 			$this->waitForAjaxCallsToStartAndFinish($session);
-			$countXHRRequests = $session->evaluateScript("jQuery.countXHRRequests");
+			$countXHRRequests = $this->getSumStartedAjaxRequests($session);
 			if ($countXHRRequests === 0) {
 				error_log("Error while moving file");
 			} else {
