@@ -360,6 +360,7 @@ abstract class FilesPageBasic extends OwnCloudPage {
 		Session $session,
 		$timeout_msec = LONGUIWAITTIMEOUTMILLISEC
 	) {
+		$this->initAjaxCounters($session);
 		$currentTime = microtime(true);
 		$end = $currentTime + ($timeout_msec / 1000);
 		while ($currentTime <= $end) {
