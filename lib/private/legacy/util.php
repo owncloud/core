@@ -420,7 +420,7 @@ class OC_Util {
 	 * @throws NoReadAccessException
 	 */
 	public static function copyr($source, \OCP\Files\Folder $target) {
-		$dir = opendir($source);
+		$dir = @opendir($source);
 		if (false === $dir) {
 			throw new NoReadAccessException('No read permission for folder ' . $source);
 		}
@@ -430,7 +430,7 @@ class OC_Util {
 					$child = $target->newFolder($file);
 					self::copyr($source . '/' . $file, $child);
 				} else {
-					$sourceFileHandle = fopen($source . '/' . $file,'r');
+					$sourceFileHandle = @fopen($source . '/' . $file,'r');
 					if (false === $sourceFileHandle) {
 						throw new NoReadAccessException('No read permission for file ' . $file);
 					}
