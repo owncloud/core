@@ -56,6 +56,7 @@
  *
  */
 
+use OCP\Files\NoReadAccessException;
 use OCP\IConfig;
 use OCP\IGroupManager;
 use OCP\IUser;
@@ -416,17 +417,25 @@ class OC_Util {
 	 * @param string $source
 	 * @param \OCP\Files\Folder $target
 	 * @return void
+	 * @throws NoReadAccessException
 	 */
 	public static function copyr($source, \OCP\Files\Folder $target) {
 		$dir = opendir($source);
+		if (false === $dir) {
+			throw new NoReadAccessException('No read permission for folder ' . $source);
+		}
 		while (false !== ($file = readdir($dir))) {
 			if (!\OC\Files\Filesystem::isIgnoredDir($file)) {
 				if (is_dir($source . '/' . $file)) {
 					$child = $target->newFolder($file);
 					self::copyr($source . '/' . $file, $child);
 				} else {
+					$sourceFileHandle = fopen($source . '/' . $file,'r');
+					if (false === $sourceFileHandle) {
+						throw new NoReadAccessException('No read permission for file ' . $file);
+					}
 					$child = $target->newFile($file);
-					stream_copy_to_stream(fopen($source . '/' . $file,'r'), $child->fopen('w'));
+					stream_copy_to_stream($sourceFileHandle, $child->fopen('w'));
 				}
 			}
 		}
