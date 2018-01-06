@@ -12,10 +12,14 @@ OC.L10N.register(
     "All users. Type to select user or group." : "모든 사용자입니다. 사용자나 그룹을 선택하려면 입력하십시오.",
     "(group)" : "(그룹)",
     "Compatibility with Mac NFD encoding (slow)" : "Mac NFD 인코딩 호환성 사용(느림)",
+    "Unknown auth backend \"{b}\"" : "알 수 없는 인증 백엔드 \"{b}\"",
+    "Please make sure that the app that provides this backend is installed and enabled" : "이 백엔드를 지원하는 앱이 설치 및 활성화되어 있는지 확인하십시오",
     "Admin defined" : "관리자 지정",
     "Saved" : "저장됨",
     "Disabling external storage will unmount all storages for all users, are you sure ?" : "외부 저장소를 비활성화하면 모든 사용자의 저장소를 마운트 해제합니다. 계속 진행하시겠습니까?",
     "Disable external storage" : "외부 저장소 비활성화",
+    "No URL provided by backend " : "백엔드에서 URL을 지정하지 않았음",
+    "Error getting OAuth2 URL for " : "다음의 OAuth2 URL 가져오기 오류",
     "Empty response from the server" : "서버에서 빈 응답이 돌아옴",
     "Couldn't access. Please logout and login to activate this mount point" : "접근할 수 없습니다. 이 마운트 지점을 활성화하려면 로그아웃 후 로그인하십시오",
     "Couldn't get the information from the ownCloud server: {code} {type}" : "ownCloud 서버에서 정보를 가져올 수 없음: {code} {type}",
@@ -109,6 +113,7 @@ OC.L10N.register(
     "Advanced settings" : "고급 설정",
     "Delete" : "삭제",
     "Allow users to mount external storage" : "사용자가 외부 저장소를 마운트하도록 허용",
-    "Allow users to mount the following external storage" : "사용자가 다음 외부 저장소를 마운트할 수 있도록 허용"
+    "Allow users to mount the following external storage" : "사용자가 다음 외부 저장소를 마운트할 수 있도록 허용",
+    "Allow sharing on user-mounted external storages" : "사용자가 마운트한 외장 저장소 공유 허용"
 },
 "nplurals=1; plural=0;");
