@@ -123,3 +123,7 @@ Vagrantfile
 /config/config-autotest-backup.php
 /config/autoconfig.php
 clover.xml
+
+# ignore build dirs
+build/dist
+apps/*/dist

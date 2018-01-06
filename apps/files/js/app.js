@@ -22,6 +22,8 @@
 		OCA.Files = {};
 	}
 
+	OCA.Files.Templates = OCA.Files.Templates || {};
+
 	/**
 	 * @namespace OCA.Files.App
 	 */

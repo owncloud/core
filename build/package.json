@@ -1,29 +1,45 @@
 {
-  "name": "owncloud-js-dev",
-  "description": "ownCloud tests",
-  "version": "0.0.1",
-  "author": {
-    "name": "Vincent Petry",
-    "email": "pvince81@owncloud.com"
-  },
-  "private": true,
-  "homepage": "https://github.com/owncloud/",
-  "contributors": [],
-  "dependencies": {},
-  "devDependencies": {
-    "bower": "~1.8.0",
-    "handlebars": "^4.0.5",
-    "jasmine-core": "^2.5.2",
-    "jasmine-sinon": "^0.4.0",
-    "sinon": "^2.0.0",
-    "jsdoc": "~3.4.0",
-    "karma": "^1.5.0",
-    "karma-coverage": "*",
-    "karma-jasmine": "^1.1.0",
-    "karma-jasmine-sinon": "^1.0.4",
-    "karma-junit-reporter": "*",
-    "karma-phantomjs-launcher": "*",
-    "phantomjs-prebuilt": "*"
-  },
-  "engine": "node >= 6.9"
+	"name": "owncloud-js-dev",
+    "description": "ownCloud tests",
+    "version": "0.0.1",
+    "author": {
+        "name": "Vincent Petry",
+        "email": "pvince81@owncloud.com"
+    },
+    "private": true,
+    "homepage": "https://github.com/owncloud/",
+    "contributors": [],
+    "dependencies": {},
+    "devDependencies": {
+        "bower": "~1.8.0",
+        "handlebars": "^4.0.5",
+        "jasmine-core": "~2.3.4",
+        "jasmine-sinon": "^0.4.0",
+        "sinon": "^2.0.0",
+        "jsdoc": "~3.4.0",
+        "karma": "^1.5.0",
+        "karma-coverage": "*",
+        "karma-jasmine": "^1.1.0",
+        "karma-jasmine-sinon": "^1.0.4",
+        "karma-junit-reporter": "*",
+        "karma-phantomjs-launcher": "*",
+        "phantomjs-prebuilt": "*",
+        "npm-watch": "*"
+    },
+    "engine": "node >= 6.9",
+    "scripts": {
+        "build": "make -C .. build-apps",
+        "watch": "npm-watch"
+    },
+    "watch": {
+        "build": {
+            "patterns": [
+                "../core/js/**/*.{js,handlebars}",
+                "../apps/*/js/**/*.{js,handlebars}",
+                "../settings/js/**/*.{js,handlebars}"
+            ],
+            "ignore": "**/*.handlebars.js",
+            "extensions": "js,handlebars"
+        }
+    }
 }

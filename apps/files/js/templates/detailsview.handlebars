@@ -1,0 +1,13 @@
+<div class="detailFileInfoContainer"></div>
+{{#if tabHeaders}}
+<ul class="tabHeaders">
+	{{#each tabHeaders}}
+	<li class="tabHeader" data-tabid="{{tabId}}" data-tabindex="{{tabIndex}}">
+		<a href="#">{{label}}</a>
+	</li>
+	{{/each}}
+</ul>
+{{/if}}
+<div class="tabsContainer">
+</div>
+<a class="close icon-close" href="#" alt="{{closeLabel}}"></a>
