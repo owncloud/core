@@ -46,7 +46,7 @@
 		<exclude name="PEAR.Functions.FunctionDeclaration.BraceOnSameLine" />
 		<exclude name="PEAR.Classes.ClassDeclaration.OpenBraceNewLine" />
 	</rule>
-
+	<rule ref="Zend.Files.ClosingTag"/>
 	<rule ref="Squiz.WhiteSpace.OperatorSpacing.NoSpaceBefore" />
 	<rule ref="Squiz.WhiteSpace.OperatorSpacing.NoSpaceAfter" />
 	<rule ref="Squiz.Commenting.DocCommentAlignment" />
