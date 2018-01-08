@@ -2045,10 +2045,16 @@
 						self.showFileBusyState(tr, true);
 						tr.attr('data-file', newName);
 						var basename = newName;
-						if (newName.indexOf('.') > 0 && tr.data('type') !== 'dir') {
-							basename = newName.substr(0, newName.lastIndexOf('.'));
+						if (tr.data('type') !== 'dir') {
+							var extension = '';
+							if (newName.indexOf('.') > 0) {
+								var lastDotIndex = newName.lastIndexOf('.');
+								basename = newName.substr(0, lastDotIndex);
+								extension = newName.substr(lastDotIndex);
+							}
+							td.find('a.name span.nametext span.extension').text(extension);
 						}
-						td.find('a.name span.nametext').text(basename);
+						td.find('a.name span.nametext span.innernametext').text(basename);
 						td.children('a.name').show();
 
 						var path = tr.attr('data-path') || self.getCurrentDirectory();
