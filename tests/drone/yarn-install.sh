@@ -6,4 +6,4 @@ if [[ "$(pwd)" == "$(cd "$(dirname "$0")"; pwd -P)" ]]; then
   exit 1
 fi
 
-exec npm install --prefix build
+exec yarn install --cwd build
