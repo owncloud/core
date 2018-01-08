@@ -186,7 +186,6 @@ class OC_User {
 		if ($uid) {
 			if (self::getUser() !== $uid) {
 				self::setUserId($uid);
-				self::setDisplayName($uid);
 				$userSession = self::getUserSession();
 				$userSession->getSession()->regenerateId();
 				$userSession->setLoginName($uid);
