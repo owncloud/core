@@ -168,7 +168,7 @@ interface IAppManager {
 	public function canInstall();
 
 	/**
-	 * Get the directory for the given app.
+	 * Get the absolute path to the directory for the given app.
 	 * If the app exists in multiple directories, the most recent version is taken.
 	 * Returns false if not found
 	 *
@@ -179,7 +179,7 @@ interface IAppManager {
 	public function getAppPath($appId);
 
 	/**
-	 * Get the web path for the given app.
+	 * Get the HTTP Web path to the app directory for the given app, relative to the ownCloud webroot.
 	 * If the app exists in multiple directories, web path to the most recent version is taken.
 	 * Returns false if not found
 	 *
