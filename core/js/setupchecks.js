@@ -148,6 +148,15 @@
 							type: OC.SetupChecks.MESSAGE_TYPE_ERROR
 						});
 					}
+					if (data.hasDebugMode) {
+						messages.push({
+							msg: t(
+									'core',
+									'You are running in DEBUG mode, this can cause unwanted side effects. Please remove the "debug" flag from "config.php".'
+							),
+							type: OC.SetupChecks.MESSAGE_TYPE_ERROR
+						});
+					}
 				} else {
 					messages.push({
 						msg: t('core', 'Error occurred while checking server setup'),
