@@ -260,4 +260,11 @@ class LoginController extends Controller {
 		return OC_Util::getDefaultPageUrl();
 	}
 
+	/**
+	 * @return ISession
+	 */
+	public function getSession() {
+		return $this->session;
+	}
+
 }
