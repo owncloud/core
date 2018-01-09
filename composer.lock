@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "67e16fd2fefd05ad17877c9456e6b40e",
+    "content-hash": "bad585e60d498bceeeb297d86014e997",
     "packages": [
         {
             "name": "bantu/ini-get-wrapper",
@@ -1999,12 +1999,12 @@
             "version": "3.2.2",
             "source": {
                 "type": "git",
-                "url": "https://github.com/fruux/sabre-dav.git",
+                "url": "https://github.com/sabre-io/dav.git",
                 "reference": "e987775e619728f12205606c9cc3ee565ffb1516"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/fruux/sabre-dav/zipball/e987775e619728f12205606c9cc3ee565ffb1516",
+                "url": "https://api.github.com/repos/sabre-io/dav/zipball/e987775e619728f12205606c9cc3ee565ffb1516",
                 "reference": "e987775e619728f12205606c9cc3ee565ffb1516",
                 "shasum": ""
             },
@@ -2082,12 +2082,12 @@
             "version": "3.0.0",
             "source": {
                 "type": "git",
-                "url": "https://github.com/fruux/sabre-event.git",
+                "url": "https://github.com/sabre-io/event.git",
                 "reference": "831d586f5a442dceacdcf5e9c4c36a4db99a3534"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/fruux/sabre-event/zipball/831d586f5a442dceacdcf5e9c4c36a4db99a3534",
+                "url": "https://api.github.com/repos/sabre-io/event/zipball/831d586f5a442dceacdcf5e9c4c36a4db99a3534",
                 "reference": "831d586f5a442dceacdcf5e9c4c36a4db99a3534",
                 "shasum": ""
             },
@@ -2139,12 +2139,12 @@
             "version": "4.2.2",
             "source": {
                 "type": "git",
-                "url": "https://github.com/fruux/sabre-http.git",
+                "url": "https://github.com/sabre-io/http.git",
                 "reference": "dd50e7260356f4599d40270826f9548b23efa204"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/fruux/sabre-http/zipball/dd50e7260356f4599d40270826f9548b23efa204",
+                "url": "https://api.github.com/repos/sabre-io/http/zipball/dd50e7260356f4599d40270826f9548b23efa204",
                 "reference": "dd50e7260356f4599d40270826f9548b23efa204",
                 "shasum": ""
             },
@@ -2195,12 +2195,12 @@
             "version": "1.2.1",
             "source": {
                 "type": "git",
-                "url": "https://github.com/fruux/sabre-uri.git",
+                "url": "https://github.com/sabre-io/uri.git",
                 "reference": "ada354d83579565949d80b2e15593c2371225e61"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/fruux/sabre-uri/zipball/ada354d83579565949d80b2e15593c2371225e61",
+                "url": "https://api.github.com/repos/sabre-io/uri/zipball/ada354d83579565949d80b2e15593c2371225e61",
                 "reference": "ada354d83579565949d80b2e15593c2371225e61",
                 "shasum": ""
             },
@@ -2246,12 +2246,12 @@
             "version": "4.1.2",
             "source": {
                 "type": "git",
-                "url": "https://github.com/fruux/sabre-vobject.git",
+                "url": "https://github.com/sabre-io/vobject.git",
                 "reference": "d0fde2fafa2a3dad1f559c2d1c2591d4fd75ae3c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/fruux/sabre-vobject/zipball/d0fde2fafa2a3dad1f559c2d1c2591d4fd75ae3c",
+                "url": "https://api.github.com/repos/sabre-io/vobject/zipball/d0fde2fafa2a3dad1f559c2d1c2591d4fd75ae3c",
                 "reference": "d0fde2fafa2a3dad1f559c2d1c2591d4fd75ae3c",
                 "shasum": ""
             },
@@ -2343,12 +2343,12 @@
             "version": "1.5.0",
             "source": {
                 "type": "git",
-                "url": "https://github.com/fruux/sabre-xml.git",
+                "url": "https://github.com/sabre-io/xml.git",
                 "reference": "59b20e5bbace9912607481634f97d05a776ffca7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/fruux/sabre-xml/zipball/59b20e5bbace9912607481634f97d05a776ffca7",
+                "url": "https://api.github.com/repos/sabre-io/xml/zipball/59b20e5bbace9912607481634f97d05a776ffca7",
                 "reference": "59b20e5bbace9912607481634f97d05a776ffca7",
                 "shasum": ""
             },
@@ -3254,12 +3254,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/minkphp/MinkSelenium2Driver.git",
-                "reference": "739b7570f0536bad9b07b511a62c885ee1ec029a"
+                "reference": "93474c65a2a7bf959200ab5f7a14cc450645c185"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/minkphp/MinkSelenium2Driver/zipball/739b7570f0536bad9b07b511a62c885ee1ec029a",
-                "reference": "739b7570f0536bad9b07b511a62c885ee1ec029a",
+                "url": "https://api.github.com/repos/minkphp/MinkSelenium2Driver/zipball/93474c65a2a7bf959200ab5f7a14cc450645c185",
+                "reference": "93474c65a2a7bf959200ab5f7a14cc450645c185",
                 "shasum": ""
             },
             "require": {
@@ -3307,7 +3307,7 @@
                 "testing",
                 "webdriver"
             ],
-            "time": "2017-02-06T08:22:23+00:00"
+            "time": "2018-01-07T19:17:08+00:00"
         },
         {
             "name": "behat/transliterator",
@@ -3716,16 +3716,16 @@
         },
         {
             "name": "mikey179/vfsStream",
-            "version": "v1.6.4",
+            "version": "v1.6.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/mikey179/vfsStream.git",
-                "reference": "0247f57b2245e8ad2e689d7cee754b45fbabd592"
+                "reference": "d5fec95f541d4d71c4823bb5e30cf9b9e5b96145"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/mikey179/vfsStream/zipball/0247f57b2245e8ad2e689d7cee754b45fbabd592",
-                "reference": "0247f57b2245e8ad2e689d7cee754b45fbabd592",
+                "url": "https://api.github.com/repos/mikey179/vfsStream/zipball/d5fec95f541d4d71c4823bb5e30cf9b9e5b96145",
+                "reference": "d5fec95f541d4d71c4823bb5e30cf9b9e5b96145",
                 "shasum": ""
             },
             "require": {
@@ -3758,7 +3758,7 @@
             ],
             "description": "Virtual file system to mock the real file system in unit tests.",
             "homepage": "http://vfs.bovigo.org/",
-            "time": "2016-07-18T14:02:57+00:00"
+            "time": "2017-08-01T08:02:14+00:00"
         },
         {
             "name": "myclabs/deep-copy",
@@ -5762,7 +5762,6 @@
     "aliases": [],
     "minimum-stability": "stable",
     "stability-flags": {
-        "swiftmailer/swiftmailer": 0,
         "behat/mink-selenium2-driver": 20
     },
     "prefer-stable": false,
