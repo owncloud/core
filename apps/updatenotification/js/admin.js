@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2016 ownCloud Inc
+ * Copyright (c) 2018, ownCloud GmbH
  *
  * @author Lukas Reschke <lukas@owncloud.com>
  *

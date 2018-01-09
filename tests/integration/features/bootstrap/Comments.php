@@ -3,7 +3,7 @@
  * @author Lukas Reschke <lukas@owncloud.com>
  * @author Sergio Bertolin <sbertolin@owncloud.com>
  *
- * @copyright Copyright (c) 2017, ownCloud, Gmbh.
+ * @copyright Copyright (c) 2018, ownCloud GmbH
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify

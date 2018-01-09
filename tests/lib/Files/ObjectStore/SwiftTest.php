@@ -1,7 +1,7 @@
 <?php
 /**
  * @author Jörn Friedrich Dreyer
- * @copyright (c) 2014 Jörn Friedrich Dreyer <jfd@owncloud.com>
+ * @copyright Copyright (c) 2014 Jörn Friedrich Dreyer <jfd@owncloud.com>
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU AFFERO GENERAL PUBLIC LICENSE

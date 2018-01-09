@@ -2,9 +2,9 @@
  * ownCloud
  *
  * @author John Molakvoæ
- * @copyright 2016 John Molakvoæ <fremulon@protonmail.com>
+ * @copyright Copyright (c) 2016 John Molakvoæ <fremulon@protonmail.com>
  * @author Morris Jobke
- * @copyright 2013 Morris Jobke <morris.jobke@gmail.com>
+ * @copyright Copyright (c) 2013 Morris Jobke <morris.jobke@gmail.com>
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU AFFERO GENERAL PUBLIC LICENSE

@@ -3,7 +3,7 @@
 * ownCloud
 *
 * @author Arthur Schiwon
-* @copyright 2013 Arthur Schiwon blizzz@owncloud.com
+* @copyright Copyright (c) 2013 Arthur Schiwon blizzz@owncloud.com
 *
 * This library is free software; you can redistribute it and/or
 * modify it under the terms of the GNU AFFERO GENERAL PUBLIC LICENSE

@@ -3,7 +3,7 @@
  * ownCloud
  *
  * @author Joas Schilling
- * @copyright 2015 Joas Schilling nickvergessen@owncloud.com
+ * @copyright Copyright (c) 2015 Joas Schilling nickvergessen@owncloud.com
  *
  * This file is licensed under the Affero General Public License version 3 or
  * later.
