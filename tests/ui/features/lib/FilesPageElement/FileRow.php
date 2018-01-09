@@ -100,6 +100,7 @@ class FileRow extends OwnCloudPage {
 				" xpath $this->fileActionMenuBtnXpath could not find actionButton in fileRow"
 			);
 		}
+		$actionButton->focus();
 		return $actionButton;
 	}
 
@@ -144,6 +145,7 @@ class FileRow extends OwnCloudPage {
 				" xpath $this->shareBtnXpath could not find sharing button in fileRow"
 			);
 		}
+		$shareBtn->focus();
 		return $shareBtn;
 	}
 
