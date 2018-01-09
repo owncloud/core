@@ -36,7 +36,7 @@ $(document).ready(function() {
 	 */
 	$('.configuration').on('oauth_step1', function (event, data) {
 		if (data['backend_id'] !== backendId) {
-			return false;	// means the trigger is not for this storage adapter
+			return;	// means the trigger is not for this storage adapter
 		}
 
 		// Redirects the User on success else displays an alert (with error message sent by backend)
@@ -45,7 +45,7 @@ $(document).ready(function() {
 
 	$('.configuration').on('oauth_step2', function (event, data) {
 		if (data['backend_id'] !== backendId || data['code'] === undefined) {
-			return false;		// means the trigger is not for this OAuth2 grant
+			return;		// means the trigger is not for this OAuth2 grant
 		}
 
 		OCA.External.Settings.OAuth2.verifyCode(backendUrl, data)
