@@ -234,12 +234,14 @@ $(dist_dir)/owncloud: $(composer_deps) $(nodejs_deps) $(core_all_src)
 	find $@/{core/,l10n/} -iname \*.sh -delete
 	find $@/{apps/,lib/composer/,core/vendor/} \( \
 		-name bin -o \
+		-name build -o \
 		-name test -o \
 		-name tests -o \
 		-name examples -o \
 		-name demo -o \
 		-name demos -o \
 		-name doc -o \
+		-name docs -o \
 		-name travis -o \
 		-iname \*.sh \
 		\) -print | xargs rm -Rf
@@ -287,6 +289,7 @@ $(dist_dir)/qa/owncloud: $(composer_dev_deps) $(nodejs_deps) $(core_all_src) $(c
 		-name demo -o \
 		-name demos -o \
 		-name doc -o \
+		-name docs -o \
 		-name travis -o \
 		-iname \*.sh \
 		\) -print | xargs rm -Rf
