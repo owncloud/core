@@ -10,7 +10,7 @@
 # @author Joas Schilling
 # @author Lukas Reschke
 # @author Jörn Friedrich Dreyer
-# @copyright 2012-2015 Thomas Müller thomas.mueller@tmit.eu
+# @copyright Copyright (c) 2012-2015 Thomas Müller thomas.mueller@tmit.eu
 #
 
 #$EXECUTOR_NUMBER is set by Jenkins and allows us to run autotest in parallel

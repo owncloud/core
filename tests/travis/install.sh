@@ -3,7 +3,7 @@
 # ownCloud
 #
 # @author Thomas Müller
-# @copyright 2014 Thomas Müller thomas.mueller@tmit.eu
+# @copyright Copyright (c) 2014 Thomas Müller thomas.mueller@tmit.eu
 #
 
 set -e

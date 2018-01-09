@@ -3,7 +3,7 @@
 # ownCloud
 #
 # @author Thomas Müller
-# @copyright 2015 Thomas Müller <deepdiver@owncloud.com>
+# @copyright Copyright (c) 2015 Thomas Müller <deepdiver@owncloud.com>
 #
 
 # retrieve current folder to remove the config from the parent folder

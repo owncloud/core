@@ -3,7 +3,7 @@
 * ownCloud
 *
 * @author Thomas Tanghus
-* @copyright 2012-13 Thomas Tanghus (thomas@tanghus.net)
+* @copyright Copyright (c) 2012-13 Thomas Tanghus (thomas@tanghus.net)
 *
 * This library is free software; you can redistribute it and/or
 * modify it under the terms of the GNU AFFERO GENERAL PUBLIC LICENSE

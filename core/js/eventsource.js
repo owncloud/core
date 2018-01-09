@@ -2,7 +2,7 @@
  * ownCloud
  *
  * @author Robin Appelman
- * @copyright 2012 Robin Appelman icewind1991@gmail.com
+ * @copyright Copyright (c) 2012 Robin Appelman icewind1991@gmail.com
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU AFFERO GENERAL PUBLIC LICENSE

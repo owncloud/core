@@ -12,7 +12,7 @@
 # Set environment variable DEBUG to print config file
 #
 # @author Morris Jobke
-# @copyright 2014 Morris Jobke <hey@morrisjobke.de>
+# @copyright Copyright (c) 2014 Morris Jobke <hey@morrisjobke.de>
 #
 
 if ! command -v docker >/dev/null 2>&1; then

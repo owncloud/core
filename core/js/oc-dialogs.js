@@ -2,7 +2,7 @@
  * ownCloud
  *
  * @author Bartek Przybylski, Christopher Schäpers, Thomas Tanghus
- * @copyright 2012 Bartek Przybylski bartek@alefzero.eu
+ * @copyright Copyright (c) 2012 Bartek Przybylski bartek@alefzero.eu
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU AFFERO GENERAL PUBLIC LICENSE
