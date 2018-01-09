@@ -243,6 +243,9 @@ $(dist_dir)/owncloud: $(composer_deps) $(nodejs_deps) $(core_all_src)
 		-name doc -o \
 		-name docs -o \
 		-name travis -o \
+		-name node_modules -o \
+		-name scripts -o \
+		-name grunt -o \
 		-iname \*.sh \
 		\) -print | xargs rm -Rf
 	find $@/{apps/,lib/composer/} -iname \*.exe -delete
