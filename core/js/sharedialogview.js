@@ -52,7 +52,7 @@
 					'<div class="avatardiv"></div>' +
 					'{{/if}}' +
 					'<div class="autocomplete-item-text">' +
-						'<span class="autocomplete-item-displayname">{{displayName}}</span>' +
+						'<span class="autocomplete-item-displayname">{{{displayName}}}</span>' +
 						'{{#if additionalInfo}}' +
 						'<span class="autocomplete-item-additional-info">({{additionalInfo}})</span>' +
 						'{{/if}}' +
