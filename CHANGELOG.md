@@ -22,7 +22,6 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/).
 - Require a minimum of 1 character for the application password name - [#29831](https://github.com/owncloud/core/issues/29831)
 - Only allow a single active theme app with no magic fallbacks to inactive app themes  - [#29854](https://github.com/owncloud/core/issues/29854)
 - Config report now hides email address from email config - [#29949](https://github.com/owncloud/core/issues/29949)
-- Switched to yarn for JS dependencies - [#30026](https://github.com/owncloud/core/issues/30026)
 - Change "remote" to "federated" suffix in sharing autocomplete dialog. - [#30046](https://github.com/owncloud/core/issues/30046)
 
 ### Removed
@@ -31,8 +30,9 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/).
 - Remove unused composer dependency on natxet/CssMin - [#29930](https://github.com/owncloud/core/issues/29930)
 
 ### Fixed
+- Fix Dropbox / GDrive oauth handshake handling - [#30071](https://github.com/owncloud/core/pull/30071)
 - Redisplay login page on CSRF error - [#30035](https://github.com/owncloud/core/issues/30035)
-- Do not reset dispalyname to uid on sso login - [#30038](https://github.com/owncloud/core/issues/30038)
+- Do not reset display name to uid on sso login - [#30038](https://github.com/owncloud/core/issues/30038)
 - Do not automatically disable apps of certain types - [#29870](https://github.com/owncloud/core/issues/29870)
 - Fix provisioning API when dealing with group name "0" - [#30004](https://github.com/owncloud/core/issues/30004)
 - Tweak occ command help output - [#29959](https://github.com/owncloud/core/issues/29959)
