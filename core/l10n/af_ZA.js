@@ -171,7 +171,6 @@ OC.L10N.register(
     "An error occurred. Please try again" : "’n Fout het voorgekom. Probeer weer",
     "{sharee} (group)" : "{sharee} (groep)",
     "{sharee} (at {server})" : "{sharee} (by {server})",
-    "{sharee} (remote)" : "{sharee} (afstand)",
     "Share" : "Deel",
     "User and Groups" : "Gebruiker en Groepe",
     "Public Links" : "Openbare Skakels",

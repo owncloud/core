@@ -207,7 +207,6 @@ OC.L10N.register(
     "An error occurred. Please try again" : "خطایی روی داده است. لطفا دوباره تلاش کنید",
     "{sharee} (group)" : "{به اشتراک گذاری} (گروه)",
     "{sharee} (at {server})" : "{به اشتراک گذاری} (در {سرور})",
-    "{sharee} (remote)" : "{به اشتراک گذاری} (از راه دور)",
     "Share" : "اشتراک‌گذاری",
     "User and Groups" : "کاربر و گروه ها",
     "Public Links" : "پیوندهای عمومی",

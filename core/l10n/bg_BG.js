@@ -197,7 +197,6 @@ OC.L10N.register(
     "An error occurred. Please try again" : "Възникна грешка. Моля, опитайте отново",
     "{sharee} (group)" : "{sharee} (група)",
     "{sharee} (at {server})" : "{sharee} (на {server})",
-    "{sharee} (remote)" : "{sharee} (отдалечен)",
     "Share" : "Споделяне",
     "User and Groups" : "Потребители и Групи",
     "Public Links" : "Публични връзки",

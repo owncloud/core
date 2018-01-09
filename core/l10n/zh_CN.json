@@ -198,7 +198,6 @@
     "An error occurred. Please try again" : "发生错误。请重试。",
     "{sharee} (group)" : "{sharee} (组)",
     "{sharee} (at {server})" : "{sharee} (位于 {server})",
-    "{sharee} (remote)" : "{sharee} (远程)",
     "Share" : "分享",
     "User and Groups" : "用户和组",
     "Public Links" : "公共链接",

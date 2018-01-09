@@ -196,7 +196,6 @@ OC.L10N.register(
     "An error occurred. Please try again" : "Der opstor den fejl. Prøv igen",
     "{sharee} (group)" : "{sharee} (gruppe)",
     "{sharee} (at {server})" : "{sharee} (på {server})",
-    "{sharee} (remote)" : "{sharee} (ekstern)",
     "Share" : "Del",
     "User and Groups" : "Bruger og Grupper",
     "Public Links" : "Offentlige links",

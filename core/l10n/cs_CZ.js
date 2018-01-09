@@ -196,7 +196,6 @@ OC.L10N.register(
     "An error occurred. Please try again" : "Došlo k chybě. Zkuste to prosím znovu",
     "{sharee} (group)" : "{sharee} (skupina)",
     "{sharee} (at {server})" : "{sharee} (na {server})",
-    "{sharee} (remote)" : "{sharee} (vzdálený)",
     "Share" : "Sdílet",
     "User and Groups" : "Uživatelé a skupiny",
     "Public Links" : "Veřejné odkazy",

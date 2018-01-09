@@ -286,6 +286,7 @@ OC.L10N.register(
     "Personal" : "個人",
     "Admin" : "管理",
     "Error" : "エラー",
+    "Show enabled/disabled option" : "有効/無効オプションを表示",
     "Show storage location" : "データの保存場所を表示",
     "Show last log in" : "最終ログインを表示",
     "Show user backend" : "ユーザーバックエンドを表示",

@@ -180,7 +180,6 @@ OC.L10N.register(
     "An error occurred. Please try again" : "Un error ha occurrite. Per favor, reproba",
     "{sharee} (group)" : "{sharee} (gruppo)",
     "{sharee} (at {server})" : "{sharee} (a {server})",
-    "{sharee} (remote)" : "{sharee} (distante)",
     "Share" : "Compartir",
     "Resharing is not allowed" : "Il non es permittite compartir plus que un vice",
     "Share with people on other ownClouds using the syntax username@example.com/owncloud" : "Compartir con personas sur altere ownClouds usante le syntaxe username@example.com/owncloud",

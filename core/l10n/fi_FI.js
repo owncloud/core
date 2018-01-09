@@ -182,7 +182,6 @@ OC.L10N.register(
     "An error occurred. Please try again" : "Tapahtui virhe, yritä uudelleen",
     "{sharee} (group)" : "{sharee} (ryhmä)",
     "{sharee} (at {server})" : "{sharee} (palvelimella {server})",
-    "{sharee} (remote)" : "{sharee} (etä)",
     "Share" : "Jaa",
     "User and Groups" : "Käyttäjät ja ryhmät",
     "Public Links" : "Julkiset linkit",
