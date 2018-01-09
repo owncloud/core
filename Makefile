@@ -2,7 +2,7 @@
 #
 # Requirements to run make here:
 #    - node
-#    - yarn
+#    - npm
 #
 # Both can be installed following e.g. the Debian/Ubuntu instructions at
 # https://nodejs.org/en/download/package-manager/
@@ -32,14 +32,15 @@ NODE_PREFIX=build
 SHELL=/bin/bash
 
 #
-# Define YARN and check if it is available on the system.
+# Define NPM and check if it is available on the system.
 #
-YARN := $(shell command -v yarn 2> /dev/null)
-ifndef YARN
-	$(error yarn is not available on your system, please install yarn (npm install -g yarn))
+NPM := $(shell command -v npm 2> /dev/null)
+ifndef NPM
+    $(error npm is not available on your system, please install npm)
 endif
 
 KARMA=$(NODE_PREFIX)/node_modules/.bin/karma
+BOWER=$(NODE_PREFIX)/node_modules/bower/bin/bower
 JSDOC=$(NODE_PREFIX)/node_modules/.bin/jsdoc
 PHPUNIT="$(shell pwd)/lib/composer/phpunit/phpunit/phpunit"
 COMPOSER_BIN=build/composer.phar
@@ -67,10 +68,10 @@ dist_dir=build/dist
 # Catch-all rules
 #
 .PHONY: all
-all: help-hint $(composer_dev_deps) $(nodejs_deps)
+all: help-hint $(composer_dev_deps) $(core_vendor) $(nodejs_deps)
 
 .PHONY: clean
-clean: clean-composer-deps clean-nodejs-deps clean-test clean-dist
+clean: clean-composer-deps clean-nodejs-deps clean-js-deps clean-test clean-dist
 
 .PHONY: help-hint
 help-hint:
@@ -87,7 +88,7 @@ help:
 	@echo -e "make clean\t\t\tclean everything"
 	@echo -e "make install-composer-deps\tinstall composer dependencies"
 	@echo -e "make update-composer\t\tupdate composer.lock"
-	@echo -e "make install-nodejs-deps\t\tinstall Node JS and Javascript dependencies"
+	@echo -e "make install-js-deps\t\tinstall Javascript dependencies"
 	@echo
 	@echo -e "Note that running 'make' without arguments already installs all required dependencies"
 	@echo
@@ -144,19 +145,31 @@ clean-composer-deps:
 # Node JS dependencies for tools
 #
 $(nodejs_deps): build/package.json
-	cd $(NODE_PREFIX) && $(YARN) install
-	touch $@
-
-# alias for core deps
-$(core_vendor): $(nodejs_deps)
+	$(NPM) install --prefix $(NODE_PREFIX)
+	touch $(nodejs_deps)
 
 .PHONY: install-nodejs-deps
 install-nodejs-deps: $(nodejs_deps)
 
 .PHONY: clean-nodejs-deps
 clean-nodejs-deps:
-	rm -Rf $(core_vendor)
 	rm -Rf $(nodejs_deps)
+
+#
+# ownCloud core JS dependencies
+$(core_vendor): $(nodejs_deps) bower.json
+	$(BOWER) install
+
+.PHONY: install-js-deps
+install-js-deps: $(nodejs_deps)
+
+.PHONY: update-js-deps
+update-js-deps: $(nodejs_deps)
+	$(BOWER) update
+
+.PHONY: clean-js-deps
+clean-js-deps:
+	rm -Rf $(core_vendor)
 
 #
 # Tests
@@ -170,11 +183,11 @@ test-external: $(composer_dev_deps)
 	PHPUNIT=$(PHPUNIT) build/autotest-external.sh $(TEST_DATABASE) $(TEST_EXTERNAL_ENV) $(TEST_PHP_SUITE)
 
 .PHONY: test-js
-test-js: $(nodejs_deps)
+test-js: $(nodejs_deps) $(js_deps) $(core_vendor)
 	NODE_PATH='$(NODE_PREFIX)/node_modules' $(KARMA) start tests/karma.config.js --single-run
 
 .PHONY: test-js-debug
-test-js-debug: $(nodejs_deps)
+test-js-debug: $(nodejs_deps) $(js_deps) $(core_vendor)
 	NODE_PATH='$(NODE_PREFIX)/node_modules' $(KARMA) start tests/karma.config.js
 
 .PHONY: test-integration
@@ -220,9 +233,9 @@ clean-docs:
 #
 # Build distribution
 #
-$(dist_dir)/owncloud: $(composer_deps) $(nodejs_deps) $(core_all_src)
+$(dist_dir)/owncloud: $(composer_deps) $(core_vendor) $(core_all_src)
 	rm -Rf $@; mkdir -p $@/config
-	cp -RL $(core_all_src) $@
+	cp -R $(core_all_src) $@
 	cp -R config/config.sample.php $@/config
 	rm -Rf $(dist_dir)/owncloud/apps/testing
 	find $@ -name .gitkeep -delete
@@ -271,9 +284,9 @@ clean-dist:
 #
 # Build qa distribution
 #
-$(dist_dir)/qa/owncloud: $(composer_dev_deps) $(nodejs_deps) $(core_all_src) $(core_test_dirs)
+$(dist_dir)/qa/owncloud: $(composer_dev_deps) $(core_vendor) $(core_all_src) $(core_test_dirs)
 	rm -Rf $@; mkdir -p $@/config
-	cp -RL $(core_all_src) $@
+	cp -R $(core_all_src) $@
 	cp -R $(core_test_dirs) $@
 	cp -R config/config.sample.php $@/config
 	find $@ -name .gitkeep -delete
