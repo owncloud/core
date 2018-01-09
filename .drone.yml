@@ -58,6 +58,16 @@ pipeline:
       local: false
       event: [push]
 
+  javascript:
+    image: owncloudci/php:${PHP_VERSION}
+    pull: true
+    group: test
+    commands:
+      - ./tests/drone/test-javascript.sh
+    when:
+      matrix:
+        TEST_SUITE: phpunit
+
   phpunit:
     image: owncloudci/php:${PHP_VERSION}
     pull: true
@@ -73,15 +83,6 @@ pipeline:
       matrix:
         TEST_SUITE: phpunit
 
-  test-javascript:
-    image: owncloudci/php:${PHP_VERSION}
-    pull: true
-    commands:
-      - ./tests/drone/test-javascript.sh
-    when:
-      matrix:
-        TEST_SUITE: javascript
-
   codecov:
     image: plugins/codecov:1
     secrets: [codecov_token]
@@ -89,6 +90,7 @@ pipeline:
     files:
      - tests/autotest-clover-${DB_TYPE}.xml
      - tests/autotest-external-clover-${DB_TYPE}.xml
+     - tests/autotest-external-clover-${DB_TYPE}-${FILES_EXTERNAL_TYPE}.xml
     when:
       event: [push, pull_request]
       matrix:
@@ -140,10 +142,10 @@ services:
         DB_TYPE: postgres
 
   owncloud_external:
-    image: owncloud/server:latest
+    image: morrisjobke/owncloud:latest
     when:
       matrix:
-        FILES_EXTERNAL_TYPE: webdav
+        FILES_EXTERNAL_TYPE: Webdav
 
   oracle:
     image: deepdiver/docker-oracle-xe-11g
@@ -246,5 +248,5 @@ matrix:
     - PHP_VERSION: 7.1
       DB_TYPE: sqlite
       TEST_SUITE: phpunit
-      FILES_EXTERNAL_TYPE: webdav
+      FILES_EXTERNAL_TYPE: Webdav
       ENABLE_COVERAGE: true
