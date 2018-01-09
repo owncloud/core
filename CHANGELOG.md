@@ -12,7 +12,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/).
 - Link to trusted domains docs in error message - [#29730](https://github.com/owncloud/core/issues/29730)
 - Add indices on share table - [#29883](https://github.com/owncloud/core/issues/29883) [#29592](https://github.com/owncloud/core/issues/29592)
 - Add dispatcher event for "unshare from self" action - [#29851](https://github.com/owncloud/core/issues/29851)
-- Works now with PHP 7.2 - [#29878](https://github.com/owncloud/core/issues/29878)
+- Technology preview for PHP 7.2 support - [#29878](https://github.com/owncloud/core/issues/29878)
 - Added public hooks for file operations using Symfony Event Dispatcher - [#29939](https://github.com/owncloud/core/issues/29939)
 - Expose getAppPath() and getAppWebPath() on the AppManager service [#30041](https://github.com/owncloud/core/pull/30041)
 - Add warning in settings page when running in debug mode - [#29936](https://github.com/owncloud/core/issues/29936)
