@@ -12,7 +12,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/).
 - Link to trusted domains docs in error message - [#29730](https://github.com/owncloud/core/issues/29730)
 - Add indices on share table - [#29883](https://github.com/owncloud/core/issues/29883) [#29592](https://github.com/owncloud/core/issues/29592)
 - Add dispatcher event for "unshare from self" action - [#29851](https://github.com/owncloud/core/issues/29851)
-- Works now with PHP 7.2 - [#29878](https://github.com/owncloud/core/issues/29878)
+- Technology preview for PHP 7.2 support - [#29878](https://github.com/owncloud/core/issues/29878)
 - Added public hooks for file operations using Symfony Event Dispatcher - [#29939](https://github.com/owncloud/core/issues/29939)
 - Expose getAppPath() and getAppWebPath() on the AppManager service [#30041](https://github.com/owncloud/core/pull/30041)
 - Add warning in settings page when running in debug mode - [#29936](https://github.com/owncloud/core/issues/29936)
@@ -23,6 +23,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/).
 - Only allow a single active theme app with no magic fallbacks to inactive app themes  - [#29854](https://github.com/owncloud/core/issues/29854)
 - Config report now hides email address from email config - [#29949](https://github.com/owncloud/core/issues/29949)
 - Switched to yarn for JS dependencies - [#30026](https://github.com/owncloud/core/issues/30026)
+- Change "remote" to "federated" suffix in sharing autocomplete dialog. - [#30046](https://github.com/owncloud/core/issues/30046)
 
 ### Removed
 - Removed old Dropbox storage backend, people should use the [files_external_dropbox app](https://github.com/owncloud/files_external_dropbox/) instead - [#29135](https://github.com/owncloud/core/issues/29135)
@@ -30,6 +31,9 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/).
 - Remove unused composer dependency on natxet/CssMin - [#29930](https://github.com/owncloud/core/issues/29930)
 
 ### Fixed
+- Redisplay login page on CSRF error - [#30035](https://github.com/owncloud/core/issues/30035)
+- Do not reset dispalyname to uid on sso login - [#30038](https://github.com/owncloud/core/issues/30038)
+- Do not automatically disable apps of certain types - [#29870](https://github.com/owncloud/core/issues/29870)
 - Fix provisioning API when dealing with group name "0" - [#30004](https://github.com/owncloud/core/issues/30004)
 - Tweak occ command help output - [#29959](https://github.com/owncloud/core/issues/29959)
 - Now using upsert instead of insertIfNotExists for file cache updates, fixes concurrency issues - [#29934](https://github.com/owncloud/core/issues/29934)
