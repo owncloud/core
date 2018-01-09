@@ -21,6 +21,7 @@ use OCP\IUser;
 use OCP\IUserSession;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Test\TestCase;
+use org\bovigo\vfs\vfsStream;
 
 /**
  * Class Manager
@@ -458,6 +459,55 @@ class ManagerTest extends TestCase {
 		return [
 			[true, 'single-instance'],
 			[false, 'clustered-instance'],
+		];
+	}
+
+	/**
+	 * @dataProvider appInfoDataProvider
+	 *
+	 * @param string $firstDirVersion
+	 * @param string $secondDirVersion
+	 * @param bool $isFirstWinner
+	 */
+	public function testTheMostRecentAppIsFound($firstDirVersion, $secondDirVersion, $isFirstWinner) {
+		$appId = 'bogusapp';
+		$appsParentDir = vfsStream::setup();
+		$firstAppDir = vfsStream::newDirectory('apps')->at($appsParentDir);
+		$appDir1 = vfsStream::newDirectory($appId)->at($firstAppDir);
+		$secondAppDir = vfsStream::newDirectory('apps2')->at($appsParentDir);
+		$appDir2 = vfsStream::newDirectory($appId)->at($secondAppDir);
+
+		$appManager = $this->getMockBuilder(AppManager::class)
+			->setMethods(['getAppVersionByPath', 'getAppRoots'])
+			->disableOriginalConstructor()
+			->getMock();
+
+		$appManager->expects($this->any())
+			->method('getAppRoots')
+			->willReturn([
+				[
+					'path' => $firstAppDir->url(),
+					'url' => $firstAppDir->url(),
+				],
+				[
+					'path' => $secondAppDir->url(),
+					'url' => $secondAppDir->url(),
+				]
+			]);
+
+		$appManager->expects($this->any())
+			->method('getAppVersionByPath')
+			->will($this->onConsecutiveCalls($firstDirVersion, $secondDirVersion));
+
+		$expected = $isFirstWinner ? $appDir1->url() : $appDir2->url();
+		$appPath = $appManager->getAppPath($appId);
+		$this->assertEquals($expected, $appPath);
+	}
+
+	public function appInfoDataProvider() {
+		return [
+			[ '1.2.3', '3.2.4', false ],
+			[ '2.2.3', '2.2.1', true ]
 		];
 	}
 }

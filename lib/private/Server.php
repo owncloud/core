@@ -543,10 +543,17 @@ class Server extends ServerContainer implements IServerContainer, IServiceLoader
 			);
 		});
 		$this->registerService('AppManager', function (Server $c) {
+			if(\OC::$server->getSystemConfig()->getValue('installed', false)) {
+				$appConfig = $c->getAppConfig();
+				$groupManager = $c->getGroupManager();
+			} else {
+				$appConfig = null;
+				$groupManager = null;
+			}
 			return new \OC\App\AppManager(
 				$c->getUserSession(),
-				$c->getAppConfig(),
-				$c->getGroupManager(),
+				$appConfig,
+				$groupManager,
 				$c->getMemCacheFactory(),
 				$c->getEventDispatcher(),
 				$c->getConfig()
