@@ -64,10 +64,11 @@ fi
 
 set_up_external_storage() {
     ./occ app:enable files_external
+    ./occ config:app:set core enable_external_storage --value=yes
     case "${FILES_EXTERNAL_TYPE}" in
-    webdav)
+    Webdav)
         wait-for-it owncloud_external:80
-        cat > config/config.webdav.php <<DELIM
+        cat > apps/files_external/tests/config.webdav.php <<DELIM
  <?php
  return array(
      'run'=>true,
@@ -86,19 +87,24 @@ DELIM
     esac
 }
 
+FILES_EXTERNAL_BACKEND_PATH=apps/files_external/tests/Storage
+FILES_EXTERNAL_TEST_TO_RUN=${FILES_EXTERNAL_TYPE}Test.php
+
 
 if [[ ${ENABLE_COVERAGE} == "true" ]]; then
     if [[ -n ${FILES_EXTERNAL_TYPE} ]]; then
         set_up_external_storage
-        exec phpdbg -d memory_limit=4096M -rr ./lib/composer/bin/phpunit --configuration tests/phpunit-autotest-external.xml ${GROUP} --coverage-clover tests/autotest-external-clover-${DB_TYPE}.xml
+        phpdbg -d memory_limit=4096M -rr ./lib/composer/bin/phpunit --configuration tests/phpunit-autotest-external.xml ${GROUP} --coverage-clover tests/autotest-external-clover-${DB_TYPE}.xml
+        phpdbg -d memory_limit=4096M -rr ./lib/composer/bin/phpunit --configuration tests/phpunit-autotest-external.xml ${GROUP} --coverage-clover tests/autotest-external-clover-${DB_TYPE}-${FILES_EXTERNAL_TYPE}.xml ${FILES_EXTERNAL_BACKEND_PATH}/${FILES_EXTERNAL_TEST_TO_RUN}
     else
-        exec phpdbg -d memory_limit=4096M -rr ./lib/composer/bin/phpunit --configuration tests/phpunit-autotest.xml ${GROUP} --coverage-clover tests/autotest-clover-${DB_TYPE}.xml
+        phpdbg -d memory_limit=4096M -rr ./lib/composer/bin/phpunit --configuration tests/phpunit-autotest.xml ${GROUP} --coverage-clover tests/autotest-clover-${DB_TYPE}.xml
     fi
 else
     if [[ -n ${FILES_EXTERNAL_TYPE} ]]; then
         set_up_external_storage
-        exec ./lib/composer/bin/phpunit --configuration tests/phpunit-autotest-external.xml ${GROUP} --log-junit tests/autotest-external-results-${DB_TYPE}.xml
+        ./lib/composer/bin/phpunit --configuration tests/phpunit-autotest-external.xml ${GROUP} --log-junit tests/autotest-external-results-${DB_TYPE}.xml
+        ./lib/composer/bin/phpunit --configuration tests/phpunit-autotest-external.xml ${GROUP} --log-junit tests/autotest-external-results-${DB_TYPE}-${FILES_EXTERNAL_TYPE}.xml ${FILES_EXTERNAL_BACKEND_PATH}/${FILES_EXTERNAL_TEST_TO_RUN}
     else
-        exec ./lib/composer/bin/phpunit --configuration tests/phpunit-autotest.xml ${GROUP} --log-junit tests/autotest-results-${DB_TYPE}.xml    
+        ./lib/composer/bin/phpunit --configuration tests/phpunit-autotest.xml ${GROUP} --log-junit tests/autotest-results-${DB_TYPE}.xml    
     fi
 fi
