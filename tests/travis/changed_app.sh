@@ -4,7 +4,7 @@
 #
 # @author Joas Schilling
 # @author Thomas Müller
-# @copyright 2015 Thomas Müller thomas.mueller@tmit.eu
+# @copyright Copyright (c) 2015 Thomas Müller thomas.mueller@tmit.eu
 #
 
 APP=$1

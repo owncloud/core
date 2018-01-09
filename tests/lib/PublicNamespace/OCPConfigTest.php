@@ -3,7 +3,7 @@
  * ownCloud
  *
  * @author Thomas Müller
- * @copyright 2014 Thomas Müller thomas.mueller@tmit.eu
+ * @copyright Copyright (c) 2014 Thomas Müller thomas.mueller@tmit.eu
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU AFFERO GENERAL PUBLIC LICENSE

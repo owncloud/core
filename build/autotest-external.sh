@@ -4,8 +4,8 @@
 #
 # @author Thomas Müller
 # @author Morris Jobke
-# @copyright 2012-2015 Thomas Müller thomas.mueller@tmit.eu
-# @copyright 2014 Morris Jobke hey@morrisjobke.de
+# @copyright Copyright (c) 2012-2015 Thomas Müller thomas.mueller@tmit.eu
+# @copyright Copyright (c) 2014 Morris Jobke hey@morrisjobke.de
 #
 
 #$EXECUTOR_NUMBER is set by Jenkins and allows us to run autotest in parallel

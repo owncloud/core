@@ -1,7 +1,7 @@
 <?php
 /**
- * @copyright 2013 Thomas Tanghus (thomas@tanghus.net)
- * @copyright 2015 Lukas Reschke lukas@owncloud.com
+ * @copyright Copyright (c) 2013 Thomas Tanghus (thomas@tanghus.net)
+ * @copyright Copyright (c) 2015 Lukas Reschke lukas@owncloud.com
  *
  * This file is licensed under the Affero General Public License version 3 or
  * later.

@@ -10,7 +10,7 @@
 #
 # @author Morris Jobke
 # @author Robin McCorkell
-# @copyright 2015 ownCloud
+# @copyright Copyright (c) 2018, ownCloud GmbH
 
 if ! command -v docker >/dev/null 2>&1; then
     echo "No docker executable found - skipped docker setup"
