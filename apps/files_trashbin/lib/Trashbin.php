@@ -15,7 +15,7 @@
  * @author Sjors van der Pluijm <sjors@desjors.nl>
  * @author Steven Bühner <buehner@me.com>
  * @author Thomas Müller <thomas.mueller@tmit.eu>
- * @author Victor Dubiniuk <dubiniuk@owncloud.com>
+ * @author Viktar Dubiniuk <dubiniuk@owncloud.com>
  * @author Vincent Petry <pvince81@owncloud.com>
  *
  * @copyright Copyright (c) 2018, ownCloud GmbH
@@ -45,9 +45,6 @@ use OCP\Files\NotFoundException;
 use OCP\User;
 
 class Trashbin {
-
-	// unit: percentage; 50% of available disk space/quota
-	const DEFAULTMAXSIZE = 50;
 
 	/**
 	 * Whether versions have already be rescanned during this PHP request
@@ -664,8 +661,6 @@ class Trashbin {
 
 		if ($timestamp) {
 			$filename = $filename . '.d' . $timestamp;
-		} else {
-			$filename = $filename;
 		}
 
 		$target = Filesystem::normalizePath('files_trashbin/files/' . $filename);
@@ -684,60 +679,13 @@ class Trashbin {
 	}
 
 	/**
-	 * calculate remaining free space for trash bin
-	 *
-	 * @param integer $trashbinSize current size of the trash bin
-	 * @param string $user
-	 * @return int available free space for trash bin
-	 */
-	private static function calculateFreeSpace($trashbinSize, $user) {
-		$softQuota = true;
-		$userObject = \OC::$server->getUserManager()->get($user);
-		if(is_null($userObject)) {
-			return 0;
-		}
-		$quota = \OC_Util::getUserQuota($userObject);
-		if ($quota === \OCP\Files\FileInfo::SPACE_UNLIMITED) {
-			$quota = Filesystem::free_space('/');
-			$softQuota = false;
-			// inf or unknown free space
-			if ($quota < 0) {
-				$quota = PHP_INT_MAX;
-			}
-		} else {
-			$quota = \OCP\Util::computerFileSize($quota);
-		}
-
-		// calculate available space for trash bin
-		// subtract size of files and current trash bin size from quota
-		if ($softQuota) {
-			$userFolder = \OC::$server->getUserFolder($user);
-			if(is_null($userFolder)) {
-				return 0;
-			}
-			$free = $quota - $userFolder->getSize(); // remaining free space for user
-			if ($free > 0) {
-				$availableSpace = ($free * self::DEFAULTMAXSIZE / 100) - $trashbinSize; // how much space can be used for versions
-			} else {
-				$availableSpace = $free - $trashbinSize;
-			}
-		} else {
-			$availableSpace = $quota;
-		}
-
-		return $availableSpace;
-	}
-
-	/**
 	 * resize trash bin if necessary after a new file was added to ownCloud
 	 *
 	 * @param string $user user id
 	 */
 	public static function resizeTrash($user) {
-
 		$size = self::getTrashbinSize($user);
-
-		$freeSpace = self::calculateFreeSpace($size, $user);
+		$freeSpace = self::getQuota()->calculateFreeSpace($size, $user);
 
 		if ($freeSpace < 0) {
 			self::scheduleExpire($user);
@@ -751,7 +699,7 @@ class Trashbin {
 	 */
 	public static function expire($user) {
 		$trashBinSize = self::getTrashbinSize($user);
-		$availableSpace = self::calculateFreeSpace($trashBinSize, $user);
+		$availableSpace = self::getQuota()->calculateFreeSpace($trashBinSize, $user);
 
 		$dirContent = Helper::getTrashFiles('/', $user, 'mtime');
 
@@ -762,6 +710,14 @@ class Trashbin {
 
 		// delete files from trash until we meet the trash bin size limit again
 		self::deleteFiles(array_slice($dirContent, $count), $user, $availableSpace);
+	}
+
+	/**
+	 * @return Quota
+	 */
+	protected static function getQuota() {
+		$application = new Application();
+		return $application->getContainer()->query('Quota');
 	}
 
 	/**
@@ -794,7 +750,13 @@ class Trashbin {
 			foreach ($files as $file) {
 				if ($availableSpace < 0 && $expiration->isExpired($file['mtime'], true)) {
 					$tmp = self::delete($file['name'], $user, $file['mtime']);
-					\OCP\Util::writeLog('files_trashbin', 'remove "' . $file['name'] . '" (' . $tmp . 'B) to meet the limit of trash bin size (50% of available quota)', \OCP\Util::INFO);
+					$message = sprintf(
+						'remove "%s" (%dB) to meet the limit of trash bin size (%d%% of available quota)',
+						$file['name'],
+						$tmp,
+						self::getQuota()->getPurgeLimit()
+					);
+					\OCP\Util::writeLog('files_trashbin', $message, \OCP\Util::INFO);
 					$availableSpace += $tmp;
 					$size += $tmp;
 				} else {
