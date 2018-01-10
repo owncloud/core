@@ -1,6 +1,7 @@
 <?php
 /**
  * @author Joas Schilling <nickvergessen@owncloud.com>
+ * @author Jörn Friedrich Dreyer <jfd@butonic.de>
  *
  * @copyright Copyright (c) 2018, ownCloud GmbH
  * @license AGPL-3.0
@@ -23,37 +24,42 @@ namespace Tests\Core\Command\User;
 
 
 use OC\Core\Command\User\Delete;
+use OCP\IUserManager;
+use Symfony\Component\Console\Application;
+use Symfony\Component\Console\Tester\CommandTester;
 use Test\TestCase;
 
 class DeleteTest extends TestCase {
-	/** @var \PHPUnit_Framework_MockObject_MockObject */
-	protected $userManager;
-	/** @var \PHPUnit_Framework_MockObject_MockObject */
-	protected $consoleInput;
-	/** @var \PHPUnit_Framework_MockObject_MockObject */
-	protected $consoleOutput;
 
-	/** @var \Symfony\Component\Console\Command\Command */
-	protected $command;
+	/** @var \PHPUnit_Framework_MockObject_MockObject|IUserManager */
+	protected $userManager;
+
+	/** @var CommandTester */
+	private $commandTester;
 
 	protected function setUp() {
 		parent::setUp();
-
-		$userManager = $this->userManager = $this->getMockBuilder('OCP\IUserManager')
+		$this->userManager = $this->getMockBuilder('OCP\IUserManager')
 			->disableOriginalConstructor()
 			->getMock();
-		$this->consoleInput = $this->createMock('Symfony\Component\Console\Input\InputInterface');
-		$this->consoleOutput = $this->createMock('Symfony\Component\Console\Output\OutputInterface');
 
-		/** @var \OCP\IUserManager $userManager */
-		$this->command = new Delete($userManager);
+		$application = new Application(
+			\OC::$server->getConfig(),
+			\OC::$server->getEventDispatcher(),
+			\OC::$server->getRequest()
+		);
+
+		$command = new Delete($this->userManager);
+		$command->setApplication($application);
+		$this->commandTester = new CommandTester($command);
+
 	}
 
 
 	public function validUserLastSeen() {
 		return [
-			[true, 'The specified user was deleted'],
-			[false, 'The specified user could not be deleted'],
+			[true, "User with uid 'user', display name 'Display Name', email 'email@host.tld' was deleted"],
+			[false, "User with uid 'user', display name 'Display Name', email 'email@host.tld' could not be deleted"],
 		];
 	}
 
@@ -61,29 +67,31 @@ class DeleteTest extends TestCase {
 	 * @dataProvider validUserLastSeen
 	 *
 	 * @param bool $deleteSuccess
-	 * @param string $expectedString
+	 * @param string $expectedOutput
 	 */
-	public function testValidUser($deleteSuccess, $expectedString) {
+	public function testValidUser($deleteSuccess, $expectedOutput) {
 		$user = $this->createMock('OCP\IUser');
 		$user->expects($this->once())
 			->method('delete')
 			->willReturn($deleteSuccess);
+		$user->expects($this->any())
+			->method('getUID')
+			->willReturn('user');
+		$user->expects($this->any())
+			->method('getDisplayName')
+			->willReturn('Display Name');
+		$user->expects($this->any())
+			->method('getEMailAddress')
+			->willReturn('email@host.tld');
 
 		$this->userManager->expects($this->once())
 			->method('get')
 			->with('user')
 			->willReturn($user);
 
-		$this->consoleInput->expects($this->once())
-			->method('getArgument')
-			->with('uid')
-			->willReturn('user');
-
-		$this->consoleOutput->expects($this->once())
-			->method('writeln')
-			->with($this->stringContains($expectedString));
-
-		self::invokePrivate($this->command, 'execute', [$this->consoleInput, $this->consoleOutput]);
+		$this->commandTester->execute(['uid' => 'user']);
+		$output = $this->commandTester->getDisplay();
+		$this->assertContains($expectedOutput, $output);
 	}
 
 	public function testInvalidUser() {
@@ -92,15 +100,8 @@ class DeleteTest extends TestCase {
 			->with('user')
 			->willReturn(null);
 
-		$this->consoleInput->expects($this->once())
-			->method('getArgument')
-			->with('uid')
-			->willReturn('user');
-
-		$this->consoleOutput->expects($this->once())
-			->method('writeln')
-			->with($this->stringContains('User does not exist'));
-
-		self::invokePrivate($this->command, 'execute', [$this->consoleInput, $this->consoleOutput]);
+		$this->commandTester->execute(['uid' => 'user']);
+		$output = $this->commandTester->getDisplay();
+		$this->assertContains("User with uid 'user' does not exist", $output);
 	}
 }
