@@ -311,7 +311,7 @@ OC.L10N.register(
     "App passwords" : "App-Passwörter",
     "You've linked these apps." : "Sie haben diese Apps verbunden.",
     "Name" : "Name",
-    "An app password is a passcode that gives an app or device permissions to access your %s account." : "Ein App-Passwort ist ein Passwort, dass einer App oder einem Gerät erlaubt auf Ihren %s-Konto zuzugreifen.",
+    "An app password is a passcode that gives an app or device permissions to access your %s account." : "Ein App-Passwort ist ein Passwort, dass einer App oder einem Gerät erlaubt auf ihr %s-Konto zuzugreifen.",
     "App name" : "App-Name",
     "Create new app password" : "Neues App-Passwort erstellen",
     "Use the credentials below to configure your app or device." : "Verwenden Sie die folgenden Zugangsdaten um Ihre App oder Ihr Gerät zu konfigurieren.",
