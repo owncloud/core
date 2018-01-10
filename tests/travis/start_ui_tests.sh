@@ -282,9 +282,10 @@ then
 	if verlte "$BROWSER_VERSION" "47.0"
 	then
 		EXTRA_CAPABILITIES='"seleniumVersion":"2.53.1",'$EXTRA_CAPABILITIES
+	else
+		EXTRA_CAPABILITIES='"seleniumVersion":"3.4.0",'$EXTRA_CAPABILITIES
 	fi
 fi
-
 
 if [ "$BROWSER" == "internet explorer" ]
 then
