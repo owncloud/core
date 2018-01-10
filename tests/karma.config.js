@@ -161,11 +161,7 @@ module.exports = function(config) {
 	files.push(corePath + 'tests/specHelper.js');
 
 	var srcFile, i;
-	// add vendor library files
-	for ( i = 0; i < coreModule.vendor.length; i++ ) {
-		srcFile = vendorPath + coreModule.vendor[i];
-		files.push(srcFile);
-	}
+	files.push(vendorPath + 'vendor.bundle.js');
 
 	// add core library files
 	for ( i = 0; i < coreModule.libraries.length; i++ ) {
@@ -293,7 +289,6 @@ module.exports = function(config) {
 		captureTimeout: 60000,
 		browserNoActivityTimeout: 60000,
 		browserDisconnectTimeout: 30000,
-		captureTimeout: 60000,
 
 		// Continuous Integration mode
 		// if true, it capture browsers, run tests and exit
