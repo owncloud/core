@@ -7,3 +7,4 @@ if [[ "$(pwd)" == "$(cd "$(dirname "$0")"; pwd -P)" ]]; then
 fi
 
 exec yarn install --cwd build
+
