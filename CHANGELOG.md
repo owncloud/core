@@ -30,8 +30,9 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/).
 - Remove unused composer dependency on natxet/CssMin - [#29930](https://github.com/owncloud/core/issues/29930)
 
 ### Fixed
+- Fix Dropbox / GDrive oauth handshake handling - [#30071](https://github.com/owncloud/core/pull/30071)
 - Redisplay login page on CSRF error - [#30035](https://github.com/owncloud/core/issues/30035)
-- Do not reset dispalyname to uid on sso login - [#30038](https://github.com/owncloud/core/issues/30038)
+- Do not reset display name to uid on sso login - [#30038](https://github.com/owncloud/core/issues/30038)
 - Do not automatically disable apps of certain types - [#29870](https://github.com/owncloud/core/issues/29870)
 - Fix provisioning API when dealing with group name "0" - [#30004](https://github.com/owncloud/core/issues/30004)
 - Tweak occ command help output - [#29959](https://github.com/owncloud/core/issues/29959)
