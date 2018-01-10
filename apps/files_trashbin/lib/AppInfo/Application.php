@@ -1,7 +1,7 @@
 <?php
 /**
  * @author Roeland Jago Douma <rullzer@owncloud.com>
- * @author Victor Dubiniuk <dubiniuk@owncloud.com>
+ * @author Viktar Dubiniuk <dubiniuk@owncloud.com>
  *
  * @copyright Copyright (c) 2017, ownCloud GmbH
  * @license AGPL-3.0
@@ -23,6 +23,7 @@
 namespace OCA\Files_Trashbin\AppInfo;
 
 use OCA\Files_Trashbin\Expiration;
+use OCA\Files_Trashbin\Quota;
 use OCP\AppFramework\App;
 
 class Application extends App {
@@ -39,9 +40,19 @@ class Application extends App {
 		 * Register expiration
 		 */
 		$container->registerService('Expiration', function($c) {
-			return  new Expiration(
+			return new Expiration(
 				$c->query('ServerContainer')->getConfig(),
 				$c->query('OCP\AppFramework\Utility\ITimeFactory')
+			);
+		});
+
+		/*
+		 * Register quota
+		 */
+		$container->registerService('Quota', function($c) {
+			return new Quota(
+				$c->getServer()->getUserManager(),
+				$c->query('ServerContainer')->getConfig()
 			);
 		});
 	}

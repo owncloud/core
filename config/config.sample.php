@@ -485,6 +485,11 @@ $CONFIG = array(
  */
 'trashbin_retention_obligation' => 'auto',
 
+/**
+ * This setting defines percentage of free space occupied by deleted files
+ * that triggers auto purging of deleted files for this user
+ */
+'trashbin_purge_limit' => 50,
 
 /**
  * File versions
