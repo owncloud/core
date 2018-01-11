@@ -295,7 +295,7 @@ GroupList = {
 	},
 
 	getElementGID: function (element) {
-		return ($(element).closest('li').attr('data-gid') || '').toString();
+		return encodeURIComponent(($(element).closest('li').attr('data-gid') || '')).toString();
 	},
 	getEveryoneCount: function () {
 		$.ajax({
