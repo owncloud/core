@@ -243,6 +243,7 @@ class PreviewManager implements IPreview {
 			'OC\Preview\JPEG',
 			'OC\Preview\GIF',
 			'OC\Preview\BMP',
+			'OC\Preview\Heic',
 			'OC\Preview\XBitmap'
 		];
 
@@ -303,6 +304,7 @@ class PreviewManager implements IPreview {
 				'PSD'	=> ['mimetype' => '/application\/x-photoshop/', 'class' => '\OC\Preview\Photoshop'],
 				'EPS'	=> ['mimetype' => '/application\/postscript/', 'class' => '\OC\Preview\Postscript'],
 				'TTF'	=> ['mimetype' => '/application\/(?:font-sfnt|x-font$)/', 'class' => '\OC\Preview\Font'],
+				'HEIC'	=> ['mimetype' => '/image\/hei(f|c)/', 'class' => '\OC\Preview\Heic'],
 			];
 
 			foreach ($imagickProviders as $queryFormat => $provider) {
