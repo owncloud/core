@@ -132,7 +132,7 @@ class GroupsController extends Controller {
 	 * @return DataResponse
 	 */
 	public function destroy($id) {
-		$group = $this->groupManager->get($id);
+		$group = $this->groupManager->get(urldecode($id));
 		if ($group) {
 			if ($group->delete()) {
 				return new DataResponse(
