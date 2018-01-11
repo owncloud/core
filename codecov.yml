@@ -1,0 +1,10 @@
+codecov:
+  ci:
+    - drone.owncloud.com
+    - !jenkins.owncloud.org
+    - !travis-ci.org
+    - !scrutinizer-ci.com
+    - !cla-assistant.io
+
+fixes:
+  - "drone/src/::"
