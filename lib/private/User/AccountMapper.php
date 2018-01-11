@@ -25,8 +25,10 @@ namespace OC\User;
 
 
 use OC\DB\QueryBuilder\Literal;
+use OCP\AppFramework\Db\DoesNotExistException;
 use OCP\AppFramework\Db\Entity;
 use OCP\AppFramework\Db\Mapper;
+use OCP\AppFramework\Db\MultipleObjectsReturnedException;
 use OCP\IConfig;
 use OCP\IDBConnection;
 
@@ -119,6 +121,8 @@ class AccountMapper extends Mapper {
 
 	/**
 	 * @param string $uid
+	 * @throws DoesNotExistException if the account does not exist
+	 * @throws MultipleObjectsReturnedException if more than one account exists
 	 * @return Account
 	 */
 	public function getByUid($uid) {
