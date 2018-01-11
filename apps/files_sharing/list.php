@@ -25,5 +25,6 @@ $tmpl = new OCP\Template('files_sharing', 'list', '');
 
 OCP\Util::addScript('files_sharing', 'app');
 OCP\Util::addScript('files_sharing', 'sharedfilelist');
+OCP\Util::addStyle('files_sharing', 'sharedfilelist');
 
 $tmpl->printPage();

@@ -85,6 +85,7 @@ interface IManager {
 	 * @return IShare
 	 * @throws \InvalidArgumentException If $share is a link share or the $recipient does not match
 	 * @since 9.0.0
+	 * @deprecated 10.0.8 use updateShareForRecipient() instead
 	 */
 	public function moveShare(IShare $share, $recipientId);
 
@@ -347,4 +348,14 @@ interface IManager {
 	 * @since 9.0.0
 	 */
 	public function outgoingServer2ServerSharesAllowed();
+
+	/**
+	 * Updates the share entry of the given recipient
+	 *
+	 * @param IShare $share
+	 * @param string $recipientId
+	 * @throws \InvalidArgumentException If $share is a link share or the $recipient does not match
+	 * @since 10.0.8
+	 */
+	public function updateShareForRecipient(IShare $share, $recipientId);
 }

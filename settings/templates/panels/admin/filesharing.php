@@ -86,6 +86,13 @@
 	<p class="<?php if ($_['shareAPIEnabled'] === 'no') {
 	p('hidden');
 }?>">
+		<input type="checkbox" name="shareapi_auto_accept_share" id="autoAcceptShare" class="checkbox"
+			value="1" <?php if ($_['autoAcceptShare'] === 'yes') print_unescaped('checked="checked"'); ?> />
+		<label for="autoAcceptShare"><?php p($l->t('Automatically accept new incoming local user shares'));?></label><br/>
+	</p>
+	<p class="<?php if ($_['shareAPIEnabled'] === 'no') {
+	p('hidden');
+}?>">
 		<input type="checkbox" name="shareapi_allow_resharing" id="allowResharing" class="checkbox"
 			   value="1" <?php if ($_['allowResharing'] === 'yes') {
 	print_unescaped('checked="checked"');

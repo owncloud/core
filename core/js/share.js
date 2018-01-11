@@ -10,6 +10,10 @@ OC.Share = _.extend(OC.Share || {}, {
 	SHARE_TYPE_GUEST:4,
 	SHARE_TYPE_REMOTE:6,
 
+	STATE_ACCEPTED: 0,
+	STATE_PENDING: 1,
+	STATE_REJECTED: 2,
+
 	/**
 	 * Regular expression for splitting parts of remote share owners:
 	 * "user@example.com/path/to/owncloud"
