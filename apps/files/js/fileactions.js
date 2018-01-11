@@ -37,6 +37,8 @@
 		defaults: {},
 		icons: {},
 
+		_actionFilters: [],
+
 		/**
 		 * @deprecated
 		 */
@@ -175,6 +177,7 @@
 			this.icons = {};
 			this.currentFile = null;
 			this._updateListeners = [];
+			this._actionFilters = [];
 		},
 		/**
 		 * Sets the default action for a given mime type.
@@ -521,6 +524,7 @@
 				this.getCurrentType(),
 				this.getCurrentPermissions()
 			);
+			actions = this._advancedFilter(actions, $tr);
 			var nameLinks;
 			if ($tr.data('renaming')) {
 				return;
@@ -542,6 +546,8 @@
 				fileList: fileList
 			};
 
+
+			var hasDropDownActions = false;
 			$.each(actions, function (name, actionSpec) {
 				if (actionSpec.type === FileActions.TYPE_INLINE) {
 					self._renderInlineAction(
@@ -550,9 +556,14 @@
 						context
 					);
 				}
+				if (!actionSpec.type || actionSpec.type === FileActions.TYPE_DROPDOWN) {
+					hasDropDownActions = true;
+				}
 			});
 
-			this._renderMenuTrigger($tr, context);
+			if (hasDropDownActions) {
+				this._renderMenuTrigger($tr, context);
+			}
 
 			if (triggerEvent){
 				fileList.$fileList.trigger(jQuery.Event("fileActionsReady", {fileList: fileList, $files: $tr}));
@@ -650,6 +661,30 @@
 			});
 
 			this.setDefault('dir', 'Open');
+		},
+
+		/**
+		 * To be overridden by subclasses to add additional filtering of actions based
+		 * on file properties
+		 *
+		 * @param {String.<String,OCA.Files.FileAction>} actions action list with action name as string
+		 * @param $tr jQuery file element
+		 */
+		_advancedFilter: function(actions, $tr) {
+			for (var i = 0; i < this._actionFilters.length; i++) {
+				actions = this._actionFilters[i](actions, $tr);
+			}
+
+			return actions;
+		},
+
+		/**
+		 * Adds a callback to filter actions
+		 *
+		 * @param {Function} callback callback
+		 */
+		addAdvancedFilter: function(callback) {
+			this._actionFilters.push(callback);
 		}
 	};
 

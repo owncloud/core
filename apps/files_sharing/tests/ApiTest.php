@@ -33,6 +33,7 @@ use OCP\IL10N;
 use OCP\IRequest;
 use OCP\Share;
 use Symfony\Component\EventDispatcher\GenericEvent;
+use OCA\Files_Sharing\Service\NotificationPublisher;
 
 /**
  * Class ApiTest
@@ -120,6 +121,7 @@ class ApiTest extends TestCase {
 			$this->shareManager,
 			\OC::$server->getGroupManager(),
 			\OC::$server->getUserManager(),
+			$this->createMock(NotificationPublisher::class),
 			$request,
 			\OC::$server->getRootFolder(),
 			\OC::$server->getURLGenerator(),

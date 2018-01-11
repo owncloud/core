@@ -68,17 +68,11 @@
 		_createRow: function(fileData) {
 			// TODO: hook earlier and render the whole row here
 			var $tr = OCA.Files.FileList.prototype._createRow.apply(this, arguments);
+			var $dateColumn = $tr.find('td.date');
 			$tr.find('.filesize').remove();
-			$tr.find('td.date').before($tr.children('td:first'));
+			$dateColumn.before($tr.children('td:first'));
 			$tr.find('td.filename input:checkbox').remove();
 			$tr.attr('data-share-id', _.pluck(fileData.shares, 'id').join(','));
-			if (this._sharedWithUser) {
-				$tr.attr('data-share-owner', fileData.shareOwner);
-				$tr.attr('data-mounttype', 'shared-root');
-				var permission = parseInt($tr.attr('data-permissions')) | OC.PERMISSION_DELETE;
-				$tr.attr('data-permissions', permission);
-			}
-
 			// add row with expiration date for link only shares - influenced by _createRow of filelist
 			if (this._linksOnly) {
 				var expirationTimestamp = 0;
@@ -103,6 +97,7 @@
 					text = '';
 					modifiedColor = 160;
 				}
+
 				td = $('<td></td>').attr({"class": "date"});
 				td.append($('<span></span>').attr({
 						"class": "modified",
@@ -114,6 +109,43 @@
 
 				$tr.append(td);
 			}
+			if (this._sharedWithUser) {
+				$tr.attr('data-share-owner', fileData.shareOwner);
+				$tr.attr('data-mounttype', 'shared-root');
+				var permission = parseInt($tr.attr('data-permissions')) | OC.PERMISSION_DELETE;
+				$tr.attr('data-permissions', permission);
+				$tr.attr('data-share-state', fileData.shareState);
+
+				var text = '';
+				var shareStateClass;
+				var iconClass;
+				if (fileData.shareState === OC.Share.STATE_REJECTED) {
+					text = t('files_sharing', 'Rejected');
+					shareStateClass = 'share-state-rejected';
+					iconClass = 'icon-rejected';
+				} else if (fileData.shareState === OC.Share.STATE_PENDING) {
+					text = t('files_sharing', 'Pending');
+					shareStateClass = 'share-state-pending';
+					iconClass = 'icon-added';
+				} else {
+					shareStateClass = 'share-state-accepted';
+                    iconClass = 'icon-removed';
+				}
+				td = $('<td></td>').attr({"class": "share-state"});
+				td.append($('<span></span>').attr({
+						"class": "state",
+					}).text(text)
+				);
+				$tr.addClass(shareStateClass);
+				$dateColumn.before(td);
+
+				if (iconClass) {
+					$tr.find('td:first').prepend(
+						$('<div class="share-state"><span class="icon ' + iconClass + '"></span></div>')
+					);
+				}
+			}
+
 			return $tr;
 		},
 
@@ -127,6 +159,17 @@
 			this._sharedWithUser = !!state;
 		},
 
+		_updateDetailsView: function(fileName, show) {
+			var $tr = this.findFileEl(fileName);
+			var shareState = parseInt($tr.attr('data-share-state'), 10);
+
+			if (shareState !== OC.Share.STATE_ACCEPTED) {
+				show = false;
+			}
+
+			return OCA.Files.FileList.prototype._updateDetailsView.call(this, fileName, show);
+		},
+
 		updateEmptyContent: function() {
 			var dir = this.getCurrentDirectory();
 			if (dir === '/') {
@@ -137,6 +180,10 @@
 				// hide expiration date header for non link only shares
 				if (!this._linksOnly) {
 					this.$el.find('th.column-expiration').addClass('hidden');
+				}
+				if (!this._sharedWithUser) {
+					// hide state column
+					this.$el.find('th.column-state').addClass('hidden');
 				}
 			}
 			else {
@@ -169,6 +216,7 @@
 				data: {
 					format: 'json',
 					shared_with_me: !!this._sharedWithUser,
+					state: 'all',
 					include_tags: true
 				},
 				type: 'GET',
@@ -222,6 +270,13 @@
 
 			this.setFiles(files);
 			return true;
+		},
+
+		elementToFile: function($el) {
+			var fileInfo = OCA.Files.FileList.prototype.elementToFile.apply(this, arguments);
+			fileInfo.shareId = $el.attr('data-share-id');
+			fileInfo.shareState = parseInt($el.attr('data-share-state'), 10);
+			return fileInfo;
 		},
 
 		_makeFilesFromRemoteShares: function(data) {
@@ -297,6 +352,7 @@
 					};
 					if (self._sharedWithUser) {
 						file.shareOwner = share.displayname_owner;
+						file.shareState = share.state;
 						file.name = OC.basename(share.file_target);
 						file.path = OC.dirname(share.file_target);
 						file.permissions = share.permissions;

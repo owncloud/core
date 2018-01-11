@@ -1026,29 +1026,17 @@ class Manager implements IManager {
 	 * @inheritdoc
 	 */
 	public function moveShare(\OCP\Share\IShare $share, $recipientId) {
-		if ($share->getShareType() === \OCP\Share::SHARE_TYPE_LINK) {
-			throw new \InvalidArgumentException('Can\'t change target of link share');
-		}
+		return $this->updateShareForRecipient($share, $recipientId);
+	}
 
-		if ($share->getShareType() === \OCP\Share::SHARE_TYPE_USER && $share->getSharedWith() !== $recipientId) {
-			throw new \InvalidArgumentException('Invalid recipient');
-		}
-
-		if ($share->getShareType() === \OCP\Share::SHARE_TYPE_GROUP) {
-			$sharedWith = $this->groupManager->get($share->getSharedWith());
-			if (is_null($sharedWith)) {
-				throw new \InvalidArgumentException('Group "' . $share->getSharedWith() . '" does not exist');
-			}
-			$recipient = $this->userManager->get($recipientId);
-			if (!$sharedWith->inGroup($recipient)) {
-				throw new \InvalidArgumentException('Invalid recipient');
-			}
-		}
-
+	/**
+	 * @inheritdoc
+	 */
+	public function updateShareForRecipient(\OCP\Share\IShare $share, $recipientId) {
 		list($providerId, ) = $this->splitFullId($share->getFullId());
 		$provider = $this->factory->getProvider($providerId);
 
-		$provider->move($share, $recipientId);
+		return $provider->updateForRecipient($share, $recipientId);
 	}
 
 	/**

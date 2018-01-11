@@ -108,10 +108,12 @@ class DefaultShareProvider implements IShareProvider {
 		if ($share->getShareType() === \OCP\Share::SHARE_TYPE_USER) {
 			//Set the UID of the user we share with
 			$qb->setValue('share_with', $qb->createNamedParameter($share->getSharedWith()));
-		} else if ($share->getShareType() === \OCP\Share::SHARE_TYPE_GROUP) {
+			$qb->setValue('accepted', $share->getState());
+		} elseif ($share->getShareType() === \OCP\Share::SHARE_TYPE_GROUP) {
 			//Set the GID of the group we share with
 			$qb->setValue('share_with', $qb->createNamedParameter($share->getSharedWith()));
-		} else if ($share->getShareType() === \OCP\Share::SHARE_TYPE_LINK) {
+			$qb->setValue('accepted', $share->getState());
+		} elseif ($share->getShareType() === \OCP\Share::SHARE_TYPE_LINK) {
 			//Set the token of the share
 			$qb->setValue('token', $qb->createNamedParameter($share->getToken()));
 
@@ -208,6 +210,7 @@ class DefaultShareProvider implements IShareProvider {
 				->set('permissions', $qb->createNamedParameter($share->getPermissions()))
 				->set('item_source', $qb->createNamedParameter($share->getNode()->getId()))
 				->set('file_source', $qb->createNamedParameter($share->getNode()->getId()))
+				->set('accepted', $qb->createNamedParameter($share->getState()))
 				->execute();
 		} else if ($share->getShareType() === \OCP\Share::SHARE_TYPE_GROUP) {
 			$qb = $this->dbConn->getQueryBuilder();
@@ -218,6 +221,7 @@ class DefaultShareProvider implements IShareProvider {
 				->set('permissions', $qb->createNamedParameter($share->getPermissions()))
 				->set('item_source', $qb->createNamedParameter($share->getNode()->getId()))
 				->set('file_source', $qb->createNamedParameter($share->getNode()->getId()))
+				->set('accepted', $qb->createNamedParameter($share->getState()))
 				->execute();
 
 			/*
@@ -233,12 +237,11 @@ class DefaultShareProvider implements IShareProvider {
 				->execute();
 
 			/*
-			 * Now update the permissions for all children that have not set it to 0
+			 * Now update the permissions for all children
 			 */
 			$qb = $this->dbConn->getQueryBuilder();
 			$qb->update('share')
 				->where($qb->expr()->eq('parent', $qb->createNamedParameter($share->getId())))
-				->andWhere($qb->expr()->neq('permissions', $qb->createNamedParameter(0)))
 				->set('permissions', $qb->createNamedParameter($share->getPermissions()))
 				->execute();
 
@@ -331,79 +334,11 @@ class DefaultShareProvider implements IShareProvider {
 	 * @throws ProviderException
 	 */
 	public function deleteFromSelf(\OCP\Share\IShare $share, $recipient) {
-		if ($share->getShareType() === \OCP\Share::SHARE_TYPE_GROUP) {
-
-			$group = $this->groupManager->get($share->getSharedWith());
-			$user = $this->userManager->get($recipient);
-
-			if (is_null($group)) {
-				throw new ProviderException('Group "' . $share->getSharedWith() . '" does not exist');
-			}
-
-			if (!$group->inGroup($user)) {
-				throw new ProviderException('Recipient not in receiving group');
-			}
-
-			// Try to fetch user specific share
-			$qb = $this->dbConn->getQueryBuilder();
-			$stmt = $qb->select('*')
-				->from('share')
-				->where($qb->expr()->eq('share_type', $qb->createNamedParameter(self::SHARE_TYPE_USERGROUP)))
-				->andWhere($qb->expr()->eq('share_with', $qb->createNamedParameter($recipient)))
-				->andWhere($qb->expr()->eq('parent', $qb->createNamedParameter($share->getId())))
-				->andWhere($qb->expr()->orX(
-					$qb->expr()->eq('item_type', $qb->createNamedParameter('file')),
-					$qb->expr()->eq('item_type', $qb->createNamedParameter('folder'))
-				))
-				->execute();
-
-			$data = $stmt->fetch();
-
-			/*
-			 * Check if there already is a user specific group share.
-			 * If there is update it (if required).
-			 */
-			if ($data === false) {
-				$qb = $this->dbConn->getQueryBuilder();
-
-				$type = $share->getNode() instanceof \OCP\Files\File ? 'file' : 'folder';
-
-				//Insert new share
-				$qb->insert('share')
-					->values([
-						'share_type' => $qb->createNamedParameter(self::SHARE_TYPE_USERGROUP),
-						'share_with' => $qb->createNamedParameter($recipient),
-						'uid_owner' => $qb->createNamedParameter($share->getShareOwner()),
-						'uid_initiator' => $qb->createNamedParameter($share->getSharedBy()),
-						'parent' => $qb->createNamedParameter($share->getId()),
-						'item_type' => $qb->createNamedParameter($type),
-						'item_source' => $qb->createNamedParameter($share->getNode()->getId()),
-						'file_source' => $qb->createNamedParameter($share->getNode()->getId()),
-						'file_target' => $qb->createNamedParameter($share->getTarget()),
-						'permissions' => $qb->createNamedParameter(0),
-						'stime' => $qb->createNamedParameter($share->getShareTime()->getTimestamp()),
-					])->execute();
-
-			} else if ($data['permissions'] !== 0) {
-
-				// Update existing usergroup share
-				$qb = $this->dbConn->getQueryBuilder();
-				$qb->update('share')
-					->set('permissions', $qb->createNamedParameter(0))
-					->where($qb->expr()->eq('id', $qb->createNamedParameter($data['id'])))
-					->execute();
-			}
-
-		} else if ($share->getShareType() === \OCP\Share::SHARE_TYPE_USER) {
-
-			if ($share->getSharedWith() !== $recipient) {
-				throw new ProviderException('Recipient does not match');
-			}
-
-			// We can just delete user and link shares
-			$this->delete($share);
+		if ($share->getShareType() === \OCP\Share::SHARE_TYPE_GROUP || $share->getShareType() === \OCP\Share::SHARE_TYPE_USER) {
+			$share->setState(\OCP\Share::STATE_REJECTED);
+			$this->updateForRecipient($share, $recipient);
 		} else {
-			throw new ProviderException('Invalid shareType');
+			throw new ProviderException('Invalid share type ' . $share->getShareType());
 		}
 	}
 
@@ -411,15 +346,36 @@ class DefaultShareProvider implements IShareProvider {
 	 * @inheritdoc
 	 */
 	public function move(\OCP\Share\IShare $share, $recipient) {
+		return $this->updateForRecipient($share, $recipient);
+	}
+
+	/**
+	 * @inheritdoc
+	 */
+	public function updateForRecipient(\OCP\Share\IShare $share, $recipient) {
 		if ($share->getShareType() === \OCP\Share::SHARE_TYPE_USER) {
+			if ($share->getSharedWith() !== $recipient) {
+				throw new ProviderException('Recipient does not match');
+			}
+
 			// Just update the target
 			$qb = $this->dbConn->getQueryBuilder();
 			$qb->update('share')
+				->set('accepted', $qb->createNamedParameter($share->getState()))
 				->set('file_target', $qb->createNamedParameter($share->getTarget()))
 				->where($qb->expr()->eq('id', $qb->createNamedParameter($share->getId())))
 				->execute();
+		} elseif ($share->getShareType() === \OCP\Share::SHARE_TYPE_GROUP) {
+			$group = $this->groupManager->get($share->getSharedWith());
+			$user = $this->userManager->get($recipient);
 
-		} else if ($share->getShareType() === \OCP\Share::SHARE_TYPE_GROUP) {
+			if (\is_null($group)) {
+				throw new ProviderException('Group "' . $share->getSharedWith() . '" does not exist');
+			}
+
+			if (!$group->inGroup($user)) {
+				throw new ProviderException('Recipient not in receiving group');
+			}
 
 			// Check if there is a usergroup share
 			$qb = $this->dbConn->getQueryBuilder();
@@ -454,15 +410,22 @@ class DefaultShareProvider implements IShareProvider {
 						'file_target' => $qb->createNamedParameter($share->getTarget()),
 						'permissions' => $qb->createNamedParameter($share->getPermissions()),
 						'stime' => $qb->createNamedParameter($share->getShareTime()->getTimestamp()),
+						'accepted' => $qb->createNamedParameter($share->getState()),
 					])->execute();
 			} else {
 				// Already a usergroup share. Update it.
 				$qb = $this->dbConn->getQueryBuilder();
 				$qb->update('share')
+					->set('accepted', $qb->createNamedParameter($share->getState()))
 					->set('file_target', $qb->createNamedParameter($share->getTarget()))
+					// make sure to reset the permissions to the one of the parent share,
+					// as legacy entries with zero permissions might still exist
+					->set('permissions', $qb->createNamedParameter($share->getPermissions()))
 					->where($qb->expr()->eq('id', $qb->createNamedParameter($data['id'])))
 					->execute();
 			}
+		} else {
+			throw new ProviderException('Can\'t update share of recipient for share type ' . $share->getShareType());
 		}
 
 		return $share;
@@ -1000,6 +963,7 @@ class DefaultShareProvider implements IShareProvider {
 		$share->setNodeId((int)$data['file_source']);
 		$share->setNodeType($data['item_type']);
 		$share->setName($data['share_name']);
+		$share->setState((int)$data['accepted']);
 
 		if ($data['expiration'] !== null) {
 			$expiration = \DateTime::createFromFormat('Y-m-d H:i:s', $data['expiration']);
@@ -1097,7 +1061,7 @@ class DefaultShareProvider implements IShareProvider {
 				// If $shareParent is contained in $shareIdToShareMap, it means that needs resolving
 				if (isset($shareIdToShareMap[$shareParent])) {
 					$share = $shareIdToShareMap[$shareParent];
-					$share->setPermissions(intval($data['permissions']));
+					$share->setState(\intval($data['accepted']));
 					$share->setTarget($data['file_target']);
 				}
 			}

@@ -339,4 +339,20 @@ interface IShare {
 	 * @since 10.0.0
 	 */
 	public function getName();
+
+	/**
+	 * Set share accepted state
+	 *
+	 * @param int $state
+	 * @since 10.0.6
+	 */
+	public function setState($state);
+
+	/**
+	 * Get share accepted state
+	 *
+	 * @return int state
+	 * @since 10.0.6
+	 */
+	public function getState();
 }
