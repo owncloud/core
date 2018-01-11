@@ -2860,33 +2860,24 @@ class ManagerTest extends \Test\TestCase {
 		$this->assertInstanceOf(Share::class, $calledAfterUpdate[1]->getArgument('shareobject'));
 	}
 
-	/**
-	 * @expectedException \InvalidArgumentException
-	 * @expectedExceptionMessage Can't change target of link share
-	 */
-	public function testMoveShareLink() {
+	public function testMoveCallsUpdateShareForRecipient() {
+		$manager = $this->createManagerMock()
+			->setMethods(['updateShareForRecipient'])
+			->getMock();
+
 		$share = $this->manager->newShare();
-		$share->setShareType(\OCP\Share::SHARE_TYPE_LINK);
 
-		$recipient = $this->createMock('\OCP\IUser');
+		$manager->expects($this->once())
+			->method('updateShareForRecipient')
+			->with($share, 'recipient1')
+			->will($this->returnArgument(0));
 
-		$this->manager->moveShare($share, $recipient);
+		$returnedShare = $manager->moveShare($share, 'recipient1');
+
+		$this->assertSame($share, $returnedShare);
 	}
 
-	/**
-	 * @expectedException \InvalidArgumentException
-	 * @expectedExceptionMessage Invalid recipient
-	 */
-	public function testMoveShareUserNotRecipient() {
-		$share = $this->manager->newShare();
-		$share->setShareType(\OCP\Share::SHARE_TYPE_USER);
-
-		$share->setSharedWith('sharedWith');
-
-		$this->manager->moveShare($share, 'recipient');
-	}
-
-	public function testMoveShareUser() {
+	public function testUpdateShareForRecipient() {
 		$share = $this->manager->newShare();
 		$share->setShareType(\OCP\Share::SHARE_TYPE_USER)
 			->setId('42')
@@ -2896,64 +2887,7 @@ class ManagerTest extends \Test\TestCase {
 
 		$this->defaultProvider->method('move')->with($share, 'recipient')->will($this->returnArgument(0));
 
-		$this->manager->moveShare($share, 'recipient');
-	}
-
-	/**
-	 * @expectedException \InvalidArgumentException
-	 * @expectedExceptionMessage Invalid recipient
-	 */
-	public function testMoveShareGroupNotRecipient() {
-		$share = $this->manager->newShare();
-		$share->setShareType(\OCP\Share::SHARE_TYPE_GROUP);
-
-		$sharedWith = $this->createMock('\OCP\IGroup');
-		$share->setSharedWith('shareWith');
-
-		$recipient = $this->createMock('\OCP\IUser');
-		$sharedWith->method('inGroup')->with($recipient)->willReturn(false);
-
-		$this->groupManager->method('get')->with('shareWith')->willReturn($sharedWith);
-		$this->userManager->method('get')->with('recipient')->willReturn($recipient);
-
-		$this->manager->moveShare($share, 'recipient');
-	}
-
-	/**
-	 * @expectedException \InvalidArgumentException
-	 * @expectedExceptionMessage Group "shareWith" does not exist
-	 */
-	public function testMoveShareGroupNull() {
-		$share = $this->manager->newShare();
-		$share->setShareType(\OCP\Share::SHARE_TYPE_GROUP);
-		$share->setSharedWith('shareWith');
-
-		$recipient = $this->createMock(IUser::class);
-
-		$this->groupManager->method('get')->with('shareWith')->willReturn(null);
-		$this->userManager->method('get')->with('recipient')->willReturn($recipient);
-
-		$this->manager->moveShare($share, 'recipient');
-	}
-
-	public function testMoveShareGroup() {
-		$share = $this->manager->newShare();
-		$share->setShareType(\OCP\Share::SHARE_TYPE_GROUP)
-			->setId('42')
-			->setProviderId('foo');
-
-		$group = $this->createMock('\OCP\IGroup');
-		$share->setSharedWith('group');
-
-		$recipient = $this->createMock('\OCP\IUser');
-		$group->method('inGroup')->with($recipient)->willReturn(true);
-
-		$this->groupManager->method('get')->with('group')->willReturn($group);
-		$this->userManager->method('get')->with('recipient')->willReturn($recipient);
-
-		$this->defaultProvider->method('move')->with($share, 'recipient')->will($this->returnArgument(0));
-
-		$this->manager->moveShare($share, 'recipient');
+		$this->manager->updateShareForRecipient($share, 'recipient');
 	}
 
 	public function testGetSharedWith() {

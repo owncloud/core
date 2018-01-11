@@ -71,6 +71,7 @@ class FileSharing implements ISettings {
 		$template->assign('shareExcludedGroupsList', !\is_null($excludedGroupsList) ? \implode('|', $excludedGroupsList) : '');
 		$template->assign('shareExpireAfterNDays', $this->config->getAppValue('core', 'shareapi_expire_after_n_days', '7'));
 		$template->assign('shareEnforceExpireDate', $this->config->getAppValue('core', 'shareapi_enforce_expire_date', 'no'));
+		$template->assign('autoAcceptShare', $this->config->getAppValue('core', 'shareapi_auto_accept_share', 'yes'));
 
 		$permList = [
 			[

@@ -1,3 +1,59 @@
-#filestable.shareList .summary .filesize {
-	display: none;
+#app-content-sharingin td > .share-state {
+	display    : block;
+	float      : left;
+	width      : 30px;
+	line-height: 100%;
+	text-align : center;
+	padding    : 17px 8px;
+	opacity    : 0.3;
+}
+
+#app-content-sharingin td > .share-state .icon {
+	display        : inline-block;
+	vertical-align : middle;
+	background-size: 16px 16px;
+}
+
+.icon-added,
+.icon-rejected,
+.icon-removed {
+	position: relative;
+}
+
+.icon-rejected {
+	border       : 3px solid red;
+	border-radius: 100%;
+}
+
+.icon-added::after,
+.icon-added::before,
+.icon-rejected::before,
+.icon-removed::before {
+	content   : "";
+	position  : absolute;
+	height    : 3px;
+	top       : 50%;
+	left      : 0;
+	right     : 0;
+	background: black;
+}
+
+.icon-added::before {
+	border-radius: 1.5px;
+	transform    : translateY(-50%);
+}
+
+.icon-added::after {
+	border-radius: 1.5px;
+	transform    : translateY(-50%) rotate(90deg);
+}
+
+.icon-rejected::before {
+	background: red;
+	transform : rotate(-45deg) translate(1px, -1px);
+}
+
+.icon-removed::before {
+	border-radius: 1.5px;
+	transform    : translateY(-50%);
 }

@@ -34,6 +34,7 @@
 
 $application = new \OCA\Files_Sharing\AppInfo\Application();
 $application->registerMountProviders();
+$application->registerNotifier();
 
 $eventDispatcher = \OC::$server->getEventDispatcher();
 $eventDispatcher->addListener(

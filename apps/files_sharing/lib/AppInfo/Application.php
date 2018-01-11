@@ -138,4 +138,20 @@ class Application extends App {
 		$mountProviderCollection->registerProvider($this->getContainer()->query('MountProvider'));
 		$mountProviderCollection->registerProvider($this->getContainer()->query('ExternalMountProvider'));
 	}
+
+	/**
+	 * Registers the notifier
+	 */
+	public function registerNotifier() {
+		$manager = $this->getContainer()->getServer()->getNotificationManager();
+		$manager->registerNotifier(function() use ($manager) {
+			return $this->getContainer()->query('\OCA\Files_Sharing\Notifier');
+		}, function() {
+			$l = \OC::$server->getL10N('files_sharing');
+			return [
+				'id' => 'files_sharing',
+				'name' => $l->t('File sharing'),
+			];
+		});
+	}
 }
