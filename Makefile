@@ -84,7 +84,8 @@ help:
 	@echo -e "make clean\t\t\tclean everything"
 	@echo -e "make install-composer-deps\tinstall composer dependencies"
 	@echo -e "make update-composer\t\tupdate composer.lock"
-	@echo -e "make install-nodejs-deps\t\tinstall Node JS and Javascript dependencies"
+	@echo -e "make install-nodejs-deps\tinstall Node JS dependencies"
+	@echo -e "make install-js-deps\t\tinstall Javascript dependencies"
 	@echo
 	@echo -e "Note that running 'make' without arguments already installs all required dependencies"
 	@echo
@@ -145,8 +146,9 @@ $(nodejs_deps): build/package.json build/package-lock.json build/yarn.lock
 	cd $(NODE_PREFIX) && $(YARN) install
 	touch $@
 
-# alias for core deps
-$(core_vendor): $(nodejs_deps) $(NODE_PREFIX)/webpack.config.js
+# core JS deps
+$(core_vendor): $(nodejs_deps) $(NODE_PREFIX)/webpack.config.js $(NODE_PREFIX)/entry.js
+	rm -Rf $(core_vendor)
 	mkdir -p $(core_vendor)
 	cd $(NODE_PREFIX) && node_modules/.bin/webpack
 
@@ -156,6 +158,9 @@ install-nodejs-deps: $(nodejs_deps)
 .PHONY: clean-nodejs-deps
 clean-nodejs-deps:
 	rm -Rf $(nodejs_deps)
+
+.PHONY: install-js-deps
+install-js-deps: $(core_vendor)
 
 .PHONY: clean-js-deps
 clean-js-deps:
@@ -173,11 +178,11 @@ test-external: $(composer_dev_deps)
 	PHPUNIT=$(PHPUNIT) build/autotest-external.sh $(TEST_DATABASE) $(TEST_EXTERNAL_ENV) $(TEST_PHP_SUITE)
 
 .PHONY: test-js
-test-js: $(nodejs_deps)
+test-js: $(core_vendor)
 	NODE_PATH='$(NODE_PREFIX)/node_modules' $(KARMA) start tests/karma.config.js --single-run
 
 .PHONY: test-js-debug
-test-js-debug: $(nodejs_deps)
+test-js-debug: $(core_vendor)
 	NODE_PATH='$(NODE_PREFIX)/node_modules' $(KARMA) start tests/karma.config.js
 
 .PHONY: test-integration
