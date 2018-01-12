@@ -477,17 +477,16 @@ var OCdialogs = {
 				$replacementDiv.find('.mtime').text(formatDate(replacement.lastModifiedDate));
 			}
 			var path = original.directory + '/' +original.name;
-			var urlSpec = {
-				file:		path,
-				x:		96,
-				y:		96,
-				c:		original.etag,
-				forceIcon:	0
-			};
-			var previewpath = Files.generatePreviewUrl(urlSpec);
-			// Escaping single quotes
-			previewpath = previewpath.replace(/'/g, "%27");
-			$originalDiv.find('.icon').css({"background-image":   "url('" + previewpath + "')"});
+
+			FileList.lazyLoadPreview({
+				path: path,
+				mime: original.mimetype,
+				etag: original.etag,
+				callback: function(url) {
+					$originalDiv.find('.icon').css('background-image', 'url("' + url + '")');
+				}
+			});
+
 			getCroppedPreview(replacement).then(
 				function(path){
 					$replacementDiv.find('.icon').css('background-image','url(' + path + ')');
