@@ -89,7 +89,7 @@ pipeline:
     pull: true
     group: test
     commands:
-      - ./tests/drone/test-javascript.sh
+      - make test-js
     when:
       matrix:
         TEST_SUITE: phpunit
