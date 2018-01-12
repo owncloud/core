@@ -21,7 +21,6 @@ module.exports = {
 		}),
 		new CopyWebpackPlugin([
 			{ from: 'browser-update/browser-update.js', to: 'browser-update/browser-update.js' },
-			{ from: 'browser-update/browser-update.js', to: 'browser-update/browser-update.js' },
 			{ from: 'showdown/dist/showdown.js', to: 'showdown/dist/showdown.js' },
 			{ from: 'base64/base64.js', to: 'base64/base64.js' },
 			{ from: 'zxcvbn/dist/zxcvbn.js', to: 'zxcvbn/dist/zxcvbn.js'},
