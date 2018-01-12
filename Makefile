@@ -37,6 +37,7 @@ SHELL=/bin/bash
 YARN := $(shell command -v yarn 2> /dev/null)
 KARMA=$(NODE_PREFIX)/node_modules/.bin/karma
 JSDOC=$(NODE_PREFIX)/node_modules/.bin/jsdoc
+WEBPACK=$(NODE_PREFIX)/node_modules/.bin/webpack
 PHPUNIT="$(shell pwd)/lib/composer/phpunit/phpunit/phpunit"
 COMPOSER_BIN=build/composer.phar
 
@@ -63,10 +64,10 @@ dist_dir=build/dist
 # Catch-all rules
 #
 .PHONY: all
-all: help-hint $(composer_dev_deps) $(nodejs_deps)
+all: help-hint $(composer_dev_deps) $(core_vendor)
 
 .PHONY: clean
-clean: clean-composer-deps clean-nodejs-deps clean-test clean-dist
+clean: clean-composer-deps clean-nodejs-deps clean-js-deps clean-test clean-dist
 
 .PHONY: help-hint
 help-hint:
@@ -139,21 +140,26 @@ clean-composer-deps:
 #
 # Node JS dependencies for tools
 #
-$(nodejs_deps): build/package.json
+$(nodejs_deps): build/package.json build/package-lock.json build/yarn.lock
 	@test -x "$(YARN)" || { echo "yarn is not available on your system, please install yarn (npm install -g yarn)" && exit 1; }
 	cd $(NODE_PREFIX) && $(YARN) install
 	touch $@
 
 # alias for core deps
-$(core_vendor): $(nodejs_deps)
+$(core_vendor): $(nodejs_deps) $(NODE_PREFIX)/webpack.config.js
+	mkdir -p $(core_vendor)
+	cd $(NODE_PREFIX) && node_modules/.bin/webpack
 
 .PHONY: install-nodejs-deps
 install-nodejs-deps: $(nodejs_deps)
 
 .PHONY: clean-nodejs-deps
 clean-nodejs-deps:
-	rm -Rf $(core_vendor)
 	rm -Rf $(nodejs_deps)
+
+.PHONY: clean-js-deps
+clean-js-deps:
+	rm -Rf $(core_vendor)
 
 #
 # Tests
@@ -217,7 +223,7 @@ clean-docs:
 #
 # Build distribution
 #
-$(dist_dir)/owncloud: $(composer_deps) $(nodejs_deps) $(core_all_src)
+$(dist_dir)/owncloud: $(composer_deps) $(core_vendor) $(core_all_src)
 	rm -Rf $@; mkdir -p $@/config
 	cp -RL $(core_all_src) $@
 	cp -R config/config.sample.php $@/config
@@ -268,7 +274,7 @@ clean-dist:
 #
 # Build qa distribution
 #
-$(dist_dir)/qa/owncloud: $(composer_dev_deps) $(nodejs_deps) $(core_all_src) $(core_test_dirs)
+$(dist_dir)/qa/owncloud: $(composer_dev_deps) $(core_vendor) $(core_all_src) $(core_test_dirs)
 	rm -Rf $@; mkdir -p $@/config
 	cp -RL $(core_all_src) $@
 	cp -R $(core_test_dirs) $@

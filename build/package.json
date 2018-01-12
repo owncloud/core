@@ -54,8 +54,5 @@
   "engines": {
     "node": ">= 6.9",
     "yarn": ">= 1.0.0"
-  },
-  "scripts": {
-    "postinstall": "npx webpack"
   }
 }
