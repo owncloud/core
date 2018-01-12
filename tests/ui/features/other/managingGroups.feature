@@ -38,7 +38,46 @@ So that access to resources can be controlled more effectively
 		|groupname|
 		|0        |
 		|false    |
-	
+
+	@skipOnOcV10.0.3 @skipOnOcV10.0.4 @skipOnOcV10.0.5
+	Scenario: delete groups with special characters that appear in URLs
+		And these groups exist:
+		|groupname     |
+		|do-not-delete |
+		|a/slash       |
+		|per%cent      |
+		|hash#char     |
+		|q?mark        |
+		|do-not-delete2|
+		And I am on the users page
+		When I delete these groups:
+		|groupname     |
+		|a/slash       |
+		|per%cent      |
+		|hash#char     |
+		|q?mark        |
+		And the users page is reloaded
+		Then these groups should be listed:
+		|groupname     |
+		|do-not-delete |
+		|do-not-delete2|
+		But these groups should not be listed:
+		|groupname     |
+		|a/slash       |
+		|per%cent      |
+		|hash#char     |
+		|q?mark        |
+		And these groups should exist:
+		|groupname     |
+		|do-not-delete |
+		|do-not-delete2|
+		But these groups should not exist:
+		|groupname     |
+		|a/slash       |
+		|per%cent      |
+		|hash#char     |
+		|q?mark        |
+
 	Scenario: delete groups with problematic names
 		And these groups exist:
 		|groupname     |
