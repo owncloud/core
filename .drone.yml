@@ -142,7 +142,7 @@ pipeline:
     image: owncloudci/php:${PHP_VERSION}
     pull: true
     commands:
-      - ./tests/drone/test-javascript.sh
+      - make test-js
     when:
       matrix:
         TEST_SUITE: javascript
