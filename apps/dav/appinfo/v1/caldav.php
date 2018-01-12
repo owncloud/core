@@ -71,7 +71,7 @@ $server->setBaseUri($baseuri);
 
 // Add plugins
 $server->addPlugin(new MaintenancePlugin());
-$server->addPlugin(new \Sabre\DAV\Auth\Plugin($authBackend, 'ownCloud'));
+$server->addPlugin(new \Sabre\DAV\Auth\Plugin($authBackend));
 $server->addPlugin(new \Sabre\CalDAV\Plugin());
 
 $server->addPlugin(new LegacyDAVACL());
