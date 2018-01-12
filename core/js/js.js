@@ -2050,7 +2050,11 @@ OC.Util = {
 		var windowHeight = $(window).height();
 
 		if (scrollContainer === null) {
-			scrollContainer = $('#content-wrapper, #app-content');
+			if ($('#app-content').length) {
+				scrollContainer = $('#app-content');
+			} else {
+				scrollContainer = $('#content-wrapper');
+			}
 		}
 
 		if (toViewElBottomLocation > windowHeight) {
