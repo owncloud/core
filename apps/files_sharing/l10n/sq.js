@@ -37,6 +37,7 @@ OC.L10N.register(
     "Wrong share ID, share doesn't exist" : "ID e gabuar ndarjeje, ndarja s’ekziston",
     "Could not delete share" : "Ndarja s’u fshi dot",
     "Please specify a file or folder path" : "Ju lutemi, tregoni një shteg kartele ose dosjeje",
+    "No permission to create share" : "S’ka leje për krijim ndarjeje",
     "Wrong path, file/folder doesn't exist" : "Shteg i gabuar, kratela/dosja s’ekziston",
     "Cannot remove all permissions" : "S’mund të hiqen krejt lejet",
     "Please specify a valid user" : "Ju lutemi, tregoni një përdorues të vlefshëm",

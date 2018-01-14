@@ -37,6 +37,7 @@ OC.L10N.register(
     "Wrong share ID, share doesn't exist" : "잘못된 공유 ID, 공유가 존재하지 않음",
     "Could not delete share" : "공유를 삭제할 수 없음",
     "Please specify a file or folder path" : "파일이나 폴더 경로를 지정하십시오",
+    "No permission to create share" : "공유를 만들 권한 없음",
     "Wrong path, file/folder doesn't exist" : "잘못된 경로, 파일/폴더가 존재하지 않음",
     "Cannot remove all permissions" : "모든 권한을 제거할 수 없음",
     "Please specify a valid user" : "올바른 사용자를 지정하십시오",
