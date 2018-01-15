@@ -561,9 +561,22 @@ class AppManager implements IAppManager {
 					$versionToLoad['url'] .= '/' . $appId;
 				}
 			}
-			$this->appDirs[$appId] = empty($versionToLoad) ? false : $versionToLoad;
+
+			if (empty($versionToLoad)) {
+				return false;
+			}
+			$this->saveAppPath($appId, $versionToLoad);
 		}
 		return $this->appDirs[$appId];
+	}
+
+	/**
+	 * Save app path and webPath to internal cache
+	 * @param string $appId
+	 * @param string[] $appData
+	 */
+	protected function saveAppPath($appId, $appData) {
+		$this->appDirs[$appId] = $appData;
 	}
 
 	/**

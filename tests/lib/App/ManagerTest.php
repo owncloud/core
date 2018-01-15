@@ -510,4 +510,23 @@ class ManagerTest extends TestCase {
 			[ '2.2.3', '2.2.1', true ]
 		];
 	}
+
+	public function testPathIsNotCachedForNotFoundApp() {
+		$appId = 'notexistingapp';
+
+		$appManager = $this->getMockBuilder(AppManager::class)
+			->setMethods(['getAppVersionByPath', 'getAppRoots', 'saveAppPath'])
+			->disableOriginalConstructor()
+			->getMock();
+
+		$appManager->expects($this->any())
+			->method('getAppRoots')
+			->willReturn([]);
+
+		$appManager->expects($this->never())
+			->method('saveAppPath');
+
+		$appPath = $appManager->getAppPath($appId);
+		$this->assertFalse($appPath);
+	}
 }
