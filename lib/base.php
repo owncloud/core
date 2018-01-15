@@ -635,7 +635,7 @@ class OC {
 		// User and Groups
 		if ($systemConfig->getValue("installed", false)) {
 			OC_User::useBackend(new \OC\User\Database());
-			\OC::$server->getGroupManager()->addBackend(new \OC\Group\Database());
+			\OC::$server->getGroupManager()->addBackend(new \OC\Group\Database(\OC::$server->getDatabaseConnection()));
 		} else {
 			self::$server->getSession()->set('user_id', '');
 		}

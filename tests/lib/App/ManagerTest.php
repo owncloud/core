@@ -10,13 +10,17 @@
 namespace Test\App;
 
 use OC\App\AppManager;
+use OC\Group\BackendGroup;
 use OC\Group\Group;
+use OC\Group\GroupMapper;
+use OC\MembershipManager;
 use OCP\App\IAppManager;
 use OCP\IAppConfig;
 use OCP\ICache;
 use OCP\ICacheFactory;
 use OCP\IConfig;
-use OCP\IGroupManager;
+use OC\User\Manager as UserManager;
+use OC\Group\Manager as GroupManager;
 use OCP\IUser;
 use OCP\IUserSession;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
@@ -31,9 +35,15 @@ use org\bovigo\vfs\vfsStream;
  */
 class ManagerTest extends TestCase {
 
+	/** @var GroupMapper | \PHPUnit_Framework_MockObject_MockObject */
+	private $groupMapper;
+	/** @var MembershipManager | \PHPUnit_Framework_MockObject_MockObject */
+	private $membershipManager;
 	/** @var IUserSession | \PHPUnit_Framework_MockObject_MockObject */
 	protected $userSession;
-	/** @var IGroupManager | \PHPUnit_Framework_MockObject_MockObject */
+	/** @var UserManager | \PHPUnit_Framework_MockObject_MockObject */
+	protected $userManager;
+	/** @var GroupManager | \PHPUnit_Framework_MockObject_MockObject */
 	protected $groupManager;
 	/** @var IAppConfig */
 	protected $appConfig;
@@ -94,7 +104,10 @@ class ManagerTest extends TestCase {
 
 		$this->userSession = $this->createMock(IUserSession::class);
 		$this->config = $this->createMock(IConfig::class);
-		$this->groupManager = $this->createMock(IGroupManager::class);
+		$this->groupManager = $this->createMock(GroupManager::class);
+		$this->userManager = $this->createMock(UserManager::class);
+		$this->membershipManager = $this->createMock(MembershipManager::class);
+		$this->groupMapper = $this->createMock(GroupMapper::class);
 		$this->appConfig = $this->getAppConfig();
 		$this->cacheFactory = $this->createMock(ICacheFactory::class);
 		$this->cache = $this->createMock(ICache::class);
@@ -163,9 +176,13 @@ class ManagerTest extends TestCase {
 	}
 
 	public function testEnableAppForGroups() {
+		$backendGroup1 = $this->createMock(BackendGroup::class);
+		$backendGroup1->expects($this->any())->method('__call')->willReturnOnConsecutiveCalls('group1');
+		$backendGroup2 = $this->createMock(BackendGroup::class);
+		$backendGroup2->expects($this->any())->method('__call')->willReturnOnConsecutiveCalls('group2');
 		$groups = [
-			new Group('group1', [], null),
-			new Group('group2', [], null)
+			new Group($backendGroup1, $this->groupMapper, $this->groupManager, $this->userManager, $this->membershipManager),
+			new Group($backendGroup2, $this->groupMapper, $this->groupManager, $this->userManager, $this->membershipManager)
 		];
 		$this->expectClearCache();
 		$this->manager->enableAppForGroups('test', $groups);
@@ -190,9 +207,13 @@ class ManagerTest extends TestCase {
 	 * @param array $appInfo
 	 */
 	public function testEnableAppForGroupsAllowedTypes(array $appInfo) {
+		$backendGroup1 = $this->createMock(BackendGroup::class);
+		$backendGroup1->expects($this->any())->method('__call')->willReturnOnConsecutiveCalls('group1');
+		$backendGroup2 = $this->createMock(BackendGroup::class);
+		$backendGroup2->expects($this->any())->method('__call')->willReturnOnConsecutiveCalls('group2');
 		$groups = [
-			new Group('group1', [], null),
-			new Group('group2', [], null)
+			new Group($backendGroup1, $this->groupMapper, $this->groupManager, $this->userManager, $this->membershipManager),
+			new Group($backendGroup2, $this->groupMapper, $this->groupManager, $this->userManager, $this->membershipManager)
 		];
 		$this->expectClearCache();
 
@@ -235,9 +256,13 @@ class ManagerTest extends TestCase {
 	 * @expectedExceptionMessage test can't be enabled for groups.
 	 */
 	public function testEnableAppForGroupsForbiddenTypes($type) {
+		$backendGroup1 = $this->createMock(BackendGroup::class);
+		$backendGroup1->expects($this->any())->method('__call')->willReturnOnConsecutiveCalls('group1');
+		$backendGroup2 = $this->createMock(BackendGroup::class);
+		$backendGroup2->expects($this->any())->method('__call')->willReturnOnConsecutiveCalls('group2');
 		$groups = [
-			new Group('group1', [], null),
-			new Group('group2', [], null)
+			new Group($backendGroup1, $this->groupMapper, $this->groupManager, $this->userManager, $this->membershipManager),
+			new Group($backendGroup2, $this->groupMapper, $this->groupManager, $this->userManager, $this->membershipManager)
 		];
 
 		/** @var AppManager|\PHPUnit_Framework_MockObject_MockObject $manager */

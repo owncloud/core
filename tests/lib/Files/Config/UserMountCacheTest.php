@@ -12,6 +12,7 @@ use OC\DB\QueryBuilder\Literal;
 use OC\Files\Config\UserMountCache;
 use OC\Files\Mount\MountPoint;
 use OC\Log;
+use OC\MembershipManager;
 use OC\User\Account;
 use OC\User\AccountMapper;
 use OC\User\Manager;
@@ -70,7 +71,8 @@ class UserMountCacheTest extends TestCase {
 		$log = $this->createMock(Log::class);
 		/** @var SyncService $syncService */
 		$syncService = $this->createMock(SyncService::class);
-		$this->userManager = new Manager($config, $log, $accountMapper, $syncService);
+		$membershipManager = $this->createMock(MembershipManager::class);
+		$this->userManager = new Manager($config, $log, $accountMapper, $syncService, $membershipManager);
 		$this->cache = new UserMountCache($this->connection, $this->userManager, $log);
 
 		// hookup listener

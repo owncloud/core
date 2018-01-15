@@ -44,14 +44,24 @@ namespace OCP;
  * @since 8.0.0
  */
 interface IGroupManager {
+
 	/**
 	 * Checks whether a given backend is used
 	 *
 	 * @param string $backendClass Full classname including complete namespace
 	 * @return bool
+	 * @deprecated 10.0.0 - use getBackends of \OCP\IGroupManager
 	 * @since 8.1.0
 	 */
 	public function isBackendUsed($backendClass);
+
+	/**
+	 * Get all active backends
+	 *
+	 * @return \OCP\GroupInterface[]
+	 * @since 10.0.0
+	 */
+	public function getBackends();
 
 	/**
 	 * @param \OCP\GroupInterface $backend
@@ -144,13 +154,13 @@ interface IGroupManager {
 	public function isAdmin($userId);
 
 	/**
-	 * Checks if a userId is in a group
+	 * Checks if a userId is in a group identified by gid
 	 * @param string $userId
-	 * @param string $group
+	 * @param string $gid
 	 * @return bool if in group
 	 * @since 8.0.0
 	 */
-	public function isInGroup($userId, $group);
+	public function isInGroup($userId, $gid);
 
 	/**
 	 * Returns the sub admin manager
@@ -159,5 +169,12 @@ interface IGroupManager {
 	 * @return ISubAdminManager
 	 */
 	public function getSubAdmin();
-}
 
+	/**
+	 * @param string $gid
+	 * @param GroupInterface $backend
+	 * @return IGroup|null
+	 * @since 10.0
+	 */
+	public function createGroupFromBackend($gid, $backend);
+}

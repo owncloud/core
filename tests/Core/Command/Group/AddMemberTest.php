@@ -24,6 +24,7 @@ namespace Tests\Core\Command\Group;
 use OC\Core\Command\Group\AddMember;
 use Symfony\Component\Console\Tester\CommandTester;
 use Test\TestCase;
+use Test\Traits\GroupTrait;
 use Test\Traits\UserTrait;
 
 /**
@@ -33,6 +34,7 @@ use Test\Traits\UserTrait;
  */
 class AddMemberTest extends TestCase {
     use UserTrait;
+	use GroupTrait;
 
     /** @var CommandTester */
     private $commandTester;
@@ -44,7 +46,7 @@ class AddMemberTest extends TestCase {
         $this->commandTester = new CommandTester($command);
         $user1 = $this->createUser('user1');
         $this->createUser('user2');
-        \OC::$server->getGroupManager()->createGroup('group1');
+        $this->createGroup('group1');
         \OC::$server->getGroupManager()->get('group1')->addUser($user1);
     }
 

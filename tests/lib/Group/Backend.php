@@ -85,71 +85,29 @@ abstract class Backend extends \Test\TestCase {
 		$this->assertFalse((array_search($name2, $this->backend->getGroups()) !== false));
 	}
 
-	public function testUser() {
-		$group1 = $this->getGroupName();
-		$group2 = $this->getGroupName();
-		$this->backend->createGroup($group1);
-		$this->backend->createGroup($group2);
-
-		$user1 = $this->getUserName();
-		$user2 = $this->getUserName();
-
-		$this->assertFalse($this->backend->inGroup($user1, $group1));
-		$this->assertFalse($this->backend->inGroup($user2, $group1));
-		$this->assertFalse($this->backend->inGroup($user1, $group2));
-		$this->assertFalse($this->backend->inGroup($user2, $group2));
-
-		$this->assertTrue($this->backend->addToGroup($user1, $group1));
-
-		$this->assertTrue($this->backend->inGroup($user1, $group1));
-		$this->assertFalse($this->backend->inGroup($user2, $group1));
-		$this->assertFalse($this->backend->inGroup($user1, $group2));
-		$this->assertFalse($this->backend->inGroup($user2, $group2));
-
-		$this->assertFalse($this->backend->addToGroup($user1, $group1));
-
-		$this->assertEquals([$user1], $this->backend->usersInGroup($group1));
-		$this->assertEquals([], $this->backend->usersInGroup($group2));
-
-		$this->assertEquals([$group1], $this->backend->getUserGroups($user1));
-		$this->assertEquals([], $this->backend->getUserGroups($user2));
-
-		$this->backend->deleteGroup($group1);
-		$this->assertEquals([], $this->backend->getUserGroups($user1));
-		$this->assertEquals([], $this->backend->usersInGroup($group1));
-		$this->assertFalse($this->backend->inGroup($user1, $group1));
-	}
-
 	public function testSearchGroups() {
 		$name1 = $this->getGroupName('foobarbaz');
+		$this->assertFalse($this->backend->groupExists($name1));
 		$name2 = $this->getGroupName('bazbarfoo');
+		$this->assertFalse($this->backend->groupExists($name2));
 		$name3 = $this->getGroupName('notme');
+		$this->assertFalse($this->backend->groupExists($name3));
 
 		$this->backend->createGroup($name1);
+		$this->assertTrue($this->backend->groupExists($name1));
 		$this->backend->createGroup($name2);
+		$this->assertTrue($this->backend->groupExists($name2));
 		$this->backend->createGroup($name3);
+		$this->assertTrue($this->backend->groupExists($name3));
 
 		$result = $this->backend->getGroups('bar');
-		$this->assertCount(2, $result);
-	}
-
-	public function testSearchUsers() {
-		$group = $this->getGroupName();
-		$this->backend->createGroup($group);
-
-		$name1 = 'foobarbaz';
-		$name2 = 'bazbarfoo';
-		$name3 = 'notme';
-
-		$this->backend->addToGroup($name1, $group);
-		$this->backend->addToGroup($name2, $group);
-		$this->backend->addToGroup($name3, $group);
-
-		$result = $this->backend->usersInGroup($group, 'bar');
-		$this->assertCount(2, $result);
-
-		$result = $this->backend->countUsersInGroup($group, 'bar');
-		$this->assertSame(2, $result);
+		$this->assertSame(2, count($result));
+		$result = $this->backend->getGroups('bar', 1, 1);
+		$this->assertSame(1, count($result));
+		$this->assertSame('foobarbaz', $result[0]);
+		$result = $this->backend->getGroups('bar', 2, 0);
+		$this->assertSame(2, count($result));
+		$this->assertSame('foobarbaz', $result[1]);
 	}
 
 	public function testAddDouble() {

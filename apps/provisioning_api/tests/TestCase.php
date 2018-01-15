@@ -4,6 +4,7 @@
  * @author Morris Jobke <hey@morrisjobke.de>
  * @author Roeland Jago Douma <rullzer@owncloud.com>
  * @author Thomas Müller <thomas.mueller@tmit.eu>
+ * @author Piotr Mrowczynski <piotr@owncloud.com>
  *
  * @copyright Copyright (c) 2018, ownCloud GmbH
  * @license AGPL-3.0
@@ -24,50 +25,20 @@
 
 namespace OCA\Provisioning_API\Tests;
 
-use OCP\IGroupManager;
-use OCP\IUser;
-use OCP\IUserManager;
+use Test\Traits\GroupTrait;
+use Test\Traits\UserTrait;
 
 abstract class TestCase extends \Test\TestCase {
+	use UserTrait;
+	use GroupTrait;
 
-	/** @var IUser[] */
-	protected $users = [];
-
-	/** @var IUserManager */
-	protected $userManager;
-
-	/** @var IGroupManager */
-	protected $groupManager;
+	const TEST_PROVI_API_ADMIN_GROUP = "admin";
 
 	protected function setUp() {
 		parent::setUp();
-
-		$this->userManager = \OC::$server->getUserManager();
-		$this->groupManager = \OC::$server->getGroupManager();
-		$this->groupManager->createGroup('admin');
-	}
-
-	/**
-	 * Generates a temp user
-	 * @param int $num number of users to generate
-	 * @return IUser[]|IUser
-	 */
-	protected function generateUsers($num = 1) {
-		$users = [];
-		for ($i = 0; $i < $num; $i++) {
-			$user = $this->userManager->createUser($this->getUniqueID(), 'password');
-			$this->users[] = $user;
-			$users[] = $user;
-		}
-		return count($users) == 1 ? reset($users) : $users;
 	}
 
 	protected function tearDown() {
-		foreach($this->users as $user) {
-			$user->delete();
-		}
-
-		$this->groupManager->get('admin')->delete();
 		parent::tearDown();
 	}
 }

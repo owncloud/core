@@ -242,16 +242,18 @@ class Server extends ServerContainer implements IServerContainer, IServiceLoader
 			$logger = $c->getLogger();
 			$termMapper = new AccountTermMapper($c->getDatabaseConnection());
 			$accountMapper = new AccountMapper($c->getConfig(), $c->getDatabaseConnection(), $termMapper);
+			$membershipManager = new MembershipManager($c->getDatabaseConnection(), $c->getConfig());
 			$userSyncService = new SyncService(
 					$c->getConfig(),
 					$c->getLogger(),
 					$accountMapper
 				);
-			return new \OC\User\Manager($config, $logger, $accountMapper, $userSyncService);
+			return new \OC\User\Manager($config, $logger, $accountMapper, $userSyncService, $membershipManager);
 		});
 		$this->registerService('GroupManager', function (Server $c) {
 			$groupMapper = new GroupMapper($c->getDatabaseConnection());
-			$groupManager = new \OC\Group\Manager($this->getUserManager(), $groupMapper);
+			$membershipManager = new MembershipManager($c->getDatabaseConnection(), $c->getConfig());
+			$groupManager = new \OC\Group\Manager($this->getUserManager(), $membershipManager, $groupMapper, $c->getDatabaseConnection());
 			$groupManager->listen('\OC\Group', 'preCreate', function ($gid) {
 				\OC_Hook::emit('OC_Group', 'pre_createGroup', ['run' => true, 'gid' => $gid]);
 			});

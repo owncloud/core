@@ -163,7 +163,13 @@ class Dummy extends Backend {
 				$result[] = $group;
 			}
 		}
-		return $result;
+		sort($result);
+
+		if ($limit != -1) {
+			return array_slice($result, $offset, $limit);
+		}
+
+		return array_slice($result, $offset);
 	}
 
 	/**

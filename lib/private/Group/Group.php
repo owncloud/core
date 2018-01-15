@@ -9,6 +9,7 @@
  * @author Roeland Jago Douma <rullzer@owncloud.com>
  * @author Thomas Müller <thomas.mueller@tmit.eu>
  * @author Vincent Petry <pvince81@owncloud.com>
+ * @author Piotr Mrowczynski <piotr@owncloud.com>
  *
  * @copyright Copyright (c) 2018, ownCloud GmbH
  * @license AGPL-3.0
@@ -29,34 +30,31 @@
 
 namespace OC\Group;
 
+use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
 use OCP\IGroup;
 use OCP\IUser;
 
 class Group implements IGroup {
-	/**
-	 * @var string $id
-	 */
-	private $gid;
 
 	/**
-	 * @var \OC\User\User[] $users
+	 * @var \OC\Group\BackendGroup $backendGroup
 	 */
-	private $users = [];
+	private $backendGroup;
 
 	/**
-	 * @var bool $usersLoaded
+	 * @var \OC\Group\GroupMapper $groupMapper
 	 */
-	private $usersLoaded;
+	private $groupMapper;
 
 	/**
-	 * @var \OC\Group\Backend[]|\OC\Group\Database[] $backend
+	 * @var \OC\MembershipManager $membershipManager
 	 */
-	private $backends;
+	private $membershipManager;
 
 	/**
-	 * @var \OC\Hooks\PublicEmitter $emitter
+	 * @var \OC\Group\Manager $groupManager
 	 */
-	private $emitter;
+	private $groupManager;
 
 	/**
 	 * @var \OC\User\Manager $userManager
@@ -64,29 +62,33 @@ class Group implements IGroup {
 	private $userManager;
 
 	/**
-	 * @param string $gid
-	 * @param \OC\Group\Backend[] $backends
-	 * @param \OC\User\Manager $userManager
-	 * @param \OC\Hooks\PublicEmitter $emitter
-	 * @param string $displayName
+	 * @var \OC\User\User[]|null $usersCache
 	 */
-	public function __construct($gid, $backends, $userManager, $emitter = null, $displayName = null) {
-		$this->gid = $gid;
-		$this->backends = $backends;
+	private $usersCache = null;
+
+	/**
+	 * @param \OC\Group\BackendGroup $backendGroup
+	 * @param \OC\Group\GroupMapper $groupMapper
+	 * @param \OC\Group\Manager $groupManager
+	 * @param \OC\User\Manager $userManager
+	 * @param \OC\MembershipManager $membershipManager
+	 */
+	public function __construct(\OC\Group\BackendGroup $backendGroup, \OC\Group\GroupMapper $groupMapper,
+								\OC\Group\Manager $groupManager, \OC\User\Manager $userManager,
+								\OC\MembershipManager $membershipManager) {
+		$this->backendGroup = $backendGroup;
+		$this->groupMapper = $groupMapper;
+		$this->groupManager = $groupManager;
 		$this->userManager = $userManager;
-		$this->emitter = $emitter;
-		$this->displayName = $displayName;
+		$this->membershipManager = $membershipManager;
 	}
 
 	public function getGID() {
-		return $this->gid;
+		return $this->backendGroup->getGroupId();
 	}
 
 	public function getDisplayName() {
-		if (is_null($this->displayName)) {
-			return $this->gid;
-		}
-		return $this->displayName;
+		return $this->backendGroup->getDisplayName();
 	}
 
 	/**
@@ -95,24 +97,16 @@ class Group implements IGroup {
 	 * @return \OC\User\User[]
 	 */
 	public function getUsers() {
-		if ($this->usersLoaded) {
-			return $this->users;
+		// If users were retrieved already with getUsers, fetch them from cache
+		if (!is_null($this->usersCache)) {
+			return $this->usersCache;
 		}
 
-		$userIds = [];
-		foreach ($this->backends as $backend) {
-			$diff = array_diff(
-				$backend->usersInGroup($this->gid),
-				$userIds
-			);
-			if ($diff) {
-				$userIds = array_merge($userIds, $diff);
-			}
-		}
-
-		$this->users = $this->getVerifiedUsers($userIds);
-		$this->usersLoaded = true;
-		return $this->users;
+		$this->usersCache = array_map(function($account) {
+			// Get Group object for each backend group and cache
+			return $this->userManager->getUserObject($account);
+		}, $this->membershipManager->getGroupUserAccountsById($this->backendGroup->getId()));
+		return $this->usersCache;
 	}
 
 	/**
@@ -122,16 +116,8 @@ class Group implements IGroup {
 	 * @return bool
 	 */
 	public function inGroup($user) {
-		if (isset($this->users[$user->getUID()])) {
-			return true;
-		}
-		foreach ($this->backends as $backend) {
-			if ($backend->inGroup($user->getUID(), $this->gid)) {
-				$this->users[$user->getUID()] = $user;
-				return true;
-			}
-		}
-		return false;
+		$account = $this->userManager->getAccountObject($user);
+		return $this->membershipManager->isGroupUserById($account->getId(), $this->backendGroup->getId());
 	}
 
 	/**
@@ -144,20 +130,26 @@ class Group implements IGroup {
 			return;
 		}
 
-		if ($this->emitter) {
-			$this->emitter->emit('\OC\Group', 'preAddUser', [$this, $user]);
+		$this->groupManager->emit('\OC\Group', 'preAddUser', [$this, $user]);
+
+		$backend = $this->getBackend();
+		if (!is_null($backend) && $backend->implementsActions(\OC\Group\Backend::ADD_TO_GROUP)) {
+			$backend->addToGroup($user->getUID(), $this->backendGroup->getGroupId());
 		}
-		foreach ($this->backends as $backend) {
-			if ($backend->implementsActions(\OC\Group\Backend::ADD_TO_GROUP)) {
-				$backend->addToGroup($user->getUID(), $this->gid);
-				if ($this->users) {
-					$this->users[$user->getUID()] = $user;
-				}
-				if ($this->emitter) {
-					$this->emitter->emit('\OC\Group', 'postAddUser', [$this, $user]);
-				}
-				return;
-			}
+
+		$account = $this->userManager->getAccountObject($user);
+		try {
+			// Might throw UniqueConstraintViolationException - only in case of bug since inGroup should prevent it
+			$result = $this->membershipManager->addGroupUser($account->getId(), $this->backendGroup->getId());
+		} catch (UniqueConstraintViolationException $exception) {
+			$result = false;
+		}
+
+		// Clear cache for consistency
+		$this->usersCache = null;
+
+		if ($result) {
+			$this->groupManager->emit('\OC\Group', 'postAddUser', [$this, $user]);
 		}
 	}
 
@@ -167,28 +159,21 @@ class Group implements IGroup {
 	 * @param \OC\User\User $user
 	 */
 	public function removeUser($user) {
-		$result = false;
-		if ($this->emitter) {
-			$this->emitter->emit('\OC\Group', 'preRemoveUser', [$this, $user]);
+		$this->groupManager->emit('\OC\Group', 'preRemoveUser', [$this, $user]);
+
+		$backend = $this->getBackend();
+		if (!is_null($backend) && $backend->implementsActions(\OC\Group\Backend::REMOVE_FROM_GROUP)) {
+			$backend->removeFromGroup($user->getUID(), $this->backendGroup->getGroupId());
 		}
-		foreach ($this->backends as $backend) {
-			if ($backend->implementsActions(\OC\Group\Backend::REMOVE_FROM_GOUP) and $backend->inGroup($user->getUID(), $this->gid)) {
-				$backend->removeFromGroup($user->getUID(), $this->gid);
-				$result = true;
-			}
-		}
+
+		$account = $this->userManager->getAccountObject($user);
+		$result = $this->membershipManager->removeGroupUser($account->getId(), $this->backendGroup->getId());
+
+		// Clear cache for consistency
+		$this->usersCache = null;
+
 		if ($result) {
-			if ($this->emitter) {
-				$this->emitter->emit('\OC\Group', 'postRemoveUser', [$this, $user]);
-			}
-			if ($this->users) {
-				foreach ($this->users as $index => $groupUser) {
-					if ($groupUser->getUID() === $user->getUID()) {
-						unset($this->users[$index]);
-						return;
-					}
-				}
-			}
+			$this->groupManager->emit('\OC\Group', 'postRemoveUser', [$this, $user]);
 		}
 	}
 
@@ -201,36 +186,20 @@ class Group implements IGroup {
 	 * @return \OC\User\User[]
 	 */
 	public function searchUsers($search, $limit = null, $offset = null) {
-		$users = [];
-		foreach ($this->backends as $backend) {
-			$userIds = $backend->usersInGroup($this->gid, $search, $limit, $offset);
-			$users += $this->getVerifiedUsers($userIds);
-			if (!is_null($limit) and $limit <= 0) {
-				return array_values($users);
-			}
-		}
-		return array_values($users);
+		return array_map(function($account) {
+			// Get Group object for each backend group and cache
+			return $this->userManager->getUserObject($account);
+		}, $this->membershipManager->find($this->backendGroup->getGroupId(), $search, $limit, $offset));
 	}
 
 	/**
 	 * returns the number of users matching the search string
 	 *
 	 * @param string $search
-	 * @return int|bool
+	 * @return int
 	 */
 	public function count($search = '') {
-		$users = false;
-		foreach ($this->backends as $backend) {
-			if($backend->implementsActions(\OC\Group\Backend::COUNT_USERS)) {
-				if($users === false) {
-					//we could directly add to a bool variable, but this would
-					//be ugly
-					$users = 0;
-				}
-				$users += $backend->countUsersInGroup($this->gid, $search);
-			}
-		}
-		return $users;
+		return $this->membershipManager->count($this->backendGroup->getGroupId(), $search);
 	}
 
 	/**
@@ -242,15 +211,7 @@ class Group implements IGroup {
 	 * @return \OC\User\User[]
 	 */
 	public function searchDisplayName($search, $limit = null, $offset = null) {
-		$users = [];
-		foreach ($this->backends as $backend) {
-			$userIds = $backend->usersInGroup($this->gid, $search, $limit, $offset);
-			$users = $this->getVerifiedUsers($userIds);
-			if (!is_null($limit) and $limit <= 0) {
-				return array_values($users);
-			}
-		}
-		return array_values($users);
+		return $this->searchUsers($search, $limit, $offset);
 	}
 
 	/**
@@ -264,50 +225,40 @@ class Group implements IGroup {
 			return false;
 		}
 
-		$result = false;
-		if ($this->emitter) {
-			$this->emitter->emit('\OC\Group', 'preDelete', [$this]);
+		// Remove group from backend if possible
+		$this->groupManager->emit('\OC\Group', 'preDelete', [$this]);
+
+		// Remove members from the internal group
+		$this->membershipManager->removeGroupMembers($this->backendGroup->getId());
+
+		// Delete group in external backend
+		$backend = $this->getBackend();
+		if (!is_null($backend) && $backend->implementsActions(\OC\Group\Backend::DELETE_GROUP)) {
+			$backend->deleteGroup($this->getGID());
 		}
-		foreach ($this->backends as $backend) {
-			if ($backend->implementsActions(\OC\Group\Backend::DELETE_GROUP)) {
-				$result = true;
-				$backend->deleteGroup($this->gid);
-			}
-		}
-		if ($result and $this->emitter) {
-			$this->emitter->emit('\OC\Group', 'postDelete', [$this]);
-		}
-		return $result;
+
+		// Delete group internally
+		$this->groupMapper->delete($this->backendGroup);
+
+		// Emit post delete
+		$this->groupManager->emit('\OC\Group', 'postDelete', [$this]);
+		return true;
 	}
 
 	/**
-	 * returns all the Users from an array that really exists
-	 * @param string[] $userIds an array containing user IDs
-	 * @return \OC\User\User[] an Array with the userId as Key and \OC\User\User as value
-	 */
-	private function getVerifiedUsers($userIds) {
-		if (!is_array($userIds)) {
-			return [];
-		}
-		$users = [];
-		foreach ($userIds as $userId) {
-			$user = $this->userManager->get($userId);
-			if (!is_null($user)) {
-				$users[$userId] = $user;
-			}
-		}
-		return $users;
-	}
-
-	/**
-	 * Returns the backend for this group
+	 * Returns the backend for this group (depreciated and returns null)
 	 *
-	 * @return \OC\Group\Backend
+	 * @return \OCP\GroupInterface|null
 	 * @since 10.0.0
 	 */
 	public function getBackend() {
-		// multiple backends can exist for the same group name,
-		// but in practice there is only a single one, so return that one
-		return $this->backends[0];
+		$backendClass = $this->backendGroup->getBackend();
+		foreach ($this->groupManager->getBackends() as $backend) {
+			if (get_class($backend) === $backendClass) {
+				return $backend;
+			}
+		}
+
+		return null;
 	}
 }

@@ -78,7 +78,7 @@ class MemoryAccountMapper extends AccountMapper {
 			return self::$accounts;
 		}
 		$match = array_filter(self::$accounts, function (Account $a) use ($pattern) {
-			return stripos($a->getUserId(), $pattern);
+			return stripos($a->getUserId(), $pattern) || $pattern == '';
 		});
 
 		return $match;

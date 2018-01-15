@@ -21,7 +21,7 @@
 
 namespace Test\Share;
 
-use OCP\IConfig;
+use Test\Traits\GroupTrait;
 use Test\Traits\UserTrait;
 
 /**
@@ -30,7 +30,7 @@ use Test\Traits\UserTrait;
  * @group DB
  */
 class ShareTest extends \Test\TestCase {
-
+	use GroupTrait;
 	use UserTrait;
 
 	protected $itemType;
@@ -71,9 +71,9 @@ class ShareTest extends \Test\TestCase {
 		\OC::$server->getGroupManager()->addBackend(new \Test\Util\Group\Dummy());
 		$this->group1 = $this->getUniqueID('group1_');
 		$this->group2 = $this->getUniqueID('group2_');
-		$g1 = \OC::$server->getGroupManager()->createGroup($this->group1);
-		$g2 = \OC::$server->getGroupManager()->createGroup($this->group2);
-		$gAU = \OC::$server->getGroupManager()->createGroup($this->groupAndUser);
+		$g1 = $this->createGroup($this->group1);
+		$g2 = $this->createGroup($this->group2);
+		$gAU = $this->createGroup($this->groupAndUser);
 		$g1->addUser($u1);
 		$g1->addUser($u2);
 		$g1->addUser($u3);

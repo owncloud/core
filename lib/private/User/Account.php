@@ -87,7 +87,7 @@ class Account extends Entity {
 		if (empty($backendClass)) {
 			return null;
 		}
-		// actually stupid
+		// FIXME: actually stupid - use UserManager->getBackends inside User class
 		return \OC::$server->getUserManager()->getBackend($backendClass);
 	}
 

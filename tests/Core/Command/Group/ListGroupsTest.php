@@ -24,6 +24,7 @@ namespace Tests\Core\Command\Group;
 use OC\Core\Command\Group\ListGroups;
 use Symfony\Component\Console\Tester\CommandTester;
 use Test\TestCase;
+use Test\Traits\GroupTrait;
 
 /**
  * Class ListGroupsTest
@@ -31,6 +32,8 @@ use Test\TestCase;
  * @group DB
  */
 class ListGroupsTest extends TestCase {
+	use GroupTrait;
+
     /** @var CommandTester */
     private $commandTester;
 
@@ -40,7 +43,7 @@ class ListGroupsTest extends TestCase {
         $command = new ListGroups(\OC::$server->getGroupManager());
         $this->commandTester = new CommandTester($command);
 
-        \OC::$server->getGroupManager()->createGroup('group1');
+        $this->createGroup('group1');
     }
 
     /**
