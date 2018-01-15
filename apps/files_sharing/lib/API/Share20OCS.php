@@ -145,7 +145,7 @@ class Share20OCS {
 			'uid_owner' => $share->getSharedBy(),
 			'displayname_owner' => $sharedBy !== null ? $sharedBy->getDisplayName() : $share->getSharedBy(),
 			'permissions' => $share->getPermissions(),
-			'stime' => $share->getShareTime()->getTimestamp(),
+			'stime' => $share->getShareTime() ? $share->getShareTime()->getTimestamp() : null,
 			'parent' => null,
 			'expiration' => null,
 			'token' => null,
@@ -194,7 +194,9 @@ class Share20OCS {
 			$result['name'] = $share->getName();
 
 			$result['token'] = $share->getToken();
-			$result['url'] = $this->urlGenerator->linkToRouteAbsolute('files_sharing.sharecontroller.showShare', ['token' => $share->getToken()]);
+			if ($share->getToken() !== null) {
+				$result['url'] = $this->urlGenerator->linkToRouteAbsolute('files_sharing.sharecontroller.showShare', ['token' => $share->getToken()]);
+			}
 
 			$expiration = $share->getExpirationDate();
 			if ($expiration !== null) {
@@ -281,6 +283,7 @@ class Share20OCS {
 	 */
 	public function createShare() {
 		$event = new GenericEvent(null);
+		$beforeEvent = new GenericEvent(null);
 		$share = $this->shareManager->newShare();
 
 		if (!$this->shareManager->shareApiEnabled()) {
@@ -296,15 +299,13 @@ class Share20OCS {
 		}
 
 		$userFolder = $this->rootFolder->getUserFolder($this->currentUser->getUID());
-		$event->setArgument('userFolder', $userFolder);
-		$event->setArgument('path', $path);
-		$event->setArgument('name', $name);
-		$event->setArgument('run', true);
-		//Dispatch an event to see if creating shares is blocked by any app
-		$this->eventDispatcher->dispatch('share.beforeCreate', $event);
-		if ($event->getArgument('run') === false) {
+		$beforeEvent->setArgument('userFolder', $userFolder);
+		$beforeEvent->setArgument('run', true);
+
+		if ($beforeEvent->getArgument('run') === false) {
 			return new \OC\OCS\Result(null, 403, $this->l->t('No permission to create share'));
 		}
+
 		try {
 			$path = $userFolder->get($path);
 		} catch (NotFoundException $e) {
@@ -469,6 +470,13 @@ class Share20OCS {
 		$share->setShareType($shareType);
 		$share->setSharedBy($this->currentUser->getUID());
 
+
+
+
+		$beforeEvent->setArgument('share', $this->formatShare($share));
+
+		$this->eventDispatcher->dispatch('share.beforeCreate', $beforeEvent);
+
 		try {
 			$share = $this->shareManager->createShare($share);
 		} catch (GenericShareException $e) {
@@ -480,15 +488,17 @@ class Share20OCS {
 			return new \OC\OCS\Result(null, 403, $e->getMessage());
 		}
 
-		$output = $this->formatShare($share);
+
 
 		$share->getNode()->unlock(\OCP\Lock\ILockingProvider::LOCK_SHARED);
 
-		$event = new GenericEvent(null, []);
-		$event->setArgument('output', $output);
-		$event->setArgument('result', 'success');
-		$this->eventDispatcher->dispatch('share.afterCreate', $event);
-		return new \OC\OCS\Result($output);
+
+		$formattedShareAfterCreate = $this->formatShare($share);
+		$afterEvent = new GenericEvent(null, []);
+		$afterEvent->setArgument('share', $formattedShareAfterCreate);
+		$afterEvent->setArgument('result', 'success');
+		$this->eventDispatcher->dispatch('share.afterCreate', $afterEvent);
+		return new \OC\OCS\Result($formattedShareAfterCreate);
 	}
 
 	/**
