@@ -19,7 +19,7 @@ else
   DATABASENAME=owncloud
   case "${DB_TYPE}" in
     mariadb)
-      wait-for-it mariadb:3306
+      wait-for-it database:3306
       DB=mysql
       ;;
     mysql)
@@ -46,7 +46,7 @@ else
       ;;
   esac
 
-  ./occ maintenance:install -vvv --database=${DB} --database-host=${DB_TYPE} --database-user=${DATABASEUSER} --database-pass=owncloud --database-name=${DATABASENAME} --database-table-prefix=oc_ --admin-user=admin --admin-pass=admin --data-dir=$(pwd)/data
+  ./occ maintenance:install -vvv --database=mysql --database-host=database --database-user=${DATABASEUSER} --database-pass=owncloud --database-name=${DATABASENAME} --database-table-prefix=oc_ --admin-user=admin --admin-pass=admin --data-dir=$(pwd)/data
 fi
 
 ./occ app:enable files_sharing
