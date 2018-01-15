@@ -231,6 +231,7 @@
 							$.each(options,function(index, item) {
 								if ($(item).val() == value || $(item).text() == value) {
 									exists = true;
+									OC.Notification.showTemporary(t('settings', "Error adding {addItem}: {addItem} already exists", {addItem: value}));
 									return false;
 								}
 							});
