@@ -70,6 +70,9 @@ class Share20OCS {
 	 */
 	private $additionalInfoField;
 
+	/** @var \Symfony\Component\EventDispatcher\EventDispatcherInterface  */
+	private $eventDispatcher;
+
 	/**
 	 * Share20OCS constructor.
 	 *
@@ -82,6 +85,7 @@ class Share20OCS {
 	 * @param IUser $currentUser
 	 * @param IL10N $l10n
 	 * @param IConfig $config
+	 * @param EventDispatcher $eventDispatcher
 	 */
 	public function __construct(
 			IManager $shareManager,
@@ -92,7 +96,8 @@ class Share20OCS {
 			IURLGenerator $urlGenerator,
 			IUser $currentUser,
 			IL10N $l10n,
-			IConfig $config
+			IConfig $config,
+			EventDispatcher $eventDispatcher
 	) {
 		$this->shareManager = $shareManager;
 		$this->userManager = $userManager;
