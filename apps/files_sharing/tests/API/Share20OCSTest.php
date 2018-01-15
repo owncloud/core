@@ -24,6 +24,7 @@
  */
 namespace OCA\Files_Sharing\Tests\API;
 
+use JMS\Serializer\EventDispatcher\EventDispatcher;
 use OCA\Files_Sharing\API\Share20OCS;
 use OCP\Files\IRootFolder;
 use OCP\Files\NotFoundException;
@@ -36,6 +37,7 @@ use OCP\IUser;
 use OCP\IUserManager;
 use OCP\Lock\LockedException;
 use OCP\Share;
+use Symfony\Component\EventDispatcher\GenericEvent;
 use Test\TestCase;
 
 /**
@@ -73,6 +75,9 @@ class Share20OCSTest extends TestCase {
 	/** @var IL10N */
 	private $l;
 
+	/** @var  EventDispatcher */
+	private $eventDispatcher;
+
 	protected function setUp() {
 		$this->shareManager = $this->getMockBuilder('OCP\Share\IManager')
 			->disableOriginalConstructor()
@@ -103,6 +108,8 @@ class Share20OCSTest extends TestCase {
 				['core', 'shareapi_default_permissions', \OCP\Constants::PERMISSION_ALL, \OCP\Constants::PERMISSION_READ | \OCP\Constants::PERMISSION_CREATE]
 			]));
 
+		$this->eventDispatcher = \OC::$server->getEventDispatcher();
+
 		$this->ocs = new Share20OCS(
 			$this->shareManager,
 			$this->groupManager,
@@ -112,9 +119,15 @@ class Share20OCSTest extends TestCase {
 			$this->urlGenerator,
 			$this->currentUser,
 			$this->l,
-			$this->config
+			$this->config,
+			$this->eventDispatcher
 		);
 	}
+
+	public function tearDown() {
+		parent::tearDown();
+	}
+
 
 	private function mockFormatShare() {
 		return $this->getMockBuilder('OCA\Files_Sharing\API\Share20OCS')
@@ -128,6 +141,7 @@ class Share20OCSTest extends TestCase {
 				$this->currentUser,
 				$this->l,
 				$this->config,
+				$this->eventDispatcher,
 			])->setMethods(['formatShare'])
 			->getMock();
 	}
@@ -436,6 +450,7 @@ class Share20OCSTest extends TestCase {
 					$this->currentUser,
 					$this->l,
 					$this->config,
+					$this->eventDispatcher,
 				])->setMethods(['canAccessShare'])
 				->getMock();
 
@@ -763,6 +778,7 @@ class Share20OCSTest extends TestCase {
 				$this->currentUser,
 				$this->l,
 				$this->config,
+				$this->eventDispatcher,
 			])->setMethods(['formatShare'])
 			->getMock();
 
@@ -815,11 +831,20 @@ class Share20OCSTest extends TestCase {
 			}))
 			->will($this->returnArgument(0));
 
+		$calledAfterCreate = [];
+		\OC::$server->getEventDispatcher()->addListener('share.afterCreate', function (GenericEvent $event) use (&$calledAfterCreate) {
+			$calledAfterCreate[] = 'share.afterCreate';
+			$calledAfterCreate[] = $event;
+		});
 		$expected = new \OC\OCS\Result();
 		$result = $ocs->createShare();
 
 		$this->assertEquals($expected->getMeta(), $result->getMeta());
 		$this->assertEquals($expected->getData(), $result->getData());
+		$this->assertEquals('share.afterCreate', $calledAfterCreate[0]);
+		$this->assertInstanceOf(GenericEvent::class, $calledAfterCreate[1]);
+		$this->assertEquals('success', $calledAfterCreate[1]->getArgument('result'));
+		$this->assertArrayHasKey('share', $calledAfterCreate[1]);
 	}
 
 	public function testCreateShareGroupNoValidShareWith() {
@@ -880,6 +905,7 @@ class Share20OCSTest extends TestCase {
 				$this->currentUser,
 				$this->l,
 				$this->config,
+				$this->eventDispatcher,
 			])->setMethods(['formatShare'])
 			->getMock();
 
@@ -1417,6 +1443,7 @@ class Share20OCSTest extends TestCase {
 				$this->currentUser,
 				$this->l,
 				$this->config,
+				$this->eventDispatcher,
 			])->setMethods(['formatShare'])
 			->getMock();
 
@@ -2699,7 +2726,8 @@ class Share20OCSTest extends TestCase {
 			$this->urlGenerator,
 			$this->currentUser,
 			$this->l,
-			$this->config
+			$this->config,
+			$this->eventDispatcher
 		);
 	}
 
@@ -2790,7 +2818,8 @@ class Share20OCSTest extends TestCase {
 			$this->urlGenerator,
 			$this->currentUser,
 			$this->l,
-			$config
+			$config,
+			$this->eventDispatcher
 		);
 
 		list($file,) = $this->getMockFileFolder();
@@ -2822,4 +2851,68 @@ class Share20OCSTest extends TestCase {
 
 		$this->assertEquals($expectedInfo, $result['share_with_additional_info']);
 	}
+
+	public function testBeforeAndAfterCreateHooksAreCalled() {
+		$ocs = $this->mockFormatShare();
+		$share = $this->newShare();
+		$this->shareManager->method('newShare')->willReturn($share);
+
+		$storage = $this->createMock('OCP\Files\Storage');
+		$storage->method('instanceOfStorage')
+			->with('OCA\Files_Sharing\External\Storage')
+			->willReturn(false);
+		$path = $this->createMock('\OCP\Files\File');
+		$path->method('getStorage')
+			->willReturn($storage);
+
+		$userFolder = $this->createMock('\OCP\Files\Folder');
+		$node = $this->createMock('\OCP\Files\Node');
+		$node->method('getStorage')
+			->willReturn($storage);
+		$userFolder->method('get')->willReturn($node);
+		$this->request
+			->method('getParam')
+			->will($this->returnValueMap([
+				['path', null, 'valid-path'],
+				['permissions', null, \OCP\Constants::PERMISSION_ALL],
+				['shareType', $this->any(), Share::SHARE_TYPE_USER],
+				['shareWith', null, 'validUser'],
+			]));
+
+		$this->rootFolder
+			->method('getUserFolder')
+			->with('currentUser')
+			->willReturn($userFolder);
+		$this->userManager->method('userExists')
+			->withAnyParameters()
+			->willReturn(true);
+		$this->shareManager
+			->method('createShare')
+			->willReturn($share);
+
+		$shareBeforeCreateCalled = false;
+
+		\OC::$server->getEventDispatcher()->addListener('share.beforeCreate', function (GenericEvent $event) use (&$shareBeforeCreateCalled) {
+			$shareBeforeCreateCalled = true;
+			$this->assertInstanceOf('Symfony\Component\EventDispatcher\GenericEvent', $event);
+			$args = $event->getArguments();
+			$this->assertArrayHasKey('share', $args);
+			$this->assertArrayHasKey('run', $args);
+		});
+
+		$shareAfterCreateCalled = false;
+
+		\OC::$server->getEventDispatcher()->addListener('share.afterCreate', function (GenericEvent $event) use (&$shareAfterCreateCalled) {
+			$shareAfterCreateCalled = true;
+			$this->assertInstanceOf('Symfony\Component\EventDispatcher\GenericEvent', $event);
+			$args = $event->getArguments();
+			$this->assertArrayHasKey('share', $args);
+		});
+
+		$ocs->createShare();
+
+		$this->assertTrue($shareBeforeCreateCalled, 'share.beforeCreate not called');
+		$this->assertTrue($shareAfterCreateCalled, 'share.afterCreate not called');
+	}
 }
+
