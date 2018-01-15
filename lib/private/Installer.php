@@ -50,6 +50,12 @@ use OCP\App\AppAlreadyInstalledException;
  */
 class Installer {
 
+	private static $allowedArchiveMimetypes = array (
+		'application/zip',
+		'application/x-gzip',
+		'application/x-bzip2',
+	);
+
 	/**
 	 *
 	 * This function installs an app. All information needed are passed in the
@@ -276,9 +282,9 @@ class Installer {
 		}
 
 		//detect the archive type
-		$mime = \OC::$server->getMimeTypeDetector()->detect($path);
-		if ($mime !=='application/zip' && $mime !== 'application/x-gzip' && $mime !== 'application/x-bzip2') {
-			throw new \Exception($l->t("Archives of type %s are not supported", [$mime]));
+		$mimeType = \OC::$server->getMimeTypeDetector()->detect($path);
+		if (!in_array($mimeType, self::$allowedArchiveMimetypes)) {
+			throw new \Exception($l->t("Archives of type %s are not supported", [$mimeType]));
 		}
 
 		//extract the archive in a temporary folder
