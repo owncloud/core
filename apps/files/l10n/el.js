@@ -9,6 +9,7 @@ OC.L10N.register(
     "Home" : "Σπίτι",
     "Close" : "Κλείσιμο",
     "Favorites" : "Αγαπημένα",
+    "Unknown error \"{error}\" uploading file \"{file}\"" : "Άγνωστο σφάλμα \"{error}\" κατά τη μεταφόρτωση του αρχείου \"{file}\"",
     "Could not create folder \"{dir}\"" : "Αδυναμία δημιουργίας του φακέλου \"{dir}\"",
     "Upload cancelled." : "Η αποστολή ακυρώθηκε.",
     "Unable to upload {filename} as it is a directory or has 0 bytes" : "Αδυναμία φόρτωσης {filename} καθώς είναι κατάλογος αρχείων ή έχει 0 bytes",
