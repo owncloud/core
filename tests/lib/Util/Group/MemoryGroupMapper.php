@@ -1,6 +1,6 @@
 <?php
 /**
- * @author Thomas Müller <thomas.mueller@tmit.eu>
+ * @author Piotr Mrowczynski <piotr@owncloud.com>
  *
  * @copyright Copyright (c) 2017, ownCloud GmbH
  * @license AGPL-3.0
@@ -19,49 +19,41 @@
  *
  */
 
-namespace Test\Util\User;
+namespace Test\Util\Group;
 
 
-use OC\User\Account;
-use OC\User\AccountMapper;
+use OC\Group\BackendGroup;
+use OC\Group\GroupMapper;
 use OCP\AppFramework\Db\DoesNotExistException;
 use OCP\AppFramework\Db\Entity;
 
-class MemoryAccountMapper extends AccountMapper {
+class MemoryGroupMapper extends GroupMapper {
 
-	private static $accounts = [];
+	private static $groups = [];
 	private static $counter = 1000;
 
 	public $testCaseName = '';
 
 	public function insert(Entity $entity) {
 		$entity->setId(self::$counter++);
-		self::$accounts[$entity->getId()] = $entity;
+		self::$groups[$entity->getId()] = $entity;
 
 		return $entity;
 	}
 
 	public function update(Entity $entity) {
-		self::$accounts[$entity->getId()] = $entity;
+		self::$groups[$entity->getId()] = $entity;
 
 		return $entity;
 	}
 
 	public function delete(Entity $entity) {
-		unset(self::$accounts[$entity->getId()]);
+		unset(self::$groups[$entity->getId()]);
 	}
 
-	public function getByEmail($email) {
-		$match = array_filter(self::$accounts, function (Account $a) use ($email) {
-			return $a->getEmail() === $email;
-		});
-
-		return $match;
-	}
-
-	public function getByUid($uid) {
-		$match = array_filter(self::$accounts, function (Account $a) use ($uid) {
-			return strtolower($a->getUserId()) === strtolower($uid);
+	public function getGroup($gid) {
+		$match = array_filter(self::$groups, function (BackendGroup $a) use ($gid) {
+			return $a->getGroupId() === $gid;
 		});
 		if (empty($match)) {
 			throw new DoesNotExistException('');
@@ -70,24 +62,12 @@ class MemoryAccountMapper extends AccountMapper {
 		return array_values($match)[0];
 	}
 
-	public function getUserCount($hasLoggedIn) {
-		return count(self::$accounts);
-	}
-
-	public function search($fieldName, $pattern, $limit, $offset) {
-		$match = array_filter(self::$accounts, function (Account $a) use ($pattern) {
-			return stripos($a->getUserId(), $pattern) || $pattern == '';
+	public function search($pattern, $limit, $offset) {
+		$match = array_filter(self::$groups, function (BackendGroup $a) use ($pattern) {
+			return stripos($a->getGroupId(), $pattern) !== false || stripos($a->getDisplayName(), $pattern) !== false || $pattern == '';
 		});
 
 		return $match;
 	}
 
-	public function callForAllUsers($callback, $search, $onlySeen) {
-		foreach (self::$accounts as $account) {
-			$return =$callback($account);
-			if ($return === false) {
-				return;
-			}
-		}
-	}
 }

@@ -50,9 +50,11 @@ class AppsTest extends TestCase {
 		parent::setUp();
 
 		$this->appManager = \OC::$server->getAppManager();
-		$this->groupManager = \OC::$server->getGroupManager();
 		$this->userSession = \OC::$server->getUserSession();
 		$this->api = new Apps($this->appManager);
+		$user = $this->createUser($this->getUniqueID(), 'password');
+		$this->createGroup(self::TEST_PROVI_API_ADMIN_GROUP)->addUser($user);
+		$this->userSession->setUser($user);
 	}
 
 	public function testGetAppInfo() {
@@ -69,10 +71,6 @@ class AppsTest extends TestCase {
 	}
 
 	public function testGetApps() {
-		$user = $this->generateUsers();
-		$this->groupManager->get('admin')->addUser($user);
-		$this->userSession->setUser($user);
-
 		$result = $this->api->getApps([]);
 
 		$this->assertTrue($result->succeeded());

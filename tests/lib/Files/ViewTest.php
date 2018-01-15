@@ -77,6 +77,11 @@ class ViewTest extends TestCase {
 	/** @var \OC\Files\Storage\Storage */
 	private $tempStorage;
 
+	/**
+	 * @var string
+	 */
+	private $group;
+
 	protected function setUp() {
 		parent::setUp();
 		\OC_Hook::clear();
@@ -85,17 +90,21 @@ class ViewTest extends TestCase {
 		$userManager = \OC::$server->getUserManager();
 		$groupManager = \OC::$server->getGroupManager();
 		$this->user = 'test';
-		if ($userManager->userExists('test')) {
-			$this->userObject = $userManager->get('test');
+		if ($userManager->userExists($this->user)) {
+			$this->userObject = $userManager->get($this->user);
 			$this->userObject->delete();
 		}
-		$this->userObject = $userManager->createUser('test', 'test');
+		$this->userObject = $userManager->createUser($this->user, $this->user);
 
-		$this->groupObject = $groupManager->createGroup('group1');
+		$this->group = 'group1';
+		if ($groupManager->groupExists($this->group)) {
+			$this->groupObject = $groupManager->get($this->group);
+			$this->groupObject->delete();
+		}
+		$this->groupObject = $groupManager->createGroup($this->group);
 		$this->groupObject->addUser($this->userObject);
 
 		$this->loginAsUser($this->user);
-
 		// clear mounts but somehow keep the root storage
 		// that was initialized above...
 		Filesystem::clearMounts();

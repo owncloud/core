@@ -33,8 +33,10 @@
 
 namespace OC\User;
 
+use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
 use OC\Cache\CappedMemoryCache;
 use OC\Hooks\PublicEmitter;
+use OC\MembershipManager;
 use OCP\AppFramework\Db\DoesNotExistException;
 use OCP\Events\EventEmitterTrait;
 use OCP\ILogger;
@@ -78,37 +80,26 @@ class Manager extends PublicEmitter implements IUserManager {
 	/** @var AccountMapper */
 	private $accountMapper;
 
+	/** @var MembershipManager */
+	private $membershipManager;
+
 	/**
 	 * @param IConfig $config
 	 * @param ILogger $logger
 	 * @param AccountMapper $accountMapper
+	 * @param MembershipManager $membershipManager
 	 */
-	public function __construct(IConfig $config, ILogger $logger, AccountMapper $accountMapper) {
+	public function __construct(IConfig $config, ILogger $logger, AccountMapper $accountMapper, MembershipManager $membershipManager) {
 		$this->config = $config;
 		$this->logger = $logger;
 		$this->accountMapper = $accountMapper;
+		$this->membershipManager = $membershipManager;
 		$this->cachedUsers = new CappedMemoryCache();
 		$cachedUsers = &$this->cachedUsers;
 		$this->listen('\OC\User', 'postDelete', function ($user) use (&$cachedUsers) {
 			/** @var \OC\User\User $user */
 			unset($cachedUsers[$user->getUID()]);
 		});
-	}
-
-	/**
-	 * only used for unit testing
-	 *
-	 * @param AccountMapper $mapper
-	 * @param array $backends
-	 * @return array
-	 */
-	public function reset(AccountMapper $mapper, $backends) {
-		$return = [$this->accountMapper, $this->backends];
-		$this->accountMapper = $mapper;
-		$this->backends = $backends;
-		$this->cachedUsers->clear();
-
-		return $return;
 	}
 
 	/**
@@ -156,15 +147,15 @@ class Manager extends PublicEmitter implements IUserManager {
 		if (is_null($uid) || !is_string($uid)) {
 			return null;
 		}
-		if ($this->cachedUsers->hasKey($uid)) { //check the cache first to prevent having to loop over the backends
-			return $this->cachedUsers->get($uid);
+
+		// Check if user object is cached
+		if ($user = $this->getCachedUserObject($uid)) {
+			return $user;
 		}
+
+		// Retrieve user object
 		try {
 			$account = $this->accountMapper->getByUid($uid);
-			if (is_null($account)) {
-				$this->cachedUsers->set($uid, null);
-				return null;
-			}
 			return $this->getUserObject($account);
 		} catch (DoesNotExistException $ex) {
 			return null;
@@ -172,22 +163,45 @@ class Manager extends PublicEmitter implements IUserManager {
 	}
 
 	/**
-	 * get or construct the user object
+	 * Get or construct the user object
+	 *
+	 * NOTE: This function is not defined in the interface and is only
+	 * available in the User/Group management scope. Only classes receiving this class instance will
+	 * have access to this function.
 	 *
 	 * @param Account $account
-	 * @param bool $cacheUser If false the newly created user object will not be cached
 	 * @return \OC\User\User
 	 */
-	protected function getUserObject(Account $account, $cacheUser = true) {
-		if ($this->cachedUsers->hasKey($account->getUserId())) {
-			return $this->cachedUsers->get($account->getUserId());
+	public function getUserObject(Account $account) {
+		if ($user = $this->getCachedUserObject($account->getUserId())) {
+			return $user;
 		}
 
-		$user = new User($account, $this->accountMapper, $this, $this->config, null, \OC::$server->getEventDispatcher() );
-		if ($cacheUser) {
-			$this->cachedUsers->set($account->getUserId(), $user);
+		// Return new user object, since user is not cached
+		return $this->newUserObject($account);
+	}
+
+	/**
+	 * Retrieve the account object
+	 *
+	 * NOTE: This function is not defined in the interface and is only
+	 * available in the User/Group management scope. Only classes receiving this class instance will
+	 * have access to this function.
+	 *
+	 * @param \OCP\IUser
+	 * @return \OC\User\Account
+	 */
+	public function getAccountObject(\OCP\IUser $user) {
+		if ($account = $this->getCachedUserAccount($user->getUID())) {
+			return $account;
 		}
-		return $user;
+
+		// Retrieve account from account mapper, since User is not cached
+		try {
+			return $this->accountMapper->getByUid($user->getUID());
+		} catch (DoesNotExistException $ex) {
+			return null;
+		}
 	}
 
 	/**
@@ -225,7 +239,7 @@ class Manager extends PublicEmitter implements IUserManager {
 					} catch(DoesNotExistException $ex) {
 						$account = $this->newAccount($uid, $backend);
 					}
-					$this->cachedUsers->remove($account->getUserId());
+					$this->clearCachedUser($account->getUserId());
 					// TODO always sync account with backend here to update displayname, email, search terms, home etc. user_ldap currently updates user metadata on login, core should take care of updating accounts on a successful login
 					return $this->getUserObject($account);
 				}
@@ -341,7 +355,7 @@ class Manager extends PublicEmitter implements IUserManager {
 				if ($backend->implementsActions(Backend::CREATE_USER)) {
 					$backend->createUser($uid, $password);
 					$account = $this->newAccount($uid, $backend);
-					$this->cachedUsers->remove($account->getUserId());
+					$this->clearCachedUser($account->getUserId());
 					$user = $this->getUserObject($account);
 					$this->emit('\OC\User', 'postCreateUser', [$user, $password]);
 					return $user;
@@ -354,13 +368,14 @@ class Manager extends PublicEmitter implements IUserManager {
 	/**
 	 * @param string $uid
 	 * @param UserInterface $backend
+	 * @throws UniqueConstraintViolationException
 	 * @return IUser | null
 	 */
 	public function createUserFromBackend($uid, $password, $backend) {
 		return $this->emittingCall(function () use (&$uid, &$password, &$backend) {
 			$this->emit('\OC\User', 'preCreateUser', [$uid, '']);
 			$account = $this->newAccount($uid, $backend);
-			$this->cachedUsers->remove($account->getUserId());
+			$this->clearCachedUser($account->getUserId());
 			$user = $this->getUserObject($account);
 			$this->emit('\OC\User', 'postCreateUser', [$user, $password]);
 			return $user;
@@ -436,6 +451,7 @@ class Manager extends PublicEmitter implements IUserManager {
 	 * TODO inject OC\User\SyncService to deduplicate Account creation code
 	 * @param string $uid
 	 * @param UserInterface $backend
+	 * @throws UniqueConstraintViolationException
 	 * @return Account|\OCP\AppFramework\Db\Entity
 	 */
 	private function newAccount($uid, $backend) {
@@ -481,11 +497,102 @@ class Manager extends PublicEmitter implements IUserManager {
 		return $account;
 	}
 
+	/**
+	 * Create new user object instance from given Account instance,
+	 * and cache User and Account classes
+	 *
+	 * @param Account $account
+	 *
+	 * @return \OC\User\User
+	 */
+	private function newUserObject($account) {
+		// Create new User object instance
+		$user = new User($account, $this->accountMapper, $this->membershipManager, $this, $this->config, null, \OC::$server->getEventDispatcher() );
+
+		// Let User Manager have control over both User and Account class instances
+		// and pass references to other classes
+		$cachedUser["account"] = $account;
+		$cachedUser["user"] = $user;
+		$this->cachedUsers->set($user->getUID(), $cachedUser);
+
+		return $user;
+	}
+
+	/**
+	 * Get cached user object if cached
+	 *
+	 * @param string $uid
+	 *
+	 * @return \OC\User\User
+	 */
+	private function getCachedUserObject($uid) {
+		if ($userCache = $this->cachedUsers->get($uid)) {
+			return $userCache["user"];
+		}
+		return null;
+	}
+
+	/**
+	 * Get cached user account if cached
+	 * @param string $uid
+	 *
+	 * @return \OC\User\Account
+	 */
+	private function getCachedUserAccount($uid) {
+		if ($userCache = $this->cachedUsers->get($uid)) {
+			return $userCache["account"];
+		}
+		return null;
+	}
+
+	/**
+	 * Clear cached user
+	 * @param string $uid
+	 */
+	private function clearCachedUser($uid) {
+		$this->cachedUsers->remove($uid);
+	}
+
+	/**
+	 * Get backend for given class
+	 *
+	 * @param string $backendClass
+	 * @return UserInterface|null
+	 * @deprecated 10.0.0 - use getBackends of \OCP\IUserManager
+	 */
 	public function getBackend($backendClass) {
 		if (isset($this->backends[$backendClass])) {
 			return $this->backends[$backendClass];
 		}
 		return null;
+	}
+
+	/**
+	 * only used for unit testing
+	 *
+	 * @param AccountMapper $mapper
+	 * @param array $backends
+	 * @return array
+	 */
+	public function reset(AccountMapper $mapper, $backends) {
+		$return = [$this->accountMapper, $this->backends];
+		$this->accountMapper = $mapper;
+		$this->backends = $backends;
+
+		return $return;
+	}
+
+	/**
+	 * only used for unit testing
+	 *
+	 * @param MembershipManager $membershipManager
+	 * @return MembershipManager
+	 */
+	public function resetMembershipManager(MembershipManager $membershipManager) {
+		$return = $this->membershipManager;
+		$this->membershipManager = $membershipManager;
+
+		return $return;
 	}
 
 }

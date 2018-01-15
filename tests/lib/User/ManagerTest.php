@@ -1,13 +1,30 @@
 <?php
 
 /**
- * Copyright (c) 2013 Robin Appelman <icewind@owncloud.com>
- * This file is licensed under the Affero General Public License version 3 or
- * later.
- * See the COPYING-README file.
+ * @author Robin Appelman <icewind@owncloud.com>
+ * @author Thomas Müller <thomas.mueller@tmit.eu>
+ * @author Piotr Mrowczynski <piotr@owncloud.com>
+ *
+ * @copyright Copyright (c) 2017, ownCloud GmbH
+ * @license AGPL-3.0
+ *
+ * This code is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License, version 3,
+ * as published by the Free Software Foundation.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License, version 3,
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>
+ *
  */
 
 namespace Test\User;
+use \InvalidArgumentException;
+use OC\MembershipManager;
 use OC\User\Account;
 use OC\User\AccountMapper;
 use OC\User\AccountTermMapper;
@@ -33,8 +50,8 @@ class ManagerTest extends TestCase {
 	private $manager;
 	/** @var AccountMapper | \PHPUnit_Framework_MockObject_MockObject */
 	private $accountMapper;
-	/** @var AccountTermMapper | \PHPUnit_Framework_MockObject_MockObject */
-	private $accountTermMapper;
+	/** @var MembershipManager | \PHPUnit_Framework_MockObject_MockObject */
+	private $membershipManager;
 
 	public function setUp() {
 		parent::setUp();
@@ -44,8 +61,8 @@ class ManagerTest extends TestCase {
 		/** @var ILogger | \PHPUnit_Framework_MockObject_MockObject $logger */
 		$logger = $this->createMock(ILogger::class);
 		$this->accountMapper = $this->createMock(AccountMapper::class);
-		$this->accountTermMapper = $this->createMock(AccountTermMapper::class);
-		$this->manager = new \OC\User\Manager($config, $logger, $this->accountMapper, $this->accountTermMapper);
+		$this->membershipManager = $this->createMock(MembershipManager::class);
+		$this->manager = new \OC\User\Manager($config, $logger, $this->accountMapper, $this->membershipManager);
 	}
 
 	public function testGetBackends() {
@@ -73,6 +90,7 @@ class ManagerTest extends TestCase {
 	}
 
 	public function testUserExistsNoBackends() {
+		$this->accountMapper->expects($this->once())->method('getByUid')->with('foo')->willThrowException(new DoesNotExistException(''));
 		$this->assertFalse($this->manager->userExists('foo'));
 	}
 
@@ -126,10 +144,30 @@ class ManagerTest extends TestCase {
 		$account = new Account();
 		$account->setUserId('foo');
 		$this->accountMapper->expects($this->once())->method('getByUid')->with('foo')->willReturn($account);
+
+		$this->assertEquals('foo', $this->manager->get('foo')->getUID());
+
+		// Second call should not call account mapper and fetch from cache
 		$this->assertEquals('foo', $this->manager->get('foo')->getUID());
 	}
 
+	public function testGetByEmail() {
+		$account = new Account();
+		$account->setUserId('foo');
+		$account->setEmail('foo@foo');
+		$this->accountMapper->expects($this->once())->method('getByEmail')->with('foo@foo')->willReturn([$account]);
+		$this->assertEquals('foo', $this->manager->getByEmail('foo@foo')[0]->getUID());
+	}
+
+	/**
+	 * @expectedException InvalidArgumentException
+	 */
+	public function testGetByEmailThrowsException() {
+		$this->manager->getByEmail('');
+	}
+
 	public function testGetOneBackendNotExists() {
+		$this->accountMapper->expects($this->once())->method('getByUid')->with('foo')->willThrowException(new DoesNotExistException(''));
 		$this->assertNull($this->manager->get('foo'));
 	}
 
@@ -275,9 +313,46 @@ class ManagerTest extends TestCase {
 		$user4->delete();
 	}
 
+	public function testGetAccountObject() {
+		$user = $this->createMock(IUser::class);
+		$account = $this->createMock(Account::class);
+		$user->expects($this->any())->method('getUID')->willReturn('foo');
+		$this->accountMapper->expects($this->once())->method('getByUid')->with('foo')->willReturn($account);
+
+		// This should fetch user object from account mapper since user is not cached and created as object yet
+		// (but exists in database)
+		$this->assertEquals($this->manager->getAccountObject($user), $account);
+
+		// This will create new user object from account and cache
+		$user = $this->manager->getUserObject($account);
+
+		// This should fetch from cache (getByUid not being called)
+		$this->assertEquals($this->manager->getAccountObject($user), $account);
+	}
+
+	public function testGetAccountObjectDoesNotExists() {
+		$user = $this->createMock(IUser::class);
+		$user->expects($this->any())->method('getUID')->willReturn('foo');
+		$this->accountMapper->expects($this->once())->method('getByUid')->with('foo')->willThrowException(new DoesNotExistException(''));
+
+		$this->assertNull($this->manager->getAccountObject($user));
+	}
+
 	public function testNullUidMakesNoQueryToAccountsTable() {
 		// migration from versions below 10.0. accounts table hasn't been created yet.
 		$this->accountMapper->expects($this->never())->method('getByUid');
 		$this->assertNull($this->manager->get(null));
+	}
+
+	public function testResets() {
+		/** @var Backend | \PHPUnit_Framework_MockObject_MockObject $backend */
+		$backend = $this->createMock(Backend::class);
+		$this->manager->registerBackend($backend);
+		$array = $this->manager->reset($this->accountMapper, []);
+		$this->assertEquals($array[0], $this->accountMapper);
+		$this->assertEquals($array[1][get_class($backend)], $backend);
+
+		$memb = $this->manager->resetMembershipManager($this->membershipManager);
+		$this->assertEquals($memb, $this->membershipManager);
 	}
 }

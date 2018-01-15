@@ -77,7 +77,7 @@ abstract class TestCase extends \Test\TestCase {
 		\OC_User::clearBackends();
 		\OC_User::useBackend('database');
 		\OC::$server->getGroupManager()->clearBackends();
-		\OC::$server->getGroupManager()->addBackend(new \OC_Group_Database());
+		\OC::$server->getGroupManager()->addBackend(new \OC\Group\Database(\OC::$server->getDatabaseConnection()));
 
 		parent::tearDownAfterClass();
 	}
