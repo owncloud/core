@@ -3,8 +3,8 @@ script('settings', 'panels/profile');
 vendor_script('strengthify/jquery.strengthify');
 vendor_style('strengthify/strengthify');
 if ($_['enableAvatars']) {
-	vendor_script('jcrop/js/jquery.Jcrop');
-	vendor_style('jcrop/css/jquery.Jcrop');
+	vendor_script('Jcrop/js/Jcrop.min');
+	vendor_style('Jcrop/css/Jcrop.min');
 }
 ?>
 <?php if ($_['enableAvatars']): ?>
