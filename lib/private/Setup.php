@@ -380,6 +380,9 @@ class Setup {
 
 			self::installBackgroundJobs();
 
+			// save the origin version that we installed at
+			$config->setAppValue('core', 'first_install_version', \implode('.', \OCP\Util::getVersion()));
+
 			//and we are done
 			$config->setSystemValue('installed', true);
 		}
