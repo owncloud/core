@@ -156,6 +156,8 @@ OC.L10N.register(
     "Errors and fatal issues" : "Kesalahan dan masalah fatal",
     "Fatal issues only" : "Hanya masalah fatal",
     "Log" : "Log",
+    "What to log" : "Yang akan dicatat",
+    "Download logfile (%s)" : "Unduh berkas catatan (%s)",
     "The logfile is bigger than 100 MB. Downloading it may take some time!" : "Berkas log lebih besar dari 100MB. Pengunduhan ini memerlukan beberapa saat!",
     "Login" : "Masuk",
     "Plain" : "Biasa",

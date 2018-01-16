@@ -37,6 +37,7 @@ OC.L10N.register(
     "Wrong share ID, share doesn't exist" : "Неверный идентификатор публикации, публикация не существует",
     "Could not delete share" : "Не удалось удалить публикацию",
     "Please specify a file or folder path" : "Пожалуйста, укажите путь к файлу или каталогу",
+    "No permission to create share" : "Нет права на предоставление доступа",
     "Wrong path, file/folder doesn't exist" : "Неверный путь, файл/каталог не существует",
     "Cannot remove all permissions" : "Не могу удалить все права",
     "Please specify a valid user" : "Пожалуйста, укажите допустимого пользователя",
