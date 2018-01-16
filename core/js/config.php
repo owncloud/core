@@ -66,6 +66,7 @@ if ($defaultExpireDateEnabled) {
 	$value = $config->getAppValue('core', 'shareapi_enforce_expire_date', 'no');
 	$enforceDefaultExpireDate = ($value === 'yes') ? true : false;
 }
+$disableEnforceLinkPasswordForUploadOnly = $config->getAppValue('core', 'shareapi_disable_enforce_links_password_for_upload_only', 'no') === 'yes';
 $outgoingServer2serverShareEnabled = $config->getAppValue('files_sharing', 'outgoing_server2server_share_enabled', 'yes') === 'yes';
 
 $countOfDataLocation = 0;
@@ -164,6 +165,7 @@ $array = [
 				'defaultExpireDate' => $defaultExpireDate,
 				'defaultExpireDateEnforced' => $enforceDefaultExpireDate,
 				'enforcePasswordForPublicLink' => \OCP\Util::isPublicLinkPasswordRequired(),
+				'disableEnforceLinkPasswordForUploadOnly' => $disableEnforceLinkPasswordForUploadOnly,
 				'sharingDisabledForUser' => \OCP\Util::isSharingDisabledForUser(),
 				'resharingAllowed' => \OCP\Share::isResharingAllowed(),
 				'remoteShareAllowed' => $outgoingServer2serverShareEnabled,

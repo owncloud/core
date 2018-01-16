@@ -53,6 +53,7 @@ class FileSharing implements ISettings {
 		$template->assign('allowLinks', $this->config->getAppValue('core', 'shareapi_allow_links', 'yes'));
 		$template->assign('allowPublicUpload', $this->config->getAppValue('core', 'shareapi_allow_public_upload', 'yes'));
 		$template->assign('enforceLinkPassword', $this->helper->isPublicLinkPasswordRequired());
+		$template->assign('disableEnforceLinkPasswordForUploadOnly', $this->config->getAppValue('core', 'shareapi_disable_enforce_links_password_for_upload_only', 'no'));
 		$template->assign('shareDefaultExpireDateSet', $this->config->getAppValue('core', 'shareapi_default_expire_date', 'no'));
 		$template->assign('allowPublicMailNotification', $this->config->getAppValue('core', 'shareapi_allow_public_notification', 'no'));
 		$template->assign('allowSocialShare', $this->config->getAppValue('core', 'shareapi_allow_social_share', 'yes'));

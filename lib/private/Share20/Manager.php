@@ -147,10 +147,10 @@ class Manager implements IManager {
 	 * @param string $password
 	 * @throws \Exception
 	 */
-	protected function verifyPassword($password) {
+	protected function verifyPassword($password, $permissions) {
 		if ($password === null) {
 			// No password is set, check if this is allowed.
-			if ($this->shareApiLinkEnforcePassword()) {
+			if ($this->shareApiLinkEnforcePassword() && ($permissions !== \OCP\CONSTANTS::PERMISSION_CREATE || !$this->shareApiLinkEnforcePasswordDisabledForUploads())) {
 				throw new \InvalidArgumentException('Passwords are enforced for link shares');
 			}
 
@@ -585,7 +585,7 @@ class Manager implements IManager {
 			$this->validateExpirationDate($share);
 
 			//Verify the password
-			$this->verifyPassword($share->getPassword());
+			$this->verifyPassword($share->getPassword(), $share->getPermissions());
 
 			// If a password is set. Hash it!
 			if ($share->getPassword() !== null) {
@@ -699,7 +699,7 @@ class Manager implements IManager {
 			// Password updated.
 			if ($share->getPassword() !== $originalShare->getPassword()) {
 				//Verify the password
-				$this->verifyPassword($share->getPassword());
+				$this->verifyPassword($share->getPassword(), $share->getPermissions());
 
 				// If a password is set. Hash it!
 				if ($share->getPassword() !== null) {
@@ -1257,6 +1257,15 @@ class Manager implements IManager {
 	 */
 	public function shareApiLinkEnforcePassword() {
 		return $this->config->getAppValue('core', 'shareapi_enforce_links_password', 'no') === 'yes';
+	}
+
+	/**
+	 * Is password enforced for upload-only shares?
+	 *
+	 * @return bool
+	 */
+	public function shareApiLinkEnforcePasswordDisabledForUploads() {
+		return $this->config->getAppValue('core', 'shareapi_disable_enforce_links_password_for_upload_only', 'no') === 'yes';
 	}
 
 	/**
