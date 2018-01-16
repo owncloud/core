@@ -162,7 +162,7 @@ class Calendar extends \Sabre\CalDAV\Calendar implements IShareable {
 			/** @var CalDavBackend $calDavBackend */
 			$calDavBackend = $this->caldavBackend;
 			$calDavBackend->updateShares($this, [], [
-				'href' => $principal
+				$principal
 			]);
 			return;
 		}
