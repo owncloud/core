@@ -4,6 +4,7 @@ namespace Test\Comments;
 
 use OCP\Comments\ICommentsManager;
 use OCP\IDBConnection;
+use Symfony\Component\EventDispatcher\GenericEvent;
 use Test\TestCase;
 use Test\Traits\UserTrait;
 
@@ -428,6 +429,16 @@ class ManagerTest extends TestCase {
 	}
 
 	public function testSaveNew() {
+		$calledBeforeCreateEvent = [];
+		$calledAfterCreateEvent = [];
+		\OC::$server->getEventDispatcher()->addListener('comment.beforecreate', function (GenericEvent $event) use (&$calledBeforeCreateEvent) {
+			$calledBeforeCreateEvent[] = 'comment.beforesave';
+			$calledBeforeCreateEvent[] = $event;
+		});
+		\OC::$server->getEventDispatcher()->addListener('comment.aftercreate', function (GenericEvent $event) use (&$calledAfterCreateEvent) {
+			$calledAfterCreateEvent[] = 'comment.aftersave';
+			$calledAfterCreateEvent[] = $event;
+		});
 		$manager = $this->getManager();
 		$comment = new \OC\Comments\Comment();
 		$comment
@@ -441,6 +452,14 @@ class ManagerTest extends TestCase {
 		$this->assertTrue($comment->getId() !== '');
 		$this->assertTrue($comment->getId() !== '0');
 		$this->assertNotNull($comment->getCreationDateTime());
+		$this->assertInstanceOf(GenericEvent::class, $calledBeforeCreateEvent[1]);
+		$this->assertInstanceOf(GenericEvent::class, $calledAfterCreateEvent[1]);
+		$this->assertEquals('comment.beforesave', $calledBeforeCreateEvent[0]);
+		$this->assertEquals('comment.aftersave', $calledAfterCreateEvent[0]);
+		$this->assertArrayHasKey('objectId', $calledBeforeCreateEvent[1]);
+		$this->assertArrayHasKey('message', $calledBeforeCreateEvent[1]);
+		$this->assertArrayHasKey('objectId', $calledAfterCreateEvent[1]);
+		$this->assertArrayHasKey('message', $calledAfterCreateEvent[1]);
 
 		$loadedComment = $manager->get($comment->getId());
 		$this->assertSame($comment->getMessage(), $loadedComment->getMessage());
@@ -448,6 +467,16 @@ class ManagerTest extends TestCase {
 	}
 
 	public function testSaveUpdate() {
+		$calledBeforeUpdateEevnt = [];
+		$calledAfterUpdateEevnt = [];
+		\OC::$server->getEventDispatcher()->addListener('comment.beforeupdate', function (GenericEvent $event) use (&$calledBeforeUpdateEevnt) {
+			$calledBeforeUpdateEevnt[] = 'comment.beforeupdate';
+			$calledBeforeUpdateEevnt[] = $event;
+		});
+		\OC::$server->getEventDispatcher()->addListener('comment.afterupdate', function (GenericEvent $event) use (&$calledAfterUpdateEevnt) {
+			$calledAfterUpdateEevnt[] = 'comment.afterupdate';
+			$calledAfterUpdateEevnt[] = $event;
+		});
 		$manager = $this->getManager();
 		$comment = new \OC\Comments\Comment();
 		$comment
@@ -463,12 +492,34 @@ class ManagerTest extends TestCase {
 
 		$loadedComment = $manager->get($comment->getId());
 		$this->assertSame($comment->getMessage(), $loadedComment->getMessage());
+
+		$this->assertInstanceOf(GenericEvent::class, $calledAfterUpdateEevnt[1]);
+		$this->assertInstanceOf(GenericEvent::class, $calledBeforeUpdateEevnt[1]);
+		$this->assertEquals('comment.beforeupdate', $calledBeforeUpdateEevnt[0]);
+		$this->assertEquals('comment.afterupdate', $calledAfterUpdateEevnt[0]);
+		$this->assertArrayHasKey('objectId', $calledAfterUpdateEevnt[1]);
+		$this->assertArrayHasKey('commentId', $calledAfterUpdateEevnt[1]);
+		$this->assertArrayHasKey('message', $calledAfterUpdateEevnt[1]);
+		$this->assertArrayHasKey('objectId', $calledBeforeUpdateEevnt[1]);
+		$this->assertArrayHasKey('commentId', $calledBeforeUpdateEevnt[1]);
+		$this->assertArrayHasKey('message', $calledBeforeUpdateEevnt[1]);
 	}
 
 	/**
 	 * @expectedException \OCP\Comments\NotFoundException
 	 */
 	public function testSaveUpdateException() {
+		$calledBeforeDeleteEvent = [];
+		$calledAfterDeleteEvent = [];
+		\OC::$server->getEventDispatcher()->addListener('comment.beforedelete', function (GenericEvent $event) use (&$calledBeforeDeleteEvent) {
+			$calledBeforeDeleteEvent[] = 'comment.beforedelete';
+			$calledBeforeDeleteEvent[] = $event;
+		});
+		\OC::$server->getEventDispatcher()->addListener('comment.afterdelete', function (GenericEvent $event) use (&$calledAfterDeleteEvent) {
+			$calledAfterDeleteEvent[] = 'comment.afterdelete';
+			$calledAfterDeleteEvent[] = $event;
+		});
+
 		$manager = $this->getManager();
 		$comment = new \OC\Comments\Comment();
 		$comment
@@ -480,6 +531,14 @@ class ManagerTest extends TestCase {
 		$manager->save($comment);
 
 		$manager->delete($comment->getId());
+		$this->assertInstanceOf(GenericEvent::class, $calledBeforeDeleteEvent[1]);
+		$this->assertInstanceOf(GenericEvent::class, $calledAfterDeleteEvent[1]);
+		$this->assertEquals('comment.beforedelete', $calledBeforeDeleteEvent[0]);
+		$this->assertEquals('comment.afterdelete', $calledAfterDeleteEvent[0]);
+		$this->assertArrayHasKey('commentId', $calledBeforeDeleteEvent[1]);
+		$this->assertArrayHasKey('commentId', $calledAfterDeleteEvent[1]);
+		$this->assertArrayHasKey('objectId', $calledAfterDeleteEvent[1]);
+
 		$comment->setMessage('very beautiful, I am really so much impressed!');
 		$manager->save($comment);
 	}
