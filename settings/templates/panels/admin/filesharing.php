@@ -27,6 +27,10 @@
 			   value="1" <?php if ($_['enforceLinkPassword']) print_unescaped('checked="checked"'); ?> />
 		<label for="enforceLinkPassword"><?php p($l->t('Enforce password protection'));?></label><br/>
 
+		<input type="checkbox" name="shareapi_disable_enforce_links_password_for_upload_only" id="disableEnforceLinkPasswordForUploadOnly" class="checkbox"
+			value="1" <?php if ($_['disableEnforceLinkPasswordForUploadOnly'] === 'yes') print_unescaped('checked="checked"'); ?> />
+		<label for="disableEnforceLinkPasswordForUploadOnly"><?php p($l->t('Disable enforce password protection for upload-only shares'));?></label><br/>
+
 		<input type="checkbox" name="shareapi_default_expire_date" id="shareapiDefaultExpireDate" class="checkbox"
 			   value="1" <?php if ($_['shareDefaultExpireDateSet'] === 'yes') print_unescaped('checked="checked"'); ?> />
 		<label for="shareapiDefaultExpireDate"><?php p($l->t('Set default expiration date'));?></label><br/>

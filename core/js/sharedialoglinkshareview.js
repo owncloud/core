@@ -146,6 +146,7 @@
 
 			if (this.configModel.get('enforcePasswordForPublicLink')
 				&& !password
+				&& (this.model.get('permissions') !== OC.PERMISSION_CREATE || !this.configModel.get('disableEnforceLinkPasswordForUploadOnly'))
 				&& (this.model.isNew() || !this.model.get('encryptedPassword'))
 			) {
 				$password.addClass('error');
@@ -221,7 +222,7 @@
 			this.$el.html(this.template({
 				cid: this.cid,
 				passwordPlaceholder: isPasswordSet ? PASSWORD_PLACEHOLDER_STARS : PASSWORD_PLACEHOLDER_MESSAGE,
-				isPasswordRequired: this.configModel.get('enforcePasswordForPublicLink'),
+				isPasswordRequired: this.configModel.get('enforcePasswordForPublicLink') && (this.model.get('permissions') !== OC.PERMISSION_CREATE || !this.configModel.get('disableEnforceLinkPasswordForUploadOnly')),
 				namePlaceholder: t('core', 'Name'),
 				name: this.model.get('name'),
 				isPasswordSet: isPasswordSet,
