@@ -1112,6 +1112,11 @@ $CONFIG = array(
  */
 'sharing.managerFactory' => '\OC\Share20\ProviderFactory',
 
+/**
+ * When talking with federated sharing server, allow falling back to HTTP
+ * instead of hard forcing HTTPS
+ */
+'sharing.federation.allowHttpFallback' => false,
 
 
 /**
@@ -1410,4 +1415,5 @@ $CONFIG = array(
  * Set this property to true if you want to enable debug logging for SMB access.
  */
 'smb.logging.enable' => false, 
+
 );
