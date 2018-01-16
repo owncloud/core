@@ -28,4 +28,9 @@
 		<command>OCA\DAV\Command\SyncSystemAddressBook</command>
 		<command>OCA\DAV\Command\CleanupChunks</command>
 	</commands>
+	<repair-steps>
+		<post-migration>
+			<step>OCA\DAV\Repair\RemoveInvalidShares</step>
+		</post-migration>
+	</repair-steps>
 </info>
