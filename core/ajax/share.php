@@ -35,6 +35,7 @@
  *
  */
 
+use OC\Share\Filters\MailNotificationFilter;
 use OCP\IUser;
 
 OC_JSON::checkLoggedIn();
@@ -159,10 +160,13 @@ if (isset($_POST['action']) && isset($_POST['itemType']) && isset($_POST['itemSo
 			break;
 
 		case 'email':
-			// read post variables
-			$link = (string)$_POST['link'];
-			$file = (string)$_POST['file'];
-			$to_address = (string)$_POST['toaddress'];
+			// read and filter post variables
+			$filter = new MailNotificationFilter([
+				'link' => $_POST['link'],
+				'file' => $_POST['file'],
+				'toAddress' => $_POST['toaddress'],
+				'expiration' => $_POST['expiration']
+			]);
 
 			$mailNotification = new \OC\Share\MailNotifications(
 				\OC::$server->getUserSession()->getUser(),
@@ -174,16 +178,19 @@ if (isset($_POST['action']) && isset($_POST['itemType']) && isset($_POST['itemSo
 			);
 
 			$expiration = null;
-			if (isset($_POST['expiration']) && $_POST['expiration'] !== '') {
+			if ($filter->getExpirationDate() !== '') {
 				try {
-					$date = new DateTime((string)$_POST['expiration']);
+					$date = new DateTime($filter->getExpirationDate());
 					$expiration = $date->getTimestamp();
 				} catch (Exception $e) {
 					\OCP\Util::writeLog('sharing', "Couldn't read date: " . $e->getMessage(), \OCP\Util::ERROR);
 				}
 			}
 
-			$result = $mailNotification->sendLinkShareMail($to_address, $file, $link, $expiration);
+			$result = $mailNotification->sendLinkShareMail(
+				$filter->getToAddress(), $filter->getFile(), $filter->getLink(), $expiration
+			);
+
 			if(empty($result)) {
 				// Get the token from the link
 				$linkParts = explode('/', $link);
