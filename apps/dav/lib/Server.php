@@ -126,7 +126,7 @@ class Server {
 		// with performance and locking issues because it will query
 		// every parent node which might trigger an implicit rescan in the
 		// case of external storages with update detection
-		if (!$this->isRequestForSubtree('files')) {
+		if (!$this->isRequestForSubtree(['files'])) {
 			// acl
 			$acl = new DavAclPlugin();
 			$acl->principalCollectionSet = [
@@ -137,7 +137,7 @@ class Server {
 		}
 
 		// calendar plugins
-		if ($this->isRequestForSubtree('calendars')) {
+		if ($this->isRequestForSubtree(['calendars', 'principals'])) {
 			$mailer = \OC::$server->getMailer();
 			$this->server->addPlugin(new \OCA\DAV\CalDAV\Plugin());
 			$this->server->addPlugin(new \Sabre\CalDAV\ICSExportPlugin());
@@ -153,7 +153,7 @@ class Server {
 		}
 
 		// addressbook plugins
-		if ($this->isRequestForSubtree('addressbooks')) {
+		if ($this->isRequestForSubtree(['addressbooks', 'principals'])) {
 			$this->server->addPlugin(new DAV\Sharing\Plugin($authBackend, \OC::$server->getRequest()));
 			$this->server->addPlugin(new \OCA\DAV\CardDAV\Plugin());
 			$this->server->addPlugin(new VCFExportPlugin());
@@ -280,11 +280,16 @@ class Server {
 	}
 
 	/**
-	 * @param string $subTree
+	 * @param string[] $subTree
 	 * @return bool
 	 */
-	private function isRequestForSubtree($subTree) {
+	private function isRequestForSubtree(array $subTrees) {
+		foreach ($subTrees as $subTree) {
 		$subTree = trim($subTree, " /");
-		return strpos($this->server->getRequestUri(), "$subTree/") === 0;
+			if (strpos($this->server->getRequestUri(), "$subTree/") === 0) {
+				return true;
+			}
+		}
+		return false;
 	}
 }
