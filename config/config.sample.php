@@ -35,7 +35,7 @@ $CONFIG = array(
  * This is a unique identifier for your ownCloud installation, created
  * automatically by the installer. This example is for documentation only,
  * and you should never use it because it will not work. A valid ``instanceid``
- * is created when you install ownCloud.
+ * is created when you install ownCloud. Needs to start with a letter.
  *
  * 'instanceid' => 'd3c944a9a',
  */
