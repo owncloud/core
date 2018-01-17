@@ -43,6 +43,7 @@
     php_value mbstring.func_overload 0
     php_value default_charset 'UTF-8'
     php_value output_buffering 0
+    php_value session.cache_limiter 0
     <IfModule mod_env.c>
       SetEnv htaccessWorking true
     </IfModule>
@@ -55,6 +56,7 @@
     php_value mbstring.func_overload 0
     php_value default_charset 'UTF-8'
     php_value output_buffering 0
+    php_value session.cache_limiter 0
     <IfModule mod_env.c>
       SetEnv htaccessWorking true
     </IfModule>
