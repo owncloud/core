@@ -1703,7 +1703,7 @@
 		 * @param {int} urlSpec.x width
 		 * @param {int} urlSpec.y height
 		 * @param {String} urlSpec.file path to the file
-		 * @return preview URL
+		 * @return {String} preview URL
 		 */
 		generatePreviewUrl: function(urlSpec) {
 			urlSpec = urlSpec || {};
@@ -1718,11 +1718,16 @@
 			urlSpec.x = Math.ceil(urlSpec.x);
 			urlSpec.y = Math.ceil(urlSpec.y);
 			urlSpec.forceIcon = 0;
-			var file = encodeURIComponent(urlSpec.file);
+			var parts = urlSpec.file.split('/');
+			var encoded = [];
+			for (var i = 0; i < parts.length; i++) {
+				encoded.push(encodeURIComponent(parts[i]));
+			}
+			var file = encoded.join('/');
 			delete urlSpec.file;
 			urlSpec.preview = 1;
 
-			return OC.linkToRemoteBase('dav') + '/files/' + OC.getCurrentUser().uid  + '/' + file + '?' + $.param(urlSpec);
+			return OC.linkToRemoteBase('dav') + '/files/' + OC.getCurrentUser().uid + file + '?' + $.param(urlSpec);
 		},
 
 		/**
