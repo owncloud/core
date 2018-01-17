@@ -116,7 +116,7 @@ interface IManager {
 	/**
 	 * Get shares shared with $userId for specified share types.
 	 * Filter by $node if provided
-	 * 
+	 *
 	 * @param string $userId
 	 * @param int[] $shareTypes - ref \OC\Share\Constants[]
 	 * @param Node|null $node
@@ -235,6 +235,14 @@ interface IManager {
 	 * @since 9.0.0
 	 */
 	public function shareApiLinkEnforcePassword();
+
+	/**
+	 * Is password enforced for upload-only shares?
+	 *
+	 * @return bool true -> password isn't enforce for upload-only share, false otherwise
+	 * @since 10.0.6
+	 */
+	public function shareApiLinkEnforcePasswordDisabledForUploads();
 
 	/**
 	 * Is default expire date enabled
