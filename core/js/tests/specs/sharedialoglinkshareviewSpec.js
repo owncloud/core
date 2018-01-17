@@ -230,16 +230,6 @@ describe('OC.Share.ShareDialogLinkShareView', function() {
 				expect(view.$('.linkPassText').val()).toEqual('');
 				expect(view.$('.linkPassText').attr('placeholder')).toEqual(PASSWORD_PLACEHOLDER_STARS);
 			});
-			it('renders required indicator when password is enforced', function() {
-				configModel.set('enforcePasswordForPublicLink', true);
-				view.render();
-				expect(view.$('.linkPass .required-indicator').length).toEqual(1);
-			});
-			it('does not render required indicator when password not enforced', function() {
-				configModel.set('enforcePasswordForPublicLink', false);
-				view.render();
-				expect(view.$('.linkPass .required-indicator').length).toEqual(0);
-			});
 		});
 	});
 
@@ -271,7 +261,7 @@ describe('OC.Share.ShareDialogLinkShareView', function() {
 				name: 'first link',
 				expireDate: '',
 				password: 'newpassword',
-				permissions: OC.PERMISSION_READ.toString(),
+				permissions: OC.PERMISSION_READ,
 				shareType: OC.Share.SHARE_TYPE_LINK
 			});
 		});
@@ -284,7 +274,7 @@ describe('OC.Share.ShareDialogLinkShareView', function() {
 			expect(saveStub.getCall(0).args[0]).toEqual({
 				name: 'first link',
 				expireDate: '',
-				permissions: OC.PERMISSION_READ.toString(),
+				permissions: OC.PERMISSION_READ,
 				shareType: OC.Share.SHARE_TYPE_LINK
 			});
 		});
@@ -367,8 +357,8 @@ describe('OC.Share.ShareDialogLinkShareView', function() {
 			beforeEach(function() {
 				publicUploadConfigStub = sinon.stub(configModel, 'isPublicUploadEnabled');
 			});
-			afterEach(function() { 
-				publicUploadConfigStub.restore(); 
+			afterEach(function() {
+				publicUploadConfigStub.restore();
 			});
 
 			var dataProvider = [
@@ -379,7 +369,7 @@ describe('OC.Share.ShareDialogLinkShareView', function() {
 			];
 
 			function testPermissions(globalEnabled, expectedPerms) {
-				expectedPerms = expectedPerms.toString();
+				expectedPerms = expectedPerms;
 				it('sets permissions to ' + expectedPerms +
 					' if global enabled is ' + globalEnabled +
 					' and corresponding radiobutton is checked', function() {
