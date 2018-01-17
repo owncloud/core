@@ -126,7 +126,7 @@
 			if (shareType === OC.Share.SHARE_TYPE_GROUP) {
 				shareWithDisplayName = shareWithDisplayName + " (" + t('core', 'group') + ')';
 			} else if (shareType === OC.Share.SHARE_TYPE_REMOTE) {
-				shareWithDisplayName = shareWithDisplayName + " (" + t('core', 'remote') + ')';
+				shareWithDisplayName = shareWithDisplayName + " (" + t('core', 'federated') + ')';
 			}
 
 			return _.extend(hasPermissionOverride, {
