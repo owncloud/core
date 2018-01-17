@@ -80,7 +80,7 @@ class SharingContext extends RawMinkContext implements Context {
 	}
 
 	/**
-	 * @Given /^the (?:file|folder) "([^"]*)" is shared with the (?:(remote)\s)?user "([^"]*)"$/
+	 * @Given /^the (?:file|folder) "([^"]*)" is shared with the (?:(remote|federated)\s)?user "([^"]*)"$/
 	 * @param string $folder
 	 * @param string $remote
 	 * @param string $user
