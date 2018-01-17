@@ -40,7 +40,7 @@
 			'</div>' +
 			'{{/if}}' +
 			'<div id="linkPass-{{cid}}" class="public-link-modal--item linkPass">' +
-				'<label class="public-link-modal--label" for="linkPassText-{{cid}}">{{passwordLabel}}{{#if isPasswordRequired}}<span class="required-indicator">*</span>{{/if}}</label>' +
+				'<label class="public-link-modal--label" for="linkPassText-{{cid}}">{{passwordLabel}}</label>' +
 				'<input class="public-link-modal--input linkPassText" id="linkPassText-{{cid}}" type="password" placeholder="{{passwordPlaceholder}}" />' +
 				'<span class="error-message hidden"></span>' +
 			'</div>' +
@@ -101,7 +101,7 @@
 		_getPermissions: function() {
 			var permissions = this.$('input[name="publicPermissions"]:checked').val();
 
-			return (permissions) ? permissions : OC.PERMISSION_READ;
+			return (permissions) ? parseInt(permissions, 10) : OC.PERMISSION_READ;
 		},
 
 		_save: function () {
@@ -146,7 +146,7 @@
 
 			if (this.configModel.get('enforcePasswordForPublicLink')
 				&& !password
-				&& (this.model.get('permissions') !== OC.PERMISSION_CREATE || !this.configModel.get('disableEnforceLinkPasswordForUploadOnly'))
+				&& (this._getPermissions() !== OC.PERMISSION_CREATE || !this.configModel.get('disableEnforceLinkPasswordForUploadOnly'))
 				&& (this.model.isNew() || !this.model.get('encryptedPassword'))
 			) {
 				$password.addClass('error');
@@ -222,7 +222,6 @@
 			this.$el.html(this.template({
 				cid: this.cid,
 				passwordPlaceholder: isPasswordSet ? PASSWORD_PLACEHOLDER_STARS : PASSWORD_PLACEHOLDER_MESSAGE,
-				isPasswordRequired: this.configModel.get('enforcePasswordForPublicLink') && (this.model.get('permissions') !== OC.PERMISSION_CREATE || !this.configModel.get('disableEnforceLinkPasswordForUploadOnly')),
 				namePlaceholder: t('core', 'Name'),
 				name: this.model.get('name'),
 				isPasswordSet: isPasswordSet,
