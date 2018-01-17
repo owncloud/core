@@ -697,7 +697,8 @@ class Manager implements IManager {
 			$this->linkCreateChecks($share);
 
 			// Password updated.
-			if ($share->getPassword() !== $originalShare->getPassword()) {
+			if ($share->getPassword() !== $originalShare->getPassword() ||
+					$share->getPermissions() !== $originalShare->getPermissions()) {
 				//Verify the password
 				$this->verifyPassword($share->getPassword(), $share->getPermissions());
 
