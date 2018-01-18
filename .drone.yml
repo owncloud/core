@@ -120,6 +120,46 @@ pipeline:
       matrix:
         TEST_SUITE: files_external
 
+  install-server:
+    image: owncloudci/php:${PHP_VERSION}
+    pull: true
+    commands:
+      - cd /drone/src/
+      - ls -l
+      - php ./occ maintenance:install -vvv --database=sqlite --database-name=owncloud --database-table-prefix=oc_ --admin-user=admin --admin-pass=admin --data-dir=/var/www/owncloud/data
+      - php ./occ a:l
+      - php ./occ a:e testing
+      - php ./occ a:l
+      - php ./occ config:system:set trusted_domains 1 --value=owncloud
+    when:
+      matrix:
+        TEST_SUITE: selenium
+
+  owncloud-log:
+    image: owncloud/ubuntu:16.04
+    detach: true
+    pull: true
+    commands:
+      - tail -f /drone/src/data/owncloud.log
+
+  acceptance-tests:
+    image: owncloudci/php:${PHP_VERSION}
+    pull: true
+    environment:
+      - BROWSER=chrome
+      - SELENIUM_HOST=selenium
+      - SRV_HOST_NAME=php-dev-server
+      - SRV_HOST_PORT=80
+      - SKELETON_DIR=/drone/src/tests/ui/skeleton
+      - SELENIUM_PORT=4444
+      - PLATFORM=Linux
+    commands:
+      - cd /drone/src/
+      - bash tests/travis/start_ui_tests.sh --remote 
+    when:
+      matrix:
+        TEST_SUITE: selenium
+
 services:
   mariadb:
     image: mariadb:10.2
@@ -180,8 +220,30 @@ services:
       matrix:
         DB_TYPE: oracle
 
+  selenium:
+    image: selenium/standalone-chrome:latest
+    pull: true
+    when:
+      matrix:
+        TEST_SUITE: selenium
+
+  php-dev-server:
+    image: owncloudci/php:${PHP_VERSION}
+    pull: true
+    environment:
+      - SRV_HOST_NAME=localhost
+      - SRV_HOST_PORT=80
+    commands:
+      - bash /drone/src/tests/travis/start_php_dev_server.sh
+    when:
+      matrix:
+        TEST_SUITE: selenium
 matrix:
   include:
+    - PHP_VERSION: 5.6
+      DB_TYPE: sqlite
+      TEST_SUITE: selenium
+
     # PHP 5.6
     #- PHP_VERSION: 5.6
     #  DB_TYPE: sqlite
