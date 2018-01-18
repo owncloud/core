@@ -265,6 +265,7 @@ services:
     when:
       matrix:
         USE_FEDERATED_SERVER: true
+
 matrix:
   include:
     - TEST_SUITE: javascript
