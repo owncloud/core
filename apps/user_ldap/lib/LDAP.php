@@ -175,7 +175,10 @@ class LDAP implements ILDAPWrapper {
 	 * @return mixed
 	 */
 	public function read($link, $baseDN, $filter, $attr) {
-		return $this->invokeLDAPMethod('read', $link, $baseDN, $filter, $attr);
+		\OC::$server->getEventLogger()->start('ldap_read', "LDAP read baseDN:".json_encode($baseDN).' filter:'.json_encode($filter).' attr:'.json_encode($attr));
+		$result = $this->invokeLDAPMethod('read', $link, $baseDN, $filter, $attr);
+		\OC::$server->getEventLogger()->end('ldap_read');
+		return $result;
 	}
 
 	/**
@@ -188,7 +191,10 @@ class LDAP implements ILDAPWrapper {
 	 * @return mixed
 	 */
 	public function search($link, $baseDN, $filter, $attr, $attrsOnly = 0, $limit = 0) {
-		return $this->invokeLDAPMethod('search', $link, $baseDN, $filter, $attr, $attrsOnly, $limit);
+		\OC::$server->getEventLogger()->start('ldap_search', "LDAP search baseDN:".json_encode($baseDN).' filter:'.json_encode($filter).' attr:'.json_encode($attr).' attrOnly:'.$attrsOnly.' limit:'.$limit);
+		$result = $this->invokeLDAPMethod('search', $link, $baseDN, $filter, $attr, $attrsOnly, $limit);
+		\OC::$server->getEventLogger()->end('ldap_search');
+		return $result;
 	}
 
 	/**

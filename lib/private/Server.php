@@ -43,6 +43,7 @@ use OC\AppFramework\Db\Db;
 use OC\AppFramework\Utility\TimeFactory;
 use OC\Command\AsyncBus;
 use OC\Diagnostics\EventLogger;
+use OC\Diagnostics\LoggingEventLogger;
 use OC\Diagnostics\NullEventLogger;
 use OC\Diagnostics\NullQueryLogger;
 use OC\Diagnostics\QueryLogger;
@@ -435,6 +436,9 @@ class Server extends ServerContainer implements IServerContainer {
 		});
 		$this->registerService('EventLogger', function (Server $c) {
 			if ($c->getSystemConfig()->getValue('debug', false)) {
+				if ($c->getSystemConfig()->getValue('log.events', false)) {
+					return new LoggingEventLogger($c->getLogger());
+				}
 				return new EventLogger();
 			} else {
 				return new NullEventLogger();
@@ -863,6 +867,8 @@ class Server extends ServerContainer implements IServerContainer {
 	 * @param \OCP\ISession $session
 	 */
 	public function setSession(\OCP\ISession $session) {
+		$sessionStorage = new SessionStorage($session);
+		$this->query('CsrfTokenManager')->setSessionStorage($sessionStorage);
 		return $this->query('UserSession')->setSession($session);
 	}
 
