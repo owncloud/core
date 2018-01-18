@@ -50,12 +50,12 @@ class IpHelper {
 	private static function parseIfconfigOutput($regex, $except = null) {
 		if (!is_null($except)) {
 			// device names are at the start of a line
-			$invalid_device_regex = '/^' . $except . '/';
+			$invalid_device_regex = '/^\d+:\s' . $except . '/';
 		}
 
 		$output_lines = [];
 		$return_var = null;
-		exec('ifconfig', $output_lines, $return_var);
+		exec('ip a show', $output_lines, $return_var);
 		if ($return_var) {
 			throw new \Exception(
 				"parseIfconfigOutput: Error $return_var calling exec ifconfig"
