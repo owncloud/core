@@ -267,6 +267,12 @@ BEHAT_TAGS='~@skipOnOcV'$OWNCLOUD_VERSION'&&'$BEHAT_TAGS
 OWNCLOUD_VERSION=`echo $OWNCLOUD_VERSION | cut -d"." -f1`
 BEHAT_TAGS='~@skipOnOcV'$OWNCLOUD_VERSION'&&'$BEHAT_TAGS
 
+#if we running remote only tests add an other skip '@skipWhenTestingRemoteSystems'
+if test "$REMOTE_ONLY" = true
+then
+	BEHAT_TAGS='~@skipWhenTestingRemoteSystems&&'$BEHAT_TAGS
+fi
+
 if [ "$BROWSER" == "firefox" ]
 then
 	#set screen resolution so that hopefully dragable elements will be visible
