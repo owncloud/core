@@ -38,6 +38,7 @@ use OC\Repair\OldGroupMembershipShares;
 use OC\Repair\RemoveGetETagEntries;
 use OC\Repair\RemoveRootShares;
 use OC\Repair\RepairMismatchFileCachePath;
+use OC\Repair\RepairSubShares;
 use OC\Repair\SharePropagation;
 use OC\Repair\SqliteAutoincrement;
 use OC\Repair\DropOldTables;
@@ -159,6 +160,9 @@ class Repair implements IOutput{
 				\OC::$server->getAppManager(),
 				\OC::$server->getConfig(),
 				\OC::$server->getAppConfig()
+			),
+			new RepairSubShares(
+				\OC::$server->getDatabaseConnection()
 			),
 		];
 	}
