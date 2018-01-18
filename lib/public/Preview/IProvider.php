@@ -26,6 +26,7 @@ namespace OCP\Preview;
  *
  * @package OCP\Preview
  * @since 8.1.0
+ * @deprecated 10.1.0
  */
 interface IProvider {
 	/**

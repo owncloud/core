@@ -1285,6 +1285,9 @@ class View {
 	 * @return bool
 	 */
 	private function runHooks($hooks, $path, $post = false) {
+		if (empty($hooks)) {
+			return true;
+		}
 		$relativePath = $path;
 		$path = $this->getHookPath($path);
 		$prefix = ($post) ? 'post_' : '';

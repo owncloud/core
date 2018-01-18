@@ -26,8 +26,10 @@
 namespace OC\Preview;
 
 use ID3Parser\ID3Parser;
+use OCP\Files\File;
+use OCP\Preview\IProvider2;
 
-class MP3 extends Provider {
+class MP3 implements IProvider2 {
 	/**
 	 * {@inheritDoc}
 	 */
@@ -38,12 +40,22 @@ class MP3 extends Provider {
 	/**
 	 * {@inheritDoc}
 	 */
-	public function getThumbnail($path, $maxX, $maxY, $scalingup, $fileview) {
-		$getID3 = new ID3Parser();
+	public function getThumbnail(File $file, $maxX, $maxY, $scalingUp) {
 
-		$tmpPath = $fileview->toTmpFile($path);
-		$tags = $getID3->analyze($tmpPath);
-		unlink($tmpPath);
+		$useFileDirectly = (!$file->isEncrypted() && !$file->isMounted());
+		if ($useFileDirectly) {
+			$absPath = $file->getStorage()->getLocalFile($file->getInternalPath());
+		} else {
+			$absPath = \OC::$server->getTempManager()->getTemporaryFile();
+
+			$handle = $file->fopen('rb');
+			file_put_contents($absPath, $handle);
+			fclose($handle);
+		}
+
+		$getID3 = new ID3Parser();
+		$tags = $getID3->analyze($absPath);
+		unlink($absPath);
 		$picture = isset($tags['id3v2']['APIC'][0]['data']) ? $tags['id3v2']['APIC'][0]['data'] : null;
 		if(is_null($picture) && isset($tags['id3v2']['PIC'][0]['data'])) {
 			$picture = $tags['id3v2']['PIC'][0]['data'];
@@ -80,4 +92,14 @@ class MP3 extends Provider {
 		return $image->valid() ? $image : false;
 	}
 
+	/**
+	 * Check if a preview can be generated for $path
+	 *
+	 * @param File $file
+	 * @return bool
+	 * @since 10.1.0
+	 */
+	public function isAvailable(File $file) {
+		return true;
+	}
 }

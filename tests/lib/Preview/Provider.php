@@ -21,18 +21,20 @@
 
 namespace Test\Preview;
 
+use OCP\Files\Node;
+use OCP\Preview\IProvider2;
 use Test\Traits\UserTrait;
 
 abstract class Provider extends \Test\TestCase {
 	use UserTrait;
 
-	/** @var string */
+	/** @var Node */
 	protected $imgPath;
 	/** @var int */
 	protected $width;
 	/** @var int */
 	protected $height;
-	/** @var \OC\Preview\Provider */
+	/** @var IProvider2 */
 	protected $provider;
 	/** @var int */
 	protected $maxWidth = 1024;
@@ -116,7 +118,7 @@ abstract class Provider extends \Test\TestCase {
 	 * @param string $fileName name of the file to create
 	 * @param string $fileContent path to file to use for test
 	 *
-	 * @return string
+	 * @return Node
 	 */
 	protected function prepareTestFile($fileName, $fileContent) {
 		$imgData = file_get_contents($fileContent);
@@ -125,19 +127,18 @@ abstract class Provider extends \Test\TestCase {
 
 		$scanner = $this->storage->getScanner();
 		$scanner->scan('');
-
-		return $imgPath;
+		return \OC::$server->getUserFolder($this->userId)->get($fileName);
 	}
 
 	/**
 	 * Retrieves a max size thumbnail can be created
 	 *
-	 * @param \OC\Preview\Provider $provider
+	 * @param IProvider2 $provider
 	 *
 	 * @return bool|\OCP\IImage
 	 */
 	private function getPreview($provider) {
-		$preview = $provider->getThumbnail($this->imgPath, $this->maxWidth, $this->maxHeight, $this->scalingUp, $this->rootView);
+		$preview = $provider->getThumbnail($this->imgPath, $this->maxWidth, $this->maxHeight, $this->scalingUp);
 
 		$this->assertNotFalse($preview);
 		$this->assertTrue($preview->valid());

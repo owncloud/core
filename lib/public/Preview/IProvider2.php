@@ -1,12 +1,9 @@
 <?php
 /**
- * @author Georg Ehrke <georg@owncloud.com>
  * @author Joas Schilling <coding@schilljs.com>
- * @author Jörn Friedrich Dreyer <jfd@butonic.de>
- * @author Olivier Paroz <github@oparoz.com>
- * @author Robin Appelman <icewind@owncloud.com>
+ * @author Morris Jobke <hey@morrisjobke.de>
  *
- * @copyright Copyright (c) 2018, ownCloud GmbH
+ * @copyright Copyright (c) 2017, ownCloud GmbH
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -22,46 +19,41 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>
  *
  */
-namespace OC\Preview;
+namespace OCP\Preview;
 
-use OCP\Preview\IProvider;
+use OCP\Files\File;
 
-abstract class Provider implements IProvider {
-	private $options;
-
-	/**
-	 * Constructor
-	 *
-	 * @param array $options
-	 */
-	public function __construct(array $options = []) {
-		$this->options = $options;
-	}
-
+/**
+ * Interface IProvider2
+ *
+ * @package OCP\Preview
+ * @since 10.1.0
+ */
+interface IProvider2 {
 	/**
 	 * @return string Regex with the mimetypes that are supported by this provider
+	 * @since 10.1.0
 	 */
-	abstract public function getMimeType();
+	public function getMimeType();
 
 	/**
 	 * Check if a preview can be generated for $path
 	 *
-	 * @param \OCP\Files\FileInfo $file
+	 * @param File $file
 	 * @return bool
+	 * @since 10.1.0
 	 */
-	public function isAvailable(\OCP\Files\FileInfo $file) {
-		return true;
-	}
+	public function isAvailable(File $file);
 
 	/**
-	 * Generates thumbnail which fits in $maxX and $maxY and keeps the aspect ratio, for file at path $path
+	 * get thumbnail for file at path $path
 	 *
-	 * @param string $path Path of file
+	 * @param File $file Path of file
 	 * @param int $maxX The maximum X size of the thumbnail. It can be smaller depending on the shape of the image
 	 * @param int $maxY The maximum Y size of the thumbnail. It can be smaller depending on the shape of the image
-	 * @param bool $scalingup Disable/Enable upscaling of previews
-	 * @param \OC\Files\View $fileview fileview object of user folder
+	 * @param bool $scalingUp Disable/Enable upscaling of previews
 	 * @return bool|\OCP\IImage false if no preview was generated
+	 * @since 10.1.0
 	 */
-	abstract public function getThumbnail($path, $maxX, $maxY, $scalingup, $fileview);
+	public function getThumbnail(File $file, $maxX, $maxY, $scalingUp);
 }

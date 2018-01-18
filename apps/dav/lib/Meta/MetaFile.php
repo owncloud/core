@@ -26,6 +26,8 @@ namespace OCA\DAV\Meta;
 use OC\Files\Meta\MetaFileVersionNode;
 use OCA\DAV\Files\ICopySource;
 use OCA\DAV\Files\IProvidesAdditionalHeaders;
+use OCA\DAV\Files\IFileNode;
+use OCP\Files\Node;
 use Sabre\DAV\File;
 
 /**
@@ -34,7 +36,7 @@ use Sabre\DAV\File;
  *
  * @package OCA\DAV\Meta
  */
-class MetaFile extends File implements ICopySource, IProvidesAdditionalHeaders {
+class MetaFile extends File implements ICopySource, IFileNode, IProvidesAdditionalHeaders {
 
 	/** @var \OCP\Files\File */
 	private $file;
@@ -118,5 +120,12 @@ class MetaFile extends File implements ICopySource, IProvidesAdditionalHeaders {
 			return $this->file->getContentDispositionFileName();
 		}
 		return $this->getName();
+	}
+
+	/**
+	 * @return Node
+	 */
+	public function getNode() {
+		return $this->file;
 	}
 }
