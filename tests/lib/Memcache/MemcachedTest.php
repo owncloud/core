@@ -17,7 +17,9 @@ class MemcachedTest extends Cache {
 			self::markTestSkipped('The memcached extension is not available.');
 		}
 		$instance = new \OC\Memcache\Memcached(self::getUniqueID());
-		if ($instance->set(self::getUniqueID(), self::getUniqueID()) === false) {
+		try {
+			$instance->set(self::getUniqueID(), self::getUniqueID());
+		} catch (\Exception $ex) {
 			self::markTestSkipped('memcached server seems to be down.');
 		}
 	}

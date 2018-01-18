@@ -1,0 +1,150 @@
+workspace:
+  base: /drone
+  path: src
+
+branches: [master, stable10, stable9.1, stable9]
+
+clone:
+  git:
+    image: plugins/git
+    depth: 1
+
+pipeline:
+  composer:
+    image: owncloudci/php:${PHP_VERSION}
+    pull: true
+    commands:
+      - ./tests/drone/composer-install.sh
+
+  npm:
+    image: owncloudci/php:${PHP_VERSION}
+    pull: true
+    commands:
+      - ./tests/drone/npm-install.sh
+
+  coverage:
+    image: owncloudci/php:${PHP_VERSION}
+    pull: true
+    group: test
+    environment:
+      - PHP_VERSION=${PHP_VERSION}
+      - DB_TYPE=${DB_TYPE}
+    commands:
+      - ./tests/drone/test-coverage.sh
+    when:
+      matrix:
+        TEST_SUITE: coverage
+
+  codecov:
+    image: plugins/codecov:1
+    secrets: [codecov_token]
+    pull: true
+    files:
+     - tests/autotest-clover-${DB_TYPE}.xml
+    when:
+      matrix:
+        TEST_SUITE: coverage
+
+  javascript:
+    image: owncloudci/php:${PHP_VERSION}
+    pull: true
+    group: test
+    commands:
+      - ./tests/drone/test-javascript.sh
+    when:
+      matrix:
+        TEST_SUITE: phpunit
+
+services:
+  mariadb:
+    image: mariadb:10.3
+    environment:
+      - MYSQL_USER=owncloud
+      - MYSQL_PASSWORD=owncloud
+      - MYSQL_DATABASE=owncloud
+      - MYSQL_ROOT_PASSWORD=owncloud
+    when:
+      matrix:
+        DB_TYPE: mariadb
+
+  mysql:
+    image: mysql:5.7
+    environment:
+      - MYSQL_USER=owncloud
+      - MYSQL_PASSWORD=owncloud
+      - MYSQL_DATABASE=owncloud
+      - MYSQL_ROOT_PASSWORD=owncloud
+    when:
+      matrix:
+        DB_TYPE: mysql
+
+  postgres:
+    image: postgres:9.6
+    environment:
+      - POSTGRES_USER=owncloud
+      - POSTGRES_PASSWORD=owncloud
+      - POSTGRES_DB=owncloud
+    when:
+      matrix:
+        DB_TYPE: postgres
+
+  # oracle:
+  #   image: oracle:x.x
+  #   environment:
+  #     - ORACLE_USER=owncloud
+  #     - ORACLE_PASSWORD=owncloud
+  #     - ORACLE_DB=owncloud
+  #   when:
+  #     matrix:
+  #       DB_TYPE: oracle
+
+matrix:
+  include:
+#    # PHP 5.6
+#    - PHP_VERSION: 5.6
+#      DB_TYPE: sqlite
+#      TEST_SUITE: phpunit
+#    - PHP_VERSION: 5.6
+#      DB_TYPE: mariadb
+#      TEST_SUITE: phpunit
+#    - PHP_VERSION: 5.6
+#      DB_TYPE: mysql
+#      TEST_SUITE: phpunit
+#    - PHP_VERSION: 5.6
+#      DB_TYPE: postgres
+#      TEST_SUITE: phpunit
+#    # - PHP_VERSION: 5.6
+#    #   DB_TYPE: oracle
+#    #   TEST_SUITE: phpunit
+#
+#    # PHP 7.0
+#    - PHP_VERSION: 7.0
+#      DB_TYPE: sqlite
+#      TEST_SUITE: phpunit
+#    - PHP_VERSION: 7.0
+#      DB_TYPE: mariadb
+#      TEST_SUITE: phpunit
+#    - PHP_VERSION: 7.0
+#      DB_TYPE: mysql
+#      TEST_SUITE: phpunit
+#    - PHP_VERSION: 7.0
+#      DB_TYPE: postgres
+#      TEST_SUITE: phpunit
+#    # - PHP_VERSION: 7.0
+#    #   DB_TYPE: oracle
+#    #   TEST_SUITE: phpunit
+#
+#
+#    # Integration
+#    - PHP_VERSION: 7.0
+#      DB_TYPE: sqlite
+#      TEST_SUITE: integration
+
+    # Code Coverage Computation
+    - PHP_VERSION: 7.0
+      DB_TYPE: sqlite
+      TEST_SUITE: coverage
+
+    - PHP_VERSION: 7.0
+      DB_TYPE: sqlite
+      TEST_SUITE: phpunit

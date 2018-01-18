@@ -142,6 +142,9 @@ class TempManagerTest extends \Test\TestCase {
 			$this->markTestSkipped('[Windows] chmod() does not work as intended on Windows.');
 		}
 
+		if ($this->getCurrentUser() === 'root') {
+			$this->markTestSkipped('You are running tests as root - this test will not work in this case.');
+		}
 		$logger = $this->getMock('\Test\NullLogger');
 		$manager = $this->getManager($logger);
 		chmod($this->baseDir, 0500);
@@ -156,6 +159,9 @@ class TempManagerTest extends \Test\TestCase {
 			$this->markTestSkipped('[Windows] chmod() does not work as intended on Windows.');
 		}
 
+		if ($this->getCurrentUser() === 'root') {
+			$this->markTestSkipped('You are running tests as root - this test will not work in this case.');
+		}
 		$logger = $this->getMock('\Test\NullLogger');
 		$manager = $this->getManager($logger);
 		chmod($this->baseDir, 0500);

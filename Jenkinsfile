@@ -9,11 +9,6 @@ timestampedNode('SLAVE') {
         checkout scm
         sh '''git submodule update --init'''
 
-    stage 'JavaScript Testing'
-        executeAndReport('tests/autotest-results-js.xml') {
-            sh '''./autotest-js.sh'''
-        }
-
     stage 'PHPUnit 7.0/sqlite'
         executeAndReport('tests/autotest-results-sqlite.xml') {
             sh '''
