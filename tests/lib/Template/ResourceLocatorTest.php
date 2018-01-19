@@ -40,33 +40,30 @@ class ResourceLocatorTest extends \Test\TestCase {
 	/**
 	 * @param string $theme
 	 * @param array $core_map
-	 * @param array $party_map
 	 * @param array $appsRoots
 	 * @return \PHPUnit_Framework_MockObject_MockObject
 	 */
-	public function getResourceLocator($theme, $core_map, $party_map, $appsRoots) {
+	public function getResourceLocator($theme, $core_map, $appsRoots) {
 		$themeInstance = $this->createMock('OC\Theme\Theme');
 		$themeInstance->method('getName')->willReturn($theme);
 
 		return $this->getMockForAbstractClass('OC\Template\ResourceLocator',
-			[$this->logger, $themeInstance, $core_map, $party_map, $appsRoots],
+			[$this->logger, $themeInstance, $core_map, $appsRoots],
 			'', true, true, true, []);
 	}
 
 	public function testConstructor() {
-		$locator = $this->getResourceLocator('theme',
-			['core'=>'map'], ['3rd'=>'party'], ['foo'=>'bar']);
+		$locator = $this->getResourceLocator('theme',	['core'=>'map'], ['foo'=>'bar']);
 		$this->assertAttributeInstanceOf('OC\Theme\Theme', 'theme', $locator);
 		$this->assertAttributeEquals('core', 'serverroot', $locator);
-		$this->assertAttributeEquals(['core'=>'map','3rd'=>'party'], 'mapping', $locator);
-		$this->assertAttributeEquals('3rd', 'thirdpartyroot', $locator);
+		$this->assertAttributeEquals(['core'=>'map'], 'mapping', $locator);
 		$this->assertAttributeEquals('map', 'webroot', $locator);
 		$this->assertAttributeEquals([], 'resources', $locator);
 	}
 
 	public function testFind() {
 		$locator = $this->getResourceLocator('theme',
-			['core' => 'map'], ['3rd' => 'party'], ['foo' => 'bar']);
+			['core' => 'map'], ['foo' => 'bar']);
 		$locator->expects($this->once())
 			->method('doFind')
 			->with('foo');
@@ -78,8 +75,7 @@ class ResourceLocatorTest extends \Test\TestCase {
 	}
 
 	public function testFindNotFound() {
-		$locator = $this->getResourceLocator('theme',
-			['core'=>'map'], ['3rd'=>'party'], ['foo'=>'bar']);
+		$locator = $this->getResourceLocator('theme',	['core'=>'map'], ['foo'=>'bar']);
 		$locator->expects($this->once())
 			->method('doFind')
 			->with('foo')
@@ -98,12 +94,10 @@ class ResourceLocatorTest extends \Test\TestCase {
 	public function testAppendOnceIfExist() {
 		
 		/** @var \OC\Template\ResourceLocator $locator */
-		$locator = $this->getResourceLocator('theme',
-			[__DIR__=>'map'], [vfsStream::url('resources')=>'party'], ['foo'=>'bar']);
+		$locator = $this->getResourceLocator('theme', [__DIR__=>'map'], ['foo'=>'bar']);
 		
 		$method = new \ReflectionMethod($locator, 'appendOnceIfExist');
 		$method->setAccessible(true);
-
 
 		$method->invoke($locator, __DIR__, basename(__FILE__), 'webroot');
 		$resource1 = [__DIR__, 'webroot', basename(__FILE__)];
@@ -114,22 +108,6 @@ class ResourceLocatorTest extends \Test\TestCase {
 
 		$method->invoke($locator, __DIR__, 'does-not-exist');
 		$this->assertEquals([__FILE__ => $resource1], $locator->getResources());
-		
-		
-		$method->invoke($locator, vfsStream::url('resources'), $this->filenames[0]);
-		$resource2 = [vfsStream::url('resources'), 'party', $this->filenames[0]];
-		$this->assertEquals([
-				__FILE__ => $resource1,
-				vfsStream::url('resources') . '/' . $this->filenames[0] => $resource2
-		], $locator->getResources());
-		
-		$method->invoke($locator, vfsStream::url('resources'), $this->filenames[1]);
-		$resource3 = [vfsStream::url('resources'), 'party', $this->filenames[1]];
-		$this->assertEquals([
-				__FILE__ => $resource1,
-				vfsStream::url('resources') . '/' . $this->filenames[0] => $resource2,
-				vfsStream::url('resources') . '/' . $this->filenames[1] => $resource3
-		], $locator->getResources());
 	}
 }
 
