@@ -91,6 +91,7 @@ class FileActionsMenu extends OwnCloudPage {
 				" could not find action button with label " . $this->deleteActionLabel
 			);
 		}
+		$deleteBtn->focus();
 		$deleteBtn->click();
 	}
 	
@@ -114,6 +115,9 @@ class FileActionsMenu extends OwnCloudPage {
 				" xpath $xpathLocator could not find button '$action' in action Menu"
 			);
 		} else {
+			$this->waitFor(
+				STANDARDUIWAITTIMEOUTMILLISEC / 1000, array($button, 'isVisible')
+			);
 			return $button;
 		}
 	}
