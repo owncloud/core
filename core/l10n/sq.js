@@ -209,6 +209,7 @@ OC.L10N.register(
     "An error occurred. Please try again" : "Ndodhi një gabim. Ju lutemi, riprovoni",
     "{sharee} (group)" : "{sharee} (grup)",
     "{sharee} (at {server})" : "{sharee} (në {server})",
+    "{sharee} (federated)" : "{sharee} (i federuar)",
     "Share" : "Ndaje",
     "User and Groups" : "Përdorues dhe Grupe",
     "Public Links" : "Lidhje Publike",
