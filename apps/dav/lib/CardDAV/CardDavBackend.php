@@ -833,10 +833,6 @@ class CardDavBackend implements BackendInterface, SyncSupport {
 	 * @return array an array of contacts which are arrays of key-value-pairs
 	 */
 	public function searchEx($addressBookId, $pattern, $searchProperties, $options, $limit = 100, $offset = 0) {
-		$query = $this->db->getQueryBuilder();
-		$query2 = $this->db->getQueryBuilder();
-		$query2->selectDistinct('cp.cardid')->from($this->dbCardsPropertiesTable, 'cp');
-
 		$matchMode = $options['matchMode'] ?? 'any';
 		switch ($matchMode) {
 			case 'START':
@@ -853,21 +849,18 @@ class CardDavBackend implements BackendInterface, SyncSupport {
 				$searchPattern = '%' . $this->db->escapeLikeParameter($pattern) . '%';
 		}
 
-		foreach ($searchProperties as $property) {
-			$query2->orWhere(
-				$query2->expr()->andX(
-					$query2->expr()->eq('cp.name', $query->createNamedParameter($property)),
-					$query2->expr()->iLike('cp.value', $query->createNamedParameter($searchPattern))
-				)
-			);
-		}
-		$query2->andWhere($query2->expr()->eq('cp.addressbookid', $query->createNamedParameter($addressBookId)));
-
-		$query->select('c.carddata', 'c.uri')->from($this->dbCardsTable, 'c')
-			->where($query->expr()->in('c.id', $query->createFunction($query2->getSQL())));
-
-		$query->setFirstResult($offset)->setMaxResults($limit);
-		$query->orderBy('c.uri');
+		$query = $this->db->getQueryBuilder();
+		$query->select(['c.uri', 'c.carddata'])
+			->from($this->dbCardsTable, 'c')
+			->join('c', $this->dbCardsPropertiesTable, 'cp', $query->expr()->eq('c.id', 'cp.cardid'))
+			->where($query->expr()->eq('cp.addressbookid', $query->createNamedParameter($addressBookId)))
+			->andWhere($query->expr()->in('cp.name', \array_map(function ($property) use ($query) {
+				return $query->createNamedParameter($property);
+			}, $searchProperties)))
+			->andWhere($query->expr()->iLike('cp.value', $query->createNamedParameter($searchPattern)))
+			->setFirstResult($offset)->setMaxResults($limit)
+			->groupBy(['c.uri', 'c.carddata']) // groupby without aggregation is essentially distinct
+			->orderBy('c.uri');
 
 		$result = $query->execute();
 		$cards = $result->fetchAll();
