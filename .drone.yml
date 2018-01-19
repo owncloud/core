@@ -86,6 +86,7 @@ pipeline:
   codecov:
     image: plugins/codecov:1
     secrets: [codecov_token]
+    debug: true
     pull: true
     files:
      - tests/autotest-clover-${DB_TYPE}.xml
