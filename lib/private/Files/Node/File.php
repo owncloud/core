@@ -160,6 +160,9 @@ class File extends Node implements \OCP\Files\File, IPreviewNode {
 		$preview->setScalingUp($scalingUp);
 		$preview->setMode($mode);
 		$preview->setKeepAspect($keepAspect);
+		if (array_key_exists('mimeType', $options)) {
+			$preview->setMimetype($options['mimeType']);
+		}
 		return $preview->getPreview();
 	}
 }
