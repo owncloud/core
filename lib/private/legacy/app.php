@@ -59,7 +59,8 @@ class OC_App {
 	static private $appVersion = [];
 	static private $adminForms = [];
 	static private $personalForms = [];
-	static private $appInfo = [];
+	/** @var \OCP\ICache */
+	static private $appInfo = null;
 	static private $appTypes = [];
 	static private $loadedApps = [];
 	static private $loadedTypes = [];
@@ -617,6 +618,40 @@ class OC_App {
 	}
 
 	/**
+	 * @param $path
+	 * @return string|false an etag for the given $path or false
+	 */
+	private static function getEtag($path) {
+		if (!file_exists($path)) {
+			return false;
+		}
+		$stat = stat($path);
+		if ($stat) {
+			// ok, file still exists
+			return "${stat['mtime']}|${stat['ino']}|${stat['dev']}|${stat['size']}";
+		}
+		return false;
+	}
+
+	/**
+	 * if available use a local cache that survives requests, otherwise
+	 * fallback to an in memory implementation of \OCP\ICache
+	 */
+	static private function setupAppInfoCache(){
+		if (self::$appInfo === null) {
+			// TODO not beautiful, clean up when getting rid of this legacy class
+			$cache = \OC::$server->getMemCacheFactory();
+			if (method_exists($cache, 'createLocal')) {
+				// TODO we have no puplic API for this
+				self::$appInfo = \OC::$server->getMemCacheFactory()->createLocal('app-info');
+			}
+			if (self::$appInfo === null || self::$appInfo instanceof \OC\Memcache\NullCache) {
+				self::$appInfo = new \OC\Memcache\ArrayCache('app-info');
+			}
+		};
+	}
+
+	/**
 	 * Read all app metadata from the info.xml file
 	 *
 	 * @param string $appId id of the app or the path of the info.xml file
@@ -624,36 +659,77 @@ class OC_App {
 	 * @return array|null
 	 * @note all data is read from info.xml, not just pre-defined fields
 	 */
-	public static function getAppInfo($appId, $path = false) {
-		if ($path) {
+	public static function getAppInfo($appId, $isPath = false) {
+		if(empty($appId)) {
+			return null; // TODO explode?
+		}
+
+		$etag = null;
+
+		self::setupAppInfoCache();
+
+		// check the cache
+		$data = self::$appInfo->get($appId);
+		if (isset($data['path'])) {
+			// check that that info file hasn't changed by comparing the etag
+			$etag = self::getEtag($data['path']);
+			if ($data['etag'] === $etag) {
+				// nice, etags still the same, return from cache!
+				return $data['info'];
+			}
+		}
+
+		if ($isPath) {
 			$file = $appId;
 		} else {
-			if (isset(self::$appInfo[$appId])) {
-				return self::$appInfo[$appId];
-			}
 			$appPath = self::getAppPath($appId);
 			if($appPath === false) {
-				return null;
+				// app no longer exists
+				return null; // TODO explode?
 			}
 			$file = $appPath . '/appinfo/info.xml';
-		}
-
-		$parser = new InfoParser();
-		$data = $parser->parse($file);
-
-		if (is_array($data)) {
-			$data = OC_App::parseAppInfo($data);
-		}
-		if(isset($data['ocsid'])) {
-			$storedId = \OC::$server->getConfig()->getAppValue($appId, 'ocsid');
-			if($storedId !== '' && $storedId !== $data['ocsid']) {
-				$data['ocsid'] = $storedId;
+			if (isset($data['path']) && $data['path'] !== $file) {
+				// path changed, invalidate etag
+				$etag = null;
 			}
 		}
 
-		self::$appInfo[$appId] = $data;
+		// if we still have an etag, the content changed but the etag is up to
+		// date. otherwise the path changed and we have to recalculate it
+		if (!$etag) {
+			$etag = self::getEtag($file);
+		}
 
-		return $data;
+		// reparse the actual file
+		$parser = new InfoParser();
+		$info = $parser->parse($file);
+		if (is_array($info)) {
+			$info = \OC_App::parseAppInfo($info);
+		} else {
+			return null; // TODO explode?
+		}
+
+		// always use stored ocsid // TODO add / explain reason
+		if(isset($info['ocsid'])) {
+			$storedId = \OC::$server->getConfig()->getAppValue($appId, 'ocsid');
+			if($storedId !== '' && $storedId !== $info['ocsid']) {
+				$info['ocsid'] = $storedId;
+			}
+		}
+
+		// add etag and path so cache can be invalidated
+		$data = [
+			'etag' => $etag,
+			'path' => $file,
+			// store info in its own key so path and etag cannot be injected
+			'info' => $info
+		];
+
+		// cache results for a day
+		self::$appInfo->set($appId, $data, 86400);
+		self::$appInfo->set($file, $data, 86400);
+
+		return $info;
 	}
 
 	/**
@@ -1188,6 +1264,8 @@ class OC_App {
 	 */
 	public static function clearAppCache($appId) {
 		unset(self::$appVersion[$appId]);
-		unset(self::$appInfo[$appId]);
+		if (self::$appInfo instanceof \OCP\ICache) {
+			self::$appInfo->remove($appId);
+		}
 	}
 }
