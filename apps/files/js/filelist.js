@@ -1951,7 +1951,7 @@
 						if (status === 412) {
 							// TODO: some day here we should invoke the conflict dialog
 							OC.Notification.show(t('files', 'Could not move "{file}", target exists', 
-								{file: fileName}), {type: 'error'}
+								{file: fileName}, null, {escape: false}), {type: 'error'}
 							);
 						} else {
 							OC.Notification.show(t('files', 'Could not move "{file}"', 
