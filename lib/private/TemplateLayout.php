@@ -164,7 +164,6 @@ class TemplateLayout extends \OC_Template {
 		$locator = new \OC\Template\CSSResourceLocator(
 			\OC::$server->getLogger(),
 			\OC_Util::getTheme(),
-			[\OC::$SERVERROOT => \OC::$WEBROOT],
 			[\OC::$SERVERROOT => \OC::$WEBROOT]);
 		$locator->find($styles);
 		return $locator->getResources();
@@ -178,7 +177,6 @@ class TemplateLayout extends \OC_Template {
 		$locator = new \OC\Template\JSResourceLocator(
 			\OC::$server->getLogger(),
 			\OC_Util::getTheme(),
-			[\OC::$SERVERROOT => \OC::$WEBROOT],
 			[\OC::$SERVERROOT => \OC::$WEBROOT]);
 		$locator->find($scripts);
 		return $locator->getResources();

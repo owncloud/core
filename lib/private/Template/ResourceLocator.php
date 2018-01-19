@@ -38,7 +38,6 @@ abstract class ResourceLocator {
 
 	protected $mapping;
 	protected $serverroot;
-	protected $thirdpartyroot;
 	protected $webroot;
 
 	protected $resources = [];
@@ -50,14 +49,12 @@ abstract class ResourceLocator {
 	 * @param \OCP\ILogger $logger
 	 * @param ITheme $theme
 	 * @param array $core_map
-	 * @param array $party_map
 	 */
-	public function __construct(\OCP\ILogger $logger, $theme, $core_map, $party_map) {
+	public function __construct(\OCP\ILogger $logger, $theme, $core_map) {
 		$this->logger = $logger;
 		$this->theme = $theme;
-		$this->mapping = $core_map + $party_map;
+		$this->mapping = $core_map;
 		$this->serverroot = key($core_map);
-		$this->thirdpartyroot = key($party_map);
 		$this->webroot = $this->mapping[$this->serverroot];
 	}
 
