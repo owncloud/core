@@ -30,8 +30,11 @@
 
 namespace OC\App;
 
+use OC\Memcache\ArrayCache;
+use OC\Memcache\NullCache;
 use OC_App;
 use OC\Installer;
+use OCP\App\AppNotFoundException;
 use OCP\App\IAppManager;
 use OCP\App\AppManagerException;
 use OCP\App\ManagerEvent;
@@ -48,9 +51,8 @@ class AppManager implements IAppManager {
 
 	/**
 	 * Apps with these types can not be enabled for certain groups only
-	 * @var string[]
 	 */
-	protected $protectedAppTypes = [
+	const PROTECTED_APP_TYPES = [
 		'filesystem',
 		'prelogin',
 		'authentication',
@@ -62,6 +64,7 @@ class AppManager implements IAppManager {
 	private $userSession;
 	/** @var \OCP\IAppConfig */
 	private $appConfig;
+	private $appInfo;
 	/** @var \OCP\IGroupManager */
 	private $groupManager;
 	/** @var \OCP\ICacheFactory */
@@ -106,10 +109,19 @@ class AppManager implements IAppManager {
 		$this->memCacheFactory = $memCacheFactory;
 		$this->dispatcher = $dispatcher;
 		$this->config = $config;
+
+		// TODO we have no public API for this
+		if (method_exists($this->memCacheFactory, 'createLocal')) {
+			$this->appInfo = $this->memCacheFactory->createLocal('app-info');
+		}
+		if ($this->appInfo === null || $this->appInfo instanceof NullCache) {
+			$this->appInfo = new ArrayCache('app-info');
+		}
 	}
 
 	/**
 	 * @return string[] $appId => $enabled
+	 * @throws \Exception
 	 */
 	private function getInstalledAppsValues() {
 		if (!$this->installedAppsCache) {
@@ -132,6 +144,7 @@ class AppManager implements IAppManager {
 	 * List all installed apps
 	 *
 	 * @return string[]
+	 * @throws \Exception
 	 */
 	public function getInstalledApps() {
 		return array_keys($this->getInstalledAppsValues());
@@ -142,6 +155,7 @@ class AppManager implements IAppManager {
 	 *
 	 * @param \OCP\IUser|null $user
 	 * @return string[]
+	 * @throws \Exception
 	 */
 	public function getEnabledAppsForUser(IUser $user = null) {
 		$apps = $this->getInstalledAppsValues();
@@ -157,20 +171,20 @@ class AppManager implements IAppManager {
 	 * @param string $appId
 	 * @param \OCP\IUser $user (optional) if not defined, the currently logged in user will be used
 	 * @return bool
+	 * @throws \Exception
 	 */
 	public function isEnabledForUser($appId, $user = null) {
 		if ($this->isAlwaysEnabled($appId)) {
 			return true;
 		}
-		if (is_null($user) && !is_null($this->userSession)) {
+		if ($user === null && $this->userSession !== null) {
 			$user = $this->userSession->getUser();
 		}
 		$installedApps = $this->getInstalledAppsValues();
 		if (isset($installedApps[$appId])) {
 			return $this->checkAppForUser($installedApps[$appId], $user);
-		} else {
-			return false;
 		}
+		return false;
 	}
 
 	/**
@@ -181,29 +195,29 @@ class AppManager implements IAppManager {
 	private function checkAppForUser($enabled, $user) {
 		if ($enabled === 'yes') {
 			return true;
-		} elseif (is_null($user)) {
-			return false;
-		} else {
-			if(empty($enabled)){
-				return false;
-			}
-
-			$groupIds = json_decode($enabled);
-
-			if (!is_array($groupIds)) {
-				$jsonError = json_last_error();
-				\OC::$server->getLogger()->warning('AppManger::checkAppForUser - can\'t decode group IDs: ' . print_r($enabled, true) . ' - json error code: ' . $jsonError, ['app' => 'lib']);
-				return false;
-			}
-
-			$userGroups = $this->groupManager->getUserGroupIds($user);
-			foreach ($userGroups as $groupId) {
-				if (array_search($groupId, $groupIds) !== false) {
-					return true;
-				}
-			}
+		}
+		if ($user === null) {
 			return false;
 		}
+		if(empty($enabled)){
+			return false;
+		}
+
+		$groupIds = json_decode($enabled);
+
+		if (!is_array($groupIds)) {
+			$jsonError = json_last_error();
+			\OC::$server->getLogger()->warning('AppManger::checkAppForUser - can\'t decode group IDs: ' . print_r($enabled, true) . ' - json error code: ' . $jsonError, ['app' => 'lib']);
+			return false;
+		}
+
+		$userGroups = $this->groupManager->getUserGroupIds($user);
+		foreach ($userGroups as $groupId) {
+			if (in_array($groupId, $groupIds, true)) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 	/**
@@ -211,6 +225,7 @@ class AppManager implements IAppManager {
 	 *
 	 * @param string $appId
 	 * @return bool
+	 * @throws \Exception
 	 */
 	public function isInstalled($appId) {
 		$installedApps = $this->getInstalledAppsValues();
@@ -241,6 +256,9 @@ class AppManager implements IAppManager {
 	 * Do not allow more than one active app-theme
 	 *
 	 * @param $appId
+	 * @throws AppNotFoundException
+	 * @throws \InvalidArgumentException
+	 * @throws \Exception
 	 * @throws AppManagerException
 	 */
 	protected function canEnableTheme($appId) {
@@ -248,7 +266,7 @@ class AppManager implements IAppManager {
 		if (
 			isset($info['types'])
 			&& is_array($info['types'])
-			&& in_array('theme', $info['types'])
+			&& in_array('theme', $info['types'], true)
 		) {
 			$apps = $this->getInstalledApps();
 			foreach ($apps as $installedAppId) {
@@ -279,7 +297,7 @@ class AppManager implements IAppManager {
 	public function enableAppForGroups($appId, $groups) {
 		$info = $this->getAppInfo($appId);
 		if (!empty($info['types'])) {
-			$protectedTypes = array_intersect($this->protectedAppTypes, $info['types']);
+			$protectedTypes = array_intersect(self::PROTECTED_APP_TYPES, $info['types']);
 			if (!empty($protectedTypes)) {
 				throw new \Exception("$appId can't be enabled for groups.");
 			}
@@ -321,6 +339,8 @@ class AppManager implements IAppManager {
 	public function clearAppsCache() {
 		$settingsMemCache = $this->memCacheFactory->create('settings');
 		$settingsMemCache->clear('listApps');
+		$this->appInfo->clear();
+		$this->appDirs = [];
 	}
 
 	/**
@@ -330,6 +350,9 @@ class AppManager implements IAppManager {
 	 * @return array list of app info from apps that need an upgrade
 	 *
 	 * @internal
+	 * @throws \Exception
+	 * @throws \InvalidArgumentException
+	 * @throws AppNotFoundException
 	 */
 	public function getAppsNeedingUpgrade($ocVersion) {
 		$appsToUpgrade = [];
@@ -350,6 +373,23 @@ class AppManager implements IAppManager {
 	}
 
 	/**
+	 * @param $path
+	 * @return string|null an etag for the given $path or null
+	 */
+	private function getEtag($path) {
+		if (!\file_exists($path)) {
+			return null;
+		}
+		\clearstatcache(false, $path);
+		$stat = \stat($path);
+		if ($stat) {
+			// ok, file still exists
+			return "${stat['mtime']}|${stat['ino']}|${stat['dev']}|${stat['size']}";
+		}
+		return null;
+	}
+
+	/**
 	 * Returns the app information from "appinfo/info.xml".
 	 *
 	 * @param string $appId app id
@@ -357,17 +397,121 @@ class AppManager implements IAppManager {
 	 * @return array app info
 	 *
 	 * @internal
+	 * @throws \InvalidArgumentException
+	 * @throws AppNotFoundException
 	 */
 	public function getAppInfo($appId) {
-		$appInfo = \OC_App::getAppInfo($appId);
-		if ($appInfo === null) {
-			return null;
+		if(empty($appId)) {
+			return null; // TODO explode?
 		}
-		if (!isset($appInfo['version'])) {
-			// read version from separate file
-			$appInfo['version'] = \OC_App::getAppVersion($appId);
+
+		$etag = null;
+
+		// check the cache
+		$data = $this->appInfo->get($appId);
+		if (isset($data['path'])) {
+			// check that that info file hasn't changed by comparing the etag
+			$etag = $this->getEtag($data['path']);
+			if ($data['etag'] === $etag) {
+				// nice, etag is still the same, return from cache!
+				return $data['info'];
+			}
+			// invalidate cache
+			$this->appInfo->remove($appId);
 		}
-		return $appInfo;
+
+		$appPath = $this->getAppPath($appId);
+		if($appPath === false) {
+			// app no longer exists
+			return null; // TODO explode?
+		}
+
+		$file = "$appPath/appinfo/info.xml";
+		if (isset($data['path']) && $data['path'] !== $file) {
+			// path changed, invalidate etag
+			$etag = null;
+		}
+
+		// if we still have an etag, the content changed but the etag is up to
+		// date. otherwise the path changed and we have to recalculate it
+		return $this->getAppInfoByPath($file, $etag);
+	}
+
+	/**
+	 * Returns the app information from the given path.
+	 *
+	 * @note all data is read from info.xml, not just pre-defined fields
+	 *
+	 * @param string $path path to info xml
+	 * @param string $etag optional etag for the file, used to invalidate cache
+	 *
+	 * @return array app info
+	 *
+	 * @internal
+	 * @throws \InvalidArgumentException
+	 * @throws AppNotFoundException
+	 */
+	public function getAppInfoByPath($path, $etag = null) {
+		$file = realpath($path);
+
+		// check the cache
+		$data = $this->appInfo->get($file);
+		if (isset($data['path'])) {
+			// check that that info file hasn't changed by comparing the etag
+			$etag = $this->getEtag($data['path']);
+			if ($data['etag'] === $etag) {
+				// nice, etag is still the same, return from cache!
+				return $data['info'];
+			}
+			// invalidate cache
+			$this->appInfo->remove($file);
+		}
+
+		// parse the actual file
+		$parser = new InfoParser();
+		try {
+			$info = $parser->parse($file);
+		} catch (\InvalidArgumentException $e) {
+			\OC::$server->getLogger()->logException($e);
+			throw $e;
+		} catch (AppNotFoundException $e) {
+			\OC::$server->getLogger()->logException($e);
+			throw $e;
+		}
+
+		$info = \OC_App::parseAppInfo($info); // TODO move to info parser?
+
+		$appId = \OC_App::cleanAppId($info['id']); // so we can fetch the right config value and cache correctly
+
+		// always use stored ocsid // TODO add / explain reason
+		if(isset($info['ocsid'])) {
+			$storedId = \OC::$server->getConfig()->getAppValue($appId, 'ocsid');
+			if($storedId !== '' && $storedId !== $info['ocsid']) {
+				$info['ocsid'] = $storedId;
+			}
+		}
+
+		$cachedInfo = $info;
+		$cachedInfo['_cached'] = true;
+		$info['_cached'] = false;
+
+		if ($etag === null) {
+			$etag = $this->getEtag($file);
+			// TODO if etag is still null?
+		}
+		// add etag and path so cache can be invalidated
+		$data = [
+			'etag' => $etag,
+			'path' => $file,
+			// store info in its own key so path and etag cannot be injected
+			'info' => $cachedInfo
+		];
+
+		// cache results for a day
+		$this->appInfo->set($appId, $data, 86400);
+		$this->appInfo->set($file, $data, 86400);
+
+		return $info;
 	}
 
 	/**
@@ -378,6 +522,9 @@ class AppManager implements IAppManager {
 	 * @return array list of app info from incompatible apps
 	 *
 	 * @internal
+	 * @throws \Exception
+	 * @throws \InvalidArgumentException
+	 * @throws AppNotFoundException
 	 */
 	public function getIncompatibleApps($version) {
 		$apps = $this->getInstalledApps();
@@ -393,19 +540,28 @@ class AppManager implements IAppManager {
 
 	/**
 	 * @inheritdoc
+	 * @throws \Exception
 	 */
 	public function isShipped($appId) {
 		$this->loadShippedJson();
-		return in_array($appId, $this->shippedApps);
+		return in_array($appId, $this->shippedApps, true);
 	}
 
+	/**
+	 * @param $appId
+	 * @return bool
+	 * @throws \Exception
+	 */
 	private function isAlwaysEnabled($appId) {
 		$alwaysEnabled = $this->getAlwaysEnabledApps();
-		return in_array($appId, $alwaysEnabled);
+		return in_array($appId, $alwaysEnabled, true);
 	}
 
+	/**
+	 * @throws \Exception
+	 */
 	private function loadShippedJson() {
-		if (is_null($this->shippedApps)) {
+		if ($this->shippedApps === null) {
 			$shippedJson = \OC::$SERVERROOT . '/core/shipped.json';
 			if (!file_exists($shippedJson)) {
 				throw new \Exception("File not found: $shippedJson");
@@ -418,6 +574,7 @@ class AppManager implements IAppManager {
 
 	/**
 	 * @inheritdoc
+	 * @throws \Exception
 	 */
 	public function getAlwaysEnabledApps() {
 		$this->loadShippedJson();
@@ -429,6 +586,8 @@ class AppManager implements IAppManager {
 	 * @param bool $skipMigrations whether to skip migrations, which would only install the code
 	 * @return string|false app id or false in case of error
 	 * @since 10.0
+	 * @throws \Exception
+	 * @throws \Exception
 	 */
 	public function installApp($package, $skipMigrations = false) {
 		$appId = Installer::installApp([
@@ -442,6 +601,8 @@ class AppManager implements IAppManager {
 	 * @param string $package
 	 * @return mixed
 	 * @since 10.0
+	 * @throws \Exception
+	 * @throws \Exception
 	 */
 	public function updateApp($package) {
 		return Installer::updateApp([
@@ -463,6 +624,9 @@ class AppManager implements IAppManager {
 	/**
 	 * @param string $path
 	 * @return string[] app info
+	 * @throws \Exception
+	 * @throws \Exception
+	 * @throws \Exception
 	 */
 	public function readAppPackage($path) {
 		$data = [
@@ -614,8 +778,14 @@ class AppManager implements IAppManager {
 	 *
 	 * @param string $path
 	 * @return string
+	 *
+	 * @internal
+	 * @throws \InvalidArgumentException
+	 * @throws AppNotFoundException
 	 */
-	protected function getAppVersionByPath($path) {
-		return \OC_App::getAppVersionByPath($path);
+	public function getAppVersionByPath($path) {
+		$infoFile = "{$path}/appinfo/info.xml";
+		$appData = $this->getAppInfoByPath($infoFile);
+		return isset($appData['version']) ? $appData['version'] : '';
 	}
 }
