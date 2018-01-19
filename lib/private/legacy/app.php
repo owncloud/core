@@ -658,10 +658,12 @@ class OC_App {
 	 * @param boolean $path (optional)
 	 * @return array|null
 	 * @note all data is read from info.xml, not just pre-defined fields
+	 * @throws \InvalidArgumentException if appId is empty or xml was invalid
+	 * @throws \NotFoundException if appId does not exist
 	 */
 	public static function getAppInfo($appId, $isPath = false) {
 		if(empty($appId)) {
-			return null; // TODO explode?
+			throw new \InvalidArgumentException('invalid appId <'.print_r($appId,true).'>');
 		}
 
 		$etag = null;
@@ -685,7 +687,7 @@ class OC_App {
 			$appPath = self::getAppPath($appId);
 			if($appPath === false) {
 				// app no longer exists
-				return null; // TODO explode?
+				throw new \NotFoundException($appId);
 			}
 			$file = $appPath . '/appinfo/info.xml';
 			if (isset($data['path']) && $data['path'] !== $file) {
@@ -698,6 +700,9 @@ class OC_App {
 		// date. otherwise the path changed and we have to recalculate it
 		if (!$etag) {
 			$etag = self::getEtag($file);
+			if ($etag === false) {
+				throw new \NotFoundException($file);
+			}
 		}
 
 		// reparse the actual file
@@ -705,8 +710,6 @@ class OC_App {
 		$info = $parser->parse($file);
 		if (is_array($info)) {
 			$info = \OC_App::parseAppInfo($info);
-		} else {
-			return null; // TODO explode?
 		}
 
 		// always use stored ocsid // TODO add / explain reason

@@ -30,10 +30,12 @@ class InfoParser {
 	/**
 	 * @param string $file the xml file to be loaded
 	 * @return null|array where null is an indicator for an error
+	 * @throws \NotFoundException if file does not exist
+	 * @throws \InvalidArgumentException on malformed XML
 	 */
 	public function parse($file) {
 		if (!file_exists($file)) {
-			return null;
+			throw new \NotFoundException($file);
 		}
 
 		libxml_use_internal_errors(true);
@@ -43,12 +45,12 @@ class InfoParser {
 		libxml_disable_entity_loader($loadEntities);
 		if ($xml === false) {
 			libxml_clear_errors();
-			return null;
+			throw new \InvalidArgumentException('Invalid XML');
 		}
 		$array = $this->xmlToArray($xml);
 
 		if (is_null($array)) {
-			return null;
+			throw new \InvalidArgumentException('Could not convert XML to array');
 		}
 
 		if (!array_key_exists('info', $array)) {
