@@ -663,14 +663,14 @@ class SMB extends \OCP\Files\Storage\StorageAdapter {
 	 * @param int $level
 	 * @param string $from
 	 */
-	private function log($message, $level = Util::DEBUG, $from = 'wnd') {
-		if (\OC::$server->getConfig()->getSystemValue('wnd.logging.enable', false) === true) {
+	private function log($message, $level = Util::DEBUG, $from = 'smb') {
+		if (\OC::$server->getConfig()->getSystemValue('smb.logging.enable', false) === true) {
 			Util::writeLog($from, $message, $level);
 		}
 	}
 
 	/**
-	 * if wnd.logging.enable is set to true in the config will log a leave line
+	 * if smb.logging.enable is set to true in the config will log a leave line
 	 * with the given function, the return value or the exception
 	 *
 	 * @param $function
@@ -678,31 +678,31 @@ class SMB extends \OCP\Files\Storage\StorageAdapter {
 	 * @return mixed
 	 */
 	private function leave($function, $result) {
-		if (\OC::$server->getConfig()->getSystemValue('wnd.logging.enable', false) === false) {
+		if (\OC::$server->getConfig()->getSystemValue('smb.logging.enable', false) === false) {
 			//don't bother building log strings
 			return $result;
 		} else if ($result === true) {
-			Util::writeLog('wnd', "leave: $function, return true", Util::DEBUG);
+			Util::writeLog('smb', "leave: $function, return true", Util::DEBUG);
 		} else if ($result === false) {
-			Util::writeLog('wnd', "leave: $function, return false", Util::DEBUG);
+			Util::writeLog('smb', "leave: $function, return false", Util::DEBUG);
 		} else if (is_string($result)) {
-			Util::writeLog('wnd', "leave: $function, return '$result'", Util::DEBUG);
+			Util::writeLog('smb', "leave: $function, return '$result'", Util::DEBUG);
 		} else if (is_resource($result)) {
-			Util::writeLog('wnd', "leave: $function, return resource", Util::DEBUG);
+			Util::writeLog('smb', "leave: $function, return resource", Util::DEBUG);
 		} else if ($result instanceof \Exception) {
-			Util::writeLog('wnd', "leave: $function, throw ".get_class($result)
+			Util::writeLog('smb', "leave: $function, throw ".get_class($result)
 				.' - code: '.$result->getCode()
 				.' message: '.$result->getMessage()
 				.' trace: '.$result->getTraceAsString(), Util::DEBUG);
 		} else {
-			Util::writeLog('wnd', "leave: $function, return ".json_encode($result, true), Util::DEBUG);
+			Util::writeLog('smb', "leave: $function, return ".json_encode($result, true), Util::DEBUG);
 		}
 		return $result;
 	}
 
 	private function swallow($function, \Exception $exception) {
-		if (\OC::$server->getConfig()->getSystemValue('wnd.logging.enable', false) === true) {
-			Util::writeLog('wnd', "$function swallowing ".get_class($exception)
+		if (\OC::$server->getConfig()->getSystemValue('smb.logging.enable', false) === true) {
+			Util::writeLog('smb', "$function swallowing ".get_class($exception)
 				.' - code: '.$exception->getCode()
 				.' message: '.$exception->getMessage()
 				.' trace: '.$exception->getTraceAsString(), Util::DEBUG);
