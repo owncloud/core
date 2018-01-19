@@ -812,17 +812,28 @@ class FilesContext extends RawMinkContext implements Context {
 	public function theFilesactionmenuShouldBeCompletelyVisibleAfterClickingOnIt() {
 		for ($i = 1; $i <= $this->filesPage->getSizeOfFileFolderList(); $i++) {
 			$actionMenu = $this->filesPage->openFileActionsMenuByNo($i);
-
-			$windowHeight = $this->filesPage->getWindowHeight(
-				$this->getSession()
-			);
-
-			$deleteBtn = $actionMenu->findButton(
-				$actionMenu->getDeleteActionLabel()
-			);
-			$deleteBtnCoordinates = $this->filesPage->getCoordinatesOfElement(
-				$this->getSession(), $deleteBtn
-			);
+			
+			$timeout_msec = STANDARDUIWAITTIMEOUTMILLISEC;
+			$currentTime = microtime(true);
+			$end = $currentTime + ($timeout_msec / 1000);
+			while ($currentTime <= $end) {
+				$windowHeight = $this->filesPage->getWindowHeight(
+					$this->getSession()
+				);
+				
+				$deleteBtn = $actionMenu->findButton(
+					$actionMenu->getDeleteActionLabel()
+				);
+				$deleteBtnCoordinates = $this->filesPage->getCoordinatesOfElement(
+					$this->getSession(), $deleteBtn
+				);
+				if ($windowHeight >= $deleteBtnCoordinates ["top"]) {
+					break;
+				}
+				usleep(STANDARDSLEEPTIMEMICROSEC);
+				$currentTime = microtime(true);
+			}
+			
 			PHPUnit_Framework_Assert::assertLessThan(
 				$windowHeight, $deleteBtnCoordinates ["top"]
 			);
