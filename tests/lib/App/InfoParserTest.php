@@ -22,23 +22,17 @@ class InfoParserTest extends TestCase {
 		$this->parser = new InfoParser();
 	}
 
-	/**
-	 * @dataProvider providesInfoXml
-	 */
-	public function testParsingValidXml($expectedJson, $xmlFile) {
-		$expectedData = null;
-		if (!is_null($expectedJson)) {
-			$expectedData = json_decode(file_get_contents(OC::$SERVERROOT . "/tests/data/app/$expectedJson"), true);
-		}
-		$data = $this->parser->parse(OC::$SERVERROOT. "/tests/data/app/$xmlFile");
-
+	public function testParsingValidXml() {
+		$expectedData = json_decode(file_get_contents(OC::$SERVERROOT . "/tests/data/app/expected-info.json"), true);
+		$data = $this->parser->parse(OC::$SERVERROOT. "/tests/data/app/valid-info.xml");
 		$this->assertEquals($expectedData, $data);
 	}
 
-	function providesInfoXml() {
-		return [
-			['expected-info.json', 'valid-info.xml'],
-			[null, 'invalid-info.xml'],
-		];
+	/**
+	 * @expectedException \InvalidArgumentException
+	 */
+	public function testParsingInvalidXml() {
+		$this->parser->parse(OC::$SERVERROOT. "/tests/data/app/valid-info.xml");
 	}
+
 }
