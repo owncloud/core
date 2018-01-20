@@ -19,6 +19,30 @@ default:
         - CalDavContext:
             baseUrl: http://localhost:8080
         - AppManagementContext:
+    trashbin:
+      paths:
+        - %paths.base%/../features/trashbin
+      contexts:
+        - FeatureContext:
+            baseUrl:  http://localhost:8080/ocs/
+            admin:
+              - admin
+              - admin
+            regular_user_password: 123456
+            mailhog_url: http://127.0.0.1:8025/api/v2/messages
+            oc_path: ../../
+    webdav:
+      paths:
+        - %paths.base%/../features/webdav
+      contexts:
+        - FeatureContext:
+            baseUrl:  http://localhost:8080/ocs/
+            admin:
+              - admin
+              - admin
+            regular_user_password: 123456
+            mailhog_url: http://127.0.0.1:8025/api/v2/messages
+            oc_path: ../../
     federation:
       paths:
         - %paths.base%/../federation_features
