@@ -6,6 +6,7 @@ codecov:
     - !scrutinizer-ci.com
     - !cla-assistant.io
 
-fixes:
-  - "drone/src/::"
+coverage:
+  fixes:
+    - "drone/src/::"
 
