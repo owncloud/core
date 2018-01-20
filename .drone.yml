@@ -58,15 +58,15 @@ pipeline:
       local: false
       event: [push]
 
-  javascript:
-    image: owncloudci/php:${PHP_VERSION}
-    pull: true
-    group: test
-    commands:
-      - ./tests/drone/test-javascript.sh
-    when:
-      matrix:
-        TEST_SUITE: phpunit
+#  javascript:
+#    image: owncloudci/php:${PHP_VERSION}
+#    pull: true
+#    group: test
+#    commands:
+#      - ./tests/drone/test-javascript.sh
+#    when:
+#      matrix:
+#        TEST_SUITE: phpunit
 
   phpunit:
     image: owncloudci/php:${PHP_VERSION}
@@ -76,6 +76,7 @@ pipeline:
       - PHP_VERSION=${PHP_VERSION}
       - DB_TYPE=${DB_TYPE}
       - ENABLE_COVERAGE=${ENABLE_COVERAGE}
+      - FILES_EXTERNAL_TYPE=${FILES_EXTERNAL_TYPE}
     commands:
       - ./tests/drone/test-phpunit.sh
     when:
@@ -143,7 +144,11 @@ services:
         DB_TYPE: postgres
 
   owncloud_external:
-    image: morrisjobke/owncloud:latest
+    image: morrisjobke/webdav
+    environment:
+      - OWNCLOUD_SUB_URL=/owncloud
+      - USERNAME=admin
+      - PASSWORD=admin
     when:
       matrix:
         FILES_EXTERNAL_TYPE: Webdav

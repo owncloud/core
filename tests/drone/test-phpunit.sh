@@ -72,7 +72,7 @@ set_up_external_storage() {
  <?php
  return array(
      'run'=>true,
-     'host'=>'owncloud_external:80/owncloud/remote.php/webdav/',
+     'host'=>'owncloud_external:80/webdav',
      'user'=>'admin',
      'password'=>'admin',
      'root'=>'',
@@ -91,8 +91,8 @@ FILES_EXTERNAL_BACKEND_PATH=apps/files_external/tests/Storage
 FILES_EXTERNAL_TEST_TO_RUN=${FILES_EXTERNAL_TYPE}Test.php
 
 
-if [[ ${ENABLE_COVERAGE} == "true" ]]; then
-    if [[ -n ${FILES_EXTERNAL_TYPE} ]]; then
+if [[ "${ENABLE_COVERAGE}" == "true" ]]; then
+    if [[ -n "${FILES_EXTERNAL_TYPE}" ]]; then
         set_up_external_storage
         phpdbg -d memory_limit=4096M -rr ./lib/composer/bin/phpunit --configuration tests/phpunit-autotest-external.xml ${GROUP} --coverage-clover tests/autotest-external-clover-${DB_TYPE}.xml
         phpdbg -d memory_limit=4096M -rr ./lib/composer/bin/phpunit --configuration tests/phpunit-autotest-external.xml ${GROUP} --coverage-clover tests/autotest-external-clover-${DB_TYPE}-${FILES_EXTERNAL_TYPE}.xml ${FILES_EXTERNAL_BACKEND_PATH}/${FILES_EXTERNAL_TEST_TO_RUN}
@@ -100,11 +100,14 @@ if [[ ${ENABLE_COVERAGE} == "true" ]]; then
         phpdbg -d memory_limit=4096M -rr ./lib/composer/bin/phpunit --configuration tests/phpunit-autotest.xml ${GROUP} --coverage-clover tests/autotest-clover-${DB_TYPE}.xml
     fi
 else
-    if [[ -n ${FILES_EXTERNAL_TYPE} ]]; then
+    if [[ -n "${FILES_EXTERNAL_TYPE}" ]]; then
+        echo "run files external"
         set_up_external_storage
+
         ./lib/composer/bin/phpunit --configuration tests/phpunit-autotest-external.xml ${GROUP} --log-junit tests/autotest-external-results-${DB_TYPE}.xml
         ./lib/composer/bin/phpunit --configuration tests/phpunit-autotest-external.xml ${GROUP} --log-junit tests/autotest-external-results-${DB_TYPE}-${FILES_EXTERNAL_TYPE}.xml ${FILES_EXTERNAL_BACKEND_PATH}/${FILES_EXTERNAL_TEST_TO_RUN}
     else
-        ./lib/composer/bin/phpunit --configuration tests/phpunit-autotest.xml ${GROUP} --log-junit tests/autotest-results-${DB_TYPE}.xml    
+        echo "normal"
+        ./lib/composer/bin/phpunit --configuration tests/phpunit-autotest.xml ${GROUP} --log-junit tests/autotest-results-${DB_TYPE}.xml
     fi
 fi
