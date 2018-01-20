@@ -66,6 +66,10 @@ if [ "${TEST_WITH_PHPDEVSERVER}" != "true" ]; then
     $OCC config:system:set trusted_domains 1 --value=server
     $OCC config:system:set trusted_domains 2 --value=federated
 
+    echo "Updating .htaccess for proper rewrites"
+    $OCC config:system:set htaccess.RewriteBase --value /
+    $OCC maintenance:update:htaccess
+
 else
     echo "Using php inbuilt server for running scenario ..."
 
