@@ -69,7 +69,7 @@ default:
             oc_path: ../../
     federation:
       paths:
-        - %paths.base%/../federation_features
+        - %paths.base%/../features/federation
       contexts:
         - FederationContext:
             baseUrl:  http://localhost:8080/ocs/
@@ -81,7 +81,7 @@ default:
             oc_path: ../../
     capabilities:
       paths:
-        - %paths.base%/../capabilities_features
+        - %paths.base%/../features/capabilities
       contexts:
         - CapabilitiesContext:
             baseUrl:  http://localhost:8080/ocs/
@@ -93,7 +93,7 @@ default:
             oc_path: ../../
     sharees:
       paths:
-        - %paths.base%/../sharees_features
+        - %paths.base%/../features/sharees
       contexts:
         - ShareesContext:
             baseUrl:  http://localhost:8080/ocs/
