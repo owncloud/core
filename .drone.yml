@@ -423,6 +423,7 @@ matrix:
       TEST_SUITE: integration
       INTEGRATION_SUITE: features/capabilities
       USE_SERVER: true
+      USE_FEDERATED_SERVER: true
 
     - PHP_VERSION: 7.1
       TEST_SUITE: integration

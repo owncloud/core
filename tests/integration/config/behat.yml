@@ -31,6 +31,18 @@ default:
             regular_user_password: 123456
             mailhog_url: http://127.0.0.1:8025/api/v2/messages
             oc_path: ../../
+    provisioning:
+      paths:
+        - %paths.base%/../features/provisioning
+      contexts:
+        - FeatureContext:
+            baseUrl:  http://localhost:8080/ocs/
+            admin:
+              - admin
+              - admin
+            regular_user_password: 123456
+            mailhog_url: http://127.0.0.1:8025/api/v2/messages
+            oc_path: ../../
     sharing:
       paths:
         - %paths.base%/../features/sharing
