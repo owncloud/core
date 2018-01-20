@@ -566,7 +566,11 @@ class OC_App {
 	 * @return string|false
 	 */
 	public static function getAppPath($appId) {
-		return \OC::$server->getAppManager()->getAppPath($appId);
+		try {
+			return \OC::$server->getAppManager()->getAppPath($appId);
+		} catch (AppNotFoundException $e) {
+			return false;
+		}
 	}
 
 	/**
@@ -578,7 +582,11 @@ class OC_App {
 	 * @return string|false
 	 */
 	public static function getAppWebPath($appId) {
-		return \OC::$server->getAppManager()->getAppWebPath($appId);
+		try {
+			return \OC::$server->getAppManager()->getAppWebPath($appId);
+		} catch (AppNotFoundException $e) {
+			return false;
+		}
 	}
 
 	/**

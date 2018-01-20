@@ -45,10 +45,8 @@ class AppTest extends \Test\TestCase {
 
 	private $container;
 	private $io;
-	private $api;
 	private $controller;
 	private $dispatcher;
-	private $params;
 	private $headers;
 	private $output;
 	private $controllerName;
@@ -79,17 +77,6 @@ class AppTest extends \Test\TestCase {
 		$this->container['Dispatcher'] = $this->dispatcher;
 		$this->container['OCP\\AppFramework\\Http\\IOutput'] = $this->io;
 		$this->container['urlParams'] = [];
-
-		$this->appPath = __DIR__ . '/../../../apps/namespacetestapp';
-		$infoXmlPath = $this->appPath . '/appinfo/info.xml';
-		mkdir($this->appPath . '/appinfo', 0777, true);
-
-		$xml = '<?xml version="1.0" encoding="UTF-8"?>' .
-		'<info>' .
-		    '<id>namespacetestapp</id>' .
-			'<namespace>NameSpaceTestApp</namespace>' .
-		'</info>';
-		file_put_contents($infoXmlPath, $xml);
 	}
 
 
@@ -110,18 +97,49 @@ class AppTest extends \Test\TestCase {
 
 
 	public function testBuildAppNamespace() {
-		$ns = App::buildAppNamespace('someapp');
-		$this->assertEquals('OCA\Someapp', $ns);
+		$this->appPath = __DIR__ . '/../../../apps/namespacetestapp';
+		$infoXmlPath = $this->appPath . '/appinfo/info.xml';
+		mkdir($this->appPath . '/appinfo', 0777, true);
+
+		$xml = '<?xml version="1.0" encoding="UTF-8"?>' .
+			'<info>' .
+			'<id>namespacetestapp</id>' .
+			'</info>';
+		file_put_contents($infoXmlPath, $xml);
+
+		$ns = App::buildAppNamespace('namespacetestapp');
+		$this->assertEquals('OCA\Namespacetestapp', $ns);
 	}
 
 
 	public function testBuildAppNamespaceCore() {
-		$ns = App::buildAppNamespace('someapp', 'OC\\');
-		$this->assertEquals('OC\Someapp', $ns);
+		$this->appPath = __DIR__ . '/../../../apps/namespacetestapp';
+		$infoXmlPath = $this->appPath . '/appinfo/info.xml';
+		mkdir($this->appPath . '/appinfo', 0777, true);
+
+		$xml = '<?xml version="1.0" encoding="UTF-8"?>' .
+			'<info>' .
+			'<id>namespacetestapp</id>' .
+			'</info>';
+		file_put_contents($infoXmlPath, $xml);
+
+		$ns = App::buildAppNamespace('namespacetestapp', 'OC\\');
+		$this->assertEquals('OC\Namespacetestapp', $ns);
 	}
 
 
 	public function testBuildAppNamespaceInfoXml() {
+		$this->appPath = __DIR__ . '/../../../apps/namespacetestapp';
+		$infoXmlPath = $this->appPath . '/appinfo/info.xml';
+		mkdir($this->appPath . '/appinfo', 0777, true);
+
+		$xml = '<?xml version="1.0" encoding="UTF-8"?>' .
+			'<info>' .
+			'<id>namespacetestapp</id>' .
+			'<namespace>NameSpaceTestApp</namespace>' .
+			'</info>';
+		file_put_contents($infoXmlPath, $xml);
+
 		$ns = App::buildAppNamespace('namespacetestapp', 'OCA\\');
 		$this->assertEquals('OCA\NameSpaceTestApp', $ns);
 	}

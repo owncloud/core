@@ -185,6 +185,7 @@ interface IAppManager {
 	 *
 	 * @param string $appId
 	 * @return string|false
+	 * @throws AppNotFoundException
 	 * @since 10.0.5
 	 */
 	public function getAppWebPath($appId);

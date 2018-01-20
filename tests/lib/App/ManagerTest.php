@@ -163,13 +163,25 @@ class ManagerTest extends TestCase {
 	}
 
 	public function testEnableAppForGroups() {
+		$appPath = __DIR__ . '/../../../apps/managertestapp';
+		$infoXmlPath = $appPath . '/appinfo/info.xml';
+		mkdir($appPath . '/appinfo', 0777, true);
+
+		$xml = '<?xml version="1.0" encoding="UTF-8"?>' .
+			'<info>' .
+			'<id>managertestapp</id>' .
+			'</info>';
+		file_put_contents($infoXmlPath, $xml);
+
 		$groups = [
 			new Group('group1', [], null),
 			new Group('group2', [], null)
 		];
 		$this->expectClearCache();
-		$this->manager->enableAppForGroups('test', $groups);
+		$this->manager->enableAppForGroups('managertestapp', $groups);
 		$this->assertEquals('["group1","group2"]', $this->appConfig->getValue('test', 'enabled', 'no'));
+
+		rrmdir($appPath);
 	}
 
 	public function dataEnableAppForGroupsAllowedTypes() {

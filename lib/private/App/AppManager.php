@@ -32,6 +32,7 @@ namespace OC\App;
 
 use OC_App;
 use OC\Installer;
+use OCP\App\AppNotFoundException;
 use OCP\App\IAppManager;
 use OCP\App\AppManagerException;
 use OCP\App\ManagerEvent;
@@ -359,7 +360,11 @@ class AppManager implements IAppManager {
 	 * @internal
 	 */
 	public function getAppInfo($appId) {
-		$appInfo = \OC_App::getAppInfo($appId);
+		try {
+			$appInfo = \OC_App::getAppInfo($appId);
+		} catch (AppNotFoundException $e) {
+			return null;
+		}
 		if ($appInfo === null) {
 			return null;
 		}
@@ -519,6 +524,7 @@ class AppManager implements IAppManager {
 	 *
 	 * @param string $appId
 	 * @return string|false
+	 * @throws AppNotFoundException
 	 * @since 10.0.5
 	 */
 	public function getAppWebPath($appId) {

@@ -27,6 +27,7 @@ namespace OC\AppFramework;
 
 use OC\AppFramework\Http\Dispatcher;
 use OC\AppFramework\DependencyInjection\DIContainer;
+use OCP\App\AppNotFoundException;
 use OCP\AppFramework\QueryException;
 use OCP\AppFramework\Http\ICallbackResponse;
 
@@ -46,6 +47,8 @@ class App {
 	 * @param string $topNamespace the namespace which should be prepended to
 	 * the transformed app id, defaults to OCA\
 	 * @return string the starting namespace for the app
+	 * @throws \InvalidArgumentException if appId is empty or xml was invalid
+	 * @throws AppNotFoundException if appId does not exist
 	 */
 	public static function buildAppNamespace($appId, $topNamespace='OCA\\') {
 		// first try to parse the app's appinfo/info.xml <namespace> tag
