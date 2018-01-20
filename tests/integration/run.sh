@@ -53,10 +53,19 @@ function env_encryption_disable_users_key {
 	$OCC config:app:delete encryption userSpecificKey
 }
 
+declare -x TEST_SERVER_URL
+declare -x TEST_SERVER_FED_URL
+declare -x TEST_WITH_PHPDEVSERVER
+[[ -z "${TEST_SERVER_URL}" || -z "${TEST_SERVER_FED_URL}" ]] && TEST_WITH_PHPDEVSERVER="true"
+
+if [ "${TEST_WITH_PHPDEVSERVER}" == "true" ]; then
+echo "Using php inbuilt server for running scenario ..."
+
 # avoid port collision on jenkins - use $EXECUTOR_NUMBER
-if [ -z "$EXECUTOR_NUMBER" ]; then
-    EXECUTOR_NUMBER=0
-fi
+declare -x EXECUTOR_NUMBER
+[[ -z "$EXECUTOR_NUMBER" ]] && EXECUTOR_NUMBER=0
+
+
 PORT=$((8080 + $EXECUTOR_NUMBER))
 echo $PORT
 php -S localhost:$PORT -t "$OC_PATH" &
@@ -69,8 +78,10 @@ php -S localhost:$PORT_FED -t ../.. &
 PHPPID_FED=$!
 echo $PHPPID_FED
 
-export TEST_SERVER_URL="http://localhost:$PORT/ocs/"
-export TEST_SERVER_FED_URL="http://localhost:$PORT_FED/ocs/"
+TEST_SERVER_URL="http://localhost:$PORT/ocs/"
+TEST_SERVER_FED_URL="http://localhost:$PORT_FED/ocs/"
+
+fi
 
 #Set up personalized skeleton
 PREVIOUS_SKELETON_DIR=$($OCC --no-warnings config:system:get skeletondirectory)
@@ -129,12 +140,20 @@ if test "$BEHAT_FILTER_TAGS"; then
 		}
 	}'
 fi
+if [ "${TEST_WITH_PHPDEVSERVER}" != "true" ]; then
+    echo "Adjusting file permissions ... "
+    $OCC config:system:set trusted_domains 1 --value=server
+    $OCC config:system:set trusted_domains 2 --value=federated
+    chown www-data $OC_PATH -R
+fi
 
 BEHAT_PARAMS="$BEHAT_PARAMS" $BEHAT --strict -f junit -f pretty $SCENARIO_TO_RUN
 RESULT=$?
 
-kill $PHPPID
-kill $PHPPID_FED
+if [ "${TEST_WITH_PHPDEVSERVER}" == "true" ]; then
+    kill $PHPPID
+    kill $PHPPID_FED
+fi
 
 $OCC files_external:delete -y $ID_STORAGE
 
