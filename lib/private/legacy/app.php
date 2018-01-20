@@ -46,6 +46,7 @@
  */
 use OC\App\DependencyAnalyzer;
 use OC\App\InfoParser;
+use \OCP\App\AppNotFoundException;
 use OC\App\Platform;
 use OC\Installer;
 use OC\Repair;
@@ -659,7 +660,7 @@ class OC_App {
 	 * @return array|null
 	 * @note all data is read from info.xml, not just pre-defined fields
 	 * @throws \InvalidArgumentException if appId is empty or xml was invalid
-	 * @throws \NotFoundException if appId does not exist
+	 * @throws AppNotFoundException if appId does not exist
 	 */
 	public static function getAppInfo($appId, $isPath = false) {
 		if(empty($appId)) {
@@ -687,7 +688,7 @@ class OC_App {
 			$appPath = self::getAppPath($appId);
 			if($appPath === false) {
 				// app no longer exists
-				throw new \NotFoundException($appId);
+				throw new AppNotFoundException($appId);
 			}
 			$file = $appPath . '/appinfo/info.xml';
 			if (isset($data['path']) && $data['path'] !== $file) {
@@ -701,7 +702,7 @@ class OC_App {
 		if (!$etag) {
 			$etag = self::getEtag($file);
 			if ($etag === false) {
-				throw new \NotFoundException($file);
+				throw new AppNotFoundException($file);
 			}
 		}
 

@@ -25,17 +25,19 @@
 
 namespace OC\App;
 
+use OCP\App\AppNotFoundException;
+
 class InfoParser {
 
 	/**
 	 * @param string $file the xml file to be loaded
 	 * @return null|array where null is an indicator for an error
-	 * @throws \NotFoundException if file does not exist
+	 * @throws AppNotFoundException if file does not exist
 	 * @throws \InvalidArgumentException on malformed XML
 	 */
 	public function parse($file) {
 		if (!file_exists($file)) {
-			throw new \NotFoundException($file);
+			throw new AppNotFoundException($file);
 		}
 
 		libxml_use_internal_errors(true);
