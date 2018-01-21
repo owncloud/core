@@ -2,6 +2,7 @@ workspace:
   base: /drone
   path: src
 
+
 branches: [master, stable10, stable9.1, stable9]
 
 clone:
@@ -34,7 +35,7 @@ pipeline:
       - ./tests/drone/yarn-install.sh
     when:
       event: [push, pull_request]
-
+#
   rebuild:
     image: plugins/s3-cache:1
     pull: true
@@ -58,15 +59,15 @@ pipeline:
       local: false
       event: [push]
 
-#  javascript:
-#    image: owncloudci/php:${PHP_VERSION}
-#    pull: true
-#    group: test
-#    commands:
-#      - ./tests/drone/test-javascript.sh
-#    when:
-#      matrix:
-#        TEST_SUITE: phpunit
+
+  test-javascript:
+    image: owncloudci/php:${PHP_VERSION}
+    pull: true
+    commands:
+      - ./tests/drone/test-javascript.sh
+    when:
+      matrix:
+        TEST_SUITE: javascript
 
   phpunit:
     image: owncloudci/php:${PHP_VERSION}
@@ -144,14 +145,26 @@ services:
         DB_TYPE: postgres
 
   owncloud_external:
-    image: morrisjobke/webdav
-    environment:
-      - OWNCLOUD_SUB_URL=/owncloud
-      - USERNAME=admin
-      - PASSWORD=admin
+    image: owncloud/server:10.0.4
     when:
       matrix:
-        FILES_EXTERNAL_TYPE: Webdav
+        FILES_EXTERNAL_TYPE: owncloud_webdav
+
+  apache_webdav:
+    image: owncloudci/php:latest
+    environment:
+      - APACHE_CONFIG_TEMPLATE=/drone/src/tests/drone/webdav.conf
+    command: [ "/usr/local/bin/apachectl", "-e debug" , "-DFOREGROUND" ]
+    when:
+      matrix:
+        FILES_EXTERNAL_TYPE: apache_webdav
+
+  smb_docker:
+    image: dperson/samba
+    command: "-u \"test;test\" -s \"public;/tmp;yes;no;no;test;none;test\" -S"
+    when:
+      matrix:
+        FILES_EXTERNAL_TYPE: smb_docker
 
   oracle:
     image: deepdiver/docker-oracle-xe-11g
@@ -167,6 +180,7 @@ matrix:
   include:
     - TEST_SUITE: javascript
       PHP_VERSION: 7.1
+
     # PHP 5.6
     #- PHP_VERSION: 5.6
     #  DB_TYPE: sqlite
@@ -254,5 +268,19 @@ matrix:
     - PHP_VERSION: 7.1
       DB_TYPE: sqlite
       TEST_SUITE: phpunit
-      FILES_EXTERNAL_TYPE: Webdav
-      ENABLE_COVERAGE: true
+      FILES_EXTERNAL_TYPE: apache_webdav
+
+    - PHP_VERSION: 7.1
+      DB_TYPE: sqlite
+      TEST_SUITE: phpunit
+      FILES_EXTERNAL_TYPE: owncloud_webdav
+
+    - PHP_VERSION: 7.1
+      DB_TYPE: sqlite
+      TEST_SUITE: phpunit
+      FILES_EXTERNAL_TYPE: smb_docker
+
+    - PHP_VERSION: 7.1
+      DB_TYPE: sqlite
+      TEST_SUITE: phpunit
+      FILES_EXTERNAL_TYPE: smb_windows

@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-set -xeo pipefail
+set -x
 
 if [[ "$(pwd)" == "$(cd "$(dirname "$0")"; pwd -P)" ]]; then
   echo "Can only be executed from project root!"
@@ -66,18 +66,73 @@ set_up_external_storage() {
     ./occ app:enable files_external
     ./occ config:app:set core enable_external_storage --value=yes
     case "${FILES_EXTERNAL_TYPE}" in
-    Webdav)
+    owncloud_webdav)
         wait-for-it owncloud_external:80
+        FILES_EXTERNAL_TEST_TO_RUN=WebdavTest.php
         cat > apps/files_external/tests/config.webdav.php <<DELIM
  <?php
  return array(
      'run'=>true,
-     'host'=>'owncloud_external:80/webdav',
+     'host'=>'owncloud_external:80/remote.php/webdav',
      'user'=>'admin',
      'password'=>'admin',
      'root'=>'',
      'wait'=> 0
  );
+DELIM
+        ;;
+    apache_webdav)
+        wait-for-it apache_webdav:80
+        FILES_EXTERNAL_TEST_TO_RUN=WebdavTest.php
+        mkdir -p /drone/webdav
+        chown -R www-data:www-data /drone/webdav
+        htpasswd -cb /drone/webdav.password admin admin
+        chown www-data:www-data /drone/webdav.password
+        chmod 640 /drone/webdav.password
+        cat > apps/files_external/tests/config.webdav.php <<DELIM
+ <?php
+ return array(
+     'run'=>true,
+     'host'=>'apache_webdav:80/webdav',
+     'user'=>'admin',
+     'password'=>'admin',
+     'root'=>'',
+     'wait'=> 0
+ );
+DELIM
+        ;;
+    smb_docker)
+        wait-for-it smb_docker:445
+        FILES_EXTERNAL_TEST_TO_RUN=SmbTest.php
+        cat > apps/files_external/tests//config.smb.php <<DELIM
+<?php
+
+return array(
+    'run'=>true,
+    'host'=>'smb_docker',
+    'user'=>'test',
+    'password'=>'test',
+    'root'=>'',
+    'share'=>'public',
+);
+
+DELIM
+        ;;
+    smb_windows)
+        wait-for-it WIN-9GTFAS08C15:445
+        FILES_EXTERNAL_TEST_TO_RUN=SmbTest.php
+        cat > apps/files_external/tests//config.smb.php <<DELIM
+<?php
+
+return array(
+    'run'=>true,
+    'host'=>'WIN-9GTFAS08C15',
+    'user'=>'smb-test',
+    'password'=>'!owncloud123',
+    'root'=>'',
+    'share'=>'oc-test',
+);
+
 DELIM
         ;;
     *)
@@ -88,8 +143,6 @@ DELIM
 }
 
 FILES_EXTERNAL_BACKEND_PATH=apps/files_external/tests/Storage
-FILES_EXTERNAL_TEST_TO_RUN=${FILES_EXTERNAL_TYPE}Test.php
-
 
 if [[ "${ENABLE_COVERAGE}" == "true" ]]; then
     if [[ -n "${FILES_EXTERNAL_TYPE}" ]]; then
