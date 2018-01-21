@@ -119,6 +119,54 @@ pipeline:
       matrix:
         TEST_SUITE: files_external
 
+  install-server:
+    image: owncloudci/php:${PHP_VERSION}
+    pull: true
+    commands:
+      - cd /drone/src/
+      - php occ maintenance:install -vvv --database=mysql --database-host=${DB_TYPE} --database-user=owncloud --database-pass=owncloud --database-name=owncloud --database-table-prefix=oc_ --admin-user=admin --admin-pass=admin --data-dir=/drone/src/data
+      - php occ a:l
+      - php occ a:e testing
+      - php occ a:l
+      - php occ config:system:set trusted_domains 1 --value=server
+      - php occ config:system:set trusted_domains 2 --value=federated
+      - php occ log:manage --level 0
+      - php occ config:list
+    when:
+      matrix:
+        TEST_SUITE: selenium
+
+  owncloud-log:
+    image: owncloud/ubuntu:16.04
+    detach: true
+    pull: true
+    commands:
+      - tail -f /drone/src/data/owncloud.log
+    when:
+      matrix:
+        TEST_SUITE: selenium
+
+  acceptance-tests:
+    image: owncloudci/php:latest
+    pull: true
+    environment:
+      - BROWSER=chrome
+      - SELENIUM_HOST=selenium
+      - SRV_HOST_NAME=server
+      - SRV_HOST_PORT=80
+      - REMOTE_FED_SRV_HOST_NAME=federated
+      - REMOTE_FED_SRV_HOST_PORT=80
+      - SKELETON_DIR=/drone/src/tests/ui/skeleton
+      - SELENIUM_PORT=4444
+      - PLATFORM=Linux
+    commands:
+      - cd /drone/src/
+      - chown www-data * -R
+      - bash tests/travis/start_ui_tests.sh --remote 
+    when:
+      matrix:
+        TEST_SUITE: selenium
+
 services:
   mariadb:
     image: mariadb:10.2
@@ -179,6 +227,32 @@ services:
       matrix:
         DB_TYPE: oracle
 
+  selenium:
+    image: selenium/standalone-chrome-debug:latest
+    pull: true
+    when:
+      matrix:
+        TEST_SUITE: selenium
+
+  server:
+    image: owncloudci/php:latest
+    pull: true
+    environment:
+      - APACHE_WEBROOT=/drone/src/
+    command: [ "/usr/local/bin/apachectl", "-e debug" , "-DFOREGROUND" ]
+    when:
+      matrix:
+        USE_SERVER: true
+
+  federated:
+    image: owncloudci/php:latest
+    pull: true
+    environment:
+      - APACHE_WEBROOT=/drone/src/
+    command: [ "/usr/local/bin/apachectl", "-e debug" , "-DFOREGROUND" ]
+    when:
+      matrix:
+        USE_FEDERATED_SERVER: true
 matrix:
   include:
     - TEST_SUITE: javascript
@@ -273,3 +347,64 @@ matrix:
       DB_TYPE: sqlite
       TEST_SUITE: coverage
       FILES_EXTERNAL_TYPE: webdav
+      
+    - PHP_VERSION: 7.1
+      TEST_SUITE: selenium
+      BEHAT_SUITE: other
+      DB_TYPE: mariadb
+      USE_SERVER: true
+      
+    - PHP_VERSION: 7.1
+      TEST_SUITE: selenium
+      BEHAT_SUITE: files
+      DB_TYPE: mariadb
+      USE_SERVER: true
+
+    - PHP_VERSION: 7.1
+      TEST_SUITE: selenium
+      BEHAT_SUITE: moveFilesFolders
+      DB_TYPE: mariadb
+      USE_SERVER: true
+    
+    - PHP_VERSION: 7.1
+      TEST_SUITE: selenium
+      BEHAT_SUITE: renameFiles
+      DB_TYPE: mariadb
+      USE_SERVER: true
+    
+    - PHP_VERSION: 7.1
+      TEST_SUITE: selenium
+      BEHAT_SUITE: renameFolders
+      DB_TYPE: mariadb
+      USE_SERVER: true
+    
+    - PHP_VERSION: 7.1
+      TEST_SUITE: selenium
+      BEHAT_SUITE: trashbin
+      DB_TYPE: mariadb
+      USE_SERVER: true
+    
+    - PHP_VERSION: 7.1
+      TEST_SUITE: selenium
+      BEHAT_SUITE: sharingInternalGroupsUsers
+      DB_TYPE: mariadb
+      USE_SERVER: true
+    
+    - PHP_VERSION: 7.1
+      TEST_SUITE: selenium
+      BEHAT_SUITE: sharingExternalOther
+      DB_TYPE: mariadb
+      USE_SERVER: true
+      USE_FEDERATED_SERVER: true
+    
+    - PHP_VERSION: 7.1
+      TEST_SUITE: selenium
+      BEHAT_SUITE: restrictSharing
+      DB_TYPE: mariadb
+      USE_SERVER: true
+      
+    - PHP_VERSION: 7.1
+      TEST_SUITE: selenium
+      BEHAT_SUITE: upload
+      DB_TYPE: mariadb
+      USE_SERVER: true
