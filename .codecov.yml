@@ -2,4 +2,11 @@ codecov:
   ci:
     - drone.owncloud.com
     - !jenkins.owncloud.org
-    - !travisci
+    - !travis-ci.org
+    - !scrutinizer-ci.com
+    - !cla-assistant.io
+
+coverage:
+  fixes:
+    - "drone/src/::"
+
