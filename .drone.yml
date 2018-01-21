@@ -146,6 +146,18 @@ pipeline:
       matrix:
         TEST_SUITE: selenium
 
+  test_primary:
+    image: owncloudci/php:latest
+    pull: true
+    environment:
+      - DB_TYPE=mysql
+    commands:
+      - cp tests/drone/configs/swift.config.primary.php config/autotest-storage-swift.config.php
+      - bash tests/drone/test-phpunit.sh
+    when:
+      matrix:
+        PRIMARY_OBJECTSTORE: swift-primary
+
   acceptance-tests:
     image: owncloudci/php:latest
     pull: true
@@ -227,6 +239,20 @@ services:
       matrix:
         DB_TYPE: oracle
 
+  swift_primary:
+    image: owncloudci/ceph
+    environment:
+      - KEYSTONE_PUBLIC_PORT=5034
+      - KEYSTONE_ADMIN_USER=test
+      - KEYSTONE_ADMIN_PASS=testing
+      - KEYSTONE_ADMIN_TENANT=testtenant
+      - KEYSTONE_ENDPOINT_REGION=testregion
+      - KEYSTONE_SERVICE=testceph
+      - OSD_SIZE=300
+    when:
+      matrix:
+        PRIMARY_OBJECTSTORE: swift-primary
+
   selenium:
     image: selenium/standalone-chrome-debug:latest
     pull: true
@@ -253,10 +279,15 @@ services:
     when:
       matrix:
         USE_FEDERATED_SERVER: true
+
+
 matrix:
   include:
-    - TEST_SUITE: javascript
-      PHP_VERSION: 7.1
+    - PHP_VERSION: 7.1
+      PRIMARY_OBJECTSTORE: swift-primary
+      DB_TYPE: mysql
+#    - TEST_SUITE: javascript
+#      PHP_VERSION: 7.1
     # PHP 5.6
     #- PHP_VERSION: 5.6
     #  DB_TYPE: sqlite
@@ -267,26 +298,26 @@ matrix:
     #- PHP_VERSION: 5.6
     #  DB_TYPE: mysql
     #  TEST_SUITE: phpunit
-    - PHP_VERSION: 5.6
-      DB_TYPE: postgres
-      TEST_SUITE: phpunit
-    - PHP_VERSION: 5.6
-      DB_TYPE: oracle
-      TEST_SUITE: phpunit
-
-    # PHP 7.0
-    - PHP_VERSION: 7.0
-      DB_TYPE: sqlite
-      TEST_SUITE: phpunit
-    #- PHP_VERSION: 7.0
-    #  DB_TYPE: mariadb
-    #  TEST_SUITE: phpunit
-    - PHP_VERSION: 7.0
-      DB_TYPE: mysql
-      TEST_SUITE: phpunit
-    - PHP_VERSION: 7.0
-      DB_TYPE: mysqlmb4
-      TEST_SUITE: phpunit
+#    - PHP_VERSION: 5.6
+#      DB_TYPE: postgres
+#      TEST_SUITE: phpunit
+#    - PHP_VERSION: 5.6
+#      DB_TYPE: oracle
+#      TEST_SUITE: phpunit
+#
+#    # PHP 7.0
+#    - PHP_VERSION: 7.0
+#      DB_TYPE: sqlite
+#      TEST_SUITE: phpunit
+#    #- PHP_VERSION: 7.0
+#    #  DB_TYPE: mariadb
+#    #  TEST_SUITE: phpunit
+#    - PHP_VERSION: 7.0
+#      DB_TYPE: mysql
+#      TEST_SUITE: phpunit
+#    - PHP_VERSION: 7.0
+#      DB_TYPE: mysqlmb4
+#      TEST_SUITE: phpunit
     #- PHP_VERSION: 7.0
     #  DB_TYPE: postgres
     #  TEST_SUITE: phpunit
@@ -295,10 +326,10 @@ matrix:
     #   TEST_SUITE: phpunit
 
     # PHP 7.1
-    - PHP_VERSION: 7.1
-      DB_TYPE: sqlite
-      TEST_SUITE: files_external
-      FILES_EXTERNAL_TYPE: webdav
+#    - PHP_VERSION: 7.1
+#      DB_TYPE: sqlite
+#      TEST_SUITE: files_external
+#      FILES_EXTERNAL_TYPE: webdav
     #- PHP_VERSION: 7.1
     #  DB_TYPE: mariadb
     #  TEST_SUITE: phpunit
@@ -313,9 +344,9 @@ matrix:
     #   TEST_SUITE: phpunit
 
     # PHP 7.2
-    - PHP_VERSION: 7.2
-      DB_TYPE: sqlite
-      TEST_SUITE: phpunit
+#    - PHP_VERSION: 7.2
+#      DB_TYPE: sqlite
+#      TEST_SUITE: phpunit
     #- PHP_VERSION: 7.2
     #  DB_TYPE: mariadb
     #  TEST_SUITE: phpunit
@@ -333,78 +364,78 @@ matrix:
 #    - PHP_VERSION: 7.1
 #      DB_TYPE: sqlite
 #      TEST_SUITE: integration
-
-    # Code Coverage Computation
-    - PHP_VERSION: 7.1
-      DB_TYPE: sqlite
-      TEST_SUITE: coverage
-
-    - PHP_VERSION: 7.1
-      DB_TYPE: mysql
-      TEST_SUITE: coverage
-
-    - PHP_VERSION: 7.1
-      DB_TYPE: sqlite
-      TEST_SUITE: coverage
-      FILES_EXTERNAL_TYPE: webdav
-      
-    - PHP_VERSION: 7.1
-      TEST_SUITE: selenium
-      BEHAT_SUITE: other
-      DB_TYPE: mariadb
-      USE_SERVER: true
-      
-    - PHP_VERSION: 7.1
-      TEST_SUITE: selenium
-      BEHAT_SUITE: files
-      DB_TYPE: mariadb
-      USE_SERVER: true
-
-    - PHP_VERSION: 7.1
-      TEST_SUITE: selenium
-      BEHAT_SUITE: moveFilesFolders
-      DB_TYPE: mariadb
-      USE_SERVER: true
-    
-    - PHP_VERSION: 7.1
-      TEST_SUITE: selenium
-      BEHAT_SUITE: renameFiles
-      DB_TYPE: mariadb
-      USE_SERVER: true
-    
-    - PHP_VERSION: 7.1
-      TEST_SUITE: selenium
-      BEHAT_SUITE: renameFolders
-      DB_TYPE: mariadb
-      USE_SERVER: true
-    
-    - PHP_VERSION: 7.1
-      TEST_SUITE: selenium
-      BEHAT_SUITE: trashbin
-      DB_TYPE: mariadb
-      USE_SERVER: true
-    
-    - PHP_VERSION: 7.1
-      TEST_SUITE: selenium
-      BEHAT_SUITE: sharingInternalGroupsUsers
-      DB_TYPE: mariadb
-      USE_SERVER: true
-    
-    - PHP_VERSION: 7.1
-      TEST_SUITE: selenium
-      BEHAT_SUITE: sharingExternalOther
-      DB_TYPE: mariadb
-      USE_SERVER: true
-      USE_FEDERATED_SERVER: true
-    
-    - PHP_VERSION: 7.1
-      TEST_SUITE: selenium
-      BEHAT_SUITE: restrictSharing
-      DB_TYPE: mariadb
-      USE_SERVER: true
-      
-    - PHP_VERSION: 7.1
-      TEST_SUITE: selenium
-      BEHAT_SUITE: upload
-      DB_TYPE: mariadb
-      USE_SERVER: true
+#
+#    # Code Coverage Computation
+#    - PHP_VERSION: 7.1
+#      DB_TYPE: sqlite
+#      TEST_SUITE: coverage
+#
+#    - PHP_VERSION: 7.1
+#      DB_TYPE: mysql
+#      TEST_SUITE: coverage
+#
+#    - PHP_VERSION: 7.1
+#      DB_TYPE: sqlite
+#      TEST_SUITE: coverage
+#      FILES_EXTERNAL_TYPE: webdav
+#
+#    - PHP_VERSION: 7.1
+#      TEST_SUITE: selenium
+#      BEHAT_SUITE: other
+#      DB_TYPE: mariadb
+#      USE_SERVER: true
+#
+#    - PHP_VERSION: 7.1
+#      TEST_SUITE: selenium
+#      BEHAT_SUITE: files
+#      DB_TYPE: mariadb
+#      USE_SERVER: true
+#
+#    - PHP_VERSION: 7.1
+#      TEST_SUITE: selenium
+#      BEHAT_SUITE: moveFilesFolders
+#      DB_TYPE: mariadb
+#      USE_SERVER: true
+#
+#    - PHP_VERSION: 7.1
+#      TEST_SUITE: selenium
+#      BEHAT_SUITE: renameFiles
+#      DB_TYPE: mariadb
+#      USE_SERVER: true
+#
+#    - PHP_VERSION: 7.1
+#      TEST_SUITE: selenium
+#      BEHAT_SUITE: renameFolders
+#      DB_TYPE: mariadb
+#      USE_SERVER: true
+#
+#    - PHP_VERSION: 7.1
+#      TEST_SUITE: selenium
+#      BEHAT_SUITE: trashbin
+#      DB_TYPE: mariadb
+#      USE_SERVER: true
+#
+#    - PHP_VERSION: 7.1
+#      TEST_SUITE: selenium
+#      BEHAT_SUITE: sharingInternalGroupsUsers
+#      DB_TYPE: mariadb
+#      USE_SERVER: true
+#
+#    - PHP_VERSION: 7.1
+#      TEST_SUITE: selenium
+#      BEHAT_SUITE: sharingExternalOther
+#      DB_TYPE: mariadb
+#      USE_SERVER: true
+#      USE_FEDERATED_SERVER: true
+#
+#    - PHP_VERSION: 7.1
+#      TEST_SUITE: selenium
+#      BEHAT_SUITE: restrictSharing
+#      DB_TYPE: mariadb
+#      USE_SERVER: true
+#
+#    - PHP_VERSION: 7.1
+#      TEST_SUITE: selenium
+#      BEHAT_SUITE: upload
+#      DB_TYPE: mariadb
+#      USE_SERVER: true
