@@ -29,7 +29,7 @@ So that other users have access to these files
 	@skipOnMICROSOFTEDGE
 	Scenario: share a folder with an remote user and prohibit deleting
 		When the folder "simple-folder" is shared with the remote user "user1@%remote_server%"
-		And the sharing permissions of "user1@%remote_server% (remote)" for "simple-folder" are set to
+		And the sharing permissions of "user1@%remote_server% (federated)" for "simple-folder" are set to
 		| delete | no |
 		And I relogin with username "user1" and password "1234" to "http://%remote_server%"
 		And the offered remote shares are accepted
