@@ -230,19 +230,38 @@ interface IManager {
 
 	/**
 	 * Is password on public link requires
+	 * NOTE: This method is deprecated and will fallback to the "shareApiLinkEnforcePasswordReadOnly"
 	 *
 	 * @return bool
 	 * @since 9.0.0
+	 * @see IManager::shareApiLinkEnforcePasswordReadOnly()
+	 * @deprecated
 	 */
 	public function shareApiLinkEnforcePassword();
 
 	/**
-	 * Is password enforced for upload-only shares?
+	 * Is password enforced for read-only shares?
 	 *
-	 * @return bool true -> password isn't enforce for upload-only share, false otherwise
+	 * @return bool true if password is enforced, false otherwise
 	 * @since 10.0.6
 	 */
-	public function shareApiLinkEnforcePasswordDisabledForUploads();
+	public function shareApiLinkEnforcePasswordReadOnly();
+
+	/**
+	 * Is password enforced for read & write shares?
+	 *
+	 * @return bool true if password is enforced, false otherwise
+	 * @since 10.0.6
+	 */
+	public function shareApiLinkEnforcePasswordReadWrite();
+
+	/**
+	 * Is password enforced for write-only shares?
+	 *
+	 * @return bool true if password is enforced, false otherwise
+	 * @since 10.0.6
+	 */
+	public function shareApiLinkEnforcePasswordWriteOnly();
 
 	/**
 	 * Is default expire date enabled

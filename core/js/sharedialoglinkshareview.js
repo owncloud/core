@@ -104,6 +104,19 @@
 			return (permissions) ? parseInt(permissions, 10) : OC.PERMISSION_READ;
 		},
 
+		_shouldRequirePassword: function() {
+			// matching passwordMustBeEnforced from server side
+			var permissions = this._getPermissions();
+			var roEnforcement = permissions === OC.PERMISSION_READ && this.configModel.get('enforceLinkPasswordReadOnly');
+			var woEnforcement = permissions === OC.PERMISSION_CREATE && this.configModel.get('enforceLinkPasswordWriteOnly');
+			var rwEnforcement = (permissions !== OC.PERMISSION_READ && permissions !== OC.PERMISSION_CREATE) && this.configModel.get('enforceLinkPasswordReadWrite');
+			if (roEnforcement || woEnforcement || rwEnforcement) {
+				return true;
+			} else {
+				return false;
+			}
+		},
+
 		_save: function () {
 			var deferred = $.Deferred();
 			var $el = this.$el;
@@ -144,9 +157,8 @@
 			var validates = true;
 			validates &= this.expirationView.validate();
 
-			if (this.configModel.get('enforcePasswordForPublicLink')
-				&& !password
-				&& (this._getPermissions() !== OC.PERMISSION_CREATE || !this.configModel.get('disableEnforceLinkPasswordForUploadOnly'))
+			if (!password
+				&& this._shouldRequirePassword()
 				&& (this.model.isNew() || !this.model.get('encryptedPassword'))
 			) {
 				$password.addClass('error');

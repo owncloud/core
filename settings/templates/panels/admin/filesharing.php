@@ -23,13 +23,17 @@
 			   value="1" <?php if ($_['allowPublicUpload'] == 'yes') print_unescaped('checked="checked"'); ?> />
 		<label for="allowPublicUpload"><?php p($l->t('Allow public uploads'));?></label><br/>
 
-		<input type="checkbox" name="shareapi_enforce_links_password" id="enforceLinkPassword" class="checkbox"
-			   value="1" <?php if ($_['enforceLinkPassword']) print_unescaped('checked="checked"'); ?> />
-		<label for="enforceLinkPassword"><?php p($l->t('Enforce password protection'));?></label><br/>
+		<input type="checkbox" name="shareapi_enforce_links_password_read_only" id="enforceLinkPasswordReadOnly" class="checkbox"
+			value="1" <?php if ($_['enforceLinkPasswordReadOnly']) print_unescaped('checked="checked"'); ?> />
+		<label for="enforceLinkPasswordReadOnly"><?php p($l->t('Enforce password protection for read-only shares'));?></label><br/>
 
-		<input type="checkbox" name="shareapi_disable_enforce_links_password_for_upload_only" id="disableEnforceLinkPasswordForUploadOnly" class="checkbox"
-			value="1" <?php if ($_['disableEnforceLinkPasswordForUploadOnly'] === 'yes') print_unescaped('checked="checked"'); ?> />
-		<label for="disableEnforceLinkPasswordForUploadOnly"><?php p($l->t('Disable enforce password protection for upload-only shares'));?></label><br/>
+		<input type="checkbox" name="shareapi_enforce_links_password_read_write" id="enforceLinkPasswordReadWrite" class="checkbox"
+			value="1" <?php if ($_['enforceLinkPasswordReadWrite'] === 'yes') print_unescaped('checked="checked"'); ?> />
+		<label for="enforceLinkPasswordReadWrite"><?php p($l->t('Enforce password protection for read & write shares'));?></label><br/>
+
+		<input type="checkbox" name="shareapi_enforce_links_password_write_only" id="enforceLinkPasswordWriteOnly" class="checkbox"
+			value="1" <?php if ($_['enforceLinkPasswordWriteOnly'] === 'yes') print_unescaped('checked="checked"'); ?> />
+		<label for="enforceLinkPasswordWriteOnly"><?php p($l->t('Enforce password protection for write-only shares'));?></label><br/>
 
 		<input type="checkbox" name="shareapi_default_expire_date" id="shareapiDefaultExpireDate" class="checkbox"
 			   value="1" <?php if ($_['shareDefaultExpireDateSet'] === 'yes') print_unescaped('checked="checked"'); ?> />
