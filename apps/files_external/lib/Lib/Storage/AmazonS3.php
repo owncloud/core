@@ -35,12 +35,13 @@
 
 namespace OCA\Files_External\Lib\Storage;
 
-set_include_path(get_include_path() . PATH_SEPARATOR .
-	\OC_App::getAppPath('files_external') . '/3rdparty/aws-sdk-php');
-require 'aws-autoloader.php';
+//require_once __DIR__ . '/../../../vendor/autoload.php';
 
+use Aws\Handler\GuzzleV5\GuzzleHandler;
 use Aws\S3\Exception\S3Exception;
 use Aws\S3\S3Client;
+use GuzzleHttp\Event\BeforeEvent;
+use GuzzleHttp\Ring\Client\StreamHandler;
 use Icewind\Streams\IteratorDirectory;
 
 class AmazonS3 extends \OCP\Files\Storage\StorageAdapter {
@@ -108,6 +109,12 @@ class AmazonS3 extends \OCP\Files\Storage\StorageAdapter {
 		return $path;
 	}
 
+	/**
+	 * AmazonS3 constructor.
+	 *
+	 * @param $params
+	 * @throws \Exception
+	 */
 	public function __construct($params) {
 		if (empty($params['key']) || empty($params['secret']) || empty($params['bucket'])) {
 			throw new \Exception("Access Key, Secret and Bucket have to be configured.");
@@ -221,7 +228,7 @@ class AmazonS3 extends \OCP\Files\Storage\StorageAdapter {
 
 	protected function clearBucket() {
 		try {
-			$this->getConnection()->clearBucket($this->bucket);
+			$this->getConnection()->deleteMatchingObjects($this->bucket);
 			return true;
 			// clearBucket() is not working with Ceph, so if it fails we try the slower approach
 		} catch (\Exception $e) {
@@ -309,7 +316,7 @@ class AmazonS3 extends \OCP\Files\Storage\StorageAdapter {
 				]);
 
 				$stat['size'] = $result['ContentLength'] ? $result['ContentLength'] : 0;
-				if ($result['Metadata']['lastmodified']) {
+				if (isset($result['Metadata']['lastmodified'])) {
 					$stat['mtime'] = strtotime($result['Metadata']['lastmodified']);
 				} else {
 					$stat['mtime'] = strtotime($result['LastModified']);
@@ -541,13 +548,25 @@ class AmazonS3 extends \OCP\Files\Storage\StorageAdapter {
 	}
 
 	public function test() {
-		$test = $this->getConnection()->getBucketAcl([
-			'Bucket' => $this->bucket,
-		]);
-		if (isset($test) && !is_null($test->getPath('Owner/ID'))) {
-			return true;
+		if ($this->getConnection()->getApi()->hasOperation('getBucketAcl')) {
+
+			$test = $this->getConnection()->getBucketAcl([
+				'Bucket' => $this->bucket,
+			]);
+			if (isset($test) && $test->getPath('Owner/ID') !== null) {
+				return true;
+			}
+			return false;
 		}
-		return false;
+
+		$buckets = $this->getConnection()->listBuckets();
+		if ($buckets->getPath('Owner/ID') === null ) {
+			return false;
+		}
+		$bucketExists = !empty(array_filter($buckets->getPath('Buckets'), function ($k) {
+			return $k['Name'] === $this->bucket;
+		} ));
+		return $bucketExists;
 	}
 
 	public function getId() {
@@ -568,27 +587,45 @@ class AmazonS3 extends \OCP\Files\Storage\StorageAdapter {
 		$scheme = ($this->params['use_ssl'] === false) ? 'http' : 'https';
 		$base_url = $scheme . '://' . $this->params['hostname'] . ':' . $this->params['port'] . '/';
 
-		$this->connection = S3Client::factory([
-			'key' => $this->params['key'],
-			'secret' => $this->params['secret'],
-			'base_url' => $base_url,
-			'region' => $this->params['region'],
-			'signature' => 'v4',
-			S3Client::COMMAND_PARAMS => [
-				'PathStyle' => $this->params['use_path_style'],
-			],
-		]);
 
-		if (!$this->connection->isValidBucketName($this->bucket)) {
-			throw new \Exception("The configured bucket name is invalid.");
-		}
+		$config = [
+			'version' => '2006-03-01',
+			'region' => $this->params['region'],
+//			'signature_version' => 'v4',
+			'credentials' => [
+				'key' => $this->params['key'],
+				'secret' => $this->params['secret'],
+			],
+			'endpoint' => $base_url,
+			'use_path_style_endpoint' => $this->params['use_path_style'],
+		];
+		$client = new \GuzzleHttp\Client(['handler' => new StreamHandler()]);
+		$emitter = $client->getEmitter();
+		$emitter->on('before', function (BeforeEvent $event) {
+			$request = $event->getRequest();
+			if ($request->getMethod() !== 'PUT') {
+				return;
+			}
+			$body = $request->getBody();
+			if ($body !== null && $body->getSize() !== 0) {
+				return;
+			}
+			if ($request->hasHeader('Content-Length')) {
+				return;
+			}
+			// force content length header on empty body
+			$request->setHeader('Content-Length', 0);
+		});
+		$h = new GuzzleHandler($client);
+		$config['http_handler'] = $h;
+		$this->connection = S3Client::factory($config);
 
 		if (!$this->connection->doesBucketExist($this->bucket)) {
 			try {
 				$this->connection->createBucket([
 					'Bucket' => $this->bucket
 				]);
-				$this->connection->waitUntilBucketExists([
+				$this->connection->waitUntil('BucketExists',[
 					'Bucket' => $this->bucket,
 					'waiter.interval' => 1,
 					'waiter.max_attempts' => 15
