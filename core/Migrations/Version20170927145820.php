@@ -46,6 +46,10 @@ class Version20170927145820 implements ISchemaMigration {
 			'notnull' => true,
 			'comment' => '0: GroupUser, 1: GroupAdmin'
 		]);
+		$table->addColumn('maintenance_type', Type::SMALLINT, [
+			'notnull' => true,
+			'comment' => '0: Manual, 1: Sync'
+		]);
 
 		// This set of values has to be unique
 		$table->addUniqueIndex(['backend_group_id', 'account_id', 'membership_type'], 'group_account_membership_index');

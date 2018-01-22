@@ -112,9 +112,11 @@ class GroupTest extends \Test\TestCase {
 		$account2 = $this->createMock(Account::class);
 		$user2 = $this->createMock(User::class);
 		$user2->expects($this->any())->method('getUID')->willReturn('user2');
+		$user3 = $this->createMock(User::class);
+		$user3->expects($this->any())->method('getUID')->willReturn('user3');
 		$this->membershipManager->expects($this->once())
-			->method('getGroupUserAccountsById')
-			->with($backendGroupId)
+			->method('getGroupMemberAccountsById')
+			->with($backendGroupId, MembershipManager::MEMBERSHIP_TYPE_GROUP_USER)
 			->will($this->returnValue([$account1, $account2]));
 		$this->userManager->expects($this->at(0))
 			->method('getUserObject')
@@ -134,6 +136,15 @@ class GroupTest extends \Test\TestCase {
 		// This call should fetch from cache
 		$users2 = $group->getUsers();
 		$this->assertEquals($users, $users2);
+
+		// Call inGroup should also be fetched from cache
+		$this->userManager->expects($this->never())
+			->method('getAccountObject');
+		$this->membershipManager->expects($this->never())
+			->method('isGroupMemberById');
+		$this->assertTrue($group->inGroup($user1));
+		$this->assertTrue($group->inGroup($user2));
+		$this->assertFalse($group->inGroup($user3));
 	}
 
 	public function testInGroup() {
@@ -151,8 +162,8 @@ class GroupTest extends \Test\TestCase {
 			->with($user)
 			->willReturn($account);
 		$this->membershipManager->expects($this->once())
-			->method('isGroupUserById')
-			->with($accountId,$backendGroupId)
+			->method('isGroupMemberById')
+			->with($accountId,$backendGroupId, MembershipManager::MEMBERSHIP_TYPE_GROUP_USER)
 			->willReturn(true);
 
 		$this->assertTrue($group->inGroup($user));
@@ -186,11 +197,11 @@ class GroupTest extends \Test\TestCase {
 		$group2 =  $this->getGroup(2, get_class($backend2));
 
 		$this->membershipManager->expects($this->any())
-			->method('isGroupUserById')
+			->method('isGroupMemberById')
 			->willReturn(false);
 		$this->membershipManager->expects($this->any())
-			->method('addGroupUser')
-			->withConsecutive([1,1], [1,2])
+			->method('addMembership')
+			->withConsecutive([1,1, MembershipManager::MEMBERSHIP_TYPE_GROUP_USER], [1,2, MembershipManager::MEMBERSHIP_TYPE_GROUP_USER])
 			->willReturn(true);
 
 		$user1 = $this->createMock(IUser::class);
@@ -220,8 +231,8 @@ class GroupTest extends \Test\TestCase {
 			->method('getBackends');
 
 		$this->membershipManager->expects($this->once())
-			->method('isGroupUserById')
-			->with(1,1)
+			->method('isGroupMemberById')
+			->with(1,1, MembershipManager::MEMBERSHIP_TYPE_GROUP_USER)
 			->willReturn(true);
 
 		$user1 = $this->createMock(IUser::class);
@@ -260,8 +271,8 @@ class GroupTest extends \Test\TestCase {
 		$group2 =  $this->getGroup(2, get_class($backend2));
 
 		$this->membershipManager->expects($this->any())
-			->method('removeGroupUser')
-			->withConsecutive([1,1], [1,2])
+			->method('removeMembership')
+			->withConsecutive([1,1, MembershipManager::MEMBERSHIP_TYPE_GROUP_USER], [1,2, MembershipManager::MEMBERSHIP_TYPE_GROUP_USER])
 			->willReturn(true);
 
 		$user1 = $this->createMock(IUser::class);
@@ -292,8 +303,8 @@ class GroupTest extends \Test\TestCase {
 			->willReturn([$backend]);
 
 		$this->membershipManager->expects($this->any())
-			->method('removeGroupUser')
-			->with(1,1)
+			->method('removeMembership')
+			->with(1,1, MembershipManager::MEMBERSHIP_TYPE_GROUP_USER)
 			->willReturn(false);
 
 		$user1 = $this->createMock(IUser::class);

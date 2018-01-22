@@ -77,7 +77,8 @@ class SubAdmin extends PublicEmitter implements ISubAdminManager {
 
 		try {
 			// Throw an exception when trying to add subadmin again
-			$result = $this->membershipManager->addGroupAdmin($account->getId(), $backendGroup->getId());
+			$result = $this->membershipManager->addMembership($account->getId(), $backendGroup->getId(),
+				MembershipManager::MEMBERSHIP_TYPE_GROUP_ADMIN, MembershipManager::MAINTENANCE_TYPE_MANUAL);
 		} catch (UniqueConstraintViolationException $exception) {
 			$result = false;
 		}
@@ -98,7 +99,7 @@ class SubAdmin extends PublicEmitter implements ISubAdminManager {
 	public function deleteSubAdmin(IUser $user, IGroup $group) {
 		$account = $this->userManager->getAccountObject($user);
 		$backendGroup = $this->groupManager->getBackendGroupObject($group->getGID());
-		$result = $this->membershipManager->removeGroupAdmin($account->getId(), $backendGroup->getId());
+		$result = $this->membershipManager->removeMembership($account->getId(), $backendGroup->getId(), MembershipManager::MEMBERSHIP_TYPE_GROUP_ADMIN);
 
 		if ($result) {
 			$this->emit('\OC\SubAdmin', 'postDeleteSubAdmin', [$user, $group]);
@@ -116,7 +117,7 @@ class SubAdmin extends PublicEmitter implements ISubAdminManager {
 		return array_map(function($backendGroup) {
 			// Get \OCP\IGroup object for each backend group and cache
 			return $this->groupManager->getGroupObject($backendGroup);
-		}, $this->membershipManager->getAdminBackendGroups($user->getUID()));
+		}, $this->membershipManager->getMemberBackendGroups($user->getUID(), MembershipManager::MEMBERSHIP_TYPE_GROUP_ADMIN));
 	}
 
 	/**
@@ -128,7 +129,7 @@ class SubAdmin extends PublicEmitter implements ISubAdminManager {
 		return array_map(function($account) {
 			// Get \OCP\IGroup object for each backend group and cache
 			return $this->userManager->getUserObject($account);
-		}, $this->membershipManager->getGroupAdminAccounts($group->getGID()));
+		}, $this->membershipManager->getGroupMemberAccounts($group->getGID(), MembershipManager::MEMBERSHIP_TYPE_GROUP_ADMIN));
 	}
 
 	/**
@@ -139,12 +140,12 @@ class SubAdmin extends PublicEmitter implements ISubAdminManager {
 		$subAdmins =  array_map(function($account) {
 			// Get \OCP\IGroup object for each backend group and cache
 			return $this->userManager->getUserObject($account);
-		}, $this->membershipManager->getGroupAdminAccounts());
+		}, $this->membershipManager->getGroupMemberAccounts(null, MembershipManager::MEMBERSHIP_TYPE_GROUP_ADMIN));
 
 		$subAdminsGroups = [];
 		foreach($subAdmins as $subAdmin) {
 			/** @var \OC\User\User $subAdmin */
-			$subAdminBackendGroups = $this->membershipManager->getAdminBackendGroups($subAdmin->getUID());
+			$subAdminBackendGroups = $this->membershipManager->getMemberBackendGroups($subAdmin->getUID(), MembershipManager::MEMBERSHIP_TYPE_GROUP_ADMIN);
 			foreach($subAdminBackendGroups as $backendGroup) {
 				$group = $this->groupManager->getGroupObject($backendGroup);
 				$subAdminsGroups[] = [
@@ -163,7 +164,7 @@ class SubAdmin extends PublicEmitter implements ISubAdminManager {
 	 * @return bool
 	 */
 	public function isSubAdminofGroup(IUser $user, IGroup $group) {
-		return $this->membershipManager->isGroupAdmin($user->getUID(), $group->getGID());
+		return $this->membershipManager->isGroupMember($user->getUID(), $group->getGID(), MembershipManager::MEMBERSHIP_TYPE_GROUP_ADMIN);
 	}
 
 	/**
@@ -172,7 +173,7 @@ class SubAdmin extends PublicEmitter implements ISubAdminManager {
 	 * @return bool
 	 */
 	public function isSubAdmin(IUser $user) {
-		return $this->membershipManager->isGroupAdmin($user->getUID());
+		return $this->membershipManager->isGroupMember($user->getUID(), null, MembershipManager::MEMBERSHIP_TYPE_GROUP_ADMIN);
 	}
 
 	/**

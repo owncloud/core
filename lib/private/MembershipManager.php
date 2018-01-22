@@ -34,6 +34,12 @@ class MembershipManager {
 	/**
 	 * types of memberships in the group
 	 */
+	const MAINTENANCE_TYPE_MANUAL = 0;
+	const MAINTENANCE_TYPE_SYNC = 1;
+
+	/**
+	 * types of memberships in the group
+	 */
 	const MEMBERSHIP_TYPE_GROUP_USER = 0;
 	const MEMBERSHIP_TYPE_GROUP_ADMIN = 1;
 
@@ -59,11 +65,12 @@ class MembershipManager {
 	 * Return backend group entities for given account (identified by user's uid)
 	 *
 	 * @param string $userId
+	 * @param int $membershipType - type of membership in the group (0 - MEMBERSHIP_TYPE_GROUP_USER, 1 - MEMBERSHIP_TYPE_GROUP_ADMIN)
 	 *
 	 * @return BackendGroup[]
 	 */
-	public function getUserBackendGroups($userId) {
-		return $this->getBackendGroupsSqlQuery($userId, false, self::MEMBERSHIP_TYPE_GROUP_USER);
+	public function getMemberBackendGroups($userId, $membershipType) {
+		return $this->getBackendGroupsSqlQuery($userId, false, $membershipType);
 	}
 
 	/**
@@ -73,73 +80,67 @@ class MembershipManager {
 	 * group backend/account has already been instantiated and internal id is explicitly available
 	 *
 	 * @param int $accountId
+	 * @param int $membershipType - type of membership in the group (0 - MEMBERSHIP_TYPE_GROUP_USER, 1 - MEMBERSHIP_TYPE_GROUP_ADMIN)
 	 *
 	 * @return BackendGroup[]
 	 */
-	public function getUserBackendGroupsById($accountId) {
-		return $this->getBackendGroupsSqlQuery($accountId, true, self::MEMBERSHIP_TYPE_GROUP_USER);
-	}
-
-	/**
-	 * Return backend group entities for given account (identified by user's uid) of which
-	 * the user is admin.
-	 *
-	 * @param string $userId
-	 *
-	 * @return BackendGroup[]
-	 */
-	public function getAdminBackendGroups($userId) {
-		return $this->getBackendGroupsSqlQuery($userId, false, self::MEMBERSHIP_TYPE_GROUP_ADMIN);
+	public function getMemberBackendGroupsById($accountId, $membershipType) {
+		return $this->getBackendGroupsSqlQuery($accountId, true, $membershipType);
 	}
 
 	/**
 	 * Return user account entities for given group (identified with gid). If group predicate not specified,
-	 * it will return all users which are group users
+	 * it will return all users which are group members of specified type
 	 *
 	 * @param string|null $gid
+	 * @param int $membershipType - type of membership in the group (0 - MEMBERSHIP_TYPE_GROUP_USER, 1 - MEMBERSHIP_TYPE_GROUP_ADMIN)
 	 *
 	 * @return Account[]
 	 */
-	public function getGroupUserAccounts($gid = null) {
-		return $this->getAccountsSqlQuery($gid, false, self::MEMBERSHIP_TYPE_GROUP_USER);
+	public function getGroupMemberAccounts($gid, $membershipType) {
+		return $this->getAccountsSqlQuery($gid, false, $membershipType, null);
 	}
 
 	/**
 	 * Return user account entities for given group (identified with group's internal backend group id)
+	 * and membership type
 	 *
 	 * @param int $backendGroupId
+	 * @param int $membershipType - type of membership in the group (0 - MEMBERSHIP_TYPE_GROUP_USER, 1 - MEMBERSHIP_TYPE_GROUP_ADMIN)
 	 *
 	 * @return Account[]
 	 */
-	public function getGroupUserAccountsById($backendGroupId) {
-		return $this->getAccountsSqlQuery($backendGroupId, true, self::MEMBERSHIP_TYPE_GROUP_USER);
+	public function getGroupMemberAccountsById($backendGroupId, $membershipType) {
+		return $this->getAccountsSqlQuery($backendGroupId, true, $membershipType, null);
 	}
 
 	/**
-	 * Return admin account entities for given group (identified with gid). If group predicate not specified,
-	 * it will return all users which are group admins
+	 * Return user account entities for given group (identified with gid)
+	 * of specified membership and maintenance type
 	 *
-	 * @param string|null $gid
+	 * @param string $gid
+	 * @param int $membershipType - type of membership in the group (0 - MEMBERSHIP_TYPE_GROUP_USER, 1 - MEMBERSHIP_TYPE_GROUP_ADMIN)
+	 * @param int $maintenanceType - defines how membership is maintained (0 - MANUAL, 1 - SYNC)
 	 *
 	 * @return Account[]
 	 */
-	public function getGroupAdminAccounts($gid = null) {
-		return $this->getAccountsSqlQuery($gid, false, self::MEMBERSHIP_TYPE_GROUP_ADMIN);
-
+	public function getGroupMembershipsByType($gid, $membershipType, $maintenanceType) {
+		return $this->getAccountsSqlQuery($gid, false, $membershipType, $maintenanceType);
 	}
 
 	/**
-	 * Check whether given user (identified by user's uid) is user of
-	 * the group (identified with group's gid). If group predicate not specified,
-	 * it will check if user is group user of any group
+	 * Check whether given user (identified by user's uid) is member of
+	 * the group (identified with group's gid) of specified membership type. If group predicate not specified,
+	 * it will check if user is group member of any group
 	 *
 	 * @param string $userId
-	 * @param string $gid
+	 * @param string|null $gid
+	 * @param int $membershipType - type of membership in the group (0 - MEMBERSHIP_TYPE_GROUP_USER, 1 - MEMBERSHIP_TYPE_GROUP_ADMIN)
 	 *
 	 * @return boolean
 	 */
-	public function isGroupUser($userId, $gid = null) {
-		return $this->isGroupMemberSqlQuery($userId, $gid, self::MEMBERSHIP_TYPE_GROUP_USER, false);
+	public function isGroupMember($userId, $gid, $membershipType) {
+		return $this->isGroupMemberSqlQuery($userId, $gid, $membershipType, false);
 	}
 
 	/**
@@ -151,26 +152,12 @@ class MembershipManager {
 	 *
 	 * @param int $accountId
 	 * @param int $backendGroupId
+	 * @param int $membershipType - type of membership in the group (0 - MEMBERSHIP_TYPE_GROUP_USER, 1 - MEMBERSHIP_TYPE_GROUP_ADMIN)
 	 *
 	 * @return boolean
 	 */
-	public function isGroupUserById($accountId, $backendGroupId) {
-		return $this->isGroupMemberSqlQuery($accountId, $backendGroupId, self::MEMBERSHIP_TYPE_GROUP_USER, true);
-	}
-
-	/**
-	 * Check whether given account (identified by user's uid) is admin of
-	 * the group (identified with gid). If group predicate not specified,
-	 * it will check if user is group admin of any group
-	 *
-	 * @param string $userId
-	 * @param string $gid
-	 *
-	 * @return boolean
-	 */
-	public function isGroupAdmin($userId, $gid = null) {
-		return $this->isGroupMemberSqlQuery($userId, $gid, self::MEMBERSHIP_TYPE_GROUP_ADMIN, false);
-
+	public function isGroupMemberById($accountId, $backendGroupId, $membershipType) {
+		return $this->isGroupMemberSqlQuery($accountId, $backendGroupId, $membershipType, true);
 	}
 
 	/**
@@ -223,61 +210,27 @@ class MembershipManager {
 	 *
 	 * @param int $accountId - internal id of an account
 	 * @param int $backendGroupId - internal id of backend group
+	 * @param int $membershipType - type of membership in the group (0 - MEMBERSHIP_TYPE_GROUP_USER, 1 - MEMBERSHIP_TYPE_GROUP_ADMIN)
+	 * @param int $maintenanceType - defines how membership is maintained (0 - MANUAL, 1 - SYNC)
 	 *
 	 * @throws UniqueConstraintViolationException
 	 * @return bool
 	 */
-	public function addGroupUser($accountId, $backendGroupId) {
-		return $this->addGroupMemberSqlQuery($accountId, $backendGroupId, self::MEMBERSHIP_TYPE_GROUP_USER);
+	public function addMembership($accountId, $backendGroupId, $membershipType, $maintenanceType) {
+		return $this->addGroupMemberSqlQuery($accountId, $backendGroupId, $membershipType, $maintenanceType);
 	}
 
 	/**
-	 * Add a group admin account (identified by user's internal account id)
-	 * to group (identified by group's internal backend group id).
-	 *
-	 * @param int $accountId - internal id of an account
-	 * @param int $backendGroupId - internal id of backend group
-	 *
-	 * @throws UniqueConstraintViolationException
-	 * @return bool
-	 */
-	public function addGroupAdmin($accountId, $backendGroupId) {
-		return $this->addGroupMemberSqlQuery($accountId, $backendGroupId, self::MEMBERSHIP_TYPE_GROUP_ADMIN);
-	}
-
-	/**
-	 * Remove group user membership for user (identified by user's internal account id)
+	 * Remove membership for user (identified by user's internal account id)
 	 * from group (identified by group's internal backend group id).
 	 *
 	 * @param int $accountId - internal id of an account
 	 * @param int $backendGroupId - internal id of backend group
+	 * @param int $membershipType - type of membership in the group (0 - MEMBERSHIP_TYPE_GROUP_USER, 1 - MEMBERSHIP_TYPE_GROUP_ADMIN)
 	 * @return bool
 	 */
-	public function removeGroupUser($accountId, $backendGroupId) {
-		return $this->removeGroupMembershipsSqlQuery($backendGroupId, $accountId, [self::MEMBERSHIP_TYPE_GROUP_USER]);
-	}
-
-	/**
-	 * Remove group admin membership for user (identified by user's internal account id)
-	 * from group (identified by group's internal backend group id).
-	 *
-	 * @param int $accountId - internal id of an account
-	 * @param int $backendGroupId - internal id of backend group
-	 * @return bool
-	 */
-	public function removeGroupAdmin($accountId, $backendGroupId) {
-		return $this->removeGroupMembershipsSqlQuery($backendGroupId, $accountId, [self::MEMBERSHIP_TYPE_GROUP_ADMIN]);
-	}
-
-	/**
-	 * Remove group memberships from group (identified by group's internal backend group id),
-	 * regardless of the role in the group.
-	 *
-	 * @param int $backendGroupId - internal id of backend group
-	 * @return bool
-	 */
-	public function removeGroupMembers($backendGroupId) {
-		return $this->removeGroupMembershipsSqlQuery($backendGroupId, null, [self::MEMBERSHIP_TYPE_GROUP_USER, self::MEMBERSHIP_TYPE_GROUP_ADMIN]);
+	public function removeMembership($accountId, $backendGroupId, $membershipType) {
+		return $this->removeGroupMembershipsSqlQuery($backendGroupId, $accountId, [$membershipType]);
 	}
 
 	/**
@@ -292,11 +245,22 @@ class MembershipManager {
 	}
 
 	/**
+	 * Remove group memberships from group (identified by group's internal backend group id),
+	 * regardless of the role in the group.
+	 *
+	 * @param int $backendGroupId - internal id of backend group
+	 * @return bool
+	 */
+	public function removeGroupMembers($backendGroupId) {
+		return $this->removeGroupMembershipsSqlQuery($backendGroupId, null, [self::MEMBERSHIP_TYPE_GROUP_USER, self::MEMBERSHIP_TYPE_GROUP_ADMIN]);
+	}
+
+	/**
 	 * Check if the given user is member of the group with specific membership type
 	 *
 	 * @param string|int $userId
 	 * @param string|int|null $groupId
-	 * @param string $membershipType
+	 * @param string $membershipType - type of membership in the group (0 - MEMBERSHIP_TYPE_GROUP_USER, 1 - MEMBERSHIP_TYPE_GROUP_ADMIN)
 	 * @param bool $useInternalIds
 	 *
 	 * @return boolean
@@ -329,14 +293,15 @@ class MembershipManager {
 	 *
 	 * @param int $accountId - internal id of an account
 	 * @param int $backendGroupId - internal id of backend group
-	 * @param string $membershipType
+	 * @param int $membershipType - type of membership in the group (0 - MEMBERSHIP_TYPE_GROUP_USER, 1 - MEMBERSHIP_TYPE_GROUP_ADMIN)
+	 * @param int $maintenanceType - defines how membership is maintained (0 - MANUAL, 1 - SYNC)
 	 *
 	 * Return will indicate if row has been inserted
 	 *
 	 * @throws UniqueConstraintViolationException
 	 * @return boolean
 	 */
-	private function addGroupMemberSqlQuery($accountId, $backendGroupId, $membershipType) {
+	private function addGroupMemberSqlQuery($accountId, $backendGroupId, $membershipType, $maintenanceType) {
 		$qb = $this->db->getQueryBuilder();
 
 		$qb->insert('memberships')
@@ -344,6 +309,7 @@ class MembershipManager {
 				'backend_group_id' => $qb->createNamedParameter($backendGroupId),
 				'account_id' => $qb->createNamedParameter($accountId),
 				'membership_type' => $qb->createNamedParameter($membershipType),
+				'maintenance_type' => $qb->createNamedParameter($maintenanceType),
 			]);
 
 		return $this->getAffectedQuery($qb);
@@ -361,7 +327,7 @@ class MembershipManager {
 	 *
 	 * @param int|null $accountId - internal id of an account
 	 * @param int|null $backendGroupId - internal id of backend group
-	 * @param int[] $membershipTypeArray
+	 * @param int[] $membershipTypeArray - type of membership in the group (0 - MEMBERSHIP_TYPE_GROUP_USER, 1 - MEMBERSHIP_TYPE_GROUP_ADMIN)
 	 *
 	 * @return boolean
 	 */
@@ -395,7 +361,7 @@ class MembershipManager {
 	 *
 	 * @param string|int $userId
 	 * @param bool $isAccountId
-	 * @param int $membershipType
+	 * @param int $membershipType - type of membership in the group (0 - MEMBERSHIP_TYPE_GROUP_USER, 1 - MEMBERSHIP_TYPE_GROUP_ADMIN)
 	 *
 	 * @return BackendGroup[]
 	 */
@@ -427,10 +393,11 @@ class MembershipManager {
 	 *
 	 * @param string|int|null $groupId
 	 * @param bool $isBackendGroupId
-	 * @param int $membershipType
+	 * @param int $membershipType - type of membership in the group (0 - MEMBERSHIP_TYPE_GROUP_USER, 1 - MEMBERSHIP_TYPE_GROUP_ADMIN)
+	 * @param int|null $maintenanceType - defines how membership is maintained (0 - MANUAL, 1 - SYNC)
 	 * @return Account[]
 	 */
-	private function getAccountsSqlQuery($groupId, $isBackendGroupId, $membershipType) {
+	private function getAccountsSqlQuery($groupId, $isBackendGroupId, $membershipType, $maintenanceType) {
 		$qb = $this->db->getQueryBuilder();
 		$qb->select(['a.id', 'a.user_id', 'a.lower_user_id', 'a.display_name', 'a.email', 'a.last_login', 'a.backend', 'a.state', 'a.quota', 'a.home'])
 			->from('memberships', 'm')
@@ -448,6 +415,11 @@ class MembershipManager {
 
 		// Place predicate on membership_type
 		$qb->andWhere($qb->expr()->eq('m.membership_type', $qb->createNamedParameter($membershipType)));
+
+		if (!is_null($maintenanceType)) {
+			// Place predicate on maintenance_type
+			$qb->andWhere($qb->expr()->eq('m.maintenance_type', $qb->createNamedParameter($maintenanceType)));
+		}
 
 		return $this->getAccountsQuery($qb);
 	}

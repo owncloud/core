@@ -143,7 +143,7 @@ class ManagerTest extends \Test\TestCase {
 
 	public function setUp() {
 		parent::setUp();
-		$this->connection = $this->createMock(IDBConnection::class);;
+		$this->connection = $this->createMock(IDBConnection::class);
 		$this->membershipManager = $this->createMock(MembershipManager::class);
 		$this->userManager = $this->createMock(UserManager::class);
 		$this->groupMapper = $this->createMock(GroupMapper::class);
@@ -671,8 +671,8 @@ class ManagerTest extends \Test\TestCase {
 
 		$backendGroup = $this->getBackendGroup(1, get_class($backend));
 		$this->membershipManager->expects($this->any())
-			->method('getUserBackendGroupsById')
-			->with(1)
+			->method('getMemberBackendGroupsById')
+			->with(1, MembershipManager::MEMBERSHIP_TYPE_GROUP_USER)
 			->willReturn([$backendGroup]);
 
 		$manager = new \OC\Group\Manager($this->userManager, $this->membershipManager, $this->groupMapper, $this->connection);
@@ -707,8 +707,8 @@ class ManagerTest extends \Test\TestCase {
 
 		$backendGroup = $this->getBackendGroup(1, get_class($backend));
 		$this->membershipManager->expects($this->any())
-			->method('getUserBackendGroupsById')
-			->with(1)
+			->method('getMemberBackendGroupsById')
+			->with(1, MembershipManager::MEMBERSHIP_TYPE_GROUP_USER)
 			->willReturn([$backendGroup]);
 
 		$manager = new \OC\Group\Manager($this->userManager, $this->membershipManager, $this->groupMapper, $this->connection);
@@ -746,8 +746,8 @@ class ManagerTest extends \Test\TestCase {
 
 		$backendGroup = $this->getBackendGroup(1, get_class($backend));
 		$this->membershipManager->expects($this->any())
-			->method('getUserBackendGroupsById')
-			->with(1)
+			->method('getMemberBackendGroupsById')
+			->with(1, MembershipManager::MEMBERSHIP_TYPE_GROUP_USER)
 			->willReturn([$backendGroup]);
 
 		$manager = new \OC\Group\Manager($this->userManager, $this->membershipManager, $this->groupMapper, $this->connection);
@@ -784,7 +784,7 @@ class ManagerTest extends \Test\TestCase {
 			->method('groupExists');
 
 		$this->membershipManager->expects($this->never())
-			->method('getUserBackendGroupsById');
+			->method('getMemberBackendGroupsById');
 
 		$manager = new \OC\Group\Manager($this->userManager, $this->membershipManager, $this->groupMapper, $this->connection);
 		$manager->addBackend($backend);
@@ -821,12 +821,12 @@ class ManagerTest extends \Test\TestCase {
 			->method('groupExists');
 
 		$this->membershipManager->expects($this->at(0))
-			->method('isGroupUser')
-			->with('user1', 'group1')
+			->method('isGroupMember')
+			->with('user1', 'group1', MembershipManager::MEMBERSHIP_TYPE_GROUP_USER)
 			->willReturn(true);
 		$this->membershipManager->expects($this->at(1))
-			->method('isGroupUser')
-			->with('user1', 'group2')
+			->method('isGroupMember')
+			->with('user1', 'group2', MembershipManager::MEMBERSHIP_TYPE_GROUP_USER)
 			->willReturn(false);
 
 		$manager = new \OC\Group\Manager($this->userManager, $this->membershipManager, $this->groupMapper, $this->connection);
@@ -857,12 +857,12 @@ class ManagerTest extends \Test\TestCase {
 			->method('groupExists');
 
 		$this->membershipManager->expects($this->at(0))
-			->method('isGroupUser')
-			->with('user1', 'admin')
+			->method('isGroupMember')
+			->with('user1', 'admin', MembershipManager::MEMBERSHIP_TYPE_GROUP_USER)
 			->willReturn(true);
 		$this->membershipManager->expects($this->at(1))
-			->method('isGroupUser')
-			->with('user2', 'admin')
+			->method('isGroupMember')
+			->with('user2', 'admin', MembershipManager::MEMBERSHIP_TYPE_GROUP_USER)
 			->willReturn(false);
 
 		$manager = new \OC\Group\Manager($this->userManager, $this->membershipManager, $this->groupMapper, $this->connection);
@@ -906,8 +906,8 @@ class ManagerTest extends \Test\TestCase {
 		$backendGroup1 = $this->getBackendGroup(1, get_class($backend));
 		$backendGroup2 = $this->getBackendGroup(2, get_class($database));
 		$this->membershipManager->expects($this->any())
-			->method('getUserBackendGroupsById')
-			->with(1)
+			->method('getMemberBackendGroupsById')
+			->with(1, MembershipManager::MEMBERSHIP_TYPE_GROUP_USER)
 			->willReturn([$backendGroup1, $backendGroup2]);
 
 		$manager = new \OC\Group\Manager($this->userManager, $this->membershipManager, $this->groupMapper, $this->connection);
@@ -1129,16 +1129,16 @@ class ManagerTest extends \Test\TestCase {
 
 		$backendGroup = $this->getBackendGroup(1, get_class($backend));
 		$this->membershipManager->expects($this->at(0))
-			->method('getUserBackendGroupsById')
-			->with(1)
+			->method('getMemberBackendGroupsById')
+			->with(1, MembershipManager::MEMBERSHIP_TYPE_GROUP_USER)
 			->willReturn([$backendGroup]);
 		$this->membershipManager->expects($this->at(1))
 			->method('removeGroupMembers')
 			->with(1)
 			->willReturn(true);
 		$this->membershipManager->expects($this->at(2))
-			->method('getUserBackendGroupsById')
-			->with(1)
+			->method('getMemberBackendGroupsById')
+			->with(1, MembershipManager::MEMBERSHIP_TYPE_GROUP_USER)
 			->willReturn([]);
 
 		$manager = new \OC\Group\Manager($this->userManager, $this->membershipManager, $this->groupMapper, $this->connection);
@@ -1180,11 +1180,11 @@ class ManagerTest extends \Test\TestCase {
 
 		$backendGroup = $this->getBackendGroup(1, get_class($backend));
 		$this->membershipManager->expects($this->exactly(2))
-			->method('getUserBackendGroupsById')
-			->with(1)
+			->method('getMemberBackendGroupsById')
+			->with(1, MembershipManager::MEMBERSHIP_TYPE_GROUP_USER)
 			->willReturn([$backendGroup]);
 		$this->membershipManager->expects($this->once())
-			->method('addGroupUser')
+			->method('addMembership')
 			->willReturn(true);
 
 		$manager = new \OC\Group\Manager($this->userManager, $this->membershipManager, $this->groupMapper, $this->connection);
@@ -1249,11 +1249,11 @@ class ManagerTest extends \Test\TestCase {
 
 		$backendGroup = $this->getBackendGroup(1, get_class($backend));
 		$this->membershipManager->expects($this->once())
-			->method('getUserBackendGroupsById')
-			->with(1)
+			->method('getMemberBackendGroupsById')
+			->with(1, MembershipManager::MEMBERSHIP_TYPE_GROUP_USER)
 			->willReturn([$backendGroup]);
 		$this->membershipManager->expects($this->once())
-			->method('addGroupUser')
+			->method('addMembership')
 			->willReturn(false);
 
 		$manager = new \OC\Group\Manager($this->userManager, $this->membershipManager, $this->groupMapper, $this->connection);
@@ -1315,11 +1315,11 @@ class ManagerTest extends \Test\TestCase {
 
 		$backendGroup = $this->getBackendGroup(1, get_class($backend));
 		$this->membershipManager->expects($this->exactly(2))
-			->method('getUserBackendGroupsById')
-			->with(1)
+			->method('getMemberBackendGroupsById')
+			->with(1, MembershipManager::MEMBERSHIP_TYPE_GROUP_USER)
 			->willReturn([$backendGroup]);
 		$this->membershipManager->expects($this->once())
-			->method('removeGroupUser')
+			->method('removeMembership')
 			->willReturn(true);
 
 		$manager = new \OC\Group\Manager($this->userManager, $this->membershipManager, $this->groupMapper, $this->connection);
@@ -1378,11 +1378,11 @@ class ManagerTest extends \Test\TestCase {
 
 		$backendGroup = $this->getBackendGroup(1, get_class($backend));
 		$this->membershipManager->expects($this->exactly(1))
-			->method('getUserBackendGroupsById')
-			->with(1)
+			->method('getMemberBackendGroupsById')
+			->with(1, MembershipManager::MEMBERSHIP_TYPE_GROUP_USER)
 			->willReturn([$backendGroup]);
 		$this->membershipManager->expects($this->once())
-			->method('removeGroupUser')
+			->method('removeMembership')
 			->willReturn(false);
 
 		$manager = new \OC\Group\Manager($this->userManager, $this->membershipManager, $this->groupMapper, $this->connection);
@@ -1431,8 +1431,8 @@ class ManagerTest extends \Test\TestCase {
 		$backendGroup1 = $this->getBackendGroup(1, get_class($backend));
 		$backendGroup2 = $this->getBackendGroup(2, get_class($database));
 		$this->membershipManager->expects($this->any())
-			->method('getUserBackendGroups')
-			->with('user1')
+			->method('getMemberBackendGroups')
+			->with('user1', MembershipManager::MEMBERSHIP_TYPE_GROUP_USER)
 			->willReturn([$backendGroup1, $backendGroup2]);
 
 		$manager = new \OC\Group\Manager($this->userManager, $this->membershipManager, $this->groupMapper, $this->connection);

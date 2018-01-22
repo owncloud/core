@@ -33,11 +33,17 @@ class MemoryMembershipManager extends MembershipManager {
 	public $testCaseName = '';
 
 	/**
-	 * @param string|null $userId
+	 * @param string $userId
+	 * @param int $membershipType - type of membership in the group (0 - MEMBERSHIP_TYPE_GROUP_USER, 1 - MEMBERSHIP_TYPE_GROUP_ADMIN)
 	 *
 	 * @return BackendGroup[]
+	 * @throws \Exception
 	 */
-	public function getUserBackendGroups($userId) {
+	public function getMemberBackendGroups($userId, $membershipType) {
+		if ($membershipType === MembershipManager::MEMBERSHIP_TYPE_GROUP_ADMIN) {
+			throw new \Exception('Not implemented - MEMBERSHIP_TYPE_GROUP_ADMIN');
+		}
+
 		if ($user = \OC::$server->getUserManager()->get($userId)) {
 			$internalUserId = \OC::$server->getUserManager()->getAccountObject($user)->getId();
 			$backendGroups = [];
@@ -54,10 +60,16 @@ class MemoryMembershipManager extends MembershipManager {
 
 	/**
 	 * @param int $accountId
+	 * @param int $membershipType - type of membership in the group (0 - MEMBERSHIP_TYPE_GROUP_USER, 1 - MEMBERSHIP_TYPE_GROUP_ADMIN)
 	 *
 	 * @return BackendGroup[]
+	 * @throws \Exception
 	 */
-	public function getUserBackendGroupsById($accountId) {
+	public function getMemberBackendGroupsById($accountId, $membershipType) {
+		if ($membershipType === MembershipManager::MEMBERSHIP_TYPE_GROUP_ADMIN) {
+			throw new \Exception('Not implemented - MEMBERSHIP_TYPE_GROUP_ADMIN');
+		}
+
 		$backendGroups = [];
 		foreach (self::$groupUsers as $key => $value) {
 			if (isset(self::$groupUsers[$key][$accountId])) {
@@ -69,31 +81,28 @@ class MemoryMembershipManager extends MembershipManager {
 	}
 
 	/**
-	 * @param string $userId
-	 *
-	 * @return BackendGroup[]
-	 * @throws \Exception
-	 */
-	public function getAdminBackendGroups($userId) {
-		throw new \Exception('Not implemented - getAdminBackendGroups');
-	}
-
-	/**
 	 * @param string|null $gid
+	 * @param int $membershipType - type of membership in the group (0 - MEMBERSHIP_TYPE_GROUP_USER, 1 - MEMBERSHIP_TYPE_GROUP_ADMIN)
 	 *
 	 * @return Account[]
 	 * @throws \Exception
 	 */
-	public function getGroupUserAccounts($gid = null) {
-		throw new \Exception('Not implemented - getGroupUserAccounts');
+	public function getGroupMemberAccounts($gid, $membershipType) {
+		throw new \Exception('Not implemented - getGroupMemberAccounts');
 	}
 
 	/**
 	 * @param int $backendGroupId
+	 * @param int $membershipType - type of membership in the group (0 - MEMBERSHIP_TYPE_GROUP_USER, 1 - MEMBERSHIP_TYPE_GROUP_ADMIN)
 	 *
 	 * @return Account[]
+	 * @throws \Exception
 	 */
-	public function getGroupUserAccountsById($backendGroupId) {
+	public function getGroupMemberAccountsById($backendGroupId, $membershipType) {
+		if ($membershipType === MembershipManager::MEMBERSHIP_TYPE_GROUP_ADMIN) {
+			throw new \Exception('Not implemented - MEMBERSHIP_TYPE_GROUP_ADMIN');
+		}
+
 		if (!isset(self::$groupUsers[$backendGroupId])) {
 			return [];
 		}
@@ -107,54 +116,48 @@ class MemoryMembershipManager extends MembershipManager {
 	}
 
 	/**
-	 * Return admin account entities for given group (identified with gid). If group predicate not specified,
-	 * it will return all users which are group admins
-	 *
-	 * @param string|null $gid
+	 * @param string $gid
+	 * @param int $membershipType - type of membership in the group (0 - MEMBERSHIP_TYPE_GROUP_USER, 1 - MEMBERSHIP_TYPE_GROUP_ADMIN)
+	 * @param int $maintenanceType - defines how membership is maintained (0 - MANUAL, 1 - SYNC)
 	 *
 	 * @return Account[]
 	 * @throws \Exception
 	 */
-	public function getGroupAdminAccounts($gid = null) {
-		throw new \Exception('Not implemented - getGroupAdminAccounts');
-
+	public function getGroupMembershipsByType($gid, $membershipType, $maintenanceType) {
+		throw new \Exception('Not implemented - getGroupMembershipsByType');
 	}
 
 	/**
 	 * @param string $userId
-	 * @param string $gid
+	 * @param string|null $gid
+	 * @param int $membershipType - type of membership in the group (0 - MEMBERSHIP_TYPE_GROUP_USER, 1 - MEMBERSHIP_TYPE_GROUP_ADMIN)
 	 *
 	 * @return boolean
 	 * @throws \Exception
 	 */
-	public function isGroupUser($userId, $gid = null) {
-		throw new \Exception('Not implemented - isGroupUser');
+	public function isGroupMember($userId, $gid, $membershipType) {
+		throw new \Exception('Not implemented - isGroupMember');
 	}
 
 	/**
 	 * @param int $accountId
 	 * @param int $backendGroupId
+	 * @param int $membershipType - type of membership in the group (0 - MEMBERSHIP_TYPE_GROUP_USER, 1 - MEMBERSHIP_TYPE_GROUP_ADMIN)
 	 *
 	 * @return boolean
+	 * @throws \Exception
 	 */
-	public function isGroupUserById($accountId, $backendGroupId) {
+	public function isGroupMemberById($accountId, $backendGroupId, $membershipType) {
+		if ($membershipType === MembershipManager::MEMBERSHIP_TYPE_GROUP_ADMIN) {
+			throw new \Exception('Not implemented - MEMBERSHIP_TYPE_GROUP_ADMIN');
+		}
+
 		foreach (self::$groupUsers as $key => $value) {
 			if ($key === $backendGroupId && isset(self::$groupUsers[$key][$accountId])) {
 				return true;
 			}
 		}
 		return false;
-	}
-
-	/**
-	 * @param string $userId
-	 * @param string $gid
-	 *
-	 * @return boolean
-	 * @throws \Exception
-	 */
-	public function isGroupAdmin($userId, $gid = null) {
-		throw new \Exception('Not implemented - isGroupAdmin');
 	}
 
 	/**
@@ -204,61 +207,43 @@ class MemoryMembershipManager extends MembershipManager {
 	/**
 	 * @param int $accountId - internal id of an account
 	 * @param int $backendGroupId - internal id of backend group
+	 * @param int $membershipType - type of membership in the group (0 - MEMBERSHIP_TYPE_GROUP_USER, 1 - MEMBERSHIP_TYPE_GROUP_ADMIN)
+	 * @param int $maintenanceType - defines how membership is maintained (0 - MANUAL, 1 - SYNC)
 	 *
 	 * @return bool
 	 */
-	public function addGroupUser($accountId, $backendGroupId) {
-		if (!isset(self::$groupUsers[$backendGroupId])) {
-			self::$groupUsers[$backendGroupId] = [];
+	public function addMembership($accountId, $backendGroupId, $membershipType, $maintenanceType) {
+		if ($membershipType === MembershipManager::MEMBERSHIP_TYPE_GROUP_USER) {
+			if (!isset(self::$groupUsers[$backendGroupId])) {
+				self::$groupUsers[$backendGroupId] = [];
+			}
+			self::$groupUsers[$backendGroupId][$accountId] = true;
+
+			return true;
+		} else {
+			if (!isset(self::$groupAdmins[$backendGroupId])) {
+				self::$groupAdmins[$backendGroupId] = [];
+			}
+			self::$groupAdmins[$backendGroupId][$accountId] = true;
+
+			return true;
 		}
-		self::$groupUsers[$backendGroupId][$accountId] = true;
-
-		return true;
 	}
 
 	/**
 	 * @param int $accountId - internal id of an account
 	 * @param int $backendGroupId - internal id of backend group
-	 *
+	 * @param int $membershipType - type of membership in the group (0 - MEMBERSHIP_TYPE_GROUP_USER, 1 - MEMBERSHIP_TYPE_GROUP_ADMIN)
 	 * @return bool
 	 */
-	public function addGroupAdmin($accountId, $backendGroupId) {
-		if (!isset(self::$groupAdmins[$backendGroupId])) {
-			self::$groupAdmins[$backendGroupId] = [];
+	public function removeMembership($accountId, $backendGroupId, $membershipType) {
+		if ($membershipType === MembershipManager::MEMBERSHIP_TYPE_GROUP_USER) {
+			unset(self::$groupUsers[$backendGroupId][$accountId]);
+			return true;
+		} else {
+			unset(self::$groupAdmins[$backendGroupId][$accountId]);
+			return true;
 		}
-		self::$groupAdmins[$backendGroupId][$accountId] = true;
-
-		return true;
-	}
-
-	/**
-	 * @param int $accountId - internal id of an account
-	 * @param int $backendGroupId - internal id of backend group
-	 * @return bool
-	 */
-	public function removeGroupUser($accountId, $backendGroupId) {
-		unset(self::$groupUsers[$backendGroupId][$accountId]);
-		return true;
-	}
-
-	/**
-	 * @param int $accountId - internal id of an account
-	 * @param int $backendGroupId - internal id of backend group
-	 * @return bool
-	 */
-	public function removeGroupAdmin($accountId, $backendGroupId) {
-		unset(self::$groupAdmins[$backendGroupId][$accountId]);
-		return true;
-	}
-
-	/**
-	 * @param int $backendGroupId - internal id of backend group
-	 * @return bool
-	 */
-	public function removeGroupMembers($backendGroupId) {
-		unset(self::$groupAdmins[$backendGroupId]);
-		unset(self::$groupUsers[$backendGroupId]);
-		return true;
 	}
 
 	/**
@@ -272,6 +257,16 @@ class MemoryMembershipManager extends MembershipManager {
 		foreach (self::$groupUsers as $key => $value) {
 			unset(self::$groupUsers[$key][$accountId]);
 		}
+		return true;
+	}
+
+	/**
+	 * @param int $backendGroupId - internal id of backend group
+	 * @return bool
+	 */
+	public function removeGroupMembers($backendGroupId) {
+		unset(self::$groupAdmins[$backendGroupId]);
+		unset(self::$groupUsers[$backendGroupId]);
 		return true;
 	}
 
