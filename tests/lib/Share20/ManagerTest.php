@@ -515,49 +515,64 @@ class ManagerTest extends \Test\TestCase {
 		$manager->getShareById('default:42');
 	}
 
-	/**
-	 * @expectedException        InvalidArgumentException
-	 * @expectedExceptionMessage Passwords are enforced for link shares
-	 */
-	public function testVerifyPasswordNullButEnforced() {
+	public function testPasswordMustBeEnforcedForReadOnly() {
 		$this->config->method('getAppValue')->will($this->returnValueMap([
-			['core', 'shareapi_enforce_links_password', 'no', 'yes'],
-			['core', 'shareapi_disable_enforce_links_password_for_upload_only', 'no', 'no'],
+			['core', 'shareapi_enforce_links_password_read_only', 'no', 'yes'],
+			['core', 'shareapi_enforce_links_password_read_write', 'no', 'yes'],
+			['core', 'shareapi_enforce_links_password_write_only', 'no', 'yes'],
 		]));
 
-		$this->invokePrivate($this->manager, 'verifyPassword', [null, \OCP\Constants::PERMISSION_READ]);
+		$this->assertTrue($this->invokePrivate($this->manager, 'passwordMustBeEnforced', [\OCP\Constants::PERMISSION_READ]));
 	}
 
-	public function testVerifyPasswordNull() {
+	public function testPasswordMustBeEnforcedForReadWrite() {
 		$this->config->method('getAppValue')->will($this->returnValueMap([
-			['core', 'shareapi_enforce_links_password', 'no', 'no'],
-			['core', 'shareapi_disable_enforce_links_password_for_upload_only', 'no', 'no'],
+			['core', 'shareapi_enforce_links_password_read_only', 'no', 'yes'],
+			['core', 'shareapi_enforce_links_password_read_write', 'no', 'yes'],
+			['core', 'shareapi_enforce_links_password_write_only', 'no', 'yes'],
 		]));
 
-		$result = $this->invokePrivate($this->manager, 'verifyPassword', [null, \OCP\Constants::PERMISSION_READ]);
-		$this->assertNull($result);
+		$this->assertTrue($this->invokePrivate($this->manager, 'passwordMustBeEnforced', [\OCP\Constants::PERMISSION_ALL]));
 	}
 
-	public function testVerifyPasswordNullEnforcedDisableForWriteOnly() {
+	public function testPasswordMustBeEnforcedForWriteOnly() {
 		$this->config->method('getAppValue')->will($this->returnValueMap([
-			['core', 'shareapi_enforce_links_password', 'no', 'yes'],
-			['core', 'shareapi_disable_enforce_links_password_for_upload_only', 'no', 'yes'],
+			['core', 'shareapi_enforce_links_password_read_only', 'no', 'yes'],
+			['core', 'shareapi_enforce_links_password_read_write', 'no', 'yes'],
+			['core', 'shareapi_enforce_links_password_write_only', 'no', 'yes'],
 		]));
 
-		$this->invokePrivate($this->manager, 'verifyPassword', [null, \OCP\Constants::PERMISSION_CREATE]);
+		$this->assertTrue($this->invokePrivate($this->manager, 'passwordMustBeEnforced', [\OCP\Constants::PERMISSION_CREATE]));
 	}
 
-	/**
-	 * @expectedException        InvalidArgumentException
-	 * @expectedExceptionMessage Passwords are enforced for link shares
-	 */
-	public function testVerifyPasswordNullEnforcedDisableForWriteOnlyButReadOnly() {
+	public function testPasswordMustBeEnforcedForReadOnlyNotEnforced() {
 		$this->config->method('getAppValue')->will($this->returnValueMap([
-			['core', 'shareapi_enforce_links_password', 'no', 'yes'],
-			['core', 'shareapi_disable_enforce_links_password_for_upload_only', 'no', 'yes'],
+			['core', 'shareapi_enforce_links_password_read_only', 'no', 'no'],
+			['core', 'shareapi_enforce_links_password_read_write', 'no', 'yes'],
+			['core', 'shareapi_enforce_links_password_write_only', 'no', 'yes'],
 		]));
 
-		$this->invokePrivate($this->manager, 'verifyPassword', [null, \OCP\Constants::PERMISSION_READ]);
+		$this->assertFalse($this->invokePrivate($this->manager, 'passwordMustBeEnforced', [\OCP\Constants::PERMISSION_READ]));
+	}
+
+	public function testPasswordMustBeEnforcedForReadWrite() {
+		$this->config->method('getAppValue')->will($this->returnValueMap([
+			['core', 'shareapi_enforce_links_password_read_only', 'no', 'yes'],
+			['core', 'shareapi_enforce_links_password_read_write', 'no', 'no'],
+			['core', 'shareapi_enforce_links_password_write_only', 'no', 'yes'],
+		]));
+
+		$this->assertFalse($this->invokePrivate($this->manager, 'passwordMustBeEnforced', [\OCP\Constants::PERMISSION_ALL]));
+	}
+
+	public function testPasswordMustBeEnforcedForWriteOnly() {
+		$this->config->method('getAppValue')->will($this->returnValueMap([
+			['core', 'shareapi_enforce_links_password_read_only', 'no', 'yes'],
+			['core', 'shareapi_enforce_links_password_read_write', 'no', 'yes'],
+			['core', 'shareapi_enforce_links_password_write_only', 'no', 'no'],
+		]));
+
+		$this->assertFalse($this->invokePrivate($this->manager, 'passwordMustBeEnforced', [\OCP\Constants::PERMISSION_CREATE]));
 	}
 
 	public function testVerifyPasswordHook() {
@@ -577,7 +592,7 @@ class ManagerTest extends \Test\TestCase {
 				'message' => ''
 			]);
 
-		$result = $this->invokePrivate($this->manager, 'verifyPassword', ['password', \OCP\Constants::PERMISSION_READ]);
+		$result = $this->invokePrivate($this->manager, 'verifyPassword', ['password']);
 		$this->assertNull($result);
 	}
 
@@ -593,7 +608,7 @@ class ManagerTest extends \Test\TestCase {
 
 		$dummy = new DummyPassword();
 		\OCP\Util::connectHook('\OC\Share', 'verifyPassword', $dummy, 'listner');
-		$this->invokePrivate($this->manager, 'verifyPassword', ['password', \OCP\Constants::PERMISSION_READ]);
+		$this->invokePrivate($this->manager, 'verifyPassword', ['password']);
 	}
 
 	public function createShare($id, $type, $path, $sharedWith, $sharedBy, $shareOwner,
