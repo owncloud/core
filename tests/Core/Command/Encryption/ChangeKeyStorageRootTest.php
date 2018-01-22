@@ -200,6 +200,24 @@ class ChangeKeyStorageRootTest extends TestCase {
 		];
 	}
 
+	public function nulldir() {
+		return [
+			[null]
+		];
+	}
+
+	/**
+	 * @dataProvider nulldir
+	 * @expectedException \Exception
+	 * @expectedExceptionMessage New root folder doesn't exist. Please create the folder or check the permissions and try again.
+	 * @param $dirExists
+	 */
+	public function testPrepareNewRootExceptionForNullDir($dirExists) {
+		$this->view->expects($this->once())->method('is_dir')->with('../../newRoot')
+			->willReturn($dirExists);
+		$this->invokePrivate($this->changeKeyStorageRoot, 'prepareNewRoot', ['../../newRoot']);
+	}
+
 	/**
 	 * @dataProvider dataTestMoveSystemKeys
 	 *
