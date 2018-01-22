@@ -47,13 +47,17 @@ if($maxX === 0 || $maxY === 0) {
 	exit;
 }
 
-try{
-	$preview = new \OC\Preview(\OC_User::getUser(), 'files_trashbin/files', $file);
-	$view = new \OC\Files\View('/'.\OC_User::getUser(). '/files_trashbin/files');
-	if ($view->is_dir($file)) {
+try {
+	$userFolder = \OC::$server->getRootFolder()->getUserFolder(\OC_User::getUser());
+	/** @var \OCP\Files\Folder $trashFolder */
+	$trashFolder = $userFolder->getParent()->get('files_trashbin/files');
+	/** @var \OCP\Files\File | \OCP\Files\IPreviewNode $file */
+	$file = $trashFolder->get($file);
+
+	if ($file->getType() === \OCP\Files\FileInfo::TYPE_FOLDER) {
 		$mimetype = 'httpd/unix-directory';
 	} else {
-		$pathInfo = pathinfo(ltrim($file, '/'));
+		$pathInfo = pathinfo(ltrim($file->getName(), '/'));
 		$fileName = $pathInfo['basename'];
 		// if in root dir
 		if ($pathInfo['dirname'] === '.') {
@@ -65,13 +69,17 @@ try{
 		}
 		$mimetype = \OC::$server->getMimeTypeDetector()->detectPath($fileName);
 	}
-	$preview->setMimetype($mimetype);
-	$preview->setMaxX($maxX);
-	$preview->setMaxY($maxY);
-	$preview->setScalingUp($scalingUp);
 
-	$preview->showPreview();
-}catch(\Exception $e) {
+	$image = $file->getThumbnail([
+		'x' => $maxX,
+		'y' => $maxY,
+		'scalingup' => $scalingUp,
+		'mimeType' => $mimetype
+	]);
+
+	$image->show();
+
+} catch(\Exception $e) {
 	\OC_Response::setStatus(500);
 	\OCP\Util::writeLog('core', $e->getmessage(), \OCP\Util::DEBUG);
 }
