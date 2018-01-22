@@ -195,6 +195,109 @@ class StorageTest extends TestCase {
 	}
 
 	/**
+	 * Test that deleted folder appear in the trashbin of both owner and recipient
+	 */
+	public function testDeleteFolderAsRecipient() {
+		$this->userView->mkdir('share');
+		$this->userView->mkdir('share/folder');
+		$this->userView->file_put_contents('share/folder/test.txt', 'Yarrr! Content!');
+
+		$originalFileId = $this->userView->getFileInfo('share/folder/test.txt')->getId();
+
+		$recipientUser = $this->getUniqueId('recipient_');
+		\OC::$server->getUserManager()->createUser($recipientUser, $recipientUser);
+
+		$node = \OC::$server->getUserFolder($this->user)->get('share');
+		$share = \OC::$server->getShareManager()->newShare();
+		$share->setNode($node)
+			->setShareType(\OCP\Share::SHARE_TYPE_USER)
+			->setSharedBy($this->user)
+			->setSharedWith($recipientUser)
+			->setPermissions(\OCP\Constants::PERMISSION_ALL);
+		\OC::$server->getShareManager()->createShare($share);
+
+		$this->loginAsUser($recipientUser);
+
+		// delete as recipient
+		$recipientView = new View('/' . $recipientUser . '/files');
+		$recipientView->rmdir('share/folder');
+
+		// check if folder is in trashbin for owner
+		$results = $this->rootView->getDirectoryContent($this->user . '/files_trashbin/files/');
+		$this->assertCount(1, $results);
+		$name = $results[0]->getName();
+		$this->assertEquals('folder', substr($name, 0, strrpos($name, '.')));
+
+		// check if file is in trashbin for owner and has the same file id
+		$info = $this->rootView->getFileInfo($this->user . '/files_trashbin/files/' . $name . '/test.txt');
+		$this->assertNotNull($info);
+		$this->assertEquals($originalFileId, $info->getId());
+
+		// check if folder is in trashbin for recipient
+		$results = $this->rootView->getDirectoryContent($recipientUser . '/files_trashbin/files/');
+		$this->assertCount(1, $results);
+		$name = $results[0]->getName();
+		$this->assertEquals('folder', substr($name, 0, strrpos($name, '.')));
+
+		// check if file has a copy in trashbin for recipient (different file id)
+		$info = $this->rootView->getFileInfo($recipientUser . '/files_trashbin/files/' . $name . '/test.txt');
+		$this->assertNotNull($info);
+		$this->assertNotEquals($originalFileId, $info->getId());
+	}
+
+	/**
+	 * Test that deleted folder appear only in the trashbin of owner when recipient
+	 * has a read-only access home storage
+	 */
+	public function testDeleteFolderAsReadOnlyRecipient() {
+		$readOnlyGroups = \OC::$server->getConfig()->getAppValue('core', 'read_only_groups', null);
+		\OC::$server->getConfig()->setAppValue('core', 'read_only_groups', '["rogroup"]');
+
+		$this->userView->mkdir('share');
+		$this->userView->mkdir('share/folder');
+		$this->userView->file_put_contents('share/folder/test.txt', 'Yarrr! Content!');
+
+		$originalFileId = $this->userView->getFileInfo('share/folder/test.txt')->getId();
+
+		$recipientUser = $this->getUniqueId('recipient_');
+		$recipientUserObject = \OC::$server->getUserManager()->createUser($recipientUser, $recipientUser);
+		$roGroupObject = \OC::$server->getGroupManager()->createGroup('rogroup');
+		$roGroupObject->addUser($recipientUserObject);
+
+		$node = \OC::$server->getUserFolder($this->user)->get('share');
+		$share = \OC::$server->getShareManager()->newShare();
+		$share->setNode($node)
+			->setShareType(\OCP\Share::SHARE_TYPE_USER)
+			->setSharedBy($this->user)
+			->setSharedWith($recipientUser)
+			->setPermissions(\OCP\Constants::PERMISSION_ALL);
+		\OC::$server->getShareManager()->createShare($share);
+
+		$this->loginAsUser($recipientUser);
+
+		// delete as recipient
+		$recipientView = new View('/' . $recipientUser . '/files');
+		$recipientView->rmdir('share/folder');
+
+		// check if folder is in trashbin for owner
+		$results = $this->rootView->getDirectoryContent($this->user . '/files_trashbin/files/');
+		$this->assertCount(1, $results);
+		$name = $results[0]->getName();
+		$this->assertEquals('folder', substr($name, 0, strrpos($name, '.')));
+
+		// check if file is in trashbin for owner and has the same file id
+		$info = $this->rootView->getFileInfo($this->user . '/files_trashbin/files/' . $name . '/test.txt');
+		$this->assertNotNull($info);
+		$this->assertEquals($originalFileId, $info->getId());
+
+		// check that folder is NOT in trashbin for recipient
+		$this->assertFalse($this->rootView->file_exists($recipientUser . '/files_trashbin'));
+
+		\OC::$server->getConfig()->setAppValue('core', 'read_only_groups', $readOnlyGroups);
+		$roGroupObject->delete();
+	}
+
+	/**
 	 * Test that deleted versions properly land in the trashbin.
 	 */
 	public function testDeleteVersionsOfFile() {
