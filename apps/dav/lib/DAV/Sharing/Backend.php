@@ -58,10 +58,17 @@ class Backend {
 	 */
 	public function updateShares($shareable, $add, $remove) {
 		foreach($add as $element) {
-			$this->shareWith($shareable, $element);
+			$principal = $this->principalBackend->findByUri($element['href'], '');
+			if ($principal !== '') {
+				$this->shareWith($shareable, $element);
+			}
+
 		}
 		foreach($remove as $element) {
-			$this->unshare($shareable, $element);
+			$principal = $this->principalBackend->findByUri($element, '');
+			if ($principal !== '') {
+				$this->unshare($shareable, $element);
+			}
 		}
 	}
 
@@ -213,4 +220,5 @@ class Backend {
 		}
 		return $acl;
 	}
+
 }
