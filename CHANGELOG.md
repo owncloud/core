@@ -14,7 +14,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/).
 - Add dispatcher event for "unshare from self" action - [#29851](https://github.com/owncloud/core/issues/29851)
 - Technology preview for PHP 7.2 support - [#29878](https://github.com/owncloud/core/issues/29878)
 - Added public hooks for file operations using Symfony Event Dispatcher - [#29939](https://github.com/owncloud/core/issues/29939)
-- Expose getAppPath() and getAppWebPath() on the AppManager service [#30041](https://github.com/owncloud/core/pull/30041)
+- Expose getAppPath() and getAppWebPath() on the AppManager service [#30041](https://github.com/owncloud/core/pull/30041) [#30150](https://github.com/owncloud/core/pull/30150)
 - Add warning in settings page when running in debug mode - [#29936](https://github.com/owncloud/core/issues/29936)
 
 ### Changed
@@ -22,7 +22,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/).
 - Require a minimum of 1 character for the application password name - [#29831](https://github.com/owncloud/core/issues/29831)
 - Only allow a single active theme app with no magic fallbacks to inactive app themes  - [#29854](https://github.com/owncloud/core/issues/29854)
 - Config report now hides email address from email config - [#29949](https://github.com/owncloud/core/issues/29949)
-- Change "remote" to "federated" suffix in sharing autocomplete dialog. - [#30046](https://github.com/owncloud/core/issues/30046)
+- Change "remote" to "federated" suffix in sharing autocomplete dialog. - [#30046](https://github.com/owncloud/core/issues/30046) [#30171](https://github.com/owncloud/core/issues/30171)
 
 ### Removed
 - Removed old Dropbox storage backend, people should use the [files_external_dropbox app](https://github.com/owncloud/files_external_dropbox/) instead - [#29135](https://github.com/owncloud/core/issues/29135)
