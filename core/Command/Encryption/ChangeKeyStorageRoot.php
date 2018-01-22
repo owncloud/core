@@ -136,7 +136,8 @@ class ChangeKeyStorageRoot extends Command {
 	 * @throws \Exception
 	 */
 	protected function prepareNewRoot($newRoot) {
-		if ($this->rootView->is_dir($newRoot) === false) {
+		$validateNewRootDir = $this->rootView->is_dir($newRoot);
+		if (($validateNewRootDir === false) or ($validateNewRootDir === null)) {
 			throw new \Exception("New root folder doesn't exist. Please create the folder or check the permissions and try again.");
 		}
 
@@ -150,7 +151,6 @@ class ChangeKeyStorageRoot extends Command {
 		}
 
 	}
-
 
 	/**
 	 * move system key folder
