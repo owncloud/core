@@ -31,6 +31,7 @@
 namespace OC\Group;
 
 use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
+use OC\MembershipManager;
 use OCP\IGroup;
 use OCP\IUser;
 
@@ -105,7 +106,8 @@ class Group implements IGroup {
 		$this->usersCache = array_map(function($account) {
 			// Get Group object for each backend group and cache
 			return $this->userManager->getUserObject($account);
-		}, $this->membershipManager->getGroupUserAccountsById($this->backendGroup->getId()));
+		}, $this->membershipManager->getGroupMemberAccountsById($this->backendGroup->getId(),
+			MembershipManager::MEMBERSHIP_TYPE_GROUP_USER));
 		return $this->usersCache;
 	}
 
@@ -116,8 +118,19 @@ class Group implements IGroup {
 	 * @return bool
 	 */
 	public function inGroup($user) {
+		// If users were retrieved already with getUsers, fetch from cache
+		if (!is_null($this->usersCache)) {
+			foreach($this->usersCache as $cachedUser) {
+				if ($cachedUser->getUID() === $user->getUID()) {
+					return true;
+				}
+			}
+			return false;
+		}
+
 		$account = $this->userManager->getAccountObject($user);
-		return $this->membershipManager->isGroupUserById($account->getId(), $this->backendGroup->getId());
+		return $this->membershipManager->isGroupMemberById($account->getId(), $this->backendGroup->getId(),
+			MembershipManager::MEMBERSHIP_TYPE_GROUP_USER);
 	}
 
 	/**
@@ -140,7 +153,8 @@ class Group implements IGroup {
 		$account = $this->userManager->getAccountObject($user);
 		try {
 			// Might throw UniqueConstraintViolationException - only in case of bug since inGroup should prevent it
-			$result = $this->membershipManager->addGroupUser($account->getId(), $this->backendGroup->getId());
+			$result = $this->membershipManager->addMembership($account->getId(), $this->backendGroup->getId(),
+				MembershipManager::MEMBERSHIP_TYPE_GROUP_USER, MembershipManager::MAINTENANCE_TYPE_MANUAL);
 		} catch (UniqueConstraintViolationException $exception) {
 			$result = false;
 		}
@@ -167,7 +181,7 @@ class Group implements IGroup {
 		}
 
 		$account = $this->userManager->getAccountObject($user);
-		$result = $this->membershipManager->removeGroupUser($account->getId(), $this->backendGroup->getId());
+		$result = $this->membershipManager->removeMembership($account->getId(), $this->backendGroup->getId(), MembershipManager::MEMBERSHIP_TYPE_GROUP_USER);
 
 		// Clear cache for consistency
 		$this->usersCache = null;
@@ -239,6 +253,9 @@ class Group implements IGroup {
 
 		// Delete group internally
 		$this->groupMapper->delete($this->backendGroup);
+
+		// Clear cache for consistency
+		$this->usersCache = null;
 
 		// Emit post delete
 		$this->groupManager->emit('\OC\Group', 'postDelete', [$this]);

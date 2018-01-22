@@ -313,7 +313,7 @@ class Manager extends PublicEmitter implements IGroupManager {
 	 * @return bool if admin
 	 */
 	public function isAdmin($userId) {
-		return $this->membershipManager->isGroupUser($userId, 'admin');
+		return $this->membershipManager->isGroupMember($userId, 'admin', MembershipManager::MEMBERSHIP_TYPE_GROUP_USER);
 	}
 
 	/**
@@ -324,7 +324,7 @@ class Manager extends PublicEmitter implements IGroupManager {
 	 * @return bool if in group
 	 */
 	public function isInGroup($userId, $gid) {
-		return $this->membershipManager->isGroupUser($userId, $gid);
+		return $this->membershipManager->isGroupMember($userId, $gid, MembershipManager::MEMBERSHIP_TYPE_GROUP_USER);
 	}
 
 	/**
@@ -506,7 +506,7 @@ class Manager extends PublicEmitter implements IGroupManager {
 			$userGroups = array_map(function($backendGroup) {
 				// Get \OCP\IGroup object for \OC\Group\BackendGroup $backendGroup
 				return $this->getGroupObject($backendGroup);
-			}, $this->membershipManager->getUserBackendGroupsById($account->getId()));
+			}, $this->membershipManager->getMemberBackendGroupsById($account->getId(), MembershipManager::MEMBERSHIP_TYPE_GROUP_USER));
 
 			$this->cachedUserGroups->set($user->getUID(), $userGroups);
 		}
@@ -525,7 +525,7 @@ class Manager extends PublicEmitter implements IGroupManager {
 			$userGroups = array_map(function($backendGroup) {
 				// Get \OCP\IGroup object for each backend group and cache
 				return $this->getGroupObject($backendGroup);
-			}, $this->membershipManager->getUserBackendGroups($userId));
+			}, $this->membershipManager->getMemberBackendGroups($userId, MembershipManager::MEMBERSHIP_TYPE_GROUP_USER));
 
 			$this->cachedUserGroups->set($userId, $userGroups);
 		}

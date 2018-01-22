@@ -180,16 +180,16 @@ class MembershipManagerTest extends TestCase {
 	 * isGroupAdmin, isGroupUser, isGroupUserById
 	 */
 	public function testRegularAccountOperations() {
-		$result = $this->manager->getGroupAdminAccounts();
+		$result = $this->manager->getGroupMemberAccounts(null, MembershipManager::MEMBERSHIP_TYPE_GROUP_ADMIN);
 		$this->assertEmpty($result);
 
 		$group1 = self::getBackendGroup(1);
 		$this->assertInstanceOf(BackendGroup::class, $group1);
-		$result = $this->manager->getGroupUserAccounts($group1->getGroupId());
+		$result = $this->manager->getGroupMemberAccounts($group1->getGroupId(), MembershipManager::MEMBERSHIP_TYPE_GROUP_USER);
 		$this->assertEmpty($result);
 		$group2 = self::getBackendGroup(2);
 		$this->assertInstanceOf(BackendGroup::class, $group2);
-		$result = $this->manager->getGroupUserAccounts($group2->getGroupId());
+		$result = $this->manager->getGroupMemberAccounts($group2->getGroupId(), MembershipManager::MEMBERSHIP_TYPE_GROUP_USER);
 		$this->assertEmpty($result);
 
 		// Check adding as both ADMIN and USER
@@ -199,7 +199,7 @@ class MembershipManagerTest extends TestCase {
 
 			$this->addUserAndAdmin($account, $group1);
 
-			$result = $this->manager->getGroupAdminAccounts();
+			$result = $this->manager->getGroupMemberAccounts(null, MembershipManager::MEMBERSHIP_TYPE_GROUP_ADMIN);
 			$this->assertCount($i, $result);
 		}
 
@@ -214,29 +214,29 @@ class MembershipManagerTest extends TestCase {
 		$this->addUser($account, $group2);
 
 		// Check that we have 3 total ADMIN accounts
-		$result = $this->manager->getGroupAdminAccounts();
+		$result = $this->manager->getGroupMemberAccounts(null, MembershipManager::MEMBERSHIP_TYPE_GROUP_ADMIN);
 		$this->assertCount(3, $result);
 
 		// Check that we have 2 ADMIN accounts in group 1
-		$result = $this->manager->getGroupAdminAccounts($group1->getGroupId());
+		$result = $this->manager->getGroupMemberAccounts($group1->getGroupId(), MembershipManager::MEMBERSHIP_TYPE_GROUP_ADMIN);
 		$this->assertCount(2, $result);
 
 		// Check that we have 2 USER accounts in group 1
-		$result = $this->manager->getGroupUserAccounts($group1->getGroupId());
+		$result = $this->manager->getGroupMemberAccounts($group1->getGroupId(), MembershipManager::MEMBERSHIP_TYPE_GROUP_USER);
 		$this->assertCount(2, $result);
-		$result = $this->manager->getGroupUserAccountsById($group1->getId());
+		$result = $this->manager->getGroupMemberAccountsById($group1->getId(), MembershipManager::MEMBERSHIP_TYPE_GROUP_USER);
 		$this->assertCount(2, $result);
 
 		// Check that we have 1 ADMIN account in group 2
-		$result = $this->manager->getGroupAdminAccounts($group2->getGroupId());
+		$result = $this->manager->getGroupMemberAccounts($group2->getGroupId(), MembershipManager::MEMBERSHIP_TYPE_GROUP_ADMIN);
 		$this->assertCount(1, $result);
 		$this->assertEquals("testaccount3", $result[0]->getUserId());
 		$this->assertEquals("Test User 3", $result[0]->getDisplayName());
 
 		// Check that we have 1 USER account in group 2
-		$result = $this->manager->getGroupUserAccounts($group2->getGroupId());
+		$result = $this->manager->getGroupMemberAccounts($group2->getGroupId(), MembershipManager::MEMBERSHIP_TYPE_GROUP_USER);
 		$this->assertCount(1, $result);
-		$result = $this->manager->getGroupUserAccountsById($group2->getId());
+		$result = $this->manager->getGroupMemberAccountsById($group2->getId(), MembershipManager::MEMBERSHIP_TYPE_GROUP_USER);
 		$this->assertCount(1, $result);
 		$this->assertEquals("testaccount4", $result[0]->getUserId());
 		$this->assertEquals("Test User 4", $result[0]->getDisplayName());
@@ -252,29 +252,47 @@ class MembershipManagerTest extends TestCase {
 		$group = self::getBackendGroup($groupId);
 
 		// Add as group user
-		$check = $this->manager->addGroupUser($account->getId(), $group->getId());
+		$check = $this->manager->addMembership($account->getId(), $group->getId(),
+			MembershipManager::MEMBERSHIP_TYPE_GROUP_USER, MembershipManager::MAINTENANCE_TYPE_MANUAL);
 		$this->assertEquals(true, $check);
-		$check = $this->manager->addGroupAdmin($account->getId(), $group->getId());
+		$check = $this->manager->addMembership($account->getId(), $group->getId(),
+			MembershipManager::MEMBERSHIP_TYPE_GROUP_ADMIN, MembershipManager::MAINTENANCE_TYPE_MANUAL);
 		$this->assertEquals(true, $check);
 
-		$backendGroups = $this->manager->getUserBackendGroups($account->getUserId());
+		$backendGroups = $this->manager->getMemberBackendGroups($account->getUserId(), MembershipManager::MEMBERSHIP_TYPE_GROUP_USER);
 		$this->checkConsistencyGroup($backendGroups[0], $groupId);
 
-		$backendGroups = $this->manager->getAdminBackendGroups($account->getUserId());
+		$backendGroups = $this->manager->getMemberBackendGroups($account->getUserId(), MembershipManager::MEMBERSHIP_TYPE_GROUP_ADMIN);
 		$this->checkConsistencyGroup($backendGroups[0], $groupId);
 
-		$accounts = $this->manager->getGroupUserAccounts($group->getGroupId());
+		$accounts = $this->manager->getGroupMemberAccounts($group->getGroupId(), MembershipManager::MEMBERSHIP_TYPE_GROUP_USER);
 		$this->checkConsistencyAccount($accounts[0], $accountId);
 
-		$accounts = $this->manager->getGroupAdminAccounts($group->getGroupId());
+		$accounts = $this->manager->getGroupMemberAccounts($group->getGroupId(), MembershipManager::MEMBERSHIP_TYPE_GROUP_ADMIN);
 		$this->checkConsistencyAccount($accounts[0], $accountId);
+
+		$accounts = $this->manager->getGroupMembershipsByType($group->getGroupId(),
+			MembershipManager::MEMBERSHIP_TYPE_GROUP_ADMIN, MembershipManager::MAINTENANCE_TYPE_MANUAL);
+		$this->checkConsistencyAccount($accounts[0], $accountId);
+
+		$accounts = $this->manager->getGroupMembershipsByType($group->getGroupId(),
+			MembershipManager::MEMBERSHIP_TYPE_GROUP_USER, MembershipManager::MAINTENANCE_TYPE_MANUAL);
+		$this->checkConsistencyAccount($accounts[0], $accountId);
+
+		$accounts = $this->manager->getGroupMembershipsByType($group->getGroupId(),
+			MembershipManager::MEMBERSHIP_TYPE_GROUP_ADMIN, MembershipManager::MAINTENANCE_TYPE_SYNC);
+		$this->assertEmpty($accounts);
+
+		$accounts = $this->manager->getGroupMembershipsByType($group->getGroupId(),
+			MembershipManager::MEMBERSHIP_TYPE_GROUP_USER, MembershipManager::MAINTENANCE_TYPE_SYNC);
+		$this->assertEmpty($accounts);
 	}
 
 	/**
 	 * Test find, findById and count method, also with offsets.
 	 */
 	public function testFind() {
-		$result = $this->manager->getGroupAdminAccounts();
+		$result = $this->manager->getGroupMemberAccounts(null, MembershipManager::MEMBERSHIP_TYPE_GROUP_ADMIN);
 		$this->assertEmpty($result);
 
 		$group1 = self::getBackendGroup(1);
@@ -361,10 +379,10 @@ class MembershipManagerTest extends TestCase {
 	 * 3. Remove all memberships from account
 	 */
 	public function testRemoveAccountOperations() {
-		$result = $this->manager->getGroupAdminAccounts();
+		$result = $this->manager->getGroupMemberAccounts(null, MembershipManager::MEMBERSHIP_TYPE_GROUP_ADMIN);
 		$this->assertEmpty($result);
 		$group = self::getBackendGroup(1);
-		$result = $this->manager->getGroupUserAccounts($group->getGroupId());
+		$result = $this->manager->getGroupMemberAccounts($group->getGroupId(), MembershipManager::MEMBERSHIP_TYPE_GROUP_USER);
 		$this->assertEmpty($result);
 
 		// Check adding as both ADMIN and USER
@@ -372,44 +390,44 @@ class MembershipManagerTest extends TestCase {
 			$account = self::getAccount($i);
 			$this->addUserAndAdmin($account, $group);
 
-			$result = $this->manager->getGroupAdminAccounts();
+			$result = $this->manager->getGroupMemberAccounts(null, MembershipManager::MEMBERSHIP_TYPE_GROUP_ADMIN);
 			$this->assertCount($i, $result);
-			$result = $this->manager->getGroupUserAccounts($group->getGroupId());
+			$result = $this->manager->getGroupMemberAccounts($group->getGroupId(), MembershipManager::MEMBERSHIP_TYPE_GROUP_USER);
 			$this->assertCount($i, $result);
 		}
 
 		// Remove 1 ADMIN account
 		$account = self::getAccount(1);
-		$this->assertTrue($this->manager->isGroupAdmin($account->getUserId(), $group->getGroupId()));
-		$this->assertTrue($this->manager->isGroupUser($account->getUserId(), $group->getGroupId()));
-		$result = $this->manager->removeGroupAdmin($account->getId(), $group->getId());
+		$this->assertTrue($this->manager->isGroupMember($account->getUserId(), $group->getGroupId(), MembershipManager::MEMBERSHIP_TYPE_GROUP_ADMIN));
+		$this->assertTrue($this->manager->isGroupMember($account->getUserId(), $group->getGroupId(), MembershipManager::MEMBERSHIP_TYPE_GROUP_USER));
+		$result = $this->manager->removeMembership($account->getId(), $group->getId(), MembershipManager::MEMBERSHIP_TYPE_GROUP_ADMIN);
 		$this->assertTrue($result);
-		$this->assertCount(3, $this->manager->getGroupAdminAccounts());
-		$this->assertCount(4, $this->manager->getGroupUserAccounts($group->getGroupId()));
-		$this->assertFalse($this->manager->isGroupAdmin($account->getUserId(), $group->getGroupId()));
-		$this->assertTrue($this->manager->isGroupUser($account->getUserId(), $group->getGroupId()));
+		$this->assertCount(3, $this->manager->getGroupMemberAccounts(null, MembershipManager::MEMBERSHIP_TYPE_GROUP_ADMIN));
+		$this->assertCount(4, $this->manager->getGroupMemberAccounts($group->getGroupId(), MembershipManager::MEMBERSHIP_TYPE_GROUP_USER));
+		$this->assertFalse($this->manager->isGroupMember($account->getUserId(), $group->getGroupId(), MembershipManager::MEMBERSHIP_TYPE_GROUP_ADMIN));
+		$this->assertTrue($this->manager->isGroupMember($account->getUserId(), $group->getGroupId(), MembershipManager::MEMBERSHIP_TYPE_GROUP_USER));
 
 		// Remove 1 USER account
 		$account = self::getAccount(2);
-		$this->assertTrue($this->manager->isGroupAdmin($account->getUserId(), $group->getGroupId()));
-		$this->assertTrue($this->manager->isGroupUser($account->getUserId(), $group->getGroupId()));
-		$result = $this->manager->removeGroupUser($account->getId(), $group->getId());
+		$this->assertTrue($this->manager->isGroupMember($account->getUserId(), $group->getGroupId(), MembershipManager::MEMBERSHIP_TYPE_GROUP_ADMIN));
+		$this->assertTrue($this->manager->isGroupMember($account->getUserId(), $group->getGroupId(), MembershipManager::MEMBERSHIP_TYPE_GROUP_USER));
+		$result = $this->manager->removeMembership($account->getId(), $group->getId(), MembershipManager::MEMBERSHIP_TYPE_GROUP_USER);
 		$this->assertTrue($result);
-		$this->assertCount(3, $this->manager->getGroupAdminAccounts());
-		$this->assertCount(3, $this->manager->getGroupUserAccounts($group->getGroupId()));
-		$this->assertTrue($this->manager->isGroupAdmin($account->getUserId(), $group->getGroupId()));
-		$this->assertFalse($this->manager->isGroupUser($account->getUserId(), $group->getGroupId()));
+		$this->assertCount(3, $this->manager->getGroupMemberAccounts(null, MembershipManager::MEMBERSHIP_TYPE_GROUP_ADMIN));
+		$this->assertCount(3, $this->manager->getGroupMemberAccounts($group->getGroupId(), MembershipManager::MEMBERSHIP_TYPE_GROUP_USER));
+		$this->assertTrue($this->manager->isGroupMember($account->getUserId(), $group->getGroupId(), MembershipManager::MEMBERSHIP_TYPE_GROUP_ADMIN));
+		$this->assertFalse($this->manager->isGroupMember($account->getUserId(), $group->getGroupId(), MembershipManager::MEMBERSHIP_TYPE_GROUP_USER));
 
 		// Remove account memberships
 		$account = self::getAccount(3);
-		$this->assertTrue($this->manager->isGroupAdmin($account->getUserId(), $group->getGroupId()));
-		$this->assertTrue($this->manager->isGroupUser($account->getUserId(), $group->getGroupId()));
+		$this->assertTrue($this->manager->isGroupMember($account->getUserId(), $group->getGroupId(), MembershipManager::MEMBERSHIP_TYPE_GROUP_ADMIN));
+		$this->assertTrue($this->manager-> isGroupMember($account->getUserId(), $group->getGroupId(), MembershipManager::MEMBERSHIP_TYPE_GROUP_USER));
 		$result = $this->manager->removeMemberships($account->getId());
 		$this->assertTrue($result);
-		$this->assertCount(2, $this->manager->getGroupAdminAccounts());
-		$this->assertCount(2, $this->manager->getGroupUserAccounts($group->getGroupId()));
-		$this->assertFalse($this->manager->isGroupAdmin($account->getUserId(), $group->getGroupId()));
-		$this->assertFalse($this->manager->isGroupUser($account->getUserId(), $group->getGroupId()));
+		$this->assertCount(2, $this->manager->getGroupMemberAccounts(null, MembershipManager::MEMBERSHIP_TYPE_GROUP_ADMIN));
+		$this->assertCount(2, $this->manager->getGroupMemberAccounts($group->getGroupId(), MembershipManager::MEMBERSHIP_TYPE_GROUP_USER));
+		$this->assertFalse($this->manager->isGroupMember($account->getUserId(), $group->getGroupId(), MembershipManager::MEMBERSHIP_TYPE_GROUP_ADMIN));
+		$this->assertFalse($this->manager->isGroupMember($account->getUserId(), $group->getGroupId(), MembershipManager::MEMBERSHIP_TYPE_GROUP_USER));
 
 		// After removal, remove memberships should return false since no memberships were removed
 		$result = $this->manager->removeMemberships($account->getId());
@@ -421,10 +439,11 @@ class MembershipManagerTest extends TestCase {
 	 * should rise exception
 	 */
 	public function testRemoveIncorrectIds() {
-		$result = $this->manager->getGroupAdminAccounts();
+		$result = $this->manager->getGroupMemberAccounts(null, MembershipManager::MEMBERSHIP_TYPE_GROUP_ADMIN);
+
 		$this->assertEmpty($result);
 		$group = self::getBackendGroup(1);
-		$result = $this->manager->getGroupUserAccounts($group->getGroupId());
+		$result = $this->manager->getGroupMemberAccounts($group->getGroupId(), MembershipManager::MEMBERSHIP_TYPE_GROUP_USER);
 		$this->assertEmpty($result);
 
 		// Check adding as both ADMIN and USER
@@ -433,29 +452,29 @@ class MembershipManagerTest extends TestCase {
 			$this->addUserAndAdmin($account, $group);
 		}
 
-		$this->assertCount(4, $this->manager->getGroupAdminAccounts());
-		$this->assertCount(4, $this->manager->getGroupUserAccounts($group->getGroupId()));
+		$this->assertCount(4, $this->manager->getGroupMemberAccounts(null, MembershipManager::MEMBERSHIP_TYPE_GROUP_ADMIN));
+		$this->assertCount(4, $this->manager->getGroupMemberAccounts($group->getGroupId(), MembershipManager::MEMBERSHIP_TYPE_GROUP_USER));
 
 		// Test that removal with null instead of integer will fail
 		$result = $this->manager->removeMemberships(null);
 		$this->assertFalse($result);
-		$this->assertCount(4, $this->manager->getGroupAdminAccounts());
-		$this->assertCount(4, $this->manager->getGroupUserAccounts($group->getGroupId()));
+		$this->assertCount(4, $this->manager->getGroupMemberAccounts(null, MembershipManager::MEMBERSHIP_TYPE_GROUP_ADMIN));
+		$this->assertCount(4, $this->manager->getGroupMemberAccounts($group->getGroupId(), MembershipManager::MEMBERSHIP_TYPE_GROUP_USER));
 
 		$result = $this->manager->removeGroupMembers(null);
 		$this->assertFalse($result);
-		$this->assertCount(4, $this->manager->getGroupAdminAccounts());
-		$this->assertCount(4, $this->manager->getGroupUserAccounts($group->getGroupId()));
+		$this->assertCount(4, $this->manager->getGroupMemberAccounts(null, MembershipManager::MEMBERSHIP_TYPE_GROUP_ADMIN));
+		$this->assertCount(4, $this->manager->getGroupMemberAccounts($group->getGroupId(), MembershipManager::MEMBERSHIP_TYPE_GROUP_USER));
 
-		$result = $this->manager->removeGroupUser(null, null);
+		$result = $this->manager->removeMembership(null, null, MembershipManager::MEMBERSHIP_TYPE_GROUP_USER);
 		$this->assertFalse($result);
-		$this->assertCount(4, $this->manager->getGroupAdminAccounts());
-		$this->assertCount(4, $this->manager->getGroupUserAccounts($group->getGroupId()));
+		$this->assertCount(4, $this->manager->getGroupMemberAccounts(null, MembershipManager::MEMBERSHIP_TYPE_GROUP_ADMIN));
+		$this->assertCount(4, $this->manager->getGroupMemberAccounts($group->getGroupId(), MembershipManager::MEMBERSHIP_TYPE_GROUP_USER));
 
-		$result = $this->manager->removeGroupAdmin(null, null);
+		$result = $this->manager->removeMembership(null, null, MembershipManager::MEMBERSHIP_TYPE_GROUP_ADMIN);
 		$this->assertFalse($result);
-		$this->assertCount(4, $this->manager->getGroupAdminAccounts());
-		$this->assertCount(4, $this->manager->getGroupUserAccounts($group->getGroupId()));
+		$this->assertCount(4, $this->manager->getGroupMemberAccounts(null, MembershipManager::MEMBERSHIP_TYPE_GROUP_ADMIN));
+		$this->assertCount(4, $this->manager->getGroupMemberAccounts($group->getGroupId(), MembershipManager::MEMBERSHIP_TYPE_GROUP_USER));
 	}
 
 	/**
@@ -474,7 +493,8 @@ class MembershipManagerTest extends TestCase {
 		$this->assertInstanceOf(BackendGroup::class, $group);
 
 		// Add as group user
-		$check = $this->manager->addGroupUser($account->getId(), $group->getId());
+		$check = $this->manager->addMembership($account->getId(), $group->getId(),
+			MembershipManager::MEMBERSHIP_TYPE_GROUP_USER, MembershipManager::MAINTENANCE_TYPE_MANUAL);
 		$this->assertEquals(true, $check);
 
 		$termMapper = new AccountTermMapper(\OC::$server->getDatabaseConnection());
@@ -508,13 +528,15 @@ class MembershipManagerTest extends TestCase {
 		$this->assertInstanceOf(BackendGroup::class, $group1);
 
 		// Add as group user
-		$check = $this->manager->addGroupUser($account->getId(), $group1->getId());
+		$check = $this->manager->addMembership($account->getId(), $group1->getId(),
+			MembershipManager::MEMBERSHIP_TYPE_GROUP_USER, MembershipManager::MAINTENANCE_TYPE_MANUAL);
 		$this->assertEquals(true, $check);
 
 		// This should fail now
 		$thrown = false;
 		try {
-			$this->manager->addGroupUser($account->getId(), $group1->getId());
+			$check = $this->manager->addMembership($account->getId(), $group1->getId(),
+				MembershipManager::MEMBERSHIP_TYPE_GROUP_USER, MembershipManager::MAINTENANCE_TYPE_MANUAL);
 		} catch (\Exception $e) {
 			$thrown = true;
 			$this->assertInstanceOf(UniqueConstraintViolationException::class, $e);
@@ -522,13 +544,16 @@ class MembershipManagerTest extends TestCase {
 		$this->assertTrue($thrown);
 
 		// Add as group admin
-		$check = $this->manager->addGroupAdmin($account->getId(), $group1->getId());
+		$check = $this->manager->addMembership($account->getId(), $group1->getId(),
+			MembershipManager::MEMBERSHIP_TYPE_GROUP_ADMIN, MembershipManager::MAINTENANCE_TYPE_MANUAL);
 		$this->assertEquals(true, $check);
 
 		// This should fail now
 		$thrown = false;
 		try {
-			$this->manager->addGroupAdmin($account->getId(), $group1->getId());
+			$check = $this->manager->addMembership($account->getId(), $group1->getId(),
+				MembershipManager::MEMBERSHIP_TYPE_GROUP_ADMIN, MembershipManager::MAINTENANCE_TYPE_MANUAL);
+
 		} catch (\Exception $e) {
 			$thrown = true;
 			$this->assertInstanceOf(UniqueConstraintViolationException::class, $e);
@@ -568,23 +593,25 @@ class MembershipManagerTest extends TestCase {
 	 */
 	private function addUserAndAdmin($account, $group) {
 		// Add as both group user and group admin
-		$check = $this->manager->addGroupUser($account->getId(), $group->getId());
+		$check = $this->manager->addMembership($account->getId(), $group->getId(),
+			MembershipManager::MEMBERSHIP_TYPE_GROUP_USER, MembershipManager::MAINTENANCE_TYPE_MANUAL);
 		$this->assertEquals(true, $check);
-		$check = $this->manager->addGroupAdmin($account->getId(), $group->getId());
+		$check = $this->manager->addMembership($account->getId(), $group->getId(),
+			MembershipManager::MEMBERSHIP_TYPE_GROUP_ADMIN, MembershipManager::MAINTENANCE_TYPE_MANUAL);
 		$this->assertEquals(true, $check);
 
-		$result = $this->manager->getAdminBackendGroups($account->getUserId());
+		$result = $this->manager->getMemberBackendGroups($account->getUserId(), MembershipManager::MEMBERSHIP_TYPE_GROUP_ADMIN);
 		$this->assertCount(1, $result);
-		$result = $this->manager->getUserBackendGroups($account->getUserId());
+		$result = $this->manager->getMemberBackendGroups($account->getUserId(), MembershipManager::MEMBERSHIP_TYPE_GROUP_USER);
 		$this->assertCount(1, $result);
-		$result = $this->manager->getUserBackendGroupsById($account->getId());
+		$result = $this->manager->getMemberBackendGroupsById($account->getId(), MembershipManager::MEMBERSHIP_TYPE_GROUP_USER);
 		$this->assertCount(1, $result);
 
-		$result = $this->manager->isGroupAdmin($account->getUserId(), $group->getGroupId());
+		$result = $this->manager->isGroupMember($account->getUserId(), $group->getGroupId(), MembershipManager::MEMBERSHIP_TYPE_GROUP_ADMIN);
 		$this->assertEquals(true, $result);
-		$result = $this->manager->isGroupUser($account->getUserId(), $group->getGroupId());
+		$result = $this->manager->isGroupMember($account->getUserId(), $group->getGroupId(), MembershipManager::MEMBERSHIP_TYPE_GROUP_USER);
 		$this->assertEquals(true, $result);
-		$result = $this->manager->isGroupUserById($account->getId(), $group->getId());
+		$result = $this->manager->isGroupMemberById($account->getId(), $group->getId(), MembershipManager::MEMBERSHIP_TYPE_GROUP_USER);
 		$this->assertEquals(true, $result);
 	}
 
@@ -594,21 +621,23 @@ class MembershipManagerTest extends TestCase {
 	 */
 	private function addAdmin($account, $group) {
 		// Add only as group admin in another group
-		$check = $this->manager->addGroupAdmin($account->getId(), $group->getId());
+		$check = $this->manager->addMembership($account->getId(), $group->getId(),
+			MembershipManager::MEMBERSHIP_TYPE_GROUP_ADMIN, MembershipManager::MAINTENANCE_TYPE_MANUAL);
 		$this->assertEquals(true, $check);
 
 		// After adding
-		$result = $this->manager->getAdminBackendGroups($account->getUserId());
+		$result = $this->manager->getMemberBackendGroups($account->getUserId(), MembershipManager::MEMBERSHIP_TYPE_GROUP_ADMIN);
 		$this->assertCount(1, $result);
-		$result = $this->manager->getUserBackendGroups($account->getUserId());
+		$result = $this->manager->getMemberBackendGroups($account->getUserId(), MembershipManager::MEMBERSHIP_TYPE_GROUP_USER);
 		$this->assertCount(0, $result);
-		$result = $this->manager->getUserBackendGroupsById($account->getId());
+		$result = $this->manager->getMemberBackendGroupsById($account->getId(), MembershipManager::MEMBERSHIP_TYPE_GROUP_USER);
 		$this->assertCount(0, $result);
-		$result = $this->manager->isGroupAdmin($account->getUserId(), $group->getGroupId());
+
+		$result = $this->manager->isGroupMember($account->getUserId(), $group->getGroupId(), MembershipManager::MEMBERSHIP_TYPE_GROUP_ADMIN);
 		$this->assertEquals(true, $result);
-		$result = $this->manager->isGroupUser($account->getUserId(), $group->getGroupId());
+		$result = $this->manager->isGroupMember($account->getUserId(), $group->getGroupId(), MembershipManager::MEMBERSHIP_TYPE_GROUP_USER);
 		$this->assertEquals(false, $result);
-		$result = $this->manager->isGroupUserById($account->getId(), $group->getId());
+		$result = $this->manager->isGroupMemberById($account->getId(), $group->getId(), MembershipManager::MEMBERSHIP_TYPE_GROUP_USER);
 		$this->assertEquals(false, $result);
 	}
 
@@ -618,21 +647,23 @@ class MembershipManagerTest extends TestCase {
 	 */
 	private function addUser($account, $group) {
 		// Add only as group user in another group
-		$check = $this->manager->addGroupUser($account->getId(), $group->getId());
+		$check = $this->manager->addMembership($account->getId(), $group->getId(),
+			MembershipManager::MEMBERSHIP_TYPE_GROUP_USER, MembershipManager::MAINTENANCE_TYPE_MANUAL);
 		$this->assertEquals(true, $check);
 
 		// After adding
-		$result = $this->manager->getAdminBackendGroups($account->getUserId());
+		$result = $this->manager->getMemberBackendGroups($account->getUserId(), MembershipManager::MEMBERSHIP_TYPE_GROUP_ADMIN);
 		$this->assertCount(0, $result);
-		$result = $this->manager->getUserBackendGroups($account->getUserId());
+		$result = $this->manager->getMemberBackendGroups($account->getUserId(), MembershipManager::MEMBERSHIP_TYPE_GROUP_USER);
 		$this->assertCount(1, $result);
-		$result = $this->manager->getUserBackendGroupsById($account->getId());
+		$result = $this->manager->getMemberBackendGroupsById($account->getId(), MembershipManager::MEMBERSHIP_TYPE_GROUP_USER);
 		$this->assertCount(1, $result);
-		$result = $this->manager->isGroupAdmin($account->getUserId(), $group->getGroupId());
+
+		$result = $this->manager->isGroupMember($account->getUserId(), $group->getGroupId(), MembershipManager::MEMBERSHIP_TYPE_GROUP_ADMIN);
 		$this->assertEquals(false, $result);
-		$result = $this->manager->isGroupUser($account->getUserId(), $group->getGroupId());
+		$result = $this->manager->isGroupMember($account->getUserId(), $group->getGroupId(), MembershipManager::MEMBERSHIP_TYPE_GROUP_USER);
 		$this->assertEquals(true, $result);
-		$result = $this->manager->isGroupUserById($account->getId(), $group->getId());
+		$result = $this->manager->isGroupMemberById($account->getId(), $group->getId(), MembershipManager::MEMBERSHIP_TYPE_GROUP_USER);
 		$this->assertEquals(true, $result);
 	}
 
@@ -641,26 +672,26 @@ class MembershipManagerTest extends TestCase {
 		for ($i = 1; $i <= 4; $i++) {
 			$group = self::getBackendGroup($i);
 			$this->manager->removeGroupMembers($group->getId());
-			$result = $this->manager->getGroupUserAccounts($group->getGroupId());
+			$result = $this->manager->getGroupMemberAccounts($group->getGroupId(), MembershipManager::MEMBERSHIP_TYPE_GROUP_USER);
 			$this->assertCount(0, $result);
-			$result = $this->manager->getGroupUserAccountsById($group->getId());
+			$result = $this->manager->getGroupMemberAccountsById($group->getId(), MembershipManager::MEMBERSHIP_TYPE_GROUP_USER);
 			$this->assertCount(0, $result);
-			$result = $this->manager->getGroupAdminAccounts($group->getGroupId());
+			$result = $this->manager->getGroupMemberAccounts($group->getGroupId(), MembershipManager::MEMBERSHIP_TYPE_GROUP_ADMIN);
 			$this->assertCount(0, $result);
 		}
 
 		// Verify empty
-		$result = $this->manager->getGroupAdminAccounts();
+		$result = $this->manager->getGroupMemberAccounts(null, MembershipManager::MEMBERSHIP_TYPE_GROUP_ADMIN);
 		$this->assertCount(0, $result);
 
 		// Verify empty
 		for ($i = 1; $i <= 4; $i++) {
 			$account = self::getAccount($i);
-			$result = $this->manager->getAdminBackendGroups($account->getUserId());
+			$result = $this->manager->getMemberBackendGroups($account->getUserId(), MembershipManager::MEMBERSHIP_TYPE_GROUP_ADMIN);
 			$this->assertCount(0, $result);
-			$result = $this->manager->getUserBackendGroups($account->getUserId());
+			$result = $this->manager->getMemberBackendGroups($account->getUserId(), MembershipManager::MEMBERSHIP_TYPE_GROUP_USER);
 			$this->assertCount(0, $result);
-			$result = $this->manager->getUserBackendGroupsById($account->getId());
+			$result = $this->manager->getMemberBackendGroupsById($account->getId(), MembershipManager::MEMBERSHIP_TYPE_GROUP_USER);
 			$this->assertCount(0, $result);
 		}
 	}
