@@ -74,6 +74,7 @@ pipeline:
     environment:
       - PHP_VERSION=${PHP_VERSION}
       - DB_TYPE=${DB_TYPE}
+      - FILES_EXTERNAL_TYPE=${FILES_EXTERNAL_TYPE}
       - ENABLE_COVERAGE=${ENABLE_COVERAGE}
     commands:
       - ./tests/drone/test-phpunit.sh
