@@ -5,6 +5,8 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/).
 
 ## [Unreleased]
+
+## 10.0.5 - 2018-01-23
 ### Added
 - Add php-intl as hard requirement - [#29539](https://github.com/owncloud/core/issues/29539)
 - Optionally show server hostname in status.php - [#29471](https://github.com/owncloud/core/issues/29471)
@@ -420,7 +422,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/).
 - provisioning API now also returns the user's home path: [#26850](https://github.com/owncloud/core/issues/26850)
 - web updater shows link to changelog in admin page: [#26796](https://github.com/owncloud/core/issues/26796)
 
-[Unreleased]: https://github.com/owncloud/core/compare/v10.0.4...stable10
+[Unreleased]: https://github.com/owncloud/core/compare/v10.0.5...stable10
+[10.0.5]: https://github.com/owncloud/core/compare/v10.0.4...v10.0.5
 [10.0.4]: https://github.com/owncloud/core/compare/v10.0.3...v10.0.4
 [10.0.3]: https://github.com/owncloud/core/compare/v10.0.2...v10.0.3
 [10.0.2]: https://github.com/owncloud/core/compare/v10.0.1...v10.0.2
