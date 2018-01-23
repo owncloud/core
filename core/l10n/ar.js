@@ -96,7 +96,6 @@ OC.L10N.register(
     "Shared with you and the group {group} by {owner}" : "شورك معك ومع المجموعة {group} من قبل {owner}",
     "Shared with you by {owner}" : "شورك معك من قبل {owner}",
     "group" : "مجموعة",
-    "remote" : "عن بعد",
     "notify by email" : "الإشعار عن طريق البريد",
     "Unshare" : "إلغاء مشاركة",
     "can share" : "يمكن المشاركة",

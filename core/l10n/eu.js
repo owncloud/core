@@ -128,7 +128,6 @@ OC.L10N.register(
     "Shared with you and the group {group} by {owner}" : "{owner}-k zu eta {group} taldearekin elkarbanatuta",
     "Shared with you by {owner}" : "{owner}-k zurekin elkarbanatuta",
     "group" : "taldea",
-    "remote" : "urrunekoa",
     "notify by email" : "jakinarazi eposta bidez",
     "Unshare" : "Ez elkarbanatu",
     "can share" : "elkarbana dezake",

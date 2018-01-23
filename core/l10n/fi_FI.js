@@ -166,7 +166,6 @@ OC.L10N.register(
     "Shared with you and the group {group} by {owner}" : "Jaettu sinun ja ryhmän {group} kanssa käyttäjän {owner} toimesta",
     "Shared with you by {owner}" : "Jaettu kanssasi käyttäjän {owner} toimesta",
     "group" : "ryhmä",
-    "remote" : "etä",
     "notify by email" : "ilmoita sähköpostitse",
     "Unshare" : "Peru jakaminen",
     "can share" : "jaa",

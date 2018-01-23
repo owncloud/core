@@ -141,7 +141,6 @@ OC.L10N.register(
     "Shared with you and the group {group} by {owner}" : "Dibagikan dengan anda dan grup {group} oleh {owner}",
     "Shared with you by {owner}" : "Dibagikan dengan anda oleh {owner}",
     "group" : "grup",
-    "remote" : "remote",
     "notify by email" : "notifikasi via email",
     "Unshare" : "Batalkan berbagi",
     "can share" : "dapat berbagi",

@@ -167,7 +167,6 @@ OC.L10N.register(
     "Shared with you and the group {group} by {owner}" : "Shared with you and the group {group} by {owner}",
     "Shared with you by {owner}" : "Shared with you by {owner}",
     "group" : "group",
-    "remote" : "remote",
     "notify by email" : "notify by email",
     "Unshare" : "Unshare",
     "can share" : "can share",

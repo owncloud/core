@@ -189,7 +189,6 @@
     "Shared with you and the group {group} by {owner}" : "ได้แชร์ให้กับคุณ และกลุ่ม {group} โดย {owner}",
     "Shared with you by {owner}" : "ถูกแชร์ให้กับคุณโดย {owner}",
     "group" : "กลุ่มผู้ใช้งาน",
-    "remote" : "รีโมท",
     "notify by email" : "แจ้งเตือนทางอีเมล",
     "Unshare" : "ยกเลิกการแชร์",
     "can share" : "สามารถแชร์ได้",

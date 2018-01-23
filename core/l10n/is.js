@@ -180,7 +180,6 @@ OC.L10N.register(
     "Shared with you and the group {group} by {owner}" : "Deilt með þér og hópnum {group} af {owner}",
     "Shared with you by {owner}" : "Deilt með þér af {owner}",
     "group" : "hópur",
-    "remote" : "fjartengt",
     "notify by email" : "tilkynna með tölvupósti",
     "Unshare" : "Hætta deilingu",
     "can share" : "getur deilt",

@@ -157,7 +157,6 @@ OC.L10N.register(
     "Shared with you and the group {group} by {owner}" : " {owner} опублікував для Вас та для групи {group}",
     "Shared with you by {owner}" : "{owner} опублікував для Вас",
     "group" : "група",
-    "remote" : "Віддалений",
     "notify by email" : "повідомити по Email",
     "Unshare" : "Закрити доступ",
     "can share" : "може ділитися з іншими",

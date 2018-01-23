@@ -139,7 +139,6 @@ OC.L10N.register(
     "Shared with you and the group {group} by {owner}" : "Distribuie cu tine si grupul {group} de {owner}",
     "Shared with you by {owner}" : "Distribuie cu tine de {owner}",
     "group" : "grup",
-    "remote" : "de la distanță",
     "notify by email" : "notifică prin email",
     "Unshare" : "Anulare partajare",
     "can share" : "se poate partaja",

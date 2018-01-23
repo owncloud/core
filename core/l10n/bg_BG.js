@@ -179,7 +179,6 @@ OC.L10N.register(
     "Shared with you and the group {group} by {owner}" : "Споделено от {owner} с Вас и групата {group} .",
     "Shared with you by {owner}" : "Споделено с Вас от {owner}.",
     "group" : "група",
-    "remote" : "отдалечен",
     "notify by email" : "уведомяване по електронна поща",
     "Unshare" : "Премахване на споделяне",
     "can share" : "може да споделя",

@@ -82,7 +82,6 @@ OC.L10N.register(
     "Shared with you and the group {group} by {owner}" : "ನಿಮಗೆ ಮತ್ತು {group} ಗುಂಪಿನೂಂದಿಗೆ {owner} ಹಂಚಿಕೊಂಡಿದ್ದಾರೆ",
     "Shared with you by {owner}" : "﻿ನಿಮ್ಮೊಂದಿಗೆ {owner} ಹಂಚಿಕೊಂಡಿದ್ದಾರೆ",
     "group" : "﻿ಗುಂಪು",
-    "remote" : "ಆಚೆಯ",
     "notify by email" : "﻿ಇ-ಅಂಚೆ ಮೂಲಕ ತಿಳಿಸಲು",
     "Unshare" : "ಹಂಚಿಕೆಯನ್ನು ಹಿಂತೆಗೆ",
     "can share" : "﻿ಹಂಚಿಕೊಳ್ಳಬಹುದು",

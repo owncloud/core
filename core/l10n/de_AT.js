@@ -152,7 +152,6 @@ OC.L10N.register(
     "Shared with you and the group {group} by {owner}" : "{owner} hat dies mit Dir und der Gruppe {group} geteilt",
     "Shared with you by {owner}" : "{owner} hat dies mit Dir geteilt",
     "group" : "Gruppe",
-    "remote" : "Entfernte Freigabe",
     "notify by email" : "per E-Mail benachrichtigen",
     "Unshare" : "Freigabe aufheben",
     "can share" : "kann teilen",

@@ -178,7 +178,6 @@
     "Shared with you and the group {group} by {owner}" : "Condiviso con te e con il gruppo {group} da {owner}",
     "Shared with you by {owner}" : "Condiviso con te da {owner}",
     "group" : "gruppo",
-    "remote" : "remota",
     "notify by email" : "notifica tramite email",
     "Unshare" : "Rimuovi condivisione",
     "can share" : "può condividere",

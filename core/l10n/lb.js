@@ -130,7 +130,6 @@ OC.L10N.register(
     "Shared with you and the group {group} by {owner}" : "Gedeelt mat dir an der Grupp {group} vum {owner}",
     "Shared with you by {owner}" : "Gedeelt mat dir vum {owner}",
     "group" : "Grupp",
-    "remote" : "Op Distanz",
     "notify by email" : "via e-mail Bescheed ginn",
     "Unshare" : "Net méi deelen",
     "can share" : "kann deelen",

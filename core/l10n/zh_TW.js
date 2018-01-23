@@ -146,7 +146,6 @@ OC.L10N.register(
     "Shared with you and the group {group} by {owner}" : "由 {owner} 分享給您和 {group}",
     "Shared with you by {owner}" : "{owner} 已經和您分享",
     "group" : "群組",
-    "remote" : "遠端",
     "notify by email" : "以 email 通知",
     "Unshare" : "取消分享",
     "can share" : "可分享",

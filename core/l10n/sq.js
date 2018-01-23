@@ -191,7 +191,6 @@ OC.L10N.register(
     "Shared with you and the group {group} by {owner}" : "Ndarë me ju dhe me grupin {group} nga {owner}",
     "Shared with you by {owner}" : "Ndarë me ju nga {owner}",
     "group" : "grup",
-    "remote" : "i largët",
     "notify by email" : "njofto me email",
     "Unshare" : "Hiqe ndarjen",
     "can share" : "mund të ndajnë",

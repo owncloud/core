@@ -156,7 +156,6 @@ OC.L10N.register(
     "Shared with you and the group {group} by {owner}" : "Met u en die groep {group} gedeel deur {owner}",
     "Shared with you by {owner}" : "Met u gedeel deur {owner}",
     "group" : "groep",
-    "remote" : "afstand",
     "notify by email" : "laat weet d.m.v. e-pos",
     "Unshare" : "Herroep deel",
     "can share" : "kan deel",

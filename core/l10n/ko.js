@@ -191,7 +191,6 @@ OC.L10N.register(
     "Shared with you and the group {group} by {owner}" : "{owner} 님이 여러분 및 그룹 {group}와(과) 공유 중",
     "Shared with you by {owner}" : "{owner} 님이 공유 중",
     "group" : "그룹",
-    "remote" : "원격",
     "notify by email" : "이메일로 알림",
     "Unshare" : "공유 해제",
     "can share" : "공유 가능",

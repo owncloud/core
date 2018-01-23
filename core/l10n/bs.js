@@ -98,7 +98,6 @@ OC.L10N.register(
     "Shared with you and the group {group} by {owner}" : "Dijeljeno s vama i grupom {group} vlasnika {owner}",
     "Shared with you by {owner}" : "Podijeljeno sa vama od {owner}",
     "group" : "grupa",
-    "remote" : "daljinski",
     "notify by email" : "Obavijesti e-poštom",
     "Unshare" : "Prestani dijeliti",
     "can share" : "može dijeliti",

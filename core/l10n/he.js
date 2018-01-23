@@ -184,7 +184,6 @@ OC.L10N.register(
     "Shared with you and the group {group} by {owner}" : "שותף אתך ועם הקבוצה {group} שבבעלות {owner}",
     "Shared with you by {owner}" : "שותף אתך על ידי {owner}",
     "group" : "קבוצה",
-    "remote" : "נשלט מרחוק",
     "notify by email" : "קבלת הודעה בדואר אלקטרוני",
     "Unshare" : "הסר שיתוף",
     "can share" : "ניתן לשתף",

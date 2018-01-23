@@ -180,7 +180,6 @@ OC.L10N.register(
     "Shared with you and the group {group} by {owner}" : "Διαμοιράστηκε με σας και με την ομάδα {group} του {owner}",
     "Shared with you by {owner}" : "Διαμοιράστηκε με σας από τον {owner}",
     "group" : "ομάδα",
-    "remote" : "απομακρυσμένα",
     "notify by email" : "ειδοποίηση με email",
     "Unshare" : "Διακοπή διαμοιρασμού",
     "can share" : "δυνατότητα διαμοιρασμού",
