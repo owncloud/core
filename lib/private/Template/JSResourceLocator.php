@@ -32,24 +32,31 @@ class JSResourceLocator extends ResourceLocator {
 	 */
 	public function doFind($script) {
 		$themeDirectory = $this->theme->getDirectory();
+		$baseDirectory = $this->theme->getBaseDirectory();
+		$webroot = null;
+		if ($baseDirectory === '') {
+			$baseDirectory = $this->serverroot;
+		} else {
+			$webroot = rtrim($this->theme->getWebPath(), $themeDirectory);
+		}
 
 		if (strpos($script, '/l10n/') !== false) {
 			// For language files we try to load them all, so themes can overwrite
 			// single l10n strings without having to translate all of them.
 			$found = 0;
 			$found += $this->appendOnceIfExist($this->serverroot, 'core/'.$script.'.js');
-			$found += $this->appendOnceIfExist($this->serverroot, $themeDirectory.'/core/'.$script.'.js');
+			$found += $this->appendOnceIfExist($baseDirectory, $themeDirectory.'/core/'.$script.'.js', $webroot);
 			$found += $this->appendOnceIfExist($this->serverroot, $script.'.js');
-			$found += $this->appendOnceIfExist($this->serverroot, $themeDirectory.'/'.$script.'.js');
-			$found += $this->appendOnceIfExist($this->serverroot, $themeDirectory.'/apps/'.$script.'.js');
+			$found += $this->appendOnceIfExist($baseDirectory, $themeDirectory.'/'.$script.'.js', $webroot);
+			$found += $this->appendOnceIfExist($baseDirectory, $themeDirectory.'/apps/'.$script.'.js', $webroot);
 
 			if ($found) {
 				return;
 			}
-		} else if ($this->appendOnceIfExist($this->serverroot, $themeDirectory.'/apps/'.$script.'.js')
-			|| $this->appendOnceIfExist($this->serverroot, $themeDirectory.'/'.$script.'.js')
+		} else if ($this->appendOnceIfExist($baseDirectory, $themeDirectory.'/apps/'.$script.'.js', $webroot)
+			|| $this->appendOnceIfExist($baseDirectory, $themeDirectory.'/'.$script.'.js', $webroot)
 			|| $this->appendOnceIfExist($this->serverroot, $script.'.js')
-			|| $this->appendOnceIfExist($this->serverroot, $themeDirectory.'/core/'.$script.'.js')
+			|| $this->appendOnceIfExist($baseDirectory, $themeDirectory.'/core/'.$script.'.js', $webroot)
 			|| $this->appendOnceIfExist($this->serverroot, 'core/'.$script.'.js')
 		) {
 			return;
