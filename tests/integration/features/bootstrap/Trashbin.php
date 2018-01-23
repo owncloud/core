@@ -27,13 +27,12 @@ require __DIR__ . '/../../../../lib/composer/autoload.php';
 trait Trashbin {
 
 	/**
-	 * @When user :user empties the trashbin
+	 * @When user :user empties the trashbin using the API
 	 * @param string $user user
 	 */
 	public function emptyTrashbin($user) {
-		$this->asAn($user);
 		$body = new \Behat\Gherkin\Node\TableNode([['allfiles', 'true'], ['dir', '%2F']]);
-		$this->sendingToWithDirectUrl('POST', "/index.php/apps/files_trashbin/ajax/delete.php", $body);
+		$this->sendingToWithDirectUrl($user, 'POST', "/index.php/apps/files_trashbin/ajax/delete.php", $body);
 		$this->theHTTPStatusCodeShouldBe('200');
 	}
 
@@ -45,9 +44,8 @@ trait Trashbin {
 	 * @return array response
 	 */
 	public function listTrashbinFolder($user, $path) {
-		$this->asAn($user);
 		$params = '?dir=' . rawurlencode('/' . trim($path, '/'));
-		$this->sendingToWithDirectUrl('GET', '/index.php/apps/files_trashbin/ajax/list.php' . $params, null);
+		$this->sendingToWithDirectUrl($user, 'GET', '/index.php/apps/files_trashbin/ajax/list.php' . $params, null);
 		$this->theHTTPStatusCodeShouldBe('200');
 
 
@@ -57,9 +55,9 @@ trait Trashbin {
 	}
 
 	/**
-	 * @Then /^as "([^"]*)" the (file|folder|entry) "([^"]*)" exists in trash$/
+	 * @Then /^as "([^"]*)" the (file|folder|entry) "([^"]*)" should exist in trash$/
 	 * @param string $user
-	 * @param string $entryText
+	 * @param string $entryText unused
 	 * @param string $path
 	 */
 	public function asTheFileOrFolderExistsInTrash($user, $entryText, $path) {
@@ -97,7 +95,12 @@ trait Trashbin {
 		PHPUnit_Framework_Assert::assertTrue($found);
 	}
 
-	/*Function to check if an element is in trashbin*/
+	/**
+	 * Function to check if an element is in trashbin
+	 * @param string $user
+	 * @param string $originalPath
+	 * @return bool
+	 */
 	private function isInTrash($user, $originalPath) {
 		$listing = $this->listTrashbinFolder($user, null);
 		$originalPath = trim($originalPath, '/');
@@ -115,13 +118,20 @@ trait Trashbin {
 		return $found;
 	}
 
+	/**
+	 * @param string $user
+	 * @param string $elementTrashID
+	 */
 	private function sendUndeleteRequest($user, $elementTrashID) {
-		$this->asAn($user);
 		$body = new \Behat\Gherkin\Node\TableNode([['files',  "[\"$elementTrashID\"]"], ['dir', '/']]);
-		$this->sendingToWithDirectUrl('POST', "/index.php/apps/files_trashbin/ajax/undelete.php", $body);
+		$this->sendingToWithDirectUrl($user, 'POST', "/index.php/apps/files_trashbin/ajax/undelete.php", $body);
 		$this->theHTTPStatusCodeShouldBe('200');
 	}
 
+	/**
+	 * @param string $user
+	 * @param string $originalPath
+	 */
 	private function restoreElement($user, $originalPath) {
 		$listing = $this->listTrashbinFolder($user, null);
 		$originalPath = trim($originalPath, '/');
@@ -138,9 +148,9 @@ trait Trashbin {
 	}
 
 	/**
-	 * @Given /^as "([^"]*)" the (file|folder|entry) with original path "([^"]*)" is restored$/
+	 * @Given /^user "([^"]*)" restores the (file|folder|entry) with original path "([^"]*)" using the API$/
 	 * @param string $user
-	 * @param string $entryText
+	 * @param string $entryText unused
 	 * @param string $originalPath
 	 */
 	public function elementInTrashIsRestored($user, $entryText, $originalPath) {
@@ -150,9 +160,9 @@ trait Trashbin {
 	}
 
 	/**
-	 * @Then /^as "([^"]*)" the (file|folder|entry) with original path "([^"]*)" exists in trash$/
+	 * @Then /^as "([^"]*)" the (file|folder|entry) with original path "([^"]*)" should exist in trash$/
 	 * @param string $user
-	 * @param string $entryText
+	 * @param string $entryText unused
 	 * @param string $originalPath
 	 */
 	public function elementIsInTrashCheckingOriginalPath($user, $entryText, $originalPath) {
@@ -161,7 +171,7 @@ trait Trashbin {
 	}
 
 	/**
-	 * @Then /^as "([^"]*)" the (file|folder|entry) with original path "([^"]*)" does not exist in trash$/
+	 * @Then /^as "([^"]*)" the (file|folder|entry) with original path "([^"]*)" should not exist in trash$/
 	 * @param string $user
 	 * @param string $entryText
 	 * @param string $originalPath
@@ -174,6 +184,7 @@ trait Trashbin {
 	/**
 	 * Finds the first trashed entry matching the given name
 	 *
+	 * @param string $user
 	 * @param string $name
 	 * @return string|null real entry name with timestamp suffix or null if not found
 	 */
