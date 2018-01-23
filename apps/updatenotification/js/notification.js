@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2015 ownCloud Inc
+ * Copyright (c) 2018, ownCloud GmbH
  *
  * @author Morris Jobke <hey@morrisjobke.de>
  *

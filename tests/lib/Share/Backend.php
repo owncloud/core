@@ -3,7 +3,7 @@
 * ownCloud
 *
 * @author Michael Gapczynski
-* @copyright 2012 Michael Gapczynski mtgap@owncloud.com
+* @copyright Copyright (c) 2012 Michael Gapczynski mtgap@owncloud.com
 *
 * This library is free software; you can redistribute it and/or
 * modify it under the terms of the GNU AFFERO GENERAL PUBLIC LICENSE

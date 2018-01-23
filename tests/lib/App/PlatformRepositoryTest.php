@@ -2,7 +2,7 @@
 
 /**
  * @author Thomas Müller
- * @copyright 2014 Thomas Müller deepdiver@owncloud.com
+ * @copyright Copyright (c) 2014 Thomas Müller deepdiver@owncloud.com
  * later.
  * See the COPYING-README file.
  */

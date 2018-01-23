@@ -3,7 +3,7 @@
 # ownCloud
 #
 # @author Artur Neumann
-# @copyright 2017 Artur Neumann info@individual-it.net
+# @copyright Copyright (c) 2017 Artur Neumann info@individual-it.net
 #
 RED='\033[0;31m'
 BLUE='\033[0;34m'
