@@ -34,9 +34,9 @@ class SearchResultSorterTest extends \Test\TestCase {
 		];
 
 		usort($result, [$sorter, 'sort']);
-		$this->assertTrue($result[0]['foobar'] === 'Linus');
-		$this->assertTrue($result[1]['foobar'] === 'linux');
-		$this->assertTrue($result[2]['foobar'] === 'Bicyclerepairwoman');
-		$this->assertTrue($result[3]['foobar'] === 'woot');
+		$this->assertSame('Linus', $result[0]['foobar']);
+		$this->assertSame('linux', $result[1]['foobar']);
+		$this->assertSame('Bicyclerepairwoman', $result[2]['foobar']);
+		$this->assertSame('woot', $result[3]['foobar']);
 	}
 }

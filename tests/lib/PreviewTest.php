@@ -151,9 +151,7 @@ class PreviewTest extends TestCase {
 		$fileId = $fileInfo['fileid'];
 		$thumbCacheFile = $this->buildCachePath($fileId, $x, $y, true);
 
-		$this->assertSame(
-			true, $this->rootView->file_exists($thumbCacheFile), "$thumbCacheFile \n"
-		);
+		$this->assertTrue($this->rootView->file_exists($thumbCacheFile), "$thumbCacheFile \n");
 
 		$preview->deletePreview();
 
@@ -349,9 +347,7 @@ class PreviewTest extends TestCase {
 			$sampleFileId, $this->maxPreviewWidth, $this->maxPreviewHeight, true, '-max'
 		);
 
-		$this->assertSame(
-			true, $this->rootView->file_exists($maxThumbCacheFile), "$maxThumbCacheFile \n"
-		);
+		$this->assertTrue($this->rootView->file_exists($maxThumbCacheFile), "$maxThumbCacheFile \n");
 
 		// We check the dimensions of the file we've just stored
 		$maxPreview = imagecreatefromstring($this->rootView->file_get_contents($maxThumbCacheFile));
@@ -504,9 +500,7 @@ class PreviewTest extends TestCase {
 		$thumbCacheFile = $this->buildCachePath(
 			$this->sampleFileId, $previewWidth, $previewHeight, false, $postfix
 		);
-		$this->assertSame(
-			false, $this->rootView->file_exists($thumbCacheFile), "$thumbCacheFile \n"
-		);
+		$this->assertFalse($this->rootView->file_exists($thumbCacheFile), "$thumbCacheFile \n");
 
 		$preview->deleteAllPreviews();
 	}
@@ -615,9 +609,7 @@ class PreviewTest extends TestCase {
 			$fileId, $previewWidth, $previewHeight, true, $postfix
 		);
 
-		$this->assertSame(
-			true, $this->rootView->file_exists($thumbCacheFile), "$thumbCacheFile \n"
-		);
+		$this->assertTrue($this->rootView->file_exists($thumbCacheFile), "$thumbCacheFile \n");
 	}
 
 	/**
