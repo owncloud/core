@@ -52,9 +52,16 @@ class CSSResourceLocator extends ResourceLocator {
 	 */
 	public function doFindTheme($style) {
 		$themeDirectory = $this->theme->getDirectory();
+		$baseDirectory = $this->theme->getBaseDirectory();
+		$webroot = null;
+		if ($baseDirectory === '') {
+			$baseDirectory = $this->serverroot;
+		} else {
+			$webroot = rtrim($this->theme->getWebPath(), $themeDirectory);
+		}
 
-		$this->appendOnceIfExist($this->serverroot, $themeDirectory . '/apps/' . $style . '.css')
-			|| $this->appendOnceIfExist($this->serverroot, $themeDirectory . '/' . $style . '.css')
-			|| $this->appendOnceIfExist($this->serverroot, $themeDirectory . '/core/' . $style . '.css');
+		$this->appendOnceIfExist($baseDirectory, $themeDirectory . '/apps/' . $style . '.css', $webroot)
+			|| $this->appendOnceIfExist($baseDirectory, $themeDirectory . '/' . $style . '.css', $webroot)
+			|| $this->appendOnceIfExist($baseDirectory, $themeDirectory . '/core/' . $style . '.css', $webroot);
 	}
 }

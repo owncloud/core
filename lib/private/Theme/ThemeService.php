@@ -76,8 +76,29 @@ class ThemeService implements IThemeService {
 	 * @return Theme
 	 */
 	private function makeTheme($themeName, $appTheme = true, Theme $theme = null) {
-		$directory = $this->getDirectory($themeName, $appTheme);
-		$webPath = $this->getWebPath($themeName, $appTheme);
+		$baseDirectory = '';
+		$directory = '';
+		$webPath = '';
+		if ($themeName !== '') {
+			if ($appTheme) {
+				$themeDirectory = \OC_App::getAppPath($themeName);
+				if (strpos($themeDirectory, \OC::$SERVERROOT)===0) {
+					$directory = substr($themeDirectory, strlen(\OC::$SERVERROOT) + 1);
+				} else {
+					foreach (\OC::$APPSROOTS as $appRoot) {
+						if (strpos($themeDirectory, $appRoot['path'])===0) {
+							$baseDirectory = $appRoot['path'];
+							$directory = substr($themeDirectory, strlen($appRoot['path']) + 1);
+						}
+					}
+				}
+
+				$webPath =  \OC_App::getAppWebPath($themeName);
+			} else {
+				$directory = 'themes/' . $themeName;
+				$webPath = '/themes/' . $themeName;
+			}
+		}
 
 		if (is_null($theme)) {
 			$theme = new Theme(
@@ -90,41 +111,9 @@ class ThemeService implements IThemeService {
 			$theme->setDirectory($directory);
 			$theme->setWebPath($webPath);
 		}
+		$theme->setBaseDirectory($baseDirectory);
 
 		return $theme;
-	}
-
-	/**
-	 * @param string $themeName
-	 * @param bool $appTheme
-	 * @return string
-	 */
-	private function getDirectory($themeName, $appTheme = true) {
-		if ($themeName !== '') {
-			if ($appTheme) {
-				return substr(\OC_App::getAppPath($themeName), strlen(\OC::$SERVERROOT) + 1);
-			}
-			return 'themes/' . $themeName;
-		}
-
-		return '';
-	}
-
-	/**
-	 * @param $themeName
-	 * @param bool $appTheme
-	 * @return false|string
-	 */
-	private function getWebPath($themeName, $appTheme = true) {
-		if ($themeName !== '') {
-			if ($appTheme) {
-				$appWebPath = \OC_App::getAppWebPath($themeName);
-				return $appWebPath ? $appWebPath : '';
-			}
-			return '/themes/' . $themeName;
-		}
-
-		return '';
 	}
 
 	/**
