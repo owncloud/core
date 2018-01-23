@@ -555,7 +555,7 @@ class ManagerTest extends \Test\TestCase {
 		$this->assertFalse($this->invokePrivate($this->manager, 'passwordMustBeEnforced', [\OCP\Constants::PERMISSION_READ]));
 	}
 
-	public function testPasswordMustBeEnforcedForReadWrite() {
+	public function testPasswordMustBeEnforcedForReadWriteNotEnforced() {
 		$this->config->method('getAppValue')->will($this->returnValueMap([
 			['core', 'shareapi_enforce_links_password_read_only', 'no', 'yes'],
 			['core', 'shareapi_enforce_links_password_read_write', 'no', 'no'],
@@ -565,7 +565,7 @@ class ManagerTest extends \Test\TestCase {
 		$this->assertFalse($this->invokePrivate($this->manager, 'passwordMustBeEnforced', [\OCP\Constants::PERMISSION_ALL]));
 	}
 
-	public function testPasswordMustBeEnforcedForWriteOnly() {
+	public function testPasswordMustBeEnforcedForWriteOnlyNotEnforced() {
 		$this->config->method('getAppValue')->will($this->returnValueMap([
 			['core', 'shareapi_enforce_links_password_read_only', 'no', 'yes'],
 			['core', 'shareapi_enforce_links_password_read_write', 'no', 'yes'],

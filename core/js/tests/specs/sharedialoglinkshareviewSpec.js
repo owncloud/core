@@ -238,6 +238,7 @@ describe('OC.Share.ShareDialogLinkShareView', function() {
 		var sendMailStub;
 		var sendMailDeferred;
 		var isMailEnabledStub;
+		var isPublicUploadEnabledStub;
 
 		beforeEach(function() {
 			saveStub = sinon.stub(OC.Share.ShareModel.prototype, 'save');
@@ -251,6 +252,9 @@ describe('OC.Share.ShareDialogLinkShareView', function() {
 			sendMailStub.restore();
 			isMailEnabledStub.restore();
 			sendMailDeferred = null;
+			if (isPublicUploadEnabledStub) {
+				isPublicUploadEnabledStub.restore();
+			}
 		});
 
 		it('reads values from the fields and saves', function() {
@@ -342,8 +346,35 @@ describe('OC.Share.ShareDialogLinkShareView', function() {
 			expect(view.$('.error-message-global').hasClass('hidden')).toEqual(false);
 			expect(view.$('.error-message-global').text()).toEqual('Some error');
 		});
-		it('displays inline error when password enforced but missing', function() {
-			configModel.set('enforcePasswordForPublicLink', true);
+		it('displays inline error when password enforced for read-only but missing', function() {
+			isPublicUploadEnabledStub = sinon.stub(configModel, 'isPublicUploadEnabled').returns(true);
+			configModel.set('enforceLinkPasswordReadOnly', true);
+			view.render();
+			view.$('#sharingDialogAllowPublicRead-' + view.cid).prop('checked', true)
+			var handler = sinon.stub();
+			view.on('saved', handler);
+			view._save();
+			expect(handler.notCalled).toEqual(true);
+
+			expect(view.$('.linkPassText').next('.error-message').hasClass('hidden')).toEqual(false);
+		});
+		it('displays inline error when password enforced for read & write but missing', function() {
+			isPublicUploadEnabledStub = sinon.stub(configModel, 'isPublicUploadEnabled').returns(true);
+			configModel.set('enforceLinkPasswordReadWrite', true);
+			view.render();
+			view.$('#sharingDialogAllowPublicReadWrite-' + view.cid).prop('checked', true)
+			var handler = sinon.stub();
+			view.on('saved', handler);
+			view._save();
+			expect(handler.notCalled).toEqual(true);
+
+			expect(view.$('.linkPassText').next('.error-message').hasClass('hidden')).toEqual(false);
+		});
+		it('displays inline error when password enforced for write-only but missing', function() {
+			isPublicUploadEnabledStub = sinon.stub(configModel, 'isPublicUploadEnabled').returns(true);
+			configModel.set('enforceLinkPasswordWriteOnly', true);
+			view.render();
+			view.$('#sharingDialogAllowPublicUpload-' + view.cid).prop('checked', true)
 			var handler = sinon.stub();
 			view.on('saved', handler);
 			view._save();

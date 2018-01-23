@@ -302,7 +302,7 @@ class ApiTest extends TestCase {
 	function testEnfoceLinkPassword() {
 
 		$appConfig = \OC::$server->getAppConfig();
-		$appConfig->setValue('core', 'shareapi_enforce_links_password', 'yes');
+		$appConfig->setValue('core', 'shareapi_enforce_links_password_read_only', 'yes');
 
 		// don't allow to share link without a password
 		$data['path'] = $this->folder;
@@ -361,7 +361,7 @@ class ApiTest extends TestCase {
 		$result = $ocs->deleteShare($data['id']);
 		$this->assertTrue($result->succeeded());
 
-		$appConfig->setValue('core', 'shareapi_enforce_links_password', 'no');
+		$appConfig->setValue('core', 'shareapi_enforce_links_password_read_only', 'no');
 	}
 
 	/**
