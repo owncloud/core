@@ -56,7 +56,7 @@ class SecurityWarningTest extends \Test\TestCase {
 
 	public function testGetPriority() {
 		$this->assertInternalType('int', $this->panel->getPriority());
-		$this->assertTrue($this->panel->getPriority() > 100);
+		$this->assertGreaterThan(100, $this->panel->getPriority());
 	}
 
 	public function testGetPanel() {
