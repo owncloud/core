@@ -21,67 +21,126 @@ trait Provisioning {
 	private $createdGroups = [];
 
 	/**
-	 * @Given /^user "([^"]*)" exists$/
+	 * @When /^the administrator creates the user "([^"]*)" using the API$/
+	 * @Given /^user "([^"]*)" has been created$/
 	 * @param string $user
 	 */
-	public function assureUserExists($user) {
+	public function adminCreatesUserUsingTheAPI($user) {
 		if ( !$this->userExists($user) ) {
 			$previous_user = $this->currentUser;
 			$this->currentUser = $this->getAdminUserName();
-			$this->creatingTheUser($user);
+			$this->createTheUserUsingTheAPI($user);
 			$this->currentUser = $previous_user;
 		}
 		PHPUnit_Framework_Assert::assertTrue($this->userExists($user));
 	}
 
 	/**
-	 * @Then /^user "([^"]*)" already exists$/
+	 * @Given /^user "([^"]*)" exists$/
+	 * @param string $user
+	 * @deprecated This step is not according to the latest standard - core usages have been changed
+	 */
+	public function assureUserExists($user) {
+		$this->adminCreatesUserUsingTheAPI($user);
+	}
+
+	/**
+	 * @Then /^user "([^"]*)" should exist$/
 	 * @param string $user
 	 */
-	public function userAlreadyExists($user) {
+	public function userShouldExist($user) {
 		PHPUnit_Framework_Assert::assertTrue($this->userExists($user));
 		$this->rememberTheUser($user);
 	}
 
 	/**
-	 * @Then /^user "([^"]*)" does not already exist$/
+	 * @Then /^user "([^"]*)" already exists$/
+	 * @param string $user
+	 * @deprecated This step is not according to the latest standard - core usages have been changed
+	 */
+	public function userAlreadyExists($user) {
+		$this->userShouldExist($user);
+	}
+
+	/**
+	 * @Then /^user "([^"]*)" should not exist$/
 	 * @param string $user
 	 */
-	public function userDoesNotAlreadyExist($user) {
+	public function userShouldNotExist($user) {
 		PHPUnit_Framework_Assert::assertFalse($this->userExists($user));
 	}
 
 	/**
-	 * @Then /^group "([^"]*)" already exists$/
+	 * @Then /^user "([^"]*)" does not already exist$/
+	 * @param string $user
+	 * @deprecated This step is not according to the latest standard - core usages have been changed
+	 */
+	public function userDoesNotAlreadyExist($user) {
+		$this->userShouldNotExist($user);
+	}
+
+	/**
+	 * @Then /^group "([^"]*)" should exist$/
 	 * @param string $group
 	 */
-	public function groupAlreadyExists($group) {
+	public function groupShouldExist($group) {
 		PHPUnit_Framework_Assert::assertTrue($this->groupExists($group));
 		$this->rememberTheGroup($group);
 	}
 
 	/**
-	 * @Then /^group "([^"]*)" does not already exist$/
+	 * @Then /^group "([^"]*)" already exists$/
+	 * @param string $group
+	 * @deprecated This step is not according to the latest standard - core usages have been changed
+	 */
+	public function groupAlreadyExists($group) {
+		$this->groupShouldExist($group);
+	}
+
+	/**
+	 * @Then /^group "([^"]*)" should not exist$/
 	 * @param string $group
 	 */
-	public function groupDoesNotAlreadyExist($group) {
+	public function groupShouldNotExist($group) {
 		PHPUnit_Framework_Assert::assertFalse($this->groupExists($group));
 	}
 
 	/**
-	 * @Given /^user "([^"]*)" does not exist$/
+	 * @Then /^group "([^"]*)" does not already exist$/
+	 * @param string $group
+	 * @deprecated This step is not according to the latest standard - core usages have been changed
+	 */
+	public function groupDoesNotAlreadyExist($group) {
+		$this->groupShouldNotExist($group);
+	}
+
+	/**
+	 * @When /^the administrator deletes user "([^"]*)" using the API$/
+	 * @Given /^user "([^"]*)" has been deleted$/
 	 * @param string $user
 	 */
-	public function assureUserDoesNotExist($user) {
+	public function adminDeletesUserUsingTheAPI($user) {
 		if ($this->userExists($user)) {
 			$previous_user = $this->currentUser;
 			$this->currentUser = $this->getAdminUserName();
-			$this->deletingTheUser($user);
+			$this->deleteTheUserUsingTheAPI($user);
 			$this->currentUser = $previous_user;
 		}
 		PHPUnit_Framework_Assert::assertFalse($this->userExists($user));
 	}
 
+	/**
+	 * @Given /^user "([^"]*)" does not exist$/
+	 * @param string $user
+	 * @deprecated This step is not according to the latest standard - core usages have been changed
+	 */
+	public function assureUserDoesNotExist($user) {
+		$this->adminDeletesUserUsingTheAPI($user);
+	}
+
+	/**
+	 * @param string $user
+	 */
 	public function rememberTheUser($user) {
 		if ($this->currentServer === 'LOCAL') {
 			$this->createdUsers[$user] = $user;
@@ -90,7 +149,10 @@ trait Provisioning {
 		}
 	}
 
-	public function creatingTheUser($user) {
+	/**
+	 * @param string $user
+	 */
+	public function createTheUserUsingTheAPI($user) {
 		$fullUrl = $this->baseUrl . "v{$this->apiVersion}.php/cloud/users";
 		$client = new Client();
 		$options = [];
@@ -115,38 +177,54 @@ trait Provisioning {
 		$client->send($client->createRequest('GET', $url, $options2));
 	}
 
+	/**
+	 * @param string $user
+	 */
 	public function createUser($user) {
 		$previous_user = $this->currentUser;
 		$this->currentUser = $this->getAdminUserName();
-		$this->creatingTheUser($user);
+		$this->createTheUserUsingTheAPI($user);
 		PHPUnit_Framework_Assert::assertTrue($this->userExists($user));
 		$this->currentUser = $previous_user;
 	}
 
+	/**
+	 * @param string $user
+	 */
 	public function deleteUser($user) {
 		$previous_user = $this->currentUser;
 		$this->currentUser = $this->getAdminUserName();
-		$this->deletingTheUser($user);
+		$this->deleteTheUserUsingTheAPI($user);
 		PHPUnit_Framework_Assert::assertFalse($this->userExists($user));
 		$this->currentUser = $previous_user;
 	}
 
+	/**
+	 * @param string $group
+	 */
 	public function createGroup($group) {
 		$previous_user = $this->currentUser;
 		$this->currentUser = $this->getAdminUserName();
-		$this->creatingTheGroup($group);
+		$this->createTheGroup($group);
 		PHPUnit_Framework_Assert::assertTrue($this->groupExists($group));
 		$this->currentUser = $previous_user;
 	}
 
+	/**
+	 * @param string $group
+	 */
 	public function deleteGroup($group) {
 		$previous_user = $this->currentUser;
 		$this->currentUser = $this->getAdminUserName();
-		$this->deletingTheGroup($group);
+		$this->deleteTheGroupUsingTheAPI($group);
 		PHPUnit_Framework_Assert::assertFalse($this->groupExists($group));
 		$this->currentUser = $previous_user;
 	}
 
+	/**
+	 * @param string $user
+	 * @return bool
+	 */
 	public function userExists($user) {
 		$fullUrl = $this->baseUrl . "v2.php/cloud/users/$user";
 		$client = new Client();
@@ -162,17 +240,15 @@ trait Provisioning {
 	}
 
 	/**
-	 * @Then /^check that user "([^"]*)" belongs to group "([^"]*)"$/
+	 * @Then /^user "([^"]*)" should belong to group "([^"]*)"$/
 	 * @param string $user
 	 * @param string $group
 	 */
-	public function checkThatUserBelongsToGroup($user, $group) {
+	public function userShouldBelongToGroup($user, $group) {
 		$fullUrl = $this->baseUrl . "v2.php/cloud/users/$user/groups";
 		$client = new Client();
 		$options = [];
-		if ($this->currentUser === $this->getAdminUserName()) {
-			$options['auth'] = $this->getAuthOptionForAdmin();
-		}
+		$options['auth'] = $this->getAuthOptionForAdmin();
 
 		$this->response = $client->get($fullUrl, $options);
 		$respondedArray = $this->getArrayOfGroupsResponded($this->response);
@@ -182,17 +258,25 @@ trait Provisioning {
 	}
 
 	/**
-	 * @Then /^check that user "([^"]*)" does not belong to group "([^"]*)"$/
+	 * @Then /^check that user "([^"]*)" belongs to group "([^"]*)"$/
+	 * @param string $user
+	 * @param string $group
+	 * @deprecated This step is not according to the latest standard - core usages have been changed
+	 */
+	public function checkThatUserBelongsToGroup($user, $group) {
+		$this->userShouldBelongToGroup($user, $group);
+	}
+
+	/**
+	 * @Then /^user "([^"]*)" should not belong to group "([^"]*)"$/
 	 * @param string $user
 	 * @param string $group
 	 */
-	public function checkThatUserDoesNotBelongToGroup($user, $group) {
+	public function userShouldNotBelongToGroup($user, $group) {
 		$fullUrl = $this->baseUrl . "v2.php/cloud/users/$user/groups";
 		$client = new Client();
 		$options = [];
-		if ($this->currentUser === $this->getAdminUserName()) {
-			$options['auth'] = $this->getAuthOptionForAdmin();
-		}
+		$options['auth'] = $this->getAuthOptionForAdmin();
 
 		$this->response = $client->get($fullUrl, $options);
 		$respondedArray = $this->getArrayOfGroupsResponded($this->response);
@@ -201,6 +285,21 @@ trait Provisioning {
 		PHPUnit_Framework_Assert::assertEquals(200, $this->response->getStatusCode());
 	}
 
+	/**
+	 * @Then /^check that user "([^"]*)" does not belong to group "([^"]*)"$/
+	 * @param string $user
+	 * @param string $group
+	 * @deprecated This step is not according to the latest standard - core usages have been changed
+	 */
+	public function checkThatUserDoesNotBelongToGroup($user, $group) {
+		$this->userShouldNotBelongToGroup($user, $group);
+	}
+
+	/**
+	 * @param string $user
+	 * @param string $group
+	 * @return bool
+	 */
 	public function userBelongsToGroup($user, $group) {
 		$fullUrl = $this->baseUrl . "v2.php/cloud/users/$user/groups";
 		$client = new Client();
@@ -220,40 +319,31 @@ trait Provisioning {
 	}
 
 	/**
-	 * @Given /^user "([^"]*)" belongs to group "([^"]*)"$/
+	 * @When /^the administrator adds user "([^"]*)" to group "([^"]*)" using the API$/
+	 * @Given /^user "([^"]*)" has been added to group "([^"]*)"$/
 	 * @param string $user
 	 * @param string $group
 	 */
-	public function assureUserBelongsToGroup($user, $group) {
+	public function adminAddsUserToGroupUsingTheAPI($user, $group) {
 		$previous_user = $this->currentUser;
 		$this->currentUser = $this->getAdminUserName();
 
 		if (!$this->userBelongsToGroup($user, $group)) {
-			$this->addingUserToGroup($user, $group);
+			$this->addUserToGroupUsingTheAPI($user, $group);
 		}
 
-		$this->checkThatUserBelongsToGroup($user, $group);
+		$this->userShouldBelongToGroup($user, $group);
 		$this->currentUser = $previous_user;
 	}
 
 	/**
-	 * @Given /^user "([^"]*)" does not belong to group "([^"]*)"$/
+	 * @Given /^user "([^"]*)" belongs to group "([^"]*)"$/
 	 * @param string $user
 	 * @param string $group
+	 * @deprecated This step is not according to the latest standard - core usages have been changed
 	 */
-	public function userDoesNotBelongToGroup($user, $group) {
-		$fullUrl = $this->baseUrl . "v2.php/cloud/users/$user/groups";
-		$client = new Client();
-		$options = [];
-		if ($this->currentUser === $this->getAdminUserName()) {
-			$options['auth'] = $this->getAuthOptionForAdmin();
-		}
-
-		$this->response = $client->get($fullUrl, $options);
-		$groups = [$group];
-		$respondedArray = $this->getArrayOfGroupsResponded($this->response);
-		PHPUnit_Framework_Assert::assertNotEquals($groups, $respondedArray, "", 0.0, 10, true);
-		PHPUnit_Framework_Assert::assertEquals(200, $this->response->getStatusCode());
+	public function assureUserBelongsToGroup($user, $group) {
+		$this->adminAddsUserToGroupUsingTheAPI($user, $group);
 	}
 
 	/**
@@ -268,10 +358,24 @@ trait Provisioning {
 	}
 
 	/**
-	 * @When /^creating the group "([^"]*)"$/
+	 * @When /^the administrator creates group "([^"]*)" using the API$/
+	 * @Given /^group "([^"]*)" has been created$/
 	 * @param string $group
 	 */
-	public function creatingTheGroup($group) {
+	public function adminCreatesGroupUsingTheAPI($group) {
+		if (!$this->groupExists($group)) {
+			$previous_user = $this->currentUser;
+			$this->currentUser = $this->getAdminUserName();
+			$this->createTheGroup($group);
+			$this->currentUser = $previous_user;
+		}
+		PHPUnit_Framework_Assert::assertTrue($this->groupExists($group));
+	}
+
+	/**
+	 * @param string $group
+	 */
+	public function createTheGroup($group) {
 		$fullUrl = $this->baseUrl . "v{$this->apiVersion}.php/cloud/groups";
 		$client = new Client();
 		$options = [];
@@ -280,32 +384,40 @@ trait Provisioning {
 		}
 
 		$options['body'] = [
-							'groupid' => $group,
-							];
+			'groupid' => $group,
+		];
 
 		$this->response = $client->send($client->createRequest("POST", $fullUrl, $options));
 		$this->rememberTheGroup($group);
 	}
 
 	/**
-	 * @When /^assure user "([^"]*)" is disabled$/
+	 * @When /^the administrator disables user "([^"]*)" using the API$/
+	 * @Given /^user "([^"]*)" has been disabled$/
+	 * @param string $user
 	 */
-	public function assureUserIsDisabled($user) {
+	public function adminDisablesUserUsingTheAPI($user) {
 		$fullUrl = $this->baseUrl . "v{$this->apiVersion}.php/cloud/users/$user/disable";
 		$client = new Client();
 		$options = [];
-		if ($this->currentUser === $this->getAdminUserName()) {
-			$options['auth'] = $this->getAuthOptionForAdmin();
-		}
+		$options['auth'] = $this->getAuthOptionForAdmin();
 
 		$this->response = $client->send($client->createRequest("PUT", $fullUrl, $options));
 	}
 
 	/**
-	 * @When /^deleting the user "([^"]*)"$/
+	 * @When /^assure user "([^"]*)" is disabled$/
+	 * @param string $user
+	 * @deprecated This step is not according to the latest standard - core usages have been changed
+	 */
+	public function assureUserIsDisabled($user) {
+		$this->adminDisablesUserUsingTheAPI($user);
+	}
+
+	/**
 	 * @param string $user
 	 */
-	public function deletingTheUser($user) {
+	public function deleteTheUserUsingTheAPI($user) {
 		$fullUrl = $this->baseUrl . "v{$this->apiVersion}.php/cloud/users/$user";
 		$client = new Client();
 		$options = [];
@@ -317,10 +429,24 @@ trait Provisioning {
 	}
 
 	/**
-	 * @When /^deleting the group "([^"]*)"$/
+	 * @When /^the administrator deletes group "([^"]*)" using the API$/
+	 * @Given /^group "([^"]*)" has been deleted$/
 	 * @param string $group
 	 */
-	public function deletingTheGroup($group) {
+	public function adminDeletesGroupUsingTheAPI($group) {
+		if ($this->groupExists($group)) {
+			$previous_user = $this->currentUser;
+			$this->currentUser = $this->getAdminUserName();
+			$this->deleteTheGroupUsingTheAPI($group);
+			$this->currentUser = $previous_user;
+		}
+		PHPUnit_Framework_Assert::assertFalse($this->groupExists($group));
+	}
+
+	/**
+	 * @param string $group
+	 */
+	public function deleteTheGroupUsingTheAPI($group) {
 		$fullUrl = $this->baseUrl . "v{$this->apiVersion}.php/cloud/groups/$group";
 		$client = new Client();
 		$options = [];
@@ -332,22 +458,10 @@ trait Provisioning {
 	}
 
 	/**
-	 * @Given /^add user "([^"]*)" to the group "([^"]*)"$/
 	 * @param string $user
 	 * @param string $group
 	 */
-	public function addUserToGroup($user, $group) {
-		PHPUnit_Framework_Assert::assertTrue($this->userExists($user));
-		PHPUnit_Framework_Assert::assertTrue($this->groupExists($group));
-		$this->addingUserToGroup($user, $group);
-	}
-
-	/**
-	 * @When /^user "([^"]*)" is added to the group "([^"]*)"$/
-	 * @param string $user
-	 * @param string $group
-	 */
-	public function addingUserToGroup($user, $group) {
+	public function addUserToGroupUsingTheAPI($user, $group) {
 		$fullUrl = $this->baseUrl . "v{$this->apiVersion}.php/cloud/users/$user/groups";
 		$client = new Client();
 		$options = [];
@@ -362,6 +476,10 @@ trait Provisioning {
 		$this->response = $client->send($client->createRequest("POST", $fullUrl, $options));
 	}
 
+	/**
+	 * @param string $group
+	 * @return bool
+	 */
 	public function groupExists($group) {
 		$fullUrl = $this->baseUrl . "v2.php/cloud/groups/$group";
 		$client = new Client();
@@ -379,37 +497,27 @@ trait Provisioning {
 	/**
 	 * @Given /^group "([^"]*)" exists$/
 	 * @param string $group
+	 * @deprecated This step is not according to the latest standard - core usages have been changed
 	 */
 	public function assureGroupExists($group) {
-		if (!$this->groupExists($group)) {
-			$previous_user = $this->currentUser;
-			$this->currentUser = $this->getAdminUserName();
-			$this->creatingTheGroup($group);
-			$this->currentUser = $previous_user;
-		}
-		PHPUnit_Framework_Assert::assertTrue($this->groupExists($group));
+		$this->adminCreatesGroupUsingTheAPI($group);
 	}
 
 	/**
 	 * @Given /^group "([^"]*)" does not exist$/
 	 * @param string $group
+	 * @deprecated This step is not according to the latest standard - core usages have been changed
 	 */
 	public function assureGroupDoesNotExist($group) {
-		if ($this->groupExists($group)) {
-			$previous_user = $this->currentUser;
-			$this->currentUser = $this->getAdminUserName();
-			$this->deletingTheGroup($group);
-			$this->currentUser = $previous_user;
-		}
-		PHPUnit_Framework_Assert::assertFalse($this->groupExists($group));
+		$this->adminDeletesGroupUsingTheAPI($group);
 	}
 
 	/**
-	 * @Given /^user "([^"]*)" is subadmin of group "([^"]*)"$/
+	 * @Then /^user "([^"]*)" should be a subadmin of group "([^"]*)"$/
 	 * @param string $user
 	 * @param string $group
 	 */
-	public function userIsSubadminOfGroup($user, $group) {
+	public function userShouldBeSubadminOfGroup($user, $group) {
 		$fullUrl = $this->baseUrl . "v2.php/cloud/groups/$group/subadmins";
 		$client = new Client();
 		$options = [];
@@ -425,17 +533,16 @@ trait Provisioning {
 	}
 
 	/**
-	 * @Given /^assure user "([^"]*)" is subadmin of group "([^"]*)"$/
+	 * @When /^the administrator makes user "([^"]*)" a subadmin of group "([^"]*)" using the API$/
+	 * @Given /^user "([^"]*)" has been made a subadmin of group "([^"]*)"$/
 	 * @param string $user
 	 * @param string $group
 	 */
-	public function assureUserIsSubadminOfGroup($user, $group) {
+	public function adminMakesUserSubadminOfGroupUsingTheAPI($user, $group) {
 		$fullUrl = $this->baseUrl . "v{$this->apiVersion}.php/cloud/users/$user/subadmins";
 		$client = new Client();
 		$options = [];
-		if ($this->currentUser === $this->getAdminUserName()) {
-			$options['auth'] = $this->getAuthOptionForAdmin();
-		}
+		$options['auth'] = $this->getAuthOptionForAdmin();
 		$options['body'] = [
 							'groupid' => $group
 							];
@@ -444,11 +551,22 @@ trait Provisioning {
 	}
 
 	/**
-	 * @Given /^user "([^"]*)" is not a subadmin of group "([^"]*)"$/
+	 * @Given /^assure user "([^"]*)" is subadmin of group "([^"]*)"$/
+	 * @param string $user
+	 * @param string $group
+	 * @deprecated This step is not according to the latest standard - core usages have been changed
+	 */
+	public function assureUserIsSubadminOfGroup($user, $group) {
+		$this->adminMakesUserSubadminOfGroupUsingTheAPI($user, $group);
+	}
+
+	/**
+	 * @When /^the administrator makes user "([^"]*)" not a subadmin of group "([^"]*)" using the API$/
+	 * @Given /^user "([^"]*)" has been made not a subadmin of group "([^"]*)"$/
 	 * @param string $user
 	 * @param string $group
 	 */
-	public function userIsNotSubadminOfGroup($user, $group) {
+	public function adminMakesUserNotSubadminOfGroupUsingTheAPI($user, $group) {
 		$fullUrl = $this->baseUrl . "v2.php/cloud/groups/$group/subadmins";
 		$client = new Client();
 		$options = [];
@@ -464,7 +582,7 @@ trait Provisioning {
 	}
 
 	/**
-	 * @Then /^users returned are$/
+	 * @Then /^the users returned by the API should be$/
 	 * @param \Behat\Gherkin\Node\TableNode|null $usersList
 	 */
 	public function theUsersShouldBe($usersList) {
@@ -478,7 +596,7 @@ trait Provisioning {
 	}
 
 	/**
-	 * @Then /^groups returned are$/
+	 * @Then /^the groups returned by the API should be$/
 	 * @param \Behat\Gherkin\Node\TableNode|null $groupsList
 	 */
 	public function theGroupsShouldBe($groupsList) {
@@ -492,40 +610,42 @@ trait Provisioning {
 	}
 
 	/**
-	 * @Then /^subadmin groups returned are$/
+	 * @param \Behat\Gherkin\Node\TableNode|null $groupsOrUsersList
+	 */
+	public function checkSubadminGroupsOrUsersTable($groupsOrUsersList) {
+		$tableRows = $groupsOrUsersList->getRows();
+		$simplifiedTableRows = $this->simplifyArray($tableRows);
+		$respondedArray = $this->getArrayOfSubadminsResponded($this->response);
+		PHPUnit_Framework_Assert::assertEquals($simplifiedTableRows, $respondedArray, "", 0.0, 10, true);
+	}
+
+	/**
+	 * @Then /^the subadmin groups returned by the API should be$/
 	 * @param \Behat\Gherkin\Node\TableNode|null $groupsList
 	 */
 	public function theSubadminGroupsShouldBe($groupsList) {
-		if ($groupsList instanceof \Behat\Gherkin\Node\TableNode) {
-			$groups = $groupsList->getRows();
-			$groupsSimplified = $this->simplifyArray($groups);
-			$respondedArray = $this->getArrayOfSubadminsResponded($this->response);
-			PHPUnit_Framework_Assert::assertEquals($groupsSimplified, $respondedArray, "", 0.0, 10, true);
-		}
-
+		$this->checkSubadminGroupsOrUsersTable($groupsList);
 	}
 
 	/**
-	 * @Then /^apps returned are$/
+	 * @Then /^the subadmin users returned by the API should be$/
+	 * @param \Behat\Gherkin\Node\TableNode|null $usersList
+	 */
+	public function theSubadminUsersShouldBe($usersList) {
+		$this->checkSubadminGroupsOrUsersTable($usersList);
+	}
+
+	/**
+	 * @Then /^the apps returned by the API should include$/
 	 * @param \Behat\Gherkin\Node\TableNode|null $appList
 	 */
-	public function theAppsShouldBe($appList) {
-		if ($appList instanceof \Behat\Gherkin\Node\TableNode) {
-			$apps = $appList->getRows();
-			$appsSimplified = $this->simplifyArray($apps);
-			$respondedArray = $this->getArrayOfAppsResponded($this->response);
-			foreach ($appsSimplified as $app) {
-				PHPUnit_Framework_Assert::assertContains($app, $respondedArray);
-			}
+	public function theAppsShouldInclude($appList) {
+		$apps = $appList->getRows();
+		$appsSimplified = $this->simplifyArray($apps);
+		$respondedArray = $this->getArrayOfAppsResponded($this->response);
+		foreach ($appsSimplified as $app) {
+			PHPUnit_Framework_Assert::assertContains($app, $respondedArray);
 		}
-	}
-
-	/**
-	 * @Then /^subadmin users returned are$/
-	 * @param \Behat\Gherkin\Node\TableNode|null $groupsList
-	 */
-	public function theSubadminUsersShouldBe($groupsList) {
-		$this->theSubadminGroupsShouldBe($groupsList);
 	}
 
 	/**
@@ -572,12 +692,11 @@ trait Provisioning {
 		return $extractedElementsArray;
 	}
 
-
 	/**
-	 * @Given /^app "([^"]*)" is disabled$/
+	 * @Then /^app "([^"]*)" should be disabled$/
 	 * @param string $app
 	 */
-	public function appIsDisabled($app) {
+	public function appShouldBeDisabled($app) {
 		$fullUrl = $this->baseUrl . "v2.php/cloud/apps?filter=disabled";
 		$client = new Client();
 		$options = [];
@@ -592,10 +711,10 @@ trait Provisioning {
 	}
 
 	/**
-	 * @Given /^app "([^"]*)" is enabled$/
+	 * @Then /^app "([^"]*)" should be enabled$/
 	 * @param string $app
 	 */
-	public function appIsEnabled($app) {
+	public function appShouldBeEnabled($app) {
 		$fullUrl = $this->baseUrl . "v2.php/cloud/apps?filter=enabled";
 		$client = new Client();
 		$options = [];
@@ -610,61 +729,62 @@ trait Provisioning {
 	}
 
 	/**
-	 * @Then /^user "([^"]*)" is disabled$/
+	 * @Then /^user "([^"]*)" should be disabled$/
 	 * @param string $user
 	 */
-	public function userIsDisabled($user) {
+	public function userShouldBeDisabled($user) {
 		$fullUrl = $this->baseUrl . "v{$this->apiVersion}.php/cloud/users/$user";
 		$client = new Client();
 		$options = [];
-		if ($this->currentUser === $this->getAdminUserName()) {
-			$options['auth'] = $this->getAuthOptionForAdmin();
-		}
+		$options['auth'] = $this->getAuthOptionForAdmin();
 
 		$this->response = $client->get($fullUrl, $options);
 		PHPUnit_Framework_Assert::assertEquals("false", $this->response->xml()->data[0]->enabled);
 	}
 
 	/**
-	 * @Then /^user "([^"]*)" is enabled$/
+	 * @Then /^user "([^"]*)" should be enabled$/
 	 * @param string $user
 	 */
-	public function userIsEnabled($user) {
+	public function useShouldBeEnabled($user) {
 		$fullUrl = $this->baseUrl . "v{$this->apiVersion}.php/cloud/users/$user";
 		$client = new Client();
 		$options = [];
-		if ($this->currentUser === $this->getAdminUserName()) {
-			$options['auth'] = $this->getAuthOptionForAdmin();
-		}
+		$options['auth'] = $this->getAuthOptionForAdmin();
 
 		$this->response = $client->get($fullUrl, $options);
 		PHPUnit_Framework_Assert::assertEquals("true", $this->response->xml()->data[0]->enabled);
 	}
 
 	/**
-	 * @Given user :user has a quota of :quota
+	 * @When the administrator sets the quota of user :user to :quota using the API
+	 * @Given the quota of user :user has been set to :quota
 	 * @param string $user
 	 * @param string $quota
 	 */
-	public function userHasAQuotaOf($user, $quota)
+	public function adminSetsUserQuotaToUsingTheAPI($user, $quota)
 	{
 		$body = new \Behat\Gherkin\Node\TableNode([
 			0 => ['key', 'quota'],
 			1 => ['value', $quota],
 		]);
 
+		$previous_user = $this->currentUser;
+		$this->currentUser = "admin";
 		// method used from BasicStructure trait
 		$this->sendingToWith("PUT", "/cloud/users/" . $user, $body);
+		$this->currentUser = $previous_user;
 		PHPUnit_Framework_Assert::assertEquals(200, $this->response->getStatusCode());
 	}
 
 	/**
-	 * @Given user :user has unlimited quota
+	 * @When the administrator gives unlimited quota to user :user using the API
+	 * @Given user :user has been given unlimited quota
 	 * @param string $user
 	 */
-	public function userHasUnlimitedQuota($user)
+	public function adminGivesUnlimitedQuotaToUserUsingTheAPI($user)
 	{
-		$this->userHasAQuotaOf($user, 'none');
+		$this->adminSetsUserQuotaToUsingTheAPI($user, 'none');
 	}
 
 	/**
@@ -681,17 +801,15 @@ trait Provisioning {
 	}
 
 	/**
-	 * @Then /^user attributes match with$/
+	 * @Then /^the user attributes returned by the API should include$/
 	 * @param \Behat\Gherkin\Node\TableNode|null $body
 	 */
 	public function checkUserAttributes($body) {
 		$data = $this->response->xml()->data[0];
-		if ($body instanceof \Behat\Gherkin\Node\TableNode) {
-			$fd = $body->getRowsHash();
-			foreach ($fd as $field => $value) {
-				if ($data->$field != $value) {
-					PHPUnit_Framework_Assert::fail("$field" . " has value " . "$data->$field");
-				}
+		$fd = $body->getRowsHash();
+		foreach ($fd as $field => $value) {
+			if ($data->$field != $value) {
+				PHPUnit_Framework_Assert::fail("$field" . " has value " . "$data->$field");
 			}
 		}
 	}

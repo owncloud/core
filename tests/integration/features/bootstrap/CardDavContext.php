@@ -83,13 +83,12 @@ class CardDavContext implements \Behat\Behat\Context\Context {
 	}
 
 	/**
-	 * @When :user requests addressbook :addressBook with statuscode :statusCode
+	 * @When user :user requests addressbook :addressBook using the API
 	 * @param string $user
 	 * @param string $addressBook
-	 * @param int $statusCode
 	 * @throws \Exception
 	 */
-	public function requestsAddressbookWithStatuscode($user, $addressBook, $statusCode) {
+	public function userRequestsAddressbookUsingTheAPI($user, $addressBook) {
 		$davUrl = $this->baseUrl . '/remote.php/dav/addressbooks/users/'.$addressBook;
 
 		try {
@@ -102,33 +101,15 @@ class CardDavContext implements \Behat\Behat\Context\Context {
 		} catch (BadResponseException $e) {
 			$this->response = $e->getResponse();
 		}
-
-		if((int)$statusCode !== $this->response->getStatusCode()) {
-			throw new \Exception(
-				sprintf(
-					'Expected %s got %s',
-					(int)$statusCode,
-					$this->response->getStatusCode()
-				)
-			);
-		}
-
-		$body = $this->response->getBody()->getContents();
-		if(substr($body, 0, 1) === '<') {
-			$reader = new Sabre\Xml\Reader();
-			$reader->xml($body);
-			$this->responseXml = $reader->parse();
-		}
 	}
 
 	/**
-	 * @Given :user creates an addressbook named :addressBook with statuscode :statusCode
+	 * @Given user :user has successfully created an addressbook named :addressBook
 	 * @param string $user
 	 * @param string $addressBook
-	 * @param int $statusCode
 	 * @throws \Exception
 	 */
-	public function createsAnAddressbookNamedWithStatuscode($user, $addressBook, $statusCode) {
+	public function userHasCreatedAnAddressbookNamed($user, $addressBook) {
 		$davUrl = $this->baseUrl . '/remote.php/dav/addressbooks/users/'.$user.'/'.$addressBook;
 
 		$request = $this->client->createRequest(
@@ -153,24 +134,39 @@ class CardDavContext implements \Behat\Behat\Context\Context {
 		);
 
 		$this->response = $this->client->send($request);
+		$this->theCardDavHttpStatusCodeShouldBe(201);
+	}
 
-		if($this->response->getStatusCode() !== (int)$statusCode) {
+	/**
+	 * @Then the CardDAV HTTP status code should be :code
+	 * @param int $code
+	 * @throws \Exception
+	 */
+	public function theCardDavHttpStatusCodeShouldBe($code) {
+		if ((int)$code !== $this->response->getStatusCode()) {
 			throw new \Exception(
 				sprintf(
 					'Expected %s got %s',
-					(int)$statusCode,
+					(int)$code,
 					$this->response->getStatusCode()
 				)
 			);
 		}
+
+		$body = $this->response->getBody()->getContents();
+		if ($body && substr($body, 0, 1) === '<') {
+			$reader = new Sabre\Xml\Reader();
+			$reader->xml($body);
+			$this->responseXml = $reader->parse();
+		}
 	}
 
 	/**
-	 * @When the CardDAV exception is :message
+	 * @Then the CardDAV exception should be :message
 	 * @param string $message
 	 * @throws \Exception
 	 */
-	public function theCarddavExceptionIs($message) {
+	public function theCardDavExceptionShouldBe($message) {
 		$result = $this->responseXml['value'][0]['value'];
 
 		if ($message !== $result) {
@@ -185,11 +181,11 @@ class CardDavContext implements \Behat\Behat\Context\Context {
 	}
 
 	/**
-	 * @When the CardDAV error message is :arg1
+	 * @Then the CardDAV error message should be :arg1
 	 * @param string $message
 	 * @throws \Exception
 	 */
-	public function theCarddavErrorMessageIs($message) {
+	public function theCardDavErrorMessageShouldBe($message) {
 		$result = $this->responseXml['value'][1]['value'];
 
 		if ($message !== $result) {
