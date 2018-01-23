@@ -58,7 +58,8 @@ trait CommandLine {
 	}
 
 	/**
-	 * @Given /^invoking occ with "([^"]*)"$/
+	 * @Given /^the administrator has invoked occ command "([^"]*)"$/
+	 * @param string $cmd
 	 */
 	public function invokingTheCommand($cmd) {
 		$args = explode(' ', $cmd);
@@ -105,9 +106,9 @@ trait CommandLine {
 	}
 
 	/**
-	 * @Then /^the command was successful$/
+	 * @Then /^the command should have been successful$/
 	 */
-	public function theCommandWasSuccessful() {
+	public function theCommandShouldHaveBeenSuccessful() {
 		$exceptions = $this->findExceptions();
 		if ($this->lastCode !== 0) {
 			$msg = 'The command was not successful, exit code was ' . $this->lastCode . '.';
@@ -122,7 +123,9 @@ trait CommandLine {
 	}
 
 	/**
-	 * @Then /^the command failed with exit code ([0-9]+)$/
+	 * @Then /^the command should have failed with exit code ([0-9]+)$/
+	 * @param int $exitCode
+	 * @throws Exception
 	 */
 	public function theCommandFailedWithExitCode($exitCode) {
 		if ($this->lastCode !== (int)$exitCode) {
@@ -131,9 +134,11 @@ trait CommandLine {
 	}
 
 	/**
-	 * @Then /^the command failed with exception text "([^"]*)"$/
+	 * @Then /^the command should have failed with exception text "([^"]*)"$/
+	 * @param string $exceptionText
+	 * @throws Exception
 	 */
-	public function theCommandFailedWithException($exceptionText) {
+	public function theCommandFailedWithExceptionText($exceptionText) {
 		$exceptions = $this->findExceptions();
 		if (empty($exceptions)) {
 			throw new \Exception('The command did not throw any exceptions');
@@ -145,7 +150,9 @@ trait CommandLine {
 	}
 
 	/**
-	 * @Then /^the command output contains the text "([^"]*)"$/
+	 * @Then /^the command output should contain the text "([^"]*)"$/
+	 * @param string $text
+	 * @throws Exception
 	 */
 	public function theCommandOutputContainsTheText($text) {
 		$lines = $this->findLines($this->lastStdOut, $text);
@@ -155,7 +162,9 @@ trait CommandLine {
 	}
 
 	/**
-	 * @Then /^the command error output contains the text "([^"]*)"$/
+	 * @Then /^the command error output should contain the text "([^"]*)"$/
+	 * @param string $text
+	 * @throws Exception
 	 */
 	public function theCommandErrorOutputContainsTheText($text) {
 		$lines = $this->findLines($this->lastStdErr, $text);
@@ -166,6 +175,11 @@ trait CommandLine {
 
 	private $lastTransferPath;
 
+	/**
+	 * @param string $sourceUser
+	 * @param string $targetUser
+	 * @return string|null
+	 */
 	private function findLastTransferFolderForUser($sourceUser, $targetUser) {
 		$foundPaths = [];
 		$results = $this->listFolder($targetUser, '', 1);
@@ -200,7 +214,10 @@ trait CommandLine {
 	}
 
 	/**
-	 * @When /^transferring ownership from "([^"]+)" to "([^"]+)"/
+	 * @When /^the administrator transfers ownership from "([^"]+)" to "([^"]+)" using the occ command$/
+	 * @Given /^the administrator has transferred ownership from "([^"]+)" to "([^"]+)"$/
+	 * @param string $user1
+	 * @param string $user2
 	 */
 	public function transferringOwnership($user1, $user2) {
 		if ($this->runOcc(['files:transfer-ownership', $user1, $user2]) === 0) {
@@ -212,16 +229,20 @@ trait CommandLine {
 	}
 
 	/**
-	 * @When /^recreating masterkey by deleting old one and encrypting the filesystem/
+	 * @When /^the administrator successfully recreates the encryption masterkey using the occ command$/
+	 * @Given /^the administrator has successfully recreated the encryption masterkey$/
 	 */
-	public function recreateMasterKey() {
-		if ($this->runOcc(['encryption:recreate-master-key', '-y']) === 0) {
-			return $this->lastCode;
-		}
+	public function recreateMasterKeyUsingOccCommand() {
+		$this->runOcc(['encryption:recreate-master-key', '-y']);
+		$this->theCommandShouldHaveBeenSuccessful();
 	}
 
 	/**
-	 * @When /^transferring ownership of path "([^"]+)" from "([^"]+)" to "([^"]+)"/
+	 * @When /^the administrator transfers ownership of path "([^"]+)" from "([^"]+)" to "([^"]+)" using the occ command$/
+	 * @Given /^the administrator has transferred ownership of path "([^"]+)" from "([^"]+)" to "([^"]+)"$/
+	 * @param string $path
+	 * @param string $user1
+	 * @param string $user2
 	 */
 	public function transferringOwnershipPath($path, $user1, $user2) {
 		$path = '--path=' . $path;
@@ -235,6 +256,7 @@ trait CommandLine {
 
 	/**
 	 * @When /^using received transfer folder of "([^"]+)" as dav path$/
+	 * @param string $user
 	 */
 	public function usingTransferFolderAsDavPath($user) {
 		$davPath = $this->getDavFilesPath($user);
