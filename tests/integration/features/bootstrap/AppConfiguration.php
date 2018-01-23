@@ -69,13 +69,13 @@ trait AppConfiguration {
 	abstract public function theHTTPStatusCodeShouldBe($statusCode);
 
 	/**
-	 * @Given /^parameter "([^"]*)" of app "([^"]*)" is set to "([^"]*)"$/
+	 * @When /^the administrator sets parameter "([^"]*)" of app "([^"]*)" to "([^"]*)" using the API$/
 	 * @param string $parameter
 	 * @param string $app
 	 * @param string $value
 	 * @return void
 	 */
-	public function serverParameterIsSetTo($parameter, $app, $value) {
+	public function adminSetsServerParameterToUsingAPI($parameter, $app, $value) {
 		$user = $this->currentUser;
 		$this->currentUser = $this->getAdminUserName();
 
@@ -85,13 +85,24 @@ trait AppConfiguration {
 	}
 
 	/**
-	 * @Then the capabilities setting of :capabilitiesApp path :capabilitiesPath is :expectedValue
+	 * @Given /^parameter "([^"]*)" of app "([^"]*)" has been set to "([^"]*)"$/
+	 * @param string $parameter
+	 * @param string $app
+	 * @param string $value
+	 * @return void
+	 */
+	public function serverParameterHasBeenSetTo($parameter, $app, $value) {
+		$this->adminSetsServerParameterToUsingAPI($parameter, $app, $value);
+	}
+
+	/**
+	 * @Then the capabilities setting of :capabilitiesApp path :capabilitiesPath should be :expectedValue
 	 * @param string $capabilitiesApp the "app" name in the capabilities response
 	 * @param string $capabilitiesPath the path to the element
 	 * @param string $expectedValue
 	 * @return void
 	 */
-	public function theCapabilitiesSettingOfAppParameterIs($capabilitiesApp, $capabilitiesPath, $expectedValue) {
+	public function theCapabilitiesSettingOfAppParameterShouldBe($capabilitiesApp, $capabilitiesPath, $expectedValue) {
 		$this->getCapabilitiesCheckResponse();
 
 		PHPUnit_Framework_Assert::assertEquals(

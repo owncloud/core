@@ -1144,7 +1144,7 @@ Feature: sharing
 			| permissions | 1 |
 
 	Scenario: Creating a link share with no specified permissions defaults to read permissions when public upload disabled globally
-		Given parameter "shareapi_allow_public_upload" of app "core" is set to "no"
+		Given parameter "shareapi_allow_public_upload" of app "core" has been set to "no"
 		And user "user0" exists
 		And user "user0" created a folder "/afolder"
 		And as an "user0"

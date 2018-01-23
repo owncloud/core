@@ -43,7 +43,7 @@ Feature: sharees_provisioningapiv2
 
   Scenario: Search only with group members - denied
     Given as an "test"
-    And parameter "shareapi_only_share_with_group_members" of app "core" is set to "yes"
+    And parameter "shareapi_only_share_with_group_members" of app "core" has been set to "yes"
     When getting sharees for
       | search | sharee |
       | itemType | file |
@@ -60,7 +60,7 @@ Feature: sharees_provisioningapiv2
 
   Scenario: Search only with group members - allowed
     Given as an "test"
-    And parameter "shareapi_only_share_with_group_members" of app "core" is set to "yes"
+    And parameter "shareapi_only_share_with_group_members" of app "core" has been set to "yes"
     And user "Sharee1" belongs to group "ShareeGroup2"
     When getting sharees for
       | search | sharee |
@@ -79,8 +79,8 @@ Feature: sharees_provisioningapiv2
 
   Scenario: Search only with group members - no group as non-member
     Given as an "Sharee1"
-    And parameter "shareapi_only_share_with_group_members" of app "core" is set to "yes"
-    And parameter "shareapi_only_share_with_membership_groups" of app "core" is set to "yes"
+    And parameter "shareapi_only_share_with_group_members" of app "core" has been set to "yes"
+    And parameter "shareapi_only_share_with_membership_groups" of app "core" has been set to "yes"
     When getting sharees for
       | search | sharee |
       | itemType | file |
@@ -95,7 +95,7 @@ Feature: sharees_provisioningapiv2
 
   Scenario: Search only with membership groups - denied
     Given as an "Sharee1"
-    And parameter "shareapi_only_share_with_membership_groups" of app "core" is set to "yes"
+    And parameter "shareapi_only_share_with_membership_groups" of app "core" has been set to "yes"
     When getting sharees for
       | search | ShareeGroup |
       | itemType | file |
@@ -110,7 +110,7 @@ Feature: sharees_provisioningapiv2
 
   Scenario: Search only with membership groups - denied but users match
     Given as an "Sharee1"
-    And parameter "shareapi_only_share_with_membership_groups" of app "core" is set to "yes"
+    And parameter "shareapi_only_share_with_membership_groups" of app "core" has been set to "yes"
     When getting sharees for
       | search | sharee |
       | itemType | file |
@@ -126,7 +126,7 @@ Feature: sharees_provisioningapiv2
 
   Scenario: Search only with membership groups - allowed
     Given as an "test"
-    And parameter "shareapi_only_share_with_membership_groups" of app "core" is set to "yes"
+    And parameter "shareapi_only_share_with_membership_groups" of app "core" has been set to "yes"
     When getting sharees for
       | search | ShareeGroup |
       | itemType | file |
@@ -142,7 +142,7 @@ Feature: sharees_provisioningapiv2
 
   Scenario: Search only with membership groups - allowed including users
     Given as an "test"
-    And parameter "shareapi_only_share_with_membership_groups" of app "core" is set to "yes"
+    And parameter "shareapi_only_share_with_membership_groups" of app "core" has been set to "yes"
     When getting sharees for
       | search | Sharee |
       | itemType | file |
@@ -159,7 +159,7 @@ Feature: sharees_provisioningapiv2
 
   Scenario: Search without exact match no iteration allowed
     Given as an "test"
-    And parameter "shareapi_allow_share_dialog_user_enumeration" of app "core" is set to "no"
+    And parameter "shareapi_allow_share_dialog_user_enumeration" of app "core" has been set to "no"
     When getting sharees for
       | search | Sharee |
       | itemType | file |
@@ -174,7 +174,7 @@ Feature: sharees_provisioningapiv2
 
   Scenario: Search with exact match no iteration allowed
     Given as an "test"
-    And parameter "shareapi_allow_share_dialog_user_enumeration" of app "core" is set to "no"
+    And parameter "shareapi_allow_share_dialog_user_enumeration" of app "core" has been set to "no"
     When getting sharees for
       | search | Sharee1 |
       | itemType | file |
@@ -190,7 +190,7 @@ Feature: sharees_provisioningapiv2
 
   Scenario: Search with exact match group no iteration allowed
     Given as an "test"
-    And parameter "shareapi_allow_share_dialog_user_enumeration" of app "core" is set to "no"
+    And parameter "shareapi_allow_share_dialog_user_enumeration" of app "core" has been set to "no"
     When getting sharees for
       | search | ShareeGroup |
       | itemType | file |
@@ -295,7 +295,7 @@ Feature: sharees_provisioningapiv2
 
   Scenario: Group sharees not returned when group sharing is disabled
     Given as an "test"
-    And parameter "shareapi_allow_group_sharing" of app "core" is set to "no"
+    And parameter "shareapi_allow_group_sharing" of app "core" has been set to "no"
     When getting sharees for
       | search | sharee |
       | itemType | file |
