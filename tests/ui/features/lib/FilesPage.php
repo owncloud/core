@@ -253,6 +253,7 @@ class FilesPage extends FilesPageBasic {
 				$fileRow->rename($toFileName, $session);
 				break;
 			} catch (\Exception $e) {
+				$this->closeFileActionsMenu();
 				error_log(
 					"Error while renaming file"
 					. "\n-------------------------\n"
