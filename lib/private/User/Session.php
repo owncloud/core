@@ -48,6 +48,7 @@ use OCP\App\IServiceLoader;
 use OCP\AppFramework\Utility\ITimeFactory;
 use OCP\Authentication\IAuthModule;
 use OCP\Events\EventEmitterTrait;
+use OCP\Files\NoReadAccessException;
 use OCP\Files\NotPermittedException;
 use OCP\IConfig;
 use OCP\IRequest;
@@ -416,6 +417,11 @@ class Session implements IUserSession, Emitter {
 				// possible if files directory is in an readonly jail
 				\OC::$server->getLogger()->warning(
 					'Skeleton not created due to missing write permission'
+				);
+			} catch (NoReadAccessException $ex) {
+				// possible if the skeleton directory does not have read access
+				\OC::$server->getLogger()->warning(
+					'Skeleton not created due to missing read permission in skeleton directory'
 				);
 			} catch(\OC\HintException $hintEx) {
 				// only if Skeleton no existing Dir
