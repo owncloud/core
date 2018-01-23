@@ -1,7 +1,7 @@
 Feature: capabilities
 	Background:
-		Given using api version "1"
-		And as an "admin"
+		Given using API version "1"
+		And as user "admin"
 
 	Scenario: Check that the sharing API can be enabled
 		When the administrator sets parameter "shareapi_enabled" of app "core" to "yes" using the API
