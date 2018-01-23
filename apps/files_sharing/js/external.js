@@ -28,7 +28,7 @@
 				t(
 					'files_sharing',
 					'Do you want to add the remote share {name} from {owner}@{remote}?',
-					{name: name, owner: owner, remote: remoteClean}
+					{name: name, owner: owner, remote: remoteClean}, null, {escape: false}
 				),
 				t('files_sharing','Remote share'),
 				function (result) {
@@ -41,7 +41,7 @@
 				t(
 					'files_sharing',
 					'Do you want to add the remote share {name} from {owner}@{remote}?',
-					{name: name, owner: owner, remote: remoteClean}
+					{name: name, owner: owner, remote: remoteClean}, null, {escape: false}
 				),
 				t('files_sharing','Remote share'),
 				function (result, password) {
