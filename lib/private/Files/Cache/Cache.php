@@ -151,6 +151,13 @@ class Cache implements ICache {
 				$data['storage_mtime'] = $data['mtime'];
 			}
 			$data['permissions'] = (int)$data['permissions'];
+			// Oracle stores empty strings as null...
+			if (is_null($data['name'])) {
+				$data['name'] = '';
+			}
+			if (is_null($data['path'])) {
+				$data['path'] = '';
+			}
 			return new CacheEntry($data);
 		} else if (!$data and is_string($file)) {
 			if (isset($this->partial[$file])) {
