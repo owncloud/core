@@ -26,52 +26,67 @@ use OC\Core\Command\Maintenance\DataFingerprint;
 use OCP\AppFramework\Utility\ITimeFactory;
 use OCP\IConfig;
 use OCP\ILogger;
-use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Console\Tester\CommandTester;
 use Test\TestCase;
 
 class DataFingerprintTest extends TestCase {
+
 	/** @var IConfig | \PHPUnit_Framework_MockObject_MockObject */
 	private $config;
-	/** @var InputInterface | \PHPUnit_Framework_MockObject_MockObject */
-	private $consoleInput;
-	/** @var OutputInterface | \PHPUnit_Framework_MockObject_MockObject */
-	private $consoleOutput;
 	/** @var ITimeFactory | \PHPUnit_Framework_MockObject_MockObject */
 	private $timeFactory;
 	/** @var ILogger | \PHPUnit_Framework_MockObject_MockObject */
 	private $logger;
-
 	/** @var \Symfony\Component\Console\Command\Command */
 	private $command;
+	/** @var CommandTester */
+	private $commandTester;
+
+	public function providesAnswers() {
+		return [
+			'yes' => [true, 'yes'],
+			'no' => [false, 'no'],
+		];
+	}
 
 	protected function setUp() {
 		parent::setUp();
 
 		$this->config = $this->createMock(IConfig::class);
 		$this->timeFactory = $this->createMock(ITimeFactory::class);
-		$this->consoleInput = $this->createMock(InputInterface::class);
-		$this->consoleOutput = $this->createMock(OutputInterface::class);
 		$this->logger = $this->createMock(ILogger::class);
 
 		$this->command = new DataFingerprint($this->config, $this->timeFactory, $this->logger);
+		$this->commandTester = new CommandTester($this->command);
+
 	}
 
-	public function testSetFingerPrint() {
-		$this->timeFactory->expects($this->once())
+	/**
+	 * @dataProvider providesAnswers
+	 * @param $expectToLog
+	 * @param $answer
+	 */
+	public function testSetFingerPrint($expectToLog, $answer) {
+		$expects = $expectToLog ? $this->any() : $this->never();
+		$this->timeFactory->expects($expects)
 			->method('getTime')
 			->willReturn(42);
-		$this->config->expects($this->once())
+		$this->config->expects($expects)
 			->method('setSystemValue')
 			->with('data-fingerprint', md5(42));
 
 		$osUser = get_current_user();
 		$server = gethostname();
 
-		$this->logger->expects($this->once())
+		$this->logger->expects($expects)
 			->method('info')
 			->with("Data fingerprint was set by $osUser@$server to a1d0c6e83f027327d8461063f4ac58a6");
 
-		self::invokePrivate($this->command, 'execute', [$this->consoleInput, $this->consoleOutput]);
+		$this->commandTester->setInputs([$answer]);
+		$this->commandTester->execute([]);
+		$output = $this->commandTester->getDisplay();
+		$this->assertContains("Do you want to set the data fingerprint?", $output);
+
+
 	}
 }
