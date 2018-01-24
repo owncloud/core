@@ -56,6 +56,7 @@
         "sabre/dav": "^3.2",
         "deepdiver/zipstreamer": "^1.1",
         "zendframework/zend-inputfilter": "^2.8",
-        "zendframework/zend-servicemanager": "^3.3"
+        "zendframework/zend-servicemanager": "^3.3",
+        "symfony/translation": "3.2.4"
     }
 }
