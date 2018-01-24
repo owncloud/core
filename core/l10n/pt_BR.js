@@ -192,6 +192,7 @@ OC.L10N.register(
     "Shared with you and the group {group} by {owner}" : "Compartilhado com você e com o grupo {group} por {owner}",
     "Shared with you by {owner}" : "Compartilhado com você por {owner}",
     "group" : "grupo",
+    "federated" : "federado",
     "notify by email" : "notificar por e-mail",
     "Unshare" : "Descompartilhar",
     "can share" : "pode compartilhar",

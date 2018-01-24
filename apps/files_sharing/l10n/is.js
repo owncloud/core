@@ -37,6 +37,7 @@ OC.L10N.register(
     "Wrong share ID, share doesn't exist" : "Rangt auðkenni sameignar, sameign er ekki til",
     "Could not delete share" : "Tókst ekki að eyða sameign",
     "Please specify a file or folder path" : "Tiltaktu skrá eða slóð á möppu",
+    "No permission to create share" : "Þú hefur ekki heimild til að búa til sameign",
     "Wrong path, file/folder doesn't exist" : "Röng slóð, skrá/mappa er ekki til",
     "Cannot remove all permissions" : "Get ekki fjarlægt allar aðgangsheimildir",
     "Please specify a valid user" : "Settu inn gilt notandanafn",
