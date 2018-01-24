@@ -54,6 +54,7 @@
         "symfony/polyfill-php70": "^1.0",
         "lukasreschke/id3parser": "^0.0.1",
         "sabre/dav": "^3.2",
-        "deepdiver/zipstreamer": "^1.1"
+        "deepdiver/zipstreamer": "^1.1",
+        "symfony/translation": "3.2.4"
     }
 }
