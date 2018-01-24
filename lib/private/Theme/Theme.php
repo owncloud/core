@@ -28,7 +28,10 @@ class Theme implements ITheme {
 	 */
 	private $name;
 
-	private $baseDirectory = '';
+	/**
+	 * @var string
+	 */
+	private $baseDirectory;
 
 	/**
 	 * @var string

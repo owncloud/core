@@ -141,8 +141,14 @@ abstract class ResourceLocator {
 	 * @param string[] $parts path parts to concatenate
 	 * @return string $parts concatenated
 	 */
-	private function buildPath($parts){
-		return join(DIRECTORY_SEPARATOR, $parts);
+	protected function buildPath($parts){
+		$trimmedParts = array_map(
+			function($part){
+				return rtrim($part, '/');
+			},
+			$parts
+		);
+		return join(DIRECTORY_SEPARATOR, $trimmedParts);
 	}
 
 	/**

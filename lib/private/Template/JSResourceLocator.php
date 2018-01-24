@@ -31,46 +31,45 @@ class JSResourceLocator extends ResourceLocator {
 	 * @param string $script
 	 */
 	public function doFind($script) {
+		$fullScript = $script . '.js';
 		$themeDirectory = $this->theme->getDirectory();
 		$baseDirectory = $this->theme->getBaseDirectory();
-		$webroot = null;
-		if ($baseDirectory === '') {
-			$baseDirectory = $this->serverroot;
-		} else {
-			$webroot = rtrim($this->theme->getWebPath(), $themeDirectory);
+		$webRoot = '';
+		if ($baseDirectory !== $this->serverroot) {
+			$webRoot = substr($this->theme->getWebPath(), 0, -strlen($themeDirectory));
 		}
 
 		if (strpos($script, '/l10n/') !== false) {
 			// For language files we try to load them all, so themes can overwrite
 			// single l10n strings without having to translate all of them.
 			$found = 0;
-			$found += $this->appendOnceIfExist($this->serverroot, 'core/'.$script.'.js');
-			$found += $this->appendOnceIfExist($baseDirectory, $themeDirectory.'/core/'.$script.'.js', $webroot);
-			$found += $this->appendOnceIfExist($this->serverroot, $script.'.js');
-			$found += $this->appendOnceIfExist($baseDirectory, $themeDirectory.'/'.$script.'.js', $webroot);
-			$found += $this->appendOnceIfExist($baseDirectory, $themeDirectory.'/apps/'.$script.'.js', $webroot);
+			$found += $this->appendOnceIfExist($this->serverroot, 'core/'.$fullScript);
+			$found += $this->appendOnceIfExist($baseDirectory, $themeDirectory.'/core/'.$fullScript, $webRoot);
+			$found += $this->appendOnceIfExist($this->serverroot, $fullScript);
+			$found += $this->appendOnceIfExist($baseDirectory, $themeDirectory.'/'.$fullScript, $webRoot);
+			$found += $this->appendOnceIfExist($baseDirectory, $themeDirectory.'/apps/'.$fullScript, $webRoot);
 
 			if ($found) {
 				return;
 			}
-		} else if ($this->appendOnceIfExist($baseDirectory, $themeDirectory.'/apps/'.$script.'.js', $webroot)
-			|| $this->appendOnceIfExist($baseDirectory, $themeDirectory.'/'.$script.'.js', $webroot)
-			|| $this->appendOnceIfExist($this->serverroot, $script.'.js')
-			|| $this->appendOnceIfExist($baseDirectory, $themeDirectory.'/core/'.$script.'.js', $webroot)
-			|| $this->appendOnceIfExist($this->serverroot, 'core/'.$script.'.js')
+		} else if ($this->appendOnceIfExist($baseDirectory, $themeDirectory.'/apps/'.$fullScript, $webRoot)
+			|| $this->appendOnceIfExist($baseDirectory, $themeDirectory.'/'.$fullScript, $webRoot)
+			|| $this->appendOnceIfExist($this->serverroot, $fullScript)
+			|| $this->appendOnceIfExist($baseDirectory, $themeDirectory.'/core/'.$fullScript, $webRoot)
+			|| $this->appendOnceIfExist($this->serverroot, 'core/'.$fullScript)
 		) {
 			return;
 		}
 
-		$app = substr($script, 0, strpos($script, '/'));
-		$script = substr($script, strpos($script, '/')+1);
+		$app = substr($fullScript, 0, strpos($fullScript, '/'));
+		$fullScript = substr($fullScript, strpos($fullScript, '/')+1);
 		$app_path = \OC_App::getAppPath($app);
 		if( $app_path === false ) { return; }
 		$app_url = \OC_App::getAppWebPath($app);
 		$app_url = ($app_url !== false) ? $app_url : null;
 
 		// missing translations files fill be ignored
-		$this->appendOnceIfExist($app_path, $script . '.js', $app_url);
+		$this->appendOnceIfExist($app_path, $fullScript, $app_url);
 	}
 
 	/**

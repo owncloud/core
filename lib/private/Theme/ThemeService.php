@@ -76,7 +76,7 @@ class ThemeService implements IThemeService {
 	 * @return Theme
 	 */
 	private function makeTheme($themeName, $appTheme = true, Theme $theme = null) {
-		$baseDirectory = '';
+		$baseDirectory = \OC::$SERVERROOT;
 		$directory = '';
 		$webPath = '';
 		if ($themeName !== '') {
@@ -93,7 +93,7 @@ class ThemeService implements IThemeService {
 					}
 				}
 
-				$webPath =  \OC_App::getAppWebPath($themeName);
+				$webPath = \OC_App::getAppWebPath($themeName);
 			} else {
 				$directory = 'themes/' . $themeName;
 				$webPath = '/themes/' . $themeName;
