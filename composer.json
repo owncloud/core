@@ -36,7 +36,6 @@
         "doctrine/dbal": "^2.5",
         "phpseclib/phpseclib": "^2.0",
         "rackspace/php-opencloud": "v1.9.2",
-        "jeremeamia/superclosure": "2.1.0",
         "bantu/ini-get-wrapper": "v1.0.1",
         "punic/punic": "^1.6",
         "pear/archive_tar": "1.4.3",
@@ -46,7 +45,6 @@
         "symfony/routing": "^3.1",
         "symfony/process": "^3.1",
         "pimple/pimple": "3.0.2",
-        "nikic/php-parser": "1.4.1",
         "icewind/Streams": "0.5.2",
         "swiftmailer/swiftmailer": "^5.4",
         "guzzlehttp/guzzle": "^5.3",
@@ -60,6 +58,8 @@
         "sabre/dav": "^3.2",
         "deepdiver/zipstreamer": "^1.1",
         "zendframework/zend-inputfilter": "^2.8",
-        "zendframework/zend-servicemanager": "^3.3"
+        "zendframework/zend-servicemanager": "^3.3",
+        "jeremeamia/SuperClosure": "^2.3",
+        "nikic/php-parser": "^3.1"
     }
 }
