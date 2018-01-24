@@ -6,7 +6,15 @@
     totallyTyped="false"
 >
     <projectFiles>
-        <directory name="." />
+        <directory name="apps" />
+        <directory name="core" />
+        <directory name="lib" />
+        <directory name="ocs" />
+        <directory name="ocs-provider" />
+        <directory name="settings" />
+        <ignoreFiles>
+            <directory name="lib/composer" />
+        </ignoreFiles>
     </projectFiles>
 
     <issueHandlers>
