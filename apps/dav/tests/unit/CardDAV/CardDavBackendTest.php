@@ -636,4 +636,14 @@ class CardDavBackendTest extends TestCase {
 		$result = $this->backend->collectCardProperties(666, 'FN');
 		$this->assertEquals(['John Doe'], $result);
 	}
+
+	public function testHughMultiGet() {
+		$bookId = 1;
+		$urls = array_map(function($number){
+			return "url-$number";
+		}, range(0, 2000));
+		$multipleCards = $this->backend->getMultipleCards($bookId, $urls);
+		$this->assertEquals([], $multipleCards);
+	}
+
 }
