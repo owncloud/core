@@ -127,7 +127,7 @@ trait AppConfiguration {
 	}
 
 	/**
-	 * @When the capabilities are retrieved
+	 * @When the user retrieves the capabilities using the API
 	 * @return void
 	 */
 	public function getCapabilitiesCheckResponse() {
