@@ -539,7 +539,7 @@ Feature: webdav-related-old-endpoint
 		And user "user0" uploads file "data/textfile.txt" to "/somefile.txt"
 		Then as "user0" gets properties of file "/somefile.txt" with
 			|{http://owncloud.org/ns}privatelink|
-		And the single response should contain a property "{http://owncloud.org/ns}privatelink" with value like "/(\/index.php\/f\/[0-9]*)/"
+		And the single response should contain a property "{http://owncloud.org/ns}privatelink" with value like "/(\/(index.php\/)?f\/[0-9]*)/"
 
 	Scenario: Copying file to a path with extension .part should not be possible
 		Given using old dav path
