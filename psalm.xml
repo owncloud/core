@@ -14,23 +14,77 @@
         <directory name="settings" />
         <ignoreFiles>
             <directory name="lib/composer" />
+            <directory name="apps/**/tests" />
+            <directory name="apps/files_external/3rdparty" />
         </ignoreFiles>
     </projectFiles>
 
     <issueHandlers>
-        <LessSpecificReturnType errorLevel="info" />
+        <LessSpecificReturnType errorLevel="suppress" />
 
         <!-- level 3 issues - slightly lazy code writing, but provably low false-negatives -->
-        <DeprecatedMethod errorLevel="info" />
+        <DeprecatedClass errorLevel="suppress" />
+        <DeprecatedMethod errorLevel="suppress" />
 
-        <MissingClosureReturnType errorLevel="info" />
-        <MissingReturnType errorLevel="info" />
-        <MissingPropertyType errorLevel="info" />
-        <InvalidDocblock errorLevel="info" />
-        <MisplacedRequiredParam errorLevel="info" />
+        <MissingClosureReturnType errorLevel="suppress" />
+        <MissingReturnType errorLevel="suppress" />
+        <MissingPropertyType errorLevel="suppress" />
+        <InvalidDocblock errorLevel="suppress" />
+        <MissingDocblockType errorLevel="suppress" />
+        <MisplacedRequiredParam errorLevel="suppress" />
 
-        <PropertyNotSetInConstructor errorLevel="info" />
-        <MissingConstructor errorLevel="info" />
-        <UntypedParam errorLevel="info" />
+        <PropertyNotSetInConstructor errorLevel="suppress" />
+        <MissingConstructor errorLevel="suppress" />
+        <UntypedParam errorLevel="suppress" />
+
+        <!-- level 4 issues - points to possible deficiencies in logic, higher false-positives -->
+
+        <MoreSpecificReturnType errorLevel="suppress" />
+        <TypeCoercion errorLevel="suppress" />
+        <RedundantCondition errorLevel="suppress" />
+
+        <PossiblyFalseArgument errorLevel="suppress" />
+        <PossiblyFalsePropertyAssignmentValue errorLevel="suppress" />
+        <PossiblyFalseReference errorLevel="suppress" />
+        <PossiblyInvalidArgument errorLevel="suppress" />
+        <PossiblyInvalidArrayAccess errorLevel="suppress" />
+        <PossiblyInvalidArrayAssignment errorLevel="suppress" />
+        <PossiblyInvalidMethodCall errorLevel="suppress" />
+        <PossiblyInvalidPropertyAssignment errorLevel="suppress" />
+        <PossiblyInvalidPropertyAssignmentValue errorLevel="suppress" />
+        <PossiblyInvalidPropertyFetch errorLevel="suppress" />
+        <PossiblyNullArgument errorLevel="suppress" />
+        <PossiblyNullArrayAccess errorLevel="suppress" />
+        <PossiblyNullArrayAssignment errorLevel="suppress" />
+        <PossiblyNullArrayOffset errorLevel="suppress" />
+        <PossiblyNullFunctionCall errorLevel="suppress" />
+        <PossiblyNullIterator errorLevel="suppress" />
+        <PossiblyNullOperand errorLevel="suppress" />
+        <PossiblyNullPropertyAssignment errorLevel="suppress" />
+        <PossiblyNullPropertyAssignmentValue errorLevel="suppress" />
+        <PossiblyNullPropertyFetch errorLevel="suppress" />
+        <PossiblyNullReference errorLevel="suppress" />
+        <PossiblyUndefinedGlobalVariable errorLevel="suppress" />
+        <PossiblyUndefinedVariable errorLevel="suppress" />
+        <PossiblyUndefinedMethod errorLevel="suppress" />
+
+        <!-- level 5 issues - should be avoided at mosts costs... -->
+
+        <ForbiddenCode errorLevel="suppress" />
+        <ImplicitToStringCast errorLevel="suppress" />
+        <InvalidScalarArgument errorLevel="suppress" />
+        <InvalidToString errorLevel="suppress" />
+        <MethodSignatureMismatch errorLevel="suppress" />
+        <NoInterfaceProperties errorLevel="suppress" />
+        <TooManyArguments errorLevel="suppress" />
+        <TypeDoesNotContainType errorLevel="suppress" />
+
+        <!-- level 6 issues -->
+
+        <InvalidFalsableReturnType errorLevel="suppress" />
+        <InvalidNullableReturnType errorLevel="suppress" />
+        <FalsableReturnStatement errorLevel="suppress" />
+        <NullableReturnStatement errorLevel="suppress" />
+
     </issueHandlers>
 </psalm>
