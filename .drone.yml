@@ -326,7 +326,7 @@ matrix:
       TEST_SUITE: coverage
 
     - PHP_VERSION: 7.1
-      DB_TYPE: mariadb
+      DB_TYPE: mysql
       TEST_SUITE: coverage
 
     - PHP_VERSION: 7.1
