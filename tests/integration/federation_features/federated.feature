@@ -1,6 +1,6 @@
 Feature: federated
 	Background:
-		Given using api version "1"
+		Given using API version "1"
 
 	Scenario: Federate share a file with another server
 		Given using server "REMOTE"

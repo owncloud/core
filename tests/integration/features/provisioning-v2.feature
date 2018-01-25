@@ -28,7 +28,7 @@ Feature: provisioning
     When sending "DELETE" to "/cloud/users/brand-new-user/groups" with
       | groupid | <group_id> |
     Then the OCS status code should be "200"
-    And user "brand-new-user" does not belong to group "<group_id>"
+    And user "brand-new-user" should not belong to group "<group_id>"
     Examples:
       | group_id  |
       | new-group |
