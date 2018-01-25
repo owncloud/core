@@ -29,6 +29,8 @@ use OCP\IL10N;
 use OCP\IUser;
 use OCP\IUserManager;
 use OCP\Util;
+use Symfony\Component\EventDispatcher\EventDispatcher;
+use Symfony\Component\EventDispatcher\GenericEvent;
 
 class HookManager {
 
@@ -50,6 +52,9 @@ class HookManager {
 	/** @var IL10N */
 	private $l10n;
 
+	/** @var EventDispatcher  */
+	private $eventDispatcher;
+
 	/** @var array */
 	private $calendarsToDelete;
 
@@ -60,47 +65,37 @@ class HookManager {
 								SyncService $syncService,
 								CalDavBackend $calDav,
 								CardDavBackend $cardDav,
-								IL10N $l10n) {
+								IL10N $l10n,
+								EventDispatcher $eventDispatcher) {
 		$this->userManager = $userManager;
 		$this->syncService = $syncService;
 		$this->calDav = $calDav;
 		$this->cardDav = $cardDav;
 		$this->l10n = $l10n;
+		$this->eventDispatcher = $eventDispatcher;
 	}
 
 	public function setup() {
-		Util::connectHook('OC_User',
-			'post_createUser',
-			$this,
-			'postCreateUser');
-		Util::connectHook('OC_User',
-			'pre_deleteUser',
-			$this,
-			'preDeleteUser');
-		Util::connectHook('OC_User',
-			'post_deleteUser',
-			$this,
-			'postDeleteUser');
-		Util::connectHook('OC_User',
-			'changeUser',
-			$this,
-			'changeUser');
+		$this->eventDispatcher->addListener('user.aftercreateuser', [$this, 'postCreateUser']);
+		$this->eventDispatcher->addListener('user.beforedelete', [$this, 'preDeleteUser']);
+		$this->eventDispatcher->addListener('user.afterdelete', [$this, 'postDeleteUser']);
+		$this->eventDispatcher->addListener('user.beforefeaturechange', [$this, 'changeUser']);
 	}
 
-	public function postCreateUser($params) {
-		$user = $this->userManager->get($params['uid']);
+	public function postCreateUser(GenericEvent $params) {
+		$user = $this->userManager->get($params->getArgument('uid'));
 		$this->syncService->updateUser($user);
 	}
 
-	public function preDeleteUser($params) {
-		$uid = $params['uid'];
+	public function preDeleteUser(GenericEvent $params) {
+		$uid = $params->getArgument('uid');
 		$this->usersToDelete[$uid] = $this->userManager->get($uid);
 		$this->calendarsToDelete = $this->calDav->getUsersOwnCalendars('principals/users/' . $uid);
 		$this->addressBooksToDelete = $this->cardDav->getUsersOwnAddressBooks('principals/users/' . $uid);
 	}
 
-	public function postDeleteUser($params) {
-		$uid = $params['uid'];
+	public function postDeleteUser(GenericEvent $params) {
+		$uid = $params->getArgument('uid');
 		if (isset($this->usersToDelete[$uid])){
 			$this->syncService->deleteUser($this->usersToDelete[$uid]);
 		}
@@ -115,8 +110,8 @@ class HookManager {
 		}
 	}
 
-	public function changeUser($params) {
-		$user = $params['user'];
+	public function changeUser(GenericEvent $params) {
+		$user = $params->getArgument('user');
 		$this->syncService->updateUser($user);
 	}
 

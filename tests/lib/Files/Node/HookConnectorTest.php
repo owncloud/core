@@ -13,6 +13,8 @@ use OC\Files\Node\Root;
 use OC\Files\Storage\Temporary;
 use OC\Files\View;
 use OCP\Files\Node;
+use OCP\Files\NotFoundException;
+use Symfony\Component\EventDispatcher\EventDispatcher;
 use Test\TestCase;
 use Test\Traits\MountProviderTrait;
 use Test\Traits\UserTrait;
@@ -39,6 +41,11 @@ class HookConnectorTest extends TestCase {
 	private $root;
 
 	/**
+	 * @var EventDispatcher
+	 */
+
+	private $eventDispatcher;
+	/**
 	 * @var string
 	 */
 	private $userId;
@@ -51,6 +58,7 @@ class HookConnectorTest extends TestCase {
 		\OC_Util::setupFS($this->userId);
 		$this->view = new View();
 		$this->root = new Root(Filesystem::getMountManager(), $this->view, \OC::$server->getUserManager()->get($this->userId));
+		$this->eventDispatcher = \OC::$server->getEventDispatcher();
 	}
 
 	public function tearDown() {
@@ -116,7 +124,8 @@ class HookConnectorTest extends TestCase {
 	 * @dataProvider viewToNodeProvider
 	 */
 	public function testViewToNode(callable $operation, $expectedHook) {
-		$connector = new \OC\Files\Node\HookConnector($this->root, $this->view);
+		$postEvents = ["postCreate", "postDelete"];
+		$connector = new \OC\Files\Node\HookConnector($this->root, $this->view, $this->eventDispatcher);
 		$connector->viewToNode();
 		$hookCalled = false;
 		/** @var Node $hookNode */
@@ -130,7 +139,11 @@ class HookConnectorTest extends TestCase {
 		$operation();
 
 		$this->assertTrue($hookCalled);
-		$this->assertEquals('/' . $this->userId . '/files/test.txt', $hookNode->getPath());
+		if (in_array($expectedHook, $postEvents)) {
+			$this->assertEquals($this->userId . '/files/test.txt', $hookNode->getInternalPath());
+		} else {
+			$this->assertEquals('/' . $this->userId . '/files/test.txt', $hookNode->getPath());
+		}
 	}
 
 	public function viewToNodeProviderCopyRename() {
@@ -160,7 +173,8 @@ class HookConnectorTest extends TestCase {
 	 * @dataProvider viewToNodeProviderCopyRename
 	 */
 	public function testViewToNodeCopyRename(callable $operation, $expectedHook) {
-		$connector = new \OC\Files\Node\HookConnector($this->root, $this->view);
+		$postEvents = ["postRename", "postCopy"];
+		$connector = new \OC\Files\Node\HookConnector($this->root, $this->view, $this->eventDispatcher);
 		$connector->viewToNode();
 		$hookCalled = false;
 		/** @var Node $hookSourceNode */
@@ -177,12 +191,20 @@ class HookConnectorTest extends TestCase {
 		$operation();
 
 		$this->assertTrue($hookCalled);
-		$this->assertEquals('/' . $this->userId . '/files/source', $hookSourceNode->getPath());
-		$this->assertEquals('/' . $this->userId . '/files/target', $hookTargetNode->getPath());
+		if (in_array($expectedHook, $postEvents)) {
+			$this->assertEquals($this->userId . '/files/source', $hookSourceNode->getInternalPath());
+			$this->assertEquals($this->userId . '/files/target', $hookTargetNode->getInternalPath());
+		} else {
+			$this->assertEquals('/' . $this->userId . '/files/source', $hookSourceNode->getPath());
+			$this->assertEquals('/' . $this->userId . '/files/target', $hookTargetNode->getPath());
+		}
 	}
 
+	/**
+	 * @expectedException \OCP\Files\NotFoundException
+	 */
 	public function testPostDeleteMeta() {
-		$connector = new \OC\Files\Node\HookConnector($this->root, $this->view);
+		$connector = new \OC\Files\Node\HookConnector($this->root, $this->view, $this->eventDispatcher);
 		$connector->viewToNode();
 		$hookCalled = false;
 		/** @var Node $hookNode */
@@ -198,6 +220,6 @@ class HookConnectorTest extends TestCase {
 		Filesystem::unlink('test.txt');
 
 		$this->assertTrue($hookCalled);
-		$this->assertEquals($hookNode->getId(), $info->getId());
+		$hookNode->getId();
 	}
 }

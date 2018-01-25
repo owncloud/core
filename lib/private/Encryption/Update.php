@@ -26,6 +26,7 @@ namespace OC\Encryption;
 use OC\Files\Filesystem;
 use \OC\Files\Mount;
 use \OC\Files\View;
+use Symfony\Component\EventDispatcher\GenericEvent;
 
 /**
  * update encrypted files, e.g. because a file was shared
@@ -81,10 +82,10 @@ class Update {
 	 *
 	 * @param array $params
 	 */
-	public function postShared($params) {
+	public function postShared(GenericEvent $params) {
 		if ($this->encryptionManager->isEnabled()) {
-			if ($params['itemType'] === 'file' || $params['itemType'] === 'folder') {
-				$path = Filesystem::getPath($params['fileSource']);
+			if ($params->getArgument('itemType') === 'file' || $params->getArgument('itemType') === 'folder') {
+				$path = Filesystem::getPath($params->getArgument('fileSource'));
 				list($owner, $ownerPath) = $this->getOwnerPath($path);
 				$absPath = '/' . $owner . '/files/' . $ownerPath;
 				$this->update($absPath);
@@ -97,10 +98,10 @@ class Update {
 	 *
 	 * @param array $params
 	 */
-	public function postUnshared($params) {
+	public function postUnshared(GenericEvent $params) {
 		if ($this->encryptionManager->isEnabled()) {
-			if ($params['itemType'] === 'file' || $params['itemType'] === 'folder') {
-				$path = Filesystem::getPath($params['fileSource']);
+			if ($params->getArgument('itemType') === 'file' || $params->getArgument('itemType') === 'folder') {
+				$path = Filesystem::getPath($params->getArgument('fileSource'));
 				list($owner, $ownerPath) = $this->getOwnerPath($path);
 				$absPath = '/' . $owner . '/files/' . $ownerPath;
 				$this->update($absPath);

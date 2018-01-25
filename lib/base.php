@@ -759,9 +759,11 @@ class OC {
 	private static function registerEncryptionHooks() {
 		$enabled = self::$server->getEncryptionManager()->isEnabled();
 		if ($enabled) {
-			\OCP\Util::connectHook('OCP\Share', 'post_shared', 'OC\Encryption\HookManager', 'postShared');
-			\OCP\Util::connectHook('OCP\Share', 'post_unshare', 'OC\Encryption\HookManager', 'postUnshared');
-			\OCP\Util::connectHook('OC_Filesystem', 'post_rename', 'OC\Encryption\HookManager', 'postRename');
+			$eventDispatcher = OC::$server->getEventDispatcher();
+			$hookManager = new \OC\Encryption\HookManager();
+			$eventDispatcher->addListener('file.aftercreateshare', [$hookManager, 'postShared']);
+			$eventDispatcher->addListener('file.afterunshare',[$hookManager, 'postUnshared']);
+			$eventDispatcher->addListener('file.afterrename', [$hookManager, 'postRename']);
 			\OCP\Util::connectHook('\OCA\Files_Trashbin\Trashbin', 'post_restore', 'OC\Encryption\HookManager', 'postRestore');
 		}
 	}

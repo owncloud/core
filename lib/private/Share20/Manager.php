@@ -28,6 +28,7 @@ namespace OC\Share20;
 
 use OC\Cache\CappedMemoryCache;
 use OC\Files\Mount\MoveableMount;
+use OCP\Events\EventEmitterTrait;
 use OCP\Files\File;
 use OCP\Files\Folder;
 use OCP\Files\IRootFolder;
@@ -50,6 +51,7 @@ use Symfony\Component\EventDispatcher\GenericEvent;
  * This class is the communication hub for all sharing related operations.
  */
 class Manager implements IManager {
+	use EventEmitterTrait;
 
 	/** @var IProviderFactory */
 	private $factory;
@@ -619,49 +621,53 @@ class Manager implements IManager {
 		// Pre share hook
 		$run = true;
 		$error = '';
-		$preHookData = [
-			'itemType' => $share->getNode() instanceof \OCP\Files\File ? 'file' : 'folder',
-			'itemSource' => $share->getNode()->getId(),
-			'shareType' => $share->getShareType(),
-			'uidOwner' => $share->getSharedBy(),
-			'permissions' => $share->getPermissions(),
-			'fileSource' => $share->getNode()->getId(),
-			'expiration' => $share->getExpirationDate(),
-			'token' => $share->getToken(),
-			'itemTarget' => $share->getTarget(),
-			'shareWith' => $share->getSharedWith(),
-			'run' => &$run,
-			'error' => &$error,
-		];
-		\OC_Hook::emit('OCP\Share', 'pre_shared', $preHookData);
+		$preHookData = [];
+		$postHookData = [];
+		return $this->emittingCall(function () use (&$run, &$error, &$share, &$preHookData, &$postHookData) {
+			$preHookData = [
+				'itemType' => $share->getNode() instanceof \OCP\Files\File ? 'file' : 'folder',
+				'itemSource' => $share->getNode()->getId(),
+				'shareType' => $share->getShareType(),
+				'uidOwner' => $share->getSharedBy(),
+				'permissions' => $share->getPermissions(),
+				'fileSource' => $share->getNode()->getId(),
+				'expiration' => $share->getExpirationDate(),
+				'token' => $share->getToken(),
+				'itemTarget' => $share->getTarget(),
+				'shareWith' => $share->getSharedWith(),
+				'run' => &$run,
+				'error' => &$error,
+			];
+			\OC_Hook::emit('OCP\Share', 'pre_shared', $preHookData);
 
-		if ($run === false) {
-			throw new \Exception($error);
-		}
+			if ($run === false) {
+				throw new \Exception($error);
+			}
 
-		$provider = $this->factory->getProviderForType($share->getShareType());
-		$share = $provider->create($share);
+			$provider = $this->factory->getProviderForType($share->getShareType());
+			$share = $provider->create($share);
 
-		// Post share hook
-		$postHookData = [
-			'itemType' => $share->getNode() instanceof \OCP\Files\File ? 'file' : 'folder',
-			'itemSource' => $share->getNode()->getId(),
-			'shareType' => $share->getShareType(),
-			'uidOwner' => $share->getSharedBy(),
-			'permissions' => $share->getPermissions(),
-			'fileSource' => $share->getNode()->getId(),
-			'expiration' => $share->getExpirationDate(),
-			'token' => $share->getToken(),
-			'id' => $share->getId(),
-			'shareWith' => $share->getSharedWith(),
-			'itemTarget' => $share->getTarget(),
-			'fileTarget' => $share->getTarget(),
-			'passwordEnabled' => (!is_null($share->getPassword()) and ($share->getPassword() !== '')),
-		];
+			// Post share hook
+			$postHookData = [
+				'itemType' => $share->getNode() instanceof \OCP\Files\File ? 'file' : 'folder',
+				'itemSource' => $share->getNode()->getId(),
+				'shareType' => $share->getShareType(),
+				'uidOwner' => $share->getSharedBy(),
+				'permissions' => $share->getPermissions(),
+				'fileSource' => $share->getNode()->getId(),
+				'expiration' => $share->getExpirationDate(),
+				'token' => $share->getToken(),
+				'id' => $share->getId(),
+				'shareWith' => $share->getSharedWith(),
+				'itemTarget' => $share->getTarget(),
+				'fileTarget' => $share->getTarget(),
+				'passwordEnabled' => (!is_null($share->getPassword()) and ($share->getPassword() !== '')),
+			];
 
-		\OC_Hook::emit('OCP\Share', 'post_shared', $postHookData);
+			\OC_Hook::emit('OCP\Share', 'post_shared', $postHookData);
 
-		return $share;
+			return $share;
+		}, ['before' => $preHookData, 'after' => $postHookData], 'file', 'createshare');
 	}
 
 	/**
@@ -843,26 +849,28 @@ class Manager implements IManager {
 
 		$hookParams = self::formatUnshareHookParams($share);
 
-		// Emit pre-hook
-		\OC_Hook::emit('OCP\Share', 'pre_unshare', $hookParams);
+		return $this->emittingCall(function () use (&$hookParams, &$share) {
+			// Emit pre-hook
+			\OC_Hook::emit('OCP\Share', 'pre_unshare', $hookParams);
 
-		// Get all children and delete them as well
-		$deletedShares = $this->deleteChildren($share);
+			// Get all children and delete them as well
+			$deletedShares = $this->deleteChildren($share);
 
-		// Do the actual delete
-		$provider = $this->factory->getProviderForType($share->getShareType());
-		$provider->delete($share);
+			// Do the actual delete
+			$provider = $this->factory->getProviderForType($share->getShareType());
+			$provider->delete($share);
 
-		// All the deleted shares caused by this delete
-		$deletedShares[] = $share;
+			// All the deleted shares caused by this delete
+			$deletedShares[] = $share;
 
-		//Format hook info
-		$formattedDeletedShares = array_map('self::formatUnshareHookParams', $deletedShares);
+			//Format hook info
+			$formattedDeletedShares = array_map('self::formatUnshareHookParams', $deletedShares);
 
-		$hookParams['deletedShares'] = $formattedDeletedShares;
+			$hookParams['deletedShares'] = $formattedDeletedShares;
 
-		// Emit post hook
-		\OC_Hook::emit('OCP\Share', 'post_unshare', $hookParams);
+			// Emit post hook
+			\OC_Hook::emit('OCP\Share', 'post_unshare', $hookParams);
+		}, ['before' => $hookParams, 'after' => $hookParams], 'file', 'unshare');
 	}
 
 

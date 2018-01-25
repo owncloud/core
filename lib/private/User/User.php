@@ -207,43 +207,46 @@ class User implements IUser {
 	 * @return bool
 	 */
 	public function delete() {
-		if ($this->emitter) {
-			$this->emitter->emit('\OC\User', 'preDelete', [$this]);
-		}
-		// get the home now because it won't return it after user deletion
-		$homePath = $this->getHome();
-		$this->mapper->delete($this->account);
-		$bi = $this->account->getBackendInstance();
-		if (!is_null($bi)) {
-			$bi->deleteUser($this->account->getUserId());
-		}
+		return $this->emittingCall(function () {
+			if ($this->emitter) {
+				$this->emitter->emit('\OC\User', 'preDelete', [$this]);
+			}
+			// get the home now because it won't return it after user deletion
+			$homePath = $this->getHome();
+			$this->mapper->delete($this->account);
+			$bi = $this->account->getBackendInstance();
+			if (!is_null($bi)) {
+				$bi->deleteUser($this->account->getUserId());
+			}
 
-		// FIXME: Feels like an hack - suggestions?
+			// FIXME: Feels like an hack - suggestions?
 
-		// We have to delete the user from all groups
-		foreach (\OC::$server->getGroupManager()->getUserGroups($this) as $group) {
-			$group->removeUser($this);
-		}
-		// Delete the user's keys in preferences
-		\OC::$server->getConfig()->deleteAllUserValues($this->getUID());
+			// We have to delete the user from all groups
+			foreach (\OC::$server->getGroupManager()->getUserGroups($this) as $group) {
+				$group->removeUser($this);
+			}
+			// Delete the user's keys in preferences
+			\OC::$server->getConfig()->deleteAllUserValues($this->getUID());
 
-		// Delete user files in /data/
-		if ($homePath !== false) {
-			// FIXME: this operates directly on FS, should use View instead...
-			// also this is not testable/mockable...
-			\OC_Helper::rmdirr($homePath);
-		}
+			// Delete user files in /data/
+			if ($homePath !== false) {
+				// FIXME: this operates directly on FS, should use View instead...
+				// also this is not testable/mockable...
+				\OC_Helper::rmdirr($homePath);
+			}
 
-		// Delete the users entry in the storage table
-		Storage::remove('home::' . $this->getUID());
+			// Delete the users entry in the storage table
+			Storage::remove('home::' . $this->getUID());
 
-		\OC::$server->getCommentsManager()->deleteReferencesOfActor('users', $this->getUID());
-		\OC::$server->getCommentsManager()->deleteReadMarksFromUser($this);
+			\OC::$server->getCommentsManager()->deleteReferencesOfActor('users', $this->getUID());
+			\OC::$server->getCommentsManager()->deleteReadMarksFromUser($this);
 
-		if ($this->emitter) {
-			$this->emitter->emit('\OC\User', 'postDelete', [$this]);
-		}
-		return true;
+			if ($this->emitter) {
+				$this->emitter->emit('\OC\User', 'postDelete', [$this]);
+			}
+			return true;
+		},
+			['before' => ['uid' => $this->getUID()], 'after' => ['uid' => $this->getUID()]], 'user', 'delete');
 	}
 
 	/**

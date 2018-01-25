@@ -27,10 +27,11 @@ namespace OCA\Files_Sharing;
 
 use OC\Files\Filesystem;
 use OCA\FederatedFileSharing\DiscoveryManager;
+use Symfony\Component\EventDispatcher\GenericEvent;
 
 class Hooks {
 
-	public static function deleteUser($params) {
+	public static function deleteUser(GenericEvent $params) {
 		$discoveryManager = new DiscoveryManager(
 			\OC::$server->getMemCacheFactory(),
 			\OC::$server->getHTTPClientService()
@@ -41,13 +42,17 @@ class Hooks {
 			\OC\Files\Filesystem::getLoader(),
 			\OC::$server->getNotificationManager(),
 			\OC::$server->getEventDispatcher(),
-			$params['uid']);
+			$params->getArgument('uid'));
 
-		$manager->removeUserShares($params['uid']);
+		$manager->removeUserShares($params->getArgument('uid'));
 	}
 
 	public static function unshareChildren($params) {
-		$path = Filesystem::getView()->getAbsolutePath($params['path']);
+		if ($params instanceof  GenericEvent) {
+			$path = $params->getArgument('path');
+		} else {
+			$path = Filesystem::getView()->getAbsolutePath($params['path']);
+		}
 		$view = new \OC\Files\View('/');
 
 		// find share mount points within $path and unmount them

@@ -194,8 +194,25 @@ class UserTest extends TestCase {
 	}
 
 	public function testDelete() {
+		$calledBeforeDeleteEvent = [];
+		$calledAfterDeleteEvent = [];
+		\OC::$server->getEventDispatcher()->addListener('user.beforedelete', function ($event) use (&$calledBeforeDeleteEvent) {
+			$calledBeforeDeleteEvent[] = 'user.beforedelete';
+			$calledBeforeDeleteEvent[] = $event;
+		});
+		\OC::$server->getEventDispatcher()->addListener('user.afterdelete', function ($event) use (&$calledAfterDeleteEvent) {
+			$calledAfterDeleteEvent[] = 'user.afterdelete';
+			$calledAfterDeleteEvent[] = $event;
+		});
 		$this->accountMapper->expects($this->once())->method('delete')->willReturn($this->account);
 		$this->assertTrue($this->user->delete());
+
+		$this->assertInstanceOf(GenericEvent::class, $calledBeforeDeleteEvent[1]);
+		$this->assertInstanceOf(GenericEvent::class, $calledBeforeDeleteEvent[1]);
+		$this->assertEquals('user.afterdelete', $calledAfterDeleteEvent[0]);
+		$this->assertEquals('user.beforedelete', $calledBeforeDeleteEvent[0]);
+		$this->assertArrayHasKey('uid', $calledBeforeDeleteEvent[1]);
+		$this->assertArrayHasKey('uid', $calledAfterDeleteEvent[1]);
 	}
 
 	public function testGetHome() {

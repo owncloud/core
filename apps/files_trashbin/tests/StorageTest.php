@@ -752,6 +752,7 @@ class StorageTest extends TestCase {
 		if (!$this->userView->file_exists('test.txt')) {
 			$this->markTestSkipped('Skipping since the current home storage backend requires the user to logged in');
 		} else {
+			Filesystem::init($this->user, '/' . $this->user . '/files/');
 			$this->userView->unlink('test.txt');
 		}
 	}

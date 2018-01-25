@@ -38,10 +38,12 @@ use OCP\User;
 class Helper {
 
 	public static function registerHooks() {
-		\OCP\Util::connectHook('OC_Filesystem', 'post_rename', '\OCA\Files_Sharing\Updater', 'renameHook');
-		\OCP\Util::connectHook('OC_Filesystem', 'post_delete', '\OCA\Files_Sharing\Hooks', 'unshareChildren');
+		$hooks = new Hooks();
+		$updater = new Updater();
+		\OC::$server->getEventDispatcher()->addListener('file.afterrename', [$updater, 'renameHook']);
+		\OC::$server->getEventDispatcher()->addListener('file.afterdelete', [$hooks, 'unshareChildren']);
 
-		\OCP\Util::connectHook('OC_User', 'post_deleteUser', '\OCA\Files_Sharing\Hooks', 'deleteUser');
+		\OC::$server->getEventDispatcher()->addListener('user.afterdelete', [$hooks, 'deleteUser']);
 	}
 
 	/**

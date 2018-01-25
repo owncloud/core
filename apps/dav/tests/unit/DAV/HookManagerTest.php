@@ -31,8 +31,15 @@ use OCA\DAV\CardDAV\SyncService;
 use OCA\DAV\HookManager;
 use OCP\IUser;
 use OCP\IUserManager;
+use Symfony\Component\EventDispatcher\GenericEvent;
 use Test\TestCase;
 
+/**
+ * Class HookManagerTest
+ *
+ * @group DB
+ * @package OCA\DAV\Tests\unit\DAV
+ */
 class HookManagerTest extends TestCase {
 
 	/** @var L10N */
@@ -89,7 +96,7 @@ class HookManagerTest extends TestCase {
 			'principals/users/newUser',
 			'contacts', ['{DAV:}displayname' => $this->l10n->t('Contacts')]);
 
-		$hm = new HookManager($userManager, $syncService, $cal, $card, $this->l10n);
+		$hm = new HookManager($userManager, $syncService, $cal, $card, $this->l10n, \OC::$server->getEventDispatcher());
 		$hm->firstLogin($user);
 	}
 
@@ -127,7 +134,7 @@ class HookManagerTest extends TestCase {
 		]);
 		$card->expects($this->never())->method('createAddressBook');
 
-		$hm = new HookManager($userManager, $syncService, $cal, $card, $this->l10n);
+		$hm = new HookManager($userManager, $syncService, $cal, $card, $this->l10n, \OC::$server->getEventDispatcher());
 		$hm->firstLogin($user);
 	}
 
@@ -171,7 +178,7 @@ class HookManagerTest extends TestCase {
 			'principals/users/newUser',
 			'contacts', ['{DAV:}displayname' => $this->l10n->t('Contacts')]);
 
-		$hm = new HookManager($userManager, $syncService, $cal, $card, $this->l10n);
+		$hm = new HookManager($userManager, $syncService, $cal, $card, $this->l10n, \OC::$server->getEventDispatcher());
 		$hm->firstLogin($user);
 	}
 
@@ -212,9 +219,10 @@ class HookManagerTest extends TestCase {
 		]);
 		$card->expects($this->once())->method('deleteAddressBook')->with('personal');
 
-		$hm = new HookManager($userManager, $syncService, $cal, $card, $this->l10n);
-		$hm->preDeleteUser(['uid' => 'newUser']);
-		$hm->postDeleteUser(['uid' => 'newUser']);
+		$hm = new HookManager($userManager, $syncService, $cal, $card, $this->l10n, \OC::$server->getEventDispatcher());
+		$params = new GenericEvent(null, ['uid' => 'newUser']);
+		$hm->preDeleteUser($params);
+		$hm->postDeleteUser($params);
 	}
 
 }

@@ -934,6 +934,7 @@ class Session implements IUserSession, Emitter {
 			$this->unsetMagicInCookie();
 			$this->session->clear();
 			$this->manager->emit('\OC\User', 'postLogout');
+			return true;
 		}, ['before' => ['uid' => ''], 'after' => []], 'user', 'logout');
 	}
 

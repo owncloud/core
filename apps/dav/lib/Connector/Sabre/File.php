@@ -112,7 +112,8 @@ class File extends Node implements IFile, IFileNode {
 	 */
 	public function put($data) {
 		$path = $this->fileView->getAbsolutePath($this->path);
-		return $this->emittingCall(function () use (&$data) {
+		$emitPostEvent = false;
+		return $this->emittingCall(function () use (&$data, &$emitPostEvent) {
 			try {
 				$exists = $this->fileView->file_exists($this->path);
 				if ($this->info && $exists && !$this->info->isUpdateable()) {
@@ -251,10 +252,11 @@ class File extends Node implements IFile, IFileNode {
 				throw new ServiceUnavailable("Failed to check file size: " . $e->getMessage());
 			}
 
+			$emitPostEvent = true;
 			return '"' . $this->info->getEtag() . '"';
 		}, [
 			'before' => ['path' => $path],
-			'after' => ['path' => $path]],
+			'after' => ['path' => $path, 'processPostEvent' => &$emitPostEvent]],
 			'file', 'create');
 	}
 
