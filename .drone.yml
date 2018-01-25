@@ -81,7 +81,7 @@ pipeline:
         TEST_SUITE: coverage
 
   codecov:
-    image: plugins/codecov:1
+    image: plugins/codecov:2
     secrets: [codecov_token]
     pull: true
     files:
