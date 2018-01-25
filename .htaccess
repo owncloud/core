@@ -11,6 +11,7 @@
     <IfModule mod_proxy_fcgi.c>
        SetEnvIfNoCase Authorization "(.+)" HTTP_AUTHORIZATION=$1
     </IfModule>
+    SetEnvIfNoCase OCS_APIREQUEST "(.+)" HTTP_OCS_APIREQUEST=$1
   </IfModule>
 
   <IfModule mod_env.c>
