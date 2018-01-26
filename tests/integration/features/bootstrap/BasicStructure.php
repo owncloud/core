@@ -255,10 +255,10 @@ trait BasicStructure {
 		}
 	}
 
-	public function isExpectedUrl($possibleUrl, $finalPart) {
+	public function isAPublicLinkUrl($url) {
 		$baseUrlChopped = $this->baseUrlWithoutOCSAppendix();
-		$endCharacter = strlen($baseUrlChopped) + strlen($finalPart);
-		return (substr($possibleUrl,0,$endCharacter) == "$baseUrlChopped" . "$finalPart");
+		$urlEnding = substr($url, strlen($baseUrlChopped));
+		return preg_match("%^(index.php/)?s/([a-zA-Z0-9]{15})$%", $urlEnding);
 	}
 
 	/**

@@ -1,9 +1,9 @@
-Feature: webdav-related-old-endpoint
+Feature: webdav-related-new-endpoint
 	Background:
 		Given using api version "1"
 
 	Scenario: Unauthenticated call
-		Given using old dav path
+		Given using new dav path
 		When connecting to dav endpoint
 		Then the HTTP status code should be "401"
 		And there are no duplicate headers
@@ -11,15 +11,15 @@ Feature: webdav-related-old-endpoint
 			|WWW-Authenticate|Basic realm="ownCloud"|
 
 	Scenario: Moving a file
-		Given using old dav path
+		Given using new dav path
 		And user "user0" exists
 		And as an "user0"
 		When user "user0" moves file "/welcome.txt" to "/FOLDER/welcome.txt"
 		Then the HTTP status code should be "201"
 		And downloaded content when downloading file "/FOLDER/welcome.txt" with range "bytes=0-6" should be "Welcome"
 
-	Scenario: Moving and overwriting a file old way
-		Given using old dav path
+	Scenario: Moving and overwriting a file
+		Given using new dav path
 		And user "user0" exists
 		And as an "user0"
 		When user "user0" moves file "/welcome.txt" to "/textfile0.txt"
@@ -27,7 +27,7 @@ Feature: webdav-related-old-endpoint
 		And downloaded content when downloading file "/textfile0.txt" with range "bytes=0-6" should be "Welcome"
 
 	Scenario: Moving a file to a folder with no permissions
-		Given using old dav path
+		Given using new dav path
 		And user "user0" exists
 		And user "user1" exists
 		And as an "user1"
@@ -44,7 +44,7 @@ Feature: webdav-related-old-endpoint
  		Then the HTTP status code should be "404"
 
 	Scenario: Moving a file to overwrite a file in a folder with no permissions
-		Given using old dav path
+		Given using new dav path
 		And user "user0" exists
 		And user "user1" exists
 		And as an "user1"
@@ -61,28 +61,28 @@ Feature: webdav-related-old-endpoint
 		And downloaded content when downloading file "/testshare/overwritethis.txt" with range "bytes=0-6" should be "Welcome"
 
 	Scenario: move file into a not-existing folder
-		Given using old dav path
+		Given using new dav path
 		And user "user0" exists
 		And as an "user0"
 		When user "user0" moves file "/welcome.txt" to "/not-existing/welcome.txt"
 		Then the HTTP status code should be "409"
 
 	Scenario: rename a file into an invalid filename
-		Given using old dav path
+		Given using new dav path
 		And user "user0" exists
 		And as an "user0"
 		When user "user0" moves file "/welcome.txt" to "/a\\a"
 		Then the HTTP status code should be "400"
 
 	Scenario: rename a file into a banned filename
-		Given using old dav path
+		Given using new dav path
 		And user "user0" exists
 		And as an "user0"
 		When user "user0" moves file "/welcome.txt" to "/.htaccess"
 		Then the HTTP status code should be "403"
 
 	Scenario: Copying a file
-		Given using old dav path
+		Given using new dav path
 		And user "user0" exists
 		And as an "user0"
 		When user "user0" copies file "/welcome.txt" to "/FOLDER/welcome.txt"
@@ -90,7 +90,7 @@ Feature: webdav-related-old-endpoint
 		And downloaded content when downloading file "/FOLDER/welcome.txt" with range "bytes=0-6" should be "Welcome"
 
 	Scenario: Copying and overwriting a file
-		Given using old dav path
+		Given using new dav path
 		And user "user0" exists
 		And as an "user0"
 		When user "user0" copies file "/welcome.txt" to "/textfile1.txt"
@@ -98,7 +98,7 @@ Feature: webdav-related-old-endpoint
 		And downloaded content when downloading file "/textfile1.txt" with range "bytes=0-6" should be "Welcome"
 
 	Scenario: Copying a file to a folder with no permissions
-		Given using old dav path
+		Given using new dav path
 		And user "user0" exists
 		And user "user1" exists
 		And as an "user1"
@@ -115,7 +115,7 @@ Feature: webdav-related-old-endpoint
 		And the HTTP status code should be "404"
 
 	Scenario: Copying a file to overwrite a file into a folder with no permissions
-		Given using old dav path
+		Given using new dav path
 		And user "user0" exists
 		And user "user1" exists
 		And as an "user1"
@@ -132,14 +132,14 @@ Feature: webdav-related-old-endpoint
 		And downloaded content when downloading file "/testshare/overwritethis.txt" with range "bytes=0-6" should be "Welcome"
 
 	Scenario: download a file with range
-		Given using old dav path
+		Given using new dav path
 		And user "user0" exists
 		And as an "user0"
 		When downloading file "/welcome.txt" with range "bytes=51-77"
 		Then downloaded content should be "example file for developers"
 
 	Scenario: Retrieving folder quota when no quota is set
-		Given using old dav path
+		Given using new dav path
 		And as an "admin"
 		And user "user0" exists
 		When user "user0" has unlimited quota
@@ -148,7 +148,7 @@ Feature: webdav-related-old-endpoint
 		And the single response should contain a property "{DAV:}quota-available-bytes" with value "-3"
 
 	Scenario: Retrieving folder quota when quota is set
-		Given using old dav path
+		Given using new dav path
 		And as an "admin"
 		And user "user0" exists
 		When user "user0" has a quota of "10 MB"
@@ -157,7 +157,7 @@ Feature: webdav-related-old-endpoint
 		And the single response should contain a property "{DAV:}quota-available-bytes" with value "10485358"
 
 	Scenario: Retrieving folder quota of shared folder with quota when no quota is set for recipient
-		Given using old dav path
+		Given using new dav path
 		And as an "admin"
 		And user "user0" exists
 		And user "user1" exists
@@ -175,7 +175,7 @@ Feature: webdav-related-old-endpoint
 		Then the single response should contain a property "{DAV:}quota-available-bytes" with value "10485358"
 
 	Scenario: Retrieving folder quota when quota is set and a file was uploaded
-		Given using old dav path
+		Given using new dav path
 		And as an "admin"
 		And user "user0" exists
 		And user "user0" has a quota of "1 KB"
@@ -185,7 +185,7 @@ Feature: webdav-related-old-endpoint
 		Then the single response should contain a property "{DAV:}quota-available-bytes" with value "529"
 
 	Scenario: Retrieving folder quota when quota is set and a file was recieved
-		Given using old dav path
+		Given using new dav path
 		And as an "admin"
 		And user "user0" exists
 		And user "user1" exists
@@ -197,7 +197,7 @@ Feature: webdav-related-old-endpoint
 		Then the single response should contain a property "{DAV:}quota-available-bytes" with value "622"
 
 	Scenario: download a public shared file with range
-		Given using old dav path
+		Given using new dav path
 		And user "user0" exists
 		And as an "user0"
 		When creating a share with
@@ -207,7 +207,7 @@ Feature: webdav-related-old-endpoint
 		Then downloaded content should be "example file for developers"
 
 	Scenario: download a public shared file inside a folder with range
-		Given using old dav path
+		Given using new dav path
 		And user "user0" exists
 		And as an "user0"
 		When creating a share with
@@ -216,8 +216,24 @@ Feature: webdav-related-old-endpoint
 		And downloading last public shared file inside a folder "/parent.txt" with range "bytes=1-7"
 		Then downloaded content should be "wnCloud"
 
+	Scenario: Downloading a file on the new endpoint should serve security headers
+		Given using new dav path
+		And user "user0" exists
+		And as an "user0"
+		When downloading file "/welcome.txt"
+		Then the following headers should be set
+			|Content-Disposition|attachment; filename*=UTF-8''welcome.txt; filename="welcome.txt"|
+			|Content-Security-Policy|default-src 'none';|
+			|X-Content-Type-Options |nosniff|
+			|X-Download-Options|noopen|
+			|X-Frame-Options|SAMEORIGIN|
+			|X-Permitted-Cross-Domain-Policies|none|
+			|X-Robots-Tag|none|
+			|X-XSS-Protection|1; mode=block|
+		And downloaded content should start with "Welcome to your ownCloud account!"
+
 	Scenario: A file that is not shared does not have a share-types property
-		Given using old dav path
+		Given using new dav path
 		And user "user0" exists
 		And user "user0" created a folder "/test"
 		When as "user0" gets properties of folder "/test" with
@@ -225,7 +241,7 @@ Feature: webdav-related-old-endpoint
 		Then the response should contain an empty property "{http://owncloud.org/ns}share-types"
 
 	Scenario: A file that is shared to a user has a share-types property
-		Given using old dav path
+		Given using new dav path
 		And user "user0" exists
 		And user "user1" exists
 		And user "user0" created a folder "/test"
@@ -240,7 +256,7 @@ Feature: webdav-related-old-endpoint
 			| 0 |
 
 	Scenario: A file that is shared to a group has a share-types property
-		Given using old dav path
+		Given using new dav path
 		And user "user0" exists
 		And group "group1" exists
 		And user "user0" created a folder "/test"
@@ -255,7 +271,7 @@ Feature: webdav-related-old-endpoint
 			| 1 |
 
 	Scenario: A file that is shared by link has a share-types property
-		Given using old dav path
+		Given using new dav path
 		And user "user0" exists
 		And user "user0" created a folder "/test"
 		And as "user0" creating a share with
@@ -268,7 +284,7 @@ Feature: webdav-related-old-endpoint
 			| 3 |
 
 	Scenario: A file that is shared by user,group and link has a share-types property
-		Given using old dav path
+		Given using new dav path
 		And user "user0" exists
 		And user "user1" exists
 		And group "group2" exists
@@ -295,7 +311,7 @@ Feature: webdav-related-old-endpoint
 			| 3 |
 
 	Scenario: A disabled user cannot use webdav
-		Given using old dav path
+		Given using new dav path
 		And user "userToBeDisabled" exists
 		And as an "admin"
 		And assure user "userToBeDisabled" is disabled
@@ -303,7 +319,7 @@ Feature: webdav-related-old-endpoint
 		Then the HTTP status code should be "503"
 
 	Scenario: Creating a folder
-		Given using old dav path
+		Given using new dav path
 		And user "user0" exists
 		And user "user0" created a folder "/test_folder"
 		When as "user0" gets properties of folder "/test_folder" with
@@ -311,7 +327,7 @@ Feature: webdav-related-old-endpoint
 		Then the single response should contain a property "{DAV:}resourcetype" with value "{DAV:}collection"
 
 	Scenario: Creating a folder with special chars
-		Given using old dav path
+		Given using new dav path
 		And user "user0" exists
 		And user "user0" created a folder "/test_folder:5"
 		When as "user0" gets properties of folder "/test_folder:5" with
@@ -319,7 +335,7 @@ Feature: webdav-related-old-endpoint
 		Then the single response should contain a property "{DAV:}resourcetype" with value "{DAV:}collection"
 
 	Scenario: Removing everything of a folder
-		Given using old dav path
+		Given using new dav path
 		And user "user0" exists
 		And as an "user0"
 		And user "user0" moves file "/welcome.txt" to "/FOLDER/welcome.txt"
@@ -337,49 +353,49 @@ Feature: webdav-related-old-endpoint
 			| /textfile4.txt |
 
 	Scenario: Checking file id after a move
-		Given using old dav path
+		Given using new dav path
 		And user "user0" exists
 		And user "user0" stores id of file "/textfile0.txt"
 		When user "user0" moves file "/textfile0.txt" to "/FOLDER/textfile0.txt"
 		Then user "user0" checks id of file "/FOLDER/textfile0.txt"
 
-	Scenario: Renaming a folder to a backslash encoded should return an error using old endpoint
-		Given using old dav path
+	Scenario: Renaming a folder to a backslash encoded should return an error using new endpoint
+		Given using new dav path
 		And user "user0" exists
 		And user "user0" created a folder "/testshare"
 		When user "user0" moves folder "/testshare" to "/%5C"
 		Then the HTTP status code should be "400"
 
-	Scenario: Renaming a folder beginning with a backslash encoded should return an error using old endpoint
-		Given using old dav path
+	Scenario: Renaming a folder beginning with a backslash encoded should return an error using new endpoint
+		Given using new dav path
 		And user "user0" exists
 		And user "user0" created a folder "/testshare"
 		When user "user0" moves folder "/testshare" to "/%5Ctestshare"
 		Then the HTTP status code should be "400"
 
-	Scenario: Renaming a folder including a backslash encoded should return an error using old endpoint
-		Given using old dav path
+	Scenario: Renaming a folder including a backslash encoded should return an error using new endpoint
+		Given using new dav path
 		And user "user0" exists
 		And user "user0" created a folder "/testshare"
 		When user "user0" moves folder "/testshare" to "/hola%5Chola"
 		Then the HTTP status code should be "400"
 
 	Scenario: Renaming a folder into a banned name
-		Given using old dav path
+		Given using new dav path
 		And user "user0" exists
 		And user "user0" created a folder "/testshare"
 		When user "user0" moves folder "/testshare" to "/.htaccess"
 		Then the HTTP status code should be "403"
 
 	Scenario: Move a folder into a not existing one
-		Given using old dav path
+		Given using new dav path
 		And user "user0" exists
 		And user "user0" created a folder "/testshare"
 		When user "user0" moves folder "/testshare" to "/not-existing/testshare"
 		Then the HTTP status code should be "409"
 
-	Scenario: Downloading a file on the old endpoint should serve security headers
-		Given using old dav path
+	Scenario: Downloading a file on the new endpoint should serve security headers
+		Given using new dav path
 		And user "user0" exists
 		And as an "user0"
 		When downloading file "/welcome.txt"
@@ -394,38 +410,34 @@ Feature: webdav-related-old-endpoint
 			|X-XSS-Protection|1; mode=block|
 		And downloaded content should start with "Welcome to your ownCloud account!"
 
-	Scenario: Doing a GET with a web login should work without CSRF token on the old backend
-		Given using old dav path
-		And user "user0" exists
+	Scenario: Doing a GET with a web login should work without CSRF token on the new backend
+		Given user "user0" exists
 		And logging in using web as "user0"
-		When sending a "GET" to "/remote.php/webdav/welcome.txt" without requesttoken
+		When sending a "GET" to "/remote.php/dav/files/user0/welcome.txt" without requesttoken
 		Then downloaded content should start with "Welcome to your ownCloud account!"
 		And the HTTP status code should be "200"
 
-	Scenario: Doing a GET with a web login should work with CSRF token on the old backend
-		Given using old dav path
-		And user "user0" exists
+	Scenario: Doing a GET with a web login should work with CSRF token on the new backend
+		Given user "user0" exists
 		And logging in using web as "user0"
-		When sending a "GET" to "/remote.php/webdav/welcome.txt" with requesttoken
+		When sending a "GET" to "/remote.php/dav/files/user0/welcome.txt" with requesttoken
 		Then downloaded content should start with "Welcome to your ownCloud account!"
 		And the HTTP status code should be "200"
 
-	Scenario: Doing a PROPFIND with a web login should not work without CSRF token on the old backend
-		Given using old dav path
-		And user "user0" exists
+	Scenario: Doing a PROPFIND with a web login should not work without CSRF token on the new backend
+		Given user "user0" exists
 		And logging in using web as "user0"
-		When sending a "PROPFIND" to "/remote.php/webdav/welcome.txt" without requesttoken
+		When sending a "PROPFIND" to "/remote.php/dav/files/user0/welcome.txt" without requesttoken
 		Then the HTTP status code should be "401"
 
-	Scenario: Doing a PROPFIND with a web login should work with CSRF token on the old backend
-		Given using old dav path
-		And user "user0" exists
+	Scenario: Doing a PROPFIND with a web login should work with CSRF token on the new backend
+		Given user "user0" exists
 		And logging in using web as "user0"
-		When sending a "PROPFIND" to "/remote.php/webdav/welcome.txt" with requesttoken
+		When sending a "PROPFIND" to "/remote.php/dav/files/user0/welcome.txt" with requesttoken
 		Then the HTTP status code should be "207"
 
 	Scenario: Setting custom DAV property and reading it
-		Given using old dav path
+		Given using new dav path
 		And user "user0" exists
 		And as an "user0"
 		And user "user0" uploads file "data/textfile.txt" to "/testcustomprop.txt"
@@ -434,7 +446,7 @@ Feature: webdav-related-old-endpoint
 		Then the response should contain a custom "{http://whatever.org/ns}very-custom-prop" property with "veryCustomPropValue"
 
 	Scenario: Setting custom DAV property and reading it after the file is renamed
-		Given using old dav path
+		Given using new dav path
 		And user "user0" exists
 		And as an "user0"
 		And user "user0" uploads file "data/textfile.txt" to "/testcustompropwithmove.txt"
@@ -442,9 +454,9 @@ Feature: webdav-related-old-endpoint
 		And user "user0" moved file "/testcustompropwithmove.txt" to "/catchmeifyoucan.txt"
 		When as "user0" gets a custom property "{http://whatever.org/ns}very-custom-prop" of file "/catchmeifyoucan.txt"
 		Then the response should contain a custom "{http://whatever.org/ns}very-custom-prop" property with "valueForMovetest"
-		
+
 	Scenario: Setting custom DAV property on a shared file as an owner and reading as a recipient
-		Given using old dav path
+		Given using new dav path
 		And user "user0" exists
 		And user "user1" exists
 		And as an "user0"
@@ -459,61 +471,68 @@ Feature: webdav-related-old-endpoint
 		When as "user1" gets a custom property "{http://whatever.org/ns}very-custom-prop" of file "/testcustompropshared.txt"
 		Then the response should contain a custom "{http://whatever.org/ns}very-custom-prop" property with "valueForSharetest"
 
-	Scenario: Setting custom DAV property using an old endpoint and reading it using a new endpoint
-		Given using old dav path
+	Scenario: Setting custom DAV property using a new endpoint and reading it using an old endpoint
+		Given using new dav path
 		And user "user0" exists
 		And as an "user0"
-		And user "user0" uploads file "data/textfile.txt" to "/testoldnew.txt"
-		And "user0" sets property "{http://whatever.org/ns}very-custom-prop" of file "/testoldnew.txt" to "constant"
-		And using new dav path
-		When as "user0" gets a custom property "{http://whatever.org/ns}very-custom-prop" of file "/testoldnew.txt"
-		Then the response should contain a custom "{http://whatever.org/ns}very-custom-prop" property with "constant"
+		And user "user0" uploads file "data/textfile.txt" to "/testnewold.txt"
+		And "user0" sets property "{http://whatever.org/ns}very-custom-prop" of file "/testnewold.txt" to "lucky"
+		And using old dav path
+		When as "user0" gets a custom property "{http://whatever.org/ns}very-custom-prop" of file "/testnewold.txt"
+		Then the response should contain a custom "{http://whatever.org/ns}very-custom-prop" property with "lucky"
 
-	### Scenarios specific to old endpoint
+	## Specific scenarios for new endpoint	
 
-	Scenario: Upload chunked file asc
-		Given user "user0" exists
-		And user "user0" uploads chunk file "1" of "3" with "AAAAA" to "/myChunkedFile.txt"
-		And user "user0" uploads chunk file "2" of "3" with "BBBBB" to "/myChunkedFile.txt"
-		And user "user0" uploads chunk file "3" of "3" with "CCCCC" to "/myChunkedFile.txt"
+	Scenario: Upload chunked file asc with new chunking
+		Given using new dav path
+		And user "user0" exists
+		And user "user0" creates a new chunking upload with id "chunking-42"
+		And user "user0" uploads new chunk file "1" with "AAAAA" to id "chunking-42"
+		And user "user0" uploads new chunk file "2" with "BBBBB" to id "chunking-42"
+		And user "user0" uploads new chunk file "3" with "CCCCC" to id "chunking-42"
+		And user "user0" moves new chunk file with id "chunking-42" to "/myChunkedFile.txt"
 		When as an "user0"
 		And downloading file "/myChunkedFile.txt"
 		Then downloaded content should be "AAAAABBBBBCCCCC"
 
-	Scenario: Upload chunked file desc
-		Given user "user0" exists
-		And user "user0" uploads chunk file "3" of "3" with "CCCCC" to "/myChunkedFile.txt"
-		And user "user0" uploads chunk file "2" of "3" with "BBBBB" to "/myChunkedFile.txt"
-		And user "user0" uploads chunk file "1" of "3" with "AAAAA" to "/myChunkedFile.txt"
+	Scenario: Upload chunked file desc with new chunking
+		Given using new dav path
+		And user "user0" exists
+		And user "user0" creates a new chunking upload with id "chunking-42"
+		And user "user0" uploads new chunk file "3" with "CCCCC" to id "chunking-42"
+		And user "user0" uploads new chunk file "2" with "BBBBB" to id "chunking-42"
+		And user "user0" uploads new chunk file "1" with "AAAAA" to id "chunking-42"
+		And user "user0" moves new chunk file with id "chunking-42" to "/myChunkedFile.txt"
 		When as an "user0"
 		And downloading file "/myChunkedFile.txt"
 		Then downloaded content should be "AAAAABBBBBCCCCC"
 
-	Scenario: Upload chunked file random
-		Given user "user0" exists
-		And user "user0" uploads chunk file "2" of "3" with "BBBBB" to "/myChunkedFile.txt"
-		And user "user0" uploads chunk file "3" of "3" with "CCCCC" to "/myChunkedFile.txt"
-		And user "user0" uploads chunk file "1" of "3" with "AAAAA" to "/myChunkedFile.txt"
+	Scenario: Upload chunked file random with new chunking
+		Given using new dav path
+		And user "user0" exists
+		And user "user0" creates a new chunking upload with id "chunking-42"
+		And user "user0" uploads new chunk file "2" with "BBBBB" to id "chunking-42"
+		And user "user0" uploads new chunk file "3" with "CCCCC" to id "chunking-42"
+		And user "user0" uploads new chunk file "1" with "AAAAA" to id "chunking-42"
+		And user "user0" moves new chunk file with id "chunking-42" to "/myChunkedFile.txt"
 		When as an "user0"
 		And downloading file "/myChunkedFile.txt"
 		Then downloaded content should be "AAAAABBBBBCCCCC"
 
-	Scenario Outline: Chunked upload files with difficult name
-		Given user "user0" exists
-		And user "user0" uploads chunk file "1" of "3" with "AAAAA" to "/<file-name>"
-		And user "user0" uploads chunk file "2" of "3" with "BBBBB" to "/<file-name>"
-		And user "user0" uploads chunk file "3" of "3" with "CCCCC" to "/<file-name>"
-		When as an "user0"
-		And downloading file "/<file-name>"
-		Then downloaded content should be "AAAAABBBBBCCCCC"
-		Examples:
-		|file-name|
-		|0        |
-		|&#?      |
-		|TIÄFÜ    |
+	Scenario: Checking file id after a move overwrite using new chunking endpoint
+		Given using new dav path
+		And user "user0" exists
+		And user "user0" copies file "/textfile0.txt" to "/existingFile.txt"
+		And user "user0" stores id of file "/existingFile.txt"
+		And user "user0" creates a new chunking upload with id "chunking-42"
+		And user "user0" uploads new chunk file "1" with "AAAAA" to id "chunking-42"
+		And user "user0" uploads new chunk file "2" with "BBBBB" to id "chunking-42"
+		And user "user0" uploads new chunk file "3" with "CCCCC" to id "chunking-42"
+		When user "user0" moves new chunk file with id "chunking-42" to "/existingFile.txt"
+		Then user "user0" checks id of file "/existingFile.txt"
 
 	Scenario: Checking file id after a move between received shares
-		Given using old dav path
+		Given using new dav path
 		And user "user0" exists
 		And user "user1" exists
 		And user "user0" created a folder "/folderA"
@@ -532,32 +551,118 @@ Feature: webdav-related-old-endpoint
 		And as "user1" the folder "/folderB/ONE/TWO" exists
 		And user "user1" checks id of file "/folderB/ONE"
 
-	Scenario: Retrieving private link
+   ## Validation Plugin or Old Endpoint Specific
+
+	Scenario: New chunked upload MKDIR using old dav path should fail
 		Given using old dav path
+		And user "user0" exists
+		When user "user0" creates a new chunking upload with id "chunking-42"
+		Then the HTTP status code should be "409"
+
+	Scenario: New chunked upload PUT using old dav path should fail
+		Given using new dav path
+		And user "user0" exists
+		And user "user0" creates a new chunking upload with id "chunking-42"
+		When using old dav path
+		And user "user0" uploads new chunk file "1" with "AAAAA" to id "chunking-42"
+		Then the HTTP status code should be "404"
+
+	Scenario: New chunked upload MOVE using old dav path should fail
+		Given using new dav path
+		And user "user0" exists
+		And user "user0" creates a new chunking upload with id "chunking-42"
+		And user "user0" uploads new chunk file "2" with "BBBBB" to id "chunking-42"
+		And user "user0" uploads new chunk file "3" with "CCCCC" to id "chunking-42"
+		And user "user0" uploads new chunk file "1" with "AAAAA" to id "chunking-42"
+		When using old dav path
+		And user "user0" moves new chunk file with id "chunking-42" to "/myChunkedFile.txt"
+		Then the HTTP status code should be "404"
+
+	Scenario: Upload to new dav path using old way should fail
+		Given using new dav path
+		And user "user0" exists
+		When user "user0" uploads chunk file "1" of "3" with "AAAAA" to "/myChunkedFile.txt"
+		Then the HTTP status code should be "503"
+
+	Scenario: Upload file via new chunking endpoint with wrong size header
+		Given using new dav path
+		And user "user0" exists
+		And user "user0" creates a new chunking upload with id "chunking-42"
+		And user "user0" uploads new chunk file "1" with "AAAAA" to id "chunking-42"
+		And user "user0" uploads new chunk file "2" with "BBBBB" to id "chunking-42"
+		And user "user0" uploads new chunk file "3" with "CCCCC" to id "chunking-42"
+		When user "user0" moves new chunk file with id "chunking-42" to "/myChunkedFile.txt" with size 5
+		Then the HTTP status code should be "400"
+
+	Scenario: Upload file via new chunking endpoint with correct size header
+		Given using new dav path
+		And user "user0" exists
+		And user "user0" creates a new chunking upload with id "chunking-42"
+		And user "user0" uploads new chunk file "1" with "AAAAA" to id "chunking-42"
+		And user "user0" uploads new chunk file "2" with "BBBBB" to id "chunking-42"
+		And user "user0" uploads new chunk file "3" with "CCCCC" to id "chunking-42"
+		When user "user0" moves new chunk file with id "chunking-42" to "/myChunkedFile.txt" with size 15
+		Then the HTTP status code should be "201"
+
+	Scenario Outline: Upload files with difficult names using new chunking
+		Given using new dav path
+		And user "user0" exists
+		And user "user0" creates a new chunking upload with id "chunking-42"
+		And user "user0" uploads new chunk file "1" with "AAAAA" to id "chunking-42"
+		And user "user0" uploads new chunk file "2" with "BBBBB" to id "chunking-42"
+		And user "user0" uploads new chunk file "3" with "CCCCC" to id "chunking-42"
+		And user "user0" moves new chunk file with id "chunking-42" to "/<file-name>"
+		When as an "user0"
+		And downloading file "/<file-name>"
+		Then downloaded content should be "AAAAABBBBBCCCCC"
+		Examples:
+		|file-name|
+		|&#?      |
+		|TIÄFÜ    |
+
+	#this test should be intergrated into the previous scenario after fixing the issue
+	@skip @issue-29599
+	Scenario: Upload a file called "0" using new chunking
+		Given using new dav path
+		And user "user0" exists
+		And user "user0" creates a new chunking upload with id "chunking-42"
+		And user "user0" uploads new chunk file "1" with "AAAAA" to id "chunking-42"
+		And user "user0" uploads new chunk file "2" with "BBBBB" to id "chunking-42"
+		And user "user0" uploads new chunk file "3" with "CCCCC" to id "chunking-42"
+		And user "user0" moves new chunk file with id "chunking-42" to "/0"
+		When as an "user0"
+		And downloading file "/0"
+		Then downloaded content should be "AAAAABBBBBCCCCC"
+		
+	Scenario: Retrieving private link
+		Given using new dav path
 		And user "user0" exists
 		And as an "user0"
 		And user "user0" uploads file "data/textfile.txt" to "/somefile.txt"
 		Then as "user0" gets properties of file "/somefile.txt" with
 			|{http://owncloud.org/ns}privatelink|
-		And the single response should contain a property "{http://owncloud.org/ns}privatelink" with value like "/(\/index.php\/f\/[0-9]*)/"
+		And the single response should contain a property "{http://owncloud.org/ns}privatelink" with value like "%(/(index.php/)?f/[0-9]*)%"
 
 	Scenario: Copying file to a path with extension .part should not be possible
-		Given using old dav path
+		Given using new dav path
 		And user "user0" exists
 		And as an "user0"
 		When user "user0" copies file "/welcome.txt" to "/welcome.part"
 		Then the HTTP status code should be "400"
 
 	Scenario: Uploading file to path with extension .part should not be possible
-		Given using old dav path
+		Given using new dav path
 		And user "user0" exists
 		And as an "user0"
 		And user "user0" uploads file "data/textfile.txt" to "/textfile.part"
 		Then the HTTP status code should be "400"
 
 	Scenario: Renaming a file to a path with extension .part should not be possible
-		Given using old dav path
+		Given using new dav path
 		And user "user0" exists
+		And as an "user0"
+		When user "user0" moves file "/welcome.txt" to "/welcome.part"
+		Then the HTTP status code should be "400"
 		And as an "user0"
 		When user "user0" moves file "/welcome.txt" to "/welcome.part"
 		Then the HTTP status code should be "400"
@@ -568,4 +673,3 @@ Feature: webdav-related-old-endpoint
 		And as an "user0"
 		When user "user0" created a folder "/folder.with.ext.part"
 		Then the HTTP status code should be "400"
-

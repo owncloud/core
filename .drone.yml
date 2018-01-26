@@ -119,6 +119,18 @@ pipeline:
       matrix:
         TEST_SUITE: files_external
 
+  integration:
+    image: owncloudci/php:${PHP_VERSION}
+    pull: true
+    environment:
+      - TEST_SERVER_URL=http://server/ocs/
+      - TEST_SERVER_FED_URL=http://federated/ocs/
+    commands:
+      - ./tests/drone/test-integration.sh ${INTEGRATION_SUITE}
+    when:
+      matrix:
+        TEST_SUITE: integration
+
   install-server:
     image: owncloudci/php:${PHP_VERSION}
     pull: true
@@ -253,6 +265,7 @@ services:
     when:
       matrix:
         USE_FEDERATED_SERVER: true
+
 matrix:
   include:
     - TEST_SUITE: javascript
@@ -312,7 +325,7 @@ matrix:
     #   DB_TYPE: oracle
     #   TEST_SUITE: phpunit
 
-    # PHP 7.2
+     # PHP 7.2
     - PHP_VERSION: 7.2
       DB_TYPE: sqlite
       TEST_SUITE: phpunit
@@ -328,11 +341,6 @@ matrix:
     # - PHP_VERSION: 7.2
     #   DB_TYPE: oracle
     #   TEST_SUITE: phpunit
-#
-#    # Integration
-#    - PHP_VERSION: 7.1
-#      DB_TYPE: sqlite
-#      TEST_SUITE: integration
 
     # Code Coverage Computation
     - PHP_VERSION: 7.1
@@ -348,6 +356,7 @@ matrix:
       TEST_SUITE: coverage
       FILES_EXTERNAL_TYPE: webdav
       
+    #Selenium  
     - PHP_VERSION: 7.1
       TEST_SUITE: selenium
       BEHAT_SUITE: other
@@ -408,3 +417,52 @@ matrix:
       BEHAT_SUITE: upload
       DB_TYPE: mariadb
       USE_SERVER: true
+
+    # Integration
+    - PHP_VERSION: 7.1
+      TEST_SUITE: integration
+      INTEGRATION_SUITE: features/capabilities
+      USE_SERVER: true
+      USE_FEDERATED_SERVER: true
+
+    - PHP_VERSION: 7.1
+      TEST_SUITE: integration
+      INTEGRATION_SUITE: features/federation
+      USE_SERVER: true
+      USE_FEDERATED_SERVER: true
+
+    - PHP_VERSION: 7.1
+      TEST_SUITE: integration
+      INTEGRATION_SUITE: features/sharees
+      USE_SERVER: true
+      USE_FEDERATED_SERVER: true
+
+    - PHP_VERSION: 7.1
+      TEST_SUITE: integration
+      INTEGRATION_SUITE: features/webdav
+      USE_SERVER: true
+      USE_FEDERATED_SERVER: true
+
+    - PHP_VERSION: 7.1
+      TEST_SUITE: integration
+      INTEGRATION_SUITE: features/trashbin
+      USE_SERVER: true
+      USE_FEDERATED_SERVER: true
+
+    - PHP_VERSION: 7.1
+      TEST_SUITE: integration
+      INTEGRATION_SUITE: features/other
+      USE_SERVER: true
+      USE_FEDERATED_SERVER: true
+
+    - PHP_VERSION: 7.1
+      TEST_SUITE: integration
+      INTEGRATION_SUITE: features/sharing
+      USE_SERVER: true
+      USE_FEDERATED_SERVER: true
+
+    - PHP_VERSION: 7.1
+      TEST_SUITE: integration
+      INTEGRATION_SUITE: features/provisioning
+      USE_SERVER: true
+      USE_FEDERATED_SERVER: true
