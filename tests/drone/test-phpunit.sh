@@ -95,7 +95,7 @@ if [[ "${ENABLE_COVERAGE}" == "true" ]]; then
     if [[ -n "${FILES_EXTERNAL_TYPE}" ]]; then
         set_up_external_storage
         phpdbg -d memory_limit=4096M -rr ./lib/composer/bin/phpunit --configuration tests/phpunit-autotest-external.xml ${GROUP} --coverage-clover tests/autotest-external-clover-"${DB_TYPE}".xml
-        phpdbg -d memory_limit=4096M -rr ./lib/composer/bin/phpunit --configuration tests/phpunit-autotest-external.xml ${GROUP} --coverage-clover tests/autotest-external-clover-"${DB_TYPE}"-"${FILES_EXTERNAL_TYPE}".xml "${FILES_EXTERNAL_BACKEND_PATH}"/"${FILES_EXTERNAL_TEST_TO_RUN}"
+        #phpdbg -d memory_limit=4096M -rr ./lib/composer/bin/phpunit --configuration tests/phpunit-autotest-external.xml ${GROUP} --coverage-clover tests/autotest-external-clover-"${DB_TYPE}"-"${FILES_EXTERNAL_TYPE}".xml "${FILES_EXTERNAL_BACKEND_PATH}"/"${FILES_EXTERNAL_TEST_TO_RUN}"
     else
         phpdbg -d memory_limit=4096M -rr ./lib/composer/bin/phpunit --configuration tests/phpunit-autotest.xml ${GROUP} --coverage-clover tests/autotest-clover-"${DB_TYPE}".xml
     fi
