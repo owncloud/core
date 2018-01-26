@@ -164,28 +164,14 @@ class Auth extends AbstractBasic {
 	 * @return bool
 	 */
 	private function requiresCSRFCheck() {
-		// GET requires no check at all
-		if($this->request->getMethod() === 'GET') {
-			return false;
-		}
-
-		// Official ownCloud clients require no checks
-		if($this->request->isUserAgent([
-			Request::USER_AGENT_OWNCLOUD_DESKTOP,
-			Request::USER_AGENT_OWNCLOUD_ANDROID,
-			Request::USER_AGENT_OWNCLOUD_IOS,
-		])) {
-			return false;
-		}
-
 		// If not logged-in no check is required
 		if(!$this->userSession->isLoggedIn()) {
 			return false;
 		}
 
-		// POST always requires a check
-		if($this->request->getMethod() === 'POST') {
-			return true;
+		// If not POST no check is required 
+		if($this->request->getMethod() !== 'POST') {
+			return false;
 		}
 
 		// If logged-in AND DAV authenticated no check is required
