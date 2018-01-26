@@ -3,6 +3,7 @@ window.jQuery = $;
 window.$ = $;
 
 require("jquery-ui");
+require("jquery-ui/custom");
 require("jquery-ui/themes/base/jquery-ui.css");
 require("jquery-migrate");
 
