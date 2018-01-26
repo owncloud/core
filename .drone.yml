@@ -67,18 +67,9 @@ pipeline:
       - DB_TYPE=${DB_TYPE}
     commands:
       - ./tests/drone/test-coverage.sh
-    when:
-      event: [push, pull_request]
-      matrix:
-        TEST_SUITE: coverage
-
-  codecov:
-    image: plugins/codecov:1
-    secrets: [codecov_token]
-    pull: true
-    files:
-     - tests/autotest-clover-${DB_TYPE}.xml
-     - tests/autotest-external-clover-${DB_TYPE}.xml
+      - curl -o codecov.sh https://codecov.io/bash
+      - echo -B $DRONE_BRANCH -C $DRONE_COMMIT -P $DRONE_PULL_REQUEST
+      - bash codecov.sh -t f793afb1-3972-4979-9be0-998fb79ac605 -f tests/autotest-clover-external-${DB_TYPE}.xml -f tests/autotest-clover-${DB_TYPE}.xml
     when:
       event: [push, pull_request]
       matrix:
