@@ -45,6 +45,7 @@ trait Provisioning {
 	/**
 	 * @Given /^user "([^"]*)" exists$/
 	 * @param string $user
+	 * @deprecated This step is not according to the latest standard - all usages need to be changed
 	 */
 	public function assureUserExists($user) {
 		$this->adminCreatesUser($user);
@@ -62,6 +63,7 @@ trait Provisioning {
 	/**
 	 * @Then /^user "([^"]*)" already exists$/
 	 * @param string $user
+	 * @deprecated This step is not according to the latest standard - all usages need to be changed
 	 */
 	public function userAlreadyExists($user) {
 		$this->userShouldExist($user);
@@ -78,6 +80,7 @@ trait Provisioning {
 	/**
 	 * @Then /^user "([^"]*)" does not already exist$/
 	 * @param string $user
+	 * @deprecated This step is not according to the latest standard - all usages need to be changed
 	 */
 	public function userDoesNotAlreadyExist($user) {
 		$this->userShouldNotExist($user);
@@ -95,6 +98,7 @@ trait Provisioning {
 	/**
 	 * @Then /^group "([^"]*)" already exists$/
 	 * @param string $group
+	 * @deprecated This step is not according to the latest standard - all usages need to be changed
 	 */
 	public function groupAlreadyExists($group) {
 		$this->groupShouldExist($group);
@@ -111,6 +115,7 @@ trait Provisioning {
 	/**
 	 * @Then /^group "([^"]*)" does not already exist$/
 	 * @param string $group
+	 * @deprecated This step is not according to the latest standard - all usages need to be changed
 	 */
 	public function groupDoesNotAlreadyExist($group) {
 		$this->groupShouldNotExist($group);
@@ -141,6 +146,7 @@ trait Provisioning {
 	/**
 	 * @Given /^user "([^"]*)" does not exist$/
 	 * @param string $user
+	 * @deprecated This step is not according to the latest standard - all usages need to be changed
 	 */
 	public function assureUserDoesNotExist($user) {
 		$this->adminDeletesUser($user);
@@ -198,7 +204,7 @@ trait Provisioning {
 	public function createGroup($group) {
 		$previous_user = $this->currentUser;
 		$this->currentUser = $this->getAdminUserName();
-		$this->creatingTheGroup($group);
+		$this->createTheGroup($group);
 		PHPUnit_Framework_Assert::assertTrue($this->groupExists($group));
 		$this->currentUser = $previous_user;
 	}
@@ -249,6 +255,7 @@ trait Provisioning {
 	 * @Then /^check that user "([^"]*)" belongs to group "([^"]*)"$/
 	 * @param string $user
 	 * @param string $group
+	 * @deprecated This step is not according to the latest standard - all usages need to be changed
 	 */
 	public function checkThatUserBelongsToGroup($user, $group) {
 		$this->userShouldBelongToGroup($user, $group);
@@ -278,6 +285,7 @@ trait Provisioning {
 	 * @Then /^check that user "([^"]*)" does not belong to group "([^"]*)"$/
 	 * @param string $user
 	 * @param string $group
+	 * @deprecated This step is not according to the latest standard - all usages need to be changed
 	 */
 	public function checkThatUserDoesNotBelongToGroup($user, $group) {
 		$this->userShouldNotBelongToGroup($user, $group);
@@ -311,7 +319,7 @@ trait Provisioning {
 		$this->currentUser = $this->getAdminUserName();
 
 		if (!$this->userBelongsToGroup($user, $group)) {
-			$this->addingUserToGroup($user, $group);
+			$this->addUserToGroup($user, $group);
 		}
 
 		$this->checkThatUserBelongsToGroup($user, $group);
@@ -331,6 +339,7 @@ trait Provisioning {
 	 * @Given /^user "([^"]*)" belongs to group "([^"]*)"$/
 	 * @param string $user
 	 * @param string $group
+	 * @deprecated This step is not according to the latest standard - all usages need to be changed
 	 */
 	public function assureUserBelongsToGroup($user, $group) {
 		$this->adminAddsUserToGroup($user, $group);
@@ -352,19 +361,13 @@ trait Provisioning {
 	 * @param string $group
 	 */
 	public function adminCreatesGroup($group) {
-		$fullUrl = $this->baseUrl . "v{$this->apiVersion}.php/cloud/groups";
-		$client = new Client();
-		$options = [];
-		if ($this->currentUser === $this->getAdminUserName()) {
-			$options['auth'] = $this->getAuthOptionForAdmin();
+		if (!$this->groupExists($group)) {
+			$previous_user = $this->currentUser;
+			$this->currentUser = $this->getAdminUserName();
+			$this->createTheGroup($group);
+			$this->currentUser = $previous_user;
 		}
-
-		$options['body'] = [
-							'groupid' => $group,
-							];
-
-		$this->response = $client->send($client->createRequest("POST", $fullUrl, $options));
-		$this->rememberTheGroup($group);
+		PHPUnit_Framework_Assert::assertTrue($this->groupExists($group));
 	}
 
 	/**
@@ -376,15 +379,27 @@ trait Provisioning {
 	}
 
 	/**
-	 * @When /^creating the group "([^"]*)"$/
 	 * @param string $group
 	 */
-	public function creatingTheGroup($group) {
-		$this->adminCreatesGroup($group);
+	public function createTheGroup($group) {
+		$fullUrl = $this->baseUrl . "v{$this->apiVersion}.php/cloud/groups";
+		$client = new Client();
+		$options = [];
+		if ($this->currentUser === $this->getAdminUserName()) {
+			$options['auth'] = $this->getAuthOptionForAdmin();
+		}
+
+		$options['body'] = [
+			'groupid' => $group,
+		];
+
+		$this->response = $client->send($client->createRequest("POST", $fullUrl, $options));
+		$this->rememberTheGroup($group);
 	}
 
 	/**
 	 * @When /^the administrator disables user "([^"]*)"$/
+	 * @param string $user
 	 */
 	public function adminDisablesUser($user) {
 		$fullUrl = $this->baseUrl . "v{$this->apiVersion}.php/cloud/users/$user/disable";
@@ -399,6 +414,7 @@ trait Provisioning {
 
 	/**
 	 * @Given /^user "([^"]*)" has been disabled$/
+	 * @param string $user
 	 */
 	public function userHasBeenDisabled($user) {
 		$this->adminDisablesUser($user);
@@ -406,6 +422,8 @@ trait Provisioning {
 
 	/**
 	 * @When /^assure user "([^"]*)" is disabled$/
+	 * @param string $user
+	 * @deprecated This step is not according to the latest standard - all usages need to be changed
 	 */
 	public function assureUserIsDisabled($user) {
 		$this->adminDisablesUser($user);
@@ -430,14 +448,13 @@ trait Provisioning {
 	 * @param string $group
 	 */
 	public function adminDeletesGroup($group) {
-		$fullUrl = $this->baseUrl . "v{$this->apiVersion}.php/cloud/groups/$group";
-		$client = new Client();
-		$options = [];
-		if ($this->currentUser === $this->getAdminUserName()) {
-			$options['auth'] = $this->getAuthOptionForAdmin();
+		if ($this->groupExists($group)) {
+			$previous_user = $this->currentUser;
+			$this->currentUser = $this->getAdminUserName();
+			$this->deleteTheGroup($group);
+			$this->currentUser = $previous_user;
 		}
-
-		$this->response = $client->send($client->createRequest("DELETE", $fullUrl, $options));
+		PHPUnit_Framework_Assert::assertFalse($this->groupExists($group));
 	}
 
 	/**
@@ -452,26 +469,21 @@ trait Provisioning {
 	 * @param string $group
 	 */
 	public function deleteTheGroup($group) {
-		$this->adminDeletesGroup($group);
+		$fullUrl = $this->baseUrl . "v{$this->apiVersion}.php/cloud/groups/$group";
+		$client = new Client();
+		$options = [];
+		if ($this->currentUser === $this->getAdminUserName()) {
+			$options['auth'] = $this->getAuthOptionForAdmin();
+		}
+
+		$this->response = $client->send($client->createRequest("DELETE", $fullUrl, $options));
 	}
 
 	/**
-	 * @Given /^add user "([^"]*)" to the group "([^"]*)"$/
 	 * @param string $user
 	 * @param string $group
 	 */
 	public function addUserToGroup($user, $group) {
-		PHPUnit_Framework_Assert::assertTrue($this->userExists($user));
-		PHPUnit_Framework_Assert::assertTrue($this->groupExists($group));
-		$this->addingUserToGroup($user, $group);
-	}
-
-	/**
-	 * @When /^user "([^"]*)" is added to the group "([^"]*)"$/
-	 * @param string $user
-	 * @param string $group
-	 */
-	public function addingUserToGroup($user, $group) {
 		$fullUrl = $this->baseUrl . "v{$this->apiVersion}.php/cloud/users/$user/groups";
 		$client = new Client();
 		$options = [];
@@ -486,6 +498,10 @@ trait Provisioning {
 		$this->response = $client->send($client->createRequest("POST", $fullUrl, $options));
 	}
 
+	/**
+	 * @param $group
+	 * @return bool
+	 */
 	public function groupExists($group) {
 		$fullUrl = $this->baseUrl . "v2.php/cloud/groups/$group";
 		$client = new Client();
@@ -503,37 +519,27 @@ trait Provisioning {
 	/**
 	 * @Given /^group "([^"]*)" exists$/
 	 * @param string $group
+	 * @deprecated This step is not according to the latest standard - all usages need to be changed
 	 */
 	public function assureGroupExists($group) {
-		if (!$this->groupExists($group)) {
-			$previous_user = $this->currentUser;
-			$this->currentUser = $this->getAdminUserName();
-			$this->creatingTheGroup($group);
-			$this->currentUser = $previous_user;
-		}
-		PHPUnit_Framework_Assert::assertTrue($this->groupExists($group));
+		$this->adminCreatesGroup($group);
 	}
 
 	/**
 	 * @Given /^group "([^"]*)" does not exist$/
 	 * @param string $group
+	 * @deprecated This step is not according to the latest standard - all usages need to be changed
 	 */
 	public function assureGroupDoesNotExist($group) {
-		if ($this->groupExists($group)) {
-			$previous_user = $this->currentUser;
-			$this->currentUser = $this->getAdminUserName();
-			$this->deleteTheGroup($group);
-			$this->currentUser = $previous_user;
-		}
-		PHPUnit_Framework_Assert::assertFalse($this->groupExists($group));
+		$this->adminDeletesGroup($group);
 	}
 
 	/**
-	 * @Given /^user "([^"]*)" is subadmin of group "([^"]*)"$/
+	 * @Then /^user "([^"]*)" should be a subadmin of group "([^"]*)"$/
 	 * @param string $user
 	 * @param string $group
 	 */
-	public function userIsSubadminOfGroup($user, $group) {
+	public function userShouldBeSubadminOfGroup($user, $group) {
 		$fullUrl = $this->baseUrl . "v2.php/cloud/groups/$group/subadmins";
 		$client = new Client();
 		$options = [];
@@ -549,11 +555,11 @@ trait Provisioning {
 	}
 
 	/**
-	 * @Given /^assure user "([^"]*)" is subadmin of group "([^"]*)"$/
+	 * @When /^the administrator makes user "([^"]*)" a subadmin of group "([^"]*)"$/
 	 * @param string $user
 	 * @param string $group
 	 */
-	public function assureUserIsSubadminOfGroup($user, $group) {
+	public function adminMakesUserSubadminOfGroup($user, $group) {
 		$fullUrl = $this->baseUrl . "v{$this->apiVersion}.php/cloud/users/$user/subadmins";
 		$client = new Client();
 		$options = [];
@@ -568,11 +574,30 @@ trait Provisioning {
 	}
 
 	/**
-	 * @Given /^user "([^"]*)" is not a subadmin of group "([^"]*)"$/
+	 * @Given /^user "([^"]*)" has been made a subadmin of group "([^"]*)"$/
 	 * @param string $user
 	 * @param string $group
 	 */
-	public function userIsNotSubadminOfGroup($user, $group) {
+	public function userHasBeenMadeSubadminOfGroup($user, $group) {
+		$this->adminMakesUserSubadminOfGroup($user, $group);
+	}
+
+	/**
+	 * @Given /^assure user "([^"]*)" is subadmin of group "([^"]*)"$/
+	 * @param string $user
+	 * @param string $group
+	 * @deprecated This step is not according to the latest standard - all usages need to be changed
+	 */
+	public function assureUserIsSubadminOfGroup($user, $group) {
+		$this->adminMakesUserSubadminOfGroup($user, $group);
+	}
+
+	/**
+	 * @When /^the administrator makes user "([^"]*)" not a subadmin of group "([^"]*)"$/
+	 * @param string $user
+	 * @param string $group
+	 */
+	public function adminMakesUserNotSubadminOfGroup($user, $group) {
 		$fullUrl = $this->baseUrl . "v2.php/cloud/groups/$group/subadmins";
 		$client = new Client();
 		$options = [];
@@ -586,6 +611,18 @@ trait Provisioning {
 		PHPUnit_Framework_Assert::assertNotContains($user, $respondedArray);
 		PHPUnit_Framework_Assert::assertEquals(200, $this->response->getStatusCode());
 	}
+
+
+	/**
+	 * @Given /^user "([^"]*)" has been made not a subadmin of group "([^"]*)"$/
+	 * @param string $user
+	 * @param string $group
+	 */
+	public function userHasBeenMadeNotSubadminOfGroup($user, $group) {
+		$this->adminMakesUserNotSubadminOfGroup($user, $group);
+	}
+
+	// Refactoring of Provisioning.php completed to this point - Phil Davis 2018-01-26
 
 	/**
 	 * @Then /^users returned are$/
