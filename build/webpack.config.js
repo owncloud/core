@@ -11,6 +11,15 @@ module.exports = {
 		filename: '[name].bundle.js',
 		path: path.resolve(__dirname, '../core/vendor/')
 	},
+	module: {
+		loaders: [{
+			test: /\.css?$/,
+			loader: 'style-loader!css-loader'
+		}, {
+  			test: /\.(png|jpg|gif)$/,
+			loader: 'url-loader'
+		}]
+	},
 	plugins: [
 		new webpack.ProvidePlugin({
 			// TODO: why is this not working?
@@ -23,8 +32,7 @@ module.exports = {
 			{ from: 'browser-update/browser-update.js', to: 'browser-update/browser-update.js' },
 			{ from: 'showdown/dist/showdown.js', to: 'showdown/dist/showdown.js' },
 			{ from: 'base64/base64.js', to: 'base64/base64.js' },
-			{ from: 'zxcvbn/dist/zxcvbn.js', to: 'zxcvbn/dist/zxcvbn.js'},
-			{ from: 'select2/select2.css', to: 'select2/select2.css'},
+			{ from: 'zxcvbn/dist/zxcvbn.js', to: 'zxcvbn/dist/zxcvbn.js'}
 		])
 	]
 };

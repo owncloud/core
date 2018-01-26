@@ -3,6 +3,7 @@ window.jQuery = $;
 window.$ = $;
 
 require("jquery-ui");
+require("jquery-ui/themes/base/jquery-ui.css");
 require("jquery-migrate");
 
 var _ = require('underscore');
@@ -15,6 +16,7 @@ var backbone = require('backbone');
 window.Backbone = backbone;
 
 require('select2');
+require('select2/select2.css');
 
 var moment = require('moment');
 window.moment = moment;

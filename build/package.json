@@ -10,13 +10,15 @@
   "homepage": "https://github.com/owncloud/",
   "contributors": [],
   "dependencies": {
-    "base64" : "davidchambers/Base64.js#~1.0.1",
     "backbone": "~1.3.3",
+    "base64": "davidchambers/Base64.js#~1.0.1",
     "blueimp-md5": "^2.10.0",
     "bootstrap": "^3.3.7",
     "bowser": "^1.9.1",
     "browser-update": "Graffino/Browser-Update#^2.0.2",
     "clipboard": "^1.7.1",
+    "css-loader": "^0.28.9",
+    "css-url-loader": "^1.0.0",
     "davclient.js": "owncloud/davclient.js#^0.1.2",
     "es6-promise": "^4.2.2",
     "handlebars": "^4.0.5",
@@ -30,7 +32,9 @@
     "showdown": "^1.8.6",
     "snapjs": "jakiestfu/Snap.js#~2.0.0-rc1",
     "strengthify": "MorrisJobke/strengthify#0.5.2",
+    "style-loader": "^0.19.1",
     "underscore": "~1.8.3",
+    "url-loader": "^0.6.2",
     "zxcvbn": "~4.4.2"
   },
   "devDependencies": {
