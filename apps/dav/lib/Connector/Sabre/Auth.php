@@ -164,6 +164,15 @@ class Auth extends AbstractBasic {
 	 * @return bool
 	 */
 	private function requiresCSRFCheck() {
+		// Official ownCloud clients require no checks
+		if($this->request->isUserAgent([
+			Request::USER_AGENT_OWNCLOUD_DESKTOP,
+			Request::USER_AGENT_OWNCLOUD_ANDROID,
+			Request::USER_AGENT_OWNCLOUD_IOS,
+		])) {
+			return false;
+		}
+
 		// If not logged-in no check is required
 		if(!$this->userSession->isLoggedIn()) {
 			return false;
