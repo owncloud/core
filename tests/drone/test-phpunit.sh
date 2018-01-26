@@ -56,11 +56,13 @@ fi
 ./occ app:enable federation
 ./occ app:enable federatedfilesharing
 
-if [[ "${DB_TYPE}" == "none" || "${DB_TYPE}" == "sqlite" ]]; then
-  GROUP=""
-else
-  GROUP="--group DB"
-fi
+GROUP=""
+
+#if [[ "${DB_TYPE}" == "none" || "${DB_TYPE}" == "sqlite" ]]; then
+#  GROUP=""
+#else
+#  GROUP="--group DB"
+#fi
 
 set_up_external_storage() {
     ./occ app:enable files_external
