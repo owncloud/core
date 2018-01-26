@@ -1,6 +1,7 @@
 <?php
 /**
  * @author Roeland Jago Douma <rullzer@owncloud.com>
+ * @author Thomas Müller <thomas.mueller@tmit.eu>
  *
  * @copyright Copyright (c) 2018, ownCloud GmbH
  * @license AGPL-3.0
@@ -24,41 +25,68 @@ namespace Tests\Core\Command\Maintenance;
 use OC\Core\Command\Maintenance\DataFingerprint;
 use OCP\AppFramework\Utility\ITimeFactory;
 use OCP\IConfig;
+use OCP\ILogger;
+use Symfony\Component\Console\Tester\CommandTester;
 use Test\TestCase;
 
 class DataFingerprintTest extends TestCase {
-	/** @var IConfig|\PHPUnit_Framework_MockObject_MockObject */
-	protected $config;
-	/** @var \PHPUnit_Framework_MockObject_MockObject */
-	protected $consoleInput;
-	/** @var \PHPUnit_Framework_MockObject_MockObject */
-	protected $consoleOutput;
-	/** @var ITimeFactory|\PHPUnit_Framework_MockObject_MockObject */
-	protected $timeFactory;
 
+	/** @var IConfig | \PHPUnit_Framework_MockObject_MockObject */
+	private $config;
+	/** @var ITimeFactory | \PHPUnit_Framework_MockObject_MockObject */
+	private $timeFactory;
+	/** @var ILogger | \PHPUnit_Framework_MockObject_MockObject */
+	private $logger;
 	/** @var \Symfony\Component\Console\Command\Command */
-	protected $command;
+	private $command;
+	/** @var CommandTester */
+	private $commandTester;
+
+	public function providesAnswers() {
+		return [
+			'yes' => [true, 'yes'],
+			'no' => [false, 'no'],
+		];
+	}
 
 	protected function setUp() {
 		parent::setUp();
 
-		$this->config = $this->createMock('OCP\IConfig');
-		$this->timeFactory = $this->createMock('OCP\AppFramework\Utility\ITimeFactory');
-		$this->consoleInput = $this->createMock('Symfony\Component\Console\Input\InputInterface');
-		$this->consoleOutput = $this->createMock('Symfony\Component\Console\Output\OutputInterface');
+		$this->config = $this->createMock(IConfig::class);
+		$this->timeFactory = $this->createMock(ITimeFactory::class);
+		$this->logger = $this->createMock(ILogger::class);
 
-		/** @var \OCP\IConfig $config */
-		$this->command = new DataFingerprint($this->config, $this->timeFactory);
+		$this->command = new DataFingerprint($this->config, $this->timeFactory, $this->logger);
+		$this->commandTester = new CommandTester($this->command);
+
 	}
 
-	public function testSetFingerPrint() {
-		$this->timeFactory->expects($this->once())
+	/**
+	 * @dataProvider providesAnswers
+	 * @param $expectToLog
+	 * @param $answer
+	 */
+	public function testSetFingerPrint($expectToLog, $answer) {
+		$expects = $expectToLog ? $this->any() : $this->never();
+		$this->timeFactory->expects($expects)
 			->method('getTime')
 			->willReturn(42);
-		$this->config->expects($this->once())
+		$this->config->expects($expects)
 			->method('setSystemValue')
 			->with('data-fingerprint', md5(42));
 
-		self::invokePrivate($this->command, 'execute', [$this->consoleInput, $this->consoleOutput]);
+		$osUser = get_current_user();
+		$server = gethostname();
+
+		$this->logger->expects($expects)
+			->method('info')
+			->with("Data fingerprint was set by $osUser@$server to a1d0c6e83f027327d8461063f4ac58a6");
+
+		$this->commandTester->setInputs([$answer]);
+		$this->commandTester->execute([]);
+		$output = $this->commandTester->getDisplay();
+		$this->assertContains("Do you want to set the data fingerprint?", $output);
+
+
 	}
 }
