@@ -102,9 +102,9 @@ if [[ "${ENABLE_COVERAGE}" == "true" ]]; then
 else
     if [[ -n "${FILES_EXTERNAL_TYPE}" ]]; then
         set_up_external_storage
-        ./lib/composer/bin/phpunit --configuration tests/phpunit-autotest-external.xml ${GROUP} --log-junit tests/autotest-external-results-"${DB_TYPE}".xml
-        ./lib/composer/bin/phpunit --configuration tests/phpunit-autotest-external.xml ${GROUP} --log-junit tests/autotest-external-results-"${DB_TYPE}"-"${FILES_EXTERNAL_TYPE}".xml "${FILES_EXTERNAL_BACKEND_PATH}"/"${FILES_EXTERNAL_TEST_TO_RUN}"
+        ./lib/composer/bin/phpunit --configuration tests/phpunit-autotest-external.xml ${GROUP}
+        ./lib/composer/bin/phpunit --configuration tests/phpunit-autotest-external.xml ${GROUP} "${FILES_EXTERNAL_BACKEND_PATH}"/"${FILES_EXTERNAL_TEST_TO_RUN}"
     else
-        ./lib/composer/bin/phpunit --configuration tests/phpunit-autotest.xml ${GROUP} --log-junit tests/autotest-results-"${DB_TYPE}".xml
+        ./lib/composer/bin/phpunit --configuration tests/phpunit-autotest.xml ${GROUP}
     fi
 fi
