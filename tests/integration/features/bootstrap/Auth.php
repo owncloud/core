@@ -35,7 +35,7 @@ trait Auth {
 			if ($authHeader) {
 				$request->setHeader('Authorization', $authHeader);
 			}
-			$request->setHeader('OCS_APIREQUEST', 'true');
+			$request->setHeader('OCS-APIREQUEST', 'true');
 			$request->setHeader('requesttoken', $this->requestToken);
 			$this->response = $this->client->send($request);
 		} catch (ClientException $ex) {
