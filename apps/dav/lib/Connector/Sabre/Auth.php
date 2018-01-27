@@ -164,6 +164,11 @@ class Auth extends AbstractBasic {
 	 * @return bool
 	 */
 	private function requiresCSRFCheck() {
+		// If not POST no check is required 
+		if($this->request->getMethod() !== 'POST') {
+			return false;
+		}
+
 		// Official ownCloud clients require no checks
 		if($this->request->isUserAgent([
 			Request::USER_AGENT_OWNCLOUD_DESKTOP,
@@ -175,11 +180,6 @@ class Auth extends AbstractBasic {
 
 		// If not logged-in no check is required
 		if(!$this->userSession->isLoggedIn()) {
-			return false;
-		}
-
-		// If not POST no check is required 
-		if($this->request->getMethod() !== 'POST') {
 			return false;
 		}
 
