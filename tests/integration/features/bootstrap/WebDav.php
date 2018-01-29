@@ -138,7 +138,7 @@ trait WebDav {
 	}
 
 	/**
-	 * @When /^downloading file "([^"]*)" with range "([^"]*)"$/
+	 * @When /^the user downloads file "([^"]*)" with range "([^"]*)" using the API$/
 	 * @param string $fileSource
 	 * @param string $range
 	 */
@@ -184,7 +184,7 @@ trait WebDav {
 	}
 
 	/**
-	 * @Then /^downloaded content should be "([^"]*)"$/
+	 * @Then /^the downloaded content should be "([^"]*)"$/
 	 * @param string $content
 	 */
 	public function downloadedContentShouldBe($content) {
@@ -197,7 +197,7 @@ trait WebDav {
 	 * @param string $range
 	 * @param string $content
 	 */
-	public function downloadedContentWhenDownloadindShouldBe($fileSource, $range, $content) {
+	public function downloadedContentWhenDownloadingShouldBe($fileSource, $range, $content) {
 		$this->downloadFileWithRange($fileSource, $range);
 		$this->downloadedContentShouldBe($content);
 	}
@@ -638,7 +638,8 @@ trait WebDav {
 	}
 
 	/**
-	 * @When user :user uploads file :source to :destination
+	 * @When user :user uploads file :source to :destination using the API
+	 * @Given user :user has uploaded file :source to :destination
 	 * @param string $user
 	 * @param string $source
 	 * @param string $destination
@@ -794,11 +795,11 @@ trait WebDav {
 	/**
 	 * Check that all the files uploaded with old/new dav and chunked/non-chunked exist.
 	 *
-	 * @Then as :user the files uploaded to :destination with all mechanisms exist
+	 * @Then as :user the files uploaded to :destination with all mechanisms should exist
 	 * @param string $user
 	 * @param string $destination
 	 */
-	public function filesUploadedToWithAllMechanismsExist($user, $destination) {
+	public function filesUploadedToWithAllMechanismsShouldExist($user, $destination) {
 		foreach (['old', 'new'] as $davVersion) {
 			foreach ([$davVersion . 'dav-regular', $davVersion . 'dav-' . $davVersion . 'chunking'] as $suffix) {
 				$this->asTheFileOrFolderExists($user, 'file', $destination . '-' . $suffix);
@@ -893,11 +894,12 @@ trait WebDav {
 	}
 
 	/**
-	 * @Given user :user created a folder :destination
+	 * @When user :user creates a folder :destination using the API
+	 * @Given user :user has created a folder :destination
 	 * @param string $user
 	 * @param string $destination
 	 */
-	public function userCreatedAFolder($user, $destination) {
+	public function userCreatesAFolder($user, $destination) {
 		try {
 			$destination = '/' . ltrim($destination, '/');
 			$this->response = $this->makeDavRequest($user, "MKCOL", $destination, []);
@@ -910,7 +912,8 @@ trait WebDav {
 	/**
 	 * Old style chunking upload
 	 *
-	 * @Given user :user uploads chunk file :num of :total with :data to :destination
+	 * @When user :user uploads chunk file :num of :total with :data to :destination
+	 * @Given user :user has uploaded chunk file :num of :total with :data to :destination
 	 * @param string $user
 	 * @param int $num
 	 * @param int $total
@@ -1054,28 +1057,29 @@ trait WebDav {
 	}
 
 	/**
-	 * @Given user :user stores etag of element :path
+	 * @When user :user stores etag of element :path
+	 * @Given user :user has stored etag of element :path
 	 */
 	public function userStoresEtagOfElement($user, $path) {
 		$propertiesTable = new \Behat\Gherkin\Node\TableNode([['{DAV:}getetag']]);
 		$this->asGetsPropertiesOfFolderWith($user, NULL, $path, $propertiesTable);
 		$pathETAG[$path] = $this->response['{DAV:}getetag'];
-		$this->storedETAG[$user]= $pathETAG;
+		$this->storedETAG[$user] = $pathETAG;
 	}
 
 	/**
-	 * @Then etag of element :path of user :user has not changed
+	 * @Then the etag of element :path of user :user should not have changed
 	 */
-	public function checkIfETAGHasNotChanged($path, $user) {
+	public function etagOfElementOfUserShouldNotHaveChanged($path, $user) {
 		$propertiesTable = new \Behat\Gherkin\Node\TableNode([['{DAV:}getetag']]);
 		$this->asGetsPropertiesOfFolderWith($user, NULL, $path, $propertiesTable);
 		PHPUnit_Framework_Assert::assertEquals($this->response['{DAV:}getetag'], $this->storedETAG[$user][$path]);
 	}
 
 	/**
-	 * @Then etag of element :path of user :user has changed
+	 * @Then the etag of element :path of user :user should have changed
 	 */
-	public function checkIfETAGHasChanged($path, $user) {
+	public function etagOfElementOfUserShouldHaveChanged($path, $user) {
 		$propertiesTable = new \Behat\Gherkin\Node\TableNode([['{DAV:}getetag']]);
 		$this->asGetsPropertiesOfFolderWith($user, NULL, $path, $propertiesTable);
 		PHPUnit_Framework_Assert::assertNotEquals($this->response['{DAV:}getetag'], $this->storedETAG[$user][$path]);

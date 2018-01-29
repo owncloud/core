@@ -95,7 +95,7 @@ Feature: favorite
     Scenario: Get favorited elements of a subfolder
         Given using old dav path
         And user "user0" has been created
-        And user "user0" created a folder "/subfolder"
+        And user "user0" has created a folder "/subfolder"
         And user "user0" moves file "/textfile0.txt" to "/subfolder/textfile0.txt"
         And user "user0" moves file "/textfile1.txt" to "/subfolder/textfile1.txt"
         And user "user0" moves file "/textfile2.txt" to "/subfolder/textfile2.txt"
@@ -110,7 +110,7 @@ Feature: favorite
     Scenario: Get favorited elements of a subfolder using new path
         Given using old dav path
         And user "user0" has been created
-        And user "user0" created a folder "/subfolder"
+        And user "user0" has created a folder "/subfolder"
         And user "user0" moves file "/textfile0.txt" to "/subfolder/textfile0.txt"
         And user "user0" moves file "/textfile1.txt" to "/subfolder/textfile1.txt"
         And user "user0" moves file "/textfile2.txt" to "/subfolder/textfile2.txt"
@@ -126,7 +126,7 @@ Feature: favorite
         Given using old dav path
         And user "user0" has been created
         And user "user1" has been created
-        And user "user0" created a folder "/shared"
+        And user "user0" has created a folder "/shared"
         And user "user0" moved file "/textfile0.txt" to "/shared/shared_file.txt"
         And folder "/shared" of user "user0" is shared with user "user1"
         And user "user1" favorites element "/shared/shared_file.txt"
@@ -137,7 +137,7 @@ Feature: favorite
     Scenario: Get favorited elements paginated
         Given using old dav path
         And user "user0" has been created
-        And user "user0" created a folder "/subfolder"
+        And user "user0" has created a folder "/subfolder"
         And user "user0" copies file "/textfile0.txt" to "/subfolder/textfile0.txt"
         And user "user0" copies file "/textfile0.txt" to "/subfolder/textfile1.txt"
         And user "user0" copies file "/textfile0.txt" to "/subfolder/textfile2.txt"

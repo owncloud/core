@@ -50,7 +50,7 @@ Feature: quota
 		And the quota of user "user0" has been set to "20 B"
 		And the quota of user "user1" has been set to "10 MB"
 		And as an "user1"
-		And user "user1" created a folder "/testquota"
+		And user "user1" has created a folder "/testquota"
 		And folder "/testquota" of user "user1" is shared with user "user0" with permissions 31
 		And as an "user0"
 		When user "user0" uploads file "data/textfile.txt" to "/testquota/testquota.txt" with all mechanisms
@@ -64,7 +64,7 @@ Feature: quota
 		And the quota of user "user0" has been set to "10 MB"
 		And the quota of user "user1" has been set to "20 B"
 		And as an "user1"
-		And user "user1" created a folder "/testquota"
+		And user "user1" has created a folder "/testquota"
 		And folder "/testquota" of user "user1" is shared with user "user0" with permissions 31
 		And as an "user0"
 		When user "user0" uploads file "data/textfile.txt" to "/testquota/testquota.txt" with all mechanisms
@@ -79,7 +79,7 @@ Feature: quota
 		And the quota of user "user0" has been set to "20 B"
 		And the quota of user "user1" has been set to "10 MB"
 		And as an "user1"
-		And user "user1" created a folder "/testquota"
+		And user "user1" has created a folder "/testquota"
 		And user "user1" uploads file with content "test" to "/testquota/testquota.txt"
 		And folder "/testquota" of user "user1" is shared with user "user0" with permissions 31
 		And as an "user0"
@@ -94,7 +94,7 @@ Feature: quota
 		And the quota of user "user0" has been set to "10 MB"
 		And the quota of user "user1" has been set to "20 B"
 		And as an "user1"
-		And user "user1" created a folder "/testquota"
+		And user "user1" has created a folder "/testquota"
 		And user "user1" uploads file with content "test" to "/testquota/testquota.txt"
 		And folder "/testquota" of user "user1" is shared with user "user0" with permissions 31
 		And as an "user0"

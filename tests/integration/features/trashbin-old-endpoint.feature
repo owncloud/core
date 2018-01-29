@@ -11,14 +11,14 @@ Feature: trashbin-new-endpoint
 
 	Scenario: deleting a folder moves it to trashbin
 		Given user "user0" has been created
-		And user "user0" created a folder "/tmp"
+		And user "user0" has created a folder "/tmp"
 		When user "user0" deletes folder "/tmp"
 		Then as "user0" the folder "/tmp" exists in trash
 
 	Scenario: deleting a file of a shared folder moves it to trashbin
 		Given user "user0" has been created
 		And user "user1" has been created
-		And user "user0" created a folder "/shared"
+		And user "user0" has created a folder "/shared"
 		And user "user0" moved file "/textfile0.txt" to "/shared/shared_file.txt"
 		And folder "/shared" of user "user0" is shared with user "user1"
 		When user "user0" deletes file "/shared/shared_file.txt"
@@ -27,7 +27,7 @@ Feature: trashbin-new-endpoint
 	Scenario: deleting a shared folder moves it to trashbin
 		Given user "user0" has been created
 		And user "user1" has been created
-		And user "user0" created a folder "/shared"
+		And user "user0" has created a folder "/shared"
 		And user "user0" moved file "/textfile0.txt" to "/shared/shared_file.txt"
 		And folder "/shared" of user "user0" is shared with user "user1"
 		When user "user0" deletes folder "/shared"
@@ -36,7 +36,7 @@ Feature: trashbin-new-endpoint
 	Scenario: deleting a received folder doesn't move it to trashbin
 		Given user "user0" has been created
 		And user "user1" has been created
-		And user "user0" created a folder "/shared"
+		And user "user0" has created a folder "/shared"
 		And user "user0" moved file "/textfile0.txt" to "/shared/shared_file.txt"
 		And folder "/shared" of user "user0" is shared with user "user1"
 		And user "user1" moved folder "/shared" to "/renamed_shared"
@@ -46,7 +46,7 @@ Feature: trashbin-new-endpoint
 	Scenario: deleting a file in a received folder moves it to trashbin
 		Given user "user0" has been created
 		And user "user1" has been created
-		And user "user0" created a folder "/shared"
+		And user "user0" has created a folder "/shared"
 		And user "user0" moved file "/textfile0.txt" to "/shared/shared_file.txt"
 		And folder "/shared" of user "user0" is shared with user "user1"
 		And user "user1" moved file "/shared" to "/renamed_shared"
@@ -56,7 +56,7 @@ Feature: trashbin-new-endpoint
 	Scenario: deleting a file in a received folder when restored it comes back to the original path
 		Given user "user0" has been created
 		And user "user1" has been created
-		And user "user0" created a folder "/shared"
+		And user "user0" has created a folder "/shared"
 		And user "user0" moved file "/textfile0.txt" to "/shared/shared_file.txt"
 		And folder "/shared" of user "user0" is shared with user "user1"
 		And user "user1" moved file "/shared" to "/renamed_shared"
@@ -98,8 +98,8 @@ Feature: trashbin-new-endpoint
 	@skip
 	Scenario: trashbin can store two files with same name but different origins
 		Given user "user0" has been created
-		And user "user0" created a folder "/folderA"
-		And user "user0" created a folder "/folderB"
+		And user "user0" has created a folder "/folderA"
+		And user "user0" has created a folder "/folderB"
 		And user "user0" copies file "/textfile0.txt" to "/folderA/textfile0.txt"
 		And user "user0" copies file "/textfile0.txt" to "/folderB/textfile0.txt"
 		When user "user0" deletes file "/folderA/textfile0.txt"
@@ -114,7 +114,7 @@ Feature: trashbin-new-endpoint
 	Scenario: Deleting a folder into external storage moves it to the trashbin
 		Given invoking occ with "files:scan --all"
 		And user "user0" has been created
-		And user "user0" created a folder "/local_storage/tmp"
+		And user "user0" has created a folder "/local_storage/tmp"
 		And user "user0" moved file "/textfile0.txt" to "/local_storage/tmp/textfile0.txt"
 		When user "user0" deletes folder "/local_storage/tmp"
 		Then as "user0" the folder with original path "/local_storage/tmp" exists in trash
@@ -124,7 +124,7 @@ Feature: trashbin-new-endpoint
 	Scenario: Deleting a file into external storage moves it to the trashbin and can be restored
 		Given invoking occ with "files:scan --all"
 		And user "user0" has been created
-		And user "user0" created a folder "/local_storage/tmp"
+		And user "user0" has created a folder "/local_storage/tmp"
 		And user "user0" moved file "/textfile0.txt" to "/local_storage/tmp/textfile0.txt"
 		And user "user0" deletes file "/local_storage/tmp/textfile0.txt"
 		And as "user0" the folder with original path "/local_storage/tmp/textfile0.txt" exists in trash
@@ -141,9 +141,9 @@ Feature: trashbin-new-endpoint
 	Scenario: Deleting an updated file into external storage moves it to the trashbin and can be restored
 		Given invoking occ with "files:scan --all"
 		And user "user0" has been created
-		And user "user0" created a folder "/local_storage/tmp"
+		And user "user0" has created a folder "/local_storage/tmp"
 		And user "user0" moved file "/textfile0.txt" to "/local_storage/tmp/textfile0.txt"
-		And user "user0" uploads chunk file "1" of "1" with "AA" to "/local_storage/tmp/textfile0.txt"
+		And user "user0" has uploaded chunk file "1" of "1" with "AA" to "/local_storage/tmp/textfile0.txt"
 		And user "user0" deletes file "/local_storage/tmp/textfile0.txt"
 		And as "user0" the folder with original path "/local_storage/tmp/textfile0.txt" exists in trash
 		And logging in using web as "user0"

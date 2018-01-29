@@ -24,7 +24,8 @@ require __DIR__ . '/../../../../lib/composer/autoload.php';
 trait Federation {
 
 	/**
-	 * @Given /^user "([^"]*)" from server "(LOCAL|REMOTE)" shares "([^"]*)" with user "([^"]*)" from server "(LOCAL|REMOTE)"$/
+	 * @When /^user "([^"]*)" from server "(LOCAL|REMOTE)" shares "([^"]*)" with user "([^"]*)" from server "(LOCAL|REMOTE)" using the API$/
+	 * @Given /^user "([^"]*)" from server "(LOCAL|REMOTE)" has shared "([^"]*)" with user "([^"]*)" from server "(LOCAL|REMOTE)"$/
 	 *
 	 * @param string $sharerUser
 	 * @param string $sharerServer "LOCAL" or "REMOTE"
@@ -49,7 +50,8 @@ trait Federation {
 	}
 
 	/**
-	 * @When /^user "([^"]*)" from server "(LOCAL|REMOTE)" accepts last pending share$/
+	 * @When /^user "([^"]*)" from server "(LOCAL|REMOTE)" accepts the last pending share using the API$/
+	 * @Given /^user "([^"]*)" from server "(LOCAL|REMOTE)" has accepted the last pending share$/
 	 * @param string $user
 	 * @param string $server
 	 * @return void

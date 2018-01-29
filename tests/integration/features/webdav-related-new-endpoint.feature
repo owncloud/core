@@ -31,8 +31,8 @@ Feature: webdav-related-new-endpoint
 		And user "user0" has been created
 		And user "user1" has been created
 		And as an "user1"
-		And user "user1" created a folder "/testshare"
-		And as "user1" creating a share with
+		And user "user1" has created a folder "/testshare"
+		And user "user1" has created a share with settings
 		  | path | testshare |
 		  | shareType | 0 |
 		  | permissions | 1 |
@@ -48,8 +48,8 @@ Feature: webdav-related-new-endpoint
 		And user "user0" has been created
 		And user "user1" has been created
 		And as an "user1"
-		And user "user1" created a folder "/testshare"
-		And as "user1" creating a share with
+		And user "user1" has created a folder "/testshare"
+		And user "user1" has created a share with settings
 		  | path | testshare |
 		  | shareType | 0 |
 		  | permissions | 1 |
@@ -102,8 +102,8 @@ Feature: webdav-related-new-endpoint
 		And user "user0" has been created
 		And user "user1" has been created
 		And as an "user1"
-		And user "user1" created a folder "/testshare"
-		And as "user1" creating a share with
+		And user "user1" has created a folder "/testshare"
+		And user "user1" has created a share with settings
 		  | path | testshare |
 		  | shareType | 0 |
 		  | permissions | 1 |
@@ -119,8 +119,8 @@ Feature: webdav-related-new-endpoint
 		And user "user0" has been created
 		And user "user1" has been created
 		And as an "user1"
-		And user "user1" created a folder "/testshare"
-		And as "user1" creating a share with
+		And user "user1" has created a folder "/testshare"
+		And user "user1" has created a share with settings
 		  | path | testshare |
 		  | shareType | 0 |
 		  | permissions | 1 |
@@ -135,8 +135,8 @@ Feature: webdav-related-new-endpoint
 		Given using new dav path
 		And user "user0" has been created
 		And as an "user0"
-		When downloading file "/welcome.txt" with range "bytes=51-77"
-		Then downloaded content should be "example file for developers"
+		When the user downloads file "/welcome.txt" with range "bytes=51-77" using the API
+		Then the downloaded content should be "example file for developers"
 
 	Scenario: Retrieving folder quota when no quota is set
 		Given using new dav path
@@ -164,8 +164,8 @@ Feature: webdav-related-new-endpoint
 		And user "user0" has been given unlimited quota
 		And the quota of user "user1" has been set to "10 MB"
 		And as an "user1"
-		And user "user1" created a folder "/testquota"
-		And as "user1" creating a share with
+		And user "user1" has created a folder "/testquota"
+		And user "user1" has created a share with settings
 		  | path | testquota |
 		  | shareType | 0 |
 		  | permissions | 31 |
@@ -200,21 +200,21 @@ Feature: webdav-related-new-endpoint
 		Given using new dav path
 		And user "user0" has been created
 		And as an "user0"
-		When creating a share with
+		When the user creates a share using the API with share settings
 			| path | welcome.txt |
 			| shareType | 3 |
 		And downloading last public shared file with range "bytes=51-77"
-		Then downloaded content should be "example file for developers"
+		Then the downloaded content should be "example file for developers"
 
 	Scenario: download a public shared file inside a folder with range
 		Given using new dav path
 		And user "user0" has been created
 		And as an "user0"
-		When creating a share with
+		When the user creates a share using the API with share settings
 			| path | PARENT |
 			| shareType | 3 |
 		And downloading last public shared file inside a folder "/parent.txt" with range "bytes=1-7"
-		Then downloaded content should be "wnCloud"
+		Then the downloaded content should be "wnCloud"
 
 	Scenario: Downloading a file on the new endpoint should serve security headers
 		Given using new dav path
@@ -235,7 +235,7 @@ Feature: webdav-related-new-endpoint
 	Scenario: A file that is not shared does not have a share-types property
 		Given using new dav path
 		And user "user0" has been created
-		And user "user0" created a folder "/test"
+		And user "user0" has created a folder "/test"
 		When as "user0" gets properties of folder "/test" with
 			|{http://owncloud.org/ns}share-types|
 		Then the response should contain an empty property "{http://owncloud.org/ns}share-types"
@@ -244,8 +244,8 @@ Feature: webdav-related-new-endpoint
 		Given using new dav path
 		And user "user0" has been created
 		And user "user1" has been created
-		And user "user0" created a folder "/test"
-		And as "user0" creating a share with
+		And user "user0" has created a folder "/test"
+		And user "user0" has created a share with settings
 			| path | test |
 			| shareType | 0 |
 			| permissions | 31 |
@@ -259,8 +259,8 @@ Feature: webdav-related-new-endpoint
 		Given using new dav path
 		And user "user0" has been created
 		And group "group1" has been created
-		And user "user0" created a folder "/test"
-		And as "user0" creating a share with
+		And user "user0" has created a folder "/test"
+		And user "user0" has created a share with settings
 			| path | test |
 			| shareType | 1 |
 			| permissions | 31 |
@@ -273,8 +273,8 @@ Feature: webdav-related-new-endpoint
 	Scenario: A file that is shared by link has a share-types property
 		Given using new dav path
 		And user "user0" has been created
-		And user "user0" created a folder "/test"
-		And as "user0" creating a share with
+		And user "user0" has created a folder "/test"
+		And user "user0" has created a share with settings
 			| path | test |
 			| shareType | 3 |
 			| permissions | 31 |
@@ -288,18 +288,18 @@ Feature: webdav-related-new-endpoint
 		And user "user0" has been created
 		And user "user1" has been created
 		And group "group2" has been created
-		And user "user0" created a folder "/test"
-		And as "user0" creating a share with
+		And user "user0" has created a folder "/test"
+		And user "user0" has created a share with settings
 			| path        | test  |
 			| shareType   | 0     |
 			| permissions | 31    |
 			| shareWith   | user1 |
-		And as "user0" creating a share with
+		And user "user0" has created a share with settings
 			| path        | test  |
 			| shareType   | 1     |
 			| permissions | 31    |
 			| shareWith   | group2 |
-		And as "user0" creating a share with
+		And user "user0" has created a share with settings
 			| path        | test  |
 			| shareType   | 3     |
 			| permissions | 31    |
@@ -321,7 +321,7 @@ Feature: webdav-related-new-endpoint
 	Scenario: Creating a folder
 		Given using new dav path
 		And user "user0" has been created
-		And user "user0" created a folder "/test_folder"
+		And user "user0" has created a folder "/test_folder"
 		When as "user0" gets properties of folder "/test_folder" with
 		  |{DAV:}resourcetype|
 		Then the single response should contain a property "{DAV:}resourcetype" with value "{DAV:}collection"
@@ -329,7 +329,7 @@ Feature: webdav-related-new-endpoint
 	Scenario: Creating a folder with special chars
 		Given using new dav path
 		And user "user0" has been created
-		And user "user0" created a folder "/test_folder:5"
+		And user "user0" has created a folder "/test_folder:5"
 		When as "user0" gets properties of folder "/test_folder:5" with
 		  |{DAV:}resourcetype|
 		Then the single response should contain a property "{DAV:}resourcetype" with value "{DAV:}collection"
@@ -339,7 +339,7 @@ Feature: webdav-related-new-endpoint
 		And user "user0" has been created
 		And as an "user0"
 		And user "user0" moves file "/welcome.txt" to "/FOLDER/welcome.txt"
-		And user "user0" created a folder "/FOLDER/SUBFOLDER"
+		And user "user0" has created a folder "/FOLDER/SUBFOLDER"
 		And user "user0" copies file "/textfile0.txt" to "/FOLDER/SUBFOLDER/testfile0.txt"
 		When user "user0" deletes everything from folder "/FOLDER/"
 		Then user "user0" should see following elements
@@ -362,35 +362,35 @@ Feature: webdav-related-new-endpoint
 	Scenario: Renaming a folder to a backslash encoded should return an error using new endpoint
 		Given using new dav path
 		And user "user0" has been created
-		And user "user0" created a folder "/testshare"
+		And user "user0" has created a folder "/testshare"
 		When user "user0" moves folder "/testshare" to "/%5C"
 		Then the HTTP status code should be "400"
 
 	Scenario: Renaming a folder beginning with a backslash encoded should return an error using new endpoint
 		Given using new dav path
 		And user "user0" has been created
-		And user "user0" created a folder "/testshare"
+		And user "user0" has created a folder "/testshare"
 		When user "user0" moves folder "/testshare" to "/%5Ctestshare"
 		Then the HTTP status code should be "400"
 
 	Scenario: Renaming a folder including a backslash encoded should return an error using new endpoint
 		Given using new dav path
 		And user "user0" has been created
-		And user "user0" created a folder "/testshare"
+		And user "user0" has created a folder "/testshare"
 		When user "user0" moves folder "/testshare" to "/hola%5Chola"
 		Then the HTTP status code should be "400"
 
 	Scenario: Renaming a folder into a banned name
 		Given using new dav path
 		And user "user0" has been created
-		And user "user0" created a folder "/testshare"
+		And user "user0" has created a folder "/testshare"
 		When user "user0" moves folder "/testshare" to "/.htaccess"
 		Then the HTTP status code should be "403"
 
 	Scenario: Move a folder into a not existing one
 		Given using new dav path
 		And user "user0" has been created
-		And user "user0" created a folder "/testshare"
+		And user "user0" has created a folder "/testshare"
 		When user "user0" moves folder "/testshare" to "/not-existing/testshare"
 		Then the HTTP status code should be "409"
 
@@ -434,7 +434,7 @@ Feature: webdav-related-new-endpoint
 		Given using new dav path
 		And user "user0" has been created
 		And as an "user0"
-		And user "user0" uploads file "data/textfile.txt" to "/testcustomprop.txt"
+		And user "user0" has uploaded file "data/textfile.txt" to "/testcustomprop.txt"
 		And "user0" sets property "{http://whatever.org/ns}very-custom-prop" of file "/testcustomprop.txt" to "veryCustomPropValue"
 		When as "user0" gets a custom property "{http://whatever.org/ns}very-custom-prop" of file "/testcustomprop.txt"
 		Then the response should contain a custom "{http://whatever.org/ns}very-custom-prop" property with "veryCustomPropValue"
@@ -443,7 +443,7 @@ Feature: webdav-related-new-endpoint
 		Given using new dav path
 		And user "user0" has been created
 		And as an "user0"
-		And user "user0" uploads file "data/textfile.txt" to "/testcustompropwithmove.txt"
+		And user "user0" has uploaded file "data/textfile.txt" to "/testcustompropwithmove.txt"
 		And "user0" sets property "{http://whatever.org/ns}very-custom-prop" of file "/testcustompropwithmove.txt" to "valueForMovetest"
 		And user "user0" moved file "/testcustompropwithmove.txt" to "/catchmeifyoucan.txt"
 		When as "user0" gets a custom property "{http://whatever.org/ns}very-custom-prop" of file "/catchmeifyoucan.txt"
@@ -454,8 +454,8 @@ Feature: webdav-related-new-endpoint
 		And user "user0" has been created
 		And user "user1" has been created
 		And as an "user0"
-		And user "user0" uploads file "data/textfile.txt" to "/testcustompropshared.txt"
-		And as "user0" creating a share with
+		And user "user0" has uploaded file "data/textfile.txt" to "/testcustompropshared.txt"
+		And user "user0" has created a share with settings
 		  | path | testcustompropshared.txt |
 		  | shareType | 0 |
 		  | permissions | 31 |
@@ -469,7 +469,7 @@ Feature: webdav-related-new-endpoint
 		Given using new dav path
 		And user "user0" has been created
 		And as an "user0"
-		And user "user0" uploads file "data/textfile.txt" to "/testnewold.txt"
+		And user "user0" has uploaded file "data/textfile.txt" to "/testnewold.txt"
 		And "user0" sets property "{http://whatever.org/ns}very-custom-prop" of file "/testnewold.txt" to "lucky"
 		And using old dav path
 		When as "user0" gets a custom property "{http://whatever.org/ns}very-custom-prop" of file "/testnewold.txt"
@@ -487,7 +487,7 @@ Feature: webdav-related-new-endpoint
 		And user "user0" moves new chunk file with id "chunking-42" to "/myChunkedFile.txt"
 		When as an "user0"
 		And downloading file "/myChunkedFile.txt"
-		Then downloaded content should be "AAAAABBBBBCCCCC"
+		Then the downloaded content should be "AAAAABBBBBCCCCC"
 
 	Scenario: Upload chunked file desc with new chunking
 		Given using new dav path
@@ -499,7 +499,7 @@ Feature: webdav-related-new-endpoint
 		And user "user0" moves new chunk file with id "chunking-42" to "/myChunkedFile.txt"
 		When as an "user0"
 		And downloading file "/myChunkedFile.txt"
-		Then downloaded content should be "AAAAABBBBBCCCCC"
+		Then the downloaded content should be "AAAAABBBBBCCCCC"
 
 	Scenario: Upload chunked file random with new chunking
 		Given using new dav path
@@ -511,7 +511,7 @@ Feature: webdav-related-new-endpoint
 		And user "user0" moves new chunk file with id "chunking-42" to "/myChunkedFile.txt"
 		When as an "user0"
 		And downloading file "/myChunkedFile.txt"
-		Then downloaded content should be "AAAAABBBBBCCCCC"
+		Then the downloaded content should be "AAAAABBBBBCCCCC"
 
 	Scenario: Checking file id after a move overwrite using new chunking endpoint
 		Given using new dav path
@@ -529,13 +529,13 @@ Feature: webdav-related-new-endpoint
 		Given using new dav path
 		And user "user0" has been created
 		And user "user1" has been created
-		And user "user0" created a folder "/folderA"
-		And user "user0" created a folder "/folderB"
+		And user "user0" has created a folder "/folderA"
+		And user "user0" has created a folder "/folderB"
 		And folder "/folderA" of user "user0" is shared with user "user1"
 		And folder "/folderB" of user "user0" is shared with user "user1"
-		And user "user1" created a folder "/folderA/ONE"
+		And user "user1" has created a folder "/folderA/ONE"
 		And user "user1" stores id of file "/folderA/ONE"
-		And user "user1" created a folder "/folderA/ONE/TWO"
+		And user "user1" has created a folder "/folderA/ONE/TWO"
 		When user "user1" moves folder "/folderA/ONE" to "/folderB/ONE"
 		Then as "user1" the folder "/folderA" exists
 		And as "user1" the folder "/folderA/ONE" does not exist
@@ -608,7 +608,7 @@ Feature: webdav-related-new-endpoint
 		And user "user0" moves new chunk file with id "chunking-42" to "/<file-name>"
 		When as an "user0"
 		And downloading file "/<file-name>"
-		Then downloaded content should be "AAAAABBBBBCCCCC"
+		Then the downloaded content should be "AAAAABBBBBCCCCC"
 		Examples:
 		|file-name|
 		|&#?      |
@@ -626,13 +626,13 @@ Feature: webdav-related-new-endpoint
 		And user "user0" moves new chunk file with id "chunking-42" to "/0"
 		When as an "user0"
 		And downloading file "/0"
-		Then downloaded content should be "AAAAABBBBBCCCCC"
+		Then the downloaded content should be "AAAAABBBBBCCCCC"
 		
 	Scenario: Retrieving private link
 		Given using new dav path
 		And user "user0" has been created
 		And as an "user0"
-		And user "user0" uploads file "data/textfile.txt" to "/somefile.txt"
+		And user "user0" has uploaded file "data/textfile.txt" to "/somefile.txt"
 		Then as "user0" gets properties of file "/somefile.txt" with
 			|{http://owncloud.org/ns}privatelink|
 		And the single response should contain a property "{http://owncloud.org/ns}privatelink" with value like "/(\/index.php\/f\/[0-9]*)/"
@@ -648,7 +648,7 @@ Feature: webdav-related-new-endpoint
 		Given using new dav path
 		And user "user0" has been created
 		And as an "user0"
-		And user "user0" uploads file "data/textfile.txt" to "/textfile.part"
+		And user "user0" has uploaded file "data/textfile.txt" to "/textfile.part"
 		Then the HTTP status code should be "400"
 
 	Scenario: Renaming a file to a path with extension .part should not be possible
@@ -665,5 +665,5 @@ Feature: webdav-related-new-endpoint
 		Given using new dav path
 		And user "user0" has been created
 		And as an "user0"
-		When user "user0" created a folder "/folder.with.ext.part"
+		When user "user0" creates a folder "/folder.with.ext.part" using the API
 		Then the HTTP status code should be "400"

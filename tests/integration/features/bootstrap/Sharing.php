@@ -54,12 +54,13 @@ trait Sharing {
 	private $lastShareTime = null;
 
 	/**
-	 * @Given /^as "([^"]*)" creating a share with$/
+	 * @When /^user "([^"]*)" creates a share with settings$/
+	 * @Given /^user "([^"]*)" has created a share with settings$/
 	 * @param string $user
 	 * @param \Behat\Gherkin\Node\TableNode|null $body
 	 * @return void
 	 */
-	public function asCreatingAShareWith($user, $body) {
+	public function userCreatesAShareWithSettings($user, $body) {
 		$fullUrl = $this->baseUrl . "v{$this->apiVersion}.php/apps/files_sharing/api/v{$this->sharingApiVersion}/shares";
 		$client = new Client();
 		$options = [];
@@ -86,12 +87,13 @@ trait Sharing {
 	}
 
 	/**
-	 * @When /^creating a share with$/
+	 * @When /^the user creates a share using the API with share settings$/
+	 * @Given /^the user has created a share with settings$/
 	 * @param \Behat\Gherkin\Node\TableNode|null $body
 	 * @return void
 	 */
-	public function creatingShare($body) {
-		$this->asCreatingAShareWith($this->currentUser, $body);
+	public function theUserCreatesAShareWithSettings($body) {
+		$this->userCreatesAShareWithSettings($this->currentUser, $body);
 	}
 
 	/**
@@ -717,7 +719,7 @@ trait Sharing {
 	}
 
 	/**
-	 * @Then /^share fields of last share match with$/
+	 * @Then /^the share fields of the last share should include$/
 	 * @param \Behat\Gherkin\Node\TableNode|null $body
 	 * @return void
 	 */

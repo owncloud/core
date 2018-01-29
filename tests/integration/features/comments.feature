@@ -5,7 +5,7 @@ Feature: Comments
   Scenario: Creating a comment on a file belonging to myself
     Given user "user0" has been created
     And as an "user0"
-    And user "user0" uploads file "data/textfile.txt" to "/myFileToComment.txt"
+    And user "user0" has uploaded file "data/textfile.txt" to "/myFileToComment.txt"
     When user "user0" comments with content "My first comment" on file "/myFileToComment.txt"
     Then user "user0" should have the following comments on file "/myFileToComment.txt"
             | user0 | My first comment |
@@ -13,7 +13,7 @@ Feature: Comments
   Scenario: Creating a comment on a shared file belonging to another user
     Given user "user0" has been created
     And user "user1" has been created
-    And user "user0" uploads file "data/textfile.txt" to "/myFileToComment.txt"
+    And user "user0" has uploaded file "data/textfile.txt" to "/myFileToComment.txt"
     And file "/myFileToComment.txt" of user "user0" is shared with user "user1"
     When user "user1" comments with content "A comment from sharee" on file "/myFileToComment.txt"
     And user "user0" comments with content "A comment from sharer" on file "/myFileToComment.txt"
@@ -25,7 +25,7 @@ Feature: Comments
   Scenario: Deleting my own comments on a file belonging to myself
     Given user "user0" has been created
     And as an "user0"
-    And user "user0" uploads file "data/textfile.txt" to "/myFileToComment.txt"
+    And user "user0" has uploaded file "data/textfile.txt" to "/myFileToComment.txt"
     And user "user0" comments with content "My first comment" on file "/myFileToComment.txt"
     When user "user0" deletes the last created comment
     Then the HTTP status code should be "204"
@@ -34,7 +34,7 @@ Feature: Comments
   Scenario: Deleting a comment on a file belonging to myself having several comments
     Given user "user0" has been created
     And as an "user0"
-    And user "user0" uploads file "data/textfile.txt" to "/myFileToComment.txt"
+    And user "user0" has uploaded file "data/textfile.txt" to "/myFileToComment.txt"
     And user "user0" comments with content "My first comment" on file "/myFileToComment.txt"
     And user "user0" comments with content "My second comment" on file "/myFileToComment.txt"
     And user "user0" comments with content "My third comment" on file "/myFileToComment.txt"
@@ -47,7 +47,7 @@ Feature: Comments
     Given user "user0" has been created
     And user "user1" has been created
     And as an "user0"
-    And user "user0" uploads file "data/textfile.txt" to "/myFileToComment.txt"
+    And user "user0" has uploaded file "data/textfile.txt" to "/myFileToComment.txt"
     And file "/myFileToComment.txt" of user "user0" is shared with user "user1"
     And user "user0" comments with content "File owner comment" on file "/myFileToComment.txt"
     And user "user1" comments with content "Sharee comment" on file "/myFileToComment.txt"
@@ -60,7 +60,7 @@ Feature: Comments
 
   Scenario: Edit my own comments on a file belonging to myself
     Given user "user0" has been created
-    And user "user0" uploads file "data/textfile.txt" to "/myFileToComment.txt"
+    And user "user0" has uploaded file "data/textfile.txt" to "/myFileToComment.txt"
     And user "user0" comments with content "File owner comment" on file "/myFileToComment.txt"
     When user "user0" edits last comment with content "My edited comment"
     Then the HTTP status code should be "207"
@@ -70,7 +70,7 @@ Feature: Comments
   Scenario: Edit my own comments on a file shared by someone with me
     Given user "user0" has been created
     And user "user1" has been created
-    And user "user0" uploads file "data/textfile.txt" to "/myFileToComment.txt"
+    And user "user0" has uploaded file "data/textfile.txt" to "/myFileToComment.txt"
     And file "/myFileToComment.txt" of user "user0" is shared with user "user1"
     And user "user1" comments with content "Sharee comment" on file "/myFileToComment.txt"
     When user "user1" edits last comment with content "My edited comment"
@@ -81,7 +81,7 @@ Feature: Comments
   Scenario: Edit comments of other users should not be possible
     Given user "user0" has been created
     And user "user1" has been created
-    And user "user0" uploads file "data/textfile.txt" to "/myFileToComment.txt"
+    And user "user0" has uploaded file "data/textfile.txt" to "/myFileToComment.txt"
     And file "/myFileToComment.txt" of user "user0" is shared with user "user1"
     And user "user1" comments with content "Sharee comment" on file "/myFileToComment.txt"
     And user "user0" should have the following comments on file "/myFileToComment.txt"
@@ -94,7 +94,7 @@ Feature: Comments
   Scenario: Getting info of comments using files endpoint
     Given user "user0" has been created
     And as an "user0"
-    And user "user0" uploads file "data/textfile.txt" to "/myFileToComment.txt"
+    And user "user0" has uploaded file "data/textfile.txt" to "/myFileToComment.txt"
     And user "user0" comments with content "My first comment" on file "/myFileToComment.txt"
     And user "user0" should have the following comments on file "/myFileToComment.txt"
             | user0 | My first comment |
@@ -116,7 +116,7 @@ Feature: Comments
   Scenario: Creating a comment on a shared folder belonging to another user
     Given user "user0" has been created
     And user "user1" has been created
-    And user "user0" created a folder "/FOLDER_TO_SHARE"
+    And user "user0" has created a folder "/FOLDER_TO_SHARE"
     And folder "/FOLDER_TO_SHARE" of user "user0" is shared with user "user1"
     And user "user1" comments with content "A comment from sharee" on folder "/FOLDER_TO_SHARE"
     And user "user0" comments with content "A comment from sharer" on folder "/FOLDER_TO_SHARE"

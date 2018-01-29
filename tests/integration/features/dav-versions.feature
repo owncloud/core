@@ -7,21 +7,21 @@ Feature: dav-versions
     And as an "user0"
 
   Scenario: Upload file and no version is available
-    When user "user0" uploads file "data/davtest.txt" to "/davtest.txt"
+    When user "user0" uploads file "data/davtest.txt" to "/davtest.txt" using the API
     Then the version folder of file "/davtest.txt" for user "user0" contains "0" elements
 
   Scenario: Upload a file twice and versions are available
-    When user "user0" uploads file "data/davtest.txt" to "/davtest.txt"
-    Then user "user0" uploads file "data/davtest.txt" to "/davtest.txt"
-    And the version folder of file "/davtest.txt" for user "user0" contains "1" elements
+    When user "user0" uploads file "data/davtest.txt" to "/davtest.txt" using the API
+    And user "user0" uploads file "data/davtest.txt" to "/davtest.txt" using the API
+    Then the version folder of file "/davtest.txt" for user "user0" contains "1" elements
     And the content length of file "/davtest.txt" with version index "1" for user "user0" in versions folder is "8"
 
   Scenario: Remove a file
-    Given user "user0" uploads file "data/davtest.txt" to "/davtest.txt"
-    And user "user0" uploads file "data/davtest.txt" to "/davtest.txt"
+    Given user "user0" has uploaded file "data/davtest.txt" to "/davtest.txt"
+    And user "user0" has uploaded file "data/davtest.txt" to "/davtest.txt"
     And the version folder of file "/davtest.txt" for user "user0" contains "1" elements
     And user "user0" deletes file "/davtest.txt"
-    When user "user0" uploads file "data/davtest.txt" to "/davtest.txt"
+    When user "user0" uploads file "data/davtest.txt" to "/davtest.txt" using the API
     Then the version folder of file "/davtest.txt" for user "user0" contains "0" elements
 
   Scenario: Restore a file and check, if the content is now in the current file
@@ -30,7 +30,7 @@ Feature: dav-versions
     And the version folder of file "/davtest.txt" for user "user0" contains "1" elements
     When user "user0" restores version index "1" of file "/davtest.txt"
     Then downloading file "davtest.txt"
-    And downloaded content should be "123"
+    And the downloaded content should be "123"
 
   Scenario: User cannot access meta folder of a file which is owned by somebody else
     Given user "user1" has been created
@@ -46,7 +46,7 @@ Feature: dav-versions
     And user "user0" uploads file with content "456789" to "/davtest.txt"
     And we save it into "FILEID"
     And as an "user0"
-    And creating a share with
+    And the user has created a share with settings
       | path | /davtest.txt |
       | shareType | 0 |
       | shareWith | user1 |

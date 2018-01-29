@@ -7,7 +7,7 @@ Feature: multilinksharing
 	Scenario: Creating three public shares of a folder
 		Given user "user0" has been created
 		And as an "user0"
-		And creating a share with
+		And the user has created a share with settings
 			| path | FOLDER |
 			| shareType | 3 |
 			| password | publicpw |
@@ -17,7 +17,7 @@ Feature: multilinksharing
 			| name | sharedlink1 |
 		And the OCS status code should be "100"
 		And the HTTP status code should be "200"
-		And creating a share with
+		And the user has created a share with settings
 			| path | FOLDER |
 			| shareType | 3 |
 			| password | publicpw |
@@ -27,7 +27,7 @@ Feature: multilinksharing
 			| name | sharedlink2 |
 		And the OCS status code should be "100"
 		And the HTTP status code should be "200"
-		And creating a share with
+		And the user has created a share with settings
 			| path | FOLDER |
 			| shareType | 3 |
 			| password | publicpw |
@@ -49,7 +49,7 @@ Feature: multilinksharing
 	Scenario: Creating three public shares of a file
 		Given user "user0" has been created
 		And as an "user0"
-		And creating a share with
+		And the user has created a share with settings
 			| path | textfile0.txt |
 			| shareType | 3 |
 			| password | publicpw |
@@ -58,7 +58,7 @@ Feature: multilinksharing
 			| name | sharedlink1 |
 		And the OCS status code should be "100"
 		And the HTTP status code should be "200"
-		And creating a share with
+		And the user has created a share with settings
 			| path | textfile0.txt |
 			| shareType | 3 |
 			| password | publicpw |
@@ -67,7 +67,7 @@ Feature: multilinksharing
 			| name | sharedlink2 |
 		And the OCS status code should be "100"
 		And the HTTP status code should be "200"
-		And creating a share with
+		And the user has created a share with settings
 			| path | textfile0.txt |
 			| shareType | 3 |
 			| password | publicpw |
@@ -88,7 +88,7 @@ Feature: multilinksharing
 	Scenario: Check that updating password doesn't remove name of links
 		Given user "user0" has been created
 		And as an "user0"
-		And creating a share with
+		And the user has created a share with settings
 			| path | FOLDER |
 			| shareType | 3 |
 			| password | publicpw |
@@ -98,7 +98,7 @@ Feature: multilinksharing
 			| name | sharedlink1 |
 		And the OCS status code should be "100"
 		And the HTTP status code should be "200"
-		And creating a share with
+		And the user has created a share with settings
 			| path | FOLDER |
 			| shareType | 3 |
 			| password | publicpw |
@@ -119,7 +119,7 @@ Feature: multilinksharing
 	Scenario: Deleting a file deletes also its public links
 	 Given user "user0" has been created
 		And as an "user0"
-		And creating a share with
+		And the user has created a share with settings
 			| path | textfile0.txt |
 			| shareType | 3 |
 			| password | publicpw |
@@ -128,7 +128,7 @@ Feature: multilinksharing
 			| name | sharedlink1 |
 		And the OCS status code should be "100"
 		And the HTTP status code should be "200"
-		And creating a share with
+		And the user has created a share with settings
 			| path | textfile0.txt |
 			| shareType | 3 |
 			| password | publicpw |
@@ -137,7 +137,7 @@ Feature: multilinksharing
 			| name | sharedlink2 |
 		And user "user0" deletes file "/textfile0.txt"
 		And the HTTP status code should be "204"
-		When user "user0" uploads file "data/textfile.txt" to "/textfile0.txt"
+		When user "user0" uploads file "data/textfile.txt" to "/textfile0.txt" using the API
 		Then the HTTP status code should be "201"
 		And user "user0" checks public shares of file "/textfile0.txt"
 			| | | |
@@ -145,7 +145,7 @@ Feature: multilinksharing
 	Scenario: Deleting one public share of a file doesn't affect the rest
 		Given user "user0" has been created
 		And as an "user0"
-		And creating a share with
+		And the user has created a share with settings
 			| path | textfile0.txt |
 			| shareType | 3 |
 			| password | publicpw |
@@ -154,7 +154,7 @@ Feature: multilinksharing
 			| name | sharedlink1 |
 		And the OCS status code should be "100"
 		And the HTTP status code should be "200"
-		And creating a share with
+		And the user has created a share with settings
 			| path | textfile0.txt |
 			| shareType | 3 |
 			| password | publicpw |
@@ -163,7 +163,7 @@ Feature: multilinksharing
 			| name | sharedlink2 |
 		And the OCS status code should be "100"
 		And the HTTP status code should be "200"
-		And creating a share with
+		And the user has created a share with settings
 			| path | textfile0.txt |
 			| shareType | 3 |
 			| password | publicpw |
@@ -182,7 +182,7 @@ Feature: multilinksharing
 	Scenario: Overwriting a file doesn't remove its public shares
 		Given user "user0" has been created
 		And as an "user0"
-		And creating a share with
+		And the user has created a share with settings
 			| path | textfile0.txt |
 			| shareType | 3 |
 			| password | publicpw |
@@ -191,7 +191,7 @@ Feature: multilinksharing
 			| name | sharedlink1 |
 		And the OCS status code should be "100"
 		And the HTTP status code should be "200"
-		And creating a share with
+		And the user has created a share with settings
 			| path | textfile0.txt |
 			| shareType | 3 |
 			| password | publicpw |
@@ -200,7 +200,7 @@ Feature: multilinksharing
 			| name | sharedlink2 |
 		And the OCS status code should be "100"
 		And the HTTP status code should be "200"
-		When user "user0" uploads file "data/textfile.txt" to "/textfile0.txt"
+		When user "user0" uploads file "data/textfile.txt" to "/textfile0.txt" using the API
 		Then user "user0" checks public shares of file "/textfile0.txt"
 			| /textfile0.txt | 1 | sharedlink1 |
 			| /textfile0.txt | 1 | sharedlink2 |
@@ -208,7 +208,7 @@ Feature: multilinksharing
 	Scenario: Renaming a folder doesn't remove its public shares
 		Given user "user0" has been created
 		And as an "user0"
-		And creating a share with
+		And the user has created a share with settings
 			| path | FOLDER |
 			| shareType | 3 |
 			| password | publicpw |
@@ -218,7 +218,7 @@ Feature: multilinksharing
 			| name | sharedlink1 |
 		And the OCS status code should be "100"
 		And the HTTP status code should be "200"
-		And creating a share with
+		And the user has created a share with settings
 			| path | FOLDER |
 			| shareType | 3 |
 			| password | publicpw |

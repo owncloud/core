@@ -10,16 +10,16 @@ Feature: external-storage
     Given user "user0" has been created
     And user "user1" has been created
     And as an "user0"
-    And user "user0" created a folder "/local_storage/foo"
+    And user "user0" has created a folder "/local_storage/foo"
     And user "user0" moved file "/textfile0.txt" to "/local_storage/foo/textfile0.txt"
     And folder "/local_storage/foo" of user "user0" is shared with user "user1"
     And as an "user1"
-    When creating a share with
+    When the user creates a share using the API with share settings
       | path | foo |
       | shareType | 3 |
     Then the OCS status code should be "100"
     And the HTTP status code should be "200"
-    And share fields of last share match with
+    And the share fields of the last share should include
       | id | A_NUMBER |
       | url | AN_URL |
       | token | A_TOKEN |
@@ -31,7 +31,7 @@ Feature: external-storage
     Given user "user0" has been created
     And user "user1" has been created
     And as an "user0"
-    And user "user0" created a folder "/local_storage/foo1"
+    And user "user0" has created a folder "/local_storage/foo1"
     When user "user0" moved file "/textfile0.txt" to "/local_storage/foo1/textfile0.txt"
     Then as "user1" the file "/local_storage/foo1/textfile0.txt" exists
     And as "user0" the file "/local_storage/foo1/textfile0.txt" exists
@@ -42,7 +42,7 @@ Feature: external-storage
     Given user "user0" has been created
     And user "user1" has been created
     And as an "user0"
-    And user "user0" created a folder "/local_storage/foo2"
+    And user "user0" has created a folder "/local_storage/foo2"
     And user "user0" moved file "/textfile0.txt" to "/local_storage/foo2/textfile0.txt"
     When user "user1" moved file "/local_storage/foo2/textfile0.txt" to "/local.txt"
     Then as "user1" the file "/local_storage/foo2/textfile0.txt" does not exist
@@ -52,7 +52,7 @@ Feature: external-storage
   Scenario: Download a file that exists in filecache but not storage fails with 404
     Given user "user0" has been created
     And as an "user0"
-    And user "user0" created a folder "/local_storage/foo3"
+    And user "user0" has created a folder "/local_storage/foo3"
     And user "user0" moved file "/textfile0.txt" to "/local_storage/foo3/textfile0.txt"
     And file "foo3/textfile0.txt" is deleted in local storage
     When downloading file "local_storage/foo3/textfile0.txt"
@@ -67,4 +67,4 @@ Feature: external-storage
     And as an "user0"
     When user "user0" uploads file "data/textfile.txt" to "/local_storage/testquota.txt" with all mechanisms
     Then the HTTP status code of all upload responses should be "201"
-    And as "user0" the files uploaded to "/local_storage/testquota.txt" with all mechanisms exist
+    And as "user0" the files uploaded to "/local_storage/testquota.txt" with all mechanisms should exist

@@ -128,7 +128,7 @@ trait BasicStructure {
 	}
 
 	/**
-	 * @When /^sending "([^"]*)" to "([^"]*)"$/
+	 * @When /^the user sends HTTP method "([^"]*)" to API endpoint "([^"]*)"$/
 	 * @param string $verb
 	 * @param string $url
 	 */
@@ -196,7 +196,8 @@ trait BasicStructure {
 	}
 
 	/**
-	 * @When /^sending "([^"]*)" to "([^"]*)" with$/
+	 * @When /^the user sends HTTP method "([^"]*)" to API endpoint "([^"]*)" with body$/
+	 * @Given /^the user has sent HTTP method "([^"]*)" to API endpoint "([^"]*)" with body$/
 	 * @param string $verb
 	 * @param string $url
 	 * @param \Behat\Gherkin\Node\TableNode $body
