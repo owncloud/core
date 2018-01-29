@@ -22,6 +22,7 @@ trait Provisioning {
 
 	/**
 	 * @When /^the administrator creates the user "([^"]*)" using the API$/
+	 * @Given /^user "([^"]*)" has been created$/
 	 * @param string $user
 	 */
 	public function adminCreatesUserUsingTheAPI($user) {
@@ -32,14 +33,6 @@ trait Provisioning {
 			$this->currentUser = $previous_user;
 		}
 		PHPUnit_Framework_Assert::assertTrue($this->userExists($user));
-	}
-
-	/**
-	 * @Given /^user "([^"]*)" has been created$/
-	 * @param string $user
-	 */
-	public function userHasBeenCreated($user) {
-		$this->adminCreatesUserUsingTheAPI($user);
 	}
 
 	/**
@@ -123,6 +116,7 @@ trait Provisioning {
 
 	/**
 	 * @When /^the administrator deletes user "([^"]*)" using the API$/
+	 * @Given /^user "([^"]*)" has been deleted$/
 	 * @param string $user
 	 */
 	public function adminDeletesUserUsingTheAPI($user) {
@@ -133,14 +127,6 @@ trait Provisioning {
 			$this->currentUser = $previous_user;
 		}
 		PHPUnit_Framework_Assert::assertFalse($this->userExists($user));
-	}
-
-	/**
-	 * @Given /^user "([^"]*)" has been deleted$/
-	 * @param string $user
-	 */
-	public function userHasBeenDeleted($user) {
-		$this->adminDeletesUserUsingTheAPI($user);
 	}
 
 	/**
@@ -316,6 +302,7 @@ trait Provisioning {
 
 	/**
 	 * @When /^the administrator adds user "([^"]*)" to group "([^"]*)" using the API$/
+	 * @Given /^user "([^"]*)" has been added to group "([^"]*)"$/
 	 * @param string $user
 	 * @param string $group
 	 */
@@ -329,15 +316,6 @@ trait Provisioning {
 
 		$this->userShouldBelongToGroup($user, $group);
 		$this->currentUser = $previous_user;
-	}
-
-	/**
-	 * @Given /^user "([^"]*)" has been added to group "([^"]*)"$/
-	 * @param string $user
-	 * @param string $group
-	 */
-	public function userHasBeenAddedToGroup($user, $group) {
-		$this->adminAddsUserToGroupUsingTheAPI($user, $group);
 	}
 
 	/**
@@ -363,6 +341,7 @@ trait Provisioning {
 
 	/**
 	 * @When /^the administrator creates group "([^"]*)" using the API$/
+	 * @Given /^group "([^"]*)" has been created$/
 	 * @param string $group
 	 */
 	public function adminCreatesGroupUsingTheAPI($group) {
@@ -373,14 +352,6 @@ trait Provisioning {
 			$this->currentUser = $previous_user;
 		}
 		PHPUnit_Framework_Assert::assertTrue($this->groupExists($group));
-	}
-
-	/**
-	 * @Given /^group "([^"]*)" has been created$/
-	 * @param string $group
-	 */
-	public function groupHasBeenCreated($group) {
-		$this->adminCreatesGroupUsingTheAPI($group);
 	}
 
 	/**
@@ -404,6 +375,7 @@ trait Provisioning {
 
 	/**
 	 * @When /^the administrator disables user "([^"]*)" using the API$/
+	 * @Given /^user "([^"]*)" has been disabled$/
 	 * @param string $user
 	 */
 	public function adminDisablesUserUsingTheAPI($user) {
@@ -415,14 +387,6 @@ trait Provisioning {
 		}
 
 		$this->response = $client->send($client->createRequest("PUT", $fullUrl, $options));
-	}
-
-	/**
-	 * @Given /^user "([^"]*)" has been disabled$/
-	 * @param string $user
-	 */
-	public function userHasBeenDisabled($user) {
-		$this->adminDisablesUserUsingTheAPI($user);
 	}
 
 	/**
@@ -450,6 +414,7 @@ trait Provisioning {
 
 	/**
 	 * @When /^the administrator deletes group "([^"]*)" using the API$/
+	 * @Given /^group "([^"]*)" has been deleted$/
 	 * @param string $group
 	 */
 	public function adminDeletesGroupUsingTheAPI($group) {
@@ -460,14 +425,6 @@ trait Provisioning {
 			$this->currentUser = $previous_user;
 		}
 		PHPUnit_Framework_Assert::assertFalse($this->groupExists($group));
-	}
-
-	/**
-	 * @Given /^group "([^"]*)" has been deleted$/
-	 * @param string $group
-	 */
-	public function groupHasBeenDeleted($group) {
-		$this->adminDeletesGroupUsingTheAPI($group);
 	}
 
 	/**
@@ -561,6 +518,7 @@ trait Provisioning {
 
 	/**
 	 * @When /^the administrator makes user "([^"]*)" a subadmin of group "([^"]*)" using the API$/
+	 * @Given /^user "([^"]*)" has been made a subadmin of group "([^"]*)"$/
 	 * @param string $user
 	 * @param string $group
 	 */
@@ -579,15 +537,6 @@ trait Provisioning {
 	}
 
 	/**
-	 * @Given /^user "([^"]*)" has been made a subadmin of group "([^"]*)"$/
-	 * @param string $user
-	 * @param string $group
-	 */
-	public function userHasBeenMadeSubadminOfGroup($user, $group) {
-		$this->adminMakesUserSubadminOfGroupUsingTheAPI($user, $group);
-	}
-
-	/**
 	 * @Given /^assure user "([^"]*)" is subadmin of group "([^"]*)"$/
 	 * @param string $user
 	 * @param string $group
@@ -599,6 +548,7 @@ trait Provisioning {
 
 	/**
 	 * @When /^the administrator makes user "([^"]*)" not a subadmin of group "([^"]*)" using the API$/
+	 * @Given /^user "([^"]*)" has been made not a subadmin of group "([^"]*)"$/
 	 * @param string $user
 	 * @param string $group
 	 */
@@ -615,16 +565,6 @@ trait Provisioning {
 		sort($respondedArray);
 		PHPUnit_Framework_Assert::assertNotContains($user, $respondedArray);
 		PHPUnit_Framework_Assert::assertEquals(200, $this->response->getStatusCode());
-	}
-
-
-	/**
-	 * @Given /^user "([^"]*)" has been made not a subadmin of group "([^"]*)"$/
-	 * @param string $user
-	 * @param string $group
-	 */
-	public function userHasBeenMadeNotSubadminOfGroup($user, $group) {
-		$this->adminMakesUserNotSubadminOfGroupUsingTheAPI($user, $group);
 	}
 
 	/**
@@ -808,6 +748,7 @@ trait Provisioning {
 
 	/**
 	 * @When the administrator sets the quota of user :user to :quota using the API
+	 * @Given the quota of user :user has been set to :quota
 	 * @param string $user
 	 * @param string $quota
 	 */
@@ -824,31 +765,13 @@ trait Provisioning {
 	}
 
 	/**
-	 * @Given the quota of user :user has been set to :quota
-	 * @param string $user
-	 * @param string $quota
-	 */
-	public function quotaOfuserHasBeenSetTo($user, $quota)
-	{
-		$this->adminSetsUserQuotaToUsingTheAPI($user, $quota);
-	}
-
-	/**
 	 * @When the administrator gives unlimited quota to user :user using the API
+	 * @Given user :user has been given unlimited quota
 	 * @param string $user
 	 */
 	public function adminGivesUnlimitedQuotaToUserUsingTheAPI($user)
 	{
 		$this->adminSetsUserQuotaToUsingTheAPI($user, 'none');
-	}
-
-	/**
-	 * @Given user :user has been given unlimited quota
-	 * @param string $user
-	 */
-	public function userHasBeenGivenUnlimitedQuota($user)
-	{
-		$this->adminGivesUnlimitedQuotaToUserUsingTheAPI($user);
 	}
 
 	/**
