@@ -620,7 +620,7 @@ class UsersController extends Controller {
 						'data' => [
 							'username' => $id,
 							'mailAddress' => $mailAddress,
-							'message' => (string) $this->l10n->t('An email has been sent to this address for confirmation')
+							'message' => (string) $this->l10n->t('An email has been sent to this address for confirmation. Until the email is verified this address will not be set.')
 						]
 					],
 					Http::STATUS_OK
@@ -792,6 +792,7 @@ class UsersController extends Controller {
 	 *
 	 * @param string $id
  	 * @param string $mailAddress
+	 * @return JSONResponse
  	 */
 	public function setEmailAddress($id, $mailAddress) {
 		$user = $this->userManager->get($id);
@@ -799,11 +800,13 @@ class UsersController extends Controller {
 		// Only Admin and SubAdmins are allowed to set email
 		if($this->isAdmin ||
 			($this->groupManager->getSubAdmin()->isSubAdmin($this->userSession->getUser()) &&
-				$this->groupManager->getSubAdmin()->isUserAccessible($this->userSession->getUser(), $user))) {
+				$this->groupManager->getSubAdmin()->isUserAccessible($this->userSession->getUser(), $user)) ||
+				($this->userSession->getUser()->getUID() === $id)) {
 			$user->setEMailAddress($mailAddress);
 			if ($this->config->getUserValue($id, 'owncloud', 'changeMail') !== '') {
 				$this->config->deleteUserValue($id, 'owncloud', 'changeMail');
 			}
+			return new JSONResponse();
 		} else {
 			return new JSONResponse([
 				'error' => 'cannotSetEmailAddress',
@@ -830,7 +833,6 @@ class UsersController extends Controller {
 			$this->log->error("The logged in user is different than expected.", ['app' => 'settings']);
 			return new RedirectResponse($this->urlGenerator->linkToRoute('settings.SettingsPage.getPersonal', ['changestatus' => 'error']));
 		}
-
 		try {
 			$this->checkEmailChangeToken($token, $userId);
 		} catch (\Exception $e) {
@@ -863,7 +865,7 @@ class UsersController extends Controller {
 				));
 			}
 		}
-		return new RedirectResponse($this->urlGenerator->linkToRoute('settings.SettingsPage.getPersonal', ['changestatus' => 'success']));
+		return new RedirectResponse($this->urlGenerator->linkToRoute('settings.SettingsPage.getPersonal', ['changestatus' => 'success', 'user' => $userId]));
   }
   
   /*
