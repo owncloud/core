@@ -6,7 +6,7 @@ Feature: multilinksharing
 
 	Scenario: Creating three public shares of a folder
 		Given user "user0" has been created
-		And as an "user0"
+		And as user "user0"
 		And the user has created a share with settings
 			| path | FOLDER |
 			| shareType | 3 |
@@ -48,7 +48,7 @@ Feature: multilinksharing
 
 	Scenario: Creating three public shares of a file
 		Given user "user0" has been created
-		And as an "user0"
+		And as user "user0"
 		And the user has created a share with settings
 			| path | textfile0.txt |
 			| shareType | 3 |
@@ -87,7 +87,7 @@ Feature: multilinksharing
 
 	Scenario: Check that updating password doesn't remove name of links
 		Given user "user0" has been created
-		And as an "user0"
+		And as user "user0"
 		And the user has created a share with settings
 			| path | FOLDER |
 			| shareType | 3 |
@@ -118,7 +118,7 @@ Feature: multilinksharing
 
 	Scenario: Deleting a file deletes also its public links
 	 Given user "user0" has been created
-		And as an "user0"
+		And as user "user0"
 		And the user has created a share with settings
 			| path | textfile0.txt |
 			| shareType | 3 |
@@ -144,7 +144,7 @@ Feature: multilinksharing
 
 	Scenario: Deleting one public share of a file doesn't affect the rest
 		Given user "user0" has been created
-		And as an "user0"
+		And as user "user0"
 		And the user has created a share with settings
 			| path | textfile0.txt |
 			| shareType | 3 |
@@ -181,7 +181,7 @@ Feature: multilinksharing
 
 	Scenario: Overwriting a file doesn't remove its public shares
 		Given user "user0" has been created
-		And as an "user0"
+		And as user "user0"
 		And the user has created a share with settings
 			| path | textfile0.txt |
 			| shareType | 3 |
@@ -207,7 +207,7 @@ Feature: multilinksharing
 
 	Scenario: Renaming a folder doesn't remove its public shares
 		Given user "user0" has been created
-		And as an "user0"
+		And as user "user0"
 		And the user has created a share with settings
 			| path | FOLDER |
 			| shareType | 3 |

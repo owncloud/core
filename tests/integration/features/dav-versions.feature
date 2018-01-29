@@ -4,7 +4,7 @@ Feature: dav-versions
     And using new dav path
     And user "user0" has been created
     And file "/davtest.txt"  does not exist for user "user0"
-    And as an "user0"
+    And as user "user0"
 
   Scenario: Upload file and no version is available
     When user "user0" uploads file "data/davtest.txt" to "/davtest.txt" using the API
@@ -36,7 +36,7 @@ Feature: dav-versions
     Given user "user1" has been created
     And user "user0" uploads file with content "123" to "/davtest.txt"
     And we save it into "FILEID"
-    And as an "user1"
+    And as user "user1"
     When sending "PROPFIND" with exact url to "/remote.php/dav/meta/<<FILEID>>"
     Then the HTTP status code should be "404"
 
@@ -45,11 +45,11 @@ Feature: dav-versions
     And user "user0" uploads file with content "123" to "/davtest.txt"
     And user "user0" uploads file with content "456789" to "/davtest.txt"
     And we save it into "FILEID"
-    And as an "user0"
+    And as user "user0"
     And the user has created a share with settings
       | path | /davtest.txt |
       | shareType | 0 |
       | shareWith | user1 |
       | permissions | 8 |
-    When as an "user1"
+    When as user "user1"
     Then the version folder of fileId "<<FILEID>>" contains "1" elements

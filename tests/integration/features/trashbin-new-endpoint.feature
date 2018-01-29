@@ -2,7 +2,7 @@ Feature: trashbin-new-endpoint
 	Background:
 		Given using api version "1"
 		And using new dav path
-		And as an "admin"
+		And as user "admin"
 
 	Scenario: deleting a file moves it to trashbin
 		Given user "user0" has been created

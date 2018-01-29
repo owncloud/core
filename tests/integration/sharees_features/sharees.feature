@@ -8,7 +8,7 @@ Feature: sharees
 		And user "test" has been added to group "ShareeGroup2"
 
 	Scenario: Search without exact match
-		Given as an "test"
+		Given as user "test"
 		When getting sharees for
 			| search | Sharee |
 			| itemType | file |
@@ -25,7 +25,7 @@ Feature: sharees
 		And "remotes" sharees returned is empty
 
 	Scenario: Search without exact match not-exact casing
-		Given as an "test"
+		Given as user "test"
 		When getting sharees for
 			| search | sharee |
 			| itemType | file |
@@ -42,7 +42,7 @@ Feature: sharees
 		And "remotes" sharees returned is empty
 
 	Scenario: Search only with group members - denied
-		Given as an "test"
+		Given as user "test"
 		And parameter "shareapi_only_share_with_group_members" of app "core" has been set to "yes"
 		When getting sharees for
 			| search | sharee |
@@ -59,7 +59,7 @@ Feature: sharees
 		And "remotes" sharees returned is empty
 
 	Scenario: Search only with group members - allowed
-		Given as an "test"
+		Given as user "test"
 		And parameter "shareapi_only_share_with_group_members" of app "core" has been set to "yes"
 		And user "Sharee1" has been added to group "ShareeGroup2"
 		When getting sharees for
@@ -78,7 +78,7 @@ Feature: sharees
 		And "remotes" sharees returned is empty
 
 	Scenario: Search only with group members - no group as non-member
-		Given as an "Sharee1"
+		Given as user "Sharee1"
 		And parameter "shareapi_only_share_with_group_members" of app "core" has been set to "yes"
 		And parameter "shareapi_only_share_with_membership_groups" of app "core" has been set to "yes"
 		When getting sharees for
@@ -94,7 +94,7 @@ Feature: sharees
 		And "remotes" sharees returned is empty
 
 	Scenario: Search only with membership groups - denied
-		Given as an "Sharee1"
+		Given as user "Sharee1"
 		And parameter "shareapi_only_share_with_membership_groups" of app "core" has been set to "yes"
 		When getting sharees for
 			| search | ShareeGroup |
@@ -109,7 +109,7 @@ Feature: sharees
 		And "remotes" sharees returned is empty
 
 	Scenario: Search only with membership groups - denied but users match
-		Given as an "Sharee1"
+		Given as user "Sharee1"
 		And parameter "shareapi_only_share_with_membership_groups" of app "core" has been set to "yes"
 		When getting sharees for
 			| search | sharee |
@@ -125,7 +125,7 @@ Feature: sharees
 		And "remotes" sharees returned is empty
 
 	Scenario: Search only with membership groups - allowed
-		Given as an "test"
+		Given as user "test"
 		And parameter "shareapi_only_share_with_membership_groups" of app "core" has been set to "yes"
 		When getting sharees for
 			| search | ShareeGroup |
@@ -141,7 +141,7 @@ Feature: sharees
 		And "remotes" sharees returned is empty
 
 	Scenario: Search only with membership groups - allowed including users
-		Given as an "test"
+		Given as user "test"
 		And parameter "shareapi_only_share_with_membership_groups" of app "core" has been set to "yes"
 		When getting sharees for
 			| search | Sharee |
@@ -158,7 +158,7 @@ Feature: sharees
 		And "remotes" sharees returned is empty
 
 	Scenario: Search without exact match no iteration allowed
-		Given as an "test"
+		Given as user "test"
 		And parameter "shareapi_allow_share_dialog_user_enumeration" of app "core" has been set to "no"
 		When getting sharees for
 			| search | Sharee |
@@ -173,7 +173,7 @@ Feature: sharees
 		And "remotes" sharees returned is empty
 
 	Scenario: Search with exact match no iteration allowed
-		Given as an "test"
+		Given as user "test"
 		And parameter "shareapi_allow_share_dialog_user_enumeration" of app "core" has been set to "no"
 		When getting sharees for
 			| search | Sharee1 |
@@ -189,7 +189,7 @@ Feature: sharees
 		And "remotes" sharees returned is empty
 
 	Scenario: Search with exact match group no iteration allowed
-		Given as an "test"
+		Given as user "test"
 		And parameter "shareapi_allow_share_dialog_user_enumeration" of app "core" has been set to "no"
 		When getting sharees for
 			| search | ShareeGroup |
@@ -205,7 +205,7 @@ Feature: sharees
 		And "remotes" sharees returned is empty
 
 	Scenario: Search with exact match
-		Given as an "test"
+		Given as user "test"
 		When getting sharees for
 			| search | Sharee1 |
 			| itemType | file |
@@ -220,7 +220,7 @@ Feature: sharees
 		Then "remotes" sharees returned is empty
 
 	Scenario: Search with exact match not-exact casing
-		Given as an "test"
+		Given as user "test"
 		When getting sharees for
 			| search | sharee1 |
 			| itemType | file |
@@ -235,7 +235,7 @@ Feature: sharees
 		Then "remotes" sharees returned is empty
 
 	Scenario: Search with exact match not-exact casing group
-		Given as an "test"
+		Given as user "test"
 		When getting sharees for
 			| search | shareegroup2 |
 			| itemType | file |
@@ -250,7 +250,7 @@ Feature: sharees
 		Then "remotes" sharees returned is empty
 
 	Scenario: Search with "self"
-		Given as an "Sharee1"
+		Given as user "Sharee1"
 		When getting sharees for
 			| search | Sharee1 |
 			| itemType | file |
@@ -265,7 +265,7 @@ Feature: sharees
 		Then "remotes" sharees returned is empty
 
 	Scenario: Remote sharee for files
-		Given as an "test"
+		Given as user "test"
 		When getting sharees for
 			| search | test@localhost |
 			| itemType | file |
@@ -280,7 +280,7 @@ Feature: sharees
 		Then "remotes" sharees returned is empty
 
 	Scenario: Remote sharee for calendars not allowed
-		Given as an "test"
+		Given as user "test"
 		When getting sharees for
 			| search | test@localhost |
 			| itemType | calendar |
@@ -294,7 +294,7 @@ Feature: sharees
 		Then "remotes" sharees returned is empty
 
 	Scenario: Group sharees not returned when group sharing is disabled
-		Given as an "test"
+		Given as user "test"
 		And parameter "shareapi_allow_group_sharing" of app "core" has been set to "no"
 		When getting sharees for
 			| search | sharee |
@@ -310,7 +310,7 @@ Feature: sharees
 		And "remotes" sharees returned is empty
 
 	Scenario: Enumerate only group members - only show partial results from member groups
-		Given as an "test"
+		Given as user "test"
 		And user "Another" has been created
 		And user "Another" has been added to group "ShareeGroup2"
 		And parameter "shareapi_share_dialog_user_enumeration_group_members" of app "core" has been set to "yes"
@@ -328,7 +328,7 @@ Feature: sharees
 		And "remotes" sharees returned is empty
 
 	Scenario: Enumerate only group members - accept exact match from non-member groups
-		Given as an "test"
+		Given as user "test"
 		And parameter "shareapi_share_dialog_user_enumeration_group_members" of app "core" has been set to "yes"
 		When getting sharees for
 			| search | Sharee1 |
@@ -344,7 +344,7 @@ Feature: sharees
 		And "remotes" sharees returned is empty
 
 	Scenario: Enumerate only group members - only show partial results from member groups
-		Given as an "test"
+		Given as user "test"
 		And parameter "shareapi_share_dialog_user_enumeration_group_members" of app "core" has been set to "yes"
 		When getting sharees for
 			| search | ShareeG |
@@ -360,7 +360,7 @@ Feature: sharees
 		And "remotes" sharees returned is empty
 
 	Scenario: Enumerate only group members - only accept exact group match from non-memberships
-		Given as an "test"
+		Given as user "test"
 		And group "ShareeGroupNonMember" has been created
 		And parameter "shareapi_share_dialog_user_enumeration_group_members" of app "core" has been set to "yes"
 		When getting sharees for

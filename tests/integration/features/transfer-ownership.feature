@@ -7,7 +7,7 @@ Feature: transfer-ownership
 		And user "user0" has uploaded file "data/textfile.txt" to "/somefile.txt"
 		When transferring ownership from "user0" to "user1"
 		And the command was successful
-		And as an "user1"
+		And as user "user1"
 		And using received transfer folder of "user1" as dav path
 		Then downloaded content when downloading file "/somefile.txt" with range "bytes=0-6" should be "This is"
 
@@ -21,7 +21,7 @@ Feature: transfer-ownership
 		And user "user0" has uploaded chunk file "3" of "3" with "CC" to "/PARENT/textfile0.txt"
 		When transferring ownership from "user0" to "user1"
 		Then the command was successful
-		And as an "user1"
+		And as user "user1"
 		And using received transfer folder of "user1" as dav path
 		Then downloaded content when downloading file "/PARENT/textfile0.txt" with range "bytes=0-5" should be "AABBCC"
 
@@ -33,7 +33,7 @@ Feature: transfer-ownership
 		And user "user0" has uploaded file "data/textfile.txt" to "/test/somefile.txt"
 		When transferring ownership from "user0" to "user1"
 		And the command was successful
-		And as an "user1"
+		And as user "user1"
 		And using received transfer folder of "user1" as dav path
 		Then downloaded content when downloading file "/test/somefile.txt" with range "bytes=0-6" should be "This is"
 
@@ -46,7 +46,7 @@ Feature: transfer-ownership
 		And file "/somefile.txt" of user "user0" is shared with user "user2" with permissions 19
 		When transferring ownership from "user0" to "user1"
 		And the command was successful
-		And as an "user2"
+		And as user "user2"
 		Then downloaded content when downloading file "/somefile.txt" with range "bytes=0-6" should be "This is"
 
 	@no_default_encryption
@@ -59,7 +59,7 @@ Feature: transfer-ownership
 		And folder "/test" of user "user0" is shared with user "user2" with permissions 31
 		When transferring ownership from "user0" to "user1"
 		And the command was successful
-		And as an "user2"
+		And as user "user2"
 		Then downloaded content when downloading file "/test/somefile.txt" with range "bytes=0-6" should be "This is"
 
 	@no_default_encryption
@@ -71,7 +71,7 @@ Feature: transfer-ownership
 		And folder "/test" of user "user0" is shared with user "user1" with permissions 31
 		When transferring ownership from "user0" to "user1"
 		And the command was successful
-		And as an "user1"
+		And as user "user1"
 		Then as "user1" the folder "/test" does not exist
 		And using received transfer folder of "user1" as dav path
 		And downloaded content when downloading file "/test/somefile.txt" with range "bytes=0-6" should be "This is"
@@ -89,7 +89,7 @@ Feature: transfer-ownership
 		And folder "/test" of user "user0" is shared with user "user2" with permissions 31
 		When transferring ownership from "user0" to "user1"
 		And the command was successful
-		And as an "user2"
+		And as user "user2"
 		Then downloaded content when downloading file "/test/somefile.txt" with range "bytes=0-6" should be "This is"
 
 	@no_default_encryption
@@ -101,7 +101,7 @@ Feature: transfer-ownership
 		And folder "/test" of user "user2" is shared with user "user0" with permissions 31
 		When transferring ownership from "user0" to "user1"
 		And the command was successful
-		And as an "user1"
+		And as user "user1"
 		And using received transfer folder of "user1" as dav path
 		Then as "user1" the folder "/test" does not exist
 
@@ -111,7 +111,7 @@ Feature: transfer-ownership
 		And user "user1" has been created
 		When transferring ownership from "user0" to "user1"
 		And the command was successful
-		And as an "user1"
+		And as user "user1"
 		And using received transfer folder of "user1" as dav path
 		Then as "user1" the folder "/local_storage" does not exist
 
@@ -147,7 +147,7 @@ Feature: transfer-ownership
 		And user "user0" has uploaded file "data/textfile.txt" to "/test/somefile.txt"
 		When transferring ownership of path "test" from "user0" to "user1"
 		And the command was successful
-		And as an "user1"
+		And as user "user1"
 		And using received transfer folder of "user1" as dav path
 		Then downloaded content when downloading file "/test/somefile.txt" with range "bytes=0-6" should be "This is"
 
@@ -161,7 +161,7 @@ Feature: transfer-ownership
 		And file "/test/somefile.txt" of user "user0" is shared with user "user2" with permissions 19
 		When transferring ownership of path "test" from "user0" to "user1"
 		And the command was successful
-		And as an "user2"
+		And as user "user2"
 		Then downloaded content when downloading file "/somefile.txt" with range "bytes=0-6" should be "This is"
 
 	@no_default_encryption
@@ -191,7 +191,7 @@ Feature: transfer-ownership
 		And folder "/test" of user "user0" is shared with user "user2" with permissions 31
 		When transferring ownership of path "test" from "user0" to "user1"
 		And the command was successful
-		And as an "user2"
+		And as user "user2"
 		Then downloaded content when downloading file "/test/somefile.txt" with range "bytes=0-6" should be "This is"
 
 	@no_default_encryption
@@ -203,7 +203,7 @@ Feature: transfer-ownership
 		And folder "/test" of user "user0" is shared with user "user1" with permissions 31
 		When transferring ownership of path "test" from "user0" to "user1"
 		And the command was successful
-		And as an "user1"
+		And as user "user1"
 		Then as "user1" the folder "/test" does not exist
 		And using received transfer folder of "user1" as dav path
 		And downloaded content when downloading file "/test/somefile.txt" with range "bytes=0-6" should be "This is"
@@ -221,7 +221,7 @@ Feature: transfer-ownership
 		And folder "/test" of user "user0" is shared with user "user2" with permissions 31
 		When transferring ownership of path "test" from "user0" to "user1"
 		And the command was successful
-		And as an "user2"
+		And as user "user2"
 		Then downloaded content when downloading file "/test/somefile.txt" with range "bytes=0-6" should be "This is"
 
 	Scenario: transferring ownership does not transfer received shares
@@ -234,7 +234,7 @@ Feature: transfer-ownership
 		And user "user0" moved folder "/test" to "/sub/test"
 		When transferring ownership of path "sub" from "user0" to "user1"
 		And the command was successful
-		And as an "user1"
+		And as user "user1"
 		And using received transfer folder of "user1" as dav path
 		Then as "user1" the folder "/sub/test" does not exist
 
@@ -245,7 +245,7 @@ Feature: transfer-ownership
 		And user "user0" has created a folder "/sub"
 		When transferring ownership of path "sub" from "user0" to "user1"
 		And the command was successful
-		And as an "user1"
+		And as user "user1"
 		And using received transfer folder of "user1" as dav path
 		Then as "user1" the folder "/local_storage" does not exist
 

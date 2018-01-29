@@ -58,7 +58,7 @@ trait Federation {
 	 */
 	public function acceptLastPendingShare($user, $server) {
 		$previous = $this->usingServer($server);
-		$this->asAn($user);
+		$this->asUser($user);
 		$this->sendingToWith(
 			'GET',
 			"/apps/files_sharing/api/v1/remote_shares/pending",

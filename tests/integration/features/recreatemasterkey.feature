@@ -8,7 +8,7 @@ Feature: recreate-master-key
 		Then the command was successful
 		And logging in using web as "admin"
 		And logging in using web as "admin"
-		And as an "admin"
+		And as user "admin"
 		And downloaded content when downloading file "/somefile.txt" with range "bytes=0-6" should be "This is"
 
 	@masterkey_encryption
@@ -19,7 +19,7 @@ Feature: recreate-master-key
 		And the command was successful
 		And logging in using web as "admin"
 		And logging in using web as "user0"
-		And as an "user0"
+		And as user "user0"
 		When user "user0" uploads chunk file "1" of "1" with "AA" to "/somefile.txt"
 		Then downloaded content when downloading file "/somefile.txt" with range "bytes=0-3" should be "AA"
 
