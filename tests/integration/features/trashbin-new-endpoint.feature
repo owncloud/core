@@ -3,7 +3,6 @@ Feature: trashbin-new-endpoint
 		Given using api version "1"
 		And using new dav path
 		And as an "admin"
-		And app "files_trashbin" is enabled
 
 	Scenario: deleting a file moves it to trashbin
 		Given user "user0" exists

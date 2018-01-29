@@ -599,7 +599,7 @@ Feature: sharing
 		And user "user0" exists
 		And user "user1" exists
 		And as an "admin"
-		And user "user1" has a quota of "0"
+		And the quota of user "user1" has been set to "0"
 		And user "user0" moved file "/welcome.txt" to "/myfile.txt"
 		And file "myfile.txt" of user "user0" is shared with user "user1"
 		When user "user1" uploads file "data/textfile.txt" to "/myfile.txt"

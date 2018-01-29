@@ -45,7 +45,7 @@ Feature: provisioning
 		And user "brand-new-user" exists
 		And user "admin" exists
 		When sending "GET" to "/cloud/users"
-		Then users returned are
+		Then the users returned by the API should be
 			| brand-new-user |
 			| admin |
 
@@ -133,7 +133,7 @@ Feature: provisioning
 		And user "brand-new-user" belongs to group "new-group"
 		And user "brand-new-user" belongs to group "0"
 		When sending "GET" to "/cloud/users/brand-new-user/groups"
-		Then groups returned are
+		Then the groups returned by the API should be
 			| new-group |
 			| 0 |
 		And the OCS status code should be "100"
@@ -161,7 +161,7 @@ Feature: provisioning
 		And group "admin" exists
 		And group "España" exists
 		When sending "GET" to "/cloud/groups"
-		Then groups returned are
+		Then the groups returned by the API should be
 			| España |
 			| admin |
 			| new-group |
@@ -184,7 +184,7 @@ Feature: provisioning
 		And assure user "brand-new-user" is subadmin of group "new-group"
 		And as an "brand-new-user"
 		When sending "GET" to "/cloud/users"
-		Then users returned are
+		Then the users returned by the API should be
 			| brand-new-user |
 		And the OCS status code should be "100"
 		And the HTTP status code should be "200"
@@ -229,13 +229,13 @@ Feature: provisioning
 		Then the OCS status code should be "102"
 		And the HTTP status code should be "200"
 
-	Scenario: Getting subadmin groups
+	Scenario: Getting subadmin groups of a user
 		Given as an "admin"
 		And user "brand-new-user" exists
 		And group "new-group" exists
 		And assure user "brand-new-user" is subadmin of group "new-group"
 		When sending "GET" to "/cloud/users/brand-new-user/subadmins"
-		Then subadmin groups returned are
+		Then the subadmin groups returned by the API should be
 			| new-group |
 		And the OCS status code should be "100"
 		And the HTTP status code should be "200"
@@ -254,7 +254,7 @@ Feature: provisioning
 		And group "new-group" exists
 		And assure user "brand-new-user" is subadmin of group "new-group"
 		When sending "GET" to "/cloud/groups/new-group/subadmins"
-		Then subadmin users returned are
+		Then the subadmin users returned by the API should be
 			| brand-new-user |
 		And the OCS status code should be "100"
 		And the HTTP status code should be "200"
@@ -307,7 +307,7 @@ Feature: provisioning
 		When sending "GET" to "/cloud/apps?filter=enabled"
 		Then the OCS status code should be "100"
 		And the HTTP status code should be "200"
-		And apps returned are
+		And the apps returned by the API should include
 			| comments |
 			| dav |
 			| federatedfilesharing |
@@ -354,7 +354,7 @@ Feature: provisioning
 		When sending "PUT" to "/cloud/users/user1/disable"
 		Then the OCS status code should be "100"
 		And the HTTP status code should be "200"
-		And user "user1" is disabled
+		And user "user1" should be disabled
 
 	Scenario: enable an user
 		Given as an "admin"
@@ -363,7 +363,7 @@ Feature: provisioning
 		When sending "PUT" to "/cloud/users/user1/enable"
 		Then the OCS status code should be "100"
 		And the HTTP status code should be "200"
-		And user "user1" is enabled
+		And user "user1" should be enabled
 
 	Scenario: Subadmin should be able to enable or disable an user in their group
 		Given as an "admin"
@@ -378,7 +378,7 @@ Feature: provisioning
 		Then the OCS status code should be "100"
 		And the HTTP status code should be "200"
 		And as an "admin"
-		And user "user1" is disabled
+		And user "user1" should be disabled
 
 	Scenario: Subadmin should not be able to enable or disable an user not in their group
 		Given as an "admin"
@@ -394,7 +394,7 @@ Feature: provisioning
 		Then the OCS status code should be "997"
 		And the HTTP status code should be "401"
 		And as an "admin"
-		And user "user1" is enabled
+		And user "user1" should be enabled
 
 	Scenario: Subadmins should not be able to disable users that have admin permissions in their group
 		Given as an "admin"
@@ -410,7 +410,7 @@ Feature: provisioning
 		Then the OCS status code should be "997"
 		And the HTTP status code should be "401"
 		And as an "admin"
-		And user "another-admin" is enabled
+		And user "another-admin" should be enabled
 
 	Scenario: Admin can disable another admin user
 		Given as an "admin"
@@ -419,7 +419,7 @@ Feature: provisioning
 		When sending "PUT" to "/cloud/users/another-admin/disable"
 		Then the OCS status code should be "100"
 		And the HTTP status code should be "200"
-		And user "another-admin" is disabled
+		And user "another-admin" should be disabled
 
 	Scenario: Admin can enable another admin user
 		Given as an "admin"
@@ -429,7 +429,7 @@ Feature: provisioning
 		When sending "PUT" to "/cloud/users/another-admin/enable"
 		Then the OCS status code should be "100"
 		And the HTTP status code should be "200"
-		And user "another-admin" is enabled
+		And user "another-admin" should be enabled
 
 	Scenario: Admin can disable subadmins in the same group
 		Given as an "admin"
@@ -441,7 +441,7 @@ Feature: provisioning
 		When sending "PUT" to "/cloud/users/subadmin/disable"
 		Then the OCS status code should be "100"
 		And the HTTP status code should be "200"
-		And user "subadmin" is disabled
+		And user "subadmin" should be disabled
 
 	Scenario: Admin can enable subadmins in the same group
 		Given as an "admin"
@@ -454,7 +454,7 @@ Feature: provisioning
 		When sending "PUT" to "/cloud/users/subadmin/disable"
 		Then the OCS status code should be "100"
 		And the HTTP status code should be "200"
-		And user "subadmin" is disabled
+		And user "subadmin" should be disabled
 
 	Scenario: Admin user cannot disable himself
 		Given as an "admin"
@@ -465,7 +465,7 @@ Feature: provisioning
 		Then the OCS status code should be "101"
 		And the HTTP status code should be "200"
 		And as an "admin"
-		And user "another-admin" is enabled
+		And user "another-admin" should be enabled
 
 	Scenario:Admin user cannot enable himself
 		Given as an "admin"
@@ -475,7 +475,7 @@ Feature: provisioning
 		And as an "another-admin"
 		When sending "PUT" to "/cloud/users/another-admin/enable"
 		And as an "admin"
-		Then user "another-admin" is disabled
+		Then user "another-admin" should be disabled
 
 	Scenario: disable an user with a regular user
 		Given as an "admin"
@@ -486,7 +486,7 @@ Feature: provisioning
 		Then the OCS status code should be "997"
 		And the HTTP status code should be "401"
 		And as an "admin"
-		And user "user2" is enabled
+		And user "user2" should be enabled
 
 	Scenario: enable an user with a regular user
 		Given as an "admin"
@@ -498,7 +498,7 @@ Feature: provisioning
 		Then the OCS status code should be "997"
 		And the HTTP status code should be "401"
 		And as an "admin"
-		And user "user2" is disabled
+		And user "user2" should be disabled
 
 	Scenario: Subadmin should not be able to disable himself
 		Given as an "admin"
@@ -511,7 +511,7 @@ Feature: provisioning
 		Then the OCS status code should be "101"
 		And the HTTP status code should be "200"
 		And as an "admin"
-		And user "subadmin" is enabled
+		And user "subadmin" should be enabled
 
 	Scenario: Subadmin should not be able to enable himself
 		Given as an "admin"
@@ -523,7 +523,7 @@ Feature: provisioning
 		And as an "subadmin"
 		When sending "PUT" to "/cloud/users/subadmin/enabled"
 		Then as an "admin"
-		And user "subadmin" is disabled
+		And user "subadmin" should be disabled
 
 	Scenario: a subadmin can add users to groups the subadmin is responsible for
 		Given as an "admin"
@@ -616,5 +616,5 @@ Feature: provisioning
 		When sending "GET" to "/cloud/users/brand-new-user"
 		Then the OCS status code should be "100"
 		And the HTTP status code should be "200"
-		And user attributes match with
+		And the user attributes returned by the API should include
 			| email | brand-new-user@example.com |

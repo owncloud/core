@@ -142,7 +142,7 @@ Feature: webdav-related-old-endpoint
 		Given using old dav path
 		And as an "admin"
 		And user "user0" exists
-		When user "user0" has unlimited quota
+		When the administrator gives unlimited quota to user "user0" using the API
 		Then as "user0" gets properties of folder "/" with
 		  |{DAV:}quota-available-bytes|
 		And the single response should contain a property "{DAV:}quota-available-bytes" with value "-3"
@@ -151,7 +151,7 @@ Feature: webdav-related-old-endpoint
 		Given using old dav path
 		And as an "admin"
 		And user "user0" exists
-		When user "user0" has a quota of "10 MB"
+		When the administrator sets the quota of user "user0" to "10 MB" using the API
 		Then as "user0" gets properties of folder "/" with
 		  |{DAV:}quota-available-bytes|
 		And the single response should contain a property "{DAV:}quota-available-bytes" with value "10485358"
@@ -161,8 +161,8 @@ Feature: webdav-related-old-endpoint
 		And as an "admin"
 		And user "user0" exists
 		And user "user1" exists
-		And user "user0" has unlimited quota
-		And user "user1" has a quota of "10 MB"
+		And user "user0" has been given unlimited quota
+		And the quota of user "user1" has been set to "10 MB"
 		And as an "user1"
 		And user "user1" created a folder "/testquota"
 		And as "user1" creating a share with
@@ -178,7 +178,7 @@ Feature: webdav-related-old-endpoint
 		Given using old dav path
 		And as an "admin"
 		And user "user0" exists
-		And user "user0" has a quota of "1 KB"
+		And the quota of user "user0" has been set to "1 KB"
 		And user "user0" adds a file of 93 bytes to "/prueba.txt"
 		When as "user0" gets properties of folder "/" with
 		  |{DAV:}quota-available-bytes|
@@ -189,7 +189,7 @@ Feature: webdav-related-old-endpoint
 		And as an "admin"
 		And user "user0" exists
 		And user "user1" exists
-		And user "user1" has a quota of "1 KB"
+		And the quota of user "user1" has been set to "1 KB"
 		And user "user0" adds a file of 93 bytes to "/user0.txt"
 		And file "user0.txt" of user "user0" is shared with user "user1"
 		When as "user1" gets properties of folder "/" with

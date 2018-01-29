@@ -226,7 +226,7 @@ Feature: federated
 		Given using server "REMOTE"
 		And as an "admin"
 		And user "user1" exists
-		And user "user1" has a quota of "20 B"
+		And the quota of user "user1" has been set to "20 B"
 		And using server "LOCAL"
 		And user "user0" exists
 		And user "user0" from server "LOCAL" shares "/PARENT" with user "user1" from server "REMOTE"
@@ -244,7 +244,7 @@ Feature: federated
 		And using server "LOCAL"
 		And as an "admin"
 		And user "user0" exists
-		And user "user0" has a quota of "20 B"
+		And the quota of user "user0" has been set to "20 B"
 		And user "user0" from server "LOCAL" shares "/PARENT" with user "user1" from server "REMOTE"
 		And user "user1" from server "REMOTE" accepts last pending share
 		And using server "REMOTE"

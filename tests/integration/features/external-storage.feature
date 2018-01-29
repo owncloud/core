@@ -63,7 +63,7 @@ Feature: external-storage
   Scenario: Upload a file to external storage while quota is set on home storage
     Given user "user0" exists
     And as an "admin"
-    And user "user0" has a quota of "1 B"
+    And the quota of user "user0" has been set to "1 B"
     And as an "user0"
     When user "user0" uploads file "data/textfile.txt" to "/local_storage/testquota.txt" with all mechanisms
     Then the HTTP status code of all upload responses should be "201"

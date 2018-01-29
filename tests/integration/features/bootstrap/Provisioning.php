@@ -21,14 +21,14 @@ trait Provisioning {
 	private $createdGroups = [];
 
 	/**
-	 * @When /^the administrator creates user "([^"]*)"$/
+	 * @When /^the administrator creates the user "([^"]*)" using the API$/
 	 * @param string $user
 	 */
-	public function adminCreatesUser($user) {
+	public function adminCreatesUserUsingTheAPI($user) {
 		if ( !$this->userExists($user) ) {
 			$previous_user = $this->currentUser;
 			$this->currentUser = $this->getAdminUserName();
-			$this->creatingTheUser($user);
+			$this->createTheUserUsingTheAPI($user);
 			$this->currentUser = $previous_user;
 		}
 		PHPUnit_Framework_Assert::assertTrue($this->userExists($user));
@@ -39,7 +39,7 @@ trait Provisioning {
 	 * @param string $user
 	 */
 	public function userHasBeenCreated($user) {
-		$this->adminCreatesUser($user);
+		$this->adminCreatesUserUsingTheAPI($user);
 	}
 
 	/**
@@ -48,7 +48,7 @@ trait Provisioning {
 	 * @deprecated This step is not according to the latest standard - all usages need to be changed
 	 */
 	public function assureUserExists($user) {
-		$this->adminCreatesUser($user);
+		$this->adminCreatesUserUsingTheAPI($user);
 	}
 
 	/**
@@ -122,14 +122,14 @@ trait Provisioning {
 	}
 
 	/**
-	 * @When /^the administrator deletes user "([^"]*)"$/
+	 * @When /^the administrator deletes user "([^"]*)" using the API$/
 	 * @param string $user
 	 */
-	public function adminDeletesUser($user) {
+	public function adminDeletesUserUsingTheAPI($user) {
 		if ($this->userExists($user)) {
 			$previous_user = $this->currentUser;
 			$this->currentUser = $this->getAdminUserName();
-			$this->deleteTheUser($user);
+			$this->deleteTheUserUsingTheAPI($user);
 			$this->currentUser = $previous_user;
 		}
 		PHPUnit_Framework_Assert::assertFalse($this->userExists($user));
@@ -140,7 +140,7 @@ trait Provisioning {
 	 * @param string $user
 	 */
 	public function userHasBeenDeleted($user) {
-		$this->adminDeletesUser($user);
+		$this->adminDeletesUserUsingTheAPI($user);
 	}
 
 	/**
@@ -149,7 +149,7 @@ trait Provisioning {
 	 * @deprecated This step is not according to the latest standard - all usages need to be changed
 	 */
 	public function assureUserDoesNotExist($user) {
-		$this->adminDeletesUser($user);
+		$this->adminDeletesUserUsingTheAPI($user);
 	}
 
 	public function rememberTheUser($user) {
@@ -160,7 +160,7 @@ trait Provisioning {
 		}
 	}
 
-	public function creatingTheUser($user) {
+	public function createTheUserUsingTheAPI($user) {
 		$fullUrl = $this->baseUrl . "v{$this->apiVersion}.php/cloud/users";
 		$client = new Client();
 		$options = [];
@@ -188,7 +188,7 @@ trait Provisioning {
 	public function createUser($user) {
 		$previous_user = $this->currentUser;
 		$this->currentUser = $this->getAdminUserName();
-		$this->creatingTheUser($user);
+		$this->createTheUserUsingTheAPI($user);
 		PHPUnit_Framework_Assert::assertTrue($this->userExists($user));
 		$this->currentUser = $previous_user;
 	}
@@ -196,7 +196,7 @@ trait Provisioning {
 	public function deleteUser($user) {
 		$previous_user = $this->currentUser;
 		$this->currentUser = $this->getAdminUserName();
-		$this->deleteTheUser($user);
+		$this->deleteTheUserUsingTheAPI($user);
 		PHPUnit_Framework_Assert::assertFalse($this->userExists($user));
 		$this->currentUser = $previous_user;
 	}
@@ -212,7 +212,7 @@ trait Provisioning {
 	public function deleteGroup($group) {
 		$previous_user = $this->currentUser;
 		$this->currentUser = $this->getAdminUserName();
-		$this->deleteTheGroup($group);
+		$this->deleteTheGroupUsingTheAPI($group);
 		PHPUnit_Framework_Assert::assertFalse($this->groupExists($group));
 		$this->currentUser = $previous_user;
 	}
@@ -291,6 +291,11 @@ trait Provisioning {
 		$this->userShouldNotBelongToGroup($user, $group);
 	}
 
+	/**
+	 * @param string $user
+	 * @param string $group
+	 * @return bool
+	 */
 	public function userBelongsToGroup($user, $group) {
 		$fullUrl = $this->baseUrl . "v2.php/cloud/users/$user/groups";
 		$client = new Client();
@@ -310,16 +315,16 @@ trait Provisioning {
 	}
 
 	/**
-	 * @When /^the administrator adds user "([^"]*)" to group "([^"]*)"$/
+	 * @When /^the administrator adds user "([^"]*)" to group "([^"]*)" using the API$/
 	 * @param string $user
 	 * @param string $group
 	 */
-	public function adminAddsUserToGroup($user, $group) {
+	public function adminAddsUserToGroupUsingTheAPI($user, $group) {
 		$previous_user = $this->currentUser;
 		$this->currentUser = $this->getAdminUserName();
 
 		if (!$this->userBelongsToGroup($user, $group)) {
-			$this->addUserToGroup($user, $group);
+			$this->addUserToGroupUsingTheAPI($user, $group);
 		}
 
 		$this->checkThatUserBelongsToGroup($user, $group);
@@ -332,7 +337,7 @@ trait Provisioning {
 	 * @param string $group
 	 */
 	public function userHasBeenAddedToGroup($user, $group) {
-		$this->adminAddsUserToGroup($user, $group);
+		$this->adminAddsUserToGroupUsingTheAPI($user, $group);
 	}
 
 	/**
@@ -342,7 +347,7 @@ trait Provisioning {
 	 * @deprecated This step is not according to the latest standard - all usages need to be changed
 	 */
 	public function assureUserBelongsToGroup($user, $group) {
-		$this->adminAddsUserToGroup($user, $group);
+		$this->adminAddsUserToGroupUsingTheAPI($user, $group);
 	}
 
 	/**
@@ -357,10 +362,10 @@ trait Provisioning {
 	}
 
 	/**
-	 * @When /^the administrator creates group "([^"]*)"$/
+	 * @When /^the administrator creates group "([^"]*)" using the API$/
 	 * @param string $group
 	 */
-	public function adminCreatesGroup($group) {
+	public function adminCreatesGroupUsingTheAPI($group) {
 		if (!$this->groupExists($group)) {
 			$previous_user = $this->currentUser;
 			$this->currentUser = $this->getAdminUserName();
@@ -375,7 +380,7 @@ trait Provisioning {
 	 * @param string $group
 	 */
 	public function groupHasBeenCreated($group) {
-		$this->adminCreatesGroup($group);
+		$this->adminCreatesGroupUsingTheAPI($group);
 	}
 
 	/**
@@ -398,10 +403,10 @@ trait Provisioning {
 	}
 
 	/**
-	 * @When /^the administrator disables user "([^"]*)"$/
+	 * @When /^the administrator disables user "([^"]*)" using the API$/
 	 * @param string $user
 	 */
-	public function adminDisablesUser($user) {
+	public function adminDisablesUserUsingTheAPI($user) {
 		$fullUrl = $this->baseUrl . "v{$this->apiVersion}.php/cloud/users/$user/disable";
 		$client = new Client();
 		$options = [];
@@ -417,7 +422,7 @@ trait Provisioning {
 	 * @param string $user
 	 */
 	public function userHasBeenDisabled($user) {
-		$this->adminDisablesUser($user);
+		$this->adminDisablesUserUsingTheAPI($user);
 	}
 
 	/**
@@ -426,13 +431,13 @@ trait Provisioning {
 	 * @deprecated This step is not according to the latest standard - all usages need to be changed
 	 */
 	public function assureUserIsDisabled($user) {
-		$this->adminDisablesUser($user);
+		$this->adminDisablesUserUsingTheAPI($user);
 	}
 
 	/**
 	 * @param string $user
 	 */
-	public function deleteTheUser($user) {
+	public function deleteTheUserUsingTheAPI($user) {
 		$fullUrl = $this->baseUrl . "v{$this->apiVersion}.php/cloud/users/$user";
 		$client = new Client();
 		$options = [];
@@ -444,14 +449,14 @@ trait Provisioning {
 	}
 
 	/**
-	 * @When /^the administrator deletes group "([^"]*)"$/
+	 * @When /^the administrator deletes group "([^"]*)" using the API$/
 	 * @param string $group
 	 */
-	public function adminDeletesGroup($group) {
+	public function adminDeletesGroupUsingTheAPI($group) {
 		if ($this->groupExists($group)) {
 			$previous_user = $this->currentUser;
 			$this->currentUser = $this->getAdminUserName();
-			$this->deleteTheGroup($group);
+			$this->deleteTheGroupUsingTheAPI($group);
 			$this->currentUser = $previous_user;
 		}
 		PHPUnit_Framework_Assert::assertFalse($this->groupExists($group));
@@ -462,13 +467,13 @@ trait Provisioning {
 	 * @param string $group
 	 */
 	public function groupHasBeenDeleted($group) {
-		$this->adminDeletesGroup($group);
+		$this->adminDeletesGroupUsingTheAPI($group);
 	}
 
 	/**
 	 * @param string $group
 	 */
-	public function deleteTheGroup($group) {
+	public function deleteTheGroupUsingTheAPI($group) {
 		$fullUrl = $this->baseUrl . "v{$this->apiVersion}.php/cloud/groups/$group";
 		$client = new Client();
 		$options = [];
@@ -483,7 +488,7 @@ trait Provisioning {
 	 * @param string $user
 	 * @param string $group
 	 */
-	public function addUserToGroup($user, $group) {
+	public function addUserToGroupUsingTheAPI($user, $group) {
 		$fullUrl = $this->baseUrl . "v{$this->apiVersion}.php/cloud/users/$user/groups";
 		$client = new Client();
 		$options = [];
@@ -522,7 +527,7 @@ trait Provisioning {
 	 * @deprecated This step is not according to the latest standard - all usages need to be changed
 	 */
 	public function assureGroupExists($group) {
-		$this->adminCreatesGroup($group);
+		$this->adminCreatesGroupUsingTheAPI($group);
 	}
 
 	/**
@@ -531,7 +536,7 @@ trait Provisioning {
 	 * @deprecated This step is not according to the latest standard - all usages need to be changed
 	 */
 	public function assureGroupDoesNotExist($group) {
-		$this->adminDeletesGroup($group);
+		$this->adminDeletesGroupUsingTheAPI($group);
 	}
 
 	/**
@@ -555,11 +560,11 @@ trait Provisioning {
 	}
 
 	/**
-	 * @When /^the administrator makes user "([^"]*)" a subadmin of group "([^"]*)"$/
+	 * @When /^the administrator makes user "([^"]*)" a subadmin of group "([^"]*)" using the API$/
 	 * @param string $user
 	 * @param string $group
 	 */
-	public function adminMakesUserSubadminOfGroup($user, $group) {
+	public function adminMakesUserSubadminOfGroupUsingTheAPI($user, $group) {
 		$fullUrl = $this->baseUrl . "v{$this->apiVersion}.php/cloud/users/$user/subadmins";
 		$client = new Client();
 		$options = [];
@@ -579,7 +584,7 @@ trait Provisioning {
 	 * @param string $group
 	 */
 	public function userHasBeenMadeSubadminOfGroup($user, $group) {
-		$this->adminMakesUserSubadminOfGroup($user, $group);
+		$this->adminMakesUserSubadminOfGroupUsingTheAPI($user, $group);
 	}
 
 	/**
@@ -589,15 +594,15 @@ trait Provisioning {
 	 * @deprecated This step is not according to the latest standard - all usages need to be changed
 	 */
 	public function assureUserIsSubadminOfGroup($user, $group) {
-		$this->adminMakesUserSubadminOfGroup($user, $group);
+		$this->adminMakesUserSubadminOfGroupUsingTheAPI($user, $group);
 	}
 
 	/**
-	 * @When /^the administrator makes user "([^"]*)" not a subadmin of group "([^"]*)"$/
+	 * @When /^the administrator makes user "([^"]*)" not a subadmin of group "([^"]*)" using the API$/
 	 * @param string $user
 	 * @param string $group
 	 */
-	public function adminMakesUserNotSubadminOfGroup($user, $group) {
+	public function adminMakesUserNotSubadminOfGroupUsingTheAPI($user, $group) {
 		$fullUrl = $this->baseUrl . "v2.php/cloud/groups/$group/subadmins";
 		$client = new Client();
 		$options = [];
@@ -619,13 +624,11 @@ trait Provisioning {
 	 * @param string $group
 	 */
 	public function userHasBeenMadeNotSubadminOfGroup($user, $group) {
-		$this->adminMakesUserNotSubadminOfGroup($user, $group);
+		$this->adminMakesUserNotSubadminOfGroupUsingTheAPI($user, $group);
 	}
 
-	// Refactoring of Provisioning.php completed to this point - Phil Davis 2018-01-26
-
 	/**
-	 * @Then /^users returned are$/
+	 * @Then /^the users returned by the API should be$/
 	 * @param \Behat\Gherkin\Node\TableNode|null $usersList
 	 */
 	public function theUsersShouldBe($usersList) {
@@ -639,7 +642,7 @@ trait Provisioning {
 	}
 
 	/**
-	 * @Then /^groups returned are$/
+	 * @Then /^the groups returned by the API should be$/
 	 * @param \Behat\Gherkin\Node\TableNode|null $groupsList
 	 */
 	public function theGroupsShouldBe($groupsList) {
@@ -653,40 +656,42 @@ trait Provisioning {
 	}
 
 	/**
-	 * @Then /^subadmin groups returned are$/
+	 * @param \Behat\Gherkin\Node\TableNode|null $groupsOrUsersList
+	 */
+	public function checkSubadminGroupsOrUsersTable($groupsOrUsersList) {
+		$tableRows = $groupsOrUsersList->getRows();
+		$simplifiedTableRows = $this->simplifyArray($tableRows);
+		$respondedArray = $this->getArrayOfSubadminsResponded($this->response);
+		PHPUnit_Framework_Assert::assertEquals($simplifiedTableRows, $respondedArray, "", 0.0, 10, true);
+	}
+
+	/**
+	 * @Then /^the subadmin groups returned by the API should be$/
 	 * @param \Behat\Gherkin\Node\TableNode|null $groupsList
 	 */
 	public function theSubadminGroupsShouldBe($groupsList) {
-		if ($groupsList instanceof \Behat\Gherkin\Node\TableNode) {
-			$groups = $groupsList->getRows();
-			$groupsSimplified = $this->simplifyArray($groups);
-			$respondedArray = $this->getArrayOfSubadminsResponded($this->response);
-			PHPUnit_Framework_Assert::assertEquals($groupsSimplified, $respondedArray, "", 0.0, 10, true);
-		}
-
+		$this->checkSubadminGroupsOrUsersTable($groupsList);
 	}
 
 	/**
-	 * @Then /^apps returned are$/
+	 * @Then /^the subadmin users returned by the API should be$/
+	 * @param \Behat\Gherkin\Node\TableNode|null $usersList
+	 */
+	public function theSubadminUsersShouldBe($usersList) {
+		$this->checkSubadminGroupsOrUsersTable($usersList);
+	}
+
+	/**
+	 * @Then /^the apps returned by the API should include$/
 	 * @param \Behat\Gherkin\Node\TableNode|null $appList
 	 */
-	public function theAppsShouldBe($appList) {
-		if ($appList instanceof \Behat\Gherkin\Node\TableNode) {
-			$apps = $appList->getRows();
-			$appsSimplified = $this->simplifyArray($apps);
-			$respondedArray = $this->getArrayOfAppsResponded($this->response);
-			foreach ($appsSimplified as $app) {
-				PHPUnit_Framework_Assert::assertContains($app, $respondedArray);
-			}
+	public function theAppsShouldInclude($appList) {
+		$apps = $appList->getRows();
+		$appsSimplified = $this->simplifyArray($apps);
+		$respondedArray = $this->getArrayOfAppsResponded($this->response);
+		foreach ($appsSimplified as $app) {
+			PHPUnit_Framework_Assert::assertContains($app, $respondedArray);
 		}
-	}
-
-	/**
-	 * @Then /^subadmin users returned are$/
-	 * @param \Behat\Gherkin\Node\TableNode|null $groupsList
-	 */
-	public function theSubadminUsersShouldBe($groupsList) {
-		$this->theSubadminGroupsShouldBe($groupsList);
 	}
 
 	/**
@@ -733,12 +738,11 @@ trait Provisioning {
 		return $extractedElementsArray;
 	}
 
-
 	/**
-	 * @Given /^app "([^"]*)" is disabled$/
+	 * @Then /^app "([^"]*)" should be disabled$/
 	 * @param string $app
 	 */
-	public function appIsDisabled($app) {
+	public function appShouldBeDisabled($app) {
 		$fullUrl = $this->baseUrl . "v2.php/cloud/apps?filter=disabled";
 		$client = new Client();
 		$options = [];
@@ -753,10 +757,10 @@ trait Provisioning {
 	}
 
 	/**
-	 * @Given /^app "([^"]*)" is enabled$/
+	 * @Then /^app "([^"]*)" should be enabled$/
 	 * @param string $app
 	 */
-	public function appIsEnabled($app) {
+	public function appShouldBeEnabled($app) {
 		$fullUrl = $this->baseUrl . "v2.php/cloud/apps?filter=enabled";
 		$client = new Client();
 		$options = [];
@@ -771,10 +775,10 @@ trait Provisioning {
 	}
 
 	/**
-	 * @Then /^user "([^"]*)" is disabled$/
+	 * @Then /^user "([^"]*)" should be disabled$/
 	 * @param string $user
 	 */
-	public function userIsDisabled($user) {
+	public function userShouldBeDisabled($user) {
 		$fullUrl = $this->baseUrl . "v{$this->apiVersion}.php/cloud/users/$user";
 		$client = new Client();
 		$options = [];
@@ -787,10 +791,10 @@ trait Provisioning {
 	}
 
 	/**
-	 * @Then /^user "([^"]*)" is enabled$/
+	 * @Then /^user "([^"]*)" should be enabled$/
 	 * @param string $user
 	 */
-	public function userIsEnabled($user) {
+	public function useShouldBeEnabled($user) {
 		$fullUrl = $this->baseUrl . "v{$this->apiVersion}.php/cloud/users/$user";
 		$client = new Client();
 		$options = [];
@@ -803,11 +807,11 @@ trait Provisioning {
 	}
 
 	/**
-	 * @Given user :user has a quota of :quota
+	 * @When the administrator sets the quota of user :user to :quota using the API
 	 * @param string $user
 	 * @param string $quota
 	 */
-	public function userHasAQuotaOf($user, $quota)
+	public function adminSetsUserQuotaToUsingTheAPI($user, $quota)
 	{
 		$body = new \Behat\Gherkin\Node\TableNode([
 			0 => ['key', 'quota'],
@@ -820,12 +824,31 @@ trait Provisioning {
 	}
 
 	/**
-	 * @Given user :user has unlimited quota
+	 * @Given the quota of user :user has been set to :quota
+	 * @param string $user
+	 * @param string $quota
+	 */
+	public function quotaOfuserHasBeenSetTo($user, $quota)
+	{
+		$this->adminSetsUserQuotaToUsingTheAPI($user, $quota);
+	}
+
+	/**
+	 * @When the administrator gives unlimited quota to user :user using the API
 	 * @param string $user
 	 */
-	public function userHasUnlimitedQuota($user)
+	public function adminGivesUnlimitedQuotaToUserUsingTheAPI($user)
 	{
-		$this->userHasAQuotaOf($user, 'none');
+		$this->adminSetsUserQuotaToUsingTheAPI($user, 'none');
+	}
+
+	/**
+	 * @Given user :user has been given unlimited quota
+	 * @param string $user
+	 */
+	public function userHasBeenGivenUnlimitedQuota($user)
+	{
+		$this->adminGivesUnlimitedQuotaToUserUsingTheAPI($user);
 	}
 
 	/**
@@ -842,17 +865,15 @@ trait Provisioning {
 	}
 
 	/**
-	 * @Then /^user attributes match with$/
+	 * @Then /^the user attributes returned by the API should include$/
 	 * @param \Behat\Gherkin\Node\TableNode|null $body
 	 */
 	public function checkUserAttributes($body) {
 		$data = $this->response->xml()->data[0];
-		if ($body instanceof \Behat\Gherkin\Node\TableNode) {
-			$fd = $body->getRowsHash();
-			foreach ($fd as $field => $value) {
-				if ($data->$field != $value) {
-					PHPUnit_Framework_Assert::fail("$field" . " has value " . "$data->$field");
-				}
+		$fd = $body->getRowsHash();
+		foreach ($fd as $field => $value) {
+			if ($data->$field != $value) {
+				PHPUnit_Framework_Assert::fail("$field" . " has value " . "$data->$field");
 			}
 		}
 	}
