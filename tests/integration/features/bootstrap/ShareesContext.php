@@ -35,7 +35,7 @@ class ShareesContext implements Context, SnippetAcceptingContext {
 	use BasicStructure;
 
 	/**
-	 * @When /^getting sharees for$/
+	 * @When /^the user gets the sharees using the API with parameters$/
 	 * @param \Behat\Gherkin\Node\TableNode $body
 	 * @return void
 	 */
@@ -55,25 +55,29 @@ class ShareesContext implements Context, SnippetAcceptingContext {
 	}
 
 	/**
-	 * @Then /^"([^"]*)" sharees returned (are|is empty)$/
+	 * @Then /^the "([^"]*)" sharees returned should be$/
 	 * @param string $shareeType
-	 * @param string $isEmpty
-	 * @param \Behat\Gherkin\Node\TableNode|null $shareesList
+	 * @param \Behat\Gherkin\Node\TableNode $shareesList
 	 * @return void
 	 */
-	public function thenListOfSharees($shareeType, $isEmpty, $shareesList = null) {
-		if ($isEmpty !== 'is empty') {
-			$sharees = $shareesList->getRows();
-			$respondedArray = $this->getArrayOfShareesResponded(
-				$this->response, $shareeType
-			);
-			PHPUnit_Framework_Assert::assertEquals($sharees, $respondedArray);
-		} else {
-			$respondedArray = $this->getArrayOfShareesResponded(
-				$this->response, $shareeType
-			);
-			PHPUnit_Framework_Assert::assertEmpty($respondedArray);
-		}
+	public function theShareesReturnedShouldBe($shareeType, $shareesList) {
+		$sharees = $shareesList->getRows();
+		$respondedArray = $this->getArrayOfShareesResponded(
+			$this->response, $shareeType
+		);
+		PHPUnit_Framework_Assert::assertEquals($sharees, $respondedArray);
+	}
+
+	/**
+	 * @Then /^the "([^"]*)" sharees returned should be empty$/
+	 * @param string $shareeType
+	 * @return void
+	 */
+	public function theShareesReturnedShouldBeEmpty($shareeType) {
+		$respondedArray = $this->getArrayOfShareesResponded(
+			$this->response, $shareeType
+		);
+		PHPUnit_Framework_Assert::assertEmpty($respondedArray);
 	}
 
 	/**
