@@ -5,7 +5,7 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/).
 
 ## [Unreleased]
-## 10.0.6
+## 10.0.6 - 2018-01-29
 ### Fixed
 - Fix missing build dependency for L18N - [#30265](https://github.com/owncloud/core/pull/30265)
 
