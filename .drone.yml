@@ -274,6 +274,11 @@ matrix:
       DB_TYPE: sqlite
       TEST_SUITE: phpunit
       FILES_EXTERNAL_TYPE: owncloud_webdav
+#    skipping for the time being
+#    - PHP_VERSION: 7.1
+#      DB_TYPE: sqlite
+#      TEST_SUITE: phpunit
+#      FILES_EXTERNAL_TYPE: owncloud_webdav
 
     - PHP_VERSION: 7.1
       DB_TYPE: sqlite
