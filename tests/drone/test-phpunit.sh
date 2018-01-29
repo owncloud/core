@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-set -x
+set -exo pipefail
 
 if [[ "$(pwd)" == "$(cd "$(dirname "$0")"; pwd -P)" ]]; then
   echo "Can only be executed from project root!"
@@ -135,8 +135,28 @@ return array(
 
 DELIM
         ;;
+
+    swift_ceph)
+        wait-for-it swift:5034
+        FILES_EXTERNAL_TEST_TO_RUN=SwiftTest.php
+        cat > apps/files_external/tests//config.swift.php <<DELIM
+<?php
+
+return array(
+    'run'=>true,
+    'url'=>'http://swift:5034/v2.0',
+    'user'=>'test',
+    'tenant'=>'testtenant',
+    'password'=>'testing',
+    'service_name'=>'testceph',
+    'bucket'=>'swift',
+    'region' => 'testregion',
+);
+DELIM
+        ;;
+
     *)
-        echo "Unsupported files external type!"
+        echo "Unsupported files external type \"${FILES_EXTERNAL_TYPE}\"!"
         exit 1
         ;;
     esac
