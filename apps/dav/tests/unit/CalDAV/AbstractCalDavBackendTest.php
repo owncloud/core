@@ -24,6 +24,7 @@ namespace OCA\DAV\Tests\unit\CalDAV;
 
 use OCA\DAV\CalDAV\CalDavBackend;
 use OCA\DAV\Connector\Sabre\Principal;
+use OCP\IConfig;
 use OCP\Security\ISecureRandom;
 use Sabre\CalDAV\Xml\Property\SupportedCalendarComponentSet;
 use Test\TestCase;
@@ -43,7 +44,7 @@ abstract class AbstractCalDavBackendTest extends TestCase {
 	/** @var Principal | \PHPUnit_Framework_MockObject_MockObject */
 	protected $principal;
 
-	/** var OCP\IConfig */
+	/** @var IConfig */
 	protected $config;
 
 	const UNIT_TEST_USER = 'principals/users/caldav-unit-test';
@@ -56,7 +57,7 @@ abstract class AbstractCalDavBackendTest extends TestCase {
 	public function setUp() {
 		parent::setUp();
 
-		$this->principal = $this->getMockBuilder('OCA\DAV\Connector\Sabre\Principal')
+		$this->principal = $this->getMockBuilder(Principal::class)
 			->disableOriginalConstructor()
 			->setMethods(['getPrincipalByPath', 'getGroupMembership'])
 			->getMock();
@@ -79,7 +80,7 @@ abstract class AbstractCalDavBackendTest extends TestCase {
 	public function tearDown() {
 		parent::tearDown();
 
-		if (is_null($this->backend)) {
+		if ($this->backend === null) {
 			return;
 		}
 		$books = $this->backend->getCalendarsForUser(self::UNIT_TEST_USER);
@@ -92,6 +93,10 @@ abstract class AbstractCalDavBackendTest extends TestCase {
 		}
 	}
 
+	/**
+	 * @return int
+	 * @throws \Sabre\DAV\Exception
+	 */
 	protected function createTestCalendar() {
 		$this->backend->createCalendar(self::UNIT_TEST_USER, 'Example', [
 			'{http://apple.com/ns/ical/}calendar-color' => '#1C4587FF'
@@ -106,9 +111,7 @@ abstract class AbstractCalDavBackendTest extends TestCase {
 		$this->assertEquals('#1C4587FF', $color);
 		$this->assertEquals('Example', $calendars[0]['uri']);
 		$this->assertEquals('Example', $calendars[0]['{DAV:}displayname']);
-		$calendarId = $calendars[0]['id'];
-
-		return $calendarId;
+		return $calendars[0]['id'];
 	}
 
 	protected function createEvent($calendarId, $start = '20130912T130000Z', $end = '20130912T140000Z') {
@@ -129,7 +132,7 @@ CLASS:PUBLIC
 END:VEVENT
 END:VCALENDAR
 EOD;
-		$uri0 = $this->getUniqueID('event');
+		$uri0 = static::getUniqueID('event');
 		$this->backend->createCalendarObject($calendarId, $uri0, $calData);
 
 		return $uri0;
