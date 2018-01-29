@@ -1,11 +1,11 @@
 Feature: sharees_provisioningapiv2
   Background:
     Given using api version "2"
-    And user "test" exists
-    And user "Sharee1" exists
-    And group "ShareeGroup" exists
-    And group "ShareeGroup2" exists
-    And user "test" belongs to group "ShareeGroup2"
+    And user "test" has been created
+    And user "Sharee1" has been created
+    And group "ShareeGroup" has been created
+    And group "ShareeGroup2" has been created
+    And user "test" has been added to group "ShareeGroup2"
 
   Scenario: Search without exact match
     Given as an "test"
@@ -61,7 +61,7 @@ Feature: sharees_provisioningapiv2
   Scenario: Search only with group members - allowed
     Given as an "test"
     And parameter "shareapi_only_share_with_group_members" of app "core" has been set to "yes"
-    And user "Sharee1" belongs to group "ShareeGroup2"
+    And user "Sharee1" has been added to group "ShareeGroup2"
     When getting sharees for
       | search | sharee |
       | itemType | file |

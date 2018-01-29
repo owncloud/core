@@ -7,7 +7,7 @@ Feature: quota
 	Scenario: Uploading a file as owner having enough quota
 		Given using new dav path
 		And as an "admin"
-		And user "user0" exists
+		And user "user0" has been created
 		And the quota of user "user0" has been set to "10 MB"
 		When user "user0" uploads file "data/textfile.txt" to "/testquota.txt" with all mechanisms
 		Then the HTTP status code of all upload responses should be "201"
@@ -15,7 +15,7 @@ Feature: quota
 	Scenario: Uploading a file as owner having insufficient quota
 		Given using new dav path
 		And as an "admin"
-		And user "user0" exists
+		And user "user0" has been created
 		And the quota of user "user0" has been set to "20 B"
 		When user "user0" uploads file "data/textfile.txt" to "/testquota.txt" with all mechanisms
 		Then the HTTP status code of all upload responses should be "507"
@@ -24,7 +24,7 @@ Feature: quota
 	Scenario: Overwriting a file as owner having enough quota
 		Given using new dav path
 		And as an "admin"
-		And user "user0" exists
+		And user "user0" has been created
 		And the quota of user "user0" has been set to "10 MB"
 		And user "user0" uploads file with content "test" to "/testquota.txt"
 		When user "user0" overwrites file "data/textfile.txt" to "/testquota.txt" with all mechanisms
@@ -33,7 +33,7 @@ Feature: quota
 	Scenario: Overwriting a file as owner having insufficient quota
 		Given using new dav path
 		And as an "admin"
-		And user "user0" exists
+		And user "user0" has been created
 		And the quota of user "user0" has been set to "20 B"
 		And user "user0" uploads file with content "test" to "/testquota.txt"
 		When user "user0" overwrites file "data/textfile.txt" to "/testquota.txt" with all mechanisms
@@ -45,8 +45,8 @@ Feature: quota
 	Scenario: Uploading a file in received folder having enough quota
 		Given using new dav path
 		And as an "admin"
-		And user "user0" exists
-		And user "user1" exists
+		And user "user0" has been created
+		And user "user1" has been created
 		And the quota of user "user0" has been set to "20 B"
 		And the quota of user "user1" has been set to "10 MB"
 		And as an "user1"
@@ -59,8 +59,8 @@ Feature: quota
 	Scenario: Uploading a file in received folder having insufficient quota
 		Given using new dav path
 		And as an "admin"
-		And user "user0" exists
-		And user "user1" exists
+		And user "user0" has been created
+		And user "user1" has been created
 		And the quota of user "user0" has been set to "10 MB"
 		And the quota of user "user1" has been set to "20 B"
 		And as an "user1"
@@ -74,8 +74,8 @@ Feature: quota
 	Scenario: Overwriting a file in received folder having enough quota
 		Given using new dav path
 		And as an "admin"
-		And user "user0" exists
-		And user "user1" exists
+		And user "user0" has been created
+		And user "user1" has been created
 		And the quota of user "user0" has been set to "20 B"
 		And the quota of user "user1" has been set to "10 MB"
 		And as an "user1"
@@ -89,8 +89,8 @@ Feature: quota
 	Scenario: Overwriting a file in received folder having insufficient quota
 		Given using new dav path
 		And as an "admin"
-		And user "user0" exists
-		And user "user1" exists
+		And user "user0" has been created
+		And user "user1" has been created
 		And the quota of user "user0" has been set to "10 MB"
 		And the quota of user "user1" has been set to "20 B"
 		And as an "user1"
@@ -107,8 +107,8 @@ Feature: quota
 	Scenario: Overwriting a received file having enough quota
 		Given using new dav path
 		And as an "admin"
-		And user "user0" exists
-		And user "user1" exists
+		And user "user0" has been created
+		And user "user1" has been created
 		And the quota of user "user0" has been set to "20 B"
 		And the quota of user "user1" has been set to "10 MB"
 		And as an "user1"
@@ -121,8 +121,8 @@ Feature: quota
 	Scenario: Overwriting a received file having insufficient quota
 		Given using new dav path
 		And as an "admin"
-		And user "user0" exists
-		And user "user1" exists
+		And user "user0" has been created
+		And user "user1" has been created
 		And the quota of user "user0" has been set to "10 MB"
 		And the quota of user "user1" has been set to "20 B"
 		And as an "user1"

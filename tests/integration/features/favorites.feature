@@ -4,7 +4,7 @@ Feature: favorite
 
     Scenario: Favorite a folder
         Given using old dav path
-        And user "user0" exists
+        And user "user0" has been created
         When user "user0" favorites element "/FOLDER"
         Then as "user0" gets properties of folder "/FOLDER" with
             |{http://owncloud.org/ns}favorite|
@@ -12,7 +12,7 @@ Feature: favorite
 
     Scenario: Favorite and unfavorite a folder
         Given using old dav path
-        And user "user0" exists
+        And user "user0" has been created
         When user "user0" favorites element "/FOLDER"
         And user "user0" unfavorites element "/FOLDER"
         Then as "user0" gets properties of folder "/FOLDER" with
@@ -21,7 +21,7 @@ Feature: favorite
 
     Scenario: Favorite a file
         Given using old dav path
-        And user "user0" exists
+        And user "user0" has been created
         When user "user0" favorites element "/textfile0.txt"
         Then as "user0" gets properties of file "/textfile0.txt" with
             |{http://owncloud.org/ns}favorite|
@@ -29,7 +29,7 @@ Feature: favorite
 
     Scenario: Favorite and unfavorite a file
         Given using old dav path
-        And user "user0" exists
+        And user "user0" has been created
         When user "user0" favorites element "/textfile0.txt"
         And user "user0" unfavorites element "/textfile0.txt"
         Then as "user0" gets properties of file "/textfile0.txt" with
@@ -38,7 +38,7 @@ Feature: favorite
 
     Scenario: Favorite a folder new endpoint
         Given using new dav path
-        And user "user0" exists
+        And user "user0" has been created
         When user "user0" favorites element "/FOLDER"
         Then as "user0" gets properties of folder "/FOLDER" with
             |{http://owncloud.org/ns}favorite|
@@ -46,7 +46,7 @@ Feature: favorite
 
     Scenario: Favorite and unfavorite a folder new endpoint
         Given using new dav path
-        And user "user0" exists
+        And user "user0" has been created
         When user "user0" favorites element "/FOLDER"
         And user "user0" unfavorites element "/FOLDER"
         Then as "user0" gets properties of folder "/FOLDER" with
@@ -55,7 +55,7 @@ Feature: favorite
 
     Scenario: Favorite a file new endpoint
         Given using new dav path
-        And user "user0" exists
+        And user "user0" has been created
         When user "user0" favorites element "/textfile0.txt"
         Then as "user0" gets properties of file "/textfile0.txt" with
             |{http://owncloud.org/ns}favorite|
@@ -63,7 +63,7 @@ Feature: favorite
 
     Scenario: Favorite and unfavorite a file new endpoint
         Given using new dav path
-        And user "user0" exists
+        And user "user0" has been created
         When user "user0" favorites element "/textfile0.txt"
         And user "user0" unfavorites element "/textfile0.txt"
         Then as "user0" gets properties of file "/textfile0.txt" with
@@ -72,7 +72,7 @@ Feature: favorite
 
     Scenario: Get favorited elements of a folder
         Given using old dav path
-        And user "user0" exists
+        And user "user0" has been created
         When user "user0" favorites element "/FOLDER"
         And user "user0" favorites element "/textfile0.txt"
         And user "user0" favorites element "/textfile1.txt"
@@ -83,7 +83,7 @@ Feature: favorite
 
     Scenario: Get favorited elements of a folder using new path
         Given using new dav path
-        And user "user0" exists
+        And user "user0" has been created
         When user "user0" favorites element "/FOLDER"
         And user "user0" favorites element "/textfile0.txt"
         And user "user0" favorites element "/textfile1.txt"
@@ -94,7 +94,7 @@ Feature: favorite
 
     Scenario: Get favorited elements of a subfolder
         Given using old dav path
-        And user "user0" exists
+        And user "user0" has been created
         And user "user0" created a folder "/subfolder"
         And user "user0" moves file "/textfile0.txt" to "/subfolder/textfile0.txt"
         And user "user0" moves file "/textfile1.txt" to "/subfolder/textfile1.txt"
@@ -109,7 +109,7 @@ Feature: favorite
 
     Scenario: Get favorited elements of a subfolder using new path
         Given using old dav path
-        And user "user0" exists
+        And user "user0" has been created
         And user "user0" created a folder "/subfolder"
         And user "user0" moves file "/textfile0.txt" to "/subfolder/textfile0.txt"
         And user "user0" moves file "/textfile1.txt" to "/subfolder/textfile1.txt"
@@ -124,8 +124,8 @@ Feature: favorite
 
     Scenario: moving a favorite file out of a share keeps favorite state
         Given using old dav path
-        And user "user0" exists
-        And user "user1" exists
+        And user "user0" has been created
+        And user "user1" has been created
         And user "user0" created a folder "/shared"
         And user "user0" moved file "/textfile0.txt" to "/shared/shared_file.txt"
         And folder "/shared" of user "user0" is shared with user "user1"
@@ -136,7 +136,7 @@ Feature: favorite
 
     Scenario: Get favorited elements paginated
         Given using old dav path
-        And user "user0" exists
+        And user "user0" has been created
         And user "user0" created a folder "/subfolder"
         And user "user0" copies file "/textfile0.txt" to "/subfolder/textfile0.txt"
         And user "user0" copies file "/textfile0.txt" to "/subfolder/textfile1.txt"

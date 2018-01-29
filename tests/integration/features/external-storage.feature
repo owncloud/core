@@ -7,8 +7,8 @@ Feature: external-storage
   @local_storage
   @no_encryption
   Scenario: Share by link a file inside a local external storage
-    Given user "user0" exists
-    And user "user1" exists
+    Given user "user0" has been created
+    And user "user1" has been created
     And as an "user0"
     And user "user0" created a folder "/local_storage/foo"
     And user "user0" moved file "/textfile0.txt" to "/local_storage/foo/textfile0.txt"
@@ -28,8 +28,8 @@ Feature: external-storage
   @local_storage
   @no_encryption
   Scenario: Move a file into storage works
-    Given user "user0" exists
-    And user "user1" exists
+    Given user "user0" has been created
+    And user "user1" has been created
     And as an "user0"
     And user "user0" created a folder "/local_storage/foo1"
     When user "user0" moved file "/textfile0.txt" to "/local_storage/foo1/textfile0.txt"
@@ -39,8 +39,8 @@ Feature: external-storage
   @local_storage
   @no_encryption
   Scenario: Move a file out of the storage works
-    Given user "user0" exists
-    And user "user1" exists
+    Given user "user0" has been created
+    And user "user1" has been created
     And as an "user0"
     And user "user0" created a folder "/local_storage/foo2"
     And user "user0" moved file "/textfile0.txt" to "/local_storage/foo2/textfile0.txt"
@@ -50,7 +50,7 @@ Feature: external-storage
     And as "user1" the file "/local.txt" exists
 
   Scenario: Download a file that exists in filecache but not storage fails with 404
-    Given user "user0" exists
+    Given user "user0" has been created
     And as an "user0"
     And user "user0" created a folder "/local_storage/foo3"
     And user "user0" moved file "/textfile0.txt" to "/local_storage/foo3/textfile0.txt"
@@ -61,7 +61,7 @@ Feature: external-storage
 
   @local_storage
   Scenario: Upload a file to external storage while quota is set on home storage
-    Given user "user0" exists
+    Given user "user0" has been created
     And as an "admin"
     And the quota of user "user0" has been set to "1 B"
     And as an "user0"

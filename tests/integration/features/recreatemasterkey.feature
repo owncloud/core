@@ -2,7 +2,7 @@ Feature: recreate-master-key
 
 	@masterkey_encryption
 	Scenario: recreate masterkey
-		Given user "admin" exists
+		Given user "admin" has been created
 		And user "admin" uploads file "data/textfile.txt" to "/somefile.txt"
 		When recreating masterkey by deleting old one and encrypting the filesystem
 		Then the command was successful
@@ -13,7 +13,7 @@ Feature: recreate-master-key
 
 	@masterkey_encryption
 	Scenario: recreate masterkey and upload data
-		Given user "user0" exists
+		Given user "user0" has been created
 		And user "user0" uploads file "data/textfile.txt" to "/somefile.txt"
 		And recreating masterkey by deleting old one and encrypting the filesystem
 		And the command was successful

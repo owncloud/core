@@ -5,7 +5,7 @@ Feature: multilinksharing
 		And using old dav path
 
 	Scenario: Creating three public shares of a folder
-		Given user "user0" exists
+		Given user "user0" has been created
 		And as an "user0"
 		And creating a share with
 			| path | FOLDER |
@@ -47,7 +47,7 @@ Feature: multilinksharing
 			| /FOLDER | 1 | sharedlink3 |
 
 	Scenario: Creating three public shares of a file
-		Given user "user0" exists
+		Given user "user0" has been created
 		And as an "user0"
 		And creating a share with
 			| path | textfile0.txt |
@@ -86,7 +86,7 @@ Feature: multilinksharing
 			| /textfile0.txt | 1 | sharedlink3 |
 
 	Scenario: Check that updating password doesn't remove name of links
-		Given user "user0" exists
+		Given user "user0" has been created
 		And as an "user0"
 		And creating a share with
 			| path | FOLDER |
@@ -117,7 +117,7 @@ Feature: multilinksharing
 			| /FOLDER | 15 | sharedlink1 |
 
 	Scenario: Deleting a file deletes also its public links
-	 Given user "user0" exists
+	 Given user "user0" has been created
 		And as an "user0"
 		And creating a share with
 			| path | textfile0.txt |
@@ -143,7 +143,7 @@ Feature: multilinksharing
 			| | | |
 
 	Scenario: Deleting one public share of a file doesn't affect the rest
-		Given user "user0" exists
+		Given user "user0" has been created
 		And as an "user0"
 		And creating a share with
 			| path | textfile0.txt |
@@ -180,7 +180,7 @@ Feature: multilinksharing
 			| /textfile0.txt | 1 | sharedlink3 |
 
 	Scenario: Overwriting a file doesn't remove its public shares
-		Given user "user0" exists
+		Given user "user0" has been created
 		And as an "user0"
 		And creating a share with
 			| path | textfile0.txt |
@@ -206,7 +206,7 @@ Feature: multilinksharing
 			| /textfile0.txt | 1 | sharedlink2 |
 
 	Scenario: Renaming a folder doesn't remove its public shares
-		Given user "user0" exists
+		Given user "user0" has been created
 		And as an "user0"
 		And creating a share with
 			| path | FOLDER |

@@ -45,7 +45,7 @@ trait Provisioning {
 	/**
 	 * @Given /^user "([^"]*)" exists$/
 	 * @param string $user
-	 * @deprecated This step is not according to the latest standard - all usages need to be changed
+	 * @deprecated This step is not according to the latest standard - core usages have been changed
 	 */
 	public function assureUserExists($user) {
 		$this->adminCreatesUserUsingTheAPI($user);
@@ -63,7 +63,7 @@ trait Provisioning {
 	/**
 	 * @Then /^user "([^"]*)" already exists$/
 	 * @param string $user
-	 * @deprecated This step is not according to the latest standard - all usages need to be changed
+	 * @deprecated This step is not according to the latest standard - core usages have been changed
 	 */
 	public function userAlreadyExists($user) {
 		$this->userShouldExist($user);
@@ -80,7 +80,7 @@ trait Provisioning {
 	/**
 	 * @Then /^user "([^"]*)" does not already exist$/
 	 * @param string $user
-	 * @deprecated This step is not according to the latest standard - all usages need to be changed
+	 * @deprecated This step is not according to the latest standard - core usages have been changed
 	 */
 	public function userDoesNotAlreadyExist($user) {
 		$this->userShouldNotExist($user);
@@ -98,7 +98,7 @@ trait Provisioning {
 	/**
 	 * @Then /^group "([^"]*)" already exists$/
 	 * @param string $group
-	 * @deprecated This step is not according to the latest standard - all usages need to be changed
+	 * @deprecated This step is not according to the latest standard - core usages have been changed
 	 */
 	public function groupAlreadyExists($group) {
 		$this->groupShouldExist($group);
@@ -115,7 +115,7 @@ trait Provisioning {
 	/**
 	 * @Then /^group "([^"]*)" does not already exist$/
 	 * @param string $group
-	 * @deprecated This step is not according to the latest standard - all usages need to be changed
+	 * @deprecated This step is not according to the latest standard - core usages have been changed
 	 */
 	public function groupDoesNotAlreadyExist($group) {
 		$this->groupShouldNotExist($group);
@@ -146,7 +146,7 @@ trait Provisioning {
 	/**
 	 * @Given /^user "([^"]*)" does not exist$/
 	 * @param string $user
-	 * @deprecated This step is not according to the latest standard - all usages need to be changed
+	 * @deprecated This step is not according to the latest standard - core usages have been changed
 	 */
 	public function assureUserDoesNotExist($user) {
 		$this->adminDeletesUserUsingTheAPI($user);
@@ -255,7 +255,7 @@ trait Provisioning {
 	 * @Then /^check that user "([^"]*)" belongs to group "([^"]*)"$/
 	 * @param string $user
 	 * @param string $group
-	 * @deprecated This step is not according to the latest standard - all usages need to be changed
+	 * @deprecated This step is not according to the latest standard - core usages have been changed
 	 */
 	public function checkThatUserBelongsToGroup($user, $group) {
 		$this->userShouldBelongToGroup($user, $group);
@@ -285,7 +285,7 @@ trait Provisioning {
 	 * @Then /^check that user "([^"]*)" does not belong to group "([^"]*)"$/
 	 * @param string $user
 	 * @param string $group
-	 * @deprecated This step is not according to the latest standard - all usages need to be changed
+	 * @deprecated This step is not according to the latest standard - core usages have been changed
 	 */
 	public function checkThatUserDoesNotBelongToGroup($user, $group) {
 		$this->userShouldNotBelongToGroup($user, $group);
@@ -327,7 +327,7 @@ trait Provisioning {
 			$this->addUserToGroupUsingTheAPI($user, $group);
 		}
 
-		$this->checkThatUserBelongsToGroup($user, $group);
+		$this->userShouldBelongToGroup($user, $group);
 		$this->currentUser = $previous_user;
 	}
 
@@ -344,7 +344,7 @@ trait Provisioning {
 	 * @Given /^user "([^"]*)" belongs to group "([^"]*)"$/
 	 * @param string $user
 	 * @param string $group
-	 * @deprecated This step is not according to the latest standard - all usages need to be changed
+	 * @deprecated This step is not according to the latest standard - core usages have been changed
 	 */
 	public function assureUserBelongsToGroup($user, $group) {
 		$this->adminAddsUserToGroupUsingTheAPI($user, $group);
@@ -428,7 +428,7 @@ trait Provisioning {
 	/**
 	 * @When /^assure user "([^"]*)" is disabled$/
 	 * @param string $user
-	 * @deprecated This step is not according to the latest standard - all usages need to be changed
+	 * @deprecated This step is not according to the latest standard - core usages have been changed
 	 */
 	public function assureUserIsDisabled($user) {
 		$this->adminDisablesUserUsingTheAPI($user);
@@ -524,7 +524,7 @@ trait Provisioning {
 	/**
 	 * @Given /^group "([^"]*)" exists$/
 	 * @param string $group
-	 * @deprecated This step is not according to the latest standard - all usages need to be changed
+	 * @deprecated This step is not according to the latest standard - core usages have been changed
 	 */
 	public function assureGroupExists($group) {
 		$this->adminCreatesGroupUsingTheAPI($group);
@@ -533,7 +533,7 @@ trait Provisioning {
 	/**
 	 * @Given /^group "([^"]*)" does not exist$/
 	 * @param string $group
-	 * @deprecated This step is not according to the latest standard - all usages need to be changed
+	 * @deprecated This step is not according to the latest standard - core usages have been changed
 	 */
 	public function assureGroupDoesNotExist($group) {
 		$this->adminDeletesGroupUsingTheAPI($group);
@@ -591,7 +591,7 @@ trait Provisioning {
 	 * @Given /^assure user "([^"]*)" is subadmin of group "([^"]*)"$/
 	 * @param string $user
 	 * @param string $group
-	 * @deprecated This step is not according to the latest standard - all usages need to be changed
+	 * @deprecated This step is not according to the latest standard - core usages have been changed
 	 */
 	public function assureUserIsSubadminOfGroup($user, $group) {
 		$this->adminMakesUserSubadminOfGroupUsingTheAPI($user, $group);

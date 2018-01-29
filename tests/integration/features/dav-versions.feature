@@ -2,7 +2,7 @@ Feature: dav-versions
   Background:
     Given using api version "2"
     And using new dav path
-    And user "user0" exists
+    And user "user0" has been created
     And file "/davtest.txt"  does not exist for user "user0"
     And as an "user0"
 
@@ -33,7 +33,7 @@ Feature: dav-versions
     And downloaded content should be "123"
 
   Scenario: User cannot access meta folder of a file which is owned by somebody else
-    Given user "user1" exists
+    Given user "user1" has been created
     And user "user0" uploads file with content "123" to "/davtest.txt"
     And we save it into "FILEID"
     And as an "user1"
@@ -41,7 +41,7 @@ Feature: dav-versions
     Then the HTTP status code should be "404"
 
   Scenario: User can access meta folder of a file which is owned by somebody else but shared with that user
-    Given user "user1" exists
+    Given user "user1" has been created
     And user "user0" uploads file with content "123" to "/davtest.txt"
     And user "user0" uploads file with content "456789" to "/davtest.txt"
     And we save it into "FILEID"

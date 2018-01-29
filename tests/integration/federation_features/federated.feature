@@ -4,9 +4,9 @@ Feature: federated
 
 	Scenario: Federate share a file with another server
 		Given using server "REMOTE"
-		And user "user1" exists
+		And user "user1" has been created
 		And using server "LOCAL"
-		And user "user0" exists
+		And user "user0" has been created
 		When user "user0" from server "LOCAL" shares "/textfile0.txt" with user "user1" from server "REMOTE"
 		Then the OCS status code should be "100"
 		And the HTTP status code should be "200"
@@ -30,9 +30,9 @@ Feature: federated
 
 	Scenario: Federate share a file with local server
 		Given using server "LOCAL"
-		And user "user0" exists
+		And user "user0" has been created
 		And using server "REMOTE"
-		And user "user1" exists
+		And user "user1" has been created
 		When user "user1" from server "REMOTE" shares "/textfile0.txt" with user "user0" from server "LOCAL"
 		Then the OCS status code should be "100"
 		And the HTTP status code should be "200"
@@ -56,9 +56,9 @@ Feature: federated
 
 	Scenario: Remote sharee can see the pending share
 		Given using server "REMOTE"
-		And user "user1" exists
+		And user "user1" has been created
 		And using server "LOCAL"
-		And user "user0" exists
+		And user "user0" has been created
 		And user "user0" from server "LOCAL" shares "/textfile0.txt" with user "user1" from server "REMOTE"
 		And using server "REMOTE"
 		And as an "user1"
@@ -78,9 +78,9 @@ Feature: federated
 
 	Scenario: accept a pending remote share
 		Given using server "REMOTE"
-		And user "user1" exists
+		And user "user1" has been created
 		And using server "LOCAL"
-		And user "user0" exists
+		And user "user0" has been created
 		And user "user0" from server "LOCAL" shares "/textfile0.txt" with user "user1" from server "REMOTE"
 		When user "user1" from server "REMOTE" accepts last pending share
 		Then the OCS status code should be "100"
@@ -88,10 +88,10 @@ Feature: federated
 
 	Scenario: Reshare a federated shared file
 		Given using server "REMOTE"
-		And user "user1" exists
-		And user "user2" exists
+		And user "user1" has been created
+		And user "user2" has been created
 		And using server "LOCAL"
-		And user "user0" exists
+		And user "user0" has been created
 		And user "user0" from server "LOCAL" shares "/textfile0.txt" with user "user1" from server "REMOTE"
 		And user "user1" from server "REMOTE" accepts last pending share
 		And using server "REMOTE"
@@ -122,10 +122,10 @@ Feature: federated
 
 	Scenario: Overwrite a federated shared file as recipient
 		Given using server "REMOTE"
-		And user "user1" exists
-		And user "user2" exists
+		And user "user1" has been created
+		And user "user2" has been created
 		And using server "LOCAL"
-		And user "user0" exists
+		And user "user0" has been created
 		And user "user0" from server "LOCAL" shares "/textfile0.txt" with user "user1" from server "REMOTE"
 		And user "user1" from server "REMOTE" accepts last pending share
 		And using server "REMOTE"
@@ -138,10 +138,10 @@ Feature: federated
 
 	Scenario: Overwrite a federated shared folder as recipient
 		Given using server "REMOTE"
-		And user "user1" exists
-		And user "user2" exists
+		And user "user1" has been created
+		And user "user2" has been created
 		And using server "LOCAL"
-		And user "user0" exists
+		And user "user0" has been created
 		And user "user0" from server "LOCAL" shares "/PARENT" with user "user1" from server "REMOTE"
 		And user "user1" from server "REMOTE" accepts last pending share
 		And using server "REMOTE"
@@ -154,10 +154,10 @@ Feature: federated
 
 	Scenario: Overwrite a federated shared file as recipient using old chunking
 		Given using server "REMOTE"
-		And user "user1" exists
-		And user "user2" exists
+		And user "user1" has been created
+		And user "user2" has been created
 		And using server "LOCAL"
-		And user "user0" exists
+		And user "user0" has been created
 		And user "user0" from server "LOCAL" shares "/textfile0.txt" with user "user1" from server "REMOTE"
 		And user "user1" from server "REMOTE" accepts last pending share
 		And using server "REMOTE"
@@ -170,10 +170,10 @@ Feature: federated
 
 	Scenario: Overwrite a federated shared folder as recipient using old chunking
 		Given using server "REMOTE"
-		And user "user1" exists
-		And user "user2" exists
+		And user "user1" has been created
+		And user "user2" has been created
 		And using server "LOCAL"
-		And user "user0" exists
+		And user "user0" has been created
 		And user "user0" from server "LOCAL" shares "/PARENT" with user "user1" from server "REMOTE"
 		And user "user1" from server "REMOTE" accepts last pending share
 		And using server "REMOTE"
@@ -193,9 +193,9 @@ Feature: federated
 
 	Scenario: Overwrite a federated shared folder as recipient propagates etag for recipient
 		Given using server "REMOTE"
-		And user "user1" exists
+		And user "user1" has been created
 		And using server "LOCAL"
-		And user "user0" exists
+		And user "user0" has been created
 		And user "user0" from server "LOCAL" shares "/PARENT" with user "user1" from server "REMOTE"
 		And user "user1" from server "REMOTE" accepts last pending share
 		And using server "REMOTE"
@@ -209,9 +209,9 @@ Feature: federated
 
 	Scenario: Overwrite a federated shared folder as recipient propagates etag for sharer
 		Given using server "REMOTE"
-		And user "user1" exists
+		And user "user1" has been created
 		And using server "LOCAL"
-		And user "user0" exists
+		And user "user0" has been created
 		And user "user0" from server "LOCAL" shares "/PARENT" with user "user1" from server "REMOTE"
 		And user "user0" stores etag of element "/PARENT"
 		And user "user1" from server "REMOTE" accepts last pending share
@@ -225,10 +225,10 @@ Feature: federated
 	Scenario: Upload file to received federated share while quota is set on home storage
 		Given using server "REMOTE"
 		And as an "admin"
-		And user "user1" exists
+		And user "user1" has been created
 		And the quota of user "user1" has been set to "20 B"
 		And using server "LOCAL"
-		And user "user0" exists
+		And user "user0" has been created
 		And user "user0" from server "LOCAL" shares "/PARENT" with user "user1" from server "REMOTE"
 		And user "user1" from server "REMOTE" accepts last pending share
 		And using server "REMOTE"
@@ -240,10 +240,10 @@ Feature: federated
 	Scenario: Upload file to received federated share while quota is set on remote storage
 		Given using server "REMOTE"
 		And as an "admin"
-		And user "user1" exists
+		And user "user1" has been created
 		And using server "LOCAL"
 		And as an "admin"
-		And user "user0" exists
+		And user "user0" has been created
 		And the quota of user "user0" has been set to "20 B"
 		And user "user0" from server "LOCAL" shares "/PARENT" with user "user1" from server "REMOTE"
 		And user "user1" from server "REMOTE" accepts last pending share

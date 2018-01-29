@@ -9,8 +9,8 @@ Feature: provisioning
 
   Scenario Outline: adding a user to a group
     Given as an "admin"
-    And user "brand-new-user" exists
-    And group "<group_id>" exists
+    And user "brand-new-user" has been created
+    And group "<group_id>" has been created
     When sending "POST" to "/cloud/users/brand-new-user/groups" with
       | groupid | <group_id> |
     Then the OCS status code should be "200"
@@ -22,9 +22,9 @@ Feature: provisioning
 
   Scenario Outline: removing a user from a group
     Given as an "admin"
-    And user "brand-new-user" exists
-    And group "<group_id>" exists
-    And user "brand-new-user" belongs to group "<group_id>"
+    And user "brand-new-user" has been created
+    And group "<group_id>" has been created
+    And user "brand-new-user" has been added to group "<group_id>"
     When sending "DELETE" to "/cloud/users/brand-new-user/groups" with
       | groupid | <group_id> |
     Then the OCS status code should be "200"

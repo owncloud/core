@@ -1,11 +1,11 @@
 Feature: sharees
 	Background:
 		Given using api version "1"
-		And user "test" exists
-		And user "Sharee1" exists
-		And group "ShareeGroup" exists
-		And group "ShareeGroup2" exists
-		And user "test" belongs to group "ShareeGroup2"
+		And user "test" has been created
+		And user "Sharee1" has been created
+		And group "ShareeGroup" has been created
+		And group "ShareeGroup2" has been created
+		And user "test" has been added to group "ShareeGroup2"
 
 	Scenario: Search without exact match
 		Given as an "test"
@@ -61,7 +61,7 @@ Feature: sharees
 	Scenario: Search only with group members - allowed
 		Given as an "test"
 		And parameter "shareapi_only_share_with_group_members" of app "core" has been set to "yes"
-		And user "Sharee1" belongs to group "ShareeGroup2"
+		And user "Sharee1" has been added to group "ShareeGroup2"
 		When getting sharees for
 			| search | sharee |
 			| itemType | file |
@@ -311,8 +311,8 @@ Feature: sharees
 
 	Scenario: Enumerate only group members - only show partial results from member groups
 		Given as an "test"
-		And user "Another" exists
-		And user "Another" belongs to group "ShareeGroup2"
+		And user "Another" has been created
+		And user "Another" has been added to group "ShareeGroup2"
 		And parameter "shareapi_share_dialog_user_enumeration_group_members" of app "core" has been set to "yes"
 		When getting sharees for
 			| search | ano |
@@ -361,7 +361,7 @@ Feature: sharees
 
 	Scenario: Enumerate only group members - only accept exact group match from non-memberships
 		Given as an "test"
-		And group "ShareeGroupNonMember" exists
+		And group "ShareeGroupNonMember" has been created
 		And parameter "shareapi_share_dialog_user_enumeration_group_members" of app "core" has been set to "yes"
 		When getting sharees for
 			| search | ShareeGroupNonMember |
