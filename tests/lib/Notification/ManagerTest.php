@@ -415,4 +415,127 @@ class ManagerTest extends TestCase {
 
 		$this->assertSame(63, $this->manager->getCount($notification));
 	}
+
+	public function testSerializeNotification() {
+		$notification = $this->manager->createNotification();
+		$notification->setApp('test');
+		$notification->setUser('userTest');
+		$dateTime = new \DateTime();
+		$dateTime->setTimestamp(1517229869);
+		$notification->setDateTime($dateTime);
+		$notification->setMessage('test message');
+
+		$expectedData = [
+			"app" => "test",
+			"user" => "userTest",
+			"dateTime" => 1517229869,
+			"message" => "test message",
+			"objectType" => "",
+			"objectId" => "",
+			"subject" => "",
+			"subjectParameters" => [],
+			"messageParameters" => [],
+			"link" => "",
+			"icon" => "",
+			"actions" => [],
+		];
+		$expectedOutput = json_encode($expectedData);
+		$this->assertJsonStringEqualsJsonString($expectedOutput, $this->manager->serializeNotification($notification));
+	}
+
+	public function testSerializeNotificationWithActions() {
+		$notification = $this->manager->createNotification();
+		$notification->setApp('test');
+		$notification->setUser('userTest');
+		$dateTime = new \DateTime();
+		$dateTime->setTimestamp(1517229869);
+		$notification->setDateTime($dateTime);
+		$notification->setMessage('test message', ["arg1", "arg2"]);
+		$notification->setSubject('test subject', ["arg1", "arg2"]);
+		$notification->setIcon('http://example.com/awesomeicon.png');
+		$notification->setLink('http://example.com/visitme');
+
+		$action1 = $notification->createAction();
+		$action1->setLabel('action1 label');
+		$action1->setPrimary(true);
+		$action1->setLink('http://example.com/example', 'GET');
+
+		$action2 = $notification->createAction();
+		$action2->setLabel('action2 label');
+		$action2->setPrimary(false);
+		$action2->setLink('http://example.com/example', 'POST');
+
+		$notification->addAction($action1);
+		$notification->addAction($action2);
+
+		$expectedData = [
+			"app" => "test",
+			"user" => "userTest",
+			"dateTime" => 1517229869,
+			"message" => "test message",
+			"objectType" => "",
+			"objectId" => "",
+			"subject" => "test subject",
+			"subjectParameters" => ["arg1", "arg2"],
+			"messageParameters" => ["arg1", "arg2"],
+			"link" => "http://example.com/visitme",
+			"icon" => "http://example.com/awesomeicon.png",
+			"actions" => [
+				[
+					"label" => "action1 label",
+					"primary" => true,
+					"link" => "http://example.com/example",
+					"requestType" => "GET",
+				],
+				[
+					"label" => "action2 label",
+					"primary" => false,
+					"link" => "http://example.com/example",
+					"requestType" => "POST",
+				],
+			],
+		];
+		$expectedOutput = json_encode($expectedData);
+		$this->assertJsonStringEqualsJsonString($expectedOutput, $this->manager->serializeNotification($notification));
+	}
+
+	/**
+	 * @expectedException \OCP\Notification\Exceptions\IncompleteSerializationException
+	 */
+	public function testSerializeNotificationMissingData() {
+		$notification = $this->manager->createNotification();
+		$notification->setUser('userTest');
+		$dateTime = new \DateTime();
+		$dateTime->setTimestamp(1517229869);
+		$notification->setDateTime($dateTime);
+		$notification->setMessage('test message');
+
+		$this->manager->serializeNotification($notification);
+	}
+
+	public function testSerializeNotificationMissingDataForcing() {
+		$notification = $this->manager->createNotification();
+		$notification->setUser('userTest');
+		$dateTime = new \DateTime();
+		$dateTime->setTimestamp(1517229869);
+		$notification->setDateTime($dateTime);
+		$notification->setMessage('test message');
+
+		$expectedData = [
+			"app" => "",
+			"user" => "userTest",
+			"dateTime" => 1517229869,
+			"message" => "test message",
+			"objectType" => "",
+			"objectId" => "",
+			"subject" => "",
+			"subjectParameters" => [],
+			"messageParameters" => [],
+			"link" => "",
+			"icon" => "",
+			"actions" => [],
+		];
+		$expectedOutput = json_encode($expectedData);
+		$this->assertJsonStringEqualsJsonString($expectedOutput, $this->manager->serializeNotification($notification, true));
+	}
 }
