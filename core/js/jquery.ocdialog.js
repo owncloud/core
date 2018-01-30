@@ -41,9 +41,9 @@
 					return false;
 				}
 				// Enter
-				if(event.keyCode === 13) {
+				if (event.keyCode === 13) {
 					event.stopImmediatePropagation();
-					if(event.type === 'keyup') {
+					if (event.type === 'keyup') {
 						event.preventDefault();
 						return false;
 					}
@@ -53,10 +53,10 @@
 						self.$buttonrow.find($(event.target)).length === 0
 					) {
 						var $button = self.$buttonrow.find('button.primary');
-						if($button) {
+						if ($button) {
 							$button.trigger('click');
 						}
-					} else if(self.$buttonrow) {
+					} else if (self.$buttonrow) {
 						$(event.target).trigger('click');
 					}
 					return false;
@@ -71,19 +71,19 @@
 		},
 		_setOption: function(key, value) {
 			var self = this;
-			switch(key) {
+			switch (key) {
 				case 'title':
-					if(this.$title) {
+					if (this.$title) {
 						this.$title.text(value);
 					} else {
-						var $title = $('<h3 class="oc-dialog-title">'
-							+ value
-							+ '</h3>');
+						var $title = $('<h3 class="oc-dialog-title">' +
+							value +
+							'</h3>');
 						this.$title = $title.prependTo(this.$dialog);
 					}
 					break;
 				case 'buttons':
-					if(this.$buttonrow) {
+					if (this.$buttonrow) {
 						this.$buttonrow.empty();
 					} else {
 						var $buttonrow = $('<div class="oc-dialog-buttonrow" />');
@@ -101,7 +101,7 @@
 						if (val.classes) {
 							$button.addClass(val.classes);
 						}
-						if(val.defaultButton) {
+						if (val.defaultButton) {
 							$button.addClass('primary');
 							self.$defaultButton = $button;
 						}
@@ -117,7 +117,7 @@
 						});
 					break;
 				case 'closeButton':
-					if(value) {
+					if (value) {
 						var $closeButton = $('<a class="oc-dialog-close"></a>');
 						this.$dialog.prepend($closeButton);
 						$closeButton.on('click', function() {
@@ -132,14 +132,14 @@
 					break;
 			}
 			//this._super(key, value);
-			$.Widget.prototype._setOption.apply(this, arguments );
+			$.Widget.prototype._setOption.apply(this, arguments);
 		},
 		_setOptions: function(options) {
 			//this._super(options);
 			$.Widget.prototype._setOptions.apply(this, arguments);
 		},
 		_createOverlay: function() {
-			if(!this.options.modal) {
+			if (!this.options.modal) {
 				return;
 			}
 
@@ -148,7 +148,7 @@
 				.addClass('oc-dialog-dim')
 				.appendTo($('#content'));
 			this.overlay.on('click keydown keyup', function(event) {
-				if(event.target !== self.$dialog.get(0) && self.$dialog.find($(event.target)).length === 0) {
+				if (event.target !== self.$dialog.get(0) && self.$dialog.find($(event.target)).length === 0) {
 					event.preventDefault();
 					event.stopPropagation();
 					return;
@@ -179,14 +179,14 @@
 			}, 200);
 		},
 		destroy: function() {
-			if(this.$title) {
+			if (this.$title) {
 				this.$title.remove();
 			}
-			if(this.$buttonrow) {
+			if (this.$buttonrow) {
 				this.$buttonrow.remove();
 			}
 
-			if(this.originalTitle) {
+			if (this.originalTitle) {
 				this.element.attr('title', this.originalTitle);
 			}
 			this.element.removeClass('oc-dialog-content').detach().insertBefore(this.$dialog);
