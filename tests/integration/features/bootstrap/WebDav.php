@@ -831,7 +831,7 @@ trait WebDav {
 		try {
 			$this->response = $this->makeDavRequest($user, "PUT", $destination, [], $file);
 			return $this->response->getHeader('oc-fileid');
-		} catch (\GuzzleHttp\Exception\ServerException $e) {
+		} catch (\GuzzleHttp\Exception\BadResponseException $e) {
 			// 4xx and 5xx responses cause an exception
 			$this->response = $e->getResponse();
 		}
