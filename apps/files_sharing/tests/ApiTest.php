@@ -32,6 +32,7 @@ use OCP\Constants;
 use OCP\IL10N;
 use OCP\IRequest;
 use OCP\Share;
+use Symfony\Component\EventDispatcher\GenericEvent;
 
 /**
  * Class ApiTest
@@ -124,7 +125,8 @@ class ApiTest extends TestCase {
 			\OC::$server->getURLGenerator(),
 			$currentUser,
 			$l,
-			\OC::$server->getConfig()
+			\OC::$server->getConfig(),
+			\OC::$server->getEventDispatcher()
 		);
 	}
 
@@ -137,10 +139,18 @@ class ApiTest extends TestCase {
 		$data['shareWith'] = self::TEST_FILES_SHARING_API_USER2;
 		$data['shareType'] = Share::SHARE_TYPE_USER;
 
+		$calledBeforeCreate = [];
+		\OC::$server->getEventDispatcher()->addListener('share.beforeCreate', function (GenericEvent $event) use (&$calledBeforeCreate) {
+			$calledBeforeCreate[] = 'share.beforeCreate';
+			$calledBeforeCreate[] = $event;
+		});
 		$request = $this->createRequest($data);
 		$ocs = $this->createOCS($request, self::TEST_FILES_SHARING_API_USER1);
 		$result = $ocs->createShare();
 
+		$this->assertEquals('share.beforeCreate', $calledBeforeCreate[0]);
+		$this->assertInstanceOf(GenericEvent::class, $calledBeforeCreate[1]);
+		$this->assertTrue($calledBeforeCreate[1]->getArgument('run'));
 		$this->assertTrue($result->succeeded());
 		$data = $result->getData();
 		$this->assertEquals(19, $data['permissions']);
