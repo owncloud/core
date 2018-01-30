@@ -136,21 +136,19 @@
 		
 		/**
 		 * Update file Info about hidden
-		 * @param {OC.Files.FileInfo} file file to remove
-		 * @param {boolean} update whether to update the display
+		 * @param {OC.Files.FileInfo} newFile file with updated name
+		 * @param {OC.Files.FileInfo} oldFile file with old name
 		 */
-		updateHidden: function(file, update) {
-			if (file.name && file.name.toLowerCase().indexOf(this.summary.filter) === -1) {
+		updateHidden: function(newFile, oldFile) {
+			if (newFile.name && newFile.name.toLowerCase().indexOf(this.summary.filter) === -1 &&
+				oldFile.name && oldFile.name.toLowerCase().indexOf(this.summary.filter) === -1) {
 				return;
 			}
-
-			if (this._isHiddenFile(file)) {
+			if (this._isHiddenFile(newFile) && !this._isHiddenFile(oldFile)) {
 				this.summary.totalHidden++;
-			} else {
+				this.update();
+			} else if (!this._isHiddenFile(newFile) && this._isHiddenFile(oldFile)) {
 				this.summary.totalHidden--;
-			}
-
-			if (!!update) {
 				this.update();
 			}
 		},
