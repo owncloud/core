@@ -243,7 +243,7 @@ interface IManager {
 	 * Is password enforced for read-only shares?
 	 *
 	 * @return bool true if password is enforced, false otherwise
-	 * @since 10.0.6
+	 * @since 10.0.8
 	 */
 	public function shareApiLinkEnforcePasswordReadOnly();
 
@@ -251,7 +251,7 @@ interface IManager {
 	 * Is password enforced for read & write shares?
 	 *
 	 * @return bool true if password is enforced, false otherwise
-	 * @since 10.0.6
+	 * @since 10.0.8
 	 */
 	public function shareApiLinkEnforcePasswordReadWrite();
 
@@ -259,7 +259,7 @@ interface IManager {
 	 * Is password enforced for write-only shares?
 	 *
 	 * @return bool true if password is enforced, false otherwise
-	 * @since 10.0.6
+	 * @since 10.0.8
 	 */
 	public function shareApiLinkEnforcePasswordWriteOnly();
 
