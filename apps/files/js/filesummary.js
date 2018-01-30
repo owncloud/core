@@ -133,6 +133,28 @@
 				this.update();
 			}
 		},
+		
+		/**
+		 * Update file Info about hidden
+		 * @param {OC.Files.FileInfo} file file to remove
+		 * @param {boolean} update whether to update the display
+		 */
+		updateHidden: function(file, update) {
+			if (file.name && file.name.toLowerCase().indexOf(this.summary.filter) === -1) {
+				return;
+			}
+
+			if (this._isHiddenFile(file)) {
+				this.summary.totalHidden++;
+			} else {
+				this.summary.totalHidden--;
+			}
+
+			if (!!update) {
+				this.update();
+			}
+		},
+
 		setFilter: function(filter, files){
 			this.summary.filter = filter.toLowerCase();
 			this.calculate(files);
@@ -259,6 +281,7 @@
 				$filterInfo.removeClass('hidden');
 			}
 		},
+
 		render: function() {
 			if (!this.$el) {
 				return;

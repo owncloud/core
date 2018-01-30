@@ -2023,6 +2023,7 @@
 
 			function updateInList(fileInfo) {
 				self.updateRow(tr, fileInfo);
+				self.fileSummary.updateHidden(fileInfo, true);
 				self._updateDetailsView(fileInfo.name, false);
 			}
 
