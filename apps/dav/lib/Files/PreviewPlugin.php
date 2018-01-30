@@ -21,6 +21,7 @@
 
 namespace OCA\DAV\Files;
 
+use OCP\Files\ForbiddenException;
 use OCP\Files\IPreviewNode;
 use OCP\ILogger;
 use Sabre\DAV\Exception\NotFound;
@@ -28,6 +29,7 @@ use Sabre\DAV\Server;
 use Sabre\DAV\ServerPlugin;
 use Sabre\HTTP\RequestInterface;
 use Sabre\HTTP\ResponseInterface;
+use OCA\DAV\Connector\Sabre\Exception\Forbidden as DAVForbiddenException;
 
 class PreviewPlugin extends ServerPlugin {
 
@@ -87,7 +89,12 @@ class PreviewPlugin extends ServerPlugin {
 			$aclPlugin->checkPrivileges($path, '{DAV:}read');
 		}
 
-		if ($image = $fileNode->getThumbnail($queryParams)) {
+		try {
+			$image = $fileNode->getThumbnail($queryParams);
+		} catch (ForbiddenException $ex) {
+			throw new DAVForbiddenException($ex->getMessage(), $ex->getRetry());
+		}
+		if ($image) {
 			if ($image === null || !$image->valid()) {
 				throw new NotFound();
 			}
