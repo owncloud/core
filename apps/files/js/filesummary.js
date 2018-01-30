@@ -140,10 +140,6 @@
 		 * @param {OC.Files.FileInfo} oldFile file with old name
 		 */
 		updateHidden: function(newFile, oldFile) {
-			if (newFile.name && newFile.name.toLowerCase().indexOf(this.summary.filter) === -1 &&
-				oldFile.name && oldFile.name.toLowerCase().indexOf(this.summary.filter) === -1) {
-				return;
-			}
 			if (this._isHiddenFile(newFile) && !this._isHiddenFile(oldFile)) {
 				this.summary.totalHidden++;
 				this.update();
