@@ -51,6 +51,7 @@ class FileRow extends OwnCloudPage {
 	protected $fileTooltipXpath = ".//*[@class='tooltip-inner']";
 	protected $thumbnailXpath = "//*[@class='thumbnail']";
 	protected $fileLinkXpath = "//span[contains(@class,'nametext')]";
+	protected $restoreLinkXpath = '//a[@data-action="Restore"]';
 
 	/**
 	 * sets the NodeElement for the current file row
@@ -288,5 +289,20 @@ class FileRow extends OwnCloudPage {
 	 */
 	public function openFileFolder() {
 		$this->findFileLink()->click();
+	}
+	
+	/**
+	 * restore the current deleted file and folder by clicking on the restore link
+	 */
+	public function restore() {
+		$rowElement = $this->rowElement->find('xpath', $this->restoreLinkXpath);
+		if (is_null($rowElement)) {
+			throw new ElementNotFoundException(
+				__METHOD__ .
+				" xpath $this->restoreLinkXpath could not find restore link to '" .
+				$this->name . "'"
+			);
+		}
+		$rowElement->click();
 	}
 }
