@@ -1,8 +1,6 @@
 (function($) {
 	$.widget('oc.ocdialog', {
 		options: {
-			width: 'auto',
-			height: 'auto',
 			closeButton: true,
 			closeOnEscape: true,
 			modal: false
