@@ -107,7 +107,6 @@ OC.L10N.register(
     "Shared with you and the group {group} by {owner}" : "Kunhavigita kun vi kaj la grupo {group} de {owner}",
     "Shared with you by {owner}" : "Kunhavigita kun vi de {owner}",
     "group" : "grupo",
-    "remote" : "fora",
     "notify by email" : "avizi per retpoŝto",
     "Unshare" : "Malkunhavigi",
     "can share" : "kunhavebla",

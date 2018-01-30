@@ -184,7 +184,6 @@ OC.L10N.register(
     "Shared with you and the group {group} by {owner}" : "Delt med deg og gruppen {group} av {owner}",
     "Shared with you by {owner}" : "Delt med deg av {owner}",
     "group" : "gruppe",
-    "remote" : "ekstern",
     "notify by email" : "Varsle på email",
     "Unshare" : "Avslutt deling",
     "can share" : "kan dele",

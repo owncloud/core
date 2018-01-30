@@ -162,7 +162,6 @@ OC.L10N.register(
     "Shared with you and the group {group} by {owner}" : "Zdieľané s vami a so skupinou {group} používateľom {owner}",
     "Shared with you by {owner}" : "Zdieľané s vami používateľom {owner}",
     "group" : "skupina",
-    "remote" : "vzdialený",
     "notify by email" : "informovať emailom",
     "Unshare" : "Zrušiť zdieľanie",
     "can share" : "môže zdieľať",

@@ -87,7 +87,6 @@ OC.L10N.register(
     "Email sent" : "Էլ. նամակը ուղարկվեց",
     "Email link to person" : "Ուղարկել հղումը ոմնին",
     "group" : "խումբ",
-    "remote" : "հեռակա",
     "Unshare" : "Չկիսվել",
     "can share" : "կարող է տարածել",
     "can edit" : "կարող է խմբագրել",

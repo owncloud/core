@@ -189,7 +189,6 @@ OC.L10N.register(
     "Shared with you and the group {group} by {owner}" : "به اشتراک گذاشته شده با شما و گروه {گروه} توسط {دارنده}",
     "Shared with you by {owner}" : "به اشتراک گذاشته شده با شما توسط { دارنده}",
     "group" : "گروه",
-    "remote" : "از راه دور",
     "notify by email" : "دریافت هشدار از طریق ایمیل",
     "Unshare" : "لغو اشتراک",
     "can share" : "قابل به اشتراک گذاری",

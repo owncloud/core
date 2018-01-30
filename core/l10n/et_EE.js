@@ -162,7 +162,6 @@ OC.L10N.register(
     "Shared with you and the group {group} by {owner}" : "Jagatud sinu ja {group} grupiga {owner} poolt",
     "Shared with you by {owner}" : "Sinuga jagas {owner}",
     "group" : "grupp",
-    "remote" : "kaug",
     "notify by email" : "teavita e-postiga",
     "Unshare" : "Lõpeta jagamine",
     "can share" : "saab jagada",

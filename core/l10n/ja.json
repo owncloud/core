@@ -181,7 +181,6 @@
     "Shared with you and the group {group} by {owner}" : "あなたと {owner} のグループ {group} で共有中",
     "Shared with you by {owner}" : "{owner} と共有中",
     "group" : "グループ",
-    "remote" : "リモート",
     "notify by email" : "メールで通知",
     "Unshare" : "共有解除",
     "can share" : "共有可",

@@ -37,6 +37,7 @@ OC.L10N.register(
     "Wrong share ID, share doesn't exist" : "Mauvais ID de partage, le partage n'existe pas",
     "Could not delete share" : "Impossible de supprimer le partage",
     "Please specify a file or folder path" : "Veuillez spécifier un fichier ou dossier",
+    "No permission to create share" : "Interdit de créer le partage",
     "Wrong path, file/folder doesn't exist" : "Mauvais chemin, Le fichier/dossier n'existe pas",
     "Cannot remove all permissions" : "Il n'est pas possible d'enlever toutes les permissions",
     "Please specify a valid user" : "Veuillez entrer un utilisateur valide",

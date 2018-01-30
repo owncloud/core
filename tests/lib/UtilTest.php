@@ -417,11 +417,55 @@ class UtilTest extends \Test\TestCase {
 	 * @expectedException \OC\HintException
 	 * @expectedExceptionMessage The skeleton folder /not/existing/Directory is not accessible
 	 */
-	public function testCopySkeletonDirectory() {
+	public function testCopySkeletonDirectoryDoesNotExist() {
 		$config = \OC::$server->getConfig();
 		$config->setSystemValue('skeletondirectory', '/not/existing/Directory');
 		$userFolder = $this->createMock('\OCP\Files\Folder');
-		\OC_Util::copySkeleton($config, $userFolder);
+		\OC_Util::copySkeleton('testuser', $userFolder);
+
+		$config->deleteSystemValue('skeletondirectory');
+	}
+
+	/**
+	 * @expectedException \OCP\Files\NoReadAccessException
+	 * @expectedExceptionMessage No read permission for folder
+	 */
+	public function testCopySkeletonDirectoryNoReadAccess() {
+		if ($this->getCurrentUser() === 'root') {
+			// root can still read folders with protection mask 0
+			$this->markTestSkipped(
+				'You are running tests as root - testCopySkeletonDirectoryNoReadAccess will not work in this case.'
+			);
+		}
+		$skeletonDir = \OCP\Files::tmpFolder();
+		touch($skeletonDir . '/a-file');
+		chmod($skeletonDir, 0);
+		$config = \OC::$server->getConfig();
+		$config->setSystemValue('skeletondirectory', $skeletonDir);
+		$userFolder = $this->createMock('\OCP\Files\Folder');
+		\OC_Util::copySkeleton('testuser', $userFolder);
+
+		$config->deleteSystemValue('skeletondirectory');
+	}
+
+	/**
+	 * @expectedException \OCP\Files\NoReadAccessException
+	 * @expectedExceptionMessage No read permission for file
+	 */
+	public function testCopySkeletonDirectoryNoReadAccessToFile() {
+		if ($this->getCurrentUser() === 'root') {
+			// root can still read files with protection mask 0
+			$this->markTestSkipped(
+				'You are running tests as root - testCopySkeletonDirectoryNoReadAccessToFile will not work in this case.'
+			);
+		}
+		$skeletonDir = \OCP\Files::tmpFolder();
+		touch($skeletonDir . '/a-file');
+		chmod($skeletonDir . '/a-file', 0);
+		$config = \OC::$server->getConfig();
+		$config->setSystemValue('skeletondirectory', $skeletonDir);
+		$userFolder = $this->createMock('\OCP\Files\Folder');
+		\OC_Util::copySkeleton('testuser', $userFolder);
 
 		$config->deleteSystemValue('skeletondirectory');
 	}

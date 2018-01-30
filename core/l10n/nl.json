@@ -184,7 +184,6 @@
     "Shared with you and the group {group} by {owner}" : "Gedeeld met u en de groep {group} door {owner}",
     "Shared with you by {owner}" : "Gedeeld met u door {owner}",
     "group" : "groep",
-    "remote" : "extern",
     "notify by email" : "melden per e-mail",
     "Unshare" : "Stop met delen",
     "can share" : "kan delen",

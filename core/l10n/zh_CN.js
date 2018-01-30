@@ -184,7 +184,6 @@ OC.L10N.register(
     "Shared with you and the group {group} by {owner}" : "{owner} 共享给您及 {group} 组",
     "Shared with you by {owner}" : "{owner} 与您共享",
     "group" : "群组",
-    "remote" : "远程",
     "notify by email" : "以邮件通知",
     "Unshare" : "取消共享",
     "can share" : "可共享",

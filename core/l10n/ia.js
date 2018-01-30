@@ -164,7 +164,6 @@ OC.L10N.register(
     "Shared with you and the group {group} by {owner}" : "Compartite con te e le gruppo {group} per {owner}",
     "Shared with you by {owner}" : "Compartite con te per {owner} ",
     "group" : "gruppo",
-    "remote" : "distante",
     "notify by email" : "notificar per message de e-posta",
     "Unshare" : "Discompartir",
     "can share" : "pote compartir",

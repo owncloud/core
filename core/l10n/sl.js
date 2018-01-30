@@ -184,7 +184,6 @@ OC.L10N.register(
     "Shared with you and the group {group} by {owner}" : "V souporabi z vami in skupino {group}. Lastnik je {owner}.",
     "Shared with you by {owner}" : "V souporabi z vami. Lastnik je {owner}.",
     "group" : "skupina",
-    "remote" : "oddaljeno",
     "notify by email" : "obvesti po elektronski pošti",
     "Unshare" : "Prekliči souporabo",
     "can share" : "lahko omogoči souporabo",

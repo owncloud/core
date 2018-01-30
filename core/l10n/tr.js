@@ -180,7 +180,6 @@ OC.L10N.register(
     "Shared with you and the group {group} by {owner}" : "{owner} tarafından sizinle ve {group} ile paylaştırılmış",
     "Shared with you by {owner}" : "{owner} tarafından sizinle paylaşıldı",
     "group" : "grup",
-    "remote" : "uzak",
     "notify by email" : "e-posta ile bildir",
     "Unshare" : "Paylaşmayı Kaldır",
     "can share" : "paylaşabilir",

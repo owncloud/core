@@ -184,7 +184,6 @@ OC.L10N.register(
     "Shared with you and the group {group} by {owner}" : "{owner} megosztotta Önnel és a(z) {group} csoporttal",
     "Shared with you by {owner}" : "{owner} megosztotta Önnel",
     "group" : "csoport",
-    "remote" : "távoli",
     "notify by email" : "e-mail értesítés",
     "Unshare" : "Megosztás visszavonása",
     "can share" : "megoszthatja",

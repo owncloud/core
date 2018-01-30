@@ -35,7 +35,7 @@ class QuotaTest extends \Test\TestCase {
 
 	public function testGetPriority() {
 		$this->assertInternalType('int', $this->panel->getPriority());
-		$this->assertTrue($this->panel->getPriority() > 0);
+		$this->assertGreaterThan(0, $this->panel->getPriority());
 	}
 
 	public function testGetPanel() {

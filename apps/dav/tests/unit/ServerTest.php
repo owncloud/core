@@ -35,10 +35,26 @@ use OCP\IRequest;
  */
 class ServerTest extends \Test\TestCase {
 
-	public function test() {
-		/** @var IRequest $r */
+	/**
+	 * @dataProvider providesUris
+	 */
+	public function test($uri, array $plugins) {
+		/** @var IRequest | \PHPUnit_Framework_MockObject_MockObject $r */
 		$r = $this->createMock(IRequest::class);
+		$r->expects($this->any())->method('getRequestUri')->willReturn($uri);
 		$s = new Server($r, '/');
 		$this->assertNotNull($s->server);
+
+		foreach ($plugins as $plugin) {
+			$this->assertNotNull($s->server->getPlugin($plugin));
+		}
+	}
+
+	public function providesUris() {
+		return [
+			'principals' => ['principals/users/admin', ['caldav', 'oc-resource-sharing', 'carddav']],
+			'calendars' => ['calendars/admin', ['caldav', 'oc-resource-sharing']],
+			'addressbooks' => ['addressbooks/admin', ['carddav', 'oc-resource-sharing']],
+		];
 	}
 }

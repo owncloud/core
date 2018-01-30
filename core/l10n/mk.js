@@ -129,7 +129,6 @@ OC.L10N.register(
     "Shared with you and the group {group} by {owner}" : "Споделено со Вас и групата {group} од {owner}",
     "Shared with you by {owner}" : "Споделено со Вас од {owner}",
     "group" : "група",
-    "remote" : "далечински",
     "notify by email" : "извести преку електронска пошта",
     "Unshare" : "Не споделувај",
     "can share" : "може да споделува",
