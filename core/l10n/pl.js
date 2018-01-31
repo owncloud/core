@@ -189,6 +189,8 @@ OC.L10N.register(
     "delete" : "usuń",
     "access control" : "kontrola dostępu",
     "Could not unshare" : "Nie udało się usunąć udostępnienia",
+    "Email notification was sent!" : "Powiadomienie email zostało wysłane",
+    "Email notification not sent" : "Powiadomienie email nie zostało wysłane",
     "Share details could not be loaded for this item." : "Szczegóły udziału nie mogły zostać wczytane dla tego obiektu.",
     "No users or groups found for {search}" : "Nie znaleziono użytkowników lub grup dla {search}",
     "No users found for {search}" : "Nie znaleziono użytkowników dla {search}",
