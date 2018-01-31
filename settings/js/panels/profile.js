@@ -154,7 +154,8 @@ $(document).ready(function () {
 		if (query.changestatus === 'error') {
 			OC.Notification.showTemporary(t('settings', 'Failed to change the email address.'));
 		} else if (query.changestatus === 'success') {
-			OC.Notification.showTemporary(t('settings', 'Email changed successfully.'));
+			console.log("user = ", query.user);
+			OC.Notification.showTemporary(t('settings', 'Email changed successfully for {user}.', {user: query.user}));
 		}
 		OC.Util.History.replaceState({});
 	}
