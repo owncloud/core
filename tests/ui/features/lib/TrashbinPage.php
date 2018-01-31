@@ -22,6 +22,8 @@
 
 namespace Page;
 
+use Behat\Mink\Session;
+
 /**
  * Trashbin page.
  */
@@ -63,5 +65,16 @@ class TrashbinPage extends FilesPageBasic {
 	 */
 	protected function getEmptyContentXpath() {
 		return $this->emptyContentXpath;
+	}
+
+	/**
+	 * 
+	 * @param string $fname
+	 * @param Session $session
+	 * @return void
+	 */
+	public function restore($fname, Session $session) {
+		$row = $this->findFileRowByName($fname, $session);
+		$row->restore();
 	}
 }
