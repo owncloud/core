@@ -203,12 +203,7 @@ class Auth extends AbstractBasic {
 		if(!$this->request->passesCSRFCheck() &&
 			$this->requiresCSRFCheck()) {
 			// In case of a fail with POST we need to recheck the credentials
-			if($this->request->getMethod() === 'POST') {
-				$forcedLogout = true;
-			} else {
-				$response->setStatus(401);
-				throw new \Sabre\DAV\Exception\NotAuthenticated('CSRF check not passed.');
-			}
+			$forcedLogout = true;
 		}
 
 		if($forcedLogout) {
