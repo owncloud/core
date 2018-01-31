@@ -538,6 +538,26 @@ class Request implements \ArrayAccess, \Countable, IRequest {
 	}
 
 	/**
+	 * Returns the server address.
+	 * Some servers do not set $_SERVER['SERVER_ADDR'] so also allow it to be
+	 * provided as an environment variable if needed.
+	 * Always use this instead of $_SERVER['SERVER_ADDR']
+	 * @return string|false server IP address or false if not found or not a valid IP
+	 * @since 10.0.3
+	 */
+	public function getServerAddress() {
+		if (isset($this->server['SERVER_ADDR'])) {
+			$serverAddress = $this->server['SERVER_ADDR'];
+		} else if (isset($this->env['SERVER_ADDR'])) {
+			$serverAddress = $this->env['SERVER_ADDR'];
+		} else {
+			$serverAddress = getenv('SERVER_ADDR');
+		}
+
+		return filter_var($serverAddress, FILTER_VALIDATE_IP);
+	}
+
+	/**
 	 * Check overwrite condition
 	 * @param string $type
 	 * @return bool
