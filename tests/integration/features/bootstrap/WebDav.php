@@ -31,6 +31,7 @@ trait WebDav {
 
 	/**
 	 * @Given /^using dav path "([^"]*)"$/
+	 * @param string $davPath
 	 */
 	public function usingDavPath($davPath) {
 		$this->davPath = $davPath;
@@ -55,6 +56,10 @@ trait WebDav {
 		$this->customDavPath = null;
 	}
 
+	/**
+	 * @param string $user
+	 * @return string
+	 */
 	public function getDavFilesPath($user) {
 		if ($this->usingOldDavPath === true) {
 			return $this->davPath;
@@ -71,6 +76,17 @@ trait WebDav {
 			return 2;
 		}
 	}
+
+	/**
+	 * @param string $user
+	 * @param string $method
+	 * @param string $path
+	 * @param array $headers
+	 * @param StreamInterface $body
+	 * @param string $type
+	 * @param string|null $requestBody
+	 * @return \GuzzleHttp\Message\FutureResponse|ResponseInterface|NULL
+	 */
 	public function makeDavRequest($user,
 								   $method,
 								   $path,
@@ -95,6 +111,7 @@ trait WebDav {
 	/**
 	 * @Given /^user "([^"]*)" moved (file|folder|entry) "([^"]*)" to "([^"]*)"$/
 	 * @param string $user
+	 * @param string $entry unused
 	 * @param string $fileSource
 	 * @param string $fileDestination
 	 */
@@ -108,6 +125,7 @@ trait WebDav {
 	/**
 	 * @When /^user "([^"]*)" moves (file|folder|entry) "([^"]*)" to "([^"]*)"$/
 	 * @param string $user
+	 * @param string $entry unused
 	 * @param string $fileSource
 	 * @param string $fileDestination
 	 */
@@ -167,6 +185,7 @@ trait WebDav {
 
 	/**
 	 * @When /^downloading last public shared file inside a folder "([^"]*)" with range "([^"]*)"$/
+	 * @param string $path
 	 * @param string $range
 	 */
 	public function downloadPublicFileInsideAFolderWithRange($path, $range) {
@@ -252,7 +271,7 @@ trait WebDav {
 
 	/**
 	 * @Then downloaded content should start with :start
-	 * @param int $start
+	 * @param string $start
 	 * @throws \Exception
 	 */
 	public function downloadedContentShouldStartWith($start) {
@@ -270,6 +289,7 @@ trait WebDav {
 	/**
 	 * @Then /^as "([^"]*)" gets properties of (file|folder|entry) "([^"]*)" with$/
 	 * @param string $user
+	 * @param string $elementType unused
 	 * @param string $path
 	 * @param \Behat\Gherkin\Node\TableNode|null $propertiesTable
 	 */
@@ -302,7 +322,7 @@ trait WebDav {
 	 * @Given /^"([^"]*)" sets property "([^"]*)" of (file|folder|entry) "([^"]*)" to "([^"]*)"$/
 	 * @param string $user
 	 * @param string $propertyName
-	 * @param string $elementType
+	 * @param string $elementType unused
 	 * @param string $path
 	 * @param string $propertyValue
 	 */
@@ -318,6 +338,8 @@ trait WebDav {
 	 * @Then /^the response should contain a custom "([^"]*)" property with "([^"]*)"$/
 	 * @param string $propertyName
 	 * @param string $propertyValue
+	 * @param null $table unused
+	 * @throws Exception
 	 */
 	public function theResponseShouldContainACustomPropertyWithValue($propertyName, $propertyValue, $table=null)
 	{
@@ -333,8 +355,10 @@ trait WebDav {
 	/**
 	 * @Then /^as "([^"]*)" the (file|folder|entry) "([^"]*)" does not exist$/
 	 * @param string $user
+	 * @param string $entry
 	 * @param string $path
-	 * @param \Behat\Gherkin\Node\TableNode|null $propertiesTable
+	 * @return array
+	 * @throws Exception
 	 */
 	public function asTheFileOrFolderDoesNotExist($user, $entry, $path) {
 		$client = $this->getSabreClient($user);
@@ -349,8 +373,9 @@ trait WebDav {
 	/**
 	 * @Then /^as "([^"]*)" the (file|folder|entry) "([^"]*)" exists$/
 	 * @param string $user
+	 * @param string $entry
 	 * @param string $path
-	 * @param \Behat\Gherkin\Node\TableNode|null $propertiesTable
+	 * @throws Exception
 	 */
 	public function asTheFileOrFolderExists($user, $entry, $path) {
 		$this->response = $this->listFolder($user, $path, 0);
@@ -426,6 +451,8 @@ trait WebDav {
 
 	/**
 	 * @Then the response should contain a share-types property with
+	 * @param \Behat\Gherkin\Node\TableNode $table
+	 * @throws Exception
 	 */
 	public function theResponseShouldContainAShareTypesPropertyWith($table)
 	{
@@ -474,7 +501,14 @@ trait WebDav {
 		}
 	}
 
-	/*Returns the elements of a propfind, $folderDepth requires 1 to see elements without children*/
+	/**
+	 * Returns the elements of a propfind
+	 * @param string $user
+	 * @param string $path
+	 * @param int $folderDepth requires 1 to see elements without children
+	 * @param array|null $properties
+	 * @return array|\Sabre\HTTP\ResponseInterface
+	 */
 	public function listFolder($user, $path, $folderDepth, $properties = null) {
 		$client = $this->getSabreClient($user);
 		if (!$properties) {
@@ -491,6 +525,13 @@ trait WebDav {
 		return $response;
 	}
 
+	/**
+	 * @param string $user
+	 * @param string $path
+	 * @param int $folderDepth
+	 * @param array|null $properties
+	 * @return array|\Sabre\HTTP\ResponseInterface
+	 */
 	public function listVersionFolder($user, $path, $folderDepth, $properties = null) {
 		$client = $this->getSabreClient($user);
 		if (!$properties) {
@@ -509,9 +550,9 @@ trait WebDav {
 
 	/**
 	 * @Then the version folder of file :path for user :user contains :count elements
-	 * @param $path
-	 * @param $count
-	 * @param $user
+	 * @param string $path
+	 * @param string $user
+	 * @param int $count
 	 */
 	public function theVersionFolderOfFileContainsElements($path, $user, $count) {
 		$fileId = $this->getFileIdForPath($user, $path);
@@ -521,8 +562,8 @@ trait WebDav {
 
 	/**
 	 * @Then the version folder of fileId :fileId contains :count elements
-	 * @param int $count
 	 * @param int $fileId
+	 * @param int $count
 	 */
 	public function theVersionFolderOfFileIdContainsElements($fileId, $count) {
 		$elements = $this->listVersionFolder($this->currentUser, '/meta/'.$fileId.'/v', 1);
@@ -531,10 +572,10 @@ trait WebDav {
 
 	/**
 	 * @Then the content length of file :path with version index :index for user :user in versions folder is :length
-	 * @param $path
-	 * @param $index
-	 * @param $user
-	 * @param $length
+	 * @param string $path
+	 * @param int $index
+	 * @param string $user
+	 * @param int $length
 	 */
 	public function theContentLengthOfFileForUserInVersionsFolderIs($path, $index, $user, $length) {
 		$fileId = $this->getFileIdForPath($user, $path);
@@ -543,11 +584,16 @@ trait WebDav {
 		PHPUnit_Framework_Assert::assertEquals($length, $elements[$index]['{DAV:}getcontentlength']);
 	}
 
-	/* Returns the elements of a report command
+	/**
+	 * Returns the elements of a report command
+	 *
 	 * @param string $user
 	 * @param string $path
 	 * @param string $properties properties which needs to be included in the report
 	 * @param string $filterRules filter-rules to choose what needs to appear in the report
+	 * @param int|null $offset
+	 * @param int|null $limit
+	 * @return array
 	 */
 	public function reportFolder($user, $path, $properties, $filterRules, $offset = null, $limit = null) {
 		$client = $this->getSabreClient($user);
@@ -586,7 +632,6 @@ trait WebDav {
 	 * @param string $user
 	 * @param string $path
 	 * @param string $properties properties which needs to be included in the report
-	 * @param string $filterRules filter-rules to choose what needs to appear in the report
 	 */
 	public function reportElementComments($user, $path, $properties) {
 		$client = $this->getSabreClient($user);
@@ -603,14 +648,27 @@ trait WebDav {
 		return $parsedResponse;
 	}
 
+	/**
+	 * @param string $user
+	 * @param string $path
+	 * @return string
+	 */
 	public function makeSabrePath($user, $path) {
 		return $this->encodePath($this->getDavFilesPath($user) . $path);
 	}
 
+	/**
+	 * @param string $path
+	 * @return string
+	 */
 	public function makeSabrePathNotForFiles($path) {
 		return $this->encodePath($this->davPath . $path);
 	}
 
+	/**
+	 * @param string $user
+	 * @return SClient
+	 */
 	public function getSabreClient($user) {
 		return WebDavHelper::getSabreClient(
 			$this->baseUrlWithoutOCSAppendix(),
@@ -673,6 +731,12 @@ trait WebDav {
 		$this->uploadChunks($user, $chunks, $destination, $chunkingVersion);
 	}
 
+	/**
+	 * @param string $user
+	 * @param array $chunks
+	 * @param string $destination
+	 * @param string|null $chunkingVersion null for autodetect, "old" with old style, "new" for new style
+	 */
 	public function uploadChunks($user, $chunks, $destination, $chunkingVersion = null) {
 		if ($chunkingVersion === null) {
 			if ($this->usingOldDavPath) {
@@ -825,6 +889,10 @@ trait WebDav {
 
 	/**
 	 * @When user :user uploads file with content :content to :destination
+	 * @param string $user
+	 * @param string $content
+	 * @param string $destination
+	 * @return string
 	 */
 	public function userUploadsAFileWithContentTo($user, $content, $destination)
 	{
@@ -841,10 +909,10 @@ trait WebDav {
 
 	/**
 	 * @When user :user uploads file with checksum :checksum and content :content to :destination
-	 * @param $user
-	 * @param $checksum
-	 * @param $content
-	 * @param $destination
+	 * @param string $user
+	 * @param string $checksum
+	 * @param string $content
+	 * @param string $destination
 	 */
 	public function userUploadsAFileWithChecksumAndContentTo($user, $checksum, $content, $destination)
 	{
@@ -867,9 +935,9 @@ trait WebDav {
 	/**
 	 * @Given file :file  does not exist for user :user
 	 * @param string $file
-	 * @param $user
+	 * @param string $user
 	 */
-	public function fileDoesNotExist($file, $user)  {
+	public function fileDoesNotExist($file, $user) {
 		try {
 			$this->response = $this->makeDavRequest($user, 'DELETE', $file, []);
 		} catch (BadResponseException $e) {
@@ -881,10 +949,10 @@ trait WebDav {
 	/**
 	 * @When /^user "([^"]*)" deletes (file|folder) "([^"]*)"$/
 	 * @param string $user
-	 * @param string $type
+	 * @param string $type unused
 	 * @param string $file
 	 */
-	public function userDeletesFile($user, $type, $file)  {
+	public function userDeletesFile($user, $type, $file) {
 		try {
 			$this->response = $this->makeDavRequest($user, 'DELETE', $file, []);
 		} catch (BadResponseException $e) {
@@ -934,6 +1002,8 @@ trait WebDav {
 
 	/**
 	 * @Given user :user creates a new chunking upload with id :id
+	 * @param string $user
+	 * @param string $id
 	 */
 	public function userCreatesANewChunkingUploadWithId($user, $id)
 	{
@@ -947,6 +1017,10 @@ trait WebDav {
 
 	/**
 	 * @Given user :user uploads new chunk file :num with :data to id :id
+	 * @param string $user
+	 * @param int $num
+	 * @param string $data
+	 * @param string $id
 	 */
 	public function userUploadsNewChunkFileOfWithToId($user, $num, $data, $id)
 	{
@@ -961,6 +1035,9 @@ trait WebDav {
 
 	/**
 	 * @Given user :user moves new chunk file with id :id to :dest
+	 * @param string $user
+	 * @param string $id
+	 * @param string $dest
 	 */
 	public function userMovesNewChunkFileWithIdToMychunkedfile($user, $id, $dest) {
 		$this->moveNewDavChunkToFinalFile($user, $id, $dest, []);
@@ -968,6 +1045,10 @@ trait WebDav {
 
 	/**
 	 * @Then user :user moves new chunk file with id :id to :dest with size :size
+	 * @param string $user
+	 * @param string $id
+	 * @param string $dest
+	 * @param int $size
 	 */
 	public function userMovesNewChunkFileWithIdToMychunkedfileWithSize($user, $id, $dest, $size) {
 		$this->moveNewDavChunkToFinalFile($user, $id, $dest, ['OC-Total-Length' => $size]);
@@ -975,6 +1056,10 @@ trait WebDav {
 
 	/**
 	 * @Then user :user moves new chunk file with id :id to :dest with checksum :checksum
+	 * @param string $user
+	 * @param string $id
+	 * @param string $dest
+	 * @param string $checksum
 	 */
 	public function userMovesNewChunkFileWithIdToMychunkedfileWithChecksum($user, $id, $dest, $checksum) {
 		$this->moveNewDavChunkToFinalFile($user, $id, $dest, ['OC-Checksum' => $checksum]);
@@ -1003,6 +1088,8 @@ trait WebDav {
 
 	/**
 	 * @Given /^downloading file "([^"]*)" as "([^"]*)"$/
+	 * @param string $fileName
+	 * @param string $user
 	 */
 	public function downloadingFileAs($fileName, $user) {
 		try {
@@ -1025,6 +1112,8 @@ trait WebDav {
 
 	/**
 	 * @When user :user favorites element :path
+	 * @param string $user
+	 * @param string $path
 	 */
 	public function userFavoritesElement($user, $path) {
 		$this->response = $this->changeFavStateOfAnElement($user, $path, 1, 0, null);
@@ -1032,12 +1121,22 @@ trait WebDav {
 
 	/**
 	 * @When user :user unfavorites element :path
+	 * @param string $user
+	 * @param string $path
 	 */
 	public function userUnfavoritesElement($user, $path) {
 		$this->response = $this->changeFavStateOfAnElement($user, $path, 0, 0, null);
 	}
 
-	/*Set the elements of a proppatch, $folderDepth requires 1 to see elements without children*/
+	/**
+	 * Set the elements of a proppatch
+	 * @param string $user
+	 * @param string $path
+	 * @param int $favOrUnfav 1 = favorite, 0 = unfavorite
+	 * @param int $folderDepth requires 1 to see elements without children
+	 * @param array|null $properties
+	 * @return bool
+	 */
 	public function changeFavStateOfAnElement($user, $path, $favOrUnfav, $folderDepth, $properties = null) {
 		$settings = [
 			'baseUri' => $this->baseUrlWithoutOCSAppendix(),
@@ -1059,6 +1158,8 @@ trait WebDav {
 	/**
 	 * @When user :user stores etag of element :path
 	 * @Given user :user has stored etag of element :path
+	 * @param string $user
+	 * @param string $path
 	 */
 	public function userStoresEtagOfElement($user, $path) {
 		$propertiesTable = new \Behat\Gherkin\Node\TableNode([['{DAV:}getetag']]);
@@ -1069,6 +1170,8 @@ trait WebDav {
 
 	/**
 	 * @Then the etag of element :path of user :user should not have changed
+	 * @param string $path
+	 * @param string $user
 	 */
 	public function etagOfElementOfUserShouldNotHaveChanged($path, $user) {
 		$propertiesTable = new \Behat\Gherkin\Node\TableNode([['{DAV:}getetag']]);
@@ -1078,6 +1181,8 @@ trait WebDav {
 
 	/**
 	 * @Then the etag of element :path of user :user should have changed
+	 * @param string $path
+	 * @param string $user
 	 */
 	public function etagOfElementOfUserShouldHaveChanged($path, $user) {
 		$propertiesTable = new \Behat\Gherkin\Node\TableNode([['{DAV:}getetag']]);
@@ -1124,8 +1229,8 @@ trait WebDav {
 	 * @param string $user
 	 * @param string $folder
 	 * @param \Behat\Gherkin\Node\TableNode|null $expectedElements
-	 * @param int $offset
-	 * @param int $limit
+	 * @param int $offset unused
+	 * @param int $limit unused
 	 */
 	public function checkFavoritedElementsPaginated($user, $folder, $expectedElements, $offset, $limit) {
 		$elementList = $this->reportFolder($user,
@@ -1149,7 +1254,7 @@ trait WebDav {
 	 * @param string $user
 	 * @param string $folder
 	 */
-	public function userDeletesEverythingInFolder($user, $folder)  {
+	public function userDeletesEverythingInFolder($user, $folder) {
 		$elementList = $this->listFolder($user, $folder, 1);
 		if (is_array($elementList) && count($elementList)) {
 			$elementListKeys = array_keys($elementList);

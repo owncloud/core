@@ -128,6 +128,11 @@ trait Comments {
 		}
 	}
 
+	/**
+	 * @param string $user
+	 * @param string $fileId
+	 * @param string $commentId
+	 */
 	public function deleteComment($user, $fileId, $commentId) {
 		$commentsPath = '/comments/files/' . $fileId . '/' . $commentId;
 		try {
@@ -184,6 +189,12 @@ trait Comments {
 		}
 	}
 
+	/**
+	 * @param string $user
+	 * @param string $content
+	 * @param string $fileId
+	 * @param string $commentId
+	 */
 	public function editAComment($user, $content, $fileId, $commentId) {
 		$commentsPath = '/comments/files/' . $fileId . '/' . $commentId;
 		try {
@@ -210,8 +221,6 @@ trait Comments {
 	 * @When /^user "([^"]*)" edits last comment with content "([^"]*)"$/
 	 * @param string $user
 	 * @param string $content
-	 * @param string $type
-	 * @param string $path
 	 * @throws \Exception
 	 */
 	public function userEditsLastCreatedComment($user, $content) {

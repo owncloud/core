@@ -33,7 +33,8 @@ trait Tags {
 
 	/**
 	 * @param string $user
-	 * @param string $type
+	 * @param bool $userVisible
+	 * @param bool $userAssignable
 	 * @param string $name
 	 * @param string $groups
 	 */
@@ -142,9 +143,8 @@ trait Tags {
 
 	/**
 	 * @Then tag :tagDisplayName should not exist for :user
+	 * @param string $tagDisplayName
 	 * @param string $user
-	 * @param TableNode $table
-	 * @throws \Exception
 	 */
 	public function tagShouldNotExistForUser($tagDisplayName, $user) {
 		$tagData = $this->requestTagByDisplayName($user, $tagDisplayName);
@@ -153,6 +153,11 @@ trait Tags {
 
 	/**
 	 * @Then the user :user :can assign the :type tag with name :tagDisplayName
+	 * @param string $user
+	 * @param string $can can or cannot
+	 * @param string $type
+	 * @param string $tagDisplayName
+	 * @throws Exception
 	 */
 	public function theUserCanAssignTheTag($user, $can, $type, $tagDisplayName) {
 		$tagData = $this->requestTagByDisplayName($user, $tagDisplayName);
@@ -171,6 +176,9 @@ trait Tags {
 
 	/**
 	 * @Then the :type tag with name :tagName has the groups :groups
+	 * @param string $type
+	 * @param string $tagName
+	 * @param string $groups list of groups separated by "|"
 	 */
 	public function theTagHasGroup($type, $tagName, $groups) {
 		$tagData = $this->requestTagByDisplayName($this->getAdminUserName(), $tagName, true);
@@ -186,7 +194,7 @@ trait Tags {
 	 * @param string $user
 	 * @throws \Exception
 	 */
-	public function tagsShouldExistFor($count, $user)  {
+	public function tagsShouldExistFor($count, $user) {
 		if ((int)$count !== count($this->requestTagsForUser($user))) {
 			throw new \Exception("Expected $count tags, got ".count($this->requestTagsForUser($user)));
 		}
@@ -254,7 +262,7 @@ trait Tags {
 	/**
 	 * @Given :user deletes the tag with name :name
 	 * @param string $user
-	 * @param string $groupName
+	 * @param string $name
 	 */
 	public function userDeletesTag($user, $name) {
 		$tagID = $this->findTagIdByName($name);
@@ -328,6 +336,7 @@ trait Tags {
 	 * @param string $taggingUser
 	 * @param string $tagName
 	 * @param string $fileName
+	 * @param string $sharedOrOwnedBy unused
 	 * @param string $sharingUser
 	 */
 	public function addsTheTagToSharedBy($taggingUser, $tagName, $fileName, $sharedOrOwnedBy, $sharingUser) {
@@ -337,9 +346,10 @@ trait Tags {
 	/**
 	 * @Then /^"([^"]*)" (shared|owned) by "([^"]*)" has the following tags$/
 	 * @param string $fileName
+	 * @param string $sharedOrOwnedBy unused
 	 * @param string $sharingUser
 	 * @param TableNode $table
-	 * @throws \Exception
+	 * @return bool
 	 */
 	public function sharedByHasTheFollowingTags($fileName, $sharedOrOwnedBy, $sharingUser, TableNode $table) {
 		$tagList = $this->requestTagsForFile($sharingUser, $fileName);
@@ -367,7 +377,7 @@ trait Tags {
 	/**
 	 * @Then :fileName shared by :sharingUser has the following tags for :user
 	 * @param string $fileName
-	 * @param string $sharingUser
+	 * @param string $sharingUser unused
 	 * @param string $user
 	 * @param TableNode $table
 	 * @throws \Exception

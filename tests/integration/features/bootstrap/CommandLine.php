@@ -59,6 +59,7 @@ trait CommandLine {
 
 	/**
 	 * @Given /^invoking occ with "([^"]*)"$/
+	 * @param string $cmd
 	 */
 	public function invokingTheCommand($cmd) {
 		$args = explode(' ', $cmd);
@@ -123,6 +124,8 @@ trait CommandLine {
 
 	/**
 	 * @Then /^the command failed with exit code ([0-9]+)$/
+	 * @param int $exitCode
+	 * @throws Exception
 	 */
 	public function theCommandFailedWithExitCode($exitCode) {
 		if ($this->lastCode !== (int)$exitCode) {
@@ -132,6 +135,8 @@ trait CommandLine {
 
 	/**
 	 * @Then /^the command failed with exception text "([^"]*)"$/
+	 * @param string $exceptionText
+	 * @throws Exception
 	 */
 	public function theCommandFailedWithException($exceptionText) {
 		$exceptions = $this->findExceptions();
@@ -146,6 +151,8 @@ trait CommandLine {
 
 	/**
 	 * @Then /^the command output contains the text "([^"]*)"$/
+	 * @param string $text
+	 * @throws Exception
 	 */
 	public function theCommandOutputContainsTheText($text) {
 		$lines = $this->findLines($this->lastStdOut, $text);
@@ -156,6 +163,8 @@ trait CommandLine {
 
 	/**
 	 * @Then /^the command error output contains the text "([^"]*)"$/
+	 * @param string $text
+	 * @throws Exception
 	 */
 	public function theCommandErrorOutputContainsTheText($text) {
 		$lines = $this->findLines($this->lastStdErr, $text);
@@ -166,6 +175,11 @@ trait CommandLine {
 
 	private $lastTransferPath;
 
+	/**
+	 * @param string $sourceUser
+	 * @param string $targetUser
+	 * @return string|null
+	 */
 	private function findLastTransferFolderForUser($sourceUser, $targetUser) {
 		$foundPaths = [];
 		$results = $this->listFolder($targetUser, '', 1);
@@ -201,6 +215,8 @@ trait CommandLine {
 
 	/**
 	 * @When /^transferring ownership from "([^"]+)" to "([^"]+)"/
+	 * @param string $user1
+	 * @param string $user2
 	 */
 	public function transferringOwnership($user1, $user2) {
 		if ($this->runOcc(['files:transfer-ownership', $user1, $user2]) === 0) {
@@ -222,6 +238,9 @@ trait CommandLine {
 
 	/**
 	 * @When /^transferring ownership of path "([^"]+)" from "([^"]+)" to "([^"]+)"/
+	 * @param string $path
+	 * @param string $user1
+	 * @param string $user2
 	 */
 	public function transferringOwnershipPath($path, $user1, $user2) {
 		$path = '--path=' . $path;
@@ -235,6 +254,7 @@ trait CommandLine {
 
 	/**
 	 * @When /^using received transfer folder of "([^"]+)" as dav path$/
+	 * @param string $user
 	 */
 	public function usingTransferFolderAsDavPath($user) {
 		$davPath = $this->getDavFilesPath($user);

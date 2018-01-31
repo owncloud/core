@@ -59,7 +59,7 @@ trait Trashbin {
 	/**
 	 * @Then /^as "([^"]*)" the (file|folder|entry) "([^"]*)" exists in trash$/
 	 * @param string $user
-	 * @param string $entryText
+	 * @param string $entryText unused
 	 * @param string $path
 	 */
 	public function asTheFileOrFolderExistsInTrash($user, $entryText, $path) {
@@ -97,7 +97,12 @@ trait Trashbin {
 		PHPUnit_Framework_Assert::assertTrue($found);
 	}
 
-	/*Function to check if an element is in trashbin*/
+	/**
+	 * Function to check if an element is in trashbin
+	 * @param string $user
+	 * @param string $originalPath
+	 * @return bool
+	 */
 	private function isInTrash($user, $originalPath) {
 		$listing = $this->listTrashbinFolder($user, null);
 		$originalPath = trim($originalPath, '/');
@@ -115,6 +120,10 @@ trait Trashbin {
 		return $found;
 	}
 
+	/**
+	 * @param string $user
+	 * @param string $elementTrashID
+	 */
 	private function sendUndeleteRequest($user, $elementTrashID) {
 		$this->asUser($user);
 		$body = new \Behat\Gherkin\Node\TableNode([['files',  "[\"$elementTrashID\"]"], ['dir', '/']]);
@@ -122,6 +131,10 @@ trait Trashbin {
 		$this->theHTTPStatusCodeShouldBe('200');
 	}
 
+	/**
+	 * @param string $user
+	 * @param string $originalPath
+	 */
 	private function restoreElement($user, $originalPath) {
 		$listing = $this->listTrashbinFolder($user, null);
 		$originalPath = trim($originalPath, '/');
@@ -140,7 +153,7 @@ trait Trashbin {
 	/**
 	 * @Given /^as "([^"]*)" the (file|folder|entry) with original path "([^"]*)" is restored$/
 	 * @param string $user
-	 * @param string $entryText
+	 * @param string $entryText unused
 	 * @param string $originalPath
 	 */
 	public function elementInTrashIsRestored($user, $entryText, $originalPath) {
@@ -152,7 +165,7 @@ trait Trashbin {
 	/**
 	 * @Then /^as "([^"]*)" the (file|folder|entry) with original path "([^"]*)" exists in trash$/
 	 * @param string $user
-	 * @param string $entryText
+	 * @param string $entryText unused
 	 * @param string $originalPath
 	 */
 	public function elementIsInTrashCheckingOriginalPath($user, $entryText, $originalPath) {
@@ -174,6 +187,7 @@ trait Trashbin {
 	/**
 	 * Finds the first trashed entry matching the given name
 	 *
+	 * @param string $user
 	 * @param string $name
 	 * @return string|null real entry name with timestamp suffix or null if not found
 	 */

@@ -149,6 +149,7 @@ trait Sharing {
 	 * @Given /^user "([^"]*)" creates a public share of (?:file|folder) "([^"]*)" with (read|update|create|delete|change|share|all) permission(?:s|)$/
 	 * @param string $user
 	 * @param string $path
+	 * @param string|int|string[]|int[]|null $permissions
 	 * @return void
 	 */
 	public function userCreatesAPublicShareOfWithPermission($user, $path, $permissions) {
@@ -158,6 +159,7 @@ trait Sharing {
 	/**
 	 * @Given /^a public share of (?:file|folder) "([^"]*)" is created with (read|update|create|delete|change|share|all) permission(?:s|)$/
 	 * @param string $path
+	 * @param string|int|string[]|int[]|null $permissions
 	 * @return void
 	 */
 	public function aPublicShareOfIsCreatedWithPermission($path, $permissions) {
@@ -906,7 +908,7 @@ trait Sharing {
 	 * @When /^user "([^"]*)" deletes public share named "([^"]*)" in (file|folder) "([^"]*)"$/
 	 * @param string $user
 	 * @param string $name
-	 * @param string $type
+	 * @param string $type unused
 	 * @param string $path
 	 * @return void
 	 */
