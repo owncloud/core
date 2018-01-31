@@ -11,9 +11,27 @@
 namespace Tests\Settings\Controller;
 
 use OC\Settings\Application;
+use OC\Settings\Controller\UsersController;
 use OCP\AppFramework\Http;
 use OCP\AppFramework\Http\DataResponse;
 use OCP\AppFramework\Http\RedirectResponse;
+use OCP\IRequest;
+use OCP\IUserManager;
+use OCP\IGroupManager;
+use OCP\IUserSession;
+use OCP\IConfig;
+use OCP\Security\ISecureRandom;
+use OCP\IL10N;
+use OCP\ILogger;
+use OCP\Mail\IMailer;
+use OCP\AppFramework\Utility\ITimeFactory;
+use OCP\IURLGenerator;
+use OCP\App\IAppManager;
+use OCP\IAvatarManager;
+use OC\SubAdmin;
+use OC\Mail\Message;
+use OCP\IUser;
+use OC\Group\Manager;
 
 /**
  * @group DB
@@ -1788,6 +1806,145 @@ class UsersControllerTest extends \Test\TestCase {
 
 		$result = self::invokePrivate($this->container['UsersController'], 'formatUserForIndex', [$user]);
 		$this->assertEquals($expectedResult, $result);
+	}
+
+	public function dataforemailaddress() {
+		return [
+			['foo', 'foo', 'foo', 'foo' , 'foo@localhost'],
+			['bar', 'bar', 'bar', 'foo', 'foo@localhoster']
+		];
+	}
+
+	/**
+	 * Test to verify setting email address by user who had logged in
+	 * for itself.
+	 *
+	 * @dataProvider dataforemailaddress
+	 * @param $userName
+	 * @param $userPassword
+	 * @param $loginUser
+	 * @param $setUser
+	 * @param $emailAddress
+	 */
+	public function testSetSelfEmailAddress($userName, $userPassword, $loginUser, $setUser, $emailAddress) {
+		\OC::$server->getUserManager()->createUser($userName, $userPassword);
+
+		$appName = "settings";
+		$irequest = $this->createMock(IRequest::class);
+		$userManager = $this->createMock(IUserManager::class);
+		$groupManager = $this->createMock(Manager::class);
+		$userSession = $this->createMock(IUserSession::class);
+		$iConfig = $this->createMock(IConfig::class);
+		$iSecureRandom = $this->createMock(ISecureRandom::class);
+		$iL10 = $this->createMock(IL10N::class);
+		$iLogger = $this->createMock(ILogger::class);
+		$ocDefault = $this->getMockBuilder('\OC_Defaults')
+			->disableOriginalConstructor()->getMock();
+		$iMailer = $this->createMock(IMailer::class);
+		$iTimeFactory = $this->createMock(ITimeFactory::class);
+		$urlGenerator = $this->createMock(IURLGenerator::class);
+		$appManager = $this->createMock(IAppManager::class);
+		$iAvatarManager = $this->createMock(IAvatarManager::class);
+		$userController = new UsersController($appName, $irequest, $userManager, $groupManager,
+			$userSession, $iConfig, $iSecureRandom, false, $iL10, $iLogger, $ocDefault, $iMailer,
+			$iTimeFactory, "", $urlGenerator, $appManager, $iAvatarManager);
+
+		$this->loginAsUser($loginUser);
+
+
+		$iUser = $this->createMock(IUser::class);
+		$userManager->method('get')->willReturn($iUser);
+		$iUser->method('getUID')->willReturn($loginUser);
+		$userSession->expects($this->any())
+			->method('getUser')
+			->willReturn($iUser);
+		$subAdmin = $this->createMock(SubAdmin::class);
+		$subAdmin->method('isSubAdmin')->with($iUser)->willReturn(false);
+		$groupManager->expects($this->any())
+			->method('getSubAdmin')
+			->willReturn($subAdmin);
+		$response = $userController->setEmailAddress($setUser, $emailAddress);
+		if ($loginUser !== $setUser) {
+			$this->assertEquals( new Http\JSONResponse([
+				'error' => 'cannotSetEmailAddress',
+				'message' => 'Cannot set email address for user'
+			], HTTP::STATUS_NOT_FOUND), $response);
+		} else {
+			$this->assertEquals(new Http\JSONResponse(), $response);
+		}
+	}
+
+	public function setDataForSendMail() {
+		return [
+			['foo', 'foo@localhost'],
+			['bar', 'bar@localhost']
+		];
+	}
+
+	/**
+	 * A test to verify if the email is send and verify data response for
+	 * the success
+	 *
+	 * @dataProvider setDataForSendMail
+	 * @param $id
+	 * @param $mailaddress
+	 */
+	public function testSetEmailAddressSendEmail($id, $mailaddress) {
+
+		$appName = "settings";
+		$irequest = $this->createMock(IRequest::class);
+		$userManager = $this->createMock(IUserManager::class);
+		$groupManager = $this->createMock(IGroupManager::class);
+		$userSession = $this->createMock(IUserSession::class);
+		$iConfig = $this->createMock(IConfig::class);
+		$iSecureRandom = $this->createMock(ISecureRandom::class);
+		$iL10 = $this->createMock(IL10N::class);
+		$iLogger = $this->createMock(ILogger::class);
+		$ocDefault = $this->getMockBuilder('\OC_Defaults')
+			->disableOriginalConstructor()->getMock();
+		$iMailer = $this->createMock(IMailer::class);
+		$iTimeFactory = $this->createMock(ITimeFactory::class);
+		$urlGenerator = $this->createMock(IURLGenerator::class);
+		$appManager = $this->createMock(IAppManager::class);
+		$iAvatarManager = $this->createMock(IAvatarManager::class);
+		$userController = new UsersController($appName, $irequest, $userManager, $groupManager,
+			$userSession, $iConfig, $iSecureRandom, false, $iL10, $iLogger, $ocDefault, $iMailer,
+			$iTimeFactory, "", $urlGenerator, $appManager, $iAvatarManager);
+
+		$this->loginAsUser($id);
+
+		$iUser = $this->createMock(IUser::class);
+		$iUser->expects($this->once())
+			->method('canChangeDisplayName')
+			->willReturn(true);
+		$userManager->method('get')->willReturn($iUser);
+		$iUser->method('getUID')->willReturn($id);
+		$userSession->expects($this->any())
+			->method('getUser')
+			->willReturn($iUser);
+
+		$iMailer->expects($this->once())->method('validateMailAddress')
+			->willReturn(true);
+		$mailMessage = $this->createMock(Message::class);
+		$iMailer->expects($this->once())
+			->method('createMessage')
+			->willReturn($mailMessage);
+		$iL10->expects($this->atLeastOnce())
+			->method('t')
+			->willReturn('An email has been sent to this address for confirmation. Until the email is verified this address will not be set.');
+		$expectedResponse = new DataResponse(
+			[
+				'status' => 'success',
+				'data' => [
+					'username' => $id,
+					'mailAddress' => $mailaddress,
+					'message' => 'An email has been sent to this address for confirmation. Until the email is verified this address will not be set.'
+				]
+			],
+			Http::STATUS_OK
+		);
+		$response = $userController->setMailAddress($id, $mailaddress);
+		$this->assertEquals($expectedResponse, $response);
 	}
 
 	/**
