@@ -331,7 +331,7 @@ class Manager extends PublicEmitter implements IUserManager {
 			$this->emit('\OC\User', 'preCreateUser', [$uid, $password]);
 			\OC::$server->getEventDispatcher()->dispatch(
 				'OCP\User::validatePassword',
-				new GenericEvent(null, ['password' => $password])
+				new GenericEvent(null, ['uid' => $uid, 'password' => $password])
 			);
 
 			if (empty($this->backends)) {
