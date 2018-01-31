@@ -423,21 +423,16 @@ class ManagerTest extends TestCase {
 		$dateTime = new \DateTime();
 		$dateTime->setTimestamp(1517229869);
 		$notification->setDateTime($dateTime);
-		$notification->setMessage('test message');
+		$notification->setObject('foo', 2212);
+		$notification->setSubject('foobar');
 
 		$expectedData = [
 			"app" => "test",
 			"user" => "userTest",
 			"dateTime" => 1517229869,
-			"message" => "test message",
-			"objectType" => "",
-			"objectId" => "",
-			"subject" => "",
-			"subjectParameters" => [],
-			"messageParameters" => [],
-			"link" => "",
-			"icon" => "",
-			"actions" => [],
+			"objectType" => "foo",
+			"objectId" => "2212",
+			"subject" => "foobar",
 		];
 		$expectedOutput = json_encode($expectedData);
 		$this->assertJsonStringEqualsJsonString($expectedOutput, $this->manager->serializeNotification($notification));
@@ -450,6 +445,7 @@ class ManagerTest extends TestCase {
 		$dateTime = new \DateTime();
 		$dateTime->setTimestamp(1517229869);
 		$notification->setDateTime($dateTime);
+		$notification->setObject('foo', 2212);
 		$notification->setMessage('test message', ["arg1", "arg2"]);
 		$notification->setSubject('test subject', ["arg1", "arg2"]);
 		$notification->setIcon('http://example.com/awesomeicon.png');
@@ -473,8 +469,8 @@ class ManagerTest extends TestCase {
 			"user" => "userTest",
 			"dateTime" => 1517229869,
 			"message" => "test message",
-			"objectType" => "",
-			"objectId" => "",
+			"objectType" => "foo",
+			"objectId" => "2212",
 			"subject" => "test subject",
 			"subjectParameters" => ["arg1", "arg2"],
 			"messageParameters" => ["arg1", "arg2"],
@@ -489,7 +485,6 @@ class ManagerTest extends TestCase {
 				],
 				[
 					"label" => "action2 label",
-					"primary" => false,
 					"link" => "http://example.com/example",
 					"requestType" => "POST",
 				],
@@ -519,23 +514,185 @@ class ManagerTest extends TestCase {
 		$dateTime = new \DateTime();
 		$dateTime->setTimestamp(1517229869);
 		$notification->setDateTime($dateTime);
-		$notification->setMessage('test message');
+		$notification->setObject('foo', 2212);
+		$notification->setSubject('test message');
 
 		$expectedData = [
+/*
 			"app" => "",
+*/
 			"user" => "userTest",
 			"dateTime" => 1517229869,
-			"message" => "test message",
-			"objectType" => "",
-			"objectId" => "",
-			"subject" => "",
-			"subjectParameters" => [],
-			"messageParameters" => [],
-			"link" => "",
-			"icon" => "",
-			"actions" => [],
+			"subject" => "test message",
+			"objectType" => "foo",
+			"objectId" => 2212,
 		];
 		$expectedOutput = json_encode($expectedData);
 		$this->assertJsonStringEqualsJsonString($expectedOutput, $this->manager->serializeNotification($notification, true));
+	}
+
+	public function testDeserializeNotification() {
+		$baseData = [
+			"app" => "test",
+			"user" => "userTest",
+			"dateTime" => 1517229869,
+			"objectType" => "foo",
+			"objectId" => 112233,
+			"subject" => "foobar",
+		];
+		$inputData = json_encode($baseData);
+
+		$expectedNotification = $this->manager->createNotification();
+		$expectedNotification->setApp("test");
+		$expectedNotification->setuser("userTest");
+		$dateTime = new \DateTime();
+		$dateTime->setTimestamp(1517229869);
+		$expectedNotification->setDateTime($dateTime);
+		$expectedNotification->setObject("foo", 112233);
+		$expectedNotification->setSubject("foobar");
+
+		$this->assertEquals($expectedNotification, $this->manager->deserializeNotification($inputData));
+	}
+
+	public function testDeserializeNotificationWithActions() {
+		$baseData = [
+			"app" => "test",
+			"user" => "userTest",
+			"dateTime" => 1517229869,
+			"message" => "test message",
+			"objectType" => "foo",
+			"objectId" => "2212",
+			"subject" => "test subject",
+			"subjectParameters" => ["arg1", "arg2"],
+			"messageParameters" => ["arg1", "arg2"],
+			"link" => "http://example.com/visitme",
+			"icon" => "http://example.com/awesomeicon.png",
+			"actions" => [
+				[
+					"label" => "action1 label",
+					"primary" => true,
+					"link" => "http://example.com/example",
+					"requestType" => "GET",
+				],
+				[
+					"label" => "action2 label",
+					"link" => "http://example.com/example",
+					"requestType" => "POST",
+				],
+			],
+		];
+		$inputData = json_encode($baseData);
+
+		$notification = $this->manager->createNotification();
+		$notification->setApp('test');
+		$notification->setUser('userTest');
+		$dateTime = new \DateTime();
+		$dateTime->setTimestamp(1517229869);
+		$notification->setDateTime($dateTime);
+		$notification->setObject('foo', 2212);
+		$notification->setMessage('test message', ["arg1", "arg2"]);
+		$notification->setSubject('test subject', ["arg1", "arg2"]);
+		$notification->setIcon('http://example.com/awesomeicon.png');
+		$notification->setLink('http://example.com/visitme');
+
+		$action1 = $notification->createAction();
+		$action1->setLabel('action1 label');
+		$action1->setPrimary(true);
+		$action1->setLink('http://example.com/example', 'GET');
+
+		$action2 = $notification->createAction();
+		$action2->setLabel('action2 label');
+		$action2->setPrimary(false);
+		$action2->setLink('http://example.com/example', 'POST');
+
+		$notification->addAction($action1);
+		$notification->addAction($action2);
+
+		$this->assertEquals($notification, $this->manager->deserializeNotification($inputData));
+	}
+
+	/**
+	 * @expectedException \OCP\Notification\Exceptions\CannotDeserializeException
+	 */
+	public function testDeserializeNotificationCannotDeserialize() {
+		$this->manager->deserializeNotification('huehue');
+	}
+
+	/**
+	 * @expectedException \OCP\Notification\Exceptions\IncompleteDeserializationException
+	 */
+	public function testDeserializeNotificationIncomplete() {
+		$baseData = [
+			"app" => "test",
+			"user" => "userTest",
+			"dateTime" => 1517229869,
+			"objectId" => 112233,
+			"subject" => "foobar",
+		];
+		$inputData = json_encode($baseData);
+
+		$this->manager->deserializeNotification($inputData);
+	}
+
+	public function notificationProvider() {
+		$manager = new Manager(); // can't access to the manager set up in the tests, so we need a new instance
+		$notification1 = $manager->createNotification();
+		$notification1->setApp('test');
+		$notification1->setUser('userTest');
+		$dateTime = new \DateTime();
+		$dateTime->setTimestamp(1517229869);
+		$notification1->setDateTime($dateTime);
+		$notification1->setObject('foo', 2212);
+		$notification1->setSubject('foobar');
+
+		$notification2 = $manager->createNotification();
+		$notification2->setApp('test');
+		$notification2->setUser('userTest');
+		$dateTime = new \DateTime();
+		$dateTime->setTimestamp(1517229869);
+		$notification2->setDateTime($dateTime);
+		$notification2->setObject('foo', 2212);
+		$notification2->setMessage('test message', ["arg1", "arg2"]);
+		$notification2->setSubject('test subject', ["arg1", "arg2"]);
+		$notification2->setIcon('http://example.com/awesomeicon.png');
+		$notification2->setLink('http://example.com/visitme');
+
+		$action1 = $notification2->createAction();
+		$action1->setLabel('action1 label');
+		$action1->setPrimary(true);
+		$action1->setLink('http://example.com/example', 'GET');
+
+		$action2 = $notification2->createAction();
+		$action2->setLabel('action2 label');
+		$action2->setPrimary(false);
+		$action2->setLink('http://example.com/example', 'POST');
+
+		$notification2->addAction($action1);
+		$notification2->addAction($action2);
+
+		$notification3 = $manager->createNotification();
+		$notification3->setApp('test76þñ!"·$%&/()=|@#~½¬{[]');
+		$notification3->setUser('userTestþñ!"·$%&/()=|@#~½¬{[]');
+		$dateTime = new \DateTime();
+		$dateTime->setTimestamp(1517239869);
+		$notification3->setDateTime($dateTime);
+		$notification3->setObject('fooþñ!"·$%&/()=|@#~½¬{[]', 2212);
+		$notification3->setSubject('foobarþñ!"·$%&/()=|@#~½¬{[]');
+
+		return [
+			[$notification1],
+			[$notification2],
+			[$notification3],
+		];
+	}
+
+	/**
+	 * @dataProvider notificationProvider
+	 */
+	public function testSerializeDeserializeNotification($notification) {
+		$recoveredNotification = $this->manager->deserializeNotification(
+				$this->manager->serializeNotification($notification)
+		);
+		$this->assertEquals($notification, $recoveredNotification);
 	}
 }

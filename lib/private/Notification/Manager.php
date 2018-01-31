@@ -256,12 +256,12 @@ class Manager implements IManager {
 			'app' => 'getApp',
 			'user' => 'getUser',
 			'dateTime' => 'getDateTime',  // requires special handling
-			'message' => 'getMessage',
-		];
-		$optionalFields = [
 			'objectType' => 'getObjectType',
 			'objectId' => 'getObjectId',
 			'subject' => 'getSubject',
+		];
+		$optionalFields = [
+			'message' => 'getMessage',
 			'subjectParameters' => 'getSubjectParameters',
 			'messageParameters' => 'getMessageParameters',
 			'link' => 'getLink',
@@ -289,10 +289,14 @@ class Manager implements IManager {
 		// serialize the actions
 		$serializedActions = [];
 		$actions = $notification->getActions();
+		$dummyAction = $notification->createAction();
 		foreach ($actions as $action) {
 			$newSerializedAction = [];
 			foreach ($actionFields as $field => $fieldMethod) {
-				$newSerializedAction[$field] = $action->$fieldMethod();
+				if ($action->$fieldMethod() !== $dummyAction->$fieldMethod()) {
+					// only serialize changes
+					$newSerializedAction[$field] = $action->$fieldMethod();
+				}
 			}
 			$serializedActions[] = $newSerializedAction;
 		}
@@ -302,14 +306,22 @@ class Manager implements IManager {
 		$allFields = $mandatoryFields + $optionalFields;  // disjoint sets shouldn't be problematic
 		foreach ($allFields as $field => $fieldMethod) {
 			if ($field === 'dateTime') {
-				$serializedNotification[$field] = $notification->$fieldMethod()->getTimestamp();
+				// only serialize changes
+				if ($notification->$fieldMethod()->getTimestamp() !==
+						$dummyNotification->$fieldMethod()->getTimestamp()) {
+					$serializedNotification[$field] = $notification->$fieldMethod()->getTimestamp();
+				}
 			} else {
-				$serializedNotification[$field] = $notification->$fieldMethod();
+				if ($notification->$fieldMethod() !== $dummyNotification->$fieldMethod()) {
+					$serializedNotification[$field] = $notification->$fieldMethod();
+				}
 			}
 		}
 
 		// add the actions
-		$serializedNotification['actions'] = $serializedActions;
+		if (!empty($serializedActions)) {
+			$serializedNotification['actions'] = $serializedActions;
+		}
 
 		return json_encode($serializedNotification);
 	}
@@ -334,7 +346,7 @@ class Manager implements IManager {
 		}
 
 		// check mandatory fields
-		$mandatoryFields = ['app', 'user', 'dateTime', 'message'];
+		$mandatoryFields = ['app', 'user', 'dateTime', 'objectType', 'objectId', 'subject'];
 		$missingMandatoryFields = [];
 		foreach ($mandatoryFields as $field) {
 			if (!isset($deserializedNotification[$field])) {
@@ -369,12 +381,15 @@ class Manager implements IManager {
 			if (strpos($field, '+')) {  // 0 isn't a valid result here.
 				// this implies that several fields must be set at the same time
 				$multipleFields = explode('+', $field);
-				$multipleValues = array_map(function($field) use ($deserializedNotification){
-					return (isset($deserializedNotification[$field])) ? $deserializedNotification[$field] : null;
-				}, $multipleFields);
-				if (in_array(null, $multipleValues, true)) {
-					// TODO: Log something
-				} else {
+				$multipleValues = [];
+				foreach ($multipleFields as $field) {
+					if (isset($deserializedNotification[$field])) {
+						$multipleValues[] = $deserializedNotification[$field];
+					}
+				}
+				// WATCH OUT: this implies that "set" methods won't be called with all parameters as default
+				// nor some default parameters in the middle.
+				if (!empty($multipleValues)) {
 					call_user_func_array([$notification, $fieldMethod], $multipleValues);
 				}
 			} else {
@@ -394,30 +409,35 @@ class Manager implements IManager {
 		}
 
 		// handle actions
-		$deserializedActions = $deserializedNotification['actions'];
-		foreach ($deserializedActions as $deserializedAction) {
-			$newAction = $notification->createAction();
-			foreach ($actionsFields as $field => $fieldMethod) {
-				if (strpos($field, '+')) {  // 0 isn't a valid result here.
-					// this implies that several fields must be set at the same time
-					$multipleFields = explode('+', $field);
-					$multipleValues = array_map(function($field) use ($deserializedAction){
-						return (isset($deserializedAction[$field])) ? $deserializedAction[$field] : null;
-					}, $multipleFields);
-					if (in_array(null, $multipleValues, true)) {
-						// TODO: Log something
+		if (isset($deserializedNotification['actions'])) {
+			$deserializedActions = $deserializedNotification['actions'];
+			foreach ($deserializedActions as $deserializedAction) {
+				$newAction = $notification->createAction();
+				foreach ($actionsFields as $field => $fieldMethod) {
+					if (strpos($field, '+')) {  // 0 isn't a valid result here.
+						// this implies that several fields must be set at the same time
+						$multipleFields = explode('+', $field);
+						$multipleValues = [];
+						foreach ($multipleFields as $field) {
+							if (isset($deserializedAction[$field])) {
+								$multipleValues[] = $deserializedAction[$field];
+							}
+						}
+						// WATCH OUT: this implies that "set" methods won't be called with all parameters as default
+						// nor some default parameters in the middle.
+						if (!empty($multipleValues)) {
+							call_user_func_array([$newAction, $fieldMethod], $multipleValues);
+						}
 					} else {
-						call_user_func_array([$newAction, $fieldMethod], $multipleValues);
-					}
-				} else {
-					if (isset($deserializedAction[$field])) {
-						$newAction->$fieldMethod($deserializedAction[$field]);
-					} else {
-						// TODO: Log something
+						if (isset($deserializedAction[$field])) {
+							$newAction->$fieldMethod($deserializedAction[$field]);
+						} else {
+							// TODO: Log something
+						}
 					}
 				}
+				$notification->addAction($newAction);
 			}
-			$notification->addAction($newAction);
 		}
 		return $notification;
 	}
