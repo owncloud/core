@@ -305,7 +305,7 @@ class AuthTest extends TestCase {
 		$this->request
 			->expects($this->any())
 			->method('getMethod')
-			->willReturn('PROPFIND');
+			->willReturn('POST');
 		$this->request
 			->expects($this->any())
 			->method('isUserAgent')
@@ -357,7 +357,7 @@ class AuthTest extends TestCase {
 		$this->request
 			->expects($this->any())
 			->method('getMethod')
-			->willReturn('PROPFIND');
+			->willReturn('POST');
 		$this->request
 			->expects($this->any())
 			->method('isUserAgent')
