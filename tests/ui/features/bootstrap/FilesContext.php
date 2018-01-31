@@ -778,6 +778,17 @@ class FilesContext extends RawMinkContext implements Context {
 			$this->filesPage->getTooltipOfFile($name, $this->getSession())
 		);
 	}
+	
+	/**
+	 * @When I restore the file/folder :fname
+	 *
+	 * @param string $fname
+	 * @return void
+	 */
+	public function restoreFileAndFolder($fname) {
+		$session = $this->getSession();
+		$this->trashbinPage->restore($fname, $session);
+	}
 
 	/**
 	 * @Then near the folder input field a tooltip with the text :tooltiptext should be displayed
