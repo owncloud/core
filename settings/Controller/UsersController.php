@@ -11,7 +11,7 @@
  * @author Ujjwal Bhardwaj <ujjwalb1996@gmail.com>
  * @author Vincent Petry <pvince81@owncloud.com>
  *
- * @copyright Copyright (c) 2017, ownCloud GmbH
+ * @copyright Copyright (c) 2018, ownCloud GmbH
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -622,7 +622,7 @@ class UsersController extends Controller {
 						'data' => [
 							'username' => $id,
 							'mailAddress' => $mailAddress,
-							'message' => (string) $this->l10n->t('An email has been sent to this address for confirmation')
+							'message' => (string) $this->l10n->t('An email has been sent to this address for confirmation. Until the email is verified this address will not be set.')
 						]
 					],
 					Http::STATUS_OK
@@ -794,16 +794,19 @@ class UsersController extends Controller {
 	 *
 	 * @param string $id
  	 * @param string $mailAddress
+	 * @return JSONResponse
  	 */
 	public function setEmailAddress($id, $mailAddress) {
 		$user = $this->userManager->get($id);
 		if($this->isAdmin ||
 			($this->groupManager->getSubAdmin()->isSubAdmin($this->userSession->getUser()) &&
-				$this->groupManager->getSubAdmin()->isUserAccessible($this->userSession->getUser(), $user))) {
+				$this->groupManager->getSubAdmin()->isUserAccessible($this->userSession->getUser(), $user)) ||
+				($this->userSession->getUser()->getUID() === $id)) {
 			$user->setEMailAddress($mailAddress);
 			if ($this->config->getUserValue($id, 'owncloud', 'changeMail') !== '') {
 				$this->config->deleteUserValue($id, 'owncloud', 'changeMail');
 			}
+			return new JSONResponse();
 		} else {
 			return new JSONResponse([
 				'error' => 'cannotSetEmailAddress',
@@ -863,7 +866,7 @@ class UsersController extends Controller {
 				));
 			}
 		}
-		return new RedirectResponse($this->urlGenerator->linkToRoute('settings.SettingsPage.getPersonal', ['changestatus' => 'success']));
+		return new RedirectResponse($this->urlGenerator->linkToRoute('settings.SettingsPage.getPersonal', ['changestatus' => 'success', 'user' => $userId]));
   }
   
   /*

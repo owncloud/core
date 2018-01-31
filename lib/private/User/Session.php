@@ -13,7 +13,7 @@
  * @author Thomas Müller <thomas.mueller@tmit.eu>
  * @author Vincent Petry <pvince81@owncloud.com>
  *
- * @copyright Copyright (c) 2017, ownCloud GmbH
+ * @copyright Copyright (c) 2018, ownCloud GmbH
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -48,6 +48,7 @@ use OCP\App\IServiceLoader;
 use OCP\AppFramework\Utility\ITimeFactory;
 use OCP\Authentication\IAuthModule;
 use OCP\Events\EventEmitterTrait;
+use OCP\Files\NoReadAccessException;
 use OCP\Files\NotPermittedException;
 use OCP\IConfig;
 use OCP\IRequest;
@@ -415,6 +416,11 @@ class Session implements IUserSession, Emitter {
 				// possible if files directory is in an readonly jail
 				\OC::$server->getLogger()->warning(
 					'Skeleton not created due to missing write permission'
+				);
+			} catch (NoReadAccessException $ex) {
+				// possible if the skeleton directory does not have read access
+				\OC::$server->getLogger()->warning(
+					'Skeleton not created due to missing read permission in skeleton directory'
 				);
 			} catch(\OC\HintException $hintEx) {
 				// only if Skeleton no existing Dir

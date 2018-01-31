@@ -9,7 +9,7 @@
  * @author Thomas Tanghus <thomas@tanghus.net>
  * @author Vincent Petry <pvince81@owncloud.com>
  *
- * @copyright Copyright (c) 2017, ownCloud GmbH
+ * @copyright Copyright (c) 2018, ownCloud GmbH
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -201,6 +201,13 @@ class Principal implements BackendInterface {
 			$users = $this->userManager->getByEmail($email);
 			if (count($users) === 1) {
 				return $this->principalPrefix . '/' . $users[0]->getUID();
+			}
+		}
+		if (substr($uri, 0, 10) === 'principal:') {
+			$principal = substr($uri, 10);
+			$principal = $this->getPrincipalByPath($principal);
+			if ($principal !== null) {
+				return $principal['uri'];
 			}
 		}
 

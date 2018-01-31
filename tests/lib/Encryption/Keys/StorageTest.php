@@ -3,7 +3,7 @@
 /**
  * ownCloud
  *
- * @copyright (C) 2015 ownCloud, Inc.
+ * @copyright Copyright (c) 2018, ownCloud GmbH
  *
  * @author Bjoern Schiessle <schiessle@owncloud.com>
  *

@@ -3,7 +3,7 @@
  * ownCloud
  *
  * @author Artur Neumann <artur@jankaritech.com>
- * @copyright 2017 Artur Neumann artur@jankaritech.com
+ * @copyright Copyright (c) 2017 Artur Neumann artur@jankaritech.com
  *
  * This code is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License,
@@ -778,6 +778,17 @@ class FilesContext extends RawMinkContext implements Context {
 			$this->filesPage->getTooltipOfFile($name, $this->getSession())
 		);
 	}
+	
+	/**
+	 * @When I restore the file/folder :fname
+	 *
+	 * @param string $fname
+	 * @return void
+	 */
+	public function restoreFileAndFolder($fname) {
+		$session = $this->getSession();
+		$this->trashbinPage->restore($fname, $session);
+	}
 
 	/**
 	 * @Then near the folder input field a tooltip with the text :tooltiptext should be displayed
@@ -812,17 +823,28 @@ class FilesContext extends RawMinkContext implements Context {
 	public function theFilesactionmenuShouldBeCompletelyVisibleAfterClickingOnIt() {
 		for ($i = 1; $i <= $this->filesPage->getSizeOfFileFolderList(); $i++) {
 			$actionMenu = $this->filesPage->openFileActionsMenuByNo($i);
-
-			$windowHeight = $this->filesPage->getWindowHeight(
-				$this->getSession()
-			);
-
-			$deleteBtn = $actionMenu->findButton(
-				$actionMenu->getDeleteActionLabel()
-			);
-			$deleteBtnCoordinates = $this->filesPage->getCoordinatesOfElement(
-				$this->getSession(), $deleteBtn
-			);
+			
+			$timeout_msec = STANDARDUIWAITTIMEOUTMILLISEC;
+			$currentTime = microtime(true);
+			$end = $currentTime + ($timeout_msec / 1000);
+			while ($currentTime <= $end) {
+				$windowHeight = $this->filesPage->getWindowHeight(
+					$this->getSession()
+				);
+				
+				$deleteBtn = $actionMenu->findButton(
+					$actionMenu->getDeleteActionLabel()
+				);
+				$deleteBtnCoordinates = $this->filesPage->getCoordinatesOfElement(
+					$this->getSession(), $deleteBtn
+				);
+				if ($windowHeight >= $deleteBtnCoordinates ["top"]) {
+					break;
+				}
+				usleep(STANDARDSLEEPTIMEMICROSEC);
+				$currentTime = microtime(true);
+			}
+			
 			PHPUnit_Framework_Assert::assertLessThan(
 				$windowHeight, $deleteBtnCoordinates ["top"]
 			);

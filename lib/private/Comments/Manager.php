@@ -4,7 +4,7 @@
  * @author Joas Schilling <coding@schilljs.com>
  * @author Thomas Müller <thomas.mueller@tmit.eu>
  *
- * @copyright Copyright (c) 2017, ownCloud GmbH
+ * @copyright Copyright (c) 2018, ownCloud GmbH
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -28,6 +28,7 @@ use OCP\Comments\IComment;
 use OCP\Comments\ICommentsManager;
 use OCP\Comments\NotFoundException;
 use OCP\DB\QueryBuilder\IQueryBuilder;
+use OCP\Events\EventEmitterTrait;
 use OCP\IDBConnection;
 use OCP\IConfig;
 use OCP\ILogger;
@@ -36,6 +37,7 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class Manager implements ICommentsManager {
 
+	use EventEmitterTrait;
 	/** @var  IDBConnection */
 	protected $dbConn;
 
@@ -479,38 +481,43 @@ class Manager implements ICommentsManager {
 	 * @since 9.0.0
 	 */
 	public function delete($id) {
-		if(!is_string($id)) {
-			throw new \InvalidArgumentException('Parameter must be string');
-		}
+		return $this->emittingCall(function () use (&$id) {
+			if(!is_string($id)) {
+				throw new \InvalidArgumentException('Parameter must be string');
+			}
 
-		try {
-			$comment = $this->get($id);
-		} catch (\Exception $e) {
-			// Ignore exceptions, we just don't fire a hook then
-			$comment = null;
-		}
+			try {
+				$comment = $this->get($id);
+			} catch (\Exception $e) {
+				// Ignore exceptions, we just don't fire a hook then
+				$comment = null;
+			}
 
-		$qb = $this->dbConn->getQueryBuilder();
-		$query = $qb->delete('comments')
-			->where($qb->expr()->eq('id', $qb->createParameter('id')))
-			->setParameter('id', $id);
+			$qb = $this->dbConn->getQueryBuilder();
+			$query = $qb->delete('comments')
+				->where($qb->expr()->eq('id', $qb->createParameter('id')))
+				->setParameter('id', $id);
 
-		try {
-			$affectedRows = $query->execute();
-			$this->uncache($id);
-		} catch (DriverException $e) {
-			$this->logger->logException($e, ['app' => 'core_comments']);
-			return false;
-		}
+			try {
+				$affectedRows = $query->execute();
+				$this->uncache($id);
+			} catch (DriverException $e) {
+				$this->logger->logException($e, ['app' => 'core_comments']);
+				return false;
+			}
 
-		if ($affectedRows > 0 && $comment instanceof IComment) {
-			$this->dispatcher->dispatch(CommentsEvent::EVENT_DELETE, new CommentsEvent(
-				CommentsEvent::EVENT_DELETE,
-				$comment
-			));
-		}
+			if ($affectedRows > 0 && $comment instanceof IComment) {
+				$this->dispatcher->dispatch(CommentsEvent::EVENT_DELETE, new CommentsEvent(
+					CommentsEvent::EVENT_DELETE,
+					$comment
+				));
+			}
 
-		return ($affectedRows > 0);
+			return ($affectedRows > 0);
+		}, [
+			'before' => ['commentId' => $id],
+			'after' => ['commentId' => $id, 'objectId' => $this->get($id)->getObjectId()]
+		], 'comment', 'delete');
 	}
 
 	/**
@@ -530,21 +537,28 @@ class Manager implements ICommentsManager {
 	 * @since 9.0.0
 	 */
 	public function save(IComment $comment) {
-		if($this->prepareCommentForDatabaseWrite($comment)->getId() === '') {
-			$result = $this->insert($comment);
-		} else {
-			$result = $this->update($comment);
-		}
+		$databaseWrite = $this->prepareCommentForDatabaseWrite($comment)->getId();
+		$createOrUpdate = $databaseWrite === '' ? 'create' : 'update';
+		return $this->emittingCall(function () use (&$comment, &$databaseWrite) {
+			if($databaseWrite === '') {
+				$result = $this->insert($comment);
+			} else {
+				$result = $this->update($comment);
+			}
 
-		if($result && !!$comment->getParentId()) {
-			$this->updateChildrenInformation(
+			if($result && !!$comment->getParentId()) {
+				$this->updateChildrenInformation(
 					$comment->getParentId(),
 					$comment->getCreationDateTime()
-			);
-			$this->cache($comment);
-		}
+				);
+				$this->cache($comment);
+			}
 
-		return $result;
+			return $result;
+		}, [
+			'before' => ['objectId' => $comment->getObjectId(), 'commentId' => $comment->getId(), 'message' => $comment->getMessage(), 'status' => $createOrUpdate],
+			'after' => ['objectId' => $comment->getObjectId(), 'commentId' => $comment->getId() , 'message' => $comment->getMessage(), 'status' => $createOrUpdate]
+		], 'comment', 'save');
 	}
 
 	/**
@@ -554,34 +568,39 @@ class Manager implements ICommentsManager {
 	 * @return bool
 	 */
 	protected function insert(IComment &$comment) {
-		$qb = $this->dbConn->getQueryBuilder();
-		$affectedRows = $qb
-			->insert('comments')
-			->values([
-				'parent_id'					=> $qb->createNamedParameter($comment->getParentId()),
-				'topmost_parent_id' 		=> $qb->createNamedParameter($comment->getTopmostParentId()),
-				'children_count' 			=> $qb->createNamedParameter($comment->getChildrenCount()),
-				'actor_type' 				=> $qb->createNamedParameter($comment->getActorType()),
-				'actor_id' 					=> $qb->createNamedParameter($comment->getActorId()),
-				'message' 					=> $qb->createNamedParameter($comment->getMessage()),
-				'verb' 						=> $qb->createNamedParameter($comment->getVerb()),
-				'creation_timestamp' 		=> $qb->createNamedParameter($comment->getCreationDateTime(), 'datetime'),
-				'latest_child_timestamp'	=> $qb->createNamedParameter($comment->getLatestChildDateTime(), 'datetime'),
-				'object_type' 				=> $qb->createNamedParameter($comment->getObjectType()),
-				'object_id' 				=> $qb->createNamedParameter($comment->getObjectId()),
-			])
-			->execute();
+		return $this->emittingCall(function () use (&$comment) {
+			$qb = $this->dbConn->getQueryBuilder();
+			$affectedRows = $qb
+				->insert('comments')
+				->values([
+					'parent_id'					=> $qb->createNamedParameter($comment->getParentId()),
+					'topmost_parent_id' 		=> $qb->createNamedParameter($comment->getTopmostParentId()),
+					'children_count' 			=> $qb->createNamedParameter($comment->getChildrenCount()),
+					'actor_type' 				=> $qb->createNamedParameter($comment->getActorType()),
+					'actor_id' 					=> $qb->createNamedParameter($comment->getActorId()),
+					'message' 					=> $qb->createNamedParameter($comment->getMessage()),
+					'verb' 						=> $qb->createNamedParameter($comment->getVerb()),
+					'creation_timestamp' 		=> $qb->createNamedParameter($comment->getCreationDateTime(), 'datetime'),
+					'latest_child_timestamp'	=> $qb->createNamedParameter($comment->getLatestChildDateTime(), 'datetime'),
+					'object_type' 				=> $qb->createNamedParameter($comment->getObjectType()),
+					'object_id' 				=> $qb->createNamedParameter($comment->getObjectId()),
+				])
+				->execute();
 
-		if ($affectedRows > 0) {
-			$comment->setId(strval($qb->getLastInsertId()));
-		}
+			if ($affectedRows > 0) {
+				$comment->setId(strval($qb->getLastInsertId()));
+			}
 
-		$this->dispatcher->dispatch(CommentsEvent::EVENT_ADD, new CommentsEvent(
-			CommentsEvent::EVENT_ADD,
-			$comment
-		));
+			$this->dispatcher->dispatch(CommentsEvent::EVENT_ADD, new CommentsEvent(
+				CommentsEvent::EVENT_ADD,
+				$comment
+			));
 
-		return $affectedRows > 0;
+			return $affectedRows > 0;
+		}, [
+			'before' => ['objectId' => $comment->getObjectId(), 'message' => $comment->getMessage()],
+			'after' => ['objectId' => $comment->getObjectId(), 'message' => $comment->getMessage()]
+		], 'comment', 'create');
 	}
 
 	/**
@@ -592,9 +611,10 @@ class Manager implements ICommentsManager {
 	 * @throws NotFoundException
 	 */
 	protected function update(IComment $comment) {
-		$qb = $this->dbConn->getQueryBuilder();
-		$affectedRows = $qb
-			->update('comments')
+		return $this->emittingCall(function () use (&$comment) {
+			$qb = $this->dbConn->getQueryBuilder();
+			$affectedRows = $qb
+				->update('comments')
 				->set('parent_id',				$qb->createNamedParameter($comment->getParentId()))
 				->set('topmost_parent_id', 		$qb->createNamedParameter($comment->getTopmostParentId()))
 				->set('children_count',			$qb->createNamedParameter($comment->getChildrenCount()))
@@ -606,20 +626,24 @@ class Manager implements ICommentsManager {
 				->set('latest_child_timestamp',	$qb->createNamedParameter($comment->getLatestChildDateTime(), 'datetime'))
 				->set('object_type',			$qb->createNamedParameter($comment->getObjectType()))
 				->set('object_id',				$qb->createNamedParameter($comment->getObjectId()))
-			->where($qb->expr()->eq('id', $qb->createParameter('id')))
-			->setParameter('id', $comment->getId())
-			->execute();
+				->where($qb->expr()->eq('id', $qb->createParameter('id')))
+				->setParameter('id', $comment->getId())
+				->execute();
 
-		if($affectedRows === 0) {
-			throw new NotFoundException('Comment to update does ceased to exist');
-		}
+			if($affectedRows === 0) {
+				throw new NotFoundException('Comment to update does ceased to exist');
+			}
 
-		$this->dispatcher->dispatch(CommentsEvent::EVENT_UPDATE, new CommentsEvent(
-			CommentsEvent::EVENT_UPDATE,
-			$comment
-		));
+			$this->dispatcher->dispatch(CommentsEvent::EVENT_UPDATE, new CommentsEvent(
+				CommentsEvent::EVENT_UPDATE,
+				$comment
+			));
 
-		return $affectedRows > 0;
+			return $affectedRows > 0;
+		}, [
+			'before' => ['objectId' => $comment->getObjectId(), 'commentId' => $comment->getId(), 'message' => $comment->getMessage()],
+			'after' => ['objectId' => $comment->getObjectId(), 'commentId' => $comment->getId(), 'message' => $comment->getMessage()]
+		], 'comment', 'update');
 	}
 
 	/**

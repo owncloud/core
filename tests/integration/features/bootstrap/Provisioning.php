@@ -725,7 +725,7 @@ trait Provisioning {
 		}
 		$this->usingServer('REMOTE');
 		foreach ($this->createdRemoteGroups as $remoteGroup) {
-			$this->deleteUser($remoteGroup);
+			$this->deleteGroup($remoteGroup);
 		}
 		$this->usingServer($previousServer);
 	}

@@ -1,7 +1,7 @@
 <?php
 /**
  * @author Tom Needham
- * @copyright 2016 Tom Needham tom@owncloud.com
+ * @copyright Copyright (c) 2016 Tom Needham tom@owncloud.com
  *
  * This file is licensed under the Affero General Public License version 3 or
  * later.
@@ -35,8 +35,8 @@ class LegacyTest extends \Test\TestCase {
 
 	public function testGetPriority() {
 		$this->assertInternalType('int', $this->panel->getPriority());
-		$this->assertTrue($this->panel->getPriority() < 50);
-        $this->assertTrue($this->panel->getPriority() > -50);
+		$this->assertLessThan(50, $this->panel->getPriority());
+    	$this->assertGreaterThan(-50, $this->panel->getPriority());
 	}
 
 	public function testGetPanel() {

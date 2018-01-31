@@ -3,7 +3,7 @@
  * ownCloud
  *
  * @author Artur Neumann <artur@jankaritech.com>
- * @copyright 2017 Artur Neumann artur@jankaritech.com
+ * @copyright Copyright (c) 2017 Artur Neumann artur@jankaritech.com
  *
  * This code is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License,
@@ -44,6 +44,7 @@ abstract class FilesPageBasic extends OwnCloudPage {
 	protected $controlsId = "controls";
 	protected $loadingIndicatorXpath = ".//*[@class='loading']";
 	protected $deleteAllSelectedBtnXpath = ".//*[@id='app-content-files']//*[@class='delete-selected']";
+	protected $fileRowXpathFromActionMenu = "/../..";
 
 	/**
 	 * @return string
@@ -259,12 +260,65 @@ abstract class FilesPageBasic extends OwnCloudPage {
 	 *
 	 * @param string|array $name
 	 * @param Session $session
+	 * @param int $maxRetries
 	 * @return void
 	 */
-	public function deleteFile($name, Session $session) {
-		$row = $this->findFileRowByName($name, $session);
-		$row->delete($session);
-		$this->waitForOutstandingAjaxCalls($session);
+	public function deleteFile($name, Session $session, $maxRetries = 5) {
+		$this->initAjaxCounters($session);
+		$this->resetSumStartedAjaxRequests($session);
+		
+		for ($counter = 0; $counter < $maxRetries; $counter++) {
+			$row = $this->findFileRowByName($name, $session);
+			try {
+				$row->delete($session);
+				$this->waitForAjaxCallsToStartAndFinish($session);
+				$countXHRRequests = $this->getSumStartedAjaxRequests($session);
+				//if no XHR Request were fired we assume the delete action
+				//did not work and we retry
+				if ($countXHRRequests === 0) {
+					error_log("Error while deleting file");
+				} else {
+					break;
+				}
+			} catch (\Exception $e) {
+				$this->closeFileActionsMenu();
+				error_log(
+					"Error while deleting file"
+					. "\n-------------------------\n"
+					. $e->getMessage()
+					. "\n-------------------------\n"
+				);
+				usleep(STANDARDSLEEPTIMEMICROSEC);
+			}
+		}
+		if ($counter > 0) {
+			$message = "INFORMATION: retried to delete file '" . $name . "' " .
+					   $counter . " times";
+			echo $message;
+			error_log($message);
+		}
+	}
+
+	/**
+	 * closes the fileactionsmenu is any is open
+	 * 
+	 * @return void
+	 */
+	public function closeFileActionsMenu() {
+		try {
+			$actionMenu = $this->findFileActionMenuElement();
+			$fileRowElement = $actionMenu->find(
+				"xpath", $this->fileRowXpathFromActionMenu
+			);
+			/**
+			 * 
+			 * @var FileRow $fileRow
+			 */
+			$fileRow = $this->getPage('FilesPageElement\\FileRow');
+			$fileRow->setElement($fileRowElement);
+			$fileRow->clickFileActionButton();
+		} catch (\Exception $e) {
+		}
 	}
 
 	/**

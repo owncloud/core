@@ -3,7 +3,7 @@
 # ownCloud
 #
 # @author Artur Neumann
-# @copyright 2017 Artur Neumann info@individual-it.net
+# @copyright Copyright (c) 2017 Artur Neumann info@individual-it.net
 #
 
 # $1 hostname[:port] on which server will listen

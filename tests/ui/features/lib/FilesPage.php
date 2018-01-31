@@ -3,7 +3,7 @@
  * ownCloud
  *
  * @author Artur Neumann <artur@jankaritech.com>
- * @copyright 2017 Artur Neumann artur@jankaritech.com
+ * @copyright Copyright (c) 2017 Artur Neumann artur@jankaritech.com
  *
  * This code is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License,
@@ -253,6 +253,7 @@ class FilesPage extends FilesPageBasic {
 				$fileRow->rename($toFileName, $session);
 				break;
 			} catch (\Exception $e) {
+				$this->closeFileActionsMenu();
 				error_log(
 					"Error while renaming file"
 					. "\n-------------------------\n"

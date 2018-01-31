@@ -1438,4 +1438,8 @@ $CONFIG = array(
  */
 'files_external_allow_create_new_local' => false,
 
+/**
+ * Set this property to true if you want to enable debug logging for SMB access.
+ */
+'smb.logging.enable' => false, 
 );

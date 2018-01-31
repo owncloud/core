@@ -5,7 +5,7 @@
 # Set environment variable DEBUG to print config file
 #
 # @author Thomas Müller
-# @copyright 2015 Thomas Müller <deepdiver@owncloud.com>
+# @copyright Copyright (c) 2015 Thomas Müller <deepdiver@owncloud.com>
 #
 
 # retrieve current folder to place the config in the parent folder

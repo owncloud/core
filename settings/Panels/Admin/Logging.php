@@ -2,7 +2,7 @@
 /**
  * @author Tom Needham <tom@owncloud.com>
  *
- * @copyright Copyright (c) 2017, ownCloud GmbH
+ * @copyright Copyright (c) 2018, ownCloud GmbH
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -21,6 +21,7 @@
 
 namespace OC\Settings\Panels\Admin;
 
+use OC\LargeFileHelper;
 use OC\Settings\Panels\Helper;
 use OCP\Settings\ISettings;
 use OCP\Template;
@@ -54,7 +55,8 @@ class Logging implements ISettings {
 		$doesLogFileExist = file_exists($logFilePath);
 		$logFileSize = 0;
 		if($doesLogFileExist) {
-			$logFileSize = filesize($logFilePath);
+			$h = new LargeFileHelper();
+			$logFileSize = $h->getFileSize($logFilePath);
 		}
 		$tmpl->assign('loglevel', $this->config->getSystemValue("loglevel", 2));
 		$tmpl->assign('doesLogFileExist', $doesLogFileExist);

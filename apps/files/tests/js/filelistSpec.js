@@ -2,7 +2,7 @@
 * ownCloud
 *
 * @author Vincent Petry
-* @copyright 2014 Vincent Petry <pvince81@owncloud.com>
+* @copyright Copyright (c) 2014 Vincent Petry <pvince81@owncloud.com>
 *
 * This library is free software; you can redistribute it and/or
 * modify it under the terms of the GNU AFFERO GENERAL PUBLIC LICENSE
@@ -700,6 +700,8 @@ describe('OCA.Files.FileList tests', function() {
 			expect(fileList.findFileEl('One.txt').length).toEqual(0);
 			// file actions are hidden
 			expect($tr.hasClass('busy')).toEqual(true);
+			expect($tr.find('a .nametext').text().trim()).toEqual('Tu_after_three.txt');
+			expect($tr.find('a.name').is(':visible')).toEqual(true);
 
 			// input and form are gone
 			expect(fileList.$fileList.find('input.filename').length).toEqual(0);

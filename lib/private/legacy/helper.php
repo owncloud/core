@@ -27,7 +27,7 @@
  * @author Thomas Tanghus <thomas@tanghus.net>
  * @author Vincent Petry <pvince81@owncloud.com>
  *
- * @copyright Copyright (c) 2017, ownCloud GmbH
+ * @copyright Copyright (c) 2018, ownCloud GmbH
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -533,13 +533,7 @@ class OC_Helper {
 			// Returns null if nothing is found
 			$result = $exeSniffer->find($program);
 			if (empty($result)) {
-				$paths = getenv('PATH');
-				if (empty($paths)) {
-					$paths = '/usr/local/bin /usr/bin /opt/bin /bin';
-				} else {
-					$paths = str_replace(':',' ',getenv('PATH'));
-				}
-				$command = 'find ' . $paths . ' -name ' . escapeshellarg($program) . ' 2> /dev/null';
+				$command = 'find ' . self::getCleanedPath(getenv('PATH')) . ' -name ' . escapeshellarg($program) . ' 2> /dev/null';
 				exec($command, $output, $returnCode);
 				if (count($output) > 0) {
 					$result = escapeshellcmd($output[0]);
@@ -549,6 +543,26 @@ class OC_Helper {
 		// store the value for 5 minutes
 		$memcache->set($program, $result, 300);
 		return $result;
+	}
+
+	/**
+	 * Return a validated (sanitised) version of the system path
+	 *
+	 * The system path needs to be validated/sanitised before being used, as identified in http://bit.ly/2CEUagp (HackerOne).
+	 * This method filters out of the retrieved system path, only valid path directories, if the path is defined. Otherwise
+	 * it returns a defined set of paths.
+	 *
+	 * @param string $path
+	 * @return string|null
+	 */
+	public static function getCleanedPath($path = '') {
+		$pattern = "((\/[\w\d]*)+)";
+
+		if (preg_match_all($pattern, $path, $matches) > 0) {
+			return implode(' ', $matches[0]);
+		}
+
+		return '/usr/local/bin /usr/bin /opt/bin /bin';
 	}
 
 	/**

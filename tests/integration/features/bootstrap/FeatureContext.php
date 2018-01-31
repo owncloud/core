@@ -4,7 +4,7 @@
  *
  * @author Sergio Bertolin <sbertolin@owncloud.com>
  * @author Phillip Davis <phil@jankaritech.com>
- * @copyright 2017 ownCloud GmbH
+ * @copyright Copyright (c) 2018, ownCloud GmbH
  *
  * This code is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License,
