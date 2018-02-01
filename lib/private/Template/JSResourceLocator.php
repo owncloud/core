@@ -33,11 +33,6 @@ class JSResourceLocator extends ResourceLocator {
 	public function doFind($script) {
 		$themeDirectory = $this->theme->getDirectory();
 
-		if (strpos($script, '3rdparty') === 0
-			&& $this->appendOnceIfExist($this->thirdpartyroot, $script.'.js')) {
-			return;
-		}
-
 		if (strpos($script, '/l10n/') !== false) {
 			// For language files we try to load them all, so themes can overwrite
 			// single l10n strings without having to translate all of them.
