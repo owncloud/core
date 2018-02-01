@@ -16,11 +16,11 @@ trait Auth {
 	}
 
 	/**
-	 * @When requesting :url with :method
+	 * @When a user requests :url with :method and no authentication
 	 * @param string $url
 	 * @param string $method
 	 */
-	public function requestingWith($url, $method) {
+	public function userRequestsURLWith($url, $method) {
 		$this->sendRequest($url, $method);
 	}
 
@@ -52,62 +52,64 @@ trait Auth {
 	}
 
 	/**
-	 * @Given a new client token is used for user :user
+	 * @Given a new client token for :user has been generated
 	 * @param string $user
 	 */
-	public function aNewClientTokenIsUsed($user) {
+	public function aNewClientTokenHasBeenGenerated($user) {
 		$client = new Client();
 		$resp = $client->post(substr($this->baseUrl, 0, -5) . '/token/generate', [
 			'json' => [
-				'user' => $user,
-				'password' => $this->getPasswordForUser($user),
+					'user' => $user,
+					'password' => $this->getPasswordForUser($user),
 			]
 		]);
 		$this->clientToken = json_decode($resp->getBody()->getContents())->token;
 	}
 
 	/**
-	 * @When requesting :url with :method using basic auth for user :user
+	 * @When user :user requests :url with :method using basic auth
+	 * @param string $user
 	 * @param string $url
 	 * @param string $method
 	 */
-	public function requestingWithBasicAuth($url, $method, $user) {
+	public function userRequestsURLWithUsingBasicAuth($user, $url, $method) {
 		$authString = $user . ':' . $this->getPasswordForUser($user);
 		$this->sendRequest($url, $method, 'basic ' . base64_encode($authString));
 	}
 
 	/**
-	 * @When requesting :url with :method using basic token auth
+	 * @When user :user requests :url with :method using basic token auth
+	 * @param string $user
 	 * @param string $url
 	 * @param string $method
 	 */
-	public function requestingWithBasicTokenAuth($url, $method) {
-		$this->sendRequest($url, $method, 'basic ' . base64_encode('user0:' . $this->clientToken));
+	public function userRequestsURLWithUsingBasicTokenAuth($user, $url, $method) {
+		$this->sendRequest($url, $method, 'basic ' . base64_encode($user . ':' . $this->clientToken));
 	}
 
 	/**
-	 * @When requesting :url with :method using a client token
+	 * @When the user requests :url with :method using the generated client token
 	 * @param string $url
 	 * @param string $method
 	 */
-	public function requestingWithUsingAClientToken($url, $method) {
+	public function userRequestsURLWithUsingAClientToken($url, $method) {
 		$this->sendRequest($url, $method, 'token ' . $this->clientToken);
 	}
 
 	/**
-	 * @When requesting :url with :method using browser session
+	 * @When the user requests :url with :method using the browser session
 	 * @param string $url
 	 * @param string $method
 	 */
-	public function requestingWithBrowserSession($url, $method) {
+	public function userRequestsURLWithBrowserSession($url, $method) {
 		$this->sendRequest($url, $method, null, true);
 	}
 
 	/**
-	 * @Given a new browser session is started for user :user
+	 * @Given a new browser session for :user has been started
 	 * @param string $user
 	 */
-	public function aNewBrowserSessionIsStarted($user) {
+	public function aNewBrowserSessionForHasBeenStarted($user) {
 		$loginUrl = substr($this->baseUrl, 0, -5) . '/login';
 		// Request a new session and extract CSRF token
 		$client = new Client();

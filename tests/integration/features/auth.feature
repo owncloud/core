@@ -2,44 +2,44 @@ Feature: auth
 
 	Background:
 		Given user "user0" has been created
-		And a new client token is used for user "user0"
+		And a new client token for "user0" has been generated
 
 	# FILES APP
 
 	Scenario: access files app anonymously
-		When requesting "/index.php/apps/files" with "GET"
+		When a user requests "/index.php/apps/files" with "GET" and no authentication
 		Then the HTTP status code should be "401"
 
 	Scenario: access files app with basic auth
-		When requesting "/index.php/apps/files" with "GET" using basic auth for user "user0"
+		When user "user0" requests "/index.php/apps/files" with "GET" using basic auth
 		Then the HTTP status code should be "200"
 
 	Scenario: access files app with basic token auth
-		When requesting "/index.php/apps/files" with "GET" using basic token auth
+		When user "user0" requests "/index.php/apps/files" with "GET" using basic token auth
 		Then the HTTP status code should be "200"
 
 	Scenario: access files app with a client token
-		When requesting "/index.php/apps/files" with "GET" using a client token
+		When the user requests "/index.php/apps/files" with "GET" using the generated client token
 		Then the HTTP status code should be "200"
 
 	Scenario: access files app with browser session
-		Given a new browser session is started for user "user0"
-		When requesting "/index.php/apps/files" with "GET" using browser session
+		Given a new browser session for "user0" has been started
+		When the user requests "/index.php/apps/files" with "GET" using the browser session
 		Then the HTTP status code should be "200"
 
 
 	# WebDAV
 
 	Scenario: using WebDAV anonymously
-		When requesting "/remote.php/webdav" with "PROPFIND"
+		When a user requests "/remote.php/webdav" with "PROPFIND" and no authentication
 		Then the HTTP status code should be "401"
 
 	Scenario: using WebDAV with basic auth
-		When requesting "/remote.php/webdav" with "PROPFIND" using basic auth for user "user0"
+		When user "user0" requests "/remote.php/webdav" with "PROPFIND" using basic auth
 		Then the HTTP status code should be "207"
 
 	Scenario: using WebDAV with token auth
-		When requesting "/remote.php/webdav" with "PROPFIND" using basic token auth
+		When user "user0" requests "/remote.php/webdav" with "PROPFIND" using basic token auth
 		Then the HTTP status code should be "207"
 
 	# DAV token auth is not possible yet
@@ -48,30 +48,30 @@ Feature: auth
 	#	Then the HTTP status code should be "207"
 
 	Scenario: using WebDAV with browser session
-		Given a new browser session is started for user "user0"
-		When requesting "/remote.php/webdav" with "PROPFIND" using browser session
+		Given a new browser session for "user0" has been started
+		When the user requests "/remote.php/webdav" with "PROPFIND" using the browser session
 		Then the HTTP status code should be "207"
 
 
 	# OCS
 
 	Scenario: using OCS anonymously
-		When requesting "/ocs/v1.php/apps/files_sharing/api/v1/remote_shares" with "GET"
+		When a user requests "/ocs/v1.php/apps/files_sharing/api/v1/remote_shares" with "GET" and no authentication
 		Then the OCS status code should be "997"
 
 	Scenario: using OCS with basic auth
-		When requesting "/ocs/v1.php/apps/files_sharing/api/v1/remote_shares" with "GET" using basic auth for user "user0"
+		When user "user0" requests "/ocs/v1.php/apps/files_sharing/api/v1/remote_shares" with "GET" using basic auth
 		Then the OCS status code should be "100"
 
 	Scenario: using OCS with token auth
-		When requesting "/ocs/v1.php/apps/files_sharing/api/v1/remote_shares" with "GET" using basic token auth
+		When user "user0" requests "/ocs/v1.php/apps/files_sharing/api/v1/remote_shares" with "GET" using basic token auth
 		Then the OCS status code should be "100"
 
 	Scenario: using OCS with client token
-		When requesting "/ocs/v1.php/apps/files_sharing/api/v1/remote_shares" with "GET" using a client token
+		When the user requests "/ocs/v1.php/apps/files_sharing/api/v1/remote_shares" with "GET" using the generated client token
 		Then the OCS status code should be "100"
 
 	Scenario: using OCS with browser session
-		Given a new browser session is started for user "user0"
-		When requesting "/ocs/v1.php/apps/files_sharing/api/v1/remote_shares" with "GET" using browser session
+		Given a new browser session for "user0" has been started
+		When the user requests "/ocs/v1.php/apps/files_sharing/api/v1/remote_shares" with "GET" using the browser session
 		Then the OCS status code should be "100"
