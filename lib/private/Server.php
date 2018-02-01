@@ -716,8 +716,8 @@ class Server extends ServerContainer implements IServerContainer, IServiceLoader
 			);
 		});
 		$this->registerAlias('OCP\Files\IMimeTypeLoader', 'MimeTypeLoader');
-		$this->registerService('NotificationManager', function () {
-			return new Manager();
+		$this->registerService('NotificationManager', function (Server $c) {
+			return new Manager($c->getEventDispatcher());
 		});
 		$this->registerService('CapabilitiesManager', function (Server $c) {
 			$manager = new \OC\CapabilitiesManager();
