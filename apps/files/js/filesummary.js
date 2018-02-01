@@ -133,6 +133,22 @@
 				this.update();
 			}
 		},
+		
+		/**
+		 * Update file Info about hidden
+		 * @param {OC.Files.FileInfo} newFile file with updated name
+		 * @param {OC.Files.FileInfo} oldFile file with old name
+		 */
+		updateHidden: function(newFile, oldFile) {
+			if (this._isHiddenFile(newFile) && !this._isHiddenFile(oldFile)) {
+				this.summary.totalHidden++;
+				this.update();
+			} else if (!this._isHiddenFile(newFile) && this._isHiddenFile(oldFile)) {
+				this.summary.totalHidden--;
+				this.update();
+			}
+		},
+
 		setFilter: function(filter, files){
 			this.summary.filter = filter.toLowerCase();
 			this.calculate(files);
@@ -259,6 +275,7 @@
 				$filterInfo.removeClass('hidden');
 			}
 		},
+
 		render: function() {
 			if (!this.$el) {
 				return;

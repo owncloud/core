@@ -2030,9 +2030,10 @@
 				td.children('a.name').show();
 			}
 
-			function updateInList(fileInfo) {
-				self.updateRow(tr, fileInfo);
-				self._updateDetailsView(fileInfo.name, false);
+			function updateInList(newFileInfo, oldFileInfo) {
+				self.updateRow(tr, newFileInfo);
+				self.fileSummary.updateHidden(newFileInfo, oldFileInfo);
+				self._updateDetailsView(newFileInfo.name, false);
 			}
 
 			// TODO: too many nested blocks, move parts into functions
@@ -2069,8 +2070,9 @@
 						var path = tr.attr('data-path') || self.getCurrentDirectory();
 						self.filesClient.move(OC.joinPaths(path, oldName), OC.joinPaths(path, newName))
 							.done(function() {
-								oldFileInfo.name = newName;
-								updateInList(oldFileInfo);
+								newFileInfo = Object.create(oldFileInfo);
+								newFileInfo.name = newName;
+								updateInList(newFileInfo, oldFileInfo);
 							})
 							.fail(function(status) {
 								// TODO: 409 means current folder does not exist, redirect ?
@@ -2100,7 +2102,7 @@
 										{fileName: oldName}), {type: 'error'}
 									);
 								}
-								updateInList(oldFileInfo);
+								updateInList(oldFileInfo, oldFileInfo);
 							});
 					} else {
 						// add back the old file info when cancelled
