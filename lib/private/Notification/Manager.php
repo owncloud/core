@@ -22,7 +22,7 @@
 
 namespace OC\Notification;
 
-
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use OCP\Notification\IApp;
 use OCP\Notification\IManager;
 use OCP\Notification\INotification;
@@ -30,8 +30,16 @@ use OCP\Notification\INotifier;
 use OCP\Notification\Exceptions\IncompleteSerializationException;
 use OCP\Notification\Exceptions\IncompleteDeserializationException;
 use OCP\Notification\Exceptions\CannotDeserializeException;
+use OCP\Notification\Exceptions\NotifierIdInUseException;
+use OCP\Notification\Events\AbstractRegisterConsumerEvent;
+use OCP\Notification\Events\AbstractRegisterNotifierEvent;
+use OC\Notification\Events\RegisterConsumerEvent;
+use OC\Notification\Events\RegisterNotifierEvent;
 
 class Manager implements IManager {
+	/** @var EventDispatcherInterface */
+	protected $dispatcher;
+
 	/** @var IApp[] */
 	protected $apps;
 
@@ -50,13 +58,23 @@ class Manager implements IManager {
 	/** @var \Closure[] */
 	protected $notifiersInfoClosures;
 
-	public function __construct() {
+	/** @var IApp[] */
+	protected $builtAppsHolder;
+
+	/** @var INotifier[] */
+	protected $builtNotifiersHolder;
+
+	public function __construct(EventDispatcherInterface $dispatcher) {
+		$this->dispatcher = $dispatcher;
+
 		$this->apps = [];
 		$this->notifiers = [];
 		$this->notifiersInfo = [];
 		$this->appsClosures = [];
 		$this->notifiersClosures = [];
 		$this->notifiersInfoClosures = [];
+
+		$this->builtAppsHolder = [];
 	}
 
 	/**
@@ -86,6 +104,27 @@ class Manager implements IManager {
 	}
 
 	/**
+	 * INTERNAL USE ONLY!! This method isn't part of the IManager interface
+	 */
+	public function registerBuiltApp(IApp $app) {
+		$this->builtAppsHolder[] = $app;
+	}
+
+	/**
+	 * INTERNAL USE ONLY!! This method isn't part of the IManager interface
+	 */
+	public function registerBuiltNotifier(INotifier $notifier, $id, $name) {
+		if (!isset($this->builtNotifiersHolder[$id]) && !isset($this->notifiersInfo[$id])) {
+			// we have to check also in the notifiersInfo
+			$this->builtNotifiersHolder[$id] = [];
+			$this->builtNotifiersHolder[$id]['notifier'] = $notifier;
+			$this->builtNotifiersHolder[$id]['name'] = $name;
+		} else {
+			throw new NotifierIdInUseException("The given notifier ID $id is already in use");
+		}
+	}
+
+	/**
 	 * @return IApp[]
 	 */
 	protected function getApps() {
@@ -101,6 +140,11 @@ class Manager implements IManager {
 			}
 			$this->apps[] = $app;
 		}
+
+		$this->builtAppsHolder = [];
+		$registerAppEvent = new RegisterConsumerEvent($this);
+		$this->dispatcher->dispatch(AbstractRegisterConsumerEvent::NAME, $registerAppEvent);
+		$this->apps = array_merge($this->apps, $this->builtAppsHolder);
 
 		return $this->apps;
 	}
@@ -120,6 +164,13 @@ class Manager implements IManager {
 				throw new \InvalidArgumentException('The given notifier does not implement the INotifier interface');
 			}
 			$this->notifiers[] = $notifier;
+		}
+
+		$this->builtNotifiersHolder = [];
+		$registerNotifierEvent = new RegisterNotifierEvent($this);
+		$this->dispatcher->dispatch(AbstractRegisterNotifierEvent::NAME, $registerNotifierEvent);
+		foreach ($this->builtNotifiersHolder as $notifierData) {
+			$this->notifiers[] = $notifierData['notifier'];
 		}
 
 		return $this->notifiers;
@@ -143,6 +194,13 @@ class Manager implements IManager {
 				throw new \InvalidArgumentException('The given notifier ID ' . $notifier['id'] . ' is already in use');
 			}
 			$this->notifiersInfo[$notifier['id']] = $notifier['name'];
+		}
+
+		$this->builtNotifiersHolder = [];
+		$registerNotifierEvent = new RegisterNotifierEvent($this);
+		$this->dispatcher->dispatch(AbstractRegisterNotifierEvent::NAME, $registerNotifierEvent);
+		foreach ($this->builtNotifiersHolder as $id => $notifierData) {
+			$this->notifiersInfo[$id] = $notifierData['name'];
 		}
 
 		return $this->notifiersInfo;
