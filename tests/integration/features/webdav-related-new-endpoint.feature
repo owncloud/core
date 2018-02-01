@@ -14,7 +14,7 @@ Feature: webdav-related-new-endpoint
 		Given using new dav path
 		And user "user0" has been created
 		And as user "user0"
-		When user "user0" moves file "/welcome.txt" to "/FOLDER/welcome.txt"
+		When user "user0" moves file "/welcome.txt" to "/FOLDER/welcome.txt" using the API
 		Then the HTTP status code should be "201"
 		And downloaded content when downloading file "/FOLDER/welcome.txt" with range "bytes=0-6" should be "Welcome"
 
@@ -22,7 +22,7 @@ Feature: webdav-related-new-endpoint
 		Given using new dav path
 		And user "user0" has been created
 		And as user "user0"
-		When user "user0" moves file "/welcome.txt" to "/textfile0.txt"
+		When user "user0" moves file "/welcome.txt" to "/textfile0.txt" using the API
 		Then the HTTP status code should be "204"
 		And downloaded content when downloading file "/textfile0.txt" with range "bytes=0-6" should be "Welcome"
 
@@ -38,8 +38,8 @@ Feature: webdav-related-new-endpoint
 		  | permissions | 1 |
 		  | shareWith | user0 |
 		And as user "user0"
-		And user "user0" moves file "/textfile0.txt" to "/testshare/textfile0.txt"
-		And the HTTP status code should be "403"
+		When user "user0" moves file "/textfile0.txt" to "/testshare/textfile0.txt" using the API
+		Then the HTTP status code should be "403"
 		When downloading file "/testshare/textfile0.txt"
  		Then the HTTP status code should be "404"
 
@@ -54,9 +54,9 @@ Feature: webdav-related-new-endpoint
 		  | shareType | 0 |
 		  | permissions | 1 |
 		  | shareWith | user0 |
-		And user "user1" copies file "/welcome.txt" to "/testshare/overwritethis.txt"
+		And user "user1" has copied file "/welcome.txt" to "/testshare/overwritethis.txt"
 		And as user "user0"
-		When user "user0" moves file "/textfile0.txt" to "/testshare/overwritethis.txt"
+		When user "user0" moves file "/textfile0.txt" to "/testshare/overwritethis.txt" using the API
 		Then the HTTP status code should be "403"
 		And downloaded content when downloading file "/testshare/overwritethis.txt" with range "bytes=0-6" should be "Welcome"
 
@@ -64,28 +64,28 @@ Feature: webdav-related-new-endpoint
 		Given using new dav path
 		And user "user0" has been created
 		And as user "user0"
-		When user "user0" moves file "/welcome.txt" to "/not-existing/welcome.txt"
+		When user "user0" moves file "/welcome.txt" to "/not-existing/welcome.txt" using the API
 		Then the HTTP status code should be "409"
 
 	Scenario: rename a file into an invalid filename
 		Given using new dav path
 		And user "user0" has been created
 		And as user "user0"
-		When user "user0" moves file "/welcome.txt" to "/a\\a"
+		When user "user0" moves file "/welcome.txt" to "/a\\a" using the API
 		Then the HTTP status code should be "400"
 
 	Scenario: rename a file into a banned filename
 		Given using new dav path
 		And user "user0" has been created
 		And as user "user0"
-		When user "user0" moves file "/welcome.txt" to "/.htaccess"
+		When user "user0" moves file "/welcome.txt" to "/.htaccess" using the API
 		Then the HTTP status code should be "403"
 
 	Scenario: Copying a file
 		Given using new dav path
 		And user "user0" has been created
 		And as user "user0"
-		When user "user0" copies file "/welcome.txt" to "/FOLDER/welcome.txt"
+		When user "user0" copies file "/welcome.txt" to "/FOLDER/welcome.txt" using the API
 		Then the HTTP status code should be "201"
 		And downloaded content when downloading file "/FOLDER/welcome.txt" with range "bytes=0-6" should be "Welcome"
 
@@ -93,7 +93,7 @@ Feature: webdav-related-new-endpoint
 		Given using new dav path
 		And user "user0" has been created
 		And as user "user0"
-		When user "user0" copies file "/welcome.txt" to "/textfile1.txt"
+		When user "user0" copies file "/welcome.txt" to "/textfile1.txt" using the API
 		Then the HTTP status code should be "204"
 		And downloaded content when downloading file "/textfile1.txt" with range "bytes=0-6" should be "Welcome"
 
@@ -109,7 +109,7 @@ Feature: webdav-related-new-endpoint
 		  | permissions | 1 |
 		  | shareWith | user0 |
 		And as user "user0"
-		When user "user0" copies file "/textfile0.txt" to "/testshare/textfile0.txt"
+		When user "user0" copies file "/textfile0.txt" to "/testshare/textfile0.txt" using the API
 		Then the HTTP status code should be "403"
 		And downloading file "/testshare/textfile0.txt"
 		And the HTTP status code should be "404"
@@ -125,9 +125,9 @@ Feature: webdav-related-new-endpoint
 		  | shareType | 0 |
 		  | permissions | 1 |
 		  | shareWith | user0 |
-		And user "user1" copies file "/welcome.txt" to "/testshare/overwritethis.txt"
+		And user "user1" has copied file "/welcome.txt" to "/testshare/overwritethis.txt"
 		And as user "user0"
-		When user "user0" copies file "/textfile0.txt" to "/testshare/overwritethis.txt"
+		When user "user0" copies file "/textfile0.txt" to "/testshare/overwritethis.txt" using the API
 		Then the HTTP status code should be "403"
 		And downloaded content when downloading file "/testshare/overwritethis.txt" with range "bytes=0-6" should be "Welcome"
 
@@ -338,9 +338,9 @@ Feature: webdav-related-new-endpoint
 		Given using new dav path
 		And user "user0" has been created
 		And as user "user0"
-		And user "user0" moves file "/welcome.txt" to "/FOLDER/welcome.txt"
+		And user "user0" has moved file "/welcome.txt" to "/FOLDER/welcome.txt"
 		And user "user0" has created a folder "/FOLDER/SUBFOLDER"
-		And user "user0" copies file "/textfile0.txt" to "/FOLDER/SUBFOLDER/testfile0.txt"
+		And user "user0" has copied file "/textfile0.txt" to "/FOLDER/SUBFOLDER/testfile0.txt"
 		When user "user0" deletes everything from folder "/FOLDER/"
 		Then user "user0" should see following elements
 			| /FOLDER/ |
@@ -356,42 +356,42 @@ Feature: webdav-related-new-endpoint
 		Given using new dav path
 		And user "user0" has been created
 		And user "user0" stores id of file "/textfile0.txt"
-		When user "user0" moves file "/textfile0.txt" to "/FOLDER/textfile0.txt"
+		When user "user0" moves file "/textfile0.txt" to "/FOLDER/textfile0.txt" using the API
 		Then user "user0" checks id of file "/FOLDER/textfile0.txt"
 
 	Scenario: Renaming a folder to a backslash encoded should return an error using new endpoint
 		Given using new dav path
 		And user "user0" has been created
 		And user "user0" has created a folder "/testshare"
-		When user "user0" moves folder "/testshare" to "/%5C"
+		When user "user0" moves folder "/testshare" to "/%5C" using the API
 		Then the HTTP status code should be "400"
 
 	Scenario: Renaming a folder beginning with a backslash encoded should return an error using new endpoint
 		Given using new dav path
 		And user "user0" has been created
 		And user "user0" has created a folder "/testshare"
-		When user "user0" moves folder "/testshare" to "/%5Ctestshare"
+		When user "user0" moves folder "/testshare" to "/%5Ctestshare" using the API
 		Then the HTTP status code should be "400"
 
 	Scenario: Renaming a folder including a backslash encoded should return an error using new endpoint
 		Given using new dav path
 		And user "user0" has been created
 		And user "user0" has created a folder "/testshare"
-		When user "user0" moves folder "/testshare" to "/hola%5Chola"
+		When user "user0" moves folder "/testshare" to "/hola%5Chola" using the API
 		Then the HTTP status code should be "400"
 
 	Scenario: Renaming a folder into a banned name
 		Given using new dav path
 		And user "user0" has been created
 		And user "user0" has created a folder "/testshare"
-		When user "user0" moves folder "/testshare" to "/.htaccess"
+		When user "user0" moves folder "/testshare" to "/.htaccess" using the API
 		Then the HTTP status code should be "403"
 
 	Scenario: Move a folder into a not existing one
 		Given using new dav path
 		And user "user0" has been created
 		And user "user0" has created a folder "/testshare"
-		When user "user0" moves folder "/testshare" to "/not-existing/testshare"
+		When user "user0" moves folder "/testshare" to "/not-existing/testshare" using the API
 		Then the HTTP status code should be "409"
 
 	Scenario: Downloading a file on the new endpoint should serve security headers
@@ -435,8 +435,8 @@ Feature: webdav-related-new-endpoint
 		And user "user0" has been created
 		And as user "user0"
 		And user "user0" has uploaded file "data/textfile.txt" to "/testcustomprop.txt"
-		And "user0" sets property "{http://whatever.org/ns}very-custom-prop" of file "/testcustomprop.txt" to "veryCustomPropValue"
-		When as "user0" gets a custom property "{http://whatever.org/ns}very-custom-prop" of file "/testcustomprop.txt"
+		And "user0" has set property "{http://whatever.org/ns}very-custom-prop" of file "/testcustomprop.txt" to "veryCustomPropValue"
+		When user "user0" gets a custom property "{http://whatever.org/ns}very-custom-prop" of file "/testcustomprop.txt"
 		Then the response should contain a custom "{http://whatever.org/ns}very-custom-prop" property with "veryCustomPropValue"
 
 	Scenario: Setting custom DAV property and reading it after the file is renamed
@@ -444,9 +444,9 @@ Feature: webdav-related-new-endpoint
 		And user "user0" has been created
 		And as user "user0"
 		And user "user0" has uploaded file "data/textfile.txt" to "/testcustompropwithmove.txt"
-		And "user0" sets property "{http://whatever.org/ns}very-custom-prop" of file "/testcustompropwithmove.txt" to "valueForMovetest"
-		And user "user0" moved file "/testcustompropwithmove.txt" to "/catchmeifyoucan.txt"
-		When as "user0" gets a custom property "{http://whatever.org/ns}very-custom-prop" of file "/catchmeifyoucan.txt"
+		And "user0" has set property "{http://whatever.org/ns}very-custom-prop" of file "/testcustompropwithmove.txt" to "valueForMovetest"
+		And user "user0" has moved file "/testcustompropwithmove.txt" to "/catchmeifyoucan.txt"
+		When user "user0" gets a custom property "{http://whatever.org/ns}very-custom-prop" of file "/catchmeifyoucan.txt"
 		Then the response should contain a custom "{http://whatever.org/ns}very-custom-prop" property with "valueForMovetest"
 
 	Scenario: Setting custom DAV property on a shared file as an owner and reading as a recipient
@@ -460,9 +460,9 @@ Feature: webdav-related-new-endpoint
 		  | shareType | 0 |
 		  | permissions | 31 |
 		  | shareWith | user1 |
-		And "user0" sets property "{http://whatever.org/ns}very-custom-prop" of file "/testcustompropshared.txt" to "valueForSharetest"
+		And "user0" has set property "{http://whatever.org/ns}very-custom-prop" of file "/testcustompropshared.txt" to "valueForSharetest"
 		And as user "user1"
-		When as "user1" gets a custom property "{http://whatever.org/ns}very-custom-prop" of file "/testcustompropshared.txt"
+		When user "user1" gets a custom property "{http://whatever.org/ns}very-custom-prop" of file "/testcustompropshared.txt"
 		Then the response should contain a custom "{http://whatever.org/ns}very-custom-prop" property with "valueForSharetest"
 
 	Scenario: Setting custom DAV property using a new endpoint and reading it using an old endpoint
@@ -470,9 +470,9 @@ Feature: webdav-related-new-endpoint
 		And user "user0" has been created
 		And as user "user0"
 		And user "user0" has uploaded file "data/textfile.txt" to "/testnewold.txt"
-		And "user0" sets property "{http://whatever.org/ns}very-custom-prop" of file "/testnewold.txt" to "lucky"
+		And "user0" has set property "{http://whatever.org/ns}very-custom-prop" of file "/testnewold.txt" to "lucky"
 		And using old dav path
-		When as "user0" gets a custom property "{http://whatever.org/ns}very-custom-prop" of file "/testnewold.txt"
+		When user "user0" gets a custom property "{http://whatever.org/ns}very-custom-prop" of file "/testnewold.txt"
 		Then the response should contain a custom "{http://whatever.org/ns}very-custom-prop" property with "lucky"
 
 	## Specific scenarios for new endpoint	
@@ -480,10 +480,10 @@ Feature: webdav-related-new-endpoint
 	Scenario: Upload chunked file asc with new chunking
 		Given using new dav path
 		And user "user0" has been created
-		And user "user0" creates a new chunking upload with id "chunking-42"
-		And user "user0" uploads new chunk file "1" with "AAAAA" to id "chunking-42"
-		And user "user0" uploads new chunk file "2" with "BBBBB" to id "chunking-42"
-		And user "user0" uploads new chunk file "3" with "CCCCC" to id "chunking-42"
+		And user "user0" has created a new chunking upload with id "chunking-42"
+		And user "user0" has uploaded new chunk file "1" with "AAAAA" to id "chunking-42"
+		And user "user0" has uploaded new chunk file "2" with "BBBBB" to id "chunking-42"
+		And user "user0" has uploaded new chunk file "3" with "CCCCC" to id "chunking-42"
 		And user "user0" moves new chunk file with id "chunking-42" to "/myChunkedFile.txt"
 		When as user "user0"
 		And downloading file "/myChunkedFile.txt"
@@ -492,10 +492,10 @@ Feature: webdav-related-new-endpoint
 	Scenario: Upload chunked file desc with new chunking
 		Given using new dav path
 		And user "user0" has been created
-		And user "user0" creates a new chunking upload with id "chunking-42"
-		And user "user0" uploads new chunk file "3" with "CCCCC" to id "chunking-42"
-		And user "user0" uploads new chunk file "2" with "BBBBB" to id "chunking-42"
-		And user "user0" uploads new chunk file "1" with "AAAAA" to id "chunking-42"
+		And user "user0" has created a new chunking upload with id "chunking-42"
+		And user "user0" has uploaded new chunk file "3" with "CCCCC" to id "chunking-42"
+		And user "user0" has uploaded new chunk file "2" with "BBBBB" to id "chunking-42"
+		And user "user0" has uploaded new chunk file "1" with "AAAAA" to id "chunking-42"
 		And user "user0" moves new chunk file with id "chunking-42" to "/myChunkedFile.txt"
 		When as user "user0"
 		And downloading file "/myChunkedFile.txt"
@@ -504,10 +504,10 @@ Feature: webdav-related-new-endpoint
 	Scenario: Upload chunked file random with new chunking
 		Given using new dav path
 		And user "user0" has been created
-		And user "user0" creates a new chunking upload with id "chunking-42"
-		And user "user0" uploads new chunk file "2" with "BBBBB" to id "chunking-42"
-		And user "user0" uploads new chunk file "3" with "CCCCC" to id "chunking-42"
-		And user "user0" uploads new chunk file "1" with "AAAAA" to id "chunking-42"
+		And user "user0" has created a new chunking upload with id "chunking-42"
+		And user "user0" has uploaded new chunk file "2" with "BBBBB" to id "chunking-42"
+		And user "user0" has uploaded new chunk file "3" with "CCCCC" to id "chunking-42"
+		And user "user0" has uploaded new chunk file "1" with "AAAAA" to id "chunking-42"
 		And user "user0" moves new chunk file with id "chunking-42" to "/myChunkedFile.txt"
 		When as user "user0"
 		And downloading file "/myChunkedFile.txt"
@@ -516,12 +516,12 @@ Feature: webdav-related-new-endpoint
 	Scenario: Checking file id after a move overwrite using new chunking endpoint
 		Given using new dav path
 		And user "user0" has been created
-		And user "user0" copies file "/textfile0.txt" to "/existingFile.txt"
+		And user "user0" has copied file "/textfile0.txt" to "/existingFile.txt"
 		And user "user0" stores id of file "/existingFile.txt"
-		And user "user0" creates a new chunking upload with id "chunking-42"
-		And user "user0" uploads new chunk file "1" with "AAAAA" to id "chunking-42"
-		And user "user0" uploads new chunk file "2" with "BBBBB" to id "chunking-42"
-		And user "user0" uploads new chunk file "3" with "CCCCC" to id "chunking-42"
+		And user "user0" has created a new chunking upload with id "chunking-42"
+		And user "user0" has uploaded new chunk file "1" with "AAAAA" to id "chunking-42"
+		And user "user0" has uploaded new chunk file "2" with "BBBBB" to id "chunking-42"
+		And user "user0" has uploaded new chunk file "3" with "CCCCC" to id "chunking-42"
 		When user "user0" moves new chunk file with id "chunking-42" to "/existingFile.txt"
 		Then user "user0" checks id of file "/existingFile.txt"
 
@@ -536,13 +536,13 @@ Feature: webdav-related-new-endpoint
 		And user "user1" has created a folder "/folderA/ONE"
 		And user "user1" stores id of file "/folderA/ONE"
 		And user "user1" has created a folder "/folderA/ONE/TWO"
-		When user "user1" moves folder "/folderA/ONE" to "/folderB/ONE"
-		Then as "user1" the folder "/folderA" exists
-		And as "user1" the folder "/folderA/ONE" does not exist
+		When user "user1" moves folder "/folderA/ONE" to "/folderB/ONE" using the API
+		Then as "user1" the folder "/folderA" should exist
+		And as "user1" the folder "/folderA/ONE" should not exist
 		# yes, a weird bug used to make this one fail
-		And as "user1" the folder "/folderA/ONE/TWO" does not exist
-		And as "user1" the folder "/folderB/ONE" exists
-		And as "user1" the folder "/folderB/ONE/TWO" exists
+		And as "user1" the folder "/folderA/ONE/TWO" should not exist
+		And as "user1" the folder "/folderB/ONE" should exist
+		And as "user1" the folder "/folderB/ONE/TWO" should exist
 		And user "user1" checks id of file "/folderB/ONE"
 
    ## Validation Plugin or Old Endpoint Specific
@@ -550,24 +550,24 @@ Feature: webdav-related-new-endpoint
 	Scenario: New chunked upload MKDIR using old dav path should fail
 		Given using old dav path
 		And user "user0" has been created
-		When user "user0" creates a new chunking upload with id "chunking-42"
+		When user "user0" creates a new chunking upload with id "chunking-42" using the API
 		Then the HTTP status code should be "409"
 
 	Scenario: New chunked upload PUT using old dav path should fail
 		Given using new dav path
 		And user "user0" has been created
-		And user "user0" creates a new chunking upload with id "chunking-42"
+		And user "user0" has created a new chunking upload with id "chunking-42"
 		When using old dav path
-		And user "user0" uploads new chunk file "1" with "AAAAA" to id "chunking-42"
+		And user "user0" uploads new chunk file "1" with "AAAAA" to id "chunking-42" using the API
 		Then the HTTP status code should be "404"
 
 	Scenario: New chunked upload MOVE using old dav path should fail
 		Given using new dav path
 		And user "user0" has been created
-		And user "user0" creates a new chunking upload with id "chunking-42"
-		And user "user0" uploads new chunk file "2" with "BBBBB" to id "chunking-42"
-		And user "user0" uploads new chunk file "3" with "CCCCC" to id "chunking-42"
-		And user "user0" uploads new chunk file "1" with "AAAAA" to id "chunking-42"
+		And user "user0" has created a new chunking upload with id "chunking-42"
+		And user "user0" has uploaded new chunk file "2" with "BBBBB" to id "chunking-42"
+		And user "user0" has uploaded new chunk file "3" with "CCCCC" to id "chunking-42"
+		And user "user0" has uploaded new chunk file "1" with "AAAAA" to id "chunking-42"
 		When using old dav path
 		And user "user0" moves new chunk file with id "chunking-42" to "/myChunkedFile.txt"
 		Then the HTTP status code should be "404"
@@ -581,30 +581,30 @@ Feature: webdav-related-new-endpoint
 	Scenario: Upload file via new chunking endpoint with wrong size header
 		Given using new dav path
 		And user "user0" has been created
-		And user "user0" creates a new chunking upload with id "chunking-42"
-		And user "user0" uploads new chunk file "1" with "AAAAA" to id "chunking-42"
-		And user "user0" uploads new chunk file "2" with "BBBBB" to id "chunking-42"
-		And user "user0" uploads new chunk file "3" with "CCCCC" to id "chunking-42"
-		When user "user0" moves new chunk file with id "chunking-42" to "/myChunkedFile.txt" with size 5
+		And user "user0" has created a new chunking upload with id "chunking-42"
+		And user "user0" has uploaded new chunk file "1" with "AAAAA" to id "chunking-42"
+		And user "user0" has uploaded new chunk file "2" with "BBBBB" to id "chunking-42"
+		And user "user0" has uploaded new chunk file "3" with "CCCCC" to id "chunking-42"
+		When user "user0" moves new chunk file with id "chunking-42" to "/myChunkedFile.txt" with size 5 using the API
 		Then the HTTP status code should be "400"
 
 	Scenario: Upload file via new chunking endpoint with correct size header
 		Given using new dav path
 		And user "user0" has been created
-		And user "user0" creates a new chunking upload with id "chunking-42"
-		And user "user0" uploads new chunk file "1" with "AAAAA" to id "chunking-42"
-		And user "user0" uploads new chunk file "2" with "BBBBB" to id "chunking-42"
-		And user "user0" uploads new chunk file "3" with "CCCCC" to id "chunking-42"
-		When user "user0" moves new chunk file with id "chunking-42" to "/myChunkedFile.txt" with size 15
+		And user "user0" has created a new chunking upload with id "chunking-42"
+		And user "user0" has uploaded new chunk file "1" with "AAAAA" to id "chunking-42"
+		And user "user0" has uploaded new chunk file "2" with "BBBBB" to id "chunking-42"
+		And user "user0" has uploaded new chunk file "3" with "CCCCC" to id "chunking-42"
+		When user "user0" moves new chunk file with id "chunking-42" to "/myChunkedFile.txt" with size 15 using the API
 		Then the HTTP status code should be "201"
 
 	Scenario Outline: Upload files with difficult names using new chunking
 		Given using new dav path
 		And user "user0" has been created
-		And user "user0" creates a new chunking upload with id "chunking-42"
-		And user "user0" uploads new chunk file "1" with "AAAAA" to id "chunking-42"
-		And user "user0" uploads new chunk file "2" with "BBBBB" to id "chunking-42"
-		And user "user0" uploads new chunk file "3" with "CCCCC" to id "chunking-42"
+		And user "user0" has created a new chunking upload with id "chunking-42"
+		And user "user0" has uploaded new chunk file "1" with "AAAAA" to id "chunking-42"
+		And user "user0" has uploaded new chunk file "2" with "BBBBB" to id "chunking-42"
+		And user "user0" has uploaded new chunk file "3" with "CCCCC" to id "chunking-42"
 		And user "user0" moves new chunk file with id "chunking-42" to "/<file-name>"
 		When as user "user0"
 		And downloading file "/<file-name>"
@@ -619,10 +619,10 @@ Feature: webdav-related-new-endpoint
 	Scenario: Upload a file called "0" using new chunking
 		Given using new dav path
 		And user "user0" has been created
-		And user "user0" creates a new chunking upload with id "chunking-42"
-		And user "user0" uploads new chunk file "1" with "AAAAA" to id "chunking-42"
-		And user "user0" uploads new chunk file "2" with "BBBBB" to id "chunking-42"
-		And user "user0" uploads new chunk file "3" with "CCCCC" to id "chunking-42"
+		And user "user0" has created a new chunking upload with id "chunking-42"
+		And user "user0" has uploaded new chunk file "1" with "AAAAA" to id "chunking-42"
+		And user "user0" has uploaded new chunk file "2" with "BBBBB" to id "chunking-42"
+		And user "user0" has uploaded new chunk file "3" with "CCCCC" to id "chunking-42"
 		And user "user0" moves new chunk file with id "chunking-42" to "/0"
 		When as user "user0"
 		And downloading file "/0"
@@ -641,7 +641,7 @@ Feature: webdav-related-new-endpoint
 		Given using new dav path
 		And user "user0" has been created
 		And as user "user0"
-		When user "user0" copies file "/welcome.txt" to "/welcome.part"
+		When user "user0" copies file "/welcome.txt" to "/welcome.part" using the API
 		Then the HTTP status code should be "400"
 
 	Scenario: Uploading file to path with extension .part should not be possible
@@ -655,10 +655,10 @@ Feature: webdav-related-new-endpoint
 		Given using new dav path
 		And user "user0" has been created
 		And as user "user0"
-		When user "user0" moves file "/welcome.txt" to "/welcome.part"
+		When user "user0" moves file "/welcome.txt" to "/welcome.part" using the API
 		Then the HTTP status code should be "400"
 		And as user "user0"
-		When user "user0" moves file "/welcome.txt" to "/welcome.part"
+		When user "user0" moves file "/welcome.txt" to "/welcome.part" using the API
 		Then the HTTP status code should be "400"
 
 	Scenario: Creating a directory which contains .part should not be possible

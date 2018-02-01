@@ -3,7 +3,7 @@ Feature: dav-versions
     Given using api version "2"
     And using new dav path
     And user "user0" has been created
-    And file "/davtest.txt"  does not exist for user "user0"
+    And file "/davtest.txt" has been deleted for user "user0"
     And as user "user0"
 
   Scenario: Upload file and no version is available
@@ -20,7 +20,7 @@ Feature: dav-versions
     Given user "user0" has uploaded file "data/davtest.txt" to "/davtest.txt"
     And user "user0" has uploaded file "data/davtest.txt" to "/davtest.txt"
     And the version folder of file "/davtest.txt" for user "user0" contains "1" elements
-    And user "user0" deletes file "/davtest.txt"
+    And user "user0" has deleted file "/davtest.txt"
     When user "user0" uploads file "data/davtest.txt" to "/davtest.txt" using the API
     Then the version folder of file "/davtest.txt" for user "user0" contains "0" elements
 

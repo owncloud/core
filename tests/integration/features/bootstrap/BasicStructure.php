@@ -446,7 +446,7 @@ trait BasicStructure {
 	}
 
 	/**
-	 * @Given user :user modifies text of :filename with text :text
+	 * @Given user :user has modified text of :filename with text :text
 	 * @param string $user
 	 * @param string $filename
 	 * @param string $text
@@ -478,28 +478,28 @@ trait BasicStructure {
 	}
 
 	/**
-	 * @Given file :filename of size :size is created in local storage
+	 * @Given file :filename of size :size has been created in local storage
 	 * @param string $filename
 	 * @param string $size
 	 */
-	public function fileIsCreatedInLocalStorageWithSize($filename, $size) {
+	public function fileHasBeenCreatedInLocalStorageWithSize($filename, $size) {
 		$this->createFileSpecificSize("local_storage/$filename", $size);
 	}
 
 	/**
-	 * @Given file :filename with text :text is created in local storage
+	 * @Given file :filename with text :text has been created in local storage
 	 * @param string $filename
 	 * @param string $text
 	 */
-	public function fileIsCreatedInLocalStorageWithText($filename, $text) {
+	public function fileHasBeenCreatedInLocalStorageWithText($filename, $text) {
 		$this->createFileWithText("local_storage/$filename", $text);
 	}
 
 	/**
-	 * @Given file :filename is deleted in local storage
+	 * @Given file :filename has been deleted in local storage
 	 * @param string $filename
 	 */
-	public function fileIsDeletedInLocalStorage($filename) {
+	public function fileHasBeenDeletedInLocalStorage($filename) {
 		unlink("work/local_storage/$filename");
 	}
 

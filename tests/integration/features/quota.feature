@@ -19,7 +19,7 @@ Feature: quota
 		And the quota of user "user0" has been set to "20 B"
 		When user "user0" uploads file "data/textfile.txt" to "/testquota.txt" with all mechanisms
 		Then the HTTP status code of all upload responses should be "507"
-		And as "user0" the file "/testquota.txt" does not exist
+		And as "user0" the file "/testquota.txt" should not exist
 
 	Scenario: Overwriting a file as owner having enough quota
 		Given using new dav path
@@ -38,7 +38,7 @@ Feature: quota
 		And user "user0" uploads file with content "test" to "/testquota.txt"
 		When user "user0" overwrites file "data/textfile.txt" to "/testquota.txt" with all mechanisms
 		Then the HTTP status code of all upload responses should be "507"
-		And as "user0" the file "/testquota.txt" does not exist
+		And as "user0" the file "/testquota.txt" should not exist
 
 	# Received shared folder
 
@@ -69,7 +69,7 @@ Feature: quota
 		And as user "user0"
 		When user "user0" uploads file "data/textfile.txt" to "/testquota/testquota.txt" with all mechanisms
 		Then the HTTP status code of all upload responses should be "507"
-		And as "user0" the file "/testquota/testquota.txt" does not exist
+		And as "user0" the file "/testquota/testquota.txt" should not exist
 
 	Scenario: Overwriting a file in received folder having enough quota
 		Given using new dav path
@@ -100,7 +100,7 @@ Feature: quota
 		And as user "user0"
 		When user "user0" overwrites file "data/textfile.txt" to "/testquota/testquota.txt" with all mechanisms
 		Then the HTTP status code of all upload responses should be "507"
-		And as "user0" the file "/testquota/testquota.txt" does not exist
+		And as "user0" the file "/testquota/testquota.txt" should not exist
 
 	# Received shared file
 
@@ -126,7 +126,7 @@ Feature: quota
 		And the quota of user "user0" has been set to "10 MB"
 		And the quota of user "user1" has been set to "20 B"
 		And as user "user1"
-		And user "user1" moves file "/textfile0.txt" to "/testquota.txt"
+		And user "user1" has moved file "/textfile0.txt" to "/testquota.txt"
 		And file "/testquota.txt" of user "user1" is shared with user "user0" with permissions 19
 		When user "user0" overwrites file "data/textfile.txt" to "/testquota.txt" with all mechanisms
 		Then the HTTP status code of all upload responses should be "507"

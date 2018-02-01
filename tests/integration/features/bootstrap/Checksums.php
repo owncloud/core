@@ -7,13 +7,14 @@ use GuzzleHttp\Client;
 trait Checksums {
 
 	/**
-	 * @When user :user uploads file :source to :destination with checksum :checksum
+	 * @When user :user uploads file :source to :destination with checksum :checksum using the API
+	 * @Given user :user has uploaded file :source to :destination with checksum :checksum
 	 * @param string $user
 	 * @param string $source
 	 * @param string $destination
 	 * @param string $checksum
 	 */
-	public function userUploadsFileToWithChecksum($user, $source, $destination, $checksum) {
+	public function userUploadsFileToWithChecksumUsingTheAPI($user, $source, $destination, $checksum) {
 		$file = \GuzzleHttp\Stream\Stream::factory(fopen($source, 'r'));
 		$this->response = $this->makeDavRequest($user,
 							  'PUT',
@@ -141,7 +142,8 @@ trait Checksums {
 	}
 
 	/**
-	 * @Given user :user uploads chunk file :num of :total with :data to :destination with checksum :checksum
+	 * @When user :user uploads chunk file :num of :total with :data to :destination with checksum :checksum
+	 * @Given user :user has uploaded chunk file :num of :total with :data to :destination with checksum :checksum
 	 * @param string $user
 	 * @param int $num
 	 * @param int $total

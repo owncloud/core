@@ -96,9 +96,9 @@ Feature: favorite
         Given using old dav path
         And user "user0" has been created
         And user "user0" has created a folder "/subfolder"
-        And user "user0" moves file "/textfile0.txt" to "/subfolder/textfile0.txt"
-        And user "user0" moves file "/textfile1.txt" to "/subfolder/textfile1.txt"
-        And user "user0" moves file "/textfile2.txt" to "/subfolder/textfile2.txt"
+        And user "user0" has moved file "/textfile0.txt" to "/subfolder/textfile0.txt"
+        And user "user0" has moved file "/textfile1.txt" to "/subfolder/textfile1.txt"
+        And user "user0" has moved file "/textfile2.txt" to "/subfolder/textfile2.txt"
         When user "user0" favorites element "/subfolder/textfile0.txt"
         And user "user0" favorites element "/subfolder/textfile1.txt"
         And user "user0" favorites element "/subfolder/textfile2.txt"
@@ -111,9 +111,9 @@ Feature: favorite
         Given using old dav path
         And user "user0" has been created
         And user "user0" has created a folder "/subfolder"
-        And user "user0" moves file "/textfile0.txt" to "/subfolder/textfile0.txt"
-        And user "user0" moves file "/textfile1.txt" to "/subfolder/textfile1.txt"
-        And user "user0" moves file "/textfile2.txt" to "/subfolder/textfile2.txt"
+        And user "user0" has moved file "/textfile0.txt" to "/subfolder/textfile0.txt"
+        And user "user0" has moved file "/textfile1.txt" to "/subfolder/textfile1.txt"
+        And user "user0" has moved file "/textfile2.txt" to "/subfolder/textfile2.txt"
         When user "user0" favorites element "/subfolder/textfile0.txt"
         And user "user0" favorites element "/subfolder/textfile1.txt"
         And user "user0" favorites element "/subfolder/textfile2.txt"
@@ -127,10 +127,10 @@ Feature: favorite
         And user "user0" has been created
         And user "user1" has been created
         And user "user0" has created a folder "/shared"
-        And user "user0" moved file "/textfile0.txt" to "/shared/shared_file.txt"
+        And user "user0" has moved file "/textfile0.txt" to "/shared/shared_file.txt"
         And folder "/shared" of user "user0" is shared with user "user1"
         And user "user1" favorites element "/shared/shared_file.txt"
-        When user "user1" moved file "/shared/shared_file.txt" to "/taken_out.txt"
+        When user "user1" moves file "/shared/shared_file.txt" to "/taken_out.txt" using the API
         Then user "user1" in folder "/" should have favorited the following elements
             | /taken_out.txt |
 
@@ -138,12 +138,12 @@ Feature: favorite
         Given using old dav path
         And user "user0" has been created
         And user "user0" has created a folder "/subfolder"
-        And user "user0" copies file "/textfile0.txt" to "/subfolder/textfile0.txt"
-        And user "user0" copies file "/textfile0.txt" to "/subfolder/textfile1.txt"
-        And user "user0" copies file "/textfile0.txt" to "/subfolder/textfile2.txt"
-        And user "user0" copies file "/textfile0.txt" to "/subfolder/textfile3.txt"
-        And user "user0" copies file "/textfile0.txt" to "/subfolder/textfile4.txt"
-        And user "user0" copies file "/textfile0.txt" to "/subfolder/textfile5.txt"
+        And user "user0" has copied file "/textfile0.txt" to "/subfolder/textfile0.txt"
+        And user "user0" has copied file "/textfile0.txt" to "/subfolder/textfile1.txt"
+        And user "user0" has copied file "/textfile0.txt" to "/subfolder/textfile2.txt"
+        And user "user0" has copied file "/textfile0.txt" to "/subfolder/textfile3.txt"
+        And user "user0" has copied file "/textfile0.txt" to "/subfolder/textfile4.txt"
+        And user "user0" has copied file "/textfile0.txt" to "/subfolder/textfile5.txt"
         When user "user0" favorites element "/subfolder/textfile0.txt"
         And user "user0" favorites element "/subfolder/textfile1.txt"
         And user "user0" favorites element "/subfolder/textfile2.txt"

@@ -72,7 +72,7 @@ Feature: transfer-ownership
 		When transferring ownership from "user0" to "user1"
 		And the command was successful
 		And as user "user1"
-		Then as "user1" the folder "/test" does not exist
+		Then as "user1" the folder "/test" should not exist
 		And using received transfer folder of "user1" as dav path
 		And downloaded content when downloading file "/test/somefile.txt" with range "bytes=0-6" should be "This is"
 
@@ -103,7 +103,7 @@ Feature: transfer-ownership
 		And the command was successful
 		And as user "user1"
 		And using received transfer folder of "user1" as dav path
-		Then as "user1" the folder "/test" does not exist
+		Then as "user1" the folder "/test" should not exist
 
 	@local_storage @no_default_encryption
 	Scenario: transferring ownership does not transfer external storage
@@ -113,7 +113,7 @@ Feature: transfer-ownership
 		And the command was successful
 		And as user "user1"
 		And using received transfer folder of "user1" as dav path
-		Then as "user1" the folder "/local_storage" does not exist
+		Then as "user1" the folder "/local_storage" should not exist
 
 	@no_default_encryption
 	Scenario: transferring ownership does not fail with shared trashed files
@@ -123,7 +123,7 @@ Feature: transfer-ownership
 		And user "user0" has created a folder "/sub"
 		And user "user0" has created a folder "/sub/test"
 		And folder "/sub/test" of user "user0" is shared with user "user2" with permissions 31
-		And user "user0" deletes folder "/sub"
+		And user "user0" has deleted folder "/sub"
 		When transferring ownership from "user0" to "user1"
 		Then the command was successful
 
@@ -204,7 +204,7 @@ Feature: transfer-ownership
 		When transferring ownership of path "test" from "user0" to "user1"
 		And the command was successful
 		And as user "user1"
-		Then as "user1" the folder "/test" does not exist
+		Then as "user1" the folder "/test" should not exist
 		And using received transfer folder of "user1" as dav path
 		And downloaded content when downloading file "/test/somefile.txt" with range "bytes=0-6" should be "This is"
 
@@ -231,12 +231,12 @@ Feature: transfer-ownership
 		And user "user2" has created a folder "/test"
 		And user "user0" has created a folder "/sub"
 		And folder "/test" of user "user2" is shared with user "user0" with permissions 31
-		And user "user0" moved folder "/test" to "/sub/test"
+		And user "user0" has moved folder "/test" to "/sub/test"
 		When transferring ownership of path "sub" from "user0" to "user1"
 		And the command was successful
 		And as user "user1"
 		And using received transfer folder of "user1" as dav path
-		Then as "user1" the folder "/sub/test" does not exist
+		Then as "user1" the folder "/sub/test" should not exist
 
 	@local_storage
 	Scenario: transferring ownership does not transfer external storage
@@ -247,7 +247,7 @@ Feature: transfer-ownership
 		And the command was successful
 		And as user "user1"
 		And using received transfer folder of "user1" as dav path
-		Then as "user1" the folder "/local_storage" does not exist
+		Then as "user1" the folder "/local_storage" should not exist
 
 	Scenario: transferring ownership fails with invalid source user
 		Given user "user0" has been created

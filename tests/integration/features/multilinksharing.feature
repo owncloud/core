@@ -135,7 +135,7 @@ Feature: multilinksharing
 			| expireDate | +3 days |
 			| permissions | 1 |
 			| name | sharedlink2 |
-		And user "user0" deletes file "/textfile0.txt"
+		And user "user0" has deleted file "/textfile0.txt"
 		And the HTTP status code should be "204"
 		When user "user0" uploads file "data/textfile.txt" to "/textfile0.txt" using the API
 		Then the HTTP status code should be "201"
@@ -226,7 +226,7 @@ Feature: multilinksharing
 			| publicUpload | true |
 			| permissions | 15 |
 			| name | sharedlink2 |
-		When user "user0" moves folder "/FOLDER" to "/FOLDER_RENAMED"
+		When user "user0" moves folder "/FOLDER" to "/FOLDER_RENAMED" using the API
 		Then user "user0" checks public shares of file "/FOLDER_RENAMED"
 			| /FOLDER_RENAMED | 15 | sharedlink1 |
 			| /FOLDER_RENAMED | 15 | sharedlink2 |

@@ -11,7 +11,7 @@ Feature: external-storage
     And user "user1" has been created
     And as user "user0"
     And user "user0" has created a folder "/local_storage/foo"
-    And user "user0" moved file "/textfile0.txt" to "/local_storage/foo/textfile0.txt"
+    And user "user0" has moved file "/textfile0.txt" to "/local_storage/foo/textfile0.txt"
     And folder "/local_storage/foo" of user "user0" is shared with user "user1"
     And as user "user1"
     When the user creates a share using the API with share settings
@@ -32,9 +32,9 @@ Feature: external-storage
     And user "user1" has been created
     And as user "user0"
     And user "user0" has created a folder "/local_storage/foo1"
-    When user "user0" moved file "/textfile0.txt" to "/local_storage/foo1/textfile0.txt"
-    Then as "user1" the file "/local_storage/foo1/textfile0.txt" exists
-    And as "user0" the file "/local_storage/foo1/textfile0.txt" exists
+    When user "user0" moves file "/textfile0.txt" to "/local_storage/foo1/textfile0.txt" using the API
+    Then as "user1" the file "/local_storage/foo1/textfile0.txt" should exist
+    And as "user0" the file "/local_storage/foo1/textfile0.txt" should exist
 
   @local_storage
   @no_encryption
@@ -43,21 +43,21 @@ Feature: external-storage
     And user "user1" has been created
     And as user "user0"
     And user "user0" has created a folder "/local_storage/foo2"
-    And user "user0" moved file "/textfile0.txt" to "/local_storage/foo2/textfile0.txt"
-    When user "user1" moved file "/local_storage/foo2/textfile0.txt" to "/local.txt"
-    Then as "user1" the file "/local_storage/foo2/textfile0.txt" does not exist
-    And as "user0" the file "/local_storage/foo2/textfile0.txt" does not exist
-    And as "user1" the file "/local.txt" exists
+    And user "user0" has moved file "/textfile0.txt" to "/local_storage/foo2/textfile0.txt"
+    When user "user1" moves file "/local_storage/foo2/textfile0.txt" to "/local.txt" using the API
+    Then as "user1" the file "/local_storage/foo2/textfile0.txt" should not exist
+    And as "user0" the file "/local_storage/foo2/textfile0.txt" should not exist
+    And as "user1" the file "/local.txt" should exist
 
   Scenario: Download a file that exists in filecache but not storage fails with 404
     Given user "user0" has been created
     And as user "user0"
     And user "user0" has created a folder "/local_storage/foo3"
-    And user "user0" moved file "/textfile0.txt" to "/local_storage/foo3/textfile0.txt"
-    And file "foo3/textfile0.txt" is deleted in local storage
+    And user "user0" has moved file "/textfile0.txt" to "/local_storage/foo3/textfile0.txt"
+    And file "foo3/textfile0.txt" has been deleted in local storage
     When downloading file "local_storage/foo3/textfile0.txt"
     Then the HTTP status code should be "404"
-    And as "user0" the file "local_storage/foo3/textfile0.txt" does not exist
+    And as "user0" the file "local_storage/foo3/textfile0.txt" should not exist
 
   @local_storage
   Scenario: Upload a file to external storage while quota is set on home storage

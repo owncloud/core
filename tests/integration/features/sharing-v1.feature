@@ -241,7 +241,7 @@ Feature: sharing
 	Scenario: Downloading from upload-only share is forbidden
 		Given user "user0" has been created
 		And as user "user0"
-		And user "user0" moves file "/textfile0.txt" to "/FOLDER/test.txt"
+		And user "user0" has moved file "/textfile0.txt" to "/FOLDER/test.txt"
 		When the user creates a share using the API with share settings
 			| path | FOLDER |
 			| shareType | 3 |
@@ -270,7 +270,7 @@ Feature: sharing
 			| path | FOLDER |
 			| shareType | 3 |
 			| permissions | 4 |
-		When user "user0" deletes file "/FOLDER"
+		When user "user0" deletes file "/FOLDER" using the API
 		Then publicly uploading a file does not work
 		And the HTTP status code should be "404"
 
@@ -287,7 +287,7 @@ Feature: sharing
 	Scenario: getting all shares of a user using that user
 		Given user "user0" has been created
 		And user "user1" has been created
-		And user "user0" moved file "/textfile0.txt" to "/file_to_share.txt"
+		And user "user0" has moved file "/textfile0.txt" to "/file_to_share.txt"
 		And file "file_to_share.txt" of user "user0" is shared with user "user1"
 		And as user "user0"
 		When the user sends HTTP method "GET" to API endpoint "/apps/files_sharing/api/v1/shares"
@@ -341,11 +341,11 @@ Feature: sharing
 		And user "user2" has been created
 		And user "user3" has been created
 		And file "textfile0.txt" of user "user0" is shared with user "user1"
-		And user "user1" moved file "/textfile0 (2).txt" to "/textfile0_shared.txt"
+		And user "user1" has moved file "/textfile0 (2).txt" to "/textfile0_shared.txt"
 		And file "textfile0_shared.txt" of user "user1" is shared with user "user2"
 		And file "textfile0_shared.txt" of user "user2" is shared with user "user3"
 		And as user "user1"
-		When user "user1" deletes file "/textfile0_shared.txt"
+		When user "user1" deletes file "/textfile0_shared.txt" using the API
 		And as user "user3"
 		And the user downloads file "/textfile0_shared.txt" with range "bytes=1-7" using the API
 		Then the downloaded content should be "wnCloud"
@@ -353,7 +353,7 @@ Feature: sharing
 	Scenario: getting share info of a share
 		Given user "user0" has been created
 		And user "user1" has been created
-		And user "user0" moved file "/textfile0.txt" to "/file_to_share.txt"
+		And user "user0" has moved file "/textfile0.txt" to "/file_to_share.txt"
 		And file "file_to_share.txt" of user "user0" is shared with user "user1"
 		And as user "user0"
 		When getting info of last share
@@ -385,7 +385,7 @@ Feature: sharing
 		And group "group1" has been created
 		And user "user1" has been added to group "group1"
 		And file "textfile0.txt" of user "user0" is shared with group "group1"
-		And user "user1" moved file "/textfile0.txt" to "/FOLDER/textfile0.txt"
+		And user "user1" has moved file "/textfile0.txt" to "/FOLDER/textfile0.txt"
 		And as user "user0"
 		When updating last share with
 			| permissions | 1 |
@@ -527,8 +527,8 @@ Feature: sharing
 		And user "user0" has created a folder "/common/sub"
 		And folder "common" of user "user0" is shared with group "group0"
 		And file "textfile0.txt" of user "user1" is shared with user "user2"
-		And user "user1" moved file "/textfile0.txt" to "/common/textfile0.txt"
-		And user "user1" moved file "/common/textfile0.txt" to "/common/sub/textfile0.txt"
+		And user "user1" has moved file "/textfile0.txt" to "/common/textfile0.txt"
+		And user "user1" has moved file "/common/textfile0.txt" to "/common/sub/textfile0.txt"
 		And as user "user2"
 		When the user downloads file "/common/sub/textfile0.txt" with range "bytes=9-17" using the API
 		Then the downloaded content should be "test text"
@@ -547,8 +547,8 @@ Feature: sharing
 		And user "user0" has created a folder "/common/sub"
 		And folder "common" of user "user0" is shared with group "group0"
 		And file "textfile0.txt" of user "user1" is shared with user "user2"
-		And user "user1" moved file "/textfile0.txt" to "/common/textfile0.txt"
-		And user "user1" moved file "/common/textfile0.txt" to "/common/sub/textfile0.txt"
+		And user "user1" has moved file "/textfile0.txt" to "/common/textfile0.txt"
+		And user "user1" has moved file "/common/textfile0.txt" to "/common/sub/textfile0.txt"
 		And as user "user2"
 		When the user downloads file "/textfile0.txt" with range "bytes=9-17" using the API
 		Then the downloaded content should be "test text"
@@ -561,7 +561,7 @@ Feature: sharing
 		And group "group1" has been created
 		And user "user1" has been added to group "group1"
 		And file "textfile0.txt" of user "user0" is shared with group "group1"
-		And user "user1" moved file "/textfile0.txt" to "/FOLDER/textfile0.txt"
+		And user "user1" has moved file "/textfile0.txt" to "/FOLDER/textfile0.txt"
 		And as user "user0"
 		And deleting last share
 		And as user "user1"
@@ -589,7 +589,7 @@ Feature: sharing
 		And user "user0" has created a folder "/TMP"
 		When file "TMP" of user "user0" is shared with group "group"
 		And user "user1" has created a folder "/myFOLDER"
-		And user "user1" moves file "/TMP" to "/myFOLDER/myTMP"
+		And user "user1" moves file "/TMP" to "/myFOLDER/myTMP" using the API
 		And the administrator deletes user "user2" using the API
 		Then user "user1" should see following elements
 			| /myFOLDER/myTMP/ |
@@ -600,7 +600,7 @@ Feature: sharing
 		And user "user1" has been created
 		And as user "admin"
 		And the quota of user "user1" has been set to "0"
-		And user "user0" moved file "/welcome.txt" to "/myfile.txt"
+		And user "user0" has moved file "/welcome.txt" to "/myfile.txt"
 		And file "myfile.txt" of user "user0" is shared with user "user1"
 		When user "user1" uploads file "data/textfile.txt" to "/myfile.txt" using the API
 		Then the HTTP status code should be "204"
@@ -796,8 +796,8 @@ Feature: sharing
 		And user "user0" has created a folder "/merge-test-outside"
 		When folder "/merge-test-outside" of user "user0" is shared with group "group1"
 		And folder "/merge-test-outside" of user "user0" is shared with user "user1"
-		Then as "user1" the folder "/merge-test-outside" exists
-		And as "user1" the folder "/merge-test-outside (2)" does not exist
+		Then as "user1" the folder "/merge-test-outside" should exist
+		And as "user1" the folder "/merge-test-outside (2)" should not exist
 
 	Scenario: Merging shares for recipient when shared from outside with group and member with different permissions
 		Given user "user0" has been created
@@ -810,7 +810,7 @@ Feature: sharing
 		Then as "user1" gets properties of folder "/merge-test-outside-perms" with
 			|{http://owncloud.org/ns}permissions|
 		And the single response should contain a property "{http://owncloud.org/ns}permissions" with value "SRDNVCK"
-		And as "user1" the folder "/merge-test-outside-perms (2)" does not exist
+		And as "user1" the folder "/merge-test-outside-perms (2)" should not exist
 
 	Scenario: Merging shares for recipient when shared from outside with two groups
 		Given user "user0" has been created
@@ -822,8 +822,8 @@ Feature: sharing
 		And user "user0" has created a folder "/merge-test-outside-twogroups"
 		When folder "/merge-test-outside-twogroups" of user "user0" is shared with group "group1"
 		And folder "/merge-test-outside-twogroups" of user "user0" is shared with group "group2"
-		Then as "user1" the folder "/merge-test-outside-twogroups" exists
-		And as "user1" the folder "/merge-test-outside-twogroups (2)" does not exist
+		Then as "user1" the folder "/merge-test-outside-twogroups" should exist
+		And as "user1" the folder "/merge-test-outside-twogroups (2)" should not exist
 
 	Scenario: Merging shares for recipient when shared from outside with two groups with different permissions
 		Given user "user0" has been created
@@ -838,7 +838,7 @@ Feature: sharing
 		Then as "user1" gets properties of folder "/merge-test-outside-twogroups-perms" with
 			|{http://owncloud.org/ns}permissions|
 		And the single response should contain a property "{http://owncloud.org/ns}permissions" with value "SRDNVCK"
-		And as "user1" the folder "/merge-test-outside-twogroups-perms (2)" does not exist
+		And as "user1" the folder "/merge-test-outside-twogroups-perms (2)" should not exist
 
 	Scenario: Merging shares for recipient when shared from outside with two groups and member
 		Given user "user0" has been created
@@ -854,7 +854,7 @@ Feature: sharing
 		Then as "user1" gets properties of folder "/merge-test-outside-twogroups-member-perms" with
 			|{http://owncloud.org/ns}permissions|
 		And the single response should contain a property "{http://owncloud.org/ns}permissions" with value "SRDNVCK"
-		And as "user1" the folder "/merge-test-outside-twogroups-member-perms (2)" does not exist
+		And as "user1" the folder "/merge-test-outside-twogroups-member-perms (2)" should not exist
 
 	Scenario: Merging shares for recipient when shared from inside with group
 		Given user "user0" has been created
@@ -862,8 +862,8 @@ Feature: sharing
 		And user "user0" has been added to group "group1"
 		And user "user0" has created a folder "/merge-test-inside-group"
 		When folder "/merge-test-inside-group" of user "user0" is shared with group "group1"
-		Then as "user0" the folder "/merge-test-inside-group" exists
-		And as "user0" the folder "/merge-test-inside-group (2)" does not exist
+		Then as "user0" the folder "/merge-test-inside-group" should exist
+		And as "user0" the folder "/merge-test-inside-group (2)" should not exist
 
 	Scenario: Merging shares for recipient when shared from inside with two groups
 		Given user "user0" has been created
@@ -874,9 +874,9 @@ Feature: sharing
 		And user "user0" has created a folder "/merge-test-inside-twogroups"
 		When folder "/merge-test-inside-twogroups" of user "user0" is shared with group "group1"
 		And folder "/merge-test-inside-twogroups" of user "user0" is shared with group "group2"
-		Then as "user0" the folder "/merge-test-inside-twogroups" exists
-		And as "user0" the folder "/merge-test-inside-twogroups (2)" does not exist
-		And as "user0" the folder "/merge-test-inside-twogroups (3)" does not exist
+		Then as "user0" the folder "/merge-test-inside-twogroups" should exist
+		And as "user0" the folder "/merge-test-inside-twogroups (2)" should not exist
+		And as "user0" the folder "/merge-test-inside-twogroups (3)" should not exist
 
 	Scenario: Merging shares for recipient when shared from inside with group with less permissions
 		Given user "user0" has been created
@@ -890,8 +890,8 @@ Feature: sharing
 		Then as "user0" gets properties of folder "/merge-test-inside-twogroups-perms" with
 			|{http://owncloud.org/ns}permissions|
 		And the single response should contain a property "{http://owncloud.org/ns}permissions" with value "RDNVCK"
-		And as "user0" the folder "/merge-test-inside-twogroups-perms (2)" does not exist
-		And as "user0" the folder "/merge-test-inside-twogroups-perms (3)" does not exist
+		And as "user0" the folder "/merge-test-inside-twogroups-perms (2)" should not exist
+		And as "user0" the folder "/merge-test-inside-twogroups-perms (3)" should not exist
 
 	@skip @issue-29016
 	Scenario: Merging shares for recipient when shared from outside with group then user and recipient renames in between
@@ -901,12 +901,12 @@ Feature: sharing
 		And user "user1" has been added to group "group1"
 		And user "user0" has created a folder "/merge-test-outside-groups-renamebeforesecondshare"
 		When folder "/merge-test-outside-groups-renamebeforesecondshare" of user "user0" is shared with group "group1"
-		And user "user1" moved folder "/merge-test-outside-groups-renamebeforesecondshare" to "/merge-test-outside-groups-renamebeforesecondshare-renamed"
+		And user "user1" moves folder "/merge-test-outside-groups-renamebeforesecondshare" to "/merge-test-outside-groups-renamebeforesecondshare-renamed" using the API
 		And folder "/merge-test-outside-groups-renamebeforesecondshare" of user "user0" is shared with user "user1"
 		Then as "user1" gets properties of folder "/merge-test-outside-groups-renamebeforesecondshare-renamed" with
 			|{http://owncloud.org/ns}permissions|
 		And the single response should contain a property "{http://owncloud.org/ns}permissions" with value "SRDNVCK"
-		And as "user1" the folder "/merge-test-outside-groups-renamebeforesecondshare" does not exist
+		And as "user1" the folder "/merge-test-outside-groups-renamebeforesecondshare" should not exist
 
 	Scenario: Merging shares for recipient when shared from outside with user then group and recipient renames in between
 		Given user "user0" has been created
@@ -915,16 +915,16 @@ Feature: sharing
 		And user "user1" has been added to group "group1"
 		And user "user0" has created a folder "/merge-test-outside-groups-renamebeforesecondshare"
 		When folder "/merge-test-outside-groups-renamebeforesecondshare" of user "user0" is shared with user "user1"
-		And user "user1" moved folder "/merge-test-outside-groups-renamebeforesecondshare" to "/merge-test-outside-groups-renamebeforesecondshare-renamed"
+		And user "user1" moves folder "/merge-test-outside-groups-renamebeforesecondshare" to "/merge-test-outside-groups-renamebeforesecondshare-renamed" using the API
 		And folder "/merge-test-outside-groups-renamebeforesecondshare" of user "user0" is shared with group "group1"
 		Then as "user1" gets properties of folder "/merge-test-outside-groups-renamebeforesecondshare-renamed" with
 			|{http://owncloud.org/ns}permissions|
 		And the single response should contain a property "{http://owncloud.org/ns}permissions" with value "SRDNVCK"
-		And as "user1" the folder "/merge-test-outside-groups-renamebeforesecondshare" does not exist
+		And as "user1" the folder "/merge-test-outside-groups-renamebeforesecondshare" should not exist
 
 	Scenario: Emptying trashbin
 		Given user "user0" has been created
-		And user "user0" deletes file "/textfile0.txt"
+		And user "user0" has deleted file "/textfile0.txt"
 		When user "user0" empties the trashbin
 		Then the HTTP status code should be "200"
 
@@ -934,9 +934,9 @@ Feature: sharing
 		And user "user0" has created a folder "/common"
 		And user "user0" has created a folder "/common/sub"
 		And file "/common/sub" of user "user0" is shared with user "user1"
-		And user "user0" deletes folder "/common"
+		And user "user0" has deleted folder "/common"
 		When user "user0" empties the trashbin
-		Then as "user1" the folder "/sub" does not exist
+		Then as "user1" the folder "/sub" should not exist
 
 	Scenario: sharing again an own file while belonging to a group
 		Given user "user0" has been created
@@ -966,7 +966,7 @@ Feature: sharing
 			| shareType | 0 |
 		Then the OCS status code should be "100"
 		And the HTTP status code should be "200"
-		And as "user1" the folder "/sub" exists
+		And as "user1" the folder "/sub" should exist
 
 	Scenario: sharing subfolder when parent already shared with group of sharer
 		Given user "user0" has been created
@@ -983,7 +983,7 @@ Feature: sharing
 			| shareType | 0 |
 		Then the OCS status code should be "100"
 		And the HTTP status code should be "200"
-		And as "user1" the folder "/sub" exists
+		And as "user1" the folder "/sub" should exist
 
 	Scenario: sharing subfolder of already shared folder, GET result is correct
 		Given user "user0" has been created
@@ -1205,11 +1205,11 @@ Feature: sharing
 		Given user "user0" has been created
 		And user "user1" has been created
 		And user "user0" has created a folder "/shared"
-		And user "user0" moved file "/textfile0.txt" to "/shared/shared_file.txt"
+		And user "user0" has moved file "/textfile0.txt" to "/shared/shared_file.txt"
 		And folder "/shared" of user "user0" is shared with user "user1"
-		When user "user1" deletes file "/shared/shared_file.txt"
-		Then as "user1" the file "/shared/shared_file.txt" does not exist
-		And as "user0" the file "/shared/shared_file.txt" does not exist
+		When user "user1" deletes file "/shared/shared_file.txt" using the API
+		Then as "user1" the file "/shared/shared_file.txt" should not exist
+		And as "user0" the file "/shared/shared_file.txt" should not exist
 		And as "user0" the file "/shared_file.txt" exists in trash
 		And as "user1" the file "/shared_file.txt" exists in trash
 
@@ -1218,11 +1218,11 @@ Feature: sharing
 		And user "user1" has been created
 		And user "user0" has created a folder "/shared"
 		And user "user0" has created a folder "/shared/sub"
-		And user "user0" moved file "/textfile0.txt" to "/shared/sub/shared_file.txt"
+		And user "user0" has moved file "/textfile0.txt" to "/shared/sub/shared_file.txt"
 		And folder "/shared" of user "user0" is shared with user "user1"
-		When user "user1" deletes folder "/shared/sub"
-		Then as "user1" the folder "/shared/sub" does not exist
-		And as "user0" the folder "/shared/sub" does not exist
+		When user "user1" deletes folder "/shared/sub" using the API
+		Then as "user1" the folder "/shared/sub" should not exist
+		And as "user0" the folder "/shared/sub" should not exist
 		And as "user0" the folder "/sub" exists in trash
 		And as "user0" the file "/sub/shared_file.txt" exists in trash
 		And as "user1" the folder "/sub" exists in trash
@@ -1233,20 +1233,20 @@ Feature: sharing
 		And user "user1" has been created
 		And user "user0" has created a folder "/shared"
 		And folder "/shared" of user "user0" is shared with user "user1"
-		When user "user1" moved file "/textfile0.txt" to "/shared/shared_file.txt"
-		Then as "user1" the file "/shared/shared_file.txt" exists
-		And as "user0" the file "/shared/shared_file.txt" exists
+		When user "user1" moves file "/textfile0.txt" to "/shared/shared_file.txt" using the API
+		Then as "user1" the file "/shared/shared_file.txt" should exist
+		And as "user0" the file "/shared/shared_file.txt" should exist
 
 	Scenario: moving a file out of a share as recipient creates a backup for the owner
 		Given user "user0" has been created
 		And user "user1" has been created
 		And user "user0" has created a folder "/shared"
-		And user "user0" moved file "/textfile0.txt" to "/shared/shared_file.txt"
+		And user "user0" has moved file "/textfile0.txt" to "/shared/shared_file.txt"
 		And file "/shared" of user "user0" is shared with user "user1"
-		And user "user1" moved folder "/shared" to "/shared_renamed"
-		When user "user1" moved file "/shared_renamed/shared_file.txt" to "/taken_out.txt"
-		Then as "user1" the file "/taken_out.txt" exists
-		And as "user0" the file "/shared/shared_file.txt" does not exist
+		And user "user1" has moved folder "/shared" to "/shared_renamed"
+		When user "user1" moves file "/shared_renamed/shared_file.txt" to "/taken_out.txt" using the API
+		Then as "user1" the file "/taken_out.txt" should exist
+		And as "user0" the file "/shared/shared_file.txt" should not exist
 		And as "user0" the file "/shared_file.txt" exists in trash
 
 	Scenario: moving a folder out of a share as recipient creates a backup for the owner
@@ -1254,12 +1254,12 @@ Feature: sharing
 		And user "user1" has been created
 		And user "user0" has created a folder "/shared"
 		And user "user0" has created a folder "/shared/sub"
-		And user "user0" moved file "/textfile0.txt" to "/shared/sub/shared_file.txt"
+		And user "user0" has moved file "/textfile0.txt" to "/shared/sub/shared_file.txt"
 		And file "/shared" of user "user0" is shared with user "user1"
-		And user "user1" moved folder "/shared" to "/shared_renamed"
-		When user "user1" moved folder "/shared_renamed/sub" to "/taken_out"
-		Then as "user1" the file "/taken_out" exists
-		And as "user0" the folder "/shared/sub" does not exist
+		And user "user1" has moved folder "/shared" to "/shared_renamed"
+		When user "user1" moves folder "/shared_renamed/sub" to "/taken_out" using the API
+		Then as "user1" the file "/taken_out" should exist
+		And as "user0" the folder "/shared/sub" should not exist
 		And as "user0" the folder "/sub" exists in trash
 		And as "user0" the file "/sub/shared_file.txt" exists in trash
 
@@ -1270,7 +1270,7 @@ Feature: sharing
 		And user "user0" has been added to group "group0"
 		And user "user0" has created a folder "/shared"
 		And as user "user0"
-		And user "user0" moved file "/textfile0.txt" to "/shared/shared_file.txt"
+		And user "user0" has moved file "/textfile0.txt" to "/shared/shared_file.txt"
 		And folder "/shared" of user "user0" is shared with user "user1"
 		And as user "user1"
 		And folder "/shared" of user "user1" is shared with group "group0"
@@ -1290,7 +1290,7 @@ Feature: sharing
 		And folder "/folder1" of user "user0" is shared with user "user1" with permissions 31
 		And folder "/folder1/folder2" of user "user1" is shared with user "user2" with permissions 31
 		And as user "user1"
-		When user "user1" moves folder "/folder1/folder2" to "/moved-out/folder2"
+		When user "user1" moves folder "/folder1/folder2" to "/moved-out/folder2" using the API
 		And getting info of last share
 		Then the share fields of the last share should include
 			| id | A_NUMBER |
@@ -1308,8 +1308,8 @@ Feature: sharing
 			| file_parent | A_NUMBER |
 			| displayname_owner | user1 |
 			| mimetype | httpd/unix-directory |
-		And as "user0" the folder "/folder1/folder2" does not exist
-		And as "user2" the folder "/folder2" exists
+		And as "user0" the folder "/folder1/folder2" should not exist
+		And as "user2" the folder "/folder2" should exist
 
 	Scenario: Share ownership change after moving a shared file to another share
 		Given user "user0" has been created
@@ -1321,7 +1321,7 @@ Feature: sharing
 		And folder "/user0-folder" of user "user0" is shared with user "user1" with permissions 31
 		And folder "/user2-folder" of user "user2" is shared with user "user1" with permissions 31
 		And as user "user1"
-		When user "user1" moves folder "/user0-folder/folder2" to "/user2-folder/folder2"
+		When user "user1" moves folder "/user0-folder/folder2" to "/user2-folder/folder2" using the API
 		And getting info of last share
 		Then the share fields of the last share should include
 			| id | A_NUMBER |
@@ -1338,6 +1338,6 @@ Feature: sharing
 			| file_parent | A_NUMBER |
 			| displayname_owner | user2 |
 			| mimetype | httpd/unix-directory |
-		And as "user0" the folder "/user0-folder/folder2" does not exist
-		And as "user2" the folder "/user2-folder/folder2" exists
+		And as "user0" the folder "/user0-folder/folder2" should not exist
+		And as "user2" the folder "/user2-folder/folder2" should exist
 

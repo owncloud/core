@@ -109,13 +109,13 @@ trait WebDav {
 	}
 
 	/**
-	 * @Given /^user "([^"]*)" moved (file|folder|entry) "([^"]*)" to "([^"]*)"$/
+	 * @Given /^user "([^"]*)" has moved (file|folder|entry) "([^"]*)" to "([^"]*)"$/
 	 * @param string $user
 	 * @param string $entry unused
 	 * @param string $fileSource
 	 * @param string $fileDestination
 	 */
-	public function userMovedFile($user, $entry, $fileSource, $fileDestination) {
+	public function userHasMovedFile($user, $entry, $fileSource, $fileDestination) {
 		$fullUrl = $this->baseUrlWithoutOCSAppendix() . $this->getDavFilesPath($user);
 		$headers['Destination'] = $fullUrl . $fileDestination;
 		$this->response = $this->makeDavRequest($user, "MOVE", $fileSource, $headers);
@@ -123,13 +123,13 @@ trait WebDav {
 	}
 
 	/**
-	 * @When /^user "([^"]*)" moves (file|folder|entry) "([^"]*)" to "([^"]*)"$/
+	 * @When /^user "([^"]*)" moves (file|folder|entry) "([^"]*)" to "([^"]*)" using the API$/
 	 * @param string $user
 	 * @param string $entry unused
 	 * @param string $fileSource
 	 * @param string $fileDestination
 	 */
-	public function userMovesFile($user, $entry, $fileSource, $fileDestination) {
+	public function userMovesFileUsingTheAPI($user, $entry, $fileSource, $fileDestination) {
 		$fullUrl = $this->baseUrlWithoutOCSAppendix() . $this->getDavFilesPath($user);
 		$headers['Destination'] = $fullUrl . $fileDestination;
 		try {
@@ -140,12 +140,13 @@ trait WebDav {
 	}
 
 	/**
-	 * @When /^user "([^"]*)" copies file "([^"]*)" to "([^"]*)"$/
+	 * @When /^user "([^"]*)" copies file "([^"]*)" to "([^"]*)" using the API$/
+	 * @Given /^user "([^"]*)" has copied file "([^"]*)" to "([^"]*)"$/
 	 * @param string $user
 	 * @param string $fileSource
 	 * @param string $fileDestination
 	 */
-	public function userCopiesFile($user, $fileSource, $fileDestination) {
+	public function userCopiesFileUsingTheAPI($user, $fileSource, $fileDestination) {
 		$fullUrl = $this->baseUrlWithoutOCSAppendix() . $this->getDavFilesPath($user);
 		$headers['Destination'] = $fullUrl . $fileDestination;
 		try {
@@ -234,7 +235,7 @@ trait WebDav {
 	}
 
 	/**
-	 * @When user :user downloads the file :fileName
+	 * @When user :user downloads the file :fileName using the API
 	 * @param string $user
 	 * @param string $fileName
 	 */
@@ -304,12 +305,12 @@ trait WebDav {
 	}
 
 	/**
-	 * @Given as :arg1 gets a custom property :arg2 of file :arg3
+	 * @When user :user gets a custom property :propertyName of file :path
 	 * @param string $user
 	 * @param string $propertyName
 	 * @param string $path
 	 */
-	 public function asGetsPropertiesOfFile($user, $propertyName, $path) {
+	 public function userGetsPropertiesOfFile($user, $propertyName, $path) {
 		$client = $this->getSabreClient($user);
 		 $properties = [
 				$propertyName
@@ -319,14 +320,14 @@ trait WebDav {
 	 }
 
 	/**
-	 * @Given /^"([^"]*)" sets property "([^"]*)" of (file|folder|entry) "([^"]*)" to "([^"]*)"$/
+	 * @Given /^"([^"]*)" has set property "([^"]*)" of (file|folder|entry) "([^"]*)" to "([^"]*)"$/
 	 * @param string $user
 	 * @param string $propertyName
 	 * @param string $elementType unused
 	 * @param string $path
 	 * @param string $propertyValue
 	 */
-	public function asSetsPropertiesOfFolderWith($user, $propertyName, $elementType, $path, $propertyValue) {
+	public function userHasSetPropertyOfEntryTo($user, $propertyName, $elementType, $path, $propertyValue) {
 		$client = $this->getSabreClient($user);
 		$properties = [
 				$propertyName => $propertyValue
@@ -353,14 +354,14 @@ trait WebDav {
 	}
 
 	/**
-	 * @Then /^as "([^"]*)" the (file|folder|entry) "([^"]*)" does not exist$/
+	 * @Then /^as "([^"]*)" the (file|folder|entry) "([^"]*)" should not exist$/
 	 * @param string $user
 	 * @param string $entry
 	 * @param string $path
 	 * @return array
 	 * @throws Exception
 	 */
-	public function asTheFileOrFolderDoesNotExist($user, $entry, $path) {
+	public function asTheFileOrFolderShouldNotExist($user, $entry, $path) {
 		$client = $this->getSabreClient($user);
 		$response = $client->request('HEAD', $this->makeSabrePath($user, '/' . ltrim($path, '/')));
 		if ($response['statusCode'] !== 404) {
@@ -371,13 +372,13 @@ trait WebDav {
 	}
 
 	/**
-	 * @Then /^as "([^"]*)" the (file|folder|entry) "([^"]*)" exists$/
+	 * @Then /^as "([^"]*)" the (file|folder|entry) "([^"]*)" should exist$/
 	 * @param string $user
 	 * @param string $entry
 	 * @param string $path
 	 * @throws Exception
 	 */
-	public function asTheFileOrFolderExists($user, $entry, $path) {
+	public function asTheFileOrFolderShouldExist($user, $entry, $path) {
 		$this->response = $this->listFolder($user, $path, 0);
 		if (!is_array($this->response) || !isset($this->response['{DAV:}getetag'])) {
 			throw new \Exception($entry . ' "' . $path . '" expected to exist but not found');
@@ -866,7 +867,7 @@ trait WebDav {
 	public function filesUploadedToWithAllMechanismsShouldExist($user, $destination) {
 		foreach (['old', 'new'] as $davVersion) {
 			foreach ([$davVersion . 'dav-regular', $davVersion . 'dav-' . $davVersion . 'chunking'] as $suffix) {
-				$this->asTheFileOrFolderExists($user, 'file', $destination . '-' . $suffix);
+				$this->asTheFileOrFolderShouldExist($user, 'file', $destination . '-' . $suffix);
 			}
 		}
 	}
@@ -908,7 +909,8 @@ trait WebDav {
 
 
 	/**
-	 * @When user :user uploads file with checksum :checksum and content :content to :destination
+	 * @When user :user uploads file with checksum :checksum and content :content to :destination using the API
+	 * @Given user :user has uploaded file with checksum :checksum and content :content to :destination
 	 * @param string $user
 	 * @param string $checksum
 	 * @param string $content
@@ -933,11 +935,11 @@ trait WebDav {
 
 
 	/**
-	 * @Given file :file  does not exist for user :user
+	 * @Given file :file has been deleted for user :user
 	 * @param string $file
 	 * @param string $user
 	 */
-	public function fileDoesNotExist($file, $user) {
+	public function fileHasBeenDeleted($file, $user) {
 		try {
 			$this->response = $this->makeDavRequest($user, 'DELETE', $file, []);
 		} catch (BadResponseException $e) {
@@ -947,7 +949,8 @@ trait WebDav {
 	}
 
 	/**
-	 * @When /^user "([^"]*)" deletes (file|folder) "([^"]*)"$/
+	 * @When /^user "([^"]*)" deletes (file|folder) "([^"]*)" using the API$/
+	 * @Given /^user "([^"]*)" has deleted (file|folder) "([^"]*)"$/
 	 * @param string $user
 	 * @param string $type unused
 	 * @param string $file
@@ -1001,7 +1004,8 @@ trait WebDav {
 	}
 
 	/**
-	 * @Given user :user creates a new chunking upload with id :id
+	 * @When user :user creates a new chunking upload with id :id using the API
+	 * @Given user :user has created a new chunking upload with id :id
 	 * @param string $user
 	 * @param string $id
 	 */
@@ -1016,7 +1020,8 @@ trait WebDav {
 	}
 
 	/**
-	 * @Given user :user uploads new chunk file :num with :data to id :id
+	 * @When user :user uploads new chunk file :num with :data to id :id using the API
+	 * @Given user :user has uploaded new chunk file :num with :data to id :id
 	 * @param string $user
 	 * @param int $num
 	 * @param string $data
@@ -1044,7 +1049,7 @@ trait WebDav {
 	}
 
 	/**
-	 * @Then user :user moves new chunk file with id :id to :dest with size :size
+	 * @When user :user moves new chunk file with id :id to :dest with size :size using the API
 	 * @param string $user
 	 * @param string $id
 	 * @param string $dest
@@ -1055,7 +1060,7 @@ trait WebDav {
 	}
 
 	/**
-	 * @Then user :user moves new chunk file with id :id to :dest with checksum :checksum
+	 * @When user :user moves new chunk file with id :id to :dest with checksum :checksum using the API
 	 * @param string $user
 	 * @param string $id
 	 * @param string $dest
