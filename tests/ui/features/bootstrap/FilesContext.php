@@ -27,6 +27,7 @@ use Behat\MinkExtension\Context\RawMinkContext;
 use GuzzleHttp\Exception\ClientException;
 use Page\FilesPage;
 use Page\FilesPageElement\ConflictDialog;
+use Page\FavoritesPage;
 use Page\OwncloudPage;
 use Page\TrashbinPage;
 use SensioLabs\Behat\PageObjectExtension\PageObject\Exception\ElementNotFoundException;
@@ -42,6 +43,7 @@ class FilesContext extends RawMinkContext implements Context {
 
 	private $filesPage;
 	private $trashbinPage;
+	private $favoritesPage;
 	/**
 	 * 
 	 * @var ConflictDialog
@@ -85,16 +87,20 @@ class FilesContext extends RawMinkContext implements Context {
 	 * @param FilesPage $filesPage
 	 * @param TrashbinPage $trashbinPage
 	 * @param ConflictDialog $conflictDialog
+	 * @param FavoritesPage $favoritesPage
 	 * @return void
 	 */
 	public function __construct(
 		FilesPage $filesPage,
 		TrashbinPage $trashbinPage,
-		ConflictDialog $conflictDialog
+		ConflictDialog $conflictDialog,
+		FavoritesPage $favoritesPage
 	) {
 		$this->trashbinPage = $trashbinPage;
 		$this->filesPage = $filesPage;
 		$this->conflictDialog = $conflictDialog;
+		$this->favoritesPage = $favoritesPage;
+		
 	}
 
 	/**
@@ -144,6 +150,18 @@ class FilesContext extends RawMinkContext implements Context {
 			$this->trashbinPage->open();
 			$this->trashbinPage->waitTillPageIsLoaded($this->getSession());
 			$this->featureContext->setCurrentPageObject($this->trashbinPage);
+		}
+	}
+	
+	/**
+	 * @Given I am on the favorites page
+	 * @return void
+	 */
+	public function iAmOnTheFavoritesPage() {
+		if (!$this->favoritesPage->isOpen()) {
+			$this->favoritesPage->open();
+			$this->favoritesPage->waitTillPageIsLoaded($this->getSession());
+			$this->featureContext->setCurrentPageObject($this->favoritesPage);
 		}
 	}
 
@@ -627,7 +645,7 @@ class FilesContext extends RawMinkContext implements Context {
 	
 	
 	/**
-	 * @Then /^the (?:file|folder) ((?:'[^']*')|(?:"[^"]*")) should (not|)\s?be listed\s?(?:in the |)(trashbin|)\s?(?:folder ((?:'[^']*')|(?:"[^"]*")))?$/
+	 * @Then /^the (?:file|folder) ((?:'[^']*')|(?:"[^"]*")) should (not|)\s?be listed\s?(?:in the |)(trashbin|favorites page|)\s?(?:folder ((?:'[^']*')|(?:"[^"]*")))?$/
 	 * @param string $name enclosed in single or double quotes
 	 * @param string $shouldOrNot
 	 * @param string $typeOfFilesPage
@@ -665,6 +683,9 @@ class FilesContext extends RawMinkContext implements Context {
 		$message = null;
 		if ($typeOfFilesPage === "trashbin") {
 			$this->iAmOnTheTrashbinPage();
+		}
+		if ($typeOfFilesPage === "favorites page") {
+			$this->iAmOnTheFavoritesPage();
 		}
 		$pageObject = $this->getCurrentPageObject();
 		$pageObject->waitTillPageIsLoaded($this->getSession());
@@ -732,7 +753,7 @@ class FilesContext extends RawMinkContext implements Context {
 	}
 
 	/**
-	 * @Then /^the following (?:file|folder) should (not|)\s?be listed\s?(?:in the |)(trashbin|)\s?(?:folder ((?:'[^']*')|(?:"[^"]*")))?$/
+	 * @Then /^the following (?:file|folder) should (not|)\s?be listed\s?(?:in the |)(trashbin|favorites page|)\s?(?:folder ((?:'[^']*')|(?:"[^"]*")))?$/
 	 * @param string $shouldOrNot
 	 * @param string $typeOfFilesPage
 	 * @param string $folder
@@ -908,6 +929,32 @@ class FilesContext extends RawMinkContext implements Context {
 		$this->assertContentOfRemoteAndLocalFileIsSame($remoteFile, $localFile);
 	}
 
+	/**
+	 * @When I mark the file/folder :fileOrFolderName as favorite
+	 * @param string $fileOrFolderName
+	 * @return void
+	 */
+	public function iMarkTheFileAsFavorite($fileOrFolderName) {
+		$fileRow = $this->filesPage->findFileRowByName($fileOrFolderName, $this->getSession());
+		$fileRow->markAsFavorite();
+		$this->filesPage->waitTillFileRowsAreReady($this->getSession());
+	}
+	
+	/**
+	 * @Then the file/folder :fileOrFolderName should be marked as favorite
+	 * @param string $fileOrFolderName
+	 * @return void
+	 */
+	public function theFileShouldBeMarkedAsFavorite($fileOrFolderName) {
+		$fileRow = $this->filesPage->findFileRowByName($fileOrFolderName, $this->getSession());
+		if ($fileRow->isMarkedAsFavorite() === false) {
+			throw new Exception(
+				__METHOD__ .
+				" The file $fileOrFolderName is not marked as favorite but should be"
+			);
+		}
+	}
+	
 	/**
 	 * Asserts that the content of a remote and a local file is the same
 	 * or is different
