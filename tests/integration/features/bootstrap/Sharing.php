@@ -23,7 +23,7 @@
  */
 
 use GuzzleHttp\Client;
-use GuzzleHttp\Exception\ClientException;
+use GuzzleHttp\Exception\BadResponseException;
 use TestHelpers\SharingHelper;
 
 require __DIR__ . '/../../../../lib/composer/autoload.php';
@@ -82,7 +82,7 @@ trait Sharing {
 			$this->response = $client->send(
 				$client->createRequest("POST", $fullUrl, $options)
 			);
-		} catch (\GuzzleHttp\Exception\ClientException $ex) {
+		} catch (BadResponseException $ex) {
 			$this->response = $ex->getResponse();
 		}
 
@@ -184,7 +184,7 @@ trait Sharing {
 		try {
 			$this->response = $client->send($request);
 			PHPUnit_Framework_Assert::fail('download must fail');
-		} catch (ClientException $e) {
+		} catch (BadResponseException $e) {
 			// expected
 			PHPUnit_Framework_Assert::assertGreaterThanOrEqual(400, $e->getCode());
 			PHPUnit_Framework_Assert::assertLessThanOrEqual(499, $e->getCode());
@@ -306,7 +306,7 @@ trait Sharing {
 		try {
 			$this->publicUploadContent('whateverfilefortesting.txt', '', 'test');
 			PHPUnit_Framework_Assert::fail('Publicly uploading must fail');
-		} catch (ClientException $e) {
+		} catch (BadResponseException $e) {
 			// expected
 			PHPUnit_Framework_Assert::assertGreaterThanOrEqual(400, $e->getCode());
 			PHPUnit_Framework_Assert::assertLessThanOrEqual(499, $e->getCode());
@@ -405,7 +405,7 @@ trait Sharing {
 			$this->response = $client->send(
 				$client->createRequest("PUT", $fullUrl, $options)
 			);
-		} catch (\GuzzleHttp\Exception\ClientException $ex) {
+		} catch (BadResponseException $ex) {
 			$this->response = $ex->getResponse();
 		}
 
@@ -453,7 +453,7 @@ trait Sharing {
 				$this->sharingApiVersion
 			);
 			$this->lastShareData = $this->response->xml();
-		} catch (\GuzzleHttp\Exception\ClientException $ex) {
+		} catch (BadResponseException $ex) {
 			$this->response = $ex->getResponse();
 		}
 	}

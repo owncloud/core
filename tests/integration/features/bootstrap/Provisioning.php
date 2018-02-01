@@ -1,6 +1,7 @@
 <?php
 
 use GuzzleHttp\Client;
+use GuzzleHttp\Exception\BadResponseException;
 use GuzzleHttp\Message\ResponseInterface;
 
 require __DIR__ . '/../../../../lib/composer/autoload.php';
@@ -153,7 +154,7 @@ trait Provisioning {
 		try {
 			$this->response = $client->get($fullUrl, $options);
 			return True;
-		} catch (\GuzzleHttp\Exception\ClientException $e) {
+		} catch (BadResponseException $e) {
 			$this->response = $e->getResponse();
 			return False;
 		}
@@ -368,7 +369,7 @@ trait Provisioning {
 		try {
 			$this->response = $client->get($fullUrl, $options);
 			return True;
-		} catch (\GuzzleHttp\Exception\ClientException $e) {
+		} catch (BadResponseException $e) {
 			$this->response = $e->getResponse();
 			return False;
 		}
