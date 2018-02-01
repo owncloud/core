@@ -1,7 +1,7 @@
 <?php
 
+use GuzzleHttp\Exception\BadResponseException;
 use GuzzleHttp\Client as GClient;
-use GuzzleHttp\Exception\ServerException;
 use GuzzleHttp\Message\ResponseInterface;
 use Sabre\DAV\Client as SClient;
 use Sabre\DAV\Xml\Property\ResourceType;
@@ -116,7 +116,7 @@ trait WebDav {
 		$headers['Destination'] = $fullUrl . $fileDestination;
 		try {
 			$this->response = $this->makeDavRequest($user, "MOVE", $fileSource, $headers);
-		} catch (\GuzzleHttp\Exception\ClientException $e) {
+		} catch (BadResponseException $e) {
 			$this->response = $e->getResponse();
 		}
 	}
@@ -132,7 +132,7 @@ trait WebDav {
 		$headers['Destination'] = $fullUrl . $fileDestination;
 		try {
 			$this->response = $this->makeDavRequest($user, "COPY", $fileSource, $headers);
-		} catch (\GuzzleHttp\Exception\ClientException $e) {
+		} catch (BadResponseException $e) {
 			$this->response = $e->getResponse();
 		}
 	}
@@ -209,7 +209,7 @@ trait WebDav {
 	public function downloadingFile($fileName) {
 		try {
 			$this->response = $this->makeDavRequest($this->currentUser, 'GET', $fileName, []);
-		} catch (\GuzzleHttp\Exception\ClientException $e) {
+		} catch (BadResponseException $e) {
 			$this->response = $e->getResponse();
 		}
 	}
@@ -222,7 +222,7 @@ trait WebDav {
 	public function userDownloadsTheFile($user, $fileName) {
 		try {
 			$this->response = $this->makeDavRequest($user, 'GET', $fileName, []);
-		} catch (\GuzzleHttp\Exception\ClientException $e) {
+		} catch (BadResponseException $e) {
 			$this->response = $e->getResponse();
 		}
 	}
@@ -647,7 +647,7 @@ trait WebDav {
 		$file = \GuzzleHttp\Stream\Stream::factory(fopen($source, 'r'));
 		try {
 			$this->response = $this->makeDavRequest($user, "PUT", $destination, [], $file);
-		} catch (\GuzzleHttp\Exception\BadResponseException $e) {
+		} catch (BadResponseException $e) {
 			// 4xx and 5xx responses cause an exception
 			$this->response = $e->getResponse();
 		}
@@ -745,7 +745,7 @@ trait WebDav {
 				}
 				$this->userUploadsAFileTo($user, $source, $destination . $suffix);
 				$responses[] = $this->response;
-			} catch (ServerException $e) {
+			} catch (BadResponseException $e) {
 				$responses[] = $e->getResponse();
 			}
 
@@ -757,7 +757,7 @@ trait WebDav {
 				try {
 					$this->userUploadsAFileToWithChunks($user, $source, $destination . $suffix, 'old');
 					$responses[] = $this->response;
-				} catch (ServerException $e) {
+				} catch (BadResponseException $e) {
 					$responses[] = $e->getResponse();
 				}
 			}
@@ -768,7 +768,7 @@ trait WebDav {
 				try {
 					$this->userUploadsAFileToWithChunks($user, $source, $destination . $suffix, 'new');
 					$responses[] = $this->response;
-				} catch (ServerException $e) {
+				} catch (BadResponseException $e) {
 					$responses[] = $e->getResponse();
 				}
 			}
@@ -831,7 +831,7 @@ trait WebDav {
 		try {
 			$this->response = $this->makeDavRequest($user, "PUT", $destination, [], $file);
 			return $this->response->getHeader('oc-fileid');
-		} catch (\GuzzleHttp\Exception\BadResponseException $e) {
+		} catch (BadResponseException $e) {
 			// 4xx and 5xx responses cause an exception
 			$this->response = $e->getResponse();
 		}
@@ -856,7 +856,7 @@ trait WebDav {
 				['OC-Checksum' => $checksum],
 				$file
 			);
-		} catch (\GuzzleHttp\Exception\BadResponseException $e) {
+		} catch (BadResponseException $e) {
 			// 4xx and 5xx responses cause an exception
 			$this->response = $e->getResponse();
 		}
@@ -871,7 +871,7 @@ trait WebDav {
 	public function fileDoesNotExist($file, $user)  {
 		try {
 			$this->response = $this->makeDavRequest($user, 'DELETE', $file, []);
-		} catch (\GuzzleHttp\Exception\BadResponseException $e) {
+		} catch (BadResponseException $e) {
 			// 4xx and 5xx responses cause an exception
 			$this->response = $e->getResponse();
 		}
@@ -886,7 +886,7 @@ trait WebDav {
 	public function userDeletesFile($user, $type, $file)  {
 		try {
 			$this->response = $this->makeDavRequest($user, 'DELETE', $file, []);
-		} catch (\GuzzleHttp\Exception\ServerException $e) {
+		} catch (BadResponseException $e) {
 			// 4xx and 5xx responses cause an exception
 			$this->response = $e->getResponse();
 		}
@@ -901,11 +901,9 @@ trait WebDav {
 		try {
 			$destination = '/' . ltrim($destination, '/');
 			$this->response = $this->makeDavRequest($user, "MKCOL", $destination, []);
-		} catch (\GuzzleHttp\Exception\ServerException $e) {
+		} catch (BadResponseException $e) {
 			// 4xx and 5xx responses cause an exception
 			$this->response = $e->getResponse();
-		} catch (\GuzzleHttp\Exception\ClientException $ex) {
-			$this->response = $ex->getResponse();
 		}
 	}
 
@@ -995,7 +993,7 @@ trait WebDav {
 
 		try {
 			$this->response = $this->makeDavRequest($user, 'MOVE', $source, $headers, null, "uploads");
-		} catch (\GuzzleHttp\Exception\BadResponseException $ex) {
+		} catch (BadResponseException $ex) {
 			$this->response = $ex->getResponse();
 		}
 	}
@@ -1006,7 +1004,7 @@ trait WebDav {
 	public function downloadingFileAs($fileName, $user) {
 		try {
 			$this->response = $this->makeDavRequest($user, 'GET', $fileName, []);
-		} catch (\GuzzleHttp\Exception\ServerException $ex) {
+		} catch (BadResponseException $ex) {
 			$this->response = $ex->getResponse();
 		}
 	}
@@ -1089,7 +1087,7 @@ trait WebDav {
 	public function connectingToDavEndpoint() {
 		try {
 			$this->response = $this->makeDavRequest(null, 'PROPFIND', '', []);
-		} catch (\GuzzleHttp\Exception\ClientException $e) {
+		} catch (BadResponseException $e) {
 			$this->response = $e->getResponse();
 		}
 	}

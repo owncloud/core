@@ -22,6 +22,7 @@
 require __DIR__ . '/../../../../lib/composer/autoload.php';
 
 use GuzzleHttp\Client;
+use GuzzleHttp\Exception\BadResponseException;
 use GuzzleHttp\Message\ResponseInterface;
 
 class CalDavContext implements \Behat\Behat\Context\Context {
@@ -66,7 +67,7 @@ class CalDavContext implements \Behat\Behat\Context\Context {
 					],
 				]
 			);
-		} catch (\GuzzleHttp\Exception\ClientException $e) {}
+		} catch (BadResponseException $e) {}
 	}
 
 	/**
@@ -88,7 +89,7 @@ class CalDavContext implements \Behat\Behat\Context\Context {
 					]
 				]
 			);
-		} catch (\GuzzleHttp\Exception\ClientException $e) {
+		} catch (BadResponseException $e) {
 			$this->response = $e->getResponse();
 		}
 	}

@@ -3,6 +3,7 @@
 use Behat\Gherkin\Node\PyStringNode;
 use Behat\Testwork\Hook\Scope\BeforeSuiteScope;
 use GuzzleHttp\Client;
+use GuzzleHttp\Exception\BadResponseException;
 use GuzzleHttp\Message\ResponseInterface;
 use TestHelpers\OcsApiHelper;
 
@@ -250,7 +251,7 @@ trait BasicStructure {
 				$request->addHeader('requesttoken', $this->requestToken);
 			}
 			$this->response = $client->send($request);
-		} catch (\GuzzleHttp\Exception\ClientException $ex) {
+		} catch (BadResponseException $ex) {
 			$this->response = $ex->getResponse();
 		}
 	}
@@ -379,7 +380,7 @@ trait BasicStructure {
 		$request->addHeader('requesttoken', $this->requestToken);
 		try {
 			$this->response = $client->send($request);
-		} catch (\GuzzleHttp\Exception\ClientException $e) {
+		} catch (BadResponseException $e) {
 			$this->response = $e->getResponse();
 		}
 	}
@@ -402,7 +403,7 @@ trait BasicStructure {
 		);
 		try {
 			$this->response = $client->send($request);
-		} catch (\GuzzleHttp\Exception\ClientException $e) {
+		} catch (BadResponseException $e) {
 			$this->response = $e->getResponse();
 		}
 	}
@@ -485,7 +486,7 @@ trait BasicStructure {
 		$options['auth'] = $this->adminUser;
 		try {
 			$this->response = $client->send($client->createRequest('GET', $fullUrl, $options));
-		} catch (\GuzzleHttp\Exception\ClientException $ex) {
+		} catch (BadResponseException $ex) {
 			$this->response = $ex->getResponse();
 		}
 	}

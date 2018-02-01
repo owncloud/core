@@ -20,6 +20,8 @@
  *
  */
 
+use GuzzleHttp\Exception\BadResponseException;
+
 require __DIR__ . '/../../../../lib/composer/autoload.php';
 
 //class CommentsContext implements \Behat\Behat\Context\Context {
@@ -61,7 +63,7 @@ trait Comments {
 			$responseHeaders =  $this->response->getHeaders();
 			$commentUrl = $responseHeaders['Content-Location'][0];
 			$this->lastCommentId = substr($commentUrl, strrpos($commentUrl,'/')+1);
-		} catch (\GuzzleHttp\Exception\ClientException $ex) {
+		} catch (BadResponseException $ex) {
 			$this->response = $ex->getResponse();
 		}
 	}
@@ -79,7 +81,7 @@ trait Comments {
 		$properties = '<oc:limit>200</oc:limit><oc:offset>0</oc:offset>';
 		try {
 			$elementList = $this->reportElementComments($user,$commentsPath,$properties);
-		} catch (\GuzzleHttp\Exception\ClientException $e) {
+		} catch (BadResponseException $e) {
 			$this->response = $e->getResponse();
 			return 1;
 		}
@@ -114,7 +116,7 @@ trait Comments {
 		try {
 			$elementList = $this->reportElementComments($user,$commentsPath,$properties);
 			PHPUnit_Framework_Assert::assertCount((int) $numberOfComments, $elementList);
-		} catch (\GuzzleHttp\Exception\ClientException $e) {
+		} catch (BadResponseException $e) {
 			$this->response = $e->getResponse();
 		}
 	}
@@ -129,7 +131,7 @@ trait Comments {
 													null,
 													"uploads",
 													null);
-		} catch (\GuzzleHttp\Exception\ClientException $ex) {
+		} catch (BadResponseException $ex) {
 			$this->response = $ex->getResponse();
 		}
 	}
@@ -192,7 +194,7 @@ trait Comments {
 											</d:prop>
 										</d:set>
 									</d:propertyupdate>');
-		} catch (\GuzzleHttp\Exception\ClientException $ex) {
+		} catch (BadResponseException $ex) {
 			$this->response = $ex->getResponse();
 		}
 	}
