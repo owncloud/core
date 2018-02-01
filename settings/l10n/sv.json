@@ -80,7 +80,6 @@
     "Error while deleting the token" : "Fel vid borttagning av token",
     "Sending..." : "Skickar ...",
     "Failed to change the email address." : "Kunde inte ändra e-postadress.",
-    "Email changed successfully." : "E-postadressen ändrades.",
     "An error occurred: {message}" : "Ett fel inträffade: {message}",
     "Select a profile picture" : "Välj en profilbild",
     "Very weak password" : "Väldigt svagt lösenord",

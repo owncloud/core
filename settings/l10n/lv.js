@@ -6,6 +6,8 @@ OC.L10N.register(
     "Authentication error" : "Autentifikācijas kļūda",
     "Wrong admin recovery password. Please check the password and try again." : "Nepareiza administratora atjaunošanas parole. Lūdzu pārbaudiet paroli un mēģiniet vēlreiz.",
     "Unable to change password" : "Nav iespējams nomainīt paroli",
+    "%s password changed successfully" : "%s parole veiksmīgi nomainīta",
+    "Couldn't send reset email. Please contact your administrator." : "Neizdevās nosūt paroles maiņas e-pasta ziņojumu. Lūdzu sazinieties ar sistēmas administratoru.",
     "Group already exists." : "Grupa jau eksistē.",
     "Unable to add group." : "Nevar pievienot grupu.",
     "Unable to delete group." : "Nevar izdzēst grupu.",

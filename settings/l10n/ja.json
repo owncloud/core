@@ -77,7 +77,6 @@
     "Error while creating device token" : "デバイストークンの作成におけるエラー",
     "Error while deleting the token" : "トークンの削除におけるエラー",
     "Sending..." : "送信中…",
-    "Email changed successfully." : "電子メールが正常に変更されました。",
     "An error occurred: {message}" : "エラーが発生しました: {message}",
     "Select a profile picture" : "プロファイル画像を選択",
     "Very weak password" : "非常に弱いパスワード",

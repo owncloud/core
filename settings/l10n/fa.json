@@ -31,7 +31,6 @@
     "Invalid user" : "کاربر نامعتبر",
     "Unable to change mail address" : "تغییر آدرس ایمیل امکان‌پذیر نیست",
     "Email has been changed successfully." : "ایمیل با موفقیت تغییر کرد.",
-    "An email has been sent to this address for confirmation" : "ایمیلی برای تایید به این آدرس ارسال شده است",
     "No email was sent because you already sent one recently. Please try again later." : "هیچ ایمیلی ارسال نشد زیرا شما اخیرا ایمیلی ارسال کردید. لطفا بعدا تلاش کنید.",
     "Your full name has been changed." : "نام کامل شما تغییر یافت",
     "Unable to change full name" : "امکان تغییر نام کامل وجود ندارد",

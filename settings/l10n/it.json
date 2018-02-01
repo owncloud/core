@@ -78,7 +78,6 @@
     "Error while creating device token" : "Errore durante la creazione del token di dispositivo",
     "Error while deleting the token" : "Errore durante l'eliminazione del token",
     "Sending..." : "Invio in corso...",
-    "Email changed successfully." : "Email cambiata correttamente.",
     "An error occurred: {message}" : "Si è verificato un errore: {message}",
     "Select a profile picture" : "Seleziona un'immagine del profilo",
     "Very weak password" : "Password molto debole",

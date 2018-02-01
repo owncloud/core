@@ -75,7 +75,6 @@ OC.L10N.register(
     "Error while deleting the token" : "Błąd podczas usuwania tokena.",
     "Sending..." : "Wysyłam...",
     "Failed to change the email address." : "Nie udało się zmienić adresu email.",
-    "Email changed successfully." : "Pomyślnie zmieniono email.",
     "An error occurred: {message}" : "Wystąpił błąd: {message}",
     "Select a profile picture" : "Wybierz zdjęcie profilu",
     "Very weak password" : "Bardzo słabe hasło",
