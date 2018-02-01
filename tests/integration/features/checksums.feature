@@ -53,7 +53,11 @@ Feature: checksums
   @local_storage
   Scenario: Downloading a file from local storage has correct checksum
     Given using old dav path
+    # Create the file directly in local storage, bypassing ownCloud
     And file "prueba_cksum.txt" with text "Test file for checksums" has been created in local storage
+    # Do a first download, which will trigger ownCloud to calculate a checksum for the file
+    And user "user0" downloads the file "/local_storage/prueba_cksum.txt" using the API
+    # Now do a download that is expected to have a checksum with it
     When user "user0" downloads the file "/local_storage/prueba_cksum.txt" using the API
     Then the header checksum should match "SHA1:a35b7605c8f586d735435535c337adc066c2ccb6"
 
@@ -105,7 +109,11 @@ Feature: checksums
   @local_storage
   Scenario: Downloading a file from local storage has correct checksum using new dav path
     Given using new dav path
+    # Create the file directly in local storage, bypassing ownCloud
     And file "prueba_cksum.txt" with text "Test file for checksums" has been created in local storage
+    # Do a first download, which will trigger ownCloud to calculate a checksum for the file
+    And user "user0" downloads the file "/local_storage/prueba_cksum.txt" using the API
+    # Now do a download that is expected to have a checksum with it
     When user "user0" downloads the file "/local_storage/prueba_cksum.txt" using the API
     Then the header checksum should match "SHA1:a35b7605c8f586d735435535c337adc066c2ccb6"
 
