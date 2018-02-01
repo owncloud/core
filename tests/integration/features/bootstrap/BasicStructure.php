@@ -113,6 +113,7 @@ trait BasicStructure {
 	/**
 	 * @Given /^as an "([^"]*)"$/
 	 * @param string $user
+	 * @deprecated This step is not according to the latest standard - core usages have been changed
 	 */
 	public function asAn($user) {
 		$this->currentUser = $user;
