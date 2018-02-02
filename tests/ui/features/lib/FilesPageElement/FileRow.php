@@ -316,7 +316,7 @@ class FileRow extends OwnCloudPage {
 	public function markAsFavorite() {
 		$element = $this->rowElement->find("xpath", $this->notMarkedFavoriteXpath);
 		if (is_null($element)) {
-			throw new Exception(
+			throw new ElementNotFoundException(
 				__METHOD__ .
 				" xpath $this->notMarkedFavoriteXpath not found"
 			);
@@ -337,5 +337,21 @@ class FileRow extends OwnCloudPage {
 		} else {
 			return true;
 		}
+	}
+	
+	/**
+	 * unmarks the current file or folder off favorite by clicking the star icon
+	 *
+	 * @return void
+	 */
+	public function unmarkFavorite() {
+		$element = $this->rowElement->find("xpath", $this->markedFavoriteXpath);
+		if (is_null($element)) {
+			throw new ElementNotFoundException(
+				__METHOD__ .
+				" xpath $this->markedFavoriteXpath not found"
+			);
+		}
+		$element->click();
 	}
 }
