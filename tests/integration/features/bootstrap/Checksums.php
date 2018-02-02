@@ -142,7 +142,7 @@ trait Checksums {
 	}
 
 	/**
-	 * @When user :user uploads chunk file :num of :total with :data to :destination with checksum :checksum
+	 * @When user :user uploads chunk file :num of :total with :data to :destination with checksum :checksum using the API
 	 * @Given user :user has uploaded chunk file :num of :total with :data to :destination with checksum :checksum
 	 * @param string $user
 	 * @param int $num

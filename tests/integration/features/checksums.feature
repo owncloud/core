@@ -166,5 +166,5 @@ Feature: checksums
 
   Scenario: Uploading an old method chunked file with checksum should fail using new dav path
     Given using new dav path
-    When user "user0" uploads chunk file "1" of "3" with "AAAAA" to "/myChecksumFile.txt" with checksum "MD5:45a72715acdd5019c5be30bdbb75233e"
+    When user "user0" uploads chunk file "1" of "3" with "AAAAA" to "/myChecksumFile.txt" with checksum "MD5:45a72715acdd5019c5be30bdbb75233e" using the API
     Then the HTTP status code should be "503"
