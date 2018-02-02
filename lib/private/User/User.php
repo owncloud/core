@@ -251,7 +251,7 @@ class User implements IUser {
 				$this->emitter->emit('\OC\User', 'preSetPassword', [$this, $password, $recoveryPassword]);
 				\OC::$server->getEventDispatcher()->dispatch(
 					'OCP\User::validatePassword',
-					new GenericEvent(null, ['password' => $password])
+					new GenericEvent(null, ['uid'=> $this->getUID(), 'password' => $password])
 				);
 			}
 			if ($this->canChangePassword()) {
@@ -268,7 +268,10 @@ class User implements IUser {
 			} else {
 				return false;
 			}
-		}, ['before' => [], 'after' => ['user' => $this, 'password' => $password, 'recoveryPassword' => $recoveryPassword]], 'user', 'setpassword');
+		}, [
+			'before' => ['user' => $this, 'password' => $password, 'recoveryPassword' => $recoveryPassword],
+			'after' => ['user' => $this, 'password' => $password, 'recoveryPassword' => $recoveryPassword]
+		], 'user', 'setpassword');
 	}
 
 	/**
