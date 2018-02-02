@@ -38,14 +38,14 @@ class ListUsersTest extends TestCase
     protected function setUp() {
         parent::setUp();
 
-        \OC::$server->getUserManager()->createUser('user1','password');
+        \OC::$server->getUserManager()->createUser('testlistuser','password');
         $command = new ListUsers(\OC::$server->getUserManager());
         $this->commandTester = new CommandTester($command);
     }
 
     protected function tearDown() {
         parent::tearDown();
-        \OC::$server->getUserManager()->get('user1')->delete();
+        \OC::$server->getUserManager()->get('testlistuser')->delete();
     }
 
 
@@ -62,8 +62,8 @@ class ListUsersTest extends TestCase
 
     public function inputProvider() {
         return [
-            [[], 'user1'],
-            [['search-pattern' => 'user'], 'user1']
+            [[], 'testlistuser'],
+            [['search-pattern' => 'testlist'], 'testlistuser']
         ];
     }
 

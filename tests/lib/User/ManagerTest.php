@@ -14,10 +14,12 @@ use OC\User\AccountTermMapper;
 use OC\User\Backend;
 use OC\User\Database;
 use OC\User\Manager;
+use OC\User\SyncService;
 use OCP\AppFramework\Db\DoesNotExistException;
 use OCP\IConfig;
 use OCP\ILogger;
 use OCP\IUser;
+use Punic\Data;
 use Test\TestCase;
 
 /**
@@ -33,8 +35,8 @@ class ManagerTest extends TestCase {
 	private $manager;
 	/** @var AccountMapper | \PHPUnit_Framework_MockObject_MockObject */
 	private $accountMapper;
-	/** @var AccountTermMapper | \PHPUnit_Framework_MockObject_MockObject */
-	private $accountTermMapper;
+	/** @var SyncService | \PHPUnit_Framework_MockObject_MockObject */
+	private $syncService;
 
 	public function setUp() {
 		parent::setUp();
@@ -44,8 +46,8 @@ class ManagerTest extends TestCase {
 		/** @var ILogger | \PHPUnit_Framework_MockObject_MockObject $logger */
 		$logger = $this->createMock(ILogger::class);
 		$this->accountMapper = $this->createMock(AccountMapper::class);
-		$this->accountTermMapper = $this->createMock(AccountTermMapper::class);
-		$this->manager = new \OC\User\Manager($config, $logger, $this->accountMapper, $this->accountTermMapper);
+		$this->syncService = $this->createMock(SyncService::class);
+		$this->manager = new \OC\User\Manager($config, $logger, $this->accountMapper, $this->syncService);
 	}
 
 	public function testGetBackends() {
@@ -96,10 +98,14 @@ class ManagerTest extends TestCase {
 				}
 			}));
 
-		$this->manager->registerBackend($backend);
-
 		$account = $this->createMock(Account::class);
-		$this->accountMapper->expects($this->once())->method('getByUid')->with('foo')->willReturn($account);
+
+		$this->syncService->expects($this->once())
+			->method('createOrSyncAccount')
+			->with('foo', $backend)
+			->willReturn($account);
+
+		$this->manager->registerBackend($backend);
 
 		$user = $this->manager->checkPassword('foo', 'bar');
 		$this->assertInstanceOf(\OC\User\User::class, $user);

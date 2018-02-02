@@ -15,6 +15,7 @@ use OC\Log;
 use OC\User\Account;
 use OC\User\AccountMapper;
 use OC\User\Manager;
+use OC\User\SyncService;
 use OCP\Files\Config\ICachedMountInfo;
 use OCP\IConfig;
 use OCP\IDBConnection;
@@ -67,7 +68,9 @@ class UserMountCacheTest extends TestCase {
 
 		/** @var Log $log */
 		$log = $this->createMock(Log::class);
-		$this->userManager = new Manager($config, $log, $accountMapper);
+		/** @var SyncService $syncService */
+		$syncService = $this->createMock(SyncService::class);
+		$this->userManager = new Manager($config, $log, $accountMapper, $syncService);
 		$this->cache = new UserMountCache($this->connection, $this->userManager, $log);
 
 		// hookup listener
