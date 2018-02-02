@@ -52,6 +52,8 @@ class FileRow extends OwnCloudPage {
 	protected $thumbnailXpath = "//*[@class='thumbnail']";
 	protected $fileLinkXpath = "//span[contains(@class,'nametext')]";
 	protected $restoreLinkXpath = '//a[@data-action="Restore"]';
+	protected $notMarkedFavoriteXpath = "//span[contains(@class,'icon-star')]";
+	protected $markedFavoriteXpath = "//span[contains(@class,'icon-starred')]";
 
 	/**
 	 * sets the NodeElement for the current file row
@@ -304,5 +306,36 @@ class FileRow extends OwnCloudPage {
 			);
 		}
 		$rowElement->click();
+	}
+
+	/**
+	 * marks the current file or folder as favorite by clicking the star icon
+	 *
+	 * @return void
+	 */
+	public function markAsFavorite() {
+		$element = $this->rowElement->find("xpath", $this->notMarkedFavoriteXpath);
+		if (is_null($element)) {
+			throw new Exception(
+				__METHOD__ .
+				" xpath $this->notMarkedFavoriteXpath not found"
+			);
+		}
+		$element->click();
+	}
+
+	/**
+	 * checks whether the current file or folder is marked as favorite or not
+	 *
+	 * @return bool
+	 */
+	public function isMarkedAsFavorite() {
+		$checkFavorite = $this->rowElement->find("xpath", $this->markedFavoriteXpath);
+		
+		if (is_null($checkFavorite)) {
+			return false;
+		} else {
+			return true;
+		}
 	}
 }
