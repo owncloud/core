@@ -19,7 +19,7 @@ I want to be able to forbid a user that received a share from me to share it fur
 		And I am on the login page
 		And I login with username "user2" and password "1234"
 
-	@skipOnMICROSOFTEDGE
+	@skipOnMICROSOFTEDGE @TestAlsoOnExternalUserBackend
 	Scenario: share a folder with another internal user and prohibit resharing
 		And the setting "Allow resharing" in the section "Sharing" is enabled
 		And I am on the files page
@@ -29,6 +29,7 @@ I want to be able to forbid a user that received a share from me to share it fur
 		And I relogin with username "user1" and password "1234"
 		Then it should not be possible to share the folder "simple-folder (2)"
 
+	@TestAlsoOnExternalUserBackend
 	Scenario: forbid resharing globally
 		When the setting "Allow resharing" in the section "Sharing" is disabled
 		And I am on the files page

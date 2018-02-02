@@ -1,4 +1,4 @@
-@insulated
+@insulated @TestAlsoOnExternalUserBackend
 Feature: Autocompletion of share-with names
 As a user
 I want to share files, with minimal typing, to the right people or groups
@@ -15,7 +15,7 @@ So that I can efficiently share my files with other users or groups
 		And regular groups exist
 		And I am logged in as a regular user
 		And I am on the files page
-		
+	@skipOnLDAP @user_ldap#175
 	Scenario: autocompletion of regular existing users
 		And the share dialog for the folder "simple-folder" is open
 		When I type "user" in the share-with-field

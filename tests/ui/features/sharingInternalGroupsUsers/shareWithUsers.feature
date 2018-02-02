@@ -12,6 +12,7 @@ So that those users can access the files and folders
 		And I am on the login page
 		And I login with username "user2" and password "1234"
 
+	@TestAlsoOnExternalUserBackend
 	Scenario: share a file & folder with another internal user
 		When the folder "simple-folder" is shared with the user "User One"
 		And the file "testimage.jpg" is shared with the user "User One"
@@ -24,6 +25,7 @@ So that those users can access the files and folders
 		Then the file "lorem.txt" should be listed
 		But the folder "simple-folder (2)" should not be listed
 
+	@TestAlsoOnExternalUserBackend
 	Scenario: share a file with another internal user who overwrites and unshares the file
 		When I rename the file "lorem.txt" to "new-lorem.txt"
 		And the file "new-lorem.txt" is shared with the user "User One"
@@ -40,6 +42,7 @@ So that those users can access the files and folders
 		When I relogin with username "user2" and password "1234"
 		Then the content of "new-lorem.txt" should be the same as the local "new-lorem.txt"
 
+	@TestAlsoOnExternalUserBackend
 	Scenario: share a folder with another internal user who uploads, overwrites and deletes files
 		When I rename the folder "simple-folder" to "new-simple-folder"
 		And the folder "new-simple-folder" is shared with the user "User One"
@@ -65,6 +68,7 @@ So that those users can access the files and folders
 		And the content of "new-lorem.txt" should be the same as the local "new-lorem.txt"
 		And the file "data.zip" should not be listed
 
+	@TestAlsoOnExternalUserBackend
 	Scenario: share a folder with another internal user who unshares the folder
 		When I rename the folder "simple-folder" to "new-simple-folder"
 		And the folder "new-simple-folder" is shared with the user "User One"
@@ -79,7 +83,7 @@ So that those users can access the files and folders
 		Then the file "lorem.txt" should be listed
 		Then the content of "lorem.txt" should be the same as the original "simple-folder/lorem.txt"
 
-	@skipOnMICROSOFTEDGE
+	@skipOnMICROSOFTEDGE @TestAlsoOnExternalUserBackend
 	Scenario: share a folder with another internal user and prohibit deleting
 		When the folder "simple-folder" is shared with the user "User One"
 		And the sharing permissions of "User One" for "simple-folder" are set to

@@ -190,7 +190,7 @@ trait BasicStructure {
 		if ($method === null && getenv("TEST_EXTERNAL_USER_BACKENDS") === "true") {
 			//guess yourself
 			$method = "ldap";
-		} else {
+		} elseif ($method === null) {
 			$method = "api";
 		}
 		$user = trim($user);
@@ -224,7 +224,7 @@ trait BasicStructure {
 				}
 				break;
 			case "ldap":
-				echo "creating LDAP users is not implemented, so assume they exists\n";
+				echo "creating LDAP users is not implemented, so assume they exist\n";
 				break;
 			default:
 				throw new InvalidArgumentException(
@@ -287,7 +287,7 @@ trait BasicStructure {
 		if ($method === null && getenv("TEST_EXTERNAL_USER_BACKENDS") === "true") {
 			//guess yourself
 			$method = "ldap";
-		} else {
+		} elseif ($method === null) {
 			$method = "api";
 		}
 		$group = trim($group);
@@ -315,7 +315,7 @@ trait BasicStructure {
 				}
 				break;
 			case "ldap":
-				echo "creating LDAP groups is not implemented, so assume they exists\n";
+				echo "creating LDAP groups is not implemented, so assume they exist\n";
 				break;
 			default:
 				throw new InvalidArgumentException(
@@ -349,7 +349,7 @@ trait BasicStructure {
 		if ($method === null && getenv("TEST_EXTERNAL_USER_BACKENDS") === "true") {
 			//guess yourself
 			$method = "ldap";
-		} else {
+		} elseif ($method === null) {
 			$method = "api";
 		}
 		$method = trim(strtolower($method));
