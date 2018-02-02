@@ -177,8 +177,8 @@ trait AppConfiguration {
 	) {
 		$savedCapabilitiesChanges = AppConfigHelper::setCapability(
 			$this->baseUrlWithoutOCSAppendix(),
-			$this->adminUser[0],
-			$this->adminUser[1],
+			$this->getAdminUserName(),
+			$this->getAdminPassword(),
 			$capabilitiesApp,
 			$capabilitiesParameter,
 			$testingApp,
@@ -201,8 +201,8 @@ trait AppConfiguration {
 	protected function modifyServerConfig($app, $parameter, $value) {
 		AppConfigHelper::modifyServerConfig(
 			$this->baseUrlWithoutOCSAppendix(),
-			$this->adminUser[0],
-			$this->adminUser[1],
+			$this->getAdminUserName(),
+			$this->getAdminPassword(),
 			$app,
 			$parameter,
 			$value,
