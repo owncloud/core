@@ -52,12 +52,15 @@ namespace OC\User;
 
 use OC\Cache\CappedMemoryCache;
 use OCP\IUserBackend;
+use OCP\User\IProvidesDisplayNameBackend;
+use OCP\User\IProvidesEMailBackend;
+use OCP\User\IProvidesHomeBackend;
 use OCP\Util;
 
 /**
  * Class for user management in a SQL Database (e.g. MySQL, SQLite)
  */
-class Database extends Backend implements IUserBackend {
+class Database extends Backend implements IUserBackend, IProvidesHomeBackend, IProvidesDisplayNameBackend {
 	/** @var CappedMemoryCache */
 	private $cache;
 
@@ -290,14 +293,10 @@ class Database extends Backend implements IUserBackend {
 	/**
 	 * get the user's home directory
 	 * @param string $uid the username
-	 * @return string|false
+	 * @return string
 	 */
 	public function getHome($uid) {
-		if ($this->userExists($uid)) {
-			return \OC::$server->getConfig()->getSystemValue("datadirectory", \OC::$SERVERROOT . "/data") . '/' . $uid;
-		}
-
-		return false;
+		return \OC::$server->getConfig()->getSystemValue("datadirectory", \OC::$SERVERROOT . "/data") . '/' . $uid;
 	}
 
 	/**

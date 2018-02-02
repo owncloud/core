@@ -56,7 +56,7 @@ interface IApacheBackend {
 
 	/**
 	 * Return the id of the current user
-	 * @return string
+	 * @return string|array[] the uid, or an array with [uid, backend]
 	 * @since 6.0.0
 	 */
 	public function getCurrentUserId();

@@ -37,7 +37,6 @@ class MemoryAccountMapper extends AccountMapper {
 	public function insert(Entity $entity) {
 		$entity->setId(self::$counter++);
 		self::$accounts[$entity->getId()] = $entity;
-
 		return $entity;
 	}
 
