@@ -83,7 +83,10 @@ trait Comments {
 			$elementList = $this->reportElementComments($user,$commentsPath,$properties);
 		} catch (BadResponseException $e) {
 			$this->response = $e->getResponse();
-			return 1;
+			$statusCode = $this->response->getStatusCode();
+			PHPUnit_Framework_Assert::fail(
+				"checkComments failed to get comments for user $user path $path status $statusCode"
+			);
 		}
 
 		if ($expectedElements instanceof \Behat\Gherkin\Node\TableNode) {
@@ -118,6 +121,10 @@ trait Comments {
 			PHPUnit_Framework_Assert::assertCount((int) $numberOfComments, $elementList);
 		} catch (BadResponseException $e) {
 			$this->response = $e->getResponse();
+			$statusCode = $this->response->getStatusCode();
+			PHPUnit_Framework_Assert::fail(
+				"checkNumberOfComments failed to get comments for user $user path $path status $statusCode"
+			);
 		}
 	}
 
