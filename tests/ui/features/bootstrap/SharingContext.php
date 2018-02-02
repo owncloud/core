@@ -324,21 +324,22 @@ class SharingContext extends RawMinkContext implements Context {
 				= $this->sharingDialog->groupStringsToMatchAutoComplete($notToBeListed);
 		}
 		$autocompleteItems = $this->sharingDialog->getAutocompleteItemsList();
-		foreach (
-			array_merge(
-				$this->regularUserNames,
-				$this->sharingDialog->groupStringsToMatchAutoComplete(
-					$this->regularGroupNames
-				)
-			) as $regularUserOrGroup ) {
-
-			if (strpos($regularUserOrGroup, $requiredString) !== false
-				&& $regularUserOrGroup !== $notToBeListed
+		$createdGroups = $this->sharingDialog->groupStringsToMatchAutoComplete(
+			$this->featureContext->getCreatedGroupNames()
+		);
+		$usersAndGroups = array_merge(
+			$this->featureContext->getCreatedUserDisplayNames(),
+			$createdGroups
+		);
+		foreach ($usersAndGroups as $expectedUserOrGroup) {
+			if (strpos($expectedUserOrGroup, $requiredString) !== false
+				&& $expectedUserOrGroup !== $notToBeListed
+				&& $expectedUserOrGroup !== $this->featureContext->getCurrentUser()
 			) {
 				PHPUnit_Framework_Assert::assertContains(
-					$regularUserOrGroup,
+					$expectedUserOrGroup,
 					$autocompleteItems,
-					"'" . $regularUserOrGroup . "' not in autocomplete list"
+					"'" . $expectedUserOrGroup . "' not in autocomplete list"
 				);
 			}
 		}
