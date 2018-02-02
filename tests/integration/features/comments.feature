@@ -55,7 +55,8 @@ Feature: Comments
             | user0 | File owner comment |
             | user1 | Sharee comment |
     When user "user1" deletes the last created comment
-    Then user "user1" should have 1 comments on file "/myFileToComment.txt"
+    Then the HTTP status code should be "204"
+    And user "user1" should have 1 comments on file "/myFileToComment.txt"
 
   Scenario: Edit my own comments on a file belonging to myself
     Given user "user0" exists
