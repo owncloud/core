@@ -37,6 +37,7 @@ interface IProvidesQuotaBackend {
 	 *
 	 * @param string $uid The username
 	 * @return string|null
+	 * @throws \OutOfBoundsException if the quota could not be determined as expected
 	 * @since 10.0
 	 */
 	public function getQuota($uid);

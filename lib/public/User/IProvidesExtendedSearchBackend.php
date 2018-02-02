@@ -38,6 +38,7 @@ interface IProvidesExtendedSearchBackend {
 	 *
 	 * @param string $uid The username
 	 * @return string[]
+	 * @throws \OutOfBoundsException if the search attributes could not be determined as expected
 	 * @since 10.0.1
 	 */
 	public function getSearchTerms($uid);

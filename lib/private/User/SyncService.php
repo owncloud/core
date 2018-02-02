@@ -100,24 +100,30 @@ class SyncService {
 			// update existing and insert new users
 			foreach ($users as $uid) {
 				try {
-					$a = $this->mapper->getByUid($uid);
-					if ($a->getBackend() !== $this->backendClass) {
-						$this->logger->warning(
-							"User <$uid> already provided by another backend({$a->getBackend()} != {$this->backendClass}), skipping.",
-							['app' => self::class]
-						);
-						continue;
+					try {
+						$a = $this->mapper->getByUid($uid);
+						if ($a->getBackend() !== $this->backendClass) {
+							$this->logger->warning(
+								"User <$uid> already provided by another backend({$a->getBackend()} != {$this->backendClass}), skipping.",
+								['app' => self::class]
+							);
+							continue;
+						}
+						$a = $this->setupAccount($a, $uid);
+						$this->mapper->update($a);
+					} catch (DoesNotExistException $ex) {
+						$a = $this->createNewAccount($uid);
+						$this->setupAccount($a, $uid);
+						$this->mapper->insert($a);
 					}
-					$a = $this->setupAccount($a, $uid);
-					$this->mapper->update($a);
-				} catch(DoesNotExistException $ex) {
-					$a = $this->createNewAccount($uid);
-					$this->setupAccount($a, $uid);
-					$this->mapper->insert($a);
+					// clean the user's preferences
+					$this->cleanPreferences($uid);
+				} catch (\OutOfBoundsException $e) {
+					// if an attribute could not be determined
+					// continue syncing other users
+					// TODO expose on CLI to show the admin running the occ command the problem, maybe additional $output parameter?
+					$this->logger->logException($e,	['app' => self::class]);
 				}
-				// clean the user's preferences
-				$this->cleanPreferences($uid);
-
 				// call the callback
 				$callback($uid);
 			}
@@ -129,6 +135,7 @@ class SyncService {
 	 * @param Account $a
 	 * @param string $uid
 	 * @return Account
+	 * @throws \OutOfBoundsException if a property could not be determined as expected
 	 */
 	public function setupAccount(Account $a, $uid) {
 		list($hasKey, $value) = $this->readUserConfig($uid, 'core', 'enabled');
