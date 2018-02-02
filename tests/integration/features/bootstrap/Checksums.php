@@ -51,10 +51,7 @@ trait Checksums {
     <oc:checksums />
   </d:prop>
 </d:propfind>',
-				'auth' => [
-					$user,
-					$this->getPasswordForUser($user),
-				]
+				'auth' => $this->getAuthOptionForUser($user)
 			]
 		);
 		$this->response = $client->send($request);
@@ -105,10 +102,7 @@ trait Checksums {
 			'COPY',
 			substr($this->baseUrl, 0, -4) . $this->davPath . $source,
 			[
-				'auth' => [
-					$user,
-					$this->getPasswordForUser($user),
-				],
+				'auth' => $this->getAuthOptionForUser($user),
 				'headers' => [
 					'Destination' => substr($this->baseUrl, 0, -4) . $this->davPath . $destination,
 				],

@@ -262,7 +262,8 @@ trait Tags {
 			$this->response = TagsHelper::deleteTag(
 				$this->baseUrlWithoutOCSAppendix(),
 				$user,
-				$this->getPasswordForUser($user), $tagID,
+				$this->getPasswordForUser($user),
+				$tagID,
 				$this->getDavPathVersion()
 			);
 		} catch (ClientException $e) {

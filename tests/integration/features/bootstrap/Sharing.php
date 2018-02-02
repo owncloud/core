@@ -63,11 +63,7 @@ trait Sharing {
 		$fullUrl = $this->baseUrl . "v{$this->apiVersion}.php/apps/files_sharing/api/v{$this->sharingApiVersion}/shares";
 		$client = new Client();
 		$options = [];
-		if ($user === 'admin') {
-			$options['auth'] = $this->adminUser;
-		} else {
-			$options['auth'] = [$user, $this->regularUser];
-		}
+		$options['auth'] = $this->getAuthOptionForUser($user);
 
 		if ($body instanceof \Behat\Gherkin\Node\TableNode) {
 			$fd = $body->getRowsHash();
@@ -360,11 +356,7 @@ trait Sharing {
 		$fullUrl = $this->baseUrl . "v{$this->apiVersion}.php/apps/files_sharing/api/v{$this->sharingApiVersion}/shares/$share_id";
 		$client = new Client();
 		$options = [];
-		if ($this->currentUser === 'admin') {
-			$options['auth'] = $this->adminUser;
-		} else {
-			$options['auth'] = [$this->currentUser, $this->regularUser];
-		}
+		$options['auth'] = $this->getAuthOptionForUser($this->currentUser);
 		$date = date('Y-m-d', strtotime("+3 days"));
 		$options['body'] = ['expireDate' => $date];
 		$this->response = $client->send(
@@ -386,11 +378,7 @@ trait Sharing {
 		$fullUrl = $this->baseUrl . "v{$this->apiVersion}.php/apps/files_sharing/api/v{$this->sharingApiVersion}/shares/$share_id";
 		$client = new Client();
 		$options = [];
-		if ($this->currentUser === 'admin') {
-			$options['auth'] = $this->adminUser;
-		} else {
-			$options['auth'] = [$this->currentUser, $this->regularUser];
-		}
+		$options['auth'] = $this->getAuthOptionForUser($this->currentUser);
 
 		if ($body instanceof \Behat\Gherkin\Node\TableNode) {
 			$fd = $body->getRowsHash();
@@ -615,11 +603,7 @@ trait Sharing {
 		$fullUrl = $this->baseUrl . "v{$this->apiVersion}.php/apps/files_sharing/api/v{$this->sharingApiVersion}/shares" . "?path=$filepath";
 		$client = new Client();
 		$options = [];
-		if ($user1 === 'admin') {
-			$options['auth'] = $this->adminUser;
-		} else {
-			$options['auth'] = [$user1, $this->regularUser];
-		}
+		$options['auth'] = $this->getAuthOptionForUser($user1);
 		$this->response = $client->get($fullUrl, $options);
 		if ($this->isUserOrGroupInSharedData($user2, $permissions)) {
 			return;
@@ -660,11 +644,7 @@ trait Sharing {
 		$fullUrl = $this->baseUrl . "v{$this->apiVersion}.php/apps/files_sharing/api/v{$this->sharingApiVersion}/shares" . "?path=$filepath";
 		$client = new Client();
 		$options = [];
-		if ($user === 'admin') {
-			$options['auth'] = $this->adminUser;
-		} else {
-			$options['auth'] = [$user, $this->regularUser];
-		}
+		$options['auth'] = $this->getAuthOptionForUser($user);
 		$this->response = $client->get($fullUrl, $options);
 		if ($this->isUserOrGroupInSharedData($group, $permissions)) {
 			return;
@@ -857,12 +837,7 @@ trait Sharing {
 
 		$client = new Client();
 		$options = [];
-
-		if ($user === 'admin') {
-			$options['auth'] = $this->adminUser;
-		} else {
-			$options['auth'] = [$user, $this->regularUser];
-		}
+		$options['auth'] = $this->getAuthOptionForUser($user);
 
 		$this->response = $client->send(
 			$client->createRequest("GET", $fullUrl, $options)

@@ -22,6 +22,20 @@ trait BasicStructure {
 	use WebDav;
 	use CommandLine;
 
+	/** @var array */
+	private $adminUser = [];
+
+	/**
+	 * @var string
+	 */
+	private $regularUserPassword = '';
+
+	/**
+	 * @var string
+	 * @deprecated this var actually store[s|d] the password - better to use method getPasswordForUser()
+	 */
+	private $regularUser = '';
+
 	/** @var string */
 	private $currentUser = '';
 
@@ -48,6 +62,8 @@ trait BasicStructure {
 		// Initialize your context here
 		$this->baseUrl = $baseUrl;
 		$this->adminUser = $admin;
+		$this->regularUserPassword = $regular_user_password;
+		// Set regularUser for backward-compatibility with old app tests that use BasicStructure
 		$this->regularUser = $regular_user_password;
 		$this->mailhogUrl = $mailhog_url;
 		$this->localBaseUrl = $this->baseUrl;
@@ -199,11 +215,7 @@ trait BasicStructure {
 
 		if ($this->currentUser !== 'UNAUTHORIZED_USER') {
 			$user = $this->currentUser;
-			if ($this->currentUser === 'admin') {
-				$password = $this->adminUser[1];
-			} else {
-				$password = $this->regularUser;
-			}
+			$password = $this->getPasswordForUser($user);
 		} else {
 			$user = null;
 			$password = null;
@@ -229,11 +241,7 @@ trait BasicStructure {
 		$fullUrl = substr($this->baseUrl, 0, -5) . $url;
 		$client = new Client();
 		$options = [];
-		if ($this->currentUser === 'admin') {
-			$options['auth'] = $this->adminUser;
-		} else {
-			$options['auth'] = [$this->currentUser, $this->regularUser];
-		}
+		$options['auth'] = $this->getAuthOptionForUser($this->currentUser);
 
 		if (!empty($this->cookieJar->toArray())) {
 			$options['cookies'] = $this->cookieJar;
@@ -464,14 +472,40 @@ trait BasicStructure {
 	}
 
 	/**
+	 * @return string
+	 */
+	private function getAdminUserName() {
+		return (string) $this->adminUser[0];
+	}
+
+	/**
+	 * @return string
+	 */
+	private function getAdminPassword() {
+		return (string) $this->adminUser[1];
+	}
+
+	/**
 	 * @param string $userName
 	 * @return string
 	 */
 	private function getPasswordForUser($userName) {
 		if ($userName === 'admin') {
-			return (string) $this->adminUser[1];
+			return (string) $this->getAdminPassword();
 		} else {
-			return (string) $this->regularUser;
+			return (string) $this->regularUserPassword;
+		}
+	}
+
+	/**
+	 * @param string $userName
+	 * @return array
+	 */
+	private function getAuthOptionForUser($userName) {
+		if ($userName === 'admin') {
+			return $this->adminUser;
+		} else {
+			return [$userName, $this->getPasswordForUser($userName)];
 		}
 	}
 
@@ -482,7 +516,7 @@ trait BasicStructure {
 		$fullUrl = $this->baseUrlWithoutOCSAppendix() . "status.php";
 		$client = new Client();
 		$options = [];
-		$options['auth'] = $this->adminUser;
+		$options['auth'] = $this->getAuthOptionForUser('admin');
 		try {
 			$this->response = $client->send($client->createRequest('GET', $fullUrl, $options));
 		} catch (\GuzzleHttp\Exception\ClientException $ex) {
