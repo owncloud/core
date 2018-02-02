@@ -18,6 +18,7 @@ So that those groups can access the files and folders
 		And I am on the login page
 		And I login with username "user3" and password "1234"
 
+	@TestAlsoOnExternalUserBackend
 	Scenario: share a folder with an internal group
 		When the folder "simple-folder" is shared with the group "grp1"
 		And the file "testimage.jpg" is shared with the group "grp1"
@@ -32,6 +33,7 @@ So that those groups can access the files and folders
 		And the file "testimage (2).jpg" should be listed
 		And the file "testimage (2).jpg" should be marked as shared with "grp1" by "User Three"
 
+	@TestAlsoOnExternalUserBackend
 	Scenario: share a file with an internal group a member overwrites and unshares the file
 		When I rename the file "lorem.txt" to "new-lorem.txt"
 		And the file "new-lorem.txt" is shared with the group "grp1"
@@ -51,6 +53,7 @@ So that those groups can access the files and folders
 		When I relogin with username "user2" and password "1234"
 		Then the content of "new-lorem.txt" should be the same as the local "new-lorem.txt"
 
+	@TestAlsoOnExternalUserBackend
 	Scenario: share a folder with an internal group and a member uploads, overwrites and deletes files
 		When I rename the folder "simple-folder" to "new-simple-folder"
 		And the folder "new-simple-folder" is shared with the group "grp1"
@@ -80,6 +83,7 @@ So that those groups can access the files and folders
 		And the content of "new-lorem.txt" should be the same as the local "new-lorem.txt"
 		And the file "data.zip" should not be listed
 
+	@TestAlsoOnExternalUserBackend
 	Scenario: share a folder with an internal group and a member unshares the folder
 		When I rename the folder "simple-folder" to "new-simple-folder"
 		And the folder "new-simple-folder" is shared with the group "grp1"
