@@ -5,77 +5,77 @@ Feature: favorite
     Scenario: Favorite a folder
         Given using old dav path
         And user "user0" has been created
-        When user "user0" favorites element "/FOLDER"
-        Then as "user0" gets properties of folder "/FOLDER" with
+        When user "user0" favorites element "/FOLDER" using the API
+        And user "user0" gets the following properties of folder "/FOLDER" using the API
             |{http://owncloud.org/ns}favorite|
-        And the single response should contain a property "{http://owncloud.org/ns}favorite" with value "1"
+        Then the single response should contain a property "{http://owncloud.org/ns}favorite" with value "1"
 
     Scenario: Favorite and unfavorite a folder
         Given using old dav path
         And user "user0" has been created
-        When user "user0" favorites element "/FOLDER"
-        And user "user0" unfavorites element "/FOLDER"
-        Then as "user0" gets properties of folder "/FOLDER" with
+        When user "user0" favorites element "/FOLDER" using the API
+        And user "user0" unfavorites element "/FOLDER" using the API
+        And user "user0" gets the following properties of folder "/FOLDER" using the API
             |{http://owncloud.org/ns}favorite|
-        And the single response should contain a property "{http://owncloud.org/ns}favorite" with value "0"
+        Then the single response should contain a property "{http://owncloud.org/ns}favorite" with value "0"
 
     Scenario: Favorite a file
         Given using old dav path
         And user "user0" has been created
-        When user "user0" favorites element "/textfile0.txt"
-        Then as "user0" gets properties of file "/textfile0.txt" with
+        When user "user0" favorites element "/textfile0.txt" using the API
+        And user "user0" gets the following properties of file "/textfile0.txt" using the API
             |{http://owncloud.org/ns}favorite|
-        And the single response should contain a property "{http://owncloud.org/ns}favorite" with value "1"
+        Then the single response should contain a property "{http://owncloud.org/ns}favorite" with value "1"
 
     Scenario: Favorite and unfavorite a file
         Given using old dav path
         And user "user0" has been created
-        When user "user0" favorites element "/textfile0.txt"
-        And user "user0" unfavorites element "/textfile0.txt"
-        Then as "user0" gets properties of file "/textfile0.txt" with
+        When user "user0" favorites element "/textfile0.txt" using the API
+        And user "user0" unfavorites element "/textfile0.txt" using the API
+        And user "user0" gets the following properties of file "/textfile0.txt" using the API
             |{http://owncloud.org/ns}favorite|
-        And the single response should contain a property "{http://owncloud.org/ns}favorite" with value "0"
+        Then the single response should contain a property "{http://owncloud.org/ns}favorite" with value "0"
 
     Scenario: Favorite a folder new endpoint
         Given using new dav path
         And user "user0" has been created
-        When user "user0" favorites element "/FOLDER"
-        Then as "user0" gets properties of folder "/FOLDER" with
+        When user "user0" favorites element "/FOLDER" using the API
+        And user "user0" gets the following properties of folder "/FOLDER" using the API
             |{http://owncloud.org/ns}favorite|
-        And the single response should contain a property "{http://owncloud.org/ns}favorite" with value "1"
+        Then the single response should contain a property "{http://owncloud.org/ns}favorite" with value "1"
 
     Scenario: Favorite and unfavorite a folder new endpoint
         Given using new dav path
         And user "user0" has been created
-        When user "user0" favorites element "/FOLDER"
-        And user "user0" unfavorites element "/FOLDER"
-        Then as "user0" gets properties of folder "/FOLDER" with
+        When user "user0" favorites element "/FOLDER" using the API
+        And user "user0" unfavorites element "/FOLDER" using the API
+        And user "user0" gets the following properties of folder "/FOLDER" using the API
             |{http://owncloud.org/ns}favorite|
-        And the single response should contain a property "{http://owncloud.org/ns}favorite" with value "0"
+        Then the single response should contain a property "{http://owncloud.org/ns}favorite" with value "0"
 
     Scenario: Favorite a file new endpoint
         Given using new dav path
         And user "user0" has been created
-        When user "user0" favorites element "/textfile0.txt"
-        Then as "user0" gets properties of file "/textfile0.txt" with
+        When user "user0" favorites element "/textfile0.txt" using the API
+        And user "user0" gets the following properties of file "/textfile0.txt" using the API
             |{http://owncloud.org/ns}favorite|
-        And the single response should contain a property "{http://owncloud.org/ns}favorite" with value "1"
+        Then the single response should contain a property "{http://owncloud.org/ns}favorite" with value "1"
 
     Scenario: Favorite and unfavorite a file new endpoint
         Given using new dav path
         And user "user0" has been created
-        When user "user0" favorites element "/textfile0.txt"
-        And user "user0" unfavorites element "/textfile0.txt"
-        Then as "user0" gets properties of file "/textfile0.txt" with
+        When user "user0" favorites element "/textfile0.txt" using the API
+        And user "user0" unfavorites element "/textfile0.txt" using the API
+        And user "user0" gets the following properties of file "/textfile0.txt" using the API
             |{http://owncloud.org/ns}favorite|
-        And the single response should contain a property "{http://owncloud.org/ns}favorite" with value "0"
+        Then the single response should contain a property "{http://owncloud.org/ns}favorite" with value "0"
 
     Scenario: Get favorited elements of a folder
         Given using old dav path
         And user "user0" has been created
-        When user "user0" favorites element "/FOLDER"
-        And user "user0" favorites element "/textfile0.txt"
-        And user "user0" favorites element "/textfile1.txt"
+        When user "user0" favorites element "/FOLDER" using the API
+        And user "user0" favorites element "/textfile0.txt" using the API
+        And user "user0" favorites element "/textfile1.txt" using the API
         Then user "user0" in folder "/" should have favorited the following elements
             | /FOLDER |
             | /textfile0.txt |
@@ -84,9 +84,9 @@ Feature: favorite
     Scenario: Get favorited elements of a folder using new path
         Given using new dav path
         And user "user0" has been created
-        When user "user0" favorites element "/FOLDER"
-        And user "user0" favorites element "/textfile0.txt"
-        And user "user0" favorites element "/textfile1.txt"
+        When user "user0" favorites element "/FOLDER" using the API
+        And user "user0" favorites element "/textfile0.txt" using the API
+        And user "user0" favorites element "/textfile1.txt" using the API
         Then user "user0" in folder "/" should have favorited the following elements
             | /FOLDER |
             | /textfile0.txt |
@@ -99,10 +99,10 @@ Feature: favorite
         And user "user0" has moved file "/textfile0.txt" to "/subfolder/textfile0.txt"
         And user "user0" has moved file "/textfile1.txt" to "/subfolder/textfile1.txt"
         And user "user0" has moved file "/textfile2.txt" to "/subfolder/textfile2.txt"
-        When user "user0" favorites element "/subfolder/textfile0.txt"
-        And user "user0" favorites element "/subfolder/textfile1.txt"
-        And user "user0" favorites element "/subfolder/textfile2.txt"
-        And user "user0" unfavorites element "/subfolder/textfile1.txt"
+        When user "user0" favorites element "/subfolder/textfile0.txt" using the API
+        And user "user0" favorites element "/subfolder/textfile1.txt" using the API
+        And user "user0" favorites element "/subfolder/textfile2.txt" using the API
+        And user "user0" unfavorites element "/subfolder/textfile1.txt" using the API
         Then user "user0" in folder "/subfolder" should have favorited the following elements
             | /subfolder/textfile0.txt |
             | /subfolder/textfile2.txt |
@@ -114,10 +114,10 @@ Feature: favorite
         And user "user0" has moved file "/textfile0.txt" to "/subfolder/textfile0.txt"
         And user "user0" has moved file "/textfile1.txt" to "/subfolder/textfile1.txt"
         And user "user0" has moved file "/textfile2.txt" to "/subfolder/textfile2.txt"
-        When user "user0" favorites element "/subfolder/textfile0.txt"
-        And user "user0" favorites element "/subfolder/textfile1.txt"
-        And user "user0" favorites element "/subfolder/textfile2.txt"
-        And user "user0" unfavorites element "/subfolder/textfile1.txt"
+        When user "user0" favorites element "/subfolder/textfile0.txt" using the API
+        And user "user0" favorites element "/subfolder/textfile1.txt" using the API
+        And user "user0" favorites element "/subfolder/textfile2.txt" using the API
+        And user "user0" unfavorites element "/subfolder/textfile1.txt" using the API
         Then user "user0" in folder "/subfolder" should have favorited the following elements
             | /subfolder/textfile0.txt |
             | /subfolder/textfile2.txt |
@@ -128,8 +128,8 @@ Feature: favorite
         And user "user1" has been created
         And user "user0" has created a folder "/shared"
         And user "user0" has moved file "/textfile0.txt" to "/shared/shared_file.txt"
-        And folder "/shared" of user "user0" is shared with user "user1"
-        And user "user1" favorites element "/shared/shared_file.txt"
+        And folder "/shared" of user "user0" has been shared with user "user1"
+        And user "user1" has favorited element "/shared/shared_file.txt"
         When user "user1" moves file "/shared/shared_file.txt" to "/taken_out.txt" using the API
         Then user "user1" in folder "/" should have favorited the following elements
             | /taken_out.txt |
@@ -144,12 +144,12 @@ Feature: favorite
         And user "user0" has copied file "/textfile0.txt" to "/subfolder/textfile3.txt"
         And user "user0" has copied file "/textfile0.txt" to "/subfolder/textfile4.txt"
         And user "user0" has copied file "/textfile0.txt" to "/subfolder/textfile5.txt"
-        When user "user0" favorites element "/subfolder/textfile0.txt"
-        And user "user0" favorites element "/subfolder/textfile1.txt"
-        And user "user0" favorites element "/subfolder/textfile2.txt"
-        And user "user0" favorites element "/subfolder/textfile3.txt"
-        And user "user0" favorites element "/subfolder/textfile4.txt"
-        And user "user0" favorites element "/subfolder/textfile5.txt"
+        When user "user0" favorites element "/subfolder/textfile0.txt" using the API
+        And user "user0" favorites element "/subfolder/textfile1.txt" using the API
+        And user "user0" favorites element "/subfolder/textfile2.txt" using the API
+        And user "user0" favorites element "/subfolder/textfile3.txt" using the API
+        And user "user0" favorites element "/subfolder/textfile4.txt" using the API
+        And user "user0" favorites element "/subfolder/textfile5.txt" using the API
         Then user "user0" in folder "/subfolder" should have favorited the following elements from offset 3 and limit 2
             | /subfolder/textfile2.txt |
             | /subfolder/textfile3.txt |

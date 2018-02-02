@@ -31,7 +31,7 @@ Feature: sharing
 		And user "user1" has been created
 		And group "sharing-group" has been created
 		And user "user1" has been added to group "sharing-group"
-		And file "welcome.txt" of user "user0" is shared with group "sharing-group"
+		And file "welcome.txt" of user "user0" has been shared with group "sharing-group"
 		And as user "user0"
 		When the user sends HTTP method "POST" to API endpoint "/apps/files_sharing/api/v1/shares" with body
 			| path | welcome.txt |
@@ -223,7 +223,7 @@ Feature: sharing
 			| shareType | 3 |
 			| permissions | 4 |
 		And publicly uploading file "test.txt" with content "test"
-		When downloading file "/FOLDER/test.txt"
+		When the user downloads the file "/FOLDER/test.txt" using the API
 		Then the downloaded content should be "test"
 
 	Scenario: Uploading to a public upload-only share with password
@@ -235,7 +235,7 @@ Feature: sharing
 			| password | publicpw |
 			| permissions | 4 |
 		And publicly uploading file "test.txt" with password "publicpw" and content "test"
-		When downloading file "/FOLDER/test.txt"
+		When the user downloads the file "/FOLDER/test.txt" using the API
 		Then the downloaded content should be "test"
 
 	Scenario: Downloading from upload-only share is forbidden
@@ -258,9 +258,9 @@ Feature: sharing
 			| permissions | 4 |
 		And publicly uploading file "test.txt" with content "test"
 		And publicly uploading file "test.txt" with content "test2" with autorename mode
-		When downloading file "/FOLDER/test.txt"
+		When the user downloads the file "/FOLDER/test.txt" using the API
 		Then the downloaded content should be "test"
-		And downloading file "/FOLDER/test (2).txt"
+		And the user downloads the file "/FOLDER/test (2).txt" using the API
 		And the downloaded content should be "test2"
 
 	Scenario: Uploading file to a public upload-only share that was deleted does not work
@@ -288,7 +288,7 @@ Feature: sharing
 		Given user "user0" has been created
 		And user "user1" has been created
 		And user "user0" has moved file "/textfile0.txt" to "/file_to_share.txt"
-		And file "file_to_share.txt" of user "user0" is shared with user "user1"
+		And file "file_to_share.txt" of user "user0" has been shared with user "user1"
 		And as user "user0"
 		When the user sends HTTP method "GET" to API endpoint "/apps/files_sharing/api/v1/shares"
 		Then the OCS status code should be "100"
@@ -298,7 +298,7 @@ Feature: sharing
 	Scenario: getting all shares of a user using another user
 		Given user "user0" has been created
 		And user "user1" has been created
-		And file "textfile0.txt" of user "user0" is shared with user "user1"
+		And file "textfile0.txt" of user "user0" has been shared with user "user1"
 		And as user "admin"
 		When the user sends HTTP method "GET" to API endpoint "/apps/files_sharing/api/v1/shares"
 		Then the OCS status code should be "100"
@@ -310,8 +310,8 @@ Feature: sharing
 		And user "user1" has been created
 		And user "user2" has been created
 		And user "user3" has been created
-		And file "textfile0.txt" of user "user0" is shared with user "user1"
-		And file "textfile0.txt" of user "user0" is shared with user "user2"
+		And file "textfile0.txt" of user "user0" has been shared with user "user1"
+		And file "textfile0.txt" of user "user0" has been shared with user "user2"
 		And as user "user0"
 		When the user sends HTTP method "GET" to API endpoint "/apps/files_sharing/api/v1/shares?path=textfile0.txt"
 		Then the OCS status code should be "100"
@@ -325,8 +325,8 @@ Feature: sharing
 		And user "user1" has been created
 		And user "user2" has been created
 		And user "user3" has been created
-		And file "textfile0.txt" of user "user0" is shared with user "user1"
-		And file "textfile0 (2).txt" of user "user1" is shared with user "user2"
+		And file "textfile0.txt" of user "user0" has been shared with user "user1"
+		And file "textfile0 (2).txt" of user "user1" has been shared with user "user2"
 		And as user "user0"
 		When the user sends HTTP method "GET" to API endpoint "/apps/files_sharing/api/v1/shares?reshares=true&path=textfile0.txt"
 		Then the OCS status code should be "100"
@@ -340,10 +340,10 @@ Feature: sharing
 		And user "user1" has been created
 		And user "user2" has been created
 		And user "user3" has been created
-		And file "textfile0.txt" of user "user0" is shared with user "user1"
+		And file "textfile0.txt" of user "user0" has been shared with user "user1"
 		And user "user1" has moved file "/textfile0 (2).txt" to "/textfile0_shared.txt"
-		And file "textfile0_shared.txt" of user "user1" is shared with user "user2"
-		And file "textfile0_shared.txt" of user "user2" is shared with user "user3"
+		And file "textfile0_shared.txt" of user "user1" has been shared with user "user2"
+		And file "textfile0_shared.txt" of user "user2" has been shared with user "user3"
 		And as user "user1"
 		When user "user1" deletes file "/textfile0_shared.txt" using the API
 		And as user "user3"
@@ -354,7 +354,7 @@ Feature: sharing
 		Given user "user0" has been created
 		And user "user1" has been created
 		And user "user0" has moved file "/textfile0.txt" to "/file_to_share.txt"
-		And file "file_to_share.txt" of user "user0" is shared with user "user1"
+		And file "file_to_share.txt" of user "user0" has been shared with user "user1"
 		And as user "user0"
 		When getting info of last share
 		Then the OCS status code should be "100"
@@ -384,7 +384,7 @@ Feature: sharing
 		And user "user1" has been created
 		And group "group1" has been created
 		And user "user1" has been added to group "group1"
-		And file "textfile0.txt" of user "user0" is shared with group "group1"
+		And file "textfile0.txt" of user "user0" has been shared with group "group1"
 		And user "user1" has moved file "/textfile0.txt" to "/FOLDER/textfile0.txt"
 		And as user "user0"
 		When updating last share with
@@ -412,7 +412,7 @@ Feature: sharing
 	Scenario: Sharee can see the share
 		Given user "user0" has been created
 		And user "user1" has been created
-		And file "textfile0.txt" of user "user0" is shared with user "user1"
+		And file "textfile0.txt" of user "user0" has been shared with user "user1"
 		And as user "user1"
 		When the user sends HTTP method "GET" to API endpoint "/apps/files_sharing/api/v1/shares?shared_with_me=true"
 		Then the OCS status code should be "100"
@@ -422,8 +422,8 @@ Feature: sharing
 	Scenario: Sharee can see the filtered share
 		Given user "user0" has been created
 		And user "user1" has been created
-		And file "textfile0.txt" of user "user0" is shared with user "user1"
-		And file "textfile1.txt" of user "user0" is shared with user "user1"
+		And file "textfile0.txt" of user "user0" has been shared with user "user1"
+		And file "textfile1.txt" of user "user0" has been shared with user "user1"
 		And as user "user1"
 		When the user sends HTTP method "GET" to API endpoint "/apps/files_sharing/api/v1/shares?shared_with_me=true&path=textfile1 (2).txt"
 		Then the OCS status code should be "100"
@@ -433,8 +433,8 @@ Feature: sharing
 	Scenario: Sharee can't see the share that is filtered out
 		Given user "user0" has been created
 		And user "user1" has been created
-		And file "textfile0.txt" of user "user0" is shared with user "user1"
-		And file "textfile1.txt" of user "user0" is shared with user "user1"
+		And file "textfile0.txt" of user "user0" has been shared with user "user1"
+		And file "textfile1.txt" of user "user0" has been shared with user "user1"
 		And as user "user1"
 		When the user sends HTTP method "GET" to API endpoint "/apps/files_sharing/api/v1/shares?shared_with_me=true&path=textfile0 (2).txt"
 		Then the OCS status code should be "100"
@@ -446,7 +446,7 @@ Feature: sharing
 		And user "user1" has been created
 		And group "group0" has been created
 		And user "user1" has been added to group "group0"
-		And file "textfile0.txt" of user "user0" is shared with group "group0"
+		And file "textfile0.txt" of user "user0" has been shared with group "group0"
 		And as user "user1"
 		When the user sends HTTP method "GET" to API endpoint "/apps/files_sharing/api/v1/shares?shared_with_me=true"
 		Then the OCS status code should be "100"
@@ -495,7 +495,7 @@ Feature: sharing
 		Given user "user0" has been created
 		And user "user1" has been created
 		And user "user2" has been created
-		And file "textfile0.txt" of user "user0" is shared with user "user1"
+		And file "textfile0.txt" of user "user0" has been shared with user "user1"
 		And as user "user2"
 		When getting info of last share
 		Then the OCS status code should be "404"
@@ -506,9 +506,9 @@ Feature: sharing
 		And user "user1" has been created
 		And group "group0" has been created
 		And user "user1" has been added to group "group0"
-		And file "/PARENT" of user "user0" is shared with user "user1"
-		When file "/PARENT/CHILD" of user "user0" is shared with group "group0"
-		Then user "user1" should see following elements
+		When user "user0" shares file "/PARENT" with user "user1" using the API
+		And user "user0" shares file "/PARENT/CHILD" with group "group0" using the API
+		Then user "user1" should see the following elements
 			| /FOLDER/ |
 			| /PARENT/ |
 			| /CHILD/ |
@@ -525,15 +525,15 @@ Feature: sharing
 		And user "user2" has been added to group "group0"
 		And user "user0" has created a folder "/common"
 		And user "user0" has created a folder "/common/sub"
-		And folder "common" of user "user0" is shared with group "group0"
-		And file "textfile0.txt" of user "user1" is shared with user "user2"
+		And folder "common" of user "user0" has been shared with group "group0"
+		And file "textfile0.txt" of user "user1" has been shared with user "user2"
 		And user "user1" has moved file "/textfile0.txt" to "/common/textfile0.txt"
 		And user "user1" has moved file "/common/textfile0.txt" to "/common/sub/textfile0.txt"
 		And as user "user2"
 		When the user downloads file "/common/sub/textfile0.txt" with range "bytes=9-17" using the API
 		Then the downloaded content should be "test text"
 		And downloaded content when downloading file "/textfile0.txt" with range "bytes=9-17" should be "test text"
-		And user "user2" should see following elements
+		And user "user2" should see the following elements
 			| /common/sub/textfile0.txt |
 
 	Scenario: Share a file by multiple channels and download from direct file share
@@ -545,14 +545,14 @@ Feature: sharing
 		And user "user2" has been added to group "group0"
 		And user "user0" has created a folder "/common"
 		And user "user0" has created a folder "/common/sub"
-		And folder "common" of user "user0" is shared with group "group0"
-		And file "textfile0.txt" of user "user1" is shared with user "user2"
+		And folder "common" of user "user0" has been shared with group "group0"
+		And file "textfile0.txt" of user "user1" has been shared with user "user2"
 		And user "user1" has moved file "/textfile0.txt" to "/common/textfile0.txt"
 		And user "user1" has moved file "/common/textfile0.txt" to "/common/sub/textfile0.txt"
 		And as user "user2"
 		When the user downloads file "/textfile0.txt" with range "bytes=9-17" using the API
 		Then the downloaded content should be "test text"
-		And user "user2" should see following elements
+		And user "user2" should see the following elements
 			| /common/sub/textfile0.txt |
 
 	Scenario: Delete all group shares
@@ -560,7 +560,7 @@ Feature: sharing
 		And user "user1" has been created
 		And group "group1" has been created
 		And user "user1" has been added to group "group1"
-		And file "textfile0.txt" of user "user0" is shared with group "group1"
+		And file "textfile0.txt" of user "user0" has been shared with group "group1"
 		And user "user1" has moved file "/textfile0.txt" to "/FOLDER/textfile0.txt"
 		And as user "user0"
 		And deleting last share
@@ -573,7 +573,7 @@ Feature: sharing
 	Scenario: delete a share
 		Given user "user0" has been created
 		And user "user1" has been created
-		And file "textfile0.txt" of user "user0" is shared with user "user1"
+		And file "textfile0.txt" of user "user0" has been shared with user "user1"
 		And as user "user0"
 		When deleting last share
 		Then the OCS status code should be "100"
@@ -587,11 +587,11 @@ Feature: sharing
 		And user "user1" has been added to group "group"
 		And user "user2" has been added to group "group"
 		And user "user0" has created a folder "/TMP"
-		When file "TMP" of user "user0" is shared with group "group"
+		When user "user0" shares file "TMP" with group "group" using the API
 		And user "user1" has created a folder "/myFOLDER"
 		And user "user1" moves file "/TMP" to "/myFOLDER/myTMP" using the API
 		And the administrator deletes user "user2" using the API
-		Then user "user1" should see following elements
+		Then user "user1" should see the following elements
 			| /myFOLDER/myTMP/ |
 
 	Scenario: Check quota of owners parent directory of a shared file
@@ -601,7 +601,7 @@ Feature: sharing
 		And as user "admin"
 		And the quota of user "user1" has been set to "0"
 		And user "user0" has moved file "/welcome.txt" to "/myfile.txt"
-		And file "myfile.txt" of user "user0" is shared with user "user1"
+		And file "myfile.txt" of user "user0" has been shared with user "user1"
 		When user "user1" uploads file "data/textfile.txt" to "/myfile.txt" using the API
 		Then the HTTP status code should be "204"
 
@@ -618,8 +618,8 @@ Feature: sharing
 		And user "user1" has been created
 		And user "user2" has been created
 		And user "user0" has created a folder "/TMP"
-		And file "TMP" of user "user0" is shared with user "user1"
-		And file "TMP" of user "user1" is shared with user "user2"
+		And file "TMP" of user "user0" has been shared with user "user1"
+		And file "TMP" of user "user1" has been shared with user "user2"
 		And as user "user1"
 		When updating last share with
 			| permissions | 1 |
@@ -660,48 +660,48 @@ Feature: sharing
 
 	Scenario: Correct webdav share-permissions for owned file
 		Given user "user0" has been created
-		And user "user0" uploads file with content "foo" to "/tmp.txt"
-		When as "user0" gets properties of folder "/tmp.txt" with
+		And user "user0" has uploaded file with content "foo" to "/tmp.txt"
+		When user "user0" gets the following properties of folder "/tmp.txt" using the API
 			|{http://open-collaboration-services.org/ns}share-permissions |
 		Then the single response should contain a property "{http://open-collaboration-services.org/ns}share-permissions" with value "19"
 
 	Scenario: Correct webdav share-permissions for received file with edit and reshare permissions
 		Given user "user0" has been created
 		And user "user1" has been created
-		And user "user0" uploads file with content "foo" to "/tmp.txt"
-		And file "/tmp.txt" of user "user0" is shared with user "user1"
-		When as "user1" gets properties of folder "/tmp.txt" with
+		And user "user0" has uploaded file with content "foo" to "/tmp.txt"
+		And file "/tmp.txt" of user "user0" has been shared with user "user1"
+		When user "user1" gets the following properties of folder "/tmp.txt" using the API
 			|{http://open-collaboration-services.org/ns}share-permissions |
 		Then the single response should contain a property "{http://open-collaboration-services.org/ns}share-permissions" with value "19"
 
 	Scenario: Correct webdav share-permissions for received file with edit permissions but no reshare permissions
 		Given user "user0" has been created
 		And user "user1" has been created
-		And user "user0" uploads file with content "foo" to "/tmp.txt"
-		And file "tmp.txt" of user "user0" is shared with user "user1"
+		And user "user0" has uploaded file with content "foo" to "/tmp.txt"
+		And file "tmp.txt" of user "user0" has been shared with user "user1"
 		And as user "user0"
 		And updating last share with
 			| permissions | 3 |
-		When as "user1" gets properties of folder "/tmp.txt" with
+		When user "user1" gets the following properties of folder "/tmp.txt" using the API
 			|{http://open-collaboration-services.org/ns}share-permissions |
 		Then the single response should contain a property "{http://open-collaboration-services.org/ns}share-permissions" with value "3"
 
 	Scenario: Correct webdav share-permissions for received file with reshare permissions but no edit permissions
 		Given user "user0" has been created
 		And user "user1" has been created
-		And user "user0" uploads file with content "foo" to "/tmp.txt"
-		And file "tmp.txt" of user "user0" is shared with user "user1"
+		And user "user0" has uploaded file with content "foo" to "/tmp.txt"
+		And file "tmp.txt" of user "user0" has been shared with user "user1"
 		And as user "user0"
 		And updating last share with
 			| permissions | 17 |
-		When as "user1" gets properties of folder "/tmp.txt" with
+		When user "user1" gets the following properties of folder "/tmp.txt" using the API
 			|{http://open-collaboration-services.org/ns}share-permissions |
 		Then the single response should contain a property "{http://open-collaboration-services.org/ns}share-permissions" with value "17"
 
 	Scenario: Correct webdav share-permissions for owned folder
 		Given user "user0" has been created
 		And user "user0" has created a folder "/tmp"
-		When as "user0" gets properties of folder "/" with
+		When user "user0" gets the following properties of folder "/" using the API
 			|{http://open-collaboration-services.org/ns}share-permissions |
 		Then the single response should contain a property "{http://open-collaboration-services.org/ns}share-permissions" with value "31"
 
@@ -709,8 +709,8 @@ Feature: sharing
 		Given user "user0" has been created
 		And user "user1" has been created
 		And user "user0" has created a folder "/tmp"
-		And file "/tmp" of user "user0" is shared with user "user1"
-		When as "user1" gets properties of folder "/tmp" with
+		And file "/tmp" of user "user0" has been shared with user "user1"
+		When user "user1" gets the following properties of folder "/tmp" using the API
 			|{http://open-collaboration-services.org/ns}share-permissions |
 		Then the single response should contain a property "{http://open-collaboration-services.org/ns}share-permissions" with value "31"
 
@@ -718,11 +718,11 @@ Feature: sharing
 		Given user "user0" has been created
 		And user "user1" has been created
 		And user "user0" has created a folder "/tmp"
-		And file "/tmp" of user "user0" is shared with user "user1"
+		And file "/tmp" of user "user0" has been shared with user "user1"
 		And as user "user0"
 		And updating last share with
 			| permissions | 29 |
-		When as "user1" gets properties of folder "/tmp" with
+		When user "user1" gets the following properties of folder "/tmp" using the API
 			|{http://open-collaboration-services.org/ns}share-permissions |
 		Then the single response should contain a property "{http://open-collaboration-services.org/ns}share-permissions" with value "29"
 
@@ -730,11 +730,11 @@ Feature: sharing
 		Given user "user0" has been created
 		And user "user1" has been created
 		And user "user0" has created a folder "/tmp"
-		And file "/tmp" of user "user0" is shared with user "user1"
+		And file "/tmp" of user "user0" has been shared with user "user1"
 		And as user "user0"
 		And updating last share with
 			| permissions | 27 |
-		When as "user1" gets properties of folder "/tmp" with
+		When user "user1" gets the following properties of folder "/tmp" using the API
 			|{http://open-collaboration-services.org/ns}share-permissions |
 		Then the single response should contain a property "{http://open-collaboration-services.org/ns}share-permissions" with value "27"
 
@@ -742,11 +742,11 @@ Feature: sharing
 		Given user "user0" has been created
 		And user "user1" has been created
 		And user "user0" has created a folder "/tmp"
-		And file "/tmp" of user "user0" is shared with user "user1"
+		And file "/tmp" of user "user0" has been shared with user "user1"
 		And as user "user0"
 		And updating last share with
 			| permissions | 23 |
-		When as "user1" gets properties of folder "/tmp" with
+		When user "user1" gets the following properties of folder "/tmp" using the API
 			|{http://open-collaboration-services.org/ns}share-permissions |
 		Then the single response should contain a property "{http://open-collaboration-services.org/ns}share-permissions" with value "23"
 
@@ -754,11 +754,11 @@ Feature: sharing
 		Given user "user0" has been created
 		And user "user1" has been created
 		And user "user0" has created a folder "/tmp"
-		And file "/tmp" of user "user0" is shared with user "user1"
+		And file "/tmp" of user "user0" has been shared with user "user1"
 		And as user "user0"
 		And updating last share with
 			| permissions | 15 |
-		When as "user1" gets properties of folder "/tmp" with
+		When user "user1" gets the following properties of folder "/tmp" using the API
 			|{http://open-collaboration-services.org/ns}share-permissions |
 		Then the single response should contain a property "{http://open-collaboration-services.org/ns}share-permissions" with value "15"
 
@@ -768,9 +768,9 @@ Feature: sharing
 		And user "user2" has been created
 		And user "user0" has created a folder "/foo"
 		And user "user1" has created a folder "/foo"
-		When file "/foo" of user "user0" is shared with user "user2"
-		And file "/foo" of user "user1" is shared with user "user2"
-		Then user "user2" should see following elements
+		When user "user0" shares file "/foo" with user "user2" using the API
+		And user "user1" shares file "/foo" with user "user2" using the API
+		Then user "user2" should see the following elements
 			| /foo/		|
 			| /foo%20(2)/ |
 
@@ -794,8 +794,8 @@ Feature: sharing
 		And group "group1" has been created
 		And user "user1" has been added to group "group1"
 		And user "user0" has created a folder "/merge-test-outside"
-		When folder "/merge-test-outside" of user "user0" is shared with group "group1"
-		And folder "/merge-test-outside" of user "user0" is shared with user "user1"
+		When user "user0" shares folder "/merge-test-outside" with group "group1" using the API
+		And user "user0" shares folder "/merge-test-outside" with user "user1" using the API
 		Then as "user1" the folder "/merge-test-outside" should exist
 		And as "user1" the folder "/merge-test-outside (2)" should not exist
 
@@ -805,11 +805,11 @@ Feature: sharing
 		And group "group1" has been created
 		And user "user1" has been added to group "group1"
 		And user "user0" has created a folder "/merge-test-outside-perms"
-		When folder "/merge-test-outside-perms" of user "user0" is shared with group "group1" with permissions 1
-		And folder "/merge-test-outside-perms" of user "user0" is shared with user "user1" with permissions 31
-		Then as "user1" gets properties of folder "/merge-test-outside-perms" with
+		When user "user0" shares folder "/merge-test-outside-perms" with group "group1" with permissions 1 using the API
+		And user "user0" shares folder "/merge-test-outside-perms" with user "user1" with permissions 31 using the API
+		And user "user1" gets the following properties of folder "/merge-test-outside-perms" using the API
 			|{http://owncloud.org/ns}permissions|
-		And the single response should contain a property "{http://owncloud.org/ns}permissions" with value "SRDNVCK"
+		Then the single response should contain a property "{http://owncloud.org/ns}permissions" with value "SRDNVCK"
 		And as "user1" the folder "/merge-test-outside-perms (2)" should not exist
 
 	Scenario: Merging shares for recipient when shared from outside with two groups
@@ -820,8 +820,8 @@ Feature: sharing
 		And user "user1" has been added to group "group1"
 		And user "user1" has been added to group "group2"
 		And user "user0" has created a folder "/merge-test-outside-twogroups"
-		When folder "/merge-test-outside-twogroups" of user "user0" is shared with group "group1"
-		And folder "/merge-test-outside-twogroups" of user "user0" is shared with group "group2"
+		When user "user0" shares folder "/merge-test-outside-twogroups" with group "group1" using the API
+		And user "user0" shares folder "/merge-test-outside-twogroups" with group "group2" using the API
 		Then as "user1" the folder "/merge-test-outside-twogroups" should exist
 		And as "user1" the folder "/merge-test-outside-twogroups (2)" should not exist
 
@@ -833,11 +833,11 @@ Feature: sharing
 		And user "user1" has been added to group "group1"
 		And user "user1" has been added to group "group2"
 		And user "user0" has created a folder "/merge-test-outside-twogroups-perms"
-		When folder "/merge-test-outside-twogroups-perms" of user "user0" is shared with group "group1" with permissions 1
-		And folder "/merge-test-outside-twogroups-perms" of user "user0" is shared with group "group2" with permissions 31
-		Then as "user1" gets properties of folder "/merge-test-outside-twogroups-perms" with
+		When user "user0" shares folder "/merge-test-outside-twogroups-perms" with group "group1" with permissions 1 using the API
+		And user "user0" shares folder "/merge-test-outside-twogroups-perms" with group "group2" with permissions 31 using the API
+		And user "user1" gets the following properties of folder "/merge-test-outside-twogroups-perms" using the API
 			|{http://owncloud.org/ns}permissions|
-		And the single response should contain a property "{http://owncloud.org/ns}permissions" with value "SRDNVCK"
+		Then the single response should contain a property "{http://owncloud.org/ns}permissions" with value "SRDNVCK"
 		And as "user1" the folder "/merge-test-outside-twogroups-perms (2)" should not exist
 
 	Scenario: Merging shares for recipient when shared from outside with two groups and member
@@ -848,12 +848,12 @@ Feature: sharing
 		And user "user1" has been added to group "group1"
 		And user "user1" has been added to group "group2"
 		And user "user0" has created a folder "/merge-test-outside-twogroups-member-perms"
-		When folder "/merge-test-outside-twogroups-member-perms" of user "user0" is shared with group "group1" with permissions 1
-		And folder "/merge-test-outside-twogroups-member-perms" of user "user0" is shared with group "group2" with permissions 31
-		And folder "/merge-test-outside-twogroups-member-perms" of user "user0" is shared with user "user1" with permissions 1
-		Then as "user1" gets properties of folder "/merge-test-outside-twogroups-member-perms" with
+		When user "user0" shares folder "/merge-test-outside-twogroups-member-perms" with group "group1" with permissions 1 using the API
+		And user "user0" shares folder "/merge-test-outside-twogroups-member-perms" with group "group2" with permissions 31 using the API
+		And user "user0" shares folder "/merge-test-outside-twogroups-member-perms" with user "user1" with permissions 1 using the API
+		And user "user1" gets the following properties of folder "/merge-test-outside-twogroups-member-perms" using the API
 			|{http://owncloud.org/ns}permissions|
-		And the single response should contain a property "{http://owncloud.org/ns}permissions" with value "SRDNVCK"
+		Then the single response should contain a property "{http://owncloud.org/ns}permissions" with value "SRDNVCK"
 		And as "user1" the folder "/merge-test-outside-twogroups-member-perms (2)" should not exist
 
 	Scenario: Merging shares for recipient when shared from inside with group
@@ -861,7 +861,7 @@ Feature: sharing
 		And group "group1" has been created
 		And user "user0" has been added to group "group1"
 		And user "user0" has created a folder "/merge-test-inside-group"
-		When folder "/merge-test-inside-group" of user "user0" is shared with group "group1"
+		When user "user0" shares folder "/merge-test-inside-group" with group "group1" using the API
 		Then as "user0" the folder "/merge-test-inside-group" should exist
 		And as "user0" the folder "/merge-test-inside-group (2)" should not exist
 
@@ -872,8 +872,8 @@ Feature: sharing
 		And user "user0" has been added to group "group1"
 		And user "user0" has been added to group "group2"
 		And user "user0" has created a folder "/merge-test-inside-twogroups"
-		When folder "/merge-test-inside-twogroups" of user "user0" is shared with group "group1"
-		And folder "/merge-test-inside-twogroups" of user "user0" is shared with group "group2"
+		When user "user0" shares folder "/merge-test-inside-twogroups" with group "group1" using the API
+		And user "user0" shares folder "/merge-test-inside-twogroups" with group "group2" using the API
 		Then as "user0" the folder "/merge-test-inside-twogroups" should exist
 		And as "user0" the folder "/merge-test-inside-twogroups (2)" should not exist
 		And as "user0" the folder "/merge-test-inside-twogroups (3)" should not exist
@@ -885,11 +885,11 @@ Feature: sharing
 		And user "user0" has been added to group "group1"
 		And user "user0" has been added to group "group2"
 		And user "user0" has created a folder "/merge-test-inside-twogroups-perms"
-		When folder "/merge-test-inside-twogroups-perms" of user "user0" is shared with group "group1"
-		And folder "/merge-test-inside-twogroups-perms" of user "user0" is shared with group "group2"
-		Then as "user0" gets properties of folder "/merge-test-inside-twogroups-perms" with
+		When user "user0" shares folder "/merge-test-inside-twogroups-perms" with group "group1" using the API
+		And user "user0" shares folder "/merge-test-inside-twogroups-perms" with group "group2" using the API
+		And user "user0" gets the following properties of folder "/merge-test-inside-twogroups-perms" using the API
 			|{http://owncloud.org/ns}permissions|
-		And the single response should contain a property "{http://owncloud.org/ns}permissions" with value "RDNVCK"
+		Then the single response should contain a property "{http://owncloud.org/ns}permissions" with value "RDNVCK"
 		And as "user0" the folder "/merge-test-inside-twogroups-perms (2)" should not exist
 		And as "user0" the folder "/merge-test-inside-twogroups-perms (3)" should not exist
 
@@ -900,12 +900,12 @@ Feature: sharing
 		And group "group1" has been created
 		And user "user1" has been added to group "group1"
 		And user "user0" has created a folder "/merge-test-outside-groups-renamebeforesecondshare"
-		When folder "/merge-test-outside-groups-renamebeforesecondshare" of user "user0" is shared with group "group1"
+		When user "user0" shares folder "/merge-test-outside-groups-renamebeforesecondshare" with group "group1" using the API
 		And user "user1" moves folder "/merge-test-outside-groups-renamebeforesecondshare" to "/merge-test-outside-groups-renamebeforesecondshare-renamed" using the API
-		And folder "/merge-test-outside-groups-renamebeforesecondshare" of user "user0" is shared with user "user1"
-		Then as "user1" gets properties of folder "/merge-test-outside-groups-renamebeforesecondshare-renamed" with
+		And user "user0" shares folder "/merge-test-outside-groups-renamebeforesecondshare" with user "user1" using the API
+		And user "user1" gets the following properties of folder "/merge-test-outside-groups-renamebeforesecondshare-renamed" using the API
 			|{http://owncloud.org/ns}permissions|
-		And the single response should contain a property "{http://owncloud.org/ns}permissions" with value "SRDNVCK"
+		Then the single response should contain a property "{http://owncloud.org/ns}permissions" with value "SRDNVCK"
 		And as "user1" the folder "/merge-test-outside-groups-renamebeforesecondshare" should not exist
 
 	Scenario: Merging shares for recipient when shared from outside with user then group and recipient renames in between
@@ -914,12 +914,12 @@ Feature: sharing
 		And group "group1" has been created
 		And user "user1" has been added to group "group1"
 		And user "user0" has created a folder "/merge-test-outside-groups-renamebeforesecondshare"
-		When folder "/merge-test-outside-groups-renamebeforesecondshare" of user "user0" is shared with user "user1"
+		When user "user0" shares folder "/merge-test-outside-groups-renamebeforesecondshare" with user "user1" using the API
 		And user "user1" moves folder "/merge-test-outside-groups-renamebeforesecondshare" to "/merge-test-outside-groups-renamebeforesecondshare-renamed" using the API
-		And folder "/merge-test-outside-groups-renamebeforesecondshare" of user "user0" is shared with group "group1"
-		Then as "user1" gets properties of folder "/merge-test-outside-groups-renamebeforesecondshare-renamed" with
+		And user "user0" shares folder "/merge-test-outside-groups-renamebeforesecondshare" with group "group1" using the API
+		And user "user1" gets the following properties of folder "/merge-test-outside-groups-renamebeforesecondshare-renamed" using the API
 			|{http://owncloud.org/ns}permissions|
-		And the single response should contain a property "{http://owncloud.org/ns}permissions" with value "SRDNVCK"
+		Then the single response should contain a property "{http://owncloud.org/ns}permissions" with value "SRDNVCK"
 		And as "user1" the folder "/merge-test-outside-groups-renamebeforesecondshare" should not exist
 
 	Scenario: Emptying trashbin
@@ -933,7 +933,7 @@ Feature: sharing
 		And user "user1" has been created
 		And user "user0" has created a folder "/common"
 		And user "user0" has created a folder "/common/sub"
-		And file "/common/sub" of user "user0" is shared with user "user1"
+		And file "/common/sub" of user "user0" has been shared with user "user1"
 		And user "user0" has deleted folder "/common"
 		When user "user0" empties the trashbin
 		Then as "user1" the folder "/sub" should not exist
@@ -942,7 +942,7 @@ Feature: sharing
 		Given user "user0" has been created
 		And group "sharing-group" has been created
 		And user "user0" has been added to group "sharing-group"
-		And file "welcome.txt" of user "user0" is shared with group "sharing-group"
+		And file "welcome.txt" of user "user0" has been shared with group "sharing-group"
 		And as user "user0"
 		And deleting last share
 		When the user sends HTTP method "POST" to API endpoint "/apps/files_sharing/api/v1/shares" with body
@@ -958,7 +958,7 @@ Feature: sharing
 		And group "sharing-group" has been created
 		And user "user0" has created a folder "/test"
 		And user "user0" has created a folder "/test/sub"
-		And file "/test" of user "user0" is shared with group "sharing-group"
+		And file "/test" of user "user0" has been shared with group "sharing-group"
 		And as user "user0"
 		When the user sends HTTP method "POST" to API endpoint "/apps/files_sharing/api/v1/shares" with body
 			| path | /test/sub |
@@ -975,7 +975,7 @@ Feature: sharing
 		And user "user0" has been added to group "sharing-group"
 		And user "user0" has created a folder "/test"
 		And user "user0" has created a folder "/test/sub"
-		And file "/test" of user "user0" is shared with group "sharing-group"
+		And file "/test" of user "user0" has been shared with group "sharing-group"
 		And as user "user0"
 		When the user sends HTTP method "POST" to API endpoint "/apps/files_sharing/api/v1/shares" with body
 			| path | /test/sub |
@@ -992,11 +992,11 @@ Feature: sharing
 		And user "user3" has been created
 		And user "user4" has been created
 		And user "user0" has created a folder "/folder1"
-		And file "/folder1" of user "user0" is shared with user "user1"
-		And file "/folder1" of user "user0" is shared with user "user2"
+		And file "/folder1" of user "user0" has been shared with user "user1"
+		And file "/folder1" of user "user0" has been shared with user "user2"
 		And user "user0" has created a folder "/folder1/folder2"
-		And file "/folder1/folder2" of user "user0" is shared with user "user3"
-		And file "/folder1/folder2" of user "user0" is shared with user "user4"
+		And file "/folder1/folder2" of user "user0" has been shared with user "user3"
+		And file "/folder1/folder2" of user "user0" has been shared with user "user4"
 		And as user "user0"
 		When the user sends HTTP method "GET" to API endpoint "/apps/files_sharing/api/v1/shares"
 		Then the OCS status code should be "100"
@@ -1015,7 +1015,7 @@ Feature: sharing
 		And group "sharing-group" has been created
 		And user "user0" has been added to group "sharing-group"
 		And user "user1" has been added to group "sharing-group"
-		And file "/PARENT/parent.txt" of user "user0" is shared with group "sharing-group"
+		And file "/PARENT/parent.txt" of user "user0" has been shared with group "sharing-group"
 		And user "user0" has stored etag of element "/PARENT"
 		And user "user1" has stored etag of element "/"
 		And as user "user1"
@@ -1032,7 +1032,7 @@ Feature: sharing
 		And user "user1" has been added to group "new-group"
 		And user "user0" has been made a subadmin of group "new-group"
 		And as user "user0"
-		And folder "/FOLDER" of user "user0" is shared with group "new-group"
+		And folder "/FOLDER" of user "user0" has been shared with group "new-group"
 		And updating last share with
 			| permissions | 1 |
 		When updating last share with
@@ -1060,8 +1060,8 @@ Feature: sharing
 		And user "user1" has been added to group "new-group"
 		And user "user0" has been made a subadmin of group "new-group"
 		And as user "user0"
-		And folder "/FOLDER" of user "user0" is shared with group "new-group"
-		And updating last share with
+		And folder "/FOLDER" of user "user0" has been shared with group "new-group"
+		When updating last share with
 			| permissions | 0 |
 		Then the OCS status code should be "400"
 
@@ -1070,7 +1070,7 @@ Feature: sharing
 		And user "user1" has been created
 		And as user "user0"
 		And user "user0" has created a folder "/test"
-		And folder "/test" of user "user0" is shared with user "user1" with permissions 17
+		And folder "/test" of user "user0" has been shared with user "user1" with permissions 17
 		And as user "user1"
 		And the user has created a share with settings
 			| path | /test |
@@ -1086,7 +1086,7 @@ Feature: sharing
 		And user "user1" has been created
 		And as user "user0"
 		And user "user0" has created a folder "/test"
-		And folder "/test" of user "user0" is shared with user "user1" with permissions 31
+		And folder "/test" of user "user0" has been shared with user "user1" with permissions 31
 		And as user "user1"
 		And the user has created a share with settings
 			| path | /test |
@@ -1102,7 +1102,7 @@ Feature: sharing
 		And user "user1" has been created
 		And as user "user0"
 		And user "user0" has created a folder "/test"
-		And folder "/test" of user "user0" is shared with user "user1" with permissions 17
+		And folder "/test" of user "user0" has been shared with user "user1" with permissions 17
 		And as user "user1"
 		And the user has created a share with settings
 			| path | /test |
@@ -1118,7 +1118,7 @@ Feature: sharing
 		And user "user1" has been created
 		And as user "user0"
 		And user "user0" has created a folder "/test"
-		And folder "/test" of user "user0" is shared with user "user1" with permissions 31
+		And folder "/test" of user "user0" has been shared with user "user1" with permissions 31
 		And as user "user1"
 		And the user has created a share with settings
 			| path | /test |
@@ -1178,7 +1178,7 @@ Feature: sharing
 		And user "user1" has been created
 		And as user "user0"
 		And user "user0" has created a folder "/test"
-		And folder "/test" of user "user0" is shared with user "user1" with permissions 1
+		And folder "/test" of user "user0" has been shared with user "user1" with permissions 1
 		And as user "user1"
 		And the user has created a share with settings
 			| path | /test |
@@ -1192,7 +1192,7 @@ Feature: sharing
 		And user "user1" has been created
 		And as user "user0"
 		And user "user0" has created a folder "/test"
-		And folder "/test" of user "user0" is shared with user "user1" with permissions 15
+		And folder "/test" of user "user0" has been shared with user "user1" with permissions 15
 		And as user "user1"
 		And the user has created a share with settings
 			| path | /test |
@@ -1206,7 +1206,7 @@ Feature: sharing
 		And user "user1" has been created
 		And user "user0" has created a folder "/shared"
 		And user "user0" has moved file "/textfile0.txt" to "/shared/shared_file.txt"
-		And folder "/shared" of user "user0" is shared with user "user1"
+		And folder "/shared" of user "user0" has been shared with user "user1"
 		When user "user1" deletes file "/shared/shared_file.txt" using the API
 		Then as "user1" the file "/shared/shared_file.txt" should not exist
 		And as "user0" the file "/shared/shared_file.txt" should not exist
@@ -1219,7 +1219,7 @@ Feature: sharing
 		And user "user0" has created a folder "/shared"
 		And user "user0" has created a folder "/shared/sub"
 		And user "user0" has moved file "/textfile0.txt" to "/shared/sub/shared_file.txt"
-		And folder "/shared" of user "user0" is shared with user "user1"
+		And folder "/shared" of user "user0" has been shared with user "user1"
 		When user "user1" deletes folder "/shared/sub" using the API
 		Then as "user1" the folder "/shared/sub" should not exist
 		And as "user0" the folder "/shared/sub" should not exist
@@ -1232,7 +1232,7 @@ Feature: sharing
 		Given user "user0" has been created
 		And user "user1" has been created
 		And user "user0" has created a folder "/shared"
-		And folder "/shared" of user "user0" is shared with user "user1"
+		And folder "/shared" of user "user0" has been shared with user "user1"
 		When user "user1" moves file "/textfile0.txt" to "/shared/shared_file.txt" using the API
 		Then as "user1" the file "/shared/shared_file.txt" should exist
 		And as "user0" the file "/shared/shared_file.txt" should exist
@@ -1242,7 +1242,7 @@ Feature: sharing
 		And user "user1" has been created
 		And user "user0" has created a folder "/shared"
 		And user "user0" has moved file "/textfile0.txt" to "/shared/shared_file.txt"
-		And file "/shared" of user "user0" is shared with user "user1"
+		And file "/shared" of user "user0" has been shared with user "user1"
 		And user "user1" has moved folder "/shared" to "/shared_renamed"
 		When user "user1" moves file "/shared_renamed/shared_file.txt" to "/taken_out.txt" using the API
 		Then as "user1" the file "/taken_out.txt" should exist
@@ -1255,7 +1255,7 @@ Feature: sharing
 		And user "user0" has created a folder "/shared"
 		And user "user0" has created a folder "/shared/sub"
 		And user "user0" has moved file "/textfile0.txt" to "/shared/sub/shared_file.txt"
-		And file "/shared" of user "user0" is shared with user "user1"
+		And file "/shared" of user "user0" has been shared with user "user1"
 		And user "user1" has moved folder "/shared" to "/shared_renamed"
 		When user "user1" moves folder "/shared_renamed/sub" to "/taken_out" using the API
 		Then as "user1" the file "/taken_out" should exist
@@ -1271,9 +1271,9 @@ Feature: sharing
 		And user "user0" has created a folder "/shared"
 		And as user "user0"
 		And user "user0" has moved file "/textfile0.txt" to "/shared/shared_file.txt"
-		And folder "/shared" of user "user0" is shared with user "user1"
+		And folder "/shared" of user "user0" has been shared with user "user1"
 		And as user "user1"
-		And folder "/shared" of user "user1" is shared with group "group0"
+		And folder "/shared" of user "user1" has been shared with group "group0"
 		And as user "user0"
 		When the user sends HTTP method "GET" to API endpoint "/apps/files_sharing/api/v1/shares?shared_with_me=true"
 		Then the OCS status code should be "100"
@@ -1287,8 +1287,8 @@ Feature: sharing
 		And user "user0" has created a folder "/folder1"
 		And user "user0" has created a folder "/folder1/folder2"
 		And user "user1" has created a folder "/moved-out"
-		And folder "/folder1" of user "user0" is shared with user "user1" with permissions 31
-		And folder "/folder1/folder2" of user "user1" is shared with user "user2" with permissions 31
+		And folder "/folder1" of user "user0" has been shared with user "user1" with permissions 31
+		And folder "/folder1/folder2" of user "user1" has been shared with user "user2" with permissions 31
 		And as user "user1"
 		When user "user1" moves folder "/folder1/folder2" to "/moved-out/folder2" using the API
 		And getting info of last share
@@ -1318,8 +1318,8 @@ Feature: sharing
 		And user "user0" has created a folder "/user0-folder"
 		And user "user0" has created a folder "/user0-folder/folder2"
 		And user "user2" has created a folder "/user2-folder"
-		And folder "/user0-folder" of user "user0" is shared with user "user1" with permissions 31
-		And folder "/user2-folder" of user "user2" is shared with user "user1" with permissions 31
+		And folder "/user0-folder" of user "user0" has been shared with user "user1" with permissions 31
+		And folder "/user2-folder" of user "user2" has been shared with user "user1" with permissions 31
 		And as user "user1"
 		When user "user1" moves folder "/user0-folder/folder2" to "/user2-folder/folder2" using the API
 		And getting info of last share

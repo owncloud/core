@@ -4,9 +4,9 @@ Feature: webdav-related-old-endpoint
 
 	Scenario: Unauthenticated call
 		Given using old dav path
-		When connecting to dav endpoint
+		When an unauthenticated client connects to the dav endpoint using the API
 		Then the HTTP status code should be "401"
-		And there are no duplicate headers
+		And there should be no duplicate headers
 		And the following headers should be set
 			|WWW-Authenticate|Basic realm="ownCloud"|
 
@@ -37,10 +37,9 @@ Feature: webdav-related-old-endpoint
 		  | shareType | 0 |
 		  | permissions | 1 |
 		  | shareWith | user0 |
-		And as user "user0"
 		When user "user0" moves file "/textfile0.txt" to "/testshare/textfile0.txt" using the API
 		Then the HTTP status code should be "403"
-		When downloading file "/testshare/textfile0.txt"
+		When user "user0" downloads the file "/testshare/textfile0.txt" using the API
  		Then the HTTP status code should be "404"
 
 	Scenario: Moving a file to overwrite a file in a folder with no permissions
@@ -108,10 +107,9 @@ Feature: webdav-related-old-endpoint
 		  | shareType | 0 |
 		  | permissions | 1 |
 		  | shareWith | user0 |
-		And as user "user0"
 		When user "user0" copies file "/textfile0.txt" to "/testshare/textfile0.txt" using the API
 		Then the HTTP status code should be "403"
-		And downloading file "/testshare/textfile0.txt"
+		And user "user0" downloads the file "/testshare/textfile0.txt" using the API
 		And the HTTP status code should be "404"
 
 	Scenario: Copying a file to overwrite a file into a folder with no permissions
@@ -143,18 +141,18 @@ Feature: webdav-related-old-endpoint
 		And as user "admin"
 		And user "user0" has been created
 		When the administrator gives unlimited quota to user "user0" using the API
-		Then as "user0" gets properties of folder "/" with
+		And user "user0" gets the following properties of folder "/" using the API
 		  |{DAV:}quota-available-bytes|
-		And the single response should contain a property "{DAV:}quota-available-bytes" with value "-3"
+		Then the single response should contain a property "{DAV:}quota-available-bytes" with value "-3"
 
 	Scenario: Retrieving folder quota when quota is set
 		Given using old dav path
 		And as user "admin"
 		And user "user0" has been created
 		When the administrator sets the quota of user "user0" to "10 MB" using the API
-		Then as "user0" gets properties of folder "/" with
+		And user "user0" gets the following properties of folder "/" using the API
 		  |{DAV:}quota-available-bytes|
-		And the single response should contain a property "{DAV:}quota-available-bytes" with value "10485358"
+		Then the single response should contain a property "{DAV:}quota-available-bytes" with value "10485358"
 
 	Scenario: Retrieving folder quota of shared folder with quota when no quota is set for recipient
 		Given using old dav path
@@ -170,7 +168,7 @@ Feature: webdav-related-old-endpoint
 		  | shareType | 0 |
 		  | permissions | 31 |
 		  | shareWith | user0 |
-		When as "user0" gets properties of folder "/testquota" with
+		When user "user0" gets the following properties of folder "/testquota" using the API
 		  |{DAV:}quota-available-bytes|
 		Then the single response should contain a property "{DAV:}quota-available-bytes" with value "10485358"
 
@@ -179,8 +177,8 @@ Feature: webdav-related-old-endpoint
 		And as user "admin"
 		And user "user0" has been created
 		And the quota of user "user0" has been set to "1 KB"
-		And user "user0" adds a file of 93 bytes to "/prueba.txt"
-		When as "user0" gets properties of folder "/" with
+		And user "user0" has added file "/prueba.txt" of 93 bytes
+		When user "user0" gets the following properties of folder "/" using the API
 		  |{DAV:}quota-available-bytes|
 		Then the single response should contain a property "{DAV:}quota-available-bytes" with value "529"
 
@@ -190,9 +188,9 @@ Feature: webdav-related-old-endpoint
 		And user "user0" has been created
 		And user "user1" has been created
 		And the quota of user "user1" has been set to "1 KB"
-		And user "user0" adds a file of 93 bytes to "/user0.txt"
-		And file "user0.txt" of user "user0" is shared with user "user1"
-		When as "user1" gets properties of folder "/" with
+		And user "user0" has added file "/user0.txt" of 93 bytes
+		And file "user0.txt" of user "user0" has been shared with user "user1"
+		When user "user1" gets the following properties of folder "/" using the API
 		  |{DAV:}quota-available-bytes|
 		Then the single response should contain a property "{DAV:}quota-available-bytes" with value "622"
 
@@ -220,7 +218,7 @@ Feature: webdav-related-old-endpoint
 		Given using old dav path
 		And user "user0" has been created
 		And user "user0" has created a folder "/test"
-		When as "user0" gets properties of folder "/test" with
+		When user "user0" gets the following properties of folder "/test" using the API
 			|{http://owncloud.org/ns}share-types|
 		Then the response should contain an empty property "{http://owncloud.org/ns}share-types"
 
@@ -234,7 +232,7 @@ Feature: webdav-related-old-endpoint
 			| shareType | 0 |
 			| permissions | 31 |
 			| shareWith | user1 |
-		When as "user0" gets properties of folder "/test" with
+		When user "user0" gets the following properties of folder "/test" using the API
 			|{http://owncloud.org/ns}share-types|
 		Then the response should contain a share-types property with
 			| 0 |
@@ -249,7 +247,7 @@ Feature: webdav-related-old-endpoint
 			| shareType | 1 |
 			| permissions | 31 |
 			| shareWith | group1 |
-		When as "user0" gets properties of folder "/test" with
+		When user "user0" gets the following properties of folder "/test" using the API
 			|{http://owncloud.org/ns}share-types|
 		Then the response should contain a share-types property with
 			| 1 |
@@ -262,7 +260,7 @@ Feature: webdav-related-old-endpoint
 			| path | test |
 			| shareType | 3 |
 			| permissions | 31 |
-		When as "user0" gets properties of folder "/test" with
+		When user "user0" gets the following properties of folder "/test" using the API
 			|{http://owncloud.org/ns}share-types|
 		Then the response should contain a share-types property with
 			| 3 |
@@ -287,7 +285,7 @@ Feature: webdav-related-old-endpoint
 			| path        | test  |
 			| shareType   | 3     |
 			| permissions | 31    |
-		When as "user0" gets properties of folder "/test" with
+		When user "user0" gets the following properties of folder "/test" using the API
 			|{http://owncloud.org/ns}share-types|
 		Then the response should contain a share-types property with
 			| 0 |
@@ -299,14 +297,14 @@ Feature: webdav-related-old-endpoint
 		And user "userToBeDisabled" has been created
 		And as user "admin"
 		And user "userToBeDisabled" has been disabled
-		When downloading file "/welcome.txt" as "userToBeDisabled"
+		When user "userToBeDisabled" downloads the file "/welcome.txt" using the API
 		Then the HTTP status code should be "503"
 
 	Scenario: Creating a folder
 		Given using old dav path
 		And user "user0" has been created
 		And user "user0" has created a folder "/test_folder"
-		When as "user0" gets properties of folder "/test_folder" with
+		When user "user0" gets the following properties of folder "/test_folder" using the API
 		  |{DAV:}resourcetype|
 		Then the single response should contain a property "{DAV:}resourcetype" with value "{DAV:}collection"
 
@@ -314,7 +312,7 @@ Feature: webdav-related-old-endpoint
 		Given using old dav path
 		And user "user0" has been created
 		And user "user0" has created a folder "/test_folder:5"
-		When as "user0" gets properties of folder "/test_folder:5" with
+		When user "user0" gets the following properties of folder "/test_folder:5" using the API
 		  |{DAV:}resourcetype|
 		Then the single response should contain a property "{DAV:}resourcetype" with value "{DAV:}collection"
 
@@ -325,8 +323,8 @@ Feature: webdav-related-old-endpoint
 		And user "user0" has moved file "/welcome.txt" to "/FOLDER/welcome.txt"
 		And user "user0" has created a folder "/FOLDER/SUBFOLDER"
 		And user "user0" has copied file "/textfile0.txt" to "/FOLDER/SUBFOLDER/testfile0.txt"
-		When user "user0" deletes everything from folder "/FOLDER/"
-		Then user "user0" should see following elements
+		When user "user0" deletes everything from folder "/FOLDER/" using the API
+		Then user "user0" should see the following elements
 			| /FOLDER/ |
 			| /PARENT/ |
 			| /PARENT/parent.txt |
@@ -339,9 +337,9 @@ Feature: webdav-related-old-endpoint
 	Scenario: Checking file id after a move
 		Given using old dav path
 		And user "user0" has been created
-		And user "user0" stores id of file "/textfile0.txt"
+		And user "user0" has stored id of file "/textfile0.txt"
 		When user "user0" moves file "/textfile0.txt" to "/FOLDER/textfile0.txt" using the API
-		Then user "user0" checks id of file "/FOLDER/textfile0.txt"
+		Then user "user0" file "/FOLDER/textfile0.txt" should have the previously stored id
 
 	Scenario: Renaming a folder to a backslash encoded should return an error using old endpoint
 		Given using old dav path
@@ -381,8 +379,7 @@ Feature: webdav-related-old-endpoint
 	Scenario: Downloading a file on the old endpoint should serve security headers
 		Given using old dav path
 		And user "user0" has been created
-		And as user "user0"
-		When downloading file "/welcome.txt"
+		When user "user0" downloads the file "/welcome.txt" using the API
 		Then the following headers should be set
 			|Content-Disposition|attachment; filename*=UTF-8''welcome.txt; filename="welcome.txt"|
 			|Content-Security-Policy|default-src 'none';|
@@ -469,8 +466,7 @@ Feature: webdav-related-old-endpoint
 		And user "user0" has uploaded chunk file "1" of "3" with "AAAAA" to "/myChunkedFile.txt"
 		And user "user0" has uploaded chunk file "2" of "3" with "BBBBB" to "/myChunkedFile.txt"
 		And user "user0" has uploaded chunk file "3" of "3" with "CCCCC" to "/myChunkedFile.txt"
-		When as user "user0"
-		And downloading file "/myChunkedFile.txt"
+		When user "user0" downloads the file "/myChunkedFile.txt" using the API
 		Then the downloaded content should be "AAAAABBBBBCCCCC"
 
 	Scenario: Upload chunked file desc
@@ -478,8 +474,7 @@ Feature: webdav-related-old-endpoint
 		And user "user0" has uploaded chunk file "3" of "3" with "CCCCC" to "/myChunkedFile.txt"
 		And user "user0" has uploaded chunk file "2" of "3" with "BBBBB" to "/myChunkedFile.txt"
 		And user "user0" has uploaded chunk file "1" of "3" with "AAAAA" to "/myChunkedFile.txt"
-		When as user "user0"
-		And downloading file "/myChunkedFile.txt"
+		When user "user0" downloads the file "/myChunkedFile.txt" using the API
 		Then the downloaded content should be "AAAAABBBBBCCCCC"
 
 	Scenario: Upload chunked file random
@@ -487,8 +482,7 @@ Feature: webdav-related-old-endpoint
 		And user "user0" has uploaded chunk file "2" of "3" with "BBBBB" to "/myChunkedFile.txt"
 		And user "user0" has uploaded chunk file "3" of "3" with "CCCCC" to "/myChunkedFile.txt"
 		And user "user0" has uploaded chunk file "1" of "3" with "AAAAA" to "/myChunkedFile.txt"
-		When as user "user0"
-		And downloading file "/myChunkedFile.txt"
+		When user "user0" downloads the file "/myChunkedFile.txt" using the API
 		Then the downloaded content should be "AAAAABBBBBCCCCC"
 
 	Scenario Outline: Chunked upload files with difficult name
@@ -496,8 +490,7 @@ Feature: webdav-related-old-endpoint
 		And user "user0" has uploaded chunk file "1" of "3" with "AAAAA" to "/<file-name>"
 		And user "user0" has uploaded chunk file "2" of "3" with "BBBBB" to "/<file-name>"
 		And user "user0" has uploaded chunk file "3" of "3" with "CCCCC" to "/<file-name>"
-		When as user "user0"
-		And downloading file "/<file-name>"
+		When user "user0" downloads the file "/<file-name>" using the API
 		Then the downloaded content should be "AAAAABBBBBCCCCC"
 		Examples:
 		|file-name|
@@ -511,10 +504,10 @@ Feature: webdav-related-old-endpoint
 		And user "user1" has been created
 		And user "user0" has created a folder "/folderA"
 		And user "user0" has created a folder "/folderB"
-		And folder "/folderA" of user "user0" is shared with user "user1"
-		And folder "/folderB" of user "user0" is shared with user "user1"
+		And folder "/folderA" of user "user0" has been shared with user "user1"
+		And folder "/folderB" of user "user0" has been shared with user "user1"
 		And user "user1" has created a folder "/folderA/ONE"
-		And user "user1" stores id of file "/folderA/ONE"
+		And user "user1" has stored id of file "/folderA/ONE"
 		And user "user1" has created a folder "/folderA/ONE/TWO"
 		When user "user1" moves folder "/folderA/ONE" to "/folderB/ONE" using the API
 		Then as "user1" the folder "/folderA" should exist
@@ -523,16 +516,16 @@ Feature: webdav-related-old-endpoint
 		And as "user1" the folder "/folderA/ONE/TWO" should not exist
 		And as "user1" the folder "/folderB/ONE" should exist
 		And as "user1" the folder "/folderB/ONE/TWO" should exist
-		And user "user1" checks id of file "/folderB/ONE"
+		And user "user1" file "/folderB/ONE" should have the previously stored id
 
 	Scenario: Retrieving private link
 		Given using old dav path
 		And user "user0" has been created
 		And as user "user0"
 		And user "user0" has uploaded file "data/textfile.txt" to "/somefile.txt"
-		Then as "user0" gets properties of file "/somefile.txt" with
+		When user "user0" gets the following properties of file "/somefile.txt" using the API
 			|{http://owncloud.org/ns}privatelink|
-		And the single response should contain a property "{http://owncloud.org/ns}privatelink" with value like "/(\/index.php\/f\/[0-9]*)/"
+		Then the single response should contain a property "{http://owncloud.org/ns}privatelink" with value like "/(\/index.php\/f\/[0-9]*)/"
 
 	Scenario: Copying file to a path with extension .part should not be possible
 		Given using old dav path

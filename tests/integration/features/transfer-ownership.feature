@@ -43,7 +43,7 @@ Feature: transfer-ownership
 		And user "user1" has been created
 		And user "user2" has been created
 		And user "user0" has uploaded file "data/textfile.txt" to "/somefile.txt"
-		And file "/somefile.txt" of user "user0" is shared with user "user2" with permissions 19
+		And file "/somefile.txt" of user "user0" has been shared with user "user2" with permissions 19
 		When transferring ownership from "user0" to "user1"
 		And the command was successful
 		And as user "user2"
@@ -56,7 +56,7 @@ Feature: transfer-ownership
 		And user "user2" has been created
 		And user "user0" has created a folder "/test"
 		And user "user0" has uploaded file "data/textfile.txt" to "/test/somefile.txt"
-		And folder "/test" of user "user0" is shared with user "user2" with permissions 31
+		And folder "/test" of user "user0" has been shared with user "user2" with permissions 31
 		When transferring ownership from "user0" to "user1"
 		And the command was successful
 		And as user "user2"
@@ -68,7 +68,7 @@ Feature: transfer-ownership
 		And user "user1" has been created
 		And user "user0" has created a folder "/test"
 		And user "user0" has uploaded file "data/textfile.txt" to "/test/somefile.txt"
-		And folder "/test" of user "user0" is shared with user "user1" with permissions 31
+		And folder "/test" of user "user0" has been shared with user "user1" with permissions 31
 		When transferring ownership from "user0" to "user1"
 		And the command was successful
 		And as user "user1"
@@ -85,8 +85,8 @@ Feature: transfer-ownership
     	And user "user2" has been added to group "group1"
 		And user "user0" has created a folder "/test"
 		And user "user0" has uploaded file "data/textfile.txt" to "/test/somefile.txt"
-		And folder "/test" of user "user0" is shared with group "group1" with permissions 31
-		And folder "/test" of user "user0" is shared with user "user2" with permissions 31
+		And folder "/test" of user "user0" has been shared with group "group1" with permissions 31
+		And folder "/test" of user "user0" has been shared with user "user2" with permissions 31
 		When transferring ownership from "user0" to "user1"
 		And the command was successful
 		And as user "user2"
@@ -98,7 +98,7 @@ Feature: transfer-ownership
 		And user "user1" has been created
 		And user "user2" has been created
 		And user "user2" has created a folder "/test"
-		And folder "/test" of user "user2" is shared with user "user0" with permissions 31
+		And folder "/test" of user "user2" has been shared with user "user0" with permissions 31
 		When transferring ownership from "user0" to "user1"
 		And the command was successful
 		And as user "user1"
@@ -122,7 +122,7 @@ Feature: transfer-ownership
 		And user "user2" has been created
 		And user "user0" has created a folder "/sub"
 		And user "user0" has created a folder "/sub/test"
-		And folder "/sub/test" of user "user0" is shared with user "user2" with permissions 31
+		And folder "/sub/test" of user "user0" has been shared with user "user2" with permissions 31
 		And user "user0" has deleted folder "/sub"
 		When transferring ownership from "user0" to "user1"
 		Then the command was successful
@@ -158,7 +158,7 @@ Feature: transfer-ownership
 		And user "user2" has been created
 		And user "user0" has created a folder "/test"
 		And user "user0" has uploaded file "data/textfile.txt" to "/test/somefile.txt"
-		And file "/test/somefile.txt" of user "user0" is shared with user "user2" with permissions 19
+		And file "/test/somefile.txt" of user "user0" has been shared with user "user2" with permissions 19
 		When transferring ownership of path "test" from "user0" to "user1"
 		And the command was successful
 		And as user "user2"
@@ -188,7 +188,7 @@ Feature: transfer-ownership
 		And user "user2" has been created
 		And user "user0" has created a folder "/test"
 		And user "user0" has uploaded file "data/textfile.txt" to "/test/somefile.txt"
-		And folder "/test" of user "user0" is shared with user "user2" with permissions 31
+		And folder "/test" of user "user0" has been shared with user "user2" with permissions 31
 		When transferring ownership of path "test" from "user0" to "user1"
 		And the command was successful
 		And as user "user2"
@@ -200,7 +200,7 @@ Feature: transfer-ownership
 		And user "user1" has been created
 		And user "user0" has created a folder "/test"
 		And user "user0" has uploaded file "data/textfile.txt" to "/test/somefile.txt"
-		And folder "/test" of user "user0" is shared with user "user1" with permissions 31
+		And folder "/test" of user "user0" has been shared with user "user1" with permissions 31
 		When transferring ownership of path "test" from "user0" to "user1"
 		And the command was successful
 		And as user "user1"
@@ -217,8 +217,8 @@ Feature: transfer-ownership
 		And user "user2" has been added to group "group1"
 		And user "user0" has created a folder "/test"
 		And user "user0" has uploaded file "data/textfile.txt" to "/test/somefile.txt"
-		And folder "/test" of user "user0" is shared with group "group1" with permissions 31
-		And folder "/test" of user "user0" is shared with user "user2" with permissions 31
+		And folder "/test" of user "user0" has been shared with group "group1" with permissions 31
+		And folder "/test" of user "user0" has been shared with user "user2" with permissions 31
 		When transferring ownership of path "test" from "user0" to "user1"
 		And the command was successful
 		And as user "user2"
@@ -230,7 +230,7 @@ Feature: transfer-ownership
 		And user "user2" has been created
 		And user "user2" has created a folder "/test"
 		And user "user0" has created a folder "/sub"
-		And folder "/test" of user "user2" is shared with user "user0" with permissions 31
+		And folder "/test" of user "user2" has been shared with user "user0" with permissions 31
 		And user "user0" has moved folder "/test" to "/sub/test"
 		When transferring ownership of path "sub" from "user0" to "user1"
 		And the command was successful

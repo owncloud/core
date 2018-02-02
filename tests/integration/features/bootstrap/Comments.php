@@ -34,14 +34,15 @@ trait Comments {
 	private $lastFileId;
 
 	/**
-	 * @When /^user "([^"]*)" comments with content "([^"]*)" on (file|folder) "([^"]*)"$/
+	 * @When /^user "([^"]*)" comments with content "([^"]*)" on (file|folder) "([^"]*)" using the API$/
+	 * @Given /^user "([^"]*)" has commented with content "([^"]*)" on (file|folder) "([^"]*)"$/
 	 * @param string $user
 	 * @param string $content
 	 * @param string $type
 	 * @param string $path
 	 * @throws \Exception
 	 */
-	public function postsAComment($user, $content, $type, $path) {
+	public function userCommentsWithContentOnEntry($user, $content, $type, $path) {
 		$fileId = $this->getFileIdForPath($user, $path);
 		$this->lastFileId = $fileId;
 		$commentsPath = '/comments/files/' . $fileId . '/';
@@ -149,7 +150,7 @@ trait Comments {
 	}
 
 	/**
-	 * @Then user :user deletes the last created comment
+	 * @When user :user deletes the last created comment using the API
 	 * @param string $user
 	 * @throws \Exception
 	 */
@@ -218,7 +219,7 @@ trait Comments {
 	}
 
 	/**
-	 * @When /^user "([^"]*)" edits last comment with content "([^"]*)"$/
+	 * @When /^user "([^"]*)" edits the last created comment with content "([^"]*)" using the API$/
 	 * @param string $user
 	 * @param string $content
 	 * @throws \Exception

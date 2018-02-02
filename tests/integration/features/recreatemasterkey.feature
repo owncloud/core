@@ -20,6 +20,6 @@ Feature: recreate-master-key
 		And logging in using web as "admin"
 		And logging in using web as "user0"
 		And as user "user0"
-		When user "user0" uploads chunk file "1" of "1" with "AA" to "/somefile.txt"
+		When user "user0" uploads chunk file "1" of "1" with "AA" to "/somefile.txt" using the API
 		Then downloaded content when downloading file "/somefile.txt" with range "bytes=0-3" should be "AA"
 

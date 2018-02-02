@@ -149,7 +149,7 @@ Feature: checksums
     Given using old dav path
     And file "/chksumtst.txt" has been deleted for user "user0"
     And user "user0" has uploaded file with checksum "SHA1:ce5582148c6f0c1282335b87df5ed4be4b781399" and content "Some Text" to "/chksumtst.txt"
-    When downloading file "/chksumtst.txt" as "user0"
+    When user "user0" downloads the file "/chksumtst.txt" using the API
     Then the following headers should be set
             | OC-Checksum | SHA1:ce5582148c6f0c1282335b87df5ed4be4b781399 |
 
@@ -158,7 +158,7 @@ Feature: checksums
     Given using old dav path
     And file "/local_storage/chksumtst.txt" has been deleted for user "user0"
     And user "user0" has uploaded file with checksum "SHA1:ce5582148c6f0c1282335b87df5ed4be4b781399" and content "Some Text" to "/local_storage/chksumtst.txt"
-    When downloading file "/local_storage/chksumtst.txt" as "user0"
+    When user "user0" downloads the file "/local_storage/chksumtst.txt" using the API
     Then the following headers should be set
             | OC-Checksum | SHA1:ce5582148c6f0c1282335b87df5ed4be4b781399 |
 

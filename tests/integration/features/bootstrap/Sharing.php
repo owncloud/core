@@ -591,7 +591,26 @@ trait Sharing {
 	}
 
 	/**
-	 * @Given /^(file|folder|entry) "([^"]*)" of user "([^"]*)" is shared with user "([^"]*)"( with permissions ([\d]*))?$/
+	 * @When /^user "([^"]*)" shares (file|folder|entry) "([^"]*)" with user "([^"]*)"( with permissions ([\d]*))? using the API$/
+	 *
+	 * @param string $user1
+	 * @param string $entry unused
+	 * @param string $filepath
+	 * @param string $user2
+	 * @param null $withPerms unused
+	 * @param int $permissions
+	 * @return void
+	 */
+	public function userSharesFileWithUserUsingTheAPI(
+		$user1, $entry, $filepath, $user2, $withPerms = null, $permissions = null
+	) {
+		$this->fileOfUserHasBeenSharedWithUser(
+			$entry, $filepath, $user1, $user2, $withPerms, $permissions
+		);
+	}
+
+	/**
+	 * @Given /^(file|folder|entry) "([^"]*)" of user "([^"]*)" has been shared with user "([^"]*)"( with permissions ([\d]*))?$/
 	 *
 	 * @param string $entry unused
 	 * @param string $filepath
@@ -601,7 +620,7 @@ trait Sharing {
 	 * @param int $permissions
 	 * @return void
 	 */
-	public function assureFileIsShared(
+	public function fileOfUserHasBeenSharedWithUser(
 		$entry, $filepath, $user1, $user2, $withPerms = null, $permissions = null
 	) {
 		$fullUrl = $this->baseUrl . "v{$this->apiVersion}.php/apps/files_sharing/api/v{$this->sharingApiVersion}/shares" . "?path=$filepath";
@@ -631,8 +650,28 @@ trait Sharing {
 		);
 	}
 
+
 	/**
-	 * @Given /^(file|folder|entry) "([^"]*)" of user "([^"]*)" is shared with group "([^"]*)"( with permissions ([\d]*))?$/
+	 * @When /^user "([^"]*)" shares (file|folder|entry) "([^"]*)" with group "([^"]*)"( with permissions ([\d]*))? using the API$/
+	 *
+	 * @param string $user1
+	 * @param string $entry unused
+	 * @param string $filepath
+	 * @param string $group
+	 * @param null $withPerms unused
+	 * @param int $permissions
+	 * @return void
+	 */
+	public function userSharesFileWithGroupUsingTheAPI(
+		$user1, $entry, $filepath, $group, $withPerms = null, $permissions = null
+	) {
+		$this->fileOfUserHasBeenSharedWithGroup(
+			$entry, $filepath, $user1, $group, $withPerms, $permissions
+		);
+	}
+
+	/**
+	 * @Given /^(file|folder|entry) "([^"]*)" of user "([^"]*)" has been shared with group "([^"]*)"( with permissions ([\d]*))?$/
 	 *
 	 * @param string $entry unused
 	 * @param string $filepath
@@ -642,7 +681,7 @@ trait Sharing {
 	 * @param int $permissions
 	 * @return void
 	 */
-	public function assureFileIsSharedWithGroup(
+	public function fileOfUserHasBeenSharedWithGroup(
 		$entry, $filepath, $user, $group, $withPerms = null, $permissions = null
 	) {
 		$fullUrl = $this->baseUrl . "v{$this->apiVersion}.php/apps/files_sharing/api/v{$this->sharingApiVersion}/shares" . "?path=$filepath";

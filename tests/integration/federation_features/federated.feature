@@ -232,7 +232,7 @@ Feature: federated
 		And user "user0" from server "LOCAL" has shared "/PARENT" with user "user1" from server "REMOTE"
 		And user "user1" from server "REMOTE" has accepted the last pending share
 		And using server "REMOTE"
-		When user "user1" uploads file "data/textfile.txt" to "/PARENT (2)/testquota.txt" with all mechanisms
+		When user "user1" uploads file "data/textfile.txt" to "/PARENT (2)/testquota.txt" with all mechanisms using the API
 		Then the HTTP status code of all upload responses should be "201"
 		And using server "LOCAL"
 		And as "user0" the files uploaded to "/PARENT/testquota.txt" with all mechanisms should exist
@@ -248,6 +248,6 @@ Feature: federated
 		And user "user0" from server "LOCAL" has shared "/PARENT" with user "user1" from server "REMOTE"
 		And user "user1" from server "REMOTE" has accepted the last pending share
 		And using server "REMOTE"
-		When user "user1" uploads file "data/textfile.txt" to "/PARENT (2)/testquota.txt" with all mechanisms
+		When user "user1" uploads file "data/textfile.txt" to "/PARENT (2)/testquota.txt" with all mechanisms using the API
 		Then the HTTP status code of all upload responses should be "507"
 
