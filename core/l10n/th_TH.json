@@ -97,6 +97,7 @@
     "Your files are encrypted. If you haven't enabled the recovery key, there will be no way to get your data back after your password is reset.<br />If you are not sure what to do, please contact your administrator before you continue. <br />Do you really want to continue?" : "ไฟล์ของคุณถูกเข้ารหัสแล้ว หากคุณยังไม่ได้เปิดใช้งานรหัสการกู้คืน คุณจะไม่ได้รับข้อมูลของคุณกลับมาหลังจากที่รหัสผ่านของคุณถูกรีเซ็ต<br /> หากคุณไม่แน่ใจว่าควรทำอย่างไรโปรดติดต่อผู้ดูแลระบบของคุณก่อนที่คุณจะดำเนินการต่อไป <br /> คุณต้องการดำเนินการต่อ?",
     "I know what I'm doing" : "ฉันรู้ว่าฉันกำลังทำอะไรอยู่",
     "Password can not be changed. Please contact your administrator." : "หากคุณไม่สามารถเปลี่ยนแปลงรหัสผ่าน กรุณาติดต่อผู้ดูแลระบบ",
+    "Error adding {addItem}: {addItem} already exists" : "เกิดข้อผิดพลาดขณะกำลังเพิ่ม {addItem}: {addItem} ที่มีอยู่แล้ว",
     "No" : "ไม่ตกลง",
     "Yes" : "ตกลง",
     "Choose" : "เลือก",

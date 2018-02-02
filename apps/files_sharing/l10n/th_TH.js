@@ -37,6 +37,7 @@ OC.L10N.register(
     "Wrong share ID, share doesn't exist" : "แชร์ไอดีผิด หรือ ไม่มีแชร์นั้นอยู่",
     "Could not delete share" : "ไม่สามารถลบแชร์",
     "Please specify a file or folder path" : "โปรดระบุเส้นทางของไฟล์หรือโฟลเดอร์",
+    "No permission to create share" : "ไม่มีสิทธิ์ในการสร้างแชร์",
     "Wrong path, file/folder doesn't exist" : "เส้นทางที่ผิด, ไม่มีไฟล์หรือโฟลเดอร์นั้นอยู่",
     "Cannot remove all permissions" : "ไม่สามารถลบสิทธิ์ทั้งหมด",
     "Please specify a valid user" : "โปรดระบุผู้ใช้ให้ถูกต้อง",
