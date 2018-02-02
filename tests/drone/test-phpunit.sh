@@ -119,18 +119,18 @@ return array(
 DELIM
         ;;
     smb_windows)
-        wait-for-it WIN-9GTFAS08C15:445
+        wait-for-it fsweb.test.owncloud.com:445
         FILES_EXTERNAL_TEST_TO_RUN=SmbTest.php
         cat > apps/files_external/tests//config.smb.php <<DELIM
 <?php
 
 return array(
     'run'=>true,
-    'host'=>'WIN-9GTFAS08C15',
-    'user'=>'smb-test',
-    'password'=>'!owncloud123',
+    'host'=>'fsweb.test.owncloud.com',
+    'user'=>'test100',
+    'password'=>'Password123!',
     'root'=>'',
-    'share'=>'oc-test',
+    'share'=>'test100',
 );
 
 DELIM
