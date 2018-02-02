@@ -207,7 +207,7 @@ services:
         FILES_EXTERNAL_TYPE: apache_webdav
 
   smb_docker:
-    image: dperson/samba
+    image: owncloudci/samba
     command: "-u \"test;test\" -s \"public;/tmp;yes;no;no;test;none;test\" -S"
     when:
       matrix:
