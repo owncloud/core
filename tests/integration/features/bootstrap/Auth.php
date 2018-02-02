@@ -1,7 +1,7 @@
 <?php
 
 use GuzzleHttp\Client;
-use GuzzleHttp\Exception\ClientException;
+use GuzzleHttp\Exception\BadResponseException;
 
 require __DIR__ . '/../../../../lib/composer/autoload.php';
 
@@ -38,7 +38,7 @@ trait Auth {
 			$request->setHeader('OCS_APIREQUEST', 'true');
 			$request->setHeader('requesttoken', $this->requestToken);
 			$this->response = $this->client->send($request);
-		} catch (ClientException $ex) {
+		} catch (BadResponseException $ex) {
 			$this->response = $ex->getResponse();
 		}
 	}
