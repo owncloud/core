@@ -628,6 +628,13 @@ $CONFIG = array(
 'syslog_tag' => 'ownCloud',
 
 /**
+ * The syslog format can be changed to remove or add information.
+ * In addition to the %replacements% below %level% can be used, but it is used
+ * as a dedicated parameter to the syslog logging facility anyway.
+ */
+'log.syslog.format' => '[%reqId%][%remoteAddr%][%user%][%app%][%method%][%url%] %message%',
+
+/**
  * Log condition for log level increase based on conditions. Once one of these
  * conditions is met, the required log level is set to debug. This allows to
  * debug specific requests, users or apps
