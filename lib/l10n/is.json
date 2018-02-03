@@ -95,7 +95,6 @@
     "You need to provide a password to create a public link, only protected links are allowed" : "Þú verður að setja inn lykilorð til að útbúa opinberan tengil, aðeins verndaðir tenglar eru leyfðir",
     "Sharing %s failed, because sharing with links is not allowed" : "Deiling %s mistókst, því deiling með tenglum er ekki leyfð",
     "Not allowed to create a federated share with the same user" : "Ekki er heimilt að búa til skýjasambandssameign með sama notanda",
-    "Sharing %s failed, could not find %s, maybe the server is currently unreachable." : "Deiling %s mistókst, gat ekki fundið %s, hugsanlega er þjónninn ekki tiltækur í augnablikinu.",
     "Share type %s is not valid for %s" : "Deiling af gerðinni %s er ekki gild fyrir %s",
     "Setting permissions for %s failed, because the permissions exceed permissions granted to %s" : "Stilling heimilda fyrir %s mistókst, því heimildirnar eru rétthærri en heimildir til handa %s",
     "Setting permissions for %s failed, because the item was not found" : "Stilling heimilda fyrir %s mistókst, því atriðið fannst ekki",

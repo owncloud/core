@@ -95,7 +95,6 @@
     "You need to provide a password to create a public link, only protected links are allowed" : "Herkese açık bir bağlantı oluşturmak için bir parola belirtmeniz gerekiyor. Sadece korunmuş bağlantılara izin verilmektedir",
     "Sharing %s failed, because sharing with links is not allowed" : "%s paylaşımı, bağlantılar ile paylaşım izin verilmediğinden başarısız oldu",
     "Not allowed to create a federated share with the same user" : "Aynı kullanıcı ile bir birleşik paylaşım oluşturulamaz",
-    "Sharing %s failed, could not find %s, maybe the server is currently unreachable." : "%s paylaşımı başarısız. %s bulunamadı veya sunucu şu anda ulaşılamıyor olabilir.",
     "Share type %s is not valid for %s" : "%s paylaşım türü %s için geçerli değil",
     "Setting permissions for %s failed, because the permissions exceed permissions granted to %s" : "%s için izinler, izinler %s için verilen izinleri aştığından dolayı ayarlanamadı",
     "Setting permissions for %s failed, because the item was not found" : "%s için izinler öge bulunamadığından ayarlanamadı",

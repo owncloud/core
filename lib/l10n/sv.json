@@ -99,7 +99,6 @@
     "You need to provide a password to create a public link, only protected links are allowed" : "Du måste ange ett lösenord för att skapa en offentlig länk, endast skyddade länkar är tillåtna",
     "Sharing %s failed, because sharing with links is not allowed" : "Delning %s misslyckades därför att delning utav länkar inte är tillåtet",
     "Not allowed to create a federated share with the same user" : "Ej tillåtet att skapa en förbundsdelning med samma användare",
-    "Sharing %s failed, could not find %s, maybe the server is currently unreachable." : "Misslyckades dela ut %s, kan inte hitta %s, kanske är servern inte åtkomlig för närvarande.",
     "Share type %s is not valid for %s" : "Delningstyp %s är inte giltig för %s",
     "Setting permissions for %s failed, because the permissions exceed permissions granted to %s" : "Misslyckades att sätta rättigheter för %s därför att rättigheterna överskrider de som är tillåtna för %s",
     "Setting permissions for %s failed, because the item was not found" : "Att sätta rättigheterna för %s misslyckades därför att objektet inte hittades",

@@ -101,7 +101,6 @@
     "You need to provide a password to create a public link, only protected links are allowed" : "Вам нужно задать пароль для создания публичной ссылки. Разрешены только защищённые ссылки",
     "Sharing %s failed, because sharing with links is not allowed" : "Не удалось поделиться %s, открытие доступа по ссылке запрещено",
     "Not allowed to create a federated share with the same user" : "Не допускается создание федеративного общего ресурса с тем же пользователем",
-    "Sharing %s failed, could not find %s, maybe the server is currently unreachable." : "Не удалось поделиться %s, не удалось найти %s, возможно, сервер не доступен.",
     "Share type %s is not valid for %s" : "Тип общего доступа %s недопустим для %s",
     "Setting permissions for %s failed, because the permissions exceed permissions granted to %s" : "Не удалось настроить права доступа для %s, указанные права доступа превышают предоставленные для %s",
     "Setting permissions for %s failed, because the item was not found" : "Не удалось настроить права доступа для %s, элемент не найден.",

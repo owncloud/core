@@ -71,7 +71,7 @@
     "_%n byte_::_%n bytes_" : ["%n ไบต์"],
     "Favorited" : "รายการโปรด",
     "Favorite" : "รายการโปรด",
-    "Private link:  Only people who have access to the file/folder can use it. Use it as a permanent link for yourself or to point others to files within shares" : "ลิงค์ส่วนตัว: สร้างลิงค์ถาวรสำหรับตัวคุณเองและยังสามารถแชร์ไปให้คนอื่นๆได้อีกด้วย",
+    "Private link:  Only people who have access to the file/folder can use it. Use it as a permanent link for yourself or to point others to files within shares" : "ลิงก์ส่วนตัว: สร้างลิงก์ถาวรสำหรับตัวคุณเองและยังสามารถแชร์ไปให้คนอื่นๆได้อีกด้วย",
     "Folder" : "แฟ้มเอกสาร",
     "New folder" : "โฟลเดอร์ใหม่",
     "{newname} already exists" : "{newname} ถูกใช้ไปแล้ว",

@@ -100,7 +100,6 @@
     "You need to provide a password to create a public link, only protected links are allowed" : "Du skal angive et kodeord for at oprette et offentligt link - kun beskyttede links er tilladt",
     "Sharing %s failed, because sharing with links is not allowed" : "Der skete en fejl ved deling af %s, det er ikke tilladt at dele links",
     "Not allowed to create a federated share with the same user" : "Det er ikke tilladt at danne et datafællesskab med samme bruger",
-    "Sharing %s failed, could not find %s, maybe the server is currently unreachable." : "Deling af %s mislykkedes - kunne ikke finde %s. Måske er serveren ikke tilgængelig i øjeblikket.",
     "Share type %s is not valid for %s" : "Delingstypen %s er ikke gyldig for %s",
     "Setting permissions for %s failed, because the permissions exceed permissions granted to %s" : "Angivelse af tilladelser for %s mislykkedes, fordi tilladelserne overskred de som var tildelt %s",
     "Setting permissions for %s failed, because the item was not found" : "Angivelse af tilladelser for %s mislykkedes, fordi artiklen ikke blev fundet",

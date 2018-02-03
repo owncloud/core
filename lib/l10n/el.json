@@ -97,7 +97,6 @@
     "You need to provide a password to create a public link, only protected links are allowed" : "Πρέπει να εισάγετε έναν κωδικό για να δημιουργήσετε έναν δημόσιο σύνδεσμο. Μόνο προστατευμένοι σύνδεσμοι επιτρέπονται",
     "Sharing %s failed, because sharing with links is not allowed" : "Ο διαμοιρασμός του %s απέτυχε, γιατί δεν επιτρέπεται ο διαμοιρασμός με συνδέσμους",
     "Not allowed to create a federated share with the same user" : "Δεν είναι επιτρεπτή η δημιουργία ομόσπονδου διαμοιρασμού με τον ίδιο διακομιστή χρήστη",
-    "Sharing %s failed, could not find %s, maybe the server is currently unreachable." : "Αποτυχία διαμοιρασμού %s, δεν βρέθηκε το %s, μπορεί ο διακομιστής να είναι προσωρινά απροσπέλαστος.",
     "Share type %s is not valid for %s" : "Ο τύπος διαμοιρασμού %s δεν είναι έγκυρος για το %s",
     "Setting permissions for %s failed, because the permissions exceed permissions granted to %s" : "Ο ορισμός δικαιωμάτων για το %s απέτυχε, γιατί τα δικαιώματα υπερτερούν αυτά που είναι ορισμένα για το %s",
     "Setting permissions for %s failed, because the item was not found" : "Ο ορισμός δικαιωμάτων για το %s απέτυχε, γιατί το αντικείμενο δεν βρέθηκε",
