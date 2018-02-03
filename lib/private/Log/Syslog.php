@@ -33,6 +33,8 @@ class Syslog {
 		\OCP\Util::FATAL => LOG_CRIT,
 	];
 
+	public static $DEFAULT_FORMAT = '[%reqId%][%remoteAddr%][%user%][%app%][%method%][%url%] %message%';
+
 	/**
 	 * Init class data
 	 */
@@ -49,7 +51,31 @@ class Syslog {
 	 * @param int $level
 	 */
 	public static function write($app, $message, $level) {
-		$syslog_level = self::$levels[$level];
-		syslog($syslog_level, '{'.$app.'} '.$message);
+		$syslogLevel = self::$levels[$level];
+
+		$request = \OC::$server->getRequest();
+		if(\OC::$server->getConfig()->getSystemValue('installed', false)) {
+			$user = (\OC_User::getUser()) ? \OC_User::getUser() : '--';
+		} else {
+			$user = '--';
+		}
+
+		$entry = [
+			'%reqId%' => $request->getId(),
+			'%level%' => $level, // not needed in the default log line format, added by syslog itself
+			'%remoteAddr%' => $request->getRemoteAddress(),
+			'%user%' => $user,
+			'%app%' => $app,
+			'%method%' => is_string($request->getMethod()) ? $request->getMethod() : '--',
+			'%url%' => ($request->getRequestUri() !== '') ? $request->getRequestUri() : '--',
+			'%message%' => $message
+		];
+
+		$syslogFormat = \OC::$server->getConfig()->getSystemValue(
+			'log.syslog.format', self::$DEFAULT_FORMAT
+		);
+
+		$entryLine = str_ireplace(array_keys($entry), array_values($entry), $syslogFormat);
+		syslog($syslogLevel, $entryLine);
 	}
 }
