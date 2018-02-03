@@ -19,7 +19,8 @@ So that users can only share files with specific users and groups
 		And the user "user3" is in the group "grp2"
 		And I am on the login page
 		And I login with username "user2" and password "1234"
-		
+	
+	@TestAlsoOnExternalUserBackend
 	Scenario: Restrict users to only share with users in their groups
 		When the setting "Restrict users to only share with users in their groups" in the section "Sharing" is enabled
 		And I am on the files page
@@ -28,6 +29,7 @@ So that users can only share files with specific users and groups
 		And I relogin with username "user1" and password "1234"
 		Then the folder "simple-folder (2)" should be listed
 
+	@TestAlsoOnExternalUserBackend
 	Scenario: Restrict users to only share with groups they are member of
 		When the setting "Restrict users to only share with groups they are member of" in the section "Sharing" is enabled
 		And I am on the files page
@@ -36,6 +38,7 @@ So that users can only share files with specific users and groups
 		And I relogin with username "user1" and password "1234"
 		Then the folder "simple-folder (2)" should be listed
 
+	@TestAlsoOnExternalUserBackend
 	Scenario: Do not restrict users to only share with groups they are member of
 		When the setting "Restrict users to only share with groups they are member of" in the section "Sharing" is disabled
 		And I am on the files page
@@ -43,6 +46,7 @@ So that users can only share files with specific users and groups
 		And I relogin with username "user3" and password "1234"
 		Then the folder "simple-folder (2)" should be listed
 
+	@TestAlsoOnExternalUserBackend
 	Scenario: Forbid sharing with groups
 		When the setting "Allow sharing with groups" in the section "Sharing" is disabled
 		And I am on the files page
