@@ -293,7 +293,7 @@ class FilesystemTest extends TestCase {
 	}
 
 	/**
-	 * The parameter array can be redesigned if filesystem.php will get a constructor where it is possible to 
+	 * The parameter array can be redesigned if filesystem.php will get a constructor where it is possible to
 	 * define the excluded directories for unit tests
 	 * @dataProvider isExcludedData
 	 */

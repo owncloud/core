@@ -178,39 +178,7 @@ class OC_User {
 	 * @return bool
 	 */
 	public static function loginWithApache(\OCP\Authentication\IApacheBackend $backend) {
-
-		$uid = $backend->getCurrentUserId();
-		$run = true;
-		OC_Hook::emit("OC_User", "pre_login", ["run" => &$run, "uid" => $uid]);
-
-		if ($uid) {
-			if (self::getUser() !== $uid) {
-				self::setUserId($uid);
-				$userSession = self::getUserSession();
-				$userSession->getSession()->regenerateId();
-				$userSession->setLoginName($uid);
-				$request = OC::$server->getRequest();
-				$userSession->createSessionToken($request, $uid, $uid);
-				// setup the filesystem
-				OC_Util::setupFS($uid);
-				// first call the post_login hooks, the login-process needs to be
-				// completed before we can safely create the users folder.
-				// For example encryption needs to initialize the users keys first
-				// before we can create the user folder with the skeleton files
-				OC_Hook::emit("OC_User", "post_login", ["uid" => $uid, 'password' => '']);
-				$user = $userSession->getUser();
-				$firstTimeLogin = $user->updateLastLoginTimestamp();
-				if ($userSession->isLoggedIn()) {
-					$userSession->prepareUserLogin($firstTimeLogin);
-				} else {
-					// injecting l10n does not work - there is a circular dependency between session and \OCP\L10N\IFactory
-					$message = \OC::$server->getL10N('lib')->t('Login canceled by app');
-					throw new \OC\User\LoginException($message);
-				}
-			}
-			return true;
-		}
-		return false;
+		return self::getUserSession()->loginWithApache($backend);
 	}
 
 	/**

@@ -23,8 +23,10 @@ namespace OC\User;
 use OCP\AppFramework\Db\DoesNotExistException;
 use OCP\IConfig;
 use OCP\ILogger;
+use OCP\User\IProvidesDisplayNameBackend;
 use OCP\User\IProvidesEMailBackend;
 use OCP\User\IProvidesExtendedSearchBackend;
+use OCP\User\IProvidesHomeBackend;
 use OCP\User\IProvidesQuotaBackend;
 use OCP\UserInterface;
 
@@ -39,46 +41,48 @@ use OCP\UserInterface;
  */
 class SyncService {
 
-	/** @var UserInterface */
-	private $backend;
-	/** @var AccountMapper */
-	private $mapper;
 	/** @var IConfig */
 	private $config;
 	/** @var ILogger */
 	private $logger;
-	/** @var string */
-	private $backendClass;
+	/** @var AccountMapper */
+	private $mapper;
 
 	/**
 	 * SyncService constructor.
 	 *
-	 * @param AccountMapper $mapper
-	 * @param UserInterface $backend
 	 * @param IConfig $config
 	 * @param ILogger $logger
+	 * @param AccountMapper $mapper
 	 */
-	public function __construct(AccountMapper $mapper,
-								UserInterface $backend,
-								IConfig $config,
-								ILogger $logger) {
-		$this->mapper = $mapper;
-		$this->backend = $backend;
-		$this->backendClass = get_class($backend);
+	public function __construct(IConfig $config,
+								ILogger $logger,
+								AccountMapper $mapper) {
 		$this->config = $config;
 		$this->logger = $logger;
+		$this->mapper = $mapper;
 	}
 
 	/**
+	 * For unit tests
+	 * @param AccountMapper $mapper
+	 */
+	public function setAccountMapper(AccountMapper $mapper) {
+		$this->mapper = $mapper;
+	}
+
+	/**
+	 * @param UserInterface $backend the backend to check
 	 * @param \Closure $callback is called for every user to allow progress display
 	 * @return array
 	 */
-	public function getNoLongerExistingUsers(\Closure $callback) {
+	public function getNoLongerExistingUsers(UserInterface $backend, \Closure $callback) {
 		// detect no longer existing users
 		$toBeDeleted = [];
-		$this->mapper->callForAllUsers(function (Account $a) use (&$toBeDeleted, $callback) {
-			if ($a->getBackend() == $this->backendClass) {
-				if (!$this->backend->userExists($a->getUserId())) {
+		$backendClass = get_class($backend);
+		$this->mapper->callForAllUsers(function (Account $a) use (&$toBeDeleted, $backend, $backendClass, $callback) {
+			if ($a->getBackend() === $backendClass) {
+				if (!$backend->userExists($a->getUserId())) {
 					$toBeDeleted[] = $a->getUserId();
 				}
 			}
@@ -89,32 +93,35 @@ class SyncService {
 	}
 
 	/**
+	 * @param UserInterface $backend to sync
 	 * @param \Closure $callback is called for every user to progress display
 	 */
-	public function run(\Closure $callback) {
+	public function run(UserInterface $backend, \Closure $callback) {
 		$limit = 500;
 		$offset = 0;
+		$backendClass = get_class($backend);
 		do {
-			$users = $this->backend->getUsers('', $limit, $offset);
+			$users = $backend->getUsers('', $limit, $offset);
 
 			// update existing and insert new users
 			foreach ($users as $uid) {
 				try {
 					$a = $this->mapper->getByUid($uid);
-					if ($a->getBackend() !== $this->backendClass) {
+					if ($a->getBackend() !== $backendClass) {
 						$this->logger->warning(
-							"User <$uid> already provided by another backend({$a->getBackend()} != {$this->backendClass}), skipping.",
+							"User <$uid> already provided by another backend({$a->getBackend()} != $backendClass), skipping.",
 							['app' => self::class]
 						);
 						continue;
 					}
-					$a = $this->setupAccount($a, $uid);
+					$this->syncAccount($a, $backend);
 					$this->mapper->update($a);
 				} catch(DoesNotExistException $ex) {
-					$a = $this->createNewAccount($uid);
-					$this->setupAccount($a, $uid);
+					$this->createNewAccount($backendClass, $uid);
+					$this->syncAccount($a, $backend);
 					$this->mapper->insert($a);
 				}
+				$uid = $a->getUserId(); // get correct case
 				// clean the user's preferences
 				$this->cleanPreferences($uid);
 
@@ -125,65 +132,197 @@ class SyncService {
 		} while(count($users) >= $limit);
 	}
 
-	/**
-	 * @param Account $a
-	 * @param string $uid
-	 * @return Account
-	 */
-	public function setupAccount(Account $a, $uid) {
+	private function syncState(Account $a) {
+		$uid = $a->getUserId();
 		list($hasKey, $value) = $this->readUserConfig($uid, 'core', 'enabled');
 		if ($hasKey) {
-			$a->setState(($value === 'true') ? Account::STATE_ENABLED : Account::STATE_DISABLED);
+			if ($value === 'true') {
+				$a->setState(Account::STATE_ENABLED);
+			} else {
+				$a->setState(Account::STATE_DISABLED);
+			}
+			if (array_key_exists('state', $a->getUpdatedFields())) {
+				if ($value === 'true') {
+					$this->logger->debug(
+						"Enabling <$uid>", ['app' => self::class]
+					);
+				} else {
+					$this->logger->debug(
+						"Disabling <$uid>", ['app' => self::class]
+					);
+				}
+			}
 		}
+	}
+
+	private function syncLastLogin(Account $a) {
+		$uid = $a->getUserId();
 		list($hasKey, $value) = $this->readUserConfig($uid, 'login', 'lastLogin');
 		if ($hasKey) {
 			$a->setLastLogin($value);
-		}
-		if ($this->backend instanceof IProvidesEMailBackend) {
-			$a->setEmail($this->backend->getEMailAddress($uid));
-		} else {
-			list($hasKey, $value) = $this->readUserConfig($uid, 'settings', 'email');
-			if ($hasKey) {
-				$a->setEmail($value);
+			if (array_key_exists('lastLogin', $a->getUpdatedFields())) {
+				$this->logger->debug(
+					"Setting lastLogin for <$uid> to <$value>", ['app' => self::class]
+				);
 			}
 		}
-		if ($this->backend instanceof IProvidesQuotaBackend) {
-			$quota = $this->backend->getQuota($uid);
+	}
+
+	private function syncEmail(Account $a, UserInterface $backend) {
+		$uid = $a->getUserId();
+		$email = null;
+		if ($backend instanceof IProvidesEMailBackend) {
+			$email = $backend->getEMailAddress($uid);
+			$a->setEmail($email);
+		} else {
+			list($hasKey, $email) = $this->readUserConfig($uid, 'settings', 'email');
+			if ($hasKey) {
+				$a->setEmail($email);
+			}
+		}
+		if (array_key_exists('email', $a->getUpdatedFields())) {
+			$this->logger->debug(
+				"Setting email for <$uid> to <$email>", ['app' => self::class]
+			);
+		}
+	}
+
+	private function syncQuota(Account $a, UserInterface $backend) {
+		$uid = $a->getUserId();
+		$quota = null;
+		if ($backend instanceof IProvidesQuotaBackend) {
+			$quota = $backend->getQuota($uid);
 			if ($quota !== null) {
 				$a->setQuota($quota);
 			}
 		} else {
-			list($hasKey, $value) = $this->readUserConfig($uid, 'files', 'quota');
+			list($hasKey, $quota) = $this->readUserConfig($uid, 'files', 'quota');
 			if ($hasKey) {
-				$a->setQuota($value);
+				$a->setQuota($quota);
 			}
 		}
-		if ($this->backend->implementsActions(\OC_User_Backend::GET_HOME)) {
-			$home = $this->backend->getHome($uid);
+		if (array_key_exists('quota', $a->getUpdatedFields())) {
+			$this->logger->debug(
+				"Setting quota for <$uid> to <$quota>", ['app' => self::class]
+			);
+		}
+	}
+
+	private function syncHome(Account $a, UserInterface $backend) {
+		// Fallback for backends that dont yet use the new interfaces
+		$proividesHome = $backend instanceof IProvidesHomeBackend || $backend->implementsActions(\OC_User_Backend::GET_HOME);
+		$uid = $a->getUserId();
+		// Log when the backend returns a string that is a different home to the current value
+		if($proividesHome && is_string($backend->getHome($uid)) && $a->getHome() !== $backend->getHome($uid)) {
+			$existing = $a->getHome();
+			$backendHome = $backend->getHome($uid);
+			$class = get_class($backend);
+			$this->logger->error("User backend $class is returning home: $backendHome for user: $uid which differs from existing value: $existing");
+		}
+		// Home is handled differently, it should only be set on account creation, when there is no home already set
+		// Otherwise it could change on a sync and result in a new user folder being created
+		if($a->getHome() === null) {
+
+			$home = false;
+			if ($proividesHome) {
+				$home = $backend->getHome($uid);
+			}
 			if (!is_string($home) || substr($home, 0, 1) !== '/') {
 				$home = $this->config->getSystemValue('datadirectory', \OC::$SERVERROOT . '/data') . "/$uid";
-				$this->logger->warning(
-					"User backend {$this->backendClass} provided no home for <$uid>, using <$home>.",
+				$this->logger->debug(
+					"User backend ".get_class($backend)." provided no home for <$uid>",
 					['app' => self::class]
 				);
 			}
+			// This will set the home if not provided by the backend
 			$a->setHome($home);
+			if (array_key_exists('home', $a->getUpdatedFields())) {
+				$this->logger->debug(
+					"Setting home for <$uid> to <$home>", ['app' => self::class]
+				);
+			}
 		}
-		if ($this->backend->implementsActions(\OC_User_Backend::GET_DISPLAYNAME)) {
-			$a->setDisplayName($this->backend->getDisplayName($uid));
+	}
+
+	private function syncDisplayName(Account $a, UserInterface $backend) {
+		$uid = $a->getUserId();
+		if ($backend instanceof IProvidesDisplayNameBackend || $backend->implementsActions(\OC_User_Backend::GET_DISPLAYNAME)) {
+			$displayName = $backend->getDisplayName($uid);
+			$a->setDisplayName($displayName);
+			if (array_key_exists('displayName', $a->getUpdatedFields())) {
+				$this->logger->debug(
+					"Setting displayName for <$uid> to <$displayName>", ['app' => self::class]
+				);
+			}
 		}
-		// Check if backend supplies an additional search string
-		if ($this->backend instanceof IProvidesExtendedSearchBackend) {
-			$a->setSearchTerms($this->backend->getSearchTerms($uid));
+	}
+
+	private function syncSearchTerms(Account $a, UserInterface $backend) {
+		$uid = $a->getUserId();
+		if ($backend instanceof IProvidesExtendedSearchBackend) {
+			$searchTerms = $backend->getSearchTerms($uid);
+			$a->setSearchTerms($searchTerms);
+			if ($a->haveTermsChanged()) {
+				$logTerms = join('|', $searchTerms);
+				$this->logger->debug(
+					"Setting searchTerms for <$uid> to <$logTerms>", ['app' => self::class]
+				);
+			}
 		}
+	}
+
+	/**
+	 * @param Account $a
+	 * @param UserInterface $backend of the user
+	 * @return Account
+	 */
+	public function syncAccount(Account $a, UserInterface $backend) {
+		$this->syncState($a);
+		$this->syncLastLogin($a);
+		$this->syncEmail($a, $backend);
+		$this->syncQuota($a, $backend);
+		$this->syncHome($a, $backend);
+		$this->syncDisplayName($a, $backend);
+		$this->syncSearchTerms($a, $backend);
 		return $a;
 	}
 
-	private function createNewAccount($uid) {
+	/**
+	 * @param $uid
+	 * @param UserInterface $backend
+	 * @return Account
+	 */
+	public function createOrSyncAccount($uid, UserInterface $backend) {
+		// Try to find the account based on the uid
+		try {
+			$account = $this->mapper->getByUid($uid);
+		} catch (DoesNotExistException $e) {
+			// Create a new account for this uid and backend pairing and sync
+			$account = $this->createNewAccount(get_class($backend), $uid);
+		}
+
+		// The account exists, sync
+		$account = $this->syncAccount($account, $backend);
+		if($account->getId() === null) {
+			// New account, insert
+			$this->mapper->insert($account);
+		} else {
+			$this->mapper->update($account);
+		}
+		return $account;
+	}
+
+	/**
+	 * @param string $backend of the user
+	 * @param string $uid of the user
+	 * @return Account
+	 */
+	public function createNewAccount($backend, $uid) {
+		$this->logger->info("Creating new account with UID $uid and backend $backend");
 		$a = new Account();
 		$a->setUserId($uid);
 		$a->setState(Account::STATE_ENABLED);
-		$a->setBackend(get_class($this->backend));
+		$a->setBackend($backend);
 		return $a;
 	}
 
