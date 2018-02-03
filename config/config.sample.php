@@ -1248,12 +1248,6 @@ $CONFIG = array(
 'share_folder' => '/',
 
 /**
- * If you are applying a theme to ownCloud, enter the name of the theme here.
- * The default location for themes is ``owncloud/themes/``.
- */
-'theme' => '',
-
-/**
  * The default cipher for encrypting files. Currently AES-128-CFB and
  * AES-256-CFB are supported.
  */
