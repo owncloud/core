@@ -23,7 +23,7 @@
 require __DIR__ . '/../../../../lib/composer/autoload.php';
 
 use Behat\Gherkin\Node\TableNode;
-use GuzzleHttp\Exception\ClientException;
+use GuzzleHttp\Exception\BadResponseException;
 use TestHelpers\TagsHelper;
 
 trait Tags {
@@ -49,7 +49,7 @@ trait Tags {
 			$lastTagId = $createdTag['lastTagId'];
 			$this->response = $createdTag['HTTPResponse'];
 			array_push($this->createdTags, $lastTagId);
-		} catch (ClientException $e) {
+		} catch (BadResponseException $e) {
 			$this->response = $e->getResponse();
 		}
 	}
@@ -266,7 +266,7 @@ trait Tags {
 				$tagID,
 				$this->getDavPathVersion()
 			);
-		} catch (ClientException $e) {
+		} catch (BadResponseException $e) {
 			$this->response = $e->getResponse();
 		}
 		
@@ -287,7 +287,7 @@ trait Tags {
 				$this->getPasswordForUser($taggingUser),
 				$tagName, $fileName, $fileOwner, $this->getDavPathVersion()
 				);
-		} catch ( ClientException $e ) {
+		} catch ( BadResponseException $e ) {
 			$this->response = $e->getResponse();
 		}
 	}
@@ -388,7 +388,7 @@ trait Tags {
 		$path = '/systemtags-relations/files/' . $fileID . '/' . $tagID;
 		try {
 			$this->response = $this->makeDavRequest($untaggingUser,"DELETE", $path, null, null, "uploads");
-		} catch (\GuzzleHttp\Exception\ClientException $e) {
+		} catch (BadResponseException $e) {
 			$this->response = $e->getResponse();
 		}
 	}
@@ -415,7 +415,7 @@ trait Tags {
 				$this->response = TagsHelper::deleteTag(
 					$this->baseUrlWithoutOCSAppendix(),
 					"admin", $this->getPasswordForUser("admin"), $tagID, 2);
-			} catch (ClientException  $e) {
+			} catch (BadResponseException  $e) {
 				$this->response = $e->getResponse();
 			}
 		}
