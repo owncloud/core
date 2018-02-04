@@ -100,7 +100,7 @@
     "Check for changes" : "ตรวจสอบการเปลี่ยนแปลง",
     "Never" : "ไม่เคย",
     "Once every direct access" : "เมื่อทุกคนเข้าถึงโดยตรง",
-    "External Storage" : "พื้นทีจัดเก็บข้อมูลจากภายนอก",
+    "External Storage" : "พื้นทีจัดเก็บข้อมูลภายนอก",
     "Enable external storage" : "เปิดการใช้งานพื้นที่จัดเก็บข้อมูลภายนอก",
     "External storage has been disabled by the administrator" : "ผู้ดูแลระบบได้ปิดการใช้งานการจัดเก็บข้อมูลภายนอก",
     "Folder name" : "ชื่อโฟลเดอร์",

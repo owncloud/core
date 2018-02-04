@@ -101,6 +101,7 @@
     "You need to provide a password to create a public link, only protected links are allowed" : "คุณจำเป็นต้องระบุรหัสผ่านเพื่อสร้างลิงก์สาธารณะ, ลิงก์ที่มีการป้องกันเท่านั้นที่ได้รับอนุญาต",
     "Sharing %s failed, because sharing with links is not allowed" : "การแชร์ %s ล้มเหลวเพราะมีการแชร์ลิงก์ไม่ได้รับอนุญาต",
     "Not allowed to create a federated share with the same user" : "ไม่อนุญาตให้สร้างแชร์สหพันธ์กับผู้ใช้คนเดียวกัน",
+    "Sharing %s failed, could not find %s, check spelling and server availability." : "แชร์ %s ล้มเหลวหรือไม่พบ %s โปรดตรวจสอบตัวสะกดและความพร้อมใช้งานของเซิร์ฟเวอร์",
     "Share type %s is not valid for %s" : "ประเภท %s ที่แชร์ไม่ถูกต้องสำหรับ %s",
     "Setting permissions for %s failed, because the permissions exceed permissions granted to %s" : "การตั้งค่าสิทธิ์สำหรับ %s ล้มเหลวเพราะเกินสิทธิ์ที่ได้อนุญาตให้ %s",
     "Setting permissions for %s failed, because the item was not found" : "การตั้งค่าสิทธิ์สำหรับ %s ล้มเหลวเพราะไม่พบรายการ",
