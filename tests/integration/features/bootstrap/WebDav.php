@@ -674,7 +674,7 @@ trait WebDav {
 	}
 
 	/**
-	 * @Then /^user "([^"]*)" should see following elements$/
+	 * @Then /^user "([^"]*)" should see the following elements$/
 	 * @param string $user
 	 * @param \Behat\Gherkin\Node\TableNode|null $expectedElements
 	 */

@@ -564,7 +564,7 @@ Feature: webdav-related-new-endpoint
 		And user "user0" has uploaded new chunk file "3" with "CCCCC" to id "chunking-42"
 		And user "user0" has uploaded new chunk file "1" with "AAAAA" to id "chunking-42"
 		When using old dav path
-		And user "user0" moves new chunk file with id "chunking-42" to "/myChunkedFile.txt"
+		And user "user0" moves new chunk file with id "chunking-42" to "/myChunkedFile.txt" using the API
 		Then the HTTP status code should be "404"
 
 	Scenario: Upload to new dav path using old way should fail
