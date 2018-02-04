@@ -186,7 +186,7 @@ Feature: federated
 
 	Scenario: Trusted server handshake does not require authenticated requests - we force 403 by sending an empty body
 		Given using server "LOCAL"
-		And using api version "2"
+		And using API version "2"
 		And as user "UNAUTHORIZED_USER"
 		When the user sends HTTP method "POST" to API endpoint "/apps/federation/api/v1/request-shared-secret"
 		Then the HTTP status code should be "403"

@@ -1,6 +1,6 @@
 Feature: provisioning
 	Background:
-		Given using api version "1"
+		Given using API version "1"
 
 	Scenario: Getting a not existing user
 		Given as user "admin"
@@ -588,16 +588,14 @@ Feature: provisioning
 	Scenario: Making a web request with an enabled user
 	    Given as user "admin"
 		And user "user0" has been created
-		And as user "user0"
-		When sending "GET" with exact url to "/index.php/apps/files"
+		When user "user0" sends HTTP method "GET" to URL "/index.php/apps/files"
 		Then the HTTP status code should be "200"
 
 	Scenario: Making a web request with a disabled user
 	    Given as user "admin"
 		And user "user0" has been created
 		And user "user0" has been disabled
-		And as user "user0"
-		When sending "GET" with exact url to "/index.php/apps/files"
+		When user "user0" sends HTTP method "GET" to URL "/index.php/apps/files"
 		Then the HTTP status code should be "403"
 
 	Scenario: Edit a user email twice

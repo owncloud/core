@@ -1,11 +1,11 @@
 Feature: quota
 	Background:
-		Given using api version "1"
+		Given using API version "1"
 
 	# Owner
 
 	Scenario: Uploading a file as owner having enough quota
-		Given using new dav path
+		Given using new DAV path
 		And as user "admin"
 		And user "user0" has been created
 		And the quota of user "user0" has been set to "10 MB"
@@ -13,7 +13,7 @@ Feature: quota
 		Then the HTTP status code of all upload responses should be "201"
 
 	Scenario: Uploading a file as owner having insufficient quota
-		Given using new dav path
+		Given using new DAV path
 		And as user "admin"
 		And user "user0" has been created
 		And the quota of user "user0" has been set to "20 B"
@@ -22,7 +22,7 @@ Feature: quota
 		And as "user0" the file "/testquota.txt" should not exist
 
 	Scenario: Overwriting a file as owner having enough quota
-		Given using new dav path
+		Given using new DAV path
 		And as user "admin"
 		And user "user0" has been created
 		And the quota of user "user0" has been set to "10 MB"
@@ -31,7 +31,7 @@ Feature: quota
 		Then the HTTP status code of all upload responses should be "204"
 
 	Scenario: Overwriting a file as owner having insufficient quota
-		Given using new dav path
+		Given using new DAV path
 		And as user "admin"
 		And user "user0" has been created
 		And the quota of user "user0" has been set to "20 B"
@@ -43,7 +43,7 @@ Feature: quota
 	# Received shared folder
 
 	Scenario: Uploading a file in received folder having enough quota
-		Given using new dav path
+		Given using new DAV path
 		And as user "admin"
 		And user "user0" has been created
 		And user "user1" has been created
@@ -57,7 +57,7 @@ Feature: quota
 		Then the HTTP status code of all upload responses should be "201"
 
 	Scenario: Uploading a file in received folder having insufficient quota
-		Given using new dav path
+		Given using new DAV path
 		And as user "admin"
 		And user "user0" has been created
 		And user "user1" has been created
@@ -72,7 +72,7 @@ Feature: quota
 		And as "user0" the file "/testquota/testquota.txt" should not exist
 
 	Scenario: Overwriting a file in received folder having enough quota
-		Given using new dav path
+		Given using new DAV path
 		And as user "admin"
 		And user "user0" has been created
 		And user "user1" has been created
@@ -87,7 +87,7 @@ Feature: quota
 		Then the HTTP status code of all upload responses should be "204"
 
 	Scenario: Overwriting a file in received folder having insufficient quota
-		Given using new dav path
+		Given using new DAV path
 		And as user "admin"
 		And user "user0" has been created
 		And user "user1" has been created
@@ -105,7 +105,7 @@ Feature: quota
 	# Received shared file
 
 	Scenario: Overwriting a received file having enough quota
-		Given using new dav path
+		Given using new DAV path
 		And as user "admin"
 		And user "user0" has been created
 		And user "user1" has been created
@@ -119,7 +119,7 @@ Feature: quota
 		Then the HTTP status code of all upload responses should be "204"
 
 	Scenario: Overwriting a received file having insufficient quota
-		Given using new dav path
+		Given using new DAV path
 		And as user "admin"
 		And user "user0" has been created
 		And user "user1" has been created

@@ -240,24 +240,26 @@ trait BasicStructure {
 	}
 
 	/**
-	 * @When /^sending "([^"]*)" with exact url to "([^"]*)"$/
+	 * @When /^user "([^"]*)" sends HTTP method "([^"]*)" to URL "([^"]*)"$/
+	 * @param string $user
 	 * @param string $verb
 	 * @param string $url
 	 */
-	public function sendingToDirectUrl($verb, $url) {
-		$this->sendingToWithDirectUrl($verb, $url, null);
+	public function userSendsHTTPMethodToUrl($user, $verb, $url) {
+		$this->sendingToWithDirectUrl($user, $verb, $url, null);
 	}
 
 	/**
+	 * @param string $user
 	 * @param string $verb
 	 * @param string $url
 	 * @param \Behat\Gherkin\Node\TableNode $body
 	 */
-	public function sendingToWithDirectUrl($verb, $url, $body) {
+	public function sendingToWithDirectUrl($user, $verb, $url, $body) {
 		$fullUrl = substr($this->baseUrl, 0, -5) . $url;
 		$client = new Client();
 		$options = [];
-		$options['auth'] = $this->getAuthOptionForUser($this->currentUser);
+		$options['auth'] = $this->getAuthOptionForUser($user);
 
 		if (!empty($this->cookieJar->toArray())) {
 			$options['cookies'] = $this->cookieJar;

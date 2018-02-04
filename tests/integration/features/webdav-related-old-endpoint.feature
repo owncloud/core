@@ -1,9 +1,9 @@
 Feature: webdav-related-old-endpoint
 	Background:
-		Given using api version "1"
+		Given using API version "1"
 
 	Scenario: Unauthenticated call
-		Given using old dav path
+		Given using old DAV path
 		When an unauthenticated client connects to the dav endpoint using the API
 		Then the HTTP status code should be "401"
 		And there should be no duplicate headers
@@ -11,7 +11,7 @@ Feature: webdav-related-old-endpoint
 			|WWW-Authenticate|Basic realm="ownCloud"|
 
 	Scenario: Moving a file
-		Given using old dav path
+		Given using old DAV path
 		And user "user0" has been created
 		And as user "user0"
 		When user "user0" moves file "/welcome.txt" to "/FOLDER/welcome.txt" using the API
@@ -19,7 +19,7 @@ Feature: webdav-related-old-endpoint
 		And downloaded content when downloading file "/FOLDER/welcome.txt" with range "bytes=0-6" should be "Welcome"
 
 	Scenario: Moving and overwriting a file old way
-		Given using old dav path
+		Given using old DAV path
 		And user "user0" has been created
 		And as user "user0"
 		When user "user0" moves file "/welcome.txt" to "/textfile0.txt" using the API
@@ -27,7 +27,7 @@ Feature: webdav-related-old-endpoint
 		And downloaded content when downloading file "/textfile0.txt" with range "bytes=0-6" should be "Welcome"
 
 	Scenario: Moving a file to a folder with no permissions
-		Given using old dav path
+		Given using old DAV path
 		And user "user0" has been created
 		And user "user1" has been created
 		And as user "user1"
@@ -43,7 +43,7 @@ Feature: webdav-related-old-endpoint
  		Then the HTTP status code should be "404"
 
 	Scenario: Moving a file to overwrite a file in a folder with no permissions
-		Given using old dav path
+		Given using old DAV path
 		And user "user0" has been created
 		And user "user1" has been created
 		And as user "user1"
@@ -60,28 +60,28 @@ Feature: webdav-related-old-endpoint
 		And downloaded content when downloading file "/testshare/overwritethis.txt" with range "bytes=0-6" should be "Welcome"
 
 	Scenario: move file into a not-existing folder
-		Given using old dav path
+		Given using old DAV path
 		And user "user0" has been created
 		And as user "user0"
 		When user "user0" moves file "/welcome.txt" to "/not-existing/welcome.txt" using the API
 		Then the HTTP status code should be "409"
 
 	Scenario: rename a file into an invalid filename
-		Given using old dav path
+		Given using old DAV path
 		And user "user0" has been created
 		And as user "user0"
 		When user "user0" moves file "/welcome.txt" to "/a\\a" using the API
 		Then the HTTP status code should be "400"
 
 	Scenario: rename a file into a banned filename
-		Given using old dav path
+		Given using old DAV path
 		And user "user0" has been created
 		And as user "user0"
 		When user "user0" moves file "/welcome.txt" to "/.htaccess" using the API
 		Then the HTTP status code should be "403"
 
 	Scenario: Copying a file
-		Given using old dav path
+		Given using old DAV path
 		And user "user0" has been created
 		And as user "user0"
 		When user "user0" copies file "/welcome.txt" to "/FOLDER/welcome.txt" using the API
@@ -89,7 +89,7 @@ Feature: webdav-related-old-endpoint
 		And downloaded content when downloading file "/FOLDER/welcome.txt" with range "bytes=0-6" should be "Welcome"
 
 	Scenario: Copying and overwriting a file
-		Given using old dav path
+		Given using old DAV path
 		And user "user0" has been created
 		And as user "user0"
 		When user "user0" copies file "/welcome.txt" to "/textfile1.txt" using the API
@@ -97,7 +97,7 @@ Feature: webdav-related-old-endpoint
 		And downloaded content when downloading file "/textfile1.txt" with range "bytes=0-6" should be "Welcome"
 
 	Scenario: Copying a file to a folder with no permissions
-		Given using old dav path
+		Given using old DAV path
 		And user "user0" has been created
 		And user "user1" has been created
 		And as user "user1"
@@ -113,7 +113,7 @@ Feature: webdav-related-old-endpoint
 		And the HTTP status code should be "404"
 
 	Scenario: Copying a file to overwrite a file into a folder with no permissions
-		Given using old dav path
+		Given using old DAV path
 		And user "user0" has been created
 		And user "user1" has been created
 		And as user "user1"
@@ -130,14 +130,14 @@ Feature: webdav-related-old-endpoint
 		And downloaded content when downloading file "/testshare/overwritethis.txt" with range "bytes=0-6" should be "Welcome"
 
 	Scenario: download a file with range
-		Given using old dav path
+		Given using old DAV path
 		And user "user0" has been created
 		And as user "user0"
 		When the user downloads file "/welcome.txt" with range "bytes=51-77" using the API
 		Then the downloaded content should be "example file for developers"
 
 	Scenario: Retrieving folder quota when no quota is set
-		Given using old dav path
+		Given using old DAV path
 		And as user "admin"
 		And user "user0" has been created
 		When the administrator gives unlimited quota to user "user0" using the API
@@ -146,7 +146,7 @@ Feature: webdav-related-old-endpoint
 		Then the single response should contain a property "{DAV:}quota-available-bytes" with value "-3"
 
 	Scenario: Retrieving folder quota when quota is set
-		Given using old dav path
+		Given using old DAV path
 		And as user "admin"
 		And user "user0" has been created
 		When the administrator sets the quota of user "user0" to "10 MB" using the API
@@ -155,7 +155,7 @@ Feature: webdav-related-old-endpoint
 		Then the single response should contain a property "{DAV:}quota-available-bytes" with value "10485358"
 
 	Scenario: Retrieving folder quota of shared folder with quota when no quota is set for recipient
-		Given using old dav path
+		Given using old DAV path
 		And as user "admin"
 		And user "user0" has been created
 		And user "user1" has been created
@@ -173,7 +173,7 @@ Feature: webdav-related-old-endpoint
 		Then the single response should contain a property "{DAV:}quota-available-bytes" with value "10485358"
 
 	Scenario: Retrieving folder quota when quota is set and a file was uploaded
-		Given using old dav path
+		Given using old DAV path
 		And as user "admin"
 		And user "user0" has been created
 		And the quota of user "user0" has been set to "1 KB"
@@ -183,7 +183,7 @@ Feature: webdav-related-old-endpoint
 		Then the single response should contain a property "{DAV:}quota-available-bytes" with value "529"
 
 	Scenario: Retrieving folder quota when quota is set and a file was recieved
-		Given using old dav path
+		Given using old DAV path
 		And as user "admin"
 		And user "user0" has been created
 		And user "user1" has been created
@@ -195,7 +195,7 @@ Feature: webdav-related-old-endpoint
 		Then the single response should contain a property "{DAV:}quota-available-bytes" with value "622"
 
 	Scenario: download a public shared file with range
-		Given using old dav path
+		Given using old DAV path
 		And user "user0" has been created
 		And as user "user0"
 		When the user creates a share using the API with share settings
@@ -205,7 +205,7 @@ Feature: webdav-related-old-endpoint
 		Then the downloaded content should be "example file for developers"
 
 	Scenario: download a public shared file inside a folder with range
-		Given using old dav path
+		Given using old DAV path
 		And user "user0" has been created
 		And as user "user0"
 		When the user creates a share using the API with share settings
@@ -215,7 +215,7 @@ Feature: webdav-related-old-endpoint
 		Then the downloaded content should be "wnCloud"
 
 	Scenario: A file that is not shared does not have a share-types property
-		Given using old dav path
+		Given using old DAV path
 		And user "user0" has been created
 		And user "user0" has created a folder "/test"
 		When user "user0" gets the following properties of folder "/test" using the API
@@ -223,7 +223,7 @@ Feature: webdav-related-old-endpoint
 		Then the response should contain an empty property "{http://owncloud.org/ns}share-types"
 
 	Scenario: A file that is shared to a user has a share-types property
-		Given using old dav path
+		Given using old DAV path
 		And user "user0" has been created
 		And user "user1" has been created
 		And user "user0" has created a folder "/test"
@@ -238,7 +238,7 @@ Feature: webdav-related-old-endpoint
 			| 0 |
 
 	Scenario: A file that is shared to a group has a share-types property
-		Given using old dav path
+		Given using old DAV path
 		And user "user0" has been created
 		And group "group1" has been created
 		And user "user0" has created a folder "/test"
@@ -253,7 +253,7 @@ Feature: webdav-related-old-endpoint
 			| 1 |
 
 	Scenario: A file that is shared by link has a share-types property
-		Given using old dav path
+		Given using old DAV path
 		And user "user0" has been created
 		And user "user0" has created a folder "/test"
 		And user "user0" has created a share with settings
@@ -266,7 +266,7 @@ Feature: webdav-related-old-endpoint
 			| 3 |
 
 	Scenario: A file that is shared by user,group and link has a share-types property
-		Given using old dav path
+		Given using old DAV path
 		And user "user0" has been created
 		And user "user1" has been created
 		And group "group2" has been created
@@ -293,7 +293,7 @@ Feature: webdav-related-old-endpoint
 			| 3 |
 
 	Scenario: A disabled user cannot use webdav
-		Given using old dav path
+		Given using old DAV path
 		And user "userToBeDisabled" has been created
 		And as user "admin"
 		And user "userToBeDisabled" has been disabled
@@ -301,7 +301,7 @@ Feature: webdav-related-old-endpoint
 		Then the HTTP status code should be "503"
 
 	Scenario: Creating a folder
-		Given using old dav path
+		Given using old DAV path
 		And user "user0" has been created
 		And user "user0" has created a folder "/test_folder"
 		When user "user0" gets the following properties of folder "/test_folder" using the API
@@ -309,7 +309,7 @@ Feature: webdav-related-old-endpoint
 		Then the single response should contain a property "{DAV:}resourcetype" with value "{DAV:}collection"
 
 	Scenario: Creating a folder with special chars
-		Given using old dav path
+		Given using old DAV path
 		And user "user0" has been created
 		And user "user0" has created a folder "/test_folder:5"
 		When user "user0" gets the following properties of folder "/test_folder:5" using the API
@@ -317,7 +317,7 @@ Feature: webdav-related-old-endpoint
 		Then the single response should contain a property "{DAV:}resourcetype" with value "{DAV:}collection"
 
 	Scenario: Removing everything of a folder
-		Given using old dav path
+		Given using old DAV path
 		And user "user0" has been created
 		And as user "user0"
 		And user "user0" has moved file "/welcome.txt" to "/FOLDER/welcome.txt"
@@ -335,49 +335,49 @@ Feature: webdav-related-old-endpoint
 			| /textfile4.txt |
 
 	Scenario: Checking file id after a move
-		Given using old dav path
+		Given using old DAV path
 		And user "user0" has been created
 		And user "user0" has stored id of file "/textfile0.txt"
 		When user "user0" moves file "/textfile0.txt" to "/FOLDER/textfile0.txt" using the API
 		Then user "user0" file "/FOLDER/textfile0.txt" should have the previously stored id
 
 	Scenario: Renaming a folder to a backslash encoded should return an error using old endpoint
-		Given using old dav path
+		Given using old DAV path
 		And user "user0" has been created
 		And user "user0" has created a folder "/testshare"
 		When user "user0" moves folder "/testshare" to "/%5C" using the API
 		Then the HTTP status code should be "400"
 
 	Scenario: Renaming a folder beginning with a backslash encoded should return an error using old endpoint
-		Given using old dav path
+		Given using old DAV path
 		And user "user0" has been created
 		And user "user0" has created a folder "/testshare"
 		When user "user0" moves folder "/testshare" to "/%5Ctestshare" using the API
 		Then the HTTP status code should be "400"
 
 	Scenario: Renaming a folder including a backslash encoded should return an error using old endpoint
-		Given using old dav path
+		Given using old DAV path
 		And user "user0" has been created
 		And user "user0" has created a folder "/testshare"
 		When user "user0" moves folder "/testshare" to "/hola%5Chola" using the API
 		Then the HTTP status code should be "400"
 
 	Scenario: Renaming a folder into a banned name
-		Given using old dav path
+		Given using old DAV path
 		And user "user0" has been created
 		And user "user0" has created a folder "/testshare"
 		When user "user0" moves folder "/testshare" to "/.htaccess" using the API
 		Then the HTTP status code should be "403"
 
 	Scenario: Move a folder into a not existing one
-		Given using old dav path
+		Given using old DAV path
 		And user "user0" has been created
 		And user "user0" has created a folder "/testshare"
 		When user "user0" moves folder "/testshare" to "/not-existing/testshare" using the API
 		Then the HTTP status code should be "409"
 
 	Scenario: Downloading a file on the old endpoint should serve security headers
-		Given using old dav path
+		Given using old DAV path
 		And user "user0" has been created
 		When user "user0" downloads the file "/welcome.txt" using the API
 		Then the following headers should be set
@@ -392,7 +392,7 @@ Feature: webdav-related-old-endpoint
 		And downloaded content should start with "Welcome to your ownCloud account!"
 
 	Scenario: Doing a GET with a web login should work without CSRF token on the old backend
-		Given using old dav path
+		Given using old DAV path
 		And user "user0" has been created
 		And logging in using web as "user0"
 		When sending a "GET" to "/remote.php/webdav/welcome.txt" without requesttoken
@@ -400,7 +400,7 @@ Feature: webdav-related-old-endpoint
 		And the HTTP status code should be "200"
 
 	Scenario: Doing a GET with a web login should work with CSRF token on the old backend
-		Given using old dav path
+		Given using old DAV path
 		And user "user0" has been created
 		And logging in using web as "user0"
 		When sending a "GET" to "/remote.php/webdav/welcome.txt" with requesttoken
@@ -408,14 +408,14 @@ Feature: webdav-related-old-endpoint
 		And the HTTP status code should be "200"
 
 	Scenario: Doing a PROPFIND with a web login should work with CSRF token on the old backend
-		Given using old dav path
+		Given using old DAV path
 		And user "user0" has been created
 		And logging in using web as "user0"
 		When sending a "PROPFIND" to "/remote.php/webdav/welcome.txt" with requesttoken
 		Then the HTTP status code should be "207"
 
 	Scenario: Setting custom DAV property and reading it
-		Given using old dav path
+		Given using old DAV path
 		And user "user0" has been created
 		And as user "user0"
 		And user "user0" has uploaded file "data/textfile.txt" to "/testcustomprop.txt"
@@ -424,7 +424,7 @@ Feature: webdav-related-old-endpoint
 		Then the response should contain a custom "{http://whatever.org/ns}very-custom-prop" property with "veryCustomPropValue"
 
 	Scenario: Setting custom DAV property and reading it after the file is renamed
-		Given using old dav path
+		Given using old DAV path
 		And user "user0" has been created
 		And as user "user0"
 		And user "user0" has uploaded file "data/textfile.txt" to "/testcustompropwithmove.txt"
@@ -434,7 +434,7 @@ Feature: webdav-related-old-endpoint
 		Then the response should contain a custom "{http://whatever.org/ns}very-custom-prop" property with "valueForMovetest"
 		
 	Scenario: Setting custom DAV property on a shared file as an owner and reading as a recipient
-		Given using old dav path
+		Given using old DAV path
 		And user "user0" has been created
 		And user "user1" has been created
 		And as user "user0"
@@ -450,12 +450,12 @@ Feature: webdav-related-old-endpoint
 		Then the response should contain a custom "{http://whatever.org/ns}very-custom-prop" property with "valueForSharetest"
 
 	Scenario: Setting custom DAV property using an old endpoint and reading it using a new endpoint
-		Given using old dav path
+		Given using old DAV path
 		And user "user0" has been created
 		And as user "user0"
 		And user "user0" has uploaded file "data/textfile.txt" to "/testoldnew.txt"
 		And "user0" has set property "{http://whatever.org/ns}very-custom-prop" of file "/testoldnew.txt" to "constant"
-		And using new dav path
+		And using new DAV path
 		When user "user0" gets a custom property "{http://whatever.org/ns}very-custom-prop" of file "/testoldnew.txt"
 		Then the response should contain a custom "{http://whatever.org/ns}very-custom-prop" property with "constant"
 
@@ -499,7 +499,7 @@ Feature: webdav-related-old-endpoint
 		|TIÄFÜ    |
 
 	Scenario: Checking file id after a move between received shares
-		Given using old dav path
+		Given using old DAV path
 		And user "user0" has been created
 		And user "user1" has been created
 		And user "user0" has created a folder "/folderA"
@@ -519,7 +519,7 @@ Feature: webdav-related-old-endpoint
 		And user "user1" file "/folderB/ONE" should have the previously stored id
 
 	Scenario: Retrieving private link
-		Given using old dav path
+		Given using old DAV path
 		And user "user0" has been created
 		And as user "user0"
 		And user "user0" has uploaded file "data/textfile.txt" to "/somefile.txt"
@@ -528,28 +528,28 @@ Feature: webdav-related-old-endpoint
 		Then the single response should contain a property "{http://owncloud.org/ns}privatelink" with value like "/(\/index.php\/f\/[0-9]*)/"
 
 	Scenario: Copying file to a path with extension .part should not be possible
-		Given using old dav path
+		Given using old DAV path
 		And user "user0" has been created
 		And as user "user0"
 		When user "user0" copies file "/welcome.txt" to "/welcome.part" using the API
 		Then the HTTP status code should be "400"
 
 	Scenario: Uploading file to path with extension .part should not be possible
-		Given using old dav path
+		Given using old DAV path
 		And user "user0" has been created
 		And as user "user0"
 		And user "user0" has uploaded file "data/textfile.txt" to "/textfile.part"
 		Then the HTTP status code should be "400"
 
 	Scenario: Renaming a file to a path with extension .part should not be possible
-		Given using old dav path
+		Given using old DAV path
 		And user "user0" has been created
 		And as user "user0"
 		When user "user0" moves file "/welcome.txt" to "/welcome.part" using the API
 		Then the HTTP status code should be "400"
 
 	Scenario: Creating a directory which contains .part should not be possible
-		Given using new dav path
+		Given using new DAV path
 		And user "user0" has been created
 		And as user "user0"
 		When user "user0" creates a folder "/folder.with.ext.part" using the API

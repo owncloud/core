@@ -54,7 +54,7 @@ trait Sharing {
 	private $lastShareTime = null;
 
 	/**
-	 * @When /^user "([^"]*)" creates a share with settings$/
+	 * @When /^user "([^"]*)" creates a share using the API with settings$/
 	 * @Given /^user "([^"]*)" has created a share with settings$/
 	 * @param string $user
 	 * @param \Behat\Gherkin\Node\TableNode|null $body

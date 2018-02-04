@@ -1,6 +1,6 @@
 Feature: Comments
   Background:
-    Given using new dav path
+    Given using new DAV path
 
   Scenario: Creating a comment on a file belonging to myself
     Given user "user0" has been created

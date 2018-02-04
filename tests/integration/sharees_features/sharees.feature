@@ -1,6 +1,6 @@
 Feature: sharees
 	Background:
-		Given using api version "1"
+		Given using API version "1"
 		And user "test" has been created
 		And user "Sharee1" has been created
 		And group "ShareeGroup" has been created

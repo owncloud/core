@@ -31,9 +31,8 @@ trait Trashbin {
 	 * @param string $user user
 	 */
 	public function emptyTrashbin($user) {
-		$this->asUser($user);
 		$body = new \Behat\Gherkin\Node\TableNode([['allfiles', 'true'], ['dir', '%2F']]);
-		$this->sendingToWithDirectUrl('POST', "/index.php/apps/files_trashbin/ajax/delete.php", $body);
+		$this->sendingToWithDirectUrl($user, 'POST', "/index.php/apps/files_trashbin/ajax/delete.php", $body);
 		$this->theHTTPStatusCodeShouldBe('200');
 	}
 
@@ -45,9 +44,8 @@ trait Trashbin {
 	 * @return array response
 	 */
 	public function listTrashbinFolder($user, $path) {
-		$this->asUser($user);
 		$params = '?dir=' . rawurlencode('/' . trim($path, '/'));
-		$this->sendingToWithDirectUrl('GET', '/index.php/apps/files_trashbin/ajax/list.php' . $params, null);
+		$this->sendingToWithDirectUrl($user, 'GET', '/index.php/apps/files_trashbin/ajax/list.php' . $params, null);
 		$this->theHTTPStatusCodeShouldBe('200');
 
 
@@ -125,9 +123,8 @@ trait Trashbin {
 	 * @param string $elementTrashID
 	 */
 	private function sendUndeleteRequest($user, $elementTrashID) {
-		$this->asUser($user);
 		$body = new \Behat\Gherkin\Node\TableNode([['files',  "[\"$elementTrashID\"]"], ['dir', '/']]);
-		$this->sendingToWithDirectUrl('POST', "/index.php/apps/files_trashbin/ajax/undelete.php", $body);
+		$this->sendingToWithDirectUrl($user, 'POST', "/index.php/apps/files_trashbin/ajax/undelete.php", $body);
 		$this->theHTTPStatusCodeShouldBe('200');
 	}
 

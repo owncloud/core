@@ -1,6 +1,6 @@
 Feature: provisioning
   Background:
-    Given using api version "2"
+    Given using API version "2"
 
   Scenario: Getting a not existing user
     Given as user "admin"

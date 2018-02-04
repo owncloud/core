@@ -1,6 +1,6 @@
 Feature: tags
   Background:
-    Given using new dav path
+    Given using new DAV path
 
   Scenario Outline: Creating a normal tag as regular user should work
     Given user "user0" has been created

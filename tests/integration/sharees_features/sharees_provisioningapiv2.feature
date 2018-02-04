@@ -1,6 +1,6 @@
 Feature: sharees_provisioningapiv2
   Background:
-    Given using api version "2"
+    Given using API version "2"
     And user "test" has been created
     And user "Sharee1" has been created
     And group "ShareeGroup" has been created

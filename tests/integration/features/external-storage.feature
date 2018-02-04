@@ -1,7 +1,7 @@
 Feature: external-storage
   Background:
-    Given using api version "1"
-    And using old dav path
+    Given using API version "1"
+    And using old DAV path
 
   # TODO: change to @no_default_encryption once all this works with master key
   @local_storage

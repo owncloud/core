@@ -39,7 +39,7 @@ trait WebDav {
 	}
 
 	/**
-	 * @Given /^using old dav path$/
+	 * @Given /^using old (?:dav|DAV) path$/
 	 */
 	public function usingOldDavPath() {
 		$this->davPath = "remote.php/webdav";
@@ -48,7 +48,7 @@ trait WebDav {
 	}
 
 	/**
-	 * @Given /^using new dav path$/
+	 * @Given /^using new (?:dav|DAV) path$/
 	 */
 	public function usingNewDavPath() {
 		$this->davPath = "remote.php/dav";
@@ -546,29 +546,30 @@ trait WebDav {
 	}
 
 	/**
-	 * @Then the version folder of file :path for user :user contains :count elements
+	 * @Then the version folder of file :path for user :user should contain :count element(s)
 	 * @param string $path
 	 * @param string $user
 	 * @param int $count
 	 */
-	public function theVersionFolderOfFileContainsElements($path, $user, $count) {
+	public function theVersionFolderOfFilehouldContainElements($path, $user, $count) {
 		$fileId = $this->getFileIdForPath($user, $path);
 		$elements = $this->listVersionFolder($user, '/meta/'.$fileId.'/v', 1);
 		PHPUnit_Framework_Assert::assertEquals($count, count($elements)-1);
 	}
 
 	/**
-	 * @Then the version folder of fileId :fileId contains :count elements
+	 * @Then the version folder of fileId :fileId for user :user should contain :count element(s)
 	 * @param int $fileId
+	 * @param string $user
 	 * @param int $count
 	 */
-	public function theVersionFolderOfFileIdContainsElements($fileId, $count) {
-		$elements = $this->listVersionFolder($this->currentUser, '/meta/'.$fileId.'/v', 1);
+	public function theVersionFolderOfFileIdShouldContainElements($fileId, $user, $count) {
+		$elements = $this->listVersionFolder($user, '/meta/'.$fileId.'/v', 1);
 		PHPUnit_Framework_Assert::assertEquals($count, count($elements)-1);
 	}
 
 	/**
-	 * @Then the content length of file :path with version index :index for user :user in versions folder is :length
+	 * @Then the content length of file :path with version index :index for user :user in versions folder should be :length
 	 * @param string $path
 	 * @param int $index
 	 * @param string $user

@@ -1,7 +1,7 @@
 Feature: trashbin-new-endpoint
 	Background:
-		Given using api version "1"
-		And using old dav path
+		Given using API version "1"
+		And using old DAV path
 		And as user "admin"
 
 	Scenario: deleting a file moves it to trashbin

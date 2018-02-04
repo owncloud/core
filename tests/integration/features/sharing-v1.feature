@@ -1,7 +1,7 @@
 Feature: sharing
 	Background:
-		Given using api version "1"
-		Given using old dav path
+		Given using API version "1"
+		Given using old DAV path
 
 	Scenario: Creating a new share with user
 		Given user "user0" has been created
@@ -595,7 +595,7 @@ Feature: sharing
 			| /myFOLDER/myTMP/ |
 
 	Scenario: Check quota of owners parent directory of a shared file
-		Given using old dav path
+		Given using old DAV path
 		And user "user0" has been created
 		And user "user1" has been created
 		And as user "admin"
@@ -788,7 +788,7 @@ Feature: sharing
 		And the HTTP status code should be "401"
 
 	Scenario: Merging shares for recipient when shared from outside with group and member
-		Given using old dav path
+		Given using old DAV path
 		And user "user0" has been created
 		And user "user1" has been created
 		And group "group1" has been created

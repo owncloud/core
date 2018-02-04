@@ -1,9 +1,9 @@
 Feature: favorite
     Background:
-        Given using api version "1"
+        Given using API version "1"
 
     Scenario: Favorite a folder
-        Given using old dav path
+        Given using old DAV path
         And user "user0" has been created
         When user "user0" favorites element "/FOLDER" using the API
         And user "user0" gets the following properties of folder "/FOLDER" using the API
@@ -11,7 +11,7 @@ Feature: favorite
         Then the single response should contain a property "{http://owncloud.org/ns}favorite" with value "1"
 
     Scenario: Favorite and unfavorite a folder
-        Given using old dav path
+        Given using old DAV path
         And user "user0" has been created
         When user "user0" favorites element "/FOLDER" using the API
         And user "user0" unfavorites element "/FOLDER" using the API
@@ -20,7 +20,7 @@ Feature: favorite
         Then the single response should contain a property "{http://owncloud.org/ns}favorite" with value "0"
 
     Scenario: Favorite a file
-        Given using old dav path
+        Given using old DAV path
         And user "user0" has been created
         When user "user0" favorites element "/textfile0.txt" using the API
         And user "user0" gets the following properties of file "/textfile0.txt" using the API
@@ -28,7 +28,7 @@ Feature: favorite
         Then the single response should contain a property "{http://owncloud.org/ns}favorite" with value "1"
 
     Scenario: Favorite and unfavorite a file
-        Given using old dav path
+        Given using old DAV path
         And user "user0" has been created
         When user "user0" favorites element "/textfile0.txt" using the API
         And user "user0" unfavorites element "/textfile0.txt" using the API
@@ -37,7 +37,7 @@ Feature: favorite
         Then the single response should contain a property "{http://owncloud.org/ns}favorite" with value "0"
 
     Scenario: Favorite a folder new endpoint
-        Given using new dav path
+        Given using new DAV path
         And user "user0" has been created
         When user "user0" favorites element "/FOLDER" using the API
         And user "user0" gets the following properties of folder "/FOLDER" using the API
@@ -45,7 +45,7 @@ Feature: favorite
         Then the single response should contain a property "{http://owncloud.org/ns}favorite" with value "1"
 
     Scenario: Favorite and unfavorite a folder new endpoint
-        Given using new dav path
+        Given using new DAV path
         And user "user0" has been created
         When user "user0" favorites element "/FOLDER" using the API
         And user "user0" unfavorites element "/FOLDER" using the API
@@ -54,7 +54,7 @@ Feature: favorite
         Then the single response should contain a property "{http://owncloud.org/ns}favorite" with value "0"
 
     Scenario: Favorite a file new endpoint
-        Given using new dav path
+        Given using new DAV path
         And user "user0" has been created
         When user "user0" favorites element "/textfile0.txt" using the API
         And user "user0" gets the following properties of file "/textfile0.txt" using the API
@@ -62,7 +62,7 @@ Feature: favorite
         Then the single response should contain a property "{http://owncloud.org/ns}favorite" with value "1"
 
     Scenario: Favorite and unfavorite a file new endpoint
-        Given using new dav path
+        Given using new DAV path
         And user "user0" has been created
         When user "user0" favorites element "/textfile0.txt" using the API
         And user "user0" unfavorites element "/textfile0.txt" using the API
@@ -71,7 +71,7 @@ Feature: favorite
         Then the single response should contain a property "{http://owncloud.org/ns}favorite" with value "0"
 
     Scenario: Get favorited elements of a folder
-        Given using old dav path
+        Given using old DAV path
         And user "user0" has been created
         When user "user0" favorites element "/FOLDER" using the API
         And user "user0" favorites element "/textfile0.txt" using the API
@@ -82,7 +82,7 @@ Feature: favorite
             | /textfile1.txt |
 
     Scenario: Get favorited elements of a folder using new path
-        Given using new dav path
+        Given using new DAV path
         And user "user0" has been created
         When user "user0" favorites element "/FOLDER" using the API
         And user "user0" favorites element "/textfile0.txt" using the API
@@ -93,7 +93,7 @@ Feature: favorite
             | /textfile1.txt |
 
     Scenario: Get favorited elements of a subfolder
-        Given using old dav path
+        Given using old DAV path
         And user "user0" has been created
         And user "user0" has created a folder "/subfolder"
         And user "user0" has moved file "/textfile0.txt" to "/subfolder/textfile0.txt"
@@ -108,7 +108,7 @@ Feature: favorite
             | /subfolder/textfile2.txt |
 
     Scenario: Get favorited elements of a subfolder using new path
-        Given using old dav path
+        Given using old DAV path
         And user "user0" has been created
         And user "user0" has created a folder "/subfolder"
         And user "user0" has moved file "/textfile0.txt" to "/subfolder/textfile0.txt"
@@ -123,7 +123,7 @@ Feature: favorite
             | /subfolder/textfile2.txt |
 
     Scenario: moving a favorite file out of a share keeps favorite state
-        Given using old dav path
+        Given using old DAV path
         And user "user0" has been created
         And user "user1" has been created
         And user "user0" has created a folder "/shared"
@@ -135,7 +135,7 @@ Feature: favorite
             | /taken_out.txt |
 
     Scenario: Get favorited elements paginated
-        Given using old dav path
+        Given using old DAV path
         And user "user0" has been created
         And user "user0" has created a folder "/subfolder"
         And user "user0" has copied file "/textfile0.txt" to "/subfolder/textfile0.txt"
