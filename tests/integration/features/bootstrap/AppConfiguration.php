@@ -77,7 +77,7 @@ trait AppConfiguration {
 	 */
 	public function serverParameterIsSetTo($parameter, $app, $value) {
 		$user = $this->currentUser;
-		$this->currentUser = 'admin';
+		$this->currentUser = $this->getAdminUserName();
 
 		$this->modifyServerConfig($app, $parameter, $value);
 
@@ -251,7 +251,7 @@ trait AppConfiguration {
 	 */
 	public function prepareParametersBeforeScenario() {
 		$user = $this->currentUser;
-		$this->currentUser = 'admin';
+		$this->currentUser = $this->getAdminUserName();
 		$this->resetAppConfigs();
 		$this->currentUser = $user;
 	}
@@ -262,7 +262,7 @@ trait AppConfiguration {
 	 */
 	public function restoreParametersAfterScenario() {
 		$user = $this->currentUser;
-		$this->currentUser = 'admin';
+		$this->currentUser = $this->getAdminUserName();
 
 		foreach ($this->savedCapabilitiesChanges as $capabilitiesChange) {
 			$this->modifyServerConfig(
