@@ -106,9 +106,9 @@ trait CommandLine {
 	}
 
 	/**
-	 * @Then /^the command was successful$/
+	 * @Then /^the command should have been successful$/
 	 */
-	public function theCommandWasSuccessful() {
+	public function theCommandShouldHaveBeenSuccessful() {
 		$exceptions = $this->findExceptions();
 		if ($this->lastCode !== 0) {
 			$msg = 'The command was not successful, exit code was ' . $this->lastCode . '.';
@@ -228,12 +228,11 @@ trait CommandLine {
 	}
 
 	/**
-	 * @When /^recreating masterkey by deleting old one and encrypting the filesystem/
+	 * @Given /^the administrator has successfully recreated the encryption masterkey using the occ command/
 	 */
-	public function recreateMasterKey() {
-		if ($this->runOcc(['encryption:recreate-master-key', '-y']) === 0) {
-			return $this->lastCode;
-		}
+	public function recreateMasterKeyUsingOccCommand() {
+		$this->runOcc(['encryption:recreate-master-key', '-y']);
+		$this->theCommandShouldHaveBeenSuccessful();
 	}
 
 	/**

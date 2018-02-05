@@ -358,10 +358,11 @@ trait BasicStructure {
 	}
 
 	/**
-	 * @Given logging in using web as :user
+	 * @When /^user "([^"]*)" logs in to a web-style session using the API$/
+	 * @Given /^user "([^"]*)" has logged in to a web-style session using the API$/
 	 * @param string $user
 	 */
-	public function loggingInUsingWebAs($user) {
+	public function userHasLoggedInToAWebStyleSessionUsingTheAPI($user) {
 		$loginUrl = substr($this->baseUrl, 0, -5) . '/login';
 		// Request a new session and extract CSRF token
 		$client = new Client();

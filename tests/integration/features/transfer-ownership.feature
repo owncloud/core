@@ -6,10 +6,10 @@ Feature: transfer-ownership
 		And user "user1" has been created
 		And user "user0" has uploaded file "data/textfile.txt" to "/somefile.txt"
 		When transferring ownership from "user0" to "user1"
-		And the command was successful
+		Then the command should have been successful
 		And as user "user1"
 		And using received transfer folder of "user1" as dav path
-		Then downloaded content when downloading file "/somefile.txt" with range "bytes=0-6" should be "This is"
+		And the downloaded content when downloading file "/somefile.txt" with range "bytes=0-6" should be "This is"
 
 	@no_default_encryption
 	Scenario: transferring ownership of a file after updating the file
@@ -20,10 +20,10 @@ Feature: transfer-ownership
 		And user "user0" has uploaded chunk file "2" of "3" with "BB" to "/PARENT/textfile0.txt"
 		And user "user0" has uploaded chunk file "3" of "3" with "CC" to "/PARENT/textfile0.txt"
 		When transferring ownership from "user0" to "user1"
-		Then the command was successful
+		Then the command should have been successful
 		And as user "user1"
 		And using received transfer folder of "user1" as dav path
-		Then downloaded content when downloading file "/PARENT/textfile0.txt" with range "bytes=0-5" should be "AABBCC"
+		And the downloaded content when downloading file "/PARENT/textfile0.txt" with range "bytes=0-5" should be "AABBCC"
 
 	@no_default_encryption
 	Scenario: transferring ownership of a folder
@@ -32,10 +32,10 @@ Feature: transfer-ownership
 		And user "user0" has created a folder "/test"
 		And user "user0" has uploaded file "data/textfile.txt" to "/test/somefile.txt"
 		When transferring ownership from "user0" to "user1"
-		And the command was successful
+		Then the command should have been successful
 		And as user "user1"
 		And using received transfer folder of "user1" as dav path
-		Then downloaded content when downloading file "/test/somefile.txt" with range "bytes=0-6" should be "This is"
+		And the downloaded content when downloading file "/test/somefile.txt" with range "bytes=0-6" should be "This is"
 
 	@no_default_encryption
 	Scenario: transferring ownership of file shares
@@ -45,9 +45,9 @@ Feature: transfer-ownership
 		And user "user0" has uploaded file "data/textfile.txt" to "/somefile.txt"
 		And user "user0" has shared file "/somefile.txt" with user "user2" with permissions 19
 		When transferring ownership from "user0" to "user1"
-		And the command was successful
+		Then the command should have been successful
 		And as user "user2"
-		Then downloaded content when downloading file "/somefile.txt" with range "bytes=0-6" should be "This is"
+		And the downloaded content when downloading file "/somefile.txt" with range "bytes=0-6" should be "This is"
 
 	@no_default_encryption
 	Scenario: transferring ownership of folder shared with third user
@@ -58,9 +58,9 @@ Feature: transfer-ownership
 		And user "user0" has uploaded file "data/textfile.txt" to "/test/somefile.txt"
 		And user "user0" has shared folder "/test" with user "user2" with permissions 31
 		When transferring ownership from "user0" to "user1"
-		And the command was successful
+		Then the command should have been successful
 		And as user "user2"
-		Then downloaded content when downloading file "/test/somefile.txt" with range "bytes=0-6" should be "This is"
+		And the downloaded content when downloading file "/test/somefile.txt" with range "bytes=0-6" should be "This is"
 
 	@no_default_encryption
 	Scenario: transferring ownership of folder shared with transfer recipient
@@ -70,11 +70,11 @@ Feature: transfer-ownership
 		And user "user0" has uploaded file "data/textfile.txt" to "/test/somefile.txt"
 		And user "user0" has shared folder "/test" with user "user1" with permissions 31
 		When transferring ownership from "user0" to "user1"
-		And the command was successful
+		Then the command should have been successful
 		And as user "user1"
-		Then as "user1" the folder "/test" should not exist
+		And as "user1" the folder "/test" should not exist
 		And using received transfer folder of "user1" as dav path
-		And downloaded content when downloading file "/test/somefile.txt" with range "bytes=0-6" should be "This is"
+		And the downloaded content when downloading file "/test/somefile.txt" with range "bytes=0-6" should be "This is"
 
 	@no_default_encryption
 	Scenario: transferring ownership of folder doubly shared with third user
@@ -88,9 +88,9 @@ Feature: transfer-ownership
 		And folder "/test" of user "user0" has been shared with group "group1" with permissions 31
 		And user "user0" has shared folder "/test" with user "user2" with permissions 31
 		When transferring ownership from "user0" to "user1"
-		And the command was successful
+		Then the command should have been successful
 		And as user "user2"
-		Then downloaded content when downloading file "/test/somefile.txt" with range "bytes=0-6" should be "This is"
+		And the downloaded content when downloading file "/test/somefile.txt" with range "bytes=0-6" should be "This is"
 
 	@no_default_encryption
 	Scenario: transferring ownership does not transfer received shares
@@ -100,20 +100,20 @@ Feature: transfer-ownership
 		And user "user2" has created a folder "/test"
 		And user "user2" has shared folder "/test" with user "user0" with permissions 31
 		When transferring ownership from "user0" to "user1"
-		And the command was successful
+		Then the command should have been successful
 		And as user "user1"
 		And using received transfer folder of "user1" as dav path
-		Then as "user1" the folder "/test" should not exist
+		And as "user1" the folder "/test" should not exist
 
 	@local_storage @no_default_encryption
 	Scenario: transferring ownership does not transfer external storage
 		Given user "user0" has been created
 		And user "user1" has been created
 		When transferring ownership from "user0" to "user1"
-		And the command was successful
+		Then the command should have been successful
 		And as user "user1"
 		And using received transfer folder of "user1" as dav path
-		Then as "user1" the folder "/local_storage" should not exist
+		And as "user1" the folder "/local_storage" should not exist
 
 	@no_default_encryption
 	Scenario: transferring ownership does not fail with shared trashed files
@@ -125,7 +125,7 @@ Feature: transfer-ownership
 		And user "user0" has shared folder "/sub/test" with user "user2" with permissions 31
 		And user "user0" has deleted folder "/sub"
 		When transferring ownership from "user0" to "user1"
-		Then the command was successful
+		Then the command should have been successful
 
 	Scenario: transferring ownership fails with invalid source user
 		Given user "user0" has been created
@@ -146,10 +146,10 @@ Feature: transfer-ownership
 		And user "user0" has created a folder "/test"
 		And user "user0" has uploaded file "data/textfile.txt" to "/test/somefile.txt"
 		When transferring ownership of path "test" from "user0" to "user1"
-		And the command was successful
+		Then the command should have been successful
 		And as user "user1"
 		And using received transfer folder of "user1" as dav path
-		Then downloaded content when downloading file "/test/somefile.txt" with range "bytes=0-6" should be "This is"
+		And the downloaded content when downloading file "/test/somefile.txt" with range "bytes=0-6" should be "This is"
 
 	@no_default_encryption
 	Scenario: transferring ownership of file shares
@@ -160,9 +160,9 @@ Feature: transfer-ownership
 		And user "user0" has uploaded file "data/textfile.txt" to "/test/somefile.txt"
 		And user "user0" has shared file "/test/somefile.txt" with user "user2" with permissions 19
 		When transferring ownership of path "test" from "user0" to "user1"
-		And the command was successful
+		Then the command should have been successful
 		And as user "user2"
-		Then downloaded content when downloading file "/somefile.txt" with range "bytes=0-6" should be "This is"
+		And the downloaded content when downloading file "/somefile.txt" with range "bytes=0-6" should be "This is"
 
 	@no_default_encryption
 	Scenario: transferring ownership of folder shares which has public link
@@ -190,9 +190,9 @@ Feature: transfer-ownership
 		And user "user0" has uploaded file "data/textfile.txt" to "/test/somefile.txt"
 		And user "user0" has shared folder "/test" with user "user2" with permissions 31
 		When transferring ownership of path "test" from "user0" to "user1"
-		And the command was successful
+		Then the command should have been successful
 		And as user "user2"
-		Then downloaded content when downloading file "/test/somefile.txt" with range "bytes=0-6" should be "This is"
+		And the downloaded content when downloading file "/test/somefile.txt" with range "bytes=0-6" should be "This is"
 
 	@no_default_encryption
 	Scenario: transferring ownership of folder shared with transfer recipient
@@ -202,11 +202,11 @@ Feature: transfer-ownership
 		And user "user0" has uploaded file "data/textfile.txt" to "/test/somefile.txt"
 		And user "user0" has shared folder "/test" with user "user1" with permissions 31
 		When transferring ownership of path "test" from "user0" to "user1"
-		And the command was successful
+		Then the command should have been successful
 		And as user "user1"
-		Then as "user1" the folder "/test" should not exist
+		And as "user1" the folder "/test" should not exist
 		And using received transfer folder of "user1" as dav path
-		And downloaded content when downloading file "/test/somefile.txt" with range "bytes=0-6" should be "This is"
+		And the downloaded content when downloading file "/test/somefile.txt" with range "bytes=0-6" should be "This is"
 
 	@no_default_encryption
 	Scenario: transferring ownership of folder doubly shared with third user
@@ -220,9 +220,9 @@ Feature: transfer-ownership
 		And folder "/test" of user "user0" has been shared with group "group1" with permissions 31
 		And user "user0" has shared folder "/test" with user "user2" with permissions 31
 		When transferring ownership of path "test" from "user0" to "user1"
-		And the command was successful
+		Then the command should have been successful
 		And as user "user2"
-		Then downloaded content when downloading file "/test/somefile.txt" with range "bytes=0-6" should be "This is"
+		And the downloaded content when downloading file "/test/somefile.txt" with range "bytes=0-6" should be "This is"
 
 	Scenario: transferring ownership does not transfer received shares
 		Given user "user0" has been created
@@ -233,10 +233,10 @@ Feature: transfer-ownership
 		And user "user2" has shared folder "/test" with user "user0" with permissions 31
 		And user "user0" has moved folder "/test" to "/sub/test"
 		When transferring ownership of path "sub" from "user0" to "user1"
-		And the command was successful
+		Then the command should have been successful
 		And as user "user1"
 		And using received transfer folder of "user1" as dav path
-		Then as "user1" the folder "/sub/test" should not exist
+		And as "user1" the folder "/sub/test" should not exist
 
 	@local_storage
 	Scenario: transferring ownership does not transfer external storage
@@ -244,10 +244,10 @@ Feature: transfer-ownership
 		And user "user1" has been created
 		And user "user0" has created a folder "/sub"
 		When transferring ownership of path "sub" from "user0" to "user1"
-		And the command was successful
+		Then the command should have been successful
 		And as user "user1"
 		And using received transfer folder of "user1" as dav path
-		Then as "user1" the folder "/local_storage" should not exist
+		And as "user1" the folder "/local_storage" should not exist
 
 	Scenario: transferring ownership fails with invalid source user
 		Given user "user0" has been created

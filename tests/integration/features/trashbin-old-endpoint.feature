@@ -61,7 +61,7 @@ Feature: trashbin-new-endpoint
 		And user "user0" has shared folder "/shared" with user "user1"
 		And user "user1" has moved file "/shared" to "/renamed_shared"
 		And user "user1" has deleted file "/renamed_shared/shared_file.txt"
-		And logging in using web as "user1"
+		And user "user1" has logged in to a web-style session using the API
 		When as "user1" the file with original path "/renamed_shared/shared_file.txt" is restored
 		Then as "user1" the file with original path "/renamed_shared/shared_file.txt" does not exist in trash
 		And user "user1" should see the following elements
@@ -82,7 +82,7 @@ Feature: trashbin-new-endpoint
 		Given user "user0" has been created
 		And user "user0" has deleted file "/textfile0.txt"
 		And as "user0" the file "/textfile0.txt" exists in trash
-		And logging in using web as "user0"
+		And user "user0" has logged in to a web-style session using the API
 		When as "user0" the folder with original path "/textfile0.txt" is restored
 		Then as "user0" the folder with original path "/textfile0.txt" does not exist in trash
 		And user "user0" should see the following elements
@@ -128,7 +128,7 @@ Feature: trashbin-new-endpoint
 		And user "user0" has moved file "/textfile0.txt" to "/local_storage/tmp/textfile0.txt"
 		And user "user0" has deleted file "/local_storage/tmp/textfile0.txt"
 		And as "user0" the folder with original path "/local_storage/tmp/textfile0.txt" exists in trash
-		And logging in using web as "user0"
+		And user "user0" has logged in to a web-style session using the API
 		When as "user0" the folder with original path "/local_storage/tmp/textfile0.txt" is restored
 		Then as "user0" the folder with original path "/local_storage/tmp/textfile0.txt" does not exist in trash
 		And user "user0" should see the following elements
@@ -146,7 +146,7 @@ Feature: trashbin-new-endpoint
 		And user "user0" has uploaded chunk file "1" of "1" with "AA" to "/local_storage/tmp/textfile0.txt"
 		And user "user0" has deleted file "/local_storage/tmp/textfile0.txt"
 		And as "user0" the folder with original path "/local_storage/tmp/textfile0.txt" exists in trash
-		And logging in using web as "user0"
+		And user "user0" has logged in to a web-style session using the API
 		When as "user0" the folder with original path "/local_storage/tmp/textfile0.txt" is restored
 		Then as "user0" the folder with original path "/local_storage/tmp/textfile0.txt" does not exist in trash
-		And downloaded content when downloading file "/local_storage/tmp/textfile0.txt" with range "bytes=0-1" should be "AA"
+		And the downloaded content when downloading file "/local_storage/tmp/textfile0.txt" with range "bytes=0-1" should be "AA"

@@ -16,7 +16,7 @@ Feature: webdav-related-new-endpoint
 		And as user "user0"
 		When user "user0" moves file "/welcome.txt" to "/FOLDER/welcome.txt" using the API
 		Then the HTTP status code should be "201"
-		And downloaded content when downloading file "/FOLDER/welcome.txt" with range "bytes=0-6" should be "Welcome"
+		And the downloaded content when downloading file "/FOLDER/welcome.txt" with range "bytes=0-6" should be "Welcome"
 
 	Scenario: Moving and overwriting a file
 		Given using new DAV path
@@ -24,7 +24,7 @@ Feature: webdav-related-new-endpoint
 		And as user "user0"
 		When user "user0" moves file "/welcome.txt" to "/textfile0.txt" using the API
 		Then the HTTP status code should be "204"
-		And downloaded content when downloading file "/textfile0.txt" with range "bytes=0-6" should be "Welcome"
+		And the downloaded content when downloading file "/textfile0.txt" with range "bytes=0-6" should be "Welcome"
 
 	Scenario: Moving a file to a folder with no permissions
 		Given using new DAV path
@@ -58,7 +58,7 @@ Feature: webdav-related-new-endpoint
 		And as user "user0"
 		When user "user0" moves file "/textfile0.txt" to "/testshare/overwritethis.txt" using the API
 		Then the HTTP status code should be "403"
-		And downloaded content when downloading file "/testshare/overwritethis.txt" with range "bytes=0-6" should be "Welcome"
+		And the downloaded content when downloading file "/testshare/overwritethis.txt" with range "bytes=0-6" should be "Welcome"
 
 	Scenario: move file into a not-existing folder
 		Given using new DAV path
@@ -87,7 +87,7 @@ Feature: webdav-related-new-endpoint
 		And as user "user0"
 		When user "user0" copies file "/welcome.txt" to "/FOLDER/welcome.txt" using the API
 		Then the HTTP status code should be "201"
-		And downloaded content when downloading file "/FOLDER/welcome.txt" with range "bytes=0-6" should be "Welcome"
+		And the downloaded content when downloading file "/FOLDER/welcome.txt" with range "bytes=0-6" should be "Welcome"
 
 	Scenario: Copying and overwriting a file
 		Given using new DAV path
@@ -95,7 +95,7 @@ Feature: webdav-related-new-endpoint
 		And as user "user0"
 		When user "user0" copies file "/welcome.txt" to "/textfile1.txt" using the API
 		Then the HTTP status code should be "204"
-		And downloaded content when downloading file "/textfile1.txt" with range "bytes=0-6" should be "Welcome"
+		And the downloaded content when downloading file "/textfile1.txt" with range "bytes=0-6" should be "Welcome"
 
 	Scenario: Copying a file to a folder with no permissions
 		Given using new DAV path
@@ -129,7 +129,7 @@ Feature: webdav-related-new-endpoint
 		And as user "user0"
 		When user "user0" copies file "/textfile0.txt" to "/testshare/overwritethis.txt" using the API
 		Then the HTTP status code should be "403"
-		And downloaded content when downloading file "/testshare/overwritethis.txt" with range "bytes=0-6" should be "Welcome"
+		And the downloaded content when downloading file "/testshare/overwritethis.txt" with range "bytes=0-6" should be "Welcome"
 
 	Scenario: download a file with range
 		Given using new DAV path
@@ -410,21 +410,21 @@ Feature: webdav-related-new-endpoint
 
 	Scenario: Doing a GET with a web login should work without CSRF token on the new backend
 		Given user "user0" has been created
-		And logging in using web as "user0"
+		And user "user0" has logged in to a web-style session using the API
 		When sending a "GET" to "/remote.php/dav/files/user0/welcome.txt" without requesttoken
 		Then downloaded content should start with "Welcome to your ownCloud account!"
 		And the HTTP status code should be "200"
 
 	Scenario: Doing a GET with a web login should work with CSRF token on the new backend
 		Given user "user0" has been created
-		And logging in using web as "user0"
+		And user "user0" has logged in to a web-style session using the API
 		When sending a "GET" to "/remote.php/dav/files/user0/welcome.txt" with requesttoken
 		Then downloaded content should start with "Welcome to your ownCloud account!"
 		And the HTTP status code should be "200"
 
 	Scenario: Doing a PROPFIND with a web login should work with CSRF token on the new backend
 		Given user "user0" has been created
-		And logging in using web as "user0"
+		And user "user0" has logged in to a web-style session using the API
 		When sending a "PROPFIND" to "/remote.php/dav/files/user0/welcome.txt" with requesttoken
 		Then the HTTP status code should be "207"
 

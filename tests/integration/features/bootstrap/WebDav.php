@@ -212,7 +212,7 @@ trait WebDav {
 	}
 
 	/**
-	 * @Then /^downloaded content when downloading file "([^"]*)" with range "([^"]*)" should be "([^"]*)"$/
+	 * @Then /^the downloaded content when downloading file "([^"]*)" with range "([^"]*)" should be "([^"]*)"$/
 	 * @param string $fileSource
 	 * @param string $range
 	 * @param string $content

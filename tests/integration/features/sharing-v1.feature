@@ -532,7 +532,7 @@ Feature: sharing
 		And as user "user2"
 		When the user downloads file "/common/sub/textfile0.txt" with range "bytes=9-17" using the API
 		Then the downloaded content should be "test text"
-		And downloaded content when downloading file "/textfile0.txt" with range "bytes=9-17" should be "test text"
+		And the downloaded content when downloading file "/textfile0.txt" with range "bytes=9-17" should be "test text"
 		And user "user2" should see the following elements
 			| /common/sub/textfile0.txt |
 
