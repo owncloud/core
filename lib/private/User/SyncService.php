@@ -106,21 +106,24 @@ class SyncService {
 			// update existing and insert new users
 			foreach ($users as $uid) {
 				try {
-					$a = $this->mapper->getByUid($uid);
-					if ($a->getBackend() !== $backendClass) {
+					$existingAccount = $this->mapper->getByUid($uid);
+					if ($existingAccount->getBackend() !== $backendClass) {
 						$this->logger->warning(
-							"User <$uid> already provided by another backend({$a->getBackend()} != $backendClass), skipping.",
+							"User <$uid> already provided by another backend({$existingAccount->getBackend()} != $backendClass), skipping.",
 							['app' => self::class]
 						);
 						continue;
 					}
-					$this->syncAccount($a, $backend);
-					$this->mapper->update($a);
+					$this->syncAccount($existingAccount, $backend);
+					$this->mapper->update($existingAccount);
+					$a = $existingAccount;
 				} catch(DoesNotExistException $ex) {
-					$this->createNewAccount($backendClass, $uid);
-					$this->syncAccount($a, $backend);
-					$this->mapper->insert($a);
+					$newAccount = $this->createNewAccount($backendClass, $uid);
+					$this->syncAccount($newAccount, $backend);
+					$this->mapper->insert($newAccount);
+					$a = $newAccount;
 				}
+
 				$uid = $a->getUserId(); // get correct case
 				// clean the user's preferences
 				$this->cleanPreferences($uid);
