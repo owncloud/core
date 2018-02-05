@@ -1,7 +1,7 @@
 Feature: sharing
 	Background:
 		Given using API version "1"
-		Given using old DAV path
+		And using old DAV path
 
 	Scenario: Creating a new share with user
 		Given user "user0" has been created
@@ -88,7 +88,7 @@ Feature: sharing
 			| path | welcome.txt |
 			| shareType | 3 |
 			| password | publicpw |
-		And updating last share with
+		And the user updates the last share using the API with
 			| expireDate | +3 days |
 		Then the OCS status code should be "100"
 		And the HTTP status code should be "200"
@@ -100,7 +100,7 @@ Feature: sharing
 		When the user creates a share using the API with share settings
 			| path | FOLDER |
 			| shareType | 3 |
-		And updating last share with
+		And the user updates the last share using the API with
 			| expireDate | +3 days |
 		And getting info of last share
 		Then the OCS status code should be "100"
@@ -131,7 +131,7 @@ Feature: sharing
 		When the user creates a share using the API with share settings
 			| path | FOLDER |
 			| shareType | 3 |
-		And updating last share with
+		And the user updates the last share using the API with
 			| password | publicpw |
 		And getting info of last share
 		Then the OCS status code should be "100"
@@ -161,7 +161,7 @@ Feature: sharing
 		When the user creates a share using the API with share settings
 			| path | FOLDER |
 			| shareType | 3 |
-		And updating last share with
+		And the user updates the last share using the API with
 			| permissions | 7 |
 		And getting info of last share
 		Then the OCS status code should be "100"
@@ -191,7 +191,7 @@ Feature: sharing
 		When the user creates a share using the API with share settings
 			| path | FOLDER |
 			| shareType | 3 |
-		And updating last share with
+		And the user updates the last share using the API with
 			| publicUpload | true |
 		And getting info of last share
 		Then the OCS status code should be "100"
@@ -387,7 +387,7 @@ Feature: sharing
 		And file "textfile0.txt" of user "user0" has been shared with group "group1"
 		And user "user1" has moved file "/textfile0.txt" to "/FOLDER/textfile0.txt"
 		And as user "user0"
-		When updating last share with
+		When the user updates the last share using the API with
 			| permissions | 1 |
 		And getting info of last share
 		Then the OCS status code should be "100"
@@ -621,7 +621,7 @@ Feature: sharing
 		And user "user0" has shared file "TMP" with user "user1"
 		And user "user1" has shared file "TMP" with user "user2"
 		And as user "user1"
-		When updating last share with
+		When the user updates the last share using the API with
 			| permissions | 1 |
 		Then the OCS status code should be "100"
 
@@ -642,7 +642,7 @@ Feature: sharing
 			| shareType | 0 |
 			| shareWith | user2 |
 			| permissions | 21 |
-		When updating last share with
+		When the user updates the last share using the API with
 			| permissions | 31 |
 		Then the OCS status code should be "404"
 
@@ -653,7 +653,7 @@ Feature: sharing
 			| path | welcome.txt |
 			| shareType | 3 |
 		When save last share id
-		And the user has created a share with settings
+		And the user creates a share using the API with share settings
 			| path | welcome.txt |
 			| shareType | 3 |
 		Then share ids should match
@@ -680,7 +680,7 @@ Feature: sharing
 		And user "user0" has uploaded file with content "foo" to "/tmp.txt"
 		And user "user0" has shared file "tmp.txt" with user "user1"
 		And as user "user0"
-		And updating last share with
+		And the user updates the last share using the API with
 			| permissions | 3 |
 		When user "user1" gets the following properties of folder "/tmp.txt" using the API
 			|{http://open-collaboration-services.org/ns}share-permissions |
@@ -692,7 +692,7 @@ Feature: sharing
 		And user "user0" has uploaded file with content "foo" to "/tmp.txt"
 		And user "user0" has shared file "tmp.txt" with user "user1"
 		And as user "user0"
-		And updating last share with
+		And the user updates the last share using the API with
 			| permissions | 17 |
 		When user "user1" gets the following properties of folder "/tmp.txt" using the API
 			|{http://open-collaboration-services.org/ns}share-permissions |
@@ -720,7 +720,7 @@ Feature: sharing
 		And user "user0" has created a folder "/tmp"
 		And user "user0" has shared file "/tmp" with user "user1"
 		And as user "user0"
-		And updating last share with
+		And the user updates the last share using the API with
 			| permissions | 29 |
 		When user "user1" gets the following properties of folder "/tmp" using the API
 			|{http://open-collaboration-services.org/ns}share-permissions |
@@ -732,7 +732,7 @@ Feature: sharing
 		And user "user0" has created a folder "/tmp"
 		And user "user0" has shared file "/tmp" with user "user1"
 		And as user "user0"
-		And updating last share with
+		And the user updates the last share using the API with
 			| permissions | 27 |
 		When user "user1" gets the following properties of folder "/tmp" using the API
 			|{http://open-collaboration-services.org/ns}share-permissions |
@@ -744,7 +744,7 @@ Feature: sharing
 		And user "user0" has created a folder "/tmp"
 		And user "user0" has shared file "/tmp" with user "user1"
 		And as user "user0"
-		And updating last share with
+		And the user updates the last share using the API with
 			| permissions | 23 |
 		When user "user1" gets the following properties of folder "/tmp" using the API
 			|{http://open-collaboration-services.org/ns}share-permissions |
@@ -756,7 +756,7 @@ Feature: sharing
 		And user "user0" has created a folder "/tmp"
 		And user "user0" has shared file "/tmp" with user "user1"
 		And as user "user0"
-		And updating last share with
+		And the user updates the last share using the API with
 			| permissions | 15 |
 		When user "user1" gets the following properties of folder "/tmp" using the API
 			|{http://open-collaboration-services.org/ns}share-permissions |
@@ -1033,9 +1033,9 @@ Feature: sharing
 		And user "user0" has been made a subadmin of group "new-group"
 		And as user "user0"
 		And folder "/FOLDER" of user "user0" has been shared with group "new-group"
-		And updating last share with
+		And the user updates the last share using the API with
 			| permissions | 1 |
-		When updating last share with
+		When the user updates the last share using the API with
 			| permissions | 31 |
 		Then the OCS status code should be "100"
 		And the HTTP status code should be "200"
@@ -1061,7 +1061,7 @@ Feature: sharing
 		And user "user0" has been made a subadmin of group "new-group"
 		And as user "user0"
 		And folder "/FOLDER" of user "user0" has been shared with group "new-group"
-		When updating last share with
+		When the user updates the last share using the API with
 			| permissions | 0 |
 		Then the OCS status code should be "400"
 
@@ -1076,7 +1076,7 @@ Feature: sharing
 			| path | /test |
 			| shareType | 3 |
 			| publicUpload | false |
-		When updating last share with
+		When the user updates the last share using the API with
 			| publicUpload | true |
 		Then the OCS status code should be "404"
 		And the HTTP status code should be "200"
@@ -1092,7 +1092,7 @@ Feature: sharing
 			| path | /test |
 			| shareType | 3 |
 			| publicUpload | false |
-		When updating last share with
+		When the user updates the last share using the API with
 			| publicUpload | true |
 		Then the OCS status code should be "100"
 		And the HTTP status code should be "200"
@@ -1108,7 +1108,7 @@ Feature: sharing
 			| path | /test |
 			| shareType | 3 |
 			| permissions | 1 |
-		When updating last share with
+		When the user updates the last share using the API with
 			| permissions | 15 |
 		Then the OCS status code should be "404"
 		And the HTTP status code should be "200"
@@ -1124,7 +1124,7 @@ Feature: sharing
 			| path | /test |
 			| shareType | 3 |
 			| permissions | 1 |
-		When updating last share with
+		When the user updates the last share using the API with
 			| permissions | 15 |
 		Then the OCS status code should be "100"
 		And the HTTP status code should be "200"
@@ -1133,7 +1133,7 @@ Feature: sharing
 		Given user "user0" has been created
 		And user "user0" has created a folder "/afolder"
 		And as user "user0"
-		And the user has created a share with settings
+		When the user creates a share using the API with share settings
 			| path | /afolder |
 			| shareType | 3 |
 		Then the OCS status code should be "100"
@@ -1148,7 +1148,7 @@ Feature: sharing
 		And user "user0" has been created
 		And user "user0" has created a folder "/afolder"
 		And as user "user0"
-		And the user has created a share with settings
+		When the user creates a share using the API with share settings
 			| path | /afolder |
 			| shareType | 3 |
 		Then the OCS status code should be "100"
@@ -1162,7 +1162,7 @@ Feature: sharing
 		Given user "user0" has been created
 		And user "user0" has created a folder "/afolder"
 		And as user "user0"
-		And the user has created a share with settings
+		When the user creates a share using the API with share settings
 			| path | /afolder |
 			| shareType | 3 |
 			| permissions | 15 |
@@ -1180,7 +1180,7 @@ Feature: sharing
 		And user "user0" has created a folder "/test"
 		And user "user0" has shared folder "/test" with user "user1" with permissions 1
 		And as user "user1"
-		And the user has created a share with settings
+		When the user creates a share using the API with share settings
 			| path | /test |
 			| shareType | 3 |
 			| publicUpload | false |
@@ -1194,7 +1194,7 @@ Feature: sharing
 		And user "user0" has created a folder "/test"
 		And user "user0" has shared folder "/test" with user "user1" with permissions 15
 		And as user "user1"
-		And the user has created a share with settings
+		When the user creates a share using the API with share settings
 			| path | /test |
 			| shareType | 3 |
 			| publicUpload | false |

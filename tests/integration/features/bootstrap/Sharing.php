@@ -88,12 +88,22 @@ trait Sharing {
 
 	/**
 	 * @When /^the user creates a share using the API with share settings$/
-	 * @Given /^the user has created a share with settings$/
 	 * @param \Behat\Gherkin\Node\TableNode|null $body
 	 * @return void
 	 */
 	public function theUserCreatesAShareWithSettings($body) {
 		$this->userCreatesAShareWithSettings($this->currentUser, $body);
+	}
+
+	/**
+	 * @Given /^the user has created a share with settings$/
+	 * @param \Behat\Gherkin\Node\TableNode|null $body
+	 * @return void
+	 */
+	public function theUserHasCreatedAShareWithSettings($body) {
+		$this->userCreatesAShareWithSettings($this->currentUser, $body);
+		$this->theOCSStatusCodeShouldBe(100);
+		$this->theHTTPStatusCodeShouldBe(200);
 	}
 
 	/**
@@ -373,11 +383,11 @@ trait Sharing {
 	}
 
 	/**
-	 * @When /^updating last share with$/
+	 * @When /^the user updates the last share using the API with$/
 	 * @param \Behat\Gherkin\Node\TableNode|null $body
 	 * @return void
 	 */
-	public function updatingLastShare($body) {
+	public function theUserUpdatesTheLastShareWith($body) {
 		$share_id = (string) $this->lastShareData->data[0]->id;
 		$fullUrl = $this->baseUrl . "v{$this->apiVersion}.php/apps/files_sharing/api/v{$this->sharingApiVersion}/shares/$share_id";
 		$client = new Client();
@@ -885,7 +895,7 @@ trait Sharing {
 	}
 
 	/**
-	 * @When /^user "([^"]*)" checks public shares of (file|folder) "([^"]*)"$/
+	 * @Then /^as user "([^"]*)" the public shares of (file|folder) "([^"]*)" should be$/
 	 * @param string $user
 	 * @param string $type
 	 * @param string $path
@@ -946,14 +956,14 @@ trait Sharing {
 	}
 
 	/**
-	 * @When /^user "([^"]*)" deletes public share named "([^"]*)" in (file|folder) "([^"]*)"$/
+	 * @When /^user "([^"]*)" deletes public share named "([^"]*)" in (file|folder) "([^"]*)" using the API$/
 	 * @param string $user
 	 * @param string $name
 	 * @param string $type unused
 	 * @param string $path
 	 * @return void
 	 */
-	public function deletingPublicShareNamed($user, $name, $type, $path) {
+	public function userDeletesPublicShareNamedUsingTheAPI($user, $name, $type, $path) {
 		$share_id = $this->getPublicShareIDByName($user, $path, $name);
 		$url = "/apps/files_sharing/api/v{$this->sharingApiVersion}/shares/$share_id";
 		$this->sendingToWith("DELETE", $url, null);
