@@ -26,9 +26,11 @@ namespace OC\User;
 use OC\Authentication\Exceptions\InvalidTokenException;
 use OC\Authentication\Exceptions\PasswordlessTokenException;
 use OC\Authentication\Token\IProvider;
+use OC\Authentication\Token\IToken;
 use OCP\Authentication\IAuthModule;
 use OCP\IRequest;
 use OCP\ISession;
+use OCP\IUser;
 use OCP\IUserManager;
 use OCP\Session\Exceptions\SessionNotAvailableException;
 
@@ -56,6 +58,63 @@ class TokenAuthModule implements IAuthModule {
 	 * @inheritdoc
 	 */
 	public function auth(IRequest $request) {
+		$dbToken = $this->getTokenForAppPassword($request, $token);
+		if ($dbToken === null) {
+			$dbToken = $this->getToken($request, $token);
+		}
+		if ($dbToken === null) {
+			return null;
+		}
+
+		// When logging in with token, the password must be decrypted first before passing to login hook
+		try {
+			$this->password = $this->tokenProvider->getPassword($dbToken, $token);
+		} catch (PasswordlessTokenException $ex) {
+			// Ignore and use empty string instead
+		}
+
+		$uid = $dbToken->getUID();
+		return $this->manager->get($uid);
+	}
+
+	/**
+	 * @inheritdoc
+	 */
+	public function getUserPassword(IRequest $request) {
+		return $this->password;
+	}
+
+	/**
+	 * @param IRequest $request
+	 * @return null|IToken
+	 */
+	private function getTokenForAppPassword(IRequest $request, &$token) {
+		if (!isset($request->server['PHP_AUTH_USER'], $request->server['PHP_AUTH_PW'])) {
+			return null;
+		}
+
+		try {
+			$token = $request->server['PHP_AUTH_PW'];
+			$dbToken = $this->tokenProvider->getToken($token);
+			if ($dbToken->getUID() !== $request->server['PHP_AUTH_USER']) {
+				throw new \Exception('Invalid credentials');
+			}
+
+			return $dbToken;
+		} catch (InvalidTokenException $ex) {
+			// invalid app passwords do NOT throw an exception because basic
+			// auth headers can be evaluated properly in the basic auth module
+			$token = null;
+			return null;
+		}
+	}
+
+	/**
+	 * @param IRequest $request
+	 * @return null|IToken
+	 * @throws \Exception
+	 */
+	private function getToken(IRequest $request, &$token) {
 		$authHeader = $request->getHeader('Authorization');
 		if ($authHeader === null || strpos($authHeader, 'token ') === false) {
 			// No auth header, let's try session id
@@ -69,26 +128,10 @@ class TokenAuthModule implements IAuthModule {
 		}
 
 		try {
-			$dbToken = $this->tokenProvider->getToken($token);
+			return $this->tokenProvider->getToken($token);
 		} catch (InvalidTokenException $ex) {
+			$token = null;
 			return null;
 		}
-		$uid = $dbToken->getUID();
-
-		// When logging in with token, the password must be decrypted first before passing to login hook
-		try {
-			$this->password = $this->tokenProvider->getPassword($dbToken, $token);
-		} catch (PasswordlessTokenException $ex) {
-			// Ignore and use empty string instead
-		}
-
-		return $this->manager->get($uid);
-	}
-
-	/**
-	 * @inheritdoc
-	 */
-	public function getUserPassword(IRequest $request) {
-		return $this->password;
 	}
 }
