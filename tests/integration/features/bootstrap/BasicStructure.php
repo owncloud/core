@@ -353,7 +353,7 @@ trait BasicStructure {
 		$this->extracRequestTokenFromResponse($response);
 
 		// Login and extract new token
-		$password = ($user === 'admin') ? 'admin' : '123456';
+		$password = $this->getPasswordForUser($user);
 		$client = new Client();
 		$response = $client->post(
 			$loginUrl,
@@ -475,14 +475,14 @@ trait BasicStructure {
 	/**
 	 * @return string
 	 */
-	private function getAdminUserName() {
+	public function getAdminUserName() {
 		return (string) $this->adminUser[0];
 	}
 
 	/**
 	 * @return string
 	 */
-	private function getAdminPassword() {
+	public function getAdminPassword() {
 		return (string) $this->adminUser[1];
 	}
 
@@ -490,8 +490,8 @@ trait BasicStructure {
 	 * @param string $userName
 	 * @return string
 	 */
-	private function getPasswordForUser($userName) {
-		if ($userName === 'admin') {
+	public function getPasswordForUser($userName) {
+		if ($userName === $this->getAdminUserName()) {
 			return (string) $this->getAdminPassword();
 		} else {
 			return (string) $this->regularUserPassword;
@@ -502,12 +502,15 @@ trait BasicStructure {
 	 * @param string $userName
 	 * @return array
 	 */
-	private function getAuthOptionForUser($userName) {
-		if ($userName === 'admin') {
-			return $this->adminUser;
-		} else {
-			return [$userName, $this->getPasswordForUser($userName)];
-		}
+	public function getAuthOptionForUser($userName) {
+		return [$userName, $this->getPasswordForUser($userName)];
+	}
+
+	/**
+	 * @return array
+	 */
+	public function getAuthOptionForAdmin() {
+		return $this->getAuthOptionForUser($this->getAdminUserName());
 	}
 
 	/**

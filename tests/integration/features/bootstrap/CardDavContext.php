@@ -21,6 +21,7 @@
 
 require __DIR__ . '/../../../../lib/composer/autoload.php';
 
+use Behat\Behat\Hook\Scope\BeforeScenarioScope;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\BadResponseException;
 use GuzzleHttp\Message\ResponseInterface;
@@ -36,6 +37,11 @@ class CardDavContext implements \Behat\Behat\Context\Context {
 	private $responseXml = '';
 
 	/**
+	 * @var FeatureContext
+	 */
+	private $featureContext;
+
+	/**
 	 * @param string $baseUrl
 	 */
 	public function __construct($baseUrl) {
@@ -48,8 +54,17 @@ class CardDavContext implements \Behat\Behat\Context\Context {
 		}
 	}
 
-	/** @BeforeScenario @carddav*/
-	public function setUpScenario() {
+	/**
+	 * @BeforeScenario @carddav
+	 *
+	 * @param BeforeScenarioScope $scope
+	 * @return void
+	 */
+	public function setUpScenario(BeforeScenarioScope $scope) {
+		// Get the environment
+		$environment = $scope->getEnvironment();
+		// Get all the contexts you need in this context
+		$this->featureContext = $environment->getContext('FeatureContext');
 		$this->client = new Client();
 		$this->responseXml = '';
 	}
@@ -61,10 +76,7 @@ class CardDavContext implements \Behat\Behat\Context\Context {
 			$this->client->delete(
 				$davUrl,
 				[
-					'auth' => [
-						'admin',
-						'admin',
-					],
+					'auth' => $this->featureContext->getAuthOptionForAdmin()
 				]
 			);
 		} catch (BadResponseException $e) {}
@@ -80,15 +92,11 @@ class CardDavContext implements \Behat\Behat\Context\Context {
 	public function requestsAddressbookWithStatuscode($user, $addressBook, $statusCode) {
 		$davUrl = $this->baseUrl . '/remote.php/dav/addressbooks/users/'.$addressBook;
 
-		$password = ($user === 'admin') ? 'admin' : '123456';
 		try {
 			$this->response = $this->client->get(
 				$davUrl,
 				[
-					'auth' => [
-						$user,
-						$password,
-					],
+					'auth' => $this->featureContext->getAuthOptionForUser($user)
 				]
 			);
 		} catch (BadResponseException $e) {
@@ -122,7 +130,6 @@ class CardDavContext implements \Behat\Behat\Context\Context {
 	 */
 	public function createsAnAddressbookNamedWithStatuscode($user, $addressBook, $statusCode) {
 		$davUrl = $this->baseUrl . '/remote.php/dav/addressbooks/users/'.$user.'/'.$addressBook;
-		$password = ($user === 'admin') ? 'admin' : '123456';
 
 		$request = $this->client->createRequest(
 			'MKCOL',
@@ -138,10 +145,7 @@ class CardDavContext implements \Behat\Behat\Context\Context {
       </d:prop>
     </d:set>
   </d:mkcol>',
-				'auth' => [
-					$user,
-					$password,
-				],
+				'auth' => $this->featureContext->getAuthOptionForUser($user),
 				'headers' => [
 					'Content-Type' => 'application/xml;charset=UTF-8',
 				],

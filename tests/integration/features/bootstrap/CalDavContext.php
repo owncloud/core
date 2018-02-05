@@ -21,6 +21,7 @@
 
 require __DIR__ . '/../../../../lib/composer/autoload.php';
 
+use Behat\Behat\Hook\Scope\BeforeScenarioScope;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\BadResponseException;
 use GuzzleHttp\Message\ResponseInterface;
@@ -36,6 +37,11 @@ class CalDavContext implements \Behat\Behat\Context\Context {
 	private $responseXml = '';
 
 	/**
+	 * @var FeatureContext
+	 */
+	private $featureContext;
+
+	/**
 	 * @param string $baseUrl
 	 */
 	public function __construct($baseUrl) {
@@ -48,8 +54,17 @@ class CalDavContext implements \Behat\Behat\Context\Context {
 		}
 	}
 
-	/** @BeforeScenario @caldav */
-	public function setUpScenario() {
+	/**
+	 * @BeforeScenario @caldav
+	 *
+	 * @param BeforeScenarioScope $scope
+	 * @return void
+	 */
+	public function setUpScenario(BeforeScenarioScope $scope) {
+		// Get the environment
+		$environment = $scope->getEnvironment();
+		// Get all the contexts you need in this context
+		$this->featureContext = $environment->getContext('FeatureContext');
 		$this->client = new Client();
 		$this->responseXml = '';
 	}
@@ -61,10 +76,7 @@ class CalDavContext implements \Behat\Behat\Context\Context {
 			$this->client->delete(
 				$davUrl,
 				[
-					'auth' => [
-						'admin',
-						'admin',
-					],
+					'auth' => $this->featureContext->getAuthOptionForAdmin()
 				]
 			);
 		} catch (BadResponseException $e) {}
@@ -78,15 +90,11 @@ class CalDavContext implements \Behat\Behat\Context\Context {
 	public function requestsCalendar($user, $calendar)  {
 		$davUrl = $this->baseUrl . '/remote.php/dav/calendars/'.$calendar;
 
-		$password = ($user === 'admin') ? 'admin' : '123456';
 		try {
 			$this->response = $this->client->get(
 				$davUrl,
 				[
-					'auth' => [
-						$user,
-						$password,
-					]
+					'auth' => $this->featureContext->getAuthOptionForUser($user)
 				]
 			);
 		} catch (BadResponseException $e) {
@@ -163,17 +171,13 @@ class CalDavContext implements \Behat\Behat\Context\Context {
 	 */
 	public function createsACalendarNamed($user, $name) {
 		$davUrl = $this->baseUrl . '/remote.php/dav/calendars/'.$user.'/'.$name;
-		$password = ($user === 'admin') ? 'admin' : '123456';
 
 		$request = $this->client->createRequest(
 			'MKCALENDAR',
 			$davUrl,
 			[
 				'body' => '<c:mkcalendar xmlns:c="urn:ietf:params:xml:ns:caldav" xmlns:d="DAV:" xmlns:a="http://apple.com/ns/ical/" xmlns:o="http://owncloud.org/ns"><d:set><d:prop><d:displayname>test</d:displayname><o:calendar-enabled>1</o:calendar-enabled><a:calendar-color>#21213D</a:calendar-color><c:supported-calendar-component-set><c:comp name="VEVENT"/></c:supported-calendar-component-set></d:prop></d:set></c:mkcalendar>',
-				'auth' => [
-					$user,
-					$password,
-				],
+				'auth' => $this->featureContext->getAuthOptionForUser($user)
 			]
 		);
 
