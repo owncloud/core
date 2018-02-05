@@ -548,7 +548,7 @@ trait BasicStructure {
 	}
 
 	/**
-	 * @When requesting status.php
+	 * @When the admin requests status.php using the API
 	 */
 	public function getStatusPhp(){
 		$fullUrl = $this->baseUrlWithoutOCSAppendix() . "status.php";
@@ -573,7 +573,7 @@ trait BasicStructure {
 	}
 
 	/**
-	 * @Then the status.php with versions fixed responded should match with
+	 * @Then the status.php response should match with
 	 * @param PyStringNode $jsonExpected
 	 */
 	public function statusPhpRespondedShouldMatch(PyStringNode $jsonExpected) {
