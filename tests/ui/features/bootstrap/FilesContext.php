@@ -166,7 +166,7 @@ class FilesContext extends RawMinkContext implements Context {
 	}
 
 	/**
-	 * @When the files page is reloaded
+	 * @When the files/favorites page is reloaded
 	 * @return void
 	 */
 	public function theFilesPageIsReloaded() {
@@ -931,6 +931,7 @@ class FilesContext extends RawMinkContext implements Context {
 
 	/**
 	 * @When I mark the file/folder :fileOrFolderName as favorite
+	 * @Given the file/folder :fileOrFolderName is marked as favorite 
 	 * @param string $fileOrFolderName
 	 * @return void
 	 */
@@ -951,6 +952,32 @@ class FilesContext extends RawMinkContext implements Context {
 			throw new Exception(
 				__METHOD__ .
 				" The file $fileOrFolderName is not marked as favorite but should be"
+			);
+		}
+	}
+	
+	/**
+	 * @When I unmark the file/folder :fileOrFolderName
+	 * @param string $fileOrFolderName
+	 * @return void
+	 */
+	public function iUnmarkTheFolder($fileOrFolderName) {
+		$fileRow = $this->getCurrentPageObject()->findFileRowByName($fileOrFolderName, $this->getSession());
+		$fileRow->unmarkFavorite();
+		$this->getCurrentPageObject()->waitTillFileRowsAreReady($this->getSession());
+	}
+	
+	/**
+	 * @Then the file/folder :fileOrFolderName should not be marked as favorite
+	 * @param string $fileOrFolderName
+	 * @return void
+	 */
+	public function theFolderShouldNotBeMarkedAsFavorite($fileOrFolderName) {
+		$fileRow = $this->filesPage->findFileRowByName($fileOrFolderName, $this->getSession());
+		if ($fileRow->isMarkedAsFavorite() === true) {
+			throw new Exception(
+				__METHOD__ .
+				" The file $fileOrFolderName is marked as favorite but should not be"
 			);
 		}
 	}
