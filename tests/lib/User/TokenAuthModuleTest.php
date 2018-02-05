@@ -31,6 +31,7 @@ use OCP\IRequest;
 use OCP\ISession;
 use OCP\IUser;
 use OCP\IUserManager;
+use OCP\Session\Exceptions\SessionNotAvailableException;
 use Test\TestCase;
 
 class TokenAuthModuleTest extends TestCase {
@@ -54,6 +55,7 @@ class TokenAuthModuleTest extends TestCase {
 		$this->request = $this->createMock(IRequest::class);
 		$this->user = $this->createMock(IUser::class);
 
+		$this->session->expects($this->any())->method('getId')->willThrowException(new SessionNotAvailableException());
 		$this->user->expects($this->any())->method('getUID')->willReturn('user1');
 
 		$this->tokenProvider->expects($this->any())->method('getToken')
@@ -82,16 +84,33 @@ class TokenAuthModuleTest extends TestCase {
 
 	/**
 	 * @dataProvider providesCredentials
-	 * @param bool $expectsUser
+	 * @param mixed $expectedResult
 	 * @param string $authHeader
 	 * @param string $password
 	 */
-	public function testModule($expectsUser, $authHeader, $password = '') {
+	public function testModule($expectedResult, $authHeader, $password = '') {
 		$module = new TokenAuthModule($this->session, $this->tokenProvider, $this->manager);
-		$this->request->expects($this->any())->method('getHeader')->willReturn($authHeader);
+		if ($authHeader === 'basic') {
+			$this->request->server = [
+				'PHP_AUTH_USER' => 'user1',
+				'PHP_AUTH_PW' => 'valid-token',
+			];
+		} else {
+			$this->request->server = [
+				'PHP_AUTH_USER' => '',
+				'PHP_AUTH_PW' => '',
+			];
+			$this->request->expects($this->any())->method('getHeader')->willReturn($authHeader);
+		}
 
-		$this->assertEquals($expectsUser ? $this->user : null, $module->auth($this->request));
-		$this->assertEquals($password, $module->getUserPassword($this->request));
+		if ($expectedResult instanceof \Exception) {
+			$this->expectException(get_class($expectedResult));
+			$this->expectExceptionMessage($expectedResult->getMessage());
+			$module->auth($this->request);
+		} else {
+			$this->assertEquals($expectedResult ? $this->user : null, $module->auth($this->request));
+			$this->assertEquals($password, $module->getUserPassword($this->request));
+		}
 	}
 
 	public function providesCredentials() {
@@ -99,7 +118,8 @@ class TokenAuthModuleTest extends TestCase {
 			'no auth header' => [false, ''],
 			'not valid token' => [false, 'token whateverbutnothingvalid'],
 			'valid token' => [true, 'token valid-token'],
-			'valid token with password' => [true, 'token valid-token-with-password', 'supersecret']
+			'valid token with password' => [true, 'token valid-token-with-password', 'supersecret'],
+			'valid app password' => [true, 'basic'],
 		];
 	}
 }
