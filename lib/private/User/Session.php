@@ -39,6 +39,7 @@ use OC\Authentication\Exceptions\PasswordlessTokenException;
 use OC\Authentication\Exceptions\PasswordLoginForbiddenException;
 use OC\Authentication\Token\IProvider;
 use OC\Authentication\Token\IToken;
+use OC\HintException;
 use OC\Hooks\Emitter;
 use OC\Hooks\PublicEmitter;
 use OC_User;
@@ -55,7 +56,6 @@ use OCP\IConfig;
 use OCP\IRequest;
 use OCP\ISession;
 use OCP\IUser;
-use OCP\IUserBackend;
 use OCP\IUserManager;
 use OCP\IUserSession;
 use OCP\Session\Exceptions\SessionNotAvailableException;
@@ -185,7 +185,7 @@ class Session implements IUserSession, Emitter {
 	 * @param IUser|null $user
 	 */
 	public function setUser($user) {
-		if (is_null($user)) {
+		if (null === $user) {
 			$this->session->remove('user_id');
 		} else {
 			$this->session->set('user_id', $user->getUID());
@@ -205,13 +205,13 @@ class Session implements IUserSession, Emitter {
 		if (OC_User::isIncognitoMode()) {
 			return null;
 		}
-		if (is_null($this->activeUser)) {
+		if (null === $this->activeUser) {
 			$uid = $this->session->get('user_id');
-			if (is_null($uid)) {
+			if (null === $uid) {
 				return null;
 			}
 			$this->activeUser = $this->manager->get($uid);
-			if (is_null($this->activeUser)) {
+			if (null === $this->activeUser) {
 				return null;
 			}
 		}
@@ -232,7 +232,7 @@ class Session implements IUserSession, Emitter {
 		$token = null;
 		$appPassword = $this->session->get('app_password');
 
-		if (is_null($appPassword)) {
+		if (null === $appPassword) {
 			try {
 				$token = $this->session->getId();
 			} catch (SessionNotAvailableException $ex) {
@@ -255,7 +255,7 @@ class Session implements IUserSession, Emitter {
 	 */
 	public function isLoggedIn() {
 		$user = $this->getUser();
-		if (is_null($user)) {
+		if (null === $user) {
 			return false;
 		}
 
@@ -268,7 +268,7 @@ class Session implements IUserSession, Emitter {
 	 * @param string|null $loginName for the logged in user
 	 */
 	public function setLoginName($loginName) {
-		if (is_null($loginName)) {
+		if (null === $loginName) {
 			$this->session->remove('loginname');
 		} else {
 			$this->session->set('loginname', $loginName);
@@ -354,7 +354,7 @@ class Session implements IUserSession, Emitter {
 	}
 
 	protected function supportsCookies(IRequest $request) {
-		if (!is_null($request->getCookie('cookie_test'))) {
+		if (null !== $request->getCookie('cookie_test')) {
 			return true;
 		}
 		setcookie('cookie_test', 'test', $this->timeFactory->getTime() + 3600);
@@ -372,7 +372,7 @@ class Session implements IUserSession, Emitter {
 			['uid' => &$username]
 		);
 		$user = $this->manager->get($username);
-		if (is_null($user)) {
+		if (null === $user) {
 			$users = $this->manager->getByEmail($username);
 			if (empty($users)) {
 				return false;
@@ -432,7 +432,7 @@ class Session implements IUserSession, Emitter {
 				\OC::$server->getLogger()->warning(
 					'Skeleton not created due to missing read permission in skeleton directory'
 				);
-			} catch(\OC\HintException $hintEx) {
+			} catch(HintException $hintEx) {
 				// only if Skeleton no existing Dir
 				\OC::$server->getLogger()->error($hintEx->getMessage());
 			}
@@ -536,7 +536,7 @@ class Session implements IUserSession, Emitter {
 		$this->manager->emit('\OC\User', 'preLogin', [$uid, $password]);
 
 		$user = $this->manager->get($uid);
-		if (is_null($user)) {
+		if (null === $user) {
 			// user does not exist
 			return false;
 		}
@@ -591,11 +591,11 @@ class Session implements IUserSession, Emitter {
 			if ($apacheBackend instanceof UserInterface) {
 				$backend = $apacheBackend;
 			} else {
-				\OC::$server->getLogger()->error("Apache backend failed to provide a valid backend for the user");
+				\OC::$server->getLogger()->error('Apache backend failed to provide a valid backend for the user');
 				return false;
 			}
 		} else {
-			\OC::$server->getLogger()->debug("No valid user detected from apache user backend");
+			\OC::$server->getLogger()->debug('No valid user detected from apache user backend');
 			return false;
 		}
 
@@ -661,7 +661,7 @@ class Session implements IUserSession, Emitter {
 	 * @return boolean
 	 */
 	public function createSessionToken(IRequest $request, $uid, $loginName, $password = null) {
-		if (is_null($this->manager->get($uid))) {
+		if (null === $this->manager->get($uid)) {
 			// User does not exist
 			return false;
 		}
@@ -687,7 +687,7 @@ class Session implements IUserSession, Emitter {
 	 * @return string|null the password or null if none was set in the token
 	 */
 	private function getPassword($password) {
-		if (is_null($password)) {
+		if (null === $password) {
 			// This is surely no token ;-)
 			return null;
 		}
@@ -715,7 +715,7 @@ class Session implements IUserSession, Emitter {
 		// administrator could change this 5 minutes timeout
 		$lastCheck = $dbToken->getLastCheck() ? : 0;
 		$now = $this->timeFactory->getTime();
-		$last_check_timeout = intval($this->config->getAppValue('core', 'last_check_timeout', 5));
+		$last_check_timeout = (int)$this->config->getAppValue('core', 'last_check_timeout', 5);
 		if ($lastCheck > ($now - 60 * $last_check_timeout)) {
 			// Checked performed recently, nothing to do now
 			return true;
@@ -729,7 +729,7 @@ class Session implements IUserSession, Emitter {
 		} catch (PasswordlessTokenException $ex) {
 			// Token has no password
 
-			if (!is_null($this->activeUser) && !$this->activeUser->isEnabled()) {
+			if (null !== $this->activeUser && !$this->activeUser->isEnabled()) {
 				$this->tokenProvider->invalidateToken($token);
 				return false;
 			}
@@ -740,7 +740,7 @@ class Session implements IUserSession, Emitter {
 		}
 
 		if ($this->manager->checkPassword($dbToken->getLoginName(), $pwd) === false
-			|| (!is_null($this->activeUser) && !$this->activeUser->isEnabled())) {
+			|| (null !== $this->activeUser && !$this->activeUser->isEnabled())) {
 			$this->tokenProvider->invalidateToken($token);
 			// Password has changed or user was disabled -> log user out
 			return false;
@@ -767,7 +767,7 @@ class Session implements IUserSession, Emitter {
 		}
 
 		// Check if login names match
-		if (!is_null($user) && $dbToken->getLoginName() !== $user) {
+		if (null !== $user && $dbToken->getLoginName() !== $user) {
 			// TODO: this makes it imposssible to use different login names on browser and client
 			// e.g. login by e-mail 'user@example.com' on browser for generating the token will not
 			//      allow to use the client token with the login name 'user'.
@@ -840,7 +840,7 @@ class Session implements IUserSession, Emitter {
 	 */
 	private function loginUser($user, $password) {
 		return $this->emittingCall(function () use (&$user, &$password) {
-			if (is_null($user)) {
+			if (null === $user) {
 				return false;
 			}
 
@@ -857,7 +857,7 @@ class Session implements IUserSession, Emitter {
 			$this->manager->emit('\OC\User', 'postLogin', [$user, $password]);
 
 			if ($this->isLoggedIn()) {
-				$this->prepareUserLogin(false);
+				$this->prepareUserLogin();
 			} else {
 				$message = \OC::$server->getL10N('lib')->t('Login canceled by app');
 				throw new LoginException($message);
@@ -878,7 +878,7 @@ class Session implements IUserSession, Emitter {
 		$this->session->regenerateId();
 		$this->manager->emit('\OC\User', 'preRememberedLogin', [$uid]);
 		$user = $this->manager->get($uid);
-		if (is_null($user)) {
+		if (null === $user) {
 			// user does not exist
 			return false;
 		}
@@ -921,7 +921,7 @@ class Session implements IUserSession, Emitter {
 
 			$this->manager->emit('\OC\User', 'logout');
 			$user = $this->getUser();
-			if (!is_null($user)) {
+			if (null !== $user) {
 				try {
 					$this->tokenProvider->invalidateToken($this->session->getId());
 				} catch (SessionNotAvailableException $ex) {
@@ -1012,8 +1012,8 @@ class Session implements IUserSession, Emitter {
 	 */
 	private function getAuthModules($includeBuiltIn) {
 		if ($includeBuiltIn) {
-			yield new BasicAuthModule($this->manager);
 			yield new TokenAuthModule($this->session, $this->tokenProvider, $this->manager);
+			yield new BasicAuthModule($this->manager);
 		}
 
 		$modules = $this->serviceLoader->load(['auth-modules']);
