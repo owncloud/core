@@ -128,7 +128,7 @@ Feature: favorite
         And user "user1" has been created
         And user "user0" has created a folder "/shared"
         And user "user0" has moved file "/textfile0.txt" to "/shared/shared_file.txt"
-        And folder "/shared" of user "user0" has been shared with user "user1"
+        And user "user0" has shared folder "/shared" with user "user1"
         And user "user1" has favorited element "/shared/shared_file.txt"
         When user "user1" moves file "/shared/shared_file.txt" to "/taken_out.txt" using the API
         Then user "user1" in folder "/" should have favorited the following elements

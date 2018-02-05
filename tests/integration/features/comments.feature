@@ -14,7 +14,7 @@ Feature: Comments
     Given user "user0" has been created
     And user "user1" has been created
     And user "user0" has uploaded file "data/textfile.txt" to "/myFileToComment.txt"
-    And file "/myFileToComment.txt" of user "user0" has been shared with user "user1"
+    And user "user0" has shared file "/myFileToComment.txt" with user "user1"
     When user "user1" comments with content "A comment from sharee" on file "/myFileToComment.txt" using the API
     And user "user0" comments with content "A comment from sharer" on file "/myFileToComment.txt" using the API
     Then the HTTP status code should be "201"
@@ -48,7 +48,7 @@ Feature: Comments
     And user "user1" has been created
     And as user "user0"
     And user "user0" has uploaded file "data/textfile.txt" to "/myFileToComment.txt"
-    And file "/myFileToComment.txt" of user "user0" has been shared with user "user1"
+    And user "user0" has shared file "/myFileToComment.txt" with user "user1"
     And user "user0" has commented with content "File owner comment" on file "/myFileToComment.txt"
     And user "user1" has commented with content "Sharee comment" on file "/myFileToComment.txt"
     And user "user1" should have the following comments on file "/myFileToComment.txt"
@@ -71,7 +71,7 @@ Feature: Comments
     Given user "user0" has been created
     And user "user1" has been created
     And user "user0" has uploaded file "data/textfile.txt" to "/myFileToComment.txt"
-    And file "/myFileToComment.txt" of user "user0" has been shared with user "user1"
+    And user "user0" has shared file "/myFileToComment.txt" with user "user1"
     And user "user1" has commented with content "Sharee comment" on file "/myFileToComment.txt"
     When user "user1" edits the last created comment with content "My edited comment" using the API
     Then the HTTP status code should be "207"
@@ -82,7 +82,7 @@ Feature: Comments
     Given user "user0" has been created
     And user "user1" has been created
     And user "user0" has uploaded file "data/textfile.txt" to "/myFileToComment.txt"
-    And file "/myFileToComment.txt" of user "user0" has been shared with user "user1"
+    And user "user0" has shared file "/myFileToComment.txt" with user "user1"
     And user "user1" has commented with content "Sharee comment" on file "/myFileToComment.txt"
     And user "user0" should have the following comments on file "/myFileToComment.txt"
             | user1 | Sharee comment |
@@ -117,7 +117,7 @@ Feature: Comments
     Given user "user0" has been created
     And user "user1" has been created
     And user "user0" has created a folder "/FOLDER_TO_SHARE"
-    And folder "/FOLDER_TO_SHARE" of user "user0" has been shared with user "user1"
+    And user "user0" has shared folder "/FOLDER_TO_SHARE" with user "user1"
     When user "user1" comments with content "A comment from sharee" on folder "/FOLDER_TO_SHARE" using the API
     And user "user0" comments with content "A comment from sharer" on folder "/FOLDER_TO_SHARE" using the API
     Then the HTTP status code should be "201"

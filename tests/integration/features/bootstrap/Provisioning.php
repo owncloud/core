@@ -781,8 +781,11 @@ trait Provisioning {
 			1 => ['value', $quota],
 		]);
 
+		$previous_user = $this->currentUser;
+		$this->currentUser = "admin";
 		// method used from BasicStructure trait
 		$this->sendingToWith("PUT", "/cloud/users/" . $user, $body);
+		$this->currentUser = $previous_user;
 		PHPUnit_Framework_Assert::assertEquals(200, $this->response->getStatusCode());
 	}
 

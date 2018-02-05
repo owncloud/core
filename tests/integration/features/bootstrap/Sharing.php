@@ -592,6 +592,7 @@ trait Sharing {
 
 	/**
 	 * @When /^user "([^"]*)" shares (file|folder|entry) "([^"]*)" with user "([^"]*)"( with permissions ([\d]*))? using the API$/
+	 * @Given /^user "([^"]*)" has shared (file|folder|entry) "([^"]*)" with user "([^"]*)"( with permissions ([\d]*))?$/
 	 *
 	 * @param string $user1
 	 * @param string $entry unused
@@ -618,6 +619,7 @@ trait Sharing {
 	 * @param string $user2
 	 * @param null $withPerms unused
 	 * @param int $permissions
+	 * @deprecated prefer using the gherkin forms for userSharesFileWithUserUsingTheAPI()
 	 * @return void
 	 */
 	public function fileOfUserHasBeenSharedWithUser(
@@ -644,9 +646,9 @@ trait Sharing {
 			);
 		}
 		$this->response = $client->get($fullUrl, $options);
-		PHPUnit_Framework_Assert::assertEquals(
-			true,
-			$this->isUserOrGroupInSharedData($user2, $permissions)
+		PHPUnit_Framework_Assert::assertTrue(
+			$this->isUserOrGroupInSharedData($user2, $permissions),
+			"User $user1 failed to share $filepath with user $user2"
 		);
 	}
 

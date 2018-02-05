@@ -191,7 +191,7 @@ Feature: webdav-related-new-endpoint
 		And user "user1" has been created
 		And the quota of user "user1" has been set to "1 KB"
 		And user "user0" has added file "/user0.txt" of 93 bytes
-		And file "user0.txt" of user "user0" has been shared with user "user1"
+		And user "user0" has shared file "user0.txt" with user "user1"
 		When user "user1" gets the following properties of folder "/" using the API
 		  |{DAV:}quota-available-bytes|
 		Then the single response should contain a property "{DAV:}quota-available-bytes" with value "622"
@@ -526,8 +526,8 @@ Feature: webdav-related-new-endpoint
 		And user "user1" has been created
 		And user "user0" has created a folder "/folderA"
 		And user "user0" has created a folder "/folderB"
-		And folder "/folderA" of user "user0" has been shared with user "user1"
-		And folder "/folderB" of user "user0" has been shared with user "user1"
+		And user "user0" has shared folder "/folderA" with user "user1"
+		And user "user0" has shared folder "/folderB" with user "user1"
 		And user "user1" has created a folder "/folderA/ONE"
 		And user "user1" has stored id of file "/folderA/ONE"
 		And user "user1" has created a folder "/folderA/ONE/TWO"

@@ -20,7 +20,7 @@ Feature: trashbin-new-endpoint
 		And user "user1" has been created
 		And user "user0" has created a folder "/shared"
 		And user "user0" has moved file "/textfile0.txt" to "/shared/shared_file.txt"
-		And folder "/shared" of user "user0" has been shared with user "user1"
+		And user "user0" has shared folder "/shared" with user "user1"
 		When user "user0" deletes file "/shared/shared_file.txt" using the API
 		Then as "user0" the folder with original path "/shared/shared_file.txt" exists in trash
 
@@ -29,7 +29,7 @@ Feature: trashbin-new-endpoint
 		And user "user1" has been created
 		And user "user0" has created a folder "/shared"
 		And user "user0" has moved file "/textfile0.txt" to "/shared/shared_file.txt"
-		And folder "/shared" of user "user0" has been shared with user "user1"
+		And user "user0" has shared folder "/shared" with user "user1"
 		When user "user0" deletes folder "/shared" using the API
 		Then as "user0" the folder with original path "/shared" exists in trash
 
@@ -38,7 +38,7 @@ Feature: trashbin-new-endpoint
 		And user "user1" has been created
 		And user "user0" has created a folder "/shared"
 		And user "user0" has moved file "/textfile0.txt" to "/shared/shared_file.txt"
-		And folder "/shared" of user "user0" has been shared with user "user1"
+		And user "user0" has shared folder "/shared" with user "user1"
 		And user "user1" has moved folder "/shared" to "/renamed_shared"
 		When user "user1" deletes folder "/renamed_shared" using the API
 		Then as "user1" the folder with original path "/renamed_shared" does not exist in trash
@@ -48,7 +48,7 @@ Feature: trashbin-new-endpoint
 		And user "user1" has been created
 		And user "user0" has created a folder "/shared"
 		And user "user0" has moved file "/textfile0.txt" to "/shared/shared_file.txt"
-		And folder "/shared" of user "user0" has been shared with user "user1"
+		And user "user0" has shared folder "/shared" with user "user1"
 		And user "user1" has moved file "/shared" to "/renamed_shared"
 		When user "user1" deletes file "/renamed_shared/shared_file.txt" using the API
 		Then as "user1" the file with original path "/renamed_shared/shared_file.txt" exists in trash
@@ -58,7 +58,7 @@ Feature: trashbin-new-endpoint
 		And user "user1" has been created
 		And user "user0" has created a folder "/shared"
 		And user "user0" has moved file "/textfile0.txt" to "/shared/shared_file.txt"
-		And folder "/shared" of user "user0" has been shared with user "user1"
+		And user "user0" has shared folder "/shared" with user "user1"
 		And user "user1" has moved file "/shared" to "/renamed_shared"
 		And user "user1" has deleted file "/renamed_shared/shared_file.txt"
 		And logging in using web as "user1"

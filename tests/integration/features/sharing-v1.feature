@@ -288,7 +288,7 @@ Feature: sharing
 		Given user "user0" has been created
 		And user "user1" has been created
 		And user "user0" has moved file "/textfile0.txt" to "/file_to_share.txt"
-		And file "file_to_share.txt" of user "user0" has been shared with user "user1"
+		And user "user0" has shared file "file_to_share.txt" with user "user1"
 		And as user "user0"
 		When the user sends HTTP method "GET" to API endpoint "/apps/files_sharing/api/v1/shares"
 		Then the OCS status code should be "100"
@@ -298,7 +298,7 @@ Feature: sharing
 	Scenario: getting all shares of a user using another user
 		Given user "user0" has been created
 		And user "user1" has been created
-		And file "textfile0.txt" of user "user0" has been shared with user "user1"
+		And user "user0" has shared file "textfile0.txt" with user "user1"
 		And as user "admin"
 		When the user sends HTTP method "GET" to API endpoint "/apps/files_sharing/api/v1/shares"
 		Then the OCS status code should be "100"
@@ -310,8 +310,8 @@ Feature: sharing
 		And user "user1" has been created
 		And user "user2" has been created
 		And user "user3" has been created
-		And file "textfile0.txt" of user "user0" has been shared with user "user1"
-		And file "textfile0.txt" of user "user0" has been shared with user "user2"
+		And user "user0" has shared file "textfile0.txt" with user "user1"
+		And user "user0" has shared file "textfile0.txt" with user "user2"
 		And as user "user0"
 		When the user sends HTTP method "GET" to API endpoint "/apps/files_sharing/api/v1/shares?path=textfile0.txt"
 		Then the OCS status code should be "100"
@@ -325,8 +325,8 @@ Feature: sharing
 		And user "user1" has been created
 		And user "user2" has been created
 		And user "user3" has been created
-		And file "textfile0.txt" of user "user0" has been shared with user "user1"
-		And file "textfile0 (2).txt" of user "user1" has been shared with user "user2"
+		And user "user0" has shared file "textfile0.txt" with user "user1"
+		And user "user1" has shared file "textfile0 (2).txt" with user "user2"
 		And as user "user0"
 		When the user sends HTTP method "GET" to API endpoint "/apps/files_sharing/api/v1/shares?reshares=true&path=textfile0.txt"
 		Then the OCS status code should be "100"
@@ -340,10 +340,10 @@ Feature: sharing
 		And user "user1" has been created
 		And user "user2" has been created
 		And user "user3" has been created
-		And file "textfile0.txt" of user "user0" has been shared with user "user1"
+		And user "user0" has shared file "textfile0.txt" with user "user1"
 		And user "user1" has moved file "/textfile0 (2).txt" to "/textfile0_shared.txt"
-		And file "textfile0_shared.txt" of user "user1" has been shared with user "user2"
-		And file "textfile0_shared.txt" of user "user2" has been shared with user "user3"
+		And user "user1" has shared file "textfile0_shared.txt" with user "user2"
+		And user "user2" has shared file "textfile0_shared.txt" with user "user3"
 		And as user "user1"
 		When user "user1" deletes file "/textfile0_shared.txt" using the API
 		And as user "user3"
@@ -354,7 +354,7 @@ Feature: sharing
 		Given user "user0" has been created
 		And user "user1" has been created
 		And user "user0" has moved file "/textfile0.txt" to "/file_to_share.txt"
-		And file "file_to_share.txt" of user "user0" has been shared with user "user1"
+		And user "user0" has shared file "file_to_share.txt" with user "user1"
 		And as user "user0"
 		When getting info of last share
 		Then the OCS status code should be "100"
@@ -412,7 +412,7 @@ Feature: sharing
 	Scenario: Sharee can see the share
 		Given user "user0" has been created
 		And user "user1" has been created
-		And file "textfile0.txt" of user "user0" has been shared with user "user1"
+		And user "user0" has shared file "textfile0.txt" with user "user1"
 		And as user "user1"
 		When the user sends HTTP method "GET" to API endpoint "/apps/files_sharing/api/v1/shares?shared_with_me=true"
 		Then the OCS status code should be "100"
@@ -422,8 +422,8 @@ Feature: sharing
 	Scenario: Sharee can see the filtered share
 		Given user "user0" has been created
 		And user "user1" has been created
-		And file "textfile0.txt" of user "user0" has been shared with user "user1"
-		And file "textfile1.txt" of user "user0" has been shared with user "user1"
+		And user "user0" has shared file "textfile0.txt" with user "user1"
+		And user "user0" has shared file "textfile1.txt" with user "user1"
 		And as user "user1"
 		When the user sends HTTP method "GET" to API endpoint "/apps/files_sharing/api/v1/shares?shared_with_me=true&path=textfile1 (2).txt"
 		Then the OCS status code should be "100"
@@ -433,8 +433,8 @@ Feature: sharing
 	Scenario: Sharee can't see the share that is filtered out
 		Given user "user0" has been created
 		And user "user1" has been created
-		And file "textfile0.txt" of user "user0" has been shared with user "user1"
-		And file "textfile1.txt" of user "user0" has been shared with user "user1"
+		And user "user0" has shared file "textfile0.txt" with user "user1"
+		And user "user0" has shared file "textfile1.txt" with user "user1"
 		And as user "user1"
 		When the user sends HTTP method "GET" to API endpoint "/apps/files_sharing/api/v1/shares?shared_with_me=true&path=textfile0 (2).txt"
 		Then the OCS status code should be "100"
@@ -495,7 +495,7 @@ Feature: sharing
 		Given user "user0" has been created
 		And user "user1" has been created
 		And user "user2" has been created
-		And file "textfile0.txt" of user "user0" has been shared with user "user1"
+		And user "user0" has shared file "textfile0.txt" with user "user1"
 		And as user "user2"
 		When getting info of last share
 		Then the OCS status code should be "404"
@@ -526,7 +526,7 @@ Feature: sharing
 		And user "user0" has created a folder "/common"
 		And user "user0" has created a folder "/common/sub"
 		And folder "common" of user "user0" has been shared with group "group0"
-		And file "textfile0.txt" of user "user1" has been shared with user "user2"
+		And user "user1" has shared file "textfile0.txt" with user "user2"
 		And user "user1" has moved file "/textfile0.txt" to "/common/textfile0.txt"
 		And user "user1" has moved file "/common/textfile0.txt" to "/common/sub/textfile0.txt"
 		And as user "user2"
@@ -546,7 +546,7 @@ Feature: sharing
 		And user "user0" has created a folder "/common"
 		And user "user0" has created a folder "/common/sub"
 		And folder "common" of user "user0" has been shared with group "group0"
-		And file "textfile0.txt" of user "user1" has been shared with user "user2"
+		And user "user1" has shared file "textfile0.txt" with user "user2"
 		And user "user1" has moved file "/textfile0.txt" to "/common/textfile0.txt"
 		And user "user1" has moved file "/common/textfile0.txt" to "/common/sub/textfile0.txt"
 		And as user "user2"
@@ -573,7 +573,7 @@ Feature: sharing
 	Scenario: delete a share
 		Given user "user0" has been created
 		And user "user1" has been created
-		And file "textfile0.txt" of user "user0" has been shared with user "user1"
+		And user "user0" has shared file "textfile0.txt" with user "user1"
 		And as user "user0"
 		When deleting last share
 		Then the OCS status code should be "100"
@@ -601,7 +601,7 @@ Feature: sharing
 		And as user "admin"
 		And the quota of user "user1" has been set to "0"
 		And user "user0" has moved file "/welcome.txt" to "/myfile.txt"
-		And file "myfile.txt" of user "user0" has been shared with user "user1"
+		And user "user0" has shared file "myfile.txt" with user "user1"
 		When user "user1" uploads file "data/textfile.txt" to "/myfile.txt" using the API
 		Then the HTTP status code should be "204"
 
@@ -618,8 +618,8 @@ Feature: sharing
 		And user "user1" has been created
 		And user "user2" has been created
 		And user "user0" has created a folder "/TMP"
-		And file "TMP" of user "user0" has been shared with user "user1"
-		And file "TMP" of user "user1" has been shared with user "user2"
+		And user "user0" has shared file "TMP" with user "user1"
+		And user "user1" has shared file "TMP" with user "user2"
 		And as user "user1"
 		When updating last share with
 			| permissions | 1 |
@@ -669,7 +669,7 @@ Feature: sharing
 		Given user "user0" has been created
 		And user "user1" has been created
 		And user "user0" has uploaded file with content "foo" to "/tmp.txt"
-		And file "/tmp.txt" of user "user0" has been shared with user "user1"
+		And user "user0" has shared file "/tmp.txt" with user "user1"
 		When user "user1" gets the following properties of folder "/tmp.txt" using the API
 			|{http://open-collaboration-services.org/ns}share-permissions |
 		Then the single response should contain a property "{http://open-collaboration-services.org/ns}share-permissions" with value "19"
@@ -678,7 +678,7 @@ Feature: sharing
 		Given user "user0" has been created
 		And user "user1" has been created
 		And user "user0" has uploaded file with content "foo" to "/tmp.txt"
-		And file "tmp.txt" of user "user0" has been shared with user "user1"
+		And user "user0" has shared file "tmp.txt" with user "user1"
 		And as user "user0"
 		And updating last share with
 			| permissions | 3 |
@@ -690,7 +690,7 @@ Feature: sharing
 		Given user "user0" has been created
 		And user "user1" has been created
 		And user "user0" has uploaded file with content "foo" to "/tmp.txt"
-		And file "tmp.txt" of user "user0" has been shared with user "user1"
+		And user "user0" has shared file "tmp.txt" with user "user1"
 		And as user "user0"
 		And updating last share with
 			| permissions | 17 |
@@ -709,7 +709,7 @@ Feature: sharing
 		Given user "user0" has been created
 		And user "user1" has been created
 		And user "user0" has created a folder "/tmp"
-		And file "/tmp" of user "user0" has been shared with user "user1"
+		And user "user0" has shared file "/tmp" with user "user1"
 		When user "user1" gets the following properties of folder "/tmp" using the API
 			|{http://open-collaboration-services.org/ns}share-permissions |
 		Then the single response should contain a property "{http://open-collaboration-services.org/ns}share-permissions" with value "31"
@@ -718,7 +718,7 @@ Feature: sharing
 		Given user "user0" has been created
 		And user "user1" has been created
 		And user "user0" has created a folder "/tmp"
-		And file "/tmp" of user "user0" has been shared with user "user1"
+		And user "user0" has shared file "/tmp" with user "user1"
 		And as user "user0"
 		And updating last share with
 			| permissions | 29 |
@@ -730,7 +730,7 @@ Feature: sharing
 		Given user "user0" has been created
 		And user "user1" has been created
 		And user "user0" has created a folder "/tmp"
-		And file "/tmp" of user "user0" has been shared with user "user1"
+		And user "user0" has shared file "/tmp" with user "user1"
 		And as user "user0"
 		And updating last share with
 			| permissions | 27 |
@@ -742,7 +742,7 @@ Feature: sharing
 		Given user "user0" has been created
 		And user "user1" has been created
 		And user "user0" has created a folder "/tmp"
-		And file "/tmp" of user "user0" has been shared with user "user1"
+		And user "user0" has shared file "/tmp" with user "user1"
 		And as user "user0"
 		And updating last share with
 			| permissions | 23 |
@@ -754,7 +754,7 @@ Feature: sharing
 		Given user "user0" has been created
 		And user "user1" has been created
 		And user "user0" has created a folder "/tmp"
-		And file "/tmp" of user "user0" has been shared with user "user1"
+		And user "user0" has shared file "/tmp" with user "user1"
 		And as user "user0"
 		And updating last share with
 			| permissions | 15 |
@@ -933,7 +933,7 @@ Feature: sharing
 		And user "user1" has been created
 		And user "user0" has created a folder "/common"
 		And user "user0" has created a folder "/common/sub"
-		And file "/common/sub" of user "user0" has been shared with user "user1"
+		And user "user0" has shared file "/common/sub" with user "user1"
 		And user "user0" has deleted folder "/common"
 		When user "user0" empties the trashbin
 		Then as "user1" the folder "/sub" should not exist
@@ -992,11 +992,11 @@ Feature: sharing
 		And user "user3" has been created
 		And user "user4" has been created
 		And user "user0" has created a folder "/folder1"
-		And file "/folder1" of user "user0" has been shared with user "user1"
-		And file "/folder1" of user "user0" has been shared with user "user2"
+		And user "user0" has shared file "/folder1" with user "user1"
+		And user "user0" has shared file "/folder1" with user "user2"
 		And user "user0" has created a folder "/folder1/folder2"
-		And file "/folder1/folder2" of user "user0" has been shared with user "user3"
-		And file "/folder1/folder2" of user "user0" has been shared with user "user4"
+		And user "user0" has shared file "/folder1/folder2" with user "user3"
+		And user "user0" has shared file "/folder1/folder2" with user "user4"
 		And as user "user0"
 		When the user sends HTTP method "GET" to API endpoint "/apps/files_sharing/api/v1/shares"
 		Then the OCS status code should be "100"
@@ -1070,7 +1070,7 @@ Feature: sharing
 		And user "user1" has been created
 		And as user "user0"
 		And user "user0" has created a folder "/test"
-		And folder "/test" of user "user0" has been shared with user "user1" with permissions 17
+		And user "user0" has shared folder "/test" with user "user1" with permissions 17
 		And as user "user1"
 		And the user has created a share with settings
 			| path | /test |
@@ -1086,7 +1086,7 @@ Feature: sharing
 		And user "user1" has been created
 		And as user "user0"
 		And user "user0" has created a folder "/test"
-		And folder "/test" of user "user0" has been shared with user "user1" with permissions 31
+		And user "user0" has shared folder "/test" with user "user1" with permissions 31
 		And as user "user1"
 		And the user has created a share with settings
 			| path | /test |
@@ -1102,7 +1102,7 @@ Feature: sharing
 		And user "user1" has been created
 		And as user "user0"
 		And user "user0" has created a folder "/test"
-		And folder "/test" of user "user0" has been shared with user "user1" with permissions 17
+		And user "user0" has shared folder "/test" with user "user1" with permissions 17
 		And as user "user1"
 		And the user has created a share with settings
 			| path | /test |
@@ -1118,7 +1118,7 @@ Feature: sharing
 		And user "user1" has been created
 		And as user "user0"
 		And user "user0" has created a folder "/test"
-		And folder "/test" of user "user0" has been shared with user "user1" with permissions 31
+		And user "user0" has shared folder "/test" with user "user1" with permissions 31
 		And as user "user1"
 		And the user has created a share with settings
 			| path | /test |
@@ -1178,7 +1178,7 @@ Feature: sharing
 		And user "user1" has been created
 		And as user "user0"
 		And user "user0" has created a folder "/test"
-		And folder "/test" of user "user0" has been shared with user "user1" with permissions 1
+		And user "user0" has shared folder "/test" with user "user1" with permissions 1
 		And as user "user1"
 		And the user has created a share with settings
 			| path | /test |
@@ -1192,7 +1192,7 @@ Feature: sharing
 		And user "user1" has been created
 		And as user "user0"
 		And user "user0" has created a folder "/test"
-		And folder "/test" of user "user0" has been shared with user "user1" with permissions 15
+		And user "user0" has shared folder "/test" with user "user1" with permissions 15
 		And as user "user1"
 		And the user has created a share with settings
 			| path | /test |
@@ -1206,7 +1206,7 @@ Feature: sharing
 		And user "user1" has been created
 		And user "user0" has created a folder "/shared"
 		And user "user0" has moved file "/textfile0.txt" to "/shared/shared_file.txt"
-		And folder "/shared" of user "user0" has been shared with user "user1"
+		And user "user0" has shared folder "/shared" with user "user1"
 		When user "user1" deletes file "/shared/shared_file.txt" using the API
 		Then as "user1" the file "/shared/shared_file.txt" should not exist
 		And as "user0" the file "/shared/shared_file.txt" should not exist
@@ -1219,7 +1219,7 @@ Feature: sharing
 		And user "user0" has created a folder "/shared"
 		And user "user0" has created a folder "/shared/sub"
 		And user "user0" has moved file "/textfile0.txt" to "/shared/sub/shared_file.txt"
-		And folder "/shared" of user "user0" has been shared with user "user1"
+		And user "user0" has shared folder "/shared" with user "user1"
 		When user "user1" deletes folder "/shared/sub" using the API
 		Then as "user1" the folder "/shared/sub" should not exist
 		And as "user0" the folder "/shared/sub" should not exist
@@ -1232,7 +1232,7 @@ Feature: sharing
 		Given user "user0" has been created
 		And user "user1" has been created
 		And user "user0" has created a folder "/shared"
-		And folder "/shared" of user "user0" has been shared with user "user1"
+		And user "user0" has shared folder "/shared" with user "user1"
 		When user "user1" moves file "/textfile0.txt" to "/shared/shared_file.txt" using the API
 		Then as "user1" the file "/shared/shared_file.txt" should exist
 		And as "user0" the file "/shared/shared_file.txt" should exist
@@ -1242,7 +1242,7 @@ Feature: sharing
 		And user "user1" has been created
 		And user "user0" has created a folder "/shared"
 		And user "user0" has moved file "/textfile0.txt" to "/shared/shared_file.txt"
-		And file "/shared" of user "user0" has been shared with user "user1"
+		And user "user0" has shared file "/shared" with user "user1"
 		And user "user1" has moved folder "/shared" to "/shared_renamed"
 		When user "user1" moves file "/shared_renamed/shared_file.txt" to "/taken_out.txt" using the API
 		Then as "user1" the file "/taken_out.txt" should exist
@@ -1255,7 +1255,7 @@ Feature: sharing
 		And user "user0" has created a folder "/shared"
 		And user "user0" has created a folder "/shared/sub"
 		And user "user0" has moved file "/textfile0.txt" to "/shared/sub/shared_file.txt"
-		And file "/shared" of user "user0" has been shared with user "user1"
+		And user "user0" has shared file "/shared" with user "user1"
 		And user "user1" has moved folder "/shared" to "/shared_renamed"
 		When user "user1" moves folder "/shared_renamed/sub" to "/taken_out" using the API
 		Then as "user1" the file "/taken_out" should exist
@@ -1271,7 +1271,7 @@ Feature: sharing
 		And user "user0" has created a folder "/shared"
 		And as user "user0"
 		And user "user0" has moved file "/textfile0.txt" to "/shared/shared_file.txt"
-		And folder "/shared" of user "user0" has been shared with user "user1"
+		And user "user0" has shared folder "/shared" with user "user1"
 		And as user "user1"
 		And folder "/shared" of user "user1" has been shared with group "group0"
 		And as user "user0"
@@ -1287,8 +1287,8 @@ Feature: sharing
 		And user "user0" has created a folder "/folder1"
 		And user "user0" has created a folder "/folder1/folder2"
 		And user "user1" has created a folder "/moved-out"
-		And folder "/folder1" of user "user0" has been shared with user "user1" with permissions 31
-		And folder "/folder1/folder2" of user "user1" has been shared with user "user2" with permissions 31
+		And user "user0" has shared folder "/folder1" with user "user1" with permissions 31
+		And user "user1" has shared folder "/folder1/folder2" with user "user2" with permissions 31
 		And as user "user1"
 		When user "user1" moves folder "/folder1/folder2" to "/moved-out/folder2" using the API
 		And getting info of last share
@@ -1318,8 +1318,8 @@ Feature: sharing
 		And user "user0" has created a folder "/user0-folder"
 		And user "user0" has created a folder "/user0-folder/folder2"
 		And user "user2" has created a folder "/user2-folder"
-		And folder "/user0-folder" of user "user0" has been shared with user "user1" with permissions 31
-		And folder "/user2-folder" of user "user2" has been shared with user "user1" with permissions 31
+		And user "user0" has shared folder "/user0-folder" with user "user1" with permissions 31
+		And user "user2" has shared folder "/user2-folder" with user "user1" with permissions 31
 		And as user "user1"
 		When user "user1" moves folder "/user0-folder/folder2" to "/user2-folder/folder2" using the API
 		And getting info of last share

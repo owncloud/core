@@ -9,12 +9,10 @@ Feature: external-storage
   Scenario: Share by link a file inside a local external storage
     Given user "user0" has been created
     And user "user1" has been created
-    And as user "user0"
     And user "user0" has created a folder "/local_storage/foo"
     And user "user0" has moved file "/textfile0.txt" to "/local_storage/foo/textfile0.txt"
-    And folder "/local_storage/foo" of user "user0" has been shared with user "user1"
-    And as user "user1"
-    When the user creates a share using the API with share settings
+    And user "user0" has shared folder "/local_storage/foo" with user "user1"
+    When user "user1" creates a share using the API with settings
       | path | foo |
       | shareType | 3 |
     Then the OCS status code should be "100"
@@ -27,10 +25,9 @@ Feature: external-storage
 
   @local_storage
   @no_encryption
-  Scenario: Move a file into storage works
+  Scenario: Move a file into storage
     Given user "user0" has been created
     And user "user1" has been created
-    And as user "user0"
     And user "user0" has created a folder "/local_storage/foo1"
     When user "user0" moves file "/textfile0.txt" to "/local_storage/foo1/textfile0.txt" using the API
     Then as "user1" the file "/local_storage/foo1/textfile0.txt" should exist
@@ -38,10 +35,9 @@ Feature: external-storage
 
   @local_storage
   @no_encryption
-  Scenario: Move a file out of the storage works
+  Scenario: Move a file out of storage
     Given user "user0" has been created
     And user "user1" has been created
-    And as user "user0"
     And user "user0" has created a folder "/local_storage/foo2"
     And user "user0" has moved file "/textfile0.txt" to "/local_storage/foo2/textfile0.txt"
     When user "user1" moves file "/local_storage/foo2/textfile0.txt" to "/local.txt" using the API
@@ -51,7 +47,6 @@ Feature: external-storage
 
   Scenario: Download a file that exists in filecache but not storage fails with 404
     Given user "user0" has been created
-    And as user "user0"
     And user "user0" has created a folder "/local_storage/foo3"
     And user "user0" has moved file "/textfile0.txt" to "/local_storage/foo3/textfile0.txt"
     And file "foo3/textfile0.txt" has been deleted in local storage
@@ -62,9 +57,7 @@ Feature: external-storage
   @local_storage
   Scenario: Upload a file to external storage while quota is set on home storage
     Given user "user0" has been created
-    And as user "admin"
     And the quota of user "user0" has been set to "1 B"
-    And as user "user0"
     When user "user0" uploads file "data/textfile.txt" to "/local_storage/testquota.txt" with all mechanisms using the API
     Then the HTTP status code of all upload responses should be "201"
     And as "user0" the files uploaded to "/local_storage/testquota.txt" with all mechanisms should exist

@@ -51,7 +51,7 @@ Feature: quota
 		And the quota of user "user1" has been set to "10 MB"
 		And as user "user1"
 		And user "user1" has created a folder "/testquota"
-		And folder "/testquota" of user "user1" has been shared with user "user0" with permissions 31
+		And user "user1" has shared folder "/testquota" with user "user0" with permissions 31
 		And as user "user0"
 		When user "user0" uploads file "data/textfile.txt" to "/testquota/testquota.txt" with all mechanisms using the API
 		Then the HTTP status code of all upload responses should be "201"
@@ -65,7 +65,7 @@ Feature: quota
 		And the quota of user "user1" has been set to "20 B"
 		And as user "user1"
 		And user "user1" has created a folder "/testquota"
-		And folder "/testquota" of user "user1" has been shared with user "user0" with permissions 31
+		And user "user1" has shared folder "/testquota" with user "user0" with permissions 31
 		And as user "user0"
 		When user "user0" uploads file "data/textfile.txt" to "/testquota/testquota.txt" with all mechanisms using the API
 		Then the HTTP status code of all upload responses should be "507"
@@ -81,7 +81,7 @@ Feature: quota
 		And as user "user1"
 		And user "user1" has created a folder "/testquota"
 		And user "user1" has uploaded file with content "test" to "/testquota/testquota.txt"
-		And folder "/testquota" of user "user1" has been shared with user "user0" with permissions 31
+		And user "user1" has shared folder "/testquota" with user "user0" with permissions 31
 		And as user "user0"
 		When user "user0" overwrites file "data/textfile.txt" to "/testquota/testquota.txt" with all mechanisms using the API
 		Then the HTTP status code of all upload responses should be "204"
@@ -96,7 +96,7 @@ Feature: quota
 		And as user "user1"
 		And user "user1" has created a folder "/testquota"
 		And user "user1" has uploaded file with content "test" to "/testquota/testquota.txt"
-		And folder "/testquota" of user "user1" has been shared with user "user0" with permissions 31
+		And user "user1" has shared folder "/testquota" with user "user0" with permissions 31
 		And as user "user0"
 		When user "user0" overwrites file "data/textfile.txt" to "/testquota/testquota.txt" with all mechanisms using the API
 		Then the HTTP status code of all upload responses should be "507"
@@ -113,7 +113,7 @@ Feature: quota
 		And the quota of user "user1" has been set to "10 MB"
 		And as user "user1"
 		And user "user1" has uploaded file with content "test" to "/testquota.txt"
-		And file "/testquota.txt" of user "user1" has been shared with user "user0" with permissions 19
+		And user "user1" has shared file "/testquota.txt" with user "user0" with permissions 19
 		And as user "user0"
 		When user "user0" overwrites file "data/textfile.txt" to "/testquota.txt" with all mechanisms using the API
 		Then the HTTP status code of all upload responses should be "204"
@@ -127,7 +127,7 @@ Feature: quota
 		And the quota of user "user1" has been set to "20 B"
 		And as user "user1"
 		And user "user1" has moved file "/textfile0.txt" to "/testquota.txt"
-		And file "/testquota.txt" of user "user1" has been shared with user "user0" with permissions 19
+		And user "user1" has shared file "/testquota.txt" with user "user0" with permissions 19
 		When user "user0" overwrites file "data/textfile.txt" to "/testquota.txt" with all mechanisms using the API
 		Then the HTTP status code of all upload responses should be "507"
 
