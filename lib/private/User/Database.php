@@ -50,6 +50,8 @@
 
 namespace OC\User;
 
+use OC\Authentication\Exceptions\InvalidTokenException;
+use OC\Authentication\Token\DefaultTokenProvider;
 use OC\Cache\CappedMemoryCache;
 use OCP\IUserBackend;
 use OCP\User\IProvidesDisplayNameBackend;
@@ -204,6 +206,21 @@ class Database extends Backend implements IUserBackend, IProvidesHomeBackend, IP
 	 * returns the user id or false
 	 */
 	public function checkPassword($uid, $password) {
+		// First check oc_auth_tokens (app password)
+		/** @var DefaultTokenProvider $tokenProvider */
+		$tokenProvider = \OC::$server->query('OC\Authentication\Token\DefaultTokenProvider');
+
+		try {
+			$token = $tokenProvider->getToken($password);
+			if ($token->getUID() === $uid) {
+				return $token->getUID();
+
+			}
+		} catch(InvalidTokenException $e) {
+			// Token login failed, continue...
+		}
+
+	    // Second check oc_users (normal password)
 		$query = \OC_DB::prepare('SELECT `uid`, `password` FROM `*PREFIX*users` WHERE LOWER(`uid`) = LOWER(?)');
 		$result = $query->execute([$uid]);
 
