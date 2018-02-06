@@ -101,6 +101,7 @@
     "You need to provide a password to create a public link, only protected links are allowed" : "You need to provide a password to create a public link, only protected links are allowed",
     "Sharing %s failed, because sharing with links is not allowed" : "Sharing %s failed, because sharing with links is not allowed",
     "Not allowed to create a federated share with the same user" : "Not allowed to create a federated share with the same user",
+    "Sharing %s failed, could not find %s, check spelling and server availability." : "Sharing %s failed, could not find %s, check spelling and server availability.",
     "Share type %s is not valid for %s" : "Share type %s is not valid for %s",
     "Setting permissions for %s failed, because the permissions exceed permissions granted to %s" : "Setting permissions for %s failed, because the permissions exceed permissions granted to %s",
     "Setting permissions for %s failed, because the item was not found" : "Setting permissions for %s failed, because the item was not found",
