@@ -911,8 +911,8 @@ class Session implements IUserSession, Emitter {
 	 */
 	private function getAuthModules($includeBuiltIn) {
 		if ($includeBuiltIn) {
-			yield new BasicAuthModule($this->manager);
 			yield new TokenAuthModule($this->session, $this->tokenProvider, $this->manager);
+			yield new BasicAuthModule($this->manager);
 		}
 
 		$modules = $this->serviceLoader->load(['auth-modules']);
