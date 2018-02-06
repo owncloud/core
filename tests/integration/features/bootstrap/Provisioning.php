@@ -98,9 +98,10 @@ trait Provisioning {
 			$options['auth'] = $this->getAuthOptionForAdmin();
 		}
 
+		$password = $this->getPasswordForUser($user);
 		$options['body'] = [
 							'userid' => $user,
-							'password' => '123456'
+							'password' => $password
 							];
 
 		$this->response = $client->send($client->createRequest("POST", $fullUrl, $options));
@@ -108,7 +109,7 @@ trait Provisioning {
 
 		//Quick hack to login once with the current user
 		$options2 = [
-			'auth' => [$user, '123456'],
+			'auth' => [$user, $password],
 		];
 		$url = $fullUrl.'/'.$user;
 		$client->send($client->createRequest('GET', $url, $options2));

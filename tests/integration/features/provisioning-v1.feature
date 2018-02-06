@@ -18,8 +18,8 @@ Feature: provisioning
 		Given as an "admin"
 		And user "brand-new-user" does not exist
 		When sending "POST" to "/cloud/users" with
-			| userid | brand-new-user |
-			| password | 123456 |
+			| userid   | brand-new-user |
+			| password | 456firstpwd    |
 		Then the OCS status code should be "100"
 		And the HTTP status code should be "200"
 		And user "brand-new-user" already exists
@@ -28,8 +28,8 @@ Feature: provisioning
 		Given as an "admin"
 		And user "brand-new-user" exists
 		When sending "POST" to "/cloud/users" with
-			| userid | brand-new-user |
-			| password | 123456 |
+			| userid   | brand-new-user |
+			| password | 456newpwd      |
 		Then the OCS status code should be "102"
 		And the HTTP status code should be "200"
 
@@ -66,7 +66,6 @@ Feature: provisioning
 		And group "new-group" does not exist
 		When sending "POST" to "/cloud/groups" with
 			| groupid | new-group |
-			| password | 123456 |
 		Then the OCS status code should be "100"
 		And the HTTP status code should be "200"
 		And group "new-group" already exists
@@ -76,7 +75,6 @@ Feature: provisioning
 		And group "España" does not exist
 		When sending "POST" to "/cloud/groups" with
 			| groupid | España |
-			| password | 123456 |
 		Then the OCS status code should be "100"
 		And the HTTP status code should be "200"
 		And group "España" already exists
@@ -86,7 +84,6 @@ Feature: provisioning
 		And group "0" does not exist
 		When sending "POST" to "/cloud/groups" with
 			| groupid | 0 |
-			| password | 123456 |
 		Then the OCS status code should be "100"
 		And the HTTP status code should be "200"
 		And group "0" already exists

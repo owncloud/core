@@ -43,7 +43,7 @@ Feature: dav-versions
   Scenario: User can access meta folder of a file which is owned by somebody else but shared with that user
     Given user "user1" exists
     And user "user0" uploads file with content "123" to "/davtest.txt"
-    And user "user0" uploads file with content "123456" to "/davtest.txt"
+    And user "user0" uploads file with content "456789" to "/davtest.txt"
     And we save it into "FILEID"
     And as an "user0"
     And creating a share with
