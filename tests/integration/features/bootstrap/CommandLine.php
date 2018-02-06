@@ -58,7 +58,7 @@ trait CommandLine {
 	}
 
 	/**
-	 * @Given /^invoking occ with "([^"]*)"$/
+	 * @Given /^the administrator has invoked occ command "([^"]*)"$/
 	 * @param string $cmd
 	 */
 	public function invokingTheCommand($cmd) {
@@ -123,7 +123,7 @@ trait CommandLine {
 	}
 
 	/**
-	 * @Then /^the command failed with exit code ([0-9]+)$/
+	 * @Then /^the command should have failed with exit code ([0-9]+)$/
 	 * @param int $exitCode
 	 * @throws Exception
 	 */
@@ -134,11 +134,11 @@ trait CommandLine {
 	}
 
 	/**
-	 * @Then /^the command failed with exception text "([^"]*)"$/
+	 * @Then /^the command should have failed with exception text "([^"]*)"$/
 	 * @param string $exceptionText
 	 * @throws Exception
 	 */
-	public function theCommandFailedWithException($exceptionText) {
+	public function theCommandFailedWithExceptionText($exceptionText) {
 		$exceptions = $this->findExceptions();
 		if (empty($exceptions)) {
 			throw new \Exception('The command did not throw any exceptions');
@@ -150,7 +150,7 @@ trait CommandLine {
 	}
 
 	/**
-	 * @Then /^the command output contains the text "([^"]*)"$/
+	 * @Then /^the command output should contain the text "([^"]*)"$/
 	 * @param string $text
 	 * @throws Exception
 	 */
@@ -162,7 +162,7 @@ trait CommandLine {
 	}
 
 	/**
-	 * @Then /^the command error output contains the text "([^"]*)"$/
+	 * @Then /^the command error output should contain the text "([^"]*)"$/
 	 * @param string $text
 	 * @throws Exception
 	 */
@@ -214,7 +214,7 @@ trait CommandLine {
 	}
 
 	/**
-	 * @When /^transferring ownership from "([^"]+)" to "([^"]+)"/
+	 * @When /^the administrator transfers ownership from "([^"]+)" to "([^"]+)" using the occ command$/
 	 * @param string $user1
 	 * @param string $user2
 	 */
@@ -228,7 +228,7 @@ trait CommandLine {
 	}
 
 	/**
-	 * @Given /^the administrator has successfully recreated the encryption masterkey using the occ command/
+	 * @Given /^the administrator has successfully recreated the encryption masterkey using the occ command$/
 	 */
 	public function recreateMasterKeyUsingOccCommand() {
 		$this->runOcc(['encryption:recreate-master-key', '-y']);
@@ -236,7 +236,7 @@ trait CommandLine {
 	}
 
 	/**
-	 * @When /^transferring ownership of path "([^"]+)" from "([^"]+)" to "([^"]+)"/
+	 * @When /^the administrator transfers ownership of path "([^"]+)" from "([^"]+)" to "([^"]+)" using the occ command$/
 	 * @param string $path
 	 * @param string $user1
 	 * @param string $user2
