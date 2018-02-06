@@ -965,6 +965,25 @@ trait WebDav {
 	}
 
 	/**
+	 * Wait for 1 second then delete a file/folder to avoid creating trashbin
+	 * entries with the same timestamp. Only use this step to avoid the problem
+	 * in core issue 23151 when wanting to demonstrate other correct behavior
+	 *
+	 * @When /^user "([^"]*)" waits and deletes (file|folder) "([^"]*)" using the API$/
+	 * @Given /^user "([^"]*)" has waited and deleted (file|folder) "([^"]*)"$/
+	 * @param string $user
+	 * @param string $type unused
+	 * @param string $file
+	 */
+	public function userWaitsAndDeletesFile($user, $type, $file) {
+		// prevent creating two files in the trashbin with the same timestamp
+		// which is based on seconds. e.g. deleting a/file.txt and b/file.txt
+		// might result in a name clash file.txt.d1456657282 in the trashbin
+		sleep(1);
+		$this->userDeletesFile($user, $type, $file);
+	}
+
+	/**
 	 * @When /^user "([^"]*)" deletes (file|folder) "([^"]*)" using the API$/
 	 * @Given /^user "([^"]*)" has deleted (file|folder) "([^"]*)"$/
 	 * @param string $user
