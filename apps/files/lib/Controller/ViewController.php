@@ -41,6 +41,7 @@ use OCP\IRequest;
 use OCP\IURLGenerator;
 use OCP\IUserSession;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use OCP\AppFramework\Http;
 
 /**
  * Class ViewController
@@ -282,12 +283,14 @@ class ViewController extends Controller {
 		$files = $baseFolder->getById($fileId);
 		$params = [];
 
+		$isFilesView = true;
 		if (empty($files) && $this->appManager->isEnabledForUser('files_trashbin')) {
 			// Access files_trashbin if it exists
 			if ( $this->rootFolder->nodeExists($uid . '/files_trashbin/files/')) {
 				$baseFolder = $this->rootFolder->get($uid . '/files_trashbin/files/');
 				$files = $baseFolder->getById($fileId);
 				$params['view'] = 'trashbin';
+				$isFilesView = false;
 			}
 		}
 
@@ -302,13 +305,23 @@ class ViewController extends Controller {
 				// and scroll to the entry
 				$params['scrollto'] = $file->getName();
 			}
-			return new RedirectResponse($this->urlGenerator->linkToRoute('files.view.index', $params));
+			$response = new RedirectResponse($this->urlGenerator->linkToRoute('files.view.index', $params));
+			if ($isFilesView) {
+				$webdavUrl = $this->urlGenerator->linkTo('', 'remote.php') . '/dav/files/' . $uid . '/';
+				$webdavUrl .= ltrim($baseFolder->getRelativePath($file->getPath()), '/');
+				$response->addHeader('Webdav-Location', $webdavUrl);
+			}
+			return $response;
 		}
 
-		if ( $this->userSession->isLoggedIn() and empty($files)) {
+		if ($this->userSession->isLoggedIn() and empty($files)) {
 			$param["error"] = $this->l10n->t("You don't have permissions to access this file/folder - Please contact the owner to share it with you.");
-			return new TemplateResponse("core", 'error', ["errors" => [$param]], 'guest');
+			$response = new TemplateResponse("core", 'error', ["errors" => [$param]], 'guest');
+			$response->setStatus(Http::STATUS_NOT_FOUND);
+			return $response;
 		}
+
+		// FIXME: potentially dead code as the user is normally always logged in non-public routes
 		throw new \OCP\Files\NotFoundException();
 	}
 }
