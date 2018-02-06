@@ -24,6 +24,7 @@ namespace OC\User;
 
 
 use OCP\Authentication\IAuthModule;
+use OCP\Authentication\InvalidCredentialsException;
 use OCP\IRequest;
 use OCP\IUser;
 use OCP\IUserManager;
@@ -46,16 +47,26 @@ class BasicAuthModule implements IAuthModule {
 		}
 
 		// check uid and password
-		$user = $this->manager->checkPassword($request->server['PHP_AUTH_USER'], $request->server['PHP_AUTH_PW']);
-		if ($user instanceof IUser) {
-			return $user;
+		try {
+			list($userId,) = $this->manager->checkCredentials($request->server['PHP_AUTH_USER'], $request->server['PHP_AUTH_PW']);
+			$user = $this->manager->get($userId);
+			if ($user instanceof IUser) {
+				return $user;
+			}
+		} catch (InvalidCredentialsException $e) {
+			// try again with email
 		}
 		// check email and password
 		$users = $this->manager->getByEmail($request->server['PHP_AUTH_USER']);
 		if (count($users) !== 1) {
 			return null;
 		}
-		return $this->manager->checkPassword($users[0]->getUID(), $request->server['PHP_AUTH_PW']);
+		try {
+			list($userId,) = $this->manager->checkCredentials($users[0]->getUID(), $request->server['PHP_AUTH_PW']);
+			return $this->manager->get($userId);
+		} catch (InvalidCredentialsException $e) {
+			return null;
+		}
 	}
 
 	/**

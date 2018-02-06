@@ -36,6 +36,8 @@ namespace OC\User;
 use OC\Cache\CappedMemoryCache;
 use OC\Hooks\PublicEmitter;
 use OCP\AppFramework\Db\DoesNotExistException;
+use OCP\AppFramework\Db\MultipleObjectsReturnedException;
+use OCP\Authentication\InvalidCredentialsException;
 use OCP\Events\EventEmitterTrait;
 use OCP\ILogger;
 use OCP\IUser;
@@ -154,28 +156,40 @@ class Manager extends PublicEmitter implements IUserManager {
 	}
 
 	/**
-	 * get a user by user id
+	 * get a user by user id or account
 	 *
-	 * @param string $uid
+	 * @param string|Account $uidOrAccount
 	 * @return \OC\User\User|null Either the user or null if the specified user does not exist
 	 */
-	public function get($uid) {
-		if (is_null($uid) || !is_string($uid)) {
+	public function get($uidOrAccount) {
+		if ($uidOrAccount instanceof Account) {
+			$uid = $uidOrAccount->getUserId();
+			$account = $uidOrAccount;
+		} else {
+			$uid = $uidOrAccount;
+			$account = null;
+		}
+		if ($uid === null || !is_string($uid)) {
 			return null;
 		}
-		if ($this->cachedUsers->hasKey($uid)) { //check the cache first to prevent having to loop over the backends
+		//check the cache first
+		if ($this->cachedUsers->hasKey($uid)) {
 			return $this->cachedUsers->get($uid);
 		}
-		try {
-			$account = $this->accountMapper->getByUid($uid);
-			if (is_null($account)) {
-				$this->cachedUsers->set($uid, null);
+		if ($account === null) {
+			try {
+				$account = $this->accountMapper->getByUid($uid);
+			} catch (DoesNotExistException $ex) {
+				return null;
+			} catch (MultipleObjectsReturnedException $ex) {
 				return null;
 			}
-			return $this->getUserObject($account);
-		} catch (DoesNotExistException $ex) {
+		}
+		if ($account !== null) {
+			$this->cachedUsers->set($uid, null);
 			return null;
 		}
+		return $this->getUserObject($account);
 	}
 
 	/**
@@ -227,14 +241,37 @@ class Manager extends PublicEmitter implements IUserManager {
 			if ($backend->implementsActions(Backend::CHECK_PASSWORD)) {
 				$uid = $backend->checkPassword($loginName, $password);
 				if ($uid !== false) {
-					$account = $this->syncService->createOrSyncAccount($uid, $backend);
-					return $this->getUserObject($account);
+					return $this->get($uid);
 				}
 			}
 		}
 
 		$this->logger->warning('Login failed: \''. $loginName .'\' (Remote IP: \''. \OC::$server->getRequest()->getRemoteAddress(). '\')', ['app' => 'core']);
 		return false;
+	}
+	/**
+	 * Check if the password is valid for the user and return the userId
+	 * Does not log in the user
+	 *
+	 * @param string $loginName
+	 * @param string $password
+	 * @return array with [string $userId, OCP\UserInterface $backend]
+	 * @throws InvalidCredentialsException
+	 */
+	public function checkCredentials($loginName, $password) {
+		$loginName = str_replace("\0", '', $loginName);
+		$password = str_replace("\0", '', $password);
+
+		foreach ($this->backends as $backend) {
+			if ($backend->implementsActions(Backend::CHECK_PASSWORD)) {
+				$uid = $backend->checkPassword($loginName, $password);
+				if ($uid !== false) {
+					return [$uid, $backend];
+				}
+			}
+		}
+
+		throw new InvalidCredentialsException("Unknown user '$loginName' or wrong password");
 	}
 
 	/**

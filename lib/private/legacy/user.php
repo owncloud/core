@@ -435,9 +435,14 @@ class OC_User {
 	 */
 	public static function checkPassword($uid, $password) {
 		$manager = \OC::$server->getUserManager();
-		$username = $manager->checkPassword($uid, $password);
-		if ($username !== false) {
-			return $username->getUID();
+		try {
+			list($userId,) = $manager->checkCredentials($uid, $password);
+			$user = $manager->get($userId);
+			if ($user !== null) {
+				return $user->getUID();
+			}
+		} catch (\OCP\Authentication\InvalidCredentialsException $e) {
+			return false;
 		}
 		return false;
 	}

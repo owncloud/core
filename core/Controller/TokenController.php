@@ -30,6 +30,7 @@ use OC\User\Manager as UserManager;
 use OCA\User_LDAP\User\Manager;
 use OCP\AppFramework\Controller;
 use OCP\AppFramework\Http\JSONResponse;
+use OCP\Authentication\InvalidCredentialsException;
 use OCP\IRequest;
 use OCP\Security\ISecureRandom;
 
@@ -74,14 +75,19 @@ class TokenController extends Controller {
 	 * @return JSONResponse
 	 */
 	public function generateToken($user, $password, $name = 'unknown client') {
-		if (is_null($user) || is_null($password)) {
+		if ($user === null || $password === null ) {
 			$response = new JSONResponse();
 			$response->setStatus(Http::STATUS_UNPROCESSABLE_ENTITY);
 			return $response;
 		}
 		$loginName = $user;
-		$user = $this->userManager->checkPassword($loginName, $password);
-		if ($user === false) {
+		try {
+			list($userId,) = $this->userManager->checkCredentials($loginName, $password);
+			$user = $this->userManager->get($userId);
+		} catch (InvalidCredentialsException $e) {
+			$user = null;
+		}
+		if ($user === null) {
 			$response = new JSONResponse();
 			$response->setStatus(Http::STATUS_UNAUTHORIZED);
 			return $response;

@@ -117,7 +117,7 @@ class SyncService {
 					$this->syncAccount($a, $backend);
 					$this->mapper->update($a);
 				} catch(DoesNotExistException $ex) {
-					$this->createNewAccount($backendClass, $uid);
+					$a = $this->createNewAccount($backendClass, $uid);
 					$this->syncAccount($a, $backend);
 					$this->mapper->insert($a);
 				}

@@ -48,6 +48,7 @@ use OCP\App\IServiceLoader;
 use OCP\AppFramework\Utility\ITimeFactory;
 use OCP\Authentication\IApacheBackend;
 use OCP\Authentication\IAuthModule;
+use OCP\Authentication\InvalidCredentialsException;
 use OCP\Events\EventEmitterTrait;
 use OCP\Files\NoReadAccessException;
 use OCP\Files\NotPermittedException;
@@ -480,34 +481,39 @@ class Session implements IUserSession, Emitter {
 	 * @return boolean
 	 * @throws LoginException if an app canceld the login process or the user is not enabled
 	 */
-	private function loginWithPassword($uid, $password) {
-		return $this->emittingCall(function () use (&$uid, &$password) {
-			$this->manager->emit('\OC\User', 'preLogin', [$uid, $password]);
-			$user = $this->manager->checkPassword($uid, $password);
-			if ($user === false) {
-				$this->manager->emit('\OC\User', 'failedLogin', [$uid]);
+	private function loginWithPassword($login, $password) {
+		$uid = null;
+		return $this->emittingCall(function () use (&$login, &$password, &$uid) {
+			$this->manager->emit('\OC\User', 'preLogin', [$login, $password]);
+			try {
+				list($uid, $backend) = $this->manager->checkCredentials($login, $password);
+				$account = $this->userSyncService->createOrSyncAccount($uid, $backend);
+				$user = $this->manager->get($account);
+			} catch (InvalidCredentialsException $e) {
+				$user = null;
+			}
+			if ($user === null) {
+				$this->manager->emit('\OC\User', 'failedLogin', [$login]);
 				return false;
 			}
 
 			if ($user->isEnabled()) {
 				$this->setUser($user);
-				$this->setLoginName($uid);
+				$this->setLoginName($login);
 				$firstTimeLogin = $user->updateLastLoginTimestamp();
 				$this->manager->emit('\OC\User', 'postLogin', [$user, $password]);
 				if ($this->isLoggedIn()) {
 					$this->prepareUserLogin($firstTimeLogin);
 					return true;
-				} else {
-					// injecting l10n does not work - there is a circular dependency between session and \OCP\L10N\IFactory
-					$message = \OC::$server->getL10N('lib')->t('Login canceled by app');
-					throw new LoginException($message);
 				}
-			} else {
 				// injecting l10n does not work - there is a circular dependency between session and \OCP\L10N\IFactory
-				$message = \OC::$server->getL10N('lib')->t('User disabled');
+				$message = \OC::$server->getL10N('lib')->t('Login canceled by app');
 				throw new LoginException($message);
 			}
-		}, ['before' => ['uid' => $uid, 'password' => $password], 'after' => ['uid' => $uid, 'password' => $password]], 'user', 'login');
+			// injecting l10n does not work - there is a circular dependency between session and \OCP\L10N\IFactory
+			$message = \OC::$server->getL10N('lib')->t('User disabled');
+			throw new LoginException($message);
+		}, ['before' => ['uid' => $login, 'password' => $password], 'after' => ['uid' => $uid, 'password' => $password]], 'user', 'login');
 	}
 
 	/**
@@ -715,7 +721,7 @@ class Session implements IUserSession, Emitter {
 		// administrator could change this 5 minutes timeout
 		$lastCheck = $dbToken->getLastCheck() ? : 0;
 		$now = $this->timeFactory->getTime();
-		$last_check_timeout = intval($this->config->getAppValue('core', 'last_check_timeout', 5));
+		$last_check_timeout = (int)$this->config->getAppValue('core', 'last_check_timeout', 5);
 		if ($lastCheck > ($now - 60 * $last_check_timeout)) {
 			// Checked performed recently, nothing to do now
 			return true;
@@ -739,12 +745,24 @@ class Session implements IUserSession, Emitter {
 			return true;
 		}
 
-		if ($this->manager->checkPassword($dbToken->getLoginName(), $pwd) === false
-			|| (!is_null($this->activeUser) && !$this->activeUser->isEnabled())) {
+		try {
+			list($userId,) = $this->manager->checkCredentials($dbToken->getLoginName(), $pwd);
+			$user = $this->manager->get($userId);
+		} catch (InvalidCredentialsException $e) {
+			$user = null;
+		}
+		if ($user === null) {
 			$this->tokenProvider->invalidateToken($token);
-			// Password has changed or user was disabled -> log user out
+			// Password has changed -> log user out
 			return false;
 		}
+
+		if ($this->activeUser !== null && !$this->activeUser->isEnabled()) {
+			$this->tokenProvider->invalidateToken($token);
+			// user was disabled -> log user out
+			return false;
+		}
+
 		$dbToken->setLastCheck($now);
 		$this->tokenProvider->updateToken($dbToken);
 		return true;
@@ -768,7 +786,7 @@ class Session implements IUserSession, Emitter {
 
 		// Check if login names match
 		if (!is_null($user) && $dbToken->getLoginName() !== $user) {
-			// TODO: this makes it imposssible to use different login names on browser and client
+			// TODO: this makes it impossible to use different login names on browser and client
 			// e.g. login by e-mail 'user@example.com' on browser for generating the token will not
 			//      allow to use the client token with the login name 'user'.
 			return false;

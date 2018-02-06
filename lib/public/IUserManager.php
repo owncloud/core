@@ -26,6 +26,9 @@
 
 namespace OCP;
 
+use OC\User\Account;
+use OCP\Authentication\InvalidCredentialsException;
+
 
 /**
  * Class Manager
@@ -74,11 +77,11 @@ interface IUserManager {
 	/**
 	 * get a user by user id
 	 *
-	 * @param string $uid
+	 * @param string|Account $uidOrAccount
 	 * @return \OCP\IUser|null Either the user or null if the specified user does not exist
 	 * @since 8.0.0
 	 */
-	public function get($uid);
+	public function get($uidOrAccount);
 
 	/**
 	 * check if a user exists
@@ -95,9 +98,22 @@ interface IUserManager {
 	 * @param string $loginName
 	 * @param string $password
 	 * @return mixed the User object on success, false otherwise
+	 * @deprecated use checkCredentials($loginName, $password) instead
 	 * @since 8.0.0
 	 */
 	public function checkPassword($loginName, $password);
+
+	/**
+	 * Check if the password is valid for the user and return the userId
+	 * Does not log in the user
+	 *
+	 * @param string $loginName
+	 * @param string $password
+	 * @return string the $userId
+	 * @since 10.0.7
+	 * @throws InvalidCredentialsException
+	 */
+	public function checkCredentials($loginName, $password);
 
 	/**
 	 * search by user id
