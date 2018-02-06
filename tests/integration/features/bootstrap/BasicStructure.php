@@ -146,6 +146,21 @@ trait BasicStructure {
 	}
 
 	/**
+	 * @When /^user "([^"]*)" sends HTTP method "([^"]*)" to API endpoint "([^"]*)"$/
+	 * @param string $user
+	 * @param string $verb
+	 * @param string $url
+	 */
+	public function userSendingTo($user, $verb, $url) {
+		$this->userSendsHTTPMethodToAPIEndpointWithBody(
+			$user,
+			$verb,
+			$url,
+			null
+		);
+	}
+
+	/**
 	 * Parses the xml answer to get ocs response which doesn't match with
 	 * http one in v1 of the api.
 	 * @param ResponseInterface $response
@@ -212,11 +227,28 @@ trait BasicStructure {
 	 * @param \Behat\Gherkin\Node\TableNode $body
 	 */
 	public function sendingToWith($verb, $url, $body) {
-		
+		$this->userSendsHTTPMethodToAPIEndpointWithBody(
+			$this->currentUser,
+			$verb,
+			$url,
+			$body
+		);
+	}
+
+	/**
+	 * @When /^user "([^"]*)" sends HTTP method "([^"]*)" to API endpoint "([^"]*)" with body$/
+	 * @Given /^user "([^"]*)" has sent HTTP method "([^"]*)" to API endpoint "([^"]*)" with body$/
+	 * @param string $user
+	 * @param string $verb
+	 * @param string $url
+	 * @param \Behat\Gherkin\Node\TableNode $body
+	 */
+	public function userSendsHTTPMethodToAPIEndpointWithBody($user, $verb, $url, $body) {
+
 		/**
 		 * array of the data to be sent in the body.
-		 * contains $body data converted to an array 
-		 * 
+		 * contains $body data converted to an array
+		 *
 		 * @var array $bodyArray
 		 */
 		$bodyArray = [];
@@ -224,8 +256,7 @@ trait BasicStructure {
 			$bodyArray = $body->getRowsHash();
 		}
 
-		if ($this->currentUser !== 'UNAUTHORIZED_USER') {
-			$user = $this->currentUser;
+		if ($user !== 'UNAUTHORIZED_USER') {
 			$password = $this->getPasswordForUser($user);
 		} else {
 			$user = null;

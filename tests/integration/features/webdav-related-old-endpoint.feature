@@ -132,8 +132,7 @@ Feature: webdav-related-old-endpoint
 	Scenario: download a file with range
 		Given using old DAV path
 		And user "user0" has been created
-		And as user "user0"
-		When the user downloads file "/welcome.txt" with range "bytes=51-77" using the API
+		When user "user0" downloads file "/welcome.txt" with range "bytes=51-77" using the API
 		Then the downloaded content should be "example file for developers"
 
 	Scenario: Retrieving folder quota when no quota is set
@@ -197,8 +196,7 @@ Feature: webdav-related-old-endpoint
 	Scenario: download a public shared file with range
 		Given using old DAV path
 		And user "user0" has been created
-		And as user "user0"
-		When the user creates a share using the API with share settings
+		When user "user0" creates a share using the API with settings
 			| path | welcome.txt |
 			| shareType | 3 |
 		And downloading last public shared file with range "bytes=51-77"
@@ -207,8 +205,7 @@ Feature: webdav-related-old-endpoint
 	Scenario: download a public shared file inside a folder with range
 		Given using old DAV path
 		And user "user0" has been created
-		And as user "user0"
-		When the user creates a share using the API with share settings
+		When user "user0" creates a share using the API with settings
 			| path | PARENT |
 			| shareType | 3 |
 		And downloading last public shared file inside a folder "/parent.txt" with range "bytes=1-7"

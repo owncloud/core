@@ -85,7 +85,7 @@ Feature: transfer-ownership
     	And user "user2" has been added to group "group1"
 		And user "user0" has created a folder "/test"
 		And user "user0" has uploaded file "data/textfile.txt" to "/test/somefile.txt"
-		And folder "/test" of user "user0" has been shared with group "group1" with permissions 31
+		And user "user0" has shared folder "/test" with group "group1" with permissions 31
 		And user "user0" has shared folder "/test" with user "user2" with permissions 31
 		When transferring ownership from "user0" to "user1"
 		Then the command should have been successful
@@ -217,7 +217,7 @@ Feature: transfer-ownership
 		And user "user2" has been added to group "group1"
 		And user "user0" has created a folder "/test"
 		And user "user0" has uploaded file "data/textfile.txt" to "/test/somefile.txt"
-		And folder "/test" of user "user0" has been shared with group "group1" with permissions 31
+		And user "user0" has shared folder "/test" with group "group1" with permissions 31
 		And user "user0" has shared folder "/test" with user "user2" with permissions 31
 		When transferring ownership of path "test" from "user0" to "user1"
 		Then the command should have been successful

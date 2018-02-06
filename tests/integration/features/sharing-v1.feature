@@ -6,8 +6,7 @@ Feature: sharing
 	Scenario: Creating a new share with user
 		Given user "user0" has been created
 		And user "user1" has been created
-		And as user "user0"
-		When the user sends HTTP method "POST" to API endpoint "/apps/files_sharing/api/v1/shares" with body
+		When user "user0" sends HTTP method "POST" to API endpoint "/apps/files_sharing/api/v1/shares" with body
 			| path | welcome.txt |
 			| shareWith | user1 |
 			| shareType | 0 |
@@ -18,8 +17,7 @@ Feature: sharing
 		Given user "user0" has been created
 		And user "user1" has been created
 		And group "sharing-group" has been created
-		And as user "user0"
-		When the user sends HTTP method "POST" to API endpoint "/apps/files_sharing/api/v1/shares" with body
+		When user "user0" sends HTTP method "POST" to API endpoint "/apps/files_sharing/api/v1/shares" with body
 			| path | welcome.txt |
 			| shareWith | sharing-group |
 			| shareType | 1 |
@@ -31,9 +29,8 @@ Feature: sharing
 		And user "user1" has been created
 		And group "sharing-group" has been created
 		And user "user1" has been added to group "sharing-group"
-		And file "welcome.txt" of user "user0" has been shared with group "sharing-group"
-		And as user "user0"
-		When the user sends HTTP method "POST" to API endpoint "/apps/files_sharing/api/v1/shares" with body
+		And user "user0" has shared file "welcome.txt" with group "sharing-group"
+		When user "user0" sends HTTP method "POST" to API endpoint "/apps/files_sharing/api/v1/shares" with body
 			| path | welcome.txt |
 			| shareWith | user1 |
 			| shareType | 0 |
@@ -42,29 +39,26 @@ Feature: sharing
 
 	Scenario: Creating a new public share
 		Given user "user0" has been created
-		And as user "user0"
-		When the user creates a share using the API with share settings
+		When user "user0" creates a share using the API with settings
 			| path | welcome.txt |
 			| shareType | 3 |
 		Then the OCS status code should be "100"
 		And the HTTP status code should be "200"
-		And public shared file "welcome.txt" can be downloaded
+		And the last public shared file should be able to be downloaded without a password
 
 	Scenario: Creating a new public share with password
 		Given user "user0" has been created
-		And as user "user0"
-		When the user creates a share using the API with share settings
+		When user "user0" creates a share using the API with settings
 			| path | welcome.txt |
 			| shareType | 3 |
 			| password | publicpw |
 		Then the OCS status code should be "100"
 		And the HTTP status code should be "200"
-		And public shared file "welcome.txt" with password "publicpw" can be downloaded
+		And the last public shared file should be able to be downloaded with password "publicpw"
 
 	Scenario: Creating a new public share of a folder
 		Given user "user0" has been created
-		And as user "user0"
-		When the user creates a share using the API with share settings
+		When user "user0" creates a share using the API with settings
 			| path | FOLDER |
 			| shareType | 3 |
 			| password | publicpw |
@@ -84,7 +78,7 @@ Feature: sharing
 	Scenario: Creating a new public share with password and adding an expiration date
 		Given user "user0" has been created
 		And as user "user0"
-		When the user creates a share using the API with share settings
+		When the user creates a share using the API with settings
 			| path | welcome.txt |
 			| shareType | 3 |
 			| password | publicpw |
@@ -92,17 +86,17 @@ Feature: sharing
 			| expireDate | +3 days |
 		Then the OCS status code should be "100"
 		And the HTTP status code should be "200"
-		And public shared file "welcome.txt" with password "publicpw" can be downloaded
+		And the last public shared file should be able to be downloaded with password "publicpw"
 
 	Scenario: Creating a new public share, updating its expiration date and getting its info
 		Given user "user0" has been created
 		And as user "user0"
-		When the user creates a share using the API with share settings
+		When the user creates a share using the API with settings
 			| path | FOLDER |
 			| shareType | 3 |
 		And the user updates the last share using the API with
 			| expireDate | +3 days |
-		And getting info of last share
+		And the user gets the info of the last share using the API
 		Then the OCS status code should be "100"
 		And the HTTP status code should be "200"
 		And the share fields of the last share should include
@@ -128,12 +122,12 @@ Feature: sharing
 	Scenario: Creating a new public share, updating its password and getting its info
 		Given user "user0" has been created
 		And as user "user0"
-		When the user creates a share using the API with share settings
+		When the user creates a share using the API with settings
 			| path | FOLDER |
 			| shareType | 3 |
 		And the user updates the last share using the API with
 			| password | publicpw |
-		And getting info of last share
+		And the user gets the info of the last share using the API
 		Then the OCS status code should be "100"
 		And the HTTP status code should be "200"
 		And the share fields of the last share should include
@@ -158,12 +152,12 @@ Feature: sharing
 	Scenario: Creating a new public share, updating its permissions and getting its info
 		Given user "user0" has been created
 		And as user "user0"
-		When the user creates a share using the API with share settings
+		When the user creates a share using the API with settings
 			| path | FOLDER |
 			| shareType | 3 |
 		And the user updates the last share using the API with
 			| permissions | 7 |
-		And getting info of last share
+		And the user gets the info of the last share using the API
 		Then the OCS status code should be "100"
 		And the HTTP status code should be "200"
 		And the share fields of the last share should include
@@ -188,12 +182,12 @@ Feature: sharing
 	Scenario: Creating a new public share, updating publicUpload option and getting its info
 		Given user "user0" has been created
 		And as user "user0"
-		When the user creates a share using the API with share settings
+		When the user creates a share using the API with settings
 			| path | FOLDER |
 			| shareType | 3 |
 		And the user updates the last share using the API with
 			| publicUpload | true |
-		And getting info of last share
+		And the user gets the info of the last share using the API
 		Then the OCS status code should be "100"
 		And the HTTP status code should be "200"
 		And the share fields of the last share should include
@@ -222,7 +216,7 @@ Feature: sharing
 			| path | FOLDER |
 			| shareType | 3 |
 			| permissions | 4 |
-		And publicly uploading file "test.txt" with content "test"
+		And the public has uploaded file "test.txt" with content "test"
 		When the user downloads the file "/FOLDER/test.txt" using the API
 		Then the downloaded content should be "test"
 
@@ -234,19 +228,18 @@ Feature: sharing
 			| shareType | 3 |
 			| password | publicpw |
 			| permissions | 4 |
-		And publicly uploading file "test.txt" with password "publicpw" and content "test"
+		And the public has uploaded file "test.txt" with password "publicpw" and content "test"
 		When the user downloads the file "/FOLDER/test.txt" using the API
 		Then the downloaded content should be "test"
 
 	Scenario: Downloading from upload-only share is forbidden
 		Given user "user0" has been created
-		And as user "user0"
 		And user "user0" has moved file "/textfile0.txt" to "/FOLDER/test.txt"
-		When the user creates a share using the API with share settings
+		When user "user0" creates a share using the API with settings
 			| path | FOLDER |
 			| shareType | 3 |
 			| permissions | 4 |
-		Then public shared file "test.txt" cannot be downloaded
+		Then the public shared file "test.txt" should not be able to be downloaded
 		And the HTTP status code should be "404"
 
 	Scenario: Uploading same file to a public upload-only share multiple times
@@ -256,8 +249,8 @@ Feature: sharing
 			| path | FOLDER |
 			| shareType | 3 |
 			| permissions | 4 |
-		And publicly uploading file "test.txt" with content "test"
-		And publicly uploading file "test.txt" with content "test2" with autorename mode
+		And the public has uploaded file "test.txt" with content "test"
+		And the public has uploaded file "test.txt" with content "test2" with autorename mode
 		When the user downloads the file "/FOLDER/test.txt" using the API
 		Then the downloaded content should be "test"
 		And the user downloads the file "/FOLDER/test (2).txt" using the API
@@ -271,17 +264,16 @@ Feature: sharing
 			| shareType | 3 |
 			| permissions | 4 |
 		When user "user0" deletes file "/FOLDER" using the API
-		Then publicly uploading a file does not work
+		Then publicly uploading a file should not work
 		And the HTTP status code should be "404"
 
 	Scenario: Uploading file to a public read-only share does not work
 		Given user "user0" has been created
-		And as user "user0"
-		When the user creates a share using the API with share settings
+		When user "user0" creates a share using the API with settings
 			| path | FOLDER |
 			| shareType | 3 |
 			| permissions | 1 |
-		Then publicly uploading a file does not work
+		Then publicly uploading a file should not work
 		And the HTTP status code should be "403"
 
 	Scenario: getting all shares of a user using that user
@@ -289,8 +281,7 @@ Feature: sharing
 		And user "user1" has been created
 		And user "user0" has moved file "/textfile0.txt" to "/file_to_share.txt"
 		And user "user0" has shared file "file_to_share.txt" with user "user1"
-		And as user "user0"
-		When the user sends HTTP method "GET" to API endpoint "/apps/files_sharing/api/v1/shares"
+		When user "user0" sends HTTP method "GET" to API endpoint "/apps/files_sharing/api/v1/shares"
 		Then the OCS status code should be "100"
 		And the HTTP status code should be "200"
 		And file "file_to_share.txt" should be included in the response
@@ -299,8 +290,7 @@ Feature: sharing
 		Given user "user0" has been created
 		And user "user1" has been created
 		And user "user0" has shared file "textfile0.txt" with user "user1"
-		And as user "admin"
-		When the user sends HTTP method "GET" to API endpoint "/apps/files_sharing/api/v1/shares"
+		When user "admin" sends HTTP method "GET" to API endpoint "/apps/files_sharing/api/v1/shares"
 		Then the OCS status code should be "100"
 		And the HTTP status code should be "200"
 		And file "textfile0.txt" should not be included in the response
@@ -312,8 +302,7 @@ Feature: sharing
 		And user "user3" has been created
 		And user "user0" has shared file "textfile0.txt" with user "user1"
 		And user "user0" has shared file "textfile0.txt" with user "user2"
-		And as user "user0"
-		When the user sends HTTP method "GET" to API endpoint "/apps/files_sharing/api/v1/shares?path=textfile0.txt"
+		When user "user0" sends HTTP method "GET" to API endpoint "/apps/files_sharing/api/v1/shares?path=textfile0.txt"
 		Then the OCS status code should be "100"
 		And the HTTP status code should be "200"
 		And user "user1" should be included in the response
@@ -327,8 +316,7 @@ Feature: sharing
 		And user "user3" has been created
 		And user "user0" has shared file "textfile0.txt" with user "user1"
 		And user "user1" has shared file "textfile0 (2).txt" with user "user2"
-		And as user "user0"
-		When the user sends HTTP method "GET" to API endpoint "/apps/files_sharing/api/v1/shares?reshares=true&path=textfile0.txt"
+		When user "user0" sends HTTP method "GET" to API endpoint "/apps/files_sharing/api/v1/shares?reshares=true&path=textfile0.txt"
 		Then the OCS status code should be "100"
 		And the HTTP status code should be "200"
 		And user "user1" should be included in the response
@@ -344,10 +332,8 @@ Feature: sharing
 		And user "user1" has moved file "/textfile0 (2).txt" to "/textfile0_shared.txt"
 		And user "user1" has shared file "textfile0_shared.txt" with user "user2"
 		And user "user2" has shared file "textfile0_shared.txt" with user "user3"
-		And as user "user1"
 		When user "user1" deletes file "/textfile0_shared.txt" using the API
-		And as user "user3"
-		And the user downloads file "/textfile0_shared.txt" with range "bytes=1-7" using the API
+		And user "user3" downloads file "/textfile0_shared.txt" with range "bytes=1-7" using the API
 		Then the downloaded content should be "wnCloud"
 
 	Scenario: getting share info of a share
@@ -355,8 +341,7 @@ Feature: sharing
 		And user "user1" has been created
 		And user "user0" has moved file "/textfile0.txt" to "/file_to_share.txt"
 		And user "user0" has shared file "file_to_share.txt" with user "user1"
-		And as user "user0"
-		When getting info of last share
+		When user "user0" gets the info of the last share using the API
 		Then the OCS status code should be "100"
 		And the HTTP status code should be "200"
 		And the share fields of the last share should include
@@ -384,12 +369,12 @@ Feature: sharing
 		And user "user1" has been created
 		And group "group1" has been created
 		And user "user1" has been added to group "group1"
-		And file "textfile0.txt" of user "user0" has been shared with group "group1"
+		And user "user0" has shared file "textfile0.txt" with group "group1"
 		And user "user1" has moved file "/textfile0.txt" to "/FOLDER/textfile0.txt"
 		And as user "user0"
 		When the user updates the last share using the API with
 			| permissions | 1 |
-		And getting info of last share
+		And the user gets the info of the last share using the API
 		Then the OCS status code should be "100"
 		And the HTTP status code should be "200"
 		And the share fields of the last share should include
@@ -413,58 +398,52 @@ Feature: sharing
 		Given user "user0" has been created
 		And user "user1" has been created
 		And user "user0" has shared file "textfile0.txt" with user "user1"
-		And as user "user1"
-		When the user sends HTTP method "GET" to API endpoint "/apps/files_sharing/api/v1/shares?shared_with_me=true"
+		When user "user1" sends HTTP method "GET" to API endpoint "/apps/files_sharing/api/v1/shares?shared_with_me=true"
 		Then the OCS status code should be "100"
 		And the HTTP status code should be "200"
-		And last share_id is included in the answer
+		And the last share_id should be included in the response
 
 	Scenario: Sharee can see the filtered share
 		Given user "user0" has been created
 		And user "user1" has been created
 		And user "user0" has shared file "textfile0.txt" with user "user1"
 		And user "user0" has shared file "textfile1.txt" with user "user1"
-		And as user "user1"
-		When the user sends HTTP method "GET" to API endpoint "/apps/files_sharing/api/v1/shares?shared_with_me=true&path=textfile1 (2).txt"
+		When user "user1" sends HTTP method "GET" to API endpoint "/apps/files_sharing/api/v1/shares?shared_with_me=true&path=textfile1 (2).txt"
 		Then the OCS status code should be "100"
 		And the HTTP status code should be "200"
-		And last share_id is included in the answer
+		And the last share_id should be included in the response
 
 	Scenario: Sharee can't see the share that is filtered out
 		Given user "user0" has been created
 		And user "user1" has been created
 		And user "user0" has shared file "textfile0.txt" with user "user1"
 		And user "user0" has shared file "textfile1.txt" with user "user1"
-		And as user "user1"
-		When the user sends HTTP method "GET" to API endpoint "/apps/files_sharing/api/v1/shares?shared_with_me=true&path=textfile0 (2).txt"
+		When user "user1" sends HTTP method "GET" to API endpoint "/apps/files_sharing/api/v1/shares?shared_with_me=true&path=textfile0 (2).txt"
 		Then the OCS status code should be "100"
 		And the HTTP status code should be "200"
-		And last share_id is not included in the answer
+		And the last share_id should not be included in the response
 
 	Scenario: Sharee can see the group share
 		Given user "user0" has been created
 		And user "user1" has been created
 		And group "group0" has been created
 		And user "user1" has been added to group "group0"
-		And file "textfile0.txt" of user "user0" has been shared with group "group0"
-		And as user "user1"
-		When the user sends HTTP method "GET" to API endpoint "/apps/files_sharing/api/v1/shares?shared_with_me=true"
+		And user "user0" has shared file "textfile0.txt" with group "group0"
+		When user "user1" sends HTTP method "GET" to API endpoint "/apps/files_sharing/api/v1/shares?shared_with_me=true"
 		Then the OCS status code should be "100"
 		And the HTTP status code should be "200"
-		And last share_id is included in the answer
+		And the last share_id should be included in the response
 
 	Scenario: User is not allowed to reshare file
 		Given user "user0" has been created
 		And user "user1" has been created
 		And user "user2" has been created
-		And as user "user0"
-		And the user has created a share with settings
+		And user "user0" has created a share with settings
 			| path | /textfile0.txt |
 			| shareType | 0 |
 			| shareWith | user1 |
 			| permissions | 8 |
-		And as user "user1"
-		When the user creates a share using the API with share settings
+		When user "user1" creates a share using the API with settings
 			| path | /textfile0 (2).txt |
 			| shareType | 0 |
 			| shareWith | user2 |
@@ -476,14 +455,12 @@ Feature: sharing
 		Given user "user0" has been created
 		And user "user1" has been created
 		And user "user2" has been created
-		And as user "user0"
-		And the user has created a share with settings
+		And user "user0" has created a share with settings
 			| path | /textfile0.txt |
 			| shareType | 0 |
 			| shareWith | user1 |
 			| permissions | 16 |
-		And as user "user1"
-		When the user creates a share using the API with share settings
+		When user "user1" creates a share using the API with settings
 			| path | /textfile0 (2).txt |
 			| shareType | 0 |
 			| shareWith | user2 |
@@ -496,8 +473,7 @@ Feature: sharing
 		And user "user1" has been created
 		And user "user2" has been created
 		And user "user0" has shared file "textfile0.txt" with user "user1"
-		And as user "user2"
-		When getting info of last share
+		When user "user2" gets the info of the last share using the API
 		Then the OCS status code should be "404"
 		And the HTTP status code should be "200"
 
@@ -525,12 +501,11 @@ Feature: sharing
 		And user "user2" has been added to group "group0"
 		And user "user0" has created a folder "/common"
 		And user "user0" has created a folder "/common/sub"
-		And folder "common" of user "user0" has been shared with group "group0"
+		And user "user0" has shared folder "common" with group "group0"
 		And user "user1" has shared file "textfile0.txt" with user "user2"
 		And user "user1" has moved file "/textfile0.txt" to "/common/textfile0.txt"
 		And user "user1" has moved file "/common/textfile0.txt" to "/common/sub/textfile0.txt"
-		And as user "user2"
-		When the user downloads file "/common/sub/textfile0.txt" with range "bytes=9-17" using the API
+		When user "user2" downloads file "/common/sub/textfile0.txt" with range "bytes=9-17" using the API
 		Then the downloaded content should be "test text"
 		And the downloaded content when downloading file "/textfile0.txt" with range "bytes=9-17" should be "test text"
 		And user "user2" should see the following elements
@@ -545,12 +520,11 @@ Feature: sharing
 		And user "user2" has been added to group "group0"
 		And user "user0" has created a folder "/common"
 		And user "user0" has created a folder "/common/sub"
-		And folder "common" of user "user0" has been shared with group "group0"
+		And user "user0" has shared folder "common" with group "group0"
 		And user "user1" has shared file "textfile0.txt" with user "user2"
 		And user "user1" has moved file "/textfile0.txt" to "/common/textfile0.txt"
 		And user "user1" has moved file "/common/textfile0.txt" to "/common/sub/textfile0.txt"
-		And as user "user2"
-		When the user downloads file "/textfile0.txt" with range "bytes=9-17" using the API
+		When user "user2" downloads file "/textfile0.txt" with range "bytes=9-17" using the API
 		Then the downloaded content should be "test text"
 		And user "user2" should see the following elements
 			| /common/sub/textfile0.txt |
@@ -560,22 +534,19 @@ Feature: sharing
 		And user "user1" has been created
 		And group "group1" has been created
 		And user "user1" has been added to group "group1"
-		And file "textfile0.txt" of user "user0" has been shared with group "group1"
+		And user "user0" has shared file "textfile0.txt" with group "group1"
 		And user "user1" has moved file "/textfile0.txt" to "/FOLDER/textfile0.txt"
-		And as user "user0"
-		And deleting last share
-		And as user "user1"
-		When the user sends HTTP method "GET" to API endpoint "/apps/files_sharing/api/v1/shares?shared_with_me=true"
+		When user "user0" deletes the last share using the API
+		And user "user1" sends HTTP method "GET" to API endpoint "/apps/files_sharing/api/v1/shares?shared_with_me=true"
 		Then the OCS status code should be "100"
 		And the HTTP status code should be "200"
-		And last share_id is not included in the answer
+		And the last share_id should not be included in the response
 
 	Scenario: delete a share
 		Given user "user0" has been created
 		And user "user1" has been created
 		And user "user0" has shared file "textfile0.txt" with user "user1"
-		And as user "user0"
-		When deleting last share
+		When user "user0" deletes the last share using the API
 		Then the OCS status code should be "100"
 		And the HTTP status code should be "200"
 
@@ -588,7 +559,7 @@ Feature: sharing
 		And user "user2" has been added to group "group"
 		And user "user0" has created a folder "/TMP"
 		When user "user0" shares file "TMP" with group "group" using the API
-		And user "user1" has created a folder "/myFOLDER"
+		And user "user1" creates a folder "/myFOLDER" using the API
 		And user "user1" moves file "/TMP" to "/myFOLDER/myTMP" using the API
 		And the administrator deletes user "user2" using the API
 		Then user "user1" should see the following elements
@@ -607,8 +578,7 @@ Feature: sharing
 
 	Scenario: Don't allow sharing of the root
 		Given user "user0" has been created
-		And as user "user0"
-		When the user creates a share using the API with share settings
+		When user "user0" creates a share using the API with settings
 			| path | / |
 			| shareType | 3 |
 		Then the OCS status code should be "403"
@@ -620,8 +590,7 @@ Feature: sharing
 		And user "user0" has created a folder "/TMP"
 		And user "user0" has shared file "TMP" with user "user1"
 		And user "user1" has shared file "TMP" with user "user2"
-		And as user "user1"
-		When the user updates the last share using the API with
+		When user "user1" updates the last share using the API with
 			| permissions | 1 |
 		Then the OCS status code should be "100"
 
@@ -630,8 +599,7 @@ Feature: sharing
 		And user "user1" has been created
 		And user "user2" has been created
 		And user "user0" has created a folder "/TMP"
-		And as user "user0"
-		And the user has created a share with settings
+		And user "user0" has created a share with settings
 			| path | /TMP |
 			| shareType | 0 |
 			| shareWith | user1 |
@@ -652,11 +620,11 @@ Feature: sharing
 		And the user has created a share with settings
 			| path | welcome.txt |
 			| shareType | 3 |
-		When save last share id
-		And the user creates a share using the API with share settings
+		And the last share id has been remembered
+		When the user creates a share using the API with settings
 			| path | welcome.txt |
 			| shareType | 3 |
-		Then share ids should match
+		Then the share ids should match
 
 	Scenario: Correct webdav share-permissions for owned file
 		Given user "user0" has been created
@@ -679,10 +647,9 @@ Feature: sharing
 		And user "user1" has been created
 		And user "user0" has uploaded file with content "foo" to "/tmp.txt"
 		And user "user0" has shared file "tmp.txt" with user "user1"
-		And as user "user0"
-		And the user updates the last share using the API with
+		When user "user0" updates the last share using the API with
 			| permissions | 3 |
-		When user "user1" gets the following properties of folder "/tmp.txt" using the API
+		And user "user1" gets the following properties of folder "/tmp.txt" using the API
 			|{http://open-collaboration-services.org/ns}share-permissions |
 		Then the single response should contain a property "{http://open-collaboration-services.org/ns}share-permissions" with value "3"
 
@@ -691,10 +658,9 @@ Feature: sharing
 		And user "user1" has been created
 		And user "user0" has uploaded file with content "foo" to "/tmp.txt"
 		And user "user0" has shared file "tmp.txt" with user "user1"
-		And as user "user0"
-		And the user updates the last share using the API with
+		When user "user0" updates the last share using the API with
 			| permissions | 17 |
-		When user "user1" gets the following properties of folder "/tmp.txt" using the API
+		And user "user1" gets the following properties of folder "/tmp.txt" using the API
 			|{http://open-collaboration-services.org/ns}share-permissions |
 		Then the single response should contain a property "{http://open-collaboration-services.org/ns}share-permissions" with value "17"
 
@@ -719,10 +685,9 @@ Feature: sharing
 		And user "user1" has been created
 		And user "user0" has created a folder "/tmp"
 		And user "user0" has shared file "/tmp" with user "user1"
-		And as user "user0"
-		And the user updates the last share using the API with
+		When user "user0" updates the last share using the API with
 			| permissions | 29 |
-		When user "user1" gets the following properties of folder "/tmp" using the API
+		And user "user1" gets the following properties of folder "/tmp" using the API
 			|{http://open-collaboration-services.org/ns}share-permissions |
 		Then the single response should contain a property "{http://open-collaboration-services.org/ns}share-permissions" with value "29"
 
@@ -731,10 +696,9 @@ Feature: sharing
 		And user "user1" has been created
 		And user "user0" has created a folder "/tmp"
 		And user "user0" has shared file "/tmp" with user "user1"
-		And as user "user0"
-		And the user updates the last share using the API with
+		When user "user0" updates the last share using the API with
 			| permissions | 27 |
-		When user "user1" gets the following properties of folder "/tmp" using the API
+		And user "user1" gets the following properties of folder "/tmp" using the API
 			|{http://open-collaboration-services.org/ns}share-permissions |
 		Then the single response should contain a property "{http://open-collaboration-services.org/ns}share-permissions" with value "27"
 
@@ -743,10 +707,9 @@ Feature: sharing
 		And user "user1" has been created
 		And user "user0" has created a folder "/tmp"
 		And user "user0" has shared file "/tmp" with user "user1"
-		And as user "user0"
-		And the user updates the last share using the API with
+		When user "user0" updates the last share using the API with
 			| permissions | 23 |
-		When user "user1" gets the following properties of folder "/tmp" using the API
+		And user "user1" gets the following properties of folder "/tmp" using the API
 			|{http://open-collaboration-services.org/ns}share-permissions |
 		Then the single response should contain a property "{http://open-collaboration-services.org/ns}share-permissions" with value "23"
 
@@ -755,10 +718,9 @@ Feature: sharing
 		And user "user1" has been created
 		And user "user0" has created a folder "/tmp"
 		And user "user0" has shared file "/tmp" with user "user1"
-		And as user "user0"
-		And the user updates the last share using the API with
+		When user "user0" updates the last share using the API with
 			| permissions | 15 |
-		When user "user1" gets the following properties of folder "/tmp" using the API
+		And user "user1" gets the following properties of folder "/tmp" using the API
 			|{http://open-collaboration-services.org/ns}share-permissions |
 		Then the single response should contain a property "{http://open-collaboration-services.org/ns}share-permissions" with value "15"
 
@@ -779,8 +741,7 @@ Feature: sharing
 		And user "user0" has been created
 		And user "user1" has been created
 		And user "user0" has been disabled
-		And as user "user0"
-		When the user sends HTTP method "POST" to API endpoint "/apps/files_sharing/api/v1/shares" with body
+		When user "user0" sends HTTP method "POST" to API endpoint "/apps/files_sharing/api/v1/shares" with body
 			| path | welcome.txt |
 			| shareWith | user1 |
 			| shareType | 0 |
@@ -942,10 +903,9 @@ Feature: sharing
 		Given user "user0" has been created
 		And group "sharing-group" has been created
 		And user "user0" has been added to group "sharing-group"
-		And file "welcome.txt" of user "user0" has been shared with group "sharing-group"
-		And as user "user0"
-		And deleting last share
-		When the user sends HTTP method "POST" to API endpoint "/apps/files_sharing/api/v1/shares" with body
+		And user "user0" has shared file "welcome.txt" with group "sharing-group"
+		And user "user0" has deleted the last share
+		When user "user0" sends HTTP method "POST" to API endpoint "/apps/files_sharing/api/v1/shares" with body
 			| path | welcome.txt |
 			| shareWith | sharing-group |
 			| shareType | 1 |
@@ -958,9 +918,8 @@ Feature: sharing
 		And group "sharing-group" has been created
 		And user "user0" has created a folder "/test"
 		And user "user0" has created a folder "/test/sub"
-		And file "/test" of user "user0" has been shared with group "sharing-group"
-		And as user "user0"
-		When the user sends HTTP method "POST" to API endpoint "/apps/files_sharing/api/v1/shares" with body
+		And user "user0" has shared file "/test" with group "sharing-group"
+		When user "user0" sends HTTP method "POST" to API endpoint "/apps/files_sharing/api/v1/shares" with body
 			| path | /test/sub |
 			| shareWith | user1 |
 			| shareType | 0 |
@@ -975,9 +934,8 @@ Feature: sharing
 		And user "user0" has been added to group "sharing-group"
 		And user "user0" has created a folder "/test"
 		And user "user0" has created a folder "/test/sub"
-		And file "/test" of user "user0" has been shared with group "sharing-group"
-		And as user "user0"
-		When the user sends HTTP method "POST" to API endpoint "/apps/files_sharing/api/v1/shares" with body
+		And user "user0" has shared file "/test" with group "sharing-group"
+		When user "user0" sends HTTP method "POST" to API endpoint "/apps/files_sharing/api/v1/shares" with body
 			| path | /test/sub |
 			| shareWith | user1 |
 			| shareType | 0 |
@@ -1015,11 +973,10 @@ Feature: sharing
 		And group "sharing-group" has been created
 		And user "user0" has been added to group "sharing-group"
 		And user "user1" has been added to group "sharing-group"
-		And file "/PARENT/parent.txt" of user "user0" has been shared with group "sharing-group"
+		And user "user0" has shared file "/PARENT/parent.txt" with group "sharing-group"
 		And user "user0" has stored etag of element "/PARENT"
 		And user "user1" has stored etag of element "/"
-		And as user "user1"
-		When deleting last share
+		When user "user1" deletes the last share using the API
 		Then the etag of element "/" of user "user1" should have changed
 		And the etag of element "/PARENT" of user "user0" should not have changed
 
@@ -1032,8 +989,8 @@ Feature: sharing
 		And user "user1" has been added to group "new-group"
 		And user "user0" has been made a subadmin of group "new-group"
 		And as user "user0"
-		And folder "/FOLDER" of user "user0" has been shared with group "new-group"
-		And the user updates the last share using the API with
+		And user "user0" has shared folder "/FOLDER" with group "new-group"
+		And the user has updated the last share with
 			| permissions | 1 |
 		When the user updates the last share using the API with
 			| permissions | 31 |
@@ -1043,8 +1000,7 @@ Feature: sharing
 	Scenario: Cannot create share with zero permissions
 		Given user "user0" has been created
 		And user "user1" has been created
-		And as user "user0"
-		When the user sends HTTP method "POST" to API endpoint "/apps/files_sharing/api/v1/shares" with body
+		When user "user0" sends HTTP method "POST" to API endpoint "/apps/files_sharing/api/v1/shares" with body
 			| path | welcome.txt |
 			| shareWith | user1 |
 			| shareType | 0 |
@@ -1059,9 +1015,8 @@ Feature: sharing
 		And user "user0" has been added to group "new-group"
 		And user "user1" has been added to group "new-group"
 		And user "user0" has been made a subadmin of group "new-group"
-		And as user "user0"
-		And folder "/FOLDER" of user "user0" has been shared with group "new-group"
-		When the user updates the last share using the API with
+		And user "user0" has shared folder "/FOLDER" with group "new-group"
+		When user "user0" updates the last share using the API with
 			| permissions | 0 |
 		Then the OCS status code should be "400"
 
@@ -1132,8 +1087,7 @@ Feature: sharing
 	Scenario: Creating a link share with no specified permissions defaults to read permissions
 		Given user "user0" has been created
 		And user "user0" has created a folder "/afolder"
-		And as user "user0"
-		When the user creates a share using the API with share settings
+		When user "user0" creates a share using the API with settings
 			| path | /afolder |
 			| shareType | 3 |
 		Then the OCS status code should be "100"
@@ -1147,8 +1101,7 @@ Feature: sharing
 		Given parameter "shareapi_allow_public_upload" of app "core" has been set to "no"
 		And user "user0" has been created
 		And user "user0" has created a folder "/afolder"
-		And as user "user0"
-		When the user creates a share using the API with share settings
+		When user "user0" creates a share using the API with settings
 			| path | /afolder |
 			| shareType | 3 |
 		Then the OCS status code should be "100"
@@ -1161,8 +1114,7 @@ Feature: sharing
 	Scenario: Creating a link share with edit permissions keeps it
 		Given user "user0" has been created
 		And user "user0" has created a folder "/afolder"
-		And as user "user0"
-		When the user creates a share using the API with share settings
+		When user "user0" creates a share using the API with settings
 			| path | /afolder |
 			| shareType | 3 |
 			| permissions | 15 |
@@ -1176,11 +1128,9 @@ Feature: sharing
 	Scenario: resharing using a public link with read only permissions is not allowed
 		Given user "user0" has been created
 		And user "user1" has been created
-		And as user "user0"
 		And user "user0" has created a folder "/test"
 		And user "user0" has shared folder "/test" with user "user1" with permissions 1
-		And as user "user1"
-		When the user creates a share using the API with share settings
+		When user "user1" creates a share using the API with settings
 			| path | /test |
 			| shareType | 3 |
 			| publicUpload | false |
@@ -1190,11 +1140,9 @@ Feature: sharing
 	Scenario: resharing using a public link with read and write permissions only is not allowed
 		Given user "user0" has been created
 		And user "user1" has been created
-		And as user "user0"
 		And user "user0" has created a folder "/test"
 		And user "user0" has shared folder "/test" with user "user1" with permissions 15
-		And as user "user1"
-		When the user creates a share using the API with share settings
+		When user "user1" creates a share using the API with settings
 			| path | /test |
 			| shareType | 3 |
 			| publicUpload | false |
@@ -1210,8 +1158,8 @@ Feature: sharing
 		When user "user1" deletes file "/shared/shared_file.txt" using the API
 		Then as "user1" the file "/shared/shared_file.txt" should not exist
 		And as "user0" the file "/shared/shared_file.txt" should not exist
-		And as "user0" the file "/shared_file.txt" exists in trash
-		And as "user1" the file "/shared_file.txt" exists in trash
+		And as "user0" the file "/shared_file.txt" should exist in trash
+		And as "user1" the file "/shared_file.txt" should exist in trash
 
 	Scenario: deleting a folder out of a share as recipient creates a backup for the owner
 		Given user "user0" has been created
@@ -1223,10 +1171,10 @@ Feature: sharing
 		When user "user1" deletes folder "/shared/sub" using the API
 		Then as "user1" the folder "/shared/sub" should not exist
 		And as "user0" the folder "/shared/sub" should not exist
-		And as "user0" the folder "/sub" exists in trash
-		And as "user0" the file "/sub/shared_file.txt" exists in trash
-		And as "user1" the folder "/sub" exists in trash
-		And as "user1" the file "/sub/shared_file.txt" exists in trash
+		And as "user0" the folder "/sub" should exist in trash
+		And as "user0" the file "/sub/shared_file.txt" should exist in trash
+		And as "user1" the folder "/sub" should exist in trash
+		And as "user1" the file "/sub/shared_file.txt" should exist in trash
 
 	Scenario: moving a file into a share as recipient
 		Given user "user0" has been created
@@ -1247,7 +1195,7 @@ Feature: sharing
 		When user "user1" moves file "/shared_renamed/shared_file.txt" to "/taken_out.txt" using the API
 		Then as "user1" the file "/taken_out.txt" should exist
 		And as "user0" the file "/shared/shared_file.txt" should not exist
-		And as "user0" the file "/shared_file.txt" exists in trash
+		And as "user0" the file "/shared_file.txt" should exist in trash
 
 	Scenario: moving a folder out of a share as recipient creates a backup for the owner
 		Given user "user0" has been created
@@ -1260,8 +1208,8 @@ Feature: sharing
 		When user "user1" moves folder "/shared_renamed/sub" to "/taken_out" using the API
 		Then as "user1" the file "/taken_out" should exist
 		And as "user0" the folder "/shared/sub" should not exist
-		And as "user0" the folder "/sub" exists in trash
-		And as "user0" the file "/sub/shared_file.txt" exists in trash
+		And as "user0" the folder "/sub" should exist in trash
+		And as "user0" the file "/sub/shared_file.txt" should exist in trash
 
 	Scenario: User's own shares reshared to him don't appear when getting "shared with me" shares
 		Given user "user0" has been created
@@ -1272,13 +1220,11 @@ Feature: sharing
 		And as user "user0"
 		And user "user0" has moved file "/textfile0.txt" to "/shared/shared_file.txt"
 		And user "user0" has shared folder "/shared" with user "user1"
-		And as user "user1"
-		And folder "/shared" of user "user1" has been shared with group "group0"
-		And as user "user0"
-		When the user sends HTTP method "GET" to API endpoint "/apps/files_sharing/api/v1/shares?shared_with_me=true"
+		And user "user1" has shared folder "/shared" with group "group0"
+		When user "user0" sends HTTP method "GET" to API endpoint "/apps/files_sharing/api/v1/shares?shared_with_me=true"
 		Then the OCS status code should be "100"
 		And the HTTP status code should be "200"
-		And last share_id is not included in the answer
+		And the last share_id should not be included in the response
 
 	Scenario: Share ownership change after moving a shared file outside of an outer share
 		Given user "user0" has been created
@@ -1289,9 +1235,8 @@ Feature: sharing
 		And user "user1" has created a folder "/moved-out"
 		And user "user0" has shared folder "/folder1" with user "user1" with permissions 31
 		And user "user1" has shared folder "/folder1/folder2" with user "user2" with permissions 31
-		And as user "user1"
 		When user "user1" moves folder "/folder1/folder2" to "/moved-out/folder2" using the API
-		And getting info of last share
+		And user "user1" gets the info of the last share using the API
 		Then the share fields of the last share should include
 			| id | A_NUMBER |
 			| item_type | folder |
@@ -1320,9 +1265,8 @@ Feature: sharing
 		And user "user2" has created a folder "/user2-folder"
 		And user "user0" has shared folder "/user0-folder" with user "user1" with permissions 31
 		And user "user2" has shared folder "/user2-folder" with user "user1" with permissions 31
-		And as user "user1"
 		When user "user1" moves folder "/user0-folder/folder2" to "/user2-folder/folder2" using the API
-		And getting info of last share
+		And user "user1" gets the info of the last share using the API
 		Then the share fields of the last share should include
 			| id | A_NUMBER |
 			| item_type | folder |

@@ -55,7 +55,7 @@ trait Trashbin {
 	}
 
 	/**
-	 * @Then /^as "([^"]*)" the (file|folder|entry) "([^"]*)" exists in trash$/
+	 * @Then /^as "([^"]*)" the (file|folder|entry) "([^"]*)" should exist in trash$/
 	 * @param string $user
 	 * @param string $entryText unused
 	 * @param string $path
@@ -160,7 +160,7 @@ trait Trashbin {
 	}
 
 	/**
-	 * @Then /^as "([^"]*)" the (file|folder|entry) with original path "([^"]*)" exists in trash$/
+	 * @Then /^as "([^"]*)" the (file|folder|entry) with original path "([^"]*)" should exist in trash$/
 	 * @param string $user
 	 * @param string $entryText unused
 	 * @param string $originalPath
@@ -171,7 +171,7 @@ trait Trashbin {
 	}
 
 	/**
-	 * @Then /^as "([^"]*)" the (file|folder|entry) with original path "([^"]*)" does not exist in trash$/
+	 * @Then /^as "([^"]*)" the (file|folder|entry) with original path "([^"]*)" should not exist in trash$/
 	 * @param string $user
 	 * @param string $entryText
 	 * @param string $originalPath

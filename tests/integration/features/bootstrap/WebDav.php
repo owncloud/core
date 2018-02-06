@@ -162,8 +162,18 @@ trait WebDav {
 	 * @param string $range
 	 */
 	public function downloadFileWithRange($fileSource, $range) {
+		$this->userDownloadsFileWithRange($this->currentUser, $fileSource, $range);
+	}
+
+	/**
+	 * @When /^user "([^"]*)" downloads file "([^"]*)" with range "([^"]*)" using the API$/
+	 * @param string $user
+	 * @param string $fileSource
+	 * @param string $range
+	 */
+	public function userDownloadsFileWithRange($user, $fileSource, $range) {
 		$headers['Range'] = $range;
-		$this->response = $this->makeDavRequest($this->currentUser, "GET", $fileSource, $headers);
+		$this->response = $this->makeDavRequest($user, "GET", $fileSource, $headers);
 	}
 
 	/**
