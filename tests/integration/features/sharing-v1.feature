@@ -505,6 +505,7 @@ Feature: sharing
 		And user "user1" has shared file "textfile0.txt" with user "user2"
 		And user "user1" has moved file "/textfile0.txt" to "/common/textfile0.txt"
 		And user "user1" has moved file "/common/textfile0.txt" to "/common/sub/textfile0.txt"
+		And as user "user2"
 		When user "user2" downloads file "/common/sub/textfile0.txt" with range "bytes=9-17" using the API
 		Then the downloaded content should be "test text"
 		And the downloaded content when downloading file "/textfile0.txt" with range "bytes=9-17" should be "test text"
