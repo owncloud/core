@@ -44,24 +44,26 @@ trait Auth {
 	}
 
 	/**
-	 * @Given a new client token is used
+	 * @Given a new client token is used for user :user
+	 * @param string $user
 	 */
-	public function aNewClientTokenIsUsed() {
+	public function aNewClientTokenIsUsed($user) {
 		$client = new Client();
 		$resp = $client->post(substr($this->baseUrl, 0, -5) . '/token/generate', [
-		    'json' => [
-			'user' => 'user0',
-			'password' => '123456',
-		    ]
+			'json' => [
+				'user' => $user,
+				'password' => $this->getPasswordForUser($user),
+			]
 		]);
 		$this->clientToken = json_decode($resp->getBody()->getContents())->token;
 	}
 
 	/**
-	 * @When requesting :url with :method using basic auth
+	 * @When requesting :url with :method using basic auth for user :user
 	 */
-	public function requestingWithBasicAuth($url, $method) {
-		$this->sendRequest($url, $method, 'basic ' . base64_encode('user0:123456'));
+	public function requestingWithBasicAuth($url, $method, $user) {
+		$authString = $user . ':' . $this->getPasswordForUser($user);
+		$this->sendRequest($url, $method, 'basic ' . base64_encode($authString));
 	}
 
 	/**
@@ -86,9 +88,10 @@ trait Auth {
 	}
 
 	/**
-	 * @Given a new browser session is started
+	 * @Given a new browser session is started for user :user
+	 * @param string $user
 	 */
-	public function aNewBrowserSessionIsStarted() {
+	public function aNewBrowserSessionIsStarted($user) {
 		$loginUrl = substr($this->baseUrl, 0, -5) . '/login';
 		// Request a new session and extract CSRF token
 		$client = new Client();
@@ -103,12 +106,12 @@ trait Auth {
 		$client = new Client();
 		$response = $client->post(
 			$loginUrl, [
-		    'body' => [
-			'user' => 'user0',
-			'password' => '123456',
-			'requesttoken' => $this->requestToken,
-		    ],
-		    'cookies' => $this->cookieJar,
+				'body' => [
+					'user' => $user,
+					'password' => $this->getPasswordForUser($user),
+					'requesttoken' => $this->requestToken,
+				],
+				'cookies' => $this->cookieJar,
 			]
 		);
 		$this->extracRequestTokenFromResponse($response);

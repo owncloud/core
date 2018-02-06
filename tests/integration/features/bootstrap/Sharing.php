@@ -771,10 +771,7 @@ trait Sharing {
 		$res = $client->get(
 			$url,
 			[
-				'auth' => [
-					$user,
-					'123456',
-				],
+				'auth' => $this->getAuthOptionForUser($user),
 				'headers' => [
 					'Content-Type' => 'application/json',
 				],
@@ -788,10 +785,7 @@ trait Sharing {
 				$client->delete(
 					$this->baseUrl . "v{$this->apiVersion}.php/apps/files_sharing/api/v{$this->sharingApiVersion}/shares/{$id}",
 					[
-						'auth' => [
-							$user,
-							'123456',
-						],
+						'auth' => $this->getAuthOptionForUser($user),
 						'headers' => [
 							'Content-Type' => 'application/json',
 						],
