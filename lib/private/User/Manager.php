@@ -246,7 +246,6 @@ class Manager extends PublicEmitter implements IUserManager {
 			}
 		}
 
-		$this->logger->warning('Login failed: \''. $loginName .'\' (Remote IP: \''. \OC::$server->getRequest()->getRemoteAddress(). '\')', ['app' => 'core']);
 		return false;
 	}
 	/**

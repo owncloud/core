@@ -53,6 +53,7 @@ use OCP\Events\EventEmitterTrait;
 use OCP\Files\NoReadAccessException;
 use OCP\Files\NotPermittedException;
 use OCP\IConfig;
+use OCP\ILogger;
 use OCP\IRequest;
 use OCP\ISession;
 use OCP\IUser;
@@ -87,6 +88,13 @@ use Symfony\Component\EventDispatcher\GenericEvent;
 class Session implements IUserSession, Emitter {
 
 	use EventEmitterTrait;
+
+	/** @var ILogger */
+	private $logger;
+
+	/** @var IConfig */
+	private $config;
+
 	/** @var IUserManager | PublicEmitter $manager */
 	private $manager;
 
@@ -99,9 +107,6 @@ class Session implements IUserSession, Emitter {
 	/** @var IProvider */
 	private $tokenProvider;
 
-	/** @var IConfig */
-	private $config;
-
 	/** @var User $activeUser */
 	protected $activeUser;
 
@@ -112,23 +117,29 @@ class Session implements IUserSession, Emitter {
 	protected $userSyncService;
 
 	/**
+	 * @param ILogger $logger
+	 * @param IConfig $config
 	 * @param IUserManager $manager
 	 * @param ISession $session
 	 * @param ITimeFactory $timeFactory
 	 * @param IProvider $tokenProvider
-	 * @param IConfig $config
 	 * @param IServiceLoader $serviceLoader
 	 * @param SyncService $userSyncService
 	 */
-	public function __construct(IUserManager $manager, ISession $session,
-								ITimeFactory $timeFactory, IProvider $tokenProvider,
-								IConfig $config, IServiceLoader $serviceLoader,
+	public function __construct(ILogger $logger,
+								IConfig $config,
+								IUserManager $manager,
+								ISession $session,
+								ITimeFactory $timeFactory,
+								IProvider $tokenProvider,
+								IServiceLoader $serviceLoader,
 								SyncService $userSyncService) {
+		$this->logger = $logger;
+		$this->config = $config;
 		$this->manager = $manager;
 		$this->session = $session;
 		$this->timeFactory = $timeFactory;
 		$this->tokenProvider = $tokenProvider;
-		$this->config = $config;
 		$this->serviceLoader = $serviceLoader;
 		$this->userSyncService = $userSyncService;
 	}
@@ -494,6 +505,7 @@ class Session implements IUserSession, Emitter {
 			}
 			if ($user === null) {
 				$this->manager->emit('\OC\User', 'failedLogin', [$login]);
+				$this->logger->warning('Login failed: \''. $login .'\' (Remote IP: \''. \OC::$server->getRequest()->getRemoteAddress(). '\')', ['app' => 'core']);
 				return false;
 			}
 

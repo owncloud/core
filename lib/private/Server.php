@@ -306,8 +306,16 @@ class Server extends ServerContainer implements IServerContainer, IServiceLoader
 
 			$userSyncService = new SyncService($c->getConfig(), $c->getLogger(), $c->getAccountMapper());
 
-			$userSession = new \OC\User\Session($manager, $session, $timeFactory,
-				$defaultTokenProvider, $c->getConfig(), $this, $userSyncService);
+			$userSession = new \OC\User\Session(
+				$c->getLogger(),
+				$c->getConfig(),
+				$manager,
+				$session,
+				$timeFactory,
+				$defaultTokenProvider,
+				$this,
+				$userSyncService
+			);
 			$userSession->listen('\OC\User', 'preCreateUser', function ($uid, $password) {
 				\OC_Hook::emit('OC_User', 'pre_createUser', ['run' => true, 'uid' => $uid, 'password' => $password]);
 			});
