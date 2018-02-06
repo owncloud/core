@@ -845,13 +845,14 @@ trait Sharing {
 	}
 
 	/**
-	 * @Then as :user remove all shares from the file named :fileName
+	 * @When user :user removes all shares from the file named :fileName using the API
+	 * @Given user :user has removed all shares from the file named :fileName
 	 * @param string $user
 	 * @param string $fileName
 	 * @throws Exception
 	 * @return void
 	 */
-	public function asRemoveAllSharesFromTheFileNamed($user, $fileName) {
+	public function userRemovesAllSharesFromTheFileNamed($user, $fileName) {
 		$url = $this->baseUrl . "v{$this->apiVersion}.php/apps/files_sharing/api/v{$this->sharingApiVersion}/shares?format=json";
 		$client = new \GuzzleHttp\Client();
 		$res = $client->get(
@@ -882,7 +883,7 @@ trait Sharing {
 		}
 
 		if ($deleted === false) {
-			throw new \Exception("Could not delete file $fileName");
+			throw new \Exception("Could not delete shares for user $user file $fileName");
 		}
 	}
 

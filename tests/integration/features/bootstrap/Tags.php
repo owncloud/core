@@ -71,7 +71,8 @@ trait Tags {
 	}
 
 	/**
-	 * @When :user creates a :type tag with name :name
+	 * @When user :user creates a :type tag with name :name using the API
+	 * @Given user :user has created a :type tag with name :name
 	 * @param string $user
 	 * @param string $type
 	 * @param string $name
@@ -82,7 +83,8 @@ trait Tags {
 	}
 
 	/**
-	 * @When :user creates a :type tag with name :name and groups :groups
+	 * @When user :user creates a :type tag with name :name and groups :groups using the API
+	 * @Given user :user has created a :type tag with name :name and groups :groups
 	 * @param string $user
 	 * @param string $type
 	 * @param string $name
@@ -152,22 +154,22 @@ trait Tags {
 	}
 
 	/**
-	 * @Then the user :user :can assign the :type tag with name :tagDisplayName
+	 * @Then /^the user "([^"]*)" (should|should not) be able to assign the "([^"]*)" tag with name "([^"]*)"$/
 	 * @param string $user
-	 * @param string $can can or cannot
+	 * @param string $shouldOrNot should or should not
 	 * @param string $type
 	 * @param string $tagDisplayName
 	 * @throws Exception
 	 */
-	public function theUserCanAssignTheTag($user, $can, $type, $tagDisplayName) {
+	public function theUserCanAssignTheTag($user, $shouldOrNot, $type, $tagDisplayName) {
 		$tagData = $this->requestTagByDisplayName($user, $tagDisplayName);
 		$this->assertTypeOfTag($tagData, $type);
-		if ($can === 'can') {
+		if ($shouldOrNot === 'should') {
 			$expected = 'true';
-		} else if ($can === 'cannot') {
+		} else if ($shouldOrNot === 'should not') {
 			$expected = 'false';
 		} else {
-			throw new \Exception('Invalid condition, must be "can" or "cannot"');
+			throw new \Exception('Invalid condition, must be "should" or "should not"');
 		}
 		if ($tagData['{http://owncloud.org/ns}can-assign'] !== $expected) {
 			throw new \Exception('Tag cannot be assigned by user');
@@ -175,7 +177,7 @@ trait Tags {
 	}
 
 	/**
-	 * @Then the :type tag with name :tagName has the groups :groups
+	 * @Then the :type tag with name :tagName should have the groups :groups
 	 * @param string $type
 	 * @param string $tagName
 	 * @param string $groups list of groups separated by "|"
@@ -232,7 +234,7 @@ trait Tags {
 	}
 
 	/**
-	 * @When :user edits the tag with name :oldName and sets its name to :newName
+	 * @When :user edits the tag with name :oldName and sets its name to :newName using the API
 	 * @param string $user
 	 * @param string $oldName
 	 * @param string $newName
@@ -246,7 +248,7 @@ trait Tags {
 	}
 
 	/**
-	 * @When :user edits the tag with name :oldName and sets its groups to :groups
+	 * @When :user edits the tag with name :oldName and sets its groups to :groups using the API
 	 * @param string $user
 	 * @param string $oldName
 	 * @param string $groups
@@ -260,7 +262,7 @@ trait Tags {
 	}
 
 	/**
-	 * @Given :user deletes the tag with name :name
+	 * @Given :user deletes the tag with name :name using the API
 	 * @param string $user
 	 * @param string $name
 	 */
@@ -332,7 +334,8 @@ trait Tags {
 	}
 
 	/**
-	 * @When /^"([^"]*)" adds the tag "([^"]*)" to "([^"]*)" (shared|owned) by "([^"]*)"$/
+	 * @When /^user "([^"]*)" adds the tag "([^"]*)" to "([^"]*)" (shared|owned) by "([^"]*)" using the API$/
+	 * @Given /^user "([^"]*)" has added the tag "([^"]*)" to "([^"]*)" (shared|owned) by "([^"]*)"$/
 	 * @param string $taggingUser
 	 * @param string $tagName
 	 * @param string $fileName
@@ -344,7 +347,7 @@ trait Tags {
 	}
 
 	/**
-	 * @Then /^"([^"]*)" (shared|owned) by "([^"]*)" has the following tags$/
+	 * @Then /^(?:file|folder|entry) "([^"]*)" (shared|owned) by "([^"]*)" should have the following tags$/
 	 * @param string $fileName
 	 * @param string $sharedOrOwnedBy unused
 	 * @param string $sharingUser
@@ -375,7 +378,7 @@ trait Tags {
 	}
 
 	/**
-	 * @Then :fileName shared by :sharingUser has the following tags for :user
+	 * @Then file :fileName shared by :sharingUser should have the following tags for :user
 	 * @param string $fileName
 	 * @param string $sharingUser unused
 	 * @param string $user
@@ -404,7 +407,7 @@ trait Tags {
 	}
 
 	/**
-	 * @When :user removes the tag :tagName from :fileName shared by :shareUser
+	 * @When user :user removes the tag :tagName from :fileName shared by :shareUser using the API
 	 * @param string $user
 	 * @param string $tagName
 	 * @param string $fileName
