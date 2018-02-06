@@ -173,7 +173,7 @@ trait Tags {
 	 * @Then the :type tag with name :tagName has the groups :groups
 	 */
 	public function theTagHasGroup($type, $tagName, $groups) {
-		$tagData = $this->requestTagByDisplayName('admin', $tagName, true);
+		$tagData = $this->requestTagByDisplayName($this->getAdminUserName(), $tagName, true);
 		PHPUnit_Framework_Assert::assertNotNull($tagData, "Tag $tagName wasn't found for admin user");
 		$this->assertTypeOfTag($tagData, $type);
 		PHPUnit_Framework_Assert::assertEquals($tagData['{http://owncloud.org/ns}groups'], $groups,
@@ -197,7 +197,7 @@ trait Tags {
 	 * @return int
 	 */
 	private function findTagIdByName($name) {
-		$tagData = $this->requestTagByDisplayName('admin', $name);
+		$tagData = $this->requestTagByDisplayName($this->getAdminUserName(), $name);
 		return (int)$tagData['{http://owncloud.org/ns}id'];
 	}
 
@@ -414,7 +414,10 @@ trait Tags {
 			try {
 				$this->response = TagsHelper::deleteTag(
 					$this->baseUrlWithoutOCSAppendix(),
-					"admin", $this->getPasswordForUser("admin"), $tagID, 2);
+					$this->getAdminUserName(),
+					$this->getAdminPassword(),
+					$tagID,
+					2);
 			} catch (BadResponseException  $e) {
 				$this->response = $e->getResponse();
 			}
