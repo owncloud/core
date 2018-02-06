@@ -142,8 +142,8 @@ trait BasicStructure {
 	 * @param ResponseInterface $response
 	 * @return string
 	 */
-	public function getOCSResponse($response) {
-		return $response->xml()->meta[0]->statuscode;
+	public function getOCSResponseStatusCode($response) {
+		return (string) $response->xml()->meta[0]->statuscode;
 	}
 
 	/**
@@ -275,7 +275,7 @@ trait BasicStructure {
 	 * @param int $statusCode
 	 */
 	public function theOCSStatusCodeShouldBe($statusCode) {
-		PHPUnit_Framework_Assert::assertEquals($statusCode, $this->getOCSResponse($this->response));
+		PHPUnit_Framework_Assert::assertEquals($statusCode, $this->getOCSResponseStatusCode($this->response));
 	}
 
 	/**
