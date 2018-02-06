@@ -887,7 +887,7 @@ Feature: sharing
 	Scenario: Emptying trashbin
 		Given user "user0" has been created
 		And user "user0" has deleted file "/textfile0.txt"
-		When user "user0" empties the trashbin
+		When user "user0" empties the trashbin using the API
 		Then the HTTP status code should be "200"
 
 	Scenario: orphaned shares
@@ -897,7 +897,7 @@ Feature: sharing
 		And user "user0" has created a folder "/common/sub"
 		And user "user0" has shared file "/common/sub" with user "user1"
 		And user "user0" has deleted folder "/common"
-		When user "user0" empties the trashbin
+		When user "user0" empties the trashbin using the API
 		Then as "user1" the folder "/sub" should not exist
 
 	Scenario: sharing again an own file while belonging to a group

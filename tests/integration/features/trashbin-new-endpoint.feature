@@ -62,7 +62,7 @@ Feature: trashbin-new-endpoint
 		And user "user1" has moved file "/shared" to "/renamed_shared"
 		And user "user1" has deleted file "/renamed_shared/shared_file.txt"
 		And user "user1" has logged in to a web-style session using the API
-		When as "user1" the file with original path "/renamed_shared/shared_file.txt" is restored
+		When user "user1" restores the file with original path "/renamed_shared/shared_file.txt" using the API
 		Then as "user1" the file with original path "/renamed_shared/shared_file.txt" should not exist in trash
 		And user "user1" should see the following elements
 			| /renamed_shared/ |
@@ -74,7 +74,7 @@ Feature: trashbin-new-endpoint
 		And user "user0" has deleted file "/textfile1.txt"
 		And as "user0" the file "/textfile0.txt" should exist in trash
 		And as "user0" the file "/textfile0.txt" should exist in trash
-		When user "user0" empties the trashbin
+		When user "user0" empties the trashbin using the API
 		Then as "user0" the file with original path "/textfile0.txt" should not exist in trash
 		And as "user0" the file with original path "/textfile1.txt" should not exist in trash
 
@@ -83,7 +83,7 @@ Feature: trashbin-new-endpoint
 		And user "user0" has deleted file "/textfile0.txt"
 		And as "user0" the file "/textfile0.txt" should exist in trash
 		And user "user0" has logged in to a web-style session using the API
-		When as "user0" the folder with original path "/textfile0.txt" is restored
+		When user "user0" restores the folder with original path "/textfile0.txt" using the API
 		Then as "user0" the folder with original path "/textfile0.txt" should not exist in trash
 		And user "user0" should see the following elements
 			| /FOLDER/ |
@@ -129,7 +129,7 @@ Feature: trashbin-new-endpoint
 		And user "user0" has deleted file "/local_storage/tmp/textfile0.txt"
 		And as "user0" the folder with original path "/local_storage/tmp/textfile0.txt" should exist in trash
 		And user "user0" has logged in to a web-style session using the API
-		When as "user0" the folder with original path "/local_storage/tmp/textfile0.txt" is restored
+		When user "user0" restores the folder with original path "/local_storage/tmp/textfile0.txt" using the API
 		Then as "user0" the folder with original path "/local_storage/tmp/textfile0.txt" should not exist in trash
 		And user "user0" should see the following elements
 			| /local_storage/ |
