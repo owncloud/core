@@ -151,8 +151,8 @@ Feature: trashbin-new-endpoint
 		Then as "user0" the file with original path "/new-folder/new-file.txt" should not exist in trash
 		And as "user0" the file "/new-folder/new-file.txt" should exist
 
-	@skip
-	Scenario: trashbin can store two files with same name but different origins
+	@skip @issue-23151
+	Scenario: trashbin can store two files with the same name but different origins when the files are deleted close together in time
 		Given user "user0" has been created
 		And user "user0" has created a folder "/folderA"
 		And user "user0" has created a folder "/folderB"
@@ -161,6 +161,19 @@ Feature: trashbin-new-endpoint
 		When user "user0" deletes file "/folderA/textfile0.txt" using the API
 		And user "user0" deletes file "/folderB/textfile0.txt" using the API
 		And user "user0" deletes file "/textfile0.txt" using the API
+		Then as "user0" the folder with original path "/folderA/textfile0.txt" should exist in trash
+		And as "user0" the folder with original path "/folderB/textfile0.txt" should exist in trash
+		And as "user0" the folder with original path "/textfile0.txt" should exist in trash
+
+	Scenario: trashbin can store two files with the same name but different origins when the deletes are separated by at least 1 second
+		Given user "user0" has been created
+		And user "user0" has created a folder "/folderA"
+		And user "user0" has created a folder "/folderB"
+		And user "user0" has copied file "/textfile0.txt" to "/folderA/textfile0.txt"
+		And user "user0" has copied file "/textfile0.txt" to "/folderB/textfile0.txt"
+		When user "user0" waits and deletes file "/folderA/textfile0.txt" using the API
+		And user "user0" waits and deletes file "/folderB/textfile0.txt" using the API
+		And user "user0" waits and deletes file "/textfile0.txt" using the API
 		Then as "user0" the folder with original path "/folderA/textfile0.txt" should exist in trash
 		And as "user0" the folder with original path "/folderB/textfile0.txt" should exist in trash
 		And as "user0" the folder with original path "/textfile0.txt" should exist in trash
