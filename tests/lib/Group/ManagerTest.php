@@ -26,6 +26,7 @@ namespace Test\Group;
 use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
 use OC\Group\BackendGroup;
 use OC\Group\Database;
+use OC\Group\SyncService;
 use OC\MembershipManager;
 use OC\Group\GroupMapper;
 use OC\SubAdmin;
@@ -52,6 +53,9 @@ class ManagerTest extends \Test\TestCase {
 
 	/** @var GroupMapper | \PHPUnit_Framework_MockObject_MockObject */
 	private $groupMapper;
+
+	/** @var SyncService | \PHPUnit_Framework_MockObject_MockObject */
+	private $syncService;
 
 	private function getTestUser($id) {
 		$mockUser = $this->createMock(IUser::class);
@@ -147,6 +151,7 @@ class ManagerTest extends \Test\TestCase {
 		$this->membershipManager = $this->createMock(MembershipManager::class);
 		$this->userManager = $this->createMock(UserManager::class);
 		$this->groupMapper = $this->createMock(GroupMapper::class);
+		$this->syncService = $this->createMock(SyncService::class);
 	}
 
 	public function testGet() {
@@ -165,7 +170,7 @@ class ManagerTest extends \Test\TestCase {
 			->with('group1')
 			->willReturn($backendGroup);
 
-		$manager = new \OC\Group\Manager($this->userManager, $this->membershipManager, $this->groupMapper, $this->connection);
+		$manager = new \OC\Group\Manager($this->userManager, $this->membershipManager, $this->groupMapper, $this->syncService, $this->connection);
 		$manager->addBackend($backend);
 
 		$group = $manager->get('group1');
@@ -191,7 +196,7 @@ class ManagerTest extends \Test\TestCase {
 			->with('group1')
 			->willThrowException(new DoesNotExistException(''));
 
-		$manager = new \OC\Group\Manager($this->userManager, $this->membershipManager, $this->groupMapper, $this->connection);
+		$manager = new \OC\Group\Manager($this->userManager, $this->membershipManager, $this->groupMapper, $this->syncService, $this->connection);
 		$manager->addBackend($backend);
 
 		$this->assertNull($manager->get('group1'));
@@ -223,7 +228,7 @@ class ManagerTest extends \Test\TestCase {
 			->with('group1')
 			->willReturn($backendGroup);
 
-		$manager = new \OC\Group\Manager($this->userManager, $this->membershipManager, $this->groupMapper, $this->connection);
+		$manager = new \OC\Group\Manager($this->userManager, $this->membershipManager, $this->groupMapper, $this->syncService, $this->connection);
 		$manager->addBackend($backend1);
 		$manager->addBackend($backend2);
 
@@ -255,11 +260,13 @@ class ManagerTest extends \Test\TestCase {
 		$this->groupMapper->expects($this->exactly(1))
 			->method('getGroup')
 			->willThrowException(new DoesNotExistException(''));
-		$this->groupMapper->expects($this->exactly(1))
-			->method('insert')
+
+		$this->syncService->expects($this->exactly(1))
+			->method('createOrSyncGroup')
+			->with('group1', $backend)
 			->willReturn($backendGroup);
 
-		$manager = new \OC\Group\Manager($this->userManager, $this->membershipManager, $this->groupMapper, $this->connection);
+		$manager = new \OC\Group\Manager($this->userManager, $this->membershipManager, $this->groupMapper, $this->syncService, $this->connection);
 		$manager->addBackend($backend);
 
 		$group = $manager->createGroup('group1');
@@ -287,15 +294,17 @@ class ManagerTest extends \Test\TestCase {
 				return true;
 			}));
 
-		$this->groupMapper->expects($this->never())
-			->method('getGroup');
+		$this->groupMapper->expects($this->exactly(1))
+			->method('getGroup')
+			->willThrowException(new DoesNotExistException(''));
 
 		$backendGroup = $this->getBackendGroup(1, get_class($backend));
-		$this->groupMapper->expects($this->exactly(1))
-			->method('insert')
+		$this->syncService->expects($this->exactly(1))
+			->method('createOrSyncGroup')
+			->with('group1', $backend)
 			->willReturn($backendGroup);
 
-		$manager = new \OC\Group\Manager($this->userManager, $this->membershipManager, $this->groupMapper, $this->connection);
+		$manager = new \OC\Group\Manager($this->userManager, $this->membershipManager, $this->groupMapper, $this->syncService, $this->connection);
 		// We can add, but dont have to
 		$manager->addBackend($backend);
 
@@ -316,122 +325,16 @@ class ManagerTest extends \Test\TestCase {
 		$this->groupMapper->expects($this->exactly(1))
 			->method('getGroup')
 			->willThrowException(new DoesNotExistException(''));
-		$this->groupMapper->expects($this->exactly(1))
-			->method('insert')
+		$this->syncService->expects($this->exactly(1))
+			->method('createOrSyncGroup')
 			->willReturn($backendGroup);
 
-		$manager = new \OC\Group\Manager($this->userManager, $this->membershipManager, $this->groupMapper, $this->connection);
+		$manager = new \OC\Group\Manager($this->userManager, $this->membershipManager, $this->groupMapper, $this->syncService, $this->connection);
 
 		$group = $manager->createGroup('group1');
 		$this->assertEquals('group1', $group->getGID());
 		$this->assertEquals('group1', $group->getDisplayName());
 		$this->assertEquals('OC\Group\Database', get_class($group->getBackend()));
-	}
-
-	public function testCreateFromBackendWithDisplayName() {
-		/**
-		 * @var \PHPUnit_Framework_MockObject_MockObject | \OC\Group\Backend $backend
-		 */
-		$backendGroupCreated = false;
-		$implementedActions =
-			GroupInterface::ADD_TO_GROUP |
-			GroupInterface::REMOVE_FROM_GOUP |
-			GroupInterface::COUNT_USERS |
-			GroupInterface::CREATE_GROUP |
-			GroupInterface::GROUP_DETAILS |
-			GroupInterface::DELETE_GROUP;
-
-		$groupDetails = [];
-		$groupDetails['displayName'] = 'Group 1';
-
-		$backend = $this->getTestBackend($implementedActions);
-		$backend->expects($this->any())
-			->method('groupExists')
-			->with('group1')
-			->will($this->returnCallback(function () use (&$backendGroupCreated) {
-				return $backendGroupCreated;
-			}));
-		$backend->expects($this->once())
-			->method('createGroup')
-			->will($this->returnCallback(function () use (&$backendGroupCreated) {
-				$backendGroupCreated = true;
-				return true;
-			}));
-		$backend->expects($this->once())
-			->method('getGroupDetails')
-			->will($this->returnValue($groupDetails));
-
-		$this->groupMapper->expects($this->never())
-			->method('getGroup');
-
-		$this->groupMapper->expects($this->exactly(1))
-			->method('insert')
-			->will($this->returnCallback(function ($backendGroup) {
-				return $backendGroup;
-			}));
-
-		$manager = new \OC\Group\Manager($this->userManager, $this->membershipManager, $this->groupMapper, $this->connection);
-		// We might add, but dont have to if createGroupFromBackend is used
-		$manager->addBackend($backend);
-
-		$backend->createGroup('group1');
-
-		$group = $manager->createGroupFromBackend('group1', $backend);
-		$this->assertEquals('group1', $group->getGID());
-		$this->assertEquals('Group 1', $group->getDisplayName());
-		$this->assertEquals($backend, $group->getBackend());
-	}
-
-	public function testCreateFromBackendWithDisplayNameWrong() {
-		/**
-		 * @var \PHPUnit_Framework_MockObject_MockObject | \OC\Group\Backend $backend
-		 */
-		$backendGroupCreated = false;
-		$implementedActions =
-			GroupInterface::ADD_TO_GROUP |
-			GroupInterface::REMOVE_FROM_GOUP |
-			GroupInterface::COUNT_USERS |
-			GroupInterface::CREATE_GROUP |
-			GroupInterface::GROUP_DETAILS |
-			GroupInterface::DELETE_GROUP;
-		$backend = $this->getTestBackend($implementedActions);
-		$backend->expects($this->any())
-			->method('groupExists')
-			->with('group1')
-			->will($this->returnCallback(function () use (&$backendGroupCreated) {
-				return $backendGroupCreated;
-			}));
-		$backend->expects($this->once())
-			->method('createGroup')
-			->will($this->returnCallback(function () use (&$backendGroupCreated) {
-				$backendGroupCreated = true;
-				return true;
-			}));
-		$backend->expects($this->once())
-			->method('getGroupDetails')
-			->will($this->returnValue('IamNotArray'));
-
-		$this->groupMapper->expects($this->never())
-			->method('getGroup');
-
-		$this->groupMapper->expects($this->exactly(1))
-			->method('insert')
-			->will($this->returnCallback(function ($backendGroup) {
-				return $backendGroup;
-			}));
-
-		$manager = new \OC\Group\Manager($this->userManager, $this->membershipManager, $this->groupMapper, $this->connection);
-		// We might add, but dont have to if createGroupFromBackend is used
-		$manager->addBackend($backend);
-
-		$backend->createGroup('group1');
-
-		$group = $manager->createGroupFromBackend('group1', $backend);
-		$this->assertEquals('group1', $group->getGID());
-
-		// We expect that displayname will be the same as gid if getGroupDetails return incorrect result
-		$this->assertEquals('group1', $group->getDisplayName());
-		$this->assertEquals($backend, $group->getBackend());
 	}
 
 	public function testCreateWrong() {
@@ -447,7 +350,7 @@ class ManagerTest extends \Test\TestCase {
 			->method('createGroup');
 
 
-		$manager = new \OC\Group\Manager($this->userManager, $this->membershipManager, $this->groupMapper, $this->connection);
+		$manager = new \OC\Group\Manager($this->userManager, $this->membershipManager, $this->groupMapper, $this->syncService, $this->connection);
 		$manager->addBackend($backend);
 
 		$group = $manager->createGroup(null);
@@ -469,7 +372,7 @@ class ManagerTest extends \Test\TestCase {
 		$this->groupMapper->expects($this->never())
 			->method('getGroup');
 
-		$manager = new \OC\Group\Manager($this->userManager, $this->membershipManager, $this->groupMapper, $this->connection);
+		$manager = new \OC\Group\Manager($this->userManager, $this->membershipManager, $this->groupMapper, $this->syncService, $this->connection);
 		$manager->addBackend($backend);
 
 		$group = $manager->createGroupFromBackend(null, $backend);
@@ -492,7 +395,7 @@ class ManagerTest extends \Test\TestCase {
 			->method('getGroup')
 			->willReturn($backendGroup);
 
-		$manager = new \OC\Group\Manager($this->userManager, $this->membershipManager, $this->groupMapper, $this->connection);
+		$manager = new \OC\Group\Manager($this->userManager, $this->membershipManager, $this->groupMapper, $this->syncService, $this->connection);
 		$manager->addBackend($backend);
 
 		$exceptionThrown = false;
@@ -522,7 +425,7 @@ class ManagerTest extends \Test\TestCase {
 			->with('1')
 			->willReturn([$backendGroup]);
 
-		$manager = new \OC\Group\Manager($this->userManager, $this->membershipManager, $this->groupMapper, $this->connection);
+		$manager = new \OC\Group\Manager($this->userManager, $this->membershipManager, $this->groupMapper, $this->syncService, $this->connection);
 		$manager->addBackend($backend);
 
 		$groups = $manager->search('1');
@@ -555,7 +458,7 @@ class ManagerTest extends \Test\TestCase {
 			->with('group')
 			->willReturn([$backendGroup1, $backendGroup2, $backendGroup3]);
 
-		$manager = new \OC\Group\Manager($this->userManager, $this->membershipManager, $this->groupMapper, $this->connection);
+		$manager = new \OC\Group\Manager($this->userManager, $this->membershipManager, $this->groupMapper, $this->syncService, $this->connection);
 		$manager->addBackend($database);
 		$manager->addBackend($backend);
 
@@ -594,7 +497,7 @@ class ManagerTest extends \Test\TestCase {
 			->with('group', 1, 1)
 			->willReturn([$backendGroup2]);
 
-		$manager = new \OC\Group\Manager($this->userManager, $this->membershipManager, $this->groupMapper, $this->connection);
+		$manager = new \OC\Group\Manager($this->userManager, $this->membershipManager, $this->groupMapper, $this->syncService, $this->connection);
 		$manager->addBackend($backend);
 
 		$groups = $manager->search('group', 1, 1);
@@ -637,7 +540,7 @@ class ManagerTest extends \Test\TestCase {
 			->with('group')
 			->willReturn([$backendGroup1, $backendGroup2, $backendGroup3]);
 
-		$manager = new \OC\Group\Manager($this->userManager, $this->membershipManager, $this->groupMapper, $this->connection);
+		$manager = new \OC\Group\Manager($this->userManager, $this->membershipManager, $this->groupMapper, $this->syncService, $this->connection);
 		$manager->addBackend($database);
 		$manager->addBackend($backend);
 
@@ -675,7 +578,7 @@ class ManagerTest extends \Test\TestCase {
 			->with(1, MembershipManager::MEMBERSHIP_TYPE_GROUP_USER)
 			->willReturn([$backendGroup]);
 
-		$manager = new \OC\Group\Manager($this->userManager, $this->membershipManager, $this->groupMapper, $this->connection);
+		$manager = new \OC\Group\Manager($this->userManager, $this->membershipManager, $this->groupMapper, $this->syncService, $this->connection);
 		$manager->addBackend($backend);
 
 		$accountId = 1;
@@ -711,7 +614,7 @@ class ManagerTest extends \Test\TestCase {
 			->with(1, MembershipManager::MEMBERSHIP_TYPE_GROUP_USER)
 			->willReturn([$backendGroup]);
 
-		$manager = new \OC\Group\Manager($this->userManager, $this->membershipManager, $this->groupMapper, $this->connection);
+		$manager = new \OC\Group\Manager($this->userManager, $this->membershipManager, $this->groupMapper, $this->syncService, $this->connection);
 		$manager->addBackend($backend);
 
 		$accountId = 1;
@@ -750,7 +653,7 @@ class ManagerTest extends \Test\TestCase {
 			->with(1, MembershipManager::MEMBERSHIP_TYPE_GROUP_USER)
 			->willReturn([$backendGroup]);
 
-		$manager = new \OC\Group\Manager($this->userManager, $this->membershipManager, $this->groupMapper, $this->connection);
+		$manager = new \OC\Group\Manager($this->userManager, $this->membershipManager, $this->groupMapper, $this->syncService, $this->connection);
 		$manager->addBackend($backend);
 
 		$accountId = 1;
@@ -786,7 +689,7 @@ class ManagerTest extends \Test\TestCase {
 		$this->membershipManager->expects($this->never())
 			->method('getMemberBackendGroupsById');
 
-		$manager = new \OC\Group\Manager($this->userManager, $this->membershipManager, $this->groupMapper, $this->connection);
+		$manager = new \OC\Group\Manager($this->userManager, $this->membershipManager, $this->groupMapper, $this->syncService, $this->connection);
 		$manager->addBackend($backend);
 
 		$groups = $manager->getUserGroups(null);
@@ -829,7 +732,7 @@ class ManagerTest extends \Test\TestCase {
 			->with('user1', 'group2', MembershipManager::MEMBERSHIP_TYPE_GROUP_USER)
 			->willReturn(false);
 
-		$manager = new \OC\Group\Manager($this->userManager, $this->membershipManager, $this->groupMapper, $this->connection);
+		$manager = new \OC\Group\Manager($this->userManager, $this->membershipManager, $this->groupMapper, $this->syncService, $this->connection);
 		$manager->addBackend($backend);
 
 		/**
@@ -865,7 +768,7 @@ class ManagerTest extends \Test\TestCase {
 			->with('user2', 'admin', MembershipManager::MEMBERSHIP_TYPE_GROUP_USER)
 			->willReturn(false);
 
-		$manager = new \OC\Group\Manager($this->userManager, $this->membershipManager, $this->groupMapper, $this->connection);
+		$manager = new \OC\Group\Manager($this->userManager, $this->membershipManager, $this->groupMapper, $this->syncService, $this->connection);
 		$manager->addBackend($backend);
 
 		$accountId1 = 1;
@@ -910,7 +813,7 @@ class ManagerTest extends \Test\TestCase {
 			->with(1, MembershipManager::MEMBERSHIP_TYPE_GROUP_USER)
 			->willReturn([$backendGroup1, $backendGroup2]);
 
-		$manager = new \OC\Group\Manager($this->userManager, $this->membershipManager, $this->groupMapper, $this->connection);
+		$manager = new \OC\Group\Manager($this->userManager, $this->membershipManager, $this->groupMapper, $this->syncService, $this->connection);
 		$manager->addBackend($database);
 		$manager->addBackend($backend);
 
@@ -945,7 +848,7 @@ class ManagerTest extends \Test\TestCase {
 		$backend->expects($this->never())
 			->method('groupExists');
 
-		$manager = new \OC\Group\Manager($this->userManager, $this->membershipManager, $this->groupMapper, $this->connection);
+		$manager = new \OC\Group\Manager($this->userManager, $this->membershipManager, $this->groupMapper, $this->syncService, $this->connection);
 		$manager->addBackend($backend);
 
 		$groups = $manager->getUserGroups(null);
@@ -973,7 +876,7 @@ class ManagerTest extends \Test\TestCase {
 			->with('group', 'user', -1, 0)
 			->willReturn([$account1, $account2]);
 
-		$manager = new \OC\Group\Manager($this->userManager, $this->membershipManager, $this->groupMapper, $this->connection);
+		$manager = new \OC\Group\Manager($this->userManager, $this->membershipManager, $this->groupMapper, $this->syncService, $this->connection);
 		$manager->addBackend($backend);
 
 		$users = $manager->displayNamesInGroup('group', 'user');
@@ -1004,7 +907,7 @@ class ManagerTest extends \Test\TestCase {
 			->with('group', 'user', 2, 0)
 			->willReturn([$account1, $account2]);
 
-		$manager = new \OC\Group\Manager($this->userManager, $this->membershipManager, $this->groupMapper, $this->connection);
+		$manager = new \OC\Group\Manager($this->userManager, $this->membershipManager, $this->groupMapper, $this->syncService, $this->connection);
 		$manager->addBackend($backend);
 
 		$users = $manager->displayNamesInGroup('group', 'user', 2);
@@ -1035,7 +938,7 @@ class ManagerTest extends \Test\TestCase {
 			->with('group', 'user', 2, 1)
 			->willReturn([$account2, $account3]);
 
-		$manager = new \OC\Group\Manager($this->userManager, $this->membershipManager, $this->groupMapper, $this->connection);
+		$manager = new \OC\Group\Manager($this->userManager, $this->membershipManager, $this->groupMapper, $this->syncService, $this->connection);
 		$manager->addBackend($backend);
 
 		$users = $manager->displayNamesInGroup('group', 'user', 2, 1);
@@ -1066,7 +969,7 @@ class ManagerTest extends \Test\TestCase {
 			->with('group', '')
 			->willReturn([$account1, $account2, $account3]);
 
-		$manager = new \OC\Group\Manager($this->userManager, $this->membershipManager, $this->groupMapper, $this->connection);
+		$manager = new \OC\Group\Manager($this->userManager, $this->membershipManager, $this->groupMapper, $this->syncService, $this->connection);
 		$manager->addBackend($backend);
 
 		$users = $manager->displayNamesInGroup('group', '');
@@ -1100,7 +1003,7 @@ class ManagerTest extends \Test\TestCase {
 			->with('group1')
 			->willThrowException(new DoesNotExistException(''));
 
-		$manager = new \OC\Group\Manager($this->userManager, $this->membershipManager, $this->groupMapper, $this->connection);
+		$manager = new \OC\Group\Manager($this->userManager, $this->membershipManager, $this->groupMapper, $this->syncService, $this->connection);
 		$manager->addBackend($backend);
 
 		// Fetch group, should exists
@@ -1141,7 +1044,7 @@ class ManagerTest extends \Test\TestCase {
 			->with(1, MembershipManager::MEMBERSHIP_TYPE_GROUP_USER)
 			->willReturn([]);
 
-		$manager = new \OC\Group\Manager($this->userManager, $this->membershipManager, $this->groupMapper, $this->connection);
+		$manager = new \OC\Group\Manager($this->userManager, $this->membershipManager, $this->groupMapper, $this->syncService, $this->connection);
 		$manager->addBackend($backend);
 
 		$accountId = 1;
@@ -1187,7 +1090,7 @@ class ManagerTest extends \Test\TestCase {
 			->method('addMembership')
 			->willReturn(true);
 
-		$manager = new \OC\Group\Manager($this->userManager, $this->membershipManager, $this->groupMapper, $this->connection);
+		$manager = new \OC\Group\Manager($this->userManager, $this->membershipManager, $this->groupMapper, $this->syncService, $this->connection);
 		$manager->addBackend($backend);
 
 		$accountId1 = 1;
@@ -1256,7 +1159,7 @@ class ManagerTest extends \Test\TestCase {
 			->method('addMembership')
 			->willReturn(false);
 
-		$manager = new \OC\Group\Manager($this->userManager, $this->membershipManager, $this->groupMapper, $this->connection);
+		$manager = new \OC\Group\Manager($this->userManager, $this->membershipManager, $this->groupMapper, $this->syncService, $this->connection);
 		$manager->addBackend($backend);
 
 		$accountId1 = 1;
@@ -1322,7 +1225,7 @@ class ManagerTest extends \Test\TestCase {
 			->method('removeMembership')
 			->willReturn(true);
 
-		$manager = new \OC\Group\Manager($this->userManager, $this->membershipManager, $this->groupMapper, $this->connection);
+		$manager = new \OC\Group\Manager($this->userManager, $this->membershipManager, $this->groupMapper, $this->syncService, $this->connection);
 		$manager->addBackend($backend);
 
 		$accountId1 = 1;
@@ -1385,7 +1288,7 @@ class ManagerTest extends \Test\TestCase {
 			->method('removeMembership')
 			->willReturn(false);
 
-		$manager = new \OC\Group\Manager($this->userManager, $this->membershipManager, $this->groupMapper, $this->connection);
+		$manager = new \OC\Group\Manager($this->userManager, $this->membershipManager, $this->groupMapper, $this->syncService, $this->connection);
 		$manager->addBackend($backend);
 
 		$accountId1 = 1;
@@ -1435,7 +1338,7 @@ class ManagerTest extends \Test\TestCase {
 			->with('user1', MembershipManager::MEMBERSHIP_TYPE_GROUP_USER)
 			->willReturn([$backendGroup1, $backendGroup2]);
 
-		$manager = new \OC\Group\Manager($this->userManager, $this->membershipManager, $this->groupMapper, $this->connection);
+		$manager = new \OC\Group\Manager($this->userManager, $this->membershipManager, $this->groupMapper, $this->syncService, $this->connection);
 		$manager->addBackend($database);
 		$manager->addBackend($backend);
 
@@ -1481,7 +1384,7 @@ class ManagerTest extends \Test\TestCase {
 			->with($account2)
 			->willReturn($user2);
 
-		$manager = new \OC\Group\Manager($this->userManager, $this->membershipManager, $this->groupMapper, $this->connection);
+		$manager = new \OC\Group\Manager($this->userManager, $this->membershipManager, $this->groupMapper, $this->syncService, $this->connection);
 		$manager->addBackend($database);
 		$manager->addBackend($backend);
 
@@ -1516,7 +1419,7 @@ class ManagerTest extends \Test\TestCase {
 			->with($account1)
 			->willReturn($user1);
 
-		$manager = new \OC\Group\Manager($this->userManager, $this->membershipManager, $this->groupMapper, $this->connection);
+		$manager = new \OC\Group\Manager($this->userManager, $this->membershipManager, $this->groupMapper, $this->syncService, $this->connection);
 		$manager->addBackend($backend);
 
 		$users = $manager->findUsersInGroup('group', 'user', 1);
@@ -1549,7 +1452,7 @@ class ManagerTest extends \Test\TestCase {
 			->with($account2)
 			->willReturn($user2);
 
-		$manager = new \OC\Group\Manager($this->userManager, $this->membershipManager, $this->groupMapper, $this->connection);
+		$manager = new \OC\Group\Manager($this->userManager, $this->membershipManager, $this->groupMapper, $this->syncService, $this->connection);
 		$manager->addBackend($backend);
 
 		$users = $manager->findUsersInGroup('group', 'user',1,1);
@@ -1589,7 +1492,7 @@ class ManagerTest extends \Test\TestCase {
 			->with($account2)
 			->willReturn($user2);
 
-		$manager = new \OC\Group\Manager($this->userManager, $this->membershipManager, $this->groupMapper, $this->connection);
+		$manager = new \OC\Group\Manager($this->userManager, $this->membershipManager, $this->groupMapper, $this->syncService, $this->connection);
 		$manager->addBackend($backend);
 
 		$users = $manager->findUsersInGroup('group', '',2,0);
@@ -1605,7 +1508,7 @@ class ManagerTest extends \Test\TestCase {
 		 */
 		$backend = $this->getTestBackend();
 
-		$manager = new \OC\Group\Manager($this->userManager, $this->membershipManager, $this->groupMapper, $this->connection);
+		$manager = new \OC\Group\Manager($this->userManager, $this->membershipManager, $this->groupMapper, $this->syncService, $this->connection);
 		$manager->addBackend($backend);
 
 		$isUsed = $manager->isBackendUsed(get_class($backend));
@@ -1618,7 +1521,7 @@ class ManagerTest extends \Test\TestCase {
 	}
 
 	public function testGetBackendGroupObject() {
-		$manager = new \OC\Group\Manager($this->userManager, $this->membershipManager, $this->groupMapper, $this->connection);
+		$manager = new \OC\Group\Manager($this->userManager, $this->membershipManager, $this->groupMapper, $this->syncService, $this->connection);
 
 		$group = $this->createMock(IGroup::class);
 		$group->expects($this->any())->method('getGID')->willReturn('foo');
@@ -1638,7 +1541,7 @@ class ManagerTest extends \Test\TestCase {
 	}
 
 	public function testGetBackendGroupObjectDoesNotExists() {
-		$manager = new \OC\Group\Manager($this->userManager, $this->membershipManager, $this->groupMapper, $this->connection);
+		$manager = new \OC\Group\Manager($this->userManager, $this->membershipManager, $this->groupMapper, $this->syncService, $this->connection);
 
 		$group = $this->createMock(IGroup::class);
 		$group->expects($this->any())->method('getGID')->willReturn('foo');
@@ -1653,7 +1556,7 @@ class ManagerTest extends \Test\TestCase {
 		 */
 		$backend = $this->getTestBackend();
 
-		$manager = new \OC\Group\Manager($this->userManager, $this->membershipManager, $this->groupMapper, $this->connection);
+		$manager = new \OC\Group\Manager($this->userManager, $this->membershipManager, $this->groupMapper, $this->syncService, $this->connection);
 		$manager->addBackend($backend);
 
 		$subAdmin = $manager->getSubAdmin();
@@ -1666,12 +1569,13 @@ class ManagerTest extends \Test\TestCase {
 		 */
 		$backend = $this->getTestBackend();
 
-		$manager = new \OC\Group\Manager($this->userManager, $this->membershipManager, $this->groupMapper, $this->connection);
+		$manager = new \OC\Group\Manager($this->userManager, $this->membershipManager, $this->groupMapper, $this->syncService, $this->connection);
 		$manager->addBackend($backend);
 
-		$array = $manager->reset($this->groupMapper, []);
+		$array = $manager->reset($this->groupMapper, [], $this->syncService);
 		$this->assertEquals($array[0], $this->groupMapper);
 		$this->assertEquals($array[1][0], $backend);
+		$this->assertEquals($array[2], $this->syncService);
 
 		$memb = $manager->resetMembershipManager($this->membershipManager);
 		$this->assertEquals($memb, $this->membershipManager);

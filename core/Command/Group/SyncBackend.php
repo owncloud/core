@@ -118,16 +118,16 @@ class SyncBackend extends Command {
 			return 1;
 		}
 
-		$syncService = new SyncService($this->groupMapper, $this->accountMapper, $this->membershipManager, $backend, $this->config, $this->logger);
+		$syncService = new SyncService($this->groupMapper, $this->accountMapper, $this->membershipManager, $this->config, $this->logger);
 
 		// Count groups
-		$backendGroupsNo = $this->handleCount($output, $syncService);
+		$backendGroupsNo = $this->handleCount($output, $syncService, $backend);
 
 		// Analyse unknown groups
-		$this->handleUnknownGroups($output, $syncService);
+		$this->handleUnknownGroups($output, $syncService, $backend);
 
 		// Sync groups and memberships
-		$this->handleUpdate($output, $syncService, $backendGroupsNo);
+		$this->handleUpdate($output, $syncService, $backend, $backendGroupsNo);
 
 		return 0;
 	}
@@ -168,14 +168,15 @@ class SyncBackend extends Command {
 	/**
 	 * @param OutputInterface $output
 	 * @param SyncService $syncService
+	 * @param GroupInterface $backend
 	 *
 	 * @return int - number of groups in external backend
 	 */
-	private function handleCount(OutputInterface $output, SyncService $syncService) {
+	private function handleCount(OutputInterface $output, SyncService $syncService, GroupInterface $backend) {
 		$output->writeln("Count groups from external backend ...");
 		$p = new ProgressBar($output);
 		$max = 0;
-		$syncService->count(function () use ($p, &$max) {
+		$syncService->count($backend, function () use ($p, &$max) {
 			$p->advance();
 			$max++;
 		});
@@ -189,11 +190,12 @@ class SyncBackend extends Command {
 	/**
 	 * @param OutputInterface $output
 	 * @param SyncService $syncService
+	 * @param GroupInterface $backend
 	 */
-	private function handleUnknownGroups(OutputInterface $output, SyncService $syncService) {
+	private function handleUnknownGroups(OutputInterface $output, SyncService $syncService, GroupInterface $backend) {
 		$output->writeln("Scan existing groups and find groups to delete...");
 		$p = new ProgressBar($output);
-		$toBeDeleted = $syncService->getNoLongerExistingGroup(function () use ($p) {
+		$toBeDeleted = $syncService->getNoLongerExistingGroup($backend, function () use ($p) {
 			$p->advance();
 		});
 		$p->finish();
@@ -223,14 +225,15 @@ class SyncBackend extends Command {
 	/**
 	 * @param OutputInterface $output
 	 * @param SyncService $syncService
+	 * @param GroupInterface $backend
 	 * @param int $backendGroupsNo
 	 */
-	private function handleUpdate(OutputInterface $output, SyncService $syncService, $backendGroupsNo) {
+	private function handleUpdate(OutputInterface $output, SyncService $syncService, GroupInterface $backend, $backendGroupsNo) {
 		// insert/update known users
 		$output->writeln("Insert new and update existing groups. Sync memberships of each group ...");
 		$p = new ProgressBar($output);
 		$p->start($backendGroupsNo);
-		$syncService->run(function () use ($p) {
+		$syncService->run($backend, function () use ($p) {
 			$p->advance();
 		});
 		$p->finish();

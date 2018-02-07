@@ -34,6 +34,7 @@ use OC\Files\Storage\Temporary;
 use OC\Files\View;
 use OCP\Files\Storage;
 use Test\TestCase;
+use Test\Traits\GroupTrait;
 use Test\Traits\UserTrait;
 
 /**
@@ -46,6 +47,7 @@ use Test\Traits\UserTrait;
 class StorageTest extends TestCase {
 
 	use UserTrait;
+	use GroupTrait;
 
 	/**
 	 * @var string
@@ -205,7 +207,7 @@ class StorageTest extends TestCase {
 		$originalFileId = $this->userView->getFileInfo('share/folder/test.txt')->getId();
 
 		$recipientUser = $this->getUniqueId('recipient_');
-		\OC::$server->getUserManager()->createUser($recipientUser, $recipientUser);
+		$this->createUser($recipientUser, $recipientUser);
 
 		$node = \OC::$server->getUserFolder($this->user)->get('share');
 		$share = \OC::$server->getShareManager()->newShare();
@@ -260,8 +262,8 @@ class StorageTest extends TestCase {
 		$originalFileId = $this->userView->getFileInfo('share/folder/test.txt')->getId();
 
 		$recipientUser = $this->getUniqueId('recipient_');
-		$recipientUserObject = \OC::$server->getUserManager()->createUser($recipientUser, $recipientUser);
-		$roGroupObject = \OC::$server->getGroupManager()->createGroup('rogroup');
+		$recipientUserObject = $this->createUser($recipientUser, $recipientUser);
+		$roGroupObject = $this->createGroup('rogroup');
 		$roGroupObject->addUser($recipientUserObject);
 
 		$node = \OC::$server->getUserFolder($this->user)->get('share');
@@ -379,7 +381,7 @@ class StorageTest extends TestCase {
 		$this->assertCount(1, $results);
 
 		$recipientUser = $this->getUniqueId('recipient_');
-		\OC::$server->getUserManager()->createUser($recipientUser, $recipientUser);
+		$this->createUser($recipientUser, $recipientUser);
 
 		$node = \OC::$server->getUserFolder($this->user)->get('share');
 		$share = \OC::$server->getShareManager()->newShare();
@@ -433,7 +435,7 @@ class StorageTest extends TestCase {
 		$this->assertCount(1, $results);
 
 		$recipientUser = $this->getUniqueId('recipient_');
-		\OC::$server->getUserManager()->createUser($recipientUser, $recipientUser);
+		$this->createUser($recipientUser, $recipientUser);
 
 		$node = \OC::$server->getUserFolder($this->user)->get('share');
 		$share = \OC::$server->getShareManager()->newShare();
@@ -590,7 +592,7 @@ class StorageTest extends TestCase {
 		$this->assertCount(1, $results);
 
 		$recipientUser = $this->getUniqueId('recipient_');
-		$user2 = \OC::$server->getUserManager()->createUser($recipientUser, $recipientUser);
+		$user2 = $this->createUser($recipientUser, $recipientUser);
 
 		$node = \OC::$server->getUserFolder($this->user)->get('share');
 		$share = \OC::$server->getShareManager()->newShare();

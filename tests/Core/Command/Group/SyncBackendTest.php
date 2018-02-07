@@ -33,6 +33,7 @@ use OCP\GroupInterface;
 use OCP\IConfig;
 use OCP\IDBConnection;
 use OCP\IGroup;
+use OCP\ILogger;
 use OCP\IUser;
 use OCP\UserInterface;
 use Symfony\Component\Console\Input\InputInterface;
@@ -44,6 +45,8 @@ use Test\Traits\UserTrait;
 use Test\Util\Group\MemoryGroupMapper;
 use Test\Util\MemoryMembershipManager;
 use Test\Util\User\MemoryAccountMapper;
+use OC\User\SyncService as UserSyncService;
+use OC\Group\SyncService as GroupSyncService;
 
 /**
  * Class SyncBackendTest
@@ -82,12 +85,14 @@ class SyncBackendTest extends TestCase {
 
     protected function setUp() {
         parent::setUp();
-
+		$logger = $this->createMock(ILogger::class);
 		$db = \OC::$server->getDatabaseConnection();
-		$config = $this->createMock(IConfig::class);
+		$config = \OC::$server->getConfig();
 		$groupMapper = new MemoryGroupMapper($db);
 		$accountMapper = new MemoryAccountMapper($config, $db, new AccountTermMapper($db));
 		$membershipManager = new MemoryMembershipManager($db, $config);
+		$userSyncService = new UserSyncService($config, $logger, $accountMapper);
+		$groupSyncService =  new GroupSyncService($groupMapper, $accountMapper, $membershipManager, $config, $logger);
 
 		$this->backend = $this->getMockBuilder(GroupInterface::class)
 			->disableOriginalConstructor()
@@ -137,8 +142,8 @@ class SyncBackendTest extends TestCase {
 		$this->userManager = \OC::$server->getUserManager();
 		$this->groupManager = \OC::$server->getGroupManager();
 		$this->userManager->resetMembershipManager($membershipManager);
-		$this->userManager->reset($accountMapper, [$this->userBackend1, $this->userBackend2]);
-		$this->groupManager->reset($groupMapper, [$this->backend]);
+		$this->userManager->reset($accountMapper, [$this->userBackend1, $this->userBackend2], $userSyncService);
+		$this->groupManager->reset($groupMapper, [$this->backend], $groupSyncService);
 
 		$this->command = new SyncBackend($groupMapper,
 			$accountMapper,

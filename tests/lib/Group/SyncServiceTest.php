@@ -22,7 +22,8 @@
 namespace Test\Group;
 
 use OC\Group\BackendGroup;
-use OC\Group\SyncService;
+use OC\User\SyncService as UserSyncService;
+use OC\Group\SyncService as GroupSyncService;
 use OC\MembershipManager;
 use OC\User\Account;
 use OC\User\AccountTermMapper;
@@ -114,7 +115,7 @@ class SyncServiceTest extends TestCase {
 
 		// This should call backend 4 times and count of gids should be 1502
 		$counter = 0;
-		$syncService->count( function ($gid) use (&$counter){
+		$syncService->count($this->backend, function ($gid) use (&$counter){
 			$counter++;
 		});
 
@@ -122,7 +123,7 @@ class SyncServiceTest extends TestCase {
 
 		// This should call backend 0 times (fetch from cache). Count of gids should be 1502
 		$counter = 0;
-		$syncService->count( function ($gid) use (&$counter){
+		$syncService->count($this->backend, function ($gid) use (&$counter){
 			$counter++;
 		});
 
@@ -158,7 +159,7 @@ class SyncServiceTest extends TestCase {
 			->will($this->returnValue(['userbeforelast', 'userlast']));
 
 		$groups = [];
-		$syncService->run( function ($gid) use (&$groups){
+		$syncService->run($this->backend, function ($gid) use (&$groups){
 			$groups[] = $gid;
 		});
 
@@ -244,7 +245,7 @@ class SyncServiceTest extends TestCase {
 
 		// Run sync
 		$groups = [];
-		$syncService->run( function ($gid) use (&$groups){
+		$syncService->run($this->backend, function ($gid) use (&$groups){
 			$groups[] = $gid;
 		});
 
@@ -318,7 +319,7 @@ class SyncServiceTest extends TestCase {
 
 		// Run sync
 		$groups = [];
-		$syncService->run( function ($gid) use (&$groups){
+		$syncService->run($this->backend, function ($gid) use (&$groups){
 			$groups[] = $gid;
 		});
 
@@ -384,7 +385,7 @@ class SyncServiceTest extends TestCase {
 
 		//  Run sync
 		$groups = [];
-		$syncService->run(function ($gid) use (&$groups) {
+		$syncService->run($this->backend, function ($gid) use (&$groups) {
 			$groups[] = $gid;
 		});
 
@@ -460,7 +461,7 @@ class SyncServiceTest extends TestCase {
 		$this->assertEquals($backendGroups[0]->getBackend(), get_class($this->backend));
 
 		$groups = [];
-		$syncService->run( function ($gid) use (&$groups){
+		$syncService->run($this->backend, function ($gid) use (&$groups){
 			$groups[] = $gid;
 		});
 
@@ -519,7 +520,7 @@ class SyncServiceTest extends TestCase {
 		// This run should detect that group1 exists already in backend Test/Backend and
 		// entry for backend $this->backend cannot be processed
 		$groups = [];
-		$syncService->run( function ($gid) use (&$groups){
+		$syncService->run($this->backend, function ($gid) use (&$groups){
 			$groups[] = $gid;
 		});
 
@@ -571,7 +572,7 @@ class SyncServiceTest extends TestCase {
 		$this->assertEquals($backendGroups[0]->getDisplayName(), 'Group 1');
 
 		$groups = [];
-		$syncService->run( function ($gid) use (&$groups){
+		$syncService->run($this->backend, function ($gid) use (&$groups){
 			$groups[] = $gid;
 		});
 
@@ -606,7 +607,7 @@ class SyncServiceTest extends TestCase {
 		$backendGroup->setBackend(get_class($this->backend));
 		$this->groupMapper->insert($backendGroup);
 
-		$toDeleteGroups = $syncService->getNoLongerExistingGroup( function ($backendGroup){
+		$toDeleteGroups = $syncService->getNoLongerExistingGroup($this->backend, function ($backendGroup){
 		});
 
 		$this->assertCount(1, $toDeleteGroups);
@@ -616,18 +617,23 @@ class SyncServiceTest extends TestCase {
 	/**
 	 * This allows to reset sync service for each test
 	 *
-	 * @return SyncService
+	 * @return GroupSyncService
 	 */
 	private function getSyncService() {
+		$config =  \OC::$server->getConfig();
+		$logger = $this->createMock(ILogger::class);
+
 		// Adjust membership manager
 		\OC::$server->getUserManager()->resetMembershipManager($this->membershipManager);
+		\OC::$server->getGroupManager()->resetMembershipManager($this->membershipManager);
 
 		// Adjust mappers
-		\OC::$server->getUserManager()->reset($this->accountMapper, []);
-		\OC::$server->getGroupManager()->reset($this->groupMapper, []);
+		$userSyncService = new UserSyncService($config, $logger, $this->accountMapper);
+		$groupSyncService =  new GroupSyncService($this->groupMapper, $this->accountMapper, $this->membershipManager, $config, $logger);
 
-		$config = $this->createMock(IConfig::class);
-		$logger = $this->createMock(ILogger::class);
-		return new SyncService($this->groupMapper, $this->accountMapper, $this->membershipManager, $this->backend, $config, $logger);
+		\OC::$server->getUserManager()->reset($this->accountMapper, [], $userSyncService);
+		\OC::$server->getGroupManager()->reset($this->groupMapper, [], $groupSyncService);
+
+		return $groupSyncService;
 	}
 }

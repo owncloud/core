@@ -43,8 +43,6 @@ use OCP\ILogger;
  */
 class SyncService {
 
-	/** @var GroupInterface */
-	private $backend;
 	/** @var GroupMapper */
 	private $groupMapper;
 	/** @var AccountMapper */
@@ -55,11 +53,7 @@ class SyncService {
 	private $config;
 	/** @var ILogger */
 	private $logger;
-	/** @var string */
-	private $backendClass;
-	/** @var boolean */
-	private $prefetched;
-	/** @var string[] */
+	/** @var string[] backendclass -> gid array map*/
 	private $prefetchedGroupIds;
 
 	/**
@@ -68,24 +62,19 @@ class SyncService {
 	 * @param GroupMapper $groupMapper
 	 * @param AccountMapper $accountMapper
 	 * @param MembershipManager $membershipManager
-	 * @param GroupInterface $backend
 	 * @param IConfig $config
 	 * @param ILogger $logger
 	 */
 	public function __construct(GroupMapper $groupMapper,
 								AccountMapper $accountMapper,
 								MembershipManager $membershipManager,
-								GroupInterface $backend,
 								IConfig $config,
 								ILogger $logger) {
 		$this->groupMapper = $groupMapper;
 		$this->accountMapper = $accountMapper;
 		$this->membershipManager = $membershipManager;
-		$this->backend = $backend;
-		$this->backendClass = get_class($backend);
 		$this->config = $config;
 		$this->logger = $logger;
-		$this->prefetched = false;
 		$this->prefetchedGroupIds = [];
 	}
 
@@ -95,18 +84,20 @@ class SyncService {
 	 * This function will prefetch groups in case groups were not prefetched before-hands,
 	 * however callback for prefetch call will not be displayed
 	 *
+	 * @param GroupInterface $backend
 	 * @param \Closure $callback is called for every user to progress display
 	 * @throws UniqueConstraintViolationException
 	 * @throws MultipleObjectsReturnedException
 	 */
-	public function run(\Closure $callback) {
-		$this->fetch();
+	public function run(GroupInterface $backend, \Closure $callback) {
+		$this->fetch($backend);
 
 		// update existing and insert new users
-		foreach ($this->prefetchedGroupIds as $gid) {
-			if ($backendGroup = $this->groupUpdate($gid)) {
+		$backendClass = get_class($backend);
+		foreach ($this->prefetchedGroupIds[$backendClass] as $gid) {
+			if ($backendGroup = $this->createOrSyncGroup($gid, $backend)) {
 				// Fetch remote group users, which have existing accounts in the system
-				$remoteAccounts = $this->getRemoteGroupUsers($backendGroup->getGroupId());
+				$remoteAccounts = $this->getRemoteGroupUsers($backend, $backendGroup->getGroupId());
 
 				// Fetch local group users, which were synced to the group using SYNC mechanism
 				$localSyncAccounts = $this->getSyncLocalGroupUsers($backendGroup->getId());
@@ -149,18 +140,20 @@ class SyncService {
 	 * This function will prefetch groups in case groups were not prefetched before-hands,
 	 * however callback for prefetch call will not be displayed
 	 *
+	 * @param GroupInterface $backend
 	 * @param \Closure $callback is called for every group to allow progress display
 	 * @return array
 	 */
-	public function getNoLongerExistingGroup(\Closure $callback) {
-		$this->fetch();
+	public function getNoLongerExistingGroup(GroupInterface $backend, \Closure $callback) {
+		$this->fetch($backend);
 
 		// detect no longer existing group
 		$toBeDeleted = [];
-		$this->groupMapper->callForAllGroups(function (BackendGroup $b) use (&$toBeDeleted, $callback) {
-			if ($b->getBackend() == $this->backendClass) {
+		$backendClass = get_class($backend);
+		$this->groupMapper->callForAllGroups(function (BackendGroup $b) use (&$toBeDeleted, $callback, $backendClass) {
+			if ($b->getBackend() == $backendClass) {
 				$gid = $b->getGroupId();
-				if (!in_array($gid, $this->prefetchedGroupIds)) {
+				if (!in_array($gid, $this->prefetchedGroupIds[$backendClass])) {
 					$toBeDeleted[] = $b->getGroupId();
 				}
 			}
@@ -176,29 +169,62 @@ class SyncService {
 	 * This function will prefetch groups in case groups were not prefetched before-hands,
 	 * however callback for prefetch call will not be displayed
 	 *
+	 * @param GroupInterface $backend
 	 * @param \Closure $callback is called for every group to allow progress display
 	 * @return array
 	 */
-	public function count(\Closure $callback) {
-		$this->fetch($callback);
+	public function count(GroupInterface $backend, \Closure $callback) {
+		$this->fetch($backend, $callback);
 
-		return count($this->prefetchedGroupIds);
+		$backendClass = get_class($backend);
+		return count($this->prefetchedGroupIds[$backendClass]);
+	}
+
+	/**
+	 * Creates/Sync group from/with group backend. If already existing in the backend,
+	 * returns null
+	 *
+	 * @param string $gid
+	 * @param GroupInterface $backend
+	 * @return BackendGroup | null
+	 * @throws UniqueConstraintViolationException
+	 */
+	public function createOrSyncGroup($gid, GroupInterface $backend) {
+		$backendClass = get_class($backend);
+
+		try {
+			$b = $this->groupMapper->getGroup($gid);
+			if ($b->getBackend() !== $backendClass) {
+				$this->logger->warning(
+					"Group <$gid> already provided by another backend({$b->getBackend()} != {$backendClass}), skipping.",
+					['app' => self::class]
+				);
+				return null;
+			}
+			$b = $this->syncBackendGroup($b, $backend);
+			return $this->groupMapper->update($b);
+		} catch(DoesNotExistException $ex) {
+			$b = $this->createNewBackendGroup($backend, $gid);
+			$b = $this->syncBackendGroup($b, $backend);
+			return $this->groupMapper->insert($b);
+		}
 	}
 
 	/**.
 	 * Returns remote users for updated backend group, which have already synced
 	 * accounts in the system
 	 *
+	 * @param GroupInterface $backend
 	 * @param string $gid
 	 * @return Account[] - account id -> account map
 	 * @throws MultipleObjectsReturnedException
 	 */
-	private function getRemoteGroupUsers($gid) {
+	private function getRemoteGroupUsers(GroupInterface $backend, $gid) {
 		$limit = 500;
 		$offset = 0;
 		$uids = [];
 		do {
-			$users = $this->backend->usersInGroup($gid,'', $limit, $offset);
+			$users = $backend->usersInGroup($gid,'', $limit, $offset);
 			$uids = array_merge($uids, $users);
 			$offset += $limit;
 		} while(count($users) >= $limit);
@@ -217,6 +243,45 @@ class SyncService {
 		}
 
 		return $accounts;
+	}
+
+	/**
+	 * Fetch backend service groups and
+	 * use callback function for each of the groups, if callback has been specified.
+	 *
+	 * @param GroupInterface $backend
+	 * @param \Closure $callback is called for every group to allow progress display
+	 */
+	private function fetch(GroupInterface $backend, \Closure $callback = null) {
+		$backendClass = get_class($backend);
+		if (isset($this->prefetchedGroupIds[$backendClass])) {
+			$this->callbackForEachGroup($this->prefetchedGroupIds[$backendClass], $callback);
+		} else {
+			$limit = 500;
+			$offset = 0;
+			$this->prefetchedGroupIds[$backendClass] = [];
+			do {
+				$groups = $backend->getGroups('', $limit, $offset);
+				$this->prefetchedGroupIds[$backendClass] = array_merge($this->prefetchedGroupIds[$backendClass], $groups);
+				$offset += $limit;
+
+				$this->callbackForEachGroup($groups, $callback);
+			} while(count($groups) >= $limit);
+		}
+	}
+
+	/**
+	 * Use callback function for each of the groups (group ids), if callback has been specified.
+	 *
+	 * @param string[] $gids
+	 * @param \Closure $callback is called for every group to allow progress display
+	 */
+	private function callbackForEachGroup($gids, \Closure $callback = null) {
+		if (!is_null($callback)) {
+			foreach ($gids as $gid) {
+				$callback($gid);
+			}
+		}
 	}
 
 	/**.
@@ -266,91 +331,45 @@ class SyncService {
 	}
 
 	/**
+	 * @param GroupInterface $backend
 	 * @param string $gid
-	 * @return BackendGroup | null
-	 * @throws UniqueConstraintViolationException
+	 * @return BackendGroup
 	 */
-	private function groupUpdate($gid) {
-		try {
-			$group = $this->groupMapper->getGroup($gid);
-			if ($group->getBackend() !== $this->backendClass) {
-				$this->logger->warning(
-					"Group <$gid> already provided by another backend({$group->getBackend()} != {$this->backendClass}), skipping.",
-					['app' => self::class]
-				);
-				return null;
-			}
-			$b = $this->setupBackendGroup($group, $gid);
-			return $this->groupMapper->update($b);
-		} catch(DoesNotExistException $ex) {
-			$b = $this->createNewBackendGroup($gid);
-			$this->setupBackendGroup($b, $gid);
-			return $this->groupMapper->insert($b);
-		}
-	}
-
-	/**
-	 * Use callback function for each of the groups (group ids), if callback has been specified.
-	 *
-	 * @param string[] $gids
-	 * @param \Closure $callback is called for every group to allow progress display
-	 */
-	private function callbackForEachGroup($gids, \Closure $callback = null) {
-		if (!is_null($callback)) {
-			foreach ($gids as $gid) {
-				$callback($gid);
-			}
-		}
-	}
-
-	/**
-	 * Fetch backend service groups and
-	 * use callback function for each of the groups, if callback has been specified.
-	 *
-	 * @param \Closure $callback is called for every group to allow progress display
-	 */
-	private function fetch(\Closure $callback = null) {
-		if ($this->prefetched) {
-			$this->callbackForEachGroup($this->prefetchedGroupIds, $callback);
-		} else {
-			$limit = 500;
-			$offset = 0;
-			$this->prefetchedGroupIds = [];
-			do {
-				$groups = $this->backend->getGroups('', $limit, $offset);
-				$this->prefetchedGroupIds = array_merge($this->prefetchedGroupIds, $groups);
-				$offset += $limit;
-
-				$this->callbackForEachGroup($groups, $callback);
-			} while(count($groups) >= $limit);
-
-			$this->prefetched = true;
-		}
+	private function createNewBackendGroup(GroupInterface $backend, $gid) {
+		$b = new BackendGroup();
+		$b->setGroupId($gid);
+		$b->setBackend(get_class($backend));
+		return $b;
 	}
 
 	/**
 	 * @param BackendGroup $b
-	 * @param string $gid
+	 * @param GroupInterface $backend
 	 * @return BackendGroup
 	 */
-	private function setupBackendGroup(BackendGroup $b, $gid) {
-		$displayName = $gid;
+	private function syncBackendGroup(BackendGroup $b, GroupInterface $backend) {
+		$this->syncDisplayName($b, $backend);
+		return $b;
+	}
 
-		if ($this->backend->implementsActions(\OC\Group\Backend::GROUP_DETAILS)) {
-			$groupData = $this->backend->getGroupDetails($gid);
+
+	/**
+	 * @param BackendGroup $b
+	 * @param GroupInterface $backend
+	 * @return BackendGroup
+	 */
+	private function syncDisplayName(BackendGroup $b, GroupInterface $backend) {
+		$gid = $b->getGroupId();
+
+		$displayName = $gid;
+		if ($backend->implementsActions(\OC\Group\Backend::GROUP_DETAILS)) {
+			$groupData = $backend->getGroupDetails($gid);
 			if (is_array($groupData) && isset($groupData['displayName'])) {
 				// take the display name from the backend
 				$displayName = $groupData['displayName'];
 			}
 		}
 		$b->setDisplayName($displayName);
-		return $b;
-	}
-
-	private function createNewBackendGroup($gid) {
-		$b = new BackendGroup();
-		$b->setGroupId($gid);
-		$b->setBackend(get_class($this->backend));
 		return $b;
 	}
 

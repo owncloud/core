@@ -26,7 +26,7 @@ use OCP\AppFramework\Db\Entity;
 /**
  * Class BackendGroup
  *
- * @method int getGroupId()
+ * @method string getGroupId()
  * @method string getDisplayName()
  * @method void setDisplayName(string $displayName)
  * @method string getBackend()

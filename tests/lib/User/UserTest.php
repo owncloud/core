@@ -371,7 +371,7 @@ class UserTest extends TestCase {
 		$account->expects($this->any())->method('getBackendInstance')->willReturn($backendinstance);
 		$account->expects($this->any())->method('getDisplayName')->willReturn('admin');
 		$account->expects($this->any())->method('setDisplayName')->willReturn($setDisplayName);
-		$user = new User($account, $this->accountMapper, null, $this->config, null, null, $this->groupManager, null);
+		$user = new User($account, $this->accountMapper, $this->membershipManager, null, $this->config, null, null, $this->groupManager, null);
 		if ($setDisplayName !== true) {
 			$this->assertEquals($setDisplayName, $user->canChangeDisplayName());
 		} else {

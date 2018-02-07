@@ -85,7 +85,8 @@ use OC\Tagging\TagMapper;
 use OC\Theme\ThemeService;
 use OC\User\AccountMapper;
 use OC\User\AccountTermMapper;
-use OC\User\SyncService;
+use OC\User\SyncService as UserSyncService;
+use OC\Group\SyncService as GroupSyncService;
 use OCP\App\IServiceLoader;
 use OCP\AppFramework\QueryException;
 use OCP\AppFramework\Utility\ITimeFactory;
@@ -243,7 +244,7 @@ class Server extends ServerContainer implements IServerContainer, IServiceLoader
 			$termMapper = new AccountTermMapper($c->getDatabaseConnection());
 			$accountMapper = new AccountMapper($c->getConfig(), $c->getDatabaseConnection(), $termMapper);
 			$membershipManager = new MembershipManager($c->getDatabaseConnection(), $c->getConfig());
-			$userSyncService = new SyncService(
+			$userSyncService = new UserSyncService(
 					$c->getConfig(),
 					$c->getLogger(),
 					$accountMapper
@@ -252,8 +253,17 @@ class Server extends ServerContainer implements IServerContainer, IServiceLoader
 		});
 		$this->registerService('GroupManager', function (Server $c) {
 			$groupMapper = new GroupMapper($c->getDatabaseConnection());
+			$termMapper = new AccountTermMapper($c->getDatabaseConnection());
+			$accountMapper = new AccountMapper($c->getConfig(), $c->getDatabaseConnection(), $termMapper);
 			$membershipManager = new MembershipManager($c->getDatabaseConnection(), $c->getConfig());
-			$groupManager = new \OC\Group\Manager($this->getUserManager(), $membershipManager, $groupMapper, $c->getDatabaseConnection());
+			$groupSyncService = new GroupSyncService(
+				$groupMapper,
+				$accountMapper,
+				$membershipManager,
+				$c->getConfig(),
+				$c->getLogger()
+			);
+			$groupManager = new \OC\Group\Manager($this->getUserManager(), $membershipManager, $groupMapper, $groupSyncService, $c->getDatabaseConnection());
 			$groupManager->listen('\OC\Group', 'preCreate', function ($gid) {
 				\OC_Hook::emit('OC_Group', 'pre_createGroup', ['run' => true, 'gid' => $gid]);
 			});
@@ -307,7 +317,7 @@ class Server extends ServerContainer implements IServerContainer, IServiceLoader
 
 			$termMapper = new AccountTermMapper($c->getDatabaseConnection());
 			$accountMapper = new AccountMapper($c->getConfig(), $c->getDatabaseConnection(), $termMapper);
-			$userSyncService = new SyncService($c->getConfig(), $c->getLogger(), $accountMapper);
+			$userSyncService = new UserSyncService($c->getConfig(), $c->getLogger(), $accountMapper);
 
 			$userSession = new \OC\User\Session($manager, $session, $timeFactory,
 				$defaultTokenProvider, $c->getConfig(), $this, $userSyncService);

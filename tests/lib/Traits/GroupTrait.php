@@ -23,7 +23,10 @@
 namespace Test\Traits;
 
 use OC\Group\Group;
+use OC\Group\SyncService;
+use OC\User\AccountMapper;
 use OCP\IConfig;
+use OCP\ILogger;
 use Test\Util\Group\Dummy;
 use Test\Util\Group\MemoryGroupMapper;
 use Test\Util\MemoryMembershipManager;
@@ -62,19 +65,11 @@ trait GroupTrait {
 	}
 
 	protected function setUpGroupTrait() {
-		// Setup groups
+		$config = \OC::$server->getConfig();
+		$logger = $this->createMock(ILogger::class);
 		$db = \OC::$server->getDatabaseConnection();
-		$groupMapper = new MemoryGroupMapper($db);
-		$groupMapper->testCaseName = get_class($this);
-		$this->previousGroupManagerInternals = \OC::$server->getGroupManager()
-			->reset($groupMapper, [Dummy::class => new Dummy()]);
-
-		if ($this->previousGroupManagerInternals[0] instanceof MemoryGroupMapper) {
-			throw new \Exception("Missing tearDown call in " . $this->previousGroupManagerInternals[0]->testCaseName);
-		}
 
 		// Setup memberships
-		$config = $this->createMock(IConfig::class);
 		$membershipManager = new MemoryMembershipManager($db, $config);
 		$membershipManager->testCaseName = get_class($this);
 		$this->previousGroupManagerMembershipManager = \OC::$server->getGroupManager()
@@ -88,6 +83,28 @@ trait GroupTrait {
 		if ($this->previousUserManagerMembershipManager instanceof MemoryMembershipManager) {
 			throw new \Exception("Missing tearDown call in " . $this->previousUserManagerMembershipManager->testCaseName);
 		}
+
+		// Setup groups
+		$groupMapper = new MemoryGroupMapper($db);
+		$groupMapper->testCaseName = get_class($this);
+
+		// Account mapper is relevant only for sync command tests - to test sync one should reset group manager and user manager
+		// in the test, and not in set-up
+		$accountMapper = $this->createMock(AccountMapper::class);
+		$groupSyncService = new SyncService(
+			$groupMapper,
+			$accountMapper,
+			$membershipManager,
+			$config,
+			$logger
+		);
+
+		$this->previousGroupManagerInternals = \OC::$server->getGroupManager()
+			->reset($groupMapper, [Dummy::class => new Dummy()], $groupSyncService);
+
+		if ($this->previousGroupManagerInternals[0] instanceof MemoryGroupMapper) {
+			throw new \Exception("Missing tearDown call in " . $this->previousGroupManagerInternals[0]->testCaseName);
+		}
 	}
 
 	protected function tearDownGroupTrait() {
@@ -96,7 +113,7 @@ trait GroupTrait {
 		}
 
 		\OC::$server->getGroupManager()
-			->reset($this->previousGroupManagerInternals[0], $this->previousGroupManagerInternals[1]);
+			->reset($this->previousGroupManagerInternals[0], $this->previousGroupManagerInternals[1], $this->previousGroupManagerInternals[2]);
 		\OC::$server->getGroupManager()
 			->resetMembershipManager($this->previousGroupManagerMembershipManager);
 		\OC::$server->getUserManager()
