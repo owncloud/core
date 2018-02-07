@@ -149,4 +149,4 @@ Feature: trashbin-new-endpoint
 		And user "user0" has logged in to a web-style session using the API
 		When user "user0" restores the folder with original path "/local_storage/tmp/textfile0.txt" using the API
 		Then as "user0" the folder with original path "/local_storage/tmp/textfile0.txt" should not exist in trash
-		And the downloaded content when downloading file "/local_storage/tmp/textfile0.txt" with range "bytes=0-1" should be "AA"
+		And the downloaded content when downloading file "/local_storage/tmp/textfile0.txt" for user "user0" with range "bytes=0-1" should be "AA"

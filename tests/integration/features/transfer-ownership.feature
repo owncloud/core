@@ -7,9 +7,8 @@ Feature: transfer-ownership
 		And user "user0" has uploaded file "data/textfile.txt" to "/somefile.txt"
 		When the administrator transfers ownership from "user0" to "user1" using the occ command
 		Then the command should have been successful
-		And as user "user1"
 		And using received transfer folder of "user1" as dav path
-		And the downloaded content when downloading file "/somefile.txt" with range "bytes=0-6" should be "This is"
+		And the downloaded content when downloading file "/somefile.txt" for user "user1" with range "bytes=0-6" should be "This is"
 
 	@no_default_encryption
 	Scenario: transferring ownership of a file after updating the file
@@ -21,9 +20,8 @@ Feature: transfer-ownership
 		And user "user0" has uploaded chunk file "3" of "3" with "CC" to "/PARENT/textfile0.txt"
 		When the administrator transfers ownership from "user0" to "user1" using the occ command
 		Then the command should have been successful
-		And as user "user1"
 		And using received transfer folder of "user1" as dav path
-		And the downloaded content when downloading file "/PARENT/textfile0.txt" with range "bytes=0-5" should be "AABBCC"
+		And the downloaded content when downloading file "/PARENT/textfile0.txt" for user "user1" with range "bytes=0-5" should be "AABBCC"
 
 	@no_default_encryption
 	Scenario: transferring ownership of a folder
@@ -33,9 +31,8 @@ Feature: transfer-ownership
 		And user "user0" has uploaded file "data/textfile.txt" to "/test/somefile.txt"
 		When the administrator transfers ownership from "user0" to "user1" using the occ command
 		Then the command should have been successful
-		And as user "user1"
 		And using received transfer folder of "user1" as dav path
-		And the downloaded content when downloading file "/test/somefile.txt" with range "bytes=0-6" should be "This is"
+		And the downloaded content when downloading file "/test/somefile.txt" for user "user1" with range "bytes=0-6" should be "This is"
 
 	@no_default_encryption
 	Scenario: transferring ownership of file shares
@@ -46,8 +43,7 @@ Feature: transfer-ownership
 		And user "user0" has shared file "/somefile.txt" with user "user2" with permissions 19
 		When the administrator transfers ownership from "user0" to "user1" using the occ command
 		Then the command should have been successful
-		And as user "user2"
-		And the downloaded content when downloading file "/somefile.txt" with range "bytes=0-6" should be "This is"
+		And the downloaded content when downloading file "/somefile.txt" for user "user2" with range "bytes=0-6" should be "This is"
 
 	@no_default_encryption
 	Scenario: transferring ownership of folder shared with third user
@@ -59,8 +55,7 @@ Feature: transfer-ownership
 		And user "user0" has shared folder "/test" with user "user2" with permissions 31
 		When the administrator transfers ownership from "user0" to "user1" using the occ command
 		Then the command should have been successful
-		And as user "user2"
-		And the downloaded content when downloading file "/test/somefile.txt" with range "bytes=0-6" should be "This is"
+		And the downloaded content when downloading file "/test/somefile.txt" for user "user2" with range "bytes=0-6" should be "This is"
 
 	@no_default_encryption
 	Scenario: transferring ownership of folder shared with transfer recipient
@@ -71,10 +66,9 @@ Feature: transfer-ownership
 		And user "user0" has shared folder "/test" with user "user1" with permissions 31
 		When the administrator transfers ownership from "user0" to "user1" using the occ command
 		Then the command should have been successful
-		And as user "user1"
 		And as "user1" the folder "/test" should not exist
 		And using received transfer folder of "user1" as dav path
-		And the downloaded content when downloading file "/test/somefile.txt" with range "bytes=0-6" should be "This is"
+		And the downloaded content when downloading file "/test/somefile.txt" for user "user1" with range "bytes=0-6" should be "This is"
 
 	@no_default_encryption
 	Scenario: transferring ownership of folder doubly shared with third user
@@ -89,8 +83,7 @@ Feature: transfer-ownership
 		And user "user0" has shared folder "/test" with user "user2" with permissions 31
 		When the administrator transfers ownership from "user0" to "user1" using the occ command
 		Then the command should have been successful
-		And as user "user2"
-		And the downloaded content when downloading file "/test/somefile.txt" with range "bytes=0-6" should be "This is"
+		And the downloaded content when downloading file "/test/somefile.txt" for user "user2" with range "bytes=0-6" should be "This is"
 
 	@no_default_encryption
 	Scenario: transferring ownership does not transfer received shares
@@ -147,9 +140,8 @@ Feature: transfer-ownership
 		And user "user0" has uploaded file "data/textfile.txt" to "/test/somefile.txt"
 		When the administrator transfers ownership of path "test" from "user0" to "user1" using the occ command
 		Then the command should have been successful
-		And as user "user1"
 		And using received transfer folder of "user1" as dav path
-		And the downloaded content when downloading file "/test/somefile.txt" with range "bytes=0-6" should be "This is"
+		And the downloaded content when downloading file "/test/somefile.txt" for user "user1" with range "bytes=0-6" should be "This is"
 
 	@no_default_encryption
 	Scenario: transferring ownership of file shares
@@ -161,8 +153,7 @@ Feature: transfer-ownership
 		And user "user0" has shared file "/test/somefile.txt" with user "user2" with permissions 19
 		When the administrator transfers ownership of path "test" from "user0" to "user1" using the occ command
 		Then the command should have been successful
-		And as user "user2"
-		And the downloaded content when downloading file "/somefile.txt" with range "bytes=0-6" should be "This is"
+		And the downloaded content when downloading file "/somefile.txt" for user "user2" with range "bytes=0-6" should be "This is"
 
 	@no_default_encryption
 	Scenario: transferring ownership of folder shares which has public link
@@ -191,8 +182,7 @@ Feature: transfer-ownership
 		And user "user0" has shared folder "/test" with user "user2" with permissions 31
 		When the administrator transfers ownership of path "test" from "user0" to "user1" using the occ command
 		Then the command should have been successful
-		And as user "user2"
-		And the downloaded content when downloading file "/test/somefile.txt" with range "bytes=0-6" should be "This is"
+		And the downloaded content when downloading file "/test/somefile.txt" for user "user2" with range "bytes=0-6" should be "This is"
 
 	@no_default_encryption
 	Scenario: transferring ownership of folder shared with transfer recipient
@@ -203,10 +193,9 @@ Feature: transfer-ownership
 		And user "user0" has shared folder "/test" with user "user1" with permissions 31
 		When the administrator transfers ownership of path "test" from "user0" to "user1" using the occ command
 		Then the command should have been successful
-		And as user "user1"
 		And as "user1" the folder "/test" should not exist
 		And using received transfer folder of "user1" as dav path
-		And the downloaded content when downloading file "/test/somefile.txt" with range "bytes=0-6" should be "This is"
+		And the downloaded content when downloading file "/test/somefile.txt" for user "user1" with range "bytes=0-6" should be "This is"
 
 	@no_default_encryption
 	Scenario: transferring ownership of folder doubly shared with third user
@@ -221,8 +210,7 @@ Feature: transfer-ownership
 		And user "user0" has shared folder "/test" with user "user2" with permissions 31
 		When the administrator transfers ownership of path "test" from "user0" to "user1" using the occ command
 		Then the command should have been successful
-		And as user "user2"
-		And the downloaded content when downloading file "/test/somefile.txt" with range "bytes=0-6" should be "This is"
+		And the downloaded content when downloading file "/test/somefile.txt" for user "user2" with range "bytes=0-6" should be "This is"
 
 	Scenario: transferring ownership does not transfer received shares
 		Given user "user0" has been created

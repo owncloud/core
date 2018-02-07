@@ -423,7 +423,7 @@ trait BasicStructure {
 	}
 
 	/**
-	 * @When sending a :method to :url with requesttoken
+	 * @When the client sends a :method to :url with requesttoken using the API
 	 * @param string $method
 	 * @param string $url
 	 */
@@ -447,7 +447,7 @@ trait BasicStructure {
 	}
 
 	/**
-	 * @When sending a :method to :url without requesttoken
+	 * @When the client sends a :method to :url without requesttoken using the API
 	 * @param string $method
 	 * @param string $url
 	 */

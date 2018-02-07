@@ -13,24 +13,22 @@ Feature: webdav-related-old-endpoint
 	Scenario: Moving a file
 		Given using old DAV path
 		And user "user0" has been created
-		And as user "user0"
 		When user "user0" moves file "/welcome.txt" to "/FOLDER/welcome.txt" using the API
 		Then the HTTP status code should be "201"
-		And the downloaded content when downloading file "/FOLDER/welcome.txt" with range "bytes=0-6" should be "Welcome"
+		And the downloaded content when downloading file "/FOLDER/welcome.txt" for user "user0" with range "bytes=0-6" should be "Welcome"
+		And the downloaded content when downloading file "/FOLDER/welcome.txt" for user "user0" with range "bytes=0-6" should be "Welcome"
 
 	Scenario: Moving and overwriting a file old way
 		Given using old DAV path
 		And user "user0" has been created
-		And as user "user0"
 		When user "user0" moves file "/welcome.txt" to "/textfile0.txt" using the API
 		Then the HTTP status code should be "204"
-		And the downloaded content when downloading file "/textfile0.txt" with range "bytes=0-6" should be "Welcome"
+		And the downloaded content when downloading file "/textfile0.txt" for user "user0" with range "bytes=0-6" should be "Welcome"
 
 	Scenario: Moving a file to a folder with no permissions
 		Given using old DAV path
 		And user "user0" has been created
 		And user "user1" has been created
-		And as user "user1"
 		And user "user1" has created a folder "/testshare"
 		And user "user1" has created a share with settings
 		  | path | testshare |
@@ -46,7 +44,6 @@ Feature: webdav-related-old-endpoint
 		Given using old DAV path
 		And user "user0" has been created
 		And user "user1" has been created
-		And as user "user1"
 		And user "user1" has created a folder "/testshare"
 		And user "user1" has created a share with settings
 		  | path | testshare |
@@ -54,53 +51,46 @@ Feature: webdav-related-old-endpoint
 		  | permissions | 1 |
 		  | shareWith | user0 |
 		And user "user1" has copied file "/welcome.txt" to "/testshare/overwritethis.txt"
-		And as user "user0"
 		When user "user0" moves file "/textfile0.txt" to "/testshare/overwritethis.txt" using the API
 		Then the HTTP status code should be "403"
-		And the downloaded content when downloading file "/testshare/overwritethis.txt" with range "bytes=0-6" should be "Welcome"
+		And the downloaded content when downloading file "/testshare/overwritethis.txt" for user "user0" with range "bytes=0-6" should be "Welcome"
 
 	Scenario: move file into a not-existing folder
 		Given using old DAV path
 		And user "user0" has been created
-		And as user "user0"
 		When user "user0" moves file "/welcome.txt" to "/not-existing/welcome.txt" using the API
 		Then the HTTP status code should be "409"
 
 	Scenario: rename a file into an invalid filename
 		Given using old DAV path
 		And user "user0" has been created
-		And as user "user0"
 		When user "user0" moves file "/welcome.txt" to "/a\\a" using the API
 		Then the HTTP status code should be "400"
 
 	Scenario: rename a file into a banned filename
 		Given using old DAV path
 		And user "user0" has been created
-		And as user "user0"
 		When user "user0" moves file "/welcome.txt" to "/.htaccess" using the API
 		Then the HTTP status code should be "403"
 
 	Scenario: Copying a file
 		Given using old DAV path
 		And user "user0" has been created
-		And as user "user0"
 		When user "user0" copies file "/welcome.txt" to "/FOLDER/welcome.txt" using the API
 		Then the HTTP status code should be "201"
-		And the downloaded content when downloading file "/FOLDER/welcome.txt" with range "bytes=0-6" should be "Welcome"
+		And the downloaded content when downloading file "/FOLDER/welcome.txt" for user "user0" with range "bytes=0-6" should be "Welcome"
 
 	Scenario: Copying and overwriting a file
 		Given using old DAV path
 		And user "user0" has been created
-		And as user "user0"
 		When user "user0" copies file "/welcome.txt" to "/textfile1.txt" using the API
 		Then the HTTP status code should be "204"
-		And the downloaded content when downloading file "/textfile1.txt" with range "bytes=0-6" should be "Welcome"
+		And the downloaded content when downloading file "/textfile1.txt" for user "user0" with range "bytes=0-6" should be "Welcome"
 
 	Scenario: Copying a file to a folder with no permissions
 		Given using old DAV path
 		And user "user0" has been created
 		And user "user1" has been created
-		And as user "user1"
 		And user "user1" has created a folder "/testshare"
 		And user "user1" has created a share with settings
 		  | path | testshare |
@@ -116,7 +106,6 @@ Feature: webdav-related-old-endpoint
 		Given using old DAV path
 		And user "user0" has been created
 		And user "user1" has been created
-		And as user "user1"
 		And user "user1" has created a folder "/testshare"
 		And user "user1" has created a share with settings
 		  | path | testshare |
@@ -124,10 +113,9 @@ Feature: webdav-related-old-endpoint
 		  | permissions | 1 |
 		  | shareWith | user0 |
 		And user "user1" has copied file "/welcome.txt" to "/testshare/overwritethis.txt"
-		And as user "user0"
 		When user "user0" copies file "/textfile0.txt" to "/testshare/overwritethis.txt" using the API
 		Then the HTTP status code should be "403"
-		And the downloaded content when downloading file "/testshare/overwritethis.txt" with range "bytes=0-6" should be "Welcome"
+		And the downloaded content when downloading file "/testshare/overwritethis.txt" for user "user0" with range "bytes=0-6" should be "Welcome"
 
 	Scenario: download a file with range
 		Given using old DAV path
@@ -160,7 +148,6 @@ Feature: webdav-related-old-endpoint
 		And user "user1" has been created
 		And user "user0" has been given unlimited quota
 		And the quota of user "user1" has been set to "10 MB"
-		And as user "user1"
 		And user "user1" has created a folder "/testquota"
 		And user "user1" has created a share with settings
 		  | path | testquota |
@@ -199,7 +186,7 @@ Feature: webdav-related-old-endpoint
 		When user "user0" creates a share using the API with settings
 			| path | welcome.txt |
 			| shareType | 3 |
-		And downloading last public shared file with range "bytes=51-77"
+		And the public downloads the last public shared file with range "bytes=51-77" using the API
 		Then the downloaded content should be "example file for developers"
 
 	Scenario: download a public shared file inside a folder with range
@@ -208,7 +195,7 @@ Feature: webdav-related-old-endpoint
 		When user "user0" creates a share using the API with settings
 			| path | PARENT |
 			| shareType | 3 |
-		And downloading last public shared file inside a folder "/parent.txt" with range "bytes=1-7"
+		And the public downloads file "/parent.txt" from inside the last public shared folder with range "bytes=1-7" using the API
 		Then the downloaded content should be "wnCloud"
 
 	Scenario: A file that is not shared does not have a share-types property
@@ -316,7 +303,6 @@ Feature: webdav-related-old-endpoint
 	Scenario: Removing everything of a folder
 		Given using old DAV path
 		And user "user0" has been created
-		And as user "user0"
 		And user "user0" has moved file "/welcome.txt" to "/FOLDER/welcome.txt"
 		And user "user0" has created a folder "/FOLDER/SUBFOLDER"
 		And user "user0" has copied file "/textfile0.txt" to "/FOLDER/SUBFOLDER/testfile0.txt"
@@ -386,46 +372,44 @@ Feature: webdav-related-old-endpoint
 			|X-Permitted-Cross-Domain-Policies|none|
 			|X-Robots-Tag|none|
 			|X-XSS-Protection|1; mode=block|
-		And downloaded content should start with "Welcome to your ownCloud account!"
+		And the downloaded content should start with "Welcome to your ownCloud account!"
 
 	Scenario: Doing a GET with a web login should work without CSRF token on the old backend
 		Given using old DAV path
 		And user "user0" has been created
 		And user "user0" has logged in to a web-style session using the API
-		When sending a "GET" to "/remote.php/webdav/welcome.txt" without requesttoken
-		Then downloaded content should start with "Welcome to your ownCloud account!"
+		When the client sends a "GET" to "/remote.php/webdav/welcome.txt" without requesttoken using the API
+		Then the downloaded content should start with "Welcome to your ownCloud account!"
 		And the HTTP status code should be "200"
 
 	Scenario: Doing a GET with a web login should work with CSRF token on the old backend
 		Given using old DAV path
 		And user "user0" has been created
 		And user "user0" has logged in to a web-style session using the API
-		When sending a "GET" to "/remote.php/webdav/welcome.txt" with requesttoken
-		Then downloaded content should start with "Welcome to your ownCloud account!"
+		When the client sends a "GET" to "/remote.php/webdav/welcome.txt" with requesttoken using the API
+		Then the downloaded content should start with "Welcome to your ownCloud account!"
 		And the HTTP status code should be "200"
 
 	Scenario: Doing a PROPFIND with a web login should work with CSRF token on the old backend
 		Given using old DAV path
 		And user "user0" has been created
 		And user "user0" has logged in to a web-style session using the API
-		When sending a "PROPFIND" to "/remote.php/webdav/welcome.txt" with requesttoken
+		When the client sends a "PROPFIND" to "/remote.php/webdav/welcome.txt" with requesttoken using the API
 		Then the HTTP status code should be "207"
 
 	Scenario: Setting custom DAV property and reading it
 		Given using old DAV path
 		And user "user0" has been created
-		And as user "user0"
 		And user "user0" has uploaded file "data/textfile.txt" to "/testcustomprop.txt"
-		And "user0" has set property "{http://whatever.org/ns}very-custom-prop" of file "/testcustomprop.txt" to "veryCustomPropValue"
+		And user "user0" has set property "{http://whatever.org/ns}very-custom-prop" of file "/testcustomprop.txt" to "veryCustomPropValue"
 		When user "user0" gets a custom property "{http://whatever.org/ns}very-custom-prop" of file "/testcustomprop.txt"
 		Then the response should contain a custom "{http://whatever.org/ns}very-custom-prop" property with "veryCustomPropValue"
 
 	Scenario: Setting custom DAV property and reading it after the file is renamed
 		Given using old DAV path
 		And user "user0" has been created
-		And as user "user0"
 		And user "user0" has uploaded file "data/textfile.txt" to "/testcustompropwithmove.txt"
-		And "user0" has set property "{http://whatever.org/ns}very-custom-prop" of file "/testcustompropwithmove.txt" to "valueForMovetest"
+		And user "user0" has set property "{http://whatever.org/ns}very-custom-prop" of file "/testcustompropwithmove.txt" to "valueForMovetest"
 		And user "user0" has moved file "/testcustompropwithmove.txt" to "/catchmeifyoucan.txt"
 		When user "user0" gets a custom property "{http://whatever.org/ns}very-custom-prop" of file "/catchmeifyoucan.txt"
 		Then the response should contain a custom "{http://whatever.org/ns}very-custom-prop" property with "valueForMovetest"
@@ -434,24 +418,21 @@ Feature: webdav-related-old-endpoint
 		Given using old DAV path
 		And user "user0" has been created
 		And user "user1" has been created
-		And as user "user0"
 		And user "user0" has uploaded file "data/textfile.txt" to "/testcustompropshared.txt"
 		And user "user0" has created a share with settings
 		  | path | testcustompropshared.txt |
 		  | shareType | 0 |
 		  | permissions | 31 |
 		  | shareWith | user1 |
-		And "user0" has set property "{http://whatever.org/ns}very-custom-prop" of file "/testcustompropshared.txt" to "valueForSharetest"
-		And as user "user1"
+		And user "user0" has set property "{http://whatever.org/ns}very-custom-prop" of file "/testcustompropshared.txt" to "valueForSharetest"
 		When user "user1" gets a custom property "{http://whatever.org/ns}very-custom-prop" of file "/testcustompropshared.txt"
 		Then the response should contain a custom "{http://whatever.org/ns}very-custom-prop" property with "valueForSharetest"
 
 	Scenario: Setting custom DAV property using an old endpoint and reading it using a new endpoint
 		Given using old DAV path
 		And user "user0" has been created
-		And as user "user0"
 		And user "user0" has uploaded file "data/textfile.txt" to "/testoldnew.txt"
-		And "user0" has set property "{http://whatever.org/ns}very-custom-prop" of file "/testoldnew.txt" to "constant"
+		And user "user0" has set property "{http://whatever.org/ns}very-custom-prop" of file "/testoldnew.txt" to "constant"
 		And using new DAV path
 		When user "user0" gets a custom property "{http://whatever.org/ns}very-custom-prop" of file "/testoldnew.txt"
 		Then the response should contain a custom "{http://whatever.org/ns}very-custom-prop" property with "constant"
@@ -518,7 +499,6 @@ Feature: webdav-related-old-endpoint
 	Scenario: Retrieving private link
 		Given using old DAV path
 		And user "user0" has been created
-		And as user "user0"
 		And user "user0" has uploaded file "data/textfile.txt" to "/somefile.txt"
 		When user "user0" gets the following properties of file "/somefile.txt" using the API
 			|{http://owncloud.org/ns}privatelink|
@@ -527,28 +507,24 @@ Feature: webdav-related-old-endpoint
 	Scenario: Copying file to a path with extension .part should not be possible
 		Given using old DAV path
 		And user "user0" has been created
-		And as user "user0"
 		When user "user0" copies file "/welcome.txt" to "/welcome.part" using the API
 		Then the HTTP status code should be "400"
 
 	Scenario: Uploading file to path with extension .part should not be possible
 		Given using old DAV path
 		And user "user0" has been created
-		And as user "user0"
 		And user "user0" has uploaded file "data/textfile.txt" to "/textfile.part"
 		Then the HTTP status code should be "400"
 
 	Scenario: Renaming a file to a path with extension .part should not be possible
 		Given using old DAV path
 		And user "user0" has been created
-		And as user "user0"
 		When user "user0" moves file "/welcome.txt" to "/welcome.part" using the API
 		Then the HTTP status code should be "400"
 
 	Scenario: Creating a directory which contains .part should not be possible
 		Given using new DAV path
 		And user "user0" has been created
-		And as user "user0"
 		When user "user0" creates a folder "/folder.with.ext.part" using the API
 		Then the HTTP status code should be "400"
 

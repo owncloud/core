@@ -177,7 +177,7 @@ trait WebDav {
 	}
 
 	/**
-	 * @When /^downloading last public shared file with range "([^"]*)"$/
+	 * @When /^the public downloads the last public shared file with range "([^"]*)" using the API$/
 	 * @param string $range
 	 */
 	public function downloadPublicFileWithRange($range) {
@@ -195,7 +195,7 @@ trait WebDav {
 	}
 
 	/**
-	 * @When /^downloading last public shared file inside a folder "([^"]*)" with range "([^"]*)"$/
+	 * @When /^the public downloads file "([^"]*)" from inside the last public shared folder with range "([^"]*)" using the API$/
 	 * @param string $path
 	 * @param string $range
 	 */
@@ -229,6 +229,18 @@ trait WebDav {
 	 */
 	public function downloadedContentWhenDownloadingShouldBe($fileSource, $range, $content) {
 		$this->downloadFileWithRange($fileSource, $range);
+		$this->downloadedContentShouldBe($content);
+	}
+
+	/**
+	 * @Then /^the downloaded content when downloading file "([^"]*)" for user "([^"]*)" with range "([^"]*)" should be "([^"]*)"$/
+	 * @param string $fileSource
+	 * @param string $user
+	 * @param string $range
+	 * @param string $content
+	 */
+	public function downloadedContentWhenDownloadingForUserShouldBe($fileSource, $user, $range, $content) {
+		$this->userDownloadsFileWithRange($user, $fileSource, $range);
 		$this->downloadedContentShouldBe($content);
 	}
 
@@ -277,7 +289,7 @@ trait WebDav {
 	}
 
 	/**
-	 * @Then downloaded content should start with :start
+	 * @Then the downloaded content should start with :start
 	 * @param string $start
 	 * @throws \Exception
 	 */
@@ -326,7 +338,7 @@ trait WebDav {
 	 }
 
 	/**
-	 * @Given /^"([^"]*)" has set property "([^"]*)" of (file|folder|entry) "([^"]*)" to "([^"]*)"$/
+	 * @Given /^user "([^"]*)" has set property "([^"]*)" of (file|folder|entry) "([^"]*)" to "([^"]*)"$/
 	 * @param string $user
 	 * @param string $propertyName
 	 * @param string $elementType unused
