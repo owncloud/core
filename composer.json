@@ -7,7 +7,7 @@
         "optimize-autoloader": true,
         "classmap-authoritative": false,
         "platform": {
-            "php": "5.6.33"
+            "php": "7.1"
         }
     },
     "autoload" : {
