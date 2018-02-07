@@ -31,7 +31,7 @@ class JSResourceLocator extends ResourceLocator {
 	 * @param string $script
 	 */
 	public function doFind($script) {
-		$fullScript = $script . '.js';
+		$fullScript = $this->addExtension($script);
 		$themeDirectory = $this->theme->getDirectory();
 		$baseDirectory = $this->theme->getBaseDirectory();
 		$webRoot = '';
@@ -63,12 +63,12 @@ class JSResourceLocator extends ResourceLocator {
 
 		$app = substr($fullScript, 0, strpos($fullScript, '/'));
 		$fullScript = substr($fullScript, strpos($fullScript, '/')+1);
-		$app_path = \OC_App::getAppPath($app);
+		$app_path = $this->appManager->getAppPath($app);
 		if( $app_path === false ) { return; }
-		$app_url = \OC_App::getAppWebPath($app);
+		$app_url = $this->appManager->getAppWebPath($app);
 		$app_url = ($app_url !== false) ? $app_url : null;
 
-		// missing translations files fill be ignored
+		// missing translations files will be ignored
 		$this->appendOnceIfExist($app_path, $fullScript, $app_url);
 	}
 
@@ -76,5 +76,13 @@ class JSResourceLocator extends ResourceLocator {
 	 * @param string $script
 	 */
 	public function doFindTheme($script) {
+	}
+
+	/**
+	 * @param string $path
+	 * @return string
+	 */
+	protected function addExtension($path) {
+		return $path . '.js';
 	}
 }
