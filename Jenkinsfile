@@ -10,13 +10,13 @@ timestampedNode('SLAVE') {
 
     stage 'make dist'
         sh '''
-        phpenv local 7.1
+        phpenv local 7.1.0
         make dist
         '''
 
     stage 'Files External: SMB/SAMBA'
         executeAndReport('tests/autotest-external-results-sqlite-smb-silvershell.xml') {
-            sh '''phpenv local 7.1
+            sh '''phpenv local 7.1.0
             export NOCOVERAGE=1
             unset USEDOCKER
             make test-external TEST_EXTERNAL_ENV=smb-silvershell
@@ -25,7 +25,7 @@ timestampedNode('SLAVE') {
 
     stage 'Files External: swift/ceph'
         executeAndReport('tests/autotest-external-results-sqlite-swift-ceph.xml') {
-            sh '''phpenv local 7.1
+            sh '''phpenv local 7.1.0
             export NOCOVERAGE=1
             unset USEDOCKER
             make test-external TEST_EXTERNAL_ENV=swift-ceph
@@ -34,7 +34,7 @@ timestampedNode('SLAVE') {
 
     stage 'Files External: SMB/WINDOWS'
         executeAndReport('tests/autotest-external-results-sqlite-smb-windows.xml') {
-            sh '''phpenv local 7.1
+            sh '''phpenv local 7.1.0
             export NOCOVERAGE=1
             unset USEDOCKER
             make test-external TEST_EXTERNAL_ENV=smb-windows
@@ -45,7 +45,7 @@ timestampedNode('SLAVE') {
 
     stage 'Primary Objectstore: swift'
         executeAndReport('tests/autotest-results-mysql.xml') {
-            sh '''phpenv local 7.1
+            sh '''phpenv local 7.1.0
 
             export NOCOVERAGE=1
             export RUN_OBJECTSTORE_TESTS=1
@@ -59,7 +59,7 @@ timestampedNode('SLAVE') {
 
 	stage 'Integration Testing'
 		executeAndReport('tests/integration/output/*.xml') {
-			sh '''phpenv local 7.1
+			sh '''phpenv local 7.1.0
 			rm -rf config/config.php data/*
 			./occ maintenance:install --admin-pass=admin
 			make clean-test-integration
