@@ -28,6 +28,8 @@
 
 namespace OC\Template;
 
+use OCP\App\IAppManager;
+use OCP\ILogger;
 use OCP\Theme\ITheme;
 
 abstract class ResourceLocator {
@@ -42,17 +44,22 @@ abstract class ResourceLocator {
 
 	protected $resources = [];
 
-	/** @var \OCP\ILogger */
+	/** @var $appManager */
+	protected $appManager;
+
+	/** @var ILogger */
 	protected $logger;
 
 	/**
-	 * @param \OCP\ILogger $logger
 	 * @param ITheme $theme
+	 * @param IAppManager $appManager
+	 * @param ILogger $logger
 	 * @param array $core_map
 	 */
-	public function __construct(\OCP\ILogger $logger, $theme, $core_map) {
-		$this->logger = $logger;
+	public function __construct(ITheme $theme, IAppManager $appManager, ILogger $logger, $core_map) {
 		$this->theme = $theme;
+		$this->logger = $logger;
+		$this->appManager = $appManager;
 		$this->mapping = $core_map;
 		$this->serverroot = key($core_map);
 		$this->webroot = $this->mapping[$this->serverroot];
@@ -67,6 +74,12 @@ abstract class ResourceLocator {
 	 * @param string $resource
 	 */
 	abstract public function doFindTheme($resource);
+
+	/**
+	 * @param string $path
+	 * @return string
+	 */
+	abstract protected function addExtension($path);
 
 	/**
 	 * Finds the resources and adds them to the list

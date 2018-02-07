@@ -8,6 +8,7 @@
 
 namespace Test\Template;
 
+use OC\App\AppManager;
 use OC\Template\ResourceNotFoundException;
 use org\bovigo\vfs\vfsStream;
 use org\bovigo\vfs\vfsStreamWrapper;
@@ -47,8 +48,10 @@ class ResourceLocatorTest extends \Test\TestCase {
 		$themeInstance = $this->createMock('OC\Theme\Theme');
 		$themeInstance->method('getName')->willReturn($theme);
 
+		$appManagerInstance = $this->createMock(AppManager::class);
+
 		return $this->getMockForAbstractClass('OC\Template\ResourceLocator',
-			[$this->logger, $themeInstance, $core_map, $appsRoots],
+			[$themeInstance, $appManagerInstance, $this->logger, $core_map, $appsRoots],
 			'', true, true, true, []);
 	}
 

@@ -31,27 +31,28 @@ class CSSResourceLocator extends ResourceLocator {
 	 * @param string $style
 	 */
 	public function doFind($style) {
+		$fullStyle = $this->addExtension($style);
 		if (
-			$this->appendOnceIfExist($this->serverroot, $style.'.css')
-			|| $this->appendOnceIfExist($this->serverroot, 'core/'.$style.'.css')
+			$this->appendOnceIfExist($this->serverroot, $fullStyle)
+			|| $this->appendOnceIfExist($this->serverroot, 'core/' . $fullStyle)
 		) {
 			return;
 		}
-		$app = substr($style, 0, strpos($style, '/'));
-		$style = substr($style, strpos($style, '/')+1);
+		$app = substr($fullStyle, 0, strpos($fullStyle, '/'));
+		$fullStyle = substr($fullStyle, strpos($fullStyle, '/')+1);
 
-		$app_path = \OC_App::getAppPath($app);
+		$app_path = $this->appManager->getAppPath($app);
 		if( $app_path === false ) { return; }
-		$app_url = \OC_App::getAppWebPath($app);
+		$app_url = $this->appManager->getAppWebPath($app);
 		$app_url = ($app_url !== false) ? $app_url : null;
-		$this->appendOnceIfExist($app_path, $style.'.css', $app_url);
+		$this->appendOnceIfExist($app_path, $fullStyle, $app_url);
 	}
 
 	/**
 	 * @param string $style
 	 */
 	public function doFindTheme($style) {
-		$fullStyle = $style . '.css';
+		$fullStyle = $this->addExtension($style);
 		$themeDirectory = $this->theme->getDirectory();
 		$baseDirectory = $this->theme->getBaseDirectory();
 		$webRoot = '';
@@ -60,9 +61,9 @@ class CSSResourceLocator extends ResourceLocator {
 		}
 
 		$searchLocations = [
-			$this->buildPath([$themeDirectory, '/apps', $fullStyle]),
+			$this->buildPath([$themeDirectory, 'apps', $fullStyle]),
 			$this->buildPath([$themeDirectory, $fullStyle]),
-			$this->buildPath([$themeDirectory, '/core', $fullStyle]),
+			$this->buildPath([$themeDirectory, 'core', $fullStyle]),
 		];
 
 		foreach ($searchLocations as $location) {
@@ -70,5 +71,13 @@ class CSSResourceLocator extends ResourceLocator {
 				break;
 			}
 		}
+	}
+
+	/**
+	 * @param string $path
+	 * @return string
+	 */
+	protected function addExtension($path) {
+		return $path . '.css';
 	}
 }
