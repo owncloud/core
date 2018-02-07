@@ -7,7 +7,7 @@ branches: [master, stable10, stable9.1, stable9]
 clone:
   git:
     image: plugins/git
-    depth: 1
+    depth: 50
 
 pipeline:
   restore:
