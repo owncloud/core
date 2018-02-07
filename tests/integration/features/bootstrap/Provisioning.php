@@ -248,9 +248,7 @@ trait Provisioning {
 		$fullUrl = $this->baseUrl . "v2.php/cloud/users/$user/groups";
 		$client = new Client();
 		$options = [];
-		if ($this->currentUser === $this->getAdminUserName()) {
-			$options['auth'] = $this->getAuthOptionForAdmin();
-		}
+		$options['auth'] = $this->getAuthOptionForAdmin();
 
 		$this->response = $client->get($fullUrl, $options);
 		$respondedArray = $this->getArrayOfGroupsResponded($this->response);
@@ -278,9 +276,7 @@ trait Provisioning {
 		$fullUrl = $this->baseUrl . "v2.php/cloud/users/$user/groups";
 		$client = new Client();
 		$options = [];
-		if ($this->currentUser === $this->getAdminUserName()) {
-			$options['auth'] = $this->getAuthOptionForAdmin();
-		}
+		$options['auth'] = $this->getAuthOptionForAdmin();
 
 		$this->response = $client->get($fullUrl, $options);
 		$respondedArray = $this->getArrayOfGroupsResponded($this->response);
@@ -404,9 +400,7 @@ trait Provisioning {
 		$fullUrl = $this->baseUrl . "v{$this->apiVersion}.php/cloud/users/$user/disable";
 		$client = new Client();
 		$options = [];
-		if ($this->currentUser === $this->getAdminUserName()) {
-			$options['auth'] = $this->getAuthOptionForAdmin();
-		}
+		$options['auth'] = $this->getAuthOptionForAdmin();
 
 		$this->response = $client->send($client->createRequest("PUT", $fullUrl, $options));
 	}
@@ -548,9 +542,7 @@ trait Provisioning {
 		$fullUrl = $this->baseUrl . "v{$this->apiVersion}.php/cloud/users/$user/subadmins";
 		$client = new Client();
 		$options = [];
-		if ($this->currentUser === $this->getAdminUserName()) {
-			$options['auth'] = $this->getAuthOptionForAdmin();
-		}
+		$options['auth'] = $this->getAuthOptionForAdmin();
 		$options['body'] = [
 							'groupid' => $group
 							];
@@ -744,9 +736,7 @@ trait Provisioning {
 		$fullUrl = $this->baseUrl . "v{$this->apiVersion}.php/cloud/users/$user";
 		$client = new Client();
 		$options = [];
-		if ($this->currentUser === $this->getAdminUserName()) {
-			$options['auth'] = $this->getAuthOptionForAdmin();
-		}
+		$options['auth'] = $this->getAuthOptionForAdmin();
 
 		$this->response = $client->get($fullUrl, $options);
 		PHPUnit_Framework_Assert::assertEquals("false", $this->response->xml()->data[0]->enabled);
@@ -760,9 +750,7 @@ trait Provisioning {
 		$fullUrl = $this->baseUrl . "v{$this->apiVersion}.php/cloud/users/$user";
 		$client = new Client();
 		$options = [];
-		if ($this->currentUser === $this->getAdminUserName()) {
-			$options['auth'] = $this->getAuthOptionForAdmin();
-		}
+		$options['auth'] = $this->getAuthOptionForAdmin();
 
 		$this->response = $client->get($fullUrl, $options);
 		PHPUnit_Framework_Assert::assertEquals("true", $this->response->xml()->data[0]->enabled);

@@ -94,7 +94,6 @@ Feature: transfer-ownership
 		And user "user2" has shared folder "/test" with user "user0" with permissions 31
 		When the administrator transfers ownership from "user0" to "user1" using the occ command
 		Then the command should have been successful
-		And as user "user1"
 		And using received transfer folder of "user1" as dav path
 		And as "user1" the folder "/test" should not exist
 
@@ -104,7 +103,6 @@ Feature: transfer-ownership
 		And user "user1" has been created
 		When the administrator transfers ownership from "user0" to "user1" using the occ command
 		Then the command should have been successful
-		And as user "user1"
 		And using received transfer folder of "user1" as dav path
 		And as "user1" the folder "/local_storage" should not exist
 
@@ -222,7 +220,6 @@ Feature: transfer-ownership
 		And user "user0" has moved folder "/test" to "/sub/test"
 		When the administrator transfers ownership of path "sub" from "user0" to "user1" using the occ command
 		Then the command should have been successful
-		And as user "user1"
 		And using received transfer folder of "user1" as dav path
 		And as "user1" the folder "/sub/test" should not exist
 
@@ -233,7 +230,6 @@ Feature: transfer-ownership
 		And user "user0" has created a folder "/sub"
 		When the administrator transfers ownership of path "sub" from "user0" to "user1" using the occ command
 		Then the command should have been successful
-		And as user "user1"
 		And using received transfer folder of "user1" as dav path
 		And as "user1" the folder "/local_storage" should not exist
 

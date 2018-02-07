@@ -39,7 +39,17 @@ class ShareesContext implements Context, SnippetAcceptingContext {
 	 * @param \Behat\Gherkin\Node\TableNode $body
 	 * @return void
 	 */
-	public function whenGettingShareesFor($body) {
+	public function theUserGetsTheShareesWithParameters($body) {
+		$this->userGetsTheShareesWithParameters($this->currentUser, $body);
+	}
+
+	/**
+	 * @When /^user "([^"]*)" gets the sharees using the API with parameters$/
+	 * @param string $user
+	 * @param \Behat\Gherkin\Node\TableNode $body
+	 * @return void
+	 */
+	public function userGetsTheShareesWithParameters($user, $body) {
 		$url = '/apps/files_sharing/api/v1/sharees';
 		if ($body instanceof \Behat\Gherkin\Node\TableNode) {
 			$parameters = [];
@@ -51,7 +61,9 @@ class ShareesContext implements Context, SnippetAcceptingContext {
 			}
 		}
 
-		$this->sendingTo('GET', $url);
+		$this->userSendsHTTPMethodToAPIEndpointWithBody(
+			$user, 'GET', $url, null
+		);
 	}
 
 	/**

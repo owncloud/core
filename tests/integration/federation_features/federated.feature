@@ -61,8 +61,7 @@ Feature: federated
 		And user "user0" has been created
 		And user "user0" from server "LOCAL" has shared "/textfile0.txt" with user "user1" from server "REMOTE"
 		And using server "REMOTE"
-		And as user "user1"
-		When the user sends HTTP method "GET" to API endpoint "/apps/files_sharing/api/v1/remote_shares/pending"
+		When user "user1" sends HTTP method "GET" to API endpoint "/apps/files_sharing/api/v1/remote_shares/pending"
 		Then the OCS status code should be "100"
 		And the HTTP status code should be "200"
 		And the share fields of the last share should include
@@ -128,7 +127,6 @@ Feature: federated
 		And user "user0" from server "LOCAL" has shared "/textfile0.txt" with user "user1" from server "REMOTE"
 		And user "user1" from server "REMOTE" has accepted the last pending share
 		And using server "REMOTE"
-		And as user "user1"
 		When user "user1" uploads file "data/file_to_overwrite.txt" to "/textfile0 (2).txt" using the API
 		And using server "LOCAL"
 		And user "user0" downloads file "/textfile0.txt" with range "bytes=0-8" using the API
@@ -143,7 +141,6 @@ Feature: federated
 		And user "user0" from server "LOCAL" has shared "/PARENT" with user "user1" from server "REMOTE"
 		And user "user1" from server "REMOTE" has accepted the last pending share
 		And using server "REMOTE"
-		And as user "user1"
 		When user "user1" uploads file "data/file_to_overwrite.txt" to "/PARENT (2)/textfile0.txt" using the API
 		And using server "LOCAL"
 		And user "user0" downloads file "/PARENT/textfile0.txt" with range "bytes=0-8" using the API
@@ -182,8 +179,7 @@ Feature: federated
 	Scenario: Trusted server handshake does not require authenticated requests - we force 403 by sending an empty body
 		Given using server "LOCAL"
 		And using API version "2"
-		And as user "UNAUTHORIZED_USER"
-		When the user sends HTTP method "POST" to API endpoint "/apps/federation/api/v1/request-shared-secret"
+		When user "UNAUTHORIZED_USER" sends HTTP method "POST" to API endpoint "/apps/federation/api/v1/request-shared-secret"
 		Then the HTTP status code should be "403"
 
 	Scenario: Overwrite a federated shared folder as recipient propagates etag for recipient
@@ -196,10 +192,8 @@ Feature: federated
 		And using server "REMOTE"
 		And user "user1" has stored etag of element "/PARENT (2)"
 		And using server "LOCAL"
-		And as user "user0"
 		When user "user0" uploads file "data/file_to_overwrite.txt" to "/PARENT/textfile0.txt" using the API
 		Then using server "REMOTE"
-		And as user "user1"
 		And the etag of element "/PARENT (2)" of user "user1" should have changed
 
 	Scenario: Overwrite a federated shared folder as recipient propagates etag for sharer
@@ -211,15 +205,12 @@ Feature: federated
 		And user "user0" has stored etag of element "/PARENT"
 		And user "user1" from server "REMOTE" has accepted the last pending share
 		And using server "REMOTE"
-		And as user "user1"
 		When user "user1" uploads file "data/file_to_overwrite.txt" to "/PARENT (2)/textfile0.txt" using the API
 		Then using server "LOCAL"
-		And as user "user0"
 		And the etag of element "/PARENT" of user "user0" should have changed
 
 	Scenario: Upload file to received federated share while quota is set on home storage
 		Given using server "REMOTE"
-		And as user "admin"
 		And user "user1" has been created
 		And the quota of user "user1" has been set to "20 B"
 		And using server "LOCAL"
@@ -234,10 +225,8 @@ Feature: federated
 
 	Scenario: Upload file to received federated share while quota is set on remote storage
 		Given using server "REMOTE"
-		And as user "admin"
 		And user "user1" has been created
 		And using server "LOCAL"
-		And as user "admin"
 		And user "user0" has been created
 		And the quota of user "user0" has been set to "20 B"
 		And user "user0" from server "LOCAL" has shared "/PARENT" with user "user1" from server "REMOTE"

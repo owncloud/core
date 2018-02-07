@@ -258,8 +258,7 @@ Feature: sharing
 
 	Scenario: Uploading file to a public upload-only share that was deleted does not work
 		Given user "user0" has been created
-		And as user "user0"
-		And the user has created a share with settings
+		And user "user0" has created a share with settings
 			| path | FOLDER |
 			| shareType | 3 |
 			| permissions | 4 |
@@ -569,7 +568,6 @@ Feature: sharing
 		Given using old DAV path
 		And user "user0" has been created
 		And user "user1" has been created
-		And as user "admin"
 		And the quota of user "user1" has been set to "0"
 		And user "user0" has moved file "/welcome.txt" to "/myfile.txt"
 		And user "user0" has shared file "myfile.txt" with user "user1"
@@ -737,8 +735,7 @@ Feature: sharing
 			| /foo%20(2)/ |
 
 	Scenario: Creating a new share with a disabled user
-		Given as user "admin"
-		And user "user0" has been created
+		Given user "user0" has been created
 		And user "user1" has been created
 		And user "user0" has been disabled
 		When user "user0" sends HTTP method "POST" to API endpoint "/apps/files_sharing/api/v1/shares" with body
@@ -981,15 +978,14 @@ Feature: sharing
 		And the etag of element "/PARENT" of user "user0" should not have changed
 
 	Scenario: Increasing permissions is allowed for owner
-		Given as user "admin"
-		And user "user0" has been created
+		Given user "user0" has been created
 		And user "user1" has been created
 		And group "new-group" has been created
 		And user "user0" has been added to group "new-group"
 		And user "user1" has been added to group "new-group"
 		And user "user0" has been made a subadmin of group "new-group"
 		And as user "user0"
-		And user "user0" has shared folder "/FOLDER" with group "new-group"
+		And the user has shared folder "/FOLDER" with group "new-group"
 		And the user has updated the last share with
 			| permissions | 1 |
 		When the user updates the last share using the API with
@@ -1008,8 +1004,7 @@ Feature: sharing
 		Then the OCS status code should be "400"
 
 	Scenario: Cannot set permissions to zero
-		Given as user "admin"
-		And user "user0" has been created
+		Given user "user0" has been created
 		And user "user1" has been created
 		And group "new-group" has been created
 		And user "user0" has been added to group "new-group"
@@ -1023,7 +1018,6 @@ Feature: sharing
 	Scenario: Adding public upload to a read only shared folder as recipient is not allowed
 		Given user "user0" has been created
 		And user "user1" has been created
-		And as user "user0"
 		And user "user0" has created a folder "/test"
 		And user "user0" has shared folder "/test" with user "user1" with permissions 17
 		And as user "user1"
@@ -1039,7 +1033,6 @@ Feature: sharing
 	Scenario: Adding public upload to a shared folder as recipient is allowed with permissions
 		Given user "user0" has been created
 		And user "user1" has been created
-		And as user "user0"
 		And user "user0" has created a folder "/test"
 		And user "user0" has shared folder "/test" with user "user1" with permissions 31
 		And as user "user1"
@@ -1055,7 +1048,6 @@ Feature: sharing
 	Scenario: Adding public upload to a read only shared folder as recipient is not allowed
 		Given user "user0" has been created
 		And user "user1" has been created
-		And as user "user0"
 		And user "user0" has created a folder "/test"
 		And user "user0" has shared folder "/test" with user "user1" with permissions 17
 		And as user "user1"
@@ -1071,7 +1063,6 @@ Feature: sharing
 	Scenario: Adding public upload to a shared folder as recipient is allowed with permissions
 		Given user "user0" has been created
 		And user "user1" has been created
-		And as user "user0"
 		And user "user0" has created a folder "/test"
 		And user "user0" has shared folder "/test" with user "user1" with permissions 31
 		And as user "user1"
@@ -1217,7 +1208,6 @@ Feature: sharing
 		And group "group0" has been created
 		And user "user0" has been added to group "group0"
 		And user "user0" has created a folder "/shared"
-		And as user "user0"
 		And user "user0" has moved file "/textfile0.txt" to "/shared/shared_file.txt"
 		And user "user0" has shared folder "/shared" with user "user1"
 		And user "user1" has shared folder "/shared" with group "group0"

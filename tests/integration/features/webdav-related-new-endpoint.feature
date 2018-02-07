@@ -124,7 +124,6 @@ Feature: webdav-related-new-endpoint
 
 	Scenario: Retrieving folder quota when no quota is set
 		Given using new DAV path
-		And as user "admin"
 		And user "user0" has been created
 		When the administrator gives unlimited quota to user "user0" using the API
 		And user "user0" gets the following properties of folder "/" using the API
@@ -133,7 +132,6 @@ Feature: webdav-related-new-endpoint
 
 	Scenario: Retrieving folder quota when quota is set
 		Given using new DAV path
-		And as user "admin"
 		And user "user0" has been created
 		When the administrator sets the quota of user "user0" to "10 MB" using the API
 		And user "user0" gets the following properties of folder "/" using the API
@@ -142,7 +140,6 @@ Feature: webdav-related-new-endpoint
 
 	Scenario: Retrieving folder quota of shared folder with quota when no quota is set for recipient
 		Given using new DAV path
-		And as user "admin"
 		And user "user0" has been created
 		And user "user1" has been created
 		And user "user0" has been given unlimited quota
@@ -159,7 +156,6 @@ Feature: webdav-related-new-endpoint
 
 	Scenario: Retrieving folder quota when quota is set and a file was uploaded
 		Given using new DAV path
-		And as user "admin"
 		And user "user0" has been created
 		And the quota of user "user0" has been set to "1 KB"
 		And user "user0" has added file "/prueba.txt" of 93 bytes
@@ -169,7 +165,6 @@ Feature: webdav-related-new-endpoint
 
 	Scenario: Retrieving folder quota when quota is set and a file was recieved
 		Given using new DAV path
-		And as user "admin"
 		And user "user0" has been created
 		And user "user1" has been created
 		And the quota of user "user1" has been set to "1 KB"
@@ -293,7 +288,6 @@ Feature: webdav-related-new-endpoint
 	Scenario: A disabled user cannot use webdav
 		Given using new DAV path
 		And user "userToBeDisabled" has been created
-		And as user "admin"
 		And user "userToBeDisabled" has been disabled
 		When user "userToBeDisabled" downloads the file "/welcome.txt" using the API
 		Then the HTTP status code should be "503"

@@ -4,7 +4,6 @@ Feature: dav-versions
     And using new DAV path
     And user "user0" has been created
     And file "/davtest.txt" has been deleted for user "user0"
-    And as user "user0"
 
   Scenario: Upload file and no version is available
     When user "user0" uploads file "data/davtest.txt" to "/davtest.txt" using the API

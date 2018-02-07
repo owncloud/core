@@ -4,7 +4,6 @@ Feature: Comments
 
   Scenario: Creating a comment on a file belonging to myself
     Given user "user0" has been created
-    And as user "user0"
     And user "user0" has uploaded file "data/textfile.txt" to "/myFileToComment.txt"
     When user "user0" comments with content "My first comment" on file "/myFileToComment.txt" using the API
     Then user "user0" should have the following comments on file "/myFileToComment.txt"
@@ -24,7 +23,6 @@ Feature: Comments
 
   Scenario: Deleting my own comments on a file belonging to myself
     Given user "user0" has been created
-    And as user "user0"
     And user "user0" has uploaded file "data/textfile.txt" to "/myFileToComment.txt"
     And user "user0" has commented with content "My first comment" on file "/myFileToComment.txt"
     When user "user0" deletes the last created comment using the API
@@ -33,7 +31,6 @@ Feature: Comments
 
   Scenario: Deleting a comment on a file belonging to myself having several comments
     Given user "user0" has been created
-    And as user "user0"
     And user "user0" has uploaded file "data/textfile.txt" to "/myFileToComment.txt"
     And user "user0" has commented with content "My first comment" on file "/myFileToComment.txt"
     And user "user0" has commented with content "My second comment" on file "/myFileToComment.txt"
@@ -46,7 +43,6 @@ Feature: Comments
   Scenario: Deleting my own comments on a file shared by somebody else
     Given user "user0" has been created
     And user "user1" has been created
-    And as user "user0"
     And user "user0" has uploaded file "data/textfile.txt" to "/myFileToComment.txt"
     And user "user0" has shared file "/myFileToComment.txt" with user "user1"
     And user "user0" has commented with content "File owner comment" on file "/myFileToComment.txt"
@@ -93,7 +89,6 @@ Feature: Comments
 
   Scenario: Getting info of comments using files endpoint
     Given user "user0" has been created
-    And as user "user0"
     And user "user0" has uploaded file "data/textfile.txt" to "/myFileToComment.txt"
     And user "user0" has commented with content "My first comment" on file "/myFileToComment.txt"
     And user "user0" should have the following comments on file "/myFileToComment.txt"
@@ -108,7 +103,6 @@ Feature: Comments
 
   Scenario: Creating a comment on a folder belonging to myself
     Given user "user0" has been created
-    And as user "user0"
     When user "user0" comments with content "My first comment" on folder "/FOLDER" using the API
     Then user "user0" should have the following comments on folder "/FOLDER"
             | user0 | My first comment |
