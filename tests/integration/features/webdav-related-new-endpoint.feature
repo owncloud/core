@@ -424,12 +424,6 @@ Feature: webdav-related-new-endpoint
 		Then downloaded content should start with "Welcome to your ownCloud account!"
 		And the HTTP status code should be "200"
 
-	Scenario: Doing a PROPFIND with a web login should not work without CSRF token on the new backend
-		Given user "user0" exists
-		And logging in using web as "user0"
-		When sending a "PROPFIND" to "/remote.php/dav/files/user0/welcome.txt" without requesttoken
-		Then the HTTP status code should be "401"
-
 	Scenario: Doing a PROPFIND with a web login should work with CSRF token on the new backend
 		Given user "user0" exists
 		And logging in using web as "user0"

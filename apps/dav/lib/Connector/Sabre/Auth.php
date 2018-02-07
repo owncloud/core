@@ -164,8 +164,8 @@ class Auth extends AbstractBasic {
 	 * @return bool
 	 */
 	private function requiresCSRFCheck() {
-		// GET requires no check at all
-		if($this->request->getMethod() === 'GET') {
+		// If not POST no check is required 
+		if($this->request->getMethod() !== 'POST') {
 			return false;
 		}
 
@@ -181,11 +181,6 @@ class Auth extends AbstractBasic {
 		// If not logged-in no check is required
 		if(!$this->userSession->isLoggedIn()) {
 			return false;
-		}
-
-		// POST always requires a check
-		if($this->request->getMethod() === 'POST') {
-			return true;
 		}
 
 		// If logged-in AND DAV authenticated no check is required
@@ -208,12 +203,7 @@ class Auth extends AbstractBasic {
 		if(!$this->request->passesCSRFCheck() &&
 			$this->requiresCSRFCheck()) {
 			// In case of a fail with POST we need to recheck the credentials
-			if($this->request->getMethod() === 'POST') {
-				$forcedLogout = true;
-			} else {
-				$response->setStatus(401);
-				throw new \Sabre\DAV\Exception\NotAuthenticated('CSRF check not passed.');
-			}
+			$forcedLogout = true;
 		}
 
 		if($forcedLogout) {
