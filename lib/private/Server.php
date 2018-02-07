@@ -61,6 +61,7 @@ use OC\IntegrityCheck\Checker;
 use OC\IntegrityCheck\Helpers\AppLocator;
 use OC\IntegrityCheck\Helpers\EnvironmentHelper;
 use OC\IntegrityCheck\Helpers\FileAccessHelper;
+use OC\Lock\RetryLockingProvider;
 use OC\Lock\DBLockingProvider;
 use OC\Lock\MemcacheLockingProvider;
 use OC\Lock\NoopLockingProvider;
@@ -693,9 +694,15 @@ class Server extends ServerContainer implements IServerContainer, IServiceLoader
 				$memcacheFactory = $c->getMemCacheFactory();
 				$memcache = $memcacheFactory->createLocking('lock');
 				if (!($memcache instanceof \OC\Memcache\NullCache)) {
-					return new MemcacheLockingProvider($memcache, $ttl);
+					$provider = new MemcacheLockingProvider($memcache, $ttl);
+				} else {
+					$provider = new DBLockingProvider($c->getDatabaseConnection(), $c->getLogger(), new TimeFactory(), $ttl);
 				}
-				return new DBLockingProvider($c->getDatabaseConnection(), $c->getLogger(), new TimeFactory(), $ttl);
+				return new RetryLockingProvider(
+					$provider,
+					(int)$config->getSystemValue('filelocking.retries', 5),
+					(int)$config->getSystemValue('filelocking.retrydelay', 5000)
+				);
 			}
 			return new NoopLockingProvider();
 		});
