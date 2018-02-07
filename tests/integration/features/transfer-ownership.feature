@@ -165,6 +165,23 @@ Feature: transfer-ownership
 		Then downloaded content when downloading file "/somefile.txt" with range "bytes=0-6" should be "This is"
 
 	@no_default_encryption
+	Scenario: transferring ownership of folder shares which has public link
+		Given user "user0" exists
+		And user "user1" exists
+		And user "user2" exists
+		And user "user0" created a folder "/test"
+		And user "user0" uploads file "data/textfile.txt" to "/test/somefile.txt"
+		And folder "/test" of user "user0" is shared with user "user2" with permissions 31
+		And as an "user1"
+		And creating a share with
+			| path | /test/somefile.txt |
+			| shareType | 3 |
+		When transferring ownership of path "test" from "user0" to "user1"
+		And the command was successful
+		And as an "user2"
+		Then downloaded content when downloading file "/test/somefile.txt" with range "bytes=0-6" should be "This is"
+
+	@no_default_encryption
 	Scenario: transferring ownership of folder shared with third user
 		Given user "user0" exists
 		And user "user1" exists
