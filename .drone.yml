@@ -91,15 +91,14 @@ pipeline:
       matrix:
         TEST_SUITE: coverage
 
-  javascript:
+  test-javascript:
     image: owncloudci/php:${PHP_VERSION}
     pull: true
-    group: test
     commands:
       - ./tests/drone/test-javascript.sh
     when:
       matrix:
-        TEST_SUITE: phpunit
+        TEST_SUITE: javascript
 
   phpunit:
     image: owncloudci/php:${PHP_VERSION}
@@ -244,6 +243,8 @@ services:
         USE_FEDERATED_SERVER: true
 matrix:
   include:
+    - TEST_SUITE: javascript
+      PHP_VERSION: 7.1
     # PHP 5.6
     #- PHP_VERSION: 5.6
     #  DB_TYPE: sqlite
