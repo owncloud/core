@@ -35,10 +35,6 @@ class Helper  {
 		return \OC_App::getForms('admin');
 	}
 
-	public function isPublicLinkPasswordRequired() {
-		return \OCP\Util::isPublicLinkPasswordRequired();
-	}
-
 	public function shareWithGroupMembersOnly() {
 		return \OC\Share\Share::shareWithGroupMembersOnly();
 	}

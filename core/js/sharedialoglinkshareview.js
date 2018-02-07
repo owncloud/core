@@ -40,7 +40,7 @@
 			'</div>' +
 			'{{/if}}' +
 			'<div id="linkPass-{{cid}}" class="public-link-modal--item linkPass">' +
-				'<label class="public-link-modal--label" for="linkPassText-{{cid}}">{{passwordLabel}}{{#if isPasswordRequired}}<span class="required-indicator">*</span>{{/if}}</label>' +
+				'<label class="public-link-modal--label" for="linkPassText-{{cid}}">{{passwordLabel}}</label>' +
 				'<input class="public-link-modal--input linkPassText" id="linkPassText-{{cid}}" type="password" placeholder="{{passwordPlaceholder}}" />' +
 				'<span class="error-message hidden"></span>' +
 			'</div>' +
@@ -101,7 +101,20 @@
 		_getPermissions: function() {
 			var permissions = this.$('input[name="publicPermissions"]:checked').val();
 
-			return (permissions) ? permissions : OC.PERMISSION_READ;
+			return (permissions) ? parseInt(permissions, 10) : OC.PERMISSION_READ;
+		},
+
+		_shouldRequirePassword: function() {
+			// matching passwordMustBeEnforced from server side
+			var permissions = this._getPermissions();
+			var roEnforcement = permissions === OC.PERMISSION_READ && this.configModel.get('enforceLinkPasswordReadOnly');
+			var woEnforcement = permissions === OC.PERMISSION_CREATE && this.configModel.get('enforceLinkPasswordWriteOnly');
+			var rwEnforcement = (permissions !== OC.PERMISSION_READ && permissions !== OC.PERMISSION_CREATE) && this.configModel.get('enforceLinkPasswordReadWrite');
+			if (roEnforcement || woEnforcement || rwEnforcement) {
+				return true;
+			} else {
+				return false;
+			}
 		},
 
 		_save: function () {
@@ -144,8 +157,8 @@
 			var validates = true;
 			validates &= this.expirationView.validate();
 
-			if (this.configModel.get('enforcePasswordForPublicLink')
-				&& !password
+			if (!password
+				&& this._shouldRequirePassword()
 				&& (this.model.isNew() || !this.model.get('encryptedPassword'))
 			) {
 				$password.addClass('error');
@@ -221,7 +234,6 @@
 			this.$el.html(this.template({
 				cid: this.cid,
 				passwordPlaceholder: isPasswordSet ? PASSWORD_PLACEHOLDER_STARS : PASSWORD_PLACEHOLDER_MESSAGE,
-				isPasswordRequired: this.configModel.get('enforcePasswordForPublicLink'),
 				namePlaceholder: t('core', 'Name'),
 				name: this.model.get('name'),
 				isPasswordSet: isPasswordSet,

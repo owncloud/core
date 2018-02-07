@@ -32,7 +32,6 @@ describe('OC.Share.ShareDialogShareeListView', function () {
 	beforeEach(function () {
 		/* jshint camelcase:false */
 		oldAppConfig = _.extend({}, oc_appconfig.core);
-		oc_appconfig.core.enforcePasswordForPublicLink = false;
 
 		$('#testArea').append('<input id="mailNotificationEnabled" name="mailNotificationEnabled" type="hidden" value="yes">');
 
@@ -59,9 +58,7 @@ describe('OC.Share.ShareDialogShareeListView', function () {
 		});
 
 		configModel = new OC.Share.ShareConfigModel({
-			enforcePasswordForPublicLink: false,
 			isResharingAllowed: true,
-			enforcePasswordForPublicLink: false,
 			isDefaultExpireDateEnabled: false,
 			isDefaultExpireDateEnforced: false,
 			defaultExpireDate: 7

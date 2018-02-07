@@ -67,8 +67,8 @@ describe('OC.Share.ShareDialogExpirationView', function() {
 		});
 		view.render();
 	});
-	afterEach(function() { 
-		tooltipStub.restore(); 
+	afterEach(function() {
+		tooltipStub.restore();
 		view.remove();
 	});
 
@@ -128,7 +128,6 @@ describe('OC.Share.ShareDialogExpirationView', function() {
 				setDefaultsStub = sinon.stub($.datepicker, 'setDefaults');
 
 				configModel.set({
-					enforcePasswordForPublicLink: false,
 					isDefaultExpireDateEnabled: false,
 					isDefaultExpireDateEnforced: false,
 					defaultExpireDate: 7

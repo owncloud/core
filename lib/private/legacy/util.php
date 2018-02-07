@@ -304,13 +304,17 @@ class OC_Util {
 	}
 
 	/**
-	 * check if a password is required for each public link
+	 * check if a password is required for each public link.
+	 * This is deprecated due to not reflecting all the possibilities now. Falling back to
+	 * enforce password for read-only links. Note that read & write or write-only options won't
+	 * be considered here
 	 *
 	 * @return boolean
+	 * @deprecated
 	 */
 	public static function isPublicLinkPasswordRequired() {
 		$appConfig = \OC::$server->getAppConfig();
-		$enforcePassword = $appConfig->getValue('core', 'shareapi_enforce_links_password', 'no');
+		$enforcePassword = $appConfig->getValue('core', 'shareapi_enforce_links_password_read_only', 'no');
 		return ($enforcePassword === 'yes') ? true : false;
 	}
 
