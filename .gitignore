@@ -20,6 +20,7 @@
 !/apps/files_sharing
 !/apps/files_trashbin
 !/apps/files_versions
+!/apps/notifications_mail
 !/apps/provisioning_api
 !/apps/systemtags
 !/apps/testing
