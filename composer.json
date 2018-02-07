@@ -38,7 +38,7 @@
         "rackspace/php-opencloud": "v1.9.2",
         "jeremeamia/superclosure": "2.1.0",
         "bantu/ini-get-wrapper": "v1.0.1",
-        "punic/punic": "^1.6",
+        "punic/punic": "^2.1",
         "pear/archive_tar": "1.4.3",
         "patchwork/utf8": "^1.3",
         "symfony/console": "^3.1",
