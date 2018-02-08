@@ -8,7 +8,7 @@ Feature: webdav-related-old-endpoint
 		Then the HTTP status code should be "401"
 		And there should be no duplicate headers
 		And the following headers should be set
-			|WWW-Authenticate|Basic realm="ownCloud"|
+			| WWW-Authenticate | Basic realm="ownCloud" |
 
 	Scenario: Moving a file
 		Given using old DAV path
@@ -31,10 +31,10 @@ Feature: webdav-related-old-endpoint
 		And user "user1" has been created
 		And user "user1" has created a folder "/testshare"
 		And user "user1" has created a share with settings
-		  | path | testshare |
-		  | shareType | 0 |
-		  | permissions | 1 |
-		  | shareWith | user0 |
+			| path        | testshare |
+			| shareType   | 0         |
+			| permissions | 1         |
+			| shareWith   | user0     |
 		When user "user0" moves file "/textfile0.txt" to "/testshare/textfile0.txt" using the API
 		Then the HTTP status code should be "403"
 		When user "user0" downloads the file "/testshare/textfile0.txt" using the API
@@ -46,10 +46,10 @@ Feature: webdav-related-old-endpoint
 		And user "user1" has been created
 		And user "user1" has created a folder "/testshare"
 		And user "user1" has created a share with settings
-		  | path | testshare |
-		  | shareType | 0 |
-		  | permissions | 1 |
-		  | shareWith | user0 |
+			| path        | testshare |
+			| shareType   | 0         |
+			| permissions | 1         |
+			| shareWith   | user0     |
 		And user "user1" has copied file "/welcome.txt" to "/testshare/overwritethis.txt"
 		When user "user0" moves file "/textfile0.txt" to "/testshare/overwritethis.txt" using the API
 		Then the HTTP status code should be "403"
@@ -93,10 +93,10 @@ Feature: webdav-related-old-endpoint
 		And user "user1" has been created
 		And user "user1" has created a folder "/testshare"
 		And user "user1" has created a share with settings
-		  | path | testshare |
-		  | shareType | 0 |
-		  | permissions | 1 |
-		  | shareWith | user0 |
+			| path        | testshare |
+			| shareType   | 0         |
+			| permissions | 1         |
+			| shareWith   | user0     |
 		When user "user0" copies file "/textfile0.txt" to "/testshare/textfile0.txt" using the API
 		Then the HTTP status code should be "403"
 		And user "user0" downloads the file "/testshare/textfile0.txt" using the API
@@ -108,10 +108,10 @@ Feature: webdav-related-old-endpoint
 		And user "user1" has been created
 		And user "user1" has created a folder "/testshare"
 		And user "user1" has created a share with settings
-		  | path | testshare |
-		  | shareType | 0 |
-		  | permissions | 1 |
-		  | shareWith | user0 |
+			| path        | testshare |
+			| shareType   | 0         |
+			| permissions | 1         |
+			| shareWith   | user0     |
 		And user "user1" has copied file "/welcome.txt" to "/testshare/overwritethis.txt"
 		When user "user0" copies file "/textfile0.txt" to "/testshare/overwritethis.txt" using the API
 		Then the HTTP status code should be "403"
@@ -147,10 +147,10 @@ Feature: webdav-related-old-endpoint
 		And the quota of user "user1" has been set to "10 MB"
 		And user "user1" has created a folder "/testquota"
 		And user "user1" has created a share with settings
-		  | path | testquota |
-		  | shareType | 0 |
-		  | permissions | 31 |
-		  | shareWith | user0 |
+			| path        | testquota |
+			| shareType   | 0         |
+			| permissions | 31        |
+			| shareWith   | user0     |
 		When user "user0" gets the following properties of folder "/testquota" using the API
 		  |{DAV:}quota-available-bytes|
 		Then the single response should contain a property "{DAV:}quota-available-bytes" with value "10485358"
@@ -179,8 +179,8 @@ Feature: webdav-related-old-endpoint
 		Given using old DAV path
 		And user "user0" has been created
 		When user "user0" creates a share using the API with settings
-			| path | welcome.txt |
-			| shareType | 3 |
+			| path      | welcome.txt |
+			| shareType | 3           |
 		And the public downloads the last public shared file with range "bytes=51-77" using the API
 		Then the downloaded content should be "example file for developers"
 
@@ -188,8 +188,8 @@ Feature: webdav-related-old-endpoint
 		Given using old DAV path
 		And user "user0" has been created
 		When user "user0" creates a share using the API with settings
-			| path | PARENT |
-			| shareType | 3 |
+			| path      | PARENT |
+			| shareType | 3      |
 		And the public downloads file "/parent.txt" from inside the last public shared folder with range "bytes=1-7" using the API
 		Then the downloaded content should be "wnCloud"
 
@@ -207,10 +207,10 @@ Feature: webdav-related-old-endpoint
 		And user "user1" has been created
 		And user "user0" has created a folder "/test"
 		And user "user0" has created a share with settings
-			| path | test |
-			| shareType | 0 |
-			| permissions | 31 |
-			| shareWith | user1 |
+			| path        | test  |
+			| shareType   | 0     |
+			| permissions | 31    |
+			| shareWith   | user1 |
 		When user "user0" gets the following properties of folder "/test" using the API
 			|{http://owncloud.org/ns}share-types|
 		Then the response should contain a share-types property with
@@ -222,10 +222,10 @@ Feature: webdav-related-old-endpoint
 		And group "group1" has been created
 		And user "user0" has created a folder "/test"
 		And user "user0" has created a share with settings
-			| path | test |
-			| shareType | 1 |
-			| permissions | 31 |
-			| shareWith | group1 |
+			| path        | test   |
+			| shareType   | 1      |
+			| permissions | 31     |
+			| shareWith   | group1 |
 		When user "user0" gets the following properties of folder "/test" using the API
 			|{http://owncloud.org/ns}share-types|
 		Then the response should contain a share-types property with
@@ -236,9 +236,9 @@ Feature: webdav-related-old-endpoint
 		And user "user0" has been created
 		And user "user0" has created a folder "/test"
 		And user "user0" has created a share with settings
-			| path | test |
-			| shareType | 3 |
-			| permissions | 31 |
+			| path        | test |
+			| shareType   | 3    |
+			| permissions | 31   |
 		When user "user0" gets the following properties of folder "/test" using the API
 			|{http://owncloud.org/ns}share-types|
 		Then the response should contain a share-types property with
@@ -256,9 +256,9 @@ Feature: webdav-related-old-endpoint
 			| permissions | 31    |
 			| shareWith   | user1 |
 		And user "user0" has created a share with settings
-			| path        | test  |
-			| shareType   | 1     |
-			| permissions | 31    |
+			| path        | test   |
+			| shareType   | 1      |
+			| permissions | 31     |
 			| shareWith   | group2 |
 		And user "user0" has created a share with settings
 			| path        | test  |
@@ -302,14 +302,14 @@ Feature: webdav-related-old-endpoint
 		And user "user0" has copied file "/textfile0.txt" to "/FOLDER/SUBFOLDER/testfile0.txt"
 		When user "user0" deletes everything from folder "/FOLDER/" using the API
 		Then user "user0" should see the following elements
-			| /FOLDER/ |
-			| /PARENT/ |
+			| /FOLDER/           |
+			| /PARENT/           |
 			| /PARENT/parent.txt |
-			| /textfile0.txt |
-			| /textfile1.txt |
-			| /textfile2.txt |
-			| /textfile3.txt |
-			| /textfile4.txt |
+			| /textfile0.txt     |
+			| /textfile1.txt     |
+			| /textfile2.txt     |
+			| /textfile3.txt     |
+			| /textfile4.txt     |
 
 	Scenario: Checking file id after a move
 		Given using old DAV path
@@ -358,14 +358,14 @@ Feature: webdav-related-old-endpoint
 		And user "user0" has been created
 		When user "user0" downloads the file "/welcome.txt" using the API
 		Then the following headers should be set
-			|Content-Disposition|attachment; filename*=UTF-8''welcome.txt; filename="welcome.txt"|
-			|Content-Security-Policy|default-src 'none';|
-			|X-Content-Type-Options |nosniff|
-			|X-Download-Options|noopen|
-			|X-Frame-Options|SAMEORIGIN|
-			|X-Permitted-Cross-Domain-Policies|none|
-			|X-Robots-Tag|none|
-			|X-XSS-Protection|1; mode=block|
+			| Content-Disposition               | attachment; filename*=UTF-8''welcome.txt; filename="welcome.txt" |
+			| Content-Security-Policy           | default-src 'none';                                              |
+			| X-Content-Type-Options            | nosniff                                                          |
+			| X-Download-Options                | noopen                                                           |
+			| X-Frame-Options                   | SAMEORIGIN                                                       |
+			| X-Permitted-Cross-Domain-Policies | none                                                             |
+			| X-Robots-Tag                      | none                                                             |
+			| X-XSS-Protection                  | 1; mode=block                                                    |
 		And the downloaded content should start with "Welcome to your ownCloud account!"
 
 	Scenario: Doing a GET with a web login should work without CSRF token on the old backend
@@ -414,10 +414,10 @@ Feature: webdav-related-old-endpoint
 		And user "user1" has been created
 		And user "user0" has uploaded file "data/textfile.txt" to "/testcustompropshared.txt"
 		And user "user0" has created a share with settings
-		  | path | testcustompropshared.txt |
-		  | shareType | 0 |
-		  | permissions | 31 |
-		  | shareWith | user1 |
+			| path        | testcustompropshared.txt |
+			| shareType   | 0                        |
+			| permissions | 31                       |
+			| shareWith   | user1                    |
 		And user "user0" has set property "{http://whatever.org/ns}very-custom-prop" of file "/testcustompropshared.txt" to "valueForSharetest"
 		When user "user1" gets a custom property "{http://whatever.org/ns}very-custom-prop" of file "/testcustompropshared.txt"
 		Then the response should contain a custom "{http://whatever.org/ns}very-custom-prop" property with "valueForSharetest"
@@ -465,10 +465,10 @@ Feature: webdav-related-old-endpoint
 		When user "user0" downloads the file "/<file-name>" using the API
 		Then the downloaded content should be "AAAAABBBBBCCCCC"
 		Examples:
-		|file-name|
-		|0        |
-		|&#?      |
-		|TIÄFÜ    |
+			| file-name |
+			| 0         |
+			| &#?       |
+			| TIÄFÜ     |
 
 	Scenario: Checking file id after a move between received shares
 		Given using old DAV path
