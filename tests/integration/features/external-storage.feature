@@ -13,14 +13,14 @@ Feature: external-storage
     And user "user0" has moved file "/textfile0.txt" to "/local_storage/foo/textfile0.txt"
     And user "user0" has shared folder "/local_storage/foo" with user "user1"
     When user "user1" creates a share using the API with settings
-      | path | foo |
-      | shareType | 3 |
+      | path      | foo |
+      | shareType | 3   |
     Then the OCS status code should be "100"
     And the HTTP status code should be "200"
     And the share fields of the last share should include
-      | id | A_NUMBER |
-      | url | AN_URL |
-      | token | A_TOKEN |
+      | id       | A_NUMBER             |
+      | url      | AN_URL               |
+      | token    | A_TOKEN              |
       | mimetype | httpd/unix-directory |
 
   @local_storage
