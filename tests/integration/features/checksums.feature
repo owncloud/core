@@ -151,7 +151,7 @@ Feature: checksums
     And user "user0" has uploaded file with checksum "SHA1:ce5582148c6f0c1282335b87df5ed4be4b781399" and content "Some Text" to "/chksumtst.txt"
     When user "user0" downloads the file "/chksumtst.txt" using the API
     Then the following headers should be set
-            | OC-Checksum | SHA1:ce5582148c6f0c1282335b87df5ed4be4b781399 |
+      | OC-Checksum | SHA1:ce5582148c6f0c1282335b87df5ed4be4b781399 |
 
   @local_storage
   Scenario: Uploaded file to external storage should have the same checksum when downloaded
@@ -160,7 +160,7 @@ Feature: checksums
     And user "user0" has uploaded file with checksum "SHA1:ce5582148c6f0c1282335b87df5ed4be4b781399" and content "Some Text" to "/local_storage/chksumtst.txt"
     When user "user0" downloads the file "/local_storage/chksumtst.txt" using the API
     Then the following headers should be set
-            | OC-Checksum | SHA1:ce5582148c6f0c1282335b87df5ed4be4b781399 |
+      | OC-Checksum | SHA1:ce5582148c6f0c1282335b87df5ed4be4b781399 |
 
   ## Validation Plugin or Old Endpoint Specific
 
