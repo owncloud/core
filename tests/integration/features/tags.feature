@@ -11,10 +11,10 @@ Feature: tags
     And the following tags should exist for "user0"
       |<tag_name>|normal|
 
-  Examples:
-    |tag_name|
-    |JustARegularTagName|
-    |😀|
+    Examples:
+      | tag_name            |
+      | JustARegularTagName |
+      | 😀                  |
 
   Scenario: Creating a not user-assignable tag as regular user should fail
     Given user "user0" has been created
@@ -45,26 +45,26 @@ Feature: tags
     And user "admin" has created a "normal" tag with name "<tag_name>"
     When "user0" edits the tag with name "<tag_name>" and sets its name to "AnotherTagName" using the API
     Then the following tags should exist for "admin"
-      |AnotherTagName|normal|
+      | AnotherTagName | normal |
 
-  Examples:
-    |tag_name|
-    |JustARegularTagName|
-    |😀|
+    Examples:
+      | tag_name            |
+      | JustARegularTagName |
+      | 😀                  |
 
   Scenario: Renaming a not user-assignable tag as regular user should fail
     Given user "user0" has been created
     And user "admin" has created a "not user-assignable" tag with name "JustARegularTagName"
     When "user0" edits the tag with name "JustARegularTagName" and sets its name to "AnotherTagName" using the API
     Then the following tags should exist for "admin"
-      |JustARegularTagName|not user-assignable|
+      | JustARegularTagName | not user-assignable |
 
   Scenario: Renaming a not user-visible tag as regular user should fail
     Given user "user0" has been created
     And user "admin" has created a "not user-visible" tag with name "JustARegularTagName"
     When "user0" edits the tag with name "JustARegularTagName" and sets its name to "AnotherTagName" using the API
     Then the following tags should exist for "admin"
-      |JustARegularTagName|not user-visible|
+      | JustARegularTagName | not user-visible |
 
   Scenario: Editing tag groups as admin should work
     Given user "user0" has been created
@@ -91,7 +91,7 @@ Feature: tags
     When "user0" deletes the tag with name "JustARegularTagName" using the API
     Then the HTTP status code should be "403"
     And the following tags should exist for "admin"
-      |JustARegularTagName|not user-assignable|
+      | JustARegularTagName | not user-assignable |
 
   Scenario: Deleting a not user-visible tag as regular user should fail
     Given user "user0" has been created
@@ -99,7 +99,7 @@ Feature: tags
     When "user0" deletes the tag with name "JustARegularTagName" using the API
     Then the HTTP status code should be "404"
     And the following tags should exist for "admin"
-      |JustARegularTagName|not user-visible|
+      | JustARegularTagName | not user-visible |
 
   Scenario: Deleting a not user-assignable tag as admin should work
     Given user "admin" has created a "not user-assignable" tag with name "JustARegularTagName"
@@ -122,7 +122,7 @@ Feature: tags
     When user "user1" adds the tag "JustARegularTagName" to "/myFileToTag.txt" shared by "user0" using the API
     Then the HTTP status code should be "201"
     And file "/myFileToTag.txt" shared by "user0" should have the following tags
-      |JustARegularTagName|normal|
+      | JustARegularTagName | normal |
 
   Scenario: Assigning a normal tag to a file belonging to someone else as regular user should fail
     Given user "user0" has been created
@@ -134,7 +134,7 @@ Feature: tags
     And user "user1" adds the tag "MySecondTag" to "/myFileToTag.txt" owned by "user0" using the API
     Then the HTTP status code should be "404"
     And file "/myFileToTag.txt" owned by "user0" should have the following tags
-      |MyFirstTag|normal|
+      | MyFirstTag | normal |
 
   Scenario: Assigning a not user-assignable tag to a file shared by someone else as regular user should fail
     Given user "user0" has been created
@@ -147,7 +147,7 @@ Feature: tags
     And user "user1" adds the tag "MySecondTag" to "/myFileToTag.txt" shared by "user0" using the API
     Then the HTTP status code should be "403"
     And file "/myFileToTag.txt" shared by "user0" should have the following tags
-      |MyFirstTag|normal|
+      | MyFirstTag | normal |
 
   Scenario: Assigning a not user-assignable tag to a file shared by someone else as regular user belongs to tag's groups should work
     Given user "user0" has been created
@@ -160,7 +160,7 @@ Feature: tags
     When user "user1" adds the tag "JustARegularTagName" to "/myFileToTag.txt" shared by "user0" using the API
     Then the HTTP status code should be "201"
     And file "/myFileToTag.txt" shared by "user0" should have the following tags
-      |JustARegularTagName|not user-assignable|
+      | JustARegularTagName | not user-assignable |
 
   Scenario: Assigning a not user-visible tag to a file shared by someone else as regular user should fail
     Given user "user0" has been created
@@ -173,7 +173,7 @@ Feature: tags
     And user "user1" adds the tag "MySecondTag" to "/myFileToTag.txt" shared by "user0" using the API
     Then the HTTP status code should be "412"
     And file "/myFileToTag.txt" shared by "user0" should have the following tags
-      |MyFirstTag|normal|
+      | MyFirstTag | normal |
 
   Scenario: Assigning a not user-visible tag to a file shared by someone else as admin user should work
     Given user "user0" has been created
@@ -187,10 +187,10 @@ Feature: tags
     And user "another_admin" adds the tag "MySecondTag" to "/myFileToTag.txt" shared by "user0" using the API
     Then the HTTP status code should be "201"
     And file "/myFileToTag.txt" shared by "user0" should have the following tags for "another_admin"
-      |MyFirstTag|normal|
-      |MySecondTag|not user-visible|
+      | MyFirstTag  | normal           |
+      | MySecondTag | not user-visible |
     And file "/myFileToTag.txt" shared by "user0" should have the following tags for "user0"
-      |MyFirstTag|normal|
+      | MyFirstTag | normal |
 
   Scenario: Assigning a not user-assignable tag to a file shared by someone else as admin user should work
     Given user "user0" has been created
@@ -204,11 +204,11 @@ Feature: tags
     And user "another_admin" adds the tag "MySecondTag" to "/myFileToTag.txt" shared by "user0" using the API
     Then the HTTP status code should be "201"
     And file "/myFileToTag.txt" shared by "user0" should have the following tags for "another_admin"
-      |MyFirstTag|normal|
-      |MySecondTag|not user-assignable|
+      | MyFirstTag  | normal              |
+      | MySecondTag | not user-assignable |
     And file "/myFileToTag.txt" shared by "user0" should have the following tags for "user0"
-      |MyFirstTag|normal|
-      |MySecondTag|not user-assignable|
+      | MyFirstTag  | normal              |
+      | MySecondTag | not user-assignable |
 
   Scenario: Unassigning a normal tag from a file shared by someone else as regular user should work
     Given user "user0" has been created
@@ -222,7 +222,7 @@ Feature: tags
     When user "user1" removes the tag "MyFirstTag" from "/myFileToTag.txt" shared by "user0" using the API
     Then the HTTP status code should be "204"
     And file "/myFileToTag.txt" shared by "user0" should have the following tags for "user0"
-      |MySecondTag|normal|
+      | MySecondTag | normal |
 
   Scenario: Unassigning a normal tag from a file unshared by someone else as regular user should fail
     Given user "user0" has been created
@@ -235,8 +235,8 @@ Feature: tags
     When user "user1" removes the tag "MyFirstTag" from "/myFileToTag.txt" shared by "user0" using the API
     Then the HTTP status code should be "404"
     And file "/myFileToTag.txt" shared by "user0" should have the following tags for "user0"
-      |MyFirstTag|normal|
-      |MySecondTag|normal|
+      | MyFirstTag  | normal |
+      | MySecondTag | normal |
 
   Scenario: Unassigning a not user-visible tag from a file shared by someone else as regular user should fail
     Given user "user0" has been created
@@ -253,10 +253,10 @@ Feature: tags
     When user "user1" removes the tag "MyFirstTag" from "/myFileToTag.txt" shared by "user0" using the API
     Then the HTTP status code should be "404"
     And file "/myFileToTag.txt" shared by "user0" should have the following tags for "user0"
-      |MySecondTag|normal|
+      | MySecondTag | normal |
     And file "/myFileToTag.txt" shared by "user0" should have the following tags for "another_admin"
-      |MyFirstTag|not user-visible|
-      |MySecondTag|normal|
+      | MyFirstTag  | not user-visible |
+      | MySecondTag | normal           |
 
   Scenario: Unassigning a not user-visible tag from a file shared by someone else as admin should work
     Given user "user0" has been created
@@ -273,9 +273,9 @@ Feature: tags
     When user "another_admin" removes the tag "MyFirstTag" from "/myFileToTag.txt" shared by "user0" using the API
     Then the HTTP status code should be "204"
     And file "/myFileToTag.txt" shared by "user0" should have the following tags for "user0"
-      |MySecondTag|normal|
+      | MySecondTag | normal |
     And file "/myFileToTag.txt" shared by "user0" should have the following tags for "another_admin"
-      |MySecondTag|normal|
+      | MySecondTag | normal |
 
   Scenario: Unassigning a not user-visible tag from a file unshared by someone else should fail
     Given user "user0" has been created
@@ -308,11 +308,11 @@ Feature: tags
     When user "user1" removes the tag "MyFirstTag" from "/myFileToTag.txt" shared by "user0" using the API
     Then the HTTP status code should be "403"
     And file "/myFileToTag.txt" shared by "user0" should have the following tags for "user0"
-      |MyFirstTag|not user-assignable|
-      |MySecondTag|normal|
+      | MyFirstTag  | not user-assignable |
+      | MySecondTag | normal              |
     And file "/myFileToTag.txt" shared by "user0" should have the following tags for "another_admin"
-      |MyFirstTag|not user-assignable|
-      |MySecondTag|normal|
+      | MyFirstTag  | not user-assignable |
+      | MySecondTag | normal              |
 
   Scenario: Unassigning a not user-assignable tag from a file shared by someone else as admin should work
     Given user "user0" has been created
@@ -329,9 +329,9 @@ Feature: tags
     When user "another_admin" removes the tag "MyFirstTag" from "/myFileToTag.txt" shared by "user0" using the API
     Then the HTTP status code should be "204"
     And file "/myFileToTag.txt" shared by "user0" should have the following tags for "user0"
-      |MySecondTag|normal|
+      | MySecondTag | normal |
     And file "/myFileToTag.txt" shared by "user0" should have the following tags for "another_admin"
-      |MySecondTag|normal|
+      | MySecondTag | normal |
 
   Scenario: Unassigning a not user-assignable tag from a file unshared by someone else should fail
     Given user "user0" has been created
@@ -372,7 +372,7 @@ Feature: tags
     And user "user0" has uploaded file "data/textfile.txt" to "/myFileToTag.txt"
     When user "user0" adds the tag "MyFirstTag" to "/myFileToTag.txt" shared by "user0" using the API
     Then file "/myFileToTag.txt" shared by "user0" should have the following tags for "user0"
-      |MyFirstTag|normal|
+      | MyFirstTag | normal |
     And file "/myFileToTag.txt" shared by "user0" should have the following tags for "user1"
       ||
 
