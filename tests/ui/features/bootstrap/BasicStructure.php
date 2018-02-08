@@ -83,12 +83,14 @@ trait BasicStructure {
 	 * @return \Page\OwncloudPage
 	 */
 	public function loginAs($username, $password, $target = 'FilesPage') {
+		$session = $this->getSession();
+		$this->loginPage->waitTillPageIsLoaded($session);
 		$nextPage = $this->loginPage->loginAs(
 			$username,
 			$password,
 			$target
 		);
-		$nextPage->waitTillPageIsLoaded($this->getSession());
+		$nextPage->waitTillPageIsLoaded($session);
 		$this->setCurrentUser($username);
 		$this->setCurrentServer(null);
 		return $nextPage;
