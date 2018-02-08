@@ -162,8 +162,8 @@ Feature: transfer-ownership
 		And user "user0" uploads file "data/textfile.txt" to "/test/somefile.txt" using the API
 		And user "user0" has shared folder "/test" with user "user2" with permissions 31
 		And user "user1" creates a share using the API with settings
-			| path | /test/somefile.txt |
-			| shareType | 3 |
+			| path      | /test/somefile.txt |
+			| shareType | 3                  |
 		When the administrator transfers ownership of path "test" from "user0" to "user1" using the occ command
 		And the command should have been successful
 		Then the downloaded content when downloading file "/test/somefile.txt" for user "user2" with range "bytes=0-6" should be "This is"

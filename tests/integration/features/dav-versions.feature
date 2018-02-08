@@ -44,8 +44,8 @@ Feature: dav-versions
     And user "user0" has uploaded file with content "456789" to "/davtest.txt"
     And we save it into "FILEID"
     When user "user0" creates a share using the API with settings
-      | path | /davtest.txt |
-      | shareType | 0 |
-      | shareWith | user1 |
-      | permissions | 8 |
+      | path        | /davtest.txt |
+      | shareType   | 0            |
+      | shareWith   | user1        |
+      | permissions | 8            |
     Then the version folder of fileId "<<FILEID>>" for user "user1" should contain "1" element

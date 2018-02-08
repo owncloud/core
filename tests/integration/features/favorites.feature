@@ -77,7 +77,7 @@ Feature: favorite
         And user "user0" favorites element "/textfile0.txt" using the API
         And user "user0" favorites element "/textfile1.txt" using the API
         Then user "user0" in folder "/" should have favorited the following elements
-            | /FOLDER |
+            | /FOLDER        |
             | /textfile0.txt |
             | /textfile1.txt |
 
@@ -88,7 +88,7 @@ Feature: favorite
         And user "user0" favorites element "/textfile0.txt" using the API
         And user "user0" favorites element "/textfile1.txt" using the API
         Then user "user0" in folder "/" should have favorited the following elements
-            | /FOLDER |
+            | /FOLDER        |
             | /textfile0.txt |
             | /textfile1.txt |
 
