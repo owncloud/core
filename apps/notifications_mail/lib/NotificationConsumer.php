@@ -26,7 +26,6 @@ use OCP\Notification\INotification;
 use OCP\IUserManager;
 use OCP\ILogger;
 use OCP\IURLGenerator;
-use OCP\IRequest;
 use OCA\notifications_mail\NotificationSender;
 
 class NotificationConsumer implements IApp {

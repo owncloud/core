@@ -49,6 +49,7 @@ class NotificationSender {
 
 	/**
 	 * Send a notification via email to the list of email addresses passed as parameter
+	 * @return \OC\Mail\Message the message sent
 	 */
 	public function sendNotification(INotification $notification, $serverUrl, array $emailAddresses) {
 		$targetUser = $notification->getUser();
@@ -69,16 +70,21 @@ class NotificationSender {
 		$translatedSubject = (string)$l10n->t($subject, [$serverUrl, $generatedId]);
 		$emailMessage->setSubject($translatedSubject);
 
-		$body = '%s</br>%s</br>Go to <a href="%s">%s</a> to check the notification';
-		$translatedBody = (string)$l10n->t($body, [
-			$notification->getParsedSubject(),
-			$notification->getParsedMessage(),
-			$serverUrl,
-			$serverUrl
-		]);
-		$emailMessage->setHtmlBody($translatedBody);
+		$body = 'Go to %s to check the notification';
+		$translatedPlainBody = (string)$l10n->t($body, [$serverUrl]);
+		$serverUrlLink = "<a href=\"$serverUrl\">$serverUrl<a/>";
+		$translatedHtmlBody = (string)$l10n->t($body, [$serverUrlLink]);
+
+		$parsedSubject = $notification->getParsedSubject();
+		$parsedMessage = $notification->getParsedMessage();
+		$plainText = "$parsedSubject\n\n$parsedMessage\n\n$translatedPlainBody";
+		$htmlText = "$parsedSubject</br></br>$parsedMessage</br></br>$translatedHtmlBody";
+		$emailMessage->setPlainBody($plainText);
+		$emailMessage->setHtmlBody($htmlText);
 
 		$this->mailer->send($emailMessage);
+
+		return $emailMessage;
 	}
 
 	/**
