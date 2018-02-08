@@ -162,8 +162,8 @@ Feature: transfer-ownership
 		And user "user0" uploads file "data/textfile.txt" to "/test/somefile.txt" using the API
 		And folder "/test" of user "user0" has been shared with user "user2" with permissions 31
 		And user "user1" creates a share using the API with settings
-			| path | /test/somefile.txt |
-			| shareType | 3 |
+			| path      | /test/somefile.txt |
+			| shareType | 3                  |
 		When the administrator transfers ownership of path "test" from "user0" to "user1" using the occ command
 		And the command should have been successful
 		And as an "user2"
