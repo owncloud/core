@@ -155,7 +155,6 @@
     "Allow apps to use the Share API" : "Salli sovellusten käyttää jakamisen ohjelmointirajapintaa",
     "Allow users to share via link" : "Salli käyttäjien jakaa linkkien kautta",
     "Allow public uploads" : "Salli julkiset lähetykset",
-    "Enforce password protection" : "Pakota salasanasuojaus",
     "Set default expiration date" : "Aseta oletusvanhenemispäivä",
     "Allow users to send mail notification for shared files" : "Salli käyttäjien lähettää sähköposti-ilmoituksia jaetuista tiedostoista",
     "Allow users to share file via social media" : "Salli käyttäjien jakaa tiedosto sosiaalisessa mediassa",

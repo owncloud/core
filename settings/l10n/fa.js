@@ -151,7 +151,6 @@ OC.L10N.register(
     "Allow apps to use the Share API" : "اجازه ی برنامه ها برای استفاده از API اشتراک گذاری",
     "Allow users to share via link" : "اجازه دادن به کاربران برای اشتراک گذاری توسط پیوند",
     "Allow public uploads" : "اجازه بارگذاری عمومی",
-    "Enforce password protection" : "اجبار برای محافظت توسط رمز عبور",
     "Set default expiration date" : "اعمال تاریخ اتمام پیش فرض",
     "Allow users to send mail notification for shared files" : "اجازه به کاربران برای ارسال ایمیل نوتیفیکیشن برای فایل‌های به اشتراک‌گذاشته شده",
     "Expire after " : "اتمام اعتبار بعد از",

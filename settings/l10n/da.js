@@ -177,7 +177,6 @@ OC.L10N.register(
     "Allow apps to use the Share API" : "Tillad apps til at bruge Share API",
     "Allow users to share via link" : "Tillad brugere at dele via link",
     "Allow public uploads" : "Tillad offentlig upload",
-    "Enforce password protection" : "Tving kodeords beskyttelse",
     "Set default expiration date" : "Vælg standard udløbsdato",
     "Allow users to send mail notification for shared files" : "Tillad brugere at sende mail underretninger for delte filer",
     "Allow users to share file via social media" : "Tillad brugere at dele via socialt media",

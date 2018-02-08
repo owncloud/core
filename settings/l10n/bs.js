@@ -85,7 +85,6 @@ OC.L10N.register(
     "Allow apps to use the Share API" : "Dozvoli aplikacijama korištenje Share API",
     "Allow users to share via link" : "Dozvoli korisnicima dijeljenje putem veze",
     "Allow public uploads" : "Dozvoli javno učitavanje",
-    "Enforce password protection" : "Nametni zaštitu lozinke",
     "Set default expiration date" : "Postavite zadani datum isteka",
     "Allow users to send mail notification for shared files" : "Dozvoli korisnicima slanje notifikacijske e-pošte za podijeljene datoteke",
     "Expire after " : "Istek nakon",

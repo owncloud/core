@@ -177,7 +177,6 @@ OC.L10N.register(
     "Allow apps to use the Share API" : "Povolit aplikacím používat API sdílení",
     "Allow users to share via link" : "Povolit uživatelům sdílení pomocí odkazů",
     "Allow public uploads" : "Povolit veřejné nahrávání souborů",
-    "Enforce password protection" : "Vynutit ochranu heslem",
     "Set default expiration date" : "Nastavit výchozí datum vypršení platnosti",
     "Allow users to send mail notification for shared files" : "Povolit uživatelům odesílat emailová upozornění pro sdílené soubory",
     "Allow users to share file via social media" : "Povolit uživatelům sdílení pomocí sociálních médií",

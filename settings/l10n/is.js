@@ -177,7 +177,6 @@ OC.L10N.register(
     "Allow apps to use the Share API" : "Leyfa forritum að nota Share API",
     "Allow users to share via link" : "Leyfa notendum að deila með tengli",
     "Allow public uploads" : "Leyfa opinberar innsendingar",
-    "Enforce password protection" : "Krefjast verndunar með aðgangsorði",
     "Set default expiration date" : "Setja sjálfgefinn gildistíma",
     "Allow users to send mail notification for shared files" : "Leyfa notendum að senda tilkynningar í tölvupósti vegna deildra skráa",
     "Allow users to share file via social media" : "Leyfa notendum að deila með samfélagsmiðlum",

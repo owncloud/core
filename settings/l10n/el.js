@@ -176,7 +176,6 @@ OC.L10N.register(
     "Allow apps to use the Share API" : "Επιτρέπει την χρήση του API διαμοιρασμού σε εφαρμογές ",
     "Allow users to share via link" : "Να επιτρέπεται σε χρήστες ο διαμοιρασμός μέσω συνδέσμου",
     "Allow public uploads" : "Επιτρέπεται το κοινόχρηστο ανέβασμα",
-    "Enforce password protection" : "Επιβολή προστασίας με κωδικό",
     "Set default expiration date" : "Ορισμός ερήμην ημερομηνίας λήξης",
     "Allow users to send mail notification for shared files" : "Επιτρέψτε στους χρήστες να στέλνουν ειδοποιήσεις μέσω ηλεκτρονικού ταχυδρομείου για κοινόχρηστα αρχεία",
     "Allow users to share file via social media" : "Να επιτρέπεται σε χρήστες ο διαμοιρασμός αρχείου μέσω κοινωνικών δικτύων",

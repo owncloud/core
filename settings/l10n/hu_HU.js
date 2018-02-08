@@ -150,7 +150,6 @@ OC.L10N.register(
     "Allow apps to use the Share API" : "Lehetővé teszi, hogy a programmodulok is használhassák a megosztást",
     "Allow users to share via link" : "Engedjük meg az állományok linkekkel történő megosztását",
     "Allow public uploads" : "Nyilvános feltöltés engedélyezése",
-    "Enforce password protection" : "Legyen kötelező a linkek jelszóval való védelme",
     "Set default expiration date" : "Alapértelmezett lejárati idő beállítása",
     "Allow users to send mail notification for shared files" : "A felhasználók küldhessenek e-mail értesítést a megosztás létrejöttéről",
     "Expire after " : "A lejárat legyen",

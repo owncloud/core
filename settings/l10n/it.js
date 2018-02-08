@@ -165,7 +165,6 @@ OC.L10N.register(
     "Allow apps to use the Share API" : "Consenti alle applicazioni di utilizzare le API di condivisione",
     "Allow users to share via link" : "Consenti agli utenti di condividere tramite collegamento",
     "Allow public uploads" : "Consenti caricamenti pubblici",
-    "Enforce password protection" : "Imponi la protezione con password",
     "Set default expiration date" : "Imposta data di scadenza predefinita",
     "Allow users to send mail notification for shared files" : "Consenti agli utenti di inviare email di notifica per i file condivisi",
     "Allow users to share file via social media" : "Consenti agli utenti di condividere file tramite piattaforme sociali",

@@ -179,7 +179,6 @@ OC.L10N.register(
     "Allow apps to use the Share API" : "允许应用软件使用共享API",
     "Allow users to share via link" : "允许用户通过链接分享文件",
     "Allow public uploads" : "允许公开上传",
-    "Enforce password protection" : "强制密码保护",
     "Set default expiration date" : "设置默认过期日期",
     "Allow users to send mail notification for shared files" : "允许用户发送共享文件的邮件通知",
     "Allow users to share file via social media" : "允许用户通过社交媒体分享文件",

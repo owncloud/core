@@ -165,7 +165,6 @@
     "Allow apps to use the Share API" : "Tillåt applikationer att använda delat API",
     "Allow users to share via link" : "Tillåt användare att dela via länk",
     "Allow public uploads" : "Tillåt offentlig uppladdning",
-    "Enforce password protection" : "Tillämpa lösenordskydd",
     "Set default expiration date" : "Ställ in standardutgångsdatum",
     "Allow users to send mail notification for shared files" : "Tillåt användare att skicka mailnotifieringar för delade filer",
     "Allow users to share file via social media" : "Tillåt användare att dela fil via social media",

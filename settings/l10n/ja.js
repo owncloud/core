@@ -162,7 +162,6 @@ OC.L10N.register(
     "Allow apps to use the Share API" : "アプリからの共有APIの利用を許可する",
     "Allow users to share via link" : "URLリンクでの共有を許可する",
     "Allow public uploads" : "パブリックなアップロードを許可する",
-    "Enforce password protection" : "常にパスワード保護を有効にする",
     "Set default expiration date" : "有効期限のデフォルト値を設定する",
     "Allow users to send mail notification for shared files" : "共有ファイルに関するメール通知の送信をユーザーに許可する",
     "Allow users to share file via social media" : "ユーザーがソーシャルメディア経由でファイルを共有できるようにする",

@@ -137,7 +137,6 @@ OC.L10N.register(
     "Allow apps to use the Share API" : "Izinkan aplikasi untuk menggunakan API Pembagian",
     "Allow users to share via link" : "Izinkan pengguna untuk membagikan via tautan",
     "Allow public uploads" : "Izinkan unggahan publik",
-    "Enforce password protection" : "Berlakukan perlindungan sandi",
     "Set default expiration date" : "Atur tanggal kadaluarsa default",
     "Allow users to send mail notification for shared files" : "Izinkan pengguna untuk mengirimkan email pemberitahuan untuk berkas berbagi",
     "Expire after " : "Kadaluarsa setelah",

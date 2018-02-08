@@ -125,7 +125,6 @@
     "Allow apps to use the Share API" : "Дозвољава апликацијама да користе АПИ дељења",
     "Allow users to share via link" : "Дозволи корисницима да деле путем везе",
     "Allow public uploads" : "Дозволи јавна отпремања",
-    "Enforce password protection" : "Захтевај заштиту лозинком",
     "Set default expiration date" : "Постави подразумевано време истека",
     "Allow users to send mail notification for shared files" : "Дозволи корисницима да шаљу обавештења за дељене фајлове",
     "Expire after " : "Истиче након",

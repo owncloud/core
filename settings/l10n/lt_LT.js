@@ -122,7 +122,6 @@ OC.L10N.register(
     "Allow apps to use the Share API" : "Leidžia programoms naudoti Share API",
     "Allow users to share via link" : "Leisti naudotojams dalintis nuoroda",
     "Allow public uploads" : "Leisti viešus įkėlimus",
-    "Enforce password protection" : "Apsaugoti slaptažodžiu",
     "Set default expiration date" : "Nustatykite galiojimo laiką",
     "Allow users to send mail notification for shared files" : "Leisti naudotojams siųsti perspėjimus apie bendrinamus failus",
     "Expire after " : "Baigsis po",

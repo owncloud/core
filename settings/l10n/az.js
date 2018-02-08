@@ -101,7 +101,6 @@ OC.L10N.register(
     "Allow apps to use the Share API" : "Proqramlara izin verin ki, Paylaşım API-sindən istifadə edə bilsinlər.",
     "Allow users to share via link" : "Istifadəçilərə link üzərindən paylaşım etməyə izin vermək",
     "Allow public uploads" : "Ümumi yüklənmələrə izin vermək",
-    "Enforce password protection" : "Şifrə müdafiəsini həyata keçirmək",
     "Set default expiration date" : "Susmaya görə olan bitmə vaxtını təyin edin",
     "Allow users to send mail notification for shared files" : "Yayımlanmış fayllar üçün, istifadəçilərə məktubla xəbərdarlığın yollanmasına izin verir",
     "Expire after " : "Bitir sonra",

@@ -96,7 +96,6 @@ OC.L10N.register(
     "Allow apps to use the Share API" : "Дозволете апликациите да го користат API-то за споделување",
     "Allow users to share via link" : "Допушти корисниците да споделуваат со линкови",
     "Allow public uploads" : "Дозволи јавен аплоуд",
-    "Enforce password protection" : "Наметни заштита на лозинка",
     "Set default expiration date" : "Постави основен датум на истекување",
     "Expire after " : "Истекува по",
     "days" : "денови",

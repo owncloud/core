@@ -118,7 +118,6 @@ OC.L10N.register(
     "Allow apps to use the Share API" : "Permet que les aplicacions utilitzin l'API de compartir",
     "Allow users to share via link" : "Permet als usuaris compartir a través d'enllaços",
     "Allow public uploads" : "Permet pujada pública",
-    "Enforce password protection" : "Reforça la protecció amb contrasenya",
     "Set default expiration date" : "Estableix la data de venciment",
     "Allow users to send mail notification for shared files" : "Permet als usuaris enviar notificacions de fitxers compartits per correu ",
     "Expire after " : "Venciment després de",

@@ -129,7 +129,6 @@ OC.L10N.register(
     "Allow apps to use the Share API" : "Дозволити програмам використовувати API спільного доступу",
     "Allow users to share via link" : "Дозволити користувачам ділитися через посилання",
     "Allow public uploads" : "Дозволити публічне завантаження",
-    "Enforce password protection" : "Захист паролем обов'язковий",
     "Set default expiration date" : "Встановити термін дії за замовчуванням",
     "Allow users to send mail notification for shared files" : "Дозволити користувачам сповіщати листами про спільний доступ до файлів",
     "Expire after " : "Скінчиться через",

@@ -116,7 +116,6 @@ OC.L10N.register(
     "Allow apps to use the Share API" : "Luba rakendustel kasutada Share API-t",
     "Allow users to share via link" : "Luba kasutajatel lingiga jagamist ",
     "Allow public uploads" : "Luba avalikud üleslaadimised",
-    "Enforce password protection" : "Sunni parooliga kaitsmist",
     "Set default expiration date" : "Määra vaikimisi aegumise kuupäev",
     "Allow users to send mail notification for shared files" : "Luba kasutajatel saata e-posti teavitusi jagatud failide kohta",
     "Expire after " : "Aegu pärast",

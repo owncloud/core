@@ -92,7 +92,6 @@ OC.L10N.register(
     "Allow apps to use the Share API" : "Baimendu aplikazioak partekatzeko APIa erabiltzeko",
     "Allow users to share via link" : "Baimendu erabiltzaileak esteken bidez partekatzea",
     "Allow public uploads" : "Baimendu igoera publikoak",
-    "Enforce password protection" : "Betearazi pasahitzaren babesa",
     "Set default expiration date" : "Ezarri muga data lehenetsia",
     "Allow users to send mail notification for shared files" : "Baimendu erabiltzaileak epostako jakinarazpenak bidaltzen partekatutako fitxategientzat",
     "Expire after " : "Iraungia honen ondoren",

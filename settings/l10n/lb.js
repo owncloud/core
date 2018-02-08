@@ -136,7 +136,6 @@ OC.L10N.register(
     "Allow apps to use the Share API" : "Erlab Apps d'Share API ze benotzen",
     "Allow users to share via link" : "De Benotzer d'Deele via Link erlaben",
     "Allow public uploads" : "Ëffentlechen Upload erlaaben",
-    "Enforce password protection" : "Passwuert Schutz forcéieren",
     "Set default expiration date" : "E Standard Verfallsdatum setzen",
     "Allow users to send mail notification for shared files" : "De Benotzer erlaben Email Notifikatiounen fir gedeelten Fichieren ze schécken",
     "Expire after " : "Oflafen nom",
