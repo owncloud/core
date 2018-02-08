@@ -11,22 +11,22 @@ Feature: federated
 		Then the OCS status code should be "100"
 		And the HTTP status code should be "200"
 		And the share fields of the last share should include
-			| id | A_NUMBER |
-			| item_type | file |
-			| item_source | A_NUMBER |
-			| share_type | 6 |
-			| file_source | A_NUMBER |
-			| path | /textfile0.txt |
-			| permissions | 19 |
-			| stime | A_NUMBER |
-			| storage | A_NUMBER |
-			| mail_send | 0 |
-			| uid_owner | user0 |
-			| storage_id | home::user0 |
-			| file_parent | A_NUMBER |
-			| displayname_owner | user0 |
-			| share_with | user1@REMOTE |
-			| share_with_displayname | user1@REMOTE |
+			| id                     | A_NUMBER       |
+			| item_type              | file           |
+			| item_source            | A_NUMBER       |
+			| share_type             | 6              |
+			| file_source            | A_NUMBER       |
+			| path                   | /textfile0.txt |
+			| permissions            | 19             |
+			| stime                  | A_NUMBER       |
+			| storage                | A_NUMBER       |
+			| mail_send              | 0              |
+			| uid_owner              | user0          |
+			| storage_id             | home::user0    |
+			| file_parent            | A_NUMBER       |
+			| displayname_owner      | user0          |
+			| share_with             | user1@REMOTE   |
+			| share_with_displayname | user1@REMOTE   |
 
 	Scenario: Federate share a file with local server
 		Given using server "LOCAL"
@@ -37,22 +37,22 @@ Feature: federated
 		Then the OCS status code should be "100"
 		And the HTTP status code should be "200"
 		And the share fields of the last share should include
-			| id | A_NUMBER |
-			| item_type | file |
-			| item_source | A_NUMBER |
-			| share_type | 6 |
-			| file_source | A_NUMBER |
-			| path | /textfile0.txt |
-			| permissions | 19 |
-			| stime | A_NUMBER |
-			| storage | A_NUMBER |
-			| mail_send | 0 |
-			| uid_owner | user1 |
-			| storage_id | home::user1 |
-			| file_parent | A_NUMBER |
-			| displayname_owner | user1 |
-			| share_with | user0@LOCAL |
-			| share_with_displayname | user0@LOCAL |
+			| id                     | A_NUMBER       |
+			| item_type              | file           |
+			| item_source            | A_NUMBER       |
+			| share_type             | 6              |
+			| file_source            | A_NUMBER       |
+			| path                   | /textfile0.txt |
+			| permissions            | 19             |
+			| stime                  | A_NUMBER       |
+			| storage                | A_NUMBER       |
+			| mail_send              | 0              |
+			| uid_owner              | user1          |
+			| storage_id             | home::user1    |
+			| file_parent            | A_NUMBER       |
+			| displayname_owner      | user1          |
+			| share_with             | user0@LOCAL    |
+			| share_with_displayname | user0@LOCAL    |
 
 	Scenario: Remote sharee can see the pending share
 		Given using server "REMOTE"
@@ -65,15 +65,15 @@ Feature: federated
 		Then the OCS status code should be "100"
 		And the HTTP status code should be "200"
 		And the share fields of the last share should include
-			| id | A_NUMBER |
-			| remote | LOCAL |
-			| remote_id | A_NUMBER |
-			| share_token | A_TOKEN |
-			| name | /textfile0.txt |
-			| owner | user0 |
-			| user | user1 |
-			| mountpoint | {{TemporaryMountPointName#/textfile0.txt}} |
-			| accepted | 0 |
+			| id          | A_NUMBER                                   |
+			| remote      | LOCAL                                      |
+			| remote_id   | A_NUMBER                                   |
+			| share_token | A_TOKEN                                    |
+			| name        | /textfile0.txt                             |
+			| owner       | user0                                      |
+			| user        | user1                                      |
+			| mountpoint  | {{TemporaryMountPointName#/textfile0.txt}} |
+			| accepted    | 0                                          |
 
 	Scenario: accept a pending remote share
 		Given using server "REMOTE"
@@ -95,28 +95,28 @@ Feature: federated
 		And user "user1" from server "REMOTE" has accepted the last pending share
 		And using server "REMOTE"
 		When user "user1" creates a share using the API with settings
-			| path | /textfile0 (2).txt |
-			| shareType | 0 |
-			| shareWith | user2 |
-			| permissions | 19 |
+			| path        | /textfile0 (2).txt |
+			| shareType   | 0                  |
+			| shareWith   | user2              |
+			| permissions | 19                 |
 		Then the OCS status code should be "100"
 		And the HTTP status code should be "200"
 		And the share fields of the last share should include
-			| id | A_NUMBER |
-			| item_type | file |
-			| item_source | A_NUMBER |
-			| share_type | 0 |
-			| file_source | A_NUMBER |
-			| path | /textfile0 (2).txt |
-			| permissions | 19 |
-			| stime | A_NUMBER |
-			| storage | A_NUMBER |
-			| mail_send | 0 |
-			| uid_owner | user1 |
-			| file_parent | A_NUMBER |
-			| displayname_owner | user1 |
-			| share_with | user2 |
-			| share_with_displayname | user2 |
+			| id                     | A_NUMBER           |
+			| item_type              | file               |
+			| item_source            | A_NUMBER           |
+			| share_type             | 0                  |
+			| file_source            | A_NUMBER           |
+			| path                   | /textfile0 (2).txt |
+			| permissions            | 19                 |
+			| stime                  | A_NUMBER           |
+			| storage                | A_NUMBER           |
+			| mail_send              | 0                  |
+			| uid_owner              | user1              |
+			| file_parent            | A_NUMBER           |
+			| displayname_owner      | user1              |
+			| share_with             | user2              |
+			| share_with_displayname | user2              |
 
 	Scenario: Overwrite a federated shared file as recipient
 		Given using server "REMOTE"

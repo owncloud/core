@@ -65,7 +65,7 @@ Feature: trashbin-new-endpoint
 		When user "user1" restores the file with original path "/renamed_shared/shared_file.txt" using the API
 		Then as "user1" the file with original path "/renamed_shared/shared_file.txt" should not exist in trash
 		And user "user1" should see the following elements
-			| /renamed_shared/ |
+			| /renamed_shared/                |
 			| /renamed_shared/shared_file.txt |
 
 	Scenario: Trashbin can be emptied
@@ -86,14 +86,14 @@ Feature: trashbin-new-endpoint
 		When user "user0" restores the folder with original path "/textfile0.txt" using the API
 		Then as "user0" the folder with original path "/textfile0.txt" should not exist in trash
 		And user "user0" should see the following elements
-			| /FOLDER/ |
-			| /PARENT/ |
+			| /FOLDER/           |
+			| /PARENT/           |
 			| /PARENT/parent.txt |
-			| /textfile0.txt |
-			| /textfile1.txt |
-			| /textfile2.txt |
-			| /textfile3.txt |
-			| /textfile4.txt |
+			| /textfile0.txt     |
+			| /textfile1.txt     |
+			| /textfile2.txt     |
+			| /textfile3.txt     |
+			| /textfile4.txt     |
 
 	@skip
 	Scenario: trashbin can store two files with same name but different origins
@@ -132,6 +132,6 @@ Feature: trashbin-new-endpoint
 		When user "user0" restores the folder with original path "/local_storage/tmp/textfile0.txt" using the API
 		Then as "user0" the folder with original path "/local_storage/tmp/textfile0.txt" should not exist in trash
 		And user "user0" should see the following elements
-			| /local_storage/ |
-			| /local_storage/tmp/ |
+			| /local_storage/                  |
+			| /local_storage/tmp/              |
 			| /local_storage/tmp/textfile0.txt |
