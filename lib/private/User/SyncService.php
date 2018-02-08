@@ -29,6 +29,7 @@ use OCP\User\IProvidesExtendedSearchBackend;
 use OCP\User\IProvidesHomeBackend;
 use OCP\User\IProvidesQuotaBackend;
 use OCP\UserInterface;
+use OCP\AppFramework\Db\MultipleObjectsReturnedException;
 
 /**
  * Class SyncService
@@ -106,27 +107,15 @@ class SyncService {
 			// update existing and insert new users
 			foreach ($users as $uid) {
 				try {
-					$existingAccount = $this->mapper->getByUid($uid);
-					if ($existingAccount->getBackend() !== $backendClass) {
-						$this->logger->warning(
-							"User <$uid> already provided by another backend({$existingAccount->getBackend()} != $backendClass), skipping.",
-							['app' => self::class]
-						);
-						continue;
-					}
-					$this->syncAccount($existingAccount, $backend);
-					$this->mapper->update($existingAccount);
-					$a = $existingAccount;
-				} catch(DoesNotExistException $ex) {
-					$newAccount = $this->createNewAccount($backendClass, $uid);
-					$this->syncAccount($newAccount, $backend);
-					$this->mapper->insert($newAccount);
-					$a = $newAccount;
+					$account = $this->createOrSyncAccount($uid, $backend);
+					$uid = $account->getUserId(); // get correct case
+					// clean the user's preferences
+					$this->cleanPreferences($uid);
+				} catch (\Exception $e) {
+					// Error syncing this user
+					$this->logger->error("Error syncing user with uid: $uid and backend: {get_class($backend)}");
+					$this->logger->logException($e);
 				}
-
-				$uid = $a->getUserId(); // get correct case
-				// clean the user's preferences
-				$this->cleanPreferences($uid);
 
 				// call the callback
 				$callback($uid);
@@ -135,6 +124,9 @@ class SyncService {
 		} while(count($users) >= $limit);
 	}
 
+	/**
+	 * @param Account $a
+	 */
 	private function syncState(Account $a) {
 		$uid = $a->getUserId();
 		list($hasKey, $value) = $this->readUserConfig($uid, 'core', 'enabled');
@@ -158,6 +150,9 @@ class SyncService {
 		}
 	}
 
+	/**
+	 * @param Account $a
+	 */
 	private function syncLastLogin(Account $a) {
 		$uid = $a->getUserId();
 		list($hasKey, $value) = $this->readUserConfig($uid, 'login', 'lastLogin');
@@ -171,6 +166,10 @@ class SyncService {
 		}
 	}
 
+	/**
+	 * @param Account $a
+	 * @param UserInterface $backend
+	 */
 	private function syncEmail(Account $a, UserInterface $backend) {
 		$uid = $a->getUserId();
 		$email = null;
@@ -190,6 +189,10 @@ class SyncService {
 		}
 	}
 
+	/**
+	 * @param Account $a
+	 * @param UserInterface $backend
+	 */
 	private function syncQuota(Account $a, UserInterface $backend) {
 		$uid = $a->getUserId();
 		$quota = null;
@@ -211,6 +214,10 @@ class SyncService {
 		}
 	}
 
+	/**
+	 * @param Account $a
+	 * @param UserInterface $backend
+	 */
 	private function syncHome(Account $a, UserInterface $backend) {
 		// Fallback for backends that dont yet use the new interfaces
 		$proividesHome = $backend instanceof IProvidesHomeBackend || $backend->implementsActions(\OC_User_Backend::GET_HOME);
@@ -247,6 +254,10 @@ class SyncService {
 		}
 	}
 
+	/**
+	 * @param Account $a
+	 * @param UserInterface $backend
+	 */
 	private function syncDisplayName(Account $a, UserInterface $backend) {
 		$uid = $a->getUserId();
 		if ($backend instanceof IProvidesDisplayNameBackend || $backend->implementsActions(\OC_User_Backend::GET_DISPLAYNAME)) {
@@ -260,6 +271,10 @@ class SyncService {
 		}
 	}
 
+	/**
+	 * @param Account $a
+	 * @param UserInterface $backend
+	 */
 	private function syncSearchTerms(Account $a, UserInterface $backend) {
 		$uid = $a->getUserId();
 		if ($backend instanceof IProvidesExtendedSearchBackend) {
@@ -294,15 +309,30 @@ class SyncService {
 	 * @param $uid
 	 * @param UserInterface $backend
 	 * @return Account
+	 * @throws \Exception
+	 * @throws \InvalidArgumentException if you try to sync with a backend
+	 * that doesnt match an existing account
 	 */
 	public function createOrSyncAccount($uid, UserInterface $backend) {
 		// Try to find the account based on the uid
 		try {
 			$account = $this->mapper->getByUid($uid);
+			// Check the backend matches
+			$existingAccountBackend = get_class($backend);
+			if ($account->getBackend() !== $existingAccountBackend) {
+				$this->logger->warning(
+					"User <$uid> already provided by another backend({$account->getBackend()} !== $existingAccountBackend), skipping.",
+					['app' => self::class]
+				);
+				throw new \InvalidArgumentException('Returned account has different backend to the requested backend for sync');
+			}
 		} catch (DoesNotExistException $e) {
 			// Create a new account for this uid and backend pairing and sync
 			$account = $this->createNewAccount(get_class($backend), $uid);
+		} catch (MultipleObjectsReturnedException $e) {
+			throw new \Exception("The database returned multiple accounts for this uid: $uid");
 		}
+
 
 		// The account exists, sync
 		$account = $this->syncAccount($account, $backend);

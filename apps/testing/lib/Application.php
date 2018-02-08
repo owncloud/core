@@ -36,6 +36,12 @@ class Application extends App {
 			// replace all user backends with this one
 			$userManager->clearBackends();
 			$userManager->registerBackend($c->query(AlternativeHomeUserBackend::class));
+
+			// Make existing accounts use the new alternative home backed
+			$q = $c->getServer()->getDatabaseConnection()->getQueryBuilder();
+			$q->update('*PREFIX*accounts')
+				->set('backend', AlternativeHomeUserBackend::class)
+				->execute();
 		}
 	}
 }

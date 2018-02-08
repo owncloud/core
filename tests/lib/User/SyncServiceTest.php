@@ -25,6 +25,7 @@ namespace Test\User;
 
 use OC\User\Account;
 use OC\User\AccountMapper;
+use OC\User\Database;
 use OC\User\SyncService;
 use OCP\AppFramework\Db\DoesNotExistException;
 use OCP\IConfig;
@@ -122,5 +123,29 @@ class SyncServiceTest extends TestCase {
 		$s = new SyncService($config, $logger, $mapper);
 
 		$this->invokePrivate($s, 'syncHome', [$a, $backend]);
+	}
+
+	/**
+	 * @expectedException \InvalidArgumentException
+	 */
+	public function testTrySyncExistingUserWithOtherBackend() {
+		$uid = 'myTestUser';
+
+		/** @var AccountMapper | \PHPUnit_Framework_MockObject_MockObject $mapper */
+		$mapper = $this->createMock(AccountMapper::class);
+		$wrongBackend = new Database();
+		/** @var IConfig | \PHPUnit_Framework_MockObject_MockObject $config */
+		$config = $this->createMock(IConfig::class);
+		/** @var ILogger | \PHPUnit_Framework_MockObject_MockObject $logger */
+		$logger = $this->createMock(ILogger::class);
+
+		$a = $this->getMockBuilder(Account::class)->setMethods(['getBackend'])->getMock();
+		$a->expects($this->exactly(2))->method('getBackend')->willReturn('OriginalBackedClass');
+
+		$mapper->expects($this->once())->method('getByUid')->with($uid)->willReturn($a);
+
+		$s = new SyncService($config, $logger, $mapper);
+
+		$s->createOrSyncAccount($uid, $wrongBackend);
 	}
 }
