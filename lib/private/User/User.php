@@ -41,6 +41,7 @@ use OCP\IURLGenerator;
 use OCP\IUser;
 use OCP\IConfig;
 use OCP\IUserBackend;
+use OCP\IUserSession;
 use OCP\User\IChangePasswordBackend;
 use OCP\UserInterface;
 use Symfony\Component\EventDispatcher\EventDispatcher;
@@ -339,10 +340,15 @@ class User implements IUser {
 	 */
 	public function canChangeDisplayName() {
 		// Only Admin and SubAdmins are allowed to change display name
-		if (($this->config->getSystemValue('allow_user_to_change_display_name') === false) &&
-			(!$this->groupManager->isAdmin($this->userSession->getUser()->getUID())) &&
-			(!$this->groupManager->getSubAdmin()->isSubAdmin($this->userSession->getUser()))) {
-			return false;
+		if ($this->userSession instanceof IUserSession) {
+			$user = $this->userSession->getUser();
+			if (
+				($this->config->getSystemValue('allow_user_to_change_display_name') === false) &&
+				(($user !== null) && (!$this->groupManager->isAdmin($user->getUID()))) &&
+				(($user !== null) && (!$this->groupManager->getSubAdmin()->isSubAdmin($user)))
+			) {
+				return false;
+			}
 		}
 		$backend = $this->account->getBackendInstance();
 		if (is_null($backend)) {
