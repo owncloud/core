@@ -15,14 +15,25 @@ Feature: trashbin-new-endpoint
 		When user "user0" deletes folder "/tmp" using the API
 		Then as "user0" the folder "/tmp" should exist in trash
 
-	Scenario: deleting a file of a shared folder moves it to trashbin
+	Scenario: deleting a file in a folder moves it to the trashbin root
+		Given user "user0" has been created
+		And user "user0" has created a folder "/new-folder"
+		And user "user0" has moved file "/textfile0.txt" to "/new-folder/new-file.txt"
+		When user "user0" deletes file "/new-folder/new-file.txt" using the API
+		Then as "user0" the file with original path "/new-folder/new-file.txt" should exist in trash
+		And as "user0" the file "/new-file.txt" should exist in trash
+		But as "user0" the file "/new-folder/new-file.txt" should not exist
+
+	Scenario: deleting a file in a shared folder moves it to the trashbin root
 		Given user "user0" has been created
 		And user "user1" has been created
 		And user "user0" has created a folder "/shared"
 		And user "user0" has moved file "/textfile0.txt" to "/shared/shared_file.txt"
 		And user "user0" has shared folder "/shared" with user "user1"
 		When user "user0" deletes file "/shared/shared_file.txt" using the API
-		Then as "user0" the folder with original path "/shared/shared_file.txt" should exist in trash
+		Then as "user0" the file with original path "/shared/shared_file.txt" should exist in trash
+		And as "user0" the file "/shared_file.txt" should exist in trash
+		But as "user0" the file "/shared/shared_file.txt" should not exist
 
 	Scenario: deleting a shared folder moves it to trashbin
 		Given user "user0" has been created
@@ -94,6 +105,47 @@ Feature: trashbin-new-endpoint
 			| /textfile2.txt     |
 			| /textfile3.txt     |
 			| /textfile4.txt     |
+
+	Scenario: A file deleted from a folder can be restored to the original folder
+		Given user "user0" has been created
+		And user "user0" has created a folder "/new-folder"
+		And user "user0" has moved file "/textfile0.txt" to "/new-folder/new-file.txt"
+		And user "user0" has deleted file "/new-folder/new-file.txt"
+		When user "user0" restores the file with original path "/new-folder/new-file.txt" using the API
+		Then as "user0" the file with original path "/new-folder/new-file.txt" should not exist in trash
+		And as "user0" the file "/new-folder/new-file.txt" should exist
+
+	Scenario: A file deleted from a folder is restored to root if the original folder does not exist
+		Given user "user0" has been created
+		And user "user0" has created a folder "/new-folder"
+		And user "user0" has moved file "/textfile0.txt" to "/new-folder/new-file.txt"
+		And user "user0" has deleted file "/new-folder/new-file.txt"
+		And user "user0" has deleted folder "/new-folder"
+		When user "user0" restores the file with original path "/new-folder/new-file.txt" using the API
+		Then as "user0" the file with original path "/new-folder/new-file.txt" should not exist in trash
+		And as "user0" the file "/new-file.txt" should exist
+
+	Scenario: A file deleted from a folder is restored to the original folder if the original folder was deleted and restored
+		Given user "user0" has been created
+		And user "user0" has created a folder "/new-folder"
+		And user "user0" has moved file "/textfile0.txt" to "/new-folder/new-file.txt"
+		And user "user0" has deleted file "/new-folder/new-file.txt"
+		And user "user0" has deleted folder "/new-folder"
+		When user "user0" restores the folder with original path "/new-folder" using the API
+		And user "user0" restores the file with original path "/new-folder/new-file.txt" using the API
+		Then as "user0" the file with original path "/new-folder/new-file.txt" should not exist in trash
+		And as "user0" the file "/new-folder/new-file.txt" should exist
+
+	Scenario: A file deleted from a folder is restored to the original folder if the original folder was deleted and recreated
+		Given user "user0" has been created
+		And user "user0" has created a folder "/new-folder"
+		And user "user0" has moved file "/textfile0.txt" to "/new-folder/new-file.txt"
+		And user "user0" has deleted file "/new-folder/new-file.txt"
+		And user "user0" has deleted folder "/new-folder"
+		When user "user0" creates a folder "/new-folder" using the API
+		And user "user0" restores the file with original path "/new-folder/new-file.txt" using the API
+		Then as "user0" the file with original path "/new-folder/new-file.txt" should not exist in trash
+		And as "user0" the file "/new-folder/new-file.txt" should exist
 
 	@skip
 	Scenario: trashbin can store two files with same name but different origins
