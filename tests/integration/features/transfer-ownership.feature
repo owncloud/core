@@ -158,17 +158,16 @@ Feature: transfer-ownership
 		Given user "user0" exists
 		And user "user1" exists
 		And user "user2" exists
-		And user "user0" created a folder "/test"
-		And user "user0" uploads file "data/textfile.txt" to "/test/somefile.txt"
-		And folder "/test" of user "user0" is shared with user "user2" with permissions 31
-		And as an "user1"
-		And creating a share with
+		And user "user0" has created a folder "/test"
+		And user "user0" uploads file "data/textfile.txt" to "/test/somefile.txt" using the API
+		And folder "/test" of user "user0" has been shared with user "user2" with permissions 31
+		And user "user1" creates a share using the API with settings
 			| path      | /test/somefile.txt |
 			| shareType | 3                  |
-		When transferring ownership of path "test" from "user0" to "user1"
-		And the command was successful
+		When the administrator transfers ownership of path "test" from "user0" to "user1" using the occ command
+		And the command should have been successful
 		And as an "user2"
-		Then downloaded content when downloading file "/test/somefile.txt" with range "bytes=0-6" should be "This is"
+		Then the downloaded content when downloading file "/test/somefile.txt" with range "bytes=0-6" should be "This is"
 
 	@no_default_encryption
 	Scenario: transferring ownership of folder shared with third user
