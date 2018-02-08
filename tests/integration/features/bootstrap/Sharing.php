@@ -54,12 +54,13 @@ trait Sharing {
 	private $lastShareTime = null;
 
 	/**
-	 * @Given /^as "([^"]*)" creating a share with$/
+	 * @When /^user "([^"]*)" creates a share using the API with settings$/
+	 * @Given /^user "([^"]*)" has created a share with settings$/
 	 * @param string $user
 	 * @param \Behat\Gherkin\Node\TableNode|null $body
 	 * @return void
 	 */
-	public function asCreatingAShareWith($user, $body) {
+	public function userCreatesAShareWithSettings($user, $body) {
 		$fullUrl = $this->baseUrl . "v{$this->apiVersion}.php/apps/files_sharing/api/v{$this->sharingApiVersion}/shares";
 		$client = new Client();
 		$options = [];
@@ -86,12 +87,23 @@ trait Sharing {
 	}
 
 	/**
-	 * @When /^creating a share with$/
+	 * @When /^the user creates a share using the API with settings$/
 	 * @param \Behat\Gherkin\Node\TableNode|null $body
 	 * @return void
 	 */
-	public function creatingShare($body) {
-		$this->asCreatingAShareWith($this->currentUser, $body);
+	public function theUserCreatesAShareWithSettings($body) {
+		$this->userCreatesAShareWithSettings($this->currentUser, $body);
+	}
+
+	/**
+	 * @Given /^the user has created a share with settings$/
+	 * @param \Behat\Gherkin\Node\TableNode|null $body
+	 * @return void
+	 */
+	public function theUserHasCreatedAShareWithSettings($body) {
+		$this->userCreatesAShareWithSettings($this->currentUser, $body);
+		$this->theOCSStatusCodeShouldBe(100);
+		$this->theHTTPStatusCodeShouldBe(200);
 	}
 
 	/**
@@ -147,6 +159,7 @@ trait Sharing {
 	 * @Given /^user "([^"]*)" creates a public share of (?:file|folder) "([^"]*)" with (read|update|create|delete|change|share|all) permission(?:s|)$/
 	 * @param string $user
 	 * @param string $path
+	 * @param string|int|string[]|int[]|null $permissions
 	 * @return void
 	 */
 	public function userCreatesAPublicShareOfWithPermission($user, $path, $permissions) {
@@ -156,6 +169,7 @@ trait Sharing {
 	/**
 	 * @Given /^a public share of (?:file|folder) "([^"]*)" is created with (read|update|create|delete|change|share|all) permission(?:s|)$/
 	 * @param string $path
+	 * @param string|int|string[]|int[]|null $permissions
 	 * @return void
 	 */
 	public function aPublicShareOfIsCreatedWithPermission($path, $permissions) {
@@ -163,11 +177,11 @@ trait Sharing {
 	}
 
 	/**
-	 * @When /^public shared file "([^"]*)" cannot be downloaded$/
+	 * @Then /^the public shared file "([^"]*)" should not be able to be downloaded$/
 	 * @param string $path
 	 * @return void
 	 */
-	public function publicSharedFileCannotDownload($path) {
+	public function publicSharedFileCannotBeDownloaded($path) {
 		$token = $this->getLastShareToken();
 		$fullUrl = substr($this->baseUrl, 0, -4) . "public.php/webdav/" . rawurlencode(ltrim($path, '/'));
 
@@ -189,11 +203,10 @@ trait Sharing {
 	}
 
 	/**
-	 * @Then /^public shared file "([^"]*)" can be downloaded$/
-	 * @param string $filename unused
+	 * @Then /^the last public shared file should be able to be downloaded without a password$/
 	 * @return void
 	 */
-	public function checkPublicSharedFile($filename) {
+	public function checkLastPublicSharedFileDownload() {
 		if (count($this->lastShareData->data->element) > 0) {
 			$url = $this->lastShareData->data[0]->url;
 		} else {
@@ -204,12 +217,12 @@ trait Sharing {
 	}
 
 	/**
-	 * @Then /^public shared file "([^"]*)" with password "([^"]*)" can be downloaded$/
+	 * @Then /^the last public shared file should be able to be downloaded with password "([^"]*)"$/
 	 * @param string $filename unused
 	 * @param string $password
 	 * @return void
 	 */
-	public function checkPublicSharedFileWithPassword($filename, $password) {
+	public function checkLastPublicSharedFileWithPasswordDownload($password) {
 		$token = $this->getLastShareToken();
 		$fullUrl = substr($this->baseUrl, 0, -4) . "public.php/webdav";
 		$this->checkDownload($fullUrl, [$token, $password], 'text/plain');
@@ -252,7 +265,7 @@ trait Sharing {
 	}
 
 	/**
-	 * @When publicly uploading file ":filename" with content ":body"
+	 * @Given the public has uploaded file ":filename" with content ":body"
 	 * @param string $filename target file name
 	 * @param string $body content to upload
 	 * @return void
@@ -272,7 +285,7 @@ trait Sharing {
 	}
 
 	/**
-	 * @When publicly uploading file ":filename" with password ":password" and content ":body"
+	 * @Given the public has uploaded file ":filename" with password ":password" and content ":body"
 	 * @param string $filename target file name
 	 * @param string $password
 	 * @param string $body content to upload
@@ -285,7 +298,7 @@ trait Sharing {
 	}
 
 	/**
-	 * @When publicly uploading file ":filename" with content ":body" with autorename mode
+	 * @Given the public has uploaded file ":filename" with content ":body" with autorename mode
 	 * @param string $filename target file name
 	 * @param string $body content to upload
 	 * @return void
@@ -295,10 +308,10 @@ trait Sharing {
 	}
 
 	/**
-	 * @When publicly uploading a file does not work
+	 * @Then publicly uploading a file should not work
 	 * @return void
 	 */
-	public function publiclyUploadingDoesNotWork() {
+	public function publiclyUploadingShouldNotWork() {
 		try {
 			$this->publicUploadContent('whateverfilefortesting.txt', '', 'test');
 			PHPUnit_Framework_Assert::fail('Publicly uploading must fail');
@@ -369,16 +382,28 @@ trait Sharing {
 	}
 
 	/**
-	 * @When /^updating last share with$/
+	 * @When /^the user updates the last share using the API with$/
+	 * @Given /^the user has updated the last share with$/
 	 * @param \Behat\Gherkin\Node\TableNode|null $body
 	 * @return void
 	 */
-	public function updatingLastShare($body) {
+	public function theUserUpdatesTheLastShareWith($body) {
+		$this->userUpdatesTheLastShareWith($this->currentUser, $body);
+	}
+
+	/**
+	 * @When /^user "([^"]*)" updates the last share using the API with$/
+	 * @Given /^user "([^"]*)" has updated the last share with$/
+	 * @param string $user
+	 * @param \Behat\Gherkin\Node\TableNode|null $body
+	 * @return void
+	 */
+	public function userUpdatesTheLastShareWith($user, $body) {
 		$share_id = (string) $this->lastShareData->data[0]->id;
 		$fullUrl = $this->baseUrl . "v{$this->apiVersion}.php/apps/files_sharing/api/v{$this->sharingApiVersion}/shares/$share_id";
 		$client = new Client();
 		$options = [];
-		$options['auth'] = $this->getAuthOptionForUser($this->currentUser);
+		$options['auth'] = $this->getAuthOptionForUser($user);
 
 		if ($body instanceof \Behat\Gherkin\Node\TableNode) {
 			$fd = $body->getRowsHash();
@@ -587,7 +612,27 @@ trait Sharing {
 	}
 
 	/**
-	 * @Given /^(file|folder|entry) "([^"]*)" of user "([^"]*)" is shared with user "([^"]*)"( with permissions ([\d]*))?$/
+	 * @When /^user "([^"]*)" shares (file|folder|entry) "([^"]*)" with user "([^"]*)"( with permissions ([\d]*))? using the API$/
+	 * @Given /^user "([^"]*)" has shared (file|folder|entry) "([^"]*)" with user "([^"]*)"( with permissions ([\d]*))?$/
+	 *
+	 * @param string $user1
+	 * @param string $entry unused
+	 * @param string $filepath
+	 * @param string $user2
+	 * @param null $withPerms unused
+	 * @param int $permissions
+	 * @return void
+	 */
+	public function userSharesFileWithUserUsingTheAPI(
+		$user1, $entry, $filepath, $user2, $withPerms = null, $permissions = null
+	) {
+		$this->fileOfUserHasBeenSharedWithUser(
+			$entry, $filepath, $user1, $user2, $withPerms, $permissions
+		);
+	}
+
+	/**
+	 * @Given /^(file|folder|entry) "([^"]*)" of user "([^"]*)" has been shared with user "([^"]*)"( with permissions ([\d]*))?$/
 	 *
 	 * @param string $entry unused
 	 * @param string $filepath
@@ -595,9 +640,10 @@ trait Sharing {
 	 * @param string $user2
 	 * @param null $withPerms unused
 	 * @param int $permissions
+	 * @deprecated prefer using the gherkin forms for userSharesFileWithUserUsingTheAPI()
 	 * @return void
 	 */
-	public function assureFileIsShared(
+	public function fileOfUserHasBeenSharedWithUser(
 		$entry, $filepath, $user1, $user2, $withPerms = null, $permissions = null
 	) {
 		$fullUrl = $this->baseUrl . "v{$this->apiVersion}.php/apps/files_sharing/api/v{$this->sharingApiVersion}/shares" . "?path=$filepath";
@@ -621,14 +667,53 @@ trait Sharing {
 			);
 		}
 		$this->response = $client->get($fullUrl, $options);
-		PHPUnit_Framework_Assert::assertEquals(
-			true,
-			$this->isUserOrGroupInSharedData($user2, $permissions)
+		PHPUnit_Framework_Assert::assertTrue(
+			$this->isUserOrGroupInSharedData($user2, $permissions),
+			"User $user1 failed to share $filepath with user $user2"
 		);
 	}
 
 	/**
-	 * @Given /^(file|folder|entry) "([^"]*)" of user "([^"]*)" is shared with group "([^"]*)"( with permissions ([\d]*))?$/
+	 * @When /^the user shares (file|folder|entry) "([^"]*)" with group "([^"]*)"( with permissions ([\d]*))? using the API$/
+	 * @Given /^the user has shared (file|folder|entry) "([^"]*)" with group "([^"]*)"( with permissions ([\d]*))?$/
+	 *
+	 * @param string $entry unused
+	 * @param string $filepath
+	 * @param string $group
+	 * @param null $withPerms unused
+	 * @param int $permissions
+	 * @return void
+	 */
+	public function theUserSharesFileWithGroupUsingTheAPI(
+		$entry, $filepath, $group, $withPerms = null, $permissions = null
+	) {
+		$this->userSharesFileWithGroupUsingTheAPI(
+			$this->currentUser, $entry, $filepath, $group, $withPerms, $permissions
+		);
+	}
+
+	/**
+	 * @When /^user "([^"]*)" shares (file|folder|entry) "([^"]*)" with group "([^"]*)"( with permissions ([\d]*))? using the API$/
+	 * @Given /^user "([^"]*)" has shared (file|folder|entry) "([^"]*)" with group "([^"]*)"( with permissions ([\d]*))?$/
+	 *
+	 * @param string $user1
+	 * @param string $entry unused
+	 * @param string $filepath
+	 * @param string $group
+	 * @param null $withPerms unused
+	 * @param int $permissions
+	 * @return void
+	 */
+	public function userSharesFileWithGroupUsingTheAPI(
+		$user1, $entry, $filepath, $group, $withPerms = null, $permissions = null
+	) {
+		$this->fileOfUserHasBeenSharedWithGroup(
+			$entry, $filepath, $user1, $group, $withPerms, $permissions
+		);
+	}
+
+	/**
+	 * @Given /^(file|folder|entry) "([^"]*)" of user "([^"]*)" has been shared with group "([^"]*)"( with permissions ([\d]*))?$/
 	 *
 	 * @param string $entry unused
 	 * @param string $filepath
@@ -636,9 +721,10 @@ trait Sharing {
 	 * @param string $group
 	 * @param null $withPerms unused
 	 * @param int $permissions
+	 * @deprecated prefer using the gherkin forms for userSharesFileWithGroupUsingTheAPI()
 	 * @return void
 	 */
-	public function assureFileIsSharedWithGroup(
+	public function fileOfUserHasBeenSharedWithGroup(
 		$entry, $filepath, $user, $group, $withPerms = null, $permissions = null
 	) {
 		$fullUrl = $this->baseUrl . "v{$this->apiVersion}.php/apps/files_sharing/api/v{$this->sharingApiVersion}/shares" . "?path=$filepath";
@@ -661,27 +747,46 @@ trait Sharing {
 	}
 
 	/**
-	 * @When /^deleting last share$/
+	 * @When /^the user deletes the last share using the API$/
 	 * @return void
 	 */
-	public function deletingLastShare() {
-		$share_id = $this->lastShareData->data[0]->id;
-		$url = "/apps/files_sharing/api/v{$this->sharingApiVersion}/shares/$share_id";
-		$this->sendingToWith("DELETE", $url, null);
+	public function theUserDeletesLastShareUsingTheAPI() {
+		$this->userDeletesLastShareUsingTheAPI($this->currentUser);
 	}
 
 	/**
-	 * @When /^getting info of last share$/
+	 * @When /^user "([^"]*)" deletes the last share using the API$/
+	 * @Given /^user "([^"]*)" has deleted the last share$/
+	 * @param string $user
 	 * @return void
 	 */
-	public function gettingInfoOfLastShare() {
+	public function userDeletesLastShareUsingTheAPI($user) {
 		$share_id = $this->lastShareData->data[0]->id;
 		$url = "/apps/files_sharing/api/v{$this->sharingApiVersion}/shares/$share_id";
-		$this->sendingToWith("GET", $url, null);
+		$this->userSendsHTTPMethodToAPIEndpointWithBody($user, "DELETE", $url, null);
 	}
 
 	/**
-	 * @Then /^last share_id is included in the answer$/
+	 * @When /^the user gets the info of the last share using the API$/
+	 * @return void
+	 */
+	public function theUserGetsInfoOfLastShareUsingTheAPI() {
+		$this->userGetsInfoOfLastShareUsingTheAPI($this->currentUser);
+	}
+
+	/**
+	 * @When /^user "([^"]*)" gets the info of the last share using the API$/
+	 * @param string $user
+	 * @return void
+	 */
+	public function userGetsInfoOfLastShareUsingTheAPI($user) {
+		$share_id = $this->lastShareData->data[0]->id;
+		$url = "/apps/files_sharing/api/v{$this->sharingApiVersion}/shares/$share_id";
+		$this->userSendsHTTPMethodToAPIEndpointWithBody($user, "GET", $url, null);
+	}
+
+	/**
+	 * @Then /^the last share_id should be included in the response/
 	 * @return void
 	 */
 	public function checkingLastShareIDIsIncluded() {
@@ -694,7 +799,7 @@ trait Sharing {
 	}
 
 	/**
-	 * @Then /^last share_id is not included in the answer$/
+	 * @Then /^the last share_id should not be included in the response/
 	 * @return void
 	 */
 	public function checkingLastShareIDIsNotIncluded() {
@@ -717,7 +822,7 @@ trait Sharing {
 	}
 
 	/**
-	 * @Then /^share fields of last share match with$/
+	 * @Then /^the share fields of the last share should include$/
 	 * @param \Behat\Gherkin\Node\TableNode|null $body
 	 * @return void
 	 */
@@ -759,13 +864,14 @@ trait Sharing {
 	}
 
 	/**
-	 * @Then as :user remove all shares from the file named :fileName
+	 * @When user :user removes all shares from the file named :fileName using the API
+	 * @Given user :user has removed all shares from the file named :fileName
 	 * @param string $user
 	 * @param string $fileName
 	 * @throws Exception
 	 * @return void
 	 */
-	public function asRemoveAllSharesFromTheFileNamed($user, $fileName) {
+	public function userRemovesAllSharesFromTheFileNamed($user, $fileName) {
 		$url = $this->baseUrl . "v{$this->apiVersion}.php/apps/files_sharing/api/v{$this->sharingApiVersion}/shares?format=json";
 		$client = new \GuzzleHttp\Client();
 		$res = $client->get(
@@ -796,20 +902,20 @@ trait Sharing {
 		}
 
 		if ($deleted === false) {
-			throw new \Exception("Could not delete file $fileName");
+			throw new \Exception("Could not delete shares for user $user file $fileName");
 		}
 	}
 
 	/**
-	 * @When save last share id
+	 * @Given the last share id has been remembered
 	 * @return void
 	 */
-	public function saveLastShareId() {
+	public function rememberLastShareId() {
 		$this->savedShareId = $this->lastShareData['data']['id'];
 	}
 
 	/**
-	 * @Then share ids should match
+	 * @Then the share ids should match
 	 * @return void
 	 */
 	public function shareIdsShouldMatch() {
@@ -840,7 +946,7 @@ trait Sharing {
 	}
 
 	/**
-	 * @When /^user "([^"]*)" checks public shares of (file|folder) "([^"]*)"$/
+	 * @Then /^as user "([^"]*)" the public shares of (file|folder) "([^"]*)" should be$/
 	 * @param string $user
 	 * @param string $type
 	 * @param string $path
@@ -901,14 +1007,14 @@ trait Sharing {
 	}
 
 	/**
-	 * @When /^user "([^"]*)" deletes public share named "([^"]*)" in (file|folder) "([^"]*)"$/
+	 * @When /^user "([^"]*)" deletes public share named "([^"]*)" in (file|folder) "([^"]*)" using the API$/
 	 * @param string $user
 	 * @param string $name
-	 * @param string $type
+	 * @param string $type unused
 	 * @param string $path
 	 * @return void
 	 */
-	public function deletingPublicShareNamed($user, $name, $type, $path) {
+	public function userDeletesPublicShareNamedUsingTheAPI($user, $name, $type, $path) {
 		$share_id = $this->getPublicShareIDByName($user, $path, $name);
 		$url = "/apps/files_sharing/api/v{$this->sharingApiVersion}/shares/$share_id";
 		$this->sendingToWith("DELETE", $url, null);
