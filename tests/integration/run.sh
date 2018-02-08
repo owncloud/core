@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-
+# trigger CI
 #composer install
 
 # from http://stackoverflow.com/a/630387
