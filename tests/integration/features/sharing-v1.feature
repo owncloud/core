@@ -7,9 +7,9 @@ Feature: sharing
 		Given user "user0" has been created
 		And user "user1" has been created
 		When user "user0" sends HTTP method "POST" to API endpoint "/apps/files_sharing/api/v1/shares" with body
-			| path | welcome.txt |
-			| shareWith | user1 |
-			| shareType | 0 |
+			| path      | welcome.txt |
+			| shareWith | user1       |
+			| shareType | 0           |
 		Then the OCS status code should be "100"
 		And the HTTP status code should be "200"
 
@@ -18,9 +18,9 @@ Feature: sharing
 		And user "user1" has been created
 		And group "sharing-group" has been created
 		When user "user0" sends HTTP method "POST" to API endpoint "/apps/files_sharing/api/v1/shares" with body
-			| path | welcome.txt |
+			| path      | welcome.txt   |
 			| shareWith | sharing-group |
-			| shareType | 1 |
+			| shareType | 1             |
 		Then the OCS status code should be "100"
 		And the HTTP status code should be "200"
 
@@ -31,17 +31,17 @@ Feature: sharing
 		And user "user1" has been added to group "sharing-group"
 		And user "user0" has shared file "welcome.txt" with group "sharing-group"
 		When user "user0" sends HTTP method "POST" to API endpoint "/apps/files_sharing/api/v1/shares" with body
-			| path | welcome.txt |
-			| shareWith | user1 |
-			| shareType | 0 |
+			| path      | welcome.txt |
+			| shareWith | user1       |
+			| shareType | 0           |
 		Then the OCS status code should be "100"
 		And the HTTP status code should be "200"
 
 	Scenario: Creating a new public share
 		Given user "user0" has been created
 		When user "user0" creates a share using the API with settings
-			| path | welcome.txt |
-			| shareType | 3 |
+			| path      | welcome.txt |
+			| shareType | 3           |
 		Then the OCS status code should be "100"
 		And the HTTP status code should be "200"
 		And the last public shared file should be able to be downloaded without a password
@@ -49,9 +49,9 @@ Feature: sharing
 	Scenario: Creating a new public share with password
 		Given user "user0" has been created
 		When user "user0" creates a share using the API with settings
-			| path | welcome.txt |
-			| shareType | 3 |
-			| password | publicpw |
+			| path      | welcome.txt |
+			| shareType | 3           |
+			| password  | publicpw    |
 		Then the OCS status code should be "100"
 		And the HTTP status code should be "200"
 		And the last public shared file should be able to be downloaded with password "publicpw"
@@ -59,29 +59,29 @@ Feature: sharing
 	Scenario: Creating a new public share of a folder
 		Given user "user0" has been created
 		When user "user0" creates a share using the API with settings
-			| path | FOLDER |
-			| shareType | 3 |
-			| password | publicpw |
-			| expireDate | +3 days |
-			| publicUpload | true |
-			| permissions | 7 |
+			| path         | FOLDER   |
+			| shareType    | 3        |
+			| password     | publicpw |
+			| expireDate   | +3 days  |
+			| publicUpload | true     |
+			| permissions  | 7        |
 		Then the OCS status code should be "100"
 		And the HTTP status code should be "200"
 		And the share fields of the last share should include
-			| id | A_NUMBER |
-			| permissions | 15 |
-			| expiration | +3 days |
-			| url | AN_URL |
-			| token | A_TOKEN |
-			| mimetype | httpd/unix-directory |
+			| id          | A_NUMBER             |
+			| permissions | 15                   |
+			| expiration  | +3 days              |
+			| url         | AN_URL               |
+			| token       | A_TOKEN              |
+			| mimetype    | httpd/unix-directory |
 
 	Scenario: Creating a new public share with password and adding an expiration date
 		Given user "user0" has been created
 		And as user "user0"
 		When the user creates a share using the API with settings
-			| path | welcome.txt |
-			| shareType | 3 |
-			| password | publicpw |
+			| path      | welcome.txt |
+			| shareType | 3           |
+			| password  | publicpw    |
 		And the user updates the last share using the API with
 			| expireDate | +3 days |
 		Then the OCS status code should be "100"
@@ -92,130 +92,130 @@ Feature: sharing
 		Given user "user0" has been created
 		And as user "user0"
 		When the user creates a share using the API with settings
-			| path | FOLDER |
-			| shareType | 3 |
+			| path      | FOLDER |
+			| shareType | 3      |
 		And the user updates the last share using the API with
 			| expireDate | +3 days |
 		And the user gets the info of the last share using the API
 		Then the OCS status code should be "100"
 		And the HTTP status code should be "200"
 		And the share fields of the last share should include
-			| id | A_NUMBER |
-			| item_type | folder |
-			| item_source | A_NUMBER |
-			| share_type | 3 |
-			| file_source | A_NUMBER |
-			| file_target | /FOLDER |
-			| permissions | 1 |
-			| stime | A_NUMBER |
-			| expiration | +3 days |
-			| token | A_TOKEN |
-			| storage | A_NUMBER |
-			| mail_send | 0 |
-			| uid_owner | user0 |
-			| storage_id | home::user0 |
-			| file_parent | A_NUMBER |
-			| displayname_owner | user0 |
-			| url | AN_URL |
-			| mimetype | httpd/unix-directory |
+			| id                | A_NUMBER             |
+			| item_type         | folder               |
+			| item_source       | A_NUMBER             |
+			| share_type        | 3                    |
+			| file_source       | A_NUMBER             |
+			| file_target       | /FOLDER              |
+			| permissions       | 1                    |
+			| stime             | A_NUMBER             |
+			| expiration        | +3 days              |
+			| token             | A_TOKEN              |
+			| storage           | A_NUMBER             |
+			| mail_send         | 0                    |
+			| uid_owner         | user0                |
+			| storage_id        | home::user0          |
+			| file_parent       | A_NUMBER             |
+			| displayname_owner | user0                |
+			| url               | AN_URL               |
+			| mimetype          | httpd/unix-directory |
 
 	Scenario: Creating a new public share, updating its password and getting its info
 		Given user "user0" has been created
 		And as user "user0"
 		When the user creates a share using the API with settings
-			| path | FOLDER |
-			| shareType | 3 |
+			| path      | FOLDER |
+			| shareType | 3      |
 		And the user updates the last share using the API with
 			| password | publicpw |
 		And the user gets the info of the last share using the API
 		Then the OCS status code should be "100"
 		And the HTTP status code should be "200"
 		And the share fields of the last share should include
-			| id | A_NUMBER |
-			| item_type | folder |
-			| item_source | A_NUMBER |
-			| share_type | 3 |
-			| file_source | A_NUMBER |
-			| file_target | /FOLDER |
-			| permissions | 1 |
-			| stime | A_NUMBER |
-			| token | A_TOKEN |
-			| storage | A_NUMBER |
-			| mail_send | 0 |
-			| uid_owner | user0 |
-			| storage_id | home::user0 |
-			| file_parent | A_NUMBER |
-			| displayname_owner | user0 |
-			| url | AN_URL |
-			| mimetype | httpd/unix-directory |
+			| id                | A_NUMBER             |
+			| item_type         | folder               |
+			| item_source       | A_NUMBER             |
+			| share_type        | 3                    |
+			| file_source       | A_NUMBER             |
+			| file_target       | /FOLDER              |
+			| permissions       | 1                    |
+			| stime             | A_NUMBER             |
+			| token             | A_TOKEN              |
+			| storage           | A_NUMBER             |
+			| mail_send         | 0                    |
+			| uid_owner         | user0                |
+			| storage_id        | home::user0          |
+			| file_parent       | A_NUMBER             |
+			| displayname_owner | user0                |
+			| url               | AN_URL               |
+			| mimetype          | httpd/unix-directory |
 
 	Scenario: Creating a new public share, updating its permissions and getting its info
 		Given user "user0" has been created
 		And as user "user0"
 		When the user creates a share using the API with settings
-			| path | FOLDER |
-			| shareType | 3 |
+			| path      | FOLDER |
+			| shareType | 3      |
 		And the user updates the last share using the API with
 			| permissions | 7 |
 		And the user gets the info of the last share using the API
 		Then the OCS status code should be "100"
 		And the HTTP status code should be "200"
 		And the share fields of the last share should include
-			| id | A_NUMBER |
-			| item_type | folder |
-			| item_source | A_NUMBER |
-			| share_type | 3 |
-			| file_source | A_NUMBER |
-			| file_target | /FOLDER |
-			| permissions | 15 |
-			| stime | A_NUMBER |
-			| token | A_TOKEN |
-			| storage | A_NUMBER |
-			| mail_send | 0 |
-			| uid_owner | user0 |
-			| storage_id | home::user0 |
-			| file_parent | A_NUMBER |
-			| displayname_owner | user0 |
-			| url | AN_URL |
-			| mimetype | httpd/unix-directory |
+			| id                | A_NUMBER             |
+			| item_type         | folder               |
+			| item_source       | A_NUMBER             |
+			| share_type        | 3                    |
+			| file_source       | A_NUMBER             |
+			| file_target       | /FOLDER              |
+			| permissions       | 15                   |
+			| stime             | A_NUMBER             |
+			| token             | A_TOKEN              |
+			| storage           | A_NUMBER             |
+			| mail_send         | 0                    |
+			| uid_owner         | user0                |
+			| storage_id        | home::user0          |
+			| file_parent       | A_NUMBER             |
+			| displayname_owner | user0                |
+			| url               | AN_URL               |
+			| mimetype          | httpd/unix-directory |
 
 	Scenario: Creating a new public share, updating publicUpload option and getting its info
 		Given user "user0" has been created
 		And as user "user0"
 		When the user creates a share using the API with settings
-			| path | FOLDER |
-			| shareType | 3 |
+			| path      | FOLDER |
+			| shareType | 3      |
 		And the user updates the last share using the API with
 			| publicUpload | true |
 		And the user gets the info of the last share using the API
 		Then the OCS status code should be "100"
 		And the HTTP status code should be "200"
 		And the share fields of the last share should include
-			| id | A_NUMBER |
-			| item_type | folder |
-			| item_source | A_NUMBER |
-			| share_type | 3 |
-			| file_source | A_NUMBER |
-			| file_target | /FOLDER |
-			| permissions | 15 |
-			| stime | A_NUMBER |
-			| token | A_TOKEN |
-			| storage | A_NUMBER |
-			| mail_send | 0 |
-			| uid_owner | user0 |
-			| storage_id | home::user0 |
-			| file_parent | A_NUMBER |
-			| displayname_owner | user0 |
-			| url | AN_URL |
-			| mimetype | httpd/unix-directory |
+			| id                | A_NUMBER             |
+			| item_type         | folder               |
+			| item_source       | A_NUMBER             |
+			| share_type        | 3                    |
+			| file_source       | A_NUMBER             |
+			| file_target       | /FOLDER              |
+			| permissions       | 15                   |
+			| stime             | A_NUMBER             |
+			| token             | A_TOKEN              |
+			| storage           | A_NUMBER             |
+			| mail_send         | 0                    |
+			| uid_owner         | user0                |
+			| storage_id        | home::user0          |
+			| file_parent       | A_NUMBER             |
+			| displayname_owner | user0                |
+			| url               | AN_URL               |
+			| mimetype          | httpd/unix-directory |
 
 	Scenario: Uploading to a public upload-only share
 		Given user "user0" has been created
 		And as user "user0"
 		And the user has created a share with settings
-			| path | FOLDER |
-			| shareType | 3 |
-			| permissions | 4 |
+			| path        | FOLDER |
+			| shareType   | 3      |
+			| permissions | 4      |
 		And the public has uploaded file "test.txt" with content "test"
 		When the user downloads the file "/FOLDER/test.txt" using the API
 		Then the downloaded content should be "test"
@@ -224,10 +224,10 @@ Feature: sharing
 		Given user "user0" has been created
 		And as user "user0"
 		And the user has created a share with settings
-			| path | FOLDER |
-			| shareType | 3 |
-			| password | publicpw |
-			| permissions | 4 |
+			| path        | FOLDER   |
+			| shareType   | 3        |
+			| password    | publicpw |
+			| permissions | 4        |
 		And the public has uploaded file "test.txt" with password "publicpw" and content "test"
 		When the user downloads the file "/FOLDER/test.txt" using the API
 		Then the downloaded content should be "test"
@@ -236,9 +236,9 @@ Feature: sharing
 		Given user "user0" has been created
 		And user "user0" has moved file "/textfile0.txt" to "/FOLDER/test.txt"
 		When user "user0" creates a share using the API with settings
-			| path | FOLDER |
-			| shareType | 3 |
-			| permissions | 4 |
+			| path        | FOLDER |
+			| shareType   | 3      |
+			| permissions | 4      |
 		Then the public shared file "test.txt" should not be able to be downloaded
 		And the HTTP status code should be "404"
 
@@ -246,9 +246,9 @@ Feature: sharing
 		Given user "user0" has been created
 		And as user "user0"
 		And the user has created a share with settings
-			| path | FOLDER |
-			| shareType | 3 |
-			| permissions | 4 |
+			| path        | FOLDER |
+			| shareType   | 3      |
+			| permissions | 4      |
 		And the public has uploaded file "test.txt" with content "test"
 		And the public has uploaded file "test.txt" with content "test2" with autorename mode
 		When the user downloads the file "/FOLDER/test.txt" using the API
@@ -259,9 +259,9 @@ Feature: sharing
 	Scenario: Uploading file to a public upload-only share that was deleted does not work
 		Given user "user0" has been created
 		And user "user0" has created a share with settings
-			| path | FOLDER |
-			| shareType | 3 |
-			| permissions | 4 |
+			| path        | FOLDER |
+			| shareType   | 3      |
+			| permissions | 4      |
 		When user "user0" deletes file "/FOLDER" using the API
 		Then publicly uploading a file should not work
 		And the HTTP status code should be "404"
@@ -269,9 +269,9 @@ Feature: sharing
 	Scenario: Uploading file to a public read-only share does not work
 		Given user "user0" has been created
 		When user "user0" creates a share using the API with settings
-			| path | FOLDER |
-			| shareType | 3 |
-			| permissions | 1 |
+			| path        | FOLDER |
+			| shareType   | 3      |
+			| permissions | 1      |
 		Then publicly uploading a file should not work
 		And the HTTP status code should be "403"
 
@@ -344,24 +344,24 @@ Feature: sharing
 		Then the OCS status code should be "100"
 		And the HTTP status code should be "200"
 		And the share fields of the last share should include
-			| id | A_NUMBER |
-			| item_type | file |
-			| item_source | A_NUMBER |
-			| share_type | 0 |
-			| share_with | user1 |
-			| file_source | A_NUMBER |
-			| file_target | /file_to_share.txt |
-			| path | /file_to_share.txt |
-			| permissions | 19 |
-			| stime | A_NUMBER |
-			| storage | A_NUMBER |
-			| mail_send | 0 |
-			| uid_owner | user0 |
-			| storage_id | home::user0 |
-			| file_parent | A_NUMBER |
-			| share_with_displayname | user1 |
-			| displayname_owner | user0 |
-			| mimetype | text/plain |
+			| id                     | A_NUMBER           |
+			| item_type              | file               |
+			| item_source            | A_NUMBER           |
+			| share_type             | 0                  |
+			| share_with             | user1              |
+			| file_source            | A_NUMBER           |
+			| file_target            | /file_to_share.txt |
+			| path                   | /file_to_share.txt |
+			| permissions            | 19                 |
+			| stime                  | A_NUMBER           |
+			| storage                | A_NUMBER           |
+			| mail_send              | 0                  |
+			| uid_owner              | user0              |
+			| storage_id             | home::user0        |
+			| file_parent            | A_NUMBER           |
+			| share_with_displayname | user1              |
+			| displayname_owner      | user0              |
+			| mimetype               | text/plain         |
 
 	Scenario: keep group permissions in sync
 		Given user "user0" has been created
@@ -377,21 +377,21 @@ Feature: sharing
 		Then the OCS status code should be "100"
 		And the HTTP status code should be "200"
 		And the share fields of the last share should include
-			| id | A_NUMBER |
-			| item_type | file |
-			| item_source | A_NUMBER |
-			| share_type | 1 |
-			| file_source | A_NUMBER |
-			| file_target | /textfile0.txt |
-			| permissions | 1 |
-			| stime | A_NUMBER |
-			| storage | A_NUMBER |
-			| mail_send | 0 |
-			| uid_owner | user0 |
-			| storage_id | home::user0 |
-			| file_parent | A_NUMBER |
-			| displayname_owner | user0 |
-			| mimetype | text/plain |
+			| id                | A_NUMBER       |
+			| item_type         | file           |
+			| item_source       | A_NUMBER       |
+			| share_type        | 1              |
+			| file_source       | A_NUMBER       |
+			| file_target       | /textfile0.txt |
+			| permissions       | 1              |
+			| stime             | A_NUMBER       |
+			| storage           | A_NUMBER       |
+			| mail_send         | 0              |
+			| uid_owner         | user0          |
+			| storage_id        | home::user0    |
+			| file_parent       | A_NUMBER       |
+			| displayname_owner | user0          |
+			| mimetype          | text/plain     |
 
 	Scenario: Sharee can see the share
 		Given user "user0" has been created
@@ -438,15 +438,15 @@ Feature: sharing
 		And user "user1" has been created
 		And user "user2" has been created
 		And user "user0" has created a share with settings
-			| path | /textfile0.txt |
-			| shareType | 0 |
-			| shareWith | user1 |
-			| permissions | 8 |
+			| path        | /textfile0.txt |
+			| shareType   | 0              |
+			| shareWith   | user1          |
+			| permissions | 8              |
 		When user "user1" creates a share using the API with settings
-			| path | /textfile0 (2).txt |
-			| shareType | 0 |
-			| shareWith | user2 |
-			| permissions | 31 |
+			| path        | /textfile0 (2).txt |
+			| shareType   | 0                  |
+			| shareWith   | user2              |
+			| permissions | 31                 |
 		Then the OCS status code should be "404"
 		And the HTTP status code should be "200"
 
@@ -455,15 +455,15 @@ Feature: sharing
 		And user "user1" has been created
 		And user "user2" has been created
 		And user "user0" has created a share with settings
-			| path | /textfile0.txt |
-			| shareType | 0 |
-			| shareWith | user1 |
-			| permissions | 16 |
+			| path        | /textfile0.txt |
+			| shareType   | 0              |
+			| shareWith   | user1          |
+			| permissions | 16             |
 		When user "user1" creates a share using the API with settings
-			| path | /textfile0 (2).txt |
-			| shareType | 0 |
-			| shareWith | user2 |
-			| permissions | 31 |
+			| path        | /textfile0 (2).txt |
+			| shareType   | 0                  |
+			| shareWith   | user2              |
+			| permissions | 31                 |
 		Then the OCS status code should be "404"
 		And the HTTP status code should be "200"
 
@@ -484,11 +484,11 @@ Feature: sharing
 		When user "user0" shares file "/PARENT" with user "user1" using the API
 		And user "user0" shares file "/PARENT/CHILD" with group "group0" using the API
 		Then user "user1" should see the following elements
-			| /FOLDER/ |
-			| /PARENT/ |
-			| /CHILD/ |
+			| /FOLDER/           |
+			| /PARENT/           |
+			| /CHILD/            |
 			| /PARENT/parent.txt |
-			| /CHILD/child.txt |
+			| /CHILD/child.txt   |
 		And the HTTP status code should be "200"
 
 	Scenario: Share a file by multiple channels and download from sub-folder
@@ -577,7 +577,7 @@ Feature: sharing
 	Scenario: Don't allow sharing of the root
 		Given user "user0" has been created
 		When user "user0" creates a share using the API with settings
-			| path | / |
+			| path      | / |
 			| shareType | 3 |
 		Then the OCS status code should be "403"
 
@@ -598,16 +598,16 @@ Feature: sharing
 		And user "user2" has been created
 		And user "user0" has created a folder "/TMP"
 		And user "user0" has created a share with settings
-			| path | /TMP |
-			| shareType | 0 |
-			| shareWith | user1 |
-			| permissions | 21 |
+			| path        | /TMP  |
+			| shareType   | 0     |
+			| shareWith   | user1 |
+			| permissions | 21    |
 		And as user "user1"
 		And the user has created a share with settings
-			| path | /TMP |
-			| shareType | 0 |
-			| shareWith | user2 |
-			| permissions | 21 |
+			| path        | /TMP  |
+			| shareType   | 0     |
+			| shareWith   | user2 |
+			| permissions | 21    |
 		When the user updates the last share using the API with
 			| permissions | 31 |
 		Then the OCS status code should be "404"
@@ -616,12 +616,12 @@ Feature: sharing
 		Given user "user0" has been created
 		And as user "user0"
 		And the user has created a share with settings
-			| path | welcome.txt |
-			| shareType | 3 |
+			| path      | welcome.txt |
+			| shareType | 3           |
 		And the last share id has been remembered
 		When the user creates a share using the API with settings
-			| path | welcome.txt |
-			| shareType | 3 |
+			| path      | welcome.txt |
+			| shareType | 3           |
 		Then the share ids should match
 
 	Scenario: Correct webdav share-permissions for owned file
@@ -731,7 +731,7 @@ Feature: sharing
 		When user "user0" shares file "/foo" with user "user2" using the API
 		And user "user1" shares file "/foo" with user "user2" using the API
 		Then user "user2" should see the following elements
-			| /foo/		|
+			| /foo/       |
 			| /foo%20(2)/ |
 
 	Scenario: Creating a new share with a disabled user
@@ -739,9 +739,9 @@ Feature: sharing
 		And user "user1" has been created
 		And user "user0" has been disabled
 		When user "user0" sends HTTP method "POST" to API endpoint "/apps/files_sharing/api/v1/shares" with body
-			| path | welcome.txt |
-			| shareWith | user1 |
-			| shareType | 0 |
+			| path      | welcome.txt |
+			| shareWith | user1       |
+			| shareType | 0           |
 		Then the OCS status code should be "997"
 		And the HTTP status code should be "401"
 
@@ -903,9 +903,9 @@ Feature: sharing
 		And user "user0" has shared file "welcome.txt" with group "sharing-group"
 		And user "user0" has deleted the last share
 		When user "user0" sends HTTP method "POST" to API endpoint "/apps/files_sharing/api/v1/shares" with body
-			| path | welcome.txt |
+			| path      | welcome.txt   |
 			| shareWith | sharing-group |
-			| shareType | 1 |
+			| shareType | 1             |
 		Then the OCS status code should be "100"
 		And the HTTP status code should be "200"
 
@@ -917,9 +917,9 @@ Feature: sharing
 		And user "user0" has created a folder "/test/sub"
 		And user "user0" has shared file "/test" with group "sharing-group"
 		When user "user0" sends HTTP method "POST" to API endpoint "/apps/files_sharing/api/v1/shares" with body
-			| path | /test/sub |
-			| shareWith | user1 |
-			| shareType | 0 |
+			| path      | /test/sub |
+			| shareWith | user1     |
+			| shareType | 0         |
 		Then the OCS status code should be "100"
 		And the HTTP status code should be "200"
 		And as "user1" the folder "/sub" should exist
@@ -933,9 +933,9 @@ Feature: sharing
 		And user "user0" has created a folder "/test/sub"
 		And user "user0" has shared file "/test" with group "sharing-group"
 		When user "user0" sends HTTP method "POST" to API endpoint "/apps/files_sharing/api/v1/shares" with body
-			| path | /test/sub |
-			| shareWith | user1 |
-			| shareType | 0 |
+			| path      | /test/sub |
+			| shareWith | user1     |
+			| shareType | 0         |
 		Then the OCS status code should be "100"
 		And the HTTP status code should be "200"
 		And as "user1" the folder "/sub" should exist
@@ -997,10 +997,10 @@ Feature: sharing
 		Given user "user0" has been created
 		And user "user1" has been created
 		When user "user0" sends HTTP method "POST" to API endpoint "/apps/files_sharing/api/v1/shares" with body
-			| path | welcome.txt |
-			| shareWith | user1 |
-			| shareType | 0 |
-			| permissions | 0 |
+			| path        | welcome.txt |
+			| shareWith   | user1       |
+			| shareType   | 0           |
+			| permissions | 0           |
 		Then the OCS status code should be "400"
 
 	Scenario: Cannot set permissions to zero
@@ -1022,8 +1022,8 @@ Feature: sharing
 		And user "user0" has shared folder "/test" with user "user1" with permissions 17
 		And as user "user1"
 		And the user has created a share with settings
-			| path | /test |
-			| shareType | 3 |
+			| path         | /test |
+			| shareType    | 3     |
 			| publicUpload | false |
 		When the user updates the last share using the API with
 			| publicUpload | true |
@@ -1037,8 +1037,8 @@ Feature: sharing
 		And user "user0" has shared folder "/test" with user "user1" with permissions 31
 		And as user "user1"
 		And the user has created a share with settings
-			| path | /test |
-			| shareType | 3 |
+			| path         | /test |
+			| shareType    | 3     |
 			| publicUpload | false |
 		When the user updates the last share using the API with
 			| publicUpload | true |
@@ -1052,9 +1052,9 @@ Feature: sharing
 		And user "user0" has shared folder "/test" with user "user1" with permissions 17
 		And as user "user1"
 		And the user has created a share with settings
-			| path | /test |
-			| shareType | 3 |
-			| permissions | 1 |
+			| path        | /test |
+			| shareType   | 3     |
+			| permissions | 1     |
 		When the user updates the last share using the API with
 			| permissions | 15 |
 		Then the OCS status code should be "404"
@@ -1067,9 +1067,9 @@ Feature: sharing
 		And user "user0" has shared folder "/test" with user "user1" with permissions 31
 		And as user "user1"
 		And the user has created a share with settings
-			| path | /test |
-			| shareType | 3 |
-			| permissions | 1 |
+			| path        | /test |
+			| shareType   | 3     |
+			| permissions | 1     |
 		When the user updates the last share using the API with
 			| permissions | 15 |
 		Then the OCS status code should be "100"
@@ -1079,42 +1079,42 @@ Feature: sharing
 		Given user "user0" has been created
 		And user "user0" has created a folder "/afolder"
 		When user "user0" creates a share using the API with settings
-			| path | /afolder |
-			| shareType | 3 |
+			| path      | /afolder |
+			| shareType | 3        |
 		Then the OCS status code should be "100"
 		And the HTTP status code should be "200"
 		And the share fields of the last share should include
-			| id | A_NUMBER |
-			| share_type | 3 |
-			| permissions | 1 |
+			| id          | A_NUMBER |
+			| share_type  | 3        |
+			| permissions | 1        |
 
 	Scenario: Creating a link share with no specified permissions defaults to read permissions when public upload disabled globally
 		Given parameter "shareapi_allow_public_upload" of app "core" has been set to "no"
 		And user "user0" has been created
 		And user "user0" has created a folder "/afolder"
 		When user "user0" creates a share using the API with settings
-			| path | /afolder |
-			| shareType | 3 |
+			| path      | /afolder |
+			| shareType | 3        |
 		Then the OCS status code should be "100"
 		And the HTTP status code should be "200"
 		And the share fields of the last share should include
-			| id | A_NUMBER |
-			| share_type | 3 |
-			| permissions | 1 |
+			| id          | A_NUMBER |
+			| share_type  | 3        |
+			| permissions | 1        |
 
 	Scenario: Creating a link share with edit permissions keeps it
 		Given user "user0" has been created
 		And user "user0" has created a folder "/afolder"
 		When user "user0" creates a share using the API with settings
-			| path | /afolder |
-			| shareType | 3 |
-			| permissions | 15 |
+			| path        | /afolder |
+			| shareType   | 3        |
+			| permissions | 15       |
 		Then the OCS status code should be "100"
 		And the HTTP status code should be "200"
 		And the share fields of the last share should include
-			| id | A_NUMBER |
-			| share_type | 3 |
-			| permissions | 15 |
+			| id          | A_NUMBER |
+			| share_type  | 3        |
+			| permissions | 15       |
 
 	Scenario: resharing using a public link with read only permissions is not allowed
 		Given user "user0" has been created
@@ -1122,8 +1122,8 @@ Feature: sharing
 		And user "user0" has created a folder "/test"
 		And user "user0" has shared folder "/test" with user "user1" with permissions 1
 		When user "user1" creates a share using the API with settings
-			| path | /test |
-			| shareType | 3 |
+			| path         | /test |
+			| shareType    | 3     |
 			| publicUpload | false |
 		Then the OCS status code should be "404"
 		And the HTTP status code should be "200"
@@ -1134,8 +1134,8 @@ Feature: sharing
 		And user "user0" has created a folder "/test"
 		And user "user0" has shared folder "/test" with user "user1" with permissions 15
 		When user "user1" creates a share using the API with settings
-			| path | /test |
-			| shareType | 3 |
+			| path         | /test |
+			| shareType    | 3     |
 			| publicUpload | false |
 		Then the OCS status code should be "404"
 		And the HTTP status code should be "200"
@@ -1228,21 +1228,21 @@ Feature: sharing
 		When user "user1" moves folder "/folder1/folder2" to "/moved-out/folder2" using the API
 		And user "user1" gets the info of the last share using the API
 		Then the share fields of the last share should include
-			| id | A_NUMBER |
-			| item_type | folder |
-			| item_source | A_NUMBER |
-			| share_type | 0 |
-			| file_source | A_NUMBER |
-			| file_target | /folder2 |
-			| permissions | 31 |
-			| stime | A_NUMBER |
-			| storage | A_NUMBER |
-			| mail_send | 0 |
-			| uid_owner | user1 |
-			| storage_id | home::user1 |
-			| file_parent | A_NUMBER |
-			| displayname_owner | user1 |
-			| mimetype | httpd/unix-directory |
+			| id                | A_NUMBER             |
+			| item_type         | folder               |
+			| item_source       | A_NUMBER             |
+			| share_type        | 0                    |
+			| file_source       | A_NUMBER             |
+			| file_target       | /folder2             |
+			| permissions       | 31                   |
+			| stime             | A_NUMBER             |
+			| storage           | A_NUMBER             |
+			| mail_send         | 0                    |
+			| uid_owner         | user1                |
+			| storage_id        | home::user1          |
+			| file_parent       | A_NUMBER             |
+			| displayname_owner | user1                |
+			| mimetype          | httpd/unix-directory |
 		And as "user0" the folder "/folder1/folder2" should not exist
 		And as "user2" the folder "/folder2" should exist
 
@@ -1258,20 +1258,20 @@ Feature: sharing
 		When user "user1" moves folder "/user0-folder/folder2" to "/user2-folder/folder2" using the API
 		And user "user1" gets the info of the last share using the API
 		Then the share fields of the last share should include
-			| id | A_NUMBER |
-			| item_type | folder |
-			| item_source | A_NUMBER |
-			| share_type | 0 |
-			| file_source | A_NUMBER |
-			| file_target | /user2-folder |
-			| permissions | 31 |
-			| stime | A_NUMBER |
-			| storage | A_NUMBER |
-			| mail_send | 0 |
-			| uid_owner | user2 |
-			| file_parent | A_NUMBER |
-			| displayname_owner | user2 |
-			| mimetype | httpd/unix-directory |
+			| id                | A_NUMBER             |
+			| item_type         | folder               |
+			| item_source       | A_NUMBER             |
+			| share_type        | 0                    |
+			| file_source       | A_NUMBER             |
+			| file_target       | /user2-folder        |
+			| permissions       | 31                   |
+			| stime             | A_NUMBER             |
+			| storage           | A_NUMBER             |
+			| mail_send         | 0                    |
+			| uid_owner         | user2                |
+			| file_parent       | A_NUMBER             |
+			| displayname_owner | user2                |
+			| mimetype          | httpd/unix-directory |
 		And as "user0" the folder "/user0-folder/folder2" should not exist
 		And as "user2" the folder "/user2-folder/folder2" should exist
 

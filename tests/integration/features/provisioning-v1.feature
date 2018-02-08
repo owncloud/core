@@ -41,14 +41,14 @@ Feature: provisioning
 		When user "admin" sends HTTP method "GET" to API endpoint "/cloud/users"
 		Then the users returned by the API should be
 			| brand-new-user |
-			| admin |
+			| admin          |
 
 	Scenario: Edit a user
 		Given user "brand-new-user" has been created
 		When user "admin" sends HTTP method "PUT" to API endpoint "/cloud/users/brand-new-user" with body
-			| key | quota |
-			| value | 12MB |
-			| key | email |
+			| key   | quota                    |
+			| value | 12MB                     |
+			| key   | email                    |
 			| value | brand-new-user@gmail.com |
 		Then the OCS status code should be "100"
 		And the HTTP status code should be "200"
@@ -121,7 +121,7 @@ Feature: provisioning
 		When user "admin" sends HTTP method "GET" to API endpoint "/cloud/users/brand-new-user/groups"
 		Then the groups returned by the API should be
 			| new-group |
-			| 0 |
+			| 0         |
 		And the OCS status code should be "100"
 
 	Scenario: adding a user which doesn't exist to a group
@@ -145,10 +145,10 @@ Feature: provisioning
 		And group "España" has been created
 		When user "admin" sends HTTP method "GET" to API endpoint "/cloud/groups"
 		Then the groups returned by the API should be
-			| España |
-			| admin |
+			| España    |
+			| admin     |
 			| new-group |
-			| 0 |
+			| 0         |
 
 	Scenario: create a subadmin
 		Given user "brand-new-user" has been created
@@ -275,18 +275,18 @@ Feature: provisioning
 		Then the OCS status code should be "100"
 		And the HTTP status code should be "200"
 		And the apps returned by the API should include
-			| comments |
-			| dav |
+			| comments             |
+			| dav                  |
 			| federatedfilesharing |
-			| federation |
-			| files |
-			| files_sharing |
-			| files_trashbin |
-			| files_versions |
-			| provisioning_api |
-			| systemtags |
-			| updatenotification |
-			| files_external |
+			| federation           |
+			| files                |
+			| files_sharing        |
+			| files_trashbin       |
+			| files_versions       |
+			| provisioning_api     |
+			| systemtags           |
+			| updatenotification   |
+			| files_external       |
 
 	Scenario: get app info
 		When user "admin" sends HTTP method "GET" to API endpoint "/cloud/apps/files"
@@ -518,12 +518,12 @@ Feature: provisioning
 	Scenario: Edit a user email twice
 		Given user "brand-new-user" has been created
 		And user "admin" has sent HTTP method "PUT" to API endpoint "/cloud/users/brand-new-user" with body
-			| key | email |
+			| key   | email                    |
 			| value | brand-new-user@gmail.com |
 		And the OCS status code should be "100"
 		And the HTTP status code should be "200"
 		And user "admin" has sent HTTP method "PUT" to API endpoint "/cloud/users/brand-new-user" with body
-			| key | email |
+			| key   | email                      |
 			| value | brand-new-user@example.com |
 		And the OCS status code should be "100"
 		And the HTTP status code should be "200"
