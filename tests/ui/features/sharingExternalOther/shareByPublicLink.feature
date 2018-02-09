@@ -41,6 +41,7 @@ So that public sharing is limited according to organization policy
 		And I access the last created public link
 		Then it should not be possible to delete the file "lorem.txt"
 
+	@skipOnINTERNETEXPLORER @issue_30392
 	Scenario: mount public link
 		Given these users exist:
 		|username|password|displayname|email       |
@@ -56,6 +57,7 @@ So that public sharing is limited according to organization policy
 		And the content of "lorem.txt" should be the same as the original "simple-folder/lorem.txt"
 		And it should not be possible to delete the file "lorem.txt"
 
+	@skipOnINTERNETEXPLORER @issue_30392
 	Scenario: mount public link and overwrite file
 		Given these users exist:
 		|username|password|displayname|email       |
