@@ -46,8 +46,9 @@ class ControllerMethodReflector implements IControllerMethodReflector{
 
 
 	/**
-	 * @param object $object an object or classname
+	 * @param object|string $object an object or classname
 	 * @param string $method the method which we want to inspect
+	 * @throws \ReflectionException
 	 */
 	public function reflect($object, $method){
 		$reflection = new \ReflectionMethod($object, $method);
