@@ -31,7 +31,7 @@ require_once 'bootstrap.php';
 /**
  * Features context.
  */
-class FeatureContext implements Context, SnippetAcceptingContext {
+class FeatureContext extends \rdx\behatvars\BehatVariablesContext {
 	use BasicStructure;
 
 	/**
