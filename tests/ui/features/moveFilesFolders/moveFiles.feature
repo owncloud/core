@@ -32,6 +32,7 @@ So that I can organise my data structure
 			|Could not move "data.zip", target exists|
 		And the file "data.zip" should be listed
 
+	@skipOnFIREFOX47+
 	Scenario: move a file into a folder where a file with the same name already exists
 		When I move the file "strängé filename (duplicate #2 &).txt" into the folder "strängé नेपाली folder"
 		Then notifications should be displayed with the text
