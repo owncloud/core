@@ -39,10 +39,6 @@
 		_filesClient: null,
 
 		initialize: function(data, options) {
-			if (!_.isUndefined(data.id)) {
-				data.id = parseInt(data.id, 10);
-			}
-
 			if( options ){
 				if (options.filesClient) {
 					this._filesClient = options.filesClient;
