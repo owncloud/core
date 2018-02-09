@@ -10,6 +10,7 @@ namespace Test;
 
 use OC\Log;
 use OCP\IConfig;
+use OCP\IUserSession;
 use OCP\Util;
 
 class LoggerTest extends TestCase {
@@ -73,6 +74,27 @@ class LoggerTest extends TestCase {
 
 		$expected = [
 			'1 Show info messages of files app',
+		];
+		$this->assertEquals($expected, $this->getLogs());
+	}
+
+	public function testNullUserSession() {
+		$userSession = $this->createMock(IUserSession::class);
+		$userSession->expects($this->any())
+			->method('getUser')
+			->willReturn(null);
+		$this->config->expects($this->any())
+			->method('getValue')
+			->will(($this->returnValueMap([
+				['loglevel', Util::WARN, Util::WARN],
+				['log.conditions', [], [['users' => ['foo'], 'apps' => ['files'], 'logfile' => '/tmp/test.log']]]
+			])));
+		$logger = $this->logger;
+
+		$logger->warning('Don\'t display info messages');
+
+		$expected = [
+			'2 Don\'t display info messages',
 		];
 		$this->assertEquals($expected, $this->getLogs());
 	}
