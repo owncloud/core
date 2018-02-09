@@ -111,6 +111,7 @@ Feature: trashbin-new-endpoint
 		And user "user0" has created a folder "/new-folder"
 		And user "user0" has moved file "/textfile0.txt" to "/new-folder/new-file.txt"
 		And user "user0" has deleted file "/new-folder/new-file.txt"
+		And user "user0" has logged in to a web-style session using the API
 		When user "user0" restores the file with original path "/new-folder/new-file.txt" using the API
 		Then as "user0" the file with original path "/new-folder/new-file.txt" should not exist in trash
 		And as "user0" the file "/new-folder/new-file.txt" should exist
@@ -121,6 +122,7 @@ Feature: trashbin-new-endpoint
 		And user "user0" has moved file "/textfile0.txt" to "/new-folder/new-file.txt"
 		And user "user0" has deleted file "/new-folder/new-file.txt"
 		And user "user0" has deleted folder "/new-folder"
+		And user "user0" has logged in to a web-style session using the API
 		When user "user0" restores the file with original path "/new-folder/new-file.txt" using the API
 		Then as "user0" the file with original path "/new-folder/new-file.txt" should not exist in trash
 		And as "user0" the file "/new-file.txt" should exist
@@ -131,6 +133,7 @@ Feature: trashbin-new-endpoint
 		And user "user0" has moved file "/textfile0.txt" to "/new-folder/new-file.txt"
 		And user "user0" has deleted file "/new-folder/new-file.txt"
 		And user "user0" has deleted folder "/new-folder"
+		And user "user0" has logged in to a web-style session using the API
 		When user "user0" restores the folder with original path "/new-folder" using the API
 		And user "user0" restores the file with original path "/new-folder/new-file.txt" using the API
 		Then as "user0" the file with original path "/new-folder/new-file.txt" should not exist in trash
@@ -142,6 +145,7 @@ Feature: trashbin-new-endpoint
 		And user "user0" has moved file "/textfile0.txt" to "/new-folder/new-file.txt"
 		And user "user0" has deleted file "/new-folder/new-file.txt"
 		And user "user0" has deleted folder "/new-folder"
+		And user "user0" has logged in to a web-style session using the API
 		When user "user0" creates a folder "/new-folder" using the API
 		And user "user0" restores the file with original path "/new-folder/new-file.txt" using the API
 		Then as "user0" the file with original path "/new-folder/new-file.txt" should not exist in trash
