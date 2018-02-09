@@ -353,8 +353,8 @@ class DIContainer extends SimpleContainer implements IAppContainer {
 				$app->getServer()->getNavigationManager(),
 				$app->getServer()->getURLGenerator(),
 				$app->getServer()->getLogger(),
+				$app->getServer()->getUserSession(),
 				$c['AppName'],
-				$app->isLoggedIn(),
 				$app->isAdminUser(),
 				$app->getServer()->getContentSecurityPolicyManager()
 			);

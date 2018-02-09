@@ -46,6 +46,7 @@ use OCP\IURLGenerator;
 use OCP\IRequest;
 use OCP\ILogger;
 use OCP\AppFramework\Controller;
+use OCP\IUserSession;
 use OCP\Util;
 use OC\AppFramework\Middleware\Security\Exceptions\SecurityException;
 
@@ -69,11 +70,11 @@ class SecurityMiddleware extends Middleware {
 	/** @var ILogger */
 	private $logger;
 	/** @var bool */
-	private $isLoggedIn;
-	/** @var bool */
 	private $isAdminUser;
 	/** @var ContentSecurityPolicyManager */
 	private $contentSecurityPolicyManager;
+	/** @var IUserSession */
+	private $session;
 
 	/**
 	 * @param IRequest $request
@@ -81,8 +82,8 @@ class SecurityMiddleware extends Middleware {
 	 * @param INavigationManager $navigationManager
 	 * @param IURLGenerator $urlGenerator
 	 * @param ILogger $logger
+	 * @param IUserSession $session
 	 * @param string $appName
-	 * @param bool $isLoggedIn
 	 * @param bool $isAdminUser
 	 * @param ContentSecurityPolicyManager $contentSecurityPolicyManager
 	 */
@@ -91,8 +92,8 @@ class SecurityMiddleware extends Middleware {
 								INavigationManager $navigationManager,
 								IURLGenerator $urlGenerator,
 								ILogger $logger,
+								IUserSession $session,
 								$appName,
-								$isLoggedIn,
 								$isAdminUser,
 								ContentSecurityPolicyManager $contentSecurityPolicyManager) {
 		$this->navigationManager = $navigationManager;
@@ -101,7 +102,7 @@ class SecurityMiddleware extends Middleware {
 		$this->appName = $appName;
 		$this->urlGenerator = $urlGenerator;
 		$this->logger = $logger;
-		$this->isLoggedIn = $isLoggedIn;
+		$this->session = $session;
 		$this->isAdminUser = $isAdminUser;
 		$this->contentSecurityPolicyManager = $contentSecurityPolicyManager;
 	}
@@ -124,7 +125,7 @@ class SecurityMiddleware extends Middleware {
 		// security checks
 		$isPublicPage = $this->reflector->hasAnnotation('PublicPage');
 		if(!$isPublicPage) {
-			if(!$this->isLoggedIn) {
+			if(!$this->isLoggedIn()) {
 				throw new NotLoggedInException();
 			}
 
@@ -165,7 +166,7 @@ class SecurityMiddleware extends Middleware {
 	 * @return Response
 	 */
 	public function afterController($controller, $methodName, Response $response) {
-		$policy = !is_null($response->getContentSecurityPolicy()) ? $response->getContentSecurityPolicy() : new ContentSecurityPolicy();
+		$policy = $response->getContentSecurityPolicy() !== null ? $response->getContentSecurityPolicy() : new ContentSecurityPolicy();
 
 		$defaultPolicy = $this->contentSecurityPolicyManager->getDefaultPolicy();
 		$defaultPolicy = $this->contentSecurityPolicyManager->mergePolicies($defaultPolicy, $policy);
@@ -227,6 +228,15 @@ class SecurityMiddleware extends Middleware {
 		}
 
 		throw $exception;
+	}
+
+	private function isLoggedIn() {
+		static $loginCalled = false;
+		if (!$loginCalled && !$this->session->isLoggedIn()) {
+			\OC::handleLogin($this->request);
+			$loginCalled = true;
+		}
+		return $this->session->isLoggedIn();
 	}
 
 }
