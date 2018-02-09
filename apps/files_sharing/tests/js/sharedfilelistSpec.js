@@ -85,9 +85,9 @@ describe('OCA.Sharing.FileList tests', function() {
 					data: [{
 						id: 7,
 						item_type: 'file',
-						item_source: 49,
+						item_source: '49',
 						item_target: '/49',
-						file_source: 49,
+						file_source: '49',
 						file_target: '/local path/local name.txt',
 						path: 'files/something shared.txt',
 						permissions: 31,
@@ -126,7 +126,7 @@ describe('OCA.Sharing.FileList tests', function() {
 						mtime: 22222,
 						permissions: 31,
 						type: 'file',
-						file_id: 1337
+						file_id: '1337'
 					}]
 				}
 			};
@@ -304,8 +304,8 @@ describe('OCA.Sharing.FileList tests', function() {
 					data: [{
 						id: 7,
 						item_type: 'file',
-						item_source: 49,
-						file_source: 49,
+						item_source: '49',
+						file_source: '49',
 						path: '/local path/local name.txt',
 						permissions: 27,
 						stime: 11111,
@@ -406,8 +406,8 @@ describe('OCA.Sharing.FileList tests', function() {
 			ocsResponse.ocs.data[0] = {
 				id: 7,
 				item_type: 'file',
-				item_source: 49,
-				file_source: 49,
+				item_source: '49',
+				file_source: '49',
 				path: '/local path/local name.txt',
 				permissions: 1,
 				stime: 11111,
@@ -460,8 +460,8 @@ describe('OCA.Sharing.FileList tests', function() {
 			ocsResponse.ocs.data.push({
 				id: 8,
 				item_type: 'file',
-				item_source: 49,
-				file_source: 49,
+				item_source: '49',
+				file_source: '49',
 				path: '/local path/local name.txt',
 				permissions: 1,
 				stime: 11111,
@@ -477,8 +477,8 @@ describe('OCA.Sharing.FileList tests', function() {
 			ocsResponse.ocs.data.push({
 				id: 9,
 				item_type: 'file',
-				item_source: 49,
-				file_source: 49,
+				item_source: '49',
+				file_source: '49',
 				path: '/local path/local name.txt',
 				permissions: 27,
 				stime: 22222,
@@ -551,8 +551,8 @@ describe('OCA.Sharing.FileList tests', function() {
 					data: [{
 						id: 7,
 						item_type: 'file',
-						item_source: 49,
-						file_source: 49,
+						item_source: '49',
+						file_source: '49',
 						path: '/local path/local name.txt',
 						permissions: 1,
 						stime: 11111,
@@ -567,8 +567,8 @@ describe('OCA.Sharing.FileList tests', function() {
 					},{
 						id: 8,
 						item_type: 'file',
-						item_source: 50,
-						file_source: 50,
+						item_source: '50',
+						file_source: '50',
 						path: '/local path2/local name2.txt',
 						permissions: 1,
 						stime: 11112,
@@ -590,8 +590,8 @@ describe('OCA.Sharing.FileList tests', function() {
 				// non-link share
 				id: 8,
 				item_type: 'file',
-				item_source: 49,
-				file_source: 49,
+				item_source: '49',
+				file_source: '49',
 				path: '/local path/local name.txt',
 				permissions: 27,
 				stime: 11111,
@@ -716,7 +716,7 @@ describe('OCA.Sharing.FileList tests', function() {
 			var $tr;
 			OC.Share.statuses = {1: {link: false, path: '/subdir'}};
 			fileList.setFiles([{
-				id: 1,
+				id: '1',
 				type: 'dir',
 				name: 'One.txt',
 				path: '/subdir',
@@ -737,7 +737,7 @@ describe('OCA.Sharing.FileList tests', function() {
 			var $tr;
 			OC.Share.statuses = {1: {link: false, path: '/subdir'}};
 			fileList.setFiles([{
-				id: 1,
+				id: '1',
 				type: 'dir',
 				name: 'One.txt',
 				path: '/subdir',
@@ -758,7 +758,7 @@ describe('OCA.Sharing.FileList tests', function() {
 			var $tr;
 			OC.Share.statuses = {1: {link: false, path: '/subdir'}};
 			fileList.setFiles([{
-				id: 1,
+				id: '1',
 				type: 'file',
 				name: 'One.txt',
 				path: '/subdir',

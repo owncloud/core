@@ -20,7 +20,7 @@ describe('OCA.Versions.VersionModel', function() {
 	beforeEach(function() {
 		model = new VersionModel({
 			id: 123456789,
-			fileId: 10000000,
+			fileId: '10000000',
 			timestamp: 10000000,
 			fullPath: '/subdir/some file.txt',
 			name: 'some file.txt',

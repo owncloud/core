@@ -44,7 +44,7 @@ describe('OCA.Comments.CommentsTabView tests', function() {
 		fetchStub = sinon.stub(OCA.Comments.CommentCollection.prototype, 'fetchNext');
 		view = new OCA.Comments.CommentsTabView();
 		fileInfoModel = new OCA.Files.FileInfoModel({
-			id: 5,
+			id: '5',
 			name: 'One.txt',
 			mimetype: 'text/plain',
 			permissions: 31,
@@ -60,7 +60,7 @@ describe('OCA.Comments.CommentsTabView tests', function() {
 			actorId: 'user1',
 			actorDisplayName: 'User One',
 			objectType: 'files',
-			objectId: 5,
+			objectId: '5',
 			message: 'First',
 			creationDateTime: new Date(Date.UTC(2016, 1, 3, 10, 5, 0)).toUTCString()
 		});
@@ -70,7 +70,7 @@ describe('OCA.Comments.CommentsTabView tests', function() {
 			actorId: 'user2',
 			actorDisplayName: 'User Two',
 			objectType: 'files',
-			objectId: 5,
+			objectId: '5',
 			message: 'Second\nNewline',
 			creationDateTime: new Date(Date.UTC(2016, 1, 3, 10, 0, 0)).toUTCString()
 		});
@@ -162,7 +162,7 @@ describe('OCA.Comments.CommentsTabView tests', function() {
 				actorId: 'user3',
 				actorDisplayName: 'User Three',
 				objectType: 'files',
-				objectId: 5,
+				objectId: '5',
 				message: 'Third',
 				creationDateTime: new Date(Date.UTC(2016, 1, 3, 5, 0, 0)).toUTCString()
 			});

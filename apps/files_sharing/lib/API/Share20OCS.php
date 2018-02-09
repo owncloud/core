@@ -171,9 +171,9 @@ class Share20OCS {
 		$result['mimetype'] = $node->getMimeType();
 		$result['storage_id'] = $node->getStorage()->getId();
 		$result['storage'] = $node->getStorage()->getCache()->getNumericStorageId();
-		$result['item_source'] = $node->getId();
-		$result['file_source'] = $node->getId();
-		$result['file_parent'] = $node->getParent()->getId();
+		$result['item_source'] = strval($node->getId());
+		$result['file_source'] = strval($node->getId());
+		$result['file_parent'] = strval($node->getParent()->getId());
 		$result['file_target'] = $share->getTarget();
 
 		if ($share->getShareType() === \OCP\Share::SHARE_TYPE_USER) {

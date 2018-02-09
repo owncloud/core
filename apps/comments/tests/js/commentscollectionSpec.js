@@ -23,7 +23,7 @@ describe('OCA.Comments.CommentCollection', function() {
 			actorId: 'user1',
 			actorDisplayName: 'User One',
 			objectType: 'files',
-			objectId: 5,
+			objectId: '5',
 			message: 'First',
 			creationDateTime: Date.UTC(2016, 1, 3, 10, 5, 0)
 		};
@@ -33,7 +33,7 @@ describe('OCA.Comments.CommentCollection', function() {
 			actorId: 'user2',
 			actorDisplayName: 'User Two',
 			objectType: 'files',
-			objectId: 5,
+			objectId: '5',
 			message: 'Second\nNewline',
 			creationDateTime: Date.UTC(2016, 1, 3, 10, 0, 0)
 		};
@@ -43,7 +43,7 @@ describe('OCA.Comments.CommentCollection', function() {
 			actorId: 'user3',
 			actorDisplayName: 'User Three',
 			objectType: 'files',
-			objectId: 5,
+			objectId: '5',
 			message: 'Third',
 			creationDateTime: Date.UTC(2016, 1, 3, 5, 0, 0)
 		};

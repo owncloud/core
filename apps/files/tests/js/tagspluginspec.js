@@ -29,7 +29,7 @@ describe('OCA.Files.TagsPlugin tests', function() {
 		OCA.Files.TagsPlugin.attach(fileList);
 
 		testFiles = [{
-			id: 1,
+			id: '1',
 			type: 'file',
 			name: 'One.txt',
 			path: '/subdir',

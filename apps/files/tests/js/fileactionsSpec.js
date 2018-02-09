@@ -79,7 +79,7 @@ describe('OCA.Files.FileActions tests', function() {
 
 		beforeEach(function() {
 			var fileData = {
-				id: 18,
+				id: '18',
 				type: 'file',
 				name: 'testName.txt',
 				mimetype: 'text/plain',
@@ -273,7 +273,7 @@ describe('OCA.Files.FileActions tests', function() {
 		beforeEach(function() {
 			clock = sinon.useFakeTimers();
 			var fileData = {
-				id: 18,
+				id: '18',
 				type: 'file',
 				name: 'testName.txt',
 				mimetype: 'text/plain',
@@ -318,7 +318,7 @@ describe('OCA.Files.FileActions tests', function() {
 		});
 		it('also triggers action handler when calling triggerAction()', function() {
 			var model = new OCA.Files.FileInfoModel({
-				id: 1,
+				id: '1',
 				name: 'Test.txt',
 				path: '/subdir',
 				mime: 'text/plain',
@@ -359,7 +359,7 @@ describe('OCA.Files.FileActions tests', function() {
 		var $tr;
 		beforeEach(function() {
 			var fileData = {
-				id: 18,
+				id: '18',
 				type: 'file',
 				name: 'testName.txt',
 				mimetype: 'text/plain',
@@ -408,7 +408,7 @@ describe('OCA.Files.FileActions tests', function() {
 		var $tr;
 		beforeEach(function() {
 			var fileData = {
-				id: 18,
+				id: '18',
 				type: 'file',
 				name: 'testName.txt',
 				path: '/anotherpath/there',
@@ -621,7 +621,7 @@ describe('OCA.Files.FileActions tests', function() {
 				var handleDownloadStub = sinon.stub(OCA.Files.Files, 'handleDownload');
 				var busyStub = sinon.stub(fileList, 'showFileBusyState');
 				var fileData = {
-					id: 18,
+					id: '18',
 					type: 'file',
 					name: 'testName.txt',
 					mimetype: 'text/plain',

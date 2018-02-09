@@ -36,7 +36,7 @@ describe('OC.Share.ShareDialogShareeListView', function () {
 		$('#testArea').append('<input id="mailNotificationEnabled" name="mailNotificationEnabled" type="hidden" value="yes">');
 
 		fileInfoModel = new OCA.Files.FileInfoModel({
-			id: 123,
+			id: '123',
 			name: 'shared_file_name.txt',
 			path: '/subdir',
 			size: 100,
@@ -93,7 +93,7 @@ describe('OC.Share.ShareDialogShareeListView', function () {
 		it('Renders shares', function() {
 			shareModel.set('shares', [{
 					id: 100,
-					item_source: 123,
+					item_source: '123',
 					permissions: 1,
 					share_type: OC.Share.SHARE_TYPE_USER,
 					share_with: 'user1',
@@ -101,7 +101,7 @@ describe('OC.Share.ShareDialogShareeListView', function () {
 					share_with_additional_info: 'user1@example.com'
 				}, {
 					id: 101,
-					item_source: 123,
+					item_source: '123',
 					permissions: 1,
 					share_type: OC.Share.SHARE_TYPE_GROUP,
 					share_with: 'group1',
@@ -128,7 +128,7 @@ describe('OC.Share.ShareDialogShareeListView', function () {
 		it('Checks cruds boxes when edit box checked', function () {
 			shareModel.set('shares', [{
 				id: 100,
-				item_source: 123,
+				item_source: '123',
 				permissions: 1,
 				share_type: OC.Share.SHARE_TYPE_USER,
 				share_with: 'user1',
@@ -143,7 +143,7 @@ describe('OC.Share.ShareDialogShareeListView', function () {
 		it('Checks edit box when create/update/delete are checked', function () {
 			shareModel.set('shares', [{
 				id: 100,
-				item_source: 123,
+				item_source: '123',
 				permissions: 1,
 				share_type: OC.Share.SHARE_TYPE_USER,
 				share_with: 'user1',
@@ -158,7 +158,7 @@ describe('OC.Share.ShareDialogShareeListView', function () {
 		it('shows cruds checkboxes when toggled', function () {
 			shareModel.set('shares', [{
 				id: 100,
-				item_source: 123,
+				item_source: '123',
 				permissions: 1,
 				share_type: OC.Share.SHARE_TYPE_USER,
 				share_with: 'user1',
@@ -173,7 +173,7 @@ describe('OC.Share.ShareDialogShareeListView', function () {
 			var notifStub = sinon.stub(OC.Notification, 'show');
 			shareModel.set('shares', [{
 				id: 100,
-				item_source: 123,
+				item_source: '123',
 				permissions: 1,
 				share_type: OC.Share.SHARE_TYPE_USER,
 				share_with: 'user1',
@@ -200,7 +200,7 @@ describe('OC.Share.ShareDialogShareeListView', function () {
 			var notifStub = sinon.stub(OC.dialogs, 'alert');
 			shareModel.set('shares', [{
 				id: 100,
-				item_source: 123,
+				item_source: '123',
 				permissions: 1,
 				share_type: OC.Share.SHARE_TYPE_USER,
 				share_with: 'user1',
