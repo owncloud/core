@@ -35,6 +35,7 @@ namespace OC;
 use InterfaSys\LogNormalizer\Normalizer;
 
 use \OCP\ILogger;
+use OCP\IUserSession;
 use OCP\Util;
 
 /**
@@ -292,12 +293,15 @@ class Log implements ILogger {
 
 					// check for user
 					if (!empty($logCondition['users'])) {
-						$user = \OC::$server->getUserSession()->getUser();
+						$userSession = \OC::$server->getUserSession();
+						if ($userSession instanceof IUserSession) {
+							$user = $userSession->getUser();
 
-						// if the user matches set the log condition to satisfied
-						if ($user !== null && in_array($user->getUID(), $logCondition['users'], true)) {
-							$this->logConditionSatisfied = true;
-							break;
+							// if the user matches set the log condition to satisfied
+							if ($user !== null && in_array($user->getUID(), $logCondition['users'], true)) {
+								$this->logConditionSatisfied = true;
+								break;
+							}
 						}
 					}
 				}
