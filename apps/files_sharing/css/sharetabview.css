@@ -1,292 +1,298 @@
 .app-files .shareTabView {
-  min-height: 100px;
+	min-height: 100px;
 }
 
 .shareTabView .oneline {
-  white-space: nowrap;
+	white-space: nowrap;
 }
 
 .shareTabView .shareWithLoading {
-  padding-left: 10px;
-  right: 30px;
-  top: 2px;
+	padding-left: 10px;
+	right       : 30px;
+	top         : 2px;
 }
 
 .shareTabView label {
-  white-space: nowrap;
+	white-space: nowrap;
 }
 
 .shareTabView input[type="checkbox"] {
-  margin: 0 3px 0 8px;
-  vertical-align: middle;
+	margin        : 0 3px 0 8px;
+	vertical-align: middle;
 }
 
 .shareTabView input[type="text"],
 .shareTabView input[type="password"] {
-  width: 94%;
-  margin-left: 0;
+	width      : 94%;
+	margin-left: 0;
 }
 
 .shareTabView input[type="text"].shareWithField,
 .shareTabView input[type="text"].emailField,
 .shareTabView input[type="text"].linkText {
-  width: 80%;
+	width: 80%;
 }
 
 .shareTabView form {
-  font-size: 100%;
-  margin-left: 0;
-  margin-right: 0;
+	font-size   : 100%;
+	margin-left : 0;
+	margin-right: 0;
 }
 
 #shareWithList {
-  list-style-type: none;
-  padding: 0 0 16px;
+	list-style-type: none;
+	padding        : 0 0 16px;
 }
 
 #shareWithList li {
-  padding-top: 5px;
-  padding-bottom: 5px;
-  font-weight: bold;
-  white-space: normal;
+	padding-top   : 5px;
+	padding-bottom: 5px;
+	font-weight   : bold;
+	white-space   : normal;
 }
 
-#shareWithList .unshare img,
-#shareWithList .showCruds img {
-  vertical-align: text-bottom;
-  /* properly align icons */
+#shareWithList .showCruds img,
+#shareWithList .unshare img {
+	vertical-align: text-bottom;
+	/* properly align icons */
 }
 
 #shareWithList label input[type=checkbox] {
-  margin-left: 0;
-  position: relative;
+	margin-left: 0;
+	position   : relative;
 }
 
 #shareWithList .username {
-  padding-right: 8px;
-  white-space: nowrap;
-  text-overflow: ellipsis;
-  max-width: 254px;
-  display: inline-block;
-  overflow: hidden;
-  vertical-align: middle;
+	padding-right : 8px;
+	white-space   : nowrap;
+	text-overflow : ellipsis;
+	max-width     : 254px;
+	display       : inline-block;
+	overflow      : hidden;
+	vertical-align: middle;
 }
 
 #shareWithList li label {
-  margin-right: 8px;
+	margin-right: 8px;
 }
 
 .shareTabView .icon-loading-small {
-  display: inline-block;
-  z-index: 1;
-  background-color: white;
-  padding: 2px 0;
+	display         : inline-block;
+	z-index         : 1;
+	background-color: white;
+	padding         : 2px 0;
 }
 
-.shareTabView .shareWithList .icon-loading-small,
-.shareTabView .linkShareView .icon-loading-small {
-  position: absolute;
+.shareTabView .linkShareView .icon-loading-small,
+.shareTabView .shareWithList .icon-loading-small {
+	position: absolute;
 }
 
 .shareTabView .linkPass .icon-loading-small {
-  margin-top: 9px;
+	margin-top: 9px;
 }
 
 .shareTabView .icon {
-  display: inline-block;
-  background-size: 16px 16px;
+	display        : inline-block;
+	background-size: 16px 16px;
 }
 
 .shareTabView .privacyWarningMessage {
-  margin-top: 20px;
+	margin-top: 20px;
 }
 
 .shareTabView .shareWithList .mailNotificationSpinner {
-  position: relative;
-  vertical-align: middle;
-  margin-right: 10px;
+	position      : relative;
+	vertical-align: middle;
+	margin-right  : 10px;
 }
 
 .subTabHeaders .tabHeaders {
-  margin-left: 0px;
-  margin-right: 0px;
+	margin-left : 0;
+	margin-right: 0;
 }
 
 .link-shares {
-  margin-bottom: 20px;
+	margin-bottom: 20px;
 }
 
 .link-entry {
-  display: flex;
-  align-items: center;
-  min-height: 50px;
-  position: relative;
+	display    : flex;
+	align-items: center;
+	min-height : 50px;
+	position   : relative;
 }
 
 .link-entry:not(:last-child) {
-  border-bottom: 1px solid #eee;
+	border-bottom: 1px solid #eee;
 }
 
 .link-entry .socialShareContainer {
-  position: absolute;
-  right: 0;
-  top: -20px;
-  background-color: rgba(0, 0, 0, 0.5);
-  padding: 0 2px 2px 5px;
-  border-radius: 3px;
+	position        : absolute;
+	right           : 0;
+	top             : -20px;
+	background-color: rgba(0, 0, 0, 0.5);
+	padding         : 0 2px 2px 5px;
+	border-radius   : 3px;
 }
 
 .link-entry--icon {
-  height: 32px;
-  width: 32px;
-  background-color: #b4b4b4;
-  background-position: 8px 8px;
-  border-radius: 50%;
-  margin-right: 10px;
-  flex-shrink: 0;
+	height             : 32px;
+	width              : 32px;
+	background-color   : #b4b4b4;
+	background-position: 8px 8px;
+	border-radius      : 50%;
+	margin-right       : 10px;
 }
 
 .link-entry--title {
-  flex-grow: 1;
-  font-weight: bold;
+	flex-grow  : 1;
+	font-weight: bold;
 }
 
 .link-entry--icon-button {
-  margin-left: 5px;
-  opacity: .333;
-  -webkit-transition: opacity .25s;
-  -moz-transition: opacity .25s;
-  -ms-transition: opacity .25s;
-  -o-transition: opacity .25s;
-  transition: opacity .25s;
+	margin-left       : 5px;
+	opacity           : 0.333;
+	-webkit-transition: opacity 0.25s;
+	-moz-transition   : opacity 0.25s;
+	-ms-transition    : opacity 0.25s;
+	-o-transition     : opacity 0.25s;
+	transition        : opacity 0.25s;
 }
 
 .link-entry--icon-button:hover {
-  opacity: 1;
+	opacity: 1;
 }
 
 .link-entry--icon-button span {
-  cursor: pointer;
+	cursor: pointer;
 }
 
 /* -------------------------------------------------- USER & GROUP SHARES --- */
 
 .user-shares {
-  margin: 20px -15px;
+	margin: 20px -15px;
 }
 
 .user-share {
-  transition: all 0.25s ease;
-  padding: 0 15px;
+	transition: all 0.25s ease;
+	padding   : 0 15px;
 }
 
 .user-share .icon-settings-dark {
-  transition: all 0.25s ease;
-  opacity: .25;
+	transition: all 0.25s ease;
+	opacity   : 0.25;
 }
 
 .user-share.-active,
 .user-share:hover {
-  background-color: #eee;
+	background-color: #eee;
 }
 
 .user-share.-active .icon-settings-dark,
 .user-share:hover .icon-settings-dark {
-  opacity: .25;
+	opacity: 0.25;
 }
 
 .user-share.-active .user-share--dropdown {
-  height: 30px;
+	height: 30px;
 }
 
 .user-share:not(:last-child) {
-  border-bottom: 1px solid #eee;
+	border-bottom: 1px solid #eee;
 }
 
 .user-share .icon-settings-dark {
-  opacity: 0;
+	opacity: 0;
 }
 
 .user-share--user {
-  display: flex;
-  align-items: center;
+	display    : flex;
+	align-items: center;
 }
 
 .user-share--title {
-  font-weight: bold;
-  margin-right: 5px;
+	font-weight : bold;
+	margin-right: 5px;
 }
 
 .user-share--main {
-  display: flex;
-  align-items: center;
-  min-height: 50px;
-  justify-content: space-between;
+	display        : flex;
+	align-items    : center;
+	min-height     : 50px;
+	justify-content: space-between;
 }
 
 .user-share--checkbox:not(:first-child) {
-  margin-left: 5px;
+	margin-left: 5px;
 }
 
 .user-share--dropdown {
-  overflow: hidden;
-  height: 0;
-  transition: height 0.25s ease-in-out;
-  display: flex;
-  justify-content: space-between;
+	overflow       : hidden;
+	height         : 0;
+	transition     : height 0.25s ease-in-out;
+	display        : flex;
+	justify-content: space-between;
 }
 
 .user-share--permission-preview {
-  white-space: nowrap;
-  overflow: hidden;
-  -ms-text-overflow: ellipsis;
-  text-overflow: ellipsis;
+	white-space      : nowrap;
+	overflow         : hidden;
+	-ms-text-overflow: ellipsis;
+	text-overflow    : ellipsis;
 }
 
 .user-share--permission-preview li {
-  display: inline;
-  font-size: 12px;
+	display  : inline;
+	font-size: 12px;
 }
 
 .user-share--permission-preview li:first-child:before {
-  content: '(';
+	content: "(";
 }
 
 .user-share--permission-preview li:not(:last-child):after {
-  content: ',';
+	content: ",";
 }
 
 .user-share--permission-preview li:last-child:after {
-  content: ')';
+	content: ")";
 }
 
 .user-share--permission-list li {
-  display: inline;
+	display: inline;
 }
 
 .user-share--toggle-dropdown {
-  cursor: pointer;
+	cursor: pointer;
 }
 
 /* ---------------------------------------------------- PUBLIC LINK MODAL --- */
 
 .public-link-modal--item {
-  margin-bottom: 20px;
+	margin-bottom: 20px;
 }
 
-.public-link-modal--label,
-.public-link-modal--input {
-  display: block;
-  width: calc(100% - 15px) !important;
+.public-link-modal--input,
+.public-link-modal--label {
+	position: relative;
+	display : block;
+	width   : calc(100% - 15px) !important;
+}
+
+.public-link-modal--input[type="password"],
+.public-link-modal--input.datepicker {
+	max-width: 50%;
+	min-width: 175px;
 }
 
 .minify {
-  width: 1px;
-  height: 1px;
-  overflow: hidden;
-  opacity: 0;
+	width   : 1px;
+	height  : 1px;
+	overflow: hidden;
+	opacity : 0;
 }
 
 .minify input {
-  font-size: 1px;
+	font-size: 1px;
 }

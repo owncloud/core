@@ -88,6 +88,19 @@ class MailNotifications {
 	}
 
 	/**
+	 * split a list of comma or semicolon separated email addresses
+	 *
+	 * @param string $mailsstring email addresses
+	 * @return array list of individual addresses
+	 */
+	private function _mailStringToArray($mailsstring) {
+		$sanatised  = str_replace([', ', '; ', ',', ';', ' '], ',', $mailsstring);
+		$mail_array = explode(',', $sanatised);
+
+		return $mail_array;
+	}
+
+	/**
 	 * inform users if a file was shared with them
 	 *
 	 * @param IUser[] $recipientList list of recipients
@@ -156,26 +169,42 @@ class MailNotifications {
 
 	}
 
+	public function sendLinkShareMail($recipient, $filename, $link, $expiration) {
+		$subject = (string)$this->l->t('%s shared »%s« with you', [$this->senderDisplayName, $filename]);
+		list($htmlBody, $textBody) = $this->createMailBody($filename, $link, $expiration);
+
+		return $this->sendLinkShareMailFromBody($recipient, $subject, $htmlBody, $textBody);
+	}
+
 	/**
 	 * inform recipient about public link share
 	 *
 	 * @param string $recipient recipient email address
 	 * @param string $filename the shared file
 	 * @param string $link the public link
+	 * @param array $options allows ['cc'] and ['bcc'] recipients
 	 * @param int $expiration expiration date (timestamp)
 	 * @return string[] $result of failed recipients
 	 */
-	public function sendLinkShareMail($recipient, $filename, $link, $expiration) {
-		$subject = (string)$this->l->t('%s shared »%s« with you', [$this->senderDisplayName, $filename]);
-		list($htmlBody, $textBody) = $this->createMailBody($filename, $link, $expiration);
+	public function sendLinkShareMailFromBody($recipient, $subject, $htmlBody, $textBody, $options = array()) {
 
-		$recipient = str_replace([', ', '; ', ',', ';', ' '], ',', $recipient);
-		$recipients = explode(',', $recipient);
+		$recipients    = $this->_mailStringToArray($recipient);
+		$ccRecipients  = (isset($options['cc']) && $options['cc'] !== '') ? $this->_mailStringToArray($options['cc']) : null;
+		$bccRecipients = (isset($options['bcc']) && $options['bcc'] !== '') ? $this->_mailStringToArray($options['bcc']) : null;
+
 		try {
 			$message = $this->mailer->createMessage();
 			$message->setSubject($subject);
 			$message->setTo($recipients);
-			$message->setHtmlBody($htmlBody);
+			if ($htmlBody !== null) {
+				$message->setHtmlBody($htmlBody);
+			}
+			if ($bccRecipients !== null) {
+				$message->setBcc($bccRecipients);
+			}
+			if ($ccRecipients !== null) {
+				$message->setCc($ccRecipients);
+			}
 			$message->setPlainBody($textBody);
 			$message->setFrom([
 				Util::getDefaultEmailAddress('sharing-noreply') =>
@@ -204,7 +233,7 @@ class MailNotifications {
 	 * @param string $prefix prefix of mail template files
 	 * @return array an array of the html mail body and the plain text mail body
 	 */
-	private function createMailBody($filename, $link, $expiration, $prefix = '') {
+	public function createMailBody($filename, $link, $expiration, $prefix = '') {
 		$formattedDate = $expiration ? $this->l->l('date', $expiration) : null;
 
 		$html = new \OC_Template('core', $prefix . 'mail', '');
