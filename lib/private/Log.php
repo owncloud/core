@@ -287,6 +287,9 @@ class Log implements ILogger {
 						// if token is found in the request change set the log condition to satisfied
 						if ($request && hash_equals($logCondition['shared_secret'], $request->getParam('log_secret'))) {
 							$this->logConditionSatisfied = true;
+							if (!empty($logCondition['logfile'])) {
+								$logConditionFile = $logCondition['logfile'];
+							}
 							break;
 						}
 					}
@@ -300,6 +303,9 @@ class Log implements ILogger {
 							// if the user matches set the log condition to satisfied
 							if ($user !== null && in_array($user->getUID(), $logCondition['users'], true)) {
 								$this->logConditionSatisfied = true;
+								if (!empty($logCondition['logfile'])) {
+									$logConditionFile = $logCondition['logfile'];
+								}
 								break;
 							}
 						}
