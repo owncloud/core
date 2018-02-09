@@ -116,7 +116,7 @@ interface IManager {
 	/**
 	 * Get shares shared with $userId for specified share types.
 	 * Filter by $node if provided
-	 * 
+	 *
 	 * @param string $userId
 	 * @param int[] $shareTypes - ref \OC\Share\Constants[]
 	 * @param Node|null $node
@@ -230,11 +230,38 @@ interface IManager {
 
 	/**
 	 * Is password on public link requires
+	 * NOTE: This method is deprecated and will fallback to the "shareApiLinkEnforcePasswordReadOnly"
 	 *
 	 * @return bool
 	 * @since 9.0.0
+	 * @see IManager::shareApiLinkEnforcePasswordReadOnly()
+	 * @deprecated
 	 */
 	public function shareApiLinkEnforcePassword();
+
+	/**
+	 * Is password enforced for read-only shares?
+	 *
+	 * @return bool true if password is enforced, false otherwise
+	 * @since 10.0.8
+	 */
+	public function shareApiLinkEnforcePasswordReadOnly();
+
+	/**
+	 * Is password enforced for read & write shares?
+	 *
+	 * @return bool true if password is enforced, false otherwise
+	 * @since 10.0.8
+	 */
+	public function shareApiLinkEnforcePasswordReadWrite();
+
+	/**
+	 * Is password enforced for write-only shares?
+	 *
+	 * @return bool true if password is enforced, false otherwise
+	 * @since 10.0.8
+	 */
+	public function shareApiLinkEnforcePasswordWriteOnly();
 
 	/**
 	 * Is default expire date enabled

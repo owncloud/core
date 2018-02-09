@@ -148,15 +148,6 @@ class Manager implements IManager {
 	 * @throws \Exception
 	 */
 	protected function verifyPassword($password) {
-		if ($password === null) {
-			// No password is set, check if this is allowed.
-			if ($this->shareApiLinkEnforcePassword()) {
-				throw new \InvalidArgumentException('Passwords are enforced for link shares');
-			}
-
-			return;
-		}
-
 		// Let others verify the password
 		$accepted = true;
 		$message = '';
@@ -174,6 +165,23 @@ class Manager implements IManager {
 			'OCP\Share::validatePassword',
 			new GenericEvent(null, ['password' => $password])
 		);
+	}
+
+	/**
+	 * Check if a password must be enforced if the shared has those permissions
+	 * @param int $permissions \OCP\Constants::PERMISSION_* ("|" can be use for sets of permissions)
+	 * @return bool true if the password must be enforced, false otherwise
+	 */
+	protected function passwordMustBeEnforced($permissions) {
+		$roEnforcement = $permissions === \OCP\Constants::PERMISSION_READ && $this->shareApiLinkEnforcePasswordReadOnly();
+		$woEnforcement = $permissions === \OCP\Constants::PERMISSION_CREATE && $this->shareApiLinkEnforcePasswordWriteOnly();
+		// use read & write enforcement for the rest of the cases
+		$rwEnforcement = ($permissions !== \OCP\Constants::PERMISSION_READ && $permissions !== \OCP\Constants::PERMISSION_CREATE) && $this->shareApiLinkEnforcePasswordReadWrite();
+		if ($roEnforcement || $woEnforcement || $rwEnforcement) {
+			return true;
+		} else {
+			return false;
+		}
 	}
 
 	/**
@@ -585,7 +593,11 @@ class Manager implements IManager {
 			$this->validateExpirationDate($share);
 
 			//Verify the password
-			$this->verifyPassword($share->getPassword());
+			if ($this->passwordMustBeEnforced($share->getPermissions()) && $share->getPassword() === null) {
+				throw new \InvalidArgumentException('Passwords are enforced for link shares');
+			} else {
+				$this->verifyPassword($share->getPassword());
+			}
 
 			// If a password is set. Hash it!
 			if ($share->getPassword() !== null) {
@@ -697,9 +709,14 @@ class Manager implements IManager {
 			$this->linkCreateChecks($share);
 
 			// Password updated.
-			if ($share->getPassword() !== $originalShare->getPassword()) {
+			if ($share->getPassword() !== $originalShare->getPassword() ||
+					$share->getPermissions() !== $originalShare->getPermissions()) {
 				//Verify the password
-				$this->verifyPassword($share->getPassword());
+				if ($this->passwordMustBeEnforced($share->getPermissions()) && $share->getPassword() === null) {
+					throw new \InvalidArgumentException('Passwords are enforced for link shares');
+				} else {
+					$this->verifyPassword($share->getPassword(), $share->getPermissions());
+				}
 
 				// If a password is set. Hash it!
 				if ($share->getPassword() !== null) {
@@ -1251,12 +1268,39 @@ class Manager implements IManager {
 	}
 
 	/**
-	 * Is password on public link requires
+	 * Is password on public link requires (fallback to shareApiLinkEnforcePasswordReadOnly)
 	 *
 	 * @return bool
 	 */
 	public function shareApiLinkEnforcePassword() {
-		return $this->config->getAppValue('core', 'shareapi_enforce_links_password', 'no') === 'yes';
+		return $this->shareApiLinkEnforcePasswordReadOnly();
+	}
+
+	/**
+	 * Is password enforced for read-only shares?
+	 *
+	 * @return bool
+	 */
+	public function shareApiLinkEnforcePasswordReadOnly() {
+		return $this->config->getAppValue('core', 'shareapi_enforce_links_password_read_only', 'no') === 'yes';
+	}
+
+	/**
+	 * Is password enforced for read & write shares?
+	 *
+	 * @return bool
+	 */
+	public function shareApiLinkEnforcePasswordReadWrite() {
+		return $this->config->getAppValue('core', 'shareapi_enforce_links_password_read_write', 'no') === 'yes';
+	}
+
+	/**
+	 * Is password enforced for write-only shares?
+	 *
+	 * @return bool
+	 */
+	public function shareApiLinkEnforcePasswordWriteOnly() {
+		return $this->config->getAppValue('core', 'shareapi_enforce_links_password_write_only', 'no') === 'yes';
 	}
 
 	/**

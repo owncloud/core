@@ -679,8 +679,12 @@ class Util {
 
 	/**
 	 * check if a password is required for each public link
+	 * This is deprecated due to not reflecting all the possibilities now. Falling back to
+	 * enforce password for read-only links. Note that read & write or write-only options won't
+	 * be considered here
 	 * @return boolean
 	 * @since 7.0.0
+	 * @deprecated
 	 */
 	public static function isPublicLinkPasswordRequired() {
 		return \OC_Util::isPublicLinkPasswordRequired();
