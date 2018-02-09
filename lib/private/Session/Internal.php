@@ -95,6 +95,7 @@ class Internal extends Session {
 	public function clear() {
 		session_unset();
 		$this->regenerateId();
+		@session_destroy();
 		@session_start();
 		$_SESSION = [];
 	}
