@@ -894,7 +894,7 @@
 		elementToFile: function($el){
 			$el = $($el);
 			var data = {
-				id: parseInt($el.attr('data-id'), 10),
+				id: $el.attr('data-id'),
 				name: $el.attr('data-file'),
 				mimetype: $el.attr('data-mime'),
 				mtime: parseInt($el.attr('data-mtime'), 10),
@@ -1859,7 +1859,7 @@
 		remove: function(name, options){
 			options = options || {};
 			var fileEl = this.findFileEl(name);
-			var fileId = fileEl.data('id');
+			var fileId = fileEl.attr('data-id');
 			var index = fileEl.index();
 			if (!fileEl.length) {
 				return null;
