@@ -24,5 +24,8 @@
 	<dependencies>
 		<owncloud min-version="10.0" max-version="10.0" />
 	</dependencies>
+	<settings>
+		<personal>OCA\notifications_mail\Panels\Personal\EmailNotificationsPanel</personal>
+	</settings>
 	<use-migrations>true</use-migrations>
 </info>

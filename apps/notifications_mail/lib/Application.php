@@ -26,6 +26,7 @@ use OCP\IContainer;
 use OCP\Notification\Events\AbstractRegisterConsumerEvent;
 use OCA\notifications_mail\NotificationSender;
 use OCA\notifications_mail\NotificationConsumer;
+use OCA\notifications_mail\Controller\NotificationOptionsController;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class Application extends App {
@@ -51,6 +52,15 @@ class Application extends App {
 				$server->getUserManager(),
 				$server->getLogger(),
 				$server->getURLGenerator()
+			);
+		});
+
+		$container->registerService(NotificationOptionsController::class, function (IContainer $c) {
+			$server = $c->getServer();
+			return new NotificationOptionsController(
+				$server->getUserSession(),
+				$server->getConfig(),
+				$server->getL10N('notifications_mail')
 			);
 		});
 
