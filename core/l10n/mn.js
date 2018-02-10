@@ -14,8 +14,8 @@ OC.L10N.register(
     "Edit" : "Засах",
     "Remove" : "Устгах",
     "Password" : "Нууц үг",
-    "Save" : "Хадгалах",
     "Share" : "Түгээх",
+    "Save" : "Хадгалах",
     "Delete" : "Устгах",
     "Username" : "Хэрэглэгчийн нэр"
 },

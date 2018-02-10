@@ -28,7 +28,6 @@ OC.L10N.register(
     "Cancel" : "రద్దుచేయి",
     "Continue" : "కొనసాగించు",
     "Error" : "పొరపాటు",
-    "Expiration date" : "కాలం చెల్లు తేదీ",
     "Name" : "పేరు",
     "Password" : "సంకేతపదం",
     "Save" : "భద్రపరచు",
