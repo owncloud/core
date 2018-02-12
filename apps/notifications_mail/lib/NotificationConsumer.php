@@ -78,7 +78,7 @@ class NotificationConsumer implements IApp {
 
 		$splittedEmails = $this->sender->validateEmails([$targetEmail]);
 		if (!empty($splittedEmails['valid'])) {
-			$this->sender->sendNotification($notification, $this->urlGenerator->getAbsoluteURL(''), $splittedEmails['valid']);
+			$this->sender->sendNotification($notification, $this->urlGenerator->getAbsoluteURL('/'), $splittedEmails['valid']);
 		}
 
 		if (!empty($splittedEmails['invalid'])) {
