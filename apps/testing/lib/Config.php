@@ -67,4 +67,44 @@ class Config {
 
 		return new \OC_OCS_Result();
 	}
+
+	/**
+	 * @return \OC_OCS_Result
+	 */
+	public function setAppValues() {
+		$values = $this->request->getParam('values');
+
+		if (is_array($values)) {
+			foreach ($values as $appEntry) {
+				if (is_array($appEntry)) {
+					$this->config->setAppValue(
+						$appEntry['appid'],
+						$appEntry['configkey'],
+						$appEntry['value']);
+				}
+			}
+		}
+
+		return new \OC_OCS_Result();
+	}
+
+	/**
+	 * @return \OC_OCS_Result
+	 */
+	public function deleteAppValues() {
+		$values = $this->request->getParam('values');
+
+		if (is_array($values)) {
+			foreach ($values as $appEntry) {
+				if (is_array($appEntry)) {
+					$this->config->deleteAppValue(
+						$appEntry['appid'],
+						$appEntry['configkey']
+					);
+				}
+			}
+		}
+
+		return new \OC_OCS_Result();
+	}
 }

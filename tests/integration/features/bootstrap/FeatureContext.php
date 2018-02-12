@@ -42,6 +42,6 @@ class FeatureContext implements Context, SnippetAcceptingContext {
 		$this->getCapabilitiesCheckResponse();
 		$this->savedCapabilitiesXml = $this->getCapabilitiesXml();
 		// Set the required starting values for testing
-		$this->setupCommonSharingConfigs();
+		$this->setCapabilities($this->getCommonSharingConfigs());
 	}
 }
