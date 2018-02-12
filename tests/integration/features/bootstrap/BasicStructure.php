@@ -480,6 +480,7 @@ trait BasicStructure {
 	}
 
 	/**
+	 * @When user :user modifies text of :filename with text :text using the API
 	 * @Given user :user has modified text of :filename with text :text
 	 * @param string $user
 	 * @param string $filename

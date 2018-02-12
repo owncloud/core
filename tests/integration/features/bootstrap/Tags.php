@@ -234,7 +234,8 @@ trait Tags {
 	}
 
 	/**
-	 * @When :user edits the tag with name :oldName and sets its name to :newName using the API
+	 * @When user :user edits the tag with name :oldName and sets its name to :newName using the API
+	 * @Given user :user has edited the tag with name :oldName and set its name to :newName
 	 * @param string $user
 	 * @param string $oldName
 	 * @param string $newName
@@ -248,7 +249,8 @@ trait Tags {
 	}
 
 	/**
-	 * @When :user edits the tag with name :oldName and sets its groups to :groups using the API
+	 * @When user :user edits the tag with name :oldName and sets its groups to :groups using the API
+	 * @Given user :user has edited the tag with name :oldName and set its groups to :groups
 	 * @param string $user
 	 * @param string $oldName
 	 * @param string $groups
@@ -262,7 +264,8 @@ trait Tags {
 	}
 
 	/**
-	 * @Given :user deletes the tag with name :name using the API
+	 * @When user :user deletes the tag with name :name using the API
+	 * @Given user :user has deleted the tag with name :name
 	 * @param string $user
 	 * @param string $name
 	 */
@@ -408,6 +411,7 @@ trait Tags {
 
 	/**
 	 * @When user :user removes the tag :tagName from :fileName shared by :shareUser using the API
+	 * @Given user :user has removed the tag :tagName from :fileName shared by :shareUser
 	 * @param string $user
 	 * @param string $tagName
 	 * @param string $fileName

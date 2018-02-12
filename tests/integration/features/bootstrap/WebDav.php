@@ -338,6 +338,7 @@ trait WebDav {
 	 }
 
 	/**
+	 * @When /^user "([^"]*)" sets property "([^"]*)" of (file|folder|entry) "([^"]*)" to "([^"]*)" using the API$/
 	 * @Given /^user "([^"]*)" has set property "([^"]*)" of (file|folder|entry) "([^"]*)" to "([^"]*)"$/
 	 * @param string $user
 	 * @param string $propertyName
@@ -908,6 +909,7 @@ trait WebDav {
 	}
 
 	/**
+	 * @When user :user uploads file with content :content to :destination using the API
 	 * @Given user :user has uploaded file with content :content to :destination
 	 * @param string $user
 	 * @param string $content
@@ -959,12 +961,7 @@ trait WebDav {
 	 * @param string $user
 	 */
 	public function fileHasBeenDeleted($file, $user) {
-		try {
-			$this->response = $this->makeDavRequest($user, 'DELETE', $file, []);
-		} catch (BadResponseException $e) {
-			// 4xx and 5xx responses cause an exception
-			$this->response = $e->getResponse();
-		}
+		$this->userDeletesFile($user, 'file', $file);
 	}
 
 	/**
@@ -1309,7 +1306,7 @@ trait WebDav {
 	}
 
 	/**
-	 * @Given /^user "([^"]*)" file "([^"]*)" should have the previously stored id$/
+	 * @Then /^user "([^"]*)" file "([^"]*)" should have the previously stored id$/
 	 * @param string $user
 	 * @param string $path
 	 * @return void

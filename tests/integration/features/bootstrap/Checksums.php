@@ -92,27 +92,6 @@ trait Checksums {
 	}
 
 	/**
-	 * @Given user :user copied file :source to :destination
-	 * @param string $user
-	 * @param string $source
-	 * @param string $destination
-	 */
-	public function userCopiedFileTo($user, $source, $destination) {
-		$client = new Client();
-		$request = $client->createRequest(
-			'COPY',
-			substr($this->baseUrl, 0, -4) . $this->davPath . $source,
-			[
-				'auth' => $this->getAuthOptionForUser($user),
-				'headers' => [
-					'Destination' => substr($this->baseUrl, 0, -4) . $this->davPath . $destination,
-				],
-			]
-		);
-		$this->response = $client->send($request);
-	}
-
-	/**
 	 * @Then the webdav checksum should be empty
 	 */
 	public function theWebdavChecksumShouldBeEmpty()
