@@ -31,12 +31,6 @@ trait BasicStructure {
 	 */
 	private $regularUserPassword = '';
 
-	/**
-	 * @var string
-	 * @deprecated this var actually store[s|d] the password - better to use method getPasswordForUser()
-	 */
-	private $regularUser = '';
-
 	/** @var string */
 	private $currentUser = '';
 
@@ -64,8 +58,6 @@ trait BasicStructure {
 		$this->baseUrl = $baseUrl;
 		$this->adminUser = $admin;
 		$this->regularUserPassword = $regular_user_password;
-		// Set regularUser for backward-compatibility with old app tests that use BasicStructure
-		$this->regularUser = $regular_user_password;
 		$this->mailhogUrl = $mailhog_url;
 		$this->localBaseUrl = $this->baseUrl;
 		$this->remoteBaseUrl = $this->baseUrl;
@@ -107,15 +99,6 @@ trait BasicStructure {
 	 * @param string $user
 	 */
 	public function asUser($user) {
-		$this->currentUser = $user;
-	}
-
-	/**
-	 * @Given /^as an "([^"]*)"$/
-	 * @param string $user
-	 * @deprecated This step is not according to the latest standard - core usages have been changed
-	 */
-	public function asAn($user) {
 		$this->currentUser = $user;
 	}
 
