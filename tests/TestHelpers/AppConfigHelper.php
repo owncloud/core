@@ -79,15 +79,78 @@ class AppConfigHelper {
 		if ($savedState !== $testingState) {
 			return
 			[
-				'testingApp' => $testingApp,
-				'testingParameter' => $testingParameter,
-				'savedState' => $savedState
+				'appid' => $testingApp,
+				'configkey' => $testingParameter,
+				'value' => $savedState ? 'yes' : 'no'
 			];
 		} else {
 			return [];
 		}
 	}
-	
+	/**
+	 * @param string $baseUrl
+	 * @param string $user
+	 * @param string $password
+	 * @param array $capabilitiesArray[] with each array entry containing keys for:
+	 *                                   ['capabilitiesApp'] the "app" name in the capabilities response
+	 *                                   ['capabilitiesParameter'] the parameter name in the capabilities response
+	 *                                   ['testingApp'] the "app" name as understood by "testing"
+	 *                                   ['testingParameter'] the parameter name as understood by "testing"
+	 *                                   ['testingState'] boolean state the parameter must be set to for the test
+	 * @param string $savedCapabilitiesXml the original capabilities in XML format
+	 * @param int $apiVersion (1|2)
+	 * @return array of capabilities that were changed compared to $savedCapabilitiesXml
+	 */
+	public static function setCapabilities(
+		$baseUrl,
+		$user,
+		$password,
+		$capabilitiesArray,
+		$savedCapabilitiesXml,
+		$apiVersion = 1
+	) {
+		$appParameterValues = [];
+		$settingsChanged = [];
+
+		if (is_array($capabilitiesArray)) {
+			foreach ($capabilitiesArray as $capabilityToSet) {
+				$savedState = self::wasCapabilitySet(
+					$capabilityToSet['capabilitiesApp'],
+					$capabilityToSet['capabilitiesParameter'],
+					$savedCapabilitiesXml
+				);
+
+				// Always set each config value, because sometimes enabling one config
+				// also changes some sub-settings. So the "interim" state as we set
+				// the config values could be unexpectedly different from the original
+				// saved state.
+				$appParameterValues[] = [
+					'appid' => $capabilityToSet['testingApp'],
+					'configkey' => $capabilityToSet['testingParameter'],
+					'value' => $capabilityToSet['testingState'] ? 'yes' : 'no'
+				];
+
+				if ($savedState !== $capabilityToSet['testingState']) {
+					$settingsChanged[] = [
+						'appid' => $capabilityToSet['testingApp'],
+						'configkey' => $capabilityToSet['testingParameter'],
+						'value' => $savedState ? 'yes' : 'no'
+					];
+				}
+			}
+		}
+
+		self::modifyServerConfigs(
+			$baseUrl,
+			$user,
+			$password,
+			$appParameterValues,
+			$apiVersion
+		);
+
+		return $settingsChanged;
+	}
+
 	/**
 	 * @param string $xml of the capabilities
 	 * @param string $capabilitiesApp the "app" name in the capabilities response
@@ -190,5 +253,34 @@ class AppConfigHelper {
 			PHPUnit_Framework_Assert::assertEquals("100", self::getOCSResponse($response));
 		}
 	}
-	
+
+	/**
+	 * @param string $baseUrl
+	 * @param string $user
+	 * @param string $password
+	 * @param array $appParameterValues[] 'appid' 'configkey' and 'value'
+	 * @param int $apiVersion (1|2)
+	 * @return void
+	 */
+	public static function modifyServerConfigs(
+		$baseUrl,
+		$user,
+		$password, $appParameterValues, $apiVersion = 2
+	) {
+		$body = ['values' => $appParameterValues];
+		$response = OcsApiHelper::sendRequest(
+			$baseUrl,
+			$user,
+			$password,
+			'post',
+			"/apps/testing/api/v1/apps",
+			$body,
+			$apiVersion
+		);
+		PHPUnit_Framework_Assert::assertEquals("200", $response->getStatusCode());
+		if ($apiVersion === 1) {
+			PHPUnit_Framework_Assert::assertEquals("100", self::getOCSResponse($response));
+		}
+	}
+
 }
