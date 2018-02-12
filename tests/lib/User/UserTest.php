@@ -294,6 +294,45 @@ class UserTest extends TestCase {
 		$this->assertEquals($expected, $user->setDisplayName('Foo'));
 	}
 
+	public function provideNullorFalseData() {
+		return [
+			[null, null, false],
+			[null, true, false],
+			[null, true, true]
+		];
+	}
+
+	/**
+	 * @dataProvider provideNullorFalseData
+	 * @param $user
+	 * @param $backendinstance
+	 * @param $setDisplayName
+	 */
+	public function testCanChangeDisplayNameWhenNullSession($getUser, $backendinstance, $setDisplayName) {
+		$this->sessionUser->method('getUser')
+			->willReturn($getUser);
+		$backend = $this->getMockBuilder(Database::class)
+			->setMethods(['implementsActions'])
+			->getMock();
+
+		/** @var Account | \PHPUnit_Framework_MockObject_MockObject $account */
+		$account = $this->getMockBuilder(Account::class)
+			->setMethods(['getBackendInstance', 'getDisplayName', 'setDisplayName'])
+			->getMock();
+		if ($backendinstance !== null) {
+			$backendinstance = $backend;
+		}
+		$account->expects($this->any())->method('getBackendInstance')->willReturn($backendinstance);
+		$account->expects($this->any())->method('getDisplayName')->willReturn('admin');
+		$account->expects($this->any())->method('setDisplayName')->willReturn($setDisplayName);
+		$user = new User($account, $this->accountMapper, null, $this->config, null, null, $this->groupManager, null);
+		if ($setDisplayName !== true) {
+			$this->assertEquals($setDisplayName, $user->canChangeDisplayName());
+		} else {
+			$this->assertEquals(null, $user->canChangeDisplayName());
+		}
+	}
+
 	/**
 	 * don't allow display names containing whitespaces only
 	 */
