@@ -27,6 +27,7 @@ use Doctrine\DBAL\Platforms\MySqlPlatform;
 use Doctrine\DBAL\Platforms\OraclePlatform;
 use OCP\Files\IMimeTypeLoader;
 use OCP\IDBConnection;
+use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
 
 /**
  * Repairs file cache entry which path do not match the parent-child relationship
@@ -407,7 +408,11 @@ class RepairMismatchFileCachePath implements IRepairStep {
 			$values['fileid'] = $qb->createNamedParameter($reuseFileId);
 		}
 		$qb->insert('filecache')->values($values);
-		$qb->execute();
+		try {
+			$qb->execute();
+		} catch (UniqueConstraintViolationException $e) {
+			// Skip if the entry already exists
+		}
 
 		// If we reused the fileid then this is the id to return
 		if($reuseFileId !== null) {
