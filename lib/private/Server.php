@@ -357,7 +357,7 @@ class Server extends ServerContainer implements IServerContainer, IServiceLoader
 			return $userSession;
 		});
 
-		$this->registerService('\OC\Authentication\TwoFactorAuth\Manager', function (Server $c) {
+		$this->registerService('OC\Authentication\TwoFactorAuth\Manager', function (Server $c) {
 			return new \OC\Authentication\TwoFactorAuth\Manager($c->getAppManager(), $c->getSession(), $c->getConfig());
 		});
 
@@ -1065,7 +1065,7 @@ class Server extends ServerContainer implements IServerContainer, IServiceLoader
 	 * @return \OC\Authentication\TwoFactorAuth\Manager
 	 */
 	public function getTwoFactorAuthManager() {
-		return $this->query('\OC\Authentication\TwoFactorAuth\Manager');
+		return $this->query('OC\Authentication\TwoFactorAuth\Manager');
 	}
 
 	/**
@@ -1571,14 +1571,14 @@ class Server extends ServerContainer implements IServerContainer, IServiceLoader
 	 * @return IThemeService
 	 */
 	public function getThemeService() {
-		return $this->query('\OCP\Theme\IThemeService');
+		return $this->query('OCP\Theme\IThemeService');
 	}
 
 	/**
 	 * @return ITimeFactory
 	 */
 	public function getTimeFactory() {
-		return $this->query('\OCP\AppFramework\Utility\ITimeFactory');
+		return $this->query('OCP\AppFramework\Utility\ITimeFactory');
 	}
 
 	/**
