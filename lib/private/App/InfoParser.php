@@ -25,15 +25,22 @@
 
 namespace OC\App;
 
+use InvalidArgumentException;
+use OCP\App\AppNotFoundException;
+
 class InfoParser {
 
 	/**
 	 * @param string $file the xml file to be loaded
-	 * @return null|array where null is an indicator for an error
+	 * @return array
+	 * @throws AppNotFoundException if file does not exist
+	 * @throws InvalidArgumentException on malformed XML
 	 */
 	public function parse($file) {
-		if (!\file_exists($file)) {
-			return null;
+		if (!\is_file($file)) {
+			throw new AppNotFoundException(
+				sprintf('%s does not exist', $file)
+			);
 		}
 
 		\libxml_use_internal_errors(true);
@@ -43,12 +50,12 @@ class InfoParser {
 		\libxml_disable_entity_loader($loadEntities);
 		if ($xml === false) {
 			\libxml_clear_errors();
-			return null;
+			throw new InvalidArgumentException('Invalid XML');
 		}
 		$array = $this->xmlToArray($xml);
 
-		if ($array === null) {
-			return null;
+		if (!\is_array($array)) {
+			throw new InvalidArgumentException('Could not convert XML to array');
 		}
 
 		if (!\array_key_exists('info', $array)) {
@@ -129,9 +136,9 @@ class InfoParser {
 
 	/**
 	 * @param \SimpleXMLElement $xml
-	 * @return array
+	 * @return array|string
 	 */
-	public function xmlToArray($xml) {
+	protected function xmlToArray($xml) {
 		if (!$xml->children()) {
 			return (string)$xml;
 		}
