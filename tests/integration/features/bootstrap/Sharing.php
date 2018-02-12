@@ -626,26 +626,6 @@ trait Sharing {
 	public function userSharesFileWithUserUsingTheAPI(
 		$user1, $entry, $filepath, $user2, $withPerms = null, $permissions = null
 	) {
-		$this->fileOfUserHasBeenSharedWithUser(
-			$entry, $filepath, $user1, $user2, $withPerms, $permissions
-		);
-	}
-
-	/**
-	 * @Given /^(file|folder|entry) "([^"]*)" of user "([^"]*)" has been shared with user "([^"]*)"( with permissions ([\d]*))?$/
-	 *
-	 * @param string $entry unused
-	 * @param string $filepath
-	 * @param string $user1
-	 * @param string $user2
-	 * @param null $withPerms unused
-	 * @param int $permissions
-	 * @deprecated prefer using the gherkin forms for userSharesFileWithUserUsingTheAPI()
-	 * @return void
-	 */
-	public function fileOfUserHasBeenSharedWithUser(
-		$entry, $filepath, $user1, $user2, $withPerms = null, $permissions = null
-	) {
 		$fullUrl = $this->baseUrl . "v{$this->apiVersion}.php/apps/files_sharing/api/v{$this->sharingApiVersion}/shares" . "?path=$filepath";
 		$client = new Client();
 		$options = [];
@@ -696,7 +676,7 @@ trait Sharing {
 	 * @When /^user "([^"]*)" shares (file|folder|entry) "([^"]*)" with group "([^"]*)"( with permissions ([\d]*))? using the API$/
 	 * @Given /^user "([^"]*)" has shared (file|folder|entry) "([^"]*)" with group "([^"]*)"( with permissions ([\d]*))?$/
 	 *
-	 * @param string $user1
+	 * @param string $user
 	 * @param string $entry unused
 	 * @param string $filepath
 	 * @param string $group
@@ -705,27 +685,7 @@ trait Sharing {
 	 * @return void
 	 */
 	public function userSharesFileWithGroupUsingTheAPI(
-		$user1, $entry, $filepath, $group, $withPerms = null, $permissions = null
-	) {
-		$this->fileOfUserHasBeenSharedWithGroup(
-			$entry, $filepath, $user1, $group, $withPerms, $permissions
-		);
-	}
-
-	/**
-	 * @Given /^(file|folder|entry) "([^"]*)" of user "([^"]*)" has been shared with group "([^"]*)"( with permissions ([\d]*))?$/
-	 *
-	 * @param string $entry unused
-	 * @param string $filepath
-	 * @param string $user
-	 * @param string $group
-	 * @param null $withPerms unused
-	 * @param int $permissions
-	 * @deprecated prefer using the gherkin forms for userSharesFileWithGroupUsingTheAPI()
-	 * @return void
-	 */
-	public function fileOfUserHasBeenSharedWithGroup(
-		$entry, $filepath, $user, $group, $withPerms = null, $permissions = null
+		$user, $entry, $filepath, $group, $withPerms = null, $permissions = null
 	) {
 		$fullUrl = $this->baseUrl . "v{$this->apiVersion}.php/apps/files_sharing/api/v{$this->sharingApiVersion}/shares" . "?path=$filepath";
 		$client = new Client();
