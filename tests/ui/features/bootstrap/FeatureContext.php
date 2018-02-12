@@ -471,9 +471,9 @@ class FeatureContext extends RawMinkContext implements Context {
 				$this->getMinkParameter('base_url'),
 				"admin",
 				$this->getUserPassword("admin"),
-				$capabilitiesChange['testingApp'],
-				$capabilitiesChange['testingParameter'],
-				$capabilitiesChange['savedState'] ? 'yes' : 'no'
+				$capabilitiesChange['appid'],
+				$capabilitiesChange['configkey'],
+				$capabilitiesChange['value']
 			);
 		}
 		
