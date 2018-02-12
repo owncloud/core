@@ -124,13 +124,12 @@ class NotificationSender {
 		switch ($option) {
 			case "never":
 				return false;
-				break;
 			case "always":
 				return true;
-				break;
 			case "action":
 				return !empty($notification->getActions());
-				break;
+			default:
+				return false;
 		}
 	}
 }

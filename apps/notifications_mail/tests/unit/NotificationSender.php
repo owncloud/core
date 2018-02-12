@@ -105,6 +105,11 @@ class NotificationSenderTest extends TestCase {
 		$this->l10nFactory->method('get')->willReturn($mockedL10N);
 		$this->mailer->expects($this->once())->method('send');
 
+		$this->config->method('getUserValue')
+			->will($this->returnValueMap([
+				['userTest1', 'notifications_mail', 'email_sending_option', 'never', 'always']
+		]));
+
 		$sentMessage = $this->nsender->sendNotification($mockedNotification, 'http://test.server/oc', ['test@example.com']);
 
 		$this->assertEquals(['test@example.com' => null], $sentMessage->getTo());
@@ -115,9 +120,72 @@ class NotificationSenderTest extends TestCase {
 		$this->assertContains($notifId, $sentMessage->getSubject());
 
 		// notification's subject and message must be present in the email body, as well as the server url
-file_put_contents('/tmp/fooo', $sentMessage->getPlainBody());
 		$this->assertContains($mockedNotification->getParsedSubject(), $sentMessage->getPlainBody());
 		$this->assertContains($mockedNotification->getParsedMessage(), $sentMessage->getPlainBody());
 		$this->assertContains('http://test.server/oc', $sentMessage->getPlainBody());
+	}
+
+	public function testSendNotificationPrevented() {
+		$mockedNotification = $this->getMockBuilder('\OCP\Notification\INotification')->disableOriginalConstructor()->getMock();
+		$mockedNotification->method('getUser')->willReturn('userTest1');
+		$mockedNotification->method('getObjectType')->willReturn('test_obj_type');
+		$mockedNotification->method('getObjectId')->willReturn('202');
+		$mockedNotification->method('getParsedSubject')->willReturn('This is a parsed subject');
+		$mockedNotification->method('getParsedMessage')->willReturn('Parsed message is this');
+
+		$this->manager->method('prepare')->willReturn($mockedNotification);
+		$this->config->method('getUserValue')
+			->will($this->returnValueMap([
+				['userTest1', 'notifications_mail', 'email_sending_option', 'never', 'never']
+		]));
+
+		$sentMessage = $this->nsender->sendNotification($mockedNotification, 'http://test.server/oc', ['test@example.com']);
+		$this->assertFalse($sentMessage);
+	}
+
+	public function willSendNotificationProvider() {
+		$mockedAction = $this->getMockBuilder('\OCP\Notification\IAction')
+			->disableOriginalConstructor()
+			->getMock();
+		$mockedNotification = $this->getMockBuilder('\OCP\Notification\INotification')
+			->disableOriginalConstructor()
+			->getMock();
+		$mockedNotification->method('getUser')->willReturn('userTest1');
+		$mockedNotification->method('getObjectType')->willReturn('test_obj_type');
+		$mockedNotification->method('getObjectId')->willReturn('202');
+		$mockedNotification->method('getParsedSubject')->willReturn('This is a parsed subject');
+		$mockedNotification->method('getParsedMessage')->willReturn('Parsed message is this');
+		$mockedNotification->method('getActions')->willReturn([$mockedAction]);
+
+		$mockedNotification2 = $this->getMockBuilder('\OCP\Notification\INotification')
+			->disableOriginalConstructor()
+			->getMock();
+		$mockedNotification2->method('getUser')->willReturn('userTest1');
+		$mockedNotification2->method('getObjectType')->willReturn('test_obj_type');
+		$mockedNotification2->method('getObjectId')->willReturn('202');
+		$mockedNotification2->method('getParsedSubject')->willReturn('This is a parsed subject');
+		$mockedNotification2->method('getParsedMessage')->willReturn('Parsed message is this');
+
+		return [
+			[$mockedNotification, 'never', false],
+			[$mockedNotification, 'always', true],
+			[$mockedNotification, 'action', true],
+			[$mockedNotification, 'randomMissing', false],
+			[$mockedNotification2, 'never', false],
+			[$mockedNotification2, 'always', true],
+			[$mockedNotification2, 'action', false],
+			[$mockedNotification2, 'randomMissing', false],
+		];
+	}
+
+	/**
+	 * @dataProvider willSendNotificationProvider
+	 */
+	public function testWillSendNotification($notification, $configOption, $expectedValue) {
+		$this->config->method('getUserValue')
+			->will($this->returnValueMap([
+				['userTest1', 'notifications_mail', 'email_sending_option', 'never', $configOption],
+		]));
+		$this->assertEquals($expectedValue, $this->nsender->willSendNotification($notification));
 	}
 }

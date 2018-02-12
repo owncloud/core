@@ -54,7 +54,8 @@ class EmailNotificationsPanel implements ISettings {
 		];
 
 		if (!isset($possibleOptions[$emailSendingOption])) {
-			$emailSendingOption = $this->config->setUserValue($this->userSession->getUser()->getUID(), 'notifications_mail', 'email_sending_option', 'never');
+			$this->config->setUserValue($this->userSession->getUser()->getUID(), 'notifications_mail', 'email_sending_option', 'never');
+			$emailSendingOption = 'never';
 		}
 		$possibleOptions[$emailSendingOption]['selected'] = true;
 

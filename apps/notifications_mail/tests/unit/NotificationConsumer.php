@@ -48,7 +48,7 @@ class NotificationConsumerTest extends TestCase {
 		$this->consumer = new NotificationConsumer($this->sender, $this->userManager, $this->logger, $this->urlGenerator);
 	}
 
-	public function testNotifyNoActions() {
+	public function testNotifyWontSend() {
 		$mockedNotification = $this->getMockBuilder('\OCP\Notification\INotification')
 			->disableOriginalConstructor()
 			->getMock();
@@ -61,6 +61,7 @@ class NotificationConsumerTest extends TestCase {
 			->method('debug')
 			->with($this->stringContains('testobject#467 ignored'));
 
+		$this->sender->method('willSendNotification')->willReturn(false);
 		$this->sender->expects($this->never())
 			->method('sendNotification');
 
@@ -89,6 +90,7 @@ class NotificationConsumerTest extends TestCase {
 			->method('warning')
 			->with($this->stringContains('testobject#467 can\'t be sent'));
 
+		$this->sender->method('willSendNotification')->willReturn(true);
 		$this->sender->expects($this->never())
 			->method('sendNotification');
 
@@ -123,6 +125,7 @@ class NotificationConsumerTest extends TestCase {
 			->method('warning')
 			->with($this->stringContains('testobject#467 can\'t be sent'));
 
+		$this->sender->method('willSendNotification')->willReturn(true);
 		$this->sender->expects($this->never())
 			->method('sendNotification');
 
@@ -157,6 +160,7 @@ class NotificationConsumerTest extends TestCase {
 			->method('warning')
 			->with($this->stringContains('testobject#467 can\'t be sent'));
 
+		$this->sender->method('willSendNotification')->willReturn(true);
 		$this->sender->method('validateEmails')
 			->willReturn(['valid' => [], 'invalid' => ['wiiiiii']]);
 		$this->sender->expects($this->never())
@@ -200,6 +204,7 @@ class NotificationConsumerTest extends TestCase {
 		$this->logger->expects($this->never())
 			->method('critical');
 
+		$this->sender->method('willSendNotification')->willReturn(true);
 		$this->sender->method('validateEmails')
 			->willReturn(['valid' => ['we@we.we'], 'invalid' => []]);
 		$this->sender->expects($this->once())
@@ -207,5 +212,12 @@ class NotificationConsumerTest extends TestCase {
 			->with($mockedNotification, 'http://what.ever/oc', ['we@we.we']);
 
 		$this->consumer->notify($mockedNotification);
+	}
+
+	public function testGetCount() {
+		$mockedNotification = $this->getMockBuilder('\OCP\Notification\INotification')
+			->disableOriginalConstructor()
+			->getMock();
+		$this->assertEquals(0, $this->consumer->getCount($mockedNotification));
 	}
 }
