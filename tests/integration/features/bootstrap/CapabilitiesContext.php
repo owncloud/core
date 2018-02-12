@@ -64,49 +64,56 @@ class CapabilitiesContext implements Context, SnippetAcceptingContext {
 		$this->getCapabilitiesCheckResponse();
 		$this->savedCapabilitiesXml = $this->getCapabilitiesXml();
 		// Set the required starting values for testing
-		$this->setupCommonSharingConfigs();
-		$this->setupCommonFederationConfigs();
-		$this->setCapability(
-			'files_sharing',
-			'resharing',
-			'core',
-			'shareapi_allow_resharing',
-			true
+		$capabilitiesArray = $this->getCommonSharingConfigs();
+		$capabilitiesArray = array_merge($capabilitiesArray, $this->getCommonFederationConfigs());
+		$capabilitiesArray = array_merge(
+			$capabilitiesArray,
+			[
+				[
+					'capabilitiesApp' => 'files_sharing',
+					'capabilitiesParameter' => 'resharing',
+					'testingApp' => 'core',
+					'testingParameter' => 'shareapi_allow_resharing',
+					'testingState' => true
+				],
+				[
+					'capabilitiesApp' => 'files_sharing',
+					'capabilitiesParameter' => 'public@@@password@@@enforced',
+					'testingApp' => 'core',
+					'testingParameter' => 'shareapi_enforce_links_password',
+					'testingState' => false
+				],
+				[
+					'capabilitiesApp' => 'files_sharing',
+					'capabilitiesParameter' => 'public@@@send_mail',
+					'testingApp' => 'core',
+					'testingParameter' => 'shareapi_allow_public_notification',
+					'testingState' => false
+				],
+				[
+					'capabilitiesApp' => 'files_sharing',
+					'capabilitiesParameter' => 'public@@@social_share',
+					'testingApp' => 'core',
+					'testingParameter' => 'shareapi_allow_social_share',
+					'testingState' => true
+				],
+				[
+					'capabilitiesApp' => 'files_sharing',
+					'capabilitiesParameter' => 'public@@@expire_date@@@enabled',
+					'testingApp' => 'core',
+					'testingParameter' => 'shareapi_default_expire_date',
+					'testingState' => false
+				],
+				[
+					'capabilitiesApp' => 'files_sharing',
+					'capabilitiesParameter' => 'public@@@expire_date@@@enforced',
+					'testingApp' => 'core',
+					'testingParameter' => 'shareapi_enforce_expire_date',
+					'testingState' => false
+				]
+			]
 		);
-		$this->setCapability(
-			'files_sharing',
-			'public@@@password@@@enforced',
-			'core',
-			'shareapi_enforce_links_password',
-			false
-		);
-		$this->setCapability(
-			'files_sharing',
-			'public@@@send_mail',
-			'core',
-			'shareapi_allow_public_notification',
-			false
-		);
-		$this->setCapability(
-			'files_sharing',
-			'public@@@social_share',
-			'core',
-			'shareapi_allow_social_share',
-			true
-		);
-		$this->setCapability(
-			'files_sharing',
-			'public@@@expire_date@@@enabled',
-			'core',
-			'shareapi_default_expire_date',
-			false
-		);
-		$this->setCapability(
-			'files_sharing',
-			'public@@@expire_date@@@enforced',
-			'core',
-			'shareapi_enforce_expire_date',
-			false
-		);
+
+		$this->setCapabilities($capabilitiesArray);
 	}
 }

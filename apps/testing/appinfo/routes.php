@@ -48,6 +48,22 @@ API::register(
 	API::ADMIN_AUTH
 );
 
+API::register(
+	'post',
+	'/apps/testing/api/v1/apps',
+	[$config, 'setAppValues'],
+	'testing',
+	API::ADMIN_AUTH
+);
+
+API::register(
+	'delete',
+	'/apps/testing/api/v1/apps',
+	[$config, 'deleteAppValues'],
+	'testing',
+	API::ADMIN_AUTH
+);
+
 $locking = new Provisioning(
 	\OC::$server->getLockingProvider(),
 	\OC::$server->getDatabaseConnection(),

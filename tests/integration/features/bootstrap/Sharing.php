@@ -926,84 +926,88 @@ trait Sharing {
 	}
 
 	/**
-	 * @return void
+	 * @return array of common sharing capability settings for testing
 	 */
-	protected function setupCommonSharingConfigs() {
-		$this->setCapability(
-			'files_sharing',
-			'api_enabled',
-			'core',
-			'shareapi_enabled',
-			true
-		);
-		$this->setCapability(
-			'files_sharing',
-			'public@@@enabled',
-			'core',
-			'shareapi_allow_links',
-			true
-		);
-		$this->setCapability(
-			'files_sharing',
-			'public@@@upload',
-			'core',
-			'shareapi_allow_public_upload',
-			true
-		);
-		$this->setCapability(
-			'files_sharing',
-			'group_sharing',
-			'core',
-			'shareapi_allow_group_sharing',
-			true
-		);
-		$this->setCapability(
-			'files_sharing',
-			'share_with_group_members_only',
-			'core',
-			'shareapi_only_share_with_group_members',
-			false
-		);
-		$this->setCapability(
-			'files_sharing',
-			'share_with_membership_groups_only',
-			'core',
-			'shareapi_only_share_with_membership_groups',
-			false
-		);
-		$this->setCapability(
-			'files_sharing',
-			'user_enumeration@@@enabled',
-			'core',
-			'shareapi_allow_share_dialog_user_enumeration',
-			true
-		);
-		$this->setCapability(
-			'files_sharing',
-			'user_enumeration@@@group_members_only',
-			'core',
-			'shareapi_share_dialog_user_enumeration_group_members',
-			false
-		);
+	protected function getCommonSharingConfigs() {
+		return [
+			[
+				'capabilitiesApp' => 'files_sharing',
+				'capabilitiesParameter' => 'api_enabled',
+				'testingApp' => 'core',
+				'testingParameter' => 'shareapi_enabled',
+				'testingState' => true
+			],
+			[
+				'capabilitiesApp' => 'files_sharing',
+				'capabilitiesParameter' => 'public@@@enabled',
+				'testingApp' => 'core',
+				'testingParameter' => 'shareapi_allow_links',
+				'testingState' => true
+			],
+			[
+				'capabilitiesApp' => 'files_sharing',
+				'capabilitiesParameter' => 'public@@@upload',
+				'testingApp' => 'core',
+				'testingParameter' => 'shareapi_allow_public_upload',
+				'testingState' => true
+			],
+			[
+				'capabilitiesApp' => 'files_sharing',
+				'capabilitiesParameter' => 'group_sharing',
+				'testingApp' => 'core',
+				'testingParameter' => 'shareapi_allow_group_sharing',
+				'testingState' => true
+			],
+			[
+				'capabilitiesApp' => 'files_sharing',
+				'capabilitiesParameter' => 'share_with_group_members_only',
+				'testingApp' => 'core',
+				'testingParameter' => 'shareapi_only_share_with_group_members',
+				'testingState' => false
+			],
+			[
+				'capabilitiesApp' => 'files_sharing',
+				'capabilitiesParameter' => 'share_with_membership_groups_only',
+				'testingApp' => 'core',
+				'testingParameter' => 'shareapi_only_share_with_membership_groups',
+				'testingState' => false
+			],
+			[
+				'capabilitiesApp' => 'files_sharing',
+				'capabilitiesParameter' => 'user_enumeration@@@enabled',
+				'testingApp' => 'core',
+				'testingParameter' => 'shareapi_allow_share_dialog_user_enumeration',
+				'testingState' => true
+			],
+			[
+				'capabilitiesApp' => 'files_sharing',
+				'capabilitiesParameter' => 'user_enumeration@@@group_members_only',
+				'testingApp' => 'core',
+				'testingParameter' => 'shareapi_share_dialog_user_enumeration_group_members',
+				'testingState' => false
+			],
+		];
 	}
 
 	/**
-	 * @return void
+	 * @return array of common federation capability settings for testing
 	 */
-	protected function setupCommonFederationConfigs() {
-		$this->setCapability(
-			'federation',
-			'outgoing',
-			'files_sharing',
-			'outgoing_server2server_share_enabled',
-			true
-		);
-		$this->setCapability(
-			'federation',
-			'incoming',
-			'files_sharing',
-			'incoming_server2server_share_enabled',
-			true
-		);
+	protected function getCommonFederationConfigs() {
+		return [
+			[
+				'capabilitiesApp' => 'federation',
+				'capabilitiesParameter' => 'outgoing',
+				'testingApp' => 'files_sharing',
+				'testingParameter' => 'outgoing_server2server_share_enabled',
+				'testingState' => true
+			],
+			[
+				'capabilitiesApp' => 'federation',
+				'capabilitiesParameter' => 'incoming',
+				'testingApp' => 'files_sharing',
+				'testingParameter' => 'incoming_server2server_share_enabled',
+				'testingState' => true
+			],
+		];
 	}
 }

@@ -163,33 +163,24 @@ trait AppConfiguration {
 	}
 
 	/**
-	 * @param string $capabilitiesApp the "app" name in the capabilities response
-	 * @param string $capabilitiesParameter the parameter name in the
-	 *                                      capabilities response
-	 * @param string $testingApp the "app" name as understood by "testing"
-	 * @param string $testingParameter the parameter name as understood by
-	 *                                 "testing"
-	 * @param boolean $testingState the on|off state the parameter must be set to for the test
+	 * @param array $capabilitiesArray[] with each array entry containing keys for:
+	 *                                   ['capabilitiesApp'] the "app" name in the capabilities response
+	 *                                   ['capabilitiesParameter'] the parameter name in the capabilities response
+	 *                                   ['testingApp'] the "app" name as understood by "testing"
+	 *                                   ['testingParameter'] the parameter name as understood by "testing"
+	 *                                   ['testingState'] boolean state the parameter must be set to for the test
 	 * @return void
 	 */
-	public function setCapability(
-		$capabilitiesApp, $capabilitiesParameter, $testingApp, $testingParameter, $testingState
-	) {
-		$savedCapabilitiesChanges = AppConfigHelper::setCapability(
+	public function setCapabilities($capabilitiesArray) {
+		$savedCapabilitiesChanges = AppConfigHelper::setCapabilities(
 			$this->baseUrlWithoutOCSAppendix(),
 			$this->getAdminUserName(),
 			$this->getAdminPassword(),
-			$capabilitiesApp,
-			$capabilitiesParameter,
-			$testingApp,
-			$testingParameter,
-			$testingState,
+			$capabilitiesArray,
 			$this->savedCapabilitiesXml
 		);
-		
-		if (sizeof($savedCapabilitiesChanges) > 0) {
-			$this->savedCapabilitiesChanges[] = $savedCapabilitiesChanges;
-		}
+
+		$this->savedCapabilitiesChanges = array_merge($this->savedCapabilitiesChanges, $savedCapabilitiesChanges);
 	}
 
 	/**
@@ -206,6 +197,20 @@ trait AppConfiguration {
 			$app,
 			$parameter,
 			$value,
+			$this->apiVersion
+		);
+	}
+
+	/**
+	 * @param string $appParameterValues
+	 * @return void
+	 */
+	protected function modifyServerConfigs($appParameterValues) {
+		AppConfigHelper::modifyServerConfigs(
+			$this->baseUrlWithoutOCSAppendix(),
+			$this->getAdminUserName(),
+			$this->getAdminPassword(),
+			$appParameterValues,
 			$this->apiVersion
 		);
 	}
@@ -263,15 +268,7 @@ trait AppConfiguration {
 	public function restoreParametersAfterScenario() {
 		$user = $this->currentUser;
 		$this->currentUser = $this->getAdminUserName();
-
-		foreach ($this->savedCapabilitiesChanges as $capabilitiesChange) {
-			$this->modifyServerConfig(
-				$capabilitiesChange['testingApp'],
-				$capabilitiesChange['testingParameter'],
-				$capabilitiesChange['savedState'] ? 'yes' : 'no'
-			);
-		}
-
+		$this->modifyServerConfigs($this->savedCapabilitiesChanges);
 		$this->currentUser = $user;
 	}
 }

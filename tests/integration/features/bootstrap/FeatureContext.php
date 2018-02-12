@@ -39,6 +39,6 @@ class FeatureContext extends \rdx\behatvars\BehatVariablesContext {
 		$this->getCapabilitiesCheckResponse();
 		$this->savedCapabilitiesXml = $this->getCapabilitiesXml();
 		// Set the required starting values for testing
-		$this->setupCommonSharingConfigs();
+		$this->setCapabilities($this->getCommonSharingConfigs());
 	}
 }

@@ -121,7 +121,8 @@ class ShareesContext implements Context, SnippetAcceptingContext {
 		$this->getCapabilitiesCheckResponse();
 		$this->savedCapabilitiesXml = $this->getCapabilitiesXml();
 		// Set the required starting values for testing
-		$this->setupCommonSharingConfigs();
-		$this->setupCommonFederationConfigs();
+		$capabilitiesArray = $this->getCommonSharingConfigs();
+		$capabilitiesArray = array_merge($capabilitiesArray, $this->getCommonFederationConfigs());
+		$this->setCapabilities($capabilitiesArray);
 	}
 }
