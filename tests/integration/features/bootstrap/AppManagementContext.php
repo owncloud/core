@@ -36,8 +36,7 @@ class AppManagementContext implements  Context {
 	/**
 	 * @BeforeScenario
 	 *
-	 * Enable the testing app before the first scenario of the feature and
-	 * reset the configs before each scenario
+	 * Remember the config values before each scenario
 	 */
 	public function prepareParameters() {
 		include_once __DIR__ . '/../../../../lib/base.php';
@@ -47,7 +46,7 @@ class AppManagementContext implements  Context {
 	/**
 	 * @AfterScenario
 	 *
-	 * Reset the values after the last scenario of the feature and disable the testing app
+	 * Reset the config values after each scenario
 	 */
 	public function undoChangingParameters() {
 		if (!is_null($this->oldAppPath)) {
@@ -58,7 +57,7 @@ class AppManagementContext implements  Context {
 	}
 	
 	/**
-	 * @Given apps are in two directories :dir1 and :dir2
+	 * @Given apps have been put in two directories :dir1 and :dir2
 	 * @param string $dir1
 	 * @param string $dir2
 	 */
@@ -75,12 +74,12 @@ class AppManagementContext implements  Context {
 	}
 	
 	/**
-	 * @Given app :appId with version :version exists in dir :dir
+	 * @Given app :appId with version :version has been put in dir :dir
 	 * @param string $appId app id
 	 * @param string $version app version
 	 * @param string $dir app directory
 	 */
-	public function appExistsInDir($appId, $version, $dir) {
+	public function appHasBeenPutInDir($appId, $version, $dir) {
 		$ocVersion = \OC::$server->getConfig()->getSystemValue('version', '0.0.0');
 		$appInfo = sprintf('<?xml version="1.0"?>
 			<info>
@@ -123,7 +122,7 @@ class AppManagementContext implements  Context {
 	}
 	
 	/**
-	 * @When app :appId is loaded
+	 * @When the administrator loads app :appId using the console
 	 * @param string $appId app id
 	 */
 	public function loadApp($appId) {
@@ -145,7 +144,7 @@ class AppManagementContext implements  Context {
 	}
 	
 	/**
-	 * @Then path to :appId should be :dir
+	 * @Then the path to :appId should be :dir
 	 * @param string $appId
 	 * @param string $dir
 	 */
