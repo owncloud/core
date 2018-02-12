@@ -155,19 +155,18 @@ Feature: transfer-ownership
 
 	@no_default_encryption
 	Scenario: transferring ownership of folder shares which has public link
-		Given user "user0" exists
-		And user "user1" exists
-		And user "user2" exists
+		Given user "user0" has been created
+		And user "user1" has been created
+		And user "user2" has been created
 		And user "user0" has created a folder "/test"
 		And user "user0" uploads file "data/textfile.txt" to "/test/somefile.txt" using the API
-		And folder "/test" of user "user0" has been shared with user "user2" with permissions 31
+		And user "user0" has shared folder "/test" with user "user2" with permissions 31
 		And user "user1" creates a share using the API with settings
 			| path      | /test/somefile.txt |
 			| shareType | 3                  |
 		When the administrator transfers ownership of path "test" from "user0" to "user1" using the occ command
 		And the command should have been successful
-		And as an "user2"
-		Then the downloaded content when downloading file "/test/somefile.txt" with range "bytes=0-6" should be "This is"
+		Then the downloaded content when downloading file "/test/somefile.txt" for user "user2" with range "bytes=0-6" should be "This is"
 
 	@no_default_encryption
 	Scenario: transferring ownership of folder shared with third user
