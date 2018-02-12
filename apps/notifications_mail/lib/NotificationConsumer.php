@@ -54,8 +54,8 @@ class NotificationConsumer implements IApp {
 		$nObjectType = $notification->getObjectType();
 		$nObjectId = $notification->getObjectId();
 
-		if (empty($notification->getActions())) {
-			$this->logger->debug("notification $nObjectType#$nObjectId ignored due to missing actions",
+		if (!$this->sender->willSendNotification($notification)) {
+			$this->logger->debug("notification $nObjectType#$nObjectId ignored. Prevented by configuration",
 				['app' => $this->appName]);
 			return;
 		}

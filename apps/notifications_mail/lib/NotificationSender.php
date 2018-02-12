@@ -48,10 +48,15 @@ class NotificationSender {
 	}
 
 	/**
-	 * Send a notification via email to the list of email addresses passed as parameter
-	 * @return \OC\Mail\Message the message sent
+	 * Send a notification via email to the list of email addresses passed as parameter, or false if
+	 * the mail isn't sent
+	 * @return \OC\Mail\Message|bool the message sent
 	 */
 	public function sendNotification(INotification $notification, $serverUrl, array $emailAddresses) {
+		if (!$this->willSendNotification($notification)) {
+			return false;
+		}
+
 		$targetUser = $notification->getUser();
 		$language = $this->config->getUserValue($targetUser, 'core', 'lang', null);
 
@@ -104,5 +109,28 @@ class NotificationSender {
 			}
 		}
 		return $result;
+	}
+
+	/**
+	 * Check if the notification will be sent according to the configuration set. This will be checked
+	 * here to enforce the behaviour, but it should be also checked upwards to fail faster.
+	 * The checks of this function shouldn't consider the notification as prepared in order to use
+	 * this function as soon as possible
+	 * @param INotification $notification the notification that will be checked
+	 * @return true if the notification will be sent by the sendNotification method, false otherwise
+	 */
+	public function willSendNotification(INotification $notification) {
+		$option = $this->config->getUserValue($notification->getUser(), 'notifications_mail', 'email_sending_option', 'never');
+		switch ($option) {
+			case "never":
+				return false;
+				break;
+			case "always":
+				return true;
+				break;
+			case "action":
+				return !empty($notification->getActions());
+				break;
+		}
 	}
 }
