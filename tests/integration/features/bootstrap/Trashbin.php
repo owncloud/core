@@ -28,6 +28,7 @@ trait Trashbin {
 
 	/**
 	 * @When user :user empties the trashbin using the API
+	 * @Given user :user has emptied the trashbin
 	 * @param string $user user
 	 */
 	public function emptyTrashbin($user) {
@@ -148,7 +149,8 @@ trait Trashbin {
 	}
 
 	/**
-	 * @Given /^user "([^"]*)" restores the (file|folder|entry) with original path "([^"]*)" using the API$/
+	 * @When /^user "([^"]*)" restores the (file|folder|entry) with original path "([^"]*)" using the API$/
+	 * @Given /^user "([^"]*)" has restored the (file|folder|entry) with original path "([^"]*)"$/
 	 * @param string $user
 	 * @param string $entryText unused
 	 * @param string $originalPath
@@ -200,4 +202,3 @@ trait Trashbin {
 		return null;
 	}
 }
-

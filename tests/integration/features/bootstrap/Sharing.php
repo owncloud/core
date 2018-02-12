@@ -137,7 +137,8 @@ trait Sharing {
 	}
 
 	/**
-	 * @Given /^user "([^"]*)" creates a public share of (?:file|folder) "([^"]*)"$/
+	 * @When /^user "([^"]*)" creates a public share of (?:file|folder) "([^"]*)" using the API$/
+	 * @Given /^user "([^"]*)" has created a public share of (?:file|folder) "([^"]*)"$/
 	 * @param string $user
 	 * @param string $path
 	 * @return void
@@ -147,7 +148,8 @@ trait Sharing {
 	}
 
 	/**
-	 * @When /^a public share of (?:file|folder) "([^"]*)" is created/
+	 * @When /^the user creates a public share of (?:file|folder) "([^"]*)" using the API$/
+	 * @Given /^the user has created a public share of (?:file|folder) "([^"]*)"$/
 	 * @param string $path
 	 * @return void
 	 */
@@ -156,7 +158,8 @@ trait Sharing {
 	}
 
 	/**
-	 * @Given /^user "([^"]*)" creates a public share of (?:file|folder) "([^"]*)" with (read|update|create|delete|change|share|all) permission(?:s|)$/
+	 * @When /^user "([^"]*)" creates a public share of (?:file|folder) "([^"]*)" using the API with (read|update|create|delete|change|share|all) permission(?:s|)$/
+	 * @Given /^user "([^"]*)" has created a public share of (?:file|folder) "([^"]*)" with (read|update|create|delete|change|share|all) permission(?:s|)$/
 	 * @param string $user
 	 * @param string $path
 	 * @param string|int|string[]|int[]|null $permissions
@@ -167,7 +170,8 @@ trait Sharing {
 	}
 
 	/**
-	 * @Given /^a public share of (?:file|folder) "([^"]*)" is created with (read|update|create|delete|change|share|all) permission(?:s|)$/
+	 * @When /^the user creates a public share of (?:file|folder) "([^"]*)" using the API with (read|update|create|delete|change|share|all) permission(?:s|)$/
+	 * @Given /^the user has created a public share of (?:file|folder) "([^"]*)" with (read|update|create|delete|change|share|all) permission(?:s|)$/
 	 * @param string $path
 	 * @param string|int|string[]|int[]|null $permissions
 	 * @return void
@@ -275,7 +279,7 @@ trait Sharing {
 	}
 
 	/**
-	 * @When publicly overwriting file ":filename" with content ":body"
+	 * @When the public overwrites file ":filename" with content ":body" using the API
 	 * @param string $filename target file name
 	 * @param string $body content to upload
 	 * @return void
@@ -361,10 +365,10 @@ trait Sharing {
 	}
 
 	/**
-	 * @When /^adding expiration date to last share$/
+	 * @When /^the user adds an expiration date to the last share using the API$/
 	 * @return void
 	 */
-	public function addingExpirationDate() {
+	public function theUserAddsExpirationDateToLastShare() {
 		$share_id = (string) $this->lastShareData->data[0]->id;
 		$fullUrl = $this->baseUrl . "v{$this->apiVersion}.php/apps/files_sharing/api/v{$this->sharingApiVersion}/shares/$share_id";
 		$client = new Client();
@@ -772,7 +776,7 @@ trait Sharing {
 	}
 
 	/**
-	 * @Then /^the response contains ([0-9]+) entries$/
+	 * @Then /^the response should contain ([0-9]+) entries$/
 	 * @param int $count
 	 * @return void
 	 */

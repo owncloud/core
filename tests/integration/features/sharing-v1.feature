@@ -956,11 +956,11 @@ Feature: sharing
 		When the user sends HTTP method "GET" to API endpoint "/apps/files_sharing/api/v1/shares"
 		Then the OCS status code should be "100"
 		And the HTTP status code should be "200"
-		And the response contains 4 entries
+		And the response should contain 4 entries
 		And file "/folder1" should be included as path in the response
 		And file "/folder1/folder2" should be included as path in the response
 		And the user sends HTTP method "GET" to API endpoint "/apps/files_sharing/api/v1/shares?path=/folder1/folder2"
-		And the response contains 2 entries
+		And the response should contain 2 entries
 		And file "/folder1" should not be included as path in the response
 		And file "/folder1/folder2" should be included as path in the response
 

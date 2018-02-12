@@ -43,7 +43,7 @@ Feature: tags
   Scenario Outline: Renaming a normal tag as regular user should work
     Given user "user0" has been created
     And user "admin" has created a "normal" tag with name "<tag_name>"
-    When "user0" edits the tag with name "<tag_name>" and sets its name to "AnotherTagName" using the API
+    When user "user0" edits the tag with name "<tag_name>" and sets its name to "AnotherTagName" using the API
     Then the following tags should exist for "admin"
       | AnotherTagName | normal |
 
@@ -55,40 +55,40 @@ Feature: tags
   Scenario: Renaming a not user-assignable tag as regular user should fail
     Given user "user0" has been created
     And user "admin" has created a "not user-assignable" tag with name "JustARegularTagName"
-    When "user0" edits the tag with name "JustARegularTagName" and sets its name to "AnotherTagName" using the API
+    When user "user0" edits the tag with name "JustARegularTagName" and sets its name to "AnotherTagName" using the API
     Then the following tags should exist for "admin"
       | JustARegularTagName | not user-assignable |
 
   Scenario: Renaming a not user-visible tag as regular user should fail
     Given user "user0" has been created
     And user "admin" has created a "not user-visible" tag with name "JustARegularTagName"
-    When "user0" edits the tag with name "JustARegularTagName" and sets its name to "AnotherTagName" using the API
+    When user "user0" edits the tag with name "JustARegularTagName" and sets its name to "AnotherTagName" using the API
     Then the following tags should exist for "admin"
       | JustARegularTagName | not user-visible |
 
   Scenario: Editing tag groups as admin should work
     Given user "user0" has been created
     And user "admin" has created a "not user-assignable" tag with name "TagWithGroups" and groups "group1|group2"
-    When "admin" edits the tag with name "TagWithGroups" and sets its groups to "group1|group3" using the API
+    When user "admin" edits the tag with name "TagWithGroups" and sets its groups to "group1|group3" using the API
     Then the "not user-assignable" tag with name "TagWithGroups" should have the groups "group1|group3"
 
   Scenario: Editing tag groups as regular user should fail
     Given user "user0" has been created
     And user "admin" has created a "not user-assignable" tag with name "TagWithGroups" and groups "group1|group2"
-    When "user0" edits the tag with name "TagWithGroups" and sets its groups to "group1|group3" using the API
+    When user "user0" edits the tag with name "TagWithGroups" and sets its groups to "group1|group3" using the API
     Then the "not user-assignable" tag with name "TagWithGroups" should have the groups "group1|group2"
 
   Scenario: Deleting a normal tag as regular user should work
     Given user "user0" has been created
     And user "admin" has created a "normal" tag with name "JustARegularTagName"
-    When "user0" deletes the tag with name "JustARegularTagName" using the API
+    When user "user0" deletes the tag with name "JustARegularTagName" using the API
     Then the HTTP status code should be "204"
     And tag "JustARegularTagName" should not exist for "admin"
 
   Scenario: Deleting a not user-assignable tag as regular user should fail
     Given user "user0" has been created
     And user "admin" has created a "not user-assignable" tag with name "JustARegularTagName"
-    When "user0" deletes the tag with name "JustARegularTagName" using the API
+    When user "user0" deletes the tag with name "JustARegularTagName" using the API
     Then the HTTP status code should be "403"
     And the following tags should exist for "admin"
       | JustARegularTagName | not user-assignable |
@@ -96,20 +96,20 @@ Feature: tags
   Scenario: Deleting a not user-visible tag as regular user should fail
     Given user "user0" has been created
     And user "admin" has created a "not user-visible" tag with name "JustARegularTagName"
-    When "user0" deletes the tag with name "JustARegularTagName" using the API
+    When user "user0" deletes the tag with name "JustARegularTagName" using the API
     Then the HTTP status code should be "404"
     And the following tags should exist for "admin"
       | JustARegularTagName | not user-visible |
 
   Scenario: Deleting a not user-assignable tag as admin should work
     Given user "admin" has created a "not user-assignable" tag with name "JustARegularTagName"
-    When "admin" deletes the tag with name "JustARegularTagName" using the API
+    When user "admin" deletes the tag with name "JustARegularTagName" using the API
     Then the HTTP status code should be "204"
     And tag "JustARegularTagName" should not exist for "admin"
 
   Scenario: Deleting a not user-visible tag as admin should work
     Given user "admin" has created a "not user-visible" tag with name "JustARegularTagName"
-    When "admin" deletes the tag with name "JustARegularTagName" using the API
+    When user "admin" deletes the tag with name "JustARegularTagName" using the API
     Then the HTTP status code should be "204"
     And tag "JustARegularTagName" should not exist for "admin"
 

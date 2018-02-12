@@ -215,6 +215,7 @@ trait CommandLine {
 
 	/**
 	 * @When /^the administrator transfers ownership from "([^"]+)" to "([^"]+)" using the occ command$/
+	 * @Given /^the administrator has transferred ownership from "([^"]+)" to "([^"]+)"$/
 	 * @param string $user1
 	 * @param string $user2
 	 */
@@ -228,7 +229,8 @@ trait CommandLine {
 	}
 
 	/**
-	 * @Given /^the administrator has successfully recreated the encryption masterkey using the occ command$/
+	 * @When /^the administrator successfully recreates the encryption masterkey using the occ command$/
+	 * @Given /^the administrator has successfully recreated the encryption masterkey$/
 	 */
 	public function recreateMasterKeyUsingOccCommand() {
 		$this->runOcc(['encryption:recreate-master-key', '-y']);
@@ -237,6 +239,7 @@ trait CommandLine {
 
 	/**
 	 * @When /^the administrator transfers ownership of path "([^"]+)" from "([^"]+)" to "([^"]+)" using the occ command$/
+	 * @Given /^the administrator has transferred ownership of path "([^"]+)" from "([^"]+)" to "([^"]+)"$/
 	 * @param string $path
 	 * @param string $user1
 	 * @param string $user2
