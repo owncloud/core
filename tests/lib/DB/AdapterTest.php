@@ -22,6 +22,7 @@
 
 namespace Test\DB;
 use Doctrine\DBAL\DBALException;
+use Doctrine\DBAL\Driver\AbstractDriverException;
 use Doctrine\DBAL\Driver\DriverException;
 use OC\DB\Adapter;
 use OCP\DB\QueryBuilder\IExpressionBuilder;
@@ -132,7 +133,7 @@ class AdapterTest extends \Test\TestCase {
 		$qb->expects($this->exactly(3))->method('set')->willReturn($qb);
 		$qb->expects($this->exactly(3))->method('setValue')->willReturn($qb);
 		// Make a deadlock driver exception
-		$ex = $this->createMock(DriverException::class);
+		$ex = $this->createMock(AbstractDriverException::class);
 		$ex->expects($this->exactly(5))->method('getErrorCode')->willReturn(1213);
 		// Wrap the exception in a doctrine exception
 		$e = new \Doctrine\DBAL\Exception\DriverException('1213', $ex);
@@ -173,7 +174,7 @@ class AdapterTest extends \Test\TestCase {
 		$qb->expects($this->exactly(3))->method('set')->willReturn($qb);
 		$qb->expects($this->exactly(3))->method('setValue')->willReturn($qb);
 		// Make a deadlock driver exception
-		$ex = $this->createMock(DriverException::class);
+		$ex = $this->createMock(AbstractDriverException::class);
 		$ex->expects($this->exactly(1))->method('getErrorCode')->willReturn(1214);
 		// Wrap the exception in a doctrine exception
 		/** @var  DriverException|\PHPUnit_Framework_MockObject_MockObject $ex */
