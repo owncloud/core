@@ -1630,6 +1630,29 @@ describe('OCA.Files.FileList tests', function() {
 				.toEqual(OC.webroot + '/index.php/apps/files/ajax/test.php?a=1&b=x%20y');
 		});
 	});
+	describe('Upload Url', function() {
+		var testPath;
+		beforeEach(function() {
+			currentUserStub = sinon.stub(OC, 'getCurrentUser').returns({uid: 'test@#?%test'});
+			testPath = 'path/to sp@ce/a@b#?%/x';
+		});
+		afterEach(function() {
+			currentUserStub.restore();
+		});
+		it('returns correct upload URL for single files with provided dir', function() {
+			expect(fileList.getUploadUrl('some file.txt', testPath))
+				.toEqual(OC.webroot + '/remote.php/dav/files/test%40%23%3F%25test/path/to%20sp%40ce/a%40b%23%3F%25/x/some%20file.txt');
+		});
+		it('returns correct upload URL with current list dir for single files when no dir argument was provided', function() {
+			expect(fileList.getUploadUrl('some file.txt'))
+				.toEqual(OC.webroot + '/remote.php/dav/files/test%40%23%3F%25test/subdir/some%20file.txt');
+		});
+		it('returns correct upload URL with current list dir when in root for single files when no dir argument was provided', function() {
+			$('#dir').val('/');
+			expect(fileList.getUploadUrl('some file.txt'))
+				.toEqual(OC.webroot + '/remote.php/dav/files/test%40%23%3F%25test/some%20file.txt');
+		});
+	});
 	describe('File selection', function() {
 		beforeEach(function() {
 			fileList.setFiles(testFiles);
