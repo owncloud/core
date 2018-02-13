@@ -38,12 +38,16 @@ class BaseTest extends \Test\TestCase {
 			->method('getDirectory')
 			->willReturn('theme-test');
 
+		$this->theme->expects($this->any())
+			->method('getBaseDirectory')
+			->willReturn($this->serverRoot);
+
 		$app = 'anyapp';
 
 		$directories = self::invokePrivate(
 			$base,
 			'getAppTemplateDirs',
-			[$this->theme, $app, $this->serverRoot, $this->serverRoot . '/apps3/anyapp']
+			[$this->theme, $app, $this->serverRoot . '/apps3/anyapp']
 		);
 		$this->assertEquals(
 			[
@@ -68,7 +72,7 @@ class BaseTest extends \Test\TestCase {
 		$directories = self::invokePrivate(
 			$base,
 			'getAppTemplateDirs',
-			[$this->theme, $app, $this->serverRoot, $this->serverRoot . '/apps3/anyapp']
+			[$this->theme, $app, $this->serverRoot . '/apps3/anyapp']
 		);
 		$this->assertEquals(
 			[
