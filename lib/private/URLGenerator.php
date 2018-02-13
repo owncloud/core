@@ -171,7 +171,11 @@ class URLGenerator implements IURLGenerator {
 	 * @return string
 	 */
 	private function getImagePath($app, $imageName) {
-		$appWebPath = \OC_App::getAppWebPath($app);
+		if ($app !== '') {
+			$appWebPath = \OC_App::getAppWebPath($app);
+		} else {
+			$appWebPath = \OC::$WEBROOT;
+		}
 		$appPath = substr($appWebPath, strlen(\OC::$WEBROOT));
 
 		$directories = ["/core", ""];
