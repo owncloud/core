@@ -48,6 +48,7 @@ RELEASE_CHANNEL=git
 
 # internal aliases
 composer_deps=lib/composer
+composer_deps_external=apps/files_external/vendor
 composer_dev_deps=lib/composer/phpunit
 nodejs_deps=build/node_modules
 core_vendor=core/vendor
@@ -114,14 +115,17 @@ $(COMPOSER_BIN):
 $(composer_deps): $(COMPOSER_BIN) composer.json composer.lock
 	php $(COMPOSER_BIN) install --no-dev
 
-$(composer_dev_deps): $(COMPOSER_BIN) composer.json composer.lock
+$(composer_deps_external): $(COMPOSER_BIN) apps/files_external/composer.json apps/files_external/composer.lock
+	php $(COMPOSER_BIN) install --no-dev -d=apps/files_external
+
+$(composer_dev_deps): $(COMPOSER_BIN) composer.json composer.lock $(composer_deps_external)
 	php $(COMPOSER_BIN) install --dev
 
 .PHONY: install-composer-release-deps
-install-composer-release-deps: $(composer_deps)
+install-composer-release-deps: $(composer_deps) $(composer_deps_external)
 
 .PHONY: install-composer-dev-deps
-install-composer-dev-deps: $(composer_dev_deps)
+install-composer-dev-deps: $(composer_dev_deps) $(composer_deps_external)
 
 .PHONY: install-composer-deps
 install-composer-deps: install-composer-dev-deps
@@ -135,6 +139,7 @@ update-composer: $(COMPOSER_BIN)
 clean-composer-deps:
 	rm -f $(COMPOSER_BIN)
 	rm -Rf lib/composer
+	rm -Rf apps/files_external/vendor
 
 #
 # Node JS dependencies for tools
@@ -217,7 +222,7 @@ clean-docs:
 #
 # Build distribution
 #
-$(dist_dir)/owncloud: $(composer_deps) $(nodejs_deps) $(core_all_src)
+$(dist_dir)/owncloud: $(composer_deps) $(composer_deps_external) $(nodejs_deps) $(core_all_src)
 	rm -Rf $@; mkdir -p $@/config
 	cp -RL $(core_all_src) $@
 	cp -R config/config.sample.php $@/config

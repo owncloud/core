@@ -1,0 +1,14 @@
+{
+    "name": "files_external",
+    "description": "3rdparty components for files_external",
+    "license": "MIT",
+    "config": {
+        "optimize-autoloader": true,
+        "classmap-authoritative": true
+    },
+    "require": {
+        "guzzlehttp/guzzle": "^5.3",
+        "aws/aws-sdk-php": "^3.51",
+        "icewind/smb": "^2.0"
+    }
+}

@@ -6,4 +6,5 @@ if [[ "$(pwd)" == "$(cd "$(dirname "$0")"; pwd -P)" ]]; then
   exit 1
 fi
 
-exec composer install -n --no-progress
+composer install -n --no-progress
+composer install -n --no-progress -d=apps/files_external
