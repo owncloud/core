@@ -537,10 +537,16 @@
 				actionsWidth += $(action).outerWidth();
 			});
 
+			var customWidth = 0;
+			// custom controls
+			this.$el.find('#controls>div:not(.actions):not(.breadcrumb):not(.hidden)').each(function(index, el) {
+				customWidth += $(el).outerWidth();
+			});
+
 			// subtract app navigation toggle when visible
 			containerWidth -= $('#app-navigation-toggle').width();
 
-			this.breadcrumb.setMaxWidth(containerWidth - actionsWidth - 10);
+			this.breadcrumb.setMaxWidth(containerWidth - actionsWidth - customWidth - 10);
 
 			this.$table.find('>thead').width($('#app-content').width() - OC.Util.getScrollBarWidth());
 		},
@@ -1815,7 +1821,7 @@
 		 * @param show true for enabling, false for disabling
 		 */
 		showActions: function(show){
-			this.$el.find('.actions,#file_action_panel').toggleClass('hidden', !show);
+			this.$el.find('.actions').toggleClass('hidden', !show);
 			if (show){
 				// make sure to display according to permissions
 				var permissions = this.getDirectoryPermissions();
