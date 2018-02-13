@@ -31,9 +31,18 @@ use OCP\Notification\INotifier;
  * Note that each notification manager is expected to thrown custom implementations of this event
  * while hiding the implementation details.
  *
+ * The agreement here is that the notification manager will use its own implementation of this event
+ * (implementing the "registerNotifier" method), and throw that event as a
+ * "notification.register.notifier" event (use the constant of this class).
+ * Notification consumers will listen to this public event name and use the event method to register.
+ * Note that the event type the consumers must expect is this abstract class and not the specific
+ * event implementation.
+ *
  * IMPORTANT NOTE: this event might be triggered several times so plan accordingly. Either
  * register always the same instance (per request) or make sure the behaviour won't change if
  * several instances are used.
+
+ * @since 10.0.8
  */
 abstract class AbstractRegisterNotifierEvent extends Event {
 	/**
@@ -43,8 +52,11 @@ abstract class AbstractRegisterNotifierEvent extends Event {
 
 	/**
 	 * Empty implementation in order to prevent stopping the propagation of this event
+	 *
+	 * @since 10.0.8
 	 */
-	public function stopPropagation(){}
+	public function stopPropagation(){
+	}
 
 	/**
 	 * Register the notifier in the notification manager. Implementations must take care of injecting
@@ -56,6 +68,8 @@ abstract class AbstractRegisterNotifierEvent extends Event {
 	 * @throws \OCP\Notification\Exceptions\NotifierIdInUseException if the id is already in use by
 	 * other apps. Note that although this event might be thrown several times, the app has to use the
 	 * same id, and this exception won't be thrown in this particular scenario.
+	 *
+	 * @since 10.0.8
 	 */
 	abstract public function registerNotifier(INotifier $notifier, $id, $name);
 }

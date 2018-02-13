@@ -27,9 +27,18 @@ use OCP\Notification\IApp;
 /**
  * Abstract class representing a "register app" event. The event should be thrown when the
  * notification manager needs to retrieve the notification apps.
- * Use the "registerApp" function in the event to register the app.
+ * Use the "registerNotificationConsumer" function in the event to register the app.
  * Note that each notification manager is expected to thrown custom implementations of this event
  * while hiding the implementation details.
+ *
+ * The agreement here is that the notification manager will use its own implementation of this event
+ * (implementing the "registerNotificationConsumer" method), and throw that event as a
+ * "notification.register.consumer" event (use the constant of this class).
+ * Notification consumers will listen to this public event name and use the event method to register.
+ * Note that the event type the consumers must expect is this abstract class and not the specific
+ * event implementation.
+ *
+ * @since 10.0.8
  */
 abstract class AbstractRegisterConsumerEvent extends Event {
 	/**
@@ -39,13 +48,18 @@ abstract class AbstractRegisterConsumerEvent extends Event {
 
 	/**
 	 * Empty implementation in order to prevent stopping the propagation of this event
+	 *
+	 * @since 10.0.8
 	 */
-	public function stopPropagation(){}
+	public function stopPropagation(){
+	}
 
 	/**
 	 * Register the app in the notification manager. Implementations must take care of injecting
 	 * the specific notification manager implementation.
 	 * @param IApp $app the notification app to be registered
+	 *
+	 * @since 10.0.8
 	 */
 	abstract public function registerNotificationConsumer(IApp $app);
 }
