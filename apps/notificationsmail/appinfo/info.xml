@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <info>
-	<id>notifications_mail</id>
+	<id>notificationsmail</id>
 	<name>Email Notifications</name>
 	<summary>Send mails for some internal events</summary>
 	<description>This application adds an email notification system to an ownCloud instance. Notifications are triggered by apps like the Announcement Center or Custom Groups and and some of them will be sent via email.</description>
@@ -10,22 +10,12 @@
 	<licence>AGPL</licence>
 	<author>Juan Pablo Villafáñez</author>
 	<version>0.0.1</version>
-	<namespace>notifications_mail</namespace>
-	<types>
-		<logging/>
-	</types>
-
-	<default_enable/>
-
-	<commands>
-		<command>OCA\Notifications\Command\Generate</command>
-	</commands>
+	<namespace>NotificationsMail</namespace>
 
 	<dependencies>
 		<owncloud min-version="10.0" max-version="10.0" />
 	</dependencies>
 	<settings>
-		<personal>OCA\notifications_mail\Panels\Personal\EmailNotificationsPanel</personal>
+		<personal>OCA\NotificationsMail\Panels\Personal\EmailNotificationsPanel</personal>
 	</settings>
-	<use-migrations>true</use-migrations>
 </info>

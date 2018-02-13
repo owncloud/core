@@ -19,10 +19,10 @@
  *
  */
 
-namespace OCA\notifications_mail\Tests\Controller;
+namespace OCA\NotificationsMail\Tests\Controller;
 
 use Test\TestCase;
-use OCA\notifications_mail\Controller\NotificationOptionsController;
+use OCA\NotificationsMail\Controller\NotificationOptionsController;
 
 class NotificationOptionsControllerTest extends TestCase {
 	private $userSession;
@@ -108,7 +108,7 @@ class NotificationOptionsControllerTest extends TestCase {
 
 		if (in_array($value, $validKeys, true)) {
 			$this->assertEquals('testUser', $valuesSet['user']);
-			$this->assertEquals('notifications_mail', $valuesSet['app']);
+			$this->assertEquals('notificationsmail', $valuesSet['app']);
 			$this->assertEquals('email_sending_option', $valuesSet['key']);
 			$this->assertEquals($value, $valuesSet['value']);
 		}

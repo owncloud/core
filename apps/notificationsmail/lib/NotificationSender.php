@@ -19,7 +19,7 @@
  *
  */
 
-namespace OCA\notifications_mail;
+namespace OCA\NotificationsMail;
 
 use OCP\Notification\IManager;
 use OCP\Notification\INotification;
@@ -65,7 +65,7 @@ class NotificationSender {
 		$emailMessage = $this->mailer->createMessage();
 		$emailMessage->setTo($emailAddresses);
 
-		$l10n = $this->l10nFactory->get('notifications_mail', $language);
+		$l10n = $this->l10nFactory->get('notificationsmail', $language);
 
 		$notificationObjectType = $notification->getObjectType();
 		$notificationObjectId = $notification->getObjectId();
@@ -120,7 +120,7 @@ class NotificationSender {
 	 * @return true if the notification will be sent by the sendNotification method, false otherwise
 	 */
 	public function willSendNotification(INotification $notification) {
-		$option = $this->config->getUserValue($notification->getUser(), 'notifications_mail', 'email_sending_option', 'never');
+		$option = $this->config->getUserValue($notification->getUser(), 'notificationsmail', 'email_sending_option', 'never');
 		switch ($option) {
 			case "never":
 				return false;

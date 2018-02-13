@@ -19,7 +19,7 @@
  *
  */
 
-namespace OCA\notifications_mail\Panels\Personal;
+namespace OCA\NotificationsMail\Panels\Personal;
 
 use OCP\Settings\ISettings;
 use OCP\Template;
@@ -37,7 +37,7 @@ class EmailNotificationsPanel implements ISettings {
 		$this->userSession = $userSession;
 	}
 	public function getPanel() {
-		$emailSendingOption = $this->config->getUserValue($this->userSession->getUser()->getUID(), 'notifications_mail', 'email_sending_option', 'never');
+		$emailSendingOption = $this->config->getUserValue($this->userSession->getUser()->getUID(), 'notificationsmail', 'email_sending_option', 'never');
 		$possibleOptions = [
 			'never' => [
 				'visibleText' => 'Never send me any notification email',
@@ -54,12 +54,12 @@ class EmailNotificationsPanel implements ISettings {
 		];
 
 		if (!isset($possibleOptions[$emailSendingOption])) {
-			$this->config->setUserValue($this->userSession->getUser()->getUID(), 'notifications_mail', 'email_sending_option', 'never');
+			$this->config->setUserValue($this->userSession->getUser()->getUID(), 'notificationsmail', 'email_sending_option', 'never');
 			$emailSendingOption = 'never';
 		}
 		$possibleOptions[$emailSendingOption]['selected'] = true;
 
-		$tmpl = new Template('notifications_mail', 'panels/personal/emailnotifications');
+		$tmpl = new Template('notificationsmail', 'panels/personal/emailnotifications');
 		$tmpl->assign('possibleOptions', $possibleOptions);
 		return $tmpl;
 	}

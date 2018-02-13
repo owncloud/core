@@ -19,19 +19,19 @@
  *
  */
 
-namespace OCA\notifications_mail;
+namespace OCA\NotificationsMail;
 
 use OCP\AppFramework\App;
 use OCP\IContainer;
 use OCP\Notification\Events\AbstractRegisterConsumerEvent;
-use OCA\notifications_mail\NotificationSender;
-use OCA\notifications_mail\NotificationConsumer;
-use OCA\notifications_mail\Controller\NotificationOptionsController;
+use OCA\NotificationsMail\NotificationSender;
+use OCA\NotificationsMail\NotificationConsumer;
+use OCA\NotificationsMail\Controller\NotificationOptionsController;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class Application extends App {
 	public function __construct(array $urlParams = []) {
-		parent::__construct('notifications_mail', $urlParams);
+		parent::__construct('notificationsmail', $urlParams);
 
 		$container = $this->getContainer();
 
@@ -60,7 +60,7 @@ class Application extends App {
 			return new NotificationOptionsController(
 				$server->getUserSession(),
 				$server->getConfig(),
-				$server->getL10N('notifications_mail')
+				$server->getL10N('notificationsmail')
 			);
 		});
 

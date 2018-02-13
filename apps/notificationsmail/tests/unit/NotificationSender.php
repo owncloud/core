@@ -19,10 +19,10 @@
  *
  */
 
-namespace OCA\notifications_mail\Tests;
+namespace OCA\NotificationsMail\Tests;
 
 use Test\TestCase;
-use OCA\notifications_mail\NotificationSender;
+use OCA\NotificationsMail\NotificationSender;
 use OC\Mail\Message;
 
 class NotificationSenderTest extends TestCase {
@@ -107,7 +107,7 @@ class NotificationSenderTest extends TestCase {
 
 		$this->config->method('getUserValue')
 			->will($this->returnValueMap([
-				['userTest1', 'notifications_mail', 'email_sending_option', 'never', 'always']
+				['userTest1', 'notificationsmail', 'email_sending_option', 'never', 'always']
 		]));
 
 		$sentMessage = $this->nsender->sendNotification($mockedNotification, 'http://test.server/oc', ['test@example.com']);
@@ -136,7 +136,7 @@ class NotificationSenderTest extends TestCase {
 		$this->manager->method('prepare')->willReturn($mockedNotification);
 		$this->config->method('getUserValue')
 			->will($this->returnValueMap([
-				['userTest1', 'notifications_mail', 'email_sending_option', 'never', 'never']
+				['userTest1', 'notificationsmail', 'email_sending_option', 'never', 'never']
 		]));
 
 		$sentMessage = $this->nsender->sendNotification($mockedNotification, 'http://test.server/oc', ['test@example.com']);
@@ -184,7 +184,7 @@ class NotificationSenderTest extends TestCase {
 	public function testWillSendNotification($notification, $configOption, $expectedValue) {
 		$this->config->method('getUserValue')
 			->will($this->returnValueMap([
-				['userTest1', 'notifications_mail', 'email_sending_option', 'never', $configOption],
+				['userTest1', 'notificationsmail', 'email_sending_option', 'never', $configOption],
 		]));
 		$this->assertEquals($expectedValue, $this->nsender->willSendNotification($notification));
 	}

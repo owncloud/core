@@ -19,7 +19,7 @@
  *
  */
 
-namespace OCA\notifications_mail\Controller;
+namespace OCA\NotificationsMail\Controller;
 
 use OCP\AppFramework\Controller;
 use OCP\AppFramework\Http;
@@ -49,7 +49,7 @@ class NotificationOptionsController extends Controller {
 	public function setEmailNotificationOption($value) {
 		$validOptions = ['never' => true, 'action' => true, 'always' => true];
 		if (isset($validOptions[$value])) {
-			$this->config->setUserValue($this->userSession->getUser()->getUID(), 'notifications_mail', 'email_sending_option', $value);
+			$this->config->setUserValue($this->userSession->getUser()->getUID(), 'notificationsmail', 'email_sending_option', $value);
 			return new JSONResponse([
 				'status' => 'success',
 				'data' => [

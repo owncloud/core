@@ -19,14 +19,14 @@
  *
  */
 
-namespace OCA\notifications_mail;
+namespace OCA\NotificationsMail;
 
 use OCP\Notification\IApp;
 use OCP\Notification\INotification;
 use OCP\IUserManager;
 use OCP\ILogger;
 use OCP\IURLGenerator;
-use OCA\notifications_mail\NotificationSender;
+use OCA\NotificationsMail\NotificationSender;
 
 class NotificationConsumer implements IApp {
 	/** @var NotificationSender */
@@ -41,7 +41,7 @@ class NotificationConsumer implements IApp {
 	/** @var IURLGenerator */
 	private $urlGenerator;
 
-	private $appName = 'notifications_mail';
+	private $appName = 'notificationsmail';
 
 	public function __construct(NotificationSender $sender, IUserManager $userManager, ILogger $logger, IURLGenerator $urlGenerator) {
 		$this->sender = $sender;

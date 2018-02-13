@@ -19,10 +19,10 @@
  *
  */
 
-namespace OCA\notifications_mail\Tests;
+namespace OCA\NotificationsMail\Tests;
 
 use Test\TestCase;
-use OCA\notifications_mail\NotificationConsumer;
+use OCA\NotificationsMail\NotificationConsumer;
 
 class NotificationConsumerTest extends TestCase {
 	private $sender;
@@ -32,7 +32,7 @@ class NotificationConsumerTest extends TestCase {
 	private $consumer;
 
 	protected function setUp() {
-		$this->sender = $this->getMockBuilder('\OCA\notifications_mail\NotificationSender')
+		$this->sender = $this->getMockBuilder('\OCA\NotificationsMail\NotificationSender')
 			->disableOriginalConstructor()
 			->getMock();
 		$this->userManager = $this->getMockBuilder('\OCP\IUserManager')
@@ -194,7 +194,7 @@ class NotificationConsumerTest extends TestCase {
 			->willReturn($mockedUser);
 
 		$this->urlGenerator->method('getAbsoluteURL')
-			->with('')
+			->with('/')
 			->willReturn('http://what.ever/oc');
 
 		$this->logger->expects($this->never())

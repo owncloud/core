@@ -19,10 +19,10 @@
  *
  */
 
-namespace OCA\notifications_mail\Tests\Panels\Personal;
+namespace OCA\NotificationsMail\Tests\Panels\Personal;
 
 use Test\TestCase;
-use OCA\notifications_mail\Panels\Personal\EmailNotificationsPanel;
+use OCA\NotificationsMail\Panels\Personal\EmailNotificationsPanel;
 
 class EmailNotificationsPanelTest extends TestCase {
 	private $config;

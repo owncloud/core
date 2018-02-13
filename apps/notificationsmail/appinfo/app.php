@@ -19,4 +19,4 @@
  *
  */
 
-$app = new \OCA\notifications_mail\Application();
+$app = new \OCA\NotificationsMail\Application();

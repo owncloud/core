@@ -28,7 +28,7 @@
 		sendNotificationMailOptions: function(value) {
 			OC.msg.startSaving('#email_notifications .msg');
 			var requests = $.ajax({
-				url: OC.generateUrl('/apps/notifications_mail/settings/personal/setEmailNotificationOption'),
+				url: OC.generateUrl('/apps/notificationsmail/settings/personal/setEmailNotificationOption'),
 				type: 'POST',
 				data: {'value': value},
 			}).done(function(result) {
