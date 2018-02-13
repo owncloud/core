@@ -71,18 +71,6 @@ return [
 		'share'=>'/test',
 		'root'=>'/test/',
 	],
-	'amazons3'=> [
-		'run'=>false,
-		'key'=>'test',
-		'secret'=>'test',
-		'bucket'=>'bucket'
-		//'hostname' => 'your.host.name',
-		//'port' => '443',
-		//'use_ssl' => 'true',
-		//'region' => 'eu-west-1',
-		//'test'=>'true',
-		//'timeout'=>20
-	],
 	'sftp' => [
 		'run'=>false,
 		'host'=>'localhost',
