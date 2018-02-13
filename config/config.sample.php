@@ -514,7 +514,7 @@ $CONFIG = array(
  *
  * * ``auto``
  *     default setting. Automatically expire versions according to expire
- *     rules. Please refer to :doc:`../configuration_files/file_versioning` for
+ *     rules. Please refer to :doc:`../configuration/files/file_versioning` for
  *     more information.
  * * ``D, auto``
  *     keep versions at least for D days, apply expire rules to all versions
@@ -836,7 +836,7 @@ $CONFIG = array(
  *  - OC\Preview\Font
  *
  * .. note:: Troubleshooting steps for the MS Word previews are available
- *    at the :doc:`../configuration_files/collaborative_documents_configuration`
+ *    at the :doc:`../configuration/files/collaborative_documents_configuration`
  *    section of the Administrators Manual.
  *
  * The following providers are not available in Microsoft Windows:
