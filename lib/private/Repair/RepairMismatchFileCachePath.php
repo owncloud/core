@@ -21,6 +21,7 @@
 
 namespace OC\Repair;
 
+use OCP\ILogger;
 use OCP\Migration\IOutput;
 use OCP\Migration\IRepairStep;
 use Doctrine\DBAL\Platforms\MySqlPlatform;
@@ -54,12 +55,18 @@ class RepairMismatchFileCachePath implements IRepairStep {
 	/** @var bool */
 	protected $countOnly = true;
 
+	/** @var ILogger  */
+	protected $logger;
+
 	/**
 	 * @param \OCP\IDBConnection $connection
 	 */
-	public function __construct(IDBConnection $connection, IMimeTypeLoader $mimeLoader) {
+	public function __construct(IDBConnection $connection,
+								IMimeTypeLoader $mimeLoader,
+								ILogger $logger) {
 		$this->connection = $connection;
 		$this->mimeLoader = $mimeLoader;
+		$this->logger = $logger;
 	}
 
 	public function getName() {
@@ -411,6 +418,9 @@ class RepairMismatchFileCachePath implements IRepairStep {
 		try {
 			$qb->execute();
 		} catch (UniqueConstraintViolationException $e) {
+			// This situation should no happen - need debugging information if it does
+			\OC::$server->getLogger()->logException($e);
+			\OC::$server->getLogger()->error("Filecache repair step tried to insert row that already existed with fileid: {$values['fileid']}");
 			// Skip if the entry already exists
 		}
 

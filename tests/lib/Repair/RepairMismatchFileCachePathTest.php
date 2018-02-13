@@ -8,12 +8,12 @@
 
 namespace Test\Repair;
 
-
 use OC\Repair\RepairMismatchFileCachePath;
 use OCP\Files\IMimeTypeLoader;
 use OCP\Migration\IOutput;
 use OCP\Migration\IRepairStep;
 use Test\TestCase;
+use OCP\ILogger;
 
 /**
  * Tests for repairing mismatch file cache paths
@@ -41,7 +41,10 @@ class RepairMismatchFileCachePathTest extends TestCase {
 				['httpd', 1],
 				['httpd/unix-directory', 2],
 			]));
-		$this->repair = new RepairMismatchFileCachePath($this->connection, $mimeLoader);
+
+		/** @var \PHPUnit_Framework_MockObject_MockObject | ILogger $logger */
+		$logger = $this->createMock(ILogger::class);
+		$this->repair = new RepairMismatchFileCachePath($this->connection, $mimeLoader, $logger);
 		$this->repair->setCountOnly(false);
 	}
 
