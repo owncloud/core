@@ -565,20 +565,14 @@ class SharingContext extends RawMinkContext implements Context {
 			]
 		];
 
-		foreach ($settings as $setting) {
-			$change = AppConfigHelper::setCapability(
-				$this->getMinkParameter('base_url'),
-				"admin",
-				$this->featureContext->getUserPassword("admin"),
-				$setting['capabilitiesApp'],
-				$setting['capabilitiesParameter'],
-				$setting['testingApp'],
-				$setting['testingParameter'],
-				$setting['testingState'],
-				$this->featureContext->getSavedCapabilitiesXml()
-			);
-			$this->featureContext->addToSavedCapabilitiesChanges($change);
-		}
+		$change = AppConfigHelper::setCapabilities(
+			$this->getMinkParameter('base_url'),
+			"admin",
+			$this->featureContext->getUserPassword("admin"),
+			$settings,
+			$this->featureContext->getSavedCapabilitiesXml()
+		);
+		$this->featureContext->addToSavedCapabilitiesChanges($change);
 	}
 
 }
