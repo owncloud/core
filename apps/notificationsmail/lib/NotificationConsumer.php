@@ -89,7 +89,8 @@ class NotificationConsumer implements IApp {
 	/**
 	 * Don't do anything since we're not storing the notifications
 	 */
-	public function markProcessed(INotification $notification) {}
+	public function markProcessed(INotification $notification) {
+	}
 
 	public function getCount(INotification $notification) {
 		return 0;

@@ -48,9 +48,14 @@ class NotificationSender {
 	}
 
 	/**
-	 * Send a notification via email to the list of email addresses passed as parameter, or false if
-	 * the mail isn't sent
-	 * @return \OC\Mail\Message|bool the message sent
+	 * Send a notification via email to the list of email addresses passed as parameter
+	 * @param INotification $notification the notification to be sent
+	 * @param string $serverUrl the url of the server so the user can access to his instance from the
+	 * email. Make sure the url is safe to be used as a clickable link (in case encoding is needed)
+	 * @param string[] $emailAddresses the list of email addresses where the notification should be
+	 * sent. Normally only one email is needed. Note that in case of several emails, the same email
+	 * message will be sent to each of them.
+	 * @return \OC\Mail\Message|bool the message sent, or false if the mail isn't sent
 	 */
 	public function sendNotification(INotification $notification, $serverUrl, array $emailAddresses) {
 		if (!$this->willSendNotification($notification)) {
@@ -122,11 +127,11 @@ class NotificationSender {
 	public function willSendNotification(INotification $notification) {
 		$option = $this->config->getUserValue($notification->getUser(), 'notificationsmail', 'email_sending_option', 'never');
 		switch ($option) {
-			case "never":
+			case 'never':
 				return false;
-			case "always":
+			case 'always':
 				return true;
-			case "action":
+			case 'action':
 				return !empty($notification->getActions());
 			default:
 				return false;

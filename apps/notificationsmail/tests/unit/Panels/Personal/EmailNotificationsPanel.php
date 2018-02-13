@@ -23,17 +23,24 @@ namespace OCA\NotificationsMail\Tests\Panels\Personal;
 
 use Test\TestCase;
 use OCA\NotificationsMail\Panels\Personal\EmailNotificationsPanel;
+use OCP\IUserSession;
+use OCP\IConfig;
+use OCP\IUser;
 
 class EmailNotificationsPanelTest extends TestCase {
+	/** @var IConfig */
 	private $config;
+	/** @var IUserSession */
 	private $userSession;
+	/** @var EmailNotificationsPanel */
 	private $emailNotificationsPanel;
 
 	protected function setUp() {
-		$this->userSession = $this->getMockBuilder('\OCP\IUserSession')
+		parent::setUp();
+		$this->userSession = $this->getMockBuilder(IUserSession::class)
 			->disableOriginalConstructor()
 			->getMock();
-		$this->config = $this->getMockBuilder('\OCP\IConfig')
+		$this->config = $this->getMockBuilder(IConfig::class)
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -61,7 +68,7 @@ class EmailNotificationsPanelTest extends TestCase {
 	 * @dataProvider panelValueProvider
 	 */
 	public function testGetPanelDefault($selectedValue) {
-		$mockedUser = $this->getMockBuilder('\OCP\IUser')
+		$mockedUser = $this->getMockBuilder(IUser::class)
 			->disableOriginalConstructor()
 			->getMock();
 		$mockedUser->method('getUID')->willReturn('testUser');
@@ -77,5 +84,15 @@ class EmailNotificationsPanelTest extends TestCase {
 		} else {
 			$this->assertContains("<option value=\"never\" selected=\"selected\">", $page);
 		}
+	}
+
+	public function testGetPanelMissingUserSession() {
+		$this->userSession->method('getUser')->willReturn(null);
+
+		$this->config->method('getUserValue')->willReturn('always');
+
+		$page = $this->emailNotificationsPanel->getPanel()->fetchPage();
+		$this->assertContains('not possible to get your session', $page);
+		$this->assertNotContains('<select id="email_sending_option">', $page);
 	}
 }

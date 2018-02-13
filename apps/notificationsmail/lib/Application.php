@@ -35,35 +35,6 @@ class Application extends App {
 
 		$container = $this->getContainer();
 
-		$container->registerService(NotificationSender::class, function (IContainer $c) {
-			$server = $c->getServer();
-			return new NotificationSender(
-				$server->getNotificationManager(),
-				$server->getMailer(),
-				$server->getConfig(),
-				$server->getL10NFactory()
-			);
-		});
-
-		$container->registerService(NotificationConsumer::class, function (IContainer $c) {
-			$server = $c->getServer();
-			return new NotificationConsumer(
-				$c->query(NotificationSender::class),
-				$server->getUserManager(),
-				$server->getLogger(),
-				$server->getURLGenerator()
-			);
-		});
-
-		$container->registerService(NotificationOptionsController::class, function (IContainer $c) {
-			$server = $c->getServer();
-			return new NotificationOptionsController(
-				$server->getUserSession(),
-				$server->getConfig(),
-				$server->getL10N('notificationsmail')
-			);
-		});
-
 		$dispatcher = $container->getServer()->getEventDispatcher();
 		$dispatcher->addListener(AbstractRegisterConsumerEvent::NAME, function(AbstractRegisterConsumerEvent $event) use ($container) {
 			$event->registerNotificationConsumer($container->query(NotificationConsumer::class));

@@ -37,29 +37,35 @@ class EmailNotificationsPanel implements ISettings {
 		$this->userSession = $userSession;
 	}
 	public function getPanel() {
-		$emailSendingOption = $this->config->getUserValue($this->userSession->getUser()->getUID(), 'notificationsmail', 'email_sending_option', 'never');
-		$possibleOptions = [
-			'never' => [
-				'visibleText' => 'Never send me any notification email',
-				'selected' => false,
-			],
-			'action' => [
-				'visibleText' => 'Only send me an email when the notification requires some action',
-				'selected' => false,
-			],
-			'always' => [
-				'visibleText' => 'Always send me an email for any notification',
-				'selected' => false,
-			],
-		];
+		$userObject = $this->userSession->getUser();
+		if ($userObject !== null) {
+			$emailSendingOption = $this->config->getUserValue($userObject->getUID(), 'notificationsmail', 'email_sending_option', 'never');
+			$possibleOptions = [
+				'never' => [
+					'visibleText' => 'Never send me any notification email',
+					'selected' => false,
+				],
+				'action' => [
+					'visibleText' => 'Only send me an email when the notification requires some action',
+					'selected' => false,
+				],
+				'always' => [
+					'visibleText' => 'Always send me an email for any notification',
+					'selected' => false,
+				],
+			];
 
-		if (!isset($possibleOptions[$emailSendingOption])) {
-			$this->config->setUserValue($this->userSession->getUser()->getUID(), 'notificationsmail', 'email_sending_option', 'never');
-			$emailSendingOption = 'never';
+			if (!isset($possibleOptions[$emailSendingOption])) {
+				$this->config->setUserValue($userObject->getUID(), 'notificationsmail', 'email_sending_option', 'never');
+				$emailSendingOption = 'never';
+			}
+			$possibleOptions[$emailSendingOption]['selected'] = true;
+		} else {
+			$possibleOptions = [];
 		}
-		$possibleOptions[$emailSendingOption]['selected'] = true;
 
 		$tmpl = new Template('notificationsmail', 'panels/personal/emailnotifications');
+		$tmpl->assign('validUserObject', $userObject !== null);
 		$tmpl->assign('possibleOptions', $possibleOptions);
 		return $tmpl;
 	}

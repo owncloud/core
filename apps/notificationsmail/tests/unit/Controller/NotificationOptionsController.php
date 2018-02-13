@@ -23,35 +23,32 @@ namespace OCA\NotificationsMail\Tests\Controller;
 
 use Test\TestCase;
 use OCA\NotificationsMail\Controller\NotificationOptionsController;
+use OCP\IUserSession;
+use OCP\IConfig;
+use OCP\IUser;
 
 class NotificationOptionsControllerTest extends TestCase {
+	/** @var IUserSession */
 	private $userSession;
+	/** @var IConfig */
 	private $config;
-	private $l10n;
+	/** @var NotificationOptionsController */
 	private $controller;
 
 	protected function setUp() {
-		$this->userSession = $this->getMockBuilder('\OCP\IUserSession')
+		parent::setUp();
+		$this->userSession = $this->getMockBuilder(IUserSession::class)
 			->disableOriginalConstructor()
 			->getMock();
-		$this->config = $this->getMockBuilder('\OCP\IConfig')
-			->disableOriginalConstructor()
-			->getMock();
-		$this->l10n = $this->getMockBuilder('\OCP\IL10N')
+		$this->config = $this->getMockBuilder(IConfig::class)
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->l10n->method('t')
-			->will($this->returnCallback(function ($text, $params) {
-				return vsprintf($text, $params);
-		}));
-
-		$this->controller = new NotificationOptionsController($this->userSession, $this->config, $this->l10n);
+		$this->controller = new NotificationOptionsController($this->userSession, $this->config);
 	}
 
 	private function getSuccessResponse($value) {
 		return json_encode([
-			'status' => 'success',
 			'data' => [
 				'optionSet' => $value,
 				'message' => 'Saved'
@@ -61,9 +58,8 @@ class NotificationOptionsControllerTest extends TestCase {
 
 	public function emailNotificationOptionsProvider() {
 		$errorResponse = json_encode([
-			'status' => 'failure',
 			'data' => [
-				'message' => 'Invalid value'
+				'message' => 'Option not supported'
 			]
 		]);
 		return [
@@ -81,7 +77,7 @@ class NotificationOptionsControllerTest extends TestCase {
 	public function testSetEmailNotificationOption($value, $expectedValue) {
 		$validKeys = ['never', 'action', 'always'];
 
-		$mockedUser = $this->getMockBuilder('\OCP\IUser')
+		$mockedUser = $this->getMockBuilder(IUser::class)
 			->disableOriginalConstructor()
 			->getMock();
 		$mockedUser->method('getUID')->willReturn('testUser');

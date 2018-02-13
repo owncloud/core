@@ -32,9 +32,9 @@
 				type: 'POST',
 				data: {'value': value},
 			}).done(function(result) {
-				OC.msg.finishedSaving('#email_notifications .msg', result);
+				OC.msg.finishedSuccess('#email_notifications .msg', t('notificationsmail', result.data.message));
 			}).fail(function(result) {
-				OC.msg.finishedSaving('#email_notifications .msg', result.responseJSON);
+				OC.msg.finishedError('#email_notifications .msg', t('notificationsmail', result.responseJSON.data.message));
 			});
 		}
 	};

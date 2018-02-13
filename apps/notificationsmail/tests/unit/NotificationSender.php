@@ -24,27 +24,37 @@ namespace OCA\NotificationsMail\Tests;
 use Test\TestCase;
 use OCA\NotificationsMail\NotificationSender;
 use OC\Mail\Message;
+use OC\Mail\Mailer;
+use OCP\Notification\IManager;
+use OCP\IConfig;
+use OCP\L10N\IFactory;
 
 class NotificationSenderTest extends TestCase {
+	/** @var NotificationSender */
 	private $nsender;
+	/** @var IManager */
 	private $manager;
+	/** @var Mailer */
 	private $mailer;
+	/** @var IConfig */
 	private $config;
+	/** @var IFactory */
 	private $l10nFactory;
 
 	protected function setUp() {
-		$this->manager = $this->getMockBuilder('\OCP\Notification\IManager')
+		parent::setUp();
+		$this->manager = $this->getMockBuilder(IManager::class)
 			->disableOriginalConstructor()
 			->getMock();
 		// we have to use an implementation due to the "createMessage" method in the mailer
-		$this->mailer = $this->getMockBuilder('\OC\Mail\Mailer')
+		$this->mailer = $this->getMockBuilder(Mailer::class)
 			->setMethodsExcept(['createMessage'])
 			->disableOriginalConstructor()
 			->getMock();
-		$this->config = $this->getMockBuilder('\OCP\IConfig')
+		$this->config = $this->getMockBuilder(IConfig::class)
 			->disableOriginalConstructor()
 			->getMock();
-		$this->l10nFactory = $this->getMockBuilder('\OCP\L10N\IFactory')
+		$this->l10nFactory = $this->getMockBuilder(IFactory::class)
 			->disableOriginalConstructor()
 			->getMock();
 		$this->nsender = new NotificationSender($this->manager, $this->mailer, $this->config, $this->l10nFactory);

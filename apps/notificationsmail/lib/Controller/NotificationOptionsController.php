@@ -26,42 +26,46 @@ use OCP\AppFramework\Http;
 use OCP\AppFramework\Http\JSONResponse;
 use OCP\IUserSession;
 use OCP\IConfig;
-use OCP\IL10N;
 
 class NotificationOptionsController extends Controller {
 	/** @var IUserSession */
 	private $userSession;
 	/** @var IConfig */
 	private $config;
-	/** @var IL10N */
-	private $l10n;
 
-	public function __construct(IUserSession $userSession, IConfig $config, IL10N $l10n) {
+	public function __construct(IUserSession $userSession, IConfig $config) {
 		$this->userSession = $userSession;
 		$this->config = $config;
-		$this->l10n = $l10n;
 	}
 
 	/**
+	 * @NoAdminRequired
 	 * @param string $value any of ["never", "action", "always"]
 	 * @return JSONResponse
 	 */
 	public function setEmailNotificationOption($value) {
+		$userObject = $this->userSession->getUser();
+		if ($userObject === null) {
+			return new JSONResponse([
+				'data' => [
+					'message' => 'Unknown user session. It is not possible to set the option'
+				]
+			], Http::STATUS_UNAUTHORIZED);
+		}
+
 		$validOptions = ['never' => true, 'action' => true, 'always' => true];
 		if (isset($validOptions[$value])) {
-			$this->config->setUserValue($this->userSession->getUser()->getUID(), 'notificationsmail', 'email_sending_option', $value);
+			$this->config->setUserValue($userObject->getUID(), 'notificationsmail', 'email_sending_option', $value);
 			return new JSONResponse([
-				'status' => 'success',
 				'data' => [
 					'optionSet' => $value,
-					'message' => $this->l10n->t('Saved')
+					'message' => 'Saved'
 				]
 			]);
 		} else {
 			return new JSONResponse([
-				'status' => 'failure',
 				'data' => [
-					'message' => $this->l10n->t('Invalid value')
+					'message' => 'Option not supported'
 				]
 			], Http::STATUS_BAD_REQUEST);
 		}

@@ -23,25 +23,38 @@ namespace OCA\NotificationsMail\Tests;
 
 use Test\TestCase;
 use OCA\NotificationsMail\NotificationConsumer;
+use OCA\NotificationsMail\NotificationSender;
+use OCP\IUserManager;
+use OCP\ILogger;
+use OCP\IURLGenerator;
+use OCP\Notification\INotification;
+use OCP\Notification\IAction;
+use OCP\IUser;
 
 class NotificationConsumerTest extends TestCase {
+	/** @var NotificationSender */
 	private $sender;
+	/** @var IUserManager */
 	private $userManager;
+	/** @var ILogger */
 	private $logger;
+	/** @var IURLGenerator */
 	private $urlGenerator;
+	/** @var NotificationConsumer */
 	private $consumer;
 
 	protected function setUp() {
-		$this->sender = $this->getMockBuilder('\OCA\NotificationsMail\NotificationSender')
+		parent::setUp();
+		$this->sender = $this->getMockBuilder(NotificationSender::class)
 			->disableOriginalConstructor()
 			->getMock();
-		$this->userManager = $this->getMockBuilder('\OCP\IUserManager')
+		$this->userManager = $this->getMockBuilder(IUserManager::class)
 			->disableOriginalConstructor()
 			->getMock();
-		$this->logger = $this->getMockBuilder('\OCP\ILogger')
+		$this->logger = $this->getMockBuilder(ILogger::class)
 			->disableOriginalConstructor()
 			->getMock();
-		$this->urlGenerator = $this->getMockBuilder('\OCP\IURLGenerator')
+		$this->urlGenerator = $this->getMockBuilder(IURLGenerator::class)
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -49,7 +62,7 @@ class NotificationConsumerTest extends TestCase {
 	}
 
 	public function testNotifyWontSend() {
-		$mockedNotification = $this->getMockBuilder('\OCP\Notification\INotification')
+		$mockedNotification = $this->getMockBuilder(INotification::class)
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -69,11 +82,11 @@ class NotificationConsumerTest extends TestCase {
 	}
 
 	public function testNotifyMissingUser() {
-		$mockedAction = $this->getMockBuilder('\OCP\Notification\IAction')
+		$mockedAction = $this->getMockBuilder(IAction::class)
 			->disableOriginalConstructor()
 			->getMock();
 
-		$mockedNotification = $this->getMockBuilder('\OCP\Notification\INotification')
+		$mockedNotification = $this->getMockBuilder(INotification::class)
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -98,17 +111,17 @@ class NotificationConsumerTest extends TestCase {
 	}
 
 	public function testNotifyMissingEmail() {
-		$mockedUser = $this->getMockBuilder('\OCP\IUser')
+		$mockedUser = $this->getMockBuilder(IUser::class)
 			->disableOriginalConstructor()
 			->getMock();
 		$mockedUser->method('getEMailAddress')
 			->willReturn(null);
 
-		$mockedAction = $this->getMockBuilder('\OCP\Notification\IAction')
+		$mockedAction = $this->getMockBuilder(IAction::class)
 			->disableOriginalConstructor()
 			->getMock();
 
-		$mockedNotification = $this->getMockBuilder('\OCP\Notification\INotification')
+		$mockedNotification = $this->getMockBuilder(INotification::class)
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -133,17 +146,17 @@ class NotificationConsumerTest extends TestCase {
 	}
 
 	public function testNotifyInvalidEmail() {
-		$mockedUser = $this->getMockBuilder('\OCP\IUser')
+		$mockedUser = $this->getMockBuilder(IUser::class)
 			->disableOriginalConstructor()
 			->getMock();
 		$mockedUser->method('getEMailAddress')
 			->willReturn('wiiiiii');
 
-		$mockedAction = $this->getMockBuilder('\OCP\Notification\IAction')
+		$mockedAction = $this->getMockBuilder(IAction::class)
 			->disableOriginalConstructor()
 			->getMock();
 
-		$mockedNotification = $this->getMockBuilder('\OCP\Notification\INotification')
+		$mockedNotification = $this->getMockBuilder(INotification::class)
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -170,17 +183,17 @@ class NotificationConsumerTest extends TestCase {
 	}
 
 	public function testNotify() {
-		$mockedUser = $this->getMockBuilder('\OCP\IUser')
+		$mockedUser = $this->getMockBuilder(IUser::class)
 			->disableOriginalConstructor()
 			->getMock();
 		$mockedUser->method('getEMailAddress')
 			->willReturn('we@we.we');
 
-		$mockedAction = $this->getMockBuilder('\OCP\Notification\IAction')
+		$mockedAction = $this->getMockBuilder(IAction::class)
 			->disableOriginalConstructor()
 			->getMock();
 
-		$mockedNotification = $this->getMockBuilder('\OCP\Notification\INotification')
+		$mockedNotification = $this->getMockBuilder(INotification::class)
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -215,7 +228,7 @@ class NotificationConsumerTest extends TestCase {
 	}
 
 	public function testGetCount() {
-		$mockedNotification = $this->getMockBuilder('\OCP\Notification\INotification')
+		$mockedNotification = $this->getMockBuilder(INotification::class)
 			->disableOriginalConstructor()
 			->getMock();
 		$this->assertEquals(0, $this->consumer->getCount($mockedNotification));
