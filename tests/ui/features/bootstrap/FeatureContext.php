@@ -388,15 +388,17 @@ class FeatureContext extends RawMinkContext implements Context {
 	 * 
 	 * @param array $change
 	 *        [
-	 *         'testingApp' => string,
-	 *         'testingParameter' => string,
-	 *         'savedState' => bool
+	 *         'appid' => string,
+	 *         'configkey' => string,
+	 *         'value' => bool
 	 *        ]
 	 * @return void
 	 */
 	public function addToSavedCapabilitiesChanges($change) {
 		if (sizeof($change) > 0) {
-			$this->savedCapabilitiesChanges[] = $change;
+			$this->savedCapabilitiesChanges = array_merge(
+				$this->savedCapabilitiesChanges, $change
+			);
 		}
 	}
 
@@ -466,17 +468,13 @@ class FeatureContext extends RawMinkContext implements Context {
 	 * @AfterScenario
 	 */
 	public function tearDownSuite() {
-		foreach ($this->savedCapabilitiesChanges as $capabilitiesChange) {
-			AppConfigHelper::modifyServerConfig(
-				$this->getMinkParameter('base_url'),
-				"admin",
-				$this->getUserPassword("admin"),
-				$capabilitiesChange['appid'],
-				$capabilitiesChange['configkey'],
-				$capabilitiesChange['value']
-			);
-		}
-		
+		AppConfigHelper::modifyServerConfigs(
+			$this->getMinkParameter('base_url'),
+			"admin",
+			$this->getUserPassword("admin"),
+			$this->savedCapabilitiesChanges
+		);
+
 		if ($this->oldCSRFSetting === "") {
 			SetupHelper::runOcc(['config:system:delete', 'csrf.disabled']);
 		} elseif (!is_null($this->oldCSRFSetting)) {
