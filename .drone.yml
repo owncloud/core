@@ -239,7 +239,7 @@ services:
     pull: true
     environment:
       - APACHE_WEBROOT=/drone/src/
-    command: [ "/usr/local/bin/apachectl", "-e debug" , "-DFOREGROUND" ]
+    command: [ "/usr/local/bin/apachectl", "-e", "debug" , "-D", "FOREGROUND" ]
     when:
       matrix:
         USE_SERVER: true
@@ -249,7 +249,7 @@ services:
     pull: true
     environment:
       - APACHE_WEBROOT=/drone/src/
-    command: [ "/usr/local/bin/apachectl", "-e debug" , "-DFOREGROUND" ]
+    command: [ "/usr/local/bin/apachectl", "-e", "debug" , "-D", "FOREGROUND" ]
     when:
       matrix:
         USE_FEDERATED_SERVER: true
