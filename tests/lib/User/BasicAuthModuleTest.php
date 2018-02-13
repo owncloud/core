@@ -42,8 +42,8 @@ class BasicAuthModuleTest extends TestCase {
 		parent::setUp();
 		$this->manager = $this->createMock(IUserManager::class);
 		$this->request = $this->createMock(IRequest::class);
-		$this->user = $this->createMock(IUser::class);
 
+		$this->user = $this->createMock(IUser::class);
 		$this->user->expects($this->any())->method('getUID')->willReturn('user1');
 
 		$this->manager->expects($this->any())->method('checkPassword')
@@ -65,16 +65,20 @@ class BasicAuthModuleTest extends TestCase {
 
 	/**
 	 * @dataProvider providesCredentials
-	 * @param bool $expectsUser
+	 * @param mixed $expectedResult
 	 * @param string $userId
 	 */
-	public function testAuth($expectsUser, $userId) {
+	public function testAuth($expectedResult, $userId) {
 		$module = new BasicAuthModule($this->manager);
 		$this->request->server = [
 			'PHP_AUTH_USER' => $userId,
 			'PHP_AUTH_PW' => '123456',
 		];
-		$this->assertEquals($expectsUser ? $this->user : null, $module->auth($this->request));
+		if ($expectedResult instanceof \Exception) {
+			$this->expectException(get_class($expectedResult));
+			$this->expectExceptionMessage($expectedResult->getMessage());
+		}
+		$this->assertEquals($expectedResult ? $this->user : null, $module->auth($this->request));
 	}
 
 	public function testGetUserPassword() {
@@ -90,12 +94,14 @@ class BasicAuthModuleTest extends TestCase {
 	}
 
 	public function providesCredentials() {
+
 		return [
+			'no user is' => [false, ''],
 			'user1 can login' => [true, 'user1'],
 			'user1 can login with email' => [true, 'user@example.com'],
 			'unique email can login' => [true, 'unique@example.com'],
-			'not unique email can not login' => [false, 'not-unique@example.com'],
-			'user2 is not known' => [false, 'user2'],
+			'not unique email can not login' => [new \Exception('Invalid credentials'), 'not-unique@example.com'],
+			'user2 is not known' => [new \Exception('Invalid credentials'), 'user2'],
 		];
 	}
 }
