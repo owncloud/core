@@ -37,7 +37,7 @@
     "@bower_components/zxcvbn": "dropbox/zxcvbn#4.4.2"
   },
   "devDependencies": {
-    "handlebars": "^4.0.5",
+    "handlebars": "^4.0.11",
     "jasmine-core": "^2.9.1",
     "jasmine-sinon": "^0.4.0",
     "sinon": "^2.0.0",
