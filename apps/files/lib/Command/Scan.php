@@ -7,6 +7,7 @@
  * @author Robin Appelman <icewind@owncloud.com>
  * @author Thomas Müller <thomas.mueller@tmit.eu>
  * @author Vincent Petry <pvince81@owncloud.com>
+ * @author Sujith Haridasan <sharidasan@owncloud.com>
  *
  * @copyright Copyright (c) 2018, ownCloud GmbH
  * @license AGPL-3.0
@@ -37,6 +38,7 @@ use OCP\Files\IMimeTypeLoader;
 use OCP\Files\StorageNotAvailableException;
 use OCP\IConfig;
 use OCP\IDBConnection;
+use OCP\IGroupManager;
 use OCP\IUserManager;
 use OCP\Lock\ILockingProvider;
 use OCP\Lock\LockedException;
@@ -50,6 +52,8 @@ class Scan extends Base {
 
 	/** @var IUserManager $userManager */
 	private $userManager;
+	/** @var  IGroupManager $groupManager */
+	private $groupManager;
 	/** @var ILockingProvider */
 	private $lockingProvider;
 	/** @var IMimeTypeLoader */
@@ -65,11 +69,13 @@ class Scan extends Base {
 
 	public function __construct(
 		IUserManager $userManager,
+		IGroupManager $groupManager,
 		ILockingProvider $lockingProvider,
 		IMimeTypeLoader $mimeTypeLoader,
 		IConfig $config
 	) {
 		$this->userManager = $userManager;
+		$this->groupManager = $groupManager;
 		$this->lockingProvider = $lockingProvider;
 		$this->mimeTypeLoader = $mimeTypeLoader;
 		$this->config = $config;
@@ -92,6 +98,12 @@ class Scan extends Base {
 				'p',
 				InputArgument::OPTIONAL,
 				'Limit rescan to this path, e.g., --path="/alice/files/Music", the user_id is determined by the path and the user_id parameter and --all are ignored.'
+			)
+			->addOption(
+				'groups',
+				'g',
+				InputArgument::OPTIONAL,
+				'Scan user(s) under the group(s). This option can be used as --groups=foo,bar to scan groups foo and bar'
 			)
 			->addOption(
 				'quiet',
@@ -235,12 +247,44 @@ class Scan extends Base {
 		}
 	}
 
+	protected function getAllUsersFromGroup($group) {
+		$count = 0;
+		$users = [];
+		foreach ($this->groupManager->findUsersInGroup($group) as $user) {
+			array_push($users, $user->getUID());
+			$count++;
+			//Take 200 users at a time
+			if ($count > 199) {
+				yield $users;
+				$count = 1;
+				$users = [];
+			}
+		}
+		if (count($users) > 0) {
+			yield $users;
+		}
+	}
 
 	protected function execute(InputInterface $input, OutputInterface $output) {
 		$inputPath = $input->getOption('path');
+		$groups = $input->getOption('groups') ? explode(',', $input->getOption('groups')) : [];
 		$shouldRepairStoragesIndividually = (bool) $input->getOption('repair');
 
-		if ($inputPath) {
+		if (count($groups) >= 1) {
+			$users = [];
+			foreach ($groups as $group) {
+				if ($this->groupManager->groupExists($group) === false) {
+					$output->writeln("Group name $group doesn't exist");
+					return 1;
+				} else {
+					$users[$group] = [];
+					foreach ($this->getAllUsersFromGroup($group) as $users_array) {
+						$users[$group] = $users_array;
+						$this->processUserChunks($input, $output, $users, $inputPath, $shouldRepairStoragesIndividually, $group);
+					}
+				}
+			}
+		} else if ($inputPath) {
 			$inputPath = '/' . trim($inputPath, '/');
 			list (, $user,) = explode('/', $inputPath, 3);
 			$users = [$user];
@@ -264,6 +308,12 @@ class Scan extends Base {
 			$users = $input->getArgument('user_id');
 		}
 
+		if (count($groups) === 0) {
+			$this->processUserChunks($input, $output, $users, $inputPath, $shouldRepairStoragesIndividually);
+		}
+	}
+
+	protected function processUserChunks($input, $output, $users, $inputPath, $shouldRepairStoragesIndividually, $group = null) {
 		# no messaging level option means: no full printout but statistics
 		# $quiet   means no print at all
 		# $verbose means full printout including statistics
@@ -287,13 +337,35 @@ class Scan extends Base {
 			$output->writeln("<error>Please specify the user id to scan, \"--all\" to scan for all users or \"--path=...\"</error>");
 			return;
 		} else {
-			if ($users_total > 1) {
+			$this->initTools();
+			if ($group !== null) {
+				$output->writeln("Scanning group $group");
+				$this->userScan($users[$group], $inputPath, $shouldRepairStoragesIndividually, $input, $output, $verbose);
+
+			} elseif ($users_total >= 1) {
 				$output->writeln("\nScanning files for $users_total users");
+				$this->userScan($users, $inputPath, $shouldRepairStoragesIndividually, $input, $output, $verbose);
 			}
 		}
 
-		$this->initTools();
+		# stat: printout statistics if $quiet was not set
+		if (!$quiet) {
+			$this->presentStats($output);
+		}
+	}
 
+	/**
+	 * Initialises some useful tools for the Command
+	 */
+	protected function initTools() {
+		// Start the timer
+		$this->execTime = -microtime(true);
+		// Convert PHP errors to exceptions
+		set_error_handler([$this, 'exceptionErrorHandler'], E_ALL);
+	}
+
+	protected function userScan($users, $inputPath, $shouldRepairStoragesIndividually, $input, $output, $verbose) {
+		$users_total = count($users);
 		$user_count = 0;
 		foreach ($users as $user) {
 			if (is_object($user)) {
@@ -316,21 +388,6 @@ class Scan extends Base {
 				break;
 			}
 		}
-
-		# stat: printout statistics if $quiet was not set
-		if (!$quiet) {
-			$this->presentStats($output);
-		}
-	}
-
-	/**
-	 * Initialises some useful tools for the Command
-	 */
-	protected function initTools() {
-		// Start the timer
-		$this->execTime = -microtime(true);
-		// Convert PHP errors to exceptions
-		set_error_handler([$this, 'exceptionErrorHandler'], E_ALL);
 	}
 
 	/**
