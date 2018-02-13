@@ -147,7 +147,7 @@ pipeline:
         TEST_SUITE: selenium
 
   acceptance-tests:
-    image: owncloudci/php:latest
+    image: owncloudci/php:${PHP_VERSION}
     pull: true
     environment:
       - BROWSER=chrome
@@ -235,7 +235,7 @@ services:
         TEST_SUITE: selenium
 
   server:
-    image: owncloudci/php:latest
+    image: owncloudci/php:${PHP_VERSION}
     pull: true
     environment:
       - APACHE_WEBROOT=/drone/src/
@@ -245,7 +245,7 @@ services:
         USE_SERVER: true
 
   federated:
-    image: owncloudci/php:latest
+    image: owncloudci/php:${PHP_VERSION}
     pull: true
     environment:
       - APACHE_WEBROOT=/drone/src/
