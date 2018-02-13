@@ -44,7 +44,7 @@ if (version_compare(PHP_VERSION, '7.3.0alpha1') !== -1) {
 
 // running oC on Windows is unsupported since 8.1, this has to happen here because
 // is seems that the autoloader on Windows fails later and just throws an exception.
-if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {
+if (stripos(PHP_OS, 'WIN') === 0) {
 	echo 'ownCloud Server does not support Microsoft Windows.';
 	return;
 }
@@ -80,7 +80,7 @@ try {
 		// with some env issues, it can happen that the logger couldn't log properly,
 		// so print out the exception directly
 		echo('<html><body>');
-		echo('Exception occurred while logging exception: ' . $ex->getMessage() . '<br/>');
+		echo("Exception occurred while logging exception: {$ex->getMessage()}<br/>");
 		echo(str_replace("\n", '<br/>', $ex->getTraceAsString()));
 		echo('</body></html>');
 	}

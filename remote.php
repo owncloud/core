@@ -103,7 +103,7 @@ function resolveService($service) {
 		return $services[$service];
 	}
 
-	return \OC::$server->getConfig()->getAppValue('core', 'remote_' . $service);
+	return \OC::$server->getConfig()->getAppValue('core', "remote_$service");
 }
 
 try {
@@ -137,7 +137,7 @@ try {
 
 	$file = resolveService($service);
 
-	if(is_null($file)) {
+	if($file === null) {
 		$dispatcher = \OC::$server->getEventDispatcher();
 		$dispatcher->dispatch(\OCP\Http\HttpEvents::EVENT_404, new OCP\Http\HttpEvents(
 			\OCP\Http\HttpEvents::EVENT_404,
@@ -159,19 +159,17 @@ try {
 	OC_App::loadApps(['authentication']);
 	OC_App::loadApps(['filesystem', 'logging']);
 
-	switch ($app) {
-		case 'core':
-			$file =  OC::$SERVERROOT .'/'. $file;
-			break;
-		default:
-			if (!\OC::$server->getAppManager()->isInstalled($app)) {
-				throw new RemoteException('App not installed: ' . $app);
-			}
-			OC_App::loadApp($app);
-			$file = OC_App::getAppPath($app) .'/'. $parts[1];
-			break;
+	if ($app === 'core') {
+		$file = OC::$SERVERROOT . "/$file";
+	} else {
+		if (!\OC::$server->getAppManager()->isInstalled($app)) {
+			throw new RemoteException("App not installed: $app");
+		}
+		OC_App::loadApp($app);
+		$file = OC_App::getAppPath($app) . "/$parts[1]";
 	}
-	$baseuri = OC::$WEBROOT . '/remote.php/'.$service.'/';
+
+	$baseuri = OC::$WEBROOT . "/remote.php/$service/";
 	require_once $file;
 
 } catch (Exception $ex) {

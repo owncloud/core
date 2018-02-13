@@ -35,7 +35,7 @@ try {
 	require_once __DIR__ . '/lib/base.php';
 
 	# show the version details based on config.php parameter, 
-	# but do not expose the servername in the public via url
+	# but do not expose the server name in the public via url
 	$values = \OCP\Util::getStatusInfo(
 		null,
 		\OC::$server->getConfig()->getSystemValue('show_server_hostname', false) !== true);
