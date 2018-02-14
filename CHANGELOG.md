@@ -7,7 +7,9 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/).
 ## [Unreleased]
 ## 10.0.7
 ### Fixed
-- Fixed issues related to app passwords and account lock-outs - [#30157](https://github.com/owncloud/core/issues/30157)
+- Fix various issues about null user errors - [#30450](https://github.com/owncloud/core/issues/30450)
+- Solve OAuth token expiry issue - [#30481](https://github.com/owncloud/core/issues/30481)
+- Fixed issues related to app passwords and account lock-outs - [#30363](https://github.com/owncloud/core/issues/30363)
 
 ## 10.0.6 - 2018-01-29
 ### Fixed
