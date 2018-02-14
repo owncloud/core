@@ -1,5 +1,6 @@
 <?php
 /**
+ * @author Jörn Friedrich Dreyer <jfd@butonic.de>
  * @author Thomas Müller <thomas.mueller@tmit.eu>
  *
  * @copyright Copyright (c) 2018, ownCloud GmbH
@@ -95,33 +96,26 @@ class SyncService {
 
 	/**
 	 * @param UserInterface $backend to sync
+	 * @param \Traversable $userIds of users
 	 * @param \Closure $callback is called for every user to progress display
 	 */
-	public function run(UserInterface $backend, \Closure $callback) {
-		$limit = 500;
-		$offset = 0;
-		$backendClass = get_class($backend);
-		do {
-			$users = $backend->getUsers('', $limit, $offset);
-
-			// update existing and insert new users
-			foreach ($users as $uid) {
-				try {
-					$account = $this->createOrSyncAccount($uid, $backend);
-					$uid = $account->getUserId(); // get correct case
-					// clean the user's preferences
-					$this->cleanPreferences($uid);
-				} catch (\Exception $e) {
-					// Error syncing this user
-					$this->logger->error("Error syncing user with uid: $uid and backend: {get_class($backend)}");
-					$this->logger->logException($e);
-				}
-
-				// call the callback
-				$callback($uid);
+	public function run(UserInterface $backend, \Traversable $userIds, \Closure $callback) {
+		// update existing and insert new users
+		foreach ($userIds as $uid) {
+			try {
+				$account = $this->createOrSyncAccount($uid, $backend);
+				$uid = $account->getUserId(); // get correct case
+				// clean the user's preferences
+				$this->cleanPreferences($uid);
+			} catch (\Exception $e) {
+				// Error syncing this user
+				$this->logger->error("Error syncing user with uid: $uid and backend: {get_class($backend)}");
+				$this->logger->logException($e);
 			}
-			$offset += $limit;
-		} while(count($users) >= $limit);
+
+			// call the callback
+			$callback($uid);
+		}
 	}
 
 	/**
@@ -239,10 +233,10 @@ class SyncService {
 			if ($proividesHome) {
 				$home = $backend->getHome($uid);
 			}
-			if (!is_string($home) || substr($home, 0, 1) !== '/') {
+			if (!is_string($home) || $home[0] !== '/') {
 				$home = $this->config->getSystemValue('datadirectory', \OC::$SERVERROOT . '/data') . "/$uid";
 				$this->logger->debug(
-					"User backend ".get_class($backend)." provided no home for <$uid>",
+					'User backend ' .get_class($backend)." provided no home for <$uid>",
 					['app' => self::class]
 				);
 			}
@@ -283,7 +277,7 @@ class SyncService {
 			$searchTerms = $backend->getSearchTerms($uid);
 			$a->setSearchTerms($searchTerms);
 			if ($a->haveTermsChanged()) {
-				$logTerms = join('|', $searchTerms);
+				$logTerms = implode('|', $searchTerms);
 				$this->logger->debug(
 					"Setting searchTerms for <$uid> to <$logTerms>", ['app' => self::class]
 				);
@@ -369,7 +363,7 @@ class SyncService {
 	 */
 	private function readUserConfig($uid, $app, $key) {
 		$keys = $this->config->getUserKeys($uid, $app);
-		if (in_array($key, $keys)) {
+		if (in_array($key, $keys, true)) {
 			$enabled = $this->config->getUserValue($uid, $app, $key);
 			return [true, $enabled];
 		}

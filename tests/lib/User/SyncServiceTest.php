@@ -26,6 +26,7 @@ namespace Test\User;
 use OC\User\Account;
 use OC\User\AccountMapper;
 use OC\User\Database;
+use OC\User\Sync\AllUsersIterator;
 use OC\User\SyncService;
 use OCP\AppFramework\Db\DoesNotExistException;
 use OCP\IConfig;
@@ -95,7 +96,7 @@ class SyncServiceTest extends TestCase {
 
 
 		$s = new SyncService($config, $logger, $mapper);
-		$s->run($backend, function($uid) {});
+		$s->run($backend, new AllUsersIterator($backend), function($uid) {});
 
 		$this->invokePrivate($s, 'syncHome', [$account, $backend]);
 	}
