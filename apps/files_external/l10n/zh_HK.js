@@ -6,7 +6,6 @@ OC.L10N.register(
     "Username" : "用戶名稱",
     "Password" : "密碼",
     "Save" : "儲存",
-    "Port" : "連接埠",
     "WebDAV" : "WebDAV",
     "URL" : "網址",
     "Location" : "位置",

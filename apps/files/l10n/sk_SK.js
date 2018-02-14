@@ -1,6 +1,7 @@
 OC.L10N.register(
     "files",
     {
+    "Storage is temporarily not available" : "Úložisko je dočasne nedostupné",
     "Storage invalid" : "Úložisko nie je platné",
     "Unknown error" : "Neznáma chyba",
     "All files" : "Všetky súbory",
@@ -12,6 +13,7 @@ OC.L10N.register(
     "Upload cancelled." : "Odosielanie je zrušené.",
     "Unable to upload {filename} as it is a directory or has 0 bytes" : "Nemožno nahrať súbor {filename}, pretože je to priečinok, alebo má 0 bitov",
     "Not enough free space, you are uploading {size1} but only {size2} is left" : "Nie je dostatok voľného miesta, chcete nahrať {size1} ale k dispozíciji je len {size2}",
+    "Not enough free space" : "Nedostatok voľného miesta",
     "Uploading..." : "Nahrávam...",
     "..." : "...",
     "File upload is in progress. Leaving the page now will cancel the upload." : "Opustenie stránky zruší práve prebiehajúce odosielanie súboru.",

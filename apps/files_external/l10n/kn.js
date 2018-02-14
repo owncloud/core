@@ -6,7 +6,6 @@ OC.L10N.register(
     "Username" : "﻿ಬಳಕೆಯ ಹೆಸರು",
     "Password" : "ಗುಪ್ತ ಪದ",
     "Save" : "﻿ಉಳಿಸಿ",
-    "Port" : "﻿ರೇವು",
     "WebDAV" : "﻿WebDAV",
     "URL" : "ಜಾಲದ ಕೊಂಡಿ",
     "Local" : "ಸ್ಥಳೀಯ",
