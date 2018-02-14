@@ -22,13 +22,24 @@
 
 namespace OC\Notification;
 
-
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use OCP\Notification\IApp;
 use OCP\Notification\IManager;
 use OCP\Notification\INotification;
 use OCP\Notification\INotifier;
+use OCP\Notification\Exceptions\IncompleteSerializationException;
+use OCP\Notification\Exceptions\IncompleteDeserializationException;
+use OCP\Notification\Exceptions\CannotDeserializeException;
+use OCP\Notification\Exceptions\NotifierIdInUseException;
+use OCP\Notification\Events\AbstractRegisterConsumerEvent;
+use OCP\Notification\Events\AbstractRegisterNotifierEvent;
+use OC\Notification\Events\RegisterConsumerEvent;
+use OC\Notification\Events\RegisterNotifierEvent;
 
 class Manager implements IManager {
+	/** @var EventDispatcherInterface */
+	protected $dispatcher;
+
 	/** @var IApp[] */
 	protected $apps;
 
@@ -47,13 +58,23 @@ class Manager implements IManager {
 	/** @var \Closure[] */
 	protected $notifiersInfoClosures;
 
-	public function __construct() {
+	/** @var IApp[] */
+	protected $builtAppsHolder;
+
+	/** @var INotifier[] */
+	protected $builtNotifiersHolder;
+
+	public function __construct(EventDispatcherInterface $dispatcher) {
+		$this->dispatcher = $dispatcher;
+
 		$this->apps = [];
 		$this->notifiers = [];
 		$this->notifiersInfo = [];
 		$this->appsClosures = [];
 		$this->notifiersClosures = [];
 		$this->notifiersInfoClosures = [];
+
+		$this->builtAppsHolder = [];
 	}
 
 	/**
@@ -83,6 +104,27 @@ class Manager implements IManager {
 	}
 
 	/**
+	 * INTERNAL USE ONLY!! This method isn't part of the IManager interface
+	 */
+	public function registerBuiltApp(IApp $app) {
+		$this->builtAppsHolder[] = $app;
+	}
+
+	/**
+	 * INTERNAL USE ONLY!! This method isn't part of the IManager interface
+	 */
+	public function registerBuiltNotifier(INotifier $notifier, $id, $name) {
+		if (!isset($this->builtNotifiersHolder[$id]) && !isset($this->notifiersInfo[$id])) {
+			// we have to check also in the notifiersInfo
+			$this->builtNotifiersHolder[$id] = [];
+			$this->builtNotifiersHolder[$id]['notifier'] = $notifier;
+			$this->builtNotifiersHolder[$id]['name'] = $name;
+		} else {
+			throw new NotifierIdInUseException("The given notifier ID $id is already in use");
+		}
+	}
+
+	/**
 	 * @return IApp[]
 	 */
 	protected function getApps() {
@@ -98,6 +140,11 @@ class Manager implements IManager {
 			}
 			$this->apps[] = $app;
 		}
+
+		$this->builtAppsHolder = [];
+		$registerAppEvent = new RegisterConsumerEvent($this);
+		$this->dispatcher->dispatch(AbstractRegisterConsumerEvent::NAME, $registerAppEvent);
+		$this->apps = array_merge($this->apps, $this->builtAppsHolder);
 
 		return $this->apps;
 	}
@@ -117,6 +164,13 @@ class Manager implements IManager {
 				throw new \InvalidArgumentException('The given notifier does not implement the INotifier interface');
 			}
 			$this->notifiers[] = $notifier;
+		}
+
+		$this->builtNotifiersHolder = [];
+		$registerNotifierEvent = new RegisterNotifierEvent($this);
+		$this->dispatcher->dispatch(AbstractRegisterNotifierEvent::NAME, $registerNotifierEvent);
+		foreach ($this->builtNotifiersHolder as $notifierData) {
+			$this->notifiers[] = $notifierData['notifier'];
 		}
 
 		return $this->notifiers;
@@ -140,6 +194,13 @@ class Manager implements IManager {
 				throw new \InvalidArgumentException('The given notifier ID ' . $notifier['id'] . ' is already in use');
 			}
 			$this->notifiersInfo[$notifier['id']] = $notifier['name'];
+		}
+
+		$this->builtNotifiersHolder = [];
+		$registerNotifierEvent = new RegisterNotifierEvent($this);
+		$this->dispatcher->dispatch(AbstractRegisterNotifierEvent::NAME, $registerNotifierEvent);
+		foreach ($this->builtNotifiersHolder as $id => $notifierData) {
+			$this->notifiersInfo[$id] = $notifierData['name'];
 		}
 
 		return $this->notifiersInfo;
@@ -236,5 +297,206 @@ class Manager implements IManager {
 		}
 
 		return $count;
+	}
+
+	/**
+	 * @param INotification $notification the notification to be serialized
+	 * @param bool $forceIncomplete whether this method should serialize a INotification instance with
+	 * incomplete data or throw an exception if the notification isn't complete
+	 * @return string a json string with the all the data
+	 * @throws \OCP\Notification\Exceptions\IncompleteSerializationException if the notification
+	 * doesn't * have all the required fields for the notification AND the $forceIncomplete flag
+	 * isn't true. This exception musn't be thrown if the $forceIncomplete flag is true.
+	 */
+	public function serializeNotification(INotification $notification, $forceIncomplete = false) {
+		// make sure signature of these methods are the expected ones
+		$mandatoryFields = [
+			'app' => 'getApp',
+			'user' => 'getUser',
+			'dateTime' => 'getDateTime',  // requires special handling
+			'objectType' => 'getObjectType',
+			'objectId' => 'getObjectId',
+			'subject' => 'getSubject',
+		];
+		$optionalFields = [
+			'message' => 'getMessage',
+			'subjectParameters' => 'getSubjectParameters',
+			'messageParameters' => 'getMessageParameters',
+			'link' => 'getLink',
+			'icon' => 'getIcon',
+		];
+		$actionFields = [
+			'label' => 'getLabel',
+			'requestType' => 'getRequestType',
+			'link' => 'getLink',
+			'primary' => 'isPrimary',
+		];
+
+		$dummyNotification = $this->createNotification();
+		foreach ($mandatoryFields as $field => $fieldMethod) {
+			if ($dummyNotification->$fieldMethod() === $notification->$fieldMethod()) {
+				// one of the mandatory fields didn't change => missing important data
+				if (!$forceIncomplete) {
+					throw new IncompleteSerializationException('mandatory fields not set or using the default values');
+				}
+				// TODO: Log something if forcing for tracking.
+			}
+		}
+
+		// start the serialization
+		// serialize the actions
+		$serializedActions = [];
+		$actions = $notification->getActions();
+		$dummyAction = $notification->createAction();
+		foreach ($actions as $action) {
+			$newSerializedAction = [];
+			foreach ($actionFields as $field => $fieldMethod) {
+				if ($action->$fieldMethod() !== $dummyAction->$fieldMethod()) {
+					// only serialize changes
+					$newSerializedAction[$field] = $action->$fieldMethod();
+				}
+			}
+			$serializedActions[] = $newSerializedAction;
+		}
+
+		// serialize the notification
+		$serializedNotification = [];
+		$allFields = $mandatoryFields + $optionalFields;  // disjoint sets shouldn't be problematic
+		foreach ($allFields as $field => $fieldMethod) {
+			if ($field === 'dateTime') {
+				// only serialize changes
+				if ($notification->$fieldMethod()->getTimestamp() !==
+						$dummyNotification->$fieldMethod()->getTimestamp()) {
+					$serializedNotification[$field] = $notification->$fieldMethod()->getTimestamp();
+				}
+			} else {
+				if ($notification->$fieldMethod() !== $dummyNotification->$fieldMethod()) {
+					$serializedNotification[$field] = $notification->$fieldMethod();
+				}
+			}
+		}
+
+		// add the actions
+		if (!empty($serializedActions)) {
+			$serializedNotification['actions'] = $serializedActions;
+		}
+
+		return json_encode($serializedNotification);
+	}
+
+	/**
+	 * @param string $serialNotification the serialized notification coming from the
+	 * serializeNotification() method
+	 * @param bool $forceIncomplete whether this method should return a INotification instance with
+	 * incomplete data or throw an exception if the notification data isn't complete
+	 * @return INotification an INotification object from the serialized data
+	 * @throws \OCP\Notification\Exceptions\CannotDeserializeException if the data can't be
+	 * deserialized (format not supported, errors during deserialization, etc)
+	 * @throws \OCP\Notification\Exceptions\IncompleteDeserializationException if the data doesn't
+	 * have all the required fields for the notification AND the $forceIncomplete flag isn't true.
+	 * This exception musn't be thrown if the $forceIncomplete flag is true.
+	 */
+	public function deserializeNotification($serialNotification, $forceIncomplete = false) {
+		$deserializedNotification = json_decode($serialNotification, true);
+		if ($deserializedNotification === null) {
+			$jsonError = json_last_error_msg();
+			throw new CannotDeserializeException("cannot deserialize the notification: $jsonError");
+		}
+
+		// check mandatory fields
+		$mandatoryFields = ['app', 'user', 'dateTime', 'objectType', 'objectId', 'subject'];
+		$missingMandatoryFields = [];
+		foreach ($mandatoryFields as $field) {
+			if (!isset($deserializedNotification[$field])) {
+				$missingMandatoryFields[] = $field;
+			}
+		}
+		if (!empty($missingMandatoryFields) && !$forceIncomplete) {
+			$missingFields = implode(',', $missingMandatoryFields);
+			throw new IncompleteDeserializationException("some required fields to deserialize the notification are missing: $missingFields");
+		}
+
+		$notificationFields = [
+			'app' => 'setApp',
+			'user' => 'setUser',
+			'dateTime' => 'setDateTime',  // requires special handling
+			'objectType+objectId' => 'setObject',
+			'subject+subjectParameters' => 'setSubject',
+			'message+messageParameters' => 'setMessage',
+			'link' => 'setLink',
+			'icon' => 'setIcon',
+			// actions will be handled separately
+		];
+
+		$actionsFields = [
+			'label' => 'setLabel',
+			'link+requestType' => 'setLink',
+			'primary' => 'setPrimary',
+		];
+
+		$notification = $this->createNotification();
+		foreach ($notificationFields as $field => $fieldMethod) {
+			if (strpos($field, '+')) {  // 0 isn't a valid result here.
+				// this implies that several fields must be set at the same time
+				$multipleFields = explode('+', $field);
+				$multipleValues = [];
+				foreach ($multipleFields as $field) {
+					if (isset($deserializedNotification[$field])) {
+						$multipleValues[] = $deserializedNotification[$field];
+					}
+				}
+				// WATCH OUT: this implies that "set" methods won't be called with all parameters as default
+				// nor some default parameters in the middle.
+				if (!empty($multipleValues)) {
+					call_user_func_array([$notification, $fieldMethod], $multipleValues);
+				}
+			} else {
+				if (isset($deserializedNotification[$field])) {
+					if ($field === 'dateTime') {
+						// requires special handling
+						$dateTime = new \DateTime();
+						$dateTime->setTimestamp($deserializedNotification[$field]);
+						$notification->$fieldMethod($dateTime);
+					} else {
+						$notification->$fieldMethod($deserializedNotification[$field]);
+					}
+				} else {
+					// TODO: Log something
+				}
+			}
+		}
+
+		// handle actions
+		if (isset($deserializedNotification['actions'])) {
+			$deserializedActions = $deserializedNotification['actions'];
+			foreach ($deserializedActions as $deserializedAction) {
+				$newAction = $notification->createAction();
+				foreach ($actionsFields as $field => $fieldMethod) {
+					if (strpos($field, '+')) {  // 0 isn't a valid result here.
+						// this implies that several fields must be set at the same time
+						$multipleFields = explode('+', $field);
+						$multipleValues = [];
+						foreach ($multipleFields as $field) {
+							if (isset($deserializedAction[$field])) {
+								$multipleValues[] = $deserializedAction[$field];
+							}
+						}
+						// WATCH OUT: this implies that "set" methods won't be called with all parameters as default
+						// nor some default parameters in the middle.
+						if (!empty($multipleValues)) {
+							call_user_func_array([$newAction, $fieldMethod], $multipleValues);
+						}
+					} else {
+						if (isset($deserializedAction[$field])) {
+							$newAction->$fieldMethod($deserializedAction[$field]);
+						} else {
+							// TODO: Log something
+						}
+					}
+				}
+				$notification->addAction($newAction);
+			}
+		}
+		return $notification;
 	}
 }
