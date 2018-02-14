@@ -230,13 +230,47 @@ class AccountMapper extends Mapper {
 		}
 		$stmt = $qb->execute();
 		while ($row = $stmt->fetch()) {
-			$return =$callback($this->mapRowToEntity($row));
+			$return = $callback($this->mapRowToEntity($row));
 			if ($return === false) {
 				break;
 			}
 		}
 
 		$stmt->closeCursor();
+	}
+
+	/**
+	 * @param string $backend
+	 * @param bool $hasLoggedIn
+	 * @param integer $limit
+	 * @param integer $offset
+	 * @return string[]
+	 */
+	public function findUserIds($backend = null, $hasLoggedIn = null, $limit = null, $offset = null) {
+		$qb = $this->db->getQueryBuilder();
+		$qb->select('user_id')
+			->from($this->getTableName())
+			->orderBy('user_id'); // needed for predictable limit & offset
+
+		if ($backend !== null) {
+			$qb->andWhere($qb->expr()->eq('backend', $qb->createNamedParameter($backend)));
+		}
+		if ($hasLoggedIn === true) {
+			$qb->andWhere($qb->expr()->gt('last_login', new Literal(0)));
+		} else if ($hasLoggedIn === false) {
+			$qb->andWhere($qb->expr()->eq('last_login', new Literal(0)));
+		}
+		if ($limit !== null) {
+			$qb->setMaxResults($limit);
+		}
+		if ($offset !== null) {
+			$qb->setFirstResult($offset);
+		}
+
+		$stmt = $qb->execute();
+		$rows = $stmt->fetchAll(\PDO::FETCH_COLUMN);
+		$stmt->closeCursor();
+		return $rows;
 	}
 
 }
