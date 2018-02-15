@@ -4,18 +4,26 @@ Feature: capabilities
 		And as user "admin"
 
 	Scenario: Check that the sharing API can be enabled
+		Given parameter "shareapi_enabled" of app "core" has been set to "no"
+		And the capabilities setting of "files_sharing" path "api_enabled" has been confirmed to be ""
 		When the administrator sets parameter "shareapi_enabled" of app "core" to "yes" using the API
 		Then the capabilities setting of "files_sharing" path "api_enabled" should be "1"
 
 	Scenario: Check that the sharing API can be disabled
+		Given parameter "shareapi_enabled" of app "core" has been set to "yes"
+		And the capabilities setting of "files_sharing" path "api_enabled" has been confirmed to be "1"
 		When the administrator sets parameter "shareapi_enabled" of app "core" to "no" using the API
 		Then the capabilities setting of "files_sharing" path "api_enabled" should be ""
 
 	Scenario: Check that group sharing can be enabled
+		Given parameter "shareapi_allow_group_sharing" of app "core" has been set to "no"
+		And the capabilities setting of "files_sharing" path "group_sharing" has been confirmed to be ""
 		When the administrator sets parameter "shareapi_allow_group_sharing" of app "core" to "yes" using the API
 		Then the capabilities setting of "files_sharing" path "group_sharing" should be "1"
 
 	Scenario: Check that group sharing can be disabled
+		Given parameter "shareapi_allow_group_sharing" of app "core" has been set to "yes"
+		And the capabilities setting of "files_sharing" path "group_sharing" has been confirmed to be "1"
 		When the administrator sets parameter "shareapi_allow_group_sharing" of app "core" to "no" using the API
 		Then the capabilities setting of "files_sharing" path "group_sharing" should be ""
 
