@@ -31,6 +31,7 @@
 
 namespace OC\Route;
 
+use OCP\AppFramework\Http\TemplateResponse;
 use OCP\ILogger;
 use OCP\Route\IRouter;
 use OCP\AppFramework\App;
@@ -102,6 +103,11 @@ class Router implements IRouter {
 					$file = $appPath . '/appinfo/routes.php';
 					if (file_exists($file)) {
 						$this->routingFiles[$app] = $file;
+					} else {
+						$info = \OC_App::getAppInfo($app);
+						if (isset($info['navigation'], $info['frontend'])) {
+							$this->routingFiles[$app] = $info;
+						}
 					}
 				}
 			}
@@ -123,7 +129,7 @@ class Router implements IRouter {
 		if ($this->loaded) {
 			return;
 		}
-		if (is_null($app)) {
+		if ($app === null) {
 			$this->loaded = true;
 			$routingFiles = $this->getRoutingFiles();
 		} else {
@@ -135,6 +141,10 @@ class Router implements IRouter {
 				$routingFiles = [$app => $file];
 			} else {
 				$routingFiles = [];
+				$info = \OC_App::getAppInfo($app);
+				if (isset($info['navigation'], $info['frontend'])) {
+					$routingFiles = [$app => $info];
+				}
 			}
 		}
 		\OC::$server->getEventLogger()->start('loadroutes' . $requestedApp, 'Loading Routes');
@@ -148,7 +158,19 @@ class Router implements IRouter {
 				}
 				$this->loadedApps[$app] = true;
 				$this->useCollection($app);
-				$this->requireRouteFile($file, $app);
+				if (is_string($file)) {
+					$this->requireRouteFile($file, $app);
+				} else {
+					if (isset($file['navigation'], $file['frontend'])) {
+						$file['navigation']['route'] = "$app.view.index";
+						$this->create($file['navigation']['route'], '/')
+							->method('GET')
+							->action(function() use ($app) {
+								$template = new TemplateResponse($app, '');
+								echo $template->render();
+							});
+					}
+				}
 				$collection = $this->getCollection($app);
 				$collection->addPrefix('/apps/' . $app);
 				$this->root->addCollection($collection);
