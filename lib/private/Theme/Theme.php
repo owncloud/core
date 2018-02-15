@@ -31,6 +31,11 @@ class Theme implements ITheme {
 	/**
 	 * @var string
 	 */
+	private $baseDirectory;
+
+	/**
+	 * @var string
+	 */
 	private $directory;
 
 	/**
@@ -54,6 +59,21 @@ class Theme implements ITheme {
 	 */
 	public function getName() {
 		return $this->name;
+	}
+
+	/**
+	 * @param string $baseDirectory
+	 * @return string
+	 */
+	public function setBaseDirectory($baseDirectory) {
+		$this->baseDirectory = $baseDirectory;
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getBaseDirectory() {
+		return $this->baseDirectory;
 	}
 
 	/**

@@ -194,7 +194,7 @@ class OC_Template extends \OC\Template\Base {
 		} elseif ($app === 'settings') {
 			$dirs = $this->getSettingsTemplateDirs($theme, OC::$SERVERROOT);
 		} else {
-			$dirs = $this->getAppTemplateDirs($theme, $app, OC::$SERVERROOT, OC_App::getAppPath($app));
+			$dirs = $this->getAppTemplateDirs($theme, $app, OC_App::getAppPath($app));
 		}
 
 		$locator = new \OC\Template\TemplateFileLocator( $dirs );

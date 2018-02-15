@@ -162,9 +162,9 @@ class TemplateLayout extends \OC_Template {
 	 */
 	static public function findStylesheetFiles($styles) {
 		$locator = new \OC\Template\CSSResourceLocator(
-			\OC::$server->getLogger(),
 			\OC_Util::getTheme(),
-			[\OC::$SERVERROOT => \OC::$WEBROOT],
+			\OC::$server->getAppManager(),
+			\OC::$server->getLogger(),
 			[\OC::$SERVERROOT => \OC::$WEBROOT]);
 		$locator->find($styles);
 		return $locator->getResources();
@@ -176,9 +176,9 @@ class TemplateLayout extends \OC_Template {
 	 */
 	static public function findJavascriptFiles($scripts) {
 		$locator = new \OC\Template\JSResourceLocator(
-			\OC::$server->getLogger(),
 			\OC_Util::getTheme(),
-			[\OC::$SERVERROOT => \OC::$WEBROOT],
+			\OC::$server->getAppManager(),
+			\OC::$server->getLogger(),
 			[\OC::$SERVERROOT => \OC::$WEBROOT]);
 		$locator->find($scripts);
 		return $locator->getResources();

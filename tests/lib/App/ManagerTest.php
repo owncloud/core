@@ -529,4 +529,28 @@ class ManagerTest extends TestCase {
 		$appPath = $appManager->getAppPath($appId);
 		$this->assertFalse($appPath);
 	}
+
+	public function testAppWebRootAboveOcWebroot() {
+		$appId = 'notexistingapp';
+
+		$appManager = $this->getMockBuilder(AppManager::class)
+			->setMethods(['findAppInDirectories', 'getOcWebRoot'])
+			->disableOriginalConstructor()
+			->getMock();
+
+		$appManager->expects($this->any())
+			->method('getOcWebRoot')
+			->willReturn('some/host/path');
+
+		$appManager->expects($this->any())
+			->method('findAppInDirectories')
+			->with($appId)
+			->willReturn([
+				'path' => '/not/essential',
+				'url' => '../../relative',
+			]);
+
+		$appWebPath = $appManager->getAppWebPath($appId);
+		$this->assertEquals('some/relative', $appWebPath);
+	}
 }
