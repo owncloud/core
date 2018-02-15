@@ -1,4 +1,4 @@
-@insulated
+@insulated @disablePreviews
 Feature: Restore deleted files/folders
 As a user
 I would like to restore files/folders
