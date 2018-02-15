@@ -43,7 +43,7 @@ class AppConfigHelper {
 	 * @param boolean $testingState the on|off state the parameter must be set to for the test
 	 * @param string $savedCapabilitiesXml the original capabilities in XML format
 	 * @param int $apiVersion (1|2)
-	 * @return array of capabilities that were changed compared to $savedCapabilitiesXml
+	 * @return array of the original state of the capability set
 	 */
 	public static function setCapability(
 		$baseUrl,
@@ -57,11 +57,12 @@ class AppConfigHelper {
 		$savedCapabilitiesXml,
 		$apiVersion = 1
 	) {
-		$savedState = self::wasCapabilitySet(
+		$originalState = self::wasCapabilitySet(
 			$capabilitiesApp,
 			$capabilitiesParameter,
 			$savedCapabilitiesXml
 		);
+
 		// Always set the config value, because sometimes enabling one config
 		// also changes some sub-settings. So the "interim" state as we set
 		// the config values could be unexpectedly different from the original
@@ -76,16 +77,11 @@ class AppConfigHelper {
 			$apiVersion
 		);
 		
-		if ($savedState !== $testingState) {
-			return
-			[
-				'appid' => $testingApp,
-				'configkey' => $testingParameter,
-				'value' => $savedState ? 'yes' : 'no'
-			];
-		} else {
-			return [];
-		}
+		return [
+			'appid' => $testingApp,
+			'configkey' => $testingParameter,
+			'value' => $originalState ? 'yes' : 'no'
+		];
 	}
 	/**
 	 * @param string $baseUrl
@@ -99,7 +95,7 @@ class AppConfigHelper {
 	 *                                   ['testingState'] boolean state the parameter must be set to for the test
 	 * @param string $savedCapabilitiesXml the original capabilities in XML format
 	 * @param int $apiVersion (1|2)
-	 * @return array of capabilities that were changed compared to $savedCapabilitiesXml
+	 * @return array of the original state of each capability set
 	 */
 	public static function setCapabilities(
 		$baseUrl,
@@ -110,11 +106,11 @@ class AppConfigHelper {
 		$apiVersion = 1
 	) {
 		$appParameterValues = [];
-		$settingsChanged = [];
+		$originalCapabilities = [];
 
 		if (is_array($capabilitiesArray)) {
 			foreach ($capabilitiesArray as $capabilityToSet) {
-				$savedState = self::wasCapabilitySet(
+				$originalState = self::wasCapabilitySet(
 					$capabilityToSet['capabilitiesApp'],
 					$capabilityToSet['capabilitiesParameter'],
 					$savedCapabilitiesXml
@@ -130,13 +126,16 @@ class AppConfigHelper {
 					'value' => $capabilityToSet['testingState'] ? 'yes' : 'no'
 				];
 
-				if ($savedState !== $capabilityToSet['testingState']) {
-					$settingsChanged[] = [
-						'appid' => $capabilityToSet['testingApp'],
-						'configkey' => $capabilityToSet['testingParameter'],
-						'value' => $savedState ? 'yes' : 'no'
-					];
-				}
+				// Remember the original state of all capabilities touched
+				// because tests might change the state, even if the state
+				// was already as desired in this setup phase.
+				// So we will need to reset all to their original state at the
+				// end of the scenario, just to be sure.
+				$originalCapabilities[] = [
+					'appid' => $capabilityToSet['testingApp'],
+					'configkey' => $capabilityToSet['testingParameter'],
+					'value' => $originalState ? 'yes' : 'no'
+				];
 			}
 		}
 
@@ -148,7 +147,7 @@ class AppConfigHelper {
 			$apiVersion
 		);
 
-		return $settingsChanged;
+		return $originalCapabilities;
 	}
 
 	/**
