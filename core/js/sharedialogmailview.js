@@ -12,14 +12,23 @@
 	if (!OC.Share) {
 		OC.Share = {};
 	}
-	
-	var TEMPLATE = 
-			'<form id="emailPrivateLink" class="emailPrivateLinkForm oneline">' +
-			'    <label for="emailPrivateLinkField-{{cid}}">{{mailLabel}}</label>' +
-			'    <input id="emailPrivateLinkField-{{cid}}" class="emailField" value="{{email}}" placeholder="{{mailPrivatePlaceholder}}" type="email" />' +
-			'</form>'
-		;
-	
+
+	var TEMPLATE =
+		'<form id="emailPrivateLink" class="emailPrivateLinkForm">' +
+		'  <span class="emailPrivateLinkForm--send-indicator success-message-global absolute-center hidden">{{sending}}</span>' +
+		'  <label class="public-link-modal--label" for="emailPrivateLinkField-{{cid}}">{{mailLabel}}</label>' +
+		'  <input class="public-link-modal--input emailPrivateLinkForm--emailField" autocomplete="off" id="emailPrivateLinkField-{{cid}}" value="" placeholder="{{mailPlaceholder}}" type="email" />' +
+		'  <div class="emailPrivateLinkForm--elements hidden">' +
+		'    {{#if userHasEmail}}' +
+		'    <label class="public-link-modal--bccSelf">' +
+		'      <input class="emailPrivateLinkForm--emailBccSelf" type="checkbox"> {{bccSelf}}' +
+		'    </label>' +
+		'    {{/if}}' +
+		'    <label class="public-link-modal--label" for="emailBodyPrivateLinkField-{{cid}}">{{mailMessageLabel}}</label>' +
+		'    <textarea class="public-link-modal--input emailPrivateLinkForm--emailBodyField" id="emailBodyPrivateLinkField-{{cid}}" rows="3" placeholder="{{mailBodyPlaceholder}}"></textarea>' +
+		'  </div>' +
+		'</form>';
+
 	/**
 	 * @class OCA.Share.ShareDialogMailView
 	 * @member {OC.Share.ShareItemModel} model
@@ -34,14 +43,39 @@
 		/** @type {string} **/
 		id: 'shareDialogMailView',
 
+		events: {
+			"keyup   .emailPrivateLinkForm--emailField"     : "toggleMailElements",
+			"keydown .emailPrivateLinkForm--emailBodyField" : "expandMailBody"
+		},
+
 		/** @type {Function} **/
 		_template: undefined,
 
 		initialize: function(options) {
-			if(!_.isUndefined(options.itemModel)) {
+			if (!_.isUndefined(options.itemModel)) {
 				this.itemModel = options.itemModel;
 			} else {
 				throw 'missing OC.Share.ShareItemModel';
+			}
+		},
+
+		toggleMailElements: function() {
+			var $email         = this.$el.find('.emailPrivateLinkForm--emailField');
+			var $emailElements = this.$el.find('.emailPrivateLinkForm--elements');
+
+			if ($email.val().length > 0 && $emailElements.is(":hidden")) {
+				$emailElements.slideDown();
+			} else if ($email.val().length === 0 && $emailElements.is(":visible")) {
+				$emailElements.slideUp();
+			}
+		},
+
+		expandMailBody: function(event) {
+			var $emailBody = this.$el.find('.emailPrivateLinkForm--emailBodyField');
+			$emailBody.css('minHeight', $emailBody[0].scrollHeight - 12);
+
+			if (event.keyCode == 13) {
+				event.stopPropagation();
 			}
 		},
 
@@ -50,105 +84,90 @@
 		 *
 		 * @param {string} recipientEmail recipient email address
 		 */
-		_sendEmailPrivateLink: function(recipientEmail) {
-			var deferred = $.Deferred();
-			var itemType = this.itemModel.get('itemType');
+		_sendEmailPrivateLink: function(mail) {
+			var deferred   = $.Deferred();
+			var itemType   = this.itemModel.get('itemType');
 			var itemSource = this.itemModel.get('itemSource');
 
-			if (!this.validateEmail(recipientEmail)) {
-				deferred.reject();
+			if (!this.validateEmail(mail.to)) {
+				return deferred.reject({
+					message: t('core', '{email} is not a valid address!', {email: mail.to})
+				});
 			}
 
+			var params = {
+				action      : 'email',
+				toAddress   : mail.to,
+				emailBody   : mail.body,
+				bccSelf     : mail.bccSelf,
+				link        : this.model.getLink(),
+				itemType    : itemType,
+				itemSource  : itemSource,
+				file        : this.itemModel.getFileInfo().get('name'),
+				expiration  : this.model.get('expireDate') || ''
+			};
+
 			$.post(
-				OC.generateUrl('core/ajax/share.php'), {
-					action: 'email',
-					toaddress: recipientEmail,
-					link: this.model.getLink(),
-					itemType: itemType,
-					itemSource: itemSource,
-					file: this.itemModel.getFileInfo().get('name'),
-					expiration: this.model.get('expireDate') || ''
-				},
+				OC.generateUrl('core/ajax/share.php'), params,
 				function(result) {
 					if (!result || result.status !== 'success') {
-						OC.dialogs.alert(result.data.message, t('core', 'Error while sending notification'));
-						deferred.reject();
+						deferred.reject({
+							message: result.data.message
+						});
 					} else {
 						deferred.resolve();
 					}
-			}).fail(function() {
-				deferred.reject();
+			}).fail(function(error) {
+				return deferred.reject();
 			});
 
 			return deferred.promise();
 		},
 
-		validateEmail: function (email) {
+		validateEmail: function(email) {
+			if (email.length === 0)
+				return true
+
 			return email.match(/([\w\.\-_]+)?\w+@[\w-_]+(\.\w+){1,}$/);
 		},
 
 		sendEmails: function() {
-			var $emailField = this.$el.find('.emailField');
-			var $emailButton = this.$el.find('.emailButton');
-			var email = $emailField.val();
-			if (email !== '') {
-				$emailField.prop('disabled', true);
-				$emailButton.prop('disabled', true);
-				$emailField.val(t('core', 'Sending ...'));
-				return this._sendEmailPrivateLink(email).done(function() {
-					$emailField.css('font-weight', 'bold').val(t('core','Email sent'));
+			var $formItems         = this.$el.find('.emailPrivateLinkForm input, .emailPrivateLinkForm textarea');
+			var $formSendIndicator = this.$el.find('.emailPrivateLinkForm--send-indicator');
+			var  mail = {
+				 to      : this.$el.find('.emailPrivateLinkForm--emailField').val().toLowerCase(),
+				 bccSelf : this.$el.find('.emailPrivateLinkForm--emailBccSelf').is(':checked'),
+				 body    : this.$el.find('.emailPrivateLinkForm--emailBodyField').val()
+			};
+
+			if (mail.to !== '') {
+				$formItems.prop('disabled', true);
+				$formSendIndicator.removeClass('hidden');
+				return this._sendEmailPrivateLink(mail).done(function() {
 					setTimeout(function() {
-						$emailField.val('');
-						$emailField.css('font-weight', 'normal');
-						$emailField.prop('disabled', false);
-						$emailButton.prop('disabled', false);
+						$formItems.prop('disabled', false);
+						$formSendIndicator.addClass('hidden');
 					}, 2000);
-				}).fail(function() {
-					$emailField.val(email);
-					$emailField.css('font-weight', 'normal');
-					$emailField.prop('disabled', false);
-					$emailButton.prop('disabled', false);
+				}).fail(function(error) {
+					OC.dialogs.info(error.message, t('core', 'An error occured'));
+					$formSendIndicator.addClass('hidden');
+					$formItems.prop('disabled', false);
 				});
 			}
 			return $.Deferred().resolve();
 		},
 
 		render: function() {
-			var email = this.$el.find('.emailField').val();
-	
 			this.$el.html(this.template({
-				cid: this.cid,
-				mailPrivatePlaceholder: t('core', 'Email link to person'),
-				mailLabel: t('core', 'Send link via email'),
-				email: email
+				cid                 : this.cid,
+				userHasEmail        : !!OC.getCurrentUser().email,
+				mailPlaceholder     : t('core', 'Email link to person'),
+				bccSelf             : t('core', 'Send copy to self'),
+				mailLabel           : t('core', 'Send link via email'),
+				mailBodyPlaceholder : t('core', 'Add personal message'),
+				sending             : t('core', 'Sending') + ' ...'
 			}));
 
-			var $emailField = this.$el.find('.emailField');
-			if ($emailField.length !== 0) {
-				$emailField.autocomplete({
-					minLength: 1,
-					source: function (search, response) {
-						$.get(
-							OC.generateUrl('core/ajax/share.php'), {
-								fetch: 'getShareWithEmail',
-								search: search.term
-							}, function(result) {
-								if (result.status == 'success' && result.data.length > 0) {
-									response(result.data);
-								}
-							});
-						},
-					select: function( event, item ) {
-						$emailField.val(item.item.email);
-						return false;
-					}
-				})
-				.data("ui-autocomplete")._renderItem = function( ul, item ) {
-					return $('<li>')
-						.append('<a>' + escapeHTML(item.displayname) + "<br>" + escapeHTML(item.email) + '</a>' )
-						.appendTo( ul );
-				};
-			}
 			this.delegateEvents();
 
 			return this;

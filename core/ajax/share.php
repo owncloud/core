@@ -130,6 +130,7 @@ if (isset($_POST['action']) && isset($_POST['itemType']) && isset($_POST['itemSo
 				$defaults,
 				\OC::$server->getURLGenerator()
 			);
+
 			$result = $mailNotification->sendInternalShareMail($recipientList, $itemSource, $itemType);
 
 			// if we were able to send to at least one recipient, mark as sent
@@ -143,7 +144,7 @@ if (isset($_POST['action']) && isset($_POST['itemType']) && isset($_POST['itemSo
 			} else {
 				OCP\JSON::error([
 					'data' => [
-						'message' => $l->t("Couldn't send mail to following users: %s ",
+						'message' => $l->t("Couldn't send mail to following recipient(s): %s ",
 								implode(', ', $result)
 								)
 					]
@@ -160,6 +161,7 @@ if (isset($_POST['action']) && isset($_POST['itemType']) && isset($_POST['itemSo
 			break;
 
 		case 'email':
+
 			// read and filter post variables
 			$filter = new MailNotificationFilter([
 				'link' => $_POST['link'],
@@ -168,9 +170,26 @@ if (isset($_POST['action']) && isset($_POST['itemType']) && isset($_POST['itemSo
 				'expiration' => $_POST['expiration']
 			]);
 
+			// read post variables
+			$link = (string)$_POST['link'];
+			$file = (string)$_POST['file'];
+			$toAddress = (string)$_POST['toAddress'];
+			$options = array();
+			$emailBody = null;
+
+			if (isset($_POST['emailBody'])) {
+				$emailBody = trim((string)$_POST['emailBody']);
+			}
+
+			if (isset($_POST['bccSelf']) && $_POST['bccSelf'] === 'true') {
+				$options['bcc'] = \OC::$server->getUserSession()->getUser()->getEMailAddress();
+			}
+
+			$l10n = \OC::$server->getL10N('lib');
+
 			$mailNotification = new \OC\Share\MailNotifications(
 				\OC::$server->getUserSession()->getUser(),
-				\OC::$server->getL10N('lib'),
+				$l10n,
 				\OC::$server->getMailer(),
 				\OC::$server->getLogger(),
 				$defaults,
@@ -190,6 +209,16 @@ if (isset($_POST['action']) && isset($_POST['itemType']) && isset($_POST['itemSo
 			$result = $mailNotification->sendLinkShareMail(
 				$filter->getToAddress(), $filter->getFile(), $filter->getLink(), $expiration
 			);
+
+			$subject = (string)$l10n->t('%s shared »%s« with you', [$this->senderDisplayName, $filename]);
+			if ($emailBody === null || $emailBody === '') {
+				list($htmlBody, $textBody) = $mailNotification->createMailBody($file, $link, $expiration);
+			} else {
+				$htmlBody = null;
+				$textBody = strip_tags($emailBody);
+			}
+
+			$result = $mailNotification->sendLinkShareMailFromBody($toAddress, $subject, $htmlBody, $textBody, $options);
 
 			if(empty($result)) {
 				// Get the token from the link
@@ -217,7 +246,7 @@ if (isset($_POST['action']) && isset($_POST['itemType']) && isset($_POST['itemSo
 								->setAuthor($currentUser)
 								->setAffectedUser($currentUser)
 								->setObject('files', $fileId, $path)
-								->setSubject(\OCA\Files_Sharing\Activity::SUBJECT_SHARED_EMAIL, [$path, $to_address]);
+								->setSubject(\OCA\Files_Sharing\Activity::SUBJECT_SHARED_EMAIL, [$path, $toAddress]);
 							\OC::$server->getActivityManager()->publish($event);
 						}
 					}
@@ -228,7 +257,7 @@ if (isset($_POST['action']) && isset($_POST['itemType']) && isset($_POST['itemSo
 				$l = \OC::$server->getL10N('core');
 				OCP\JSON::error([
 					'data' => [
-						'message' => $l->t("Couldn't send mail to following users: %s ",
+						'message' => $l->t("Couldn't send mail to following recipient(s): %s ",
 								implode(', ', $result)
 							)
 					]
@@ -323,12 +352,12 @@ if (isset($_POST['action']) && isset($_POST['itemType']) && isset($_POST['itemSo
 				$sharedGroups = [];
 				if (isset($_GET['itemShares'])) {
 					if (isset($_GET['itemShares'][OCP\Share::SHARE_TYPE_USER]) &&
-					    is_array($_GET['itemShares'][OCP\Share::SHARE_TYPE_USER])) {
+						is_array($_GET['itemShares'][OCP\Share::SHARE_TYPE_USER])) {
 						$sharedUsers = $_GET['itemShares'][OCP\Share::SHARE_TYPE_USER];
 					}
 
 					if (isset($_GET['itemShares'][OCP\Share::SHARE_TYPE_GROUP]) &&
-					    is_array($_GET['itemShares'][OCP\Share::SHARE_TYPE_GROUP])) {
+						is_array($_GET['itemShares'][OCP\Share::SHARE_TYPE_GROUP])) {
 						$sharedGroups = $_GET['itemShares'][OCP\Share::SHARE_TYPE_GROUP];
 					}
 				}

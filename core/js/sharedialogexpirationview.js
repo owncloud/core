@@ -113,7 +113,7 @@
 				cid: this.cid,
 				setExpirationLabel: t('core', 'Set expiration date'),
 				expirationLabel: t('core', 'Expiration'),
-				expirationDatePlaceholder: t('core', 'Expiration date'),
+				expirationDatePlaceholder: t('core', 'Choose an expiration date'),
 				defaultExpireMessage: defaultExpireMessage,
 				isExpirationSet: isExpirationSet,
 				isExpirationEnforced: isExpirationEnforced,
