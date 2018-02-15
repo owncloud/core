@@ -35,8 +35,10 @@
 /** @var $application Symfony\Component\Console\Application */
 $application->add(new OC\Core\Command\Status);
 $application->add(new OC\Core\Command\Check(\OC::$server->getConfig()));
-$infoParser = new \OC\App\InfoParser();
-$application->add(new OC\Core\Command\App\CheckCode($infoParser));
+$application->add(new OC\Core\Command\App\CheckCode(
+	new \OC\App\InfoParser(),
+	\OC::$server->getAppManager()
+));
 $application->add(new \OC\Core\Command\Integrity\SignApp(
 		\OC::$server->getIntegrityCodeChecker(),
 		new \OC\IntegrityCheck\Helpers\FileAccessHelper(),
