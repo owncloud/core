@@ -49,6 +49,7 @@ use OCA\DAV\DAV\FileCustomPropertiesBackend;
 use OCA\DAV\DAV\MiscCustomPropertiesBackend;
 use OCA\DAV\DAV\PublicAuth;
 use OCA\DAV\Files\BrowserErrorPagePlugin;
+use OCA\DAV\DAV\JsonPlugin;
 use OCA\DAV\Files\PreviewPlugin;
 use OCA\DAV\SystemTag\SystemTagPlugin;
 use OCA\DAV\Upload\ChunkingPlugin;
@@ -100,6 +101,7 @@ class Server {
 		$this->server->addPlugin(new ValidateRequestPlugin('dav'));
 		$this->server->addPlugin(new BlockLegacyClientPlugin($config));
 		$this->server->addPlugin(new CorsPlugin(\OC::$server->getUserSession()));
+		$this->server->addPlugin(new JsonPlugin($logger));
 		$authPlugin = new Plugin();
 		$authPlugin->addBackend(new PublicAuth());
 		$this->server->addPlugin($authPlugin);

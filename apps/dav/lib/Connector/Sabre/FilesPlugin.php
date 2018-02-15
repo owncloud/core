@@ -226,8 +226,13 @@ class FilesPlugin extends ServerPlugin {
 	 */
 	function httpGet(RequestInterface $request, ResponseInterface $response) {
 		// Only handle valid files
+		if (!$this->tree->nodeExists($request->getPath())) {
+			return;
+		}
 		$node = $this->tree->getNodeForPath($request->getPath());
-		if (!($node instanceof IFile)) return;
+		if (!($node instanceof IFile)) {
+			return;
+		}
 
 		// adds a 'Content-Disposition: attachment' header
 		if ($this->downloadAttachment) {
