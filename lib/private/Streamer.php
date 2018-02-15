@@ -23,7 +23,9 @@
 
 namespace OC;
 
+use OC\Files\Filesystem;
 use ownCloud\TarStreamer\TarStreamer;
+use Symfony\Component\EventDispatcher\GenericEvent;
 use ZipStreamer\ZipStreamer;
 
 class Streamer {
@@ -32,11 +34,15 @@ class Streamer {
 
 	// streamer instance
 	private $streamerInstance;
+
+	private $eventDispatcher;
 	
 	public function __construct(){
 		/** @var \OCP\IRequest */
 		$request = \OC::$server->getRequest();
-		
+
+		$this->eventDispatcher = \OC::$server->getEventDispatcher();
+
 		if ($request->isUserAgent($this->preferTarFor)) {
 			$this->streamerInstance = new TarStreamer();
 		} else {
@@ -73,11 +79,13 @@ class Streamer {
 		foreach($files as $file) {
 			$filename = $file['name'];
 			$file = $dir . '/' . $filename;
+			$getAbsolutePath = Filesystem::getView()->getAbsolutePath($filename);
 			if(\OC\Files\Filesystem::is_file($file)) {
 				$filesize = \OC\Files\Filesystem::filesize($file);
 				$fh = \OC\Files\Filesystem::fopen($file, 'r');
 				$this->addFileFromStream($fh, $internalDir . $filename, $filesize);
 				fclose($fh);
+				$this->eventDispatcher->dispatch('file.afterread', new GenericEvent(null, ['path' => $getAbsolutePath]));
 			}elseif(\OC\Files\Filesystem::is_dir($file)) {
 				$this->addDirRecursive($file, $internalDir);
 			}
