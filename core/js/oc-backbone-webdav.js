@@ -56,6 +56,10 @@
 /* global dav */
 
 (function(Backbone) {
+	var defaultXmlNamespaces = {
+		'DAV:': 'd',
+		'http://owncloud.org/ns': 'oc'
+	};
 	var methodMap = {
 		'create': 'POST',
 		'update': 'PROPPATCH',
@@ -64,9 +68,29 @@
 		'read':   'PROPFIND'
 	};
 
+	// borrow this method from the dav client library
+	var parseClarkNotation = dav.Client.prototype.parseClarkNotation;
+	var escapeXml = dav._escapeXml;
+
 	// Throw an error when a URL is needed, and none is supplied.
 	function urlError() {
 		throw new Error('A "url" property or function must be specified');
+	}
+
+	function getDavProperties(model, options) {
+		var davProperties = model.davProperties;
+		if (!davProperties && model.model) {
+			// use dav properties from model in case of collection
+			davProperties = model.model.prototype.davProperties;
+		}
+		if (davProperties) {
+			if (_.isFunction(davProperties)) {
+				davProperties = davProperties.call(model);
+			}
+		}
+
+		davProperties = _.extend(davProperties || {}, options.davProperties);
+		return davProperties;
 	}
 
 	/**
@@ -300,10 +324,7 @@
 	function davCall(options, model) {
 		var client = new dav.Client({
 			baseUrl: options.url,
-			xmlNamespaces: _.extend({
-				'DAV:': 'd',
-				'http://owncloud.org/ns': 'oc'
-			}, options.xmlNamespaces || {})
+			xmlNamespaces: _.extend(defaultXmlNamespaces, options.xmlNamespaces || {})
 		});
 		client.resolveUrl = function() {
 			return options.url;
@@ -391,20 +412,7 @@
 		}
 
 		if (params.type === 'PROPFIND' || params.type === 'PROPPATCH' || params.type === 'MKCOL') {
-			var davProperties = model.davProperties;
-			if (!davProperties && model.model) {
-				// use dav properties from model in case of collection
-				davProperties = model.model.prototype.davProperties;
-			}
-			if (davProperties) {
-				if (_.isFunction(davProperties)) {
-					params.davProperties = davProperties.call(model);
-				} else {
-					params.davProperties = davProperties;
-				}
-			}
-
-			params.davProperties = _.extend(params.davProperties || {}, options.davProperties);
+			params.davProperties = getDavProperties(model, options);
 
 			if (_.isUndefined(options.depth)) {
 				if (isCollection) {
@@ -516,6 +524,99 @@
 		}
 	});
 
+	var WebdavChildrenPaginatedCollection = WebdavChildrenCollection.extend({
+
+		limit: 20,
+		endReached: false,
+
+		reportName: '{http://owncloud.org/ns}search-query',
+
+		reset: function() {
+			this.endReached = false;
+			return WebdavChildrenCollection.prototype.reset.apply(this, arguments);
+		},
+
+		fetchNext: function(options) {
+			var self = this;
+			options = options || {};
+			if (this.endReached) {
+				return null;
+			}
+
+			var reportName = _.result(this, 'reportName');
+			if (!reportName) {
+				throw 'reportName attribute must be set';
+			}
+
+			options.xmlNamespaces = _.extend(defaultXmlNamespaces, options.xmlNamespaces || {});
+
+			// convert clark notation to namespaced name
+			reportName = parseClarkNotation(reportName);
+			reportName = options.xmlNamespaces[reportName.namespace] + ':' + reportName.name;
+
+			// header
+			var body =
+				'<?xml version="1.0" encoding="utf-8" ?>\n' +
+				'<' + reportName + ' ';
+			var namespace;
+			for (namespace in options.xmlNamespaces) {
+				body += ' xmlns:' + options.xmlNamespaces[namespace] + '="' + namespace + '"';
+			}
+			body += '>\n';
+
+			// properties query
+			var davProperties = getDavProperties(this, options);
+			body += '    <d:prop>\n';
+			_.each(davProperties, function(prop) {
+				var property = parseClarkNotation(prop);
+				body += '        <' + options.xmlNamespaces[property.namespace] + ':' + property.name + ' />\n';
+			});
+			body += '    </d:prop>\n';
+
+			// search query
+			body +=
+				'    <oc:search>\n';
+			if (options.searchPattern) {
+				body += '        <oc:pattern>' + escapeXml(options.searchPattern) + '</oc:pattern>\n';
+			}
+			body +=
+				'        <oc:offset>' + escapeXml('' + this.length) + '</oc:offset>\n' +
+				'        <oc:limit>' + escapeXml('' + (this.limit + 1)) + '</oc:limit>\n' +
+				'    </oc:search>\n';
+
+			body += '</' + reportName + '>';
+
+			var success = options.success;
+			options = _.extend({
+				remove: false,
+				parse: true,
+				data: body,
+				davProperties: davProperties
+			}, options);
+
+			options.success = function(resp) {
+				if (resp.length <= self.limit) {
+					// no new entries, end reached
+					self.endReached = true;
+				} else {
+					// remove last entry, for next page load
+					resp = _.initial(resp);
+				}
+
+				if (!self.set(resp, options)) {
+					return false;
+				}
+				if (success) {
+					success.apply(null, arguments);
+				}
+				self.trigger('sync', self, resp, options);
+			};
+
+			return this.sync('REPORT', this, options);
+		}
+
+	});
+
 	// exports
 	Backbone.davCall = davCall;
 	Backbone.davSync = davSync;
@@ -523,6 +624,7 @@
 	Backbone.WebdavNode = WebdavNode;
 	Backbone.WebdavChildrenCollection = WebdavChildrenCollection;
 	Backbone.WebdavCollectionNode = WebdavCollectionNode;
+	Backbone.WebdavChildrenPaginatedCollection = WebdavChildrenPaginatedCollection;
 
 })(OC.Backbone);
 
