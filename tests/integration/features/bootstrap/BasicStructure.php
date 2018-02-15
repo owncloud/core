@@ -31,12 +31,6 @@ trait BasicStructure {
 	 */
 	private $regularUserPassword = '';
 
-	/**
-	 * @var string
-	 * @deprecated this var actually store[s|d] the password - better to use method getPasswordForUser()
-	 */
-	private $regularUser = '';
-
 	/** @var string */
 	private $currentUser = '';
 
@@ -64,8 +58,6 @@ trait BasicStructure {
 		$this->baseUrl = $baseUrl;
 		$this->adminUser = $admin;
 		$this->regularUserPassword = $regular_user_password;
-		// Set regularUser for backward-compatibility with old app tests that use BasicStructure
-		$this->regularUser = $regular_user_password;
 		$this->mailhogUrl = $mailhog_url;
 		$this->localBaseUrl = $this->baseUrl;
 		$this->remoteBaseUrl = $this->baseUrl;
@@ -95,7 +87,7 @@ trait BasicStructure {
 	}
 
 	/**
-	 * @Given /^using api version "([^"]*)"$/
+	 * @Given /^using (?:api|API) version "([^"]*)"$/
 	 * @param string $version
 	 */
 	public function usingApiVersion($version) {
@@ -103,10 +95,10 @@ trait BasicStructure {
 	}
 
 	/**
-	 * @Given /^as an "([^"]*)"$/
+	 * @Given /^as user "([^"]*)"$/
 	 * @param string $user
 	 */
-	public function asAn($user) {
+	public function asUser($user) {
 		$this->currentUser = $user;
 	}
 
@@ -128,12 +120,27 @@ trait BasicStructure {
 	}
 
 	/**
-	 * @When /^sending "([^"]*)" to "([^"]*)"$/
+	 * @When /^the user sends HTTP method "([^"]*)" to API endpoint "([^"]*)"$/
 	 * @param string $verb
 	 * @param string $url
 	 */
 	public function sendingTo($verb, $url) {
 		$this->sendingToWith($verb, $url, null);
+	}
+
+	/**
+	 * @When /^user "([^"]*)" sends HTTP method "([^"]*)" to API endpoint "([^"]*)"$/
+	 * @param string $user
+	 * @param string $verb
+	 * @param string $url
+	 */
+	public function userSendingTo($user, $verb, $url) {
+		$this->userSendsHTTPMethodToAPIEndpointWithBody(
+			$user,
+			$verb,
+			$url,
+			null
+		);
 	}
 
 	/**
@@ -196,17 +203,35 @@ trait BasicStructure {
 	}
 
 	/**
-	 * @When /^sending "([^"]*)" to "([^"]*)" with$/
+	 * @When /^the user sends HTTP method "([^"]*)" to API endpoint "([^"]*)" with body$/
+	 * @Given /^the user has sent HTTP method "([^"]*)" to API endpoint "([^"]*)" with body$/
 	 * @param string $verb
 	 * @param string $url
 	 * @param \Behat\Gherkin\Node\TableNode $body
 	 */
 	public function sendingToWith($verb, $url, $body) {
-		
+		$this->userSendsHTTPMethodToAPIEndpointWithBody(
+			$this->currentUser,
+			$verb,
+			$url,
+			$body
+		);
+	}
+
+	/**
+	 * @When /^user "([^"]*)" sends HTTP method "([^"]*)" to API endpoint "([^"]*)" with body$/
+	 * @Given /^user "([^"]*)" has sent HTTP method "([^"]*)" to API endpoint "([^"]*)" with body$/
+	 * @param string $user
+	 * @param string $verb
+	 * @param string $url
+	 * @param \Behat\Gherkin\Node\TableNode $body
+	 */
+	public function userSendsHTTPMethodToAPIEndpointWithBody($user, $verb, $url, $body) {
+
 		/**
 		 * array of the data to be sent in the body.
-		 * contains $body data converted to an array 
-		 * 
+		 * contains $body data converted to an array
+		 *
 		 * @var array $bodyArray
 		 */
 		$bodyArray = [];
@@ -214,8 +239,7 @@ trait BasicStructure {
 			$bodyArray = $body->getRowsHash();
 		}
 
-		if ($this->currentUser !== 'UNAUTHORIZED_USER') {
-			$user = $this->currentUser;
+		if ($user !== 'UNAUTHORIZED_USER') {
 			$password = $this->getPasswordForUser($user);
 		} else {
 			$user = null;
@@ -230,19 +254,26 @@ trait BasicStructure {
 	}
 
 	/**
-	 * @When /^sending "([^"]*)" with exact url to "([^"]*)"$/
+	 * @When /^user "([^"]*)" sends HTTP method "([^"]*)" to URL "([^"]*)"$/
+	 * @param string $user
 	 * @param string $verb
 	 * @param string $url
 	 */
-	public function sendingToDirectUrl($verb, $url) {
-		$this->sendingToWithDirectUrl($verb, $url, null);
+	public function userSendsHTTPMethodToUrl($user, $verb, $url) {
+		$this->sendingToWithDirectUrl($user, $verb, $url, null);
 	}
 
-	public function sendingToWithDirectUrl($verb, $url, $body) {
+	/**
+	 * @param string $user
+	 * @param string $verb
+	 * @param string $url
+	 * @param \Behat\Gherkin\Node\TableNode $body
+	 */
+	public function sendingToWithDirectUrl($user, $verb, $url, $body) {
 		$fullUrl = substr($this->baseUrl, 0, -5) . $url;
 		$client = new Client();
 		$options = [];
-		$options['auth'] = $this->getAuthOptionForUser($this->currentUser);
+		$options['auth'] = $this->getAuthOptionForUser($user);
 
 		if (!empty($this->cookieJar->toArray())) {
 			$options['cookies'] = $this->cookieJar;
@@ -264,6 +295,11 @@ trait BasicStructure {
 		}
 	}
 
+	/**
+	 * @param string $possibleUrl
+	 * @param string $finalPart
+	 * @return bool
+	 */
 	public function isExpectedUrl($possibleUrl, $finalPart) {
 		$baseUrlChopped = $this->baseUrlWithoutOCSAppendix();
 		$endCharacter = strlen($baseUrlChopped) + strlen($finalPart);
@@ -319,7 +355,6 @@ trait BasicStructure {
 	 * @param string $key2
 	 * @param string $key3
 	 * @param string $attribute
-	 * @param string $idText
 	 */
 	public function theXMLKey1Key2AttributeValueShouldBe($key1, $key2, $key3, $attribute) {
 		$value = $this->getXMLKey1Key2Key3AttributeValue($this->response, $key1, $key2, $key3, $attribute);
@@ -337,10 +372,11 @@ trait BasicStructure {
 	}
 
 	/**
-	 * @Given logging in using web as :user
+	 * @When /^user "([^"]*)" logs in to a web-style session using the API$/
+	 * @Given /^user "([^"]*)" has logged in to a web-style session using the API$/
 	 * @param string $user
 	 */
-	public function loggingInUsingWebAs($user) {
+	public function userHasLoggedInToAWebStyleSessionUsingTheAPI($user) {
 		$loginUrl = substr($this->baseUrl, 0, -5) . '/login';
 		// Request a new session and extract CSRF token
 		$client = new Client();
@@ -370,7 +406,7 @@ trait BasicStructure {
 	}
 
 	/**
-	 * @When sending a :method to :url with requesttoken
+	 * @When the client sends a :method to :url with requesttoken using the API
 	 * @param string $method
 	 * @param string $url
 	 */
@@ -394,7 +430,7 @@ trait BasicStructure {
 	}
 
 	/**
-	 * @When sending a :method to :url without requesttoken
+	 * @When the client sends a :method to :url without requesttoken using the API
 	 * @param string $method
 	 * @param string $url
 	 */
@@ -416,6 +452,10 @@ trait BasicStructure {
 		}
 	}
 
+	/**
+	 * @param string $path
+	 * @param string $filename
+	 */
 	public static function removeFile($path, $filename) {
 		if (file_exists("$path" . "$filename")) {
 			unlink("$path" . "$filename");
@@ -423,7 +463,8 @@ trait BasicStructure {
 	}
 
 	/**
-	 * @Given user :user modifies text of :filename with text :text
+	 * @When user :user modifies text of :filename with text :text using the API
+	 * @Given user :user has modified text of :filename with text :text
 	 * @param string $user
 	 * @param string $filename
 	 * @param string $text
@@ -433,6 +474,10 @@ trait BasicStructure {
 		file_put_contents($this->getUserHome($user) . "/files" . "$filename", "$text");
 	}
 
+	/**
+	 * @param string $name
+	 * @param string $size
+	 */
 	public function createFileSpecificSize($name, $size) {
 		$file = fopen("work/" . "$name", 'w');
 		fseek($file, $size - 1 ,SEEK_CUR);
@@ -440,6 +485,10 @@ trait BasicStructure {
 		fclose($file);
 	}
 
+	/**
+	 * @param string $name
+	 * @param string $text
+	 */
 	public function createFileWithText($name, $text) {
 		$file = fopen("work/" . "$name", 'w');
 		fwrite($file, $text);
@@ -447,28 +496,28 @@ trait BasicStructure {
 	}
 
 	/**
-	 * @Given file :filename of size :size is created in local storage
+	 * @Given file :filename of size :size has been created in local storage
 	 * @param string $filename
 	 * @param string $size
 	 */
-	public function fileIsCreatedInLocalStorageWithSize($filename, $size) {
+	public function fileHasBeenCreatedInLocalStorageWithSize($filename, $size) {
 		$this->createFileSpecificSize("local_storage/$filename", $size);
 	}
 
 	/**
-	 * @Given file :filename with text :text is created in local storage
+	 * @Given file :filename with text :text has been created in local storage
 	 * @param string $filename
 	 * @param string $text
 	 */
-	public function fileIsCreatedInLocalStorageWithText($filename, $text) {
+	public function fileHasBeenCreatedInLocalStorageWithText($filename, $text) {
 		$this->createFileWithText("local_storage/$filename", $text);
 	}
 
 	/**
-	 * @Given file :filename is deleted in local storage
+	 * @Given file :filename has been deleted in local storage
 	 * @param string $filename
 	 */
-	public function fileIsDeletedInLocalStorage($filename) {
+	public function fileHasBeenDeletedInLocalStorage($filename) {
 		unlink("work/local_storage/$filename");
 	}
 
@@ -514,7 +563,7 @@ trait BasicStructure {
 	}
 
 	/**
-	 * @When requesting status.php
+	 * @When the admin requests status.php using the API
 	 */
 	public function getStatusPhp(){
 		$fullUrl = $this->baseUrlWithoutOCSAppendix() . "status.php";
@@ -530,6 +579,7 @@ trait BasicStructure {
 
 	/**
 	 * @Then the json responded should match with
+	 * @param PyStringNode $jsonExpected
 	 */
 	public function jsonRespondedShouldMatch(PyStringNode $jsonExpected) {
 		$jsonExpectedEncoded = json_encode($jsonExpected->getRaw());
@@ -538,7 +588,8 @@ trait BasicStructure {
 	}
 
 	/**
-	 * @Then the status.php with versions fixed responded should match with
+	 * @Then the status.php response should match with
+	 * @param PyStringNode $jsonExpected
 	 */
 	public function statusPhpRespondedShouldMatch(PyStringNode $jsonExpected) {
 		$jsonExpectedDecoded = json_decode($jsonExpected->getRaw(), true);
@@ -584,6 +635,7 @@ trait BasicStructure {
 
 	/**
 	 * @BeforeSuite
+	 * @param BeforeSuiteScope $scope
 	 */
 	public static function useBigFileIDs(BeforeSuiteScope $scope) {
 		$fullUrl = getenv('TEST_SERVER_URL') . "/v1.php/apps/testing/api/v1/increasefileid";
