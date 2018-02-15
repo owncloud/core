@@ -34,14 +34,15 @@ trait Comments {
 	private $lastFileId;
 
 	/**
-	 * @When /^user "([^"]*)" comments with content "([^"]*)" on (file|folder) "([^"]*)"$/
+	 * @When /^user "([^"]*)" comments with content "([^"]*)" on (file|folder) "([^"]*)" using the API$/
+	 * @Given /^user "([^"]*)" has commented with content "([^"]*)" on (file|folder) "([^"]*)"$/
 	 * @param string $user
 	 * @param string $content
 	 * @param string $type
 	 * @param string $path
 	 * @throws \Exception
 	 */
-	public function postsAComment($user, $content, $type, $path) {
+	public function userCommentsWithContentOnEntry($user, $content, $type, $path) {
 		$fileId = $this->getFileIdForPath($user, $path);
 		$this->lastFileId = $fileId;
 		$commentsPath = '/comments/files/' . $fileId . '/';
@@ -128,6 +129,11 @@ trait Comments {
 		}
 	}
 
+	/**
+	 * @param string $user
+	 * @param string $fileId
+	 * @param string $commentId
+	 */
 	public function deleteComment($user, $fileId, $commentId) {
 		$commentsPath = '/comments/files/' . $fileId . '/' . $commentId;
 		try {
@@ -144,7 +150,8 @@ trait Comments {
 	}
 
 	/**
-	 * @Then user :user deletes the last created comment
+	 * @When user :user deletes the last created comment using the API
+	 * @Given user :user has deleted the last created comment
 	 * @param string $user
 	 * @throws \Exception
 	 */
@@ -184,6 +191,12 @@ trait Comments {
 		}
 	}
 
+	/**
+	 * @param string $user
+	 * @param string $content
+	 * @param string $fileId
+	 * @param string $commentId
+	 */
 	public function editAComment($user, $content, $fileId, $commentId) {
 		$commentsPath = '/comments/files/' . $fileId . '/' . $commentId;
 		try {
@@ -207,11 +220,10 @@ trait Comments {
 	}
 
 	/**
-	 * @When /^user "([^"]*)" edits last comment with content "([^"]*)"$/
+	 * @When /^user "([^"]*)" edits the last created comment with content "([^"]*)" using the API$/
+	 * @Given /^user "([^"]*)" has edited the last created comment with content "([^"]*)"$/
 	 * @param string $user
 	 * @param string $content
-	 * @param string $type
-	 * @param string $path
 	 * @throws \Exception
 	 */
 	public function userEditsLastCreatedComment($user, $content) {

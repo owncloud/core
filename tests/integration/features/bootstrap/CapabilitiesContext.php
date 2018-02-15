@@ -35,7 +35,7 @@ class CapabilitiesContext implements Context, SnippetAcceptingContext {
 	use BasicStructure;
 
 	/**
-	 * @Then /^fields of capabilities match with$/
+	 * @Then the capabilities should contain
 	 * @param \Behat\Gherkin\Node\TableNode|null $formData
 	 * @return void
 	 */
