@@ -1899,22 +1899,26 @@ class Share extends Constants {
 			if (isset($uidOwner) && isset($row['path'])) {
 				if (isset($row['parent'])) {
 					$query = \OC_DB::prepare('SELECT `file_target` FROM `*PREFIX*share` WHERE `id` = ?');
-					$parentResult = $query->execute([$row['parent']]);
-					if ($result === false) {
-						\OCP\Util::writeLog('OCP\Share', 'Can\'t select parent: ' .
+					if ($parentResult = $query->execute([$row['parent']])) {
+						if($parentRow = $parentResult->fetchRow()) {
+							$tmpPath = $parentRow['file_target'];
+							// find the right position where the row path continues from the target path
+							$pos = strrpos($row['path'], $parentRow['file_target']);
+							$subPath = substr($row['path'], $pos);
+							$splitPath = explode('/', $subPath);
+							foreach (array_slice($splitPath, 2) as $pathPart) {
+								$tmpPath = $tmpPath . '/' . $pathPart;
+							}
+							$row['path'] = $tmpPath;
+						} else {
+							\OCP\Util::writeLog('OCP\Share', "No parent {$row['parent']}: " .
+								\OC_DB::getErrorMessage() . ', select=' . $select . ' where=' . $where,
+								\OCP\Util::ERROR);
+						}
+					} else {
+						\OCP\Util::writeLog('OCP\Share', "Can't select parent {$row['parent']}: " .
 							\OC_DB::getErrorMessage() . ', select=' . $select . ' where=' . $where,
 							\OCP\Util::ERROR);
-					} else {
-						$parentRow = $parentResult->fetchRow();
-						$tmpPath = $parentRow['file_target'];
-						// find the right position where the row path continues from the target path
-						$pos = strrpos($row['path'], $parentRow['file_target']);
-						$subPath = substr($row['path'], $pos);
-						$splitPath = explode('/', $subPath);
-						foreach (array_slice($splitPath, 2) as $pathPart) {
-							$tmpPath = $tmpPath . '/' . $pathPart;
-						}
-						$row['path'] = $tmpPath;
 					}
 				} else {
 					if (!isset($mounts[$row['storage']])) {
