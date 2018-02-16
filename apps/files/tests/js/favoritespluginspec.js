@@ -53,10 +53,10 @@ describe('OCA.Files.FavoritesPlugin tests', function() {
 		it('provides default file actions', function() {
 			var fileActions = fileList.fileActions;
 
-			expect(fileActions.actions.all).toBeDefined();
-			expect(fileActions.actions.all.Delete).toBeDefined();
-			expect(fileActions.actions.all.Rename).toBeDefined();
-			expect(fileActions.actions.all.Download).toBeDefined();
+			var actions = fileList.fileActions.getActions('all', 'file', 31);
+			expect(actions.Delete).toBeDefined();
+			expect(actions.Rename).toBeDefined();
+			expect(actions.Download).toBeDefined();
 
 			expect(fileActions.defaults.dir).toEqual('Open');
 		});
@@ -74,7 +74,7 @@ describe('OCA.Files.FavoritesPlugin tests', function() {
 			Plugin.favoritesFileList = null;
 			fileList = Plugin.showFileList($('#app-content-favorites'));
 
-			expect(fileList.fileActions.actions.all.RegularTest).toBeDefined();
+			expect(fileList.fileActions.getActions('all', 'file', 31).RegularTest).toBeDefined();
 		});
 		it('does not provide legacy file actions', function() {
 			var actionStub = sinon.stub();
@@ -90,7 +90,7 @@ describe('OCA.Files.FavoritesPlugin tests', function() {
 			Plugin.favoritesFileList = null;
 			fileList = Plugin.showFileList($('#app-content-favorites'));
 
-			expect(fileList.fileActions.actions.all.LegacyTest).not.toBeDefined();
+			expect(fileList.fileActions.getActions('all', 'file', 31).LegacyTest).not.toBeDefined();
 		});
 		it('redirects to files app when opening a directory', function() {
 			var oldList = OCA.Files.App.fileList;

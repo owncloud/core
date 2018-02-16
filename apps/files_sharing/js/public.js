@@ -237,7 +237,8 @@ OCA.Sharing.PublicApp = {
 			});
 
 			// do not allow sharing from the public page
-			delete this.fileList.fileActions.actions.all.Share;
+			// FIXME find a way: register handler that deletes action?
+			//delete this.fileList.fileActions.actions.all.Share;
 
 			this.fileList.changeDirectory(this.initialDir || '/', false, true);
 

@@ -68,7 +68,7 @@ describe('OCA.Files.App tests', function() {
 	describe('initialization', function() {
 		it('initializes the default file list with the default file actions', function() {
 			expect(App.fileList).toBeDefined();
-			expect(App.fileList.fileActions.actions.all).toBeDefined();
+			expect(App.fileList.fileActions.getActions('all', 'file', 31).Download).toBeDefined();
 			expect(App.fileList.$el.is('#app-content-files')).toEqual(true);
 		});
 		it('merges the legacy file actions with the default ones', function() {
@@ -111,12 +111,13 @@ describe('OCA.Files.App tests', function() {
 
 			App.initialize();
 
-			var actions = App.fileList.fileActions.actions;
-			expect(actions.all.OverwriteThis.action).toBe(actionStub);
-			expect(actions.all.LegacyTest.action).toBe(legacyActionStub);
-			expect(actions.all.RegularTest.action).toBe(actionStub);
+			var actions = App.fileList.fileActions.getActions('all', 'file', 31);
+			expect(actions.OverwriteThis.action).toBe(actionStub);
+			expect(actions.LegacyTest.action).toBe(legacyActionStub);
+			expect(actions.RegularTest.action).toBe(actionStub);
 			// default one still there
-			expect(actions.dir.Open.action).toBeDefined();
+			actions = App.fileList.fileActions.getActions('httpd/unix-directory', 'dir', 31);
+			expect(actions.Open).toBeDefined();
 		});
 	});
 
