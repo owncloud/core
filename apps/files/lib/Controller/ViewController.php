@@ -220,7 +220,7 @@ class ViewController extends Controller {
 			return $item1['order'] - $item2['order'];
 		});
 		$nav->assign('navigationItems', $navItems);
-		$nav->assign('webdavUrl', $this->urlGenerator->getAbsoluteUrl($this->urlGenerator->linkTo('', 'remote.php') . '/dav/files/' . $user . '/'));
+		$nav->assign('webdavUrl', $this->urlGenerator->getAbsoluteUrl($this->urlGenerator->linkTo('', 'remote.php') . '/dav/files/' . rawurlencode($user) . '/'));
 
 		$contentItems = [];
 
@@ -307,8 +307,8 @@ class ViewController extends Controller {
 			}
 			$response = new RedirectResponse($this->urlGenerator->linkToRoute('files.view.index', $params));
 			if ($isFilesView) {
-				$webdavUrl = $this->urlGenerator->linkTo('', 'remote.php') . '/dav/files/' . $uid . '/';
-				$webdavUrl .= ltrim($baseFolder->getRelativePath($file->getPath()), '/');
+				$webdavUrl = $this->urlGenerator->linkTo('', 'remote.php') . '/dav/files/' . rawurlencode($uid) . '/';
+				$webdavUrl .= \OCP\Util::encodePath(ltrim($baseFolder->getRelativePath($file->getPath()), '/'));
 				$response->addHeader('Webdav-Location', $webdavUrl);
 			}
 			return $response;
