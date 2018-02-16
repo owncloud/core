@@ -80,7 +80,7 @@ class ViewControllerTest extends TestCase {
 		$this->user = $this->createMock('\OCP\IUser');
 		$this->user->expects($this->any())
 			->method('getUID')
-			->will($this->returnValue('testuser1'));
+			->will($this->returnValue('test@#?%test'));
 		$this->userSession->expects($this->any())
 			->method('getUser')
 			->will($this->returnValue($this->user));
@@ -189,8 +189,8 @@ class ViewControllerTest extends TestCase {
 			->with('', 'remote.php')
 			->willReturn('/owncloud/remote.php');
 		$this->urlGenerator->method('getAbsoluteUrl')
-			->with('/owncloud/remote.php/dav/files/' . $this->user->getUID() . '/')
-			->willReturn('http://example.org/owncloud/remote.php/dav/files/' . $this->user->getUID() . '/');
+			->with('/owncloud/remote.php/dav/files/test%40%23%3F%25test/')
+			->willReturn('http://example.org/owncloud/remote.php/dav/files/test%40%23%3F%25test/');
 
 		$nav = new Template('files', 'appnavigation');
 		$nav->assign('navigationItems', [
@@ -258,7 +258,7 @@ class ViewControllerTest extends TestCase {
 				'icon' => '',
 			],
 		]);
-		$nav->assign('webdavUrl', 'http://example.org/owncloud/remote.php/dav/files/' . $this->user->getUID() . '/');
+		$nav->assign('webdavUrl', 'http://example.org/owncloud/remote.php/dav/files/test%40%23%3F%25test/');
 
 		$expected = new Http\TemplateResponse(
 			'files',
@@ -329,13 +329,13 @@ class ViewControllerTest extends TestCase {
 		$node = $this->createMock('\OCP\Files\Folder');
 		$node->expects($this->any())
 			->method('getPath')
-			->will($this->returnValue('/testuser1/files/test/sub'));
+			->will($this->returnValue('/test@#?%test/files/to sp@ce/a@b#?%'));
 
 		$baseFolder = $this->createMock('\OCP\Files\Folder');
 
 		$this->rootFolder->expects($this->once())
 			->method('get')
-			->with('testuser1/files/')
+			->with('test@#?%test/files/')
 			->will($this->returnValue($baseFolder));
 
 		$baseFolder->expects($this->any())
@@ -344,17 +344,17 @@ class ViewControllerTest extends TestCase {
 			->will($this->returnValue([$node]));
 		$baseFolder->expects($this->any())
 			->method('getRelativePath')
-			->with('/testuser1/files/test/sub')
-			->will($this->returnValue('/test/sub'));
+			->with('/test@#?%test/files/to sp@ce/a@b#?%')
+			->will($this->returnValue('/to sp@ce/a@b#?%'));
 
 		$this->urlGenerator
 			->expects($this->once())
 			->method('linkToRoute')
-			->with('files.view.index', ['dir' => '/test/sub'])
-			->will($this->returnValue('/owncloud/index.php/apps/files/?dir=/test/sub'));
+			->with('files.view.index', ['dir' => '/to sp@ce/a@b#?%'])
+			->will($this->returnValue('/owncloud/index.php/apps/files/?dir=/to%20sp%40ce/a%40b%23%3F%25'));
 
-		$expected = new Http\RedirectResponse('/owncloud/index.php/apps/files/?dir=/test/sub');
-		$expected->addHeader('Webdav-Location', '/owncloud/remote.php/dav/files/testuser1/test/sub');
+		$expected = new Http\RedirectResponse('/owncloud/index.php/apps/files/?dir=/to%20sp%40ce/a%40b%23%3F%25');
+		$expected->addHeader('Webdav-Location', '/owncloud/remote.php/dav/files/test%40%23%3F%25test/to%20sp%40ce/a%40b%23%3F%25');
 		if ($useShowFile) {
 			$this->assertEquals($expected, $this->viewController->showFile(123));
 		} else {
@@ -369,13 +369,13 @@ class ViewControllerTest extends TestCase {
 		$parentNode = $this->createMock('\OCP\Files\Folder');
 		$parentNode->expects($this->any())
 			->method('getPath')
-			->will($this->returnValue('testuser1/files/test'));
+			->will($this->returnValue('test@#?%test/files/test'));
 
 		$baseFolder = $this->createMock('\OCP\Files\Folder');
 
 		$this->rootFolder->expects($this->once())
 			->method('get')
-			->with('testuser1/files/')
+			->with('test@#?%test/files/')
 			->will($this->returnValue($baseFolder));
 
 		$node = $this->createMock('\OCP\Files\File');
@@ -387,7 +387,7 @@ class ViewControllerTest extends TestCase {
 			->will($this->returnValue('somefile.txt'));
 		$node->expects($this->any())
 			->method('getPath')
-			->will($this->returnValue('testuser1/files/test/somefile.txt'));
+			->will($this->returnValue('test@#?%test/files/test/somefile.txt'));
 
 		$baseFolder->expects($this->any())
 			->method('getById')
@@ -396,8 +396,8 @@ class ViewControllerTest extends TestCase {
 		$baseFolder->expects($this->any())
 			->method('getRelativePath')
 			->will($this->returnValueMap([
-				['testuser1/files/test', '/test'],
-				['testuser1/files/test/somefile.txt', '/test/somefile.txt'],
+				['test@#?%test/files/test', '/test'],
+				['test@#?%test/files/test/somefile.txt', '/test/somefile.txt'],
 			]));
 
 		$this->urlGenerator
@@ -407,7 +407,7 @@ class ViewControllerTest extends TestCase {
 			->will($this->returnValue('/owncloud/index.php/apps/files/?dir=/test&scrollto=somefile.txt'));
 
 		$expected = new Http\RedirectResponse('/owncloud/index.php/apps/files/?dir=/test&scrollto=somefile.txt');
-		$expected->addHeader('Webdav-Location', '/owncloud/remote.php/dav/files/testuser1/test/somefile.txt');
+		$expected->addHeader('Webdav-Location', '/owncloud/remote.php/dav/files/test%40%23%3F%25test/test/somefile.txt');
 		if ($useShowFile) {
 			$this->assertEquals($expected, $this->viewController->showFile(123));
 		} else {
@@ -422,7 +422,7 @@ class ViewControllerTest extends TestCase {
 		$baseFolder = $this->createMock('\OCP\Files\Folder');
 		$this->rootFolder->expects($this->once())
 			->method('get')
-			->with('testuser1/files/')
+			->with('test@#?%test/files/')
 			->will($this->returnValue($baseFolder));
 
 		$baseFolder->expects($this->at(0))
@@ -447,7 +447,7 @@ class ViewControllerTest extends TestCase {
 		$baseFolder = $this->createMock('\OCP\Files\Folder');
 		$this->rootFolder->expects($this->once())
 			->method('get')
-			->with('testuser1/files/')
+			->with('test@#?%test/files/')
 			->will($this->returnValue($baseFolder));
 
 		$baseFolder->expects($this->at(0))
@@ -481,19 +481,19 @@ class ViewControllerTest extends TestCase {
 		$parentNode = $this->createMock('\OCP\Files\Folder');
 		$parentNode->expects($this->once())
 			->method('getPath')
-			->will($this->returnValue('testuser1/files_trashbin/files/test.d1462861890/sub'));
+			->will($this->returnValue('test@#?%test/files_trashbin/files/test.d1462861890/sub'));
 
 		$baseFolderFiles = $this->createMock('\OCP\Files\Folder');
 		$baseFolderTrash = $this->createMock('\OCP\Files\Folder');
 
 		$this->rootFolder->expects($this->at(0))
 			->method('get')
-			->with('testuser1/files/')
+			->with('test@#?%test/files/')
 			->will($this->returnValue($baseFolderFiles));
 		//The index is pointing to 2, because nodeExists internally calls get method.
 		$this->rootFolder->expects($this->at(2))
 			->method('get')
-			->with('testuser1/files_trashbin/files/')
+			->with('test@#?%test/files_trashbin/files/')
 			->will($this->returnValue($baseFolderTrash));
 
 		$baseFolderFiles->expects($this->once())
@@ -515,7 +515,7 @@ class ViewControllerTest extends TestCase {
 			->will($this->returnValue([$node]));
 		$baseFolderTrash->expects($this->at(1))
 			->method('getRelativePath')
-			->with('testuser1/files_trashbin/files/test.d1462861890/sub')
+			->with('test@#?%test/files_trashbin/files/test.d1462861890/sub')
 			->will($this->returnValue('/test.d1462861890/sub'));
 
 		$this->urlGenerator
