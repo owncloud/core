@@ -45,6 +45,9 @@ class ChunkingPlugin extends ServerPlugin {
 	/**
 	 * @param string $sourcePath source path
 	 * @param string $destination destination path
+	 * @return bool|void
+	 * @throws BadRequest
+	 * @throws \Sabre\DAV\Exception\NotFound
 	 */
 	function beforeMove($sourcePath, $destination) {
 		$this->sourceNode = $this->server->tree->getNodeForPath($sourcePath);
@@ -98,7 +101,7 @@ class ChunkingPlugin extends ServerPlugin {
 			return;
 		}
 		$actualSize = $this->sourceNode->getSize();
-		if ((int)$expectedSize !== $actualSize) {
+		if ($expectedSize != $actualSize) {
 			throw new BadRequest("Chunks on server do not sum up to $expectedSize but to $actualSize");
 		}
 	}
