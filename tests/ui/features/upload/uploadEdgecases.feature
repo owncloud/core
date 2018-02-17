@@ -52,15 +52,15 @@ that is not academically correct but saves a lot of time
 		| "strängé नेपाली folder" |
 
 	Scenario: overwrite an existing file
-		When I upload overwriting the file "'single'quotes.txt"
+		When I upload overwriting the file "'single'quotes.txt" and retry if the file is locked
 		Then the file "'single'quotes.txt" should be listed
 		And the content of "'single'quotes.txt" should be the same as the local "'single'quotes.txt"
 
-		When I upload overwriting the file "strängé filename (duplicate #2 &).txt"
+		When I upload overwriting the file "strängé filename (duplicate #2 &).txt" and retry if the file is locked
 		Then the file "strängé filename (duplicate #2 &).txt" should be listed
 		And the content of "strängé filename (duplicate #2 &).txt" should be the same as the local "strängé filename (duplicate #2 &).txt"
 
-		When I upload overwriting the file "zzzz-must-be-last-file-in-folder.txt"
+		When I upload overwriting the file "zzzz-must-be-last-file-in-folder.txt" and retry if the file is locked
 		Then the file "zzzz-must-be-last-file-in-folder.txt" should be listed
 		And the content of "zzzz-must-be-last-file-in-folder.txt" should be the same as the local "zzzz-must-be-last-file-in-folder.txt"
 

@@ -89,7 +89,7 @@ class SharingContext extends RawMinkContext implements Context {
 	 * @return void
 	 */
 	public function theFileFolderIsSharedWithTheUser(
-		$folder, $remote, $user, $maxRetries = 5, $quiet = false
+		$folder, $remote, $user, $maxRetries = STANDARDRETRYCOUNT, $quiet = false
 	) {
 		$this->filesPage->waitTillPageIsloaded($this->getSession());
 		try {
