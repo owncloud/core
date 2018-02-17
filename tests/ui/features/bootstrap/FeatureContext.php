@@ -175,6 +175,19 @@ class FeatureContext extends RawMinkContext implements Context {
 	}
 
 	/**
+	 * @Then no notification should be displayed
+	 * @return void
+	 */
+	public function noNotificationShouldBeDisplayed() {
+		try {
+			$notificationText = $this->owncloudPage->getNotificationText();
+			PHPUnit_Framework_Assert::fail("Expecting no notifications but got $notificationText");
+		} catch (\SensioLabs\Behat\PageObjectExtension\PageObject\Exception\ElementNotFoundException $e) {
+			// pdd
+		}
+	}
+
+	/**
 	 * @Then a notification should be displayed with the text :notificationText
 	 * @param string $notificationText expected notification text
 	 * @return void
