@@ -27,6 +27,7 @@ use Behat\Gherkin\Node\TableNode;
 use Behat\MinkExtension\Context\RawMinkContext;
 use Page\LoginPage;
 use Page\OwncloudPage;
+use SensioLabs\Behat\PageObjectExtension\PageObject\Exception\ElementNotFoundException;
 use TestHelpers\AppConfigHelper;
 use TestHelpers\SetupHelper;
 use TestHelpers\UploadHelper;
@@ -172,6 +173,23 @@ class FeatureContext extends RawMinkContext implements Context {
 	 */
 	public function getCurrentPageObject() {
 		return $this->currentPageObject;
+	}
+
+	/**
+	 * @Then no notification should be displayed
+	 * @return void
+	 */
+	public function noNotificationShouldBeDisplayed() {
+		try {
+			$notificationText = $this->owncloudPage->getNotificationText();
+			PHPUnit_Framework_Assert::assertEquals(
+				'',
+				$notificationText,
+				"Expecting no notifications but got $notificationText"
+			);
+		} catch (ElementNotFoundException $e) {
+			// if there is no notification element, then good
+		}
 	}
 
 	/**
