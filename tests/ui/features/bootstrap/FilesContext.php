@@ -462,6 +462,51 @@ class FilesContext extends RawMinkContext implements Context {
 	}
 
 	/**
+	 * @When I upload overwriting the file :name and retry if the file is locked
+	 * @param string $name
+	 * @return void
+	 */
+	public function iUploadOverwritingTheFileRetry($name) {
+		$previousNotificationsCount = 0;
+
+		for ($retryCounter = 0;
+			 $retryCounter < STANDARDRETRYCOUNT;
+			 $retryCounter++) {
+			$this->iUploadOverwritingTheFile($name);
+
+			try {
+				$notifications = $this->filesPage->getNotifications();
+			} catch (ElementNotFoundException $e) {
+				$notifications = [];
+			}
+
+			$currentNotificationsCount = count($notifications);
+
+			if ($currentNotificationsCount > $previousNotificationsCount) {
+				$message
+					= "Upload overwriting " . $name .
+					  " and got " . $currentNotificationsCount .
+					  " notifications including " .
+					  end($notifications) . "\n";
+				echo $message;
+				error_log($message);
+				$previousNotificationsCount = $currentNotificationsCount;
+				usleep(STANDARDSLEEPTIMEMICROSEC);
+			} else {
+				break;
+			}
+		}
+
+		if ($retryCounter > 0) {
+			$message
+				= "INFORMATION: retried to upload overwriting file " .
+				  $name . " " . $retryCounter . " times";
+			echo $message;
+			error_log($message);
+		}
+	}
+
+	/**
 	 * @When I upload the file :name keeping both new and existing files
 	 * @param string $name
 	 * @return void

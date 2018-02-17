@@ -128,7 +128,7 @@ class PublicLinkFilesPage extends FilesPageBasic {
 		$fromFileName,
 		$toFileName,
 		Session $session,
-		$maxRetries = 5
+		$maxRetries = STANDARDRETRYCOUNT
 	) {
 		throw new \Exception("not implemented");
 	}
@@ -143,7 +143,7 @@ class PublicLinkFilesPage extends FilesPageBasic {
 	 * @return void
 	 */
 	public function moveFileTo(
-		$name, $destination, Session $session, $maxRetries = 5
+		$name, $destination, Session $session, $maxRetries = STANDARDRETRYCOUNT
 	) {
 		throw new \Exception("not implemented");
 	}

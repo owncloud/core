@@ -40,7 +40,7 @@ So that those groups can access the files and folders
 		And I relogin with username "user1" and password "1234"
 		Then the content of "new-lorem.txt" should not be the same as the local "new-lorem.txt"
 		# overwrite the received shared file
-		When I upload overwriting the file "new-lorem.txt"
+		When I upload overwriting the file "new-lorem.txt" and retry if the file is locked
 		Then the file "new-lorem.txt" should be listed
 		And the content of "new-lorem.txt" should be the same as the local "new-lorem.txt"
 		# unshare the received shared file
@@ -61,7 +61,7 @@ So that those groups can access the files and folders
 		And I open the folder "new-simple-folder"
 		Then the content of "lorem.txt" should not be the same as the local "lorem.txt"
 		# overwrite an existing file in the received share
-		When I upload overwriting the file "lorem.txt"
+		When I upload overwriting the file "lorem.txt" and retry if the file is locked
 		Then the file "lorem.txt" should be listed
 		And the content of "lorem.txt" should be the same as the local "lorem.txt"
 		# upload a new file into the received share
