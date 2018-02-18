@@ -350,59 +350,179 @@ matrix:
       
     - PHP_VERSION: 7.1
       TEST_SUITE: selenium
-      BEHAT_SUITE: other
+      BEHAT_SUITE: upload
       DB_TYPE: mariadb
       USE_SERVER: true
       
     - PHP_VERSION: 7.1
       TEST_SUITE: selenium
-      BEHAT_SUITE: files
+      BEHAT_SUITE: upload
       DB_TYPE: mariadb
       USE_SERVER: true
 
     - PHP_VERSION: 7.1
       TEST_SUITE: selenium
-      BEHAT_SUITE: moveFilesFolders
+      BEHAT_SUITE: upload
       DB_TYPE: mariadb
       USE_SERVER: true
     
     - PHP_VERSION: 7.1
       TEST_SUITE: selenium
-      BEHAT_SUITE: renameFiles
+      BEHAT_SUITE: upload
       DB_TYPE: mariadb
       USE_SERVER: true
     
     - PHP_VERSION: 7.1
       TEST_SUITE: selenium
-      BEHAT_SUITE: renameFolders
+      BEHAT_SUITE: upload
       DB_TYPE: mariadb
       USE_SERVER: true
     
     - PHP_VERSION: 7.1
       TEST_SUITE: selenium
-      BEHAT_SUITE: trashbin
+      BEHAT_SUITE: upload
       DB_TYPE: mariadb
       USE_SERVER: true
     
     - PHP_VERSION: 7.1
       TEST_SUITE: selenium
-      BEHAT_SUITE: sharingInternalGroupsUsers
+      BEHAT_SUITE: upload
       DB_TYPE: mariadb
       USE_SERVER: true
     
     - PHP_VERSION: 7.1
       TEST_SUITE: selenium
-      BEHAT_SUITE: sharingExternalOther
+      BEHAT_SUITE: upload
       DB_TYPE: mariadb
       USE_SERVER: true
       USE_FEDERATED_SERVER: true
     
     - PHP_VERSION: 7.1
       TEST_SUITE: selenium
-      BEHAT_SUITE: restrictSharing
+      BEHAT_SUITE: upload
       DB_TYPE: mariadb
       USE_SERVER: true
       
+    - PHP_VERSION: 7.1
+      TEST_SUITE: selenium
+      BEHAT_SUITE: upload
+      DB_TYPE: mariadb
+      USE_SERVER: true
+
+    - PHP_VERSION: 7.1
+      TEST_SUITE: selenium
+      BEHAT_SUITE: upload
+      DB_TYPE: mariadb
+      USE_SERVER: true
+
+    - PHP_VERSION: 7.1
+      TEST_SUITE: selenium
+      BEHAT_SUITE: upload
+      DB_TYPE: mariadb
+      USE_SERVER: true
+
+    - PHP_VERSION: 7.1
+      TEST_SUITE: selenium
+      BEHAT_SUITE: upload
+      DB_TYPE: mariadb
+      USE_SERVER: true
+
+    - PHP_VERSION: 7.1
+      TEST_SUITE: selenium
+      BEHAT_SUITE: upload
+      DB_TYPE: mariadb
+      USE_SERVER: true
+
+    - PHP_VERSION: 7.1
+      TEST_SUITE: selenium
+      BEHAT_SUITE: upload
+      DB_TYPE: mariadb
+      USE_SERVER: true
+
+    - PHP_VERSION: 7.1
+      TEST_SUITE: selenium
+      BEHAT_SUITE: upload
+      DB_TYPE: mariadb
+      USE_SERVER: true
+
+    - PHP_VERSION: 7.1
+      TEST_SUITE: selenium
+      BEHAT_SUITE: upload
+      DB_TYPE: mariadb
+      USE_SERVER: true
+
+    - PHP_VERSION: 7.1
+      TEST_SUITE: selenium
+      BEHAT_SUITE: upload
+      DB_TYPE: mariadb
+      USE_SERVER: true
+
+    - PHP_VERSION: 7.1
+      TEST_SUITE: selenium
+      BEHAT_SUITE: upload
+      DB_TYPE: mariadb
+      USE_SERVER: true
+
+    - PHP_VERSION: 7.1
+      TEST_SUITE: selenium
+      BEHAT_SUITE: upload
+      DB_TYPE: mariadb
+      USE_SERVER: true
+
+    - PHP_VERSION: 7.1
+      TEST_SUITE: selenium
+      BEHAT_SUITE: upload
+      DB_TYPE: mariadb
+      USE_SERVER: true
+
+    - PHP_VERSION: 7.1
+      TEST_SUITE: selenium
+      BEHAT_SUITE: upload
+      DB_TYPE: mariadb
+      USE_SERVER: true
+
+    - PHP_VERSION: 7.1
+      TEST_SUITE: selenium
+      BEHAT_SUITE: upload
+      DB_TYPE: mariadb
+      USE_SERVER: true
+
+    - PHP_VERSION: 7.1
+      TEST_SUITE: selenium
+      BEHAT_SUITE: upload
+      DB_TYPE: mariadb
+      USE_SERVER: true
+
+    - PHP_VERSION: 7.1
+      TEST_SUITE: selenium
+      BEHAT_SUITE: upload
+      DB_TYPE: mariadb
+      USE_SERVER: true
+
+    - PHP_VERSION: 7.1
+      TEST_SUITE: selenium
+      BEHAT_SUITE: upload
+      DB_TYPE: mariadb
+      USE_SERVER: true
+
+    - PHP_VERSION: 7.1
+      TEST_SUITE: selenium
+      BEHAT_SUITE: upload
+      DB_TYPE: mariadb
+      USE_SERVER: true
+
+    - PHP_VERSION: 7.1
+      TEST_SUITE: selenium
+      BEHAT_SUITE: upload
+      DB_TYPE: mariadb
+      USE_SERVER: true
+
+    - PHP_VERSION: 7.1
+      TEST_SUITE: selenium
+      BEHAT_SUITE: upload
+      DB_TYPE: mariadb
+      USE_SERVER: true
+
     - PHP_VERSION: 7.1
       TEST_SUITE: selenium
       BEHAT_SUITE: upload
