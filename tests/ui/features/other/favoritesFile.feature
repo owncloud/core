@@ -1,4 +1,4 @@
-@insulated
+@insulated @disablePreviews
 Feature: Mark file as favorite
 
 As a user

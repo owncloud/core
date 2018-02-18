@@ -1,4 +1,4 @@
-@insulated
+@insulated @disablePreviews
 Feature: manage user quota
 As an admin
 I want to manage user quota

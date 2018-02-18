@@ -1,3 +1,4 @@
+@insulated @disablePreviews
 Feature: manage groups
 As an admin
 I want to manage groups
