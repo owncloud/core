@@ -351,11 +351,11 @@ class FilesContext extends RawMinkContext implements Context {
 
 	/**
 	 * @Given the following files/folders are deleted
-	 * @param TableNode $namePartsTable table headings: must be: |name|
+	 * @param TableNode $filesTable table headings: must be: |name|
 	 * @return void
 	 */
-	public function theFollowingFilesFoldersAreDeleted(TableNode $table) {
-		foreach ($table as $file) {
+	public function theFollowingFilesFoldersAreDeleted(TableNode $filesTable) {
+		foreach ($filesTable as $file) {
 			$username = $this->featureContext->getCurrentUser();
 			$currentTime = microtime(true);
 			$end = $currentTime + (LONGUIWAITTIMEOUTMILLISEC / 1000);
@@ -762,12 +762,16 @@ class FilesContext extends RawMinkContext implements Context {
 	 * @return void
 	 */
 	public function theFollowingFileFolderShouldBeListed(
-		$shouldOrNot, $typeOfFilesPage, $folder = "", TableNode $namePartsTable
+		$shouldOrNot, $typeOfFilesPage, $folder = "", TableNode $namePartsTable = null
 	) {
 		$fileNameParts = [];
 
-		foreach ($namePartsTable as $namePartsRow) {
-			$fileNameParts[] = $namePartsRow['name-parts'];
+		if ($namePartsTable !== null) {
+			foreach ($namePartsTable as $namePartsRow) {
+				$fileNameParts[] = $namePartsRow['name-parts'];
+			}
+		} else {
+			PHPUnit_Framework_Assert::fail('no table of file name parts passed to theFollowingFileFolderShouldBeListed');
 		}
 
 		// The capturing groups of the regex include the quotes at each
