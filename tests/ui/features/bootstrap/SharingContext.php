@@ -284,7 +284,10 @@ class SharingContext extends RawMinkContext implements Context {
 	/**
 	 * @When I add the public link to :server as user :username with the password :password
 	 * @param string $server
+	 * @param string $username
+	 * @param string $password
 	 * @return void
+	 * @throws Exception
 	 */
 	public function iAddThePublicLinkTo($server, $username, $password) {
 		if (!$this->publicLinkFilesPage->isOpen()) {

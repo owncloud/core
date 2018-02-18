@@ -25,6 +25,7 @@
 		<exclude name="Generic.Commenting.DocComment.MissingShort" />
 		<exclude name="Generic.Commenting.DocComment.TagValueIndent" />
 		<exclude name="Generic.Commenting.DocComment.NonParamGroup" />
+		<exclude name="PEAR.Commenting.FileComment.IncompleteCopyright" />
 		<exclude name="PEAR.Commenting.FileComment.MissingVersion" />
 		<exclude name="PEAR.Commenting.FileComment.MissingCategoryTag" />
 		<exclude name="PEAR.Commenting.FileComment.MissingPackageTag" />
