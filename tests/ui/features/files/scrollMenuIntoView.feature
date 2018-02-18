@@ -1,3 +1,4 @@
+@insulated @disablePreviews
 Feature: scroll menu of actions that can be done on a file into view
 As a user
 I want to see the whole menu of actions that can be done on a file

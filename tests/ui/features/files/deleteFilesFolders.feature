@@ -1,4 +1,4 @@
-@insulated
+@insulated @disablePreviews
 Feature: deleting files and folders
 As a user
 I want to delete files and folders

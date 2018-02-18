@@ -1,4 +1,4 @@
-@insulated
+@insulated @disablePreviews
 Feature: personal security settings
 As a user
 I want to be able to manage security settings for my account
