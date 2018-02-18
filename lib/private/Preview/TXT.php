@@ -40,8 +40,9 @@ class TXT implements IProvider2 {
 	 * {@inheritDoc}
 	 */
 	public function getThumbnail(File $file, $maxX, $maxY, $scalingUp) {
-		$content = $file->fopen('r');
-		$content = stream_get_contents($content,3000);
+		$stream = $file->fopen('r');
+		$content = stream_get_contents($stream,3000);
+		fclose($stream);
 
 		//don't create previews of empty text files
 		if(trim($content) === '') {
