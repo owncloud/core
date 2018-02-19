@@ -276,7 +276,7 @@ Feature: webdav-related-old-endpoint
 		And user "userToBeDisabled" has been created
 		And user "userToBeDisabled" has been disabled
 		When user "userToBeDisabled" downloads the file "/welcome.txt" using the API
-		Then the HTTP status code should be "503"
+		Then the HTTP status code should be "401"
 
 	Scenario: Creating a folder
 		Given using old DAV path
