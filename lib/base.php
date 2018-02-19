@@ -198,12 +198,6 @@ class OC {
 			}
 		} elseif (file_exists(OC::$SERVERROOT . '/apps')) {
 			OC::$APPSROOTS[] = ['path' => OC::$SERVERROOT . '/apps', 'url' => '/apps', 'writable' => true];
-		} elseif (file_exists(OC::$SERVERROOT . '/../apps')) {
-			OC::$APPSROOTS[] = [
-				'path' => rtrim(dirname(OC::$SERVERROOT), '/') . '/apps',
-				'url' => '/apps',
-				'writable' => true
-			];
 		}
 
 		if (empty(OC::$APPSROOTS)) {
