@@ -295,6 +295,8 @@ class FileRow extends OwnCloudPage {
 	
 	/**
 	 * restore the current deleted file and folder by clicking on the restore link
+	 *
+	 * @return void
 	 */
 	public function restore() {
 		$rowElement = $this->rowElement->find('xpath', $this->restoreLinkXpath);

@@ -510,11 +510,12 @@ trait BasicStructure {
 	/**
 	 * returns an array of the real displayed names
 	 * if no "Display Name" is set the user-name is returned instead
+	 *
 	 * @return array
 	 */
 	public function getCreatedUserDisplayNames() {
 		$result = array();
-		foreach ($this->getCreatedUsers() as $username=>$user) {
+		foreach ($this->getCreatedUsers() as $username => $user) {
 			if (is_null($user['displayname'])) {
 				$result[] = $username;
 			} else {
