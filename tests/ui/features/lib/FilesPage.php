@@ -241,7 +241,7 @@ class FilesPage extends FilesPageBasic {
 		$fromFileName,
 		$toFileName,
 		Session $session,
-		$maxRetries = 5
+		$maxRetries = STANDARDRETRYCOUNT
 	) {
 		if (is_array($toFileName)) {
 			$toFileName = implode($toFileName);
@@ -281,7 +281,7 @@ class FilesPage extends FilesPageBasic {
 	 * @return void
 	 */
 	public function moveFileTo(
-		$name, $destination, Session $session, $maxRetries = 5
+		$name, $destination, Session $session, $maxRetries = STANDARDRETRYCOUNT
 	) {
 		$toMoveFileRow = $this->findFileRowByName($name, $session);
 		$destinationFileRow = $this->findFileRowByName($destination, $session);
