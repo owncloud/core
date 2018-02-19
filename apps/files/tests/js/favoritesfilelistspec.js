@@ -67,7 +67,7 @@ describe('OCA.Files.FavoritesFileList tests', function() {
 			expect(fetchStub.calledOnce).toEqual(true);
 
 			deferred.resolve(207, [{
-				id: 7,
+				id: '7',
 				name: 'test.txt',
 				path: '/somedir',
 				size: 123,

@@ -134,7 +134,7 @@ class Remote {
 		$share['mtime'] = $info->getMtime();
 		$share['permissions'] = $info->getPermissions();
 		$share['type'] = $info->getType();
-		$share['file_id'] = $info->getId();
+		$share['file_id'] = strval($info->getId());
 
 		return $share;
 	}

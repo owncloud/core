@@ -43,7 +43,7 @@ describe('OCA.Files.FileList tests', function() {
 			}
 			name += i + '.txt';
 			files.push(new FileInfo({
-				id: i,
+				id: '' + i,
 				type: 'file',
 				name: name,
 				mimetype: 'text/plain',
@@ -111,7 +111,7 @@ describe('OCA.Files.FileList tests', function() {
 
 		testRoot = new FileInfo({
 			// root entry
-			id: 99,
+			id: '99',
 			type: 'dir',
 			name: '/subdir',
 			mimetype: 'httpd/unix-directory',
@@ -120,7 +120,7 @@ describe('OCA.Files.FileList tests', function() {
 			permissions: OC.PERMISSION_ALL
 		});
 		testFiles = [new FileInfo({
-			id: 1,
+			id: '1',
 			type: 'file',
 			name: 'One.txt',
 			mimetype: 'text/plain',
@@ -129,7 +129,7 @@ describe('OCA.Files.FileList tests', function() {
 			etag: 'abc',
 			permissions: OC.PERMISSION_ALL
 		}), new FileInfo({
-			id: 2,
+			id: '2',
 			type: 'file',
 			name: 'Two.jpg',
 			mimetype: 'image/jpeg',
@@ -138,7 +138,7 @@ describe('OCA.Files.FileList tests', function() {
 			etag: 'def',
 			permissions: OC.PERMISSION_ALL
 		}), new FileInfo({
-			id: 3,
+			id: '3',
 			type: 'file',
 			name: 'Three.pdf',
 			mimetype: 'application/pdf',
@@ -147,7 +147,7 @@ describe('OCA.Files.FileList tests', function() {
 			etag: '123',
 			permissions: OC.PERMISSION_ALL
 		}), new FileInfo({
-			id: 4,
+			id: '4',
 			type: 'dir',
 			name: 'somedir',
 			mimetype: 'httpd/unix-directory',
@@ -197,7 +197,7 @@ describe('OCA.Files.FileList tests', function() {
 		});
 		it('generates file element with correct attributes when calling add() with file data', function() {
 			var fileData = new FileInfo({
-				id: 18,
+				id: '18',
 				name: 'testName.txt',
 				mimetype: 'text/plain',
 				size: 1234,
@@ -226,7 +226,7 @@ describe('OCA.Files.FileList tests', function() {
 		});
 		it('generates dir element with correct attributes when calling add() with dir data', function() {
 			var fileData = new FileInfo({
-				id: 19,
+				id: '19',
 				name: 'testFolder',
 				mimetype: 'httpd/unix-directory',
 				size: 1234,
@@ -1164,7 +1164,7 @@ describe('OCA.Files.FileList tests', function() {
 		});
 		it('inserts into the DOM if insertion point is in the visible page ', function() {
 			fileList.add({
-				id: 2000,
+				id: '2000',
 				type: 'file',
 				name: 'File with index 15b.txt'
 			});
@@ -1173,7 +1173,7 @@ describe('OCA.Files.FileList tests', function() {
 		});
 		it('does not inserts into the DOM if insertion point is not the visible page ', function() {
 			fileList.add({
-				id: 2000,
+				id: '2000',
 				type: 'file',
 				name: 'File with index 28b.txt'
 			});
@@ -1185,7 +1185,7 @@ describe('OCA.Files.FileList tests', function() {
 		});
 		it('appends into the DOM when inserting a file after the last visible element', function() {
 			fileList.add({
-				id: 2000,
+				id: '2000',
 				type: 'file',
 				name: 'File with index 19b.txt'
 			});
@@ -1202,7 +1202,7 @@ describe('OCA.Files.FileList tests', function() {
 			expect($('#fileList tr').length).toEqual(65);
 			fileList._nextPage(true);
 			fileList.add({
-				id: 2000,
+				id: '2000',
 				type: 'file',
 				name: 'File with index 88.txt'
 			});
@@ -1507,7 +1507,7 @@ describe('OCA.Files.FileList tests', function() {
 			deferredList.resolve(200, [testRoot].concat(testFiles));
 			expect(handler.calledOnce).toEqual(true);
 			expect(handler.getCall(0).args[0].dir).toEqual('/somedir');
-			expect(handler.getCall(0).args[0].fileId).toEqual(99);
+			expect(handler.getCall(0).args[0].fileId).toEqual('99');
 		});
 		it('changes the directory when receiving "urlChanged" event', function() {
 			$('#app-content-files').trigger(new $.Event('urlChanged', {view: 'files', dir: '/somedir'}));
@@ -1957,7 +1957,7 @@ describe('OCA.Files.FileList tests', function() {
 				var files = fileList.getSelectedFiles();
 				expect(files.length).toEqual(3);
 				expect(files[0]).toEqual({
-					id: 1,
+					id: '1',
 					name: 'One.txt',
 					mimetype: 'text/plain',
 					mtime: 123456789,
@@ -1967,7 +1967,7 @@ describe('OCA.Files.FileList tests', function() {
 					permissions: OC.PERMISSION_ALL
 				});
 				expect(files[1]).toEqual({
-					id: 3,
+					id: '3',
 					type: 'file',
 					name: 'Three.pdf',
 					mimetype: 'application/pdf',
@@ -1977,7 +1977,7 @@ describe('OCA.Files.FileList tests', function() {
 					permissions: OC.PERMISSION_ALL
 				});
 				expect(files[2]).toEqual({
-					id: 4,
+					id: '4',
 					type: 'dir',
 					name: 'somedir',
 					mimetype: 'httpd/unix-directory',
@@ -1986,11 +1986,11 @@ describe('OCA.Files.FileList tests', function() {
 					etag: '456',
 					permissions: OC.PERMISSION_ALL
 				});
-				expect(files[0].id).toEqual(1);
+				expect(files[0].id).toEqual('1');
 				expect(files[0].name).toEqual('One.txt');
-				expect(files[1].id).toEqual(3);
+				expect(files[1].id).toEqual('3');
 				expect(files[1].name).toEqual('Three.pdf');
-				expect(files[2].id).toEqual(4);
+				expect(files[2].id).toEqual('4');
 				expect(files[2].name).toEqual('somedir');
 			});
 			it('Removing a file removes it from the selection', function() {
@@ -1998,7 +1998,7 @@ describe('OCA.Files.FileList tests', function() {
 				var files = fileList.getSelectedFiles();
 				expect(files.length).toEqual(2);
 				expect(files[0]).toEqual({
-					id: 1,
+					id: '1',
 					name: 'One.txt',
 					mimetype: 'text/plain',
 					mtime: 123456789,
@@ -2008,7 +2008,7 @@ describe('OCA.Files.FileList tests', function() {
 					permissions: OC.PERMISSION_ALL
 				});
 				expect(files[1]).toEqual({
-					id: 4,
+					id: '4',
 					type: 'dir',
 					name: 'somedir',
 					mimetype: 'httpd/unix-directory',
@@ -2189,7 +2189,7 @@ describe('OCA.Files.FileList tests', function() {
 			$tr.find('td.filename>a.name').click();
 			expect($tr.hasClass('highlighted')).toEqual(true);
 
-			expect(fileList._detailsView.getFileInfo().id).toEqual(1);
+			expect(fileList._detailsView.getFileInfo().id).toEqual('1');
 		});
 		it('keeps the last highlighted file when clicking outside', function() {
 			var $tr = fileList.findFileEl('One.txt');
@@ -2198,7 +2198,7 @@ describe('OCA.Files.FileList tests', function() {
 			fileList.$el.find('tfoot').click();
 
 			expect($tr.hasClass('highlighted')).toEqual(true);
-			expect(fileList._detailsView.getFileInfo().id).toEqual(1);
+			expect(fileList._detailsView.getFileInfo().id).toEqual('1');
 		});
 		it('removes last highlighted file when selecting via checkbox', function() {
 			var $tr = fileList.findFileEl('One.txt');
@@ -2235,7 +2235,7 @@ describe('OCA.Files.FileList tests', function() {
 			$tr.find('td.filename>a.name').click();
 			expect($tr.hasClass('highlighted')).toEqual(true);
 
-			expect(fileList._detailsView.getFileInfo().id).toEqual(1);
+			expect(fileList._detailsView.getFileInfo().id).toEqual('1');
 
 			expect($('#app-sidebar').hasClass('disappear')).toEqual(false);
 			fileList.remove('One.txt');
@@ -2410,7 +2410,7 @@ describe('OCA.Files.FileList tests', function() {
 			fileList.setFiles(testFiles);
 			fileList.$el.find('.column-size .columntitle').click();
 			var newFileData = new FileInfo({
-				id: 999,
+				id: '999',
 				name: 'new file.txt',
 				mimetype: 'text/plain',
 				size: 40001,
@@ -2433,7 +2433,7 @@ describe('OCA.Files.FileList tests', function() {
 			// reverse sort
 			fileList.$el.find('.column-size .columntitle').click();
 			var newFileData = new FileInfo({
-				id: 999,
+				id: '999',
 				name: 'new file.txt',
 				mimetype: 'text/plain',
 				size: 40001,
@@ -2960,7 +2960,7 @@ describe('OCA.Files.FileList tests', function() {
 
 		it('converts data attributes to file info structure', function() {
 			var fileInfo = fileList.elementToFile($tr);
-			expect(fileInfo.id).toEqual(1);
+			expect(fileInfo.id).toEqual('1');
 			expect(fileInfo.name).toEqual('One.txt');
 			expect(fileInfo.mtime).toEqual(123456789);
 			expect(fileInfo.etag).toEqual('abc');

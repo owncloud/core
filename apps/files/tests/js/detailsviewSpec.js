@@ -52,7 +52,7 @@ describe('OCA.Files.DetailsView tests', function() {
 			detailsView.addDetailView(testView2);
 			detailsView.render();
 
-			var fileInfo = {id: 5, name: 'test.txt'};
+			var fileInfo = {id: '5', name: 'test.txt'};
 			viewRenderStub.reset();
 			detailsView.setFileInfo(fileInfo);
 
@@ -80,8 +80,8 @@ describe('OCA.Files.DetailsView tests', function() {
 		it('updates tab model and rerenders on-demand as soon as it gets selected', function() {
 			var tab1RenderStub = sinon.stub(testView, 'render');
 			var tab2RenderStub = sinon.stub(testView2, 'render');
-			var fileInfo1 = new OCA.Files.FileInfoModel({id: 5, name: 'test.txt'});
-			var fileInfo2 = new OCA.Files.FileInfoModel({id: 8, name: 'test2.txt'});
+			var fileInfo1 = new OCA.Files.FileInfoModel({id: '5', name: 'test.txt'});
+			var fileInfo2 = new OCA.Files.FileInfoModel({id: '8', name: 'test2.txt'});
 
 			detailsView.setFileInfo(fileInfo1);
 
@@ -166,7 +166,7 @@ describe('OCA.Files.DetailsView tests', function() {
 				detailsView.addTabView(testView2);
 				detailsView.addTabView(testView3);
 
-				var fileInfo = {id: 5, name: 'test.txt'};
+				var fileInfo = {id: '5', name: 'test.txt'};
 				detailsView.setFileInfo(fileInfo);
 
 				expect(testView.canDisplay.calledOnce).toEqual(true);
@@ -184,7 +184,7 @@ describe('OCA.Files.DetailsView tests', function() {
 				detailsView.addTabView(testView);
 				detailsView.addTabView(testView2);
 
-				var fileInfo = {id: 5, name: 'test.txt'};
+				var fileInfo = {id: '5', name: 'test.txt'};
 				detailsView.setFileInfo(fileInfo);
 
 				expect(testView.canDisplay.calledOnce).toEqual(true);
@@ -203,13 +203,13 @@ describe('OCA.Files.DetailsView tests', function() {
 				detailsView.addTabView(testView);
 				detailsView.addTabView(testView2);
 
-				var fileInfo = {id: 5, name: 'test.txt', mimetype: 'text/plain'};
+				var fileInfo = {id: '5', name: 'test.txt', mimetype: 'text/plain'};
 				detailsView.setFileInfo(fileInfo);
 
 				expect(detailsView.$el.find('.tabHeader[data-tabid=test1]').hasClass('selected')).toEqual(true);
 				expect(detailsView.$el.find('.tabHeader[data-tabid=test2]').hasClass('selected')).toEqual(false);
 
-				detailsView.setFileInfo({id: 10, name: 'folder', mimetype: 'httpd/unix-directory'});
+				detailsView.setFileInfo({id: '10', name: 'folder', mimetype: 'httpd/unix-directory'});
 
 				expect(detailsView.$el.find('.tabHeader[data-tabid=test1]').hasClass('selected')).toEqual(false);
 				expect(detailsView.$el.find('.tabHeader[data-tabid=test2]').hasClass('selected')).toEqual(true);

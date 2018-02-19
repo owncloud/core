@@ -57,28 +57,28 @@ describe('OCA.Trashbin.FileList tests', function() {
 		);
 
 		testFiles = [{
-			id: 1,
+			id: '1',
 			type: 'file',
 			name: 'One.txt',
 			mtime: 11111000,
 			mimetype: 'text/plain',
 			etag: 'abc'
 		}, {
-			id: 2,
+			id: '2',
 			type: 'file',
 			name: 'Two.jpg',
 			mtime: 22222000,
 			mimetype: 'image/jpeg',
 			etag: 'def',
 		}, {
-			id: 3,
+			id: '3',
 			type: 'file',
 			name: 'Three.pdf',
 			mtime: 33333000,
 			mimetype: 'application/pdf',
 			etag: '123',
 		}, {
-			id: 4,
+			id: '4',
 			type: 'dir',
 			mtime: 99999000,
 			name: 'somedir',
@@ -244,7 +244,7 @@ describe('OCA.Trashbin.FileList tests', function() {
 
 		it('converts data attributes to file info structure', function() {
 			var fileInfo = fileList.elementToFile($tr);
-			expect(fileInfo.id).toEqual(1);
+			expect(fileInfo.id).toEqual('1');
 			expect(fileInfo.name).toEqual('One.txt.d11111');
 			expect(fileInfo.displayName).toEqual('One.txt');
 			expect(fileInfo.mtime).toEqual(11111000);

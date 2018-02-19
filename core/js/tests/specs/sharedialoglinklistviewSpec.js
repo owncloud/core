@@ -32,7 +32,7 @@ describe('OC.Share.ShareDialogLinkListView', function() {
 	beforeEach(function() {
 		configModel = new OC.Share.ShareConfigModel();
 		fileInfoModel = new OCA.Files.FileInfoModel({
-			id: 123,
+			id: '123',
 			name: 'shared_file_name.txt',
 			path: '/subdir',
 			size: 100,

@@ -48,7 +48,7 @@ describe('OC.Share.ShareDialogView', function() {
 		fetchStub = sinon.stub(OC.Share.ShareItemModel.prototype, 'fetch');
 
 		fileInfoModel = new OCA.Files.FileInfoModel({
-			id: 123,
+			id: '123',
 			name: 'shared_file_name.txt',
 			path: '/subdir',
 			size: 100,
@@ -130,21 +130,21 @@ describe('OC.Share.ShareDialogView', function() {
 				},
 				shares: [{
 					id: 100,
-					item_source: 123,
+					item_source: '123',
 					permissions: 31,
 					share_type: OC.Share.SHARE_TYPE_USER,
 					share_with: 'user1',
 					share_with_displayname: 'User One'
 				},{
 					id: 101,
-					item_source: 123,
+					item_source: '123',
 					permissions: 31,
 					share_type: OC.Share.SHARE_TYPE_GROUP,
 					share_with: 'group',
 					share_with_displayname: 'group'
 				},{
 					id: 102,
-					item_source: 123,
+					item_source: '123',
 					permissions: 31,
 					share_type: OC.Share.SHARE_TYPE_REMOTE,
 					share_with: 'foo@bar.com/baz',
@@ -448,21 +448,21 @@ describe('OC.Share.ShareDialogView', function() {
 						reshare: {},
 						shares: [{
 							id: 100,
-							item_source: 123,
+							item_source: '123',
 							permissions: 31,
 							share_type: OC.Share.SHARE_TYPE_USER,
 							share_with: 'user1',
 							share_with_displayname: 'User One'
 						},{
 							id: 101,
-							item_source: 123,
+							item_source: '123',
 							permissions: 31,
 							share_type: OC.Share.SHARE_TYPE_GROUP,
 							share_with: 'group',
 							share_with_displayname: 'group'
 						},{
 							id: 102,
-							item_source: 123,
+							item_source: '123',
 							permissions: 31,
 							share_type: OC.Share.SHARE_TYPE_REMOTE,
 							share_with: 'foo@bar.com/baz',

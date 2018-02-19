@@ -44,7 +44,7 @@ describe('OCA.Sharing.Util tests', function() {
 		OCA.Sharing.Util.attach(fileList);
 
 		testFiles = [{
-			id: 1,
+			id: '1',
 			type: 'file',
 			name: 'One.txt',
 			path: '/subdir',
@@ -72,7 +72,7 @@ describe('OCA.Sharing.Util tests', function() {
 			var $action, $tr;
 			OC.Share.statuses = {};
 			fileList.setFiles([{
-				id: 1,
+				id: '1',
 				type: 'dir',
 				name: 'One',
 				path: '/subdir',
@@ -91,7 +91,7 @@ describe('OCA.Sharing.Util tests', function() {
 		it('shows simple share text with share icon', function() {
 			var $action, $tr;
 			fileList.setFiles([{
-				id: 1,
+				id: '1',
 				type: 'dir',
 				name: 'One',
 				path: '/subdir',
@@ -112,7 +112,7 @@ describe('OCA.Sharing.Util tests', function() {
 			var $action, $tr;
 			OC.Share.statuses = {1: {link: true, path: '/subdir'}};
 			fileList.setFiles([{
-				id: 1,
+				id: '1',
 				type: 'dir',
 				name: 'One',
 				path: '/subdir',
@@ -132,7 +132,7 @@ describe('OCA.Sharing.Util tests', function() {
 		it('shows owner name when owner is available', function() {
 			var $action, $tr;
 			fileList.setFiles([{
-				id: 1,
+				id: '1',
 				type: 'dir',
 				name: 'One.txt',
 				path: '/subdir',
@@ -153,7 +153,7 @@ describe('OCA.Sharing.Util tests', function() {
 		it('shows recipients when recipients are available', function() {
 			var $action, $tr;
 			fileList.setFiles([{
-				id: 1,
+				id: '1',
 				type: 'dir',
 				name: 'One.txt',
 				path: '/subdir',
@@ -174,7 +174,7 @@ describe('OCA.Sharing.Util tests', function() {
 		it('shows share action when shared with user who has no share permission', function() {
 			var $action, $tr;
 			fileList.setFiles([{
-				id: 1,
+				id: '1',
 				type: 'dir',
 				name: 'One',
 				path: '/subdir',
@@ -190,7 +190,7 @@ describe('OCA.Sharing.Util tests', function() {
 		it('do not show share action when share exists but neither permission nor owner is available', function() {
 			var $action, $tr;
 			fileList.setFiles([{
-				id: 1,
+				id: '1',
 				type: 'dir',
 				name: 'One',
 				path: '/subdir',
@@ -224,7 +224,7 @@ describe('OCA.Sharing.Util tests', function() {
 			var showDetailsViewStub = sinon.stub(fileList, 'showDetailsView');
 
 			fileList.setFiles([{
-				id: 1,
+				id: '1',
 				type: 'file',
 				name: 'One.txt',
 				path: '/subdir',
@@ -247,7 +247,7 @@ describe('OCA.Sharing.Util tests', function() {
 			var $action, $tr;
 			OC.Share.statuses = {};
 			fileList.setFiles([{
-				id: 1,
+				id: '1',
 				type: 'file',
 				name: 'One.txt',
 				path: '/subdir',
@@ -281,7 +281,7 @@ describe('OCA.Sharing.Util tests', function() {
 			var $action, $tr;
 			OC.Share.statuses = {1: {link: false, path: '/subdir'}};
 			fileList.setFiles([{
-				id: 1,
+				id: '1',
 				type: 'file',
 				name: 'One.txt',
 				path: '/subdir',
@@ -314,7 +314,7 @@ describe('OCA.Sharing.Util tests', function() {
 			var $action, $tr;
 			OC.Share.statuses = {1: {link: false, path: '/subdir'}};
 			fileList.setFiles([{
-				id: 1,
+				id: '1',
 				type: 'file',
 				name: 'One.txt',
 				path: '/subdir',
@@ -340,7 +340,7 @@ describe('OCA.Sharing.Util tests', function() {
 			var $action, $tr;
 			OC.Share.statuses = {1: {link: false, path: '/subdir'}};
 			fileList.setFiles([{
-				id: 1,
+				id: '1',
 				type: 'file',
 				name: 'One.txt',
 				path: '/subdir',
@@ -370,7 +370,7 @@ describe('OCA.Sharing.Util tests', function() {
 			var $action, $tr;
 			OC.Share.statuses = {1: {link: false, path: '/subdir'}};
 			fileList.setFiles([{
-				id: 1,
+				id: '1',
 				type: 'file',
 				name: 'One.txt',
 				path: '/subdir',
@@ -481,7 +481,7 @@ describe('OCA.Sharing.Util tests', function() {
 
 			var attributes = {
 				itemType: 'file',
-				itemSource: 123,
+				itemSource: '123',
 				possiblePermissions: 31,
 				permissions: 31
 			};
@@ -503,14 +503,14 @@ describe('OCA.Sharing.Util tests', function() {
 				reshare: {},
 				shares: [{
 					id: 100,
-					item_source: 1,
+					item_source: '1',
 					permissions: 31,
 					share_type: OC.Share.SHARE_TYPE_USER,
 					share_with: 'user1',
 					share_with_displayname: 'User One'
 				}, {
 					id: 102,
-					item_source: 1,
+					item_source: '1',
 					permissions: 31,
 					share_type: OC.Share.SHARE_TYPE_REMOTE,
 					share_with: 'foo@bar.com/baz',

@@ -38,7 +38,7 @@ describe('OCA.Versions.VersionsTabView', function() {
 
 		fetchStub = sinon.stub(VersionCollection.prototype, 'fetch');
 		fileInfoModel = new OCA.Files.FileInfoModel({
-			id: 123,
+			id: '123',
 			name: 'test.txt',
 			permissions: OC.PERMISSION_READ | OC.PERMISSION_UPDATE
 		});

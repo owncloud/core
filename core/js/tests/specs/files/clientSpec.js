@@ -269,7 +269,7 @@ describe('OC.Files.Client tests', function() {
 				// file entry
 				var info = response[0];
 				expect(info instanceof OC.Files.FileInfo).toEqual(true);
-				expect(info.id).toEqual(51);
+				expect(info.id).toEqual('51');
 				expect(info.path).toEqual('/path/to sp@ce/文件夹');
 				expect(info.name).toEqual('One.txt');
 				expect(info.permissions).toEqual(27);
@@ -281,7 +281,7 @@ describe('OC.Files.Client tests', function() {
 				// sub entry
 				info = response[1];
 				expect(info instanceof OC.Files.FileInfo).toEqual(true);
-				expect(info.id).toEqual(15);
+				expect(info.id).toEqual('15');
 				expect(info.path).toEqual('/path/to sp@ce/文件夹');
 				expect(info.name).toEqual('sub');
 				expect(info.permissions).toEqual(31);
@@ -310,7 +310,7 @@ describe('OC.Files.Client tests', function() {
 				// root entry
 				var info = response[0];
 				expect(info instanceof OC.Files.FileInfo).toEqual(true);
-				expect(info.id).toEqual(11);
+				expect(info.id).toEqual('11');
 				expect(info.path).toEqual('/path/to sp@ce');
 				expect(info.name).toEqual('文件夹');
 				expect(info.permissions).toEqual(31);
@@ -320,8 +320,8 @@ describe('OC.Files.Client tests', function() {
 				expect(info.etag).toEqual('56cfcabd79abb');
 
 				// the two other entries follow
-				expect(response[1].id).toEqual(51);
-				expect(response[2].id).toEqual(15);
+				expect(response[1].id).toEqual('51');
+				expect(response[2].id).toEqual('15');
 			});
 		});
 		it('rejects promise when an error occurred', function() {
@@ -460,17 +460,17 @@ describe('OC.Files.Client tests', function() {
 				// file entry
 				var info = response[0];
 				expect(info instanceof OC.Files.FileInfo).toEqual(true);
-				expect(info.id).toEqual(11);
+				expect(info.id).toEqual('11');
 
 				// file entry
 				var info = response[1];
 				expect(info instanceof OC.Files.FileInfo).toEqual(true);
-				expect(info.id).toEqual(51);
+				expect(info.id).toEqual('51');
 
 				// sub entry
 				info = response[2];
 				expect(info instanceof OC.Files.FileInfo).toEqual(true);
-				expect(info.id).toEqual(15);
+				expect(info.id).toEqual('15');
 			});
 		});
 		it('throws exception if arguments are missing', function() {
@@ -542,7 +542,7 @@ describe('OC.Files.Client tests', function() {
 
 				var info = response;
 				expect(info instanceof OC.Files.FileInfo).toEqual(true);
-				expect(info.id).toEqual(11);
+				expect(info.id).toEqual('11');
 				expect(info.path).toEqual('/path/to sp@ce');
 				expect(info.name).toEqual('文件夹');
 				expect(info.permissions).toEqual(31);
@@ -590,7 +590,7 @@ describe('OC.Files.Client tests', function() {
 
 				var info = response;
 				expect(info instanceof OC.Files.FileInfo).toEqual(true);
-				expect(info.id).toEqual(11);
+				expect(info.id).toEqual('11');
 				expect(info.path).toEqual('/');
 				expect(info.name).toEqual('in root');
 				expect(info.permissions).toEqual(31);

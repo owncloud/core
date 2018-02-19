@@ -180,7 +180,7 @@ describe('OCA.SystemTags.FileList tests', function() {
 			expect(getFilteredFilesSpec.lastCall.args[0].systemTagIds).toEqual(['123', '456']);
 
 			var testFiles = [new FileInfo({
-				id: 1,
+				id: '1',
 				type: 'file',
 				name: 'One.txt',
 				mimetype: 'text/plain',
@@ -189,7 +189,7 @@ describe('OCA.SystemTags.FileList tests', function() {
 				etag: 'abc',
 				permissions: OC.PERMISSION_ALL
 			}), new FileInfo({
-				id: 2,
+				id: '2',
 				type: 'file',
 				name: 'Two.jpg',
 				mimetype: 'image/jpeg',
@@ -198,7 +198,7 @@ describe('OCA.SystemTags.FileList tests', function() {
 				etag: 'def',
 				permissions: OC.PERMISSION_ALL
 			}), new FileInfo({
-				id: 3,
+				id: '3',
 				type: 'file',
 				name: 'Three.pdf',
 				mimetype: 'application/pdf',
@@ -207,7 +207,7 @@ describe('OCA.SystemTags.FileList tests', function() {
 				etag: '123',
 				permissions: OC.PERMISSION_ALL
 			}), new FileInfo({
-				id: 4,
+				id: '4',
 				type: 'dir',
 				name: 'somedir',
 				mimetype: 'httpd/unix-directory',

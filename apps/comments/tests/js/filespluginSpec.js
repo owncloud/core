@@ -29,7 +29,7 @@ describe('OCA.Comments.FilesPlugin tests', function() {
 		OCA.Comments.FilesPlugin.attach(fileList);
 
 		testFiles = [{
-			id: 1,
+			id: '1',
 			type: 'file',
 			name: 'One.txt',
 			path: '/subdir',

@@ -33,7 +33,7 @@ describe('OCA.Files.MainFileInfoDetailView tests', function() {
 			fileActions: fileActions
 		});
 		testFileInfo = new OCA.Files.FileInfoModel({
-			id: 5,
+			id: '5',
 			name: 'One.txt',
 			mimetype: 'text/plain',
 			permissions: 31,
@@ -198,7 +198,7 @@ describe('OCA.Files.MainFileInfoDetailView tests', function() {
 		it('unbinds change listener from model', function() {
 			view.setFileInfo(testFileInfo);
 			view.setFileInfo(new OCA.Files.FileInfoModel({
-				id: 999,
+				id: '999',
 				name: 'test.txt',
 				path: '/'
 			}));

@@ -27,7 +27,7 @@
 		});
 
 		if (!_.isUndefined(this.id)) {
-			this.id = parseInt(data.id, 10);
+			this.id = data.id;
 		}
 
 		// TODO: normalize path
