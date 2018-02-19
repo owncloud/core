@@ -23,6 +23,7 @@
 namespace Page;
 
 use Behat\Mink\Session;
+use SensioLabs\Behat\PageObjectExtension\PageObject\Exception\ElementNotFoundException;
 
 /**
  * Personal General Settings page.
@@ -36,6 +37,10 @@ class PersonalGeneralSettingsPage extends OwncloudPage {
 	protected $path = '/index.php/settings/personal?sectionid=general';
 	protected $languageSelectId = "languageinput";
 	protected $personalProfilePanelId = "OC\Settings\Panels\Personal\Profile";
+	protected $oldPasswordInputID = "pass1";
+	protected $newPasswordInputID = "pass2";
+	protected $changePasswordButtonID = "passwordbutton";
+	protected $passwordErrorMessageID = "password-error";
 
 	/**
 	 * @param string $language
@@ -74,5 +79,45 @@ class PersonalGeneralSettingsPage extends OwncloudPage {
 		}
 
 		$this->waitForOutstandingAjaxCalls($session);
+	}
+
+	/**
+	 *
+	 * @param string $oldPassword
+	 * @param string $newPassword
+	 * @param Session $session
+	 * 
+	 * @return void
+	 */
+	public function changePassword($oldPassword, $newPassword, Session $session) {
+		$this->fillField($this->newPasswordInputID, $newPassword);
+		$this->fillField($this->oldPasswordInputID, $oldPassword);
+		$changePasswordButton = $this->findById($this->changePasswordButtonID);
+		if (is_null($changePasswordButton)) {
+			throw new ElementNotFoundException(
+				__METHOD__ .
+				" could not find element with id $this->changePasswordButtonID"
+			);
+		}
+		$changePasswordButton->click();
+		$this->waitForAjaxCallsToStartAndFinish($session);
+	}
+	/**
+	 *
+	 * @throws ElementNotFoundException
+	 *
+	 * @return string
+	 */
+	public function getWrongPasswordMessageText() {
+		$errorMessage = $this->findById($this->passwordErrorMessageID);
+		
+		if (is_null($errorMessage)) {
+			throw new ElementNotFoundException(
+				__METHOD__ .
+				" could not find element with id $this->passwordErrorMessageID"
+			);
+		}
+		
+		return $this->getTrimmedText($errorMessage);
 	}
 }
