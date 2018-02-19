@@ -39,10 +39,12 @@ class SVG extends Provider {
 			$svg = new \Imagick();
 			$svg->setBackgroundColor(new \ImagickPixel('transparent'));
 
-			$content = stream_get_contents($fileview->fopen($path, 'r'));
+			$stream = $fileview->fopen($path, 'r');
+			$content = stream_get_contents($stream);
 			if (substr($content, 0, 5) !== '<?xml') {
 				$content = '<?xml version="1.0" encoding="UTF-8" standalone="no"?>' . $content;
 			}
+			fclose($stream);
 
 			// Do not parse SVG files with references
 			if (stripos($content, 'xlink:href') !== false) {
