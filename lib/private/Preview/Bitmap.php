@@ -49,9 +49,10 @@ abstract class Bitmap implements IProvider2 {
 		} catch (\Exception $e) {
 			Util::writeLog('core', 'ImageMagick says: ' . $e->getmessage(), Util::ERROR);
 			return false;
+		} finally {
+			fclose($stream);
 		}
 
-		fclose($stream);
 
 		//new bitmap image object
 		$image = new \OC_Image();

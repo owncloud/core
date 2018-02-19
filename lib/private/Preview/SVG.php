@@ -42,10 +42,12 @@ class SVG implements IProvider2 {
 			$svg = new \Imagick();
 			$svg->setBackgroundColor(new \ImagickPixel('transparent'));
 
-			$content = stream_get_contents($file->fopen('r'));
+			$stream = $file->fopen('r');
+			$content = stream_get_contents($stream);
 			if (substr($content, 0, 5) !== '<?xml') {
 				$content = '<?xml version="1.0" encoding="UTF-8" standalone="no"?>' . $content;
 			}
+			fclose($stream);
 
 			// Do not parse SVG files with references
 			if (stripos($content, 'xlink:href') !== false) {
