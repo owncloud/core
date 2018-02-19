@@ -72,6 +72,6 @@ So that public sharing is limited according to organization policy
 		When I open the folder "simple-folder (2)"
 		Then the file "lorem.txt" should be listed
 		And the content of "lorem.txt" should be the same as the original "simple-folder/lorem.txt"
-		When I upload overwriting the file "lorem.txt"
+		When I upload overwriting the file "lorem.txt" and retry if the file is locked
 		Then the file "lorem.txt" should be listed
 		And the content of "lorem.txt" should be the same as the local "lorem.txt"
