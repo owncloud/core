@@ -1,4 +1,4 @@
-@insulated
+@insulated @disablePreviews
 Feature: Share by public link
 As a user
 I want to share files through a publicly accessible link

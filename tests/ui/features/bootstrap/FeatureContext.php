@@ -45,6 +45,7 @@ class FeatureContext extends RawMinkContext implements Context {
 	private $owncloudPage;
 	private $loginPage;
 	private $oldCSRFSetting = null;
+	private $oldPreviewSetting = null;
 	private $currentUser = null;
 	private $currentServer = null;
 	private $createdFiles = [];
@@ -452,6 +453,30 @@ class FeatureContext extends RawMinkContext implements Context {
 	}
 
 	/**
+	 * disable the previews on all tests tagged with '@disablePreviews'
+	 * 
+	 * @BeforeScenario @disablePreviews
+	 * @return void
+	 */
+	public function disablePreviewBeforeScenario() {
+		if (is_null($this->oldPreviewSetting)) {
+			$oldPreviewSetting = SetupHelper::runOcc(
+				['config:system:get', 'enable_previews']
+			)['stdOut'];
+			$this->oldPreviewSetting = trim($oldPreviewSetting);
+		}
+		SetupHelper::runOcc(
+			[
+				'config:system:set',
+				'enable_previews',
+				'--type',
+				'boolean',
+				'--value',
+				'false'
+			]
+		);
+	}
+	/**
 	 * @return string
 	 */
 	public function getSessionId() {
@@ -475,6 +500,21 @@ class FeatureContext extends RawMinkContext implements Context {
 			$this->savedCapabilitiesChanges
 		);
 
+		if ($this->oldPreviewSetting === "") {
+			SetupHelper::runOcc(['config:system:delete', 'enable_previews']);
+		} elseif (!is_null($this->oldPreviewSetting)) {
+			SetupHelper::runOcc(
+				[
+					'config:system:set',
+					'enable_previews',
+					'--type',
+					'boolean',
+					'--value',
+					$this->oldPreviewSetting
+				]
+			);
+		}
+		
 		if ($this->oldCSRFSetting === "") {
 			SetupHelper::runOcc(['config:system:delete', 'csrf.disabled']);
 		} elseif (!is_null($this->oldCSRFSetting)) {

@@ -1,4 +1,4 @@
-@insulated
+@insulated @disablePreviews
 Feature: File Upload
 
 As a user
