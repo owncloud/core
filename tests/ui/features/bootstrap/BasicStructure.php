@@ -456,6 +456,12 @@ trait BasicStructure {
 		}
 
 		foreach ($this->getCreatedGroupNames() as $group) {
+			// Tests can complete so quickly that there is still some background
+			// server activity for a user(s). Deleting the user too quickly
+			// sometimes leaves file locks behind that cause problems for the
+			// next scenario.
+			// First try a really long wait (hack) to see if this helps.
+			sleep(5);
 			$result = UserHelper::deleteGroup(
 				$baseUrl,
 				$group,
