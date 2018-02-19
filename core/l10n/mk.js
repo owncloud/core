@@ -10,6 +10,7 @@ OC.L10N.register(
     "No crop data provided" : "Не се доставени податоци за сечење",
     "No valid crop data provided" : "Нема валидни податоци за сечење",
     "Crop is not square" : "Сечењето не е правоаголно",
+    "%s password changed successfully" : "%s лозинката е успешно променета",
     "%s password reset" : "%s ресетирање на лозинката",
     "Couldn't send reset email. Please contact your administrator." : "Не можам да истпратам порака за ресетирање. Ве молам контактирајте го вашиот администратор.",
     "%s shared »%s« with you" : "%s ви испрати линк »%s«",
