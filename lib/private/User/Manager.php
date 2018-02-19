@@ -14,7 +14,7 @@
  * @author Vincent Petry <pvince81@owncloud.com>
  * @author Volkan Gezer <volkangezer@gmail.com>
  *
- * @copyright Copyright (c) 2017, ownCloud GmbH
+ * @copyright Copyright (c) 2018, ownCloud GmbH
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -331,7 +331,7 @@ class Manager extends PublicEmitter implements IUserManager {
 			$this->emit('\OC\User', 'preCreateUser', [$uid, $password]);
 			\OC::$server->getEventDispatcher()->dispatch(
 				'OCP\User::validatePassword',
-				new GenericEvent(null, ['password' => $password])
+				new GenericEvent(null, ['uid' => $uid, 'password' => $password])
 			);
 
 			if (empty($this->backends)) {

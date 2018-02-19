@@ -485,6 +485,11 @@ $CONFIG = array(
  */
 'trashbin_retention_obligation' => 'auto',
 
+/**
+ * This setting defines percentage of free space occupied by deleted files
+ * that triggers auto purging of deleted files for this user
+ */
+'trashbin_purge_limit' => 50,
 
 /**
  * File versions
@@ -509,7 +514,7 @@ $CONFIG = array(
  *
  * * ``auto``
  *     default setting. Automatically expire versions according to expire
- *     rules. Please refer to :doc:`../configuration_files/file_versioning` for
+ *     rules. Please refer to :doc:`../configuration/files/file_versioning` for
  *     more information.
  * * ``D, auto``
  *     keep versions at least for D days, apply expire rules to all versions
@@ -630,6 +635,13 @@ $CONFIG = array(
 'syslog_tag' => 'ownCloud',
 
 /**
+ * The syslog format can be changed to remove or add information.
+ * In addition to the %replacements% below %level% can be used, but it is used
+ * as a dedicated parameter to the syslog logging facility anyway.
+ */
+'log.syslog.format' => '[%reqId%][%remoteAddr%][%user%][%app%][%method%][%url%] %message%',
+
+/**
  * Log condition for log level increase based on conditions. Once one of these
  * conditions is met, the required log level is set to debug. This allows to
  * debug specific requests, users or apps
@@ -710,26 +722,6 @@ $CONFIG = array(
 	'https://play.google.com/store/apps/details?id=com.owncloud.android',
 'customclient_ios' =>
 	'https://itunes.apple.com/us/app/owncloud/id543672169?mt=8',
-
-/**
- * Apps
- *
- * Options for the Apps folder, Apps store, and App code checker.
- */
-
-/**
- * The URL of the appstore to use.
- */
-'appstoreurl' => 'https://api.owncloud.com/v1',
-
-/**
- * Whether to show experimental apps in the appstore interface
- *
- * Experimental apps are not checked for security issues and are new or known
- * to be unstable and under heavy development. Installing these can cause data
- * loss or security breaches.
- */
-'appstore.experimental.enabled' => false,
 
 /**
  * Use the ``apps_paths`` parameter to set the location of the Apps directory,
@@ -844,7 +836,7 @@ $CONFIG = array(
  *  - OC\Preview\Font
  *
  * .. note:: Troubleshooting steps for the MS Word previews are available
- *    at the :doc:`../configuration_files/collaborative_documents_configuration`
+ *    at the :doc:`../configuration/files/collaborative_documents_configuration`
  *    section of the Administrators Manual.
  *
  * The following providers are not available in Microsoft Windows:
@@ -1263,12 +1255,6 @@ $CONFIG = array(
 'share_folder' => '/',
 
 /**
- * If you are applying a theme to ownCloud, enter the name of the theme here.
- * The default location for themes is ``owncloud/themes/``.
- */
-'theme' => '',
-
-/**
  * The default cipher for encrypting files. Currently AES-128-CFB and
  * AES-256-CFB are supported.
  */
@@ -1438,4 +1424,8 @@ $CONFIG = array(
  */
 'files_external_allow_create_new_local' => false,
 
+/**
+ * Set this property to true if you want to enable debug logging for SMB access.
+ */
+'smb.logging.enable' => false, 
 );

@@ -4,7 +4,7 @@
  * ownCloud
  *
  * @author Artur Neumann <artur@jankaritech.com>
- * @copyright 2017 Artur Neumann artur@jankaritech.com
+ * @copyright Copyright (c) 2017 Artur Neumann artur@jankaritech.com
  *
  * This code is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License,
@@ -41,7 +41,7 @@ class EditPublicLinkPopup extends OwncloudPage {
 	private $expirationDateLabelXpath = ".//label[contains(text(), 'Expiration')]";
 	private $expirationDateInputXpath = ".//input[contains(@class,'expirationDate')]";
 	private $emailInputXpath = ".//input[@type='email']";
-	private $saveButtonXpath = ".//button[contains(text(), 'Save')]";
+	private $shareButtonXpath = ".//button[contains(text(), 'Share')]";
 	
 
 	/**
@@ -184,11 +184,11 @@ class EditPublicLinkPopup extends OwncloudPage {
 	 * @return void
 	 */
 	public function save() {
-		$saveButton = $this->popupElement->find("xpath", $this->saveButtonXpath);
+		$saveButton = $this->popupElement->find("xpath", $this->shareButtonXpath);
 		if (is_null($saveButton)) {
 			throw new ElementNotFoundException(
 				__METHOD__ .
-				" xpath $this->saveButtonXpath" .
+				" xpath $this->shareButtonXpath" .
 				" could not find save button of the public link popup"
 			);
 		}

@@ -21,7 +21,7 @@
  * @author Vincent Petry <pvince81@owncloud.com>
  * @author Felix Heidecke <felix@heidecke.me>
  *
- * @copyright Copyright (c) 2017, ownCloud GmbH
+ * @copyright Copyright (c) 2018, ownCloud GmbH
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -66,6 +66,9 @@ if ($defaultExpireDateEnabled) {
 	$value = $config->getAppValue('core', 'shareapi_enforce_expire_date', 'no');
 	$enforceDefaultExpireDate = ($value === 'yes') ? true : false;
 }
+$enforceLinkPasswordReadOnly = $config->getAppValue('core', 'shareapi_enforce_links_password_read_only', 'no') === 'yes';
+$enforceLinkPasswordReadWrite = $config->getAppValue('core', 'shareapi_enforce_links_password_read_write', 'no') === 'yes';
+$enforceLinkPasswordWriteOnly = $config->getAppValue('core', 'shareapi_enforce_links_password_write_only', 'no') === 'yes';
 $outgoingServer2serverShareEnabled = $config->getAppValue('files_sharing', 'outgoing_server2server_share_enabled', 'yes') === 'yes';
 
 $countOfDataLocation = 0;
@@ -163,7 +166,9 @@ $array = [
 				'defaultExpireDateEnabled' => $defaultExpireDateEnabled,
 				'defaultExpireDate' => $defaultExpireDate,
 				'defaultExpireDateEnforced' => $enforceDefaultExpireDate,
-				'enforcePasswordForPublicLink' => \OCP\Util::isPublicLinkPasswordRequired(),
+				'enforceLinkPasswordReadOnly' => $enforceLinkPasswordReadOnly,
+				'enforceLinkPasswordReadWrite' => $enforceLinkPasswordReadWrite,
+				'enforceLinkPasswordWriteOnly' => $enforceLinkPasswordWriteOnly,
 				'sharingDisabledForUser' => \OCP\Util::isSharingDisabledForUser(),
 				'resharingAllowed' => \OCP\Share::isResharingAllowed(),
 				'remoteShareAllowed' => $outgoingServer2serverShareEnabled,
@@ -202,6 +207,15 @@ if (\OC::$server->getUserSession() !== null && \OC::$server->getUserSession()->i
 	// remove status.php info as we already have the version above
 	unset($caps['core']['status']);
 	$array['oc_capabilities'] = json_encode($caps);
+
+	$user = \OC::$server->getUserSession()->getUser();
+	if ($user !== null) {
+		$array['oc_user'] = json_encode([
+			'uid' => $user->getUID(),
+			'displayName' => $user->getDisplayName(),
+			'email' => $user->getEMailAddress()
+		]);
+	}
 }
 
 // Allow hooks to modify the output values

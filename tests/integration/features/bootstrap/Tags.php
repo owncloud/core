@@ -3,7 +3,7 @@
  * @author Lukas Reschke <lukas@owncloud.com>
  * @author Sergio Bertolin <sbertlin@owncloud.com>
  *
- * @copyright Copyright (c) 2016, ownCloud, Inc.
+ * @copyright Copyright (c) 2018, ownCloud GmbH
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -23,7 +23,7 @@
 require __DIR__ . '/../../../../lib/composer/autoload.php';
 
 use Behat\Gherkin\Node\TableNode;
-use GuzzleHttp\Exception\ClientException;
+use GuzzleHttp\Exception\BadResponseException;
 use TestHelpers\TagsHelper;
 
 trait Tags {
@@ -33,7 +33,8 @@ trait Tags {
 
 	/**
 	 * @param string $user
-	 * @param string $type
+	 * @param bool $userVisible
+	 * @param bool $userAssignable
 	 * @param string $name
 	 * @param string $groups
 	 */
@@ -49,7 +50,7 @@ trait Tags {
 			$lastTagId = $createdTag['lastTagId'];
 			$this->response = $createdTag['HTTPResponse'];
 			array_push($this->createdTags, $lastTagId);
-		} catch (ClientException $e) {
+		} catch (BadResponseException $e) {
 			$this->response = $e->getResponse();
 		}
 	}
@@ -70,7 +71,8 @@ trait Tags {
 	}
 
 	/**
-	 * @When :user creates a :type tag with name :name
+	 * @When user :user creates a :type tag with name :name using the API
+	 * @Given user :user has created a :type tag with name :name
 	 * @param string $user
 	 * @param string $type
 	 * @param string $name
@@ -81,7 +83,8 @@ trait Tags {
 	}
 
 	/**
-	 * @When :user creates a :type tag with name :name and groups :groups
+	 * @When user :user creates a :type tag with name :name and groups :groups using the API
+	 * @Given user :user has created a :type tag with name :name and groups :groups
 	 * @param string $user
 	 * @param string $type
 	 * @param string $name
@@ -142,9 +145,8 @@ trait Tags {
 
 	/**
 	 * @Then tag :tagDisplayName should not exist for :user
+	 * @param string $tagDisplayName
 	 * @param string $user
-	 * @param TableNode $table
-	 * @throws \Exception
 	 */
 	public function tagShouldNotExistForUser($tagDisplayName, $user) {
 		$tagData = $this->requestTagByDisplayName($user, $tagDisplayName);
@@ -152,17 +154,22 @@ trait Tags {
 	}
 
 	/**
-	 * @Then the user :user :can assign the :type tag with name :tagDisplayName
+	 * @Then /^the user "([^"]*)" (should|should not) be able to assign the "([^"]*)" tag with name "([^"]*)"$/
+	 * @param string $user
+	 * @param string $shouldOrNot should or should not
+	 * @param string $type
+	 * @param string $tagDisplayName
+	 * @throws Exception
 	 */
-	public function theUserCanAssignTheTag($user, $can, $type, $tagDisplayName) {
+	public function theUserCanAssignTheTag($user, $shouldOrNot, $type, $tagDisplayName) {
 		$tagData = $this->requestTagByDisplayName($user, $tagDisplayName);
 		$this->assertTypeOfTag($tagData, $type);
-		if ($can === 'can') {
+		if ($shouldOrNot === 'should') {
 			$expected = 'true';
-		} else if ($can === 'cannot') {
+		} else if ($shouldOrNot === 'should not') {
 			$expected = 'false';
 		} else {
-			throw new \Exception('Invalid condition, must be "can" or "cannot"');
+			throw new \Exception('Invalid condition, must be "should" or "should not"');
 		}
 		if ($tagData['{http://owncloud.org/ns}can-assign'] !== $expected) {
 			throw new \Exception('Tag cannot be assigned by user');
@@ -170,10 +177,13 @@ trait Tags {
 	}
 
 	/**
-	 * @Then the :type tag with name :tagName has the groups :groups
+	 * @Then the :type tag with name :tagName should have the groups :groups
+	 * @param string $type
+	 * @param string $tagName
+	 * @param string $groups list of groups separated by "|"
 	 */
 	public function theTagHasGroup($type, $tagName, $groups) {
-		$tagData = $this->requestTagByDisplayName('admin', $tagName, true);
+		$tagData = $this->requestTagByDisplayName($this->getAdminUserName(), $tagName, true);
 		PHPUnit_Framework_Assert::assertNotNull($tagData, "Tag $tagName wasn't found for admin user");
 		$this->assertTypeOfTag($tagData, $type);
 		PHPUnit_Framework_Assert::assertEquals($tagData['{http://owncloud.org/ns}groups'], $groups,
@@ -186,7 +196,7 @@ trait Tags {
 	 * @param string $user
 	 * @throws \Exception
 	 */
-	public function tagsShouldExistFor($count, $user)  {
+	public function tagsShouldExistFor($count, $user) {
 		if ((int)$count !== count($this->requestTagsForUser($user))) {
 			throw new \Exception("Expected $count tags, got ".count($this->requestTagsForUser($user)));
 		}
@@ -197,7 +207,7 @@ trait Tags {
 	 * @return int
 	 */
 	private function findTagIdByName($name) {
-		$tagData = $this->requestTagByDisplayName('admin', $name);
+		$tagData = $this->requestTagByDisplayName($this->getAdminUserName(), $name);
 		return (int)$tagData['{http://owncloud.org/ns}id'];
 	}
 
@@ -224,7 +234,8 @@ trait Tags {
 	}
 
 	/**
-	 * @When :user edits the tag with name :oldName and sets its name to :newName
+	 * @When user :user edits the tag with name :oldName and sets its name to :newName using the API
+	 * @Given user :user has edited the tag with name :oldName and set its name to :newName
 	 * @param string $user
 	 * @param string $oldName
 	 * @param string $newName
@@ -238,7 +249,8 @@ trait Tags {
 	}
 
 	/**
-	 * @When :user edits the tag with name :oldName and sets its groups to :groups
+	 * @When user :user edits the tag with name :oldName and sets its groups to :groups using the API
+	 * @Given user :user has edited the tag with name :oldName and set its groups to :groups
 	 * @param string $user
 	 * @param string $oldName
 	 * @param string $groups
@@ -252,9 +264,10 @@ trait Tags {
 	}
 
 	/**
-	 * @Given :user deletes the tag with name :name
+	 * @When user :user deletes the tag with name :name using the API
+	 * @Given user :user has deleted the tag with name :name
 	 * @param string $user
-	 * @param string $groupName
+	 * @param string $name
 	 */
 	public function userDeletesTag($user, $name) {
 		$tagID = $this->findTagIdByName($name);
@@ -262,10 +275,11 @@ trait Tags {
 			$this->response = TagsHelper::deleteTag(
 				$this->baseUrlWithoutOCSAppendix(),
 				$user,
-				$this->getPasswordForUser($user), $tagID,
+				$this->getPasswordForUser($user),
+				$tagID,
 				$this->getDavPathVersion()
 			);
-		} catch (ClientException $e) {
+		} catch (BadResponseException $e) {
 			$this->response = $e->getResponse();
 		}
 		
@@ -286,7 +300,7 @@ trait Tags {
 				$this->getPasswordForUser($taggingUser),
 				$tagName, $fileName, $fileOwner, $this->getDavPathVersion()
 				);
-		} catch ( ClientException $e ) {
+		} catch ( BadResponseException $e ) {
 			$this->response = $e->getResponse();
 		}
 	}
@@ -323,10 +337,12 @@ trait Tags {
 	}
 
 	/**
-	 * @When /^"([^"]*)" adds the tag "([^"]*)" to "([^"]*)" (shared|owned) by "([^"]*)"$/
+	 * @When /^user "([^"]*)" adds the tag "([^"]*)" to "([^"]*)" (shared|owned) by "([^"]*)" using the API$/
+	 * @Given /^user "([^"]*)" has added the tag "([^"]*)" to "([^"]*)" (shared|owned) by "([^"]*)"$/
 	 * @param string $taggingUser
 	 * @param string $tagName
 	 * @param string $fileName
+	 * @param string $sharedOrOwnedBy unused
 	 * @param string $sharingUser
 	 */
 	public function addsTheTagToSharedBy($taggingUser, $tagName, $fileName, $sharedOrOwnedBy, $sharingUser) {
@@ -334,11 +350,12 @@ trait Tags {
 	}
 
 	/**
-	 * @Then /^"([^"]*)" (shared|owned) by "([^"]*)" has the following tags$/
+	 * @Then /^(?:file|folder|entry) "([^"]*)" (shared|owned) by "([^"]*)" should have the following tags$/
 	 * @param string $fileName
+	 * @param string $sharedOrOwnedBy unused
 	 * @param string $sharingUser
 	 * @param TableNode $table
-	 * @throws \Exception
+	 * @return bool
 	 */
 	public function sharedByHasTheFollowingTags($fileName, $sharedOrOwnedBy, $sharingUser, TableNode $table) {
 		$tagList = $this->requestTagsForFile($sharingUser, $fileName);
@@ -364,9 +381,9 @@ trait Tags {
 	}
 
 	/**
-	 * @Then :fileName shared by :sharingUser has the following tags for :user
+	 * @Then file :fileName shared by :sharingUser should have the following tags for :user
 	 * @param string $fileName
-	 * @param string $sharingUser
+	 * @param string $sharingUser unused
 	 * @param string $user
 	 * @param TableNode $table
 	 * @throws \Exception
@@ -387,13 +404,14 @@ trait Tags {
 		$path = '/systemtags-relations/files/' . $fileID . '/' . $tagID;
 		try {
 			$this->response = $this->makeDavRequest($untaggingUser,"DELETE", $path, null, null, "uploads");
-		} catch (\GuzzleHttp\Exception\ClientException $e) {
+		} catch (BadResponseException $e) {
 			$this->response = $e->getResponse();
 		}
 	}
 
 	/**
-	 * @When :user removes the tag :tagName from :fileName shared by :shareUser
+	 * @When user :user removes the tag :tagName from :fileName shared by :shareUser using the API
+	 * @Given user :user has removed the tag :tagName from :fileName shared by :shareUser
 	 * @param string $user
 	 * @param string $tagName
 	 * @param string $fileName
@@ -413,8 +431,11 @@ trait Tags {
 			try {
 				$this->response = TagsHelper::deleteTag(
 					$this->baseUrlWithoutOCSAppendix(),
-					"admin", $this->getPasswordForUser("admin"), $tagID, 2);
-			} catch (ClientException  $e) {
+					$this->getAdminUserName(),
+					$this->getAdminPassword(),
+					$tagID,
+					2);
+			} catch (BadResponseException  $e) {
 				$this->response = $e->getResponse();
 			}
 		}

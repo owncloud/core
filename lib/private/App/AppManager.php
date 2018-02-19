@@ -11,7 +11,7 @@
  * @author Thomas Müller <thomas.mueller@tmit.eu>
  * @author Vincent Petry <pvince81@owncloud.com>
  *
- * @copyright Copyright (c) 2017, ownCloud GmbH
+ * @copyright Copyright (c) 2018, ownCloud GmbH
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -523,7 +523,14 @@ class AppManager implements IAppManager {
 	 */
 	public function getAppWebPath($appId) {
 		if (($appRoot = $this->findAppInDirectories($appId)) !== false) {
-			return \OC::$WEBROOT . $appRoot['url'];
+			$ocWebRoot = $this->getOcWebRoot();
+			// consider all relative ../ in the app web path as an adjustment
+			// for oC web root
+			while (strpos($appRoot['url'], '../') === 0) {
+				$appRoot['url'] = substr($appRoot['url'], 3);
+				$ocWebRoot = dirname($ocWebRoot);
+			}
+			return $ocWebRoot . '/' . ltrim($appRoot['url'], '/');
 		}
 		return false;
 	}
@@ -577,6 +584,15 @@ class AppManager implements IAppManager {
 	 */
 	protected function saveAppPath($appId, $appData) {
 		$this->appDirs[$appId] = $appData;
+	}
+
+	/**
+	 * Get OC web root
+	 * Wrapper for easy mocking
+	 * @return string
+	 */
+	protected function getOcWebRoot() {
+		return \OC::$WEBROOT;
 	}
 
 	/**

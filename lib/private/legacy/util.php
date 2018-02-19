@@ -39,7 +39,7 @@
  * @author Vincent Petry <pvince81@owncloud.com>
  * @author Volkan Gezer <volkangezer@gmail.com>
  *
- * @copyright Copyright (c) 2017, ownCloud GmbH
+ * @copyright Copyright (c) 2018, ownCloud GmbH
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -56,6 +56,7 @@
  *
  */
 
+use OCP\Files\NoReadAccessException;
 use OCP\IConfig;
 use OCP\IGroupManager;
 use OCP\IUser;
@@ -303,13 +304,17 @@ class OC_Util {
 	}
 
 	/**
-	 * check if a password is required for each public link
+	 * check if a password is required for each public link.
+	 * This is deprecated due to not reflecting all the possibilities now. Falling back to
+	 * enforce password for read-only links. Note that read & write or write-only options won't
+	 * be considered here
 	 *
 	 * @return boolean
+	 * @deprecated
 	 */
 	public static function isPublicLinkPasswordRequired() {
 		$appConfig = \OC::$server->getAppConfig();
-		$enforcePassword = $appConfig->getValue('core', 'shareapi_enforce_links_password', 'no');
+		$enforcePassword = $appConfig->getValue('core', 'shareapi_enforce_links_password_read_only', 'no');
 		return ($enforcePassword === 'yes') ? true : false;
 	}
 
@@ -416,17 +421,25 @@ class OC_Util {
 	 * @param string $source
 	 * @param \OCP\Files\Folder $target
 	 * @return void
+	 * @throws NoReadAccessException
 	 */
 	public static function copyr($source, \OCP\Files\Folder $target) {
-		$dir = opendir($source);
+		$dir = @opendir($source);
+		if (false === $dir) {
+			throw new NoReadAccessException('No read permission for folder ' . $source);
+		}
 		while (false !== ($file = readdir($dir))) {
 			if (!\OC\Files\Filesystem::isIgnoredDir($file)) {
 				if (is_dir($source . '/' . $file)) {
 					$child = $target->newFolder($file);
 					self::copyr($source . '/' . $file, $child);
 				} else {
+					$sourceFileHandle = @fopen($source . '/' . $file,'r');
+					if (false === $sourceFileHandle) {
+						throw new NoReadAccessException('No read permission for file ' . $file);
+					}
 					$child = $target->newFile($file);
-					stream_copy_to_stream(fopen($source . '/' . $file,'r'), $child->fopen('w'));
+					stream_copy_to_stream($sourceFileHandle, $child->fopen('w'));
 				}
 			}
 		}

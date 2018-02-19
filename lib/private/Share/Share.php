@@ -22,7 +22,7 @@
  * @author Vincent Petry <pvince81@owncloud.com>
  * @author Volkan Gezer <volkangezer@gmail.com>
  *
- * @copyright Copyright (c) 2017, ownCloud GmbH
+ * @copyright Copyright (c) 2018, ownCloud GmbH
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -915,7 +915,7 @@ class Share extends Constants {
 			if ($send === false) {
 				$currentUser = \OC::$server->getUserSession()->getUser()->getUID();
 				self::unshare($itemType, $itemSource, $shareType, $shareWith, $currentUser);
-				$message_t = $l->t('Sharing %s failed, could not find %s, maybe the server is currently unreachable.', [$itemSourceName, $shareWith]);
+				$message_t = $l->t('Sharing %s failed, could not find %s, check spelling and server availability.', [$itemSourceName, $shareWith]);
 				throw new \Exception($message_t);
 			}
 

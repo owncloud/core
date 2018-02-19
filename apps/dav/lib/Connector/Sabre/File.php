@@ -14,7 +14,7 @@
  * @author Thomas Müller <thomas.mueller@tmit.eu>
  * @author Vincent Petry <pvince81@owncloud.com>
  *
- * @copyright Copyright (c) 2017, ownCloud GmbH
+ * @copyright Copyright (c) 2018, ownCloud GmbH
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -365,8 +365,8 @@ class File extends Node implements IFile {
 			}
 			return $res;
 		} catch (GenericEncryptionException $e) {
-			// returning 503 will allow retry of the operation at a later point in time
-			throw new ServiceUnavailable("Encryption not ready: " . $e->getMessage());
+			// returning 403 because some apps stops syncing if 503 is returned.
+			throw new Forbidden("Encryption not ready: " . $e->getMessage());
 		} catch (StorageNotAvailableException $e) {
 			throw new ServiceUnavailable("Failed to open file: " . $e->getMessage());
 		} catch (ForbiddenException $ex) {

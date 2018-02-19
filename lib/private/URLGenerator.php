@@ -12,7 +12,7 @@
  * @author Thomas Müller <thomas.mueller@tmit.eu>
  * @author Thomas Tanghus <thomas@tanghus.net>
  *
- * @copyright Copyright (c) 2017, ownCloud GmbH
+ * @copyright Copyright (c) 2018, ownCloud GmbH
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -180,20 +180,19 @@ class URLGenerator implements IURLGenerator {
 			array_unshift($directories, "$appPath", "/$app");
 		}
 
+		$themeDirectory = $this->theme->getDirectory();
 		foreach($directories as $directory) {
 			$directory = $directory . "/img/";
-			$themeDirectory = $this->theme->getDirectory();
-
 			$file = $directory . $imageName;
 
-			if (!empty($themeDirectory)) {
-				if ($imagePath = $this->getImagePathOrFallback('/' . $this->theme->getDirectory() . $file)) {
-					return $imagePath;
-				}
+			if ($themeDirectory !== ''
+				&& $imagePath = $this->getImagePathOrFallback( $this->theme->getBaseDirectory() . '/' . $themeDirectory . $file)
+			) {
+				return $this->theme->getWebPath() . $file;
 			}
 
-			if ($imagePath = $this->getImagePathOrFallback($file)) {
-				return $imagePath;
+			if ($imagePath = $this->getImagePathOrFallback(\OC::$SERVERROOT . $file)) {
+				return \OC::$WEBROOT . $file;
 			}
 		}
 	}
@@ -203,15 +202,12 @@ class URLGenerator implements IURLGenerator {
 	 * @return string
 	 */
 	private function getImagePathOrFallback($file) {
-
-		if (file_exists(\OC::$SERVERROOT . $file)) {
-			return \OC::$WEBROOT . $file;
-		}
-
 		$fallback = substr($file, 0, -3) . 'png';
-
-		if (file_exists(\OC::$SERVERROOT . $fallback)) {
-			return \OC::$WEBROOT . $fallback;
+		$locations = [ $file, $fallback ];
+		foreach ($locations as $location) {
+			if (file_exists($location)) {
+				return $location;
+			}
 		}
 	}
 

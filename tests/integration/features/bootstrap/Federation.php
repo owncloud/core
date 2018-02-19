@@ -2,7 +2,7 @@
 /**
  * @author Phil Davis <phil@jankaritech.com>
  *
- * @copyright Copyright (c) 2017, ownCloud, Inc.
+ * @copyright Copyright (c) 2018, ownCloud GmbH
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -24,7 +24,8 @@ require __DIR__ . '/../../../../lib/composer/autoload.php';
 trait Federation {
 
 	/**
-	 * @Given /^user "([^"]*)" from server "(LOCAL|REMOTE)" shares "([^"]*)" with user "([^"]*)" from server "(LOCAL|REMOTE)"$/
+	 * @When /^user "([^"]*)" from server "(LOCAL|REMOTE)" shares "([^"]*)" with user "([^"]*)" from server "(LOCAL|REMOTE)" using the API$/
+	 * @Given /^user "([^"]*)" from server "(LOCAL|REMOTE)" has shared "([^"]*)" with user "([^"]*)" from server "(LOCAL|REMOTE)"$/
 	 *
 	 * @param string $sharerUser
 	 * @param string $sharerServer "LOCAL" or "REMOTE"
@@ -49,14 +50,15 @@ trait Federation {
 	}
 
 	/**
-	 * @When /^user "([^"]*)" from server "(LOCAL|REMOTE)" accepts last pending share$/
+	 * @When /^user "([^"]*)" from server "(LOCAL|REMOTE)" accepts the last pending share using the API$/
+	 * @Given /^user "([^"]*)" from server "(LOCAL|REMOTE)" has accepted the last pending share$/
 	 * @param string $user
 	 * @param string $server
 	 * @return void
 	 */
 	public function acceptLastPendingShare($user, $server) {
 		$previous = $this->usingServer($server);
-		$this->asAn($user);
+		$this->asUser($user);
 		$this->sendingToWith(
 			'GET',
 			"/apps/files_sharing/api/v1/remote_shares/pending",

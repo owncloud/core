@@ -2,7 +2,7 @@
 /**
  * @author Ilja Neumann <ineumann@owncloud.com>
  *
- * @copyright Copyright (c) 2017, ownCloud GmbH.
+ * @copyright Copyright (c) 2018, ownCloud GmbH
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -185,6 +185,10 @@ class Checksum extends Wrapper {
 		$parentMetaData = [];
 		if(!self::isPartialFile($path)) {
 			$parentMetaData = $this->getWrapperStorage()->getMetaData($path);
+			// can be null if entry does not exist
+			if (is_null($parentMetaData)) {
+				return null;
+			}
 		}
 		$parentMetaData['checksum'] = self::getChecksumsInDbFormat($path);
 

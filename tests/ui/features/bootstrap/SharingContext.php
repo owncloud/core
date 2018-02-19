@@ -3,7 +3,7 @@
  * ownCloud
  *
  * @author Artur Neumann <artur@jankaritech.com>
- * @copyright 2017 Artur Neumann artur@jankaritech.com
+ * @copyright Copyright (c) 2017 Artur Neumann artur@jankaritech.com
  *
  * This code is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License,
@@ -89,7 +89,7 @@ class SharingContext extends RawMinkContext implements Context {
 	 * @return void
 	 */
 	public function theFileFolderIsSharedWithTheUser(
-		$folder, $remote, $user, $maxRetries = 5, $quiet = false
+		$folder, $remote, $user, $maxRetries = STANDARDRETRYCOUNT, $quiet = false
 	) {
 		$this->filesPage->waitTillPageIsloaded($this->getSession());
 		try {
@@ -284,7 +284,10 @@ class SharingContext extends RawMinkContext implements Context {
 	/**
 	 * @When I add the public link to :server as user :username with the password :password
 	 * @param string $server
+	 * @param string $username
+	 * @param string $password
 	 * @return void
+	 * @throws Exception
 	 */
 	public function iAddThePublicLinkTo($server, $username, $password) {
 		if (!$this->publicLinkFilesPage->isOpen()) {
@@ -324,21 +327,22 @@ class SharingContext extends RawMinkContext implements Context {
 				= $this->sharingDialog->groupStringsToMatchAutoComplete($notToBeListed);
 		}
 		$autocompleteItems = $this->sharingDialog->getAutocompleteItemsList();
-		foreach (
-			array_merge(
-				$this->regularUserNames,
-				$this->sharingDialog->groupStringsToMatchAutoComplete(
-					$this->regularGroupNames
-				)
-			) as $regularUserOrGroup ) {
-
-			if (strpos($regularUserOrGroup, $requiredString) !== false
-				&& $regularUserOrGroup !== $notToBeListed
+		$createdGroups = $this->sharingDialog->groupStringsToMatchAutoComplete(
+			$this->featureContext->getCreatedGroupNames()
+		);
+		$usersAndGroups = array_merge(
+			$this->featureContext->getCreatedUserDisplayNames(),
+			$createdGroups
+		);
+		foreach ($usersAndGroups as $expectedUserOrGroup) {
+			if (strpos($expectedUserOrGroup, $requiredString) !== false
+				&& $expectedUserOrGroup !== $notToBeListed
+				&& $expectedUserOrGroup !== $this->featureContext->getCurrentUser()
 			) {
 				PHPUnit_Framework_Assert::assertContains(
-					$regularUserOrGroup,
+					$expectedUserOrGroup,
 					$autocompleteItems,
-					"'" . $regularUserOrGroup . "' not in autocomplete list"
+					"'" . $expectedUserOrGroup . "' not in autocomplete list"
 				);
 			}
 		}
@@ -564,20 +568,14 @@ class SharingContext extends RawMinkContext implements Context {
 			]
 		];
 
-		foreach ($settings as $setting) {
-			$change = AppConfigHelper::setCapability(
-				$this->getMinkParameter('base_url'),
-				"admin",
-				$this->featureContext->getUserPassword("admin"),
-				$setting['capabilitiesApp'],
-				$setting['capabilitiesParameter'],
-				$setting['testingApp'],
-				$setting['testingParameter'],
-				$setting['testingState'],
-				$this->featureContext->getSavedCapabilitiesXml()
-			);
-			$this->featureContext->addToSavedCapabilitiesChanges($change);
-		}
+		$change = AppConfigHelper::setCapabilities(
+			$this->getMinkParameter('base_url'),
+			"admin",
+			$this->featureContext->getUserPassword("admin"),
+			$settings,
+			$this->featureContext->getSavedCapabilitiesXml()
+		);
+		$this->featureContext->addToSavedCapabilitiesChanges($change);
 	}
 
 }

@@ -2,7 +2,7 @@
 * ownCloud
 *
 * @author Jakob Sack
-* @copyright 2012 Jakob Sack owncloud@jakobsack.de
+* @copyright Copyright (c) 2012 Jakob Sack owncloud@jakobsack.de
 *
 * This library is free software; you can redistribute it and/or
 * modify it under the terms of the GNU AFFERO GENERAL PUBLIC LICENSE

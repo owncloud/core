@@ -2,7 +2,7 @@
 * ownCloud
 *
 * @author Vincent Petry
-* @copyright 2014 Vincent Petry <pvince81@owncloud.com>
+* @copyright Copyright (c) 2014 Vincent Petry <pvince81@owncloud.com>
 *
 * This library is free software; you can redistribute it and/or
 * modify it under the terms of the GNU AFFERO GENERAL PUBLIC LICENSE
@@ -110,10 +110,12 @@ module.exports = function(config) {
 			{
 				name: 'settings',
 				srcFiles: [
-					'settings/js/users/deleteHandler.js'
+					'settings/js/users/deleteHandler.js',
+					'settings/js/admin-apps.js'
 				],
 				testFiles: [
-					'settings/tests/js/users/deleteHandlerSpec.js'
+					'settings/tests/js/users/deleteHandlerSpec.js',
+					'settings/tests/js/apps/appSettingsSpec.js'
 				]
 			}
 		];

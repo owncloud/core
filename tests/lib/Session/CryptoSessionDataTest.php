@@ -2,7 +2,7 @@
 /**
  * @author Joas Schilling <nickvergessen@owncloud.com>
  *
- * @copyright Copyright (c) 2015, ownCloud, Inc.
+ * @copyright Copyright (c) 2018, ownCloud GmbH
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -22,6 +22,7 @@
 namespace Test\Session;
 
 use OC\Session\CryptoSessionData;
+use OCP\Session\Exceptions\SessionNotAvailableException;
 
 class CryptoSessionDataTest extends Session {
 	/** @var \PHPUnit_Framework_MockObject_MockObject|\OCP\Security\ICrypto */
@@ -49,5 +50,15 @@ class CryptoSessionDataTest extends Session {
 			});
 
 		$this->instance = new CryptoSessionData($this->wrappedSession, $this->crypto, 'PASS');
+	}
+
+	/**
+	 * Thrown exception during session destruct/close should be handled silently
+	 */
+	protected function testDestructExceptionCatching() {
+		$instance = new CryptoSessionData($this->wrappedSession, $this->crypto, 'PASS');
+		$e = new SessionNotAvailableException();
+		$this->wrappedSession->expects($this->once())->method('set')->willThrowException($e);
+		$instance->__destruct();
 	}
 }

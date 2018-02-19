@@ -5,7 +5,7 @@
  * @author Joas Schilling <coding@schilljs.com>
  * @author Sergio Bertolin <sbertolin@owncloud.com>
  * @author Phillip Davis <phil@jankaritech.com>
- * @copyright 2017 ownCloud GmbH
+ * @copyright Copyright (c) 2018, ownCloud GmbH
  *
  * This code is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License,
@@ -44,14 +44,21 @@ class FederationContext implements Context, SnippetAcceptingContext {
 		$this->getCapabilitiesCheckResponse();
 		$this->savedCapabilitiesXml = $this->getCapabilitiesXml();
 		// Set the required starting values for testing
-		$this->setupCommonSharingConfigs();
-		$this->setupCommonFederationConfigs();
-		$this->setCapability(
-			'files_sharing',
-			'resharing',
-			'core',
-			'shareapi_allow_resharing',
-			true
+		$capabilitiesArray = $this->getCommonSharingConfigs();
+		$capabilitiesArray = array_merge($capabilitiesArray, $this->getCommonFederationConfigs());
+		$capabilitiesArray = array_merge(
+			$capabilitiesArray,
+			[
+				[
+					'capabilitiesApp' => 'files_sharing',
+					'capabilitiesParameter' => 'resharing',
+					'testingApp' => 'core',
+					'testingParameter' => 'shareapi_allow_resharing',
+					'testingState' => true
+				]
+			]
 		);
+
+		$this->setCapabilities($capabilitiesArray);
 	}
 }

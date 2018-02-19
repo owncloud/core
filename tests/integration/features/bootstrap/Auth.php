@@ -1,7 +1,7 @@
 <?php
 
 use GuzzleHttp\Client;
-use GuzzleHttp\Exception\ClientException;
+use GuzzleHttp\Exception\BadResponseException;
 
 require __DIR__ . '/../../../../lib/composer/autoload.php';
 
@@ -16,12 +16,20 @@ trait Auth {
 	}
 
 	/**
-	 * @When requesting :url with :method
+	 * @When a user requests :url with :method and no authentication
+	 * @param string $url
+	 * @param string $method
 	 */
-	public function requestingWith($url, $method) {
+	public function userRequestsURLWith($url, $method) {
 		$this->sendRequest($url, $method);
 	}
 
+	/**
+	 * @param string $url
+	 * @param string $method
+	 * @param string|null $authHeader
+	 * @param bool $useCookies
+	 */
 	private function sendRequest($url, $method, $authHeader = null, $useCookies = false) {
 		$fullUrl = substr($this->baseUrl, 0, -5) . $url;
 		try {
@@ -38,57 +46,70 @@ trait Auth {
 			$request->setHeader('OCS_APIREQUEST', 'true');
 			$request->setHeader('requesttoken', $this->requestToken);
 			$this->response = $this->client->send($request);
-		} catch (ClientException $ex) {
+		} catch (BadResponseException $ex) {
 			$this->response = $ex->getResponse();
 		}
 	}
 
 	/**
-	 * @Given a new client token is used
+	 * @Given a new client token for :user has been generated
+	 * @param string $user
 	 */
-	public function aNewClientTokenIsUsed() {
+	public function aNewClientTokenHasBeenGenerated($user) {
 		$client = new Client();
 		$resp = $client->post(substr($this->baseUrl, 0, -5) . '/token/generate', [
-		    'json' => [
-			'user' => 'user0',
-			'password' => '123456',
-		    ]
+			'json' => [
+					'user' => $user,
+					'password' => $this->getPasswordForUser($user),
+			]
 		]);
 		$this->clientToken = json_decode($resp->getBody()->getContents())->token;
 	}
 
 	/**
-	 * @When requesting :url with :method using basic auth
+	 * @When user :user requests :url with :method using basic auth
+	 * @param string $user
+	 * @param string $url
+	 * @param string $method
 	 */
-	public function requestingWithBasicAuth($url, $method) {
-		$this->sendRequest($url, $method, 'basic ' . base64_encode('user0:123456'));
+	public function userRequestsURLWithUsingBasicAuth($user, $url, $method) {
+		$authString = $user . ':' . $this->getPasswordForUser($user);
+		$this->sendRequest($url, $method, 'basic ' . base64_encode($authString));
 	}
 
 	/**
-	 * @When requesting :url with :method using basic token auth
+	 * @When user :user requests :url with :method using basic token auth
+	 * @param string $user
+	 * @param string $url
+	 * @param string $method
 	 */
-	public function requestingWithBasicTokenAuth($url, $method) {
-		$this->sendRequest($url, $method, 'basic ' . base64_encode('user0:' . $this->clientToken));
+	public function userRequestsURLWithUsingBasicTokenAuth($user, $url, $method) {
+		$this->sendRequest($url, $method, 'basic ' . base64_encode($user . ':' . $this->clientToken));
 	}
 
 	/**
-	 * @When requesting :url with :method using a client token
+	 * @When the user requests :url with :method using the generated client token
+	 * @param string $url
+	 * @param string $method
 	 */
-	public function requestingWithUsingAClientToken($url, $method) {
+	public function userRequestsURLWithUsingAClientToken($url, $method) {
 		$this->sendRequest($url, $method, 'token ' . $this->clientToken);
 	}
 
 	/**
-	 * @When requesting :url with :method using browser session
+	 * @When the user requests :url with :method using the browser session
+	 * @param string $url
+	 * @param string $method
 	 */
-	public function requestingWithBrowserSession($url, $method) {
+	public function userRequestsURLWithBrowserSession($url, $method) {
 		$this->sendRequest($url, $method, null, true);
 	}
 
 	/**
-	 * @Given a new browser session is started
+	 * @Given a new browser session for :user has been started
+	 * @param string $user
 	 */
-	public function aNewBrowserSessionIsStarted() {
+	public function aNewBrowserSessionForHasBeenStarted($user) {
 		$loginUrl = substr($this->baseUrl, 0, -5) . '/login';
 		// Request a new session and extract CSRF token
 		$client = new Client();
@@ -103,12 +124,12 @@ trait Auth {
 		$client = new Client();
 		$response = $client->post(
 			$loginUrl, [
-		    'body' => [
-			'user' => 'user0',
-			'password' => '123456',
-			'requesttoken' => $this->requestToken,
-		    ],
-		    'cookies' => $this->cookieJar,
+				'body' => [
+					'user' => $user,
+					'password' => $this->getPasswordForUser($user),
+					'requesttoken' => $this->requestToken,
+				],
+				'cookies' => $this->cookieJar,
 			]
 		);
 		$this->extracRequestTokenFromResponse($response);

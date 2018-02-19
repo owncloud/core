@@ -2,7 +2,7 @@
 /**
  * @author Björn Schießle <schiessle@owncloud.com>
  *
- * @copyright Copyright (c) 2015, ownCloud, Inc.
+ * @copyright Copyright (c) 2018, ownCloud GmbH
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -198,6 +198,24 @@ class ChangeKeyStorageRootTest extends TestCase {
 			[true, false],
 			[false, true]
 		];
+	}
+
+	public function nulldir() {
+		return [
+			[null]
+		];
+	}
+
+	/**
+	 * @dataProvider nulldir
+	 * @expectedException \Exception
+	 * @expectedExceptionMessage New root folder doesn't exist. Please create the folder or check the permissions and try again.
+	 * @param $dirExists
+	 */
+	public function testPrepareNewRootExceptionForNullDir($dirExists) {
+		$this->view->expects($this->once())->method('is_dir')->with('../../newRoot')
+			->willReturn($dirExists);
+		$this->invokePrivate($this->changeKeyStorageRoot, 'prepareNewRoot', ['../../newRoot']);
 	}
 
 	/**

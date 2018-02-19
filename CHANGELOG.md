@@ -431,7 +431,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/).
 - provisioning API now also returns the user's home path: [#26850](https://github.com/owncloud/core/issues/26850)
 - web updater shows link to changelog in admin page: [#26796](https://github.com/owncloud/core/issues/26796)
 
-[Unreleased]: https://github.com/owncloud/core/compare/v10.0.6...stable10
+[Unreleased]: https://github.com/owncloud/core/compare/v10.0.7...stable10
+[10.0.7]: https://github.com/owncloud/core/compare/v10.0.6...v10.0.7
 [10.0.6]: https://github.com/owncloud/core/compare/v10.0.5...v10.0.6
 [10.0.5]: https://github.com/owncloud/core/compare/v10.0.4...v10.0.5
 [10.0.4]: https://github.com/owncloud/core/compare/v10.0.3...v10.0.4

@@ -3,7 +3,7 @@
  * ownCloud
  *
  * @author Artur Neumann <artur@jankaritech.com>
- * @copyright 2017 Artur Neumann artur@jankaritech.com
+ * @copyright Copyright (c) 2017 Artur Neumann artur@jankaritech.com
  *
  * This code is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License,
@@ -128,7 +128,7 @@ class PublicLinkFilesPage extends FilesPageBasic {
 		$fromFileName,
 		$toFileName,
 		Session $session,
-		$maxRetries = 5
+		$maxRetries = STANDARDRETRYCOUNT
 	) {
 		throw new \Exception("not implemented");
 	}
@@ -143,7 +143,7 @@ class PublicLinkFilesPage extends FilesPageBasic {
 	 * @return void
 	 */
 	public function moveFileTo(
-		$name, $destination, Session $session, $maxRetries = 5
+		$name, $destination, Session $session, $maxRetries = STANDARDRETRYCOUNT
 	) {
 		throw new \Exception("not implemented");
 	}

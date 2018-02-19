@@ -5,7 +5,10 @@
     "config" : {
         "vendor-dir": "lib/composer",
         "optimize-autoloader": true,
-        "classmap-authoritative": false
+        "classmap-authoritative": false,
+        "platform": {
+            "php": "5.6.33"
+        }
     },
     "autoload" : {
         "psr-4": {
@@ -18,7 +21,7 @@
     "require-dev": {
         "jakub-onderka/php-parallel-lint": "^0.9.2",
         "jakub-onderka/php-console-highlighter": "^0.3.2",
-        "phpunit/phpunit": "^5.5",
+        "phpunit/phpunit": "^5.7",
         "mikey179/vfsStream": "^1.6",
         "behat/mink-extension": "^2.2",
         "behat/mink-goutte-driver": "^1.2",
@@ -52,9 +55,11 @@
         "deepdiver1975/TarStreamer": "v0.1.0",
         "patchwork/jsqueeze": "^2.0",
         "symfony/polyfill-php70": "^1.0",
-        "lukasreschke/id3parser": "^0.0.1",
+        "lukasreschke/id3parser": "^0.0.3",
         "sabre/dav": "^3.2",
         "deepdiver/zipstreamer": "^1.1",
-        "symfony/translation": "3.2.4"
+        "zendframework/zend-inputfilter": "^2.8",
+        "zendframework/zend-servicemanager": "^3.3",
+        "symfony/translation": "^3.4"
     }
 }

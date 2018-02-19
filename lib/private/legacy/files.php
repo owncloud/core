@@ -19,7 +19,7 @@
  * @author Victor Dubiniuk <dubiniuk@owncloud.com>
  * @author Vincent Petry <pvince81@owncloud.com>
  *
- * @copyright Copyright (c) 2017, ownCloud GmbH
+ * @copyright Copyright (c) 2018, ownCloud GmbH
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -139,6 +139,13 @@ class OC_Files {
 				}
 			}
 
+			//Dispatch an event to see if any apps have problem with download
+			$event = new \Symfony\Component\EventDispatcher\GenericEvent(null, ['dir' => $dir, 'files' => $files, 'run' => true]);
+			OC::$server->getEventDispatcher()->dispatch('file.beforeCreateZip', $event);
+			if (($event->getArgument('run') === false) or ($event->hasArgument('errorMessage'))) {
+				throw new \OC\ForbiddenException("Access denied: " . $event->getArgument('errorMessage'));
+			}
+
 			$streamer = new Streamer();
 			OC_Util::obEnd();
 
@@ -167,6 +174,9 @@ class OC_Files {
 			$streamer->finalize();
 			set_time_limit($executionTime);
 			self::unlockAllTheFiles($dir, $files, $getType, $view, $filename);
+			$event = new \Symfony\Component\EventDispatcher\GenericEvent(null, ['result' => 'success', 'dir' => $dir, 'files' => $files]);
+			OC::$server->getEventDispatcher()->dispatch('file.afterCreateZip', $event);
+
 		} catch (\OCP\Lock\LockedException $ex) {
 			self::unlockAllTheFiles($dir, $files, $getType, $view, $filename);
 			OC::$server->getLogger()->logException($ex);
@@ -183,6 +193,9 @@ class OC_Files {
 			OC::$server->getLogger()->logException($ex);
 			$l = \OC::$server->getL10N('core');
 			$hint = method_exists($ex, 'getHint') ? $ex->getHint() : '';
+			if ($event->hasArgument('message')) {
+				$hint .= ' ' . $event->getArgument('message');
+			}
 			\OC_Template::printErrorPage($l->t('File cannot be read'), $hint);
 		}
 	}

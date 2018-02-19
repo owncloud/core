@@ -3,7 +3,7 @@
  * ownCloud
  *
  * @author Artur Neumann <artur@jankaritech.com>
- * @copyright 2017 Artur Neumann artur@jankaritech.com
+ * @copyright Copyright (c) 2017 Artur Neumann artur@jankaritech.com
  *
  * This code is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License,
@@ -27,6 +27,7 @@ use Behat\MinkExtension\Context\RawMinkContext;
 use GuzzleHttp\Exception\ClientException;
 use Page\FilesPage;
 use Page\FilesPageElement\ConflictDialog;
+use Page\FavoritesPage;
 use Page\OwncloudPage;
 use Page\TrashbinPage;
 use SensioLabs\Behat\PageObjectExtension\PageObject\Exception\ElementNotFoundException;
@@ -42,6 +43,7 @@ class FilesContext extends RawMinkContext implements Context {
 
 	private $filesPage;
 	private $trashbinPage;
+	private $favoritesPage;
 	/**
 	 * 
 	 * @var ConflictDialog
@@ -85,16 +87,20 @@ class FilesContext extends RawMinkContext implements Context {
 	 * @param FilesPage $filesPage
 	 * @param TrashbinPage $trashbinPage
 	 * @param ConflictDialog $conflictDialog
+	 * @param FavoritesPage $favoritesPage
 	 * @return void
 	 */
 	public function __construct(
 		FilesPage $filesPage,
 		TrashbinPage $trashbinPage,
-		ConflictDialog $conflictDialog
+		ConflictDialog $conflictDialog,
+		FavoritesPage $favoritesPage
 	) {
 		$this->trashbinPage = $trashbinPage;
 		$this->filesPage = $filesPage;
 		$this->conflictDialog = $conflictDialog;
+		$this->favoritesPage = $favoritesPage;
+		
 	}
 
 	/**
@@ -146,9 +152,21 @@ class FilesContext extends RawMinkContext implements Context {
 			$this->featureContext->setCurrentPageObject($this->trashbinPage);
 		}
 	}
+	
+	/**
+	 * @Given I am on the favorites page
+	 * @return void
+	 */
+	public function iAmOnTheFavoritesPage() {
+		if (!$this->favoritesPage->isOpen()) {
+			$this->favoritesPage->open();
+			$this->favoritesPage->waitTillPageIsLoaded($this->getSession());
+			$this->featureContext->setCurrentPageObject($this->favoritesPage);
+		}
+	}
 
 	/**
-	 * @When the files page is reloaded
+	 * @When the files/favorites page is reloaded
 	 * @return void
 	 */
 	public function theFilesPageIsReloaded() {
@@ -333,11 +351,11 @@ class FilesContext extends RawMinkContext implements Context {
 
 	/**
 	 * @Given the following files/folders are deleted
-	 * @param TableNode $namePartsTable table headings: must be: |name|
+	 * @param TableNode $filesTable table headings: must be: |name|
 	 * @return void
 	 */
-	public function theFollowingFilesFoldersAreDeleted(TableNode $table) {
-		foreach ($table as $file) {
+	public function theFollowingFilesFoldersAreDeleted(TableNode $filesTable) {
+		foreach ($filesTable as $file) {
 			$username = $this->featureContext->getCurrentUser();
 			$currentTime = microtime(true);
 			$end = $currentTime + (LONGUIWAITTIMEOUTMILLISEC / 1000);
@@ -441,6 +459,51 @@ class FilesContext extends RawMinkContext implements Context {
 		$this->iUploadTheFile($name);
 		$this->choiceInUploadConflict("new");
 		$this->iClickTheButton("Continue");
+	}
+
+	/**
+	 * @When I upload overwriting the file :name and retry if the file is locked
+	 * @param string $name
+	 * @return void
+	 */
+	public function iUploadOverwritingTheFileRetry($name) {
+		$previousNotificationsCount = 0;
+
+		for ($retryCounter = 0;
+			 $retryCounter < STANDARDRETRYCOUNT;
+			 $retryCounter++) {
+			$this->iUploadOverwritingTheFile($name);
+
+			try {
+				$notifications = $this->filesPage->getNotifications();
+			} catch (ElementNotFoundException $e) {
+				$notifications = [];
+			}
+
+			$currentNotificationsCount = count($notifications);
+
+			if ($currentNotificationsCount > $previousNotificationsCount) {
+				$message
+					= "Upload overwriting " . $name .
+					  " and got " . $currentNotificationsCount .
+					  " notifications including " .
+					  end($notifications) . "\n";
+				echo $message;
+				error_log($message);
+				$previousNotificationsCount = $currentNotificationsCount;
+				usleep(STANDARDSLEEPTIMEMICROSEC);
+			} else {
+				break;
+			}
+		}
+
+		if ($retryCounter > 0) {
+			$message
+				= "INFORMATION: retried to upload overwriting file " .
+				  $name . " " . $retryCounter . " times";
+			echo $message;
+			error_log($message);
+		}
 	}
 
 	/**
@@ -627,7 +690,7 @@ class FilesContext extends RawMinkContext implements Context {
 	
 	
 	/**
-	 * @Then /^the (?:file|folder) ((?:'[^']*')|(?:"[^"]*")) should (not|)\s?be listed\s?(?:in the |)(trashbin|)\s?(?:folder ((?:'[^']*')|(?:"[^"]*")))?$/
+	 * @Then /^the (?:file|folder) ((?:'[^']*')|(?:"[^"]*")) should (not|)\s?be listed\s?(?:in the |)(trashbin|favorites page|)\s?(?:folder ((?:'[^']*')|(?:"[^"]*")))?$/
 	 * @param string $name enclosed in single or double quotes
 	 * @param string $shouldOrNot
 	 * @param string $typeOfFilesPage
@@ -665,6 +728,9 @@ class FilesContext extends RawMinkContext implements Context {
 		$message = null;
 		if ($typeOfFilesPage === "trashbin") {
 			$this->iAmOnTheTrashbinPage();
+		}
+		if ($typeOfFilesPage === "favorites page") {
+			$this->iAmOnTheFavoritesPage();
 		}
 		$pageObject = $this->getCurrentPageObject();
 		$pageObject->waitTillPageIsLoaded($this->getSession());
@@ -732,7 +798,7 @@ class FilesContext extends RawMinkContext implements Context {
 	}
 
 	/**
-	 * @Then /^the following (?:file|folder) should (not|)\s?be listed\s?(?:in the |)(trashbin|)\s?(?:folder ((?:'[^']*')|(?:"[^"]*")))?$/
+	 * @Then /^the following (?:file|folder) should (not|)\s?be listed\s?(?:in the |)(trashbin|favorites page|)\s?(?:folder ((?:'[^']*')|(?:"[^"]*")))?$/
 	 * @param string $shouldOrNot
 	 * @param string $typeOfFilesPage
 	 * @param string $folder
@@ -741,12 +807,16 @@ class FilesContext extends RawMinkContext implements Context {
 	 * @return void
 	 */
 	public function theFollowingFileFolderShouldBeListed(
-		$shouldOrNot, $typeOfFilesPage, $folder = "", TableNode $namePartsTable
+		$shouldOrNot, $typeOfFilesPage, $folder = "", TableNode $namePartsTable = null
 	) {
 		$fileNameParts = [];
 
-		foreach ($namePartsTable as $namePartsRow) {
-			$fileNameParts[] = $namePartsRow['name-parts'];
+		if ($namePartsTable !== null) {
+			foreach ($namePartsTable as $namePartsRow) {
+				$fileNameParts[] = $namePartsRow['name-parts'];
+			}
+		} else {
+			PHPUnit_Framework_Assert::fail('no table of file name parts passed to theFollowingFileFolderShouldBeListed');
 		}
 
 		// The capturing groups of the regex include the quotes at each
@@ -777,6 +847,17 @@ class FilesContext extends RawMinkContext implements Context {
 			$toolTipText,
 			$this->filesPage->getTooltipOfFile($name, $this->getSession())
 		);
+	}
+	
+	/**
+	 * @When I restore the file/folder :fname
+	 *
+	 * @param string $fname
+	 * @return void
+	 */
+	public function restoreFileAndFolder($fname) {
+		$session = $this->getSession();
+		$this->trashbinPage->restore($fname, $session);
 	}
 
 	/**
@@ -812,17 +893,28 @@ class FilesContext extends RawMinkContext implements Context {
 	public function theFilesactionmenuShouldBeCompletelyVisibleAfterClickingOnIt() {
 		for ($i = 1; $i <= $this->filesPage->getSizeOfFileFolderList(); $i++) {
 			$actionMenu = $this->filesPage->openFileActionsMenuByNo($i);
-
-			$windowHeight = $this->filesPage->getWindowHeight(
-				$this->getSession()
-			);
-
-			$deleteBtn = $actionMenu->findButton(
-				$actionMenu->getDeleteActionLabel()
-			);
-			$deleteBtnCoordinates = $this->filesPage->getCoordinatesOfElement(
-				$this->getSession(), $deleteBtn
-			);
+			
+			$timeout_msec = STANDARDUIWAITTIMEOUTMILLISEC;
+			$currentTime = microtime(true);
+			$end = $currentTime + ($timeout_msec / 1000);
+			while ($currentTime <= $end) {
+				$windowHeight = $this->filesPage->getWindowHeight(
+					$this->getSession()
+				);
+				
+				$deleteBtn = $actionMenu->findButton(
+					$actionMenu->getDeleteActionLabel()
+				);
+				$deleteBtnCoordinates = $this->filesPage->getCoordinatesOfElement(
+					$this->getSession(), $deleteBtn
+				);
+				if ($windowHeight >= $deleteBtnCoordinates ["top"]) {
+					break;
+				}
+				usleep(STANDARDSLEEPTIMEMICROSEC);
+				$currentTime = microtime(true);
+			}
+			
 			PHPUnit_Framework_Assert::assertLessThan(
 				$windowHeight, $deleteBtnCoordinates ["top"]
 			);
@@ -886,6 +978,59 @@ class FilesContext extends RawMinkContext implements Context {
 		$this->assertContentOfRemoteAndLocalFileIsSame($remoteFile, $localFile);
 	}
 
+	/**
+	 * @When I mark the file/folder :fileOrFolderName as favorite
+	 * @Given the file/folder :fileOrFolderName is marked as favorite 
+	 * @param string $fileOrFolderName
+	 * @return void
+	 */
+	public function iMarkTheFileAsFavorite($fileOrFolderName) {
+		$fileRow = $this->filesPage->findFileRowByName($fileOrFolderName, $this->getSession());
+		$fileRow->markAsFavorite();
+		$this->filesPage->waitTillFileRowsAreReady($this->getSession());
+	}
+	
+	/**
+	 * @Then the file/folder :fileOrFolderName should be marked as favorite
+	 * @param string $fileOrFolderName
+	 * @return void
+	 */
+	public function theFileShouldBeMarkedAsFavorite($fileOrFolderName) {
+		$fileRow = $this->filesPage->findFileRowByName($fileOrFolderName, $this->getSession());
+		if ($fileRow->isMarkedAsFavorite() === false) {
+			throw new Exception(
+				__METHOD__ .
+				" The file $fileOrFolderName is not marked as favorite but should be"
+			);
+		}
+	}
+	
+	/**
+	 * @When I unmark the file/folder :fileOrFolderName
+	 * @param string $fileOrFolderName
+	 * @return void
+	 */
+	public function iUnmarkTheFolder($fileOrFolderName) {
+		$fileRow = $this->getCurrentPageObject()->findFileRowByName($fileOrFolderName, $this->getSession());
+		$fileRow->unmarkFavorite();
+		$this->getCurrentPageObject()->waitTillFileRowsAreReady($this->getSession());
+	}
+	
+	/**
+	 * @Then the file/folder :fileOrFolderName should not be marked as favorite
+	 * @param string $fileOrFolderName
+	 * @return void
+	 */
+	public function theFolderShouldNotBeMarkedAsFavorite($fileOrFolderName) {
+		$fileRow = $this->filesPage->findFileRowByName($fileOrFolderName, $this->getSession());
+		if ($fileRow->isMarkedAsFavorite() === true) {
+			throw new Exception(
+				__METHOD__ .
+				" The file $fileOrFolderName is marked as favorite but should not be"
+			);
+		}
+	}
+	
 	/**
 	 * Asserts that the content of a remote and a local file is the same
 	 * or is different

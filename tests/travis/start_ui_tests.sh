@@ -3,7 +3,7 @@
 # ownCloud
 #
 # @author Artur Neumann
-# @copyright 2017 Artur Neumann info@individual-it.net
+# @copyright Copyright (c) 2017 Artur Neumann info@individual-it.net
 #
 RED='\033[0;31m'
 BLUE='\033[0;34m'
@@ -51,9 +51,44 @@ then
 	BASE_URL="$BASE_URL:$SRV_HOST_PORT"
 fi
 
+IPV4_URL="$BASE_URL"
+IPV6_URL="$BASE_URL"
+
 if [ -n "$SRV_HOST_URL" ]
 then
 	BASE_URL="$BASE_URL/$SRV_HOST_URL"
+	IPV4_URL="$IPV4_URL/$SRV_HOST_URL"
+	IPV6_URL="$IPV6_URL/$SRV_HOST_URL"
+fi
+
+REMOTE_FED_BASE_URL=$REMOTE_FED_SRV_HOST_NAME
+
+if [ ! -z "$REMOTE_FED_SRV_HOST_PORT" ] && [ "$REMOTE_FED_SRV_HOST_PORT" != "80" ]
+then
+	REMOTE_FED_BASE_URL="$REMOTE_FED_BASE_URL:$REMOTE_FED_SRV_HOST_PORT"
+fi
+
+if [ ! -z "$IPV4_HOST_NAME" ]
+then
+	IPV4_URL="http://$IPV4_HOST_NAME"
+	if [ ! -z "$SRV_HOST_PORT" ] && [ "$SRV_HOST_PORT" != "80" ]
+	then
+		IPV4_URL="$IPV4_URL:$SRV_HOST_PORT"
+	fi
+fi
+
+if [ ! -z "$IPV6_HOST_NAME" ]
+then
+	IPV6_URL="http://$IPV6_HOST_NAME"
+	if [ ! -z "$SRV_HOST_PORT" ] && [ "$SRV_HOST_PORT" != "80" ]
+	then
+		IPV6_URL="$IPV6_URL:$SRV_HOST_PORT"
+	fi
+fi
+
+if [ -n "$REMOTE_FED_SRV_HOST_URL" ]
+then
+	REMOTE_FED_BASE_URL="$REMOTE_FED_BASE_URL/$REMOTE_FED_SRV_HOST_URL"
 fi
 
 OCC_URL="$BASE_URL/ocs/v2.php/apps/testing/api/v1/occ"
@@ -232,44 +267,10 @@ BEHAT_TAGS='~@skipOnOcV'$OWNCLOUD_VERSION'&&'$BEHAT_TAGS
 OWNCLOUD_VERSION=`echo $OWNCLOUD_VERSION | cut -d"." -f1`
 BEHAT_TAGS='~@skipOnOcV'$OWNCLOUD_VERSION'&&'$BEHAT_TAGS
 
-REMOTE_FED_BASE_URL=$REMOTE_FED_SRV_HOST_NAME
-
-if [ ! -z "$REMOTE_FED_SRV_HOST_PORT" ] && [ "$REMOTE_FED_SRV_HOST_PORT" != "80" ]
+#if we running remote only tests add an other skip '@skipWhenTestingRemoteSystems'
+if test "$REMOTE_ONLY" = true
 then
-	REMOTE_FED_BASE_URL="$REMOTE_FED_BASE_URL:$REMOTE_FED_SRV_HOST_PORT"
-fi
-
-IPV4_URL="$BASE_URL"
-
-if [ ! -z "$IPV4_HOST_NAME" ]
-then
-	IPV4_URL="http://$IPV4_HOST_NAME"
-	if [ ! -z "$SRV_HOST_PORT" ] && [ "$SRV_HOST_PORT" != "80" ]
-	then
-		IPV4_URL="$IPV4_URL:$SRV_HOST_PORT"
-	fi
-fi
-
-IPV6_URL="$BASE_URL"
-
-if [ ! -z "$IPV6_HOST_NAME" ]
-then
-	IPV6_URL="http://$IPV6_HOST_NAME"
-	if [ ! -z "$SRV_HOST_PORT" ] && [ "$SRV_HOST_PORT" != "80" ]
-	then
-		IPV6_URL="$IPV6_URL:$SRV_HOST_PORT"
-	fi
-fi
-
-if [ -n "$SRV_HOST_URL" ]
-then
-	IPV4_URL="$IPV4_URL/$SRV_HOST_URL"
-	IPV6_URL="$IPV6_URL/$SRV_HOST_URL"
-fi
-
-if [ -n "$REMOTE_FED_SRV_HOST_URL" ]
-then
-	REMOTE_FED_BASE_URL="$REMOTE_FED_BASE_URL/$REMOTE_FED_SRV_HOST_URL"
+	BEHAT_TAGS='~@skipWhenTestingRemoteSystems&&'$BEHAT_TAGS
 fi
 
 if [ "$BROWSER" == "firefox" ]
@@ -282,6 +283,8 @@ then
 	if verlte "$BROWSER_VERSION" "47.0"
 	then
 		EXTRA_CAPABILITIES='"seleniumVersion":"2.53.1",'$EXTRA_CAPABILITIES
+	else
+		EXTRA_CAPABILITIES='"seleniumVersion":"3.4.0",'$EXTRA_CAPABILITIES
 	fi
 fi
 
@@ -328,7 +331,7 @@ then
 fi
 
 echo "Running tests on '$BROWSER' ($BROWSER_VERSION) on $PLATFORM" | tee $TEST_LOG_FILE
-export BEHAT_PARAMS='{"extensions" : {"Behat\\MinkExtension" : {"browser_name": "'$BROWSER'", "base_url" : "'$BASE_URL'", "selenium2":{"capabilities": {"browser": "'$BROWSER'", "version": "'$BROWSER_VERSION'", "platform": "'$PLATFORM'", "name": "'$TRAVIS_REPO_SLUG' - '$TRAVIS_JOB_NUMBER'", "extra_capabilities": {'$EXTRA_CAPABILITIES'}}, "wd_host":"http://'$SAUCE_USERNAME:$SAUCE_ACCESS_KEY'@'$SELENIUM_HOST':'$SELENIUM_PORT'/wd/hub"}}}}'
+export BEHAT_PARAMS='{"extensions" : {"Behat\\MinkExtension" : {"browser_name": "'$BROWSER'", "base_url" : "'$BASE_URL'", "selenium2":{"capabilities": {"marionette":null, "browser": "'$BROWSER'", "version": "'$BROWSER_VERSION'", "platform": "'$PLATFORM'", "name": "'$TRAVIS_REPO_SLUG' - '$TRAVIS_JOB_NUMBER'", "extra_capabilities": {'$EXTRA_CAPABILITIES'}}, "wd_host":"http://'$SAUCE_USERNAME:$SAUCE_ACCESS_KEY'@'$SELENIUM_HOST':'$SELENIUM_PORT'/wd/hub"}}}}'
 export IPV4_URL
 export IPV6_URL
 export REMOTE_FED_BASE_URL

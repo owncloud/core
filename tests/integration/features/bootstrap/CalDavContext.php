@@ -2,7 +2,7 @@
 /**
  * @author Lukas Reschke <lukas@owncloud.com>
  *
- * @copyright Copyright (c) 2016, ownCloud, Inc.
+ * @copyright Copyright (c) 2018, ownCloud GmbH
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -21,7 +21,9 @@
 
 require __DIR__ . '/../../../../lib/composer/autoload.php';
 
+use Behat\Behat\Hook\Scope\BeforeScenarioScope;
 use GuzzleHttp\Client;
+use GuzzleHttp\Exception\BadResponseException;
 use GuzzleHttp\Message\ResponseInterface;
 
 class CalDavContext implements \Behat\Behat\Context\Context {
@@ -33,6 +35,11 @@ class CalDavContext implements \Behat\Behat\Context\Context {
 	private $response;
 	/** @var array */
 	private $responseXml = '';
+
+	/**
+	 * @var FeatureContext
+	 */
+	private $featureContext;
 
 	/**
 	 * @param string $baseUrl
@@ -47,8 +54,17 @@ class CalDavContext implements \Behat\Behat\Context\Context {
 		}
 	}
 
-	/** @BeforeScenario @caldav */
-	public function setUpScenario() {
+	/**
+	 * @BeforeScenario @caldav
+	 *
+	 * @param BeforeScenarioScope $scope
+	 * @return void
+	 */
+	public function setUpScenario(BeforeScenarioScope $scope) {
+		// Get the environment
+		$environment = $scope->getEnvironment();
+		// Get all the contexts you need in this context
+		$this->featureContext = $environment->getContext('FeatureContext');
 		$this->client = new Client();
 		$this->responseXml = '';
 	}
@@ -60,35 +76,28 @@ class CalDavContext implements \Behat\Behat\Context\Context {
 			$this->client->delete(
 				$davUrl,
 				[
-					'auth' => [
-						'admin',
-						'admin',
-					],
+					'auth' => $this->featureContext->getAuthOptionForAdmin()
 				]
 			);
-		} catch (\GuzzleHttp\Exception\ClientException $e) {}
+		} catch (BadResponseException $e) {}
 	}
 
 	/**
-	 * @When :user requests calendar :calendar
+	 * @When user :user requests calendar :calendar using the API
 	 * @param string $user
 	 * @param string $calendar
 	 */
-	public function requestsCalendar($user, $calendar)  {
+	public function userRequestsCalendarUsingTheAPI($user, $calendar) {
 		$davUrl = $this->baseUrl . '/remote.php/dav/calendars/'.$calendar;
 
-		$password = ($user === 'admin') ? 'admin' : '123456';
 		try {
 			$this->response = $this->client->get(
 				$davUrl,
 				[
-					'auth' => [
-						$user,
-						$password,
-					]
+					'auth' => $this->featureContext->getAuthOptionForUser($user)
 				]
 			);
-		} catch (\GuzzleHttp\Exception\ClientException $e) {
+		} catch (BadResponseException $e) {
 			$this->response = $e->getResponse();
 		}
 	}
@@ -98,7 +107,7 @@ class CalDavContext implements \Behat\Behat\Context\Context {
 	 * @param int $code
 	 * @throws \Exception
 	 */
-	public function theCaldavHttpStatusCodeShouldBe($code) {
+	public function theCalDavHttpStatusCodeShouldBe($code) {
 		if ((int)$code !== $this->response->getStatusCode()) {
 			throw new \Exception(
 				sprintf(
@@ -118,11 +127,11 @@ class CalDavContext implements \Behat\Behat\Context\Context {
 	}
 
 	/**
-	 * @Then the exception is :message
+	 * @Then the CalDAV exception should be :message
 	 * @param string $message
 	 * @throws \Exception
 	 */
-	public function theExceptionIs($message) {
+	public function theCalDavExceptionShouldBe($message) {
 		$result = $this->responseXml['value'][0]['value'];
 
 		if ($message !== $result) {
@@ -137,11 +146,11 @@ class CalDavContext implements \Behat\Behat\Context\Context {
 	}
 
 	/**
-	 * @Then the error message is :message
+	 * @Then the CalDAV error message should be :message
 	 * @param string $message
 	 * @throws \Exception
 	 */
-	public function theErrorMessageIs($message) {
+	public function theCalDavErrorMessageShouldBe($message) {
 		$result = $this->responseXml['value'][1]['value'];
 
 		if ($message !== $result) {
@@ -156,27 +165,24 @@ class CalDavContext implements \Behat\Behat\Context\Context {
 	}
 
 	/**
-	 * @Given :user creates a calendar named :name
+	 * @Given user :user has successfully created a calendar named :name
 	 * @param string $user
 	 * @param string $name
 	 */
-	public function createsACalendarNamed($user, $name) {
+	public function userHasCreatedACalendarNamed($user, $name) {
 		$davUrl = $this->baseUrl . '/remote.php/dav/calendars/'.$user.'/'.$name;
-		$password = ($user === 'admin') ? 'admin' : '123456';
 
 		$request = $this->client->createRequest(
 			'MKCALENDAR',
 			$davUrl,
 			[
 				'body' => '<c:mkcalendar xmlns:c="urn:ietf:params:xml:ns:caldav" xmlns:d="DAV:" xmlns:a="http://apple.com/ns/ical/" xmlns:o="http://owncloud.org/ns"><d:set><d:prop><d:displayname>test</d:displayname><o:calendar-enabled>1</o:calendar-enabled><a:calendar-color>#21213D</a:calendar-color><c:supported-calendar-component-set><c:comp name="VEVENT"/></c:supported-calendar-component-set></d:prop></d:set></c:mkcalendar>',
-				'auth' => [
-					$user,
-					$password,
-				],
+				'auth' => $this->featureContext->getAuthOptionForUser($user)
 			]
 		);
 
 		$this->response = $this->client->send($request);
+		$this->theCalDavHttpStatusCodeShouldBe(201);
 	}
 
 }

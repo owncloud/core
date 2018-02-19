@@ -5,7 +5,7 @@
  * @author Joas Schilling <coding@schilljs.com>
  * @author Sergio Bertolin <sbertolin@owncloud.com>
  * @author Phillip Davis <phil@jankaritech.com>
- * @copyright 2017 ownCloud GmbH
+ * @copyright Copyright (c) 2018, ownCloud GmbH
  *
  * This code is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License,
@@ -69,15 +69,15 @@ trait AppConfiguration {
 	abstract public function theHTTPStatusCodeShouldBe($statusCode);
 
 	/**
-	 * @Given /^parameter "([^"]*)" of app "([^"]*)" is set to "([^"]*)"$/
+	 * @When /^the administrator sets parameter "([^"]*)" of app "([^"]*)" to "([^"]*)" using the API$/
 	 * @param string $parameter
 	 * @param string $app
 	 * @param string $value
 	 * @return void
 	 */
-	public function serverParameterIsSetTo($parameter, $app, $value) {
+	public function adminSetsServerParameterToUsingAPI($parameter, $app, $value) {
 		$user = $this->currentUser;
-		$this->currentUser = 'admin';
+		$this->currentUser = $this->getAdminUserName();
 
 		$this->modifyServerConfig($app, $parameter, $value);
 
@@ -85,13 +85,24 @@ trait AppConfiguration {
 	}
 
 	/**
-	 * @Then the capabilities setting of :capabilitiesApp path :capabilitiesPath is :expectedValue
+	 * @Given /^parameter "([^"]*)" of app "([^"]*)" has been set to "([^"]*)"$/
+	 * @param string $parameter
+	 * @param string $app
+	 * @param string $value
+	 * @return void
+	 */
+	public function serverParameterHasBeenSetTo($parameter, $app, $value) {
+		$this->adminSetsServerParameterToUsingAPI($parameter, $app, $value);
+	}
+
+	/**
+	 * @Then the capabilities setting of :capabilitiesApp path :capabilitiesPath should be :expectedValue
 	 * @param string $capabilitiesApp the "app" name in the capabilities response
 	 * @param string $capabilitiesPath the path to the element
 	 * @param string $expectedValue
 	 * @return void
 	 */
-	public function theCapabilitiesSettingOfAppParameterIs($capabilitiesApp, $capabilitiesPath, $expectedValue) {
+	public function theCapabilitiesSettingOfAppParameterShouldBe($capabilitiesApp, $capabilitiesPath, $expectedValue) {
 		$this->getCapabilitiesCheckResponse();
 
 		PHPUnit_Framework_Assert::assertEquals(
@@ -116,7 +127,7 @@ trait AppConfiguration {
 	}
 
 	/**
-	 * @When the capabilities are retrieved
+	 * @When the user retrieves the capabilities using the API
 	 * @return void
 	 */
 	public function getCapabilitiesCheckResponse() {
@@ -163,33 +174,24 @@ trait AppConfiguration {
 	}
 
 	/**
-	 * @param string $capabilitiesApp the "app" name in the capabilities response
-	 * @param string $capabilitiesParameter the parameter name in the
-	 *                                      capabilities response
-	 * @param string $testingApp the "app" name as understood by "testing"
-	 * @param string $testingParameter the parameter name as understood by
-	 *                                 "testing"
-	 * @param boolean $testingState the on|off state the parameter must be set to for the test
+	 * @param array $capabilitiesArray[] with each array entry containing keys for:
+	 *                                   ['capabilitiesApp'] the "app" name in the capabilities response
+	 *                                   ['capabilitiesParameter'] the parameter name in the capabilities response
+	 *                                   ['testingApp'] the "app" name as understood by "testing"
+	 *                                   ['testingParameter'] the parameter name as understood by "testing"
+	 *                                   ['testingState'] boolean state the parameter must be set to for the test
 	 * @return void
 	 */
-	public function setCapability(
-		$capabilitiesApp, $capabilitiesParameter, $testingApp, $testingParameter, $testingState
-	) {
-		$savedCapabilitiesChanges = AppConfigHelper::setCapability(
+	public function setCapabilities($capabilitiesArray) {
+		$savedCapabilitiesChanges = AppConfigHelper::setCapabilities(
 			$this->baseUrlWithoutOCSAppendix(),
-			$this->adminUser[0],
-			$this->adminUser[1],
-			$capabilitiesApp,
-			$capabilitiesParameter,
-			$testingApp,
-			$testingParameter,
-			$testingState,
+			$this->getAdminUserName(),
+			$this->getAdminPassword(),
+			$capabilitiesArray,
 			$this->savedCapabilitiesXml
 		);
-		
-		if (sizeof($savedCapabilitiesChanges) > 0) {
-			$this->savedCapabilitiesChanges[] = $savedCapabilitiesChanges;
-		}
+
+		$this->savedCapabilitiesChanges = array_merge($this->savedCapabilitiesChanges, $savedCapabilitiesChanges);
 	}
 
 	/**
@@ -201,11 +203,25 @@ trait AppConfiguration {
 	protected function modifyServerConfig($app, $parameter, $value) {
 		AppConfigHelper::modifyServerConfig(
 			$this->baseUrlWithoutOCSAppendix(),
-			$this->adminUser[0],
-			$this->adminUser[1],
+			$this->getAdminUserName(),
+			$this->getAdminPassword(),
 			$app,
 			$parameter,
 			$value,
+			$this->apiVersion
+		);
+	}
+
+	/**
+	 * @param string $appParameterValues
+	 * @return void
+	 */
+	protected function modifyServerConfigs($appParameterValues) {
+		AppConfigHelper::modifyServerConfigs(
+			$this->baseUrlWithoutOCSAppendix(),
+			$this->getAdminUserName(),
+			$this->getAdminPassword(),
+			$appParameterValues,
 			$this->apiVersion
 		);
 	}
@@ -251,7 +267,7 @@ trait AppConfiguration {
 	 */
 	public function prepareParametersBeforeScenario() {
 		$user = $this->currentUser;
-		$this->currentUser = 'admin';
+		$this->currentUser = $this->getAdminUserName();
 		$this->resetAppConfigs();
 		$this->currentUser = $user;
 	}
@@ -262,16 +278,8 @@ trait AppConfiguration {
 	 */
 	public function restoreParametersAfterScenario() {
 		$user = $this->currentUser;
-		$this->currentUser = 'admin';
-
-		foreach ($this->savedCapabilitiesChanges as $capabilitiesChange) {
-			$this->modifyServerConfig(
-				$capabilitiesChange['testingApp'],
-				$capabilitiesChange['testingParameter'],
-				$capabilitiesChange['savedState'] ? 'yes' : 'no'
-			);
-		}
-
+		$this->currentUser = $this->getAdminUserName();
+		$this->modifyServerConfigs($this->savedCapabilitiesChanges);
 		$this->currentUser = $user;
 	}
 }

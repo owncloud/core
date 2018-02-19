@@ -5,7 +5,7 @@
  * @author Joas Schilling <coding@schilljs.com>
  * @author Sergio Bertolin <sbertolin@owncloud.com>
  * @author Phillip Davis <phil@jankaritech.com>
- * @copyright 2017 ownCloud GmbH
+ * @copyright Copyright (c) 2018, ownCloud GmbH
  *
  * This code is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License,
@@ -35,11 +35,21 @@ class ShareesContext implements Context, SnippetAcceptingContext {
 	use BasicStructure;
 
 	/**
-	 * @When /^getting sharees for$/
+	 * @When /^the user gets the sharees using the API with parameters$/
 	 * @param \Behat\Gherkin\Node\TableNode $body
 	 * @return void
 	 */
-	public function whenGettingShareesFor($body) {
+	public function theUserGetsTheShareesWithParameters($body) {
+		$this->userGetsTheShareesWithParameters($this->currentUser, $body);
+	}
+
+	/**
+	 * @When /^user "([^"]*)" gets the sharees using the API with parameters$/
+	 * @param string $user
+	 * @param \Behat\Gherkin\Node\TableNode $body
+	 * @return void
+	 */
+	public function userGetsTheShareesWithParameters($user, $body) {
 		$url = '/apps/files_sharing/api/v1/sharees';
 		if ($body instanceof \Behat\Gherkin\Node\TableNode) {
 			$parameters = [];
@@ -51,29 +61,35 @@ class ShareesContext implements Context, SnippetAcceptingContext {
 			}
 		}
 
-		$this->sendingTo('GET', $url);
+		$this->userSendsHTTPMethodToAPIEndpointWithBody(
+			$user, 'GET', $url, null
+		);
 	}
 
 	/**
-	 * @Then /^"([^"]*)" sharees returned (are|is empty)$/
+	 * @Then /^the "([^"]*)" sharees returned should be$/
 	 * @param string $shareeType
-	 * @param string $isEmpty
-	 * @param \Behat\Gherkin\Node\TableNode|null $shareesList
+	 * @param \Behat\Gherkin\Node\TableNode $shareesList
 	 * @return void
 	 */
-	public function thenListOfSharees($shareeType, $isEmpty, $shareesList = null) {
-		if ($isEmpty !== 'is empty') {
-			$sharees = $shareesList->getRows();
-			$respondedArray = $this->getArrayOfShareesResponded(
-				$this->response, $shareeType
-			);
-			PHPUnit_Framework_Assert::assertEquals($sharees, $respondedArray);
-		} else {
-			$respondedArray = $this->getArrayOfShareesResponded(
-				$this->response, $shareeType
-			);
-			PHPUnit_Framework_Assert::assertEmpty($respondedArray);
-		}
+	public function theShareesReturnedShouldBe($shareeType, $shareesList) {
+		$sharees = $shareesList->getRows();
+		$respondedArray = $this->getArrayOfShareesResponded(
+			$this->response, $shareeType
+		);
+		PHPUnit_Framework_Assert::assertEquals($sharees, $respondedArray);
+	}
+
+	/**
+	 * @Then /^the "([^"]*)" sharees returned should be empty$/
+	 * @param string $shareeType
+	 * @return void
+	 */
+	public function theShareesReturnedShouldBeEmpty($shareeType) {
+		$respondedArray = $this->getArrayOfShareesResponded(
+			$this->response, $shareeType
+		);
+		PHPUnit_Framework_Assert::assertEmpty($respondedArray);
 	}
 
 	/**
@@ -121,7 +137,8 @@ class ShareesContext implements Context, SnippetAcceptingContext {
 		$this->getCapabilitiesCheckResponse();
 		$this->savedCapabilitiesXml = $this->getCapabilitiesXml();
 		// Set the required starting values for testing
-		$this->setupCommonSharingConfigs();
-		$this->setupCommonFederationConfigs();
+		$capabilitiesArray = $this->getCommonSharingConfigs();
+		$capabilitiesArray = array_merge($capabilitiesArray, $this->getCommonFederationConfigs());
+		$this->setCapabilities($capabilitiesArray);
 	}
 }

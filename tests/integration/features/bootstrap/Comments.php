@@ -3,7 +3,7 @@
  * @author Lukas Reschke <lukas@owncloud.com>
  * @author Sergio Bertolin <sbertolin@owncloud.com>
  *
- * @copyright Copyright (c) 2017, ownCloud, Gmbh.
+ * @copyright Copyright (c) 2018, ownCloud GmbH
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -20,6 +20,8 @@
  *
  */
 
+use GuzzleHttp\Exception\BadResponseException;
+
 require __DIR__ . '/../../../../lib/composer/autoload.php';
 
 //class CommentsContext implements \Behat\Behat\Context\Context {
@@ -32,14 +34,15 @@ trait Comments {
 	private $lastFileId;
 
 	/**
-	 * @When /^user "([^"]*)" comments with content "([^"]*)" on (file|folder) "([^"]*)"$/
+	 * @When /^user "([^"]*)" comments with content "([^"]*)" on (file|folder) "([^"]*)" using the API$/
+	 * @Given /^user "([^"]*)" has commented with content "([^"]*)" on (file|folder) "([^"]*)"$/
 	 * @param string $user
 	 * @param string $content
 	 * @param string $type
 	 * @param string $path
 	 * @throws \Exception
 	 */
-	public function postsAComment($user, $content, $type, $path) {
+	public function userCommentsWithContentOnEntry($user, $content, $type, $path) {
 		$fileId = $this->getFileIdForPath($user, $path);
 		$this->lastFileId = $fileId;
 		$commentsPath = '/comments/files/' . $fileId . '/';
@@ -61,7 +64,7 @@ trait Comments {
 			$responseHeaders =  $this->response->getHeaders();
 			$commentUrl = $responseHeaders['Content-Location'][0];
 			$this->lastCommentId = substr($commentUrl, strrpos($commentUrl,'/')+1);
-		} catch (\GuzzleHttp\Exception\ClientException $ex) {
+		} catch (BadResponseException $ex) {
 			$this->response = $ex->getResponse();
 		}
 	}
@@ -79,9 +82,12 @@ trait Comments {
 		$properties = '<oc:limit>200</oc:limit><oc:offset>0</oc:offset>';
 		try {
 			$elementList = $this->reportElementComments($user,$commentsPath,$properties);
-		} catch (\GuzzleHttp\Exception\ClientException $e) {
+		} catch (BadResponseException $e) {
 			$this->response = $e->getResponse();
-			return 1;
+			$statusCode = $this->response->getStatusCode();
+			PHPUnit_Framework_Assert::fail(
+				"checkComments failed to get comments for user $user path $path status $statusCode"
+			);
 		}
 
 		if ($expectedElements instanceof \Behat\Gherkin\Node\TableNode) {
@@ -114,11 +120,20 @@ trait Comments {
 		try {
 			$elementList = $this->reportElementComments($user,$commentsPath,$properties);
 			PHPUnit_Framework_Assert::assertCount((int) $numberOfComments, $elementList);
-		} catch (\GuzzleHttp\Exception\ClientException $e) {
+		} catch (BadResponseException $e) {
 			$this->response = $e->getResponse();
+			$statusCode = $this->response->getStatusCode();
+			PHPUnit_Framework_Assert::fail(
+				"checkNumberOfComments failed to get comments for user $user path $path status $statusCode"
+			);
 		}
 	}
 
+	/**
+	 * @param string $user
+	 * @param string $fileId
+	 * @param string $commentId
+	 */
 	public function deleteComment($user, $fileId, $commentId) {
 		$commentsPath = '/comments/files/' . $fileId . '/' . $commentId;
 		try {
@@ -129,13 +144,14 @@ trait Comments {
 													null,
 													"uploads",
 													null);
-		} catch (\GuzzleHttp\Exception\ClientException $ex) {
+		} catch (BadResponseException $ex) {
 			$this->response = $ex->getResponse();
 		}
 	}
 
 	/**
-	 * @Then user :user deletes the last created comment
+	 * @When user :user deletes the last created comment using the API
+	 * @Given user :user has deleted the last created comment
 	 * @param string $user
 	 * @throws \Exception
 	 */
@@ -175,6 +191,12 @@ trait Comments {
 		}
 	}
 
+	/**
+	 * @param string $user
+	 * @param string $content
+	 * @param string $fileId
+	 * @param string $commentId
+	 */
 	public function editAComment($user, $content, $fileId, $commentId) {
 		$commentsPath = '/comments/files/' . $fileId . '/' . $commentId;
 		try {
@@ -192,17 +214,16 @@ trait Comments {
 											</d:prop>
 										</d:set>
 									</d:propertyupdate>');
-		} catch (\GuzzleHttp\Exception\ClientException $ex) {
+		} catch (BadResponseException $ex) {
 			$this->response = $ex->getResponse();
 		}
 	}
 
 	/**
-	 * @When /^user "([^"]*)" edits last comment with content "([^"]*)"$/
+	 * @When /^user "([^"]*)" edits the last created comment with content "([^"]*)" using the API$/
+	 * @Given /^user "([^"]*)" has edited the last created comment with content "([^"]*)"$/
 	 * @param string $user
 	 * @param string $content
-	 * @param string $type
-	 * @param string $path
 	 * @throws \Exception
 	 */
 	public function userEditsLastCreatedComment($user, $content) {

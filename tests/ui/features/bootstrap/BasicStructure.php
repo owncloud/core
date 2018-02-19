@@ -3,7 +3,7 @@
  * ownCloud
  *
  * @author Artur Neumann <artur@jankaritech.com>
- * @copyright 2017 Artur Neumann artur@jankaritech.com
+ * @copyright Copyright (c) 2017 Artur Neumann artur@jankaritech.com
  *
  * This code is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License,
@@ -83,12 +83,14 @@ trait BasicStructure {
 	 * @return \Page\OwncloudPage
 	 */
 	public function loginAs($username, $password, $target = 'FilesPage') {
+		$session = $this->getSession();
+		$this->loginPage->waitTillPageIsLoaded($session);
 		$nextPage = $this->loginPage->loginAs(
 			$username,
 			$password,
 			$target
 		);
-		$nextPage->waitTillPageIsLoaded($this->getSession());
+		$nextPage->waitTillPageIsLoaded($session);
 		$this->setCurrentUser($username);
 		$this->setCurrentServer(null);
 		return $nextPage;
@@ -185,8 +187,14 @@ trait BasicStructure {
 	 */
 	private function createUser(
 		$user, $password, $displayName = null, $email = null, $initialize = true,
-		$method = "api"
+		$method = null
 	) {
+		if ($method === null && getenv("TEST_EXTERNAL_USER_BACKENDS") === "true") {
+			//guess yourself
+			$method = "ldap";
+		} elseif ($method === null) {
+			$method = "api";
+		}
 		$user = trim($user);
 		$method = trim(strtolower($method));
 		$baseUrl = $this->getMinkParameter("base_url");
@@ -216,6 +224,9 @@ trait BasicStructure {
 						. $result["stdOut"] . " " . $result["stdErr"]
 					);
 				}
+				break;
+			case "ldap":
+				echo "creating LDAP users is not implemented, so assume they exist\n";
 				break;
 			default:
 				throw new InvalidArgumentException(
@@ -274,7 +285,13 @@ trait BasicStructure {
 	 * @return void
 	 * @throws Exception
 	 */
-	private function createGroup($group, $method = "api") {
+	private function createGroup($group, $method = null) {
+		if ($method === null && getenv("TEST_EXTERNAL_USER_BACKENDS") === "true") {
+			//guess yourself
+			$method = "ldap";
+		} elseif ($method === null) {
+			$method = "api";
+		}
 		$group = trim($group);
 		$method = trim(strtolower($method));
 		switch ($method) {
@@ -298,6 +315,9 @@ trait BasicStructure {
 						. $result["stdOut"] . " " . $result["stdErr"]
 					);
 				}
+				break;
+			case "ldap":
+				echo "creating LDAP groups is not implemented, so assume they exist\n";
 				break;
 			default:
 				throw new InvalidArgumentException(
@@ -327,7 +347,13 @@ trait BasicStructure {
 	 * @return void
 	 * @throws Exception
 	 */
-	public function theUserIsInTheGroup($user, $group, $method = "api") {
+	public function theUserIsInTheGroup($user, $group, $method = null) {
+		if ($method === null && getenv("TEST_EXTERNAL_USER_BACKENDS") === "true") {
+			//guess yourself
+			$method = "ldap";
+		} elseif ($method === null) {
+			$method = "api";
+		}
 		$method = trim(strtolower($method));
 		switch ($method) {
 			case "api":
@@ -351,10 +377,36 @@ trait BasicStructure {
 					);
 				}
 				break;
+			case "ldap":
+				echo "adding users to groups in LDAP is not implemented, " .
+					 "so assume user is in group\n";
+				break;
 			default:
 				throw new InvalidArgumentException(
 					"Invalid method to add a user to a group"
 				);
+		}
+	}
+
+	/**
+	 * @return void
+	 * @BeforeScenario
+	 * @TestAlsoOnExternalUserBackend
+	 */
+	public function setUpExternalUserBackends() {
+		//TODO make it smarter to be able also to work with other backends 
+		if (getenv("TEST_EXTERNAL_USER_BACKENDS") === "true") {
+			$result = SetupHelper::runOcc(
+				["user:sync", "OCA\User_LDAP\User_Proxy", "-m remove"]
+			);
+			if ((int)$result['code'] !== 0) {
+				throw new Exception(
+					"could not sync users with LDAP. stdOut:\n" .
+					$result['stdOut'] . "\n" .
+					"stdErr:\n" .
+					$result['stdErr'] . "\n"
+				);
+			}
 		}
 	}
 
@@ -446,6 +498,31 @@ trait BasicStructure {
 	 */
 	public function getCreatedUserNames() {
 		return array_keys($this->createdUsers);
+	}
+
+	/**
+	 * @return array
+	 */
+	public function getCreatedUsers() {
+		return $this->createdUsers;
+	}
+
+	/**
+	 * returns an array of the real displayed names
+	 * if no "Display Name" is set the user-name is returned instead
+	 *
+	 * @return array
+	 */
+	public function getCreatedUserDisplayNames() {
+		$result = array();
+		foreach ($this->getCreatedUsers() as $username => $user) {
+			if (is_null($user['displayname'])) {
+				$result[] = $username;
+			} else {
+				$result[] = $user['displayname'];
+			}
+		}
+		return $result;
 	}
 
 	/**

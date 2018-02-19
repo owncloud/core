@@ -4,6 +4,15 @@
 
 /* Global Components */
 
+/* Positioning */
+
+.absolute-center {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+}
+
 .pull-left {
 	float: left;
 }
@@ -24,7 +33,7 @@
 	clear: both;
 }
 
-.hidden {
+.hidden.hidden {
 	display: none;
 }
 
@@ -41,10 +50,25 @@
 	font-weight:600;
 }
 
-.center {
-	text-align:center;
+.text-small {
+	font-size: 80%;
 }
 
 .inlineblock {
 	display: inline-block;
+}
+
+/* Text */
+
+.text-right {
+	text-align: right;
+}
+
+.center,
+.text-center {
+	text-align: center;
+}
+
+.text-left {
+	text-align: left;
 }

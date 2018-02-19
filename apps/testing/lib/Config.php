@@ -2,7 +2,7 @@
 /**
  * @author Joas Schilling <coding@schilljs.com>
  *
- * @copyright Copyright (c) 2017, ownCloud GmbH
+ * @copyright Copyright (c) 2018, ownCloud GmbH
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -64,6 +64,46 @@ class Config {
 		$configKey = $parameters['configkey'];
 
 		$this->config->deleteAppValue($app, $configKey);
+
+		return new \OC_OCS_Result();
+	}
+
+	/**
+	 * @return \OC_OCS_Result
+	 */
+	public function setAppValues() {
+		$values = $this->request->getParam('values');
+
+		if (is_array($values)) {
+			foreach ($values as $appEntry) {
+				if (is_array($appEntry)) {
+					$this->config->setAppValue(
+						$appEntry['appid'],
+						$appEntry['configkey'],
+						$appEntry['value']);
+				}
+			}
+		}
+
+		return new \OC_OCS_Result();
+	}
+
+	/**
+	 * @return \OC_OCS_Result
+	 */
+	public function deleteAppValues() {
+		$values = $this->request->getParam('values');
+
+		if (is_array($values)) {
+			foreach ($values as $appEntry) {
+				if (is_array($appEntry)) {
+					$this->config->deleteAppValue(
+						$appEntry['appid'],
+						$appEntry['configkey']
+					);
+				}
+			}
+		}
 
 		return new \OC_OCS_Result();
 	}

@@ -7,7 +7,7 @@
  * @author Robin Appelman <icewind@owncloud.com>
  * @author Thomas Müller <thomas.mueller@tmit.eu>
  *
- * @copyright Copyright (c) 2017, ownCloud GmbH
+ * @copyright Copyright (c) 2018, ownCloud GmbH
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -116,7 +116,7 @@ class Memory extends Session {
 	 */
 	private function validateSession() {
 		if ($this->sessionClosed) {
-			throw new Exception('Session has been closed - no further changes to the session are allowed');
+			throw new SessionNotAvailableException('Session has been closed - no further changes to the session are allowed');
 		}
 	}
 }

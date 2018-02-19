@@ -13,7 +13,7 @@
  * @author Thomas Müller <thomas.mueller@tmit.eu>
  * @author Victor Dubiniuk <dubiniuk@owncloud.com>
  *
- * @copyright Copyright (c) 2017, ownCloud GmbH
+ * @copyright Copyright (c) 2018, ownCloud GmbH
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -97,7 +97,7 @@ class Log implements ILogger {
 	 * @param SystemConfig $config the system config object
 	 * @param null $normalizer
 	 */
-	public function __construct($logger=null, SystemConfig $config=null, $normalizer = null) {
+	public function __construct($logger = null, SystemConfig $config = null, $normalizer = null) {
 		// FIXME: Add this for backwards compatibility, should be fixed at some point probably
 		if($config === null) {
 			$config = \OC::$server->getSystemConfig();
@@ -287,6 +287,9 @@ class Log implements ILogger {
 						// if token is found in the request change set the log condition to satisfied
 						if ($request && hash_equals($logCondition['shared_secret'], $request->getParam('log_secret'))) {
 							$this->logConditionSatisfied = true;
+							if (!empty($logCondition['logfile'])) {
+								$logConditionFile = $logCondition['logfile'];
+							}
 							break;
 						}
 					}
@@ -300,6 +303,9 @@ class Log implements ILogger {
 							// if the user matches set the log condition to satisfied
 							if ($user !== null && in_array($user->getUID(), $logCondition['users'], true)) {
 								$this->logConditionSatisfied = true;
+								if (!empty($logCondition['logfile'])) {
+									$logConditionFile = $logCondition['logfile'];
+								}
 								break;
 							}
 						}

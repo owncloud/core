@@ -5,7 +5,7 @@
  * @author Thomas Müller <thomas.mueller@tmit.eu>
  * @author Vincent Petry <pvince81@owncloud.com>
  *
- * @copyright Copyright (c) 2017, ownCloud GmbH
+ * @copyright Copyright (c) 2018, ownCloud GmbH
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -29,6 +29,7 @@ use OC\Files\Filesystem;
 use OC\Files\Storage\Local;
 use OC\Files\View;
 use OCA\DAV\Connector\Sabre\Exception\FileLocked;
+use OCA\DAV\Connector\Sabre\Exception\Forbidden;
 use OCA\DAV\Connector\Sabre\File;
 use OCP\Constants;
 use OCP\Encryption\Exceptions\GenericEncryptionException;
@@ -1244,6 +1245,30 @@ public function testPutWithModifyRun() {
 		$view->expects($this->atLeastOnce())
 			->method('fopen')
 			->willThrowException(new ForbiddenException('', true));
+		$view->expects($this->atLeastOnce())
+			->method('file_exists')
+			->will($this->returnValue(true));
+
+		$info = new FileInfo('/test.txt', $this->getMockStorage(), null, [
+			'permissions' => Constants::PERMISSION_ALL
+		], null);
+
+		$file = new File($view, $info);
+
+		$file->get();
+	}
+
+	/**
+	 * @expectedException \Sabre\Dav\Exception\Forbidden
+	 * @expectedExceptionMessage Encryption not ready
+	 */
+	public function testFopenForbiddenExceptionEncryption() {
+		$view = $this->getMockBuilder(View::class)
+			->setMethods(['fopen', 'file_exists'])
+			->getMock();
+		$view->expects($this->atLeastOnce())
+			->method('fopen')
+			->willThrowException(new Exception\Forbidden('Encryption not ready', true));
 		$view->expects($this->atLeastOnce())
 			->method('file_exists')
 			->will($this->returnValue(true));

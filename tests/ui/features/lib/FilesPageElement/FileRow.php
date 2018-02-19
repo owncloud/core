@@ -4,7 +4,7 @@
  * ownCloud
  *
  * @author Artur Neumann <artur@jankaritech.com>
- * @copyright 2017 Artur Neumann artur@jankaritech.com
+ * @copyright Copyright (c) 2017 Artur Neumann artur@jankaritech.com
  *
  * This code is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License,
@@ -51,6 +51,9 @@ class FileRow extends OwnCloudPage {
 	protected $fileTooltipXpath = ".//*[@class='tooltip-inner']";
 	protected $thumbnailXpath = "//*[@class='thumbnail']";
 	protected $fileLinkXpath = "//span[contains(@class,'nametext')]";
+	protected $restoreLinkXpath = '//a[@data-action="Restore"]';
+	protected $notMarkedFavoriteXpath = "//span[contains(@class,'icon-star')]";
+	protected $markedFavoriteXpath = "//span[contains(@class,'icon-starred')]";
 
 	/**
 	 * sets the NodeElement for the current file row
@@ -100,6 +103,7 @@ class FileRow extends OwnCloudPage {
 				" xpath $this->fileActionMenuBtnXpath could not find actionButton in fileRow"
 			);
 		}
+		$actionButton->focus();
 		return $actionButton;
 	}
 
@@ -144,6 +148,7 @@ class FileRow extends OwnCloudPage {
 				" xpath $this->shareBtnXpath could not find sharing button in fileRow"
 			);
 		}
+		$shareBtn->focus();
 		return $shareBtn;
 	}
 
@@ -286,5 +291,69 @@ class FileRow extends OwnCloudPage {
 	 */
 	public function openFileFolder() {
 		$this->findFileLink()->click();
+	}
+	
+	/**
+	 * restore the current deleted file and folder by clicking on the restore link
+	 *
+	 * @return void
+	 */
+	public function restore() {
+		$rowElement = $this->rowElement->find('xpath', $this->restoreLinkXpath);
+		if (is_null($rowElement)) {
+			throw new ElementNotFoundException(
+				__METHOD__ .
+				" xpath $this->restoreLinkXpath could not find restore link to '" .
+				$this->name . "'"
+			);
+		}
+		$rowElement->click();
+	}
+
+	/**
+	 * marks the current file or folder as favorite by clicking the star icon
+	 *
+	 * @return void
+	 */
+	public function markAsFavorite() {
+		$element = $this->rowElement->find("xpath", $this->notMarkedFavoriteXpath);
+		if (is_null($element)) {
+			throw new ElementNotFoundException(
+				__METHOD__ .
+				" xpath $this->notMarkedFavoriteXpath not found"
+			);
+		}
+		$element->click();
+	}
+
+	/**
+	 * checks whether the current file or folder is marked as favorite or not
+	 *
+	 * @return bool
+	 */
+	public function isMarkedAsFavorite() {
+		$checkFavorite = $this->rowElement->find("xpath", $this->markedFavoriteXpath);
+		
+		if (is_null($checkFavorite)) {
+			return false;
+		} else {
+			return true;
+		}
+	}
+	
+	/**
+	 * unmarks the current file or folder off favorite by clicking the star icon
+	 *
+	 * @return void
+	 */
+	public function unmarkFavorite() {
+		$element = $this->rowElement->find("xpath", $this->markedFavoriteXpath);
+		if (is_null($element)) {
+			throw new ElementNotFoundException(
+				__METHOD__ .
+				" xpath $this->markedFavoriteXpath not found"
+			);
+		}
+		$element->click();
 	}
 }

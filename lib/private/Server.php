@@ -22,7 +22,7 @@
  * @author Tom Needham <tom@owncloud.com>
  * @author Vincent Petry <pvince81@owncloud.com>
  *
- * @copyright Copyright (c) 2017, ownCloud GmbH
+ * @copyright Copyright (c) 2018, ownCloud GmbH
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -847,7 +847,10 @@ class Server extends ServerContainer implements IServerContainer, IServiceLoader
 		});
 
 		$this->registerService('ThemeService', function ($c) {
-			return new ThemeService($this->getSystemConfig()->getValue('theme'));
+			return new ThemeService(
+				$this->getSystemConfig()->getValue('theme'),
+				\OC::$SERVERROOT
+			);
 		});
 		$this->registerAlias('OCP\Theme\IThemeService', 'ThemeService');
 		$this->registerAlias('OCP\IUserSession', 'UserSession');

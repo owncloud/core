@@ -1,4 +1,4 @@
-@insulated
+@insulated @disablePreviews
 Feature: login users
 As a user
 I want to be able to log into my account
@@ -8,6 +8,7 @@ As an admin
 I want only authorised users to log in
 So that unauthorised access is impossible
 
+	@TestAlsoOnExternalUserBackend
 	Scenario: simple user login
 		Given a regular user exists but is not initialized
 		And I am on the login page

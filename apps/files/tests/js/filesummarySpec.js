@@ -2,7 +2,7 @@
 * ownCloud
 *
 * @author Vincent Petry
-* @copyright 2014 Vincent Petry <pvince81@owncloud.com>
+* @copyright Copyright (c) 2014 Vincent Petry <pvince81@owncloud.com>
 *
 * This library is free software; you can redistribute it and/or
 * modify it under the terms of the GNU AFFERO GENERAL PUBLIC LICENSE
@@ -188,6 +188,46 @@ describe('OCA.Files.FileSummary tests', function() {
 		expect(s.summary.totalDirs).toEqual(0);
 		expect(s.summary.totalFiles).toEqual(0);
 		expect(s.summary.totalSize).toEqual(0);
+	});
+	it('donot update hidden file count when file is not renamed to hidden', function() {
+		var s = new FileSummary($container);
+		s.setSummary({
+			totalFiles: 10,
+			totalHidden: 0
+		});
+		s.updateHidden({name:'abc'}, {name:'def'});
+		expect(s.summary.totalFiles).toEqual(10);
+		expect(s.summary.totalHidden).toEqual(0);
+	});
+	it('updates hidden file count on renaming from hidden to normal file', function() {
+		var s = new FileSummary($container);
+		s.setSummary({
+			totalFiles: 10,
+			totalHidden: 1
+		});
+		s.updateHidden({name:'abc'}, {name:'.def'});
+		expect(s.summary.totalFiles).toEqual(10);
+		expect(s.summary.totalHidden).toEqual(0);
+	});
+	it('updates hidden file count on renaming to hidden file', function() {
+		var s = new FileSummary($container);
+		s.setSummary({
+			totalFiles: 10,
+			totalHidden: 0
+		});
+		s.updateHidden({name:'.abc'}, {name:'def'});
+		expect(s.summary.totalFiles).toEqual(10);
+		expect(s.summary.totalHidden).toEqual(1);
+	});
+	it('donot update hidden file count on renaming hidden file as hidden file', function() {
+		var s = new FileSummary($container);
+		s.setSummary({
+			totalFiles: 10,
+			totalHidden: 1
+		});
+		s.updateHidden({name:'.abc'}, {name:'.def'});
+		expect(s.summary.totalFiles).toEqual(10);
+		expect(s.summary.totalHidden).toEqual(1);
 	});
 	describe('hidden files', function() {
 		var config;

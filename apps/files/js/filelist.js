@@ -1942,7 +1942,7 @@
 						if (status === 412) {
 							// TODO: some day here we should invoke the conflict dialog
 							OC.Notification.show(t('files', 'Could not move "{file}", target exists', 
-								{file: fileName}), {type: 'error'}
+								{file: fileName}, null, {escape: false}), {type: 'error'}
 							);
 						} else {
 							OC.Notification.show(t('files', 'Could not move "{file}"', 
@@ -2021,9 +2021,10 @@
 				td.children('a.name').show();
 			}
 
-			function updateInList(fileInfo) {
-				self.updateRow(tr, fileInfo);
-				self._updateDetailsView(fileInfo.name, false);
+			function updateInList(newFileInfo, oldFileInfo) {
+				self.updateRow(tr, newFileInfo);
+				self.fileSummary.updateHidden(newFileInfo, oldFileInfo);
+				self._updateDetailsView(newFileInfo.name, false);
 			}
 
 			// TODO: too many nested blocks, move parts into functions
@@ -2045,17 +2046,24 @@
 						self.showFileBusyState(tr, true);
 						tr.attr('data-file', newName);
 						var basename = newName;
-						if (newName.indexOf('.') > 0 && tr.data('type') !== 'dir') {
-							basename = newName.substr(0, newName.lastIndexOf('.'));
+						if (tr.data('type') !== 'dir') {
+							var extension = '';
+							if (newName.indexOf('.') > 0) {
+								var lastDotIndex = newName.lastIndexOf('.');
+								basename = newName.substr(0, lastDotIndex);
+								extension = newName.substr(lastDotIndex);
+							}
+							td.find('a.name span.nametext span.extension').text(extension);
 						}
-						td.find('a.name span.nametext').text(basename);
+						td.find('a.name span.nametext span.innernametext').text(basename);
 						td.children('a.name').show();
 
 						var path = tr.attr('data-path') || self.getCurrentDirectory();
 						self.filesClient.move(OC.joinPaths(path, oldName), OC.joinPaths(path, newName))
 							.done(function() {
-								oldFileInfo.name = newName;
-								updateInList(oldFileInfo);
+								newFileInfo = Object.create(oldFileInfo);
+								newFileInfo.name = newName;
+								updateInList(newFileInfo, oldFileInfo);
 							})
 							.fail(function(status) {
 								// TODO: 409 means current folder does not exist, redirect ?
@@ -2085,7 +2093,7 @@
 										{fileName: oldName}), {type: 'error'}
 									);
 								}
-								updateInList(oldFileInfo);
+								updateInList(oldFileInfo, oldFileInfo);
 							});
 					} else {
 						// add back the old file info when cancelled

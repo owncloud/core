@@ -11,7 +11,7 @@
  * @author Thomas Müller <thomas.mueller@tmit.eu>
  * @author Tom Needham <tom@owncloud.com>
  *
- * @copyright Copyright (c) 2017, ownCloud GmbH
+ * @copyright Copyright (c) 2018, ownCloud GmbH
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -77,15 +77,14 @@ class Base {
 	/**
 	 * @param ITheme $theme
 	 * @param string $app
-	 * @param string $serverRoot
 	 * @param string|false $appDir
 	 * @return string[]
 	 */
-	protected function getAppTemplateDirs(ITheme $theme, $app, $serverRoot, $appDir) {
+	protected function getAppTemplateDirs(ITheme $theme, $app, $appDir) {
 		$templateDirectories = [];
 		// Templates dir from the active theme first
 		if ($theme->getDirectory() !== '') {
-			$templateDirectories[] = $serverRoot . '/' . $theme->getDirectory() . '/apps/' . $app . '/templates/';
+			$templateDirectories[] = $theme->getBaseDirectory() . '/' . $theme->getDirectory() . '/apps/' . $app . '/templates/';
 		}
 
 		// Templates dir from the app dir then
@@ -126,9 +125,9 @@ class Base {
 	protected function getTemplateDirs(ITheme $theme, $basePath, $relativePath) {
 		$directories = [];
 		if ($theme->getDirectory() !== '') {
-			$directories[] =  $basePath . '/' . $theme->getDirectory() . $relativePath;
+			$directories[] = $theme->getBaseDirectory() . '/' . $theme->getDirectory() . $relativePath;
 		}
-		$directories[] =  $basePath . $relativePath;
+		$directories[] = $basePath . $relativePath;
 
 		return $directories;
 	}

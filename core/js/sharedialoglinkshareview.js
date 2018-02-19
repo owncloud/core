@@ -14,7 +14,7 @@
 	}
 
 	var PASSWORD_PLACEHOLDER_STARS = '**********';
-	var PASSWORD_PLACEHOLDER_MESSAGE = t('core', 'Choose a password for the public link');
+	var PASSWORD_PLACEHOLDER_MESSAGE = t('core', 'Choose a password');
 	var TEMPLATE =
 		'<div class="error-message-global hidden"></div>' +
 		'<div class="public-link-modal">'+
@@ -40,7 +40,7 @@
 			'</div>' +
 			'{{/if}}' +
 			'<div id="linkPass-{{cid}}" class="public-link-modal--item linkPass">' +
-				'<label class="public-link-modal--label" for="linkPassText-{{cid}}">{{passwordLabel}}{{#if isPasswordRequired}}<span class="required-indicator">*</span>{{/if}}</label>' +
+				'<label class="public-link-modal--label" for="linkPassText-{{cid}}">{{passwordLabel}}</label>' +
 				'<input class="public-link-modal--input linkPassText" id="linkPassText-{{cid}}" type="password" placeholder="{{passwordPlaceholder}}" />' +
 				'<span class="error-message hidden"></span>' +
 			'</div>' +
@@ -101,7 +101,20 @@
 		_getPermissions: function() {
 			var permissions = this.$('input[name="publicPermissions"]:checked').val();
 
-			return (permissions) ? permissions : OC.PERMISSION_READ;
+			return (permissions) ? parseInt(permissions, 10) : OC.PERMISSION_READ;
+		},
+
+		_shouldRequirePassword: function() {
+			// matching passwordMustBeEnforced from server side
+			var permissions = this._getPermissions();
+			var roEnforcement = permissions === OC.PERMISSION_READ && this.configModel.get('enforceLinkPasswordReadOnly');
+			var woEnforcement = permissions === OC.PERMISSION_CREATE && this.configModel.get('enforceLinkPasswordWriteOnly');
+			var rwEnforcement = (permissions !== OC.PERMISSION_READ && permissions !== OC.PERMISSION_CREATE) && this.configModel.get('enforceLinkPasswordReadWrite');
+			if (roEnforcement || woEnforcement || rwEnforcement) {
+				return true;
+			} else {
+				return false;
+			}
 		},
 
 		_save: function () {
@@ -144,8 +157,8 @@
 			var validates = true;
 			validates &= this.expirationView.validate();
 
-			if (this.configModel.get('enforcePasswordForPublicLink')
-				&& !password
+			if (!password
+				&& this._shouldRequirePassword()
 				&& (this.model.isNew() || !this.model.get('encryptedPassword'))
 			) {
 				$password.addClass('error');
@@ -181,11 +194,8 @@
 				success: function() {
 					if (self.mailView) {
 						// also send out email first
-						self.mailView.sendEmails().then(done).fail(function() {
-							done();
-							// re-show the popup
-							self.show();
-						});
+						// do not resolve on errors
+						self.mailView.sendEmails().then(done);
 					} else {
 						done();
 					}
@@ -221,7 +231,6 @@
 			this.$el.html(this.template({
 				cid: this.cid,
 				passwordPlaceholder: isPasswordSet ? PASSWORD_PLACEHOLDER_STARS : PASSWORD_PLACEHOLDER_MESSAGE,
-				isPasswordRequired: this.configModel.get('enforcePasswordForPublicLink'),
 				namePlaceholder: t('core', 'Name'),
 				name: this.model.get('name'),
 				isPasswordSet: isPasswordSet,
@@ -231,7 +240,7 @@
 
 				publicUploadPossible       : this._isPublicUploadPossible(),
 
-				publicUploadLabel          : t('core', 'Upload only (File Drop)'),
+				publicUploadLabel          : t('core', 'Upload only') + ' (File Drop)',
 				publicUploadDescription    : t('core', 'Receive files from others without revealing the contents of the folder.'),
 				publicUploadValue          : OC.PERMISSION_CREATE,
 				publicUploadSelected       : this.model.get('permissions') === OC.PERMISSION_CREATE,
@@ -314,18 +323,27 @@
 			var self = this;
 			var title = t('files_sharing', 'Edit link share: {name}', {name: this.itemModel.getFileInfo().getFullPath()});
 			var buttons = [{
-				text: t('core', 'Save'),
-				click: _.bind(this._onClickSave, this),
-				defaultButton: true
-			}, {
 				text: t('core', 'Cancel'),
 				click: _.bind(this._onClickCancel, this)
 			}];
 
 			if (this.model.isNew()) {
 				title = t('files_sharing', 'Create link share: {name}', {name: this.itemModel.getFileInfo().getFullPath()});
+				buttons.unshift({
+					text: t('core', 'Share'),
+					click: _.bind(this._onClickSave, this),
+					defaultButton: true
+				})
 			}
-			else if (this.model.get('encryptedPassword')) {
+			else {
+				buttons.unshift({
+					text: t('core', 'Save'),
+					click: _.bind(this._onClickSave, this),
+					defaultButton: true
+				})
+			}
+
+			if (this.model.get('encryptedPassword')) {
 				buttons.push({
 					classes: 'removePassword -float-left',
 					text: t('core', 'Remove password'),

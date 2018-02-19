@@ -2,7 +2,7 @@
 * ownCloud
 *
 * @author Vincent Petry
-* @copyright 2017 Vincent Petry <pvince81@owncloud.com>
+* @copyright Copyright (c) 2017 Vincent Petry <pvince81@owncloud.com>
 *
 * This library is free software; you can redistribute it and/or
 * modify it under the terms of the GNU AFFERO GENERAL PUBLIC LICENSE
@@ -67,8 +67,8 @@ describe('OC.Share.ShareDialogExpirationView', function() {
 		});
 		view.render();
 	});
-	afterEach(function() { 
-		tooltipStub.restore(); 
+	afterEach(function() {
+		tooltipStub.restore();
 		view.remove();
 	});
 
@@ -128,7 +128,6 @@ describe('OC.Share.ShareDialogExpirationView', function() {
 				setDefaultsStub = sinon.stub($.datepicker, 'setDefaults');
 
 				configModel.set({
-					enforcePasswordForPublicLink: false,
 					isDefaultExpireDateEnabled: false,
 					isDefaultExpireDateEnforced: false,
 					defaultExpireDate: 7

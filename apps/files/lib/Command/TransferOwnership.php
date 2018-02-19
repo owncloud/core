@@ -5,7 +5,7 @@
  * @author Thomas Müller <thomas.mueller@tmit.eu>
  * @author Vincent Petry <pvince81@owncloud.com>
  *
- * @copyright Copyright (c) 2017, ownCloud GmbH
+ * @copyright Copyright (c) 2018, ownCloud GmbH
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -301,6 +301,18 @@ class TransferOwnership extends Command {
 					}
 					if ($share->getSharedBy() === $this->sourceUser) {
 						$share->setSharedBy($this->destinationUser);
+					}
+					/*
+					 * If the share is already moved then updateShare would cause exception
+					 * This can happen if the folder is shared and file(s) inside the folder
+					 * has shares, for example public link
+					 */
+					if ($share->getShareType() === \OCP\Share::SHARE_TYPE_LINK) {
+						$sharePath = ltrim($share->getNode()->getPath(), '/');
+						if (strpos($sharePath, $this->finalTarget) !== false) {
+							//The share is already moved
+							continue;
+						}
 					}
 
 					$this->shareManager->updateShare($share);

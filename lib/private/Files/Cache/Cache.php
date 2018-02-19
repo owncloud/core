@@ -16,7 +16,7 @@
  * @author Thomas Müller <thomas.mueller@tmit.eu>
  * @author Vincent Petry <pvince81@owncloud.com>
  *
- * @copyright Copyright (c) 2017, ownCloud GmbH
+ * @copyright Copyright (c) 2018, ownCloud GmbH
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -151,6 +151,13 @@ class Cache implements ICache {
 				$data['storage_mtime'] = $data['mtime'];
 			}
 			$data['permissions'] = (int)$data['permissions'];
+			// Oracle stores empty strings as null...
+			if (is_null($data['name'])) {
+				$data['name'] = '';
+			}
+			if (is_null($data['path'])) {
+				$data['path'] = '';
+			}
 			return new CacheEntry($data);
 		} else if (!$data and is_string($file)) {
 			if (isset($this->partial[$file])) {

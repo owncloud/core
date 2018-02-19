@@ -3,7 +3,7 @@
  * ownCloud
  *
  * @author Artur Neumann <artur@jankaritech.com>
- * @copyright 2017 Artur Neumann artur@jankaritech.com
+ * @copyright Copyright (c) 2017 Artur Neumann artur@jankaritech.com
  *
  * This code is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License,
@@ -38,3 +38,5 @@ const LONGUIWAITTIMEOUTMILLISEC = 60000;
 const STANDARDUIWAITTIMEOUTMILLISEC = 10000;
 // Minimum timeout for use in code that needs to wait for the UI
 const MINIMUMUIWAITTIMEOUTMILLISEC = 500;
+// Default number of times to retry where retries are useful
+const STANDARDRETRYCOUNT = 5;

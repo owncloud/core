@@ -23,7 +23,7 @@
  * @author Victor Dubiniuk <dubiniuk@owncloud.com>
  * @author Vincent Petry <pvince81@owncloud.com>
  *
- * @copyright Copyright (c) 2017, ownCloud GmbH
+ * @copyright Copyright (c) 2018, ownCloud GmbH
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -679,8 +679,12 @@ class Util {
 
 	/**
 	 * check if a password is required for each public link
+	 * This is deprecated due to not reflecting all the possibilities now. Falling back to
+	 * enforce password for read-only links. Note that read & write or write-only options won't
+	 * be considered here
 	 * @return boolean
 	 * @since 7.0.0
+	 * @deprecated
 	 */
 	public static function isPublicLinkPasswordRequired() {
 		return \OC_Util::isPublicLinkPasswordRequired();

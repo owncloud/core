@@ -2,7 +2,7 @@
 /**
  * @author Joas Schilling <coding@schilljs.com>
  *
- * @copyright Copyright (c) 2017, ownCloud GmbH
+ * @copyright Copyright (c) 2018, ownCloud GmbH
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -44,6 +44,22 @@ API::register(
 	'delete',
 	'/apps/testing/api/v1/app/{appid}/{configkey}',
 	[$config, 'deleteAppValue'],
+	'testing',
+	API::ADMIN_AUTH
+);
+
+API::register(
+	'post',
+	'/apps/testing/api/v1/apps',
+	[$config, 'setAppValues'],
+	'testing',
+	API::ADMIN_AUTH
+);
+
+API::register(
+	'delete',
+	'/apps/testing/api/v1/apps',
+	[$config, 'deleteAppValues'],
 	'testing',
 	API::ADMIN_AUTH
 );

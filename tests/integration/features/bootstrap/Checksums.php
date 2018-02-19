@@ -7,13 +7,14 @@ use GuzzleHttp\Client;
 trait Checksums {
 
 	/**
-	 * @When user :user uploads file :source to :destination with checksum :checksum
+	 * @When user :user uploads file :source to :destination with checksum :checksum using the API
+	 * @Given user :user has uploaded file :source to :destination with checksum :checksum
 	 * @param string $user
 	 * @param string $source
 	 * @param string $destination
 	 * @param string $checksum
 	 */
-	public function userUploadsFileToWithChecksum($user, $source, $destination, $checksum) {
+	public function userUploadsFileToWithChecksumUsingTheAPI($user, $source, $destination, $checksum) {
 		$file = \GuzzleHttp\Stream\Stream::factory(fopen($source, 'r'));
 		$this->response = $this->makeDavRequest($user,
 							  'PUT',
@@ -51,10 +52,7 @@ trait Checksums {
     <oc:checksums />
   </d:prop>
 </d:propfind>',
-				'auth' => [
-					$user,
-					$this->getPasswordForUser($user),
-				]
+				'auth' => $this->getAuthOptionForUser($user)
 			]
 		);
 		$this->response = $client->send($request);
@@ -94,30 +92,6 @@ trait Checksums {
 	}
 
 	/**
-	 * @Given user :user copied file :source to :destination
-	 * @param string $user
-	 * @param string $source
-	 * @param string $destination
-	 */
-	public function userCopiedFileTo($user, $source, $destination) {
-		$client = new Client();
-		$request = $client->createRequest(
-			'COPY',
-			substr($this->baseUrl, 0, -4) . $this->davPath . $source,
-			[
-				'auth' => [
-					$user,
-					$this->getPasswordForUser($user),
-				],
-				'headers' => [
-					'Destination' => substr($this->baseUrl, 0, -4) . $this->davPath . $destination,
-				],
-			]
-		);
-		$this->response = $client->send($request);
-	}
-
-	/**
 	 * @Then the webdav checksum should be empty
 	 */
 	public function theWebdavChecksumShouldBeEmpty()
@@ -147,7 +121,8 @@ trait Checksums {
 	}
 
 	/**
-	 * @Given user :user uploads chunk file :num of :total with :data to :destination with checksum :checksum
+	 * @When user :user uploads chunk file :num of :total with :data to :destination with checksum :checksum using the API
+	 * @Given user :user has uploaded chunk file :num of :total with :data to :destination with checksum :checksum
 	 * @param string $user
 	 * @param int $num
 	 * @param int $total

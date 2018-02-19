@@ -91,10 +91,18 @@ class UserTest extends TestCase {
 			->method('deleteUserValue')
 			->with('foo', 'owncloud', 'lostpassword');
 
-		$calledEvent = [];
-		\OC::$server->getEventDispatcher()->addListener('user.aftersetpassword', function ($event) use (&$calledEvent) {
-			$calledEvent[] = 'user.aftersetpassword';
-			$calledEvent[] = $event;
+		/**
+		 * @var GenericEvent[] $calledEvents
+		 */
+		$calledEvents = [];
+		\OC::$server->getEventDispatcher()->addListener('user.beforesetpassword', function ($event) use (&$calledEvents) {
+			$calledEvents['user.beforesetpassword'] = $event;
+		});
+		\OC::$server->getEventDispatcher()->addListener('OCP\User::validatePassword', function ($event) use (&$calledEvents) {
+			$calledEvents['OCP\User::validatePassword'] = $event;
+		});
+		\OC::$server->getEventDispatcher()->addListener('user.aftersetpassword', function ($event) use (&$calledEvents) {
+			$calledEvents['user.aftersetpassword'] = $event;
 		});
 		$backend = $this->createMock(IChangePasswordBackend::class);
 		/** @var Account | \PHPUnit_Framework_MockObject_MockObject $account */
@@ -109,11 +117,22 @@ class UserTest extends TestCase {
 		$this->assertTrue($this->user->setPassword('bar',''));
 		$this->assertTrue($this->user->canChangePassword());
 
-		$this->assertArrayHasKey('user', $calledEvent[1]);
-		$this->assertInstanceOf(GenericEvent::class, $calledEvent[1]);
-		$this->assertEquals('user.aftersetpassword', $calledEvent[0]);
-		$this->assertArrayHasKey('password', $calledEvent[1]);
-		$this->assertArrayHasKey('recoveryPassword', $calledEvent[1]);
+		$this->assertArrayHasKey('user.beforesetpassword', $calledEvents);
+		$this->assertArrayHasKey('OCP\User::validatePassword', $calledEvents);
+		$this->assertArrayHasKey('user.aftersetpassword', $calledEvents);
+
+		$this->assertInstanceOf(GenericEvent::class, $calledEvents['user.beforesetpassword']);
+		$this->assertInstanceOf(GenericEvent::class, $calledEvents['OCP\User::validatePassword']);
+		$this->assertInstanceOf(GenericEvent::class, $calledEvents['user.aftersetpassword']);
+
+		$this->assertInstanceOf(User::class, $calledEvents['user.beforesetpassword']->getArgument('user'));
+		$this->assertEquals('bar', $calledEvents['user.beforesetpassword']->getArgument('password'));
+		$this->assertEquals('', $calledEvents['user.beforesetpassword']->getArgument('recoveryPassword'));
+		$this->assertEquals('foo', $calledEvents['OCP\User::validatePassword']->getArgument('uid'));
+		$this->assertEquals('bar', $calledEvents['OCP\User::validatePassword']->getArgument('password'));
+		$this->assertInstanceOf(User::class, $calledEvents['user.aftersetpassword']->getArgument('user'));
+		$this->assertEquals('bar', $calledEvents['user.aftersetpassword']->getArgument('password'));
+		$this->assertEquals('', $calledEvents['user.aftersetpassword']->getArgument('recoveryPassword'));
 
 	}
 	public function testSetPasswordNotSupported() {

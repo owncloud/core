@@ -2,7 +2,7 @@
 /**
  * @author Björn Schießle <schiessle@owncloud.com>
  *
- * @copyright Copyright (c) 2015, ownCloud, Inc.
+ * @copyright Copyright (c) 2018, ownCloud GmbH
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -39,6 +39,7 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\NullOutput;
 use Symfony\Component\Console\Output\OutputInterface;
 use Test\TestCase;
+use OCP\Files\Storage\IStorage;
 
 /**
  * Class DecryptAllTest
@@ -260,16 +261,23 @@ class DecryptAllTest extends TestCase {
 
 	public function providesData() {
 		return[
-			[true],
-			[false]
+			['called', \OC\Files\Storage\Local::class],
+			['exception', \OC\Files\Storage\Local::class],
+			['skip', SharedStorage::class],
+			['skip', \OCA\Files_Sharing\External\Storage::class],
 		];
 	}
 	/**
 	 * @param $throwsExceptionInDecrypt
 	 * @dataProvider providesData
 	 */
-	public function testDecryptUsersFiles($throwsExceptionInDecrypt) {
-		$storage = $this->createMock(SharedStorage::class);
+	public function testDecryptUsersFiles($decryptBehavior, $storageClass) {
+		$storage = $this->createMock($storageClass);
+		$storage->expects($this->any())
+			->method('instanceOfStorage')
+			->will($this->returnCallback(function($className) use ($storage) {
+				return ($storage instanceof $className);
+			}));
 
 		/** @var DecryptAll | \PHPUnit_Framework_MockObject_MockObject  $instance */
 		$instance = $this->getMockBuilder(DecryptAll::class)
@@ -292,12 +300,14 @@ class DecryptAllTest extends TestCase {
 				]
 			);
 
-		$this->view->expects($this->at(3))->method('getDirectoryContent')
-			->with('/user1/files/foo')->willReturn(
-				[
-					new FileInfo('path', $storage, 'intPath', ['name' => 'subfile', 'type'=>'file', 'encrypted'=>true], null)
-				]
-			);
+		if ($decryptBehavior !== 'skip') {
+			$this->view->expects($this->at(3))->method('getDirectoryContent')
+				->with('/user1/files/foo')->willReturn(
+					[
+						new FileInfo('path', $storage, 'intPath', ['name' => 'subfile', 'type'=>'file', 'encrypted'=>true], null)
+					]
+				);
+		}
 
 		$this->view->expects($this->any())->method('is_dir')
 			->willReturnCallback(
@@ -309,11 +319,14 @@ class DecryptAllTest extends TestCase {
 				}
 			);
 
-		if ($throwsExceptionInDecrypt) {
+		if ($decryptBehavior === 'exception') {
 			$instance->expects($this->at(0))
 				->method('decryptFile')
 				->with('/user1/files/bar')
 				->willThrowException(new \Exception());
+		} else if ($decryptBehavior === 'skip') {
+			$instance->expects($this->never())
+				->method('decryptFile');
 		} else {
 			$instance->expects($this->at(0))
 				->method('decryptFile')

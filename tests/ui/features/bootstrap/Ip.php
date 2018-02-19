@@ -3,7 +3,7 @@
  * ownCloud
  *
  * @author Phillip Davis <phil@jankaritech.com>
- * @copyright 2017 Phillip Davis phil@jankaritech.com
+ * @copyright Copyright (c) 2017 Phillip Davis phil@jankaritech.com
  *
  * This code is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License,

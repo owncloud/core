@@ -2,7 +2,7 @@
 /**
  * @author Vincent Petry <pvince81@owncloud.com>
  *
- * @copyright Copyright (c) 2017, ownCloud GmbH
+ * @copyright Copyright (c) 2018, ownCloud GmbH
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -21,12 +21,14 @@
 
 namespace OC\Repair;
 
+use OCP\ILogger;
 use OCP\Migration\IOutput;
 use OCP\Migration\IRepairStep;
 use Doctrine\DBAL\Platforms\MySqlPlatform;
 use Doctrine\DBAL\Platforms\OraclePlatform;
 use OCP\Files\IMimeTypeLoader;
 use OCP\IDBConnection;
+use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
 
 /**
  * Repairs file cache entry which path do not match the parent-child relationship
@@ -53,12 +55,18 @@ class RepairMismatchFileCachePath implements IRepairStep {
 	/** @var bool */
 	protected $countOnly = true;
 
+	/** @var ILogger  */
+	protected $logger;
+
 	/**
 	 * @param \OCP\IDBConnection $connection
 	 */
-	public function __construct(IDBConnection $connection, IMimeTypeLoader $mimeLoader) {
+	public function __construct(IDBConnection $connection,
+								IMimeTypeLoader $mimeLoader,
+								ILogger $logger) {
 		$this->connection = $connection;
 		$this->mimeLoader = $mimeLoader;
+		$this->logger = $logger;
 	}
 
 	public function getName() {
@@ -407,7 +415,14 @@ class RepairMismatchFileCachePath implements IRepairStep {
 			$values['fileid'] = $qb->createNamedParameter($reuseFileId);
 		}
 		$qb->insert('filecache')->values($values);
-		$qb->execute();
+		try {
+			$qb->execute();
+		} catch (UniqueConstraintViolationException $e) {
+			// This situation should no happen - need debugging information if it does
+			\OC::$server->getLogger()->logException($e);
+			\OC::$server->getLogger()->error("Filecache repair step tried to insert row that already existed with fileid: {$values['fileid']}");
+			// Skip if the entry already exists
+		}
 
 		// If we reused the fileid then this is the id to return
 		if($reuseFileId !== null) {

@@ -4,7 +4,7 @@
  * @author Roeland Jago Douma <rullzer@owncloud.com>
  * @author Vincent Petry <pvince81@owncloud.com>
  *
- * @copyright Copyright (c) 2017, ownCloud GmbH
+ * @copyright Copyright (c) 2018, ownCloud GmbH
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -37,6 +37,8 @@ use OCP\Share\Exceptions\GenericShareException;
 use OCP\Share\Exceptions\ShareNotFound;
 use OCP\Share\IManager;
 use OCP\Share\IShare;
+use Symfony\Component\EventDispatcher\EventDispatcher;
+use Symfony\Component\EventDispatcher\GenericEvent;
 
 /**
  * Class Share20OCS
@@ -69,6 +71,9 @@ class Share20OCS {
 	 */
 	private $additionalInfoField;
 
+	/** @var \Symfony\Component\EventDispatcher\EventDispatcherInterface  */
+	private $eventDispatcher;
+
 	/**
 	 * Share20OCS constructor.
 	 *
@@ -81,6 +86,7 @@ class Share20OCS {
 	 * @param IUser $currentUser
 	 * @param IL10N $l10n
 	 * @param IConfig $config
+	 * @param EventDispatcher $eventDispatcher
 	 */
 	public function __construct(
 			IManager $shareManager,
@@ -91,7 +97,8 @@ class Share20OCS {
 			IURLGenerator $urlGenerator,
 			IUser $currentUser,
 			IL10N $l10n,
-			IConfig $config
+			IConfig $config,
+			EventDispatcher $eventDispatcher
 	) {
 		$this->shareManager = $shareManager;
 		$this->userManager = $userManager;
@@ -103,6 +110,7 @@ class Share20OCS {
 		$this->l = $l10n;
 		$this->config = $config;
 		$this->additionalInfoField = $this->config->getAppValue('core', 'user_additional_info_field', '');
+		$this->eventDispatcher = $eventDispatcher;
 	}
 
 	/**
@@ -137,7 +145,7 @@ class Share20OCS {
 			'uid_owner' => $share->getSharedBy(),
 			'displayname_owner' => $sharedBy !== null ? $sharedBy->getDisplayName() : $share->getSharedBy(),
 			'permissions' => $share->getPermissions(),
-			'stime' => $share->getShareTime()->getTimestamp(),
+			'stime' => $share->getShareTime() ? $share->getShareTime()->getTimestamp() : null,
 			'parent' => null,
 			'expiration' => null,
 			'token' => null,
@@ -186,7 +194,9 @@ class Share20OCS {
 			$result['name'] = $share->getName();
 
 			$result['token'] = $share->getToken();
-			$result['url'] = $this->urlGenerator->linkToRouteAbsolute('files_sharing.sharecontroller.showShare', ['token' => $share->getToken()]);
+			if ($share->getToken() !== null) {
+				$result['url'] = $this->urlGenerator->linkToRouteAbsolute('files_sharing.sharecontroller.showShare', ['token' => $share->getToken()]);
+			}
 
 			$expiration = $share->getExpirationDate();
 			if ($expiration !== null) {
@@ -272,6 +282,8 @@ class Share20OCS {
 	 * @return \OC\OCS\Result
 	 */
 	public function createShare() {
+		$event = new GenericEvent(null);
+		$beforeEvent = new GenericEvent(null);
 		$share = $this->shareManager->newShare();
 
 		if (!$this->shareManager->shareApiEnabled()) {
@@ -287,6 +299,13 @@ class Share20OCS {
 		}
 
 		$userFolder = $this->rootFolder->getUserFolder($this->currentUser->getUID());
+		$beforeEvent->setArgument('userFolder', $userFolder);
+		$beforeEvent->setArgument('run', true);
+
+		if ($beforeEvent->getArgument('run') === false) {
+			return new \OC\OCS\Result(null, 403, $this->l->t('No permission to create share'));
+		}
+
 		try {
 			$path = $userFolder->get($path);
 		} catch (NotFoundException $e) {
@@ -451,6 +470,13 @@ class Share20OCS {
 		$share->setShareType($shareType);
 		$share->setSharedBy($this->currentUser->getUID());
 
+
+
+
+		$beforeEvent->setArgument('share', $this->formatShare($share));
+
+		$this->eventDispatcher->dispatch('share.beforeCreate', $beforeEvent);
+
 		try {
 			$share = $this->shareManager->createShare($share);
 		} catch (GenericShareException $e) {
@@ -462,16 +488,22 @@ class Share20OCS {
 			return new \OC\OCS\Result(null, 403, $e->getMessage());
 		}
 
-		$output = $this->formatShare($share);
+
 
 		$share->getNode()->unlock(\OCP\Lock\ILockingProvider::LOCK_SHARED);
 
-		return new \OC\OCS\Result($output);
+
+		$formattedShareAfterCreate = $this->formatShare($share);
+		$afterEvent = new GenericEvent(null, []);
+		$afterEvent->setArgument('share', $formattedShareAfterCreate);
+		$afterEvent->setArgument('result', 'success');
+		$this->eventDispatcher->dispatch('share.afterCreate', $afterEvent);
+		return new \OC\OCS\Result($formattedShareAfterCreate);
 	}
 
 	/**
 	 * @param \OCP\Files\File|\OCP\Files\Folder $node
-	 * @param boolean $includeTags 
+	 * @param boolean $includeTags
 	 * @return \OC\OCS\Result
 	 */
 	private function getSharedWithMe($node = null, $includeTags) {

@@ -5,7 +5,7 @@
  * @author Thomas Citharel <tcit@tcit.fr>
  * @author Thomas Müller <thomas.mueller@tmit.eu>
  *
- * @copyright Copyright (c) 2017, ownCloud GmbH
+ * @copyright Copyright (c) 2018, ownCloud GmbH
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -58,10 +58,17 @@ class Backend {
 	 */
 	public function updateShares($shareable, $add, $remove) {
 		foreach($add as $element) {
-			$this->shareWith($shareable, $element);
+			$principal = $this->principalBackend->findByUri($element['href'], '');
+			if ($principal !== '') {
+				$this->shareWith($shareable, $element);
+			}
+
 		}
 		foreach($remove as $element) {
-			$this->unshare($shareable, $element);
+			$principal = $this->principalBackend->findByUri($element, '');
+			if ($principal !== '') {
+				$this->unshare($shareable, $element);
+			}
 		}
 	}
 
@@ -213,4 +220,5 @@ class Backend {
 		}
 		return $acl;
 	}
+
 }

@@ -2,7 +2,7 @@
 /**
  * @author Sergio Bertolin <sbertolin@owncloud.com>
  *
- * @copyright Copyright (c) 2017, ownCloud, Gmbh.
+ * @copyright Copyright (c) 2018, ownCloud GmbH
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -22,6 +22,7 @@
 require __DIR__ . '/../../../../lib/composer/autoload.php';
 
 use GuzzleHttp\Client;
+use GuzzleHttp\Exception\BadResponseException;
 
 trait MailTool {
 
@@ -38,7 +39,7 @@ trait MailTool {
 			$this->response = $client->send(
 				$client->createRequest('GET', $fullUrl, $options)
 			);
-		} catch (\GuzzleHttp\Exception\ClientException $ex) {
+		} catch (BadResponseException $ex) {
 			$this->response = $ex->getResponse();
 		}
 		$json = json_decode($this->response->getBody()->getContents());

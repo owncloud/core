@@ -7,7 +7,7 @@ branches: [master, stable10, stable9.1, stable9, hotfix-*]
 clone:
   git:
     image: plugins/git
-    depth: 1
+    depth: 50
 
 pipeline:
   restore:
@@ -91,15 +91,14 @@ pipeline:
       matrix:
         TEST_SUITE: coverage
 
-  javascript:
+  test-javascript:
     image: owncloudci/php:${PHP_VERSION}
     pull: true
-    group: test
     commands:
       - ./tests/drone/test-javascript.sh
     when:
       matrix:
-        TEST_SUITE: phpunit
+        TEST_SUITE: javascript
 
   phpunit:
     image: owncloudci/php:${PHP_VERSION}
@@ -142,7 +141,7 @@ pipeline:
         TEST_SUITE: selenium
 
   acceptance-tests:
-    image: owncloudci/php:latest
+    image: owncloudci/php:${PHP_VERSION}
     pull: true
     environment:
       - BROWSER=chrome
@@ -224,26 +223,28 @@ services:
         TEST_SUITE: selenium
 
   server:
-    image: owncloudci/php:latest
+    image: owncloudci/php:${PHP_VERSION}
     pull: true
     environment:
       - APACHE_WEBROOT=/drone/src/
-    command: [ "/usr/local/bin/apachectl", "-e debug" , "-DFOREGROUND" ]
+    command: [ "/usr/local/bin/apachectl", "-e", "debug" , "-D", "FOREGROUND" ]
     when:
       matrix:
         USE_SERVER: true
 
   federated:
-    image: owncloudci/php:latest
+    image: owncloudci/php:${PHP_VERSION}
     pull: true
     environment:
       - APACHE_WEBROOT=/drone/src/
-    command: [ "/usr/local/bin/apachectl", "-e debug" , "-DFOREGROUND" ]
+    command: [ "/usr/local/bin/apachectl", "-e", "debug" , "-D", "FOREGROUND" ]
     when:
       matrix:
         USE_FEDERATED_SERVER: true
 matrix:
   include:
+    - TEST_SUITE: javascript
+      PHP_VERSION: 7.1
     # PHP 5.6
     #- PHP_VERSION: 5.6
     #  DB_TYPE: sqlite

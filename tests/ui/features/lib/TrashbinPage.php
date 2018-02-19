@@ -3,7 +3,7 @@
  * ownCloud
  *
  * @author Artur Neumann <artur@jankaritech.com>
- * @copyright 2017 Artur Neumann artur@jankaritech.com
+ * @copyright Copyright (c) 2017 Artur Neumann artur@jankaritech.com
  *
  * This code is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License,
@@ -21,6 +21,8 @@
  */
 
 namespace Page;
+
+use Behat\Mink\Session;
 
 /**
  * Trashbin page.
@@ -63,5 +65,16 @@ class TrashbinPage extends FilesPageBasic {
 	 */
 	protected function getEmptyContentXpath() {
 		return $this->emptyContentXpath;
+	}
+
+	/**
+	 * 
+	 * @param string $fname
+	 * @param Session $session
+	 * @return void
+	 */
+	public function restore($fname, Session $session) {
+		$row = $this->findFileRowByName($fname, $session);
+		$row->restore();
 	}
 }

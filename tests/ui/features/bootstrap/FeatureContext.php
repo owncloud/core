@@ -3,7 +3,7 @@
  * ownCloud
  *
  * @author Artur Neumann <artur@jankaritech.com>
- * @copyright 2017 Artur Neumann artur@jankaritech.com
+ * @copyright Copyright (c) 2017 Artur Neumann artur@jankaritech.com
  *
  * This code is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License,
@@ -27,6 +27,7 @@ use Behat\Gherkin\Node\TableNode;
 use Behat\MinkExtension\Context\RawMinkContext;
 use Page\LoginPage;
 use Page\OwncloudPage;
+use SensioLabs\Behat\PageObjectExtension\PageObject\Exception\ElementNotFoundException;
 use TestHelpers\AppConfigHelper;
 use TestHelpers\SetupHelper;
 use TestHelpers\UploadHelper;
@@ -45,6 +46,7 @@ class FeatureContext extends RawMinkContext implements Context {
 	private $owncloudPage;
 	private $loginPage;
 	private $oldCSRFSetting = null;
+	private $oldPreviewSetting = null;
 	private $currentUser = null;
 	private $currentServer = null;
 	private $createdFiles = [];
@@ -172,6 +174,23 @@ class FeatureContext extends RawMinkContext implements Context {
 	 */
 	public function getCurrentPageObject() {
 		return $this->currentPageObject;
+	}
+
+	/**
+	 * @Then no notification should be displayed
+	 * @return void
+	 */
+	public function noNotificationShouldBeDisplayed() {
+		try {
+			$notificationText = $this->owncloudPage->getNotificationText();
+			PHPUnit_Framework_Assert::assertEquals(
+				'',
+				$notificationText,
+				"Expecting no notifications but got $notificationText"
+			);
+		} catch (ElementNotFoundException $e) {
+			// if there is no notification element, then good
+		}
 	}
 
 	/**
@@ -388,15 +407,17 @@ class FeatureContext extends RawMinkContext implements Context {
 	 * 
 	 * @param array $change
 	 *        [
-	 *         'testingApp' => string,
-	 *         'testingParameter' => string,
-	 *         'savedState' => bool
+	 *         'appid' => string,
+	 *         'configkey' => string,
+	 *         'value' => bool
 	 *        ]
 	 * @return void
 	 */
 	public function addToSavedCapabilitiesChanges($change) {
 		if (sizeof($change) > 0) {
-			$this->savedCapabilitiesChanges[] = $change;
+			$this->savedCapabilitiesChanges = array_merge(
+				$this->savedCapabilitiesChanges, $change
+			);
 		}
 	}
 
@@ -450,6 +471,30 @@ class FeatureContext extends RawMinkContext implements Context {
 	}
 
 	/**
+	 * disable the previews on all tests tagged with '@disablePreviews'
+	 * 
+	 * @BeforeScenario @disablePreviews
+	 * @return void
+	 */
+	public function disablePreviewBeforeScenario() {
+		if (is_null($this->oldPreviewSetting)) {
+			$oldPreviewSetting = SetupHelper::runOcc(
+				['config:system:get', 'enable_previews']
+			)['stdOut'];
+			$this->oldPreviewSetting = trim($oldPreviewSetting);
+		}
+		SetupHelper::runOcc(
+			[
+				'config:system:set',
+				'enable_previews',
+				'--type',
+				'boolean',
+				'--value',
+				'false'
+			]
+		);
+	}
+	/**
 	 * @return string
 	 */
 	public function getSessionId() {
@@ -466,14 +511,25 @@ class FeatureContext extends RawMinkContext implements Context {
 	 * @AfterScenario
 	 */
 	public function tearDownSuite() {
-		foreach ($this->savedCapabilitiesChanges as $capabilitiesChange) {
-			AppConfigHelper::modifyServerConfig(
-				$this->getMinkParameter('base_url'),
-				"admin",
-				$this->getUserPassword("admin"),
-				$capabilitiesChange['testingApp'],
-				$capabilitiesChange['testingParameter'],
-				$capabilitiesChange['savedState'] ? 'yes' : 'no'
+		AppConfigHelper::modifyServerConfigs(
+			$this->getMinkParameter('base_url'),
+			"admin",
+			$this->getUserPassword("admin"),
+			$this->savedCapabilitiesChanges
+		);
+
+		if ($this->oldPreviewSetting === "") {
+			SetupHelper::runOcc(['config:system:delete', 'enable_previews']);
+		} elseif (!is_null($this->oldPreviewSetting)) {
+			SetupHelper::runOcc(
+				[
+					'config:system:set',
+					'enable_previews',
+					'--type',
+					'boolean',
+					'--value',
+					$this->oldPreviewSetting
+				]
 			);
 		}
 		

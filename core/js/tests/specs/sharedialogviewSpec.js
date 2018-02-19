@@ -2,7 +2,7 @@
 * ownCloud
 *
 * @author Vincent Petry
-* @copyright 2015 Vincent Petry <pvince81@owncloud.com>
+* @copyright Copyright (c) 2015 Vincent Petry <pvince81@owncloud.com>
 *
 * This library is free software; you can redistribute it and/or
 * modify it under the terms of the GNU AFFERO GENERAL PUBLIC LICENSE
@@ -44,7 +44,6 @@ describe('OC.Share.ShareDialogView', function() {
 		$container = $('#shareContainer');
 		/* jshint camelcase:false */
 		oldAppConfig = _.extend({}, oc_appconfig.core);
-		oc_appconfig.core.enforcePasswordForPublicLink = false;
 
 		fetchStub = sinon.stub(OC.Share.ShareItemModel.prototype, 'fetch');
 
@@ -65,9 +64,7 @@ describe('OC.Share.ShareDialogView', function() {
 			permissions: 31
 		};
 		configModel = new OC.Share.ShareConfigModel({
-			enforcePasswordForPublicLink: false,
 			isResharingAllowed: true,
-			enforcePasswordForPublicLink: false,
 			isDefaultExpireDateEnabled: false,
 			isDefaultExpireDateEnforced: false,
 			defaultExpireDate: 7

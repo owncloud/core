@@ -1,4 +1,4 @@
-@insulated
+@insulated @disablePreviews
 Feature: Share by public link
 As a user
 I want to share files through a publicly accessible link
@@ -41,6 +41,7 @@ So that public sharing is limited according to organization policy
 		And I access the last created public link
 		Then it should not be possible to delete the file "lorem.txt"
 
+	@skipOnINTERNETEXPLORER @issue_30392
 	Scenario: mount public link
 		Given these users exist:
 		|username|password|displayname|email       |
@@ -56,6 +57,7 @@ So that public sharing is limited according to organization policy
 		And the content of "lorem.txt" should be the same as the original "simple-folder/lorem.txt"
 		And it should not be possible to delete the file "lorem.txt"
 
+	@skipOnINTERNETEXPLORER @issue_30392
 	Scenario: mount public link and overwrite file
 		Given these users exist:
 		|username|password|displayname|email       |
@@ -70,6 +72,6 @@ So that public sharing is limited according to organization policy
 		When I open the folder "simple-folder (2)"
 		Then the file "lorem.txt" should be listed
 		And the content of "lorem.txt" should be the same as the original "simple-folder/lorem.txt"
-		When I upload overwriting the file "lorem.txt"
+		When I upload overwriting the file "lorem.txt" and retry if the file is locked
 		Then the file "lorem.txt" should be listed
 		And the content of "lorem.txt" should be the same as the local "lorem.txt"

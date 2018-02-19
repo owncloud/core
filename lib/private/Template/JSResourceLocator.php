@@ -7,7 +7,7 @@
  * @author Philipp Schaffrath <github@philippschaffrath.de>
  * @author Thomas Müller <thomas.mueller@tmit.eu>
  *
- * @copyright Copyright (c) 2017, ownCloud GmbH
+ * @copyright Copyright (c) 2018, ownCloud GmbH
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -31,49 +31,58 @@ class JSResourceLocator extends ResourceLocator {
 	 * @param string $script
 	 */
 	public function doFind($script) {
+		$fullScript = $this->addExtension($script);
 		$themeDirectory = $this->theme->getDirectory();
-
-		if (strpos($script, '3rdparty') === 0
-			&& $this->appendOnceIfExist($this->thirdpartyroot, $script.'.js')) {
-			return;
+		$baseDirectory = $this->theme->getBaseDirectory();
+		$webRoot = '';
+		if ($baseDirectory !== $this->serverroot) {
+			$webRoot = substr($this->theme->getWebPath(), 0, -strlen($themeDirectory));
 		}
 
 		if (strpos($script, '/l10n/') !== false) {
 			// For language files we try to load them all, so themes can overwrite
 			// single l10n strings without having to translate all of them.
 			$found = 0;
-			$found += $this->appendOnceIfExist($this->serverroot, 'core/'.$script.'.js');
-			$found += $this->appendOnceIfExist($this->serverroot, $themeDirectory.'/core/'.$script.'.js');
-			$found += $this->appendOnceIfExist($this->serverroot, $script.'.js');
-			$found += $this->appendOnceIfExist($this->serverroot, $themeDirectory.'/'.$script.'.js');
-			$found += $this->appendOnceIfExist($this->serverroot, $themeDirectory.'/apps/'.$script.'.js');
+			$found += $this->appendOnceIfExist($this->serverroot, 'core/'.$fullScript);
+			$found += $this->appendOnceIfExist($baseDirectory, $themeDirectory.'/core/'.$fullScript, $webRoot);
+			$found += $this->appendOnceIfExist($this->serverroot, $fullScript);
+			$found += $this->appendOnceIfExist($baseDirectory, $themeDirectory.'/'.$fullScript, $webRoot);
+			$found += $this->appendOnceIfExist($baseDirectory, $themeDirectory.'/apps/'.$fullScript, $webRoot);
 
 			if ($found) {
 				return;
 			}
-		} else if ($this->appendOnceIfExist($this->serverroot, $themeDirectory.'/apps/'.$script.'.js')
-			|| $this->appendOnceIfExist($this->serverroot, $themeDirectory.'/'.$script.'.js')
-			|| $this->appendOnceIfExist($this->serverroot, $script.'.js')
-			|| $this->appendOnceIfExist($this->serverroot, $themeDirectory.'/core/'.$script.'.js')
-			|| $this->appendOnceIfExist($this->serverroot, 'core/'.$script.'.js')
+		} else if ($this->appendOnceIfExist($baseDirectory, $themeDirectory.'/apps/'.$fullScript, $webRoot)
+			|| $this->appendOnceIfExist($baseDirectory, $themeDirectory.'/'.$fullScript, $webRoot)
+			|| $this->appendOnceIfExist($this->serverroot, $fullScript)
+			|| $this->appendOnceIfExist($baseDirectory, $themeDirectory.'/core/'.$fullScript, $webRoot)
+			|| $this->appendOnceIfExist($this->serverroot, 'core/'.$fullScript)
 		) {
 			return;
 		}
 
-		$app = substr($script, 0, strpos($script, '/'));
-		$script = substr($script, strpos($script, '/')+1);
-		$app_path = \OC_App::getAppPath($app);
+		$app = substr($fullScript, 0, strpos($fullScript, '/'));
+		$fullScript = substr($fullScript, strpos($fullScript, '/')+1);
+		$app_path = $this->appManager->getAppPath($app);
 		if( $app_path === false ) { return; }
-		$app_url = \OC_App::getAppWebPath($app);
+		$app_url = $this->appManager->getAppWebPath($app);
 		$app_url = ($app_url !== false) ? $app_url : null;
 
-		// missing translations files fill be ignored
-		$this->appendOnceIfExist($app_path, $script . '.js', $app_url);
+		// missing translations files will be ignored
+		$this->appendOnceIfExist($app_path, $fullScript, $app_url);
 	}
 
 	/**
 	 * @param string $script
 	 */
 	public function doFindTheme($script) {
+	}
+
+	/**
+	 * @param string $path
+	 * @return string
+	 */
+	protected function addExtension($path) {
+		return $path . '.js';
 	}
 }
