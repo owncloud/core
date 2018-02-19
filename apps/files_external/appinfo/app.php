@@ -35,7 +35,7 @@ require_once __DIR__ . '/../3rdparty/autoload.php';
 $appContainer = \OC_Mount_Config::$app->getContainer();
 
 $config = \OC::$server->getConfig();
-if ($config->getAppValue('core', 'enable_external_storage', 'no') === 'yes') {
+if ($config->getAppValue('core', 'enable_external_storage', 'no') === 'yes' && class_exists('OCA\Files\App', false)) {
 	\OCA\Files\App::getNavigationManager()->add(function () {
 		$l = \OC::$server->getL10N('files_external');
 		return [

@@ -77,6 +77,8 @@ class SMB extends \OCP\Files\Storage\StorageAdapter {
 		$this->log('enter: '.__FUNCTION__.'('.json_encode($loggedParams).')');
 
 		if (isset($params['host']) && isset($params['user']) && isset($params['password']) && isset($params['share'])) {
+			// add the domain in the user
+			$params['user'] = $this->conditionalDomainPlusUsername($params['domain'], $params['user']);
 			if (Server::NativeAvailable()) {
 				$this->log('using native libsmbclient');
 				$this->server = new NativeServer($params['host'], $params['user'], $params['password']);
@@ -109,6 +111,19 @@ class SMB extends \OCP\Files\Storage\StorageAdapter {
 		// FIXME: double slash to keep compatible with the old storage ids,
 		// failure to do so will lead to creation of a new storage id and
 		// loss of shares from the storage
+		$workgroup = $this->server->getWorkgroup();
+		if ($workgroup === null || $workgroup === '') {
+			// in order to keep compatibility
+			return 'smb::' . $this->server->getUser() . '@' . $this->server->getHost() . '//' . $this->share->getName() . '/' . $this->root;
+		} else {
+			return 'smb::' . $workgroup . '\\' . $this->server->getUser() . '@' . $this->server->getHost() . '//' . $this->share->getName() . '/' . $this->root;
+		}
+	}
+
+	/**
+	 * INTERNAL USE ONLY: This is only useful for migration code. Do not use outside. Use "getId()".
+	 */
+	public function getOldId() {
 		return 'smb::' . $this->server->getUser() . '@' . $this->server->getHost() . '//' . $this->share->getName() . '/' . $this->root;
 	}
 
@@ -640,6 +655,22 @@ class SMB extends \OCP\Files\Storage\StorageAdapter {
 			(bool)\OC_Helper::findBinaryPath('smbclient')
 			|| Server::NativeAvailable()
 		) ? true : ['smbclient'];
+	}
+
+	/**
+	 * Add the domain name to the username conditionally
+	 * If there is a domain the function will return something like <domain>\<username>
+	 * If there is no domain (domain is not set or is empty) it will return just the username
+	 * (without the backslash)
+	 */
+	private function conditionalDomainPlusUsername($domain, $username) {
+		if (isset($domain) && $domain !== "" && strpos($username, "\\") === false
+				&& strpos($username, "/") === false) {
+			$usernameWithDomain = $domain . "\\" . $username;
+		} else {
+			$usernameWithDomain = $username;
+		}
+		return $usernameWithDomain;
 	}
 
 	/**
