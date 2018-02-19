@@ -41,7 +41,7 @@ So that other users have access to these files
 		And I relogin with username "user1" and password "1234" to "http://%remote_server%"
 		And the offered remote shares are accepted
 		And I open the folder "simple-folder (2)"
-		And I upload overwriting the file "lorem.txt"
+		And I upload overwriting the file "lorem.txt" and retry if the file is locked
 		And I relogin with username "user2" and password "1234" to "%base_url%"
 		And I open the folder "simple-folder"
 		Then the file "lorem.txt" should be listed

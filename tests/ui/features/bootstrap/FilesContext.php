@@ -41,6 +41,7 @@ require_once 'bootstrap.php';
  */
 class FilesContext extends RawMinkContext implements Context {
 
+	private $owncloudPage;
 	private $filesPage;
 	private $trashbinPage;
 	private $favoritesPage;
@@ -91,13 +92,15 @@ class FilesContext extends RawMinkContext implements Context {
 	 * @return void
 	 */
 	public function __construct(
+		OwncloudPage $owncloudPage,
 		FilesPage $filesPage,
 		TrashbinPage $trashbinPage,
 		ConflictDialog $conflictDialog,
 		FavoritesPage $favoritesPage
 	) {
-		$this->trashbinPage = $trashbinPage;
+		$this->owncloudPage = $owncloudPage;
 		$this->filesPage = $filesPage;
+		$this->trashbinPage = $trashbinPage;
 		$this->conflictDialog = $conflictDialog;
 		$this->favoritesPage = $favoritesPage;
 		
@@ -459,6 +462,45 @@ class FilesContext extends RawMinkContext implements Context {
 		$this->iUploadTheFile($name);
 		$this->choiceInUploadConflict("new");
 		$this->iClickTheButton("Continue");
+	}
+
+	/**
+	 * @When I upload overwriting the file :name and retry if the file is locked
+	 * @param string $name
+	 * @return void
+	 */
+	public function iUploadOverwritingTheFileRetry($name) {
+		$previousNotificationsCount = 0;
+
+		for ($retryCounter = 0; $retryCounter < STANDARDRETRYCOUNT; $retryCounter++) {
+			$this->iUploadTheFile($name);
+			$this->choiceInUploadConflict("new");
+			$this->iClickTheButton("Continue");
+
+			try {
+				$notifications = $this->owncloudPage->getNotifications();
+			} catch (\SensioLabs\Behat\PageObjectExtension\PageObject\Exception\ElementNotFoundException $e) {
+				$notifications = [];
+			}
+
+			$currentNotificationsCount = count($notifications);
+
+			if ($currentNotificationsCount > $previousNotificationsCount) {
+				$message = "Upload overwriting $name and got $currentNotificationsCount notifications including " . end($notifications) . "\n";
+				echo $message;
+				error_log($message);
+				$previousNotificationsCount = $currentNotificationsCount;
+				usleep(STANDARDSLEEPTIMEMICROSEC);
+			} else {
+				break;
+			}
+		}
+
+		if ($retryCounter > 0) {
+			$message = "INFORMATION: retried to upload overwriting file $name $retryCounter times";
+			echo $message;
+			error_log($message);
+		}
 	}
 
 	/**

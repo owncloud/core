@@ -38,3 +38,5 @@ const LONGUIWAITTIMEOUTMILLISEC = 60000;
 const STANDARDUIWAITTIMEOUTMILLISEC = 10000;
 // Minimum timeout for use in code that needs to wait for the UI
 const MINIMUMUIWAITTIMEOUTMILLISEC = 500;
+// Default number of times to retry where retries are useful
+const STANDARDRETRYCOUNT = 5;

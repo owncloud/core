@@ -263,7 +263,7 @@ abstract class FilesPageBasic extends OwnCloudPage {
 	 * @param int $maxRetries
 	 * @return void
 	 */
-	public function deleteFile($name, Session $session, $maxRetries = 5) {
+	public function deleteFile($name, Session $session, $maxRetries = STANDARDRETRYCOUNT) {
 		$this->initAjaxCounters($session);
 		$this->resetSumStartedAjaxRequests($session);
 		
