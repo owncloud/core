@@ -264,7 +264,7 @@ trait BasicStructure {
 						  " and got response status " . $status . "\n";
 					echo $message;
 					error_log($message);
-					usleep(STANDARDSLEEPTIMEMICROSEC);
+					sleep(2);
 				}
 			}
 
