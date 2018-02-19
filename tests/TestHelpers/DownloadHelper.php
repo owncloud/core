@@ -21,6 +21,7 @@
  */
 namespace TestHelpers;
 
+use GuzzleHttp\Exception\BadResponseException;
 use GuzzleHttp\Message\FutureResponse;
 use GuzzleHttp\Message\ResponseInterface;
 
@@ -45,6 +46,7 @@ class DownloadHelper {
 	 * @param int    $davPathVersionToUse (1|2)
 	 * @param string $sourceIpAddress
 	 * @return FutureResponse|ResponseInterface|NULL
+	 * @throws BadResponseException
 	 */
 	public static function download(
 		$baseUrl,
