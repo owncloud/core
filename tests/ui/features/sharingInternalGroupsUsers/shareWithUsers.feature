@@ -1,4 +1,4 @@
-@insulated
+@insulated @disablePreviews
 Feature: Sharing files and folders with internal users
 As a user
 I want to share files and folders with other users

@@ -1,4 +1,4 @@
-@insulated
+@insulated @disablePreviews
 Feature: Unmark file/folder as favorite
 
 As a user
