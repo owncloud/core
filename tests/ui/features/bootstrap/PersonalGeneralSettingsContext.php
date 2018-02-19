@@ -21,6 +21,7 @@
  */
 
 use Behat\Behat\Context\Context;
+use Behat\Behat\Hook\Scope\BeforeScenarioScope;
 use Behat\MinkExtension\Context\RawMinkContext;
 use Page\PersonalGeneralSettingsPage;
 
@@ -32,7 +33,11 @@ require_once 'bootstrap.php';
 class PersonalGeneralSettingsContext extends RawMinkContext implements Context {
 
 	private $personalGeneralSettingsPage;
-
+	/**
+	 * 
+	 * @var FeatureContext
+	 */
+	private $featureContext;
 	/**
 	 * PersonalGeneralSettingsContext constructor.
 	 *
@@ -76,5 +81,62 @@ class PersonalGeneralSettingsContext extends RawMinkContext implements Context {
 		$this->personalGeneralSettingsPage->waitForOutstandingAjaxCalls(
 			$this->getSession()
 		);
+	}
+	
+	/**
+	 * @When I change the password to :newPassword
+	 *
+	 * @param string $newPassword
+	 *
+	 * @return void
+	 */
+	public function iChangeThePasswordTo($newPassword) {
+		$username = $this->featureContext->getCurrentUser();
+		$oldPassword = trim($this->featureContext->getUserPassword($username));
+		$this->personalGeneralSettingsPage->changePassword(
+			$oldPassword, $newPassword,$this->getSession());
+	}
+	
+	/**
+	 * @When I change the password to :newPassword using wrong current password
+	 *
+	 * @param string $newPassword
+	 *
+	 * @return void
+	 */
+	public function iChangeThePasswordToUsingWrongCurrentPassword($newPassword) {
+		$oldPassword = "thisisawrongpassword";
+		$this->personalGeneralSettingsPage->changePassword(
+			$oldPassword, $newPassword, $this->getSession());
+	}
+	
+	/**
+	 * @Then a password error message should be displayed with the text :wrongPasswordmessageText
+	 *
+	 * @param string $wrongPasswordmessageText
+	 *
+	 * @return void
+	 */
+	public function aPasswordErrorMessageShouldBeDisplayedWithTheText(
+		$wrongPasswordmessageText
+	) {
+		PHPUnit_Framework_Assert::assertEquals(
+			$wrongPasswordmessageText,
+			$this->personalGeneralSettingsPage->getWrongPasswordMessageText());
+	}
+
+	/**
+	 * @BeforeScenario
+	 * This will run before EVERY scenario.
+	 * It will set the properties for this object.
+	 *
+	 * @param BeforeScenarioScope $scope
+	 * @return void
+	 */
+	public function before(BeforeScenarioScope $scope) {
+		// Get the environment
+		$environment = $scope->getEnvironment();
+		// Get all the contexts you need in this context
+		$this->featureContext = $environment->getContext('FeatureContext');
 	}
 }
