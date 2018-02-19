@@ -69,9 +69,8 @@ describe('OCA.Files.FileActions tests', function() {
 	});
 	it('calling clear() clears file actions', function() {
 		fileActions.clear();
-		expect(fileActions.actions).toEqual({});
+		expect(fileActions._actionFunctions).toEqual([]);
 		expect(fileActions.defaults).toEqual({});
-		expect(fileActions.icons).toEqual({});
 		expect(fileActions.currentFile).toBe(null);
 	});
 	describe('displaying actions', function() {

@@ -56,12 +56,12 @@ describe('OCA.Trashbin.App tests', function() {
 
 			fileActions = App.fileList.fileActions;
 
-			expect(fileActions.actions.all).toBeDefined();
-			expect(fileActions.actions.all.Restore).toBeDefined();
-			expect(fileActions.actions.all.Delete).toBeDefined();
+			var actions = fileActions.getActions('all', 'file', 31);
+			expect(actions.Restore).toBeDefined();
+			expect(actions.Delete).toBeDefined();
 
-			expect(fileActions.actions.all.Rename).not.toBeDefined();
-			expect(fileActions.actions.all.Download).not.toBeDefined();
+			expect(actions.Rename).not.toBeDefined();
+			expect(actions.Download).not.toBeDefined();
 
 			expect(fileActions.defaults.dir).toEqual('Open');
 		});

@@ -8,7 +8,7 @@
  *
  */
 
-(function() {
+(function(OC, OCA) {
 
 	var TEMPLATE_FILE_ACTION_TRIGGER =
 		'<a class="action action-{{nameLowerCase}}" href="#" data-action="{{name}}">' +
@@ -33,9 +33,8 @@
 	FileActions.TYPE_INLINE = 1;
 	FileActions.prototype = {
 		/** @lends FileActions.prototype */
-		actions: {},
+		_actionFunctions: null,
 		defaults: {},
-		icons: {},
 
 		/**
 		 * @deprecated
@@ -106,18 +105,18 @@
 		 * @param {OCA.Files.FileActions} fileActions instance of OCA.Files.FileActions
 		 */
 		merge: function(fileActions) {
+
+			if (fileActions === this || fileActions._actionFunctions === this._actionFunctions) {
+				throw 'Cannot merge FileActions with itself!';
+			}
+
 			var self = this;
 			// merge first level to avoid unintended overwriting
-			_.each(fileActions.actions, function(sourceMimeData, mime) {
-				var targetMimeData = self.actions[mime];
-				if (!targetMimeData) {
-					targetMimeData = {};
-				}
-				self.actions[mime] = _.extend(targetMimeData, sourceMimeData);
+			_.each(fileActions._actionFunctions, function(actionFunction) {
+				self._actionFunctions.push(actionFunction);
 			});
 
 			this.defaults = _.extend(this.defaults, fileActions.defaults);
-			this.icons = _.extend(this.icons, fileActions.icons);
 		},
 		/**
 		 * @deprecated use #registerAction() instead
@@ -136,45 +135,66 @@
 		/**
 		 * Register action
 		 *
-		 * @param {OCA.Files.FileAction} action object
+		 * @param {OCA.Files.FileAction|Function} action object or function that returns an array of
+		 * action objects
 		 */
 		registerAction: function (action) {
-			var mime = action.mime;
-			var name = action.name;
-			var actionSpec = {
-				action: action.actionHandler,
-				name: name,
-				displayName: action.displayName,
-				mime: mime,
-				order: action.order || 0,
-				icon: action.icon,
-				iconClass: action.iconClass,
-				permissions: action.permissions,
-				type: action.type || FileActions.TYPE_DROPDOWN,
-				altText: action.altText || ''
-			};
-			if (_.isUndefined(action.displayName)) {
-				actionSpec.displayName = t('files', name);
+			var actionFunction;
+			if (_.isFunction(action)) {
+				actionFunction = action;
+			} else {
+				actionFunction = function(fileInfoModel) {
+					var mime = action.mime;
+					var requestedMime = fileInfoModel.get('mimetype');
+					var requestedMimePart = requestedMime.substr(0, requestedMime.indexOf('/'));
+
+					if (mime === 'dir') {
+						mime = 'httpd/unix-directory';
+					}
+
+					if (!(
+						(mime === 'all' || requestedMimePart === mime || requestedMime === mime)
+						&& (fileInfoModel.get('permissions') & action.permissions)
+					)) {
+						return;
+					}
+
+					var name = action.name;
+					var actionSpec = {
+						action: action.actionHandler,
+						name: name,
+						displayName: action.displayName,
+						mime: mime,
+						order: action.order || 0,
+						icon: action.icon,
+						iconClass: action.iconClass,
+						permissions: action.permissions,
+						type: action.type || FileActions.TYPE_DROPDOWN,
+						altText: action.altText || ''
+					};
+					if (_.isUndefined(action.displayName)) {
+						actionSpec.displayName = t('files', name);
+					}
+					if (_.isFunction(action.render)) {
+						actionSpec.render = action.render;
+					}
+
+					return actionSpec;
+				};
 			}
-			if (_.isFunction(action.render)) {
-				actionSpec.render = action.render;
-			}
-			if (!this.actions[mime]) {
-				this.actions[mime] = {};
-			}
-			this.actions[mime][name] = actionSpec;
-			this.icons[name] = action.icon;
-			this._notifyUpdateListeners('registerAction', {action: action});
+
+			this._actionFunctions.push(actionFunction);
+
+			this._notifyUpdateListeners('registerAction', {actionFunction: actionFunction});
 		},
 		/**
 		 * Clears all registered file actions.
 		 */
 		clear: function() {
-			this.actions = {};
 			this.defaults = {};
-			this.icons = {};
 			this.currentFile = null;
 			this._updateListeners = [];
+			this._actionFunctions = [];
 		},
 		/**
 		 * Sets the default action for a given mime type.
@@ -215,31 +235,46 @@
 		 * @return {Array.<OCA.Files.FileAction>} array of action specs
 		 */
 		getActions: function (mime, type, permissions) {
+			var fileInfoModel;
 			var actions = {};
-			if (this.actions.all) {
-				actions = $.extend(actions, this.actions.all);
+			if (_.isObject(arguments[0])) {
+				fileInfoModel = arguments[0];
+			} else {
+				// legacy
+				if (mime === 'dir' || type === 'dir') {
+					mime = 'httpd/unix-directory';
+				}
+				fileInfoModel = new OCA.Files.FileInfoModel({
+					mimetype: mime,
+					permissions: permissions
+				});
 			}
-			if (type) {//type is 'dir' or 'file'
-				if (this.actions[type]) {
-					actions = $.extend(actions, this.actions[type]);
+
+			// TODO: "all" actions
+			_.each(this._actionFunctions, function(actionFunction) {
+				var actionSpecs = actionFunction(fileInfoModel);
+				if (!actionSpecs) {
+					return;
 				}
-			}
-			if (mime) {
-				var mimePart = mime.substr(0, mime.indexOf('/'));
-				if (this.actions[mimePart]) {
-					actions = $.extend(actions, this.actions[mimePart]);
+
+				if (!_.isArray(actionSpecs)) {
+					actionSpecs = [actionSpecs];
 				}
-				if (this.actions[mime]) {
-					actions = $.extend(actions, this.actions[mime]);
-				}
-			}
-			var filteredActions = {};
-			$.each(actions, function (name, action) {
-				if (action.permissions & permissions) {
-					filteredActions[name] = action;
-				}
+
+				_.each(actionSpecs, function(actionSpec) {
+					if (_.isUndefined(actionSpec.type)) {
+						actionSpec.type = FileActions.TYPE_DROPDOWN;
+					}
+					// legacy...
+					if (_.isUndefined(actionSpec.action)) {
+						actionSpec.action = actionSpec.actionHandler;
+					}
+
+					actions[actionSpec.name] = actionSpec;
+				})
 			});
-			return filteredActions;
+
+			return actions;
 		},
 
 		/**
@@ -575,81 +610,105 @@
 		 * Register the actions that are used by default for the files app.
 		 */
 		registerDefaultActions: function() {
-			this.registerAction({
-				name: 'Download',
-				displayName: t('files', 'Download'),
-				order: -20,
-				mime: 'all',
-				permissions: OC.PERMISSION_READ,
-				iconClass: 'icon-download',
-				actionHandler: function (filename, context) {
-					var dir = context.dir || context.fileList.getCurrentDirectory();
-					var isDir = context.$file.attr('data-type') === 'dir';
-					var url = context.fileList.getDownloadUrl(filename, dir, isDir);
-
-					var downloadFileaction = $(context.$file).find('.fileactions .action-download');
-
-					// don't allow a second click on the download action
-					if(downloadFileaction.hasClass('disabled')) {
-						return;
-					}
-
-					if (url) {
-						var disableLoadingState = function() {
-							context.fileList.showFileBusyState(filename, false);
-						};
-
-						context.fileList.showFileBusyState(filename, true);
-						OCA.Files.Files.handleDownload(url, disableLoadingState);
-					}
-				}
-			});
-
-			this.registerAction({
-				name: 'Rename',
-				displayName: t('files', 'Rename'),
-				mime: 'all',
-				order: -30,
-				permissions: OC.PERMISSION_UPDATE,
-				iconClass: 'icon-rename',
-				actionHandler: function (filename, context) {
-					context.fileList.rename(filename);
-				}
-			});
-
-			this.register('dir', 'Open', OC.PERMISSION_READ, '', function (filename, context) {
-				var dir = context.$file.attr('data-path') || context.fileList.getCurrentDirectory();
-				context.fileList.changeDirectory(OC.joinPaths(dir, filename), true, false, parseInt(context.$file.attr('data-id'), 10));
-			});
-
-			this.registerAction({
-				name: 'Delete',
-				displayName: function(context) {
-					var mountType = context.$file.attr('data-mounttype');
-					var deleteTitle = t('files', 'Delete');
-					if (mountType === 'external-root') {
-						deleteTitle = t('files', 'Disconnect storage');
-					} else if (mountType === 'shared-root') {
-						deleteTitle = t('files', 'Unshare');
-					}
-					return deleteTitle;
-				},
-				mime: 'all',
-				order: 1000,
-				// permission is READ because we show a hint instead if there is no permission
-				permissions: OC.PERMISSION_DELETE,
-				iconClass: 'icon-delete',
-				actionHandler: function(fileName, context) {
-					// if there is no permission to delete do nothing
-					if((context.$file.data('permissions') & OC.PERMISSION_DELETE) === 0) {
-						return;
-					}
-					context.fileList.do_delete(fileName, context.dir);
-					$('.tipsy').remove();
-				}
-			});
-
+			this.registerAction(this._getDefaultActions);
 			this.setDefault('dir', 'Open');
+		},
+
+		_getDefaultActions: function(fileInfoModel) {
+
+			var actions = [];
+
+			if (fileInfoModel.get('permissions') & OC.PERMISSION_READ) {
+				actions.push(FileActions._actionDownload);
+			}
+
+			if (fileInfoModel.get('permissions') & OC.PERMISSION_UPDATE) {
+				actions.push(FileActions._actionRename);
+			}
+
+			if (fileInfoModel.isDirectory() && (fileInfoModel.get('permissions') & OC.PERMISSION_READ)) {
+				actions.push(FileActions._actionOpenDirectory);
+			}
+
+			if (fileInfoModel.get('permissions') & OC.PERMISSION_DELETE) {
+				actions.push(FileActions._actionDelete);
+			}
+
+			return actions;
+		}
+	};
+
+	FileActions._actionRename = {
+		name: 'Rename',
+		displayName: t('files', 'Rename'),
+		order: -30,
+		permissions: OC.PERMISSION_UPDATE,
+		iconClass: 'icon-rename',
+		actionHandler: function (filename, context) {
+			context.fileList.rename(filename);
+		}
+	};
+
+	FileActions._actionDownload = {
+		name: 'Download',
+		displayName: t('files', 'Download'),
+		order: -20,
+		permissions: OC.PERMISSION_READ,
+		iconClass: 'icon-download',
+		actionHandler: function (filename, context) {
+			var dir = context.dir || context.fileList.getCurrentDirectory();
+			var isDir = context.$file.attr('data-type') === 'dir';
+			var url = context.fileList.getDownloadUrl(filename, dir, isDir);
+
+			var downloadFileaction = $(context.$file).find('.fileactions .action-download');
+
+			// don't allow a second click on the download action
+			if(downloadFileaction.hasClass('disabled')) {
+				return;
+			}
+
+			if (url) {
+				var disableLoadingState = function() {
+					context.fileList.showFileBusyState(filename, false);
+				};
+
+				context.fileList.showFileBusyState(filename, true);
+				OCA.Files.Files.handleDownload(url, disableLoadingState);
+			}
+		}
+	};
+
+	FileActions._actionOpenDirectory = {
+		name: 'Open',
+		actionHandler: function (filename, context) {
+			var dir = context.$file.attr('data-path') || context.fileList.getCurrentDirectory();
+			context.fileList.changeDirectory(OC.joinPaths(dir, filename), true, false, parseInt(context.$file.attr('data-id'), 10));
+		}
+	};
+
+	FileActions._actionDelete = {
+		name: 'Delete',
+		displayName: function(context) {
+			var mountType = context.$file.attr('data-mounttype');
+			var deleteTitle = t('files', 'Delete');
+			if (mountType === 'external-root') {
+				deleteTitle = t('files', 'Disconnect storage');
+			} else if (mountType === 'shared-root') {
+				deleteTitle = t('files', 'Unshare');
+			}
+			return deleteTitle;
+		},
+		order: 1000,
+		// permission is READ because we show a hint instead if there is no permission
+		permissions: OC.PERMISSION_DELETE,
+		iconClass: 'icon-delete',
+		actionHandler: function(fileName, context) {
+			// if there is no permission to delete do nothing
+			if((context.$file.data('permissions') & OC.PERMISSION_DELETE) === 0) {
+				return;
+			}
+			context.fileList.do_delete(fileName, context.dir);
+			$('.tipsy').remove();
 		}
 	};
 
@@ -762,5 +821,5 @@
 		console.warn('FileActions.display() is deprecated, please use OCA.Files.fileActions.register() which automatically redisplays actions', mime, name);
 		OCA.Files.FileActions.prototype.display.call(window.FileActions, parent, triggerEvent, fileList);
 	};
-})();
+})(OC, OCA);
 

@@ -168,11 +168,11 @@ test-external: $(composer_dev_deps)
 
 .PHONY: test-js
 test-js: $(nodejs_deps)
-	NODE_PATH='$(NODE_PREFIX)/node_modules' $(KARMA) start tests/karma.config.js --single-run
+	ulimit -Sv 3000000 && NODE_PATH='$(NODE_PREFIX)/node_modules' $(KARMA) start tests/karma.config.js --single-run
 
 .PHONY: test-js-debug
 test-js-debug: $(nodejs_deps)
-	NODE_PATH='$(NODE_PREFIX)/node_modules' $(KARMA) start tests/karma.config.js
+	ulimit -Sv 3000000 && NODE_PATH='$(NODE_PREFIX)/node_modules' $(KARMA) start tests/karma.config.js
 
 .PHONY: test-integration
 test-integration: $(composer_dev_deps)

@@ -185,6 +185,18 @@ window.isPhantom = /phantom/i.test(navigator.userAgent);
 		OC.Util.History._handlers = [];
 
 		$(window).off('beforeunload');
+
+		OCA.Files.fileActions.clear();
+		OCA.Files.legacyFileActions.clear();
 	});
 })();
+
+var reporterCurrentSpec = {
+     specStarted: function(result) {
+		 console.log(result.fullName);
+     }
+ };
+
+// uncomment this to log the test name, useful for debugging browser crashes in case of memory leaks / infinite loops
+//jasmine.getEnv().addReporter(reporterCurrentSpec);
 

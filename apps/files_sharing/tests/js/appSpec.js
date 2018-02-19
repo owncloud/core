@@ -71,10 +71,10 @@ describe('OCA.Sharing.App tests', function() {
 			_.each([fileListIn, fileListOut], function(fileList) {
 				var fileActions = fileList.fileActions;
 
-				expect(fileActions.actions.all).toBeDefined();
-				expect(fileActions.actions.all.Delete).toBeDefined();
-				expect(fileActions.actions.all.Rename).toBeDefined();
-				expect(fileActions.actions.all.Download).toBeDefined();
+				var actions = fileActions.getActions('all', 'file', 31);
+				expect(actions.Delete).toBeDefined();
+				expect(actions.Rename).toBeDefined();
+				expect(actions.Download).toBeDefined();
 
 				expect(fileActions.defaults.dir).toEqual('Open');
 			});
@@ -93,7 +93,8 @@ describe('OCA.Sharing.App tests', function() {
 			App._inFileList = null;
 			fileListIn = App.initSharingIn($('#app-content-sharingin'));
 
-			expect(fileListIn.fileActions.actions.all.RegularTest).toBeDefined();
+			var actions = fileListIn.fileActions.getActions('all', 'file', 31);
+			expect(actions.RegularTest).toBeDefined();
 		});
 		it('does not provide legacy file actions', function() {
 			var actionStub = sinon.stub();
@@ -109,7 +110,8 @@ describe('OCA.Sharing.App tests', function() {
 			App._inFileList = null;
 			fileListIn = App.initSharingIn($('#app-content-sharingin'));
 
-			expect(fileListIn.fileActions.actions.all.LegacyTest).not.toBeDefined();
+			var actions = fileListIn.fileActions.getActions('all', 'file', 31);
+			expect(actions.LegacyTest).not.toBeDefined();
 		});
 		it('redirects to files app when opening a directory', function() {
 			var oldList = OCA.Files.App.fileList;
