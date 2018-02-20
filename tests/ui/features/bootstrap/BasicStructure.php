@@ -22,6 +22,7 @@
 
 use Behat\Behat\Hook\Scope\BeforeScenarioScope;
 use Behat\Gherkin\Node\TableNode;
+use GuzzleHttp\Exception\BadResponseException;
 use TestHelpers\DownloadHelper;
 use TestHelpers\SetupHelper;
 use TestHelpers\UserHelper;
@@ -235,15 +236,45 @@ trait BasicStructure {
 		}
 
 		$this->addUserToCreatedUsersList($user, $password, $displayName, $email);
+
 		if ($initialize) {
 			// Download a skeleton file. That will force the server to fully
 			// initialize the user, including their skeleton files.
-			DownloadHelper::download(
-				$baseUrl,
-				$user,
-				$password,
-				"lorem.txt"
-			);
+			$fileName = "lorem.txt";
+
+			for ($retryCounter = 0;
+				 $retryCounter < STANDARDRETRYCOUNT;
+				 $retryCounter++) {
+				try {
+					$result = DownloadHelper::download(
+						$baseUrl,
+						$user,
+						$password,
+						$fileName
+					);
+					$downloadSuccess = true;
+					break;
+				} catch (BadResponseException $ex) {
+					$downloadSuccess = false;
+					$result = $ex->getResponse();
+					$status = $result->getStatusCode();
+					$message
+						= "Downloading file " . $fileName .
+						  " to initialize user " . $user .
+						  " and got response status " . $status . "\n";
+					echo $message;
+					error_log($message);
+					usleep(STANDARDSLEEPTIMEMICROSEC);
+				}
+			}
+
+			if (!$downloadSuccess) {
+				throw new Exception(
+					"could not initialize user. "
+					. $result->getStatusCode() . " " . $result->getBody()
+				);
+
+			}
 		}
 	}
 
