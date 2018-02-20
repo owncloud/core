@@ -673,8 +673,8 @@ class Session implements IUserSession, Emitter {
 		}
 
 		// Check if login names match
-		if (!is_null($user) && $dbToken->getLoginName() !== $user) {
-			// TODO: this makes it imposssible to use different login names on browser and client
+		if ($user !== null && $dbToken->getLoginName() !== $user) {
+			// TODO: this makes it impossible to use different login names on browser and client
 			// e.g. login by e-mail 'user@example.com' on browser for generating the token will not
 			//      allow to use the client token with the login name 'user'.
 			return false;
@@ -729,7 +729,10 @@ class Session implements IUserSession, Emitter {
 		foreach ($this->getAuthModules(false) as $authModule) {
 			$user = $authModule->auth($request);
 			if ($user !== null) {
-				return $this->loginUser($authModule->auth($request), $authModule->getUserPassword($request));
+				$uid = $user->getUID();
+				$password = $authModule->getUserPassword($request);
+				$this->createSessionToken($request, $uid, $uid, $password);
+				return $this->loginUser($user, $password);
 			}
 		}
 
@@ -744,7 +747,7 @@ class Session implements IUserSession, Emitter {
 	 * @return boolean True if the user can be authenticated, false otherwise
 	 * @throws LoginException if an app canceld the login process or the user is not enabled
 	 */
-	private function loginUser($user, $password) {
+	protected function loginUser($user, $password) {
 		return $this->emittingCall(function () use (&$user, &$password) {
 			if (is_null($user)) {
 				return false;
