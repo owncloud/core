@@ -62,6 +62,16 @@ class FakeDBLockingProvider extends \OC\Lock\DBLockingProvider {
 		parent::releaseLock($path, $type);
 	}
 
+	/**
+	 * sets all locks in the file_locks table to "0"
+	 * @return void
+	 */
+	public function releaseAllGlobally() {
+		$this->db->executeUpdate(
+			'UPDATE `*PREFIX*file_locks` SET `lock` = 0'
+		);
+	}
+
 	public function __destruct() {
 		// Prevent cleaning up at the end of the live time.
 		// parent::__destruct();

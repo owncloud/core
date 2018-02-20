@@ -59,7 +59,7 @@ class Provisioning {
 	}
 
 	/**
-	 * @return ILockingProvider
+	 * @return FakeDBLockingProvider
 	 */
 	protected function getLockingProvider() {
 		if ($this->lockingProvider instanceof DBLockingProvider) {
@@ -199,24 +199,36 @@ class Provisioning {
 	}
 
 	/**
+	 * releases all locks that were set by the testing app
+	 * if $parameters['_delete']['global'] is set to "true"
+	 * all locks in the files_lock table are released (set to "0")
+	 * 
 	 * @param array $parameters
 	 * @return \OC_OCS_Result
 	 */
 	public function releaseAll(array $parameters) {
 		$type = $this->getType($parameters);
+		if (isset($parameters['_delete']['global'])
+			&& $parameters['_delete']['global'] === "true"
+		) {
+			$globalRelease = true;
+		} else {
+			$globalRelease = false;
+		}
 
 		$lockingProvider = $this->getLockingProvider();
-
-		foreach ($this->config->getAppKeys('testing') as $lock) {
-			if (strpos($lock, 'locking_') === 0) {
-				$path = substr($lock, strlen('locking_'));
-
-				if ($type === ILockingProvider::LOCK_EXCLUSIVE && $this->config->getAppValue('testing', $lock) == ILockingProvider::LOCK_EXCLUSIVE) {
-					$lockingProvider->releaseLock($path, $this->config->getAppValue('testing', $lock));
-				} else if ($type === ILockingProvider::LOCK_SHARED && $this->config->getAppValue('testing', $lock) == ILockingProvider::LOCK_SHARED) {
-					$lockingProvider->releaseLock($path, $this->config->getAppValue('testing', $lock));
-				} else {
-					$lockingProvider->releaseLock($path, $this->config->getAppValue('testing', $lock));
+		if ($globalRelease === true) {
+			$lockingProvider->releaseAllGlobally();
+		} else {
+			foreach ($this->config->getAppKeys('testing') as $lock) {
+				if (strpos($lock, 'locking_') === 0) {
+					$path = substr($lock, strlen('locking_'));
+					$testingAppLock = (int) $this->config->getAppValue(
+						'testing', $lock
+					);
+					if ($type === $testingAppLock || $type === 0) {
+						$lockingProvider->releaseLock($path, $testingAppLock);
+					}
 				}
 			}
 		}
