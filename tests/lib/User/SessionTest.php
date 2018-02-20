@@ -1106,4 +1106,55 @@ class SessionTest extends TestCase {
 		$this->assertEquals( $expectedReturn, $session->verifyAuthHeaders($request));
 	}
 
+	public function providesModulesForLogin() {
+		$nullModule = $this->createMock(IAuthModule::class);
+		$nullModule->expects($this->any())->method('auth')->willReturn(null);
+		$throwingModule = $this->createMock(IAuthModule::class);
+		$throwingModule->expects($this->any())->method('auth')->willThrowException(new \Exception('Invalid token'));
+		$user1 = $this->createMock(IUser::class);
+		$user1->expects($this->any())->method('getUID')->willReturn('user1');
+		$user1Module = $this->createMock(IAuthModule::class);
+		$user1Module->expects($this->any())->method('auth')->willReturn($user1);
+		return [
+			'no modules' => [false, []],
+			'module returning null' => [false, [$nullModule]],
+			'module returning a user' => [true, [$user1Module]],
+			'module throwing an exception' => [new \Exception('Invalid token'), [$throwingModule]],
+		];
+	}
+
+	/**
+	 * @dataProvider providesModulesForLogin
+	 * @param mixed $expectedReturn
+	 * @param array $modules
+	 */
+	public function testTryAuthModuleLogin($expectedReturn, array $modules) {
+		/** @var IRequest | \PHPUnit_Framework_MockObject_MockObject $request */
+		$request = $this->createMock(IRequest::class);
+		/** @var IUserManager | \PHPUnit_Framework_MockObject_MockObject $userManager */
+		$userManager = $this->createMock(IUserManager::class);
+		/** @var ISession | \PHPUnit_Framework_MockObject_MockObject $session */
+		$session = $this->createMock(ISession::class);
+		/** @var ITimeFactory | \PHPUnit_Framework_MockObject_MockObject $timeFactory */
+		$timeFactory = $this->createMock(ITimeFactory::class);
+		/** @var IProvider | \PHPUnit_Framework_MockObject_MockObject $tokenProvider */
+		$tokenProvider = $this->createMock(IProvider::class);
+
+		/** @var Session | \PHPUnit_Framework_MockObject_MockObject $session */
+		$session = $this->getMockBuilder(Session::class)
+			->setConstructorArgs([$userManager, $session, $timeFactory, $tokenProvider, $this->config, $this->serviceLoader, $this->userSyncService])
+			->setMethods(['getAuthModules', 'createSessionToken', 'loginUser', 'getUser'])
+			->getMock();
+		$session->expects($this->any())->method('getAuthModules')->willReturn($modules);
+
+		if ($expectedReturn instanceof \Exception) {
+			$this->expectException(\Exception::class);
+			$this->expectExceptionMessage('Invalid token');
+		} else {
+			$session->expects($expectedReturn ? $this->once() : $this->never())->method('createSessionToken');
+			$session->expects($expectedReturn ? $this->once() : $this->never())->method('loginUser')->willReturn($expectedReturn);
+		}
+
+		$this->assertEquals( $expectedReturn, $session->tryAuthModuleLogin($request));
+	}
 }
