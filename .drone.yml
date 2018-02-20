@@ -167,6 +167,16 @@ pipeline:
       matrix:
         TEST_SUITE: selenium
 
+  print-log:
+    image: owncloudci/php:${PHP_VERSION}
+    pull: true
+    commands:
+      - cat /drone/src/data/owncloud.log
+    when:
+      status:  [ failure ]
+      matrix:
+        TEST_SUITE: phpunit
+
 services:
   mariadb:
     image: mariadb:10.2
