@@ -63,31 +63,4 @@ interface IManager extends IApp, INotifier {
 	 * @since 9.0.0
 	 */
 	public function hasNotifiers();
-
-	/**
-	 * @param INotification $notification the notification to be serialized
-	 * @param bool $forceIncomplete whether this method should serialize a INotification instance with
-	 * incomplete data or throw an exception if the notification isn't complete
-	 * @return string the serialized notification
-	 * @throws \OCP\Notification\Exceptions\IncompleteSerializationException if the notification
-	 * doesn't have all the required fields for the notification AND the $forceIncomplete flag
-	 * isn't true. This exception musn't be thrown if the $forceIncomplete flag is true.
-	 * @since 10.0.7
-	 */
-	public function serializeNotification(INotification $notification, $forceIncomplete = false);
-
-	/**
-	 * @param string $serialNotification the serialized notification coming from the
-	 * serializeNotification() method
-	 * @param bool $forceIncomplete whether this method should return a INotification instance with
-	 * incomplete data or throw an exception if the notification data isn't complete
-	 * @return INotification an INotification object from the serialized data
-	 * @throws \OCP\Notification\Exceptions\CannotDeserializeException if the data can't be
-	 * deserialized (format not supported, errors during deserialization, etc)
-	 * @throws \OCP\Notification\Exceptions\IncompleteDeserializationException if the data doesn't
-	 * have all the required fields for the notification AND the $forceIncomplete flag isn't true.
-	 * This exception musn't be thrown if the $forceIncomplete flag is true.
-	 * @since 10.0.7
-	 */
-	public function deserializeNotification($serialNotification, $forceIncomplete = false);
 }
