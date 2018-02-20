@@ -75,8 +75,24 @@ API::register('get', '/apps/testing/api/v1/lockprovisioning/{type}/{user}', [$lo
 API::register('post', '/apps/testing/api/v1/lockprovisioning/{type}/{user}', [$locking, 'acquireLock'], 'files_lockprovisioning', API::ADMIN_AUTH);
 API::register('put', '/apps/testing/api/v1/lockprovisioning/{type}/{user}', [$locking, 'changeLock'], 'files_lockprovisioning', API::ADMIN_AUTH);
 API::register('delete', '/apps/testing/api/v1/lockprovisioning/{type}/{user}', [$locking, 'releaseLock'], 'files_lockprovisioning', API::ADMIN_AUTH);
-API::register('delete', '/apps/testing/api/v1/lockprovisioning/{type}', [$locking, 'releaseAll'], 'files_lockprovisioning', API::ADMIN_AUTH);
-API::register('delete', '/apps/testing/api/v1/lockprovisioning', [$locking, 'releaseAll'], 'files_lockprovisioning', API::ADMIN_AUTH);
+
+//release all locks of the given type that were set by the testing app
+API::register(
+	'delete',
+	'/apps/testing/api/v1/lockprovisioning/{type}',
+	[$locking, 'releaseAll'],
+	'files_lockprovisioning',
+	API::ADMIN_AUTH
+);
+//relase all locks that were set by the testing app
+//if global=true in the requests also locks that were not set by the testing app get cleared
+API::register(
+	'delete',
+	'/apps/testing/api/v1/lockprovisioning',
+	[$locking, 'releaseAll'],
+	'files_lockprovisioning',
+	API::ADMIN_AUTH
+);
 
 $bigFileID = new BigFileID(
 	\OC::$server->getDatabaseConnection()
