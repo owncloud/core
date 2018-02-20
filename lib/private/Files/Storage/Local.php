@@ -180,12 +180,26 @@ class Local extends Common {
 			return false;
 		}
 		if (PHP_INT_SIZE === 4) {
-			if (\OC_Util::runningOn('linux')) {
-				return (int) exec ('stat -c %Y '. escapeshellarg ($fullPath));
-			} else if (\OC_Util::runningOn('bsd') || \OC_Util::runningOn('mac')) {
-				return (int) exec ('stat -f %m '. escapeshellarg ($fullPath));
+			/**
+			 * Check if exec is available to use before calling it.
+			 */
+			if (function_exists('exec') === true) {
+				$result = 0;
+				$returnVar = 0;
+				if (\OC_Util::runningOn('linux')) {
+					$result = (int)exec('stat -c %Y ' . escapeshellarg($fullPath), $output, $returnVar);
+				} else if (\OC_Util::runningOn('bsd') || \OC_Util::runningOn('mac')) {
+					$result = (int)exec('stat -f %m ' . escapeshellarg($fullPath), $output, $returnVar);
+				}
+
+				/**
+				 * If the result is zero, then stat is missing.
+				 * Additionally check the return status from the shell.
+				 */
+				if ($returnVar === 0) {
+					return $result;
+				}
 			}
-			return false;
 		}
 		return filemtime($fullPath);
 	}
