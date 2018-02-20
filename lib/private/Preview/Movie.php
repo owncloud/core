@@ -63,6 +63,7 @@ class Movie extends Provider {
 			// in some cases 1MB was no enough to generate thumbnail
 			$firstmb = stream_get_contents($handle, 5242880);
 			file_put_contents($absPath, $firstmb);
+			fclose($handle);
 		}
 
 		$result = $this->generateThumbNail($maxX, $maxY, $absPath, 5);
