@@ -227,7 +227,9 @@ class SyncService {
 			$existing = $a->getHome();
 			$backendHome = $backend->getHome($uid);
 			$class = get_class($backend);
-			$this->logger->error("User backend $class is returning home: $backendHome for user: $uid which differs from existing value: $existing");
+			if ($existing !== '') {
+				$this->logger->error("User backend $class is returning home: $backendHome for user: $uid which differs from existing value: $existing");
+			}
 		}
 		// Home is handled differently, it should only be set on account creation, when there is no home already set
 		// Otherwise it could change on a sync and result in a new user folder being created
