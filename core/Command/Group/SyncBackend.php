@@ -26,12 +26,9 @@ use OC\Group\SyncService;
 use OC\MembershipManager;
 use OC\User\AccountMapper;
 use OCP\GroupInterface;
-use OCP\IConfig;
 use OCP\IGroup;
 use OCP\IGroupManager;
 use OCP\ILogger;
-use OCP\IUser;
-use OCP\IUserManager;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Input\InputInterface;
@@ -47,12 +44,8 @@ class SyncBackend extends Command {
 	private $accountMapper;
 	/** @var MembershipManager */
 	private $membershipManager;
-	/** @var IConfig */
-	private $config;
 	/** @var IGroupManager */
 	private $groupManager;
-	/** @var IUserManager */
-	private $userManager;
 	/** @var ILogger */
 	private $logger;
 
@@ -60,25 +53,19 @@ class SyncBackend extends Command {
 	 * @param GroupMapper $groupMapper
 	 * @param AccountMapper $accountMapper
 	 * @param MembershipManager $membershipManager
-	 * @param IConfig $config
 	 * @param ILogger $logger
 	 * @param IGroupManager $groupManager
-	 * @param IUserManager $userManager
 	 */
 	public function __construct(GroupMapper $groupMapper,
 								AccountMapper $accountMapper,
 								MembershipManager $membershipManager,
-								IConfig $config,
 								ILogger $logger,
-								IGroupManager $groupManager,
-								IUserManager $userManager) {
+								IGroupManager $groupManager) {
 		parent::__construct();
 		$this->groupMapper = $groupMapper;
 		$this->accountMapper = $accountMapper;
 		$this->membershipManager = $membershipManager;
-		$this->config = $config;
 		$this->groupManager = $groupManager;
-		$this->userManager = $userManager;
 		$this->logger = $logger;
 	}
 
@@ -108,17 +95,17 @@ class SyncBackend extends Command {
 			return 0;
 		}
 		$backendClassName = $input->getArgument('backend-class');
-		if (is_null($backendClassName)) {
-			$output->writeln("<error>No backend class name given. Please run ./occ help group:sync to understand how this command works.</error>");
+		if ($backendClassName === null) {
+			$output->writeln('<error>No backend class name given. Please run ./occ help group:sync to understand how this command works.</error>');
 			return 1;
 		}
 		$backend = $this->getBackend($backendClassName);
-		if (is_null($backend)) {
+		if ($backend === null) {
 			$output->writeln("<error>The backend <$backendClassName> does not exist. Did you miss to enable the app?</error>");
 			return 1;
 		}
 
-		$syncService = new SyncService($this->groupMapper, $this->accountMapper, $this->membershipManager, $this->config, $this->logger);
+		$syncService = new SyncService($this->groupMapper, $this->accountMapper, $this->membershipManager, $this->logger);
 
 		// Count groups
 		$backendGroupsNo = $this->handleCount($output, $syncService, $backend);
@@ -173,7 +160,7 @@ class SyncBackend extends Command {
 	 * @return int - number of groups in external backend
 	 */
 	private function handleCount(OutputInterface $output, SyncService $syncService, GroupInterface $backend) {
-		$output->writeln("Count groups from external backend ...");
+		$output->writeln('Count groups from external backend ...');
 		$p = new ProgressBar($output);
 		$max = 0;
 		$syncService->count($backend, function () use ($p, &$max) {
@@ -193,7 +180,7 @@ class SyncBackend extends Command {
 	 * @param GroupInterface $backend
 	 */
 	private function handleUnknownGroups(OutputInterface $output, SyncService $syncService, GroupInterface $backend) {
-		$output->writeln("Scan existing groups and find groups to delete...");
+		$output->writeln('Scan existing groups and find groups to delete...');
 		$p = new ProgressBar($output);
 		$toBeDeleted = $syncService->getNoLongerExistingGroup($backend, function () use ($p) {
 			$p->advance();
@@ -203,9 +190,9 @@ class SyncBackend extends Command {
 		$output->writeln('');
 
 		if (empty($toBeDeleted)) {
-			$output->writeln("No groups to be deleted have been detected.");
+			$output->writeln('No groups to be deleted have been detected.');
 		} else {
-			$output->writeln("Proceeding to remove the backend groups. Following groups are no longer known with the connected backend.");
+			$output->writeln('Proceeding to remove the backend groups. Following groups are no longer known with the connected backend.');
 			$output->writeln('');
 
 			$this->doActionForGIDs($toBeDeleted,
@@ -214,7 +201,7 @@ class SyncBackend extends Command {
 					$output->writeln($gid);
 				},
 				function ($gid) use ($output) {
-					$output->writeln($gid . " (unknown backend group)");
+					$output->writeln("$gid (unknown backend group)");
 				}
 			);
 		}
@@ -230,7 +217,7 @@ class SyncBackend extends Command {
 	 */
 	private function handleUpdate(OutputInterface $output, SyncService $syncService, GroupInterface $backend, $backendGroupsNo) {
 		// insert/update known users
-		$output->writeln("Insert new and update existing groups. Sync memberships of each group ...");
+		$output->writeln('Insert new and update existing groups. Sync memberships of each group ...');
 		$p = new ProgressBar($output);
 		$p->start($backendGroupsNo);
 		$syncService->run($backend, function () use ($p) {

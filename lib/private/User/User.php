@@ -44,7 +44,6 @@ use OCP\IConfig;
 use OCP\IUserBackend;
 use OCP\IUserSession;
 use OCP\User\IChangePasswordBackend;
-use OCP\UserInterface;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\EventDispatcher\GenericEvent;
 
@@ -57,7 +56,7 @@ class User implements IUser {
 	/** @var Emitter|Manager $emitter */
 	private $emitter;
 
-	/** @var \OCP\IConfig $config */
+	/** @var IConfig $config */
 	private $config;
 
 	/** @var IAvatarManager */
@@ -104,20 +103,20 @@ class User implements IUser {
 		$this->emitter = $emitter;
 		$this->membershipManager = $membershipManager;
 		$this->eventDispatcher = $eventDispatcher;
-		if(is_null($config)) {
+		if($config === null) {
 			$config = \OC::$server->getConfig();
 		}
 		$this->config = $config;
 		$this->urlGenerator = $urlGenerator;
-		if (is_null($this->urlGenerator)) {
+		if ($this->urlGenerator === null) {
 			$this->urlGenerator = \OC::$server->getURLGenerator();
 		}
 		$this->groupManager = $groupManager;
-		if (is_null($this->groupManager)) {
+		if ($this->groupManager === null) {
 			$this->groupManager = \OC::$server->getGroupManager();
 		}
 		$this->userSession = $userSession;
-		if (is_null($this->userSession)) {
+		if ($this->userSession === null) {
 			$this->userSession = \OC::$server->getUserSession();
 		}
 	}
@@ -145,7 +144,7 @@ class User implements IUser {
 	}
 
 	/**
-	 * set the displayname for the user
+	 * set the display name for the user
 	 *
 	 * @param string $displayName
 	 * @return bool
@@ -240,7 +239,7 @@ class User implements IUser {
 
 		// Delete user in external backend
 		$bi = $this->account->getBackendInstance();
-		if (!is_null($bi)) {
+		if ($bi !== null) {
 			$bi->deleteUser($this->account->getUserId());
 		}
 
@@ -280,9 +279,8 @@ class User implements IUser {
 					$this->config->deleteUserValue($this->getUID(), 'owncloud', 'lostpassword');
 				}
 				return !($result === false);
-			} else {
-				return false;
 			}
+			return false;
 		}, [
 			'before' => ['user' => $this, 'password' => $password, 'recoveryPassword' => $recoveryPassword],
 			'after' => ['user' => $this, 'password' => $password, 'recoveryPassword' => $recoveryPassword]
@@ -318,7 +316,7 @@ class User implements IUser {
 	 */
 	public function canChangeAvatar() {
 		$backend = $this->account->getBackendInstance();
-		if (is_null($backend)) {
+		if ($backend === null) {
 			return false;
 		}
 		if ($backend->implementsActions(Backend::PROVIDE_AVATAR)) {
@@ -334,7 +332,7 @@ class User implements IUser {
 	 */
 	public function canChangePassword() {
 		$backend = $this->account->getBackendInstance();
-		if (is_null($backend)) {
+		if ($backend === null) {
 			return false;
 		}
 		return $backend instanceof IChangePasswordBackend || $backend->implementsActions(Backend::SET_PASSWORD);
@@ -358,7 +356,7 @@ class User implements IUser {
 			}
 		}
 		$backend = $this->account->getBackendInstance();
-		if (is_null($backend)) {
+		if ($backend === null) {
 			return false;
 		}
 		return $backend->implementsActions(Backend::SET_DISPLAYNAME);
@@ -409,7 +407,7 @@ class User implements IUser {
 	 */
 	public function getQuota() {
 		$quota = $this->account->getQuota();
-		if(is_null($quota)) {
+		if ($quota === null) {
 			return 'default';
 		}
 		return $quota;
@@ -441,7 +439,7 @@ class User implements IUser {
 	 */
 	public function getAvatarImage($size) {
 		// delay the initialization
-		if (is_null($this->avatarManager)) {
+		if ($this->avatarManager === null) {
 			$this->avatarManager = \OC::$server->getAvatarManager();
 		}
 
@@ -473,7 +471,8 @@ class User implements IUser {
 	private function removeProtocolFromUrl($url) {
 		if (strpos($url, 'https://') === 0) {
 			return substr($url, strlen('https://'));
-		} else if (strpos($url, 'http://') === 0) {
+		}
+		if (strpos($url, 'http://') === 0) {
 			return substr($url, strlen('http://'));
 		}
 
@@ -481,7 +480,7 @@ class User implements IUser {
 	}
 
 	public function triggerChange($feature, $value = null) {
-		if ($this->emitter && in_array($feature, $this->account->getUpdatedFields())) {
+		if ($this->emitter && in_array($feature, $this->account->getUpdatedFields(), true)) {
 			$this->emitter->emit('\OC\User', 'changeUser', [$this, $feature, $value]);
 		}
 	}

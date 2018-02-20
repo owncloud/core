@@ -629,7 +629,7 @@ class SyncServiceTest extends TestCase {
 
 		// Adjust mappers
 		$userSyncService = new UserSyncService($config, $logger, $this->accountMapper);
-		$groupSyncService =  new GroupSyncService($this->groupMapper, $this->accountMapper, $this->membershipManager, $config, $logger);
+		$groupSyncService =  new GroupSyncService($this->groupMapper, $this->accountMapper, $this->membershipManager, $logger);
 
 		\OC::$server->getUserManager()->reset($this->accountMapper, [], $userSyncService);
 		\OC::$server->getGroupManager()->reset($this->groupMapper, [], $groupSyncService);

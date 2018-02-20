@@ -260,7 +260,6 @@ class Server extends ServerContainer implements IServerContainer, IServiceLoader
 				$groupMapper,
 				$accountMapper,
 				$membershipManager,
-				$c->getConfig(),
 				$c->getLogger()
 			);
 			$groupManager = new \OC\Group\Manager($this->getUserManager(), $membershipManager, $groupMapper, $groupSyncService, $c->getDatabaseConnection());

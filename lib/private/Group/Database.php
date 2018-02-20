@@ -23,24 +23,25 @@
  */
 
 namespace OC\Group;
+use OCP\IDBConnection;
 
 /**
  * Class for group management in a SQL Database (e.g. MySQL, SQLite)
  */
-class Database extends \OC\Group\Backend {
+class Database extends Backend {
 
-	/** @var \OCP\IDBConnection */
+	/** @var IDBConnection */
 	private $db;
 
 	/** @var string */
 	private $tableName;
 
 	/**
-	 * \OC\Group\Database constructor.
+	 * Database constructor.
 	 *
-	 * @param \OCP\IDBConnection $db
+	 * @param IDBConnection $db
 	 */
-	public function __construct(\OCP\IDBConnection $db) {
+	public function __construct(IDBConnection $db) {
 		$this->db = $db;
 		$this->tableName = 'groups';
 	}
@@ -55,7 +56,7 @@ class Database extends \OC\Group\Backend {
 	 */
 	public function createGroup($groupName) {
 		// Add group
-		$affected = $this->db->insertIfNotExist( '*PREFIX*'.$this->tableName, [
+		$affected = $this->db->insertIfNotExist( "*PREFIX*$this->tableName", [
 			'gid' => $groupName,
 		]);
 
@@ -102,14 +103,14 @@ class Database extends \OC\Group\Backend {
 			$qb->where($qb->expr()->like('gid', $qb->createNamedParameter($loweredParameter)));
 		}
 
-		// Order by display_name so we can use limit and offset
+		// Order by gid so we can use limit and offset
 		$qb->orderBy('gid');
 
-		if (!is_null($offset)) {
+		if ($offset !== null) {
 			$qb->setFirstResult($offset);
 		}
 
-		if (!is_null($limit)) {
+		if ($limit !== null) {
 			$qb->setMaxResults($limit);
 		}
 

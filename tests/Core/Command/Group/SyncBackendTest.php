@@ -72,7 +72,7 @@ class SyncBackendTest extends TestCase {
 	private $userBackend2;
 
 	/** @var CommandTester */
-    private $commandTester;
+	private $commandTester;
 
 	/** @var \PHPUnit_Framework_MockObject_MockObject */
 	protected $consoleInput;
@@ -83,8 +83,8 @@ class SyncBackendTest extends TestCase {
 	/** @var \Symfony\Component\Console\Command\Command */
 	protected $command;
 
-    protected function setUp() {
-        parent::setUp();
+	protected function setUp() {
+		parent::setUp();
 		$logger = $this->createMock(ILogger::class);
 		$db = \OC::$server->getDatabaseConnection();
 		$config = \OC::$server->getConfig();
@@ -92,7 +92,7 @@ class SyncBackendTest extends TestCase {
 		$accountMapper = new MemoryAccountMapper($config, $db, new AccountTermMapper($db));
 		$membershipManager = new MemoryMembershipManager($db, $config);
 		$userSyncService = new UserSyncService($config, $logger, $accountMapper);
-		$groupSyncService =  new GroupSyncService($groupMapper, $accountMapper, $membershipManager, $config, $logger);
+		$groupSyncService =  new GroupSyncService($groupMapper, $accountMapper, $membershipManager, $logger);
 
 		$this->backend = $this->getMockBuilder(GroupInterface::class)
 			->disableOriginalConstructor()
@@ -148,11 +148,9 @@ class SyncBackendTest extends TestCase {
 		$this->command = new SyncBackend($groupMapper,
 			$accountMapper,
 			$membershipManager,
-			\OC::$server->getConfig(),
 			\OC::$server->getLogger(),
-			$this->groupManager,
-			$this->userManager);
-        $this->commandTester = new CommandTester($this->command);
+			$this->groupManager);
+		$this->commandTester = new CommandTester($this->command);
 		$this->consoleInput = $this->createMock(InputInterface::class);
 		$this->consoleOutput = $this->createMock(OutputInterface::class);
 	}
@@ -176,7 +174,7 @@ class SyncBackendTest extends TestCase {
 			->method('writeln');
 
 		self::invokePrivate($this->command, 'execute', [$this->consoleInput, $this->consoleOutput]);
-    }
+	}
 
 	/**
 	 * There are no user or groups synced. We expect groups to be synced down, but
@@ -332,21 +330,21 @@ class SyncBackendTest extends TestCase {
 		$this->assertEquals($users[0]->getUID(), 'userManualSync');
 	}
 
-    /**
-     * @dataProvider inputProvider
-     * @param array $input
-     * @param string $expectedOutput
-     */
-    public function testErrors($input, $expectedOutput) {
-        $this->commandTester->execute($input);
-        $output = $this->commandTester->getDisplay();
-        $this->assertContains($expectedOutput, $output);
-    }
+	/**
+	 * @dataProvider inputProvider
+	 * @param array $input
+	 * @param string $expectedOutput
+	 */
+	public function testErrors($input, $expectedOutput) {
+		$this->commandTester->execute($input);
+		$output = $this->commandTester->getDisplay();
+		$this->assertContains($expectedOutput, $output);
+	}
 
-    public function inputProvider() {
-        return [
-            [['backend-class' => 'OCA\User_LDAP\Group_Proxy'], 'does not exist'],
+	public function inputProvider() {
+		return [
+			[['backend-class' => 'OCA\User_LDAP\Group_Proxy'], 'does not exist'],
 			[['backend-class' => null], 'No backend class name given'],
-        ];
-    }
+		];
+	}
 }

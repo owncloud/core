@@ -53,7 +53,7 @@ class SyncService {
 	private $config;
 	/** @var ILogger */
 	private $logger;
-	/** @var string[] backendclass -> gid array map*/
+	/** @var string[] backendclass -> gid array map */
 	private $prefetchedGroupIds;
 
 	/**
@@ -62,18 +62,15 @@ class SyncService {
 	 * @param GroupMapper $groupMapper
 	 * @param AccountMapper $accountMapper
 	 * @param MembershipManager $membershipManager
-	 * @param IConfig $config
 	 * @param ILogger $logger
 	 */
 	public function __construct(GroupMapper $groupMapper,
 								AccountMapper $accountMapper,
 								MembershipManager $membershipManager,
-								IConfig $config,
 								ILogger $logger) {
 		$this->groupMapper = $groupMapper;
 		$this->accountMapper = $accountMapper;
 		$this->membershipManager = $membershipManager;
-		$this->config = $config;
 		$this->logger = $logger;
 		$this->prefetchedGroupIds = [];
 	}
@@ -277,7 +274,7 @@ class SyncService {
 	 * @param \Closure $callback is called for every group to allow progress display
 	 */
 	private function callbackForEachGroup($gids, \Closure $callback = null) {
-		if (!is_null($callback)) {
+		if ($callback !== null) {
 			foreach ($gids as $gid) {
 				$callback($gid);
 			}
@@ -362,7 +359,7 @@ class SyncService {
 		$gid = $b->getGroupId();
 
 		$displayName = $gid;
-		if ($backend->implementsActions(\OC\Group\Backend::GROUP_DETAILS)) {
+		if ($backend->implementsActions(Backend::GROUP_DETAILS)) {
 			$groupData = $backend->getGroupDetails($gid);
 			if (is_array($groupData) && isset($groupData['displayName'])) {
 				// take the display name from the backend

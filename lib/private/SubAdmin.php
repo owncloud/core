@@ -46,23 +46,17 @@ class SubAdmin extends PublicEmitter implements ISubAdminManager {
 	/** @var MembershipManager */
 	private $membershipManager;
 
-	/** @var IDBConnection */
-	private $dbConn;
-
 	/**
 	 * @param UserManager $userManager
 	 * @param GroupManager $groupManager
 	 * @param MembershipManager $membershipManager
-	 * @param IDBConnection $dbConn
 	 */
 	public function __construct(UserManager $userManager,
 								GroupManager $groupManager,
-								MembershipManager $membershipManager,
-								IDBConnection $dbConn) {
+								MembershipManager $membershipManager) {
 		$this->userManager = $userManager;
 		$this->groupManager = $groupManager;
 		$this->membershipManager = $membershipManager;
-		$this->dbConn = $dbConn;
 	}
 
 	/**

@@ -38,6 +38,7 @@ use OC\Cache\CappedMemoryCache;
 use OC\Hooks\PublicEmitter;
 use OC\MembershipManager;
 use OCP\AppFramework\Db\DoesNotExistException;
+use OCP\AppFramework\Db\MultipleObjectsReturnedException;
 use OCP\Events\EventEmitterTrait;
 use OCP\ILogger;
 use OCP\IUser;
@@ -106,7 +107,7 @@ class Manager extends PublicEmitter implements IUserManager {
 
 	/**
 	 * Get the active backends
-	 * @return \OCP\UserInterface[]
+	 * @return UserInterface[]
 	 */
 	public function getBackends() {
 		return array_values($this->backends);
@@ -115,7 +116,7 @@ class Manager extends PublicEmitter implements IUserManager {
 	/**
 	 * register a user backend
 	 *
-	 * @param \OCP\UserInterface $backend
+	 * @param UserInterface $backend
 	 */
 	public function registerBackend($backend) {
 		$this->backends[get_class($backend)] = $backend;
@@ -124,7 +125,7 @@ class Manager extends PublicEmitter implements IUserManager {
 	/**
 	 * remove a user backend
 	 *
-	 * @param \OCP\UserInterface $backend
+	 * @param UserInterface $backend
 	 */
 	public function removeBackend($backend) {
 		$this->cachedUsers->clear();
@@ -143,10 +144,11 @@ class Manager extends PublicEmitter implements IUserManager {
 	 * get a user by user id
 	 *
 	 * @param string $uid
-	 * @return \OC\User\User|null Either the user or null if the specified user does not exist
+	 * @return User|null Either the user or null if the specified user does not exist
+	 * @throws MultipleObjectsReturnedException
 	 */
 	public function get($uid) {
-		if (is_null($uid) || !is_string($uid)) {
+		if ($uid === null || !is_string($uid)) {
 			return null;
 		}
 
@@ -172,7 +174,7 @@ class Manager extends PublicEmitter implements IUserManager {
 	 * have access to this function.
 	 *
 	 * @param Account $account
-	 * @return \OC\User\User
+	 * @return User
 	 */
 	public function getUserObject(Account $account) {
 		if ($user = $this->getCachedUserObject($account->getUserId())) {
@@ -190,10 +192,11 @@ class Manager extends PublicEmitter implements IUserManager {
 	 * available in the User/Group management scope. Only classes receiving this class instance will
 	 * have access to this function.
 	 *
-	 * @param \OCP\IUser
-	 * @return \OC\User\Account
+	 * @param IUser
+	 * @return Account
+	 * @throws MultipleObjectsReturnedException
 	 */
-	public function getAccountObject(\OCP\IUser $user) {
+	public function getAccountObject(IUser $user) {
 		if ($account = $this->getCachedUserAccount($user->getUID())) {
 			return $account;
 		}
@@ -211,6 +214,7 @@ class Manager extends PublicEmitter implements IUserManager {
 	 *
 	 * @param string $uid
 	 * @return bool
+	 * @throws MultipleObjectsReturnedException
 	 */
 	public function userExists($uid) {
 		$user = $this->get($uid);
@@ -242,7 +246,8 @@ class Manager extends PublicEmitter implements IUserManager {
 			}
 		}
 
-		$this->logger->warning('Login failed: \''. $loginName .'\' (Remote IP: \''. \OC::$server->getRequest()->getRemoteAddress(). '\')', ['app' => 'core']);
+		$remoteAddress = \OC::$server->getRequest()->getRemoteAddress();
+		$this->logger->warning("Login failed: '$loginName' (Remote IP: '$remoteAddress')", ['app' => 'core']);
 		return false;
 	}
 
@@ -252,7 +257,7 @@ class Manager extends PublicEmitter implements IUserManager {
 	 * @param string $pattern
 	 * @param int $limit
 	 * @param int $offset
-	 * @return \OC\User\User[]
+	 * @return User[]
 	 */
 	public function search($pattern, $limit = null, $offset = null) {
 		$accounts = $this->accountMapper->search('user_id', $pattern, $limit, $offset);
@@ -271,7 +276,7 @@ class Manager extends PublicEmitter implements IUserManager {
 	 * @param string $pattern
 	 * @param int $limit
 	 * @param int $offset
-	 * @return \OC\User\User[]
+	 * @return User[]
 	 */
 	public function find($pattern, $limit = null, $offset = null) {
 		$accounts = $this->accountMapper->find($pattern, $limit, $offset);
@@ -289,7 +294,7 @@ class Manager extends PublicEmitter implements IUserManager {
 	 * @param string $pattern
 	 * @param int $limit
 	 * @param int $offset
-	 * @return \OC\User\User[]
+	 * @return User[]
 	 */
 	public function searchDisplayName($pattern, $limit = null, $offset = null) {
 		$accounts = $this->accountMapper->search('display_name', $pattern, $limit, $offset);
@@ -461,8 +466,8 @@ class Manager extends PublicEmitter implements IUserManager {
 
 		// Let User Manager have control over both User and Account class instances
 		// and pass references to other classes
-		$cachedUser["account"] = $account;
-		$cachedUser["user"] = $user;
+		$cachedUser['account'] = $account;
+		$cachedUser['user'] = $user;
 		$this->cachedUsers->set($user->getUID(), $cachedUser);
 
 		return $user;
@@ -473,11 +478,11 @@ class Manager extends PublicEmitter implements IUserManager {
 	 *
 	 * @param string $uid
 	 *
-	 * @return \OC\User\User
+	 * @return User
 	 */
 	private function getCachedUserObject($uid) {
 		if ($userCache = $this->cachedUsers->get($uid)) {
-			return $userCache["user"];
+			return $userCache['user'];
 		}
 		return null;
 	}
@@ -486,11 +491,11 @@ class Manager extends PublicEmitter implements IUserManager {
 	 * Get cached user account if cached
 	 * @param string $uid
 	 *
-	 * @return \OC\User\Account
+	 * @return Account
 	 */
 	private function getCachedUserAccount($uid) {
 		if ($userCache = $this->cachedUsers->get($uid)) {
-			return $userCache["account"];
+			return $userCache['account'];
 		}
 		return null;
 	}
@@ -517,7 +522,7 @@ class Manager extends PublicEmitter implements IUserManager {
 	 * @param SyncService $syncService
 	 * @return array
 	 */
-	public function reset(AccountMapper $mapper, $backends, $syncService) {
+	public function reset(AccountMapper $mapper, array $backends, $syncService) {
 		$return = [$this->accountMapper, $this->backends, $this->syncService];
 		$this->accountMapper = $mapper;
 		$this->backends = $backends;

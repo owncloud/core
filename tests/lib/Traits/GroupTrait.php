@@ -95,7 +95,6 @@ trait GroupTrait {
 			$groupMapper,
 			$accountMapper,
 			$membershipManager,
-			$config,
 			$logger
 		);
 

@@ -32,51 +32,53 @@ namespace OC\Group;
 
 use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
 use OC\MembershipManager;
+use OC\User\Manager as UserManager;
+use OC\User\User;
 use OCP\IGroup;
 use OCP\IUser;
 
 class Group implements IGroup {
 
 	/**
-	 * @var \OC\Group\BackendGroup $backendGroup
+	 * @var BackendGroup $backendGroup
 	 */
 	private $backendGroup;
 
 	/**
-	 * @var \OC\Group\GroupMapper $groupMapper
+	 * @var GroupMapper $groupMapper
 	 */
 	private $groupMapper;
 
 	/**
-	 * @var \OC\MembershipManager $membershipManager
+	 * @var MembershipManager $membershipManager
 	 */
 	private $membershipManager;
 
 	/**
-	 * @var \OC\Group\Manager $groupManager
+	 * @var Manager $groupManager
 	 */
 	private $groupManager;
 
 	/**
-	 * @var \OC\User\Manager $userManager
+	 * @var UserManager $userManager
 	 */
 	private $userManager;
 
 	/**
-	 * @var \OC\User\User[]|null $usersCache
+	 * @var User[]|null $usersCache
 	 */
 	private $usersCache = null;
 
 	/**
-	 * @param \OC\Group\BackendGroup $backendGroup
-	 * @param \OC\Group\GroupMapper $groupMapper
-	 * @param \OC\Group\Manager $groupManager
-	 * @param \OC\User\Manager $userManager
-	 * @param \OC\MembershipManager $membershipManager
+	 * @param BackendGroup $backendGroup
+	 * @param GroupMapper $groupMapper
+	 * @param Manager $groupManager
+	 * @param UserManager $userManager
+	 * @param MembershipManager $membershipManager
 	 */
-	public function __construct(\OC\Group\BackendGroup $backendGroup, \OC\Group\GroupMapper $groupMapper,
-								\OC\Group\Manager $groupManager, \OC\User\Manager $userManager,
-								\OC\MembershipManager $membershipManager) {
+	public function __construct(BackendGroup $backendGroup, GroupMapper $groupMapper,
+								Manager $groupManager, UserManager $userManager,
+								MembershipManager $membershipManager) {
 		$this->backendGroup = $backendGroup;
 		$this->groupMapper = $groupMapper;
 		$this->groupManager = $groupManager;
@@ -99,7 +101,7 @@ class Group implements IGroup {
 	 */
 	public function getUsers() {
 		// If users were retrieved already with getUsers, fetch them from cache
-		if (!is_null($this->usersCache)) {
+		if ($this->usersCache !== null) {
 			return $this->usersCache;
 		}
 
@@ -119,7 +121,7 @@ class Group implements IGroup {
 	 */
 	public function inGroup($user) {
 		// If users were retrieved already with getUsers, fetch from cache
-		if (!is_null($this->usersCache)) {
+		if ($this->usersCache !== null) {
 			foreach($this->usersCache as $cachedUser) {
 				if ($cachedUser->getUID() === $user->getUID()) {
 					return true;
@@ -146,7 +148,7 @@ class Group implements IGroup {
 		$this->groupManager->emit('\OC\Group', 'preAddUser', [$this, $user]);
 
 		$backend = $this->getBackend();
-		if (!is_null($backend) && $backend->implementsActions(\OC\Group\Backend::ADD_TO_GROUP)) {
+		if ($backend !== null && $backend->implementsActions(Backend::ADD_TO_GROUP)) {
 			$backend->addToGroup($user->getUID(), $this->backendGroup->getGroupId());
 		}
 
@@ -176,7 +178,7 @@ class Group implements IGroup {
 		$this->groupManager->emit('\OC\Group', 'preRemoveUser', [$this, $user]);
 
 		$backend = $this->getBackend();
-		if (!is_null($backend) && $backend->implementsActions(\OC\Group\Backend::REMOVE_FROM_GROUP)) {
+		if ($backend !== null && $backend->implementsActions(Backend::REMOVE_FROM_GROUP)) {
 			$backend->removeFromGroup($user->getUID(), $this->backendGroup->getGroupId());
 		}
 
@@ -247,7 +249,7 @@ class Group implements IGroup {
 
 		// Delete group in external backend
 		$backend = $this->getBackend();
-		if (!is_null($backend) && $backend->implementsActions(\OC\Group\Backend::DELETE_GROUP)) {
+		if ($backend !== null && $backend->implementsActions(Backend::DELETE_GROUP)) {
 			$backend->deleteGroup($this->getGID());
 		}
 

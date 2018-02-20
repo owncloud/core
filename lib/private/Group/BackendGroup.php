@@ -27,6 +27,7 @@ use OCP\AppFramework\Db\Entity;
  * Class BackendGroup
  *
  * @method string getGroupId()
+ * @method string setGroupId(string $groupId)
  * @method string getDisplayName()
  * @method void setDisplayName(string $displayName)
  * @method string getBackend()
@@ -36,13 +37,19 @@ use OCP\AppFramework\Db\Entity;
  */
 class BackendGroup extends Entity {
 
+	/**
+	 * @var string
+	 */
 	protected $groupId;
+
+	/**
+	 * @var string
+	 */
 	protected $displayName;
+
+	/**
+	 * @var string
+	 */
 	protected $backend;
 
-	public function __construct() { }
-
-	public function setGroupId($gid) {
-		parent::setter('groupId', [$gid]);
-	}
 }

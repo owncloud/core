@@ -21,6 +21,7 @@
 namespace Test;
 
 use OC\MembershipManager;
+use OC\SubAdmin;
 
 /**
  * Class SubAdminTest
@@ -65,6 +66,8 @@ class SubAdminTest extends TestCase {
 			$this->users[] = $this->userManager->createUser($this->getUniqueID('user'), 'user');
 			$this->groups[] = $this->groupManager->createGroup('group' . $i);
 		}
+
+		// TODO set up $this->subAdmin here and remove individual new instantiations
 	}
 
 	protected function tearDown() {
@@ -88,7 +91,7 @@ class SubAdminTest extends TestCase {
 		$result = $this->membershipManager->isGroupMember($this->users[0]->getUID(), null,MembershipManager::MEMBERSHIP_TYPE_GROUP_ADMIN);
 		$this->assertFalse($result);
 
-		$subAdmin = new \OC\SubAdmin($this->userManager, $this->groupManager, $this->membershipManager, $this->dbConn);
+		$subAdmin = new SubAdmin($this->userManager, $this->groupManager, $this->membershipManager);
 		$this->assertTrue($subAdmin->createSubAdmin($this->users[0], $this->groups[0]));
 
 		// Look for subadmin in the database
@@ -100,7 +103,7 @@ class SubAdminTest extends TestCase {
 		$result = $this->membershipManager->isGroupMember($this->users[0]->getUID(), null, MembershipManager::MEMBERSHIP_TYPE_GROUP_ADMIN);
 		$this->assertFalse($result);
 
-		$subAdmin = new \OC\SubAdmin($this->userManager, $this->groupManager, $this->membershipManager, $this->dbConn);
+		$subAdmin = new SubAdmin($this->userManager, $this->groupManager, $this->membershipManager);
 		$this->assertTrue($subAdmin->createSubAdmin($this->users[0], $this->groups[0]));
 
 		// Look for subadmin in the database
@@ -115,7 +118,7 @@ class SubAdminTest extends TestCase {
 		$result = $this->membershipManager->isGroupMember($this->users[0]->getUID(), null, MembershipManager::MEMBERSHIP_TYPE_GROUP_ADMIN);
 		$this->assertFalse($result);
 
-		$subAdmin = new \OC\SubAdmin($this->userManager, $this->groupManager, $this->membershipManager, $this->dbConn);
+		$subAdmin = new SubAdmin($this->userManager, $this->groupManager, $this->membershipManager);
 		$this->assertTrue($subAdmin->createSubAdmin($this->users[0], $this->groups[0]));
 
 		$result = $this->membershipManager->isGroupMember($this->users[0]->getUID(), null, MembershipManager::MEMBERSHIP_TYPE_GROUP_ADMIN);
@@ -128,7 +131,7 @@ class SubAdminTest extends TestCase {
 	}
 
 	public function testGetSubAdminsGroups() {
-		$subAdmin = new \OC\SubAdmin($this->userManager, $this->groupManager, $this->membershipManager, $this->dbConn);
+		$subAdmin = new SubAdmin($this->userManager, $this->groupManager, $this->membershipManager);
 		$this->assertTrue($subAdmin->createSubAdmin($this->users[0], $this->groups[0]));
 		$this->assertTrue($subAdmin->createSubAdmin($this->users[0], $this->groups[1]));
 
@@ -141,7 +144,7 @@ class SubAdminTest extends TestCase {
 	}
 
 	public function testGetGroupsSubAdmins() {
-		$subAdmin = new \OC\SubAdmin($this->userManager, $this->groupManager, $this->membershipManager, $this->dbConn);
+		$subAdmin = new SubAdmin($this->userManager, $this->groupManager, $this->membershipManager);
 		$this->assertTrue($subAdmin->createSubAdmin($this->users[0], $this->groups[0]));
 		$this->assertTrue($subAdmin->createSubAdmin($this->users[1], $this->groups[0]));
 
@@ -154,7 +157,7 @@ class SubAdminTest extends TestCase {
 	}
 
 	public function testGetAllSubAdmin() {
-		$subAdmin = new \OC\SubAdmin($this->userManager, $this->groupManager, $this->membershipManager, $this->dbConn);
+		$subAdmin = new SubAdmin($this->userManager, $this->groupManager, $this->membershipManager);
 
 		$this->assertTrue($subAdmin->createSubAdmin($this->users[0], $this->groups[0]));
 		$this->assertTrue($subAdmin->createSubAdmin($this->users[1], $this->groups[1]));
@@ -169,7 +172,7 @@ class SubAdminTest extends TestCase {
 	}
 
 	public function testIsSubAdminofGroup() {
-		$subAdmin = new \OC\SubAdmin($this->userManager, $this->groupManager, $this->membershipManager, $this->dbConn);
+		$subAdmin = new SubAdmin($this->userManager, $this->groupManager, $this->membershipManager);
 		$this->assertTrue($subAdmin->createSubAdmin($this->users[0], $this->groups[0]));
 
 		$this->assertTrue($subAdmin->isSubAdminOfGroup($this->users[0], $this->groups[0]));
@@ -180,7 +183,7 @@ class SubAdminTest extends TestCase {
 	}
 
 	public function testIsSubAdmin() {
-		$subAdmin = new \OC\SubAdmin($this->userManager, $this->groupManager, $this->membershipManager, $this->dbConn);
+		$subAdmin = new SubAdmin($this->userManager, $this->groupManager, $this->membershipManager);
 
 		// There is an orphaned group of which users[0] is subadmin of
 		$this->assertNull($this->groupManager->get('orphanedGroup'));
@@ -200,7 +203,7 @@ class SubAdminTest extends TestCase {
 	}
 
 	public function testIsSubAdminAsAdmin() {
-		$subAdmin = new \OC\SubAdmin($this->userManager, $this->groupManager, $this->membershipManager, $this->dbConn);
+		$subAdmin = new SubAdmin($this->userManager, $this->groupManager, $this->membershipManager);
 		$this->groupManager->get('admin')->addUser($this->users[1]);
 
 		// User is not subadmin, but is admin
@@ -209,7 +212,7 @@ class SubAdminTest extends TestCase {
 	}
 
 	public function testIsUserAccessible() {
-		$subAdmin = new \OC\SubAdmin($this->userManager, $this->groupManager, $this->membershipManager, $this->dbConn);
+		$subAdmin = new SubAdmin($this->userManager, $this->groupManager, $this->membershipManager);
 		$this->groups[0]->addUser($this->users[1]);
 		$this->groups[1]->addUser($this->users[1]);
 		$this->groups[1]->addUser($this->users[2]);
@@ -225,12 +228,12 @@ class SubAdminTest extends TestCase {
 	}
 
 	public function testIsUserAccessibleAsUser() {
-		$subAdmin = new \OC\SubAdmin($this->userManager, $this->groupManager, $this->membershipManager, $this->dbConn);
+		$subAdmin = new SubAdmin($this->userManager, $this->groupManager, $this->membershipManager);
 		$this->assertFalse($subAdmin->isUserAccessible($this->users[0], $this->users[1]));
 	}
 
 	public function testIsUserAccessibleAdmin() {
-		$subAdmin = new \OC\SubAdmin($this->userManager, $this->groupManager, $this->membershipManager, $this->dbConn);
+		$subAdmin = new SubAdmin($this->userManager, $this->groupManager, $this->membershipManager);
 		$this->assertTrue($subAdmin->createSubAdmin($this->users[0], $this->groups[0]));
 		$this->groupManager->get('admin')->addUser($this->users[1]);
 
@@ -239,7 +242,7 @@ class SubAdminTest extends TestCase {
 	}
 
 	public function testPostDeleteUser() {
-		$subAdmin = new \OC\SubAdmin($this->userManager, $this->groupManager, $this->membershipManager, $this->dbConn);
+		$subAdmin = new SubAdmin($this->userManager, $this->groupManager, $this->membershipManager);
 
 		$user = array_shift($this->users);
 		foreach($this->groups as $group) {
@@ -251,7 +254,7 @@ class SubAdminTest extends TestCase {
 	}
 
 	public function testPostDeleteGroup() {
-		$subAdmin = new \OC\SubAdmin($this->userManager, $this->groupManager, $this->membershipManager, $this->dbConn);
+		$subAdmin = new SubAdmin($this->userManager, $this->groupManager, $this->membershipManager);
 
 		$group = array_shift($this->groups);
 		foreach($this->users as $user) {
@@ -263,7 +266,7 @@ class SubAdminTest extends TestCase {
 	}
 
 	public function testHooks() {
-		$subAdmin = new \OC\SubAdmin($this->userManager, $this->groupManager, $this->membershipManager, $this->dbConn);
+		$subAdmin = new SubAdmin($this->userManager, $this->groupManager, $this->membershipManager);
 
 		$test = $this;
 		$u = $this->users[0];

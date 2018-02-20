@@ -155,7 +155,7 @@ if (\OC::$server->getConfig()->getSystemValue('installed', false)) {
 	$groupMapper = new \OC\Group\GroupMapper(\OC::$server->getDatabaseConnection());
 	$membershipManager = new \OC\MembershipManager(\OC::$server->getDatabaseConnection(), \OC::$server->getConfig());
 	$application->add(new OC\Core\Command\User\SyncBackend($accountMapper, \OC::$server->getConfig(), \OC::$server->getUserManager(), \OC::$server->getLogger()));
-	$application->add(new OC\Core\Command\Group\SyncBackend($groupMapper, $accountMapper, $membershipManager, \OC::$server->getConfig(), \OC::$server->getLogger(), \OC::$server->getGroupManager(), \OC::$server->getUserManager()));
+	$application->add(new OC\Core\Command\Group\SyncBackend($groupMapper, $accountMapper, $membershipManager, \OC::$server->getLogger(), \OC::$server->getGroupManager()));
 	$application->add(new \OC\Core\Command\User\Inactive(\OC::$server->getUserManager()));
 
 	$application->add(new OC\Core\Command\Group\Add(\OC::$server->getGroupManager()));

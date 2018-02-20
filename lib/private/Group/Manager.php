@@ -40,9 +40,14 @@ use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
 use OC\Cache\CappedMemoryCache;
 use OC\Hooks\PublicEmitter;
 use OC\MembershipManager;
+use OC\SubAdmin;
 use OC\User\Account;
+use OC\User\Manager as UserManager;
 use OCP\AppFramework\Db\DoesNotExistException;
+use OCP\AppFramework\Db\MultipleObjectsReturnedException;
 use OCP\GroupInterface;
+use OCP\IDBConnection;
+use OCP\IGroup;
 use OCP\IGroupManager;
 
 /**
@@ -65,13 +70,13 @@ class Manager extends PublicEmitter implements IGroupManager {
 	/** @var GroupInterface[] $backends */
 	private $backends = [];
 
-	/** @var \OC\User\Manager $userManager */
+	/** @var UserManager $userManager */
 	private $userManager;
 
-	/** @var \OC\MembershipManager $membershipManager */
+	/** @var MembershipManager $membershipManager */
 	private $membershipManager;
 
-	/** @var \OC\Group\SyncService $syncService */
+	/** @var SyncService $syncService */
 	private $syncService;
 
 	/** @var CappedMemoryCache $cachedGroups */
@@ -80,23 +85,23 @@ class Manager extends PublicEmitter implements IGroupManager {
 	/** @var CappedMemoryCache $cachedUserGroups */
 	private $cachedUserGroups;
 
-	/** @var \OC\SubAdmin */
+	/** @var SubAdmin */
 	private $subAdmin = null;
 
-	/** @var \OC\Group\GroupMapper */
+	/** @var GroupMapper */
 	private $groupMapper;
 
-	/** @var \OCP\IDBConnection */
+	/** @var IDBConnection */
 	private $db;
 
 	/**
-	 * @param \OC\User\Manager $userManager
-	 * @param \OC\MembershipManager $membershipManager
-	 * @param \OC\Group\GroupMapper $groupMapper
-	 * @param \OC\Group\SyncService $syncService
-	 * @param \OCP\IDBConnection $db
+	 * @param UserManager $userManager
+	 * @param MembershipManager $membershipManager
+	 * @param GroupMapper $groupMapper
+	 * @param SyncService $syncService
+	 * @param IDBConnection $db
 	 */
-	public function __construct(\OC\User\Manager $userManager, \OC\MembershipManager $membershipManager, \OC\Group\GroupMapper $groupMapper, \OC\Group\SyncService $syncService, \OCP\IDBConnection $db) {
+	public function __construct(UserManager $userManager, MembershipManager $membershipManager, GroupMapper $groupMapper, SyncService $syncService, \OCP\IDBConnection $db) {
 		$this->db = $db;
 		$this->userManager = $userManager;
 		$this->groupMapper = $groupMapper;
@@ -108,20 +113,20 @@ class Manager extends PublicEmitter implements IGroupManager {
 		$cachedUserGroups = & $this->cachedUserGroups;
 		$this->listen('\OC\Group', 'postDelete', function ($group) use (&$cachedGroups, &$cachedUserGroups) {
 			/**
-			 * @var \OC\Group\Group $group
+			 * @var Group $group
 			 */
 			unset($cachedGroups[$group->getGID()]);
 			$cachedUserGroups->clear();
 		});
 		$this->listen('\OC\Group', 'postAddUser', function ($group) use (&$cachedUserGroups) {
 			/**
-			 * @var \OC\Group\Group $group
+			 * @var Group $group
 			 */
 			$cachedUserGroups->clear();
 		});
 		$this->listen('\OC\Group', 'postRemoveUser', function ($group) use (&$cachedUserGroups) {
 			/**
-			 * @var \OC\Group\Group $group
+			 * @var Group $group
 			 */
 			$cachedUserGroups->clear();
 		});
@@ -130,14 +135,14 @@ class Manager extends PublicEmitter implements IGroupManager {
 	/**
 	 * Get all active backends
 	 *
-	 * @return \OCP\GroupInterface[]
+	 * @return GroupInterface[]
 	 */
 	public function getBackends() {
 		return $this->backends;
 	}
 
 	/**
-	 * @param \OCP\GroupInterface $backend
+	 * @param GroupInterface $backend
 	 */
 	public function addBackend($backend) {
 		$this->backends[] = $backend;
@@ -151,7 +156,7 @@ class Manager extends PublicEmitter implements IGroupManager {
 
 	/**
 	 * @param string $gid
-	 * @return \OCP\IGroup|null
+	 * @return IGroup|null
 	 */
 	public function get($gid) {
 		// Check cache first
@@ -165,6 +170,9 @@ class Manager extends PublicEmitter implements IGroupManager {
 			return $this->getGroupObject($backendGroup);
 		} catch (DoesNotExistException $ex) {
 			return null;
+		} catch (MultipleObjectsReturnedException $ex) {
+			// TODO log warning
+			return null;
 		}
 	}
 
@@ -173,7 +181,7 @@ class Manager extends PublicEmitter implements IGroupManager {
 	 * @return bool
 	 */
 	public function groupExists($gid) {
-		return !is_null($this->get($gid));
+		return $this->get($gid) !== null;
 	}
 
 	/**
@@ -182,7 +190,7 @@ class Manager extends PublicEmitter implements IGroupManager {
 	 * @param string $gid
 	 * @throws UniqueConstraintViolationException
 	 * @throws \Exception
-	 * @return \OCP\IGroup|null
+	 * @return IGroup|null
 	 */
 	public function createGroup($gid) {
 		if (!$this->isValid($gid)) {
@@ -371,15 +379,14 @@ class Manager extends PublicEmitter implements IGroupManager {
 	}
 
 	/**
-	 * @return \OC\SubAdmin
+	 * @return SubAdmin
 	 */
 	public function getSubAdmin() {
 		if (!$this->subAdmin) {
-			$this->subAdmin = new \OC\SubAdmin(
+			$this->subAdmin = new SubAdmin(
 				$this->userManager,
 				$this,
-				$this->membershipManager,
-				$this->db
+				$this->membershipManager
 			);
 		}
 
@@ -577,7 +584,7 @@ class Manager extends PublicEmitter implements IGroupManager {
 	 * @return bool
 	 */
 	private function isValid($gid) {
-		if ($gid === '' || is_null($gid)) {
+		if ($gid === '' || $gid === null) {
 			return false;
 		}
 

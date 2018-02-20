@@ -23,6 +23,7 @@ namespace OC\Group;
 
 use OC\Group\BackendGroup;
 use OCP\AppFramework\Db\Mapper;
+use OCP\AppFramework\Db\MultipleObjectsReturnedException;
 use OCP\IDBConnection;
 use OCP\AppFramework\Db\DoesNotExistException;
 
@@ -33,11 +34,12 @@ class GroupMapper extends Mapper {
 	}
 
 	/**
-	 * Return backend group object or null in case does not exists
+	 * Return backend group object
 	 *
 	 * @param string $gid
 	 * @return BackendGroup
 	 * @throws DoesNotExistException
+	 * @throws MultipleObjectsReturnedException
 	 */
 	public function getGroup($gid) {
 		$qb = $this->db->getQueryBuilder();
