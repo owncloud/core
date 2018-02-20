@@ -70,7 +70,7 @@ interface IManager extends IApp, INotifier {
 	 * incomplete data or throw an exception if the notification isn't complete
 	 * @return string the serialized notification
 	 * @throws \OCP\Notification\Exceptions\IncompleteSerializationException if the notification
-	 * doesn't * have all the required fields for the notification AND the $forceIncomplete flag
+	 * doesn't have all the required fields for the notification AND the $forceIncomplete flag
 	 * isn't true. This exception musn't be thrown if the $forceIncomplete flag is true.
 	 * @since 10.0.7
 	 */

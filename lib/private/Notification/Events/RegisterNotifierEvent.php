@@ -28,12 +28,12 @@ use OC\Notification\Manager;
 
 /**
  * Abstract class representing a "register notifier" event. The event should be thrown when the
- * notification manager needs to retrieve the notification apps.
+ * notification manager needs to retrieve the apps that will send notifications.
  * Use the "registerNotifier" function in the event to register the notifier.
  * Note that each notification manager is expected to thrown custom implementations of this event
  * while hiding the implementation details.
  *
- * IMPORTANT NOTE: this event might be triggered several times so plan accordingly. Either
+ * IMPORTANT NOTE: this event might be triggered several times, so plan accordingly. Either
  * register always the same instance (per request) or make sure the behaviour won't change if
  * several instances are used.
  */
@@ -46,14 +46,14 @@ class RegisterNotifierEvent extends AbstractRegisterNotifierEvent {
 	}
 
 	/**
-	 * Register the notification consumer in the notification manager
-	 * @param INotifier $notifier the notification consumer to be registered
+	 * Register the notifier in the notification manager
+	 * @param INotifier $notifier the notifier to be registered
 	 * @param string $id the id of the app that register the notifier. This must be unique and can't
 	 * be duplicated
 	 * @param string $name the app name
 	 * @throws \OCP\Notification\Exceptions\NotifierIdInUseException if the id is already in use by
-	 * other apps. Note that although this event might be thrown several times, the app has to use the
-	 * same id, and this exception won't be thrown in this particular scenario.
+	 * other apps. Note that although this RegisterNotifierEvent might be thrown several times,
+	 * the app has to use the same id, and this exception won't be thrown in this particular scenario.
 	 */
 	public function registerNotifier(INotifier $notifier, $id, $name) {
 		$this->manager->registerBuiltNotifier($notifier, $id, $name);

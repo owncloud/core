@@ -105,6 +105,8 @@ class Manager implements IManager {
 
 	/**
 	 * INTERNAL USE ONLY!! This method isn't part of the IManager interface
+	 * @internal This should only be used by the RegisterConsumerEvent (the actual implementation).
+	 * Do NOT use this method outside as it might not work as expected.
 	 */
 	public function registerBuiltApp(IApp $app) {
 		$this->builtAppsHolder[] = $app;
@@ -112,6 +114,8 @@ class Manager implements IManager {
 
 	/**
 	 * INTERNAL USE ONLY!! This method isn't part of the IManager interface
+	 * @internal This should only be used by the RegisterNotifierEvent (the actual implementation).
+	 * Do NOT use this method outside as it might not work as expected.
 	 */
 	public function registerBuiltNotifier(INotifier $notifier, $id, $name) {
 		if (!isset($this->builtNotifiersHolder[$id]) && !isset($this->notifiersInfo[$id])) {
