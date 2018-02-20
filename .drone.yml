@@ -440,6 +440,16 @@ pipeline:
       matrix:
         CALDAV_CARDDAV_JOB: true
 
+  print-log:
+    image: owncloudci/php:${PHP_VERSION}
+    pull: true
+    commands:
+      - cat /drone/src/data/owncloud.log
+    when:
+      status:  [ failure ]
+      matrix:
+        TEST_SUITE: phpunit
+
   notify:
     image: plugins/slack:1
     pull: true
