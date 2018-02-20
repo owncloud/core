@@ -60,11 +60,11 @@ class UserHelper {
 			return $return;
 		}
 		if ($displayName !== null) {
-			$editReponse = self::editUser(
+			$editResponse = self::editUser(
 				$baseUrl, $user, "display", $displayName, $adminUser, $adminPassword
 			);
-			$return[] = $editReponse;
-			if ($editReponse->getStatusCode() !== 200) {
+			$return[] = $editResponse;
+			if ($editResponse->getStatusCode() !== 200) {
 				return $return;
 			}
 		}
