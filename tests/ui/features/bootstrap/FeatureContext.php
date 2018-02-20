@@ -29,6 +29,7 @@ use Page\LoginPage;
 use Page\OwncloudPage;
 use SensioLabs\Behat\PageObjectExtension\PageObject\Exception\ElementNotFoundException;
 use TestHelpers\AppConfigHelper;
+use TestHelpers\OcsApiHelper;
 use TestHelpers\SetupHelper;
 use TestHelpers\UploadHelper;
 use TestHelpers\UserHelper;
@@ -551,6 +552,24 @@ class FeatureContext extends RawMinkContext implements Context {
 		foreach ($this->createdFiles as $file) {
 			unlink($file);
 		}
+	}
+
+	/**
+	 * After Scenario. clear file locks
+	 *
+	 * @return void
+	 * @AfterScenario
+	 */
+	public function clearFileLocks() {
+		$response = OcsApiHelper::sendRequest(
+			$this->getMinkParameter('base_url'),
+			"admin",
+			$this->getUserPassword("admin"),
+			'delete',
+			"/apps/testing/api/v1/lockprovisioning",
+			["global" => "true"]
+		);
+		PHPUnit_Framework_Assert::assertEquals("200", $response->getStatusCode());
 	}
 
 	/**
