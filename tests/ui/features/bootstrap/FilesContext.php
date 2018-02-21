@@ -725,7 +725,7 @@ class FilesContext extends RawMinkContext implements Context {
 		$name, $shouldOrNot, $typeOfFilesPage = "", $folder = ""
 	) {
 		$should = ($shouldOrNot !== "not");
-		$message = null;
+		$exceptionMessage = null;
 		if ($typeOfFilesPage === "trashbin") {
 			$this->iAmOnTheTrashbinPage();
 		}
@@ -740,20 +740,43 @@ class FilesContext extends RawMinkContext implements Context {
 
 		try {
 			$fileRowElement = $pageObject->findFileRowByName($name, $this->getSession());
-			$message = '';
+			$exceptionMessage = '';
 		} catch (ElementNotFoundException $e) {
-			$message = $e->getMessage();
+			$exceptionMessage = $e->getMessage();
 			$fileRowElement = null;
 		}
+
+		if (is_array($name)) {
+			$nameText = implode($name);
+		} else {
+			$nameText = $name;
+		}
+
+		$fileLocationText = " file '" . $nameText . "'";
+
+		if ($folder !== "") {
+			$fileLocationText .= " in folder '" . $folder . "'";
+		} else {
+			$fileLocationText .= " in current folder";
+		}
+
+		if ($typeOfFilesPage !== "") {
+			$fileLocationText .= " in " . $typeOfFilesPage;
+		}
+
 		if ($should) {
-			PHPUnit_Framework_Assert::assertNotNull($fileRowElement);
+			PHPUnit_Framework_Assert::assertNotNull(
+				$fileRowElement,
+				"could not find" . $fileLocationText . " when it should be listed"
+			);
 		} else {
 			if (is_array($name)) {
 				$name = implode($name);
 			}
 			PHPUnit_Framework_Assert::assertContains(
 				"could not find file with the name '" . $name . "'",
-				$message
+				$exceptionMessage,
+				"found " . $fileLocationText . " when it should not be listed"
 			);
 		}
 	}
