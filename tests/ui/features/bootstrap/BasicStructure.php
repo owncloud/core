@@ -439,17 +439,17 @@ trait BasicStructure {
 	 */
 	public function tearDownScenarioDeleteCreatedUsersAndGroups() {
 		$baseUrl = $this->getMinkParameter("base_url");
-		foreach ($this->getCreatedUserNames() as $user) {
+		foreach ($this->getCreatedUsers() as $username => $user) {
 			$result = UserHelper::deleteUser(
 				$baseUrl,
-				$user,
+				$username,
 				"admin",
 				$this->getUserPassword("admin")
 			);
 			
-			if ($result->getStatusCode() !== 200) {
+			if ($user['shouldHaveBeenCreated'] && ($result->getStatusCode() !== 200)) {
 				error_log(
-					"INFORMATION: could not delete user. '" . $user . "'"
+					"INFORMATION: could not delete user '" . $username . "' "
 					. $result->getStatusCode() . " " . $result->getBody()
 				);
 			}
@@ -558,12 +558,13 @@ trait BasicStructure {
 	 * @return void
 	 */
 	public function addUserToCreatedUsersList(
-		$user, $password, $displayName = null, $email = null
+		$user, $password, $displayName = null, $email = null, $shouldHaveBeenCreated = true
 	) {
 		$this->createdUsers [$user] = [
 			"password" => $password,
 			"displayname" => $displayName,
-			"email" => $email
+			"email" => $email,
+			"shouldHaveBeenCreated" => $shouldHaveBeenCreated
 		];
 	}
 
