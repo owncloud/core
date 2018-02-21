@@ -114,11 +114,12 @@
 				return;
 			}
 
+			var currentUser = OC.getCurrentUser().uid;
 			var usedSpacePercent = $('#usedSpacePercent').val(),
 				owner = $('#owner').val(),
 				ownerDisplayName = $('#ownerDisplayName').val();
 			if (usedSpacePercent > 98) {
-				if (owner !== oc_current_user) {
+				if (owner !== currentUser) {
 					OC.Notification.show(t('files', 'Storage of {owner} is full, files can not be updated or synced anymore!', 
 						{owner: ownerDisplayName}), {type: 'error'}
 					);
@@ -131,7 +132,7 @@
 				return;
 			}
 			if (usedSpacePercent > 90) {
-				if (owner !== oc_current_user) {
+				if (owner !== currentUser) {
 					OC.Notification.show(t('files', 'Storage of {owner} is almost full ({usedSpacePercent}%)', 
 						{
 							usedSpacePercent: usedSpacePercent,  
