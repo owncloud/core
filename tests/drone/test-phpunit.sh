@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-set -xeo pipefail
+set -exo pipefail
 
 if [[ "$(pwd)" == "$(cd "$(dirname "$0")"; pwd -P)" ]]; then
   echo "Can only be executed from project root!"
@@ -62,5 +62,125 @@ else
   GROUP="--group DB"
 fi
 
-exec ./lib/composer/bin/phpunit --configuration tests/phpunit-autotest.xml ${GROUP} --log-junit tests/autotest-results-${DB_TYPE}.xml
+set_up_external_storage() {
+    ./occ app:enable files_external
+    ./occ config:app:set core enable_external_storage --value=yes
+    case "${FILES_EXTERNAL_TYPE}" in
+    owncloud_webdav)
+        wait-for-it owncloud_external:80
+        FILES_EXTERNAL_TEST_TO_RUN=WebdavTest.php
+        cat > apps/files_external/tests/config.webdav.php <<DELIM
+ <?php
+ return array(
+     'run'=>true,
+     'host'=>'owncloud_external:80/remote.php/webdav',
+     'user'=>'admin',
+     'password'=>'admin',
+     'root'=>'',
+     'wait'=> 0
+ );
+DELIM
+        ;;
+    apache_webdav)
+        wait-for-it apache_webdav:80
+        FILES_EXTERNAL_TEST_TO_RUN=WebdavTest.php
+        mkdir -p /drone/webdav
+        chown -R www-data:www-data /drone/webdav
+        htpasswd -cb /drone/webdav.password admin admin
+        chown www-data:www-data /drone/webdav.password
+        chmod 640 /drone/webdav.password
+        cat > apps/files_external/tests/config.webdav.php <<DELIM
+ <?php
+ return array(
+     'run'=>true,
+     'host'=>'apache_webdav:80/webdav',
+     'user'=>'admin',
+     'password'=>'admin',
+     'root'=>'',
+     'wait'=> 0
+ );
+DELIM
+        ;;
+    smb_docker)
+        wait-for-it smb_docker:445
+        FILES_EXTERNAL_TEST_TO_RUN=SmbTest.php
+        cat > apps/files_external/tests//config.smb.php <<DELIM
+<?php
 
+return array(
+    'run'=>true,
+    'host'=>'smb_docker',
+    'user'=>'test',
+    'password'=>'test',
+    'root'=>'',
+    'share'=>'public',
+);
+
+DELIM
+        ;;
+    smb_windows)
+        wait-for-it fsweb.test.owncloud.com:445
+        FILES_EXTERNAL_TEST_TO_RUN=SmbTest.php
+        cat > apps/files_external/tests//config.smb.php <<DELIM
+<?php
+
+return array(
+    'run'=>true,
+    'host'=>'fsweb.test.owncloud.com',
+    'user'=>'test100',
+    'password'=>'Password123!',
+    'root'=>'',
+    'share'=>'test100',
+);
+
+DELIM
+        ;;
+
+    swift_ceph)
+        wait-for-it swift:5034
+        FILES_EXTERNAL_TEST_TO_RUN=SwiftTest.php
+        cat > apps/files_external/tests//config.swift.php <<DELIM
+<?php
+
+return array(
+    'run'=>true,
+    'url'=>'http://swift:5034/v2.0',
+    'user'=>'test',
+    'tenant'=>'testtenant',
+    'password'=>'testing',
+    'service_name'=>'testceph',
+    'bucket'=>'swift',
+    'region' => 'testregion',
+);
+DELIM
+        ;;
+
+    *)
+        echo "Unsupported files external type \"${FILES_EXTERNAL_TYPE}\"!"
+        exit 1
+        ;;
+    esac
+}
+
+FILES_EXTERNAL_BACKEND_PATH=apps/files_external/tests/Storage
+
+if [[ "${ENABLE_COVERAGE}" == "true" ]]; then
+    if [[ -n "${FILES_EXTERNAL_TYPE}" ]]; then
+        set_up_external_storage
+        phpdbg -d memory_limit=4096M -rr ./lib/composer/bin/phpunit --configuration tests/phpunit-autotest-external.xml ${GROUP} --coverage-clover tests/autotest-external-clover-${DB_TYPE}.xml
+        phpdbg -d memory_limit=4096M -rr ./lib/composer/bin/phpunit --configuration tests/phpunit-autotest-external.xml ${GROUP} --coverage-clover tests/autotest-external-clover-${DB_TYPE}-${FILES_EXTERNAL_TYPE}.xml ${FILES_EXTERNAL_BACKEND_PATH}/${FILES_EXTERNAL_TEST_TO_RUN}
+    else
+        phpdbg -d memory_limit=4096M -rr ./lib/composer/bin/phpunit --configuration tests/phpunit-autotest.xml ${GROUP} --coverage-clover tests/autotest-clover-${DB_TYPE}.xml
+    fi
+else
+    if [[ -n "${FILES_EXTERNAL_TYPE}" ]]; then
+        echo "run files external"
+        set_up_external_storage
+
+        ./lib/composer/bin/phpunit --configuration tests/phpunit-autotest-external.xml ${GROUP} --log-junit tests/autotest-external-results-${DB_TYPE}.xml
+        ./lib/composer/bin/phpunit --configuration tests/phpunit-autotest-external.xml ${GROUP} --log-junit tests/autotest-external-results-${DB_TYPE}-${FILES_EXTERNAL_TYPE}.xml ${FILES_EXTERNAL_BACKEND_PATH}/${FILES_EXTERNAL_TEST_TO_RUN}
+    else
+        echo "normal"
+        ./lib/composer/bin/phpunit --configuration tests/phpunit-autotest.xml ${GROUP} --log-junit tests/autotest-results-${DB_TYPE}.xml
+    fi
+fi

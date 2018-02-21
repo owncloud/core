@@ -2,6 +2,7 @@ workspace:
   base: /drone
   path: src
 
+
 branches: [master, stable10, stable9.1, stable9]
 
 clone:
@@ -34,7 +35,7 @@ pipeline:
       - ./tests/drone/yarn-install.sh
     when:
       event: [push, pull_request]
-
+#
   rebuild:
     image: plugins/s3-cache:1
     pull: true
@@ -58,32 +59,6 @@ pipeline:
       local: false
       event: [push]
 
-  coverage:
-    image: owncloudci/php:${PHP_VERSION}
-    pull: true
-    group: test
-    environment:
-      - PHP_VERSION=${PHP_VERSION}
-      - DB_TYPE=${DB_TYPE}
-    commands:
-      - ./tests/drone/test-coverage.sh
-    when:
-      event: [push, pull_request]
-      matrix:
-        TEST_SUITE: coverage
-
-  codecov:
-    image: plugins/codecov:2
-    secrets: [codecov_token]
-    pull: true
-    files:
-     - tests/autotest-clover-${DB_TYPE}.xml
-     - tests/autotest-external-clover-${DB_TYPE}.xml
-    when:
-      event: [push, pull_request]
-      matrix:
-        TEST_SUITE: coverage
-
   test-javascript:
     image: owncloudci/php:${PHP_VERSION}
     pull: true
@@ -100,24 +75,29 @@ pipeline:
     environment:
       - PHP_VERSION=${PHP_VERSION}
       - DB_TYPE=${DB_TYPE}
+      - ENABLE_COVERAGE=${ENABLE_COVERAGE}
+      - FILES_EXTERNAL_TYPE=${FILES_EXTERNAL_TYPE}
     commands:
       - ./tests/drone/test-phpunit.sh
     when:
+      event: [push, pull_request]
       matrix:
         TEST_SUITE: phpunit
 
-  files_external:
-    image: owncloudci/php:${PHP_VERSION}
+  codecov:
+    image: plugins/codecov:1
+    secrets: [codecov_token]
+    debug: true
     pull: true
-    group: test
-    environment:
-      - PHP_VERSION=${PHP_VERSION}
-      - DB_TYPE=${DB_TYPE}
-    commands:
-      - ./tests/drone/test-files-external.sh
+    files:
+     - tests/autotest-clover-${DB_TYPE}.xml
+     - tests/autotest-external-clover-${DB_TYPE}.xml
+     - tests/autotest-external-clover-${DB_TYPE}-${FILES_EXTERNAL_TYPE}.xml
     when:
+      event: [push, pull_request]
       matrix:
-        TEST_SUITE: files_external
+        TEST_SUITE: phpunit
+        ENABLE_COVERAGE: true
 
   install-server:
     image: owncloudci/php:${PHP_VERSION}
@@ -212,10 +192,40 @@ services:
         DB_TYPE: postgres
 
   owncloud_external:
-    image: owncloud/server:latest
+    image: owncloud/server:10.0.4
     when:
       matrix:
-        FILES_EXTERNAL_TYPE: webdav
+        FILES_EXTERNAL_TYPE: owncloud_webdav
+
+  apache_webdav:
+    image: owncloudci/php:latest
+    environment:
+      - APACHE_CONFIG_TEMPLATE=/drone/src/tests/drone/webdav.conf
+    command: [ "/usr/local/bin/apachectl", "-e debug" , "-DFOREGROUND" ]
+    when:
+      matrix:
+        FILES_EXTERNAL_TYPE: apache_webdav
+
+  smb_docker:
+    image: owncloudci/samba
+    command: "-u \"test;test\" -s \"public;/tmp;yes;no;no;test;none;test\" -S"
+    when:
+      matrix:
+        FILES_EXTERNAL_TYPE: smb_docker
+
+  swift:
+    image: owncloudci/ceph
+    environment:
+      - KEYSTONE_PUBLIC_PORT=5034
+      - KEYSTONE_ADMIN_USER=test
+      - KEYSTONE_ADMIN_PASS=testing
+      - KEYSTONE_ADMIN_TENANT=testtenant
+      - KEYSTONE_ENDPOINT_REGION=testregion
+      - KEYSTONE_SERVICE=testceph
+      - OSD_SIZE=300
+    when:
+      matrix:
+        OBJECTSTORE: swift
 
   oracle:
     image: deepdiver/docker-oracle-xe-11g
@@ -253,10 +263,12 @@ services:
     when:
       matrix:
         USE_FEDERATED_SERVER: true
+
 matrix:
   include:
     - TEST_SUITE: javascript
       PHP_VERSION: 7.1
+
     # PHP 5.6
     #- PHP_VERSION: 5.6
     #  DB_TYPE: sqlite
@@ -295,10 +307,6 @@ matrix:
     #   TEST_SUITE: phpunit
 
     # PHP 7.1
-    - PHP_VERSION: 7.1
-      DB_TYPE: sqlite
-      TEST_SUITE: files_external
-      FILES_EXTERNAL_TYPE: webdav
     #- PHP_VERSION: 7.1
     #  DB_TYPE: mariadb
     #  TEST_SUITE: phpunit
@@ -337,16 +345,40 @@ matrix:
     # Code Coverage Computation
     - PHP_VERSION: 7.1
       DB_TYPE: sqlite
-      TEST_SUITE: coverage
+      TEST_SUITE: phpunit
+      ENABLE_COVERAGE: true
 
     - PHP_VERSION: 7.1
       DB_TYPE: mysql
-      TEST_SUITE: coverage
+      TEST_SUITE: phpunit
+      ENABLE_COVERAGE: true
 
     - PHP_VERSION: 7.1
       DB_TYPE: sqlite
-      TEST_SUITE: coverage
-      FILES_EXTERNAL_TYPE: webdav
+      TEST_SUITE: phpunit
+      FILES_EXTERNAL_TYPE: apache_webdav
+
+#    skipping for the time being
+#    - PHP_VERSION: 7.1
+#      DB_TYPE: sqlite
+#      TEST_SUITE: phpunit
+#      FILES_EXTERNAL_TYPE: owncloud_webdav
+
+    - PHP_VERSION: 7.1
+      DB_TYPE: sqlite
+      TEST_SUITE: phpunit
+      FILES_EXTERNAL_TYPE: smb_docker
+
+    - PHP_VERSION: 7.1
+      DB_TYPE: sqlite
+      TEST_SUITE: phpunit
+      FILES_EXTERNAL_TYPE: smb_windows
+
+    - PHP_VERSION: 7.1
+      DB_TYPE: sqlite
+      TEST_SUITE: phpunit
+      OBJECTSTORE: swift
+      FILES_EXTERNAL_TYPE: swift_ceph
       
     - PHP_VERSION: 7.1
       TEST_SUITE: selenium
