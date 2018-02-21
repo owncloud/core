@@ -5,6 +5,77 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/).
 
 ## [Unreleased]
+### Added
+- Share personal cleanup + note - [#30486](https://github.com/owncloud/core/issues/30486)
+- Add conditional Logging target logfile for shared_secret and users - [#30443](https://github.com/owncloud/core/issues/30443)
+- Add option to disable link share password enforcement for write-only shares - [#30408](https://github.com/owncloud/core/issues/30408)
+- Add Webdav-Location header in private link redirect - [#30387](https://github.com/owncloud/core/issues/30387)
+- Make syslog output configurable, introduce new default that includes the request id - [#30346](https://github.com/owncloud/core/issues/30346)
+- Add "uid" parameter to "validatePassword" events - [#30334](https://github.com/owncloud/core/issues/30334)
+- Added new API event for zip file download - [#30067](https://github.com/owncloud/core/issues/30067)
+- Added new API event for public link creation - [#30067](https://github.com/owncloud/core/issues/30067)
+- Added log entry when the "data-fingerprint" command was run - [#30281](https://github.com/owncloud/core/issues/30281)
+- Added "heic" and "heif" as image mime types for thumbnails - [#30108](https://github.com/owncloud/core/issues/30108)
+- Added new API events for commenting actions - [#30142](https://github.com/owncloud/core/issues/30142)
+
+### Changed
+- Bump phpseclib/phpseclib from 2.0.3 to 2.0.10 - [#30052](https://github.com/owncloud/core/issues/30052) [#30537](https://github.com/owncloud/core/issues/30537)
+- Bump phpunit and symfony/translation to match master - [#30410](https://github.com/owncloud/core/issues/30410)
+- Bump guzzlehttp/guzzle from 5.3.1 to 5.3.2 - [#30217](https://github.com/owncloud/core/issues/30217)
+- Bump lukasreschke/id3parser from 0.0.1 to 0.0.3 - [#30085](https://github.com/owncloud/core/issues/30085)
+- Bump PHP to 5.6.33 in composer - [#30403](https://github.com/owncloud/core/issues/30403)
+- Bump symfony/translation from 3.2.4 to 3.3.16 - [#30380](https://github.com/owncloud/core/issues/30380)
+- Bump latest symfony and sabre/vobject point versions - [#30266](https://github.com/owncloud/core/issues/30266)
+- Bump karma from 1.5.0 to 2.0.0 in /build - [#30050](https://github.com/owncloud/core/issues/30050)
+- Update composer in stable10 with versions as at 2018-02-07 - [#30390](https://github.com/owncloud/core/issues/30390)
+- Renamed SMB logging config.php settings from "wnd" to "smb" - [#30244](https://github.com/owncloud/core/issues/30244)
+- Improved error messages in user:delete command - [#30164](https://github.com/owncloud/core/issues/30164)
+- Allow avatars to be visible publicly for public calendar - [#30228](https://github.com/owncloud/core/issues/30228)
+
+### Removed
+- Removed private oc_current_user Javascript variable - [#30486](https://github.com/owncloud/core/issues/30486) [#30556](https://github.com/owncloud/core/issues/30556)
+- Remove app store config values from config.sample.php - [#30422](https://github.com/owncloud/core/issues/30422)
+- Remove documentation of the theme option in config.sample.php - [#30350](https://github.com/owncloud/core/issues/30350)
+
+### Fixes
+
+- Fix wording if you are not a member of any groups - [#30558](https://github.com/owncloud/core/issues/30558)
+- Fix for error when querying non present log_secret - [#30470](https://github.com/owncloud/core/issues/30470)
+- Properly create a session for a pure token based request, fixed oauth2 issues - [#30542](https://github.com/owncloud/core/issues/30542)
+- Free resources in preview providers - [#30533](https://github.com/owncloud/core/issues/30533)
+- Continue in case of rare error in files:scan repair command - [#30494](https://github.com/owncloud/core/issues/30494)
+- Make theming work when theme app is outside the ownCloud root - [#30477](https://github.com/owncloud/core/issues/30477)
+- Don't try decrypting federated shares in decrypt-all command - [#30155](https://github.com/owncloud/core/issues/30155)
+- Fix some documentation paths in config.sample.php - [#30431](https://github.com/owncloud/core/issues/30431)
+- Keep null in getMetaData in Checksum storage wrapper, fixes some files:scan scenarios - [#30302](https://github.com/owncloud/core/issues/30302)
+- Modals dialogs can now scroll, improves link share dialog UX - [#30424](https://github.com/owncloud/core/issues/30424)
+- Fix failure of shares which are already moved with transfer ownership - [#30161](https://github.com/owncloud/core/issues/30161)
+- Return 403 instead of 503 to resume syncing of desktop client - [#30353](https://github.com/owncloud/core/issues/30353)
+- Guide users to also check spelling for typos in federated share id - [#30355](https://github.com/owncloud/core/issues/30355)
+- Fixed issue with number of hidden files not updating on renaming a file - [#30359](https://github.com/owncloud/core/issues/30359)
+- Fix deleted items auto expiration for users with no quota - [#30163](https://github.com/owncloud/core/issues/30163)
+- Fix validation for new encryption storage key location - [#30357](https://github.com/owncloud/core/issues/30357)
+- Fix some CSRF issues on Webdav endpoint by only checking for POST method - [#30358](https://github.com/owncloud/core/issues/30358)
+- Prevent share icon from shrinking with long texts - [#30352](https://github.com/owncloud/core/issues/30352)
+- Catch session unavailable exception - [#30347](https://github.com/owncloud/core/issues/30347)
+- Fixed regression where a user could not set own email address in the settings page - [#30319](https://github.com/owncloud/core/issues/30319)
+- Catch BadResponseException when trying to upload - [#30316](https://github.com/owncloud/core/issues/30316)
+- Fix caldav and carddav syncing when dealing with lots of data - [#30252](https://github.com/owncloud/core/issues/30252)
+- Don't restrain width of icon-logo - [#30282](https://github.com/owncloud/core/issues/30282)
+- Check trashbin permissions before moving to trash, fixes deletion as guest user - [#30240](https://github.com/owncloud/core/issues/30240)
+- Handle no read access to skeleton - [#30241](https://github.com/owncloud/core/issues/30241)
+- Fix file name escaping in error messages in web UI related to file operations - [#30193](https://github.com/owncloud/core/issues/30193)
+- Proper error message when trying to add user to a group they are already member of in web UI - [#30194](https://github.com/owncloud/core/issues/30194)
+- Show new basename and extension while waiting for rename operation to finish in web UI - [#30040](https://github.com/owncloud/core/issues/30040)
+- Fix app author parsing in apps page - [#30043](https://github.com/owncloud/core/issues/30043)
+- Validate system path data used in findBinaryPath - [#30061](https://github.com/owncloud/core/issues/30061)
+- Fix deletion of group with special characters in web UI - [#30111](https://github.com/owncloud/core/issues/30111)
+- Fix missing preview in file upload conflict window - [#30125](https://github.com/owncloud/core/issues/30125)
+- Fix files endpoint bug when downloading vCard - [#30149](https://github.com/owncloud/core/issues/30149)
+- Properly filter link share email parameters - [#30165](https://github.com/owncloud/core/issues/30165)
+- Convert null to empty string for Oracle in file cache accessor - [#30224](https://github.com/owncloud/core/issues/30224)
+- Use LargeFileHelper to calculate log file size - fixes #30227 - [#30234](https://github.com/owncloud/core/issues/30234)
+
 ## 10.0.7 - 2018-01-19
 ### Fixed
 - Fix various issues about null user errors - [#30450](https://github.com/owncloud/core/issues/30450)
