@@ -208,28 +208,37 @@ class FeatureContext extends RawMinkContext implements Context {
 	/**
 	 * @Then /^notifications should be displayed with the text\s?(matching|)$/
 	 * @param string $matching contains "matching" when notification text
-	 * 						   has to be checked against regular expression
+	 *                         has to be checked against regular expression
 	 * @param TableNode $table of expected notification text
 	 * @return void
+	 * @throws Exception
 	 */
 	public function notificationsShouldBeDisplayedWithTheText($matching, TableNode $table) {
-		$notifications = $this->owncloudPage->getNotifications();
-		$tableRows = $table->getRows();
+		$actualNotifications = $this->owncloudPage->getNotifications();
+		$numActualNotifications = count($actualNotifications);
+		$expectedNotifications = $table->getRows();
+		$numExpectedNotifications = count($expectedNotifications);
+
 		PHPUnit_Framework_Assert::assertGreaterThanOrEqual(
-			count($tableRows),
-			count($notifications)
+			$numExpectedNotifications,
+			$numActualNotifications,
+			"expected at least $numExpectedNotifications notifications but only found $numActualNotifications"
 		);
 
 		$notificationCounter = 0;
-		foreach ($tableRows as $row) {
+		foreach ($expectedNotifications as $expectedNotification) {
+			$expectedNotificationText = $expectedNotification[0];
+			$actualNotificationText = $actualNotifications[$notificationCounter];
 			if ($matching === "matching") {
-				if (!preg_match($row[0], $notifications[$notificationCounter])) {
-					throw new Exception($notifications[$notificationCounter] . " does not match " . $row[0]);
+				if (!preg_match($expectedNotificationText, $actualNotificationText)) {
+					throw new Exception(
+						$actualNotificationText . " does not match " . $expectedNotificationText
+					);
 				}
 			} else {
 				PHPUnit_Framework_Assert::assertEquals(
-					$row[0],
-					$notifications[$notificationCounter]
+					$expectedNotificationText,
+					$actualNotificationText
 				);
 			}
 			$notificationCounter++;
