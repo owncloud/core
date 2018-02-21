@@ -82,7 +82,7 @@ class UsersContext extends RawMinkContext implements Context {
 	}
 
 	/**
-	 * @When /^I create a user with the name "([^"]*)" (?:and )?the password "([^"]*)"(?: and the email "([^"]*)")?(?: that is member of these groups)?$/
+	 * @When /^I create a user with the name "([^"]*)" (?:and )?the password "([^"]*)"(?: and the email "([^"]*)")?(?: that is a member of these groups)?$/
 	 * @param string $username
 	 * @param string $password
 	 * @param string $email
@@ -103,7 +103,7 @@ class UsersContext extends RawMinkContext implements Context {
 			$this->getSession(), $username, $password, $email, $groups
 		);
 		$this->featureContext->addUserToCreatedUsersList(
-			$username, $password, $email
+			$username, $password, "", $email
 		);
 		if (is_array($groups)) {
 			foreach ($groups as $group) {
