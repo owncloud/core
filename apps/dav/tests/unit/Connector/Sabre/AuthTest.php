@@ -29,11 +29,14 @@ namespace OCA\DAV\Tests\unit\Connector\Sabre;
 
 use OC\Authentication\Exceptions\PasswordLoginForbiddenException;
 use OC\Authentication\TwoFactorAuth\Manager;
+use OC\ForbiddenException;
+use OC\User\LoginException;
 use OC\User\Session;
 use OCA\DAV\Connector\Sabre\Auth;
 use OCP\IRequest;
 use OCP\ISession;
 use OCP\IUser;
+use Sabre\DAV\Exception\NotAuthenticated;
 use Sabre\HTTP\RequestInterface;
 use Sabre\HTTP\ResponseInterface;
 use Test\TestCase;
@@ -513,6 +516,25 @@ class AuthTest extends TestCase {
 
 		$response = $this->auth->check($request, $response);
 		$this->assertEquals([true, 'principals/users/MyWrongDavUser'], $response);
+	}
+
+	/**
+	 * @expectedException Sabre\DAV\Exception\NotAuthenticated
+	 */
+	public function testAutenticateWithLoggedInUserButLoginExceptionThrown() {
+		/** @var RequestInterface | \PHPUnit_Framework_MockObject_MockObject $request */
+		$request = $this->getMockBuilder(RequestInterface::class)
+			->disableOriginalConstructor()
+			->getMock();
+		/** @var ResponseInterface | \PHPUnit_Framework_MockObject_MockObject $response */
+		$response = $this->getMockBuilder(ResponseInterface::class)
+			->disableOriginalConstructor()
+			->getMock();
+		$this->userSession
+			->expects($this->any())
+			->method('isLoggedIn')
+			->willThrowException(new LoginException());
+		$response = $this->auth->check($request, $response);
 	}
 
 	public function testAuthenticateNoBasicAuthenticateHeadersProvided() {
