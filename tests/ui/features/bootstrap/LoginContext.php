@@ -32,6 +32,8 @@ require_once 'bootstrap.php';
  */
 class LoginContext extends RawMinkContext implements Context {
 
+	private $loginFailedPageTitle = "ownCloud";
+	private $loginSuccessPageTitle = "Files - ownCloud";
 	private $loginPage;
 	private $filesPage;
 	private $expectedPage;
@@ -114,6 +116,8 @@ class LoginContext extends RawMinkContext implements Context {
 
 	/**
 	 * @When I login with username :username and invalid password :password
+	 * @When I login with invalid username :username and password :password
+	 * @When I login with invalid username :username and invalid password :password
 	 * @param string $username
 	 * @param string $password
 	 * @return void
@@ -150,6 +154,39 @@ class LoginContext extends RawMinkContext implements Context {
 		$this->filesPage = $this->featureContext->loginAsARegularUser();
 	}
 
+	/**
+	 * @Then /^it should (not|)\s?be possible to login with the username ((?:'[^']*')|(?:"[^"]*")) and password ((?:'[^']*')|(?:"[^"]*")) into the WebUI$/
+	 * 
+	 * @param string $shouldOrNot
+	 * @param string $username
+	 * @param string $password
+	 * @return void
+	 */
+	public function itShouldBePossibleToLogin($shouldOrNot, $username, $password) {
+		$should = ($shouldOrNot !== "not");
+
+		// The capturing groups of the regex include the quotes at each
+		// end of the captured string, so trim them.
+		if ($username !== "") {
+			$username = trim($username, $username[0]);
+		}
+		if ($password !== "") {
+			$password = trim($password, $password[0]);
+		}
+		$this->iAmOnTheLoginPage();
+		if ($should) {
+			$this->iLoginWithUsernameAndPassword($username, $password);
+			$this->featureContext->iShouldBeRedirectedToAPageWithTheTitle(
+				$this->loginSuccessPageTitle
+			);
+		} else {
+			$this->iLoginWithUsernameAndInvalidPassword($username, $password);
+			$this->featureContext->iShouldBeRedirectedToAPageWithTheTitle(
+				$this->loginFailedPageTitle
+			);
+		}
+		
+	}
 	/**
 	 * @BeforeScenario
 	 * This will run before EVERY scenario.
