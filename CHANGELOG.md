@@ -59,7 +59,6 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/).
 - Prevent share icon from shrinking with long texts - [#30352](https://github.com/owncloud/core/issues/30352)
 - Catch session unavailable exception - [#30347](https://github.com/owncloud/core/issues/30347)
 - Fixed regression where a user could not set own email address in the settings page - [#30319](https://github.com/owncloud/core/issues/30319)
-- Catch BadResponseException when trying to upload - [#30316](https://github.com/owncloud/core/issues/30316)
 - Fix caldav and carddav syncing when dealing with lots of data - [#30252](https://github.com/owncloud/core/issues/30252)
 - Don't restrain width of icon-logo - [#30282](https://github.com/owncloud/core/issues/30282)
 - Check trashbin permissions before moving to trash, fixes deletion as guest user - [#30240](https://github.com/owncloud/core/issues/30240)
