@@ -9,6 +9,9 @@
 	<dependencies>
 		<owncloud min-version="10.0" max-version="10.0" />
 	</dependencies>
+	<commands>
+		<command>OCA\Testing\Command\CreateMultiUser</command>
+	</commands>
 	<types>
 		<authentication/>
 	</types>
