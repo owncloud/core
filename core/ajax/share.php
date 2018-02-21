@@ -187,8 +187,9 @@ if (isset($_POST['action']) && isset($_POST['itemType']) && isset($_POST['itemSo
 
 			$l10n = \OC::$server->getL10N('lib');
 
+			$sendingUser = \OC::$server->getUserSession()->getUser();
 			$mailNotification = new \OC\Share\MailNotifications(
-				\OC::$server->getUserSession()->getUser(),
+				$sendingUser,
 				$l10n,
 				\OC::$server->getMailer(),
 				\OC::$server->getLogger(),
@@ -206,11 +207,7 @@ if (isset($_POST['action']) && isset($_POST['itemType']) && isset($_POST['itemSo
 				}
 			}
 
-			$result = $mailNotification->sendLinkShareMail(
-				$filter->getToAddress(), $filter->getFile(), $filter->getLink(), $expiration
-			);
-
-			$subject = (string)$l10n->t('%s shared »%s« with you', [$this->senderDisplayName, $filename]);
+			$subject = (string)$l10n->t('%s shared »%s« with you', [$sendingUser->getDisplayName(), $filter->getFile()]);
 			if ($emailBody === null || $emailBody === '') {
 				list($htmlBody, $textBody) = $mailNotification->createMailBody($file, $link, $expiration);
 			} else {
