@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/).
 
 ## [Unreleased]
+## 10.0.7 - 2018-01-19
+### Fixed
+- Fix various issues about null user errors - [#30450](https://github.com/owncloud/core/issues/30450)
+- Solve OAuth token expiry issue - [#30481](https://github.com/owncloud/core/issues/30481)
+- Fixed issues related to app passwords and account lock-outs - [#30363](https://github.com/owncloud/core/issues/30363)
+
 ## 10.0.6 - 2018-01-29
 ### Fixed
 - Fix missing build dependency for L18N - [#30265](https://github.com/owncloud/core/pull/30265)
@@ -425,7 +431,9 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/).
 - provisioning API now also returns the user's home path: [#26850](https://github.com/owncloud/core/issues/26850)
 - web updater shows link to changelog in admin page: [#26796](https://github.com/owncloud/core/issues/26796)
 
-[Unreleased]: https://github.com/owncloud/core/compare/v10.0.5...stable10
+[Unreleased]: https://github.com/owncloud/core/compare/v10.0.7...stable10
+[10.0.7]: https://github.com/owncloud/core/compare/v10.0.6...v10.0.7
+[10.0.6]: https://github.com/owncloud/core/compare/v10.0.5...v10.0.6
 [10.0.5]: https://github.com/owncloud/core/compare/v10.0.4...v10.0.5
 [10.0.4]: https://github.com/owncloud/core/compare/v10.0.3...v10.0.4
 [10.0.3]: https://github.com/owncloud/core/compare/v10.0.2...v10.0.3
