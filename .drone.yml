@@ -66,6 +66,7 @@ pipeline:
       - PHP_VERSION=${PHP_VERSION}
       - DB_TYPE=${DB_TYPE}
     commands:
+      - ./tests/drone/install-server.sh
       - ./tests/drone/test-coverage.sh
     when:
       event: [push, pull_request]
@@ -101,6 +102,7 @@ pipeline:
       - PHP_VERSION=${PHP_VERSION}
       - DB_TYPE=${DB_TYPE}
     commands:
+      - ./tests/drone/install-server.sh
       - ./tests/drone/test-phpunit.sh
     when:
       matrix:
@@ -114,6 +116,7 @@ pipeline:
       - PHP_VERSION=${PHP_VERSION}
       - DB_TYPE=${DB_TYPE}
     commands:
+      - ./tests/drone/install-server.sh
       - ./tests/drone/test-files-external.sh
     when:
       matrix:
@@ -123,8 +126,7 @@ pipeline:
     image: owncloudci/php:${PHP_VERSION}
     pull: true
     commands:
-      - cd /drone/src/
-      - php occ maintenance:install -vvv --database=mysql --database-host=${DB_TYPE} --database-user=owncloud --database-pass=owncloud --database-name=owncloud --database-table-prefix=oc_ --admin-user=admin --admin-pass=admin --data-dir=/drone/src/data
+      - ./tests/drone/install-server.sh
       - php occ a:l
       - php occ a:e testing
       - php occ a:l
