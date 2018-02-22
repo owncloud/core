@@ -306,7 +306,7 @@ class Scanner extends BasicEmitter implements IScanner {
 			$reuse = ($recursive === self::SCAN_SHALLOW) ? self::REUSE_ETAG | self::REUSE_SIZE : self::REUSE_ETAG;
 		}
 		if ($lock) {
-			if ($this->storage->instanceOfStorage('\OCP\Files\Storage\ILockingStorage')) {
+			if ($this->storage->instanceOfStorage(ILockingStorage::class)) {
 				$this->storage->acquireLock('scanner::' . $path, ILockingProvider::LOCK_EXCLUSIVE, $this->lockingProvider);
 				$this->storage->acquireLock($path, ILockingProvider::LOCK_SHARED, $this->lockingProvider);
 			}
@@ -317,7 +317,7 @@ class Scanner extends BasicEmitter implements IScanner {
 			$data['size'] = $size;
 		}
 		if ($lock) {
-			if ($this->storage->instanceOfStorage('\OCP\Files\Storage\ILockingStorage')) {
+			if ($this->storage->instanceOfStorage(ILockingStorage::class)) {
 				$this->storage->releaseLock($path, ILockingProvider::LOCK_SHARED, $this->lockingProvider);
 				$this->storage->releaseLock('scanner::' . $path, ILockingProvider::LOCK_EXCLUSIVE, $this->lockingProvider);
 			}

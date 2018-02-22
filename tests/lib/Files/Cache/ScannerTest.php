@@ -407,7 +407,7 @@ class ScannerTest extends \Test\TestCase {
 	 * @throws \OC\HintException
 	 * @throws \OC\ServerNotAvailableException
 	 */
-	public function testUnLockInCaseOfException() {
+	public function testUnLockInCaseOfExceptionInScanFile() {
 		/** @var Storage | \PHPUnit_Framework_MockObject_MockObject $storage */
 		$storage = $this->createMock(Storage::class);
 		$storage->expects($this->any())
@@ -421,5 +421,30 @@ class ScannerTest extends \Test\TestCase {
 		$storage->expects($this->any())->method('getMetaData')->willThrowException(new \Exception('No MetaData'));
 		$this->scanner = new \OC\Files\Cache\Scanner($storage);
 		$this->scanner->scanFile('file/test.txt');
+	}
+
+	/**
+	 * @expectedException \Exception
+	 * @expectedExceptionMessage No MetaData
+	 *
+	 * @throws \OCP\Files\StorageNotAvailableException
+	 * @throws \OCP\Lock\LockedException
+	 * @throws \OC\HintException
+	 * @throws \OC\ServerNotAvailableException
+	 */
+	public function testUnLockInCaseOfExceptionInScan() {
+		/** @var Storage | \PHPUnit_Framework_MockObject_MockObject $storage */
+		$storage = $this->createMock(Storage::class);
+		$storage->expects($this->any())
+			->method('instanceOfStorage')
+			->will($this->returnValueMap([
+				[ILockingStorage::class, true],
+			]));
+
+		$storage->expects($this->exactly(3))->method('acquireLock');
+		$storage->expects($this->exactly(3))->method('releaseLock');
+		$storage->expects($this->any())->method('getMetaData')->willThrowException(new \Exception('No MetaData'));
+		$this->scanner = new \OC\Files\Cache\Scanner($storage);
+		$this->scanner->scan('file/test.txt');
 	}
 }
