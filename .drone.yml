@@ -58,32 +58,6 @@ pipeline:
       local: false
       event: [push]
 
-  coverage:
-    image: owncloudci/php:${PHP_VERSION}
-    pull: true
-    group: test
-    environment:
-      - PHP_VERSION=${PHP_VERSION}
-      - DB_TYPE=${DB_TYPE}
-    commands:
-      - ./tests/drone/test-coverage.sh
-    when:
-      event: [push, pull_request]
-      matrix:
-        TEST_SUITE: coverage
-
-  codecov:
-    image: plugins/codecov:2
-    secrets: [codecov_token]
-    pull: true
-    files:
-     - tests/autotest-clover-${DB_TYPE}.xml
-     - tests/autotest-external-clover-${DB_TYPE}.xml
-    when:
-      event: [push, pull_request]
-      matrix:
-        TEST_SUITE: coverage
-
   test-javascript:
     image: owncloudci/php:${PHP_VERSION}
     pull: true
@@ -100,24 +74,29 @@ pipeline:
     environment:
       - PHP_VERSION=${PHP_VERSION}
       - DB_TYPE=${DB_TYPE}
+      - FILES_EXTERNAL_TYPE=${FILES_EXTERNAL_TYPE}
+      - ENABLE_COVERAGE=${ENABLE_COVERAGE}
     commands:
       - ./tests/drone/test-phpunit.sh
     when:
+      event: [push, pull_request]
       matrix:
         TEST_SUITE: phpunit
 
-  files_external:
-    image: owncloudci/php:${PHP_VERSION}
+  codecov:
+    image: plugins/codecov:2
+    secrets: [codecov_token]
+    debug: true
     pull: true
-    group: test
-    environment:
-      - PHP_VERSION=${PHP_VERSION}
-      - DB_TYPE=${DB_TYPE}
-    commands:
-      - ./tests/drone/test-files-external.sh
+    files:
+     - tests/autotest-clover-${DB_TYPE}.xml
+     - tests/autotest-external-clover-${DB_TYPE}.xml
+     - tests/autotest-external-clover-${DB_TYPE}-${FILES_EXTERNAL_TYPE}.xml
     when:
+      event: [push, pull_request]
       matrix:
-        TEST_SUITE: files_external
+        TEST_SUITE: phpunit
+        ENABLE_COVERAGE: true
 
   install-server:
     image: owncloudci/php:${PHP_VERSION}
@@ -212,10 +191,10 @@ services:
         DB_TYPE: postgres
 
   owncloud_external:
-    image: owncloud/server:latest
+    image: morrisjobke/owncloud:latest
     when:
       matrix:
-        FILES_EXTERNAL_TYPE: webdav
+        FILES_EXTERNAL_TYPE: Webdav
 
   oracle:
     image: deepdiver/docker-oracle-xe-11g
@@ -295,10 +274,6 @@ matrix:
     #   TEST_SUITE: phpunit
 
     # PHP 7.1
-    - PHP_VERSION: 7.1
-      DB_TYPE: sqlite
-      TEST_SUITE: files_external
-      FILES_EXTERNAL_TYPE: webdav
     #- PHP_VERSION: 7.1
     #  DB_TYPE: mariadb
     #  TEST_SUITE: phpunit
@@ -337,16 +312,19 @@ matrix:
     # Code Coverage Computation
     - PHP_VERSION: 7.1
       DB_TYPE: sqlite
-      TEST_SUITE: coverage
+      TEST_SUITE: phpunit
+      ENABLE_COVERAGE: true
 
     - PHP_VERSION: 7.1
       DB_TYPE: mysql
-      TEST_SUITE: coverage
+      TEST_SUITE: phpunit
+      ENABLE_COVERAGE: true
 
     - PHP_VERSION: 7.1
       DB_TYPE: sqlite
-      TEST_SUITE: coverage
-      FILES_EXTERNAL_TYPE: webdav
+      TEST_SUITE: phpunit
+      FILES_EXTERNAL_TYPE: Webdav
+      ENABLE_COVERAGE: true
       
     - PHP_VERSION: 7.1
       TEST_SUITE: selenium
