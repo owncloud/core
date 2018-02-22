@@ -63,9 +63,9 @@ default:
         - UsersContext:
         - FilesContext:
 
-    sharingInternalGroupsUsers:
+    sharingInternalGroups:
       paths:
-        - %paths.base%/../features/sharingInternalGroupsUsers
+        - %paths.base%/../features/sharingInternalGroups
       context: *common_suite_context
       contexts:
         - FeatureContext:
@@ -74,9 +74,20 @@ default:
         - FilesContext:
         - SharingContext:
 
-    sharingExternalOther:
+    sharingInternalUsers:
       paths:
-        - %paths.base%/../features/sharingExternalOther
+        - %paths.base%/../features/sharingInternalUsers
+      context: *common_suite_context
+      contexts:
+        - FeatureContext:
+        - LoginContext:
+        - UsersContext:
+        - FilesContext:
+        - SharingContext:
+
+    sharingExternal:
+      paths:
+        - %paths.base%/../features/sharingExternal
       context: *common_suite_context
       contexts:
         - FeatureContext:
@@ -106,9 +117,45 @@ default:
         - FilesContext:
         - SharingContext:
 
-    other:
+    favorites:
       paths:
-        - %paths.base%/../features/other
+        - %paths.base%/../features/favorites
+      context: *common_suite_context
+      contexts:
+        - FeatureContext:
+        - LoginContext:
+        - UsersContext:
+        - FilesContext:
+        - PersonalSecuritySettingsContext:
+        - PersonalGeneralSettingsContext:
+
+    manageUsersGroups:
+      paths:
+        - %paths.base%/../features/manageUsersGroups
+      context: *common_suite_context
+      contexts:
+        - FeatureContext:
+        - LoginContext:
+        - UsersContext:
+        - FilesContext:
+        - PersonalSecuritySettingsContext:
+        - PersonalGeneralSettingsContext:
+
+    manageQuota:
+      paths:
+        - %paths.base%/../features/manageQuota
+      context: *common_suite_context
+      contexts:
+        - FeatureContext:
+        - LoginContext:
+        - UsersContext:
+        - FilesContext:
+        - PersonalSecuritySettingsContext:
+        - PersonalGeneralSettingsContext:
+
+    personalSettings:
+      paths:
+        - %paths.base%/../features/personalSettings
       context: *common_suite_context
       contexts:
         - FeatureContext:

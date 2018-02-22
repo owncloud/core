@@ -332,10 +332,28 @@ matrix:
 
     - PHP_VERSION: 7.1
       TEST_SUITE: selenium
-      BEHAT_SUITE: other
+      BEHAT_SUITE: favorites
       DB_TYPE: mariadb
       USE_SERVER: true
       
+    - PHP_VERSION: 7.1
+      TEST_SUITE: selenium
+      BEHAT_SUITE: manageUsersGroups
+      DB_TYPE: mariadb
+      USE_SERVER: true
+
+    - PHP_VERSION: 7.1
+      TEST_SUITE: selenium
+      BEHAT_SUITE: manageQuota
+      DB_TYPE: mariadb
+      USE_SERVER: true
+
+    - PHP_VERSION: 7.1
+      TEST_SUITE: selenium
+      BEHAT_SUITE: personalSettings
+      DB_TYPE: mariadb
+      USE_SERVER: true
+
     - PHP_VERSION: 7.1
       TEST_SUITE: selenium
       BEHAT_SUITE: files
@@ -368,13 +386,19 @@ matrix:
     
     - PHP_VERSION: 7.1
       TEST_SUITE: selenium
-      BEHAT_SUITE: sharingInternalGroupsUsers
+      BEHAT_SUITE: sharingInternalGroups
       DB_TYPE: mariadb
       USE_SERVER: true
-    
+
     - PHP_VERSION: 7.1
       TEST_SUITE: selenium
-      BEHAT_SUITE: sharingExternalOther
+      BEHAT_SUITE: sharingInternalUsers
+      DB_TYPE: mariadb
+      USE_SERVER: true
+
+    - PHP_VERSION: 7.1
+      TEST_SUITE: selenium
+      BEHAT_SUITE: sharingExternal
       DB_TYPE: mariadb
       USE_SERVER: true
       USE_FEDERATED_SERVER: true
