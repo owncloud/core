@@ -36,9 +36,12 @@ namespace OC\Files\Cache;
 
 use OC\Files\Filesystem;
 use OC\Hooks\BasicEmitter;
+use OCA\Files_Sharing\ISharedStorage;
 use OCP\Config;
 use OCP\Files\Cache\IScanner;
 use OCP\Files\ForbiddenException;
+use OCP\Files\IHomeStorage;
+use OCP\Files\Storage\ILockingStorage;
 use OCP\Lock\ILockingProvider;
 
 /**
@@ -113,7 +116,7 @@ class Scanner extends BasicEmitter implements IScanner {
 		if (is_null($data)) {
 			\OCP\Util::writeLog('OC\Files\Cache\Scanner', "!!! Path '$path' is not accessible or present !!!", \OCP\Util::DEBUG);
 			// Last Line of Defence against potential Metadata-loss
-			if ($this->storage->instanceOfStorage('\OCP\Files\IHomeStorage') && !$this->storage->instanceOfStorage('OCA\Files_Sharing\ISharedStorage') && ($path === '' || $path === 'files')) {
+			if ($this->storage->instanceOfStorage(IHomeStorage::class) && !$this->storage->instanceOfStorage(ISharedStorage::class) && ($path === '' || $path === 'files')) {
 				\OCP\Util::writeLog('OC\Files\Cache\Scanner', 'Missing important folder "' . $path . '" in home storage!!! - ' . $this->storageId, \OCP\Util::ERROR);
 				throw new \OCP\Files\StorageNotAvailableException('Missing important folder "' . $path . '" in home storage - ' . $this->storageId);
 			}
@@ -140,7 +143,7 @@ class Scanner extends BasicEmitter implements IScanner {
 
 			//acquire a lock
 			if ($lock) {
-				if ($this->storage->instanceOfStorage('\OCP\Files\Storage\ILockingStorage')) {
+				if ($this->storage->instanceOfStorage(ILockingStorage::class)) {
 					$this->storage->acquireLock($file, ILockingProvider::LOCK_SHARED, $this->lockingProvider);
 				}
 			}
@@ -229,7 +232,7 @@ class Scanner extends BasicEmitter implements IScanner {
 
 			//release the acquired lock
 			if ($lock) {
-				if ($this->storage->instanceOfStorage('\OCP\Files\Storage\ILockingStorage')) {
+				if ($this->storage->instanceOfStorage(ILockingStorage::class)) {
 					$this->storage->releaseLock($file, ILockingProvider::LOCK_SHARED, $this->lockingProvider);
 				}
 			}

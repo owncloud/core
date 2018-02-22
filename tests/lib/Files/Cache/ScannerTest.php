@@ -351,9 +351,10 @@ class ScannerTest extends \Test\TestCase {
 		return [
 			// throws for empty path and "files" in home storage
 			[true, false, '', true],
-			[true, true, '', true],
 			[true, false, 'files', true],
-			[true, true, 'files', true],
+			// but in shared storage
+			[true, true, '', false],
+			[true, true, 'files', false],
 
 			// doesn't throw for federated shares (non-home)
 			[false, true, '', false],
