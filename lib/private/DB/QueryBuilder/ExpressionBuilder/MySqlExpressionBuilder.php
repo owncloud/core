@@ -46,4 +46,23 @@ class MySqlExpressionBuilder extends ExpressionBuilder {
 		return new QueryFunction("CHAR_LENGTH({$column})");
 	}
 
+	/**
+	 * Returns a query function to concatenate values within each group defined by GROUP BY clause
+	 * @param string $column
+	 * @param string $orderBy optional
+	 * @param string $separator default is ','
+	 * @return string
+	 *
+	 * Max length seems to be 1024, but can be increased @see https://dev.mysql.com/doc/refman/5.7/en/server-system-variables.html#sysvar_group_concat_max_len
+	 */
+	public function groupConcat($column, $orderBy = null, $separator = ',') {
+		$column = $this->helper->quoteColumnName($column);
+		if ($orderBy !== null) {
+			$orderBy = ' ORDER BY '.$this->helper->quoteColumnName($orderBy);
+		} else {
+			$orderBy = '';
+		}
+		$separator = str_replace(["'",'\\'], ["\'",'\\\\'], $separator);
+		return new QueryFunction("GROUP_CONCAT({$column}{$orderBy} SEPARATOR '$separator')");
+	}
 }

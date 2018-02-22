@@ -331,4 +331,14 @@ interface IExpressionBuilder {
 	 * @since 10.0.3
 	 */
 	public function length($column);
+
+	/**
+	 * Returns a query function to concatenate values within each group defined by GROUP BY clause
+	 * @param string $column
+	 * @param string $orderBy optional
+	 * @param string $separator default is ','
+	 * @return string
+	 * @since 10.0.8
+	 */
+	public function groupConcat($column, $orderBy = null, $separator = ',');
 }

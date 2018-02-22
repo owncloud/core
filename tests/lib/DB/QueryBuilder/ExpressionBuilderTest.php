@@ -348,6 +348,36 @@ class ExpressionBuilderTest extends TestCase {
 		);
 	}
 
+	public function testGroupConcat() {
+
+		$appId = $this->getUniqueID('testgroupconcat');
+		$this->createConfig($appId, 1, 4);
+		$this->createConfig($appId, 2, 5);
+		$this->createConfig($appId, 3, 6);
+		$this->createConfig($appId, 4, 4);
+		$this->createConfig($appId, 5, 5);
+		$this->createConfig($appId, 6, 6);
+		$this->createConfig($appId, 7, 4);
+		$this->createConfig($appId, 8, 5);
+		$this->createConfig($appId, 9, 6);
+
+		$query = $this->connection->getQueryBuilder();
+		$query->select([$query->expr()->groupConcat('configkey', 'configkey', ' ')])
+			->from('appconfig')
+			->where($query->expr()->eq('appid', $query->createNamedParameter($appId)))
+			->groupBy(['appid']);
+
+		$result = $query->execute();
+
+		$this->assertEquals([0 => '1 2 3 4 5 6 7 8 9'], $result->fetch(\PDO::FETCH_NUM));
+		$result->closeCursor();
+
+		$query = $this->connection->getQueryBuilder();
+		$query->delete('appconfig')
+			->where($query->expr()->eq('appid', $query->createNamedParameter($appId)))
+			->execute();
+	}
+
 	public function dataClobComparisons() {
 		return [
 			['eq', '5', IQueryBuilder::PARAM_STR, false, 3],

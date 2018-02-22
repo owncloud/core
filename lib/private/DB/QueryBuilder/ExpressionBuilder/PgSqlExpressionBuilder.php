@@ -53,4 +53,23 @@ class PgSqlExpressionBuilder extends ExpressionBuilder {
 		return $this->expressionBuilder->comparison($x, 'ILIKE', $y);
 	}
 
+	/**
+	 * Returns a query function to concatenate values within each group defined by GROUP BY clause
+	 * @param string $column
+	 * @param string $orderBy optional
+	 * @param string $separator default is ','
+	 * @return string
+	 *
+	 * TODO Max length seems to be ?, @see ?
+	 */
+	public function groupConcat($column, $orderBy = null, $separator = ',') {
+		$column = $this->helper->quoteColumnName($column);
+		if ($orderBy !== null) {
+			$orderBy = ' ORDER BY '.$this->helper->quoteColumnName($orderBy);
+		} else {
+			$orderBy = '';
+		}
+		$separator = str_replace(["'",'\\'], ["\'",'\\\\'], $separator);
+		return new QueryFunction("STRING_AGG({$column}, '{$separator}'{$orderBy})");
+	}
 }

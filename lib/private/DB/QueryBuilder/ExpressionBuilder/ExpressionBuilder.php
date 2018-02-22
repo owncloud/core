@@ -378,4 +378,19 @@ class ExpressionBuilder implements IExpressionBuilder {
 		$column = $this->helper->quoteColumnName($column);
 		return new QueryFunction("LENGTH({$column})");
 	}
+
+	/**
+	 * Returns a query function to concatenate values within each group defined by GROUP BY clause
+	 * @param string $column
+	 * @param string $orderBy ignored
+	 * @param string $separator default is ','
+	 * @return string
+	 *
+	 * TODO Max length for sqlite seems to be ?, @see http://gemmingforcode.blogspot.de/2011/03/groupconcat-sqlite-gem-and-devil-in.html
+	 */
+	public function groupConcat($column, $orderBy = null, $separator = ',') {
+		$column = $this->helper->quoteColumnName($column);
+		$separator = str_replace(["'",'\\'], ["\'",'\\\\'], $separator);
+		return new QueryFunction("GROUP_CONCAT({$column}, '$separator')");
+	}
 }
