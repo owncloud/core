@@ -34,7 +34,7 @@ So that unauthorised access is impossible
 	Scenario Outline: use the webUI to create a user with special invalid characters
 		Given I am logged in as admin
 		And I am on the users page
-		When I create a user with the name <user> and the password <pwd>
+		When I attempt to create a user with the name <user> and the password <pwd>
 		Then notifications should be displayed with the text
 			|Error creating user: Only the following characters are allowed in a username: "a-z", "A-Z", "0-9", and "_.@-'"|
 		And I should be redirected to a page with the title "Users - ownCloud"
@@ -49,7 +49,7 @@ So that unauthorised access is impossible
 	Scenario: use the webUI to create a user with empty password
 		Given I am logged in as admin
 		And I am on the users page
-		When I create a user with the name "bijay" and the password ""
+		When I attempt to create a user with the name "bijay" and the password ""
 		Then notifications should be displayed with the text
 			|Error creating user: A valid password must be provided|
 		And I should be redirected to a page with the title "Users - ownCloud"
@@ -57,7 +57,7 @@ So that unauthorised access is impossible
 	Scenario Outline: use the webUI to create a user with less than 3 characters
 		Given I am logged in as admin
 		And I am on the users page
-		When I create a user with the name <user> and the password <pwd>
+		When I attempt to create a user with the name <user> and the password <pwd>
 		Then notifications should be displayed with the text
 		|Error creating user: The username must be at least 3 characters long|
 		Examples:
