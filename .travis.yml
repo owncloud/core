@@ -359,6 +359,13 @@ matrix:
         sauce_connect: true
     - php: 5.6
       if: type = cron
+      env: DB=pgsql TC=selenium BROWSER="internet explorer" BROWSER_VERSION="11.0" BEHAT_SUITE="files" PLATFORM="Windows 7" TEST_DAV=0
+      addons:
+        apt: *common_apt
+        hosts: *common_hosts
+        sauce_connect: true
+    - php: 5.6
+      if: type = cron
       env: DB=pgsql TC=selenium BROWSER="internet explorer" BROWSER_VERSION="11.0" BEHAT_SUITE="moveFilesFolders" PLATFORM="Windows 7" TEST_DAV=0
       addons:
         apt: *common_apt
@@ -374,13 +381,6 @@ matrix:
     - php: 5.6
       if: type = cron
       env: DB=pgsql TC=selenium BROWSER="internet explorer" BROWSER_VERSION="11.0" BEHAT_SUITE="renameFolders" PLATFORM="Windows 7" TEST_DAV=0
-      addons:
-        apt: *common_apt
-        hosts: *common_hosts
-        sauce_connect: true
-    - php: 5.6
-      if: type = cron
-      env: DB=pgsql TC=selenium BROWSER="internet explorer" BROWSER_VERSION="11.0" BEHAT_SUITE="files" PLATFORM="Windows 7" TEST_DAV=0
       addons:
         apt: *common_apt
         hosts: *common_hosts
