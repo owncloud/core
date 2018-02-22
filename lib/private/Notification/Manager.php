@@ -28,10 +28,10 @@ use OCP\Notification\IManager;
 use OCP\Notification\INotification;
 use OCP\Notification\INotifier;
 use OCP\Notification\Exceptions\NotifierIdInUseException;
-use OCP\Notification\Events\AbstractRegisterConsumerEvent;
-use OCP\Notification\Events\AbstractRegisterNotifierEvent;
-use OC\Notification\Events\RegisterConsumerEvent;
-use OC\Notification\Events\RegisterNotifierEvent;
+use OCP\Notification\Events\RegisterConsumerEvent;
+use OCP\Notification\Events\RegisterNotifierEvent;
+use OC\Notification\Events\RegisterConsumerEventImpl;
+use OC\Notification\Events\RegisterNotifierEventImpl;
 
 class Manager implements IManager {
 	/** @var EventDispatcherInterface */
@@ -102,7 +102,7 @@ class Manager implements IManager {
 
 	/**
 	 * INTERNAL USE ONLY!! This method isn't part of the IManager interface
-	 * @internal This should only be used by the RegisterConsumerEvent (the actual implementation).
+	 * @internal This should only be used by the RegisterConsumerEventImpl (the real implementation).
 	 * Do NOT use this method outside as it might not work as expected.
 	 */
 	public function registerBuiltApp(IApp $app) {
@@ -111,7 +111,7 @@ class Manager implements IManager {
 
 	/**
 	 * INTERNAL USE ONLY!! This method isn't part of the IManager interface
-	 * @internal This should only be used by the RegisterNotifierEvent (the actual implementation).
+	 * @internal This should only be used by the RegisterNotifierEventImpl (the real implementation).
 	 * Do NOT use this method outside as it might not work as expected.
 	 */
 	public function registerBuiltNotifier(INotifier $notifier, $id, $name) {
@@ -143,8 +143,8 @@ class Manager implements IManager {
 		}
 
 		$this->builtAppsHolder = [];
-		$registerAppEvent = new RegisterConsumerEvent($this);
-		$this->dispatcher->dispatch(AbstractRegisterConsumerEvent::NAME, $registerAppEvent);
+		$registerAppEvent = new RegisterConsumerEventImpl($this);
+		$this->dispatcher->dispatch(RegisterConsumerEvent::NAME, $registerAppEvent);
 		$this->apps = array_merge($this->apps, $this->builtAppsHolder);
 
 		return $this->apps;
@@ -168,8 +168,8 @@ class Manager implements IManager {
 		}
 
 		$this->builtNotifiersHolder = [];
-		$registerNotifierEvent = new RegisterNotifierEvent($this);
-		$this->dispatcher->dispatch(AbstractRegisterNotifierEvent::NAME, $registerNotifierEvent);
+		$registerNotifierEvent = new RegisterNotifierEventImpl($this);
+		$this->dispatcher->dispatch(RegisterNotifierEvent::NAME, $registerNotifierEvent);
 		foreach ($this->builtNotifiersHolder as $notifierData) {
 			$this->notifiers[] = $notifierData['notifier'];
 		}
@@ -198,8 +198,8 @@ class Manager implements IManager {
 		}
 
 		$this->builtNotifiersHolder = [];
-		$registerNotifierEvent = new RegisterNotifierEvent($this);
-		$this->dispatcher->dispatch(AbstractRegisterNotifierEvent::NAME, $registerNotifierEvent);
+		$registerNotifierEvent = new RegisterNotifierEventImpl($this);
+		$this->dispatcher->dispatch(RegisterNotifierEvent::NAME, $registerNotifierEvent);
 		foreach ($this->builtNotifiersHolder as $id => $notifierData) {
 			$this->notifiersInfo[$id] = $notifierData['name'];
 		}
