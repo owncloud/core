@@ -22,7 +22,7 @@
 namespace OC\Notification\Events;
 
 use Symfony\Component\EventDispatcher\Event;
-use OCP\Notification\Events\AbstractRegisterNotifierEvent;
+use OCP\Notification\Events\RegisterNotifierEvent;
 use OCP\Notification\INotifier;
 use OC\Notification\Manager;
 
@@ -37,7 +37,7 @@ use OC\Notification\Manager;
  * register always the same instance (per request) or make sure the behaviour won't change if
  * several instances are used.
  */
-class RegisterNotifierEvent extends AbstractRegisterNotifierEvent {
+class RegisterNotifierEventImpl extends RegisterNotifierEvent {
 	/** @var Manager */
 	private $manager;
 

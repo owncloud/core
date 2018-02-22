@@ -22,7 +22,7 @@
 namespace OC\Notification\Events;
 
 use Symfony\Component\EventDispatcher\Event;
-use OCP\Notification\Events\AbstractRegisterConsumerEvent;
+use OCP\Notification\Events\RegisterConsumerEvent;
 use OCP\Notification\IApp;
 use OC\Notification\Manager;
 
@@ -34,7 +34,7 @@ use OC\Notification\Manager;
  * Note that each notification manager is expected to thrown custom implementations of this event
  * while hiding the implementation details.
  */
-class RegisterConsumerEvent extends AbstractRegisterConsumerEvent {
+class RegisterConsumerEventImpl extends RegisterConsumerEvent {
 	/** @var Manager */
 	private $manager;
 

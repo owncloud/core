@@ -26,8 +26,8 @@ use OCP\Notification\IManager;
 use OCP\Notification\IApp;
 use OCP\Notification\INotifier;
 use OCP\Notification\INotification;
-use OCP\Notification\Events\AbstractRegisterConsumerEvent;
-use OCP\Notification\Events\AbstractRegisterNotifierEvent;
+use OCP\Notification\Events\RegisterConsumerEvent;
+use OCP\Notification\Events\RegisterNotifierEvent;
 use OCP\Notification\Exceptions\NotifierIdInUseException;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Test\TestCase;
@@ -110,8 +110,8 @@ class ManagerTest extends TestCase {
 			->getMock();
 
 		$callbackCalledCount = 0;
-		$this->eventDispatcher->addListener(AbstractRegisterConsumerEvent::NAME,
-				function(AbstractRegisterConsumerEvent $event) use ($app, &$callbackCalledCount){
+		$this->eventDispatcher->addListener(RegisterConsumerEvent::NAME,
+				function(RegisterConsumerEvent $event) use ($app, &$callbackCalledCount){
 			$callbackCalledCount++;
 			$event->registerNotificationConsumer($app);
 		});
@@ -237,8 +237,8 @@ class ManagerTest extends TestCase {
 			->getMock();
 
 		$callbackCalledCount = 0;
-		$this->eventDispatcher->addListener(AbstractRegisterNotifierEvent::NAME,
-				function(AbstractRegisterNotifierEvent $event) use ($notifier, &$callbackCalledCount){
+		$this->eventDispatcher->addListener(RegisterNotifierEvent::NAME,
+				function(RegisterNotifierEvent $event) use ($notifier, &$callbackCalledCount){
 			$callbackCalledCount++;
 			$event->registerNotifier($notifier, 'testid1', 'test app name');
 		});
@@ -261,8 +261,8 @@ class ManagerTest extends TestCase {
 			->getMock();
 
 		$callbackCalledCount = 0;
-		$this->eventDispatcher->addListener(AbstractRegisterNotifierEvent::NAME,
-				function(AbstractRegisterNotifierEvent $event) use ($notifier, &$callbackCalledCount){
+		$this->eventDispatcher->addListener(RegisterNotifierEvent::NAME,
+				function(RegisterNotifierEvent $event) use ($notifier, &$callbackCalledCount){
 			$callbackCalledCount++;
 			$event->registerNotifier($notifier, 'testid1', 'test app name');
 		});
@@ -283,8 +283,8 @@ class ManagerTest extends TestCase {
 			->getMock();
 
 		$callbackCalledCount = 0;
-		$this->eventDispatcher->addListener(AbstractRegisterNotifierEvent::NAME,
-				function(AbstractRegisterNotifierEvent $event) use ($notifier, &$callbackCalledCount){
+		$this->eventDispatcher->addListener(RegisterNotifierEvent::NAME,
+				function(RegisterNotifierEvent $event) use ($notifier, &$callbackCalledCount){
 			$callbackCalledCount++;
 			$event->registerNotifier($notifier, 'testid1', 'test app name');
 		});
@@ -319,14 +319,14 @@ class ManagerTest extends TestCase {
 		$callbackCalledCount = 0;
 		$callbackCalledCount2 = 0;
 
-		$this->eventDispatcher->addListener(AbstractRegisterNotifierEvent::NAME,
-				function(AbstractRegisterNotifierEvent $event) use ($notifier, &$callbackCalledCount){
+		$this->eventDispatcher->addListener(RegisterNotifierEvent::NAME,
+				function(RegisterNotifierEvent $event) use ($notifier, &$callbackCalledCount){
 			$callbackCalledCount++;
 			$event->registerNotifier($notifier, 'testid1', 'test app name');
 		});
 
-		$this->eventDispatcher->addListener(AbstractRegisterNotifierEvent::NAME,
-				function(AbstractRegisterNotifierEvent $event) use ($notifier2, &$callbackCalledCount2){
+		$this->eventDispatcher->addListener(RegisterNotifierEvent::NAME,
+				function(RegisterNotifierEvent $event) use ($notifier2, &$callbackCalledCount2){
 			$callbackCalledCount2++;
 			$event->registerNotifier($notifier2, 'testid1', 'test app name');
 		});
@@ -354,8 +354,8 @@ class ManagerTest extends TestCase {
 
 		$callbackCalledCount = 0;
 
-		$this->eventDispatcher->addListener(AbstractRegisterNotifierEvent::NAME,
-				function(AbstractRegisterNotifierEvent $event) use ($notifier, &$callbackCalledCount){
+		$this->eventDispatcher->addListener(RegisterNotifierEvent::NAME,
+				function(RegisterNotifierEvent $event) use ($notifier, &$callbackCalledCount){
 			$callbackCalledCount++;
 			$event->registerNotifier($notifier, 'testid1', 'test app name');
 		});
@@ -381,14 +381,14 @@ class ManagerTest extends TestCase {
 		$callbackCalledCount2 = 0;
 		$swallowedException = false;
 
-		$this->eventDispatcher->addListener(AbstractRegisterNotifierEvent::NAME,
-				function(AbstractRegisterNotifierEvent $event) use ($notifier, &$callbackCalledCount){
+		$this->eventDispatcher->addListener(RegisterNotifierEvent::NAME,
+				function(RegisterNotifierEvent $event) use ($notifier, &$callbackCalledCount){
 			$callbackCalledCount++;
 			$event->registerNotifier($notifier, 'testid1', 'test app name');
 		});
 
-		$this->eventDispatcher->addListener(AbstractRegisterNotifierEvent::NAME,
-				function(AbstractRegisterNotifierEvent $event) use ($notifier2, &$callbackCalledCount2, &$swallowedException){
+		$this->eventDispatcher->addListener(RegisterNotifierEvent::NAME,
+				function(RegisterNotifierEvent $event) use ($notifier2, &$callbackCalledCount2, &$swallowedException){
 			$callbackCalledCount2++;
 			try {
 				$event->registerNotifier($notifier2, 'testid1', 'test app name');
