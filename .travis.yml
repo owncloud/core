@@ -58,7 +58,28 @@ matrix:
   include:
     - php: 5.6
       if: type = cron
-      env: DB=pgsql TC=selenium BROWSER="chrome" BROWSER_VERSION="latest" BEHAT_SUITE="other" PLATFORM="Windows 10" TEST_DAV=0
+      env: DB=pgsql TC=selenium BROWSER="chrome" BROWSER_VERSION="latest" BEHAT_SUITE="favorites" PLATFORM="Windows 10" TEST_DAV=0
+      addons:
+        apt: *common_apt
+        hosts: *common_hosts
+        sauce_connect: true
+    - php: 5.6
+      if: type = cron
+      env: DB=pgsql TC=selenium BROWSER="chrome" BROWSER_VERSION="latest" BEHAT_SUITE="manageUsersGroups" PLATFORM="Windows 10" TEST_DAV=0
+      addons:
+        apt: *common_apt
+        hosts: *common_hosts
+        sauce_connect: true
+    - php: 5.6
+      if: type = cron
+      env: DB=pgsql TC=selenium BROWSER="chrome" BROWSER_VERSION="latest" BEHAT_SUITE="manageQuota" PLATFORM="Windows 10" TEST_DAV=0
+      addons:
+        apt: *common_apt
+        hosts: *common_hosts
+        sauce_connect: true
+    - php: 5.6
+      if: type = cron
+      env: DB=pgsql TC=selenium BROWSER="chrome" BROWSER_VERSION="latest" BEHAT_SUITE="personalSettings" PLATFORM="Windows 10" TEST_DAV=0
       addons:
         apt: *common_apt
         hosts: *common_hosts
@@ -100,14 +121,21 @@ matrix:
         sauce_connect: true
     - php: 5.6
       if: type = cron
-      env: DB=pgsql TC=selenium BROWSER="chrome" BROWSER_VERSION="latest" BEHAT_SUITE="sharingInternalGroupsUsers" PLATFORM="Windows 10" TEST_DAV=0
+      env: DB=pgsql TC=selenium BROWSER="chrome" BROWSER_VERSION="latest" BEHAT_SUITE="sharingInternalGroups" PLATFORM="Windows 10" TEST_DAV=0
       addons:
         apt: *common_apt
         hosts: *common_hosts
         sauce_connect: true
     - php: 5.6
       if: type = cron
-      env: DB=pgsql TC=selenium BROWSER="chrome" BROWSER_VERSION="latest" BEHAT_SUITE="sharingExternalOther" PLATFORM="Windows 10" TEST_DAV=0
+      env: DB=pgsql TC=selenium BROWSER="chrome" BROWSER_VERSION="latest" BEHAT_SUITE="sharingInternalUsers" PLATFORM="Windows 10" TEST_DAV=0
+      addons:
+        apt: *common_apt
+        hosts: *common_hosts
+        sauce_connect: true
+    - php: 5.6
+      if: type = cron
+      env: DB=pgsql TC=selenium BROWSER="chrome" BROWSER_VERSION="latest" BEHAT_SUITE="sharingExternal" PLATFORM="Windows 10" TEST_DAV=0
       addons:
         apt: *common_apt
         hosts: *common_hosts
@@ -128,7 +156,28 @@ matrix:
         sauce_connect: true
     - php: 5.6
       if: type = cron
-      env: DB=pgsql TC=selenium BROWSER="firefox" BROWSER_VERSION="57.0" BEHAT_SUITE="other" PLATFORM="Windows 10" TEST_DAV=0
+      env: DB=pgsql TC=selenium BROWSER="firefox" BROWSER_VERSION="57.0" BEHAT_SUITE="favorites" PLATFORM="Windows 10" TEST_DAV=0
+      addons:
+        apt: *common_apt
+        hosts: *common_hosts
+        sauce_connect: true
+    - php: 5.6
+      if: type = cron
+      env: DB=pgsql TC=selenium BROWSER="firefox" BROWSER_VERSION="57.0" BEHAT_SUITE="manageUsersGroups" PLATFORM="Windows 10" TEST_DAV=0
+      addons:
+        apt: *common_apt
+        hosts: *common_hosts
+        sauce_connect: true
+    - php: 5.6
+      if: type = cron
+      env: DB=pgsql TC=selenium BROWSER="firefox" BROWSER_VERSION="57.0" BEHAT_SUITE="manageQuota" PLATFORM="Windows 10" TEST_DAV=0
+      addons:
+        apt: *common_apt
+        hosts: *common_hosts
+        sauce_connect: true
+    - php: 5.6
+      if: type = cron
+      env: DB=pgsql TC=selenium BROWSER="firefox" BROWSER_VERSION="57.0" BEHAT_SUITE="personalSettings" PLATFORM="Windows 10" TEST_DAV=0
       addons:
         apt: *common_apt
         hosts: *common_hosts
@@ -170,14 +219,21 @@ matrix:
         sauce_connect: true
     - php: 5.6
       if: type = cron
-      env: DB=pgsql TC=selenium BROWSER="firefox" BROWSER_VERSION="57.0" BEHAT_SUITE="sharingInternalGroupsUsers" PLATFORM="Windows 10" TEST_DAV=0
+      env: DB=pgsql TC=selenium BROWSER="firefox" BROWSER_VERSION="57.0" BEHAT_SUITE="sharingInternalGroups" PLATFORM="Windows 10" TEST_DAV=0
       addons:
         apt: *common_apt
         hosts: *common_hosts
         sauce_connect: true
     - php: 5.6
       if: type = cron
-      env: DB=pgsql TC=selenium BROWSER="firefox" BROWSER_VERSION="57.0" BEHAT_SUITE="sharingExternalOther" PLATFORM="Windows 10" TEST_DAV=0
+      env: DB=pgsql TC=selenium BROWSER="firefox" BROWSER_VERSION="57.0" BEHAT_SUITE="sharingInternalUsers" PLATFORM="Windows 10" TEST_DAV=0
+      addons:
+        apt: *common_apt
+        hosts: *common_hosts
+        sauce_connect: true
+    - php: 5.6
+      if: type = cron
+      env: DB=pgsql TC=selenium BROWSER="firefox" BROWSER_VERSION="57.0" BEHAT_SUITE="sharingExternal" PLATFORM="Windows 10" TEST_DAV=0
       addons:
         apt: *common_apt
         hosts: *common_hosts
@@ -212,7 +268,28 @@ matrix:
       env: DB=sqlite TC=syntax TEST_DAV=0
     - php: 5.6
       if: type = cron
-      env: DB=pgsql TC=selenium BROWSER="chrome" BROWSER_VERSION="latest-1" BEHAT_SUITE="other" PLATFORM="Windows 10" TEST_DAV=0
+      env: DB=pgsql TC=selenium BROWSER="chrome" BROWSER_VERSION="latest-1" BEHAT_SUITE="favorites" PLATFORM="Windows 10" TEST_DAV=0
+      addons:
+        apt: *common_apt
+        hosts: *common_hosts
+        sauce_connect: true
+    - php: 5.6
+      if: type = cron
+      env: DB=pgsql TC=selenium BROWSER="chrome" BROWSER_VERSION="latest-1" BEHAT_SUITE="manageUsersGroups" PLATFORM="Windows 10" TEST_DAV=0
+      addons:
+        apt: *common_apt
+        hosts: *common_hosts
+        sauce_connect: true
+    - php: 5.6
+      if: type = cron
+      env: DB=pgsql TC=selenium BROWSER="chrome" BROWSER_VERSION="latest-1" BEHAT_SUITE="manageQuota" PLATFORM="Windows 10" TEST_DAV=0
+      addons:
+        apt: *common_apt
+        hosts: *common_hosts
+        sauce_connect: true
+    - php: 5.6
+      if: type = cron
+      env: DB=pgsql TC=selenium BROWSER="chrome" BROWSER_VERSION="latest-1" BEHAT_SUITE="personalSettings" PLATFORM="Windows 10" TEST_DAV=0
       addons:
         apt: *common_apt
         hosts: *common_hosts
@@ -254,14 +331,21 @@ matrix:
         sauce_connect: true
     - php: 5.6
       if: type = cron
-      env: DB=pgsql TC=selenium BROWSER="chrome" BROWSER_VERSION="latest-1" BEHAT_SUITE="sharingInternalGroupsUsers" PLATFORM="Windows 10" TEST_DAV=0
+      env: DB=pgsql TC=selenium BROWSER="chrome" BROWSER_VERSION="latest-1" BEHAT_SUITE="sharingInternalGroups" PLATFORM="Windows 10" TEST_DAV=0
       addons:
         apt: *common_apt
         hosts: *common_hosts
         sauce_connect: true
     - php: 5.6
       if: type = cron
-      env: DB=pgsql TC=selenium BROWSER="chrome" BROWSER_VERSION="latest-1" BEHAT_SUITE="sharingExternalOther" PLATFORM="Windows 10" TEST_DAV=0
+      env: DB=pgsql TC=selenium BROWSER="chrome" BROWSER_VERSION="latest-1" BEHAT_SUITE="sharingInternalUsers" PLATFORM="Windows 10" TEST_DAV=0
+      addons:
+        apt: *common_apt
+        hosts: *common_hosts
+        sauce_connect: true
+    - php: 5.6
+      if: type = cron
+      env: DB=pgsql TC=selenium BROWSER="chrome" BROWSER_VERSION="latest-1" BEHAT_SUITE="sharingExternal" PLATFORM="Windows 10" TEST_DAV=0
       addons:
         apt: *common_apt
         hosts: *common_hosts
@@ -282,7 +366,28 @@ matrix:
         sauce_connect: true
     - php: 5.6
       if: type = cron
-      env: DB=pgsql TC=selenium BROWSER="MicrosoftEdge" BROWSER_VERSION="latest" BEHAT_SUITE="other" PLATFORM="Windows 10" TEST_DAV=0
+      env: DB=pgsql TC=selenium BROWSER="MicrosoftEdge" BROWSER_VERSION="latest" BEHAT_SUITE="favorites" PLATFORM="Windows 10" TEST_DAV=0
+      addons:
+        apt: *common_apt
+        hosts: *common_hosts
+        sauce_connect: true
+    - php: 5.6
+      if: type = cron
+      env: DB=pgsql TC=selenium BROWSER="MicrosoftEdge" BROWSER_VERSION="latest" BEHAT_SUITE="manageUsersGroups" PLATFORM="Windows 10" TEST_DAV=0
+      addons:
+        apt: *common_apt
+        hosts: *common_hosts
+        sauce_connect: true
+    - php: 5.6
+      if: type = cron
+      env: DB=pgsql TC=selenium BROWSER="MicrosoftEdge" BROWSER_VERSION="latest" BEHAT_SUITE="manageQuota" PLATFORM="Windows 10" TEST_DAV=0
+      addons:
+        apt: *common_apt
+        hosts: *common_hosts
+        sauce_connect: true
+    - php: 5.6
+      if: type = cron
+      env: DB=pgsql TC=selenium BROWSER="MicrosoftEdge" BROWSER_VERSION="latest" BEHAT_SUITE="personalSettings" PLATFORM="Windows 10" TEST_DAV=0
       addons:
         apt: *common_apt
         hosts: *common_hosts
@@ -324,14 +429,21 @@ matrix:
         sauce_connect: true
     - php: 5.6
       if: type = cron
-      env: DB=pgsql TC=selenium BROWSER="MicrosoftEdge" BROWSER_VERSION="latest" BEHAT_SUITE="sharingInternalGroupsUsers" PLATFORM="Windows 10" TEST_DAV=0
+      env: DB=pgsql TC=selenium BROWSER="MicrosoftEdge" BROWSER_VERSION="latest" BEHAT_SUITE="sharingInternalGroups" PLATFORM="Windows 10" TEST_DAV=0
       addons:
         apt: *common_apt
         hosts: *common_hosts
         sauce_connect: true
     - php: 5.6
       if: type = cron
-      env: DB=pgsql TC=selenium BROWSER="MicrosoftEdge" BROWSER_VERSION="latest" BEHAT_SUITE="sharingExternalOther" PLATFORM="Windows 10" TEST_DAV=0
+      env: DB=pgsql TC=selenium BROWSER="MicrosoftEdge" BROWSER_VERSION="latest" BEHAT_SUITE="sharingInternalUsers" PLATFORM="Windows 10" TEST_DAV=0
+      addons:
+        apt: *common_apt
+        hosts: *common_hosts
+        sauce_connect: true
+    - php: 5.6
+      if: type = cron
+      env: DB=pgsql TC=selenium BROWSER="MicrosoftEdge" BROWSER_VERSION="latest" BEHAT_SUITE="sharingExternal" PLATFORM="Windows 10" TEST_DAV=0
       addons:
         apt: *common_apt
         hosts: *common_hosts
@@ -352,7 +464,28 @@ matrix:
         sauce_connect: true
     - php: 5.6
       if: type = cron
-      env: DB=pgsql TC=selenium BROWSER="internet explorer" BROWSER_VERSION="11.0" BEHAT_SUITE="other" PLATFORM="Windows 7" TEST_DAV=0
+      env: DB=pgsql TC=selenium BROWSER="internet explorer" BROWSER_VERSION="11.0" BEHAT_SUITE="favorites" PLATFORM="Windows 7" TEST_DAV=0
+      addons:
+        apt: *common_apt
+        hosts: *common_hosts
+        sauce_connect: true
+    - php: 5.6
+      if: type = cron
+      env: DB=pgsql TC=selenium BROWSER="internet explorer" BROWSER_VERSION="11.0" BEHAT_SUITE="manageUsersGroups" PLATFORM="Windows 7" TEST_DAV=0
+      addons:
+        apt: *common_apt
+        hosts: *common_hosts
+        sauce_connect: true
+    - php: 5.6
+      if: type = cron
+      env: DB=pgsql TC=selenium BROWSER="internet explorer" BROWSER_VERSION="11.0" BEHAT_SUITE="manageQuota" PLATFORM="Windows 7" TEST_DAV=0
+      addons:
+        apt: *common_apt
+        hosts: *common_hosts
+        sauce_connect: true
+    - php: 5.6
+      if: type = cron
+      env: DB=pgsql TC=selenium BROWSER="internet explorer" BROWSER_VERSION="11.0" BEHAT_SUITE="personalSettings" PLATFORM="Windows 7" TEST_DAV=0
       addons:
         apt: *common_apt
         hosts: *common_hosts
@@ -394,14 +527,21 @@ matrix:
         sauce_connect: true
     - php: 5.6
       if: type = cron
-      env: DB=pgsql TC=selenium BROWSER="internet explorer" BROWSER_VERSION="11.0" BEHAT_SUITE="sharingInternalGroupsUsers" PLATFORM="Windows 7" TEST_DAV=0
+      env: DB=pgsql TC=selenium BROWSER="internet explorer" BROWSER_VERSION="11.0" BEHAT_SUITE="sharingInternalGroups" PLATFORM="Windows 7" TEST_DAV=0
       addons:
         apt: *common_apt
         hosts: *common_hosts
         sauce_connect: true
     - php: 5.6
       if: type = cron
-      env: DB=pgsql TC=selenium BROWSER="internet explorer" BROWSER_VERSION="11.0" BEHAT_SUITE="sharingExternalOther" PLATFORM="Windows 7" TEST_DAV=0
+      env: DB=pgsql TC=selenium BROWSER="internet explorer" BROWSER_VERSION="11.0" BEHAT_SUITE="sharingInternalUsers" PLATFORM="Windows 7" TEST_DAV=0
+      addons:
+        apt: *common_apt
+        hosts: *common_hosts
+        sauce_connect: true
+    - php: 5.6
+      if: type = cron
+      env: DB=pgsql TC=selenium BROWSER="internet explorer" BROWSER_VERSION="11.0" BEHAT_SUITE="sharingExternal" PLATFORM="Windows 7" TEST_DAV=0
       addons:
         apt: *common_apt
         hosts: *common_hosts
