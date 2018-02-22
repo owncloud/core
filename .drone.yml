@@ -350,10 +350,22 @@ matrix:
       
     - PHP_VERSION: 7.1
       TEST_SUITE: selenium
-      BEHAT_SUITE: other
+      BEHAT_SUITE: favorites
       DB_TYPE: mariadb
       USE_SERVER: true
       
+    - PHP_VERSION: 7.1
+      TEST_SUITE: selenium
+      BEHAT_SUITE: manageUsersGroups
+      DB_TYPE: mariadb
+      USE_SERVER: true
+
+    - PHP_VERSION: 7.1
+      TEST_SUITE: selenium
+      BEHAT_SUITE: personalSettings
+      DB_TYPE: mariadb
+      USE_SERVER: true
+
     - PHP_VERSION: 7.1
       TEST_SUITE: selenium
       BEHAT_SUITE: files
