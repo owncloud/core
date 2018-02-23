@@ -25,6 +25,7 @@ namespace OC\User;
 
 use OCP\Authentication\IAuthModule;
 use OCP\IRequest;
+use OCP\ISession;
 use OCP\IUser;
 use OCP\IUserManager;
 
@@ -32,9 +33,12 @@ class BasicAuthModule implements IAuthModule {
 
 	/** @var IUserManager */
 	private $manager;
+	/** @var ISession */
+	private $session;
 
-	public function __construct(IUserManager $manager) {
+	public function __construct(IUserManager $manager, ISession $session) {
 		$this->manager = $manager;
+		$this->session = $session;
 	}
 
 	/**
@@ -42,6 +46,9 @@ class BasicAuthModule implements IAuthModule {
 	 */
 	public function auth(IRequest $request) {
 		if (!isset($request->server['PHP_AUTH_USER'], $request->server['PHP_AUTH_PW'])) {
+			return null;
+		}
+		if ($this->session->exists('app_password')) {
 			return null;
 		}
 		$authUser = $request->server['PHP_AUTH_USER'];
