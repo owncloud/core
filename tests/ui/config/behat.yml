@@ -136,6 +136,7 @@ default:
         - LoginContext:
         - UsersContext:
         - FilesContext:
+        - PersonalGeneralSettingsContext:
 
     manageQuota:
       paths:
