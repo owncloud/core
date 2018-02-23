@@ -192,6 +192,21 @@ class OC_Template extends \OC\Template\Base {
 				\OCP\Util::addScript('files/iedavclient');
 			}
 
+			\OCP\Util::addScript('core', 'shareconfigmodel');
+			\OCP\Util::addScript('core', 'sharemodel');
+			\OCP\Util::addScript('core', 'sharescollection');
+			\OCP\Util::addScript('core', 'shareitemmodel');
+			\OCP\Util::addScript('core', 'sharedialogresharerinfoview');
+			\OCP\Util::addScript('core', 'sharedialoglinklistview');
+			\OCP\Util::addScript('core', 'sharedialoglinkshareview');
+			\OCP\Util::addScript('core', 'sharedialogmailview');
+			\OCP\Util::addScript('core', 'sharedialoglinksocialview');
+			\OCP\Util::addScript('core', 'sharedialogexpirationview');
+			\OCP\Util::addScript('core', 'sharedialogshareelistview');
+			\OCP\Util::addScript('core', 'sharedialogview');
+			\OCP\Util::addScript('core', 'share');
+			\OCP\Util::addStyle('core', 'share');
+
 			self::$initTemplateEngineFirstRun = false;
 		}
 	}
