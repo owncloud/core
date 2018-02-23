@@ -126,8 +126,6 @@ default:
         - LoginContext:
         - UsersContext:
         - FilesContext:
-        - PersonalSecuritySettingsContext:
-        - PersonalGeneralSettingsContext:
 
     manageUsersGroups:
       paths:
@@ -138,8 +136,6 @@ default:
         - LoginContext:
         - UsersContext:
         - FilesContext:
-        - PersonalSecuritySettingsContext:
-        - PersonalGeneralSettingsContext:
 
     manageQuota:
       paths:
@@ -150,8 +146,6 @@ default:
         - LoginContext:
         - UsersContext:
         - FilesContext:
-        - PersonalSecuritySettingsContext:
-        - PersonalGeneralSettingsContext:
 
     personalSettings:
       paths:
