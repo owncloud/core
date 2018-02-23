@@ -33,6 +33,7 @@ use Page\TrashbinPage;
 use SensioLabs\Behat\PageObjectExtension\PageObject\Exception\ElementNotFoundException;
 use TestHelpers\DeleteHelper;
 use TestHelpers\DownloadHelper;
+use Page\FilesPageElement\FileRow;
 
 require_once 'bootstrap.php';
 
@@ -798,11 +799,15 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 		}
 
 		try {
-			$fileRowElement = $pageObject->findFileRowByName($name, $this->getSession());
+			/**
+			 * 
+			 * @var FileRow $fileRow
+			 */
+			$fileRow = $pageObject->findFileRowByName($name, $this->getSession());
 			$exceptionMessage = '';
 		} catch (ElementNotFoundException $e) {
 			$exceptionMessage = $e->getMessage();
-			$fileRowElement = null;
+			$fileRow = null;
 		}
 
 		if (is_array($name)) {
@@ -825,18 +830,29 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 
 		if ($should) {
 			PHPUnit_Framework_Assert::assertNotNull(
-				$fileRowElement,
-				"could not find" . $fileLocationText . " when it should be listed"
+				$fileRow,
+				"could not find " . $fileLocationText . " when it should be listed"
+			);
+			PHPUnit_Framework_Assert::assertTrue(
+				$fileRow->isVisible(),
+				"file row of " . $fileLocationText . " is not visible but should"
 			);
 		} else {
 			if (is_array($name)) {
 				$name = implode($name);
 			}
-			PHPUnit_Framework_Assert::assertContains(
-				"could not find file with the name '" . $name . "'",
-				$exceptionMessage,
-				"found " . $fileLocationText . " when it should not be listed"
-			);
+			if ($fileRow === null) {
+				PHPUnit_Framework_Assert::assertContains(
+					"could not find file with the name '" . $name . "'",
+					$exceptionMessage,
+					"found " . $fileLocationText . " when it should not be listed"
+				);
+			} else {
+				PHPUnit_Framework_Assert::assertFalse(
+					$fileRow->isVisible(),
+					"file row of " . $fileLocationText . " is visible but should not"
+				);
+			}
 		}
 	}
 
@@ -1189,5 +1205,13 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 		$environment = $scope->getEnvironment();
 		// Get all the contexts you need in this context
 		$this->webUIGeneralContext = $environment->getContext('WebUIGeneralContext');
+	}
+
+	/**
+	 * @When I enable the setting to view hidden files/folders
+	 * @return void
+	 */
+	public function iEnableTheSettingToViewHiddenFolders() {
+		$this->filesPage->enableShowHiddenFilesSettings();
 	}
 }
