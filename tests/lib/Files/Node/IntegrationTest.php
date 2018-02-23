@@ -61,12 +61,12 @@ class IntegrationTest extends TestCase {
 	}
 
 	protected function tearDown() {
+		parent::tearDown();
 		foreach ($this->storages as $storage) {
 			$storage->getCache()->clear();
 		}
 
 		$this->logout();
-		parent::tearDown();
 	}
 
 	public function testBasicFile() {

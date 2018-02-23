@@ -56,21 +56,24 @@ class MemcacheLockingProvider extends AbstractLockingProvider {
 		$lockValue = $this->memcache->get($path);
 		if ($type === self::LOCK_SHARED) {
 			return $lockValue > 0;
-		} else if ($type === self::LOCK_EXCLUSIVE) {
-			return $lockValue === 'exclusive';
-		} else {
-			return false;
 		}
+
+		if ($type === self::LOCK_EXCLUSIVE) {
+			return $lockValue === 'exclusive';
+		}
+
+		return false;
 	}
 
 	/**
 	 * @param string $path
 	 * @param int $type self::LOCK_SHARED or self::LOCK_EXCLUSIVE
+	 * @throws \InvalidArgumentException
 	 * @throws \OCP\Lock\LockedException
 	 */
 	public function acquireLock($path, $type) {
 		if (strlen($path) > 64) { // max length in file_locks
-			throw new \InvalidArgumentException("Lock key length too long");
+			throw new \InvalidArgumentException('Lock key length too long');
 		}
 		if ($type === self::LOCK_SHARED) {
 			if (!$this->memcache->inc($path)) {
