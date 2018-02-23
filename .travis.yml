@@ -365,196 +365,168 @@ matrix:
         hosts: *common_hosts
         sauce_connect: true
     - php: 5.6
-      if: type = cron
       env: DB=pgsql TC=selenium BROWSER="MicrosoftEdge" BROWSER_VERSION="latest" BEHAT_SUITE="favorites" PLATFORM="Windows 10" TEST_DAV=0
       addons:
         apt: *common_apt
         hosts: *common_hosts
         sauce_connect: true
     - php: 5.6
-      if: type = cron
       env: DB=pgsql TC=selenium BROWSER="MicrosoftEdge" BROWSER_VERSION="latest" BEHAT_SUITE="manageUsersGroups" PLATFORM="Windows 10" TEST_DAV=0
       addons:
         apt: *common_apt
         hosts: *common_hosts
         sauce_connect: true
     - php: 5.6
-      if: type = cron
       env: DB=pgsql TC=selenium BROWSER="MicrosoftEdge" BROWSER_VERSION="latest" BEHAT_SUITE="manageQuota" PLATFORM="Windows 10" TEST_DAV=0
       addons:
         apt: *common_apt
         hosts: *common_hosts
         sauce_connect: true
     - php: 5.6
-      if: type = cron
       env: DB=pgsql TC=selenium BROWSER="MicrosoftEdge" BROWSER_VERSION="latest" BEHAT_SUITE="personalSettings" PLATFORM="Windows 10" TEST_DAV=0
       addons:
         apt: *common_apt
         hosts: *common_hosts
         sauce_connect: true
     - php: 5.6
-      if: type = cron
       env: DB=pgsql TC=selenium BROWSER="MicrosoftEdge" BROWSER_VERSION="latest" BEHAT_SUITE="files" PLATFORM="Windows 10" TEST_DAV=0
       addons:
         apt: *common_apt
         hosts: *common_hosts
         sauce_connect: true
     - php: 5.6
-      if: type = cron
       env: DB=pgsql TC=selenium BROWSER="MicrosoftEdge" BROWSER_VERSION="latest" BEHAT_SUITE="moveFilesFolders" PLATFORM="Windows 10" TEST_DAV=0
       addons:
         apt: *common_apt
         hosts: *common_hosts
         sauce_connect: true
     - php: 5.6
-      if: type = cron
       env: DB=pgsql TC=selenium BROWSER="MicrosoftEdge" BROWSER_VERSION="latest" BEHAT_SUITE="renameFiles" PLATFORM="Windows 10" TEST_DAV=0
       addons:
         apt: *common_apt
         hosts: *common_hosts
         sauce_connect: true
     - php: 5.6
-      if: type = cron
       env: DB=pgsql TC=selenium BROWSER="MicrosoftEdge" BROWSER_VERSION="latest" BEHAT_SUITE="renameFolders" PLATFORM="Windows 10" TEST_DAV=0
       addons:
         apt: *common_apt
         hosts: *common_hosts
         sauce_connect: true
     - php: 5.6
-      if: type = cron
       env: DB=pgsql TC=selenium BROWSER="MicrosoftEdge" BROWSER_VERSION="latest" BEHAT_SUITE="trashbin" PLATFORM="Windows 10" TEST_DAV=0
       addons:
         apt: *common_apt
         hosts: *common_hosts
         sauce_connect: true
     - php: 5.6
-      if: type = cron
       env: DB=pgsql TC=selenium BROWSER="MicrosoftEdge" BROWSER_VERSION="latest" BEHAT_SUITE="sharingInternalGroups" PLATFORM="Windows 10" TEST_DAV=0
       addons:
         apt: *common_apt
         hosts: *common_hosts
         sauce_connect: true
     - php: 5.6
-      if: type = cron
       env: DB=pgsql TC=selenium BROWSER="MicrosoftEdge" BROWSER_VERSION="latest" BEHAT_SUITE="sharingInternalUsers" PLATFORM="Windows 10" TEST_DAV=0
       addons:
         apt: *common_apt
         hosts: *common_hosts
         sauce_connect: true
     - php: 5.6
-      if: type = cron
       env: DB=pgsql TC=selenium BROWSER="MicrosoftEdge" BROWSER_VERSION="latest" BEHAT_SUITE="sharingExternal" PLATFORM="Windows 10" TEST_DAV=0
       addons:
         apt: *common_apt
         hosts: *common_hosts
         sauce_connect: true
     - php: 5.6
-      if: type = cron
       env: DB=pgsql TC=selenium BROWSER="MicrosoftEdge" BROWSER_VERSION="latest" BEHAT_SUITE="restrictSharing" PLATFORM="Windows 10" TEST_DAV=0
       addons:
         apt: *common_apt
         hosts: *common_hosts
         sauce_connect: true
     - php: 5.6
-      if: type = cron
       env: DB=pgsql TC=selenium BROWSER="MicrosoftEdge" BROWSER_VERSION="latest" BEHAT_SUITE="upload" PLATFORM="Windows 10" TEST_DAV=0
       addons:
         apt: *common_apt
         hosts: *common_hosts
         sauce_connect: true
     - php: 5.6
-      if: type = cron
       env: DB=pgsql TC=selenium BROWSER="internet explorer" BROWSER_VERSION="11.0" BEHAT_SUITE="favorites" PLATFORM="Windows 7" TEST_DAV=0
       addons:
         apt: *common_apt
         hosts: *common_hosts
         sauce_connect: true
     - php: 5.6
-      if: type = cron
       env: DB=pgsql TC=selenium BROWSER="internet explorer" BROWSER_VERSION="11.0" BEHAT_SUITE="manageUsersGroups" PLATFORM="Windows 7" TEST_DAV=0
       addons:
         apt: *common_apt
         hosts: *common_hosts
         sauce_connect: true
     - php: 5.6
-      if: type = cron
       env: DB=pgsql TC=selenium BROWSER="internet explorer" BROWSER_VERSION="11.0" BEHAT_SUITE="manageQuota" PLATFORM="Windows 7" TEST_DAV=0
       addons:
         apt: *common_apt
         hosts: *common_hosts
         sauce_connect: true
     - php: 5.6
-      if: type = cron
       env: DB=pgsql TC=selenium BROWSER="internet explorer" BROWSER_VERSION="11.0" BEHAT_SUITE="personalSettings" PLATFORM="Windows 7" TEST_DAV=0
       addons:
         apt: *common_apt
         hosts: *common_hosts
         sauce_connect: true
     - php: 5.6
-      if: type = cron
       env: DB=pgsql TC=selenium BROWSER="internet explorer" BROWSER_VERSION="11.0" BEHAT_SUITE="files" PLATFORM="Windows 7" TEST_DAV=0
       addons:
         apt: *common_apt
         hosts: *common_hosts
         sauce_connect: true
     - php: 5.6
-      if: type = cron
       env: DB=pgsql TC=selenium BROWSER="internet explorer" BROWSER_VERSION="11.0" BEHAT_SUITE="moveFilesFolders" PLATFORM="Windows 7" TEST_DAV=0
       addons:
         apt: *common_apt
         hosts: *common_hosts
         sauce_connect: true
     - php: 5.6
-      if: type = cron
       env: DB=pgsql TC=selenium BROWSER="internet explorer" BROWSER_VERSION="11.0" BEHAT_SUITE="renameFiles" PLATFORM="Windows 7" TEST_DAV=0
       addons:
         apt: *common_apt
         hosts: *common_hosts
         sauce_connect: true
     - php: 5.6
-      if: type = cron
       env: DB=pgsql TC=selenium BROWSER="internet explorer" BROWSER_VERSION="11.0" BEHAT_SUITE="renameFolders" PLATFORM="Windows 7" TEST_DAV=0
       addons:
         apt: *common_apt
         hosts: *common_hosts
         sauce_connect: true
     - php: 5.6
-      if: type = cron
       env: DB=pgsql TC=selenium BROWSER="internet explorer" BROWSER_VERSION="11.0" BEHAT_SUITE="trashbin" PLATFORM="Windows 7" TEST_DAV=0
       addons:
         apt: *common_apt
         hosts: *common_hosts
         sauce_connect: true
     - php: 5.6
-      if: type = cron
       env: DB=pgsql TC=selenium BROWSER="internet explorer" BROWSER_VERSION="11.0" BEHAT_SUITE="sharingInternalGroups" PLATFORM="Windows 7" TEST_DAV=0
       addons:
         apt: *common_apt
         hosts: *common_hosts
         sauce_connect: true
     - php: 5.6
-      if: type = cron
       env: DB=pgsql TC=selenium BROWSER="internet explorer" BROWSER_VERSION="11.0" BEHAT_SUITE="sharingInternalUsers" PLATFORM="Windows 7" TEST_DAV=0
       addons:
         apt: *common_apt
         hosts: *common_hosts
         sauce_connect: true
     - php: 5.6
-      if: type = cron
       env: DB=pgsql TC=selenium BROWSER="internet explorer" BROWSER_VERSION="11.0" BEHAT_SUITE="sharingExternal" PLATFORM="Windows 7" TEST_DAV=0
       addons:
         apt: *common_apt
         hosts: *common_hosts
         sauce_connect: true
     - php: 5.6
-      if: type = cron
       env: DB=pgsql TC=selenium BROWSER="internet explorer" BROWSER_VERSION="11.0" BEHAT_SUITE="restrictSharing" PLATFORM="Windows 7" TEST_DAV=0
       addons:
         apt: *common_apt
         hosts: *common_hosts
         sauce_connect: true
     - php: 5.6
-      if: type = cron
       env: DB=pgsql TC=selenium BROWSER="internet explorer" BROWSER_VERSION="11.0" BEHAT_SUITE="upload" PLATFORM="Windows 7" TEST_DAV=0
       addons:
         apt: *common_apt
