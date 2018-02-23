@@ -45,6 +45,10 @@ abstract class FilesPageBasic extends OwnCloudPage {
 	protected $loadingIndicatorXpath = ".//*[@class='loading']";
 	protected $deleteAllSelectedBtnXpath = ".//*[@id='app-content-files']//*[@class='delete-selected']";
 	protected $fileRowXpathFromActionMenu = "/../..";
+	protected $appSettingsXpath = "//div[@id='app-settings']";
+	protected $showHiddenFilesCheckboxXpath = "//label[@for='showhiddenfilesToggle']";
+	protected $appSettingsContentId = "app-settings-content";
+	protected $styleOfCheckboxWhenVisible = "display: block;";
 
 	/**
 	 * @return string
@@ -527,5 +531,54 @@ abstract class FilesPageBasic extends OwnCloudPage {
 				__METHOD__ . " timeout waiting for file rows to be ready"
 			);
 		}
+	}
+
+	/**
+	 * @throws ElementNotFoundException
+	 * @return void
+	 */
+	public function enableShowHiddenFilesSettings() {
+		$appSettingsButton = $this->find('xpath', $this->appSettingsXpath);
+		if (is_null($appSettingsButton)) {
+			throw new ElementNotFoundException(
+				__METHOD__ .
+				" xpath $this->appSettingsXpath " .
+				"could not find the appSettings button"
+			);
+		}
+		$appSettingsButton->click();
+		$appSettingsDiv = $this->findById($this->appSettingsContentId);
+		if (is_null($appSettingsDiv)) {
+			throw new ElementNotFoundException(
+				__METHOD__ .
+				" xpath $this->appSettingsContentId " .
+				"could not find the appSettings section"
+			);
+		}
+		$timeout_msec = LONGUIWAITTIMEOUTMILLISEC;
+		$currentTime = microtime(true);
+		$end = $currentTime + ($timeout_msec / 1000);
+		while ($appSettingsDiv->getAttribute('style') !== $this->styleOfCheckboxWhenVisible) {
+			if ($currentTime >= $end) {
+				throw new \Exception(
+					__METHOD__ .
+					" timed out waiting for show hidden files checkbox to appear"
+				);
+			}
+			usleep(STANDARDSLEEPTIMEMICROSEC);
+			$currentTime = microtime(true);
+		}
+		
+		$showHiddenFilesCheckBox = $this->find(
+			'xpath', $this->showHiddenFilesCheckboxXpath
+		);
+		if (is_null($showHiddenFilesCheckBox)) {
+			throw new ElementNotFoundException(
+				__METHOD__ .
+				" xpath $this->showHiddenFilesCheckboxXpath " .
+				"could not find the field for show hidden files checkbox"
+			);
+		}
+		$showHiddenFilesCheckBox->click();
 	}
 }
