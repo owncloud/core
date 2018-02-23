@@ -296,6 +296,7 @@ OC.L10N.register(
     "For password recovery and notifications" : "Para la recuperación de contraseña y notificaciones",
     "No email address set" : "Ninguna dirección de correo establecida",
     "You are member of the following groups:" : "Es miembro de los siguientes grupos:",
+    "You are not a member of any groups." : "Tú no eres miembro de ningún grupo.",
     "Password" : "Contraseña",
     "Unable to change your password" : "No se ha podido cambiar su contraseña",
     "Current password" : "Contraseña actual",
