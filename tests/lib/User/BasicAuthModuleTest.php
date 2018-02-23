@@ -25,6 +25,7 @@ namespace Test\User;
 
 use OC\User\BasicAuthModule;
 use OCP\IRequest;
+use OCP\ISession;
 use OCP\IUser;
 use OCP\IUserManager;
 use Test\TestCase;
@@ -37,11 +38,14 @@ class BasicAuthModuleTest extends TestCase {
 	private $request;
 	/** @var IUser | \PHPUnit_Framework_MockObject_MockObject */
 	private $user;
+	/** @var ISession | \PHPUnit_Framework_MockObject_MockObject */
+	private $session;
 
 	public function setUp() {
 		parent::setUp();
 		$this->manager = $this->createMock(IUserManager::class);
 		$this->request = $this->createMock(IRequest::class);
+		$this->session = $this->createMock(ISession::class);
 
 		$this->user = $this->createMock(IUser::class);
 		$this->user->expects($this->any())->method('getUID')->willReturn('user1');
@@ -61,6 +65,7 @@ class BasicAuthModuleTest extends TestCase {
 				['unique@example.com', [$this->user]],
 				['user2', []]
 			]);
+
 	}
 
 	/**
@@ -69,7 +74,13 @@ class BasicAuthModuleTest extends TestCase {
 	 * @param string $userId
 	 */
 	public function testAuth($expectedResult, $userId) {
-		$module = new BasicAuthModule($this->manager);
+
+		$this->session
+			->method('exists')
+			->with('app_password')
+			->willReturn(false);
+
+		$module = new BasicAuthModule($this->manager, $this->session);
 		$this->request->server = [
 			'PHP_AUTH_USER' => $userId,
 			'PHP_AUTH_PW' => '123456',
@@ -81,8 +92,28 @@ class BasicAuthModuleTest extends TestCase {
 		$this->assertEquals($expectedResult ? $this->user : null, $module->auth($this->request));
 	}
 
+	public function testAppPassword() {
+
+		$this->session
+			->expects($this->once())
+			->method('exists')
+			->with('app_password')
+			->willReturn(true);
+
+		$this->manager
+			->expects($this->never())
+			->method('checkPassword');
+
+		$module = new BasicAuthModule($this->manager, $this->session);
+		$this->request->server = [
+			'PHP_AUTH_USER' => 'user',
+			'PHP_AUTH_PW' => 'app-pass-word',
+		];
+		$this->assertEquals(null, $module->auth($this->request));
+	}
+
 	public function testGetUserPassword() {
-		$module = new BasicAuthModule($this->manager);
+		$module = new BasicAuthModule($this->manager, $this->session);
 		$this->request->server = [
 			'PHP_AUTH_USER' => 'user1',
 			'PHP_AUTH_PW' => '123456',
