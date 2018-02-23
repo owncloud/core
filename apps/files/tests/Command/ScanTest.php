@@ -33,6 +33,7 @@ use OCP\Lock\ILockingProvider;
 use OCP\IUser;
 use OCP\IDBConnection;
 use OCP\IGroupManager;
+use OCP\ILogger;
 
 /**
  * Class ScanTest
@@ -111,6 +112,7 @@ class ScanTest extends TestCase {
 			$this->groupManager,
 			$this->lockingProvider,
 			$this->mimeTypeLoader,
+			$this->createMock(ILogger::class),
 			$this->config
 		);
 		$this->commandTester = new CommandTester($command);

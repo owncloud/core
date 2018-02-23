@@ -42,6 +42,7 @@ use OCP\IGroupManager;
 use OCP\IUserManager;
 use OCP\Lock\ILockingProvider;
 use OCP\Lock\LockedException;
+use OCP\ILogger;
 use Symfony\Component\Console\Helper\Table;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -58,6 +59,8 @@ class Scan extends Base {
 	private $lockingProvider;
 	/** @var IMimeTypeLoader */
 	private $mimeTypeLoader;
+	/** @var ILogger */
+	private $logger;
 	/** @var IConfig */
 	private $config;
 	/** @var float */
@@ -72,12 +75,14 @@ class Scan extends Base {
 		IGroupManager $groupManager,
 		ILockingProvider $lockingProvider,
 		IMimeTypeLoader $mimeTypeLoader,
+		ILogger $logger,
 		IConfig $config
 	) {
 		$this->userManager = $userManager;
 		$this->groupManager = $groupManager;
 		$this->lockingProvider = $lockingProvider;
 		$this->mimeTypeLoader = $mimeTypeLoader;
+		$this->logger = $logger;
 		$this->config = $config;
 		parent::__construct();
 	}
@@ -154,7 +159,8 @@ class Scan extends Base {
 		$connection = $this->reconnectToDatabase($output);
 		$repairStep = new RepairMismatchFileCachePath(
 			$connection,
-			$this->mimeTypeLoader
+			$this->mimeTypeLoader,
+			$this->logger
 		);
 		$repairStep->setStorageNumericId(null);
 		$repairStep->setCountOnly(false);
