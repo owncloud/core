@@ -40,6 +40,9 @@ class GroupList extends OwncloudPage {
 	protected $allGroupsXpath = "//li[@class='isgroup']";
 	protected $groupLiXpath = "//li[@data-gid=%s]";
 	protected $deleteBtnXpath = "//a[@class='action delete']";
+	protected $addGroupXpath = '//span[text()[normalize-space()="Add Group"]]';
+	protected $addNewGroupInputBoxId = 'newgroupname';
+	protected $addNewGroupButtonXpath = '//input[@class="button icon-add"]';
 
 	/**
 	 * sets the NodeElement for the current group list
@@ -95,6 +98,34 @@ class GroupList extends OwncloudPage {
 			);
 		}
 		$deleteButton->click();
+	}
+
+	/**
+	 * 
+	 * @param string  $groupName
+	 * @throws ElementNotFoundException
+	 * @return void
+	 */
+	public function addGroup($groupName) {
+		$addLink = $this->find("xpath", $this->addGroupXpath);
+		if (is_null($addLink)) {
+			throw new ElementNotFoundException(
+				__METHOD__ .
+				" xpath $this->addGroupXpath " .
+				"could not find add group link"
+			);
+		}
+		$addLink->click();
+		$this->fillField($this->addNewGroupInputBoxId, $groupName);
+		$addButton = $this->find("xpath", $this->addNewGroupButtonXpath);
+		if (is_null($addButton)) {
+			throw new ElementNotFoundException(
+				__METHOD__ .
+				" xpath $this->addNewGroupButtonXpath " .
+				"could not find add group button"
+			);
+		}
+		$addButton->click();
 	}
 
 	/**
