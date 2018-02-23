@@ -341,7 +341,7 @@ then
 	echo "WARNING: cannot write to upload folder '$FILES_FOR_UPLOAD', some upload tests might fail"
 fi
 
-lib/composer/bin/behat -c $BEHAT_YML $BEHAT_SUITE_OPTION $BEHAT_TAG_OPTION $BEHAT_TAGS $BEHAT_FEATURE -v  2>&1 | tee -a $TEST_LOG_FILE
+lib/composer/bin/behat --strict -c $BEHAT_YML $BEHAT_SUITE_OPTION $BEHAT_TAG_OPTION $BEHAT_TAGS $BEHAT_FEATURE -v  2>&1 | tee -a $TEST_LOG_FILE
 
 BEHAT_EXIT_STATUS=${PIPESTATUS[0]}
 
@@ -362,7 +362,7 @@ then
 		do
 			SOME_SCENARIO_RERUN=true
 			echo rerun failed tests: $FEATURE
-			lib/composer/bin/behat -c $BEHAT_YML $BEHAT_SUITE_OPTION $BEHAT_TAG_OPTION $BEHAT_TAGS $FEATURE -v  2>&1 | tee -a $TEST_LOG_FILE
+			lib/composer/bin/behat --strict -c $BEHAT_YML $BEHAT_SUITE_OPTION $BEHAT_TAG_OPTION $BEHAT_TAGS $FEATURE -v  2>&1 | tee -a $TEST_LOG_FILE
 			BEHAT_EXIT_STATUS=${PIPESTATUS[0]}
 			if [ $BEHAT_EXIT_STATUS -ne 0 ]
 			then
