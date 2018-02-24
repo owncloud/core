@@ -8,7 +8,7 @@ Feature: webdav-related-new-endpoint
 		Then the HTTP status code should be "401"
 		And there should be no duplicate headers
 		And the following headers should be set
-			| WWW-Authenticate | Basic realm="ownCloud" |
+			| WWW-Authenticate | Basic realm="ownCloud", charset="UTF-8" |
 
 	Scenario: Moving a file
 		Given using new DAV path
