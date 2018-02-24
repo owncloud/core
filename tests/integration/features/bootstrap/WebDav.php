@@ -1281,6 +1281,7 @@ trait WebDav {
 
 	/**
 	 * @When /^user "([^"]*)" deletes everything from folder "([^"]*)" using the API$/
+	 * @Given /^user "([^"]*)" has deleted everything from folder "([^"]*)"$/
 	 * @param string $user
 	 * @param string $folder
 	 */
