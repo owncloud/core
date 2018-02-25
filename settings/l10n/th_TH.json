@@ -294,6 +294,7 @@
     "For password recovery and notifications" : "สำหรับการกู้คืนรหัสผ่านและการแจ้งเตือน",
     "No email address set" : "ไม่ได้ตั้งค่าที่อยู่อีเมล",
     "You are member of the following groups:" : "คุณเป็นสมาชิกของกลุ่ม:",
+    "You are not a member of any groups." : "คุณยังไม่ได้เป็นสมาชิกในกลุ่มใดๆเลย",
     "Password" : "รหัสผ่าน",
     "Unable to change your password" : "ไม่สามารถเปลี่ยนรหัสผ่านของคุณได้",
     "Current password" : "รหัสผ่านปัจจุบัน",
