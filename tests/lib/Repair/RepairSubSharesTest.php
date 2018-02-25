@@ -25,6 +25,7 @@ use OC\Repair\RepairSubShares;
 use OCP\Migration\IOutput;
 use OCP\Migration\IRepairStep;
 use Test\TestCase;
+use Test\Traits\GroupTrait;
 use Test\Traits\UserTrait;
 
 /**
@@ -37,6 +38,7 @@ use Test\Traits\UserTrait;
  */
 class RepairSubSharesTest extends TestCase {
 	use UserTrait;
+	use GroupTrait;
 
 	/** @var  \OCP\IDBConnection */
 	private $connection;
@@ -52,16 +54,8 @@ class RepairSubSharesTest extends TestCase {
 	}
 
 	protected function tearDown() {
-		$this->deleteAllUsersAndGroups();
 		$this->deleteAllShares();
 		parent::tearDown();
-	}
-
-	public function deleteAllUsersAndGroups() {
-		$this->tearDownUserTrait();
-		$qb = $this->connection->getQueryBuilder();
-		$qb->delete('groups')->execute();
-		$qb->delete('group_user')->execute();
 	}
 
 	public function deleteAllShares() {
@@ -90,10 +84,8 @@ class RepairSubSharesTest extends TestCase {
 		$multipleOf = 2;
 		for($userCount = 1; $userCount <= 10; $userCount++) {
 			$user = $this->createUser($userName.$userCount);
-			if (\OC::$server->getGroupManager()->groupExists($groupName.$groupCount) === false) {
-				\OC::$server->getGroupManager()->createGroup($groupName.$groupCount);
-			}
-			\OC::$server->getGroupManager()->get($groupName.$groupCount)->addUser($user);
+			$group = $this->createGroup($groupName.$groupCount);
+			$group->addUser($user);
 
 			//Create a group share
 			$qb->insert('share')

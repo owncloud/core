@@ -26,10 +26,8 @@ use OC\MembershipManager;
 use OC\User\Account;
 use OC\User\AccountMapper;
 use OCP\AppFramework\Db\DoesNotExistException;
-use OCP\AppFramework\Db\Entity;
 use OCP\AppFramework\Db\MultipleObjectsReturnedException;
 use OCP\GroupInterface;
-use OCP\IConfig;
 use OCP\ILogger;
 
 
@@ -49,8 +47,6 @@ class SyncService {
 	private $accountMapper;
 	/** @var MembershipManager */
 	private $membershipManager;
-	/** @var IConfig */
-	private $config;
 	/** @var ILogger */
 	private $logger;
 	/** @var string[] backendclass -> gid array map */
@@ -97,10 +93,10 @@ class SyncService {
 				$remoteAccounts = $this->getRemoteGroupUsers($backend, $backendGroup->getGroupId());
 
 				// Fetch local group users, which were synced to the group using SYNC mechanism
-				$localSyncAccounts = $this->getSyncLocalGroupUsers($backendGroup->getId());
+				$localSyncAccounts = $this->getSyncLocalGroupUsers($backendGroup->getGroupId());
 
 				// Fetch local group users, which were added to the group MANUALY, thus should not be affected by sync
-				$localManualAccounts = $this->getManualLocalGroupUsers($backendGroup->getId());
+				$localManualAccounts = $this->getManualLocalGroupUsers($backendGroup->getGroupId());
 
 				// Check which memberships need to removed and added for this backend class
 				$membershipsToRemove = array_diff(array_keys($localSyncAccounts), array_keys($remoteAccounts));
@@ -207,39 +203,76 @@ class SyncService {
 		}
 	}
 
-	/**.
-	 * Returns remote users for updated backend group, which have already synced
-	 * accounts in the system
+	/**
+	 * Sync user memberships for given backend.
+	 *
+	 * NOTE: if the group does not exist, it will sync the group and add membership
 	 *
 	 * @param GroupInterface $backend
-	 * @param string $gid
-	 * @return Account[] - account id -> account map
-	 * @throws MultipleObjectsReturnedException
+	 * @param string $uid
+	 *
 	 */
-	private function getRemoteGroupUsers(GroupInterface $backend, $gid) {
-		$limit = 500;
-		$offset = 0;
-		$uids = [];
-		do {
-			$users = $backend->usersInGroup($gid,'', $limit, $offset);
-			$uids = array_merge($uids, $users);
-			$offset += $limit;
-		} while(count($users) >= $limit);
+	public function syncUserMemberships(GroupInterface $backend, $uid) {
+		try {
+			$accountCache = null;
+			$remoteGids = $backend->getUserGroups($uid);
 
-		// Validate if user exists in the account table
-		$accounts = [];
-		foreach($uids as $uid) {
-			try {
-				// TODO: Discuss if this should only pass for enabled users
-				$account = $this->accountMapper->getByUid($uid);
-				$accounts[$account->getId()] = $account;
-			} catch(DoesNotExistException $ex) {
-				// This user does not exist in the system
-				continue;
+			/* @var BackendGroup[] $localSyncGidGroupMap */
+			$localSyncGidGroupMap = [];
+			$localSyncGroups = $this->membershipManager->getMemberBackendGroupsByType($uid,
+				MembershipManager::MEMBERSHIP_TYPE_GROUP_USER,
+				MembershipManager::MAINTENANCE_TYPE_SYNC);
+			foreach($localSyncGroups as $localSyncGroup) {
+				$localSyncGidGroupMap[$localSyncGroup->getGroupId()] = $localSyncGroup;
 			}
+
+			// Check which memberships need to removed or added
+			$membershipsToRemove = array_diff(array_keys($localSyncGidGroupMap), $remoteGids);
+			$membershipsToAdd = array_diff($remoteGids, array_keys($localSyncGidGroupMap));
+
+			foreach ($membershipsToRemove as $gid) {
+				// Fetch account only if needed
+				if($accountCache === null) {
+					$accountCache = $this->accountMapper->getByUid($uid);
+				}
+
+				// Remove membership of maintenance type MAINTENANCE_TYPE_SYNC (diff was with localSyncAccounts)
+				$this->membershipManager->removeMembership($accountCache->getId(), $localSyncGidGroupMap[$gid]->getId(),
+					MembershipManager::MEMBERSHIP_TYPE_GROUP_USER);
+			}
+
+			foreach ($membershipsToAdd as $gid) {
+				// Sync down the group if it does not exist
+				if ($backendGroup = $this->createOrSyncGroup($gid, $backend)) {
+					// Fetch account only if needed
+					if($accountCache === null) {
+						$accountCache = $this->accountMapper->getByUid($uid);
+					}
+
+					// Do not affect local group users added manually
+					if (!$this->membershipManager->isGroupMemberByType($accountCache->getId(),
+							$backendGroup->getId(),
+							MembershipManager::MEMBERSHIP_TYPE_GROUP_USER,
+							MembershipManager::MAINTENANCE_TYPE_MANUAL)) {
+						// Add membership of maintenance type MAINTENANCE_TYPE_SYNC
+						$this->membershipManager->addMembership($accountCache->getId(), $backendGroup->getId(),
+							MembershipManager::MEMBERSHIP_TYPE_GROUP_USER,
+							MembershipManager::MAINTENANCE_TYPE_SYNC);
+					}
+				}
+			}
+
+			return;
+		} catch (UniqueConstraintViolationException $e) {
+		} catch (MultipleObjectsReturnedException $e) {
+		} catch (DoesNotExistException $e) {
 		}
 
-		return $accounts;
+		// Dont raise any exception, but log error
+		$this->logger->error(
+			"SyncUserMemberships failed for user <$uid> with {$e->getMessage()}, skipping.",
+			['app' => self::class]
+		);
 	}
 
 	/**
@@ -282,20 +315,53 @@ class SyncService {
 	}
 
 	/**.
+	 * Returns remote users for updated backend group, which have already synced
+	 * accounts in the system
+	 *
+	 * @param GroupInterface $backend
+	 * @param string $gid
+	 * @return Account[] - account id -> account map
+	 * @throws MultipleObjectsReturnedException
+	 */
+	private function getRemoteGroupUsers(GroupInterface $backend, $gid) {
+		$limit = 500;
+		$offset = 0;
+		$uids = [];
+		do {
+			$users = $backend->usersInGroup($gid,'', $limit, $offset);
+			$uids = array_merge($uids, $users);
+			$offset += $limit;
+		} while(count($users) >= $limit);
+
+		// Validate if user exists in the account table
+		$accounts = [];
+		foreach($uids as $uid) {
+			try {
+				$account = $this->accountMapper->getByUid($uid);
+				$accounts[$account->getId()] = $account;
+			} catch(DoesNotExistException $ex) {
+				// This user does not exist in the system
+				continue;
+			}
+		}
+
+		return $accounts;
+	}
+
+	/**.
 	 * Fetch group members which are group users and their memberships were
 	 * added using sync command (memberships were added using group backend)
 	 *
-	 * @param int $backendGroupId
+	 * @param string $gid
 	 * @return Account[] - account id -> account map
 	 */
-	private function getSyncLocalGroupUsers($backendGroupId) {
+	private function getSyncLocalGroupUsers($gid) {
 		// Fetch only group members which are group users and their memberships were
 		// added using sync command (memberships were added using group backend)
-		$syncMembers = $this->membershipManager->getGroupMembershipsByType($backendGroupId,
+		$syncMembers = $this->membershipManager->getGroupMembershipsByType($gid,
 			MembershipManager::MEMBERSHIP_TYPE_GROUP_USER,
 			MembershipManager::MAINTENANCE_TYPE_SYNC);
 
-		// TODO: Discuss if users should be enabled or not
 		$accounts = [];
 		foreach($syncMembers as $memberAccount) {
 			$accounts[$memberAccount->getId()] = $memberAccount;
@@ -308,17 +374,16 @@ class SyncService {
 	 * Fetch group members which are group users and their memberships were
 	 * added manualy (e.g. by admin using user interface)
 	 *
-	 * @param int $backendGroupId
+	 * @param string $gid
 	 * @return Account[] - account id -> account map
 	 */
-	private function getManualLocalGroupUsers($backendGroupId) {
+	private function getManualLocalGroupUsers($gid) {
 		// Fetch only group members which are group users and their memberships were
 		// added using sync command (memberships were added using group backend)
-		$manualMembers = $this->membershipManager->getGroupMembershipsByType($backendGroupId,
+		$manualMembers = $this->membershipManager->getGroupMembershipsByType($gid,
 			MembershipManager::MEMBERSHIP_TYPE_GROUP_USER,
 			MembershipManager::MAINTENANCE_TYPE_MANUAL);
 
-		// TODO: Discuss if users should be enabled or not
 		$accounts = [];
 		foreach($manualMembers as $memberAccount) {
 			$accounts[$memberAccount->getId()] = $memberAccount;

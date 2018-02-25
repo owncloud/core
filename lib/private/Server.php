@@ -262,7 +262,7 @@ class Server extends ServerContainer implements IServerContainer, IServiceLoader
 				$membershipManager,
 				$c->getLogger()
 			);
-			$groupManager = new \OC\Group\Manager($this->getUserManager(), $membershipManager, $groupMapper, $groupSyncService, $c->getDatabaseConnection());
+			$groupManager = new \OC\Group\Manager($this->getUserManager(), $membershipManager, $groupMapper, $groupSyncService);
 			$groupManager->listen('\OC\Group', 'preCreate', function ($gid) {
 				\OC_Hook::emit('OC_Group', 'pre_createGroup', ['run' => true, 'gid' => $gid]);
 			});
@@ -303,7 +303,8 @@ class Server extends ServerContainer implements IServerContainer, IServiceLoader
 		});
 		$this->registerAlias('OCP\AppFramework\Utility\ITimeFactory', 'TimeFactory');
 		$this->registerService('UserSession', function (Server $c) {
-			$manager = $c->getUserManager();
+			$userManager = $c->getUserManager();
+			$groupManager = $c->getGroupManager();
 			$session = new \OC\Session\Memory('');
 			$timeFactory = new TimeFactory();
 			// Token providers might require a working database. This code
@@ -316,10 +317,12 @@ class Server extends ServerContainer implements IServerContainer, IServiceLoader
 
 			$termMapper = new AccountTermMapper($c->getDatabaseConnection());
 			$accountMapper = new AccountMapper($c->getConfig(), $c->getDatabaseConnection(), $termMapper);
+			$groupMapper = new GroupMapper($c->getDatabaseConnection());
+			$membershipManager = new MembershipManager($c->getDatabaseConnection(), $c->getConfig());
 			$userSyncService = new UserSyncService($c->getConfig(), $c->getLogger(), $accountMapper);
-
-			$userSession = new \OC\User\Session($manager, $session, $timeFactory,
-				$defaultTokenProvider, $c->getConfig(), $this, $userSyncService);
+			$groupSyncService = new GroupSyncService($groupMapper, $accountMapper, $membershipManager, $c->getLogger());
+			$userSession = new \OC\User\Session($userManager, $groupManager, $session, $timeFactory,
+				$defaultTokenProvider, $c->getConfig(), $this, $userSyncService, $groupSyncService);
 			$userSession->listen('\OC\User', 'preCreateUser', function ($uid, $password) {
 				\OC_Hook::emit('OC_User', 'pre_createUser', ['run' => true, 'uid' => $uid, 'password' => $password]);
 			});

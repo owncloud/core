@@ -36,6 +36,11 @@ class Database extends Backend {
 	/** @var string */
 	private $tableName;
 
+	protected $possibleActions = [
+		self::CREATE_GROUP => 'createGroup',
+		self::DELETE_GROUP => 'deleteGroup',
+	];
+
 	/**
 	 * Database constructor.
 	 *
@@ -143,5 +148,12 @@ class Database extends Backend {
 		$data = $stmt->fetch();
 		$stmt->closeCursor();
 		return isset($data['exists']);
+	}
+
+	/**
+	 * Groups and memberships of this backend are maintained by the users
+	 */
+	public function isSyncMaintained() {
+		return false;
 	}
 }

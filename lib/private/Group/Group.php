@@ -131,8 +131,8 @@ class Group implements IGroup {
 		}
 
 		$account = $this->userManager->getAccountObject($user);
-		return $this->membershipManager->isGroupMemberById($account->getId(), $this->backendGroup->getId(),
-			MembershipManager::MEMBERSHIP_TYPE_GROUP_USER);
+		return $this->membershipManager->isGroupMemberByType($account->getId(), $this->backendGroup->getId(),
+			MembershipManager::MEMBERSHIP_TYPE_GROUP_USER, null);
 	}
 
 	/**

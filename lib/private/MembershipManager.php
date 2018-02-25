@@ -70,7 +70,20 @@ class MembershipManager {
 	 * @return BackendGroup[]
 	 */
 	public function getMemberBackendGroups($userId, $membershipType) {
-		return $this->getBackendGroupsSqlQuery($userId, false, $membershipType);
+		return $this->getBackendGroupsSqlQuery($userId, false, $membershipType, null);
+	}
+
+	/**
+	 * Return backend group entities for given user (identified by user's uid)
+	 *
+	 * @param string $userId
+	 * @param int $membershipType - type of membership in the group (0 - MEMBERSHIP_TYPE_GROUP_USER, 1 - MEMBERSHIP_TYPE_GROUP_ADMIN)
+	 * @param int|null $maintenanceType - defines how membership is maintained (0 - MANUAL, 1 - SYNC)
+	 *
+	 * @return BackendGroup[]
+	 */
+	public function getMemberBackendGroupsByType($userId, $membershipType, $maintenanceType) {
+		return $this->getBackendGroupsSqlQuery($userId, false, $membershipType, $maintenanceType);
 	}
 
 	/**
@@ -85,7 +98,7 @@ class MembershipManager {
 	 * @return BackendGroup[]
 	 */
 	public function getMemberBackendGroupsById($accountId, $membershipType) {
-		return $this->getBackendGroupsSqlQuery($accountId, true, $membershipType);
+		return $this->getBackendGroupsSqlQuery($accountId, true, $membershipType, null);
 	}
 
 	/**
@@ -102,6 +115,20 @@ class MembershipManager {
 	}
 
 	/**
+	 * Return user account entities for given group (identified with gid)
+	 * of specified membership and maintenance type
+	 *
+	 * @param string $gid
+	 * @param int $membershipType - type of membership in the group (0 - MEMBERSHIP_TYPE_GROUP_USER, 1 - MEMBERSHIP_TYPE_GROUP_ADMIN)
+	 * @param int $maintenanceType - defines how membership is maintained (0 - MANUAL, 1 - SYNC)
+	 *
+	 * @return Account[]
+	 */
+	public function getGroupMembershipsByType($gid, $membershipType, $maintenanceType) {
+		return $this->getAccountsSqlQuery($gid, false, $membershipType, $maintenanceType);
+	}
+
+	/**
 	 * Return user account entities for given group (identified with group's internal backend group id)
 	 * and membership type
 	 *
@@ -112,20 +139,6 @@ class MembershipManager {
 	 */
 	public function getGroupMemberAccountsById($backendGroupId, $membershipType) {
 		return $this->getAccountsSqlQuery($backendGroupId, true, $membershipType, null);
-	}
-
-	/**
-	 * Return user account entities for given group (identified with gid)
-	 * of specified membership and maintenance type
-	 *
-	 * @param int $backendGroupId
-	 * @param int $membershipType - type of membership in the group (0 - MEMBERSHIP_TYPE_GROUP_USER, 1 - MEMBERSHIP_TYPE_GROUP_ADMIN)
-	 * @param int $maintenanceType - defines how membership is maintained (0 - MANUAL, 1 - SYNC)
-	 *
-	 * @return Account[]
-	 */
-	public function getGroupMembershipsByType($backendGroupId, $membershipType, $maintenanceType) {
-		return $this->getAccountsSqlQuery($backendGroupId, true, $membershipType, $maintenanceType);
 	}
 
 	/**
@@ -140,7 +153,7 @@ class MembershipManager {
 	 * @return boolean
 	 */
 	public function isGroupMember($userId, $gid, $membershipType) {
-		return $this->isGroupMemberSqlQuery($userId, $gid, $membershipType, false);
+		return $this->isGroupMemberSqlQuery($userId, $gid, $membershipType, null, false);
 	}
 
 	/**
@@ -153,11 +166,12 @@ class MembershipManager {
 	 * @param int $accountId
 	 * @param int $backendGroupId
 	 * @param int $membershipType - type of membership in the group (0 - MEMBERSHIP_TYPE_GROUP_USER, 1 - MEMBERSHIP_TYPE_GROUP_ADMIN)
+	 * @param int|null $maintenanceType - defines how membership is maintained (0 - MANUAL, 1 - SYNC)
 	 *
 	 * @return boolean
 	 */
-	public function isGroupMemberById($accountId, $backendGroupId, $membershipType) {
-		return $this->isGroupMemberSqlQuery($accountId, $backendGroupId, $membershipType, true);
+	public function isGroupMemberByType($accountId, $backendGroupId, $membershipType, $maintenanceType) {
+		return $this->isGroupMemberSqlQuery($accountId, $backendGroupId, $membershipType, $maintenanceType, true);
 	}
 
 	/**
@@ -261,11 +275,12 @@ class MembershipManager {
 	 * @param string|int $userId
 	 * @param string|int|null $groupId
 	 * @param string $membershipType - type of membership in the group (0 - MEMBERSHIP_TYPE_GROUP_USER, 1 - MEMBERSHIP_TYPE_GROUP_ADMIN)
+	 * @param int|null $maintenanceType - defines how membership is maintained (0 - MANUAL, 1 - SYNC)
 	 * @param bool $useInternalIds
 	 *
 	 * @return boolean
 	 */
-	private function isGroupMemberSqlQuery($userId, $groupId, $membershipType, $useInternalIds) {
+	private function isGroupMemberSqlQuery($userId, $groupId, $membershipType, $maintenanceType, $useInternalIds) {
 		$qb = $this->db->getQueryBuilder();
 		$qb->selectAlias($qb->createFunction('1'), 'exists')
 			->from('memberships', 'm');
@@ -280,6 +295,11 @@ class MembershipManager {
 
 		// Place predicate on membership_type
 		$qb->andWhere($qb->expr()->eq('m.membership_type', $qb->createNamedParameter($membershipType)));
+
+		if (!is_null($maintenanceType)) {
+			// Place predicate on maintenance_type
+			$qb->andWhere($qb->expr()->eq('m.maintenance_type', $qb->createNamedParameter($maintenanceType)));
+		}
 
 		// Limit to 1, to prevent fetching unnecessary rows
 		$qb->setMaxResults(1);
@@ -362,10 +382,11 @@ class MembershipManager {
 	 * @param string|int $userId
 	 * @param bool $isAccountId
 	 * @param int $membershipType - type of membership in the group (0 - MEMBERSHIP_TYPE_GROUP_USER, 1 - MEMBERSHIP_TYPE_GROUP_ADMIN)
+	 * @param int|null $maintenanceType - defines how membership is maintained (0 - MANUAL, 1 - SYNC)
 	 *
 	 * @return BackendGroup[]
 	 */
-	private function getBackendGroupsSqlQuery($userId, $isAccountId, $membershipType) {
+	private function getBackendGroupsSqlQuery($userId, $isAccountId, $membershipType, $maintenanceType) {
 		$qb = $this->db->getQueryBuilder();
 		$qb->select(['g.id', 'g.group_id', 'g.display_name', 'g.backend'])
 			->from('memberships', 'm')
@@ -381,6 +402,11 @@ class MembershipManager {
 
 		// Place predicate on membership_type
 		$qb->andWhere($qb->expr()->eq('m.membership_type', $qb->createNamedParameter($membershipType)));
+
+		if (!is_null($maintenanceType)) {
+			// Place predicate on maintenance_type
+			$qb->andWhere($qb->expr()->eq('m.maintenance_type', $qb->createNamedParameter($maintenanceType)));
+		}
 
 		return $this->getBackendGroupsQuery($qb);
 	}

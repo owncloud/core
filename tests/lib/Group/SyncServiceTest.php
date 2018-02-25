@@ -27,6 +27,7 @@ use OC\Group\SyncService as GroupSyncService;
 use OC\MembershipManager;
 use OC\User\Account;
 use OC\User\AccountTermMapper;
+use OCP\AppFramework\Db\DoesNotExistException;
 use OCP\GroupInterface;
 use OCP\IConfig;
 use OCP\ILogger;
@@ -46,6 +47,9 @@ class SyncServiceTest extends TestCase {
 
 	use GroupTrait;
 	use UserTrait;
+
+	/** @var ILogger | \PHPUnit_Framework_MockObject_MockObject */
+	private $logger;
 
 	/** @var GroupInterface | \PHPUnit_Framework_MockObject_MockObject */
 	private $backend;
@@ -76,6 +80,7 @@ class SyncServiceTest extends TestCase {
 				'addToGroup',
 				'removeFromGroup',
 				'isVisibleForScope',
+				'isSyncMaintained',
 			])
 			->getMock();
 
@@ -84,6 +89,7 @@ class SyncServiceTest extends TestCase {
 		$this->groupMapper = new MemoryGroupMapper($db);
 		$this->accountMapper = new MemoryAccountMapper($config, $db, new AccountTermMapper($db));
 		$this->membershipManager = new MemoryMembershipManager($db, $config);
+		$this->logger = $this->createMock(ILogger::class);
 	}
 
 	public function tearDown() {
@@ -174,18 +180,197 @@ class SyncServiceTest extends TestCase {
 		$this->assertEquals($backendGroups[1]->getGroupId(), 'group2');
 
 		/** @var Account[] $resultAccounts */
-		$resultAccounts = array_values($this->membershipManager->getGroupMembershipsByType($backendGroups[0]->getId(),
+		$resultAccounts = array_values($this->membershipManager->getGroupMembershipsByType($backendGroups[0]->getGroupId(),
 			MembershipManager::MEMBERSHIP_TYPE_GROUP_USER,
 			MembershipManager::MAINTENANCE_TYPE_SYNC));
 		$this->assertCount(2, $resultAccounts);
 		$this->assertEquals($resultAccounts[0]->getUserId(), 'userbeforelast');
 		$this->assertEquals($resultAccounts[1]->getUserId(), 'userlast');
-		$resultAccounts = array_values($this->membershipManager->getGroupMembershipsByType($backendGroups[1]->getId(),
+		$resultAccounts = array_values($this->membershipManager->getGroupMembershipsByType($backendGroups[1]->getGroupId(),
 			MembershipManager::MEMBERSHIP_TYPE_GROUP_USER,
 			MembershipManager::MAINTENANCE_TYPE_SYNC));
 		$this->assertCount(2, $resultAccounts);
 		$this->assertEquals($resultAccounts[0]->getUserId(), 'userbeforelast');
 		$this->assertEquals($resultAccounts[1]->getUserId(), 'userlast');
+	}
+
+	/*
+	 * Sync new groups and users
+     */
+	public function testMembershipsNewSync() {
+		$syncService = $this->getSyncService();
+
+		$user = $this->createUser('user1');
+
+		$this->backend->expects($this->at(0))
+			->method('getUserGroups')
+			->with($user->getUID())
+			->will($this->returnValue(['group1','group2']));
+
+		$this->backend->expects($this->any())
+			->method('isVisibleForScope')
+			->willReturn(true);
+
+		// Check of preconditions
+		/** @var BackendGroup[] $resultGroups */
+		$resultGroups = $this->membershipManager->getMemberBackendGroups($user->getUID(),
+			MembershipManager::MEMBERSHIP_TYPE_GROUP_USER);
+		$this->assertEmpty($resultGroups);
+
+		$syncService->syncUserMemberships($this->backend, $user->getUID());
+
+		$resultGroups = $this->membershipManager->getMemberBackendGroups($user->getUID(),
+			MembershipManager::MEMBERSHIP_TYPE_GROUP_USER);
+		$this->assertCount(2, $resultGroups);
+		$this->assertEquals($resultGroups[0]->getGroupId(), 'group1');
+		$this->assertEquals($resultGroups[1]->getGroupId(), 'group2');
+	}
+
+	/*
+	 * Sync new membership, but the group already exists
+     */
+	public function testMembershipsNewMembToExistingGroupSync() {
+		$syncService = $this->getSyncService();
+
+		$user = $this->createUser('user1');
+		$group = $this->createGroup('group1', $this->backend);
+
+		$this->backend->expects($this->at(0))
+			->method('getUserGroups')
+			->with($user->getUID())
+			->will($this->returnValue(['group1']));
+
+		$this->backend->expects($this->any())
+			->method('isVisibleForScope')
+			->willReturn(true);
+
+		// Check of preconditions
+		/** @var BackendGroup[] $resultGroups */
+		$resultGroups = $this->membershipManager->getMemberBackendGroups($user->getUID(),
+			MembershipManager::MEMBERSHIP_TYPE_GROUP_USER);
+		$this->assertEmpty($resultGroups);
+
+		$syncService->syncUserMemberships($this->backend, $user->getUID());
+
+		$resultGroups = $this->membershipManager->getMemberBackendGroups($user->getUID(),
+			MembershipManager::MEMBERSHIP_TYPE_GROUP_USER);
+		$this->assertCount(1, $resultGroups);
+		$this->assertEquals($resultGroups[0]->getGroupId(), $group->getGID());
+		$this->assertEquals($resultGroups[0]->getBackend(), get_class($group->getBackend()));
+	}
+
+	/*
+	 * Sync membership, and handle any exception there
+     */
+	public function testMembershipsSyncException() {
+		$syncService = $this->getSyncService();
+
+		$user = $this->createUser('user1');
+
+		$this->backend->expects($this->at(0))
+			->method('getUserGroups')
+			->with($user->getUID())
+			->willThrowException(new DoesNotExistException(''));
+
+		$this->backend->expects($this->any())
+			->method('isVisibleForScope')
+			->willReturn(true);
+
+		$this->logger->expects($this->once())
+			->method('error');
+
+		// Check of preconditions
+		/** @var BackendGroup[] $resultGroups */
+		$resultGroups = $this->membershipManager->getMemberBackendGroups($user->getUID(),
+			MembershipManager::MEMBERSHIP_TYPE_GROUP_USER);
+		$this->assertEmpty($resultGroups);
+
+		$syncService->syncUserMemberships($this->backend, $user->getUID());
+	}
+
+	/*
+ 	 * Sync memberships, some will be removed
+ 	 */
+	public function testMembershipsRemoveSync() {
+		$syncService = $this->getSyncService();
+
+		$user = $this->createUser('user1');
+		$group = $this->createGroup('group1', $this->backend);
+		$backendGroup = \OC::$server->getGroupManager()->getBackendGroupObject($group->getGID());
+		$user2Account = \OC::$server->getUserManager()->getAccountObject($user);
+		$this->membershipManager->addMembership($user2Account->getId(), $backendGroup->getId(),
+			MembershipManager::MEMBERSHIP_TYPE_GROUP_USER,
+			MembershipManager::MAINTENANCE_TYPE_SYNC);
+
+		$this->backend->expects($this->at(1))
+			->method('getUserGroups')
+			->with($user->getUID())
+			->will($this->returnValue([]));
+
+		$this->backend->expects($this->any())
+			->method('isVisibleForScope')
+			->willReturn(true);
+
+		// Check of preconditions
+		/** @var BackendGroup[] $resultGroups */
+		$resultGroups = $this->membershipManager->getMemberBackendGroups($user->getUID(),
+			MembershipManager::MEMBERSHIP_TYPE_GROUP_USER);
+		$this->assertCount(1, $resultGroups);
+		$this->assertEquals($resultGroups[0]->getGroupId(), $group->getGID());
+
+		$syncService->syncUserMemberships($this->backend, $user->getUID());
+
+		$resultGroups = $this->membershipManager->getMemberBackendGroups($user->getUID(),
+			MembershipManager::MEMBERSHIP_TYPE_GROUP_USER);
+		$this->assertEmpty($resultGroups);
+	}
+
+	/*
+     * Sync memberships, and there will be one membership added manualy,
+	 * and one seen in remote backend - thus nothing should happen and manual membership
+	 * should be untouched.
+     */
+	public function testMembershipsSyncDontAffectManual() {
+		$syncService = $this->getSyncService();
+
+		$user = $this->createUser('user1');
+		$group = $this->createGroup('group1', $this->backend);
+		$backendGroup = \OC::$server->getGroupManager()->getBackendGroupObject($group->getGID());
+		$user2Account = \OC::$server->getUserManager()->getAccountObject($user);
+		$this->membershipManager->addMembership($user2Account->getId(), $backendGroup->getId(),
+			MembershipManager::MEMBERSHIP_TYPE_GROUP_USER,
+			MembershipManager::MAINTENANCE_TYPE_MANUAL);
+
+		$this->backend->expects($this->at(2))
+			->method('getUserGroups')
+			->with($user->getUID())
+			->will($this->returnValue(['group1']));
+
+		$this->backend->expects($this->any())
+			->method('isVisibleForScope')
+			->willReturn(true);
+
+		// Check of preconditions
+		/** @var BackendGroup[] $resultGroups */
+		$resultGroups = $this->membershipManager->getMemberBackendGroups($user->getUID(),
+			MembershipManager::MEMBERSHIP_TYPE_GROUP_USER);
+		$this->assertCount(1, $resultGroups);
+		$this->assertEquals($resultGroups[0]->getGroupId(), $group->getGID());
+		$this->assertEquals($resultGroups[0]->getBackend(), get_class($group->getBackend()));
+		$resultGroups = $this->membershipManager->getMemberBackendGroupsByType($user->getUID(), MembershipManager::MEMBERSHIP_TYPE_GROUP_USER,
+			MembershipManager::MAINTENANCE_TYPE_MANUAL);
+		$this->assertCount(1, $resultGroups);
+
+		$syncService->syncUserMemberships($this->backend, $user->getUID());
+
+		$resultGroups = $this->membershipManager->getMemberBackendGroups($user->getUID(),
+			MembershipManager::MEMBERSHIP_TYPE_GROUP_USER);
+		$this->assertCount(1, $resultGroups);
+		$this->assertEquals($resultGroups[0]->getGroupId(), $group->getGID());
+		$this->assertEquals($resultGroups[0]->getBackend(), get_class($group->getBackend()));
+		$resultGroups = $this->membershipManager->getMemberBackendGroupsByType($user->getUID(), MembershipManager::MEMBERSHIP_TYPE_GROUP_USER,
+			MembershipManager::MAINTENANCE_TYPE_MANUAL);
+		$this->assertCount(1, $resultGroups);
 	}
 
 	/*
@@ -232,12 +417,12 @@ class SyncServiceTest extends TestCase {
 
 		// Check of preconditions
 		/** @var Account[] $resultAccounts */
-		$resultAccounts = array_values($this->membershipManager->getGroupMembershipsByType($backendGroup->getId(),
+		$resultAccounts = array_values($this->membershipManager->getGroupMembershipsByType($backendGroup->getGroupId(),
 			MembershipManager::MEMBERSHIP_TYPE_GROUP_USER,
 			MembershipManager::MAINTENANCE_TYPE_SYNC));
 		$this->assertCount(1, $resultAccounts);
 		$this->assertEquals($resultAccounts[0]->getUserId(), 'user2');
-		$resultAccounts = array_values($this->membershipManager->getGroupMembershipsByType($backendGroup->getId(),
+		$resultAccounts = array_values($this->membershipManager->getGroupMembershipsByType($backendGroup->getGroupId(),
 			MembershipManager::MEMBERSHIP_TYPE_GROUP_USER,
 			MembershipManager::MAINTENANCE_TYPE_MANUAL));
 		$this->assertCount(1, $resultAccounts);
@@ -259,13 +444,13 @@ class SyncServiceTest extends TestCase {
 
 		// Check that user3 was synced down, and user1 is not affected
 
-		$resultAccounts = array_values($this->membershipManager->getGroupMembershipsByType($backendGroup->getId(),
+		$resultAccounts = array_values($this->membershipManager->getGroupMembershipsByType($backendGroup->getGroupId(),
 			MembershipManager::MEMBERSHIP_TYPE_GROUP_USER,
 			MembershipManager::MAINTENANCE_TYPE_SYNC));
 		$this->assertCount(1, $resultAccounts);
 		$this->assertEquals($resultAccounts[0]->getUserId(), 'user3');
 
-		$resultAccounts = array_values($this->membershipManager->getGroupMembershipsByType($backendGroup->getId(),
+		$resultAccounts = array_values($this->membershipManager->getGroupMembershipsByType($backendGroup->getGroupId(),
 			MembershipManager::MEMBERSHIP_TYPE_GROUP_USER,
 			MembershipManager::MAINTENANCE_TYPE_MANUAL));
 		$this->assertCount(1, $resultAccounts);
@@ -306,12 +491,12 @@ class SyncServiceTest extends TestCase {
 
 		// Check of preconditions
 		/** @var Account[] $resultAccounts */
-		$resultAccounts = array_values($this->membershipManager->getGroupMembershipsByType($backendGroup->getId(),
+		$resultAccounts = array_values($this->membershipManager->getGroupMembershipsByType($backendGroup->getGroupId(),
 			MembershipManager::MEMBERSHIP_TYPE_GROUP_USER,
 			MembershipManager::MAINTENANCE_TYPE_SYNC));
 		$this->assertCount(0, $resultAccounts);
 
-		$resultAccounts = array_values($this->membershipManager->getGroupMembershipsByType($backendGroup->getId(),
+		$resultAccounts = array_values($this->membershipManager->getGroupMembershipsByType($backendGroup->getGroupId(),
 			MembershipManager::MEMBERSHIP_TYPE_GROUP_USER,
 			MembershipManager::MAINTENANCE_TYPE_MANUAL));
 		$this->assertCount(1, $resultAccounts);
@@ -333,12 +518,12 @@ class SyncServiceTest extends TestCase {
 
 		// Check that user1 is not affected
 
-		$resultAccounts = array_values($this->membershipManager->getGroupMembershipsByType($backendGroup->getId(),
+		$resultAccounts = array_values($this->membershipManager->getGroupMembershipsByType($backendGroup->getGroupId(),
 			MembershipManager::MEMBERSHIP_TYPE_GROUP_USER,
 			MembershipManager::MAINTENANCE_TYPE_SYNC));
 		$this->assertCount(0, $resultAccounts);
 
-		$resultAccounts = array_values($this->membershipManager->getGroupMembershipsByType($backendGroup->getId(),
+		$resultAccounts = array_values($this->membershipManager->getGroupMembershipsByType($backendGroup->getGroupId(),
 			MembershipManager::MEMBERSHIP_TYPE_GROUP_USER,
 			MembershipManager::MAINTENANCE_TYPE_MANUAL));
 		$this->assertCount(1, $resultAccounts);
@@ -373,12 +558,12 @@ class SyncServiceTest extends TestCase {
 
 		// Check preconditions
 		/** @var Account[] $resultAccounts */
-		$resultAccounts = array_values($this->membershipManager->getGroupMembershipsByType($backendGroup->getId(),
+		$resultAccounts = array_values($this->membershipManager->getGroupMembershipsByType($backendGroup->getGroupId(),
 			MembershipManager::MEMBERSHIP_TYPE_GROUP_USER,
 			MembershipManager::MAINTENANCE_TYPE_SYNC));
 		$this->assertCount(0, $resultAccounts);
 
-		$resultAccounts = array_values($this->membershipManager->getGroupMembershipsByType($backendGroup->getId(),
+		$resultAccounts = array_values($this->membershipManager->getGroupMembershipsByType($backendGroup->getGroupId(),
 			MembershipManager::MEMBERSHIP_TYPE_GROUP_USER,
 			MembershipManager::MAINTENANCE_TYPE_MANUAL));
 		$this->assertCount(0, $resultAccounts);
@@ -398,12 +583,12 @@ class SyncServiceTest extends TestCase {
 		$this->assertEquals($backendGroups[0]->getGroupId(), 'group1');
 
 		// Expect no change since user user2 is not synced
-		$resultAccounts = array_values($this->membershipManager->getGroupMembershipsByType($backendGroup->getId(),
+		$resultAccounts = array_values($this->membershipManager->getGroupMembershipsByType($backendGroup->getGroupId(),
 			MembershipManager::MEMBERSHIP_TYPE_GROUP_USER,
 			MembershipManager::MAINTENANCE_TYPE_SYNC));
 		$this->assertCount(0, $resultAccounts);
 
-		$resultAccounts = array_values($this->membershipManager->getGroupMembershipsByType($backendGroup->getId(),
+		$resultAccounts = array_values($this->membershipManager->getGroupMembershipsByType($backendGroup->getGroupId(),
 			MembershipManager::MEMBERSHIP_TYPE_GROUP_USER,
 			MembershipManager::MAINTENANCE_TYPE_MANUAL));
 		$this->assertCount(0, $resultAccounts);
@@ -621,19 +806,18 @@ class SyncServiceTest extends TestCase {
 	 */
 	private function getSyncService() {
 		$config =  \OC::$server->getConfig();
-		$logger = $this->createMock(ILogger::class);
 
 		// Adjust membership manager
 		\OC::$server->getUserManager()->resetMembershipManager($this->membershipManager);
 		\OC::$server->getGroupManager()->resetMembershipManager($this->membershipManager);
 
 		// Adjust mappers
-		$userSyncService = new UserSyncService($config, $logger, $this->accountMapper);
-		$groupSyncService =  new GroupSyncService($this->groupMapper, $this->accountMapper, $this->membershipManager, $logger);
+		$userSyncService = new UserSyncService($config, $this->logger, $this->accountMapper);
+		$groupSyncService =  new GroupSyncService($this->groupMapper, $this->accountMapper, $this->membershipManager, $this->logger);
 
 		\OC::$server->getUserManager()->reset($this->accountMapper, [], $userSyncService);
 		\OC::$server->getGroupManager()->reset($this->groupMapper, [], $groupSyncService);
-
+		\OC::$server->getGroupManager()->addBackend($this->backend);
 		return $groupSyncService;
 	}
 }

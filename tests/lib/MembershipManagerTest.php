@@ -271,19 +271,19 @@ class MembershipManagerTest extends TestCase {
 		$accounts = $this->manager->getGroupMemberAccounts($group->getGroupId(), MembershipManager::MEMBERSHIP_TYPE_GROUP_ADMIN);
 		$this->checkConsistencyAccount($accounts[0], $accountId);
 
-		$accounts = $this->manager->getGroupMembershipsByType($group->getId(),
+		$accounts = $this->manager->getGroupMembershipsByType($group->getGroupId(),
 			MembershipManager::MEMBERSHIP_TYPE_GROUP_ADMIN, MembershipManager::MAINTENANCE_TYPE_MANUAL);
 		$this->checkConsistencyAccount($accounts[0], $accountId);
 
-		$accounts = $this->manager->getGroupMembershipsByType($group->getId(),
+		$accounts = $this->manager->getGroupMembershipsByType($group->getGroupId(),
 			MembershipManager::MEMBERSHIP_TYPE_GROUP_USER, MembershipManager::MAINTENANCE_TYPE_MANUAL);
 		$this->checkConsistencyAccount($accounts[0], $accountId);
 
-		$accounts = $this->manager->getGroupMembershipsByType($group->getId(),
+		$accounts = $this->manager->getGroupMembershipsByType($group->getGroupId(),
 			MembershipManager::MEMBERSHIP_TYPE_GROUP_ADMIN, MembershipManager::MAINTENANCE_TYPE_SYNC);
 		$this->assertEmpty($accounts);
 
-		$accounts = $this->manager->getGroupMembershipsByType($group->getId(),
+		$accounts = $this->manager->getGroupMembershipsByType($group->getGroupId(),
 			MembershipManager::MEMBERSHIP_TYPE_GROUP_USER, MembershipManager::MAINTENANCE_TYPE_SYNC);
 		$this->assertEmpty($accounts);
 	}
@@ -611,7 +611,7 @@ class MembershipManagerTest extends TestCase {
 		$this->assertEquals(true, $result);
 		$result = $this->manager->isGroupMember($account->getUserId(), $group->getGroupId(), MembershipManager::MEMBERSHIP_TYPE_GROUP_USER);
 		$this->assertEquals(true, $result);
-		$result = $this->manager->isGroupMemberById($account->getId(), $group->getId(), MembershipManager::MEMBERSHIP_TYPE_GROUP_USER);
+		$result = $this->manager->isGroupMemberByType($account->getId(), $group->getId(), MembershipManager::MEMBERSHIP_TYPE_GROUP_USER, MembershipManager::MAINTENANCE_TYPE_MANUAL);
 		$this->assertEquals(true, $result);
 	}
 
@@ -637,7 +637,7 @@ class MembershipManagerTest extends TestCase {
 		$this->assertEquals(true, $result);
 		$result = $this->manager->isGroupMember($account->getUserId(), $group->getGroupId(), MembershipManager::MEMBERSHIP_TYPE_GROUP_USER);
 		$this->assertEquals(false, $result);
-		$result = $this->manager->isGroupMemberById($account->getId(), $group->getId(), MembershipManager::MEMBERSHIP_TYPE_GROUP_USER);
+		$result = $this->manager->isGroupMemberByType($account->getId(), $group->getId(), MembershipManager::MEMBERSHIP_TYPE_GROUP_USER, null);
 		$this->assertEquals(false, $result);
 	}
 
@@ -663,7 +663,7 @@ class MembershipManagerTest extends TestCase {
 		$this->assertEquals(false, $result);
 		$result = $this->manager->isGroupMember($account->getUserId(), $group->getGroupId(), MembershipManager::MEMBERSHIP_TYPE_GROUP_USER);
 		$this->assertEquals(true, $result);
-		$result = $this->manager->isGroupMemberById($account->getId(), $group->getId(), MembershipManager::MEMBERSHIP_TYPE_GROUP_USER);
+		$result = $this->manager->isGroupMemberByType($account->getId(), $group->getId(), MembershipManager::MEMBERSHIP_TYPE_GROUP_USER, null);
 		$this->assertEquals(true, $result);
 	}
 

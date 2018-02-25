@@ -90,19 +90,13 @@ class Manager extends PublicEmitter implements IGroupManager {
 
 	/** @var GroupMapper */
 	private $groupMapper;
-
-	/** @var IDBConnection */
-	private $db;
-
 	/**
 	 * @param UserManager $userManager
 	 * @param MembershipManager $membershipManager
 	 * @param GroupMapper $groupMapper
 	 * @param SyncService $syncService
-	 * @param IDBConnection $db
 	 */
-	public function __construct(UserManager $userManager, MembershipManager $membershipManager, GroupMapper $groupMapper, SyncService $syncService, \OCP\IDBConnection $db) {
-		$this->db = $db;
+	public function __construct(UserManager $userManager, MembershipManager $membershipManager, GroupMapper $groupMapper, SyncService $syncService) {
 		$this->userManager = $userManager;
 		$this->groupMapper = $groupMapper;
 		$this->membershipManager = $membershipManager;
@@ -195,10 +189,6 @@ class Manager extends PublicEmitter implements IGroupManager {
 	public function createGroup($gid) {
 		if (!$this->isValid($gid)) {
 			return null;
-		}
-
-		if (empty($this->backends)) {
-			$this->addBackend(new Database($this->db));
 		}
 
 		$this->emit('\OC\Group', 'preCreate', [$gid]);

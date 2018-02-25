@@ -117,28 +117,63 @@ class MemoryMembershipManager extends MembershipManager {
 	}
 
 	/**
-	 * @param int $backendGroupId
+	 * @param string $gid
 	 * @param int $membershipType - type of membership in the group (0 - MEMBERSHIP_TYPE_GROUP_USER, 1 - MEMBERSHIP_TYPE_GROUP_ADMIN)
 	 * @param int $maintenanceType - defines how membership is maintained (0 - MANUAL, 1 - SYNC)
 	 *
 	 * @return Account[]
 	 * @throws \Exception
 	 */
-	public function getGroupMembershipsByType($backendGroupId, $membershipType, $maintenanceType) {
+	public function getGroupMembershipsByType($gid, $membershipType, $maintenanceType) {
 		if ($membershipType === MembershipManager::MEMBERSHIP_TYPE_GROUP_USER) {
-			if (!isset(self::$groupUsers[$backendGroupId])) {
-				return [];
-			}
-
-			$accounts = [];
-			$accountIds = self::$groupUsers[$backendGroupId];
-			foreach($accountIds as $accountId => $value) {
-				if ($value === $maintenanceType) {
-					$accounts[] = $this->getAccountByInternalId($accountId);
+			if ($backendGroup = \OC::$server->getGroupManager()->getBackendGroupObject($gid)) {
+				$backendGroupId = $backendGroup->getId();
+				if (!isset(self::$groupUsers[$backendGroupId])) {
+					return [];
 				}
+
+				$accounts = [];
+				$accountIds = self::$groupUsers[$backendGroupId];
+				foreach($accountIds as $accountId => $value) {
+					if ($value === $maintenanceType) {
+						$accounts[] = $this->getAccountByInternalId($accountId);
+					}
+				}
+
+				return $accounts;
 			}
 
-			return $accounts;
+			return [];
+		} else {
+			throw new \Exception('Not implemented - MEMBERSHIP_TYPE_GROUP_ADMIN');
+		}
+	}
+
+	/**
+	 * Return backend group entities for given user (identified by user's uid)
+	 *
+	 * @param string $userId
+	 * @param int $membershipType - type of membership in the group (0 - MEMBERSHIP_TYPE_GROUP_USER, 1 - MEMBERSHIP_TYPE_GROUP_ADMIN)
+	 * @param int|null $maintenanceType - defines how membership is maintained (0 - MANUAL, 1 - SYNC)
+	 *
+	 * @return BackendGroup[]
+	 */
+	public function getMemberBackendGroupsByType($userId, $membershipType, $maintenanceType) {
+		if ($membershipType === MembershipManager::MEMBERSHIP_TYPE_GROUP_USER) {
+			if ($user = \OC::$server->getUserManager()->get($userId)) {
+				$accountId = \OC::$server->getUserManager()->getAccountObject($user)->getId();
+				$groups = [];
+				foreach (self::$groupUsers as $key => $value) {
+					if (isset(self::$groupUsers[$key][$accountId])) {
+						if ($value[$accountId] === $maintenanceType) {
+							$groups[] = $this->getBackendGroupByInternalId($key);
+						}
+					}
+				}
+				return $groups;
+			}
+
+			return [];
 		} else {
 			throw new \Exception('Not implemented - MEMBERSHIP_TYPE_GROUP_ADMIN');
 		}
@@ -160,13 +195,18 @@ class MemoryMembershipManager extends MembershipManager {
 	 * @param int $accountId
 	 * @param int $backendGroupId
 	 * @param int $membershipType - type of membership in the group (0 - MEMBERSHIP_TYPE_GROUP_USER, 1 - MEMBERSHIP_TYPE_GROUP_ADMIN)
+	 * @param int|null $maintenanceType - defines how membership is maintained (0 - MANUAL, 1 - SYNC)
 	 *
 	 * @return boolean
 	 * @throws \Exception
 	 */
-	public function isGroupMemberById($accountId, $backendGroupId, $membershipType) {
+	public function isGroupMemberByType($accountId, $backendGroupId, $membershipType, $maintenanceType) {
 		if ($membershipType === MembershipManager::MEMBERSHIP_TYPE_GROUP_ADMIN) {
 			throw new \Exception('Not implemented - MEMBERSHIP_TYPE_GROUP_ADMIN');
+		}
+
+		if ($membershipType != null) {
+			throw new \Exception('Not implemented - $maintenanceType');
 		}
 
 		foreach (self::$groupUsers as $key => $value) {

@@ -25,6 +25,7 @@ namespace OCA\Files\Tests\Command;
 use OCA\Files\Command\Scan;
 use Symfony\Component\Console\Tester\CommandTester;
 use Test\TestCase;
+use Test\Traits\GroupTrait;
 use Test\Traits\UserTrait;
 use OCP\IUserManager;
 use OCP\IConfig;
@@ -43,6 +44,7 @@ use OCP\ILogger;
  */
 class ScanTest extends TestCase {
 	use UserTrait;
+	use GroupTrait;
 
 	/**
 	 * @var IDBConnection
@@ -89,11 +91,6 @@ class ScanTest extends TestCase {
 	 */
 	private $commandTester;
 
-	/**
-	 * @var string[]
-	 */
-	private $groupsCreated = [];
-
 	protected function setUp() {
 		if (getenv('RUN_OBJECTSTORE_TESTS')) {
 			$this->markTestSkipped('not testing scanner as it does not make sense for primary object store');
@@ -122,20 +119,12 @@ class ScanTest extends TestCase {
 
 		$user1 = $this->createUser('user1');
 		$this->createUser('user2');
-		$this->groupManager->createGroup('group1');
+		$this->createGroup('group1');
 		$this->groupManager->get('group1')->addUser($user1);
-		$this->groupsCreated[] = 'group1';
 
 		$this->dataDir = \OC::$server->getConfig()->getSystemValue('datadirectory', \OC::$SERVERROOT . '/data-autotest');
 
 		@mkdir($this->dataDir . '/' . $this->scanUser1->getUID() . '/files/toscan', 0777, true);
-	}
-
-	protected function tearDown() {
-		foreach ($this->groupsCreated as $group) {
-			$this->groupManager->get($group)->delete();
-		}
-		parent::tearDown();
 	}
 
 	public function dataInput() {
@@ -205,21 +194,12 @@ class ScanTest extends TestCase {
 
 		$userCount = 1;
 		foreach ($groups as $group) {
-			if ($this->groupManager->groupExists($group) === false) {
-				$this->groupManager->createGroup($group);
-				$this->groupsCreated[] = $group;
-				for ($i = $userCount; $i <= ($userCount + 9); $i++) {
-					$j = $i - 1;
-					$this->groupManager->get($group)->addUser($userObj[$j]);
-				}
-				$userCount = $i;
-			} else {
-				for ($i = $userCount; $i <= ($userCount + 9); $i++) {
-					$j = $i - 1;
-					$this->groupManager->get($group)->addUser($userObj[$j]);
-				}
-				$userCount = $i;
+			$this->createGroup($group);
+			for ($i = $userCount; $i <= ($userCount + 9); $i++) {
+				$j = $i - 1;
+				$this->groupManager->get($group)->addUser($userObj[$j]);
 			}
+			$userCount = $i;
 		}
 
 		$this->commandTester->execute($input);
