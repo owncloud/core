@@ -865,6 +865,7 @@ class DefaultShareProvider implements IShareProvider {
 	 * @inheritdoc
 	 */
 	public function getAllSharedWith($userId, $node) {
+		// TODO: Optimize me after central group table please
 		// Create array of sharedWith objects (target user -> $userId or group of which user is a member
 		$user = $this->userManager->get($userId);
 
