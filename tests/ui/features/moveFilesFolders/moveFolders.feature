@@ -9,6 +9,10 @@ So that I can organise my data structure
 		And I am logged in as a regular user
 		And I am on the files page
 
+	Scenario: An attempt to move a folder into a sub-folder using rename is not allowed
+		When I rename the folder "simple-empty-folder" to "simple-folder/simple-empty-folder"
+		Then near the folder "simple-empty-folder" a tooltip with the text 'File name cannot contain "/".' should be displayed
+
 	@skipOnFIREFOX47+
 	Scenario: move a folder into another folder
 		When I move the folder "simple-folder" into the folder "simple-empty-folder"
