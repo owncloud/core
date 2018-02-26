@@ -25,7 +25,7 @@ namespace OCP\Notification\Exceptions;
  * Class NotifierIdInUseException
  *
  * @package OCP\Notification\Exceptions
- * @since 10.0.7
+ * @since 10.0.8
  */
 class NotifierIdInUseException extends \Exception {
 }
