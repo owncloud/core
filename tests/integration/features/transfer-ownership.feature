@@ -274,3 +274,11 @@ Feature: transfer-ownership
 		When the administrator transfers ownership of path "test" from "user0" to "user1" using the occ command
 		Then the command output should contain the text "Unknown path provided"
 		And the command should have failed with exit code 1
+
+	Scenario: transferring ownership fails with empty files
+		Given user "user0" has been created
+		And user "user1" has been created
+		And user "user0" deletes everything from folder "/" using the API
+		When the administrator transfers ownership from "user0" to "user1" using the occ command
+		Then the command output should contain the text "No files/folders to transfer"
+		And the command should have failed with exit code 1
