@@ -36,6 +36,7 @@ use OCP\Share\Exceptions\ShareNotFound;
 use OCP\Share\IProviderFactory;
 use OCP\Share\IShare;
 use OCP\Share\IShareProvider;
+use Symfony\Component\EventDispatcher\GenericEvent;
 
 /**
  * Class ManagerTest
@@ -231,7 +232,26 @@ class ManagerTest extends \Test\TestCase {
 			->method('post')
 			->with($hookListnerExpectsPost);
 
+		$calledBeforeDeleteEvent = [];
+		$calledAfterDeleteEvent = [];
+
+		\OC::$server->getEventDispatcher()->addListener('file.beforeunshare',
+			function (GenericEvent $event) use (&$calledBeforeDeleteEvent) {
+			$calledBeforeDeleteEvent[] = 'file.beforeunshare';
+			$calledBeforeDeleteEvent[] = $event;
+		});
+		\OC::$server->getEventDispatcher()->addListener('file.afterunshare',
+			function (GenericEvent $event) use (&$calledAfterDeleteEvent) {
+			$calledAfterDeleteEvent[] = 'file.afterunshare';
+			$calledAfterDeleteEvent[] = $event;
+		});
 		$manager->deleteShare($share);
+
+		$this->assertInstanceOf(GenericEvent::class, $calledBeforeDeleteEvent[1]);
+		$this->assertInstanceOf(GenericEvent::class, $calledAfterDeleteEvent[1]);
+		$this->assertEquals('file.beforeunshare', $calledBeforeDeleteEvent[0]);
+		$this->assertEquals('file.afterunshare', $calledAfterDeleteEvent[0]);
+		$this->assertArrayHasKey('share', $calledAfterDeleteEvent[1]);
 	}
 
 	public function testDeleteLazyShare() {
@@ -310,7 +330,25 @@ class ManagerTest extends \Test\TestCase {
 			->method('post')
 			->with($hookListnerExpectsPost);
 
+		$calledBeforeDeleteEvent = [];
+		$calledAfterDeleteEvent = [];
+		\OC::$server->getEventDispatcher()->addListener('file.beforeunshare',
+			function (GenericEvent $event) use (&$calledBeforeDeleteEvent) {
+				$calledBeforeDeleteEvent[] = 'file.beforeunshare';
+				$calledBeforeDeleteEvent[] = $event;
+		});
+		\OC::$server->getEventDispatcher()->addListener('file.afterunshare',
+			function (GenericEvent $event) use (&$calledAfterDeleteEvent) {
+				$calledAfterDeleteEvent[] = 'file.afterunshare';
+				$calledAfterDeleteEvent[] = $event;
+		});
 		$manager->deleteShare($share);
+
+		$this->assertInstanceOf(GenericEvent::class, $calledBeforeDeleteEvent[1]);
+		$this->assertInstanceOf(GenericEvent::class, $calledAfterDeleteEvent[1]);
+		$this->assertEquals('file.afterunshare', $calledAfterDeleteEvent[0]);
+		$this->assertEquals('file.beforeunshare', $calledBeforeDeleteEvent[0]);
+		$this->assertArrayHasKey('share', $calledAfterDeleteEvent[1]);
 	}
 
 	public function testDeleteNested() {
@@ -433,7 +471,25 @@ class ManagerTest extends \Test\TestCase {
 			->method('post')
 			->with($hookListnerExpectsPost);
 
+		$calledBeforeDeleteEvent = [];
+		$calledAfterDeleteEvent = [];
+		\OC::$server->getEventDispatcher()->addListener('file.beforeunshare',
+			function (GenericEvent $event) use (&$calledBeforeDeleteEvent) {
+				$calledBeforeDeleteEvent[] = 'file.beforeunshare';
+				$calledBeforeDeleteEvent[] = $event;
+			});
+		\OC::$server->getEventDispatcher()->addListener('file.afterunshare',
+			function (GenericEvent $event) use (&$calledAfterDeleteEvent) {
+				$calledAfterDeleteEvent[] = 'file.afterunshare';
+				$calledAfterDeleteEvent[] = $event;
+			});
 		$manager->deleteShare($share1);
+
+		$this->assertInstanceOf(GenericEvent::class, $calledBeforeDeleteEvent[1]);
+		$this->assertInstanceOf(GenericEvent::class, $calledAfterDeleteEvent[1]);
+		$this->assertEquals('file.afterunshare', $calledAfterDeleteEvent[0]);
+		$this->assertEquals('file.beforeunshare', $calledBeforeDeleteEvent[0]);
+		$this->assertArrayHasKey('share', $calledAfterDeleteEvent[1]);
 	}
 
 	public function testDeleteChildren() {
@@ -1662,7 +1718,27 @@ class ManagerTest extends \Test\TestCase {
 			->method('setTarget')
 			->with('/target');
 
+		$calledBeforeCreateEvent = [];
+		$calledAfterCreateEvent = [];
+		\OC::$server->getEventDispatcher()->addListener('file.beforeshare',
+			function (GenericEvent $event) use (&$calledBeforeCreateEvent) {
+				$calledBeforeCreateEvent[] = 'file.beforeshare';
+				$calledBeforeCreateEvent[] = $event;
+		});
+		\OC::$server->getEventDispatcher()->addListener('file.aftershare',
+			function (GenericEvent $event) use (&$calledAfterCreateEvent) {
+				$calledAfterCreateEvent[] = 'file.aftershare';
+				$calledAfterCreateEvent[] = $event;
+		});
+
 		$manager->createShare($share);
+
+		$this->assertInstanceOf(GenericEvent::class, $calledBeforeCreateEvent[1]);
+		$this->assertInstanceOf(GenericEvent::class, $calledAfterCreateEvent[1]);
+		$this->assertArrayHasKey('sharedata', $calledBeforeCreateEvent[1]);
+		$this->assertArrayHasKey('sharedata', $calledAfterCreateEvent[1]);
+		$this->assertEquals('file.beforeshare', $calledBeforeCreateEvent[0]);
+		$this->assertEquals('file.aftershare', $calledAfterCreateEvent[0]);
 	}
 
 	public function testCreateShareGroup() {
@@ -1715,7 +1791,27 @@ class ManagerTest extends \Test\TestCase {
 			->method('setTarget')
 			->with('/target');
 
+		$calledBeforeCreateEvent = [];
+		$calledAfterCreateEvent = [];
+		\OC::$server->getEventDispatcher()->addListener('file.beforeshare',
+			function (GenericEvent $event) use (&$calledBeforeCreateEvent) {
+				$calledBeforeCreateEvent[] = 'file.beforeshare';
+				$calledBeforeCreateEvent[] = $event;
+			});
+		\OC::$server->getEventDispatcher()->addListener('file.aftershare',
+			function (GenericEvent $event) use (&$calledAfterCreateEvent) {
+				$calledAfterCreateEvent[] = 'file.aftershare';
+				$calledAfterCreateEvent[] = $event;
+			});
+
 		$manager->createShare($share);
+
+		$this->assertInstanceOf(GenericEvent::class, $calledBeforeCreateEvent[1]);
+		$this->assertInstanceOf(GenericEvent::class, $calledAfterCreateEvent[1]);
+		$this->assertArrayHasKey('sharedata', $calledBeforeCreateEvent[1]);
+		$this->assertArrayHasKey('sharedata', $calledAfterCreateEvent[1]);
+		$this->assertEquals('file.beforeshare', $calledBeforeCreateEvent[0]);
+		$this->assertEquals('file.aftershare', $calledAfterCreateEvent[0]);
 	}
 
 	public function testCreateShareLink() {
@@ -1978,7 +2074,27 @@ class ManagerTest extends \Test\TestCase {
 			->method('setTarget')
 			->with('/target');
 
+		$calledBeforeCreateEvent = [];
+		$calledAfterCreateEvent = [];
+		\OC::$server->getEventDispatcher()->addListener('file.beforeshare',
+			function (GenericEvent $event) use (&$calledBeforeCreateEvent) {
+				$calledBeforeCreateEvent[] = 'file.beforeshare';
+				$calledBeforeCreateEvent[] = $event;
+			});
+		\OC::$server->getEventDispatcher()->addListener('file.aftershare',
+			function (GenericEvent $event) use (&$calledAfterCreateEvent) {
+				$calledAfterCreateEvent[] = 'file.aftershare';
+				$calledAfterCreateEvent[] = $event;
+			});
+
 		$manager->createShare($share);
+
+		$this->assertInstanceOf(GenericEvent::class, $calledBeforeCreateEvent[1]);
+		$this->assertInstanceOf(GenericEvent::class, $calledAfterCreateEvent[1]);
+		$this->assertArrayHasKey('sharedata', $calledBeforeCreateEvent[1]);
+		$this->assertArrayHasKey('sharedata', $calledAfterCreateEvent[1]);
+		$this->assertEquals('file.beforeshare', $calledBeforeCreateEvent[0]);
+		$this->assertEquals('file.aftershare', $calledAfterCreateEvent[0]);
 	}
 
 	public function testGetAllSharesBy() {

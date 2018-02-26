@@ -45,6 +45,7 @@ use OC\Files\Filesystem;
 use OC\Group\Group;
 use OCA\FederatedFileSharing\DiscoveryManager;
 use OCP\DB\QueryBuilder\IQueryBuilder;
+use OCP\Events\EventEmitterTrait;
 use OCP\IUser;
 use OCP\IUserSession;
 use OCP\IDBConnection;
@@ -59,6 +60,8 @@ use Symfony\Component\EventDispatcher\GenericEvent;
  *  - post_shared
  */
 class Share extends Constants {
+
+	use EventEmitterTrait;
 
 	/** CRUDS permissions (Create, Read, Update, Delete, Share) using a bitmask
 	 * Construct permissions for share() and setPermissions with Or (|) e.g.
@@ -996,12 +999,17 @@ class Share extends Constants {
 				'itemSource' => $itemSource,
 				'shares' => $shares,
 			];
-			\OC_Hook::emit('OCP\Share', 'pre_unshareAll', $hookParams);
-			foreach ($shares as $share) {
-				self::unshareItem($share);
-			}
-			\OC_Hook::emit('OCP\Share', 'post_unshareAll', $hookParams);
-			return true;
+			return (new self)->emittingCall(function () use (&$hookParams, $shares) {
+				\OC_Hook::emit('OCP\Share', 'pre_unshareAll', $hookParams);
+				foreach ($shares as $share) {
+					self::unshareItem($share);
+				}
+				\OC_Hook::emit('OCP\Share', 'post_unshareAll', $hookParams);
+				return true;
+			}, [
+				'before' => ['share' => $hookParams],
+				'after' => ['share' => $hookParams]],
+				'file', 'unshareAll');
 		}
 		return false;
 	}
@@ -1532,11 +1540,17 @@ class Share extends Constants {
 			$hookParams['fileTarget'] = $item['file_target'];
 		}
 
-		\OC_Hook::emit('OCP\Share', 'pre_unshare', $hookParams);
-		$deletedShares = Helper::delete($item['id'], false, null, $newParent);
-		$deletedShares[] = $hookParams;
-		$hookParams['deletedShares'] = $deletedShares;
-		\OC_Hook::emit('OCP\Share', 'post_unshare', $hookParams);
+		(new self)->emittingCall(function () use (&$hookParams, &$item, &$newParent) {
+			\OC_Hook::emit('OCP\Share', 'pre_unshare', $hookParams);
+			$deletedShares = Helper::delete($item['id'], false, null, $newParent);
+			$deletedShares[] = $hookParams;
+			$hookParams['deletedShares'] = $deletedShares;
+			\OC_Hook::emit('OCP\Share', 'post_unshare', $hookParams);
+			return true;
+		}, [
+			'before' => ['share' => $hookParams],
+			'after' => ['share' => &$hookParams],
+		], 'file', 'unshare');
 		if ((int)$item['share_type'] === \OCP\Share::SHARE_TYPE_REMOTE && \OC::$server->getUserSession()->getUser()) {
 			list(, $remote) = Helper::splitUserRemote($item['share_with']);
 			self::sendRemoteUnshare($remote, $item['id'], $item['token']);
@@ -2223,118 +2237,128 @@ class Share extends Constants {
 			throw new \Exception($error);
 		}
 
-		foreach ($users as $user) {
-			$sourceId = ($itemType === 'file' || $itemType === 'folder') ? $fileSource : $itemSource;
-			$sourceExists = self::getItemSharedWithBySource($itemType, $sourceId, self::FORMAT_NONE, null, true, $user);
+		$postHookData = [];
+		return (new self)->emittingCall(function () use (&$preHookData, &$users, &$itemType,
+			&$isGroupShare, &$groupItemTarget, &$fileSource, &$itemSource,
+			&$shareType, &$uidOwner, &$suggestedItemTarget, &$parent,
+			&$parentFolder, &$suggestedFileTarget,
+			&$filePath, &$groupFileTarget, &$permissions, &$expirationDate,
+			&$token, &$shareWith, &$queriesToExecute, &$postHookData) {
+			foreach ($users as $user) {
+				$sourceId = ($itemType === 'file' || $itemType === 'folder') ? $fileSource : $itemSource;
+				$sourceExists = self::getItemSharedWithBySource($itemType, $sourceId, self::FORMAT_NONE, null, true, $user);
 
-			$userShareType = ($isGroupShare) ? self::$shareTypeGroupUserUnique : $shareType;
+				$userShareType = ($isGroupShare) ? self::$shareTypeGroupUserUnique : $shareType;
 
-			if ($sourceExists && $sourceExists['item_source'] === $itemSource) {
-				$fileTarget = $sourceExists['file_target'];
-				$itemTarget = $sourceExists['item_target'];
+				if ($sourceExists && $sourceExists['item_source'] === $itemSource) {
+					$fileTarget = $sourceExists['file_target'];
+					$itemTarget = $sourceExists['item_target'];
 
-				// for group shares we don't need a additional entry if the target is the same
-				if($isGroupShare && $groupItemTarget === $itemTarget) {
-					continue;
-				}
+					// for group shares we don't need a additional entry if the target is the same
+					if($isGroupShare && $groupItemTarget === $itemTarget) {
+						continue;
+					}
 
-			} elseif(!$sourceExists && !$isGroupShare)  {
+				} elseif(!$sourceExists && !$isGroupShare)  {
 
-				$itemTarget = Helper::generateTarget($itemType, $itemSource, $userShareType, $user,
-					$uidOwner, $suggestedItemTarget, $parent);
-				if (isset($fileSource)) {
-					if ($parentFolder) {
-						if ($parentFolder === true) {
-							$fileTarget = Helper::generateTarget('file', $filePath, $userShareType, $user,
-								$uidOwner, $suggestedFileTarget, $parent);
-							if ($fileTarget != $groupFileTarget) {
-								$parentFolders[$user]['folder'] = $fileTarget;
+					$itemTarget = Helper::generateTarget($itemType, $itemSource, $userShareType, $user,
+						$uidOwner, $suggestedItemTarget, $parent);
+					if (isset($fileSource)) {
+						if ($parentFolder) {
+							if ($parentFolder === true) {
+								$fileTarget = Helper::generateTarget('file', $filePath, $userShareType, $user,
+									$uidOwner, $suggestedFileTarget, $parent);
+								if ($fileTarget != $groupFileTarget) {
+									$parentFolders[$user]['folder'] = $fileTarget;
+								}
+							} else if (isset($parentFolder[$user])) {
+								$fileTarget = $parentFolder[$user]['folder'].$itemSource;
+								$parent = $parentFolder[$user]['id'];
 							}
-						} else if (isset($parentFolder[$user])) {
-							$fileTarget = $parentFolder[$user]['folder'].$itemSource;
-							$parent = $parentFolder[$user]['id'];
+						} else {
+							$fileTarget = Helper::generateTarget('file', $filePath, $userShareType,
+								$user, $uidOwner, $suggestedFileTarget, $parent);
 						}
 					} else {
-						$fileTarget = Helper::generateTarget('file', $filePath, $userShareType,
-							$user, $uidOwner, $suggestedFileTarget, $parent);
+						$fileTarget = null;
 					}
+
 				} else {
-					$fileTarget = null;
+
+					// group share which doesn't exists until now, check if we need a unique target for this user
+
+					$itemTarget = Helper::generateTarget($itemType, $itemSource, self::SHARE_TYPE_USER, $user,
+						$uidOwner, $suggestedItemTarget, $parent);
+
+					// do we also need a file target
+					if (isset($fileSource)) {
+						$fileTarget = Helper::generateTarget('file', $filePath, self::SHARE_TYPE_USER, $user,
+							$uidOwner, $suggestedFileTarget, $parent);
+					} else {
+						$fileTarget = null;
+					}
+
+					if (($itemTarget === $groupItemTarget) &&
+						(!isset($fileSource) || $fileTarget === $groupFileTarget)) {
+						continue;
+					}
 				}
 
-			} else {
+				$queriesToExecute[] = [
+					'itemType'			=> $itemType,
+					'itemSource'		=> $itemSource,
+					'itemTarget'		=> $itemTarget,
+					'shareType'			=> $userShareType,
+					'shareWith'			=> $user,
+					'uidOwner'			=> $uidOwner,
+					'permissions'		=> $permissions,
+					'shareTime'			=> time(),
+					'fileSource'		=> $fileSource,
+					'fileTarget'		=> $fileTarget,
+					'token'				=> $token,
+					'parent'			=> $parent,
+					'expiration'		=> $expirationDate,
+				];
 
-				// group share which doesn't exists until now, check if we need a unique target for this user
-
-				$itemTarget = Helper::generateTarget($itemType, $itemSource, self::SHARE_TYPE_USER, $user,
-					$uidOwner, $suggestedItemTarget, $parent);
-
-				// do we also need a file target
-				if (isset($fileSource)) {
-					$fileTarget = Helper::generateTarget('file', $filePath, self::SHARE_TYPE_USER, $user,
-						$uidOwner, $suggestedFileTarget, $parent);
-				} else {
-					$fileTarget = null;
-				}
-
-				if (($itemTarget === $groupItemTarget) &&
-					(!isset($fileSource) || $fileTarget === $groupFileTarget)) {
-					continue;
-				}
 			}
 
-			$queriesToExecute[] = [
-				'itemType'			=> $itemType,
-				'itemSource'		=> $itemSource,
-				'itemTarget'		=> $itemTarget,
-				'shareType'			=> $userShareType,
-				'shareWith'			=> $user,
-				'uidOwner'			=> $uidOwner,
-				'permissions'		=> $permissions,
-				'shareTime'			=> time(),
-				'fileSource'		=> $fileSource,
-				'fileTarget'		=> $fileTarget,
-				'token'				=> $token,
-				'parent'			=> $parent,
-				'expiration'		=> $expirationDate,
+			$id = false;
+			if ($isGroupShare) {
+				$id = self::insertShare($queriesToExecute['groupShare']);
+				// Save this id, any extra rows for this group share will need to reference it
+				$parent = \OC::$server->getDatabaseConnection()->lastInsertId('*PREFIX*share');
+				unset($queriesToExecute['groupShare']);
+			}
+
+			foreach ($queriesToExecute as $shareQuery) {
+				$shareQuery['parent'] = $parent;
+				$id = self::insertShare($shareQuery);
+			}
+
+			$postHookData = [
+				'itemType' => $itemType,
+				'itemSource' => $itemSource,
+				'parent' => $parent,
+				'shareType' => $shareType,
+				'uidOwner' => $uidOwner,
+				'permissions' => $permissions,
+				'fileSource' => $fileSource,
+				'id' => $parent,
+				'token' => $token,
+				'expirationDate' => $expirationDate,
 			];
 
-		}
+			$postHookData['shareWith'] = ($isGroupShare) ? $shareWith['group'] : $shareWith;
+			$postHookData['itemTarget'] = ($isGroupShare) ? $groupItemTarget : $itemTarget;
+			$postHookData['fileTarget'] = ($isGroupShare) ? $groupFileTarget : $fileTarget;
 
-		$id = false;
-		if ($isGroupShare) {
-			$id = self::insertShare($queriesToExecute['groupShare']);
-			// Save this id, any extra rows for this group share will need to reference it
-			$parent = \OC::$server->getDatabaseConnection()->lastInsertId('*PREFIX*share');
-			unset($queriesToExecute['groupShare']);
-		}
+			\OC_Hook::emit('OCP\Share', 'post_shared', $postHookData);
 
-		foreach ($queriesToExecute as $shareQuery) {
-			$shareQuery['parent'] = $parent;
-			$id = self::insertShare($shareQuery);
-		}
-
-		$postHookData = [
-			'itemType' => $itemType,
-			'itemSource' => $itemSource,
-			'parent' => $parent,
-			'shareType' => $shareType,
-			'uidOwner' => $uidOwner,
-			'permissions' => $permissions,
-			'fileSource' => $fileSource,
-			'id' => $parent,
-			'token' => $token,
-			'expirationDate' => $expirationDate,
-		];
-
-		$postHookData['shareWith'] = ($isGroupShare) ? $shareWith['group'] : $shareWith;
-		$postHookData['itemTarget'] = ($isGroupShare) ? $groupItemTarget : $itemTarget;
-		$postHookData['fileTarget'] = ($isGroupShare) ? $groupFileTarget : $fileTarget;
-
-		\OC_Hook::emit('OCP\Share', 'post_shared', $postHookData);
-
-
-		return $id ? $id : false;
+			return $id ? $id : false;
+		}, [
+			'before' => ['sharedata' => $preHookData],
+			'after' => ['sharedata' => &$postHookData]
+		], 'file', 'share');
 	}
 
 	/**

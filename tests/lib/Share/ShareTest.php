@@ -21,6 +21,7 @@
 
 namespace Test\Share;
 
+use Symfony\Component\EventDispatcher\GenericEvent;
 use Test\Traits\UserTrait;
 
 /**
@@ -282,12 +283,51 @@ class ShareTest extends \Test\TestCase {
 			$this->assertEquals($message, $exception->getMessage());
 		}
 
+		$calledBeforeUnshareEvent = [];
+		$calledAfterUnshareEvent = [];
+		\OC::$server->getEventDispatcher()->addListener('file.beforeunshare',
+			function (GenericEvent $event) use (&$calledBeforeUnshareEvent) {
+				$calledBeforeUnshareEvent[] = 'file.beforeunshare';
+				$calledBeforeUnshareEvent[] = $event;
+		});
+		\OC::$server->getEventDispatcher()->addListener('file.afterunshare',
+			function (GenericEvent $event) use (&$calledAfterUnshareEvent) {
+				$calledAfterUnshareEvent[] = 'file.afterunshare';
+				$calledAfterUnshareEvent[] = $event;
+		});
+
 		// Unshare
 		\OC_User::setUserId($this->user1);
 		$this->assertTrue(\OCP\Share::unshare('test', 'test.txt', \OCP\Share::SHARE_TYPE_USER, $this->user2));
+		$this->assertInstanceOf(GenericEvent::class, $calledBeforeUnshareEvent[1]);
+		$this->assertInstanceOf(GenericEvent::class, $calledAfterUnshareEvent[1]);
+		$this->assertArrayHasKey('share', $calledBeforeUnshareEvent[1]);
+		$this->assertArrayHasKey('share', $calledAfterUnshareEvent[1]);
+		$this->assertEquals('file.beforeunshare', $calledBeforeUnshareEvent[0]);
+		$this->assertEquals('file.afterunshare', $calledAfterUnshareEvent[0]);
+		$this->assertArrayHasKey('deletedShares', $calledAfterUnshareEvent[1]->getArgument('share'));
+
+		$calledBeforeSharedEvent = [];
+		$calledAfterSharedEvent = [];
+		\OC::$server->getEventDispatcher()->addListener('file.beforeshare',
+			function (GenericEvent $event) use (&$calledBeforeSharedEvent) {
+				$calledBeforeSharedEvent[] = 'file.beforeshare';
+				$calledBeforeSharedEvent[] = $event;
+		});
+		\OC::$server->getEventDispatcher()->addListener('file.aftershare',
+			function (GenericEvent $event) use (&$calledAfterSharedEvent) {
+				$calledAfterSharedEvent[] = 'file.aftershare';
+				$calledAfterSharedEvent[] = $event;
+		});
 
 		// Attempt reshare without share permission
 		$this->assertTrue(\OCP\Share::shareItem('test', 'test.txt', \OCP\Share::SHARE_TYPE_USER, $this->user2, \OCP\Constants::PERMISSION_READ));
+		$this->assertInstanceOf(GenericEvent::class, $calledBeforeSharedEvent[1]);
+		$this->assertInstanceOf(GenericEvent::class, $calledAfterSharedEvent[1]);
+		$this->assertEquals('file.beforeshare', $calledBeforeSharedEvent[0]);
+		$this->assertEquals('file.aftershare', $calledAfterSharedEvent[0]);
+		$this->assertArrayHasKey('sharedata', $calledBeforeSharedEvent[1]);
+		$this->assertArrayHasKey('sharedata', $calledAfterSharedEvent[1]);
 		\OC_User::setUserId($this->user2);
 		$message = 'Sharing test.txt failed, because resharing is not allowed';
 		try {
@@ -568,8 +608,28 @@ class ShareTest extends \Test\TestCase {
 		$this->assertEquals([], \OCP\Share::getItemSharedWith('test', 'test.txt', Backend::FORMAT_SOURCE),
 				'User2 sees test.txt but it was only shared with the user "groupAndUser" and not with group');
 
+		$calledBeforeUnshareAllEvent = [];
+		$calledAfterUnshareAllEvent = [];
+		\OC::$server->getEventDispatcher()->addListener('file.beforeunshareAll',
+			function (GenericEvent $event) use (&$calledBeforeUnshareAllEvent) {
+				$calledBeforeUnshareAllEvent[] = 'file.beforeunshareAll';
+				$calledBeforeUnshareAllEvent[] = $event;
+		});
+		\OC::$server->getEventDispatcher()->addListener('file.afterunshareAll',
+			function (GenericEvent $event) use (&$calledAfterUnshareAllEvent) {
+				$calledAfterUnshareAllEvent[] = 'file.afterunshareAll';
+				$calledAfterUnshareAllEvent[] = $event;
+		});
+
 		\OC_User::setUserId($this->user1);
 		$this->assertTrue(\OCP\Share::unshareAll('test', 'test.txt'));
+
+		$this->assertInstanceOf(GenericEvent::class, $calledBeforeUnshareAllEvent[1]);
+		$this->assertInstanceOf(GenericEvent::class, $calledAfterUnshareAllEvent[1]);
+		$this->assertArrayHasKey('share', $calledBeforeUnshareAllEvent[1]);
+		$this->assertArrayHasKey('share', $calledAfterUnshareAllEvent[1]);
+		$this->assertEquals('file.beforeunshareAll', $calledBeforeUnshareAllEvent[0]);
+		$this->assertEquals('file.afterunshareAll', $calledAfterUnshareAllEvent[0]);
 
 		$this->assertTrue(
 				\OCP\Share::shareItem('test', 'test.txt', \OCP\Share::SHARE_TYPE_GROUP, $this->groupAndUser, \OCP\Constants::PERMISSION_READ),
@@ -1431,8 +1491,28 @@ class ShareTest extends \Test\TestCase {
 		$expireDate = new \DateTime($result['expiration']);
 		$this->assertEquals($date, $expireDate);
 
+		$calledBeforeUnshareEvent = [];
+		$calledAfterUnshareEvent = [];
+		\OC::$server->getEventDispatcher()->addListener('file.beforeunshare',
+			function (GenericEvent $event) use (&$calledBeforeUnshareEvent) {
+				$calledBeforeUnshareEvent[] = 'file.beforeunshare';
+				$calledBeforeUnshareEvent[] = $event;
+			});
+		\OC::$server->getEventDispatcher()->addListener('file.afterunshare',
+			function (GenericEvent $event) use (&$calledAfterUnshareEvent) {
+				$calledAfterUnshareEvent[] = 'file.afterunshare';
+				$calledAfterUnshareEvent[] = $event;
+			});
+
 		//Unshare
 		$this->assertTrue(\OCP\Share::unshareAll('test', 'test.txt'));
+		$this->assertInstanceOf(GenericEvent::class, $calledBeforeUnshareEvent[1]);
+		$this->assertInstanceOf(GenericEvent::class, $calledAfterUnshareEvent[1]);
+		$this->assertArrayHasKey('share', $calledBeforeUnshareEvent[1]);
+		$this->assertArrayHasKey('share', $calledAfterUnshareEvent[1]);
+		$this->assertEquals('file.beforeunshare', $calledBeforeUnshareEvent[0]);
+		$this->assertEquals('file.afterunshare', $calledAfterUnshareEvent[0]);
+		$this->assertArrayHasKey('deletedShares', $calledAfterUnshareEvent[1]->getArgument('share'));
 
 		//Reset config
 		$config->deleteAppValue('core', 'shareapi_default_expire_date');
@@ -1454,10 +1534,31 @@ class ShareTest extends \Test\TestCase {
 	public function testShareWithOwnerError() {
 		\OC_User::setUserId($this->user1);
 
+		$calledBeforeSharedEvent = [];
+		$calledAfterSharedEvent = [];
+		\OC::$server->getEventDispatcher()->addListener('file.beforeshare',
+			function (GenericEvent $event) use (&$calledBeforeSharedEvent) {
+				$calledBeforeSharedEvent[] = 'file.beforeshare';
+				$calledBeforeSharedEvent[] = $event;
+			});
+		\OC::$server->getEventDispatcher()->addListener('file.aftershare',
+			function (GenericEvent $event) use (&$calledAfterSharedEvent) {
+				$calledAfterSharedEvent[] = 'file.aftershare';
+				$calledAfterSharedEvent[] = $event;
+			});
+
 		$this->assertTrue(
 			\OCP\Share::shareItem('test', 'test.txt', \OCP\Share::SHARE_TYPE_USER, $this->user2, \OCP\Constants::PERMISSION_ALL),
 			'Failed asserting that user 1 successfully shared "test" with user 2.'
 		);
+		$this->assertInstanceOf(GenericEvent::class, $calledBeforeSharedEvent[1]);
+		$this->assertInstanceOf(GenericEvent::class, $calledAfterSharedEvent[1]);
+		$this->assertEquals('file.beforeshare', $calledBeforeSharedEvent[0]);
+		$this->assertEquals('file.aftershare', $calledAfterSharedEvent[0]);
+		$this->assertArrayHasKey('sharedata', $calledBeforeSharedEvent[1]);
+		$this->assertArrayHasKey('sharedata', $calledAfterSharedEvent[1]);
+		$this->assertArrayHasKey('itemType', $calledBeforeSharedEvent[1]->getArgument('sharedata'));
+		$this->assertArrayHasKey('itemType', $calledAfterSharedEvent[1]->getArgument('sharedata'));
 
 		\OC_User::setUserId($this->user2);
 		try {
