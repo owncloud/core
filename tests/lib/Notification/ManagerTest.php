@@ -23,19 +23,51 @@ namespace Test\Notification;
 
 use OC\Notification\Manager;
 use OCP\Notification\IManager;
+use OCP\Notification\IApp;
+use OCP\Notification\INotifier;
+use OCP\Notification\INotification;
+use OCP\Notification\Events\RegisterConsumerEvent;
+use OCP\Notification\Events\RegisterNotifierEvent;
+use OCP\Notification\Exceptions\NotifierIdInUseException;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Test\TestCase;
 
 class ManagerTest extends TestCase {
 	/** @var IManager */
 	protected $manager;
+	/** @var EventDispatcherInterface */
+	protected $eventDispatcher;
 
 	public function setUp() {
 		parent::setUp();
-		$this->manager = new Manager();
+
+		$eventMap = [];
+		$this->eventDispatcher = $this->getMockBuilder(EventDispatcherInterface::class)
+			->disableOriginalConstructor()
+			->getMock();
+		$this->eventDispatcher->method('addListener')
+			->will($this->returnCallback(function($eventName, $callable, $priority) use (&$eventMap){
+				if (!isset($eventMap[$eventName])) {
+					$eventMap[$eventName] = [];
+				}
+				// ignore priority for now
+				$eventMap[$eventName][] = $callable;
+		}));
+		$this->eventDispatcher->method('dispatch')
+			->will($this->returnCallback(function($eventName, $event) use (&$eventMap){
+				if (isset($eventMap[$eventName])) {
+					foreach ($eventMap[$eventName] as $callable) {
+						$callable($event);
+					}
+				}
+				return $event;
+		}));
+
+		$this->manager = new Manager($this->eventDispatcher);
 	}
 
 	public function testRegisterApp() {
-		$app = $this->getMockBuilder('OCP\Notification\IApp')
+		$app = $this->getMockBuilder(IApp::class)
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -59,7 +91,7 @@ class ManagerTest extends TestCase {
 	 * @expectedException \InvalidArgumentException
 	 */
 	public function testRegisterAppInvalid() {
-		$notifier = $this->getMockBuilder('OCP\Notification\INotifier')
+		$notifier = $this->getMockBuilder(INotifier::class)
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -72,8 +104,32 @@ class ManagerTest extends TestCase {
 		$this->invokePrivate($this->manager, 'getApps');
 	}
 
+	public function testRegisterAppNew() {
+		$app = $this->getMockBuilder(IApp::class)
+			->disableOriginalConstructor()
+			->getMock();
+
+		$callbackCalledCount = 0;
+		$this->eventDispatcher->addListener(RegisterConsumerEvent::NAME,
+				function(RegisterConsumerEvent $event) use ($app, &$callbackCalledCount){
+			$callbackCalledCount++;
+			$event->registerNotificationConsumer($app);
+		});
+
+		$apps = $this->invokePrivate($this->manager, 'getApps');
+		$this->assertEquals([$app], $apps);
+		$this->assertSame($app, $apps[0]);
+		$this->assertEquals(1, $callbackCalledCount);
+
+		// second call returns the same info and doesn't trigger the event again
+		$apps = $this->invokePrivate($this->manager, 'getApps');
+		$this->assertEquals([$app], $apps);
+		$this->assertSame($app, $apps[0]);
+		$this->assertEquals(1, $callbackCalledCount);
+	}
+
 	public function testRegisterNotifier() {
-		$notifier = $this->getMockBuilder('OCP\Notification\INotifier')
+		$notifier = $this->getMockBuilder(INotifier::class)
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -105,7 +161,7 @@ class ManagerTest extends TestCase {
 	 * @expectedException \InvalidArgumentException
 	 */
 	public function testRegisterNotifierInvalid() {
-		$app = $this->getMockBuilder('OCP\Notification\IApp')
+		$app = $this->getMockBuilder(IApp::class)
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -136,7 +192,7 @@ class ManagerTest extends TestCase {
 	 * @param mixed $data
 	 */
 	public function testRegisterNotifierInfoInvalid($data) {
-		$app = $this->getMockBuilder('OCP\Notification\IApp')
+		$app = $this->getMockBuilder(IApp::class)
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -156,7 +212,7 @@ class ManagerTest extends TestCase {
 	 * @expectedExceptionMessage The given notifier ID test1 is already in use
 	 */
 	public function testRegisterNotifierInfoDuplicate() {
-		$app = $this->getMockBuilder('OCP\Notification\IApp')
+		$app = $this->getMockBuilder(IApp::class)
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -175,14 +231,188 @@ class ManagerTest extends TestCase {
 		$this->manager->listNotifiers();
 	}
 
+	public function testRegisterNotifierNew() {
+		$notifier = $this->getMockBuilder(INotifier::class)
+			->disableOriginalConstructor()
+			->getMock();
+
+		$callbackCalledCount = 0;
+		$this->eventDispatcher->addListener(RegisterNotifierEvent::NAME,
+				function(RegisterNotifierEvent $event) use ($notifier, &$callbackCalledCount){
+			$callbackCalledCount++;
+			$event->registerNotifier($notifier, 'testid1', 'test app name');
+		});
+
+		$notifiers = $this->invokePrivate($this->manager, 'getNotifiers');
+		$this->assertEquals([$notifier], $notifiers);
+		$this->assertSame($notifier, $notifiers[0]);
+		$this->assertEquals(1, $callbackCalledCount);
+
+		// second call returns the same info and doesn't trigger the event again
+		$notifiers = $this->invokePrivate($this->manager, 'getNotifiers');
+		$this->assertEquals([$notifier], $notifiers);
+		$this->assertSame($notifier, $notifiers[0]);
+		$this->assertEquals(1, $callbackCalledCount);
+	}
+
+	public function testRegisterNotifierNewListingVersion() {
+		$notifier = $this->getMockBuilder(INotifier::class)
+			->disableOriginalConstructor()
+			->getMock();
+
+		$callbackCalledCount = 0;
+		$this->eventDispatcher->addListener(RegisterNotifierEvent::NAME,
+				function(RegisterNotifierEvent $event) use ($notifier, &$callbackCalledCount){
+			$callbackCalledCount++;
+			$event->registerNotifier($notifier, 'testid1', 'test app name');
+		});
+
+		$notifiersInfo = $this->manager->listNotifiers();
+		$this->assertEquals(['testid1' => 'test app name'], $notifiersInfo);
+		$this->assertEquals(1, $callbackCalledCount);
+
+		// second call returns the same info and doesn't trigger the event again
+		$notifiersInfo = $this->manager->listNotifiers();
+		$this->assertEquals(['testid1' => 'test app name'], $notifiersInfo);
+		$this->assertEquals(1, $callbackCalledCount);
+	}
+
+	public function testRegisterNotifierNewGetPlusList() {
+		$notifier = $this->getMockBuilder(INotifier::class)
+			->disableOriginalConstructor()
+			->getMock();
+
+		$callbackCalledCount = 0;
+		$this->eventDispatcher->addListener(RegisterNotifierEvent::NAME,
+				function(RegisterNotifierEvent $event) use ($notifier, &$callbackCalledCount){
+			$callbackCalledCount++;
+			$event->registerNotifier($notifier, 'testid1', 'test app name');
+		});
+
+		$notifiers = $this->invokePrivate($this->manager, 'getNotifiers');
+		$this->assertEquals([$notifier], $notifiers);
+		$this->assertSame($notifier, $notifiers[0]);
+		$this->assertEquals(1, $callbackCalledCount);
+
+		$notifiersInfo = $this->manager->listNotifiers();
+		$this->assertEquals(['testid1' => 'test app name'], $notifiersInfo);
+		$this->assertEquals(2, $callbackCalledCount);  // expected to trigger another event
+
+		$notifiers = $this->invokePrivate($this->manager, 'getNotifiers');
+		$this->assertEquals([$notifier], $notifiers);
+		$this->assertSame($notifier, $notifiers[0]);
+		$this->assertEquals(2, $callbackCalledCount);  // this second call should remain the same
+	}
+
+	/**
+	 * @expectedException \OCP\Notification\Exceptions\NotifierIdInUseException
+	 */
+	public function testRegisterNotifierNewDuplicatedId() {
+		$notifier = $this->getMockBuilder(INotifier::class)
+			->disableOriginalConstructor()
+			->getMock();
+
+		$notifier2 = $this->getMockBuilder(INotifier::class)
+			->disableOriginalConstructor()
+			->getMock();
+
+		$callbackCalledCount = 0;
+		$callbackCalledCount2 = 0;
+
+		$this->eventDispatcher->addListener(RegisterNotifierEvent::NAME,
+				function(RegisterNotifierEvent $event) use ($notifier, &$callbackCalledCount){
+			$callbackCalledCount++;
+			$event->registerNotifier($notifier, 'testid1', 'test app name');
+		});
+
+		$this->eventDispatcher->addListener(RegisterNotifierEvent::NAME,
+				function(RegisterNotifierEvent $event) use ($notifier2, &$callbackCalledCount2){
+			$callbackCalledCount2++;
+			$event->registerNotifier($notifier2, 'testid1', 'test app name');
+		});
+
+		$notifiers = $this->invokePrivate($this->manager, 'getNotifiers');
+		$this->assertEquals(1, $callbackCalledCount);
+		$this->assertEquals(1, $callbackCalledCount2);
+	}
+
+	/**
+	 * @expected \OCP\Notification\Exceptions\NotifierIdInUseException
+	 */
+	public function testRegisterNotifierNewDuplicatedIdCompatibleWithOld() {
+		$notifier = $this->getMockBuilder(INotifier::class)
+			->disableOriginalConstructor()
+			->getMock();
+
+		$notifier2 = $this->getMockBuilder(INotifier::class)
+			->disableOriginalConstructor()
+			->getMock();
+
+		$closure = function() use ($notifier) {
+			return $notifier;
+		};
+
+		$callbackCalledCount = 0;
+
+		$this->eventDispatcher->addListener(RegisterNotifierEvent::NAME,
+				function(RegisterNotifierEvent $event) use ($notifier, &$callbackCalledCount){
+			$callbackCalledCount++;
+			$event->registerNotifier($notifier, 'testid1', 'test app name');
+		});
+
+		$this->manager->registerNotifier($closure, function(){
+			return ['id' => 'testid1', 'name' => 'test app name'];
+		});
+
+		$notifiers = $this->invokePrivate($this->manager, 'getNotifiers');
+		$this->assertEquals(1, $callbackCalledCount);
+	}
+
+	public function testRegisterNotifierNewDuplicatedIdSwallowException() {
+		$notifier = $this->getMockBuilder(INotifier::class)
+			->disableOriginalConstructor()
+			->getMock();
+
+		$notifier2 = $this->getMockBuilder(INotifier::class)
+			->disableOriginalConstructor()
+			->getMock();
+
+		$callbackCalledCount = 0;
+		$callbackCalledCount2 = 0;
+		$swallowedException = false;
+
+		$this->eventDispatcher->addListener(RegisterNotifierEvent::NAME,
+				function(RegisterNotifierEvent $event) use ($notifier, &$callbackCalledCount){
+			$callbackCalledCount++;
+			$event->registerNotifier($notifier, 'testid1', 'test app name');
+		});
+
+		$this->eventDispatcher->addListener(RegisterNotifierEvent::NAME,
+				function(RegisterNotifierEvent $event) use ($notifier2, &$callbackCalledCount2, &$swallowedException){
+			$callbackCalledCount2++;
+			try {
+				$event->registerNotifier($notifier2, 'testid1', 'test app name');
+			} catch (NotifierIdInUseException $ex) {
+				$swallowedException = true;
+			}
+		});
+
+		$notifiers = $this->invokePrivate($this->manager, 'getNotifiers');
+		$this->assertEquals(1, $callbackCalledCount);
+		$this->assertEquals(1, $callbackCalledCount2);
+		$this->assertTrue($swallowedException);
+		$this->assertEquals([$notifier], $notifiers);
+		$this->assertSame($notifier, $notifiers[0]);
+	}
+
 	public function testCreateNotification() {
 		$action = $this->manager->createNotification();
-		$this->assertInstanceOf('OCP\Notification\INotification', $action);
+		$this->assertInstanceOf(INotification::class, $action);
 	}
 
 	public function testNotify() {
 		/** @var \OCP\Notification\INotification|\PHPUnit_Framework_MockObject_MockObject $notification */
-		$notification = $this->getMockBuilder('OCP\Notification\INotification')
+		$notification = $this->getMockBuilder(INotification::class)
 			->disableOriginalConstructor()
 			->getMock();
 		$notification->expects($this->once())
@@ -190,7 +420,7 @@ class ManagerTest extends TestCase {
 			->willReturn(true);
 
 		/** @var \OCP\Notification\IApp|\PHPUnit_Framework_MockObject_MockObject $app */
-		$app = $this->getMockBuilder('OCP\Notification\IApp')
+		$app = $this->getMockBuilder(IApp::class)
 			->disableOriginalConstructor()
 			->getMock();
 		$app->expects($this->once())
@@ -198,7 +428,7 @@ class ManagerTest extends TestCase {
 			->with($notification);
 
 		/** @var \OCP\Notification\IApp|\PHPUnit_Framework_MockObject_MockObject $app2 */
-		$app2 = $this->getMockBuilder('OCP\Notification\IApp')
+		$app2 = $this->getMockBuilder(IApp::class)
 			->disableOriginalConstructor()
 			->getMock();
 		$app2->expects($this->once())
@@ -220,7 +450,7 @@ class ManagerTest extends TestCase {
 	 */
 	public function testNotifyInvalid() {
 		/** @var \OCP\Notification\INotification|\PHPUnit_Framework_MockObject_MockObject $notification */
-		$notification = $this->getMockBuilder('OCP\Notification\INotification')
+		$notification = $this->getMockBuilder(INotification::class)
 			->disableOriginalConstructor()
 			->getMock();
 		$notification->expects($this->once())
@@ -232,14 +462,14 @@ class ManagerTest extends TestCase {
 
 	public function testPrepare() {
 		/** @var \OCP\Notification\INotification|\PHPUnit_Framework_MockObject_MockObject $notification */
-		$notification = $this->getMockBuilder('OCP\Notification\INotification')
+		$notification = $this->getMockBuilder(INotification::class)
 			->disableOriginalConstructor()
 			->getMock();
 		$notification->expects($this->once())
 			->method('isValidParsed')
 			->willReturn(true);
 		/** @var \OCP\Notification\INotification|\PHPUnit_Framework_MockObject_MockObject $notification2 */
-		$notification2 = $this->getMockBuilder('OCP\Notification\INotification')
+		$notification2 = $this->getMockBuilder(INotification::class)
 			->disableOriginalConstructor()
 			->getMock();
 		$notification2->expects($this->exactly(2))
@@ -247,7 +477,7 @@ class ManagerTest extends TestCase {
 			->willReturn(true);
 
 		/** @var \OCP\Notification\IApp|\PHPUnit_Framework_MockObject_MockObject $notifier */
-		$notifier = $this->getMockBuilder('OCP\Notification\INotifier')
+		$notifier = $this->getMockBuilder(INotifier::class)
 			->disableOriginalConstructor()
 			->getMock();
 		$notifier->expects($this->once())
@@ -256,7 +486,7 @@ class ManagerTest extends TestCase {
 			->willReturnArgument(0);
 
 		/** @var \OCP\Notification\IApp|\PHPUnit_Framework_MockObject_MockObject $notifier2 */
-		$notifier2 = $this->getMockBuilder('OCP\Notification\INotifier')
+		$notifier2 = $this->getMockBuilder(INotifier::class)
 			->disableOriginalConstructor()
 			->getMock();
 		$notifier2->expects($this->once())
@@ -283,7 +513,7 @@ class ManagerTest extends TestCase {
 	 */
 	public function testPrepareInvalid() {
 		/** @var \OCP\Notification\INotification|\PHPUnit_Framework_MockObject_MockObject $notification */
-		$notification = $this->getMockBuilder('OCP\Notification\INotification')
+		$notification = $this->getMockBuilder(INotification::class)
 			->disableOriginalConstructor()
 			->getMock();
 		$notification->expects($this->once())
@@ -291,7 +521,7 @@ class ManagerTest extends TestCase {
 			->willReturn(false);
 
 		/** @var \OCP\Notification\IApp|\PHPUnit_Framework_MockObject_MockObject $notifier */
-		$notifier = $this->getMockBuilder('OCP\Notification\INotifier')
+		$notifier = $this->getMockBuilder(INotifier::class)
 			->disableOriginalConstructor()
 			->getMock();
 		$notifier->expects($this->once())
@@ -310,7 +540,7 @@ class ManagerTest extends TestCase {
 
 	public function testPrepareNotifierThrows() {
 		/** @var \OCP\Notification\INotification|\PHPUnit_Framework_MockObject_MockObject $notification */
-		$notification = $this->getMockBuilder('OCP\Notification\INotification')
+		$notification = $this->getMockBuilder(INotification::class)
 			->disableOriginalConstructor()
 			->getMock();
 		$notification->expects($this->once())
@@ -318,7 +548,7 @@ class ManagerTest extends TestCase {
 			->willReturn(true);
 
 		/** @var \OCP\Notification\IApp|\PHPUnit_Framework_MockObject_MockObject $notifier */
-		$notifier = $this->getMockBuilder('OCP\Notification\INotifier')
+		$notifier = $this->getMockBuilder(INotifier::class)
 			->disableOriginalConstructor()
 			->getMock();
 		$notifier->expects($this->once())
@@ -340,7 +570,7 @@ class ManagerTest extends TestCase {
 	 */
 	public function testPrepareNoNotifier() {
 		/** @var \OCP\Notification\INotification|\PHPUnit_Framework_MockObject_MockObject $notification */
-		$notification = $this->getMockBuilder('OCP\Notification\INotification')
+		$notification = $this->getMockBuilder(INotification::class)
 			->disableOriginalConstructor()
 			->getMock();
 		$notification->expects($this->once())
@@ -352,12 +582,12 @@ class ManagerTest extends TestCase {
 
 	public function testMarkProcessed() {
 		/** @var \OCP\Notification\INotification|\PHPUnit_Framework_MockObject_MockObject $notification */
-		$notification = $this->getMockBuilder('OCP\Notification\INotification')
+		$notification = $this->getMockBuilder(INotification::class)
 			->disableOriginalConstructor()
 			->getMock();
 
 		/** @var \OCP\Notification\IApp|\PHPUnit_Framework_MockObject_MockObject $app */
-		$app = $this->getMockBuilder('OCP\Notification\IApp')
+		$app = $this->getMockBuilder(IApp::class)
 			->disableOriginalConstructor()
 			->getMock();
 		$app->expects($this->once())
@@ -365,7 +595,7 @@ class ManagerTest extends TestCase {
 			->with($notification);
 
 		/** @var \OCP\Notification\IApp|\PHPUnit_Framework_MockObject_MockObject $app2 */
-		$app2 = $this->getMockBuilder('OCP\Notification\IApp')
+		$app2 = $this->getMockBuilder(IApp::class)
 			->disableOriginalConstructor()
 			->getMock();
 		$app2->expects($this->once())
@@ -384,12 +614,12 @@ class ManagerTest extends TestCase {
 
 	public function testGetCount() {
 		/** @var \OCP\Notification\INotification|\PHPUnit_Framework_MockObject_MockObject $notification */
-		$notification = $this->getMockBuilder('OCP\Notification\INotification')
+		$notification = $this->getMockBuilder(INotification::class)
 			->disableOriginalConstructor()
 			->getMock();
 
 		/** @var \OCP\Notification\IApp|\PHPUnit_Framework_MockObject_MockObject $app */
-		$app = $this->getMockBuilder('OCP\Notification\IApp')
+		$app = $this->getMockBuilder(IApp::class)
 			->disableOriginalConstructor()
 			->getMock();
 		$app->expects($this->once())
@@ -398,7 +628,7 @@ class ManagerTest extends TestCase {
 			->willReturn(21);
 
 		/** @var \OCP\Notification\IApp|\PHPUnit_Framework_MockObject_MockObject $app2 */
-		$app2 = $this->getMockBuilder('OCP\Notification\IApp')
+		$app2 = $this->getMockBuilder(IApp::class)
 			->disableOriginalConstructor()
 			->getMock();
 		$app2->expects($this->once())
