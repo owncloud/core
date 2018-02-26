@@ -9,6 +9,10 @@ So that I can organise my data structure
 		And I am logged in as a regular user
 		And I am on the files page
 
+	Scenario: An attempt to move a file into a sub-folder using rename is not allowed
+		When I rename the file "data.zip" to "simple-folder/data.zip"
+		Then near the file "data.zip" a tooltip with the text 'File name cannot contain "/".' should be displayed
+
 	@skipOnFIREFOX47+
 	Scenario: move a file into a folder
 		When I move the file "data.zip" into the folder "simple-empty-folder"

@@ -87,10 +87,6 @@ So that I can organise my data structure
 		When I rename the folder "simple-folder" to "lorem.txt"
 		Then near the folder "simple-folder" a tooltip with the text 'lorem.txt already exists' should be displayed
 
-	Scenario: Rename a folder using forward slash
-		When I rename the folder "simple-folder" to "simple/folder"
-		Then near the folder "simple-folder" a tooltip with the text 'File name cannot contain "/".' should be displayed
-
 	Scenario: Rename a folder to ..
 		When I rename the folder "simple-folder" to ".."
 		Then near the folder "simple-folder" a tooltip with the text '".." is an invalid file name.' should be displayed
