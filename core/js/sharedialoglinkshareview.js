@@ -18,6 +18,7 @@
 	var TEMPLATE =
 		'<div class="error-message-global hidden"></div>' +
 		'<div class="public-link-modal">'+
+			'<span class="public-link-modal--send-indicator success-message-global absolute-center hidden">{{successMessage}}</span>' +
 			'<div class="public-link-modal--item">' +
 				'<label class="public-link-modal--label">Link Name</label>' +
 				'<input class="public-link-modal--input" type="text" name="linkName" placeholder="{{namePlaceholder}}" value="{{name}}" maxlength="64" />' +
@@ -179,8 +180,18 @@
 
 			var done = function() {
 				$loading.addClass('hidden');
-				deferred.resolve(self.model);
-				self.trigger('saved', self.model);
+
+				if (self.mailView) {
+					self.$el.find('.public-link-modal--send-indicator').removeClass('hidden');
+					setTimeout(function() {
+						deferred.resolve(self.model);
+						self.trigger('saved', self.model);
+					}, 1500)
+				}
+				else {
+					deferred.resolve(self.model);
+					self.trigger('saved', self.model);
+				}
 			};
 
 			$loading.removeClass('hidden');
@@ -196,6 +207,7 @@
 						// also send out email first
 						// do not resolve on errors
 						self.mailView.sendEmails().then(done);
+
 					} else {
 						done();
 					}
@@ -237,6 +249,8 @@
 
 				fileNameLabel              : t('core', 'Filename'),
 				passwordLabel              : t('core', 'Password'),
+
+				successMessage             : t('core', 'Link successfully created'),
 
 				publicUploadPossible       : this._isPublicUploadPossible(),
 
