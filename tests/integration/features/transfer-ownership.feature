@@ -131,7 +131,7 @@ Feature: transfer-ownership
 		And the command should have failed with exit code 1
 
 	@no_default_encryption
-	Scenario: transferring ownership of a folder
+	Scenario: transferring ownership of only a single folder containing a file
 		Given user "user0" has been created
 		And user "user1" has been created
 		And user "user0" has created a folder "/test"
@@ -140,6 +140,29 @@ Feature: transfer-ownership
 		Then the command should have been successful
 		And using received transfer folder of "user1" as dav path
 		And the downloaded content when downloading file "/test/somefile.txt" for user "user1" with range "bytes=0-6" should be "This is"
+
+	@no_default_encryption
+	Scenario: transferring ownership of only a single folder containing an empty folder
+		Given user "user0" has been created
+		And user "user1" has been created
+		And user "user0" has created a folder "/test"
+		And user "user0" has created a folder "/test/subfolder"
+		When the administrator transfers ownership of path "test" from "user0" to "user1" using the occ command
+		Then the command should have been successful
+		And using received transfer folder of "user1" as dav path
+		And as "user1" the folder "/test" should exist
+		And as "user1" the folder "/test/subfolder" should exist
+
+	@no_default_encryption
+	Scenario: transferring ownership of an account containing only an empty folder
+		Given user "user0" has been created
+		And user "user1" has been created
+		And user "user0" has deleted everything from folder "/"
+		And user "user0" has created a folder "/test"
+		When the administrator transfers ownership from "user0" to "user1" using the occ command
+		Then the command should have been successful
+		And using received transfer folder of "user1" as dav path
+		And as "user1" the folder "/test" should exist
 
 	@no_default_encryption
 	Scenario: transferring ownership of file shares
