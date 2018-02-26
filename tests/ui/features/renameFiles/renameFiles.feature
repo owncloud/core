@@ -109,10 +109,6 @@ So that I can organise my data structure
 		When I rename the file "data.zip" to "lorem.txt"
 		Then near the file "data.zip" a tooltip with the text 'lorem.txt already exists' should be displayed
 
-	Scenario: Rename a file using forward slash
-		When I rename the file "data.zip" to "lorem/txt"
-		Then near the file "data.zip" a tooltip with the text 'File name cannot contain "/".' should be displayed
-
 	Scenario: Rename a file to ..
 		When I rename the file "data.zip" to ".."
 		Then near the file "data.zip" a tooltip with the text '".." is an invalid file name.' should be displayed
