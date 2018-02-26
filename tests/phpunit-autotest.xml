@@ -3,6 +3,7 @@
 		 verbose="true"
 		 backupGlobals="false"
 		 backupStaticAttributes="false"
+		 failOnWarning="true"
 		 timeoutForSmallTests="900"
 		 timeoutForMediumTests="900"
 		 timeoutForLargeTests="900"
