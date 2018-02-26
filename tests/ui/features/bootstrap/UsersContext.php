@@ -116,6 +116,7 @@ class UsersContext extends RawMinkContext implements Context {
 	}
 
 	/**
+	 * 
 	 * @When I delete the group named :name
 	 * @param string $name
 	 * @return void
@@ -135,6 +136,19 @@ class UsersContext extends RawMinkContext implements Context {
 		foreach ($table as $row) {
 			$this->iDeleteTheGroupNamed($row['groupname']);
 		}
+	}
+
+	
+	/**
+	 * @Then The group name :groupName should be listed
+	 * @param string $groupName
+	 * @return void
+	 */
+	public function theGroupNameShouldBeListed($groupName) {
+		$groups = $this->usersPage->getAllGroups();
+		PHPUnit_Framework_Assert::assertContains(
+			$groupName, $groups, "Expected '" . $groupName . "' does not exist"
+		);
 	}
 
 	/**
@@ -210,5 +224,15 @@ class UsersContext extends RawMinkContext implements Context {
 		$environment = $scope->getEnvironment();
 		// Get all the contexts you need in this context
 		$this->featureContext = $environment->getContext('FeatureContext');
+	}
+
+	/**
+	 * @Given I add a group with the name :groupName
+	 * 
+	 * @param string $groupName
+	 * @return void
+	 */
+	public function iAddAGroupWithTheName($groupName) {
+		$this->usersPage->addGroup($groupName, $this->getSession());
 	}
 }

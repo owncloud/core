@@ -389,4 +389,16 @@ class UsersPage extends OwncloudPage {
 		$groupList->deleteGroup($name);
 		$this->waitForAjaxCallsToStartAndFinish($session);
 	}
+
+	/** 
+	 * 
+	 * @param string $groupName
+	 * @param Session $session
+	 * @return void
+	 */
+	public function addGroup($groupName, Session $session) {
+		$groupList = $this->getGroupListElement();
+		$groupList->addGroup($groupName);
+		$this->waitForAjaxCallsToStartAndFinish($session);
+	}
 }
