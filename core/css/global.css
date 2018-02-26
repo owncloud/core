@@ -13,6 +13,11 @@
 	transform: translate(-50%, -50%);
 }
 
+.full-width {
+	width: 100%;
+	max-width: 100%;
+}
+
 .pull-left {
 	float: left;
 }
@@ -39,7 +44,7 @@
 
 .hidden-visually {
 	position: absolute;
-	left:-10000px;
+	left: -10000px;
 	top: auto;
 	width: 1px;
 	height: 1px;
@@ -47,7 +52,7 @@
 }
 
 .bold {
-	font-weight:600;
+	font-weight: 600;
 }
 
 .text-small {
