@@ -269,6 +269,7 @@ trait Sharing {
 	}
 
 	/**
+	 * @When the public uploads file ":filename" with content ":body"
 	 * @Given the public has uploaded file ":filename" with content ":body"
 	 * @param string $filename target file name
 	 * @param string $body content to upload
@@ -280,6 +281,7 @@ trait Sharing {
 
 	/**
 	 * @When the public overwrites file ":filename" with content ":body" using the API
+	 * @Given the public has overwritten file ":filename" with content ":body" using the API
 	 * @param string $filename target file name
 	 * @param string $body content to upload
 	 * @return void
@@ -289,6 +291,7 @@ trait Sharing {
 	}
 
 	/**
+	 * @When the public uploads file ":filename" with password ":password" and content ":body"
 	 * @Given the public has uploaded file ":filename" with password ":password" and content ":body"
 	 * @param string $filename target file name
 	 * @param string $password
@@ -302,6 +305,7 @@ trait Sharing {
 	}
 
 	/**
+	 * @When the public uploads file ":filename" with content ":body" with autorename mode
 	 * @Given the public has uploaded file ":filename" with content ":body" with autorename mode
 	 * @param string $filename target file name
 	 * @param string $body content to upload
@@ -366,6 +370,7 @@ trait Sharing {
 
 	/**
 	 * @When /^the user adds an expiration date to the last share using the API$/
+	 * @Given /^the user has added an expiration date to the last share using the API$/
 	 * @return void
 	 */
 	public function theUserAddsExpirationDateToLastShare() {
@@ -712,6 +717,7 @@ trait Sharing {
 
 	/**
 	 * @When /^the user deletes the last share using the API$/
+	 * @Given /^the user has deleted the last share using the API$/
 	 * @return void
 	 */
 	public function theUserDeletesLastShareUsingTheAPI() {
@@ -972,6 +978,7 @@ trait Sharing {
 
 	/**
 	 * @When /^user "([^"]*)" deletes public share named "([^"]*)" in (file|folder) "([^"]*)" using the API$/
+	 * @Given /^user "([^"]*)" has deleted public share named "([^"]*)" in (file|folder) "([^"]*)"$/
 	 * @param string $user
 	 * @param string $name
 	 * @param string $type unused

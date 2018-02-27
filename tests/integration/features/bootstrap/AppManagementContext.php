@@ -123,6 +123,7 @@ class AppManagementContext implements  Context {
 	
 	/**
 	 * @When the administrator loads app :appId using the console
+	 * @Given the administrator has loaded app :appId using the console
 	 * @param string $appId app id
 	 */
 	public function loadApp($appId) {

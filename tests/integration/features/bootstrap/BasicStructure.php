@@ -121,6 +121,7 @@ trait BasicStructure {
 
 	/**
 	 * @When /^the user sends HTTP method "([^"]*)" to API endpoint "([^"]*)"$/
+	 * @Given /^the user has sent HTTP method "([^"]*)" to API endpoint "([^"]*)"$/
 	 * @param string $verb
 	 * @param string $url
 	 */
@@ -130,6 +131,7 @@ trait BasicStructure {
 
 	/**
 	 * @When /^user "([^"]*)" sends HTTP method "([^"]*)" to API endpoint "([^"]*)"$/
+	 * @Given /^user "([^"]*)" has sent HTTP method "([^"]*)" to API endpoint "([^"]*)"$/
 	 * @param string $user
 	 * @param string $verb
 	 * @param string $url
@@ -255,6 +257,7 @@ trait BasicStructure {
 
 	/**
 	 * @When /^user "([^"]*)" sends HTTP method "([^"]*)" to URL "([^"]*)"$/
+	 * @Given /^user "([^"]*)" has sent HTTP method "([^"]*)" to URL "([^"]*)"$/
 	 * @param string $user
 	 * @param string $verb
 	 * @param string $url
@@ -407,6 +410,7 @@ trait BasicStructure {
 
 	/**
 	 * @When the client sends a :method to :url with requesttoken using the API
+	 * @Given the client has sent a :method to :url with requesttoken
 	 * @param string $method
 	 * @param string $url
 	 */
@@ -431,6 +435,7 @@ trait BasicStructure {
 
 	/**
 	 * @When the client sends a :method to :url without requesttoken using the API
+	 * @Given the client has sent a :method to :url without requesttoken
 	 * @param string $method
 	 * @param string $url
 	 */
