@@ -1025,6 +1025,7 @@ trait WebDav {
 
 	/**
 	 * @When user :user moves new chunk file with id :id to :dest with size :size using the API
+	 * @Given user :user has moved new chunk file with id :id to :dest with size :size
 	 * @param string $user
 	 * @param string $id
 	 * @param string $dest
@@ -1036,6 +1037,7 @@ trait WebDav {
 
 	/**
 	 * @When user :user moves new chunk file with id :id to :dest with checksum :checksum using the API
+	 * @Given user :user has moved new chunk file with id :id to :dest with checksum :checksum
 	 * @param string $user
 	 * @param string $id
 	 * @param string $dest
@@ -1161,6 +1163,7 @@ trait WebDav {
 
 	/**
 	 * @When an unauthenticated client connects to the dav endpoint using the API
+	 * @Given an unauthenticated client has connected to the dav endpoint using the API
 	 */
 	public function connectingToDavEndpoint() {
 		try {

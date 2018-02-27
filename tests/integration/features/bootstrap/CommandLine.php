@@ -58,6 +58,7 @@ trait CommandLine {
 	}
 
 	/**
+	 * @When /^the administrator invokes occ command "([^"]*)"$/
 	 * @Given /^the administrator has invoked occ command "([^"]*)"$/
 	 * @param string $cmd
 	 */
@@ -255,7 +256,7 @@ trait CommandLine {
 	}
 
 	/**
-	 * @When /^using received transfer folder of "([^"]+)" as dav path$/
+	 * @Given /^using received transfer folder of "([^"]+)" as dav path$/
 	 * @param string $user
 	 */
 	public function usingTransferFolderAsDavPath($user) {
