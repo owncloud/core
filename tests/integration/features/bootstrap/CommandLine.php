@@ -60,6 +60,7 @@ trait CommandLine {
 	/**
 	 * @When /^the administrator invokes occ command "([^"]*)"$/
 	 * @Given /^the administrator has invoked occ command "([^"]*)"$/
+	 *
 	 * @param string $cmd
 	 */
 	public function invokingTheCommand($cmd) {
@@ -125,6 +126,7 @@ trait CommandLine {
 
 	/**
 	 * @Then /^the command should have failed with exit code ([0-9]+)$/
+	 *
 	 * @param int $exitCode
 	 * @throws Exception
 	 */
@@ -136,6 +138,7 @@ trait CommandLine {
 
 	/**
 	 * @Then /^the command should have failed with exception text "([^"]*)"$/
+	 *
 	 * @param string $exceptionText
 	 * @throws Exception
 	 */
@@ -152,6 +155,7 @@ trait CommandLine {
 
 	/**
 	 * @Then /^the command output should contain the text "([^"]*)"$/
+	 *
 	 * @param string $text
 	 * @throws Exception
 	 */
@@ -164,6 +168,7 @@ trait CommandLine {
 
 	/**
 	 * @Then /^the command error output should contain the text "([^"]*)"$/
+	 *
 	 * @param string $text
 	 * @throws Exception
 	 */
@@ -217,6 +222,7 @@ trait CommandLine {
 	/**
 	 * @When /^the administrator transfers ownership from "([^"]+)" to "([^"]+)" using the occ command$/
 	 * @Given /^the administrator has transferred ownership from "([^"]+)" to "([^"]+)"$/
+	 *
 	 * @param string $user1
 	 * @param string $user2
 	 */
@@ -241,6 +247,7 @@ trait CommandLine {
 	/**
 	 * @When /^the administrator transfers ownership of path "([^"]+)" from "([^"]+)" to "([^"]+)" using the occ command$/
 	 * @Given /^the administrator has transferred ownership of path "([^"]+)" from "([^"]+)" to "([^"]+)"$/
+	 *
 	 * @param string $path
 	 * @param string $user1
 	 * @param string $user2
@@ -257,6 +264,7 @@ trait CommandLine {
 
 	/**
 	 * @Given /^using received transfer folder of "([^"]+)" as dav path$/
+	 *
 	 * @param string $user
 	 */
 	public function usingTransferFolderAsDavPath($user) {

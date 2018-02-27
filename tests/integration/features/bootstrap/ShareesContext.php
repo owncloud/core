@@ -36,6 +36,7 @@ class ShareesContext implements Context, SnippetAcceptingContext {
 
 	/**
 	 * @When /^the user gets the sharees using the API with parameters$/
+	 *
 	 * @param \Behat\Gherkin\Node\TableNode $body
 	 * @return void
 	 */
@@ -45,6 +46,7 @@ class ShareesContext implements Context, SnippetAcceptingContext {
 
 	/**
 	 * @When /^user "([^"]*)" gets the sharees using the API with parameters$/
+	 *
 	 * @param string $user
 	 * @param \Behat\Gherkin\Node\TableNode $body
 	 * @return void
@@ -68,6 +70,7 @@ class ShareesContext implements Context, SnippetAcceptingContext {
 
 	/**
 	 * @Then /^the "([^"]*)" sharees returned should be$/
+	 *
 	 * @param string $shareeType
 	 * @param \Behat\Gherkin\Node\TableNode $shareesList
 	 * @return void
@@ -82,6 +85,7 @@ class ShareesContext implements Context, SnippetAcceptingContext {
 
 	/**
 	 * @Then /^the "([^"]*)" sharees returned should be empty$/
+	 *
 	 * @param string $shareeType
 	 * @return void
 	 */

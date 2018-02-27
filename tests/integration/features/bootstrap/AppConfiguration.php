@@ -70,6 +70,7 @@ trait AppConfiguration {
 
 	/**
 	 * @When /^the administrator sets parameter "([^"]*)" of app "([^"]*)" to "([^"]*)" using the API$/
+	 *
 	 * @param string $parameter
 	 * @param string $app
 	 * @param string $value
@@ -86,6 +87,7 @@ trait AppConfiguration {
 
 	/**
 	 * @Given /^parameter "([^"]*)" of app "([^"]*)" has been set to "([^"]*)"$/
+	 *
 	 * @param string $parameter
 	 * @param string $app
 	 * @param string $value
@@ -97,6 +99,7 @@ trait AppConfiguration {
 
 	/**
 	 * @Then the capabilities setting of :capabilitiesApp path :capabilitiesPath should be :expectedValue
+	 *
 	 * @param string $capabilitiesApp the "app" name in the capabilities response
 	 * @param string $capabilitiesPath the path to the element
 	 * @param string $expectedValue
@@ -128,6 +131,7 @@ trait AppConfiguration {
 
 	/**
 	 * @When the user retrieves the capabilities using the API
+	 *
 	 * @return void
 	 */
 	public function getCapabilitiesCheckResponse() {

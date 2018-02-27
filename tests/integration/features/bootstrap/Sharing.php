@@ -56,6 +56,7 @@ trait Sharing {
 	/**
 	 * @When /^user "([^"]*)" creates a share using the API with settings$/
 	 * @Given /^user "([^"]*)" has created a share with settings$/
+	 *
 	 * @param string $user
 	 * @param \Behat\Gherkin\Node\TableNode|null $body
 	 * @return void
@@ -88,6 +89,7 @@ trait Sharing {
 
 	/**
 	 * @When /^the user creates a share using the API with settings$/
+	 *
 	 * @param \Behat\Gherkin\Node\TableNode|null $body
 	 * @return void
 	 */
@@ -97,6 +99,7 @@ trait Sharing {
 
 	/**
 	 * @Given /^the user has created a share with settings$/
+	 *
 	 * @param \Behat\Gherkin\Node\TableNode|null $body
 	 * @return void
 	 */
@@ -139,6 +142,7 @@ trait Sharing {
 	/**
 	 * @When /^user "([^"]*)" creates a public share of (?:file|folder) "([^"]*)" using the API$/
 	 * @Given /^user "([^"]*)" has created a public share of (?:file|folder) "([^"]*)"$/
+	 *
 	 * @param string $user
 	 * @param string $path
 	 * @return void
@@ -150,6 +154,7 @@ trait Sharing {
 	/**
 	 * @When /^the user creates a public share of (?:file|folder) "([^"]*)" using the API$/
 	 * @Given /^the user has created a public share of (?:file|folder) "([^"]*)"$/
+	 *
 	 * @param string $path
 	 * @return void
 	 */
@@ -160,6 +165,7 @@ trait Sharing {
 	/**
 	 * @When /^user "([^"]*)" creates a public share of (?:file|folder) "([^"]*)" using the API with (read|update|create|delete|change|share|all) permission(?:s|)$/
 	 * @Given /^user "([^"]*)" has created a public share of (?:file|folder) "([^"]*)" with (read|update|create|delete|change|share|all) permission(?:s|)$/
+	 *
 	 * @param string $user
 	 * @param string $path
 	 * @param string|int|string[]|int[]|null $permissions
@@ -172,6 +178,7 @@ trait Sharing {
 	/**
 	 * @When /^the user creates a public share of (?:file|folder) "([^"]*)" using the API with (read|update|create|delete|change|share|all) permission(?:s|)$/
 	 * @Given /^the user has created a public share of (?:file|folder) "([^"]*)" with (read|update|create|delete|change|share|all) permission(?:s|)$/
+	 *
 	 * @param string $path
 	 * @param string|int|string[]|int[]|null $permissions
 	 * @return void
@@ -182,6 +189,7 @@ trait Sharing {
 
 	/**
 	 * @Then /^the public shared file "([^"]*)" should not be able to be downloaded$/
+	 *
 	 * @param string $path
 	 * @return void
 	 */
@@ -208,6 +216,7 @@ trait Sharing {
 
 	/**
 	 * @Then /^the last public shared file should be able to be downloaded without a password$/
+	 *
 	 * @return void
 	 */
 	public function checkLastPublicSharedFileDownload() {
@@ -222,6 +231,7 @@ trait Sharing {
 
 	/**
 	 * @Then /^the last public shared file should be able to be downloaded with password "([^"]*)"$/
+	 *
 	 * @param string $filename unused
 	 * @param string $password
 	 * @return void
@@ -271,6 +281,7 @@ trait Sharing {
 	/**
 	 * @When the public uploads file ":filename" with content ":body"
 	 * @Given the public has uploaded file ":filename" with content ":body"
+	 *
 	 * @param string $filename target file name
 	 * @param string $body content to upload
 	 * @return void
@@ -282,6 +293,7 @@ trait Sharing {
 	/**
 	 * @When the public overwrites file ":filename" with content ":body" using the API
 	 * @Given the public has overwritten file ":filename" with content ":body" using the API
+	 *
 	 * @param string $filename target file name
 	 * @param string $body content to upload
 	 * @return void
@@ -293,6 +305,7 @@ trait Sharing {
 	/**
 	 * @When the public uploads file ":filename" with password ":password" and content ":body"
 	 * @Given the public has uploaded file ":filename" with password ":password" and content ":body"
+	 *
 	 * @param string $filename target file name
 	 * @param string $password
 	 * @param string $body content to upload
@@ -307,6 +320,7 @@ trait Sharing {
 	/**
 	 * @When the public uploads file ":filename" with content ":body" with autorename mode
 	 * @Given the public has uploaded file ":filename" with content ":body" with autorename mode
+	 *
 	 * @param string $filename target file name
 	 * @param string $body content to upload
 	 * @return void
@@ -317,6 +331,7 @@ trait Sharing {
 
 	/**
 	 * @Then publicly uploading a file should not work
+	 *
 	 * @return void
 	 */
 	public function publiclyUploadingShouldNotWork() {
@@ -371,6 +386,7 @@ trait Sharing {
 	/**
 	 * @When /^the user adds an expiration date to the last share using the API$/
 	 * @Given /^the user has added an expiration date to the last share using the API$/
+	 *
 	 * @return void
 	 */
 	public function theUserAddsExpirationDateToLastShare() {
@@ -393,6 +409,7 @@ trait Sharing {
 	/**
 	 * @When /^the user updates the last share using the API with$/
 	 * @Given /^the user has updated the last share with$/
+	 *
 	 * @param \Behat\Gherkin\Node\TableNode|null $body
 	 * @return void
 	 */
@@ -403,6 +420,7 @@ trait Sharing {
 	/**
 	 * @When /^user "([^"]*)" updates the last share using the API with$/
 	 * @Given /^user "([^"]*)" has updated the last share with$/
+	 *
 	 * @param string $user
 	 * @param \Behat\Gherkin\Node\TableNode|null $body
 	 * @return void
@@ -718,6 +736,7 @@ trait Sharing {
 	/**
 	 * @When /^the user deletes the last share using the API$/
 	 * @Given /^the user has deleted the last share using the API$/
+	 *
 	 * @return void
 	 */
 	public function theUserDeletesLastShareUsingTheAPI() {
@@ -727,6 +746,7 @@ trait Sharing {
 	/**
 	 * @When /^user "([^"]*)" deletes the last share using the API$/
 	 * @Given /^user "([^"]*)" has deleted the last share$/
+	 *
 	 * @param string $user
 	 * @return void
 	 */
@@ -738,6 +758,7 @@ trait Sharing {
 
 	/**
 	 * @When /^the user gets the info of the last share using the API$/
+	 *
 	 * @return void
 	 */
 	public function theUserGetsInfoOfLastShareUsingTheAPI() {
@@ -746,6 +767,7 @@ trait Sharing {
 
 	/**
 	 * @When /^user "([^"]*)" gets the info of the last share using the API$/
+	 *
 	 * @param string $user
 	 * @return void
 	 */
@@ -757,6 +779,7 @@ trait Sharing {
 
 	/**
 	 * @Then /^the last share_id should be included in the response/
+	 *
 	 * @return void
 	 */
 	public function checkingLastShareIDIsIncluded() {
@@ -770,6 +793,7 @@ trait Sharing {
 
 	/**
 	 * @Then /^the last share_id should not be included in the response/
+	 *
 	 * @return void
 	 */
 	public function checkingLastShareIDIsNotIncluded() {
@@ -783,6 +807,7 @@ trait Sharing {
 
 	/**
 	 * @Then /^the response should contain ([0-9]+) entries$/
+	 *
 	 * @param int $count
 	 * @return void
 	 */
@@ -793,6 +818,7 @@ trait Sharing {
 
 	/**
 	 * @Then /^the share fields of the last share should include$/
+	 *
 	 * @param \Behat\Gherkin\Node\TableNode|null $body
 	 * @return void
 	 */
@@ -836,6 +862,7 @@ trait Sharing {
 	/**
 	 * @When user :user removes all shares from the file named :fileName using the API
 	 * @Given user :user has removed all shares from the file named :fileName
+	 *
 	 * @param string $user
 	 * @param string $fileName
 	 * @throws Exception
@@ -878,6 +905,7 @@ trait Sharing {
 
 	/**
 	 * @Given the last share id has been remembered
+	 *
 	 * @return void
 	 */
 	public function rememberLastShareId() {
@@ -886,6 +914,7 @@ trait Sharing {
 
 	/**
 	 * @Then the share ids should match
+	 *
 	 * @return void
 	 */
 	public function shareIdsShouldMatch() {
@@ -917,6 +946,7 @@ trait Sharing {
 
 	/**
 	 * @Then /^as user "([^"]*)" the public shares of (file|folder) "([^"]*)" should be$/
+	 *
 	 * @param string $user
 	 * @param string $type
 	 * @param string $path
@@ -979,6 +1009,7 @@ trait Sharing {
 	/**
 	 * @When /^user "([^"]*)" deletes public share named "([^"]*)" in (file|folder) "([^"]*)" using the API$/
 	 * @Given /^user "([^"]*)" has deleted public share named "([^"]*)" in (file|folder) "([^"]*)"$/
+	 *
 	 * @param string $user
 	 * @param string $name
 	 * @param string $type unused
