@@ -52,6 +52,7 @@ trait Federation {
 	/**
 	 * @When /^user "([^"]*)" from server "(LOCAL|REMOTE)" accepts the last pending share using the API$/
 	 * @Given /^user "([^"]*)" from server "(LOCAL|REMOTE)" has accepted the last pending share$/
+	 *
 	 * @param string $user
 	 * @param string $server
 	 * @return void

@@ -29,6 +29,7 @@ trait Trashbin {
 	/**
 	 * @When user :user empties the trashbin using the API
 	 * @Given user :user has emptied the trashbin
+	 *
 	 * @param string $user user
 	 */
 	public function emptyTrashbin($user) {
@@ -57,6 +58,7 @@ trait Trashbin {
 
 	/**
 	 * @Then /^as "([^"]*)" the (file|folder|entry) "([^"]*)" should exist in trash$/
+	 *
 	 * @param string $user
 	 * @param string $entryText unused
 	 * @param string $path
@@ -98,6 +100,7 @@ trait Trashbin {
 
 	/**
 	 * Function to check if an element is in trashbin
+	 *
 	 * @param string $user
 	 * @param string $originalPath
 	 * @return bool
@@ -151,6 +154,7 @@ trait Trashbin {
 	/**
 	 * @When /^user "([^"]*)" restores the (file|folder|entry) with original path "([^"]*)" using the API$/
 	 * @Given /^user "([^"]*)" has restored the (file|folder|entry) with original path "([^"]*)"$/
+	 *
 	 * @param string $user
 	 * @param string $entryText unused
 	 * @param string $originalPath
@@ -163,6 +167,7 @@ trait Trashbin {
 
 	/**
 	 * @Then /^as "([^"]*)" the (file|folder|entry) with original path "([^"]*)" should exist in trash$/
+	 *
 	 * @param string $user
 	 * @param string $entryText unused
 	 * @param string $originalPath
@@ -174,6 +179,7 @@ trait Trashbin {
 
 	/**
 	 * @Then /^as "([^"]*)" the (file|folder|entry) with original path "([^"]*)" should not exist in trash$/
+	 *
 	 * @param string $user
 	 * @param string $entryText
 	 * @param string $originalPath

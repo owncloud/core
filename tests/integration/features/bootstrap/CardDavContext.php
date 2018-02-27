@@ -69,7 +69,9 @@ class CardDavContext implements \Behat\Behat\Context\Context {
 		$this->responseXml = '';
 	}
 
-	/** @AfterScenario @carddav*/
+	/**
+	 * @AfterScenario @carddav
+	 */
 	public function afterScenario() {
 		$davUrl = $this->baseUrl . '/remote.php/dav/addressbooks/users/admin/MyAddressbook';
 		try {
@@ -84,6 +86,7 @@ class CardDavContext implements \Behat\Behat\Context\Context {
 
 	/**
 	 * @When user :user requests addressbook :addressBook using the API
+	 *
 	 * @param string $user
 	 * @param string $addressBook
 	 * @throws \Exception
@@ -105,6 +108,7 @@ class CardDavContext implements \Behat\Behat\Context\Context {
 
 	/**
 	 * @Given user :user has successfully created an addressbook named :addressBook
+	 *
 	 * @param string $user
 	 * @param string $addressBook
 	 * @throws \Exception
@@ -139,6 +143,7 @@ class CardDavContext implements \Behat\Behat\Context\Context {
 
 	/**
 	 * @Then the CardDAV HTTP status code should be :code
+	 *
 	 * @param int $code
 	 * @throws \Exception
 	 */
@@ -163,6 +168,7 @@ class CardDavContext implements \Behat\Behat\Context\Context {
 
 	/**
 	 * @Then the CardDAV exception should be :message
+	 *
 	 * @param string $message
 	 * @throws \Exception
 	 */
@@ -182,6 +188,7 @@ class CardDavContext implements \Behat\Behat\Context\Context {
 
 	/**
 	 * @Then the CardDAV error message should be :arg1
+	 *
 	 * @param string $message
 	 * @throws \Exception
 	 */

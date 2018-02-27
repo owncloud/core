@@ -23,6 +23,7 @@ trait Provisioning {
 	/**
 	 * @When /^the administrator creates the user "([^"]*)" using the API$/
 	 * @Given /^user "([^"]*)" has been created$/
+	 *
 	 * @param string $user
 	 */
 	public function adminCreatesUserUsingTheAPI($user) {
@@ -37,6 +38,7 @@ trait Provisioning {
 
 	/**
 	 * @Then /^user "([^"]*)" should exist$/
+	 *
 	 * @param string $user
 	 */
 	public function userShouldExist($user) {
@@ -46,6 +48,7 @@ trait Provisioning {
 
 	/**
 	 * @Then /^user "([^"]*)" should not exist$/
+	 *
 	 * @param string $user
 	 */
 	public function userShouldNotExist($user) {
@@ -54,6 +57,7 @@ trait Provisioning {
 
 	/**
 	 * @Then /^group "([^"]*)" should exist$/
+	 *
 	 * @param string $group
 	 */
 	public function groupShouldExist($group) {
@@ -63,6 +67,7 @@ trait Provisioning {
 
 	/**
 	 * @Then /^group "([^"]*)" should not exist$/
+	 *
 	 * @param string $group
 	 */
 	public function groupShouldNotExist($group) {
@@ -72,6 +77,7 @@ trait Provisioning {
 	/**
 	 * @When /^the administrator deletes user "([^"]*)" using the API$/
 	 * @Given /^user "([^"]*)" has been deleted$/
+	 *
 	 * @param string $user
 	 */
 	public function adminDeletesUserUsingTheAPI($user) {
@@ -187,6 +193,7 @@ trait Provisioning {
 
 	/**
 	 * @Then /^user "([^"]*)" should belong to group "([^"]*)"$/
+	 *
 	 * @param string $user
 	 * @param string $group
 	 */
@@ -205,6 +212,7 @@ trait Provisioning {
 
 	/**
 	 * @Then /^user "([^"]*)" should not belong to group "([^"]*)"$/
+	 *
 	 * @param string $user
 	 * @param string $group
 	 */
@@ -247,6 +255,7 @@ trait Provisioning {
 	/**
 	 * @When /^the administrator adds user "([^"]*)" to group "([^"]*)" using the API$/
 	 * @Given /^user "([^"]*)" has been added to group "([^"]*)"$/
+	 *
 	 * @param string $user
 	 * @param string $group
 	 */
@@ -276,6 +285,7 @@ trait Provisioning {
 	/**
 	 * @When /^the administrator creates group "([^"]*)" using the API$/
 	 * @Given /^group "([^"]*)" has been created$/
+	 *
 	 * @param string $group
 	 */
 	public function adminCreatesGroupUsingTheAPI($group) {
@@ -310,6 +320,7 @@ trait Provisioning {
 	/**
 	 * @When /^the administrator disables user "([^"]*)" using the API$/
 	 * @Given /^user "([^"]*)" has been disabled$/
+	 *
 	 * @param string $user
 	 */
 	public function adminDisablesUserUsingTheAPI($user) {
@@ -338,6 +349,7 @@ trait Provisioning {
 	/**
 	 * @When /^the administrator deletes group "([^"]*)" using the API$/
 	 * @Given /^group "([^"]*)" has been deleted$/
+	 *
 	 * @param string $group
 	 */
 	public function adminDeletesGroupUsingTheAPI($group) {
@@ -403,6 +415,7 @@ trait Provisioning {
 
 	/**
 	 * @Then /^user "([^"]*)" should be a subadmin of group "([^"]*)"$/
+	 *
 	 * @param string $user
 	 * @param string $group
 	 */
@@ -424,6 +437,7 @@ trait Provisioning {
 	/**
 	 * @When /^the administrator makes user "([^"]*)" a subadmin of group "([^"]*)" using the API$/
 	 * @Given /^user "([^"]*)" has been made a subadmin of group "([^"]*)"$/
+	 *
 	 * @param string $user
 	 * @param string $group
 	 */
@@ -442,6 +456,7 @@ trait Provisioning {
 	/**
 	 * @When /^the administrator makes user "([^"]*)" not a subadmin of group "([^"]*)" using the API$/
 	 * @Given /^user "([^"]*)" has been made not a subadmin of group "([^"]*)"$/
+	 *
 	 * @param string $user
 	 * @param string $group
 	 */
@@ -462,6 +477,7 @@ trait Provisioning {
 
 	/**
 	 * @Then /^the users returned by the API should be$/
+	 *
 	 * @param \Behat\Gherkin\Node\TableNode|null $usersList
 	 */
 	public function theUsersShouldBe($usersList) {
@@ -476,6 +492,7 @@ trait Provisioning {
 
 	/**
 	 * @Then /^the groups returned by the API should be$/
+	 *
 	 * @param \Behat\Gherkin\Node\TableNode|null $groupsList
 	 */
 	public function theGroupsShouldBe($groupsList) {
@@ -500,6 +517,7 @@ trait Provisioning {
 
 	/**
 	 * @Then /^the subadmin groups returned by the API should be$/
+	 *
 	 * @param \Behat\Gherkin\Node\TableNode|null $groupsList
 	 */
 	public function theSubadminGroupsShouldBe($groupsList) {
@@ -508,6 +526,7 @@ trait Provisioning {
 
 	/**
 	 * @Then /^the subadmin users returned by the API should be$/
+	 *
 	 * @param \Behat\Gherkin\Node\TableNode|null $usersList
 	 */
 	public function theSubadminUsersShouldBe($usersList) {
@@ -516,6 +535,7 @@ trait Provisioning {
 
 	/**
 	 * @Then /^the apps returned by the API should include$/
+	 *
 	 * @param \Behat\Gherkin\Node\TableNode|null $appList
 	 */
 	public function theAppsShouldInclude($appList) {
@@ -529,6 +549,7 @@ trait Provisioning {
 
 	/**
 	 * Parses the xml answer to get the array of users returned.
+	 *
 	 * @param ResponseInterface $resp
 	 * @return array
 	 */
@@ -540,6 +561,7 @@ trait Provisioning {
 
 	/**
 	 * Parses the xml answer to get the array of groups returned.
+	 *
 	 * @param ResponseInterface $resp
 	 * @return array
 	 */
@@ -551,6 +573,7 @@ trait Provisioning {
 
 	/**
 	 * Parses the xml answer to get the array of apps returned.
+	 *
 	 * @param ResponseInterface $resp
 	 * @return array
 	 */
@@ -562,6 +585,7 @@ trait Provisioning {
 
 	/**
 	 * Parses the xml answer to get the array of subadmins returned.
+	 *
 	 * @param ResponseInterface $resp
 	 * @return array
 	 */
@@ -573,6 +597,7 @@ trait Provisioning {
 
 	/**
 	 * @Then /^app "([^"]*)" should be disabled$/
+	 *
 	 * @param string $app
 	 */
 	public function appShouldBeDisabled($app) {
@@ -591,6 +616,7 @@ trait Provisioning {
 
 	/**
 	 * @Then /^app "([^"]*)" should be enabled$/
+	 *
 	 * @param string $app
 	 */
 	public function appShouldBeEnabled($app) {
@@ -609,6 +635,7 @@ trait Provisioning {
 
 	/**
 	 * @Then /^user "([^"]*)" should be disabled$/
+	 *
 	 * @param string $user
 	 */
 	public function userShouldBeDisabled($user) {
@@ -623,6 +650,7 @@ trait Provisioning {
 
 	/**
 	 * @Then /^user "([^"]*)" should be enabled$/
+	 *
 	 * @param string $user
 	 */
 	public function useShouldBeEnabled($user) {
@@ -638,6 +666,7 @@ trait Provisioning {
 	/**
 	 * @When the administrator sets the quota of user :user to :quota using the API
 	 * @Given the quota of user :user has been set to :quota
+	 *
 	 * @param string $user
 	 * @param string $quota
 	 */
@@ -659,6 +688,7 @@ trait Provisioning {
 	/**
 	 * @When the administrator gives unlimited quota to user :user using the API
 	 * @Given user :user has been given unlimited quota
+	 *
 	 * @param string $user
 	 */
 	public function adminGivesUnlimitedQuotaToUserUsingTheAPI($user)
@@ -668,6 +698,7 @@ trait Provisioning {
 
 	/**
 	 * Returns home path of the given user
+	 *
 	 * @param string $user
 	 */
 	public function getUserHome($user) {
@@ -681,6 +712,7 @@ trait Provisioning {
 
 	/**
 	 * @Then /^the user attributes returned by the API should include$/
+	 *
 	 * @param \Behat\Gherkin\Node\TableNode|null $body
 	 */
 	public function checkUserAttributes($body) {
