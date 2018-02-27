@@ -61,11 +61,19 @@ class PersonalGeneralSettingsContext extends RawMinkContext implements Context {
 	}
 
 	/**
-	 * @Given I go to the personal general settings page
+	 * @Given /^I (attempt to |)go to the personal general settings page$/
 	 * @return void
 	 */
-	public function iGoToThePersonalGeneralSettingsPage() {
+	public function iGoToThePersonalGeneralSettingsPage($attemptTo) {
+		$pageIsExpectedToLoad = ($attemptTo === "");
 		$this->visitPath($this->personalGeneralSettingsPage->getPagePath());
+
+		if ($pageIsExpectedToLoad) {
+			$this->personalGeneralSettingsPage->waitTillPageIsLoaded(
+				$this->getSession()
+			);
+		}
+
 		$this->personalGeneralSettingsPage->waitForOutstandingAjaxCalls(
 			$this->getSession()
 		);
