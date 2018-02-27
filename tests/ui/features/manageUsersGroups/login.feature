@@ -26,13 +26,13 @@ So that unauthorised access is impossible
 		Then I should be redirected to a page with the title "ownCloud"
 
 	Scenario: access the personal general settings page when not logged in
-		Given I go to the personal general settings page
+		Given I attempt to go to the personal general settings page
 		Then I should be redirected to a page with the title "ownCloud"
 		When I login with username "admin" and password "admin" after a redirect from the "personal general settings" page
 		Then I should be redirected to a page with the title "Settings - ownCloud"
 
 	Scenario: access the personal general settings page when not logged in using incorrect then correct password
-		Given I go to the personal general settings page
+		Given I attempt to go to the personal general settings page
 		Then I should be redirected to a page with the title "ownCloud"
 		When I login with username "admin" and invalid password "qwerty"
 		Then I should be redirected to a page with the title "ownCloud"
