@@ -609,7 +609,8 @@ class ShareesController extends OCSController  {
 		}
 
 		// Get remote
-		if (in_array(Share::SHARE_TYPE_REMOTE, $shareTypes)) {
+		$remoteUserSearchEnabled = $this->config->getSystemValue('sharing.enableRemoteUserSearch', false);
+		if (in_array(Share::SHARE_TYPE_REMOTE, $shareTypes) && $remoteUserSearchEnabled === true) {
 			$this->getRemote($search);
 		}
 

@@ -1306,6 +1306,32 @@ class ShareesTest extends TestCase {
 				[],
 				true,
 			],
+			// #17 check that if remote user search is disabled they are not returned
+			[
+				'user@example.com',
+				[
+					[
+						'FN' => 'User3 @ Localhost',
+					],
+					[
+						'FN' => 'User2 @ Localhost',
+						'CLOUD' => [
+						],
+					],
+					[
+						'FN' => 'User @ Localhost',
+						'CLOUD' => [
+							'username@localhost',
+						],
+						'EMAIL' => 'user@example.com'
+					],
+				],
+				true,
+				[],
+				[],
+				true,
+				false
+			],
 		];
 	}
 
@@ -1318,9 +1344,10 @@ class ShareesTest extends TestCase {
 	 * @param array $exactExpected
 	 * @param array $expected
 	 * @param bool $reachedEnd
+	 * @param bool $enableRemoteUserSearch
 	 * @param array $previousExact
 	 */
-	public function testGetRemote($searchTerm, $contacts, $shareeEnumeration, $exactExpected, $expected, $reachedEnd, $previousExact = []) {
+	public function testGetRemote($searchTerm, $contacts, $shareeEnumeration, $exactExpected, $expected, $reachedEnd, $enableRemoteUserSearch = true, $previousExact = []) {
 
 		// Set the limit and offset for remote user searching
 		$this->invokePrivate($this->sharees, 'limit', [2]);
@@ -1341,6 +1368,11 @@ class ShareesTest extends TestCase {
 			->method('getAppValue')
 			->with('dav', 'remote_search_properties')
 			->willReturn('EMAIL,CLOUD,FN');
+
+		$this->config->expects($this->once())
+			->method('getSystemValue')
+			->with('sharing.enableRemoteUserSearch', false)
+			->willReturn($enableRemoteUserSearch);
 
 		$this->invokePrivate($this->sharees, 'shareeEnumeration', [$shareeEnumeration]);
 		$this->contactsManager->expects($this->any())

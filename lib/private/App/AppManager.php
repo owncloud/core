@@ -175,13 +175,13 @@ class AppManager implements IAppManager {
 
 	/**
 	 * @param string $enabled
-	 * @param IUser $user
+	 * @param IUser|null $user
 	 * @return bool
 	 */
 	private function checkAppForUser($enabled, $user) {
 		if ($enabled === 'yes') {
 			return true;
-		} elseif (is_null($user)) {
+		} elseif ($user === null) {
 			return false;
 		} else {
 			if(empty($enabled)){

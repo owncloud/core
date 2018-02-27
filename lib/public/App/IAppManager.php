@@ -141,7 +141,7 @@ interface IAppManager {
 	/**
 	 * Returns the list of all apps, enabled and disabled
 	 *
-	 * @return string[]
+	 * @return string[]	
 	 * @since 10.0
 	 */
 	public function getAllApps();

@@ -1118,6 +1118,11 @@ $CONFIG = array(
  */
 'sharing.federation.allowHttpFallback' => false,
 
+/**
+ * When searching for sharees - should we also seach for remote users
+ * within the users' addressbooks (expensive when many addressbooks are synced)
+ */
+'sharing.enableRemoteUserSearch' => false,
 
 /**
  * All other configuration options
