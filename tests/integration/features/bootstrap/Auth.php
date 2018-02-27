@@ -17,6 +17,8 @@ trait Auth {
 
 	/**
 	 * @When a user requests :url with :method and no authentication
+	 * @Given a user has requested :url with :method and no authentication
+	 *
 	 * @param string $url
 	 * @param string $method
 	 */
@@ -52,7 +54,9 @@ trait Auth {
 	}
 
 	/**
+	 * @When user :user generates a new client token using the API
 	 * @Given a new client token for :user has been generated
+	 *
 	 * @param string $user
 	 */
 	public function aNewClientTokenHasBeenGenerated($user) {
@@ -68,6 +72,8 @@ trait Auth {
 
 	/**
 	 * @When user :user requests :url with :method using basic auth
+	 * @Given user :user has requested :url with :method using basic auth
+	 *
 	 * @param string $user
 	 * @param string $url
 	 * @param string $method
@@ -79,6 +85,8 @@ trait Auth {
 
 	/**
 	 * @When user :user requests :url with :method using basic token auth
+	 * @Given user :user has requested :url with :method using basic token auth
+	 *
 	 * @param string $user
 	 * @param string $url
 	 * @param string $method
@@ -89,6 +97,8 @@ trait Auth {
 
 	/**
 	 * @When the user requests :url with :method using the generated client token
+	 * @Given the user has requested :url with :method using the generated client token
+	 *
 	 * @param string $url
 	 * @param string $method
 	 */
@@ -98,6 +108,8 @@ trait Auth {
 
 	/**
 	 * @When the user requests :url with :method using the browser session
+	 * @Given the user has requested :url with :method using the browser session
+	 *
 	 * @param string $url
 	 * @param string $method
 	 */
@@ -107,6 +119,7 @@ trait Auth {
 
 	/**
 	 * @Given a new browser session for :user has been started
+	 *
 	 * @param string $user
 	 */
 	public function aNewBrowserSessionForHasBeenStarted($user) {

@@ -9,6 +9,7 @@ trait Checksums {
 	/**
 	 * @When user :user uploads file :source to :destination with checksum :checksum using the API
 	 * @Given user :user has uploaded file :source to :destination with checksum :checksum
+	 *
 	 * @param string $user
 	 * @param string $source
 	 * @param string $destination
@@ -26,6 +27,7 @@ trait Checksums {
 
 	/**
 	 * @Then the webdav response should have a status code :statusCode
+	 *
 	 * @param int $statusCode
 	 * @throws \Exception
 	 */
@@ -37,6 +39,7 @@ trait Checksums {
 
 	/**
 	 * @When user :user requests the checksum of :path via propfind
+	 *
 	 * @param string $user
 	 * @param string $path
 	 */
@@ -60,6 +63,7 @@ trait Checksums {
 
 	/**
 	 * @Then the webdav checksum should match :checksum
+	 *
 	 * @param string $checksum
 	 * @throws \Exception
 	 */
@@ -81,6 +85,7 @@ trait Checksums {
 
 	/**
 	 * @Then the header checksum should match :checksum
+	 *
 	 * @param string $checksum
 	 * @throws \Exception
 	 */
@@ -123,6 +128,7 @@ trait Checksums {
 	/**
 	 * @When user :user uploads chunk file :num of :total with :data to :destination with checksum :checksum using the API
 	 * @Given user :user has uploaded chunk file :num of :total with :data to :destination with checksum :checksum
+	 *
 	 * @param string $user
 	 * @param int $num
 	 * @param int $total

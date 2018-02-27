@@ -73,6 +73,7 @@ trait Tags {
 	/**
 	 * @When user :user creates a :type tag with name :name using the API
 	 * @Given user :user has created a :type tag with name :name
+	 *
 	 * @param string $user
 	 * @param string $type
 	 * @param string $name
@@ -85,6 +86,7 @@ trait Tags {
 	/**
 	 * @When user :user creates a :type tag with name :name and groups :groups using the API
 	 * @Given user :user has created a :type tag with name :name and groups :groups
+	 *
 	 * @param string $user
 	 * @param string $type
 	 * @param string $name
@@ -128,6 +130,7 @@ trait Tags {
 
 	/**
 	 * @Then the following tags should exist for :user
+	 *
 	 * @param string $user
 	 * @param TableNode $table
 	 * @throws \Exception
@@ -145,6 +148,7 @@ trait Tags {
 
 	/**
 	 * @Then tag :tagDisplayName should not exist for :user
+	 *
 	 * @param string $tagDisplayName
 	 * @param string $user
 	 */
@@ -155,6 +159,7 @@ trait Tags {
 
 	/**
 	 * @Then /^the user "([^"]*)" (should|should not) be able to assign the "([^"]*)" tag with name "([^"]*)"$/
+	 *
 	 * @param string $user
 	 * @param string $shouldOrNot should or should not
 	 * @param string $type
@@ -178,6 +183,7 @@ trait Tags {
 
 	/**
 	 * @Then the :type tag with name :tagName should have the groups :groups
+	 *
 	 * @param string $type
 	 * @param string $tagName
 	 * @param string $groups list of groups separated by "|"
@@ -192,6 +198,7 @@ trait Tags {
 
 	/**
 	 * @Then :count tags should exist for :user
+	 *
 	 * @param int $count
 	 * @param string $user
 	 * @throws \Exception
@@ -236,6 +243,7 @@ trait Tags {
 	/**
 	 * @When user :user edits the tag with name :oldName and sets its name to :newName using the API
 	 * @Given user :user has edited the tag with name :oldName and set its name to :newName
+	 *
 	 * @param string $user
 	 * @param string $oldName
 	 * @param string $newName
@@ -251,6 +259,7 @@ trait Tags {
 	/**
 	 * @When user :user edits the tag with name :oldName and sets its groups to :groups using the API
 	 * @Given user :user has edited the tag with name :oldName and set its groups to :groups
+	 *
 	 * @param string $user
 	 * @param string $oldName
 	 * @param string $groups
@@ -266,6 +275,7 @@ trait Tags {
 	/**
 	 * @When user :user deletes the tag with name :name using the API
 	 * @Given user :user has deleted the tag with name :name
+	 *
 	 * @param string $user
 	 * @param string $name
 	 */
@@ -339,6 +349,7 @@ trait Tags {
 	/**
 	 * @When /^user "([^"]*)" adds the tag "([^"]*)" to "([^"]*)" (shared|owned) by "([^"]*)" using the API$/
 	 * @Given /^user "([^"]*)" has added the tag "([^"]*)" to "([^"]*)" (shared|owned) by "([^"]*)"$/
+	 *
 	 * @param string $taggingUser
 	 * @param string $tagName
 	 * @param string $fileName
@@ -351,6 +362,7 @@ trait Tags {
 
 	/**
 	 * @Then /^(?:file|folder|entry) "([^"]*)" (shared|owned) by "([^"]*)" should have the following tags$/
+	 *
 	 * @param string $fileName
 	 * @param string $sharedOrOwnedBy unused
 	 * @param string $sharingUser
@@ -382,6 +394,7 @@ trait Tags {
 
 	/**
 	 * @Then file :fileName shared by :sharingUser should have the following tags for :user
+	 *
 	 * @param string $fileName
 	 * @param string $sharingUser unused
 	 * @param string $user
@@ -412,6 +425,7 @@ trait Tags {
 	/**
 	 * @When user :user removes the tag :tagName from :fileName shared by :shareUser using the API
 	 * @Given user :user has removed the tag :tagName from :fileName shared by :shareUser
+	 *
 	 * @param string $user
 	 * @param string $tagName
 	 * @param string $fileName

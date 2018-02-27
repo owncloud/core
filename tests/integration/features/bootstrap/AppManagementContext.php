@@ -58,6 +58,7 @@ class AppManagementContext implements  Context {
 	
 	/**
 	 * @Given apps have been put in two directories :dir1 and :dir2
+	 *
 	 * @param string $dir1
 	 * @param string $dir2
 	 */
@@ -75,6 +76,7 @@ class AppManagementContext implements  Context {
 	
 	/**
 	 * @Given app :appId with version :version has been put in dir :dir
+	 *
 	 * @param string $appId app id
 	 * @param string $version app version
 	 * @param string $dir app directory
@@ -123,6 +125,8 @@ class AppManagementContext implements  Context {
 	
 	/**
 	 * @When the administrator loads app :appId using the console
+	 * @Given the administrator has loaded app :appId using the console
+	 *
 	 * @param string $appId app id
 	 */
 	public function loadApp($appId) {
@@ -145,6 +149,7 @@ class AppManagementContext implements  Context {
 	
 	/**
 	 * @Then the path to :appId should be :dir
+	 *
 	 * @param string $appId
 	 * @param string $dir
 	 */

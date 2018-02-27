@@ -31,6 +31,7 @@ trait WebDav {
 
 	/**
 	 * @Given /^using dav path "([^"]*)"$/
+	 *
 	 * @param string $davPath
 	 */
 	public function usingDavPath($davPath) {
@@ -68,6 +69,9 @@ trait WebDav {
 		}
 	}
 
+	/**
+	 * @return int DAV path version (1 or 2)
+	 */
 	private function getDavPathVersion ()
 	{
 		if ($this->usingOldDavPath === true) {
@@ -110,6 +114,7 @@ trait WebDav {
 
 	/**
 	 * @Given /^user "([^"]*)" has moved (file|folder|entry) "([^"]*)" to "([^"]*)"$/
+	 *
 	 * @param string $user
 	 * @param string $entry unused
 	 * @param string $fileSource
@@ -124,6 +129,7 @@ trait WebDav {
 
 	/**
 	 * @When /^user "([^"]*)" moves (file|folder|entry) "([^"]*)" to "([^"]*)" using the API$/
+	 *
 	 * @param string $user
 	 * @param string $entry unused
 	 * @param string $fileSource
@@ -142,6 +148,7 @@ trait WebDav {
 	/**
 	 * @When /^user "([^"]*)" copies file "([^"]*)" to "([^"]*)" using the API$/
 	 * @Given /^user "([^"]*)" has copied file "([^"]*)" to "([^"]*)"$/
+	 *
 	 * @param string $user
 	 * @param string $fileSource
 	 * @param string $fileDestination
@@ -158,6 +165,7 @@ trait WebDav {
 
 	/**
 	 * @When /^the user downloads file "([^"]*)" with range "([^"]*)" using the API$/
+	 *
 	 * @param string $fileSource
 	 * @param string $range
 	 */
@@ -167,6 +175,7 @@ trait WebDav {
 
 	/**
 	 * @When /^user "([^"]*)" downloads file "([^"]*)" with range "([^"]*)" using the API$/
+	 *
 	 * @param string $user
 	 * @param string $fileSource
 	 * @param string $range
@@ -178,6 +187,7 @@ trait WebDav {
 
 	/**
 	 * @When /^the public downloads the last public shared file with range "([^"]*)" using the API$/
+	 *
 	 * @param string $range
 	 */
 	public function downloadPublicFileWithRange($range) {
@@ -196,6 +206,7 @@ trait WebDav {
 
 	/**
 	 * @When /^the public downloads file "([^"]*)" from inside the last public shared folder with range "([^"]*)" using the API$/
+	 *
 	 * @param string $path
 	 * @param string $range
 	 */
@@ -215,6 +226,7 @@ trait WebDav {
 
 	/**
 	 * @Then /^the downloaded content should be "([^"]*)"$/
+	 *
 	 * @param string $content
 	 */
 	public function downloadedContentShouldBe($content) {
@@ -223,6 +235,7 @@ trait WebDav {
 
 	/**
 	 * @Then /^the downloaded content when downloading file "([^"]*)" with range "([^"]*)" should be "([^"]*)"$/
+	 *
 	 * @param string $fileSource
 	 * @param string $range
 	 * @param string $content
@@ -234,6 +247,7 @@ trait WebDav {
 
 	/**
 	 * @Then /^the downloaded content when downloading file "([^"]*)" for user "([^"]*)" with range "([^"]*)" should be "([^"]*)"$/
+	 *
 	 * @param string $fileSource
 	 * @param string $user
 	 * @param string $range
@@ -246,6 +260,7 @@ trait WebDav {
 
 	/**
 	 * @When the user downloads the file :fileName using the API
+	 *
 	 * @param string $fileName
 	 */
 	public function theUserDownloadsTheFileUsingTheAPI($fileName) {
@@ -254,6 +269,7 @@ trait WebDav {
 
 	/**
 	 * @When user :user downloads the file :fileName using the API
+	 *
 	 * @param string $fileName
 	 * @param string $user
 	 */
@@ -267,6 +283,7 @@ trait WebDav {
 
 	/**
 	 * @Then the following headers should be set
+	 *
 	 * @param \Behat\Gherkin\Node\TableNode $table
 	 * @throws \Exception
 	 */
@@ -290,6 +307,7 @@ trait WebDav {
 
 	/**
 	 * @Then the downloaded content should start with :start
+	 *
 	 * @param string $start
 	 * @throws \Exception
 	 */
@@ -307,6 +325,7 @@ trait WebDav {
 
 	/**
 	 * @When /^user "([^"]*)" gets the following properties of (file|folder|entry) "([^"]*)" using the API$/
+	 *
 	 * @param string $user
 	 * @param string $elementType unused
 	 * @param string $path
@@ -324,6 +343,7 @@ trait WebDav {
 
 	/**
 	 * @When user :user gets a custom property :propertyName of file :path
+	 *
 	 * @param string $user
 	 * @param string $propertyName
 	 * @param string $path
@@ -340,6 +360,7 @@ trait WebDav {
 	/**
 	 * @When /^user "([^"]*)" sets property "([^"]*)" of (file|folder|entry) "([^"]*)" to "([^"]*)" using the API$/
 	 * @Given /^user "([^"]*)" has set property "([^"]*)" of (file|folder|entry) "([^"]*)" to "([^"]*)"$/
+	 *
 	 * @param string $user
 	 * @param string $propertyName
 	 * @param string $elementType unused
@@ -356,6 +377,7 @@ trait WebDav {
 
 	/**
 	 * @Then /^the response should contain a custom "([^"]*)" property with "([^"]*)"$/
+	 *
 	 * @param string $propertyName
 	 * @param string $propertyValue
 	 * @param null $table unused
@@ -374,6 +396,7 @@ trait WebDav {
 
 	/**
 	 * @Then /^as "([^"]*)" the (file|folder|entry) "([^"]*)" should not exist$/
+	 *
 	 * @param string $user
 	 * @param string $entry
 	 * @param string $path
@@ -392,6 +415,7 @@ trait WebDav {
 
 	/**
 	 * @Then /^as "([^"]*)" the (file|folder|entry) "([^"]*)" should exist$/
+	 *
 	 * @param string $user
 	 * @param string $entry
 	 * @param string $path
@@ -406,6 +430,7 @@ trait WebDav {
 
 	/**
 	 * @Then the single response should contain a property :key with value :value
+	 *
 	 * @param string $key
 	 * @param string $expectedValue
 	 * @throws \Exception
@@ -441,6 +466,7 @@ trait WebDav {
 
 	/**
 	 * @Then the single response should contain a property :key with value like :regex
+	 *
 	 * @param string $key
 	 * @param string $regex
 	 * @throws \Exception
@@ -471,6 +497,7 @@ trait WebDav {
 
 	/**
 	 * @Then the response should contain a share-types property with
+	 *
 	 * @param \Behat\Gherkin\Node\TableNode $table
 	 * @throws Exception
 	 */
@@ -507,6 +534,7 @@ trait WebDav {
 
 	/**
 	 * @Then the response should contain an empty property :property
+	 *
 	 * @param string $property
 	 * @throws \Exception
 	 */
@@ -523,6 +551,7 @@ trait WebDav {
 
 	/**
 	 * Returns the elements of a propfind
+	 *
 	 * @param string $user
 	 * @param string $path
 	 * @param int $folderDepth requires 1 to see elements without children
@@ -570,6 +599,7 @@ trait WebDav {
 
 	/**
 	 * @Then the version folder of file :path for user :user should contain :count element(s)
+	 *
 	 * @param string $path
 	 * @param string $user
 	 * @param int $count
@@ -582,6 +612,7 @@ trait WebDav {
 
 	/**
 	 * @Then the version folder of fileId :fileId for user :user should contain :count element(s)
+	 *
 	 * @param int $fileId
 	 * @param string $user
 	 * @param int $count
@@ -593,6 +624,7 @@ trait WebDav {
 
 	/**
 	 * @Then the content length of file :path with version index :index for user :user in versions folder should be :length
+	 *
 	 * @param string $path
 	 * @param int $index
 	 * @param string $user
@@ -649,7 +681,9 @@ trait WebDav {
 		return $parsedResponse;
 	}
 
-	/* Returns the elements of a report command special for comments
+	/**
+	 * Returns the elements of a report command special for comments
+	 *
 	 * @param string $user
 	 * @param string $path
 	 * @param string $properties properties which needs to be included in the report
@@ -699,6 +733,7 @@ trait WebDav {
 
 	/**
 	 * @Then /^user "([^"]*)" should see the following elements$/
+	 *
 	 * @param string $user
 	 * @param \Behat\Gherkin\Node\TableNode|null $expectedElements
 	 */
@@ -719,6 +754,7 @@ trait WebDav {
 	/**
 	 * @When user :user uploads file :source to :destination using the API
 	 * @Given user :user has uploaded file :source to :destination
+	 *
 	 * @param string $user
 	 * @param string $source
 	 * @param string $destination
@@ -735,6 +771,7 @@ trait WebDav {
 
 	/**
 	 * @When user :user uploads file :source to :destination with chunks using the API
+	 *
 	 * @param string $user
 	 * @param string $source
 	 * @param string $destination
@@ -784,6 +821,7 @@ trait WebDav {
 	 * Uploading with old/new dav and chunked/non-chunked.
 	 *
 	 * @When user :user uploads file :source to :destination with all mechanisms using the API
+	 *
 	 * @param string $user
 	 * @param string $source
 	 * @param string $destination
@@ -796,6 +834,7 @@ trait WebDav {
 	 * Overwriting with old/new dav and chunked/non-chunked.
 	 *
 	 * @When user :user overwrites file :source to :destination with all mechanisms using the API
+	 *
 	 * @param string $user
 	 * @param string $source
 	 * @param string $destination
@@ -865,6 +904,7 @@ trait WebDav {
 
 	/**
 	 * @Then /^the HTTP status code of all upload responses should be "([^"]*)"$/
+	 *
 	 * @param int $statusCode
 	 */
 	public function theHTTPStatusCodeOfAllUploadResponsesShouldBe($statusCode) {
@@ -881,6 +921,7 @@ trait WebDav {
 	 * Check that all the files uploaded with old/new dav and chunked/non-chunked exist.
 	 *
 	 * @Then as :user the files uploaded to :destination with all mechanisms should exist
+	 *
 	 * @param string $user
 	 * @param string $destination
 	 */
@@ -894,6 +935,7 @@ trait WebDav {
 
 	/**
 	 * @Given user :user has added file :destination of :bytes bytes
+	 *
 	 * @param string $user
 	 * @param string $bytes
 	 * @param string $destination
@@ -911,6 +953,7 @@ trait WebDav {
 	/**
 	 * @When user :user uploads file with content :content to :destination using the API
 	 * @Given user :user has uploaded file with content :content to :destination
+	 *
 	 * @param string $user
 	 * @param string $content
 	 * @param string $destination
@@ -932,6 +975,7 @@ trait WebDav {
 	/**
 	 * @When user :user uploads file with checksum :checksum and content :content to :destination using the API
 	 * @Given user :user has uploaded file with checksum :checksum and content :content to :destination
+	 *
 	 * @param string $user
 	 * @param string $checksum
 	 * @param string $content
@@ -957,6 +1001,7 @@ trait WebDav {
 
 	/**
 	 * @Given file :file has been deleted for user :user
+	 *
 	 * @param string $file
 	 * @param string $user
 	 */
@@ -971,6 +1016,7 @@ trait WebDav {
 	 *
 	 * @When /^user "([^"]*)" waits and deletes (file|folder) "([^"]*)" using the API$/
 	 * @Given /^user "([^"]*)" has waited and deleted (file|folder) "([^"]*)"$/
+	 *
 	 * @param string $user
 	 * @param string $type unused
 	 * @param string $file
@@ -986,6 +1032,7 @@ trait WebDav {
 	/**
 	 * @When /^user "([^"]*)" deletes (file|folder) "([^"]*)" using the API$/
 	 * @Given /^user "([^"]*)" has deleted (file|folder) "([^"]*)"$/
+	 *
 	 * @param string $user
 	 * @param string $type unused
 	 * @param string $file
@@ -1002,6 +1049,7 @@ trait WebDav {
 	/**
 	 * @When user :user creates a folder :destination using the API
 	 * @Given user :user has created a folder :destination
+	 *
 	 * @param string $user
 	 * @param string $destination
 	 */
@@ -1020,6 +1068,7 @@ trait WebDav {
 	 *
 	 * @When user :user uploads chunk file :num of :total with :data to :destination using the API
 	 * @Given user :user has uploaded chunk file :num of :total with :data to :destination
+	 *
 	 * @param string $user
 	 * @param int $num
 	 * @param int $total
@@ -1041,6 +1090,7 @@ trait WebDav {
 	/**
 	 * @When user :user creates a new chunking upload with id :id using the API
 	 * @Given user :user has created a new chunking upload with id :id
+	 *
 	 * @param string $user
 	 * @param string $id
 	 */
@@ -1057,6 +1107,7 @@ trait WebDav {
 	/**
 	 * @When user :user uploads new chunk file :num with :data to id :id using the API
 	 * @Given user :user has uploaded new chunk file :num with :data to id :id
+	 *
 	 * @param string $user
 	 * @param int $num
 	 * @param string $data
@@ -1076,6 +1127,7 @@ trait WebDav {
 	/**
 	 * @When user :user moves new chunk file with id :id to :dest using the API
 	 * @Given user :user has moved new chunk file with id :id to :dest
+	 *
 	 * @param string $user
 	 * @param string $id
 	 * @param string $dest
@@ -1086,6 +1138,8 @@ trait WebDav {
 
 	/**
 	 * @When user :user moves new chunk file with id :id to :dest with size :size using the API
+	 * @Given user :user has moved new chunk file with id :id to :dest with size :size
+	 *
 	 * @param string $user
 	 * @param string $id
 	 * @param string $dest
@@ -1097,6 +1151,8 @@ trait WebDav {
 
 	/**
 	 * @When user :user moves new chunk file with id :id to :dest with checksum :checksum using the API
+	 * @Given user :user has moved new chunk file with id :id to :dest with checksum :checksum
+	 *
 	 * @param string $user
 	 * @param string $id
 	 * @param string $dest
@@ -1141,6 +1197,7 @@ trait WebDav {
 	/**
 	 * @When user :user favorites element :path using the API
 	 * @Given user :user has favorited element :path
+	 *
 	 * @param string $user
 	 * @param string $path
 	 */
@@ -1151,6 +1208,7 @@ trait WebDav {
 	/**
 	 * @When user :user unfavorites element :path using the API
 	 * @Given user :user has unfavorited element :path
+	 *
 	 * @param string $user
 	 * @param string $path
 	 */
@@ -1160,6 +1218,7 @@ trait WebDav {
 
 	/**
 	 * Set the elements of a proppatch
+	 *
 	 * @param string $user
 	 * @param string $path
 	 * @param int $favOrUnfav 1 = favorite, 0 = unfavorite
@@ -1188,6 +1247,7 @@ trait WebDav {
 	/**
 	 * @When user :user stores etag of element :path using the API
 	 * @Given user :user has stored etag of element :path
+	 *
 	 * @param string $user
 	 * @param string $path
 	 */
@@ -1200,6 +1260,7 @@ trait WebDav {
 
 	/**
 	 * @Then the etag of element :path of user :user should not have changed
+	 *
 	 * @param string $path
 	 * @param string $user
 	 */
@@ -1211,6 +1272,7 @@ trait WebDav {
 
 	/**
 	 * @Then the etag of element :path of user :user should have changed
+	 *
 	 * @param string $path
 	 * @param string $user
 	 */
@@ -1222,6 +1284,7 @@ trait WebDav {
 
 	/**
 	 * @When an unauthenticated client connects to the dav endpoint using the API
+	 * @Given an unauthenticated client has connected to the dav endpoint using the API
 	 */
 	public function connectingToDavEndpoint() {
 		try {
@@ -1246,6 +1309,7 @@ trait WebDav {
 
     /**
 	 * @Then /^user "([^"]*)" in folder "([^"]*)" should have favorited the following elements$/
+	 *
 	 * @param string $user
 	 * @param string $folder
 	 * @param \Behat\Gherkin\Node\TableNode|null $expectedElements
@@ -1256,6 +1320,7 @@ trait WebDav {
 
     /**
 	 * @Then /^user "([^"]*)" in folder "([^"]*)" should have favorited the following elements from offset ([\d*]) and limit ([\d*])$/
+	 *
 	 * @param string $user
 	 * @param string $folder
 	 * @param \Behat\Gherkin\Node\TableNode|null $expectedElements
@@ -1282,6 +1347,7 @@ trait WebDav {
 	/**
 	 * @When /^user "([^"]*)" deletes everything from folder "([^"]*)" using the API$/
 	 * @Given /^user "([^"]*)" has deleted everything from folder "([^"]*)"$/
+	 *
 	 * @param string $user
 	 * @param string $folder
 	 */
@@ -1317,6 +1383,7 @@ trait WebDav {
 
 	/**
 	 * @Given /^user "([^"]*)" has stored id of file "([^"]*)"$/
+	 *
 	 * @param string $user
 	 * @param string $path
 	 * @return void
@@ -1327,6 +1394,7 @@ trait WebDav {
 
 	/**
 	 * @Then /^user "([^"]*)" file "([^"]*)" should have the previously stored id$/
+	 *
 	 * @param string $user
 	 * @param string $path
 	 * @return void
@@ -1338,6 +1406,8 @@ trait WebDav {
 
 	/**
 	 * @When user :user restores version index :versionIndex of file :path using the API
+	 * @Given user :user has restored version index :versionIndex of file :path
+	 * 
 	 * @param string $user
 	 * @param int $versionIndex
 	 * @param string $path

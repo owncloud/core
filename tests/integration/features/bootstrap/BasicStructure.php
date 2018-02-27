@@ -88,6 +88,7 @@ trait BasicStructure {
 
 	/**
 	 * @Given /^using (?:api|API) version "([^"]*)"$/
+	 *
 	 * @param string $version
 	 */
 	public function usingApiVersion($version) {
@@ -96,6 +97,7 @@ trait BasicStructure {
 
 	/**
 	 * @Given /^as user "([^"]*)"$/
+	 *
 	 * @param string $user
 	 */
 	public function asUser($user) {
@@ -104,6 +106,7 @@ trait BasicStructure {
 
 	/**
 	 * @Given /^using server "(LOCAL|REMOTE)"$/
+	 *
 	 * @param string $server
 	 * @return string Previous used server
 	 */
@@ -121,6 +124,8 @@ trait BasicStructure {
 
 	/**
 	 * @When /^the user sends HTTP method "([^"]*)" to API endpoint "([^"]*)"$/
+	 * @Given /^the user has sent HTTP method "([^"]*)" to API endpoint "([^"]*)"$/
+	 *
 	 * @param string $verb
 	 * @param string $url
 	 */
@@ -130,6 +135,8 @@ trait BasicStructure {
 
 	/**
 	 * @When /^user "([^"]*)" sends HTTP method "([^"]*)" to API endpoint "([^"]*)"$/
+	 * @Given /^user "([^"]*)" has sent HTTP method "([^"]*)" to API endpoint "([^"]*)"$/
+	 *
 	 * @param string $user
 	 * @param string $verb
 	 * @param string $url
@@ -194,6 +201,7 @@ trait BasicStructure {
 
 	/**
 	 * This function is needed to use a vertical fashion in the gherkin tables.
+	 *
 	 * @param array $arrayOfArrays
 	 * @return array
 	 */
@@ -205,6 +213,7 @@ trait BasicStructure {
 	/**
 	 * @When /^the user sends HTTP method "([^"]*)" to API endpoint "([^"]*)" with body$/
 	 * @Given /^the user has sent HTTP method "([^"]*)" to API endpoint "([^"]*)" with body$/
+	 *
 	 * @param string $verb
 	 * @param string $url
 	 * @param \Behat\Gherkin\Node\TableNode $body
@@ -221,6 +230,7 @@ trait BasicStructure {
 	/**
 	 * @When /^user "([^"]*)" sends HTTP method "([^"]*)" to API endpoint "([^"]*)" with body$/
 	 * @Given /^user "([^"]*)" has sent HTTP method "([^"]*)" to API endpoint "([^"]*)" with body$/
+	 *
 	 * @param string $user
 	 * @param string $verb
 	 * @param string $url
@@ -255,6 +265,8 @@ trait BasicStructure {
 
 	/**
 	 * @When /^user "([^"]*)" sends HTTP method "([^"]*)" to URL "([^"]*)"$/
+	 * @Given /^user "([^"]*)" has sent HTTP method "([^"]*)" to URL "([^"]*)"$/
+	 *
 	 * @param string $user
 	 * @param string $verb
 	 * @param string $url
@@ -308,6 +320,7 @@ trait BasicStructure {
 
 	/**
 	 * @Then /^the OCS status code should be "([^"]*)"$/
+	 *
 	 * @param int $statusCode
 	 */
 	public function theOCSStatusCodeShouldBe($statusCode) {
@@ -316,6 +329,7 @@ trait BasicStructure {
 
 	/**
 	 * @Then /^the HTTP status code should be "([^"]*)"$/
+	 *
 	 * @param int $statusCode
 	 */
 	public function theHTTPStatusCodeShouldBe($statusCode) {
@@ -324,6 +338,7 @@ trait BasicStructure {
 
 	/**
 	 * @Then /^the XML "([^"]*)" "([^"]*)" value should be "([^"]*)"$/
+	 *
 	 * @param string $key1
 	 * @param string $key2
 	 * @param string $idText
@@ -337,6 +352,7 @@ trait BasicStructure {
 
 	/**
 	 * @Then /^the XML "([^"]*)" "([^"]*)" "([^"]*)" value should be "([^"]*)"$/
+	 *
 	 * @param string $key1
 	 * @param string $key2
 	 * @param string $key3
@@ -351,6 +367,7 @@ trait BasicStructure {
 
 	/**
 	 * @Then /^the XML "([^"]*)" "([^"]*)" "([^"]*)" "([^"]*)" attribute value should be a valid version string$/
+	 *
 	 * @param string $key1
 	 * @param string $key2
 	 * @param string $key3
@@ -374,6 +391,7 @@ trait BasicStructure {
 	/**
 	 * @When /^user "([^"]*)" logs in to a web-style session using the API$/
 	 * @Given /^user "([^"]*)" has logged in to a web-style session using the API$/
+	 *
 	 * @param string $user
 	 */
 	public function userHasLoggedInToAWebStyleSessionUsingTheAPI($user) {
@@ -407,6 +425,8 @@ trait BasicStructure {
 
 	/**
 	 * @When the client sends a :method to :url with requesttoken using the API
+	 * @Given the client has sent a :method to :url with requesttoken
+	 *
 	 * @param string $method
 	 * @param string $url
 	 */
@@ -431,6 +451,8 @@ trait BasicStructure {
 
 	/**
 	 * @When the client sends a :method to :url without requesttoken using the API
+	 * @Given the client has sent a :method to :url without requesttoken
+	 *
 	 * @param string $method
 	 * @param string $url
 	 */
@@ -465,6 +487,7 @@ trait BasicStructure {
 	/**
 	 * @When user :user modifies text of :filename with text :text using the API
 	 * @Given user :user has modified text of :filename with text :text
+	 *
 	 * @param string $user
 	 * @param string $filename
 	 * @param string $text
@@ -497,6 +520,7 @@ trait BasicStructure {
 
 	/**
 	 * @Given file :filename of size :size has been created in local storage
+	 *
 	 * @param string $filename
 	 * @param string $size
 	 */
@@ -506,6 +530,7 @@ trait BasicStructure {
 
 	/**
 	 * @Given file :filename with text :text has been created in local storage
+	 *
 	 * @param string $filename
 	 * @param string $text
 	 */
@@ -515,6 +540,7 @@ trait BasicStructure {
 
 	/**
 	 * @Given file :filename has been deleted in local storage
+	 *
 	 * @param string $filename
 	 */
 	public function fileHasBeenDeletedInLocalStorage($filename) {
@@ -579,6 +605,7 @@ trait BasicStructure {
 
 	/**
 	 * @Then the json responded should match with
+	 *
 	 * @param PyStringNode $jsonExpected
 	 */
 	public function jsonRespondedShouldMatch(PyStringNode $jsonExpected) {
@@ -589,6 +616,7 @@ trait BasicStructure {
 
 	/**
 	 * @Then the status.php response should match with
+	 *
 	 * @param PyStringNode $jsonExpected
 	 */
 	public function statusPhpRespondedShouldMatch(PyStringNode $jsonExpected) {
