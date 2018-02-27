@@ -69,7 +69,9 @@ class CalDavContext implements \Behat\Behat\Context\Context {
 		$this->responseXml = '';
 	}
 
-	/** @AfterScenario @caldav */
+	/**
+	 * @AfterScenario @caldav
+	 */
 	public function afterScenario() {
 		$davUrl = $this->baseUrl. '/remote.php/dav/calendars/admin/MyCalendar';
 		try {
@@ -84,6 +86,7 @@ class CalDavContext implements \Behat\Behat\Context\Context {
 
 	/**
 	 * @When user :user requests calendar :calendar using the API
+	 *
 	 * @param string $user
 	 * @param string $calendar
 	 */
@@ -104,6 +107,7 @@ class CalDavContext implements \Behat\Behat\Context\Context {
 
 	/**
 	 * @Then the CalDAV HTTP status code should be :code
+	 *
 	 * @param int $code
 	 * @throws \Exception
 	 */
@@ -128,6 +132,7 @@ class CalDavContext implements \Behat\Behat\Context\Context {
 
 	/**
 	 * @Then the CalDAV exception should be :message
+	 *
 	 * @param string $message
 	 * @throws \Exception
 	 */
@@ -147,6 +152,7 @@ class CalDavContext implements \Behat\Behat\Context\Context {
 
 	/**
 	 * @Then the CalDAV error message should be :message
+	 *
 	 * @param string $message
 	 * @throws \Exception
 	 */
@@ -166,6 +172,7 @@ class CalDavContext implements \Behat\Behat\Context\Context {
 
 	/**
 	 * @Given user :user has successfully created a calendar named :name
+	 *
 	 * @param string $user
 	 * @param string $name
 	 */

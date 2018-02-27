@@ -36,6 +36,7 @@ trait Comments {
 	/**
 	 * @When /^user "([^"]*)" comments with content "([^"]*)" on (file|folder) "([^"]*)" using the API$/
 	 * @Given /^user "([^"]*)" has commented with content "([^"]*)" on (file|folder) "([^"]*)"$/
+	 *
 	 * @param string $user
 	 * @param string $content
 	 * @param string $type
@@ -71,6 +72,7 @@ trait Comments {
 
 	/**
 	 * @Then /^user "([^"]*)" should have the following comments on (file|folder) "([^"]*)"$/
+	 *
 	 * @param string $user
 	 * @param string $type
 	 * @param string $path
@@ -108,6 +110,7 @@ trait Comments {
 
 	/**
 	 * @Then /^user "([^"]*)" should have (\d+) comments on (file|folder) "([^"]*)"$/
+	 *
 	 * @param string $user
 	 * @param string $numberOfComments
 	 * @param string $type
@@ -152,6 +155,7 @@ trait Comments {
 	/**
 	 * @When user :user deletes the last created comment using the API
 	 * @Given user :user has deleted the last created comment
+	 *
 	 * @param string $user
 	 * @throws \Exception
 	 */
@@ -161,6 +165,7 @@ trait Comments {
 
 	/**
 	 * @Then the response should contain a property :key with value :value
+	 *
 	 * @param string $key
 	 * @param string $value
 	 * @throws \Exception
@@ -182,6 +187,7 @@ trait Comments {
 
 	/**
 	 * @Then the response should contain only :number comments
+	 *
 	 * @param int $number
 	 * @throws \Exception
 	 */
@@ -222,6 +228,7 @@ trait Comments {
 	/**
 	 * @When /^user "([^"]*)" edits the last created comment with content "([^"]*)" using the API$/
 	 * @Given /^user "([^"]*)" has edited the last created comment with content "([^"]*)"$/
+	 *
 	 * @param string $user
 	 * @param string $content
 	 * @throws \Exception
