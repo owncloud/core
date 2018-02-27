@@ -64,7 +64,6 @@ matrix:
         hosts: *common_hosts
         sauce_connect: true
     - php: 7.1
-      if: type = cron
       env: DB=pgsql TC=selenium BROWSER="chrome" BROWSER_VERSION="latest" BEHAT_SUITE="manageUsersGroups" PLATFORM="Windows 10" TEST_DAV=0
       addons:
         apt: *common_apt
@@ -78,7 +77,6 @@ matrix:
         hosts: *common_hosts
         sauce_connect: true
     - php: 7.1
-      if: type = cron
       env: DB=pgsql TC=selenium BROWSER="chrome" BROWSER_VERSION="latest" BEHAT_SUITE="personalSettings" PLATFORM="Windows 10" TEST_DAV=0
       addons:
         apt: *common_apt
@@ -162,7 +160,6 @@ matrix:
         hosts: *common_hosts
         sauce_connect: true
     - php: 7.1
-      if: type = cron
       env: DB=pgsql TC=selenium BROWSER="firefox" BROWSER_VERSION="57.0" BEHAT_SUITE="manageUsersGroups" PLATFORM="Windows 10" TEST_DAV=0
       addons:
         apt: *common_apt
@@ -176,7 +173,6 @@ matrix:
         hosts: *common_hosts
         sauce_connect: true
     - php: 7.1
-      if: type = cron
       env: DB=pgsql TC=selenium BROWSER="firefox" BROWSER_VERSION="57.0" BEHAT_SUITE="personalSettings" PLATFORM="Windows 10" TEST_DAV=0
       addons:
         apt: *common_apt
@@ -274,7 +270,6 @@ matrix:
         hosts: *common_hosts
         sauce_connect: true
     - php: 7.1
-      if: type = cron
       env: DB=pgsql TC=selenium BROWSER="chrome" BROWSER_VERSION="latest-1" BEHAT_SUITE="manageUsersGroups" PLATFORM="Windows 10" TEST_DAV=0
       addons:
         apt: *common_apt
@@ -288,7 +283,6 @@ matrix:
         hosts: *common_hosts
         sauce_connect: true
     - php: 7.1
-      if: type = cron
       env: DB=pgsql TC=selenium BROWSER="chrome" BROWSER_VERSION="latest-1" BEHAT_SUITE="personalSettings" PLATFORM="Windows 10" TEST_DAV=0
       addons:
         apt: *common_apt
@@ -372,7 +366,6 @@ matrix:
         hosts: *common_hosts
         sauce_connect: true
     - php: 7.1
-      if: type = cron
       env: DB=pgsql TC=selenium BROWSER="MicrosoftEdge" BROWSER_VERSION="latest" BEHAT_SUITE="manageUsersGroups" PLATFORM="Windows 10" TEST_DAV=0
       addons:
         apt: *common_apt
@@ -386,7 +379,6 @@ matrix:
         hosts: *common_hosts
         sauce_connect: true
     - php: 7.1
-      if: type = cron
       env: DB=pgsql TC=selenium BROWSER="MicrosoftEdge" BROWSER_VERSION="latest" BEHAT_SUITE="personalSettings" PLATFORM="Windows 10" TEST_DAV=0
       addons:
         apt: *common_apt
@@ -470,7 +462,6 @@ matrix:
         hosts: *common_hosts
         sauce_connect: true
     - php: 7.1
-      if: type = cron
       env: DB=pgsql TC=selenium BROWSER="internet explorer" BROWSER_VERSION="11.0" BEHAT_SUITE="manageUsersGroups" PLATFORM="Windows 7" TEST_DAV=0
       addons:
         apt: *common_apt
@@ -484,7 +475,6 @@ matrix:
         hosts: *common_hosts
         sauce_connect: true
     - php: 7.1
-      if: type = cron
       env: DB=pgsql TC=selenium BROWSER="internet explorer" BROWSER_VERSION="11.0" BEHAT_SUITE="personalSettings" PLATFORM="Windows 7" TEST_DAV=0
       addons:
         apt: *common_apt
