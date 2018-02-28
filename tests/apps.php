@@ -7,7 +7,7 @@
  */
 
 function loadDirectory($path) {
-	if (stripos(basename($path), 'integration') !== false) {
+	if (stripos(basename($path), 'acceptance') !== false) {
 		return;
 	}
 	if (strcasecmp(basename($path), 'ui') === 0) {

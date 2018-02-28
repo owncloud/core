@@ -87,40 +87,40 @@ timestampedNode('SLAVE') {
             '''
         }
 
-	stage 'Integration Testing'
-        currentStage = 'Integration Testing'
-		executeAndReport('tests/integration/output/*.xml', currentStage) {
+	stage 'Acceptance Testing'
+        currentStage = 'Acceptance Testing'
+		executeAndReport('tests/acceptance/output/*.xml', currentStage) {
 			sh '''phpenv local 7.0
 			rm -rf config/config.php data/*
 			./occ maintenance:install --admin-pass=admin
-			make clean-test-integration
-			make test-integration OC_TEST_ALT_HOME=1
+			make clean-test-acceptance
+			make test-acceptance OC_TEST_ALT_HOME=1
 		   '''
 		}
 
-	stage 'Integration Testing Encrypted'
-        currentStage = 'Integration Testing Encrypted'
+	stage 'Acceptance Testing Encrypted'
+        currentStage = 'Acceptance Testing Encrypted'
 		if (isOnReleaseBranch()) {
-				executeAndReport('tests/integration/output/*.xml', currentStage) {
+				executeAndReport('tests/acceptance/output/*.xml', currentStage) {
 					sh '''phpenv local 7.0
 					rm -rf config/config.php data/*
 					./occ maintenance:install --admin-pass=admin
-					make clean-test-integration
-					make test-integration OC_TEST_ALT_HOME=1 OC_TEST_ENCRYPTION_ENABLED=1
+					make clean-test-acceptance
+					make test-acceptance OC_TEST_ALT_HOME=1 OC_TEST_ENCRYPTION_ENABLED=1
 				   '''
 				}
 			}
 
 
-	stage 'Integration Testing Encrypted with master key'
-        currentStage = 'Integration Testing Encrypted with master key'
+	stage 'Acceptance Testing Encrypted with master key'
+        currentStage = 'Acceptance Testing Encrypted with master key'
 		if (isOnReleaseBranch()) {
-				executeAndReport('tests/integration/output/*.xml', currentStage) {
+				executeAndReport('tests/acceptance/output/*.xml', currentStage) {
 					sh '''phpenv local 7.0
 					rm -rf config/config.php data/*
 					./occ maintenance:install --admin-pass=admin
-					make clean-test-integration
-					make test-integration OC_TEST_ALT_HOME=1 OC_TEST_ENCRYPTION_MASTER_KEY_ENABLED=1
+					make clean-test-acceptance
+					make test-acceptance OC_TEST_ALT_HOME=1 OC_TEST_ENCRYPTION_MASTER_KEY_ENABLED=1
 				   '''
 				}
 			}
@@ -140,7 +140,7 @@ void executeAndReport(String testResultLocation, String stage, def body) {
     // We're wrapping this in a timeout - if it takes longer, kill it.
     try {
         def timeoutMinutes = 120
-        if (stage.startsWith('Integration Testing')) {
+        if (stage.startsWith('Acceptance Testing')) {
             timeoutMinutes = 240
         }
         timeout(time: timeoutMinutes, unit: 'MINUTES') {
