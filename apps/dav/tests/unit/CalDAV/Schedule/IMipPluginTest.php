@@ -25,6 +25,7 @@ namespace OCA\DAV\Tests\unit\CalDAV\Schedule;
 use OC\Mail\Mailer;
 use OCA\DAV\CalDAV\Schedule\IMipPlugin;
 use OCP\ILogger;
+use OCP\IRequest;
 use Sabre\VObject\Component\VCalendar;
 use Sabre\VObject\ITip\Message;
 use Test\TestCase;
@@ -40,7 +41,9 @@ class IMipPluginTest extends TestCase {
 		/** @var ILogger | \PHPUnit_Framework_MockObject_MockObject $logger */
 		$logger = $this->getMockBuilder('OC\Log')->disableOriginalConstructor()->getMock();
 
-		$plugin = new IMipPlugin($mailer, $logger);
+		$request = $this->createMock(IRequest::class);
+
+		$plugin = new IMipPlugin($mailer, $logger, $request);
 		$message = new Message();
 		$message->method = 'REQUEST';
 		$message->message = new VCalendar();
@@ -69,7 +72,9 @@ class IMipPluginTest extends TestCase {
 		/** @var ILogger | \PHPUnit_Framework_MockObject_MockObject $logger */
 		$logger = $this->getMockBuilder('OC\Log')->disableOriginalConstructor()->getMock();
 
-		$plugin = new IMipPlugin($mailer, $logger);
+		$request = $this->createMock(IRequest::class);
+
+		$plugin = new IMipPlugin($mailer, $logger, $request);
 		$message = new Message();
 		$message->method = 'REQUEST';
 		$message->message = new VCalendar();

@@ -21,6 +21,7 @@
 namespace OCA\DAV\CalDAV\Schedule;
 
 use OCP\ILogger;
+use OCP\IRequest;
 use OCP\Mail\IMailer;
 use Sabre\CalDAV\Schedule\IMipPlugin as SabreIMipPlugin;
 use Sabre\VObject\ITip;
@@ -47,15 +48,19 @@ class IMipPlugin extends SabreIMipPlugin {
 	/** @var ILogger */
 	private $logger;
 
+	/** @var IRequest */
+	private $request;
+
 	/**
 	 * Creates the email handler.
 	 *
 	 * @param IMailer $mailer
 	 */
-	function __construct(IMailer $mailer, ILogger $logger) {
+	function __construct(IMailer $mailer, ILogger $logger, IRequest $request) {
 		parent::__construct('');
 		$this->mailer = $mailer;
 		$this->logger = $logger;
+		$this->request = $request;
 	}
 
 	/**
@@ -65,6 +70,11 @@ class IMipPlugin extends SabreIMipPlugin {
 	 * @return void
 	 */
 	function schedule(ITip\Message $iTipMessage) {
+
+		// Not sending any emails if OC-CalDav-Import header is set
+		if ($this->request->getHeader('OC-CalDav-Import') !== null) {
+			return;
+		}
 
 		// Not sending any emails if the system considers the update
 		// insignificant.
