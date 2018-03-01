@@ -43,20 +43,6 @@ timestampedNode('SLAVE') {
 
         step([$class: 'JUnitResultArchiver', testResults: 'tests/autotest-external-results-sqlite.xml'])
 
-    stage 'Primary Objectstore: swift'
-        executeAndReport('tests/autotest-results-mysql.xml') {
-            sh '''phpenv local 7.1.0
-
-            export NOCOVERAGE=1
-            export RUN_OBJECTSTORE_TESTS=1
-            export PRIMARY_STORAGE_CONFIG="swift"
-            unset USEDOCKER
-
-            make clean-test-results
-            make test-php TEST_DATABASE=mysql
-            '''
-        }
-
 	stage 'Acceptance Testing'
 		executeAndReport('tests/acceptance/output/*.xml') {
 			sh '''phpenv local 7.1.0
