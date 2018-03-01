@@ -3,6 +3,7 @@ OC.L10N.register(
     {
     "Versions" : "Verzije",
     "Failed to revert {file} to revision {timestamp}." : "Nije uspelo vraćanje {file} na reviziju {timestamp}.",
+    "_%n byte_::_%n bytes_" : ["%n bajt","%nbajta","%nbajta"],
     "Restore" : "Obnovite",
     "No other versions available" : "Nikakve druge verzije nisu dostupne"
 },

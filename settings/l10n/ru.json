@@ -294,6 +294,7 @@
     "For password recovery and notifications" : "Для восстановления пароля и уведомлений",
     "No email address set" : "Адрес не указан",
     "You are member of the following groups:" : "Вы являетесь членом следующих групп:",
+    "You are not a member of any groups." : "Вы не состоите в каких-либо группах.",
     "Password" : "Пароль",
     "Unable to change your password" : "Невозможно сменить пароль",
     "Current password" : "Текущий пароль",
