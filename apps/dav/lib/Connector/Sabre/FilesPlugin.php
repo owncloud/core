@@ -32,6 +32,7 @@ namespace OCA\DAV\Connector\Sabre;
 
 use OC\AppFramework\Http\Request;
 use OCA\DAV\Files\IProvidesAdditionalHeaders;
+use OCA\DAV\Meta\MetaFile;
 use OCP\Files\ForbiddenException;
 use OCP\Files\StorageNotAvailableException;
 use OCP\IConfig;
@@ -227,11 +228,14 @@ class FilesPlugin extends ServerPlugin {
 	public function redirect(RequestInterface $request, ResponseInterface $response) {
 		// Only handle valid files
 		$node = $this->tree->getNodeForPath($request->getPath());
-		if (!($node instanceof File)) {
-			return;
+		$directDownloadUrl = [];
+		if ($node instanceof File) {
+			$directDownloadUrl = $node->getDirectDownload();
+		}
+		if ($node instanceof MetaFile) {
+			$directDownloadUrl = $node->getDirectDownload();
 		}
 
-		$directDownloadUrl = $node->getDirectDownload();
 		if (isset($directDownloadUrl['url'])) {
 			$response->setHeader('Location', $directDownloadUrl['url']);
 			$response->setStatus(302);

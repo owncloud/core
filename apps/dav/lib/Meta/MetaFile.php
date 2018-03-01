@@ -126,4 +126,18 @@ class MetaFile extends File implements ICopySource, IFileNode, IProvidesAddition
 	public function getNode() {
 		return $this->file;
 	}
+
+	/**
+	 * @return array|false
+	 * @throws \OCP\Files\NotFoundException
+	 */
+	public function getDirectDownload() {
+		if (\OCP\App::isEnabled('encryption')) {
+			return [];
+		}
+		if ($this->file instanceof MetaFileVersionNode) {
+			return $this->file->getDirectDownload();
+		}
+		return false;
+	}
 }

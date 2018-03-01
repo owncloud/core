@@ -420,10 +420,10 @@ class Availability extends Wrapper {
 	}
 
 	/** {@inheritdoc} */
-	public function getDirectDownload($path) {
+	public function getDirectDownload($path, $versionId = null) {
 		$this->checkAvailability();
 		try {
-			return parent::getDirectDownload($path);
+			return parent::getDirectDownload($path, $versionId);
 		} catch (\OCP\Files\StorageNotAvailableException $e) {
 			$this->setAvailability(false);
 			throw $e;

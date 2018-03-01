@@ -385,10 +385,14 @@ class ObjectStoreStorage extends Common {
 				'storage_mtime' => $mtime,
 				'permissions' => Constants::PERMISSION_ALL - Constants::PERMISSION_CREATE,
 			];
-			$fileId = $this->getCache()->put($path, $stat);
+			$stat['fileid'] = $this->getCache()->put($path, $stat);
 			try {
 				//read an empty file from memory
-				$this->objectStore->writeObject($this->getURN($fileId), \fopen('php://memory', 'r'));
+				$storageStats = $this->objectStore->writeObject($this->getURN($stat['fileid']), \fopen('php://memory', 'r'));
+				if (isset($storageStats['etag'])) {
+					$stat['etag'] = $storageStats['etag'];
+					$this->getCache()->update($stat['fileid'], $stat);
+				}
 			} catch (\Exception $ex) {
 				$this->getCache()->remove($path);
 				Util::writeLog('objectstore', 'Could not create object: ' . $ex->getMessage(), Util::ERROR);
@@ -523,10 +527,12 @@ class ObjectStoreStorage extends Common {
 	/**
 	 * @inheritdoc
 	 */
-	public function getDirectDownload($path) {
+	public function getDirectDownload($path, $versionId = null) {
 		$path = $this->normalizePath($path);
 		$stat = $this->stat($path);
 
-		return $this->objectStore->getDirectDownload($this->getURN($stat['fileid']));
+		return [
+			'url' => $this->objectStore->getDirectDownload($this->getURN($stat['fileid']), $versionId)
+			];
 	}
 }

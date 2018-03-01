@@ -186,7 +186,7 @@ class ObjectStoreTest extends TestCase {
 	}
 
 	public function testDirectDownload() {
-		$this->impl->expects($this->once())->method('getDirectDownload')->willReturn([]);
-		$this->assertEquals([], $this->objectStore->getDirectDownload('urn:oid:666'));
+		$this->impl->expects($this->once())->method('getDirectDownload')->willReturn('direct-download-url');
+		$this->assertEquals(['url' => 'direct-download-url'], $this->objectStore->getDirectDownload('urn:oid:666'));
 	}
 }

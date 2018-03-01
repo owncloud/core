@@ -64,5 +64,5 @@ interface IObjectStore {
 	 * @return string mixed
 	 * @since 10.1.0
 	 */
-	public function getDirectDownload($urn);
+	public function getDirectDownload($urn, $versionId);
 }

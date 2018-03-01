@@ -484,7 +484,7 @@ abstract class Common implements Storage, ILockingStorage, IVersionedStorage {
 	 * @param string $path
 	 * @return array|false
 	 */
-	public function getDirectDownload($path) {
+	public function getDirectDownload($path, $versionId = null) {
 		return [];
 	}
 

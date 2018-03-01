@@ -379,10 +379,11 @@ interface Storage extends IStorage {
 	 * For now the returned array can hold the parameter url - in future more attributes might follow.
 	 *
 	 * @param string $path
+	 * @param string $versionId
 	 * @return array|false
 	 * @since 8.0.0
 	 */
-	public function getDirectDownload($path);
+	public function getDirectDownload($path, $versionId = null);
 
 	/**
 	 * @param string $path the path of the target folder
