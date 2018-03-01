@@ -174,6 +174,23 @@ trait BasicStructure {
 	}
 
 	/**
+	 * @Given these users are initialized:
+	 * expects a table of users with the heading
+	 * "|username|password|"
+	 *
+	 * @param TableNode $table
+	 * @return void
+	 */
+	public function theseUsersAreInitialized(TableNode $table) {
+		foreach ($table as $row) {
+			$this->initializeUser(
+				$row ['username'],
+				$row ['password']
+			);
+		}
+	}
+	
+	/**
 	 * creates a single user
 	 *
 	 * @param string $user
@@ -236,17 +253,27 @@ trait BasicStructure {
 
 		$this->addUserToCreatedUsersList($user, $password, $displayName, $email);
 		if ($initialize) {
-			// Download a skeleton file. That will force the server to fully
-			// initialize the user, including their skeleton files.
-			DownloadHelper::download(
-				$baseUrl,
-				$user,
-				$password,
-				"lorem.txt"
-			);
+			$this->initializeUser($user, $password);
 		}
 	}
 
+	/**
+	 * Download a skeleton file. That will force the server to fully
+	 * initialize the user, including their skeleton files.
+	 * 
+	 * @param string $user
+	 * @param string $password
+	 * @return void
+	 */
+	public function initializeUser($user, $password) {
+		$baseUrl = $this->getMinkParameter("base_url");
+		DownloadHelper::download(
+			$baseUrl,
+			$user,
+			$password,
+			"lorem.txt"
+		);
+	}
 	/**
 	 * @Given these groups exist:
 	 * expects a table of groups with the heading "groupname"
