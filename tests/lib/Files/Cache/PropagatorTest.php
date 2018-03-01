@@ -93,9 +93,20 @@ class PropagatorTest extends TestCase {
 		$oldInfos = $this->getFileInfos($paths);
 		$propagator = $this->storage->getPropagator();
 
+		// start at a later time because the above scanned elements have a recent mtime,
+		// we want to be sure that the propagated values are in the future
+		$time = time() + 3600;
+		$time1 = $time - 100;
+		$time2 = $time - 200;
+
 		$propagator->beginBatch();
-		$propagator->propagateChange('asd/file.txt', time(), 10);
-		$propagator->propagateChange('foo/bar/file.txt', time(), 2);
+		$propagator->propagateChange('asd/file.txt', $time1 - 500, 6);
+		$propagator->propagateChange('foo/bar/file.txt', $time2, 2);
+
+		// add again to simulate another change,
+		// the mtime will be the one from the last change
+		// and the size will be 10 because 4 is the delta, so 6 + 4 = 10
+		$propagator->propagateChange('asd/file.txt', $time1, 4);
 
 		$newInfos = $this->getFileInfos($paths);
 
@@ -118,8 +129,13 @@ class PropagatorTest extends TestCase {
 
 		$this->assertEquals($oldInfos['']->getSize() + 12, $newInfos['']->getSize());
 		$this->assertEquals($oldInfos['asd']->getSize() + 10, $newInfos['asd']->getSize());
+		$this->assertEquals($time1, $newInfos['asd']->getMtime());
 		$this->assertEquals($oldInfos['foo']->getSize() + 2, $newInfos['foo']->getSize());
+		$this->assertEquals($time2, $newInfos['foo']->getMtime());
 		$this->assertEquals($oldInfos['foo/bar']->getSize() + 2, $newInfos['foo/bar']->getSize());
+		$this->assertEquals($time2, $newInfos['foo/bar']->getMtime());
 		$this->assertEquals($oldInfos['foo/baz']->getSize(), $newInfos['foo/baz']->getSize());
+		$this->assertNotEquals($time2, $newInfos['foo/baz']->getMtime());
+		$this->assertEquals($oldInfos['foo/baz']->getMtime(), $newInfos['foo/baz']->getMtime());
 	}
 }
