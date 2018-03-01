@@ -99,6 +99,7 @@ trait AppConfiguration {
 
 	/**
 	 * @Then the capabilities setting of :capabilitiesApp path :capabilitiesPath should be :expectedValue
+	 * @Given the capabilities setting of :capabilitiesApp path :capabilitiesPath has been confirmed to be :expectedValue
 	 *
 	 * @param string $capabilitiesApp the "app" name in the capabilities response
 	 * @param string $capabilitiesPath the path to the element
