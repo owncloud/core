@@ -86,6 +86,9 @@ class CorsController extends Controller {
 	/**
 	 * Gets all White-listed domains
 	 *
+	 * @NoAdminRequired
+	 * @NoSubadminRequired
+	 *
 	 * @return JSONResponse All the White-listed domains
 	 */
 	public function getDomains() {
@@ -96,6 +99,9 @@ class CorsController extends Controller {
 
 	/**
 	 * WhiteLists a domain for CORS
+	 *
+	 * @NoAdminRequired
+	 * @NoSubadminRequired
 	 *
 	 * @param string $domain The domain to whitelist
 	 * @return RedirectResponse Redirection to the settings page.
@@ -124,6 +130,9 @@ class CorsController extends Controller {
 
 	/**
 	 * Removes a WhiteListed Domain
+	 *
+	 * @NoAdminRequired
+	 * @NoSubadminRequired
 	 *
 	 * @param string $domain Domain to remove
 	 * @return RedirectResponse Redirection to the settings page.
