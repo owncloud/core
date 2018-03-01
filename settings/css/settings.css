@@ -376,7 +376,12 @@ span.version {
 	padding: 20px;
 }
 .section h2.app-name {
+	display: inline-block;
 	margin-bottom: 8px;
+}
+
+.section span.app-name {
+	margin-left: 10px;
 }
 
 .section h2.app-name.has-documentation {
