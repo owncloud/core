@@ -26,6 +26,8 @@ namespace OCA\Encryption\Tests\Crypto;
 
 
 use OCA\Encryption\Crypto\EncryptAll;
+use Symfony\Component\Console\Helper\ProgressBar;
+use Symfony\Component\Console\Output\ConsoleOutput;
 use Test\TestCase;
 
 class EncryptAllTest extends TestCase {
@@ -99,7 +101,6 @@ class EncryptAllTest extends TestCase {
 		$this->userInterface = $this->getMockBuilder('OCP\UserInterface')
 			->disableOriginalConstructor()->getMock();
 
-
 		$this->outputInterface->expects($this->any())->method('getFormatter')
 			->willReturn($this->createMock('\Symfony\Component\Console\Formatter\OutputFormatterInterface'));
 
@@ -110,7 +111,6 @@ class EncryptAllTest extends TestCase {
 		$this->secureRandom->expects($this->any())->method('getMediumStrengthGenerator')->willReturn($this->secureRandom);
 		$this->secureRandom->expects($this->any())->method('getLowStrengthGenerator')->willReturn($this->secureRandom);
 		$this->secureRandom->expects($this->any())->method('generate')->willReturn('12345678');
-
 
 		$this->encryptAll = new EncryptAll(
 			$this->setupUser,
@@ -317,8 +317,8 @@ class EncryptAllTest extends TestCase {
 		$encryptAll->expects($this->at(1))->method('encryptFile')->with('/user1/files/bar');
 		$encryptAll->expects($this->at(2))->method('encryptFile')->with('/user1/files/foo/subfile');
 
-		$progressBar = $this->getMockBuilder('Symfony\Component\Console\Helper\ProgressBar')
-			->disableOriginalConstructor()->getMock();
+		$output = new ConsoleOutput();
+		$progressBar = new ProgressBar($output);
 
 		$this->invokePrivate($encryptAll, 'encryptUsersFiles', ['user1', $progressBar, '']);
 
