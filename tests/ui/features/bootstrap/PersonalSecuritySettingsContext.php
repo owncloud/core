@@ -88,7 +88,7 @@ class PersonalSecuritySettingsContext extends RawMinkContext implements Context 
 	public function myUsernameAndTheAppPasswordShouldBeDisplayed() {
 		$result = $this->personalSecuritySettingsPage->getAppPasswordResult();
 		PHPUnit_Framework_Assert::assertEquals(
-			$this->personalSecuritySettingsPage->getMyUsername(),
+			$this->personalSecuritySettingsPage->getMyDisplayname(),
 			$result[0]->getValue()
 		);
 
