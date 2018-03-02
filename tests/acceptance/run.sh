@@ -29,7 +29,7 @@ function env_encryption_enable {
 }
 
 function env_encryption_enable_master_key {
-	env_encryption_enable || { echo "Unable to enable user-keys encryption" >&2; exit 1; }
+	env_encryption_enable || { echo "Unable to enable masterkey encryption" >&2; exit 1; }
 	$OCC encryption:select-encryption-type masterkey --yes
 }
 
@@ -44,12 +44,12 @@ function env_encryption_disable {
 }
 
 function env_encryption_disable_master_key {
-	env_encryption_disable || { echo "Unable to disable encryption" >&2; exit 1; }
+	env_encryption_disable || { echo "Unable to disable masterkey encryption" >&2; exit 1; }
 	$OCC config:app:delete encryption useMasterKey
 }
 
-function env_encryption_disable_users_key {
-	env_encryption_disable || { echo "Unable to disable encryption" >&2; exit 1; }
+function env_encryption_disable_user_keys {
+	env_encryption_disable || { echo "Unable to disable user-keys encryption" >&2; exit 1; }
 	$OCC config:app:delete encryption userSpecificKey
 }
 
@@ -170,7 +170,7 @@ if test "$OC_TEST_ENCRYPTION_MASTER_KEY_ENABLED" = "1"; then
 fi
 
 if test "$OC_TEST_ENCRYPTION_USER_KEYS_ENABLED" = "1"; then
-	env_encryption_disable_users_key
+	env_encryption_disable_user_keys
 fi
 
 if [ -z $HIDE_OC_LOGS ]; then
