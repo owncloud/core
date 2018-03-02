@@ -51,15 +51,57 @@ class WebUIUserContext extends RawMinkContext implements Context {
 	 * @Then :displayname should be shown as the name of the current user in the WebUI
 	 * 
 	 * @param string $displayname
-	 *
 	 * @return void
 	 */
 	public function displayNameOfTheCurrentUserInTheWebUiShouldBe($displayname) {
-		$actualUserName = $this->owncloudPage->getMyUsername();
+		$actualUserName = $this->owncloudPage->getMyDisplayname();
 		PHPUnit_Framework_Assert::assertSame(
 			$displayname, $actualUserName,
 			"displayed username should be '$displayname' but it is '$actualUserName'"
 		);
 	}
 	
+	/**
+	 * @Then /^the display name should (not|)\s?be visible in the WebUI$/
+	 * 
+	 * @param string $shouldOrNot
+	 * 
+	 * @return void
+	 */
+	public function displayNameOfTheCurrentUserShouldBeVisible($shouldOrNot) {
+		$should = ($shouldOrNot !== "not");
+		if ($should) {
+			PHPUnit_Framework_Assert::assertTrue(
+				$this->owncloudPage->isDisplaynameVisible(),
+				"displayname should be visible, but is not"
+			);
+		} else {
+			PHPUnit_Framework_Assert::assertFalse(
+				$this->owncloudPage->isDisplaynameVisible(),
+				"displayname should not be visible, but is"
+			);
+		}
+	}
+
+	/**
+	 * @Then /^(no|an) avatar should be shown for the current user in the WebUI$/
+	 * 
+	 * @param string $shouldOrNot
+	 * 
+	 * @return void
+	 */
+	public function avatarShouldBeShownInTheWebUI($shouldOrNot) {
+		$should = ($shouldOrNot !== "no");
+		if ($should) {
+			PHPUnit_Framework_Assert::assertTrue(
+				$this->owncloudPage->isAvatarVisible(),
+				"avatar should be visible, but is not"
+			);
+		} else {
+			PHPUnit_Framework_Assert::assertFalse(
+				$this->owncloudPage->isAvatarVisible(),
+				"avatar should not be visible, but is"
+			);
+		}
+	}
 }
