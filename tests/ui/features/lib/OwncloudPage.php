@@ -50,6 +50,7 @@ class OwncloudPage extends Page {
 	/**
 	 * @param Session $session
 	 * @param int $timeout_msec
+	 * 
 	 * @return void
 	 */
 	public function waitTillPageIsLoaded(
@@ -85,6 +86,7 @@ class OwncloudPage extends Page {
 	 *
 	 * @param string $xpath
 	 * @param int $timeout_msec
+	 * 
 	 * @return void
 	 */
 	public function waitTillElementIsNull(
@@ -111,6 +113,7 @@ class OwncloudPage extends Page {
 	 *
 	 * @param string $xpath
 	 * @param int $timeout_msec
+	 * 
 	 * @return NodeElement|null
 	 */
 	public function waitTillElementIsNotNull(
@@ -247,6 +250,7 @@ class OwncloudPage extends Page {
 	/**
 	 *
 	 * @param string $path
+	 * 
 	 * @return void
 	 */
 	public function setPagePath($path) {
@@ -274,6 +278,7 @@ class OwncloudPage extends Page {
 	 *
 	 * @param Session $session
 	 * @param NodeElement $element
+	 * 
 	 * @return array
 	 */
 	public function getCoordinatesOfElement($session, $element) {
@@ -291,6 +296,7 @@ class OwncloudPage extends Page {
 	 * Gets the Window Height
 	 *
 	 * @param Session $session
+	 * 
 	 * @return int
 	 */
 	public function getWindowHeight($session) {
@@ -305,6 +311,7 @@ class OwncloudPage extends Page {
 	 * @param string $jQuerySelector e.g. "#app-content"
 	 * @param int|string $position number or JS function that returns a number
 	 * @param Session $session
+	 * 
 	 * @return void
 	 */
 	public function scrollToPosition($jQuerySelector, $position, Session $session) {
@@ -318,6 +325,7 @@ class OwncloudPage extends Page {
 	 *
 	 * @param Session $session
 	 * @param int $timeout_msec
+	 * 
 	 * @return void
 	 */
 	public function waitForOutstandingAjaxCalls(
@@ -371,6 +379,7 @@ class OwncloudPage extends Page {
 	 *
 	 * @param Session $session
 	 * @param int $timeout_msec
+	 * 
 	 * @return void
 	 */
 	public function waitForAjaxCallsToStart(
@@ -411,6 +420,7 @@ class OwncloudPage extends Page {
 	 *
 	 * @param Session $session
 	 * @param int $timeout_msec
+	 * 
 	 * @return void
 	 */
 	public function waitForAjaxCallsToStartAndFinish(
@@ -431,6 +441,7 @@ class OwncloudPage extends Page {
 	 * counts the sum of ajax requests in window.sumStartedAjaxRequests
 	 * 
 	 * @param Session $session
+	 * 
 	 * @see resetSumStartedAjaxRequests()
 	 * @see getSumStartedAjaxRequests()
 	 * @return void
@@ -475,6 +486,7 @@ class OwncloudPage extends Page {
 	 * reset the sum ajax counter so that every function can start counting from 0
 	 * 
 	 * @param Session $session
+	 * 
 	 * @see initAjaxCounters()
 	 * @return void
 	 */
@@ -487,6 +499,7 @@ class OwncloudPage extends Page {
 	 * gets the sum of all started Ajax requests
 	 * 
 	 * @param Session $session
+	 * 
 	 * @see initAjaxCounters()
 	 * @return int
 	 */
@@ -498,6 +511,7 @@ class OwncloudPage extends Page {
 	/**
 	 * 
 	 * @param Session $session
+	 * 
 	 * @see initAjaxCounters()
 	 * @throws \Exception
 	 * @return void
@@ -553,6 +567,7 @@ class OwncloudPage extends Page {
 	 * @param Session $session
 	 * @param string $scrolledElement jQuery identifier for the element that get scrolled
 	 * @param int $timeout_msec
+	 * 
 	 * @return void
 	 */
 	public function waitForScrollingToFinish(
@@ -594,6 +609,7 @@ class OwncloudPage extends Page {
 	 *
 	 * @param NodeElement $inputField
 	 * @param string $value
+	 * 
 	 * @throws \Exception
 	 * @return void
 	 */
@@ -617,6 +633,7 @@ class OwncloudPage extends Page {
 	 * before using it in tests.
 	 *
 	 * @param NodeElement $element
+	 * 
 	 * @throws \Exception
 	 * @return string text of the element with any whitespace trimmed
 	 */
@@ -635,6 +652,7 @@ class OwncloudPage extends Page {
 	 * both single and double quotes.
 	 *
 	 * @param string $text
+	 * 
 	 * @return string the text surrounded by single or double quotes
 	 * @throws \InvalidArgumentException
 	 */

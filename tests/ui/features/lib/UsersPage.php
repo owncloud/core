@@ -64,6 +64,7 @@ class UsersPage extends OwncloudPage {
 	protected $groupListId = "usergrouplist";
 	/**
 	 * @param string $username
+	 *
 	 * @return NodeElement for the requested user in the table
 	 * @throws \Exception
 	 */
@@ -81,6 +82,7 @@ class UsersPage extends OwncloudPage {
 
 	/**
 	 * @param string $username
+	 *
 	 * @throws ElementNotFoundException
 	 * @return string text describing the quota
 	 */
@@ -133,6 +135,7 @@ class UsersPage extends OwncloudPage {
 	 *
 	 * @param string $setting the human readable setting string
 	 * @param boolean $value
+	 *
 	 * @throws ElementNotFoundException
 	 * @return void
 	 */
@@ -198,6 +201,7 @@ class UsersPage extends OwncloudPage {
 	 * @param string $password
 	 * @param string $email
 	 * @param string[] $groups
+	 *
 	 * @throws ElementNotFoundException
 	 * @return void
 	 */
@@ -296,6 +300,7 @@ class UsersPage extends OwncloudPage {
 	 * @param string $username
 	 * @param string $quota text form of quota to be input
 	 * @param Session $session
+	 *
 	 * @throws ElementNotFoundException
 	 * @return void
 	 */
@@ -382,6 +387,7 @@ class UsersPage extends OwncloudPage {
 	 *
 	 * @param string $name
 	 * @param Session $session
+	 *
 	 * @return void
 	 */
 	public function deleteGroup($name, Session $session) {
@@ -394,6 +400,7 @@ class UsersPage extends OwncloudPage {
 	 * 
 	 * @param string $groupName
 	 * @param Session $session
+	 *
 	 * @return void
 	 */
 	public function addGroup($groupName, Session $session) {

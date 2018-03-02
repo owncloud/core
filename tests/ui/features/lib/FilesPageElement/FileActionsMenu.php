@@ -48,6 +48,7 @@ class FileActionsMenu extends OwnCloudPage {
 	 * there is no real __construct() that can take arguments
 	 *
 	 * @param \Behat\Mink\Element\NodeElement $menuElement
+	 *
 	 * @return void
 	 */
 	public function setElement(NodeElement $menuElement) {
@@ -59,6 +60,7 @@ class FileActionsMenu extends OwnCloudPage {
 	 * 
 	 * @param string $xpathToWaitFor wait for this element to appear before returning
 	 * @param int $timeout_msec
+	 *
 	 * @throws ElementNotFoundException
 	 * @return void
 	 */
@@ -99,6 +101,7 @@ class FileActionsMenu extends OwnCloudPage {
 	 * finds the actual action link in the action menu
 	 * 
 	 * @param string $action
+	 *
 	 * @return \Behat\Mink\Element\NodeElement
 	 * @throws \SensioLabs\Behat\PageObjectExtension\PageObject\Exception\ElementNotFoundException
 	 */

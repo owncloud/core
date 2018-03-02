@@ -49,6 +49,7 @@ class PersonalSecuritySettingsContext extends RawMinkContext implements Context 
 
 	/**
 	 * @Given I am on the personal security settings page
+	 *
 	 * @return void
 	 */
 	public function iAmOnThePersonalSecuritySettingsPage() {
@@ -57,6 +58,7 @@ class PersonalSecuritySettingsContext extends RawMinkContext implements Context 
 
 	/**
 	 * @When I create a new App password
+	 *
 	 * @return void
 	 */
 	public function iCreateANewAppPasswordForTheAppNamed() {
@@ -65,6 +67,7 @@ class PersonalSecuritySettingsContext extends RawMinkContext implements Context 
 
 	/**
 	 * @Then the new app should be listed in the App passwords list
+	 *
 	 * @return void
 	 */
 	public function theAppShouldBeListedInTheAppPasswordsList() {
@@ -79,6 +82,7 @@ class PersonalSecuritySettingsContext extends RawMinkContext implements Context 
 
 	/**
 	 * @Then my username and the app password should be displayed
+	 *
 	 * @return void
 	 */
 	public function myUsernameAndTheAppPasswordShouldBeDisplayed() {

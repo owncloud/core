@@ -52,6 +52,7 @@ class EditPublicLinkPopup extends OwncloudPage {
 	 * there is no real __construct() that can take arguments
 	 *
 	 * @param \Behat\Mink\Element\NodeElement $popupElement
+	 * 
 	 * @return void
 	 */
 	public function setElement(NodeElement $popupElement) {
@@ -79,6 +80,7 @@ class EditPublicLinkPopup extends OwncloudPage {
 	/**
 	 * 
 	 * @param string $name
+	 * 
 	 * @return void
 	 */
 	public function setLinkName($name) {
@@ -98,6 +100,7 @@ class EditPublicLinkPopup extends OwncloudPage {
 	/**
 	 * 
 	 * @param string $permissions
+	 * 
 	 * @return void
 	 */
 	public function setLinkPermissions($permissions) {
@@ -115,6 +118,7 @@ class EditPublicLinkPopup extends OwncloudPage {
 	/**
 	 *
 	 * @param string $password
+	 * 
 	 * @return void
 	 */
 	public function setLinkPassword($password) {
@@ -134,6 +138,7 @@ class EditPublicLinkPopup extends OwncloudPage {
 	/**
 	 *
 	 * @param string $date
+	 * 
 	 * @return void
 	 */
 	public function setLinkExpirationDate($date) {
@@ -165,6 +170,7 @@ class EditPublicLinkPopup extends OwncloudPage {
 	/**
 	 *
 	 * @param string $email
+	 * 
 	 * @return void
 	 */
 	public function setLinkEmail($email) {

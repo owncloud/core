@@ -24,7 +24,7 @@
 		<exclude name="Generic.Commenting.DocComment.SpacingAfter" />
 		<exclude name="Generic.Commenting.DocComment.MissingShort" />
 		<exclude name="Generic.Commenting.DocComment.TagValueIndent" />
-		<exclude name="Generic.Commenting.DocComment.NonParamGroup" />
+		<exclude name="Generic.Commenting.DocComment.ParamNotFirst" />
 		<exclude name="PEAR.Commenting.FileComment.IncompleteCopyright" />
 		<exclude name="PEAR.Commenting.FileComment.MissingVersion" />
 		<exclude name="PEAR.Commenting.FileComment.MissingCategoryTag" />

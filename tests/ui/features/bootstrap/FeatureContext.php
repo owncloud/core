@@ -124,6 +124,7 @@ class FeatureContext extends RawMinkContext implements Context {
 
 	/**
 	 * @param string $currentUser
+	 *
 	 * @return void
 	 */
 	public function setCurrentUser($currentUser) {
@@ -143,6 +144,7 @@ class FeatureContext extends RawMinkContext implements Context {
 
 	/**
 	 * @param string $currentServer
+	 *
 	 * @return void
 	 */
 	public function setCurrentServer($currentServer) {
@@ -163,6 +165,7 @@ class FeatureContext extends RawMinkContext implements Context {
 	/**
 	 * 
 	 * @param OwncloudPage $pageObject
+	 *
 	 * @return void
 	 */
 	public function setCurrentPageObject(OwncloudPage $pageObject) {
@@ -179,6 +182,7 @@ class FeatureContext extends RawMinkContext implements Context {
 
 	/**
 	 * @Then no notification should be displayed
+	 *
 	 * @return void
 	 */
 	public function noNotificationShouldBeDisplayed() {
@@ -196,7 +200,9 @@ class FeatureContext extends RawMinkContext implements Context {
 
 	/**
 	 * @Then a notification should be displayed with the text :notificationText
+	 *
 	 * @param string $notificationText expected notification text
+	 *
 	 * @return void
 	 */
 	public function aNotificationShouldBeDisplayedWithTheText($notificationText) {
@@ -207,9 +213,11 @@ class FeatureContext extends RawMinkContext implements Context {
 
 	/**
 	 * @Then /^notifications should be displayed with the text\s?(matching|)$/
+	 *
 	 * @param string $matching contains "matching" when notification text
 	 *                         has to be checked against regular expression
 	 * @param TableNode $table of expected notification text
+	 *
 	 * @return void
 	 * @throws Exception
 	 */
@@ -247,9 +255,11 @@ class FeatureContext extends RawMinkContext implements Context {
 
 	/**
 	 * @Then /^((?:\d)|no)?\s?dialog[s]? should be displayed$/
+	 *
 	 * @param int|string|null $count
 	 * @param TableNode|null $table of expected dialogs format must be:
 	 *                              | title | content |
+	 *
 	 * @return void
 	 */
 	public function dialogsShouldBeDisplayed(
@@ -303,7 +313,9 @@ class FeatureContext extends RawMinkContext implements Context {
 
 	/**
 	 * @Then I should be redirected to a page with the title :title
+	 *
 	 * @param string $title
+	 *
 	 * @return void
 	 */
 	public function iShouldBeRedirectedToAPageWithTheTitle($title) {
@@ -316,7 +328,9 @@ class FeatureContext extends RawMinkContext implements Context {
 
 	/**
 	 * @Then the group named :name should not exist
+	 *
 	 * @param string $name
+	 *
 	 * @return void
 	 * @throws Exception
 	 */
@@ -336,6 +350,7 @@ class FeatureContext extends RawMinkContext implements Context {
 	 *
 	 * @param string $shouldOrNot (not|)
 	 * @param TableNode $table
+	 *
 	 * @return void
 	 * @throws Exception
 	 */
@@ -355,9 +370,11 @@ class FeatureContext extends RawMinkContext implements Context {
 
 	/**
 	 * @Given /^the setting "([^"]*)" in the section "([^"]*)" is (disabled|enabled)$/
+	 *
 	 * @param string $setting
 	 * @param string $section
 	 * @param string $value
+	 *
 	 * @return void
 	 */
 	public function settingInSectionIs($setting, $section, $value) {
@@ -387,8 +404,10 @@ class FeatureContext extends RawMinkContext implements Context {
 
 	/**
 	 * @Given a file with the size of :size bytes and the name :name exists
+	 *
 	 * @param int $size if not int given it will be cast to int
 	 * @param string $name
+	 *
 	 * @throws InvalidArgumentException
 	 * @return void
 	 */
@@ -421,6 +440,7 @@ class FeatureContext extends RawMinkContext implements Context {
 	 *         'configkey' => string,
 	 *         'value' => bool
 	 *        ]
+	 *
 	 * @return void
 	 */
 	public function addToSavedCapabilitiesChanges($change) {
@@ -433,7 +453,9 @@ class FeatureContext extends RawMinkContext implements Context {
 
 	/**
 	 * @BeforeScenario
+	 *
 	 * @param BeforeScenarioScope $scope
+	 *
 	 * @return void
 	 */
 	public function setUpSuite(BeforeScenarioScope $scope) {
@@ -484,6 +506,7 @@ class FeatureContext extends RawMinkContext implements Context {
 	 * disable the previews on all tests tagged with '@disablePreviews'
 	 * 
 	 * @BeforeScenario @disablePreviews
+	 *
 	 * @return void
 	 */
 	public function disablePreviewBeforeScenario() {
@@ -517,8 +540,9 @@ class FeatureContext extends RawMinkContext implements Context {
 	/**
 	 * After Scenario. Sets back old settings
 	 *
-	 * @return void
 	 * @AfterScenario
+	 *
+	 * @return void
 	 */
 	public function tearDownSuite() {
 		AppConfigHelper::modifyServerConfigs(
@@ -566,8 +590,9 @@ class FeatureContext extends RawMinkContext implements Context {
 	/**
 	 * After Scenario. clear file locks
 	 *
-	 * @return void
 	 * @AfterScenario
+	 *
+	 * @return void
 	 */
 	public function clearFileLocks() {
 		$response = OcsApiHelper::sendRequest(
@@ -584,9 +609,11 @@ class FeatureContext extends RawMinkContext implements Context {
 	/**
 	 * After Scenario. Report the pass/fail status to SauceLabs.
 	 *
-	 * @param AfterScenarioScope $afterScenarioScope
-	 * @return void
 	 * @AfterScenario
+	 *
+	 * @param AfterScenarioScope $afterScenarioScope
+	 *
+	 * @return void
 	 */
 	public function reportResult(AfterScenarioScope $afterScenarioScope) {
 		if ($afterScenarioScope->getTestResult()->isPassed()) {
