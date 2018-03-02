@@ -54,6 +54,7 @@ class LoginContext extends RawMinkContext implements Context {
 
 	/**
 	 * @Given I am on the login page
+	 *
 	 * @return void
 	 */
 	public function iAmOnTheLoginPage() {
@@ -62,8 +63,10 @@ class LoginContext extends RawMinkContext implements Context {
 
 	/**
 	 * @When I relogin with username :username and password :password
+	 *
 	 * @param string $username
 	 * @param string $password
+	 *
 	 * @return void
 	 */
 	public function iReloginWithUsernameAndPassword($username, $password) {
@@ -73,8 +76,10 @@ class LoginContext extends RawMinkContext implements Context {
 
 	/**
 	 * @When I login with username :username and password :password
+	 *
 	 * @param string $username
 	 * @param string $password
+	 *
 	 * @return void
 	 */
 	public function iLoginWithUsernameAndPassword($username, $password) {
@@ -83,9 +88,11 @@ class LoginContext extends RawMinkContext implements Context {
 
 	/**
 	 * @When I relogin with username :username and password :password to :server
+	 *
 	 * @param string $username
 	 * @param string $password
 	 * @param string $server
+	 *
 	 * @return void
 	 */
 	public function iReloginWithUsernameAndPasswordToSrv(
@@ -97,9 +104,11 @@ class LoginContext extends RawMinkContext implements Context {
 
 	/**
 	 * @When I login with username :username and password :password to :server
+	 *
 	 * @param string $username
 	 * @param string $password
 	 * @param string $server
+	 *
 	 * @return void
 	 */
 	public function iLoginWithUsernameAndPasswordToSrv(
@@ -118,8 +127,10 @@ class LoginContext extends RawMinkContext implements Context {
 	 * @When I login with username :username and invalid password :password
 	 * @When I login with invalid username :username and password :password
 	 * @When I login with invalid username :username and invalid password :password
+	 *
 	 * @param string $username
 	 * @param string $password
+	 *
 	 * @return void
 	 */
 	public function iLoginWithUsernameAndInvalidPassword($username, $password) {
@@ -129,9 +140,11 @@ class LoginContext extends RawMinkContext implements Context {
 
 	/**
 	 * @When I login with username :username and password :password after a redirect from the :page page
+	 *
 	 * @param string $username
 	 * @param string $password
 	 * @param string $page text name of a page that I expect to be taken to
+	 *
 	 * @return void
 	 */
 	public function iLoginWithUsernameAndPasswordAfterRedirectFromThePage(
@@ -148,6 +161,7 @@ class LoginContext extends RawMinkContext implements Context {
 
 	/**
 	 * @When I login as a regular user with a correct password
+	 *
 	 * @return void
 	 */
 	public function iLoginAsARegularUserWithACorrectPassword() {
@@ -160,6 +174,7 @@ class LoginContext extends RawMinkContext implements Context {
 	 * @param string $shouldOrNot
 	 * @param string $username
 	 * @param string $password
+	 *
 	 * @return void
 	 */
 	public function itShouldBePossibleToLogin($shouldOrNot, $username, $password) {
@@ -188,11 +203,13 @@ class LoginContext extends RawMinkContext implements Context {
 		
 	}
 	/**
-	 * @BeforeScenario
 	 * This will run before EVERY scenario.
 	 * It will set the properties for this object.
 	 *
+	 * @BeforeScenario
+	 *
 	 * @param BeforeScenarioScope $scope
+	 *
 	 * @return void
 	 */
 	public function before(BeforeScenarioScope $scope) {

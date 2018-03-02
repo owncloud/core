@@ -73,6 +73,7 @@ class SharingContext extends RawMinkContext implements Context {
 	 * 
 	 * @param string $name
 	 * @param string $url
+	 * 
 	 * @return void
 	 */
 	private function addToListOfCreatedPublicLinks($name, $url) {
@@ -81,11 +82,13 @@ class SharingContext extends RawMinkContext implements Context {
 
 	/**
 	 * @Given /^the (?:file|folder) "([^"]*)" is shared with the (?:(remote|federated)\s)?user "([^"]*)"$/
+	 *
 	 * @param string $folder
 	 * @param string $remote
 	 * @param string $user
 	 * @param int $maxRetries
 	 * @param boolean $quiet
+	 * 
 	 * @return void
 	 */
 	public function theFileFolderIsSharedWithTheUser(
@@ -115,8 +118,10 @@ class SharingContext extends RawMinkContext implements Context {
 
 	/**
 	 * @Given the file/folder :folder is shared with the group :group
+	 *
 	 * @param string $folder
 	 * @param string $group
+	 * 
 	 * @return void
 	 */
 	public function theFileFolderIsSharedWithTheGroup($folder, $group) {
@@ -135,7 +140,9 @@ class SharingContext extends RawMinkContext implements Context {
 
 	/**
 	 * @Given the share dialog for the file/folder :name is open
+	 *
 	 * @param string $name
+	 * 
 	 * @return void
 	 */
 	public function theShareDialogForTheFileFolderIsOpen($name) {
@@ -146,7 +153,9 @@ class SharingContext extends RawMinkContext implements Context {
 	}
 	/**
 	 * @Given I create a new public link for the file/folder :name
+	 *
 	 * @param string $name
+	 * 
 	 * @return void
 	 */
 	public function iCreateANewPublicLinkFor($name) {
@@ -160,6 +169,7 @@ class SharingContext extends RawMinkContext implements Context {
 	 *                            password, expiration, email
 	 *                            the permissions values has to be written exactly
 	 *                            the way its written in the UI
+	 * 
 	 * @return void
 	 */
 	public function iCreateANewPublicLinkForWith(
@@ -217,6 +227,7 @@ class SharingContext extends RawMinkContext implements Context {
 	
 	/**
 	 * @Given I close the share dialog
+	 *
 	 * @return void
 	 */
 	public function iCloseTheShareDialog() {
@@ -225,7 +236,9 @@ class SharingContext extends RawMinkContext implements Context {
 
 	/**
 	 * @Given I type :input in the share-with-field
+	 *
 	 * @param string $input
+	 * 
 	 * @return void
 	 */
 	public function iTypeInTheShareWithField($input) {
@@ -234,6 +247,7 @@ class SharingContext extends RawMinkContext implements Context {
 
 	/**
 	 * @Given the sharing permissions of :userName for :fileName are set to
+	 *
 	 * @param string $userName
 	 * @param string $fileName
 	 * @param TableNode $permissionsTable table with two columns and no heading
@@ -242,6 +256,7 @@ class SharingContext extends RawMinkContext implements Context {
 	 *                                    second column yes|no
 	 *                                    not mentioned permissions will not be
 	 *                                    touched
+	 * 
 	 * @return void
 	 */
 	public function theSharingPermissionsOfAreSetTo(
@@ -256,6 +271,7 @@ class SharingContext extends RawMinkContext implements Context {
 
 	/**
 	 * @When the offered remote shares are accepted
+	 *
 	 * @return void
 	 */
 	public function theOfferedRemoteSharesAreAccepted() {
@@ -266,6 +282,7 @@ class SharingContext extends RawMinkContext implements Context {
 
 	/**
 	 * @When I access the last created public link
+	 *
 	 * @return void
 	 */
 	public function iAccessTheLastCreatedPublicLink() {
@@ -283,9 +300,11 @@ class SharingContext extends RawMinkContext implements Context {
 
 	/**
 	 * @When I add the public link to :server as user :username with the password :password
+	 *
 	 * @param string $server
 	 * @param string $username
 	 * @param string $password
+	 * 
 	 * @return void
 	 * @throws Exception
 	 */
@@ -301,7 +320,9 @@ class SharingContext extends RawMinkContext implements Context {
 
 	/**
 	 * @Then all users and groups that contain the string :requiredString in their name should be listed in the autocomplete list
+	 *
 	 * @param string $requiredString
+	 * 
 	 * @return void
 	 */
 	public function allUsersAndGroupsThatContainTheStringInTheirNameShouldBeListedInTheAutocompleteList(
@@ -314,9 +335,11 @@ class SharingContext extends RawMinkContext implements Context {
 
 	/**
 	 * @Then all users and groups that contain the string :requiredString in their name should be listed in the autocomplete list except :userOrGroup :notToBeListed
+	 *
 	 * @param string $requiredString
 	 * @param string $userOrGroup
 	 * @param string $notToBeListed
+	 * 
 	 * @return void
 	 */
 	public function allUsersAndGroupsThatContainTheStringInTheirNameShouldBeListedInTheAutocompleteListExcept(
@@ -354,6 +377,7 @@ class SharingContext extends RawMinkContext implements Context {
 
 	/**
 	 * @Then my own name should not be listed in the autocomplete list
+	 *
 	 * @return void
 	 */
 	public function myOwnNameShouldNotBeListedInTheAutocompleteList() {
@@ -365,7 +389,9 @@ class SharingContext extends RawMinkContext implements Context {
 
 	/**
 	 * @Then a tooltip with the text :text should be shown near the share-with-field
+	 *
 	 * @param string $text
+	 * 
 	 * @return void
 	 */
 	public function aTooltipWithTheTextShouldBeShownNearTheShareWithField($text) {
@@ -377,6 +403,7 @@ class SharingContext extends RawMinkContext implements Context {
 
 	/**
 	 * @Then the autocomplete list should not be displayed
+	 *
 	 * @return void
 	 */
 	public function theAutocompleteListShouldNotBeDisplayed() {
@@ -387,10 +414,12 @@ class SharingContext extends RawMinkContext implements Context {
 
 	/**
 	 * @Then /^the (file|folder) "([^"]*)" should be marked as shared(?: with "([^"]*)")? by "([^"]*)"$/
+	 *
 	 * @param string $fileOrFolder
 	 * @param string $itemName
 	 * @param string $sharedWithGroup
 	 * @param string $sharerName
+	 * 
 	 * @return void
 	 */
 	public function theFileFolderShouldBeMarkedAsSharedBy(
@@ -435,8 +464,10 @@ class SharingContext extends RawMinkContext implements Context {
 
 	/**
 	 * @Then /^it should not be possible to share the (?:file|folder) "([^"]*)"(?: with "([^"]*)")?$/
+	 *
 	 * @param string $fileName
 	 * @param string|null $shareWith
+	 * 
 	 * @return void
 	 * @throws Exception
 	 */
@@ -472,10 +503,13 @@ class SharingContext extends RawMinkContext implements Context {
 	}
 
 	/**
-	 * @BeforeScenario
 	 * This will run before EVERY scenario.
 	 * It will set the properties for this object.
+	 *
+	 * @BeforeScenario
+	 *
 	 * @param BeforeScenarioScope $scope
+	 * 
 	 * @return void
 	 */
 	public function before(BeforeScenarioScope $scope) {

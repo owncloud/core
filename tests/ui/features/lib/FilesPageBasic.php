@@ -83,6 +83,7 @@ abstract class FilesPageBasic extends OwnCloudPage {
 
 	/**
 	 * @param int $number
+	 *
 	 * @return \Behat\Mink\Element\NodeElement|null
 	 */
 	public function findActionMenuByNo($number) {
@@ -95,6 +96,7 @@ abstract class FilesPageBasic extends OwnCloudPage {
 	 *
 	 * @param string|array $name
 	 * @param Session $session
+	 *
 	 * @return FileRow
 	 * @throws ElementNotFoundException
 	 */
@@ -211,6 +213,7 @@ abstract class FilesPageBasic extends OwnCloudPage {
 	 * scrolls down the file list, to load not yet displayed files
 	 *
 	 * @param Session $session
+	 *
 	 * @return void
 	 */
 	public function scrollDownAppContent(Session $session) {
@@ -249,6 +252,7 @@ abstract class FilesPageBasic extends OwnCloudPage {
 	 *
 	 * @param string|array $name
 	 * @param Session $session
+	 *
 	 * @return void
 	 */
 	public function openFile($name, Session $session) {
@@ -261,6 +265,7 @@ abstract class FilesPageBasic extends OwnCloudPage {
 	 * @param string|array $name
 	 * @param Session $session
 	 * @param int $maxRetries
+	 *
 	 * @return void
 	 */
 	public function deleteFile($name, Session $session, $maxRetries = STANDARDRETRYCOUNT) {
@@ -343,6 +348,7 @@ abstract class FilesPageBasic extends OwnCloudPage {
 	/**
 	 *
 	 * @param Session $session
+	 *
 	 * @return void
 	 */
 	public function deleteAllSelectedFiles(Session $session) {
@@ -354,6 +360,7 @@ abstract class FilesPageBasic extends OwnCloudPage {
 	 *
 	 * @param string $name
 	 * @param Session $session
+	 *
 	 * @return void
 	 */
 	public function selectFileForBatchAction($name, Session $session) {
@@ -364,6 +371,7 @@ abstract class FilesPageBasic extends OwnCloudPage {
 	/**
 	 *
 	 * @param int $number
+	 *
 	 * @throws ElementNotFoundException
 	 * @return \Behat\Mink\Element\NodeElement
 	 */
@@ -383,6 +391,7 @@ abstract class FilesPageBasic extends OwnCloudPage {
 	/**
 	 *
 	 * @param int $number
+	 *
 	 * @return void
 	 */
 	public function clickFileActionsMenuBtnByNo($number) {
@@ -392,6 +401,7 @@ abstract class FilesPageBasic extends OwnCloudPage {
 	/**
 	 *
 	 * @param int $number
+	 *
 	 * @return FileActionsMenu
 	 */
 	public function openFileActionsMenuByNo($number) {
@@ -408,6 +418,7 @@ abstract class FilesPageBasic extends OwnCloudPage {
 	 *
 	 * @param Session $session
 	 * @param int $timeout_msec
+	 *
 	 * @return void
 	 */
 	public function waitTillPageIsLoaded(
@@ -487,6 +498,7 @@ abstract class FilesPageBasic extends OwnCloudPage {
 	 *
 	 * @param Session $session
 	 * @param int $timeout_msec
+	 *
 	 * @return void
 	 */
 	public function waitTillFileRowsAreReady(

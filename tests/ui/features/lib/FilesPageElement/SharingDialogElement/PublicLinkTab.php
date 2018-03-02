@@ -74,6 +74,7 @@ class PublicLinkTab extends OwncloudPage {
 	 * @param string $password
 	 * @param string $expirationDate
 	 * @param string $email
+	 *
 	 * @return string the name of the created public link
 	 */
 	public function createLink(
@@ -134,6 +135,7 @@ class PublicLinkTab extends OwncloudPage {
 	 * @param string $password
 	 * @param string $expirationDate
 	 * @param string $email
+	 *
 	 * @return void
 	 */
 	public function editLink(
@@ -150,6 +152,7 @@ class PublicLinkTab extends OwncloudPage {
 	/**
 	 * 
 	 * @param string $name
+	 *
 	 * @throws ElementNotFoundException
 	 * @return string
 	 */
@@ -177,6 +180,7 @@ class PublicLinkTab extends OwncloudPage {
 	/**
 	 * 
 	 * @param string $name
+	 *
 	 * @return void
 	 */
 	public function deleteLink($name) {
@@ -187,6 +191,7 @@ class PublicLinkTab extends OwncloudPage {
 	 * 
 	 * @param string $name
 	 * @param string $service
+	 *
 	 * @return void
 	 */
 	public function shareLink($name, $service) {
@@ -196,6 +201,7 @@ class PublicLinkTab extends OwncloudPage {
 	/**
 	 * 
 	 * @param string $name
+	 *
 	 * @return void
 	 */
 	public function copyLinkToClipboard($name) {
@@ -205,6 +211,7 @@ class PublicLinkTab extends OwncloudPage {
 	/**
 	 * 
 	 * @param string $name
+	 *
 	 * @throws ElementNotFoundException
 	 * @return NodeElement
 	 */
