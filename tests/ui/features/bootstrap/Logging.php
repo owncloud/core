@@ -37,11 +37,12 @@ trait Logging {
 	 * order of the table has to be the same as in the log file
 	 * empty cells in the table will not be checked!
 	 *
+	 * @Then the last lines of the log file should contain log-entries with these attributes:
+	 *
 	 * @param TableNode $expectedLogEntries table with headings that correspond
 	 *                                      to the json keys in the log entry
 	 *                                      e.g.
 	 *                                      |user|app|method|message|
-	 * @Then the last lines of the log file should contain log-entries with these attributes:
 	 * @return void
 	 */
 	public function theLastLinesOfTheLogFileShouldContainEntriesWithTheseAttributes(
@@ -83,12 +84,13 @@ trait Logging {
 	 * attributes in the table that are empty will match any value in the
 	 * corresponding attribute in the log file
 	 *
+	 * @Then the log file should not contain any log-entries with these attributes:
+	 *
 	 * @param TableNode $logEntriesExpectedNotToExist table with headings that
 	 *                                                correspond to the json
 	 *                                                keys in the log entry
 	 *                                                e.g.
 	 *                                                |user|app|method|message|
-	 * @Then the log file should not contain any log-entries with these attributes:
 	 * @return void
 	 */
 	public function theLogFileShouldNotContainAnyLogEntriesWithTheseAttributes(
@@ -122,8 +124,9 @@ trait Logging {
 	}
 
 	/**
-	 * @param string $logLevel (debug|info|warning|error)
 	 * @Given owncloud log level is set to :logLevel
+	 *
+	 * @param string $logLevel (debug|info|warning|error)
 	 * @return void
 	 */
 	public function owncloudLogLevelIsSetTo($logLevel) {
@@ -131,8 +134,9 @@ trait Logging {
 	}
 
 	/**
-	 * @param string $backend (owncloud|syslog|errorlog)
 	 * @Given owncloud log backend is set to :backend
+	 *
+	 * @param string $backend (owncloud|syslog|errorlog)
 	 * @return void
 	 */
 	public function owncloudLogBackendIsSetTo($backend) {
@@ -140,8 +144,9 @@ trait Logging {
 	}
 
 	/**
-	 * @param string $timezone
 	 * @Given owncloud log timezone is set to :timezone
+	 *
+	 * @param string $timezone
 	 * @return void
 	 */
 	public function owncloudLogTimezoneIsSetTo($timezone) {
@@ -150,6 +155,7 @@ trait Logging {
 
 	/**
 	 * @Given the owncloud log is cleared
+	 *
 	 * @return void
 	 */
 	public function theOwncloudLogIsCleared() {

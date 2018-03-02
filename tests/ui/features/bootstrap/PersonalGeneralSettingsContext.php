@@ -51,6 +51,7 @@ class PersonalGeneralSettingsContext extends RawMinkContext implements Context {
 
 	/**
 	 * @Given I am on the personal general settings page
+	 *
 	 * @return void
 	 */
 	public function iAmOnThePersonalGeneralSettingsPage() {
@@ -62,7 +63,10 @@ class PersonalGeneralSettingsContext extends RawMinkContext implements Context {
 
 	/**
 	 * @Given /^I (attempt to |)go to the personal general settings page$/
+	 *
+	 * @param string $attemptTo
 	 * @return void
+	 * @throws Exception
 	 */
 	public function iGoToThePersonalGeneralSettingsPage($attemptTo) {
 		$pageIsExpectedToLoad = ($attemptTo === "");
@@ -81,6 +85,7 @@ class PersonalGeneralSettingsContext extends RawMinkContext implements Context {
 
 	/**
 	 * @When I change the language to :language
+	 *
 	 * @param string $language
 	 * @return void
 	 */
@@ -102,7 +107,8 @@ class PersonalGeneralSettingsContext extends RawMinkContext implements Context {
 		$username = $this->featureContext->getCurrentUser();
 		$oldPassword = trim($this->featureContext->getUserPassword($username));
 		$this->personalGeneralSettingsPage->changePassword(
-			$oldPassword, $newPassword,$this->getSession());
+			$oldPassword, $newPassword, $this->getSession()
+		);
 	}
 	
 	/**
@@ -115,7 +121,8 @@ class PersonalGeneralSettingsContext extends RawMinkContext implements Context {
 	public function iChangeThePasswordToUsingWrongCurrentPassword($newPassword) {
 		$oldPassword = "thisisawrongpassword";
 		$this->personalGeneralSettingsPage->changePassword(
-			$oldPassword, $newPassword, $this->getSession());
+			$oldPassword, $newPassword, $this->getSession()
+		);
 	}
 	
 	/**
@@ -130,7 +137,8 @@ class PersonalGeneralSettingsContext extends RawMinkContext implements Context {
 	) {
 		PHPUnit_Framework_Assert::assertEquals(
 			$wrongPasswordmessageText,
-			$this->personalGeneralSettingsPage->getWrongPasswordMessageText());
+			$this->personalGeneralSettingsPage->getWrongPasswordMessageText()
+		);
 	}
 
 	/**

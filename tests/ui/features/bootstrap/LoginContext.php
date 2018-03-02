@@ -54,6 +54,7 @@ class LoginContext extends RawMinkContext implements Context {
 
 	/**
 	 * @Given I am on the login page
+	 *
 	 * @return void
 	 */
 	public function iAmOnTheLoginPage() {
@@ -62,6 +63,7 @@ class LoginContext extends RawMinkContext implements Context {
 
 	/**
 	 * @When I relogin with username :username and password :password
+	 *
 	 * @param string $username
 	 * @param string $password
 	 * @return void
@@ -73,6 +75,7 @@ class LoginContext extends RawMinkContext implements Context {
 
 	/**
 	 * @When I login with username :username and password :password
+	 *
 	 * @param string $username
 	 * @param string $password
 	 * @return void
@@ -83,6 +86,7 @@ class LoginContext extends RawMinkContext implements Context {
 
 	/**
 	 * @When I relogin with username :username and password :password to :server
+	 *
 	 * @param string $username
 	 * @param string $password
 	 * @param string $server
@@ -97,6 +101,7 @@ class LoginContext extends RawMinkContext implements Context {
 
 	/**
 	 * @When I login with username :username and password :password to :server
+	 *
 	 * @param string $username
 	 * @param string $password
 	 * @param string $server
@@ -118,6 +123,7 @@ class LoginContext extends RawMinkContext implements Context {
 	 * @When I login with username :username and invalid password :password
 	 * @When I login with invalid username :username and password :password
 	 * @When I login with invalid username :username and invalid password :password
+	 *
 	 * @param string $username
 	 * @param string $password
 	 * @return void
@@ -129,6 +135,7 @@ class LoginContext extends RawMinkContext implements Context {
 
 	/**
 	 * @When I login with username :username and password :password after a redirect from the :page page
+	 *
 	 * @param string $username
 	 * @param string $password
 	 * @param string $page text name of a page that I expect to be taken to
@@ -148,6 +155,7 @@ class LoginContext extends RawMinkContext implements Context {
 
 	/**
 	 * @When I login as a regular user with a correct password
+	 *
 	 * @return void
 	 */
 	public function iLoginAsARegularUserWithACorrectPassword() {
