@@ -31,6 +31,7 @@ namespace OC\Files\Node;
 
 use OC\Files\Mount\Manager;
 use OC\Files\Mount\MountPoint;
+use OC\User\NoUserException;
 use OCP\Files\NotFoundException;
 use OCP\Files\NotPermittedException;
 use OC\Hooks\PublicEmitter;
@@ -338,9 +339,10 @@ class Root extends Folder implements IRootFolder {
 	public function getUserFolder($userId) {
 		$userObject = \OC::$server->getUserManager()->get($userId);
 
-		if (is_null($userObject)) {
-			\OCP\Util::writeLog('files', 'Backends provided no user object for ' . $userId, \OCP\Util::ERROR);
-			throw new \OC\User\NoUserException('Backends provided no user object for ' . $userId);
+		if ($userObject === null) {
+			$msg = "Backends provided no user object for $userId";
+			\OC::$server->getLogger()->error($msg, ['app' => __CLASS__]);
+			throw new NoUserException($msg);
 		}
 
 		$userId = $userObject->getUID();
