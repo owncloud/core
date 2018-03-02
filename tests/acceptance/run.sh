@@ -20,7 +20,7 @@ function env_alt_home_enable {
 }
 
 function env_alt_home_clear {
-	$OCC app:disable testing
+	$OCC app:disable testing || { echo "Unable to disable testing app" >&2; exit 1; }
 }
 
 function env_encryption_enable {
@@ -29,12 +29,12 @@ function env_encryption_enable {
 }
 
 function env_encryption_enable_master_key {
-	env_encryption_enable
+	env_encryption_enable || { echo "Unable to enable user-keys encryption" >&2; exit 1; }
 	$OCC encryption:select-encryption-type masterkey --yes
 }
 
 function env_encryption_enable_user_keys {
-	env_encryption_enable
+	env_encryption_enable || { echo "Unable to enable user-keys encryption" >&2; exit 1; }
 	$OCC encryption:select-encryption-type user-keys --yes
 }
 
@@ -44,12 +44,12 @@ function env_encryption_disable {
 }
 
 function env_encryption_disable_master_key {
-	env_encryption_disable
+	env_encryption_disable || { echo "Unable to disable encryption" >&2; exit 1; }
 	$OCC config:app:delete encryption useMasterKey
 }
 
 function env_encryption_disable_users_key {
-	env_encryption_disable
+	env_encryption_disable || { echo "Unable to disable encryption" >&2; exit 1; }
 	$OCC config:app:delete encryption userSpecificKey
 }
 
@@ -83,7 +83,7 @@ $OCC config:system:set files_external_allow_create_new_local --value=true
 PREVIOUS_TESTING_APP_STATUS=$($OCC --no-warnings app:list "^testing$")
 if [[ "$PREVIOUS_TESTING_APP_STATUS" =~ ^Disabled: ]]
 then
-	$OCC app:enable testing
+	$OCC app:enable testing || { echo "Unable to enable testing app" >&2; exit 1; }
 	TESTING_ENABLED_BY_SCRIPT=true;
 else
 	TESTING_ENABLED_BY_SCRIPT=false;
