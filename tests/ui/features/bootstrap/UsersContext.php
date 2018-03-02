@@ -53,6 +53,7 @@ class UsersContext extends RawMinkContext implements Context {
 
 	/**
 	 * @Given I am on the users page
+	 *
 	 * @return void
 	 */
 	public function iAmOnTheUsersPage() {
@@ -73,6 +74,7 @@ class UsersContext extends RawMinkContext implements Context {
 
 	/**
 	 * @Given quota of user :username is set/changed to :quota
+	 *
 	 * @param string $username
 	 * @param string $quota
 	 * @return void
@@ -83,6 +85,8 @@ class UsersContext extends RawMinkContext implements Context {
 
 	/**
 	 * @When /^I (attempt to |)create a user with the name "([^"]*)" (?:and )?the password "([^"]*)"(?: and the email "([^"]*)")?(?: that is a member of these groups)?$/
+	 *
+	 * @param string $attemptTo
 	 * @param string $username
 	 * @param string $password
 	 * @param string $email
@@ -118,6 +122,7 @@ class UsersContext extends RawMinkContext implements Context {
 	/**
 	 * 
 	 * @When I delete the group named :name
+	 *
 	 * @param string $name
 	 * @return void
 	 */
@@ -129,6 +134,7 @@ class UsersContext extends RawMinkContext implements Context {
 	/**
 	 * @When I delete these groups:
 	 * expects a table of groups with the heading "groupname"
+	 *
 	 * @param TableNode $table
 	 * @return void
 	 */
@@ -141,6 +147,7 @@ class UsersContext extends RawMinkContext implements Context {
 	
 	/**
 	 * @Then The group name :groupName should be listed
+	 *
 	 * @param string $groupName
 	 * @return void
 	 */
@@ -153,6 +160,7 @@ class UsersContext extends RawMinkContext implements Context {
 
 	/**
 	 * @Then the group named :name should not be listed
+	 *
 	 * @param string $name
 	 * @return void
 	 * @throws Exception
@@ -188,6 +196,7 @@ class UsersContext extends RawMinkContext implements Context {
 
 	/**
 	 * @When the users page is reloaded
+	 *
 	 * @return void
 	 */
 	public function theUsersPageIsReloaded() {
@@ -197,6 +206,7 @@ class UsersContext extends RawMinkContext implements Context {
 
 	/**
 	 * @Then quota of user :username should be set to :quota
+	 *
 	 * @param string $username
 	 * @param string $quota
 	 * @return void

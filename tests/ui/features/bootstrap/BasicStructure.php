@@ -50,6 +50,7 @@ trait BasicStructure {
 
 	/**
 	 * @Given I am logged in as admin
+	 *
 	 * @return void
 	 */
 	public function iAmLoggedInAsAdmin() {
@@ -59,6 +60,7 @@ trait BasicStructure {
 
 	/**
 	 * @Given I am logged in as a regular user
+	 *
 	 * @return void
 	 */
 	public function iAmLoggedInAsARegularUser() {
@@ -98,6 +100,7 @@ trait BasicStructure {
 
 	/**
 	 * @When I logout
+	 *
 	 * @return void
 	 */
 	public function iLogout() {
@@ -111,6 +114,7 @@ trait BasicStructure {
 
 	/**
 	 * @Given /^a regular user exists\s?(but is not initialized|)$/
+	 *
 	 * @param string $doNotInitialize just create the user, do not trigger creating skeleton files etc
 	 * @return void
 	 */
@@ -126,6 +130,7 @@ trait BasicStructure {
 
 	/**
 	 * @Given /^regular users exist\s?(but are not initialized|)$/
+	 *
 	 * @param string $doNotInitialize just create the user, do not trigger creating skeleton files etc
 	 * @return void
 	 */
@@ -277,6 +282,7 @@ trait BasicStructure {
 	/**
 	 * @Given these groups exist:
 	 * expects a table of groups with the heading "groupname"
+	 *
 	 * @param TableNode $table
 	 * @return void
 	 */
@@ -288,6 +294,7 @@ trait BasicStructure {
 
 	/**
 	 * @Given a regular group exists
+	 *
 	 * @return void
 	 */
 	public function aRegularGroupExists() {
@@ -296,6 +303,7 @@ trait BasicStructure {
 
 	/**
 	 * @Given regular groups exist
+	 *
 	 * @return void
 	 */
 	public function regularGroupsExist() {
@@ -355,6 +363,7 @@ trait BasicStructure {
 	}
 	/**
 	 * @Given a regular user is in a regular group
+	 *
 	 * @return void
 	 */
 	public function aRegularUserIsInARegularGroup() {
@@ -368,6 +377,7 @@ trait BasicStructure {
 
 	/**
 	 * @Given the user :user is in the group :group
+	 *
 	 * @param string $user
 	 * @param string $group
 	 * @param string $method how to add the user to the group api|occ
@@ -582,6 +592,7 @@ trait BasicStructure {
 	 * @param string $password
 	 * @param string $displayName
 	 * @param string $email
+	 * @param bool $shouldHaveBeenCreated
 	 * @return void
 	 */
 	public function addUserToCreatedUsersList(

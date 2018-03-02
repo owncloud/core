@@ -179,6 +179,7 @@ class FeatureContext extends RawMinkContext implements Context {
 
 	/**
 	 * @Then no notification should be displayed
+	 *
 	 * @return void
 	 */
 	public function noNotificationShouldBeDisplayed() {
@@ -196,6 +197,7 @@ class FeatureContext extends RawMinkContext implements Context {
 
 	/**
 	 * @Then a notification should be displayed with the text :notificationText
+	 *
 	 * @param string $notificationText expected notification text
 	 * @return void
 	 */
@@ -207,6 +209,7 @@ class FeatureContext extends RawMinkContext implements Context {
 
 	/**
 	 * @Then /^notifications should be displayed with the text\s?(matching|)$/
+	 *
 	 * @param string $matching contains "matching" when notification text
 	 *                         has to be checked against regular expression
 	 * @param TableNode $table of expected notification text
@@ -247,6 +250,7 @@ class FeatureContext extends RawMinkContext implements Context {
 
 	/**
 	 * @Then /^((?:\d)|no)?\s?dialog[s]? should be displayed$/
+	 *
 	 * @param int|string|null $count
 	 * @param TableNode|null $table of expected dialogs format must be:
 	 *                              | title | content |
@@ -303,6 +307,7 @@ class FeatureContext extends RawMinkContext implements Context {
 
 	/**
 	 * @Then I should be redirected to a page with the title :title
+	 *
 	 * @param string $title
 	 * @return void
 	 */
@@ -316,6 +321,7 @@ class FeatureContext extends RawMinkContext implements Context {
 
 	/**
 	 * @Then the group named :name should not exist
+	 *
 	 * @param string $name
 	 * @return void
 	 * @throws Exception
@@ -355,6 +361,7 @@ class FeatureContext extends RawMinkContext implements Context {
 
 	/**
 	 * @Given /^the setting "([^"]*)" in the section "([^"]*)" is (disabled|enabled)$/
+	 *
 	 * @param string $setting
 	 * @param string $section
 	 * @param string $value
@@ -387,6 +394,7 @@ class FeatureContext extends RawMinkContext implements Context {
 
 	/**
 	 * @Given a file with the size of :size bytes and the name :name exists
+	 *
 	 * @param int $size if not int given it will be cast to int
 	 * @param string $name
 	 * @throws InvalidArgumentException
