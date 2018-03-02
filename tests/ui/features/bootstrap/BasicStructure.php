@@ -436,9 +436,10 @@ trait BasicStructure {
 	}
 
 	/**
-	 * @return void
 	 * @BeforeScenario
 	 * @TestAlsoOnExternalUserBackend
+	 *
+	 * @return void
 	 */
 	public function setUpExternalUserBackends() {
 		//TODO make it smarter to be able also to work with other backends 
@@ -458,10 +459,11 @@ trait BasicStructure {
 	}
 
 	/**
+	 * @BeforeScenario
+	 *
 	 * @param BeforeScenarioScope $scope
 	 *
 	 * @return void
-	 * @BeforeScenario
 	 */
 	public function setUpScenarioGetRegularUsersAndGroups(
 		BeforeScenarioScope $scope
@@ -481,9 +483,10 @@ trait BasicStructure {
 	}
 
 	/**
+	 * @AfterScenario
+	 *
 	 * @return void
 	 * @throws Exception
-	 * @AfterScenario
 	 */
 	public function tearDownScenarioDeleteCreatedUsersAndGroups() {
 		$baseUrl = $this->getMinkParameter("base_url");
