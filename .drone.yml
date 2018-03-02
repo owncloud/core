@@ -92,7 +92,7 @@ pipeline:
     when:
       event: [push, pull_request]
       matrix:
-        TEST_SUITE: coverage
+        TEST_SUITE: [coverage, javascript]
 
   phpunit:
     image: owncloudci/php:${PHP_VERSION}
