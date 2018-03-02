@@ -696,9 +696,11 @@ class Storage {
 		if($config->getSystemValue('files_versions', Storage::DEFAULTENABLED)=='true' && $expiration->isEnabled()) {
 			// get available disk space for user
 			$user = \OC::$server->getUserManager()->get($uid);
-			if (is_null($user)) {
-				\OCP\Util::writeLog('files_versions', 'Backends provided no user object for ' . $uid, \OCP\Util::ERROR);
-				throw new \OC\User\NoUserException('Backends provided no user object for ' . $uid);
+
+			if ($user === null) {
+				$msg = "Backends provided no user object for $uid";
+				\OC::$server->getLogger()->error($msg, ['app' => __CLASS__]);
+				throw new \OC\User\NoUserException($msg);
 			}
 
 			\OC_Util::setupFS($uid);
