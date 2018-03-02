@@ -234,10 +234,11 @@ class UsersContext extends RawMinkContext implements Context {
 	/**
 	 * This will run before EVERY scenario.
 	 *
+	 * @BeforeScenario
+	 *
 	 * @param BeforeScenarioScope $scope
 	 * 
 	 * @return void
-	 * @BeforeScenario
 	 */
 	public function before(BeforeScenarioScope $scope) {
 		// Get the environment
