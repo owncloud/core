@@ -286,9 +286,10 @@ clean-dist:
 #
 $(dist_dir)/qa/owncloud: $(composer_dev_deps) $(core_vendor) $(core_all_src) $(core_test_dirs)
 	rm -Rf $@; mkdir -p $@/config
-	cp -R $(core_all_src) $@
-	cp -R $(core_test_dirs) $@
+	cp -RL $(core_all_src) $@
+	cp -Rf $(core_test_dirs) $@
 	cp -R config/config.sample.php $@/config
+	rm -Rf $@/lib/composer/bin; cp -R lib/composer/bin $@/lib/composer/bin
 	find $@ -name .gitkeep -delete
 	find $@ -name .gitignore -delete
 	find $@ -name no-php -delete
