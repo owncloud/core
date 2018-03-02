@@ -72,18 +72,6 @@ pipeline:
       matrix:
         TEST_SUITE: coverage
 
-  codecov:
-    image: plugins/codecov:2
-    secrets: [codecov_token]
-    pull: true
-    files:
-     - tests/autotest-clover-${DB_TYPE}.xml
-     - tests/autotest-external-clover-${DB_TYPE}.xml
-    when:
-      event: [push, pull_request]
-      matrix:
-        TEST_SUITE: coverage
-
   test-javascript:
     image: owncloudci/php:${PHP_VERSION}
     pull: true
@@ -92,6 +80,19 @@ pipeline:
     when:
       matrix:
         TEST_SUITE: javascript
+
+  codecov:
+    image: plugins/codecov:2
+    secrets: [codecov_token]
+    pull: true
+    files:
+     - tests/autotest-clover-${DB_TYPE}.xml
+     - tests/autotest-external-clover-${DB_TYPE}.xml
+     - tests/karma-coverage/PhantomJS*/cobertura-coverage.xml
+    when:
+      event: [push, pull_request]
+      matrix:
+        TEST_SUITE: coverage
 
   phpunit:
     image: owncloudci/php:${PHP_VERSION}
