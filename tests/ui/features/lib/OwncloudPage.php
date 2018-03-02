@@ -39,6 +39,7 @@ class OwncloudPage extends Page {
 	protected $userNameDisplayId = "expandDisplayName";
 	protected $notificationId = "notification";
 	protected $ocDialogXpath = ".//*[@class='oc-dialog']";
+	protected $avatarImgXpath = ".//div[@id='settings']//div[contains(@class, 'avatardiv')]/img";
 
 	/**
 	 * used to store the unchanged path string when $path gets changed
@@ -220,22 +221,71 @@ class OwncloudPage extends Page {
 
 		return $this->getPage("OwncloudPageElement\\SettingsMenu");
 	}
+	
 	/**
-	 * finds the logged-in username displayed in the top right corner
+	 * finds the element that contains the displayname of the current user
+	 * 
+	 * @throws ElementNotFoundException
+	 * @return NodeElement
+	 */
+	protected function findUserDisplayNameElement() {
+		$displayNameElement = $this->findById($this->userNameDisplayId);
+		
+		if (is_null($displayNameElement)) {
+			throw new ElementNotFoundException(
+				__METHOD__ .
+				" could not find element with id $this->userNameDisplayId"
+			);
+		}
+		return $displayNameElement;
+	}
+	
+	/**
+	 * returns the displayname (Full Name or username) of the current user
 	 *
 	 * @throws ElementNotFoundException
 	 * @return string
 	 */
-	public function getMyUsername() {
-		$userNameDisplayElement = $this->findById($this->userNameDisplayId);
+	public function getMyDisplayname() {
+		return $this->getTrimmedText($this->findUserDisplayNameElement());
+	}
 
-		if (is_null($userNameDisplayElement)) {
+	/**
+	 * 
+	 * @return boolean
+	 */
+	public function isDisplaynameVisible() {
+		return $this->findUserDisplayNameElement()->isVisible();
+	}
+
+	/**
+	 * 
+	 * @throws ElementNotFoundException
+	 * @return NodeElement
+	 */
+	protected function findAvatarElement() {
+		$avatarElement = $this->find("xpath", $this->avatarImgXpath);
+		
+		if (is_null($avatarElement)) {
 			throw new ElementNotFoundException(
-				__METHOD__ . " could not find element with id $this->userNameDisplayId"
+				__METHOD__ .
+				" could not find avatar image with xpath $this->avatarImgXpath"
 			);
 		}
+		return $avatarElement;
+	}
 
-		return $this->getTrimmedText($userNameDisplayElement);
+	/**
+	 * 
+	 * @return boolean
+	 */
+	public function isAvatarVisible() {
+		try {
+			$avatarElement = $this->findAvatarElement();
+		} catch (ElementNotFoundException $e) {
+			return false;
+		}
+		return $avatarElement->isVisible();
 	}
 
 	/**
