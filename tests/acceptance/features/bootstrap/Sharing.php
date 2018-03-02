@@ -59,6 +59,7 @@ trait Sharing {
 	 *
 	 * @param string $user
 	 * @param \Behat\Gherkin\Node\TableNode|null $body
+	 *
 	 * @return void
 	 */
 	public function userCreatesAShareWithSettings($user, $body) {
@@ -91,6 +92,7 @@ trait Sharing {
 	 * @When /^the user creates a share using the API with settings$/
 	 *
 	 * @param \Behat\Gherkin\Node\TableNode|null $body
+	 *
 	 * @return void
 	 */
 	public function theUserCreatesAShareWithSettings($body) {
@@ -101,6 +103,7 @@ trait Sharing {
 	 * @Given /^the user has created a share with settings$/
 	 *
 	 * @param \Behat\Gherkin\Node\TableNode|null $body
+	 *
 	 * @return void
 	 */
 	public function theUserHasCreatedAShareWithSettings($body) {
@@ -115,6 +118,7 @@ trait Sharing {
 	 * @param boolean $publicUpload
 	 * @param string|null $sharePassword
 	 * @param string|int|string[]|int[]|null $permissions
+	 *
 	 * @return void
 	 */
 	public function createAPublicShare(
@@ -145,6 +149,7 @@ trait Sharing {
 	 *
 	 * @param string $user
 	 * @param string $path
+	 *
 	 * @return void
 	 */
 	public function userCreatesAPublicShareOf($user, $path) {
@@ -169,9 +174,12 @@ trait Sharing {
 	 * @param string $user
 	 * @param string $path
 	 * @param string|int|string[]|int[]|null $permissions
+	 *
 	 * @return void
 	 */
-	public function userCreatesAPublicShareOfWithPermission($user, $path, $permissions) {
+	public function userCreatesAPublicShareOfWithPermission(
+		$user, $path, $permissions
+	) {
 		$this->createAPublicShare($user, $path, true, null, $permissions);
 	}
 
@@ -181,16 +189,20 @@ trait Sharing {
 	 *
 	 * @param string $path
 	 * @param string|int|string[]|int[]|null $permissions
+	 *
 	 * @return void
 	 */
 	public function aPublicShareOfIsCreatedWithPermission($path, $permissions) {
-		$this->createAPublicShare($this->currentUser, $path, true, null, $permissions);
+		$this->createAPublicShare(
+			$this->currentUser, $path, true, null, $permissions
+		);
 	}
 
 	/**
 	 * @Then /^the public shared file "([^"]*)" should not be able to be downloaded$/
 	 *
 	 * @param string $path
+	 *
 	 * @return void
 	 */
 	public function publicSharedFileCannotBeDownloaded($path) {
@@ -232,8 +244,8 @@ trait Sharing {
 	/**
 	 * @Then /^the last public shared file should be able to be downloaded with password "([^"]*)"$/
 	 *
-	 * @param string $filename unused
 	 * @param string $password
+	 *
 	 * @return void
 	 */
 	public function checkLastPublicSharedFileWithPasswordDownload($password) {
@@ -246,6 +258,7 @@ trait Sharing {
 	 * @param string $url
 	 * @param string $auth
 	 * @param string $mimeType
+	 *
 	 * @return void
 	 */
 	private function checkDownload($url, $auth = null, $mimeType = null) {
@@ -284,6 +297,7 @@ trait Sharing {
 	 *
 	 * @param string $filename target file name
 	 * @param string $body content to upload
+	 *
 	 * @return void
 	 */
 	public function publiclyUploadingContent($filename, $body = 'test') {
@@ -296,6 +310,7 @@ trait Sharing {
 	 *
 	 * @param string $filename target file name
 	 * @param string $body content to upload
+	 *
 	 * @return void
 	 */
 	public function publiclyOverwritingContent($filename, $body = 'test') {
@@ -309,6 +324,7 @@ trait Sharing {
 	 * @param string $filename target file name
 	 * @param string $password
 	 * @param string $body content to upload
+	 *
 	 * @return void
 	 */
 	public function publiclyUploadingContentWithPassword(
@@ -323,6 +339,7 @@ trait Sharing {
 	 *
 	 * @param string $filename target file name
 	 * @param string $body content to upload
+	 *
 	 * @return void
 	 */
 	public function publiclyUploadingContentAutorename($filename, $body = 'test') {
@@ -352,6 +369,7 @@ trait Sharing {
 	 * @param string $body
 	 * @param bool $autorename
 	 * @param bool $overwriting the upload is expected to overwrite an existing file
+	 *
 	 * @return void
 	 */
 	private function publicUploadContent(
@@ -411,6 +429,7 @@ trait Sharing {
 	 * @Given /^the user has updated the last share with$/
 	 *
 	 * @param \Behat\Gherkin\Node\TableNode|null $body
+	 *
 	 * @return void
 	 */
 	public function theUserUpdatesTheLastShareWith($body) {
@@ -423,6 +442,7 @@ trait Sharing {
 	 *
 	 * @param string $user
 	 * @param \Behat\Gherkin\Node\TableNode|null $body
+	 *
 	 * @return void
 	 */
 	public function userUpdatesTheLastShareWith($user, $body) {
@@ -464,6 +484,7 @@ trait Sharing {
 	 * @param string $password
 	 * @param int $permissions
 	 * @param string $linkName
+	 *
 	 * @return void
 	 */
 	public function createShare(
@@ -501,6 +522,7 @@ trait Sharing {
 	/**
 	 * @param string $field
 	 * @param string $contentExpected
+	 *
 	 * @return bool
 	 */
 	public function isFieldInResponse($field, $contentExpected) {
@@ -515,7 +537,9 @@ trait Sharing {
 				} elseif ($contentExpected == "A_NUMBER") {
 					return is_numeric((string)$element->$field);
 				} elseif ($contentExpected == "AN_URL") {
-					return $this->isExpectedUrl((string)$element->$field, "index.php/s/");
+					return $this->isExpectedUrl(
+						(string)$element->$field, "index.php/s/"
+					);
 				} elseif ((string)$element->$field == $contentExpected) {
 					return true;
 				} else {
@@ -545,6 +569,7 @@ trait Sharing {
 	 * @Then /^file "([^"]*)" should be included in the response$/
 	 *
 	 * @param string $filename
+	 *
 	 * @return void
 	 */
 	public function checkSharedFileInResponse($filename) {
@@ -559,6 +584,7 @@ trait Sharing {
 	 * @Then /^file "([^"]*)" should not be included in the response$/
 	 *
 	 * @param string $filename
+	 *
 	 * @return void
 	 */
 	public function checkSharedFileNotInResponse($filename) {
@@ -573,6 +599,7 @@ trait Sharing {
 	 * @Then /^file "([^"]*)" should be included as path in the response$/
 	 *
 	 * @param string $filename
+	 *
 	 * @return void
 	 */
 	public function checkSharedFileAsPathInResponse($filename) {
@@ -587,6 +614,7 @@ trait Sharing {
 	 * @Then /^file "([^"]*)" should not be included as path in the response$/
 	 *
 	 * @param string $filename
+	 *
 	 * @return void
 	 */
 	public function checkSharedFileAsPathNotInResponse($filename) {
@@ -601,6 +629,7 @@ trait Sharing {
 	 * @Then /^user "([^"]*)" should be included in the response$/
 	 *
 	 * @param string $user
+	 *
 	 * @return void
 	 */
 	public function checkSharedUserInResponse($user) {
@@ -614,6 +643,7 @@ trait Sharing {
 	 * @Then /^user "([^"]*)" should not be included in the response$/
 	 *
 	 * @param string $user
+	 *
 	 * @return void
 	 */
 	public function checkSharedUserNotInResponse($user) {
@@ -626,12 +656,15 @@ trait Sharing {
 	/**
 	 * @param string $userOrGroup
 	 * @param int $permissions
+	 *
 	 * @return bool
 	 */
 	public function isUserOrGroupInSharedData($userOrGroup, $permissions = null) {
 		$data = $this->response->xml()->data[0];
 		foreach ($data as $element) {
-			if ($element->share_with == $userOrGroup && ($permissions === null || $permissions == $element->permissions)) {
+			if ($element->share_with == $userOrGroup
+				&& ($permissions === null || $permissions == $element->permissions)
+			) {
 				return true;
 			}
 		}
@@ -648,6 +681,7 @@ trait Sharing {
 	 * @param string $user2
 	 * @param null $withPerms unused
 	 * @param int $permissions
+	 *
 	 * @return void
 	 */
 	public function userSharesFileWithUserUsingTheAPI(
@@ -689,6 +723,7 @@ trait Sharing {
 	 * @param string $group
 	 * @param null $withPerms unused
 	 * @param int $permissions
+	 *
 	 * @return void
 	 */
 	public function theUserSharesFileWithGroupUsingTheAPI(
@@ -709,6 +744,7 @@ trait Sharing {
 	 * @param string $group
 	 * @param null $withPerms unused
 	 * @param int $permissions
+	 *
 	 * @return void
 	 */
 	public function userSharesFileWithGroupUsingTheAPI(
@@ -748,6 +784,7 @@ trait Sharing {
 	 * @Given /^user "([^"]*)" has deleted the last share$/
 	 *
 	 * @param string $user
+	 *
 	 * @return void
 	 */
 	public function userDeletesLastShareUsingTheAPI($user) {
@@ -769,6 +806,7 @@ trait Sharing {
 	 * @When /^user "([^"]*)" gets the info of the last share using the API$/
 	 *
 	 * @param string $user
+	 *
 	 * @return void
 	 */
 	public function userGetsInfoOfLastShareUsingTheAPI($user) {
@@ -809,6 +847,7 @@ trait Sharing {
 	 * @Then /^the response should contain ([0-9]+) entries$/
 	 *
 	 * @param int $count
+	 *
 	 * @return void
 	 */
 	public function checkingTheResponseEntriesCount($count) {
@@ -820,6 +859,7 @@ trait Sharing {
 	 * @Then /^the share fields of the last share should include$/
 	 *
 	 * @param \Behat\Gherkin\Node\TableNode|null $body
+	 *
 	 * @return void
 	 */
 	public function checkShareFields($body) {
@@ -865,6 +905,7 @@ trait Sharing {
 	 *
 	 * @param string $user
 	 * @param string $fileName
+	 *
 	 * @throws Exception
 	 * @return void
 	 */
@@ -899,7 +940,9 @@ trait Sharing {
 		}
 
 		if ($deleted === false) {
-			throw new \Exception("Could not delete shares for user $user file $fileName");
+			throw new \Exception(
+				"Could not delete shares for user $user file $fileName"
+			);
 		}
 	}
 
@@ -928,6 +971,7 @@ trait Sharing {
 	 *
 	 * @param string $user
 	 * @param string $path
+	 *
 	 * @return array
 	 */
 	public function getShares($user, $path) {
@@ -951,6 +995,7 @@ trait Sharing {
 	 * @param string $type
 	 * @param string $path
 	 * @param \Behat\Gherkin\Node\TableNode|null $TableNode
+	 *
 	 * @return int|void
 	 */
 	public function checkPublicShares($user, $type, $path, $TableNode) {
@@ -994,6 +1039,7 @@ trait Sharing {
 	 * @param string $user
 	 * @param string $path to share
 	 * @param string $name of share
+	 *
 	 * @return int|null
 	 */
 	public function getPublicShareIDByName($user, $path, $name) {
@@ -1014,9 +1060,12 @@ trait Sharing {
 	 * @param string $name
 	 * @param string $type unused
 	 * @param string $path
+	 *
 	 * @return void
 	 */
-	public function userDeletesPublicShareNamedUsingTheAPI($user, $name, $type, $path) {
+	public function userDeletesPublicShareNamedUsingTheAPI(
+		$user, $name, $type, $path
+	) {
 		$share_id = $this->getPublicShareIDByName($user, $path, $name);
 		$url = "/apps/files_sharing/api/v{$this->sharingApiVersion}/shares/$share_id";
 		$this->sendingToWith("DELETE", $url, null);

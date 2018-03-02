@@ -24,13 +24,18 @@ require __DIR__ . '/../../../../lib/composer/autoload.php';
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\BadResponseException;
 
+/**
+ * Mailhog-related functions
+ */
 trait MailTool {
 
-	/*
+	/**
 	 * Connects to an API in a docker container with mailhog,
 	 * retrieving the emails sent from it.
 	 * To use it the container should have previously been set up.
-	*/
+	 *
+	 * @return mixed JSON encoded contents
+	 */
 	public function getEmails() {
 		$fullUrl = $this->mailhogUrl;
 		$client = new Client();
