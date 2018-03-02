@@ -114,7 +114,6 @@ module.exports = function(config) {
 					'settings/js/admin-apps.js'
 				],
 				testFiles: [
-					'settings/tests/js/users/deleteHandlerSpec.js',
 					'settings/tests/js/apps/appSettingsSpec.js'
 				]
 			}

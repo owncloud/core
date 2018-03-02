@@ -73,8 +73,6 @@ $application->registerRoutes($this, [
 // Settings pages
 $this->create('settings_help', '/settings/help')
 	->actionInclude('settings/help.php');
-$this->create('settings_users', '/settings/users')
-	->actionInclude('settings/users.php');
 // Settings ajax actions
 // users
 $this->create('settings_ajax_setquota', '/settings/ajax/setquota.php')
