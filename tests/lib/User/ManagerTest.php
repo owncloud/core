@@ -16,6 +16,7 @@ use OC\User\Database;
 use OC\User\Manager;
 use OC\User\SyncService;
 use OCP\AppFramework\Db\DoesNotExistException;
+use OCP\AppFramework\Db\MultipleObjectsReturnedException;
 use OCP\IConfig;
 use OCP\ILogger;
 use OCP\IUser;
@@ -147,6 +148,11 @@ class ManagerTest extends TestCase {
 
 	public function testGetAccountNotExists() {
 		$this->accountMapper->expects($this->once())->method('getByUid')->with('foo')->willThrowException(new DoesNotExistException(''));
+		$this->assertNull($this->manager->get('foo'));
+	}
+
+	public function testGetDuplicateAccountNotExists() {
+		$this->accountMapper->expects($this->once())->method('getByUid')->with('foo')->willThrowException(new MultipleObjectsReturnedException(''));
 		$this->assertNull($this->manager->get('foo'));
 	}
 
