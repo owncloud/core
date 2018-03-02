@@ -43,6 +43,7 @@ trait Logging {
 	 *                                      to the json keys in the log entry
 	 *                                      e.g.
 	 *                                      |user|app|method|message|
+	 *
 	 * @return void
 	 */
 	public function theLastLinesOfTheLogFileShouldContainEntriesWithTheseAttributes(
@@ -91,6 +92,7 @@ trait Logging {
 	 *                                                keys in the log entry
 	 *                                                e.g.
 	 *                                                |user|app|method|message|
+	 *
 	 * @return void
 	 */
 	public function theLogFileShouldNotContainAnyLogEntriesWithTheseAttributes(
@@ -127,6 +129,7 @@ trait Logging {
 	 * @Given owncloud log level is set to :logLevel
 	 *
 	 * @param string $logLevel (debug|info|warning|error)
+	 *
 	 * @return void
 	 */
 	public function owncloudLogLevelIsSetTo($logLevel) {
@@ -137,6 +140,7 @@ trait Logging {
 	 * @Given owncloud log backend is set to :backend
 	 *
 	 * @param string $backend (owncloud|syslog|errorlog)
+	 *
 	 * @return void
 	 */
 	public function owncloudLogBackendIsSetTo($backend) {
@@ -147,6 +151,7 @@ trait Logging {
 	 * @Given owncloud log timezone is set to :timezone
 	 *
 	 * @param string $timezone
+	 *
 	 * @return void
 	 */
 	public function owncloudLogTimezoneIsSetTo($timezone) {
@@ -165,8 +170,9 @@ trait Logging {
 	/**
 	 * Before Scenario for logging. Saves current log settings
 	 *
-	 * @return void
 	 * @BeforeScenario
+	 *
+	 * @return void
 	 */
 	public function setUpScenarioLogging() {
 		$this->oldLogLevel = LoggingHelper::getLogLevel();
@@ -177,8 +183,9 @@ trait Logging {
 	/**
 	 * After Scenario for logging. Sets back old log settings
 	 *
-	 * @return void
 	 * @AfterScenario
+	 *
+	 * @return void
 	 */
 	public function tearDownScenarioLogging() {
 		if (!is_null($this->oldLogLevel)

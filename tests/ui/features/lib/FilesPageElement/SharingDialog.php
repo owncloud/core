@@ -81,6 +81,7 @@ class SharingDialog extends OwncloudPage {
 	 * @param string $input
 	 * @param Session $session
 	 * @param int $timeout_msec how long to wait till the autocomplete comes back
+	 *
 	 * @return NodeElement AutocompleteElement
 	 */
 	public function fillShareWithField(
@@ -117,6 +118,7 @@ class SharingDialog extends OwncloudPage {
 	 * returns the group names as they could appear in an autocomplete list
 	 *
 	 * @param string|array $groupNames
+	 *
 	 * @return array
 	 */
 	public function groupStringsToMatchAutoComplete($groupNames) {
@@ -156,6 +158,7 @@ class SharingDialog extends OwncloudPage {
 	 * @param Session $session
 	 * @param int $maxRetries
 	 * @param boolean $quiet
+	 *
 	 * @throws ElementNotFoundException
 	 * @return void
 	 */
@@ -201,6 +204,7 @@ class SharingDialog extends OwncloudPage {
 	 * @param Session $session
 	 * @param int $maxRetries
 	 * @param boolean $quiet
+	 *
 	 * @throws ElementNotFoundException
 	 * @return void
 	 */
@@ -218,6 +222,7 @@ class SharingDialog extends OwncloudPage {
 	 * @param Session $session
 	 * @param int $maxRetries
 	 * @param boolean $quiet
+	 *
 	 * @throws ElementNotFoundException
 	 * @return void
 	 */
@@ -236,6 +241,7 @@ class SharingDialog extends OwncloudPage {
 	 * @param Session $session
 	 * @param int $maxRetries
 	 * @param boolean $quiet
+	 *
 	 * @throws ElementNotFoundException
 	 * @return void
 	 */
@@ -252,6 +258,7 @@ class SharingDialog extends OwncloudPage {
 	 *
 	 * @param string $shareReceiverName
 	 * @param array $permissions [['permission' => 'yes|no']]
+	 *
 	 * @throws ElementNotFoundException
 	 * @return void
 	 */

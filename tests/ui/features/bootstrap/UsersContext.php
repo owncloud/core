@@ -65,6 +65,7 @@ class UsersContext extends RawMinkContext implements Context {
 	 * substitute codes like "%regularuser%" with the actual name of the user
 	 *
 	 * @param string $username
+	 * 
 	 * @return string
 	 * @Transform :username
 	 */
@@ -77,6 +78,7 @@ class UsersContext extends RawMinkContext implements Context {
 	 *
 	 * @param string $username
 	 * @param string $quota
+	 * 
 	 * @return void
 	 */
 	public function quotaOfUserIsSetTo($username, $quota) {
@@ -91,6 +93,7 @@ class UsersContext extends RawMinkContext implements Context {
 	 * @param string $password
 	 * @param string $email
 	 * @param TableNode $groupsTable table of groups with a heading | group |
+	 * 
 	 * @return void
 	 */
 	public function iCreateAUserInTheGUI(
@@ -124,6 +127,7 @@ class UsersContext extends RawMinkContext implements Context {
 	 * @When I delete the group named :name
 	 *
 	 * @param string $name
+	 * 
 	 * @return void
 	 */
 	public function iDeleteTheGroupNamed($name) {
@@ -136,6 +140,7 @@ class UsersContext extends RawMinkContext implements Context {
 	 * expects a table of groups with the heading "groupname"
 	 *
 	 * @param TableNode $table
+	 * 
 	 * @return void
 	 */
 	public function iDeleteTheseGroups(TableNode $table) {
@@ -149,6 +154,7 @@ class UsersContext extends RawMinkContext implements Context {
 	 * @Then The group name :groupName should be listed
 	 *
 	 * @param string $groupName
+	 * 
 	 * @return void
 	 */
 	public function theGroupNameShouldBeListed($groupName) {
@@ -162,6 +168,7 @@ class UsersContext extends RawMinkContext implements Context {
 	 * @Then the group named :name should not be listed
 	 *
 	 * @param string $name
+	 * 
 	 * @return void
 	 * @throws Exception
 	 */
@@ -177,6 +184,7 @@ class UsersContext extends RawMinkContext implements Context {
 	 *
 	 * @param string $shouldOrNot (not|)
 	 * @param TableNode $table
+	 * 
 	 * @return void
 	 * @throws Exception
 	 */
@@ -209,6 +217,7 @@ class UsersContext extends RawMinkContext implements Context {
 	 *
 	 * @param string $username
 	 * @param string $quota
+	 * 
 	 * @return void
 	 * @throws ExpectationException
 	 */
@@ -226,6 +235,7 @@ class UsersContext extends RawMinkContext implements Context {
 	 * This will run before EVERY scenario.
 	 *
 	 * @param BeforeScenarioScope $scope
+	 * 
 	 * @return void
 	 * @BeforeScenario
 	 */
@@ -240,6 +250,7 @@ class UsersContext extends RawMinkContext implements Context {
 	 * @Given I add a group with the name :groupName
 	 * 
 	 * @param string $groupName
+	 * 
 	 * @return void
 	 */
 	public function iAddAGroupWithTheName($groupName) {

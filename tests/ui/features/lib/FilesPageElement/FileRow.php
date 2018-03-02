@@ -62,6 +62,7 @@ class FileRow extends OwnCloudPage {
 	 * there is no real __construct() that can take arguments
 	 *
 	 * @param \Behat\Mink\Element\NodeElement $rowElement
+	 *
 	 * @return void
 	 */
 	public function setElement(NodeElement $rowElement) {
@@ -71,6 +72,7 @@ class FileRow extends OwnCloudPage {
 	/**
 	 *
 	 * @param string $name
+	 *
 	 * @return void
 	 */
 	public function setName($name) {
@@ -121,6 +123,7 @@ class FileRow extends OwnCloudPage {
 	 * opens the file action menu
 	 *
 	 * @param Session $session
+	 *
 	 * @throws \SensioLabs\Behat\PageObjectExtension\PageObject\Exception\ElementNotFoundException
 	 * @return FileActionsMenu
 	 */
@@ -188,6 +191,7 @@ class FileRow extends OwnCloudPage {
 	 *
 	 * @param string $toName
 	 * @param Session $session
+	 *
 	 * @return void
 	 */
 	public function rename($toName, Session $session) {
@@ -204,6 +208,7 @@ class FileRow extends OwnCloudPage {
 	 * deletes the file
 	 *
 	 * @param Session $session
+	 *
 	 * @return void
 	 */
 	public function delete(Session $session) {

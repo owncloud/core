@@ -48,6 +48,7 @@ class PersonalSecuritySettingsPage extends OwncloudPage {
 	 * create a new app password for the app named $appName
 	 *
 	 * @param string $appName
+	 *
 	 * @throws ElementNotFoundException
 	 * @return void
 	 */
@@ -94,6 +95,7 @@ class PersonalSecuritySettingsPage extends OwncloudPage {
 	 * throws Exception if App could not be found in the list
 	 *
 	 * @param string $appName
+	 *
 	 * @throws \Exception
 	 * @return NodeElement
 	 */
@@ -113,6 +115,7 @@ class PersonalSecuritySettingsPage extends OwncloudPage {
 	 * returns the NodeElement of the button if found, else NULL
 	 *
 	 * @param NodeElement $tr
+	 *
 	 * @return NodeElement|NULL
 	 */
 	public function getDisconnectButton(NodeElement $tr) {

@@ -71,6 +71,7 @@ class TrashbinPage extends FilesPageBasic {
 	 * 
 	 * @param string $fname
 	 * @param Session $session
+	 *
 	 * @return void
 	 */
 	public function restore($fname, Session $session) {

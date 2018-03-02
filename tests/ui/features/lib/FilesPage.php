@@ -83,6 +83,7 @@ class FilesPage extends FilesPageBasic {
 	 * @param Session $session
 	 * @param string $name
 	 * @param int $timeoutMsec
+	 *
 	 * @throws ElementNotFoundException|\Exception
 	 * @return string name of the created file
 	 */
@@ -188,6 +189,7 @@ class FilesPage extends FilesPageBasic {
 	 *
 	 * @param Session $session
 	 * @param string $name
+	 *
 	 * @return void
 	 */
 	public function uploadFile(Session $session, $name) {
@@ -210,6 +212,7 @@ class FilesPage extends FilesPageBasic {
 	 *
 	 * @param string $fileName
 	 * @param Session $session
+	 *
 	 * @return SharingDialog
 	 */
 	public function openSharingDialog($fileName, Session $session) {
@@ -235,6 +238,7 @@ class FilesPage extends FilesPageBasic {
 	 * @param string|array $toFileName
 	 * @param Session $session
 	 * @param int $maxRetries
+	 *
 	 * @return void
 	 */
 	public function renameFile(
@@ -278,6 +282,7 @@ class FilesPage extends FilesPageBasic {
 	 * @param string|array $destination
 	 * @param Session $session
 	 * @param int $maxRetries
+	 *
 	 * @return void
 	 */
 	public function moveFileTo(
@@ -312,6 +317,7 @@ class FilesPage extends FilesPageBasic {
 	 *
 	 * @param string $fileName
 	 * @param Session $session
+	 *
 	 * @return string
 	 * @throws \SensioLabs\Behat\PageObjectExtension\PageObject\Exception\ElementNotFoundException
 	 */
@@ -326,6 +332,7 @@ class FilesPage extends FilesPageBasic {
 	 * "files/?dir=/&fileid=2"
 	 *
 	 * @param array $urlParameters
+	 *
 	 * @return FilesPage
 	 * @see \SensioLabs\Behat\PageObjectExtension\PageObject\Page::open()
 	 */

@@ -55,6 +55,7 @@ class OCDialog extends OwncloudPage {
 	 * there is no real __construct() that can take arguments
 	 *
 	 * @param \Behat\Mink\Element\NodeElement $dialogElement
+	 *
 	 * @return void
 	 */
 	public function setElement(NodeElement $dialogElement) {
@@ -107,6 +108,7 @@ class OCDialog extends OwncloudPage {
 	 * clicks the accept (primary) button
 	 * 
 	 * @param Session $session
+	 *
 	 * @throws ElementNotFoundException
 	 * @return void
 	 */
@@ -130,6 +132,7 @@ class OCDialog extends OwncloudPage {
 	 * 
 	 * @param Session $session
 	 * @param string $label
+	 *
 	 * @return void
 	 */
 	public function clickButton(Session $session, $label) {

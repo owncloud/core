@@ -66,6 +66,7 @@ class LoginContext extends RawMinkContext implements Context {
 	 *
 	 * @param string $username
 	 * @param string $password
+	 *
 	 * @return void
 	 */
 	public function iReloginWithUsernameAndPassword($username, $password) {
@@ -78,6 +79,7 @@ class LoginContext extends RawMinkContext implements Context {
 	 *
 	 * @param string $username
 	 * @param string $password
+	 *
 	 * @return void
 	 */
 	public function iLoginWithUsernameAndPassword($username, $password) {
@@ -90,6 +92,7 @@ class LoginContext extends RawMinkContext implements Context {
 	 * @param string $username
 	 * @param string $password
 	 * @param string $server
+	 *
 	 * @return void
 	 */
 	public function iReloginWithUsernameAndPasswordToSrv(
@@ -105,6 +108,7 @@ class LoginContext extends RawMinkContext implements Context {
 	 * @param string $username
 	 * @param string $password
 	 * @param string $server
+	 *
 	 * @return void
 	 */
 	public function iLoginWithUsernameAndPasswordToSrv(
@@ -126,6 +130,7 @@ class LoginContext extends RawMinkContext implements Context {
 	 *
 	 * @param string $username
 	 * @param string $password
+	 *
 	 * @return void
 	 */
 	public function iLoginWithUsernameAndInvalidPassword($username, $password) {
@@ -139,6 +144,7 @@ class LoginContext extends RawMinkContext implements Context {
 	 * @param string $username
 	 * @param string $password
 	 * @param string $page text name of a page that I expect to be taken to
+	 *
 	 * @return void
 	 */
 	public function iLoginWithUsernameAndPasswordAfterRedirectFromThePage(
@@ -168,6 +174,7 @@ class LoginContext extends RawMinkContext implements Context {
 	 * @param string $shouldOrNot
 	 * @param string $username
 	 * @param string $password
+	 *
 	 * @return void
 	 */
 	public function itShouldBePossibleToLogin($shouldOrNot, $username, $password) {
@@ -201,6 +208,7 @@ class LoginContext extends RawMinkContext implements Context {
 	 * It will set the properties for this object.
 	 *
 	 * @param BeforeScenarioScope $scope
+	 *
 	 * @return void
 	 */
 	public function before(BeforeScenarioScope $scope) {

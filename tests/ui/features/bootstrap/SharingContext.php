@@ -73,6 +73,7 @@ class SharingContext extends RawMinkContext implements Context {
 	 * 
 	 * @param string $name
 	 * @param string $url
+	 * 
 	 * @return void
 	 */
 	private function addToListOfCreatedPublicLinks($name, $url) {
@@ -87,6 +88,7 @@ class SharingContext extends RawMinkContext implements Context {
 	 * @param string $user
 	 * @param int $maxRetries
 	 * @param boolean $quiet
+	 * 
 	 * @return void
 	 */
 	public function theFileFolderIsSharedWithTheUser(
@@ -119,6 +121,7 @@ class SharingContext extends RawMinkContext implements Context {
 	 *
 	 * @param string $folder
 	 * @param string $group
+	 * 
 	 * @return void
 	 */
 	public function theFileFolderIsSharedWithTheGroup($folder, $group) {
@@ -139,6 +142,7 @@ class SharingContext extends RawMinkContext implements Context {
 	 * @Given the share dialog for the file/folder :name is open
 	 *
 	 * @param string $name
+	 * 
 	 * @return void
 	 */
 	public function theShareDialogForTheFileFolderIsOpen($name) {
@@ -151,6 +155,7 @@ class SharingContext extends RawMinkContext implements Context {
 	 * @Given I create a new public link for the file/folder :name
 	 *
 	 * @param string $name
+	 * 
 	 * @return void
 	 */
 	public function iCreateANewPublicLinkFor($name) {
@@ -164,6 +169,7 @@ class SharingContext extends RawMinkContext implements Context {
 	 *                            password, expiration, email
 	 *                            the permissions values has to be written exactly
 	 *                            the way its written in the UI
+	 * 
 	 * @return void
 	 */
 	public function iCreateANewPublicLinkForWith(
@@ -232,6 +238,7 @@ class SharingContext extends RawMinkContext implements Context {
 	 * @Given I type :input in the share-with-field
 	 *
 	 * @param string $input
+	 * 
 	 * @return void
 	 */
 	public function iTypeInTheShareWithField($input) {
@@ -249,6 +256,7 @@ class SharingContext extends RawMinkContext implements Context {
 	 *                                    second column yes|no
 	 *                                    not mentioned permissions will not be
 	 *                                    touched
+	 * 
 	 * @return void
 	 */
 	public function theSharingPermissionsOfAreSetTo(
@@ -296,6 +304,7 @@ class SharingContext extends RawMinkContext implements Context {
 	 * @param string $server
 	 * @param string $username
 	 * @param string $password
+	 * 
 	 * @return void
 	 * @throws Exception
 	 */
@@ -313,6 +322,7 @@ class SharingContext extends RawMinkContext implements Context {
 	 * @Then all users and groups that contain the string :requiredString in their name should be listed in the autocomplete list
 	 *
 	 * @param string $requiredString
+	 * 
 	 * @return void
 	 */
 	public function allUsersAndGroupsThatContainTheStringInTheirNameShouldBeListedInTheAutocompleteList(
@@ -329,6 +339,7 @@ class SharingContext extends RawMinkContext implements Context {
 	 * @param string $requiredString
 	 * @param string $userOrGroup
 	 * @param string $notToBeListed
+	 * 
 	 * @return void
 	 */
 	public function allUsersAndGroupsThatContainTheStringInTheirNameShouldBeListedInTheAutocompleteListExcept(
@@ -380,6 +391,7 @@ class SharingContext extends RawMinkContext implements Context {
 	 * @Then a tooltip with the text :text should be shown near the share-with-field
 	 *
 	 * @param string $text
+	 * 
 	 * @return void
 	 */
 	public function aTooltipWithTheTextShouldBeShownNearTheShareWithField($text) {
@@ -407,6 +419,7 @@ class SharingContext extends RawMinkContext implements Context {
 	 * @param string $itemName
 	 * @param string $sharedWithGroup
 	 * @param string $sharerName
+	 * 
 	 * @return void
 	 */
 	public function theFileFolderShouldBeMarkedAsSharedBy(
@@ -454,6 +467,7 @@ class SharingContext extends RawMinkContext implements Context {
 	 *
 	 * @param string $fileName
 	 * @param string|null $shareWith
+	 * 
 	 * @return void
 	 * @throws Exception
 	 */
@@ -494,6 +508,7 @@ class SharingContext extends RawMinkContext implements Context {
 	 * It will set the properties for this object.
 	 *
 	 * @param BeforeScenarioScope $scope
+	 * 
 	 * @return void
 	 */
 	public function before(BeforeScenarioScope $scope) {

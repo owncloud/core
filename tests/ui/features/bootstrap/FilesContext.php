@@ -88,6 +88,7 @@ class FilesContext extends RawMinkContext implements Context {
 	 * @param TrashbinPage $trashbinPage
 	 * @param ConflictDialog $conflictDialog
 	 * @param FavoritesPage $favoritesPage
+	 *
 	 * @return void
 	 */
 	public function __construct(
@@ -185,6 +186,7 @@ class FilesContext extends RawMinkContext implements Context {
 	 * @param string $invalid contains "invalid"
 	 * 						  if the folder creation is expected to fail
 	 * @param string $name enclosed in single or double quotes
+	 *
 	 * @return void
 	 */
 	public function iCreateAFolder($invalid, $name) {
@@ -210,6 +212,7 @@ class FilesContext extends RawMinkContext implements Context {
 
 	/**
 	 * @param string $name
+	 *
 	 * @return void
 	 */
 	public function createAFolder($name) {
@@ -223,6 +226,7 @@ class FilesContext extends RawMinkContext implements Context {
 	 *
 	 * @param TableNode $namePartsTable table of parts of the file name
 	 *                                  table headings: must be: |name-parts |
+	 *
 	 * @return void
 	 */
 	public function createTheFollowingFolder(TableNode $namePartsTable) {
@@ -281,6 +285,7 @@ class FilesContext extends RawMinkContext implements Context {
 	 *
 	 * @param string $fromName
 	 * @param string $toName
+	 *
 	 * @return void
 	 */
 	public function iRenameTheFileFolderTo($fromName, $toName) {
@@ -294,6 +299,7 @@ class FilesContext extends RawMinkContext implements Context {
 	 * @param TableNode $namePartsTable table of parts of the from and to file names
 	 *                                  table headings: must be:
 	 *                                  |from-name-parts |to-name-parts |
+	 *
 	 * @return void
 	 */
 	public function iRenameTheFollowingFileFolderTo(TableNode $namePartsTable) {
@@ -317,6 +323,7 @@ class FilesContext extends RawMinkContext implements Context {
 	 *
 	 * @param string $fromName
 	 * @param TableNode $table
+	 *
 	 * @return void
 	 */
 	public function iRenameTheFileToOneOfThisNames($fromName, TableNode $table) {
@@ -335,6 +342,7 @@ class FilesContext extends RawMinkContext implements Context {
 	 * @When I delete/unshare the file/folder :name
 	 *
 	 * @param string $name
+	 *
 	 * @return void
 	 */
 	public function iDeleteTheFile($name) {
@@ -349,6 +357,7 @@ class FilesContext extends RawMinkContext implements Context {
 	 *
 	 * @param TableNode $namePartsTable table of parts of the file name
 	 *                                  table headings: must be: |name-parts |
+	 *
 	 * @return void
 	 */
 	public function iDeleteTheFollowingFile(TableNode $namePartsTable) {
@@ -365,6 +374,7 @@ class FilesContext extends RawMinkContext implements Context {
 	 * @Given the following files/folders are deleted
 	 *
 	 * @param TableNode $filesTable table headings: must be: |name|
+	 *
 	 * @return void
 	 */
 	public function theFollowingFilesFoldersAreDeleted(TableNode $filesTable) {
@@ -411,6 +421,7 @@ class FilesContext extends RawMinkContext implements Context {
 	 *
 	 * @param TableNode $table table of file names
 	 *                         table headings: must be: |name|
+	 *
 	 * @return void
 	 */
 	public function iDeleteTheElements(TableNode $table) {
@@ -425,6 +436,7 @@ class FilesContext extends RawMinkContext implements Context {
 	 *
 	 * @param string|array $name
 	 * @param string|array $destination
+	 *
 	 * @return void
 	 */
 	public function iMoveTheFileFolderTo($name, $destination) {
@@ -437,6 +449,7 @@ class FilesContext extends RawMinkContext implements Context {
 	 * @param TableNode $namePartsTable table of parts of the from and to file names
 	 *                                  table headings: must be:
 	 *                                  |item-to-move-name-parts |destination-name-parts |
+	 *
 	 * @return void
 	 */
 	public function iMoveTheFollowingFileFolderTo(TableNode $namePartsTable) {
@@ -456,6 +469,7 @@ class FilesContext extends RawMinkContext implements Context {
 	 * @param string $folderName
 	 * @param TableNode $files table of file names
 	 *                         table headings: must be: |name|
+	 *
 	 * @return void
 	 */
 	public function iBatchMoveTheseFilesIntoTheFolder(
@@ -471,6 +485,7 @@ class FilesContext extends RawMinkContext implements Context {
 	 * @When I upload overwriting the file :name
 	 *
 	 * @param string $name
+	 *
 	 * @return void
 	 */
 	public function iUploadOverwritingTheFile($name) {
@@ -483,6 +498,7 @@ class FilesContext extends RawMinkContext implements Context {
 	 * @When I upload overwriting the file :name and retry if the file is locked
 	 *
 	 * @param string $name
+	 *
 	 * @return void
 	 */
 	public function iUploadOverwritingTheFileRetry($name) {
@@ -529,6 +545,7 @@ class FilesContext extends RawMinkContext implements Context {
 	 * @When I upload the file :name keeping both new and existing files
 	 *
 	 * @param string $name
+	 *
 	 * @return void
 	 */
 	public function iUploadTheFileKeepingNewExisting($name) {
@@ -542,6 +559,7 @@ class FilesContext extends RawMinkContext implements Context {
 	 * @When I upload the file :name
 	 *
 	 * @param string $name
+	 *
 	 * @return void
 	 */
 	public function iUploadTheFile($name) {
@@ -552,6 +570,7 @@ class FilesContext extends RawMinkContext implements Context {
 	 * @When /^I choose to keep the (new|existing) files$/
 	 *
 	 * @param string $choice
+	 *
 	 * @return void
 	 */
 	public function choiceInUploadConflict($choice) {
@@ -588,6 +607,7 @@ class FilesContext extends RawMinkContext implements Context {
 	 * @When I click the :label button
 	 *
 	 * @param string $label
+	 *
 	 * @return void
 	 */
 	public function iClickTheButton($label) {
@@ -602,6 +622,7 @@ class FilesContext extends RawMinkContext implements Context {
 	 * @Then /^the (?:deleted|moved) elements should (not|)\s?be listed$/
 	 *
 	 * @param string $shouldOrNot
+	 *
 	 * @return void
 	 */
 	public function theDeletedMovedElementsShouldBeListed($shouldOrNot) {
@@ -621,6 +642,7 @@ class FilesContext extends RawMinkContext implements Context {
 	 * @Then /^the (?:deleted|moved) elements should (not|)\s?be listed after a page reload$/
 	 *
 	 * @param string $shouldOrNot
+	 *
 	 * @return void
 	 */
 	public function theDeletedMovedElementsShouldBeListedAfterPageReload(
@@ -648,6 +670,7 @@ class FilesContext extends RawMinkContext implements Context {
 	 *
 	 * @param TableNode $files table of file names
 	 *                         table headings: must be: |name|
+	 *
 	 * @return void
 	 */
 	public function iBatchDeleteTheseFiles(TableNode $files) {
@@ -670,6 +693,7 @@ class FilesContext extends RawMinkContext implements Context {
 	 *
 	 * @param TableNode $files table of file names
 	 *                         table headings: must be: |name|
+	 *
 	 * @return void
 	 */
 	public function iMarkTheseFilesForBatchAction(TableNode $files) {
@@ -687,6 +711,7 @@ class FilesContext extends RawMinkContext implements Context {
 	 * @param string $typeOfFilesPage
 	 * @param string $fileOrFolder 
 	 * @param string $name enclosed in single or double quotes
+	 *
 	 * @return void
 	 */
 	public function iOpenTheFolderNamed($typeOfFilesPage, $fileOrFolder, $name) {
@@ -699,6 +724,7 @@ class FilesContext extends RawMinkContext implements Context {
 	 * @param string $typeOfFilesPage
 	 * @param string $fileOrFolder 
 	 * @param string|array $name
+	 *
 	 * @return void
 	 */
 	public function iOpenTheFolder($typeOfFilesPage, $fileOrFolder, $name) {
@@ -726,6 +752,7 @@ class FilesContext extends RawMinkContext implements Context {
 	 * @param string $shouldOrNot
 	 * @param string $typeOfFilesPage
 	 * @param string $folder
+	 *
 	 * @return void
 	 */
 	public function theFileFolderShouldBeListed(
@@ -750,6 +777,7 @@ class FilesContext extends RawMinkContext implements Context {
 	 * @param string $shouldOrNot
 	 * @param string $typeOfFilesPage
 	 * @param string $folder
+	 *
 	 * @return void
 	 */
 	public function checkIfFileFolderIsListed(
@@ -817,6 +845,7 @@ class FilesContext extends RawMinkContext implements Context {
 	 *
 	 * @param string $shouldOrNot
 	 * @param string $folderName
+	 *
 	 * @return void
 	 */
 	public function theMovedElementsShouldBeListedInTheFolder(
@@ -833,6 +862,7 @@ class FilesContext extends RawMinkContext implements Context {
 	 * @param string $shouldOrNot
 	 * @param TableNode $namePartsTable table of parts of the file name
 	 *                                  table headings: must be: | item-name-parts | folder-name-parts |
+	 *
 	 * @return void
 	 */
 	public function theFollowingFileFolderShouldBeListedInTheFollowingFolder(
@@ -861,6 +891,7 @@ class FilesContext extends RawMinkContext implements Context {
 	 * @param string $folder
 	 * @param TableNode $namePartsTable table of parts of the file name
 	 *                                  table headings: must be: |name-parts |
+	 *
 	 * @return void
 	 */
 	public function theFollowingFileFolderShouldBeListed(
@@ -895,6 +926,7 @@ class FilesContext extends RawMinkContext implements Context {
 	 *
 	 * @param string $name
 	 * @param string $toolTipText
+	 *
 	 * @return void
 	 */
 	public function nearTheFileATooltipWithTheTextShouldBeDisplayed(
@@ -911,6 +943,7 @@ class FilesContext extends RawMinkContext implements Context {
 	 * @When I restore the file/folder :fname
 	 *
 	 * @param string $fname
+	 *
 	 * @return void
 	 */
 	public function restoreFileAndFolder($fname) {
@@ -922,6 +955,7 @@ class FilesContext extends RawMinkContext implements Context {
 	 * @Then near the folder input field a tooltip with the text :tooltiptext should be displayed
 	 *
 	 * @param string $tooltiptext
+	 *
 	 * @return void
 	 */
 	public function folderInputFieldTooltipTextShouldBe($tooltiptext) {
@@ -933,6 +967,7 @@ class FilesContext extends RawMinkContext implements Context {
 	 * @Then it should not be possible to delete the file/folder :name
 	 *
 	 * @param string $name
+	 *
 	 * @return void
 	 */
 	public function itShouldNotBePossibleToDelete($name) {
@@ -990,6 +1025,7 @@ class FilesContext extends RawMinkContext implements Context {
 	 * @param string $remoteFile enclosed in single or double quotes
 	 * @param string $shouldOrNot
 	 * @param string $originalFile enclosed in single or double quotes
+	 *
 	 * @return void
 	 */
 	public function theContentOfShouldBeTheSameAsTheOriginal(
@@ -1009,6 +1045,7 @@ class FilesContext extends RawMinkContext implements Context {
 	 * @param string $remoteFile enclosed in single or double quotes
 	 * @param string $shouldOrNot
 	 * @param string $localFile enclosed in single or double quotes
+	 *
 	 * @return void
 	 */
 	public function theContentOfShouldBeTheSameAsTheLocal(
@@ -1026,6 +1063,7 @@ class FilesContext extends RawMinkContext implements Context {
 	 * @Then /^the content of ((?:'[^']*')|(?:"[^"]*")) should not have changed$/
 	 *
 	 * @param string $fileName
+	 *
 	 * @return void
 	 */
 	public function theContentOfShouldNotHaveChanged($fileName) {
@@ -1047,6 +1085,7 @@ class FilesContext extends RawMinkContext implements Context {
 	 * @Given the file/folder :fileOrFolderName is marked as favorite
 	 *
 	 * @param string $fileOrFolderName
+	 *
 	 * @return void
 	 */
 	public function iMarkTheFileAsFavorite($fileOrFolderName) {
@@ -1059,6 +1098,7 @@ class FilesContext extends RawMinkContext implements Context {
 	 * @Then the file/folder :fileOrFolderName should be marked as favorite
 	 *
 	 * @param string $fileOrFolderName
+	 *
 	 * @return void
 	 */
 	public function theFileShouldBeMarkedAsFavorite($fileOrFolderName) {
@@ -1075,6 +1115,7 @@ class FilesContext extends RawMinkContext implements Context {
 	 * @When I unmark the file/folder :fileOrFolderName
 	 *
 	 * @param string $fileOrFolderName
+	 *
 	 * @return void
 	 */
 	public function iUnmarkTheFolder($fileOrFolderName) {
@@ -1087,6 +1128,7 @@ class FilesContext extends RawMinkContext implements Context {
 	 * @Then the file/folder :fileOrFolderName should not be marked as favorite
 	 *
 	 * @param string $fileOrFolderName
+	 *
 	 * @return void
 	 */
 	public function theFolderShouldNotBeMarkedAsFavorite($fileOrFolderName) {
@@ -1108,6 +1150,7 @@ class FilesContext extends RawMinkContext implements Context {
 	 * @param string $localFile
 	 * @param bool $shouldBeSame (default true) if true then check that the file contents are the same
 	 *                           otherwise check that the file contents are different
+	 *
 	 * @return void
 	 */
 	private function assertContentOfRemoteAndLocalFileIsSame(
@@ -1137,6 +1180,7 @@ class FilesContext extends RawMinkContext implements Context {
 	 * It will set the properties for this object.
 	 *
 	 * @param BeforeScenarioScope $scope
+	 *
 	 * @return void
 	 */
 	public function before(BeforeScenarioScope $scope) {

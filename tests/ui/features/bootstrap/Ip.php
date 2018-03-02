@@ -52,6 +52,7 @@ trait Ip {
 	 *
 	 * @param string $networkScope (loopback|routable)
 	 * @param string $ipAddressFamily (ipv4|ipv6)
+	 *
 	 * @return void
 	 */
 	public function theClientAccessesTheServerFromAddress(
@@ -66,6 +67,7 @@ trait Ip {
 	 * @When the client accesses the server from IP address :sourceIpAddress
 	 *
 	 * @param string $sourceIpAddress an IPv4 or IPv6 address
+	 *
 	 * @return void
 	 */
 	public function theClientAccessesTheServerFromIpAddress($sourceIpAddress) {
@@ -82,6 +84,7 @@ trait Ip {
 
 	/**
 	 * @BeforeScenario
+	 *
 	 * @return void
 	 */
 	public function setUpScenarioGetIpUrls() {
