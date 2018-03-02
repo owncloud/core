@@ -21,6 +21,9 @@
 
 require __DIR__ . '/../../../../lib/composer/autoload.php';
 
+/**
+ * Federated cloud functions
+ */
 trait Federation {
 
 	/**
@@ -32,6 +35,7 @@ trait Federation {
 	 * @param string $sharerPath
 	 * @param string $shareeUser
 	 * @param string $shareeServer "LOCAL" or "REMOTE"
+	 *
 	 * @return void
 	 */
 	public function federateSharing(
@@ -55,6 +59,7 @@ trait Federation {
 	 *
 	 * @param string $user
 	 * @param string $server
+	 *
 	 * @return void
 	 */
 	public function acceptLastPendingShare($user, $server) {

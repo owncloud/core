@@ -1,4 +1,23 @@
 <?php
+/**
+ * @author Sergio Bertolin <sbertolin@owncloud.com>
+ *
+ * @copyright Copyright (c) 2018, ownCloud GmbH
+ * @license AGPL-3.0
+ *
+ * This code is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License, version 3,
+ * as published by the Free Software Foundation.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License, version 3,
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>
+ *
+ */
 
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\BadResponseException;
@@ -6,18 +25,29 @@ use GuzzleHttp\Message\ResponseInterface;
 
 require __DIR__ . '/../../../../lib/composer/autoload.php';
 
+/**
+ * Functions for provisioning of users and groups
+ */
 trait Provisioning {
 
-	/** @var array */
+	/**
+	 * @var array 
+	 */
 	private $createdUsers = [];
 
-	/** @var array */
+	/**
+	 * @var array 
+	 */
 	private $createdRemoteUsers = [];
 
-	/** @var array */
+	/**
+	 * @var array 
+	 */
 	private $createdRemoteGroups = [];
 
-	/** @var array */
+	/**
+	 * @var array 
+	 */
 	private $createdGroups = [];
 
 	/**
@@ -25,9 +55,11 @@ trait Provisioning {
 	 * @Given /^user "([^"]*)" has been created$/
 	 *
 	 * @param string $user
+	 *
+	 * @return void
 	 */
 	public function adminCreatesUserUsingTheAPI($user) {
-		if ( !$this->userExists($user) ) {
+		if (!$this->userExists($user) ) {
 			$previous_user = $this->currentUser;
 			$this->currentUser = $this->getAdminUserName();
 			$this->createTheUserUsingTheAPI($user);
@@ -40,6 +72,8 @@ trait Provisioning {
 	 * @Then /^user "([^"]*)" should exist$/
 	 *
 	 * @param string $user
+	 *
+	 * @return void
 	 */
 	public function userShouldExist($user) {
 		PHPUnit_Framework_Assert::assertTrue($this->userExists($user));
@@ -50,6 +84,8 @@ trait Provisioning {
 	 * @Then /^user "([^"]*)" should not exist$/
 	 *
 	 * @param string $user
+	 *
+	 * @return void
 	 */
 	public function userShouldNotExist($user) {
 		PHPUnit_Framework_Assert::assertFalse($this->userExists($user));
@@ -59,6 +95,8 @@ trait Provisioning {
 	 * @Then /^group "([^"]*)" should exist$/
 	 *
 	 * @param string $group
+	 *
+	 * @return void
 	 */
 	public function groupShouldExist($group) {
 		PHPUnit_Framework_Assert::assertTrue($this->groupExists($group));
@@ -69,6 +107,8 @@ trait Provisioning {
 	 * @Then /^group "([^"]*)" should not exist$/
 	 *
 	 * @param string $group
+	 *
+	 * @return void
 	 */
 	public function groupShouldNotExist($group) {
 		PHPUnit_Framework_Assert::assertFalse($this->groupExists($group));
@@ -79,6 +119,8 @@ trait Provisioning {
 	 * @Given /^user "([^"]*)" has been deleted$/
 	 *
 	 * @param string $user
+	 *
+	 * @return void
 	 */
 	public function adminDeletesUserUsingTheAPI($user) {
 		if ($this->userExists($user)) {
@@ -92,6 +134,8 @@ trait Provisioning {
 
 	/**
 	 * @param string $user
+	 *
+	 * @return void
 	 */
 	public function rememberTheUser($user) {
 		if ($this->currentServer === 'LOCAL') {
@@ -103,6 +147,8 @@ trait Provisioning {
 
 	/**
 	 * @param string $user
+	 *
+	 * @return void
 	 */
 	public function createTheUserUsingTheAPI($user) {
 		$fullUrl = $this->baseUrl . "v{$this->apiVersion}.php/cloud/users";
@@ -118,19 +164,23 @@ trait Provisioning {
 							'password' => $password
 							];
 
-		$this->response = $client->send($client->createRequest("POST", $fullUrl, $options));
+		$this->response = $client->send(
+			$client->createRequest("POST", $fullUrl, $options)
+		);
 		$this->rememberTheUser($user);
 
 		//Quick hack to login once with the current user
 		$options2 = [
 			'auth' => [$user, $password],
 		];
-		$url = $fullUrl.'/'.$user;
+		$url = $fullUrl . '/' . $user;
 		$client->send($client->createRequest('GET', $url, $options2));
 	}
 
 	/**
 	 * @param string $user
+	 *
+	 * @return void
 	 */
 	public function createUser($user) {
 		$previous_user = $this->currentUser;
@@ -142,6 +192,8 @@ trait Provisioning {
 
 	/**
 	 * @param string $user
+	 *
+	 * @return void
 	 */
 	public function deleteUser($user) {
 		$previous_user = $this->currentUser;
@@ -153,6 +205,8 @@ trait Provisioning {
 
 	/**
 	 * @param string $group
+	 *
+	 * @return void
 	 */
 	public function createGroup($group) {
 		$previous_user = $this->currentUser;
@@ -164,6 +218,8 @@ trait Provisioning {
 
 	/**
 	 * @param string $group
+	 *
+	 * @return void
 	 */
 	public function deleteGroup($group) {
 		$previous_user = $this->currentUser;
@@ -175,6 +231,7 @@ trait Provisioning {
 
 	/**
 	 * @param string $user
+	 *
 	 * @return bool
 	 */
 	public function userExists($user) {
@@ -184,10 +241,10 @@ trait Provisioning {
 		$options['auth'] = $this->getAuthOptionForAdmin();
 		try {
 			$this->response = $client->get($fullUrl, $options);
-			return True;
+			return true;
 		} catch (BadResponseException $e) {
 			$this->response = $e->getResponse();
-			return False;
+			return false;
 		}
 	}
 
@@ -196,6 +253,8 @@ trait Provisioning {
 	 *
 	 * @param string $user
 	 * @param string $group
+	 *
+	 * @return void
 	 */
 	public function userShouldBelongToGroup($user, $group) {
 		$fullUrl = $this->baseUrl . "v2.php/cloud/users/$user/groups";
@@ -207,7 +266,9 @@ trait Provisioning {
 		$respondedArray = $this->getArrayOfGroupsResponded($this->response);
 		sort($respondedArray);
 		PHPUnit_Framework_Assert::assertContains($group, $respondedArray);
-		PHPUnit_Framework_Assert::assertEquals(200, $this->response->getStatusCode());
+		PHPUnit_Framework_Assert::assertEquals(
+			200, $this->response->getStatusCode()
+		);
 	}
 
 	/**
@@ -215,6 +276,8 @@ trait Provisioning {
 	 *
 	 * @param string $user
 	 * @param string $group
+	 *
+	 * @return void
 	 */
 	public function userShouldNotBelongToGroup($user, $group) {
 		$fullUrl = $this->baseUrl . "v2.php/cloud/users/$user/groups";
@@ -226,12 +289,15 @@ trait Provisioning {
 		$respondedArray = $this->getArrayOfGroupsResponded($this->response);
 		sort($respondedArray);
 		PHPUnit_Framework_Assert::assertNotContains($group, $respondedArray);
-		PHPUnit_Framework_Assert::assertEquals(200, $this->response->getStatusCode());
+		PHPUnit_Framework_Assert::assertEquals(
+			200, $this->response->getStatusCode()
+		);
 	}
 
 	/**
 	 * @param string $user
 	 * @param string $group
+	 *
 	 * @return bool
 	 */
 	public function userBelongsToGroup($user, $group) {
@@ -246,9 +312,9 @@ trait Provisioning {
 		$respondedArray = $this->getArrayOfGroupsResponded($this->response);
 
 		if (in_array($group, $respondedArray)) {
-			return True;
+			return true;
 		} else {
-			return False;
+			return false;
 		}
 	}
 
@@ -258,6 +324,8 @@ trait Provisioning {
 	 *
 	 * @param string $user
 	 * @param string $group
+	 *
+	 * @return void
 	 */
 	public function adminAddsUserToGroupUsingTheAPI($user, $group) {
 		$previous_user = $this->currentUser;
@@ -273,6 +341,8 @@ trait Provisioning {
 
 	/**
 	 * @param string $group
+	 *
+	 * @return void
 	 */
 	public function rememberTheGroup($group) {
 		if ($this->currentServer === 'LOCAL') {
@@ -287,6 +357,8 @@ trait Provisioning {
 	 * @Given /^group "([^"]*)" has been created$/
 	 *
 	 * @param string $group
+	 *
+	 * @return void
 	 */
 	public function adminCreatesGroupUsingTheAPI($group) {
 		if (!$this->groupExists($group)) {
@@ -300,6 +372,8 @@ trait Provisioning {
 
 	/**
 	 * @param string $group
+	 *
+	 * @return void
 	 */
 	public function createTheGroup($group) {
 		$fullUrl = $this->baseUrl . "v{$this->apiVersion}.php/cloud/groups";
@@ -313,7 +387,9 @@ trait Provisioning {
 			'groupid' => $group,
 		];
 
-		$this->response = $client->send($client->createRequest("POST", $fullUrl, $options));
+		$this->response = $client->send(
+			$client->createRequest("POST", $fullUrl, $options)
+		);
 		$this->rememberTheGroup($group);
 	}
 
@@ -322,6 +398,8 @@ trait Provisioning {
 	 * @Given /^user "([^"]*)" has been disabled$/
 	 *
 	 * @param string $user
+	 *
+	 * @return void
 	 */
 	public function adminDisablesUserUsingTheAPI($user) {
 		$fullUrl = $this->baseUrl . "v{$this->apiVersion}.php/cloud/users/$user/disable";
@@ -329,11 +407,15 @@ trait Provisioning {
 		$options = [];
 		$options['auth'] = $this->getAuthOptionForAdmin();
 
-		$this->response = $client->send($client->createRequest("PUT", $fullUrl, $options));
+		$this->response = $client->send(
+			$client->createRequest("PUT", $fullUrl, $options)
+		);
 	}
 
 	/**
 	 * @param string $user
+	 *
+	 * @return void
 	 */
 	public function deleteTheUserUsingTheAPI($user) {
 		$fullUrl = $this->baseUrl . "v{$this->apiVersion}.php/cloud/users/$user";
@@ -343,7 +425,9 @@ trait Provisioning {
 			$options['auth'] = $this->getAuthOptionForAdmin();
 		}
 
-		$this->response = $client->send($client->createRequest("DELETE", $fullUrl, $options));
+		$this->response = $client->send(
+			$client->createRequest("DELETE", $fullUrl, $options)
+		);
 	}
 
 	/**
@@ -351,6 +435,8 @@ trait Provisioning {
 	 * @Given /^group "([^"]*)" has been deleted$/
 	 *
 	 * @param string $group
+	 *
+	 * @return void
 	 */
 	public function adminDeletesGroupUsingTheAPI($group) {
 		if ($this->groupExists($group)) {
@@ -364,6 +450,8 @@ trait Provisioning {
 
 	/**
 	 * @param string $group
+	 *
+	 * @return void
 	 */
 	public function deleteTheGroupUsingTheAPI($group) {
 		$fullUrl = $this->baseUrl . "v{$this->apiVersion}.php/cloud/groups/$group";
@@ -373,12 +461,16 @@ trait Provisioning {
 			$options['auth'] = $this->getAuthOptionForAdmin();
 		}
 
-		$this->response = $client->send($client->createRequest("DELETE", $fullUrl, $options));
+		$this->response = $client->send(
+			$client->createRequest("DELETE", $fullUrl, $options)
+		);
 	}
 
 	/**
 	 * @param string $user
 	 * @param string $group
+	 *
+	 * @return void
 	 */
 	public function addUserToGroupUsingTheAPI($user, $group) {
 		$fullUrl = $this->baseUrl . "v{$this->apiVersion}.php/cloud/users/$user/groups";
@@ -392,11 +484,14 @@ trait Provisioning {
 							'groupid' => $group,
 							];
 
-		$this->response = $client->send($client->createRequest("POST", $fullUrl, $options));
+		$this->response = $client->send(
+			$client->createRequest("POST", $fullUrl, $options)
+		);
 	}
 
 	/**
 	 * @param string $group
+	 *
 	 * @return bool
 	 */
 	public function groupExists($group) {
@@ -406,10 +501,10 @@ trait Provisioning {
 		$options['auth'] = $this->getAuthOptionForAdmin();
 		try {
 			$this->response = $client->get($fullUrl, $options);
-			return True;
+			return true;
 		} catch (BadResponseException $e) {
 			$this->response = $e->getResponse();
-			return False;
+			return false;
 		}
 	}
 
@@ -418,6 +513,8 @@ trait Provisioning {
 	 *
 	 * @param string $user
 	 * @param string $group
+	 *
+	 * @return void
 	 */
 	public function userShouldBeSubadminOfGroup($user, $group) {
 		$fullUrl = $this->baseUrl . "v2.php/cloud/groups/$group/subadmins";
@@ -431,7 +528,9 @@ trait Provisioning {
 		$respondedArray = $this->getArrayOfSubadminsResponded($this->response);
 		sort($respondedArray);
 		PHPUnit_Framework_Assert::assertContains($user, $respondedArray);
-		PHPUnit_Framework_Assert::assertEquals(200, $this->response->getStatusCode());
+		PHPUnit_Framework_Assert::assertEquals(
+			200, $this->response->getStatusCode()
+		);
 	}
 
 	/**
@@ -440,6 +539,8 @@ trait Provisioning {
 	 *
 	 * @param string $user
 	 * @param string $group
+	 *
+	 * @return void
 	 */
 	public function adminMakesUserSubadminOfGroupUsingTheAPI($user, $group) {
 		$fullUrl = $this->baseUrl . "v{$this->apiVersion}.php/cloud/users/$user/subadmins";
@@ -449,8 +550,12 @@ trait Provisioning {
 		$options['body'] = [
 							'groupid' => $group
 							];
-		$this->response = $client->send($client->createRequest("POST", $fullUrl, $options));
-		PHPUnit_Framework_Assert::assertEquals(200, $this->response->getStatusCode());
+		$this->response = $client->send(
+			$client->createRequest("POST", $fullUrl, $options)
+		);
+		PHPUnit_Framework_Assert::assertEquals(
+			200, $this->response->getStatusCode()
+		);
 	}
 
 	/**
@@ -459,6 +564,8 @@ trait Provisioning {
 	 *
 	 * @param string $user
 	 * @param string $group
+	 *
+	 * @return void
 	 */
 	public function adminMakesUserNotSubadminOfGroupUsingTheAPI($user, $group) {
 		$fullUrl = $this->baseUrl . "v2.php/cloud/groups/$group/subadmins";
@@ -472,20 +579,26 @@ trait Provisioning {
 		$respondedArray = $this->getArrayOfSubadminsResponded($this->response);
 		sort($respondedArray);
 		PHPUnit_Framework_Assert::assertNotContains($user, $respondedArray);
-		PHPUnit_Framework_Assert::assertEquals(200, $this->response->getStatusCode());
+		PHPUnit_Framework_Assert::assertEquals(
+			200, $this->response->getStatusCode()
+		);
 	}
 
 	/**
 	 * @Then /^the users returned by the API should be$/
 	 *
 	 * @param \Behat\Gherkin\Node\TableNode|null $usersList
+	 *
+	 * @return void
 	 */
 	public function theUsersShouldBe($usersList) {
 		if ($usersList instanceof \Behat\Gherkin\Node\TableNode) {
 			$users = $usersList->getRows();
 			$usersSimplified = $this->simplifyArray($users);
 			$respondedArray = $this->getArrayOfUsersResponded($this->response);
-			PHPUnit_Framework_Assert::assertEquals($usersSimplified, $respondedArray, "", 0.0, 10, true);
+			PHPUnit_Framework_Assert::assertEquals(
+				$usersSimplified, $respondedArray, "", 0.0, 10, true
+			);
 		}
 
 	}
@@ -494,31 +607,41 @@ trait Provisioning {
 	 * @Then /^the groups returned by the API should be$/
 	 *
 	 * @param \Behat\Gherkin\Node\TableNode|null $groupsList
+	 *
+	 * @return void
 	 */
 	public function theGroupsShouldBe($groupsList) {
 		if ($groupsList instanceof \Behat\Gherkin\Node\TableNode) {
 			$groups = $groupsList->getRows();
 			$groupsSimplified = $this->simplifyArray($groups);
 			$respondedArray = $this->getArrayOfGroupsResponded($this->response);
-			PHPUnit_Framework_Assert::assertEquals($groupsSimplified, $respondedArray, "", 0.0, 10, true);
+			PHPUnit_Framework_Assert::assertEquals(
+				$groupsSimplified, $respondedArray, "", 0.0, 10, true
+			);
 		}
 
 	}
 
 	/**
 	 * @param \Behat\Gherkin\Node\TableNode|null $groupsOrUsersList
+	 *
+	 * @return void
 	 */
 	public function checkSubadminGroupsOrUsersTable($groupsOrUsersList) {
 		$tableRows = $groupsOrUsersList->getRows();
 		$simplifiedTableRows = $this->simplifyArray($tableRows);
 		$respondedArray = $this->getArrayOfSubadminsResponded($this->response);
-		PHPUnit_Framework_Assert::assertEquals($simplifiedTableRows, $respondedArray, "", 0.0, 10, true);
+		PHPUnit_Framework_Assert::assertEquals(
+			$simplifiedTableRows, $respondedArray, "", 0.0, 10, true
+		);
 	}
 
 	/**
 	 * @Then /^the subadmin groups returned by the API should be$/
 	 *
 	 * @param \Behat\Gherkin\Node\TableNode|null $groupsList
+	 *
+	 * @return void
 	 */
 	public function theSubadminGroupsShouldBe($groupsList) {
 		$this->checkSubadminGroupsOrUsersTable($groupsList);
@@ -528,6 +651,8 @@ trait Provisioning {
 	 * @Then /^the subadmin users returned by the API should be$/
 	 *
 	 * @param \Behat\Gherkin\Node\TableNode|null $usersList
+	 *
+	 * @return void
 	 */
 	public function theSubadminUsersShouldBe($usersList) {
 		$this->checkSubadminGroupsOrUsersTable($usersList);
@@ -537,6 +662,8 @@ trait Provisioning {
 	 * @Then /^the apps returned by the API should include$/
 	 *
 	 * @param \Behat\Gherkin\Node\TableNode|null $appList
+	 *
+	 * @return void
 	 */
 	public function theAppsShouldInclude($appList) {
 		$apps = $appList->getRows();
@@ -551,6 +678,7 @@ trait Provisioning {
 	 * Parses the xml answer to get the array of users returned.
 	 *
 	 * @param ResponseInterface $resp
+	 *
 	 * @return array
 	 */
 	public function getArrayOfUsersResponded($resp) {
@@ -563,6 +691,7 @@ trait Provisioning {
 	 * Parses the xml answer to get the array of groups returned.
 	 *
 	 * @param ResponseInterface $resp
+	 *
 	 * @return array
 	 */
 	public function getArrayOfGroupsResponded($resp) {
@@ -575,6 +704,7 @@ trait Provisioning {
 	 * Parses the xml answer to get the array of apps returned.
 	 *
 	 * @param ResponseInterface $resp
+	 *
 	 * @return array
 	 */
 	public function getArrayOfAppsResponded($resp) {
@@ -587,6 +717,7 @@ trait Provisioning {
 	 * Parses the xml answer to get the array of subadmins returned.
 	 *
 	 * @param ResponseInterface $resp
+	 *
 	 * @return array
 	 */
 	public function getArrayOfSubadminsResponded($resp) {
@@ -599,6 +730,8 @@ trait Provisioning {
 	 * @Then /^app "([^"]*)" should be disabled$/
 	 *
 	 * @param string $app
+	 *
+	 * @return void
 	 */
 	public function appShouldBeDisabled($app) {
 		$fullUrl = $this->baseUrl . "v2.php/cloud/apps?filter=disabled";
@@ -611,13 +744,17 @@ trait Provisioning {
 		$this->response = $client->get($fullUrl, $options);
 		$respondedArray = $this->getArrayOfAppsResponded($this->response);
 		PHPUnit_Framework_Assert::assertContains($app, $respondedArray);
-		PHPUnit_Framework_Assert::assertEquals(200, $this->response->getStatusCode());
+		PHPUnit_Framework_Assert::assertEquals(
+			200, $this->response->getStatusCode()
+		);
 	}
 
 	/**
 	 * @Then /^app "([^"]*)" should be enabled$/
 	 *
 	 * @param string $app
+	 *
+	 * @return void
 	 */
 	public function appShouldBeEnabled($app) {
 		$fullUrl = $this->baseUrl . "v2.php/cloud/apps?filter=enabled";
@@ -630,13 +767,17 @@ trait Provisioning {
 		$this->response = $client->get($fullUrl, $options);
 		$respondedArray = $this->getArrayOfAppsResponded($this->response);
 		PHPUnit_Framework_Assert::assertContains($app, $respondedArray);
-		PHPUnit_Framework_Assert::assertEquals(200, $this->response->getStatusCode());
+		PHPUnit_Framework_Assert::assertEquals(
+			200, $this->response->getStatusCode()
+		);
 	}
 
 	/**
 	 * @Then /^user "([^"]*)" should be disabled$/
 	 *
 	 * @param string $user
+	 *
+	 * @return void
 	 */
 	public function userShouldBeDisabled($user) {
 		$fullUrl = $this->baseUrl . "v{$this->apiVersion}.php/cloud/users/$user";
@@ -645,13 +786,17 @@ trait Provisioning {
 		$options['auth'] = $this->getAuthOptionForAdmin();
 
 		$this->response = $client->get($fullUrl, $options);
-		PHPUnit_Framework_Assert::assertEquals("false", $this->response->xml()->data[0]->enabled);
+		PHPUnit_Framework_Assert::assertEquals(
+			"false", $this->response->xml()->data[0]->enabled
+		);
 	}
 
 	/**
 	 * @Then /^user "([^"]*)" should be enabled$/
 	 *
 	 * @param string $user
+	 *
+	 * @return void
 	 */
 	public function useShouldBeEnabled($user) {
 		$fullUrl = $this->baseUrl . "v{$this->apiVersion}.php/cloud/users/$user";
@@ -660,7 +805,9 @@ trait Provisioning {
 		$options['auth'] = $this->getAuthOptionForAdmin();
 
 		$this->response = $client->get($fullUrl, $options);
-		PHPUnit_Framework_Assert::assertEquals("true", $this->response->xml()->data[0]->enabled);
+		PHPUnit_Framework_Assert::assertEquals(
+			"true", $this->response->xml()->data[0]->enabled
+		);
 	}
 
 	/**
@@ -669,20 +816,25 @@ trait Provisioning {
 	 *
 	 * @param string $user
 	 * @param string $quota
+	 *
+	 * @return void
 	 */
-	public function adminSetsUserQuotaToUsingTheAPI($user, $quota)
-	{
-		$body = new \Behat\Gherkin\Node\TableNode([
+	public function adminSetsUserQuotaToUsingTheAPI($user, $quota) {
+		$body = new \Behat\Gherkin\Node\TableNode(
+			[
 			0 => ['key', 'quota'],
 			1 => ['value', $quota],
-		]);
+			]
+		);
 
 		$previous_user = $this->currentUser;
 		$this->currentUser = "admin";
 		// method used from BasicStructure trait
 		$this->sendingToWith("PUT", "/cloud/users/" . $user, $body);
 		$this->currentUser = $previous_user;
-		PHPUnit_Framework_Assert::assertEquals(200, $this->response->getStatusCode());
+		PHPUnit_Framework_Assert::assertEquals(
+			200, $this->response->getStatusCode()
+		);
 	}
 
 	/**
@@ -690,9 +842,10 @@ trait Provisioning {
 	 * @Given user :user has been given unlimited quota
 	 *
 	 * @param string $user
+	 *
+	 * @return void
 	 */
-	public function adminGivesUnlimitedQuotaToUserUsingTheAPI($user)
-	{
+	public function adminGivesUnlimitedQuotaToUserUsingTheAPI($user) {
 		$this->adminSetsUserQuotaToUsingTheAPI($user, 'none');
 	}
 
@@ -700,6 +853,8 @@ trait Provisioning {
 	 * Returns home path of the given user
 	 *
 	 * @param string $user
+	 *
+	 * @return void
 	 */
 	public function getUserHome($user) {
 		$fullUrl = $this->baseUrl . "v{$this->apiVersion}.php/cloud/users/$user";
@@ -714,13 +869,17 @@ trait Provisioning {
 	 * @Then /^the user attributes returned by the API should include$/
 	 *
 	 * @param \Behat\Gherkin\Node\TableNode|null $body
+	 *
+	 * @return void
 	 */
 	public function checkUserAttributes($body) {
 		$data = $this->response->xml()->data[0];
 		$fd = $body->getRowsHash();
 		foreach ($fd as $field => $value) {
 			if ($data->$field != $value) {
-				PHPUnit_Framework_Assert::fail("$field" . " has value " . "$data->$field");
+				PHPUnit_Framework_Assert::fail(
+					"$field" . " has value " . "$data->$field"
+				);
 			}
 		}
 	}
@@ -728,9 +887,10 @@ trait Provisioning {
 	/**
 	 * @BeforeScenario
 	 * @AfterScenario
+	 *
+	 * @return void
 	 */
-	public function cleanupUsers()
-	{
+	public function cleanupUsers() {
 		$previousServer = $this->currentServer;
 		$this->usingServer('LOCAL');
 		foreach ($this->createdUsers as $user) {
@@ -746,9 +906,10 @@ trait Provisioning {
 	/**
 	 * @BeforeScenario
 	 * @AfterScenario
+	 *
+	 * @return void
 	 */
-	public function cleanupGroups()
-	{
+	public function cleanupGroups() {
 		$previousServer = $this->currentServer;
 		$this->usingServer('LOCAL');
 		foreach ($this->createdGroups as $group) {

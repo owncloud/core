@@ -1,4 +1,23 @@
 <?php
+/**
+ * @author Sergio Bertolin <sbertolin@owncloud.com>
+ *
+ * @copyright Copyright (c) 2018, ownCloud GmbH
+ * @license AGPL-3.0
+ *
+ * This code is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License, version 3,
+ * as published by the Free Software Foundation.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License, version 3,
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>
+ *
+ */
 
 use Behat\Gherkin\Node\PyStringNode;
 use Behat\Testwork\Hook\Scope\BeforeSuiteScope;
@@ -9,6 +28,9 @@ use TestHelpers\OcsApiHelper;
 
 require __DIR__ . '/../../../../lib/composer/autoload.php';
 
+/**
+ * Basic functions needed by mostly everything
+ */
 trait BasicStructure {
 
 	use AppConfiguration;
@@ -23,7 +45,9 @@ trait BasicStructure {
 	use WebDav;
 	use CommandLine;
 
-	/** @var array */
+	/**
+	 * @var array 
+	 */
 	private $adminUser = [];
 
 	/**
@@ -31,28 +55,55 @@ trait BasicStructure {
 	 */
 	private $regularUserPassword = '';
 
-	/** @var string */
+	/**
+	 * @var string 
+	 */
 	private $currentUser = '';
 
-	/** @var string */
+	/**
+	 * @var string 
+	 */
 	private $currentServer = '';
 
-	/** @var string */
+	/**
+	 * @var string 
+	 */
 	private $baseUrl = '';
 
-	/** @var int */
+	/**
+	 * @var int 
+	 */
 	private $apiVersion = 1;
 
-	/** @var ResponseInterface */
+	/**
+	 * @var ResponseInterface 
+	 */
 	private $response = null;
 
-	/** @var \GuzzleHttp\Cookie\CookieJar */
+	/**
+	 * @var \GuzzleHttp\Cookie\CookieJar 
+	 */
 	private $cookieJar;
 
-	/** @var string */
+	/**
+	 * @var string 
+	 */
 	private $requestToken;
 
-	public function __construct($baseUrl, $admin, $regular_user_password, $mailhog_url, $oc_path) {
+	/**
+	 * BasicStructure constructor.
+	 *
+	 * @param  string $baseUrl
+	 * @param string $admin
+	 * @param string $regular_user_password
+	 * @param string $mailhog_url
+	 * @param string $oc_path
+	 *
+	 * @return void
+	 */
+	public function __construct(
+		$baseUrl, $admin, $regular_user_password, $mailhog_url, $oc_path
+	) {
 
 		// Initialize your context here
 		$this->baseUrl = $baseUrl;
@@ -81,6 +132,8 @@ trait BasicStructure {
 
 	/**
 	 * returns the base URL without the /ocs part
+	 *
+	 * @return string
 	 */
 	private function baseUrlWithoutOCSAppendix() {
 		return substr($this->baseUrl, 0, -4);
@@ -90,6 +143,8 @@ trait BasicStructure {
 	 * @Given /^using (?:api|API) version "([^"]*)"$/
 	 *
 	 * @param string $version
+	 *
+	 * @return void
 	 */
 	public function usingApiVersion($version) {
 		$this->apiVersion = $version;
@@ -99,6 +154,8 @@ trait BasicStructure {
 	 * @Given /^as user "([^"]*)"$/
 	 *
 	 * @param string $user
+	 *
+	 * @return void
 	 */
 	public function asUser($user) {
 		$this->currentUser = $user;
@@ -108,6 +165,7 @@ trait BasicStructure {
 	 * @Given /^using server "(LOCAL|REMOTE)"$/
 	 *
 	 * @param string $server
+	 *
 	 * @return string Previous used server
 	 */
 	public function usingServer($server) {
@@ -128,6 +186,8 @@ trait BasicStructure {
 	 *
 	 * @param string $verb
 	 * @param string $url
+	 *
+	 * @return void
 	 */
 	public function sendingTo($verb, $url) {
 		$this->sendingToWith($verb, $url, null);
@@ -140,6 +200,8 @@ trait BasicStructure {
 	 * @param string $user
 	 * @param string $verb
 	 * @param string $url
+	 *
+	 * @return void
 	 */
 	public function userSendingTo($user, $verb, $url) {
 		$this->userSendsHTTPMethodToAPIEndpointWithBody(
@@ -153,7 +215,9 @@ trait BasicStructure {
 	/**
 	 * Parses the xml answer to get ocs response which doesn't match with
 	 * http one in v1 of the api.
+	 *
 	 * @param ResponseInterface $response
+	 *
 	 * @return string
 	 */
 	public function getOCSResponseStatusCode($response) {
@@ -166,6 +230,7 @@ trait BasicStructure {
 	 * @param ResponseInterface $response
 	 * @param string $key1
 	 * @param string $key2
+	 *
 	 * @return string
 	 */
 	public function getXMLKey1Key2Value($response, $key1, $key2) {
@@ -179,6 +244,7 @@ trait BasicStructure {
 	 * @param string $key1
 	 * @param string $key2
 	 * @param string $key3
+	 *
 	 * @return string
 	 */
 	public function getXMLKey1Key2Key3Value($response, $key1, $key2, $key3) {
@@ -193,9 +259,12 @@ trait BasicStructure {
 	 * @param string $key2
 	 * @param string $key3
 	 * @param string $attribute
+	 *
 	 * @return string
 	 */
-	public function getXMLKey1Key2Key3AttributeValue($response, $key1, $key2, $key3, $attribute) {
+	public function getXMLKey1Key2Key3AttributeValue(
+		$response, $key1, $key2, $key3, $attribute
+	) {
 		return (string) $response->xml()->$key1->$key2->$key3->attributes()->$attribute;
 	}
 
@@ -203,10 +272,15 @@ trait BasicStructure {
 	 * This function is needed to use a vertical fashion in the gherkin tables.
 	 *
 	 * @param array $arrayOfArrays
+	 *
 	 * @return array
 	 */
 	public function simplifyArray($arrayOfArrays) {
-		$a = array_map(function($subArray) { return $subArray[0]; }, $arrayOfArrays);
+		$a = array_map(
+			function ($subArray) {
+				return $subArray[0]; 
+			}, $arrayOfArrays
+		);
 		return $a;
 	}
 
@@ -217,6 +291,8 @@ trait BasicStructure {
 	 * @param string $verb
 	 * @param string $url
 	 * @param \Behat\Gherkin\Node\TableNode $body
+	 *
+	 * @return void
 	 */
 	public function sendingToWith($verb, $url, $body) {
 		$this->userSendsHTTPMethodToAPIEndpointWithBody(
@@ -235,8 +311,12 @@ trait BasicStructure {
 	 * @param string $verb
 	 * @param string $url
 	 * @param \Behat\Gherkin\Node\TableNode $body
+	 *
+	 * @return void
 	 */
-	public function userSendsHTTPMethodToAPIEndpointWithBody($user, $verb, $url, $body) {
+	public function userSendsHTTPMethodToAPIEndpointWithBody(
+		$user, $verb, $url, $body
+	) {
 
 		/**
 		 * array of the data to be sent in the body.
@@ -270,6 +350,8 @@ trait BasicStructure {
 	 * @param string $user
 	 * @param string $verb
 	 * @param string $url
+	 *
+	 * @return void
 	 */
 	public function userSendsHTTPMethodToUrl($user, $verb, $url) {
 		$this->sendingToWithDirectUrl($user, $verb, $url, null);
@@ -280,6 +362,8 @@ trait BasicStructure {
 	 * @param string $verb
 	 * @param string $url
 	 * @param \Behat\Gherkin\Node\TableNode $body
+	 *
+	 * @return void
 	 */
 	public function sendingToWithDirectUrl($user, $verb, $url, $body) {
 		$fullUrl = substr($this->baseUrl, 0, -5) . $url;
@@ -310,30 +394,39 @@ trait BasicStructure {
 	/**
 	 * @param string $possibleUrl
 	 * @param string $finalPart
+	 *
 	 * @return bool
 	 */
 	public function isExpectedUrl($possibleUrl, $finalPart) {
 		$baseUrlChopped = $this->baseUrlWithoutOCSAppendix();
 		$endCharacter = strlen($baseUrlChopped) + strlen($finalPart);
-		return (substr($possibleUrl,0,$endCharacter) == "$baseUrlChopped" . "$finalPart");
+		return (substr($possibleUrl, 0, $endCharacter) == "$baseUrlChopped" . "$finalPart");
 	}
 
 	/**
 	 * @Then /^the OCS status code should be "([^"]*)"$/
 	 *
 	 * @param int $statusCode
+	 *
+	 * @return void
 	 */
 	public function theOCSStatusCodeShouldBe($statusCode) {
-		PHPUnit_Framework_Assert::assertEquals($statusCode, $this->getOCSResponseStatusCode($this->response));
+		PHPUnit_Framework_Assert::assertEquals(
+			$statusCode, $this->getOCSResponseStatusCode($this->response)
+		);
 	}
 
 	/**
 	 * @Then /^the HTTP status code should be "([^"]*)"$/
 	 *
 	 * @param int $statusCode
+	 *
+	 * @return void
 	 */
 	public function theHTTPStatusCodeShouldBe($statusCode) {
-		PHPUnit_Framework_Assert::assertEquals($statusCode, $this->response->getStatusCode());
+		PHPUnit_Framework_Assert::assertEquals(
+			$statusCode, $this->response->getStatusCode()
+		);
 	}
 
 	/**
@@ -342,6 +435,8 @@ trait BasicStructure {
 	 * @param string $key1
 	 * @param string $key2
 	 * @param string $idText
+	 *
+	 * @return void
 	 */
 	public function theXMLKey1Key2ValueShouldBe($key1, $key2, $idText) {
 		PHPUnit_Framework_Assert::assertEquals(
@@ -357,6 +452,8 @@ trait BasicStructure {
 	 * @param string $key2
 	 * @param string $key3
 	 * @param string $idText
+	 *
+	 * @return void
 	 */
 	public function theXMLKey1Key2Key3ValueShouldBe($key1, $key2, $key3, $idText) {
 		PHPUnit_Framework_Assert::assertEquals(
@@ -372,9 +469,15 @@ trait BasicStructure {
 	 * @param string $key2
 	 * @param string $key3
 	 * @param string $attribute
+	 *
+	 * @return void
 	 */
-	public function theXMLKey1Key2AttributeValueShouldBe($key1, $key2, $key3, $attribute) {
-		$value = $this->getXMLKey1Key2Key3AttributeValue($this->response, $key1, $key2, $key3, $attribute);
+	public function theXMLKey1Key2AttributeValueShouldBe(
+		$key1, $key2, $key3, $attribute
+	) {
+		$value = $this->getXMLKey1Key2Key3AttributeValue(
+			$this->response, $key1, $key2, $key3, $attribute
+		);
 		PHPUnit_Framework_Assert::assertTrue(
 			version_compare($value, '0.0.1') >= 0,
 			'attribute ' . $attribute . ' value ' . $value . ' is not a valid version string'
@@ -383,9 +486,18 @@ trait BasicStructure {
 
 	/**
 	 * @param ResponseInterface $response
+	 *
+	 * @return void
 	 */
 	private function extracRequestTokenFromResponse(ResponseInterface $response) {
-		$this->requestToken = substr(preg_replace('/(.*)data-requesttoken="(.*)">(.*)/sm', '\2', $response->getBody()->getContents()), 0, 89);
+		$this->requestToken = substr(
+			preg_replace(
+				'/(.*)data-requesttoken="(.*)">(.*)/sm', '\2',
+				$response->getBody()->getContents()
+			),
+			0,
+			89
+		);
 	}
 
 	/**
@@ -393,6 +505,8 @@ trait BasicStructure {
 	 * @Given /^user "([^"]*)" has logged in to a web-style session using the API$/
 	 *
 	 * @param string $user
+	 *
+	 * @return void
 	 */
 	public function userHasLoggedInToAWebStyleSessionUsingTheAPI($user) {
 		$loginUrl = substr($this->baseUrl, 0, -5) . '/login';
@@ -429,6 +543,8 @@ trait BasicStructure {
 	 *
 	 * @param string $method
 	 * @param string $url
+	 *
+	 * @return void
 	 */
 	public function sendingAToWithRequesttoken($method, $url) {
 		$baseUrl = substr($this->baseUrl, 0, -5);
@@ -455,6 +571,8 @@ trait BasicStructure {
 	 *
 	 * @param string $method
 	 * @param string $url
+	 *
+	 * @return void
 	 */
 	public function sendingAToWithoutRequesttoken($method, $url) {
 		$baseUrl = substr($this->baseUrl, 0, -5);
@@ -477,6 +595,8 @@ trait BasicStructure {
 	/**
 	 * @param string $path
 	 * @param string $filename
+	 *
+	 * @return void
 	 */
 	public static function removeFile($path, $filename) {
 		if (file_exists("$path" . "$filename")) {
@@ -491,26 +611,34 @@ trait BasicStructure {
 	 * @param string $user
 	 * @param string $filename
 	 * @param string $text
+	 *
+	 * @return void
 	 */
 	public function modifyTextOfFile($user, $filename, $text) {
 		self::removeFile($this->getUserHome($user) . "/files", "$filename");
-		file_put_contents($this->getUserHome($user) . "/files" . "$filename", "$text");
+		file_put_contents(
+			$this->getUserHome($user) . "/files" . "$filename", "$text"
+		);
 	}
 
 	/**
 	 * @param string $name
 	 * @param string $size
+	 *
+	 * @return void
 	 */
 	public function createFileSpecificSize($name, $size) {
 		$file = fopen("work/" . "$name", 'w');
-		fseek($file, $size - 1 ,SEEK_CUR);
-		fwrite($file,'a'); // write a dummy char at SIZE position
+		fseek($file, $size - 1, SEEK_CUR);
+		fwrite($file, 'a'); // write a dummy char at SIZE position
 		fclose($file);
 	}
 
 	/**
 	 * @param string $name
 	 * @param string $text
+	 *
+	 * @return void
 	 */
 	public function createFileWithText($name, $text) {
 		$file = fopen("work/" . "$name", 'w');
@@ -523,6 +651,8 @@ trait BasicStructure {
 	 *
 	 * @param string $filename
 	 * @param string $size
+	 *
+	 * @return void
 	 */
 	public function fileHasBeenCreatedInLocalStorageWithSize($filename, $size) {
 		$this->createFileSpecificSize("local_storage/$filename", $size);
@@ -533,6 +663,8 @@ trait BasicStructure {
 	 *
 	 * @param string $filename
 	 * @param string $text
+	 *
+	 * @return void
 	 */
 	public function fileHasBeenCreatedInLocalStorageWithText($filename, $text) {
 		$this->createFileWithText("local_storage/$filename", $text);
@@ -542,6 +674,8 @@ trait BasicStructure {
 	 * @Given file :filename has been deleted in local storage
 	 *
 	 * @param string $filename
+	 *
+	 * @return void
 	 */
 	public function fileHasBeenDeletedInLocalStorage($filename) {
 		unlink("work/local_storage/$filename");
@@ -563,6 +697,7 @@ trait BasicStructure {
 
 	/**
 	 * @param string $userName
+	 *
 	 * @return string
 	 */
 	public function getPasswordForUser($userName) {
@@ -575,6 +710,7 @@ trait BasicStructure {
 
 	/**
 	 * @param string $userName
+	 *
 	 * @return array
 	 */
 	public function getAuthOptionForUser($userName) {
@@ -590,14 +726,18 @@ trait BasicStructure {
 
 	/**
 	 * @When the admin requests status.php using the API
+	 *
+	 * @return void
 	 */
-	public function getStatusPhp(){
+	public function getStatusPhp() {
 		$fullUrl = $this->baseUrlWithoutOCSAppendix() . "status.php";
 		$client = new Client();
 		$options = [];
 		$options['auth'] = $this->getAuthOptionForUser('admin');
 		try {
-			$this->response = $client->send($client->createRequest('GET', $fullUrl, $options));
+			$this->response = $client->send(
+				$client->createRequest('GET', $fullUrl, $options)
+			);
 		} catch (BadResponseException $ex) {
 			$this->response = $ex->getResponse();
 		}
@@ -607,17 +747,23 @@ trait BasicStructure {
 	 * @Then the json responded should match with
 	 *
 	 * @param PyStringNode $jsonExpected
+	 *
+	 * @return void
 	 */
 	public function jsonRespondedShouldMatch(PyStringNode $jsonExpected) {
 		$jsonExpectedEncoded = json_encode($jsonExpected->getRaw());
 		$jsonRespondedEncoded = json_encode((string) $this->response->getBody());
-		PHPUnit\Framework\Assert::assertEquals($jsonExpectedEncoded, $jsonRespondedEncoded);
+		PHPUnit\Framework\Assert::assertEquals(
+			$jsonExpectedEncoded, $jsonRespondedEncoded
+		);
 	}
 
 	/**
 	 * @Then the status.php response should match with
 	 *
 	 * @param PyStringNode $jsonExpected
+	 *
+	 * @return void
 	 */
 	public function statusPhpRespondedShouldMatch(PyStringNode $jsonExpected) {
 		$jsonExpectedDecoded = json_decode($jsonExpected->getRaw(), true);
@@ -639,6 +785,8 @@ trait BasicStructure {
 
 	/**
 	 * @BeforeScenario @local_storage
+	 *
+	 * @return void
 	 */
 	public static function removeFilesFromLocalStorageBefore() {
 		$dir = "./work/local_storage/";
@@ -651,6 +799,8 @@ trait BasicStructure {
 
 	/**
 	 * @AfterScenario @local_storage
+	 *
+	 * @return void
 	 */
 	public static function removeFilesFromLocalStorageAfter() {
 		$dir = "./work/local_storage/";
@@ -663,7 +813,10 @@ trait BasicStructure {
 
 	/**
 	 * @BeforeSuite
+	 *
 	 * @param BeforeSuiteScope $scope
+	 *
+	 * @return void
 	 */
 	public static function useBigFileIDs() {
 		$fullUrl = getenv('TEST_SERVER_URL') . "/v1.php/apps/testing/api/v1/increasefileid";

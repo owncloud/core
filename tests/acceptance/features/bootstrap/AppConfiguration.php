@@ -44,6 +44,7 @@ trait AppConfiguration {
 	/**
 	 * @param string $verb
 	 * @param string $url
+	 *
 	 * @return void
 	 */
 	abstract public function sendingTo($verb, $url);
@@ -52,18 +53,21 @@ trait AppConfiguration {
 	 * @param string $verb
 	 * @param string $url
 	 * @param \Behat\Gherkin\Node\TableNode $body
+	 *
 	 * @return void
 	 */
 	abstract public function sendingToWith($verb, $url, $body);
 
 	/**
 	 * @param mixed $statusCode
+	 *
 	 * @return void
 	 */
 	abstract public function theOCSStatusCodeShouldBe($statusCode);
 
 	/**
 	 * @param mixed $statusCode
+	 *
 	 * @return void
 	 */
 	abstract public function theHTTPStatusCodeShouldBe($statusCode);
@@ -74,6 +78,7 @@ trait AppConfiguration {
 	 * @param string $parameter
 	 * @param string $app
 	 * @param string $value
+	 *
 	 * @return void
 	 */
 	public function adminSetsServerParameterToUsingAPI($parameter, $app, $value) {
@@ -91,6 +96,7 @@ trait AppConfiguration {
 	 * @param string $parameter
 	 * @param string $app
 	 * @param string $value
+	 *
 	 * @return void
 	 */
 	public function serverParameterHasBeenSetTo($parameter, $app, $value) {
@@ -104,9 +110,12 @@ trait AppConfiguration {
 	 * @param string $capabilitiesApp the "app" name in the capabilities response
 	 * @param string $capabilitiesPath the path to the element
 	 * @param string $expectedValue
+	 *
 	 * @return void
 	 */
-	public function theCapabilitiesSettingOfAppParameterShouldBe($capabilitiesApp, $capabilitiesPath, $expectedValue) {
+	public function theCapabilitiesSettingOfAppParameterShouldBe(
+		$capabilitiesApp, $capabilitiesPath, $expectedValue
+	) {
 		$this->getCapabilitiesCheckResponse();
 
 		PHPUnit_Framework_Assert::assertEquals(
@@ -118,6 +127,7 @@ trait AppConfiguration {
 	/**
 	 * @param string $capabilitiesApp the "app" name in the capabilities response
 	 * @param string $capabilitiesPath the path to the element
+	 *
 	 * @return string
 	 */
 	public function getAppParameter($capabilitiesApp, $capabilitiesPath) {
@@ -137,7 +147,9 @@ trait AppConfiguration {
 	 */
 	public function getCapabilitiesCheckResponse() {
 		$this->sendingTo('GET', '/cloud/capabilities');
-		PHPUnit_Framework_Assert::assertEquals(200, $this->response->getStatusCode());
+		PHPUnit_Framework_Assert::assertEquals(
+			200, $this->response->getStatusCode()
+		);
 	}
 
 	/**
@@ -151,9 +163,12 @@ trait AppConfiguration {
 	 * @param string $xml of the capabilities
 	 * @param string $capabilitiesApp the "app" name in the capabilities response
 	 * @param string $capabilitiesPath the path to the element
+	 *
 	 * @return string
 	 */
-	public function getParameterValueFromXml($xml, $capabilitiesApp, $capabilitiesPath) {
+	public function getParameterValueFromXml(
+		$xml, $capabilitiesApp, $capabilitiesPath
+	) {
 		$path_to_element = explode('@@@', $capabilitiesPath);
 		$answeredValue = $xml->{$capabilitiesApp};
 
@@ -168,6 +183,7 @@ trait AppConfiguration {
 	 * @param string $capabilitiesApp the "app" name in the capabilities response
 	 * @param string $capabilitiesParameter the parameter name in the
 	 *                                      capabilities response
+	 *
 	 * @return boolean
 	 */
 	public function wasCapabilitySet($capabilitiesApp, $capabilitiesParameter) {
@@ -179,12 +195,13 @@ trait AppConfiguration {
 	}
 
 	/**
-	 * @param array $capabilitiesArray[] with each array entry containing keys for:
-	 *                                   ['capabilitiesApp'] the "app" name in the capabilities response
-	 *                                   ['capabilitiesParameter'] the parameter name in the capabilities response
-	 *                                   ['testingApp'] the "app" name as understood by "testing"
-	 *                                   ['testingParameter'] the parameter name as understood by "testing"
-	 *                                   ['testingState'] boolean state the parameter must be set to for the test
+	 * @param array $capabilitiesArray with each array entry containing keys for:
+	 *                                 ['capabilitiesApp'] the "app" name in the capabilities response
+	 *                                 ['capabilitiesParameter'] the parameter name in the capabilities response
+	 *                                 ['testingApp'] the "app" name as understood by "testing"
+	 *                                 ['testingParameter'] the parameter name as understood by "testing"
+	 *                                 ['testingState'] boolean state the parameter must be set to for the test
+	 *
 	 * @return void
 	 */
 	public function setCapabilities($capabilitiesArray) {
@@ -196,13 +213,17 @@ trait AppConfiguration {
 			$this->savedCapabilitiesXml
 		);
 
-		$this->savedCapabilitiesChanges = array_merge($this->savedCapabilitiesChanges, $savedCapabilitiesChanges);
+		$this->savedCapabilitiesChanges = array_merge(
+			$this->savedCapabilitiesChanges,
+			$savedCapabilitiesChanges
+		);
 	}
 
 	/**
 	 * @param string $app
 	 * @param string $parameter
 	 * @param string $value
+	 *
 	 * @return void
 	 */
 	protected function modifyServerConfig($app, $parameter, $value) {
@@ -219,6 +240,7 @@ trait AppConfiguration {
 
 	/**
 	 * @param string $appParameterValues
+	 *
 	 * @return void
 	 */
 	protected function modifyServerConfigs($appParameterValues) {
@@ -234,6 +256,7 @@ trait AppConfiguration {
 	/**
 	 * @param boolean $enabled if true, then enable the testing app
 	 *                         otherwise disable the testing app
+	 *
 	 * @return void
 	 */
 	protected function setStatusTestingApp($enabled) {
@@ -268,6 +291,7 @@ trait AppConfiguration {
 
 	/**
 	 * @BeforeScenario
+	 *
 	 * @return void
 	 */
 	public function prepareParametersBeforeScenario() {
@@ -279,6 +303,7 @@ trait AppConfiguration {
 
 	/**
 	 * @AfterScenario
+	 *
 	 * @return void
 	 */
 	public function restoreParametersAfterScenario() {

@@ -26,14 +26,25 @@ use GuzzleHttp\Client;
 use GuzzleHttp\Exception\BadResponseException;
 use GuzzleHttp\Message\ResponseInterface;
 
+/**
+ * CalDav functions
+ */
 class CalDavContext implements \Behat\Behat\Context\Context {
-	/** @var string  */
+	/**
+	 * @var string  
+	 */
 	private $baseUrl;
-	/** @var Client */
+	/**
+	 * @var Client 
+	 */
 	private $client;
-	/** @var ResponseInterface */
+	/**
+	 * @var ResponseInterface 
+	 */
 	private $response;
-	/** @var array */
+	/**
+	 * @var array 
+	 */
 	private $responseXml = '';
 
 	/**
@@ -43,6 +54,8 @@ class CalDavContext implements \Behat\Behat\Context\Context {
 
 	/**
 	 * @param string $baseUrl
+	 *
+	 * @return void
 	 */
 	public function __construct($baseUrl) {
 		$this->baseUrl = $baseUrl;
@@ -58,6 +71,7 @@ class CalDavContext implements \Behat\Behat\Context\Context {
 	 * @BeforeScenario @caldav
 	 *
 	 * @param BeforeScenarioScope $scope
+	 *
 	 * @return void
 	 */
 	public function setUpScenario(BeforeScenarioScope $scope) {
@@ -71,9 +85,11 @@ class CalDavContext implements \Behat\Behat\Context\Context {
 
 	/**
 	 * @AfterScenario @caldav
+	 *
+	 * @return void
 	 */
 	public function afterScenario() {
-		$davUrl = $this->baseUrl. '/remote.php/dav/calendars/admin/MyCalendar';
+		$davUrl = $this->baseUrl . '/remote.php/dav/calendars/admin/MyCalendar';
 		try {
 			$this->client->delete(
 				$davUrl,
@@ -81,7 +97,8 @@ class CalDavContext implements \Behat\Behat\Context\Context {
 					'auth' => $this->featureContext->getAuthOptionForAdmin()
 				]
 			);
-		} catch (BadResponseException $e) {}
+		} catch (BadResponseException $e) {
+		}
 	}
 
 	/**
@@ -89,9 +106,11 @@ class CalDavContext implements \Behat\Behat\Context\Context {
 	 *
 	 * @param string $user
 	 * @param string $calendar
+	 *
+	 * @return void
 	 */
 	public function userRequestsCalendarUsingTheAPI($user, $calendar) {
-		$davUrl = $this->baseUrl . '/remote.php/dav/calendars/'.$calendar;
+		$davUrl = $this->baseUrl . '/remote.php/dav/calendars/' . $calendar;
 
 		try {
 			$this->response = $this->client->get(
@@ -109,6 +128,8 @@ class CalDavContext implements \Behat\Behat\Context\Context {
 	 * @Then the CalDAV HTTP status code should be :code
 	 *
 	 * @param int $code
+	 *
+	 * @return void
 	 * @throws \Exception
 	 */
 	public function theCalDavHttpStatusCodeShouldBe($code) {
@@ -134,6 +155,8 @@ class CalDavContext implements \Behat\Behat\Context\Context {
 	 * @Then the CalDAV exception should be :message
 	 *
 	 * @param string $message
+	 *
+	 * @return void
 	 * @throws \Exception
 	 */
 	public function theCalDavExceptionShouldBe($message) {
@@ -154,6 +177,8 @@ class CalDavContext implements \Behat\Behat\Context\Context {
 	 * @Then the CalDAV error message should be :message
 	 *
 	 * @param string $message
+	 *
+	 * @return void
 	 * @throws \Exception
 	 */
 	public function theCalDavErrorMessageShouldBe($message) {
@@ -175,9 +200,11 @@ class CalDavContext implements \Behat\Behat\Context\Context {
 	 *
 	 * @param string $user
 	 * @param string $name
+	 *
+	 * @return void
 	 */
 	public function userHasCreatedACalendarNamed($user, $name) {
-		$davUrl = $this->baseUrl . '/remote.php/dav/calendars/'.$user.'/'.$name;
+		$davUrl = $this->baseUrl . '/remote.php/dav/calendars/' . $user . '/' . $name;
 
 		$request = $this->client->createRequest(
 			'MKCALENDAR',
