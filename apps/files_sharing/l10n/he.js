@@ -37,6 +37,7 @@ OC.L10N.register(
     "Wrong share ID, share doesn't exist" : "מספר זיהוי שיתוף שגוי, שיתוף אינו קיים",
     "Could not delete share" : "לא ניתן היה למחוק את השיתוף",
     "Please specify a file or folder path" : "יש לספק נתיב לקובץ או תיקייה",
+    "No permission to create share" : "אין הרשאה ליצירת שיתוף",
     "Wrong path, file/folder doesn't exist" : "נתיב שגוי, קובץ/תיקייה אינם קיימים",
     "Cannot remove all permissions" : "לא ניתן להסיר את כל ההרשאות",
     "Please specify a valid user" : "יש לספק משתמש חוקי",

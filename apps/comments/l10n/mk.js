@@ -17,7 +17,7 @@ OC.L10N.register(
     "Error occurred while posting comment" : "Се случи грешка при објавување коментар",
     "{count} unread comments" : "{count} непрочитани коментари",
     "Comment" : "Коментар",
-    "<strong>Comments</strong> for files <em>(always listed in stream)</em>" : "<strong>Comments</strong> for files <em>(always listed in stream)</em>",
+    "<strong>Comments</strong> for files <em>(always listed in stream)</em>" : "<strong>Коментари</strong> за датотеки<em>(секогаш наведени во стримот)</em>",
     "You commented" : "Вие коментиравте",
     "%1$s commented" : "%1$s коментиран",
     "You commented on %2$s" : "Вие коментиравте на %2$s",

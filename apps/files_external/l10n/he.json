@@ -10,6 +10,8 @@
     "All users. Type to select user or group." : "כל המשתמשים. יש להקיש לבחירת משתמש או קבוצה.",
     "(group)" : "(קבוצה)",
     "Compatibility with Mac NFD encoding (slow)" : "תואם של קידוד Mac NFD (איטי)",
+    "Unknown auth backend \"{b}\"" : "מנגנון האימות „{b}” אינו ידוע",
+    "Please make sure that the app that provides this backend is installed and enabled" : "נא לוודא שהיישום שמספק את המנגנון הזה מותקן ופעיל",
     "Admin defined" : "הוגדר מנהל",
     "Saved" : "נשמר",
     "Disabling external storage will unmount all storages for all users, are you sure ?" : "נטרול אחסון חיצוני יסיר את כל האחסונים של כל המשתמשים, האם הנך בטוח?",
