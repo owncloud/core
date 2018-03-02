@@ -51,6 +51,7 @@ class GroupList extends OwncloudPage {
 	 * there is no real __construct() that can take arguments
 	 *
 	 * @param \Behat\Mink\Element\NodeElement $groupListElement
+	 *
 	 * @return void
 	 */
 	public function setElement(NodeElement $groupListElement) {
@@ -60,6 +61,7 @@ class GroupList extends OwncloudPage {
 	/**
 	 * 
 	 * @param string $name
+	 *
 	 * @throws ElementNotFoundException
 	 * @return \Behat\Mink\Element\NodeElement
 	 */
@@ -84,6 +86,7 @@ class GroupList extends OwncloudPage {
 	 * deletes a group in the UI
 	 * 
 	 * @param string $name
+	 *
 	 * @throws ElementNotFoundException
 	 * @return void
 	 */
@@ -103,6 +106,7 @@ class GroupList extends OwncloudPage {
 	/**
 	 * 
 	 * @param string  $groupName
+	 *
 	 * @throws ElementNotFoundException
 	 * @return void
 	 */

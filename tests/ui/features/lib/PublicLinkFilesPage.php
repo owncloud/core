@@ -70,6 +70,7 @@ class PublicLinkFilesPage extends FilesPageBasic {
 	 * adding public share to particular server
 	 * 
 	 * @param string $server
+	 * 
 	 * @throws ElementNotFoundException
 	 * @return void
 	 */
@@ -108,6 +109,7 @@ class PublicLinkFilesPage extends FilesPageBasic {
 	 * If name is not given a random one is chosen
 	 *
 	 * @param string $name
+	 * 
 	 * @throws ElementNotFoundException
 	 * @return string name of the created file
 	 */
@@ -122,6 +124,7 @@ class PublicLinkFilesPage extends FilesPageBasic {
 	 * @param string|array $toFileName
 	 * @param Session $session
 	 * @param int $maxRetries
+	 * 
 	 * @return void
 	 */
 	public function renameFile(
@@ -140,6 +143,7 @@ class PublicLinkFilesPage extends FilesPageBasic {
 	 * @param string|array $destination
 	 * @param Session $session
 	 * @param int $maxRetries
+	 * 
 	 * @return void
 	 */
 	public function moveFileTo(
@@ -154,6 +158,7 @@ class PublicLinkFilesPage extends FilesPageBasic {
 	 *
 	 * @param string $fileName
 	 * @param Session $session
+	 * 
 	 * @return string
 	 * @throws \SensioLabs\Behat\PageObjectExtension\PageObject\Exception\ElementNotFoundException
 	 */

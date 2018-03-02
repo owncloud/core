@@ -44,6 +44,7 @@ class PersonalGeneralSettingsPage extends OwncloudPage {
 
 	/**
 	 * @param string $language
+	 * 
 	 * @return void
 	 */
 	public function changeLanguage($language) {
@@ -56,6 +57,7 @@ class PersonalGeneralSettingsPage extends OwncloudPage {
 	 *
 	 * @param Session $session
 	 * @param int $timeout_msec
+	 *
 	 * @return void
 	 */
 	public function waitTillPageIsLoaded(

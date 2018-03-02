@@ -43,6 +43,7 @@ class LoginPage extends OwncloudPage {
 	 * @param string $username
 	 * @param string $password
 	 * @param string $target
+	 *
 	 * @throws ElementNotFoundException
 	 * @return Page
 	 */
@@ -70,6 +71,7 @@ class LoginPage extends OwncloudPage {
 	 *
 	 * @param Session $session
 	 * @param int $timeout_msec
+	 *
 	 * @return void
 	 * @throws \Exception
 	 */

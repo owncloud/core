@@ -65,6 +65,7 @@ class PersonalGeneralSettingsContext extends RawMinkContext implements Context {
 	 * @Given /^I (attempt to |)go to the personal general settings page$/
 	 *
 	 * @param string $attemptTo
+	 *
 	 * @return void
 	 * @throws Exception
 	 */
@@ -87,6 +88,7 @@ class PersonalGeneralSettingsContext extends RawMinkContext implements Context {
 	 * @When I change the language to :language
 	 *
 	 * @param string $language
+	 *
 	 * @return void
 	 */
 	public function iChangeTheLanguageTo($language) {
@@ -142,11 +144,13 @@ class PersonalGeneralSettingsContext extends RawMinkContext implements Context {
 	}
 
 	/**
-	 * @BeforeScenario
 	 * This will run before EVERY scenario.
 	 * It will set the properties for this object.
 	 *
+	 * @BeforeScenario
+	 *
 	 * @param BeforeScenarioScope $scope
+	 *
 	 * @return void
 	 */
 	public function before(BeforeScenarioScope $scope) {

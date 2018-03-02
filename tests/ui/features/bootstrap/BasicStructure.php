@@ -82,6 +82,7 @@ trait BasicStructure {
 	 * @param string $username
 	 * @param string $password
 	 * @param string $target
+	 *
 	 * @return \Page\OwncloudPage
 	 */
 	public function loginAs($username, $password, $target = 'FilesPage') {
@@ -116,6 +117,7 @@ trait BasicStructure {
 	 * @Given /^a regular user exists\s?(but is not initialized|)$/
 	 *
 	 * @param string $doNotInitialize just create the user, do not trigger creating skeleton files etc
+	 *
 	 * @return void
 	 */
 	public function aRegularUserExists($doNotInitialize = "") {
@@ -132,6 +134,7 @@ trait BasicStructure {
 	 * @Given /^regular users exist\s?(but are not initialized|)$/
 	 *
 	 * @param string $doNotInitialize just create the user, do not trigger creating skeleton files etc
+	 *
 	 * @return void
 	 */
 	public function regularUsersExist($doNotInitialize) {
@@ -154,6 +157,7 @@ trait BasicStructure {
 	 *
 	 * @param string $doNotInitialize just create the user, do not trigger creating skeleton files etc
 	 * @param TableNode $table
+	 *
 	 * @return void
 	 */
 	public function theseUsersExist($doNotInitialize, TableNode $table) {
@@ -184,6 +188,7 @@ trait BasicStructure {
 	 * "|username|password|"
 	 *
 	 * @param TableNode $table
+	 *
 	 * @return void
 	 */
 	public function theseUsersAreInitialized(TableNode $table) {
@@ -204,6 +209,7 @@ trait BasicStructure {
 	 * @param string $email
 	 * @param bool $initialize initialize the user skeleton files etc
 	 * @param string $method how to create the user api|occ
+	 *
 	 * @return void
 	 * @throws Exception
 	 */
@@ -268,6 +274,7 @@ trait BasicStructure {
 	 * 
 	 * @param string $user
 	 * @param string $password
+	 *
 	 * @return void
 	 */
 	public function initializeUser($user, $password) {
@@ -284,6 +291,7 @@ trait BasicStructure {
 	 * expects a table of groups with the heading "groupname"
 	 *
 	 * @param TableNode $table
+	 *
 	 * @return void
 	 */
 	public function theseGroupsExist(TableNode $table) {
@@ -317,6 +325,7 @@ trait BasicStructure {
 	 *
 	 * @param string $group
 	 * @param string $method how to create the group api|occ
+	 *
 	 * @return void
 	 * @throws Exception
 	 */
@@ -381,6 +390,7 @@ trait BasicStructure {
 	 * @param string $user
 	 * @param string $group
 	 * @param string $method how to add the user to the group api|occ
+	 *
 	 * @return void
 	 * @throws Exception
 	 */
@@ -449,6 +459,7 @@ trait BasicStructure {
 
 	/**
 	 * @param BeforeScenarioScope $scope
+	 *
 	 * @return void
 	 * @BeforeScenario
 	 */
@@ -593,6 +604,7 @@ trait BasicStructure {
 	 * @param string $displayName
 	 * @param string $email
 	 * @param bool $shouldHaveBeenCreated
+	 *
 	 * @return void
 	 */
 	public function addUserToCreatedUsersList(
@@ -612,6 +624,7 @@ trait BasicStructure {
 	 * or to delete them at the end of the test
 	 *
 	 * @param string $group
+	 *
 	 * @return void
 	 */
 	public function addGroupToCreatedGroupsList($group) {
@@ -626,6 +639,7 @@ trait BasicStructure {
 	 * test run. We don't want to try to delete this group again in the tear-down phase
 	 *
 	 * @param string $group
+	 *
 	 * @return void
 	 */
 	public function deleteGroupFromCreatedGroupsList($group) {
@@ -637,6 +651,7 @@ trait BasicStructure {
 	/**
 	 *
 	 * @param string $username
+	 *
 	 * @return string password
 	 * @throws Exception
 	 */
@@ -672,6 +687,7 @@ trait BasicStructure {
 	 * then it is returned unmodified
 	 *
 	 * @param string $value
+	 *
 	 * @return string
 	 */
 	public function substituteInLineCodes($value) {
