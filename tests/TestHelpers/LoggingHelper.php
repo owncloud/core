@@ -78,6 +78,7 @@ class LoggingHelper {
 	/**
 	 *
 	 * @param string $logLevel (debug|info|warning|error|fatal)
+	 *
 	 * @return void
 	 * @throws \InvalidArgumentException
 	 * @throws \Exception
@@ -122,6 +123,7 @@ class LoggingHelper {
 	/**
 	 *
 	 * @param string $backend (owncloud|syslog|errorlog)
+	 *
 	 * @return void
 	 * @throws \InvalidArgumentException
 	 * @throws \Exception
@@ -165,6 +167,7 @@ class LoggingHelper {
 	/**
 	 *
 	 * @param string $timezone
+	 *
 	 * @return void
 	 * @throws \Exception
 	 */
@@ -199,6 +202,7 @@ class LoggingHelper {
 	 * @param string $filepath file to read
 	 * @param int $noOfLinesToRead no of lines to read
 	 * @param bool $adaptive make the file buffer adaptive
+	 *
 	 * @return array lines of the file to read
 	 * @throws \Exception
 	 * @author Torleif Berger, Lorenzo Stanco

@@ -39,6 +39,7 @@ class UserHelper {
 	 * @param string $adminPassword
 	 * @param string $displayName
 	 * @param string $email
+	 *
 	 * @return ResponseInterface[]
 	 *          we need multiple requests to set $displayName and $email
 	 *          this array will contain the responses from all requests
@@ -84,6 +85,7 @@ class UserHelper {
 	 * @param string $value
 	 * @param string $adminUser
 	 * @param string $adminPassword
+	 *
 	 * @return ResponseInterface
 	 */
 	public static function editUser(
@@ -105,6 +107,7 @@ class UserHelper {
 	 * @param string $userName
 	 * @param string $adminUser
 	 * @param string $adminPassword
+	 *
 	 * @return ResponseInterface
 	 */
 	public static function deleteUser(
@@ -125,6 +128,7 @@ class UserHelper {
 	 * @param string $group
 	 * @param string $adminUser
 	 * @param string $adminPassword
+	 *
 	 * @return ResponseInterface
 	 */
 	public static function createGroup(
@@ -142,6 +146,7 @@ class UserHelper {
 	 * @param string $group
 	 * @param string $adminUser
 	 * @param string $adminPassword
+	 *
 	 * @return ResponseInterface
 	 */
 	public static function deleteGroup(
@@ -161,6 +166,7 @@ class UserHelper {
 	 * @param string $group
 	 * @param string $adminUser
 	 * @param string $adminPassword
+	 *
 	 * @return ResponseInterface
 	 */
 	public static function addUserToGroup(
@@ -178,6 +184,7 @@ class UserHelper {
 	 * @param string $adminUser
 	 * @param string $adminPassword
 	 * @param string $search
+	 *
 	 * @return ResponseInterface
 	 */
 	public static function getGroups(
@@ -195,6 +202,7 @@ class UserHelper {
 	 * @param string $adminUser
 	 * @param string $adminPassword
 	 * @param string $search
+	 *
 	 * @return string[]
 	 */
 	public static function getGroupsAsArray(

@@ -49,6 +49,7 @@ class UploadHelper {
 	 * @param int    $chunkingVersion     (1|2|null)
 	 *                                    if set to null chunking will not be used
 	 * @param int    $noOfChunks          how many chunks do we want to upload
+	 *
 	 * @return FutureResponse|ResponseInterface|NULL
 	 */
 	public static function upload(
@@ -151,6 +152,7 @@ class UploadHelper {
 	 *
 	 * @param string $file
 	 * @param int $noOfChunks
+	 *
 	 * @return array $string
 	 */
 	public static function chunkFile($file, $noOfChunks = 1) {
@@ -174,6 +176,7 @@ class UploadHelper {
 	 *
 	 * @param string $name full path of the file to create
 	 * @param int $size
+	 *
 	 * @return void
 	 */
 	public static function createFileSpecificSize($name, $size) {
@@ -199,6 +202,7 @@ class UploadHelper {
 	 *
 	 * @param string $name full path of the file to create
 	 * @param string $text
+	 *
 	 * @return void
 	 */
 	public static function createFileWithText($name, $text) {
