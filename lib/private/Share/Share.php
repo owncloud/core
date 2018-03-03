@@ -145,10 +145,12 @@ class Share extends Constants {
 		$userManager = \OC::$server->getUserManager();
 		$userObject = $userManager->get($ownerUser);
 
-		if (is_null($ownerUser)) {
-			\OCP\Util::writeLog('files', ' Backends provided no user object for ' . $ownerUser, \OCP\Util::ERROR);
-			throw new \OC\User\NoUserException('Backends provided no user object for ' . $ownerUser);
+		if ($userObject === null) {
+			$msg = "Backends provided no user object for $ownerUser";
+			\OC::$server->getLogger()->error($msg, ['app' => __CLASS__]);
+			throw new \OC\User\NoUserException($msg);
 		}
+
 
 		$ownerUser = $userObject->getUID();
 
