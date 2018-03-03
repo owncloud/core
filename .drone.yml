@@ -307,85 +307,85 @@ matrix:
       
     - PHP_VERSION: 7.1
       TEST_SUITE: selenium
-      BEHAT_SUITE: favorites
+      BEHAT_SUITE: webUIFavorites
       DB_TYPE: mariadb
       USE_SERVER: true
       
     - PHP_VERSION: 7.1
       TEST_SUITE: selenium
-      BEHAT_SUITE: manageUsersGroups
+      BEHAT_SUITE: webUIManageUsersGroups
       DB_TYPE: mariadb
       USE_SERVER: true
 
     - PHP_VERSION: 7.1
       TEST_SUITE: selenium
-      BEHAT_SUITE: manageQuota
+      BEHAT_SUITE: webUIManageQuota
       DB_TYPE: mariadb
       USE_SERVER: true
 
     - PHP_VERSION: 7.1
       TEST_SUITE: selenium
-      BEHAT_SUITE: personalSettings
+      BEHAT_SUITE: webUIPersonalSettings
       DB_TYPE: mariadb
       USE_SERVER: true
 
     - PHP_VERSION: 7.1
       TEST_SUITE: selenium
-      BEHAT_SUITE: files
+      BEHAT_SUITE: webUIFiles
       DB_TYPE: mariadb
       USE_SERVER: true
 
     - PHP_VERSION: 7.1
       TEST_SUITE: selenium
-      BEHAT_SUITE: moveFilesFolders
+      BEHAT_SUITE: webUIMoveFilesFolders
       DB_TYPE: mariadb
       USE_SERVER: true
     
     - PHP_VERSION: 7.1
       TEST_SUITE: selenium
-      BEHAT_SUITE: renameFiles
+      BEHAT_SUITE: webUIRenameFiles
       DB_TYPE: mariadb
       USE_SERVER: true
     
     - PHP_VERSION: 7.1
       TEST_SUITE: selenium
-      BEHAT_SUITE: renameFolders
+      BEHAT_SUITE: webUIRenameFolders
       DB_TYPE: mariadb
       USE_SERVER: true
     
     - PHP_VERSION: 7.1
       TEST_SUITE: selenium
-      BEHAT_SUITE: trashbin
+      BEHAT_SUITE: webUITrashbin
       DB_TYPE: mariadb
       USE_SERVER: true
     
     - PHP_VERSION: 7.1
       TEST_SUITE: selenium
-      BEHAT_SUITE: sharingInternalGroups
+      BEHAT_SUITE: webUISharingInternalGroups
       DB_TYPE: mariadb
       USE_SERVER: true
 
     - PHP_VERSION: 7.1
       TEST_SUITE: selenium
-      BEHAT_SUITE: sharingInternalUsers
+      BEHAT_SUITE: webUISharingInternalUsers
       DB_TYPE: mariadb
       USE_SERVER: true
 
     - PHP_VERSION: 7.1
       TEST_SUITE: selenium
-      BEHAT_SUITE: sharingExternal
+      BEHAT_SUITE: webUISharingExternal
       DB_TYPE: mariadb
       USE_SERVER: true
       USE_FEDERATED_SERVER: true
     
     - PHP_VERSION: 7.1
       TEST_SUITE: selenium
-      BEHAT_SUITE: restrictSharing
+      BEHAT_SUITE: webUIRestrictSharing
       DB_TYPE: mariadb
       USE_SERVER: true
       
     - PHP_VERSION: 7.1
       TEST_SUITE: selenium
-      BEHAT_SUITE: upload
+      BEHAT_SUITE: webUIUpload
       DB_TYPE: mariadb
       USE_SERVER: true
