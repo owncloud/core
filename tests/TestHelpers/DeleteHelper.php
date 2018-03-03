@@ -44,6 +44,7 @@ class DeleteHelper {
 	 * @param array  $headers
 	 * @param int    $davPathVersionToUse (1|2)
 	 * @param string $sourceIpAddress
+	 *
 	 * @return FutureResponse|ResponseInterface|NULL
 	 */
 	public static function delete(

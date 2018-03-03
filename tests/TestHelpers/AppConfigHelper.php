@@ -43,6 +43,7 @@ class AppConfigHelper {
 	 * @param boolean $testingState the on|off state the parameter must be set to for the test
 	 * @param string $savedCapabilitiesXml the original capabilities in XML format
 	 * @param int $apiVersion (1|2)
+	 *
 	 * @return array of the original state of the capability set
 	 */
 	public static function setCapability(
@@ -87,14 +88,15 @@ class AppConfigHelper {
 	 * @param string $baseUrl
 	 * @param string $user
 	 * @param string $password
-	 * @param array $capabilitiesArray[] with each array entry containing keys for:
-	 *                                   ['capabilitiesApp'] the "app" name in the capabilities response
-	 *                                   ['capabilitiesParameter'] the parameter name in the capabilities response
-	 *                                   ['testingApp'] the "app" name as understood by "testing"
-	 *                                   ['testingParameter'] the parameter name as understood by "testing"
-	 *                                   ['testingState'] boolean state the parameter must be set to for the test
+	 * @param array $capabilitiesArray with each array entry containing keys for:
+	 *                                 ['capabilitiesApp'] the "app" name in the capabilities response
+	 *                                 ['capabilitiesParameter'] the parameter name in the capabilities response
+	 *                                 ['testingApp'] the "app" name as understood by "testing"
+	 *                                 ['testingParameter'] the parameter name as understood by "testing"
+	 *                                 ['testingState'] boolean state the parameter must be set to for the test
 	 * @param string $savedCapabilitiesXml the original capabilities in XML format
 	 * @param int $apiVersion (1|2)
+	 *
 	 * @return array of the original state of each capability set
 	 */
 	public static function setCapabilities(
@@ -116,10 +118,10 @@ class AppConfigHelper {
 					$savedCapabilitiesXml
 				);
 
-				// Always set each config value, because sometimes enabling one config
-				// also changes some sub-settings. So the "interim" state as we set
-				// the config values could be unexpectedly different from the original
-				// saved state.
+				// Always set each config value, because sometimes enabling one
+				// config also changes some sub-settings. So the "interim" state
+				// as we set the config values could be unexpectedly different
+				// from the original saved state.
 				$appParameterValues[] = [
 					'appid' => $capabilityToSet['testingApp'],
 					'configkey' => $capabilityToSet['testingParameter'],
@@ -154,9 +156,12 @@ class AppConfigHelper {
 	 * @param string $xml of the capabilities
 	 * @param string $capabilitiesApp the "app" name in the capabilities response
 	 * @param string $capabilitiesPath the path to the element
+	 *
 	 * @return string
 	 */
-	public static function getParameterValueFromXml($xml, $capabilitiesApp, $capabilitiesPath) {
+	public static function getParameterValueFromXml(
+		$xml, $capabilitiesApp, $capabilitiesPath
+	) {
 		$pathToElement = explode('@@@', $capabilitiesPath);
 		$answeredValue = $xml->{$capabilitiesApp};
 		for ($i = 0; $i < count($pathToElement); $i++) {
@@ -170,6 +175,7 @@ class AppConfigHelper {
 	 * @param string $capabilitiesParameter the parameter name in the
 	 *                                      capabilities response
 	 * @param string $savedCapabilitiesXml the original capabilities in XML format
+	 *
 	 * @return boolean
 	 */
 	public static function wasCapabilitySet(
@@ -187,6 +193,7 @@ class AppConfigHelper {
 	 * http one in v1 of the api.
 	 * 
 	 * @param ResponseInterface $response
+	 *
 	 * @return string
 	 */
 	public static function getOCSResponse($response) {
@@ -199,6 +206,7 @@ class AppConfigHelper {
 	 * @param string $baseUrl
 	 * @param string $user
 	 * @param string $password
+	 *
 	 * @return ResponseInterface
 	 */
 	public static function getCapabilities($baseUrl, $user, $password) {
@@ -216,6 +224,7 @@ class AppConfigHelper {
 
 	/**
 	 * @param ResponseInterface $response
+	 *
 	 * @return string retrieved capabilities in XML format
 	 */
 	public static function getCapabilitiesXml($response) {
@@ -230,6 +239,7 @@ class AppConfigHelper {
 	 * @param string $parameter
 	 * @param string $value
 	 * @param int $apiVersion (1|2)
+	 *
 	 * @return void
 	 */
 	public static function modifyServerConfig(
@@ -249,7 +259,9 @@ class AppConfigHelper {
 		);
 		PHPUnit_Framework_Assert::assertEquals("200", $response->getStatusCode());
 		if ($apiVersion === 1) {
-			PHPUnit_Framework_Assert::assertEquals("100", self::getOCSResponse($response));
+			PHPUnit_Framework_Assert::assertEquals(
+				"100", self::getOCSResponse($response)
+			);
 		}
 	}
 
@@ -257,8 +269,9 @@ class AppConfigHelper {
 	 * @param string $baseUrl
 	 * @param string $user
 	 * @param string $password
-	 * @param array $appParameterValues[] 'appid' 'configkey' and 'value'
+	 * @param array $appParameterValues 'appid' 'configkey' and 'value'
 	 * @param int $apiVersion (1|2)
+	 *
 	 * @return void
 	 */
 	public static function modifyServerConfigs(
@@ -278,7 +291,9 @@ class AppConfigHelper {
 		);
 		PHPUnit_Framework_Assert::assertEquals("200", $response->getStatusCode());
 		if ($apiVersion === 1) {
-			PHPUnit_Framework_Assert::assertEquals("100", self::getOCSResponse($response));
+			PHPUnit_Framework_Assert::assertEquals(
+				"100", self::getOCSResponse($response)
+			);
 		}
 	}
 
