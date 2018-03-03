@@ -38,6 +38,7 @@ class ShareesContext implements Context, SnippetAcceptingContext {
 	 * @When /^the user gets the sharees using the API with parameters$/
 	 *
 	 * @param \Behat\Gherkin\Node\TableNode $body
+	 *
 	 * @return void
 	 */
 	public function theUserGetsTheShareesWithParameters($body) {
@@ -49,6 +50,7 @@ class ShareesContext implements Context, SnippetAcceptingContext {
 	 *
 	 * @param string $user
 	 * @param \Behat\Gherkin\Node\TableNode $body
+	 *
 	 * @return void
 	 */
 	public function userGetsTheShareesWithParameters($user, $body) {
@@ -73,6 +75,7 @@ class ShareesContext implements Context, SnippetAcceptingContext {
 	 *
 	 * @param string $shareeType
 	 * @param \Behat\Gherkin\Node\TableNode $shareesList
+	 *
 	 * @return void
 	 */
 	public function theShareesReturnedShouldBe($shareeType, $shareesList) {
@@ -87,6 +90,7 @@ class ShareesContext implements Context, SnippetAcceptingContext {
 	 * @Then /^the "([^"]*)" sharees returned should be empty$/
 	 *
 	 * @param string $shareeType
+	 *
 	 * @return void
 	 */
 	public function theShareesReturnedShouldBeEmpty($shareeType) {
@@ -99,6 +103,7 @@ class ShareesContext implements Context, SnippetAcceptingContext {
 	/**
 	 * @param ResponseInterface $response
 	 * @param string $shareeType
+	 *
 	 * @return array
 	 */
 	public function getArrayOfShareesResponded(
@@ -114,7 +119,8 @@ class ShareesContext implements Context, SnippetAcceptingContext {
 		$sharees = [];
 		foreach ($elements[$shareeType] as $element) {
 			if (is_int(key($element))) {
-				// this is a list of elements instead of just one item, so return the list
+				// this is a list of elements instead of just one item,
+				// so return the list
 				foreach ($element as $innerItem) {
 					$sharees[] = [
 						$innerItem['label'],
@@ -142,7 +148,10 @@ class ShareesContext implements Context, SnippetAcceptingContext {
 		$this->savedCapabilitiesXml = $this->getCapabilitiesXml();
 		// Set the required starting values for testing
 		$capabilitiesArray = $this->getCommonSharingConfigs();
-		$capabilitiesArray = array_merge($capabilitiesArray, $this->getCommonFederationConfigs());
+		$capabilitiesArray = array_merge(
+			$capabilitiesArray,
+			$this->getCommonFederationConfigs()
+		);
 		$this->setCapabilities($capabilitiesArray);
 	}
 }

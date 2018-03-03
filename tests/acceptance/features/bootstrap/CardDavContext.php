@@ -26,14 +26,25 @@ use GuzzleHttp\Client;
 use GuzzleHttp\Exception\BadResponseException;
 use GuzzleHttp\Message\ResponseInterface;
 
+/**
+ * CardDav functions
+ */
 class CardDavContext implements \Behat\Behat\Context\Context {
-	/** @var string  */
+	/**
+	 * @var string  
+	 */
 	private $baseUrl;
-	/** @var Client */
+	/**
+	 * @var Client 
+	 */
 	private $client;
-	/** @var ResponseInterface */
+	/**
+	 * @var ResponseInterface 
+	 */
 	private $response;
-	/** @var array */
+	/**
+	 * @var array 
+	 */
 	private $responseXml = '';
 
 	/**
@@ -43,6 +54,8 @@ class CardDavContext implements \Behat\Behat\Context\Context {
 
 	/**
 	 * @param string $baseUrl
+	 *
+	 * @return void
 	 */
 	public function __construct($baseUrl) {
 		$this->baseUrl = $baseUrl;
@@ -58,6 +71,7 @@ class CardDavContext implements \Behat\Behat\Context\Context {
 	 * @BeforeScenario @carddav
 	 *
 	 * @param BeforeScenarioScope $scope
+	 *
 	 * @return void
 	 */
 	public function setUpScenario(BeforeScenarioScope $scope) {
@@ -71,6 +85,8 @@ class CardDavContext implements \Behat\Behat\Context\Context {
 
 	/**
 	 * @AfterScenario @carddav
+	 *
+	 * @return void
 	 */
 	public function afterScenario() {
 		$davUrl = $this->baseUrl . '/remote.php/dav/addressbooks/users/admin/MyAddressbook';
@@ -81,7 +97,8 @@ class CardDavContext implements \Behat\Behat\Context\Context {
 					'auth' => $this->featureContext->getAuthOptionForAdmin()
 				]
 			);
-		} catch (BadResponseException $e) {}
+		} catch (BadResponseException $e) {
+		}
 	}
 
 	/**
@@ -89,10 +106,12 @@ class CardDavContext implements \Behat\Behat\Context\Context {
 	 *
 	 * @param string $user
 	 * @param string $addressBook
+	 *
+	 * @return void
 	 * @throws \Exception
 	 */
 	public function userRequestsAddressbookUsingTheAPI($user, $addressBook) {
-		$davUrl = $this->baseUrl . '/remote.php/dav/addressbooks/users/'.$addressBook;
+		$davUrl = $this->baseUrl . '/remote.php/dav/addressbooks/users/' . $addressBook;
 
 		try {
 			$this->response = $this->client->get(
@@ -111,10 +130,12 @@ class CardDavContext implements \Behat\Behat\Context\Context {
 	 *
 	 * @param string $user
 	 * @param string $addressBook
+	 *
+	 * @return void
 	 * @throws \Exception
 	 */
 	public function userHasCreatedAnAddressbookNamed($user, $addressBook) {
-		$davUrl = $this->baseUrl . '/remote.php/dav/addressbooks/users/'.$user.'/'.$addressBook;
+		$davUrl = $this->baseUrl . '/remote.php/dav/addressbooks/users/' . $user . '/' . $addressBook;
 
 		$request = $this->client->createRequest(
 			'MKCOL',
@@ -126,7 +147,7 @@ class CardDavContext implements \Behat\Behat\Context\Context {
       <d:prop>
         <d:resourcetype>
             <d:collection />,<card:addressbook />
-          </d:resourcetype>,<d:displayname>'.$addressBook.'</d:displayname>
+          </d:resourcetype>,<d:displayname>' . $addressBook . '</d:displayname>
       </d:prop>
     </d:set>
   </d:mkcol>',
@@ -145,6 +166,8 @@ class CardDavContext implements \Behat\Behat\Context\Context {
 	 * @Then the CardDAV HTTP status code should be :code
 	 *
 	 * @param int $code
+	 *
+	 * @return void
 	 * @throws \Exception
 	 */
 	public function theCardDavHttpStatusCodeShouldBe($code) {
@@ -170,6 +193,8 @@ class CardDavContext implements \Behat\Behat\Context\Context {
 	 * @Then the CardDAV exception should be :message
 	 *
 	 * @param string $message
+	 *
+	 * @return void
 	 * @throws \Exception
 	 */
 	public function theCardDavExceptionShouldBe($message) {
@@ -190,6 +215,8 @@ class CardDavContext implements \Behat\Behat\Context\Context {
 	 * @Then the CardDAV error message should be :arg1
 	 *
 	 * @param string $message
+	 *
+	 * @return void
 	 * @throws \Exception
 	 */
 	public function theCardDavErrorMessageShouldBe($message) {

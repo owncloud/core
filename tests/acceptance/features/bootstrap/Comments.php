@@ -24,13 +24,18 @@ use GuzzleHttp\Exception\BadResponseException;
 
 require __DIR__ . '/../../../../lib/composer/autoload.php';
 
-//class CommentsContext implements \Behat\Behat\Context\Context {
-
+/**
+ * Comments functions
+ */
 trait Comments {
 
-	/** @var int */
+	/**
+	 * @var int 
+	 */
 	private $lastCommentId;
-	/** @var int */
+	/**
+	 * @var int 
+	 */
 	private $lastFileId;
 
 	/**
@@ -41,6 +46,8 @@ trait Comments {
 	 * @param string $content
 	 * @param string $type
 	 * @param string $path
+	 *
+	 * @return void
 	 * @throws \Exception
 	 */
 	public function userCommentsWithContentOnEntry($user, $content, $type, $path) {
@@ -48,23 +55,25 @@ trait Comments {
 		$this->lastFileId = $fileId;
 		$commentsPath = '/comments/files/' . $fileId . '/';
 		try {
-			$this->response = $this->makeDavRequest($user,
-								  "POST",
-								  $commentsPath,
-								  ['Content-Type' => 'application/json',
+			$this->response = $this->makeDavRequest(
+				$user,
+				"POST",
+				$commentsPath,
+				['Content-Type' => 'application/json',
 								   ],
-								    null,
-								   "uploads",
-								   '{"actorId":"user0",
+				null,
+				"uploads",
+				'{"actorId":"user0",
 								    "actorDisplayName":"user0",
 								    "actorType":"users",
 								    "verb":"comment",
 								    "message":"' . $content . '",
 								    "creationDateTime":"Thu, 18 Feb 2016 17:04:18 GMT",
-								    "objectType":"files"}');
+								    "objectType":"files"}'
+			);
 			$responseHeaders =  $this->response->getHeaders();
 			$commentUrl = $responseHeaders['Content-Location'][0];
-			$this->lastCommentId = substr($commentUrl, strrpos($commentUrl,'/')+1);
+			$this->lastCommentId = substr($commentUrl, strrpos($commentUrl, '/') + 1);
 		} catch (BadResponseException $ex) {
 			$this->response = $ex->getResponse();
 		}
@@ -77,13 +86,17 @@ trait Comments {
 	 * @param string $type
 	 * @param string $path
 	 * @param \Behat\Gherkin\Node\TableNode|null $expectedElements
+	 *
+	 * @return void
 	 */
 	public function checkComments($user, $type, $path, $expectedElements) {
 		$fileId = $this->getFileIdForPath($user, $path);
 		$commentsPath = '/comments/files/' . $fileId . '/';
 		$properties = '<oc:limit>200</oc:limit><oc:offset>0</oc:offset>';
 		try {
-			$elementList = $this->reportElementComments($user,$commentsPath,$properties);
+			$elementList = $this->reportElementComments(
+				$user, $commentsPath, $properties
+			);
 		} catch (BadResponseException $e) {
 			$this->response = $e->getResponse();
 			$statusCode = $this->response->getStatusCode();
@@ -97,13 +110,16 @@ trait Comments {
 			foreach ($elementRows as $expectedElement) {
 				$commentFound = false;
 				foreach ($elementList as $id => $answer) {
-					if  (($answer[200]['{http://owncloud.org/ns}actorDisplayName'] === $expectedElement[0]) and
-						($answer[200]['{http://owncloud.org/ns}message'] === $expectedElement[1])) {
+					if (($answer[200]['{http://owncloud.org/ns}actorDisplayName'] === $expectedElement[0])
+						and ($answer[200]['{http://owncloud.org/ns}message'] === $expectedElement[1])
+					) {
 						$commentFound = true;
 						break;
 					}
 				}
-				PHPUnit_Framework_Assert::assertTrue($commentFound, "Comment not found");
+				PHPUnit_Framework_Assert::assertTrue(
+					$commentFound, "Comment not found"
+				);
 			}
 		}
 	}
@@ -115,14 +131,20 @@ trait Comments {
 	 * @param string $numberOfComments
 	 * @param string $type
 	 * @param string $path
+	 *
+	 * @return void
 	 */
 	public function checkNumberOfComments($user, $numberOfComments, $type, $path) {
 		$fileId = $this->getFileIdForPath($user, $path);
 		$commentsPath = '/comments/files/' . $fileId . '/';
 		$properties = '<oc:limit>200</oc:limit><oc:offset>0</oc:offset>';
 		try {
-			$elementList = $this->reportElementComments($user,$commentsPath,$properties);
-			PHPUnit_Framework_Assert::assertCount((int) $numberOfComments, $elementList);
+			$elementList = $this->reportElementComments(
+				$user, $commentsPath, $properties
+			);
+			PHPUnit_Framework_Assert::assertCount(
+				(int) $numberOfComments, $elementList
+			);
 		} catch (BadResponseException $e) {
 			$this->response = $e->getResponse();
 			$statusCode = $this->response->getStatusCode();
@@ -136,17 +158,21 @@ trait Comments {
 	 * @param string $user
 	 * @param string $fileId
 	 * @param string $commentId
+	 *
+	 * @return void
 	 */
 	public function deleteComment($user, $fileId, $commentId) {
 		$commentsPath = '/comments/files/' . $fileId . '/' . $commentId;
 		try {
-			$this->response = $this->makeDavRequest($user,
-													"DELETE",
-													$commentsPath,
-													[],
-													null,
-													"uploads",
-													null);
+			$this->response = $this->makeDavRequest(
+				$user,
+				"DELETE",
+				$commentsPath,
+				[],
+				null,
+				"uploads",
+				null
+			);
 		} catch (BadResponseException $ex) {
 			$this->response = $ex->getResponse();
 		}
@@ -157,6 +183,8 @@ trait Comments {
 	 * @Given user :user has deleted the last created comment
 	 *
 	 * @param string $user
+	 *
+	 * @return void
 	 * @throws \Exception
 	 */
 	public function userDeletesLastComment($user) {
@@ -168,13 +196,15 @@ trait Comments {
 	 *
 	 * @param string $key
 	 * @param string $value
+	 *
+	 * @return void
 	 * @throws \Exception
 	 */
 	public function theResponseShouldContainAPropertyWithValue($key, $value) {
 		$keys = $this->response[0]['value'][2]['value'][0]['value'];
 		$found = false;
 		foreach ($keys as $singleKey) {
-			if ($singleKey['name'] === '{http://owncloud.org/ns}'.substr($key, 3)) {
+			if ($singleKey['name'] === '{http://owncloud.org/ns}' . substr($key, 3)) {
 				if ($singleKey['value'] === $value) {
 					$found = true;
 				}
@@ -189,11 +219,15 @@ trait Comments {
 	 * @Then the response should contain only :number comments
 	 *
 	 * @param int $number
+	 *
+	 * @return void
 	 * @throws \Exception
 	 */
 	public function theResponseShouldContainOnlyComments($number) {
 		if (count($this->response) !== (int)$number) {
-			throw new \Exception("Found more comments than $number (" . count($this->response) . ")");
+			throw new \Exception(
+				"Found more comments than $number (" . count($this->response) . ")"
+			);
 		}
 	}
 
@@ -202,24 +236,28 @@ trait Comments {
 	 * @param string $content
 	 * @param string $fileId
 	 * @param string $commentId
+	 *
+	 * @return void
 	 */
 	public function editAComment($user, $content, $fileId, $commentId) {
 		$commentsPath = '/comments/files/' . $fileId . '/' . $commentId;
 		try {
-			$this->response = $this->makeDavRequest($user,
-								  "PROPPATCH",
-								  $commentsPath,
-								  [],
-								  null,
-								  "uploads",
-								  '<?xml version="1.0"?>
+			$this->response = $this->makeDavRequest(
+				$user,
+				"PROPPATCH",
+				$commentsPath,
+				[],
+				null,
+				"uploads",
+				'<?xml version="1.0"?>
 									<d:propertyupdate  xmlns:d="DAV:" xmlns:oc="http://owncloud.org/ns">
 										<d:set>
 											<d:prop>
 												<oc:message>' . htmlspecialchars($content, ENT_XML1, 'UTF-8') . '</oc:message>
 											</d:prop>
 										</d:set>
-									</d:propertyupdate>');
+									</d:propertyupdate>'
+			);
 		} catch (BadResponseException $ex) {
 			$this->response = $ex->getResponse();
 		}
@@ -231,10 +269,14 @@ trait Comments {
 	 *
 	 * @param string $user
 	 * @param string $content
+	 *
+	 * @return void
 	 * @throws \Exception
 	 */
 	public function userEditsLastCreatedComment($user, $content) {
-		$this->editAComment($user, $content, $this->lastFileId, $this->lastCommentId);
+		$this->editAComment(
+			$user, $content, $this->lastFileId, $this->lastCommentId
+		);
 	}
 
 }

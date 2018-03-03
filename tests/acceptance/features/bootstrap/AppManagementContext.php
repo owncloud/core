@@ -30,27 +30,37 @@ class AppManagementContext implements  Context {
 	
 	private $oldAppPath;
 	
-	/** @var string stdout of last command */
+	/**
+	 * @var string stdout of last command 
+	 */
 	private $cmdOutput;
 	
 	/**
 	 * @BeforeScenario
 	 *
 	 * Remember the config values before each scenario
+	 *
+	 * @return void
 	 */
 	public function prepareParameters() {
 		include_once __DIR__ . '/../../../../lib/base.php';
-		$this->oldAppPath = \OC::$server->getConfig()->getSystemValue('apps_paths', null);
+		$this->oldAppPath = \OC::$server->getConfig()->getSystemValue(
+			'apps_paths', null
+		);
 	}
 	
 	/**
 	 * @AfterScenario
 	 *
 	 * Reset the config values after each scenario
+	 *
+	 * @return void
 	 */
 	public function undoChangingParameters() {
 		if (!is_null($this->oldAppPath)) {
-			\OC::$server->getConfig()->setSystemValue('apps_paths', $this->oldAppPath);
+			\OC::$server->getConfig()->setSystemValue(
+				'apps_paths', $this->oldAppPath
+			);
 		} else {
 			\OC::$server->getConfig()->deleteSystemValue('apps_paths');
 		}
@@ -61,6 +71,8 @@ class AppManagementContext implements  Context {
 	 *
 	 * @param string $dir1
 	 * @param string $dir2
+	 *
+	 * @return void
 	 */
 	public function setAppDirectories($dir1, $dir2) {
 		$fullpath1 = \OC::$SERVERROOT . '/' . $dir1;
@@ -80,10 +92,13 @@ class AppManagementContext implements  Context {
 	 * @param string $appId app id
 	 * @param string $version app version
 	 * @param string $dir app directory
+	 *
+	 * @return void
 	 */
 	public function appHasBeenPutInDir($appId, $version, $dir) {
 		$ocVersion = \OC::$server->getConfig()->getSystemValue('version', '0.0.0');
-		$appInfo = sprintf('<?xml version="1.0"?>
+		$appInfo = sprintf(
+			'<?xml version="1.0"?>
 			<info>
 				<id>%s</id>
 				<name>%s</name>
@@ -128,12 +143,16 @@ class AppManagementContext implements  Context {
 	 * @Given the administrator has loaded app :appId using the console
 	 *
 	 * @param string $appId app id
+	 *
+	 * @return void
 	 */
 	public function loadApp($appId) {
 		$args = explode(' ', "app:getpath $appId");
-		$args = array_map(function($arg) {
-			return escapeshellarg($arg);
-		}, $args);
+		$args = array_map(
+			function ($arg) {
+				return escapeshellarg($arg);
+			}, $args
+		);
 		$args[] = '--no-ansi';
 		$args = implode(' ', $args);
 
@@ -142,7 +161,12 @@ class AppManagementContext implements  Context {
 			1 => ['pipe', 'w'],
 			2 => ['pipe', 'w'],
 		];
-		$process = proc_open('php console.php ' . $args, $descriptor, $pipes, \OC::$SERVERROOT);
+		$process = proc_open(
+			'php console.php ' . $args,
+			$descriptor,
+			$pipes,
+			\OC::$SERVERROOT
+		);
 		$this->cmdOutput = stream_get_contents($pipes[1]);
 		proc_close($process);
 	}
@@ -152,8 +176,13 @@ class AppManagementContext implements  Context {
 	 *
 	 * @param string $appId
 	 * @param string $dir
+	 *
+	 * @return void
 	 */
-	 public function appVersionIs($appId, $dir) {
-		PHPUnit_Framework_Assert::assertEquals(\OC::$SERVERROOT . '/' . $dir . '/' . $appId, trim($this->cmdOutput));
+	public function appVersionIs($appId, $dir) {
+		PHPUnit_Framework_Assert::assertEquals(
+			\OC::$SERVERROOT . '/' . $dir . '/' . $appId,
+			trim($this->cmdOutput)
+		);
 	}
 }

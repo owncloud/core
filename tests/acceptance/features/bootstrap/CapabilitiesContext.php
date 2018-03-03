@@ -24,6 +24,7 @@
 
 use Behat\Behat\Context\Context;
 use Behat\Behat\Context\SnippetAcceptingContext;
+use Behat\Gherkin\Node\TableNode;
 
 require __DIR__ . '/../../../../lib/composer/autoload.php';
 
@@ -37,10 +38,11 @@ class CapabilitiesContext implements Context, SnippetAcceptingContext {
 	/**
 	 * @Then the capabilities should contain
 	 *
-	 * @param \Behat\Gherkin\Node\TableNode|null $formData
+	 * @param TableNode|null $formData
+	 *
 	 * @return void
 	 */
-	public function checkCapabilitiesResponse(\Behat\Gherkin\Node\TableNode $formData) {
+	public function checkCapabilitiesResponse(TableNode $formData) {
 		$capabilitiesXML = $this->getCapabilitiesXml();
 
 		foreach ($formData->getHash() as $row) {
@@ -66,7 +68,9 @@ class CapabilitiesContext implements Context, SnippetAcceptingContext {
 		$this->savedCapabilitiesXml = $this->getCapabilitiesXml();
 		// Set the required starting values for testing
 		$capabilitiesArray = $this->getCommonSharingConfigs();
-		$capabilitiesArray = array_merge($capabilitiesArray, $this->getCommonFederationConfigs());
+		$capabilitiesArray = array_merge(
+			$capabilitiesArray, $this->getCommonFederationConfigs()
+		);
 		$capabilitiesArray = array_merge(
 			$capabilitiesArray,
 			[
