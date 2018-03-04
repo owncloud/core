@@ -296,6 +296,7 @@ OC.L10N.register(
     "For password recovery and notifications" : "Për rimarrje fjalëkalimesh dhe njoftime ",
     "No email address set" : "S’është caktuar adresë email",
     "You are member of the following groups:" : "Jeni anëtar i grupeve vijuese:",
+    "You are not a member of any groups." : "S’jeni anëtar i ndonjë grupi.",
     "Password" : "Fjalëkalim",
     "Unable to change your password" : "S’arrihet të ndryshohet fjalëkalimi juaj",
     "Current password" : "Fjalëkalimi i tanishëm",
