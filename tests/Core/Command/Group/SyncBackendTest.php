@@ -22,19 +22,11 @@
 namespace Tests\Core\Command\Group;
 
 use OC\Core\Command\Group\SyncBackend;
-use OC\Group\GroupMapper;
 use OC\Group\Manager as GroupManager;
-use OC\MembershipManager;
-use OC\OCS\Exception;
-use OC\User\AccountMapper;
 use OC\User\AccountTermMapper;
 use OC\User\Manager as UserManager;
 use OCP\GroupInterface;
-use OCP\IConfig;
-use OCP\IDBConnection;
-use OCP\IGroup;
 use OCP\ILogger;
-use OCP\IUser;
 use OCP\UserInterface;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -173,6 +165,33 @@ class SyncBackendTest extends TestCase {
 
 		$this->consoleOutput->expects($this->once())
 			->method('writeln');
+
+		self::invokePrivate($this->command, 'execute', [$this->consoleInput, $this->consoleOutput]);
+	}
+
+	/**
+	 * There are no groups synced. We expect groups to be synced down
+	 * and memberships sync be ignored
+	 */
+	public function testGroupsOnly() {
+		$this->consoleInput->method('getOption')
+			->will($this->returnValueMap([
+				['groups-only', true]
+			]));
+
+		$this->backend->expects($this->any())
+			->method('getGroups')
+			->with('', 500, 0)
+			->will($this->returnValue(['group1', 'group2', 'group3']));
+
+		$this->consoleInput->method('getArgument')
+			->will($this->returnValueMap([
+				['backend-class', get_class($this->backend)]
+			]));
+
+		$this->consoleOutput->expects($this->any())
+			->method('getVerbosity')
+			->willReturn(OutputInterface::VERBOSITY_QUIET);
 
 		self::invokePrivate($this->command, 'execute', [$this->consoleInput, $this->consoleOutput]);
 	}

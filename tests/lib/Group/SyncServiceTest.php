@@ -165,7 +165,7 @@ class SyncServiceTest extends TestCase {
 			->will($this->returnValue(['userbeforelast', 'userlast']));
 
 		$groups = [];
-		$syncService->run($this->backend, function ($gid) use (&$groups){
+		$syncService->run($this->backend, true, function ($gid) use (&$groups){
 			$groups[] = $gid;
 		});
 
@@ -430,7 +430,7 @@ class SyncServiceTest extends TestCase {
 
 		// Run sync
 		$groups = [];
-		$syncService->run($this->backend, function ($gid) use (&$groups){
+		$syncService->run($this->backend, true, function ($gid) use (&$groups){
 			$groups[] = $gid;
 		});
 
@@ -504,7 +504,7 @@ class SyncServiceTest extends TestCase {
 
 		// Run sync
 		$groups = [];
-		$syncService->run($this->backend, function ($gid) use (&$groups){
+		$syncService->run($this->backend, true, function ($gid) use (&$groups){
 			$groups[] = $gid;
 		});
 
@@ -570,7 +570,7 @@ class SyncServiceTest extends TestCase {
 
 		//  Run sync
 		$groups = [];
-		$syncService->run($this->backend, function ($gid) use (&$groups) {
+		$syncService->run($this->backend, true, function ($gid) use (&$groups) {
 			$groups[] = $gid;
 		});
 
@@ -646,7 +646,7 @@ class SyncServiceTest extends TestCase {
 		$this->assertEquals($backendGroups[0]->getBackend(), get_class($this->backend));
 
 		$groups = [];
-		$syncService->run($this->backend, function ($gid) use (&$groups){
+		$syncService->run($this->backend, true, function ($gid) use (&$groups){
 			$groups[] = $gid;
 		});
 
@@ -705,7 +705,7 @@ class SyncServiceTest extends TestCase {
 		// This run should detect that group1 exists already in backend Test/Backend and
 		// entry for backend $this->backend cannot be processed
 		$groups = [];
-		$syncService->run($this->backend, function ($gid) use (&$groups){
+		$syncService->run($this->backend, true, function ($gid) use (&$groups){
 			$groups[] = $gid;
 		});
 
@@ -757,7 +757,7 @@ class SyncServiceTest extends TestCase {
 		$this->assertEquals($backendGroups[0]->getDisplayName(), 'Group 1');
 
 		$groups = [];
-		$syncService->run($this->backend, function ($gid) use (&$groups){
+		$syncService->run($this->backend, true, function ($gid) use (&$groups){
 			$groups[] = $gid;
 		});
 

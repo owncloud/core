@@ -79,6 +79,12 @@ class SyncBackend extends Command {
 				'The PHP class name - e.g., "OCA\User_LDAP\Group_Proxy". Please wrap the class name in double quotes. You can use the option --list to list all known backend classes.'
 			)
 			->addOption(
+				'groups-only',
+				'g',
+				InputOption::VALUE_NONE,
+				'Sync only groups. Memberships will be synced on user login only'
+			)
+			->addOption(
 				'list',
 				'l',
 				InputOption::VALUE_NONE,
@@ -94,6 +100,12 @@ class SyncBackend extends Command {
 			}
 			return 0;
 		}
+
+		$syncMemberships = true;
+		if ($input->getOption('groups-only')) {
+			$syncMemberships = false;
+		}
+
 		$backendClassName = $input->getArgument('backend-class');
 		if ($backendClassName === null) {
 			$output->writeln('<error>No backend class name given. Please run ./occ help group:sync to understand how this command works.</error>');
@@ -114,7 +126,7 @@ class SyncBackend extends Command {
 		$this->handleUnknownGroups($output, $syncService, $backend);
 
 		// Sync groups and memberships
-		$this->handleUpdate($output, $syncService, $backend, $backendGroupsNo);
+		$this->handleUpdate($output, $syncService, $backend, $backendGroupsNo, $syncMemberships);
 
 		return 0;
 	}
@@ -214,13 +226,14 @@ class SyncBackend extends Command {
 	 * @param SyncService $syncService
 	 * @param GroupInterface $backend
 	 * @param int $backendGroupsNo
+	 * @param bool $syncMemberships
 	 */
-	private function handleUpdate(OutputInterface $output, SyncService $syncService, GroupInterface $backend, $backendGroupsNo) {
+	private function handleUpdate(OutputInterface $output, SyncService $syncService, GroupInterface $backend, $backendGroupsNo, $syncMemberships) {
 		// insert/update known users
 		$output->writeln('Insert new and update existing groups. Sync memberships of each group ...');
 		$p = new ProgressBar($output);
 		$p->start($backendGroupsNo);
-		$syncService->run($backend, function () use ($p) {
+		$syncService->run($backend, $syncMemberships, function () use ($p) {
 			$p->advance();
 		});
 		$p->finish();

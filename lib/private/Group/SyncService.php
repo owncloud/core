@@ -78,46 +78,49 @@ class SyncService {
 	 * however callback for prefetch call will not be displayed
 	 *
 	 * @param GroupInterface $backend
+	 * @param bool $syncMemberships
 	 * @param \Closure $callback is called for every user to progress display
 	 * @throws UniqueConstraintViolationException
 	 * @throws MultipleObjectsReturnedException
 	 */
-	public function run(GroupInterface $backend, \Closure $callback) {
+	public function run(GroupInterface $backend, $syncMemberships, \Closure $callback) {
 		$this->fetch($backend);
 
 		// update existing and insert new users
 		$backendClass = get_class($backend);
 		foreach ($this->prefetchedGroupIds[$backendClass] as $gid) {
 			if ($backendGroup = $this->createOrSyncGroup($gid, $backend)) {
-				// Fetch remote group users, which have existing accounts in the system
-				$remoteAccounts = $this->getRemoteGroupUsers($backend, $backendGroup->getGroupId());
+				if ($syncMemberships) {
+					// Fetch remote group users, which have existing accounts in the system
+					$remoteAccounts = $this->getRemoteGroupUsers($backend, $backendGroup->getGroupId());
 
-				// Fetch local group users, which were synced to the group using SYNC mechanism
-				$localSyncAccounts = $this->getSyncLocalGroupUsers($backendGroup->getGroupId());
+					// Fetch local group users, which were synced to the group using SYNC mechanism
+					$localSyncAccounts = $this->getSyncLocalGroupUsers($backendGroup->getGroupId());
 
-				// Fetch local group users, which were added to the group MANUALY, thus should not be affected by sync
-				$localManualAccounts = $this->getManualLocalGroupUsers($backendGroup->getGroupId());
+					// Fetch local group users, which were added to the group MANUALY, thus should not be affected by sync
+					$localManualAccounts = $this->getManualLocalGroupUsers($backendGroup->getGroupId());
 
-				// Check which memberships need to removed and added for this backend class
-				$membershipsToRemove = array_diff(array_keys($localSyncAccounts), array_keys($remoteAccounts));
-				$membershipsToAdd = array_diff(array_keys($remoteAccounts), array_keys($localSyncAccounts));
+					// Check which memberships need to removed and added for this backend class
+					$membershipsToRemove = array_diff(array_keys($localSyncAccounts), array_keys($remoteAccounts));
+					$membershipsToAdd = array_diff(array_keys($remoteAccounts), array_keys($localSyncAccounts));
 
-				foreach ($membershipsToRemove as $accountId) {
-					// Do not affect local group users added manually
-					if (!isset($localManualAccounts[$accountId])) {
-						// Remove membership of maintenance type MAINTENANCE_TYPE_SYNC (diff was with localSyncAccounts)
-						$this->membershipManager->removeMembership($accountId, $backendGroup->getId(),
-							MembershipManager::MEMBERSHIP_TYPE_GROUP_USER);
+					foreach ($membershipsToRemove as $accountId) {
+						// Do not affect local group users added manually
+						if (!isset($localManualAccounts[$accountId])) {
+							// Remove membership of maintenance type MAINTENANCE_TYPE_SYNC (diff was with localSyncAccounts)
+							$this->membershipManager->removeMembership($accountId, $backendGroup->getId(),
+								MembershipManager::MEMBERSHIP_TYPE_GROUP_USER);
+						}
 					}
-				}
 
-				foreach ($membershipsToAdd as $accountId) {
-					// Do not affect local group users added manually
-					if (!isset($localManualAccounts[$accountId])) {
-						// Add membership of maintenance type MAINTENANCE_TYPE_SYNC
-						$this->membershipManager->addMembership($accountId, $backendGroup->getId(),
-							MembershipManager::MEMBERSHIP_TYPE_GROUP_USER,
-							MembershipManager::MAINTENANCE_TYPE_SYNC);
+					foreach ($membershipsToAdd as $accountId) {
+						// Do not affect local group users added manually
+						if (!isset($localManualAccounts[$accountId])) {
+							// Add membership of maintenance type MAINTENANCE_TYPE_SYNC
+							$this->membershipManager->addMembership($accountId, $backendGroup->getId(),
+								MembershipManager::MEMBERSHIP_TYPE_GROUP_USER,
+								MembershipManager::MAINTENANCE_TYPE_SYNC);
+						}
 					}
 				}
 
