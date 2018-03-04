@@ -56,6 +56,7 @@ class SetupHelper {
 	 * @param string $password
 	 * @param string $displayName
 	 * @param string $email
+	 *
 	 * @return string[] associated array with "code", "stdOut", "stdErr"
 	 */
 	public static function createUser(
@@ -79,6 +80,7 @@ class SetupHelper {
 	 * deletes a user
 	 *
 	 * @param string $userName
+	 *
 	 * @return string[] associated array with "code", "stdOut", "stdErr"
 	 */
 	public static function deleteUser($userName) {
@@ -91,6 +93,7 @@ class SetupHelper {
 	 * @param string $app
 	 * @param string $key
 	 * @param string $value
+	 *
 	 * @return string[]
 	 */
 	public static function changeUserSetting(
@@ -105,6 +108,7 @@ class SetupHelper {
 	 * creates a group
 	 *
 	 * @param string $groupName
+	 *
 	 * @return string[] associated array with "code", "stdOut", "stdErr"
 	 */
 	public static function createGroup($groupName) {
@@ -116,6 +120,7 @@ class SetupHelper {
 	 *
 	 * @param string $groupName
 	 * @param string $userName
+	 *
 	 * @return string[] associated array with "code", "stdOut", "stdErr"
 	 */
 	public static function addUserToGroup($groupName, $userName) {
@@ -129,6 +134,7 @@ class SetupHelper {
 	 *
 	 * @param string $groupName
 	 * @param string $userName
+	 *
 	 * @return string[] associated array with "code", "stdOut", "stdErr"
 	 */
 	public static function removeUserFromGroup($groupName, $userName) {
@@ -141,6 +147,7 @@ class SetupHelper {
 	 * deletes a group
 	 *
 	 * @param string $groupName
+	 *
 	 * @return string[] associated array with "code", "stdOut", "stdErr"
 	 */
 	public static function deleteGroup($groupName) {
@@ -157,6 +164,7 @@ class SetupHelper {
 	/**
 	 *
 	 * @param HookScope $scope
+	 *
 	 * @return array of suite context parameters
 	 */
 	public static function getSuiteParameters(HookScope $scope) {
@@ -165,6 +173,11 @@ class SetupHelper {
 	}
 
 	/**
+	 *
+	 * @param string $adminUsername
+	 * @param string $adminPassword
+	 * @param string $baseUrl
+	 * @param string $ocPath
 	 *
 	 * @return void
 	 */
@@ -202,6 +215,7 @@ class SetupHelper {
 	 * enables an app
 	 *
 	 * @param string $appName
+	 *
 	 * @return string[] associated array with "code", "stdOut", "stdErr"
 	 */
 	public static function enableApp($appName) {
@@ -212,6 +226,7 @@ class SetupHelper {
 	 * disables an app
 	 *
 	 * @param string $appName
+	 *
 	 * @return string[] associated array with "code", "stdOut", "stdErr"
 	 */
 	public static function disableApp($appName) {
@@ -222,6 +237,7 @@ class SetupHelper {
 	 * checks if an app is currently enabled
 	 *
 	 * @param string $appName
+	 *
 	 * @return bool true if enabled, false if disabled or not existing
 	 */
 	public static function isAppEnabled($appName) {
@@ -233,6 +249,7 @@ class SetupHelper {
 	 * lists app status (enabled or disabled)
 	 *
 	 * @param string $appName
+	 *
 	 * @return bool true if the app needed to be enabled, false otherwise
 	 */
 	public static function enableAppIfNotEnabled($appName) {
@@ -249,6 +266,7 @@ class SetupHelper {
 	 *
 	 * @param array $args anything behind "occ".
 	 *                    For example: "files:transfer-ownership"
+	 *
 	 * @return string[] associated array with "code", "stdOut", "stdErr"
 	 */
 	public static function runOcc($args) {

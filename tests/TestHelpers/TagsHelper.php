@@ -38,6 +38,7 @@ class TagsHelper {
 	 * @param string $fileName
 	 * @param string $fileOwner
 	 * @param int $davPathVersionToUse (1|2)
+	 *
 	 * @return \GuzzleHttp\Message\FutureResponse|\GuzzleHttp\Message\ResponseInterface|NULL
 	 */
 	public static function tag(
@@ -72,6 +73,7 @@ class TagsHelper {
 	 * @param string $user
 	 * @param string $password
 	 * @param bool $withGroups
+	 *
 	 * @return array
 	 */
 	public static function requestTagsForUser(
@@ -108,6 +110,7 @@ class TagsHelper {
 	 * @param string $password
 	 * @param string $tagDisplayName
 	 * @param bool $withGroups
+	 *
 	 * @return array
 	 */
 	public static function requestTagByDisplayName(
@@ -137,6 +140,7 @@ class TagsHelper {
 	 * @param bool $userAssignable
 	 * @param string $groups separated by "|"
 	 * @param int $davPathVersionToUse (1|2)
+	 *
 	 * @return array ['lastTagId', 'HTTPResponse']
 	 * @throws \GuzzleHttp\Exception\ClientException
 	 * @link self::makeDavRequest()
@@ -187,6 +191,7 @@ class TagsHelper {
 	 * @param string $password
 	 * @param int $tagID
 	 * @param int $davPathVersionToUse (1|2)
+	 *
 	 * @return \GuzzleHttp\Message\FutureResponse|\GuzzleHttp\Message\ResponseInterface|NULL
 	 * @throws \GuzzleHttp\Exception\ClientException
 	 */
@@ -208,6 +213,7 @@ class TagsHelper {
 	/**
 	 *
 	 * @param string $type
+	 *
 	 * @throws \Exception
 	 * @return boolean[]
 	 */
