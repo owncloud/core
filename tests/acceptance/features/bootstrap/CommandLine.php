@@ -21,12 +21,21 @@
 
 require __DIR__ . '/../../../../lib/composer/autoload.php';
 
+/**
+ * Command line functions
+ */
 trait CommandLine {
-	/** @var int return code of last command */
+	/**
+	 * @var int return code of last command 
+	 */
 	private $lastCode;
-	/** @var string stdout of last command */
+	/**
+	 * @var string stdout of last command 
+	 */
 	private $lastStdOut;
-	/** @var string stderr of last command */
+	/**
+	 * @var string stderr of last command 
+	 */
 	private $lastStdErr;
 
 	/**
@@ -34,13 +43,16 @@ trait CommandLine {
 	 *
 	 * @param array $args of the occ command
 	 * @param bool $escaping
+	 *
 	 * @return int exit code
 	 */
 	public function runOcc($args = [], $escaping = true) {
 		if ($escaping === true) {
-			$args = array_map(function($arg) {
-				return escapeshellarg($arg);
-			}, $args);
+			$args = array_map(
+				function ($arg) {
+					return escapeshellarg($arg);
+				}, $args
+			);
 		}
 		$args[] = '--no-ansi';
 		$args = implode(' ', $args);
@@ -50,7 +62,9 @@ trait CommandLine {
 			1 => ['pipe', 'w'],
 			2 => ['pipe', 'w'],
 		];
-		$process = proc_open('php console.php ' . $args, $descriptor, $pipes, $this->ocPath);
+		$process = proc_open(
+			'php console.php ' . $args, $descriptor, $pipes, $this->ocPath
+		);
 		$this->lastStdOut = stream_get_contents($pipes[1]);
 		$this->lastStdErr = stream_get_contents($pipes[2]);
 		$this->lastCode = proc_close($process);
@@ -62,6 +76,8 @@ trait CommandLine {
 	 * @Given /^the administrator has invoked occ command "([^"]*)"$/
 	 *
 	 * @param string $cmd
+	 *
+	 * @return void
 	 */
 	public function invokingTheCommand($cmd) {
 		$args = explode(' ', $cmd);
@@ -70,6 +86,8 @@ trait CommandLine {
 
 	/**
 	 * Find exception texts in stderr
+	 *
+	 * @return array of exception texts
 	 */
 	public function findExceptions() {
 		$exceptions = [];
@@ -94,6 +112,7 @@ trait CommandLine {
 	 *
 	 * @param string $input stdout or stderr output
 	 * @param string $text text to search for
+	 *
 	 * @return array array of lines that matched
 	 */
 	public function findLines($input, $text) {
@@ -109,6 +128,8 @@ trait CommandLine {
 
 	/**
 	 * @Then /^the command should have been successful$/
+	 *
+	 * @return void
 	 */
 	public function theCommandShouldHaveBeenSuccessful() {
 		$exceptions = $this->findExceptions();
@@ -128,11 +149,15 @@ trait CommandLine {
 	 * @Then /^the command should have failed with exit code ([0-9]+)$/
 	 *
 	 * @param int $exitCode
+	 *
+	 * @return void
 	 * @throws Exception
 	 */
 	public function theCommandFailedWithExitCode($exitCode) {
 		if ($this->lastCode !== (int)$exitCode) {
-			throw new \Exception('The command was expected to fail with exit code ' . $exitCode . ' but got ' . $this->lastCode);
+			throw new \Exception(
+				'The command was expected to fail with exit code ' . $exitCode . ' but got ' . $this->lastCode
+			);
 		}
 	}
 
@@ -140,6 +165,8 @@ trait CommandLine {
 	 * @Then /^the command should have failed with exception text "([^"]*)"$/
 	 *
 	 * @param string $exceptionText
+	 *
+	 * @return void
 	 * @throws Exception
 	 */
 	public function theCommandFailedWithExceptionText($exceptionText) {
@@ -149,7 +176,9 @@ trait CommandLine {
 		}
 
 		if (!in_array($exceptionText, $exceptions)) {
-			throw new \Exception('The command did not throw any exception with the text "' . $exceptionText . '"');
+			throw new \Exception(
+				'The command did not throw any exception with the text "' . $exceptionText . '"'
+			);
 		}
 	}
 
@@ -157,12 +186,16 @@ trait CommandLine {
 	 * @Then /^the command output should contain the text "([^"]*)"$/
 	 *
 	 * @param string $text
+	 *
+	 * @return void
 	 * @throws Exception
 	 */
 	public function theCommandOutputContainsTheText($text) {
 		$lines = $this->findLines($this->lastStdOut, $text);
 		if (empty($lines)) {
-			throw new \Exception('The command did not output the expected text on stdout "' . $text . '"');
+			throw new \Exception(
+				'The command did not output the expected text on stdout "' . $text . '"'
+			);
 		}
 	}
 
@@ -170,12 +203,16 @@ trait CommandLine {
 	 * @Then /^the command error output should contain the text "([^"]*)"$/
 	 *
 	 * @param string $text
+	 *
+	 * @return void
 	 * @throws Exception
 	 */
 	public function theCommandErrorOutputContainsTheText($text) {
 		$lines = $this->findLines($this->lastStdErr, $text);
 		if (empty($lines)) {
-			throw new \Exception('The command did not output the expected text on stderr "' . $text . '"');
+			throw new \Exception(
+				'The command did not output the expected text on stderr "' . $text . '"'
+			);
 		}
 	}
 
@@ -184,6 +221,7 @@ trait CommandLine {
 	/**
 	 * @param string $sourceUser
 	 * @param string $targetUser
+	 *
 	 * @return string|null
 	 */
 	private function findLastTransferFolderForUser($sourceUser, $targetUser) {
@@ -208,9 +246,11 @@ trait CommandLine {
 			return null;
 		}
 
-		usort($foundPaths, function($a, $b) {
-			return $a['date'] - $b['date'];
-		});
+		usort(
+			$foundPaths, function ($a, $b) {
+				return $a['date'] - $b['date'];
+			}
+		);
 
 		$davPath = rtrim($this->getDavFilesPath($targetUser), '/');
 
@@ -225,6 +265,8 @@ trait CommandLine {
 	 *
 	 * @param string $user1
 	 * @param string $user2
+	 *
+	 * @return void
 	 */
 	public function transferringOwnership($user1, $user2) {
 		if ($this->runOcc(['files:transfer-ownership', $user1, $user2]) === 0) {
@@ -238,6 +280,8 @@ trait CommandLine {
 	/**
 	 * @When /^the administrator successfully recreates the encryption masterkey using the occ command$/
 	 * @Given /^the administrator has successfully recreated the encryption masterkey$/
+	 *
+	 * @return void
 	 */
 	public function recreateMasterKeyUsingOccCommand() {
 		$this->runOcc(['encryption:recreate-master-key', '-y']);
@@ -251,6 +295,8 @@ trait CommandLine {
 	 * @param string $path
 	 * @param string $user1
 	 * @param string $user2
+	 *
+	 * @return void
 	 */
 	public function transferringOwnershipPath($path, $user1, $user2) {
 		$path = '--path=' . $path;
@@ -266,6 +312,8 @@ trait CommandLine {
 	 * @Given /^using received transfer folder of "([^"]+)" as dav path$/
 	 *
 	 * @param string $user
+	 *
+	 * @return void
 	 */
 	public function usingTransferFolderAsDavPath($user) {
 		$davPath = $this->getDavFilesPath($user);

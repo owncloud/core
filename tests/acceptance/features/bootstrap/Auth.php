@@ -1,15 +1,41 @@
 <?php
+/**
+ * @author Christoph Wurst <christoph@owncloud.com>
+ *
+ * @copyright Copyright (c) 2018, ownCloud GmbH
+ * @license AGPL-3.0
+ *
+ * This code is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License, version 3,
+ * as published by the Free Software Foundation.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License, version 3,
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>
+ *
+ */
 
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\BadResponseException;
 
 require __DIR__ . '/../../../../lib/composer/autoload.php';
 
+/**
+ * Authentication functions
+ */
 trait Auth {
 
 	private $clientToken;
 
-	/** @BeforeScenario */
+	/**
+	 * @BeforeScenario
+	 *
+	 * @return void
+	 */
 	public function setUpScenario() {
 		$this->client = new Client();
 		$this->responseXml = '';
@@ -21,6 +47,8 @@ trait Auth {
 	 *
 	 * @param string $url
 	 * @param string $method
+	 *
+	 * @return void
 	 */
 	public function userRequestsURLWith($url, $method) {
 		$this->sendRequest($url, $method);
@@ -31,14 +59,20 @@ trait Auth {
 	 * @param string $method
 	 * @param string|null $authHeader
 	 * @param bool $useCookies
+	 *
+	 * @return void
 	 */
-	private function sendRequest($url, $method, $authHeader = null, $useCookies = false) {
+	private function sendRequest(
+		$url, $method, $authHeader = null, $useCookies = false
+	) {
 		$fullUrl = substr($this->baseUrl, 0, -5) . $url;
 		try {
 			if ($useCookies) {
-				$request = $this->client->createRequest($method, $fullUrl, [
-				    'cookies' => $this->cookieJar,
-				]);
+				$request = $this->client->createRequest(
+					$method, $fullUrl, [
+					'cookies' => $this->cookieJar,
+					]
+				);
 			} else {
 				$request = $this->client->createRequest($method, $fullUrl);
 			}
@@ -58,15 +92,19 @@ trait Auth {
 	 * @Given a new client token for :user has been generated
 	 *
 	 * @param string $user
+	 *
+	 * @return void
 	 */
 	public function aNewClientTokenHasBeenGenerated($user) {
 		$client = new Client();
-		$resp = $client->post(substr($this->baseUrl, 0, -5) . '/token/generate', [
+		$resp = $client->post(
+			substr($this->baseUrl, 0, -5) . '/token/generate', [
 			'json' => [
 					'user' => $user,
 					'password' => $this->getPasswordForUser($user),
 			]
-		]);
+			]
+		);
 		$this->clientToken = json_decode($resp->getBody()->getContents())->token;
 	}
 
@@ -77,6 +115,8 @@ trait Auth {
 	 * @param string $user
 	 * @param string $url
 	 * @param string $method
+	 *
+	 * @return void
 	 */
 	public function userRequestsURLWithUsingBasicAuth($user, $url, $method) {
 		$authString = $user . ':' . $this->getPasswordForUser($user);
@@ -90,9 +130,15 @@ trait Auth {
 	 * @param string $user
 	 * @param string $url
 	 * @param string $method
+	 *
+	 * @return void
 	 */
 	public function userRequestsURLWithUsingBasicTokenAuth($user, $url, $method) {
-		$this->sendRequest($url, $method, 'basic ' . base64_encode($user . ':' . $this->clientToken));
+		$this->sendRequest(
+			$url,
+			$method,
+			'basic ' . base64_encode($user . ':' . $this->clientToken)
+		);
 	}
 
 	/**
@@ -101,6 +147,8 @@ trait Auth {
 	 *
 	 * @param string $url
 	 * @param string $method
+	 *
+	 * @return void
 	 */
 	public function userRequestsURLWithUsingAClientToken($url, $method) {
 		$this->sendRequest($url, $method, 'token ' . $this->clientToken);
@@ -112,6 +160,8 @@ trait Auth {
 	 *
 	 * @param string $url
 	 * @param string $method
+	 *
+	 * @return void
 	 */
 	public function userRequestsURLWithBrowserSession($url, $method) {
 		$this->sendRequest($url, $method, null, true);
@@ -121,6 +171,8 @@ trait Auth {
 	 * @Given a new browser session for :user has been started
 	 *
 	 * @param string $user
+	 *
+	 * @return void
 	 */
 	public function aNewBrowserSessionForHasBeenStarted($user) {
 		$loginUrl = substr($this->baseUrl, 0, -5) . '/login';
@@ -128,7 +180,7 @@ trait Auth {
 		$client = new Client();
 		$response = $client->get(
 			$loginUrl, [
-		    'cookies' => $this->cookieJar,
+			'cookies' => $this->cookieJar,
 			]
 		);
 		$this->extracRequestTokenFromResponse($response);
