@@ -5,9 +5,9 @@ default:
     SensioLabs\Behat\PageObjectExtension: ~
 
   suites:
-    files:
+    webUIFiles:
       paths:
-        - %paths.base%/../features/files
+        - %paths.base%/../features/webUIFiles
       context: &common_suite_context
         parameters:
           ocPath: apps/testing/api/v1/occ
@@ -23,9 +23,9 @@ default:
         - UsersContext:
         - FilesContext:
 
-    moveFilesFolders:
+    webUIMoveFilesFolders:
       paths:
-        - %paths.base%/../features/moveFilesFolders
+        - %paths.base%/../features/webUIMoveFilesFolders
       context: *common_suite_context
       contexts:
         - FeatureContext:
@@ -33,9 +33,9 @@ default:
         - UsersContext:
         - FilesContext:
 
-    renameFiles:
+    webUIRenameFiles:
       paths:
-        - %paths.base%/../features/renameFiles
+        - %paths.base%/../features/webUIRenameFiles
       context: *common_suite_context
       contexts:
         - FeatureContext:
@@ -43,9 +43,9 @@ default:
         - UsersContext:
         - FilesContext:
 
-    renameFolders:
+    webUIRenameFolders:
       paths:
-        - %paths.base%/../features/renameFolders
+        - %paths.base%/../features/webUIRenameFolders
       context: *common_suite_context
       contexts:
         - FeatureContext:
@@ -53,9 +53,9 @@ default:
         - UsersContext:
         - FilesContext:
 
-    trashbin:
+    webUITrashbin:
       paths:
-        - %paths.base%/../features/trashbin
+        - %paths.base%/../features/webUITrashbin
       context: *common_suite_context
       contexts:
         - FeatureContext:
@@ -63,20 +63,9 @@ default:
         - UsersContext:
         - FilesContext:
 
-    sharingInternalGroups:
+    webUISharingInternalGroups:
       paths:
-        - %paths.base%/../features/sharingInternalGroups
-      context: *common_suite_context
-      contexts:
-        - FeatureContext:
-        - LoginContext:
-        - UsersContext:
-        - FilesContext:
-        - SharingContext:
-
-    sharingInternalUsers:
-      paths:
-        - %paths.base%/../features/sharingInternalUsers
+        - %paths.base%/../features/webUISharingInternalGroups
       context: *common_suite_context
       contexts:
         - FeatureContext:
@@ -85,9 +74,9 @@ default:
         - FilesContext:
         - SharingContext:
 
-    sharingExternal:
+    webUISharingInternalUsers:
       paths:
-        - %paths.base%/../features/sharingExternal
+        - %paths.base%/../features/webUISharingInternalUsers
       context: *common_suite_context
       contexts:
         - FeatureContext:
@@ -96,19 +85,9 @@ default:
         - FilesContext:
         - SharingContext:
 
-    upload:
+    webUISharingExternal:
       paths:
-        - %paths.base%/../features/upload
-      context: *common_suite_context
-      contexts:
-        - FeatureContext:
-        - LoginContext:
-        - UsersContext:
-        - FilesContext:
-
-    restrictSharing:
-      paths:
-        - %paths.base%/../features/restrictSharing
+        - %paths.base%/../features/webUISharingExternal
       context: *common_suite_context
       contexts:
         - FeatureContext:
@@ -117,9 +96,9 @@ default:
         - FilesContext:
         - SharingContext:
 
-    favorites:
+    webUIUpload:
       paths:
-        - %paths.base%/../features/favorites
+        - %paths.base%/../features/webUIUpload
       context: *common_suite_context
       contexts:
         - FeatureContext:
@@ -127,9 +106,30 @@ default:
         - UsersContext:
         - FilesContext:
 
-    manageUsersGroups:
+    webUIRestrictSharing:
       paths:
-        - %paths.base%/../features/manageUsersGroups
+        - %paths.base%/../features/webUIRestrictSharing
+      context: *common_suite_context
+      contexts:
+        - FeatureContext:
+        - LoginContext:
+        - UsersContext:
+        - FilesContext:
+        - SharingContext:
+
+    webUIFavorites:
+      paths:
+        - %paths.base%/../features/webUIFavorites
+      context: *common_suite_context
+      contexts:
+        - FeatureContext:
+        - LoginContext:
+        - UsersContext:
+        - FilesContext:
+
+    webUIManageUsersGroups:
+      paths:
+        - %paths.base%/../features/webUIManageUsersGroups
       context: *common_suite_context
       contexts:
         - FeatureContext:
@@ -138,9 +138,9 @@ default:
         - FilesContext:
         - PersonalGeneralSettingsContext:
 
-    manageQuota:
+    webUIManageQuota:
       paths:
-        - %paths.base%/../features/manageQuota
+        - %paths.base%/../features/webUIManageQuota
       context: *common_suite_context
       contexts:
         - FeatureContext:
@@ -148,9 +148,9 @@ default:
         - UsersContext:
         - FilesContext:
 
-    personalSettings:
+    webUIPersonalSettings:
       paths:
-        - %paths.base%/../features/personalSettings
+        - %paths.base%/../features/webUIPersonalSettings
       context: *common_suite_context
       contexts:
         - FeatureContext:
