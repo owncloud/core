@@ -42,6 +42,7 @@ class WebDavHelper {
 	 * @param string $user
 	 * @param string $password
 	 * @param string $path
+	 *
 	 * @throws Exception
 	 * @return int
 	 */
@@ -85,6 +86,7 @@ class WebDavHelper {
 	 * @param int $davPathVersionToUse (1|2)
 	 * @param string $type of request
 	 * @param string $sourceIpAddress to initiate the request from
+	 *
 	 * @return \GuzzleHttp\Message\FutureResponse|\GuzzleHttp\Message\ResponseInterface|NULL
 	 * @throws \GuzzleHttp\Exception\BadResponseException
 	 */
@@ -125,7 +127,9 @@ class WebDavHelper {
 			foreach ($headers as $key => $value) {
 				//? and # need to be encoded in the Destination URL
 				if ($key === "Destination") {
-					$value = str_replace($urlSpecialChar[0], $urlSpecialChar[1], $value);
+					$value = str_replace(
+						$urlSpecialChar[0], $urlSpecialChar[1], $value
+					);
 				}
 				if ($request->hasHeader($key) === true) {
 					$request->setHeader($key, $value);
@@ -147,6 +151,7 @@ class WebDavHelper {
 	 * @param string $user
 	 * @param int $davPathVersionToUse (1|2)
 	 * @param string $type
+	 *
 	 * @throws InvalidArgumentException
 	 * @return string
 	 */
@@ -174,6 +179,7 @@ class WebDavHelper {
 	 * @param string $baseUrl
 	 * @param string $user
 	 * @param string $password
+	 *
 	 * @return \Sabre\DAV\Client
 	 */
 	public static function getSabreClient($baseUrl, $user, $password) {
@@ -192,6 +198,7 @@ class WebDavHelper {
 	 * 
 	 * @param string $url
 	 * @param bool $trailingSlash forces a trailing slash
+	 *
 	 * @return string
 	 */
 	public static function sanitizeUrl($url, $trailingSlash = false) {

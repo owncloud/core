@@ -39,6 +39,7 @@ class OcsApiHelper {
 	 * @param string $path
 	 * @param array $body array of key, value pairs e.g ['value' => 'yes']
 	 * @param int $apiVersion (1|2) default 2
+	 *
 	 * @return ResponseInterface
 	 * @throws ClientException
 	 */

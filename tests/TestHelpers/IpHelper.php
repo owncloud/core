@@ -44,6 +44,7 @@ class IpHelper {
 	 *
 	 * @param string $regex matching the desired text in the ifconfig output
 	 * @param string $except regex that matches devices not to be included
+	 *
 	 * @throws Exception
 	 * @return array of elements that match the inner part of the regex
 	 */
@@ -114,6 +115,7 @@ class IpHelper {
 	 *
 	 * @param string $ipv4Address with format like "192.168.1.1"
 	 * @param int $cidr the CIDR "mask" size for the subnet (0 to 32)
+	 *
 	 * @throws InvalidArgumentException
 	 * @return string IPv4 subnet base address
 	 */
@@ -143,6 +145,7 @@ class IpHelper {
 	 *
 	 * @param string $ipv6Address with format like "a:b:c::1"
 	 * @param int $cidr the CIDR "mask" size for the subnet (0 to 128)
+	 *
 	 * @throws InvalidArgumentException
 	 * @return string IPv6 subnet base address
 	 */
@@ -215,6 +218,7 @@ class IpHelper {
 	 * get a loopback address for the given IP address family
 	 *
 	 * @param string $ipAddressFamily IPv4 or IPv6 (not case sensitive)
+	 *
 	 * @throws InvalidArgumentException
 	 * @return string IP loopback address
 	 */
@@ -236,6 +240,7 @@ class IpHelper {
 	 * that contains the loopback address of the given IP address family
 	 *
 	 * @param string $ipAddressFamily IPv4 or IPv6 (not case sensitive)
+	 *
 	 * @throws InvalidArgumentException
 	 * @return string IP of loopback subnet base address
 	 */
@@ -298,6 +303,7 @@ class IpHelper {
 	 * i.e. a "real" routable IP address on some network interface
 	 *
 	 * @param string $ipAddressFamily IPv4 or IPv6 (not case sensitive)
+	 *
 	 * @throws InvalidArgumentException
 	 * @return string IP address
 	 */
@@ -319,6 +325,7 @@ class IpHelper {
 	 * that contains the IPv4 address of the first routable IPv4 subnet
 	 *
 	 * @param int $cidr the CIDR "mask" size for the subnet
+	 *
 	 * @return string IPv4 local subnet base address
 	 */
 	private static function routableIpv4AddressSubnet($cidr) {
@@ -330,6 +337,7 @@ class IpHelper {
 	 * that contains the IPv6 address of the first routable IPv6 subnet
 	 *
 	 * @param int $cidr the CIDR "mask" size for the subnet
+	 *
 	 * @return string IPv6 local subnet base address
 	 */
 	private static function routeableIpv6AddressSubnet($cidr) {
@@ -342,6 +350,7 @@ class IpHelper {
 	 *
 	 * @param string $ipAddressFamily IPv4 or IPv6 (not case sensitive)
 	 * @param int $cidr the CIDR "mask" size for the subnet
+	 *
 	 * @throws InvalidArgumentException
 	 * @return string IP of local subnet base address
 	 */
@@ -365,6 +374,7 @@ class IpHelper {
 	 * @param string $networkScope which type of address to return,
 	 *                             "routable" or "loopback"
 	 * @param string $ipAddressFamily IPv4 or IPv6 (not case sensitive)
+	 *
 	 * @throws InvalidArgumentException
 	 * @return string IP address
 	 */
@@ -393,6 +403,7 @@ class IpHelper {
 	 *                             "routable" or "loopback"
 	 * @param string $ipAddressFamily IPv4 or IPv6 (not case sensitive)
 	 * @param int $cidr the CIDR "mask" size for the subnet
+	 *
 	 * @throws InvalidArgumentException
 	 * @return string IP of base address
 	 */
