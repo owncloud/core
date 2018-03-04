@@ -191,6 +191,11 @@ class Manager extends PublicEmitter implements IGroupManager {
 			return null;
 		}
 
+		if ($this->groupExists($gid)) {
+			$l = \OC::$server->getL10N('lib');
+			throw new \Exception($l->t('The group name is already being used'));
+		}
+
 		$this->emit('\OC\Group', 'preCreate', [$gid]);
 
 		// Create group in the first added backend service
@@ -212,7 +217,7 @@ class Manager extends PublicEmitter implements IGroupManager {
 	}
 
 	/**
-	 * Create group from $backend backend service
+	 * Create or sync group from the backend
 	 *
 	 * @param string $gid
 	 * @param GroupInterface $backend
@@ -576,11 +581,6 @@ class Manager extends PublicEmitter implements IGroupManager {
 	private function isValid($gid) {
 		if ($gid === '' || $gid === null) {
 			return false;
-		}
-
-		if ($this->groupExists($gid)) {
-			$l = \OC::$server->getL10N('lib');
-			throw new \Exception($l->t('The group name is already being used'));
 		}
 
 		return true;

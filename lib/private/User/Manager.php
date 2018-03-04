@@ -367,11 +367,12 @@ class Manager extends PublicEmitter implements IUserManager {
 	}
 
 	/**
+	 * Create or sync account from the backend
+	 *
 	 * @param string $uid
 	 * @param UserInterface $backend
 	 * @throws UniqueConstraintViolationException
 	 * @return IUser | null
-	 * @deprecated core is responsible for creating accounts, see user_ldap how it is done
 	 */
 	public function createUserFromBackend($uid, $password, $backend) {
 		return $this->emittingCall(function () use (&$uid, &$password, &$backend) {

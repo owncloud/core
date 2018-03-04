@@ -291,10 +291,6 @@ class ManagerTest extends \Test\TestCase {
 				return true;
 			}));
 
-		$this->groupMapper->expects($this->exactly(1))
-			->method('getGroup')
-			->willThrowException(new DoesNotExistException(''));
-
 		$backendGroup = $this->getBackendGroup(1, get_class($backend));
 		$this->syncService->expects($this->exactly(1))
 			->method('createOrSyncGroup')
