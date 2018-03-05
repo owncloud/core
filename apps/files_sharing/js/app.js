@@ -29,11 +29,13 @@ OCA.Sharing.App = {
 
 		var fileActions = this._createFileActions();
 
+		var urlParams = OC.Util.History.parseUrlQuery();
 		this._inFileList = new OCA.Sharing.FileList(
 			$el,
 			{
 				id: 'shares.self',
 				scrollContainer: $('#app-content'),
+				scrollTo: urlParams.scrollto,
 				sharedWithUser: true,
 				fileActions: fileActions,
 				config: OCA.Files.App.getFilesConfig()
@@ -97,19 +99,22 @@ OCA.Sharing.App = {
 
 	removeSharingIn: function() {
 		if (this._inFileList) {
-			this._inFileList.$fileList.empty();
+			this._inFileList.destroy();
+			this._inFileList = null;
 		}
 	},
 
 	removeSharingOut: function() {
 		if (this._outFileList) {
-			this._outFileList.$fileList.empty();
+			this._outFileList.destroy();
+			this._outFileList = null;
 		}
 	},
 
 	removeSharingLinks: function() {
 		if (this._linkFileList) {
-			this._linkFileList.$fileList.empty();
+			this._linkFileList.destroy();
+			this._linkFileList = null;
 		}
 	},
 
@@ -183,19 +188,47 @@ OCA.Sharing.App = {
 			method = 'DELETE';
 		}
 
-		return $.ajax({
+		var xhr = $.ajax({
 			url: OC.linkToOCS('apps/files_sharing/api/v1') + 'shares/pending/' + encodeURIComponent(fileId) + '?format=json',
 			contentType: 'application/json',
 			dataType: 'json',
 			type: method,
-		}).fail(function(response) {
+		});
+		xhr.fail(function(response) {
 			var message = '';
 			// show message if it is available
 			if(response.responseJSON && response.responseJSON.message) {
 				message = ': ' + response.responseJSON.message;
 			}
-			OC.Notification.show(t('files', 'An error occurred while updating share state: ' + message), {type: 'error'});
+			OC.Notification.show(t('files', 'An error occurred while updating share state: {message}', {message:  message}), {type: 'error'});
 		});
+		return xhr;
+	},
+
+	_shareStateActionHandler: function(context, newState) {
+		function responseCallback(response, status) {
+			if (status === 'success') {
+				// note: there could be multiple shares/responses but
+				// we assume that the relevant content is the same
+				// for all (state, file_target)
+				var data = response.ocs.data[0];
+				var meta = response.ocs.meta;
+				if (meta.status === 'ok') {
+					context.fileInfoModel.set({
+						shareState: data.state,
+						name: OC.basename(data.file_target),
+						path: OC.dirname(data.file_target)
+					});
+				} else {
+					OC.Notification.show(t('files', 'An error occurred while updating share state: {message}', {message: meta.message}), {type: 'error'});
+				}
+			}
+			context.fileList.showFileBusyState(context.$file, false);
+		}
+
+		context.fileList.showFileBusyState(context.$file, true);
+		this._setShareState(context.fileInfoModel.get('shares')[0].id, newState)
+			.then(responseCallback);
 	},
 
 	_registerPendingShareActions: function(fileActions) {
@@ -210,51 +243,48 @@ OCA.Sharing.App = {
 			iconClass: 'icon-checkmark',
 			permissions: OC.PERMISSION_READ,
 			actionHandler: function (filename, context) {
-				context.fileList.showFileBusyState(filename, true);
-				self._setShareState(context.fileInfoModel.get('shareId'), OC.Share.STATE_ACCEPTED).then(function() {
-					context.fileList.showFileBusyState(filename, false);
-				}).done(function() {
-					context.fileInfoModel.set('shareState', OC.Share.STATE_ACCEPTED);
-				});
+				self._shareStateActionHandler(context, OC.Share.STATE_ACCEPTED);
 			}
 		});
 		fileActions.registerAction({
 			name: 'Reject',
 			type: OCA.Files.FileActions.TYPE_INLINE,
-			displayName: t('files', 'Reject Share'),
+			displayName: t('files', 'Decline Share'),
 			iconClass: 'icon-close',
 			mime: 'all',
 			permissions: OC.PERMISSION_READ,
 			actionHandler: function (filename, context) {
-				context.fileList.showFileBusyState(filename, true);
-				self._setShareState(context.fileInfoModel.get('shareId'), OC.Share.STATE_REJECTED).then(function() {
-					context.fileList.showFileBusyState(filename, false);
-				}).done(function() {
-					context.fileInfoModel.set('shareState', OC.Share.STATE_REJECTED);
-				});
+				self._shareStateActionHandler(context, OC.Share.STATE_REJECTED);
 			}
 		});
 
-		fileActions.addAdvancedFilter(function(actions, $tr) {
-			var shareState = parseInt($tr.attr('data-share-state'), 10);
+		fileActions.addAdvancedFilter(function(actions, context) {
+			var shareState = parseInt(context.$file.attr('data-share-state'), 10);
+			if (isNaN(shareState)) {
+				// called out of context ?
+				return actions;
+			}
+
 			if (shareState === OC.Share.STATE_ACCEPTED) {
-				delete(actions['Accept']);
-				if (!OC.getCapabilities()['files_sharing']['auto_accept_share']) {
-					// move "Reject" into drop down to replace "Delete" action
-					actions.Reject.type = OCA.Files.FileActions.TYPE_DROPDOWN;
-					delete(actions['Delete']);
-				}
+				delete(actions.Accept);
+				// move "Reject" into drop down to replace "Delete" action
+				actions.Reject.type = OCA.Files.FileActions.TYPE_DROPDOWN;
+				delete(actions.Delete);
 				return actions;
 			}
 
 			var newActions = [];
-			newActions.push(actions.Share);
-			if (shareState === OC.Share.STATE_PENDING || shareState === OC.Share.STATE_REJECTED) {
-				newActions.push(actions.Accept);
+			if (actions.Share) {
+				newActions.push(actions.Share);
 			}
-			if (shareState === OC.Share.STATE_PENDING) {
-				actions.Reject.type = OCA.Files.FileActions.TYPE_INLINE;
-				newActions.push(actions.Reject);
+			if (actions.Accept && actions.Reject) {
+				if (shareState === OC.Share.STATE_PENDING || shareState === OC.Share.STATE_REJECTED) {
+					newActions.push(actions.Accept);
+				}
+				if (shareState === OC.Share.STATE_PENDING) {
+					actions.Reject.type = OCA.Files.FileActions.TYPE_INLINE;
+					newActions.push(actions.Reject);
+				}
 			}
 
 			return newActions;

@@ -3,8 +3,6 @@
 
 <div id="emptycontent" class="hidden"></div>
 
-<input type="hidden" name="dir" value="" id="dir">
-
 <div class="nofilterresults hidden">
 	<div class="icon-search"></div>
 	<h2><?php p($l->t('No entries found in this folder')); ?></h2>
@@ -19,8 +17,8 @@
 					<a class="name sort columntitle" data-sort="name"><span><?php p($l->t('Name')); ?></span><span class="sort-indicator"></span></a>
 				</div>
 			</th>
-			<th id="headerState" class="hidden column-state">
-				<a id="modified" class="columntitle" data-sort="state"><span><?php p($l->t( 'State' )); ?></span><span class="sort-indicator"></span></a>
+			<th id="headerState" class="hidden column-sharestate">
+				<a id="modified" class="columntitle" data-sort="sharestate"><span><?php p($l->t( 'State' )); ?></span><span class="sort-indicator"></span></a>
 			</th>
 			<th id="headerDate" class="hidden column-mtime">
 				<a id="modified" class="columntitle" data-sort="mtime"><span><?php p($l->t('Share time')); ?></span><span class="sort-indicator"></span></a>

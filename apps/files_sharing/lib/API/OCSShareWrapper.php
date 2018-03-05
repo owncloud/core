@@ -39,7 +39,6 @@ class OCSShareWrapper {
 			\OC::$server->getShareManager(),
 			\OC::$server->getGroupManager(),
 			\OC::$server->getUserManager(),
-			$this->application->getContainer()->query(\OCA\Files_Sharing\Service\NotificationPublisher::class),
 			\OC::$server->getRequest(),
 			\OC::$server->getRootFolder(),
 			\OC::$server->getURLGenerator(),

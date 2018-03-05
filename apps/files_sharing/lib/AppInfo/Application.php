@@ -34,6 +34,8 @@ use OCA\Files_Sharing\Middleware\SharingCheckMiddleware;
 use OCA\Files_Sharing\MountProvider;
 use OCP\AppFramework\App;
 use OCP\IContainer;
+use OCA\Files_Sharing\Hooks;
+use OCA\Files_Sharing\Service\NotificationPublisher;
 
 class Application extends App {
 	public function __construct(array $urlParams = []) {
@@ -126,6 +128,19 @@ class Application extends App {
 		});
 
 		/*
+		 * Register trashbin service
+		 */
+		$container->registerService('Hooks', function($c) {
+			return new Hooks(
+				$c->getServer()->getLazyRootFolder(),
+				$c->getServer()->getUrlGenerator(),
+				$c->getServer()->getEventDispatcher(),
+				$c->getServer()->getShareManager(),
+				$c->query(NotificationPublisher::class)
+			);
+		});
+
+		/*
 		 * Register capabilities
 		 */
 		$container->registerCapability('OCA\Files_Sharing\Capabilities');
@@ -153,5 +168,9 @@ class Application extends App {
 				'name' => $l->t('File sharing'),
 			];
 		});
+	}
+
+	public function registerEvents() {
+		$this->getContainer()->query('Hooks')->registerListeners();
 	}
 }

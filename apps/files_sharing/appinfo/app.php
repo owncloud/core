@@ -35,7 +35,9 @@
 $application = new \OCA\Files_Sharing\AppInfo\Application();
 $application->registerMountProviders();
 $application->registerNotifier();
+$application->registerEvents();
 
+// TODO: move to "Hooks" class
 $eventDispatcher = \OC::$server->getEventDispatcher();
 $eventDispatcher->addListener(
 	'OCA\Files::loadAdditionalScripts',
