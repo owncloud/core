@@ -122,28 +122,19 @@
 				if (fileData.shareState === OC.Share.STATE_REJECTED) {
 					text = t('files_sharing', 'Rejected');
 					shareStateClass = 'share-state-rejected';
-					iconClass = 'icon-rejected';
 				} else if (fileData.shareState === OC.Share.STATE_PENDING) {
 					text = t('files_sharing', 'Pending');
 					shareStateClass = 'share-state-pending';
-					iconClass = 'icon-added';
 				} else {
 					shareStateClass = 'share-state-accepted';
-                    iconClass = 'icon-removed';
 				}
-				td = $('<td></td>').attr({"class": "share-state"});
+				td = $('<td>', {"class": "share-state"});
 				td.append($('<span></span>').attr({
 						"class": "state",
 					}).text(text)
 				);
 				$tr.addClass(shareStateClass);
 				$dateColumn.before(td);
-
-				if (iconClass) {
-					$tr.find('td:first').prepend(
-						$('<div class="share-state"><span class="icon ' + iconClass + '"></span></div>')
-					);
-				}
 			}
 
 			return $tr;
