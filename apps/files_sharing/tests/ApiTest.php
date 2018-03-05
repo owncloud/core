@@ -33,7 +33,8 @@ use OCP\IL10N;
 use OCP\IRequest;
 use OCP\Share;
 use Symfony\Component\EventDispatcher\GenericEvent;
-use OCA\Files_Sharing\Service\NotificationPublisher;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\EventDispatcher\EventDispatcher;
 
 /**
  * Class ApiTest
@@ -52,6 +53,10 @@ class ApiTest extends TestCase {
 	/** @var string */
 	private $subsubfolder;
 
+	/**
+	 * @var EventDispatcherInterface
+	 */
+	private $eventDispatcher;
 
 	protected function setUp() {
 		parent::setUp();
@@ -74,6 +79,8 @@ class ApiTest extends TestCase {
 		$this->view->file_put_contents($this->folder . $this->subfolder . $this->filename, $this->data);
 
 		$this->userFolder = \OC::$server->getUserFolder(self::TEST_FILES_SHARING_API_USER1);
+
+		$this->eventDispatcher = new EventDispatcher();
 	}
 
 	protected function tearDown() {
@@ -121,14 +128,13 @@ class ApiTest extends TestCase {
 			$this->shareManager,
 			\OC::$server->getGroupManager(),
 			\OC::$server->getUserManager(),
-			$this->createMock(NotificationPublisher::class),
 			$request,
 			\OC::$server->getRootFolder(),
 			\OC::$server->getURLGenerator(),
 			$currentUser,
 			$l,
 			\OC::$server->getConfig(),
-			\OC::$server->getEventDispatcher()
+			$this->eventDispatcher
 		);
 	}
 
@@ -142,7 +148,7 @@ class ApiTest extends TestCase {
 		$data['shareType'] = Share::SHARE_TYPE_USER;
 
 		$calledBeforeCreate = [];
-		\OC::$server->getEventDispatcher()->addListener('share.beforeCreate', function (GenericEvent $event) use (&$calledBeforeCreate) {
+		$this->eventDispatcher->addListener('share.beforeCreate', function (GenericEvent $event) use (&$calledBeforeCreate) {
 			$calledBeforeCreate[] = 'share.beforeCreate';
 			$calledBeforeCreate[] = $event;
 		});

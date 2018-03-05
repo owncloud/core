@@ -64,17 +64,17 @@ class NotificationPublisherTest extends TestCase {
 			$this->urlGenerator
 		);
 
-		$this->urlGenerator->expects($this->once())
+		$this->urlGenerator->expects($this->any())
 			->method('linkToRouteAbsolute')
 			->with('files.viewcontroller.showFile', ['fileId' => 4000])
 			->willReturn('/owncloud/f/4000');
 
-		$this->urlGenerator->expects($this->once())
+		$this->urlGenerator->expects($this->any())
 			->method('linkTo')
 			->with('', $this->stringStartsWith('ocs/v1.php/apps/files_sharing/api/v1/shares/pending/'))
 			->will($this->returnArgument(1));
 
-		$this->urlGenerator->expects($this->once())
+		$this->urlGenerator->expects($this->any())
 			->method('getAbsoluteUrl')
 			->will($this->returnArgument(0));
 	}
@@ -107,7 +107,7 @@ class NotificationPublisherTest extends TestCase {
 			->method('setUser')
 			->with($userId)
 			->will($this->returnSelf());
-		$notification->expects($this->any())
+		$notification->expects($this->once())
 			->method('setLink')
 			->with($link)
 			->will($this->returnSelf());
@@ -128,21 +128,12 @@ class NotificationPublisherTest extends TestCase {
 		return $notification;
 	}
 
-	public function testNotifySingleUserAutoAccept() {
-		$notification = $this->createExpectedNotification(
-			'local_share_accepted',
-			['shareOwner', 'sharedBy', 'node-name'],
-			'shareRecipient',
-			12300,
-			'/owncloud/f/4000'
-		);
-		$this->notificationManager->expects($this->once())
-			->method('createNotification')
-			->willReturn($notification);
+	public function testDoNotNotifySingleUserAutoAccept() {
+		$this->notificationManager->expects($this->never())
+			->method('createNotification');
 
-		$this->notificationManager->expects($this->once())
-			->method('notify')
-			->with($notification);
+		$this->notificationManager->expects($this->never())
+			->method('notify');
 
 		$share = $this->createShare();
 		$share->method('getShareType')->willReturn(\OCP\Share::SHARE_TYPE_USER);
@@ -152,17 +143,37 @@ class NotificationPublisherTest extends TestCase {
 		$this->publisher->sendNotification($share);
 	}
 
-	public function testNotifyGroupAutoAccept() {
+	private function makeGroup($groupName, $members) {
+		$memberObjects = array_map(function($memberName) {
+			$memberObject = $this->createMock(IUser::class);
+			$memberObject->method('getUID')->willReturn($memberName);
+			return $memberObject;
+		}, $members);
+
+		$group = $this->createMock(IGroup::class);
+		$group->expects($this->once())
+			->method('getUsers')
+			->willReturn($memberObjects);
+
+		$this->groupManager->expects($this->once())
+			->method('get')
+			->with($groupName)
+			->willReturn($group);
+
+		return $memberObjects;
+	}
+
+	public function testNotifyGroupManualAccept() {
 		$expectedNotifications = [
 			$this->createExpectedNotification(
-				'local_share_accepted',
+				'local_share',
 				['shareOwner', 'sharedBy', 'node-name'],
 				'groupMember1',
 				12300,
 				'/owncloud/f/4000'
 			),
 			$this->createExpectedNotification(
-				'local_share_accepted',
+				'local_share',
 				['shareOwner', 'sharedBy', 'node-name'],
 				'groupMember2',
 				12300,
@@ -188,23 +199,41 @@ class NotificationPublisherTest extends TestCase {
 		$share = $this->createShare();
 		$share->method('getShareType')->willReturn(\OCP\Share::SHARE_TYPE_GROUP);
 		$share->method('getSharedWith')->willReturn('group1');
-		$share->method('getState')->willReturn(\OCP\Share::STATE_ACCEPTED);
+		$share->method('getState')->willReturn(\OCP\Share::STATE_PENDING);
 
-		$groupMember1 = $this->createMock(IUser::class);
-		$groupMember1->method('getUID')->willReturn('groupMember1');
+		$this->makeGroup('group1', ['groupMember1', 'groupMember2', 'shareOwner', 'sharedBy']);
 
-		$groupMember2 = $this->createMock(IUser::class);
-		$groupMember2->method('getUID')->willReturn('groupMember2');
+		$endpointUrl = 'ocs/v1.php/apps/files_sharing/api/v1/shares/pending/12300';
 
-		$group = $this->createMock(IGroup::class);
-		$group->expects($this->once())
-			->method('getUsers')
-			->willReturn([$groupMember1, $groupMember2]);
+		foreach ($expectedNotifications as $notification) {
+			$action1 = $this->createMock(\OCP\Notification\IAction::class);
+			$action1->expects($this->once())
+				->method('setLabel')
+				->with('accept')
+				->will($this->returnSelf());
+			$action1->expects($this->once())
+				->method('setLink')
+				->with($endpointUrl, 'POST')
+				->will($this->returnSelf());
+			$action2 = $this->createMock(\OCP\Notification\IAction::class);
+			$action2->expects($this->once())
+				->method('setLabel')
+				->with('decline')
+				->will($this->returnSelf());
+			$action2->expects($this->once())
+				->method('setLink')
+				->with($endpointUrl, 'DELETE')
+				->will($this->returnSelf());
 
-		$this->groupManager->expects($this->once())
-			->method('get')
-			->with('group1')
-			->willReturn($group);
+			$notification->method('createAction')
+				->will($this->onConsecutiveCalls($action1, $action2));
+
+			$addedActions = [];
+			$notification->method('addAction')
+				->will($this->returnCallback(function ($action) use (&$addedActions) {
+					$addedActions[] = $action;
+				}));
+		}
 
 		$this->publisher->sendNotification($share);
 	}
@@ -263,6 +292,56 @@ class NotificationPublisherTest extends TestCase {
 		$this->publisher->sendNotification($share);
 
 		$this->assertEquals([$action1, $action2], $addedActions);
+	}
+
+	public function testNotifyUnsupportedType() {
+		$this->notificationManager->expects($this->never())
+			->method('createNotification');
+
+		$this->notificationManager->expects($this->never())
+			->method('notify');
+
+		$share = $this->createShare();
+		$share->method('getShareType')->willReturn(\OCP\Share::SHARE_TYPE_LINK);
+
+		$this->publisher->sendNotification($share);
+	}
+
+	public function testDiscardNotification() {
+		$notifications = array_map(function($userId) {
+			$notification = $this->createMock(INotification::class);
+			$notification->expects($this->once())
+				->method('setApp')
+				->with('files_sharing')
+				->will($this->returnSelf());
+			$notification->expects($this->once())
+				->method('setUser')
+				->with($userId)
+				->will($this->returnSelf());
+			$notification->expects($this->once())
+				->method('setObject')
+				->with('local_share', 12300)
+				->will($this->returnSelf());
+
+			return $notification;
+		}, ['groupMember1', 'groupMember2']);
+
+		$this->notificationManager->expects($this->exactly(2))
+			->method('createNotification')
+			->will($this->onConsecutiveCalls($notifications[0], $notifications[1]));
+
+		$this->notificationManager->expects($this->exactly(2))
+			->method('markProcessed')
+			->withConsecutive($notifications[0], $notifications[1]);
+
+		$share = $this->createShare();
+		$share->method('getShareType')->willReturn(\OCP\Share::SHARE_TYPE_GROUP);
+		$share->method('getSharedWith')->willReturn('group1');
+		$share->method('getState')->willReturn(\OCP\Share::STATE_ACCEPTED);
+
+		$this->makeGroup('group1', ['groupMember1', 'groupMember2', 'shareOwner', 'sharedBy']);
+
+		$this->publisher->discardNotification($share);
 	}
 }
 

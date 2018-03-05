@@ -55,7 +55,9 @@ class NotificationPublisher {
 			$group = $this->groupManager->get($share->getSharedWith());
 			// TODO: scale / chunk / ...
 			foreach ($group->getUsers() as $user) {
-				yield $user->getUID();
+				if ($user->getUID() !== $share->getShareOwner() && $user->getUID() !== $share->getSharedBy()) {
+					yield $user->getUID();
+				}
 			}
 		} else if ($share->getShareType() === \OCP\Share::SHARE_TYPE_USER) {
 			yield $share->getSharedWith();
@@ -68,9 +70,14 @@ class NotificationPublisher {
 	 * @param IShare $share share
 	 */
 	public function sendNotification(IShare $share) {
-		$autoAccept = true;
-		if ($share->getState() === \OCP\Share::STATE_PENDING) {
-			$autoAccept = false;
+		if ($share->getShareType() !== \OCP\Share::SHARE_TYPE_USER &&
+			$share->getShareType() !== \OCP\Share::SHARE_TYPE_GROUP) {
+
+			return;
+	   	}
+
+		if ($share->getState() !== \OCP\Share::STATE_PENDING) {
+			return;
 		}
 
 		$fileLink = $this->urlGenerator->linkToRouteAbsolute('files.viewcontroller.showFile', ['fileId' => $share->getNode()->getId()]);
@@ -88,24 +95,39 @@ class NotificationPublisher {
 			$notification->setIcon(
 				$this->urlGenerator->imagePath('core', 'actions/shared.svg')
 			);
-			if ($autoAccept) {
-				$notification->setSubject('local_share_accepted', [$share->getShareOwner(), $share->getSharedBy(), $share->getNode()->getName()]);
-				$notification->setLink($fileLink);
-			} else {
-				$notification->setSubject('local_share', [$share->getShareOwner(), $share->getSharedBy(), $share->getNode()->getName()]);
+			$notification->setLink($fileLink);
 
-				$acceptAction = $notification->createAction();
-				$acceptAction->setLabel('accept');
-				$acceptAction->setLink($endpointUrl, 'POST');
-				$notification->addAction($acceptAction);
+			$notification->setSubject('local_share', [$share->getShareOwner(), $share->getSharedBy(), $share->getNode()->getName()]);
 
-				$declineAction = $notification->createAction();
-				$declineAction->setLabel('decline');
-				$declineAction->setLink($endpointUrl, 'DELETE');
-				$notification->addAction($declineAction);
-			}
+			$acceptAction = $notification->createAction();
+			$acceptAction->setLabel('accept');
+			$acceptAction->setLink($endpointUrl, 'POST');
+			$notification->addAction($acceptAction);
+
+			$declineAction = $notification->createAction();
+			$declineAction->setLabel('decline');
+			$declineAction->setLink($endpointUrl, 'DELETE');
+			$notification->addAction($declineAction);
 
 			$this->notificationManager->notify($notification);
+		}
+	}
+
+	/**
+	 * Discards all notification related to the given share.
+	 * This is useful to cancel notifications in case said share
+	 * is being deleted
+	 *
+	 * @param IShare $share share
+	 */
+	public function discardNotification(IShare $share) {
+		foreach ($this->getAffectedUsers($share) as $userId) {
+			$notification = $this->notificationManager->createNotification();
+			$notification->setApp('files_sharing')
+				->setUser($userId)
+				->setObject('local_share', $share->getId());
+
+			$this->notificationManager->markProcessed($notification);
 		}
 	}
 
