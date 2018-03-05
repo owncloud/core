@@ -36,8 +36,6 @@ namespace OC\Settings;
 $application = new Application();
 $application->registerRoutes($this, [
 	'resources' => [
-		'groups' => ['url' => '/settings/users/groups'],
-		'users' => ['url' => '/settings/users/users'],
 		'auth_settings' => ['url' => '/settings/personal/authtokens'],
 	],
 	'routes' => [
@@ -45,11 +43,6 @@ $application->registerRoutes($this, [
 		['name' => 'MailSettings#storeCredentials', 'url' => '/settings/admin/mailsettings/credentials', 'verb' => 'POST'],
 		['name' => 'MailSettings#sendTestMail', 'url' => '/settings/admin/mailtest', 'verb' => 'POST'],
 		['name' => 'AppSettings#listApps', 'url' => '/settings/apps/list', 'verb' => 'GET'],
-		['name' => 'Users#setDisplayName', 'url' => '/settings/users/{username}/displayName', 'verb' => 'POST'],
-		['name' => 'Users#setMailAddress', 'url' => '/settings/users/{id}/mailAddress', 'verb' => 'PUT'],
-		['name' => 'Users#setEmailAddress', 'url' => '/settings/admin/{id}/mailAddress', 'verb' => 'PUT'],
-		['name' => 'Users#setEnabled', 'url' => '/settings/users/{id}/enabled', 'verb' => 'POST'],
-		['name' => 'Users#stats', 'url' => '/settings/users/stats', 'verb' => 'GET'],
 		['name' => 'LogSettings#setLogLevel', 'url' => '/settings/admin/log/level', 'verb' => 'POST'],
 		['name' => 'LogSettings#download', 'url' => '/settings/admin/log/download', 'verb' => 'GET'],
 		['name' => 'CheckSetup#check', 'url' => '/settings/ajax/checksetup', 'verb' => 'GET'],

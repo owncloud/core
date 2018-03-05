@@ -124,35 +124,6 @@ class Application extends App {
 				$c->query('IAppManager')
 			);
 		});
-		$container->registerService('GroupsController', function(IContainer $c) {
-			return new GroupsController(
-				$c->query('AppName'),
-				$c->query('Request'),
-				$c->query('GroupManager'),
-				$c->query('UserSession'),
-				$c->query('L10N')
-			);
-		});
-		$container->registerService('UsersController', function(IContainer $c) {
-			return new UsersController(
-				$c->query('AppName'),
-				$c->query('Request'),
-				$c->query('UserManager'),
-				$c->query('GroupManager'),
-				$c->query('UserSession'),
-				$c->query('Config'),
-				$c->query('SecureRandom'),
-				$c->query('L10N'),
-				$c->query('Logger'),
-				$c->query('Defaults'),
-				$c->query('Mailer'),
-				$c->query('TimeFactory'),
-				$c->query('DefaultMailAddress'),
-				$c->query('URLGenerator'),
-				$c->query('OCP\\App\\IAppManager'),
-				$c->query('OCP\\IAvatarManager')
-			);
-		});
 		$container->registerService('LogSettingsController', function(IContainer $c) {
 			return new LogSettingsController(
 				$c->query('AppName'),
