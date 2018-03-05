@@ -39,7 +39,7 @@ use OCP\Share\IManager;
 use OCP\Share\IShare;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\EventDispatcher\GenericEvent;
-use OCA\Files_Sharing\Service\NotificationPublisher;
+use OCA\Files_Sharing\Helper;
 
 /**
  * Class Share20OCS
@@ -54,8 +54,6 @@ class Share20OCS {
 	private $groupManager;
 	/** @var IUserManager */
 	private $userManager;
-	/** @var \OCP\Notification\IManager */
-	private $notificationPublisher;
 	/** @var IRequest */
 	private $request;
 	/** @var IRootFolder */
@@ -83,7 +81,6 @@ class Share20OCS {
 	 * @param IManager $shareManager
 	 * @param IGroupManager $groupManager
 	 * @param IUserManager $userManager
-	 * @param NotificationPublisher $notificationPublisher
 	 * @param IRequest $request
 	 * @param IRootFolder $rootFolder
 	 * @param IURLGenerator $urlGenerator
@@ -96,7 +93,6 @@ class Share20OCS {
 			IManager $shareManager,
 			IGroupManager $groupManager,
 			IUserManager $userManager,
-			NotificationPublisher $notificationPublisher,
 			IRequest $request,
 			IRootFolder $rootFolder,
 			IURLGenerator $urlGenerator,
@@ -108,7 +104,6 @@ class Share20OCS {
 		$this->shareManager = $shareManager;
 		$this->userManager = $userManager;
 		$this->groupManager = $groupManager;
-		$this->notificationPublisher = $notificationPublisher;
 		$this->request = $request;
 		$this->rootFolder = $rootFolder;
 		$this->urlGenerator = $urlGenerator;
@@ -498,6 +493,12 @@ class Share20OCS {
 		$share->setShareType($shareType);
 		$share->setSharedBy($this->currentUser->getUID());
 
+
+		$beforeEvent->setArgument('share', $this->formatShare($share));
+		$beforeEvent->setArgument('shareObject', $share);
+
+		$this->eventDispatcher->dispatch('share.beforeCreate', $beforeEvent);
+
 		try {
 			$share = $this->shareManager->createShare($share);
 		} catch (GenericShareException $e) {
@@ -514,10 +515,9 @@ class Share20OCS {
 		$formattedShareAfterCreate = $this->formatShare($share);
 		$afterEvent = new GenericEvent(null, []);
 		$afterEvent->setArgument('share', $formattedShareAfterCreate);
+		$afterEvent->setArgument('shareObject', $share);
 		$afterEvent->setArgument('result', 'success');
 		$this->eventDispatcher->dispatch('share.afterCreate', $afterEvent);
-
-		$this->notificationPublisher->sendNotification($share);
 
 		return new \OC\OCS\Result($formattedShareAfterCreate);
 	}
@@ -897,32 +897,86 @@ class Share20OCS {
 			return new \OC\OCS\Result(null, 404, $this->l->t('Wrong share ID, share doesn\'t exist'));
 		}
 
-		$share->getNode()->lock(\OCP\Lock\ILockingProvider::LOCK_SHARED);
+		$node = $share->getNode();
+		$node->lock(\OCP\Lock\ILockingProvider::LOCK_SHARED);
 
 		// this checks that we are either the owner or recipient
 		if (!$this->canAccessShare($share)) {
-			$share->getNode()->unlock(ILockingProvider::LOCK_SHARED);
+			$node->unlock(ILockingProvider::LOCK_SHARED);
 			return new \OC\OCS\Result(null, 404, $this->l->t('Wrong share ID, share doesn\'t exist'));
 		}
 
 		// only recipient can accept/reject share
 		if ($share->getShareOwner() === $this->currentUser->getUID() ||
 			$share->getSharedBy() === $this->currentUser->getUID()) {
-			$share->getNode()->unlock(ILockingProvider::LOCK_SHARED);
+			$node->unlock(ILockingProvider::LOCK_SHARED);
 			return new \OC\OCS\Result(null, 403, $this->l->t('Only recipient can change accepted state'));
 		}
 
+		// we actually want to update all shares related to the node in case there are multiple
+		// incoming shares for the same node (ex: receiving simultaneously through group share and user share)
+		$allShares = $this->shareManager->getSharedWith($this->currentUser->getUID(), \OCP\Share::SHARE_TYPE_USER, $node, -1, 0);
+		$allShares = array_merge($allShares, $this->shareManager->getSharedWith($this->currentUser->getUID(), \OCP\Share::SHARE_TYPE_GROUP, $node, -1, 0));
+
+		// resolve and deduplicate target if accepting
+		if ($state === \OCP\Share::STATE_ACCEPTED) {
+			$share = $this->deduplicateShareTarget($share);
+		}
+
+		$share->setState($state);
+
 		try {
-			$share->setState($state);
-			$this->shareManager->updateShareForRecipient($share, $this->currentUser->getUID());
+			foreach ($allShares as $aShare) {
+				$aShare->setState($share->getState());
+				$aShare->setTarget($share->getTarget());
+				$this->shareManager->updateShareForRecipient($aShare, $this->currentUser->getUID());
+			}
 		} catch (\Exception $e) {
 			$share->getNode()->unlock(ILockingProvider::LOCK_SHARED);
 			return new \OC\OCS\Result(null, 400, $e->getMessage());
 		}
 
-		$share->getNode()->unlock(\OCP\Lock\ILockingProvider::LOCK_SHARED);
+		$node->unlock(\OCP\Lock\ILockingProvider::LOCK_SHARED);
 
-		return new \OC\OCS\Result([$this->formatShare($share)]);
+		// FIXME: needs public API!
+		\OC\Files\Filesystem::tearDown();
+		// FIXME: trigger mount for user to make sure the new node is mounted already
+		// before formatShare resolves it
+		$this->rootFolder->getUserFolder($this->currentUser->getUID());
+
+		return new \OC\OCS\Result([$this->formatShare($share, true)]);
+	}
+
+	/**
+	 * Deduplicate the share target in the current user home folder,
+	 * based on configured share folder
+	 *
+	 * @param IShare $share share target to deduplicate
+	 * @return IShare same share with target updated if necessary
+	 */
+	private function deduplicateShareTarget(IShare $share) {
+		$userFolder = $this->rootFolder->getUserFolder($this->currentUser->getUID());
+		$mountPoint = basename($share->getTarget());
+		$parentDir = dirname($share->getTarget());
+		if (!$userFolder->nodeExists($parentDir)) {
+			$parentDir = Helper::getShareFolder();
+		}
+
+		$pathAttempt = \OC\Files\Filesystem::normalizePath($parentDir . '/' . $share->getTarget());
+
+		$pathinfo = pathinfo($pathAttempt);
+		$ext = (isset($pathinfo['extension'])) ? '.'.$pathinfo['extension'] : '';
+		$name = $pathinfo['filename'];
+
+		$i = 2;
+		while ($userFolder->nodeExists($pathAttempt)) {
+			$pathAttempt = \OC\Files\Filesystem::normalizePath($parentDir . '/' . $name . ' ('.$i.')' . $ext);
+			$i++;
+		}
+
+		$share->setTarget(basename($pathAttempt));
+
+		return $share;
 	}
 
 	/**

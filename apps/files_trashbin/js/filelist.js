@@ -251,14 +251,6 @@
 			);
 		},
 
-		_onClickFile: function(event) {
-			var mime = $(this).parent().parent().data('mime');
-			if (mime !== 'httpd/unix-directory') {
-				event.preventDefault();
-			}
-			return OCA.Files.FileList.prototype._onClickFile.apply(this, arguments);
-		},
-
 		generatePreviewUrl: function(urlSpec) {
 			return OC.generateUrl('/apps/files_trashbin/ajax/preview.php?') + $.param(urlSpec);
 		},

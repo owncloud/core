@@ -375,6 +375,9 @@
 			this.fileActions.off('setDefault', this._onFileActionsUpdated);
 			OC.Plugins.detach('OCA.Files.FileList', this);
 			$('#app-content').off('appresized', this._onResize);
+			// HACK: this will make reload work when reused
+			this.$el.find('#dir').val('');
+			this.$fileList.empty();
 		},
 
 		/**
@@ -614,6 +617,11 @@
 		 * Event handler for when clicking on files to select them
 		 */
 		_onClickFile: function(event) {
+			var $link = $(event.target).closest('a');
+			if ($link.attr('href') === '#' || $link.hasClass('disable-click')) {
+				event.preventDefault();
+				return;
+			}
 			var $tr = $(event.target).closest('tr');
 			if ($tr.hasClass('dragging')) {
 				return;
@@ -1556,7 +1564,8 @@
 			if (persist && OC.getCurrentUser().uid !== null) {
 				$.post(OC.generateUrl('/apps/files/api/v1/sorting'), {
 					mode: sort,
-					direction: direction
+					direction: direction,
+					view: this.id
 				});
 			}
 		},
@@ -2882,6 +2891,36 @@
 		},
 
 		/**
+		 * Scrolls the container to make the given row visible
+		 *
+		 * @param $fileRow row to make visible
+		 * @param {Function} callback callback to call after scroll is complete
+		 */
+		_scrollToRow: function($fileRow, callback) {
+			var currentOffset = this.$container.scrollTop();
+			var additionalOffset = 0;
+			var $controls = this.$el.find('#controls');
+			if ($controls.exists()) {
+				additionalOffset += $controls.height() + $controls.offset().top;
+			}
+
+			// Animation
+			var $scrollContainer = this.$container;
+			if ($scrollContainer[0] === window) {
+				// need to use "body" to animate scrolling
+				// when the scroll container is the window
+				$scrollContainer = $('body');
+			}
+			$scrollContainer.animate({
+				// Scrolling to the top of the new element
+				scrollTop: currentOffset + $fileRow.offset().top - $fileRow.height() * 2 - additionalOffset
+			}, {
+				duration: 500,
+				complete: callback
+			});
+		},
+
+		/**
 		 * Scroll to the last file of the given list
 		 * Highlight the list of files
 		 * @param files array of filenames,
@@ -2901,44 +2940,27 @@
 				return;
 			}
 
-			var currentOffset = this.$container.scrollTop();
-			var additionalOffset = this.$el.find("#controls").height()+this.$el.find("#controls").offset().top;
-
-			// Animation
 			var _this = this;
-			var $scrollContainer = this.$container;
-			if ($scrollContainer[0] === window) {
-				// need to use "body" to animate scrolling
-				// when the scroll container is the window
-				$scrollContainer = $('body');
-			}
-			$scrollContainer.animate({
-				// Scrolling to the top of the new element
-				scrollTop: currentOffset + $fileRow.offset().top - $fileRow.height() * 2 - additionalOffset
-			}, {
-				duration: 500,
-				complete: function() {
-					// Highlighting function
-					var highlightRow = highlightFunction;
+			this._scrollToRow($fileRow, function() {
+				// Highlighting function
+				var highlightRow = highlightFunction;
 
-					if (!highlightRow) {
-						highlightRow = function($fileRow) {
-							$fileRow.addClass("highlightUploaded");
-							setTimeout(function() {
-								$fileRow.removeClass("highlightUploaded");
-							}, 2500);
-						};
+				if (!highlightRow) {
+					highlightRow = function($fileRow) {
+						$fileRow.addClass("highlightUploaded");
+						setTimeout(function() {
+							$fileRow.removeClass("highlightUploaded");
+						}, 2500);
+					};
+				}
+
+				// Loop over uploaded files
+				for(var i=0; i<files.length; i++) {
+					var $fileRow = _this.findFileEl(files[i]);
+
+					if($fileRow.length !== 0) { // Checking element existence
+						highlightRow($fileRow);
 					}
-
-					// Loop over uploaded files
-					for(var i=0; i<files.length; i++) {
-						var $fileRow = _this.findFileEl(files[i]);
-
-						if($fileRow.length !== 0) { // Checking element existence
-							highlightRow($fileRow);
-						}
-					}
-
 				}
 			});
 		},

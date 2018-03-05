@@ -299,6 +299,11 @@ table td.filename input.filename {
 	margin-left: 48px;
 	cursor: text;
 }
+/* hack to disable cursor on non-clickable links as removing the anchor tag would break more */
+#filestable td.filename a.name.disable-click,
+#filestable td.filename a.name.disable-click span {
+	cursor: default;
+}
 .has-favorites table td.filename input.filename {
 	margin-left: 52px;
 }

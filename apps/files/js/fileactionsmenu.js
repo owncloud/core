@@ -104,7 +104,7 @@
 				fileActions.getCurrentPermissions()
 			);
 
-			actions = fileActions._advancedFilter(actions, this._context.$file);
+			actions = fileActions._advancedFilter(actions, this._context);
 
 			var items = _.filter(actions, function(actionSpec) {
 				return (

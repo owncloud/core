@@ -63,40 +63,6 @@ class Notifier implements INotifier {
 		}
 	}
 
-	private function formatInvite(INotification $notification) {
-		$params = $notification->getSubjectParameters();
-		if ($params[0] !== $params[1] && $params[1] !== null) {
-			$notification->setParsedSubject(
-				(string) $l->t('User %1$s shared "%3$s" with you (on behalf of %2$s)', $params)
-			);
-		} else {
-			$notification->setParsedSubject(
-				(string)$l->t('User %1$s shared "%3$s" with you', $params)
-			);
-		}
-
-		foreach ($notification->getActions() as $action) {
-			switch ($action->getLabel()) {
-				case 'accept':
-					$action->setParsedLabel(
-						(string) $l->t('Accept')
-					)
-					->setPrimary(true);
-					break;
-
-				case 'decline':
-					$action->setParsedLabel(
-						(string) $l->t('Decline')
-					);
-					break;
-			}
-
-			$notification->addParsedAction($action);
-		}
-
-		return $notification;
-	}
-
 	private function format(INotification $notification, L10N $l) {
 		$params = $notification->getSubjectParameters();
 		if ($params[0] !== $params[1] && $params[1] !== null) {
