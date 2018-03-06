@@ -6,7 +6,7 @@ script('settings', 'panels/authtoken_view');
 ?>
 <div id="sessions" class="section">
 	<h2><?php p($l->t('Sessions'));?></h2>
-	<span class="hidden-when-empty"><?php p($l->t('These are the web, desktop and mobile clients currently logged in to your ownCloud.'));?></span>
+	<span class="hidden-when-empty"><?php p($l->t('These are the web, desktop and mobile clients currently logged in to your %s.', $theme->getName()));?></span>
 	<table>
 		<thead class="token-list-header">
 		<tr>
