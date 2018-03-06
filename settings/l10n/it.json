@@ -13,6 +13,7 @@
     "Unable to add group." : "Impossibile aggiungere il gruppo.",
     "Unable to delete group." : "Impossibile eliminare il gruppo.",
     "log-level out of allowed range" : "livello di log fuori dall'intervallo consentito",
+    "Invalid email address" : "Indirizzo email non valido",
     "Saved" : "Salvato",
     "test email settings" : "prova impostazioni email",
     "A problem occurred while sending the email. Please revise your settings. (Error: %s)" : "Si è verificato un problema durante l'invio dell'email. Controlla le tue impostazioni. (Errore: %s)",
