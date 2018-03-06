@@ -23,12 +23,16 @@
  */
 namespace Test\Files\External\Service;
 
+use OC\Files\Config\UserMountCache;
 use OC\Files\External\Service\GlobalStoragesService;
 use OC\Files\External\Service\UserStoragesService;
 use OC\Files\External\StorageConfig;
 use OC\Files\Filesystem;
+use OC\Files\Mount\MountPoint;
 use OCP\Files\External\IStorageConfig;
 use OCP\Files\External\Service\IStoragesService;
+use OCP\ILogger;
+use OCP\IUser;
 use Test\Traits\UserTrait;
 
 /**
@@ -203,5 +207,63 @@ class UserStoragesServiceTest extends StoragesServiceTest {
 		$this->assertInstanceOf('\OC\Files\External\StorageConfig', $this->globalStoragesService->getStorage($newStorage->getId()));
 
 		$this->service->getStorage($newStorage->getId());
+	}
+
+	private function getStorage($storageId, $rootId) {
+		$storageCache = $this->getMockBuilder('\OC\Files\Cache\Storage')
+			->disableOriginalConstructor()
+			->getMock();
+		$storageCache->expects($this->any())
+			->method('getNumericId')
+			->will($this->returnValue($storageId));
+
+		$cache = $this->getMockBuilder('\OC\Files\Cache\Cache')
+			->disableOriginalConstructor()
+			->getMock();
+		$cache->expects($this->any())
+			->method('getId')
+			->will($this->returnValue($rootId));
+
+		$storage = $this->getMockBuilder('\OC\Files\Storage\Storage')
+			->disableOriginalConstructor()
+			->getMock();
+		$storage->expects($this->any())
+			->method('getStorageCache')
+			->will($this->returnValue($storageCache));
+		$storage->expects($this->any())
+			->method('getCache')
+			->will($this->returnValue($cache));
+
+		return $storage;
+	}
+
+	public function testDeleteAllMountsForUser() {
+		$storage1 = $this->getStorage(10, 20);
+		$storage2 = $this->getStorage(12, 22);
+
+		$mount1 = new MountPoint($storage1, '/foo/');
+		$mount2 = new MountPoint($storage2, '/bar/');
+
+		$dbConnection = \OC::$server->getDatabaseConnection();
+		$userManager = \OC::$server->getUserManager();
+		$logger = $this->createMock(ILogger::class);
+		$userMountCache = new UserMountCache($dbConnection, $userManager, $logger);
+		$user1 = $userManager->createUser('user1', 'user1');
+		$user2 = $userManager->createUser('user2', 'user2');
+
+		$userMountCache->registerMounts($user1, [$mount1, $mount2]);
+
+		$userMountCache->registerMounts($user2, [$mount2]);
+
+		$backendService = \OC::$server->getStoragesBackendService();
+		$userSession = \OC::$server->getUserSession();
+		$this->service = new UserStoragesService($backendService, $this->dbConfig, $userSession, $userMountCache);
+		$this->assertTrue($this->service->deleteAllMountsForUser($user1));
+		$storarge1Result1 = $userMountCache->getMountsForStorageId(10);
+		$storarge1Result2 = $userMountCache->getMountsForStorageId(12);
+		$this->assertEquals(0, \count($storarge1Result1));
+		$this->assertEquals(1, \count($storarge1Result2));
+		$this->assertEquals(12, $storarge1Result2[0]->getStorageId());
+		$this->assertEquals('/bar/', $storarge1Result2[0]->getMountPoint());
 	}
 }

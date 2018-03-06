@@ -35,4 +35,12 @@ interface IGlobalStoragesService extends IStoragesService {
 	 * @since 10.0
 	 */
 	public function getStorageForAllUsers();
+
+	/**
+	 * Deletes the external storages mounted to the user
+	 * @param \OCP\IUser $user
+	 * @return bool
+	 * @since 10.0.10
+	 */
+	public function deleteAllForUser($user);
 }

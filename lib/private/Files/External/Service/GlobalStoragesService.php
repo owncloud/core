@@ -31,6 +31,7 @@ use OC\Files\Filesystem;
 use OCP\Files\External\IStorageConfig;
 use OCP\Files\External\IStoragesBackendService;
 use OCP\Files\External\Service\IGlobalStoragesService;
+use OCP\IUser;
 
 /**
  * Service class to manage global external storages
@@ -182,5 +183,37 @@ class GlobalStoragesService extends StoragesService implements IGlobalStoragesSe
 		}, $configs);
 
 		return array_combine($keys, $configs);
+	}
+
+	/**
+	 * Deletes the external storages mounted to the user
+	 *
+	 * @param IUser $user
+	 * @return bool
+	 */
+	public function deleteAllForUser($user) {
+		$userId = $user->getUID();
+		$result = false;
+		//Get all valid storages
+		$mounts = $this->getStorages();
+		foreach ($mounts as $mount) {
+			$applicableUsers = $mount->getApplicableUsers();
+			$id = $mount->getId();
+			if (\in_array($userId, $applicableUsers, true)) {
+				if (\count($applicableUsers) === 1) {
+					//As this storage is associated only with this user.
+					$this->removeStorage($id);
+					$result = true;
+				} else {
+					$storage = $this->getStorage($id);
+					$userIndex = \array_search($userId, $applicableUsers, true);
+					unset($applicableUsers[$userIndex]);
+					$storage->setApplicableUsers($applicableUsers);
+					$this->updateStorage($storage);
+					$result = true;
+				}
+			}
+		}
+		return $result;
 	}
 }

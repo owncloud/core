@@ -24,11 +24,11 @@ namespace OCA\Files_External\Lib\Backend;
 
 use OCA\Files_External\Lib\Auth\AmazonS3\AccessKey;
 use OCA\Files_External\Lib\LegacyDependencyCheckPolyfill;
-use OCP\Files\External\Backend\Backend;
+use OCP\Files\External\Backend\Backend as ExternalBackend;
 use OCP\Files\External\DefinitionParameter;
 use OCP\IL10N;
 
-class AmazonS3 extends Backend {
+class AmazonS3 extends ExternalBackend {
 
 	use LegacyDependencyCheckPolyfill;
 

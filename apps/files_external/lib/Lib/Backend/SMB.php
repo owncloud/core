@@ -24,13 +24,13 @@ namespace OCA\Files_External\Lib\Backend;
 
 use OCA\Files_External\Lib\LegacyDependencyCheckPolyfill;
 use OCP\Files\External\Auth\AuthMechanism;
-use OCP\Files\External\Backend\Backend;
+use OCP\Files\External\Backend\Backend as ExternalBackend;
 use OCP\Files\External\DefinitionParameter;
 use OCP\Files\External\IStorageConfig;
 use OCP\IL10N;
 use OCP\IUser;
 
-class SMB extends Backend {
+class SMB extends ExternalBackend {
 
 	use LegacyDependencyCheckPolyfill;
 

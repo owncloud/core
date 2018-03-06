@@ -23,11 +23,11 @@
 namespace OCA\Files_External\Lib\Backend;
 
 use OCP\Files\External\Auth\AuthMechanism;
-use OCP\Files\External\Backend\Backend;
+use OCP\Files\External\Backend\Backend as ExternalBackend;
 use OCP\Files\External\DefinitionParameter;
 use OCP\IL10N;
 
-class OwnCloud extends Backend {
+class OwnCloud extends ExternalBackend {
 
 	public function __construct(IL10N $l) {
 		$this
