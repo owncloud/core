@@ -352,7 +352,11 @@ class Server extends ServerContainer implements IServerContainer, IServiceLoader
 				/** @var $user \OC\User\User */
 				\OC_Hook::emit('OC_User', 'changeUser', ['run' => true, 'user' => $user, 'feature' => $feature, 'value' => $value]);
 				$this->emittingCall(function () use (&$user, &$feature, &$value) {
-				}, ['before' => ['run' => true, 'user' => $user, 'feature' => $feature, 'value' => $value]], 'user', 'featurechange');
+					return true;
+				}, [
+					'before' => ['run' => true, 'user' => $user, 'feature' => $feature, 'value' => $value],
+					'after' => ['run' => true, 'user' => $user, 'feature' => $feature, 'value' => $value]
+				], 'user', 'featurechange');
 			});
 			return $userSession;
 		});
