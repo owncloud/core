@@ -68,8 +68,6 @@ $this->create('settings_help', '/settings/help')
 	->actionInclude('settings/help.php');
 // Settings ajax actions
 // users
-$this->create('settings_ajax_setquota', '/settings/ajax/setquota.php')
-	->actionInclude('settings/ajax/setquota.php');
 $this->create('settings_ajax_togglegroups', '/settings/ajax/togglegroups.php')
 	->actionInclude('settings/ajax/togglegroups.php');
 $this->create('settings_ajax_togglesubadmins', '/settings/ajax/togglesubadmins.php')
