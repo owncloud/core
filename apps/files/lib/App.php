@@ -46,8 +46,12 @@ class App {
 
 	public static function extendJsConfig($array) {
 		$maxChunkSize = (int)(\OC::$server->getConfig()->getAppValue('files', 'max_chunk_size', (10 * 1024 * 1024)));
+		$uploadStallTimeout = (int)(\OC::$server->getConfig()->getAppValue('files', 'upload_stall_timeout', 60)); // in seconds
+		$uploadStallRetries = (int)(\OC::$server->getConfig()->getAppValue('files', 'upload_stall_retries', 100));
 		$array['array']['oc_appconfig']['files'] = [
-			'max_chunk_size' => $maxChunkSize
+			'max_chunk_size' => $maxChunkSize,
+			'upload_stall_timeout' => $uploadStallTimeout,
+			'upload_stall_retries' => $uploadStallRetries
 		];
 	}
 }
