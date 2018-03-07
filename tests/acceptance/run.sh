@@ -130,7 +130,13 @@ if test "$BEHAT_FILTER_TAGS"; then
 	}'
 fi
 
-BEHAT_PARAMS="$BEHAT_PARAMS" $BEHAT --strict -f junit -f pretty $SCENARIO_TO_RUN
+if test "$BEHAT_SUITE"; then
+	BEHAT_SUITE_OPTION="--suite=$BEHAT_SUITE"
+else
+	BEHAT_SUITE_OPTION=""
+fi
+
+BEHAT_PARAMS="$BEHAT_PARAMS" $BEHAT --strict -f junit -f pretty $BEHAT_SUITE_OPTION $SCENARIO_TO_RUN
 RESULT=$?
 
 kill $PHPPID

@@ -193,6 +193,7 @@ test-js-debug: $(nodejs_deps) $(js_deps) $(core_vendor)
 .PHONY: test-acceptance
 test-acceptance: $(composer_dev_deps)
 	$(MAKE) -C tests/acceptance \
+		BEHAT_SUITE=$(BEHAT_SUITE) \
 		OC_TEST_ALT_HOME=$(OC_TEST_ALT_HOME) \
 		OC_TEST_ENCRYPTION_ENABLED=$(OC_TEST_ENCRYPTION_ENABLED) \
 		OC_TEST_ENCRYPTION_MASTER_KEY_ENABLED=$(OC_TEST_ENCRYPTION_MASTER_KEY_ENABLED)
