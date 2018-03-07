@@ -345,7 +345,9 @@
 						fileList: this,
 						filesClient: this.filesClient,
 						dropZone: $('#content'),
-						maxChunkSize: options.maxChunkSize
+						maxChunkSize: options.maxChunkSize,
+						uploadStallTimeout: options.uploadStallTimeout,
+						uploadStallRetries: options.uploadStallRetries
 					});
 
 					this.setupUploadEvents(this._uploader);
