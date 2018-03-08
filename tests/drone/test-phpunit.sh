@@ -23,7 +23,7 @@ set_up_external_storage() {
   FILES_EXTERNAL_TEST_TO_RUN="apps/files_external/tests/Storage/${FILES_EXTERNAL_TEST_TO_RUN}"
 }
 
-if [[ "${DB_TYPE}" == "sqlite" || -z "${DB_TYPE}" ]]; then
+if [[ "${DB_TYPE}" == "sqlite" || -z "${DB_TYPE}"  || "${COVERAGE}" == true ]]; then
   GROUP=""
 else
   GROUP="--group DB"
