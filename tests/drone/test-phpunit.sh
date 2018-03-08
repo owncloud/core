@@ -15,6 +15,11 @@ set_up_external_storage() {
       cp tests/drone/configs/config.files_external.webdav-apache.php apps/files_external/tests/config.webdav.php
       FILES_EXTERNAL_TEST_TO_RUN=WebdavTest.php
       ;;
+    webdav_owncloud)
+      wait-for-it -t 120 owncloud_external:80
+      cp tests/drone/configs/config.files_external.webdav-oc.php apps/files_external/tests/config.owncloud.php
+      FILES_EXTERNAL_TEST_TO_RUN=OwncloudTest.php
+      ;;
     *)
       echo "Unsupported files external type!"
       exit 1

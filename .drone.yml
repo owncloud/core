@@ -245,6 +245,13 @@ services:
       matrix:
         FILES_EXTERNAL_TYPE: webdav_apache
 
+  owncloud_external:
+    image: owncloud/server
+    pull: true
+    when:
+      matrix:
+        FILES_EXTERNAL_TYPE: webdav_owncloud
+
 matrix:
   include:
 
@@ -310,6 +317,11 @@ matrix:
       DB_TYPE: sqlite
       FILES_EXTERNAL_TYPE: webdav_apache
 
+    - PHP_VERSION: 7.1
+      TEST_SUITE: phpunit
+      COVERAGE: true
+      DB_TYPE: sqlite
+      FILES_EXTERNAL_TYPE: webdav_owncloud
 
   # Ui Acceptance tests
     - PHP_VERSION: 7.1
