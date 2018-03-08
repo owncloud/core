@@ -39,9 +39,9 @@ require_once 'bootstrap.php';
 /**
  * Feature context.
  */
-class FeatureContext extends RawMinkContext implements Context {
+class WebUIGeneralContext extends RawMinkContext implements Context {
 
-	use BasicStructure;
+	use WebUIBasicStructure;
 
 	private $adminPassword;
 	private $owncloudPage;
@@ -54,9 +54,9 @@ class FeatureContext extends RawMinkContext implements Context {
 
 	/**
 	 *
-	 * @var FilesContext
+	 * @var WebUIFilesContext
 	 */
-	private $filesContext = null;
+	private $webUIFilesContext = null;
 
 	/**
 	 * 
@@ -152,7 +152,7 @@ class FeatureContext extends RawMinkContext implements Context {
 	}
 
 	/**
-	 * FeatureContext constructor.
+	 * WebUIGeneralContext constructor.
 	 *
 	 * @param OwncloudPage $owncloudPage
 	 * @param LoginPage $loginPage
@@ -463,7 +463,7 @@ class FeatureContext extends RawMinkContext implements Context {
 		$environment = $scope->getEnvironment();
 		// Get all the contexts you need in this context
 		try {
-			$this->filesContext = $environment->getContext('FilesContext');
+			$this->webUIFilesContext = $environment->getContext('WebUIFilesContext');
 		} catch (Exception $e) {
 			//we don't care if the context cannot be found
 			//if the developer forgets to include it the test will fail anyway

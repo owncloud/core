@@ -32,9 +32,9 @@ use TestHelpers\AppConfigHelper;
 require_once 'bootstrap.php';
 
 /**
- * SharingContext context.
+ * WebUI SharingContext context.
  */
-class SharingContext extends RawMinkContext implements Context {
+class WebUISharingContext extends RawMinkContext implements Context {
 
 	private $filesPage;
 	private $publicLinkFilesPage;
@@ -45,19 +45,19 @@ class SharingContext extends RawMinkContext implements Context {
 	private $regularGroupNames;
 	/**
 	 * 
-	 * @var FeatureContext
+	 * @var WebUIGeneralContext
 	 */
-	private $featureContext;
+	private $webUIGeneralContext;
 	
 	/**
 	 * 
-	 * @var FilesContext
+	 * @var WebUIFilesContext
 	 */
-	private $filesContext;
+	private $webUIFilesContext;
 	private $createdPublicLinks = [];
 
 	/**
-	 * SharingContext constructor.
+	 * WebUISharingContext constructor.
 	 *
 	 * @param FilesPage $filesPage
 	 * @param PublicLinkFilesPage $publicLinkFilesPage
@@ -103,7 +103,7 @@ class SharingContext extends RawMinkContext implements Context {
 		$this->sharingDialog = $this->filesPage->openSharingDialog(
 			$folder, $this->getSession()
 		);
-		$user = $this->featureContext->substituteInLineCodes($user);
+		$user = $this->webUIGeneralContext->substituteInLineCodes($user);
 		if ($remote === "remote") {
 			$this->sharingDialog->shareWithRemoteUser(
 				$user, $this->getSession(), $maxRetries, $quiet
@@ -262,7 +262,7 @@ class SharingContext extends RawMinkContext implements Context {
 	public function theSharingPermissionsOfAreSetTo(
 		$userName, $fileName, TableNode $permissionsTable
 	) {
-		$userName = $this->featureContext->substituteInLineCodes($userName);
+		$userName = $this->webUIGeneralContext->substituteInLineCodes($userName);
 		$this->theShareDialogForTheFileFolderIsOpen($fileName);
 		$this->sharingDialog->setSharingPermissions(
 			$userName, $permissionsTable->getRowsHash()
@@ -295,7 +295,7 @@ class SharingContext extends RawMinkContext implements Context {
 		$this->publicLinkFilesPage->setPagePath($path);
 		$this->publicLinkFilesPage->open();
 		$this->publicLinkFilesPage->waitTillPageIsLoaded($this->getSession());
-		$this->featureContext->setCurrentPageObject($this->publicLinkFilesPage);
+		$this->webUIGeneralContext->setCurrentPageObject($this->publicLinkFilesPage);
 	}
 
 	/**
@@ -312,10 +312,10 @@ class SharingContext extends RawMinkContext implements Context {
 		if (!$this->publicLinkFilesPage->isOpen()) {
 			throw new Exception('Not on public link page!');
 		}
-		$server = $this->featureContext->substituteInLineCodes($server);
+		$server = $this->webUIGeneralContext->substituteInLineCodes($server);
 		$this->publicLinkFilesPage->addToServer($server);
-		$this->featureContext->loginAs($username, $password);
-		$this->featureContext->setCurrentServer($server);
+		$this->webUIGeneralContext->loginAs($username, $password);
+		$this->webUIGeneralContext->setCurrentServer($server);
 	}
 
 	/**
@@ -351,16 +351,16 @@ class SharingContext extends RawMinkContext implements Context {
 		}
 		$autocompleteItems = $this->sharingDialog->getAutocompleteItemsList();
 		$createdGroups = $this->sharingDialog->groupStringsToMatchAutoComplete(
-			$this->featureContext->getCreatedGroupNames()
+			$this->webUIGeneralContext->getCreatedGroupNames()
 		);
 		$usersAndGroups = array_merge(
-			$this->featureContext->getCreatedUserDisplayNames(),
+			$this->webUIGeneralContext->getCreatedUserDisplayNames(),
 			$createdGroups
 		);
 		foreach ($usersAndGroups as $expectedUserOrGroup) {
 			if (strpos($expectedUserOrGroup, $requiredString) !== false
 				&& $expectedUserOrGroup !== $notToBeListed
-				&& $expectedUserOrGroup !== $this->featureContext->getCurrentUser()
+				&& $expectedUserOrGroup !== $this->webUIGeneralContext->getCurrentUser()
 			) {
 				PHPUnit_Framework_Assert::assertContains(
 					$expectedUserOrGroup,
@@ -516,12 +516,12 @@ class SharingContext extends RawMinkContext implements Context {
 		// Get the environment
 		$environment = $scope->getEnvironment();
 		// Get all the contexts you need in this context
-		$this->featureContext = $environment->getContext('FeatureContext');
-		$this->filesContext = $environment->getContext('FilesContext');
-		$this->regularUserNames = $this->featureContext->getRegularUserNames();
-		$this->regularUserName = $this->featureContext->getRegularUserName();
-		$this->regularGroupNames = $this->featureContext->getRegularGroupNames();
-		$this->regularGroupName = $this->featureContext->getRegularGroupName();
+		$this->webUIGeneralContext = $environment->getContext('WebUIGeneralContext');
+		$this->webUIFilesContext = $environment->getContext('WebUIFilesContext');
+		$this->regularUserNames = $this->webUIGeneralContext->getRegularUserNames();
+		$this->regularUserName = $this->webUIGeneralContext->getRegularUserName();
+		$this->regularGroupNames = $this->webUIGeneralContext->getRegularGroupNames();
+		$this->regularGroupName = $this->webUIGeneralContext->getRegularGroupName();
 		$this->setupSharingConfigs();
 	}
 	
@@ -605,11 +605,11 @@ class SharingContext extends RawMinkContext implements Context {
 		$change = AppConfigHelper::setCapabilities(
 			$this->getMinkParameter('base_url'),
 			"admin",
-			$this->featureContext->getUserPassword("admin"),
+			$this->webUIGeneralContext->getUserPassword("admin"),
 			$settings,
-			$this->featureContext->getSavedCapabilitiesXml()
+			$this->webUIGeneralContext->getSavedCapabilitiesXml()
 		);
-		$this->featureContext->addToSavedCapabilitiesChanges($change);
+		$this->webUIGeneralContext->addToSavedCapabilitiesChanges($change);
 	}
 
 }

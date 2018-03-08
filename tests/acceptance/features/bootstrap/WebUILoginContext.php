@@ -28,9 +28,9 @@ use Page\LoginPage;
 require_once 'bootstrap.php';
 
 /**
- * Login context.
+ * WebUI Login context.
  */
-class LoginContext extends RawMinkContext implements Context {
+class WebUILoginContext extends RawMinkContext implements Context {
 
 	private $loginFailedPageTitle = "ownCloud";
 	private $loginSuccessPageTitle = "Files - ownCloud";
@@ -39,12 +39,12 @@ class LoginContext extends RawMinkContext implements Context {
 	private $expectedPage;
 	/**
 	 * 
-	 * @var FeatureContext
+	 * @var WebUIGeneralContext
 	 */
-	private $featureContext;
+	private $webUIGeneralContext;
 
 	/**
-	 * LoginContext constructor.
+	 * WebUILoginContext constructor.
 	 *
 	 * @param LoginPage $loginPage
 	 */
@@ -70,7 +70,7 @@ class LoginContext extends RawMinkContext implements Context {
 	 * @return void
 	 */
 	public function iReloginWithUsernameAndPassword($username, $password) {
-		$this->featureContext->iLogout();
+		$this->webUIGeneralContext->iLogout();
 		$this->iLoginWithUsernameAndPassword($username, $password);
 	}
 
@@ -83,7 +83,7 @@ class LoginContext extends RawMinkContext implements Context {
 	 * @return void
 	 */
 	public function iLoginWithUsernameAndPassword($username, $password) {
-		$this->filesPage = $this->featureContext->loginAs($username, $password);
+		$this->filesPage = $this->webUIGeneralContext->loginAs($username, $password);
 	}
 
 	/**
@@ -98,7 +98,7 @@ class LoginContext extends RawMinkContext implements Context {
 	public function iReloginWithUsernameAndPasswordToSrv(
 		$username, $password, $server
 	) {
-		$this->featureContext->iLogout();
+		$this->webUIGeneralContext->iLogout();
 		$this->iLoginWithUsernameAndPasswordToSrv($username, $password, $server);
 	}
 
@@ -114,13 +114,13 @@ class LoginContext extends RawMinkContext implements Context {
 	public function iLoginWithUsernameAndPasswordToSrv(
 		$username, $password, $server
 	) {
-		$server = $this->featureContext->substituteInLineCodes($server);
+		$server = $this->webUIGeneralContext->substituteInLineCodes($server);
 		$this->loginPage->setPagePath(
 			$server . $this->loginPage->getOriginalPath()
 		);
 		$this->loginPage->open();
 		$this->iLoginWithUsernameAndPassword($username, $password);
-		$this->featureContext->setCurrentServer($server);
+		$this->webUIGeneralContext->setCurrentServer($server);
 	}
 
 	/**
@@ -152,7 +152,7 @@ class LoginContext extends RawMinkContext implements Context {
 		$password,
 		$page
 	) {
-		$this->expectedPage = $this->featureContext->loginAs(
+		$this->expectedPage = $this->webUIGeneralContext->loginAs(
 			$username,
 			$password,
 			str_replace(' ', '', ucwords($page)) . 'Page'
@@ -165,7 +165,7 @@ class LoginContext extends RawMinkContext implements Context {
 	 * @return void
 	 */
 	public function iLoginAsARegularUserWithACorrectPassword() {
-		$this->filesPage = $this->featureContext->loginAsARegularUser();
+		$this->filesPage = $this->webUIGeneralContext->loginAsARegularUser();
 	}
 
 	/**
@@ -191,12 +191,12 @@ class LoginContext extends RawMinkContext implements Context {
 		$this->iAmOnTheLoginPage();
 		if ($should) {
 			$this->iLoginWithUsernameAndPassword($username, $password);
-			$this->featureContext->iShouldBeRedirectedToAPageWithTheTitle(
+			$this->webUIGeneralContext->iShouldBeRedirectedToAPageWithTheTitle(
 				$this->loginSuccessPageTitle
 			);
 		} else {
 			$this->iLoginWithUsernameAndInvalidPassword($username, $password);
-			$this->featureContext->iShouldBeRedirectedToAPageWithTheTitle(
+			$this->webUIGeneralContext->iShouldBeRedirectedToAPageWithTheTitle(
 				$this->loginFailedPageTitle
 			);
 		}
@@ -216,6 +216,6 @@ class LoginContext extends RawMinkContext implements Context {
 		// Get the environment
 		$environment = $scope->getEnvironment();
 		// Get all the contexts you need in this context
-		$this->featureContext = $environment->getContext('FeatureContext');
+		$this->webUIGeneralContext = $environment->getContext('WebUIGeneralContext');
 	}
 }

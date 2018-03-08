@@ -37,9 +37,9 @@ use TestHelpers\DownloadHelper;
 require_once 'bootstrap.php';
 
 /**
- * Files context.
+ * WebUI Files context.
  */
-class FilesContext extends RawMinkContext implements Context {
+class WebUIFilesContext extends RawMinkContext implements Context {
 
 	private $filesPage;
 	private $trashbinPage;
@@ -76,13 +76,13 @@ class FilesContext extends RawMinkContext implements Context {
 
 	/**
 	 *
-	 * @var FeatureContext
+	 * @var WebUIGeneralContext
 	 */
-	private $featureContext;
+	private $webUIGeneralContext;
 	private $uploadConflictDialogTitle = "file conflict";
 
 	/**
-	 * FilesContext constructor.
+	 * WebUIFilesContext constructor.
 	 *
 	 * @param FilesPage $filesPage
 	 * @param TrashbinPage $trashbinPage
@@ -105,13 +105,13 @@ class FilesContext extends RawMinkContext implements Context {
 	}
 
 	/**
-	 * returns the set page object from FeatureContext::getCurrentPageObject()
+	 * returns the set page object from WebUIGeneralContext::getCurrentPageObject()
 	 * or if that is null the files page object
 	 * 
 	 * @return OwncloudPage
 	 */
 	private function getCurrentPageObject() {
-		$pageObject = $this->featureContext->getCurrentPageObject();
+		$pageObject = $this->webUIGeneralContext->getCurrentPageObject();
 		if (is_null($pageObject)) {
 			$pageObject = $this->filesPage;
 		}
@@ -139,7 +139,7 @@ class FilesContext extends RawMinkContext implements Context {
 		if (!$this->filesPage->isOpen()) {
 			$this->filesPage->open();
 			$this->filesPage->waitTillPageIsLoaded($this->getSession());
-			$this->featureContext->setCurrentPageObject($this->filesPage);
+			$this->webUIGeneralContext->setCurrentPageObject($this->filesPage);
 		}
 	}
 
@@ -152,7 +152,7 @@ class FilesContext extends RawMinkContext implements Context {
 		if (!$this->trashbinPage->isOpen()) {
 			$this->trashbinPage->open();
 			$this->trashbinPage->waitTillPageIsLoaded($this->getSession());
-			$this->featureContext->setCurrentPageObject($this->trashbinPage);
+			$this->webUIGeneralContext->setCurrentPageObject($this->trashbinPage);
 		}
 	}
 	
@@ -165,7 +165,7 @@ class FilesContext extends RawMinkContext implements Context {
 		if (!$this->favoritesPage->isOpen()) {
 			$this->favoritesPage->open();
 			$this->favoritesPage->waitTillPageIsLoaded($this->getSession());
-			$this->featureContext->setCurrentPageObject($this->favoritesPage);
+			$this->webUIGeneralContext->setCurrentPageObject($this->favoritesPage);
 		}
 	}
 
@@ -379,16 +379,16 @@ class FilesContext extends RawMinkContext implements Context {
 	 */
 	public function theFollowingFilesFoldersAreDeleted(TableNode $filesTable) {
 		foreach ($filesTable as $file) {
-			$username = $this->featureContext->getCurrentUser();
+			$username = $this->webUIGeneralContext->getCurrentUser();
 			$currentTime = microtime(true);
 			$end = $currentTime + (LONGUIWAITTIMEOUTMILLISEC / 1000);
 			//retry deleting in case the file is locked (code 403)
 			while ($currentTime <= $end) {
 				try {
 					DeleteHelper::delete(
-						$this->featureContext->getCurrentServer(),
+						$this->webUIGeneralContext->getCurrentServer(),
 						$username,
-						$this->featureContext->getUserPassword($username),
+						$this->webUIGeneralContext->getUserPassword($username),
 						$file['name']
 					);
 					break;
@@ -1156,11 +1156,11 @@ class FilesContext extends RawMinkContext implements Context {
 	private function assertContentOfRemoteAndLocalFileIsSame(
 		$remoteFile, $localFile, $shouldBeSame = true
 	) {
-		$username = $this->featureContext->getCurrentUser();
+		$username = $this->webUIGeneralContext->getCurrentUser();
 		$result = DownloadHelper::download(
-			$this->featureContext->getCurrentServer(),
+			$this->webUIGeneralContext->getCurrentServer(),
 			$username,
-			$this->featureContext->getUserPassword($username),
+			$this->webUIGeneralContext->getUserPassword($username),
 			$remoteFile
 		);
 
@@ -1188,6 +1188,6 @@ class FilesContext extends RawMinkContext implements Context {
 		// Get the environment
 		$environment = $scope->getEnvironment();
 		// Get all the contexts you need in this context
-		$this->featureContext = $environment->getContext('FeatureContext');
+		$this->webUIGeneralContext = $environment->getContext('WebUIGeneralContext');
 	}
 }

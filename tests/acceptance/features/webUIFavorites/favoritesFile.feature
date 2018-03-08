@@ -1,4 +1,4 @@
-@webUI @insulated @disablePreviews @sendToTheUiWithBody
+@webUI @insulated @disablePreviews
 Feature: Mark file as favorite
 
 As a user

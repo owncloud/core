@@ -29,9 +29,9 @@ use TestHelpers\UserHelper;
 require_once 'bootstrap.php';
 
 /**
- * BasicStructure trait
+ * WebUIBasicStructure trait
  */
-trait BasicStructure {
+trait WebUIBasicStructure {
 
 	private $regularUserPassword;
 	private $regularUserName;
@@ -108,8 +108,8 @@ trait BasicStructure {
 		$settingsMenu = $this->owncloudPage->openSettingsMenu();
 		$settingsMenu->logout();
 		$this->loginPage->waitTillPageIsLoaded($this->getSession());
-		if ($this->filesContext !== null) {
-			$this->filesContext->resetFilesContext();
+		if ($this->webUIFilesContext !== null) {
+			$this->webUIFilesContext->resetFilesContext();
 		}
 	}
 
