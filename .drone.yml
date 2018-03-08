@@ -140,7 +140,7 @@ pipeline:
       matrix:
         TEST_SUITE: selenium
 
-  acceptance-tests:
+  webui-acceptance-tests:
     image: owncloudci/php:${PHP_VERSION}
     pull: true
     environment:
@@ -150,7 +150,7 @@ pipeline:
       - SRV_HOST_PORT=80
       - REMOTE_FED_SRV_HOST_NAME=federated
       - REMOTE_FED_SRV_HOST_PORT=80
-      - SKELETON_DIR=/drone/src/tests/ui/skeleton
+      - SKELETON_DIR=/drone/src/tests/acceptance/webUISkeleton
       - SELENIUM_PORT=4444
       - PLATFORM=Linux
     commands:

@@ -1,3 +1,4 @@
+@api
 Feature: transfer-ownership
 
 	@no_default_encryption

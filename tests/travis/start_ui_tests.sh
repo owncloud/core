@@ -154,7 +154,7 @@ fi
 
 if [ -z "$BEHAT_YML" ]
 then
-	BEHAT_YML="tests/ui/config/behat.yml"
+	BEHAT_YML="tests/acceptance/config/behat.yml"
 fi
 
 if [ -z "$BEHAT_SUITE" ]
@@ -273,6 +273,8 @@ then
 	BEHAT_TAGS='~@skipWhenTestingRemoteSystems&&'$BEHAT_TAGS
 fi
 
+BEHAT_TAGS='@webUI&&'$BEHAT_TAGS
+
 if [ "$BROWSER" == "firefox" ]
 then
 	#set screen resolution so that hopefully dragable elements will be visible
@@ -303,7 +305,7 @@ PREVIOUS_SKELETON_DIR=$REMOTE_OCC_STDOUT
 
 #$SRC_SKELETON_DIR is the path to the skeleton folder on the machine where the tests are executed
 #it is used for file comparisons in various tests
-export SRC_SKELETON_DIR=$(pwd)/tests/ui/skeleton
+export SRC_SKELETON_DIR=$(pwd)/tests/acceptance/webUISkeleton
 #$SKELETON_DIR is the path to the skeleton folder on the machine where oC runs (system under test)
 #it is used to give users a defined set of files and folders for the tests
 if [ -z "$SKELETON_DIR" ]
@@ -331,11 +333,11 @@ then
 fi
 
 echo "Running tests on '$BROWSER' ($BROWSER_VERSION) on $PLATFORM" | tee $TEST_LOG_FILE
-export BEHAT_PARAMS='{"extensions" : {"Behat\\MinkExtension" : {"browser_name": "'$BROWSER'", "base_url" : "'$BASE_URL'", "selenium2":{"capabilities": {"marionette":null, "browser": "'$BROWSER'", "version": "'$BROWSER_VERSION'", "platform": "'$PLATFORM'", "name": "'$TRAVIS_REPO_SLUG' - '$TRAVIS_JOB_NUMBER'", "extra_capabilities": {'$EXTRA_CAPABILITIES'}}, "wd_host":"http://'$SAUCE_USERNAME:$SAUCE_ACCESS_KEY'@'$SELENIUM_HOST':'$SELENIUM_PORT'/wd/hub"}}}}'
+export BEHAT_PARAMS='{"extensions" : {"Behat\\MinkExtension" : {"browser_name": "'$BROWSER'", "base_url" : "'$BASE_URL'", "selenium2":{"capabilities": {"marionette":null, "browser": "'$BROWSER'", "version": "'$BROWSER_VERSION'", "platform": "'$PLATFORM'", "name": "'$TRAVIS_REPO_SLUG' - '$TRAVIS_JOB_NUMBER'", "extra_capabilities": {'$EXTRA_CAPABILITIES'}}, "wd_host":"http://'$SAUCE_USERNAME:$SAUCE_ACCESS_KEY'@'$SELENIUM_HOST':'$SELENIUM_PORT'/wd/hub"}}, "SensioLabs\\Behat\\PageObjectExtension" : {}}}'
 export IPV4_URL
 export IPV6_URL
 export REMOTE_FED_BASE_URL
-export FILES_FOR_UPLOAD="$(pwd)/tests/ui/filesForUpload/"
+export FILES_FOR_UPLOAD="$(pwd)/tests/acceptance/filesForUpload/"
 
 if [ ! -w $FILES_FOR_UPLOAD ]
 then
@@ -388,7 +390,7 @@ then
 	# Report them in a dry-run so they can be seen
 	# Big red error output is displayed if there are no matching scenarios - send it to null
 	DRY_RUN_FILE=$(mktemp)
-	lib/composer/bin/behat --dry-run --colors -c $BEHAT_YML --tags '@skip' $BEHAT_FEATURE 1>$DRY_RUN_FILE 2>/dev/null
+	lib/composer/bin/behat --dry-run --colors -c $BEHAT_YML --tags '@webUI&&@skip' $BEHAT_FEATURE 1>$DRY_RUN_FILE 2>/dev/null
 	if grep -q -m 1 'No scenarios' "$DRY_RUN_FILE"
 	then
 		# If there are no skip scenarios, then no need to report that

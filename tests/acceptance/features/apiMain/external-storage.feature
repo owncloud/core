@@ -1,3 +1,4 @@
+@api
 Feature: external-storage
   Background:
     Given using API version "1"

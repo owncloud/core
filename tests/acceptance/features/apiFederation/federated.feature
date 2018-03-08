@@ -1,3 +1,4 @@
+@api
 Feature: federated
 	Background:
 		Given using API version "1"
