@@ -1,3 +1,4 @@
+@api
 Feature: recreate-master-key
 
 	@masterkey_encryption

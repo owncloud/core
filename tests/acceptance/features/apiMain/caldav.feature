@@ -1,3 +1,4 @@
+@api
 Feature: caldav
 
 	Background:

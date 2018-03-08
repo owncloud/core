@@ -1,3 +1,4 @@
+@api
 Feature: dav-versions
   Background:
     Given using API version "2"

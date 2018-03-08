@@ -1,3 +1,4 @@
+@api
 Feature: provisioning
 	Background:
 		Given using API version "1"

@@ -56,6 +56,161 @@ default:
             mailhog_url: http://127.0.0.1:8025/api/v2/messages
             oc_path: ../../
 
+    webUIFiles:
+      paths:
+        - %paths.base%/../features/webUIFiles
+      context: &common_webui_suite_context
+        parameters:
+          ocPath: apps/testing/api/v1/occ
+          adminPassword: admin
+          regularUserPassword: 123456
+          regularUserName: regularuser
+          regularUserNames: user1,user2,user3,usergrp
+          regularGroupName: regulargrp
+          regularGroupNames: grp1,grp2,grp3,grpuser
+      contexts:
+        - WebUIGeneralContext:
+        - WebUILoginContext:
+        - WebUIUsersContext:
+        - WebUIFilesContext:
+
+    webUIMoveFilesFolders:
+      paths:
+        - %paths.base%/../features/webUIMoveFilesFolders
+      context: *common_webui_suite_context
+      contexts:
+        - WebUIGeneralContext:
+        - WebUILoginContext:
+        - WebUIUsersContext:
+        - WebUIFilesContext:
+
+    webUIRenameFiles:
+      paths:
+        - %paths.base%/../features/webUIRenameFiles
+      context: *common_webui_suite_context
+      contexts:
+        - WebUIGeneralContext:
+        - WebUILoginContext:
+        - WebUIUsersContext:
+        - WebUIFilesContext:
+
+    webUIRenameFolders:
+      paths:
+        - %paths.base%/../features/webUIRenameFolders
+      context: *common_webui_suite_context
+      contexts:
+        - WebUIGeneralContext:
+        - WebUILoginContext:
+        - WebUIUsersContext:
+        - WebUIFilesContext:
+
+    webUITrashbin:
+      paths:
+        - %paths.base%/../features/webUITrashbin
+      context: *common_webui_suite_context
+      contexts:
+        - WebUIGeneralContext:
+        - WebUILoginContext:
+        - WebUIUsersContext:
+        - WebUIFilesContext:
+
+    webUISharingInternalGroups:
+      paths:
+        - %paths.base%/../features/webUISharingInternalGroups
+      context: *common_webui_suite_context
+      contexts:
+        - WebUIGeneralContext:
+        - WebUILoginContext:
+        - WebUIUsersContext:
+        - WebUIFilesContext:
+        - WebUISharingContext:
+
+    webUISharingInternalUsers:
+      paths:
+        - %paths.base%/../features/webUISharingInternalUsers
+      context: *common_webui_suite_context
+      contexts:
+        - WebUIGeneralContext:
+        - WebUILoginContext:
+        - WebUIUsersContext:
+        - WebUIFilesContext:
+        - WebUISharingContext:
+
+    webUISharingExternal:
+      paths:
+        - %paths.base%/../features/webUISharingExternal
+      context: *common_webui_suite_context
+      contexts:
+        - WebUIGeneralContext:
+        - WebUILoginContext:
+        - WebUIUsersContext:
+        - WebUIFilesContext:
+        - WebUISharingContext:
+
+    webUIUpload:
+      paths:
+        - %paths.base%/../features/webUIUpload
+      context: *common_webui_suite_context
+      contexts:
+        - WebUIGeneralContext:
+        - WebUILoginContext:
+        - WebUIUsersContext:
+        - WebUIFilesContext:
+
+    webUIRestrictSharing:
+      paths:
+        - %paths.base%/../features/webUIRestrictSharing
+      context: *common_webui_suite_context
+      contexts:
+        - WebUIGeneralContext:
+        - WebUILoginContext:
+        - WebUIUsersContext:
+        - WebUIFilesContext:
+        - WebUISharingContext:
+
+    webUIFavorites:
+      paths:
+        - %paths.base%/../features/webUIFavorites
+      context: *common_webui_suite_context
+      contexts:
+        - WebUIGeneralContext:
+        - WebUILoginContext:
+        - WebUIUsersContext:
+        - WebUIFilesContext:
+
+    webUIManageUsersGroups:
+      paths:
+        - %paths.base%/../features/webUIManageUsersGroups
+      context: *common_webui_suite_context
+      contexts:
+        - WebUIGeneralContext:
+        - WebUILoginContext:
+        - WebUIUsersContext:
+        - WebUIFilesContext:
+        - WebUIPersonalGeneralSettingsContext:
+
+    webUIManageQuota:
+      paths:
+        - %paths.base%/../features/webUIManageQuota
+      context: *common_webui_suite_context
+      contexts:
+        - WebUIGeneralContext:
+        - WebUILoginContext:
+        - WebUIUsersContext:
+        - WebUIFilesContext:
+
+    webUIPersonalSettings:
+      paths:
+        - %paths.base%/../features/webUIPersonalSettings
+      context: *common_webui_suite_context
+      contexts:
+        - WebUIGeneralContext:
+        - WebUILoginContext:
+        - WebUIUsersContext:
+        - WebUIFilesContext:
+        - WebUIPersonalSecuritySettingsContext:
+        - WebUIPersonalGeneralSettingsContext:
+
   extensions:
       jarnaiz\JUnitFormatter\JUnitFormatterExtension:
           filename: report.xml

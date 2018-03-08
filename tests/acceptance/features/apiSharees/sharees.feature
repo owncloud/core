@@ -1,3 +1,4 @@
+@api
 Feature: sharees
 	Background:
 		Given using API version "1"
