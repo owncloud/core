@@ -26,7 +26,6 @@ use Behat\Behat\Context\Context;
 use Behat\Behat\Context\SnippetAcceptingContext;
 use Behat\Gherkin\Node\TableNode;
 
-require __DIR__ . '/../../../../lib/composer/autoload.php';
 require_once 'bootstrap.php';
 
 /**

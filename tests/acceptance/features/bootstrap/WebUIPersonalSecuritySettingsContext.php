@@ -27,16 +27,16 @@ use Page\PersonalSecuritySettingsPage;
 require_once 'bootstrap.php';
 
 /**
- * PersonalSecuritySettingsContext context.
+ * WebUI PersonalSecuritySettings context.
  */
-class PersonalSecuritySettingsContext extends RawMinkContext implements Context {
+class WebUIPersonalSecuritySettingsContext extends RawMinkContext implements Context {
 
 	private $personalSecuritySettingsPage;
 	private $appName;
 	private $strForAppName = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
 
 	/**
-	 * PersonalSecuritySettingsContext constructor.
+	 * WebUIPersonalSecuritySettingsContext constructor.
 	 *
 	 * @param PersonalSecuritySettingsPage $personalSecuritySettingsPage
 	 */

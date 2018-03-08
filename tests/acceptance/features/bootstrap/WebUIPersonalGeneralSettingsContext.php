@@ -28,18 +28,18 @@ use Page\PersonalGeneralSettingsPage;
 require_once 'bootstrap.php';
 
 /**
- * PersonalSecuritySettingsContext context.
+ * WebUI PersonalGeneralSettings context.
  */
-class PersonalGeneralSettingsContext extends RawMinkContext implements Context {
+class WebUIPersonalGeneralSettingsContext extends RawMinkContext implements Context {
 
 	private $personalGeneralSettingsPage;
 	/**
 	 * 
-	 * @var FeatureContext
+	 * @var WebUIGeneralContext
 	 */
-	private $featureContext;
+	private $webUIGeneralContext;
 	/**
-	 * PersonalGeneralSettingsContext constructor.
+	 * WebUIPersonalGeneralSettingsContext constructor.
 	 *
 	 * @param PersonalGeneralSettingsPage $personalGeneralSettingsPage
 	 */
@@ -106,8 +106,8 @@ class PersonalGeneralSettingsContext extends RawMinkContext implements Context {
 	 * @return void
 	 */
 	public function iChangeThePasswordTo($newPassword) {
-		$username = $this->featureContext->getCurrentUser();
-		$oldPassword = trim($this->featureContext->getUserPassword($username));
+		$username = $this->webUIGeneralContext->getCurrentUser();
+		$oldPassword = trim($this->webUIGeneralContext->getUserPassword($username));
 		$this->personalGeneralSettingsPage->changePassword(
 			$oldPassword, $newPassword, $this->getSession()
 		);
@@ -157,6 +157,6 @@ class PersonalGeneralSettingsContext extends RawMinkContext implements Context {
 		// Get the environment
 		$environment = $scope->getEnvironment();
 		// Get all the contexts you need in this context
-		$this->featureContext = $environment->getContext('FeatureContext');
+		$this->webUIGeneralContext = $environment->getContext('WebUIGeneralContext');
 	}
 }

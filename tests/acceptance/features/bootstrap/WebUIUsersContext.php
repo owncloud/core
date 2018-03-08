@@ -31,20 +31,20 @@ use TestHelpers\OcsApiHelper;
 require_once 'bootstrap.php';
 
 /**
- * Users context.
+ * WebUI Users context.
  */
-class UsersContext extends RawMinkContext implements Context {
+class WebUIUsersContext extends RawMinkContext implements Context {
 
 
 	private $usersPage;
 	/**
 	 *
-	 * @var FeatureContext
+	 * @var WebUIGeneralContext
 	 */
-	private $featureContext;
+	private $webUIGeneralContext;
 
 	/**
-	 * UsersContext constructor.
+	 * WebUIUsersContext constructor.
 	 *
 	 * @param UsersPage $usersPage
 	 */
@@ -71,7 +71,7 @@ class UsersContext extends RawMinkContext implements Context {
 	 * @Transform :username
 	 */
 	public function checkUsername($username) {
-		return $this->featureContext->substituteInLineCodes($username);
+		return $this->webUIGeneralContext->substituteInLineCodes($username);
 	}
 
 	/**
@@ -108,7 +108,7 @@ class UsersContext extends RawMinkContext implements Context {
 		$this->response = OcsApiHelper::sendRequest(
 			$this->getMinkParameter('base_url'),
 			"admin",
-			$this->featureContext->getUserPassword("admin"),
+			$this->webUIGeneralContext->getUserPassword("admin"),
 			"PUT",
 			"/cloud/users/" . $user,
 			$body,
@@ -147,12 +147,12 @@ class UsersContext extends RawMinkContext implements Context {
 
 		$shouldHaveBeenCreated = ($attemptTo === "");
 
-		$this->featureContext->addUserToCreatedUsersList(
+		$this->webUIGeneralContext->addUserToCreatedUsersList(
 			$username, $password, "", $email, $shouldHaveBeenCreated
 		);
 		if (is_array($groups)) {
 			foreach ($groups as $group) {
-				$this->featureContext->addGroupToCreatedGroupsList($group);
+				$this->webUIGeneralContext->addGroupToCreatedGroupsList($group);
 			}
 		}
 	}
@@ -167,7 +167,7 @@ class UsersContext extends RawMinkContext implements Context {
 	 */
 	public function iDeleteTheGroupNamed($name) {
 		$this->usersPage->deleteGroup($name, $this->getSession());
-		$this->featureContext->deleteGroupFromCreatedGroupsList($name);
+		$this->webUIGeneralContext->deleteGroupFromCreatedGroupsList($name);
 	}
 
 	/**
@@ -279,7 +279,7 @@ class UsersContext extends RawMinkContext implements Context {
 		// Get the environment
 		$environment = $scope->getEnvironment();
 		// Get all the contexts you need in this context
-		$this->featureContext = $environment->getContext('FeatureContext');
+		$this->webUIGeneralContext = $environment->getContext('WebUIGeneralContext');
 	}
 
 	/**
