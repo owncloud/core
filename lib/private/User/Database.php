@@ -51,6 +51,7 @@
 namespace OC\User;
 
 use OC\Cache\CappedMemoryCache;
+use OCP\IDBConnection;
 use OCP\IUserBackend;
 use OCP\User\IProvidesDisplayNameBackend;
 use OCP\User\IProvidesEMailBackend;
@@ -60,15 +61,19 @@ use OCP\Util;
 /**
  * Class for user management in a SQL Database (e.g. MySQL, SQLite)
  */
-class Database extends Backend implements IUserBackend, IProvidesHomeBackend, IProvidesDisplayNameBackend {
+class Database extends Backend implements IUserBackend {
 	/** @var CappedMemoryCache */
 	private $cache;
+
+	/** @var IDBConnection */
+	private $conn;
 
 	/**
 	 * OC_User_Database constructor.
 	 */
 	public function __construct() {
 		$this->cache = new CappedMemoryCache();
+		$this->conn = \OC::$server->getDatabaseConnection();
 	}
 
 	/**
@@ -135,90 +140,36 @@ class Database extends Backend implements IUserBackend, IProvidesHomeBackend, IP
 	}
 
 	/**
-	 * Set display name
-	 * @param string $uid The username
-	 * @param string $displayName The new display name
-	 * @return bool
-	 *
-	 * Change the display name of a user
-	 */
-	public function setDisplayName($uid, $displayName) {
-		if ($this->userExists($uid)) {
-			$query = \OC_DB::prepare('UPDATE `*PREFIX*users` SET `displayname` = ? WHERE LOWER(`uid`) = LOWER(?)');
-			$query->execute([$displayName, $uid]);
-			$this->cache[$uid]['displayname'] = $displayName;
-
-			return true;
-		}
-
-		return false;
-	}
-
-	/**
-	 * get display name of the user
-	 * @param string $uid user ID of the user
-	 * @return string display name
-	 */
-	public function getDisplayName($uid) {
-		$this->loadUser($uid);
-		return empty($this->cache[$uid]['displayname']) ? $uid : $this->cache[$uid]['displayname'];
-	}
-
-	/**
-	 * Get a list of all display names and user ids.
-	 *
-	 * @param string $search
-	 * @param string|null $limit
-	 * @param string|null $offset
-	 * @return array an array of all displayNames (value) and the corresponding uids (key)
-	 */
-	public function getDisplayNames($search = '', $limit = null, $offset = null) {
-		$parameters = [];
-		$searchLike = '';
-		if ($search !== '') {
-			$search = \OC::$server->getDatabaseConnection()->escapeLikeParameter($search);
-			$parameters[] = '%' . $search . '%';
-			$parameters[] = '%' . $search . '%';
-			$searchLike = ' WHERE LOWER(`displayname`) LIKE LOWER(?) OR '
-				. 'LOWER(`uid`) LIKE LOWER(?)';
-		}
-
-		$displayNames = [];
-		$query = \OC_DB::prepare('SELECT `uid`, `displayname` FROM `*PREFIX*users`'
-			. $searchLike .' ORDER BY `uid` ASC', $limit, $offset);
-		$result = $query->execute($parameters);
-		while ($row = $result->fetchRow()) {
-			$displayNames[$row['uid']] = $row['displayname'];
-		}
-
-		return $displayNames;
-	}
-
-	/**
 	 * Check if the password is correct
-	 * @param string $uid The username
+	 * @param string $userName The username
 	 * @param string $password The password
-	 * @return string
+	 * @return string the uuid
 	 *
 	 * Check if the password is correct without logging in the user
-	 * returns the user id or false
+	 * returns the uuid or false
 	 */
-	public function checkPassword($uid, $password) {
-		$query = \OC_DB::prepare('SELECT `uid`, `password` FROM `*PREFIX*users` WHERE LOWER(`uid`) = LOWER(?)');
-		$result = $query->execute([$uid]);
+	public function checkPassword($userName, $password) {
 
-		$row = $result->fetchRow();
-		if ($row) {
-			$storedHash = $row['password'];
+		$qb = $this->conn->getQueryBuilder();
+		$qb->select(['a.uuid', 'u.password'])
+			->from('accounts', 'a')
+			->join('a', 'users', 'u', $qb->expr()->eq('u.uid', 'a.uuid')) // TODO use id foreign key
+			->where($qb->expr()->eq('a.user_name',  $qb->createNamedParameter(mb_strtolower($userName))));
+
+		$result = $qb->execute();
+
+		$rows = $result->fetchAll();
+		if (count($rows) === 1) {
+			$storedHash = $rows[0]['password'];
 			$newHash = '';
 			if(\OC::$server->getHasher()->verify($password, $storedHash, $newHash)) {
+				$uuid = $rows[0]['uuid'];
 				if(!empty($newHash)) {
-					$this->setPassword($uid, $password);
-					unset($this->cache[$uid]); // invalidate cache
+					$this->setPassword($uuid, $password);
+					unset($this->cache[$uuid]); // invalidate cache
 				}
-				return $row['uid'];
+				return $uuid;
 			}
-
 		}
 
 		return false;
@@ -232,7 +183,7 @@ class Database extends Backend implements IUserBackend, IProvidesHomeBackend, IP
 	private function loadUser($uid) {
 		// if not in cache (false is a valid value)
 		if (!isset($this->cache[$uid]) && $this->cache[$uid] !== false) {
-			$query = \OC_DB::prepare('SELECT `uid`, `displayname` FROM `*PREFIX*users` WHERE LOWER(`uid`) = LOWER(?)');
+			$query = \OC_DB::prepare('SELECT `uid` FROM `*PREFIX*users` WHERE LOWER(`uid`) = LOWER(?)');
 			$result = $query->execute([$uid]);
 
 			if ($result === false) {
@@ -243,7 +194,6 @@ class Database extends Backend implements IUserBackend, IProvidesHomeBackend, IP
 			// "uid" is primary key, so there can only be a single result
 			if ($row = $result->fetchRow()) {
 				$this->cache[$uid]['uid'] = $row['uid'];
-				$this->cache[$uid]['displayname'] = $row['displayname'];
 			} else {
 				$this->cache[$uid] = false;
 				return false;
@@ -255,31 +205,6 @@ class Database extends Backend implements IUserBackend, IProvidesHomeBackend, IP
 	}
 
 	/**
-	 * Get a list of all users
-	 *
-	 * @param string $search
-	 * @param null|int $limit
-	 * @param null|int $offset
-	 * @return string[] an array of all uids
-	 */
-	public function getUsers($search = '', $limit = null, $offset = null) {
-		$parameters = [];
-		$searchLike = '';
-		if ($search !== '') {
-			$search = \OC::$server->getDatabaseConnection()->escapeLikeParameter($search);
-			$parameters[] = '%' . $search . '%';
-			$searchLike = ' WHERE LOWER(`uid`) LIKE LOWER(?)';
-		}
-
-		$query = \OC_DB::prepare('SELECT `uid` FROM `*PREFIX*users`' . $searchLike . ' ORDER BY `uid` ASC', $limit, $offset);
-		$result = $query->execute($parameters);
-		$users = [];
-		while ($row = $result->fetchRow()) {
-			$users[] = $row['uid'];
-		}
-		return $users;
-	}
-
 	/**
 	 * check if a user exists
 	 * @param string $uid the username
@@ -288,15 +213,6 @@ class Database extends Backend implements IUserBackend, IProvidesHomeBackend, IP
 	public function userExists($uid) {
 		$this->loadUser($uid);
 		return !empty($this->cache[$uid]);
-	}
-
-	/**
-	 * get the user's home directory
-	 * @param string $uid the username
-	 * @return string
-	 */
-	public function getHome($uid) {
-		return \OC::$server->getConfig()->getSystemValue("datadirectory", \OC::$SERVERROOT . "/data") . '/' . $uid;
 	}
 
 	/**
