@@ -1,3 +1,4 @@
+@api
 Feature: webdav-related-new-endpoint
 	Background:
 		Given using API version "1"

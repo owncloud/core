@@ -120,6 +120,8 @@ else
 	BEHAT_FILTER_TAGS="~@skip&&~@masterkey_encryption"
 fi
 
+BEHAT_FILTER_TAGS="$BEHAT_FILTER_TAGS&&@api"
+
 if test "$BEHAT_FILTER_TAGS"; then
 	BEHAT_PARAMS='{ 
 		"gherkin": {

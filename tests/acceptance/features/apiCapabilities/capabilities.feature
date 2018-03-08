@@ -1,3 +1,4 @@
+@api
 Feature: capabilities
 	Background:
 		Given using API version "1"
