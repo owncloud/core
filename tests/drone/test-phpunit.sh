@@ -15,6 +15,11 @@ set_up_external_storage() {
       cp tests/drone/configs/config.files_external.webdav-apache.php apps/files_external/tests/config.webdav.php
       FILES_EXTERNAL_TEST_TO_RUN=WebdavTest.php
       ;;
+    smb_samba)
+      wait-for-it -t 120 smb_samba:445
+      cp tests/drone/configs/config.files_external.smb-samba.php apps/files_external/tests/config.smb.php
+      FILES_EXTERNAL_TEST_TO_RUN=SmbTest.php
+      ;;
     *)
       echo "Unsupported files external type!"
       exit 1

@@ -284,6 +284,14 @@ services:
       matrix:
         FILES_EXTERNAL_TYPE: webdav_apache
 
+  smb_samba:
+    image: owncloudci/samba
+    pull: true
+    command: "-u \"test;test\" -s \"public;/tmp;yes;no;no;test;none;test\" -S"
+    when:
+      matrix:
+        FILES_EXTERNAL_TYPE: smb_samba
+
 matrix:
   include:
 
@@ -399,6 +407,13 @@ matrix:
       DB_TYPE: sqlite
       FILES_EXTERNAL_TYPE: webdav_apache
 
+    - PHP_VERSION: 7.1
+      TEST_SUITE: phpunit
+      COVERAGE: true
+      DB_TYPE: sqlite
+      FILES_EXTERNAL_TYPE: smb_samba
+
+
   # Ui Acceptance tests
     - PHP_VERSION: 7.1
       TEST_SUITE: selenium
@@ -407,7 +422,7 @@ matrix:
       USE_SERVER: true
       INSTALL_SERVER: true
       CHOWN_SERVER: true
-      
+
     - PHP_VERSION: 7.1
       TEST_SUITE: selenium
       BEHAT_SUITE: webUIManageUsersGroups
@@ -447,7 +462,7 @@ matrix:
       USE_SERVER: true
       INSTALL_SERVER: true
       CHOWN_SERVER: true
-    
+
     - PHP_VERSION: 7.1
       TEST_SUITE: selenium
       BEHAT_SUITE: webUIRenameFiles
@@ -455,7 +470,7 @@ matrix:
       USE_SERVER: true
       INSTALL_SERVER: true
       CHOWN_SERVER: true
-    
+
     - PHP_VERSION: 7.1
       TEST_SUITE: selenium
       BEHAT_SUITE: webUIRenameFolders
@@ -496,7 +511,7 @@ matrix:
       USE_FEDERATED_SERVER: true
       INSTALL_SERVER: true
       CHOWN_SERVER: true
-    
+
     - PHP_VERSION: 7.1
       TEST_SUITE: selenium
       BEHAT_SUITE: webUIRestrictSharing
@@ -504,7 +519,7 @@ matrix:
       USE_SERVER: true
       INSTALL_SERVER: true
       CHOWN_SERVER: true
-      
+
     - PHP_VERSION: 7.1
       TEST_SUITE: selenium
       BEHAT_SUITE: webUIUpload
