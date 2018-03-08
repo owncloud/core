@@ -103,12 +103,7 @@ class OC_App {
 	 * @throws \OC\ServerNotAvailableException
 	 */
 	public static function loadApps($types = null) {
-		if ($types === null) {
-			$types = [];
-		} else if (is_string($types)) {
-			$types = [$types];
-		}
-		if (!array_diff($types, self::$loadedTypes)) {
+		if (is_array($types) && !array_diff($types, self::$loadedTypes)) {
 			return true;
 		}
 		if (\OC::$server->getSystemConfig()->getValue('maintenance', false)) {
@@ -131,7 +126,7 @@ class OC_App {
 		// prevent app.php from printing output
 		ob_start();
 		foreach ($apps as $app) {
-			if (!in_array($app, self::$loadedApps, true) && self::isType($app, $types)) {
+			if (($types === null || self::isType($app, $types)) && !in_array($app, self::$loadedApps)) {
 				self::loadApp($app);
 			}
 		}
@@ -166,8 +161,9 @@ class OC_App {
 				}
 			}
 		}
-
-		self::$loadedTypes = array_merge(self::$loadedTypes, $types);
+		if (is_array($types)) {
+			self::$loadedTypes = array_merge(self::$loadedTypes, $types);
+		}
 
 		\OC_Hook::emit('OC_App', 'loadedApps');
 		return true;
