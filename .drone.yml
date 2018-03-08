@@ -92,19 +92,6 @@ pipeline:
       matrix:
         TEST_SUITE: phpunit
 
-  codecov:
-    image: plugins/codecov:2
-    secrets: [codecov_token]
-    pull: true
-    files:
-     - '*.xml'
-    paths:
-     - tests/output/coverage
-    when:
-      event: [push, pull_request]
-      matrix:
-        COVERAGE: true
-
   test-javascript:
     image: owncloudci/php:${PHP_VERSION}
     pull: true
@@ -113,6 +100,21 @@ pipeline:
     when:
       matrix:
         TEST_SUITE: javascript
+
+  codecov:
+    image: plugins/codecov:2
+    secrets: [codecov_token]
+    pull: true
+    flags:
+     - ${TEST_SUITE}
+    files:
+     - '*.xml'
+    paths:
+     - tests/output/coverage
+    when:
+      event: [push, pull_request]
+      matrix:
+        COVERAGE: true
 
   install-server:
     image: owncloudci/php:${PHP_VERSION}
@@ -258,6 +260,7 @@ matrix:
   # frontend
     - TEST_SUITE: javascript
       PHP_VERSION: 7.1
+      COVERAGE: true
 
     # linting
     - TEST_SUITE: lint
