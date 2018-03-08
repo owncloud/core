@@ -2,6 +2,7 @@
 
 /**
  * @author Christoph Wurst <christoph@owncloud.com>
+ * @author Jörn Friedrich Dreyer <jfd@butonic.de>
  *
  * @copyright Copyright (c) 2018, ownCloud GmbH
  * @license AGPL-3.0
@@ -23,16 +24,30 @@
 namespace Test\Core\Middleware;
 
 use OC\AppFramework\Http\Request;
+use OC\Authentication\TwoFactorAuth\Manager;
 use OC\Core\Middleware\TwoFactorMiddleware;
+use OCP\AppFramework\Utility\IControllerMethodReflector;
+use OCP\IConfig;
+use OCP\IURLGenerator;
+use OCP\IUserSession;
+use OCP\Security\ISecureRandom;
 use Test\TestCase;
 
 class TwoFactorMiddlewareTest extends TestCase {
 
+	/** @var Manager|\PHPUnit_Framework_MockObject_MockObject */
 	private $twoFactorManager;
+
+	/** @var IUserSession|\PHPUnit_Framework_MockObject_MockObject */
 	private $userSession;
-	private $session;
+
+	/** @var IURLGenerator|\PHPUnit_Framework_MockObject_MockObject */
 	private $urlGenerator;
+
+	/** @var IControllerMethodReflector|\PHPUnit_Framework_MockObject_MockObject */
 	private $reflector;
+
+	/** @var Request */
 	private $request;
 
 	/** @var TwoFactorMiddleware */
@@ -41,26 +56,23 @@ class TwoFactorMiddlewareTest extends TestCase {
 	protected function setUp() {
 		parent::setUp();
 
-		$this->twoFactorManager = $this->getMockBuilder('\OC\Authentication\TwoFactorAuth\Manager')
+		$this->twoFactorManager = $this->getMockBuilder(Manager::class)
 			->disableOriginalConstructor()
 			->getMock();
-		$this->userSession = $this->getMockBuilder('\OC\User\Session')
-			->disableOriginalConstructor()
-			->getMock();
-		$this->session = $this->createMock('\OCP\ISession');
-		$this->urlGenerator = $this->createMock('\OCP\IURLGenerator');
-		$this->reflector = $this->createMock('\OCP\AppFramework\Utility\IControllerMethodReflector');
+		$this->userSession = $this->createMock(IUserSession::class);
+		$this->urlGenerator = $this->createMock(IURLGenerator::class);
+		$this->reflector = $this->createMock(IControllerMethodReflector::class);
 		$this->request = new Request(
 			[
 				'server' => [
 					'REQUEST_URI' => 'test/url'
 				]
 			],
-			$this->createMock('\OCP\Security\ISecureRandom'),
-			$this->createMock('\OCP\IConfig')
+			$this->createMock(ISecureRandom::class),
+			$this->createMock(IConfig::class)
 		);
 
-		$this->middleware = new TwoFactorMiddleware($this->twoFactorManager, $this->userSession, $this->session, $this->urlGenerator, $this->reflector, $this->request);
+		$this->middleware = new TwoFactorMiddleware($this->twoFactorManager, $this->userSession, $this->urlGenerator, $this->reflector, $this->request);
 	}
 
 	public function testBeforeControllerNotLoggedIn() {
@@ -183,10 +195,10 @@ class TwoFactorMiddlewareTest extends TestCase {
 		$ex = new \OC\Authentication\Exceptions\UserAlreadyLoggedInException();
 
 		$this->urlGenerator->expects($this->once())
-			->method('linkToRoute')
-			->with('files.view.index')
-			->will($this->returnValue('redirect/url'));
-		$expected = new \OCP\AppFramework\Http\RedirectResponse('redirect/url');
+			->method('getAbsoluteUrl')
+			->with('')
+			->will($this->returnValue('http://cloud.local/'));
+		$expected = new \OCP\AppFramework\Http\RedirectResponse('http://cloud.local/');
 
 		$this->assertEquals($expected, $this->middleware->afterException(null, 'index', $ex));
 	}
