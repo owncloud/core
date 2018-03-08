@@ -1,4 +1,4 @@
-@insulated
+@webUI @insulated
 Feature: Change Login Password
 As a user
 I would like to change my login password
