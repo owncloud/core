@@ -294,6 +294,21 @@ services:
       matrix:
         FILES_EXTERNAL_TYPE: smb_samba
 
+  ceph:
+    image: owncloudci/ceph
+    pull: true
+    environment:
+      - KEYSTONE_PUBLIC_PORT=5034
+      - KEYSTONE_ADMIN_USER=test
+      - KEYSTONE_ADMIN_PASS=testing
+      - KEYSTONE_ADMIN_TENANT=testtenant
+      - KEYSTONE_ENDPOINT_REGION=testregion
+      - KEYSTONE_SERVICE=testceph
+      - OSD_SIZE=500
+    when:
+      matrix:
+        FILES_EXTERNAL_TYPE: swift
+
 matrix:
   include:
 
@@ -380,6 +395,11 @@ matrix:
       DB_TYPE: sqlite
       FILES_EXTERNAL_TYPE: smb_samba
 
+    - PHP_VERSION: 7.1
+      TEST_SUITE: phpunit
+      COVERAGE: true
+      DB_TYPE: sqlite
+      FILES_EXTERNAL_TYPE: swift
 
   # Ui Acceptance tests
     - PHP_VERSION: 7.1
