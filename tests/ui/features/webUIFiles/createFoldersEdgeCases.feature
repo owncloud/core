@@ -1,4 +1,4 @@
-@insulated @disablePreviews
+@webUI @insulated @disablePreviews
 Feature: create folder
 As a user
 I want to create folders

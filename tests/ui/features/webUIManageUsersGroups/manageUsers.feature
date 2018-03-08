@@ -1,4 +1,4 @@
-@insulated @disablePreviews
+@webUI @insulated @disablePreviews
 Feature: manage users
   As an admin
   I want to manage users

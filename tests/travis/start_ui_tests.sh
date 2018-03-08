@@ -273,6 +273,8 @@ then
 	BEHAT_TAGS='~@skipWhenTestingRemoteSystems&&'$BEHAT_TAGS
 fi
 
+BEHAT_TAGS='@webUI&&'$BEHAT_TAGS
+
 if [ "$BROWSER" == "firefox" ]
 then
 	#set screen resolution so that hopefully dragable elements will be visible

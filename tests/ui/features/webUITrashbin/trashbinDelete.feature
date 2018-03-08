@@ -1,4 +1,4 @@
-@insulated @disablePreviews
+@webUI @insulated @disablePreviews
 Feature: files and folders can be deleted from the trashbin
   As a user
   I want to delete files and folders from the trashbin
