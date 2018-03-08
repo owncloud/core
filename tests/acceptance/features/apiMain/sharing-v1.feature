@@ -1,3 +1,4 @@
+@api
 Feature: sharing
 	Background:
 		Given using API version "1"

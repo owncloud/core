@@ -1,3 +1,4 @@
+@api
 Feature: Status
 
   Scenario: Status.php is correct

@@ -1,3 +1,4 @@
+@api
 Feature: auth
 
 	Background:

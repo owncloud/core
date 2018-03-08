@@ -1,3 +1,4 @@
+@api
 Feature: tags
   Background:
     Given using new DAV path

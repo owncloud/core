@@ -1,3 +1,4 @@
+@api
 Feature: favorite
     Background:
         Given using API version "1"

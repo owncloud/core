@@ -1,3 +1,4 @@
+@api
 Feature: Comments
   Background:
     Given using new DAV path

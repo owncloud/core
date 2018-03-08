@@ -1,3 +1,4 @@
+@api
 Feature: quota
 	Background:
 		Given using API version "1"

@@ -1,3 +1,4 @@
+@api
 Feature: checksums
 
   Background:

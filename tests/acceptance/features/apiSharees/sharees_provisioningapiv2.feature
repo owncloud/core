@@ -1,3 +1,4 @@
+@api
 Feature: sharees_provisioningapiv2
   Background:
     Given using API version "2"
