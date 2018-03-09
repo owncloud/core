@@ -535,8 +535,8 @@ trait Tags {
 	}
 
 	/**
-	 * @BeforeScenario
-	 * @AfterScenario
+	 * @BeforeScenario @api
+	 * @AfterScenario @api
 	 *
 	 * @return void
 	 */
