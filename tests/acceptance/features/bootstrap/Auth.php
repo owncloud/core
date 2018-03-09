@@ -32,7 +32,7 @@ trait Auth {
 	private $clientToken;
 
 	/**
-	 * @BeforeScenario
+	 * @BeforeScenario @api
 	 *
 	 * @return void
 	 */

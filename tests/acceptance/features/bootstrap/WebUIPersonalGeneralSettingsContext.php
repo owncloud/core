@@ -147,7 +147,7 @@ class WebUIPersonalGeneralSettingsContext extends RawMinkContext implements Cont
 	 * This will run before EVERY scenario.
 	 * It will set the properties for this object.
 	 *
-	 * @BeforeScenario
+	 * @BeforeScenario @webUI
 	 *
 	 * @param BeforeScenarioScope $scope
 	 *

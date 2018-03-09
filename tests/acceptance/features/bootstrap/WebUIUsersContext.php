@@ -269,7 +269,7 @@ class WebUIUsersContext extends RawMinkContext implements Context {
 	/**
 	 * This will run before EVERY scenario.
 	 *
-	 * @BeforeScenario
+	 * @BeforeScenario @webUI
 	 *
 	 * @param BeforeScenarioScope $scope
 	 * 
