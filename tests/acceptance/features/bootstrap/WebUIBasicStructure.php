@@ -436,7 +436,7 @@ trait WebUIBasicStructure {
 	}
 
 	/**
-	 * @BeforeScenario
+	 * @BeforeScenario @webUI
 	 * @TestAlsoOnExternalUserBackend
 	 *
 	 * @return void
@@ -459,7 +459,7 @@ trait WebUIBasicStructure {
 	}
 
 	/**
-	 * @BeforeScenario
+	 * @BeforeScenario @webUI
 	 *
 	 * @param BeforeScenarioScope $scope
 	 *
@@ -483,7 +483,7 @@ trait WebUIBasicStructure {
 	}
 
 	/**
-	 * @AfterScenario
+	 * @AfterScenario @webUI
 	 *
 	 * @return void
 	 * @throws Exception

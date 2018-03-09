@@ -452,7 +452,7 @@ class WebUIGeneralContext extends RawMinkContext implements Context {
 	}
 
 	/**
-	 * @BeforeScenario
+	 * @BeforeScenario @webUI
 	 *
 	 * @param BeforeScenarioScope $scope
 	 *
@@ -505,7 +505,7 @@ class WebUIGeneralContext extends RawMinkContext implements Context {
 	/**
 	 * disable the previews on all tests tagged with '@disablePreviews'
 	 * 
-	 * @BeforeScenario @disablePreviews
+	 * @BeforeScenario @webUI&&@disablePreviews
 	 *
 	 * @return void
 	 */
@@ -540,7 +540,7 @@ class WebUIGeneralContext extends RawMinkContext implements Context {
 	/**
 	 * After Scenario. Sets back old settings
 	 *
-	 * @AfterScenario
+	 * @AfterScenario @webUI
 	 *
 	 * @return void
 	 */
@@ -590,7 +590,7 @@ class WebUIGeneralContext extends RawMinkContext implements Context {
 	/**
 	 * After Scenario. clear file locks
 	 *
-	 * @AfterScenario
+	 * @AfterScenario @webUI
 	 *
 	 * @return void
 	 */
@@ -609,7 +609,7 @@ class WebUIGeneralContext extends RawMinkContext implements Context {
 	/**
 	 * After Scenario. Report the pass/fail status to SauceLabs.
 	 *
-	 * @AfterScenario
+	 * @AfterScenario @webUI
 	 *
 	 * @param AfterScenarioScope $afterScenarioScope
 	 *
