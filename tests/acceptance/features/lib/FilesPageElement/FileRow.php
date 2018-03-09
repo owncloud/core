@@ -56,6 +56,14 @@ class FileRow extends OwnCloudPage {
 	protected $markedFavoriteXpath = "//span[contains(@class,'icon-starred')]";
 
 	/**
+	 * 
+	 * @return boolean
+	 */
+	public function isVisible() { 
+		return $this->rowElement->isVisible();
+	}
+
+	/**
 	 * sets the NodeElement for the current file row
 	 * a little bit like __construct() but as we access this "sub-page-object"
 	 * from an other Page Object by $this->getPage("FilesPageElement\\FileRow")
