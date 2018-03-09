@@ -784,7 +784,7 @@ trait BasicStructure {
 	}
 
 	/**
-	 * @BeforeScenario @local_storage
+	 * @BeforeScenario @api&&@local_storage
 	 *
 	 * @return void
 	 */
@@ -798,7 +798,7 @@ trait BasicStructure {
 	}
 
 	/**
-	 * @AfterScenario @local_storage
+	 * @AfterScenario @api&&@local_storage
 	 *
 	 * @return void
 	 */

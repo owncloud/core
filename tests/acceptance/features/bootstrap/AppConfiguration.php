@@ -290,7 +290,7 @@ trait AppConfiguration {
 	abstract protected function resetAppConfigs();
 
 	/**
-	 * @BeforeScenario
+	 * @BeforeScenario @api
 	 *
 	 * @return void
 	 */
@@ -302,7 +302,7 @@ trait AppConfiguration {
 	}
 
 	/**
-	 * @AfterScenario
+	 * @AfterScenario @api
 	 *
 	 * @return void
 	 */

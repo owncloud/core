@@ -885,8 +885,8 @@ trait Provisioning {
 	}
 
 	/**
-	 * @BeforeScenario
-	 * @AfterScenario
+	 * @BeforeScenario @api
+	 * @AfterScenario @api
 	 *
 	 * @return void
 	 */
@@ -904,8 +904,8 @@ trait Provisioning {
 	}
 
 	/**
-	 * @BeforeScenario
-	 * @AfterScenario
+	 * @BeforeScenario @api
+	 * @AfterScenario @api
 	 *
 	 * @return void
 	 */

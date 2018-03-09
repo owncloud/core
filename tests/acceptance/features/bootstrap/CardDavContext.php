@@ -68,7 +68,7 @@ class CardDavContext implements \Behat\Behat\Context\Context {
 	}
 
 	/**
-	 * @BeforeScenario @carddav
+	 * @BeforeScenario @api&&@carddav
 	 *
 	 * @param BeforeScenarioScope $scope
 	 *
@@ -84,7 +84,7 @@ class CardDavContext implements \Behat\Behat\Context\Context {
 	}
 
 	/**
-	 * @AfterScenario @carddav
+	 * @AfterScenario @api&&@carddav
 	 *
 	 * @return void
 	 */

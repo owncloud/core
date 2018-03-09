@@ -1194,7 +1194,7 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 	 * This will run before EVERY scenario.
 	 * It will set the properties for this object.
 	 *
-	 * @BeforeScenario
+	 * @BeforeScenario @webUI
 	 *
 	 * @param BeforeScenarioScope $scope
 	 *
