@@ -1093,7 +1093,7 @@ class SessionTest extends TestCase {
 
 		/** @var Session | \PHPUnit_Framework_MockObject_MockObject $session */
 		$session = $this->getMockBuilder(Session::class)
-			->setConstructorArgs([$userManager, $session, $timeFactory, $tokenProvider, $this->config, $this->serviceLoader])
+			->setConstructorArgs([$userManager, $session, $timeFactory, $tokenProvider, $this->config, $this->serviceLoader, $this->userSyncService])
 			->setMethods(['getAuthModules', 'logout', 'isLoggedIn', 'getUser'])
 			->getMock();
 		$session->expects($this->any())->method('getAuthModules')->willReturn($modules);
@@ -1141,7 +1141,7 @@ class SessionTest extends TestCase {
 
 		/** @var Session | \PHPUnit_Framework_MockObject_MockObject $session */
 		$session = $this->getMockBuilder(Session::class)
-			->setConstructorArgs([$userManager, $session, $timeFactory, $tokenProvider, $this->config, $this->serviceLoader])
+			->setConstructorArgs([$userManager, $session, $timeFactory, $tokenProvider, $this->config, $this->serviceLoader, $this->userSyncService])
 			->setMethods(['getAuthModules', 'createSessionToken', 'loginUser', 'getUser'])
 			->getMock();
 		$session->expects($this->any())->method('getAuthModules')->willReturn($modules);

@@ -28,6 +28,7 @@ use OC\User\AccountMapper;
 use OC\User\SyncService;
 use OCP\IConfig;
 use OCP\ILogger;
+use OCP\User;
 use OCP\UserInterface;
 use Test\TestCase;
 
@@ -59,22 +60,23 @@ class SyncServiceTest extends TestCase {
 
 	public function testSyncHomeLogsWhenBackendDiffersFromExisting() {
 		$mapper = $this->createMock(AccountMapper::class);
-		$backend = $this->createMock(UserInterface::class);
+		// Create a mapper which supports providing a home
+		$backend = $this->createMock([UserInterface::class, \OCP\User\IProvidesHomeBackend::class]);
 		$config = $this->createMock(IConfig::class);
 		$logger = $this->createMock(ILogger::class);
-		$a = $this->createMock(Account::class);
+		$a = $this->getMockBuilder(Account::class)->setMethods(['getHome'])->getMock();
 
-		// Accoutn returns existing home
-		$a->expects($this->once())->method('getHome')->willReturn('existing');
+		// Account returns existing home
+		$a->expects($this->any())->method('getHome')->willReturn('existing');
 
 		// Backend returns a new home
-		$backend->expects($this->exactly(2))->method('getHome')->willReturn('newwrongvalue');
+		$backend->expects($this->any())->method('getHome')->willReturn('newwrongvalue');
 
 		// Should produce an error in the log if backend home different from stored account home
 		$logger->expects($this->once())->method('error');
 
+		// Run the sync
 		$s = new SyncService($config, $logger, $mapper);
-
 		$this->invokePrivate($s, 'syncHome', [$a, $backend]);
 	}
 }
