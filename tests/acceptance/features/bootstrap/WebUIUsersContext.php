@@ -35,7 +35,6 @@ require_once 'bootstrap.php';
  */
 class WebUIUsersContext extends RawMinkContext implements Context {
 
-
 	private $usersPage;
 	/**
 	 *
@@ -53,11 +52,12 @@ class WebUIUsersContext extends RawMinkContext implements Context {
 	}
 
 	/**
-	 * @Given I am on the users page
+	 * @When the user/administrator browses to the users page
+	 * @Given the user/administrator has browsed to the users page
 	 *
 	 * @return void
 	 */
-	public function iAmOnTheUsersPage() {
+	public function theUserBrowsesToTheUsersPage() {
 		$this->usersPage->open();
 		$this->usersPage->waitTillPageIsLoaded($this->getSession());
 	}
@@ -75,14 +75,15 @@ class WebUIUsersContext extends RawMinkContext implements Context {
 	}
 
 	/**
-	 * @Given quota of user :username is set/changed to :quota
+	 * @When the administrator sets/changes the quota of user :username to :quota using the webUI
+	 * @Given the administrator has set/changed the quota of user :username to :quota using the webUI
 	 *
 	 * @param string $username
 	 * @param string $quota
 	 * 
 	 * @return void
 	 */
-	public function quotaOfUserIsSetTo($username, $quota) {
+	public function theAdministratorSetsTheQuotaOfUserUsingTheWebUI($username, $quota) {
 		$this->usersPage->setQuotaOfUserTo($username, $quota, $this->getSession());
 	}
 
@@ -121,7 +122,7 @@ class WebUIUsersContext extends RawMinkContext implements Context {
 	}
 
 	/**
-	 * @When /^I (attempt to |)create a user with the name "([^"]*)" (?:and )?the password "([^"]*)"(?: and the email "([^"]*)")?(?: that is a member of these groups)?$/
+	 * @When /^the administrator (attempts to create|creates) a user with the name "([^"]*)" (?:and )?the password "([^"]*)"(?: and the email "([^"]*)")?(?: that is a member of these groups)? using the webUI$/
 	 *
 	 * @param string $attemptTo
 	 * @param string $username
@@ -131,7 +132,7 @@ class WebUIUsersContext extends RawMinkContext implements Context {
 	 * 
 	 * @return void
 	 */
-	public function iCreateAUserInTheGUI(
+	public function theAdminCreatesAUserUsingTheWebUI(
 		$attemptTo, $username, $password, $email=null, TableNode $groupsTable=null
 	) {
 		if (!is_null($groupsTable)) {
@@ -159,34 +160,34 @@ class WebUIUsersContext extends RawMinkContext implements Context {
 
 	/**
 	 * 
-	 * @When I delete the group named :name
+	 * @When the administrator deletes the group named :name using the webUI
 	 *
 	 * @param string $name
 	 * 
 	 * @return void
 	 */
-	public function iDeleteTheGroupNamed($name) {
+	public function theAdminDeletesTheGroupUsingTheWebUI($name) {
 		$this->usersPage->deleteGroup($name, $this->getSession());
 		$this->webUIGeneralContext->deleteGroupFromCreatedGroupsList($name);
 	}
 
 	/**
-	 * @When I delete these groups:
+	 * @When the administrator deletes these groups using the webUI:
 	 * expects a table of groups with the heading "groupname"
 	 *
 	 * @param TableNode $table
 	 * 
 	 * @return void
 	 */
-	public function iDeleteTheseGroups(TableNode $table) {
+	public function theAdminDeletesTheseGroupsUsingTheWebUI(TableNode $table) {
 		foreach ($table as $row) {
-			$this->iDeleteTheGroupNamed($row['groupname']);
+			$this->theAdminDeletesTheGroupUsingTheWebUI($row['groupname']);
 		}
 	}
 
 	
 	/**
-	 * @Then The group name :groupName should be listed
+	 * @Then the group name :groupName should be listed on the webUI
 	 *
 	 * @param string $groupName
 	 * 
@@ -200,21 +201,21 @@ class WebUIUsersContext extends RawMinkContext implements Context {
 	}
 
 	/**
-	 * @Then the group named :name should not be listed
+	 * @Then the group name :name should not be listed on the webUI
 	 *
 	 * @param string $name
 	 * 
 	 * @return void
 	 * @throws Exception
 	 */
-	public function theGroupNamedShouldNotBeListed($name) {
+	public function theGroupNamedShouldNotBeListedOnTheWebUI($name) {
 		if (in_array($name, $this->usersPage->getAllGroups(), true)) {
 			throw new Exception("group '" . $name . "' is listed but should not");
 		}
 	}
 
 	/**
-	 * @Then /^these groups should (not|)\s?be listed:$/
+	 * @Then /^these groups should (not|)\s?be listed on the webUI:$/
 	 * expects a table of groups with the heading "groupname"
 	 *
 	 * @param string $shouldOrNot (not|)
@@ -223,7 +224,7 @@ class WebUIUsersContext extends RawMinkContext implements Context {
 	 * @return void
 	 * @throws Exception
 	 */
-	public function theseGroupsShouldBeListed($shouldOrNot, TableNode $table) {
+	public function theseGroupsShouldBeListedOnTheWebUI($shouldOrNot, TableNode $table) {
 		$should = ($shouldOrNot !== "not");
 		$groups = $this->usersPage->getAllGroups();
 		foreach ($table as $row) {
@@ -238,17 +239,18 @@ class WebUIUsersContext extends RawMinkContext implements Context {
 	}
 
 	/**
-	 * @When the users page is reloaded
+	 * @When the user/administrator reloads the users page
+	 * @Given the user/administrator has reloaded the users page
 	 *
 	 * @return void
 	 */
-	public function theUsersPageIsReloaded() {
+	public function theUserReloadsTheUsersPage() {
 		$this->getSession()->reload();
 		$this->usersPage->waitTillPageIsLoaded($this->getSession());
 	}
 
 	/**
-	 * @Then quota of user :username should be set to :quota
+	 * @Then the quota of user :username should be set to :quota on the webUI
 	 *
 	 * @param string $username
 	 * @param string $quota
@@ -256,7 +258,7 @@ class WebUIUsersContext extends RawMinkContext implements Context {
 	 * @return void
 	 * @throws ExpectationException
 	 */
-	public function quotaOfUserShouldBeSetTo($username, $quota) {
+	public function quotaOfUserShouldBeSetToOnTheWebUI($username, $quota) {
 		$setQuota = $this->usersPage->getQuotaOfUser($username);
 		if ($setQuota !== $quota) {
 			throw new ExpectationException(
@@ -283,13 +285,13 @@ class WebUIUsersContext extends RawMinkContext implements Context {
 	}
 
 	/**
-	 * @Given I add a group with the name :groupName
-	 * 
+	 * @When the administrator adds group :groupName using the webUI
+	 *
 	 * @param string $groupName
 	 * 
 	 * @return void
 	 */
-	public function iAddAGroupWithTheName($groupName) {
+	public function theAdminAddsGroupUsingTheWebUI($groupName) {
 		$this->usersPage->addGroup($groupName, $this->getSession());
 	}
 }

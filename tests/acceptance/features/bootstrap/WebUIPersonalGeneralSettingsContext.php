@@ -50,11 +50,12 @@ class WebUIPersonalGeneralSettingsContext extends RawMinkContext implements Cont
 	}
 
 	/**
-	 * @Given I am on the personal general settings page
+	 * @When the user browses to the personal general settings page
+	 * @Given the user has browsed to the personal general settings page
 	 *
 	 * @return void
 	 */
-	public function iAmOnThePersonalGeneralSettingsPage() {
+	public function theUserBrowsesToThePersonalGeneralSettingsPage() {
 		$this->personalGeneralSettingsPage->open();
 		$this->personalGeneralSettingsPage->waitForOutstandingAjaxCalls(
 			$this->getSession()
@@ -62,22 +63,15 @@ class WebUIPersonalGeneralSettingsContext extends RawMinkContext implements Cont
 	}
 
 	/**
-	 * @Given /^I (attempt to |)go to the personal general settings page$/
+	 * Browse to the personal general settings page, but do not test or fail
+	 * if the expected page is not actually reached.
 	 *
-	 * @param string $attemptTo
+	 * @When /^the user attempts to browse to the personal general settings page$/
 	 *
 	 * @return void
-	 * @throws Exception
 	 */
-	public function iGoToThePersonalGeneralSettingsPage($attemptTo) {
-		$pageIsExpectedToLoad = ($attemptTo === "");
+	public function theUserAttemptsToBrowseToThePersonalGeneralSettingsPage() {
 		$this->visitPath($this->personalGeneralSettingsPage->getPagePath());
-
-		if ($pageIsExpectedToLoad) {
-			$this->personalGeneralSettingsPage->waitTillPageIsLoaded(
-				$this->getSession()
-			);
-		}
 
 		$this->personalGeneralSettingsPage->waitForOutstandingAjaxCalls(
 			$this->getSession()
@@ -85,13 +79,13 @@ class WebUIPersonalGeneralSettingsContext extends RawMinkContext implements Cont
 	}
 
 	/**
-	 * @When I change the language to :language
+	 * @When the user changes the language to :language using the webUI
 	 *
 	 * @param string $language
 	 *
 	 * @return void
 	 */
-	public function iChangeTheLanguageTo($language) {
+	public function theUserChangesTheLanguageToUsingTheWebUI($language) {
 		$this->personalGeneralSettingsPage->changeLanguage($language);
 		$this->personalGeneralSettingsPage->waitForOutstandingAjaxCalls(
 			$this->getSession()
@@ -99,13 +93,13 @@ class WebUIPersonalGeneralSettingsContext extends RawMinkContext implements Cont
 	}
 	
 	/**
-	 * @When I change the password to :newPassword
+	 * @When the user changes the password to :newPassword using the webUI
 	 *
 	 * @param string $newPassword
 	 *
 	 * @return void
 	 */
-	public function iChangeThePasswordTo($newPassword) {
+	public function theUserChangesThePasswordToUsingTheWebUI($newPassword) {
 		$username = $this->webUIGeneralContext->getCurrentUser();
 		$oldPassword = trim($this->webUIGeneralContext->getUserPassword($username));
 		$this->personalGeneralSettingsPage->changePassword(
@@ -114,13 +108,15 @@ class WebUIPersonalGeneralSettingsContext extends RawMinkContext implements Cont
 	}
 	
 	/**
-	 * @When I change the password to :newPassword using wrong current password
+	 * @When the user changes the password to :newPassword entering the wrong current password using the webUI
 	 *
 	 * @param string $newPassword
 	 *
 	 * @return void
 	 */
-	public function iChangeThePasswordToUsingWrongCurrentPassword($newPassword) {
+	public function theUserChangesThePasswordWrongCurrentPasswordUsingTheWebUI(
+		$newPassword
+	) {
 		$oldPassword = "thisisawrongpassword";
 		$this->personalGeneralSettingsPage->changePassword(
 			$oldPassword, $newPassword, $this->getSession()
@@ -128,13 +124,13 @@ class WebUIPersonalGeneralSettingsContext extends RawMinkContext implements Cont
 	}
 	
 	/**
-	 * @Then a password error message should be displayed with the text :wrongPasswordmessageText
+	 * @Then a password error message should be displayed on the webUI with the text :wrongPasswordmessageText
 	 *
 	 * @param string $wrongPasswordmessageText
 	 *
 	 * @return void
 	 */
-	public function aPasswordErrorMessageShouldBeDisplayedWithTheText(
+	public function aPasswordErrorMessageShouldBeDisplayedOnTheWebUIWithTheText(
 		$wrongPasswordmessageText
 	) {
 		PHPUnit_Framework_Assert::assertEquals(
