@@ -111,7 +111,39 @@ pipeline:
       - php occ config:list
     when:
       matrix:
-        TEST_SUITE: selenium
+        TEST_SUITE: [selenium, litmus]
+
+  fix-permissions:
+    image: owncloudci/php:${PHP_VERSION}
+    pull: true
+    commands:
+      - cd /drone/src/
+      - chown www-data * -R
+    when:
+      matrix:
+        TEST_SUITE: [selenium, litmus]
+
+  litmus-old-endpoint:
+    image: owncloud/litmus
+    pull: true
+    environment:
+      - LITMUS_URL=http://server/remote.php/webdav
+      - LITMUS_USERNAME=admin
+      - LITMUS_PASSWORD=admin
+    when:
+      matrix:
+        TEST_SUITE: litmus
+
+  litmus-new-endpoint:
+    image: owncloud/litmus
+    pull: true
+    environment:
+      - LITMUS_URL=http://server/remote.php/dav/files/admin
+      - LITMUS_USERNAME=admin
+      - LITMUS_PASSWORD=admin
+    when:
+      matrix:
+        TEST_SUITE: litmus
 
   owncloud-log:
     image: owncloud/ubuntu:16.04
@@ -137,8 +169,6 @@ pipeline:
       - SELENIUM_PORT=4444
       - PLATFORM=Linux
     commands:
-      - cd /drone/src/
-      - chown www-data * -R
       - bash tests/travis/start_ui_tests.sh --remote 
     when:
       matrix:
@@ -252,6 +282,11 @@ matrix:
     - TEST_SUITE: javascript
       PHP_VERSION: 7.1
 
+  # Litmus
+    - PHP_VERSION: 7.1
+      USE_SERVER: true
+      TEST_SUITE: litmus
+
   # Unit Tests
     - PHP_VERSION: 7.1
       DB_TYPE: mysql
@@ -309,7 +344,6 @@ matrix:
       COVERAGE: true
       DB_TYPE: sqlite
       FILES_EXTERNAL_TYPE: webdav_apache
-
 
   # Ui Acceptance tests
     - PHP_VERSION: 7.1
