@@ -111,7 +111,7 @@ pipeline:
       - php occ config:list
     when:
       matrix:
-        TEST_SUITE: [selenium, litmus]
+        INSTALL_SERVER: true
 
   fix-permissions:
     image: owncloudci/php:${PHP_VERSION}
@@ -121,7 +121,7 @@ pipeline:
       - chown www-data * -R
     when:
       matrix:
-        TEST_SUITE: [selenium, litmus]
+        CHOWN_SERVER: true
 
   litmus-old-endpoint:
     image: owncloud/litmus
@@ -286,6 +286,8 @@ matrix:
     - PHP_VERSION: 7.1
       USE_SERVER: true
       TEST_SUITE: litmus
+      INSTALL_SERVER: true
+      CHOWN_SERVER: true
 
   # Unit Tests
     - PHP_VERSION: 7.1
@@ -351,66 +353,88 @@ matrix:
       BEHAT_SUITE: webUIFavorites
       DB_TYPE: mariadb
       USE_SERVER: true
+      INSTALL_SERVER: true
+      CHOWN_SERVER: true
       
     - PHP_VERSION: 7.1
       TEST_SUITE: selenium
       BEHAT_SUITE: webUIManageUsersGroups
       DB_TYPE: mariadb
       USE_SERVER: true
+      INSTALL_SERVER: true
+      CHOWN_SERVER: true
 
     - PHP_VERSION: 7.1
       TEST_SUITE: selenium
       BEHAT_SUITE: webUIManageQuota
       DB_TYPE: mariadb
       USE_SERVER: true
+      INSTALL_SERVER: true
+      CHOWN_SERVER: true
 
     - PHP_VERSION: 7.1
       TEST_SUITE: selenium
       BEHAT_SUITE: webUIPersonalSettings
       DB_TYPE: mariadb
       USE_SERVER: true
+      INSTALL_SERVER: true
+      CHOWN_SERVER: true
 
     - PHP_VERSION: 7.1
       TEST_SUITE: selenium
       BEHAT_SUITE: webUIFiles
       DB_TYPE: mariadb
       USE_SERVER: true
+      INSTALL_SERVER: true
+      CHOWN_SERVER: true
 
     - PHP_VERSION: 7.1
       TEST_SUITE: selenium
       BEHAT_SUITE: webUIMoveFilesFolders
       DB_TYPE: mariadb
       USE_SERVER: true
+      INSTALL_SERVER: true
+      CHOWN_SERVER: true
     
     - PHP_VERSION: 7.1
       TEST_SUITE: selenium
       BEHAT_SUITE: webUIRenameFiles
       DB_TYPE: mariadb
       USE_SERVER: true
+      INSTALL_SERVER: true
+      CHOWN_SERVER: true
     
     - PHP_VERSION: 7.1
       TEST_SUITE: selenium
       BEHAT_SUITE: webUIRenameFolders
       DB_TYPE: mariadb
       USE_SERVER: true
+      INSTALL_SERVER: true
+      CHOWN_SERVER: true
 
     - PHP_VERSION: 7.1
       TEST_SUITE: selenium
       BEHAT_SUITE: webUITrashbin
       DB_TYPE: mariadb
       USE_SERVER: true
+      INSTALL_SERVER: true
+      CHOWN_SERVER: true
 
     - PHP_VERSION: 7.1
       TEST_SUITE: selenium
       BEHAT_SUITE: webUISharingInternalGroups
       DB_TYPE: mariadb
       USE_SERVER: true
+      INSTALL_SERVER: true
+      CHOWN_SERVER: true
 
     - PHP_VERSION: 7.1
       TEST_SUITE: selenium
       BEHAT_SUITE: webUISharingInternalUsers
       DB_TYPE: mariadb
       USE_SERVER: true
+      INSTALL_SERVER: true
+      CHOWN_SERVER: true
 
     - PHP_VERSION: 7.1
       TEST_SUITE: selenium
@@ -418,15 +442,21 @@ matrix:
       DB_TYPE: mariadb
       USE_SERVER: true
       USE_FEDERATED_SERVER: true
+      INSTALL_SERVER: true
+      CHOWN_SERVER: true
     
     - PHP_VERSION: 7.1
       TEST_SUITE: selenium
       BEHAT_SUITE: webUIRestrictSharing
       DB_TYPE: mariadb
       USE_SERVER: true
+      INSTALL_SERVER: true
+      CHOWN_SERVER: true
       
     - PHP_VERSION: 7.1
       TEST_SUITE: selenium
       BEHAT_SUITE: webUIUpload
       DB_TYPE: mariadb
       USE_SERVER: true
+      INSTALL_SERVER: true
+      CHOWN_SERVER: true
