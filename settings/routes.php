@@ -67,12 +67,6 @@ $application->registerRoutes($this, [
 $this->create('settings_help', '/settings/help')
 	->actionInclude('settings/help.php');
 // Settings ajax actions
-// users
-$this->create('settings_users_changepassword', '/settings/users/changepassword')
-	->post()
-	->action('OC\Settings\ChangePassword\Controller', 'changeUserPassword');
-$this->create('settings_ajax_changegroupname', '/settings/ajax/changegroupname.php')
-	->actionInclude('settings/ajax/changegroupname.php');
 // personal
 $this->create('settings_personal_changepassword', '/settings/personal/changepassword')
 	->post()
