@@ -5,101 +5,101 @@ I want to share files and folders with groups
 So that those groups can access the files and folders
 
 	Background:
-		Given these users exist:
+		Given these users have been created:
 			|username|password|displayname|email       |
 			|user1   |1234    |User One   |u1@oc.com.np|
 			|user2   |1234    |User Two   |u2@oc.com.np|
 			|user3   |1234    |User Three |u2@oc.com.np|
-		And these groups exist:
+		And these groups have been created:
 			|groupname|
 			|grp1     |
-		And the user "user1" is in the group "grp1"
-		And the user "user2" is in the group "grp1"
-		And I am on the login page
-		And I login with username "user3" and password "1234"
+		And user "user1" has been added to group "grp1" ready for use by the webUI
+		And user "user2" has been added to group "grp1" ready for use by the webUI
+		And the user has browsed to the login page
+		And the user has logged in with username "user3" and password "1234" using the webUI
 
 	@TestAlsoOnExternalUserBackend
 	Scenario: share a folder with an internal group
-		When the folder "simple-folder" is shared with the group "grp1"
-		And the file "testimage.jpg" is shared with the group "grp1"
-		And I relogin with username "user1" and password "1234"
-		Then the folder "simple-folder (2)" should be listed
-		And the folder "simple-folder (2)" should be marked as shared with "grp1" by "User Three"
-		And the file "testimage (2).jpg" should be listed
-		And the file "testimage (2).jpg" should be marked as shared with "grp1" by "User Three"
-		When I relogin with username "user2" and password "1234"
-		Then the folder "simple-folder (2)" should be listed
-		And the folder "simple-folder (2)" should be marked as shared with "grp1" by "User Three"
-		And the file "testimage (2).jpg" should be listed
-		And the file "testimage (2).jpg" should be marked as shared with "grp1" by "User Three"
+		When the user shares the folder "simple-folder" with the group "grp1" using the webUI
+		And the user shares the file "testimage.jpg" with the group "grp1" using the webUI
+		And the user re-logs in with username "user1" and password "1234" using the webUI
+		Then the folder "simple-folder (2)" should be listed on the webUI
+		And the folder "simple-folder (2)" should be marked as shared with "grp1" by "User Three" on the webUI
+		And the file "testimage (2).jpg" should be listed on the webUI
+		And the file "testimage (2).jpg" should be marked as shared with "grp1" by "User Three" on the webUI
+		When the user re-logs in with username "user2" and password "1234" using the webUI
+		Then the folder "simple-folder (2)" should be listed on the webUI
+		And the folder "simple-folder (2)" should be marked as shared with "grp1" by "User Three" on the webUI
+		And the file "testimage (2).jpg" should be listed on the webUI
+		And the file "testimage (2).jpg" should be marked as shared with "grp1" by "User Three" on the webUI
 
 	@TestAlsoOnExternalUserBackend
 	Scenario: share a file with an internal group a member overwrites and unshares the file
-		When I rename the file "lorem.txt" to "new-lorem.txt"
-		And the file "new-lorem.txt" is shared with the group "grp1"
-		And I relogin with username "user1" and password "1234"
+		When the user renames the file "lorem.txt" to "new-lorem.txt" using the webUI
+		And the user shares the file "new-lorem.txt" with the group "grp1" using the webUI
+		And the user re-logs in with username "user1" and password "1234" using the webUI
 		Then the content of "new-lorem.txt" should not be the same as the local "new-lorem.txt"
 		# overwrite the received shared file
-		When I upload overwriting the file "new-lorem.txt" and retry if the file is locked
-		Then the file "new-lorem.txt" should be listed
+		When the user uploads overwriting the file "new-lorem.txt" using the webUI and retries if the file is locked
+		Then the file "new-lorem.txt" should be listed on the webUI
 		And the content of "new-lorem.txt" should be the same as the local "new-lorem.txt"
 		# unshare the received shared file
-		When I unshare the file "new-lorem.txt"
-		Then the file "new-lorem.txt" should not be listed
+		When the user unshares the file "new-lorem.txt" using the webUI
+		Then the file "new-lorem.txt" should not be listed on the webUI
 		# check that another group member can still see the file
-		When I relogin with username "user2" and password "1234"
+		When the user re-logs in with username "user2" and password "1234" using the webUI
 		Then the content of "new-lorem.txt" should be the same as the local "new-lorem.txt"
 		# check that the original file owner can still see the file
-		When I relogin with username "user2" and password "1234"
+		When the user re-logs in with username "user2" and password "1234" using the webUI
 		Then the content of "new-lorem.txt" should be the same as the local "new-lorem.txt"
 
 	@TestAlsoOnExternalUserBackend
 	Scenario: share a folder with an internal group and a member uploads, overwrites and deletes files
-		When I rename the folder "simple-folder" to "new-simple-folder"
-		And the folder "new-simple-folder" is shared with the group "grp1"
-		And I relogin with username "user1" and password "1234"
-		And I open the folder "new-simple-folder"
+		When the user renames the folder "simple-folder" to "new-simple-folder" using the webUI
+		And the user shares the folder "new-simple-folder" with the group "grp1" using the webUI
+		And the user re-logs in with username "user1" and password "1234" using the webUI
+		And the user opens the folder "new-simple-folder" using the webUI
 		Then the content of "lorem.txt" should not be the same as the local "lorem.txt"
 		# overwrite an existing file in the received share
-		When I upload overwriting the file "lorem.txt" and retry if the file is locked
-		Then the file "lorem.txt" should be listed
+		When the user uploads overwriting the file "lorem.txt" using the webUI and retries if the file is locked
+		Then the file "lorem.txt" should be listed on the webUI
 		And the content of "lorem.txt" should be the same as the local "lorem.txt"
 		# upload a new file into the received share
-		When I upload the file "new-lorem.txt"
+		When the user uploads the file "new-lorem.txt" using the webUI
 		Then the content of "new-lorem.txt" should be the same as the local "new-lorem.txt"
 		# delete a file in the received share
-		When I delete the file "data.zip"
-		Then the file "data.zip" should not be listed
+		When the user deletes the file "data.zip" using the webUI
+		Then the file "data.zip" should not be listed on the webUI
 		# check that the file actions by the sharee are visible to another group member
-		When I relogin with username "user2" and password "1234"
-		And I open the folder "new-simple-folder"
+		When the user re-logs in with username "user2" and password "1234" using the webUI
+		And the user opens the folder "new-simple-folder" using the webUI
 		Then the content of "lorem.txt" should be the same as the local "lorem.txt"
 		And the content of "new-lorem.txt" should be the same as the local "new-lorem.txt"
-		And the file "data.zip" should not be listed
+		And the file "data.zip" should not be listed on the webUI
 		# check that the file actions by the sharee are visible for the share owner
-		When I relogin with username "user3" and password "1234"
-		And I open the folder "new-simple-folder"
+		When the user re-logs in with username "user3" and password "1234" using the webUI
+		And the user opens the folder "new-simple-folder" using the webUI
 		Then the content of "lorem.txt" should be the same as the local "lorem.txt"
 		And the content of "new-lorem.txt" should be the same as the local "new-lorem.txt"
-		And the file "data.zip" should not be listed
+		And the file "data.zip" should not be listed on the webUI
 
 	@TestAlsoOnExternalUserBackend
 	Scenario: share a folder with an internal group and a member unshares the folder
-		When I rename the folder "simple-folder" to "new-simple-folder"
-		And the folder "new-simple-folder" is shared with the group "grp1"
+		When the user renames the folder "simple-folder" to "new-simple-folder" using the webUI
+		And the user shares the folder "new-simple-folder" with the group "grp1" using the webUI
 		# unshare the received shared folder and check it is gone
-		And I relogin with username "user1" and password "1234"
-		And I unshare the folder "new-simple-folder"
-		Then the folder "new-simple-folder" should not be listed
+		And the user re-logs in with username "user1" and password "1234" using the webUI
+		And the user unshares the folder "new-simple-folder" using the webUI
+		Then the folder "new-simple-folder" should not be listed on the webUI
 		# check that the folder is still visible to another group member
-		When I relogin with username "user2" and password "1234"
-		Then the folder "new-simple-folder" should be listed
-		When I open the folder "new-simple-folder"
-		Then the file "lorem.txt" should be listed
-		Then the content of "lorem.txt" should be the same as the original "simple-folder/lorem.txt"
+		When the user re-logs in with username "user2" and password "1234" using the webUI
+		Then the folder "new-simple-folder" should be listed on the webUI
+		When the user opens the folder "new-simple-folder" using the webUI
+		Then the file "lorem.txt" should be listed on the webUI
+		And the content of "lorem.txt" should be the same as the original "simple-folder/lorem.txt"
 		# check that the folder is still visible for the share owner
-		When I relogin with username "user3" and password "1234"
-		Then the folder "new-simple-folder" should be listed
-		When I open the folder "new-simple-folder"
-		Then the file "lorem.txt" should be listed
-		Then the content of "lorem.txt" should be the same as the original "simple-folder/lorem.txt"
+		When the user re-logs in with username "user3" and password "1234" using the webUI
+		Then the folder "new-simple-folder" should be listed on the webUI
+		When the user opens the folder "new-simple-folder" using the webUI
+		Then the file "lorem.txt" should be listed on the webUI
+		And the content of "lorem.txt" should be the same as the original "simple-folder/lorem.txt"

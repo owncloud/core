@@ -126,7 +126,8 @@ trait Logging {
 	}
 
 	/**
-	 * @Given owncloud log level is set to :logLevel
+	 * @When the owncloud log level is set to :logLevel
+	 * @Given the owncloud log level has been set to :logLevel
 	 *
 	 * @param string $logLevel (debug|info|warning|error)
 	 *
@@ -137,7 +138,8 @@ trait Logging {
 	}
 
 	/**
-	 * @Given owncloud log backend is set to :backend
+	 * @When the owncloud log backend is set to :backend
+	 * @Given the owncloud log backend has been set to :backend
 	 *
 	 * @param string $backend (owncloud|syslog|errorlog)
 	 *
@@ -148,7 +150,8 @@ trait Logging {
 	}
 
 	/**
-	 * @Given owncloud log timezone is set to :timezone
+	 * @When the owncloud log timezone is set to :timezone
+	 * @Given the owncloud log timezone has been set to :timezone
 	 *
 	 * @param string $timezone
 	 *
@@ -159,7 +162,8 @@ trait Logging {
 	}
 
 	/**
-	 * @Given the owncloud log is cleared
+	 * @When the owncloud log is cleared
+	 * @Given the owncloud log has been cleared
 	 *
 	 * @return void
 	 */

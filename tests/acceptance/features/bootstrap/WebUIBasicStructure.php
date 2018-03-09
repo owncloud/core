@@ -49,21 +49,23 @@ trait WebUIBasicStructure {
 	private $createdGroupNames = array();
 
 	/**
-	 * @Given I am logged in as admin
+	 * @When user admin logs in using the webUI
+	 * @Given user admin has logged in using the webUI
 	 *
 	 * @return void
 	 */
-	public function iAmLoggedInAsAdmin() {
+	public function adminLogsInUsingTheWebUI() {
 		$this->loginPage->open();
 		$this->loginAs("admin", $this->getUserPassword("admin"));
 	}
 
 	/**
-	 * @Given I am logged in as a regular user
+	 * @When the regular user logs in using the webUI
+	 * @Given the regular user has logged in using the webUI
 	 *
 	 * @return void
 	 */
-	public function iAmLoggedInAsARegularUser() {
+	public function theRegularUserLogsInUsingTheWebUI() {
 		$this->loginPage->open();
 		$this->loginAsARegularUser();
 	}
@@ -100,11 +102,12 @@ trait WebUIBasicStructure {
 	}
 
 	/**
-	 * @When I logout
+	 * @When the user/administrator logs out of the webUI
+	 * @Given the user/administrator has logged out of the webUI
 	 *
 	 * @return void
 	 */
-	public function iLogout() {
+	public function theUserLogsOutOfTheWebUI() {
 		$settingsMenu = $this->owncloudPage->openSettingsMenu();
 		$settingsMenu->logout();
 		$this->loginPage->waitTillPageIsLoaded($this->getSession());
@@ -114,13 +117,13 @@ trait WebUIBasicStructure {
 	}
 
 	/**
-	 * @Given /^a regular user exists\s?(but is not initialized|)$/
+	 * @Given /^a regular user has been created\s?(but not initialized|)$/
 	 *
 	 * @param string $doNotInitialize just create the user, do not trigger creating skeleton files etc
 	 *
 	 * @return void
 	 */
-	public function aRegularUserExists($doNotInitialize = "") {
+	public function aRegularUserHasBeenCreated($doNotInitialize = "") {
 		$this->createUser(
 			$this->getRegularUserName(),
 			$this->getRegularUserPassword(),
@@ -131,13 +134,13 @@ trait WebUIBasicStructure {
 	}
 
 	/**
-	 * @Given /^regular users exist\s?(but are not initialized|)$/
+	 * @Given /^regular users have been created\s?(but not initialized|)$/
 	 *
 	 * @param string $doNotInitialize just create the user, do not trigger creating skeleton files etc
 	 *
 	 * @return void
 	 */
-	public function regularUsersExist($doNotInitialize) {
+	public function regularUsersHaveBeenCreated($doNotInitialize) {
 		foreach ($this->getRegularUserNames() as $user) {
 			$this->createUser(
 				$user,
@@ -150,7 +153,7 @@ trait WebUIBasicStructure {
 	}
 
 	/**
-	 * @Given /^these users exist\s?(but are not initialized|):$/
+	 * @Given /^these users have been created\s?(but not initialized|):$/
 	 * expects a table of users with the heading
 	 * "|username|password|displayname|email|"
 	 * displayname & email are optional
@@ -160,7 +163,7 @@ trait WebUIBasicStructure {
 	 *
 	 * @return void
 	 */
-	public function theseUsersExist($doNotInitialize, TableNode $table) {
+	public function theseUsersHaveBeenCreated($doNotInitialize, TableNode $table) {
 		foreach ($table as $row) {
 			if (isset($row['displayname'])) {
 				$displayName = $row['displayname'];
@@ -183,7 +186,7 @@ trait WebUIBasicStructure {
 	}
 
 	/**
-	 * @Given these users are initialized:
+	 * @Given these users have been initialized:
 	 * expects a table of users with the heading
 	 * "|username|password|"
 	 *
@@ -191,7 +194,7 @@ trait WebUIBasicStructure {
 	 *
 	 * @return void
 	 */
-	public function theseUsersAreInitialized(TableNode $table) {
+	public function theseUsersHaveBeenInitialized(TableNode $table) {
 		foreach ($table as $row) {
 			$this->initializeUser(
 				$row ['username'],
@@ -287,34 +290,34 @@ trait WebUIBasicStructure {
 		);
 	}
 	/**
-	 * @Given these groups exist:
+	 * @Given these groups have been created:
 	 * expects a table of groups with the heading "groupname"
 	 *
 	 * @param TableNode $table
 	 *
 	 * @return void
 	 */
-	public function theseGroupsExist(TableNode $table) {
+	public function theseGroupsHaveBeenCreated(TableNode $table) {
 		foreach ($table as $row) {
 			$this->createGroup($row['groupname']);
 		}
 	}
 
 	/**
-	 * @Given a regular group exists
+	 * @Given a regular group has been created
 	 *
 	 * @return void
 	 */
-	public function aRegularGroupExists() {
+	public function aRegularGroupHasBeenCreated() {
 		$this->createGroup($this->regularGroupName);
 	}
 
 	/**
-	 * @Given regular groups exist
+	 * @Given regular groups have been created
 	 *
 	 * @return void
 	 */
-	public function regularGroupsExist() {
+	public function regularGroupsHaveBeenCreated() {
 		foreach ($this->regularGroupNames as $group) {
 			$this->createGroup($group);
 		}
@@ -371,21 +374,21 @@ trait WebUIBasicStructure {
 		$this->addGroupToCreatedGroupsList($group);
 	}
 	/**
-	 * @Given a regular user is in a regular group
+	 * @Given the regular user has been added to the regular group
 	 *
 	 * @return void
 	 */
-	public function aRegularUserIsInARegularGroup() {
+	public function theRegularUserHasBeenAddedToTheRegularGroup() {
 		$group = $this->getRegularGroupName();
 		$user = $this->getRegularUserName();
 		if (!in_array($user, $this->getCreatedUserNames())) {
-			$this->aRegularUserExists();
+			$this->aRegularUserHasBeenCreated();
 		}
-		$this->theUserIsInTheGroup($user, $group);
+		$this->userHasBeenAddedToGroup($user, $group);
 	}
 
 	/**
-	 * @Given the user :user is in the group :group
+	 * @Given user :user has been added to group :group ready for use by the webUI
 	 *
 	 * @param string $user
 	 * @param string $group
@@ -394,7 +397,7 @@ trait WebUIBasicStructure {
 	 * @return void
 	 * @throws Exception
 	 */
-	public function theUserIsInTheGroup($user, $group, $method = null) {
+	public function userHasBeenAddedToGroup($user, $group, $method = null) {
 		if ($method === null && getenv("TEST_EXTERNAL_USER_BACKENDS") === "true") {
 			//guess yourself
 			$method = "ldap";
