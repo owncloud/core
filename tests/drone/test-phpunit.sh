@@ -15,6 +15,8 @@ rm -rf data config/config.php
 if [[ "${DB_TYPE}" == "none" || "${DB_TYPE}" == "sqlite" ]]; then
   ./occ maintenance:install -vvv --database=sqlite --database-name=owncloud --database-table-prefix=oc_ --admin-user=admin --admin-pass=admin --data-dir=$(pwd)/data
 else
+  DATABASEUSER=owncloud
+  DATABASENAME=owncloud
   case "${DB_TYPE}" in
     mariadb)
       wait-for-it mariadb:3306
@@ -32,13 +34,19 @@ else
       wait-for-it postgres:5432
       DB=pgsql
       ;;
+    oracle)
+      wait-for-it oracle:1521
+      DB=oci
+      DATABASEUSER=autotest
+      DATABASENAME='XE'
+      ;;
     *)
       echo "Unsupported database type!"
       exit 1
       ;;
   esac
 
-  ./occ maintenance:install -vvv --database=${DB} --database-host=${DB_TYPE} --database-user=owncloud --database-pass=owncloud --database-name=owncloud --database-table-prefix=oc_ --admin-user=admin --admin-pass=admin --data-dir=$(pwd)/data
+  ./occ maintenance:install -vvv --database=${DB} --database-host=${DB_TYPE} --database-user=${DATABASEUSER} --database-pass=owncloud --database-name=${DATABASENAME} --database-table-prefix=oc_ --admin-user=admin --admin-pass=admin --data-dir=$(pwd)/data
 fi
 
 ./occ app:enable files_sharing
