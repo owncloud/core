@@ -812,7 +812,7 @@ trait BasicStructure {
 	}
 
 	/**
-	 * @BeforeSuite
+	 * @BeforeSuite @api
 	 *
 	 * @param BeforeSuiteScope $scope
 	 *
