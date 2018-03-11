@@ -263,10 +263,6 @@ matrix:
     - php: 7.1
       env: DB=sqlite TC=carddav-old-endpoint
     - php: 7.1
-      env: DB=sqlite TC=syntax TEST_DAV=0
-    - php: 7.2
-      env: DB=sqlite TC=syntax TEST_DAV=0
-    - php: 7.1
       if: type = cron
       env: DB=pgsql TC=selenium BROWSER="chrome" BROWSER_VERSION="latest-1" BEHAT_SUITE="webUIFavorites" PLATFORM="Windows 10" TEST_DAV=0
       addons:
