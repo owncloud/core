@@ -7,6 +7,7 @@ OC.L10N.register(
     "Wrong admin recovery password. Please check the password and try again." : "La contrasenya de recuperació d'administrador és incorrecta. Comproveu-la i torneu-ho a intentar.",
     "Backend doesn't support password change, but the user's encryption key was successfully updated." : "El backend no admet canvis de contrasenya, però la clau de xifrat de l'usuari ha estat actualitzada satisfactòriament.",
     "Unable to change password" : "No es pot canviar la contrasenya",
+    "%s password changed successfully" : "%scontrassenya actualitzada correctament",
     "Couldn't send reset email. Please contact your administrator." : "No s'ha pogut restablir el correu. Contacteu amb l'administrador.",
     "Group already exists." : "El grup ja existeix.",
     "Unable to add group." : "No es pot agregar el grup.",

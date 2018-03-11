@@ -188,6 +188,7 @@ OC.L10N.register(
     "{email} is not a valid address!" : "{email} ist keine gültige Adresse!",
     "An error occured" : "Ein Fehler ist aufgetreten",
     "Email link to person" : "Link per E-Mail verschicken",
+    "Send copy to self" : "Eine Kopie an eigene Adresse senden",
     "Send link via email" : "Link als E-Mail verschicken",
     "Add personal message" : "Persönliche Nachricht hinzufügen",
     "Sending" : "Senden",
