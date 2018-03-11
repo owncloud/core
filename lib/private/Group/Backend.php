@@ -133,8 +133,4 @@ abstract class Backend implements \OCP\GroupInterface {
 	public function isVisibleForScope($scope) {
 		return true;
 	}
-
-	public function isSyncMaintained() {
-		return false;
-	}
 }

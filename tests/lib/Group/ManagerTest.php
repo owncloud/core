@@ -90,8 +90,7 @@ class ManagerTest extends \Test\TestCase {
 				'deleteGroup',
 				'addToGroup',
 				'removeFromGroup',
-				'isVisibleForScope',
-				'isSyncMaintained'
+				'isVisibleForScope'
 			])
 			->getMock();
 		$backend->expects($this->any())

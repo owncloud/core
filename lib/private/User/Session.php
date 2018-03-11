@@ -495,9 +495,7 @@ class Session implements IUserSession, Emitter {
 	private function updateUserMemberships(IUser $user) {
 		// Update only the backends which are sync maintained
 		foreach($this->groupManager->getBackends() as $groupBackend) {
-			if ($groupBackend->isSyncMaintained()) {
-				$this->groupSyncService->syncUserMemberships($groupBackend, $user->getUID());
-			}
+			$this->groupSyncService->syncUserMemberships($groupBackend, $user->getUID());
 		};
 	}
 

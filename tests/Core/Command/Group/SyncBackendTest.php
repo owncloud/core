@@ -101,7 +101,6 @@ class SyncBackendTest extends TestCase {
 				'addToGroup',
 				'removeFromGroup',
 				'isVisibleForScope',
-				'isSyncMaintained',
 			])
 			->getMock();
 		$this->userBackend1 = $this->getMockBuilder(UserInterface::class)

@@ -80,7 +80,6 @@ class SyncServiceTest extends TestCase {
 				'addToGroup',
 				'removeFromGroup',
 				'isVisibleForScope',
-				'isSyncMaintained',
 			])
 			->getMock();
 

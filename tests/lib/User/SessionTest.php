@@ -76,9 +76,6 @@ class SessionTest extends TestCase {
 		$this->groupSyncService = $this->createMock(\OC\Group\SyncService::class);
 
 		$groupBackend = $this->createMock(GroupInterface::class);
-		$groupBackend->expects($this->any())
-			->method('isSyncMaintained')
-			->willReturn(true);
 		$this->groupManager->expects($this->any())
 			->method('getBackends')
 			->willReturn([$groupBackend]);
@@ -1052,8 +1049,8 @@ class SessionTest extends TestCase {
 			->method('set')
 			->with('user_id', 'foo');
 
-		/** @var Manager $manager */
-		$manager = $this->createMock(Manager::class);
+		/** @var Manager $userManager */
+		$userManager = $this->createMock(Manager::class);
 
 		/** @var IUser | \PHPUnit_Framework_MockObject_MockObject $user */
 		$user = $this->createMock(IUser::class);
@@ -1061,8 +1058,8 @@ class SessionTest extends TestCase {
 			->method('getUID')
 			->will($this->returnValue('foo'));
 
-		$userSession = new Session($manager, $session, $this->timeFactory,
-			$this->tokenProvider, $this->config, $this->serviceLoader, $this->userSyncService);
+		$userSession = new Session($userManager, $this->groupManager, $session, $this->timeFactory,
+			$this->tokenProvider, $this->config, $this->serviceLoader, $this->userSyncService, $this->groupSyncService);
 		$userSession->setUser($user);
 
 		$this->assertTrue($userSession->logout());

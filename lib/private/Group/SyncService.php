@@ -51,6 +51,10 @@ class SyncService {
 	private $logger;
 	/** @var string[] backendclass -> gid array map */
 	private $prefetchedGroupIds;
+	/** @var string[] backendclass -> BackendGroup array map */
+	private $membershipsByBackend;
+	/** @var string uid - uid of last user for which sync was run */
+	private $lastUser;
 
 	/**
 	 * SyncService constructor.
@@ -69,6 +73,8 @@ class SyncService {
 		$this->membershipManager = $membershipManager;
 		$this->logger = $logger;
 		$this->prefetchedGroupIds = [];
+		$this->membershipsByBackend = [];
+		$this->lastUser = null;
 	}
 
 	/**
@@ -221,13 +227,7 @@ class SyncService {
 			$remoteGids = $backend->getUserGroups($uid);
 
 			/* @var BackendGroup[] $localSyncGidGroupMap */
-			$localSyncGidGroupMap = [];
-			$localSyncGroups = $this->membershipManager->getMemberBackendGroupsByType($uid,
-				MembershipManager::MEMBERSHIP_TYPE_GROUP_USER,
-				MembershipManager::MAINTENANCE_TYPE_SYNC);
-			foreach($localSyncGroups as $localSyncGroup) {
-				$localSyncGidGroupMap[$localSyncGroup->getGroupId()] = $localSyncGroup;
-			}
+			$localSyncGidGroupMap = $this->getLocalBackendMemberships($backend, $uid);
 
 			// Check which memberships need to removed or added
 			$membershipsToRemove = array_diff(array_keys($localSyncGidGroupMap), $remoteGids);
@@ -276,6 +276,39 @@ class SyncService {
 			"SyncUserMemberships failed for user <$uid> with {$e->getMessage()}, skipping.",
 			['app' => self::class]
 		);
+	}
+
+	/**
+	 * Return gid->BackendGroup map of user groups for this backend
+	 *
+	 * @param GroupInterface $backend
+	 * @param $uid
+	 */
+	private function getLocalBackendMemberships(GroupInterface $backend, $uid) {
+		if ($this->lastUser !== $uid) {
+			// Fetch all memberships for this user and segregate by backend class
+			$this->lastUser = $uid;
+			$this->membershipsByBackend = [];
+
+			/* @var BackendGroup[] $localSyncGroups */
+			$localSyncGroups = $this->membershipManager->getMemberBackendGroupsByType($uid,
+				MembershipManager::MEMBERSHIP_TYPE_GROUP_USER,
+				MembershipManager::MAINTENANCE_TYPE_SYNC);
+			foreach($localSyncGroups as $localSyncGroup) {
+				if (!isset($this->membershipsByBackend[$localSyncGroup->getBackend()])) {
+					$this->membershipsByBackend[$localSyncGroup->getBackend()] = [];
+				}
+				$this->membershipsByBackend[$localSyncGroup->getBackend()][$localSyncGroup->getGroupId()] = $localSyncGroup;
+			}
+		}
+
+		// Return and invalidate the cache for selected backend
+		if (isset($this->membershipsByBackend[get_class($backend)])) {
+			$memberships = $this->membershipsByBackend[get_class($backend)];
+			unset($this->membershipsByBackend[get_class($backend)]);
+			return $memberships;
+		}
+		return [];
 	}
 
 	/**

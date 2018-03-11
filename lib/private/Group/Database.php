@@ -149,11 +149,4 @@ class Database extends Backend {
 		$stmt->closeCursor();
 		return isset($data['exists']);
 	}
-
-	/**
-	 * Groups and memberships of this backend are maintained by the users
-	 */
-	public function isSyncMaintained() {
-		return false;
-	}
 }
