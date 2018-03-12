@@ -277,7 +277,7 @@ class Users {
 				break;
 			case 'quota':
 				$quota = $parameters['_put']['value'];
-				if($quota !== 'none' and $quota !== 'default') {
+				if($quota !== 'none' && $quota !== 'default') {
 					if (is_numeric($quota)) {
 						$quota = floatval($quota);
 					} else {
@@ -286,13 +286,7 @@ class Users {
 					if ($quota === false) {
 						return new Result(null, 103, "Invalid quota value {$parameters['_put']['value']}");
 					}
-					if($quota === 0) {
-						$quota = 'default';
-					}else if($quota === -1) {
-						$quota = 'none';
-					} else {
-						$quota = Util::humanFileSize($quota);
-					}
+					$quota = Util::humanFileSize($quota);
 				}
 				$targetUser->setQuota($quota);
 				break;
