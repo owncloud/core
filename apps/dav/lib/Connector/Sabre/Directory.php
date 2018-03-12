@@ -37,6 +37,7 @@ use OCA\DAV\Connector\Sabre\Exception\FileLocked;
 use OCA\DAV\Connector\Sabre\Exception\Forbidden;
 use OCA\DAV\Connector\Sabre\Exception\InvalidPath;
 use OCA\DAV\Upload\FutureFile;
+use OCA\DAV\Upload\FutureFileZsync;
 use OCP\Files\ForbiddenException;
 use OCP\Files\InvalidPathException;
 use OCP\Files\StorageNotAvailableException;
@@ -147,7 +148,7 @@ class Directory extends Node implements ICollection, IQuota, IMoveTarget {
 				) {
 					throw new SabreForbidden();
 				}
-			} else if (FutureFile::isFutureFile()) {
+			} else if (FutureFile::isFutureFile() or FutureFileZsync::isFutureFile()) {
 				// Future file (chunked upload) requires fileinfo
 				$info = $this->fileView->getFileInfo($this->path . '/' . $name);
 			} else {

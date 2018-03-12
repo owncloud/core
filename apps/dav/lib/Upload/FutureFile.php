@@ -36,9 +36,9 @@ use Sabre\DAV\IFile;
 class FutureFile implements \Sabre\DAV\IFile {
 
 	/** @var Directory */
-	private $root;
+	protected $root;
 	/** @var string */
-	private $name;
+	protected $name;
 
 	static public function getFutureFileName() {
 		return '.file';
