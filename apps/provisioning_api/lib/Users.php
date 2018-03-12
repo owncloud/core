@@ -32,6 +32,7 @@ namespace OCA\Provisioning_API;
 use OC\OCS\Result;
 use OC_Helper;
 use OCP\API;
+use OCP\Files\FileInfo;
 use OCP\Files\NotFoundException;
 use OCP\IGroup;
 use OCP\IGroupManager;
@@ -211,6 +212,7 @@ class Users {
 
 		// Find the data
 		$data['quota'] = $this->fillStorageInfo($userId);
+		$data['quota']['definition'] = $targetUserObject->getQuota();
 		$data['email'] = $targetUserObject->getEMailAddress();
 		$data['displayname'] = $targetUserObject->getDisplayName();
 		$data['home'] = $targetUserObject->getHome();
@@ -662,6 +664,7 @@ class Users {
 		} catch (NotFoundException $ex) {
 			$data = [];
 		}
+
 		return $data;
 	}
 }
