@@ -66,6 +66,15 @@ pipeline:
       local: false
       event: [push]
 
+  phplint:
+    image: owncloudci/php:${PHP_VERSION}
+    pull: true
+    commands:
+      - make test-php-lint
+    when:
+      matrix:
+        TEST_SUITE: lint
+
   coverage:
     image: owncloudci/php:${PHP_VERSION}
     pull: true
@@ -245,6 +254,14 @@ matrix:
   include:
     - TEST_SUITE: javascript
       PHP_VERSION: 7.1
+
+    # linting
+    - TEST_SUITE: lint
+      PHP_VERSION: 5.6
+
+    - TEST_SUITE: lint
+      PHP_VERSION: 7.0
+
     # PHP 5.6
     #- PHP_VERSION: 5.6
     #  DB_TYPE: sqlite
