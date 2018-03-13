@@ -126,7 +126,7 @@ class OC_App {
 		// prevent app.php from printing output
 		ob_start();
 		foreach ($apps as $app) {
-			if (($types === null || self::isType($app, $types)) && !in_array($app, self::$loadedApps)) {
+			if (($types === null || self::isType($app, $types)) && !in_array($app, self::$loadedApps, true)) {
 				self::loadApp($app);
 			}
 		}
