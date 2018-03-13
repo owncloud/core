@@ -5,18 +5,18 @@ I want to rename a file
 So that I can recognize my file easily
 
 	Background:
-		Given these users exist:
+		Given these users have been created:
 		|username|password|displayname|email       |
 		|user1   |1234    |User One   |u1@oc.com.np|
-		And I am on the login page
-		And I login with username "user1" and password "1234"
+		And the user has browsed to the login page
+		And the user has logged in with username "user1" and password "1234" using the webUI
 
 	Scenario Outline: Rename the existing file inside a problematic folder
-		When I open the folder <folder>
-		And I rename the file "lorem.txt" to "???.txt"
-		Then the file "???.txt" should be listed
-		And the files page is reloaded
-		Then the file "???.txt" should be listed
+		When the user opens the folder <folder> using the webUI
+		And the user renames the file "lorem.txt" to "???.txt" using the webUI
+		Then the file "???.txt" should be listed on the webUI
+		When the user reloads the current page of the webUI
+		Then the file "???.txt" should be listed on the webUI
 		Examples:
 		|       folder       |
 		|         "0"        |
