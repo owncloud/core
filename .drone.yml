@@ -75,30 +75,35 @@ pipeline:
       matrix:
         TEST_SUITE: lint
 
-  coverage:
+  phpunit:
     image: owncloudci/php:${PHP_VERSION}
     pull: true
     group: test
     environment:
       - PHP_VERSION=${PHP_VERSION}
       - DB_TYPE=${DB_TYPE}
+      - FILES_EXTERNAL_TYPE=${FILES_EXTERNAL_TYPE}
+      - COVERAGE=${COVERAGE}
     commands:
-      - ./tests/drone/test-coverage.sh
+      - ./tests/drone/install-server.sh
+      - ./tests/drone/test-phpunit.sh
     when:
       event: [push, pull_request]
       matrix:
-        TEST_SUITE: coverage
+        TEST_SUITE: phpunit
 
   codecov:
     image: plugins/codecov:2
     secrets: [codecov_token]
     pull: true
     files:
-     - tests/autotest-clover-${DB_TYPE}.xml
+     - '*.xml'
+    paths:
+     - tests/output/coverage
     when:
       event: [push, pull_request]
       matrix:
-        TEST_SUITE: coverage
+        COVERAGE: true
 
   test-javascript:
     image: owncloudci/php:${PHP_VERSION}
@@ -109,25 +114,11 @@ pipeline:
       matrix:
         TEST_SUITE: javascript
 
-  phpunit:
-    image: owncloudci/php:${PHP_VERSION}
-    pull: true
-    group: test
-    environment:
-      - PHP_VERSION=${PHP_VERSION}
-      - DB_TYPE=${DB_TYPE}
-    commands:
-      - ./tests/drone/test-phpunit.sh
-    when:
-      matrix:
-        TEST_SUITE: phpunit
-
   install-server:
     image: owncloudci/php:${PHP_VERSION}
     pull: true
     commands:
-      - cd /drone/src/
-      - php occ maintenance:install -vvv --database=mysql --database-host=${DB_TYPE} --database-user=owncloud --database-pass=owncloud --database-name=owncloud --database-table-prefix=oc_ --admin-user=admin --admin-pass=admin --data-dir=/drone/src/data
+      - ./tests/drone/install-server.sh
       - php occ a:l
       - php occ a:e testing
       - php occ a:l
@@ -214,15 +205,15 @@ services:
       matrix:
         DB_TYPE: postgres
 
-  # oracle:
-  #   image: oracle:x.x
-  #   environment:
-  #     - ORACLE_USER=owncloud
-  #     - ORACLE_PASSWORD=owncloud
-  #     - ORACLE_DB=owncloud
-  #   when:
-  #     matrix:
-  #       DB_TYPE: oracle
+  oracle:
+    image: deepdiver/docker-oracle-xe-11g
+    environment:
+       - ORACLE_USER=system
+       - ORACLE_PASSWORD=oracle
+       - ORACLE_DB=owncloud
+    when:
+      matrix:
+        DB_TYPE: oracle
 
   selenium:
     image: selenium/standalone-chrome-debug:latest
@@ -250,8 +241,21 @@ services:
     when:
       matrix:
         USE_FEDERATED_SERVER: true
+
+  apache_webdav:
+    image: owncloudci/php
+    pull: true
+    environment:
+     - APACHE_CONFIG_TEMPLATE=webdav
+    command: [ "apachectl", "-D", "FOREGROUND" ]
+    when:
+      matrix:
+        FILES_EXTERNAL_TYPE: webdav_apache
+
 matrix:
   include:
+
+  # frontend
     - TEST_SUITE: javascript
       PHP_VERSION: 7.1
 
@@ -279,42 +283,36 @@ matrix:
     #   DB_TYPE: oracle
     #   TEST_SUITE: phpunit
 
-    # PHP 7.0
-    - PHP_VERSION: 7.0
-      DB_TYPE: sqlite
-      TEST_SUITE: phpunit
-    #- PHP_VERSION: 7.0
-    #  DB_TYPE: mariadb
-    #  TEST_SUITE: phpunit
-    - PHP_VERSION: 7.0
+
+  # Unit Tests
+    - PHP_VERSION: 7.1
       DB_TYPE: mysql
       TEST_SUITE: phpunit
-    - PHP_VERSION: 7.0
+      COVERAGE: true
+
+    - PHP_VERSION: 7.1
       DB_TYPE: mysqlmb4
       TEST_SUITE: phpunit
-    #- PHP_VERSION: 7.0
-    #  DB_TYPE: postgres
-    #  TEST_SUITE: phpunit
-    # - PHP_VERSION: 7.0
-    #   DB_TYPE: oracle
-    #   TEST_SUITE: phpunit
 
-    # PHP 7.1
+#    - PHP_VERSION: 7.1
+#      DB_TYPE: mariadb
+#      TEST_SUITE: phpunit
+
+    - PHP_VERSION: 7.1
+      DB_TYPE: postgres
+      TEST_SUITE: phpunit
+      COVERAGE: true
+
+    - PHP_VERSION: 7.1
+      DB_TYPE: oracle
+      TEST_SUITE: phpunit
+      COVERAGE: true
+
     - PHP_VERSION: 7.1
       DB_TYPE: sqlite
       TEST_SUITE: phpunit
-    #- PHP_VERSION: 7.1
-    #  DB_TYPE: mariadb
-    #  TEST_SUITE: phpunit
-    #- PHP_VERSION: 7.1
-    #  DB_TYPE: mysql
-    #  TEST_SUITE: phpunit
-    #- PHP_VERSION: 7.1
-    #  DB_TYPE: postgres
-    #  TEST_SUITE: phpunit
-    # - PHP_VERSION: 7.1
-    #   DB_TYPE: oracle
-    #   TEST_SUITE: phpunit
+      COVERAGE: true
+
 
     # PHP 7.2
     - PHP_VERSION: 7.2
@@ -338,15 +336,31 @@ matrix:
 #      DB_TYPE: sqlite
 #      TEST_SUITE: integration
 
-    # Code Coverage Computation
+    - PHP_VERSION: 7.2
+      DB_TYPE: mariadb
+      TEST_SUITE: phpunit
+
+    #- PHP_VERSION: 7.2
+    #  DB_TYPE: mysql
+    #  TEST_SUITE: phpunit
+    #
+    #- PHP_VERSION: 7.2
+    #  DB_TYPE: postgres
+    #  TEST_SUITE: phpunit
+    #
+    # - PHP_VERSION: 7.2
+    #   DB_TYPE: oracle
+    #   TEST_SUITE: phpunit
+
+  # Files External
     - PHP_VERSION: 7.1
+      TEST_SUITE: phpunit
+      COVERAGE: true
       DB_TYPE: sqlite
-      TEST_SUITE: coverage
+      FILES_EXTERNAL_TYPE: webdav_apache
 
-    - PHP_VERSION: 7.1
-      DB_TYPE: mysql
-      TEST_SUITE: coverage
 
+  # Ui Acceptance tests
     - PHP_VERSION: 7.1
       TEST_SUITE: selenium
       BEHAT_SUITE: webUIFavorites
@@ -394,13 +408,13 @@ matrix:
       BEHAT_SUITE: webUIRenameFolders
       DB_TYPE: mariadb
       USE_SERVER: true
-    
+
     - PHP_VERSION: 7.1
       TEST_SUITE: selenium
       BEHAT_SUITE: webUITrashbin
       DB_TYPE: mariadb
       USE_SERVER: true
-    
+
     - PHP_VERSION: 7.1
       TEST_SUITE: selenium
       BEHAT_SUITE: webUISharingInternalGroups

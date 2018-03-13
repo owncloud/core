@@ -6,53 +6,38 @@ if [[ "$(pwd)" == "$(cd "$(dirname "$0")"; pwd -P)" ]]; then
   exit 1
 fi
 
-if [[ -f config/config.php ]]; then
-  cp config/config.php config/config.backup.php
-fi
-
-rm -rf data config/config.php
-
-if [[ "${DB_TYPE}" == "none" || "${DB_TYPE}" == "sqlite" ]]; then
-  ./occ maintenance:install -vvv --database=sqlite --database-name=owncloud --database-table-prefix=oc_ --admin-user=admin --admin-pass=admin --data-dir=$(pwd)/data
-else
-  case "${DB_TYPE}" in
-    mariadb)
-      wait-for-it mariadb:3306
-      DB=mysql
-      ;;
-    mysql)
-      wait-for-it mysql:3306
-      DB=mysql
-      ;;
-    mysqlmb4)
-      wait-for-it mysqlmb4:3306
-      DB=mysql
-      ;;
-    postgres)
-      wait-for-it postgres:5432
-      DB=pgsql
+set_up_external_storage() {
+    php occ app:enable files_external
+    php occ config:app:set core enable_external_storage --value=yes
+    case "${FILES_EXTERNAL_TYPE}" in
+    webdav_apache)
+      wait-for-it -t 120 apache_webdav:80
+      cp tests/drone/configs/config.files_external.webdav-apache.php apps/files_external/tests/config.webdav.php
+      FILES_EXTERNAL_TEST_TO_RUN=WebdavTest.php
       ;;
     *)
-      echo "Unsupported database type!"
+      echo "Unsupported files external type!"
       exit 1
       ;;
   esac
+  FILES_EXTERNAL_TEST_TO_RUN="apps/files_external/tests/Storage/${FILES_EXTERNAL_TEST_TO_RUN}"
+}
 
-  ./occ maintenance:install -vvv --database=${DB} --database-host=${DB_TYPE} --database-user=owncloud --database-pass=owncloud --database-name=owncloud --database-table-prefix=oc_ --admin-user=admin --admin-pass=admin --data-dir=$(pwd)/data
-fi
-
-./occ app:enable files_sharing
-./occ app:enable files_trashbin
-./occ app:enable files_versions
-./occ app:enable provisioning_api
-./occ app:enable federation
-./occ app:enable federatedfilesharing
-
-if [[ "${DB_TYPE}" == "none" || "${DB_TYPE}" == "sqlite" ]]; then
+if [[ "${DB_TYPE}" == "sqlite" || -z "${DB_TYPE}" || "${COVERAGE}" == "true" ]]; then
   GROUP=""
 else
   GROUP="--group DB"
 fi
 
-exec ./lib/composer/bin/phpunit --configuration tests/phpunit-autotest.xml ${GROUP} --coverage-clover tests/autotest-clover-${DB_TYPE}.xml --coverage-html tests/coverage-html-${DB_TYPE} --log-junit tests/autotest-results-${DB_TYPE}.xml
+phpunit_cmd="php ./lib/composer/bin/phpunit"
+if [[ "${COVERAGE}" == "true" ]]; then
+    phpunit_cmd="phpdbg -d memory_limit=4096M -rr ./lib/composer/bin/phpunit"
+fi
 
+if [[ -n "${FILES_EXTERNAL_TYPE}" ]]; then
+    set_up_external_storage
+    $phpunit_cmd --configuration tests/phpunit-autotest-external.xml ${GROUP} --coverage-clover tests/output/coverage/autotest-external-clover-"${DB_TYPE}".xml
+    $phpunit_cmd --configuration tests/phpunit-autotest-external.xml ${GROUP} --coverage-clover tests/output/coverage/autotest-external-clover-"${DB_TYPE}"-"${FILES_EXTERNAL_TYPE}".xml "${FILES_EXTERNAL_TEST_TO_RUN}"
+else
+    $phpunit_cmd --configuration tests/phpunit-autotest.xml ${GROUP} --coverage-clover tests/output/coverage/autotest-clover-"${DB_TYPE}".xml
+fi

@@ -666,6 +666,7 @@ abstract class Common implements Storage, ILockingStorage {
 	 * @param string $path
 	 * @param int $type \OCP\Lock\ILockingProvider::LOCK_SHARED or \OCP\Lock\ILockingProvider::LOCK_EXCLUSIVE
 	 * @param \OCP\Lock\ILockingProvider $provider
+	 * @throws \OCP\Lock\LockedException
 	 */
 	public function changeLock($path, $type, ILockingProvider $provider) {
 		$provider->changeLock('files/' . md5($this->getId() . '::' . trim($path, '/')), $type);
