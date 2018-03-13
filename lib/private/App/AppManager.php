@@ -175,6 +175,7 @@ class AppManager implements IAppManager {
 	 */
 	public function isEnabledForUser($appId, $user = null) {
 		if ($this->isAlwaysEnabled($appId)) {
+			\OC::$server->getLogger()->warning('$appId for $user -- true');
 			return true;
 		}
 		if ($user === null && $this->userSession !== null) {
@@ -182,8 +183,11 @@ class AppManager implements IAppManager {
 		}
 		$installedApps = $this->getInstalledAppsValues();
 		if (isset($installedApps[$appId])) {
-			return $this->checkAppForUser($installedApps[$appId], $user);
+			$isEnabled = $this->checkAppForUser($installedApps[$appId], $user);
+			\OC::$server->getLogger()->warning('$appId for $user -- $isEnabled');
+			return $isEnabled;
 		}
+		\OC::$server->getLogger()->warning('$appId for $user -- false');
 		return false;
 	}
 
