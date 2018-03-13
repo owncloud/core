@@ -268,7 +268,6 @@ OC.L10N.register(
     "You are using %s of %s (%s %%)" : "Вие използвате %s от %s (%s %%)",
     "Developed by the {communityopen}ownCloud community{linkclose}, the {githubopen}source code{linkclose} is licensed under the {licenseopen}<abbr title=\"Affero General Public License\">AGPL</abbr>{linkclose}." : "Разработен от {communityopen}ownCloud общността {linkclose}, {githubopen}изходящия код{linkclose} е лицензиран под {licenseopen}<abbr title=\"Affero General Public License\">AGPL</abbr>{linkclose}.",
     "Sessions" : "Сесии",
-    "These are the web, desktop and mobile clients currently logged in to your ownCloud." : "Това са уеб, десктоп и мобилни клиенти, с които понастоящем сте свързали вашия профил в ownCloud.",
     "Browser" : "Браузър",
     "Most recent activity" : "Последна активност",
     "App passwords" : "Пароли за приложения",

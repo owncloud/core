@@ -256,7 +256,6 @@ OC.L10N.register(
     "Unlimited" : "Non llendáu",
     "Developed by the {communityopen}ownCloud community{linkclose}, the {githubopen}source code{linkclose} is licensed under the {licenseopen}<abbr title=\"Affero General Public License\">AGPL</abbr>{linkclose}." : "Desendolcáu pola {communityopen}comunidá d'ownCloud{linkclose}, el {githubopen}código fonte{linkclose} tien llicencia{licenseopen}<abbr title=\"Affero General Public License\">AGPL</abbr>{linkclose}.",
     "Sessions" : "Sesiones",
-    "These are the web, desktop and mobile clients currently logged in to your ownCloud." : "Estos son los veceros na web, n'escritoriu y nel móvil anguaño conectaos nel so OwnCloud.",
     "Browser" : "Restolador",
     "Most recent activity" : "Actividá más recién",
     "App passwords" : "Contraseñes d'aplicación",

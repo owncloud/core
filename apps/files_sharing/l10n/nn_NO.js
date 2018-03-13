@@ -30,6 +30,7 @@ OC.L10N.register(
     "Shares" : "Delingar",
     "The password is wrong. Try again." : "Passordet er gale. Prøv igjen.",
     "Password" : "Passord",
+    "No entries found in this folder" : "Ingen oppføring i dette området",
     "Name" : "Namn",
     "Expiration date" : "Utløpsdato",
     "Sorry, this link doesn’t seem to work anymore." : "Orsak, denne lenkja fungerer visst ikkje lenger.",

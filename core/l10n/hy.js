@@ -116,6 +116,8 @@ OC.L10N.register(
     "Help" : "Օգնություն",
     "File not found" : "Ֆայլը չգտնվեց",
     "Cheers!" : "Չը՛խկ",
+    "Technical details" : "Տեխնիկական մանրամասներ",
+    "Remote Address: %s" : "Հեռակա հասցե. %s",
     "Type: %s" : "Տիպ. %s",
     "Code: %s" : "Կոդ. %s",
     "Message: %s" : "Նամակ. %s",

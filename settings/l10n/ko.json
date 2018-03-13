@@ -303,7 +303,6 @@
     "You are using %s of %s (%s %%)" : "%s/%s 사용 중(%s%%)",
     "Developed by the {communityopen}ownCloud community{linkclose}, the {githubopen}source code{linkclose} is licensed under the {licenseopen}<abbr title=\"Affero General Public License\">AGPL</abbr>{linkclose}." : "{communityopen}ownCloud 커뮤니티{linkclose}에서 개발함. {githubopen}원본 코드{linkclose}는 {licenseopen}<abbr title=\"Affero General Public License\">AGPL</abbr>{linkclose} 라이선스로 배포됩니다.",
     "Sessions" : "세션",
-    "These are the web, desktop and mobile clients currently logged in to your ownCloud." : "내 ownCloud에 접속 중인 웹, 데스크톱, 모바일 클라이언트가 있습니다.",
     "Browser" : "브라우저",
     "Most recent activity" : "최근 활동",
     "App passwords" : "앱 암호",

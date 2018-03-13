@@ -299,7 +299,6 @@ OC.L10N.register(
     "You are using %s of %s (%s %%)" : "Používáte %s z %s (%s %%)",
     "Developed by the {communityopen}ownCloud community{linkclose}, the {githubopen}source code{linkclose} is licensed under the {licenseopen}<abbr title=\"Affero General Public License\">AGPL</abbr>{linkclose}." : "Vyvíjeno {communityopen}komunitou ownCloud{linkclose}, {githubopen}zdrojový kód{linkclose} je licencován pod {licenseopen}<abbr title=\"Affero General Public License\">AGPL</abbr>{linkclose}.",
     "Sessions" : "Sezení",
-    "These are the web, desktop and mobile clients currently logged in to your ownCloud." : "Toto jsou klienti aktuálně přihlášení do této instance ownCloud přes web, počítač, či telefon.",
     "Browser" : "Prohlížeč",
     "Most recent activity" : "Nejnovější aktivity",
     "App passwords" : "Hesla aplikací",

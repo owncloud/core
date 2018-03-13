@@ -37,6 +37,7 @@ OC.L10N.register(
     "never" : "երբեք",
     "deleted {userName}" : "ջնջված {userName}",
     "add group" : "խումբ ավելացնել",
+    "enabled" : "միացված",
     "Cheers!" : "Չը՛խկ",
     "Forum" : "Ֆորում",
     "by %s" : "%s կողմից",

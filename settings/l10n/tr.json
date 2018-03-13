@@ -258,7 +258,6 @@
     "Unlimited" : "Sınırsız",
     "Developed by the {communityopen}ownCloud community{linkclose}, the {githubopen}source code{linkclose} is licensed under the {licenseopen}<abbr title=\"Affero General Public License\">AGPL</abbr>{linkclose}." : "{communityopen}ownCloud topluluğu tarafından{linkclose} geliştirildi. {githubopen}Kaynak kodu{linkclose}, {licenseopen}<abbr title=\"Affero Genel Kamu Lisansı\">AGPL</abbr>{linkclose} ile lisanslanmıştır.",
     "Sessions" : "Oturumlar",
-    "These are the web, desktop and mobile clients currently logged in to your ownCloud." : "Bunlar ownCloud'unuza halen bağlı olan web, masaüstü ve mobil istemcileridir.",
     "Browser" : "Tarayıcı",
     "Most recent activity" : "Son güncel etkinlik",
     "App passwords" : "Uygulama parolaları",

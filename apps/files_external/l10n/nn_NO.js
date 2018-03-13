@@ -2,6 +2,7 @@ OC.L10N.register(
     "files_external",
     {
     "Personal" : "Personleg",
+    "Saved" : "Lagra",
     "Username" : "Brukarnamn",
     "Password" : "Passord",
     "Save" : "Lagra",

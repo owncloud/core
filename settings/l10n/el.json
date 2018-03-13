@@ -286,7 +286,6 @@
     "You are using %s of %s (%s %%)" : "Χρησιμοποιείτε %s από %s (%s %%)",
     "Developed by the {communityopen}ownCloud community{linkclose}, the {githubopen}source code{linkclose} is licensed under the {licenseopen}<abbr title=\"Affero General Public License\">AGPL</abbr>{linkclose}." : "Αναπτύχθηκε από την {communityopen}  κοινότητα του  ownCloud {linkclose}, ο {githubopen}  πηγαίος κώδικας {linkclose} έχει την άδεια της {licenseopen} <abbr title = \"Affero General Public License\"> AGPL </ abbr> {linkclose}.",
     "Sessions" : "Συνεδρίες",
-    "These are the web, desktop and mobile clients currently logged in to your ownCloud." : "Αυτοί είναι οι πελάτες για το δίκτυο, το σταθερό υπολογιστή και το κινητό που έχουν εισέλθει στο ownCloud.",
     "Browser" : "Περιηγητής",
     "Most recent activity" : "Τελευταία δραστηριότητα",
     "App passwords" : "Συνθηματικά εφαρμογής",

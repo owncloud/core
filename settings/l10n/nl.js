@@ -295,7 +295,6 @@ OC.L10N.register(
     "You are using %s of %s (%s %%)" : "U gebruikt %s van %s (%s %%)",
     "Developed by the {communityopen}ownCloud community{linkclose}, the {githubopen}source code{linkclose} is licensed under the {licenseopen}<abbr title=\"Affero General Public License\">AGPL</abbr>{linkclose}." : "Ontwikkeld door de {communityopen}ownCloud gemeenschap{linkclose}, de {githubopen}source code{linkclose} is gelicenseerd onder de {licenseopen}<abbr title=\"Affero General Public License\">AGPL</abbr>{linkclose}.",
     "Sessions" : "Sessies",
-    "These are the web, desktop and mobile clients currently logged in to your ownCloud." : "Dit zijn de web, desktop en mobiele clients die momenteel zijn verbonden met uw ownCloud.",
     "Browser" : "Browser",
     "Most recent activity" : "Meest recente activiteit",
     "App passwords" : "App wachtwoorden",

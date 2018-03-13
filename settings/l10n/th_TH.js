@@ -309,7 +309,6 @@ OC.L10N.register(
     "You are using %s of %s (%s %%)" : "คุณใช้พื้นที่ไปแล้ว %s จากทั้งหมด %s (%s %%)",
     "Developed by the {communityopen}ownCloud community{linkclose}, the {githubopen}source code{linkclose} is licensed under the {licenseopen}<abbr title=\"Affero General Public License\">AGPL</abbr>{linkclose}." : "พัฒนาโดย {communityopen}ownCloud{linkclose} {githubopen}ต้นฉบับจาก Github{linkclose} อยู่ภายใต้สัญญา {licenseopen}<abbr title=\"Affero General Public License\">AGPL</abbr>{linkclose}",
     "Sessions" : "สถานที่ที่คุณเข้าสู่ระบบ",
-    "These are the web, desktop and mobile clients currently logged in to your ownCloud." : "ทั้งหมดนี้เป็นรายละเอียดของผู้ใช้ที่เข้าสู่ระบบใน ownCloud ของคุณ",
     "Browser" : "เบราว์เซอร์",
     "Most recent activity" : "กิจกรรมล่าสุด",
     "App passwords" : "รหัสผ่านของแอพฯ",

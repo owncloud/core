@@ -189,7 +189,6 @@
     "You are using %s of %s (%s %%)" : "U gebruik %s van %s (%s %%)",
     "Developed by the {communityopen}ownCloud community{linkclose}, the {githubopen}source code{linkclose} is licensed under the {licenseopen}<abbr title=\"Affero General Public License\">AGPL</abbr>{linkclose}." : "Ontwikkel deur die {communityopen}ownCloud-gemeenskap{linkclose}, die {githubopen}bronkode{linkclose} is onder die {licenseopen}<abbr title=\"Affero General Public License\">APGL</abbr>{linkclose} gelisensieer.",
     "Sessions" : "Sessies",
-    "These are the web, desktop and mobile clients currently logged in to your ownCloud." : "Dit is die web-, werkskerm- en mobielekliënte wat tans op u ownCloud aangeteken is.",
     "Browser" : "Blaaier",
     "Most recent activity" : "Onlangsste aktiwiteit",
     "App passwords" : "Toepwagwoord",

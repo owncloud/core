@@ -25,6 +25,7 @@
     "Help" : "Hjelp",
     "Settings" : "Innstillingar",
     "Users" : "Brukarar",
-    "Authentication error" : "Feil i autentisering"
+    "Authentication error" : "Feil i autentisering",
+    "Storage is temporarily not available" : "Lager er mellombels utilgjengeleg"
 },"pluralForm" :"nplurals=2; plural=(n != 1);"
 }

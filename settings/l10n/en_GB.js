@@ -262,7 +262,6 @@ OC.L10N.register(
     "Unlimited" : "Unlimited",
     "Developed by the {communityopen}ownCloud community{linkclose}, the {githubopen}source code{linkclose} is licensed under the {licenseopen}<abbr title=\"Affero General Public License\">AGPL</abbr>{linkclose}." : "Developed by the {communityopen}ownCloud community{linkclose}, the {githubopen}source code{linkclose} is licensed under the {licenseopen}<abbr title=\"Affero General Public Licence\">AGPL</abbr>{linkclose}.",
     "Sessions" : "Sessions",
-    "These are the web, desktop and mobile clients currently logged in to your ownCloud." : "These are the web, desktop and mobile clients currently logged in to your ownCloud.",
     "Browser" : "Browser",
     "Most recent activity" : "Most recent activity",
     "App passwords" : "App passwords",

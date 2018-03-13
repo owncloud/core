@@ -309,7 +309,6 @@ OC.L10N.register(
     "You are using %s of %s (%s %%)" : "Du bruker %s av %s (%s %%)",
     "Developed by the {communityopen}ownCloud community{linkclose}, the {githubopen}source code{linkclose} is licensed under the {licenseopen}<abbr title=\"Affero General Public License\">AGPL</abbr>{linkclose}." : "Utviklet av {communityopen}ownCloud-fellesskapet{linkclose}. {githubopen}Kildekoden{linkclose} er lisensiert under {licenseopen}<abbr title=\"Affero General Public License\">AGPL</abbr>{linkclose}.",
     "Sessions" : "Økter",
-    "These are the web, desktop and mobile clients currently logged in to your ownCloud." : "Disse web-, skrivebords- og mobilklientene er pålogget din ownCloud for øyeblikket.",
     "Browser" : "Nettleser",
     "Most recent activity" : "Siste aktivitet",
     "App passwords" : "App-passord",

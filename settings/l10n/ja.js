@@ -268,7 +268,6 @@ OC.L10N.register(
     "Unlimited" : "無制限",
     "Developed by the {communityopen}ownCloud community{linkclose}, the {githubopen}source code{linkclose} is licensed under the {licenseopen}<abbr title=\"Affero General Public License\">AGPL</abbr>{linkclose}." : " {communityopen}ownCloud community{linkclose} によって開発されています。{githubopen}ソースコード{linkclose} は {licenseopen}<abbr title=\"Affero General Public License\">AGPL</abbr>{linkclose} によってライセンスされます。",
     "Sessions" : "セッション",
-    "These are the web, desktop and mobile clients currently logged in to your ownCloud." : "現在、Web、デスクトップ、モバイルアプリで ownCloud にログインしている端末一覧です。",
     "Browser" : "ブラウザー",
     "Most recent activity" : "最新のアクティビティ",
     "App passwords" : "アプリパスワード",

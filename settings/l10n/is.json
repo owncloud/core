@@ -307,7 +307,6 @@
     "You are using %s of %s (%s %%)" : "Þú notar %s af %s (%s %%)",
     "Developed by the {communityopen}ownCloud community{linkclose}, the {githubopen}source code{linkclose} is licensed under the {licenseopen}<abbr title=\"Affero General Public License\">AGPL</abbr>{linkclose}." : "Þróað af {communityopen}ownCloud samfélaginu{linkclose}, {githubopen}grunnkóðinn{linkclose} er gefinn út með {licenseopen}<abbr title=\"Affero General Public License\">AGPL</abbr>{linkclose} notkunarleyfinu.",
     "Sessions" : "Setur",
-    "These are the web, desktop and mobile clients currently logged in to your ownCloud." : "Þetta eru þau veftól, tölvur og símar sem núna eru skráð inn á aðganginn þinn.",
     "Browser" : "Vafri",
     "Most recent activity" : "Nýjasta virkni",
     "App passwords" : "Lykilorð forrita",

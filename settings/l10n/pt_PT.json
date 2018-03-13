@@ -289,7 +289,6 @@
     "You are using %s of %s (%s %%)" : "Está a utilizar %s de %s (%s %%)",
     "Developed by the {communityopen}ownCloud community{linkclose}, the {githubopen}source code{linkclose} is licensed under the {licenseopen}<abbr title=\"Affero General Public License\">AGPL</abbr>{linkclose}." : "Desenvolvido pela {communityopen}comunidade ownCloud{linkclose}, o {githubopen}código-fonte{linkclose} está licenciado sob a {licenseopen}<abbr title=\"Affero General Public License\">AGPL</abbr>{linkclose}.",
     "Sessions" : "Sessões",
-    "These are the web, desktop and mobile clients currently logged in to your ownCloud." : "Estes são os clientes web, desktop e móveis actualmente ligados à sua ownCloud.",
     "Browser" : "Navegador",
     "Most recent activity" : "Atividade mais recente",
     "App passwords" : "Palavras-passe da Aplicação",

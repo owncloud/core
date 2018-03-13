@@ -2,10 +2,17 @@ OC.L10N.register(
     "files_external",
     {
     "Personal" : "Անձնական",
+    "Generate keys" : "Գեներացնել բանալի",
+    "Admin defined" : "Ադմին սահմանվեց",
     "Saved" : "Պահված",
     "Username" : "Օգտանուն",
     "Password" : "Գաղտնաբառ",
     "Save" : "Պահպանել",
+    "%s" : "%s",
+    "OAuth2" : "OAuth2",
+    "Client ID" : "Client ID",
+    "OpenStack" : "OpenStack",
+    "API key" : "API բանալի",
     "WebDAV" : "WebDAV",
     "URL" : "URL",
     "Location" : "Տեղակայություն",
@@ -14,6 +21,7 @@ OC.L10N.register(
     "Name" : "Անուն",
     "Never" : "Երբեք",
     "Folder name" : "Պանակի անուն",
+    "Available for" : "Հասանելի",
     "Delete" : "Ջնջել"
 },
 "nplurals=2; plural=(n != 1);");

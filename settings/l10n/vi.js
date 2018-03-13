@@ -63,7 +63,6 @@ OC.L10N.register(
     "Help translate" : "Hỗ trợ dịch thuật",
     "Unlimited" : "Không giới hạn",
     "Sessions" : "Phiên làm việc",
-    "These are the web, desktop and mobile clients currently logged in to your ownCloud." : "Danh sách các thiết bị điện thoại, web và máy tính hiện tại đã đăng nhập vào ownCould của bạn.",
     "Browser" : "Trình duyệt",
     "Most recent activity" : "Hoạt động gần đây nhất",
     "Name" : "Tên",
