@@ -9,69 +9,69 @@ I want to limit the ability of a user to share files/folders through a publicly 
 So that public sharing is limited according to organization policy
 
 	Background:
-		Given these users exist:
+		Given these users have been created:
 		|username|password|displayname|email       |
 		|user1   |1234    |User One   |u1@oc.com.np|
-		And I am on the login page
-		And I login with username "user1" and password "1234"
+		And the user has browsed to the login page
+		And the user has logged in with username "user1" and password "1234" using the webUI
 
 	Scenario: simple sharing by public link
-		When I create a new public link for the folder "simple-folder"
-		And I access the last created public link
-		Then the file "lorem.txt" should be listed
+		When the user creates a new public link for the folder "simple-folder" using the webUI
+		And the public accesses the last created public link using the webUI
+		Then the file "lorem.txt" should be listed on the webUI
 
 	@skipOnOcV10.0.3 @feature_was_changed_in_10.0.4
 	Scenario: creating a public link with read & write permissions makes it possible to delete files via the link
-		When I create a new public link for the folder "simple-folder" with
+		When the user creates a new public link for the folder "simple-folder" using the webUI with
 		| permission | Read & Write |
-		And I access the last created public link
-		And I delete the elements
+		And the public accesses the last created public link using the webUI
+		And the user deletes the following elements using the webUI
 		| name                                 |
 		| simple-empty-folder                  |
 		| lorem.txt                            |
 		| strängé filename (duplicate #2 &).txt  |
 		| zzzz-must-be-last-file-in-folder.txt |
-		Then the deleted elements should not be listed
-		And the deleted elements should not be listed after a page reload
+		Then the deleted elements should not be listed on the webUI
+		And the deleted elements should not be listed on the webUI after a page reload
 
 	@skipOnOcV10.0.3 @feature_was_changed_in_10.0.4
 	Scenario: creating a public link with read permissions only makes it impossible to delete files via the link
-		When I create a new public link for the folder "simple-folder" with
+		When the user creates a new public link for the folder "simple-folder" using the webUI with
 		| permission | Read |
-		And I access the last created public link
-		Then it should not be possible to delete the file "lorem.txt"
+		And the public accesses the last created public link using the webUI
+		Then it should not be possible to delete the file "lorem.txt" using the webUI
 
 	@skipOnINTERNETEXPLORER @skipOnMICROSOFTEDGE @issue_30392
 	Scenario: mount public link
-		Given these users exist:
+		Given these users have been created:
 		|username|password|displayname|email       |
 		|user2   |1234    |User One   |u1@oc.com.np|
-		When I create a new public link for the folder "simple-folder"
-		And I logout
-		And I access the last created public link
-		And I add the public link to "http://%remote_server%" as user "user2" with the password "1234"
-		And the offered remote shares are accepted
-		Then the folder "simple-folder (2)" should be listed
-		When I open the folder "simple-folder (2)"
-		Then the file "lorem.txt" should be listed
+		When the user creates a new public link for the folder "simple-folder" using the webUI
+		And the user logs out of the webUI
+		And the public accesses the last created public link using the webUI
+		And the public adds the public link to "http://%remote_server%" as user "user2" with the password "1234" using the webUI
+		And the user accepts the offered remote shares
+		Then the folder "simple-folder (2)" should be listed on the webUI
+		When the user opens the folder "simple-folder (2)" using the webUI
+		Then the file "lorem.txt" should be listed on the webUI
 		And the content of "lorem.txt" should be the same as the original "simple-folder/lorem.txt"
-		And it should not be possible to delete the file "lorem.txt"
+		And it should not be possible to delete the file "lorem.txt" using the webUI
 
 	@skipOnINTERNETEXPLORER @skipOnMICROSOFTEDGE @issue_30392
 	Scenario: mount public link and overwrite file
-		Given these users exist:
+		Given these users have been created:
 		|username|password|displayname|email       |
 		|user2   |1234    |User One   |u1@oc.com.np|
-		When I create a new public link for the folder "simple-folder" with
+		When the user creates a new public link for the folder "simple-folder" using the webUI with
 		| permission | Read & Write |
-		And I logout
-		And I access the last created public link
-		And I add the public link to "http://%remote_server%" as user "user2" with the password "1234"
-		And the offered remote shares are accepted
-		Then the folder "simple-folder (2)" should be listed
-		When I open the folder "simple-folder (2)"
-		Then the file "lorem.txt" should be listed
+		And the user logs out of the webUI
+		And the public accesses the last created public link using the webUI
+		And the public adds the public link to "http://%remote_server%" as user "user2" with the password "1234" using the webUI
+		And the user accepts the offered remote shares
+		Then the folder "simple-folder (2)" should be listed on the webUI
+		When the user opens the folder "simple-folder (2)" using the webUI
+		Then the file "lorem.txt" should be listed on the webUI
 		And the content of "lorem.txt" should be the same as the original "simple-folder/lorem.txt"
-		When I upload overwriting the file "lorem.txt" and retry if the file is locked
-		Then the file "lorem.txt" should be listed
+		When the user uploads overwriting the file "lorem.txt" using the webUI and retries if the file is locked
+		Then the file "lorem.txt" should be listed on the webUI
 		And the content of "lorem.txt" should be the same as the local "lorem.txt"

@@ -5,34 +5,34 @@ Feature: files and folders exist in the trashbin after being deleted
   So that I can recover data easily
 
   Background:
-    Given a regular user exists
-    And I am logged in as a regular user
-    And I am on the files page
+    Given a regular user has been created
+    And the regular user has logged in using the webUI
+    And the user has browsed to the files page
 
   Scenario: Delete files & folders one by one and check that they are all in the trashbin
-    When I delete the elements
+    When the user deletes the following elements using the webUI
       | name                                |
       | simple-folder                       |
       | lorem.txt                           |
       | strängé नेपाली folder                  |
       | strängé filename (duplicate #2 &).txt |
-    Then the deleted elements should be listed in the trashbin
-    And the file "lorem.txt" should be listed in the trashbin folder "simple-folder"
+    Then the deleted elements should be listed in the trashbin on the webUI
+    And the file "lorem.txt" should be listed in the trashbin folder "simple-folder" on the webUI
 
   Scenario: Delete a file with problematic characters and check it is in the trashbin
-    When I rename the following file to
+    When the user renames the following file using the webUI
       | from-name-parts | to-name-parts   |
       | lorem.txt       | 'single'        |
       |                 | "double" quotes |
       |                 | question?       |
       |                 | &and#hash       |
-    And I delete the following file
+    And the user deletes the following file using the webUI
       | name-parts      |
       | 'single'        |
       | "double" quotes |
       | question?       |
       | &and#hash       |
-    Then the following file should be listed in the trashbin
+    Then the following file should be listed in the trashbin on the webUI
       | name-parts      |
       | 'single'        |
       | "double" quotes |
@@ -40,19 +40,19 @@ Feature: files and folders exist in the trashbin after being deleted
       | &and#hash       |
 
   Scenario: Delete multiple files at once and check that they are all in the trashbin
-    When I batch delete these files
+    When the user batch deletes these files using the webUI
       | name          |
       | data.zip      |
       | lorem.txt     |
       | simple-folder |
-    Then the deleted elements should be listed in the trashbin
-    And the file "lorem.txt" should be listed in the trashbin folder "simple-folder"
+    Then the deleted elements should be listed in the trashbin on the webUI
+    And the file "lorem.txt" should be listed in the trashbin folder "simple-folder" on the webUI
 
   Scenario: Delete an empty folder and check it is in the trashbin
-    When I create a folder with the name "my-empty-folder"
-    And I create a folder with the name "my-other-empty-folder"
-    And I delete the folder "my-empty-folder"
-    Then the folder "my-empty-folder" should be listed in the trashbin
-    But the folder "my-other-empty-folder" should not be listed in the trashbin
-    When I open the trashbin folder "my-empty-folder"
-    Then there are no files/folders listed
+    When the user creates a folder with the name "my-empty-folder" using the webUI
+    And the user creates a folder with the name "my-other-empty-folder" using the webUI
+    And the user deletes the folder "my-empty-folder" using the webUI
+    Then the folder "my-empty-folder" should be listed in the trashbin on the webUI
+    But the folder "my-other-empty-folder" should not be listed in the trashbin on the webUI
+    When the user opens the trashbin folder "my-empty-folder" using the webUI
+    Then there should be no files/folders listed on the webUI

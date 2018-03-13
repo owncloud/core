@@ -48,29 +48,31 @@ class WebUIPersonalSecuritySettingsContext extends RawMinkContext implements Con
 	}
 
 	/**
-	 * @Given I am on the personal security settings page
+	 * @When the user browses to the personal security settings page
+	 * @Given the user has browsed to the personal security settings page
 	 *
 	 * @return void
 	 */
-	public function iAmOnThePersonalSecuritySettingsPage() {
+	public function theUserBrowsesToThePersonalSecuritySettingsPage() {
 		$this->personalSecuritySettingsPage->open();
 	}
 
 	/**
-	 * @When I create a new App password
+	 * @When the user creates a new App password using the webUI
+	 * @Given the user has created a new App password using the webUI
 	 *
 	 * @return void
 	 */
-	public function iCreateANewAppPasswordForTheAppNamed() {
+	public function theUserCreatesANewAppPasswordUsingTheWebUI() {
 		$this->personalSecuritySettingsPage->createNewAppPassword($this->appName);
 	}
 
 	/**
-	 * @Then the new app should be listed in the App passwords list
+	 * @Then the new app should be listed in the App passwords list on the webUI
 	 *
 	 * @return void
 	 */
-	public function theAppShouldBeListedInTheAppPasswordsList() {
+	public function theAppShouldBeListedInTheAppPasswordsListOnTheWebUI() {
 		$appTr = $this->personalSecuritySettingsPage->getLinkedAppByName(
 			$this->appName
 		);
@@ -81,11 +83,11 @@ class WebUIPersonalSecuritySettingsContext extends RawMinkContext implements Con
 	}
 
 	/**
-	 * @Then my username and the app password should be displayed
+	 * @Then the user display name and the app password should be displayed on the webUI
 	 *
 	 * @return void
 	 */
-	public function myUsernameAndTheAppPasswordShouldBeDisplayed() {
+	public function theUserDisplayNameAndAppPasswordShouldBeDisplayedOnTheWebUI() {
 		$result = $this->personalSecuritySettingsPage->getAppPasswordResult();
 		PHPUnit_Framework_Assert::assertEquals(
 			$this->personalSecuritySettingsPage->getMyDisplayname(),

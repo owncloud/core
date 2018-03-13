@@ -6,39 +6,39 @@ I would like to unmark any file/folder
 So that I can remove my favorite file/folder from favorite page
 
 	Background:
-		Given a regular user exists
-		And I am logged in as a regular user
-		And I am on the files page
+		Given a regular user has been created
+		And the regular user has logged in using the webUI
+		And the user has browsed to the files page
 
 	Scenario: unmark a file as favorite from files page 
-		Given the file "data.zip" is marked as favorite 
-		When I unmark the file "data.zip"
-		Then the file "data.zip" should not be marked as favorite
-		And I am on the favorites page
-		Then the file "data.zip" should not be listed in the favorites page
+		Given the user has marked the file "data.zip" as favorite using the webUI
+		When the user unmarks the favorited file "data.zip" using the webUI
+		Then the file "data.zip" should not be marked as favorite on the webUI
+		When the user browses to the favorites page
+		Then the file "data.zip" should not be listed in the favorites page on the webUI
 
 	Scenario: unmark a folder as favorite from files page 
-		Given the folder "simple-folder" is marked as favorite 
-		When I unmark the folder "simple-folder"
-		Then the folder "simple-folder" should not be marked as favorite
-		And I am on the favorites page
-		Then the folder "simple-folder" should not be listed in the favorites page
+		Given the user has marked the folder "simple-folder" as favorite using the webUI
+		When the user unmarks the favorited folder "simple-folder" using the webUI
+		Then the folder "simple-folder" should not be marked as favorite on the webUI
+		When the user browses to the favorites page
+		Then the folder "simple-folder" should not be listed in the favorites page on the webUI
 	
 	Scenario: unmark a file as favorite from favorite page 
-		Given the file "data.zip" is marked as favorite 
-		And I am on the favorites page
-		When I unmark the file "data.zip"
-		And the favorites page is reloaded
-		Then the file "data.zip" should not be listed in the favorites page
-		And I am on the files page
-		Then the file "data.zip" should not be marked as favorite
+		Given the user has marked the file "data.zip" as favorite using the webUI
+		And the user has browsed to the favorites page
+		When the user unmarks the favorited file "data.zip" using the webUI
+		And the user reloads the current page of the webUI
+		Then the file "data.zip" should not be listed in the favorites page on the webUI
+		When the user browses to the files page
+		Then the file "data.zip" should not be marked as favorite on the webUI
 	
 
 	Scenario: unmark a folder as favorite from files page 
-		Given the folder "simple-folder" is marked as favorite 
-		And I am on the favorites page
-		When I unmark the folder "simple-folder"
-		And the favorites page is reloaded
-		Then the folder "simple-folder" should not be listed in the favorites page
-		And I am on the files page
-		Then the folder "simple-folder" should not be marked as favorite
+		Given the user has marked the folder "simple-folder" as favorite using the webUI
+		And the user has browsed to the favorites page
+		When the user unmarks the favorited folder "simple-folder" using the webUI
+		And the user reloads the current page of the webUI
+		Then the folder "simple-folder" should not be listed in the favorites page on the webUI
+		When the user browses to the files page
+		Then the folder "simple-folder" should not be marked as favorite on the webUI

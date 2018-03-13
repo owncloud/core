@@ -181,11 +181,11 @@ class WebUIGeneralContext extends RawMinkContext implements Context {
 	}
 
 	/**
-	 * @Then no notification should be displayed
+	 * @Then no notification should be displayed on the webUI
 	 *
 	 * @return void
 	 */
-	public function noNotificationShouldBeDisplayed() {
+	public function noNotificationShouldBeDisplayedOnTheWebUI() {
 		try {
 			$notificationText = $this->owncloudPage->getNotificationText();
 			PHPUnit_Framework_Assert::assertEquals(
@@ -199,20 +199,22 @@ class WebUIGeneralContext extends RawMinkContext implements Context {
 	}
 
 	/**
-	 * @Then a notification should be displayed with the text :notificationText
+	 * @Then a notification should be displayed on the webUI with the text :notificationText
 	 *
 	 * @param string $notificationText expected notification text
 	 *
 	 * @return void
 	 */
-	public function aNotificationShouldBeDisplayedWithTheText($notificationText) {
+	public function aNotificationShouldBeDisplayedOnTheWebUIWithTheText(
+		$notificationText
+	) {
 		PHPUnit_Framework_Assert::assertEquals(
 			$notificationText, $this->owncloudPage->getNotificationText()
 		);
 	}
 
 	/**
-	 * @Then /^notifications should be displayed with the text\s?(matching|)$/
+	 * @Then /^notifications should be displayed on the webUI with the text\s?(matching|)$/
 	 *
 	 * @param string $matching contains "matching" when notification text
 	 *                         has to be checked against regular expression
@@ -221,7 +223,7 @@ class WebUIGeneralContext extends RawMinkContext implements Context {
 	 * @return void
 	 * @throws Exception
 	 */
-	public function notificationsShouldBeDisplayedWithTheText($matching, TableNode $table) {
+	public function notificationsShouldBeDisplayedOnTheWebUIWithTheText($matching, TableNode $table) {
 		$actualNotifications = $this->owncloudPage->getNotifications();
 		$numActualNotifications = count($actualNotifications);
 		$expectedNotifications = $table->getRows();
@@ -254,7 +256,7 @@ class WebUIGeneralContext extends RawMinkContext implements Context {
 	}
 
 	/**
-	 * @Then /^((?:\d)|no)?\s?dialog[s]? should be displayed$/
+	 * @Then /^((?:\d)|no)?\s?dialog[s]? should be displayed on the webUI$/
 	 *
 	 * @param int|string|null $count
 	 * @param TableNode|null $table of expected dialogs format must be:
@@ -262,7 +264,7 @@ class WebUIGeneralContext extends RawMinkContext implements Context {
 	 *
 	 * @return void
 	 */
-	public function dialogsShouldBeDisplayed(
+	public function dialogsShouldBeDisplayedOnTheWebUI(
 		$count = null, TableNode $table = null
 	) {
 		$dialogs = $this->owncloudPage->getOcDialogs();
@@ -312,13 +314,13 @@ class WebUIGeneralContext extends RawMinkContext implements Context {
 	}
 
 	/**
-	 * @Then I should be redirected to a page with the title :title
+	 * @Then the user should be redirected to a webUI page with the title :title
 	 *
 	 * @param string $title
 	 *
 	 * @return void
 	 */
-	public function iShouldBeRedirectedToAPageWithTheTitle($title) {
+	public function theUserShouldBeRedirectedToAWebUIPageWithTheTitle($title) {
 		$this->owncloudPage->waitForOutstandingAjaxCalls($this->getSession());
 		$actualTitle = $this->getSession()->getPage()->find(
 			'xpath', './/title'
@@ -369,7 +371,7 @@ class WebUIGeneralContext extends RawMinkContext implements Context {
 	}
 
 	/**
-	 * @Given /^the setting "([^"]*)" in the section "([^"]*)" is (disabled|enabled)$/
+	 * @Given /^the setting "([^"]*)" in the section "([^"]*)" has been (disabled|enabled)$/
 	 *
 	 * @param string $setting
 	 * @param string $section
@@ -377,7 +379,7 @@ class WebUIGeneralContext extends RawMinkContext implements Context {
 	 *
 	 * @return void
 	 */
-	public function settingInSectionIs($setting, $section, $value) {
+	public function settingInSectionHasBeen($setting, $section, $value) {
 		if ($value === "enabled") {
 			$value = true;
 		} elseif ($value === "disabled") {
@@ -403,7 +405,7 @@ class WebUIGeneralContext extends RawMinkContext implements Context {
 	}
 
 	/**
-	 * @Given a file with the size of :size bytes and the name :name exists
+	 * @Given a file with the size of :size bytes and the name :name has been created locally
 	 *
 	 * @param int $size if not int given it will be cast to int
 	 * @param string $name
@@ -411,7 +413,7 @@ class WebUIGeneralContext extends RawMinkContext implements Context {
 	 * @throws InvalidArgumentException
 	 * @return void
 	 */
-	public function aFileWithSizeAndNameExists($size, $name) {
+	public function aFileWithSizeAndNameHasBeenCreatedLocally($size, $name) {
 		$fullPath = getenv("FILES_FOR_UPLOAD") . $name;
 		if (file_exists($fullPath)) {
 			throw new InvalidArgumentException(

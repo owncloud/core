@@ -5,12 +5,12 @@ I would like to add a group
 So that I can share documents with other users
 
 	Background: 
-		Given I am logged in as admin
-		And I am on the users page
+		Given user admin has logged in using the webUI
+		And the administrator has browsed to the users page
 
 	Scenario Outline: Add group
-		When I add a group with the name <groupname>
-		Then The group name <groupname> should be listed
+		When the administrator adds group <groupname> using the webUI
+		Then the group name <groupname> should be listed on the webUI
 		Examples:
 		|groupname|
 		|"localuser" |
