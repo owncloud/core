@@ -4,6 +4,7 @@
  * @author Joas Schilling <nickvergessen@owncloud.com>
  * @author Robin Appelman <icewind@owncloud.com>
  * @author Thomas Müller <thomas.mueller@tmit.eu>
+ * @author Jörn Friedrich Dreyer <jfd@butonic.de>
  *
  * @copyright Copyright (c) 2016, ownCloud, Inc.
  * @license AGPL-3.0
@@ -29,6 +30,7 @@ namespace OCA\Federation\BackgroundJob;
 use GuzzleHttp\Exception\ClientException;
 use OC\BackgroundJob\JobList;
 use OC\BackgroundJob\Job;
+use OCA\Federation\Cluster;
 use OCA\Federation\DbHandler;
 use OCA\Federation\TrustedServers;
 use OCP\AppFramework\Http;
@@ -69,6 +71,9 @@ class RequestSharedSecret extends Job {
 	/** @var bool */
 	protected $retainJob = false;
 
+	/** @var Cluster */
+	private $cluster;
+
 	/**
 	 * RequestSharedSecret constructor.
 	 *
@@ -103,6 +108,7 @@ class RequestSharedSecret extends Job {
 				\OC::$server->getEventDispatcher()
 			);
 		}
+		$this->cluster = new Cluster(); // FIXME DI
 	}
 
 
@@ -137,8 +143,11 @@ class RequestSharedSecret extends Job {
 	protected function run($argument) {
 
 		$target = $argument['url'];
-		$source = $this->urlGenerator->getAbsoluteURL('/');
-		$source = rtrim($source, '/');
+		$source = $this->cluster->getSourceFor($target);
+		\OC::$server->getLogger()->debug(
+			"POSTing shared secret for $source to $target",
+			['app' => 'federation']
+		);
 		$token = $argument['token'];
 
 		try {

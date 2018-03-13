@@ -2,6 +2,7 @@
 /**
  * @author Björn Schießle <bjoern@schiessle.org>
  * @author Lukas Reschke <lukas@statuscode.ch>
+ * @author Jörn Friedrich Dreyer <jfd@butonic.de>
  *
  * @copyright Copyright (c) 2016, ownCloud, Inc.
  * @license AGPL-3.0
@@ -23,6 +24,7 @@
 
 namespace OCA\FederatedFileSharing;
 
+use OCA\Federation\Cluster;
 use OCP\AppFramework\Http;
 use OCP\BackgroundJob\IJobList;
 use OCP\Http\Client\IClientService;
@@ -42,6 +44,9 @@ class Notifications {
 	/** @var IJobList  */
 	private $jobList;
 
+	/** @var Cluster */
+	private $cluster;
+
 	/**
 	 * @param AddressHandler $addressHandler
 	 * @param IClientService $httpClientService
@@ -58,6 +63,7 @@ class Notifications {
 		$this->httpClientService = $httpClientService;
 		$this->discoveryManager = $discoveryManager;
 		$this->jobList = $jobList;
+		$this->cluster = new Cluster(); // FIXME DI
 	}
 
 	/**
@@ -81,7 +87,7 @@ class Notifications {
 
 		if ($user && $remote) {
 			$url = $remote;
-			$local = $this->addressHandler->generateRemoteURL();
+			$local = $this->cluster->getSourceFor($remote);
 
 			$fields = array(
 				'shareWith' => $user,
@@ -131,6 +137,7 @@ class Notifications {
 			'remoteId' => $shareId
 		);
 
+		// FIXME url
 		$url = $this->addressHandler->removeProtocolFromUrl($remote);
 		$result = $this->tryHttpPostToShareEndpoint(rtrim($url, '/'), '/' . $id . '/reshare', $fields);
 		$status = json_decode($result['result'], true);
@@ -228,7 +235,10 @@ class Notifications {
 		}
 
 		$url = $this->addressHandler->removeProtocolFromUrl($remote);
-		$result = $this->tryHttpPostToShareEndpoint(rtrim($url, '/'), '/' . $remoteId . '/' . $action, $fields);
+		// FIXME url we may neet to iterate over all cluster nodes because we have no owner here?
+		// if remote is the cluster get the owner from the db, then ask that instance?
+
+				$result = $this->tryHttpPostToShareEndpoint(rtrim($url, '/'), '/' . $remoteId . '/' . $action, $fields);
 		$status = json_decode($result['result'], true);
 
 		if ($result['success'] &&
@@ -276,7 +286,7 @@ class Notifications {
 	 */
 	protected function tryHttpPostToShareEndpoint($remoteDomain, $urlSuffix, array $fields) {
 		$client = $this->httpClientService->newClient();
-		$protocol = 'https://';
+		$protocol = $this->cluster->getScheme($remoteDomain).'://';
 		$result = [
 			'success' => false,
 			'result' => '',

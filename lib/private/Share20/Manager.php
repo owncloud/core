@@ -598,6 +598,7 @@ class Manager implements IManager {
 			'token' => $share->getToken(),
 			'itemTarget' => $share->getTarget(),
 			'shareWith' => $share->getSharedWith(),
+			'\OCP\Share\IShare' => &$share, // allows manipulating the share with hooks
 			'run' => &$run,
 			'error' => &$error,
 		];
@@ -1016,7 +1017,17 @@ class Manager implements IManager {
 		// If it is not a link share try to fetch a federated share by token
 		if ($share === null) {
 			$provider = $this->factory->getProviderForType(\OCP\Share::SHARE_TYPE_REMOTE);
-			$share = $provider->getShareByToken($token);
+			try {
+				$share = $provider->getShareByToken($token);
+			} catch (ShareNotFound $ex) {
+				\OC::$server->getLogger()->debug(
+					'shareByTokenNotFound', ['app'=>'\OC\Share20\Manager']
+				);
+				\OCP\Util::emitHook('OCP\Share', 'shareByTokenNotFound', [
+					'token' => $token
+				]);
+				throw $ex;
+			}
 		}
 
 		if ($share->getExpirationDate() !== null &&

@@ -31,6 +31,7 @@ namespace OC\User;
 
 use OC\Hooks\Emitter;
 use OC_Helper;
+use OCA\Federation\Cluster;
 use OCP\IAvatarManager;
 use OCP\IImage;
 use OCP\IURLGenerator;
@@ -121,7 +122,8 @@ class User implements IUser {
 			if (!empty($displayName)) {
 				$this->displayName = $displayName;
 			} else {
-				$this->displayName = $this->uid;
+				$cluster = new Cluster();
+				$this->displayName = $cluster->hideClusterInUserId($this->uid);
 			}
 		}
 		return $this->displayName;

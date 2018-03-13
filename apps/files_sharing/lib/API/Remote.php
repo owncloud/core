@@ -3,6 +3,7 @@
  * @author Joas Schilling <nickvergessen@owncloud.com>
  * @author Lukas Reschke <lukas@statuscode.ch>
  * @author Roeland Jago Douma <rullzer@owncloud.com>
+ * @author Jörn Friedrich Dreyer <jfd@butonic.de>
  *
  * @copyright Copyright (c) 2016, ownCloud, Inc.
  * @license AGPL-3.0
@@ -25,6 +26,7 @@ namespace OCA\Files_Sharing\API;
 
 use OC\Files\Filesystem;
 use OCA\FederatedFileSharing\DiscoveryManager;
+use OCA\Federation\Cluster;
 use OCA\Files_Sharing\External\Manager;
 
 class Remote {
@@ -50,7 +52,11 @@ class Remote {
 			\OC_User::getUser()
 		);
 
-		return new \OC_OCS_Result($externalManager->getOpenShares());
+		$shares = $externalManager->getOpenShares();
+
+		$shares = array_map('self::hideCluster', $shares);
+
+		return new \OC_OCS_Result($shares);
 	}
 
 	/**
@@ -133,6 +139,26 @@ class Remote {
 	}
 
 	/**
+	 * @param array $share Share with info from the share_external table
+	 * @return array updated share info with the externally visible cluster remote url
+	 */
+	private static function hideCluster($share) {
+
+		$cluster = new Cluster();
+		if ($cluster->isClusterMember($share['remote'])) {
+
+			$url = $cluster->getClusterUrl();
+			\OC::$server->getLogger()->debug(
+				'hideCluster overwriting remote with '.$url.' in '.json_encode($share),
+				['app' => self::class]
+			);
+			$share['remote'] = $url;
+		}
+
+		return $share;
+	}
+
+	/**
 	 * List accepted remote shares
 	 *
 	 * @param array $params 
@@ -156,6 +182,8 @@ class Remote {
 		$shares = $externalManager->getAcceptedShares();
 
 		$shares = array_map('self::extendShareInfo', $shares);
+
+		$shares = array_map('self::hideCluster', $shares);
 	
 		return new \OC_OCS_Result($shares);
 	}
@@ -182,11 +210,16 @@ class Remote {
 		);
 
 		$shareInfo = $externalManager->getShare($params['id']);
+		//FIXME the remote needs to be set on the server side, otherwise we have to touch
+		// the client code, even if we use '' as a remote, the web ui appends an @
+		// We should always translate the Federated Cloud id to a federated cluster id?
+
 
 		if ($shareInfo === false) {
 			return new \OC_OCS_Result(null, 404, 'share does not exist');
 		} else {
 			$shareInfo = self::extendShareInfo($shareInfo);
+			$shareInfo = self::hideCluster($shareInfo);
 			return new \OC_OCS_Result($shareInfo);
 		}
 	}

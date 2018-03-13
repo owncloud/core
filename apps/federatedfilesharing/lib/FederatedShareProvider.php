@@ -3,6 +3,7 @@
  * @author Björn Schießle <bjoern@schiessle.org>
  * @author Roeland Jago Douma <rullzer@owncloud.com>
  * @author Thomas Müller <thomas.mueller@tmit.eu>
+ * @author Jörn Friedrich Dreyer <jfd@butonic.de>
  *
  * @copyright Copyright (c) 2016, ownCloud, Inc.
  * @license AGPL-3.0
@@ -24,6 +25,7 @@
 namespace OCA\FederatedFileSharing;
 
 use OC\Share20\Share;
+use OCA\Federation\Cluster;
 use OCP\Files\IRootFolder;
 use OCP\IConfig;
 use OCP\IL10N;
@@ -76,6 +78,9 @@ class FederatedShareProvider implements IShareProvider {
 	/** @var IUserManager */
 	private $userManager;
 
+	/** @var Cluster  */
+	private $cluster;
+
 	/**
 	 * DefaultShareProvider constructor.
 	 *
@@ -109,6 +114,7 @@ class FederatedShareProvider implements IShareProvider {
 		$this->rootFolder = $rootFolder;
 		$this->config = $config;
 		$this->userManager = $userManager;
+		$this->cluster = $cluster = new Cluster(); // FIXME DI
 	}
 
 	/**
@@ -218,16 +224,28 @@ class FederatedShareProvider implements IShareProvider {
 			$token
 		);
 		$sharedByFederatedId = $share->getSharedBy();
+		$shareWith = $share->getSharedWith();
+		$clusterId = $this->cluster->getClusterUserId($shareWith);
+		if ($clusterId) {
+			$shareWith = $clusterId;
+			// remote is only used for notification, use cluster host
+			$remote = $this->cluster->getClusterHost();
+		} else {
+			$remote = $this->addressHandler->generateRemoteURL();
+		}
 		if ($this->userManager->userExists($sharedByFederatedId)) {
-			$sharedByFederatedId = $sharedByFederatedId . '@' . $this->addressHandler->generateRemoteURL();
+			// TODO can we omit the remote part in the custer? no web has different ways of building the id:
+			// list shared with me uses the share with uid and the remote und builds the id in the web ui
+			// -> needs to be done as a platform effort
+			$sharedByFederatedId = $sharedByFederatedId . '@' . $remote;
 		}
 		$send = $this->notifications->sendRemoteShare(
 			$token,
-			$share->getSharedWith(),
+			$shareWith,
 			$share->getNode()->getName(),
 			$shareId,
 			$share->getShareOwner(),
-			$share->getShareOwner() . '@' . $this->addressHandler->generateRemoteURL(),
+			$share->getShareOwner() . '@' . $remote,
 			$share->getSharedBy(),
 			$sharedByFederatedId
 		);
