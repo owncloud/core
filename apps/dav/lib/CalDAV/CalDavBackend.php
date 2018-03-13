@@ -1152,12 +1152,9 @@ class CalDavBackend extends AbstractBackend implements SyncSupport, Subscription
 		if ($syncToken) {
 
 			$query = 'SELECT `uri`, `operation` FROM `*PREFIX*calendarchanges` WHERE `synctoken` >= ? AND `synctoken` < ? AND `calendarid` = ? ORDER BY `synctoken`';
-			if ($limit>0) {
-				$query.= ' `LIMIT` ' . (int)$limit;
-			}
 
 			// Fetching all changes
-			$stmt = $this->db->prepare($query);
+			$stmt = $this->db->prepare($query, $limit ?: null, $limit ? 0 : null);
 			$stmt->execute([$syncToken, $currentToken, $calendarId]);
 
 			$changes = [];
