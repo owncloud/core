@@ -69,11 +69,21 @@
 		}
 	},
 	"repair-steps": {
-		"install": [],
-		"pre-migration": [],
-		"post-migration": [],
-		"live-migration": [],
-		"uninstall": []
+		"install": {
+			"step": "OCA\\FilesEncryption\\Migration\\Install"
+		},
+		"pre-migration": {
+			"step": "OCA\\FilesEncryption\\Migration\\PreMigration"
+		},
+		"post-migration": {
+			"step": "OCA\\FilesEncryption\\Migration\\PostMigration"
+		},
+		"live-migration": {
+			"step": "OCA\\FilesEncryption\\Migration\\LiveMigration"
+		},
+		"uninstall": {
+			"step": "OCA\\FilesEncryption\\Migration\\Uninstall"
+		}
 	},
 	"background-jobs": [],
 	"two-factor-providers": [],
