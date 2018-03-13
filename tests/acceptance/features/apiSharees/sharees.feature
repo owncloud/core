@@ -296,7 +296,7 @@ Feature: sharees
 		And user "Another" has been added to group "ShareeGroup2"
 		And parameter "shareapi_share_dialog_user_enumeration_group_members" of app "core" has been set to "yes"
 		When user "test" gets the sharees using the API with parameters
-			| search   | ano  |
+			| search   | anot  |
 			| itemType | file |
 		Then the OCS status code should be "100"
 		And the HTTP status code should be "200"
