@@ -2,6 +2,7 @@
 /**
  * @author Christoph Wurst <christoph@owncloud.com>
  * @author Joas Schilling <coding@schilljs.com>
+ * @author Jörn Friedrich Dreyer <jfd@butonic.de>
  *
  * @copyright Copyright (c) 2018, ownCloud GmbH
  * @license AGPL-3.0
@@ -26,25 +27,22 @@ use Exception;
 use OC\Authentication\Exceptions\TwoFactorAuthRequiredException;
 use OC\Authentication\Exceptions\UserAlreadyLoggedInException;
 use OC\Authentication\TwoFactorAuth\Manager;
+use OC\Core\Controller\LoginController;
 use OC\Core\Controller\TwoFactorChallengeController;
-use OC\User\Session;
 use OCP\AppFramework\Controller;
 use OCP\AppFramework\Http\RedirectResponse;
 use OCP\AppFramework\Middleware;
 use OCP\AppFramework\Utility\IControllerMethodReflector;
 use OCP\IRequest;
-use OCP\ISession;
 use OCP\IURLGenerator;
+use OCP\IUserSession;
 
 class TwoFactorMiddleware extends Middleware {
 
 	/** @var Manager */
 	private $twoFactorManager;
 
-	/** @var Session */
-	private $userSession;
-
-	/** @var ISession */
+	/** @var IUserSession */
 	private $session;
 
 	/** @var IURLGenerator */
@@ -58,14 +56,19 @@ class TwoFactorMiddleware extends Middleware {
 
 	/**
 	 * @param Manager $twoFactorManager
-	 * @param Session $userSession
-	 * @param ISession $session
+	 * @param IUserSession $session
 	 * @param IURLGenerator $urlGenerator
+	 * @param IControllerMethodReflector $reflector
+	 * @param IRequest $request
 	 */
-	public function __construct(Manager $twoFactorManager, Session $userSession, ISession $session,
-		IURLGenerator $urlGenerator, IControllerMethodReflector $reflector, IRequest $request) {
+	public function __construct(
+		Manager $twoFactorManager,
+		IUserSession $session,
+		IURLGenerator $urlGenerator,
+		IControllerMethodReflector $reflector,
+		IRequest $request
+	) {
 		$this->twoFactorManager = $twoFactorManager;
-		$this->userSession = $userSession;
 		$this->session = $session;
 		$this->urlGenerator = $urlGenerator;
 		$this->reflector = $reflector;
@@ -75,6 +78,9 @@ class TwoFactorMiddleware extends Middleware {
 	/**
 	 * @param Controller $controller
 	 * @param string $methodName
+	 * @throws \UnexpectedValueException
+	 * @throws TwoFactorAuthRequiredException
+	 * @throws UserAlreadyLoggedInException
 	 */
 	public function beforeController($controller, $methodName) {
 		if ($this->reflector->hasAnnotation('PublicPage')) {
@@ -82,25 +88,32 @@ class TwoFactorMiddleware extends Middleware {
 			return;
 		}
 
-		if ($controller instanceof \OC\Core\Controller\LoginController && $methodName === 'logout') {
+		if ($controller instanceof LoginController && $methodName === 'logout') {
 			// Don't block the logout page, to allow canceling the 2FA
 			return;
 		}
 
-		if ($this->userSession->isLoggedIn()) {
-			$user = $this->userSession->getUser();
-
+		if ($this->session->isLoggedIn()) {
+			$user = $this->session->getUser();
+			if ($user === null) {
+				throw new \UnexpectedValueException('User isLoggedIn but session does not contain user');
+			}
 			if ($this->twoFactorManager->isTwoFactorAuthenticated($user)) {
 				$this->checkTwoFactor($controller, $methodName);
 			} else if ($controller instanceof TwoFactorChallengeController) {
-				// Allow access to the two-factor controllers only if two-factor authentication
-				// is in progress.
-				throw new UserAlreadyLoggedInException();
+				// two-factor authentication is in progress.
+				throw new UserAlreadyLoggedInException('Grant access to the two-factor controllers');
 			}
 		}
 		// TODO: dont check/enforce 2FA if a auth token is used
 	}
 
+	/**
+	 * @param $controller
+	 * @param $methodName
+	 * @throws TwoFactorAuthRequiredException
+	 * @throws UserAlreadyLoggedInException
+	 */
 	private function checkTwoFactor($controller, $methodName) {
 		// If two-factor auth is in progress disallow access to any controllers
 		// defined within "LoginController".
@@ -109,16 +122,23 @@ class TwoFactorMiddleware extends Middleware {
 
 		// Disallow access to any controller if 2FA needs to be checked
 		if ($needsSecondFactor && !$twoFactor) {
-			throw new TwoFactorAuthRequiredException();
+			throw new TwoFactorAuthRequiredException('Additional factor required');
 		}
 
 		// Allow access to the two-factor controllers only if two-factor authentication
 		// is in progress.
 		if (!$needsSecondFactor && $twoFactor) {
-			throw new UserAlreadyLoggedInException();
+			throw new UserAlreadyLoggedInException('Grant access to the two-factor controllers');
 		}
 	}
 
+	/**
+	 * @param Controller $controller
+	 * @param string $methodName
+	 * @param Exception $exception
+	 * @return RedirectResponse
+	 * @throws Exception
+	 */
 	public function afterException($controller, $methodName, Exception $exception) {
 		if ($exception instanceof TwoFactorAuthRequiredException) {
 			return new RedirectResponse($this->urlGenerator->linkToRoute('core.TwoFactorChallenge.selectChallenge', [
@@ -126,8 +146,9 @@ class TwoFactorMiddleware extends Middleware {
 			]));
 		}
 		if ($exception instanceof UserAlreadyLoggedInException) {
-			return new RedirectResponse($this->urlGenerator->linkToRoute('files.view.index'));
+			return new RedirectResponse($this->urlGenerator->getAbsoluteUrl(''));
 		}
+		throw $exception;
 	}
 
 }
