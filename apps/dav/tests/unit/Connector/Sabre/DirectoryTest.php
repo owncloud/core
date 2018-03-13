@@ -26,6 +26,7 @@ namespace OCA\DAV\Tests\Unit\Connector\Sabre;
 
 use OC\Files\FileInfo;
 use OCA\DAV\Connector\Sabre\Directory;
+use OCP\Files\FileContentNotAllowedException;
 use OCP\Files\ForbiddenException;
 
 class TestDoubleFileView extends \OC\Files\View {
@@ -430,5 +431,21 @@ class DirectoryTest extends \Test\TestCase {
 			->willReturn(true);
 
 		$targetNode->moveInto(basename($destination), $source, $sourceNode);
+	}
+
+	/**
+	 * A test to throw ExcludeForbiddenException
+	 *
+	 * @expectedException \OCP\Files\FileContentNotAllowedException
+	 * @expectedExceptionMessage The message already logged
+	 */
+	public function testFailCreateFile() {
+		//$this->invokePrivate();
+		$previous = new FileContentNotAllowedException('The message already logged', false);
+		$this->view->expects($this->any())
+			->method('isCreatable')
+			->willThrowException(new FileContentNotAllowedException('The message already logged', false, $previous));
+		$dir = $this->getDir();
+		$dir->createFile('foobar.txt', 'hello foo bar');
 	}
 }

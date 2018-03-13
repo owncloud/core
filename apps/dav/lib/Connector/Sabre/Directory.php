@@ -38,6 +38,7 @@ use OCA\DAV\Connector\Sabre\Exception\Forbidden;
 use OCA\DAV\Connector\Sabre\Exception\InvalidPath;
 use OCA\DAV\Upload\FutureFile;
 use OCA\DAV\Upload\FutureFileZsync;
+use OCP\Files\FileContentNotAllowedException;
 use OCP\Files\ForbiddenException;
 use OCP\Files\InvalidPathException;
 use OCP\Files\StorageNotAvailableException;
@@ -175,7 +176,11 @@ class Directory extends Node implements ICollection, IQuota, IMoveTarget {
 		} catch (InvalidPathException $ex) {
 			throw new InvalidPath($ex->getMessage());
 		} catch (ForbiddenException $ex) {
-			throw new Forbidden($ex->getMessage(), $ex->getRetry());
+			if ($ex->getPrevious() instanceof FileContentNotAllowedException) {
+				throw new FileContentNotAllowedException($ex->getMessage(), $ex->getRetry(), $ex);
+			} else {
+				throw new Forbidden($ex->getMessage(), $ex->getRetry());
+			}
 		} catch (LockedException $e) {
 			throw new FileLocked($e->getMessage(), $e->getCode(), $e);
 		}
