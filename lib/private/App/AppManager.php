@@ -175,7 +175,7 @@ class AppManager implements IAppManager {
 	 */
 	public function isEnabledForUser($appId, $user = null) {
 		if ($this->isAlwaysEnabled($appId)) {
-			\OC::$server->getLogger()->warning("$appId for $user -- true");
+			\OC::$server->getLogger()->warning("$appId isAlwaysEnabled -- true");
 			return true;
 		}
 		if ($user === null && $this->userSession !== null) {
@@ -184,10 +184,10 @@ class AppManager implements IAppManager {
 		$installedApps = $this->getInstalledAppsValues();
 		if (isset($installedApps[$appId])) {
 			$isEnabled = $this->checkAppForUser($installedApps[$appId], $user);
-			\OC::$server->getLogger()->warning("$appId for $user -- $isEnabled");
+			\OC::$server->getLogger()->warning("$appId for $user->getDisplayName() -- $isEnabled");
 			return $isEnabled;
 		}
-		\OC::$server->getLogger()->warning("$appId for $user -- false");
+		\OC::$server->getLogger()->warning("$appId for $user->getDisplayName() -- false");
 		return false;
 	}
 
@@ -388,8 +388,12 @@ class AppManager implements IAppManager {
 		$stat = \stat($path);
 		if ($stat) {
 			// ok, file still exists
-			return "${stat['mtime']}|${stat['ino']}|${stat['dev']}|${stat['size']}";
+			
+			$etag = "${stat['mtime']}|${stat['ino']}|${stat['dev']}|${stat['size']}";
+			\OC::$server->getLogger()->warning("Path: $path - Etag : $etag");
+			return $etag;
 		}
+		\OC::$server->getLogger()->warning("Path: $path - Etag : null");
 		return null;
 	}
 
