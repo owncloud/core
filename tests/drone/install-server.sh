@@ -72,6 +72,20 @@ case "${DB_TYPE}" in
     ;;
 esac
 
+declare -x PRIMARY_OBJECTSTORE
+if [[ ! -z "${PRIMARY_OBJECTSTORE}" ]]; then
+  case "${PRIMARY_OBJECTSTORE}" in
+    swift)
+      wait-for-it -t 120 ceph:5034
+      cp tests/drone/configs/config.primary_storage.swift.php config/autotest-storage-swift.config.php
+      ;;
+    *)
+      echo "Unknown primary object storage!"
+      exit 1
+      ;;
+  esac
+fi
+
 install_cmd="maintenance:install -vvv \
       --database=${DB} \
       --database-name=${DB_NAME} \

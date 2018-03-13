@@ -84,6 +84,7 @@ pipeline:
       - DB_TYPE=${DB_TYPE}
       - FILES_EXTERNAL_TYPE=${FILES_EXTERNAL_TYPE}
       - COVERAGE=${COVERAGE}
+      - PRIMARY_OBJECTSTORE=${PRIMARY_OBJECTSTORE}
     commands:
       - ./tests/drone/install-server.sh
       - ./tests/drone/test-phpunit.sh
@@ -194,6 +195,22 @@ pipeline:
         TEST_SUITE: selenium
 
 services:
+
+  ceph:
+    image: owncloudci/ceph
+    pull: true
+    environment:
+      - KEYSTONE_PUBLIC_PORT=5034
+      - KEYSTONE_ADMIN_USER=test
+      - KEYSTONE_ADMIN_PASS=testing
+      - KEYSTONE_ADMIN_TENANT=testtenant
+      - KEYSTONE_ENDPOINT_REGION=testregion
+      - KEYSTONE_SERVICE=testceph
+      - OSD_SIZE=500
+    when:
+      matrix:
+        OBJECTSTORE: swift
+
   mariadb:
     image: mariadb:10.2
     environment:
@@ -439,6 +456,20 @@ matrix:
       COVERAGE: true
       DB_TYPE: sqlite
       FILES_EXTERNAL_TYPE: swift
+
+  # Primary Objectstorage
+    - PHP_VERSION: 5.6
+      TEST_SUITE: phpunit
+      DB_TYPE: sqlite
+      OBJECTSTORE: swift
+      PRIMARY_OBJECTSTORE: swift
+
+    - PHP_VERSION: 7.1
+      TEST_SUITE: phpunit
+      COVERAGE: true
+      DB_TYPE: sqlite
+      OBJECTSTORE: swift
+      PRIMARY_OBJECTSTORE: swift
 
   # Ui Acceptance tests
     - PHP_VERSION: 7.1
