@@ -41,11 +41,23 @@ class UserMountCacheTest extends TestCase {
 	 */
 	private $cache;
 
+	/**
+	 * @var \OCP\Util\UserSearch
+	 */
+	protected $userSearch;
+
 	private $fileIds = [];
 
 	public function setUp() {
 		$this->fileIds = [];
 		$this->connection = \OC::$server->getDatabaseConnection();
+		$this->userSearch = $this->getMockBuilder(\OCP\Util\UserSearch::class)
+			->disableOriginalConstructor()
+			->getMock();
+		$this->userSearch->expects($this->any())
+			->method('isSearchable')
+			->willReturn(true);
+
 		/** @var IConfig $config */
 		$config = $this->createMock(IConfig::class);
 		/** @var AccountMapper | \PHPUnit_Framework_MockObject_MockObject $accountMapper */
@@ -70,7 +82,7 @@ class UserMountCacheTest extends TestCase {
 		$log = $this->createMock(Log::class);
 		/** @var SyncService $syncService */
 		$syncService = $this->createMock(SyncService::class);
-		$this->userManager = new Manager($config, $log, $accountMapper, $syncService);
+		$this->userManager = new Manager($config, $log, $accountMapper, $syncService, $this->userSearch);
 		$this->cache = new UserMountCache($this->connection, $this->userManager, $log);
 
 		// hookup listener

@@ -22,6 +22,7 @@ namespace OCA\Files_Sharing;
 
 use OCP\Capabilities\ICapability;
 use OCP\IConfig;
+use OCP\Util\UserSearch;
 
 /**
  * Class Capabilities
@@ -33,8 +34,20 @@ class Capabilities implements ICapability {
 	/** @var IConfig */
 	private $config;
 
-	public function __construct(IConfig $config) {
+	/**
+	 * @var UserSearch
+	 */
+	private $userSearch;
+
+	/**
+	 * Capabilities constructor.
+	 *
+	 * @param IConfig $config
+	 * @param UserSearch $userSearch
+	 */
+	public function __construct(IConfig $config, UserSearch $userSearch) {
 		$this->config = $config;
+		$this->userSearch = $userSearch;
 	}
 
 	/**
@@ -98,6 +111,8 @@ class Capabilities implements ICapability {
 			'outgoing'  => $this->config->getAppValue('files_sharing', 'outgoing_server2server_share_enabled', 'yes') === 'yes',
 			'incoming' => $this->config->getAppValue('files_sharing', 'incoming_server2server_share_enabled', 'yes') === 'yes'
 		];
+
+		$res['search_min_length'] = $this->userSearch->getSearchMinLength();
 
 		return [
 			'files_sharing' => $res,
