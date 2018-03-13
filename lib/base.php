@@ -346,59 +346,17 @@ class OC {
 	private static function printUpgradePage() {
 		$systemConfig = \OC::$server->getSystemConfig();
 
-		$disableWebUpdater = $systemConfig->getValue('upgrade.disable-web', false);
-		$tooBig = false;
-		if (!$disableWebUpdater) {
-			$apps = \OC::$server->getAppManager();
-			$tooBig = $apps->isInstalled('user_ldap') || $apps->isInstalled('user_shibboleth');
-			if (!$tooBig) {
-				// count users
-				$db = new \OC\User\Database();
-				$tooBig = ($db->countUsers() > 50);
-			}
-		}
-		if ($disableWebUpdater || $tooBig) {
-			// send http status 503
-			header('HTTP/1.1 503 Service Temporarily Unavailable');
-			header('Status: 503 Service Temporarily Unavailable');
-			header('Retry-After: 120');
+		// send http status 503
+		header('HTTP/1.1 503 Service Temporarily Unavailable');
+		header('Status: 503 Service Temporarily Unavailable');
+		header('Retry-After: 120');
 
-			// render error page
-			$template = new OC_Template('', 'update.use-cli', 'guest');
-			$template->assign('productName', 'ownCloud'); // for now
-			$template->assign('version', OC_Util::getVersionString());
-			$template->assign('tooBig', $tooBig);
+		// render error page
+		$template = new OC_Template('', 'update.use-cli', 'guest');
+		$template->assign('productName', 'ownCloud'); // for now
+		$template->assign('version', OC_Util::getVersionString());
 
-			$template->printPage();
-			die();
-		}
-
-		// check whether this is a core update or apps update
-		$installedVersion = $systemConfig->getValue('version', '0.0.0');
-		$currentVersion = implode('.', \OCP\Util::getVersion());
-
-		// if not a core upgrade, then it's apps upgrade
-		$isAppsOnlyUpgrade = (version_compare($currentVersion, $installedVersion, '='));
-
-		$oldTheme = $systemConfig->getValue('theme');
-		$systemConfig->setValue('theme', '');
-		\OCP\Util::addScript('config'); // needed for web root
-		\OCP\Util::addScript('update');
-		\OCP\Util::addStyle('update');
-
-		/** @var \OC\App\AppManager $appManager */
-		$appManager = \OC::$server->getAppManager();
-
-		$tmpl = new OC_Template('', 'update.admin', 'guest');
-		$tmpl->assign('version', OC_Util::getVersionString());
-		$tmpl->assign('isAppsOnlyUpgrade', $isAppsOnlyUpgrade);
-
-		// get third party apps
-		$ocVersion = \OCP\Util::getVersion();
-		$tmpl->assign('appsToUpgrade', $appManager->getAppsNeedingUpgrade($ocVersion));
-		$tmpl->assign('productName', 'ownCloud'); // for now
-		$tmpl->assign('oldTheme', $oldTheme);
-		$tmpl->printPage();
+		$template->printPage();
 	}
 
 	public static function initSession() {

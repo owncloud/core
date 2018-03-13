@@ -74,9 +74,6 @@ $this->create('core_ajax_share', '/core/ajax/share.php')
 // oC JS config
 $this->create('js_config', '/core/js/oc.js')
 	->actionInclude('core/js/config.php');
-// Routing
-$this->create('core_ajax_update', '/core/ajax/update.php')
-	->actionInclude('core/ajax/update.php');
 
 // File routes
 $this->create('files.viewcontroller.showFile', '/f/{fileId}')->action(function($urlParams) {
