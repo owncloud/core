@@ -261,7 +261,7 @@ module.exports = function(config) {
 		preprocessors: preprocessors,
 
 		coverageReporter: {
-			dir:'tests/karma-coverage',
+			dir:'tests/output/coverage',
 			reporters: [
 				{ type: 'html' },
 				{ type: 'cobertura' }
