@@ -534,7 +534,8 @@ abstract class TestCase extends BaseTestCase {
 	}
 
 	public function runsWithPrimaryObjectstorage() {
-		if (getenv('RUN_OBJECTSTORE_TESTS')) {
+		$objectstoreConfiguration = \OC::$server->getConfig()->getSystemValue('objectstore', null);
+		if ($objectstoreConfiguration !== null) {
 			return true;
 		}
 		return false;
