@@ -522,4 +522,11 @@ abstract class TestCase extends BaseTestCase {
 		return $processUser['name'];
 	}
 
+	public function runsWithPrimaryObjectstorage() {
+		if (getenv('RUN_OBJECTSTORE_TESTS')) {
+			return true;
+		}
+		return false;
+	}
+
 }
