@@ -8,6 +8,14 @@
 
 namespace Test;
 
+use Symfony\Component\EventDispatcher\GenericEvent;
+
+/**
+ * Class ConfigTest
+ *
+ * @group DB
+ * @package Test
+ */
 class ConfigTest extends TestCase {
 	const TESTCONTENT = '<?php $CONFIG=array("foo"=>"bar", "beers" => array("Appenzeller", "Guinness", "Kölsch"), "alcohol_free" => false);';
 
@@ -64,11 +72,34 @@ class ConfigTest extends TestCase {
 			"  1 => 'Guinness',\n    2 => 'Kölsch',\n  ),\n  'alcohol_free' => false,\n);\n";
 		$this->assertStringEqualsFile($this->configFile, $expected);
 
+		$calledBeforeSetValue = [];
+		$calledAfterSetValue = [];
+		\OC::$server->getEventDispatcher()->addListener('config.beforesetvalue',
+			function (GenericEvent $event) use (&$calledBeforeSetValue) {
+				$calledBeforeSetValue[] = 'config.beforesetvalue';
+				$calledBeforeSetValue[] = $event;
+			});
+		\OC::$server->getEventDispatcher()->addListener('config.aftersetvalue',
+			function (GenericEvent $event) use (&$calledAfterSetValue) {
+				$calledAfterSetValue[] = 'config.aftersetvalue';
+				$calledAfterSetValue[] = $event;
+			});
+
 		$this->config->setValue('bar', 'red');
 		$this->config->setValue('apps', ['files', 'gallery']);
 		$expectedConfig['bar'] = 'red';
 		$expectedConfig['apps'] = ['files', 'gallery'];
 		$this->assertAttributeEquals($expectedConfig, 'cache', $this->config);
+		$this->assertInstanceOf(GenericEvent::class, $calledBeforeSetValue[1]);
+		$this->assertInstanceOf(GenericEvent::class, $calledAfterSetValue[1]);
+		$this->assertEquals('config.beforesetvalue', $calledBeforeSetValue[0]);
+		$this->assertEquals('config.aftersetvalue', $calledAfterSetValue[0]);
+		$this->assertArrayHasKey('key', $calledBeforeSetValue[1]);
+		$this->assertArrayHasKey('value', $calledBeforeSetValue[1]);
+		$this->assertArrayHasKey('cache', $calledBeforeSetValue[1]);
+		$this->assertArrayHasKey('key', $calledAfterSetValue[1]);
+		$this->assertArrayHasKey('value', $calledAfterSetValue[1]);
+		$this->assertArrayHasKey('cache', $calledAfterSetValue[1]);
 
 		$expected = "<?php\n\$CONFIG = array (\n  'foo' => 'moo',\n  'beers' => \n  array (\n    0 => 'Appenzeller',\n  " .
 			"  1 => 'Guinness',\n    2 => 'Kölsch',\n  ),\n  'alcohol_free' => false,\n  'bar' => 'red',\n  'apps' => \n " .
@@ -104,10 +135,31 @@ class ConfigTest extends TestCase {
 	}
 
 	public function testDeleteKey() {
+		$calledBeforeDeleteValue = [];
+		$calledAfterDeleteValue = [];
+		\OC::$server->getEventDispatcher()->addListener('config.beforedeletevalue',
+			function (GenericEvent $event) use (&$calledBeforeDeleteValue) {
+				$calledBeforeDeleteValue[] = 'config.beforedeletevalue';
+				$calledBeforeDeleteValue[] = $event;
+			});
+		\OC::$server->getEventDispatcher()->addListener('config.afterdeletevalue',
+			function (GenericEvent $event) use (&$calledAfterDeleteValue) {
+				$calledAfterDeleteValue[] = 'config.afterdeletevalue';
+				$calledAfterDeleteValue[] = $event;
+			});
 		$this->config->deleteKey('foo');
 		$expectedConfig = $this->initialConfig;
 		unset($expectedConfig['foo']);
 		$this->assertAttributeEquals($expectedConfig, 'cache', $this->config);
+
+		$this->assertInstanceOf(GenericEvent::class, $calledBeforeDeleteValue[1]);
+		$this->assertInstanceOf(GenericEvent::class, $calledBeforeDeleteValue[1]);
+		$this->assertEquals('config.beforedeletevalue', $calledBeforeDeleteValue[0]);
+		$this->assertEquals('config.afterdeletevalue', $calledAfterDeleteValue[0]);
+		$this->assertArrayHasKey('key', $calledBeforeDeleteValue[1]);
+		$this->assertArrayHasKey('cache', $calledBeforeDeleteValue[1]);
+		$this->assertArrayHasKey('key', $calledAfterDeleteValue[1]);
+		$this->assertArrayHasKey('cache', $calledAfterDeleteValue[1]);
 
 		$expected = "<?php\n\$CONFIG = array (\n  'beers' => \n  array (\n    0 => 'Appenzeller',\n  " .
 			"  1 => 'Guinness',\n    2 => 'Kölsch',\n  ),\n  'alcohol_free' => false,\n);\n";
