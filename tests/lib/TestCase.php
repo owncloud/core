@@ -533,4 +533,11 @@ abstract class TestCase extends BaseTestCase {
 		return $stream;
 	}
 
+	public function runsWithPrimaryObjectstorage() {
+		if (getenv('RUN_OBJECTSTORE_TESTS')) {
+			return true;
+		}
+		return false;
+	}
+
 }

@@ -95,7 +95,7 @@ class ScanTest extends TestCase {
 	private $groupsCreated = [];
 
 	protected function setUp() {
-		if (getenv('RUN_OBJECTSTORE_TESTS')) {
+		if ($this->runsWithPrimaryObjectstorage()) {
 			$this->markTestSkipped('not testing scanner as it does not make sense for primary object store');
 		}
 		parent::setUp();
