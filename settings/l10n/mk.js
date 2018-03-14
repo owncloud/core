@@ -156,6 +156,7 @@ OC.L10N.register(
     "Test email settings" : "Провери ги нагодувањаа за електронска пошта",
     "Send email" : "Испрати пошта",
     "Security & setup warnings" : "Предупредувања за сигурност и подесувања",
+    "Especially when using the desktop client for file syncing the use of SQLite is discouraged." : "Особено кога се користи десктопот клиент за синхронизација на датотеката, употребата на SQLite е обесхрабрена.",
     "Please double check the <a target=\"_blank\" rel=\"noreferrer\" href=\"%s\">installation guides ↗</a>, and check for any errors or warnings in the <a href=\"#log-section\">log</a>." : "Ве молиме двојно проверете ги <a target=\"_blank\" rel=\"noreferrer\" href=\"%s\">упатствата за инсталација ↗</a>, и проверете ги грешките или предупредувањата во <a href=\"#log-section\">записникот</a>.",
     "All checks passed." : "Сите проверки се поминати.",
     "System Status" : "Статус на системот",

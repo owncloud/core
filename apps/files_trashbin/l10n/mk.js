@@ -9,6 +9,7 @@ OC.L10N.register(
     "Delete permanently" : "Трајно избришани",
     "Error" : "Грешка",
     "This operation is forbidden" : "Операцијата не е дозволена",
+    "This directory is unavailable, please check the logs or contact the administrator" : "Овој директориум е недостапен, ве молиме проверете ги логовите или контактирајте со администраторот",
     "restored" : "повратени",
     "No entries found in this folder" : "Нема ништо во оваа папка",
     "Select all" : "Избери се",
