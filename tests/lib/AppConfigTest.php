@@ -8,6 +8,7 @@
  */
 
 namespace Test;
+use Symfony\Component\EventDispatcher\GenericEvent;
 
 /**
  * Class AppConfigTest
@@ -204,8 +205,33 @@ class AppConfigTest extends TestCase {
 		$this->assertEquals('1.2.3', $config->getValue('testapp', 'installed_version'));
 		$this->assertConfigKey('testapp', 'installed_version', '1.2.3');
 
+		$calledBeforeSetValue = [];
+		$calledAfterSetValue = [];
+		\OC::$server->getEventDispatcher()->addListener('appconfig.beforesetvalue',
+			function (GenericEvent $event) use (&$calledBeforeSetValue) {
+				$calledBeforeSetValue[] = 'appconfig.beforesetvalue';
+				$calledBeforeSetValue[] = $event;
+			});
+		\OC::$server->getEventDispatcher()->addListener('appconfig.aftersetvalue',
+			function (GenericEvent $event) use (&$calledAfterSetValue) {
+				$calledAfterSetValue[] = 'appconfig.aftersetvalue';
+				$calledAfterSetValue[] = $event;
+			});
+
 		$this->assertTrue($config->setValue('testapp', 'installed_version', '1.33.7'));
 
+		$this->assertEquals('appconfig.aftersetvalue', $calledAfterSetValue[0]);
+		$this->assertEquals('appconfig.beforesetvalue', $calledBeforeSetValue[0]);
+		$this->assertInstanceOf(GenericEvent::class, $calledBeforeSetValue[1]);
+		$this->assertInstanceOf(GenericEvent::class, $calledAfterSetValue[1]);
+		$this->assertArrayHasKey('key', $calledBeforeSetValue[1]);
+		$this->assertArrayHasKey('value', $calledBeforeSetValue[1]);
+		$this->assertArrayHasKey('app', $calledBeforeSetValue[1]);
+		$this->assertArrayHasKey('appcache', $calledBeforeSetValue[1]);
+		$this->assertArrayHasKey('key', $calledAfterSetValue[1]);
+		$this->assertArrayHasKey('value', $calledAfterSetValue[1]);
+		$this->assertArrayHasKey('app', $calledAfterSetValue[1]);
+		$this->assertArrayHasKey('appcache', $calledAfterSetValue[1]);
 
 		$this->assertEquals('1.33.7', $config->getValue('testapp', 'installed_version'));
 		$this->assertConfigKey('testapp', 'installed_version', '1.33.7');
@@ -220,7 +246,33 @@ class AppConfigTest extends TestCase {
 		$this->assertFalse($config->hasKey('someapp', 'somekey'));
 		$this->assertNull($config->getValue('someapp', 'somekey'));
 
+		$calledBeforeSetValue = [];
+		$calledAfterSetValue = [];
+		\OC::$server->getEventDispatcher()->addListener('appconfig.beforesetvalue',
+			function (GenericEvent $event) use (&$calledBeforeSetValue) {
+				$calledBeforeSetValue[] = 'appconfig.beforesetvalue';
+				$calledBeforeSetValue[] = $event;
+			});
+		\OC::$server->getEventDispatcher()->addListener('appconfig.aftersetvalue',
+			function (GenericEvent $event) use (&$calledAfterSetValue) {
+				$calledAfterSetValue[] = 'appconfig.aftersetvalue';
+				$calledAfterSetValue[] = $event;
+			});
+
 		$this->assertTrue($config->setValue('someapp', 'somekey', 'somevalue'));
+
+		$this->assertEquals('appconfig.aftersetvalue', $calledAfterSetValue[0]);
+		$this->assertEquals('appconfig.beforesetvalue', $calledBeforeSetValue[0]);
+		$this->assertInstanceOf(GenericEvent::class, $calledBeforeSetValue[1]);
+		$this->assertInstanceOf(GenericEvent::class, $calledAfterSetValue[1]);
+		$this->assertArrayHasKey('key', $calledBeforeSetValue[1]);
+		$this->assertArrayHasKey('value', $calledBeforeSetValue[1]);
+		$this->assertArrayHasKey('app', $calledBeforeSetValue[1]);
+		$this->assertArrayHasKey('appcache', $calledBeforeSetValue[1]);
+		$this->assertArrayHasKey('key', $calledAfterSetValue[1]);
+		$this->assertArrayHasKey('value', $calledAfterSetValue[1]);
+		$this->assertArrayHasKey('app', $calledAfterSetValue[1]);
+		$this->assertArrayHasKey('appcache', $calledAfterSetValue[1]);
 
 		$this->assertTrue($config->hasKey('someapp', 'somekey'));
 		$this->assertEquals('somevalue', $config->getValue('someapp', 'somekey'));
@@ -237,7 +289,29 @@ class AppConfigTest extends TestCase {
 
 		$this->assertTrue($config->hasKey('testapp', 'deletethis'));
 
+		$calledBeforeDeleteValue = [];
+		$calledAfterDeleteValue = [];
+		\OC::$server->getEventDispatcher()->addListener('appconfig.beforedeletevalue',
+			function (GenericEvent $event) use (&$calledBeforeDeleteValue) {
+				$calledBeforeDeleteValue[] = 'appconfig.beforedeletevalue';
+				$calledBeforeDeleteValue[] = $event;
+			});
+		\OC::$server->getEventDispatcher()->addListener('appconfig.afterdeletevalue',
+			function (GenericEvent $event) use (&$calledAfterDeleteValue){
+				$calledAfterDeleteValue[] = 'appconfig.afterdeletevalue';
+				$calledAfterDeleteValue[] = $event;
+			});
+
 		$config->deleteKey('testapp', 'deletethis');
+
+		$this->assertEquals('appconfig.beforedeletevalue', $calledBeforeDeleteValue[0]);
+		$this->assertEquals('appconfig.afterdeletevalue', $calledAfterDeleteValue[0]);
+		$this->assertInstanceOf(GenericEvent::class, $calledBeforeDeleteValue[1]);
+		$this->assertInstanceOf(GenericEvent::class, $calledAfterDeleteValue[1]);
+		$this->assertArrayHasKey('app', $calledBeforeDeleteValue[1]);
+		$this->assertArrayHasKey('key', $calledBeforeDeleteValue[1]);
+		$this->assertArrayHasKey('app', $calledAfterDeleteValue[1]);
+		$this->assertArrayHasKey('key', $calledAfterDeleteValue[1]);
 
 		$this->assertFalse($config->hasKey('testapp', 'deletethis'));
 
@@ -259,7 +333,27 @@ class AppConfigTest extends TestCase {
 
 		$this->assertTrue($config->hasKey('someapp', 'otherkey'));
 
+		$calledBeforeDeleteApp = [];
+		$calledAfterDeleteApp = [];
+		\OC::$server->getEventDispatcher()->addListener('appconfig.beforedeleteapp',
+			function (GenericEvent $event) use (&$calledBeforeDeleteApp) {
+				$calledBeforeDeleteApp[] = 'appconfig.beforedeleteapp';
+				$calledBeforeDeleteApp[] = $event;
+			});
+		\OC::$server->getEventDispatcher()->addListener('appconfig.afterdeleteapp',
+			function (GenericEvent $event) use (&$calledAfterDeleteApp){
+				$calledAfterDeleteApp[] = 'appconfig.afterdeleteapp';
+				$calledAfterDeleteApp[] = $event;
+			});
+
 		$config->deleteApp('someapp');
+
+		$this->assertEquals('appconfig.beforedeleteapp', $calledBeforeDeleteApp[0]);
+		$this->assertEquals('appconfig.afterdeleteapp', $calledAfterDeleteApp[0]);
+		$this->assertInstanceOf(GenericEvent::class, $calledBeforeDeleteApp[1]);
+		$this->assertInstanceOf(GenericEvent::class, $calledAfterDeleteApp[1]);
+		$this->assertArrayHasKey('app', $calledBeforeDeleteApp[1]);
+		$this->assertArrayHasKey('app', $calledAfterDeleteApp[1]);
 
 		$this->assertFalse($config->hasKey('someapp', 'otherkey'));
 
