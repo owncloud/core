@@ -5,15 +5,17 @@ I want to manage user quota
 So that users can only take up a certain amount of storage space
 
 	Background:
-		Given a regular user has been created but not initialized
+		Given these users have been created but not initialized:
+			|username|password|displayname|email       |
+			|user1   |1234    |User One   |u1@oc.com.np|
 		And user admin has logged in using the webUI
 		And the administrator has browsed to the users page
 
 	Scenario Outline: change quota to a valid value
-		Given the administrator has set the quota of user "%regularuser%" to "<start_quota>" using the webUI
-		When the administrator changes the quota of user "%regularuser%" to "<wished_quota>" using the webUI
+		Given the administrator has set the quota of user "user1" to "<start_quota>" using the webUI
+		When the administrator changes the quota of user "user1" to "<wished_quota>" using the webUI
 		And the administrator reloads the users page
-		Then the quota of user "%regularuser%" should be set to "<expected_quota>" on the webUI
+		Then the quota of user "user1" should be set to "<expected_quota>" on the webUI
 
 		Examples:
 		|start_quota|wished_quota|expected_quota|
@@ -28,15 +30,15 @@ So that users can only take up a certain amount of storage space
 
 	@skipOnOcV10.0.3
 	Scenario: change quota to a valid value that do not work on 10.0.3
-		Given the administrator has set the quota of user "%regularuser%" to "Unlimited" using the webUI
-		When the administrator changes the quota of user "%regularuser%" to "0 Kb" using the webUI
+		Given the administrator has set the quota of user "user1" to "Unlimited" using the webUI
+		When the administrator changes the quota of user "user1" to "0 Kb" using the webUI
 		And the administrator reloads the users page
-		Then the quota of user "%regularuser%" should be set to "0 B" on the webUI
+		Then the quota of user "user1" should be set to "0 B" on the webUI
 
 	Scenario Outline: change quota to an invalid value
-		When the administrator changes the quota of user "%regularuser%" to "<wished_quota>" using the webUI
+		When the administrator changes the quota of user "user1" to "<wished_quota>" using the webUI
 		Then a notification should be displayed on the webUI with the text 'Invalid quota value "<wished_quota>"'
-		And the quota of user "%regularuser%" should be set to "Default" on the webUI
+		And the quota of user "user1" should be set to "Default" on the webUI
 
 		Examples:
 		|wished_quota|
