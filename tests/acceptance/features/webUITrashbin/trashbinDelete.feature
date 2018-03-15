@@ -5,8 +5,11 @@ Feature: files and folders can be deleted from the trashbin
   So that I can control my trashbin space and which files are kept in that space
 
   Background:
-    Given a regular user has been created
-    And the regular user has logged in using the webUI
+    Given these users have been created:
+      |username|password|displayname|email       |
+      |user1   |1234    |User One   |u1@oc.com.np|
+    And the user has browsed to the login page
+    And the user has logged in with username "user1" and password "1234" using the webUI
     And the following files have been deleted
       | name          |
       | lorem.txt     |

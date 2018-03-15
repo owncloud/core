@@ -48,7 +48,12 @@ trait BasicStructure {
 	/**
 	 * @var array 
 	 */
-	private $adminUser = [];
+	private $adminUsername = '';
+
+	/**
+	 * @var array
+	 */
+	private $adminPassword = '';
 
 	/**
 	 * @var string
@@ -93,28 +98,29 @@ trait BasicStructure {
 	/**
 	 * BasicStructure constructor.
 	 *
-	 * @param  string $baseUrl
-	 * @param string $admin
-	 * @param string $regular_user_password
-	 * @param string $mailhog_url
-	 * @param string $oc_path
+	 * @param string $baseUrl
+	 * @param string $adminUsername
+	 * @param string $adminPassword
+	 * @param string $regularUserPassword
+	 * @param string $mailhogUrl
+	 * @param string $ocPath
 	 *
-	 * @return void
 	 */
 	public function __construct(
-		$baseUrl, $admin, $regular_user_password, $mailhog_url, $oc_path
+		$baseUrl, $adminUsername, $adminPassword, $regularUserPassword, $mailhogUrl, $ocPath
 	) {
 
 		// Initialize your context here
 		$this->baseUrl = $baseUrl;
-		$this->adminUser = $admin;
-		$this->regularUserPassword = $regular_user_password;
-		$this->mailhogUrl = $mailhog_url;
+		$this->adminUsername = $adminUsername;
+		$this->adminPassword = $adminPassword;
+		$this->regularUserPassword = $regularUserPassword;
+		$this->mailhogUrl = $mailhogUrl;
 		$this->localBaseUrl = $this->baseUrl;
 		$this->remoteBaseUrl = $this->baseUrl;
 		$this->currentServer = 'LOCAL';
 		$this->cookieJar = new \GuzzleHttp\Cookie\CookieJar();
-		$this->ocPath = $oc_path;
+		$this->ocPath = $ocPath;
 
 		// in case of CI deployment we take the server url from the environment
 		$testServerUrl = getenv('TEST_SERVER_URL');
@@ -684,15 +690,15 @@ trait BasicStructure {
 	/**
 	 * @return string
 	 */
-	public function getAdminUserName() {
-		return (string) $this->adminUser[0];
+	public function getAdminUsername() {
+		return (string) $this->adminUsername;
 	}
 
 	/**
 	 * @return string
 	 */
 	public function getAdminPassword() {
-		return (string) $this->adminUser[1];
+		return (string) $this->adminPassword;
 	}
 
 	/**
@@ -701,7 +707,7 @@ trait BasicStructure {
 	 * @return string
 	 */
 	public function getPasswordForUser($userName) {
-		if ($userName === $this->getAdminUserName()) {
+		if ($userName === $this->getAdminUsername()) {
 			return (string) $this->getAdminPassword();
 		} else {
 			return (string) $this->regularUserPassword;
@@ -721,7 +727,7 @@ trait BasicStructure {
 	 * @return array
 	 */
 	public function getAuthOptionForAdmin() {
-		return $this->getAuthOptionForUser($this->getAdminUserName());
+		return $this->getAuthOptionForUser($this->getAdminUsername());
 	}
 
 	/**

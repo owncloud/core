@@ -83,7 +83,7 @@ trait AppConfiguration {
 	 */
 	public function adminSetsServerParameterToUsingAPI($parameter, $app, $value) {
 		$user = $this->currentUser;
-		$this->currentUser = $this->getAdminUserName();
+		$this->currentUser = $this->getAdminUsername();
 
 		$this->modifyServerConfig($app, $parameter, $value);
 
@@ -207,7 +207,7 @@ trait AppConfiguration {
 	public function setCapabilities($capabilitiesArray) {
 		$savedCapabilitiesChanges = AppConfigHelper::setCapabilities(
 			$this->baseUrlWithoutOCSAppendix(),
-			$this->getAdminUserName(),
+			$this->getAdminUsername(),
 			$this->getAdminPassword(),
 			$capabilitiesArray,
 			$this->savedCapabilitiesXml
@@ -229,7 +229,7 @@ trait AppConfiguration {
 	protected function modifyServerConfig($app, $parameter, $value) {
 		AppConfigHelper::modifyServerConfig(
 			$this->baseUrlWithoutOCSAppendix(),
-			$this->getAdminUserName(),
+			$this->getAdminUsername(),
 			$this->getAdminPassword(),
 			$app,
 			$parameter,
@@ -246,7 +246,7 @@ trait AppConfiguration {
 	protected function modifyServerConfigs($appParameterValues) {
 		AppConfigHelper::modifyServerConfigs(
 			$this->baseUrlWithoutOCSAppendix(),
-			$this->getAdminUserName(),
+			$this->getAdminUsername(),
 			$this->getAdminPassword(),
 			$appParameterValues,
 			$this->apiVersion
@@ -296,7 +296,7 @@ trait AppConfiguration {
 	 */
 	public function prepareParametersBeforeScenario() {
 		$user = $this->currentUser;
-		$this->currentUser = $this->getAdminUserName();
+		$this->currentUser = $this->getAdminUsername();
 		$this->resetAppConfigs();
 		$this->currentUser = $user;
 	}
@@ -308,7 +308,7 @@ trait AppConfiguration {
 	 */
 	public function restoreParametersAfterScenario() {
 		$user = $this->currentUser;
-		$this->currentUser = $this->getAdminUserName();
+		$this->currentUser = $this->getAdminUsername();
 		$this->modifyServerConfigs($this->savedCapabilitiesChanges);
 		$this->currentUser = $user;
 	}
