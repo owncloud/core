@@ -93,7 +93,7 @@ OC.L10N.register(
     "Problem loading page, reloading in 5 seconds" : "Проблем при вчитување на страницата, повторно вчитување за 5 секунди",
     "Saving..." : "Снимам...",
     "Dismiss" : "Отфрли",
-    "seconds ago" : "пред секунди",
+    "seconds ago" : "пред неколку секунди",
     "The link to reset your password has been sent to your email. If you do not receive it within a reasonable amount of time, check your spam/junk folders.<br>If it is not there ask your local administrator." : "Врската за ресетирање на вашата лозинка е испратена на вашата е-адреса. Ако не ја добиете во разумно време, проверете ги вашите папки за спам/ѓубре.<br>Ако не е таму прашајте го вашиот локален администратор.",
     "Your files are encrypted. If you haven't enabled the recovery key, there will be no way to get your data back after your password is reset.<br />If you are not sure what to do, please contact your administrator before you continue. <br />Do you really want to continue?" : "Вашите датотеки се шифрирани. Ако не сте го овозможиле клучот за враќање, нема да можете да ги повратите вашите податоци откога вашата лозинка ќе биде ресетирана.<br>Ако не сте сигурни што да правите, ве молам контактирајте го вашиот локален администратор пред да продолжите.<br/>Дали навистина сакате да продолжите?",
     "I know what I'm doing" : "Знам што правам",
