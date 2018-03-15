@@ -68,4 +68,35 @@ class EventEmitterTraitTest extends TestCase {
 			$this->assertEquals(array(), $calledAfterEvent);
 		}
 	}
+
+	/**
+	 * The test to verify modification in the after array
+	 * @dataProvider dummyFunction
+	 */
+	public function testEmittingCallWithAdditionalArgument($className, $eventName, $data) {
+		$calledAfterEvent = [];
+		\OC::$server->getEventDispatcher()->addListener("$className.after$eventName", function ($event) use (&$calledAfterEvent, &$className, &$eventName) {
+			$calledAfterEvent[] = "$className.after$eventName";
+			$calledAfterEvent[] = $event;
+		});
+		$calledBeforeEvent = [];
+		\OC::$server->getEventDispatcher()->addListener("$className.before$eventName", function ($event) use (&$calledBeforeEvent, &$className, &$eventName) {
+			$calledBeforeEvent[] = "$className.before$eventName";
+			$calledBeforeEvent[] = $event;
+		});
+
+		$this->emittingCall(function (&$afterArray) {
+			//Update array by creating new key item
+			$afterArray['item'] = "testing";
+			return true;
+		}, ['before' => $data['before'], 'after' => $data['after']], $className, $eventName);
+
+		if (isset($data['after']) and (count($data['after']))) {
+			$this->assertEquals($calledAfterEvent[0], "$className.after$eventName");
+			$this->assertArrayHasKey('item1', $calledAfterEvent[1]);
+			$this->assertInstanceOf(GenericEvent::class, $calledAfterEvent[1]);
+			$this->assertArrayHasKey('item', $calledAfterEvent[1]);
+			$this->assertEquals('testing', $calledAfterEvent[1]->getArgument('item'));
+		}
+	}
 }
