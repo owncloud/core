@@ -96,8 +96,8 @@ class WebUIUsersContext extends RawMinkContext implements Context {
 
 		$this->response = OcsApiHelper::sendRequest(
 			$this->getMinkParameter('base_url'),
-			"admin",
-			$this->webUIGeneralContext->getUserPassword("admin"),
+			$this->webUIGeneralContext->getAdminUsername(),
+			$this->webUIGeneralContext->getAdminPassword(),
 			"PUT",
 			"/cloud/users/" . $user,
 			$body,

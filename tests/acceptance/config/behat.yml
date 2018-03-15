@@ -8,12 +8,11 @@ default:
       contexts:
         - FeatureContext:
             baseUrl:  http://localhost:8080/ocs/
-            admin:
-              - admin
-              - admin
-            regular_user_password: 123456
-            mailhog_url: http://127.0.0.1:8025/api/v2/messages
-            oc_path: ../../
+            adminUsername: admin
+            adminPassword: admin
+            regularUserPassword: 123456
+            mailhogUrl: http://127.0.0.1:8025/api/v2/messages
+            ocPath: ../../
         - CardDavContext:
             baseUrl: http://localhost:8080
         - CalDavContext:
@@ -25,36 +24,33 @@ default:
       contexts:
         - FederationContext:
             baseUrl:  http://localhost:8080/ocs/
-            admin:
-              - admin
-              - admin
-            regular_user_password: 123456
-            mailhog_url: http://127.0.0.1:8025/api/v2/messages
-            oc_path: ../../
+            adminUsername: admin
+            adminPassword: admin
+            regularUserPassword: 123456
+            mailhogUrl: http://127.0.0.1:8025/api/v2/messages
+            ocPath: ../../
     apiCapabilities:
       paths:
         - %paths.base%/../features/apiCapabilities
       contexts:
         - CapabilitiesContext:
             baseUrl:  http://localhost:8080/ocs/
-            admin:
-              - admin
-              - admin
-            regular_user_password: 123456
-            mailhog_url: http://127.0.0.1:8025/api/v2/messages
-            oc_path: ../../
+            adminUsername: admin
+            adminPassword: admin
+            regularUserPassword: 123456
+            mailhogUrl: http://127.0.0.1:8025/api/v2/messages
+            ocPath: ../../
     apiSharees:
       paths:
         - %paths.base%/../features/apiSharees
       contexts:
         - ShareesContext:
             baseUrl:  http://localhost:8080/ocs/
-            admin:
-              - admin
-              - admin
-            regular_user_password: 123456
-            mailhog_url: http://127.0.0.1:8025/api/v2/messages
-            oc_path: ../../
+            adminUsername: admin
+            adminPassword: admin
+            regularUserPassword: 123456
+            mailhogUrl: http://127.0.0.1:8025/api/v2/messages
+            ocPath: ../../
 
     webUIFiles:
       paths:
@@ -62,6 +58,7 @@ default:
       context: &common_webui_suite_context
         parameters:
           ocPath: apps/testing/api/v1/occ
+          adminUsername: admin
           adminPassword: admin
           regularUserPassword: 123456
       contexts:

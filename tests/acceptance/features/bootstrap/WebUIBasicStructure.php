@@ -52,7 +52,10 @@ trait WebUIBasicStructure {
 	 */
 	public function adminLogsInUsingTheWebUI() {
 		$this->loginPage->open();
-		$this->loginAs("admin", $this->getUserPassword("admin"));
+		$this->loginAs(
+			$this->getAdminUsername(),
+			$this->getAdminPassword()
+		);
 	}
 
 	/**
@@ -171,8 +174,9 @@ trait WebUIBasicStructure {
 		switch ($method) {
 			case "api":
 				$results = UserHelper::createUser(
-					$baseUrl, $user, $password, "admin",
-					$this->getUserPassword("admin"),
+					$baseUrl, $user, $password,
+					$this->getAdminUsername(),
+					$this->getAdminPassword(),
 					$displayName, $email
 				);
 				foreach ($results as $result) {
@@ -264,7 +268,9 @@ trait WebUIBasicStructure {
 			case "api":
 				$result = UserHelper::createGroup(
 					$this->getMinkParameter("base_url"),
-					$group, "admin", $this->getUserPassword("admin")
+					$group,
+					$this->getAdminUsername(),
+					$this->getAdminPassword()
 				);
 				if ($result->getStatusCode() !== 200) {
 					throw new Exception(
@@ -315,7 +321,9 @@ trait WebUIBasicStructure {
 			case "api":
 				$result = UserHelper::addUserToGroup(
 					$this->getMinkParameter("base_url"), 
-					$user, $group, "admin", $this->getUserPassword("admin")
+					$user, $group,
+					$this->getAdminUsername(),
+					$this->getAdminPassword()
 				);
 				if ($result->getStatusCode() !== 200) {
 					throw new Exception(
@@ -393,8 +401,8 @@ trait WebUIBasicStructure {
 			$result = UserHelper::deleteUser(
 				$baseUrl,
 				$username,
-				"admin",
-				$this->getUserPassword("admin")
+				$this->getAdminUsername(),
+				$this->getAdminPassword()
 			);
 			
 			if ($user['shouldHaveBeenCreated'] && ($result->getStatusCode() !== 200)) {
@@ -409,8 +417,8 @@ trait WebUIBasicStructure {
 			$result = UserHelper::deleteGroup(
 				$baseUrl,
 				$group,
-				"admin",
-				$this->getUserPassword("admin")
+				$this->getAdminUsername(),
+				$this->getAdminPassword()
 			);
 			
 			if ($result->getStatusCode() !== 200) {
@@ -523,6 +531,20 @@ trait WebUIBasicStructure {
 	}
 
 	/**
+	 * @return string
+	 */
+	public function getAdminUsername() {
+		return (string) $this->adminUsername;
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getAdminPassword() {
+		return (string) $this->adminPassword;
+	}
+
+	/**
 	 *
 	 * @param string $username
 	 *
@@ -530,8 +552,8 @@ trait WebUIBasicStructure {
 	 * @throws Exception
 	 */
 	public function getUserPassword($username) {
-		if ($username === 'admin') {
-			$password = $this->adminPassword;
+		if ($username === $this->getAdminUsername()) {
+			$password = $this->getAdminPassword();
 		} else {
 			if (!array_key_exists($username, $this->createdUsers)) {
 				throw new Exception(
