@@ -63,18 +63,6 @@ class WebUIUsersContext extends RawMinkContext implements Context {
 	}
 
 	/**
-	 * substitute codes like "%regularuser%" with the actual name of the user
-	 *
-	 * @param string $username
-	 * 
-	 * @return string
-	 * @Transform :username
-	 */
-	public function checkUsername($username) {
-		return $this->webUIGeneralContext->substituteInLineCodes($username);
-	}
-
-	/**
 	 * @When the administrator sets/changes the quota of user :username to :quota using the webUI
 	 * @Given the administrator has set/changed the quota of user :username to :quota using the webUI
 	 *

@@ -5,8 +5,11 @@ I want to delete files and folders
 So that I can keep my filing system clean and tidy
 
 	Background:
-		Given a regular user has been created
-		And the regular user has logged in using the webUI
+		Given these users have been created:
+			|username|password|displayname|email       |
+			|user1   |1234    |User One   |u1@oc.com.np|
+		And the user has browsed to the login page
+		And the user has logged in with username "user1" and password "1234" using the webUI
 		And the user has browsed to the files page
 
 	Scenario: Delete files & folders one by one and check its existence after page reload

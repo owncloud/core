@@ -6,15 +6,17 @@ So that I can efficiently share my files with other users or groups
 
 	Background:
 		Given these users have been created but not initialized:
-			|username|password|displayname|email       |
-			|user1   |1234    |User One   |u1@oc.com.np|
-			|user2   |1234    |User Two   |u2@oc.com.np|
-			|user3   |1234    |User Three |u2@oc.com.np|
-			|usergrp |1234    |User Grp   |u@oc.com.np |
-		And a regular user has been created
+			| username    | password | displayname  | email                 |
+			| user1       | 1234     | User One     | u1@oc.com.np          |
+			| user2       | 1234     | User Two     | u2@oc.com.np          |
+			| user3       | 1234     | User Three   | u2@oc.com.np          |
+			| usergrp     | 1234     | User Grp     | u@oc.com.np           |
+			| regularuser | 1234     | User Regular | regularuser@oc.com.np |
 		And regular groups have been created
-		And the regular user has logged in using the webUI
+		And the user has browsed to the login page
+		And the user has logged in with username "regularuser" and password "1234" using the webUI
 		And the user has browsed to the files page
+
 	@skipOnLDAP @user_ldap#175
 	Scenario: autocompletion of regular existing users
 		Given the user has opened the share dialog for the folder "simple-folder"

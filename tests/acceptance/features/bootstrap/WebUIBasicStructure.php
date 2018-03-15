@@ -34,9 +34,7 @@ require_once 'bootstrap.php';
 trait WebUIBasicStructure {
 
 	private $regularUserPassword;
-	private $regularUserName;
-	private $regularUserNames = array();
-	
+
 	/**
 	 * list of users that were created during test runs
 	 * key is the username value is an array of user attributes
@@ -57,27 +55,6 @@ trait WebUIBasicStructure {
 	public function adminLogsInUsingTheWebUI() {
 		$this->loginPage->open();
 		$this->loginAs("admin", $this->getUserPassword("admin"));
-	}
-
-	/**
-	 * @When the regular user logs in using the webUI
-	 * @Given the regular user has logged in using the webUI
-	 *
-	 * @return void
-	 */
-	public function theRegularUserLogsInUsingTheWebUI() {
-		$this->loginPage->open();
-		$this->loginAsARegularUser();
-	}
-
-	/**
-	 * @return Page\OwncloudPage
-	 */
-	public function loginAsARegularUser() {
-		return $this->loginAs(
-			$this->getRegularUserName(),
-			$this->getRegularUserPassword()
-		);
 	}
 
 	/**
@@ -113,42 +90,6 @@ trait WebUIBasicStructure {
 		$this->loginPage->waitTillPageIsLoaded($this->getSession());
 		if ($this->webUIFilesContext !== null) {
 			$this->webUIFilesContext->resetFilesContext();
-		}
-	}
-
-	/**
-	 * @Given /^a regular user has been created\s?(but not initialized|)$/
-	 *
-	 * @param string $doNotInitialize just create the user, do not trigger creating skeleton files etc
-	 *
-	 * @return void
-	 */
-	public function aRegularUserHasBeenCreated($doNotInitialize = "") {
-		$this->createUser(
-			$this->getRegularUserName(),
-			$this->getRegularUserPassword(),
-			null,
-			null,
-			($doNotInitialize === "")
-		);
-	}
-
-	/**
-	 * @Given /^regular users have been created\s?(but not initialized|)$/
-	 *
-	 * @param string $doNotInitialize just create the user, do not trigger creating skeleton files etc
-	 *
-	 * @return void
-	 */
-	public function regularUsersHaveBeenCreated($doNotInitialize) {
-		foreach ($this->getRegularUserNames() as $user) {
-			$this->createUser(
-				$user,
-				$this->getRegularUserPassword(),
-				null,
-				null,
-				($doNotInitialize === "")
-			);
 		}
 	}
 
@@ -373,19 +314,6 @@ trait WebUIBasicStructure {
 		}
 		$this->addGroupToCreatedGroupsList($group);
 	}
-	/**
-	 * @Given the regular user has been added to the regular group
-	 *
-	 * @return void
-	 */
-	public function theRegularUserHasBeenAddedToTheRegularGroup() {
-		$group = $this->getRegularGroupName();
-		$user = $this->getRegularUserName();
-		if (!in_array($user, $this->getCreatedUserNames())) {
-			$this->aRegularUserHasBeenCreated();
-		}
-		$this->userHasBeenAddedToGroup($user, $group);
-	}
 
 	/**
 	 * @Given user :user has been added to group :group ready for use by the webUI
@@ -472,11 +400,6 @@ trait WebUIBasicStructure {
 		BeforeScenarioScope $scope
 	) {
 		$suiteParameters = SetupHelper::getSuiteParameters($scope);
-		$this->regularUserNames = explode(
-			",",
-			$suiteParameters['regularUserNames']
-		);
-		$this->regularUserName = (string)$suiteParameters['regularUserName'];
 		$this->regularUserPassword = (string)$suiteParameters['regularUserPassword'];
 		$this->regularGroupNames = explode(
 			",",
@@ -531,20 +454,6 @@ trait WebUIBasicStructure {
 	 */
 	public function getRegularUserPassword() {
 		return $this->regularUserPassword;
-	}
-
-	/**
-	 * @return string
-	 */
-	public function getRegularUserName() {
-		return $this->regularUserName;
-	}
-
-	/**
-	 * @return array
-	 */
-	public function getRegularUserNames() {
-		return $this->regularUserNames;
 	}
 
 	/**
@@ -720,14 +629,6 @@ trait WebUIBasicStructure {
 				"function" => [
 					$this,
 					"getBaseUrlWithoutScheme"
-				],
-				"parameter" => [ ]
-			],
-			[
-				"code" => "%regularuser%",
-				"function" => [
-					$this,
-					"getRegularUserName"
 				],
 				"parameter" => [ ]
 			]
