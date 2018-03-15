@@ -370,7 +370,7 @@ Feature: sharing
 		And group "group1" has been created
 		And user "user1" has been added to group "group1"
 		And user "user0" has shared file "textfile0.txt" with group "group1"
-		And user "user1" has moved file "/textfile0.txt" to "/FOLDER/textfile0.txt"
+		And user "user1" has moved file "/textfile0 (2).txt" to "/FOLDER/textfile0.txt"
 		And as user "user0"
 		When the user updates the last share using the API with
 			| permissions | 1 |
@@ -485,14 +485,16 @@ Feature: sharing
 		When user "user0" shares file "/PARENT" with user "user1" using the API
 		And user "user0" shares file "/PARENT/CHILD" with group "group0" using the API
 		Then user "user1" should see the following elements
-			| /FOLDER/           |
-			| /PARENT/           |
-			| /CHILD/            |
-			| /PARENT/parent.txt |
-			| /CHILD/child.txt   |
+			| /FOLDER/                 |
+			| /PARENT/                 |
+			| /PARENT/parent.txt       |
+			| /PARENT%20(2)/           |
+			| /PARENT%20(2)/parent.txt |
+			| /CHILD/                  |
+			| /CHILD/child.txt         |
 		And the HTTP status code should be "200"
 
-	Scenario: Share a file by multiple channels and download from sub-folder
+	Scenario: Share a file by multiple channels and download from sub-folder and direct file share
 		Given user "user0" has been created
 		And user "user1" has been created
 		And user "user2" has been created
@@ -505,29 +507,13 @@ Feature: sharing
 		And user "user1" has shared file "textfile0.txt" with user "user2"
 		And user "user1" has moved file "/textfile0.txt" to "/common/textfile0.txt"
 		And user "user1" has moved file "/common/textfile0.txt" to "/common/sub/textfile0.txt"
-		When user "user2" downloads file "/common/sub/textfile0.txt" with range "bytes=9-17" using the API
-		Then the downloaded content should be "test text"
-		And the downloaded content when downloading file "/textfile0.txt" for user "user2" with range "bytes=9-17" should be "test text"
+		And user "user2" uploads file "data/file_to_overwrite.txt" to "/textfile0 (2).txt" using the API
+		When user "user2" downloads file "/common/sub/textfile0.txt" with range "bytes=0-8" using the API
+		Then the downloaded content should be "BLABLABLA"
+		And the downloaded content when downloading file "/textfile0 (2).txt" for user "user2" with range "bytes=0-8" should be "BLABLABLA"
 		And user "user2" should see the following elements
 			| /common/sub/textfile0.txt |
-
-	Scenario: Share a file by multiple channels and download from direct file share
-		Given user "user0" has been created
-		And user "user1" has been created
-		And user "user2" has been created
-		And group "group0" has been created
-		And user "user1" has been added to group "group0"
-		And user "user2" has been added to group "group0"
-		And user "user0" has created a folder "/common"
-		And user "user0" has created a folder "/common/sub"
-		And user "user0" has shared folder "common" with group "group0"
-		And user "user1" has shared file "textfile0.txt" with user "user2"
-		And user "user1" has moved file "/textfile0.txt" to "/common/textfile0.txt"
-		And user "user1" has moved file "/common/textfile0.txt" to "/common/sub/textfile0.txt"
-		When user "user2" downloads file "/textfile0.txt" with range "bytes=9-17" using the API
-		Then the downloaded content should be "test text"
-		And user "user2" should see the following elements
-			| /common/sub/textfile0.txt |
+			| /textfile0%20(2).txt      |
 
 	Scenario: Delete all group shares
 		Given user "user0" has been created
@@ -535,7 +521,7 @@ Feature: sharing
 		And group "group1" has been created
 		And user "user1" has been added to group "group1"
 		And user "user0" has shared file "textfile0.txt" with group "group1"
-		And user "user1" has moved file "/textfile0.txt" to "/FOLDER/textfile0.txt"
+		And user "user1" has moved file "/textfile0 (2).txt" to "/FOLDER/textfile0.txt"
 		When user "user0" deletes the last share using the API
 		And user "user1" sends HTTP method "GET" to API endpoint "/apps/files_sharing/api/v1/shares?shared_with_me=true"
 		Then the OCS status code should be "100"
