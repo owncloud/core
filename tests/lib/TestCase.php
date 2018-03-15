@@ -522,6 +522,17 @@ abstract class TestCase extends BaseTestCase {
 		return $processUser['name'];
 	}
 
+	/**
+	 * @param string $string
+	 * @return bool|resource
+	 */
+	protected function createStreamFor($string) {
+		$stream = fopen('php://memory', 'r+');
+		fwrite($stream, $string);
+		rewind($stream);
+		return $stream;
+	}
+
 	public function runsWithPrimaryObjectstorage() {
 		$objectstoreConfiguration = \OC::$server->getConfig()->getSystemValue('objectstore', null);
 		if ($objectstoreConfiguration !== null) {

@@ -636,6 +636,9 @@ class Encryption extends Wrapper {
 			return false;
 		}
 
+		if (!$this->encryptionManager->isEnabled()) {
+			return $this->storage->moveFromStorage($sourceStorage, $sourceInternalPath, $targetInternalPath, $preserveMtime);
+		}
 		$result = $this->copyBetweenStorage($sourceStorage, $sourceInternalPath, $targetInternalPath, $preserveMtime, true);
 		if ($result) {
 			if ($sourceStorage->is_dir($sourceInternalPath)) {
