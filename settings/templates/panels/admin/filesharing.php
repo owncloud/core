@@ -25,15 +25,15 @@
 
 		<input type="checkbox" name="shareapi_enforce_links_password_read_only" id="enforceLinkPasswordReadOnly" class="checkbox"
 			value="1" <?php if ($_['enforceLinkPasswordReadOnly']) print_unescaped('checked="checked"'); ?> />
-		<label for="enforceLinkPasswordReadOnly"><?php p($l->t('Enforce password protection for read-only shares'));?></label><br/>
+		<label for="enforceLinkPasswordReadOnly"><?php p($l->t('Enforce password protection for read-only links'));?></label><br/>
 
 		<input type="checkbox" name="shareapi_enforce_links_password_read_write" id="enforceLinkPasswordReadWrite" class="checkbox"
 			value="1" <?php if ($_['enforceLinkPasswordReadWrite'] === 'yes') print_unescaped('checked="checked"'); ?> />
-		<label for="enforceLinkPasswordReadWrite"><?php p($l->t('Enforce password protection for read & write shares'));?></label><br/>
+		<label for="enforceLinkPasswordReadWrite"><?php p($l->t('Enforce password protection for read & write links'));?></label><br/>
 
 		<input type="checkbox" name="shareapi_enforce_links_password_write_only" id="enforceLinkPasswordWriteOnly" class="checkbox"
 			value="1" <?php if ($_['enforceLinkPasswordWriteOnly'] === 'yes') print_unescaped('checked="checked"'); ?> />
-		<label for="enforceLinkPasswordWriteOnly"><?php p($l->t('Enforce password protection for write-only shares'));?></label><br/>
+		<label for="enforceLinkPasswordWriteOnly"><?php p($l->t('Enforce password protection for upload-only (File Drop) links'));?></label><br/>
 
 		<input type="checkbox" name="shareapi_default_expire_date" id="shareapiDefaultExpireDate" class="checkbox"
 			   value="1" <?php if ($_['shareDefaultExpireDateSet'] === 'yes') print_unescaped('checked="checked"'); ?> />
