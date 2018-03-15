@@ -1954,14 +1954,18 @@
 							self.remove(fileName);
 						}
 					})
-					.fail(function(status) {
+					.fail(function(status, result) {
 						if (status === 412) {
 							// TODO: some day here we should invoke the conflict dialog
 							OC.Notification.show(t('files', 'Could not move "{file}", target exists', 
 								{file: fileName}, null, {escape: false}), {type: 'error'}
 							);
+						} else if (result != null && typeof result.message !== "undefined") {
+							OC.Notification.show(t('files', 'Could not move "{file}": {message}',
+								{file: fileName, message: result.message}), {type: 'error'}
+							);
 						} else {
-							OC.Notification.show(t('files', 'Could not move "{file}"', 
+							OC.Notification.show(t('files', 'Could not move "{file}"',
 								{file: fileName}), {type: 'error'}
 							);
 						}
