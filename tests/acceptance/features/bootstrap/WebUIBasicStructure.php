@@ -42,8 +42,6 @@ trait WebUIBasicStructure {
 	 * @var array
 	 */
 	private $createdUsers = array();
-	private $regularGroupName;
-	private $regularGroupNames = array();
 	private $createdGroupNames = array();
 
 	/**
@@ -245,26 +243,6 @@ trait WebUIBasicStructure {
 	}
 
 	/**
-	 * @Given a regular group has been created
-	 *
-	 * @return void
-	 */
-	public function aRegularGroupHasBeenCreated() {
-		$this->createGroup($this->regularGroupName);
-	}
-
-	/**
-	 * @Given regular groups have been created
-	 *
-	 * @return void
-	 */
-	public function regularGroupsHaveBeenCreated() {
-		foreach ($this->regularGroupNames as $group) {
-			$this->createGroup($group);
-		}
-	}
-
-	/**
 	 * creates a single group
 	 *
 	 * @param string $group
@@ -401,11 +379,6 @@ trait WebUIBasicStructure {
 	) {
 		$suiteParameters = SetupHelper::getSuiteParameters($scope);
 		$this->regularUserPassword = (string)$suiteParameters['regularUserPassword'];
-		$this->regularGroupNames = explode(
-			",",
-			$suiteParameters['regularGroupNames']
-		);
-		$this->regularGroupName = (string)$suiteParameters['regularGroupName'];
 	}
 
 	/**
@@ -486,20 +459,6 @@ trait WebUIBasicStructure {
 			}
 		}
 		return $result;
-	}
-
-	/**
-	 * @return string
-	 */
-	public function getRegularGroupName() {
-		return $this->regularGroupName;
-	}
-
-	/**
-	 * @return array
-	 */
-	public function getRegularGroupNames() {
-		return $this->regularGroupNames;
 	}
 
 	/**

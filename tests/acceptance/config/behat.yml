@@ -64,8 +64,6 @@ default:
           ocPath: apps/testing/api/v1/occ
           adminPassword: admin
           regularUserPassword: 123456
-          regularGroupName: regulargrp
-          regularGroupNames: grp1,grp2,grp3,grpuser
       contexts:
         - WebUIGeneralContext:
         - WebUILoginContext:

@@ -12,7 +12,12 @@ So that I can efficiently share my files with other users or groups
 			| user3       | 1234     | User Three   | u2@oc.com.np          |
 			| usergrp     | 1234     | User Grp     | u@oc.com.np           |
 			| regularuser | 1234     | User Regular | regularuser@oc.com.np |
-		And regular groups have been created
+		And these groups have been created:
+			|groupname|
+			|grp1     |
+			|grp2     |
+			|grp3     |
+			|grpuser  |
 		And the user has browsed to the login page
 		And the user has logged in with username "regularuser" and password "1234" using the webUI
 		And the user has browsed to the files page

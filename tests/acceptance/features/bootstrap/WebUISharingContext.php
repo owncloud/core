@@ -39,8 +39,6 @@ class WebUISharingContext extends RawMinkContext implements Context {
 	private $filesPage;
 	private $publicLinkFilesPage;
 	private $sharingDialog;
-	private $regularGroupName;
-	private $regularGroupNames;
 	/**
 	 * 
 	 * @var WebUIGeneralContext
@@ -531,8 +529,6 @@ class WebUISharingContext extends RawMinkContext implements Context {
 		// Get all the contexts you need in this context
 		$this->webUIGeneralContext = $environment->getContext('WebUIGeneralContext');
 		$this->webUIFilesContext = $environment->getContext('WebUIFilesContext');
-		$this->regularGroupNames = $this->webUIGeneralContext->getRegularGroupNames();
-		$this->regularGroupName = $this->webUIGeneralContext->getRegularGroupName();
 		$this->setupSharingConfigs();
 	}
 	
