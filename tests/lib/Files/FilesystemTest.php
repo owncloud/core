@@ -428,7 +428,7 @@ class FilesystemTest extends TestCase {
 		$homeMount = Filesystem::getStorage('/' . $userId . '/');
 
 		$this->assertTrue($homeMount->instanceOfStorage('\OCP\Files\IHomeStorage'));
-		if (getenv('RUN_OBJECTSTORE_TESTS')) {
+		if ($this->runsWithPrimaryObjectstorage()) {
 			$this->assertTrue($homeMount->instanceOfStorage('\OC\Files\ObjectStore\HomeObjectStoreStorage'));
 			$this->assertEquals('object::user:' . $userId, $homeMount->getId());
 		} else {

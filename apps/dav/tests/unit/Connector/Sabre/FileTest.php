@@ -755,7 +755,7 @@ public function testPutWithModifyRun() {
 		}
 
 		// objectstore does not use partfiles -> no move after upload -> no exception
-		if (getenv('RUN_OBJECTSTORE_TESTS')) {
+		if ($this->runsWithPrimaryObjectstorage()) {
 			$this->assertFalse($thrown);
 		} else {
 			$this->assertTrue($thrown);

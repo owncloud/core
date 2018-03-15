@@ -40,7 +40,7 @@ class SwiftTest extends \Test\Files\Storage\Storage {
 	protected function setUp() {
 		parent::setUp();
 
-		if (!getenv('RUN_OBJECTSTORE_TESTS')) {
+		if (!$this->runsWithPrimaryObjectstorage()) {
 			$this->markTestSkipped('objectstore tests are unreliable in some environments');
 		}
 

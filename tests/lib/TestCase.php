@@ -522,4 +522,12 @@ abstract class TestCase extends BaseTestCase {
 		return $processUser['name'];
 	}
 
+	public function runsWithPrimaryObjectstorage() {
+		$objectstoreConfiguration = \OC::$server->getConfig()->getSystemValue('objectstore', null);
+		if ($objectstoreConfiguration !== null) {
+			return true;
+		}
+		return false;
+	}
+
 }
