@@ -34,6 +34,7 @@
  */
 
 namespace OC;
+use OCP\Events\EventEmitterTrait;
 
 /**
  * This class is responsible for reading and writing config.php, the very basic
@@ -41,6 +42,7 @@ namespace OC;
  */
 class Config {
 
+	use EventEmitterTrait;
 	const ENV_PREFIX = 'OC_';
 
 	/** @var array Associative array ($key => $value) */
@@ -133,10 +135,16 @@ class Config {
 		if ($this->isReadOnly()) {
 			throw new \Exception('Config file is read only.');
 		}
-		if ($this->set($key, $value)) {
-			// Write changes
-			$this->writeData();
-		}
+		$this->emittingCall(function () use (&$key, &$value) {
+			if ($this->set($key, $value)) {
+				// Write changes
+				$this->writeData();
+			}
+			return true;
+		}, [
+			'before' => ['key' => $key, 'value' => $value, 'cache' => $this->cache],
+			'after' => ['key' => $key, 'value' => $value, 'cache' => $this->cache]
+		], 'config', 'setvalue');
 	}
 
 	/**
@@ -164,10 +172,16 @@ class Config {
 		if ($this->isReadOnly()) {
 			throw new \Exception('Config file is read only.');
 		}
-		if ($this->delete($key)) {
-			// Write changes
-			$this->writeData();
-		}
+		$this->emittingCall(function () use (&$key) {
+			if ($this->delete($key)) {
+				// Write changes
+				$this->writeData();
+			}
+			return true;
+		}, [
+			'before' => ['key' => $key, 'cache' => $this->cache],
+			'after' => ['key' => $key, 'cache' => $this->cache]
+		], 'config', 'deletevalue');
 	}
 
 	/**
