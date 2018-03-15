@@ -25,6 +25,7 @@ namespace OCA\Files_Trashbin\AppInfo;
 use OCA\Files_Trashbin\Expiration;
 use OCA\Files_Trashbin\Quota;
 use OCP\AppFramework\App;
+use OCA\Files_Trashbin\Trashbin;
 
 class Application extends App {
 	public function __construct (array $urlParams = []) {
@@ -55,5 +56,20 @@ class Application extends App {
 				$c->query('ServerContainer')->getConfig()
 			);
 		});
+
+		/*
+		 * Register trashbin service
+		 */
+		$container->registerService('Trashbin', function($c) {
+			return new Trashbin(
+				$c->getServer()->getLazyRootFolder(),
+				$c->getServer()->getUrlGenerator(),
+				$c->getServer()->getEventDispatcher()
+			);
+		});
+	}
+
+	public function registerListeners() {
+		$this->getContainer()->query('Trashbin')->registerListeners();
 	}
 }

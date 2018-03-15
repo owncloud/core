@@ -40,6 +40,9 @@ use OCP\Constants;
 use OCP\Files\File;
 use OCP\Files\FileInfo;
 use Test\TestCase;
+use OCP\IURLGenerator;
+use OCP\Files\IRootFolder;
+use Symfony\Component\EventDispatcher\GenericEvent;
 
 /**
  * Class Test_Encryption
@@ -242,7 +245,6 @@ class TrashbinTest extends TestCase {
 	public function testExpireOldFiles() {
 
 		$currentTime = time();
-		$expireAt = $currentTime - 2 * 24 * 60 * 60;
 		$expiredDate = $currentTime - 3 * 24 * 60 * 60;
 
 		// create some files
@@ -262,8 +264,7 @@ class TrashbinTest extends TestCase {
 		// every second file will get a date in the past so that it will get expired
 		$manipulatedList = $this->manipulateDeleteTime($filesInTrash, $this->trashRoot1, $expiredDate);
 
-		$testClass = new TrashbinForTesting();
-		list($sizeOfDeletedFiles, $count) = $testClass->dummyDeleteExpiredFiles($manipulatedList, $expireAt);
+		list($sizeOfDeletedFiles, $count) = Trashbin::deleteExpiredFiles($manipulatedList, self::TEST_TRASHBIN_USER1);
 
 		$this->assertSame(10, $sizeOfDeletedFiles);
 		$this->assertSame(2, $count);
@@ -349,8 +350,7 @@ class TrashbinTest extends TestCase {
 		$filesInTrash = Helper::getTrashFiles('/', self::TEST_TRASHBIN_USER1, 'mtime');
 		$this->assertCount(3, $filesInTrash);
 
-		$testClass = new TrashbinForTesting();
-		$sizeOfDeletedFiles = $testClass->dummyDeleteFiles($filesInTrash, -8);
+		$sizeOfDeletedFiles = $this->invokePrivate(Trashbin::class, 'deleteFiles', [$filesInTrash, self::TEST_TRASHBIN_USER1, -8]);
 
 		// the two oldest files (file3.txt and file2.txt) should be deleted
 		$this->assertSame(10, $sizeOfDeletedFiles);
@@ -677,6 +677,68 @@ class TrashbinTest extends TestCase {
 		}
 	}
 
+	public function testPrivateLink() {
+		$urlGenerator = $this->createMock(IURLGenerator::class);
+		$rootFolder = $this->createMock(IRootFolder::class);
+
+		$trashbin = new Trashbin(
+			$rootFolder,
+			$urlGenerator,
+			\OC::$server->getEventDispatcher()
+		);
+		$trashbin->registerListeners();
+
+		$rootFolder->expects($this->once())
+			->method('nodeExists')
+			->will($this->returnValue(true));
+
+		$parentNode = $this->createMock('\OCP\Files\Folder');
+		$parentNode->expects($this->once())
+			->method('getPath')
+			->will($this->returnValue('test@#?%test/files_trashbin/files/test.d1462861890/sub'));
+
+		$baseFolderTrash = $this->createMock('\OCP\Files\Folder');
+
+		$rootFolder->expects($this->once())
+			->method('get')
+			->with('test@#?%test/files_trashbin/files/')
+			->will($this->returnValue($baseFolderTrash));
+
+		$node = $this->createMock('\OCP\Files\File');
+		$node->expects($this->once())
+			->method('getParent')
+			->will($this->returnValue($parentNode));
+		$node->expects($this->once())
+			->method('getName')
+			->will($this->returnValue('somefile.txt'));
+
+		$baseFolderTrash->expects($this->at(0))
+			->method('getById')
+			->with(123)
+			->will($this->returnValue([$node]));
+		$baseFolderTrash->expects($this->at(1))
+			->method('getRelativePath')
+			->with('test@#?%test/files_trashbin/files/test.d1462861890/sub')
+			->will($this->returnValue('/test.d1462861890/sub'));
+
+		$urlGenerator
+			->expects($this->once())
+			->method('linkToRoute')
+			->with('files.view.index', ['view' => 'trashbin', 'dir' => '/test.d1462861890/sub', 'scrollto' => 'somefile.txt'])
+			->will($this->returnValue('/owncloud/index.php/apps/files/?view=trashbin&dir=/test.d1462861890/sub&scrollto=somefile.txt'));
+
+		$event = new GenericEvent(null, [
+			'fileid' => 123,
+			'uid' => 'test@#?%test',
+			'resolvedWebLink' => null,
+			'resolvedDavLink' => null,
+		]);
+		\OC::$server->getEventDispatcher()->dispatch('files.resolvePrivateLink', $event);
+
+		$this->assertEquals('/owncloud/index.php/apps/files/?view=trashbin&dir=/test.d1462861890/sub&scrollto=somefile.txt', $event->getArgument('resolvedWebLink'));
+		$this->assertNull($event->getArgument('resolvedDavLink'));
+	}
+
 	/**
 	 * @param string $user
 	 * @param bool $create
@@ -699,25 +761,3 @@ class TrashbinTest extends TestCase {
 	}
 }
 
-
-// just a dummy class to make protected methods available for testing
-class TrashbinForTesting extends Trashbin {
-
-	/**
-	 * @param FileInfo[] $files
-	 * @return \integer[]
-	 */
-	public function dummyDeleteExpiredFiles($files) {
-		// dummy value for $retention_obligation because it is not needed here
-		return parent::deleteExpiredFiles($files, TrashbinTest::TEST_TRASHBIN_USER1);
-	}
-
-	/**
-	 * @param FileInfo[] $files
-	 * @param integer $availableSpace
-	 * @return int
-	 */
-	public function dummyDeleteFiles($files, $availableSpace) {
-		return parent::deleteFiles($files, TrashbinTest::TEST_TRASHBIN_USER1, $availableSpace);
-	}
-}

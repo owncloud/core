@@ -43,8 +43,38 @@ use OCA\Files_Trashbin\AppInfo\Application;
 use OCA\Files_Trashbin\Command\Expire;
 use OCP\Files\NotFoundException;
 use OCP\User;
+use Symfony\Component\EventDispatcher\GenericEvent;
+use OCP\Files\Folder;
+use OCP\Files\IRootFolder;
+use OCP\IURLGenerator;
+use Symfony\Component\EventDispatcher\EventDispatcher;
 
 class Trashbin {
+
+	/**
+	 * @var IURLGenerator
+	 */
+	private $urlGenerator;
+
+	/**
+	 * @var IRootFolder
+	 */
+	private $rootFolder;
+
+	/**
+	 * @var EventDispatcher
+	 */
+	private $eventDispatcher;
+
+	public function __construct(
+		IRootFolder $rootFolder,
+		IUrlGenerator $urlGenerator,
+		EventDispatcher $eventDispatcher
+	) {
+		$this->rootFolder = $rootFolder;
+		$this->urlGenerator = $urlGenerator;
+		$this->eventDispatcher = $eventDispatcher;
+	}
 
 	/**
 	 * Whether versions have already be rescanned during this PHP request
@@ -975,6 +1005,25 @@ class Trashbin {
 	}
 
 	/**
+	 * Register listeners
+	 */
+	public function registerListeners() {
+		$this->eventDispatcher->addListener(
+			'files.resolvePrivateLink',
+			function(GenericEvent $event) {
+				$uid = $event->getArgument('uid');
+				$fileId = $event->getArgument('fileid');
+
+				$link = $this->resolvePrivateLink($uid, $fileId);
+
+				if ($link !== null) {
+					$event->setArgument('resolvedWebLink', $link);
+				}
+			}
+		);
+	}
+
+	/**
 	 * register hooks
 	 */
 	public static function registerHooks() {
@@ -988,6 +1037,36 @@ class Trashbin {
 		\OCP\Util::connectHook('OC_Filesystem', 'delete', 'OCA\Files_Trashbin\Trashbin', 'ensureFileScannedHook');
 		\OCP\Util::connectHook('OC_Filesystem', 'rename', 'OCA\Files_Trashbin\Storage', 'preRenameHook');
 		\OCP\Util::connectHook('OC_Filesystem', 'post_rename', 'OCA\Files_Trashbin\Storage', 'postRenameHook');
+	}
+
+	/**
+	 * Resolves web URL that points to the trashbin view of the given file
+	 *
+	 * @param string $uid user id
+	 * @param string $fileId file id
+	 * @return string|null view URL or null if the file is not found or not accessible
+	 */
+	public function resolvePrivateLink($uid, $fileId) {
+		if ($this->rootFolder->nodeExists($uid . '/files_trashbin/files/')) {
+			$baseFolder = $this->rootFolder->get($uid . '/files_trashbin/files/');
+			$files = $baseFolder->getById($fileId);
+			if (!empty($files)) {
+				$params['view'] = 'trashbin';
+				$file = current($files);
+				if ($file instanceof Folder) {
+					// set the full path to enter the folder
+					$params['dir'] = $baseFolder->getRelativePath($file->getPath());
+				} else {
+					// set parent path as dir
+					$params['dir'] = $baseFolder->getRelativePath($file->getParent()->getPath());
+					// and scroll to the entry
+					$params['scrollto'] = $file->getName();
+				}
+				return $this->urlGenerator->linkToRoute('files.view.index', $params);
+			}
+		}
+
+		return null;
 	}
 
 	/**

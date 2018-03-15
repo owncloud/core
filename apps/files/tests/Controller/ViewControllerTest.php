@@ -40,6 +40,7 @@ use OCP\IUserSession;
 use OCP\Template;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Test\TestCase;
+use Symfony\Component\EventDispatcher\GenericEvent;
 
 /**
  * Class ViewControllerTest
@@ -468,63 +469,28 @@ class ViewControllerTest extends TestCase {
 	/**
 	 * @dataProvider showFileMethodProvider
 	 */
-	public function testShowFileRouteWithTrashedFile($useShowFile) {
-		$this->appManager->expects($this->once())
-			->method('isEnabledForUser')
-			->with('files_trashbin')
-			->will($this->returnValue(true));
-
+	public function testShowFileRouteWithDispatcher($useShowFile) {
+		$baseFolder = $this->createMock('\OCP\Files\Folder');
 		$this->rootFolder->expects($this->once())
-			->method('nodeExists')
-			->will($this->returnValue(true));
-
-		$parentNode = $this->createMock('\OCP\Files\Folder');
-		$parentNode->expects($this->once())
-			->method('getPath')
-			->will($this->returnValue('test@#?%test/files_trashbin/files/test.d1462861890/sub'));
-
-		$baseFolderFiles = $this->createMock('\OCP\Files\Folder');
-		$baseFolderTrash = $this->createMock('\OCP\Files\Folder');
-
-		$this->rootFolder->expects($this->at(0))
 			->method('get')
 			->with('test@#?%test/files/')
-			->will($this->returnValue($baseFolderFiles));
-		//The index is pointing to 2, because nodeExists internally calls get method.
-		$this->rootFolder->expects($this->at(2))
-			->method('get')
-			->with('test@#?%test/files_trashbin/files/')
-			->will($this->returnValue($baseFolderTrash));
+			->will($this->returnValue($baseFolder));
 
-		$baseFolderFiles->expects($this->once())
+		$baseFolder->expects($this->at(0))
 			->method('getById')
 			->with(123)
 			->will($this->returnValue([]));
 
-		$node = $this->createMock('\OCP\Files\File');
-		$node->expects($this->once())
-			->method('getParent')
-			->will($this->returnValue($parentNode));
-		$node->expects($this->once())
-			->method('getName')
-			->will($this->returnValue('somefile.txt'));
+		$this->eventDispatcher->expects($this->once())
+			->method('dispatch')
+			->with('files.resolvePrivateLink')
+			->will($this->returnCallback(function ($eventName, $event) {
+				$event->setArgument('resolvedWebLink', '/owncloud/weblink/' . $event->getArgument('uid') . '/' . $event->getArgument('fileid'));
+				$event->setArgument('resolvedDavLink', '/owncloud/davlink/' . $event->getArgument('uid') . '/' . $event->getArgument('fileid'));
+			}));
 
-		$baseFolderTrash->expects($this->at(0))
-			->method('getById')
-			->with(123)
-			->will($this->returnValue([$node]));
-		$baseFolderTrash->expects($this->at(1))
-			->method('getRelativePath')
-			->with('test@#?%test/files_trashbin/files/test.d1462861890/sub')
-			->will($this->returnValue('/test.d1462861890/sub'));
-
-		$this->urlGenerator
-			->expects($this->once())
-			->method('linkToRoute')
-			->with('files.view.index', ['view' => 'trashbin', 'dir' => '/test.d1462861890/sub', 'scrollto' => 'somefile.txt'])
-			->will($this->returnValue('/owncloud/index.php/apps/files/?view=trashbin&dir=/test.d1462861890/sub&scrollto=somefile.txt'));
-
-		$expected = new Http\RedirectResponse('/owncloud/index.php/apps/files/?view=trashbin&dir=/test.d1462861890/sub&scrollto=somefile.txt');
+		$expected = new Http\RedirectResponse('/owncloud/weblink/test@#?%test/123');
+		$expected->addHeader('Webdav-Location', '/owncloud/davlink/test@#?%test/123');
 		if ($useShowFile) {
 			$this->assertEquals($expected, $this->viewController->showFile(123));
 		} else {
