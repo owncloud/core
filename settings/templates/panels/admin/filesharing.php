@@ -24,7 +24,7 @@
 		<label for="allowPublicUpload"><?php p($l->t('Allow public uploads'));?></label><br/>
 
 		<input type="checkbox" name="shareapi_enforce_links_password_read_only" id="enforceLinkPasswordReadOnly" class="checkbox"
-			value="1" <?php if ($_['enforceLinkPasswordReadOnly']) print_unescaped('checked="checked"'); ?> />
+			value="1" <?php if ($_['enforceLinkPasswordReadOnly'] === 'yes') print_unescaped('checked="checked"'); ?> />
 		<label for="enforceLinkPasswordReadOnly"><?php p($l->t('Enforce password protection for read-only links'));?></label><br/>
 
 		<input type="checkbox" name="shareapi_enforce_links_password_read_write" id="enforceLinkPasswordReadWrite" class="checkbox"
