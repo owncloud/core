@@ -131,6 +131,55 @@ class MailNotificationsTest extends TestCase {
 		$this->assertSame([], $mailNotifications->sendLinkShareMail('lukas@owncloud.com', 'MyFile', 'https://owncloud.com/file/?foo=bar', 3600));
 	}
 
+	public function testSendLinkShareMailPersonalNote() {
+		$message = $this->getMockBuilder('\OC\Mail\Message')
+			->disableOriginalConstructor()->getMock();
+
+		$message
+			->expects($this->once())
+			->method('setSubject')
+			->with('TestUser shared »MyFile« with you');
+		$message
+			->expects($this->once())
+			->method('setTo')
+			->with(['lukas@owncloud.com']);
+		$message
+			->expects($this->once())
+			->method('setHtmlBody')
+			->with($this->stringContains('personal note'));
+		$message
+			->expects($this->once())
+			->method('setPlainBody')
+			->with($this->stringContains('personal note'));
+
+		$message
+			->expects($this->once())
+			->method('setFrom')
+			->with([Util::getDefaultEmailAddress('sharing-noreply') => 'TestUser via UnitTestCloud']);
+
+		$this->mailer
+			->expects($this->once())
+			->method('createMessage')
+			->will($this->returnValue($message));
+
+		$this->mailer
+			->expects($this->once())
+			->method('send')
+			->with($message)
+			->will($this->returnValue([]));
+
+		$mailNotifications = new MailNotifications(
+			$this->user,
+			$this->l10n,
+			$this->mailer,
+			$this->logger,
+			$this->defaults,
+			$this->urlGenerator
+		);
+
+		$this->assertSame([], $mailNotifications->sendLinkShareMail('lukas@owncloud.com', 'MyFile', 'https://owncloud.com/file/?foo=bar', 3600, 'personal note'));
+	}
+
 	public function dataSendLinkShareMailWithReplyTo() {
 		return [
 			['lukas@owncloud.com', ['lukas@owncloud.com']],

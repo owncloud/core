@@ -161,13 +161,19 @@ if (isset($_POST['action']) && isset($_POST['itemType']) && isset($_POST['itemSo
 			break;
 
 		case 'email':
+			$emailBody = null;
+
+			if (isset($_POST['emailBody'])) {
+				$emailBody = trim((string)$_POST['emailBody']);
+			}
 
 			// read and filter post variables
 			$filter = new MailNotificationFilter([
 				'link' => $_POST['link'],
 				'file' => $_POST['file'],
-				'toAddress' => $_POST['toaddress'],
-				'expiration' => $_POST['expiration']
+				'toAddress' => $_POST['toAddress'],
+				'expiration' => $_POST['expiration'],
+				'personalNote' => $emailBody
 			]);
 
 			// read post variables
@@ -175,11 +181,6 @@ if (isset($_POST['action']) && isset($_POST['itemType']) && isset($_POST['itemSo
 			$file = (string)$_POST['file'];
 			$toAddress = (string)$_POST['toAddress'];
 			$options = array();
-			$emailBody = null;
-
-			if (isset($_POST['emailBody'])) {
-				$emailBody = trim((string)$_POST['emailBody']);
-			}
 
 			if (isset($_POST['bccSelf']) && $_POST['bccSelf'] === 'true') {
 				$options['bcc'] = \OC::$server->getUserSession()->getUser()->getEMailAddress();
@@ -207,16 +208,16 @@ if (isset($_POST['action']) && isset($_POST['itemType']) && isset($_POST['itemSo
 				}
 			}
 
-			$subject = (string)$l10n->t('%s shared »%s« with you', [$sendingUser->getDisplayName(), $filter->getFile()]);
-			if ($emailBody === null || $emailBody === '') {
-				list($htmlBody, $textBody) = $mailNotification->createMailBody($file, $link, $expiration);
-			} else {
-				$htmlBody = null;
-				$textBody = strip_tags($emailBody);
+			if ($emailBody !== null || $emailBody !== '') {
+				$emailBody = strip_tags($emailBody);
 			}
-
-			$result = $mailNotification->sendLinkShareMailFromBody($toAddress, $subject, $htmlBody, $textBody, $options);
-
+			$result = $mailNotification->sendLinkShareMail(
+				$filter->getToAddress(),
+				$filter->getFile(),
+				$filter->getLink(),
+				$filter->getExpirationDate(),
+				$filter->getPersonalNote()
+			);
 			if(empty($result)) {
 				// Get the token from the link
 				$linkParts = explode('/', $link);
