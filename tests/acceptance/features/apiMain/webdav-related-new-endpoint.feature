@@ -325,6 +325,10 @@ Feature: webdav-related-new-endpoint
 			| /textfile2.txt     |
 			| /textfile3.txt     |
 			| /textfile4.txt     |
+		And user "user0" should not see the following elements
+			| /FOLDER/SUBFOLDER/              |
+			| /FOLDER/welcome.txt             |
+			| /FOLDER/SUBFOLDER/testfile0.txt |
 
 	Scenario: Checking file id after a move
 		Given using new DAV path
@@ -332,6 +336,8 @@ Feature: webdav-related-new-endpoint
 		And user "user0" has stored id of file "/textfile0.txt"
 		When user "user0" moves file "/textfile0.txt" to "/FOLDER/textfile0.txt" using the API
 		Then user "user0" file "/FOLDER/textfile0.txt" should have the previously stored id
+		And user "user0" should not see the following elements
+			| /textfile0.txt |
 
 	Scenario: Renaming a folder to a backslash encoded should return an error using new endpoint
 		Given using new DAV path
@@ -339,6 +345,8 @@ Feature: webdav-related-new-endpoint
 		And user "user0" has created a folder "/testshare"
 		When user "user0" moves folder "/testshare" to "/%5C" using the API
 		Then the HTTP status code should be "400"
+		And user "user0" should see the following elements
+			| /testshare/ |
 
 	Scenario: Renaming a folder beginning with a backslash encoded should return an error using new endpoint
 		Given using new DAV path
@@ -346,6 +354,8 @@ Feature: webdav-related-new-endpoint
 		And user "user0" has created a folder "/testshare"
 		When user "user0" moves folder "/testshare" to "/%5Ctestshare" using the API
 		Then the HTTP status code should be "400"
+		And user "user0" should see the following elements
+			| /testshare/ |
 
 	Scenario: Renaming a folder including a backslash encoded should return an error using new endpoint
 		Given using new DAV path
@@ -353,6 +363,8 @@ Feature: webdav-related-new-endpoint
 		And user "user0" has created a folder "/testshare"
 		When user "user0" moves folder "/testshare" to "/hola%5Chola" using the API
 		Then the HTTP status code should be "400"
+		And user "user0" should see the following elements
+			| /testshare/ |
 
 	Scenario: Renaming a folder into a banned name
 		Given using new DAV path
@@ -360,6 +372,8 @@ Feature: webdav-related-new-endpoint
 		And user "user0" has created a folder "/testshare"
 		When user "user0" moves folder "/testshare" to "/.htaccess" using the API
 		Then the HTTP status code should be "403"
+		And user "user0" should see the following elements
+			| /testshare/ |
 
 	Scenario: Move a folder into a not existing one
 		Given using new DAV path
@@ -367,6 +381,8 @@ Feature: webdav-related-new-endpoint
 		And user "user0" has created a folder "/testshare"
 		When user "user0" moves folder "/testshare" to "/not-existing/testshare" using the API
 		Then the HTTP status code should be "409"
+		And user "user0" should see the following elements
+			| /testshare/ |
 
 	Scenario: Downloading a file on the new endpoint should serve security headers
 		Given using new DAV path
@@ -604,21 +620,33 @@ Feature: webdav-related-new-endpoint
 		And user "user0" has been created
 		When user "user0" copies file "/welcome.txt" to "/welcome.part" using the API
 		Then the HTTP status code should be "400"
+		And user "user0" should see the following elements
+			| /welcome.txt |
+		But user "user0" should not see the following elements
+			| /welcome.part |
 
 	Scenario: Uploading file to path with extension .part should not be possible
 		Given using new DAV path
 		And user "user0" has been created
 		When user "user0" uploads file "data/textfile.txt" to "/textfile.part" using the API
 		Then the HTTP status code should be "400"
+		And user "user0" should not see the following elements
+			| /textfile.part |
 
 	Scenario: Renaming a file to a path with extension .part should not be possible
 		Given using new DAV path
 		And user "user0" has been created
 		When user "user0" moves file "/welcome.txt" to "/welcome.part" using the API
 		Then the HTTP status code should be "400"
+		And user "user0" should see the following elements
+			| /welcome.txt |
+		But user "user0" should not see the following elements
+			| /welcome.part |
 
 	Scenario: Creating a directory which contains .part should not be possible
 		Given using new DAV path
 		And user "user0" has been created
 		When user "user0" creates a folder "/folder.with.ext.part" using the API
 		Then the HTTP status code should be "400"
+		And user "user0" should not see the following elements
+			| /folder.with.ext.part |
