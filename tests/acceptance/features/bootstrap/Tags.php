@@ -242,7 +242,7 @@ trait Tags {
 	 */
 	public function theTagHasGroup($type, $tagName, $groups) {
 		$tagData = $this->requestTagByDisplayName(
-			$this->getAdminUserName(), $tagName, true
+			$this->getAdminUsername(), $tagName, true
 		);
 		PHPUnit_Framework_Assert::assertNotNull(
 			$tagData, "Tag $tagName wasn't found for admin user"
@@ -277,7 +277,7 @@ trait Tags {
 	 * @return int
 	 */
 	private function findTagIdByName($name) {
-		$tagData = $this->requestTagByDisplayName($this->getAdminUserName(), $name);
+		$tagData = $this->requestTagByDisplayName($this->getAdminUsername(), $name);
 		return (int)$tagData['{http://owncloud.org/ns}id'];
 	}
 
@@ -545,7 +545,7 @@ trait Tags {
 			try {
 				$this->response = TagsHelper::deleteTag(
 					$this->baseUrlWithoutOCSAppendix(),
-					$this->getAdminUserName(),
+					$this->getAdminUsername(),
 					$this->getAdminPassword(),
 					$tagID,
 					2

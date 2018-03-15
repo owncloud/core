@@ -61,7 +61,7 @@ trait Provisioning {
 	public function adminCreatesUserUsingTheAPI($user) {
 		if (!$this->userExists($user) ) {
 			$previous_user = $this->currentUser;
-			$this->currentUser = $this->getAdminUserName();
+			$this->currentUser = $this->getAdminUsername();
 			$this->createTheUserUsingTheAPI($user);
 			$this->currentUser = $previous_user;
 		}
@@ -125,7 +125,7 @@ trait Provisioning {
 	public function adminDeletesUserUsingTheAPI($user) {
 		if ($this->userExists($user)) {
 			$previous_user = $this->currentUser;
-			$this->currentUser = $this->getAdminUserName();
+			$this->currentUser = $this->getAdminUsername();
 			$this->deleteTheUserUsingTheAPI($user);
 			$this->currentUser = $previous_user;
 		}
@@ -154,7 +154,7 @@ trait Provisioning {
 		$fullUrl = $this->baseUrl . "v{$this->apiVersion}.php/cloud/users";
 		$client = new Client();
 		$options = [];
-		if ($this->currentUser === $this->getAdminUserName()) {
+		if ($this->currentUser === $this->getAdminUsername()) {
 			$options['auth'] = $this->getAuthOptionForAdmin();
 		}
 
@@ -184,7 +184,7 @@ trait Provisioning {
 	 */
 	public function createUser($user) {
 		$previous_user = $this->currentUser;
-		$this->currentUser = $this->getAdminUserName();
+		$this->currentUser = $this->getAdminUsername();
 		$this->createTheUserUsingTheAPI($user);
 		PHPUnit_Framework_Assert::assertTrue($this->userExists($user));
 		$this->currentUser = $previous_user;
@@ -197,7 +197,7 @@ trait Provisioning {
 	 */
 	public function deleteUser($user) {
 		$previous_user = $this->currentUser;
-		$this->currentUser = $this->getAdminUserName();
+		$this->currentUser = $this->getAdminUsername();
 		$this->deleteTheUserUsingTheAPI($user);
 		PHPUnit_Framework_Assert::assertFalse($this->userExists($user));
 		$this->currentUser = $previous_user;
@@ -210,7 +210,7 @@ trait Provisioning {
 	 */
 	public function createGroup($group) {
 		$previous_user = $this->currentUser;
-		$this->currentUser = $this->getAdminUserName();
+		$this->currentUser = $this->getAdminUsername();
 		$this->createTheGroup($group);
 		PHPUnit_Framework_Assert::assertTrue($this->groupExists($group));
 		$this->currentUser = $previous_user;
@@ -223,7 +223,7 @@ trait Provisioning {
 	 */
 	public function deleteGroup($group) {
 		$previous_user = $this->currentUser;
-		$this->currentUser = $this->getAdminUserName();
+		$this->currentUser = $this->getAdminUsername();
 		$this->deleteTheGroupUsingTheAPI($group);
 		PHPUnit_Framework_Assert::assertFalse($this->groupExists($group));
 		$this->currentUser = $previous_user;
@@ -304,7 +304,7 @@ trait Provisioning {
 		$fullUrl = $this->baseUrl . "v2.php/cloud/users/$user/groups";
 		$client = new Client();
 		$options = [];
-		if ($this->currentUser === $this->getAdminUserName()) {
+		if ($this->currentUser === $this->getAdminUsername()) {
 			$options['auth'] = $this->getAuthOptionForAdmin();
 		}
 
@@ -329,7 +329,7 @@ trait Provisioning {
 	 */
 	public function adminAddsUserToGroupUsingTheAPI($user, $group) {
 		$previous_user = $this->currentUser;
-		$this->currentUser = $this->getAdminUserName();
+		$this->currentUser = $this->getAdminUsername();
 
 		if (!$this->userBelongsToGroup($user, $group)) {
 			$this->addUserToGroupUsingTheAPI($user, $group);
@@ -363,7 +363,7 @@ trait Provisioning {
 	public function adminCreatesGroupUsingTheAPI($group) {
 		if (!$this->groupExists($group)) {
 			$previous_user = $this->currentUser;
-			$this->currentUser = $this->getAdminUserName();
+			$this->currentUser = $this->getAdminUsername();
 			$this->createTheGroup($group);
 			$this->currentUser = $previous_user;
 		}
@@ -379,7 +379,7 @@ trait Provisioning {
 		$fullUrl = $this->baseUrl . "v{$this->apiVersion}.php/cloud/groups";
 		$client = new Client();
 		$options = [];
-		if ($this->currentUser === $this->getAdminUserName()) {
+		if ($this->currentUser === $this->getAdminUsername()) {
 			$options['auth'] = $this->getAuthOptionForAdmin();
 		}
 
@@ -421,7 +421,7 @@ trait Provisioning {
 		$fullUrl = $this->baseUrl . "v{$this->apiVersion}.php/cloud/users/$user";
 		$client = new Client();
 		$options = [];
-		if ($this->currentUser === $this->getAdminUserName()) {
+		if ($this->currentUser === $this->getAdminUsername()) {
 			$options['auth'] = $this->getAuthOptionForAdmin();
 		}
 
@@ -441,7 +441,7 @@ trait Provisioning {
 	public function adminDeletesGroupUsingTheAPI($group) {
 		if ($this->groupExists($group)) {
 			$previous_user = $this->currentUser;
-			$this->currentUser = $this->getAdminUserName();
+			$this->currentUser = $this->getAdminUsername();
 			$this->deleteTheGroupUsingTheAPI($group);
 			$this->currentUser = $previous_user;
 		}
@@ -457,7 +457,7 @@ trait Provisioning {
 		$fullUrl = $this->baseUrl . "v{$this->apiVersion}.php/cloud/groups/$group";
 		$client = new Client();
 		$options = [];
-		if ($this->currentUser === $this->getAdminUserName()) {
+		if ($this->currentUser === $this->getAdminUsername()) {
 			$options['auth'] = $this->getAuthOptionForAdmin();
 		}
 
@@ -476,7 +476,7 @@ trait Provisioning {
 		$fullUrl = $this->baseUrl . "v{$this->apiVersion}.php/cloud/users/$user/groups";
 		$client = new Client();
 		$options = [];
-		if ($this->currentUser === $this->getAdminUserName()) {
+		if ($this->currentUser === $this->getAdminUsername()) {
 			$options['auth'] = $this->getAuthOptionForAdmin();
 		}
 
@@ -520,7 +520,7 @@ trait Provisioning {
 		$fullUrl = $this->baseUrl . "v2.php/cloud/groups/$group/subadmins";
 		$client = new Client();
 		$options = [];
-		if ($this->currentUser === $this->getAdminUserName()) {
+		if ($this->currentUser === $this->getAdminUsername()) {
 			$options['auth'] = $this->getAuthOptionForAdmin();
 		}
 
@@ -571,7 +571,7 @@ trait Provisioning {
 		$fullUrl = $this->baseUrl . "v2.php/cloud/groups/$group/subadmins";
 		$client = new Client();
 		$options = [];
-		if ($this->currentUser === $this->getAdminUserName()) {
+		if ($this->currentUser === $this->getAdminUsername()) {
 			$options['auth'] = $this->getAuthOptionForAdmin();
 		}
 
@@ -737,7 +737,7 @@ trait Provisioning {
 		$fullUrl = $this->baseUrl . "v2.php/cloud/apps?filter=disabled";
 		$client = new Client();
 		$options = [];
-		if ($this->currentUser === $this->getAdminUserName()) {
+		if ($this->currentUser === $this->getAdminUsername()) {
 			$options['auth'] = $this->getAuthOptionForAdmin();
 		}
 
@@ -760,7 +760,7 @@ trait Provisioning {
 		$fullUrl = $this->baseUrl . "v2.php/cloud/apps?filter=enabled";
 		$client = new Client();
 		$options = [];
-		if ($this->currentUser === $this->getAdminUserName()) {
+		if ($this->currentUser === $this->getAdminUsername()) {
 			$options['auth'] = $this->getAuthOptionForAdmin();
 		}
 
@@ -828,7 +828,7 @@ trait Provisioning {
 		);
 
 		$previous_user = $this->currentUser;
-		$this->currentUser = "admin";
+		$this->currentUser = $this->getAdminUsername();
 		// method used from BasicStructure trait
 		$this->sendingToWith("PUT", "/cloud/users/" . $user, $body);
 		$this->currentUser = $previous_user;

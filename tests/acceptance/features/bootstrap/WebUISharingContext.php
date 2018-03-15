@@ -611,8 +611,8 @@ class WebUISharingContext extends RawMinkContext implements Context {
 
 		$change = AppConfigHelper::setCapabilities(
 			$this->getMinkParameter('base_url'),
-			"admin",
-			$this->webUIGeneralContext->getUserPassword("admin"),
+			$this->webUIGeneralContext->getAdminUsername(),
+			$this->webUIGeneralContext->getAdminPassword(),
 			$settings,
 			$this->webUIGeneralContext->getSavedCapabilitiesXml()
 		);
