@@ -136,7 +136,7 @@ class DefaultToken extends Entity implements IToken {
 	 */
 	public function setName($name) {
 		if (strlen($name) < 1) {
-			throw new \InvalidArgumentException();
+			$name = '(none)';
 		}
 		parent::setName($name);
 	}
