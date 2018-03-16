@@ -823,25 +823,50 @@ trait WebDav {
 	}
 
 	/**
-	 * @Then /^user "([^"]*)" should see the following elements$/
+	 * @Then /^user "([^"]*)" should (not|)\s?see the following elements$/
 	 *
 	 * @param string $user
-	 * @param TableNode|null $expectedElements
+	 * @param string $shouldOrNot
+	 * @param TableNode $expectedElements
+	 * @throws InvalidArgumentException
 	 *
 	 * @return void
 	 */
-	public function checkElementList($user, $expectedElements) {
+	public function userShouldSeeTheElements($user, $shouldOrNot, $elements) {
+		$should = ($shouldOrNot !== "not");
+		$this->checkElementList($user, $elements, $should);
+	}
+
+	/**
+	 * asserts that a the user can or can not see a list of files/folders by propfind
+	 * 
+	 * @param string $user
+	 * @param TableNode $elements
+	 * @param boolean $expectedToBeListed
+	 * 
+	 * @throws InvalidArgumentException
+	 * 
+	 * @return void
+	 */
+	public function checkElementList($user, $elements, $expectedToBeListed = true) {
+		if (!($elements instanceof TableNode)) {
+			throw new InvalidArgumentException(
+				'$expectedElements has to be an instance of TableNode'
+			);
+		}
 		$elementList = $this->listFolder($user, '/', 3);
-		if ($expectedElements instanceof TableNode) {
-			$elementRows = $expectedElements->getRows();
-			$elementsSimplified = $this->simplifyArray($elementRows);
-			foreach ($elementsSimplified as $expectedElement) {
-				$webdavPath = "/" . $this->getDavFilesPath($user) . $expectedElement;
-				if (!array_key_exists($webdavPath, $elementList)) {
-					PHPUnit_Framework_Assert::fail(
-						"$webdavPath" . " is not in propfind answer"
-					);
-				}
+		$elementRows = $elements->getRows();
+		$elementsSimplified = $this->simplifyArray($elementRows);
+		foreach ($elementsSimplified as $expectedElement) {
+			$webdavPath = "/" . $this->getDavFilesPath($user) . $expectedElement;
+			if (!array_key_exists($webdavPath, $elementList) && $expectedToBeListed) {
+				PHPUnit_Framework_Assert::fail(
+					"$webdavPath" . " is not in propfind answer but should"
+				);
+			} elseif (array_key_exists($webdavPath, $elementList) && !$expectedToBeListed) {
+				PHPUnit_Framework_Assert::fail(
+					"$webdavPath" . " is in propfind answer but should not be"
+				);
 			}
 		}
 	}
