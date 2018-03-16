@@ -10,9 +10,11 @@ So that unauthorised access is impossible
 
 	@TestAlsoOnExternalUserBackend
 	Scenario: simple user login
-		Given a regular user has been created but not initialized
+		Given these users have been created but not initialized:
+			|username|password|displayname|email       |
+			|user1   |1234    |User One   |u1@oc.com.np|
 		And the user has browsed to the login page
-		When the user logs in as a regular user with a correct password using the webUI
+		When the user logs in with username "user1" and password "1234" using the webUI
 		Then the user should be redirected to a webUI page with the title "Files - ownCloud"
 
 	Scenario: admin login

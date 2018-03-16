@@ -168,15 +168,6 @@ class WebUILoginContext extends RawMinkContext implements Context {
 	}
 
 	/**
-	 * @When the user logs in as a regular user with a correct password using the webUI
-	 *
-	 * @return void
-	 */
-	public function theUserLogsInAsARegularUserWithACorrectPasswordUsingTheWebUI() {
-		$this->filesPage = $this->webUIGeneralContext->loginAsARegularUser();
-	}
-
-	/**
 	 * @Then /^it should (not|)\s?be possible to login with the username ((?:'[^']*')|(?:"[^"]*")) and password ((?:'[^']*')|(?:"[^"]*")) using the WebUI$/
 	 * 
 	 * @param string $shouldOrNot

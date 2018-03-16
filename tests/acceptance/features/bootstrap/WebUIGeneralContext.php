@@ -43,6 +43,7 @@ class WebUIGeneralContext extends RawMinkContext implements Context {
 
 	use WebUIBasicStructure;
 
+	private $adminUsername;
 	private $adminPassword;
 	private $owncloudPage;
 	private $loginPage;
@@ -338,8 +339,9 @@ class WebUIGeneralContext extends RawMinkContext implements Context {
 	 */
 	public function theGroupNamedShouldNotExist($name) {
 		$groups = UserHelper::getGroupsAsArray(
-			$this->getMinkParameter("base_url"), "admin",
-			$this->getUserPassword("admin")
+			$this->getMinkParameter("base_url"),
+			$this->getAdminUsername(),
+			$this->getAdminPassword()
 		);
 		if (in_array($name, $groups, true)) {
 			throw new Exception("group '" . $name . "' exists but should not");
@@ -391,8 +393,8 @@ class WebUIGeneralContext extends RawMinkContext implements Context {
 		$capability = $this->capabilities[strtolower($section)][$setting];
 		$change = AppConfigHelper::setCapability(
 			$this->getMinkParameter('base_url'),
-			"admin",
-			$this->getUserPassword("admin"),
+			$this->getAdminUsername(),
+			$this->getAdminPassword(),
 			$capability['capabilitiesApp'],
 			$capability['capabilitiesParameter'],
 			$capability['testingApp'],
@@ -474,14 +476,19 @@ class WebUIGeneralContext extends RawMinkContext implements Context {
 		}
 
 		$suiteParameters = SetupHelper::getSuiteParameters($scope);
+		$this->adminUsername = (string)$suiteParameters['adminUsername'];
 		$this->adminPassword = (string)$suiteParameters['adminPassword'];
 		SetupHelper::init(
-			"admin", $this->getUserPassword("admin"),
-			$this->getMinkParameter('base_url'), $suiteParameters['ocPath']
+			$this->getAdminUsername(),
+			$this->getAdminPassword(),
+			$this->getMinkParameter('base_url'),
+			$suiteParameters['ocPath']
 		);
 		
 		$response = AppConfigHelper::getCapabilities(
-			$this->getMinkParameter('base_url'), "admin", $this->getUserPassword("admin")
+			$this->getMinkParameter('base_url'),
+			$this->getAdminUsername(),
+			$this->getAdminPassword()
 		);
 		$this->savedCapabilitiesXml = AppConfigHelper::getCapabilitiesXml(
 			$response
@@ -549,8 +556,8 @@ class WebUIGeneralContext extends RawMinkContext implements Context {
 	public function tearDownSuite() {
 		AppConfigHelper::modifyServerConfigs(
 			$this->getMinkParameter('base_url'),
-			"admin",
-			$this->getUserPassword("admin"),
+			$this->getAdminUsername(),
+			$this->getAdminPassword(),
 			$this->savedCapabilitiesChanges
 		);
 
@@ -599,8 +606,8 @@ class WebUIGeneralContext extends RawMinkContext implements Context {
 	public function clearFileLocks() {
 		$response = OcsApiHelper::sendRequest(
 			$this->getMinkParameter('base_url'),
-			"admin",
-			$this->getUserPassword("admin"),
+			$this->getAdminUsername(),
+			$this->getAdminPassword(),
 			'delete',
 			"/apps/testing/api/v1/lockprovisioning",
 			["global" => "true"]

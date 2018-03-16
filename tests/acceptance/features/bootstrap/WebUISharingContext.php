@@ -39,10 +39,6 @@ class WebUISharingContext extends RawMinkContext implements Context {
 	private $filesPage;
 	private $publicLinkFilesPage;
 	private $sharingDialog;
-	private $regularUserName;
-	private $regularUserNames;
-	private $regularGroupName;
-	private $regularGroupNames;
 	/**
 	 * 
 	 * @var WebUIGeneralContext
@@ -397,7 +393,7 @@ class WebUISharingContext extends RawMinkContext implements Context {
 	 */
 	public function theUsersOwnNameShouldNotBeListedInTheAutocompleteList() {
 		PHPUnit_Framework_Assert::assertNotContains(
-			$this->regularUserName,
+			$this->filesPage->getMyDisplayname(),
 			$this->sharingDialog->getAutocompleteItemsList()
 		);
 	}
@@ -533,10 +529,6 @@ class WebUISharingContext extends RawMinkContext implements Context {
 		// Get all the contexts you need in this context
 		$this->webUIGeneralContext = $environment->getContext('WebUIGeneralContext');
 		$this->webUIFilesContext = $environment->getContext('WebUIFilesContext');
-		$this->regularUserNames = $this->webUIGeneralContext->getRegularUserNames();
-		$this->regularUserName = $this->webUIGeneralContext->getRegularUserName();
-		$this->regularGroupNames = $this->webUIGeneralContext->getRegularGroupNames();
-		$this->regularGroupName = $this->webUIGeneralContext->getRegularGroupName();
 		$this->setupSharingConfigs();
 	}
 	
@@ -619,8 +611,8 @@ class WebUISharingContext extends RawMinkContext implements Context {
 
 		$change = AppConfigHelper::setCapabilities(
 			$this->getMinkParameter('base_url'),
-			"admin",
-			$this->webUIGeneralContext->getUserPassword("admin"),
+			$this->webUIGeneralContext->getAdminUsername(),
+			$this->webUIGeneralContext->getAdminPassword(),
 			$settings,
 			$this->webUIGeneralContext->getSavedCapabilitiesXml()
 		);

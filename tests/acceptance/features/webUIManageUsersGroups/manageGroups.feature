@@ -5,8 +5,7 @@ I want to manage groups
 So that access to resources can be controlled more effectively
 
 	Background:
-		Given a regular user has been created but not initialized
-		And user admin has logged in using the webUI
+		Given user admin has logged in using the webUI
 		And the administrator has browsed to the users page
 
 	@skipOnOcV10.0.3

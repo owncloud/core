@@ -34,9 +34,7 @@ require_once 'bootstrap.php';
 trait WebUIBasicStructure {
 
 	private $regularUserPassword;
-	private $regularUserName;
-	private $regularUserNames = array();
-	
+
 	/**
 	 * list of users that were created during test runs
 	 * key is the username value is an array of user attributes
@@ -44,8 +42,6 @@ trait WebUIBasicStructure {
 	 * @var array
 	 */
 	private $createdUsers = array();
-	private $regularGroupName;
-	private $regularGroupNames = array();
 	private $createdGroupNames = array();
 
 	/**
@@ -56,27 +52,9 @@ trait WebUIBasicStructure {
 	 */
 	public function adminLogsInUsingTheWebUI() {
 		$this->loginPage->open();
-		$this->loginAs("admin", $this->getUserPassword("admin"));
-	}
-
-	/**
-	 * @When the regular user logs in using the webUI
-	 * @Given the regular user has logged in using the webUI
-	 *
-	 * @return void
-	 */
-	public function theRegularUserLogsInUsingTheWebUI() {
-		$this->loginPage->open();
-		$this->loginAsARegularUser();
-	}
-
-	/**
-	 * @return Page\OwncloudPage
-	 */
-	public function loginAsARegularUser() {
-		return $this->loginAs(
-			$this->getRegularUserName(),
-			$this->getRegularUserPassword()
+		$this->loginAs(
+			$this->getAdminUsername(),
+			$this->getAdminPassword()
 		);
 	}
 
@@ -113,42 +91,6 @@ trait WebUIBasicStructure {
 		$this->loginPage->waitTillPageIsLoaded($this->getSession());
 		if ($this->webUIFilesContext !== null) {
 			$this->webUIFilesContext->resetFilesContext();
-		}
-	}
-
-	/**
-	 * @Given /^a regular user has been created\s?(but not initialized|)$/
-	 *
-	 * @param string $doNotInitialize just create the user, do not trigger creating skeleton files etc
-	 *
-	 * @return void
-	 */
-	public function aRegularUserHasBeenCreated($doNotInitialize = "") {
-		$this->createUser(
-			$this->getRegularUserName(),
-			$this->getRegularUserPassword(),
-			null,
-			null,
-			($doNotInitialize === "")
-		);
-	}
-
-	/**
-	 * @Given /^regular users have been created\s?(but not initialized|)$/
-	 *
-	 * @param string $doNotInitialize just create the user, do not trigger creating skeleton files etc
-	 *
-	 * @return void
-	 */
-	public function regularUsersHaveBeenCreated($doNotInitialize) {
-		foreach ($this->getRegularUserNames() as $user) {
-			$this->createUser(
-				$user,
-				$this->getRegularUserPassword(),
-				null,
-				null,
-				($doNotInitialize === "")
-			);
 		}
 	}
 
@@ -232,8 +174,9 @@ trait WebUIBasicStructure {
 		switch ($method) {
 			case "api":
 				$results = UserHelper::createUser(
-					$baseUrl, $user, $password, "admin",
-					$this->getUserPassword("admin"),
+					$baseUrl, $user, $password,
+					$this->getAdminUsername(),
+					$this->getAdminPassword(),
 					$displayName, $email
 				);
 				foreach ($results as $result) {
@@ -304,26 +247,6 @@ trait WebUIBasicStructure {
 	}
 
 	/**
-	 * @Given a regular group has been created
-	 *
-	 * @return void
-	 */
-	public function aRegularGroupHasBeenCreated() {
-		$this->createGroup($this->regularGroupName);
-	}
-
-	/**
-	 * @Given regular groups have been created
-	 *
-	 * @return void
-	 */
-	public function regularGroupsHaveBeenCreated() {
-		foreach ($this->regularGroupNames as $group) {
-			$this->createGroup($group);
-		}
-	}
-
-	/**
 	 * creates a single group
 	 *
 	 * @param string $group
@@ -345,7 +268,9 @@ trait WebUIBasicStructure {
 			case "api":
 				$result = UserHelper::createGroup(
 					$this->getMinkParameter("base_url"),
-					$group, "admin", $this->getUserPassword("admin")
+					$group,
+					$this->getAdminUsername(),
+					$this->getAdminPassword()
 				);
 				if ($result->getStatusCode() !== 200) {
 					throw new Exception(
@@ -373,19 +298,6 @@ trait WebUIBasicStructure {
 		}
 		$this->addGroupToCreatedGroupsList($group);
 	}
-	/**
-	 * @Given the regular user has been added to the regular group
-	 *
-	 * @return void
-	 */
-	public function theRegularUserHasBeenAddedToTheRegularGroup() {
-		$group = $this->getRegularGroupName();
-		$user = $this->getRegularUserName();
-		if (!in_array($user, $this->getCreatedUserNames())) {
-			$this->aRegularUserHasBeenCreated();
-		}
-		$this->userHasBeenAddedToGroup($user, $group);
-	}
 
 	/**
 	 * @Given user :user has been added to group :group ready for use by the webUI
@@ -409,7 +321,9 @@ trait WebUIBasicStructure {
 			case "api":
 				$result = UserHelper::addUserToGroup(
 					$this->getMinkParameter("base_url"), 
-					$user, $group, "admin", $this->getUserPassword("admin")
+					$user, $group,
+					$this->getAdminUsername(),
+					$this->getAdminPassword()
 				);
 				if ($result->getStatusCode() !== 200) {
 					throw new Exception(
@@ -472,17 +386,7 @@ trait WebUIBasicStructure {
 		BeforeScenarioScope $scope
 	) {
 		$suiteParameters = SetupHelper::getSuiteParameters($scope);
-		$this->regularUserNames = explode(
-			",",
-			$suiteParameters['regularUserNames']
-		);
-		$this->regularUserName = (string)$suiteParameters['regularUserName'];
 		$this->regularUserPassword = (string)$suiteParameters['regularUserPassword'];
-		$this->regularGroupNames = explode(
-			",",
-			$suiteParameters['regularGroupNames']
-		);
-		$this->regularGroupName = (string)$suiteParameters['regularGroupName'];
 	}
 
 	/**
@@ -497,8 +401,8 @@ trait WebUIBasicStructure {
 			$result = UserHelper::deleteUser(
 				$baseUrl,
 				$username,
-				"admin",
-				$this->getUserPassword("admin")
+				$this->getAdminUsername(),
+				$this->getAdminPassword()
 			);
 			
 			if ($user['shouldHaveBeenCreated'] && ($result->getStatusCode() !== 200)) {
@@ -513,8 +417,8 @@ trait WebUIBasicStructure {
 			$result = UserHelper::deleteGroup(
 				$baseUrl,
 				$group,
-				"admin",
-				$this->getUserPassword("admin")
+				$this->getAdminUsername(),
+				$this->getAdminPassword()
 			);
 			
 			if ($result->getStatusCode() !== 200) {
@@ -531,20 +435,6 @@ trait WebUIBasicStructure {
 	 */
 	public function getRegularUserPassword() {
 		return $this->regularUserPassword;
-	}
-
-	/**
-	 * @return string
-	 */
-	public function getRegularUserName() {
-		return $this->regularUserName;
-	}
-
-	/**
-	 * @return array
-	 */
-	public function getRegularUserNames() {
-		return $this->regularUserNames;
 	}
 
 	/**
@@ -577,20 +467,6 @@ trait WebUIBasicStructure {
 			}
 		}
 		return $result;
-	}
-
-	/**
-	 * @return string
-	 */
-	public function getRegularGroupName() {
-		return $this->regularGroupName;
-	}
-
-	/**
-	 * @return array
-	 */
-	public function getRegularGroupNames() {
-		return $this->regularGroupNames;
 	}
 
 	/**
@@ -655,6 +531,20 @@ trait WebUIBasicStructure {
 	}
 
 	/**
+	 * @return string
+	 */
+	public function getAdminUsername() {
+		return (string) $this->adminUsername;
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getAdminPassword() {
+		return (string) $this->adminPassword;
+	}
+
+	/**
 	 *
 	 * @param string $username
 	 *
@@ -662,8 +552,8 @@ trait WebUIBasicStructure {
 	 * @throws Exception
 	 */
 	public function getUserPassword($username) {
-		if ($username === 'admin') {
-			$password = $this->adminPassword;
+		if ($username === $this->getAdminUsername()) {
+			$password = $this->getAdminPassword();
 		} else {
 			if (!array_key_exists($username, $this->createdUsers)) {
 				throw new Exception(
@@ -720,14 +610,6 @@ trait WebUIBasicStructure {
 				"function" => [
 					$this,
 					"getBaseUrlWithoutScheme"
-				],
-				"parameter" => [ ]
-			],
-			[
-				"code" => "%regularuser%",
-				"function" => [
-					$this,
-					"getRegularUserName"
 				],
 				"parameter" => [ ]
 			]
