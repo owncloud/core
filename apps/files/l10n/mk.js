@@ -2,7 +2,7 @@ OC.L10N.register(
     "files",
     {
     "Storage is temporarily not available" : "Складот е привремено недостапен",
-    "Storage invalid" : "Сториџот не е валиден",
+    "Storage invalid" : "Складиштето не е валидно",
     "Unknown error" : "Непозната грешка",
     "All files" : "Сите датотеки",
     "File could not be found" : "Датотеката не е пронајдена",
@@ -33,7 +33,7 @@ OC.L10N.register(
     "Files" : "Датотеки",
     "Details" : "Детали:",
     "Select" : "Избери",
-    "Pending" : "Чека",
+    "Pending" : "Во очекување",
     "Unable to determine date" : "Не може да се одреди датум",
     "Invalid path" : "Грешна патека",
     "This operation is forbidden" : "Операцијата не е дозволена",
