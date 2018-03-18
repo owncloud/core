@@ -40,6 +40,7 @@ OC.L10N.register(
     "This operation is forbidden" : "Ky veprim është i ndaluar",
     "This directory is unavailable, please check the logs or contact the administrator" : "Kjo drejtori nuk kapet, ju lutemi, kontrolloni regjistrat ose lidhuni me përgjegjësin",
     "Could not move \"{file}\", target exists" : "S’u lëviz dot \"{file}\", objektivi ekziston",
+    "Could not move \"{file}\": {message}" : "S’u lëviz dot \"{file}\": {message}",
     "Could not move \"{file}\"" : "S’u lëviz dot \"{file}\"",
     "{newName} already exists" : "{newName} ekziston tashmë",
     "Could not rename \"{fileName}\", it does not exist any more" : "S’u riemërtua dot \"{fileName}\", s’ekziston më",
