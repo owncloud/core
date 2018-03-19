@@ -22,8 +22,10 @@
 namespace Test\Files\ObjectStore;
 
 use OC\Files\Cache\CacheEntry;
+use OC\Files\Cache\Updater;
 use OC\Files\ObjectStore\NoopScanner;
 use OC\Files\ObjectStore\ObjectStoreStorage;
+use OC\Files\Storage\Storage;
 use OCP\Files\NotFoundException;
 use OCP\Files\ObjectStore\IObjectStore;
 use OCP\Files\ObjectStore\IVersionedObjectStorage;
@@ -146,5 +148,34 @@ class ObjectStoreTest extends TestCase {
 			'getContentOfVersion' => ['getContentOfVersion'],
 			'restoreVersion' => ['restoreVersion'],
 		];
+	}
+
+	public function testMoveFromStorageWithSelf() {
+		$this->objectStore = $this->getMockBuilder(ObjectStoreStorage::class)
+			->setMethods(['copy'])
+			->setConstructorArgs([[ 'objectstore' => $this->impl]])
+			->getMock();
+
+		$this->objectStore->expects($this->once())->method('copy')->willReturn(true);
+		$sourceInternalPath = 'text.txt';
+		$targetInternalPath = 'foo/bar.txt';
+		$this->assertEquals(true, $this->objectStore->moveFromStorage($this->objectStore, $sourceInternalPath, $targetInternalPath));
+	}
+
+	public function testMoveFromStorageWithObjectStore() {
+		$sourceStorage = new ObjectStoreStorage([
+			'objectstore' => $this->impl
+		]);
+
+		$this->objectStore = $this->getMockBuilder(ObjectStoreStorage::class)
+			->setMethods(['getUpdater'])
+			->setConstructorArgs([[ 'objectstore' => $this->impl]])
+			->getMock();
+
+		$updater = $this->createMock(Updater::class);
+		$this->objectStore->expects($this->once())->method('getUpdater')->willReturn($updater);
+		$sourceInternalPath = 'text.txt';
+		$targetInternalPath = 'foo/bar.txt';
+		$this->assertEquals(true, $this->objectStore->moveFromStorage($sourceStorage, $sourceInternalPath, $targetInternalPath));
 	}
 }

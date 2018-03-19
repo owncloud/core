@@ -319,6 +319,24 @@ class ObjectStoreStorage extends \OC\Files\Storage\Common {
 		return true;
 	}
 
+	public function moveFromStorage(\OCP\Files\Storage $sourceStorage, $sourceInternalPath, $targetInternalPath) {
+		if ($sourceStorage === $this) {
+			return $this->copy($sourceInternalPath, $targetInternalPath);
+		}
+		// cross storage moves need to perform a move operation
+		// TODO: there is some cache updating missing which requires bigger changes and is
+		//       subject to followup PRs
+		if (!$sourceStorage->instanceOfStorage(self::class)) {
+			return parent::moveFromStorage($sourceStorage, $sourceInternalPath, $targetInternalPath);
+		}
+
+		// source and target live on the same object store and we can simply rename
+		// which updates the cache properly
+		$this->getUpdater()->renameFromStorage($sourceStorage, $sourceInternalPath, $targetInternalPath);
+		return true;
+	}
+
+
 	public function getMimeType($path) {
 		$path = $this->normalizePath($path);
 		$stat = $this->stat($path);

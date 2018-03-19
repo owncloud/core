@@ -38,6 +38,7 @@ namespace OC\Files\Storage;
 
 use OCP\Files\ForbiddenException;
 
+
 /**
  * for local filestore, we only have to map the paths
  */
@@ -119,7 +120,7 @@ class Local extends Common {
 	}
 
 	public function is_dir($path) {
-		if (substr($path, -1) == '/') {
+		if (substr($path, -1) === '/') {
 			$path = substr($path, 0, -1);
 		}
 		return is_dir($this->getSourcePath($path));
@@ -143,7 +144,7 @@ class Local extends Common {
 
 	public function filetype($path) {
 		$filetype = filetype($this->getSourcePath($path));
-		if ($filetype == 'link') {
+		if ($filetype === 'link') {
 			$filetype = filetype(realpath($this->getSourcePath($path)));
 		}
 		return $filetype;
@@ -156,7 +157,7 @@ class Local extends Common {
 		$fullPath = $this->getSourcePath($path);
 		if (PHP_INT_SIZE === 4) {
 			$helper = new \OC\LargeFileHelper;
-			return $helper->getFilesize($fullPath);
+			return $helper->getFileSize($fullPath);
 		}
 		return filesize($fullPath);
 	}
@@ -331,6 +332,7 @@ class Local extends Common {
 	 * @param string $query
 	 * @param string $dir
 	 * @return array
+	 * @throws ForbiddenException
 	 */
 	protected function searchInDir($query, $dir = '') {
 		$files = [];
@@ -384,7 +386,7 @@ class Local extends Common {
 			$realPath = realpath($pathToResolve);
 		}
 		if ($realPath) {
-			$realPath = $realPath . '/';
+			$realPath .= '/';
 		}
 
 		// Is broken symlink?
@@ -421,27 +423,29 @@ class Local extends Common {
 				$stat['dev'] .
 				$stat['size']
 			);
-		} else {
-			return parent::getETag($path);
 		}
+
+		return parent::getETag($path);
 	}
 
 	/**
 	 * @param \OCP\Files\Storage $sourceStorage
 	 * @param string $sourceInternalPath
 	 * @param string $targetInternalPath
+	 * @param bool $preserveMtime
 	 * @return bool
+	 * @throws ForbiddenException
 	 */
 	public function copyFromStorage(\OCP\Files\Storage $sourceStorage, $sourceInternalPath, $targetInternalPath, $preserveMtime = false) {
-		if ($sourceStorage->instanceOfStorage('\OC\Files\Storage\Local')) {
+		if ($sourceStorage->instanceOfStorage(__CLASS__)) {
 			/**
 			 * @var \OC\Files\Storage\Local $sourceStorage
 			 */
 			$rootStorage = new Local(['datadir' => '/']);
 			return $rootStorage->copy($sourceStorage->getSourcePath($sourceInternalPath), $this->getSourcePath($targetInternalPath));
-		} else {
-			return parent::copyFromStorage($sourceStorage, $sourceInternalPath, $targetInternalPath, $preserveMtime);
 		}
+
+		return parent::copyFromStorage($sourceStorage, $sourceInternalPath, $targetInternalPath, $preserveMtime);
 	}
 
 	/**
@@ -449,16 +453,17 @@ class Local extends Common {
 	 * @param string $sourceInternalPath
 	 * @param string $targetInternalPath
 	 * @return bool
+	 * @throws \InvalidArgumentException
 	 */
 	public function moveFromStorage(\OCP\Files\Storage $sourceStorage, $sourceInternalPath, $targetInternalPath) {
-		if ($sourceStorage->instanceOfStorage('\OC\Files\Storage\Local')) {
+		if ($sourceStorage->instanceOfStorage(__CLASS__)) {
 			/**
 			 * @var \OC\Files\Storage\Local $sourceStorage
 			 */
 			$rootStorage = new Local(['datadir' => '/']);
-			return $rootStorage->rename($sourceStorage->getSourcePath($sourceInternalPath), $this->getSourcePath($targetInternalPath));
-		} else {
-			return parent::moveFromStorage($sourceStorage, $sourceInternalPath, $targetInternalPath);
+			return $rootStorage->rename($sourceStorage->getLocalFile($sourceInternalPath), $this->getLocalFile($targetInternalPath));
 		}
+
+		return parent::moveFromStorage($sourceStorage, $sourceInternalPath, $targetInternalPath);
 	}
 }
