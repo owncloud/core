@@ -417,14 +417,14 @@ EOD;
 		$calendarId = $this->createTestCalendar();
 
 		// fist call without synctoken
-		$changes = $this->backend->getChangesForCalendar($calendarId, '', 1);
+		$changes = $this->backend->getChangesForCalendar($calendarId, '', 1, 1000);
 		$syncToken = $changes['syncToken'];
 
 		// add a change
 		$event = $this->createEvent($calendarId, '20130912T130000Z', '20130912T140000Z');
 
 		// look for changes
-		$changes = $this->backend->getChangesForCalendar($calendarId, $syncToken, 1);
+		$changes = $this->backend->getChangesForCalendar($calendarId, $syncToken, 1, 1000);
 		$this->assertEquals($event, $changes['added'][0]);
 	}
 

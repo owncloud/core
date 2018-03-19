@@ -321,7 +321,7 @@ class CardDavBackendTest extends TestCase {
 		$bookId = $books[0]['id'];
 
 		// fist call without synctoken
-		$changes = $this->backend->getChangesForAddressBook($bookId, '', 1);
+		$changes = $this->backend->getChangesForAddressBook($bookId, '', 1, 1000);
 		$syncToken = $changes['syncToken'];
 
 		// add a change
@@ -329,7 +329,7 @@ class CardDavBackendTest extends TestCase {
 		$this->backend->createCard($bookId, $uri0, '');
 
 		// look for changes
-		$changes = $this->backend->getChangesForAddressBook($bookId, $syncToken, 1);
+		$changes = $this->backend->getChangesForAddressBook($bookId, $syncToken, 1, 1000);
 		$this->assertEquals($uri0, $changes['added'][0]);
 	}
 
