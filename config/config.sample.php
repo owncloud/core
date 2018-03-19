@@ -842,20 +842,6 @@ $CONFIG = array(
 ),
 
 /**
- * LDAP
- *
- * Global settings used by LDAP User and Group Backend
- */
-
-/**
- * defines the interval in minutes for the background job that checks user
- * existence and marks them as ready to be cleaned up. The number is always
- * minutes. Setting it to 0 disables the feature.
- * See command line (occ) methods ldap:show-remnants and user:delete
- */
-'ldapUserCleanupInterval' => 51,
-
-/**
  * Comments
  *
  * Global settings for the Comments infrastructure
