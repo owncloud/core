@@ -727,7 +727,7 @@ class UsersTest extends OriginalTest {
 		$expected = new Result(
 			[
 				'enabled' => 'true',
-				'quota' => ['DummyValue'],
+				'quota' => ['DummyValue', 'definition' => null],
 				'email' => 'demo@owncloud.org',
 				'displayname' => 'Demo User',
 				'home' => '/var/ocdata/UserToGet',
@@ -794,7 +794,7 @@ class UsersTest extends OriginalTest {
 		$expected = new Result(
 			[
 				'enabled' => 'true',
-				'quota' => ['DummyValue'],
+				'quota' => ['DummyValue', 'definition' => null],
 				'email' => 'demo@owncloud.org',
 				'home' => '/var/ocdata/UserToGet',
 				'displayname' => 'Demo User',
@@ -893,7 +893,7 @@ class UsersTest extends OriginalTest {
 			->will($this->returnValue('subadmin@owncloud.org'));
 
 		$expected = new Result([
-			'quota' => ['DummyValue'],
+			'quota' => ['DummyValue', 'definition' => null],
 			'email' => 'subadmin@owncloud.org',
 			'displayname' => 'Subadmin User',
 			'home' => '/var/ocdata/UserToGet',
