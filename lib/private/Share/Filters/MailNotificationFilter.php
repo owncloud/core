@@ -69,6 +69,13 @@ class MailNotificationFilter {
 					['name' => 'StripTags'],
 				],
 			],
+			'personalNote' => [
+				'required' => false,
+				'filters' => [
+					['name' => 'StringTrim'],
+					['name' => 'StripTags'],
+				],
+			],
 			'expirationDate' => [
 				'required' => true,
 				'filters' => [
@@ -107,5 +114,12 @@ class MailNotificationFilter {
 	 */
 	public function getExpirationDate() {
 		return $this->inputFilter->getValue('expirationDate');
+	}
+
+	/**
+	 * @return string The filtered personal note
+	 */
+	public function getPersonalNote() {
+		return $this->inputFilter->getValue('personalNote');
 	}
 }

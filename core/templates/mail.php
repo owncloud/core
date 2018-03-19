@@ -17,6 +17,12 @@ if ( isset($_['expiration']) ) {
 	p($l->t("The share will expire on %s.", [$_['expiration']]));
 	print_unescaped('<br><br>');
 }
+
+if (isset($_['personal_note'])) {
+	// TRANSLATORS personal note in share notification email
+	p($l->t("Personal note from the sender: %s.", [$_['personal_note']]));
+	print_unescaped('<br><br>');
+}
 // TRANSLATORS term at the end of a mail
 p($l->t('Cheers!'));
 ?>
