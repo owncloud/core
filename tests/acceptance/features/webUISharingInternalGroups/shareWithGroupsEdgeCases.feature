@@ -13,8 +13,8 @@ So that those groups can access the files and folders
 		And these groups have been created:
 			|groupname|
 			|<group>  |
-		And user "user1" has been added to group "<group>" ready for use by the webUI
-		And user "user2" has been added to group "<group>" ready for use by the webUI
+		And user "user1" has been added to group "<group>"
+		And user "user2" has been added to group "<group>"
 		And the user has browsed to the login page
 		And the user has logged in with username "user3" and password "1234" using the webUI
 		When the user shares the folder "simple-folder" with the group "<group>" using the webUI
