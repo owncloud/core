@@ -78,7 +78,8 @@ install_cmd="maintenance:install -vvv \
       --database-table-prefix=${DB_PREFIX} \
       --admin-user=${ADMIN_LOGIN} \
       --admin-pass=${ADMIN_PASSWORD} \
-      --data-dir=${DATA_DIRECTORY} "
+      --data-dir=${DATA_DIRECTORY} \
+      --overwrite.cli.url=http://localhost "
 
 if [[ "${DB_TYPE}" != "sqlite" ]]; then
   install_cmd+=" --database-host=${DB_TYPE} \

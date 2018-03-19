@@ -47,7 +47,7 @@ timestampedNode('SLAVE') {
 		executeAndReport('tests/acceptance/output/*.xml') {
 			sh '''phpenv local 7.1.0
 			rm -rf config/config.php data/*
-			./occ maintenance:install --admin-pass=admin
+			./occ maintenance:install --admin-pass=admin --overwrite.cli.url=http://localhost
 			make clean-test-acceptance
 			make test-acceptance OC_TEST_ALT_HOME=1
 		   '''

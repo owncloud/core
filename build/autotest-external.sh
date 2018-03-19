@@ -150,7 +150,7 @@ EOF
 
 	# trigger installation
 	echo "Installing ...."
-	./occ maintenance:install -vvv --database=$1 --database-name=$DATABASENAME --database-host=localhost --database-user=$DATABASEUSER --database-pass=owncloud --database-table-prefix=oc_ --admin-user=$ADMINLOGIN --admin-pass=admin --data-dir=$DATADIR
+	./occ maintenance:install -vvv --database=$1 --database-name=$DATABASENAME --database-host=localhost --database-user=$DATABASEUSER --database-pass=owncloud --database-table-prefix=oc_ --admin-user=$ADMINLOGIN --admin-pass=admin --data-dir=$DATADIR --overwrite.cli.url=http://localhost
 
 	#test execution
 	echo "Testing with $1 ..."
