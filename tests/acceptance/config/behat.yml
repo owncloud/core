@@ -67,12 +67,31 @@ default:
       contexts:
         - FeatureContext: *common_feature_context_params
 
-    webUIFiles:
+    apiSharingNotifications:
       paths:
-        - %paths.base%/../features/webUIFiles
+        - %paths.base%/../features/apiSharingNotifications
+      contexts:
+        - FeatureContext: *common_feature_context_params
+        - NotificationsContext:
+
+    webUILogin:
+      paths:
+        - %paths.base%/../features/webUILogin
       context: &common_webui_suite_context
         parameters:
           ocPath: apps/testing/api/v1/occ
+      contexts:
+        - FeatureContext: *common_feature_context_params
+        - WebUIGeneralContext:
+        - WebUILoginContext:
+        - WebUIFilesContext:
+        - WebUIPersonalGeneralSettingsContext:
+        - EmailContext:
+
+    webUIFiles:
+      paths:
+        - %paths.base%/../features/webUIFiles
+      context: *common_webui_suite_context
       contexts:
         - FeatureContext: *common_feature_context_params
         - WebUIGeneralContext:
@@ -231,6 +250,19 @@ default:
         - WebUIFilesContext:
         - WebUIPersonalSecuritySettingsContext:
         - WebUIPersonalGeneralSettingsContext:
+
+    webUISharingNotifications:
+      paths:
+        - %paths.base%/../features/webUISharingNotifications
+      context: *common_webui_suite_context
+      contexts:
+        - FeatureContext: *common_feature_context_params
+        - WebUIGeneralContext:
+        - WebUILoginContext:
+        - WebUIFilesContext:
+        - WebUISharingContext:
+        - WebUINotificationsContext
+        - NotificationsContext
 
   extensions:
       jarnaiz\JUnitFormatter\JUnitFormatterExtension:

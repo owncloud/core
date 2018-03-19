@@ -43,7 +43,7 @@ class WebUISharingContext extends RawMinkContext implements Context {
 	 * @var FilesPage
 	 */
 	private $filesPage;
-	
+
 	/**
 	 * 
 	 * @var PublicLinkFilesPage
@@ -435,6 +435,43 @@ class WebUISharingContext extends RawMinkContext implements Context {
 	}
 
 	/**
+	 * @When /^the user (declines|accepts) the share "([^"]*)" offered by user "([^"]*)" using the webUI$/
+	 *
+	 * @param string $action
+	 * @param string $share
+	 * @param string $offeredBy
+	 *
+	 * @return void
+	 */
+	public function userReactsToShareOfferedByUsingWebUI(
+		$action, $share, $offeredBy
+	) {
+		$this->webUIFilesContext->theUserBrowsesToTheSharedWithYouPage();
+		$fileRows = $this->sharedWithYouPage->findAllFileRowsByName(
+			$share, $this->getSession()
+		);
+		
+		$found = false;
+		foreach ($fileRows as $fileRow) {
+			if ($offeredBy === $fileRow->getSharer()) {
+				if ($action === "accepts") {
+					$fileRow->acceptShare($this->getSession());
+				} else {
+					$fileRow->declineShare($this->getSession());
+				}
+				$found = true;
+				break;
+			}
+		}
+		if ($found === false) {
+			throw new Exception(
+				__METHOD__ .
+				" could not find share '$share' offered by '$offeredBy'"
+			);
+		}
+
+	}
+	/**
 	 * @Then all users and groups that contain the string :requiredString in their name should be listed in the autocomplete list on the webUI
 	 *
 	 * @param string $requiredString
@@ -579,6 +616,65 @@ class WebUISharingContext extends RawMinkContext implements Context {
 		}
 	}
 
+	/**
+	 * @Then the file/folder :item should be in state :state in the shared-with-you page on the webUI
+	 *
+	 * @param string $item
+	 * @param string $state
+	 *
+	 * @return void
+	 */
+	public function assertShareIsInStateOnWebUI($item, $state) {
+		$this->webUIFilesContext->theUserBrowsesToTheSharedWithYouPage();
+		$fileRow = $this->sharedWithYouPage->findFileRowByName(
+			$item, $this->getSession()
+		);
+		PHPUnit_Framework_Assert::assertSame($state, $fileRow->getShareState());
+	}
+
+	/**
+	 * @Then the file/folder :item shared by :sharedBy should be in state :state in the shared-with-you page on the webUI
+	 *
+	 * @param string $item
+	 * @param string $sharedBy
+	 * @param string $state
+	 *
+	 * @return void
+	 */
+	public function assertShareSharedByIsInStateOnWebUI($item, $sharedBy, $state) {
+		$this->webUIFilesContext->theUserBrowsesToTheSharedWithYouPage();
+		$fileRows = $this->sharedWithYouPage->findAllFileRowsByName(
+			$item, $this->getSession()
+		);
+		$found = false;
+		$currentState = null;
+		foreach ($fileRows as $fileRow) {
+			if ($sharedBy === $fileRow->getSharer()) {
+				$found = true;
+				$currentState = $fileRow->getShareState();
+				break;
+			}
+		}
+		PHPUnit_Framework_Assert::assertTrue(
+			$found, "could not find item called $item shared by $sharedBy"
+		);
+		PHPUnit_Framework_Assert::assertSame($state, $currentState);
+	}
+
+	/**
+	 * @Then the file/folder :item should be in state :state in the shared-with-you page on the webUI after a page reload
+	 *
+	 * @param string $item
+	 * @param string $state
+	 *
+	 * @return void
+	 */
+	public function assertSharesIsInStateOnWebUIAfterPageReload($item, $state) {
+		$this->webUIGeneralContext->theUserReloadsTheCurrentPageOfTheWebUI();
+		$this->sharedWithYouPage->waitForAjaxCallsToStartAndFinish($this->getSession());
+		$this->assertShareIsInStateOnWebUI($item, $state);
+	}
+	
 	/**
 	 * @Then /^it should not be possible to share the (?:file|folder) "([^"]*)"(?: with "([^"]*)")? using the webUI$/
 	 *

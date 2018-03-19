@@ -42,24 +42,28 @@ class FileRow extends OwncloudPage {
 	 *
 	 * @var string
 	 */
-	private $name;
-	private $fileActionMenuBtnXpath = "//a[@data-action='menu']";
-	private $shareBtnXpath = "//a[@data-action='Share']";
-	private $loadingIndicatorXpath = ".//*[@class='loading']";
-	private $fileRenameInputXpath = "//input[contains(@class,'filename')]";
-	private $fileBusyIndicatorXpath = ".//*[@class='thumbnail' and contains(@style,'loading')]";
-	private $fileTooltipXpath = ".//*[@class='tooltip-inner']";
-	private $thumbnailXpath = "//*[@class='thumbnail']";
-	private $fileLinkXpath = "//span[contains(@class,'nametext')]";
-	private $restoreLinkXpath = '//a[@data-action="Restore"]';
-	private $notMarkedFavoriteXpath = "//span[contains(@class,'icon-star')]";
-	private $markedFavoriteXpath = "//span[contains(@class,'icon-starred')]";
+	protected $name;
+	protected $fileActionMenuBtnXpath = "//a[@data-action='menu']";
+	protected $shareBtnXpath = "//a[@data-action='Share']";
+	protected $loadingIndicatorXpath = ".//*[@class='loading']";
+	protected $fileRenameInputXpath = "//input[contains(@class,'filename')]";
+	protected $fileBusyIndicatorXpath = ".//*[@class='thumbnail' and contains(@style,'loading')]";
+	protected $fileTooltipXpath = ".//*[@class='tooltip-inner']";
+	protected $thumbnailXpath = "//*[@class='thumbnail']";
+	protected $fileLinkXpath = "//span[contains(@class,'nametext')]";
+	protected $restoreLinkXpath = '//a[@data-action="Restore"]';
+	protected $notMarkedFavoriteXpath = "//span[contains(@class,'icon-star')]";
+	protected $markedFavoriteXpath = "//span[contains(@class,'icon-starred')]";
+	protected $shareStateXpath = "//span[@class='state']";
+	protected $sharerXpath = "//a[@data-action='Share']";
+	protected $acceptShareBtnXpath = "//span[@class='fileactions']//a[contains(@class,'accept')]";
+	protected $declinePendingShareBtnXpath = "//a[@data-action='Reject']";
 
 	/**
-	 * 
+	 *
 	 * @return boolean
 	 */
-	public function isVisible() { 
+	public function isVisible() {
 		return $this->rowElement->isVisible();
 	}
 
@@ -371,5 +375,82 @@ class FileRow extends OwncloudPage {
 			);
 		}
 		$element->click();
+	}
+
+	/**
+	 * returns the share state (only works on the "Shared with you" page)
+	 *
+	 * @throws ElementNotFoundException
+	 *
+	 * @return string
+	 */
+	public function getShareState() {
+		$element = $this->rowElement->find("xpath", $this->shareStateXpath);
+		if ($element === null)) {
+			throw new ElementNotFoundException(
+				__METHOD__ .
+				" sharing state element with xpath $this->shareStateXpath not found"
+			);
+		}
+		return $element->getText();
+	}
+
+	/**
+	 *
+	 * @throws ElementNotFoundException
+	 *
+	 * @return string
+	 */
+	public function getSharer() {
+		$element = $this->rowElement->find("xpath", $this->sharerXpath);
+		if ($element === null) {
+			throw new ElementNotFoundException(
+				__METHOD__ .
+				" sharer element with xpath $this->sharerXpath not found"
+			);
+		}
+		return trim($element->getText());
+	}
+	/**
+	 *
+	 * @param Session $session
+	 *
+	 * @return void
+	 */
+	public function acceptShare($session) {
+		$element = $this->rowElement->find("xpath", $this->acceptShareBtnXpath);
+		if ($element === null) {
+			throw new ElementNotFoundException(
+				__METHOD__ .
+				" accept share button with xpath" .
+				" $this->acceptShareBtnXpath not found"
+			);
+		}
+		$element->click();
+		$this->waitForAjaxCallsToStartAndFinish($session);
+	}
+
+	/**
+	 *
+	 * @param Session $session
+	 *
+	 * @return void
+	 */
+	public function declineShare($session) {
+		//TODO decline already accepted share
+		$element = $this->rowElement->find("xpath", $this->declinePendingShareBtnXpath);
+		if ($element === null) {
+			$this->openFileActionsMenu($session);
+			$element = $this->rowElement->find("xpath", $this->declinePendingShareBtnXpath);
+		}
+		if ($element === null) {
+			throw new ElementNotFoundException(
+				__METHOD__ .
+				" decline share button with xpath" .
+				" $this->declinePendingShareBtnXpath not found"
+			);
+		}
+		$element->click();
+		$this->waitForAjaxCallsToStartAndFinish($session);
 	}
 }
