@@ -37,21 +37,21 @@ use TestHelpers\UserHelper;
 require_once 'bootstrap.php';
 
 /**
- * Feature context.
+ * WebUI General context.
  */
 class WebUIGeneralContext extends RawMinkContext implements Context {
 
-	use WebUIBasicStructure;
-
-	private $adminUsername;
-	private $adminPassword;
 	private $owncloudPage;
 	private $loginPage;
 	private $oldCSRFSetting = null;
 	private $oldPreviewSetting = null;
-	private $currentUser = null;
-	private $currentServer = null;
 	private $createdFiles = [];
+
+	/**
+	 *
+	 * @var FeatureContext
+	 */
+	private $featureContext = null;
 
 	/**
 	 *
@@ -115,42 +115,6 @@ class WebUIGeneralContext extends RawMinkContext implements Context {
 			]
 		] 
 	];
-	
-	/**
-	 * @return string
-	 */
-	public function getCurrentUser() {
-		return $this->currentUser;
-	}
-
-	/**
-	 * @param string $currentUser
-	 *
-	 * @return void
-	 */
-	public function setCurrentUser($currentUser) {
-		$this->currentUser = $currentUser;
-	}
-
-	/**
-	 * @return string
-	 */
-	public function getCurrentServer() {
-		if (is_null($this->currentServer)) {
-			return $this->getMinkParameter("base_url");
-		}
-
-		return $this->currentServer;
-	}
-
-	/**
-	 * @param string $currentServer
-	 *
-	 * @return void
-	 */
-	public function setCurrentServer($currentServer) {
-		$this->currentServer = $currentServer;
-	}
 
 	/**
 	 * WebUIGeneralContext constructor.
@@ -179,6 +143,56 @@ class WebUIGeneralContext extends RawMinkContext implements Context {
 	 */
 	public function getCurrentPageObject() {
 		return $this->currentPageObject;
+	}
+
+	/**
+	 * @When user admin logs in using the webUI
+	 * @Given user admin has logged in using the webUI
+	 *
+	 * @return void
+	 */
+	public function adminLogsInUsingTheWebUI() {
+		$this->loginPage->open();
+		$this->loginAs(
+			$this->featureContext->getAdminUsername(),
+			$this->featureContext->getAdminPassword()
+		);
+	}
+
+	/**
+	 * @param string $username
+	 * @param string $password
+	 * @param string $target
+	 *
+	 * @return \Page\OwncloudPage
+	 */
+	public function loginAs($username, $password, $target = 'FilesPage') {
+		$session = $this->getSession();
+		$this->loginPage->waitTillPageIsLoaded($session);
+		$nextPage = $this->loginPage->loginAs(
+			$username,
+			$password,
+			$target
+		);
+		$nextPage->waitTillPageIsLoaded($session);
+		$this->featureContext->asUser($username);
+		$this->featureContext->usingServer('LOCAL');
+		return $nextPage;
+	}
+
+	/**
+	 * @When the user/administrator logs out of the webUI
+	 * @Given the user/administrator has logged out of the webUI
+	 *
+	 * @return void
+	 */
+	public function theUserLogsOutOfTheWebUI() {
+		$settingsMenu = $this->owncloudPage->openSettingsMenu();
+		$settingsMenu->logout();
+		$this->loginPage->waitTillPageIsLoaded($this->getSession());
+		if ($this->webUIFilesContext !== null) {
+			$this->webUIFilesContext->resetFilesContext();
+		}
 	}
 
 	/**
@@ -330,49 +344,6 @@ class WebUIGeneralContext extends RawMinkContext implements Context {
 	}
 
 	/**
-	 * @Then the group named :name should not exist
-	 *
-	 * @param string $name
-	 *
-	 * @return void
-	 * @throws Exception
-	 */
-	public function theGroupNamedShouldNotExist($name) {
-		$groups = UserHelper::getGroupsAsArray(
-			$this->getMinkParameter("base_url"),
-			$this->getAdminUsername(),
-			$this->getAdminPassword()
-		);
-		if (in_array($name, $groups, true)) {
-			throw new Exception("group '" . $name . "' exists but should not");
-		}
-	}
-
-	/**
-	 * @Then /^these groups should (not|)\s?exist:$/
-	 * expects a table of groups with the heading "groupname"
-	 *
-	 * @param string $shouldOrNot (not|)
-	 * @param TableNode $table
-	 *
-	 * @return void
-	 * @throws Exception
-	 */
-	public function theseGroupsShouldNotExist($shouldOrNot, TableNode $table) {
-		$should = ($shouldOrNot !== "not");
-		$groups = SetupHelper::getGroups();
-		foreach ($table as $row) {
-			if (in_array($row['groupname'], $groups, true) !== $should) {
-				throw new Exception(
-					"group '" . $row['groupname'] .
-					"' does" . ($should ? " not" : "") .
-					" exist but should" . ($should ? "" : " not")
-				);
-			}
-		}
-	}
-
-	/**
 	 * @Given /^the setting "([^"]*)" in the section "([^"]*)" has been (disabled|enabled)$/
 	 *
 	 * @param string $setting
@@ -393,8 +364,8 @@ class WebUIGeneralContext extends RawMinkContext implements Context {
 		$capability = $this->capabilities[strtolower($section)][$setting];
 		$change = AppConfigHelper::setCapability(
 			$this->getMinkParameter('base_url'),
-			$this->getAdminUsername(),
-			$this->getAdminPassword(),
+			$this->featureContext->getAdminUsername(),
+			$this->featureContext->getAdminPassword(),
 			$capability['capabilitiesApp'],
 			$capability['capabilitiesParameter'],
 			$capability['testingApp'],
@@ -424,6 +395,67 @@ class WebUIGeneralContext extends RawMinkContext implements Context {
 		}
 		UploadHelper::createFileSpecificSize($fullPath, (int)$size);
 		$this->createdFiles[] = $fullPath;
+	}
+
+	/**
+	 * gets the base url but without "http(s)://" in front of it
+	 *
+	 * @return string
+	 */
+	public function getBaseUrlWithoutScheme() {
+		return preg_replace(
+			"(^https?://)", "", $this->getMinkParameter('base_url')
+		);
+	}
+
+	/**
+	 * substitutes codes like %base_url% with the value
+	 * if the given value does not have anything to be substituted
+	 * then it is returned unmodified
+	 *
+	 * @param string $value
+	 *
+	 * @return string
+	 */
+	public function substituteInLineCodes($value) {
+		$substitutions = [
+			[
+				"code" => "%base_url%",
+				"function" => [
+					$this,
+					"getMinkParameter"
+				],
+				"parameter" => [
+					"base_url"
+				]
+			],
+			[
+				"code" => "%remote_server%",
+				"function" => "getenv",
+				"parameter" => [
+					"REMOTE_FED_BASE_URL"
+				]
+			],
+			[
+				"code" => "%local_server%",
+				"function" => [
+					$this,
+					"getBaseUrlWithoutScheme"
+				],
+				"parameter" => [ ]
+			]
+		];
+		foreach ($substitutions as $substitution) {
+			$value = str_replace(
+				$substitution["code"],
+				call_user_func_array(
+					$substitution["function"],
+					$substitution["parameter"]
+				),
+				$value
+			);
+		}
+		return $value;
 	}
 
 	/**
@@ -457,6 +489,29 @@ class WebUIGeneralContext extends RawMinkContext implements Context {
 
 	/**
 	 * @BeforeScenario @webUI
+	 * @TestAlsoOnExternalUserBackend
+	 *
+	 * @return void
+	 */
+	public function setUpExternalUserBackends() {
+		//TODO make it smarter to be able also to work with other backends
+		if (getenv("TEST_EXTERNAL_USER_BACKENDS") === "true") {
+			$result = SetupHelper::runOcc(
+				["user:sync", "OCA\User_LDAP\User_Proxy", "-m remove"]
+			);
+			if ((int)$result['code'] !== 0) {
+				throw new Exception(
+					"could not sync users with LDAP. stdOut:\n" .
+					$result['stdOut'] . "\n" .
+					"stdErr:\n" .
+					$result['stdErr'] . "\n"
+				);
+			}
+		}
+	}
+
+	/**
+	 * @BeforeScenario @webUI
 	 *
 	 * @param BeforeScenarioScope $scope
 	 *
@@ -466,6 +521,8 @@ class WebUIGeneralContext extends RawMinkContext implements Context {
 		// Get the environment
 		$environment = $scope->getEnvironment();
 		// Get all the contexts you need in this context
+		$this->featureContext = $environment->getContext('FeatureContext');
+
 		try {
 			$this->webUIFilesContext = $environment->getContext('WebUIFilesContext');
 		} catch (Exception $e) {
@@ -476,19 +533,17 @@ class WebUIGeneralContext extends RawMinkContext implements Context {
 		}
 
 		$suiteParameters = SetupHelper::getSuiteParameters($scope);
-		$this->adminUsername = (string)$suiteParameters['adminUsername'];
-		$this->adminPassword = (string)$suiteParameters['adminPassword'];
 		SetupHelper::init(
-			$this->getAdminUsername(),
-			$this->getAdminPassword(),
+			$this->featureContext->getAdminUsername(),
+			$this->featureContext->getAdminPassword(),
 			$this->getMinkParameter('base_url'),
 			$suiteParameters['ocPath']
 		);
 		
 		$response = AppConfigHelper::getCapabilities(
 			$this->getMinkParameter('base_url'),
-			$this->getAdminUsername(),
-			$this->getAdminPassword()
+			$this->featureContext->getAdminUsername(),
+			$this->featureContext->getAdminPassword()
 		);
 		$this->savedCapabilitiesXml = AppConfigHelper::getCapabilitiesXml(
 			$response
@@ -509,6 +564,21 @@ class WebUIGeneralContext extends RawMinkContext implements Context {
 				'true'
 			]
 		);
+
+		// The webUI tests get the base URL of the server-under-test via a
+		// Mink parameter. Tell that to featureContext, which normally gets
+		// baseUrl passed in from behat.yml via its constructor.
+		$baseUrl = $this->getMinkParameter("base_url");
+
+		// baseUrl in featureContext uses a form with '/ocs/' on the end
+		// so tell that to featureContext.
+		if (substr($baseUrl, -1) !== '/') {
+			$baseUrl .= '/';
+		}
+
+		$baseUrl .= 'ocs/';
+
+		$this->featureContext->overrideBaseUrl($baseUrl);
 	}
 
 	/**
@@ -556,8 +626,8 @@ class WebUIGeneralContext extends RawMinkContext implements Context {
 	public function tearDownSuite() {
 		AppConfigHelper::modifyServerConfigs(
 			$this->getMinkParameter('base_url'),
-			$this->getAdminUsername(),
-			$this->getAdminPassword(),
+			$this->featureContext->getAdminUsername(),
+			$this->featureContext->getAdminPassword(),
 			$this->savedCapabilitiesChanges
 		);
 
@@ -606,8 +676,8 @@ class WebUIGeneralContext extends RawMinkContext implements Context {
 	public function clearFileLocks() {
 		$response = OcsApiHelper::sendRequest(
 			$this->getMinkParameter('base_url'),
-			$this->getAdminUsername(),
-			$this->getAdminPassword(),
+			$this->featureContext->getAdminUsername(),
+			$this->featureContext->getAdminPassword(),
 			'delete',
 			"/apps/testing/api/v1/lockprovisioning",
 			["global" => "true"]

@@ -37,8 +37,15 @@ class WebUILoginContext extends RawMinkContext implements Context {
 	private $loginPage;
 	private $filesPage;
 	private $expectedPage;
+
 	/**
 	 * 
+	 * @var FeatureContext
+	 */
+	private $featureContext;
+
+	/**
+	 *
 	 * @var WebUIGeneralContext
 	 */
 	private $webUIGeneralContext;
@@ -126,7 +133,7 @@ class WebUILoginContext extends RawMinkContext implements Context {
 		);
 		$this->loginPage->open();
 		$this->theUserLogsInWithUsernameAndPasswordUsingTheWebUI($username, $password);
-		$this->webUIGeneralContext->setCurrentServer($server);
+		$this->featureContext->usingServer($server);
 	}
 
 	/**
@@ -216,6 +223,7 @@ class WebUILoginContext extends RawMinkContext implements Context {
 		// Get the environment
 		$environment = $scope->getEnvironment();
 		// Get all the contexts you need in this context
+		$this->featureContext = $environment->getContext('FeatureContext');
 		$this->webUIGeneralContext = $environment->getContext('WebUIGeneralContext');
 	}
 }

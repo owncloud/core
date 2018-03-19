@@ -14,8 +14,8 @@ I want to be able to forbid a user that received a share from me to share it fur
 		And these groups have been created:
 		|groupname|
 		|grp1     |
-		And user "user1" has been added to group "grp1" ready for use by the webUI
-		And user "user2" has been added to group "grp1" ready for use by the webUI
+		And user "user1" has been added to group "grp1"
+		And user "user2" has been added to group "grp1"
 		And the user has browsed to the login page
 		And the user has logged in with username "user2" and password "1234" using the webUI
 

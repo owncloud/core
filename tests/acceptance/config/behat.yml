@@ -6,7 +6,7 @@ default:
       paths:
         - %paths.base%/../features/apiMain
       contexts:
-        - FeatureContext:
+        - FeatureContext: &common_feature_context_params
             baseUrl:  http://localhost:8080/ocs/
             adminUsername: admin
             adminPassword: admin
@@ -18,39 +18,24 @@ default:
         - CalDavContext:
             baseUrl: http://localhost:8080
         - AppManagementContext:
+
     apiFederation:
       paths:
         - %paths.base%/../features/apiFederation
       contexts:
-        - FederationContext:
-            baseUrl:  http://localhost:8080/ocs/
-            adminUsername: admin
-            adminPassword: admin
-            regularUserPassword: 123456
-            mailhogUrl: http://127.0.0.1:8025/api/v2/messages
-            ocPath: ../../
+        - FederationContext: *common_feature_context_params
+
     apiCapabilities:
       paths:
         - %paths.base%/../features/apiCapabilities
       contexts:
-        - CapabilitiesContext:
-            baseUrl:  http://localhost:8080/ocs/
-            adminUsername: admin
-            adminPassword: admin
-            regularUserPassword: 123456
-            mailhogUrl: http://127.0.0.1:8025/api/v2/messages
-            ocPath: ../../
+        - CapabilitiesContext: *common_feature_context_params
+
     apiSharees:
       paths:
         - %paths.base%/../features/apiSharees
       contexts:
-        - ShareesContext:
-            baseUrl:  http://localhost:8080/ocs/
-            adminUsername: admin
-            adminPassword: admin
-            regularUserPassword: 123456
-            mailhogUrl: http://127.0.0.1:8025/api/v2/messages
-            ocPath: ../../
+        - ShareesContext: *common_feature_context_params
 
     webUIFiles:
       paths:
@@ -62,6 +47,7 @@ default:
           adminPassword: admin
           regularUserPassword: 123456
       contexts:
+        - FeatureContext: *common_feature_context_params
         - WebUIGeneralContext:
         - WebUILoginContext:
         - WebUIUsersContext:
@@ -72,6 +58,7 @@ default:
         - %paths.base%/../features/webUIMoveFilesFolders
       context: *common_webui_suite_context
       contexts:
+        - FeatureContext: *common_feature_context_params
         - WebUIGeneralContext:
         - WebUILoginContext:
         - WebUIUsersContext:
@@ -82,6 +69,7 @@ default:
         - %paths.base%/../features/webUIRenameFiles
       context: *common_webui_suite_context
       contexts:
+        - FeatureContext: *common_feature_context_params
         - WebUIGeneralContext:
         - WebUILoginContext:
         - WebUIUsersContext:
@@ -92,6 +80,7 @@ default:
         - %paths.base%/../features/webUIRenameFolders
       context: *common_webui_suite_context
       contexts:
+        - FeatureContext: *common_feature_context_params
         - WebUIGeneralContext:
         - WebUILoginContext:
         - WebUIUsersContext:
@@ -102,6 +91,7 @@ default:
         - %paths.base%/../features/webUITrashbin
       context: *common_webui_suite_context
       contexts:
+        - FeatureContext: *common_feature_context_params
         - WebUIGeneralContext:
         - WebUILoginContext:
         - WebUIUsersContext:
@@ -112,6 +102,7 @@ default:
         - %paths.base%/../features/webUISharingInternalGroups
       context: *common_webui_suite_context
       contexts:
+        - FeatureContext: *common_feature_context_params
         - WebUIGeneralContext:
         - WebUILoginContext:
         - WebUIUsersContext:
@@ -123,6 +114,7 @@ default:
         - %paths.base%/../features/webUISharingInternalUsers
       context: *common_webui_suite_context
       contexts:
+        - FeatureContext: *common_feature_context_params
         - WebUIGeneralContext:
         - WebUILoginContext:
         - WebUIUsersContext:
@@ -134,6 +126,7 @@ default:
         - %paths.base%/../features/webUISharingExternal
       context: *common_webui_suite_context
       contexts:
+        - FeatureContext: *common_feature_context_params
         - WebUIGeneralContext:
         - WebUILoginContext:
         - WebUIUsersContext:
@@ -145,6 +138,7 @@ default:
         - %paths.base%/../features/webUIUpload
       context: *common_webui_suite_context
       contexts:
+        - FeatureContext: *common_feature_context_params
         - WebUIGeneralContext:
         - WebUILoginContext:
         - WebUIUsersContext:
@@ -155,6 +149,7 @@ default:
         - %paths.base%/../features/webUIRestrictSharing
       context: *common_webui_suite_context
       contexts:
+        - FeatureContext: *common_feature_context_params
         - WebUIGeneralContext:
         - WebUILoginContext:
         - WebUIUsersContext:
@@ -166,6 +161,7 @@ default:
         - %paths.base%/../features/webUIFavorites
       context: *common_webui_suite_context
       contexts:
+        - FeatureContext: *common_feature_context_params
         - WebUIGeneralContext:
         - WebUILoginContext:
         - WebUIUsersContext:
@@ -176,6 +172,7 @@ default:
         - %paths.base%/../features/webUIManageUsersGroups
       context: *common_webui_suite_context
       contexts:
+        - FeatureContext: *common_feature_context_params
         - WebUIGeneralContext:
         - WebUILoginContext:
         - WebUIUsersContext:
@@ -187,6 +184,7 @@ default:
         - %paths.base%/../features/webUIManageQuota
       context: *common_webui_suite_context
       contexts:
+        - FeatureContext: *common_feature_context_params
         - WebUIGeneralContext:
         - WebUILoginContext:
         - WebUIUsersContext:
@@ -197,6 +195,7 @@ default:
         - %paths.base%/../features/webUIPersonalSettings
       context: *common_webui_suite_context
       contexts:
+        - FeatureContext: *common_feature_context_params
         - WebUIGeneralContext:
         - WebUILoginContext:
         - WebUIUsersContext:
