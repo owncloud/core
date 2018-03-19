@@ -67,6 +67,12 @@ class OC_JSON{
 	 * @deprecated Use annotation based ACLs from the AppFramework instead
 	 */
 	public static function checkLoggedIn() {
+		static $loginCalled = false;
+		if (!$loginCalled && !OC_User::isLoggedIn()) {
+			\OC::handleLogin(\OC::$server->getRequest());
+			$loginCalled = true;
+		}
+
 		$twoFactorAuthManger = \OC::$server->getTwoFactorAuthManager();
 		if( !OC_User::isLoggedIn()
 			|| $twoFactorAuthManger->needsSecondFactor()) {

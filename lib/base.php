@@ -894,7 +894,6 @@ class OC {
 			} else {
 				// For guests: Load only filesystem and logging
 				OC_App::loadApps(['filesystem', 'logging']);
-				self::handleLogin($request);
 			}
 		}
 
