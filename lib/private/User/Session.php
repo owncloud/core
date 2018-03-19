@@ -46,6 +46,7 @@ use OC_Util;
 use OCA\DAV\Connector\Sabre\Auth;
 use OCP\App\IServiceLoader;
 use OCP\AppFramework\Utility\ITimeFactory;
+use OCP\Authentication\IApacheBackend;
 use OCP\Authentication\IAuthModule;
 use OCP\Events\EventEmitterTrait;
 use OCP\Files\NoReadAccessException;
@@ -54,9 +55,11 @@ use OCP\IConfig;
 use OCP\IRequest;
 use OCP\ISession;
 use OCP\IUser;
+use OCP\IUserBackend;
 use OCP\IUserManager;
 use OCP\IUserSession;
 use OCP\Session\Exceptions\SessionNotAvailableException;
+use OCP\UserInterface;
 use OCP\Util;
 use Symfony\Component\EventDispatcher\GenericEvent;
 
@@ -104,6 +107,9 @@ class Session implements IUserSession, Emitter {
 	/** @var IServiceLoader */
 	private $serviceLoader;
 
+	/** @var SyncService */
+	protected $userSyncService;
+
 	/**
 	 * @param IUserManager $manager
 	 * @param ISession $session
@@ -111,16 +117,19 @@ class Session implements IUserSession, Emitter {
 	 * @param IProvider $tokenProvider
 	 * @param IConfig $config
 	 * @param IServiceLoader $serviceLoader
+	 * @param SyncService $userSyncService
 	 */
 	public function __construct(IUserManager $manager, ISession $session,
-								ITimeFactory $timeFactory, $tokenProvider,
-								IConfig $config, IServiceLoader $serviceLoader) {
+								ITimeFactory $timeFactory, IProvider $tokenProvider,
+								IConfig $config, IServiceLoader $serviceLoader,
+								SyncService $userSyncService) {
 		$this->manager = $manager;
 		$this->session = $session;
 		$this->timeFactory = $timeFactory;
 		$this->tokenProvider = $tokenProvider;
 		$this->config = $config;
 		$this->serviceLoader = $serviceLoader;
+		$this->userSyncService = $userSyncService;
 	}
 
 	/**
@@ -555,6 +564,91 @@ class Session implements IUserSession, Emitter {
 		$this->session->set('app_password', $token);
 
 		return true;
+	}
+
+	/**
+	 * Try to login a user, assuming authentication
+	 * has already happened (e.g. via Single Sign On).
+	 *
+	 * Log in a user and regenerate a new session.
+	 *
+	 * @param \OCP\Authentication\IApacheBackend $apacheBackend
+	 * @return bool
+	 * @throws LoginException
+	 */
+	public function loginWithApache(IApacheBackend $apacheBackend) {
+
+		$uidAndBackend = $apacheBackend->getCurrentUserId();
+		if (is_array($uidAndBackend)
+			&& count($uidAndBackend) === 2
+			&& $uidAndBackend[0] !== ''
+			&& $uidAndBackend[0] !== null
+			&& $uidAndBackend[1] instanceof UserInterface
+		) {
+			list($uid, $backend) = $uidAndBackend;
+		} else if (is_string($uidAndBackend)) {
+			$uid = $uidAndBackend;
+			if ($apacheBackend instanceof UserInterface) {
+				$backend = $apacheBackend;
+			} else {
+				\OC::$server->getLogger()->error("Apache backend failed to provide a valid backend for the user");
+				return false;
+			}
+		} else {
+			\OC::$server->getLogger()->debug("No valid user detected from apache user backend");
+			return false;
+		}
+
+		if ($this->getUser() !== null && $uid === $this->getUser()->getUID()) {
+			return true; // nothing to do
+		}
+		$this->session->regenerateId();
+
+		$this->manager->emit('\OC\User', 'preLogin', [$uid, '']);
+
+		// Die here if not valid
+		if(!$apacheBackend->isSessionActive()) {
+			return false;
+		}
+
+		// Now we try to create the account or sync
+		$this->userSyncService->createOrSyncAccount($uid, $backend);
+
+		$user = $this->manager->get($uid);
+		if ($user === null) {
+			$this->manager->emit('\OC\User', 'failedLogin', [$uid]);
+			return false;
+		}
+
+		if ($user->isEnabled()) {
+			$this->setUser($user);
+			$this->setLoginName($uid);
+
+			$request = OC::$server->getRequest();
+			$this->createSessionToken($request, $uid, $uid);
+
+			// setup the filesystem
+			OC_Util::setupFS($uid);
+			// first call the post_login hooks, the login-process needs to be
+			// completed before we can safely create the users folder.
+			// For example encryption needs to initialize the users keys first
+			// before we can create the user folder with the skeleton files
+
+			$firstTimeLogin = $user->updateLastLoginTimestamp();
+			$this->manager->emit('\OC\User', 'postLogin', [$user, '']);
+			if ($this->isLoggedIn()) {
+				$this->prepareUserLogin($firstTimeLogin);
+				return true;
+			} else {
+				// injecting l10n does not work - there is a circular dependency between session and \OCP\L10N\IFactory
+				$message = \OC::$server->getL10N('lib')->t('Login canceled by app');
+				throw new LoginException($message);
+			}
+		} else {
+			// injecting l10n does not work - there is a circular dependency between session and \OCP\L10N\IFactory
+			$message = \OC::$server->getL10N('lib')->t('User disabled');
+			throw new LoginException($message);
+		}
 	}
 
 	/**

@@ -28,7 +28,7 @@ use OCP\UserInterface;
 /**
  * Class Account
  *
- * @method int getUserId()
+ * @method string getUserId()
  * @method string getDisplayName()
  * @method void setDisplayName(string $displayName)
  * @method string getEmail()
@@ -71,6 +71,9 @@ class Account extends Entity {
 		$this->addType('lastLogin', 'integer');
 	}
 
+	/**
+	 * @param string $uid
+	 */
 	public function setUserId($uid) {
 		parent::setter('lowerUserId', [strtolower($uid)]);
 		parent::setter('userId', [$uid]);

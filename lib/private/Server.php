@@ -85,6 +85,7 @@ use OC\Tagging\TagMapper;
 use OC\Theme\ThemeService;
 use OC\User\AccountMapper;
 use OC\User\AccountTermMapper;
+use OC\User\SyncService;
 use OCP\App\IServiceLoader;
 use OCP\AppFramework\QueryException;
 use OCP\AppFramework\Utility\ITimeFactory;
@@ -239,9 +240,16 @@ class Server extends ServerContainer implements IServerContainer, IServiceLoader
 			return new AccountMapper($c->getConfig(), $c->getDatabaseConnection(), new AccountTermMapper($c->getDatabaseConnection()));
 		});
 		$this->registerService('UserManager', function (Server $c) {
-			$config = $c->getConfig();
-			$logger = $c->getLogger();
-			return new \OC\User\Manager($config, $logger, $c->getAccountMapper());
+			return new \OC\User\Manager(
+				$c->getConfig(),
+				$c->getLogger(),
+				$c->getAccountMapper(),
+				new SyncService(
+					$c->getConfig(),
+					$c->getLogger(),
+					$c->getAccountMapper()
+				)
+			);
 		});
 		$this->registerService('GroupManager', function (Server $c) {
 			$groupManager = new \OC\Group\Manager($this->getUserManager());
@@ -296,8 +304,10 @@ class Server extends ServerContainer implements IServerContainer, IServiceLoader
 				$defaultTokenProvider = null;
 			}
 
+			$userSyncService = new SyncService($c->getConfig(), $c->getLogger(), $c->getAccountMapper());
+
 			$userSession = new \OC\User\Session($manager, $session, $timeFactory,
-				$defaultTokenProvider, $c->getConfig(), $this);
+				$defaultTokenProvider, $c->getConfig(), $this, $userSyncService);
 			$userSession->listen('\OC\User', 'preCreateUser', function ($uid, $password) {
 				\OC_Hook::emit('OC_User', 'pre_createUser', ['run' => true, 'uid' => $uid, 'password' => $password]);
 			});

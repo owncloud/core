@@ -78,16 +78,21 @@ class Manager extends PublicEmitter implements IUserManager {
 	/** @var AccountMapper */
 	private $accountMapper;
 
+	/** @var SyncService */
+	private $syncService;
+
 	/**
 	 * @param IConfig $config
 	 * @param ILogger $logger
 	 * @param AccountMapper $accountMapper
+	 * @param SyncService $syncService
 	 */
-	public function __construct(IConfig $config, ILogger $logger, AccountMapper $accountMapper) {
+	public function __construct(IConfig $config, ILogger $logger, AccountMapper $accountMapper, SyncService $syncService) {
 		$this->config = $config;
 		$this->logger = $logger;
 		$this->accountMapper = $accountMapper;
 		$this->cachedUsers = new CappedMemoryCache();
+		$this->syncService = $syncService;
 		$cachedUsers = &$this->cachedUsers;
 		$this->listen('\OC\User', 'postDelete', function ($user) use (&$cachedUsers) {
 			/** @var \OC\User\User $user */
@@ -100,12 +105,14 @@ class Manager extends PublicEmitter implements IUserManager {
 	 *
 	 * @param AccountMapper $mapper
 	 * @param array $backends
+	 * @param SyncService $syncService
 	 * @return array
 	 */
-	public function reset(AccountMapper $mapper, $backends) {
-		$return = [$this->accountMapper, $this->backends];
+	public function reset(AccountMapper $mapper, $backends, $syncService) {
+		$return = [$this->accountMapper, $this->backends, $this->syncService];
 		$this->accountMapper = $mapper;
 		$this->backends = $backends;
+		$this->syncService = $syncService;
 		$this->cachedUsers->clear();
 
 		return $return;
@@ -220,13 +227,7 @@ class Manager extends PublicEmitter implements IUserManager {
 			if ($backend->implementsActions(Backend::CHECK_PASSWORD)) {
 				$uid = $backend->checkPassword($loginName, $password);
 				if ($uid !== false) {
-					try {
-						$account = $this->accountMapper->getByUid($uid);
-					} catch(DoesNotExistException $ex) {
-						$account = $this->newAccount($uid, $backend);
-					}
-					$this->cachedUsers->remove($account->getUserId());
-					// TODO always sync account with backend here to update displayname, email, search terms, home etc. user_ldap currently updates user metadata on login, core should take care of updating accounts on a successful login
+					$account = $this->syncService->createOrSyncAccount($uid, $backend);
 					return $this->getUserObject($account);
 				}
 			}
@@ -292,7 +293,7 @@ class Manager extends PublicEmitter implements IUserManager {
 	 * @param string $uid
 	 * @param string $password
 	 * @throws \Exception
-	 * @return bool|\OC\User\User the created user or false
+	 * @return bool|IUser the created user or false
 	 */
 	public function createUser($uid, $password) {
 		return $this->emittingCall(function () use (&$uid, &$password) {
@@ -337,16 +338,16 @@ class Manager extends PublicEmitter implements IUserManager {
 			if (empty($this->backends)) {
 				$this->registerBackend(new Database());
 			}
+
 			foreach ($this->backends as $backend) {
 				if ($backend->implementsActions(Backend::CREATE_USER)) {
 					$backend->createUser($uid, $password);
-					$account = $this->newAccount($uid, $backend);
-					$this->cachedUsers->remove($account->getUserId());
-					$user = $this->getUserObject($account);
-					$this->emit('\OC\User', 'postCreateUser', [$user, $password]);
-					return $user;
+					$user = $this->createUserFromBackend($uid, $password, $backend);
+					return $user === null ? false : $user;
 				}
 			}
+
+
 			return false;
 		}, ['before' => ['uid' => $uid], 'after' => ['uid' => $uid, 'password' => $password]], 'user', 'create');
 	}
@@ -355,12 +356,16 @@ class Manager extends PublicEmitter implements IUserManager {
 	 * @param string $uid
 	 * @param UserInterface $backend
 	 * @return IUser | null
+	 * @deprecated core is responsible for creating accounts, see user_ldap how it is done
 	 */
 	public function createUserFromBackend($uid, $password, $backend) {
 		return $this->emittingCall(function () use (&$uid, &$password, &$backend) {
-			$this->emit('\OC\User', 'preCreateUser', [$uid, '']);
-			$account = $this->newAccount($uid, $backend);
-			$this->cachedUsers->remove($account->getUserId());
+			$this->emit('\OC\User', 'preCreateUser', [$uid, $password]);
+			try {
+				$account = $this->syncService->createOrSyncAccount($uid, $backend);
+			} catch (\InvalidArgumentException $e) {
+				return null; // because that's what this method should do
+			}
 			$user = $this->getUserObject($account);
 			$this->emit('\OC\User', 'postCreateUser', [$user, $password]);
 			return $user;
@@ -430,55 +435,6 @@ class Manager extends PublicEmitter implements IUserManager {
 		return array_map(function(Account $account) {
 			return $this->getUserObject($account);
 		}, $accounts);
-	}
-
-	/**
-	 * TODO inject OC\User\SyncService to deduplicate Account creation code
-	 * @param string $uid
-	 * @param UserInterface $backend
-	 * @return Account|\OCP\AppFramework\Db\Entity
-	 */
-	private function newAccount($uid, $backend) {
-		$account = new Account();
-		$account->setUserId($uid);
-		$account->setBackend(get_class($backend));
-		$account->setState(Account::STATE_ENABLED);
-		$account->setLastLogin(0);
-		if ($backend->implementsActions(Backend::GET_DISPLAYNAME)) {
-			$account->setDisplayName($backend->getDisplayName($uid));
-		}
-		if ($backend instanceof IProvidesEMailBackend) {
-			$email = $backend->getEMailAddress($uid);
-			if ($email !== null) {
-				$account->setEmail($email);
-			}
-		}
-		if ($backend instanceof IProvidesQuotaBackend) {
-			$quota = $backend->getQuota($uid);
-			if ($quota !== null) {
-				$account->setQuota($quota);
-			}
-		}
-		if ($backend instanceof IProvidesExtendedSearchBackend) {
-			$terms = $backend->getSearchTerms($uid);
-			if (!empty($terms)) {
-				$account->setSearchTerms($terms);
-			}
-		}
-		$home = false;
-		if ($backend->implementsActions(Backend::GET_HOME)) {
-			$home = $backend->getHome($uid);
-		}
-		if (!is_string($home) || substr($home, 0, 1) !== '/') {
-			$home = $this->config->getSystemValue('datadirectory', \OC::$SERVERROOT . '/data') . "/$uid";
-			$this->logger->warning(
-				"User backend ".get_class($backend)." provided no home for <$uid>, using <$home>.",
-				['app' => self::class]
-			);
-		}
-		$account->setHome($home);
-		$account = $this->accountMapper->insert($account);
-		return $account;
 	}
 
 	public function getBackend($backendClass) {
