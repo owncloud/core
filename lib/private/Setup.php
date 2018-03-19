@@ -40,10 +40,13 @@ namespace OC;
 
 use bantu\IniGetWrapper\IniGetWrapper;
 use Exception;
+use OC\DatabaseSetupException;
+use OC\User\Database;
 use OCP\IConfig;
 use OCP\IL10N;
 use OCP\ILogger;
 use OCP\Security\ISecureRandom;
+use OCP\Util;
 
 class Setup {
 	/** @var \OCP\IConfig */
@@ -62,16 +65,17 @@ class Setup {
 	/**
 	 * @param IConfig $config
 	 * @param IniGetWrapper $iniWrapper
+	 * @param IL10N $l10n
 	 * @param \OC_Defaults $defaults
 	 * @param ILogger $logger
 	 * @param ISecureRandom $random
 	 */
-	function __construct(IConfig $config,
-						 IniGetWrapper $iniWrapper,
-						 IL10N $l10n,
-						 \OC_Defaults $defaults,
-						 ILogger $logger,
-						 ISecureRandom $random
+	public function __construct(IConfig $config,
+								IniGetWrapper $iniWrapper,
+								IL10N $l10n,
+								\OC_Defaults $defaults,
+								ILogger $logger,
+								ISecureRandom $random
 		) {
 		$this->config = $config;
 		$this->iniWrapper = $iniWrapper;
@@ -81,12 +85,12 @@ class Setup {
 		$this->random = $random;
 	}
 
-	static $dbSetupClasses = [
-		'mysql' => \OC\Setup\MySQL::class,
-		'pgsql' => \OC\Setup\PostgreSQL::class,
-		'oci'   => \OC\Setup\OCI::class,
-		'sqlite' => \OC\Setup\Sqlite::class,
-		'sqlite3' => \OC\Setup\Sqlite::class,
+	static private $dbSetupClasses = [
+		'mysql' => Setup\MySQL::class,
+		'pgsql' => Setup\PostgreSQL::class,
+		'oci'   => Setup\OCI::class,
+		'sqlite' => Setup\Sqlite::class,
+		'sqlite3' => Setup\Sqlite::class,
 	];
 
 	/**
@@ -184,8 +188,10 @@ class Setup {
 	 * Gathers system information like database type and does
 	 * a few system checks.
 	 *
+	 * @param bool $allowAllDatabases
 	 * @return array of system info, including an "errors" value
 	 * in case of errors/warnings
+	 * @throws Exception
 	 */
 	public function getSystemInfo($allowAllDatabases = false) {
 		$databases = $this->getSupportedDatabases($allowAllDatabases);
@@ -202,7 +208,7 @@ class Setup {
 		}
 		if (is_dir($dataDir) && is_writable($dataDir)) {
 			// Protect data directory here, so we can test if the protection is working
-			\OC\Setup::protectDataDirectory();
+			self::protectDataDirectory();
 		}
 
 		if (!\OC_Util::runningOn('linux')) {
@@ -260,8 +266,11 @@ class Setup {
 		if(empty($options['adminpass'])) {
 			$error[] = $l->t('Set an admin password.');
 		}
+		if (empty($options['overwrite.cli.url'])) {
+			$error[] = $l->t('Set public facing ownCloud URL.');
+		}
 		if(empty($options['directory'])) {
-			$options['directory'] = \OC::$SERVERROOT."/data";
+			$options['directory'] = \OC::$SERVERROOT. '/data';
 		}
 
 		if (!isset(self::$dbSetupClasses[$dbType])) {
@@ -271,6 +280,7 @@ class Setup {
 		$username = htmlspecialchars_decode($options['adminlogin']);
 		$password = htmlspecialchars_decode($options['adminpass']);
 		$dataDir = htmlspecialchars_decode($options['directory']);
+		$overwriteCliUrl = htmlspecialchars_decode($options['overwrite.cli.url']);
 
 		$class = self::$dbSetupClasses[$dbType];
 		/** @var \OC\Setup\AbstractDatabase $dbSetup */
@@ -280,29 +290,35 @@ class Setup {
 
 		// validate the data directory
 		if (
-			(!is_dir($dataDir) and !mkdir($dataDir)) or
+			(!is_dir($dataDir) && !mkdir($dataDir)) ||
 			!is_writable($dataDir)
 		) {
 			$error[] = $l->t("Can't create or write into the data directory %s", [$dataDir]);
 		}
 
-		if(count($error) != 0) {
+		if(count($error) !== 0) {
 			return $error;
 		}
-
-		$request = \OC::$server->getRequest();
 
 		//no errors, good
 		if(isset($options['trusted_domains'])
 		    && is_array($options['trusted_domains'])) {
 			$trustedDomains = $options['trusted_domains'];
 		} else {
-			$trustedDomains = [$request->getInsecureServerHost()];
+			$parts = parse_url($overwriteCliUrl);
+			if ($parts === false) {
+				throw new \InvalidArgumentException('Invalid url "' . $overwriteCliUrl . '"');
+			}
+			if (!isset($parts['scheme']) || !isset($parts['host'])) {
+				throw new \InvalidArgumentException('Invalid url "' . $overwriteCliUrl . '"');
+			}
+			$host = strtolower($parts['host']);
+			$trustedDomains = [$host];
 		}
 
 		//use sqlite3 when available, otherwise sqlite2 will be used.
-		if($dbType=='sqlite' and $this->IsClassExisting('SQLite3')) {
-			$dbType='sqlite3';
+		if($dbType == 'sqlite' && $this->IsClassExisting('SQLite3')) {
+			$dbType = 'sqlite3';
 		}
 
 		//generate a random salt that is used to salt the local user passwords
@@ -316,9 +332,9 @@ class Setup {
 			'secret'			=> $secret,
 			'trusted_domains'	=> $trustedDomains,
 			'datadirectory'		=> $dataDir,
-			'overwrite.cli.url'	=> $request->getServerProtocol() . '://' . $request->getInsecureServerHost() . \OC::$WEBROOT,
+			'overwrite.cli.url'	=> $overwriteCliUrl,
 			'dbtype'			=> $dbType,
-			'version'			=> implode('.', \OCP\Util::getVersion()),
+			'version'			=> implode('.', Util::getVersion()),
 		]);
 
 		try {
@@ -326,24 +342,24 @@ class Setup {
 			$dbSetup->setupDatabase($username);
 			// apply necessary migrations
 			$dbSetup->runMigrations();
-		} catch (\OC\DatabaseSetupException $e) {
+		} catch (DatabaseSetupException $e) {
 			$error[] = [
 				'error' => $e->getMessage(),
 				'hint' => $e->getHint()
 			];
-			return($error);
+			return $error;
 		} catch (Exception $e) {
 			$error[] = [
 				'error' => 'Error while trying to create admin user: ' . $e->getMessage(),
 				'hint' => ''
 			];
-			return($error);
+			return $error;
 		}
 
 		//create the user and group
 		$user =  null;
 		try {
-			\OC::$server->getUserManager()->registerBackend(new \OC\User\Database());
+			\OC::$server->getUserManager()->registerBackend(new Database());
 			$user = \OC::$server->getUserManager()->createUser($username, $password);
 			if (!$user) {
 				$error[] = "User <$username> could not be created.";
@@ -352,12 +368,12 @@ class Setup {
 			$error[] = $exception->getMessage();
 		}
 
-		if(count($error) == 0) {
+		if(count($error) === 0) {
 			$config = \OC::$server->getConfig();
 			$config->setAppValue('core', 'installedat', microtime(true));
 			$config->setAppValue('core', 'lastupdatedat', microtime(true));
 
-			\OC::$server->getGroupManager()->addBackend(new \OC\Group\Database());
+			\OC::$server->getGroupManager()->addBackend(new Group\Database());
 
 			$group =\OC::$server->getGroupManager()->createGroup('admin');
 			$group->addUser($user);
@@ -370,8 +386,8 @@ class Setup {
 			file_put_contents($config->getSystemValue('datadirectory', \OC::$SERVERROOT.'/data').'/.ocdata', '');
 
 			// Update .htaccess files
-			Setup::updateHtaccess();
-			Setup::protectDataDirectory();
+			self::updateHtaccess();
+			self::protectDataDirectory();
 
 			//try to write logtimezone
 			if (date_default_timezone_get()) {
@@ -416,7 +432,7 @@ class Setup {
 			$webRoot = !empty(\OC::$WEBROOT) ? \OC::$WEBROOT : '/';
 		}
 
-		$setupHelper = new \OC\Setup($config, \OC::$server->getIniWrapper(),
+		$setupHelper = new Setup($config, \OC::$server->getIniWrapper(),
 			\OC::$server->getL10N('lib'), new \OC_Defaults(), \OC::$server->getLogger(),
 			\OC::$server->getSecureRandom());
 
@@ -425,10 +441,10 @@ class Setup {
 		$htaccessContent = explode($content, $htaccessContent, 2)[0];
 
 		//custom 403 error page
-		$content.= "\nErrorDocument 403 ".$webRoot."/core/templates/403.php";
+		$content.= "\nErrorDocument 403 ".$webRoot. '/core/templates/403.php';
 
 		//custom 404 error page
-		$content.= "\nErrorDocument 404 ".$webRoot."/core/templates/404.php";
+		$content.= "\nErrorDocument 404 ".$webRoot. '/core/templates/404.php';
 
 		// Add rewrite rules if the RewriteBase is configured
 		$rewriteBase = $config->getSystemValue('htaccess.RewriteBase', '');

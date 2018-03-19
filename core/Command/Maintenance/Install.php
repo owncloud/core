@@ -57,7 +57,8 @@ class Install extends Command {
 			->addOption('database-table-prefix', null, InputOption::VALUE_OPTIONAL, 'Prefix for all tables (default: oc_).', null)
 			->addOption('admin-user', null, InputOption::VALUE_REQUIRED, 'User name of the admin account.', 'admin')
 			->addOption('admin-pass', null, InputOption::VALUE_REQUIRED, 'Password of the admin account.')
-			->addOption('data-dir', null, InputOption::VALUE_REQUIRED, 'Path to the data directory.', \OC::$SERVERROOT."/data");
+			->addOption('data-dir', null, InputOption::VALUE_REQUIRED, 'Path to the data directory.', \OC::$SERVERROOT. '/data')
+			->addOption('overwrite.cli.url', null, InputOption::VALUE_REQUIRED, 'URL the ownCloud instance is primarily accessible.');
 	}
 
 	protected function execute(InputInterface $input, OutputInterface $output) {
@@ -74,7 +75,7 @@ class Install extends Command {
 
 			// ignore the OS X setup warning
 			if(count($errors) !== 1 ||
-				(string)($errors[0]['error']) !== 'Mac OS X is not supported and ownCloud will not work properly on this platform. Use it at your own risk! ') {
+				(string)$errors[0]['error'] !== 'Mac OS X is not supported and ownCloud will not work properly on this platform. Use it at your own risk! ') {
 				return 1;
 			}
 		}
@@ -88,7 +89,7 @@ class Install extends Command {
 			$this->printErrors($output, $errors);
 			return 1;
 		}
-		$output->writeln("ownCloud was successfully installed");
+		$output->writeln('ownCloud was successfully installed');
 		return 0;
 	}
 
@@ -125,15 +126,16 @@ class Install extends Command {
 		$adminLogin = $input->getOption('admin-user');
 		$adminPassword = $input->getOption('admin-pass');
 		$dataDir = $input->getOption('data-dir');
+		$overwriteCliUrl = $input->getOption('overwrite.cli.url');
 
 		if ($db !== 'sqlite') {
-			if (is_null($dbUser)) {
-				throw new InvalidArgumentException("Database user not provided.");
+			if ($dbUser === null) {
+				throw new InvalidArgumentException('Database user not provided.');
 			}
-			if (is_null($dbName)) {
-				throw new InvalidArgumentException("Database name not provided.");
+			if ($dbName === null) {
+				throw new InvalidArgumentException('Database name not provided.');
 			}
-			if (is_null($dbPass)) {
+			if ($dbPass === null) {
 				/** @var $dialog \Symfony\Component\Console\Helper\QuestionHelper */
 				$dialog = $this->getHelperSet()->get('question');
 				$q = new Question("<question>What is the password to access the database with user <$dbUser>?</question>", false);
@@ -142,12 +144,19 @@ class Install extends Command {
 			}
 		}
 
-		if (is_null($adminPassword)) {
+		if ($adminPassword === null) {
 			/** @var $dialog \Symfony\Component\Console\Helper\QuestionHelper */
 			$dialog = $this->getHelperSet()->get('question');
 			$q = new Question("<question>What is the password you like to use for the admin account <$adminLogin>?</question>", false);
 			$q->setHidden(true);
 			$adminPassword = $dialog->ask($input, $output, $q);
+		}
+
+		if ($overwriteCliUrl === null) {
+			/** @var $dialog \Symfony\Component\Console\Helper\QuestionHelper */
+			$dialog = $this->getHelperSet()->get('question');
+			$q = new Question('<question>What is the public facing URL of this ownCloud instance?</question>', false);
+			$overwriteCliUrl = $dialog->ask($input, $output, $q);
 		}
 
 		$options = [
@@ -159,7 +168,8 @@ class Install extends Command {
 			'dbtableprefix' => $dbTablePrefix,
 			'adminlogin' => $adminLogin,
 			'adminpass' => $adminPassword,
-			'directory' => $dataDir
+			'directory' => $dataDir,
+			'overwrite.cli.url' => $overwriteCliUrl
 		];
 		return $options;
 	}
