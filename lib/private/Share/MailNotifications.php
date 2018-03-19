@@ -138,7 +138,7 @@ class MailNotifications {
 				['fileId' => $items[0]['item_source']]
 			);
 
-			list($htmlBody, $textBody) = $this->createMailBody($filename, $link, $expiration, 'internal');
+			list($htmlBody, $textBody) = $this->createMailBody($filename, $link, $expiration, null, 'internal');
 
 			// send it out now
 			try {
@@ -169,9 +169,9 @@ class MailNotifications {
 
 	}
 
-	public function sendLinkShareMail($recipient, $filename, $link, $expiration) {
+	public function sendLinkShareMail($recipient, $filename, $link, $expiration, $personalNote = null) {
 		$subject = (string)$this->l->t('%s shared »%s« with you', [$this->senderDisplayName, $filename]);
-		list($htmlBody, $textBody) = $this->createMailBody($filename, $link, $expiration);
+		list($htmlBody, $textBody) = $this->createMailBody($filename, $link, $expiration, $personalNote);
 
 		return $this->sendLinkShareMailFromBody($recipient, $subject, $htmlBody, $textBody);
 	}
@@ -230,24 +230,31 @@ class MailNotifications {
 	 * @param string $filename the shared file
 	 * @param string $link link to the shared file
 	 * @param int $expiration expiration date (timestamp)
+	 * @param string $personalNote optional personal note
 	 * @param string $prefix prefix of mail template files
 	 * @return array an array of the html mail body and the plain text mail body
 	 */
-	public function createMailBody($filename, $link, $expiration, $prefix = '') {
+	public function createMailBody($filename, $link, $expiration, $personalNote = null, $prefix = '') {
 		$formattedDate = $expiration ? $this->l->l('date', $expiration) : null;
 
 		$html = new \OC_Template('core', $prefix . 'mail', '');
-		$html->assign ('link', $link);
-		$html->assign ('user_displayname', $this->senderDisplayName);
-		$html->assign ('filename', $filename);
+		$html->assign('link', $link);
+		$html->assign('user_displayname', $this->senderDisplayName);
+		$html->assign('filename', $filename);
 		$html->assign('expiration',  $formattedDate);
+		if ($personalNote !== null && $personalNote !== '') {
+			$html->assign('personal_note', $personalNote);
+		}
 		$htmlMail = $html->fetchPage();
 
 		$plainText = new \OC_Template('core', $prefix . 'altmail', '');
-		$plainText->assign ('link', $link);
-		$plainText->assign ('user_displayname', $this->senderDisplayName);
-		$plainText->assign ('filename', $filename);
+		$plainText->assign('link', $link);
+		$plainText->assign('user_displayname', $this->senderDisplayName);
+		$plainText->assign('filename', $filename);
 		$plainText->assign('expiration', $formattedDate);
+		if ($personalNote !== null && $personalNote !== '') {
+			$plainText->assign('personal_note', $personalNote);
+		}
 		$plainTextMail = $plainText->fetchPage();
 
 		return [$htmlMail, $plainTextMail];
