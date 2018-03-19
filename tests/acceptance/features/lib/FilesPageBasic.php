@@ -106,6 +106,19 @@ abstract class FilesPageBasic extends OwncloudPage {
 	 * @throws ElementNotFoundException
 	 */
 	public function findFileRowByName($name, Session $session) {
+		return $this->findAllFileRowsByName($name, $session)[0];
+	}
+
+	/**
+	 * finds all rows that have the given name
+	 *
+	 * @param string|array $name
+	 * @param Session $session
+	 *
+	 * @return FileRow[]
+	 * @throws ElementNotFoundException
+	 */
+	public function findAllFileRowsByName($name, Session $session) {
 		$previousFileCount = 0;
 		$currentFileCount = null;
 		$spaceLeftTillBottom = 0;
@@ -148,22 +161,21 @@ abstract class FilesPageBasic extends OwncloudPage {
 				);
 			}
 
-			$fileNameMatch = $fileListElement->find(
+			$fileNameMatch = $fileListElement->findAll(
 				"xpath", \sprintf($this->getFileNameMatchXpath(), $xpathString)
 			);
-
-			if ($fileNameMatch === null) {
+			if (\count($fileNameMatch) === 0) {
 				$fileNameMatchIsVisible = false;
 			} else {
 				try {
-					$fileNameMatchIsVisible = $fileNameMatch->isVisible();
+					$fileNameMatchIsVisible = $fileNameMatch[0]->isVisible();
 				} catch (NoSuchElement $e) {
 					// Somehow on Edge this can throw NoSuchElement even though
 					// we just found the file name.
 					// TODO: Edge - if it keeps happening then find out why.
 					\error_log(
 						__METHOD__
-						. " NoSuchElement while doing fileNameMatch->isVisible()"
+						. " NoSuchElement while doing fileNameMatch[0]->isVisible()"
 						. "\n-------------------------\n"
 						. $e->getMessage()
 						. "\n-------------------------\n"
@@ -173,7 +185,7 @@ abstract class FilesPageBasic extends OwncloudPage {
 			}
 
 			if ($fileNameMatchIsVisible) {
-				$fileNameMatch->focus();
+				$fileNameMatch[0]->focus();
 			} else {
 				if ($currentFileCount === null) {
 					$currentFileCount = $this->getSizeOfFileFolderList();
@@ -194,26 +206,35 @@ abstract class FilesPageBasic extends OwncloudPage {
 			&& ($currentFileCount > $previousFileCount || $spaceLeftTillBottom > 0)
 		);
 
-		if ($fileNameMatch === null) {
+		if (\count($fileNameMatch) === 0) {
 			throw new ElementNotFoundException(
 				__METHOD__ .
 				" could not find file with the name '" . $name . "'"
 			);
 		}
 
-		$fileRowElement = $fileNameMatch->find("xpath", $this->fileRowFromNameXpath);
-
-		if ($fileRowElement === null) {
-			throw new ElementNotFoundException(
-				__METHOD__ .
-				" xpath $this->fileRowFromNameXpath " .
-				"could not find file row"
-			);
+		$fileRowElements = [];
+		foreach ($fileNameMatch as $match) {
+			$fileRowElement = $match->find("xpath", $this->fileRowFromNameXpath);
+			if (is_null($fileRowElement)) {
+				throw new ElementNotFoundException(
+					__METHOD__ .
+					" xpath $this->fileRowFromNameXpath " .
+					"could not find file row"
+				);
+			}
+			$fileRowElements[] = $fileRowElement;
 		}
-		$fileRow = $this->getPage('FilesPageElement\\FileRow');
-		$fileRow->setElement($fileRowElement);
-		$fileRow->setName($name);
-		return $fileRow;
+
+		$fileRows = [];
+		foreach ($fileRowElements as $fileRowElement) {
+			$fileRow = $this->getPage('FilesPageElement\\FileRow');
+			$fileRow->setElement($fileRowElement);
+			$fileRow->setName($name);
+			$fileRows[] = $fileRow;
+		}
+		
+		return $fileRows;
 	}
 
 	/**
