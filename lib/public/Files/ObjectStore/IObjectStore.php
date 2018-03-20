@@ -60,9 +60,11 @@ interface IObjectStore {
 	public function deleteObject($urn);
 
 	/**
-	 * @param string $path
+	 * @param string $urn
+	 * @param string $versionId
+	 * @param string $fileName
 	 * @return string mixed
-	 * @since 10.1.0
+	 * @since 11.0.0
 	 */
-	public function getDirectDownload($urn, $versionId);
+	public function getDirectDownload($urn, $versionId, $fileName);
 }

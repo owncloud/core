@@ -36,6 +36,7 @@ use OCP\Files\External\IStorageConfig;
 use OC\Files\Storage\FailedStorage;
 use OCP\Files\StorageNotAvailableException;
 use OCP\IConfig;
+use OCP\Files\ObjectStore\IObjectStore;
 
 /**
  * Make the old files_external config work with the new public mount config api
@@ -81,7 +82,7 @@ class ConfigAdapter implements IMountProvider {
 		$objectStore = $storage->getBackendOption('objectstore');
 		if ($objectStore) {
 			$objectClass = $objectStore['class'];
-			if (!\is_subclass_of($objectClass, '\OCP\Files\ObjectStore\IObjectStore')) {
+			if (!\is_subclass_of($objectClass, IObjectStore::class)) {
 				throw new \InvalidArgumentException('Invalid object store');
 			}
 			$storage->setBackendOption('objectstore', new $objectClass($objectStore));
