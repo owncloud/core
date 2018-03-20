@@ -33,11 +33,13 @@ require_once 'bootstrap.php';
 class WebUIPersonalGeneralSettingsContext extends RawMinkContext implements Context {
 
 	private $personalGeneralSettingsPage;
+
 	/**
 	 * 
-	 * @var WebUIGeneralContext
+	 * @var FeatureContext
 	 */
-	private $webUIGeneralContext;
+	private $featureContext;
+
 	/**
 	 * WebUIPersonalGeneralSettingsContext constructor.
 	 *
@@ -100,8 +102,8 @@ class WebUIPersonalGeneralSettingsContext extends RawMinkContext implements Cont
 	 * @return void
 	 */
 	public function theUserChangesThePasswordToUsingTheWebUI($newPassword) {
-		$username = $this->webUIGeneralContext->getCurrentUser();
-		$oldPassword = trim($this->webUIGeneralContext->getUserPassword($username));
+		$username = $this->featureContext->getCurrentUser();
+		$oldPassword = trim($this->featureContext->getUserPassword($username));
 		$this->personalGeneralSettingsPage->changePassword(
 			$oldPassword, $newPassword, $this->getSession()
 		);
@@ -153,6 +155,6 @@ class WebUIPersonalGeneralSettingsContext extends RawMinkContext implements Cont
 		// Get the environment
 		$environment = $scope->getEnvironment();
 		// Get all the contexts you need in this context
-		$this->webUIGeneralContext = $environment->getContext('WebUIGeneralContext');
+		$this->featureContext = $environment->getContext('FeatureContext');
 	}
 }

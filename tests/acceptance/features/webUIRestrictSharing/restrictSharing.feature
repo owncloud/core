@@ -14,9 +14,9 @@ So that users can only share files with specific users and groups
 		|groupname|
 		|grp1     |
 		|grp2     |
-		And user "user1" has been added to group "grp1" ready for use by the webUI
-		And user "user2" has been added to group "grp1" ready for use by the webUI
-		And user "user3" has been added to group "grp2" ready for use by the webUI
+		And user "user1" has been added to group "grp1"
+		And user "user2" has been added to group "grp1"
+		And user "user3" has been added to group "grp2"
 		And the user has browsed to the login page
 		And the user has logged in with username "user2" and password "1234" using the webUI
 	
