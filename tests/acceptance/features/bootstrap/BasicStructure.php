@@ -76,6 +76,16 @@ trait BasicStructure {
 	private $baseUrl = '';
 
 	/**
+	 * @var string
+	 */
+	private $localBaseUrl = '';
+
+	/**
+	 * @var string
+	 */
+	private $remoteBaseUrl = '';
+
+	/**
 	 * @var int 
 	 */
 	private $apiVersion = 1;
@@ -137,11 +147,28 @@ trait BasicStructure {
 	}
 
 	/**
+	 * Override the baseUrl that came via the behat.yml and context constructor.
+	 * Use this when running in an environment that passes the baseUrl from some
+	 * external script. For example, the UI acceptance tests build up the baseUrl
+	 * from environment variables and the script passes the value in as a Mink
+	 * Extension parameter.
+	 *
+	 * @param string $newBaseUrl
+	 *
+	 * @return void
+	 */
+	public function overrideBaseUrl($newBaseUrl) {
+		$this->baseUrl = $newBaseUrl;
+		$this->localBaseUrl = $this->baseUrl;
+		$this->remoteBaseUrl = $this->baseUrl;
+	}
+
+	/**
 	 * returns the base URL without the /ocs part
 	 *
 	 * @return string
 	 */
-	private function baseUrlWithoutOCSAppendix() {
+	public function baseUrlWithoutOCSAppendix() {
 		return substr($this->baseUrl, 0, -4);
 	}
 
@@ -165,6 +192,13 @@ trait BasicStructure {
 	 */
 	public function asUser($user) {
 		$this->currentUser = $user;
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getCurrentUser() {
+		return $this->currentUser;
 	}
 
 	/**
