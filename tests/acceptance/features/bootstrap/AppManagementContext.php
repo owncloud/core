@@ -36,7 +36,7 @@ class AppManagementContext implements  Context {
 	private $cmdOutput;
 	
 	/**
-	 * @BeforeScenario @api
+	 * @BeforeScenario
 	 *
 	 * Remember the config values before each scenario
 	 *
@@ -50,7 +50,7 @@ class AppManagementContext implements  Context {
 	}
 	
 	/**
-	 * @AfterScenario @api
+	 * @AfterScenario
 	 *
 	 * Reset the config values after each scenario
 	 *

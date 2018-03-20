@@ -68,7 +68,7 @@ class CalDavContext implements \Behat\Behat\Context\Context {
 	}
 
 	/**
-	 * @BeforeScenario @api&&@caldav
+	 * @BeforeScenario @caldav
 	 *
 	 * @param BeforeScenarioScope $scope
 	 *
@@ -84,7 +84,7 @@ class CalDavContext implements \Behat\Behat\Context\Context {
 	}
 
 	/**
-	 * @AfterScenario @api&&@caldav
+	 * @AfterScenario @caldav
 	 *
 	 * @return void
 	 */
