@@ -36,11 +36,12 @@ require_once 'bootstrap.php';
 class WebUIUsersContext extends RawMinkContext implements Context {
 
 	private $usersPage;
+
 	/**
 	 *
-	 * @var WebUIGeneralContext
+	 * @var FeatureContext
 	 */
-	private $webUIGeneralContext;
+	private $featureContext;
 
 	/**
 	 * WebUIUsersContext constructor.
@@ -76,40 +77,6 @@ class WebUIUsersContext extends RawMinkContext implements Context {
 	}
 
 	/**
-	 * Taken from acceptance Provisioning.php and modified to suit current
-	 * UI test environment. This function should be removed when merging UI
-	 * and API acceptance tests, and the one from Provisioning.php used everywhere.
-	 *
-	 * @Given the quota of user :user has been set to :quota
-	 *
-	 * @param string $user
-	 * @param string $quota
-	 *
-	 * @return void
-	 */
-	public function theQuotaOfUserHasBeenSetTo($user, $quota) {
-		$body
-			= [
-				'key' => 'quota',
-				'value' => $quota,
-			];
-
-		$this->response = OcsApiHelper::sendRequest(
-			$this->getMinkParameter('base_url'),
-			$this->webUIGeneralContext->getAdminUsername(),
-			$this->webUIGeneralContext->getAdminPassword(),
-			"PUT",
-			"/cloud/users/" . $user,
-			$body,
-			2
-		);
-
-		PHPUnit_Framework_Assert::assertEquals(
-			200, $this->response->getStatusCode()
-		);
-	}
-
-	/**
 	 * @When /^the administrator (attempts to create|creates) a user with the name "([^"]*)" (?:and )?the password "([^"]*)"(?: and the email "([^"]*)")?(?: that is a member of these groups)? using the webUI$/
 	 *
 	 * @param string $attemptTo
@@ -136,12 +103,12 @@ class WebUIUsersContext extends RawMinkContext implements Context {
 
 		$shouldHaveBeenCreated = ($attemptTo === "");
 
-		$this->webUIGeneralContext->addUserToCreatedUsersList(
+		$this->featureContext->addUserToCreatedUsersList(
 			$username, $password, "", $email, $shouldHaveBeenCreated
 		);
 		if (is_array($groups)) {
 			foreach ($groups as $group) {
-				$this->webUIGeneralContext->addGroupToCreatedGroupsList($group);
+				$this->featureContext->addGroupToCreatedGroupsList($group);
 			}
 		}
 	}
@@ -156,7 +123,7 @@ class WebUIUsersContext extends RawMinkContext implements Context {
 	 */
 	public function theAdminDeletesTheGroupUsingTheWebUI($name) {
 		$this->usersPage->deleteGroup($name, $this->getSession());
-		$this->webUIGeneralContext->deleteGroupFromCreatedGroupsList($name);
+		$this->featureContext->deleteGroupFromCreatedGroupsList($name);
 	}
 
 	/**
@@ -269,7 +236,7 @@ class WebUIUsersContext extends RawMinkContext implements Context {
 		// Get the environment
 		$environment = $scope->getEnvironment();
 		// Get all the contexts you need in this context
-		$this->webUIGeneralContext = $environment->getContext('WebUIGeneralContext');
+		$this->featureContext = $environment->getContext('FeatureContext');
 	}
 
 	/**
