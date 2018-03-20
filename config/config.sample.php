@@ -65,6 +65,13 @@ $CONFIG = array(
     'otherdomain.example.org',
   ),
 
+/**
+ * The global list of CORS domains. All users can use tools running CORS
+ * requests from the listed domains.
+ */
+'cors.allowed-domains' => [
+	'https://foo.example.org',
+],
 
 /**
  * Where user files are stored; this defaults to ``data/`` in the ownCloud
