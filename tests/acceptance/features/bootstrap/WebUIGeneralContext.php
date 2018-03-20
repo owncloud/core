@@ -511,6 +511,15 @@ class WebUIGeneralContext extends RawMinkContext implements Context {
 	}
 
 	/**
+	 * Return the baseUrl in the form that the webUI tests use.
+	 *
+	 * @return string
+	 */
+	public function getBaseUrlInWebUITestFormat() {
+		return $this->getMinkParameter("base_url");
+	}
+
+	/**
 	 * @BeforeScenario @webUI
 	 *
 	 * @param BeforeScenarioScope $scope
@@ -565,20 +574,9 @@ class WebUIGeneralContext extends RawMinkContext implements Context {
 			]
 		);
 
-		// The webUI tests get the base URL of the server-under-test via a
-		// Mink parameter. Tell that to featureContext, which normally gets
-		// baseUrl passed in from behat.yml via its constructor.
-		$baseUrl = $this->getMinkParameter("base_url");
-
-		// baseUrl in featureContext uses a form with '/ocs/' on the end
-		// so tell that to featureContext.
-		if (substr($baseUrl, -1) !== '/') {
-			$baseUrl .= '/';
-		}
-
-		$baseUrl .= 'ocs/';
-
-		$this->featureContext->overrideBaseUrl($baseUrl);
+		$this->featureContext->overrideBaseUrlWithWebUIValue(
+			$this->getBaseUrlInWebUITestFormat()
+		);
 	}
 
 	/**

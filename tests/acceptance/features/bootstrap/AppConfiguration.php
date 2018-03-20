@@ -22,6 +22,7 @@
  *
  */
 
+use Behat\Behat\Hook\Scope\BeforeScenarioScope;
 use TestHelpers\AppConfigHelper;
 
 require __DIR__ . '/../../../../lib/composer/autoload.php';
@@ -30,6 +31,11 @@ require __DIR__ . '/../../../../lib/composer/autoload.php';
  * AppConfiguration trait
  */
 trait AppConfiguration {
+
+	/**
+	 * @var WebUIGeneralContext
+	 */
+	private $webUIGeneralContext;
 
 	/**
 	 * @var string the original capabilities in XML format
@@ -290,11 +296,24 @@ trait AppConfiguration {
 	abstract protected function resetAppConfigs();
 
 	/**
-	 * @BeforeScenario @api
+	 * @BeforeScenario
 	 *
+	 * @param BeforeScenarioScope $scope
 	 * @return void
 	 */
-	public function prepareParametersBeforeScenario() {
+	public function prepareParametersBeforeScenario(BeforeScenarioScope $scope) {
+		// If we are running a webUI scenario, then make sure to use the base URL
+		// that the webUI has configured.
+		// Because the order of BeforeScenario method execution is not guaranteed,
+		// we need to be sure this happens here, before calling resetAppConfigs(),
+		// which will need to access the server API.
+		if ($scope->getScenario()->hasTag("webUI") || $scope->getFeature()->hasTag("webUI")) {
+			$environment = $scope->getEnvironment();
+			$this->webUIGeneralContext = $environment->getContext('WebUIGeneralContext');
+			$baseUrl = $this->webUIGeneralContext->getBaseUrlInWebUITestFormat();
+			$this->overrideBaseUrlWithWebUIValue($baseUrl);
+		}
+
 		$user = $this->currentUser;
 		$this->currentUser = $this->getAdminUsername();
 		$this->resetAppConfigs();
@@ -302,7 +321,7 @@ trait AppConfiguration {
 	}
 
 	/**
-	 * @AfterScenario @api
+	 * @AfterScenario
 	 *
 	 * @return void
 	 */

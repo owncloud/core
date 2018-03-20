@@ -149,15 +149,22 @@ trait BasicStructure {
 	/**
 	 * Override the baseUrl that came via the behat.yml and context constructor.
 	 * Use this when running in an environment that passes the baseUrl from some
-	 * external script. For example, the UI acceptance tests build up the baseUrl
-	 * from environment variables and the script passes the value in as a Mink
-	 * Extension parameter.
+	 * external script. For example, the webUI acceptance tests build up the
+	 * baseUrl from environment variables and the script passes the value in as
+	 * a Mink parameter.
 	 *
-	 * @param string $newBaseUrl
+	 * @param string $newBaseUrl in the format that the webUI tests use
 	 *
 	 * @return void
 	 */
-	public function overrideBaseUrl($newBaseUrl) {
+	public function overrideBaseUrlWithWebUIValue($newBaseUrl) {
+		// baseUrl in the API tests featureContext uses a form with '/ocs/'
+		// on the end so add that.
+		if (substr($newBaseUrl, -1) !== '/') {
+			$newBaseUrl .= '/';
+		}
+
+		$newBaseUrl .= 'ocs/';
 		$this->baseUrl = $newBaseUrl;
 		$this->localBaseUrl = $this->baseUrl;
 		$this->remoteBaseUrl = $this->baseUrl;
@@ -824,7 +831,7 @@ trait BasicStructure {
 	}
 
 	/**
-	 * @BeforeScenario @api&&@local_storage
+	 * @BeforeScenario @local_storage
 	 *
 	 * @return void
 	 */
@@ -838,7 +845,7 @@ trait BasicStructure {
 	}
 
 	/**
-	 * @AfterScenario @api&&@local_storage
+	 * @AfterScenario @local_storage
 	 *
 	 * @return void
 	 */
