@@ -103,7 +103,10 @@ class CORSMiddleware extends Middleware {
 
 			$requesterDomain = $this->request->getHeader("Origin");
 
-			\OC_Response::setCorsHeaders($userId, $requesterDomain, $response, $this->config);
+			$headers = \OC_Response::setCorsHeaders($userId, $requesterDomain, $this->config);
+			foreach ($headers as $key => $value) {
+				$response->addHeader($key, implode(',', $value));
+			}
 
 			// allow credentials headers must not be true or CSRF is possible
 			// otherwise

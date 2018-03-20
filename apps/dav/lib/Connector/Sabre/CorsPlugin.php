@@ -96,7 +96,10 @@ class CorsPlugin extends \Sabre\DAV\ServerPlugin {
 		if ($request->getHeader('origin') !== null && !is_null($this->userSession->getUser())) {
 			$requesterDomain = $request->getHeader('origin');
 			$userId = $this->userSession->getUser()->getUID();
-			$response = \OC_Response::setCorsHeaders($userId, $requesterDomain, $response, null, $this->getExtraHeaders($request));
+			$headers = \OC_Response::setCorsHeaders($userId, $requesterDomain, null, $this->getExtraHeaders($request));
+			foreach ($headers as $key => $value) {
+				$response->addHeader($key, implode(',', $value));
+			}
 		}
 	}
 
