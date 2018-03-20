@@ -167,29 +167,6 @@ default:
         - WebUIUsersContext:
         - WebUIFilesContext:
 
-    webUIManageUsersGroups:
-      paths:
-        - %paths.base%/../features/webUIManageUsersGroups
-      context: *common_webui_suite_context
-      contexts:
-        - FeatureContext: *common_feature_context_params
-        - WebUIGeneralContext:
-        - WebUILoginContext:
-        - WebUIUsersContext:
-        - WebUIFilesContext:
-        - WebUIPersonalGeneralSettingsContext:
-
-    webUIManageQuota:
-      paths:
-        - %paths.base%/../features/webUIManageQuota
-      context: *common_webui_suite_context
-      contexts:
-        - FeatureContext: *common_feature_context_params
-        - WebUIGeneralContext:
-        - WebUILoginContext:
-        - WebUIUsersContext:
-        - WebUIFilesContext:
-
     webUIPersonalSettings:
       paths:
         - %paths.base%/../features/webUIPersonalSettings
