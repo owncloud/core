@@ -860,7 +860,7 @@ trait BasicStructure {
 	}
 
 	/**
-	 * @BeforeSuite @api
+	 * @BeforeSuite
 	 *
 	 * @param BeforeSuiteScope $scope
 	 *
@@ -870,9 +870,10 @@ trait BasicStructure {
 		$fullUrl = getenv('TEST_SERVER_URL') . "/v1.php/apps/testing/api/v1/increasefileid";
 		$client = new Client();
 		$options = [];
-		$adminCredentials = $scope->getSuite()->getSettings()['contexts'][0][__CLASS__]['admin'];
-		$options['auth'] = $adminCredentials;
-		$client->send($client->createRequest('post', $fullUrl, $options));
+		$adminUsername = $scope->getSuite()->getSettings()['contexts'][0][__CLASS__]['adminUsername'];
+		$adminPassword = $scope->getSuite()->getSettings()['contexts'][0][__CLASS__]['adminPassword'];
+		$options['auth'] = [$adminUsername, $adminPassword];
+		$client->send($client->createRequest('POST', $fullUrl, $options));
 	}
 }
 
