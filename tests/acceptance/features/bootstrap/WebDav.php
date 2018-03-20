@@ -911,7 +911,8 @@ trait WebDav {
 	 *
 	 * @param string $user
 	 * @param string $shouldOrNot
-	 * @param TableNode $expectedElements
+	 * @param TableNode $elements
+	 *
 	 * @throws InvalidArgumentException
 	 *
 	 * @return void
