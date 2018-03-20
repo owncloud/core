@@ -15,18 +15,14 @@ Feature: provisioning
 
 	Scenario: Create a user
 		Given user "brand-new-user" has been deleted
-		When user "admin" sends HTTP method "POST" to API endpoint "/cloud/users" with body
-			| userid   | brand-new-user |
-			| password | 456firstpwd    |
+		When the administrator sends a user creation request for user "brand-new-user" password "456firstpwd" using the API
 		Then the OCS status code should be "100"
 		And the HTTP status code should be "200"
 		And user "brand-new-user" should exist
 
 	Scenario: Create an existing user
 		Given user "brand-new-user" has been created
-		When user "admin" sends HTTP method "POST" to API endpoint "/cloud/users" with body
-			| userid   | brand-new-user |
-			| password | 456newpwd      |
+		When the administrator sends a user creation request for user "brand-new-user" password "456newpwd" using the API
 		Then the OCS status code should be "102"
 		And the HTTP status code should be "200"
 
@@ -57,24 +53,21 @@ Feature: provisioning
 
 	Scenario: Create a group
 		Given group "new-group" has been deleted
-		When user "admin" sends HTTP method "POST" to API endpoint "/cloud/groups" with body
-			| groupid | new-group |
+		When the administrator sends a group creation request for group "new-group" using the API
 		Then the OCS status code should be "100"
 		And the HTTP status code should be "200"
 		And group "new-group" should exist
 
 	Scenario: Create a group with special characters
 		Given group "España" has been deleted
-		When user "admin" sends HTTP method "POST" to API endpoint "/cloud/groups" with body
-			| groupid | España |
+		When the administrator sends a group creation request for group "España" using the API
 		Then the OCS status code should be "100"
 		And the HTTP status code should be "200"
 		And group "España" should exist
 
 	Scenario: Create a group named "0"
 		Given group "0" has been deleted
-		When user "admin" sends HTTP method "POST" to API endpoint "/cloud/groups" with body
-			| groupid | 0 |
+		When the administrator sends a group creation request for group "0" using the API
 		Then the OCS status code should be "100"
 		And the HTTP status code should be "200"
 		And group "0" should exist
