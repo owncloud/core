@@ -131,7 +131,7 @@ class NavigationManager implements INavigationManager {
 			return;
 		}
 		$this->init = true;
-		if (is_null($this->appManager)) {
+		if ($this->appManager === null) {
 			return;
 		}
 		foreach ($this->appManager->getInstalledApps() as $app) {
@@ -146,6 +146,9 @@ class NavigationManager implements INavigationManager {
 			}
 			$role = isset($nav['@attributes']['role']) ? $nav['@attributes']['role'] : 'all';
 			if ($role === 'admin' && !$this->isAdmin()) {
+				continue;
+			}
+			if ($role === 'sub-admin' && !$this->isSubAdmin()) {
 				continue;
 			}
 			$l = $this->l10nFac->get($app);
@@ -163,8 +166,8 @@ class NavigationManager implements INavigationManager {
 				}
 			}
 
-			if (is_null($iconPath)) {
-				$iconPath = $this->urlGenerator->imagePath('core', 'default-app-icon');
+			if ($iconPath === null) {
+				$iconPath = $this->urlGenerator->imagePath('core', 'default-app-icon.svg');
 			}
 
 			$this->add([
@@ -181,6 +184,14 @@ class NavigationManager implements INavigationManager {
 		$user = $this->userSession->getUser();
 		if ($user !== null) {
 			return $this->groupManager->isAdmin($user->getUID());
+		}
+		return false;
+	}
+
+	private function isSubAdmin() {
+		$user = $this->userSession->getUser();
+		if ($user !== null) {
+			return $this->groupManager->getSubAdmin()->isSubAdmin($user);
 		}
 		return false;
 	}

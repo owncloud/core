@@ -27,72 +27,67 @@ namespace Test\AppFramework\Http;
 use OCP\AppFramework\Http;
 use OCP\AppFramework\Http\TemplateResponse;
 use Test\TestCase;
+use OC\AppFramework\Core\API;
 
 
+/**
+ * Class TemplateResponseTest
+ *
+ * @package Test\AppFramework\Http
+ * @group DB
+ */
 class TemplateResponseTest extends TestCase {
 
-	/** @var \OCP\AppFramework\Http\TemplateResponse */
-	private $tpl;
-
-	/** @var \OCP\AppFramework\IApi */
-	private $api;
-
-	protected function setUp() {
-		parent::setUp();
-
-		$this->api = $this->getMockBuilder('OC\AppFramework\Core\API')
-			->setMethods(['getAppName'])
-			->setConstructorArgs(['test'])
-			->getMock();
-		$this->api->expects($this->any())
-				->method('getAppName')
-				->will($this->returnValue('app'));
-
-		$this->tpl = new TemplateResponse($this->api, 'home');
-	}
-
-
-	public function testSetParamsConstructor(){
+	public function testSetParamsConstructor() {
 		$params = ['hi' => 'yo'];
-		$this->tpl = new TemplateResponse($this->api, 'home', $params);
+		$tpl = new TemplateResponse('app', 'home', $params);
 
-		$this->assertEquals(['hi' => 'yo'], $this->tpl->getParams());
+		$this->assertEquals(['hi' => 'yo'], $tpl->getParams());
 	}
-
 
 	public function testSetRenderAsConstructor(){
 		$renderAs = 'myrender';
-		$this->tpl = new TemplateResponse($this->api, 'home', [], $renderAs);
+		$tpl = new TemplateResponse('app', 'home', [], $renderAs);
 
-		$this->assertEquals($renderAs, $this->tpl->getRenderAs());
+		$this->assertEquals($renderAs, $tpl->getRenderAs());
 	}
-
 
 	public function testSetParams(){
 		$params = ['hi' => 'yo'];
-		$this->tpl->setParams($params);
+		$tpl = new TemplateResponse('app', 'home');
+		$tpl->setParams($params);
 
-		$this->assertEquals(['hi' => 'yo'], $this->tpl->getParams());
+		$this->assertEquals(['hi' => 'yo'], $tpl->getParams());
 	}
 
 
 	public function testGetTemplateName(){
-		$this->assertEquals('home', $this->tpl->getTemplateName());
+		$tpl = new TemplateResponse('app', 'home');
+		$this->assertEquals('home', $tpl->getTemplateName());
 	}
 
 	public function testGetRenderAs(){
 		$render = 'myrender';
-		$this->tpl->renderAs($render);
-		$this->assertEquals($render, $this->tpl->getRenderAs());
+		$tpl = new TemplateResponse('app', 'home');
+		$tpl->renderAs($render);
+		$this->assertEquals($render, $tpl->getRenderAs());
 	}
 
 	public function testChainability() {
 		$params = ['hi' => 'yo'];
-		$this->tpl->setParams($params)
+		$tpl = new TemplateResponse('app', 'home');
+		$tpl->setParams($params)
 			->setStatus(Http::STATUS_NOT_FOUND);
 
-		$this->assertEquals(Http::STATUS_NOT_FOUND, $this->tpl->getStatus());
-		$this->assertEquals(['hi' => 'yo'], $this->tpl->getParams());
+		$this->assertEquals(Http::STATUS_NOT_FOUND, $tpl->getStatus());
+		$this->assertEquals(['hi' => 'yo'], $tpl->getParams());
+	}
+
+	public function testRender() {
+		$tpl = new TemplateResponse('core', '404', [], 'base');
+		$data = $tpl->render();
+		$this->assertContains('File not found', $data);
+		$this->assertContains('The specified document has not been found on the server.', $data);
 	}
 
 }

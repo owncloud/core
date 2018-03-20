@@ -497,25 +497,6 @@ class OC_App {
 				"name" => $l->t("Settings"),
 				"icon" => $urlGenerator->imagePath("settings", "admin.svg")
 			];
-
-			$hasUserManagementPrivileges = false;
-			$userObject = \OC::$server->getUserSession()->getUser();
-			if($userObject !== null) {
-				//Admin and SubAdmins are allowed to access user management
-				$hasUserManagementPrivileges = \OC::$server->getGroupManager()->isAdmin($userObject->getUID())
-					|| \OC::$server->getGroupManager()->getSubAdmin()->isSubAdmin($userObject);
-			}
-			if ($hasUserManagementPrivileges) {
-				// admin users menu
-				$settings[] = [
-					"id" => "core_users",
-					"order" => 2,
-					"href" => $urlGenerator->linkToRoute('settings_users'),
-					"name" => $l->t("Users"),
-					"icon" => $urlGenerator->imagePath("settings", "users.svg")
-				];
-			}
-
 		}
 
 		return self::proceedNavigation($settings);
