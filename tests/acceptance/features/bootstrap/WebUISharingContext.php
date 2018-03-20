@@ -39,12 +39,19 @@ class WebUISharingContext extends RawMinkContext implements Context {
 	private $filesPage;
 	private $publicLinkFilesPage;
 	private $sharingDialog;
+
 	/**
 	 * 
+	 * @var FeatureContext
+	 */
+	private $featureContext;
+
+	/**
+	 *
 	 * @var WebUIGeneralContext
 	 */
 	private $webUIGeneralContext;
-	
+
 	/**
 	 * 
 	 * @var WebUIFilesContext
@@ -326,7 +333,7 @@ class WebUISharingContext extends RawMinkContext implements Context {
 		// addToServer takes us from the public link page to the login page
 		// of the remote server, waiting for us to login.
 		$this->webUIGeneralContext->loginAs($username, $password);
-		$this->webUIGeneralContext->setCurrentServer($server);
+		$this->featureContext->usingServer($server);
 	}
 
 	/**
@@ -362,16 +369,16 @@ class WebUISharingContext extends RawMinkContext implements Context {
 		}
 		$autocompleteItems = $this->sharingDialog->getAutocompleteItemsList();
 		$createdGroups = $this->sharingDialog->groupStringsToMatchAutoComplete(
-			$this->webUIGeneralContext->getCreatedGroupNames()
+			$this->featureContext->getCreatedGroups()
 		);
 		$usersAndGroups = array_merge(
-			$this->webUIGeneralContext->getCreatedUserDisplayNames(),
+			$this->featureContext->getCreatedUserDisplayNames(),
 			$createdGroups
 		);
 		foreach ($usersAndGroups as $expectedUserOrGroup) {
 			if (strpos($expectedUserOrGroup, $requiredString) !== false
 				&& $expectedUserOrGroup !== $notToBeListed
-				&& $expectedUserOrGroup !== $this->webUIGeneralContext->getCurrentUser()
+				&& $expectedUserOrGroup !== $this->featureContext->getCurrentUser()
 			) {
 				PHPUnit_Framework_Assert::assertContains(
 					$expectedUserOrGroup,
@@ -527,6 +534,7 @@ class WebUISharingContext extends RawMinkContext implements Context {
 		// Get the environment
 		$environment = $scope->getEnvironment();
 		// Get all the contexts you need in this context
+		$this->featureContext = $environment->getContext('FeatureContext');
 		$this->webUIGeneralContext = $environment->getContext('WebUIGeneralContext');
 		$this->webUIFilesContext = $environment->getContext('WebUIFilesContext');
 		$this->setupSharingConfigs();
@@ -611,8 +619,8 @@ class WebUISharingContext extends RawMinkContext implements Context {
 
 		$change = AppConfigHelper::setCapabilities(
 			$this->getMinkParameter('base_url'),
-			$this->webUIGeneralContext->getAdminUsername(),
-			$this->webUIGeneralContext->getAdminPassword(),
+			$this->featureContext->getAdminUsername(),
+			$this->featureContext->getAdminPassword(),
 			$settings,
 			$this->webUIGeneralContext->getSavedCapabilitiesXml()
 		);
