@@ -19,9 +19,13 @@
  *
  */
 
+use Behat\Gherkin\Node\TableNode;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\BadResponseException;
 use GuzzleHttp\Message\ResponseInterface;
+use TestHelpers\OcsApiHelper;
+use TestHelpers\SetupHelper;
+use TestHelpers\UserHelper;
 
 require __DIR__ . '/../../../../lib/composer/autoload.php';
 
@@ -31,7 +35,10 @@ require __DIR__ . '/../../../../lib/composer/autoload.php';
 trait Provisioning {
 
 	/**
-	 * @var array 
+	 * list of users that were created during test runs
+	 * key is the username value is an array of user attributes
+	 *
+	 * @var array
 	 */
 	private $createdUsers = [];
 
@@ -51,6 +58,83 @@ trait Provisioning {
 	private $createdGroups = [];
 
 	/**
+	 * @return array
+	 */
+	public function getCreatedUsers() {
+		return $this->createdUsers;
+	}
+
+	/**
+	 * @return array
+	 */
+	public function getCreatedGroups() {
+		return $this->createdGroups;
+	}
+
+	/**
+	 * returns an array of the real displayed names
+	 * if no "Display Name" is set the user-name is returned instead
+	 *
+	 * @return array
+	 */
+	public function getCreatedUserDisplayNames() {
+		$result = array();
+		foreach ($this->getCreatedUsers() as $username => $user) {
+			if (is_null($user['displayname'])) {
+				$result[] = $username;
+			} else {
+				$result[] = $user['displayname'];
+			}
+		}
+		return $result;
+	}
+
+	/**
+	 *
+	 * @param string $username
+	 *
+	 * @return string password
+	 * @throws Exception
+	 */
+	public function getUserPassword($username) {
+		if ($username === $this->getAdminUsername()) {
+			$password = $this->getAdminPassword();
+		} else if (array_key_exists($username, $this->createdUsers)) {
+			$password = $this->createdUsers[$username]['password'];
+		} else if (array_key_exists($username, $this->createdRemoteUsers)) {
+			$password = $this->createdRemoteUsers[$username]['password'];
+		} else {
+			throw new Exception(
+				"user '$username' was not created by this test run"
+			);
+		}
+
+		//make sure the function always returns a string
+		return (string) $password;
+	}
+
+	/**
+	 *
+	 * @param string $username
+	 *
+	 * @return boolean
+	 * @throws Exception
+	 */
+	public function theUserShouldHaveBeenCreated($username) {
+		if (array_key_exists($username, $this->createdUsers)) {
+			return $this->createdUsers[$username]['shouldHaveBeenCreated'];
+		}
+
+		if (array_key_exists($username, $this->createdRemoteUsers)) {
+			return $this->createdRemoteUsers[$username]['shouldHaveBeenCreated'];
+		}
+
+		throw new Exception(
+			"user '$username' was not created by this test run"
+		);
+	}
+
+	/**
 	 * @When /^the administrator creates the user "([^"]*)" using the API$/
 	 * @Given /^user "([^"]*)" has been created$/
 	 *
@@ -60,12 +144,43 @@ trait Provisioning {
 	 */
 	public function adminCreatesUserUsingTheAPI($user) {
 		if (!$this->userExists($user) ) {
-			$previous_user = $this->currentUser;
-			$this->currentUser = $this->getAdminUsername();
-			$this->createTheUserUsingTheAPI($user);
-			$this->currentUser = $previous_user;
+			$password = $this->getPasswordForUser($user);
+			$this->createUser($user, $password);
 		}
 		PHPUnit_Framework_Assert::assertTrue($this->userExists($user));
+	}
+
+	/**
+	 * @Given /^these users have been created\s?(but not initialized|):$/
+	 * expects a table of users with the heading
+	 * "|username|password|displayname|email|"
+	 * displayname & email are optional
+	 *
+	 * @param string $doNotInitialize just create the user, do not trigger creating skeleton files etc
+	 * @param TableNode $table
+	 *
+	 * @return void
+	 */
+	public function theseUsersHaveBeenCreated($doNotInitialize, TableNode $table) {
+		foreach ($table as $row) {
+			if (isset($row['displayname'])) {
+				$displayName = $row['displayname'];
+			} else {
+				$displayName = null;
+			}
+			if (isset($row['email'])) {
+				$email = $row['email'];
+			} else {
+				$email = null;
+			}
+			$this->createUser(
+				$row ['username'],
+				$row ['password'],
+				$displayName,
+				$email,
+				($doNotInitialize === "")
+			);
+		}
 	}
 
 	/**
@@ -77,7 +192,7 @@ trait Provisioning {
 	 */
 	public function userShouldExist($user) {
 		PHPUnit_Framework_Assert::assertTrue($this->userExists($user));
-		$this->rememberTheUser($user);
+		$this->addUserToCreatedUsersList($user, $this->getPasswordForUser($user));
 	}
 
 	/**
@@ -100,7 +215,7 @@ trait Provisioning {
 	 */
 	public function groupShouldExist($group) {
 		PHPUnit_Framework_Assert::assertTrue($this->groupExists($group));
-		$this->rememberTheGroup($group);
+		$this->addGroupToCreatedGroupsList($group);
 	}
 
 	/**
@@ -115,6 +230,30 @@ trait Provisioning {
 	}
 
 	/**
+	 * @Then /^these groups should (not|)\s?exist:$/
+	 * expects a table of groups with the heading "groupname"
+	 *
+	 * @param string $shouldOrNot (not|)
+	 * @param TableNode $table
+	 *
+	 * @return void
+	 * @throws Exception
+	 */
+	public function theseGroupsShouldNotExist($shouldOrNot, TableNode $table) {
+		$should = ($shouldOrNot !== "not");
+		$groups = SetupHelper::getGroups();
+		foreach ($table as $row) {
+			if (in_array($row['groupname'], $groups, true) !== $should) {
+				throw new Exception(
+					"group '" . $row['groupname'] .
+					"' does" . ($should ? " not" : "") .
+					" exist but should" . ($should ? "" : " not")
+				);
+			}
+		}
+	}
+
+	/**
 	 * @When /^the administrator deletes user "([^"]*)" using the API$/
 	 * @Given /^user "([^"]*)" has been deleted$/
 	 *
@@ -124,70 +263,144 @@ trait Provisioning {
 	 */
 	public function adminDeletesUserUsingTheAPI($user) {
 		if ($this->userExists($user)) {
-			$previous_user = $this->currentUser;
-			$this->currentUser = $this->getAdminUsername();
 			$this->deleteTheUserUsingTheAPI($user);
-			$this->currentUser = $previous_user;
 		}
 		PHPUnit_Framework_Assert::assertFalse($this->userExists($user));
 	}
 
 	/**
-	 * @param string $user
+	 * @Given these users have been initialized:
+	 * expects a table of users with the heading
+	 * "|username|password|"
+	 *
+	 * @param TableNode $table
 	 *
 	 * @return void
 	 */
-	public function rememberTheUser($user) {
-		if ($this->currentServer === 'LOCAL') {
-			$this->createdUsers[$user] = $user;
-		} elseif ($this->currentServer === 'REMOTE') {
-			$this->createdRemoteUsers[$user] = $user;
+	public function theseUsersHaveBeenInitialized(TableNode $table) {
+		foreach ($table as $row) {
+			$this->initializeUser(
+				$row ['username'],
+				$row ['password']
+			);
 		}
 	}
 
 	/**
+	 * Make a request about the user. That will force the server to fully
+	 * initialize the user, including their skeleton files.
+	 *
 	 * @param string $user
+	 * @param string $password
 	 *
 	 * @return void
 	 */
-	public function createTheUserUsingTheAPI($user) {
-		$fullUrl = $this->baseUrl . "v{$this->apiVersion}.php/cloud/users";
+	public function initializeUser($user, $password) {
+		$url = $this->baseUrl . "v{$this->apiVersion}.php/cloud/users/" . $user;
 		$client = new Client();
-		$options = [];
-		if ($this->currentUser === $this->getAdminUsername()) {
-			$options['auth'] = $this->getAuthOptionForAdmin();
-		}
-
-		$password = $this->getPasswordForUser($user);
-		$options['body'] = [
-							'userid' => $user,
-							'password' => $password
-							];
-
-		$this->response = $client->send(
-			$client->createRequest("POST", $fullUrl, $options)
-		);
-		$this->rememberTheUser($user);
-
-		//Quick hack to login once with the current user
-		$options2 = [
+		$options = [
 			'auth' => [$user, $password],
 		];
-		$url = $fullUrl . '/' . $user;
-		$client->send($client->createRequest('GET', $url, $options2));
+		$client->send($client->createRequest('GET', $url, $options));
 	}
 
 	/**
+	 * adds a user to the list of users that were created during test runs
+	 * makes it possible to use this list in other test steps
+	 * or to delete them at the end of the test
+	 *
 	 * @param string $user
+	 * @param string $password
+	 * @param string $displayName
+	 * @param string $email
+	 * @param bool $shouldHaveBeenCreated
 	 *
 	 * @return void
 	 */
-	public function createUser($user) {
-		$previous_user = $this->currentUser;
-		$this->currentUser = $this->getAdminUsername();
-		$this->createTheUserUsingTheAPI($user);
-		PHPUnit_Framework_Assert::assertTrue($this->userExists($user));
-		$this->currentUser = $previous_user;
+	public function addUserToCreatedUsersList(
+		$user, $password, $displayName = null, $email = null, $shouldHaveBeenCreated = true
+	) {
+		$userData = [
+			"password" => $password,
+			"displayname" => $displayName,
+			"email" => $email,
+			"shouldHaveBeenCreated" => $shouldHaveBeenCreated
+		];
+
+		if ($this->currentServer === 'LOCAL') {
+			$this->createdUsers[$user] = $userData;
+		} elseif ($this->currentServer === 'REMOTE') {
+			$this->createdRemoteUsers[$user] = $userData;
+		}
+	}
+
+	/**
+	 * creates a single user
+	 *
+	 * @param string $user
+	 * @param string $password
+	 * @param string $displayName
+	 * @param string $email
+	 * @param bool $initialize initialize the user skeleton files etc
+	 * @param string $method how to create the user api|occ
+	 *
+	 * @return void
+	 * @throws Exception
+	 */
+	private function createUser(
+		$user, $password, $displayName = null, $email = null, $initialize = true,
+		$method = null
+	) {
+		if ($method === null && getenv("TEST_EXTERNAL_USER_BACKENDS") === "true") {
+			//guess yourself
+			$method = "ldap";
+		} elseif ($method === null) {
+			$method = "api";
+		}
+		$user = trim($user);
+		$method = trim(strtolower($method));
+		$baseUrl = $this->baseUrlWithoutOCSAppendix();
+		switch ($method) {
+			case "api":
+				$results = UserHelper::createUser(
+					$baseUrl, $user, $password,
+					$this->getAdminUsername(),
+					$this->getAdminPassword(),
+					$displayName, $email
+				);
+				foreach ($results as $result) {
+					if ($result->getStatusCode() !== 200) {
+						throw new Exception(
+							"could not create user. "
+							. $result->getStatusCode() . " " . $result->getBody()
+						);
+					}
+				}
+				break;
+			case "occ":
+				$result = SetupHelper::createUser(
+					$user, $password, $displayName, $email
+				);
+				if ($result["code"] != 0) {
+					throw new Exception(
+						"could not create user. "
+						. $result["stdOut"] . " " . $result["stdErr"]
+					);
+				}
+				break;
+			case "ldap":
+				echo "creating LDAP users is not implemented, so assume they exist\n";
+				break;
+			default:
+				throw new InvalidArgumentException(
+					"Invalid method to create a user"
+				);
+		}
+
+		$this->addUserToCreatedUsersList($user, $password, $displayName, $email);
+		if ($initialize) {
+			$this->initializeUser($user, $password);
+		}
 	}
 
 	/**
@@ -196,24 +409,8 @@ trait Provisioning {
 	 * @return void
 	 */
 	public function deleteUser($user) {
-		$previous_user = $this->currentUser;
-		$this->currentUser = $this->getAdminUsername();
 		$this->deleteTheUserUsingTheAPI($user);
 		PHPUnit_Framework_Assert::assertFalse($this->userExists($user));
-		$this->currentUser = $previous_user;
-	}
-
-	/**
-	 * @param string $group
-	 *
-	 * @return void
-	 */
-	public function createGroup($group) {
-		$previous_user = $this->currentUser;
-		$this->currentUser = $this->getAdminUsername();
-		$this->createTheGroup($group);
-		PHPUnit_Framework_Assert::assertTrue($this->groupExists($group));
-		$this->currentUser = $previous_user;
 	}
 
 	/**
@@ -222,11 +419,8 @@ trait Provisioning {
 	 * @return void
 	 */
 	public function deleteGroup($group) {
-		$previous_user = $this->currentUser;
-		$this->currentUser = $this->getAdminUsername();
 		$this->deleteTheGroupUsingTheAPI($group);
 		PHPUnit_Framework_Assert::assertFalse($this->groupExists($group));
-		$this->currentUser = $previous_user;
 	}
 
 	/**
@@ -320,7 +514,6 @@ trait Provisioning {
 
 	/**
 	 * @When /^the administrator adds user "([^"]*)" to group "([^"]*)" using the API$/
-	 * @Given /^user "([^"]*)" has been added to group "([^"]*)"$/
 	 *
 	 * @param string $user
 	 * @param string $group
@@ -328,15 +521,64 @@ trait Provisioning {
 	 * @return void
 	 */
 	public function adminAddsUserToGroupUsingTheAPI($user, $group) {
-		$previous_user = $this->currentUser;
-		$this->currentUser = $this->getAdminUsername();
-
 		if (!$this->userBelongsToGroup($user, $group)) {
-			$this->addUserToGroupUsingTheAPI($user, $group);
+			$this->userHasBeenAddedToGroup($user, $group);
 		}
 
 		$this->userShouldBelongToGroup($user, $group);
-		$this->currentUser = $previous_user;
+	}
+
+	/**
+	 * @Given /^user "([^"]*)" has been added to group "([^"]*)"$/
+	 *
+	 * @param string $user
+	 * @param string $group
+	 * @param string $method how to add the user to the group api|occ
+	 *
+	 * @return void
+	 * @throws Exception
+	 */
+	public function userHasBeenAddedToGroup($user, $group, $method = null) {
+		if ($method === null && getenv("TEST_EXTERNAL_USER_BACKENDS") === "true") {
+			//guess yourself
+			$method = "ldap";
+		} elseif ($method === null) {
+			$method = "api";
+		}
+		$method = trim(strtolower($method));
+		switch ($method) {
+			case "api":
+				$result = UserHelper::addUserToGroup(
+					$this->baseUrlWithoutOCSAppendix(),
+					$user, $group,
+					$this->getAdminUsername(),
+					$this->getAdminPassword()
+				);
+				if ($result->getStatusCode() !== 200) {
+					throw new Exception(
+						"could not add user to group. "
+						. $result->getStatusCode() . " " . $result->getBody()
+					);
+				}
+				break;
+			case "occ":
+				$result = SetupHelper::addUserToGroup($group, $user);
+				if ($result["code"] != 0) {
+					throw new Exception(
+						"could not add user to group. "
+						. $result["stdOut"] . " " . $result["stdErr"]
+					);
+				}
+				break;
+			case "ldap":
+				echo "adding users to groups in LDAP is not implemented, " .
+					"so assume user is in group\n";
+				break;
+			default:
+				throw new InvalidArgumentException(
+					"Invalid method to add a user to a group"
+				);
+		}
 	}
 
 	/**
@@ -344,11 +586,26 @@ trait Provisioning {
 	 *
 	 * @return void
 	 */
-	public function rememberTheGroup($group) {
+	public function addGroupToCreatedGroupsList($group) {
 		if ($this->currentServer === 'LOCAL') {
 			$this->createdGroups[$group] = $group;
 		} elseif ($this->currentServer === 'REMOTE') {
 			$this->createdRemoteGroups[$group] = $group;
+		}
+	}
+
+	/**
+	 * deletes a group from the lists of groups that were created during test runs
+	 * useful if a group got created during the setup phase but got deleted in a
+	 * test run. We don't want to try to delete this group again in the tear-down phase
+	 *
+	 * @param string $group
+	 *
+	 * @return void
+	 */
+	public function deleteGroupFromCreatedGroupsList($group) {
+		if (($key = array_search($group, $this->createdGroups, true)) !== false) {
+			unset($this->createdGroups[$key]);
 		}
 	}
 
@@ -362,35 +619,76 @@ trait Provisioning {
 	 */
 	public function adminCreatesGroupUsingTheAPI($group) {
 		if (!$this->groupExists($group)) {
-			$previous_user = $this->currentUser;
-			$this->currentUser = $this->getAdminUsername();
 			$this->createTheGroup($group);
-			$this->currentUser = $previous_user;
 		}
 		PHPUnit_Framework_Assert::assertTrue($this->groupExists($group));
 	}
 
 	/**
-	 * @param string $group
+	 * @Given these groups have been created:
+	 * expects a table of groups with the heading "groupname"
+	 *
+	 * @param TableNode $table
 	 *
 	 * @return void
 	 */
-	public function createTheGroup($group) {
-		$fullUrl = $this->baseUrl . "v{$this->apiVersion}.php/cloud/groups";
-		$client = new Client();
-		$options = [];
-		if ($this->currentUser === $this->getAdminUsername()) {
-			$options['auth'] = $this->getAuthOptionForAdmin();
+	public function theseGroupsHaveBeenCreated(TableNode $table) {
+		foreach ($table as $row) {
+			$this->createTheGroup($row['groupname']);
 		}
+	}
 
-		$options['body'] = [
-			'groupid' => $group,
-		];
-
-		$this->response = $client->send(
-			$client->createRequest("POST", $fullUrl, $options)
-		);
-		$this->rememberTheGroup($group);
+	/**
+	 * creates a single group
+	 *
+	 * @param string $group
+	 * @param string $method how to create the group api|occ
+	 *
+	 * @return void
+	 * @throws Exception
+	 */
+	private function createTheGroup($group, $method = null) {
+		if ($method === null && getenv("TEST_EXTERNAL_USER_BACKENDS") === "true") {
+			//guess yourself
+			$method = "ldap";
+		} elseif ($method === null) {
+			$method = "api";
+		}
+		$group = trim($group);
+		$method = trim(strtolower($method));
+		switch ($method) {
+			case "api":
+				$result = UserHelper::createGroup(
+					$this->baseUrlWithoutOCSAppendix(),
+					$group,
+					$this->getAdminUsername(),
+					$this->getAdminPassword()
+				);
+				if ($result->getStatusCode() !== 200) {
+					throw new Exception(
+						"could not create group. "
+						. $result->getStatusCode() . " " . $result->getBody()
+					);
+				}
+				break;
+			case "occ":
+				$result = SetupHelper::createGroup($group);
+				if ($result["code"] != 0) {
+					throw new Exception(
+						"could not create group. "
+						. $result["stdOut"] . " " . $result["stdErr"]
+					);
+				}
+				break;
+			case "ldap":
+				echo "creating LDAP groups is not implemented, so assume they exist\n";
+				break;
+			default:
+				throw new InvalidArgumentException(
+					"Invalid method to create a group"
+				);
+		}
+		$this->addGroupToCreatedGroupsList($group);
 	}
 
 	/**
@@ -418,16 +716,24 @@ trait Provisioning {
 	 * @return void
 	 */
 	public function deleteTheUserUsingTheAPI($user) {
-		$fullUrl = $this->baseUrl . "v{$this->apiVersion}.php/cloud/users/$user";
-		$client = new Client();
-		$options = [];
-		if ($this->currentUser === $this->getAdminUsername()) {
-			$options['auth'] = $this->getAuthOptionForAdmin();
-		}
-
-		$this->response = $client->send(
-			$client->createRequest("DELETE", $fullUrl, $options)
+		// Always try to delete the user
+		$this->response = UserHelper::deleteUser(
+			$this->baseUrlWithoutOCSAppendix(),
+			$user,
+			$this->getAdminUsername(),
+			$this->getAdminPassword()
 		);
+
+		// Only log a message if the test really expected the user to have been
+		// successfully created (i.e. the delete is expected to work) and
+		// there was a problem deleting the user. Because in this case there
+		// might be an effect on later tests.
+		if ($this->theUserShouldHaveBeenCreated($user) && ($this->response->getStatusCode() !== 200)) {
+			error_log(
+				"INFORMATION: could not delete user '" . $user . "' "
+				. $this->response->getStatusCode() . " " . $this->response->getBody()
+			);
+		}
 	}
 
 	/**
@@ -440,10 +746,7 @@ trait Provisioning {
 	 */
 	public function adminDeletesGroupUsingTheAPI($group) {
 		if ($this->groupExists($group)) {
-			$previous_user = $this->currentUser;
-			$this->currentUser = $this->getAdminUsername();
 			$this->deleteTheGroupUsingTheAPI($group);
-			$this->currentUser = $previous_user;
 		}
 		PHPUnit_Framework_Assert::assertFalse($this->groupExists($group));
 	}
@@ -454,39 +757,19 @@ trait Provisioning {
 	 * @return void
 	 */
 	public function deleteTheGroupUsingTheAPI($group) {
-		$fullUrl = $this->baseUrl . "v{$this->apiVersion}.php/cloud/groups/$group";
-		$client = new Client();
-		$options = [];
-		if ($this->currentUser === $this->getAdminUsername()) {
-			$options['auth'] = $this->getAuthOptionForAdmin();
-		}
-
-		$this->response = $client->send(
-			$client->createRequest("DELETE", $fullUrl, $options)
+		$this->response = UserHelper::deleteGroup(
+			$this->baseUrlWithoutOCSAppendix(),
+			$group,
+			$this->getAdminUsername(),
+			$this->getAdminPassword()
 		);
-	}
 
-	/**
-	 * @param string $user
-	 * @param string $group
-	 *
-	 * @return void
-	 */
-	public function addUserToGroupUsingTheAPI($user, $group) {
-		$fullUrl = $this->baseUrl . "v{$this->apiVersion}.php/cloud/users/$user/groups";
-		$client = new Client();
-		$options = [];
-		if ($this->currentUser === $this->getAdminUsername()) {
-			$options['auth'] = $this->getAuthOptionForAdmin();
+		if ($this->response->getStatusCode() !== 200) {
+			error_log(
+				"INFORMATION: could not delete group. '" . $group . "'"
+				. $this->response->getStatusCode() . " " . $this->response->getBody()
+			);
 		}
-
-		$options['body'] = [
-							'groupid' => $group,
-							];
-
-		$this->response = $client->send(
-			$client->createRequest("POST", $fullUrl, $options)
-		);
 	}
 
 	/**
@@ -820,18 +1103,22 @@ trait Provisioning {
 	 * @return void
 	 */
 	public function adminSetsUserQuotaToUsingTheAPI($user, $quota) {
-		$body = new \Behat\Gherkin\Node\TableNode(
-			[
-			0 => ['key', 'quota'],
-			1 => ['value', $quota],
-			]
+		$body
+			= [
+				'key' => 'quota',
+				'value' => $quota,
+			];
+
+		$this->response = OcsApiHelper::sendRequest(
+			$this->baseUrlWithoutOCSAppendix(),
+			$this->getAdminUsername(),
+			$this->getAdminPassword(),
+			"PUT",
+			"/cloud/users/" . $user,
+			$body,
+			2
 		);
 
-		$previous_user = $this->currentUser;
-		$this->currentUser = $this->getAdminUsername();
-		// method used from BasicStructure trait
-		$this->sendingToWith("PUT", "/cloud/users/" . $user, $body);
-		$this->currentUser = $previous_user;
 		PHPUnit_Framework_Assert::assertEquals(
 			200, $this->response->getStatusCode()
 		);
@@ -885,27 +1172,27 @@ trait Provisioning {
 	}
 
 	/**
-	 * @BeforeScenario @api
-	 * @AfterScenario @api
+	 * @BeforeScenario
+	 * @AfterScenario
 	 *
 	 * @return void
 	 */
 	public function cleanupUsers() {
 		$previousServer = $this->currentServer;
 		$this->usingServer('LOCAL');
-		foreach ($this->createdUsers as $user) {
+		foreach ($this->createdUsers as $user => $userData) {
 			$this->deleteUser($user);
 		}
 		$this->usingServer('REMOTE');
-		foreach ($this->createdRemoteUsers as $remoteUser) {
+		foreach ($this->createdRemoteUsers as $remoteUser => $userData) {
 			$this->deleteUser($remoteUser);
 		}
 		$this->usingServer($previousServer);
 	}
 
 	/**
-	 * @BeforeScenario @api
-	 * @AfterScenario @api
+	 * @BeforeScenario
+	 * @AfterScenario
 	 *
 	 * @return void
 	 */

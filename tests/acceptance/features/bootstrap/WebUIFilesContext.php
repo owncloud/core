@@ -77,9 +77,16 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 
 	/**
 	 *
+	 * @var featureContext
+	 */
+	private $featureContext;
+
+	/**
+	 *
 	 * @var WebUIGeneralContext
 	 */
 	private $webUIGeneralContext;
+
 	private $uploadConflictDialogTitle = "file conflict";
 
 	/**
@@ -400,16 +407,16 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 	 */
 	public function theFollowingFilesFoldersHaveBeenDeleted(TableNode $filesTable) {
 		foreach ($filesTable as $file) {
-			$username = $this->webUIGeneralContext->getCurrentUser();
+			$username = $this->featureContext->getCurrentUser();
 			$currentTime = microtime(true);
 			$end = $currentTime + (LONGUIWAITTIMEOUTMILLISEC / 1000);
 			//retry deleting in case the file is locked (code 403)
 			while ($currentTime <= $end) {
 				try {
 					DeleteHelper::delete(
-						$this->webUIGeneralContext->getCurrentServer(),
+						$this->featureContext->baseUrlWithoutOCSAppendix(),
 						$username,
-						$this->webUIGeneralContext->getUserPassword($username),
+						$this->featureContext->getUserPassword($username),
 						$file['name']
 					);
 					break;
@@ -1218,11 +1225,11 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 	private function assertContentOfRemoteAndLocalFileIsSame(
 		$remoteFile, $localFile, $shouldBeSame = true
 	) {
-		$username = $this->webUIGeneralContext->getCurrentUser();
+		$username = $this->featureContext->getCurrentUser();
 		$result = DownloadHelper::download(
-			$this->webUIGeneralContext->getCurrentServer(),
+			$this->featureContext->baseUrlWithoutOCSAppendix(),
 			$username,
-			$this->webUIGeneralContext->getUserPassword($username),
+			$this->featureContext->getUserPassword($username),
 			$remoteFile
 		);
 
@@ -1250,6 +1257,7 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 		// Get the environment
 		$environment = $scope->getEnvironment();
 		// Get all the contexts you need in this context
+		$this->featureContext = $environment->getContext('FeatureContext');
 		$this->webUIGeneralContext = $environment->getContext('WebUIGeneralContext');
 	}
 
