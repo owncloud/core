@@ -145,7 +145,7 @@ trait Provisioning {
 	public function adminCreatesUserUsingTheAPI($user) {
 		if (!$this->userExists($user) ) {
 			$password = $this->getPasswordForUser($user);
-			$this->createUser($user, $password);
+			$this->createUser($user, $password, null, null, true, 'api');
 		}
 		PHPUnit_Framework_Assert::assertTrue($this->userExists($user));
 	}
@@ -184,6 +184,25 @@ trait Provisioning {
 	}
 
 	/**
+	 * @When /^the administrator sends a user creation request for user "([^"]*)" password "([^"]*)" using the API$/
+	 *
+	 * @param string $user
+	 * @param string $password
+	 *
+	 * @return void
+	 */
+	public function adminSendsUserCreationRequestUsingTheAPI($user, $password) {
+		$bodyTable = new TableNode([['userid', $user], ['password', $password]]);
+		$this->userSendsHTTPMethodToAPIEndpointWithBody(
+			$this->getAdminUsername(),
+			"POST",
+			"/cloud/users",
+			$bodyTable
+		);
+		$this->addUserToCreatedUsersList($user, $password);
+	}
+
+	/**
 	 * @Then /^user "([^"]*)" should exist$/
 	 *
 	 * @param string $user
@@ -192,7 +211,6 @@ trait Provisioning {
 	 */
 	public function userShouldExist($user) {
 		PHPUnit_Framework_Assert::assertTrue($this->userExists($user));
-		$this->addUserToCreatedUsersList($user, $this->getPasswordForUser($user));
 	}
 
 	/**
@@ -215,7 +233,6 @@ trait Provisioning {
 	 */
 	public function groupShouldExist($group) {
 		PHPUnit_Framework_Assert::assertTrue($this->groupExists($group));
-		$this->addGroupToCreatedGroupsList($group);
 	}
 
 	/**
@@ -619,7 +636,7 @@ trait Provisioning {
 	 */
 	public function adminCreatesGroupUsingTheAPI($group) {
 		if (!$this->groupExists($group)) {
-			$this->createTheGroup($group);
+			$this->createTheGroup($group, 'api');
 		}
 		PHPUnit_Framework_Assert::assertTrue($this->groupExists($group));
 	}
@@ -636,6 +653,24 @@ trait Provisioning {
 		foreach ($table as $row) {
 			$this->createTheGroup($row['groupname']);
 		}
+	}
+
+	/**
+	 * @When /^the administrator sends a group creation request for group "([^"]*)" using the API$/
+	 *
+	 * @param string $group
+	 *
+	 * @return void
+	 */
+	public function adminSendsGroupCreationRequestUsingTheAPI($group) {
+		$bodyTable = new TableNode([['groupid', $group]]);
+		$this->userSendsHTTPMethodToAPIEndpointWithBody(
+			$this->getAdminUsername(),
+			"POST",
+			"/cloud/groups",
+			$bodyTable
+		);
+		$this->addGroupToCreatedGroupsList($group);
 	}
 
 	/**
