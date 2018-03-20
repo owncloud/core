@@ -20,19 +20,23 @@
  */
 namespace OCA\DAV\Tests\unit\Connector\Sabre;
 
+use OCA\DAV\Connector\Sabre\CorsPlugin;
 use OCP\IUserSession;
 use OCP\IUser;
 use OCP\IConfig;
+use Sabre\DAV\Server;
+use Sabre\DAV\ServerPlugin;
+use Test\TestCase;
 
-class CorsPluginTest extends \Test\TestCase {
+class CorsPluginTest extends TestCase {
 
 	/**
-	 * @var \Sabre\DAV\Server
+	 * @var Server
 	 */
 	private $server;
 
 	/**
-	 * @var \OCA\DAV\Connector\Sabre\CorsPlugin
+	 * @var CorsPlugin
 	 */
 	private $plugin;
 
@@ -48,9 +52,9 @@ class CorsPluginTest extends \Test\TestCase {
 
 	public function setUp() {
 		parent::setUp();
-		$this->server = new \Sabre\DAV\Server();
+		$this->server = new Server();
 
-		$this->server->sapi = $this->getMockBuilder(\stdclass::class)
+		$this->server->sapi = $this->getMockBuilder(\stdClass::class)
 			->setMethods(['sendResponse'])
 			->getMock();
 		$this->server->sapi->expects($this->once())->method('sendResponse')->with($this->server->httpResponse);
@@ -62,7 +66,16 @@ class CorsPluginTest extends \Test\TestCase {
 		$this->config = $this->createMock(IConfig::class);
 		$this->overwriteService('AllConfig', $this->config);
 
-		$this->plugin = new \OCA\DAV\Connector\Sabre\CorsPlugin($this->userSession);
+		$this->plugin = new CorsPlugin($this->userSession);
+
+		/** @var ServerPlugin | \PHPUnit_Framework_MockObject_MockObject $extraMethodPlugin */
+		$extraMethodPlugin = $this->createMock(ServerPlugin::class);
+		$extraMethodPlugin->method('getHTTPMethods')
+			->with('owncloud/remote.php/dav/files/user1/target/path')
+			->willReturn(['EXTRA']);
+		$extraMethodPlugin->method('getFeatures')->willReturn([]);
+
+		$this->server->addPlugin($extraMethodPlugin);
 	}
 
 	public function tearDown() {
@@ -97,12 +110,29 @@ class CorsPluginTest extends \Test\TestCase {
 			'PATCH',
 			'PROPPATCH',
 			'REPORT',
-			'MOVE',
+			'HEAD',
 			'COPY',
+			'MOVE',
+			'EXTRA',
+		];
+		$allowedMethodsUnAuthenticated = [
+			'GET',
+			'OPTIONS',
+			'POST',
+			'PUT',
+			'DELETE',
+			'MKCOL',
+			'PROPFIND',
+			'PATCH',
+			'PROPPATCH',
+			'REPORT',
+			'HEAD',
+			'COPY',
+			'MOVE',
 		];
 
 		return [
-			// OPTIONS headers
+			'OPTIONS headers' =>
 			[
 				$allowedDomains,
 				false,
@@ -113,11 +143,11 @@ class CorsPluginTest extends \Test\TestCase {
 				[
 					'Access-Control-Allow-Headers' => implode(',', $allowedHeaders),
 					'Access-Control-Allow-Origin' => '*',
-					'Access-Control-Allow-Methods' => implode(',', $allowedMethods),
+					'Access-Control-Allow-Methods' => implode(',', $allowedMethodsUnAuthenticated),
 				],
 				false
 			],
-			// OPTIONS headers with user
+			'OPTIONS headers with user' =>
 			[
 				$allowedDomains,
 				true,
@@ -133,7 +163,7 @@ class CorsPluginTest extends \Test\TestCase {
 				],
 				true
 			],
-			// OPTIONS headers no user
+			'OPTIONS headers no user' =>
 			[
 				$allowedDomains,
 				false,
@@ -149,7 +179,7 @@ class CorsPluginTest extends \Test\TestCase {
 				],
 				true
 			],
-			// OPTIONS headers domain not allowed
+			'OPTIONS headers domain not allowed' =>
 			[
 				'[]',
 				true,
@@ -165,7 +195,7 @@ class CorsPluginTest extends \Test\TestCase {
 				],
 				true
 			],
-			// OPTIONS headers not allowed but no cross-domain
+			'OPTIONS headers not allowed but no cross-domain' =>
 			[
 				'[]',
 				true,
@@ -181,7 +211,7 @@ class CorsPluginTest extends \Test\TestCase {
 				],
 				true
 			],
-			// OPTIONS headers allowed but no cross-domain
+			'OPTIONS headers allowed but no cross-domain' =>
 			[
 				'["currentdomain.tld:8080"]',
 				true,
@@ -197,7 +227,7 @@ class CorsPluginTest extends \Test\TestCase {
 				],
 				true
 			],
-			// OPTIONS headers allowed, cross-domain through different port
+			'OPTIONS headers allowed, cross-domain through different port' =>
 			[
 				'["https://currentdomain.tld:8443"]',
 				true,
@@ -213,7 +243,7 @@ class CorsPluginTest extends \Test\TestCase {
 				],
 				true
 			],
-			// no Origin header
+			'no Origin header' =>
 			[
 				$allowedDomains,
 				true,
@@ -233,7 +263,7 @@ class CorsPluginTest extends \Test\TestCase {
 	/**
 	 * @dataProvider optionsCases
 	 */
-	public function testOptionsHeaders($allowedDomains, $hasUser, $requestHeaders, $expectedStatus, $expectedHeaders, $expectDavHeaders = false) {
+	public function testOptionsHeaders($allowedDomains, $hasUser, $requestHeaders, $expectedStatus, array $expectedHeaders, $expectDavHeaders = false) {
 		$user = $this->createMock(IUser::class);
 		$user->method('getUID')->willReturn('someuser');
 
