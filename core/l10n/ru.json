@@ -17,7 +17,6 @@
     "%s password reset" : "Сброс пароля %s",
     "Couldn't send reset email. Please contact your administrator." : "Не удалось отправить письмо для сброса пароля. Пожалуйста, свяжитесь с вашим администратором.",
     "Couldn't send mail to following recipient(s): %s " : "Не удалось отправить почту следующим получателям: %s ",
-    "%s shared »%s« with you" : "%s поделился »%s« с вами",
     "Preparing update" : "Подготовка к обновлению",
     "[%d / %d]: %s" : "[%d / %d]: %s",
     "Repair warning: " : "Предупреждение восстановления:",

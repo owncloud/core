@@ -14,7 +14,6 @@ OC.L10N.register(
     "Crop is not square" : "Crop is not square",
     "%s password reset" : "%s password reset",
     "Couldn't send reset email. Please contact your administrator." : "Couldn't send reset email. Please contact your administrator.",
-    "%s shared »%s« with you" : "%s shared \"%s\" with you",
     "Preparing update" : "Preparing update",
     "[%d / %d]: %s" : "[%d / %d]: %s",
     "Repair warning: " : "Repair warning: ",

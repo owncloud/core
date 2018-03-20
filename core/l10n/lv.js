@@ -6,7 +6,6 @@ OC.L10N.register(
     "%s password changed successfully" : "%s parole veiksmīgi nomainīta",
     "%s password reset" : "%s paroles maiņa",
     "Couldn't send reset email. Please contact your administrator." : "Neizdevās nosūt paroles maiņas e-pasta ziņojumu. Lūdzu sazinieties ar sistēmas administratoru.",
-    "%s shared »%s« with you" : "%s kopīgots »%s« ar jums",
     "Turned on maintenance mode" : "Ieslēgts uzturēšanas režīms",
     "Turned off maintenance mode" : "Izslēgts uzturēšanas režīms",
     "Updated database" : "Atjaunota datu bāze",

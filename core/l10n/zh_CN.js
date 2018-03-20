@@ -19,7 +19,6 @@ OC.L10N.register(
     "%s password reset" : "重置 %s 的密码",
     "Couldn't send reset email. Please contact your administrator." : "未能成功发送重置邮件，请联系管理员。",
     "Couldn't send mail to following recipient(s): %s " : "无法发送邮件到下列收件人: %s ",
-    "%s shared »%s« with you" : "%s 向您分享了 »%s«",
     "Preparing update" : "正在准备更新",
     "[%d / %d]: %s" : "[%d / %d]: %s",
     "Repair warning: " : "修复警告：",

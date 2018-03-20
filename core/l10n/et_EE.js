@@ -15,7 +15,6 @@ OC.L10N.register(
     "%s password changed successfully" : "%s parool on muudetud",
     "%s password reset" : "%s parooli lähtestus",
     "Couldn't send reset email. Please contact your administrator." : "Ei suutnud lähtestada e-maili. Palun kontakteeru süsteemihalduriga.",
-    "%s shared »%s« with you" : "%s jagas sinuga »%s«",
     "Preparing update" : "Uuendamise ettevalmistamine",
     "[%d / %d]: %s" : "[%d / %d]: %s",
     "Repair warning: " : "Paranda hoiatus:",

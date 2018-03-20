@@ -18,7 +18,6 @@ OC.L10N.register(
     "%s password changed successfully" : "%s パスワードは正常に変更されました",
     "%s password reset" : "%s パスワードリセット",
     "Couldn't send reset email. Please contact your administrator." : "リセットメールを送信できませんでした。管理者に問い合わせてください。",
-    "%s shared »%s« with you" : "%sが あなたと »%s«を共有しました",
     "Preparing update" : "アップデートの準備中",
     "[%d / %d]: %s" : "[%d / %d]: %s",
     "Repair warning: " : "修復警告:",

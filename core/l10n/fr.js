@@ -19,7 +19,6 @@ OC.L10N.register(
     "%s password reset" : "Réinitialisation de votre mot de passe %s",
     "Couldn't send reset email. Please contact your administrator." : "Impossible d'envoyer le courriel de réinitialisation. Veuillez contacter votre administrateur.",
     "Couldn't send mail to following recipient(s): %s " : "Impossible d'envoyer de mail au(x) destinataire(s) suivant(s) : %s",
-    "%s shared »%s« with you" : "%s a partagé «%s» avec vous",
     "Preparing update" : "Préparation de la mise à jour",
     "[%d / %d]: %s" : "[%d / %d] : %s",
     "Repair warning: " : "Avertissement de réparation :",

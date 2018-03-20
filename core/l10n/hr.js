@@ -8,7 +8,6 @@ OC.L10N.register(
     "No crop data provided" : "Nema podataka o obrezivanju",
     "%s password reset" : "%s lozinka resetirana",
     "Couldn't send reset email. Please contact your administrator." : "Nije mogće poslati resetiranu poštu. MOlimo kontaktirajte svog administratora.",
-    "%s shared »%s« with you" : "%s je s vama podijelio »%s«",
     "Turned on maintenance mode" : "Način rada za održavanje uključen",
     "Turned off maintenance mode" : "Način rada za održavanje isključen",
     "Updated database" : " Baza podataka ažurirana",

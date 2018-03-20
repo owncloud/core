@@ -13,7 +13,6 @@ OC.L10N.register(
     "Crop is not square" : "Pangkas ini tidak persegi",
     "%s password reset" : "%s sandi disetel ulang",
     "Couldn't send reset email. Please contact your administrator." : "Tidak dapat mengirim email setel ulang. Silakan hubungi administrator Anda.",
-    "%s shared »%s« with you" : "%s membagikan »%s« dengan anda",
     "Preparing update" : "Mempersiapkan pembaruan",
     "Repair warning: " : "Peringatan perbaikan:",
     "Repair error: " : "Kesalahan perbaikan:",

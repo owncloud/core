@@ -14,7 +14,6 @@ OC.L10N.register(
     "Crop is not square" : "Recorte no es cuadrado",
     "%s password reset" : "%s restablecer contraseña",
     "Couldn't send reset email. Please contact your administrator." : "No se pudo enviar correo de restauración de contraseña. Por favor contacta a tu administrador.",
-    "%s shared »%s« with you" : "%s ha compartido  »%s« contigo",
     "Preparing update" : "Preparando actualización",
     "[%d / %d]: %s" : "[%d / %d]: %s",
     "Repair warning: " : "Alerta de reparación:",

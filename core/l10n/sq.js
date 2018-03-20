@@ -19,7 +19,6 @@ OC.L10N.register(
     "%s password reset" : "U ricaktua fjalëkalimi për %s",
     "Couldn't send reset email. Please contact your administrator." : "S’u dërgua dot email-i i ricaktimit. Ju lutemi, lidhuni me përgjegjësin tuaj.",
     "Couldn't send mail to following recipient(s): %s " : "S’u dërgua dot postë te marrësi(t) vijues: %s ",
-    "%s shared »%s« with you" : "%s ndau me ju »%s«",
     "Preparing update" : "Po përgatitet përditësimi",
     "[%d / %d]: %s" : "[%d / %d]: %s",
     "Repair warning: " : "Sinjalizim ndreqjeje: ",

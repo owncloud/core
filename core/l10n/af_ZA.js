@@ -18,7 +18,6 @@ OC.L10N.register(
     "%s password changed successfully" : "%s wagwoord suksesvol verander",
     "%s password reset" : "%s wagwoord herstel",
     "Couldn't send reset email. Please contact your administrator." : "Herstel-e-pos kon nie gestuur word nie. Kontak u stelseladministrateur.",
-    "%s shared »%s« with you" : "%s het »%s« met u gedeel",
     "Preparing update" : "Berei tans bywerking voor",
     "[%d / %d]: %s" : "[%d / %d]: %s",
     "Repair warning: " : "Herstelwaarskuwing:",

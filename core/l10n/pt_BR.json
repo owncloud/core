@@ -17,7 +17,6 @@
     "%s password reset" : "%s redefinir senha",
     "Couldn't send reset email. Please contact your administrator." : "Não foi possível enviar e-mail de redefinição. Por favor, contate o administrador.",
     "Couldn't send mail to following recipient(s): %s " : "Não foi possível enviar email para o(s) seguinte(s) destinatário(s): %s ",
-    "%s shared »%s« with you" : "%s compartilhou »%s« com você",
     "Preparing update" : "Preparando atualização",
     "[%d / %d]: %s" : "[%d / %d]: %s",
     "Repair warning: " : "Aviso de reparação:",

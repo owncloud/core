@@ -18,7 +18,6 @@ OC.L10N.register(
     "%s password changed successfully" : "%s jelszó sikeresen megváltozott",
     "%s password reset" : "%s jelszó visszaállítás",
     "Couldn't send reset email. Please contact your administrator." : "Visszaállítási e-mail nem küldhető. Kérjük, lépjen kapcsolatba a rendszergazdával.",
-    "%s shared »%s« with you" : "%s megosztotta Önnel ezt:  »%s«",
     "Preparing update" : "Felkészülés a frissítésre",
     "[%d / %d]: %s" : "[%d / %d]: %s",
     "Repair warning: " : "Javítási figyelmeztetés:",

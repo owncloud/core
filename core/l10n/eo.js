@@ -5,7 +5,6 @@ OC.L10N.register(
     "File is too big" : "Dosiero tro grandas.",
     "Unknown filetype" : "Ne konatas dosiertipo",
     "Invalid image" : "Ne validas bildo",
-    "%s shared »%s« with you" : "%s kunhavigis “%s” kun vi",
     "Updated database" : "Ĝisdatiĝis datumbazo",
     "Updated \"%s\" to %s" : "Ĝisdatiĝis “%s” al %s",
     "%s (incompatible)" : "%s (nekongrua)",

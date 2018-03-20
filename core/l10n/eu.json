@@ -16,7 +16,6 @@
     "%s password changed successfully" : "%s pasahitza behar bezala aldatu da",
     "%s password reset" : "%s pasahitza berrezarri",
     "Couldn't send reset email. Please contact your administrator." : "Ezin da berrezartzeko eposta bidali. Mesedez jarri harremetan zure administradorearekin.",
-    "%s shared »%s« with you" : "%s-ek »%s« zurekin partekatu du",
     "Preparing update" : "Eguneraketa prestatzen",
     "[%d / %d]: %s" : "[%d / %d]: %s",
     "Repair warning: " : "Konponketa abisua:",

@@ -19,7 +19,6 @@ OC.L10N.register(
     "%s password reset" : "%s restablecer contraseña",
     "Couldn't send reset email. Please contact your administrator." : "No pudo enviarse el correo para restablecer la contraseña. Por favor, contacte con su administrador.",
     "Couldn't send mail to following recipient(s): %s " : "No se puede enviar un correo electrónico a los siguientes receptores: %s ",
-    "%s shared »%s« with you" : "%s ha compartido »%s« contigo",
     "Preparing update" : "Preparando la actualización",
     "[%d / %d]: %s" : "[%d / %d]: %s",
     "Repair warning: " : "Advertencia de reparación:",

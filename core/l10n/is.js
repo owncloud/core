@@ -19,7 +19,6 @@ OC.L10N.register(
     "%s password reset" : "%s lykilorð endurstillt",
     "Couldn't send reset email. Please contact your administrator." : "Gat ekki sent endurstillingu í tölvupósti. Hafðu samband við kerfisstjóra.",
     "Couldn't send mail to following recipient(s): %s " : "Gat ekki sent póst á eftirfarandi notendur: %s ",
-    "%s shared »%s« with you" : "%s deildi »%s« með þér",
     "Preparing update" : "Undirbý uppfærslu",
     "[%d / %d]: %s" : "[%d / %d]: %s",
     "Repair warning: " : "Viðvörun vegna viðgerðar: ",

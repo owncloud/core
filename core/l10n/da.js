@@ -15,7 +15,6 @@ OC.L10N.register(
     "%s password changed successfully" : "App %s succesfuldt opdateret",
     "%s password reset" : "%s adgangskode nulstillet",
     "Couldn't send reset email. Please contact your administrator." : "Der opstod et problem under afsending af e-mailen til nulstilling. Kontakt venligst systemadministratoren.",
-    "%s shared »%s« with you" : "%s delte »%s« med sig",
     "Preparing update" : "Forbereder opdatering",
     "[%d / %d]: %s" : "[%d / %d]: %s",
     "Repair warning: " : "Reparationsadvarsel:",

@@ -18,7 +18,6 @@ OC.L10N.register(
     "%s password changed successfully" : "%s mật khẩu đã được thay đổi thành công",
     "%s password reset" : "%s thiết lập lại mật khẩu",
     "Couldn't send reset email. Please contact your administrator." : "Không thể gửi email đặt lại. Vui lòng liên hệ với quản trị viên của bạn.",
-    "%s shared »%s« with you" : "%s đã chia sẻ »%s« với bạn",
     "Preparing update" : "Chuẩn bị cập nhật",
     "[%d / %d]: %s" : "[%d / %d]: %s",
     "Repair warning: " : "Cảnh báo đang sửa:",

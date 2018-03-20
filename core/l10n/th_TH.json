@@ -17,7 +17,6 @@
     "%s password reset" : "%s ตั้งรหัสผ่านใหม่",
     "Couldn't send reset email. Please contact your administrator." : "ไม่สามารถส่งข้อมูลการตั้งค่าไปยังอีเมลของคุณ กรุณาติดต่อผู้ดูแลระบบ",
     "Couldn't send mail to following recipient(s): %s " : "ไม่สามารถส่งจดหมายไปยังผู้รับต่อไปนี้: %s",
-    "%s shared »%s« with you" : "%s ถูกแชร์ »%s« กับคุณ",
     "Preparing update" : "เตรียมอัพเดท",
     "[%d / %d]: %s" : "[%d / %d]: %s",
     "Repair warning: " : "เตือนการซ่อมแซม:",

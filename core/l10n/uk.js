@@ -14,7 +14,6 @@ OC.L10N.register(
     "Crop is not square" : "Кадр не є квадратом",
     "%s password reset" : "%s скидання паролю",
     "Couldn't send reset email. Please contact your administrator." : "Не можу надіслати email для скидання. Будь ласка, зверніться до вашого адміністратора.",
-    "%s shared »%s« with you" : "%s поділився »%s« з вами",
     "Preparing update" : "Підготовка до оновлення",
     "[%d / %d]: %s" : "[%d / %d]: %s",
     "Repair warning: " : "Попередження відновлення:",

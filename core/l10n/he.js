@@ -19,7 +19,6 @@ OC.L10N.register(
     "%s password reset" : "%s הסיסמא אופסה",
     "Couldn't send reset email. Please contact your administrator." : "לא ניתן היה לשלוח דואר אלקטרוני לאיפוס. יש לפנות למנהל שלך.",
     "Couldn't send mail to following recipient(s): %s " : "נא ניתן לשלוח דוא״ל לנמענים הבאים: %s",
-    "%s shared »%s« with you" : "%s שיתף/שיתפה איתך את »%s«",
     "Preparing update" : "מכין עדכון",
     "[%d / %d]: %s" : "[%d / %d]: %s",
     "Repair warning: " : "אזהרת תיקון:",

@@ -8,7 +8,6 @@
     "An error occurred. Please contact your admin." : "حدث خطأ.  يرجى الاتصال بمدير النظام.",
     "%s password reset" : "تمت إعادة ضبط كلمة مرور %s",
     "Couldn't send reset email. Please contact your administrator." : "لم يتم إرسال بريد إعادة الضبط .  فضلاً اتصل بمدير النظام.",
-    "%s shared »%s« with you" : "%s شارك »%s« معك",
     "Preparing update" : "التحضير للتحديث",
     "[%d / %d]: %s" : "[%d / %d]: %s",
     "Updated database" : "قاعدة بيانات المرفوعات",

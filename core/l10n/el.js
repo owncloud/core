@@ -15,7 +15,6 @@ OC.L10N.register(
     "%s password changed successfully" : "ο %s άλλαξε το συνθηματικό επιτυχώς",
     "%s password reset" : "%s επαναφορά κωδικού πρόσβασης",
     "Couldn't send reset email. Please contact your administrator." : "Αδυναμία αποστολής ηλ. μηνύματος επαναφοράς. Παρακαλώ επικοινωνήστε με το διαχειριστή σας.",
-    "%s shared »%s« with you" : "Ο %s διαμοιράστηκε μαζί σας το »%s«",
     "Preparing update" : "Προετοιμασία ενημέρωσης",
     "[%d / %d]: %s" : "[%d / %d]: %s",
     "Repair warning: " : "Προειδοποίηση διόρθωσης:",

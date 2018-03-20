@@ -14,7 +14,6 @@ OC.L10N.register(
     "Crop is not square" : "Leikkaus ei ole neliö",
     "%s password reset" : "%s salasanan palautus",
     "Couldn't send reset email. Please contact your administrator." : "Palautussähköpostin lähettäminen ei onnistunut. Ota yhteys ylläpitäjään.",
-    "%s shared »%s« with you" : "%s jakoi kohteen »%s« kanssasi",
     "Preparing update" : "Valmistellaan päivitystä",
     "[%d / %d]: %s" : "[%d / %d]: %s",
     "Repair warning: " : "Korjausvaroitus:",

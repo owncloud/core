@@ -17,7 +17,6 @@ OC.L10N.register(
     "%s password changed successfully" : "%sslaptažodis pakeistas",
     "%s password reset" : "%s slaptažodžio atnaujinimas",
     "Couldn't send reset email. Please contact your administrator." : "Nepavyko išsiųsti atkūrimo laiško, susisiekite su administratoriumi.",
-    "%s shared »%s« with you" : "%s pasidalino »%s« su tavimi",
     "Preparing update" : "Ruošiamasi atnaujinimui",
     "[%d / %d]: %s" : "[%d / %d]: %s",
     "Repair warning: " : "Taisymo perspėjimas:",

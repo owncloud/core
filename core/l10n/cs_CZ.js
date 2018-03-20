@@ -15,7 +15,6 @@ OC.L10N.register(
     "%s password changed successfully" : "%s heslo bylo změněno vpořádku",
     "%s password reset" : "reset hesla %s",
     "Couldn't send reset email. Please contact your administrator." : "Nepodařilo se odeslat email pro změnu hesla. Kontaktujte svého správce systému.",
-    "%s shared »%s« with you" : "%s s vámi sdílí »%s«",
     "Preparing update" : "Příprava na aktualizaci",
     "[%d / %d]: %s" : "[%d / %d]: %s",
     "Repair warning: " : "Upozornění opravy:",

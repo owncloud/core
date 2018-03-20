@@ -18,7 +18,6 @@ OC.L10N.register(
     "%s password changed successfully" : "%spassord er endra",
     "%s password reset" : "%s passordnullstilling",
     "Couldn't send reset email. Please contact your administrator." : "Kunne ikkje senda e-post for nullstilling, kontakt administratoren.",
-    "%s shared »%s« with you" : "%s delte «%s» med deg",
     "Preparing update" : "Klargjer forbetring",
     "[%d / %d]: %s" : "[%d / %d]: %s",
     "Repair warning: " : "Åtvaring ved reparering:",

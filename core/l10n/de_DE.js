@@ -19,7 +19,6 @@ OC.L10N.register(
     "%s password reset" : "%s-Passwort zurücksetzen",
     "Couldn't send reset email. Please contact your administrator." : "Die E-Mail zum Zurücksetzen konnte nicht versendet werden. Bitte kontaktieren Sie Ihren Administrator.",
     "Couldn't send mail to following recipient(s): %s " : "Zu folgenden Empfängern konnte keine Email geschickt werden: %s",
-    "%s shared »%s« with you" : "%s hat „%s“ mit Ihnen geteilt",
     "Preparing update" : "Update vorbereiten",
     "[%d / %d]: %s" : "[%d / %d]: %s",
     "Repair warning: " : "Reperaturwarnung:",

@@ -19,7 +19,6 @@ OC.L10N.register(
     "%s password reset" : "%s tilbakestilling av passord",
     "Couldn't send reset email. Please contact your administrator." : "Klarte ikke å sende e-post for tilbakestilling. Kontakt administratoren.",
     "Couldn't send mail to following recipient(s): %s " : "Kunne ikke sende e-post til følgende mottaker (e): %s",
-    "%s shared »%s« with you" : "%s delte »%s« med deg",
     "Preparing update" : "Forbereder oppdatering",
     "[%d / %d]: %s" : "[%d / %d]: %s",
     "Repair warning: " : "Advarsel fra reparering: ",

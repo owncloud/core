@@ -4,7 +4,6 @@ OC.L10N.register(
     "Unknown filetype" : "Fayl tipi bəlli deyil.",
     "Invalid image" : "Yalnış şəkil",
     "No temporary profile picture available, try again" : "Profaylın müvəqqəti şəklinə çatmaq mümkün olmadı, yenidən təkrarlayın.",
-    "%s shared »%s« with you" : "%s yayımlandı »%s« sizinlə",
     "Turned on maintenance mode" : "Xidməti rejimə keçilmişdir",
     "Turned off maintenance mode" : "Xidməti rejim söndürüldü",
     "Updated database" : "Yenilənmiş verilənlər bazası",

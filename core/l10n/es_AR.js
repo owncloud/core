@@ -9,7 +9,6 @@ OC.L10N.register(
     "No temporary profile picture available, try again" : "No hay una imágen temporal del perfil disponible, intente de nuevo",
     "No crop data provided" : "No se proveyeron datos de recorte",
     "%s password reset" : "%s restablecer contraseña",
-    "%s shared »%s« with you" : "%s compartió \"%s\" con vos",
     "Turned on maintenance mode" : "Modo de mantenimiento activado",
     "Turned off maintenance mode" : "Modo de mantenimiento desactivado",
     "Updated database" : "Base de datos actualizada",

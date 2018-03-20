@@ -12,7 +12,6 @@
     "Crop is not square" : "剪裁設定不是正方形",
     "%s password reset" : "%s 密碼重設",
     "Couldn't send reset email. Please contact your administrator." : "無法寄送重設 email ，請聯絡系統管理員",
-    "%s shared »%s« with you" : "%s 與您分享了 %s",
     "Preparing update" : "準備更新",
     "Repair warning: " : "修復警告：",
     "Repair error: " : "修復錯誤",

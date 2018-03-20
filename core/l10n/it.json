@@ -13,7 +13,6 @@
     "%s password changed successfully" : "Password di %s modificata correttamente",
     "%s password reset" : "Ripristino password di %s",
     "Couldn't send reset email. Please contact your administrator." : "Impossibile inviare l'email di reimpostazione. Contatta il tuo amministratore.",
-    "%s shared »%s« with you" : "%s ha condiviso «%s» con te",
     "Preparing update" : "Preparazione aggiornamento",
     "[%d / %d]: %s" : "[%d / %d]: %s",
     "Repair warning: " : "Avviso di riparazione",

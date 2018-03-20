@@ -18,7 +18,6 @@ OC.L10N.register(
     "%s password changed successfully" : "Geslo %s je uspešno spremenjeno",
     "%s password reset" : "Ponastavitev gesla %s",
     "Couldn't send reset email. Please contact your administrator." : "Ni mogoče nastaviti elektronskega naslova za ponastavitev. Stopite v stik s skrbnikom sistema.",
-    "%s shared »%s« with you" : "%s je omogočil souporabo »%s«",
     "Preparing update" : "Pripravljanje posodobitve",
     "[%d / %d]: %s" : "[%d / %d]: %s",
     "Repair warning: " : "Opozorilo popravila:",

@@ -13,7 +13,6 @@
     "%s password changed successfully" : "%s lösenord ändrades",
     "%s password reset" : "%s återställ lösenord",
     "Couldn't send reset email. Please contact your administrator." : "Kunde inte skicka återställningsmail. Vänligen kontakta din administratör.",
-    "%s shared »%s« with you" : "%s delade »%s« med dig",
     "Preparing update" : "Förbereder uppdatering",
     "[%d / %d]: %s" : "[%d / %d]: %s",
     "Repair warning: " : "Reperationsvarning:",

@@ -16,7 +16,6 @@
     "%s password changed successfully" : "%s wachtwoord succesvol gewijzigd.",
     "%s password reset" : "%s wachtwoord reset",
     "Couldn't send reset email. Please contact your administrator." : "Kon herstel e-mail niet versturen. Neem contact op met uw beheerder.",
-    "%s shared »%s« with you" : "%s deelde »%s« met u",
     "Preparing update" : "Update voorbereiden",
     "[%d / %d]: %s" : "[%d / %d]: %s",
     "Repair warning: " : "Reparatiewaarschuwing:",

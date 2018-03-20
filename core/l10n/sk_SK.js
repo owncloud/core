@@ -14,7 +14,6 @@ OC.L10N.register(
     "Crop is not square" : "Orezanie nie je štvorcové",
     "%s password reset" : "reset hesla %s",
     "Couldn't send reset email. Please contact your administrator." : "Nemožno poslať email pre obnovu. Kontaktujte prosím vášho administrátora.",
-    "%s shared »%s« with you" : "%s s vami zdieľa »%s«",
     "Preparing update" : "Pripravuje sa aktualizácia",
     "[%d / %d]: %s" : "[%d / %d]: %s",
     "Repair warning: " : "Oznámenie opravy:",

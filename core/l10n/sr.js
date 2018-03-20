@@ -12,7 +12,6 @@ OC.L10N.register(
     "Crop is not square" : "Опсецање није квадрат",
     "%s password reset" : "%s лозинка ресетована",
     "Couldn't send reset email. Please contact your administrator." : "Не могу да пошаљем е-пошту за ресетовање лозинке. Контактирајте администратора.",
-    "%s shared »%s« with you" : "%s подели „%s“ са вама",
     "Preparing update" : "Припремам надоградњу",
     "Repair warning: " : "Упозорење о поправци :",
     "Repair error: " : "Грешка поправке:",

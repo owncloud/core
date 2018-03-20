@@ -18,7 +18,6 @@ OC.L10N.register(
     "%s password changed successfully" : "%s hasło zmieniono pomyślnie",
     "%s password reset" : "%s reset hasła",
     "Couldn't send reset email. Please contact your administrator." : "Nie mogę wysłać maila resetującego. Skontaktuj się z administratorem.",
-    "%s shared »%s« with you" : "%s Współdzielone »%s« z tobą",
     "Preparing update" : "Przygotowuję aktualizację",
     "[%d / %d]: %s" : "[%d / %d]: %s",
     "Repair warning: " : "Ostrzeżenie naprawiania:",
