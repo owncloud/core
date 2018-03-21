@@ -876,8 +876,23 @@ trait BasicStructure {
 		$fullUrl = getenv('TEST_SERVER_URL') . "/v1.php/apps/testing/api/v1/increasefileid";
 		$client = new Client();
 		$options = [];
-		$adminUsername = $scope->getSuite()->getSettings()['contexts'][0][__CLASS__]['adminUsername'];
-		$adminPassword = $scope->getSuite()->getSettings()['contexts'][0][__CLASS__]['adminPassword'];
+		$suiteSettingsContexts = $scope->getSuite()->getSettings()['contexts'];
+		$adminUsername = null;
+		$adminPassword = null;
+		foreach ($suiteSettingsContexts as $context) {
+			if (isset($context[__CLASS__])) {
+				$adminUsername = $context[__CLASS__]['adminUsername'];
+				$adminPassword = $context[__CLASS__]['adminPassword'];
+				break;
+			}
+		}
+
+		if (($adminUsername === null) || ($adminPassword === null)) {
+			throw new \Exception(
+				"Could not find adminUsername and/or adminPassword in useBigFileIDs"
+			);
+		}
+
 		$options['auth'] = [$adminUsername, $adminPassword];
 		$client->send($client->createRequest('POST', $fullUrl, $options));
 	}
