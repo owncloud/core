@@ -1315,6 +1315,7 @@ class RequestTest extends TestCase {
 			['/index.php/apps/files/../&amp;/&?someQueryParameter=QueryParam', 'index.php', '/apps/files/../&amp;/&'],
 			['/remote.php/漢字編碼方法 / 汉字编码方法', 'remote.php', '/漢字編碼方法 / 汉字编码方法'],
 			['///removeTrailin//gSlashes///', 'remote.php', '/removeTrailin/gSlashes/'],
+			['/remove/multiple/Slashes/In/ScriptName/', '//remote.php', '/remove/multiple/Slashes/In/ScriptName/'],
 			['/', '/', ''],
 			['', '', ''],
 		];
@@ -1326,6 +1327,8 @@ class RequestTest extends TestCase {
 	public function rawPathInfoProvider() {
 		return [
 			['/foo%2Fbar/subfolder', '', 'foo%2Fbar/subfolder'],
+			['/foo/bar', 'remote.php', '/foo/bar'],
+			['/foo/bar', '//remote.php', '/foo/bar'],
 		];
 	}
 

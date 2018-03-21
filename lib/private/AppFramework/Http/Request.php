@@ -651,6 +651,7 @@ class Request implements \ArrayAccess, \Countable, IRequest {
 		}
 
 		$scriptName = $this->server['SCRIPT_NAME'];
+		$scriptName = preg_replace('%/{2,}%', '/', $scriptName);
 		$pathInfo = $requestUri;
 
 		// strip off the script name's dir and file name
