@@ -1,7 +1,6 @@
 OC.L10N.register(
     "settings",
     {
-    "Authentication error" : "ავთენტიფიკაციის შეცდომა",
     "Email sent" : "იმეილი გაიგზავნა",
     "Create" : "შექმნა",
     "Delete" : "წაშლა",
@@ -9,7 +8,6 @@ OC.L10N.register(
     "__language_name__" : "__language_name__",
     "Language changed" : "ენა შეცვლილია",
     "Invalid request" : "არასწორი მოთხოვნა",
-    "Admins can't remove themself from the admin group" : "ადმინისტრატორებს არ შეუძლიათ საკუთარი თავის წაშლა ადმინ ჯგუფიდან",
     "All" : "ყველა",
     "Please wait...." : "დაიცადეთ....",
     "Disable" : "გამორთვა",
@@ -18,13 +16,6 @@ OC.L10N.register(
     "Error while updating app" : "შეცდომა აპლიკაციის განახლების დროს",
     "Updated" : "განახლებულია",
     "Groups" : "ჯგუფები",
-    "undo" : "დაბრუნება",
-    "never" : "არასდროს",
-    "add group" : "ჯგუფის დამატება",
-    "enabled" : "ჩართულია",
-    "disabled" : "გათიშულია",
-    "A valid username must be provided" : "უნდა მიუთითოთ არსებული მომხმარებლის სახელი",
-    "A valid password must be provided" : "უნდა მიუთითოთ არსებული პაროლი",
     "Forum" : "ფორუმი",
     "Cron" : "Cron–ი",
     "Execute one task with each page loaded" : "გაუშვი თითო მოქმედება ყველა ჩატვირთულ გვერდზე",
@@ -58,11 +49,6 @@ OC.L10N.register(
     "Version" : "ვერსია",
     "Personal" : "პირადი",
     "Admin" : "ადმინისტრატორი",
-    "Error" : "შეცდომა",
-    "Default Quota" : "საწყისი ქვოტა",
-    "Other" : "სხვა",
-    "Quota" : "ქვოტა",
-    "set new password" : "დააყენეთ ახალი პაროლი",
-    "Default" : "საწყისი პარამეტრები"
+    "Error" : "შეცდომა"
 },
 "nplurals=1; plural=0;");

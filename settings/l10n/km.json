@@ -1,6 +1,5 @@
 { "translations": {
     "Wrong password" : "ខុស​ពាក្យ​សម្ងាត់",
-    "Authentication error" : "កំហុស​ការ​ផ្ទៀង​ផ្ទាត់​ភាព​ត្រឹម​ត្រូវ",
     "Saved" : "បាន​រក្សាទុក",
     "test email settings" : "សាក​ល្បង​ការ​កំណត់​អ៊ីមែល",
     "Email sent" : "បាន​ផ្ញើ​អ៊ីមែល",
@@ -11,8 +10,6 @@
     "__language_name__" : "__language_name__",
     "Language changed" : "បាន​ប្ដូរ​ភាសា",
     "Invalid request" : "សំណើ​មិន​ត្រឹម​ត្រូវ",
-    "Admins can't remove themself from the admin group" : "អ្នក​គ្រប់​គ្រង​មិន​អាច​លុប​ខ្លួន​ឯង​ចេញ​ពី​ក្រុម​អ្នក​គ្រប់​គ្រង​ឡើយ",
-    "Unknown user" : "មិនស្គាល់អ្នកប្រើប្រាស់",
     "All" : "ទាំងអស់",
     "Enabled" : "បាន​បើក",
     "Please wait...." : "សូម​រង់​ចាំ....",
@@ -30,11 +27,6 @@
     "Good password" : "ពាក្យ​សម្ងាត់​ល្អ",
     "Strong password" : "ពាក្យ​សម្ងាត់​ខ្លាំង",
     "Groups" : "ក្រុ",
-    "undo" : "មិន​ធ្វើ​វិញ",
-    "never" : "មិនដែរ",
-    "add group" : "បន្ថែម​ក្រុម",
-    "A valid username must be provided" : "ត្រូវ​ផ្ដល់​ឈ្មោះ​អ្នក​ប្រើ​ឲ្យ​បាន​ត្រឹម​ត្រូវ",
-    "A valid password must be provided" : "ត្រូវ​ផ្ដល់​ពាក្យ​សម្ងាត់​ឲ្យ​បាន​ត្រឹម​ត្រូវ",
     "Forum" : "វេទិកាពិភាក្សា",
     "Sharing" : "ការ​ចែក​រំលែក",
     "Allow apps to use the Share API" : "អនុញ្ញាត​ឲ្យ​កម្មវិធី​ប្រើ API ចែក​រំលែក",
@@ -71,10 +63,6 @@
     "Version" : "កំណែ",
     "Personal" : "ផ្ទាល់​ខ្លួន",
     "Admin" : "អ្នក​គ្រប់​គ្រង",
-    "Error" : "កំហុស",
-    "Admin Recovery Password" : "ការ​ស្វែង​រក​ពាក្យ​សម្ងាត់របស់ប្រធាន​វេបសាយ",
-    "Other" : "ផ្សេងៗ",
-    "set new password" : "កំណត់​ពាក្យ​សម្ងាត់​ថ្មី",
-    "Default" : "លំនាំ​ដើម"
+    "Error" : "កំហុស"
 },"pluralForm" :"nplurals=1; plural=0;"
 }

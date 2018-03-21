@@ -199,7 +199,6 @@ OC.L10N.register(
     "The update was successful. There were warnings." : "Die bywerking was suksesvol. Daar was waarskuwings.",
     "The update was successful. Redirecting you to ownCloud now." : "Die bywerking was suksesvol. U word nou na ownCloud herlei.",
     "Personal" : "Persoonlik",
-    "Users" : "Gebruikers",
     "Apps" : "Toepassings",
     "Admin" : "Admin",
     "Help" : "Hulp",

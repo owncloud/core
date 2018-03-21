@@ -30,7 +30,6 @@ OC.L10N.register(
     "Delete" : "हटाना",
     "Add" : "डाले",
     "Personal" : "यक्तिगत",
-    "Users" : "उपयोगकर्ता",
     "Apps" : "Apps",
     "Help" : "सहयोग",
     "Create an <strong>admin account</strong>" : "व्यवस्थापक खाता बनाएँ",

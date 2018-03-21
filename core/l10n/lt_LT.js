@@ -174,7 +174,6 @@ OC.L10N.register(
     "The update was successful. Redirecting you to ownCloud now." : "Atnaujinimas buvo sėkmingas. Nukreipiame į jūsų ownCloud.",
     "Searching other places" : "Ieškoma kitose vietose",
     "Personal" : "Asmeniniai",
-    "Users" : "Vartotojai",
     "Apps" : "Programos",
     "Admin" : "Administravimas",
     "Help" : "Pagalba",

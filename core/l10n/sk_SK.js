@@ -211,7 +211,6 @@ OC.L10N.register(
     "No search results in other folders" : "Žiadne výsledky vyhľadávania v ostatných priečinkoch",
     "_{count} search result in another folder_::_{count} search results in other folders_" : ["{count} výsledok vyhľadávania v ostatných priečinkoch","{count} výsledky vyhľadávania v ostatných priečinkoch","{count} výsledkov vyhľadávania v ostatných priečinkoch"],
     "Personal" : "Osobné",
-    "Users" : "Používatelia",
     "Apps" : "Aplikácie",
     "Admin" : "Administrácia",
     "Help" : "Pomoc",

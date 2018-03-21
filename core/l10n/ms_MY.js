@@ -59,7 +59,6 @@ OC.L10N.register(
     "Rename" : "Namakan",
     "Add" : "Tambah",
     "Personal" : "Peribadi",
-    "Users" : "Pengguna",
     "Apps" : "Aplikasi",
     "Admin" : "Admin",
     "Help" : "Bantuan",

@@ -131,7 +131,6 @@ OC.L10N.register(
     "The update was successful. Redirecting you to ownCloud now." : "Ažuriranje je uspjelo. Upravo ste preusmjeravani na ownCloud.",
     "Searching other places" : "Pretraživanje drugih lokacija",
     "Personal" : "Osobno",
-    "Users" : "Korisnici",
     "Apps" : "Aplikacije",
     "Admin" : "Admin",
     "Help" : "Pomoć",

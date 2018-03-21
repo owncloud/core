@@ -112,7 +112,6 @@
     "The update was unsuccessful. Please report this issue to the <a href=\"https://github.com/owncloud/core/issues\" target=\"_blank\">ownCloud community</a>." : "La actualización no pudo ser completada. Por favor, reportá el inconveniente a la comunidad <a href=\"https://github.com/owncloud/core/issues\" target=\"_blank\">ownCloud</a>.",
     "The update was successful. Redirecting you to ownCloud now." : "La actualización fue exitosa. Estás siendo redirigido a ownCloud.",
     "Personal" : "Personal",
-    "Users" : "Usuarios",
     "Apps" : "Apps",
     "Admin" : "Administración",
     "Help" : "Ayuda",

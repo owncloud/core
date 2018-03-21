@@ -231,7 +231,6 @@ OC.L10N.register(
     "No search results in other folders" : "Diğer klasörlerde arama sonucu yok",
     "_{count} search result in another folder_::_{count} search results in other folders_" : ["Diğer klasörlerde {count} arama sonucu","Diğer bir klasörde {count} arama sonucu"],
     "Personal" : "Kişisel",
-    "Users" : "Kullanıcılar",
     "Apps" : "Uygulamalar",
     "Admin" : "Yönetici",
     "Help" : "Yardım",

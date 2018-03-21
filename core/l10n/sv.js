@@ -234,7 +234,6 @@ OC.L10N.register(
     "No search results in other folders" : "Inga sökresultat i andra mappar",
     "_{count} search result in another folder_::_{count} search results in other folders_" : ["{count} sökresultat i en annan mapp","{count} sökresultat i andra mappar"],
     "Personal" : "Personligt",
-    "Users" : "Användare",
     "Apps" : "Program",
     "Admin" : "Admin",
     "Help" : "Hjälp",

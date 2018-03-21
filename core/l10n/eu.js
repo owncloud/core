@@ -157,7 +157,6 @@ OC.L10N.register(
     "Searching other places" : "Beste lekuak bilatzen",
     "No search results in other folders" : "Ez da bilaketaren emaitzik lortu beste karpetatan",
     "Personal" : "Pertsonala",
-    "Users" : "Erabiltzaileak",
     "Apps" : "Aplikazioak",
     "Admin" : "Admin",
     "Help" : "Laguntza",

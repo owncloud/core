@@ -1,5 +1,4 @@
 { "translations": {
-    "Authentication error" : "அத்தாட்சிப்படுத்தலில் வழு",
     "Create" : "உருவாக்குக",
     "Delete" : "நீக்குக",
     "Share" : "பகிர்வு",
@@ -10,8 +9,6 @@
     "Disable" : "இயலுமைப்ப",
     "Enable" : "இயலுமைப்படுத்துக",
     "Groups" : "குழுக்கள்",
-    "undo" : "முன் செயல் நீக்கம் ",
-    "never" : "ஒருபோதும்",
     "None" : "ஒன்றுமில்லை",
     "Login" : "புகுபதிகை",
     "Encryption" : "மறைக்குறியீடு",
@@ -33,9 +30,6 @@
     "Username" : "பயனாளர் பெயர்",
     "Personal" : "தனிப்பட்ட",
     "Admin" : "நிர்வாகம்",
-    "Error" : "வழு",
-    "Default Quota" : "பொது இருப்பு பங்கு",
-    "Other" : "மற்றவை",
-    "Quota" : "பங்கு"
+    "Error" : "வழு"
 },"pluralForm" :"nplurals=2; plural=(n != 1);"
 }

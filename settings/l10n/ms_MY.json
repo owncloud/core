@@ -1,5 +1,4 @@
 { "translations": {
-    "Authentication error" : "Ralat pengesahan",
     "Create" : "Buat",
     "Delete" : "Padam",
     "Share" : "Kongsi",
@@ -9,7 +8,6 @@
     "Disable" : "Nyahaktif",
     "Enable" : "Aktif",
     "Groups" : "Kumpulan",
-    "never" : "jangan",
     "Log" : "Log",
     "Login" : "Log masuk",
     "Server address" : "Alamat pelayan",
@@ -29,9 +27,6 @@
     "Username" : "Nama pengguna",
     "Personal" : "Peribadi",
     "Admin" : "Admin",
-    "Error" : "Ralat",
-    "Default Quota" : "Kuota Lalai",
-    "Other" : "Lain",
-    "Quota" : "Kuota"
+    "Error" : "Ralat"
 },"pluralForm" :"nplurals=1; plural=0;"
 }

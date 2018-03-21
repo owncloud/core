@@ -225,7 +225,6 @@ OC.L10N.register(
     "No search results in other folders" : "Ei hakutuloksia muissa kansioissa",
     "_{count} search result in another folder_::_{count} search results in other folders_" : ["{count} hakutulos muussa kansiossa","{count} hakutulosta muissa kansioissa"],
     "Personal" : "Henkilökohtainen",
-    "Users" : "Käyttäjät",
     "Apps" : "Sovellukset",
     "Admin" : "Ylläpito",
     "Help" : "Ohje",

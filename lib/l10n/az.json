@@ -33,7 +33,6 @@
     "A valid password must be provided" : "Düzgün şifrə daxil edilməlidir",
     "Help" : "Kömək",
     "Settings" : "Quraşdırmalar",
-    "Users" : "İstifadəçilər",
     "Application is not enabled" : "Proqram təminatı aktiv edilməyib",
     "Authentication error" : "Təyinat metodikası",
     "Token expired. Please reload page." : "Token vaxtı bitib. Xahiş olunur səhifəni yenidən yükləyəsiniz.",

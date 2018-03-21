@@ -77,7 +77,6 @@ OC.L10N.register(
     "Rename" : "Adı dəyiş",
     "Add" : "Əlavə etmək",
     "Personal" : "Şəxsi",
-    "Users" : "İstifadəçilər",
     "Admin" : "İnzibatçı",
     "Help" : "Kömək",
     "Cheers!" : "Şərəfə!",

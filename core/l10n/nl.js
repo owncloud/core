@@ -244,7 +244,6 @@ OC.L10N.register(
     "No search results in other folders" : "Geen zoekresultaten in andere mappen",
     "_{count} search result in another folder_::_{count} search results in other folders_" : ["{count} zoekresultaat in een andere map","{count} zoekresultaten in andere mappen"],
     "Personal" : "Persoonlijk",
-    "Users" : "Gebruikers",
     "Apps" : "Apps",
     "Admin" : "Beheerder",
     "Help" : "Help",

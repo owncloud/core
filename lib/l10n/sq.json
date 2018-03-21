@@ -132,7 +132,6 @@
     "User disabled" : "Përdorues i çaktivizuar",
     "Help" : "Ndihmë",
     "Settings" : "Rregullime",
-    "Users" : "Përdorues",
     "App \"%s\" cannot be installed because the following dependencies are not fulfilled: %s" : "Përditësimi \"%s\" s’instalohet dot, ngaqë s’plotësohen varësitë vijuese: %s.",
     "A safe home for all your data" : "Një shtëpi e sigurt për krejt të dhënat tuaja",
     "File is currently busy, please try again later" : "Kartela tani është e zënë, ju lutemi, riprovoni më vonë.",

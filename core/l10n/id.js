@@ -171,7 +171,6 @@ OC.L10N.register(
     "No search results in other folders" : "Tidak ada hasil penelusuran didalam folder yang lain",
     "_{count} search result in another folder_::_{count} search results in other folders_" : ["{count} hasil pencarian di folder lain"],
     "Personal" : "Pribadi",
-    "Users" : "Pengguna",
     "Apps" : "Aplikasi",
     "Admin" : "Admin",
     "Help" : "Bantuan",

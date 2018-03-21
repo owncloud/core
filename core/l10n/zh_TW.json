@@ -193,7 +193,6 @@
     "No search results in other folders" : "在其他資料夾中沒有找到",
     "_{count} search result in another folder_::_{count} search results in other folders_" : ["在其他資料夾中有 {count} 比結果"],
     "Personal" : "個人",
-    "Users" : "使用者",
     "Apps" : "應用程式",
     "Admin" : "管理",
     "Help" : "說明",

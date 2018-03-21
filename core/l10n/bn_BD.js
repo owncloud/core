@@ -90,7 +90,6 @@ OC.L10N.register(
     "Edit tags" : "ট্যাগ সম্পাদনা",
     "Please reload the page." : "দয়া করে পৃষ্ঠাটি পূনরায় লোড করুন।",
     "Personal" : "ব্যক্তিগত",
-    "Users" : "ব্যবহারকারী",
     "Apps" : "অ্যাপ",
     "Admin" : "প্রশাসন",
     "Help" : "সহায়িকা",

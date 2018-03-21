@@ -137,7 +137,6 @@ OC.L10N.register(
     "The update was unsuccessful. Please report this issue to the <a href=\"https://github.com/owncloud/core/issues\" target=\"_blank\">ownCloud community</a>." : "Atjaunināšana beidzās nesekmīgi. Lūdzu, ziņojiet par šo problēmu <a href=\"https://github.com/owncloud/core/issues\" target=\"_blank\">ownCloud kopienai</a>.",
     "The update was successful. Redirecting you to ownCloud now." : "Atjaunināšana beidzās sekmīgi. Tagad pārsūta jūs uz ownCloud.",
     "Personal" : "Personīgi",
-    "Users" : "Lietotāji",
     "Apps" : "Lietotnes",
     "Admin" : "Administratori",
     "Help" : "Palīdzība",

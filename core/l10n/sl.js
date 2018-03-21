@@ -238,7 +238,6 @@ OC.L10N.register(
     "No search results in other folders" : "Iskanje po drugih mapah ni vrnilo rezultata",
     "_{count} search result in another folder_::_{count} search results in other folders_" : ["{count} rezultat v drugih mapah","{count} rezultata v drugih mapah","{count} rezultatov v drugih mapah","{count} rezultatov v drugih mapah"],
     "Personal" : "Osebno",
-    "Users" : "Uporabniki",
     "Apps" : "Programi",
     "Admin" : "Skrbništvo",
     "Help" : "Pomoč",

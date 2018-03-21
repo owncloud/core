@@ -204,7 +204,6 @@ OC.L10N.register(
     "Searching other places" : "Buscant altres ubicacions",
     "No search results in other folders" : "No s'ha trobat res en altres carpetes",
     "Personal" : "Personal",
-    "Users" : "Usuaris",
     "Apps" : "Aplicacions",
     "Admin" : "Administració",
     "Help" : "Ajuda",

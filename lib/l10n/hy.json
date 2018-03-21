@@ -22,7 +22,6 @@
     "Search" : "Փնտրել",
     "Help" : "Օգնություն",
     "Settings" : "Կարգավորումներ",
-    "Users" : "Օգտատերեր",
     "Unknown user" : "Անհայտ օգտատեր",
     "PostgreSQL >= 9 required" : "Պահանջվում է PostgreSQL >= 9"
 },"pluralForm" :"nplurals=2; plural=(n != 1);"

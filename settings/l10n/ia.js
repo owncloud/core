@@ -18,8 +18,6 @@ OC.L10N.register(
     "Good password" : "Contrasigno bon",
     "Strong password" : "Contrasigno forte",
     "Groups" : "Gruppos",
-    "never" : "nunquam",
-    "Cheers!" : "Acclamationes!",
     "days" : "dies",
     "None" : "Necun",
     "Log" : "Registro",
@@ -41,11 +39,6 @@ OC.L10N.register(
     "Username" : "Nomine de usator",
     "Personal" : "Personal",
     "Admin" : "Administration",
-    "Error" : "Error",
-    "E-Mail" : "E-posta",
-    "Group" : "Gruppo",
-    "Default Quota" : "Quota predeterminate",
-    "Other" : "Altere",
-    "Quota" : "Quota"
+    "Error" : "Error"
 },
 "nplurals=2; plural=(n != 1);");

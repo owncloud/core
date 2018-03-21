@@ -233,7 +233,6 @@ OC.L10N.register(
     "No search results in other folders" : "Няма резултати от търсенето в други папки.",
     "_{count} search result in another folder_::_{count} search results in other folders_" : ["{count} резултат в друга папка","{count} резултата в други папки"],
     "Personal" : "Лични",
-    "Users" : "Потребители",
     "Apps" : "Приложения",
     "Admin" : "Админ",
     "Help" : "Помощ",

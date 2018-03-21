@@ -118,7 +118,6 @@ OC.L10N.register(
     "Please reload the page." : "Molim, ponovno učitajte stranicu",
     "The update was successful. Redirecting you to ownCloud now." : "Ažuriranje je uspjelo. Preusmjeravam vas na ownCloud.",
     "Personal" : "Osobno",
-    "Users" : "Korisnici",
     "Apps" : "Aplikacije",
     "Admin" : "Admin",
     "Help" : "Pomoć",

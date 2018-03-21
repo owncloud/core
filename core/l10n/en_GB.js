@@ -216,7 +216,6 @@ OC.L10N.register(
     "No search results in other folders" : "No search results in other folders",
     "_{count} search result in another folder_::_{count} search results in other folders_" : ["{count} search result in another folder","{count} search results in other folders"],
     "Personal" : "Personal",
-    "Users" : "Users",
     "Apps" : "Apps",
     "Admin" : "Admin",
     "Help" : "Help",

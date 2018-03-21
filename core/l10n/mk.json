@@ -249,7 +249,6 @@
     "No search results in other folders" : "Нема резултати од пребарување во други папки",
     "_{count} search result in another folder_::_{count} search results in other folders_" : ["{count} резултат од пребарувањето во други папки","{count} резултати од пребарувањето во други папки"],
     "Personal" : "Лично",
-    "Users" : "Корисници",
     "Apps" : "Аппликации",
     "Admin" : "Админ",
     "Help" : "Помош",

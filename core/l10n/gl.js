@@ -155,7 +155,6 @@ OC.L10N.register(
     "The update was successful. Redirecting you to ownCloud now." : "A actualización realizouse correctamente. Redirixíndoo agora á ownCloud.",
     "Searching other places" : "Buscando noutros lugares",
     "Personal" : "Persoal",
-    "Users" : "Usuarios",
     "Apps" : "Aplicacións",
     "Admin" : "Administración",
     "Help" : "Axuda",

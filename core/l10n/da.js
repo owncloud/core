@@ -234,7 +234,6 @@ OC.L10N.register(
     "No search results in other folders" : "Søgning gav ingen resultater in andre mapper",
     "_{count} search result in another folder_::_{count} search results in other folders_" : ["{count} søgeresultat fundet i andre mapper","{count} søgeresultater fundet i andre mapper"],
     "Personal" : "Personligt",
-    "Users" : "Brugere",
     "Apps" : "Apps",
     "Admin" : "Admin",
     "Help" : "Hjælp",

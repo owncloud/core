@@ -101,7 +101,6 @@ OC.L10N.register(
     "_download %n file_::_download %n files_" : ["%n ಕಡತಗಳನ್ನು ಸ್ಥಳೀಯ ಪ್ರತಿಯಾಗಿಸಿ"],
     "Please reload the page." : "﻿ಪುಟವನ್ನು ಪುನಃ ನವೀಕರಿಸಿ.",
     "Personal" : "﻿ವೈಯಕ್ತಿಕ",
-    "Users" : "﻿ಬಳಕೆದಾರರು",
     "Apps" : "ಕಾರ್ಯಕ್ರಮಗಳು",
     "Admin" : "﻿ನಿರ್ವಹಕ",
     "Help" : "﻿ಸಹಾಯ",

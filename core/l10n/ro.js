@@ -179,7 +179,6 @@ OC.L10N.register(
     "Searching other places" : "Se caută în alte locuri",
     "No search results in other folders" : "Nu există rezultate ale căutării în alte directoare",
     "Personal" : "Personal",
-    "Users" : "Utilizatori",
     "Apps" : "Aplicații",
     "Admin" : "Administrator",
     "Help" : "Ajutor",

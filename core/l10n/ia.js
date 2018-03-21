@@ -212,7 +212,6 @@ OC.L10N.register(
     "No search results in other folders" : "Nulle resultatos de recerca in altere dossieres",
     "_{count} search result in another folder_::_{count} search results in other folders_" : ["{count} resultato de recerca in altere dossieres","{count} resultatos de recerca in altere dossieres"],
     "Personal" : "Personal",
-    "Users" : "Usatores",
     "Apps" : "Applicationes",
     "Admin" : "Administration",
     "Help" : "Adjuta",

@@ -35,7 +35,6 @@
     "The username is already being used" : "Šāds lietotājvārds jau tiek izmantots",
     "Help" : "Palīdzība",
     "Settings" : "Iestatījumi",
-    "Users" : "Lietotāji",
     "Application is not enabled" : "Lietotne nav aktivēta",
     "Authentication error" : "Autentifikācijas kļūda",
     "Token expired. Please reload page." : "Pilnvarai ir beidzies termiņš. Lūdzu, pārlādējiet lapu."

@@ -104,7 +104,6 @@
     "The username is already being used" : "Корисничко име се већ користи",
     "Help" : "Помоћ",
     "Settings" : "Поставке",
-    "Users" : "Корисници",
     "App \"%s\" cannot be installed because the following dependencies are not fulfilled: %s" : "Апликација „%s“ не може бити инсталирана јер следеће зависности нису испуњене: %s",
     "File is currently busy, please try again later" : "Фајл је тренутно заузет, покушајте поново касније",
     "Application is not enabled" : "Апликација није укључена",

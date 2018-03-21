@@ -110,7 +110,6 @@ OC.L10N.register(
     "new" : "նոր",
     "_download %n file_::_download %n files_" : ["ներբեռնել %n ֆայլ","ներբեռնել %n ֆայլ"],
     "Personal" : "Անձնական",
-    "Users" : "Օգտատերեր",
     "Apps" : "Ափփեր",
     "Admin" : "Ադմին",
     "Help" : "Օգնություն",

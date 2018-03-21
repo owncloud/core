@@ -1,7 +1,6 @@
 OC.L10N.register(
     "settings",
     {
-    "Authentication error" : "Greška pri autentifikaciji",
     "Couldn't send reset email. Please contact your administrator." : "Nemoguće slanje e-mail-a za ponovno postavljanje lozinke. Molimo Vas kontaktirajte Vašeg administratora",
     "Saved" : "Sačuvano",
     "Email sent" : "Email poslat",
@@ -16,8 +15,6 @@ OC.L10N.register(
     "Good password" : "Dobra lozinka",
     "Strong password" : "Jaka lozinka",
     "Groups" : "Grupe",
-    "never" : "nikad",
-    "Cheers!" : "U zdravlje!",
     "Port" : "Port",
     "Get the apps to sync your files" : "Preuzmite aplikacije za sinhronizaciju Vaših fajlova",
     "Desktop client" : "Desktop klijent",
@@ -36,8 +33,6 @@ OC.L10N.register(
     "Username" : "Korisničko ime",
     "Personal" : "Lično",
     "Admin" : "Adninistracija",
-    "Error" : "Greška",
-    "Group" : "Grupa",
-    "Other" : "Drugo"
+    "Error" : "Greška"
 },
 "nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);");

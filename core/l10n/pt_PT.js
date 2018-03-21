@@ -237,7 +237,6 @@ OC.L10N.register(
     "No search results in other folders" : "Sem resultados de procura nas outras pastas",
     "_{count} search result in another folder_::_{count} search results in other folders_" : ["{count} resultado de procura noutra pasta","{count} resultados de procura noutras pastas"],
     "Personal" : "Pessoal",
-    "Users" : "Utilizadores",
     "Apps" : "Aplicações",
     "Admin" : "Administração",
     "Help" : "Ajuda",

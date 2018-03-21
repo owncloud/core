@@ -154,7 +154,6 @@ OC.L10N.register(
     "The update was successful. Redirecting you to ownCloud now." : "Ажурирање је успело. Преусмеравам вас на оунКлауд.",
     "Searching other places" : "Претражујем остала места",
     "Personal" : "Лично",
-    "Users" : "Корисници",
     "Apps" : "Апликације",
     "Admin" : "Администрација",
     "Help" : "Помоћ",

@@ -12,8 +12,6 @@ OC.L10N.register(
     "So-so password" : "Durchschnittliches Passwort",
     "Good password" : "Gutes Passwort",
     "Strong password" : "Starkes Passwort",
-    "never" : "niemals",
-    "Cheers!" : "Noch einen schönen Tag!",
     "Server address" : "Adresse des Servers",
     "Port" : "Port",
     "Especially when using the desktop client for file syncing the use of SQLite is discouraged." : "Insbesondere bei Nutzung des Desktop Clients zur Dateisynchronisierung wird vom Einsatz von SQLite abgeraten.",
@@ -27,8 +25,6 @@ OC.L10N.register(
     "Username" : "Benutzername",
     "Personal" : "Persönlich",
     "Admin" : "Administration",
-    "Error" : "Fehler",
-    "Group" : "Gruppe",
-    "Other" : "Anderes"
+    "Error" : "Fehler"
 },
 "nplurals=2; plural=(n != 1);");

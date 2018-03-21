@@ -120,7 +120,6 @@ OC.L10N.register(
     "The update was unsuccessful. Please report this issue to the <a href=\"https://github.com/owncloud/core/issues\" target=\"_blank\">ownCloud community</a>." : "Cập nhật không thành công . Vui lòng thông báo đến <a href=\"https://github.com/owncloud/core/issues\" target=\"_blank\"> Cộng đồng ownCloud </a>.",
     "The update was successful. Redirecting you to ownCloud now." : "Cập nhật thành công .Hệ thống sẽ đưa bạn tới ownCloud.",
     "Personal" : "Cá nhân",
-    "Users" : "Người dùng",
     "Apps" : "Ứng dụng",
     "Admin" : "Quản trị",
     "Help" : "Giúp đỡ",

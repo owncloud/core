@@ -39,7 +39,6 @@ OC.L10N.register(
     "Rename" : "Renombrar",
     "The object type is not specified." : "El tipo de objeto no está especificado.",
     "Personal" : "Personal",
-    "Users" : "Usuarios",
     "Admin" : "Administración",
     "Help" : "Ayuda",
     "Username" : "Usuario",

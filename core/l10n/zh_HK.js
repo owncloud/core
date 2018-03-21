@@ -75,7 +75,6 @@ OC.L10N.register(
     "Please reload the page." : "請重新載入此頁",
     "The update was successful. Redirecting you to ownCloud now." : "更新成功",
     "Personal" : "個人",
-    "Users" : "用戶",
     "Apps" : "應用程式",
     "Admin" : "管理",
     "Help" : "幫助",

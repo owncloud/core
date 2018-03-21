@@ -253,7 +253,6 @@ OC.L10N.register(
     "No search results in other folders" : "אין תוצאות חיפוש בתיקיות אחרות",
     "_{count} search result in another folder_::_{count} search results in other folders_" : ["{count} תוצאת חיפוש בתיקייה אחרות","{count} תוצאות חיפוש בתיקיות אחרות"],
     "Personal" : "אישי",
-    "Users" : "משתמשים",
     "Apps" : "יישומים",
     "Admin" : "ניהול",
     "Help" : "עזרה",

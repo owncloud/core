@@ -241,7 +241,6 @@ OC.L10N.register(
     "No search results in other folders" : "نتایج جستجو در سایر پوشه‌ها موجود نیست",
     "_{count} search result in another folder_::_{count} search results in other folders_" : ["{شمارش} نتایج جستجو در سایر پوشه‌هاست"],
     "Personal" : "شخصی",
-    "Users" : "کاربران",
     "Apps" : "  برنامه ها",
     "Admin" : "مدیر",
     "Help" : "راه‌نما",

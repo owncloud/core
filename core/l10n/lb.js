@@ -170,7 +170,6 @@ OC.L10N.register(
     "Searching other places" : "Op anere Plaaze sichen",
     "No search results in other folders" : "Keng Sich Resultater an aneren Dossieren",
     "Personal" : "Perséinlech",
-    "Users" : "Benotzer",
     "Apps" : "Applikatiounen",
     "Admin" : "Admin",
     "Help" : "Hëllef",

@@ -255,7 +255,6 @@ OC.L10N.register(
     "No search results in other folders" : "ไม่พบผลลัพธ์การค้นหาในโฟลเดอร์อื่นๆ",
     "_{count} search result in another folder_::_{count} search results in other folders_" : ["ค้นหาพบ {count} ผลลัพธ์ในโฟลเดอร์อื่นๆ"],
     "Personal" : "ส่วนตัว",
-    "Users" : "ผู้ใช้งาน",
     "Apps" : "แอพฯ",
     "Admin" : "ผู้ดูแล",
     "Help" : "ช่วยเหลือ",

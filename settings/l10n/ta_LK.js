@@ -1,7 +1,6 @@
 OC.L10N.register(
     "settings",
     {
-    "Authentication error" : "அத்தாட்சிப்படுத்தலில் வழு",
     "Create" : "உருவாக்குக",
     "Delete" : "நீக்குக",
     "Share" : "பகிர்வு",
@@ -12,8 +11,6 @@ OC.L10N.register(
     "Disable" : "இயலுமைப்ப",
     "Enable" : "இயலுமைப்படுத்துக",
     "Groups" : "குழுக்கள்",
-    "undo" : "முன் செயல் நீக்கம் ",
-    "never" : "ஒருபோதும்",
     "None" : "ஒன்றுமில்லை",
     "Login" : "புகுபதிகை",
     "Encryption" : "மறைக்குறியீடு",
@@ -35,9 +32,6 @@ OC.L10N.register(
     "Username" : "பயனாளர் பெயர்",
     "Personal" : "தனிப்பட்ட",
     "Admin" : "நிர்வாகம்",
-    "Error" : "வழு",
-    "Default Quota" : "பொது இருப்பு பங்கு",
-    "Other" : "மற்றவை",
-    "Quota" : "பங்கு"
+    "Error" : "வழு"
 },
 "nplurals=2; plural=(n != 1);");

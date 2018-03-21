@@ -1,14 +1,12 @@
 OC.L10N.register(
     "settings",
     {
-    "Authentication error" : "سالاھىيەت دەلىللەش خاتالىقى",
     "Create" : "قۇر",
     "Delete" : "ئۆچۈر",
     "Share" : "ھەمبەھىر",
     "__language_name__" : "ئۇيغۇرچە",
     "Language changed" : "تىل ئۆزگەردى",
     "Invalid request" : "ئىناۋەتسىز ئىلتىماس",
-    "Admins can't remove themself from the admin group" : "باشقۇرغۇچى ئۆزىنى باشقۇرۇش گۇرۇپپىسىدىن چىقىرىۋېتەلمەيدۇ",
     "All" : "ھەممىسى",
     "Please wait...." : "سەل كۈتۈڭ…",
     "Disable" : "چەكلە",
@@ -17,13 +15,6 @@ OC.L10N.register(
     "Error while updating app" : "ئەپنى يېڭىلاۋاتقاندا خاتالىق كۆرۈلدى",
     "Updated" : "يېڭىلاندى",
     "Groups" : "گۇرۇپپا",
-    "undo" : "يېنىۋال",
-    "never" : "ھەرگىز",
-    "add group" : "گۇرۇپپا قوش",
-    "enabled" : "قوزغىتىلغان",
-    "disabled" : "چەكلەنگەن",
-    "A valid username must be provided" : "چوقۇم ئىناۋەتلىك ئىشلەتكۈچى ئىسمىدىن بىرنى تەمىنلەش كېرەك",
-    "A valid password must be provided" : "چوقۇم ئىناۋەتلىك ئىم تەمىنلەش كېرەك",
     "Forum" : "مۇنبەر",
     "Sharing" : "ھەمبەھىر",
     "None" : "يوق",
@@ -48,9 +39,6 @@ OC.L10N.register(
     "Username" : "ئىشلەتكۈچى ئاتى",
     "Version" : "نەشرى",
     "Personal" : "شەخسىي",
-    "Error" : "خاتالىق",
-    "Other" : "باشقا",
-    "set new password" : "يېڭى ئىم تەڭشە",
-    "Default" : "كۆڭۈلدىكى"
+    "Error" : "خاتالىق"
 },
 "nplurals=1; plural=0;");

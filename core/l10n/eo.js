@@ -142,7 +142,6 @@ OC.L10N.register(
     "Searching other places" : "Serĉante en aliaj lokoj",
     "No search results in other folders" : "Neniu serĉorezulto en aliaj dosierujoj",
     "Personal" : "Persona",
-    "Users" : "Uzantoj",
     "Apps" : "Aplikaĵoj",
     "Admin" : "Administranto",
     "Help" : "Helpo",

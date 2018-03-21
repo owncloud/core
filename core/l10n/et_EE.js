@@ -206,7 +206,6 @@ OC.L10N.register(
     "The update was successful. Redirecting you to ownCloud now." : "Uuendus oli edukas. Kohe suunatakse Sind ownCloudi.",
     "Searching other places" : "Otsi teistest kohtadest",
     "Personal" : "Isiklik",
-    "Users" : "Kasutajad",
     "Apps" : "Rakendused",
     "Admin" : "Admin",
     "Help" : "Abiinfo",

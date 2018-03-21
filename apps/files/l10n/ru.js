@@ -40,6 +40,7 @@ OC.L10N.register(
     "This operation is forbidden" : "Операция запрещена",
     "This directory is unavailable, please check the logs or contact the administrator" : "Директория недоступна, пожалуйста проверьте журнал сообщений или свяжитесь с администратором",
     "Could not move \"{file}\", target exists" : "Невозможно переместить \"{file}\", цель отсутствует",
+    "Could not move \"{file}\": {message}" : "Не удалось переместить \"{file}\": {message}",
     "Could not move \"{file}\"" : "Невозможно переместить \"{file}\"",
     "{newName} already exists" : "{newName} уже имеется",
     "Could not rename \"{fileName}\", it does not exist any more" : "Невозможно переименовать \"{fileName}\", файл больше не существует",

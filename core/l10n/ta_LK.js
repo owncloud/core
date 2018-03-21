@@ -71,7 +71,6 @@ OC.L10N.register(
     "The object type is not specified." : "பொருள் வகை குறிப்பிடப்படவில்லை.",
     "Add" : "சேர்க்க",
     "Personal" : "தனிப்பட்ட",
-    "Users" : "பயனாளர்",
     "Apps" : "செயலிகள்",
     "Admin" : "நிர்வாகம்",
     "Help" : "உதவி",

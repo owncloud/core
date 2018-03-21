@@ -252,7 +252,6 @@
     "No search results in other folders" : "Aucun résultat dans d'autres dossiers",
     "_{count} search result in another folder_::_{count} search results in other folders_" : ["{count} résultat dans un autre dossier","{count} résultats dans d'autres dossiers"],
     "Personal" : "Personnel",
-    "Users" : "Utilisateurs",
     "Apps" : "Applications",
     "Admin" : "Administration",
     "Help" : "Aide",

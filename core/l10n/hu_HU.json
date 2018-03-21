@@ -244,7 +244,6 @@
     "No search results in other folders" : "Nincs keresési eredmény a másik könyvtárakban",
     "_{count} search result in another folder_::_{count} search results in other folders_" : ["{count} keresési eredmény egy másik könyvtárban","{count} keresési eredmény más könyvtárakban"],
     "Personal" : "Személyes",
-    "Users" : "Felhasználók",
     "Apps" : "Alkalmazások",
     "Admin" : "Adminsztráció",
     "Help" : "Súgó",

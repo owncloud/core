@@ -239,7 +239,6 @@ OC.L10N.register(
     "No search results in other folders" : "他のフォルダーの検索結果はありません",
     "_{count} search result in another folder_::_{count} search results in other folders_" : ["他のフォルダーの検索件数 {count}"],
     "Personal" : "個人",
-    "Users" : "ユーザー",
     "Apps" : "アプリ",
     "Admin" : "管理",
     "Help" : "ヘルプ",

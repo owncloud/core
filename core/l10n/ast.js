@@ -211,7 +211,6 @@ OC.L10N.register(
     "No search results in other folders" : "Nengún resultáu en otros direutorios",
     "_{count} search result in another folder_::_{count} search results in other folders_" : ["Atopose {count} resultáu en otros direutorios","Atopáronse {count} resultaos en otros direutorios"],
     "Personal" : "Personal",
-    "Users" : "Usuarios",
     "Apps" : "Aplicaciones",
     "Admin" : "Alministrador",
     "Help" : "Ayuda",

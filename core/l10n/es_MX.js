@@ -131,7 +131,6 @@ OC.L10N.register(
     "The update was unsuccessful. Please report this issue to the <a href=\"https://github.com/owncloud/core/issues\" target=\"_blank\">ownCloud community</a>." : "La actualización ha fracasado. Por favor, informe de este problema a la <a href=\"https://github.com/owncloud/core/issues\" target=\"_blank\">Comunidad de ownCloud</a>.",
     "The update was successful. Redirecting you to ownCloud now." : "La actualización se ha realizado con éxito. Redireccionando a ownCloud ahora.",
     "Personal" : "Personal",
-    "Users" : "Usuarios",
     "Apps" : "Aplicaciones",
     "Admin" : "Administración",
     "Help" : "Ayuda",

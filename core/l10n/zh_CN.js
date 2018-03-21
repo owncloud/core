@@ -238,7 +238,6 @@ OC.L10N.register(
     "No search results in other folders" : "在其他文件夹中没有得到任何搜索结果",
     "_{count} search result in another folder_::_{count} search results in other folders_" : ["在其他文件夹中找到 {count} 条搜索结果"],
     "Personal" : "个人",
-    "Users" : "用户",
     "Apps" : "应用",
     "Admin" : "管理",
     "Help" : "帮助",

@@ -253,7 +253,6 @@
     "No search results in other folders" : "Engar leitarniðurstöður í öðrum möppum",
     "_{count} search result in another folder_::_{count} search results in other folders_" : ["{count} leitarniðurstöður í annarri möppu","{count} leitarniðurstöður í öðrum möppum"],
     "Personal" : "Einka",
-    "Users" : "Notendur",
     "Apps" : "Forrit",
     "Admin" : "Stjórnun",
     "Help" : "Hjálp",

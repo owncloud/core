@@ -249,7 +249,6 @@ OC.L10N.register(
     "No search results in other folders" : "다른 폴더에 검색 결과 없음",
     "_{count} search result in another folder_::_{count} search results in other folders_" : ["다른 폴더의 검색 결과 {count}개"],
     "Personal" : "개인",
-    "Users" : "사용자",
     "Apps" : "앱",
     "Admin" : "관리자",
     "Help" : "도움말",

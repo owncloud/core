@@ -203,7 +203,6 @@
     "No search results in other folders" : "В інших теках нічого не знайдено",
     "_{count} search result in another folder_::_{count} search results in other folders_" : ["{count} результат пошуку в інших теках","{count} результатів пошуку в інших теках","{count} результатів пошуку в інших теках"],
     "Personal" : "Особисте",
-    "Users" : "Користувачі",
     "Apps" : "Додатки",
     "Admin" : "Адмін",
     "Help" : "Допомога",
