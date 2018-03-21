@@ -751,7 +751,13 @@ trait BasicStructure {
 	public function getPasswordForUser($userName) {
 		if ($userName === $this->getAdminUsername()) {
 			return (string) $this->getAdminPassword();
+		} else if (array_key_exists($userName, $this->createdUsers)) {
+			return (string) $this->createdUsers[$userName]['password'];
+		} else if (array_key_exists($userName, $this->createdRemoteUsers)) {
+			return (string) $this->createdRemoteUsers[$userName]['password'];
 		} else {
+			// The user has not been created yet, let the caller have the
+			// default password.
 			return (string) $this->regularUserPassword;
 		}
 	}
