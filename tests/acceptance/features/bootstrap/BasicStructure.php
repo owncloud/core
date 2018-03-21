@@ -860,18 +860,20 @@ trait BasicStructure {
 	}
 
 	/**
-	 * @BeforeSuite @api
+	 * @BeforeSuite
 	 *
 	 * @param BeforeSuiteScope $scope
 	 *
 	 * @return void
 	 */
-	public static function useBigFileIDs() {
+	public static function useBigFileIDs(BeforeSuiteScope $scope) {
 		$fullUrl = getenv('TEST_SERVER_URL') . "/v1.php/apps/testing/api/v1/increasefileid";
 		$client = new Client();
 		$options = [];
-		$options['auth'] = ['admin','admin'];
-		$client->send($client->createRequest('post', $fullUrl, $options));
+		$adminUsername = $scope->getSuite()->getSettings()['contexts'][0][__CLASS__]['adminUsername'];
+		$adminPassword = $scope->getSuite()->getSettings()['contexts'][0][__CLASS__]['adminPassword'];
+		$options['auth'] = [$adminUsername, $adminPassword];
+		$client->send($client->createRequest('POST', $fullUrl, $options));
 	}
 }
 
