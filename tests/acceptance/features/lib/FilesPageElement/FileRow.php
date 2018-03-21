@@ -31,7 +31,7 @@ use SensioLabs\Behat\PageObjectExtension\PageObject\Exception\ElementNotFoundExc
 /**
  * Object of a row on the FilesPage
  */
-class FileRow extends OwnCloudPage {
+class FileRow extends OwncloudPage {
 	/**
 	 * @var NodeElement of this row
 	 */
