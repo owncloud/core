@@ -159,7 +159,7 @@ trait BasicStructure {
 	 * @return void
 	 */
 	public function overrideBaseUrlWithWebUIValue($newBaseUrl) {
-		// baseUrl in the API tests featureContext uses a form with '/ocs/'
+		// baseUrl in the API tests FeatureContext uses a form with '/ocs/'
 		// on the end so add that.
 		if (substr($newBaseUrl, -1) !== '/') {
 			$newBaseUrl .= '/';

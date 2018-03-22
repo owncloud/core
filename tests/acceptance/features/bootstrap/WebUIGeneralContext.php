@@ -488,29 +488,6 @@ class WebUIGeneralContext extends RawMinkContext implements Context {
 	}
 
 	/**
-	 * @BeforeScenario @webUI
-	 * @TestAlsoOnExternalUserBackend
-	 *
-	 * @return void
-	 */
-	public function setUpExternalUserBackends() {
-		//TODO make it smarter to be able also to work with other backends
-		if (getenv("TEST_EXTERNAL_USER_BACKENDS") === "true") {
-			$result = SetupHelper::runOcc(
-				["user:sync", "OCA\User_LDAP\User_Proxy", "-m remove"]
-			);
-			if ((int)$result['code'] !== 0) {
-				throw new Exception(
-					"could not sync users with LDAP. stdOut:\n" .
-					$result['stdOut'] . "\n" .
-					"stdErr:\n" .
-					$result['stdErr'] . "\n"
-				);
-			}
-		}
-	}
-
-	/**
 	 * Return the baseUrl in the form that the webUI tests use.
 	 *
 	 * @return string
@@ -526,7 +503,7 @@ class WebUIGeneralContext extends RawMinkContext implements Context {
 	 *
 	 * @return void
 	 */
-	public function setUpSuite(BeforeScenarioScope $scope) {
+	public function setUpScenario(BeforeScenarioScope $scope) {
 		// Get the environment
 		$environment = $scope->getEnvironment();
 		// Get all the contexts you need in this context
@@ -604,6 +581,30 @@ class WebUIGeneralContext extends RawMinkContext implements Context {
 			]
 		);
 	}
+
+	/**
+	 * @BeforeScenario @webUI
+	 * @TestAlsoOnExternalUserBackend
+	 *
+	 * @return void
+	 */
+	public function setUpExternalUserBackends() {
+		//TODO make it smarter to be able also to work with other backends
+		if (getenv("TEST_EXTERNAL_USER_BACKENDS") === "true") {
+			$result = SetupHelper::runOcc(
+				["user:sync", "OCA\User_LDAP\User_Proxy", "-m remove"]
+			);
+			if ((int)$result['code'] !== 0) {
+				throw new Exception(
+					"could not sync users with LDAP. stdOut:\n" .
+					$result['stdOut'] . "\n" .
+					"stdErr:\n" .
+					$result['stdErr'] . "\n"
+				);
+			}
+		}
+	}
+
 	/**
 	 * @return string
 	 */
