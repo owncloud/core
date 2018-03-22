@@ -31,7 +31,7 @@ use SensioLabs\Behat\PageObjectExtension\PageObject\Exception\ElementNotFoundExc
  * Object for files action Menu on the FilesPage
  * containing actions like Rename, Delete, etc
  */
-class FileActionsMenu extends OwnCloudPage {
+class FileActionsMenu extends OwncloudPage {
 	/**
 	 * @var NodeElement of this action menu
 	 */
