@@ -37,9 +37,9 @@ default:
       contexts:
         - ShareesContext: *common_feature_context_params
 
-    webUIFiles:
+    webUILogin:
       paths:
-        - %paths.base%/../features/webUIFiles
+        - %paths.base%/../features/webUILogin
       context: &common_webui_suite_context
         parameters:
           ocPath: apps/testing/api/v1/occ
@@ -50,7 +50,17 @@ default:
         - FeatureContext: *common_feature_context_params
         - WebUIGeneralContext:
         - WebUILoginContext:
-        - WebUIUsersContext:
+        - WebUIFilesContext:
+        - WebUIPersonalGeneralSettingsContext:
+
+    webUIFiles:
+      paths:
+        - %paths.base%/../features/webUIFiles
+      context: *common_webui_suite_context
+      contexts:
+        - FeatureContext: *common_feature_context_params
+        - WebUIGeneralContext:
+        - WebUILoginContext:
         - WebUIFilesContext:
 
     webUIMoveFilesFolders:
@@ -61,7 +71,6 @@ default:
         - FeatureContext: *common_feature_context_params
         - WebUIGeneralContext:
         - WebUILoginContext:
-        - WebUIUsersContext:
         - WebUIFilesContext:
 
     webUIRenameFiles:
@@ -72,7 +81,6 @@ default:
         - FeatureContext: *common_feature_context_params
         - WebUIGeneralContext:
         - WebUILoginContext:
-        - WebUIUsersContext:
         - WebUIFilesContext:
 
     webUIRenameFolders:
@@ -83,7 +91,6 @@ default:
         - FeatureContext: *common_feature_context_params
         - WebUIGeneralContext:
         - WebUILoginContext:
-        - WebUIUsersContext:
         - WebUIFilesContext:
 
     webUITrashbin:
@@ -94,7 +101,6 @@ default:
         - FeatureContext: *common_feature_context_params
         - WebUIGeneralContext:
         - WebUILoginContext:
-        - WebUIUsersContext:
         - WebUIFilesContext:
 
     webUISharingInternalGroups:
@@ -105,7 +111,6 @@ default:
         - FeatureContext: *common_feature_context_params
         - WebUIGeneralContext:
         - WebUILoginContext:
-        - WebUIUsersContext:
         - WebUIFilesContext:
         - WebUISharingContext:
 
@@ -117,7 +122,6 @@ default:
         - FeatureContext: *common_feature_context_params
         - WebUIGeneralContext:
         - WebUILoginContext:
-        - WebUIUsersContext:
         - WebUIFilesContext:
         - WebUISharingContext:
 
@@ -129,7 +133,6 @@ default:
         - FeatureContext: *common_feature_context_params
         - WebUIGeneralContext:
         - WebUILoginContext:
-        - WebUIUsersContext:
         - WebUIFilesContext:
         - WebUISharingContext:
 
@@ -141,7 +144,6 @@ default:
         - FeatureContext: *common_feature_context_params
         - WebUIGeneralContext:
         - WebUILoginContext:
-        - WebUIUsersContext:
         - WebUIFilesContext:
 
     webUIRestrictSharing:
@@ -152,7 +154,6 @@ default:
         - FeatureContext: *common_feature_context_params
         - WebUIGeneralContext:
         - WebUILoginContext:
-        - WebUIUsersContext:
         - WebUIFilesContext:
         - WebUISharingContext:
 
@@ -164,7 +165,6 @@ default:
         - FeatureContext: *common_feature_context_params
         - WebUIGeneralContext:
         - WebUILoginContext:
-        - WebUIUsersContext:
         - WebUIFilesContext:
 
     webUIPersonalSettings:
@@ -175,7 +175,6 @@ default:
         - FeatureContext: *common_feature_context_params
         - WebUIGeneralContext:
         - WebUILoginContext:
-        - WebUIUsersContext:
         - WebUIFilesContext:
         - WebUIPersonalSecuritySettingsContext:
         - WebUIPersonalGeneralSettingsContext:
