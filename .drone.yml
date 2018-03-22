@@ -410,6 +410,14 @@ matrix:
   # Ui Acceptance tests
     - PHP_VERSION: 7.1
       TEST_SUITE: selenium
+      BEHAT_SUITE: webUILogin
+      DB_TYPE: mariadb
+      USE_SERVER: true
+      INSTALL_SERVER: true
+      CHOWN_SERVER: true
+
+    - PHP_VERSION: 7.1
+      TEST_SUITE: selenium
       BEHAT_SUITE: webUIFavorites
       DB_TYPE: mariadb
       USE_SERVER: true
