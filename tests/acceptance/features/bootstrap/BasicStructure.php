@@ -883,7 +883,11 @@ trait BasicStructure {
 	 * @return void
 	 */
 	public static function useBigFileIDs(BeforeSuiteScope $scope) {
-		$fullUrl = getenv('TEST_SERVER_URL') . "/v1.php/apps/testing/api/v1/increasefileid";
+		$fullUrl = getenv('TEST_SERVER_URL');
+		if (substr($fullUrl, -1) !== '/') {
+			$fullUrl .= '/';
+		}
+		$fullUrl .= "v1.php/apps/testing/api/v1/increasefileid";
 		$client = new Client();
 		$options = [];
 		$suiteSettingsContexts = $scope->getSuite()->getSettings()['contexts'];

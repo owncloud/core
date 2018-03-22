@@ -146,8 +146,11 @@ class SharingHelper {
 			);
 		}
 
-		$fullUrl = $baseUrl .
-			"/ocs/v{$apiVersion}.php/apps/files_sharing/api/v{$sharingApiVersion}/shares";
+		$fullUrl = $baseUrl;
+		if (substr($fullUrl, -1) !== '/') {
+			$fullUrl .= '/';
+		}
+		$fullUrl .= "ocs/v{$apiVersion}.php/apps/files_sharing/api/v{$sharingApiVersion}/shares";
 		$client = new GClient();
 		$options['auth'] = [$user, $password];
 		$fd['path'] = $path;
