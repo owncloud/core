@@ -210,6 +210,16 @@ trait BasicStructure {
 	}
 
 	/**
+	 * returns $this->response
+	 * some steps use that private var to store the response for other steps
+	 * 
+	 * @return ResponseInterface
+	 */
+	public function getResponse() {
+		return $this->response;
+	}
+
+	/**
 	 * @Given /^using server "(LOCAL|REMOTE)"$/
 	 *
 	 * @param string $server
