@@ -42,6 +42,7 @@ OC.L10N.register(
     "Migration started …" : "Миграцијата е започнаа ...",
     "Valid until {date}" : "Валидно до {date}",
     "Sending..." : "Испраќам...",
+    "Failed to change the email address." : "Промената на email адресата беше неуспешна.",
     "An error occurred: {message}" : "Се случи грешка: {message}",
     "Select a profile picture" : "Одбери фотографија за профилот",
     "Very weak password" : "Многу слаба лозинка",
