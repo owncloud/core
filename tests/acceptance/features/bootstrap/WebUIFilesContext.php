@@ -77,7 +77,7 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 
 	/**
 	 *
-	 * @var featureContext
+	 * @var FeatureContext
 	 */
 	private $featureContext;
 
