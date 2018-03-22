@@ -1,8 +1,6 @@
 @api
 Feature: tags
-  Background:
-    Given using new DAV path
-
+  
   Scenario Outline: Creating a normal tag as regular user should work
     Given user "user0" has been created
     When user "user0" creates a "normal" tag with name "<tag_name>" using the API

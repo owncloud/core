@@ -23,6 +23,7 @@ use Behat\Gherkin\Node\TableNode;
 use GuzzleHttp\Exception\BadResponseException;
 use GuzzleHttp\Client as GClient;
 use GuzzleHttp\Message\ResponseInterface;
+use GuzzleHttp\Stream\StreamInterface;
 use Sabre\DAV\Client as SClient;
 use Sabre\DAV\Xml\Property\ResourceType;
 use TestHelpers\WebDavHelper;
@@ -78,13 +79,21 @@ trait WebDav {
 		);
 	}
 
+	private function getOldDavPath() {
+		return "remote.php/webdav";
+	}
+
+	private function getNewDavPath() {
+		return "remote.php/dav";
+	}
+
 	/**
 	 * @Given /^using old (?:dav|DAV) path$/
 	 *
 	 * @return void
 	 */
 	public function usingOldDavPath() {
-		$this->davPath = "remote.php/webdav";
+		$this->davPath = $this->getOldDavPath();
 		$this->usingOldDavPath = true;
 		$this->customDavPath = null;
 	}
@@ -95,7 +104,7 @@ trait WebDav {
 	 * @return void
 	 */
 	public function usingNewDavPath() {
-		$this->davPath = "remote.php/dav";
+		$this->davPath = $this->getNewDavPath();
 		$this->usingOldDavPath = false;
 		$this->customDavPath = null;
 	}
@@ -114,14 +123,44 @@ trait WebDav {
 	}
 
 	/**
-	 * @return int DAV path version (1 or 2)
+	 * Select a suitable dav path version number.
+	 * Some endpoints have only existed since a certain point in time, so for
+	 * those make sure to return a DAV path version that works for that endpoint.
+	 * Otherwise return the currently selected DAV path version.
+	 *
+	 * @param string $for the category of endpoint that the dav path will be used for
+	 *
+	 * @return int DAV path version (1 or 2) selected, or appropriate for the endpoint
 	 */
-	private function getDavPathVersion() {
+	private function getDavPathVersion($for = null) {
+		if ($for === 'systemtags') {
+			// systemtags only exists since dav v2
+			return 2;
+		}
+
 		if ($this->usingOldDavPath === true) {
 			return 1;
 		} else {
 			return 2;
 		}
+	}
+
+	/**
+	 * Select a suitable dav path.
+	 * Some endpoints have only existed since a certain point in time, so for
+	 * those make sure to return a DAV path that works for that endpoint.
+	 * Otherwise return the currently selected DAV path.
+	 *
+	 * @param string $for the category of endpoint that the dav path will be used for
+	 *
+	 * @return string DAV path selected, or appropriate for the endpoint
+	 */
+	private function getDavPath($for = null) {
+		if ($this->getDavPathVersion($for) === 1) {
+			return $this->getOldDavPath();
+		}
+
+		return $this->getNewDavPath();
 	}
 
 	/**
@@ -132,27 +171,32 @@ trait WebDav {
 	 * @param StreamInterface $body
 	 * @param string $type
 	 * @param string|null $requestBody
+	 * @param string|null $davPathVersion
 	 *
 	 * @return \GuzzleHttp\Message\FutureResponse|ResponseInterface|NULL
 	 */
-	public function makeDavRequest($user,
+	public function makeDavRequest(
+		$user,
 		$method,
 		$path,
 		$headers,
 		$body = null,
 		$type = "files",
-		$requestBody = null
+		$requestBody = null,
+		$davPathVersion = null
 	) {
-	
-
 		if ($this->customDavPath !== null) {
 			$path = $this->customDavPath . $path;
+		}
+
+		if ($davPathVersion === null) {
+			$davPathVersion = $this->getDavPathVersion();
 		}
 
 		return WebDavHelper::makeDavRequest(
 			$this->baseUrlWithoutOCSAppendix(),
 			$user, $this->getPasswordForUser($user), $method,
-			$path, $headers, $body, $requestBody, $this->getDavPathVersion(),
+			$path, $headers, $body, $requestBody, $davPathVersion,
 			$type
 		);
 	}
@@ -806,7 +850,7 @@ trait WebDav {
 	 * @return string
 	 */
 	public function makeSabrePathNotForFiles($path) {
-		return $this->encodePath($this->davPath . $path);
+		return $this->encodePath($this->getDavPath() . $path);
 	}
 
 	/**
