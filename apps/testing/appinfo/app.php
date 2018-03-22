@@ -19,5 +19,17 @@
  *
  */
 
+namespace OCA\Testing;
+
 $app = new \OCA\Testing\Application();
 
+\OC::$server->getNotificationManager()->registerNotifier(
+	function () {
+		return new Notifier();
+	}, function () {
+		return [
+		'id' => 'testing',
+		'name' => 'testing',
+		];
+	}
+);
