@@ -25,6 +25,7 @@ use OCA\Testing\BigFileID;
 use OCA\Testing\Config;
 use OCA\Testing\Locking\Provisioning;
 use OCA\Testing\Occ;
+use OCA\Testing\Notifications;
 use OCP\API;
 
 $config = new Config(
@@ -114,4 +115,22 @@ API::register(
 	[$occ, 'execute'],
 	'testing',
 	API::ADMIN_AUTH
+);
+
+$notifications = new Notifications(
+	'notificationsacceptancetesting',
+	\OC::$server->getRequest(),
+	\OC::$server->getNotificationManager()
+);
+\OCP\API::register(
+	'delete',
+	'/apps/testing/api/v1/notifications',
+	[$notifications, 'deleteNotifications'],
+	'notifications'
+);
+\OCP\API::register(
+	'post',
+	'/apps/testing/api/v1/notifications',
+	[$notifications, 'addNotification'],
+	'notifications'
 );
