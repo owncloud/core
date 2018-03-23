@@ -153,7 +153,7 @@ class TagsHelper {
 		$userVisible = true,
 		$userAssignable = true,
 		$groups = null,
-		$davPathVersionToUse = 1
+		$davPathVersionToUse = 2
 	) {
 		$tagsPath = '/systemtags/';
 		$body = [

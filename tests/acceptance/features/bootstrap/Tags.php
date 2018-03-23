@@ -55,7 +55,7 @@ trait Tags {
 				$user,
 				$this->getPasswordForUser($user),
 				$name, $userVisible, $userAssignable, $groups,
-				$this->getDavPathVersion()
+				$this->getDavPathVersion('systemtags')
 			);
 			$lastTagId = $createdTag['lastTagId'];
 			$this->response = $createdTag['HTTPResponse'];
@@ -296,7 +296,7 @@ trait Tags {
 		$appPath = '/systemtags/';
 		$tagID = $this->findTagIdByName($tagDisplayName);
 		PHPUnit_Framework_Assert::assertNotNull($tagID, "Tag wasn't found");
-		$fullUrl = $this->baseUrlWithoutOCSAppendix() . $this->davPath . $appPath . $tagID;
+		$fullUrl = $this->baseUrlWithoutOCSAppendix() . $this->getDavPath('systemtags') . $appPath . $tagID;
 		try {
 			$response = $client->proppatch($fullUrl, $properties, 1);
 			$this->response = $response;
@@ -360,7 +360,7 @@ trait Tags {
 				$user,
 				$this->getPasswordForUser($user),
 				$tagID,
-				$this->getDavPathVersion()
+				$this->getDavPathVersion('systemtags')
 			);
 		} catch (BadResponseException $e) {
 			$this->response = $e->getResponse();
@@ -383,7 +383,7 @@ trait Tags {
 				$this->baseUrlWithoutOCSAppendix(),
 				$taggingUser, 
 				$this->getPasswordForUser($taggingUser),
-				$tagName, $fileName, $fileOwner, $this->getDavPathVersion()
+				$tagName, $fileName, $fileOwner, $this->getDavPathVersion('systemtags')
 			);
 		} catch ( BadResponseException $e ) {
 			$this->response = $e->getResponse();
@@ -412,7 +412,7 @@ trait Tags {
 						'{http://owncloud.org/ns}can-assign'
 					  ];
 		$appPath = '/systemtags-relations/files/';
-		$fullUrl = $this->baseUrlWithoutOCSAppendix() . $this->davPath . $appPath . $fileID;
+		$fullUrl = $this->baseUrlWithoutOCSAppendix() . $this->getDavPath('systemtags') . $appPath . $fileID;
 		try {
 			$response = $client->propfind($fullUrl, $properties, 1);
 		} catch (Sabre\HTTP\ClientHttpException $e) {
@@ -510,7 +510,14 @@ trait Tags {
 		$path = '/systemtags-relations/files/' . $fileID . '/' . $tagID;
 		try {
 			$this->response = $this->makeDavRequest(
-				$untaggingUser, "DELETE", $path, null, null, "uploads"
+				$untaggingUser,
+				"DELETE",
+				$path,
+				null,
+				null,
+				"uploads",
+				null,
+				$this->getDavPathVersion('systemtags')
 			);
 		} catch (BadResponseException $e) {
 			$this->response = $e->getResponse();
