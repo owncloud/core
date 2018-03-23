@@ -613,7 +613,7 @@ Feature: webdav-related-new-endpoint
 		And user "user0" has uploaded file "data/textfile.txt" to "/somefile.txt"
 		When user "user0" gets the following properties of file "/somefile.txt" using the API
 			|{http://owncloud.org/ns}privatelink|
-		Then the single response should contain a property "{http://owncloud.org/ns}privatelink" with value like "/(\/index.php\/f\/[0-9]*)/"
+		Then the single response should contain a property "{http://owncloud.org/ns}privatelink" with value like "%(/(index.php/)?f/[0-9]*)%"
 
 	Scenario: Copying file to a path with extension .part should not be possible
 		Given using new DAV path
