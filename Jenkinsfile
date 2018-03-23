@@ -43,16 +43,6 @@ timestampedNode('SLAVE') {
 
         step([$class: 'JUnitResultArchiver', testResults: 'tests/autotest-external-results-sqlite.xml'])
 
-	stage 'Acceptance Testing'
-		executeAndReport('tests/acceptance/output/*.xml') {
-			sh '''phpenv local 7.1.0
-			rm -rf config/config.php data/*
-			./occ maintenance:install --admin-pass=admin
-			make clean-test-acceptance
-			make test-acceptance OC_TEST_ALT_HOME=1
-		   '''
-		}
-
 }
 
 def isOnReleaseBranch ()  {
