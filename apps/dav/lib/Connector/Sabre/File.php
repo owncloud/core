@@ -35,6 +35,7 @@ namespace OCA\DAV\Connector\Sabre;
 
 use OC\AppFramework\Http\Request;
 use OC\Files\Filesystem;
+use OC\Files\GRPCStorage;
 use OC\Files\Storage\Storage;
 use OCA\DAV\Connector\Sabre\Exception\EntityTooLarge;
 use OCA\DAV\Connector\Sabre\Exception\FileLocked;
@@ -45,6 +46,7 @@ use OCP\Encryption\Exceptions\GenericEncryptionException;
 use OCP\Events\EventEmitterTrait;
 use OCP\Files\EntityTooLargeException;
 use OCP\Files\ForbiddenException;
+use OCP\Files\IFileStorage;
 use OCP\Files\InvalidContentException;
 use OCP\Files\InvalidPathException;
 use OCP\Files\LockNotAcquiredException;
@@ -65,7 +67,7 @@ class File extends Node implements IFile, IFileNode {
 
 	use EventEmitterTrait;
 	protected $request;
-	
+
 	/**
 	 * Sets up the node, expects a full path name
 	 *
@@ -79,6 +81,7 @@ class File extends Node implements IFile, IFileNode {
 		} else {
 			$this->request = \OC::$server->getRequest();
 		}
+
 		parent::__construct($view, $info, $shareManager);
 	}
 	
@@ -112,6 +115,11 @@ class File extends Node implements IFile, IFileNode {
 	 */
 	public function put($data) {
 		$path = $this->fileView->getAbsolutePath($this->path);
+
+		$this->storage->put($path, $data);
+
+
+
 		return $this->emittingCall(function () use (&$data) {
 			try {
 				$exists = $this->fileView->file_exists($this->path);
@@ -341,28 +349,15 @@ class File extends Node implements IFile, IFileNode {
 	 * @throws ServiceUnavailable
 	 */
 	public function get() {
-		//throw exception if encryption is disabled but files are still encrypted
-		try {
-			$viewPath = ltrim($this->path, '/');
-			if (!$this->info->isReadable() || !$this->fileView->file_exists($viewPath)) {
-				// do a if the file did not exist
-				throw new NotFound();
-			}
-			$res = $this->fileView->fopen($viewPath, 'rb');
-			if ($res === false) {
-				throw new ServiceUnavailable("Could not open file");
-			}
-			return $res;
-		} catch (GenericEncryptionException $e) {
-			// returning 403 because some apps stops syncing if 503 is returned.
-			throw new Forbidden("Encryption not ready: " . $e->getMessage());
-		} catch (StorageNotAvailableException $e) {
-			throw new ServiceUnavailable("Failed to open file: " . $e->getMessage());
-		} catch (ForbiddenException $ex) {
-			throw new DAVForbiddenException($ex->getMessage(), $ex->getRetry());
-		} catch (LockedException $e) {
-			throw new FileLocked($e->getMessage(), $e->getCode(), $e);
+		$this->initStorage();
+		$viewPath = ltrim($this->path, '/');
+
+		if(!$this->info->isReadable()) {
+			throw new NotFound();
 		}
+
+		return $this->storage->getStream($viewPath);
+
 	}
 
 	/**
@@ -376,18 +371,7 @@ class File extends Node implements IFile, IFileNode {
 			throw new Forbidden();
 		}
 
-		try {
-			if (!$this->fileView->unlink($this->path)) {
-				// assume it wasn't possible to delete due to permissions
-				throw new Forbidden();
-			}
-		} catch (StorageNotAvailableException $e) {
-			throw new ServiceUnavailable("Failed to unlink: " . $e->getMessage());
-		} catch (ForbiddenException $ex) {
-			throw new DAVForbiddenException($ex->getMessage(), $ex->getRetry());
-		} catch (LockedException $e) {
-			throw new FileLocked($e->getMessage(), $e->getCode(), $e);
-		}
+		$this->storage->delete($this->path);
 	}
 
 	/**

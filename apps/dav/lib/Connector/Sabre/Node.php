@@ -34,10 +34,13 @@
 
 namespace OCA\DAV\Connector\Sabre;
 
+use OC\Files\GRPCStorage;
 use OC\Files\Mount\MoveableMount;
+use OC\Files\View;
 use OCA\DAV\Connector\Sabre\Exception\Forbidden;
 use OCA\DAV\Connector\Sabre\Exception\InvalidPath;
 use OCP\Files\ForbiddenException;
+use OCP\Files\IFileStorage;
 use OCP\Share\Exceptions\ShareNotFound;
 use OCP\Share\IManager;
 
@@ -45,9 +48,9 @@ use OCP\Share\IManager;
 abstract class Node implements \Sabre\DAV\INode {
 
 	/**
-	 * @var \OC\Files\View
+	 * @var IFileStorage
 	 */
-	protected $fileView;
+	protected $storage;
 
 	/**
 	 * The path to the current node
@@ -74,13 +77,20 @@ abstract class Node implements \Sabre\DAV\INode {
 	protected $shareManager;
 
 	/**
+	 * @var View
+	 */
+	protected $fileView;
+
+
+	/**
 	 * Sets up the node, expects a full path name
 	 *
-	 * @param \OC\Files\View $view
+	 * @param View $view
 	 * @param \OCP\Files\FileInfo $info
 	 * @param IManager $shareManager
 	 */
 	public function __construct($view, $info, IManager $shareManager = null) {
+		$this->storage = null;
 		$this->fileView = $view;
 		$this->path = $this->fileView->getRelativePath($info->getPath());
 		$this->info = $info;
@@ -88,6 +98,13 @@ abstract class Node implements \Sabre\DAV\INode {
 			$this->shareManager = $shareManager;
 		} else {
 			$this->shareManager = \OC::$server->getShareManager();
+		}
+
+	}
+
+	protected function initStorage() {
+		if($this->storage === null) {
+			$this->storage = new GRPCStorage('localhost', '1093', 'admin', 'admin');
 		}
 	}
 
