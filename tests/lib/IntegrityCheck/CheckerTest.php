@@ -138,20 +138,42 @@ class CheckerTest extends TestCase {
 		$this->checker->writeAppSignature(\OC::$SERVERROOT . '/tests/data/integritycheck/app/', $x509, $rsa);
 	}
 
+	public function testIgnoredAppSignatureWithoutSignatureData() {
+		$this->environmentHelper
+			->expects($this->once())
+			->method('getChannel')
+			->will($this->returnValue('stable'));
+		$configMap = [
+			['integrity.check.disabled', false, false],
+			['integrity.ignore.missing.app.signature', [], ['SomeApp']]
+		];
+		$this->config
+			->expects($this->any())
+			->method('getSystemValue')
+			->will($this->returnValueMap($configMap));
+
+		$expected = [];
+		$this->assertSame($expected, $this->checker->verifyAppSignature('SomeApp'));
+	}
+
+
 	public function testVerifyAppSignatureWithoutSignatureData() {
 		$this->environmentHelper
 				->expects($this->once())
 				->method('getChannel')
 				->will($this->returnValue('stable'));
+		$configMap = [
+			['integrity.check.disabled', false, false],
+			['integrity.ignore.missing.app.signature', [], []]
+		];
 		$this->config
-				->expects($this->any())
-				->method('getSystemValue')
-				->with('integrity.check.disabled', false)
-				->will($this->returnValue(false));
+			->expects($this->any())
+			->method('getSystemValue')
+			->will($this->returnValueMap($configMap));
 
 		$expected = [
 			'EXCEPTION' => [
-					'class' => 'OC\IntegrityCheck\Exceptions\InvalidSignatureException',
+					'class' => 'OC\IntegrityCheck\Exceptions\MissingSignatureException',
 					'message' => 'Signature data not found.',
 			],
 		];
@@ -626,7 +648,7 @@ class CheckerTest extends TestCase {
 
 		$expected = [
 			'EXCEPTION' => [
-				'class' => 'OC\\IntegrityCheck\\Exceptions\\InvalidSignatureException',
+				'class' => 'OC\\IntegrityCheck\\Exceptions\\MissingSignatureException',
 				'message' => 'Signature data not found.',
 			],
 		];
