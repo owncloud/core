@@ -79,7 +79,7 @@ OC.L10N.register(
     "An error occurred while trying to update the tags" : "Се случи грешка додека се обидувавте да ги освежите таговите",
     "A new file or folder has been <strong>created</strong>" : "Нова датотека или директориум е <strong>креиран</strong>",
     "A file or folder has been <strong>changed</strong>" : "Датотека или директориум е <strong>изменет</strong>",
-    "Limit notifications about creation and changes to your <strong>favorite files</strong>" : "Ограничете известувања за креирање и промени на вашите омилени датотеки <strong>омилени датотеки</strong>",
+    "Limit notifications about creation and changes to your <strong>favorite files</strong>" : "Ограничете известувања за креирање и промени на вашите  <strong>омилени датотеки</strong>",
     "A file or folder has been <strong>deleted</strong>" : "Датотека или директоиум се <strong>избришани</strong>",
     "A file or folder has been <strong>restored</strong>" : "Датотека или директоиум се <strong>вратени</strong>",
     "You created %1$s" : "Вие го креиравте %1$s",

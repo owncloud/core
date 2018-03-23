@@ -16,7 +16,7 @@
     "%s password changed successfully" : "%s лозинката е успешно променета",
     "%s password reset" : "%s ресетирање на лозинката",
     "Couldn't send reset email. Please contact your administrator." : "Не можам да истпратам порака за ресетирање. Ве молам контактирајте го вашиот администратор.",
-    "Couldn't send mail to following recipient(s): %s " : "Не можеше да се испрати пошта до следниве приматели: %s ",
+    "Couldn't send mail to following recipient(s): %s " : "Не можеше да се испрати пошта до следниот примател(и): %s ",
     "Preparing update" : "Ја подготвувам надградбата",
     "[%d / %d]: %s" : "[%d / %d]: %s",
     "Repair warning: " : "Предупредувања при поправка:",
