@@ -302,6 +302,13 @@ class AppConfig implements IAppConfig {
 				$this->cache[$row['appid']] = [];
 			}
 
+			// check if installed_version matches the pattern
+			// one_or_more_digits-dot-one_or_more_digits-any-other-characters
+			if ($row['configkey'] === 'installed_version'
+				&& preg_match('/\d+\.\d+.*$/', $row['configvalue']) !== 1
+			) {
+				$row['configvalue'] = '0.0.1';
+			}
 			$this->cache[$row['appid']][$row['configkey']] = $row['configvalue'];
 		}
 		$result->closeCursor();

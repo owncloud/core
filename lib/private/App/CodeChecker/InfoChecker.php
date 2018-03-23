@@ -40,6 +40,7 @@ class InfoChecker extends BasicEmitter {
 		'id',
 		'licence',
 		'name',
+		'version',
 	];
 	private $optionalFields = [
 		'bugs',
@@ -53,7 +54,6 @@ class InfoChecker extends BasicEmitter {
 		'remote',
 		'repository',
 		'types',
-		'version',
 		'website',
 	];
 	private $deprecatedFields = [
