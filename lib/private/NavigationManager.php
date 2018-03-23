@@ -141,6 +141,11 @@ class NavigationManager implements INavigationManager {
 				continue;
 			}
 			$nav = $info['navigation'];
+
+			// handle pure frontend apps here
+			if (isset($info['frontend'])) {
+				$nav['route'] = "$app.view.index";
+			}
 			if (!isset($nav['route'])) {
 				continue;
 			}
