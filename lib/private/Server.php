@@ -445,7 +445,7 @@ class Server extends ServerContainer implements IServerContainer, IServiceLoader
 		$this->registerService('AvatarManager', function (Server $c) {
 			return new AvatarManager(
 				$c->getUserManager(),
-				$c->getRootFolder(),
+				$c->getLazyRootFolder(),  // initialize the root folder lazily
 				$c->getL10N('lib'),
 				$c->getLogger()
 			);
