@@ -37,10 +37,10 @@
 						<div id="header">
 							<div class="logo">
 								<h1 class="hidden-visually">
-									<?php p($theme->getName()); ?>
+									<?php print_unescaped($theme->getHTMLName()); ?>
 								</h1>
 							</div>
-							<div id="logo-claim" style="display:none;"><?php p($theme->getLogoClaim()); ?></div>
+							<div id="logo-claim" style="display:none;"><?php print_unescaped($theme->getLogoClaim()); ?></div>
 						</div>
 					</header>
 				<?php endif; ?>
