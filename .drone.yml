@@ -485,6 +485,15 @@ matrix:
   # API Acceptance tests
     - PHP_VERSION: 7.1
       TEST_SUITE: api
+      BEHAT_SUITE: apiMain
+      DB_TYPE: mariadb
+      USE_SERVER: true
+      INSTALL_SERVER: true
+      CHOWN_SERVER: true
+      OWNCLOUD_LOG: true
+
+    - PHP_VERSION: 7.1
+      TEST_SUITE: api
       BEHAT_SUITE: apiCapabilities
       DB_TYPE: mariadb
       USE_SERVER: true
@@ -504,7 +513,7 @@ matrix:
 
     - PHP_VERSION: 7.1
       TEST_SUITE: api
-      BEHAT_SUITE: apiMain
+      BEHAT_SUITE: apiProvisioning
       DB_TYPE: mariadb
       USE_SERVER: true
       INSTALL_SERVER: true
@@ -514,6 +523,33 @@ matrix:
     - PHP_VERSION: 7.1
       TEST_SUITE: api
       BEHAT_SUITE: apiSharees
+      DB_TYPE: mariadb
+      USE_SERVER: true
+      INSTALL_SERVER: true
+      CHOWN_SERVER: true
+      OWNCLOUD_LOG: true
+
+    - PHP_VERSION: 7.1
+      TEST_SUITE: api
+      BEHAT_SUITE: apiSharing
+      DB_TYPE: mariadb
+      USE_SERVER: true
+      INSTALL_SERVER: true
+      CHOWN_SERVER: true
+      OWNCLOUD_LOG: true
+
+    - PHP_VERSION: 7.1
+      TEST_SUITE: api
+      BEHAT_SUITE: apiTrashbin
+      DB_TYPE: mariadb
+      USE_SERVER: true
+      INSTALL_SERVER: true
+      CHOWN_SERVER: true
+      OWNCLOUD_LOG: true
+
+    - PHP_VERSION: 7.1
+      TEST_SUITE: api
+      BEHAT_SUITE: apiWebdav
       DB_TYPE: mariadb
       USE_SERVER: true
       INSTALL_SERVER: true
