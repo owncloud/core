@@ -141,7 +141,8 @@ class NavigationManager implements INavigationManager {
 				continue;
 			}
 			$nav = $info['navigation'];
-			if (!isset($nav['route'])) {
+			// either a route or a static page must be defined
+			if (!isset($nav['route']) && !isset($nav['static'])) {
 				continue;
 			}
 			$role = isset($nav['@attributes']['role']) ? $nav['@attributes']['role'] : 'all';
@@ -150,7 +151,15 @@ class NavigationManager implements INavigationManager {
 			}
 			$l = $this->l10nFac->get($app);
 			$order = isset($nav['order']) ? $nav['order'] : 100;
-			$route = $this->urlGenerator->linkToRoute($nav['route']);
+			if (isset($nav['route'])) {
+				$route = $this->urlGenerator->linkToRoute($nav['route']);
+			} else {
+				$html = 'index.html';
+				if (isset($nav['static'])) {
+					$html = $nav['static'];
+				}
+				$route = $this->urlGenerator->linkTo($app, $html);
+			}
 			$name = isset($nav['name']) ? $nav['name'] : ucfirst($app);
 			$icon = isset($nav['icon']) ? $nav['icon'] : 'app.svg';
 			$iconPath = null;
