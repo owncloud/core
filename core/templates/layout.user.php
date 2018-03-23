@@ -45,7 +45,7 @@
 			<div id="header">
 				<a href="<?php print_unescaped(link_to('', 'index.php')); ?>" id="owncloud" tabindex="1">
 					<h1 class="logo-icon">
-						<?php p($theme->getName()); ?>
+						<?php print_unescaped($theme->getHTMLName()); ?>
 					</h1>
 				</a>
 				<a href="#" class="header-appname-container menutoggle" tabindex="2">
@@ -56,7 +56,7 @@
 						<?php p(!empty($_['application']) ? $_['application'] : $l->t('Apps')); ?>
 					</h1>
 				</a>
-				<div id="logo-claim" style="display:none;"><?php p($theme->getLogoClaim()); ?></div>
+				<div id="logo-claim" style="display:none;"><?php print_unescaped($theme->getLogoClaim()); ?></div>
 				<div id="settings">
 					<div id="expand" tabindex="6" role="link" class="menutoggle">
 						<?php if ($_['enableAvatars']): ?>
