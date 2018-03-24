@@ -310,6 +310,9 @@ class Scanner extends BasicEmitter implements IScanner {
 				$this->storage->acquireLock($path, ILockingProvider::LOCK_SHARED, $this->lockingProvider);
 			}
 		}
+		if (function_exists('memprof_enable')) {
+			\memprof_enable();
+		}
 		$data = $this->scanFile($path, $reuse, -1, null, $lock);
 		if ($data and $data['mimetype'] === 'httpd/unix-directory') {
 			$size = $this->scanChildren($path, $recursive, $reuse, $data['fileid'], $lock);
@@ -370,6 +373,9 @@ class Scanner extends BasicEmitter implements IScanner {
 	 * @return int the size of the scanned folder or -1 if the size is unknown at this stage
 	 */
 	protected function scanChildren($path, $recursive = self::SCAN_RECURSIVE, $reuse = -1, $folderId = null, $lock = true) {
+		if (function_exists('memprof_enable') && memory_get_peak_usage() > $this->return_bytes(ini_get('memory_limit'))*0.9 ) {
+			\memprof_dump_callgrind(fopen("/tmp/callgrind.out.".microtime(true), "w"));
+		}
 		if ($reuse === -1) {
 			$reuse = ($recursive === self::SCAN_SHALLOW) ? self::REUSE_ETAG | self::REUSE_SIZE : self::REUSE_ETAG;
 		}
@@ -393,6 +399,21 @@ class Scanner extends BasicEmitter implements IScanner {
 		}
 		$this->emit('\OC\Files\Cache\Scanner', 'postScanFolder', [$path, $this->storageId]);
 		return $size;
+	}
+
+	/**
+	 * @link http://php.net/manual/de/function.ini-get.php#96996
+	 * @param $size_str
+	 * @return int
+	 */
+	private function return_bytes ($size_str)
+	{
+		switch (substr ($size_str, -1))	{
+			case 'M': case 'm': return (int)$size_str * 1048576;
+			case 'K': case 'k': return (int)$size_str * 1024;
+			case 'G': case 'g': return (int)$size_str * 1073741824;
+			default: return $size_str;
+		}
 	}
 
 	private function handleChildren($path, $recursive, $reuse, $folderId, $lock, &$size) {
