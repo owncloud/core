@@ -124,7 +124,7 @@ class SharingDialog extends OwncloudPage {
 	public function groupStringsToMatchAutoComplete($groupNames) {
 		if (is_array($groupNames)) {
 			$autocompleteStrings = array();
-			foreach ($groupNames as $groupName) {
+			foreach ($groupNames as $groupName => $groupData) {
 				$autocompleteStrings[] = $groupName . $this->suffixToIdentifyGroups;
 			}
 		} else {
