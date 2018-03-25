@@ -377,6 +377,7 @@ trait Provisioning {
 		$user = trim($user);
 		$method = trim(strtolower($method));
 		$baseUrl = $this->baseUrlWithoutOCSAppendix();
+		$userWasCreated = false;
 		switch ($method) {
 			case "api":
 				$results = UserHelper::createUser(
@@ -393,6 +394,7 @@ trait Provisioning {
 						);
 					}
 				}
+				$userWasCreated = true;
 				break;
 			case "occ":
 				$result = SetupHelper::createUser(
@@ -404,6 +406,7 @@ trait Provisioning {
 						. $result["stdOut"] . " " . $result["stdErr"]
 					);
 				}
+				$userWasCreated = true;
 				break;
 			case "ldap":
 				echo "creating LDAP users is not implemented, so assume they exist\n";
@@ -414,7 +417,7 @@ trait Provisioning {
 				);
 		}
 
-		$this->addUserToCreatedUsersList($user, $password, $displayName, $email);
+		$this->addUserToCreatedUsersList($user, $password, $displayName, $email, $userWasCreated);
 		if ($initialize) {
 			$this->initializeUser($user, $password);
 		}
@@ -600,14 +603,19 @@ trait Provisioning {
 
 	/**
 	 * @param string $group
+	 * @param bool $shouldHaveBeenCreated
 	 *
 	 * @return void
 	 */
-	public function addGroupToCreatedGroupsList($group) {
+	public function addGroupToCreatedGroupsList($group, $shouldHaveBeenCreated = true) {
+		$groupData = [
+			"shouldHaveBeenCreated" => $shouldHaveBeenCreated
+		];
+
 		if ($this->currentServer === 'LOCAL') {
-			$this->createdGroups[$group] = $group;
+			$this->createdGroups[$group] = $groupData;
 		} elseif ($this->currentServer === 'REMOTE') {
-			$this->createdRemoteGroups[$group] = $group;
+			$this->createdRemoteGroups[$group] = $groupData;
 		}
 	}
 
@@ -691,6 +699,7 @@ trait Provisioning {
 		}
 		$group = trim($group);
 		$method = trim(strtolower($method));
+		$groupWasCreated = false;
 		switch ($method) {
 			case "api":
 				$result = UserHelper::createGroup(
@@ -699,7 +708,9 @@ trait Provisioning {
 					$this->getAdminUsername(),
 					$this->getAdminPassword()
 				);
-				if ($result->getStatusCode() !== 200) {
+				if ($result->getStatusCode() === 200) {
+					$groupWasCreated = true;
+				} else {
 					throw new Exception(
 						"could not create group. "
 						. $result->getStatusCode() . " " . $result->getBody()
@@ -708,7 +719,9 @@ trait Provisioning {
 				break;
 			case "occ":
 				$result = SetupHelper::createGroup($group);
-				if ($result["code"] != 0) {
+				if ($result["code"] == 0) {
+					$groupWasCreated = true;
+				} else {
 					throw new Exception(
 						"could not create group. "
 						. $result["stdOut"] . " " . $result["stdErr"]
@@ -723,7 +736,8 @@ trait Provisioning {
 					"Invalid method to create a group"
 				);
 		}
-		$this->addGroupToCreatedGroupsList($group);
+
+		$this->addGroupToCreatedGroupsList($group, $groupWasCreated);
 	}
 
 	/**
@@ -1234,12 +1248,16 @@ trait Provisioning {
 	public function cleanupGroups() {
 		$previousServer = $this->currentServer;
 		$this->usingServer('LOCAL');
-		foreach ($this->createdGroups as $group) {
-			$this->deleteGroup($group);
+		foreach ($this->createdGroups as $group => $groupData) {
+			if ($groupData['shouldHaveBeenCreated']) {
+				$this->deleteGroup($group);
+			}
 		}
 		$this->usingServer('REMOTE');
-		foreach ($this->createdRemoteGroups as $remoteGroup) {
-			$this->deleteGroup($remoteGroup);
+		foreach ($this->createdRemoteGroups as $remoteGroup => $groupData) {
+			if ($groupData['shouldHaveBeenCreated']) {
+				$this->deleteGroup($remoteGroup);
+			}
 		}
 		$this->usingServer($previousServer);
 	}
