@@ -537,7 +537,9 @@ trait Sharing {
 				} elseif ($contentExpected == "A_NUMBER") {
 					return is_numeric((string)$element->$field);
 				} elseif ($contentExpected == "AN_URL") {
-					return $this->isAPublicLinkUrl((string)$element->$field);
+					return $this->isExpectedUrl(
+						(string)$element->$field, "index.php/s/"
+					);
 				} elseif ((string)$element->$field == $contentExpected) {
 					return true;
 				} else {
@@ -552,7 +554,10 @@ trait Sharing {
 			} elseif ($contentExpected == "A_NUMBER") {
 					return is_numeric((string)$data->$field);
 			} elseif ($contentExpected == "AN_URL") {
-					return $this->isAPublicLinkUrl((string)$data->$field);
+					return $this->isExpectedUrl(
+						(string)$data->$field,
+						"index.php/s/"
+					);
 			} elseif ($data->$field == $contentExpected) {
 					return true;
 			}
