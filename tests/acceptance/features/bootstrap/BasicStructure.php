@@ -450,14 +450,15 @@ trait BasicStructure {
 	}
 
 	/**
-	 * @param string $url
+	 * @param string $possibleUrl
+	 * @param string $finalPart
 	 *
 	 * @return bool
 	 */
-	public function isAPublicLinkUrl($url) {
+	public function isExpectedUrl($possibleUrl, $finalPart) {
 		$baseUrlChopped = $this->baseUrlWithoutOCSAppendix();
-		$urlEnding = substr($url, strlen($baseUrlChopped));
-		return preg_match("%^(index.php/)?s/([a-zA-Z0-9]{15})$%", $urlEnding);
+		$endCharacter = strlen($baseUrlChopped) + strlen($finalPart);
+		return (substr($possibleUrl, 0, $endCharacter) == "$baseUrlChopped" . "$finalPart");
 	}
 
 	/**
