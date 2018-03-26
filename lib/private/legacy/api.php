@@ -187,7 +187,10 @@ class OC_API {
 			!is_null(\OC::$server->getRequest()->getHeader('Origin'))) {
 			$requesterDomain = \OC::$server->getRequest()->getHeader('Origin');
 			$userId = \OC::$server->getUserSession()->getUser()->getUID();
-			$response = \OC_Response::setCorsHeaders($userId, $requesterDomain, $response);
+			$headers = \OC_Response::setCorsHeaders($userId, $requesterDomain);
+			foreach ($headers as $key => $value) {
+				$response->addHeader($key, implode(',', $value));
+			}
 		}
 
 		$format = self::requestedFormat();
