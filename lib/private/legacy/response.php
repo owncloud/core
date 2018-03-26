@@ -305,7 +305,7 @@ class OC_Response {
 
 			foreach ($headers as $key => $value) {
 				if (array_key_exists($key, $allHeaders)) {
-					$allHeaders[$key] = array_merge($allHeaders[$key], $value);
+					$allHeaders[$key] = array_unique(array_merge($allHeaders[$key], $value));
 				}
 			}
 
@@ -318,7 +318,7 @@ class OC_Response {
 	 * This function adds the CORS headers for all domains
 	 *
 	 * @param Sabre\HTTP\ResponseInterface $response
-	 * @param Array $headers
+	 * @param array $headers
 	 *
 	 * Format of $headers:
 	 * Array [
@@ -337,7 +337,7 @@ class OC_Response {
 
 		foreach ($headers as $key => $value) {
 			if (array_key_exists($key, $allHeaders)) {
-				$allHeaders[$key] = array_merge($allHeaders[$key], $value);
+				$allHeaders[$key] = array_unique(array_merge($allHeaders[$key], $value));
 			}
 		}
 
