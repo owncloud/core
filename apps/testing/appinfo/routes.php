@@ -27,6 +27,7 @@ use OCA\Testing\Locking\Provisioning;
 use OCA\Testing\Occ;
 use OCA\Testing\Notifications;
 use OCP\API;
+use OCA\Testing\AppManager;
 
 $config = new Config(
 	\OC::$server->getConfig(),
@@ -61,6 +62,24 @@ API::register(
 	'delete',
 	'/apps/testing/api/v1/apps',
 	[$config, 'deleteAppValues'],
+	'testing',
+	API::ADMIN_AUTH
+);
+
+$appManager = new AppManager(\OC::$server->getRequest());
+
+API::register(
+	'post',
+	'/apps/testing/api/v1/app/{appid}',
+	[$appManager, 'enableApp'],
+	'testing',
+	API::ADMIN_AUTH
+);
+
+API::register(
+	'delete',
+	'/apps/testing/api/v1/app/{appid}',
+	[$appManager, 'deleteApp'],
 	'testing',
 	API::ADMIN_AUTH
 );
