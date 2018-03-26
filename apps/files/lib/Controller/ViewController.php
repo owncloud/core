@@ -42,6 +42,7 @@ use OCP\IURLGenerator;
 use OCP\IUserSession;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use OCP\AppFramework\Http;
+use Symfony\Component\EventDispatcher\GenericEvent;
 
 /**
  * Class ViewController
@@ -283,18 +284,20 @@ class ViewController extends Controller {
 		$files = $baseFolder->getById($fileId);
 		$params = [];
 
-		$isFilesView = true;
-		if (empty($files) && $this->appManager->isEnabledForUser('files_trashbin')) {
-			// Access files_trashbin if it exists
-			if ( $this->rootFolder->nodeExists($uid . '/files_trashbin/files/')) {
-				$baseFolder = $this->rootFolder->get($uid . '/files_trashbin/files/');
-				$files = $baseFolder->getById($fileId);
-				$params['view'] = 'trashbin';
-				$isFilesView = false;
-			}
-		}
+		if (empty($files)) {
+			// probe apps to see if the file is in a different state and can be accessed
+			// through another URL
+			$event = new GenericEvent(null, [
+				'fileid' => $fileId,
+				'uid' => $uid,
+				'resolvedWebLink' => null,
+				'resolvedDavLink' => null,
+			]);
+			$this->eventDispatcher->dispatch('files.resolvePrivateLink', $event);
 
-		if (!empty($files)) {
+			$webUrl = $event->getArgument('resolvedWebLink');
+			$webdavUrl = $event->getArgument('resolvedDavLink');
+		} else {
 			$file = current($files);
 			if ($file instanceof Folder) {
 				// set the full path to enter the folder
@@ -305,10 +308,15 @@ class ViewController extends Controller {
 				// and scroll to the entry
 				$params['scrollto'] = $file->getName();
 			}
-			$response = new RedirectResponse($this->urlGenerator->linkToRoute('files.view.index', $params));
-			if ($isFilesView) {
-				$webdavUrl = $this->urlGenerator->linkTo('', 'remote.php') . '/dav/files/' . rawurlencode($uid) . '/';
-				$webdavUrl .= \OCP\Util::encodePath(ltrim($baseFolder->getRelativePath($file->getPath()), '/'));
+			$webUrl = $this->urlGenerator->linkToRoute('files.view.index', $params);
+
+			$webdavUrl = $this->urlGenerator->linkTo('', 'remote.php') . '/dav/files/' . rawurlencode($uid) . '/';
+			$webdavUrl .= \OCP\Util::encodePath(ltrim($baseFolder->getRelativePath($file->getPath()), '/'));
+		}
+
+		if ($webUrl) {
+			$response = new RedirectResponse($webUrl);
+			if ($webdavUrl !== null) {
 				$response->addHeader('Webdav-Location', $webdavUrl);
 			}
 			return $response;

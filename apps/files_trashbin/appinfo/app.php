@@ -39,4 +39,7 @@ if (class_exists('OCA\Files\App')) {
 			'name' => $l->t('Deleted files'),
 		];
 	});
+
+	$app = new \OCA\Files_Trashbin\AppInfo\Application();
+	$app->registerListeners();
 }
