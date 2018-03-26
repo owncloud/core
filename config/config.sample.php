@@ -561,26 +561,11 @@ $CONFIG = array(
 'has_internet_connection' => true,
 
 /**
- * Allows ownCloud to verify a working WebDAV connection. This is done by
- * attempting to make a WebDAV request from PHP.
- */
-'check_for_working_webdav' => true,
-
-/**
  * Allows ownCloud to verify a working .well-known URL redirects. This is done
  * by attempting to make a request from JS to
  * https://your-domain.com/.well-known/caldav/
  */
 'check_for_working_wellknown_setup' => true,
-
-/**
- * This is a crucial security check on Apache servers that should always be set
- * to ``true``. This verifies that the ``.htaccess`` file is writable and works.
- * If it is not, then any options controlled by ``.htaccess``, such as large
- * file uploads, will not work. It also runs checks on the ``data/`` directory,
- * which verifies that it can't be accessed directly through the Web server.
- */
-'check_for_working_htaccess' => true,
 
 /**
  * In certain environments it is desired to have a read-only configuration file.
