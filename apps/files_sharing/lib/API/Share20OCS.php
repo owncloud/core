@@ -469,13 +469,6 @@ class Share20OCS {
 		$share->setShareType($shareType);
 		$share->setSharedBy($this->currentUser->getUID());
 
-
-
-
-		$beforeEvent->setArgument('share', $this->formatShare($share));
-
-		$this->eventDispatcher->dispatch('share.beforeCreate', $beforeEvent);
-
 		try {
 			$share = $this->shareManager->createShare($share);
 		} catch (GenericShareException $e) {
@@ -492,10 +485,6 @@ class Share20OCS {
 		$share->getNode()->unlock(\OCP\Lock\ILockingProvider::LOCK_SHARED);
 
 		$formattedShareAfterCreate = $this->formatShare($share);
-		$afterEvent = new GenericEvent(null, []);
-		$afterEvent->setArgument('share', $formattedShareAfterCreate);
-		$afterEvent->setArgument('result', 'success');
-		$this->eventDispatcher->dispatch('share.afterCreate', $afterEvent);
 		return new \OC\OCS\Result($formattedShareAfterCreate);
 	}
 

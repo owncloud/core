@@ -44,6 +44,7 @@ use OCP\Share\Exceptions\GenericShareException;
 use OCP\Share\Exceptions\ShareNotFound;
 use OCP\Share\IManager;
 use OCP\Share\IProviderFactory;
+use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\EventDispatcher\GenericEvent;
 
 /**
@@ -73,6 +74,8 @@ class Manager implements IManager {
 	private $rootFolder;
 	/** @var CappedMemoryCache */
 	private $sharingDisabledForUsersCache;
+	/** @var EventDispatcher  */
+	private $eventDispatcher;
 
 
 	/**
@@ -99,7 +102,8 @@ class Manager implements IManager {
 			IL10N $l,
 			IProviderFactory $factory,
 			IUserManager $userManager,
-			IRootFolder $rootFolder
+			IRootFolder $rootFolder,
+			EventDispatcher $eventDispatcher
 	) {
 		$this->logger = $logger;
 		$this->config = $config;
@@ -112,6 +116,7 @@ class Manager implements IManager {
 		$this->userManager = $userManager;
 		$this->rootFolder = $rootFolder;
 		$this->sharingDisabledForUsersCache = new CappedMemoryCache();
+		$this->eventDispatcher = $eventDispatcher;
 	}
 
 	/**
@@ -635,6 +640,9 @@ class Manager implements IManager {
 		];
 		\OC_Hook::emit('OCP\Share', 'pre_shared', $preHookData);
 
+		$beforeEvent = new GenericEvent(null, ['shareData' => $preHookData]);
+		$this->eventDispatcher->dispatch('share.beforeCreate', $beforeEvent);
+
 		if ($run === false) {
 			throw new \Exception($error);
 		}
@@ -660,6 +668,9 @@ class Manager implements IManager {
 		];
 
 		\OC_Hook::emit('OCP\Share', 'post_shared', $postHookData);
+
+		$afterEvent = new GenericEvent(null, ['shareData' => $postHookData, 'shareObject' => $share, 'result' => 'success']);
+		$this->eventDispatcher->dispatch('share.afterCreate', $afterEvent);
 
 		return $share;
 	}
@@ -846,6 +857,8 @@ class Manager implements IManager {
 		// Emit pre-hook
 		\OC_Hook::emit('OCP\Share', 'pre_unshare', $hookParams);
 
+		$beforeEvent = new GenericEvent(null, ['share' => $hookParams, 'shareObject' => $share]);
+		$this->eventDispatcher->dispatch('share.beforeDelete', $beforeEvent);
 		// Get all children and delete them as well
 		$deletedShares = $this->deleteChildren($share);
 
@@ -863,6 +876,8 @@ class Manager implements IManager {
 
 		// Emit post hook
 		\OC_Hook::emit('OCP\Share', 'post_unshare', $hookParams);
+		$afterEvent = new GenericEvent(null, ['share' => $hookParams['deletedShares']]);
+		$this->eventDispatcher->dispatch('share.afterDelete', $afterEvent);
 	}
 
 
