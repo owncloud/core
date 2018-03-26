@@ -187,7 +187,11 @@ abstract class TestCase extends BaseTestCase {
 
 			$method->setAccessible(true);
 
-			return $method->invokeArgs($object, $parameters);
+			if ($method->isStatic()) {
+				return $method->invokeArgs($reflection, $parameters);
+			} else {
+				return $method->invokeArgs($object, $parameters);
+			}
 		} elseif ($reflection->hasProperty($methodName)) {
 			$property = $reflection->getProperty($methodName);
 
