@@ -992,7 +992,7 @@ OC.msg = {
 	 * is displayed as an error/success
 	 */
 	finishedAction: function (selector, response) {
-		if (response.status === "success") {
+		if (response.status === "success" || response.status === "ok") {
 			this.finishedSuccess(selector, response.data.message);
 		} else {
 			this.finishedError(selector, response.data.message);

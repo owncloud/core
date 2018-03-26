@@ -41,6 +41,12 @@ class WebUIPersonalGeneralSettingsContext extends RawMinkContext implements Cont
 	private $featureContext;
 
 	/**
+	 *
+	 * @var WebUIGeneralContext
+	 */
+	private $webUIGeneralContext;
+
+	/**
 	 * WebUIPersonalGeneralSettingsContext constructor.
 	 *
 	 * @param PersonalGeneralSettingsPage $personalGeneralSettingsPage
@@ -61,6 +67,9 @@ class WebUIPersonalGeneralSettingsContext extends RawMinkContext implements Cont
 		$this->personalGeneralSettingsPage->open();
 		$this->personalGeneralSettingsPage->waitForOutstandingAjaxCalls(
 			$this->getSession()
+		);
+		$this->webUIGeneralContext->setCurrentPageObject(
+			$this->personalGeneralSettingsPage
 		);
 	}
 
@@ -124,7 +133,33 @@ class WebUIPersonalGeneralSettingsContext extends RawMinkContext implements Cont
 			$oldPassword, $newPassword, $this->getSession()
 		);
 	}
-	
+
+	/**
+	 * @When the user changes the full name to :newFullname using the webUI
+	 *
+	 * @param string $newFullname
+	 *
+	 * @return void
+	 */
+	public function theUserChangesTheFullnameToUsingTheWebUI($newFullname) {
+		$this->personalGeneralSettingsPage->changeFullname(
+			$newFullname, $this->getSession()
+		);
+	}
+
+	/**
+	 * @When the user changes the email address to :emailAddress using the webUI
+	 *
+	 * @param string $emailAddress
+	 *
+	 * @return void
+	 */
+	public function theUserChangesTheEmailAddressToUsingTheWebUI($emailAddress) {
+		$this->personalGeneralSettingsPage->changeEmailAddress(
+			$emailAddress, $this->getSession()
+		);
+	}
+
 	/**
 	 * @Then a password error message should be displayed on the webUI with the text :wrongPasswordmessageText
 	 *
@@ -156,5 +191,6 @@ class WebUIPersonalGeneralSettingsContext extends RawMinkContext implements Cont
 		$environment = $scope->getEnvironment();
 		// Get all the contexts you need in this context
 		$this->featureContext = $environment->getContext('FeatureContext');
+		$this->webUIGeneralContext = $environment->getContext('WebUIGeneralContext');
 	}
 }
