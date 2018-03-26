@@ -26,6 +26,7 @@
 namespace OC\IntegrityCheck;
 
 use OC\IntegrityCheck\Exceptions\InvalidSignatureException;
+use OC\IntegrityCheck\Exceptions\MissingSignatureException;
 use OC\IntegrityCheck\Helpers\AppLocator;
 use OC\IntegrityCheck\Helpers\EnvironmentHelper;
 use OC\IntegrityCheck\Helpers\FileAccessHelper;
@@ -316,6 +317,7 @@ class Checker {
 	 * @param boolean $force
 	 * @return array
 	 * @throws InvalidSignatureException
+	 * @throws MissingSignatureException
 	 * @throws \Exception
 	 */
 	private function verify($signaturePath, $basePath, $certificateCN, $force = false) {
@@ -325,7 +327,7 @@ class Checker {
 
 		$signatureData = json_decode($this->fileAccessHelper->file_get_contents($signaturePath), true);
 		if(!is_array($signatureData)) {
-			throw new InvalidSignatureException('Signature data not found.');
+			throw new MissingSignatureException('Signature data not found.');
 		}
 
 		$expectedHashes = $signatureData['hashes'];
@@ -486,6 +488,21 @@ class Checker {
 	}
 
 	/**
+	 * Get a list of apps that are allowed to have no signature.json
+	 * @return string[]
+	 */
+	private function getIgnoredUnsignedApps() {
+		$ignoredUnsignedApps = $this->getSystemValue(
+			'integrity.ignore.missing.app.signature',
+			[]
+		);
+		if (is_array($ignoredUnsignedApps)===false) {
+			$ignoredUnsignedApps = [];
+		}
+		return $ignoredUnsignedApps;
+	}
+
+	/**
 	 * Sanity wrapper for getAppValue
 	 * @param string $key
 	 * @param string $default
@@ -554,15 +571,27 @@ class Checker {
 	 */
 	public function verifyAppSignature($appId, $path = '', $force = false) {
 		try {
-			if($path === '') {
+			if ($path === '') {
 				$path = $this->appLocator->getAppPath($appId);
 			}
+
 			$result = $this->verify(
-					$path . '/appinfo/signature.json',
-					$path,
-					$appId,
-					$force
+				$path . '/appinfo/signature.json',
+				$path,
+				$appId,
+				$force
 			);
+		} catch (MissingSignatureException $e) {
+			if (!in_array($appId, $this->getIgnoredUnsignedApps())) {
+				$result = [
+					'EXCEPTION' => [
+						'class' => get_class($e),
+						'message' => $e->getMessage(),
+					],
+				];
+			} else {
+				$result = [];
+			}
 		} catch (\Exception $e) {
 			$result = [
 					'EXCEPTION' => [

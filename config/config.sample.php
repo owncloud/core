@@ -1241,6 +1241,11 @@ $CONFIG = array(
 		'.user.ini',
 	),
 /**
+ * The list of apps that are allowed to have no signature.json
+ */
+'integrity.ignore.missing.app.signature' => [],
+
+/**
  * Define a default folder for shared files and folders other than root.
  */
 'share_folder' => '/',
