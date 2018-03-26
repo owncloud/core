@@ -718,21 +718,29 @@ $CONFIG = array(
 	'https://itunes.apple.com/us/app/owncloud/id543672169?mt=8',
 
 /**
- * Use the ``apps_paths`` parameter to set the location of the Apps directory,
- * which should be scanned for available apps, and where user-specific apps
- * should be installed from the Apps store. The ``path`` defines the absolute
- * file system path to the app folder. The key ``url`` defines the HTTP Web path
- * to that folder, starting from the ownCloud webroot. The key ``writable``
- * indicates if a Web server can write files to that folder.
+ * If you want to store apps in a custom directory instead of ownCloud’s default ``/app``, you need to
+ * modify the ``apps_paths`` key. There, you need to add a new associative array that contains three
+ * elements. These are:
+ *
+ * - ``path``     The absolute file system path to the custom app folder.
+ * - ``url``      The request path to that folder relative to the ownCloud web root, prefixed with /.
+ * - ``writable`` Whether users can install apps in that folder. After the configuration is added, new apps will only install in a directory where writable is set to true.
+ *
+ * The configuration example shows how to add a second directory, called ``/apps2``.
+ * Please see the Apps Management description on how to move custom apps properly.
  */
- 'apps_paths' =>
-   array (
-     array (
-       'path' => OC::$SERVERROOT.'/apps',
-       'url' => '/apps',
-       'writable' => true,
-     )
-   ),
+'apps_paths' => [
+    [
+        'path' => OC::$SERVERROOT.'/apps',
+        'url' => '/apps',
+        'writable' => false,
+    ],
+    [
+        'path' => OC::$SERVERROOT.'/apps2',
+        'url' => '/apps2',
+        'writable' => true,
+    ],
+],
 
 /**
  * Previews
@@ -1085,13 +1093,13 @@ $CONFIG = array(
  * During setup, if requirements are met (see below), this setting is set to true
  * and MySQL can handle 4 byte characters instead of 3 byte characters.
  *
- * If you want to convert an existing 3-byte setup into a 4-byte setup please 
+ * If you want to convert an existing 3-byte setup into a 4-byte setup please
  * set the parameters in MySQL as mentioned below and run the migration command:
  *  ./occ db:convert-mysql-charset
  * The config setting will be set automatically after a successful run.
- * 
+ *
  * Consult the documentation for more details.
- * 
+ *
  * MySQL requires a special setup for longer indexes (> 767 bytes) which are
  * needed:
  *
@@ -1362,6 +1370,6 @@ $CONFIG = array(
 /**
  * Set this property to true if you want to enable debug logging for SMB access.
  */
-'smb.logging.enable' => false, 
+'smb.logging.enable' => false,
 
 );
