@@ -56,6 +56,7 @@ class AppManager implements IAppManager {
 		'authentication',
 		'logging',
 		'prevent_group_restriction',
+		'theme',
 	];
 
 	/** @var \OCP\IUserSession */

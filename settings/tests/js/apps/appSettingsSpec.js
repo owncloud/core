@@ -22,6 +22,7 @@
 describe('App Settings tests', function() {
 	var apps = [
 		{
+			"id" : "app1",
 			"author": "Author 1, Author 2",
 			"types": [
 				"logging",
@@ -29,6 +30,7 @@ describe('App Settings tests', function() {
 			]
 		},
 		{
+			"id" : "app2",
 			"author": [
 				"Author 1",
 				"Author 2",
@@ -41,6 +43,13 @@ describe('App Settings tests', function() {
 			],
 			"types": [
 				"filesystem"
+			]
+		},
+		{
+			"id" : "theme-custom",
+			"author": "Front End",
+			"types": [
+				"theme"
 			]
 		}
 	];
@@ -59,5 +68,10 @@ describe('App Settings tests', function() {
 
 		isFilesystem = OC.Settings.Apps.isType(apps[1], 'filesystem');
 		expect(isFilesystem).toEqual(true);
+	});
+
+	it('should protect app themes from enabling for groups', function () {
+		var isProtected = OC.Settings.Apps.isProtected(apps[2]);
+		expect(isProtected).toEqual(true);
 	});
 });

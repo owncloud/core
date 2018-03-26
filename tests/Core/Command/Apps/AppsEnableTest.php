@@ -64,7 +64,7 @@ class AppsEnableTest extends TestCase {
 		return [
 			['testing', 'testing enabled'],
 			['hui-buh', 'hui-buh not found'],
-			['theme-example', 'theme-example enabled for groups: admin', 'admin'],
+			['updatenotification', 'updatenotification enabled for groups: admin', 'admin'],
 			['hui-buh', 'hui-buh not found', 'admin'],
 		];
 	}
