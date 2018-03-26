@@ -186,9 +186,14 @@ class NavigationManagerTest extends TestCase {
 		$urlGenerator->expects($this->any())->method('imagePath')->willReturnCallback(function($appName, $file) {
 			return "/apps/$appName/img/$file";
 		});
-		$urlGenerator->expects($this->exactly(count($expected)))->method('linkToRoute')->willReturnCallback(function($route) {
-			return "/apps/test/";
-		});
+		if (isset($config['navigation']['static'])) {
+			$urlGenerator->expects($this->never())->method('linkToRoute')->willReturn('/apps/test/');
+			$urlGenerator->expects($this->once())->method('linkTo')->willReturn('link-to-static');
+		} else {
+			$urlGenerator->expects($this->exactly(count($expected)))->method('linkToRoute')->willReturn('/apps/test/');
+			$urlGenerator->expects($this->never())->method('linkTo')->willReturn('link-to-static');
+		}
+
 		$user = $this->createMock(IUser::class);
 		$user->expects($this->any())->method('getUID')->willReturn('user001');
 		$userSession->expects($this->any())->method('getUser')->willReturn($user);
@@ -218,7 +223,15 @@ class NavigationManagerTest extends TestCase {
 				'name' => 'Test',
 				'active' => false
 			]], ['navigation' => ['@attributes' => ['role' => 'admin'], 'route' => 'test.page.index']], true],
-			'admin' => [[], ['navigation' => ['@attributes' => ['role' => 'admin'], 'route' => 'test.page.index']]]
+			'admin' => [[], ['navigation' => ['@attributes' => ['role' => 'admin'], 'route' => 'test.page.index']]],
+			'with static' => [[[
+				'id' => 'test',
+				'order' => 100,
+				'href' => 'link-to-static',
+				'icon' => '/apps/test/img/app.svg',
+				'name' => 'Test',
+				'active' => false
+			]], ['navigation' => ['static' => 'static.html']]],
 		];
 	}
 }
