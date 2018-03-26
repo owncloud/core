@@ -9,6 +9,10 @@
 namespace Test\Files\Cache;
 
 use OC\Files\Cache\CacheEntry;
+use OC\Files\Storage\Storage;
+use OCA\Files_Sharing\ISharedStorage;
+use OCP\Files\IHomeStorage;
+use OCP\Files\Storage\ILockingStorage;
 
 /**
  * Class ScannerTest
@@ -19,7 +23,7 @@ use OC\Files\Cache\CacheEntry;
  */
 class ScannerTest extends \Test\TestCase {
 	/**
-	 * @var \OC\Files\Storage\Storage $storage
+	 * @var Storage $storage
 	 */
 	private $storage;
 
@@ -347,9 +351,10 @@ class ScannerTest extends \Test\TestCase {
 		return [
 			// throws for empty path and "files" in home storage
 			[true, false, '', true],
-			[true, true, '', true],
 			[true, false, 'files', true],
-			[true, true, 'files', true],
+			// but in shared storage
+			[true, true, '', false],
+			[true, true, 'files', false],
 
 			// doesn't throw for federated shares (non-home)
 			[false, true, '', false],
@@ -371,7 +376,7 @@ class ScannerTest extends \Test\TestCase {
 	 * @dataProvider failGetDataProvider
 	 */
 	public function testFailGetData($isHomeStorage, $isSharedStorage, $scanPath, $expectedThrown, $metadata = null) {
-		$this->storage = $this->createMock(\OC\Files\Storage\Storage::class);
+		$this->storage = $this->createMock(Storage::class);
 		$this->storage->method('getCache')->willReturn($this->createMock(\OCP\Files\Cache\ICache::class));
 		$this->storage->expects($this->any())
 			->method('getMetaData')
@@ -379,8 +384,8 @@ class ScannerTest extends \Test\TestCase {
 		$this->storage->expects($this->any())
 			->method('instanceOfStorage')
 			->will($this->returnValueMap([
-				['\OCP\Files\IHomeStorage', $isHomeStorage],
-				['\OCA\Files_Sharing\ISharedStorage', $isSharedStorage],
+				[IHomeStorage::class, $isHomeStorage],
+				[ISharedStorage::class, $isSharedStorage],
 			]));
 		$this->scanner = new \OC\Files\Cache\Scanner($this->storage);
 		$thrown = false;
@@ -393,4 +398,53 @@ class ScannerTest extends \Test\TestCase {
 		$this->assertEquals($expectedThrown, $thrown);
 	}
 
+	/**
+	 * @expectedException \Exception
+	 * @expectedExceptionMessage No MetaData
+	 *
+	 * @throws \OCP\Files\StorageNotAvailableException
+	 * @throws \OCP\Lock\LockedException
+	 * @throws \OC\HintException
+	 * @throws \OC\ServerNotAvailableException
+	 */
+	public function testUnLockInCaseOfExceptionInScanFile() {
+		/** @var Storage | \PHPUnit_Framework_MockObject_MockObject $storage */
+		$storage = $this->createMock(Storage::class);
+		$storage->expects($this->any())
+			->method('instanceOfStorage')
+			->will($this->returnValueMap([
+				[ILockingStorage::class, true],
+			]));
+
+		$storage->expects($this->once())->method('acquireLock');
+		$storage->expects($this->once())->method('releaseLock');
+		$storage->expects($this->any())->method('getMetaData')->willThrowException(new \Exception('No MetaData'));
+		$this->scanner = new \OC\Files\Cache\Scanner($storage);
+		$this->scanner->scanFile('file/test.txt');
+	}
+
+	/**
+	 * @expectedException \Exception
+	 * @expectedExceptionMessage No MetaData
+	 *
+	 * @throws \OCP\Files\StorageNotAvailableException
+	 * @throws \OCP\Lock\LockedException
+	 * @throws \OC\HintException
+	 * @throws \OC\ServerNotAvailableException
+	 */
+	public function testUnLockInCaseOfExceptionInScan() {
+		/** @var Storage | \PHPUnit_Framework_MockObject_MockObject $storage */
+		$storage = $this->createMock(Storage::class);
+		$storage->expects($this->any())
+			->method('instanceOfStorage')
+			->will($this->returnValueMap([
+				[ILockingStorage::class, true],
+			]));
+
+		$storage->expects($this->exactly(3))->method('acquireLock');
+		$storage->expects($this->exactly(3))->method('releaseLock');
+		$storage->expects($this->any())->method('getMetaData')->willThrowException(new \Exception('No MetaData'));
+		$this->scanner = new \OC\Files\Cache\Scanner($storage);
+		$this->scanner->scan('file/test.txt');
+	}
 }
