@@ -132,9 +132,21 @@ class Config {
 	 * @param mixed $value value
 	 */
 	public function setValue($key, $value) {
+		/**
+		 * update and oldvalue help the after event listeners to know
+		 * if its an update or not. If update then get the old value.
+		 */
+		$update = false;
+		$oldValue = null;
 		if ($this->isReadOnly()) {
 			throw new \Exception('Config file is read only.');
 		}
+
+		if (isset($this->cache[$key])) {
+			$update = true;
+			$oldValue = $this->cache[$key];
+		}
+
 		$this->emittingCall(function () use (&$key, &$value) {
 			if ($this->set($key, $value)) {
 				// Write changes
@@ -142,8 +154,8 @@ class Config {
 			}
 			return true;
 		}, [
-			'before' => ['key' => $key, 'value' => $value, 'cache' => $this->cache],
-			'after' => ['key' => $key, 'value' => $value, 'cache' => $this->cache]
+			'before' => ['key' => $key, 'value' => $value],
+			'after' => ['key' => $key, 'value' => $value, 'update' => $update, 'oldvalue' => $oldValue]
 		], 'config', 'setvalue');
 	}
 
@@ -179,8 +191,8 @@ class Config {
 			}
 			return true;
 		}, [
-			'before' => ['key' => $key, 'cache' => $this->cache],
-			'after' => ['key' => $key, 'cache' => $this->cache]
+			'before' => ['key' => $key],
+			'after' => ['key' => $key]
 		], 'config', 'deletevalue');
 	}
 

@@ -96,10 +96,10 @@ class ConfigTest extends TestCase {
 		$this->assertEquals('config.aftersetvalue', $calledAfterSetValue[0]);
 		$this->assertArrayHasKey('key', $calledBeforeSetValue[1]);
 		$this->assertArrayHasKey('value', $calledBeforeSetValue[1]);
-		$this->assertArrayHasKey('cache', $calledBeforeSetValue[1]);
 		$this->assertArrayHasKey('key', $calledAfterSetValue[1]);
 		$this->assertArrayHasKey('value', $calledAfterSetValue[1]);
-		$this->assertArrayHasKey('cache', $calledAfterSetValue[1]);
+		$this->assertArrayHasKey('update', $calledAfterSetValue[1]);
+		$this->assertArrayHasKey('oldvalue', $calledAfterSetValue[1]);
 
 		$expected = "<?php\n\$CONFIG = array (\n  'foo' => 'moo',\n  'beers' => \n  array (\n    0 => 'Appenzeller',\n  " .
 			"  1 => 'Guinness',\n    2 => 'Kölsch',\n  ),\n  'alcohol_free' => false,\n  'bar' => 'red',\n  'apps' => \n " .
@@ -157,9 +157,7 @@ class ConfigTest extends TestCase {
 		$this->assertEquals('config.beforedeletevalue', $calledBeforeDeleteValue[0]);
 		$this->assertEquals('config.afterdeletevalue', $calledAfterDeleteValue[0]);
 		$this->assertArrayHasKey('key', $calledBeforeDeleteValue[1]);
-		$this->assertArrayHasKey('cache', $calledBeforeDeleteValue[1]);
 		$this->assertArrayHasKey('key', $calledAfterDeleteValue[1]);
-		$this->assertArrayHasKey('cache', $calledAfterDeleteValue[1]);
 
 		$expected = "<?php\n\$CONFIG = array (\n  'beers' => \n  array (\n    0 => 'Appenzeller',\n  " .
 			"  1 => 'Guinness',\n    2 => 'Kölsch',\n  ),\n  'alcohol_free' => false,\n);\n";
