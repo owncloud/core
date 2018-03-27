@@ -43,13 +43,83 @@ timestampedNode('SLAVE') {
 
         step([$class: 'JUnitResultArchiver', testResults: 'tests/autotest-external-results-sqlite.xml'])
 
-	stage 'Acceptance Testing'
+	stage 'Acceptance Testing apiMain'
 		executeAndReport('tests/acceptance/output/*.xml') {
 			sh '''phpenv local 7.1.0
 			rm -rf config/config.php data/*
 			./occ maintenance:install --admin-pass=admin
 			make clean-test-acceptance
-			make test-acceptance OC_TEST_ALT_HOME=1
+			make test-acceptance OC_TEST_ALT_HOME=1 BEHAT_SUITE="apiMain"
+		   '''
+		}
+
+	stage 'Acceptance Testing apiCapabilities'
+		executeAndReport('tests/acceptance/output/*.xml') {
+			sh '''phpenv local 7.1.0
+			rm -rf config/config.php data/*
+			./occ maintenance:install --admin-pass=admin
+			make clean-test-acceptance
+			make test-acceptance OC_TEST_ALT_HOME=1 BEHAT_SUITE="apiCapabilities"
+		   '''
+		}
+
+	stage 'Acceptance Testing apiFederation'
+		executeAndReport('tests/acceptance/output/*.xml') {
+			sh '''phpenv local 7.1.0
+			rm -rf config/config.php data/*
+			./occ maintenance:install --admin-pass=admin
+			make clean-test-acceptance
+			make test-acceptance OC_TEST_ALT_HOME=1 BEHAT_SUITE="apiFederation"
+		   '''
+		}
+
+	stage 'Acceptance Testing apiProvisioning'
+		executeAndReport('tests/acceptance/output/*.xml') {
+			sh '''phpenv local 7.1.0
+			rm -rf config/config.php data/*
+			./occ maintenance:install --admin-pass=admin
+			make clean-test-acceptance
+			make test-acceptance OC_TEST_ALT_HOME=1 BEHAT_SUITE="apiProvisioning"
+		   '''
+		}
+
+	stage 'Acceptance Testing apiSharees'
+		executeAndReport('tests/acceptance/output/*.xml') {
+			sh '''phpenv local 7.1.0
+			rm -rf config/config.php data/*
+			./occ maintenance:install --admin-pass=admin
+			make clean-test-acceptance
+			make test-acceptance OC_TEST_ALT_HOME=1 BEHAT_SUITE="apiSharees"
+		   '''
+		}
+
+	stage 'Acceptance Testing apiSharing'
+		executeAndReport('tests/acceptance/output/*.xml') {
+			sh '''phpenv local 7.1.0
+			rm -rf config/config.php data/*
+			./occ maintenance:install --admin-pass=admin
+			make clean-test-acceptance
+			make test-acceptance OC_TEST_ALT_HOME=1 BEHAT_SUITE="apiSharing"
+		   '''
+		}
+
+	stage 'Acceptance Testing apiTrashbin'
+		executeAndReport('tests/acceptance/output/*.xml') {
+			sh '''phpenv local 7.1.0
+			rm -rf config/config.php data/*
+			./occ maintenance:install --admin-pass=admin
+			make clean-test-acceptance
+			make test-acceptance OC_TEST_ALT_HOME=1 BEHAT_SUITE="apiTrashbin"
+		   '''
+		}
+
+	stage 'Acceptance Testing apiWebdav'
+		executeAndReport('tests/acceptance/output/*.xml') {
+			sh '''phpenv local 7.1.0
+			rm -rf config/config.php data/*
+			./occ maintenance:install --admin-pass=admin
+			make clean-test-acceptance
+			make test-acceptance OC_TEST_ALT_HOME=1 BEHAT_SUITE="apiWebdav"
 		   '''
 		}
 
