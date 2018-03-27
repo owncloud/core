@@ -336,6 +336,22 @@ OC.L10N.register(
     "change full name" : "cambiar el nombre completo",
     "set new password" : "establecer nueva contraseña",
     "change email address" : "cambiar dirección de correo electrónico",
-    "Default" : "Predeterminado"
+    "Default" : "Predeterminado",
+    "Change" : "Cambiar",
+    "Share" : "Compartir",
+    "installing and updating apps via the market or Federated Cloud Sharing" : "instalando y actualizando aplicaciones por medio de: Market o Nube compartida Federada",
+    "White-listed Domains" : "Dominios en la lista Blanca",
+    "Domain" : "Dominio",
+    "Add Domain" : "Añadir Dominio",
+    "CORS" : "CORS",
+    "User ID" : "ID de usuario",
+    "Email address" : "Dirección de correo electrónico",
+    "Invalid email address" : "Dirección de correo no válida",
+    "Extra field to display in autocomplete results" : "Campo adicional para mostrar en los resultados de autocompletar",
+    "Restrict users to only share with groups they are member of" : "Restrinja a los usuarios compartir sólo con grupos de los que son miembros",
+    "Default user and group share permissions" : "Permisos por defecto de usuarios y grupo",
+    "Enforce password protection for read-only links" : "Refuerza la protección de enlaces de solo-lectura con contraseña.",
+    "Enforce password protection for read & write links" : "Refuerza la protección de enlaces de lectura-escritura con contraseña.",
+    "Enforce password protection for upload-only (File Drop) links" : "Refuerza la protección de enlaces de solo subida (File Drop) con contraseña."
 },
 "nplurals=2; plural=(n != 1);");

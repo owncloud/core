@@ -144,6 +144,8 @@ OC.L10N.register(
     "Cancel login" : "Չեղարկել մուտք գործումը",
     "App update required" : "Հարկավոր է ափփի թարմացում",
     "Start update" : "Սկսել թարմացումը",
-    "Update needed" : "Թարմացում է հարկավոր"
+    "Update needed" : "Թարմացում է հարկավոր",
+    "Technical details" : "Տեխնիկական մանրամասներ",
+    "Remote Address: %s" : "Հեռակա հասցե. %s"
 },
 "nplurals=2; plural=(n != 1);");

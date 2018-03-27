@@ -332,6 +332,23 @@
     "Please use the command line updater because you have a big instance." : "יש להשתמש בעדכון על בסיס שורת פקודה כיוון שמדובר בעדכון גדול.",
     "For help, see the  <a target=\"_blank\" rel=\"noreferrer\" href=\"%s\">documentation</a>." : "לעזרה, ניתן לצפות ב<a target=\"_blank\" rel=\"noreferrer\" href=\"%s\">מסמכי התיעוד</a>.",
     "This %s instance is currently in maintenance mode, which may take a while." : "הפעלה %s זו כרגע במצב אחזקה, שתמשך זמן מה.",
-    "This page will refresh itself when the %s instance is available again." : "עמוד זה ירענן את עצמו כשהפעלת %s תהיה זמינה שוב."
+    "This page will refresh itself when the %s instance is available again." : "עמוד זה ירענן את עצמו כשהפעלת %s תהיה זמינה שוב.",
+    "Could not reset password because the token is invalid" : "לא ניתן לאפס את הסיסמא שכן חתימת הייצוג אינה חוקית",
+    "Could not reset password because the token expired" : "לא ניתן לאפס את הסיסמא שכן תוקף חתימת הייצוג עבר",
+    "Could not reset password because the token does not match" : "לא ניתן לאפס את הסיסמא שכן חתימת הייצוג אינה מתאימה",
+    "Copy to clipboard" : "העתקה ללוח הגזירים",
+    "Choose a password" : "בחירת סיסמא",
+    "Upload only" : "העלאה בלבד",
+    "Sending" : "שולח",
+    "Menu" : "תפריט",
+    "Read only" : "קריאה בלבד",
+    "Read & Write" : "קריאה וכתיבה",
+    "Email notification not sent" : "לא נשלחה הודעה בדוא״ל",
+    "You took too long to login, please try again now" : "לקח לך יותר מדי זמן להיכנס, נא לנסות שוב עכשיו",
+    "Choose an expiration date" : "נא לבחור תאריך תפוגה",
+    "An error occured" : "אירעה שגיאה",
+    "Send copy to self" : "שליחת עותק אלי",
+    "Add personal message" : "הוספת הודעה פרטית",
+    "Error adding {addItem}: {addItem} already exists" : "שגיאה בהוספת {addItem}:‏ {addItem} כבר קיים"
 },"pluralForm" :"nplurals=2; plural=(n != 1);"
 }

@@ -22,6 +22,7 @@ OC.L10N.register(
     "Share it:" : "Сподели:",
     "Add to your website" : "Добавете към вашия сайт",
     "Share with me via ownCloud" : "Сподели с мен чрез ownCloud",
-    "HTML Code:" : "HTML код:"
+    "HTML Code:" : "HTML код:",
+    "Add to your ownCloud" : "Добави към своя ownCloud"
 },
 "nplurals=2; plural=(n != 1);");

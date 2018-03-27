@@ -145,6 +145,26 @@
     "Please upgrade your database version" : "Kérem frissítse az adatbázis-szoftvert!",
     "Please change the permissions to 0770 so that the directory cannot be listed by other users." : "Kérjük módosítsa a könyvtár elérhetőségi engedélybeállítását 0770-re, hogy a tartalmát más felhasználó ne listázhassa!",
     "Please check that the data directory contains a file \".ocdata\" in its root." : "Kérjük ellenőrizze, hogy az adatkönyvtár tartalmaz a gyökerében egy \".ocdata\" nevű állományt!",
-    "Could not obtain lock type %d on \"%s\"." : "Nem sikerült %d típusú zárolást elérni itt: \"%s\"."
+    "Could not obtain lock type %d on \"%s\"." : "Nem sikerült %d típusú zárolást elérni itt: \"%s\".",
+    "Help & Tips" : "Segítség & Tippek",
+    "Additional" : "Kiegészítő",
+    "A safe home for all your data" : "Egy biztonságos otthon az összes adatod számára",
+    "Storage is temporarily not available" : "A tároló átmenetileg nem elérhető",
+    "User Authentication" : "Felhasználó Hitelesítés",
+    "File cannot be read" : "Az állomány nem olvasható",
+    "Workflows & Tags" : "Munkafolyamatok & Cimkék",
+    "Builtin" : "Beépített",
+    "Cannot set expiration date more than %s days in the future" : "Nem lehet beállítani a lejárat dátumát, %s napnál többre",
+    "Username contains whitespace at the beginning or at the end" : "A felhasználónév üres karaktert tartalmaz, az elején, vagy a végén",
+    "Login canceled by app" : "A belépés megszakítva egy kiegészítő által",
+    "User disabled" : "Felhasználó letiltva",
+    "Adjusting this setting in php.ini will make ownCloud run again" : "Ennek a beállításnak a szabályozásával a php.ini fájlban, újra futni fog az ownCloud",
+    "Your Data directory is readable by other users" : "Az Adat mappáját olvashatják más felhasználók is.",
+    "Your Data directory must be an absolute path" : "Az Adat mappájának teljes elérési úttal kell rendelkeznie",
+    "Your Data directory  is invalid" : "Az Adat mappája érvénytelen",
+    "Storage unauthorized. %s" : "Jogosulatlan tároló. %s",
+    "Storage incomplete configuration. %s" : "A tároló konfiguráció hiányos. %s",
+    "Storage connection error. %s" : "Tároló csatlakozási hiba. %s",
+    "Storage connection timeout. %s" : "Tároló csatlakozási időtúllépés. %s"
 },"pluralForm" :"nplurals=2; plural=(n != 1);"
 }

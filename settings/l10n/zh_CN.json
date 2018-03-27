@@ -333,6 +333,15 @@
     "change full name" : "更改全名",
     "set new password" : "设置新密码",
     "change email address" : "修改电子邮箱地址",
-    "Default" : "默认"
+    "Default" : "默认",
+    "Change" : "更改",
+    "Share" : "共享",
+    "installing and updating apps via the market or Federated Cloud Sharing" : "正在通过应用商店或联合云共享安装和更新应用",
+    "White-listed Domains" : "白名单域名",
+    "Domain" : "域名",
+    "Add Domain" : "添加域名",
+    "CORS" : "跨域资源共享",
+    "Invalid email address" : "无效的电邮地址",
+    "Default user and group share permissions" : "默认的用户和组共享权限"
 },"pluralForm" :"nplurals=1; plural=0;"
 }

@@ -237,6 +237,9 @@ OC.L10N.register(
     "change full name" : "zmeniť meno a priezvisko",
     "set new password" : "nastaviť nové heslo",
     "change email address" : "zmeniť emailovú adresu",
-    "Default" : "Predvolené"
+    "Default" : "Predvolené",
+    "Share" : "Zdieľať",
+    "Domain" : "Doména",
+    "Add" : "Pridať"
 },
 "nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;");

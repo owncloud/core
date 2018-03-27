@@ -14,6 +14,8 @@ OC.L10N.register(
     "No entries found in this folder" : "Ez da sarrerarik aurkitu karpeta honetan",
     "Select all" : "Hautatu dena",
     "Name" : "Izena",
-    "Deleted" : "Ezabatuta"
+    "Deleted" : "Ezabatuta",
+    "This operation is forbidden" : "Eragiketa hau debekatuta dago",
+    "This directory is unavailable, please check the logs or contact the administrator" : "Direktoria ez dago eskuragarri; mesedez, log-ak begiratu edo harremanetan jarri administratzailearekin"
 },
 "nplurals=2; plural=(n != 1);");

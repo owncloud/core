@@ -75,6 +75,8 @@ OC.L10N.register(
     "Quota" : "Hạn ngạch",
     "change full name" : "Đổi họ và t",
     "set new password" : "đặt mật khẩu mới",
-    "Default" : "Mặc định"
+    "Default" : "Mặc định",
+    "Share" : "Chia sẻ",
+    "Add" : "Thêm"
 },
 "nplurals=1; plural=0;");

@@ -4,6 +4,7 @@
     "Username" : "Usuario",
     "Personal" : "Personal",
     "Admin" : "Administración",
-    "Error" : "Error"
+    "Error" : "Error",
+    "Share" : "Compartir"
 },"pluralForm" :"nplurals=2; plural=(n != 1);"
 }

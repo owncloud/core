@@ -314,6 +314,23 @@
     "Please use the command line updater because you have a big instance." : "Brug venligst kommandolinje-opdateringsprogrammet, fordi du har en stor opsætning.",
     "For help, see the  <a target=\"_blank\" rel=\"noreferrer\" href=\"%s\">documentation</a>." : "For at få hjælp, se <a target=\"_blank\" rel=\"noreferrer\" href=\"%s\"> dokumentationen </a>.",
     "This %s instance is currently in maintenance mode, which may take a while." : "Denne %s-instans befinder sig i vedligeholdelsestilstand for øjeblikket, hvilket kan tage et stykke tid.",
-    "This page will refresh itself when the %s instance is available again." : "Denne side vil genopfriske sig selv, når %s-instancen er tilgængelig igen."
+    "This page will refresh itself when the %s instance is available again." : "Denne side vil genopfriske sig selv, når %s-instancen er tilgængelig igen.",
+    "Expiration date is required" : "Udløbsdato er påkrævet",
+    "Remove link" : "Fjern link",
+    "Create public link" : "opret offentligt link",
+    "Copy to clipboard" : "Kopier til udklipsholder",
+    "There are currently no link shares, you can create one" : "Der er på nuværende tidspunkt ingen liks delt med dig, du kan oprettet et",
+    "Anyone with the link has access to the file/folder" : "Alle med linket har adgang til filen/mappen",
+    "Choose a password" : "Vælg et kodeord",
+    "Password required" : "Kodeord påkrævet",
+    "Upload only" : "Upload kun",
+    "Remove password" : "Fjern kodeord",
+    "Sending" : "Sender",
+    "User and Groups" : "Bruger og Grupper",
+    "Public Links" : "Offentlige links",
+    "Delete {link}" : "Slet {link}",
+    "Menu" : "Menu",
+    "Password changed successfully" : "Kodeord succesfuldt ændret.",
+    "Social share" : "Social deling"
 },"pluralForm" :"nplurals=2; plural=(n != 1);"
 }

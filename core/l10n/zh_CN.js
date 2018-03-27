@@ -332,6 +332,14 @@ OC.L10N.register(
     "Please use the command line updater because you have a big instance." : "请使用命令行更新。",
     "For help, see the  <a target=\"_blank\" rel=\"noreferrer\" href=\"%s\">documentation</a>." : "获取更多帮助，请查看  <a target=\"_blank\" rel=\"noreferrer\" href=\"%s\">文档</a>.",
     "This %s instance is currently in maintenance mode, which may take a while." : "该 %s 实例当前处于维护模式，这将进行一些时间。",
-    "This page will refresh itself when the %s instance is available again." : "当实例 %s 再次可用时这个页面将刷新。"
+    "This page will refresh itself when the %s instance is available again." : "当实例 %s 再次可用时这个页面将刷新。",
+    "Could not reset password because the token is invalid" : "无法重置密码，因为该令牌无效。",
+    "Could not reset password because the token expired" : "无法重置密码，因为该令牌已过期。",
+    "Could not reset password because the token does not match" : "因令牌不符无法重置密码",
+    "Copy to clipboard" : "复制到剪贴板 ",
+    "Anyone with the link has access to the file/folder" : "任何查看此链接的人都可以访问文件、文件夹",
+    "Upload only" : "仅上传",
+    "Sending" : "发送中",
+    "Menu" : "菜单"
 },
 "nplurals=1; plural=0;");

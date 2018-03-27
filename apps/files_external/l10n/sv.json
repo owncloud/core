@@ -86,6 +86,9 @@
     "Advanced settings" : "Avancerade inställningar",
     "Delete" : "Radera",
     "Allow users to mount external storage" : "Tillåt användare att montera extern lagring",
-    "Allow users to mount the following external storage" : "Tillåt användare att montera följande extern lagring"
+    "Allow users to mount the following external storage" : "Tillåt användare att montera följande extern lagring",
+    "No URL provided by backend " : "Ingen URL tillhandahölls av gränssnitt",
+    "Disable external storage" : "Avaktivera extern lagring",
+    "Error configuring OAuth1" : "Kunde inte konfigurera OAuth1"
 },"pluralForm" :"nplurals=2; plural=(n != 1);"
 }

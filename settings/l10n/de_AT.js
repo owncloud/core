@@ -26,6 +26,8 @@ OC.L10N.register(
     "Personal" : "Persönlich",
     "Admin" : "Administration",
     "Error" : "Fehler",
-    "Other" : "Anderes"
+    "Other" : "Anderes",
+    "Share" : "Teilen",
+    "Add" : "Hinzufügen"
 },
 "nplurals=2; plural=(n != 1);");

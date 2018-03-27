@@ -176,6 +176,9 @@
     "Storage incomplete configuration. %s" : "การตั้งค่าการจัดเก็บข้อมูลไม่สำเร็จ %s",
     "Storage connection error. %s" : "ข้อผิดพลาดการเชื่อมต่อพื้นที่จัดเก็บข้อมูล %s",
     "Storage is temporarily not available" : "ไม่สามารถใช้พื้นที่จัดเก็บได้ชั่วคราว",
-    "Storage connection timeout. %s" : "หมดเวลาการเชื่อมต่อพื้นที่จัดเก็บข้อมูล %s"
+    "Storage connection timeout. %s" : "หมดเวลาการเชื่อมต่อพื้นที่จัดเก็บข้อมูล %s",
+    "A safe home for all your data" : "ปลอดภัยสำหรับสำหรับข้อมูลทั้งหมดของคุณ",
+    "The username must be at least 3 characters long" : "ชื่อผู้ใช้ต้องมีความยาวอย่างน้อย 3 ตัวอักษร",
+    "File cannot be read" : "ไม่สามารถอ่านไฟล์ได้"
 },"pluralForm" :"nplurals=1; plural=0;"
 }

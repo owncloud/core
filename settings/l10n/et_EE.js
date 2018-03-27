@@ -224,6 +224,9 @@ OC.L10N.register(
     "change full name" : "Muuda täispikka nime",
     "set new password" : "määra uus parool",
     "change email address" : "muuda e-posti aadressi",
-    "Default" : "Vaikeväärtus"
+    "Default" : "Vaikeväärtus",
+    "Share" : "Jaga",
+    "Domain" : "Domeen",
+    "Add" : "Lisa"
 },
 "nplurals=2; plural=(n != 1);");

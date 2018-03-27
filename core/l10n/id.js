@@ -254,6 +254,10 @@ OC.L10N.register(
     "Start update" : "Jalankan pembaruan",
     "To avoid timeouts with larger installations, you can instead run the following command from your installation directory:" : "Untuk menghindari waktu habis dengan instalasi yang lebih besar, Anda bisa menjalankan perintah berikut dari direktori instalasi Anda:",
     "This %s instance is currently in maintenance mode, which may take a while." : "Instansi %s ini sedang dalam modus pemeliharaan, mungkin memerlukan beberapa saat.",
-    "This page will refresh itself when the %s instance is available again." : "Halaman ini akan disegarkan dengan sendiri saat instansi %s tersebut tersedia kembali."
+    "This page will refresh itself when the %s instance is available again." : "Halaman ini akan disegarkan dengan sendiri saat instansi %s tersebut tersedia kembali.",
+    "Remove link" : "Hapus tautan",
+    "Copy to clipboard" : "Salin ke klipbor",
+    "Anyone with the link has access to the file/folder" : "Siapapun yang mengetahui tautan memiliki akses ke berkas/ folder",
+    "Menu" : "Menu"
 },
 "nplurals=1; plural=0;");

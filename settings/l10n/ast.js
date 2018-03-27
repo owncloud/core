@@ -301,6 +301,9 @@ OC.L10N.register(
     "change full name" : "camudar el nome completu",
     "set new password" : "afitar nueva contraseña",
     "change email address" : "camudar direición d'email",
-    "Default" : "Predetermináu"
+    "Default" : "Predetermináu",
+    "Share" : "Compartir",
+    "Domain" : "Dominiu",
+    "Add" : "Amestar"
 },
 "nplurals=2; plural=(n != 1);");

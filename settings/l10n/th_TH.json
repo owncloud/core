@@ -334,6 +334,19 @@
     "change full name" : "เปลี่ยนชื่อเต็ม",
     "set new password" : "ตั้งค่ารหัสผ่านใหม่",
     "change email address" : "เปลี่ยนแปลงที่อยู่อีเมล",
-    "Default" : "ค่าเริ่มต้น"
+    "Default" : "ค่าเริ่มต้น",
+    "Change" : "เปลี่ยนแปลง",
+    "Share" : "แชร์",
+    "installing and updating apps via the market or Federated Cloud Sharing" : "กำลังติดตั้งและอัพเดทแอพผ่านตลาดหรือคลาวด์ของสหพันธ์ที่แชร์อยู่",
+    "White-listed Domains" : "รายการโดเมนที่ได้รับอนุญาติ",
+    "Domain" : "โดเมน",
+    "Add Domain" : "เพิ่มโดเมน",
+    "CORS" : "CORS",
+    "User ID" : "รหัสผู้ใช้",
+    "Email address" : "ที่อยู่อีเมล",
+    "Invalid email address" : "ที่อยู่อีเมลไม่ถูกต้อง",
+    "Extra field to display in autocomplete results" : "ฟิลด์พิเศษที่จะแสดงผลจถะถูกเติมข้อความอัตโนมัติ",
+    "Restrict users to only share with groups they are member of" : "จำกัดผู้ใช้เพื่อแชร์เฉพาะกับกลุ่มที่เป็นสมาชิกของ",
+    "Default user and group share permissions" : "สิทธิ์เริ่มต้นการแชร์ของผู้ใช้และกลุ่ม"
 },"pluralForm" :"nplurals=1; plural=0;"
 }

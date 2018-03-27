@@ -113,6 +113,7 @@ OC.L10N.register(
     "No favorites" : "Keine Favoriten",
     "Files and folders you mark as favorite will show up here" : "Dateien und Ordner, die Du als Favoriten markierst, werden hier erscheinen",
     "Text file" : "Textdatei",
-    "New text file.txt" : "Neue Textdatei.txt"
+    "New text file.txt" : "Neue Textdatei.txt",
+    "Upload timeout for file \"{file}\"" : "Zeitüberschreitung beim Hochladen der Datei \"{file}\""
 },
 "nplurals=2; plural=(n != 1);");

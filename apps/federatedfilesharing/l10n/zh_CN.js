@@ -17,6 +17,8 @@ OC.L10N.register(
     "Share it:" : "分享它：",
     "Add to your website" : "添加到您的网站",
     "Share with me via ownCloud" : "通过联合云与我共享",
-    "HTML Code:" : "HTML 代码:"
+    "HTML Code:" : "HTML 代码:",
+    "Add to your ownCloud" : "添加到您的云空间",
+    "File is already shared with %s" : "已经于 %s 共享文件"
 },
 "nplurals=1; plural=0;");

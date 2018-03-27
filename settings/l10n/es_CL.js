@@ -6,6 +6,7 @@ OC.L10N.register(
     "Username" : "Usuario",
     "Personal" : "Personal",
     "Admin" : "Administración",
-    "Error" : "Error"
+    "Error" : "Error",
+    "Share" : "Compartir"
 },
 "nplurals=2; plural=(n != 1);");

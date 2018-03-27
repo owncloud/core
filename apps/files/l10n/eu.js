@@ -72,6 +72,8 @@ OC.L10N.register(
     "The files you are trying to upload exceed the maximum size for file uploads on this server." : "Igotzen saiatzen ari zaren fitxategiak zerbitzari honek igotzeko onartzen duena baino handiagoak dira.",
     "No favorites" : "Gogokorik ez",
     "Files and folders you mark as favorite will show up here" : "Gogokotzat markatutako fitxategi eta karpeta hemen agertuko dira",
-    "Text file" : "Testu fitxategia"
+    "Text file" : "Testu fitxategia",
+    "This operation is forbidden" : "Eragiketa hau debekatuta dago",
+    "This directory is unavailable, please check the logs or contact the administrator" : "Direktoria ez dago eskuragarri; mesedez, log-ak begiratu edo harremanetan jarri administratzailearekin"
 },
 "nplurals=2; plural=(n != 1);");

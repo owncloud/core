@@ -334,6 +334,19 @@
     "change full name" : "שינוי שם מלא",
     "set new password" : "הגדרת סיסמא חדשה",
     "change email address" : "שינוי כתובת דואר אלקטרוני",
-    "Default" : "ברירת מחדל"
+    "Default" : "ברירת מחדל",
+    "Change" : "שינוי",
+    "Share" : "שיתוף",
+    "installing and updating apps via the market or Federated Cloud Sharing" : "התקנה ועדכון יישומים באמצעות החנות או שיתוף ענן מאוגד",
+    "White-listed Domains" : "רשימת שמות מתחם בטוחים",
+    "Domain" : "שם תחום",
+    "Add Domain" : "הוספת שם מתחם",
+    "CORS" : "CORS",
+    "User ID" : "מזהה משתמש",
+    "Email address" : "כתובת דוא״ל",
+    "Invalid email address" : "כתובת דוא״ל שגויה",
+    "Extra field to display in autocomplete results" : "שדה נוסף להצגה בתוצאות ההשלמה האוטומטית.",
+    "Restrict users to only share with groups they are member of" : "הגבלת משתמשים לשתף רק עם קבוצות שהם חברים בהן",
+    "Default user and group share permissions" : "משתמש ברירת מחדל וקבוצה משתפים הרשאות"
 },"pluralForm" :"nplurals=2; plural=(n != 1);"
 }

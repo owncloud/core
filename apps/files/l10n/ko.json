@@ -108,6 +108,8 @@
     "No favorites" : "즐겨찾는 항목 없음",
     "Files and folders you mark as favorite will show up here" : "즐겨찾기에 추가한 파일과 폴더가 여기에 나타납니다",
     "Text file" : "텍스트 파일",
-    "New text file.txt" : "새 텍스트 파일.txt"
+    "New text file.txt" : "새 텍스트 파일.txt",
+    "Target folder does not exist any more" : "대상 폴더가 더 이상 존재하지 않습니다",
+    "Upload timeout for file \"{file}\"" : "\"{file}\" 파일 업로드 시간 초과"
 },"pluralForm" :"nplurals=1; plural=0;"
 }

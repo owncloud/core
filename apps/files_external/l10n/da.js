@@ -113,6 +113,12 @@ OC.L10N.register(
     "Advanced settings" : "Avancerede indstillinger",
     "Delete" : "Slet",
     "Allow users to mount external storage" : "Tillad brugere at montere ekstern lagring",
-    "Allow users to mount the following external storage" : "Tillad brugere at montere følgende som eksternt lager"
+    "Allow users to mount the following external storage" : "Tillad brugere at montere følgende som eksternt lager",
+    "No URL provided by backend " : "Ingen URL stillet til rådighed af backend",
+    "Disable external storage" : "Deaktiver ekstern lagring",
+    "You can add external storages in the storage settings" : "Du kan tilføge ekstern lagringer i lagringsindstillingerne",
+    "Enable external storage" : "Aktiver ekstern lagring",
+    "External storage has been disabled by the administrator" : "Ekstern lagring er blevet deaktiveret af administratoren",
+    "Error getting OAuth2 URL for " : "Fejl i hentning af OAuth2 URL for"
 },
 "nplurals=2; plural=(n != 1);");

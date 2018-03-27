@@ -175,6 +175,7 @@
     "Storage incomplete configuration. %s" : "Configuração incompleta do armazenamento. %s",
     "Storage connection error. %s" : "Erro de ligação ao armazenamento. %s",
     "Storage is temporarily not available" : "O armazenamento está temporariamente indisponível",
-    "Storage connection timeout. %s" : "Tempo de ligação ao armazenamento expirou. %s"
+    "Storage connection timeout. %s" : "Tempo de ligação ao armazenamento expirou. %s",
+    "A safe home for all your data" : "Um local seguro para todos os seus dados"
 },"pluralForm" :"nplurals=2; plural=(n != 1);"
 }

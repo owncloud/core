@@ -113,6 +113,7 @@ OC.L10N.register(
     "No favorites" : "אין מועדפים",
     "Files and folders you mark as favorite will show up here" : "קבצים ותיקיות שסומנו על ידך כמועדפים יוצגו כאן",
     "Text file" : "קובץ טקסט",
-    "New text file.txt" : "קובץ טקסט חדש.txt"
+    "New text file.txt" : "קובץ טקסט חדש.txt",
+    "Upload timeout for file \"{file}\"" : "פסק זמן בזמן העלאה של קובץ \"{file}\""
 },
 "nplurals=2; plural=(n != 1);");

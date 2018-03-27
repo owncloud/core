@@ -18,6 +18,7 @@ OC.L10N.register(
     "You commented" : "Has comentat",
     "%1$s commented" : "%1$s comentat",
     "You commented on %2$s" : "Has comentat a %2$s",
-    "%1$s commented on %2$s" : "%1$s ha comentat a %2$s"
+    "%1$s commented on %2$s" : "%1$s ha comentat a %2$s",
+    "Error occurred while posting comment" : "Error mentre es penjava el comentari"
 },
 "nplurals=2; plural=(n != 1);");

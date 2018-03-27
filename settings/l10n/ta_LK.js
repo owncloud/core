@@ -36,6 +36,8 @@ OC.L10N.register(
     "Create" : "உருவாக்குக",
     "Default Quota" : "பொது இருப்பு பங்கு",
     "Other" : "மற்றவை",
-    "Quota" : "பங்கு"
+    "Quota" : "பங்கு",
+    "Share" : "பகிர்வு",
+    "Add" : "சேர்க்க"
 },
 "nplurals=2; plural=(n != 1);");

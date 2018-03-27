@@ -113,6 +113,7 @@ OC.L10N.register(
     "Add to your ownCloud" : "Shtojeni te ownCloud-i juaj",
     "Download" : "Shkarko",
     "Download %s" : "Shkarko %s",
-    "Direct link" : "Lidhje e drejtpërdrejtë"
+    "Direct link" : "Lidhje e drejtpërdrejtë",
+    "No permission to create share" : "S’ka leje për krijim ndarjeje"
 },
 "nplurals=2; plural=(n != 1);");

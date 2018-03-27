@@ -6,6 +6,8 @@ OC.L10N.register(
     "Get the apps to sync your files" : "আপনার ফাইল সিঙ্ক করার অ্যাপ পান",
     "Cancel" : "বাতিল করা",
     "Name" : "নাম",
-    "Error" : "ভুল"
+    "Error" : "ভুল",
+    "Share" : "শেয়ার",
+    "Add" : "যোগ করা"
 },
 "nplurals=2; plural=(n != 1);");

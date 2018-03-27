@@ -17,6 +17,7 @@ OC.L10N.register(
     "Name" : "Namn",
     "Folder name" : "Mappenamn",
     "Configuration" : "Innstillingar",
-    "Delete" : "Slett"
+    "Delete" : "Slett",
+    "Saved" : "Lagra"
 },
 "nplurals=2; plural=(n != 1);");

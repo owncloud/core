@@ -142,6 +142,8 @@ OC.L10N.register(
     "change full name" : "ŝanĝi plenan nomon",
     "set new password" : "agordi novan pasvorton",
     "change email address" : "ŝanĝi retpoŝtadreson",
-    "Default" : "Defaŭlta"
+    "Default" : "Defaŭlta",
+    "Share" : "Kunhavigi",
+    "Add" : "Aldoni"
 },
 "nplurals=2; plural=(n != 1);");

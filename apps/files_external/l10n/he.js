@@ -118,6 +118,10 @@ OC.L10N.register(
     "Advanced settings" : "הגדרות מתקדמות",
     "Delete" : "מחיקה",
     "Allow users to mount external storage" : "מאפשר למשתמשים לחבר אחסון חיצוני",
-    "Allow users to mount the following external storage" : "מאפשר למשתמשים לחבר אחסון חיצוני הבא"
+    "Allow users to mount the following external storage" : "מאפשר למשתמשים לחבר אחסון חיצוני הבא",
+    "No URL provided by backend " : "לא סופק נתיב אינטרנט על ידי צד אחורי",
+    "Please make sure that the app that provides this backend is installed and enabled" : "נא לוודא שהיישום שמספק את המנגנון הזה מותקן ופעיל",
+    "Allow sharing on user-mounted external storages" : "הפעלת שיתוף של זיכרונות התקן-משתמש חיצוניים",
+    "Error getting OAuth2 URL for " : "שגיאה בקבלת נתיב אינטרנט OAuth2 עבור "
 },
 "nplurals=2; plural=(n != 1);");

@@ -22,6 +22,7 @@ OC.L10N.register(
     "Share it:" : "Ndajeni:",
     "Add to your website" : "Shtojeni te sajti juaj",
     "Share with me via ownCloud" : "Ndani me mua përmes ownCloud-it",
-    "HTML Code:" : "Kod HTML:"
+    "HTML Code:" : "Kod HTML:",
+    "Add to your ownCloud" : "Shtojeni te ownCloud-i juaj"
 },
 "nplurals=2; plural=(n != 1);");

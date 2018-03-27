@@ -330,6 +330,19 @@
     "Please use the command line updater because you have a big instance." : "Gebruik de commandoregel updater, omdat u een grote ownCloud hebt.",
     "For help, see the  <a target=\"_blank\" rel=\"noreferrer\" href=\"%s\">documentation</a>." : "Voor hulp, lees de <a target=\"_blank\" rel=\"noreferrer\" href=\"%s\">documentatie</a>.",
     "This %s instance is currently in maintenance mode, which may take a while." : "Deze %s staat momenteel in de onderhoudsstand, dat kan enige tijd duren.",
-    "This page will refresh itself when the %s instance is available again." : "Deze pagina wordt ververst als de %s-installatie weer beschikbaar is."
+    "This page will refresh itself when the %s instance is available again." : "Deze pagina wordt ververst als de %s-installatie weer beschikbaar is.",
+    "Could not reset password because the token is invalid" : "Kon het wachtwoord niet herstellen, omdat het token ongeldig is ",
+    "Could not reset password because the token expired" : "Kon het wachtwoord niet herstellen, omdat het token verlopen is ",
+    "Could not reset password because the token does not match" : "Kon het wachtwoord niet resetten omdat het token niet overeenkomt",
+    "Copy to clipboard" : "Kopiëren naar klembord",
+    "Anyone with the link has access to the file/folder" : "Iedereen met de link heeft toegang tot het bestand of de map",
+    "Choose a password" : "Kies een wachtwoord",
+    "Upload only" : "Alleen uploaden",
+    "Sending" : "Versturen",
+    "Menu" : "Menu",
+    "Read only" : "Allleen lezen",
+    "Read & Write" : "Lees & Schrijven",
+    "Email notification not sent" : "E-mailbericht niet verzonden",
+    "federated" : "gefedereerd"
 },"pluralForm" :"nplurals=2; plural=(n != 1);"
 }

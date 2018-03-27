@@ -197,6 +197,27 @@
     "This ownCloud instance is currently in single user mode." : "Ši ownCloud sistema yra vieno naudotojo veiksenoje.",
     "This means only administrators can use the instance." : "Tai reiškia, kad tik administratorius gali naudotis sistema.",
     "Contact your system administrator if this message persists or appeared unexpectedly." : "Susisiekite su savo sistemos administratoriumi jei šis pranešimas nedingsta arba jei jis pasirodė netikėtai.",
-    "Thank you for your patience." : "Dėkojame už jūsų kantrumą."
+    "Thank you for your patience." : "Dėkojame už jūsų kantrumą.",
+    "No valid crop data provided" : "Nėra galiojančių apkirpimo duomenų",
+    "Crop is not square" : "Kirpimas ne kvadratas",
+    "Could not reset password because the token is invalid" : "Nepavyko pakeisti slaptažodžio nes kodas neteisingas",
+    "Could not reset password because the token expired" : "Nepavykos atkurti slaptažodžio nes kodas negalioja",
+    "Checking updates of apps" : "Tikrina atnaujinimus programoms",
+    "Remove link" : "Pašalinti nuorodą",
+    "Create public link" : "Sukurti viešą nuorodą",
+    "Copy to clipboard" : "Kopijuoti į talpyklę",
+    "Anyone with the link has access to the file/folder" : "Kiekvienas turintis šią nuorodą gali pasiekti failą/katalogą",
+    "Choose a password" : "Pasirinkite slaptažodį",
+    "invisible" : "Nematomas",
+    "Delete {link}" : "Trinti (link)",
+    "unknown text" : "nežinomas tekstas",
+    "Message: %s" : "Žinutė: %s",
+    "Line: %s" : "Eilutė: %s",
+    "Menu" : "Meniu",
+    "Username or email" : "Vartotojas arba el. paštas",
+    "Cancel login" : "Atšaukti prisijungimą",
+    "Update needed" : "Reikalingas atnaujinimas",
+    "Searching other places" : "Ieškoma kitose vietose",
+    "See the documentation" : "Žiūrėti dokumentaciją"
 },"pluralForm" :"nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && (n%100<10 || n%100>=20) ? 1 : 2);"
 }

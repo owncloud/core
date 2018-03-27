@@ -109,6 +109,10 @@ OC.L10N.register(
     "Add to your ownCloud" : "Lägg till i din ownCloud",
     "Download" : "Ladda ner",
     "Download %s" : "Ladda ner %s",
-    "Direct link" : "Direktlänk"
+    "Direct link" : "Direktlänk",
+    "Anonymous upload" : "Anonym uppladdning",
+    "Uploaded files" : "Uppladdade filer",
+    "Click to select files or use drag & drop to upload" : "Klicka för att välja filer eller använd drag-och-släpp för att ladda upp",
+    "Cannot remove all permissions" : "Kan inte ta bort alla rättigheter"
 },
 "nplurals=2; plural=(n != 1);");

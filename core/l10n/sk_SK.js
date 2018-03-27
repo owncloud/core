@@ -309,6 +309,8 @@ OC.L10N.register(
     "Please use the command line updater because you have a big instance." : "Prosím, použite aktualizáciu z príkazového riadka, pretože vaša inštalácia je veľká.",
     "For help, see the  <a target=\"_blank\" rel=\"noreferrer\" href=\"%s\">documentation</a>." : "Pomoc nájdete v  <a target=\"_blank\" rel=\"noreferrer\" href=\"%s\">dokumentácii</a>.",
     "This %s instance is currently in maintenance mode, which may take a while." : "Táto %s inštancia je v súčasnej dobe v režime údržby. Počkajte prosím.",
-    "This page will refresh itself when the %s instance is available again." : "Táto stránka sa obnoví sama hneď ako bude %s inštancia znovu dostupná."
+    "This page will refresh itself when the %s instance is available again." : "Táto stránka sa obnoví sama hneď ako bude %s inštancia znovu dostupná.",
+    "Copy to clipboard" : "Skopírovať do schránky",
+    "Menu" : "Menu"
 },
 "nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;");

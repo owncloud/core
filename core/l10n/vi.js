@@ -138,6 +138,15 @@ OC.L10N.register(
     "This ownCloud instance is currently in single user mode." : "OwnCloud trong trường hợp này đang ở chế độ người dùng duy nhất.",
     "This means only administrators can use the instance." : "Điều này có nghĩa chỉ có người quản trị có thể sử dụng trong trường hợp này.",
     "Contact your system administrator if this message persists or appeared unexpectedly." : "Liên hệ với người quản trị nếu lỗi này vẫn tồn tại hoặc xuất hiện bất ngờ.",
-    "Thank you for your patience." : "Cảm ơn sự kiên nhẫn của bạn."
+    "Thank you for your patience." : "Cảm ơn sự kiên nhẫn của bạn.",
+    "No valid crop data provided" : "Dữ liệu crop không hợp lệ",
+    "Crop is not square" : "Crop không phải hình vuông",
+    "Could not reset password because the token is invalid" : "Không thể đặt lại mật khẩu vì mã thông báo không hợp lệ",
+    "Could not reset password because the token expired" : "Không thể đặt lại mật khẩu vì mã thông báo đã hết hạn",
+    "Could not reset password because the token does not match" : "Không thể đặt lại mật khẩu vì mã thông báo không khớp",
+    "Preparing update" : "Chuẩn bị cập nhật",
+    "Copy to clipboard" : "Sao chép vào clipboard",
+    "Invalid file provided" : "Tập tin không hợp lệ",
+    "File is too big" : "Tập tin quá lớn"
 },
 "nplurals=1; plural=0;");

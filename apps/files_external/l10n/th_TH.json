@@ -116,6 +116,10 @@
     "Advanced settings" : "ตั้งค่าขั้นสูง",
     "Delete" : "ลบ",
     "Allow users to mount external storage" : "อนุญาตให้ผู้ใช้ติดตั้งการจัดเก็บข้อมูลภายนอก",
-    "Allow users to mount the following external storage" : "อนุญาตให้ผู้ใช้ติดตั้งจัดเก็บข้อมูลภายนอกต่อไปนี้"
+    "Allow users to mount the following external storage" : "อนุญาตให้ผู้ใช้ติดตั้งจัดเก็บข้อมูลภายนอกต่อไปนี้",
+    "No URL provided by backend " : "ไม่มี URL ที่มาจากแบ็กเอนด์",
+    "Please make sure that the app that provides this backend is installed and enabled" : "โปรดตรวจสอบว่ามีการติดตั้งและเปิดใช้แอพฯสำหรับแบ็กเอนด์นี้แล้ว",
+    "Allow sharing on user-mounted external storages" : "อนุญาตให้แชร์การจัดเก็บข้อมูลภายนอกของผู้ใช้",
+    "Error getting OAuth2 URL for " : "เกิดข้อผิดพลาดในการรับ URL OAuth2 สำหรับ"
 },"pluralForm" :"nplurals=1; plural=0;"
 }

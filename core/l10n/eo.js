@@ -199,6 +199,7 @@ OC.L10N.register(
     "Thank you for your patience." : "Dankon pro via pacienco.",
     "%s will be updated to version %s" : "%s ĝisdatiĝos al eldono %s",
     "These apps will be updated:" : "Ĉi tiuj aplikaĵoj ĝisdatiĝos:",
-    "Start update" : "Ekĝisdatigi"
+    "Start update" : "Ekĝisdatigi",
+    "Copy to clipboard" : "Kopii al tondejo"
 },
 "nplurals=2; plural=(n != 1);");

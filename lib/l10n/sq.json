@@ -176,6 +176,9 @@
     "Storage incomplete configuration. %s" : "Formësim jo i plotë i depozitës. %s",
     "Storage connection error. %s" : "Gabim lidhje te depozita. %s",
     "Storage is temporarily not available" : "Depozita është përkohësisht jashtë pune",
-    "Storage connection timeout. %s" : "Mbarim kohe lidhjeje për depozitën. %s"
+    "Storage connection timeout. %s" : "Mbarim kohe lidhjeje për depozitën. %s",
+    "A safe home for all your data" : "Një shtëpi e sigurt për krejt të dhënat tuaja",
+    "The username must be at least 3 characters long" : "Emri i përdoruesit duhet të jetë e pakta 3 shenja i gjatë",
+    "File cannot be read" : "Kartela s’lexohet dot"
 },"pluralForm" :"nplurals=2; plural=(n != 1);"
 }

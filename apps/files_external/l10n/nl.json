@@ -116,6 +116,8 @@
     "Advanced settings" : "Geavanceerde instellingen",
     "Delete" : "Verwijder",
     "Allow users to mount external storage" : "Sta gebruikers toe om een externe opslag aan te koppelen",
-    "Allow users to mount the following external storage" : "Sta gebruikers toe de volgende externe opslag aan te koppelen"
+    "Allow users to mount the following external storage" : "Sta gebruikers toe de volgende externe opslag aan te koppelen",
+    "No URL provided by backend " : "Geen URL opgegeven door backend",
+    "Error getting OAuth2 URL for " : "Fout bij ophalen OAuth2 URL voor"
 },"pluralForm" :"nplurals=2; plural=(n != 1);"
 }

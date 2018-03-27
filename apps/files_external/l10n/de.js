@@ -118,6 +118,10 @@ OC.L10N.register(
     "Advanced settings" : "Erweiterte Einstellungen",
     "Delete" : "Löschen",
     "Allow users to mount external storage" : "Benutzern erlauben, externen Speicher einzubinden",
-    "Allow users to mount the following external storage" : "Benutzern erlauben, den oder die folgenden externen Speicher einzubinden:"
+    "Allow users to mount the following external storage" : "Benutzern erlauben, den oder die folgenden externen Speicher einzubinden:",
+    "No URL provided by backend " : "Das Backend stellt keine URL bereit",
+    "Please make sure that the app that provides this backend is installed and enabled" : "Bitte sicherstellen, dass die Anwendung, die das Backend zur Verfügung stellt, installiert und aktiv ist",
+    "Allow sharing on user-mounted external storages" : "Erlaube den Benutzern das Teilen extern hinzugefügter Speicher",
+    "Error getting OAuth2 URL for " : "Fehler beim Abruf der OAuth2 URL für"
 },
 "nplurals=2; plural=(n != 1);");

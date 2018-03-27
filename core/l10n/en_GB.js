@@ -316,6 +316,8 @@ OC.L10N.register(
     "Please use the command line updater because you have a big instance." : "Please use the command line updater because you have a big instance.",
     "For help, see the  <a target=\"_blank\" rel=\"noreferrer\" href=\"%s\">documentation</a>." : "For help, see the  <a target=\"_blank\" rel=\"noreferrer\" href=\"%s\">documentation</a>.",
     "This %s instance is currently in maintenance mode, which may take a while." : "This %s instance is currently in maintenance mode, which may take a while.",
-    "This page will refresh itself when the %s instance is available again." : "This page will refresh itself when the %s instance is available again."
+    "This page will refresh itself when the %s instance is available again." : "This page will refresh itself when the %s instance is available again.",
+    "Copy to clipboard" : "Copy to clipboard",
+    "Menu" : "Menu"
 },
 "nplurals=2; plural=(n != 1);");

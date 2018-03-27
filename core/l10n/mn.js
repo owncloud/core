@@ -13,6 +13,10 @@ OC.L10N.register(
     "Password" : "Нууц үг",
     "Save" : "Хадгалах",
     "Share" : "Түгээх",
-    "Username" : "Хэрэглэгчийн нэр"
+    "Username" : "Хэрэглэгчийн нэр",
+    "Edit" : "Засах",
+    "Delete" : "Устгах",
+    "Cancel" : "Цуцлах",
+    "Error" : "Алдаа"
 },
 "nplurals=2; plural=(n != 1);");

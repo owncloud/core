@@ -336,6 +336,12 @@ OC.L10N.register(
     "change full name" : "alterar nome completo",
     "set new password" : "definir nova palavra-passe",
     "change email address" : "alterar endereço do correio eletrónico",
-    "Default" : "Padrão"
+    "Default" : "Padrão",
+    "Change" : "Alterar",
+    "Share" : "Partilhar",
+    "Domain" : "Domínio",
+    "Add" : "Adicionar",
+    "Email address" : "Endereço de correio eletrónico",
+    "Invalid email address" : "Endereço de correio eletrónico inválido"
 },
 "nplurals=2; plural=(n != 1);");

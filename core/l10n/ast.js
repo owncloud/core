@@ -309,6 +309,8 @@ OC.L10N.register(
     "Please use the command line updater because you have a big instance." : "Por favor, usa l'actualización de llínea de comandos porque ties una instancia grande.",
     "For help, see the  <a target=\"_blank\" rel=\"noreferrer\" href=\"%s\">documentation</a>." : "Pa llograr sofitu, consulte la  <a target=\"_blank\" rel=\"noreferrer\" href=\"%s\">documentación</a>.",
     "This %s instance is currently in maintenance mode, which may take a while." : "Esta instancia %s  ta anguaño en mou de mantenimientu, polo que pue tardar un pocoñín.",
-    "This page will refresh itself when the %s instance is available again." : "Esta páxina va anovase sola cuando la instancia %s tea disponible de nueves."
+    "This page will refresh itself when the %s instance is available again." : "Esta páxina va anovase sola cuando la instancia %s tea disponible de nueves.",
+    "Copy to clipboard" : "Copiar al cartafueyu",
+    "Menu" : "Menú"
 },
 "nplurals=2; plural=(n != 1);");

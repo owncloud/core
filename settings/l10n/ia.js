@@ -44,6 +44,8 @@ OC.L10N.register(
     "Group" : "Gruppo",
     "Default Quota" : "Quota predeterminate",
     "Other" : "Altere",
-    "Quota" : "Quota"
+    "Quota" : "Quota",
+    "Share" : "Compartir",
+    "Add" : "Adder"
 },
 "nplurals=2; plural=(n != 1);");

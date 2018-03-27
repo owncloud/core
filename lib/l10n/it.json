@@ -175,6 +175,9 @@
     "Storage incomplete configuration. %s" : "Configurazione dell'archiviazione incompleta.%s",
     "Storage connection error. %s" : "Errore di connessione all'archiviazione. %s",
     "Storage is temporarily not available" : "L'archiviazione non è temporaneamente disponibile",
-    "Storage connection timeout. %s" : "Timeout di connessione all'archiviazione. %s"
+    "Storage connection timeout. %s" : "Timeout di connessione all'archiviazione. %s",
+    "A safe home for all your data" : "Una casa sicura per tutti i tuoi dati",
+    "User Authentication" : "Autenticazione utente",
+    "File cannot be read" : "Il File non può essere letto"
 },"pluralForm" :"nplurals=2; plural=(n != 1);"
 }

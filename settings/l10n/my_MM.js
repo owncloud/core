@@ -7,6 +7,7 @@ OC.L10N.register(
     "Password" : "စကားဝှက်",
     "New password" : "စကားဝှက်အသစ်",
     "Username" : "သုံးစွဲသူအမည်",
-    "Admin" : "အက်ဒမင်"
+    "Admin" : "အက်ဒမင်",
+    "Add" : "ပေါင်းထည့်"
 },
 "nplurals=1; plural=0;");

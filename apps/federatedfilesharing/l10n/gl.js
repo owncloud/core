@@ -16,6 +16,7 @@ OC.L10N.register(
     "Your Federated Cloud ID:" : "ID da súa nube federada:",
     "Share it:" : "Compártao:",
     "Share with me via ownCloud" : "Comparte comigo a través do ownCloud",
-    "HTML Code:" : "Código HTML:"
+    "HTML Code:" : "Código HTML:",
+    "Add to your ownCloud" : "Engadir ao seu ownCloud"
 },
 "nplurals=2; plural=(n != 1);");

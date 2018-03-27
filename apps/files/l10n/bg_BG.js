@@ -108,6 +108,9 @@ OC.L10N.register(
     "No favorites" : "Няма любими",
     "Files and folders you mark as favorite will show up here" : "Файловете и папките които отбелязваш като любими ще се показват тук",
     "Text file" : "Текстов файл",
-    "New text file.txt" : "Нов текст file.txt"
+    "New text file.txt" : "Нов текст file.txt",
+    "Target folder does not exist any more" : "Целевата папка вече не съществува",
+    "Private link:  Only people who have access to the file/folder can use it. Use it as a permanent link for yourself or to point others to files within shares" : "Частна връзка: Само хората, които имат достъп до файла/папката, могат да я използват. Използвайте я като постоянна връзка за себе си или насочете другите към файлове които са споделени.",
+    "Upload timeout for file \"{file}\"" : "Време за качване на файл \"{file}\""
 },
 "nplurals=2; plural=(n != 1);");

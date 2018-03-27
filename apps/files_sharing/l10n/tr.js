@@ -109,6 +109,8 @@ OC.L10N.register(
     "Add to your ownCloud" : "ownCloud'ınıza Ekleyin",
     "Download" : "İndir",
     "Download %s" : "İndir: %s",
-    "Direct link" : "Doğrudan bağlantı"
+    "Direct link" : "Doğrudan bağlantı",
+    "Uploaded files" : "Yüklenen dosyalar",
+    "Cannot remove all permissions" : "İzinlerin tümü kaldırılamaz"
 },
 "nplurals=2; plural=(n > 1);");

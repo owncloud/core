@@ -113,6 +113,7 @@ OC.L10N.register(
     "Add to your ownCloud" : "Добавить в свой ownCloud",
     "Download" : "Скачать",
     "Download %s" : "Скачать %s",
-    "Direct link" : "Прямая ссылка"
+    "Direct link" : "Прямая ссылка",
+    "No permission to create share" : "Нет права на предоставление доступа"
 },
 "nplurals=4; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<12 || n%100>14) ? 1 : n%10==0 || (n%10>=5 && n%10<=9) || (n%100>=11 && n%100<=14)? 2 : 3);");

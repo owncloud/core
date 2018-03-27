@@ -209,6 +209,8 @@ OC.L10N.register(
     "change full name" : "tam adı dəyiş",
     "set new password" : "yeni şifrə təyin et",
     "change email address" : "email ünvanını dəyiş",
-    "Default" : "Susmaya görə"
+    "Default" : "Susmaya görə",
+    "Share" : "Paylaş",
+    "Add" : "Əlavə etmək"
 },
 "nplurals=2; plural=(n != 1);");

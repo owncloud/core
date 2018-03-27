@@ -49,6 +49,8 @@ OC.L10N.register(
     "Create" : "قۇر",
     "Other" : "باشقا",
     "set new password" : "يېڭى ئىم تەڭشە",
-    "Default" : "كۆڭۈلدىكى"
+    "Default" : "كۆڭۈلدىكى",
+    "Share" : "ھەمبەھىر",
+    "Add" : "قوش"
 },
 "nplurals=1; plural=0;");

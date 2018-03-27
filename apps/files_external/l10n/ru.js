@@ -118,6 +118,10 @@ OC.L10N.register(
     "Advanced settings" : "Расширенные настройки",
     "Delete" : "Удалить",
     "Allow users to mount external storage" : "Разрешить пользователями монтировать внешние накопители",
-    "Allow users to mount the following external storage" : "Разрешить пользователям монтировать следующие сервисы хранения данных"
+    "Allow users to mount the following external storage" : "Разрешить пользователям монтировать следующие сервисы хранения данных",
+    "No URL provided by backend " : "Никакой адрес не предоставлен механизмом ",
+    "Please make sure that the app that provides this backend is installed and enabled" : "Пожалуйста, удостоверьтесь что приложение, которое предоставляет этот механизм, установлено и включено",
+    "Allow sharing on user-mounted external storages" : "Разрешить предоставление доступа ко внешним хранилищам, смонтированным пользователем",
+    "Error getting OAuth2 URL for " : "Ошибка получения адреса OAuth2 для "
 },
 "nplurals=4; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<12 || n%100>14) ? 1 : n%10==0 || (n%10>=5 && n%10<=9) || (n%100>=11 && n%100<=14)? 2 : 3);");

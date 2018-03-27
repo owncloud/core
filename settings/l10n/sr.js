@@ -246,6 +246,9 @@ OC.L10N.register(
     "change full name" : "измени пуно име",
     "set new password" : "постави нову лозинку",
     "change email address" : "измени е-адресу",
-    "Default" : "Подразумевано"
+    "Default" : "Подразумевано",
+    "Share" : "Дељење",
+    "Domain" : "Домен",
+    "Add" : "Додај"
 },
 "nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);");

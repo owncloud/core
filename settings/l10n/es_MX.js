@@ -156,6 +156,9 @@ OC.L10N.register(
     "Full Name" : "Nombre completo",
     "change full name" : "cambiar el nombre completo",
     "set new password" : "establecer nueva contraseña",
-    "Default" : "Predeterminado"
+    "Default" : "Predeterminado",
+    "Share" : "Compartir",
+    "Domain" : "Dominio",
+    "Add" : "Agregar"
 },
 "nplurals=2; plural=(n != 1);");

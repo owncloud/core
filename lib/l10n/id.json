@@ -144,6 +144,7 @@
     "Check the value of \"datadirectory\" in your configuration" : "Periksa nilai \"datadirectory\" di konfigurasi Anda",
     "Please check that the data directory contains a file \".ocdata\" in its root." : "Mohon periksa apakah direktori data berisi sebuah berkas \".ocdata\" di direktori induknya.",
     "Could not obtain lock type %d on \"%s\"." : "Tidak bisa memperoleh jenis kunci %d pada \"%s\".",
-    "Storage is temporarily not available" : "Penyimpanan sementara ini tidak tersedia"
+    "Storage is temporarily not available" : "Penyimpanan sementara ini tidak tersedia",
+    "A safe home for all your data" : "Sebuah rumah yang aman untuk semua data Anda"
 },"pluralForm" :"nplurals=1; plural=0;"
 }

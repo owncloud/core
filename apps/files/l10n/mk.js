@@ -63,6 +63,19 @@ OC.L10N.register(
     "The files you are trying to upload exceed the maximum size for file uploads on this server." : "Датотеките кои се обидувате да ги подигнете ја надминуваат максималната големина за подигнување датотеки на овој сервер.",
     "Files and folders you mark as favorite will show up here" : "Датотеките и папките кои ќе ги означите како чести, ќе се појават тука",
     "Text file" : "Текстуална датотека",
-    "New text file.txt" : "Нова текстуална датотека file.txt"
+    "New text file.txt" : "Нова текстуална датотека file.txt",
+    "File could not be found" : "Датотеката не е пронајдена",
+    "Target folder does not exist any more" : "Директориумот не постои повеќе",
+    "This directory is unavailable, please check the logs or contact the administrator" : "Овој директориум е недостапен, ве молиме проверете ги логовите или контактирајте со администраторот",
+    "Private link:  Only people who have access to the file/folder can use it. Use it as a permanent link for yourself or to point others to files within shares" : "Приватен линк: Само луѓето кои имаат пристап до датотеката/папката можат да го користат. Користете го како врска за себе или да го пратите на друг за да ги прикажете сите споделени податоци",
+    "Show hidden files" : "Прикажи сокриени датотеки",
+    "No favorites" : "Нема омилени",
+    "Storage is temporarily not available" : "Складот е привремено недостапен",
+    "Not enough free space, you are uploading {size1} but only {size2} is left" : "Нема доволно простор, вие прикачувате {size1} а расположлив простор е {size2} ",
+    "Disconnect storage" : "Прекини врска",
+    "Unable to upload {filename} as it is a directory or has 0 bytes" : "Неможе да се прикачи {filename} Бидејќи е директориум или големината е 0 бајти",
+    "Unable to determine date" : "Не може да се одреди датум",
+    "You don’t have permission to upload or create files here" : "Немате дозвола да прикачувате или креирате датотеки овде",
+    "You restored %1$s" : "Вративте %1$s"
 },
 "nplurals=2; plural=(n % 10 == 1 && n % 100 != 11) ? 0 : 1;");

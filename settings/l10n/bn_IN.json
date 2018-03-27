@@ -4,6 +4,8 @@
     "Get the apps to sync your files" : "আপনার ফাইল সিঙ্ক করার অ্যাপ পান",
     "Cancel" : "বাতিল করা",
     "Name" : "নাম",
-    "Error" : "ভুল"
+    "Error" : "ভুল",
+    "Share" : "শেয়ার",
+    "Add" : "যোগ করা"
 },"pluralForm" :"nplurals=2; plural=(n != 1);"
 }

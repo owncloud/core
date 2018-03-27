@@ -56,6 +56,8 @@ OC.L10N.register(
     "Everyone" : "所有人",
     "Other" : "其他",
     "Last Login" : "最後登入",
-    "Default" : "預設"
+    "Default" : "預設",
+    "Share" : "分享",
+    "Add" : "新增"
 },
 "nplurals=1; plural=0;");

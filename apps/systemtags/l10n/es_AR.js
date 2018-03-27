@@ -4,6 +4,7 @@ OC.L10N.register(
     "Tags" : "Etiquetas",
     "Name" : "Nombre",
     "Size" : "Tamaño",
-    "Modified" : "Modificado"
+    "Modified" : "Modificado",
+    "Tagged files" : "Archivos etiquetados"
 },
 "nplurals=2; plural=(n != 1);");

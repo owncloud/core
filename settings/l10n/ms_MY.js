@@ -32,6 +32,8 @@ OC.L10N.register(
     "Create" : "Buat",
     "Default Quota" : "Kuota Lalai",
     "Other" : "Lain",
-    "Quota" : "Kuota"
+    "Quota" : "Kuota",
+    "Share" : "Kongsi",
+    "Add" : "Tambah"
 },
 "nplurals=1; plural=0;");

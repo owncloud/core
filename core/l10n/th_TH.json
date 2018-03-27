@@ -332,6 +332,24 @@
     "Please use the command line updater because you have a big instance." : "กรุณาใช้คำสั่งการอัพเดทเพราะเหตุผลบางอย่าง",
     "For help, see the  <a target=\"_blank\" rel=\"noreferrer\" href=\"%s\">documentation</a>." : " สำหรับข้อมูลเพิ่มเติมสามารถดูได้จาก <a target=\"_blank\" rel=\"noreferrer\" href=\"%s\">เอกสาร</a>",
     "This %s instance is currently in maintenance mode, which may take a while." : "%s กำลังอยู่ในโหมดการบำรุงรักษาซึ่งอาจใช้เวลาสักครู่",
-    "This page will refresh itself when the %s instance is available again." : "หน้านี้จะรีเฟรชตัวเองเมื่อ %s สามารถใช้ได้อีกครั้ง"
+    "This page will refresh itself when the %s instance is available again." : "หน้านี้จะรีเฟรชตัวเองเมื่อ %s สามารถใช้ได้อีกครั้ง",
+    "Could not reset password because the token is invalid" : "ไม่สามารถรีเซ็ตรหัสผ่านเนื่องจากโทเค็นไม่ถูกต้อง",
+    "Could not reset password because the token expired" : "ไม่สามารถรีเซ็ตรหัสผ่านเนื่องจากโทเค็นหมดอายุแล้ว",
+    "Could not reset password because the token does not match" : "ไม่สามารถรีเซ็ตรหัสผ่านเนื่องจากโทเค็นไม่ตรงกัน",
+    "Copy to clipboard" : "คัดลอกไปที่คลิปบอร์ด",
+    "Choose a password" : "เลือกรหัสผ่าน",
+    "Upload only" : "อัพโหลดเท่านั้น",
+    "Sending" : "กำลังส่ง",
+    "Menu" : "เมนู",
+    "Read only" : "อ่านอย่างเดียว",
+    "Read & Write" : "อ่านและเขียน",
+    "Email notification not sent" : "ไม่ได้ส่งการแจ้งเตือนทางอีเมล",
+    "You took too long to login, please try again now" : "คุณใช้เวลาลงชื่อเข้าใช้นานเกินไป โปรดลองอีกครั้ง",
+    "Choose an expiration date" : "เลือกวันหมดอายุ",
+    "An error occured" : "เกิดข้อผิดพลาด",
+    "Send copy to self" : "ส่งสำเนาให้กับตัวเอง",
+    "Add personal message" : "เพิ่มข้อความส่วนตัว",
+    "Error adding {addItem}: {addItem} already exists" : "เกิดข้อผิดพลาดขณะกำลังเพิ่ม {addItem}: {addItem} ที่มีอยู่แล้ว",
+    "federated" : "สหพันธ์"
 },"pluralForm" :"nplurals=1; plural=0;"
 }

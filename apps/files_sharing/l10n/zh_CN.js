@@ -109,6 +109,10 @@ OC.L10N.register(
     "Add to your ownCloud" : "添加到您的 ownCloud",
     "Download" : "下载",
     "Download %s" : "下载 %s",
-    "Direct link" : "直接链接"
+    "Direct link" : "直接链接",
+    "Anonymous upload" : "匿名上传",
+    "Uploaded files" : "上传文件",
+    "Click to select files or use drag & drop to upload" : "点击选择文件或拖拽上传",
+    "Cannot remove all permissions" : "无法移除全部权限"
 },
 "nplurals=1; plural=0;");

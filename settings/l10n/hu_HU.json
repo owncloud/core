@@ -279,6 +279,14 @@
     "change full name" : "a teljes név megváltoztatása",
     "set new password" : "új jelszó beállítása",
     "change email address" : "e-mail cím megváltoztatása",
-    "Default" : "Alapértelmezett"
+    "Default" : "Alapértelmezett",
+    "Change" : "Változás",
+    "Share" : "Megosztás",
+    "Disconnect" : "Szétkapcsol",
+    "Domain" : "Domain",
+    "Add" : "Hozzáadás",
+    "Show enabled apps" : "Az engedéjezett alkalmazások mutatása",
+    "Show disabled apps" : "A nem engedéjezett alkalmazások mutatása",
+    "Invalid email address" : "Érvénytelen email cím"
 },"pluralForm" :"nplurals=2; plural=(n != 1);"
 }

@@ -330,6 +330,17 @@ OC.L10N.register(
     "Please use the command line updater because you have a big instance." : "Posodobitev večjih namestitev je priporočljivo izvesti prek ukazne vrstice.",
     "For help, see the  <a target=\"_blank\" rel=\"noreferrer\" href=\"%s\">documentation</a>." : "Za več podrobnosti si oglejte <a target=\"_blank\" rel=\"noreferrer\" href=\"%s\">dokumentacijo</a>.",
     "This %s instance is currently in maintenance mode, which may take a while." : "Strežnik %s je trenutno v načinu vzdrževanja, kar lahko traja.",
-    "This page will refresh itself when the %s instance is available again." : "Stran bo osvežena ko bo %s spet na voljo."
+    "This page will refresh itself when the %s instance is available again." : "Stran bo osvežena ko bo %s spet na voljo.",
+    "Could not reset password because the token is invalid" : "Ni mogoče ponastaviti gesla, ker je žeton neveljaven",
+    "Could not reset password because the token expired" : "Ni mogoče ponastaviti gesla, ker je žeton potekel",
+    "Could not reset password because the token does not match" : "Ni mogoče ponastaviti gesla, ker žeton ni skladen",
+    "Copy to clipboard" : "Kopiraj v odložišče",
+    "There are currently no link shares, you can create one" : "Trenutno ni povezav za souporabo. Morda lahko povezave ustvarite.",
+    "Anyone with the link has access to the file/folder" : "Vsak, ki ima povezavo ima dostop do datoteke ali mape",
+    "Choose a password" : "Izbor gesla",
+    "Upload only" : "Le pošiljanje",
+    "Sending" : "Pošiljanje",
+    "Menu" : "Meni",
+    "Social share" : "Objava prek socialnega omrežja"
 },
 "nplurals=4; plural=(n%100==1 ? 0 : n%100==2 ? 1 : n%100==3 || n%100==4 ? 2 : 3);");

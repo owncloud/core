@@ -83,6 +83,10 @@ OC.L10N.register(
     "Other" : "Anna",
     "Quota" : "Kvote",
     "set new password" : "lag nytt passord",
-    "Default" : "Standard"
+    "Default" : "Standard",
+    "Saved" : "Lagra",
+    "Share" : "Del",
+    "What to log" : "Kva skal sparast",
+    "Add" : "Legg til"
 },
 "nplurals=2; plural=(n != 1);");

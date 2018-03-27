@@ -78,6 +78,8 @@ OC.L10N.register(
     "Last Login" : "শেষ লগইন",
     "change full name" : "পুরোনাম পরিবর্তন করুন",
     "set new password" : "নতুন কূটশব্দ নির্ধারণ করুন",
-    "Default" : "পূর্বনির্ধারিত"
+    "Default" : "পূর্বনির্ধারিত",
+    "Share" : "ভাগাভাগি কর",
+    "Add" : "যোগ কর"
 },
 "nplurals=2; plural=(n != 1);");

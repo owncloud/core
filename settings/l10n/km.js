@@ -75,6 +75,8 @@ OC.L10N.register(
     "Admin Recovery Password" : "ការ​ស្វែង​រក​ពាក្យ​សម្ងាត់របស់ប្រធាន​វេបសាយ",
     "Other" : "ផ្សេងៗ",
     "set new password" : "កំណត់​ពាក្យ​សម្ងាត់​ថ្មី",
-    "Default" : "លំនាំ​ដើម"
+    "Default" : "លំនាំ​ដើម",
+    "Share" : "ចែក​រំលែក",
+    "Add" : "បន្ថែម"
 },
 "nplurals=1; plural=0;");

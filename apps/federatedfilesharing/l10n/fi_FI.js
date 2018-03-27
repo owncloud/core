@@ -20,6 +20,7 @@ OC.L10N.register(
     "Share it:" : "Jaa se:",
     "Add to your website" : "Lisää verkkosivuillesi",
     "Share with me via ownCloud" : "Jaa kanssani ownCloudin kautta",
-    "HTML Code:" : "HTML-koodi:"
+    "HTML Code:" : "HTML-koodi:",
+    "Add to your ownCloud" : "Lisää ownCloudiisi"
 },
 "nplurals=2; plural=(n != 1);");

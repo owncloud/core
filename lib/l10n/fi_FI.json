@@ -152,6 +152,7 @@
     "Storage incomplete configuration. %s" : "Tallennustilan puutteellinen määritys. %s",
     "Storage connection error. %s" : "Tallennustilan yhteysvirhe. %s",
     "Storage is temporarily not available" : "Tallennustila ei juuri nyt ole käytettävissä",
-    "Storage connection timeout. %s" : "Tallennustilan yhteyden aikakatkaisu. %s"
+    "Storage connection timeout. %s" : "Tallennustilan yhteyden aikakatkaisu. %s",
+    "A safe home for all your data" : "Turvallinen koti tiedoillesi"
 },"pluralForm" :"nplurals=2; plural=(n != 1);"
 }

@@ -307,6 +307,9 @@ OC.L10N.register(
     "change full name" : "change full name",
     "set new password" : "set new password",
     "change email address" : "change email address",
-    "Default" : "Default"
+    "Default" : "Default",
+    "Share" : "Share",
+    "Domain" : "Domain",
+    "Add" : "Add"
 },
 "nplurals=2; plural=(n != 1);");

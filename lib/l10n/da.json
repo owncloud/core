@@ -173,6 +173,10 @@
     "Storage incomplete configuration. %s" : "Ufærdig lagerkonfiguration. %s",
     "Storage connection error. %s" : "Lager tilslutningsfejl. %s",
     "Storage is temporarily not available" : "Lagerplads er ikke tilgængelig lige nu",
-    "Storage connection timeout. %s" : "Lager tilslutningstidsudløb. %s"
+    "Storage connection timeout. %s" : "Lager tilslutningstidsudløb. %s",
+    "Help & Tips" : "Hjælp % Tips",
+    "A safe home for all your data" : "Et sikkert sted til dine data",
+    "User Authentication" : "Brugerautorisation",
+    "Workflows & Tags" : "Arbejdsflow & Tags"
 },"pluralForm" :"nplurals=2; plural=(n != 1);"
 }

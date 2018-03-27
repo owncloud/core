@@ -109,6 +109,8 @@ OC.L10N.register(
     "No favorites" : "Ei suosikkeja",
     "Files and folders you mark as favorite will show up here" : "Suosikeiksi merkitsemäsi tiedostot ja kansiot näkyvät täällä",
     "Text file" : "Tekstitiedosto",
-    "New text file.txt" : "Uusi tekstitiedosto.txt"
+    "New text file.txt" : "Uusi tekstitiedosto.txt",
+    "Target folder does not exist any more" : "Kohdekansiota ei ole enää olemassa",
+    "Upload timeout for file \"{file}\"" : "Lähetyksen aikakatkaisu tiedostolle \"{file}\""
 },
 "nplurals=2; plural=(n != 1);");

@@ -173,6 +173,9 @@
     "Storage incomplete configuration. %s" : "תצורה לא מושלמת של האחסון. %s",
     "Storage connection error. %s" : "שגיאת חיבור אחסון. %s",
     "Storage is temporarily not available" : "אחסון באופן זמני אינו זמין",
-    "Storage connection timeout. %s" : "פסק זמן חיבור אחסון. %s"
+    "Storage connection timeout. %s" : "פסק זמן חיבור אחסון. %s",
+    "A safe home for all your data" : "בית בטוח לכל המידע שלך",
+    "The username must be at least 3 characters long" : "שם המשתמש חייב להיות באורך של 3 תווים לכל היותר",
+    "File cannot be read" : "קובץ לא ניתן לקריאה"
 },"pluralForm" :"nplurals=2; plural=(n != 1);"
 }

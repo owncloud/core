@@ -203,6 +203,21 @@ OC.L10N.register(
     "Please make sure that the database, the config folder and the data folder have been backed up before proceeding." : "Ekin aurretik egiazta ezazu datu basearen, ezarpenen karpetaren eta datuen karpetaren babeskopia duzula.",
     "Start update" : "Hasi eguneraketa",
     "To avoid timeouts with larger installations, you can instead run the following command from your installation directory:" : "Instalazio handien itxarote-denbora saihesteko, ondoko komandoa exekuta dezakezu instalazio direktoriotik:",
-    "This page will refresh itself when the %s instance is available again." : "Orri honek bere burua eguneratuko du %s instantzia berriz prest dagoenean."
+    "This page will refresh itself when the %s instance is available again." : "Orri honek bere burua eguneratuko du %s instantzia berriz prest dagoenean.",
+    "No valid crop data provided" : "Ebaketarako datu baliogabea",
+    "Crop is not square" : "Ebaketa ez da karratua",
+    "Could not reset password because the token is invalid" : "Ezin izan da pasahitza berrezarri tokena baliogabea delako",
+    "Could not reset password because the token expired" : "Ezin izan da pasahitza berrezarri tokena iraungi delako",
+    "Could not reset password because the token does not match" : "Ezin izan da pasahitza berrezarri tokena ez datorrelako bat",
+    "Preparing update" : "Eguneraketa prestatzen",
+    "Create public link" : "Esteka publikoa sortu",
+    "Copy to clipboard" : "Kopiatu arbelera",
+    "Anyone with the link has access to the file/folder" : "Esteka duen edonork atzitu dezake fitxategi/karpeta",
+    "Filename" : "Fitxategiaren izena",
+    "User and Groups" : "Erabiltzaile eta Taldeak",
+    "Menu" : "Menua",
+    "Invalid file provided" : "Baliogabeko fitxategia",
+    "File is too big" : "Fitxategia handiegia da",
+    "Collaborative tags" : "Kolaboraziorako etiketak"
 },
 "nplurals=2; plural=(n != 1);");
