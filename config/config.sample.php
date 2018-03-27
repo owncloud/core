@@ -876,6 +876,18 @@ $CONFIG = array(
  */
 'singleuser' => false,
 
+
+/**
+ * SSL
+ */
+
+/**
+ * Extra SSL options to be used for configuration.
+ */
+'openssl' => array(
+	'config' => '/absolute/location/of/openssl.cnf',
+),
+
 /**
  * Allow the configuration of system wide trusted certificates
  */
