@@ -18,6 +18,7 @@ OC.L10N.register(
     "You commented" : "Hozzászólt",
     "%1$s commented" : "%1$s hozzászólt",
     "You commented on %2$s" : "Hozzászólt ehhez: %2$s",
-    "%1$s commented on %2$s" : "%1$s hozzászólt ehhez: %2$s"
+    "%1$s commented on %2$s" : "%1$s hozzászólt ehhez: %2$s",
+    "Error occurred while posting comment" : "Hiba merült fel a hozzászólás elküldésekor"
 },
 "nplurals=2; plural=(n != 1);");

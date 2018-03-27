@@ -37,6 +37,8 @@ OC.L10N.register(
     "Create" : "තනන්න",
     "Default Quota" : "සාමාන්‍ය සලාකය",
     "Other" : "වෙනත්",
-    "Quota" : "සලාකය"
+    "Quota" : "සලාකය",
+    "Share" : "බෙදා හදා ගන්න",
+    "Add" : "එකතු කරන්න"
 },
 "nplurals=2; plural=(n != 1);");

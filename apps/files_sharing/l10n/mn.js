@@ -9,6 +9,7 @@ OC.L10N.register(
     "You shared %1$s via link" : "Та %1$s-ийг холбоосоор түгээлээ",
     "%2$s shared %1$s with you" : "%2$s %1$s-ийг тань руу түгээлээ",
     "Shares" : "Түгээлтүүд",
-    "Password" : "Нууц үг"
+    "Password" : "Нууц үг",
+    "Cancel" : "Цуцлах"
 },
 "nplurals=2; plural=(n != 1);");

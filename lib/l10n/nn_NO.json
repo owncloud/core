@@ -28,6 +28,7 @@
     "Settings" : "Innstillingar",
     "Users" : "Brukarar",
     "web services under your control" : "Vev tjenester under din kontroll",
-    "Authentication error" : "Feil i autentisering"
+    "Authentication error" : "Feil i autentisering",
+    "Storage is temporarily not available" : "Lager er mellombels utilgjengeleg"
 },"pluralForm" :"nplurals=2; plural=(n != 1);"
 }

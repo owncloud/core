@@ -111,6 +111,8 @@ OC.L10N.register(
     "Add to your ownCloud" : "Přidat do svého ownCloudu",
     "Download" : "Stáhnout",
     "Download %s" : "Stáhnout %s",
-    "Direct link" : "Přímý odkaz"
+    "Direct link" : "Přímý odkaz",
+    "Click to select files or use drag & drop to upload" : "Vyberte soubor nebo použijte táhni a pusť k nahrání",
+    "Cannot remove all permissions" : "Nelze odstranit všechna oprávnění"
 },
 "nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;");

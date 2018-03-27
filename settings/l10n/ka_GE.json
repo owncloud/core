@@ -59,6 +59,8 @@
     "Other" : "სხვა",
     "Quota" : "ქვოტა",
     "set new password" : "დააყენეთ ახალი პაროლი",
-    "Default" : "საწყისი პარამეტრები"
+    "Default" : "საწყისი პარამეტრები",
+    "Share" : "გაზიარება",
+    "Add" : "დამატება"
 },"pluralForm" :"nplurals=1; plural=0;"
 }

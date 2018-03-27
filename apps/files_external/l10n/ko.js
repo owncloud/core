@@ -118,6 +118,10 @@ OC.L10N.register(
     "Advanced settings" : "고급 설정",
     "Delete" : "삭제",
     "Allow users to mount external storage" : "사용자가 외부 저장소를 마운트하도록 허용",
-    "Allow users to mount the following external storage" : "사용자가 다음 외부 저장소를 마운트할 수 있도록 허용"
+    "Allow users to mount the following external storage" : "사용자가 다음 외부 저장소를 마운트할 수 있도록 허용",
+    "No URL provided by backend " : "백엔드에서 URL을 지정하지 않았음",
+    "Please make sure that the app that provides this backend is installed and enabled" : "이 백엔드를 지원하는 앱이 설치 및 활성화되어 있는지 확인하십시오",
+    "Allow sharing on user-mounted external storages" : "사용자가 마운트한 외장 저장소 공유 허용",
+    "Error getting OAuth2 URL for " : "다음의 OAuth2 URL 가져오기 오류"
 },
 "nplurals=1; plural=0;");

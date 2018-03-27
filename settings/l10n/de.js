@@ -336,6 +336,19 @@ OC.L10N.register(
     "change full name" : "Vollständigen Namen ändern",
     "set new password" : "Neues Passwort setzen",
     "change email address" : "E-Mail-Adresse ändern",
-    "Default" : "Standard"
+    "Default" : "Standard",
+    "Change" : "Ändern",
+    "Share" : "Teilen",
+    "installing and updating apps via the market or Federated Cloud Sharing" : "Das Installieren und Aktualisieren von Apps durch den App-Store oder durch Federated Cloud Sharing",
+    "White-listed Domains" : "Weiße Liste der Domains",
+    "Add Domain" : "Domain hinzufügen",
+    "Empty app name is not allowed." : "Ein leerer App-Name ist nicht erlaubt.",
+    "CORS" : "KERNE",
+    "User ID" : "Benutzer-ID",
+    "Email address" : "E-Mail-Adresse",
+    "Invalid email address" : "Ungültige E-Mail-Adresse",
+    "Extra field to display in autocomplete results" : "Separates Feld zur Anzeige des Autovervollständigen-Ergebnisses",
+    "Restrict users to only share with groups they are member of" : "Benutzer auf das Teilen innerhalb der Gruppen, deren Mitglied sie sind, beschränken",
+    "Default user and group share permissions" : "Nutzer und Gruppen Standard-Berechtigungen für das Teilen"
 },
 "nplurals=2; plural=(n != 1);");

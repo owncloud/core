@@ -176,6 +176,9 @@
     "Storage incomplete configuration. %s" : "Неполная конфигурация хранилища.  %s",
     "Storage connection error. %s" : "Ошибка подключения к хранилищу. %s",
     "Storage is temporarily not available" : "Хранилище временно не доступно",
-    "Storage connection timeout. %s" : "Истекло время ожидания подключения к хранилищу. %s"
+    "Storage connection timeout. %s" : "Истекло время ожидания подключения к хранилищу. %s",
+    "A safe home for all your data" : "Безопасный дом для всех ваших данных",
+    "The username must be at least 3 characters long" : "Имя пользователя должно быть не менее 3 символов в длину",
+    "File cannot be read" : "Невозможно прочитать файл"
 },"pluralForm" :"nplurals=4; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<12 || n%100>14) ? 1 : n%10==0 || (n%10>=5 && n%10<=9) || (n%100>=11 && n%100<=14)? 2 : 3);"
 }

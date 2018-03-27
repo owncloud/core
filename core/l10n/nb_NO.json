@@ -330,6 +330,25 @@
     "Please use the command line updater because you have a big instance." : "Vennligst bruk kommandolinje-oppdatering fordi du har en stor instans.",
     "For help, see the  <a target=\"_blank\" rel=\"noreferrer\" href=\"%s\">documentation</a>." : "For hjelp, se  <a target=\"_blank\" rel=\"noreferrer\" href=\"%s\">dokumentasjonen</a>.",
     "This %s instance is currently in maintenance mode, which may take a while." : "Denne %s-instansen er for øyeblikket i vedlikeholdsmodus, noe som kan vare en stund.",
-    "This page will refresh itself when the %s instance is available again." : "Denne siden vil bli lastet på nytt når %s-instansen er tilgjengelig igjen."
+    "This page will refresh itself when the %s instance is available again." : "Denne siden vil bli lastet på nytt når %s-instansen er tilgjengelig igjen.",
+    "Could not reset password because the token is invalid" : "Klarte ikke å tilbakestille passordet fordi token er ugyldig.",
+    "Could not reset password because the token expired" : "Klarte ikke å tilbakestille passordet fordi token er utløpt.",
+    "Could not reset password because the token does not match" : "Klarte ikke å tilbakestille passordet fordi token ikke matcher.",
+    "Copy to clipboard" : "Kopier til utklippstavlen",
+    "Anyone with the link has access to the file/folder" : "Alle med linken har tilgang til filen/mappen",
+    "Choose a password" : "Velg passord",
+    "Upload only" : "Bare last opp",
+    "Sending" : "Sender",
+    "Menu" : "Meny",
+    "Read only" : "Kun lese",
+    "Read & Write" : "Les & Skriv",
+    "Email notification not sent" : "E-postvarsling ikke sendt",
+    "You took too long to login, please try again now" : "Du tok for lang tid til å logge inn, prøv igjen nå",
+    "Choose an expiration date" : "Velg en utløpsdato",
+    "An error occured" : "En feil oppstod",
+    "Send copy to self" : "Send kopi til deg selv",
+    "Add personal message" : "Legg til personlig melding",
+    "Error adding {addItem}: {addItem} already exists" : "Feil ved å legge til {addItem}: {addItem} eksisterer allerede",
+    "federated" : "Forent"
 },"pluralForm" :"nplurals=2; plural=(n != 1);"
 }

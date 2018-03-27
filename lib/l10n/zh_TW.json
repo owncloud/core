@@ -152,6 +152,7 @@
     "Storage unauthorized. %s" : "儲存空間未經授權。%s",
     "Storage incomplete configuration. %s" : "儲存空間配置尚未完成。%s",
     "Storage connection error. %s" : "儲存空間連線錯誤。%s",
-    "Storage connection timeout. %s" : "儲存空間連線逾時。%s"
+    "Storage connection timeout. %s" : "儲存空間連線逾時。%s",
+    "A safe home for all your data" : "安心存放資料的空間"
 },"pluralForm" :"nplurals=1; plural=0;"
 }

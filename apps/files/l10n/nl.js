@@ -109,6 +109,8 @@ OC.L10N.register(
     "No favorites" : "Geen favorieten",
     "Files and folders you mark as favorite will show up here" : "Bestanden en mappen die u favoriet vindt, worden hier getoond",
     "Text file" : "Tekstbestand",
-    "New text file.txt" : "Nieuw tekstbestand.txt"
+    "New text file.txt" : "Nieuw tekstbestand.txt",
+    "Target folder does not exist any more" : "Doelmap bestaat niet mee",
+    "Upload timeout for file \"{file}\"" : "Upload timeout voor bestand \"{file}\""
 },
 "nplurals=2; plural=(n != 1);");

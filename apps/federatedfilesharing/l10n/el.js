@@ -22,6 +22,7 @@ OC.L10N.register(
     "Share it:" : "Μοιραστείτε το:",
     "Add to your website" : "Προσθήκη στην ιστοσελίδα σας",
     "Share with me via ownCloud" : "Διαμοιρασμός με εμένα μέσω του ",
-    "HTML Code:" : "Κώδικας HTML:"
+    "HTML Code:" : "Κώδικας HTML:",
+    "Add to your ownCloud" : "Προσθήκη στο ownCloud σου"
 },
 "nplurals=2; plural=(n != 1);");

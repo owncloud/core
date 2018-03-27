@@ -110,6 +110,8 @@ OC.L10N.register(
     "No favorites" : "Aucun favori",
     "Files and folders you mark as favorite will show up here" : "Les fichiers et dossiers ajoutés à vos favoris apparaîtront ici",
     "Text file" : "Fichier texte",
-    "New text file.txt" : "Nouveau fichier texte.txt"
+    "New text file.txt" : "Nouveau fichier texte.txt",
+    "Target folder does not exist any more" : "Le dossier cible n'existe plus",
+    "Upload timeout for file \"{file}\"" : "Expiration du téléversement du fichier \"{file}\""
 },
 "nplurals=2; plural=(n > 1);");

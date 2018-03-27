@@ -118,6 +118,10 @@ OC.L10N.register(
     "Advanced settings" : "Ítarlegri valkostir",
     "Delete" : "Eyða",
     "Allow users to mount external storage" : "Leyfa notendum að tengja ytri gagnageymslur í skráakerfi",
-    "Allow users to mount the following external storage" : "Leyfa notendum að tengja eftirfarandi ytri gagnageymslu í skráakerfi"
+    "Allow users to mount the following external storage" : "Leyfa notendum að tengja eftirfarandi ytri gagnageymslu í skráakerfi",
+    "No URL provided by backend " : "Engin slóð gefin upp af bakenda ",
+    "Please make sure that the app that provides this backend is installed and enabled" : "Gakktu úr skugga um að forritið sem kemur með þennan bakenda sé rétt upp sett og sé virkt",
+    "Allow sharing on user-mounted external storages" : "Leyfa deilingu á utanáliggjandi gagnageymslum sem notandinn hefur tengt",
+    "Error getting OAuth2 URL for " : "Villa við að sækja OAuth2-slóð fyrir "
 },
 "nplurals=2; plural=(n % 10 != 1 || n % 100 == 11);");

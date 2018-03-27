@@ -22,6 +22,7 @@ OC.L10N.register(
     "Share it:" : "Omogoči souporabo:",
     "Add to your website" : "Dodaj na spletišče",
     "Share with me via ownCloud" : "Omogoči souporabo prek oblaka ownCloud",
-    "HTML Code:" : "Koda HTML:"
+    "HTML Code:" : "Koda HTML:",
+    "Add to your ownCloud" : "Dodaj v svoj oblak ownCloud"
 },
 "nplurals=4; plural=(n%100==1 ? 0 : n%100==2 ? 1 : n%100==3 || n%100==4 ? 2 : 3);");

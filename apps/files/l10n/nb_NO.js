@@ -110,6 +110,8 @@ OC.L10N.register(
     "No favorites" : "Ingen favoritter",
     "Files and folders you mark as favorite will show up here" : "Filer og mapper som du gjør til favoritter vises her",
     "Text file" : "Tekstfil",
-    "New text file.txt" : "Ny tekstfil.txt"
+    "New text file.txt" : "Ny tekstfil.txt",
+    "Target folder does not exist any more" : "Målmappen finnes ikke lenger",
+    "Upload timeout for file \"{file}\"" : "Tidsavbrudd for opplasting av fil \"{file}\""
 },
 "nplurals=2; plural=(n != 1);");

@@ -307,6 +307,23 @@
     "Please use the command line updater because you have a big instance." : "Büyük ölçekli bir işiniz olduğundan lütfen komut satırı güncelleyicisini kullanın. ",
     "For help, see the  <a target=\"_blank\" rel=\"noreferrer\" href=\"%s\">documentation</a>." : "Yardım için  <a target=\"_blank\" rel=\"noreferrer\" href=\"%s\">belgelendirmemize</a> bakabilirsiniz.",
     "This %s instance is currently in maintenance mode, which may take a while." : "Bu %s örneği şu anda bakım kipinde, bu biraz zaman alabilir.",
-    "This page will refresh itself when the %s instance is available again." : "Bu sayfa, %s örneği tekrar kullanılabilir olduğunda kendini yenileyecektir."
+    "This page will refresh itself when the %s instance is available again." : "Bu sayfa, %s örneği tekrar kullanılabilir olduğunda kendini yenileyecektir.",
+    "Could not reset password because the token is invalid" : "Belirteç geçersiz olduğundan parola sıfırlanamadı",
+    "Expiration date is required" : "Son kullanım tarihi gerekli",
+    "Remove link" : "Bağlantıyı sil",
+    "Create public link" : "Herkese açık bağlantı oluştur",
+    "Copy to clipboard" : "Panoya kopyala",
+    "There are currently no link shares, you can create one" : "Şu anda paylaşım bağlantısı yok, bir tane oluşturabilirsiniz",
+    "Anyone with the link has access to the file/folder" : "Dosya/klasör linkine sahip Herkes erişebilir ",
+    "Password required" : "Parola gerekli",
+    "Remove password" : "Parolayı sil",
+    "User and Groups" : "Kullanıcı ve Gruplar",
+    "Public Links" : "Herkese açık bağlantılar",
+    "Delete {link}" : "Sil {link}",
+    "Share to Twitter. Opens in a new window." : "Twitter'da paylaş. Yeni bir pencerede açılır",
+    "Menu" : "Menü",
+    "Password changed successfully" : "Parola başarıyla değiştirildi.",
+    "Social share" : "Sosyal paylaşım",
+    "An error occurred while verifying the token" : "Jeton onaylanırken bir hata oluştu"
 },"pluralForm" :"nplurals=2; plural=(n > 1);"
 }

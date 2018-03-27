@@ -108,6 +108,8 @@
     "No favorites" : "Pa të parapëlqyera",
     "Files and folders you mark as favorite will show up here" : "Këtu do të duken kartelat dhe dosjet që i shënoni si të parapëlqyera",
     "Text file" : "Kartelë tekst",
-    "New text file.txt" : "Kartelë e re file.txt"
+    "New text file.txt" : "Kartelë e re file.txt",
+    "Target folder does not exist any more" : "Dosja e synuar nuk ekziston më",
+    "Upload timeout for file \"{file}\"" : "Mbarim kohe ngarkimi për kartelën \"{file}\""
 },"pluralForm" :"nplurals=2; plural=(n != 1);"
 }

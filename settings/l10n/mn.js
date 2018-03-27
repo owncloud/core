@@ -16,6 +16,10 @@ OC.L10N.register(
     "Email" : "И-мэйл",
     "Password" : "Нууц үг",
     "Username" : "Хэрэглэгчийн нэр",
-    "Done" : "Болсон"
+    "Done" : "Болсон",
+    "Delete" : "Устгах",
+    "Share" : "Түгээх",
+    "Error" : "Алдаа",
+    "Cancel" : "Цуцлах"
 },
 "nplurals=2; plural=(n != 1);");

@@ -305,6 +305,18 @@ OC.L10N.register(
     "change full name" : "ændre fulde navn",
     "set new password" : "skift kodeord",
     "change email address" : "skift e-mailadresse",
-    "Default" : "Standard"
+    "Default" : "Standard",
+    "Change email" : "Skift email",
+    "Share" : "Del",
+    "installing and updating apps via the market or Federated Cloud Sharing" : "installation og opdatering af apps via app-butikken eller Federated Cloud Cloud deling",
+    "System Status" : "Systemstatus",
+    "Domain" : "Domæne",
+    "Add" : "Tilføj",
+    "Set email" : "Indstil email",
+    "You are using %s of %s" : "Du bruger %s af %s",
+    "Apps Management" : "Apphåndtering",
+    "Show enabled apps" : "Vis aktiverede apps",
+    "Show disabled apps" : "Vis deaktiverede aps",
+    "Restrict enumeration to group members" : "Begræns nummereringen til gruppemedlemmer"
 },
 "nplurals=2; plural=(n != 1);");

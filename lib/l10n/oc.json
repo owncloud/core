@@ -157,6 +157,7 @@
     "Storage unauthorized. %s" : "Espaci d'emmagazinatge pas autorizat. %s",
     "Storage incomplete configuration. %s" : "Configuracion de l'espaci d'emmagazinatge incompleta. %s",
     "Storage connection error. %s" : "Error de connexion a l'espaci d'emmagazinatge. %s",
-    "Storage is temporarily not available" : "Espaci d'emmagazinatge temporàriament indisponible"
+    "Storage is temporarily not available" : "Espaci d'emmagazinatge temporàriament indisponible",
+    "A safe home for all your data" : "Un endrech segur per totas vòstras donadas"
 },"pluralForm" :"nplurals=2; plural=(n > 1);"
 }

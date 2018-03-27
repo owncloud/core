@@ -295,6 +295,8 @@ OC.L10N.register(
     "To avoid timeouts with larger installations, you can instead run the following command from your installation directory:" : "Suurtel saitidel aegumise vältimiseks võid sa paigalduskaustas käivitada järgmise käsu:",
     "Detailed logs" : "Üksikasjalikud logid",
     "Update needed" : "On vaja uuendada",
-    "This page will refresh itself when the %s instance is available again." : "Se leht laetakse uuesti, kui %s instantsi on uuesti saadaval."
+    "This page will refresh itself when the %s instance is available again." : "Se leht laetakse uuesti, kui %s instantsi on uuesti saadaval.",
+    "Copy to clipboard" : "Kopeeri lõikepuhvrisse",
+    "Menu" : "Menüü"
 },
 "nplurals=2; plural=(n != 1);");

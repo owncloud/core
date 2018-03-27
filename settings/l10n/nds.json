@@ -16,6 +16,8 @@
     "Name" : "Name",
     "Username" : "Benutzername",
     "Personal" : "Persönlich",
-    "Error" : "Fehler"
+    "Error" : "Fehler",
+    "Share" : "Teilen",
+    "Domain" : "Domäne"
 },"pluralForm" :"nplurals=2; plural=(n != 1);"
 }

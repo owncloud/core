@@ -259,6 +259,10 @@ OC.L10N.register(
     "change full name" : "ubah nama lengkap",
     "set new password" : "setel sandi baru",
     "change email address" : "ubah alamat email",
-    "Default" : "Default"
+    "Default" : "Default",
+    "Share" : "Bagikan",
+    "What to log" : "Yang akan dicatat",
+    "Domain" : "Domain",
+    "Add" : "Tambah"
 },
 "nplurals=1; plural=0;");

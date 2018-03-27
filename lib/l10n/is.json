@@ -170,6 +170,12 @@
     "Storage incomplete configuration. %s" : "Ófullgerð uppsetning gagnageymslu. %s",
     "Storage connection error. %s" : "Villa í tengingu við gagnageymslu. %s",
     "Storage is temporarily not available" : "Gagnageymsla ekki tiltæk í augnablikinu",
-    "Storage connection timeout. %s" : "Gagnageymsla féll á tíma. %s"
+    "Storage connection timeout. %s" : "Gagnageymsla féll á tíma. %s",
+    "A safe home for all your data" : "Öruggur stður fyrir öll gögnin þín",
+    "The username must be at least 3 characters long" : "Notandanafnið verður að vera að minnsta kosti 3 stafa langt",
+    "File cannot be read" : "Ekki hægt að lesa skrána",
+    "It has been detected that the sample configuration has been copied. This can break your installation and is unsupported. Please read the documentation before performing changes on config.php" : "Komið hefur í ljós að sýniuppsetningin var afrituð. Þetta getur skemmt uppsetninguna og er ekki stutt. Endilega lestu hjálparskjölin áður en þú gerir breytingar á config.php",
+    "App can't be installed because it contains the <shipped>true</shipped> tag which is not allowed for non shipped apps" : "Ekki var hægt að setja upp forritið vegna þess að það inniheldur <shipped>true</shipped>-merki sem ekki er leyfilegt í óútgefnum forritum",
+    "App can't be installed because the version in info.xml is not the same as the version reported from the app store" : "Ekki var hægt að setja upp forritið vegna þess að útgáfan í info.xml er ekki sú sama og gefin er upp í forritabúðinni"
 },"pluralForm" :"nplurals=2; plural=(n % 10 != 1 || n % 100 == 11);"
 }

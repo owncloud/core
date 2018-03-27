@@ -16,6 +16,13 @@ OC.L10N.register(
     "Name" : "Անուն",
     "Never" : "Երբեք",
     "Folder name" : "Պանակի անուն",
-    "Delete" : "Ջնջել"
+    "Delete" : "Ջնջել",
+    "Generate keys" : "Գեներացնել բանալի",
+    "API key" : "API բանալի",
+    "Available for" : "Հասանելի",
+    "Admin defined" : "Ադմին սահմանվեց",
+    "OAuth2" : "OAuth2",
+    "Client ID" : "Client ID",
+    "OpenStack" : "OpenStack"
 },
 "nplurals=2; plural=(n != 1);");

@@ -109,6 +109,9 @@ OC.L10N.register(
     "Add to your ownCloud" : "ownCloud に追加",
     "Download" : "ダウンロード",
     "Download %s" : "%s をダウンロード",
-    "Direct link" : "リンク"
+    "Direct link" : "リンク",
+    "Anonymous upload" : "匿名アップロード",
+    "Uploaded files" : "アップロード済みファイル",
+    "Cannot remove all permissions" : "全てのパーミッションを削除できません"
 },
 "nplurals=1; plural=0;");

@@ -116,6 +116,10 @@
     "Advanced settings" : "Configuración avanzada",
     "Delete" : "Eliminar",
     "Allow users to mount external storage" : "Permitir a los usuarios montar un almacenamiento externo",
-    "Allow users to mount the following external storage" : "Permitir a los usuarios montar el siguiente almacenamiento externo"
+    "Allow users to mount the following external storage" : "Permitir a los usuarios montar el siguiente almacenamiento externo",
+    "No URL provided by backend " : "No se ha proporcionado una URL por el mecanismo",
+    "Please make sure that the app that provides this backend is installed and enabled" : "Por favor asegurese de que la app que proporciona el mecanismo de autentificación esta instalada y habilitada.",
+    "Allow sharing on user-mounted external storages" : "permite compartir de almacenamiento externo montado por el usuario",
+    "Error getting OAuth2 URL for " : "Error obteniendo la URL OAuth2 para"
 },"pluralForm" :"nplurals=2; plural=(n != 1);"
 }

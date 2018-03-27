@@ -2,6 +2,7 @@
     "Username" : "Хэрэглэгчийн нэр",
     "Password" : "Нууц үг",
     "Save" : "Хадгалах",
-    "Share" : "Түгээх"
+    "Share" : "Түгээх",
+    "Delete" : "Устгах"
 },"pluralForm" :"nplurals=2; plural=(n != 1);"
 }

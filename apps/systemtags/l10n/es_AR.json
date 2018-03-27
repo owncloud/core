@@ -2,6 +2,7 @@
     "Tags" : "Etiquetas",
     "Name" : "Nombre",
     "Size" : "Tamaño",
-    "Modified" : "Modificado"
+    "Modified" : "Modificado",
+    "Tagged files" : "Archivos etiquetados"
 },"pluralForm" :"nplurals=2; plural=(n != 1);"
 }

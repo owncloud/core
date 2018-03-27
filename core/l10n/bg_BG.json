@@ -313,6 +313,21 @@
     "Please use the command line updater because you have a big instance." : "Тъй като имате голяма инстанция, моля, изпозлвайте командния ред за обновяване.",
     "For help, see the  <a target=\"_blank\" rel=\"noreferrer\" href=\"%s\">documentation</a>." : "За помощ, разгледайте <a target=\"_blank\" rel=\"noreferrer\" href=\"%s\">документацията</a>.",
     "This %s instance is currently in maintenance mode, which may take a while." : "В момента този %s се обновява, а това може да отнеме време.",
-    "This page will refresh itself when the %s instance is available again." : "Тази страница ще се опресни автоматично, когато %s е отново на линия."
+    "This page will refresh itself when the %s instance is available again." : "Тази страница ще се опресни автоматично, когато %s е отново на линия.",
+    "Create public link" : "Създаване на публична връзка",
+    "Copy to clipboard" : "Копирай",
+    "There are currently no link shares, you can create one" : "В момента няма споделени връзки, но можеш да създадеш.",
+    "Anyone with the link has access to the file/folder" : "Всеки знаещ тази връзка ще има достъп до файла/директорията",
+    "Password required" : "Изисква се парола",
+    "Filename" : "Име на файла",
+    "Remove password" : "Прамахване на парола",
+    "User and Groups" : "Потребители и Групи",
+    "Public Links" : "Публични връзки",
+    "Menu" : "Меню",
+    "Read only" : "Само за четене",
+    "Read & Write" : "Четене и писане",
+    "Email notification not sent" : "Емайл известието не е изпратено",
+    "You took too long to login, please try again now" : "Отне ви много време да влезете, моля, опитайте отново сега",
+    "Password changed successfully" : "Паролата е сменена успешно"
 },"pluralForm" :"nplurals=2; plural=(n != 1);"
 }

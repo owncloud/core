@@ -175,6 +175,10 @@
     "Storage incomplete configuration. %s" : "Ikke komplett oppsett for lager. %s",
     "Storage connection error. %s" : "Tilkoblingsfeil for lager. %s",
     "Storage is temporarily not available" : "Lagring er for tiden ikke tilgjengelig",
-    "Storage connection timeout. %s" : "Tidsavbrudd ved tilkobling av lager: %s"
+    "Storage connection timeout. %s" : "Tidsavbrudd ved tilkobling av lager: %s",
+    "A safe home for all your data" : "Et trygt hjem for alle dine data",
+    "User Authentication" : "Bruker autentisering",
+    "The username must be at least 3 characters long" : "Brukernavn må være minst tre tegn langt",
+    "File cannot be read" : "Fil kan ikke leses"
 },"pluralForm" :"nplurals=2; plural=(n != 1);"
 }

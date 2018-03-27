@@ -178,6 +178,8 @@ OC.L10N.register(
     "change full name" : "promijeni puno ime",
     "set new password" : "postavi novu lozinku",
     "change email address" : "promjeni adresu e-pošte",
-    "Default" : "Zadano"
+    "Default" : "Zadano",
+    "Share" : "Dijeli",
+    "Add" : "Dodaj"
 },
 "nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);");

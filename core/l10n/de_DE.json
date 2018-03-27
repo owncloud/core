@@ -332,6 +332,24 @@
     "Please use the command line updater because you have a big instance." : "Da Sie eine große Instanz von Owncloud besitzt, nutzen Sie bitte den Updater über die Kommandozeile.",
     "For help, see the  <a target=\"_blank\" rel=\"noreferrer\" href=\"%s\">documentation</a>." : "Für weitere Hilfen, schauen Sie bitte in die <a target=\"_blank\" rel=\"noreferrer\" href=\"%s\">Dokumentation</a>.",
     "This %s instance is currently in maintenance mode, which may take a while." : "Diese %s-Instanz befindet sich gerade im Wartungsmodus, was eine Weile dauern kann.",
-    "This page will refresh itself when the %s instance is available again." : "Diese Seite aktualisiert sich automatisch, wenn die %s-Instanz wieder verfügbar ist."
+    "This page will refresh itself when the %s instance is available again." : "Diese Seite aktualisiert sich automatisch, wenn die %s-Instanz wieder verfügbar ist.",
+    "Could not reset password because the token is invalid" : "Das Passwort konnte aufgrund eines ungültigen Tokens nicht zurückgesetzt werden",
+    "Could not reset password because the token expired" : "Das Passwort konnte nicht zurückgesetzt werden, da der Token abgelaufen ist",
+    "Could not reset password because the token does not match" : "Das Passwort konnte aufgrund eines nicht übereinstimmenden Tokens nicht zurückgesetzt werden",
+    "Copy to clipboard" : "In die Zwischenablage kopieren",
+    "Choose a password" : "Ein Passwort wählen",
+    "Upload only" : "Nur Hochladen",
+    "Sending" : "Senden",
+    "Menu" : "Menü",
+    "Read only" : "Schreibgeschützt",
+    "Read & Write" : "Lesen & Schreiben",
+    "Email notification not sent" : "Mail-Benachrichtigung wurde nicht versendet",
+    "You took too long to login, please try again now" : "Die maximale Loginzeit wurde überschritten. Bitte versuchen Sie es erneut.",
+    "Choose an expiration date" : "Wähle ein Ablaufdatum",
+    "An error occured" : "Ein Fehler ist aufgetreten",
+    "Send copy to self" : "Eine Kopie an eigene Adresse senden",
+    "Add personal message" : "Persönliche Nachricht hinzufügen",
+    "Error adding {addItem}: {addItem} already exists" : "Fehler beim hinzufügen von {addItem}: {addItem} existiert bereits",
+    "federated" : "föderiert"
 },"pluralForm" :"nplurals=2; plural=(n != 1);"
 }

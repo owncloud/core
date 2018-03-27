@@ -176,6 +176,9 @@
     "Storage incomplete configuration. %s" : "Unvollständige Konfiguration des Storage. %s",
     "Storage connection error. %s" : "Verbindungsfehler zum Storage. %s",
     "Storage is temporarily not available" : "Speicher ist vorübergehend nicht verfügbar",
-    "Storage connection timeout. %s" : "Zeitüberschreitung der Verbindung zum Storage. %s"
+    "Storage connection timeout. %s" : "Zeitüberschreitung der Verbindung zum Storage. %s",
+    "A safe home for all your data" : "Ein sicherer Speicherplatz für deine ganzen Daten.",
+    "The username must be at least 3 characters long" : "Der Nutzername muss mindestens 3 Zeichen lang sein",
+    "File cannot be read" : "Datei kann nicht gelesen werden"
 },"pluralForm" :"nplurals=2; plural=(n != 1);"
 }

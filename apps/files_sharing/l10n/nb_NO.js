@@ -109,6 +109,11 @@ OC.L10N.register(
     "Add to your ownCloud" : "Legg til i din ownCloud",
     "Download" : "Last ned",
     "Download %s" : "Last ned %s",
-    "Direct link" : "Direkte lenke"
+    "Direct link" : "Direkte lenke",
+    "Anonymous upload" : "Anonym opplasting",
+    "Uploaded files" : "Opplastede filer",
+    "Click to select files or use drag & drop to upload" : "Klikk for å velge eller dra filer hit for å laste opp",
+    "Cannot remove all permissions" : "Kan ikke fjerne alle tilganger",
+    "No permission to create share" : "Ingen tillatelse til å opprette deling"
 },
 "nplurals=2; plural=(n != 1);");

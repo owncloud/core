@@ -189,6 +189,8 @@ OC.L10N.register(
     "change full name" : "aldatu izena",
     "set new password" : "ezarri pasahitz berria",
     "change email address" : "aldatu eposta helbidea",
-    "Default" : "Lehenetsia"
+    "Default" : "Lehenetsia",
+    "Share" : "Partekatu",
+    "Add" : "Gehitu"
 },
 "nplurals=2; plural=(n != 1);");

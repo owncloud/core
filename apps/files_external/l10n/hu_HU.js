@@ -74,6 +74,9 @@ OC.L10N.register(
     "Advanced settings" : "Haladó beállítások",
     "Delete" : "Törlés",
     "Allow users to mount external storage" : "Külső tárolók engedélyezése a felhasználók részére",
-    "Allow users to mount the following external storage" : "A felhasználók számára engedélyezett külső tárolók:"
+    "Allow users to mount the following external storage" : "A felhasználók számára engedélyezett külső tárolók:",
+    "Disable external storage" : "Külső tároló kikapcsolása",
+    "Error configuring OAuth1" : "Hiba történt az OAuth1 konfigurálásakor",
+    "Invalid mount point" : "Érvénytelen csatolási pont"
 },
 "nplurals=2; plural=(n != 1);");

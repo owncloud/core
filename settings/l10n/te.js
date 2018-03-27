@@ -12,6 +12,7 @@ OC.L10N.register(
     "Name" : "పేరు",
     "Username" : "వాడుకరి పేరు",
     "Personal" : "వ్యక్తిగతం",
-    "Error" : "పొరపాటు"
+    "Error" : "పొరపాటు",
+    "Add" : "చేర్చు"
 },
 "nplurals=2; plural=(n != 1);");

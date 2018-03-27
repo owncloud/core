@@ -18,6 +18,8 @@ OC.L10N.register(
     "Name" : "Name",
     "Username" : "Benutzername",
     "Personal" : "Persönlich",
-    "Error" : "Fehler"
+    "Error" : "Fehler",
+    "Share" : "Teilen",
+    "Domain" : "Domäne"
 },
 "nplurals=2; plural=(n != 1);");

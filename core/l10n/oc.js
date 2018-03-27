@@ -290,6 +290,8 @@ OC.L10N.register(
     "Detailed logs" : "Jornals detalhats",
     "Update needed" : "Mesa a jorn necessària",
     "This %s instance is currently in maintenance mode, which may take a while." : "Aquesta instància de %s es en cors de mantenença, aquò pòt prene de temps.",
-    "This page will refresh itself when the %s instance is available again." : "Aquesta pagina se refrescarà d'ela-meteissa quand l'instància %s serà disponibla tornamai."
+    "This page will refresh itself when the %s instance is available again." : "Aquesta pagina se refrescarà d'ela-meteissa quand l'instància %s serà disponibla tornamai.",
+    "Copy to clipboard" : "Copiar dins lo quichapapièrs",
+    "Menu" : "Menú"
 },
 "nplurals=2; plural=(n > 1);");

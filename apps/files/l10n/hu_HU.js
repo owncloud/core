@@ -101,6 +101,11 @@ OC.L10N.register(
     "No favorites" : "Nincsenek kedvencek",
     "Files and folders you mark as favorite will show up here" : "A kedvencnek jelölt fájlokat és mappákat itt találod meg",
     "Text file" : "Szövegfájl",
-    "New text file.txt" : "Új szöveges fájl.txt"
+    "New text file.txt" : "Új szöveges fájl.txt",
+    "File could not be found" : "Az állomány nem található",
+    "Target folder does not exist any more" : "A cél mappa nem létezik már",
+    "Private link:  Only people who have access to the file/folder can use it. Use it as a permanent link for yourself or to point others to files within shares" : "Privát hivatkozás: Csak azok használhatják, akik hozzáférhetnek a fájlokhoz/mappákhoz. Használja az állandó hivatkozást maga, vagy rendelje hozzá más fájlokhoz a megosztáson belül ",
+    "Upload timeout for file \"{file}\"" : "Időtúllépés az állomány feltöltésekor \"{file}\"",
+    "Storage is temporarily not available" : "A tároló átmenetileg nem elérhető"
 },
 "nplurals=2; plural=(n != 1);");

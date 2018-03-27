@@ -20,6 +20,7 @@
     "Folder name" : "Nombre de la carpeta",
     "Configuration" : "Configuración",
     "Add storage" : "Añadir almacenamiento",
-    "Delete" : "Borrar"
+    "Delete" : "Borrar",
+    "System" : "Sistema"
 },"pluralForm" :"nplurals=2; plural=(n != 1);"
 }

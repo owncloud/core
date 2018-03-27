@@ -118,6 +118,10 @@ OC.L10N.register(
     "Advanced settings" : "Rregullime të mëtejshme",
     "Delete" : "Fshije",
     "Allow users to mount external storage" : "Lejoju përdoruesve të montojnë depozita të jashtme",
-    "Allow users to mount the following external storage" : "Lejoju përdoruesve të montojnë depozitën e jashtme vijuese"
+    "Allow users to mount the following external storage" : "Lejoju përdoruesve të montojnë depozitën e jashtme vijuese",
+    "No URL provided by backend " : "S’u dha URL nga pjesa e brendshme e programit",
+    "Please make sure that the app that provides this backend is installed and enabled" : "Ju lutemi, garantoni që aplikacioni që furnizon këtë program është i instaluar dhe i aktivizuar",
+    "Allow sharing on user-mounted external storages" : "Lejo ndarje me të tjerë që nga depo të jashtme të montuara nga përdorues",
+    "Error getting OAuth2 URL for " : "Gabim në marrje URL-je OAuth2 për"
 },
 "nplurals=2; plural=(n != 1);");

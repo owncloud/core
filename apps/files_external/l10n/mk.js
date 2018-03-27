@@ -22,6 +22,9 @@ OC.L10N.register(
     "External Storage" : "Надворешно складиште",
     "Folder name" : "Име на папка",
     "Configuration" : "Конфигурација",
-    "Delete" : "Избриши"
+    "Delete" : "Избриши",
+    "Scope" : "опсег",
+    "Storage type" : "Тип на чување",
+    "External storage" : "Надворешна меморија"
 },
 "nplurals=2; plural=(n % 10 == 1 && n % 100 != 11) ? 0 : 1;");

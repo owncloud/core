@@ -332,6 +332,24 @@
     "Please use the command line updater because you have a big instance." : "Ju lutemi, përdorni përditësuesin e rreshtit të urdhrave, sepse keni një instalim të madh.",
     "For help, see the  <a target=\"_blank\" rel=\"noreferrer\" href=\"%s\">documentation</a>." : "Për ndihmë, shihni  <a target=\"_blank\" rel=\"noreferrer\" href=\"%s\">dokumentimin</a>.",
     "This %s instance is currently in maintenance mode, which may take a while." : "Kjo instancë %s hëpërhë gjendet nën mënyrën mirëmbajtje, çka mund të zgjasë ca.",
-    "This page will refresh itself when the %s instance is available again." : "Kjo faqe do të rifreskohet vetiu, sapo instanca %s të jetë sërish gati."
+    "This page will refresh itself when the %s instance is available again." : "Kjo faqe do të rifreskohet vetiu, sapo instanca %s të jetë sërish gati.",
+    "Could not reset password because the token is invalid" : "S’u ricaktua dot fjalëkalimi, ngaqë token-i është i pavlefshëm",
+    "Could not reset password because the token expired" : "S’u ricaktua dot fjalëkalimi, ngaqë token-i ka skaduar",
+    "Could not reset password because the token does not match" : "S’u ricaktua dot fjalëkalimi, ngaqë token-i nuk përputhet",
+    "Copy to clipboard" : "Kopjoje në të papastër",
+    "Choose a password" : "Zgjidhni një fjalëkalim",
+    "Upload only" : "Vetëm ngarkim",
+    "Sending" : "Po dërgohet",
+    "Menu" : "Menu",
+    "Read only" : "Vetëm për lexim",
+    "Read & Write" : "Lexim & Shkrim",
+    "Email notification not sent" : "Njoftimi me email s’u dërgua",
+    "You took too long to login, please try again now" : "U vonuat shumë me hyrjen, ju lutemi, riprovoni tani",
+    "Choose an expiration date" : "Zgjidhni një datë skadimi",
+    "An error occured" : "Ndodhi një gabim",
+    "Send copy to self" : "Dërgojini vetes një kopje",
+    "Add personal message" : "Shtoni mesazh personal",
+    "Error adding {addItem}: {addItem} already exists" : "Gabim në shtimin e {addItem}: {addItem} ekziston tashmë",
+    "federated" : "i federuar"
 },"pluralForm" :"nplurals=2; plural=(n != 1);"
 }

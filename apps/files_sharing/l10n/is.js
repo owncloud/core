@@ -113,6 +113,7 @@ OC.L10N.register(
     "Add to your ownCloud" : "Bæta í þitt eigið ownCloud",
     "Download" : "Niðurhal",
     "Download %s" : "Sækja %s",
-    "Direct link" : "Beinn tengill"
+    "Direct link" : "Beinn tengill",
+    "No permission to create share" : "Þú hefur ekki heimild til að búa til sameign"
 },
 "nplurals=2; plural=(n % 10 != 1 || n % 100 == 11);");

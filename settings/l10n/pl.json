@@ -270,6 +270,11 @@
     "change full name" : "Zmień pełna nazwę",
     "set new password" : "ustaw nowe hasło",
     "change email address" : "zmień adres email",
-    "Default" : "Domyślny"
+    "Default" : "Domyślny",
+    "Share" : "Udostępnij",
+    "Add" : "Dodaj",
+    "png or jpg, max. 20 MB" : "png lub jpg, maks. 20 MB",
+    "You are using %s of %s" : "Używasz %s z %s",
+    "For password recovery and notifications" : "Niezbędny do odzyskania Twojego hasła oraz wysyłania powiadomień"
 },"pluralForm" :"nplurals=4; plural=(n==1 ? 0 : (n%10>=2 && n%10<=4) && (n%100<12 || n%100>=14) ? 1 : n!=1 && (n%10>=0 && n%10<=1) || (n%10>=5 && n%10<=9) || (n%100>=12 && n%100<=14) ? 2 : 3);"
 }

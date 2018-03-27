@@ -109,6 +109,8 @@
     "No favorites" : "无收藏",
     "Files and folders you mark as favorite will show up here" : "收藏的文件和文件夹会在这里显示",
     "Text file" : "文本文件",
-    "New text file.txt" : "创建文本文件 .txt"
+    "New text file.txt" : "创建文本文件 .txt",
+    "Target folder does not exist any more" : "目标文件夹已不存在",
+    "Upload timeout for file \"{file}\"" : "上传文件 {file} 超时"
 },"pluralForm" :"nplurals=1; plural=0;"
 }

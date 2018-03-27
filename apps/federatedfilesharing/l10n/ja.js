@@ -22,6 +22,7 @@ OC.L10N.register(
     "Share it:" : "以下で共有:",
     "Add to your website" : "ウェブサイトに追加",
     "Share with me via ownCloud" : "OwnCloud経由で共有",
-    "HTML Code:" : "HTMLコード:"
+    "HTML Code:" : "HTMLコード:",
+    "Add to your ownCloud" : "ownCloud に追加"
 },
 "nplurals=1; plural=0;");

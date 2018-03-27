@@ -149,6 +149,8 @@ OC.L10N.register(
     "Full Name" : "Pilns vārds",
     "Quota" : "Apjoms",
     "set new password" : "iestatīt jaunu paroli",
-    "Default" : "Noklusējuma"
+    "Default" : "Noklusējuma",
+    "Share" : "Dalīties",
+    "Add" : "Pievienot"
 },
 "nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n != 0 ? 1 : 2);");

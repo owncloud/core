@@ -109,6 +109,8 @@ OC.L10N.register(
     "No favorites" : "Ingen foretrukne",
     "Files and folders you mark as favorite will show up here" : "Filer og mapper som du har markeret som foretrukne, vil blive vist her",
     "Text file" : "Tekstfil",
-    "New text file.txt" : "Ny tekst file.txt"
+    "New text file.txt" : "Ny tekst file.txt",
+    "Target folder does not exist any more" : "Målmappe eksisterer ikke mere",
+    "Private link:  Only people who have access to the file/folder can use it. Use it as a permanent link for yourself or to point others to files within shares" : "Privat link: Kun personer, der har adgang til filen/mappen kan bruge dette. Brug det som et permanent link for dig selv eller til at dirigere andre til delte filer"
 },
 "nplurals=2; plural=(n != 1);");

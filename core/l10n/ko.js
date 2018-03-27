@@ -332,6 +332,21 @@ OC.L10N.register(
     "Please use the command line updater because you have a big instance." : "현재 인스턴스 크기가 크기 때문에 명령행 업데이터를 사용하십시오.",
     "For help, see the  <a target=\"_blank\" rel=\"noreferrer\" href=\"%s\">documentation</a>." : "도움말을 보려면 <a target=\"_blank\" rel=\"noreferrer\" href=\"%s\">문서</a>를 참조하십시오.",
     "This %s instance is currently in maintenance mode, which may take a while." : "이 %s 인스턴스는 현재 점검 모드입니다. 시간이 걸릴 수도 있습니다.",
-    "This page will refresh itself when the %s instance is available again." : "%s 인스턴스를 다시 사용할 수 있으면 자동으로 새로 고칩니다."
+    "This page will refresh itself when the %s instance is available again." : "%s 인스턴스를 다시 사용할 수 있으면 자동으로 새로 고칩니다.",
+    "Could not reset password because the token is invalid" : "토큰이 잘못되었기 때문에 암호를 초기화할 수 없음",
+    "Could not reset password because the token expired" : "토큰이 만료되었기 때문에 암호를 초기화할 수 없음",
+    "Could not reset password because the token does not match" : "토큰이 일치하지 않기 때문에 암호를 초기화할 수 없음",
+    "Copy to clipboard" : "클립보드로 복사",
+    "Anyone with the link has access to the file/folder" : "링크가 있는 모든 사용자는 파일/폴더에 접근할 수 있습니다",
+    "Choose a password" : "암호 지정",
+    "Upload only" : "업로드만",
+    "Sending" : "보내는 중",
+    "Menu" : "메뉴",
+    "Read only" : "읽기 전용",
+    "Read & Write" : "읽기 및 쓰기",
+    "Email notification not sent" : "이메일 알림을 보내지 못했습니다",
+    "You took too long to login, please try again now" : "로그인이 너무 오래 걸렸습니다. 다시 시도하십시오",
+    "Error adding {addItem}: {addItem} already exists" : "{addItem} 추가 오류: {addItem} 항목이 이미 존재함",
+    "federated" : "연합"
 },
 "nplurals=1; plural=0;");

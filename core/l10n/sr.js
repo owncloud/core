@@ -232,6 +232,8 @@ OC.L10N.register(
     "Start update" : "Почни надоградњу",
     "To avoid timeouts with larger installations, you can instead run the following command from your installation directory:" : "Да избегнете прекорачење времена одзива на већим инсталацијама, можете покренути следећу команду у инсталационом директоријуму:",
     "This %s instance is currently in maintenance mode, which may take a while." : "Овај %s је тренутно у режиму одржавања а то може потрајати.",
-    "This page will refresh itself when the %s instance is available again." : "Ова страница ће се сама освежити када %s постане поново доступан."
+    "This page will refresh itself when the %s instance is available again." : "Ова страница ће се сама освежити када %s постане поново доступан.",
+    "Copy to clipboard" : "Копирај у клипборд",
+    "Menu" : "Мени"
 },
 "nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);");

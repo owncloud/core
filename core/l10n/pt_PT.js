@@ -334,6 +334,12 @@ OC.L10N.register(
     "Please use the command line updater because you have a big instance." : "Por favor, utilize o atualizador de linha de comando porque a sua instância é grande.",
     "For help, see the  <a target=\"_blank\" rel=\"noreferrer\" href=\"%s\">documentation</a>." : "Para obter ajuda, consulte a <a target=\"_blank\" rel=\"noreferrer\" href=\"%s\">documentação</a>.",
     "This %s instance is currently in maintenance mode, which may take a while." : "Esta instância %s está atualmente no modo de manutenção, o que poderá demorar algum tempo.",
-    "This page will refresh itself when the %s instance is available again." : "Esta página irá ser atualizada quando a instância %s ficar novamente disponível."
+    "This page will refresh itself when the %s instance is available again." : "Esta página irá ser atualizada quando a instância %s ficar novamente disponível.",
+    "Could not reset password because the token is invalid" : "Não foi possível repor a palavra-passe porque o token é inválido",
+    "Copy to clipboard" : "Copiar para a área de trânsferencia",
+    "Choose a password" : "Escolha uma palavra-passe",
+    "Upload only" : "Apenas envio",
+    "Sending" : "A Enviar",
+    "Menu" : "Menu"
 },
 "nplurals=2; plural=(n != 1);");

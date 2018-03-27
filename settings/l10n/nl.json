@@ -333,6 +333,15 @@
     "change full name" : "wijzigen volledige naam",
     "set new password" : "Instellen nieuw wachtwoord",
     "change email address" : "wijzig e-mailadres",
-    "Default" : "Standaard"
+    "Default" : "Standaard",
+    "Change" : "Wijzigen",
+    "Share" : "Deel",
+    "installing and updating apps via the market or Federated Cloud Sharing" : "installeren en bijwerken applicaties via de app store of Federated Cloud Sharing",
+    "Domain" : "Domein",
+    "Add Domain" : "Toevoegen domein",
+    "CORS" : "CORS",
+    "User ID" : "User ID",
+    "Email address" : "E-mailadres",
+    "Restrict enumeration to group members" : "Beperk enumeratie tot groepsleden"
 },"pluralForm" :"nplurals=2; plural=(n != 1);"
 }

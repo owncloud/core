@@ -116,6 +116,11 @@ OC.L10N.register(
     "Quota" : "Cuota",
     "change full name" : "Cambiar nombre completo",
     "set new password" : "Configurar nueva contraseña",
-    "Default" : "Predeterminado"
+    "Default" : "Predeterminado",
+    "Share" : "Compartir",
+    "Open documentation" : "Abrir documentación",
+    "days" : "días",
+    "What to log" : "Que registrar",
+    "Add" : "Agregar"
 },
 "nplurals=2; plural=(n != 1);");

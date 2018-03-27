@@ -305,6 +305,16 @@ OC.L10N.register(
     "change full name" : "ändra hela namnet",
     "set new password" : "ange nytt lösenord",
     "change email address" : "ändra e-postadress",
-    "Default" : "Förvald"
+    "Default" : "Förvald",
+    "Change email" : "Ändra e-post",
+    "Share" : "Dela",
+    "System Status" : "Systemstatus",
+    "Domain" : "Domän",
+    "Add" : "Lägg till",
+    "Set email" : "Välj e-post",
+    "You are using %s of %s" : "Du använder %s av %s",
+    "Apps Management" : "Programhantering",
+    "Show enabled apps" : "Visa aktiverade appar",
+    "Show disabled apps" : "Visa avaktiverade appar"
 },
 "nplurals=2; plural=(n != 1);");

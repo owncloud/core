@@ -18,6 +18,7 @@ OC.L10N.register(
     "Share it:" : "分享它：",
     "Add to your website" : "新增至您的網站",
     "Share with me via ownCloud" : "透過 ownCloud 與我分享",
-    "HTML Code:" : "HTML Code:"
+    "HTML Code:" : "HTML Code:",
+    "Add to your ownCloud" : "加入到你的 ownCloud"
 },
 "nplurals=1; plural=0;");

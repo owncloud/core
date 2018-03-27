@@ -14,6 +14,7 @@ OC.L10N.register(
     "Share it:" : "Pasidalink:",
     "Add to your website" : "Pridėti tavo puslapį",
     "Share with me via ownCloud" : "Pasidalink su manimi per ownCloud",
-    "HTML Code:" : "HTML kodas:"
+    "HTML Code:" : "HTML kodas:",
+    "Add to your ownCloud" : "Pridėti prie tavo ownCloud"
 },
 "nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && (n%100<10 || n%100>=20) ? 1 : 2);");

@@ -19,6 +19,8 @@ OC.L10N.register(
     "Admin" : "ایڈمن",
     "Error" : "خرابی",
     "Group" : "گروپ",
-    "Other" : "دیگر"
+    "Other" : "دیگر",
+    "Share" : "اشتراک",
+    "Add" : "شامل کریں"
 },
 "nplurals=2; plural=(n != 1);");

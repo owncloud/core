@@ -67,6 +67,7 @@ OC.L10N.register(
     "Finish setup" : "تەڭشەك تامام",
     "Log out" : "تىزىمدىن چىق",
     "Search" : "ئىزدە",
-    "New password" : "يېڭى ئىم"
+    "New password" : "يېڭى ئىم",
+    "Copy to clipboard" : "چاپلاش تاختىسىغا كۆچۈر"
 },
 "nplurals=1; plural=0;");

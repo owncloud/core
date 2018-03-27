@@ -173,6 +173,7 @@
     "Storage incomplete configuration. %s" : "Ατελής διαμόρφωση αποθηκευτικού χώρου. %s",
     "Storage connection error. %s" : "Σφάλμα σύνδεσης αποθηκευτικού χώρου. %s",
     "Storage is temporarily not available" : "Ο αποθηκευτικός χώρος είναι προσωρινά μή προσωρινά",
-    "Storage connection timeout. %s" : "Λήξη χρόνου αναμονής σύνδεσης αποθηκευτικού χώρου. %s"
+    "Storage connection timeout. %s" : "Λήξη χρόνου αναμονής σύνδεσης αποθηκευτικού χώρου. %s",
+    "A safe home for all your data" : "Ένα ασφαλές μέρος για τα δεδομένα σας."
 },"pluralForm" :"nplurals=2; plural=(n != 1);"
 }

@@ -109,6 +109,8 @@ OC.L10N.register(
     "Add to your ownCloud" : "Добави към своя ownCloud",
     "Download" : "Изтегли",
     "Download %s" : "Изтегли %s",
-    "Direct link" : "Директна връзка"
+    "Direct link" : "Директна връзка",
+    "Anonymous upload" : "Анонимно качване",
+    "Uploaded files" : "Качени файлове"
 },
 "nplurals=2; plural=(n != 1);");

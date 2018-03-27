@@ -244,6 +244,8 @@ OC.L10N.register(
     "change full name" : "Ganzen Numm änneren",
     "set new password" : "Neit Passwuert setzen",
     "change email address" : "Emails Adress wiesselen",
-    "Default" : "Standard"
+    "Default" : "Standard",
+    "Share" : "Deelen",
+    "Add" : "Dobäisetzen"
 },
 "nplurals=2; plural=(n != 1);");

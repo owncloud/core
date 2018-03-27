@@ -102,6 +102,7 @@ OC.L10N.register(
     "Alternative Logins" : "ალტერნატიული Login–ი",
     "Use the following link to reset your password: {link}" : "გამოიყენე შემდეგი ლინკი პაროლის შესაცვლელად: {link}",
     "New password" : "ახალი პაროლი",
-    "Reset password" : "პაროლის შეცვლა"
+    "Reset password" : "პაროლის შეცვლა",
+    "Copy to clipboard" : "კოპირებულია ქლიპბორდში "
 },
 "nplurals=1; plural=0;");

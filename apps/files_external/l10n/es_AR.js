@@ -22,6 +22,7 @@ OC.L10N.register(
     "Folder name" : "Nombre de la carpeta",
     "Configuration" : "Configuración",
     "Add storage" : "Añadir almacenamiento",
-    "Delete" : "Borrar"
+    "Delete" : "Borrar",
+    "System" : "Sistema"
 },
 "nplurals=2; plural=(n != 1);");

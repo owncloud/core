@@ -176,6 +176,9 @@
     "Storage incomplete configuration. %s" : "Configuración de almacenamiento incompleta. %s",
     "Storage connection error. %s" : "Error de conexión de almacenamiento. %s",
     "Storage is temporarily not available" : "El almacenamiento no se encuentra disponible temporalmente",
-    "Storage connection timeout. %s" : "Tiempo de conexión de almacenamiento agotado. %s"
+    "Storage connection timeout. %s" : "Tiempo de conexión de almacenamiento agotado. %s",
+    "A safe home for all your data" : "Un lugar seguro para todos sus datos",
+    "The username must be at least 3 characters long" : "El nombre de usuario debe tener al menos 3 carácteres",
+    "File cannot be read" : "El archivo no se puede leer"
 },"pluralForm" :"nplurals=2; plural=(n != 1);"
 }

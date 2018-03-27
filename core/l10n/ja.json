@@ -330,6 +330,17 @@
     "Please use the command line updater because you have a big instance." : "データ量が大きいため、コマンドラインでの更新を利用してください。",
     "For help, see the  <a target=\"_blank\" rel=\"noreferrer\" href=\"%s\">documentation</a>." : "不明な場合、<a target=\"_blank\" rel=\"noreferrer\" href=\"%s\">ドキュメント</a>を参照してください。",
     "This %s instance is currently in maintenance mode, which may take a while." : "このサーバー %s は現在メンテナンスモードです。しばらくお待ちください。",
-    "This page will refresh itself when the %s instance is available again." : "この画面は、サーバー %s の再起動後に自動的に更新されます。"
+    "This page will refresh itself when the %s instance is available again." : "この画面は、サーバー %s の再起動後に自動的に更新されます。",
+    "Could not reset password because the token is invalid" : "トークンが無効なためパスワードのリセットができませんでした",
+    "Could not reset password because the token expired" : "トークンが期限切れのためパスワードのリセットができませんでした",
+    "Could not reset password because the token does not match" : "トークンが一致しないためパスワードのリセットができませんでした",
+    "Copy to clipboard" : "クリップボードにコピー",
+    "Anyone with the link has access to the file/folder" : "リンクを知っている人はファイル/フォルダーにアクセスできます",
+    "Choose a password" : "パスワードを選択",
+    "Upload only" : "アップロードのみ",
+    "Sending" : "送信中",
+    "Menu" : "メニュー",
+    "Read only" : "読み込みのみ",
+    "Read & Write" : "読み込みと書き込み"
 },"pluralForm" :"nplurals=1; plural=0;"
 }

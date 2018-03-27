@@ -10,6 +10,12 @@ OC.L10N.register(
     "Error" : "Feil",
     "restored" : "gjenoppretta",
     "Name" : "Namn",
-    "Deleted" : "Sletta"
+    "Deleted" : "Sletta",
+    "This operation is forbidden" : "Operasjon er ikkje tillaten.",
+    "This directory is unavailable, please check the logs or contact the administrator" : "Området er ikkje tilgjengeleg, ver vennleg og sjå i logg eller kontakt administrator",
+    "No deleted files" : "Ingen sletta filer",
+    "You will be able to recover deleted files from here" : "Du kan ta i bruk att sletta filer herfrå",
+    "No entries found in this folder" : "Ingen oppføring i dette området",
+    "Select all" : "Vel alt"
 },
 "nplurals=2; plural=(n != 1);");

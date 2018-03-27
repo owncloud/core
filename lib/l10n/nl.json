@@ -175,6 +175,9 @@
     "Storage incomplete configuration. %s" : "Incomplete opslagconfiguratie. %s",
     "Storage connection error. %s" : "Opslagverbindingsfout. %s",
     "Storage is temporarily not available" : "Opslag is tijdelijk niet beschikbaar",
-    "Storage connection timeout. %s" : "Opslagverbinding time-out. %s"
+    "Storage connection timeout. %s" : "Opslagverbinding time-out. %s",
+    "A safe home for all your data" : "Een veilig thuis voor al uw gegevens",
+    "User Authentication" : "Gebruiker authenticatie",
+    "File cannot be read" : "Bestand kan niet worden gelezen"
 },"pluralForm" :"nplurals=2; plural=(n != 1);"
 }

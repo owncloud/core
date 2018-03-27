@@ -249,6 +249,8 @@ OC.L10N.register(
     "change full name" : "Cambiar o nome completo",
     "set new password" : "estabelecer un novo contrasinal",
     "change email address" : "cambiar o enderezo de correo",
-    "Default" : "Predeterminado"
+    "Default" : "Predeterminado",
+    "Share" : "Compartir",
+    "Add" : "Engadir"
 },
 "nplurals=2; plural=(n != 1);");

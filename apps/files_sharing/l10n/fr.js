@@ -109,6 +109,11 @@ OC.L10N.register(
     "Add to your ownCloud" : "Ajouter à votre ownCloud",
     "Download" : "Télécharger",
     "Download %s" : "Télécharger %s",
-    "Direct link" : "Lien direct"
+    "Direct link" : "Lien direct",
+    "Anonymous upload" : "Téléversement anonyme",
+    "Uploaded files" : "Fichiers téléversés",
+    "Click to select files or use drag & drop to upload" : "Cliquez pour sélectionner les fichiers ou utilisez le cliquer-glisser pour téléverser",
+    "Cannot remove all permissions" : "Il n'est pas possible d'enlever toutes les permissions",
+    "No permission to create share" : "Interdit de créer le partage"
 },
 "nplurals=2; plural=(n > 1);");

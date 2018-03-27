@@ -192,6 +192,16 @@ OC.L10N.register(
     "change full name" : "keisti pilną vardą",
     "set new password" : "nustatyti naują slaptažodį",
     "change email address" : "pakeisti el. pašto adresą",
-    "Default" : "Numatytasis"
+    "Default" : "Numatytasis",
+    "Change" : "Keisti",
+    "Share" : "Dalintis",
+    "installing and updating apps via the market or Federated Cloud Sharing" : "diegiama ar atnaujinama aplikacijas per turgų arba Federated Cloud Sharing",
+    "Allow users to send mail notification for shared files" : "Leisti naudotojams siųsti perspėjimus apie bendrinamus failus",
+    "Domain" : "Domenas",
+    "Add" : "Pridėti",
+    "Allow sharing with groups" : "Leisti dalintis su grupėmis",
+    "log-level out of allowed range" : "žurnalo lygis už rėžių",
+    "Import root certificate" : "Įkelti pagrindinį sertifikatą",
+    "Set default expiration date" : "Nustatykite galiojimo laiką"
 },
 "nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && (n%100<10 || n%100>=20) ? 1 : 2);");

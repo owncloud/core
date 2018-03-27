@@ -55,6 +55,7 @@
     "WebDAV" : "WebDAV",
     "Upload too large" : "El tamaño del archivo que querés subir es demasiado grande",
     "The files you are trying to upload exceed the maximum size for file uploads on this server." : "Los archivos que intentás subir sobrepasan el tamaño máximo ",
-    "Text file" : "Archivo de texto"
+    "Text file" : "Archivo de texto",
+    "Storage is temporarily not available" : "El repositorio no está disponible temporalmente"
 },"pluralForm" :"nplurals=2; plural=(n != 1);"
 }

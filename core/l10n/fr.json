@@ -332,6 +332,24 @@
     "Please use the command line updater because you have a big instance." : "Veuillez utiliser la mise à jour en ligne de commande, votre instance est trop volumineuse.",
     "For help, see the  <a target=\"_blank\" rel=\"noreferrer\" href=\"%s\">documentation</a>." : "Pour obtenir de l'aide, lisez la <a target=\"_blank\" rel=\"noreferrer\" href=\"%s\">documentation</a>.",
     "This %s instance is currently in maintenance mode, which may take a while." : "Cette instance de %s est en cours de maintenance, cela peut prendre du temps.",
-    "This page will refresh itself when the %s instance is available again." : "Cette page se rafraîchira d'elle-même lorsque l'instance %s sera à nouveau disponible."
+    "This page will refresh itself when the %s instance is available again." : "Cette page se rafraîchira d'elle-même lorsque l'instance %s sera à nouveau disponible.",
+    "Could not reset password because the token is invalid" : "Impossible de réinitialiser le mot de passe car le jeton est non valable",
+    "Could not reset password because the token expired" : "Impossible de réinitialiser le mot de passe car le jeton a expiré.",
+    "Could not reset password because the token does not match" : "Impossible de réinitialiser le mot de passe car le jeton ne correspond pas.",
+    "Copy to clipboard" : "Copier dans le presse papiers",
+    "Choose a password" : "Choisissez un mot de passe",
+    "Upload only" : "Téléverser seulement",
+    "Sending" : "En cours d'envoi",
+    "Menu" : "Menu",
+    "Read only" : "Lecture seule",
+    "Read & Write" : "Lire et Ecrire",
+    "Email notification not sent" : "La notification via email n'a pas été envoyée",
+    "You took too long to login, please try again now" : "Vous avez mis trop longtemps pour vous connecter, veuillez réessayer maintenant",
+    "Choose an expiration date" : "Sélectionner une date d'expiration",
+    "An error occured" : "Une erreur est survenue",
+    "Send copy to self" : "M'envoyer une copie",
+    "Add personal message" : "Ajouter un message personnel",
+    "Error adding {addItem}: {addItem} already exists" : "Erreur en ajoutant {addItem}: {addItem} existe déjà",
+    "federated" : "fédéré"
 },"pluralForm" :"nplurals=2; plural=(n > 1);"
 }

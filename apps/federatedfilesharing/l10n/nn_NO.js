@@ -22,6 +22,7 @@ OC.L10N.register(
     "Share it:" : "Del det:",
     "Add to your website" : "Legg til din nettside",
     "Share with me via ownCloud" : "Del med meg via ownCloud",
-    "HTML Code:" : "HTML kode:"
+    "HTML Code:" : "HTML kode:",
+    "Add to your ownCloud" : "Legg til i din ownCloud"
 },
 "nplurals=2; plural=(n != 1);");

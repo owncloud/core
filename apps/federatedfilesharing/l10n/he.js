@@ -22,6 +22,7 @@ OC.L10N.register(
     "Share it:" : "שיתוף שלו:",
     "Add to your website" : "הוספה לאתר האינטרנט שלך",
     "Share with me via ownCloud" : "שיתוף איתי באמצעות ownCloud",
-    "HTML Code:" : "קוד HTML:"
+    "HTML Code:" : "קוד HTML:",
+    "Add to your ownCloud" : "הוספה ל- ownCloud שלך"
 },
 "nplurals=2; plural=(n != 1);");

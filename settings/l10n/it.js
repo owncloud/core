@@ -315,6 +315,13 @@ OC.L10N.register(
     "change full name" : "modica nome completo",
     "set new password" : "imposta una nuova password",
     "change email address" : "cambia l'indirizzo email",
-    "Default" : "Predefinito"
+    "Default" : "Predefinito",
+    "Change" : "Cambia",
+    "Share" : "Condividi",
+    "Domain" : "Dominio",
+    "Add" : "Aggiungi",
+    "Change email" : "Cambia email",
+    "Set email" : "Imposta email",
+    "Invalid email address" : "Indirizzo email non valido"
 },
 "nplurals=2; plural=(n != 1);");

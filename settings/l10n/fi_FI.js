@@ -295,6 +295,9 @@ OC.L10N.register(
     "change full name" : "muuta koko nimi",
     "set new password" : "aseta uusi salasana",
     "change email address" : "vaihda sähköpostiosoite",
-    "Default" : "Oletus"
+    "Default" : "Oletus",
+    "Change" : "Muuta",
+    "Share" : "Jaa",
+    "Add" : "Lisää"
 },
 "nplurals=2; plural=(n != 1);");

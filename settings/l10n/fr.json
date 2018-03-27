@@ -314,6 +314,26 @@
     "change full name" : "Modifier le nom complet",
     "set new password" : "Changer le mot de passe",
     "change email address" : "changer l'adresse e-mail",
-    "Default" : "Défaut"
+    "Default" : "Défaut",
+    "Change" : "Modification",
+    "Share" : "Partager",
+    "installing and updating apps via the market or Federated Cloud Sharing" : "installation et mise à jour des applications via le marché ou le Cloud Fédéré Partagé",
+    "Invalid email address" : "Adresse mail invalide",
+    "System Status" : "Statut du système",
+    "White-listed Domains" : "Liste blanche de domaines",
+    "Domain" : "Domaine",
+    "Add Domain" : "Ajouter un domaine",
+    "Change email" : "Changer l'adresse de courriel",
+    "Set email" : "Définir le courriel",
+    "You are using %s of %s" : "Vous utilisez %s sur %s",
+    "CORS" : "Partage de ressources d'origines croisées",
+    "Apps Management" : "Gestion des applications",
+    "Show enabled apps" : "Montrer les applications activées",
+    "Show disabled apps" : "Monter les applications désactivées",
+    "User ID" : "ID utilisateur",
+    "Email address" : "Adresse mail",
+    "Restrict enumeration to group members" : "Restreindre l'énumération aux membres du groupe",
+    "Restrict users to only share with groups they are member of" : "N'autoriser les utilisateurs qu'à partager avec les groupes dont ils sont membre",
+    "Default user and group share permissions" : "Autorisations par défaut de partage de groupe et d'utilisateur"
 },"pluralForm" :"nplurals=2; plural=(n > 1);"
 }

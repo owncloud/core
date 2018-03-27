@@ -82,6 +82,14 @@ OC.L10N.register(
     "The files you are trying to upload exceed the maximum size for file uploads on this server." : "فایلها بیش از حد تعیین شده در این سرور هستند\nمترجم:با تغییر فایل php,ini میتوان این محدودیت را برطرف کرد",
     "No favorites" : "هیچ برگزیده",
     "Files and folders you mark as favorite will show up here" : "فایل‌ها و پوشه‌های انتخاب شده به عنوان برگزیده توسط شما، در اینجا نمایش داده می‌شود",
-    "Text file" : "فایل متنی"
+    "Text file" : "فایل متنی",
+    "File could not be found" : "پرونده یافت نشد",
+    "Target folder does not exist any more" : "پوشه مورد نظر دیگر وجود ندارد",
+    "Private link:  Only people who have access to the file/folder can use it. Use it as a permanent link for yourself or to point others to files within shares" : "لینک خصوصی: تنها کسانی که به پرونده/پوشه ها دسترسی دارند می توانند از آن استفاده کنند. از آن به عنوان یک لینک دائمی برای خود یا برای اشاره دیگران به پرونده های مشترک استفاده نمایید",
+    "Upload timeout for file \"{file}\"" : "زمان بارگذاری برای \"{file}\" به پایان رسید",
+    "Show hidden files" : "نمایش پرونده های مخفی",
+    "New text file.txt" : "متن جدید file.txt",
+    "Storage is temporarily not available" : "فضای ذخیره سازی موقتا در دسترس نیست",
+    "Disconnect storage" : "قطع فضای ذخیره سازی"
 },
 "nplurals=1; plural=0;");

@@ -334,6 +334,22 @@
     "change full name" : "ndryshoni emrin e plotë",
     "set new password" : "caktoni fjalëkalim të ri",
     "change email address" : "ndryshoni adresën email",
-    "Default" : "Parazgjedhje"
+    "Default" : "Parazgjedhje",
+    "Change" : "Ndryshoje",
+    "Share" : "Ndaje",
+    "installing and updating apps via the market or Federated Cloud Sharing" : "instalim dhe përditësim aplikacionesh përmes tregut ose Federated Cloud Sharing",
+    "White-listed Domains" : "Përkatësi të Lejuara",
+    "Domain" : "Përkatësi",
+    "Add Domain" : "Shtoni Përkatësi",
+    "CORS" : "CORS",
+    "User ID" : "ID përdoruesi",
+    "Email address" : "Adresë email",
+    "Invalid email address" : "Adresë email e pavlefshme",
+    "Extra field to display in autocomplete results" : "Fushë ekstra për shfaqje në përfundime vetëplotësimesh",
+    "Restrict users to only share with groups they are member of" : "Kufizoji përdoruesit të ndajnë vetëm me grupe anëtarë të të cilëve janë",
+    "Default user and group share permissions" : "Leje parazgjedhje për ndarje nga përdorues dhe grupe",
+    "Enforce password protection for read-only links" : "Zbato me detyrim mbrojtje përmes fjalëkalimi për lidhje të llojit vetëm-lexim",
+    "Enforce password protection for read & write links" : "Zbato me detyrim mbrojtje përmes fjalëkalimi për lidhje të llojit lexim & shkrim",
+    "Enforce password protection for upload-only (File Drop) links" : "Zbato me detyrim mbrojtje përmes fjalëkalimi për lidhje të llojit vetëm-ngarkim (File Drop)"
 },"pluralForm" :"nplurals=2; plural=(n != 1);"
 }

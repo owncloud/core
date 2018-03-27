@@ -73,6 +73,8 @@ OC.L10N.register(
     "Last Login" : "Վերջին մուտք",
     "change full name" : "փոխել լրիվ անունը",
     "change email address" : "փոխել էլ. հասցեն",
-    "Default" : "Լռելյայն"
+    "Default" : "Լռելյայն",
+    "Share" : "Կիսվել",
+    "Add" : "Ավելացնել"
 },
 "nplurals=2; plural=(n != 1);");

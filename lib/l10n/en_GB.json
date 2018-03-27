@@ -172,6 +172,13 @@
     "Storage incomplete configuration. %s" : "Storage incomplete configuration. %s",
     "Storage connection error. %s" : "Storage connection error. %s",
     "Storage is temporarily not available" : "Storage is temporarily not available",
-    "Storage connection timeout. %s" : "Storage connection timeout. %s"
+    "Storage connection timeout. %s" : "Storage connection timeout. %s",
+    "Help & Tips" : "Help & Tips",
+    "Additional" : "Additional",
+    "A safe home for all your data" : "A safe home for all your data",
+    "User Authentication" : "User Authentication",
+    "The username must be at least 3 characters long" : "The username must be at least 3 characters long",
+    "File cannot be read" : "File cannot be read",
+    "Workflows & Tags" : "Workflows & Tags"
 },"pluralForm" :"nplurals=2; plural=(n != 1);"
 }

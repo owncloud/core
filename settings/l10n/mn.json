@@ -14,6 +14,10 @@
     "Email" : "И-мэйл",
     "Password" : "Нууц үг",
     "Username" : "Хэрэглэгчийн нэр",
-    "Done" : "Болсон"
+    "Done" : "Болсон",
+    "Delete" : "Устгах",
+    "Share" : "Түгээх",
+    "Error" : "Алдаа",
+    "Cancel" : "Цуцлах"
 },"pluralForm" :"nplurals=2; plural=(n != 1);"
 }

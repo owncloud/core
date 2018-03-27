@@ -335,6 +335,15 @@ OC.L10N.register(
     "change full name" : "změnit celé jméno",
     "set new password" : "nastavit nové heslo",
     "change email address" : "změnit emailovou adresu",
-    "Default" : "Výchozí"
+    "Default" : "Výchozí",
+    "Change" : "Změnit",
+    "Share" : "Sdílet",
+    "White-listed Domains" : "Seznam povolených domén",
+    "Domain" : "Doména",
+    "Add Domain" : "Přidat doménu",
+    "Email address" : "Emailová adresa",
+    "Invalid email address" : "Chybná emailová adresa",
+    "Restrict enumeration to group members" : "Omezení výčtu na členy skupiny",
+    "Extra field to display in autocomplete results" : "Zobrazit další pole pro automatické dokončování"
 },
 "nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;");

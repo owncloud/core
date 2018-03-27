@@ -17,6 +17,7 @@ OC.L10N.register(
     "Share it:" : "Bagikan:",
     "Add to your website" : "Tambahkan pada situs web Anda",
     "Share with me via ownCloud" : "Dibagikan pada saya via ownCloud",
-    "HTML Code:" : "Kode HTML:"
+    "HTML Code:" : "Kode HTML:",
+    "Add to your ownCloud" : "Tambahkan ke ownCloud Anda"
 },
 "nplurals=1; plural=0;");

@@ -332,6 +332,24 @@
     "Please use the command line updater because you have a big instance." : "Por favor, use a atualização de linha de comando, porque você tem um grande exemplo.",
     "For help, see the  <a target=\"_blank\" rel=\"noreferrer\" href=\"%s\">documentation</a>." : "Para obter ajuda, consulte a  <a target=\"_blank\" rel=\"noreferrer\" href=\"%s\">documentação</a>.",
     "This %s instance is currently in maintenance mode, which may take a while." : "Esta instância %s está em modo de manutenção, o que pode demorar um pouco.",
-    "This page will refresh itself when the %s instance is available again." : "Esta página será atualizada automaticamente quando esta instância %s estiver disponível novamente."
+    "This page will refresh itself when the %s instance is available again." : "Esta página será atualizada automaticamente quando esta instância %s estiver disponível novamente.",
+    "Could not reset password because the token is invalid" : "Não foi possível redefinir a senha porque o token é inválido",
+    "Could not reset password because the token expired" : "Não foi possível redefinir a senha porque o token expirou",
+    "Could not reset password because the token does not match" : "Não foi possível redefinir a senha porque o token não corresponde",
+    "Copy to clipboard" : "Copiar para área de transferência",
+    "Choose a password" : "Escolha uma senha",
+    "Upload only" : "Somente enviar",
+    "Sending" : "Enviando",
+    "Menu" : "Menu",
+    "Read only" : "Somente leitura",
+    "Read & Write" : "Ler & Escrever",
+    "Email notification not sent" : "Notificação de e-mail não enviada",
+    "You took too long to login, please try again now" : "Você demorou muito para se logar, tente novamente agora",
+    "Choose an expiration date" : "Escolha uma data de validade",
+    "An error occured" : "Ocorreu um erro",
+    "Send copy to self" : "Enviar cópia para si mesmo",
+    "Add personal message" : "Adicionar mensagem pessoal",
+    "Error adding {addItem}: {addItem} already exists" : "Erro ao adicionar {addItem}: {addItem} já existe",
+    "federated" : "federado"
 },"pluralForm" :"nplurals=2; plural=(n > 1);"
 }

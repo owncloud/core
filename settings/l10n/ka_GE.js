@@ -61,6 +61,8 @@ OC.L10N.register(
     "Other" : "სხვა",
     "Quota" : "ქვოტა",
     "set new password" : "დააყენეთ ახალი პაროლი",
-    "Default" : "საწყისი პარამეტრები"
+    "Default" : "საწყისი პარამეტრები",
+    "Share" : "გაზიარება",
+    "Add" : "დამატება"
 },
 "nplurals=1; plural=0;");

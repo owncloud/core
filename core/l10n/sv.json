@@ -312,6 +312,24 @@
     "Please use the command line updater because you have a big instance." : "Vänligen använd den kommandotolksbaserade uppdateringen eftersom du har en stor instans.",
     "For help, see the  <a target=\"_blank\" rel=\"noreferrer\" href=\"%s\">documentation</a>." : "För hjälp, se <a target=\"_blank\" rel=\"noreferrer\" href=\"%s\">dokumentationen</a>.",
     "This %s instance is currently in maintenance mode, which may take a while." : "Denna %s instans befinner sig för närvarande i underhållsläge, vilket kan ta ett tag.",
-    "This page will refresh itself when the %s instance is available again." : "Denna sida uppdaterar sig själv när %s instansen är tillgänglig igen."
+    "This page will refresh itself when the %s instance is available again." : "Denna sida uppdaterar sig själv när %s instansen är tillgänglig igen.",
+    "Expiration date is required" : "Utgångsdatum krävs",
+    "Remove link" : "Ta bort länk",
+    "Create public link" : "Skapa publik länk",
+    "Copy to clipboard" : "Kopiera till urklippshanteraren",
+    "There are currently no link shares, you can create one" : "Det finns inga länkdelningar, men du kan skapa en",
+    "Anyone with the link has access to the file/folder" : "Vem som helst med länken kan komma åt filen eller mappen",
+    "Choose a password" : "Välj ett lösenord",
+    "Password required" : "Lösenord krävs",
+    "Upload only" : "Ladda bara upp",
+    "Remove password" : "Ta bort lösenord",
+    "Sending" : "Skickar",
+    "User and Groups" : "Användare och grupper",
+    "Public Links" : "Publika länkar",
+    "Delete {link}" : "Ta bort {link}",
+    "Menu" : "Meny",
+    "Password changed successfully" : "Lösenordet ändrades",
+    "Social share" : "Social delning",
+    "An error occurred while verifying the token" : "Ett fel inträffade vid verifiering av nyckeln"
 },"pluralForm" :"nplurals=2; plural=(n != 1);"
 }

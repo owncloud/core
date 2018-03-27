@@ -113,6 +113,7 @@ OC.L10N.register(
     "No favorites" : "ยังไม่มีรายการโปรด",
     "Files and folders you mark as favorite will show up here" : "ไฟล์และโฟลเดอร์ที่คุณทำเครื่องหมายเป็นรายการโปรดจะปรากฏขึ้นที่นี่",
     "Text file" : "ไฟล์ข้อความ",
-    "New text file.txt" : "ไฟล์ข้อความใหม่ .txt"
+    "New text file.txt" : "ไฟล์ข้อความใหม่ .txt",
+    "Upload timeout for file \"{file}\"" : "หมดเวลาสำหรับการอัพโหลดสำหรับไฟล์ \"{file}\""
 },
 "nplurals=1; plural=0;");

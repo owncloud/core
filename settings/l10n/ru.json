@@ -334,6 +334,22 @@
     "change full name" : "изменить полное имя",
     "set new password" : "установить новый пароль",
     "change email address" : "изменить адрес почты",
-    "Default" : "По умолчанию"
+    "Default" : "По умолчанию",
+    "Change" : "Изменения",
+    "Share" : "Общий доступ",
+    "installing and updating apps via the market or Federated Cloud Sharing" : "установка и обновление приложений через маркет или Объединение облачных хранилищ",
+    "White-listed Domains" : "Белый список доменов",
+    "Domain" : "Домен",
+    "Add Domain" : "Добавить домен",
+    "CORS" : "CORS",
+    "User ID" : "Логин пользователя",
+    "Email address" : "Адрес почты",
+    "Invalid email address" : "Недопустимый адрес почты",
+    "Extra field to display in autocomplete results" : "Дополнительное поле, показываемое в результатах автодополнения",
+    "Restrict users to only share with groups they are member of" : "Ограничить возможность предоставления доступа только теми группами, членом которых является пользователь",
+    "Default user and group share permissions" : "Разрешения общего доступа для пользователей и групп по умолчанию",
+    "Enforce password protection for read-only links" : "Принудительная защита паролем для ссылок только для чтения",
+    "Enforce password protection for read & write links" : "Принудительная защита паролем для ссылок для чтения и записи",
+    "Enforce password protection for upload-only (File Drop) links" : "Принудительная защита паролем для ссылок только для записи (отправка файлов)"
 },"pluralForm" :"nplurals=4; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<12 || n%100>14) ? 1 : n%10==0 || (n%10>=5 && n%10<=9) || (n%100>=11 && n%100<=14)? 2 : 3);"
 }

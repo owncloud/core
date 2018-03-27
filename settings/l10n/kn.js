@@ -122,6 +122,8 @@ OC.L10N.register(
     "change full name" : "﻿ಪೂರ್ಣ ಹೆಸರು ಬದಲಾಯಿಸಬಹುದು",
     "set new password" : "﻿ಹೊಸ ಗುಪ್ತಪದವನ್ನು ಹೊಂದಿಸಿ",
     "change email address" : "﻿ಇ-ಅಂಚೆ ವಿಳಾಸ ಬದಲಾಯಿಸಿ",
-    "Default" : "ಆರಂಭದ ಪ್ರತಿ"
+    "Default" : "ಆರಂಭದ ಪ್ರತಿ",
+    "Share" : "﻿ಹಂಚಿಕೊಳ್ಳಿ",
+    "Add" : "﻿ಸೇರಿಸಿ"
 },
 "nplurals=1; plural=0;");

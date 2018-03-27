@@ -1,4 +1,8 @@
 { "translations": {
-    "Personal" : "Անձնական"
+    "Personal" : "Անձնական",
+    "Contact birthdays" : "Ծննդյան օրեր",
+    "Contacts" : "Կոնտակտներ",
+    "Technical details" : "Տեխնիկական մանրամասներ",
+    "Remote Address: %s" : "Հեռակա հասցե. %s"
 },"pluralForm" :"nplurals=2; plural=(n != 1);"
 }

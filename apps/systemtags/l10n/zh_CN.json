@@ -17,6 +17,13 @@
     "No entries found in this folder" : "此文件夹中无项目",
     "Name" : "名称",
     "Size" : "大小",
-    "Modified" : "修改日期"
+    "Modified" : "修改日期",
+    "You assigned system tag %3$s" : "你分配了系统标签%3$s",
+    "You deleted system tag %2$s" : "你删除了系统标签%2$s",
+    "You unassigned system tag %3$s" : "你取消分配了系统标签%3$s",
+    "You created system tag %2$s" : "你创建了系统标签%2$s",
+    "You updated system tag %3$s to %2$s" : "你将系统标签%3$s修改为%2$s",
+    "You assigned system tag %3$s to %2$s" : "你将系统标签%3$s分配给%2$s",
+    "You unassigned system tag %3$s from %2$s" : "你将系统标签%3$s从%2$s移除"
 },"pluralForm" :"nplurals=1; plural=0;"
 }

@@ -109,6 +109,10 @@ OC.L10N.register(
     "Add to your ownCloud" : "Toevoegen aan uw ownCloud",
     "Download" : "Downloaden",
     "Download %s" : "Download %s",
-    "Direct link" : "Directe link"
+    "Direct link" : "Directe link",
+    "Anonymous upload" : "Anonieme upload",
+    "Uploaded files" : "Geüploade bestanden",
+    "Click to select files or use drag & drop to upload" : "Klik om bestanden te selecteren of gebruik drag&drop om te uploaden",
+    "Cannot remove all permissions" : "Kan niet alle rechten verwijderen"
 },
 "nplurals=2; plural=(n != 1);");

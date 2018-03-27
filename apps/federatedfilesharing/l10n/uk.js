@@ -13,6 +13,7 @@ OC.L10N.register(
     "Allow users on this server to receive shares from other servers" : "Дозволити користувачам на цьому сервері отримувати публікації з інших серверів",
     "Share it:" : "Поділитися цим:",
     "Add to your website" : "Додати до себе на сайт",
-    "HTML Code:" : "HTML код:"
+    "HTML Code:" : "HTML код:",
+    "Add to your ownCloud" : "Додати до вашого ownCloud"
 },
 "nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);");

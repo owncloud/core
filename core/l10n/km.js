@@ -111,6 +111,7 @@ OC.L10N.register(
     "Log in" : "ចូល",
     "Alternative Logins" : "ការ​ចូល​ជំនួស",
     "New password" : "ពាក្យ​សម្ងាត់​ថ្មី",
-    "Reset password" : "កំណត់​ពាក្យ​សម្ងាត់​ម្ដង​ទៀត"
+    "Reset password" : "កំណត់​ពាក្យ​សម្ងាត់​ម្ដង​ទៀត",
+    "Copy to clipboard" : "ចម្លង​ទៅ​ឃ្លីបបត"
 },
 "nplurals=1; plural=0;");

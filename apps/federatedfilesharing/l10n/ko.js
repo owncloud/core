@@ -22,6 +22,7 @@ OC.L10N.register(
     "Share it:" : "공유하기:",
     "Add to your website" : "내 웹 사이트에 추가",
     "Share with me via ownCloud" : "ownCloud로 나와 공유하기",
-    "HTML Code:" : "HTML 코드:"
+    "HTML Code:" : "HTML 코드:",
+    "Add to your ownCloud" : "내 ownCloud에 추가하기"
 },
 "nplurals=1; plural=0;");

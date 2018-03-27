@@ -111,6 +111,12 @@
     "Please upgrade your database version" : "请升级您的数据库版本",
     "Please change the permissions to 0770 so that the directory cannot be listed by other users." : "请更改权限为 0770 以避免其他用户查看目录。",
     "Please check that the data directory contains a file \".ocdata\" in its root." : "请确保文件根目录下包含有一个名为“.ocdata”的文件。",
-    "Storage is temporarily not available" : "存储临时性不可用"
+    "Storage is temporarily not available" : "存储临时性不可用",
+    "Help & Tips" : "帮助",
+    "A safe home for all your data" : "为您的所有数据提供一个安全的家。",
+    "User Authentication" : "用户授权",
+    "Storage connection timeout. %s" : "存储连接超时。%s",
+    "Avatar image is not square" : "Avatar 头像图片非方形",
+    "Empty filename is not allowed" : "不允许使用空文件名"
 },"pluralForm" :"nplurals=1; plural=0;"
 }

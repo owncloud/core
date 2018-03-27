@@ -15,6 +15,7 @@ OC.L10N.register(
     "Share it:" : "Kunhavigi ĝin:",
     "Add to your website" : "Aldoni al via TTT-ejo",
     "Share with me via ownCloud" : "Kunhavigi kun mi per ownCloud",
-    "HTML Code:" : "HTML-kodo:"
+    "HTML Code:" : "HTML-kodo:",
+    "Add to your ownCloud" : "Aldoni al via ownCloud"
 },
 "nplurals=2; plural=(n != 1);");

@@ -336,6 +336,19 @@ OC.L10N.register(
     "change full name" : "breyta fullu nafni",
     "set new password" : "setja nýtt lykilorð",
     "change email address" : "breyta tölvupóstfangi",
-    "Default" : "Sjálfgefið"
+    "Default" : "Sjálfgefið",
+    "Change" : "Skipta um",
+    "Share" : "Deila",
+    "installing and updating apps via the market or Federated Cloud Sharing" : "uppsetning eða uppfærsla forrita úr forritabúð eða með skýjasambandi",
+    "White-listed Domains" : "Lén á lista yfir leyft",
+    "Domain" : "Lén",
+    "Add Domain" : "Bæta við léni",
+    "CORS" : "CORS",
+    "User ID" : "Auðkenni notanda",
+    "Email address" : "Tölvupóstfang",
+    "Invalid email address" : "Ógilt tölvupóstfang",
+    "Extra field to display in autocomplete results" : "Aukareitur til að birta niðurstöður í sjálfvirkri orðaklárun",
+    "Restrict users to only share with groups they are member of" : "Takmarka notendur við að deila með hópum sem þeir eru meðlimir í",
+    "Default user and group share permissions" : "Sjálfgefnar heimildir deilingar notenda og hópa"
 },
 "nplurals=2; plural=(n % 10 != 1 || n % 100 == 11);");
