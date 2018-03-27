@@ -30,7 +30,7 @@ $OC_Version = [10, 1, 0, 0];
 // The human readable string
 $OC_VersionString = '10.1.0 prealpha';
 
-$OC_VersionCanBeUpgradedFrom = [[9, 0, 9],[9, 1],[10, 0]];
+$OC_VersionCanBeUpgradedFrom = [[8,2,11], [9, 0, 9],[9, 1],[10, 0]];
 
 // The ownCloud channel
 $OC_Channel = 'git';
