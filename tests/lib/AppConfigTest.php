@@ -227,11 +227,11 @@ class AppConfigTest extends TestCase {
 		$this->assertArrayHasKey('key', $calledBeforeSetValue[1]);
 		$this->assertArrayHasKey('value', $calledBeforeSetValue[1]);
 		$this->assertArrayHasKey('app', $calledBeforeSetValue[1]);
-		$this->assertArrayHasKey('appcache', $calledBeforeSetValue[1]);
 		$this->assertArrayHasKey('key', $calledAfterSetValue[1]);
 		$this->assertArrayHasKey('value', $calledAfterSetValue[1]);
 		$this->assertArrayHasKey('app', $calledAfterSetValue[1]);
-		$this->assertArrayHasKey('appcache', $calledAfterSetValue[1]);
+		$this->assertArrayHasKey('update', $calledAfterSetValue[1]);
+		$this->assertArrayHasKey('oldvalue', $calledAfterSetValue[1]);
 
 		$this->assertEquals('1.33.7', $config->getValue('testapp', 'installed_version'));
 		$this->assertConfigKey('testapp', 'installed_version', '1.33.7');
@@ -268,11 +268,11 @@ class AppConfigTest extends TestCase {
 		$this->assertArrayHasKey('key', $calledBeforeSetValue[1]);
 		$this->assertArrayHasKey('value', $calledBeforeSetValue[1]);
 		$this->assertArrayHasKey('app', $calledBeforeSetValue[1]);
-		$this->assertArrayHasKey('appcache', $calledBeforeSetValue[1]);
 		$this->assertArrayHasKey('key', $calledAfterSetValue[1]);
 		$this->assertArrayHasKey('value', $calledAfterSetValue[1]);
 		$this->assertArrayHasKey('app', $calledAfterSetValue[1]);
-		$this->assertArrayHasKey('appcache', $calledAfterSetValue[1]);
+		$this->assertArrayHasKey('update', $calledAfterSetValue[1]);
+		$this->assertArrayHasKey('oldvalue', $calledAfterSetValue[1]);
 
 		$this->assertTrue($config->hasKey('someapp', 'somekey'));
 		$this->assertEquals('somevalue', $config->getValue('someapp', 'somekey'));
