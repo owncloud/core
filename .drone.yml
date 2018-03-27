@@ -47,6 +47,8 @@ pipeline:
     when:
       local: false
       event: [ push ]
+      matrix:
+        TEST_SUITE: javascript
 
   flush:
     image: plugins/s3-cache:1
@@ -57,6 +59,8 @@ pipeline:
     when:
       local: false
       event: [push]
+      matrix:
+        TEST_SUITE: javascript
 
   phplint:
     image: owncloudci/php:${PHP_VERSION}
