@@ -217,14 +217,18 @@
 				}
 			};
 
+			var height = isImage ? maxImageHeight : smallPreviewSize;
+			$iconDiv.css('height', height + 'px');
+			$iconDiv.css('width', '100%');
+
 			this._fileList.lazyLoadPreview({
 				path: path,
 				mime: mime,
 				etag: etag,
-				y: isImage ? maxImageHeight : smallPreviewSize,
+				y: height,
 				x: isImage ? maxImageWidth : smallPreviewSize,
-				a: isImage ? 1 : null,
-				mode: isImage ? 'cover' : null,
+				// a: isImage ? 1 : null,
+				// mode: isImage ? 'cover' : null,
 				callback: function (previewUrl, img) {
 					$iconDiv.previewImg = previewUrl;
 
