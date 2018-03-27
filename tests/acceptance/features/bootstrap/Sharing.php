@@ -212,6 +212,7 @@ trait Sharing {
 		$client = new Client();
 		$options = [];
 		$options['auth'] = [$token, ""];
+		$options['headers']['X-Requested-With'] = 'XMLHttpRequest';
 
 		$request = $client->createRequest('GET', $fullUrl, $options);
 
@@ -266,6 +267,7 @@ trait Sharing {
 			$options['auth'] = $auth;
 		}
 		$options['stream'] = true;
+		$options['headers']['X-Requested-With'] = 'XMLHttpRequest';
 
 		$client = new Client();
 		$this->response = $client->get($url, $options);
@@ -381,6 +383,7 @@ trait Sharing {
 		$options['auth'] = [$token, $password];
 		$options['stream'] = true;
 		$options['body'] = $body;
+		$options['headers']['X-Requested-With'] = 'XMLHttpRequest';
 
 		if ($autorename) {
 			$options['headers']['OC-Autorename'] = 1;
@@ -537,9 +540,7 @@ trait Sharing {
 				} elseif ($contentExpected == "A_NUMBER") {
 					return is_numeric((string)$element->$field);
 				} elseif ($contentExpected == "AN_URL") {
-					return $this->isExpectedUrl(
-						(string)$element->$field, "index.php/s/"
-					);
+					return $this->isAPublicLinkUrl((string)$element->$field);
 				} elseif ((string)$element->$field == $contentExpected) {
 					return true;
 				} else {
@@ -554,10 +555,7 @@ trait Sharing {
 			} elseif ($contentExpected == "A_NUMBER") {
 					return is_numeric((string)$data->$field);
 			} elseif ($contentExpected == "AN_URL") {
-					return $this->isExpectedUrl(
-						(string)$data->$field,
-						"index.php/s/"
-					);
+					return $this->isAPublicLinkUrl((string)$data->$field);
 			} elseif ($data->$field == $contentExpected) {
 					return true;
 			}

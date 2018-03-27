@@ -19,23 +19,47 @@ default:
             baseUrl: http://localhost:8080
         - AppManagementContext:
 
-    apiFederation:
-      paths:
-        - %paths.base%/../features/apiFederation
-      contexts:
-        - FederationContext: *common_feature_context_params
-
     apiCapabilities:
       paths:
         - %paths.base%/../features/apiCapabilities
       contexts:
         - CapabilitiesContext: *common_feature_context_params
 
+    apiFederation:
+      paths:
+        - %paths.base%/../features/apiFederation
+      contexts:
+        - FederationContext: *common_feature_context_params
+
+    apiProvisioning:
+      paths:
+        - %paths.base%/../features/apiProvisioning
+      contexts:
+        - FeatureContext: *common_feature_context_params
+
     apiSharees:
       paths:
         - %paths.base%/../features/apiSharees
       contexts:
         - ShareesContext: *common_feature_context_params
+
+    apiSharing:
+      paths:
+        - %paths.base%/../features/apiSharing
+      contexts:
+        - FeatureContext: *common_feature_context_params
+
+    apiTrashbin:
+      paths:
+        - %paths.base%/../features/apiTrashbin
+      contexts:
+        - FeatureContext: *common_feature_context_params
+
+    apiWebdav:
+      paths:
+        - %paths.base%/../features/apiWebdav
+      contexts:
+        - FeatureContext: *common_feature_context_params
 
     webUIFiles:
       paths:

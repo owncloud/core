@@ -137,8 +137,7 @@ pipeline:
     image: owncloudci/php:${PHP_VERSION}
     pull: true
     commands:
-      - cd /drone/src/
-      - chown www-data * -R
+      - chown www-data /drone/src -R
     when:
       matrix:
         CHOWN_SERVER: true
@@ -173,7 +172,19 @@ pipeline:
       - tail -f /drone/src/data/owncloud.log
     when:
       matrix:
-        TEST_SUITE: selenium
+        OWNCLOUD_LOG: true
+
+  api-acceptance-tests:
+    image: owncloudci/php:${PHP_VERSION}
+    pull: true
+    environment:
+      - TEST_SERVER_URL=http://server/ocs/
+      - TEST_SERVER_FED_URL=http://federated/ocs/
+    commands:
+    - ./tests/drone/test-api-acceptance.sh
+    when:
+      matrix:
+        TEST_SUITE: api
 
   webui-acceptance-tests:
     image: owncloudci/php:${PHP_VERSION}
@@ -189,7 +200,7 @@ pipeline:
       - SELENIUM_PORT=4444
       - PLATFORM=Linux
     commands:
-      - bash tests/travis/start_ui_tests.sh --remote 
+      - bash tests/travis/start_ui_tests.sh --remote
     when:
       matrix:
         TEST_SUITE: selenium
@@ -471,7 +482,81 @@ matrix:
       OBJECTSTORE: swift
       PRIMARY_OBJECTSTORE: swift
 
-  # Ui Acceptance tests
+  # API Acceptance tests
+    - PHP_VERSION: 7.1
+      TEST_SUITE: api
+      BEHAT_SUITE: apiMain
+      DB_TYPE: mariadb
+      USE_SERVER: true
+      INSTALL_SERVER: true
+      CHOWN_SERVER: true
+      OWNCLOUD_LOG: true
+
+    - PHP_VERSION: 7.1
+      TEST_SUITE: api
+      BEHAT_SUITE: apiCapabilities
+      DB_TYPE: mariadb
+      USE_SERVER: true
+      INSTALL_SERVER: true
+      CHOWN_SERVER: true
+      OWNCLOUD_LOG: true
+
+    - PHP_VERSION: 7.1
+      TEST_SUITE: api
+      BEHAT_SUITE: apiFederation
+      DB_TYPE: mariadb
+      USE_SERVER: true
+      USE_FEDERATED_SERVER: true
+      INSTALL_SERVER: true
+      CHOWN_SERVER: true
+      OWNCLOUD_LOG: true
+
+    - PHP_VERSION: 7.1
+      TEST_SUITE: api
+      BEHAT_SUITE: apiProvisioning
+      DB_TYPE: mariadb
+      USE_SERVER: true
+      INSTALL_SERVER: true
+      CHOWN_SERVER: true
+      OWNCLOUD_LOG: true
+
+    - PHP_VERSION: 7.1
+      TEST_SUITE: api
+      BEHAT_SUITE: apiSharees
+      DB_TYPE: mariadb
+      USE_SERVER: true
+      INSTALL_SERVER: true
+      CHOWN_SERVER: true
+      OWNCLOUD_LOG: true
+
+    - PHP_VERSION: 7.1
+      TEST_SUITE: api
+      BEHAT_SUITE: apiSharing
+      DB_TYPE: mariadb
+      USE_SERVER: true
+      INSTALL_SERVER: true
+      CHOWN_SERVER: true
+      OWNCLOUD_LOG: true
+
+    - PHP_VERSION: 7.1
+      TEST_SUITE: api
+      BEHAT_SUITE: apiTrashbin
+      DB_TYPE: mariadb
+      USE_SERVER: true
+      INSTALL_SERVER: true
+      CHOWN_SERVER: true
+      OWNCLOUD_LOG: true
+
+    - PHP_VERSION: 7.1
+      TEST_SUITE: api
+      BEHAT_SUITE: apiWebdav
+      DB_TYPE: mariadb
+      USE_SERVER: true
+      INSTALL_SERVER: true
+      CHOWN_SERVER: true
+      OWNCLOUD_LOG: true
+
+  # UI Acceptance tests
     - PHP_VERSION: 7.1
       TEST_SUITE: selenium
       BEHAT_SUITE: webUIFavorites
@@ -479,6 +564,7 @@ matrix:
       USE_SERVER: true
       INSTALL_SERVER: true
       CHOWN_SERVER: true
+      OWNCLOUD_LOG: true
 
     - PHP_VERSION: 7.1
       TEST_SUITE: selenium
@@ -495,6 +581,7 @@ matrix:
       USE_SERVER: true
       INSTALL_SERVER: true
       CHOWN_SERVER: true
+      OWNCLOUD_LOG: true
 
     - PHP_VERSION: 7.1
       TEST_SUITE: selenium
@@ -503,6 +590,7 @@ matrix:
       USE_SERVER: true
       INSTALL_SERVER: true
       CHOWN_SERVER: true
+      OWNCLOUD_LOG: true
 
     - PHP_VERSION: 7.1
       TEST_SUITE: selenium
@@ -511,6 +599,7 @@ matrix:
       USE_SERVER: true
       INSTALL_SERVER: true
       CHOWN_SERVER: true
+      OWNCLOUD_LOG: true
 
     - PHP_VERSION: 7.1
       TEST_SUITE: selenium
@@ -519,6 +608,7 @@ matrix:
       USE_SERVER: true
       INSTALL_SERVER: true
       CHOWN_SERVER: true
+      OWNCLOUD_LOG: true
 
     - PHP_VERSION: 7.1
       TEST_SUITE: selenium
@@ -527,6 +617,7 @@ matrix:
       USE_SERVER: true
       INSTALL_SERVER: true
       CHOWN_SERVER: true
+      OWNCLOUD_LOG: true
 
     - PHP_VERSION: 7.1
       TEST_SUITE: selenium
@@ -535,6 +626,7 @@ matrix:
       USE_SERVER: true
       INSTALL_SERVER: true
       CHOWN_SERVER: true
+      OWNCLOUD_LOG: true
 
     - PHP_VERSION: 7.1
       TEST_SUITE: selenium
@@ -543,6 +635,7 @@ matrix:
       USE_SERVER: true
       INSTALL_SERVER: true
       CHOWN_SERVER: true
+      OWNCLOUD_LOG: true
 
     - PHP_VERSION: 7.1
       TEST_SUITE: selenium
@@ -551,6 +644,7 @@ matrix:
       USE_SERVER: true
       INSTALL_SERVER: true
       CHOWN_SERVER: true
+      OWNCLOUD_LOG: true
 
     - PHP_VERSION: 7.1
       TEST_SUITE: selenium
@@ -559,6 +653,7 @@ matrix:
       USE_SERVER: true
       INSTALL_SERVER: true
       CHOWN_SERVER: true
+      OWNCLOUD_LOG: true
 
     - PHP_VERSION: 7.1
       TEST_SUITE: selenium
@@ -568,6 +663,7 @@ matrix:
       USE_FEDERATED_SERVER: true
       INSTALL_SERVER: true
       CHOWN_SERVER: true
+      OWNCLOUD_LOG: true
 
     - PHP_VERSION: 7.1
       TEST_SUITE: selenium
@@ -576,6 +672,7 @@ matrix:
       USE_SERVER: true
       INSTALL_SERVER: true
       CHOWN_SERVER: true
+      OWNCLOUD_LOG: true
 
     - PHP_VERSION: 7.1
       TEST_SUITE: selenium
@@ -584,3 +681,4 @@ matrix:
       USE_SERVER: true
       INSTALL_SERVER: true
       CHOWN_SERVER: true
+      OWNCLOUD_LOG: true

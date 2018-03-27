@@ -306,6 +306,7 @@ trait WebDav {
 		$client = new GClient();
 		$options = [];
 		$options['auth'] = [$token, ""];
+		$options['headers']['X-Requested-With'] = 'XMLHttpRequest';
 
 		$request = $client->createRequest("GET", $fullUrl, $options);
 		$request->addHeader('Range', $range);
@@ -328,6 +329,7 @@ trait WebDav {
 		$client = new GClient();
 		$options = [];
 		$options['auth'] = [$token, ""];
+		$options['headers']['X-Requested-With'] = 'XMLHttpRequest';
 
 		$request = $client->createRequest("GET", $fullUrl, $options);
 		$request->addHeader('Range', $range);
