@@ -264,6 +264,7 @@ OC.L10N.register(
     "You can click here to return to %s." : "Du kan klikke her for å gå tilbake til %s.",
     "Hey there,\n\njust letting you know that %s shared %s with you.\nView it: %s\n\n" : "Hei,\n\nDette er en beskjed om at %s delte %s med deg.\nVis den: %s\n\n",
     "The share will expire on %s." : "Delingen vil opphøre %s.",
+    "Personal note from the sender: %s." : "Personlig notat fra avsenderen: %s.",
     "Cheers!" : "Ha det!",
     "Internal Server Error" : "Intern serverfeil.",
     "The server encountered an internal error and was unable to complete your request." : "Serveren støtte på en intern feil og kunne ikke fullføre forespørselen din.",
