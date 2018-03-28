@@ -17,7 +17,7 @@
 		'<form id="emailPrivateLink" class="emailPrivateLinkForm">' +
 		'  <span class="emailPrivateLinkForm--send-indicator success-message-global absolute-center hidden">{{sending}}</span>' +
 		'  <label class="public-link-modal--label" for="emailPrivateLinkField-{{cid}}">{{mailLabel}}</label>' +
-		'  <input class="public-link-modal--input emailPrivateLinkForm--emailField" autocomplete="off" id="emailPrivateLinkField-{{cid}}" value="" placeholder="{{mailPlaceholder}}" type="email" />' +
+		'  <input class="emailPrivateLinkForm--emailField full-width" id="emailPrivateLinkField-{{cid}}" />' +
 		'  <div class="emailPrivateLinkForm--elements hidden">' +
 		'    {{#if userHasEmail}}' +
 		'    <label class="public-link-modal--bccSelf">' +
@@ -44,14 +44,24 @@
 		id: 'shareDialogMailView',
 
 		events: {
-			"keyup   .emailPrivateLinkForm--emailField"     : "toggleMailElements",
 			"keydown .emailPrivateLinkForm--emailBodyField" : "expandMailBody"
 		},
+
+		/** @type {array} **/
+		_addresses: [],
 
 		/** @type {Function} **/
 		_template: undefined,
 
 		initialize: function(options) {
+			_.bindAll(this, 'render', '_afterRender');
+			var _this = this;
+			this.render = _.wrap(this.render, function(render) {
+				render();
+				_this._afterRender();
+				return _this;
+			});
+
 			if (!_.isUndefined(options.itemModel)) {
 				this.itemModel = options.itemModel;
 			} else {
@@ -60,12 +70,11 @@
 		},
 
 		toggleMailElements: function() {
-			var $email         = this.$el.find('.emailPrivateLinkForm--emailField');
 			var $emailElements = this.$el.find('.emailPrivateLinkForm--elements');
 
-			if ($email.val().length > 0 && $emailElements.is(":hidden")) {
+			if (this._addresses.length > 0 && $emailElements.is(":hidden")) {
 				$emailElements.slideDown();
-			} else if ($email.val().length === 0 && $emailElements.is(":visible")) {
+			} else if (this._addresses.length === 0 && $emailElements.is(":visible")) {
 				$emailElements.slideUp();
 			}
 		},
@@ -89,15 +98,9 @@
 			var itemType   = this.itemModel.get('itemType');
 			var itemSource = this.itemModel.get('itemSource');
 
-			if (!this.validateEmail(mail.to)) {
-				return deferred.reject({
-					message: t('core', '{email} is not a valid address!', {email: mail.to})
-				});
-			}
-
 			var params = {
 				action      : 'email',
-				toAddress   : mail.to,
+				toAddress   : this._addresses.join(','),
 				emailBody   : mail.body,
 				bccSelf     : mail.bccSelf,
 				link        : this.model.getLink(),
@@ -135,7 +138,7 @@
 			var $formItems         = this.$el.find('.emailPrivateLinkForm input, .emailPrivateLinkForm textarea');
 			var $formSendIndicator = this.$el.find('.emailPrivateLinkForm--send-indicator');
 			var  mail = {
-				 to      : this.$el.find('.emailPrivateLinkForm--emailField').val().toLowerCase(),
+				 to      : this._addresses.join(','),
 				 bccSelf : this.$el.find('.emailPrivateLinkForm--emailBccSelf').is(':checked'),
 				 body    : this.$el.find('.emailPrivateLinkForm--emailBodyField').val()
 			};
@@ -158,6 +161,9 @@
 		},
 
 		render: function() {
+			// make sure this is empty
+			this._addresses = [];
+
 			this.$el.html(this.template({
 				cid                 : this.cid,
 				userHasEmail        : !!OC.getCurrentUser().email,
@@ -169,8 +175,44 @@
 			}));
 
 			this.delegateEvents();
-
 			return this;
+
+		},
+
+		_afterRender: function () {
+			var _this = this;
+
+			this.$el.find('.emailPrivateLinkForm--emailField').select2({
+				containerCssClass: 'emailPrivateLinkForm--dropDown',
+				tags: true,
+				tokenSeparators:[","],
+				query: function(query) {
+					// directly from search
+					query.callback({
+						results: [{
+							"id"       : query.term,
+							"text"     : query.term,
+							"disabled" : !_this.validateEmail(query.term)
+						}]
+					});
+				}
+			}).on("change", function(e) {
+				if (e.added)
+					_this._addAddress(e.added.id);
+
+				if (e.removed)
+					_this._removeAddress(e.removed.id);
+
+				_this.toggleMailElements();
+			});
+		},
+
+		_addAddress: function( email ) {
+			this._addresses.push( email.toLowerCase() )
+		},
+
+		_removeAddress: function( email ) {
+			this._addresses = _.without(this._addresses, email.toLowerCase() )
 		},
 
 		/**

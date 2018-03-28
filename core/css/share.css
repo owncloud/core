@@ -27,16 +27,18 @@
 	margin-top: 1px;
 }
 
-.shareTabView .shareWithLoading,
-.shareTabView .linkShare .icon-loading-small {
+.shareTabView .linkShare .icon-loading-small,
+.shareTabView .shareWithLoading {
 	display: inline-block !important;
 	padding-left: 10px;
 }
+
 .shareTabView .shareWithLoading {
 	position: relative;
 	right: 70px;
 	top: 2px;
 }
+
 .shareTabView .icon-loading-small.hidden {
 	display: none !important;
 }
@@ -79,14 +81,14 @@
 	flex-shrink: 0;
 }
 
-.share-autocomplete-item .autocomplete-item-additional-info,
-#shareWithList .user-additional-info {
+#shareWithList .user-additional-info,
+.share-autocomplete-item .autocomplete-item-additional-info {
 	color: #888;
 }
 
 #shareWithList {
-	list-style-type:none;
-	padding:8px;
+	list-style-type: none;
+	padding: 8px;
 }
 
 #shareWithList li {
@@ -102,15 +104,18 @@
 	display: inline-block;
 }
 
-#shareWithList .unshare img, #shareWithList .showCruds img {
-	vertical-align:text-bottom; /* properly align icons */
+#shareWithList .showCruds img,
+#shareWithList .unshare img {
+	vertical-align: text-bottom;
+	/* properly align icons */
 }
 
-#shareWithList label input[type=checkbox]{
+#shareWithList label input[type=checkbox] {
 	margin-left: 0;
 	position: relative;
 }
-#shareWithList .username{
+
+#shareWithList .username {
 	padding-right: 8px;
 	white-space: nowrap;
 	text-overflow: ellipsis;
@@ -119,36 +124,38 @@
 	overflow: hidden;
 	vertical-align: middle;
 }
-#shareWithList li label{
+
+#shareWithList li label {
 	margin-right: 8px;
 }
+
 .shareTabView label {
-	font-weight:400;
+	font-weight: 400;
 	white-space: nowrap;
 }
 
 .shareTabView input[type="checkbox"] {
-	margin:0 3px 0 8px;
+	margin: 0 3px 0 8px;
 	vertical-align: middle;
 }
 
 a.showCruds {
-	display:inline;
-	opacity:.5;
+	display: inline;
+	opacity: 0.5;
 }
 
 a.unshare {
-	display:inline;
-	float:right;
-	opacity:.5;
+	display: inline;
+	float: right;
+	opacity: 0.5;
 	padding: 10px;
 	margin-top: -5px;
 	margin-right: -10px;
 }
 
 #link {
-	border-top:1px solid #ddd;
-	padding-top:8px;
+	border-top: 1px solid #ddd;
+	padding-top: 8px;
 }
 
 .shareTabView input[type="submit"] {
@@ -167,41 +174,48 @@ a.unshare {
 	box-shadow: 0 0 6px #f8b9b7;
 }
 
-.shareTabView .localShareView, .shareTabView .linkShareView {
+.shareTabView .linkShareView,
+.shareTabView .localShareView {
 	clear: left;
 }
 
 #link #showPassword img {
-	padding-left:5px;
-	width:12px;
+	padding-left: 5px;
+	width: 12px;
 }
 
-.fileowner,.reshare,#link label,
-#expiration label {
+#expiration label,
+#link label,
+.fileowner,
+.reshare {
 	display: inline-block;
 	padding: 6px 4px;
 }
 
-a.showCruds:hover,a.unshare:hover {
-	opacity:1;
+a.showCruds:hover,
+a.unshare:hover {
+	opacity: 1;
+}
+#defaultExpireMessage,
+/* fix expire message going out of box */
+.reshare {
+	/* fix shared by text going out of box */
+	white-space: normal;
 }
 
-#defaultExpireMessage, /* fix expire message going out of box */
-.reshare { /* fix shared by text going out of box */
-	white-space:normal;
-}
-
-#defaultExpireMessage { /* show message on new line */
+#defaultExpireMessage {
+	/* show message on new line */
 	display: block;
 	padding-left: 4px;
 	/* TODO: style the dropdown in a proper way - border-box, etc. */
 	width: 90%;
 }
 
-.ui-autocomplete { /* limit dropdown height to 4 1/2 entries */
-	max-height:103px;
-	overflow-y:auto;
-	overflow-x:hidden;
+.ui-autocomplete {
+	/* limit dropdown height to 4 1/2 entries */
+	max-height: 103px;
+	overflow-y: auto;
+	overflow-x: hidden;
 }
 
 .notCreatable {
@@ -228,4 +242,22 @@ a.showCruds:hover,a.unshare:hover {
 	margin-top: -30px;
 	z-index: 1;
 	color: #999;
+}
+
+.emailPrivateLinkForm--dropDown > .select2-choices {
+	border-color: #ddd;
+	background-image: none;
+}
+
+.select2-search-choice {
+	text-transform: lowercase;
+}
+
+.select2-container-multi .select2-search-choice-close {
+	left: inherit;
+	right: 3px;
+}
+
+.select2-container-multi .select2-choices .select2-search-choice {
+	padding: 3px 18px 3px 5px;
 }
