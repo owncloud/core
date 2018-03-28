@@ -90,7 +90,7 @@ trait Ip {
 	public function setUpScenarioGetIpUrls() {
 		$this->ipv4Url = getenv('IPV4_URL');
 		$this->ipv6Url = getenv('IPV6_URL');
-		$this->baseUrl = $this->getMinkParameter("base_url");
+		$this->baseUrl = $this->featureContext->baseUrlWithoutSlash();
 		$this->baseUrlForSourceIp = $this->baseUrl;
 	}
 }

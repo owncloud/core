@@ -72,7 +72,10 @@ trait BasicStructure {
 	private $currentServer = '';
 
 	/**
-	 * @var string 
+	 * The base URL of the server under test
+	 * e.g. http://localhost:8080
+	 *
+	 * @var string
 	 */
 	private $baseUrl = '';
 
@@ -122,7 +125,7 @@ trait BasicStructure {
 	) {
 
 		// Initialize your context here
-		$this->baseUrl = $baseUrl;
+		$this->baseUrl = rtrim($baseUrl, '/');
 		$this->adminUsername = $adminUsername;
 		$this->adminPassword = $adminPassword;
 		$this->regularUserPassword = $regularUserPassword;
@@ -136,48 +139,69 @@ trait BasicStructure {
 		// in case of CI deployment we take the server url from the environment
 		$testServerUrl = getenv('TEST_SERVER_URL');
 		if ($testServerUrl !== false) {
-			$this->baseUrl = $testServerUrl;
-			$this->localBaseUrl = $testServerUrl;
+			$this->baseUrl = rtrim($testServerUrl, '/');
+			$this->localBaseUrl = $this->baseUrl;
 		}
 
 		// federated server url from the environment
 		$testRemoteServerUrl = getenv('TEST_SERVER_FED_URL');
 		if ($testRemoteServerUrl !== false) {
-			$this->remoteBaseUrl = $testRemoteServerUrl;
+			$this->remoteBaseUrl = rtrim($testRemoteServerUrl, '/');
 		}
 	}
 
 	/**
-	 * Override the baseUrl that came via the behat.yml and context constructor.
-	 * Use this when running in an environment that passes the baseUrl from some
-	 * external script. For example, the webUI acceptance tests build up the
-	 * baseUrl from environment variables and the script passes the value in as
-	 * a Mink parameter.
-	 *
-	 * @param string $newBaseUrl in the format that the webUI tests use
-	 *
-	 * @return void
-	 */
-	public function overrideBaseUrlWithWebUIValue($newBaseUrl) {
-		// baseUrl in the API tests FeatureContext uses a form with '/ocs/'
-		// on the end so add that.
-		if (substr($newBaseUrl, -1) !== '/') {
-			$newBaseUrl .= '/';
-		}
-
-		$newBaseUrl .= 'ocs/';
-		$this->baseUrl = $newBaseUrl;
-		$this->localBaseUrl = $this->baseUrl;
-		$this->remoteBaseUrl = $this->baseUrl;
-	}
-
-	/**
-	 * returns the base URL without the /ocs part
+	 * returns the base URL without a slash at the end
 	 *
 	 * @return string
 	 */
-	public function baseUrlWithoutOCSAppendix() {
-		return substr($this->baseUrl, 0, -4);
+	public function baseUrlWithoutSlash() {
+		return $this->baseUrl;
+	}
+
+	/**
+	 * returns the base URL with a slash at the end
+	 *
+	 * @return string
+	 */
+	public function baseUrlWithSlash() {
+		return $this->baseUrl . '/';
+	}
+
+	/**
+	 * returns the local base URL without a slash at the end
+	 *
+	 * @return string
+	 */
+	public function localBaseUrlWithoutSlash() {
+		return $this->localBaseUrl;
+	}
+
+	/**
+	 * returns the local base URL with a slash at the end
+	 *
+	 * @return string
+	 */
+	public function localBaseUrlWithSlash() {
+		return $this->localBaseUrl . '/';
+	}
+
+	/**
+	 * returns the remote base URL without a slash at the end
+	 *
+	 * @return string
+	 */
+	public function remoteBaseUrlWithoutSlash() {
+		return $this->remoteBaseUrl;
+	}
+
+	/**
+	 * returns the remote base URL with a slash at the end
+	 *
+	 * @return string
+	 */
+	public function remoteBaseUrlWithSlash() {
+		return $this->remoteBaseUrl . '/';
 	}
 
 	/**
@@ -395,7 +419,7 @@ trait BasicStructure {
 		}
 
 		$this->response = OcsApiHelper::sendRequest(
-			$this->baseUrlWithoutOCSAppendix(),
+			$this->baseUrlWithSlash(),
 			$user, $password, $verb, $url, $bodyArray, $this->apiVersion
 		);
 
@@ -424,7 +448,7 @@ trait BasicStructure {
 	 * @return void
 	 */
 	public function sendingToWithDirectUrl($user, $verb, $url, $body) {
-		$fullUrl = substr($this->baseUrl, 0, -5) . $url;
+		$fullUrl = $this->baseUrlWithoutSlash() . $url;
 		$client = new Client();
 		$options = [];
 		$options['auth'] = $this->getAuthOptionForUser($user);
@@ -455,7 +479,7 @@ trait BasicStructure {
 	 * @return bool
 	 */
 	public function isAPublicLinkUrl($url) {
-		$baseUrlChopped = $this->baseUrlWithoutOCSAppendix();
+		$baseUrlChopped = $this->baseUrlWithSlash();
 		$urlEnding = substr($url, strlen($baseUrlChopped));
 		return preg_match("%^(index.php/)?s/([a-zA-Z0-9]{15})$%", $urlEnding);
 	}
@@ -566,7 +590,7 @@ trait BasicStructure {
 	 * @return void
 	 */
 	public function userHasLoggedInToAWebStyleSessionUsingTheAPI($user) {
-		$loginUrl = substr($this->baseUrl, 0, -5) . '/login';
+		$loginUrl = $this->baseUrlWithSlash() . 'login';
 		// Request a new session and extract CSRF token
 		$client = new Client();
 		$response = $client->get(
@@ -604,12 +628,10 @@ trait BasicStructure {
 	 * @return void
 	 */
 	public function sendingAToWithRequesttoken($method, $url) {
-		$baseUrl = substr($this->baseUrl, 0, -5);
-
 		$client = new Client();
 		$request = $client->createRequest(
 			$method,
-			$baseUrl . $url,
+			$this->baseUrlWithoutSlash() . $url,
 			[
 				'cookies' => $this->cookieJar,
 			]
@@ -632,12 +654,10 @@ trait BasicStructure {
 	 * @return void
 	 */
 	public function sendingAToWithoutRequesttoken($method, $url) {
-		$baseUrl = substr($this->baseUrl, 0, -5);
-
 		$client = new Client();
 		$request = $client->createRequest(
 			$method,
-			$baseUrl . $url,
+			$this->baseUrlWithoutSlash() . $url,
 			[
 				'cookies' => $this->cookieJar,
 			]
@@ -793,7 +813,7 @@ trait BasicStructure {
 	 * @return void
 	 */
 	public function getStatusPhp() {
-		$fullUrl = $this->baseUrlWithoutOCSAppendix() . "status.php";
+		$fullUrl = $this->baseUrlWithSlash() . "status.php";
 		$client = new Client();
 		$options = [];
 		$options['auth'] = $this->getAuthOptionForUser('admin');
@@ -886,7 +906,7 @@ trait BasicStructure {
 		if (substr($fullUrl, -1) !== '/') {
 			$fullUrl .= '/';
 		}
-		$fullUrl .= "v1.php/apps/testing/api/v1/increasefileid";
+		$fullUrl .= "ocs/v1.php/apps/testing/api/v1/increasefileid";
 		$client = new Client();
 		$options = [];
 		$suiteSettingsContexts = $scope->getSuite()->getSettings()['contexts'];

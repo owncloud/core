@@ -81,7 +81,7 @@ trait Checksums {
 		$client = new Client();
 		$request = $client->createRequest(
 			'PROPFIND',
-			substr($this->baseUrl, 0, -4) . $this->getDavFilesPath($user) . $path,
+			$this->baseUrlWithSlash() . $this->getDavFilesPath($user) . $path,
 			[
 				'body' => '<?xml version="1.0"?>
 <d:propfind  xmlns:d="DAV:" xmlns:oc="http://owncloud.org/ns">

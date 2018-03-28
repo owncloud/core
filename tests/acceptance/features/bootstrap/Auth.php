@@ -65,7 +65,7 @@ trait Auth {
 	private function sendRequest(
 		$url, $method, $authHeader = null, $useCookies = false
 	) {
-		$fullUrl = substr($this->baseUrl, 0, -5) . $url;
+		$fullUrl = $this->baseUrlWithoutSlash() . $url;
 		try {
 			if ($useCookies) {
 				$request = $this->client->createRequest(
@@ -98,7 +98,7 @@ trait Auth {
 	public function aNewClientTokenHasBeenGenerated($user) {
 		$client = new Client();
 		$resp = $client->post(
-			substr($this->baseUrl, 0, -5) . '/token/generate', [
+			$this->baseUrlWithSlash() . 'token/generate', [
 			'json' => [
 					'user' => $user,
 					'password' => $this->getPasswordForUser($user),
@@ -175,7 +175,7 @@ trait Auth {
 	 * @return void
 	 */
 	public function aNewBrowserSessionForHasBeenStarted($user) {
-		$loginUrl = substr($this->baseUrl, 0, -5) . '/login';
+		$loginUrl = $this->baseUrlWithSlash() . 'login';
 		// Request a new session and extract CSRF token
 		$client = new Client();
 		$response = $client->get(

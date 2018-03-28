@@ -176,7 +176,6 @@ class WebUIGeneralContext extends RawMinkContext implements Context {
 		);
 		$nextPage->waitTillPageIsLoaded($session);
 		$this->featureContext->asUser($username);
-		$this->featureContext->usingServer('LOCAL');
 		return $nextPage;
 	}
 
@@ -363,7 +362,7 @@ class WebUIGeneralContext extends RawMinkContext implements Context {
 		
 		$capability = $this->capabilities[strtolower($section)][$setting];
 		$change = AppConfigHelper::setCapability(
-			$this->getMinkParameter('base_url'),
+			$this->featureContext->baseUrlWithoutSlash(),
 			$this->featureContext->getAdminUsername(),
 			$this->featureContext->getAdminPassword(),
 			$capability['capabilitiesApp'],
@@ -404,7 +403,7 @@ class WebUIGeneralContext extends RawMinkContext implements Context {
 	 */
 	public function getBaseUrlWithoutScheme() {
 		return preg_replace(
-			"(^https?://)", "", $this->getMinkParameter('base_url')
+			"(^https?://)", "", $this->featureContext->baseUrlWithoutSlash()
 		);
 	}
 
@@ -422,12 +421,10 @@ class WebUIGeneralContext extends RawMinkContext implements Context {
 			[
 				"code" => "%base_url%",
 				"function" => [
-					$this,
-					"getMinkParameter"
+					$this->featureContext,
+					"baseUrlWithoutSlash"
 				],
-				"parameter" => [
-					"base_url"
-				]
+				"parameter" => []
 			],
 			[
 				"code" => "%remote_server%",
@@ -442,7 +439,7 @@ class WebUIGeneralContext extends RawMinkContext implements Context {
 					$this,
 					"getBaseUrlWithoutScheme"
 				],
-				"parameter" => [ ]
+				"parameter" => []
 			]
 		];
 		foreach ($substitutions as $substitution) {
@@ -488,15 +485,6 @@ class WebUIGeneralContext extends RawMinkContext implements Context {
 	}
 
 	/**
-	 * Return the baseUrl in the form that the webUI tests use.
-	 *
-	 * @return string
-	 */
-	public function getBaseUrlInWebUITestFormat() {
-		return $this->getMinkParameter("base_url");
-	}
-
-	/**
 	 * @BeforeScenario @webUI
 	 *
 	 * @param BeforeScenarioScope $scope
@@ -522,12 +510,12 @@ class WebUIGeneralContext extends RawMinkContext implements Context {
 		SetupHelper::init(
 			$this->featureContext->getAdminUsername(),
 			$this->featureContext->getAdminPassword(),
-			$this->getMinkParameter('base_url'),
+			$this->featureContext->baseUrlWithoutSlash(),
 			$suiteParameters['ocPath']
 		);
 		
 		$response = AppConfigHelper::getCapabilities(
-			$this->getMinkParameter('base_url'),
+			$this->featureContext->baseUrlWithoutSlash(),
 			$this->featureContext->getAdminUsername(),
 			$this->featureContext->getAdminPassword()
 		);
@@ -565,10 +553,6 @@ class WebUIGeneralContext extends RawMinkContext implements Context {
 				);
 			}
 		}
-
-		$this->featureContext->overrideBaseUrlWithWebUIValue(
-			$this->getBaseUrlInWebUITestFormat()
-		);
 	}
 
 	/**
@@ -616,7 +600,7 @@ class WebUIGeneralContext extends RawMinkContext implements Context {
 	 */
 	public function tearDownSuite() {
 		AppConfigHelper::modifyServerConfigs(
-			$this->getMinkParameter('base_url'),
+			$this->featureContext->baseUrlWithoutSlash(),
 			$this->featureContext->getAdminUsername(),
 			$this->featureContext->getAdminPassword(),
 			$this->savedCapabilitiesChanges
@@ -666,7 +650,7 @@ class WebUIGeneralContext extends RawMinkContext implements Context {
 	 */
 	public function clearFileLocks() {
 		$response = OcsApiHelper::sendRequest(
-			$this->getMinkParameter('base_url'),
+			$this->featureContext->baseUrlWithoutSlash(),
 			$this->featureContext->getAdminUsername(),
 			$this->featureContext->getAdminPassword(),
 			'delete',

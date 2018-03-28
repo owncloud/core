@@ -194,7 +194,7 @@ trait WebDav {
 		}
 
 		return WebDavHelper::makeDavRequest(
-			$this->baseUrlWithoutOCSAppendix(),
+			$this->baseUrlWithSlash(),
 			$user, $this->getPasswordForUser($user), $method,
 			$path, $headers, $body, $requestBody, $davPathVersion,
 			$type
@@ -212,7 +212,7 @@ trait WebDav {
 	 * @return void
 	 */
 	public function userHasMovedFile($user, $entry, $fileSource, $fileDestination) {
-		$fullUrl = $this->baseUrlWithoutOCSAppendix() . $this->getDavFilesPath($user);
+		$fullUrl = $this->baseUrlWithSlash() . $this->getDavFilesPath($user);
 		$headers['Destination'] = $fullUrl . $fileDestination;
 		$this->response = $this->makeDavRequest($user, "MOVE", $fileSource, $headers);
 		PHPUnit_Framework_Assert::assertEquals(
@@ -233,7 +233,7 @@ trait WebDav {
 	public function userMovesFileUsingTheAPI(
 		$user, $entry, $fileSource, $fileDestination
 	) {
-		$fullUrl = $this->baseUrlWithoutOCSAppendix() . $this->getDavFilesPath($user);
+		$fullUrl = $this->baseUrlWithSlash() . $this->getDavFilesPath($user);
 		$headers['Destination'] = $fullUrl . $fileDestination;
 		try {
 			$this->response = $this->makeDavRequest(
@@ -255,7 +255,7 @@ trait WebDav {
 	 * @return void
 	 */
 	public function userCopiesFileUsingTheAPI($user, $fileSource, $fileDestination) {
-		$fullUrl = $this->baseUrlWithoutOCSAppendix() . $this->getDavFilesPath($user);
+		$fullUrl = $this->baseUrlWithSlash() . $this->getDavFilesPath($user);
 		$headers['Destination'] = $fullUrl . $fileDestination;
 		try {
 			$this->response = $this->makeDavRequest(
@@ -301,7 +301,7 @@ trait WebDav {
 	 */
 	public function downloadPublicFileWithRange($range) {
 		$token = $this->lastShareData->data->token;
-		$fullUrl = $this->baseUrlWithoutOCSAppendix() . "public.php/webdav";
+		$fullUrl = $this->baseUrlWithSlash() . "public.php/webdav";
 
 		$client = new GClient();
 		$options = [];
@@ -324,7 +324,7 @@ trait WebDav {
 	 */
 	public function downloadPublicFileInsideAFolderWithRange($path, $range) {
 		$token = $this->lastShareData->data->token;
-		$fullUrl = $this->baseUrlWithoutOCSAppendix() . "public.php/webdav" . "$path";
+		$fullUrl = $this->baseUrlWithSlash() . "public.php/webdav" . "$path";
 
 		$client = new GClient();
 		$options = [];
@@ -862,7 +862,7 @@ trait WebDav {
 	 */
 	public function getSabreClient($user) {
 		return WebDavHelper::getSabreClient(
-			$this->baseUrlWithoutOCSAppendix(),
+			$this->baseUrlWithSlash(),
 			$user,
 			$this->getPasswordForUser($user)
 		);
@@ -1424,7 +1424,7 @@ trait WebDav {
 	 */
 	private function moveNewDavChunkToFinalFile($user, $id, $dest, $headers) {
 		$source = '/uploads/' . $user . '/' . $id . '/.file';
-		$destination = $this->baseUrlWithoutOCSAppendix() . $this->getDavFilesPath($user) . $dest;
+		$destination = $this->baseUrlWithSlash() . $this->getDavFilesPath($user) . $dest;
 
 		$headers['Destination'] = $destination;
 
@@ -1490,7 +1490,7 @@ trait WebDav {
 		$user, $path, $favOrUnfav, $folderDepth, $properties = null
 	) {
 		$settings = [
-			'baseUri' => $this->baseUrlWithoutOCSAppendix(),
+			'baseUri' => $this->baseUrlWithSlash(),
 			'userName' => $user,
 			'password' => $this->getPasswordForUser($user),
 			'authType' => SClient::AUTH_BASIC
@@ -1669,7 +1669,7 @@ trait WebDav {
 	private function getFileIdForPath($user, $path) {
 		try {
 			return WebDavHelper::getFileIdForPath(
-				$this->baseUrlWithoutOCSAppendix(), $user,
+				$this->baseUrlWithSlash(), $user,
 				$this->getPasswordForUser($user), $path
 			);
 		} catch ( Exception $e ) {

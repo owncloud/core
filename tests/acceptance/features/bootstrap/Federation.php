@@ -42,9 +42,9 @@ trait Federation {
 		$sharerUser, $sharerServer, $sharerPath, $shareeUser, $shareeServer
 	) {
 		if ($shareeServer == "REMOTE") {
-			$shareWith = "$shareeUser@" . substr($this->remoteBaseUrl, 0, -4);
+			$shareWith = "$shareeUser@" . $this->remoteBaseUrlWithSlash();
 		} else {
-			$shareWith = "$shareeUser@" . substr($this->localBaseUrl, 0, -4);
+			$shareWith = "$shareeUser@" . $this->localBaseUrlWithSlash();
 		}
 		$previous = $this->usingServer($sharerServer);
 		$this->createShare(
