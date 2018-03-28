@@ -32,6 +32,8 @@ use OCP\ISession;
 use OCP\Share\Exceptions\ShareNotFound;
 use OCP\Share\IManager;
 use Sabre\DAV\Auth\Backend\AbstractBasic;
+use Sabre\HTTP\RequestInterface;
+use Sabre\HTTP\ResponseInterface;
 
 /**
  * Class PublicAuth
@@ -67,6 +69,22 @@ class PublicAuth extends AbstractBasic {
 		// setup realm
 		$defaults = new \OC_Defaults();
 		$this->realm = $defaults->getName();
+	}
+
+	function check(RequestInterface $request, ResponseInterface $response) {
+		$ocAuth = $request->getHeader('OC-Authorization');
+		if ($ocAuth !== null) {
+			if (\stripos($ocAuth, 'basic ') === 0) {
+				$credentials = \explode(':', \base64_decode(\substr($ocAuth, 6)), 2);
+
+				if (\count($credentials) === 2) {
+					if ($this->validateUserPass($credentials[0], $credentials[1])) {
+						return [true, $this->principalPrefix . $credentials[0]];
+					}
+				}
+			}
+		}
+		return parent::check($request, $response);
 	}
 
 	/**

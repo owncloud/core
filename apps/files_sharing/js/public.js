@@ -134,7 +134,7 @@ OCA.Sharing.PublicApp = {
 			$.ajax({
 				url: url,
 				headers: {
-					Authorization: 'Basic ' + btoa(token + ':'),
+					'OC-Authorization': 'Basic ' + btoa(token + ':'),
 					Range: 'bytes=0-1000'
 				}
 			}).then(function (data) {
