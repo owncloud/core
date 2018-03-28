@@ -7,16 +7,14 @@ default:
         - %paths.base%/../features/apiMain
       contexts:
         - FeatureContext: &common_feature_context_params
-            baseUrl:  http://localhost:8080/ocs/
+            baseUrl:  http://localhost:8080
             adminUsername: admin
             adminPassword: admin
             regularUserPassword: 123456
             mailhogUrl: http://127.0.0.1:8025/api/v2/messages
             ocPath: ../../
         - CardDavContext:
-            baseUrl: http://localhost:8080
         - CalDavContext:
-            baseUrl: http://localhost:8080
         - AppManagementContext:
 
     apiCapabilities:
