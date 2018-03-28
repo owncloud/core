@@ -169,8 +169,8 @@ pipeline:
     image: owncloudci/php:${PHP_VERSION}
     pull: true
     environment:
-      - TEST_SERVER_URL=http://server/ocs/
-      - TEST_SERVER_FED_URL=http://federated/ocs/
+      - TEST_SERVER_URL=http://server
+      - TEST_SERVER_FED_URL=http://federated
     commands:
     - ./tests/drone/test-api-acceptance.sh
     when:
