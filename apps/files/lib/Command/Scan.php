@@ -182,7 +182,8 @@ class Scan extends Base {
 				try {
 					$repairStep = new RepairMismatchFileCachePath(
 						$connection,
-						$this->mimeTypeLoader
+						$this->mimeTypeLoader,
+						$this->logger
 					);
 					$repairStep->setStorageNumericId($storage->getCache()->getNumericStorageId());
 					$repairStep->setCountOnly(false);
