@@ -178,6 +178,17 @@ trait BasicStructure {
 	}
 
 	/**
+	 * gets the base url but without "http(s)://" in front of it
+	 *
+	 * @return string
+	 */
+	public function getBaseUrlWithoutScheme() {
+		return preg_replace(
+			"(^https?://)", "", $this->getBaseUrl()
+		);
+	}
+
+	/**
 	 * returns the remote base URL (which is without a slash at the end)
 	 *
 	 * @return string
@@ -845,6 +856,54 @@ trait BasicStructure {
 			PHPUnit_Framework_Assert::fail('Cannot get version variables from occ');
 		}
 		PHPUnit\Framework\Assert::assertEquals($jsonExpectedEncoded, $jsonRespondedEncoded);
+	}
+
+	/**
+	 * substitutes codes like %base_url% with the value
+	 * if the given value does not have anything to be substituted
+	 * then it is returned unmodified
+	 *
+	 * @param string $value
+	 *
+	 * @return string
+	 */
+	public function substituteInLineCodes($value) {
+		$substitutions = [
+			[
+				"code" => "%base_url%",
+				"function" => [
+					$this,
+					"getBaseUrl"
+				],
+				"parameter" => []
+			],
+			[
+				"code" => "%remote_server%",
+				"function" => "getenv",
+				"parameter" => [
+					"REMOTE_FED_BASE_URL"
+				]
+			],
+			[
+				"code" => "%local_server%",
+				"function" => [
+					$this,
+					"getBaseUrlWithoutScheme"
+				],
+				"parameter" => []
+			]
+		];
+		foreach ($substitutions as $substitution) {
+			$value = str_replace(
+				$substitution["code"],
+				call_user_func_array(
+					$substitution["function"],
+					$substitution["parameter"]
+				),
+				$value
+			);
+		}
+		return $value;
 	}
 
 	/**

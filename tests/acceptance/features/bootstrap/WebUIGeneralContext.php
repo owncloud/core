@@ -306,9 +306,10 @@ class WebUIGeneralContext extends RawMinkContext implements Context {
 				$content = $dialog->getMessage();
 				$title = $dialog->getTitle();
 				for ($dialogI = 0; $dialogI < count($expectedDialogs); $dialogI++) {
-					$expectedDialogs[$dialogI]['content'] = $this->substituteInLineCodes(
-						$expectedDialogs[$dialogI]['content']
-					);
+					$expectedDialogs[$dialogI]['content']
+						= $this->featureContext->substituteInLineCodes(
+							$expectedDialogs[$dialogI]['content']
+						);
 					if ($expectedDialogs[$dialogI]['content'] === $content
 						&& $expectedDialogs[$dialogI]['title'] === $title
 					) {
@@ -394,65 +395,6 @@ class WebUIGeneralContext extends RawMinkContext implements Context {
 		}
 		UploadHelper::createFileSpecificSize($fullPath, (int)$size);
 		$this->createdFiles[] = $fullPath;
-	}
-
-	/**
-	 * gets the base url but without "http(s)://" in front of it
-	 *
-	 * @return string
-	 */
-	public function getBaseUrlWithoutScheme() {
-		return preg_replace(
-			"(^https?://)", "", $this->featureContext->getBaseUrl()
-		);
-	}
-
-	/**
-	 * substitutes codes like %base_url% with the value
-	 * if the given value does not have anything to be substituted
-	 * then it is returned unmodified
-	 *
-	 * @param string $value
-	 *
-	 * @return string
-	 */
-	public function substituteInLineCodes($value) {
-		$substitutions = [
-			[
-				"code" => "%base_url%",
-				"function" => [
-					$this->featureContext,
-					"getBaseUrl"
-				],
-				"parameter" => []
-			],
-			[
-				"code" => "%remote_server%",
-				"function" => "getenv",
-				"parameter" => [
-					"REMOTE_FED_BASE_URL"
-				]
-			],
-			[
-				"code" => "%local_server%",
-				"function" => [
-					$this,
-					"getBaseUrlWithoutScheme"
-				],
-				"parameter" => []
-			]
-		];
-		foreach ($substitutions as $substitution) {
-			$value = str_replace(
-				$substitution["code"],
-				call_user_func_array(
-					$substitution["function"],
-					$substitution["parameter"]
-				),
-				$value
-			);
-		}
-		return $value;
 	}
 
 	/**

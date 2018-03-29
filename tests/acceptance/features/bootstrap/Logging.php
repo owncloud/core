@@ -60,7 +60,7 @@ trait Logging {
 			$logEntry = json_decode($logLines[$lineNo], true);
 			foreach (array_keys($expectedLogEntry) as $attribute) {
 				$expectedLogEntry [$attribute]
-					= $this->webUIGeneralContext->substituteInLineCodes(
+					= $this->featureContext->substituteInLineCodes(
 						$expectedLogEntry [$attribute]
 					);
 				PHPUnit_Framework_Assert::assertArrayHasKey(
@@ -104,7 +104,7 @@ trait Logging {
 			foreach ($logEntriesExpectedNotToExist as $logEntryExpectedNotToExist) {
 				foreach (array_keys($logEntryExpectedNotToExist) as $attribute) {
 					$logEntryExpectedNotToExist [$attribute]
-						= $this->webUIGeneralContext->substituteInLineCodes(
+						= $this->featureContext->substituteInLineCodes(
 							$logEntryExpectedNotToExist [$attribute]
 						);
 					if (isset($logEntries [$attribute])
