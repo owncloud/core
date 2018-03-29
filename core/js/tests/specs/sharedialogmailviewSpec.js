@@ -84,10 +84,28 @@ describe('OC.Share.ShareDialogMailView', function() {
 		});
 	});
 
+	describe('adding and removing addresses', function() {
+		it('works as expected', function() {
+			view._addAddress('Ada.Wong@umbrella.com');
+			view._addAddress('Albert.Wesker@umbrella.com');
+			view._addAddress('Jill.Valentine@umbrella.com');
+
+			expect(view._addresses.length).toEqual(3);
+			expect(view._addresses[2]).toEqual('jill.valentine@umbrella.com');
+
+			// remove one
+			view._removeAddress('Albert.Wesker@umbrella.com');
+			expect(view._addresses.length).toEqual(2);
+			expect(view._addresses[1]).toEqual('jill.valentine@umbrella.com');
+		});
+	});
+
 	describe('sending emails', function() {
 		it('sends entered emails when calling sendEmails()', function() {
 			var callback = sinon.stub();
-			view.$('.emailPrivateLinkForm--emailField').val('email@example.com');
+
+			view._addAddress('ernie@example.com');
+			view._addAddress('bert@example.com');
 			view.sendEmails().then(callback);
 
 			expect(callback.notCalled).toEqual(true);
@@ -96,7 +114,7 @@ describe('OC.Share.ShareDialogMailView', function() {
 			expect(fakeServer.requests[0].url).toEqual(OC.generateUrl('core/ajax/share.php'));
 			expect(OC.parseQueryString(fakeServer.requests[0].requestBody)).toEqual({
 				action: 'email',
-				toAddress: 'email@example.com',
+				toAddress: 'ernie@example.com,bert@example.com',
 				link: model.getLink(),
 				itemType: 'folder',
 				itemSource: '123',
@@ -123,7 +141,7 @@ describe('OC.Share.ShareDialogMailView', function() {
 		});
 		it('sends mail to self if BCC is checked', function() {
 			var callback = sinon.stub();
-			view.$('.emailPrivateLinkForm--emailField').val('GlaDOS@aperture.com');
+			view._addAddress('GlaDOS@aperture.com');
 			view.$('.emailPrivateLinkForm--emailBccSelf').prop('checked', 'checked');
 			view.$('.emailPrivateLinkForm--emailBodyField').val('The Cake Is A Lie!');
 			view.sendEmails().then(callback);
@@ -159,15 +177,17 @@ describe('OC.Share.ShareDialogMailView', function() {
 
 			expect(callback.calledOnce).toEqual(true);
 		});
+
 		it('does not send anything if no emails were input', function() {
 			var callback = sinon.stub();
 			view.sendEmails().then(callback);
 			expect(callback.calledOnce).toEqual(true);
 		});
+
 		it('rejects promise in case of failure', function() {
 			var callback = sinon.stub();
 			var rejectCallback = sinon.stub();
-			view.$('.emailPrivateLinkForm--emailField').val('email@example.com');
+			view._addAddress('email@example.com');
 			view.sendEmails().then(callback).fail(rejectCallback);
 
 			expect(callback.notCalled).toEqual(true);
