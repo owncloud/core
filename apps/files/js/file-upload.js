@@ -1248,7 +1248,7 @@ OC.Uploader.prototype = _.extend({
 					lastSize = data.loaded;
 					diffSize = diffSize / diffUpdate; // apply timing factor, eg. 1mb/2s = 0.5mb/s
 					var remainingSeconds = ((data.total - data.loaded) / diffSize);
-					if(remainingSeconds >= 0) {
+					if (isFinite(remainingSeconds) && remainingSeconds >= 0) {
 						bufferTotal = bufferTotal - (buffer[bufferIndex]) + remainingSeconds;
 						buffer[bufferIndex] = remainingSeconds; //buffer to make it smoother
 						bufferIndex = (bufferIndex + 1) % bufferSize;
@@ -1296,6 +1296,11 @@ OC.Uploader.prototype = _.extend({
 						'/' + encodeURIComponent(chunkId);
 					delete data.contentRange;
 					delete data.headers['Content-Range'];
+				});
+				fileupload.on('fileuploadchunksend', function(e, data) {
+					var upload = self.getUpload(data);
+					// reset retries
+					upload.data.retries = 0;
 				});
 				fileupload.on('fileuploaddone', function(e, data) {
 					var upload = self.getUpload(data);
