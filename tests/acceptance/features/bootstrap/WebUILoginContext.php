@@ -127,7 +127,7 @@ class WebUILoginContext extends RawMinkContext implements Context {
 	public function theUserLogsInWithUsernameAndPasswordToUsingTheWebUI(
 		$username, $password, $server
 	) {
-		$server = $this->webUIGeneralContext->substituteInLineCodes($server);
+		$server = $this->featureContext->substituteInLineCodes($server);
 		$this->loginPage->setPagePath(
 			$server . $this->loginPage->getOriginalPath()
 		);
