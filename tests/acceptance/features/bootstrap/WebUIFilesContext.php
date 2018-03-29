@@ -414,7 +414,7 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 			while ($currentTime <= $end) {
 				try {
 					DeleteHelper::delete(
-						$this->featureContext->baseUrlWithoutOCSAppendix(),
+						$this->featureContext->baseUrlWithSlash(),
 						$username,
 						$this->featureContext->getUserPassword($username),
 						$file['name']
@@ -1227,7 +1227,7 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 	) {
 		$username = $this->featureContext->getCurrentUser();
 		$result = DownloadHelper::download(
-			$this->featureContext->baseUrlWithoutOCSAppendix(),
+			$this->featureContext->baseUrlWithSlash(),
 			$username,
 			$this->featureContext->getUserPassword($username),
 			$remoteFile

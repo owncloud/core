@@ -212,7 +212,7 @@ trait AppConfiguration {
 	 */
 	public function setCapabilities($capabilitiesArray) {
 		$savedCapabilitiesChanges = AppConfigHelper::setCapabilities(
-			$this->baseUrlWithoutOCSAppendix(),
+			$this->baseUrlWithSlash(),
 			$this->getAdminUsername(),
 			$this->getAdminPassword(),
 			$capabilitiesArray,
@@ -234,7 +234,7 @@ trait AppConfiguration {
 	 */
 	protected function modifyServerConfig($app, $parameter, $value) {
 		AppConfigHelper::modifyServerConfig(
-			$this->baseUrlWithoutOCSAppendix(),
+			$this->baseUrlWithSlash(),
 			$this->getAdminUsername(),
 			$this->getAdminPassword(),
 			$app,
@@ -251,7 +251,7 @@ trait AppConfiguration {
 	 */
 	protected function modifyServerConfigs($appParameterValues) {
 		AppConfigHelper::modifyServerConfigs(
-			$this->baseUrlWithoutOCSAppendix(),
+			$this->baseUrlWithSlash(),
 			$this->getAdminUsername(),
 			$this->getAdminPassword(),
 			$appParameterValues,
@@ -302,18 +302,6 @@ trait AppConfiguration {
 	 * @return void
 	 */
 	public function prepareParametersBeforeScenario(BeforeScenarioScope $scope) {
-		// If we are running a webUI scenario, then make sure to use the base URL
-		// that the webUI has configured.
-		// Because the order of BeforeScenario method execution is not guaranteed,
-		// we need to be sure this happens here, before calling resetAppConfigs(),
-		// which will need to access the server API.
-		if ($scope->getScenario()->hasTag("webUI") || $scope->getFeature()->hasTag("webUI")) {
-			$environment = $scope->getEnvironment();
-			$this->webUIGeneralContext = $environment->getContext('WebUIGeneralContext');
-			$baseUrl = $this->webUIGeneralContext->getBaseUrlInWebUITestFormat();
-			$this->overrideBaseUrlWithWebUIValue($baseUrl);
-		}
-
 		$user = $this->currentUser;
 		$this->currentUser = $this->getAdminUsername();
 		$this->resetAppConfigs();

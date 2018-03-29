@@ -31,10 +31,6 @@ use GuzzleHttp\Message\ResponseInterface;
  */
 class CalDavContext implements \Behat\Behat\Context\Context {
 	/**
-	 * @var string  
-	 */
-	private $baseUrl;
-	/**
 	 * @var Client 
 	 */
 	private $client;
@@ -51,21 +47,6 @@ class CalDavContext implements \Behat\Behat\Context\Context {
 	 * @var FeatureContext
 	 */
 	private $featureContext;
-
-	/**
-	 * @param string $baseUrl
-	 *
-	 * @return void
-	 */
-	public function __construct($baseUrl) {
-		$this->baseUrl = $baseUrl;
-
-		// in case of ci deployment we take the server url from the environment
-		$testServerUrl = getenv('TEST_SERVER_URL');
-		if ($testServerUrl !== false) {
-			$this->baseUrl = substr($testServerUrl, 0, -5);
-		}
-	}
 
 	/**
 	 * @BeforeScenario @caldav
@@ -89,7 +70,7 @@ class CalDavContext implements \Behat\Behat\Context\Context {
 	 * @return void
 	 */
 	public function afterScenario() {
-		$davUrl = $this->baseUrl . '/remote.php/dav/calendars/admin/MyCalendar';
+		$davUrl = $this->featureContext->baseUrlWithSlash() . 'remote.php/dav/calendars/admin/MyCalendar';
 		try {
 			$this->client->delete(
 				$davUrl,
@@ -110,7 +91,7 @@ class CalDavContext implements \Behat\Behat\Context\Context {
 	 * @return void
 	 */
 	public function userRequestsCalendarUsingTheAPI($user, $calendar) {
-		$davUrl = $this->baseUrl . '/remote.php/dav/calendars/' . $calendar;
+		$davUrl = $this->featureContext->baseUrlWithSlash() . 'remote.php/dav/calendars/' . $calendar;
 
 		try {
 			$this->response = $this->client->get(
@@ -204,7 +185,7 @@ class CalDavContext implements \Behat\Behat\Context\Context {
 	 * @return void
 	 */
 	public function userHasCreatedACalendarNamed($user, $name) {
-		$davUrl = $this->baseUrl . '/remote.php/dav/calendars/' . $user . '/' . $name;
+		$davUrl = $this->featureContext->baseUrlWithSlash() . 'remote.php/dav/calendars/' . $user . '/' . $name;
 
 		$request = $this->client->createRequest(
 			'MKCALENDAR',

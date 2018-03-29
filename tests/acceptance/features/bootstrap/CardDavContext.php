@@ -31,10 +31,6 @@ use GuzzleHttp\Message\ResponseInterface;
  */
 class CardDavContext implements \Behat\Behat\Context\Context {
 	/**
-	 * @var string  
-	 */
-	private $baseUrl;
-	/**
 	 * @var Client 
 	 */
 	private $client;
@@ -51,21 +47,6 @@ class CardDavContext implements \Behat\Behat\Context\Context {
 	 * @var FeatureContext
 	 */
 	private $featureContext;
-
-	/**
-	 * @param string $baseUrl
-	 *
-	 * @return void
-	 */
-	public function __construct($baseUrl) {
-		$this->baseUrl = $baseUrl;
-
-		// in case of CI deployment we take the server url from the environment
-		$testServerUrl = getenv('TEST_SERVER_URL');
-		if ($testServerUrl !== false) {
-			$this->baseUrl = substr($testServerUrl, 0, -5);
-		}
-	}
 
 	/**
 	 * @BeforeScenario @carddav
@@ -89,7 +70,7 @@ class CardDavContext implements \Behat\Behat\Context\Context {
 	 * @return void
 	 */
 	public function afterScenario() {
-		$davUrl = $this->baseUrl . '/remote.php/dav/addressbooks/users/admin/MyAddressbook';
+		$davUrl = $this->featureContext->baseUrlWithSlash() . 'remote.php/dav/addressbooks/users/admin/MyAddressbook';
 		try {
 			$this->client->delete(
 				$davUrl,
@@ -111,7 +92,7 @@ class CardDavContext implements \Behat\Behat\Context\Context {
 	 * @throws \Exception
 	 */
 	public function userRequestsAddressbookUsingTheAPI($user, $addressBook) {
-		$davUrl = $this->baseUrl . '/remote.php/dav/addressbooks/users/' . $addressBook;
+		$davUrl = $this->featureContext->baseUrlWithSlash() . 'remote.php/dav/addressbooks/users/' . $addressBook;
 
 		try {
 			$this->response = $this->client->get(
@@ -135,7 +116,7 @@ class CardDavContext implements \Behat\Behat\Context\Context {
 	 * @throws \Exception
 	 */
 	public function userHasCreatedAnAddressbookNamed($user, $addressBook) {
-		$davUrl = $this->baseUrl . '/remote.php/dav/addressbooks/users/' . $user . '/' . $addressBook;
+		$davUrl = $this->featureContext->baseUrlWithSlash() . 'remote.php/dav/addressbooks/users/' . $user . '/' . $addressBook;
 
 		$request = $this->client->createRequest(
 			'MKCOL',

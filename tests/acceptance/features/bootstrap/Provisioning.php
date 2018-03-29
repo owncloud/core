@@ -313,7 +313,7 @@ trait Provisioning {
 	 * @return void
 	 */
 	public function initializeUser($user, $password) {
-		$url = $this->baseUrl . "v{$this->apiVersion}.php/cloud/users/" . $user;
+		$url = $this->baseUrlWithSlash() . "ocs/v{$this->apiVersion}.php/cloud/users/" . $user;
 		$client = new Client();
 		$options = [
 			'auth' => [$user, $password],
@@ -376,7 +376,7 @@ trait Provisioning {
 		}
 		$user = trim($user);
 		$method = trim(strtolower($method));
-		$baseUrl = $this->baseUrlWithoutOCSAppendix();
+		$baseUrl = $this->baseUrlWithSlash();
 		$userWasCreated = false;
 		switch ($method) {
 			case "api":
@@ -449,7 +449,7 @@ trait Provisioning {
 	 * @return bool
 	 */
 	public function userExists($user) {
-		$fullUrl = $this->baseUrl . "v2.php/cloud/users/$user";
+		$fullUrl = $this->baseUrlWithSlash() . "ocs/v2.php/cloud/users/$user";
 		$client = new Client();
 		$options = [];
 		$options['auth'] = $this->getAuthOptionForAdmin();
@@ -471,7 +471,7 @@ trait Provisioning {
 	 * @return void
 	 */
 	public function userShouldBelongToGroup($user, $group) {
-		$fullUrl = $this->baseUrl . "v2.php/cloud/users/$user/groups";
+		$fullUrl = $this->baseUrlWithSlash() . "ocs/v2.php/cloud/users/$user/groups";
 		$client = new Client();
 		$options = [];
 		$options['auth'] = $this->getAuthOptionForAdmin();
@@ -494,7 +494,7 @@ trait Provisioning {
 	 * @return void
 	 */
 	public function userShouldNotBelongToGroup($user, $group) {
-		$fullUrl = $this->baseUrl . "v2.php/cloud/users/$user/groups";
+		$fullUrl = $this->baseUrlWithSlash() . "ocs/v2.php/cloud/users/$user/groups";
 		$client = new Client();
 		$options = [];
 		$options['auth'] = $this->getAuthOptionForAdmin();
@@ -515,7 +515,7 @@ trait Provisioning {
 	 * @return bool
 	 */
 	public function userBelongsToGroup($user, $group) {
-		$fullUrl = $this->baseUrl . "v2.php/cloud/users/$user/groups";
+		$fullUrl = $this->baseUrlWithSlash() . "ocs/v2.php/cloud/users/$user/groups";
 		$client = new Client();
 		$options = [];
 		if ($this->currentUser === $this->getAdminUsername()) {
@@ -569,7 +569,7 @@ trait Provisioning {
 		switch ($method) {
 			case "api":
 				$result = UserHelper::addUserToGroup(
-					$this->baseUrlWithoutOCSAppendix(),
+					$this->baseUrlWithSlash(),
 					$user, $group,
 					$this->getAdminUsername(),
 					$this->getAdminPassword()
@@ -703,7 +703,7 @@ trait Provisioning {
 		switch ($method) {
 			case "api":
 				$result = UserHelper::createGroup(
-					$this->baseUrlWithoutOCSAppendix(),
+					$this->baseUrlWithSlash(),
 					$group,
 					$this->getAdminUsername(),
 					$this->getAdminPassword()
@@ -749,7 +749,7 @@ trait Provisioning {
 	 * @return void
 	 */
 	public function adminDisablesUserUsingTheAPI($user) {
-		$fullUrl = $this->baseUrl . "v{$this->apiVersion}.php/cloud/users/$user/disable";
+		$fullUrl = $this->baseUrlWithSlash() . "ocs/v{$this->apiVersion}.php/cloud/users/$user/disable";
 		$client = new Client();
 		$options = [];
 		$options['auth'] = $this->getAuthOptionForAdmin();
@@ -767,7 +767,7 @@ trait Provisioning {
 	public function deleteTheUserUsingTheAPI($user) {
 		// Always try to delete the user
 		$this->response = UserHelper::deleteUser(
-			$this->baseUrlWithoutOCSAppendix(),
+			$this->baseUrlWithSlash(),
 			$user,
 			$this->getAdminUsername(),
 			$this->getAdminPassword()
@@ -807,7 +807,7 @@ trait Provisioning {
 	 */
 	public function deleteTheGroupUsingTheAPI($group) {
 		$this->response = UserHelper::deleteGroup(
-			$this->baseUrlWithoutOCSAppendix(),
+			$this->baseUrlWithSlash(),
 			$group,
 			$this->getAdminUsername(),
 			$this->getAdminPassword()
@@ -827,7 +827,7 @@ trait Provisioning {
 	 * @return bool
 	 */
 	public function groupExists($group) {
-		$fullUrl = $this->baseUrl . "v2.php/cloud/groups/$group";
+		$fullUrl = $this->baseUrlWithSlash() . "ocs/v2.php/cloud/groups/$group";
 		$client = new Client();
 		$options = [];
 		$options['auth'] = $this->getAuthOptionForAdmin();
@@ -849,7 +849,7 @@ trait Provisioning {
 	 * @return void
 	 */
 	public function userShouldBeSubadminOfGroup($user, $group) {
-		$fullUrl = $this->baseUrl . "v2.php/cloud/groups/$group/subadmins";
+		$fullUrl = $this->baseUrlWithSlash() . "ocs/v2.php/cloud/groups/$group/subadmins";
 		$client = new Client();
 		$options = [];
 		if ($this->currentUser === $this->getAdminUsername()) {
@@ -875,7 +875,7 @@ trait Provisioning {
 	 * @return void
 	 */
 	public function adminMakesUserSubadminOfGroupUsingTheAPI($user, $group) {
-		$fullUrl = $this->baseUrl . "v{$this->apiVersion}.php/cloud/users/$user/subadmins";
+		$fullUrl = $this->baseUrlWithSlash() . "ocs/v{$this->apiVersion}.php/cloud/users/$user/subadmins";
 		$client = new Client();
 		$options = [];
 		$options['auth'] = $this->getAuthOptionForAdmin();
@@ -900,7 +900,7 @@ trait Provisioning {
 	 * @return void
 	 */
 	public function adminMakesUserNotSubadminOfGroupUsingTheAPI($user, $group) {
-		$fullUrl = $this->baseUrl . "v2.php/cloud/groups/$group/subadmins";
+		$fullUrl = $this->baseUrlWithSlash() . "ocs/v2.php/cloud/groups/$group/subadmins";
 		$client = new Client();
 		$options = [];
 		if ($this->currentUser === $this->getAdminUsername()) {
@@ -1066,7 +1066,7 @@ trait Provisioning {
 	 * @return void
 	 */
 	public function appShouldBeDisabled($app) {
-		$fullUrl = $this->baseUrl . "v2.php/cloud/apps?filter=disabled";
+		$fullUrl = $this->baseUrlWithSlash() . "ocs/v2.php/cloud/apps?filter=disabled";
 		$client = new Client();
 		$options = [];
 		if ($this->currentUser === $this->getAdminUsername()) {
@@ -1089,7 +1089,7 @@ trait Provisioning {
 	 * @return void
 	 */
 	public function appShouldBeEnabled($app) {
-		$fullUrl = $this->baseUrl . "v2.php/cloud/apps?filter=enabled";
+		$fullUrl = $this->baseUrlWithSlash() . "ocs/v2.php/cloud/apps?filter=enabled";
 		$client = new Client();
 		$options = [];
 		if ($this->currentUser === $this->getAdminUsername()) {
@@ -1112,7 +1112,7 @@ trait Provisioning {
 	 * @return void
 	 */
 	public function userShouldBeDisabled($user) {
-		$fullUrl = $this->baseUrl . "v{$this->apiVersion}.php/cloud/users/$user";
+		$fullUrl = $this->baseUrlWithSlash() . "ocs/v{$this->apiVersion}.php/cloud/users/$user";
 		$client = new Client();
 		$options = [];
 		$options['auth'] = $this->getAuthOptionForAdmin();
@@ -1131,7 +1131,7 @@ trait Provisioning {
 	 * @return void
 	 */
 	public function useShouldBeEnabled($user) {
-		$fullUrl = $this->baseUrl . "v{$this->apiVersion}.php/cloud/users/$user";
+		$fullUrl = $this->baseUrlWithSlash() . "ocs/v{$this->apiVersion}.php/cloud/users/$user";
 		$client = new Client();
 		$options = [];
 		$options['auth'] = $this->getAuthOptionForAdmin();
@@ -1159,7 +1159,7 @@ trait Provisioning {
 			];
 
 		$this->response = OcsApiHelper::sendRequest(
-			$this->baseUrlWithoutOCSAppendix(),
+			$this->baseUrlWithSlash(),
 			$this->getAdminUsername(),
 			$this->getAdminPassword(),
 			"PUT",
@@ -1193,7 +1193,7 @@ trait Provisioning {
 	 * @return void
 	 */
 	public function getUserHome($user) {
-		$fullUrl = $this->baseUrl . "v{$this->apiVersion}.php/cloud/users/$user";
+		$fullUrl = $this->baseUrlWithSlash() . "ocs/v{$this->apiVersion}.php/cloud/users/$user";
 		$client = new Client();
 		$options = [];
 		$options['auth'] = $this->getAuthOptionForAdmin();

@@ -304,7 +304,7 @@ class WebUISharingContext extends RawMinkContext implements Context {
 	public function thePublicAccessesTheLastCreatedPublicLinkUsingTheWebUI() {
 		$lastCreatedLink = end($this->createdPublicLinks);
 		$path = str_replace(
-			$this->getMinkParameter('base_url'),
+			$this->featureContext->baseUrlWithoutSlash(),
 			"",
 			$lastCreatedLink['url']
 		);
@@ -333,7 +333,6 @@ class WebUISharingContext extends RawMinkContext implements Context {
 		// addToServer takes us from the public link page to the login page
 		// of the remote server, waiting for us to login.
 		$this->webUIGeneralContext->loginAs($username, $password);
-		$this->featureContext->usingServer($server);
 	}
 
 	/**
@@ -618,7 +617,7 @@ class WebUISharingContext extends RawMinkContext implements Context {
 		];
 
 		$change = AppConfigHelper::setCapabilities(
-			$this->getMinkParameter('base_url'),
+			$this->featureContext->baseUrlWithoutSlash(),
 			$this->featureContext->getAdminUsername(),
 			$this->featureContext->getAdminPassword(),
 			$settings,
