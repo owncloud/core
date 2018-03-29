@@ -181,9 +181,7 @@ OC.Settings.Apps = OC.Settings.Apps || {
 		}
 
 		// set group select properly
-		if(OC.Settings.Apps.isType(app, 'filesystem') || OC.Settings.Apps.isType(app, 'prelogin') ||
-			OC.Settings.Apps.isType(app, 'authentication') || OC.Settings.Apps.isType(app, 'logging') ||
-			OC.Settings.Apps.isType(app, 'prevent_group_restriction')) {
+		if (OC.Settings.Apps.isProtected(app)) {
 			page.find(".groups-enable").hide();
 			page.find(".groups-enable__checkbox").prop('checked', false);
 		} else {
@@ -226,6 +224,28 @@ OC.Settings.Apps = OC.Settings.Apps || {
 		}
 
 		return author;
+	},
+
+	/**
+	 * Checks if enable for groups should be hidden
+	 * @param app
+	 * @returns {boolean}
+	 */
+	isProtected: function(app) {
+		var protectedTypes = [
+			'filesystem',
+			'prelogin',
+			'authentication',
+			'logging',
+			'prevent_group_restriction',
+			'theme'
+		];
+		for (var i=0;i<protectedTypes.length;i++) {
+			if (OC.Settings.Apps.isType(app, protectedTypes[i])) {
+				return true;
+			}
+		}
+		return false;
 	},
 
 	isType: function(app, type) {
