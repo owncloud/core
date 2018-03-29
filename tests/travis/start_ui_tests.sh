@@ -339,8 +339,8 @@ export REMOTE_FED_BASE_URL
 export FILES_FOR_UPLOAD="$(pwd)/tests/acceptance/filesForUpload/"
 
 # Provide TEST_SERVER* env vars. Some API acceptance test code uses these.
-export TEST_SERVER_URL="$BASE_URL/ocs/"
-export TEST_SERVER_FED_URL="$REMOTE_FED_BASE_URL/ocs/"
+export TEST_SERVER_URL="$BASE_URL"
+export TEST_SERVER_FED_URL="$REMOTE_FED_BASE_URL"
 
 if [ ! -w $FILES_FOR_UPLOAD ]
 then
