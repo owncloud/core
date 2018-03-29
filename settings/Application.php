@@ -156,19 +156,6 @@ class Application extends App {
 		});
 
 		/**
-		 * Middleware
-		 */
-		$container->registerService('SubadminMiddleware', function(IContainer $c){
-			return new SubadminMiddleware(
-				$c->query('ControllerMethodReflector'),
-				$c->query('GroupManager'),
-				$c->query('UserSession')
-			);
-		});
-		// Execute middlewares
-		$container->registerMiddleware('SubadminMiddleware');
-
-		/**
 		 * Core class wrappers
 		 */
 		$container->registerService('Config', function(IContainer $c) {
