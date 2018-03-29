@@ -114,6 +114,7 @@ class ServerFactory {
 		// we do not provide locking we emulate it using a fake locking plugin.
 		if($this->request->isUserAgent([
 			'/WebDAVFS/',
+			'/OneNote/',
 			'/Microsoft Office OneNote 2013/',
 			'/Microsoft-WebDAV-MiniRedir/',
 		])) {
