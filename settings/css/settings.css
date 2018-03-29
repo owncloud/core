@@ -195,7 +195,6 @@ span.version {
 
 #app-navigation .app-external,
 .app-version {
-	-ms-filter:  "progid:DXImageTransform.Microsoft.Alpha(Opacity=50)""
 	filter: alpha(opacity=50);
 	opacity: 0.5;
 }
@@ -306,7 +305,6 @@ span.version {
 	clear: both;
 	padding: 7px 0;
 	cursor: pointer;
-	-ms-filter:  "progid:DXImageTransform.Microsoft.Alpha(Opacity=50)""
 	opacity: 0.5;
 }
 
