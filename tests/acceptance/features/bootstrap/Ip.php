@@ -45,7 +45,21 @@ trait Ip {
 
 	private $ipv4Url;
 	private $ipv6Url;
-	private $baseUrl;
+
+	/**
+	 * returns the base URL that matches the currently selected source IP
+	 * address (which might be an IPv4 or IPv6 address)
+	 *
+	 * @return string
+	 */
+	public function getBaseUrlForSourceIp() {
+		// Lazy init so we know that featureContext has been setup
+		// by the time we need it here.
+		if ($this->baseUrlForSourceIp === null) {
+			$this->baseUrlForSourceIp = $this->featureContext->getBaseUrl();
+		}
+		return $this->baseUrlForSourceIp;
+	}
 
 	/**
 	 * @When the client accesses the server from a :networkScope :ipAddressFamily address
@@ -78,7 +92,7 @@ trait Ip {
 		} else if (filter_var($sourceIpAddress, FILTER_VALIDATE_IP, FILTER_FLAG_IPV6)) {
 			$this->baseUrlForSourceIp = $this->ipv6Url;
 		} else {
-			$this->baseUrlForSourceIp = $this->baseUrl;
+			$this->baseUrlForSourceIp = $this->featureContext->getBaseUrl();
 		}
 	}
 
@@ -90,7 +104,5 @@ trait Ip {
 	public function setUpScenarioGetIpUrls() {
 		$this->ipv4Url = getenv('IPV4_URL');
 		$this->ipv6Url = getenv('IPV6_URL');
-		$this->baseUrl = $this->featureContext->getBaseUrl();
-		$this->baseUrlForSourceIp = $this->baseUrl;
 	}
 }
