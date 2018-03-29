@@ -184,7 +184,6 @@ OC.L10N.register(
     "Share to Diaspora. Opens in a new window." : "Поделиться в Diaspora. Откроется в новом окне",
     "Share to Google+. Opens in a new window." : "Поделиться в Google+. Откроется в новом окне",
     "Share via email. Opens your mail client." : "Поделиться через  email. Откроется в вашем почтовом клиенте",
-    "{email} is not a valid address!" : "{email} не является допустимым почтовым адресом!",
     "An error occured" : "Произошла ошибка",
     "Email link to person" : "Отправить ссылку по электронной почте",
     "Send copy to self" : "Отправить копию себе",

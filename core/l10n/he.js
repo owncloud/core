@@ -184,7 +184,6 @@ OC.L10N.register(
     "Share to Diaspora. Opens in a new window." : "שיתוף ב- Diaspora. פתיחה בחלון חדש.",
     "Share to Google+. Opens in a new window." : "שיתוף בגוגל פלוס. פתיחה בחלון חדש.",
     "Share via email. Opens your mail client." : "שיתוף על בסיס דואר אלקטרוני. פותח את אפקליקציית הדואר האלקטרוני שלך.",
-    "{email} is not a valid address!" : "הכתובת {email} אינה תקנית!",
     "An error occured" : "אירעה שגיאה",
     "Email link to person" : "שליחת קישור בדוא״ל למשתמש",
     "Send copy to self" : "שליחת עותק אלי",
