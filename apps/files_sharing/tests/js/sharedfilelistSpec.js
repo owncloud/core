@@ -119,7 +119,7 @@ describe('OCA.Sharing.FileList tests', function() {
 						id: 8,
 						remote: 'https://foo.bar/',
 						remote_id: 42,
-  						share_token: 'abc',
+						share_token: 'abc',
 						name: '/a.txt',
 						owner: 'user3',
 						user: 'user1',
@@ -345,7 +345,6 @@ describe('OCA.Sharing.FileList tests', function() {
 			expect($tr.attr('data-tags')).toEqual(OC.TAG_FAVORITE);
 			expect($tr.find('.nametext').text().trim()).toEqual('local name');
 
-			expect($tr.find('a.name').hasClass('disable-click')).toEqual(true);
 			expect($tr.find('a.name').attr('href')).toEqual('#');
 
 			var file = fileList.elementToFile($tr);
@@ -867,7 +866,7 @@ describe('OCA.Sharing.FileList tests', function() {
 				sharedWithUser: true
 			});
 		});
-	
+
 		it('sorts by state then name', function () {
 			var $tr;
 			fileList.add({
