@@ -152,7 +152,7 @@
 
 				if (fileData.shareState !== OC.Share.STATE_ACCEPTED) {
 					// remove link
-					$tr.find('a.name').attr('href', '#').addClass('disable-click');
+					$tr.find('a.name').attr('href', '#');
 				}
 			}
 
