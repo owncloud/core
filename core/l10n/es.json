@@ -1,7 +1,7 @@
 { "translations": {
     "Please select a file." : "Seleccione un archivo, por favor.",
     "File is too big" : "El archivo es demasiado grande",
-    "Invalid file provided" : "El archivo provisto no es válido",
+    "Invalid file provided" : "Archivo provisto no válido/a",
     "No image or file provided" : "No se especificó ningún archivo o imagen",
     "Unknown filetype" : "Tipo de archivo desconocido",
     "Invalid image" : "Imagen inválida",

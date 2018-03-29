@@ -40,6 +40,7 @@ OC.L10N.register(
     "This operation is forbidden" : "Diese Operation ist nicht erlaubt",
     "This directory is unavailable, please check the logs or contact the administrator" : "Dieses Verzeichnis ist nicht verfügbar, bitte überprüfe die Logdateien oder kontaktiere den Administrator",
     "Could not move \"{file}\", target exists" : "\"{file}\" konnte nicht verschoben werden: Ziel existiert bereits",
+    "Could not move \"{file}\": {message}" : "Kann die Datei \"{file}\" nicht verschieben: {message}",
     "Could not move \"{file}\"" : "\"{file}\" konnte nicht verschoben werden",
     "{newName} already exists" : "{newName} existiert bereits",
     "Could not rename \"{fileName}\", it does not exist any more" : "\"{fileName}\" konnte nicht umbenannt werden, da es nicht mehr existiert",
