@@ -107,7 +107,7 @@ class WebUISharingContext extends RawMinkContext implements Context {
 		$this->sharingDialog = $this->filesPage->openSharingDialog(
 			$folder, $this->getSession()
 		);
-		$user = $this->webUIGeneralContext->substituteInLineCodes($user);
+		$user = $this->featureContext->substituteInLineCodes($user);
 		if ($remote === "remote") {
 			$this->sharingDialog->shareWithRemoteUser(
 				$user, $this->getSession(), $maxRetries, $quiet
@@ -277,7 +277,7 @@ class WebUISharingContext extends RawMinkContext implements Context {
 	public function theUserSetsTheSharingPermissionsOfForOnTheWebUI(
 		$userName, $fileName, TableNode $permissionsTable
 	) {
-		$userName = $this->webUIGeneralContext->substituteInLineCodes($userName);
+		$userName = $this->featureContext->substituteInLineCodes($userName);
 		$this->theUserOpensTheShareDialogForTheFileFolder($fileName);
 		$this->sharingDialog->setSharingPermissions(
 			$userName, $permissionsTable->getRowsHash()
@@ -328,7 +328,7 @@ class WebUISharingContext extends RawMinkContext implements Context {
 		if (!$this->publicLinkFilesPage->isOpen()) {
 			throw new Exception('Not on public link page!');
 		}
-		$server = $this->webUIGeneralContext->substituteInLineCodes($server);
+		$server = $this->featureContext->substituteInLineCodes($server);
 		$this->publicLinkFilesPage->addToServer($server);
 		// addToServer takes us from the public link page to the login page
 		// of the remote server, waiting for us to login.
