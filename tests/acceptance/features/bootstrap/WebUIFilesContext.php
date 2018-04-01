@@ -1108,53 +1108,59 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 	}
 
 	/**
-	 * @Then /^the content of ((?:'[^']*')|(?:"[^"]*")) should (not|)\s?be the same as the original ((?:'[^']*')|(?:"[^"]*"))$/
+	 * @Then /^the content of ((?:'[^']*')|(?:"[^"]*")) (on the remote server|on the local server|)\s?should (not|)\s?be the same as the original ((?:'[^']*')|(?:"[^"]*"))$/
 	 *
 	 * @param string $remoteFile enclosed in single or double quotes
+	 * @param string $remoteServer
 	 * @param string $shouldOrNot
 	 * @param string $originalFile enclosed in single or double quotes
 	 *
 	 * @return void
 	 */
 	public function theContentOfShouldBeTheSameAsTheOriginal(
-		$remoteFile, $shouldOrNot, $originalFile
+		$remoteFile, $remoteServer, $shouldOrNot, $originalFile
 	) {
+		$checkOnRemoteServer = ($remoteServer === 'on the remote server');
 		// The capturing group of the regex always includes the quotes at each
 		// end of the captured string, so trim them.
 		$remoteFile = $this->currentFolder . "/" . trim($remoteFile, $remoteFile[0]);
 		$originalFile = getenv("SRC_SKELETON_DIR") . "/" . trim($originalFile, $originalFile[0]);
 		$shouldBeSame = ($shouldOrNot !== "not");
-		$this->assertContentOfRemoteAndLocalFileIsSame($remoteFile, $originalFile, $shouldBeSame);
+		$this->assertContentOfRemoteAndLocalFileIsSame($remoteFile, $originalFile, $shouldBeSame, $checkOnRemoteServer);
 	}
 
 	/**
-	 * @Then /^the content of ((?:'[^']*')|(?:"[^"]*")) should (not|)\s?be the same as the local ((?:'[^']*')|(?:"[^"]*"))$/
+	 * @Then /^the content of ((?:'[^']*')|(?:"[^"]*")) (on the remote server|on the local server|)\s?should (not|)\s?be the same as the local ((?:'[^']*')|(?:"[^"]*"))$/
 	 *
 	 * @param string $remoteFile enclosed in single or double quotes
+	 * @param string $remoteServer
 	 * @param string $shouldOrNot
 	 * @param string $localFile enclosed in single or double quotes
 	 *
 	 * @return void
 	 */
 	public function theContentOfShouldBeTheSameAsTheLocal(
-		$remoteFile, $shouldOrNot, $localFile
+		$remoteFile, $remoteServer, $shouldOrNot, $localFile
 	) {
+		$checkOnRemoteServer = ($remoteServer === 'on the remote server');
 		// The capturing group of the regex always includes the quotes at each
 		// end of the captured string, so trim them.
 		$remoteFile = $this->currentFolder . "/" . trim($remoteFile, $remoteFile[0]);
 		$localFile = getenv("FILES_FOR_UPLOAD") . "/" . trim($localFile, $localFile[0]);
 		$shouldBeSame = ($shouldOrNot !== "not");
-		$this->assertContentOfRemoteAndLocalFileIsSame($remoteFile, $localFile, $shouldBeSame);
+		$this->assertContentOfRemoteAndLocalFileIsSame($remoteFile, $localFile, $shouldBeSame, $checkOnRemoteServer);
 	}
 
 	/**
-	 * @Then /^the content of ((?:'[^']*')|(?:"[^"]*")) should not have changed$/
+	 * @Then /^the content of ((?:'[^']*')|(?:"[^"]*")) (on the remote server|on the local server|)\s?should not have changed$/
 	 *
 	 * @param string $fileName
+	 * @param string $remoteServer
 	 *
 	 * @return void
 	 */
-	public function theContentOfShouldNotHaveChanged($fileName) {
+	public function theContentOfShouldNotHaveChanged($fileName, $remoteServer) {
+		$checkOnRemoteServer = ($remoteServer === 'on the remote server');
 		// The capturing group of the regex always includes the quotes at each
 		// end of the captured string, so trim them.
 		$fileName = trim($fileName, $fileName[0]);
@@ -1165,7 +1171,7 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 			$subFolderPath = "";
 		}
 		$localFile = getenv("SRC_SKELETON_DIR") . "/" . $subFolderPath . $fileName;
-		$this->assertContentOfRemoteAndLocalFileIsSame($remoteFile, $localFile);
+		$this->assertContentOfRemoteAndLocalFileIsSame($remoteFile, $localFile, true, $checkOnRemoteServer);
 	}
 
 	/**
@@ -1229,7 +1235,7 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 			);
 		}
 	}
-	
+
 	/**
 	 * Asserts that the content of a remote and a local file is the same
 	 * or is different
@@ -1240,14 +1246,22 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 	 * @param bool $shouldBeSame (default true) if true then check that the file contents are the same
 	 *                           otherwise check that the file contents are different
 	 *
+	 * @param bool $checkOnRemoteServer if true, then use the remote server to download the file
 	 * @return void
+	 * @throws Exception
 	 */
 	private function assertContentOfRemoteAndLocalFileIsSame(
-		$remoteFile, $localFile, $shouldBeSame = true
+		$remoteFile, $localFile, $shouldBeSame = true, $checkOnRemoteServer = false
 	) {
+		if ($checkOnRemoteServer) {
+			$baseUrl = $this->featureContext->getRemoteBaseUrl();
+		} else {
+			$baseUrl = $this->featureContext->getLocalBaseUrl();
+		}
+
 		$username = $this->featureContext->getCurrentUser();
 		$result = DownloadHelper::download(
-			$this->featureContext->getBaseUrl(),
+			$baseUrl,
 			$username,
 			$this->featureContext->getUserPassword($username),
 			$remoteFile
