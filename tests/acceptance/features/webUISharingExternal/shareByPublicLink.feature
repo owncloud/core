@@ -49,12 +49,12 @@ So that public sharing is limited according to organization policy
 		When the user creates a new public link for the folder "simple-folder" using the webUI
 		And the user logs out of the webUI
 		And the public accesses the last created public link using the webUI
-		And the public adds the public link to "http://%remote_server%" as user "user2" with the password "1234" using the webUI
+		And the public adds the public link to "%remote_server%" as user "user2" with the password "1234" using the webUI
 		And the user accepts the offered remote shares
 		Then the folder "simple-folder (2)" should be listed on the webUI
 		When the user opens the folder "simple-folder (2)" using the webUI
 		Then the file "lorem.txt" should be listed on the webUI
-		And the content of "lorem.txt" should be the same as the original "simple-folder/lorem.txt"
+		And the content of "lorem.txt" on the remote server should be the same as the original "simple-folder/lorem.txt"
 		And it should not be possible to delete the file "lorem.txt" using the webUI
 
 	@skipOnINTERNETEXPLORER @skipOnMICROSOFTEDGE @issue_30392
@@ -66,12 +66,12 @@ So that public sharing is limited according to organization policy
 		| permission | Read & Write |
 		And the user logs out of the webUI
 		And the public accesses the last created public link using the webUI
-		And the public adds the public link to "http://%remote_server%" as user "user2" with the password "1234" using the webUI
+		And the public adds the public link to "%remote_server%" as user "user2" with the password "1234" using the webUI
 		And the user accepts the offered remote shares
 		Then the folder "simple-folder (2)" should be listed on the webUI
 		When the user opens the folder "simple-folder (2)" using the webUI
 		Then the file "lorem.txt" should be listed on the webUI
-		And the content of "lorem.txt" should be the same as the original "simple-folder/lorem.txt"
+		And the content of "lorem.txt" on the remote server should be the same as the original "simple-folder/lorem.txt"
 		When the user uploads overwriting the file "lorem.txt" using the webUI and retries if the file is locked
 		Then the file "lorem.txt" should be listed on the webUI
-		And the content of "lorem.txt" should be the same as the local "lorem.txt"
+		And the content of "lorem.txt" on the remote server should be the same as the local "lorem.txt"
