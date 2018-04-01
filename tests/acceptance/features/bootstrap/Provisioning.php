@@ -630,8 +630,8 @@ trait Provisioning {
 	 * @return void
 	 */
 	public function deleteGroupFromCreatedGroupsList($group) {
-		if (($key = array_search($group, $this->createdGroups, true)) !== false) {
-			unset($this->createdGroups[$key]);
+		if (array_key_exists($group, $this->createdGroups)) {
+			$this->createdGroups[$group]['shouldHaveBeenCreated'] = false;
 		}
 	}
 
