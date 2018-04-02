@@ -40,3 +40,5 @@ const STANDARDUIWAITTIMEOUTMILLISEC = 10000;
 const MINIMUMUIWAITTIMEOUTMILLISEC = 500;
 // Default number of times to retry where retries are useful
 const STANDARDRETRYCOUNT = 5;
+// Minimum number of times to retry where retries are useful
+const MINIMUMRETRYCOUNT = 2;
