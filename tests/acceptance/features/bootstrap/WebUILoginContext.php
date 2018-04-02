@@ -545,16 +545,46 @@ class WebUILoginContext extends RawMinkContext implements Context {
 	}
 
 	/**
-	 * @When the user resets/sets the password to :newPassword using the webUI
-	 * @Given the user has reset/set the password to :newPassword using the webUI
+	 * @When the user resets/sets the password to :newPassword and confirms same password using the webUI
+	 * @Given the user has reset/set the password to :newPassword and confirms same password using the webUI
 	 *
 	 * @param string $newPassword
 	 *
 	 * @return void
 	 */
-	public function theUserResetsThePasswordToUsingTheWebui($newPassword) {
+	public function theUserResetsThePasswordWithSameConfirmationToUsingTheWebui($newPassword) {
 		$newPassword = $this->featureContext->getActualPassword($newPassword);
-		$this->loginPage->resetThePassword($newPassword, $this->getSession());
+		$confirmNewPassword = $this->featureContext->getActualPassword($newPassword);
+		$this->loginPage->resetThePassword($newPassword, $confirmNewPassword, $this->getSession());
+	}
+
+	/**
+	 * @when the user resets/sets password to :newPassword and confirms with :confirmPassword using the webUI
+	 * @Given the user has resets/sets password to :newPassword and confirms with :confirmPassword using the webUI
+	 *
+	 * @param string $newPassword
+	 * @param string $confirmNewPassword
+	 *
+	 * @return void
+	 */
+	public function theUserResetsPasswordWIthDiffConfirmUsingTheWebUI($newPassword, $confirmNewPassword) {
+		$newPassword = $this->featureContext->getActualPassword($newPassword);
+		$this->loginPage->resetThePassword($newPassword, $confirmNewPassword, $this->getSession());
+	}
+
+	/**
+	 * @Then user should see password mismatch message displayed on the webUI
+	 *
+	 * @param PyStringNode $string
+	 *
+	 * @return void
+	 */
+	public function theUserResetConfirmPasswordErrorMessage(PyStringNode $string) {
+		$expectedString = $string->getRaw();
+		$passwordMismatchMessage = $this->loginPage->getRestPasswordConfirmError();
+		PHPUnit_Framework_Assert::assertEquals(
+			$expectedString, $passwordMismatchMessage
+		);
 	}
 
 	/**
