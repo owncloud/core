@@ -160,12 +160,35 @@ trait BasicStructure {
 	}
 
 	/**
+	 * removes the scheme "http(s)://" (if any) from the front of a URL
+	 * note: only needs to handle http or https
+	 *
+	 * @param string $url
+	 *
+	 * @return string
+	 */
+	public function removeSchemeFromUrl($url) {
+		return preg_replace(
+			"(^https?://)", "", $url
+		);
+	}
+
+	/**
 	 * returns the base URL (which is without a slash at the end)
 	 *
 	 * @return string
 	 */
 	public function getBaseUrl() {
 		return $this->baseUrl;
+	}
+
+	/**
+	 * returns the base URL but without "http(s)://" in front of it
+	 *
+	 * @return string
+	 */
+	public function getBaseUrlWithoutScheme() {
+		return $this->removeSchemeFromUrl($this->getBaseUrl());
 	}
 
 	/**
@@ -178,14 +201,12 @@ trait BasicStructure {
 	}
 
 	/**
-	 * gets the base url but without "http(s)://" in front of it
+	 * returns the local base URL but without "http(s)://" in front of it
 	 *
 	 * @return string
 	 */
-	public function getBaseUrlWithoutScheme() {
-		return preg_replace(
-			"(^https?://)", "", $this->getBaseUrl()
-		);
+	public function getLocalBaseUrlWithoutScheme() {
+		return $this->removeSchemeFromUrl($this->getLocalBaseUrl());
 	}
 
 	/**
@@ -195,6 +216,15 @@ trait BasicStructure {
 	 */
 	public function getRemoteBaseUrl() {
 		return $this->remoteBaseUrl;
+	}
+
+	/**
+	 * returns the remote base URL but without "http(s)://" in front of it
+	 *
+	 * @return string
+	 */
+	public function getRemoteBaseUrlWithoutScheme() {
+		return $this->removeSchemeFromUrl($this->getRemoteBaseUrl());
 	}
 
 	/**
@@ -878,17 +908,42 @@ trait BasicStructure {
 				"parameter" => []
 			],
 			[
+				"code" => "%base_url_without_scheme%",
+				"function" => [
+					$this,
+					"getBaseUrlWithoutScheme"
+				],
+				"parameter" => []
+			],
+			[
 				"code" => "%remote_server%",
-				"function" => "getenv",
-				"parameter" => [
-					"REMOTE_FED_BASE_URL"
-				]
+				"function" => [
+					$this,
+					"getRemoteBaseUrl"
+				],
+				"parameter" => []
+			],
+			[
+				"code" => "%remote_server_without_scheme%",
+				"function" => [
+					$this,
+					"getRemoteBaseUrlWithoutScheme"
+				],
+				"parameter" => []
 			],
 			[
 				"code" => "%local_server%",
 				"function" => [
 					$this,
-					"getBaseUrlWithoutScheme"
+					"getLocalBaseUrl"
+				],
+				"parameter" => []
+			],
+			[
+				"code" => "%local_server_without_scheme%",
+				"function" => [
+					$this,
+					"getLocalBaseUrlWithoutScheme"
 				],
 				"parameter" => []
 			]
