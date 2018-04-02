@@ -272,7 +272,7 @@ abstract class FilesPageBasic extends OwncloudPage {
 	 *
 	 * @return void
 	 */
-	public function deleteFile($name, Session $session, $maxRetries = STANDARDRETRYCOUNT) {
+	public function deleteFile($name, Session $session, $expectToDeleteFile = true, $maxRetries = STANDARDRETRYCOUNT) {
 		$this->initAjaxCounters($session);
 		$this->resetSumStartedAjaxRequests($session);
 		
@@ -285,22 +285,26 @@ abstract class FilesPageBasic extends OwncloudPage {
 				//if no XHR Request were fired we assume the delete action
 				//did not work and we retry
 				if ($countXHRRequests === 0) {
-					error_log("Error while deleting file");
+					if ($expectToDeleteFile) {
+						error_log("Error while deleting file");
+					}
 				} else {
 					break;
 				}
 			} catch (\Exception $e) {
 				$this->closeFileActionsMenu();
-				error_log(
-					"Error while deleting file"
-					. "\n-------------------------\n"
-					. $e->getMessage()
-					. "\n-------------------------\n"
-				);
+				if ($expectToDeleteFile) {
+					error_log(
+						"Error while deleting file"
+						. "\n-------------------------\n"
+						. $e->getMessage()
+						. "\n-------------------------\n"
+					);
+				}
 				usleep(STANDARDSLEEPTIMEMICROSEC);
 			}
 		}
-		if ($counter > 0) {
+		if ($expectToDeleteFile && ($counter > 0)) {
 			$message = "INFORMATION: retried to delete file '" . $name . "' " .
 					   $counter . " times";
 			echo $message;
