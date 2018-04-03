@@ -82,7 +82,7 @@ class RepairOrphanedSubshareTest extends TestCase {
 		//Lets create 10 entries in oc_share to share
 		$parentReshareCount = 1;
 		for($i=1; $i <= 10; $i++) {
-			$time = time();
+			$time = 1522762088 + $i * 60;
 			if ($i <= 5) {
 				$shareWithUser = $user1;
 				$uidOwner = 'admin';
@@ -185,7 +185,7 @@ class RepairOrphanedSubshareTest extends TestCase {
 		$firstIdSet = false;
 		foreach ($totalUsers as $user) {
 			for($i=1; $i <= 100; $i++) {
-				$time = time();
+				$time = 1522762088 + $i * 60;
 				$userIndex = array_search($user, $totalUsers, true);
 				if (($userIndex+1) === count($totalUsers)) {
 					break;
