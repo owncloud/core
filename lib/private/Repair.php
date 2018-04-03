@@ -37,6 +37,7 @@ use OC\Repair\DropOldJobs;
 use OC\Repair\OldGroupMembershipShares;
 use OC\Repair\RemoveGetETagEntries;
 use OC\Repair\RemoveRootShares;
+use OC\Repair\RepairOrphanedSubshare;
 use OC\Repair\RepairSubShares;
 use OC\Repair\SharePropagation;
 use OC\Repair\SqliteAutoincrement;
@@ -191,6 +192,7 @@ class Repair implements IOutput{
 			new InnoDB(),
 			new Collation(\OC::$server->getConfig(), $connection),
 			new SqliteAutoincrement($connection),
+			new RepairOrphanedSubshare($connection),
 			new SearchLuceneTables(),
 			new Apps(\OC::$server->getAppManager(), \OC::$server->getEventDispatcher(), \OC::$server->getConfig(), new \OC_Defaults()),
 		];
@@ -249,7 +251,7 @@ class Repair implements IOutput{
 	}
 
 	/**
-	 * @param int $max
+	 * emit signal
 	 */
 	public function finishProgress() {
 		// for now just emit as we did in the past
