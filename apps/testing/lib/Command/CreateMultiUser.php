@@ -22,6 +22,8 @@
 namespace OCA\Testing\Command;
 
 use OC\Core\Command\Base;
+use OCA\DAV\CardDAV\CardDavBackend;
+use OCA\DAV\Connector\Sabre\Principal;
 use OCP\ILogger;
 use OCP\IUserManager;
 use OCP\IUserSession;
@@ -30,6 +32,7 @@ use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
+use Sabre\VObject\Component\VCard;
 
 class CreateMultiUser extends Base {
 
@@ -37,8 +40,17 @@ class CreateMultiUser extends Base {
 	 * @var IUserManager
 	 */
 	protected $userManager;
-	/** @var IUserSession  */
+
+	/**
+	 * @var CardDavBackend
+	 */
+	protected $cardDavBackend;
+
+	/**
+	 * @var IUserSession
+	 */
 	protected $session;
+
 	/**
 	 * @var ILogger
 	 */
@@ -48,6 +60,13 @@ class CreateMultiUser extends Base {
 		$this->userManager = $userManager;
 		$this->session = $session;
 		$this->logger = $logger;
+		$userPrincipalBackend = new Principal(
+			\OC::$server->getUserManager(),
+			\OC::$server->getGroupManager()
+		);
+		$db = \OC::$server->getDatabaseConnection();
+		$dispatcher = \OC::$server->getEventDispatcher();
+		$this->cardDavBackend = new CardDavBackend($db, $userPrincipalBackend, $dispatcher);
 		parent::__construct();
 	}
 
@@ -60,11 +79,13 @@ class CreateMultiUser extends Base {
 			->setName('testing:createusers')
 			->setDescription('Creates and provisions multiple users for testing')
 			->addOption('prefix', 'p', InputOption::VALUE_REQUIRED, 'userid prefix for created users', $defaultUidPrefix)
-			->addArgument('numUsers', InputArgument::REQUIRED);
+			->addArgument('numUsers', InputArgument::REQUIRED)
+			->addArgument('numContacts', InputArgument::REQUIRED);
 	}
 
 	protected function execute(InputInterface $input, OutputInterface $output) {
 		$num = $input->getArgument('numUsers');
+		$cont = $input->getArgument('numContacts');
 		$prefix = $input->getOption('prefix');
 		$progress = new ProgressBar($output, $num);
 		$progress->setFormatDefinition('custom', ' %current%/%max% [%bar%] %percent:3s%% Elapsed:%elapsed:6s% Estimated:%estimated:-6s% Remaining:%remaining% %message%');
@@ -78,8 +99,20 @@ class CreateMultiUser extends Base {
 			$rate = round($usersCreated / ($msElapsed/1000), 1);
 			$progress->setMessage("Creating [$uid] Rate: $rate users/second");
 			try {
-				$this->userManager->createUser($uid, $uid);
+				$user = $this->userManager->createUser($uid, $uid);
 				$this->fakeLoginAndLogout($uid);
+
+				// Create 5 addressbook entries for each user
+				$username = $user->getUID();
+				$addBookId = (string)$this->cardDavBackend->getAddressBooksForUser("principals/users/$username")[0]['id'];
+				for($n=0; $n<$cont; $n++) {
+					$uri = $uid.$n.'.vcf';
+					$vCard = new VCard();
+					$vCard->UID = $uri;
+					$vCard->FN = 'Testing'.$uid.$n."Contact";
+					$this->cardDavBackend->createCard($addBookId, $uri, $vCard->serialize());
+				}
+
 				$usersCreated++;
 			} catch (\Exception $e) {
 				$error = $e->getMessage();
