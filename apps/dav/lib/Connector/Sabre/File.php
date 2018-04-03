@@ -43,6 +43,7 @@ use OCA\DAV\Connector\Sabre\Exception\UnsupportedMediaType;
 use OCP\Encryption\Exceptions\GenericEncryptionException;
 use OCP\Events\EventEmitterTrait;
 use OCP\Files\EntityTooLargeException;
+use OCP\Files\FileContentNotAllowedException;
 use OCP\Files\ForbiddenException;
 use OCP\Files\InvalidContentException;
 use OCP\Files\InvalidPathException;
@@ -611,6 +612,10 @@ class File extends Node implements IFile {
 	 * @throws \Sabre\DAV\Exception
 	 */
 	private function convertToSabreException(\Exception $e) {
+		if ($e instanceof FileContentNotAllowedException) {
+			// the file content is not permitted
+			throw new FileContentNotAllowedException($e->getMessage(), $e->getRetry(), $e);
+		}
 		if ($e instanceof \Sabre\DAV\Exception) {
 			throw $e;
 		}
