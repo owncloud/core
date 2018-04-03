@@ -43,6 +43,7 @@ class UserSearch {
 	 * UserSearch constructor.
 	 *
 	 * @param IConfig $config
+	 * @since 10.0.8
 	 */
 	public function __construct(IConfig $config) {
 		$this->config = $config;
@@ -51,6 +52,7 @@ class UserSearch {
 	/**
 	 * @param string $pattern
 	 * @return bool
+	 * @since 10.0.8
 	 */
 	public function isSearchable($pattern) {
 		$trimmed = trim($pattern);
@@ -61,6 +63,7 @@ class UserSearch {
 	 * Get minimal allowed size to search users
 	 *
 	 * @return mixed
+	 * @since 10.0.8
 	 */
 	public function getSearchMinLength() {
 		return $this->config->getSystemValue('user.search_min_length', 4);
