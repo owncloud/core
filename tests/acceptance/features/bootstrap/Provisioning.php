@@ -120,7 +120,7 @@ trait Provisioning {
 	 * @return boolean
 	 * @throws Exception
 	 */
-	public function theUserShouldHaveBeenCreated($username) {
+	public function theUserShouldExist($username) {
 		if (array_key_exists($username, $this->createdUsers)) {
 			return $this->createdUsers[$username]['shouldHaveBeenCreated'];
 		}
@@ -131,6 +131,27 @@ trait Provisioning {
 
 		throw new Exception(
 			"user '$username' was not created by this test run"
+		);
+	}
+
+	/**
+	 *
+	 * @param string $groupname
+	 *
+	 * @return boolean
+	 * @throws Exception
+	 */
+	public function theGroupShouldExist($groupname) {
+		if (array_key_exists($groupname, $this->createdGroups)) {
+			return $this->createdGroups[$groupname]['shouldHaveBeenCreated'];
+		}
+
+		if (array_key_exists($groupname, $this->createdRemoteGroups)) {
+			return $this->createdRemoteGroups[$groupname]['shouldHaveBeenCreated'];
+		}
+
+		throw new Exception(
+			"group '$groupname' was not created by this test run"
 		);
 	}
 
@@ -778,7 +799,7 @@ trait Provisioning {
 		// successfully created (i.e. the delete is expected to work) and
 		// there was a problem deleting the user. Because in this case there
 		// might be an effect on later tests.
-		if ($this->theUserShouldHaveBeenCreated($user) && ($this->response->getStatusCode() !== 200)) {
+		if ($this->theUserShouldExist($user) && ($this->response->getStatusCode() !== 200)) {
 			error_log(
 				"INFORMATION: could not delete user '" . $user . "' "
 				. $this->response->getStatusCode() . " " . $this->response->getBody()
@@ -814,7 +835,7 @@ trait Provisioning {
 			$this->getAdminPassword()
 		);
 
-		if ($this->response->getStatusCode() !== 200) {
+		if ($this->theGroupShouldExist($group) && ($this->response->getStatusCode() !== 200)) {
 			error_log(
 				"INFORMATION: could not delete group. '" . $group . "'"
 				. $this->response->getStatusCode() . " " . $this->response->getBody()
@@ -1250,15 +1271,11 @@ trait Provisioning {
 		$previousServer = $this->currentServer;
 		$this->usingServer('LOCAL');
 		foreach ($this->createdGroups as $group => $groupData) {
-			if ($groupData['shouldHaveBeenCreated']) {
-				$this->deleteGroup($group);
-			}
+			$this->deleteGroup($group);
 		}
 		$this->usingServer('REMOTE');
 		foreach ($this->createdRemoteGroups as $remoteGroup => $groupData) {
-			if ($groupData['shouldHaveBeenCreated']) {
-				$this->deleteGroup($remoteGroup);
-			}
+			$this->deleteGroup($remoteGroup);
 		}
 		$this->usingServer($previousServer);
 	}
