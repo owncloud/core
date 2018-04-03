@@ -53,6 +53,7 @@
     "Application is not enabled" : "La aplicación no está habilitada",
     "Authentication error" : "Error al autenticar",
     "Token expired. Please reload page." : "Token expirado. Por favor, recargá la página.",
+    "Unknown user" : "Usuario desconocido",
     "Storage is temporarily not available" : "El repositorio no está disponible temporalmente"
 },"pluralForm" :"nplurals=2; plural=(n != 1);"
 }

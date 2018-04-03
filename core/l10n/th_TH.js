@@ -263,6 +263,7 @@ OC.L10N.register(
     "You can click here to return to %s." : "คุณสามารถคลิกที่นี่เพื่อกลับไปยัง %s",
     "Hey there,\n\njust letting you know that %s shared %s with you.\nView it: %s\n\n" : "นี่คุณ,\nอยากให้คุณทราบว่า %s ได้แชร์ %s กับคุณ\nคลิกดูที่นี่: %s\n",
     "The share will expire on %s." : "การแชร์จะหมดอายุในวันที่ %s",
+    "Personal note from the sender: %s." : "บันทึกส่วนบุคคลจากผู้ส่ง: %s",
     "Cheers!" : "ไชโย!",
     "Internal Server Error" : "เกิดข้อผิดพลาดภายในเซิร์ฟเวอร์",
     "The server encountered an internal error and was unable to complete your request." : "พบข้อผิดพลาดภายในเซิร์ฟเวอร์และไม่สามารถดำเนินการตามคำขอของคุณ",
