@@ -359,6 +359,29 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 	}
 
 	/**
+	 * Delete a file on the current page. The current page should be one that
+	 * has rows of files.
+	 *
+	 * @param string $name
+	 *
+	 * @param bool $expectToDeleteFile if true, then the caller expects that the file can be deleted
+	 * @return void
+	 * @throws Exception
+	 */
+	public function deleteTheFileUsingTheWebUI($name, $expectToDeleteFile = true) {
+		$pageObject = $this->getCurrentPageObject();
+		$session = $this->getSession();
+		$pageObject->waitTillPageIsLoaded($session);
+		if ($expectToDeleteFile) {
+			$pageObject->deleteFile($name, $session, $expectToDeleteFile);
+		} else {
+			// We do not expect to be able to delete the file,
+			// so do not waste time doing too many retries.
+			$pageObject->deleteFile($name, $session, $expectToDeleteFile, MINIMUMRETRYCOUNT);
+		}
+	}
+
+	/**
 	 * for a folder or individual file that is shared, the receiver of the share
 	 * has an "Unshare" entry in the file actions menu. Clicking it works just
 	 * like delete.
@@ -371,10 +394,7 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 	 * @return void
 	 */
 	public function theUserDeletesTheFileUsingTheWebUI($name) {
-		$pageObject = $this->getCurrentPageObject();
-		$session = $this->getSession();
-		$pageObject->waitTillPageIsLoaded($session);
-		$pageObject->deleteFile($name, $session);
+		$this->deleteTheFileUsingTheWebUI($name);
 	}
 
 	/**
@@ -458,7 +478,7 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 	) {
 		$this->deletedElementsTable = $table;
 		foreach ($this->deletedElementsTable as $file) {
-			$this->theUserDeletesTheFileUsingTheWebUI($file['name']);
+			$this->deleteTheFileUsingTheWebUI($file['name']);
 		}
 	}
 
@@ -1040,7 +1060,7 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 	 */
 	public function itShouldNotBePossibleToDeleteUsingTheWebUI($name) {
 		try {
-			$this->theUserDeletesTheFileUsingTheWebUI($name);
+			$this->deleteTheFileUsingTheWebUI($name, false);
 		} catch (ElementNotFoundException $e) {
 			PHPUnit_Framework_Assert::assertContains(
 				"could not find button 'Delete' in action Menu",
