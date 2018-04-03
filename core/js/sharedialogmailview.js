@@ -197,7 +197,7 @@
 					// return query data ASAP
 					query.callback({results: data});
 
-					if (query.term.length >= 3) {
+					if (query.term.length >= OC.getCapabilities().files_sharing.search_min_length) {
 						if (this.xhr != null)
 							this.xhr.abort();
 
