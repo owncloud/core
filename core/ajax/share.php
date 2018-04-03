@@ -310,9 +310,13 @@ if (isset($_POST['action']) && isset($_POST['itemType']) && isset($_POST['itemSo
 				$userEnumerationAllowed = OC::$server->getConfig()
 					->getAppValue('core', 'shareapi_allow_share_dialog_user_enumeration', 'yes') == 'yes';
 
-				if (!is_null($cm) && $cm->isEnabled() && $userEnumerationAllowed) {
+				if ($cm !== null && $cm->isEnabled() && $userEnumerationAllowed) {
 					$contacts = $cm->search((string)$_GET['search'], ['FN', 'EMAIL']);
 					foreach ($contacts as $contact) {
+						// We don't want contacts from system address books
+						if (isset($contact['isSystemBook'])) {
+							continue;
+						}
 						if (!isset($contact['EMAIL'])) {
 							continue;
 						}
