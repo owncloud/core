@@ -34,16 +34,20 @@ class RepairOrphanedSubshare implements IRepairStep {
 	/** @var  IQueryBuilder */
 	private $missingParents;
 
-	/** @var  IQueryBuilder */
+	/** @var IQueryBuilder  */
 	private $deleteOrphanReshares;
+
+	/** @var  int */
+	private $pageLimit;
 
 	/**
 	 * RepairOrphanedSubshare constructor.
 	 *
 	 * @param IDBConnection $connection
 	 */
-	public function __construct(IDBConnection $connection) {
+	public function __construct(IDBConnection $connection, $pageLimit = 1000) {
 		$this->connection = $connection;
+		$this->pageLimit = $pageLimit;
 
 		//This delete query deletes orphan shares whose parents are missing
 		$this->deleteOrphanReshares = $this->connection->getQueryBuilder();
@@ -51,19 +55,19 @@ class RepairOrphanedSubshare implements IRepairStep {
 			->delete('share')
 			->where(
 				$this->deleteOrphanReshares->expr()->eq('parent',
-					$this->deleteOrphanReshares->createParameter('parentId')));
-
-
+					$this->deleteOrphanReshares->createParameter('parentId'))
+			);
 		//Set the query to get the parent id's missing from the table.
 		$this->missingParents = $this->connection->getQueryBuilder();
 		$qb = $this->connection->getQueryBuilder();
 
-		$qb->select('id')
-			->from('share');
+		$qb->select('s2.id')
+			->from('share', 's2')
+			->where($this->missingParents->expr()->eq('s2.id', 's1.parent'));
 		$this->missingParents->select('parent')
-			->from('share');
+			->from('share', 's1');
 		$this->missingParents->where($this->missingParents->expr()->isNotNull('parent'));
-		$this->missingParents->andWhere($this->missingParents->expr()->notIn('parent', $this->missingParents->createFunction($qb->getSQL())));
+		$this->missingParents->andWhere($this->missingParents->createFunction('NOT EXISTS (' . $qb->getSQL() . ')'));
 		$this->missingParents->groupBy('parent');
 	}
 
@@ -84,24 +88,21 @@ class RepairOrphanedSubshare implements IRepairStep {
 	 * @throws \Exception in case of failure
 	 */
 	public function run(IOutput $output) {
-		$pageLimit = 1000;
-		$paginationOffset = 0;
-		$deleteParents = [];
 
 		/** A one time call to get missing parents from oc_share table */
 		do {
-			$this->missingParents->setMaxResults($pageLimit);
-			$this->missingParents->setFirstResult($paginationOffset);
+			$this->missingParents->setMaxResults($this->pageLimit);
 			$results = $this->missingParents->execute();
 			$rows = $results->fetchAll();
 			$results->closeCursor();
 			if (count($rows) > 0) {
-				$paginationOffset += $pageLimit;
+				$this->connection->beginTransaction();
 				foreach ($rows as $row) {
 					$this->deleteOrphanReshares->setParameter('parentId', $row['parent'])->execute();
 				}
+				$this->connection->commit();
 			}
 
-		} while (empty($rows));
+		} while (!empty($rows));
 	}
 }

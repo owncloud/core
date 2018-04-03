@@ -286,4 +286,128 @@ class RepairOrphanedSubshareTest extends TestCase {
 		} while(count($results) > 0);
 		$this->assertEquals($totalParents - 20, $result);
 	}
+
+	/**
+	 * A new approach
+	 */
+	public function testOrphanSharesNoMorePagination() {
+		$qb = $this->connection->getQueryBuilder();
+		$totalUsers[] = 'admin';
+		//Create 4 users. admin, user1, user2
+		$user = 'user';
+		for ($i = 1; $i <= 3; $i++) {
+			$this->createUser($user . $i);
+			$totalUsers[] = $user . $i;
+		}
+
+		//Lets create 12000 entries in oc_share to share
+		//The idea here is 3000 folders of admin are shared with
+		//2 other users. So each folders are getting re-shared with others
+		$getAllIdsPerUser = [];
+		$totalParents = 1;
+		foreach ($totalUsers as $user) {
+			$userIndex = array_search($user, $totalUsers, true);
+			for($i=1; $i <= 3000; $i++) {
+				if (($userIndex+1) === count($totalUsers)) {
+					break;
+				}
+				$time = 1522762088 + $userIndex + 1 +  $i * 60;
+
+				$shareWithUser = $totalUsers[$userIndex+1];
+				$uidOwner = $user;
+				if ($userIndex === 0) {
+					$qb->insert('share')
+						->values([
+							'share_type' => $qb->expr()->literal('0'),
+							'share_with' => $qb->expr()->literal($shareWithUser),
+							'uid_owner' => $qb->expr()->literal($uidOwner),
+							'item_type' => $qb->expr()->literal('folder'),
+							'item_source' => $qb->expr()->literal($i),
+							'file_source' => $qb->expr()->literal($i),
+							'file_target' => $qb->expr()->literal('/' . $i),
+							'permissions' => $qb->expr()->literal(31),
+							'stime' => $qb->expr()->literal($time),
+						])
+						->execute();
+					$getAllIdsPerUser[$user][$i] = $this->getLastSharedId();
+					$totalParents++;
+				} else {
+
+					$qb->insert('share')
+						->values([
+							'share_type' => $qb->expr()->literal('0'),
+							'share_with' => $qb->expr()->literal($shareWithUser),
+							'uid_owner' => $qb->expr()->literal($uidOwner),
+							'parent' => $qb->expr()->literal($getAllIdsPerUser['admin'][$i]),
+							'item_type' => $qb->expr()->literal('folder'),
+							'item_source' => $qb->expr()->literal($getAllIdsPerUser['admin'][$i]),
+							'file_source' => $qb->expr()->literal($getAllIdsPerUser['admin'][$i]),
+							'file_target' => $qb->expr()->literal('/' . $getAllIdsPerUser['admin'][$i]),
+							'permissions' => $qb->expr()->literal(31),
+							'stime' => $qb->expr()->literal($time),
+						])
+						->execute();
+					$totalParents++;
+					$getAllIdsPerUser[$user][] = $this->getLastSharedId();
+				}
+			}
+		}
+
+		//Now lets delete 2500 rows from admin user who had reshared to other users.
+		$delRows = 2500;
+		$indexIdToDelete = 10;
+		while ($delRows > 0) {
+			//Lets try to grab even indexes from $getAllIdsPerUser['admin']
+			// and delete them.
+			$qb->delete('share')
+				->where($qb->expr()->eq('id', $qb->createNamedParameter($getAllIdsPerUser['admin'][$indexIdToDelete])))
+				->execute();
+			$delRows--;
+			$indexIdToDelete++;
+		}
+
+		$outputMock = $this->createMock(IOutput::class);
+		$this->repair->run($outputMock);
+
+		//Query to check the deleted parents
+		$checkQuery = $this->connection->getQueryBuilder();
+		//From 10 to 2509 are the entries missing. So lets validate that.
+		//Lets take some snippets
+		$missingEntries[] = range(10,20);
+		$missingEntries[] = range(190, 200);
+		$missingEntries[] = range(1500, 1510);
+		$missingEntries[] = range(2000, 2010);
+		$missingEntries[] = range(2499, 2509);
+		foreach ($missingEntries as $missingEntry) {
+			foreach ($missingEntry as $adminIndex) {
+				$row = $checkQuery->select('parent')
+					->from('share')->where($checkQuery->expr()->eq('id', $checkQuery->createNamedParameter($getAllIdsPerUser['admin'][$adminIndex])))
+					->execute()->fetchAll();
+				$this->assertEquals(0, count($row));
+			}
+		}
+
+		//Lets check range of 2900 to 2910
+		foreach (range(2900, 2910) as $adminIndex) {
+			$row = $checkQuery->select('parent')
+				->from('share')->where($checkQuery->expr()->eq('id', $checkQuery->createNamedParameter($getAllIdsPerUser['admin'][$adminIndex])))
+				->execute()->fetchAll();
+			$this->assertEquals(1, count($row));
+		}
+
+		//Lets check rance of 1 to 9
+		foreach (range(1, 9) as $adminIndex) {
+			$row = $checkQuery->select('parent')
+				->from('share')->where($checkQuery->expr()->eq('id', $checkQuery->createNamedParameter($getAllIdsPerUser['admin'][$adminIndex])))
+				->execute()->fetchAll();
+			$this->assertEquals(1, count($row));
+		}
+	}
+
+	/**
+	 * @return int
+	 */
+	protected function getLastSharedId() {
+		return $this->connection->lastInsertId('*PREFIX*share');
+	}
 }
