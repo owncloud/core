@@ -122,11 +122,11 @@ trait Provisioning {
 	 */
 	public function theUserShouldExist($username) {
 		if (array_key_exists($username, $this->createdUsers)) {
-			return $this->createdUsers[$username]['shouldHaveBeenCreated'];
+			return $this->createdUsers[$username]['shouldExist'];
 		}
 
 		if (array_key_exists($username, $this->createdRemoteUsers)) {
-			return $this->createdRemoteUsers[$username]['shouldHaveBeenCreated'];
+			return $this->createdRemoteUsers[$username]['shouldExist'];
 		}
 
 		throw new Exception(
@@ -143,11 +143,11 @@ trait Provisioning {
 	 */
 	public function theGroupShouldExist($groupname) {
 		if (array_key_exists($groupname, $this->createdGroups)) {
-			return $this->createdGroups[$groupname]['shouldHaveBeenCreated'];
+			return $this->createdGroups[$groupname]['shouldExist'];
 		}
 
 		if (array_key_exists($groupname, $this->createdRemoteGroups)) {
-			return $this->createdRemoteGroups[$groupname]['shouldHaveBeenCreated'];
+			return $this->createdRemoteGroups[$groupname]['shouldExist'];
 		}
 
 		throw new Exception(
@@ -351,24 +351,40 @@ trait Provisioning {
 	 * @param string $password
 	 * @param string $displayName
 	 * @param string $email
-	 * @param bool $shouldHaveBeenCreated
+	 * @param bool $shouldExist
 	 *
 	 * @return void
 	 */
 	public function addUserToCreatedUsersList(
-		$user, $password, $displayName = null, $email = null, $shouldHaveBeenCreated = true
+		$user, $password, $displayName = null, $email = null, $shouldExist = true
 	) {
 		$userData = [
 			"password" => $password,
 			"displayname" => $displayName,
 			"email" => $email,
-			"shouldHaveBeenCreated" => $shouldHaveBeenCreated
+			"shouldExist" => $shouldExist
 		];
 
 		if ($this->currentServer === 'LOCAL') {
 			$this->createdUsers[$user] = $userData;
 		} elseif ($this->currentServer === 'REMOTE') {
 			$this->createdRemoteUsers[$user] = $userData;
+		}
+	}
+
+	/**
+	 * Remembers that a user from the list of users that were created during
+	 * test runs is no longer expected to exist. Useful if a user was created
+	 * during the setup phase but was deleted in a test run. We don't expect
+	 * this user to exist in the tear-down phase, so remember that fact.
+	 *
+	 * @param string $user
+	 *
+	 * @return void
+	 */
+	public function rememberThatUserIsNotExpectedToExist($user) {
+		if (array_key_exists($user, $this->createdUsers)) {
+			$this->createdUsers[$user]['shouldExist'] = false;
 		}
 	}
 
@@ -625,13 +641,13 @@ trait Provisioning {
 
 	/**
 	 * @param string $group
-	 * @param bool $shouldHaveBeenCreated
+	 * @param bool $shouldExist
 	 *
 	 * @return void
 	 */
-	public function addGroupToCreatedGroupsList($group, $shouldHaveBeenCreated = true) {
+	public function addGroupToCreatedGroupsList($group, $shouldExist = true) {
 		$groupData = [
-			"shouldHaveBeenCreated" => $shouldHaveBeenCreated
+			"shouldExist" => $shouldExist
 		];
 
 		if ($this->currentServer === 'LOCAL') {
@@ -642,17 +658,18 @@ trait Provisioning {
 	}
 
 	/**
-	 * deletes a group from the lists of groups that were created during test runs
-	 * useful if a group got created during the setup phase but got deleted in a
-	 * test run. We don't want to try to delete this group again in the tear-down phase
+	 * Remembers that a group from the list of groups that were created during
+	 * test runs is no longer expected to exist. Useful if a group was created
+	 * during the setup phase but was deleted in a test run. We don't expect
+	 * this group to exist in the tear-down phase, so remember that fact.
 	 *
 	 * @param string $group
 	 *
 	 * @return void
 	 */
-	public function deleteGroupFromCreatedGroupsList($group) {
+	public function rememberThatGroupIsNotExpectedToExist($group) {
 		if (array_key_exists($group, $this->createdGroups)) {
-			$this->createdGroups[$group]['shouldHaveBeenCreated'] = false;
+			$this->createdGroups[$group]['shouldExist'] = false;
 		}
 	}
 
@@ -805,6 +822,8 @@ trait Provisioning {
 				. $this->response->getStatusCode() . " " . $this->response->getBody()
 			);
 		}
+
+		$this->rememberThatUserIsNotExpectedToExist($user);
 	}
 
 	/**
@@ -841,6 +860,8 @@ trait Provisioning {
 				. $this->response->getStatusCode() . " " . $this->response->getBody()
 			);
 		}
+
+		$this->rememberThatGroupIsNotExpectedToExist($group);
 	}
 
 	/**
