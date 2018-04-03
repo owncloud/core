@@ -40,6 +40,8 @@ use OC\User\Manager as UserManager;
 use OCP\GroupInterface;
 use OCP\IGroupManager;
 use OCP\Util\UserSearch;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\EventDispatcher\GenericEvent;
 
 /**
  * Class Manager
@@ -85,13 +87,17 @@ class Manager extends PublicEmitter implements IGroupManager {
 	/** @var \OC\SubAdmin */
 	private $subAdmin = null;
 
+	/** @var EventDispatcherInterface */
+	private $eventDispatcher;
+
 	/**
 	 * @param \OC\User\Manager $userManager
 	 * @param UserSearch $userSearch
 	 */
-	public function __construct(UserManager $userManager, UserSearch $userSearch) {
+	public function __construct(UserManager $userManager, UserSearch $userSearch, EventDispatcherInterface $eventDispatcher) {
 		$this->userManager = $userManager;
 		$this->userSearch = $userSearch;
+		$this->eventDispatcher = $eventDispatcher;
 		$cachedGroups = & $this->cachedGroups;
 		$cachedUserGroups = & $this->cachedUserGroups;
 		$this->listen('\OC\Group', 'postDelete', function ($group) use (&$cachedGroups, &$cachedUserGroups) {
@@ -186,7 +192,7 @@ class Manager extends PublicEmitter implements IGroupManager {
 		if (count($backends) === 0) {
 			return null;
 		}
-		$this->cachedGroups[$gid] = new Group($gid, $backends, $this->userManager, $this, $displayName);
+		$this->cachedGroups[$gid] = new Group($gid, $backends, $this->userManager, $this->eventDispatcher, $this, $displayName);
 		return $this->cachedGroups[$gid];
 	}
 
@@ -209,11 +215,13 @@ class Manager extends PublicEmitter implements IGroupManager {
 			return $group;
 		} else {
 			$this->emit('\OC\Group', 'preCreate', [$gid]);
+			$this->eventDispatcher->dispatch('group.preCreate', new GenericEvent(null, ['gid' => $gid]));
 			foreach ($this->backends as $backend) {
 				if ($backend->implementsActions(\OC\Group\Backend::CREATE_GROUP)) {
 					$backend->createGroup($gid);
 					$group = $this->getGroupObject($gid);
 					$this->emit('\OC\Group', 'postCreate', [$group]);
+					$this->eventDispatcher->dispatch('group.postCreate', new GenericEvent($group, ['gid' => $gid]));
 					return $group;
 				}
 			}
