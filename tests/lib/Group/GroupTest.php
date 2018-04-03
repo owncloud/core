@@ -10,6 +10,9 @@
 namespace Test\Group;
 
 use OCP\IUser;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\EventDispatcher\GenericEvent;
+use OC\Group\Group;
 
 class GroupTest extends \Test\TestCase {
 	/**
@@ -33,10 +36,35 @@ class GroupTest extends \Test\TestCase {
 		return $userManager;
 	}
 
+	private function getEventDispatcherMock() {
+		$eventMap = [];
+		$eventDispatcher = $this->getMockBuilder(EventDispatcherInterface::class)
+			->disableOriginalConstructor()
+			->getMock();
+		$eventDispatcher->method('addListener')
+			->will($this->returnCallback(function($eventName, $callable, $priority) use (&$eventMap){
+				if (!isset($eventMap[$eventName])) {
+					$eventMap[$eventName] = [];
+				}
+				// ignore priority for now
+				$eventMap[$eventName][] = $callable;
+		}));
+		$eventDispatcher->method('dispatch')
+			->will($this->returnCallback(function($eventName, $event) use (&$eventMap){
+				if (isset($eventMap[$eventName])) {
+					foreach ($eventMap[$eventName] as $callable) {
+						$callable($event);
+					}
+				}
+				return $event;
+		}));
+		return $eventDispatcher;
+	}
+
 	public function testGetUsersSingleBackend() {
 		$backend = $this->createMock('OC\Group\Database');
 		$userManager = $this->getUserManager();
-		$group = new \OC\Group\Group('group1', [$backend], $userManager);
+		$group = new \OC\Group\Group('group1', [$backend], $userManager, $this->getEventDispatcherMock());
 
 		$backend->expects($this->once())
 			->method('usersInGroup')
@@ -56,7 +84,7 @@ class GroupTest extends \Test\TestCase {
 		$backend1 = $this->createMock('OC\Group\Database');
 		$backend2 = $this->createMock('OC\Group\Database');
 		$userManager = $this->getUserManager();
-		$group = new \OC\Group\Group('group1', [$backend1, $backend2], $userManager);
+		$group = new \OC\Group\Group('group1', [$backend1, $backend2], $userManager, $this->getEventDispatcherMock());
 
 		$backend1->expects($this->once())
 			->method('usersInGroup')
@@ -82,7 +110,7 @@ class GroupTest extends \Test\TestCase {
 	public function testInGroupSingleBackend() {
 		$backend = $this->createMock('OC\Group\Database');
 		$userManager = $this->getUserManager();
-		$group = new \OC\Group\Group('group1', [$backend], $userManager);
+		$group = new \OC\Group\Group('group1', [$backend], $userManager, $this->getEventDispatcherMock());
 
 		$backend->expects($this->once())
 			->method('inGroup')
@@ -99,7 +127,7 @@ class GroupTest extends \Test\TestCase {
 		$backend1 = $this->createMock('OC\Group\Database');
 		$backend2 = $this->createMock('OC\Group\Database');
 		$userManager = $this->getUserManager();
-		$group = new \OC\Group\Group('group1', [$backend1, $backend2], $userManager);
+		$group = new \OC\Group\Group('group1', [$backend1, $backend2], $userManager, $this->getEventDispatcherMock());
 
 		$backend1->expects($this->once())
 			->method('inGroup')
@@ -120,7 +148,7 @@ class GroupTest extends \Test\TestCase {
 	public function testAddUser() {
 		$backend = $this->createMock('OC\Group\Database');
 		$userManager = $this->getUserManager();
-		$group = new \OC\Group\Group('group1', [$backend], $userManager);
+		$group = new \OC\Group\Group('group1', [$backend], $userManager, $this->getEventDispatcherMock());
 
 		$backend->expects($this->once())
 			->method('inGroup')
@@ -140,10 +168,52 @@ class GroupTest extends \Test\TestCase {
 		$group->addUser($user1);
 	}
 
+	public function testAddUserWithDispatcher() {
+		$backend = $this->createMock('OC\Group\Database');
+		$userManager = $this->getUserManager();
+
+		$eventsCalled = ['group.preAddUser' => [], 'group.postAddUser' => []];
+		$dispatcher = $this->getEventDispatcherMock();
+		$dispatcher->addListener('group.preAddUser', function(GenericEvent $event) use (&$eventsCalled){
+			$eventsCalled['group.preAddUser']['subject'] = $event->getSubject();
+			$eventsCalled['group.preAddUser']['arguments'] = $event->getArguments();
+		});
+		$dispatcher->addListener('group.postAddUser', function(GenericEvent $event) use (&$eventsCalled){
+			$eventsCalled['group.postAddUser']['subject'] = $event->getSubject();
+			$eventsCalled['group.postAddUser']['arguments'] = $event->getArguments();
+		});
+
+		$group = new \OC\Group\Group('group1', [$backend], $userManager, $dispatcher);
+
+		$backend->expects($this->once())
+			->method('inGroup')
+			->with('user1', 'group1')
+			->will($this->returnValue(false));
+		$backend->expects($this->any())
+			->method('implementsActions')
+			->will($this->returnValue(true));
+
+		$backend->expects($this->once())
+			->method('addToGroup')
+			->with('user1', 'group1');
+
+		$user1 = $this->createMock(IUser::class);
+		$user1->expects($this->any())->method('getUID')->willReturn('user1');
+
+		$group->addUser($user1);
+
+		$this->assertNotEmpty($eventsCalled['group.preAddUser']);
+		$this->assertInstanceOf(Group::class, $eventsCalled['group.preAddUser']['subject']);
+		$this->assertEquals(['user' => $user1], $eventsCalled['group.preAddUser']['arguments']);
+		$this->assertNotEmpty($eventsCalled['group.postAddUser']);
+		$this->assertInstanceOf(Group::class, $eventsCalled['group.postAddUser']['subject']);
+		$this->assertEquals(['user' => $user1], $eventsCalled['group.postAddUser']['arguments']);
+	}
+
 	public function testAddUserAlreadyInGroup() {
 		$backend = $this->createMock('OC\Group\Database');
 		$userManager = $this->getUserManager();
-		$group = new \OC\Group\Group('group1', [$backend], $userManager);
+		$group = new \OC\Group\Group('group1', [$backend], $userManager, $this->getEventDispatcherMock());
 
 		$backend->expects($this->once())
 			->method('inGroup')
@@ -162,10 +232,47 @@ class GroupTest extends \Test\TestCase {
 		$group->addUser($user1);
 	}
 
+	public function testAddUserAlreadyInGroupWithDispatcher() {
+		$backend = $this->createMock('OC\Group\Database');
+		$userManager = $this->getUserManager();
+
+		$eventsCalled = ['group.preAddUser' => [], 'group.postAddUser' => []];
+		$dispatcher = $this->getEventDispatcherMock();
+		$dispatcher->addListener('group.preAddUser', function(GenericEvent $event) use (&$eventsCalled){
+			$eventsCalled['group.preAddUser']['subject'] = $event->getSubject();
+			$eventsCalled['group.preAddUser']['arguments'] = $event->getArguments();
+		});
+		$dispatcher->addListener('group.postAddUser', function(GenericEvent $event) use (&$eventsCalled){
+			$eventsCalled['group.postAddUser']['subject'] = $event->getSubject();
+			$eventsCalled['group.postAddUser']['arguments'] = $event->getArguments();
+		});
+
+		$group = new \OC\Group\Group('group1', [$backend], $userManager, $dispatcher);
+
+		$backend->expects($this->once())
+			->method('inGroup')
+			->with('user1', 'group1')
+			->will($this->returnValue(true));
+		$backend->expects($this->any())
+			->method('implementsActions')
+			->will($this->returnValue(true));
+
+		$backend->expects($this->never())
+			->method('addToGroup');
+
+		$user1 = $this->createMock(IUser::class);
+		$user1->expects($this->any())->method('getUID')->willReturn('user1');
+
+		$group->addUser($user1);
+
+		$this->assertEmpty($eventsCalled['group.preAddUser']);
+		$this->assertEmpty($eventsCalled['group.postAddUser']);
+	}
+
 	public function testRemoveUser() {
 		$backend = $this->createMock('OC\Group\Database');
 		$userManager = $this->getUserManager();
-		$group = new \OC\Group\Group('group1', [$backend], $userManager);
+		$group = new \OC\Group\Group('group1', [$backend], $userManager, $this->getEventDispatcherMock());
 
 		$backend->expects($this->once())
 			->method('inGroup')
@@ -185,10 +292,64 @@ class GroupTest extends \Test\TestCase {
 		$group->removeUser($user1);
 	}
 
+	public function testRemoveUserWithDispatcher() {
+		$backend = $this->createMock('OC\Group\Database');
+		$userManager = $this->getUserManager();
+
+		$eventsCalled = ['group.preRemoveUser' => [], 'group.postRemoveUser' => []];
+		$dispatcher = $this->getEventDispatcherMock();
+		$dispatcher->addListener('group.preRemoveUser', function(GenericEvent $event) use (&$eventsCalled){
+			$eventsCalled['group.preRemoveUser']['subject'] = $event->getSubject();
+			$eventsCalled['group.preRemoveUser']['arguments'] = $event->getArguments();
+		});
+		$dispatcher->addListener('group.postRemoveUser', function(GenericEvent $event) use (&$eventsCalled){
+			$eventsCalled['group.postRemoveUser']['subject'] = $event->getSubject();
+			$eventsCalled['group.postRemoveUser']['arguments'] = $event->getArguments();
+		});
+
+		$group = new \OC\Group\Group('group1', [$backend], $userManager, $dispatcher);
+
+		$backend->expects($this->once())
+			->method('inGroup')
+			->with('user1', 'group1')
+			->will($this->returnValue(true));
+		$backend->expects($this->any())
+			->method('implementsActions')
+			->will($this->returnValue(true));
+
+		$backend->expects($this->once())
+			->method('removeFromGroup')
+			->with('user1', 'group1');
+
+		$user1 = $this->createMock(IUser::class);
+		$user1->expects($this->any())->method('getUID')->willReturn('user1');
+
+		$group->removeUser($user1);
+
+		$this->assertNotEmpty($eventsCalled['group.preRemoveUser']);
+		$this->assertInstanceOf(Group::class, $eventsCalled['group.preRemoveUser']['subject']);
+		$this->assertEquals(['user' => $user1], $eventsCalled['group.preRemoveUser']['arguments']);
+		$this->assertNotEmpty($eventsCalled['group.postRemoveUser']);
+		$this->assertInstanceOf(Group::class, $eventsCalled['group.postRemoveUser']['subject']);
+		$this->assertEquals(['user' => $user1], $eventsCalled['group.postRemoveUser']['arguments']);
+	}
+
 	public function testRemoveUserNotInGroup() {
 		$backend = $this->createMock('OC\Group\Database');
 		$userManager = $this->getUserManager();
-		$group = new \OC\Group\Group('group1', [$backend], $userManager);
+
+		$eventsCalled = ['group.preRemoveUser' => [], 'group.postRemoveUser' => []];
+		$dispatcher = $this->getEventDispatcherMock();
+		$dispatcher->addListener('group.preRemoveUser', function(GenericEvent $event) use (&$eventsCalled){
+			$eventsCalled['group.preRemoveUser']['subject'] = $event->getSubject();
+			$eventsCalled['group.preRemoveUser']['arguments'] = $event->getArguments();
+		});
+		$dispatcher->addListener('group.postRemoveUser', function(GenericEvent $event) use (&$eventsCalled){
+			$eventsCalled['group.postRemoveUser']['subject'] = $event->getSubject();
+			$eventsCalled['group.postRemoveUser']['arguments'] = $event->getArguments();
+		});
+
+		$group = new \OC\Group\Group('group1', [$backend], $userManager, $dispatcher);
 
 		$backend->expects($this->once())
 			->method('inGroup')
@@ -204,13 +365,19 @@ class GroupTest extends \Test\TestCase {
 		$user1->expects($this->any())->method('getUID')->willReturn('user1');
 
 		$group->removeUser($user1);
+
+		// preRemoveUser is triggered but not postRemoveUser
+		$this->assertNotEmpty($eventsCalled['group.preRemoveUser']);
+		$this->assertInstanceOf(Group::class, $eventsCalled['group.preRemoveUser']['subject']);
+		$this->assertEquals(['user' => $user1], $eventsCalled['group.preRemoveUser']['arguments']);
+		$this->assertEmpty($eventsCalled['group.postRemoveUser']);
 	}
 
 	public function testRemoveUserMultipleBackends() {
 		$backend1 = $this->createMock('OC\Group\Database');
 		$backend2 = $this->createMock('OC\Group\Database');
 		$userManager = $this->getUserManager();
-		$group = new \OC\Group\Group('group1', [$backend1, $backend2], $userManager);
+		$group = new \OC\Group\Group('group1', [$backend1, $backend2], $userManager, $this->getEventDispatcherMock());
 
 		$backend1->expects($this->once())
 			->method('inGroup')
@@ -245,7 +412,7 @@ class GroupTest extends \Test\TestCase {
 	public function testSearchUsers() {
 		$backend = $this->createMock('OC\Group\Database');
 		$userManager = $this->getUserManager();
-		$group = new \OC\Group\Group('group1', [$backend], $userManager);
+		$group = new \OC\Group\Group('group1', [$backend], $userManager, $this->getEventDispatcherMock());
 
 		$backend->expects($this->once())
 			->method('usersInGroup')
@@ -263,7 +430,7 @@ class GroupTest extends \Test\TestCase {
 		$backend1 = $this->createMock('OC\Group\Database');
 		$backend2 = $this->createMock('OC\Group\Database');
 		$userManager = $this->getUserManager();
-		$group = new \OC\Group\Group('group1', [$backend1, $backend2], $userManager);
+		$group = new \OC\Group\Group('group1', [$backend1, $backend2], $userManager, $this->getEventDispatcherMock());
 
 		$backend1->expects($this->once())
 			->method('usersInGroup')
@@ -284,7 +451,7 @@ class GroupTest extends \Test\TestCase {
 	public function testSearchUsersLimitAndOffset() {
 		$backend = $this->createMock('OC\Group\Database');
 		$userManager = $this->getUserManager();
-		$group = new \OC\Group\Group('group1', [$backend], $userManager);
+		$group = new \OC\Group\Group('group1', [$backend], $userManager, $this->getEventDispatcherMock());
 
 		$backend->expects($this->once())
 			->method('usersInGroup')
@@ -302,7 +469,7 @@ class GroupTest extends \Test\TestCase {
 		$backend1 = $this->createMock('OC\Group\Database');
 		$backend2 = $this->createMock('OC\Group\Database');
 		$userManager = $this->getUserManager();
-		$group = new \OC\Group\Group('group1', [$backend1, $backend2], $userManager);
+		$group = new \OC\Group\Group('group1', [$backend1, $backend2], $userManager, $this->getEventDispatcherMock());
 
 		$backend1->expects($this->once())
 			->method('usersInGroup')
@@ -325,7 +492,7 @@ class GroupTest extends \Test\TestCase {
 	public function testCountUsers() {
 		$backend1 = $this->createMock('OC\Group\Database');
 		$userManager = $this->getUserManager();
-		$group = new \OC\Group\Group('group1', [$backend1], $userManager);
+		$group = new \OC\Group\Group('group1', [$backend1], $userManager, $this->getEventDispatcherMock());
 
 		$backend1->expects($this->once())
 			->method('countUsersInGroup')
@@ -345,7 +512,7 @@ class GroupTest extends \Test\TestCase {
 		$backend1 = $this->createMock('OC\Group\Database');
 		$backend2 = $this->createMock('OC\Group\Database');
 		$userManager = $this->getUserManager();
-		$group = new \OC\Group\Group('group1', [$backend1, $backend2], $userManager);
+		$group = new \OC\Group\Group('group1', [$backend1, $backend2], $userManager, $this->getEventDispatcherMock());
 
 		$backend1->expects($this->once())
 			->method('countUsersInGroup')
@@ -371,7 +538,7 @@ class GroupTest extends \Test\TestCase {
 	public function testCountUsersNoMethod() {
 		$backend1 = $this->createMock('OC\Group\Database');
 		$userManager = $this->getUserManager();
-		$group = new \OC\Group\Group('group1', [$backend1], $userManager);
+		$group = new \OC\Group\Group('group1', [$backend1], $userManager, $this->getEventDispatcherMock());
 
 		$backend1->expects($this->never())
 			->method('countUsersInGroup');
@@ -387,7 +554,7 @@ class GroupTest extends \Test\TestCase {
 	public function testDelete() {
 		$backend = $this->createMock('OC\Group\Database');
 		$userManager = $this->getUserManager();
-		$group = new \OC\Group\Group('group1', [$backend], $userManager);
+		$group = new \OC\Group\Group('group1', [$backend], $userManager, $this->getEventDispatcherMock());
 
 		$backend->expects($this->once())
 			->method('deleteGroup')
@@ -397,5 +564,37 @@ class GroupTest extends \Test\TestCase {
 			->will($this->returnValue(true));
 
 		$group->delete();
+	}
+
+	public function testDeleteWithDispatcher() {
+		$backend = $this->createMock('OC\Group\Database');
+		$userManager = $this->getUserManager();
+
+		$eventsCalled = ['group.preDelete' => [], 'group.postDelete' => []];
+		$dispatcher = $this->getEventDispatcherMock();
+		$dispatcher->addListener('group.preDelete', function(GenericEvent $event) use (&$eventsCalled){
+			$eventsCalled['group.preDelete']['subject'] = $event->getSubject();
+			$eventsCalled['group.preDelete']['arguments'] = $event->getArguments();
+		});
+		$dispatcher->addListener('group.postDelete', function(GenericEvent $event) use (&$eventsCalled){
+			$eventsCalled['group.postDelete']['subject'] = $event->getSubject();
+			$eventsCalled['group.postDelete']['arguments'] = $event->getArguments();
+		});
+
+		$group = new \OC\Group\Group('group1', [$backend], $userManager, $dispatcher);
+
+		$backend->expects($this->once())
+			->method('deleteGroup')
+			->with('group1');
+		$backend->expects($this->any())
+			->method('implementsActions')
+			->will($this->returnValue(true));
+
+		$group->delete();
+
+		$this->assertNotEmpty($eventsCalled['group.preDelete']);
+		$this->assertInstanceOf(Group::class, $eventsCalled['group.preDelete']['subject']);
+		$this->assertNotEmpty($eventsCalled['group.postDelete']);
+		$this->assertInstanceOf(Group::class, $eventsCalled['group.postDelete']['subject']);
 	}
 }
