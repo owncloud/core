@@ -153,7 +153,7 @@ class RepairOrphanedSubshareTest extends TestCase {
 			->from('share')
 			->groupBy('parent')->orderBy('parent')->setMaxResults(1000)->setFirstResult(1)
 			->execute()->fetchAll();
-		//Total 10 rows where there, we deleted 3 and the repair deleted another
+		//Total 10 rows were there, we deleted 3 and the repair deleted another
 		//3 rows. So total 6 rows were deleted and 4 rows were remaining
 		//Hence 2 is the expected result.
 		$expectedCount = 2;
@@ -168,7 +168,7 @@ class RepairOrphanedSubshareTest extends TestCase {
 	public function testLargeSharesWithOrphans() {
 		$qb = $this->connection->getQueryBuilder();
 		$totalUsers[] = 'admin';
-		//Create 29 users. admin, user1, user2 ... user29
+		//Create another 30 users. user1, user2 ... user30
 		$user = 'user';
 		for($i=1; $i <= 30; $i++) {
 			$this->createUser($user.$i);
@@ -248,8 +248,9 @@ class RepairOrphanedSubshareTest extends TestCase {
 		}
 
 		//Now lets randomly delete 100 folders of admin to create orphan shares
-		//We would remove 20 id's from oc_share
+		//We would remove up to 20 id's from oc_share
 		$rowId = 20;
+		$deletedRows = 0;
 		while($rowId > 0) {
 			//$randomRow = (string)rand(1,100);
 			$randomRow = (string)mt_rand($pareReshareCountRest,$pareReshareCountRest + 100);
@@ -266,10 +267,11 @@ class RepairOrphanedSubshareTest extends TestCase {
 				->where($qb->expr()->eq('id', $qb->createNamedParameter($randomRow)))
 				->execute();
 			$rowId--;
+			$deletedRows++;
 		}
 
-		//Now run the repair step and verify there are no more
-		// orpahan shares are no more
+		// Now run the repair step and verify there are no more
+		// orphan shares
 		$outputMock = $this->createMock(IOutput::class);
 		$this->repair->run($outputMock);
 
@@ -285,6 +287,6 @@ class RepairOrphanedSubshareTest extends TestCase {
 			$offset += $pageLimit;
 			$result += count($results);
 		} while(count($results) > 0);
-		$this->assertEquals($totalParents - 20, $result);
+		$this->assertEquals($totalParents - $deletedRows, $result);
 	}
 }
