@@ -24,7 +24,10 @@ namespace OCA\DAV\Tests\unit\Connector\Sabre;
 
 use OC\Log;
 use OCA\DAV\Connector\Sabre\Exception\InvalidPath;
+use OCA\DAV\Connector\Sabre\Exception\UnsupportedMediaType;
 use OCA\DAV\Connector\Sabre\ExceptionLoggerPlugin as PluginToTest;
+use OCP\Files\ExcludeForbiddenException;
+use OCP\Files\FileContentNotAllowedException;
 use PHPUnit_Framework_MockObject_MockObject;
 use Sabre\DAV\Exception\NotFound;
 use Sabre\DAV\Server;
@@ -67,16 +70,21 @@ class ExceptionLoggerPluginTest extends TestCase {
 	 */
 	public function testLogging($expectedLogLevel, $expectedMessage, $exception) {
 		$this->init();
-		$this->plugin->logException($exception);
+		$result = $this->plugin->logException($exception);
 
-		$this->assertEquals($expectedLogLevel, $this->logger->level);
-		$this->assertStringStartsWith('Exception: {"Message":"' . $expectedMessage, $this->logger->message);
+		if ($exception instanceof FileContentNotAllowedException) {
+			$this->assertNull($result);
+		} else {
+			$this->assertEquals($expectedLogLevel, $this->logger->level);
+			$this->assertStringStartsWith('Exception: {"Message":"' . $expectedMessage, $this->logger->message);
+		}
 	}
 
 	public function providesExceptions() {
 		return [
 			[0, 'HTTP\/1.1 404 Not Found', new NotFound()],
-			[4, 'HTTP\/1.1 400 This path leads to nowhere', new InvalidPath('This path leads to nowhere')]
+			[4, 'HTTP\/1.1 400 This path leads to nowhere', new InvalidPath('This path leads to nowhere')],
+			[0, '', new FileContentNotAllowedException("Testing", 0, new FileContentNotAllowedException("pervious exception", 0))],
 		];
 	}
 
