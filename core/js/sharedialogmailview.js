@@ -186,49 +186,38 @@
 				containerCssClass: 'emailPrivateLinkForm--dropDown',
 				tags: true,
 				tokenSeparators:[","],
-/*
+				xhr: null,
 				query: function(query) {
 					// directly from search
-					query.callback({
-						results: [{
-							"id"       : query.term,
-							"text"     : query.term,
-							"disabled" : !_this.validateEmail(query.term)
-						}]
-					});
-				},
-*/
-				minimumInputLength: OC.getCapabilities().files_sharing.search_min_length,
-				ajax: {
-					url: OC.generateUrl('core/ajax/share.php?fetch=getShareWithEmail'),
-					dataType: 'json',
-					quietMillis: 250,
-					data: function (term) {
-						return {
-							search: term
-						};
-					},
-					results: function (data, page, query) {
+					var data = [{
+						"id": query.term,
+						"text" : query.term
+					}];
 
-						if (data.status !== 'success') {
-							return null;
-						}
+					// return query data ASAP
+					query.callback({results: data});
 
-						// format results
-						var fromQuery = (query.term.length) ? [{ id: query.term, text: query.term }] : [];
-						var fromData  = _.map(data.data, function(item) {
-							return {
-								'id'   : item.email,
-								'text' : item.displayname + ' (' + item.email + ')'
-							};
-						});
+					if (query.term.length >= 3) {
+						if (this.xhr != null)
+							this.xhr.abort();
 
-						return {
-							results: fromQuery.concat(fromData)
-						};
-					},
-					cache: true
-			   }
+						var xhr = $.get(OC.generateUrl('core/ajax/share.php'), {
+							'fetch' : 'getShareWithEmail',
+							'search': query.term
+						}).done(function(result) {
+							// enrich with share results
+							ajaxData  = _.map(result.data, function(item) {
+								return {
+									'id'   : item.email,
+									'text' : item.displayname + ' (' + item.email + ')'
+								}
+							});
+
+							query.callback({results: data.concat(ajaxData)});
+						})
+						this.xhr = xhr;
+					}
+				}
 			}).on("change", function(e) {
 				if (e.added)
 					_this._addAddress(e.added.id);
