@@ -82,7 +82,7 @@ class RepairOrphanedSubshareTest extends TestCase {
 		//Lets create 10 entries in oc_share to share
 		$parentReshareCount = 1;
 		for($i=1; $i <= 10; $i++) {
-			$time = time();
+			$time = 1522762088 + $i * 60;
 			if ($i <= 5) {
 				$shareWithUser = $user1;
 				$uidOwner = 'admin';
@@ -185,7 +185,7 @@ class RepairOrphanedSubshareTest extends TestCase {
 		$firstIdSet = false;
 		foreach ($totalUsers as $user) {
 			for($i=1; $i <= 100; $i++) {
-				$time = time();
+				$time = 1522762088 + $i * 60;
 				$userIndex = array_search($user, $totalUsers, true);
 				if (($userIndex+1) === count($totalUsers)) {
 					break;
@@ -247,25 +247,24 @@ class RepairOrphanedSubshareTest extends TestCase {
 			}
 		}
 
-		//Now lets randomly delete 100 folders of admin to create orphan shares
 		//We would remove 20 id's from oc_share
-		$rowId = 20;
-		while($rowId > 0) {
-			//$randomRow = (string)rand(1,100);
-			$randomRow = (string)mt_rand($pareReshareCountRest,$pareReshareCountRest + 100);
+		$rowIds = [2, 4, 9, 11, 12,
+			22, 33, 44, 29, 46,
+			60, 71, 81, 88, 51,
+			91, 90, 65, 75, 95];
+		foreach($rowIds as $rowId) {
 			$qb = $this->connection->getQueryBuilder();
 			//Check if the row is there before deleting
 			$result = $qb->select('id')
 				->from('share')
-				->where($qb->expr()->eq('id', $qb->createNamedParameter($randomRow)))
+				->where($qb->expr()->eq('id', $qb->createNamedParameter($rowId+ $pareReshareCountRest)))
 				->execute()->fetchAll();
 			if (count($result) === 0) {
 				continue;
 			}
 			$qb->delete('share')
-				->where($qb->expr()->eq('id', $qb->createNamedParameter($randomRow)))
+				->where($qb->expr()->eq('id', $qb->createNamedParameter($rowId+ $pareReshareCountRest)))
 				->execute();
-			$rowId--;
 		}
 
 		//Now run the repair step and verify there are no more
