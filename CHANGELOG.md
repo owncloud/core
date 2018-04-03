@@ -27,6 +27,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/).
 - Added symfony events for configuration changes (config.php and appconfig) - [#30788](https://github.com/owncloud/core/issues/30788) [#30937](https://github.com/owncloud/core/issues/30937)
 - Added symfony event to let apps resolve private links - [#30911](https://github.com/owncloud/core/issues/30911)
 - Added config.php option to select apps to ignore missing signature file (mostly for themes) - [#30891](https://github.com/owncloud/core/issues/30891)
+- Added ability for full-page frontend-only apps in info.xml - [#30918](https://github.com/owncloud/core/issues/30918)
+- More user-friendly email address input in link share dialog - [#30945](https://github.com/owncloud/core/issues/30945)
 
 ### Changed
 - Bump PHP to 5.6.33 in composer - [#30403](https://github.com/owncloud/core/issues/30403)
@@ -54,6 +56,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/).
 - Provisioning API can now properly set default or zero quota - [#30755](https://github.com/owncloud/core/issues/30755)
 - User quota setting can be queried through provisioning API - [#30850](https://github.com/owncloud/core/issues/30850)
 
+
 ### Removed
 - Removed private oc_current_user Javascript variable - [#30486](https://github.com/owncloud/core/issues/30486) [#30556](https://github.com/owncloud/core/issues/30556)
 - Remove app store config values from config.sample.php - [#30422](https://github.com/owncloud/core/issues/30422)
@@ -61,8 +64,10 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/).
 - Remove unused config.sample.php parameters - [#30933](https://github.com/owncloud/core/issues/30933) [#30812](https://github.com/owncloud/core/issues/30812)
 
 ### Fixes
+- Remove unsupported "enable for groups" field for theme apps - [#30948](https://github.com/owncloud/core/issues/30948)
+- Added OneNote 2016 user agent string to make it work with Webdav - [#30965](https://github.com/owncloud/core/issues/30965)
 - Refactored metadata sync code to unify behavior across all login methods - [#30638](https://github.com/owncloud/core/issues/30638)
-- Fix repair command and added more files:scan unit tests - [#30618](https://github.com/owncloud/core/issues/30618)
+- Fix repair command and added more files:scan unit tests - [#30618](https://github.com/owncloud/core/issues/30618) [#30959](https://github.com/owncloud/core/issues/30959)
 - Mask "marketplace.key" in config list as it is sensitive - [#30917](https://github.com/owncloud/core/issues/30917)
 - Polish totp middleware a little - [#30849](https://github.com/owncloud/core/issues/30849)
 - Set empty authtoken names to 'none' as empty is not allowed any more - [#30908](https://github.com/owncloud/core/issues/30908)
