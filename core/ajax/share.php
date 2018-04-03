@@ -307,12 +307,23 @@ if (isset($_POST['action']) && isset($_POST['itemType']) && isset($_POST['itemSo
 			if (isset($_GET['search'])) {
 				$cm = OC::$server->getContactsManager();
 
-				$userEnumerationAllowed = OC::$server->getConfig()
-					->getAppValue('core', 'shareapi_allow_share_dialog_user_enumeration', 'yes') == 'yes';
+				$config = OC::$server->getConfig();
+				$userEnumerationAllowed = $config
+					->getAppValue('core', 'shareapi_allow_share_dialog_user_enumeration', 'yes') === 'yes';
+				$pattern = (string)$_GET['search'];
+				$searchConfig =  new \OCP\Util\UserSearch($config);
+				if (!$searchConfig->isSearchable($pattern)) {
+					OC_JSON::error();
+					return;
+				}
 
-				if (!is_null($cm) && $cm->isEnabled() && $userEnumerationAllowed) {
-					$contacts = $cm->search((string)$_GET['search'], ['FN', 'EMAIL']);
+				if ($cm !== null && $cm->isEnabled() && $userEnumerationAllowed) {
+					$contacts = $cm->search($pattern, ['FN', 'EMAIL']);
 					foreach ($contacts as $contact) {
+						// We don't want contacts from system address books
+						if (isset($contact['isSystemBook'])) {
+							continue;
+						}
 						if (!isset($contact['EMAIL'])) {
 							continue;
 						}

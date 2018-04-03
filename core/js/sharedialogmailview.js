@@ -186,15 +186,37 @@
 				containerCssClass: 'emailPrivateLinkForm--dropDown',
 				tags: true,
 				tokenSeparators:[","],
+				xhr: null,
 				query: function(query) {
 					// directly from search
-					query.callback({
-						results: [{
-							"id"       : query.term,
-							"text"     : query.term,
-							"disabled" : !_this.validateEmail(query.term)
-						}]
-					});
+					var data = [{
+						"id": query.term,
+						"text" : query.term
+					}];
+
+					// return query data ASAP
+					query.callback({results: data});
+
+					if (query.term.length >= OC.getCapabilities().files_sharing.search_min_length) {
+						if (this.xhr != null)
+							this.xhr.abort();
+
+						var xhr = $.get(OC.generateUrl('core/ajax/share.php'), {
+							'fetch' : 'getShareWithEmail',
+							'search': query.term
+						}).done(function(result) {
+							// enrich with share results
+							ajaxData  = _.map(result.data, function(item) {
+								return {
+									'id'   : item.email,
+									'text' : item.displayname + ' (' + item.email + ')'
+								}
+							});
+
+							query.callback({results: data.concat(ajaxData)});
+						})
+						this.xhr = xhr;
+					}
 				}
 			}).on("change", function(e) {
 				if (e.added)
