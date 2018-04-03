@@ -747,7 +747,7 @@ OC.Uploader.prototype = _.extend({
 		// resubmit upload
 		this.submitUploads([upload]);
 	},
-	_trace:true, //TODO implement log handler for JS per class?
+	_trace:false, //TODO implement log handler for JS per class?
 	log:function(caption, e, data) {
 		if (this._trace) {
 			console.log(caption);
@@ -1078,7 +1078,7 @@ OC.Uploader.prototype = _.extend({
 				},
 				fail: function(e, data) {
 					var upload = self.getUpload(data);
-					if (upload.data.stalled) {
+					if (upload && upload.data && upload.data.stalled) {
 						self.log('retry', e, upload);
 						// jQuery Widget Factory uses "namespace-widgetname" since version 1.10.0:
 						var fu = $(this).data('blueimp-fileupload') || $(this).data('fileupload'),
@@ -1112,7 +1112,7 @@ OC.Uploader.prototype = _.extend({
 									fu._trigger('fail', e, data);
 								});
 							};
-						if (upload.data.stalled &&
+						if (upload && upload.data && upload.data.stalled &&
 							data.uploadedBytes < data.files[0].size &&
 							retries < fu.options.maxRetries) {
 							retries += 1;
