@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014
+ * Copyright (c) 2018
  *
  * This file is licensed under the Affero General Public License version 3
  * or later.
@@ -329,8 +329,11 @@ OC.FileUpload.prototype = {
 	 * retry the upload
 	 */
 	retry: function() {
-		this.data.stalled = true;
-		this.data.abort();
+		if (!this.data.stalled) {
+			console.log('Retrying upload ' + this.id);
+			this.data.stalled = true;
+			this.data.abort();
+		}
 	},
 
 	/**
@@ -828,7 +831,7 @@ OC.Uploader.prototype = _.extend({
 		this._progressBarInterval = window.setInterval(_.bind(this._updateProgressBar, this), 1000);
 		this._lastProgress = 0;
 	},
-	
+
 	_updateProgressBar: function() {
 		var progress = parseInt(this.$uploadprogressbar.attr('data-loaded'), 10);
 		var total = parseInt(this.$uploadprogressbar.attr('data-total'), 10);
@@ -840,10 +843,14 @@ OC.Uploader.prototype = _.extend({
 				// change message if we stalled at 100%
 				this.$uploadprogressbar.find('.label .desktop').text(t('core', 'Processing files...'));
 			} else if (new Date().getTime() - this._lastProgressTime >= this._uploadStallTimeout * 1000 ) {
+				// TODO: move to "fileuploadprogress" event instead and use data.uploadedBytes
 				// stalling needs to be checked here because the file upload no longer triggers events
 				// restart upload
 				this.log('progress stalled'); // retry chunk (and prevent IE from dying)
-				$.each(this._uploads, function(i,e){ console.log(e.retry()) })
+				_.each(this._uploads, function(upload) {
+					// FIXME: harden by only retry pending, not the finished ones
+					upload.retry();
+				});
 			}
 		}
 	},
@@ -880,6 +887,9 @@ OC.Uploader.prototype = _.extend({
 		var self = this;
 		options = options || {};
 
+		this._uploads = {};
+		this._knownDirs = {};
+
 		this.fileList = options.fileList;
 		this.filesClient = options.filesClient || OC.Files.getClient();
 		this.davClient = new OC.Files.Client({
@@ -900,7 +910,7 @@ OC.Uploader.prototype = _.extend({
 		$uploadEl = $($uploadEl);
 		this.$uploadEl = $uploadEl;
 
-		this.$uploadprogressbar = $('#uploadprogressbar')
+		this.$uploadprogressbar = $('#uploadprogressbar');
 
 		if ($uploadEl.exists()) {
 			$('#uploadprogresswrapper .stop').on('click', function() {
@@ -912,12 +922,12 @@ OC.Uploader.prototype = _.extend({
 				dropZone: options.dropZone, // restrict dropZone to content div
 				autoUpload: false,
 				sequentialUploads: true,
-				maxRetries: options.uploadStallRetries,
+				maxRetries: options.uploadStallRetries || 3,
 				retryTimeout: 500,
 				//singleFileUploads is on by default, so the data.files array will always have length 1
 				/**
 				 * on first add of every selection
-				 * - check all files of originalFiles array with files in dir
+
 				 * - on conflict show dialog
 				 *   - skip all -> remember as single skip action for all conflicting files
 				 *   - replace all -> remember as single replace action for all conflicting files
@@ -1296,9 +1306,7 @@ OC.Uploader.prototype = _.extend({
 						'/' + encodeURIComponent(chunkId);
 					delete data.contentRange;
 					delete data.headers['Content-Range'];
-				});
-				fileupload.on('fileuploadchunksend', function(e, data) {
-					var upload = self.getUpload(data);
+
 					// reset retries
 					upload.data.retries = 0;
 				});
