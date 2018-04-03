@@ -105,8 +105,15 @@ describe('OC.Share.ShareDialogView', function() {
 
 		oldCurrentUser = OC.currentUser;
 		OC.currentUser = 'user0';
+		capsSpec = sinon.stub(OC, 'getCapabilities');
+		capsSpec.returns({
+			'files_sharing': {
+				'search_min_length': 4
+			}
+		});
 	});
 	afterEach(function() {
+		capsSpec.restore();
 		OC.currentUser = oldCurrentUser;
 		/* jshint camelcase:false */
 		oc_appconfig.core = oldAppConfig;
