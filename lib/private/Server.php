@@ -97,6 +97,7 @@ use OCP\ISession;
 use OCP\IUser;
 use OCP\Security\IContentSecurityPolicyManager;
 use OCP\Theme\IThemeService;
+use OCP\Util\UserSearch;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use OC\Files\External\StoragesBackendService;
@@ -248,11 +249,19 @@ class Server extends ServerContainer implements IServerContainer, IServiceLoader
 					$c->getConfig(),
 					$c->getLogger(),
 					$c->getAccountMapper()
+				),
+				new UserSearch(
+					$c->getConfig()
 				)
 			);
 		});
 		$this->registerService('GroupManager', function (Server $c) {
-			$groupManager = new \OC\Group\Manager($this->getUserManager());
+			$groupManager = new \OC\Group\Manager(
+				$this->getUserManager(),
+				new UserSearch(
+					$c->getConfig()
+				)
+			);
 			$groupManager->listen('\OC\Group', 'preCreate', function ($gid) {
 				\OC_Hook::emit('OC_Group', 'pre_createGroup', ['run' => true, 'gid' => $gid]);
 			});

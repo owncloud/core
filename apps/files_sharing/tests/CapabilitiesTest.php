@@ -32,6 +32,24 @@ use OCA\Files_Sharing\Capabilities;
 class CapabilitiesTest extends \Test\TestCase {
 
 	/**
+	 * @var \OCP\Util\UserSearch
+	 */
+	protected $userSearch;
+
+	/**
+	 *
+	 */
+	protected function setUp() {
+		parent::setUp();
+		$this->userSearch = $this->getMockBuilder(\OCP\Util\UserSearch::class)
+			->disableOriginalConstructor()
+			->getMock();
+		$this->userSearch->expects($this->any())
+			->method('getSearchMinLength')
+			->willReturn(1);
+	}
+
+	/**
 	 * Test for the general part in each return statement and assert.
 	 * Strip off the general part on the way.
 	 *
@@ -54,7 +72,7 @@ class CapabilitiesTest extends \Test\TestCase {
 	private function getResults(array $map) {
 		$stub = $this->getMockBuilder('\OCP\IConfig')->disableOriginalConstructor()->getMock();
 		$stub->method('getAppValue')->will($this->returnValueMap($map));
-		$cap = new Capabilities($stub);
+		$cap = new Capabilities($stub, $this->userSearch);
 		$result = $this->getFilesSharingPart($cap->getCapabilities());
 		return $result;
 	}

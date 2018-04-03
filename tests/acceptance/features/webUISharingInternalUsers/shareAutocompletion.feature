@@ -14,10 +14,10 @@ So that I can efficiently share my files with other users or groups
 			| regularuser | 1234     | User Regular | regularuser@oc.com.np |
 		And these groups have been created:
 			|groupname|
-			|grp1     |
-			|grp2     |
-			|grp3     |
-			|grpuser  |
+			|group1     |
+			|group2     |
+			|group3     |
+			|groupuser  |
 		And the user has browsed to the login page
 		And the user has logged in with username "regularuser" and password "1234" using the webUI
 		And the user has browsed to the files page
@@ -31,8 +31,8 @@ So that I can efficiently share my files with other users or groups
 		
 	Scenario: autocompletion of regular existing groups
 		Given the user has opened the share dialog for the folder "simple-folder"
-		When the user types "grp" in the share-with-field
-		Then all users and groups that contain the string "grp" in their name should be listed in the autocomplete list on the webUI
+		When the user types "grou" in the share-with-field
+		Then all users and groups that contain the string "grou" in their name should be listed in the autocomplete list on the webUI
 		And the users own name should not be listed in the autocomplete list on the webUI
 		
 	Scenario: autocompletion for a pattern that does not match any user or group
@@ -50,7 +50,7 @@ So that I can efficiently share my files with other users or groups
 		And the users own name should not be listed in the autocomplete list on the webUI
 
 	@skipOnLDAP @user_ldap#175
-	Scenario: autocompletion of a pattern that matches regular existing users but also a user whith whom the item is already shared (file)
+	Scenario: autocompletion of a pattern that matches regular existing users but also a user with whom the item is already shared (file)
 		Given the user has shared the file "data.zip" with the user "User Grp" using the webUI
 		And the user has opened the share dialog for the file "data.zip"
 		When the user types "user" in the share-with-field
@@ -58,15 +58,15 @@ So that I can efficiently share my files with other users or groups
 		And the users own name should not be listed in the autocomplete list on the webUI
 	
 	Scenario: autocompletion of a pattern that matches regular existing groups but also a group with whom the item is already shared (folder)
-		Given the user shares the folder "simple-folder" with the group "grp1" using the webUI
+		Given the user shares the folder "simple-folder" with the group "group1" using the webUI
 		And the user has opened the share dialog for the folder "simple-folder"
-		When the user types "grp" in the share-with-field
-		Then all users and groups that contain the string "grp" in their name should be listed in the autocomplete list on the webUI except group "grp1"
+		When the user types "grou" in the share-with-field
+		Then all users and groups that contain the string "grou" in their name should be listed in the autocomplete list on the webUI except group "group1"
 		And the users own name should not be listed in the autocomplete list on the webUI
 
-	Scenario: autocompletion of a pattern that matches regular existing groups but also a group whith whom the item is already shared (file)
-		Given the user shares the file "data.zip" with the group "grpuser" using the webUI
+	Scenario: autocompletion of a pattern that matches regular existing groups but also a group with whom the item is already shared (file)
+		Given the user shares the file "data.zip" with the group "groupuser" using the webUI
 		And the user has opened the share dialog for the file "data.zip"
-		When the user types "grp" in the share-with-field
-		Then all users and groups that contain the string "grp" in their name should be listed in the autocomplete list on the webUI except group "grpuser"
+		When the user types "grou" in the share-with-field
+		Then all users and groups that contain the string "grou" in their name should be listed in the autocomplete list on the webUI except group "groupuser"
 		And the users own name should not be listed in the autocomplete list on the webUI

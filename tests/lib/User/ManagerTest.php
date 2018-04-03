@@ -38,6 +38,11 @@ class ManagerTest extends TestCase {
 	/** @var SyncService | \PHPUnit_Framework_MockObject_MockObject */
 	private $syncService;
 
+	/**
+	 * @var \OCP\Util\UserSearch
+	 */
+	protected $userSearch;
+
 	public function setUp() {
 		parent::setUp();
 
@@ -47,7 +52,16 @@ class ManagerTest extends TestCase {
 		$logger = $this->createMock(ILogger::class);
 		$this->accountMapper = $this->createMock(AccountMapper::class);
 		$this->syncService = $this->createMock(SyncService::class);
-		$this->manager = new \OC\User\Manager($config, $logger, $this->accountMapper, $this->syncService);
+
+		$this->userSearch = $this->getMockBuilder(\OCP\Util\UserSearch::class)
+			->disableOriginalConstructor()
+			->getMock();
+		$this->userSearch->expects($this->any())
+			->method('isSearchable')
+			->willReturn(true);
+		$this->manager = new \OC\User\Manager(
+			$config, $logger, $this->accountMapper, $this->syncService, $this->userSearch
+		);
 	}
 
 	public function testGetBackends() {

@@ -404,7 +404,7 @@
 			var $shareField = this.$el.find('.shareWithField');
 			if ($shareField.length) {
 				$shareField.autocomplete({
-					minLength: 1,
+					minLength: OC.getCapabilities().files_sharing.search_min_length,
 					delay: 750,
 					focus: function(event) {
 						event.preventDefault();
