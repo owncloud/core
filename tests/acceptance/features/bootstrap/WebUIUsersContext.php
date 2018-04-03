@@ -101,10 +101,10 @@ class WebUIUsersContext extends RawMinkContext implements Context {
 			$this->getSession(), $username, $password, $email, $groups
 		);
 
-		$shouldHaveBeenCreated = ($attemptTo === "");
+		$shouldExist = ($attemptTo === "");
 
 		$this->featureContext->addUserToCreatedUsersList(
-			$username, $password, "", $email, $shouldHaveBeenCreated
+			$username, $password, "", $email, $shouldExist
 		);
 		if (is_array($groups)) {
 			foreach ($groups as $group) {
@@ -123,7 +123,7 @@ class WebUIUsersContext extends RawMinkContext implements Context {
 	 */
 	public function theAdminDeletesTheGroupUsingTheWebUI($name) {
 		$this->usersPage->deleteGroup($name, $this->getSession());
-		$this->featureContext->deleteGroupFromCreatedGroupsList($name);
+		$this->featureContext->rememberThatGroupIsNotExpectedToExist($name);
 	}
 
 	/**
