@@ -870,7 +870,7 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 	public function theFolderShouldBeEmptyOnTheWebUI($shouldOrNot) {
 		$should = ($shouldOrNot !== "not");
 		$pageObject = $this->getCurrentPageObject();
-		$folderIsEmpty = $pageObject->isFolderEmpty();
+		$folderIsEmpty = $pageObject->isFolderEmpty($this->getSession());
 
 		if ($should) {
 			PHPUnit_Framework_Assert::assertTrue(

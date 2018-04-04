@@ -460,7 +460,8 @@ abstract class FilesPageBasic extends OwncloudPage {
 	 *
 	 * @return boolean
 	 */
-	public function isFolderEmpty() {
+	public function isFolderEmpty($session) {
+		$this->waitTillPageIsLoaded($session);
 		$emptyContentElement = $this->find(
 			"xpath",
 			$this->getEmptyContentXpath()
