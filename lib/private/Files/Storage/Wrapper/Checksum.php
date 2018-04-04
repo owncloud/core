@@ -37,6 +37,8 @@ use OCP\Files\IHomeStorage;
  */
 class Checksum extends Wrapper {
 
+	/** Format of checksum field in filecache */
+	const CHECKSUMS_DB_FORMAT = 'SHA1:%s MD5:%s ADLER32:%s';
 
 	const NOT_REQUIRED = 0;
 	/** Calculate checksum on write (to be stored in oc_filecache) */
@@ -133,16 +135,21 @@ class Checksum extends Wrapper {
 
 	/**
 	 * @param $path
-	 * Format like "SHA1:abc MD5:def ADLER32:ghi"
-	 * @return string
+	 * @return string Format like "SHA1:abc MD5:def ADLER32:ghi"
 	 */
 	private static function getChecksumsInDbFormat($path) {
-		$checksumString = '';
-		foreach (ChecksumStream::getChecksums($path) as $algo => $checksum) {
-			$checksumString .= sprintf('%s:%s ', strtoupper($algo), $checksum);
+		$checksums = ChecksumStream::getChecksums($path);
+
+		if (empty($checksums)) {
+			return '';
 		}
 
-		return rtrim($checksumString);
+		return sprintf(
+			self::CHECKSUMS_DB_FORMAT,
+			$checksums['sha1'],
+			$checksums['md5'],
+			$checksums['adler32']
+		);
 	}
 
 	/**

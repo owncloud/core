@@ -27,6 +27,7 @@
 		<command>OCA\Files\Command\Scan</command>
 		<command>OCA\Files\Command\DeleteOrphanedFiles</command>
 		<command>OCA\Files\Command\TransferOwnership</command>
+		<command>OCA\Files\Command\VerifyChecksums</command>
 	</commands>
 
 	<navigation>
