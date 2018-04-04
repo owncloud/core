@@ -241,9 +241,13 @@ class AddressBookImpl implements IAddressBook {
 				$result[$property->name] = $property->getValue();
 			}
 		}
-		if ($this->addressBookInfo['principaluri'] === 'principals/system/system' &&
-			$this->addressBookInfo['uri'] === 'system') {
-			$result['isLocalSystemBook'] = true;
+		if ($this->addressBookInfo['principaluri'] === 'principals/system/system' ) {
+			$result['isSystemBook'] = true;
+			if ($this->addressBookInfo['uri'] === 'system') {
+				$result['isLocalSystemBook'] = true;
+			} else {
+				$result['isFederatedSystemBook'] = true;
+			}
 		}
 		return $result;
 	}
