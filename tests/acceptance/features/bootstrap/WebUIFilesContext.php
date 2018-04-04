@@ -749,7 +749,18 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 	 * @return void
 	 */
 	public function theUserBatchDeletesTheMarkedFilesUsingTheWebUI() {
-		$this->filesPage->deleteAllSelectedFiles($this->getSession());
+		$pageObject = $this->getCurrentPageObject();
+		$pageObject->deleteAllSelectedFiles($this->getSession());
+	}
+
+	/**
+	 * @When the user batch restores the marked files using the webUI
+	 * @Given the user has batch restored the marked files using the webUI
+	 *
+	 * @return void
+	 */
+	public function theUserBatchRestoresTheMarkedFilesUsingTheWebUI() {
+		$this->trashbinPage->restoreAllSelectedFiles($this->getSession());
 	}
 
 	/**
@@ -764,12 +775,25 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 	public function theUserMarksTheseFilesForBatchActionUsingTheWebUI(
 		TableNode $files
 	) {
-		$this->filesPage->waitTillPageIsLoaded($this->getSession());
+		$pageObject = $this->getCurrentPageObject();
+		$session = $this->getSession();
+		$pageObject->waitTillPageIsLoaded($session);
 		foreach ($files as $file) {
-			$this->filesPage->selectFileForBatchAction(
-				$file['name'], $this->getSession()
+			$pageObject->selectFileForBatchAction(
+				$file['name'], $session
 			);
 		}
+	}
+
+	/**
+	 * @When the user marks all files for batch action using the webUI
+	 * @Given the user has selected all files for batch action using the webUI
+	 *
+	 * @return void
+	 */
+	public function theUserMarksAllFilesForBatchActionUsingTheWebUI() {
+		$pageObject = $this->getCurrentPageObject();
+		$pageObject->selectAllFilesForBatchAction();
 	}
 
 	/**
@@ -816,9 +840,33 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 		$pageObject->waitTillPageIsLoaded($this->getSession());
 	}
 	
-	
 	/**
-	 * @Then /^the (?:file|folder) ((?:'[^']*')|(?:"[^"]*")) should (not|)\s?be listed\s?(?:in the |)(trashbin|favorites page|)\s?(?:folder ((?:'[^']*')|(?:"[^"]*")))? on the webUI$/
+	 * @Then /^the folder should (not|)\s?be empty on the webUI$/
+	 *
+	 * @param string $shouldOrNot
+	 *
+	 * @return void
+	 */
+	public function theFolderShouldBeEmptyOnTheWebUI($shouldOrNot) {
+		$should = ($shouldOrNot !== "not");
+		$pageObject = $this->getCurrentPageObject();
+		$folderIsEmpty = $pageObject->isFolderEmpty();
+
+		if ($should) {
+			PHPUnit_Framework_Assert::assertTrue(
+				$folderIsEmpty,
+				"folder contains items but should be empty"
+			);
+		} else {
+			PHPUnit_Framework_Assert::assertFalse(
+				$folderIsEmpty,
+				"folder is empty but should contain items"
+			);
+		}
+	}
+
+	/**
+	 * @Then /^the (?:file|folder) ((?:'[^']*')|(?:"[^"]*")) should (not|)\s?be listed\s?(?:in the |)(trashbin|favorites page|files page|)\s?(?:folder ((?:'[^']*')|(?:"[^"]*")))? on the webUI$/
 	 *
 	 * @param string $name enclosed in single or double quotes
 	 * @param string $shouldOrNot
@@ -862,6 +910,9 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 		}
 		if ($typeOfFilesPage === "favorites page") {
 			$this->theUserBrowsesToTheFavoritesPage();
+		}
+		if ($typeOfFilesPage === "files page") {
+			$this->theUserBrowsesToTheFilesPage();
 		}
 		$pageObject = $this->getCurrentPageObject();
 		$pageObject->waitTillPageIsLoaded($this->getSession());

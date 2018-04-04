@@ -22,7 +22,9 @@
 
 namespace Page;
 
+use Behat\Mink\Element\NodeElement;
 use Behat\Mink\Session;
+use SensioLabs\Behat\PageObjectExtension\PageObject\Exception\ElementNotFoundException;
 
 /**
  * Trashbin page.
@@ -38,6 +40,9 @@ class TrashbinPage extends FilesPageBasic {
 	protected $fileNameMatchXpath = "//span[contains(@class,'nametext') and .=%s]";
 	protected $fileListXpath = ".//div[@id='app-content-trashbin']//tbody[@id='fileList']";
 	protected $emptyContentXpath = ".//div[@id='app-content-trashbin']//div[@id='emptycontent']";
+	protected $deleteAllSelectedBtnXpath = ".//*[@id='app-content-trashbin']//*[@class='delete-selected']";
+	protected $restoreAllSelectedBtnXpath = ".//*[@id='app-content-trashbin']//*[@class='undelete']";
+	protected $selectAllFilesCheckboxXpath = "//label[@for='select_all_trash']";
 
 	/**
 	 * @return string
@@ -65,6 +70,35 @@ class TrashbinPage extends FilesPageBasic {
 	 */
 	protected function getEmptyContentXpath() {
 		return $this->emptyContentXpath;
+	}
+
+	/**
+	 * @throws ElementNotFoundException
+	 * @return NodeElement
+	 */
+	public function findRestoreAllSelectedFilesBtn() {
+		$restoreAllSelectedBtn = $this->find(
+			"xpath", $this->restoreAllSelectedBtnXpath
+		);
+		if (is_null($restoreAllSelectedBtn)) {
+			throw new ElementNotFoundException(
+				__METHOD__ .
+				" xpath $this->restoreAllSelectedBtnXpath " .
+				"could not find button to restore all selected files"
+			);
+		}
+		return $restoreAllSelectedBtn;
+	}
+
+	/**
+	 *
+	 * @param Session $session
+	 *
+	 * @return void
+	 */
+	public function restoreAllSelectedFiles(Session $session) {
+		$this->findRestoreAllSelectedFilesBtn()->click();
+		$this->waitForAjaxCallsToStartAndFinish($session);
 	}
 
 	/**

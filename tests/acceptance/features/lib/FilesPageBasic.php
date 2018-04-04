@@ -22,6 +22,7 @@
 
 namespace Page;
 
+use Behat\Mink\Element\NodeElement;
 use Behat\Mink\Session;
 use Page\FilesPageElement\FileActionsMenu;
 use Page\FilesPageElement\FileRow;
@@ -47,6 +48,7 @@ abstract class FilesPageBasic extends OwncloudPage {
 	protected $fileRowXpathFromActionMenu = "/../..";
 	protected $appSettingsXpath = "//div[@id='app-settings']";
 	protected $showHiddenFilesCheckboxXpath = "//label[@for='showhiddenfilesToggle']";
+	protected $selectAllFilesCheckboxXpath = "//label[@for='select_all_files']";
 	protected $appSettingsContentId = "app-settings-content";
 	protected $styleOfCheckboxWhenVisible = "display: block;";
 
@@ -88,7 +90,7 @@ abstract class FilesPageBasic extends OwncloudPage {
 	/**
 	 * @param int $number
 	 *
-	 * @return \Behat\Mink\Element\NodeElement|null
+	 * @return NodeElement|null
 	 */
 	public function findActionMenuByNo($number) {
 		$xpath = sprintf($this->fileActionMenuBtnXpathByNo, $number);
@@ -235,7 +237,7 @@ abstract class FilesPageBasic extends OwncloudPage {
 	 * Finds the open File Action Menu
 	 * the File Action Button must be clicked first
 	 *
-	 * @return \Behat\Mink\Element\NodeElement
+	 * @return NodeElement
 	 * @throws ElementNotFoundException
 	 */
 	public function findFileActionMenuElement() {
@@ -342,7 +344,7 @@ abstract class FilesPageBasic extends OwncloudPage {
 	/**
 	 *
 	 * @throws ElementNotFoundException
-	 * @return \Behat\Mink\Element\NodeElement
+	 * @return NodeElement
 	 */
 	public function findDeleteAllSelectedFilesBtn() {
 		$deleteAllSelectedBtn = $this->find(
@@ -356,6 +358,24 @@ abstract class FilesPageBasic extends OwncloudPage {
 			);
 		}
 		return $deleteAllSelectedBtn;
+	}
+
+	/**
+	 *
+	 * @throws ElementNotFoundException
+	 * @return NodeElement
+	 */
+	public function findSelectAllFilesBtn() {
+		$selectedAllFilesBtn = $this->find(
+			"xpath", $this->selectAllFilesCheckboxXpath
+		);
+		if (is_null($selectedAllFilesBtn)) {
+			throw new ElementNotFoundException(
+				__METHOD__ .
+				"could not find button $this->selectAllFilesCheckboxXpath to select all files"
+			);
+		}
+		return $selectedAllFilesBtn;
 	}
 
 	/**
@@ -383,10 +403,18 @@ abstract class FilesPageBasic extends OwncloudPage {
 
 	/**
 	 *
+	 * @return void
+	 */
+	public function selectAllFilesForBatchAction() {
+		$this->findSelectAllFilesBtn()->click();
+	}
+
+	/**
+	 *
 	 * @param int $number
 	 *
 	 * @throws ElementNotFoundException
-	 * @return \Behat\Mink\Element\NodeElement
+	 * @return NodeElement
 	 */
 	public function findFileActionsMenuBtnByNo($number) {
 		$xpathLocator = sprintf($this->fileActionMenuBtnXpathByNo, $number);
@@ -423,6 +451,23 @@ abstract class FilesPageBasic extends OwncloudPage {
 		$actionMenu = $this->getPage('FilesPageElement\\FileActionsMenu');
 		$actionMenu->setElement($actionMenuElement);
 		return $actionMenu;
+	}
+
+	/**
+	 *
+	 * @return boolean
+	 */
+	public function isFolderEmpty() {
+		$emptyContentElement = $this->find(
+			"xpath",
+			$this->getEmptyContentXpath()
+		);
+
+		if (!is_null($emptyContentElement)) {
+			return $emptyContentElement->isVisible();
+		}
+
+		return false;
 	}
 
 	/**
