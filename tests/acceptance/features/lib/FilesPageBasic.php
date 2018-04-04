@@ -390,6 +390,8 @@ abstract class FilesPageBasic extends OwncloudPage {
 	}
 
 	/**
+	 * selects the given file, ready for it to be included in a batch action
+	 * if the row is already selected, then it will be unselected.
 	 *
 	 * @param string $name
 	 * @param Session $session
