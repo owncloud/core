@@ -266,6 +266,21 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 	}
 
 	/**
+	 * @Then there should be exactly :count files\/folders listed on the webUI
+	 * @Then there should be exactly :count file/files listed on the webUI
+	 * @Then there should be exactly :count folder/folders listed on the webUI
+	 *
+	 * @param string $count that is numeric
+	 * @return void
+	 */
+	public function thereShouldBeCountFilesFoldersListedOnTheWebUI($count) {
+		PHPUnit_Framework_Assert::assertEquals(
+			$count,
+			$this->filesPage->getSizeOfFileFolderList()
+		);
+	}
+
+	/**
 	 * @When the user creates so many files\/folders that they do not fit in one browser page
 	 * @Given so many files\/folders have been created that they do not fit in one browser page
 	 *
@@ -764,8 +779,11 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 	}
 
 	/**
-	 * @When the user marks these files for batch action using the webUI
-	 * @Given the user has marked these files for batch action using the webUI
+	 * mark a set of files ready for them to be included in a batch action
+	 * if any of the files are already marked, then they will be unmarked
+	 *
+	 * @When the user marks/unmarks these files for batch action using the webUI
+	 * @Given the user has marked/unmarked these files for batch action using the webUI
 	 *
 	 * @param TableNode $files table of file names
 	 *                         table headings: must be: |name|
@@ -863,6 +881,18 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 				"folder is empty but should contain items"
 			);
 		}
+	}
+
+	/**
+	 * @Then /^the folder should (not|)\s?be empty on the webUI after a page reload$/
+	 *
+	 * @param string $shouldOrNot
+	 *
+	 * @return void
+	 */
+	public function theFolderShouldBeEmptyOnTheWebUIAfterAPageReload($shouldOrNot) {
+		$this->theUserReloadsTheCurrentPageOfTheWebUI();
+		$this->theFolderShouldBeEmptyOnTheWebUI($shouldOrNot);
 	}
 
 	/**
