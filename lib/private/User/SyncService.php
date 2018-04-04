@@ -109,7 +109,8 @@ class SyncService {
 				$this->cleanPreferences($uid);
 			} catch (\Exception $e) {
 				// Error syncing this user
-				$this->logger->error("Error syncing user with uid: $uid and backend: {get_class($backend)}");
+				$backendClass = get_class($backend);
+				$this->logger->error("Error syncing user with uid: $uid and backend: $backendClass");
 				$this->logger->logException($e);
 			}
 

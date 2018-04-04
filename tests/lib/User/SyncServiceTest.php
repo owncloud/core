@@ -29,6 +29,7 @@ use OC\User\Database;
 use OC\User\Sync\AllUsersIterator;
 use OC\User\SyncService;
 use OCP\AppFramework\Db\DoesNotExistException;
+use OCP\AppFramework\Db\MultipleObjectsReturnedException;
 use OCP\IConfig;
 use OCP\ILogger;
 use OCP\User\IProvidesHomeBackend;
@@ -37,23 +38,36 @@ use Test\TestCase;
 
 class SyncServiceTest extends TestCase {
 
-	public function testSetupAccount() {
-		$mapper = $this->createMock(AccountMapper::class);
-		$backend = $this->createMock(UserInterface::class);
-		$config = $this->createMock(IConfig::class);
-		$logger = $this->createMock(ILogger::class);
+	/** @var IConfig | \PHPUnit_Framework_MockObject_MockObject */
+	private $config;
+	/** @var ILogger | \PHPUnit_Framework_MockObject_MockObject */
+	private $logger;
+	/** @var AccountMapper | \PHPUnit_Framework_MockObject_MockObject */
+	private $mapper;
 
-		$config->expects($this->any())->method('getUserKeys')->willReturnMap([
+	protected function setUp() {
+		parent::setUp();
+
+		$this->config = $this->createMock(IConfig::class);
+		$this->logger = $this->createMock(ILogger::class);
+		$this->mapper = $this->createMock(AccountMapper::class);
+	}
+
+	public function testSetupAccount() {
+		/** @var UserInterface | IProvidesHomeBackend | \PHPUnit_Framework_MockObject_MockObject $backend */
+		$backend = $this->createMock(UserInterface::class);
+
+		$this->config->expects($this->any())->method('getUserKeys')->willReturnMap([
 			['user1', 'core', []],
 			['user1', 'login', []],
 			['user1', 'settings', ['email']],
 			['user1', 'files', []],
 		]);
-		$config->expects($this->any())->method('getUserValue')->willReturnMap([
+		$this->config->expects($this->any())->method('getUserValue')->willReturnMap([
 			['user1', 'settings', 'email', '', 'foo@bar.net'],
 		]);
 
-		$s = new SyncService($config, $logger, $mapper);
+		$s = new SyncService($this->config, $this->logger, $this->mapper);
 		$a = new Account();
 		$a->setUserId('user1');
 		$s->syncAccount($a, $backend);
@@ -65,51 +79,64 @@ class SyncServiceTest extends TestCase {
 	 * Pass in a backend that has new users anc check that they accounts are inserted
 	 */
 	public function testSetupNewAccount() {
-		$mapper = $this->createMock(AccountMapper::class);
+		/** @var UserInterface | IProvidesHomeBackend | \PHPUnit_Framework_MockObject_MockObject $backend */
 		$backend = $this->createMock(UserInterface::class);
-		$config = $this->createMock(IConfig::class);
-		$logger = $this->createMock(ILogger::class);
 		$account = $this->createMock(Account::class);
 
 		$backendUids = ['thisuserhasntbeenseenbefore'];
 		$backend->expects($this->once())->method('getUsers')->willReturn($backendUids);
 
 		// We expect the mapper to be called to find the uid
-		$mapper->expects($this->once())->method('getByUid')->with($backendUids[0])->willThrowException(new DoesNotExistException('entity not found'));
+		$this->mapper->expects($this->once())->method('getByUid')->with($backendUids[0])->willThrowException(new DoesNotExistException('entity not found'));
 
 		// Lets provide some config for the user
-		$config->expects($this->at(0))->method('getUserKeys')->with($backendUids[0], 'core')->willReturn([]);
-		$config->expects($this->at(1))->method('getUserKeys')->with($backendUids[0], 'login')->willReturn([]);
-		$config->expects($this->at(2))->method('getUserKeys')->with($backendUids[0], 'settings')->willReturn([]);
-		$config->expects($this->at(3))->method('getUserKeys')->with($backendUids[0], 'files')->willReturn([]);
+		$this->config->expects($this->at(0))->method('getUserKeys')->with($backendUids[0], 'core')->willReturn([]);
+		$this->config->expects($this->at(1))->method('getUserKeys')->with($backendUids[0], 'login')->willReturn([]);
+		$this->config->expects($this->at(2))->method('getUserKeys')->with($backendUids[0], 'settings')->willReturn([]);
+		$this->config->expects($this->at(3))->method('getUserKeys')->with($backendUids[0], 'files')->willReturn([]);
 
 		// Pretend we dont update anything
 		$account->expects($this->any())->method('getUpdatedFields')->willReturn([]);
 
 		// Then we should try to setup a new account and insert
-		$mapper->expects($this->once())->method('insert')->with($this->callback(function($arg) use ($backendUids) {
+		$this->mapper->expects($this->once())->method('insert')->with($this->callback(function($arg) use ($backendUids) {
 			return $arg instanceof Account && $arg->getUserId() === $backendUids[0];
 		}));
 
 		// Ignore state flag
 
-
-
-		$s = new SyncService($config, $logger, $mapper);
+		$s = new SyncService($this->config, $this->logger, $this->mapper);
 		$s->run($backend, new AllUsersIterator($backend), function($uid) {});
 
-		$this->invokePrivate($s, 'syncHome', [$account, $backend]);
+		static::invokePrivate($s, 'syncHome', [$account, $backend]);
+	}
+
+	/**
+	 * Pass in a backend that has new users anc check that they accounts are inserted
+	 */
+	public function testSetupNewAccountLogsErrorOnException() {
+		/** @var UserInterface | IProvidesHomeBackend | \PHPUnit_Framework_MockObject_MockObject $backend */
+		$backend = $this->createMock(UserInterface::class);
+
+		$backendUids = ['thisuserhasntbeenseenbefore'];
+		$backend->expects($this->once())->method('getUsers')->willReturn($backendUids);
+
+		// We expect the mapper to be called to find the uid but we throw an exception to trigger the error logging path
+		$this->mapper->expects($this->once())->method('getByUid')->with($backendUids[0])->willThrowException(new MultipleObjectsReturnedException('Trigger error'));
+
+		// Should log an error in the log and log the exception
+		$this->logger->expects($this->at(0))->method('error');
+		$this->logger->expects($this->at(1))->method('logException');
+
+		$s = new SyncService($this->config, $this->logger, $this->mapper);
+		$s->run($backend, new AllUsersIterator($backend), function($uid) {});
+
 	}
 
 	public function testSyncHomeLogsWhenBackendDiffersFromExisting() {
-		/** @var AccountMapper | \PHPUnit_Framework_MockObject_MockObject $mapper */
-		$mapper = $this->createMock(AccountMapper::class);
+
 		/** @var UserInterface | IProvidesHomeBackend | \PHPUnit_Framework_MockObject_MockObject $backend */
 		$backend = $this->createMock([UserInterface::class, IProvidesHomeBackend::class]);
-		/** @var IConfig | \PHPUnit_Framework_MockObject_MockObject $config */
-		$config = $this->createMock(IConfig::class);
-		/** @var ILogger | \PHPUnit_Framework_MockObject_MockObject $logger */
-		$logger = $this->createMock(ILogger::class);
 		$a = $this->getMockBuilder(Account::class)->setMethods(['getHome'])->getMock();
 
 		// Accoutn returns existing home
@@ -119,11 +146,11 @@ class SyncServiceTest extends TestCase {
 		$backend->expects($this->exactly(3))->method('getHome')->willReturn('newwrongvalue');
 
 		// Should produce an error in the log if backend home different from stored account home
-		$logger->expects($this->once())->method('error');
+		$this->logger->expects($this->once())->method('error');
 
-		$s = new SyncService($config, $logger, $mapper);
+		$s = new SyncService($this->config, $this->logger, $this->mapper);
 
-		$this->invokePrivate($s, 'syncHome', [$a, $backend]);
+		static::invokePrivate($s, 'syncHome', [$a, $backend]);
 	}
 
 	/**
@@ -132,20 +159,14 @@ class SyncServiceTest extends TestCase {
 	public function testTrySyncExistingUserWithOtherBackend() {
 		$uid = 'myTestUser';
 
-		/** @var AccountMapper | \PHPUnit_Framework_MockObject_MockObject $mapper */
-		$mapper = $this->createMock(AccountMapper::class);
 		$wrongBackend = new Database();
-		/** @var IConfig | \PHPUnit_Framework_MockObject_MockObject $config */
-		$config = $this->createMock(IConfig::class);
-		/** @var ILogger | \PHPUnit_Framework_MockObject_MockObject $logger */
-		$logger = $this->createMock(ILogger::class);
 
 		$a = $this->getMockBuilder(Account::class)->setMethods(['getBackend'])->getMock();
 		$a->expects($this->exactly(2))->method('getBackend')->willReturn('OriginalBackedClass');
 
-		$mapper->expects($this->once())->method('getByUid')->with($uid)->willReturn($a);
+		$this->mapper->expects($this->once())->method('getByUid')->with($uid)->willReturn($a);
 
-		$s = new SyncService($config, $logger, $mapper);
+		$s = new SyncService($this->config, $this->logger, $this->mapper);
 
 		$s->createOrSyncAccount($uid, $wrongBackend);
 	}
