@@ -99,6 +99,7 @@ class TrashbinPage extends FilesPageBasic {
 	public function restoreAllSelectedFiles(Session $session) {
 		$this->findRestoreAllSelectedFilesBtn()->click();
 		$this->waitForAjaxCallsToStartAndFinish($session);
+		$this->waitTillFileRowsAreReady($session);
 	}
 
 	/**

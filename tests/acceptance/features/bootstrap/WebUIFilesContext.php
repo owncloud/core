@@ -259,9 +259,10 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 	 * @return void
 	 */
 	public function thereShouldBeNoFilesFoldersListedOnTheWebUI() {
+		$pageObject = $this->getCurrentPageObject();
 		PHPUnit_Framework_Assert::assertEquals(
 			0,
-			$this->filesPage->getSizeOfFileFolderList()
+			$pageObject->getSizeOfFileFolderList()
 		);
 	}
 
@@ -274,9 +275,10 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 	 * @return void
 	 */
 	public function thereShouldBeCountFilesFoldersListedOnTheWebUI($count) {
+		$pageObject = $this->getCurrentPageObject();
 		PHPUnit_Framework_Assert::assertEquals(
 			$count,
-			$this->filesPage->getSizeOfFileFolderList()
+			$pageObject->getSizeOfFileFolderList()
 		);
 	}
 
