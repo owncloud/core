@@ -260,8 +260,10 @@ class Server extends ServerContainer implements IServerContainer, IServiceLoader
 				$this->getUserManager(),
 				new UserSearch(
 					$c->getConfig()
-				)
+				),
+				$this->getEventDispatcher()
 			);
+
 			$groupManager->listen('\OC\Group', 'preCreate', function ($gid) {
 				\OC_Hook::emit('OC_Group', 'pre_createGroup', ['run' => true, 'gid' => $gid]);
 			});

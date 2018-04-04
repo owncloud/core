@@ -164,8 +164,8 @@ class ManagerTest extends TestCase {
 
 	public function testEnableAppForGroups() {
 		$groups = [
-			new Group('group1', [], null),
-			new Group('group2', [], null)
+			new Group('group1', [], null, $this->eventDispatcher),
+			new Group('group2', [], null, $this->eventDispatcher)
 		];
 		$this->expectClearCache();
 		$this->manager->enableAppForGroups('test', $groups);
@@ -191,8 +191,8 @@ class ManagerTest extends TestCase {
 	 */
 	public function testEnableAppForGroupsAllowedTypes(array $appInfo) {
 		$groups = [
-			new Group('group1', [], null),
-			new Group('group2', [], null)
+			new Group('group1', [], null, $this->eventDispatcher),
+			new Group('group2', [], null, $this->eventDispatcher)
 		];
 		$this->expectClearCache();
 
@@ -236,8 +236,8 @@ class ManagerTest extends TestCase {
 	 */
 	public function testEnableAppForGroupsForbiddenTypes($type) {
 		$groups = [
-			new Group('group1', [], null),
-			new Group('group2', [], null)
+			new Group('group1', [], null, $this->eventDispatcher),
+			new Group('group2', [], null, $this->eventDispatcher)
 		];
 
 		/** @var AppManager|\PHPUnit_Framework_MockObject_MockObject $manager */
