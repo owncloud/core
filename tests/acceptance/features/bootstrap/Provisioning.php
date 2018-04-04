@@ -156,6 +156,27 @@ trait Provisioning {
 	}
 
 	/**
+	 *
+	 * @param string $groupname
+	 *
+	 * @return boolean
+	 * @throws Exception
+	 */
+	public function theGroupShouldBeAbleToBeDeleted($groupname) {
+		if (array_key_exists($groupname, $this->createdGroups)) {
+			return $this->createdGroups[$groupname]['possibleToDelete'];
+		}
+
+		if (array_key_exists($groupname, $this->createdRemoteGroups)) {
+			return $this->createdRemoteGroups[$groupname]['possibleToDelete'];
+		}
+
+		throw new Exception(
+			"group '$groupname' was not created by this test run"
+		);
+	}
+
+	/**
 	 * @When /^the administrator creates the user "([^"]*)" using the API$/
 	 * @Given /^user "([^"]*)" has been created$/
 	 *
@@ -413,7 +434,6 @@ trait Provisioning {
 		}
 		$user = trim($user);
 		$method = trim(strtolower($method));
-		$userWasCreated = false;
 		switch ($method) {
 			case "api":
 				$results = UserHelper::createUser(
@@ -432,7 +452,6 @@ trait Provisioning {
 						);
 					}
 				}
-				$userWasCreated = true;
 				break;
 			case "occ":
 				$result = SetupHelper::createUser(
@@ -444,7 +463,6 @@ trait Provisioning {
 						. $result["stdOut"] . " " . $result["stdErr"]
 					);
 				}
-				$userWasCreated = true;
 				break;
 			case "ldap":
 				echo "creating LDAP users is not implemented, so assume they exist\n";
@@ -455,7 +473,7 @@ trait Provisioning {
 				);
 		}
 
-		$this->addUserToCreatedUsersList($user, $password, $displayName, $email, $userWasCreated);
+		$this->addUserToCreatedUsersList($user, $password, $displayName, $email);
 		if ($initialize) {
 			$this->initializeUser($user, $password);
 		}
@@ -478,7 +496,9 @@ trait Provisioning {
 	 */
 	public function deleteGroup($group) {
 		$this->deleteTheGroupUsingTheAPI($group);
-		PHPUnit_Framework_Assert::assertFalse($this->groupExists($group));
+		if ($this->theGroupShouldBeAbleToBeDeleted($group)) {
+			PHPUnit_Framework_Assert::assertFalse($this->groupExists($group));
+		}
 	}
 
 	/**
@@ -641,13 +661,17 @@ trait Provisioning {
 
 	/**
 	 * @param string $group
-	 * @param bool $shouldExist
+	 * @param bool $shouldExist - true if the group should exist
+	 * @param bool $possibleToDelete - true if it is possible to delete the group
 	 *
 	 * @return void
 	 */
-	public function addGroupToCreatedGroupsList($group, $shouldExist = true) {
+	public function addGroupToCreatedGroupsList(
+		$group, $shouldExist = true, $possibleToDelete = true
+	) {
 		$groupData = [
-			"shouldExist" => $shouldExist
+			"shouldExist" => $shouldExist,
+			"possibleToDelete" => $possibleToDelete
 		];
 
 		if ($this->currentServer === 'LOCAL') {
@@ -738,7 +762,7 @@ trait Provisioning {
 		}
 		$group = trim($group);
 		$method = trim(strtolower($method));
-		$groupWasCreated = false;
+		$groupCanBeDeleted = false;
 		switch ($method) {
 			case "api":
 				$result = UserHelper::createGroup(
@@ -748,7 +772,7 @@ trait Provisioning {
 					$this->getAdminPassword()
 				);
 				if ($result->getStatusCode() === 200) {
-					$groupWasCreated = true;
+					$groupCanBeDeleted = true;
 				} else {
 					throw new Exception(
 						"could not create group. "
@@ -759,7 +783,7 @@ trait Provisioning {
 			case "occ":
 				$result = SetupHelper::createGroup($group);
 				if ($result["code"] == 0) {
-					$groupWasCreated = true;
+					$groupCanBeDeleted = true;
 				} else {
 					throw new Exception(
 						"could not create group. "
@@ -776,7 +800,7 @@ trait Provisioning {
 				);
 		}
 
-		$this->addGroupToCreatedGroupsList($group, $groupWasCreated);
+		$this->addGroupToCreatedGroupsList($group, true, $groupCanBeDeleted);
 	}
 
 	/**
@@ -854,7 +878,10 @@ trait Provisioning {
 			$this->getAdminPassword()
 		);
 
-		if ($this->theGroupShouldExist($group) && ($this->response->getStatusCode() !== 200)) {
+		if ($this->theGroupShouldExist($group)
+			&& $this->theGroupShouldBeAbleToBeDeleted($group)
+			&& ($this->response->getStatusCode() !== 200)
+		) {
 			error_log(
 				"INFORMATION: could not delete group. '" . $group . "'"
 				. $this->response->getStatusCode() . " " . $this->response->getBody()
