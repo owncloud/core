@@ -387,6 +387,7 @@ abstract class FilesPageBasic extends OwncloudPage {
 	public function deleteAllSelectedFiles(Session $session) {
 		$this->findDeleteAllSelectedFilesBtn()->click();
 		$this->waitForAjaxCallsToStartAndFinish($session);
+		$this->waitTillFileRowsAreReady($session);
 	}
 
 	/**
