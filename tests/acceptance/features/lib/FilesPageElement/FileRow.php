@@ -272,6 +272,7 @@ class FileRow extends OwncloudPage {
 
 	/**
 	 * selects this row for batch action e.g. download or delete
+	 * if the row is already selected, then it will be unselected.
 	 *
 	 * @return void
 	 */
