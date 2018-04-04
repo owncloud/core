@@ -136,7 +136,7 @@ class Server {
 		}
 
 		// calendar plugins
-		if ($this->isRequestForSubtree(['calendars', 'principals'])) {
+		if ($this->isRequestForSubtree(['calendars', 'public-calendars', 'principals'])) {
 			$mailer = \OC::$server->getMailer();
 			$this->server->addPlugin(new \OCA\DAV\CalDAV\Plugin());
 			$this->server->addPlugin(new \Sabre\CalDAV\ICSExportPlugin());
