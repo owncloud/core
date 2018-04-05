@@ -490,14 +490,34 @@ trait Provisioning {
 	}
 
 	/**
+	 * Try to delete the group, catching anything bad that might happen.
+	 * Use this method only in places where you want to try as best you
+	 * can to delete the group, but do not want to error if there is a problem.
+	 *
 	 * @param string $group
 	 *
 	 * @return void
 	 */
-	public function deleteGroup($group) {
-		$this->deleteTheGroupUsingTheAPI($group);
-		if ($this->theGroupShouldBeAbleToBeDeleted($group)) {
-			PHPUnit_Framework_Assert::assertFalse($this->groupExists($group));
+	public function cleanupGroup($group) {
+		try {
+			$this->deleteTheGroupUsingTheAPI($group);
+		} catch (BadResponseException $e) {
+			$this->response = $e->getResponse();
+			error_log(
+				"INFORMATION: There was an unexpected problem trying to delete group '" .
+				$group . "' status code " . $this->response->getStatusCode() .
+				" message `" . $e->getMessage() . "'"
+			);
+		}
+
+		if ($this->theGroupShouldBeAbleToBeDeleted($group)
+			&& $this->groupExists($group)
+		) {
+			error_log(
+				"INFORMATION: tried to delete group '" . $group .
+				"' at the end of the scenario but it seems to still exist. " .
+				"There might be problems with later scenarios."
+			);
 		}
 	}
 
@@ -1319,11 +1339,11 @@ trait Provisioning {
 		$previousServer = $this->currentServer;
 		$this->usingServer('LOCAL');
 		foreach ($this->createdGroups as $group => $groupData) {
-			$this->deleteGroup($group);
+			$this->cleanupGroup($group);
 		}
 		$this->usingServer('REMOTE');
 		foreach ($this->createdRemoteGroups as $remoteGroup => $groupData) {
-			$this->deleteGroup($remoteGroup);
+			$this->cleanupGroup($remoteGroup);
 		}
 		$this->usingServer($previousServer);
 	}
