@@ -38,12 +38,11 @@ use OCP\Lock\LockedException;
 use OCP\Share;
 use Symfony\Component\EventDispatcher\GenericEvent;
 use Symfony\Component\EventDispatcher\EventDispatcher;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Test\TestCase;
 use OCP\Files\Folder;
 use OCP\Files\Node;
 use OCP\Share\Exceptions\ShareNotFound;
-use Symfony\Component\EventDispatcher\EventDispatcher;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
  * Class Share20OCSTest

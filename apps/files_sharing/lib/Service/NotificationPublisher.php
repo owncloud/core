@@ -90,7 +90,7 @@ class NotificationPublisher {
 			$notification->setApp('files_sharing')
 				->setUser($userId)
 				->setDateTime(new \DateTime())
-				->setObject('local_share', $share->getId());
+				->setObject('local_share', $share->getFullId());
 
 			$notification->setIcon(
 				$this->urlGenerator->imagePath('core', 'actions/shared.svg')
