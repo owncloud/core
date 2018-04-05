@@ -94,7 +94,9 @@
 					},
 					config: this._filesConfig,
 					enableUpload: true,
-					maxChunkSize: OC.appConfig.files && OC.appConfig.files.max_chunk_size
+					maxChunkSize: OC.appConfig.files && OC.appConfig.files.max_chunk_size,
+					uploadStallTimeout: OC.appConfig.files && OC.appConfig.files.upload_stall_timeout,
+					uploadStallRetries: OC.appConfig.files && OC.appConfig.files.upload_stall_retries
 				}
 			);
 			this.files.initialize();
