@@ -288,12 +288,16 @@ class RepairOrphanedSubshareTest extends TestCase {
 	}
 
 	/**
-	 * A new approach
+	 * This is a test to verify if there are lets say 3000 parents which got reshared
+	 * to subsequent users. And lets say 2500 parent entries got deleted, then
+	 * users who had these parents shared would become orphans. And this test
+	 * is a proof that all the 2500 orphaned shares in the users will be removed.
+	 * And hence no further issues would be caused in the UI.
 	 */
-	public function testOrphanSharesNoMorePagination() {
+	public function testLargeOrphanSharesDistributedAmongUsers() {
 		$qb = $this->connection->getQueryBuilder();
 		$totalUsers[] = 'admin';
-		//Create 4 users. admin, user1, user2
+		//Create 4 users. admin, user1, user2, user3
 		$user = 'user';
 		for ($i = 1; $i <= 3; $i++) {
 			$this->createUser($user . $i);
@@ -387,20 +391,16 @@ class RepairOrphanedSubshareTest extends TestCase {
 			}
 		}
 
-		//Lets check range of 2900 to 2910
-		foreach (range(2900, 2910) as $adminIndex) {
-			$row = $checkQuery->select('parent')
-				->from('share')->where($checkQuery->expr()->eq('id', $checkQuery->createNamedParameter($getAllIdsPerUser['admin'][$adminIndex])))
-				->execute()->fetchAll();
-			$this->assertEquals(1, count($row));
-		}
-
-		//Lets check rance of 1 to 9
-		foreach (range(1, 9) as $adminIndex) {
-			$row = $checkQuery->select('parent')
-				->from('share')->where($checkQuery->expr()->eq('id', $checkQuery->createNamedParameter($getAllIdsPerUser['admin'][$adminIndex])))
-				->execute()->fetchAll();
-			$this->assertEquals(1, count($row));
+		//Lets check range of 2900 to 2910 and 1 to 9
+		$checkRandomAvailableEntries[] = range(2900, 2910);
+		$checkRandomAvailableEntries[] = range(1, 9);
+		foreach ($checkRandomAvailableEntries as $checkRandomAvailableEntry) {
+			foreach ($checkRandomAvailableEntry as $adminIndex) {
+				$row = $checkQuery->select('parent')
+					->from('share')->where($checkQuery->expr()->eq('id', $checkQuery->createNamedParameter($getAllIdsPerUser['admin'][$adminIndex])))
+					->execute()->fetchAll();
+				$this->assertEquals(1, count($row));
+			}
 		}
 	}
 

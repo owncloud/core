@@ -47,28 +47,6 @@ class RepairOrphanedSubshare implements IRepairStep {
 	 */
 	public function __construct(IDBConnection $connection, $pageLimit = 1000) {
 		$this->connection = $connection;
-		$this->pageLimit = $pageLimit;
-
-		//This delete query deletes orphan shares whose parents are missing
-		$this->deleteOrphanReshares = $this->connection->getQueryBuilder();
-		$this->deleteOrphanReshares
-			->delete('share')
-			->where(
-				$this->deleteOrphanReshares->expr()->eq('parent',
-					$this->deleteOrphanReshares->createParameter('parentId'))
-			);
-		//Set the query to get the parent id's missing from the table.
-		$this->missingParents = $this->connection->getQueryBuilder();
-		$qb = $this->connection->getQueryBuilder();
-
-		$qb->select('s2.id')
-			->from('share', 's2')
-			->where($this->missingParents->expr()->eq('s2.id', 's1.parent'));
-		$this->missingParents->select('parent')
-			->from('share', 's1');
-		$this->missingParents->where($this->missingParents->expr()->isNotNull('parent'));
-		$this->missingParents->andWhere($this->missingParents->createFunction('NOT EXISTS (' . $qb->getSQL() . ')'));
-		$this->missingParents->groupBy('parent');
 	}
 
 	/**
@@ -88,21 +66,32 @@ class RepairOrphanedSubshare implements IRepairStep {
 	 * @throws \Exception in case of failure
 	 */
 	public function run(IOutput $output) {
+		/**
+		 * DELETE FROM share
+		 * WHERE parent NOT IN (
+		 * 		SELECT id FROM (
+		 * 			SELECT id FROM share
+		 * 			ORDER BY id -- to prevent derived table merge
+		 * 		) mysqlerr1093hack
+		 * )
+		 */
 
-		/** A one time call to get missing parents from oc_share table */
-		do {
-			$this->missingParents->setMaxResults($this->pageLimit);
-			$results = $this->missingParents->execute();
-			$rows = $results->fetchAll();
-			$results->closeCursor();
-			if (count($rows) > 0) {
-				$this->connection->beginTransaction();
-				foreach ($rows as $row) {
-					$this->deleteOrphanReshares->setParameter('parentId', $row['parent'])->execute();
-				}
-				$this->connection->commit();
-			}
+		// subselect for all share ids
+		$allShares = $this->connection->getQueryBuilder()
+			->select('id')
+			->from('share')
+			->orderBy('id'); // to prevent derived table merge, see https://mariadb.com/kb/en/library/derived-table-merge-optimization/#factsheet
 
-		} while (!empty($rows));
+		// TODO this subquery currently cannot be built with our doctrine wrapper
+		// TODO make the mysql hack optional? might also be needed for oracle
+		$subquery = "SELECT `id` FROM ({$allShares->getSQL()}) mysqlerr1093hack";
+
+		//This delete query deletes orphan shares whose parents are missing
+		$deleteOrphanReshares = $this->connection->getQueryBuilder();
+		$deleteOrphanReshares
+			->delete('share')
+			->where($deleteOrphanReshares->expr()->notIn('parent',
+			$deleteOrphanReshares->createFunction($subquery)));
+		$deleteOrphanReshares->execute();
 	}
 }
