@@ -37,27 +37,27 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 class HooksTest extends TestCase {
 
 	/**
-	 * @var EventDispatcherInterface | \PHPUnit_Framework_MockObject_MockObject 
+	 * @var EventDispatcherInterface | \PHPUnit_Framework_MockObject_MockObject
 	 */
 	private $eventDispatcher;
 
 	/**
-	 * @var IURLGenerator | \PHPUnit_Framework_MockObject_MockObject 
+	 * @var IURLGenerator | \PHPUnit_Framework_MockObject_MockObject
 	 */
 	private $urlGenerator;
 
 	/**
-	 * @var IRootFolder | \PHPUnit_Framework_MockObject_MockObject 
+	 * @var IRootFolder | \PHPUnit_Framework_MockObject_MockObject
 	 */
 	private $rootFolder;
 
 	/**
-	 * @var \OCP\Share\IManager | \PHPUnit_Framework_MockObject_MockObject 
+	 * @var \OCP\Share\IManager | \PHPUnit_Framework_MockObject_MockObject
 	 */
 	private $shareManager;
 
 	/**
-	 * @var NotificationPublisher | \PHPUnit_Framework_MockObject_MockObject 
+	 * @var NotificationPublisher | \PHPUnit_Framework_MockObject_MockObject
 	 */
 	private $notificationPublisher;
 
@@ -148,17 +148,13 @@ class HooksTest extends TestCase {
 	public function testPublishShareNotification() {
 		$share = $this->createMock(IShare::class);
 
-		$this->shareManager->expects($this->once())
-			->method('getShareById')
-			->with('123')
-			->willReturn($share);
-
 		$this->notificationPublisher->expects($this->once())
 			->method('sendNotification')
 			->with($share);
 
 		$event = new GenericEvent(null, [
 			'share' => ['id' => '123'],
+			'shareObject' => $share,
 		]);
 		$this->eventDispatcher->dispatch('share.afterCreate', $event);
 	}
@@ -166,17 +162,13 @@ class HooksTest extends TestCase {
 	public function testDiscardShareNotification() {
 		$share = $this->createMock(IShare::class);
 
-		$this->shareManager->expects($this->once())
-			->method('getShareById')
-			->with('123')
-			->willReturn($share);
-
 		$this->notificationPublisher->expects($this->once())
 			->method('discardNotification')
 			->with($share);
 
 		$event = new GenericEvent(null, [
 			'share' => ['id' => '123'],
+			'shareObject' => $share,
 		]);
 		$this->eventDispatcher->dispatch('share.afterDelete', $event);
 	}
