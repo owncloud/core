@@ -65,6 +65,24 @@ So that I can keep my filing system clean and tidy
 		Then the deleted elements should not be listed on the webUI
 		And the deleted elements should not be listed on the webUI after a page reload
 
+	Scenario: Delete all files at once
+		When the user marks all files for batch action using the webUI
+		And the user batch deletes the marked files using the webUI
+		Then the folder should be empty on the webUI
+		And the folder should be empty on the webUI after a page reload
+
+	Scenario: Delete all except for a few files at once
+		When the user marks all files for batch action using the webUI
+		And the user unmarks these files for batch action using the webUI
+			| name          |
+			| lorem.txt     |
+			| simple-folder |
+		And the user batch deletes the marked files using the webUI
+		Then the folder "simple-folder" should be listed on the webUI
+		And the file "lorem.txt" should be listed on the webUI
+		# Check just an example of a file that should not exist any more
+		But the file "data.zip" should not be listed on the webUI
+
 	Scenario: Delete an empty folder
 		When the user creates a folder with the name "my-empty-folder" using the webUI
 		And the user creates a folder with the name "my-other-empty-folder" using the webUI
