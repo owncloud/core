@@ -510,8 +510,14 @@ trait Provisioning {
 			);
 		}
 
-		if ($this->theGroupShouldBeAbleToBeDeleted($group)) {
-			PHPUnit_Framework_Assert::assertFalse($this->groupExists($group));
+		if ($this->theGroupShouldBeAbleToBeDeleted($group)
+			&& $this->groupExists($group)
+		) {
+			error_log(
+				"INFORMATION: tried to delete group '" . $group .
+				"' at the end of the scenario but it seems to still exist. " .
+				"There might be problems with later scenarios."
+			);
 		}
 	}
 
