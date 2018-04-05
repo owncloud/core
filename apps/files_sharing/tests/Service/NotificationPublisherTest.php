@@ -169,14 +169,14 @@ class NotificationPublisherTest extends TestCase {
 				'local_share',
 				['shareOwner', 'sharedBy', 'node-name'],
 				'groupMember1',
-				12300,
+				'ocinternal:12300',
 				'/owncloud/f/4000'
 			),
 			$this->createExpectedNotification(
 				'local_share',
 				['shareOwner', 'sharedBy', 'node-name'],
 				'groupMember2',
-				12300,
+				'ocinternal:12300',
 				'/owncloud/f/4000'
 			),
 		];
@@ -200,6 +200,7 @@ class NotificationPublisherTest extends TestCase {
 		$share->method('getShareType')->willReturn(\OCP\Share::SHARE_TYPE_GROUP);
 		$share->method('getSharedWith')->willReturn('group1');
 		$share->method('getState')->willReturn(\OCP\Share::STATE_PENDING);
+		$share->method('getFullId')->willReturn('ocinternal:12300');
 
 		$this->makeGroup('group1', ['groupMember1', 'groupMember2', 'shareOwner', 'sharedBy']);
 
@@ -243,7 +244,7 @@ class NotificationPublisherTest extends TestCase {
 			'local_share',
 			['shareOwner', 'sharedBy', 'node-name'],
 			'shareRecipient',
-			12300,
+			'ocinternal:12300',
 			'/owncloud/f/4000'
 		);
 		$this->notificationManager->expects($this->once())
@@ -258,6 +259,7 @@ class NotificationPublisherTest extends TestCase {
 		$share->method('getShareType')->willReturn(\OCP\Share::SHARE_TYPE_USER);
 		$share->method('getSharedWith')->willReturn('shareRecipient');
 		$share->method('getState')->willReturn(\OCP\Share::STATE_PENDING);
+		$share->method('getFullId')->willReturn('ocinternal:12300');
 
 		$endpointUrl = 'ocs/v1.php/apps/files_sharing/api/v1/shares/pending/12300';
 

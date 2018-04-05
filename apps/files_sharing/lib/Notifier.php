@@ -24,17 +24,33 @@ namespace OCA\Files_sharing;
 
 use OCP\Notification\INotification;
 use OCP\Notification\INotifier;
+use OCP\Notification\IManager as INotificationManager;
+use OCP\Share\IManager as IShareManager;
+use OCP\Share\Exceptions\ShareNotFound;
+use OCP\IGroupManager;
 use OC\L10N\L10N;
 
 class Notifier implements INotifier {
 	/** @var \OCP\L10N\IFactory */
 	protected $factory;
 
+	/** @var IShareManager */
+	protected $shareManager;
+
+	/** @var INotificationManager */
+	protected $notificationManager;
+
+	/** @var IGroupManager */
+	protected $groupManager;
+
 	/**
 	 * @param \OCP\L10N\IFactory $factory
 	 */
-	public function __construct(\OCP\L10N\IFactory $factory) {
+	public function __construct(\OCP\L10N\IFactory $factory, INotificationManager $notificationManager, IShareManager $shareManager, IGroupManager $groupManager) {
 		$this->factory = $factory;
+		$this->notificationManager = $notificationManager;
+		$this->shareManager = $shareManager;
+		$this->groupManager = $groupManager;
 	}
 
 	/**
@@ -56,6 +72,19 @@ class Notifier implements INotifier {
 		switch ($notification->getSubject()) {
 			case 'local_share':
 			case 'local_share_accepted':
+				$shareId = $notification->getObjectId();
+				$userId = $notification->getUser();
+				try {
+					$share = $this->shareManager->getShareById($shareId, $userId);
+					if ($share->getShareType() === \OCP\Share::SHARE_TYPE_GROUP && !$this->groupManager->isInGroup($userId, $share->getSharedWith())) {
+						$this->notificationManager->markProcessed($notification);
+						throw new \InvalidArgumentException();
+					}
+				} catch (ShareNotFound $ex) {
+					// mark the notification as processed
+					$this->notificationManager->markProcessed($notification);
+					throw new \InvalidArgumentException();
+				}
 				return $this->format($notification, $l);
 
 			default:
