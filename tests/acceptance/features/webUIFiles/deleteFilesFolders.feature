@@ -78,9 +78,10 @@ So that I can keep my filing system clean and tidy
 			| lorem.txt     |
 			| simple-folder |
 		And the user batch deletes the marked files using the webUI
-		Then there should be exactly 2 files/folders listed on the webUI
-		And the folder "simple-folder" should be listed on the webUI
+		Then the folder "simple-folder" should be listed on the webUI
 		And the file "lorem.txt" should be listed on the webUI
+		# Check just an example of a file that should not exist any more
+		But the file "data.zip" should not be listed on the webUI
 
 	Scenario: Delete an empty folder
 		When the user creates a folder with the name "my-empty-folder" using the webUI
