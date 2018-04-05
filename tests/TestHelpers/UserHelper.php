@@ -182,6 +182,7 @@ class UserHelper {
 	public static function deleteGroup(
 		$baseUrl, $group, $adminUser, $adminPassword, $ocsApiVersion = 2
 	) {
+		$group = \strtr($group, ['%' => '%25', '/' => '%2F']);
 		$group = \rawurlencode($group);
 		return OcsApiHelper::sendRequest(
 			$baseUrl, $adminUser, $adminPassword,

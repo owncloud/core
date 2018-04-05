@@ -1923,6 +1923,11 @@ trait Provisioning {
 	 * @return bool
 	 */
 	public function groupExists($group) {
+		// First turn any "/" into "%2F"
+		$group = \strtr($group, ['%' => '%25', '/' => '%2F']);
+		// Now encode anything special. This will include any "/" that has
+		// become a "%2F" which will now become "%252F" or other literal "%"
+		// that has become "%25" above, and will now become "%2525"
 		$group = \rawurlencode($group);
 		$fullUrl = $this->getBaseUrl() . "/ocs/v2.php/cloud/groups/$group";
 		$this->response = HttpRequestHelper::get(

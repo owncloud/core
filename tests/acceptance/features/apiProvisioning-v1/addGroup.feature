@@ -52,13 +52,7 @@ Feature: add groups
     When the administrator sends a group creation request for group "<group_id>" using the provisioning API
     Then the OCS status code should be "100"
     And the HTTP status code should be "200"
-    # After fixing issue-31015, change the following step to "should exist"
-    And group "<group_id>" should not exist
-    #And group "<group_id>" should exist
-    #
-    # The following step is needed so that the group does get cleaned up.
-    # After fixing issue-31015, remove the following step:
-    And the administrator deletes group "<group_id>" using the occ command
+    And group "<group_id>" should exist
     Examples:
       | group_id         | comment                            |
       | Mgmt/Sydney      | Slash (special escaping happens)   |
@@ -72,14 +66,9 @@ Feature: add groups
   Scenario: admin tries to create a group with name ending in "/subadmins"
     Given group "new-group" has been created
     When the administrator tries to send a group creation request for group "priv/subadmins" using the provisioning API
-    # After fixing issue-31015, change the expected status to "101"
-    Then the OCS status code should be "100"
-    #Then the OCS status code should be "101"
+    Then the OCS status code should be "101"
     And the HTTP status code should be "200"
     And group "priv/subadmins" should not exist
-    # The following step is needed so that the group does get cleaned up.
-    # After fixing issue-31015, remove the following step:
-    And the administrator deletes group "priv/subadmins" using the occ command
 
   Scenario: admin tries to create a group that already exists
     Given group "new-group" has been created

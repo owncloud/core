@@ -54,6 +54,17 @@ class Groups {
 	}
 
 	/**
+	 * unencode any encoded "/" or "%" that are intended to be literally part
+	 * of the group name.
+	 *
+	 * @param string $groupId
+	 * @return string
+	 */
+	private function unencodeGroupId($groupId) {
+		return \strtr($groupId, ['%25' => '%', '%2F' => '/']);
+	}
+
+	/**
 	 * returns a list of groups
 	 *
 	 * @param array $parameters
@@ -93,7 +104,7 @@ class Groups {
 			return new OC_OCS_Result(null, \OCP\API::RESPOND_UNAUTHORISED);
 		}
 
-		$groupId = $parameters['groupid'];
+		$groupId = $this->unencodeGroupId($parameters['groupid']);
 
 		// Check the group exists
 		if (!$this->groupManager->groupExists($groupId)) {
@@ -155,12 +166,13 @@ class Groups {
 	 * @return OC_OCS_Result
 	 */
 	public function deleteGroup($parameters) {
+		$groupId = $this->unencodeGroupId($parameters['groupid']);
 		// Check it exists
-		if (!$this->groupManager->groupExists($parameters['groupid'])) {
+		if (!$this->groupManager->groupExists($groupId)) {
 			return new OC_OCS_Result(null, 101);
 		}
 
-		if ($parameters['groupid'] === 'admin' || !$this->groupManager->get($parameters['groupid'])->delete()) {
+		if ($groupId === 'admin' || !$this->groupManager->get($groupId)->delete()) {
 			// Cannot delete admin group
 			return new OC_OCS_Result(null, 102);
 		}
@@ -173,7 +185,7 @@ class Groups {
 	 * @return OC_OCS_Result
 	 */
 	public function getSubAdminsOfGroup($parameters) {
-		$group = $parameters['groupid'];
+		$group = $this->unencodeGroupId($parameters['groupid']);
 		// Check group exists
 		$targetGroup = $this->groupManager->get($group);
 		if ($targetGroup === null) {
