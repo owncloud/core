@@ -1,5 +1,6 @@
 <?php
 /**
+ * @author Jörn Friedrich Dreyer <jfd@butonic.de>
  * @author Thomas Müller <thomas.mueller@tmit.eu>
  *
  * @copyright Copyright (c) 2018, ownCloud GmbH
@@ -23,6 +24,8 @@ namespace OC\Core\Command\User;
 
 
 use OC\User\AccountMapper;
+use OC\User\Sync\AllUsersIterator;
+use OC\User\Sync\SeenUsersIterator;
 use OC\User\SyncService;
 use OCP\IConfig;
 use OCP\ILogger;
@@ -81,6 +84,24 @@ class SyncBackend extends Command {
 				'List all known backend classes'
 			)
 			->addOption(
+				'uid',
+				'u',
+				InputOption::VALUE_REQUIRED,
+				'sync only the user with the given user id'
+			)
+			->addOption(
+				'seenOnly',
+				's',
+				InputOption::VALUE_NONE,
+				'sync only seen users'
+			)
+			->addOption(
+				'showCount',
+				'c',
+				InputOption::VALUE_NONE,
+				'calculate user count before syncing'
+			)
+			->addOption(
 				'missing-account-action',
 				'm',
 				InputOption::VALUE_REQUIRED,
@@ -97,12 +118,12 @@ class SyncBackend extends Command {
 			return 0;
 		}
 		$backendClassName = $input->getArgument('backend-class');
-		if (is_null($backendClassName)) {
-			$output->writeln("<error>No backend class name given. Please run ./occ help user:sync to understand how this command works.</error>");
+		if ($backendClassName === null) {
+			$output->writeln('<error>No backend class name given. Please run ./occ help user:sync to understand how this command works.</error>');
 			return 1;
 		}
 		$backend = $this->getBackend($backendClassName);
-		if (is_null($backend)) {
+		if ($backend === null) {
 			$output->writeln("<error>The backend <$backendClassName> does not exist. Did you miss to enable the app?</error>");
 			return 1;
 		}
@@ -116,7 +137,7 @@ class SyncBackend extends Command {
 		if ($input->getOption('missing-account-action') !== null) {
 			$missingAccountsAction = $input->getOption('missing-account-action');
 			if (!in_array($missingAccountsAction, $validActions, true)) {
-				$output->writeln("<error>Unknown action. Choose between \"disable\" or \"remove\"</error>");
+				$output->writeln('<error>Unknown action. Choose between "disable" or "remove"</error>');
 				return 1;
 			}
 		} else {
@@ -132,27 +153,91 @@ class SyncBackend extends Command {
 
 		$syncService = new SyncService($this->config, $this->logger, $this->accountMapper);
 
-		// analyse unknown users
-		$this->handleUnknownUsers($input, $output, $backend, $syncService, $missingAccountsAction, $validActions);
+		$uid = $input->getOption('uid');
 
-		// insert/update known users
-		$output->writeln("Insert new and update existing users ...");
-		$p = new ProgressBar($output);
-		$max = null;
-		if ($backend->implementsActions(\OC_User_Backend::COUNT_USERS)) {
-			$max = $backend->countUsers();
+		if ($uid) {
+			$this->syncSingleUser($input, $output, $syncService, $backend, $uid, $missingAccountsAction, $validActions);
+		} else {
+			$this->syncMultipleUsers($input, $output, $syncService, $backend, $missingAccountsAction, $validActions);
 		}
-		$p->start($max);
-		$syncService->run($backend, function () use ($p) {
+
+		return 0;
+	}
+
+
+	/**
+	 * @param InputInterface $input
+	 * @param OutputInterface $output
+	 * @param SyncService $syncService
+	 * @param UserInterface $backend
+	 * @param string $missingAccountsAction
+	 * @param array $validActions
+	 */
+	private function syncMultipleUsers (
+		InputInterface $input,
+		OutputInterface $output,
+		SyncService $syncService,
+		UserInterface $backend,
+		$missingAccountsAction,
+		array $validActions
+	) {
+		$output->writeln('Analyse unknown users ...');
+		$p = new ProgressBar($output);
+		$unknownUsers = $syncService->getNoLongerExistingUsers($backend, function () use ($p) {
 			$p->advance();
 		});
 		$p->finish();
 		$output->writeln('');
 		$output->writeln('');
+		$this->handleUnknownUsers($unknownUsers, $input, $output, $missingAccountsAction, $validActions);
 
-		return 0;
+		$output->writeln('Insert new and update existing users ...');
+		$p = new ProgressBar($output);
+		$max = null;
+		if ($backend->implementsActions(\OC_User_Backend::COUNT_USERS) && $input->getOption('showCount')) {
+			$max = $backend->countUsers();
+		}
+		$p->start($max);
+
+		if ($input->getOption('seenOnly')) {
+			$iterator = new SeenUsersIterator($this->accountMapper, get_class($backend));
+		} else {
+			$iterator = new AllUsersIterator($backend);
+		}
+		$syncService->run($backend, $iterator, function () use ($p) {
+			$p->advance();
+		});
+		$p->finish();
+		$output->writeln('');
+		$output->writeln('');
 	}
 
+	/**
+	 * @param InputInterface $input
+	 * @param OutputInterface $output
+	 * @param SyncService $syncService
+	 * @param UserInterface $backend
+	 * @param string $uid
+	 * @param string $missingAccountsAction
+	 * @param array $validActions
+	 */
+	private function syncSingleUser(
+		InputInterface $input,
+		OutputInterface $output,
+		SyncService $syncService,
+		UserInterface $backend,
+		$uid,
+		$missingAccountsAction,
+		array $validActions
+	) {
+		$output->writeln("Syncing $uid ...");
+		if (!$backend->userExists($uid)) {
+			$this->handleUnknownUsers([$uid], $input, $output, $missingAccountsAction, $validActions);
+		} else {
+			// sync
+			$syncService->run($backend, new \ArrayIterator([$uid]), function (){});
+		}
+	}
 	/**
 	 * @param $backend
 	 * @return null|UserInterface
@@ -187,58 +272,49 @@ class SyncBackend extends Command {
 	}
 
 	/**
+	 * @param string[] $unknownUsers
 	 * @param InputInterface $input
 	 * @param OutputInterface $output
-	 * @param UserInterface $backend
-	 * @param SyncService $syncService
 	 * @param $missingAccountsAction
 	 * @param $validActions
 	 */
-	private function handleUnknownUsers(InputInterface $input, OutputInterface $output, UserInterface $backend, SyncService $syncService, $missingAccountsAction, $validActions) {
-		$output->writeln("Analyse unknown users ...");
-		$p = new ProgressBar($output);
-		$toBeDeleted = $syncService->getNoLongerExistingUsers($backend, function () use ($p) {
-			$p->advance();
-		});
-		$p->finish();
-		$output->writeln('');
-		$output->writeln('');
+	private function handleUnknownUsers(array $unknownUsers, InputInterface $input, OutputInterface $output, $missingAccountsAction, $validActions) {
 
-		if (empty($toBeDeleted)) {
-			$output->writeln("No unknown users have been detected.");
+		if (empty($unknownUsers)) {
+			$output->writeln('No unknown users have been detected.');
 		} else {
-			$output->writeln("Following users are no longer known with the connected backend.");
+			$output->writeln('Following users are no longer known with the connected backend.');
 			switch ($missingAccountsAction) {
 				case 'disable':
-					$output->writeln("Proceeding to disable the accounts");
-					$this->doActionForAccountUids($toBeDeleted,
+					$output->writeln('Proceeding to disable the accounts');
+					$this->doActionForAccountUids($unknownUsers,
 						function ($uid, IUser $ac) use ($output) {
 							$ac->setEnabled(false);
 							$output->writeln($uid);
 						},
 						function ($uid) use ($output) {
-							$output->writeln($uid . " (unknown account for the user)");
+							$output->writeln("$uid (unknown account for the user)");
 						});
 					break;
 				case 'remove':
-					$output->writeln("Proceeding to remove the accounts");
-					$this->doActionForAccountUids($toBeDeleted,
+					$output->writeln('Proceeding to remove the accounts');
+					$this->doActionForAccountUids($unknownUsers,
 						function ($uid, IUser $ac) use ($output) {
 							$ac->delete();
 							$output->writeln($uid);
 						},
 						function ($uid) use ($output) {
-							$output->writeln($uid . " (unknown account for the user)");
+							$output->writeln("$uid (unknown account for the user)");
 						});
 					break;
 				case 'ask later':
-					$output->writeln("listing the unknown accounts");
-					$this->doActionForAccountUids($toBeDeleted,
+					$output->writeln('listing the unknown accounts');
+					$this->doActionForAccountUids($unknownUsers,
 						function ($uid) use ($output) {
 							$output->writeln($uid);
 						},
 						function ($uid) use ($output) {
-							$output->writeln($uid . " (unknown account for the user)");
+							$output->writeln("$uid (unknown account for the user)");
 						});
 					// overwriting variables!
 					$helper = $this->getHelper('question');
@@ -251,23 +327,23 @@ class SyncBackend extends Command {
 					switch ($missingAccountsAction2) {
 						// if "nothing" is selected, just ignore and finish
 						case 'disable':
-							$output->writeln("Proceeding to disable the accounts");
-							$this->doActionForAccountUids($toBeDeleted,
+							$output->writeln('Proceeding to disable the accounts');
+							$this->doActionForAccountUids($unknownUsers,
 								function ($uid, IUser $ac) {
 									$ac->setEnabled(false);
 								},
 								function ($uid) use ($output) {
-									$output->writeln($uid . " (unknown account for the user)");
+									$output->writeln("$uid (unknown account for the user)");
 								});
 							break;
 						case 'remove':
-							$output->writeln("Proceeding to remove the accounts");
-							$this->doActionForAccountUids($toBeDeleted,
+							$output->writeln('Proceeding to remove the accounts');
+							$this->doActionForAccountUids($unknownUsers,
 								function ($uid, IUser $ac) {
 									$ac->delete();
 								},
 								function ($uid) use ($output) {
-									$output->writeln($uid . " (unknown account for the user)");
+									$output->writeln("$uid (unknown account for the user)");
 								});
 							break;
 					}
