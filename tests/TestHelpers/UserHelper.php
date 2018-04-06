@@ -179,6 +179,25 @@ class UserHelper {
 	}
 
 	/**
+	 *
+	 * @param string $baseUrl
+	 * @param string $user
+	 * @param string $group
+	 * @param string $adminUser
+	 * @param string $adminPassword
+	 *
+	 * @return ResponseInterface
+	 */
+	public static function removeUserFromGroup(
+		$baseUrl, $user, $group, $adminUser, $adminPassword
+	) {
+		return OcsApiHelper::sendRequest(
+			$baseUrl, $adminUser, $adminPassword, "DELETE",
+			"/cloud/users/" . $user . "/groups", ['groupid' => $group]
+		);
+	}
+
+	/**
 	 * 
 	 * @param string $baseUrl
 	 * @param string $adminUser

@@ -931,6 +931,33 @@ trait Provisioning {
 	}
 
 	/**
+	 * @When the administrator removes user :user from group :group using the API
+	 * @Given user :user has been removed from group :group
+	 * 
+	 * @param string $user
+	 * @param string $group
+	 *
+	 * @return void
+	 */
+	public function adminRemovesUserFromGroupUsingTheAPI($user, $group) {
+		$this->response = UserHelper::removeUserFromGroup(
+			$this->getBaseUrl(),
+			$user,
+			$group,
+			$this->getAdminUsername(),
+			$this->getAdminPassword()
+		);
+		
+		if ($this->response->getStatusCode() !== 200) {
+			error_log(
+				"INFORMATION: could not remove user '" . $user
+				. "' from group. '" . $group . "'"
+				. $this->response->getStatusCode() . " " . $this->response->getBody()
+			);
+		}
+	}
+
+	/**
 	 * @Then /^user "([^"]*)" should be a subadmin of group "([^"]*)"$/
 	 *
 	 * @param string $user
