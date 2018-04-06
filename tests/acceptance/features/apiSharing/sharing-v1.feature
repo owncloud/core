@@ -494,6 +494,52 @@ Feature: sharing
 			| /CHILD/child.txt         |
 		And the HTTP status code should be "200"
 
+		Scenario: Share of folder to a group
+		Given user "user0" has been created
+		And user "user1" has been created
+		And user "user2" has been created
+		And group "group0" has been created
+		And user "user1" has been added to group "group0"
+		And user "user2" has been added to group "group0"
+		And user "user0" shares file "/PARENT" with group "group0" using the API
+		Then user "user1" should see the following elements
+			| /FOLDER/                 |
+			| /PARENT/                 |
+			| /PARENT/parent.txt       |
+			| /PARENT%20(2)/           |
+			| /PARENT%20(2)/parent.txt |
+		And the HTTP status code should be "200"
+		And user "user2" should see the following elements
+			| /FOLDER/                 |
+			| /PARENT/                 |
+			| /PARENT/parent.txt       |
+			| /PARENT%20(2)/           |
+			| /PARENT%20(2)/parent.txt |
+		And the HTTP status code should be "200"
+
+		Scenario: Share of folder to a group, remove user from that group
+		Given user "user0" has been created
+		And user "user1" has been created
+		And user "user2" has been created
+		And group "group0" has been created
+		And user "user1" has been added to group "group0"
+		And user "user2" has been added to group "group0"
+		And user "user0" shares file "/PARENT" with group "group0" using the API
+		And the administrator removes user "user2" from group "group0" using the API
+		Then user "user1" should see the following elements
+			| /FOLDER/                 |
+			| /PARENT/                 |
+			| /PARENT/parent.txt       |
+			| /PARENT%20(2)/           |
+			| /PARENT%20(2)/parent.txt |
+		And user "user2" should see the following elements
+			| /FOLDER/                 |
+			| /PARENT/                 |
+			| /PARENT/parent.txt       |
+		But user "user2" should not see the following elements
+			| /PARENT%20(2)/           |
+			| /PARENT%20(2)/parent.txt |
+
 	Scenario: Share a file by multiple channels and download from sub-folder and direct file share
 		Given user "user0" has been created
 		And user "user1" has been created
