@@ -64,7 +64,9 @@ class WebUIGeneralContext extends RawMinkContext implements Context {
 	 * @var Page\OwncloudPage
 	 */
 	private $currentPageObject = null;
-	
+
+	private $currentServer = null;
+
 	/**
 	 * @var string the original capabilities in XML format
 	 */
@@ -143,6 +145,22 @@ class WebUIGeneralContext extends RawMinkContext implements Context {
 	 */
 	public function getCurrentPageObject() {
 		return $this->currentPageObject;
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getCurrentServer() {
+		return $this->currentServer;
+	}
+
+	/**
+	 * @param string $currentServer
+	 * 
+	 * @return void
+	 */
+	public function setCurrentServer($currentServer) {
+		$this->currentServer = $currentServer;
 	}
 
 	/**

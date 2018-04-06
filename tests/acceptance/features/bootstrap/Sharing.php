@@ -54,6 +54,27 @@ trait Sharing {
 	private $lastShareTime = null;
 
 	/**
+	 * @return SimpleXMLElement
+	 */
+	public function getLastShareData() {
+		return $this->lastShareData;
+	}
+
+	/**
+	 * @return number
+	 */
+	public function getSavedShareId() {
+		return $this->savedShareId;
+	}
+
+	/**
+	 * @return number
+	 */
+	public function getLastShareTime() {
+		return $this->lastShareTime;
+	}
+
+	/**
 	 * @When /^user "([^"]*)" creates a share using the API with settings$/
 	 * @Given /^user "([^"]*)" has created a share with settings$/
 	 *

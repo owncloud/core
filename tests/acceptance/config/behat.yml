@@ -26,7 +26,8 @@ default:
       paths:
         - %paths.base%/../features/apiFederation
       contexts:
-        - FederationContext: *common_feature_context_params
+        - FeatureContext: *common_feature_context_params
+        - FederationContext:
 
     apiProvisioning:
       paths:
@@ -153,6 +154,7 @@ default:
         - WebUIUsersContext:
         - WebUIFilesContext:
         - WebUISharingContext:
+        - FederationContext:
 
     webUIUpload:
       paths:

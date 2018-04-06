@@ -2,6 +2,10 @@
 Feature: federated
 	Background:
 		Given using API version "1"
+		And parameter "shareapi_enabled" of app "core" has been set to "yes"
+		And parameter "shareapi_allow_resharing" of app "core" has been set to "yes"
+		And parameter "outgoing_server2server_share_enabled" of app "files_sharing" has been set to "yes"
+		And parameter "incoming_server2server_share_enabled" of app "files_sharing" has been set to "yes"
 
 	Scenario: Federate share a file with another server
 		Given using server "REMOTE"
