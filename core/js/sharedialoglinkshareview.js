@@ -25,18 +25,18 @@
 			'<div id="allowPublicRead-{{cid}}" class="public-link-modal--item">' +
 				'<input type="radio" value="{{publicReadValue}}" name="publicPermissions" id="sharingDialogAllowPublicRead-{{cid}}" class="checkbox publicPermissions" {{#if publicReadSelected}}checked{{/if}} />' +
 				'<label class="bold" for="sharingDialogAllowPublicRead-{{cid}}">{{publicReadLabel}}</label>' +
-				'<p>{{publicReadDescription}}</p>' +
+				'<p><em>{{publicReadDescription}}</em></p>' +
 			'</div>' +
 			'{{#if publicUploadPossible}}' +
 			'<div id="allowPublicReadWrite-{{cid}}" class="public-link-modal--item">' +
 				'<input type="radio" value="{{publicReadWriteValue}}" name="publicPermissions" id="sharingDialogAllowPublicReadWrite-{{cid}}" class="checkbox publicPermissions" {{#if publicReadWriteSelected}}checked{{/if}} />' +
 				'<label class="bold" for="sharingDialogAllowPublicReadWrite-{{cid}}">{{publicReadWriteLabel}}</label>' +
-				'<p>{{publicReadWriteDescription}}</p>' +
+				'<p><em>{{publicReadWriteDescription}}</em></p>' +
 			'</div>' +
 			'<div id="allowPublicUploadWrapper-{{cid}}" class="public-link-modal--item">' +
 				'<input type="radio" value="{{publicUploadValue}}" name="publicPermissions" id="sharingDialogAllowPublicUpload-{{cid}}" class="checkbox publicPermissions" {{#if publicUploadSelected}}checked{{/if}} />' +
 				'<label class="bold" for="sharingDialogAllowPublicUpload-{{cid}}">{{publicUploadLabel}}</label>' +
-				'<p>{{publicUploadDescription}}</p>' +
+				'<p><em>{{publicUploadDescription}}</em></p>' +
 			'</div>' +
 			'{{/if}}' +
 			'<div id="linkPass-{{cid}}" class="public-link-modal--item linkPass">' +
