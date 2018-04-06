@@ -56,9 +56,9 @@ class AccountMapperTest extends TestCase {
 		// create test users
 		for ($i = 1; $i <= 4; $i++) {
 
-			$account = $mapper->find("TestFind$i");
-			if ($account) {
-				$mapper->delete($account);
+			$accounts = $mapper->find("TestFind$i");
+			if (isset($accounts[0])) {
+				$mapper->delete($accounts[0]);
 			}
 
 			$account = new Account();
@@ -168,5 +168,53 @@ class AccountMapperTest extends TestCase {
 		//results are ordered by display name
 		$this->assertEquals("TestFind3", array_shift($result)->getUserId());
 		$this->assertEquals("TestFind4", array_shift($result)->getUserId());
+	}
+
+
+	public function findUserIdsDataProvider() {
+		return [
+			[self::class, null, null, ['TestFind1','TestFind2','TestFind3','TestFind4']],
+			['not existing backend', null, null, []],
+			[self::class, 1, null, ['TestFind1']],
+			[self::class, 2, 2, ['TestFind3', 'TestFind4']],
+			[self::class, 1, 3, ['TestFind4']],
+		];
+	}
+
+	/**
+	 * findUserIds
+	 *
+	 * @dataProvider findUserIdsDataProvider
+	 */
+	public function testFindUserIds($backend, $limit, $offset, $expected) {
+		$result = $this->mapper->findUserIds($backend, false, $limit, $offset);
+		$this->assertSame($expected, $result);
+	}
+
+	public function findUserIdsLoggedInDataProvider() {
+		return [
+			[self::class, null, null, ['TestFind2','TestFind4']],
+			['not existing backend', null, null, []],
+			[self::class, 1, null, ['TestFind2']],
+			[self::class, 1, 1, ['TestFind4']],
+		];
+	}
+
+	/**
+	 * findUserIds that logged in
+	 *
+	 * @dataProvider findUserIdsLoggedInDataProvider
+	 */
+	public function testFindUserIdsLoggedIn($backend, $limit, $offset, $expected) {
+
+		$accounts = $this->mapper->find("TestFind2");
+		$accounts[0]->setLastLogin(time());
+		$this->mapper->update($accounts[0]);
+		$accounts = $this->mapper->find("TestFind4");
+		$accounts[0]->setLastLogin(time());
+		$this->mapper->update($accounts[0]);
+
+		$result = $this->mapper->findUserIds($backend, true, $limit, $offset);
+		$this->assertSame($expected, $result);
 	}
 }
