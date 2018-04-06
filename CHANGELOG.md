@@ -7,6 +7,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/).
 ## [Unreleased]
 
 ### Added
+- Introduce seen and single user sync command line features - [#31025](https://github.com/owncloud/core/issues/31025)
+- Added config setting to specify minimum characters for sharing autocomplete - [#30994](https://github.com/owncloud/core/issues/30994)
 - Added personal note field for link share email - [#30486](https://github.com/owncloud/core/issues/30486) [#30571](https://github.com/owncloud/core/issues/30571) [#30813](https://github.com/owncloud/core/issues/30813)
 - Add conditional Logging target logfile for shared_secret and users - [#30443](https://github.com/owncloud/core/issues/30443)
 - Add option to disable link share password enforcement for write-only shares - [#30408](https://github.com/owncloud/core/issues/30408) [#30774](https://github.com/owncloud/core/issues/30774) [#30787](https://github.com/owncloud/core/issues/30787)
@@ -26,8 +28,11 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/).
 - Added repair step for orphaned sub-shares - [#30695](https://github.com/owncloud/core/issues/30695)
 - Added symfony events for configuration changes (config.php and appconfig) - [#30788](https://github.com/owncloud/core/issues/30788) [#30937](https://github.com/owncloud/core/issues/30937)
 - Added symfony event to let apps resolve private links - [#30911](https://github.com/owncloud/core/issues/30911)
+- Added symfony events for delete and create share - [#31026](https://github.com/owncloud/core/issues/31026)
+- Added symfony events for group membership events - [#31003](https://github.com/owncloud/core/issues/31003)
 - Added config.php option to select apps to ignore missing signature file (mostly for themes) - [#30891](https://github.com/owncloud/core/issues/30891)
 - Added ability for full-page frontend-only apps in info.xml - [#30918](https://github.com/owncloud/core/issues/30918)
+- Files app UI now retries chunk uploads in web UI on stalled uploads - [#31005](https://github.com/owncloud/core/issues/31005)
 - More user-friendly email address input in link share dialog - [#30945](https://github.com/owncloud/core/issues/30945)
 
 ### Changed
@@ -49,13 +54,11 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/).
 - Update composer in stable10 with versions as at 2018-02-07 - [#30390](https://github.com/owncloud/core/issues/30390)
 - Renamed SMB logging config.php settings from "wnd" to "smb" - [#30244](https://github.com/owncloud/core/issues/30244)
 - Improved error messages in user:delete command - [#30164](https://github.com/owncloud/core/issues/30164)
-- Allow avatars to be visible publicly for public calendar - [#30228](https://github.com/owncloud/core/issues/30228)
 - Validate email address in mail settings section - [#30315](https://github.com/owncloud/core/issues/30315)
 - Only decrypt users who have already logged in with decrypt-all occ command - [#30640](https://github.com/owncloud/core/issues/30640)
 - Replace usage of "create_function" in PHP - [#30714](https://github.com/owncloud/core/issues/30714)
 - Provisioning API can now properly set default or zero quota - [#30755](https://github.com/owncloud/core/issues/30755)
 - User quota setting can be queried through provisioning API - [#30850](https://github.com/owncloud/core/issues/30850)
-
 
 ### Removed
 - Removed private oc_current_user Javascript variable - [#30486](https://github.com/owncloud/core/issues/30486) [#30556](https://github.com/owncloud/core/issues/30556)
@@ -64,6 +67,10 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/).
 - Remove unused config.sample.php parameters - [#30933](https://github.com/owncloud/core/issues/30933) [#30812](https://github.com/owncloud/core/issues/30812)
 
 ### Fixes
+- Email autocomplete in link share dialog will not return local/federated users any more, only contacts - [#30998](https://github.com/owncloud/core/issues/30998)
+- Fix settings page where elements are inline when they shouldn't - [#30988](https://github.com/owncloud/core/issues/30988)
+- Do not log errors when uploading forbidden file format - [#30991](https://github.com/owncloud/core/issues/30991)
+- Fix upload issue by replacing emittingCall with separate before and after events - [#30986](https://github.com/owncloud/core/issues/30986)
 - Remove unsupported "enable for groups" field for theme apps - [#30948](https://github.com/owncloud/core/issues/30948)
 - Added OneNote 2016 user agent string to make it work with Webdav - [#30965](https://github.com/owncloud/core/issues/30965)
 - Refactored metadata sync code to unify behavior across all login methods - [#30638](https://github.com/owncloud/core/issues/30638)
