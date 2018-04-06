@@ -865,7 +865,8 @@ class Server extends ServerContainer implements IServerContainer, IServiceLoader
 				$c->getL10N('core'),
 				$factory,
 				$c->getUserManager(),
-				$c->getLazyRootFolder()
+				$c->getLazyRootFolder(),
+				$c->getEventDispatcher()
 			);
 
 			return $manager;

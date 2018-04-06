@@ -36,6 +36,8 @@ use OCP\Share\Exceptions\ShareNotFound;
 use OCP\Share\IProviderFactory;
 use OCP\Share\IShare;
 use OCP\Share\IShareProvider;
+use Symfony\Component\EventDispatcher\EventDispatcher;
+use Symfony\Component\EventDispatcher\GenericEvent;
 
 /**
  * Class ManagerTest
@@ -69,6 +71,7 @@ class ManagerTest extends \Test\TestCase {
 	protected $userManager;
 	/** @var IRootFolder | \PHPUnit_Framework_MockObject_MockObject */
 	protected $rootFolder;
+	protected $eventDispatcher;
 
 	public function setUp() {
 		parent::setUp();
@@ -81,6 +84,7 @@ class ManagerTest extends \Test\TestCase {
 		$this->groupManager = $this->createMock('\OCP\IGroupManager');
 		$this->userManager = $this->createMock('\OCP\IUserManager');
 		$this->rootFolder = $this->createMock('\OCP\Files\IRootFolder');
+		$this->eventDispatcher = new EventDispatcher();
 
 		$this->l = $this->createMock('\OCP\IL10N');
 		$this->l->method('t')
@@ -100,7 +104,8 @@ class ManagerTest extends \Test\TestCase {
 			$this->l,
 			$this->factory,
 			$this->userManager,
-			$this->rootFolder
+			$this->rootFolder,
+			$this->eventDispatcher
 		);
 
 		$this->defaultProvider = $this->getMockBuilder('\OC\Share20\DefaultShareProvider')
@@ -125,7 +130,8 @@ class ManagerTest extends \Test\TestCase {
 				$this->l,
 				$this->factory,
 				$this->userManager,
-				$this->rootFolder
+				$this->rootFolder,
+				$this->eventDispatcher
 			]);
 	}
 
@@ -231,7 +237,26 @@ class ManagerTest extends \Test\TestCase {
 			->method('post')
 			->with($hookListnerExpectsPost);
 
+		$calledBeforeEvent = [];
+		$this->eventDispatcher->addListener('share.beforeDelete',
+			function (GenericEvent $event) use (&$calledBeforeEvent) {
+				$calledBeforeEvent[] = 'share.beforeDelete';
+				$calledBeforeEvent[] = $event;
+			});
+		$calledAfterEvent = [];
+		$this->eventDispatcher->addListener('share.afterDelete',
+			function (GenericEvent $event) use (&$calledAfterEvent) {
+				$calledAfterEvent[] = 'share.afterDelete';
+				$calledAfterEvent[] = $event;
+			});
 		$manager->deleteShare($share);
+		$this->assertEquals('share.beforeDelete', $calledBeforeEvent[0]);
+		$this->assertEquals('share.afterDelete', $calledAfterEvent[0]);
+		$this->assertInstanceOf(GenericEvent::class, $calledBeforeEvent[1]);
+		$this->assertInstanceOf(GenericEvent::class, $calledAfterEvent[1]);
+		$this->assertArrayHasKey('share', $calledBeforeEvent[1]);
+		$this->assertArrayHasKey('shareObject', $calledBeforeEvent[1]);
+		$this->assertArrayHasKey('share', $calledAfterEvent[1]);
 	}
 
 	public function testDeleteLazyShare() {
@@ -310,7 +335,26 @@ class ManagerTest extends \Test\TestCase {
 			->method('post')
 			->with($hookListnerExpectsPost);
 
+		$calledBeforeEvent = [];
+		$this->eventDispatcher->addListener('share.beforeDelete',
+			function (GenericEvent $event) use (&$calledBeforeEvent) {
+				$calledBeforeEvent[] = 'share.beforeDelete';
+				$calledBeforeEvent[] = $event;
+			});
+		$calledAfterEvent = [];
+		$this->eventDispatcher->addListener('share.afterDelete',
+			function (GenericEvent $event) use (&$calledAfterEvent) {
+				$calledAfterEvent[] = 'share.afterDelete';
+				$calledAfterEvent[] = $event;
+			});
 		$manager->deleteShare($share);
+		$this->assertEquals('share.beforeDelete', $calledBeforeEvent[0]);
+		$this->assertEquals('share.afterDelete', $calledAfterEvent[0]);
+		$this->assertInstanceOf(GenericEvent::class, $calledBeforeEvent[1]);
+		$this->assertInstanceOf(GenericEvent::class, $calledAfterEvent[1]);
+		$this->assertArrayHasKey('share', $calledBeforeEvent[1]);
+		$this->assertArrayHasKey('shareObject', $calledBeforeEvent[1]);
+		$this->assertArrayHasKey('share', $calledAfterEvent[1]);
 	}
 
 	public function testDeleteNested() {
@@ -433,7 +477,26 @@ class ManagerTest extends \Test\TestCase {
 			->method('post')
 			->with($hookListnerExpectsPost);
 
+		$calledBeforeEvent = [];
+		$this->eventDispatcher->addListener('share.beforeDelete',
+			function (GenericEvent $event) use (&$calledBeforeEvent) {
+				$calledBeforeEvent[] = 'share.beforeDelete';
+				$calledBeforeEvent[] = $event;
+			});
+		$calledAfterEvent = [];
+		$this->eventDispatcher->addListener('share.afterDelete',
+			function (GenericEvent $event) use (&$calledAfterEvent) {
+				$calledAfterEvent[] = 'share.afterDelete';
+				$calledAfterEvent[] = $event;
+			});
 		$manager->deleteShare($share1);
+		$this->assertEquals('share.beforeDelete', $calledBeforeEvent[0]);
+		$this->assertEquals('share.afterDelete', $calledAfterEvent[0]);
+		$this->assertInstanceOf(GenericEvent::class, $calledBeforeEvent[1]);
+		$this->assertInstanceOf(GenericEvent::class, $calledAfterEvent[1]);
+		$this->assertArrayHasKey('share', $calledBeforeEvent[1]);
+		$this->assertArrayHasKey('shareObject', $calledBeforeEvent[1]);
+		$this->assertArrayHasKey('share', $calledAfterEvent[1]);
 	}
 
 	public function testDeleteChildren() {
@@ -1662,7 +1725,29 @@ class ManagerTest extends \Test\TestCase {
 			->method('setTarget')
 			->with('/target');
 
+		$calledBeforeShareCreate = [];
+		$this->eventDispatcher->addListener('share.beforeCreate',
+			function (GenericEvent $event) use (&$calledBeforeShareCreate) {
+				$calledBeforeShareCreate[] = 'share.beforeCreate';
+				$calledBeforeShareCreate[] = $event;
+			});
+		$calledAfterShareCreate = [];
+		$this->eventDispatcher->addListener('share.afterCreate',
+			function (GenericEvent $event) use (&$calledAfterShareCreate) {
+				$calledAfterShareCreate[] = 'share.afterCreate';
+				$calledAfterShareCreate[] = $event;
+			});
+
 		$manager->createShare($share);
+
+		$this->assertEquals('share.beforeCreate', $calledBeforeShareCreate[0]);
+		$this->assertEquals('share.afterCreate', $calledAfterShareCreate[0]);
+		$this->assertInstanceOf(GenericEvent::class, $calledBeforeShareCreate[1]);
+		$this->assertInstanceOf(GenericEvent::class, $calledAfterShareCreate[1]);
+		$this->assertArrayHasKey('shareData', $calledAfterShareCreate[1]);
+		$this->assertArrayHasKey('shareObject', $calledAfterShareCreate[1]);
+		$this->assertArrayHasKey('result', $calledAfterShareCreate[1]);
+		$this->assertArrayHasKey('shareData', $calledBeforeShareCreate[1]);
 	}
 
 	public function testCreateShareGroup() {
@@ -1715,7 +1800,29 @@ class ManagerTest extends \Test\TestCase {
 			->method('setTarget')
 			->with('/target');
 
+		$calledBeforeShareCreate = [];
+		$this->eventDispatcher->addListener('share.beforeCreate',
+			function (GenericEvent $event) use (&$calledBeforeShareCreate) {
+				$calledBeforeShareCreate[] = 'share.beforeCreate';
+				$calledBeforeShareCreate[] = $event;
+			});
+		$calledAfterShareCreate = [];
+		$this->eventDispatcher->addListener('share.afterCreate',
+			function (GenericEvent $event) use (&$calledAfterShareCreate) {
+				$calledAfterShareCreate[] = 'share.afterCreate';
+				$calledAfterShareCreate[] = $event;
+			});
+
 		$manager->createShare($share);
+
+		$this->assertEquals('share.beforeCreate', $calledBeforeShareCreate[0]);
+		$this->assertEquals('share.afterCreate', $calledAfterShareCreate[0]);
+		$this->assertInstanceOf(GenericEvent::class, $calledBeforeShareCreate[1]);
+		$this->assertInstanceOf(GenericEvent::class, $calledAfterShareCreate[1]);
+		$this->assertArrayHasKey('shareData', $calledAfterShareCreate[1]);
+		$this->assertArrayHasKey('shareObject', $calledAfterShareCreate[1]);
+		$this->assertArrayHasKey('result', $calledAfterShareCreate[1]);
+		$this->assertArrayHasKey('shareData', $calledBeforeShareCreate[1]);
 	}
 
 	public function testCreateShareLink() {
@@ -1834,6 +1941,19 @@ class ManagerTest extends \Test\TestCase {
 			->method('post')
 			->with($this->equalTo($hookListnerExpectsPost));
 
+		$calledBeforeShareCreate = [];
+		$this->eventDispatcher->addListener('share.beforeCreate',
+			function (GenericEvent $event) use (&$calledBeforeShareCreate) {
+				$calledBeforeShareCreate[] = 'share.beforeCreate';
+				$calledBeforeShareCreate[] = $event;
+			});
+		$calledAfterShareCreate = [];
+		$this->eventDispatcher->addListener('share.afterCreate',
+			function (GenericEvent $event) use (&$calledAfterShareCreate) {
+				$calledAfterShareCreate[] = 'share.afterCreate';
+				$calledAfterShareCreate[] = $event;
+			});
+
 		/** @var IShare $share */
 		$share = $manager->createShare($share);
 
@@ -1842,6 +1962,15 @@ class ManagerTest extends \Test\TestCase {
 		$this->assertSame($date, $share->getExpirationDate());
 		$this->assertEquals('token', $share->getToken());
 		$this->assertEquals('hashed', $share->getPassword());
+
+		$this->assertEquals('share.beforeCreate', $calledBeforeShareCreate[0]);
+		$this->assertEquals('share.afterCreate', $calledAfterShareCreate[0]);
+		$this->assertInstanceOf(GenericEvent::class, $calledBeforeShareCreate[1]);
+		$this->assertInstanceOf(GenericEvent::class, $calledAfterShareCreate[1]);
+		$this->assertArrayHasKey('shareData', $calledAfterShareCreate[1]);
+		$this->assertArrayHasKey('shareObject', $calledAfterShareCreate[1]);
+		$this->assertArrayHasKey('result', $calledAfterShareCreate[1]);
+		$this->assertArrayHasKey('shareData', $calledBeforeShareCreate[1]);
 	}
 
 	/**
@@ -1978,7 +2107,29 @@ class ManagerTest extends \Test\TestCase {
 			->method('setTarget')
 			->with('/target');
 
+		$calledBeforeShareCreate = [];
+		$this->eventDispatcher->addListener('share.beforeCreate',
+			function (GenericEvent $event) use (&$calledBeforeShareCreate) {
+				$calledBeforeShareCreate[] = 'share.beforeCreate';
+				$calledBeforeShareCreate[] = $event;
+			});
+		$calledAfterShareCreate = [];
+		$this->eventDispatcher->addListener('share.afterCreate',
+			function (GenericEvent $event) use (&$calledAfterShareCreate) {
+				$calledAfterShareCreate[] = 'share.afterCreate';
+				$calledAfterShareCreate[] = $event;
+			});
+
 		$manager->createShare($share);
+
+		$this->assertEquals('share.beforeCreate', $calledBeforeShareCreate[0]);
+		$this->assertEquals('share.afterCreate', $calledAfterShareCreate[0]);
+		$this->assertInstanceOf(GenericEvent::class, $calledBeforeShareCreate[1]);
+		$this->assertInstanceOf(GenericEvent::class, $calledAfterShareCreate[1]);
+		$this->assertArrayHasKey('shareData', $calledAfterShareCreate[1]);
+		$this->assertArrayHasKey('shareObject', $calledAfterShareCreate[1]);
+		$this->assertArrayHasKey('result', $calledAfterShareCreate[1]);
+		$this->assertArrayHasKey('shareData', $calledBeforeShareCreate[1]);
 	}
 
 	public function testGetAllSharesBy() {
@@ -2196,7 +2347,8 @@ class ManagerTest extends \Test\TestCase {
 			$this->l,
 			$factory,
 			$this->userManager,
-			$this->rootFolder
+			$this->rootFolder,
+			$this->eventDispatcher
 		);
 
 		$share = $this->createMock('\OCP\Share\IShare');
@@ -2228,7 +2380,8 @@ class ManagerTest extends \Test\TestCase {
 			$this->l,
 			$factory,
 			$this->userManager,
-			$this->rootFolder
+			$this->rootFolder,
+			$this->eventDispatcher
 		);
 
 		$share = $this->createMock('\OCP\Share\IShare');
@@ -2329,7 +2482,8 @@ class ManagerTest extends \Test\TestCase {
 			$this->l,
 			$factory,
 			$this->userManager,
-			$this->rootFolder
+			$this->rootFolder,
+			$this->eventDispatcher
 		);
 
 		$provider1 = $this->getMockBuilder('\OC\Share20\DefaultShareProvider')
