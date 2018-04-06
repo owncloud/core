@@ -242,17 +242,17 @@
 				publicUploadPossible       : this._isPublicUploadPossible(),
 
 				publicUploadLabel          : t('core', 'Upload only') + ' (File Drop)',
-				publicUploadDescription    : t('core', 'Receive files from others without revealing the contents of the folder.'),
+				publicUploadDescription    : t('core', 'Receive files from multiple recipients without revealing the contents of the folder.'),
 				publicUploadValue          : OC.PERMISSION_CREATE,
 				publicUploadSelected       : this.model.get('permissions') === OC.PERMISSION_CREATE,
 
-				publicReadLabel            : t('core', 'Read only'),
-				publicReadDescription      : t('core', 'Users can view and download contents.'),
+				publicReadLabel            : t('core', 'Download / View'),
+				publicReadDescription      : t('core', 'Recipients can view or download contents.'),
 				publicReadValue            : OC.PERMISSION_READ,
 				publicReadSelected         : this.model.get('permissions') === OC.PERMISSION_READ,
 
-				publicReadWriteLabel       : t('core', 'Read & Write'),
-				publicReadWriteDescription : t('core', 'Users can view, download, edit and upload contents.'),
+				publicReadWriteLabel       : t('core', 'Download / View / Upload'),
+				publicReadWriteDescription : t('core', 'Recipients can view, download, edit, delete and upload contents.'),
 				publicReadWriteValue       : OC.PERMISSION_READ | OC.PERMISSION_UPDATE | OC.PERMISSION_CREATE | OC.PERMISSION_DELETE,
 				publicReadWriteSelected    : this.model.get('permissions') >= (OC.PERMISSION_READ | OC.PERMISSION_UPDATE | OC.PERMISSION_CREATE | OC.PERMISSION_DELETE),
 
