@@ -312,6 +312,9 @@ abstract class FilesPageBasic extends OwncloudPage {
 			}
 		}
 		if ($expectToDeleteFile && ($counter > 0)) {
+			if (is_array($name)) {
+				$name = implode($name);
+			}
 			$message = "INFORMATION: retried to delete file '" . $name . "' " .
 					   $counter . " times";
 			echo $message;
