@@ -150,7 +150,7 @@ class ApiTest extends TestCase {
 
 		$this->assertEquals('share.beforeCreate', $calledBeforeCreate[0]);
 		$this->assertInstanceOf(GenericEvent::class, $calledBeforeCreate[1]);
-		$this->assertTrue($calledBeforeCreate[1]->getArgument('run'));
+		$this->assertTrue($calledBeforeCreate[1]->getArgument('shareData')['run']);
 		$this->assertTrue($result->succeeded());
 		$data = $result->getData();
 		$this->assertEquals(19, $data['permissions']);
