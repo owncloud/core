@@ -19,7 +19,7 @@
 		'<div class="error-message-global hidden"></div>' +
 		'<div class="public-link-modal">'+
 			'<div class="public-link-modal--item">' +
-				'<label class="public-link-modal--label">Link Name</label>' +
+				'<label class="public-link-modal--label">{{linkNameLabel}}</label>' +
 				'<input class="public-link-modal--input" type="text" name="linkName" placeholder="{{namePlaceholder}}" value="{{name}}" maxlength="64" />' +
 			'</div>' +
 			'<div id="allowPublicRead-{{cid}}" class="public-link-modal--item">' +
@@ -162,7 +162,7 @@
 				&& (this.model.isNew() || !this.model.get('encryptedPassword'))
 			) {
 				$password.addClass('error');
-				$password.next('.error-message').removeClass('hidden').text(t('files_sharing', 'Password required'));
+				$password.next('.error-message').removeClass('hidden').text(t('core', 'Password required'));
 				validates = false;
 			}
 
@@ -231,6 +231,7 @@
 			this.$el.html(this.template({
 				cid: this.cid,
 				passwordPlaceholder: isPasswordSet ? PASSWORD_PLACEHOLDER_STARS : PASSWORD_PLACEHOLDER_MESSAGE,
+				linkNameLabel: t('core', 'Link name'),
 				namePlaceholder: t('core', 'Name'),
 				name: this.model.get('name'),
 				isPasswordSet: isPasswordSet,
@@ -321,14 +322,14 @@
 		 */
 		show: function() {
 			var self = this;
-			var title = t('files_sharing', 'Edit link share: {name}', {name: this.itemModel.getFileInfo().getFullPath()});
+			var title = t('core', 'Edit link share: {name}', {name: this.itemModel.getFileInfo().getFullPath()});
 			var buttons = [{
 				text: t('core', 'Cancel'),
 				click: _.bind(this._onClickCancel, this)
 			}];
 
 			if (this.model.isNew()) {
-				title = t('files_sharing', 'Create link share: {name}', {name: this.itemModel.getFileInfo().getFullPath()});
+				title = t('core', 'Create link share: {name}', {name: this.itemModel.getFileInfo().getFullPath()});
 				buttons.unshift({
 					text: t('core', 'Share'),
 					click: _.bind(this._onClickSave, this),
