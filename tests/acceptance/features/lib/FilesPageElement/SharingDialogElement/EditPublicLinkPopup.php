@@ -42,6 +42,11 @@ class EditPublicLinkPopup extends OwncloudPage {
 	private $expirationDateInputXpath = ".//input[contains(@class,'expirationDate')]";
 	private $emailInputXpath = ".//input[@type='email']";
 	private $shareButtonXpath = ".//button[contains(text(), 'Share')]";
+	private $permissionLabelXpath = [
+		'read' => ".//label[contains(@for, 'sharingDialogAllowPublicRead')]",
+		'read-write' => ".//label[contains(@for, 'sharingDialogAllowPublicReadWrite')]",
+		'upload' => ".//label[contains(@for, 'sharingDialogAllowPublicUpload')]"
+	];
 	
 
 	/**
@@ -104,15 +109,24 @@ class EditPublicLinkPopup extends OwncloudPage {
 	 * @return void
 	 */
 	public function setLinkPermissions($permissions) {
-		$permissionsCheckbox = $this->popupElement->findField($permissions);
-		if (is_null($permissionsCheckbox)) {
-			throw new ElementNotFoundException(
-				__METHOD__ .
-				" findField($permissions)" .
-				" could not find the permission checkbox"
+		$permissions = strtolower($permissions);
+		if (array_key_exists($permissions, $this->permissionLabelXpath)) {
+			$permissionsCheckbox = $this->popupElement->find(
+				"xpath", $this->permissionLabelXpath[$permissions]
+			);
+			if (is_null($permissionsCheckbox)) {
+				throw new ElementNotFoundException(
+					__METHOD__ .
+					" findField($permissions)" .
+					" could not find the permission checkbox"
+				);
+			}
+			$permissionsCheckbox->click();
+		} else {
+			throw new \InvalidArgumentException(
+				__METHOD__ . " $permissions is not a valid public link permission"
 			);
 		}
-		$permissionsCheckbox->click();
 	}
 
 	/**
