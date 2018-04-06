@@ -231,11 +231,16 @@ class SyncBackend extends Command {
 		array $validActions
 	) {
 		$output->writeln("Syncing $uid ...");
-		if (!$backend->userExists($uid)) {
-			$this->handleUnknownUsers([$uid], $input, $output, $missingAccountsAction, $validActions);
+		$users = $backend->getUsers($uid, 2);
+		if (count($users) > 1) {
+			$output->writeln("Multiple users returned from backend for input: $uid. Cancelling sync.");
+			return 1;
+		} elseif (count($users) === 1) {
+			// Run the sync using the internal username if mapped
+			$syncService->run($backend, new \ArrayIterator([$users[0]]), function (){});
 		} else {
-			// sync
-			$syncService->run($backend, new \ArrayIterator([$uid]), function (){});
+			// Not found
+			$this->handleUnknownUsers([$uid], $input, $output, $missingAccountsAction, $validActions);
 		}
 	}
 	/**
