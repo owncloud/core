@@ -172,6 +172,19 @@
 			}
 			else {
 				files = _.pluck(this.getSelectedFiles(), 'name');
+				/**
+				 * The getSelectedFiles gives the file name as it is seen in UI.
+				 * But the fact is filenames are storead as filename.dxxxxx. This
+				 * change helps to extract exact filename.
+				 */
+				var trSelectedFiles = this.$el.find('tr.selected');
+				var filesFromAttribute = [];
+				for (var i = 0; i < trSelectedFiles.length; i++) {
+					filesFromAttribute.push(trSelectedFiles[i].getAttribute('data-file'));
+				}
+				if (files !== filesFromAttribute) {
+					files = filesFromAttribute;
+				}
 				for (var i = 0; i < files.length; i++) {
 					var deleteAction = this.findFileEl(files[i]).children("td.date").children(".action.delete");
 					deleteAction.removeClass('icon-delete').addClass('icon-loading-small');
@@ -215,6 +228,19 @@
 			}
 			else {
 				files = _.pluck(this.getSelectedFiles(), 'name');
+				/*
+				The getSelectedFiles gives the file name as it is seen in UI.
+				But the fact is filenames are storead as filename.dxxxxx. This
+				change helps to extract exact filename.
+				 */
+				var trSelectedFiles = this.$el.find('tr.selected');
+				var filesFromAttribute = [];
+				for (var i = 0; i < trSelectedFiles.length; i++) {
+					filesFromAttribute.push(trSelectedFiles[i].getAttribute('data-file'));
+				}
+				if (files !== filesFromAttribute) {
+					files = filesFromAttribute;
+				}
 				params = {
 					files: JSON.stringify(files),
 					dir: this.getCurrentDirectory()
