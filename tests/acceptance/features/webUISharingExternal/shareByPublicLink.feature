@@ -23,7 +23,7 @@ So that public sharing is limited according to organization policy
 	@skipOnOcV10.0.3 @feature_was_changed_in_10.0.4
 	Scenario: creating a public link with read & write permissions makes it possible to delete files via the link
 		When the user creates a new public link for the folder "simple-folder" using the webUI with
-		| permission | Read & Write |
+		| permission | Download / View / Upload |
 		And the public accesses the last created public link using the webUI
 		And the user deletes the following elements using the webUI
 		| name                                 |
@@ -37,7 +37,7 @@ So that public sharing is limited according to organization policy
 	@skipOnOcV10.0.3 @feature_was_changed_in_10.0.4
 	Scenario: creating a public link with read permissions only makes it impossible to delete files via the link
 		When the user creates a new public link for the folder "simple-folder" using the webUI with
-		| permission | Read |
+		| permission | Download / View |
 		And the public accesses the last created public link using the webUI
 		Then it should not be possible to delete the file "lorem.txt" using the webUI
 
@@ -63,7 +63,7 @@ So that public sharing is limited according to organization policy
 		|username|password|displayname|email       |
 		|user2   |1234    |User One   |u1@oc.com.np|
 		When the user creates a new public link for the folder "simple-folder" using the webUI with
-		| permission | Read & Write |
+		| permission | Download / View / Upload |
 		And the user logs out of the webUI
 		And the public accesses the last created public link using the webUI
 		And the public adds the public link to "%remote_server%" as user "user2" with the password "1234" using the webUI
