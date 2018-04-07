@@ -161,6 +161,7 @@ OC.L10N.register(
     "Press ⌘-C to copy." : "按⌘-C复制",
     "Press Ctrl-C to copy." : "按Ctrl-C复制",
     "Password required" : "要求输入密码",
+    "Link name" : "链接名称",
     "Name" : "名称",
     "Filename" : "文件名",
     "Password" : "密码",

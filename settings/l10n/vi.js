@@ -110,8 +110,6 @@ OC.L10N.register(
     "Change password" : "Đổi mật khẩu",
     "Language" : "Ngôn ngữ",
     "Help translate" : "Hỗ trợ dịch thuật",
-    "Unlimited" : "Không giới hạn",
-    "You are using %s of %s" : "Bạn đang sử dụng %s của %s",
     "You are using %s of %s (%s %%)" : "Bạn đang sử dụng %s of %s (%s %%)",
     "Sessions" : "Phiên làm việc",
     "Browser" : "Trình duyệt",

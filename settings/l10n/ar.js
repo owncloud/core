@@ -77,7 +77,6 @@ OC.L10N.register(
     "Change password" : "عدل كلمة السر",
     "Language" : "اللغة",
     "Help translate" : "ساعد في الترجمه",
-    "Unlimited" : "غير محدود",
     "Name" : "الاسم",
     "Username" : "إسم المستخدم",
     "Version" : "إصدار",

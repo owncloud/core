@@ -112,7 +112,6 @@ OC.L10N.register(
     "Change password" : "Cambiar contraseña",
     "Language" : "Idioma",
     "Help translate" : "Ayúdanos a traducir",
-    "Unlimited" : "Ilimitado",
     "Sessions" : "Sesiones",
     "App passwords" : "Contraseñas de aplicaciones",
     "Name" : "Nombre",

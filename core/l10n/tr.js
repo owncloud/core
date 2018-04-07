@@ -157,6 +157,7 @@ OC.L10N.register(
     "Press ⌘-C to copy." : "Kopyalamak için ⌘-C kullanın.",
     "Press Ctrl-C to copy." : "Kopayamak için Ctrl-C kullanın.",
     "Password required" : "Parola gerekli",
+    "Link name" : "Bağlantı adı",
     "Name" : "Ad",
     "Filename" : "Dosya adı",
     "Password" : "Parola",

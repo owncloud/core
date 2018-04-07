@@ -43,7 +43,6 @@ OC.L10N.register(
     "Change password" : "Փոխել գաղտնաբառը",
     "Language" : "Լեզու",
     "Help translate" : "Օգնել թարգմանել",
-    "Unlimited" : "Անսահման",
     "Browser" : "Զննիչ",
     "Name" : "Անուն",
     "Username" : "Օգտանուն",

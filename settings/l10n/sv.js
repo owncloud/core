@@ -224,8 +224,6 @@ OC.L10N.register(
     "Change password" : "Ändra lösenord",
     "Language" : "Språk",
     "Help translate" : "Hjälp att översätta",
-    "Unlimited" : "Obegränsad",
-    "You are using %s of %s" : "Du använder %s av %s",
     "Developed by the {communityopen}ownCloud community{linkclose}, the {githubopen}source code{linkclose} is licensed under the {licenseopen}<abbr title=\"Affero General Public License\">AGPL</abbr>{linkclose}." : "Utvecklad av {communityopen}ownCloud community{linkclose}, {githubopen}källkoden {linkclose} är licensierad under {licenseopen}<abbr title=\"Affero General Public License\">AGPL</abbr>{linkclose}.",
     "Sessions" : "Sessioner",
     "Browser" : "Webbläsare",

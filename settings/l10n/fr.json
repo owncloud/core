@@ -242,8 +242,6 @@
     "Change password" : "Changer de mot de passe",
     "Language" : "Langue",
     "Help translate" : "Aidez à traduire",
-    "Unlimited" : "Illimité",
-    "You are using %s of %s" : "Vous utilisez %s sur %s",
     "You are using %s of %s (%s %%)" : "Vous utilisez %s sur %s (%s %%)",
     "Developed by the {communityopen}ownCloud community{linkclose}, the {githubopen}source code{linkclose} is licensed under the {licenseopen}<abbr title=\"Affero General Public License\">AGPL</abbr>{linkclose}." : "Développé par la {communityopen}communauté ownCloud{linkclose}, le {githubopen}code source{linkclose} est sous licence {licenseopen}<abbr lang=\"en\" title=\"Affero General Public License\">AGPL</abbr>{linkclose}.",
     "Sessions" : "Sessions",

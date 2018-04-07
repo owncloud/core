@@ -131,7 +131,6 @@ OC.L10N.register(
     "Change password" : "Pakeisti slaptažodį",
     "Language" : "Kalba",
     "Help translate" : "Padėkite išversti",
-    "Unlimited" : "Neribota",
     "Browser" : "Naršyklė",
     "Most recent activity" : "Vėliausia veikla",
     "Name" : "Pavadinimas",

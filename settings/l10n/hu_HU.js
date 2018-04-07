@@ -210,7 +210,6 @@ OC.L10N.register(
     "Change password" : "A jelszó megváltoztatása",
     "Language" : "Nyelv",
     "Help translate" : "Segítsen a fordításban!",
-    "Unlimited" : "Korlátlan",
     "Developed by the {communityopen}ownCloud community{linkclose}, the {githubopen}source code{linkclose} is licensed under the {licenseopen}<abbr title=\"Affero General Public License\">AGPL</abbr>{linkclose}." : "{communityopen}ownCloud közösség{linkclose} fejleszti, a {githubopen}forráskód{linkclose} {licenseopen}<abbr title=\"Affero General Public License\">AGPL</abbr>{linkclose} licenc alatt licencelve.",
     "Name" : "Név",
     "Username" : "Felhasználónév",

@@ -64,7 +64,6 @@ OC.L10N.register(
     "Change password" : "Endra passord",
     "Language" : "Språk",
     "Help translate" : "Hjelp oss å omsetja",
-    "Unlimited" : "Ubegrensa",
     "Name" : "Namn",
     "Username" : "Brukarnamn",
     "Version" : "Utgåve",

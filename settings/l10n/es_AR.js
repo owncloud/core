@@ -91,7 +91,6 @@ OC.L10N.register(
     "Change password" : "Cambiar contraseña",
     "Language" : "Idioma",
     "Help translate" : "Ayudanos a traducir",
-    "Unlimited" : "Ilimitado",
     "Name" : "Nombre",
     "Username" : "Nombre de usuario",
     "Version" : "Versión",

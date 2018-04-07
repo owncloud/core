@@ -158,7 +158,6 @@ OC.L10N.register(
     "Change password" : "Muuda parooli",
     "Language" : "Keel",
     "Help translate" : "Aita tõlkida",
-    "Unlimited" : "Piiramatult",
     "Name" : "Nimi",
     "Username" : "Kasutajanimi",
     "Done" : "Valmis",

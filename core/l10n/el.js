@@ -158,6 +158,7 @@ OC.L10N.register(
     "Press Ctrl-C to copy." : "Για αντιγραφή πατήστε Ctrl-C.",
     "Choose a password" : "Επιλογή συνθηματικού",
     "Password required" : "Απαιτείται συνθηματικό",
+    "Link name" : "Όνομα συνδέσμου",
     "Name" : "Όνομα",
     "Filename" : "Όνομα αρχείου",
     "Password" : "Συνθηματικό",

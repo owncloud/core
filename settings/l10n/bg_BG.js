@@ -212,8 +212,6 @@ OC.L10N.register(
     "Change password" : "Промяна на паролата",
     "Language" : "Език",
     "Help translate" : "Помогни с превода",
-    "Unlimited" : "Неограничено",
-    "You are using %s of %s" : "Вие използвате %s от %s",
     "You are using %s of %s (%s %%)" : "Вие използвате %s от %s (%s %%)",
     "Developed by the {communityopen}ownCloud community{linkclose}, the {githubopen}source code{linkclose} is licensed under the {licenseopen}<abbr title=\"Affero General Public License\">AGPL</abbr>{linkclose}." : "Разработен от {communityopen}ownCloud общността {linkclose}, {githubopen}изходящия код{linkclose} е лицензиран под {licenseopen}<abbr title=\"Affero General Public License\">AGPL</abbr>{linkclose}.",
     "Sessions" : "Сесии",

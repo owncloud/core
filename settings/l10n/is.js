@@ -246,8 +246,6 @@ OC.L10N.register(
     "Change password" : "Breyta lykilorði",
     "Language" : "Tungumál",
     "Help translate" : "Hjálpa við þýðingu",
-    "Unlimited" : "Ótakmarkað",
-    "You are using %s of %s" : "Þú notar %s af %s",
     "You are using %s of %s (%s %%)" : "Þú notar %s af %s (%s %%)",
     "Developed by the {communityopen}ownCloud community{linkclose}, the {githubopen}source code{linkclose} is licensed under the {licenseopen}<abbr title=\"Affero General Public License\">AGPL</abbr>{linkclose}." : "Þróað af {communityopen}ownCloud samfélaginu{linkclose}, {githubopen}grunnkóðinn{linkclose} er gefinn út með {licenseopen}<abbr title=\"Affero General Public License\">AGPL</abbr>{linkclose} notkunarleyfinu.",
     "Sessions" : "Setur",

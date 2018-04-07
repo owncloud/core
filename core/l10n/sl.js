@@ -161,6 +161,7 @@ OC.L10N.register(
     "Press Ctrl-C to copy." : "Pritisnite tipki Ctrl-C za kopiranje.",
     "Choose a password" : "Izbor gesla",
     "Password required" : "Zahtevano je geslo",
+    "Link name" : "Naziv povezave",
     "Name" : "Ime",
     "Filename" : "Ime datoteke",
     "Password" : "Geslo",

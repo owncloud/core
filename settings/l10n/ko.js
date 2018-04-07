@@ -249,8 +249,6 @@ OC.L10N.register(
     "Change password" : "암호 변경",
     "Language" : "언어",
     "Help translate" : "번역 돕기",
-    "Unlimited" : "무제한",
-    "You are using %s of %s" : "%s/%s 사용 중",
     "You are using %s of %s (%s %%)" : "%s/%s 사용 중(%s%%)",
     "Developed by the {communityopen}ownCloud community{linkclose}, the {githubopen}source code{linkclose} is licensed under the {licenseopen}<abbr title=\"Affero General Public License\">AGPL</abbr>{linkclose}." : "{communityopen}ownCloud 커뮤니티{linkclose}에서 개발함. {githubopen}원본 코드{linkclose}는 {licenseopen}<abbr title=\"Affero General Public License\">AGPL</abbr>{linkclose} 라이선스로 배포됩니다.",
     "Sessions" : "세션",

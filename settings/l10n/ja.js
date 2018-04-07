@@ -224,7 +224,6 @@ OC.L10N.register(
     "Change password" : "パスワードを変更",
     "Language" : "言語",
     "Help translate" : "翻訳に協力する",
-    "Unlimited" : "無制限",
     "Developed by the {communityopen}ownCloud community{linkclose}, the {githubopen}source code{linkclose} is licensed under the {licenseopen}<abbr title=\"Affero General Public License\">AGPL</abbr>{linkclose}." : " {communityopen}ownCloud community{linkclose} によって開発されています。{githubopen}ソースコード{linkclose} は {licenseopen}<abbr title=\"Affero General Public License\">AGPL</abbr>{linkclose} によってライセンスされます。",
     "Sessions" : "セッション",
     "Browser" : "ブラウザー",

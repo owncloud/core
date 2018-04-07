@@ -163,7 +163,6 @@ OC.L10N.register(
     "Change password" : "Zmeniť heslo",
     "Language" : "Jazyk",
     "Help translate" : "Pomôcť s prekladom",
-    "Unlimited" : "Nelimitované",
     "Developed by the {communityopen}ownCloud community{linkclose}, the {githubopen}source code{linkclose} is licensed under the {licenseopen}<abbr title=\"Affero General Public License\">AGPL</abbr>{linkclose}." : "Vyvinula {communityopen}komunita ownCloud{linkclose}. {githubopen}Zdrojový kód{linkclose} je dostupný za podmienok licencie {licenseopen}<abbr title=\"Affero General Public License\">AGPL</abbr>{linkclose}.",
     "Name" : "Názov",
     "Username" : "Používateľské meno",

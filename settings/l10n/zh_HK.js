@@ -43,7 +43,6 @@ OC.L10N.register(
     "Change password" : "更改密碼",
     "Language" : "語言",
     "Help translate" : "幫忙翻譯",
-    "Unlimited" : "無限",
     "Name" : "名稱",
     "Username" : "用戶名稱",
     "Version" : "版本",

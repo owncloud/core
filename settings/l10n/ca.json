@@ -158,7 +158,6 @@
     "Change password" : "Canvia la contrasenya",
     "Language" : "Idioma",
     "Help translate" : "Ajudeu-nos amb la traducció",
-    "Unlimited" : "Il·limitat",
     "Developed by the {communityopen}ownCloud community{linkclose}, the {githubopen}source code{linkclose} is licensed under the {licenseopen}<abbr title=\"Affero General Public License\">AGPL</abbr>{linkclose}." : "Desenvolupat per la {communityopen} comunitat ownCloud comunitat{linkclose} , el {githubopen} codi font {linkclose} està llicenciat sota la {licenseopen}<abbr title=\"Affero General Public License\">AGPL</abbr>{linkclose}.",
     "Name" : "Nom",
     "Username" : "Nom d'usuari",

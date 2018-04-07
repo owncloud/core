@@ -124,6 +124,7 @@ OC.L10N.register(
     "Remove" : "Șterge",
     "Copy to clipboard" : "Copiază în clipboard",
     "Anyone with the link has access to the file/folder" : "Oricine are legătura are acces la fișier/dosar",
+    "Link name" : "Numele legăturii",
     "Name" : "Nume",
     "Filename" : "Nume fișier",
     "Password" : "Parolă",

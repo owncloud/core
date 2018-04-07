@@ -101,7 +101,6 @@ OC.L10N.register(
     "Change password" : "Mainīt paroli",
     "Language" : "Valoda",
     "Help translate" : "Palīdzi tulkot",
-    "Unlimited" : "Neierobežota",
     "Name" : "Nosaukums",
     "Username" : "Lietotājvārds",
     "Done" : "Pabeigts",

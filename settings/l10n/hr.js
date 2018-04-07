@@ -107,7 +107,6 @@ OC.L10N.register(
     "Change password" : "Promijenite lozinku",
     "Language" : "Jezik",
     "Help translate" : "Pomozite prevesti",
-    "Unlimited" : "Neograničeno",
     "Name" : "Naziv",
     "Username" : "Korisničko ime",
     "Version" : "Verzija",

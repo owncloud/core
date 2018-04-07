@@ -229,8 +229,6 @@ OC.L10N.register(
     "Change password" : "Αλλαγή συνθηματικού",
     "Language" : "Γλώσσα",
     "Help translate" : "Βοηθήστε στη μετάφραση",
-    "Unlimited" : "Απεριόριστο",
-    "You are using %s of %s" : "Χρησιμοποιείτε %s από %s",
     "You are using %s of %s (%s %%)" : "Χρησιμοποιείτε %s από %s (%s %%)",
     "Developed by the {communityopen}ownCloud community{linkclose}, the {githubopen}source code{linkclose} is licensed under the {licenseopen}<abbr title=\"Affero General Public License\">AGPL</abbr>{linkclose}." : "Αναπτύχθηκε από την {communityopen}  κοινότητα του  ownCloud {linkclose}, ο {githubopen}  πηγαίος κώδικας {linkclose} έχει την άδεια της {licenseopen} <abbr title = \"Affero General Public License\"> AGPL </ abbr> {linkclose}.",
     "Sessions" : "Συνεδρίες",

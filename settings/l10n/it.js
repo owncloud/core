@@ -227,8 +227,6 @@ OC.L10N.register(
     "Change password" : "Modifica password",
     "Language" : "Lingua",
     "Help translate" : "Migliora la traduzione",
-    "Unlimited" : "Illimitata",
-    "You are using %s of %s" : "Stai usando %s di %s",
     "You are using %s of %s (%s %%)" : "Stai usando %s di %s (%s %%)",
     "Developed by the {communityopen}ownCloud community{linkclose}, the {githubopen}source code{linkclose} is licensed under the {licenseopen}<abbr title=\"Affero General Public License\">AGPL</abbr>{linkclose}." : "Sviluppato dalla {communityopen}comunità di ownCloud{linkclose}, il {githubopen}codice sorgente{linkclose} è rilasciato nei termini della licenza {licenseopen}<abbr title=\"Affero General Public License\">AGPL</abbr>{linkclose}.",
     "Sessions" : "Sessioni",

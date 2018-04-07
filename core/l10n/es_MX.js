@@ -98,6 +98,7 @@ OC.L10N.register(
     "Remove" : "Borrar",
     "Copy to clipboard" : "Copiar al portapapeles",
     "Anyone with the link has access to the file/folder" : "Cualquier persona con el enlace tiene acceso al archivo/carpeta",
+    "Link name" : "Nombre del enlace",
     "Name" : "Nombre",
     "Filename" : "Nombre de archivo",
     "Password" : "Contraseña",

@@ -173,7 +173,6 @@ OC.L10N.register(
     "Change password" : "تغییر گذر واژه",
     "Language" : "زبان",
     "Help translate" : "به ترجمه آن کمک کنید",
-    "Unlimited" : "نامحدود",
     "Name" : "نام",
     "Username" : "نام کاربری",
     "Version" : "نسخه",

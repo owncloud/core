@@ -34,7 +34,6 @@ OC.L10N.register(
     "Change password" : "ئىم ئۆزگەرت",
     "Language" : "تىل",
     "Help translate" : "تەرجىمىگە ياردەم",
-    "Unlimited" : "چەكسىز",
     "Name" : "ئاتى",
     "Username" : "ئىشلەتكۈچى ئاتى",
     "Version" : "نەشرى",

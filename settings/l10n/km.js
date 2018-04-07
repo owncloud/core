@@ -59,7 +59,6 @@ OC.L10N.register(
     "Change password" : "ប្តូរ​ពាក្យសម្ងាត់",
     "Language" : "ភាសា",
     "Help translate" : "ជួយ​បក​ប្រែ",
-    "Unlimited" : "មិន​កំណត់",
     "Name" : "ឈ្មោះ",
     "Username" : "ឈ្មោះ​អ្នកប្រើ",
     "Version" : "កំណែ",

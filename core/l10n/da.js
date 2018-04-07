@@ -158,6 +158,7 @@ OC.L10N.register(
     "Press Ctrl-C to copy." : "Tryk Ctrl-C for at kopiere.",
     "Choose a password" : "Vælg et kodeord",
     "Password required" : "Kodeord påkrævet",
+    "Link name" : "Linknavn",
     "Name" : "Navn",
     "Filename" : "Filnavn",
     "Password" : "Adgangskode",

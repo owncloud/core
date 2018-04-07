@@ -200,7 +200,6 @@
     "Change password" : "變更密碼",
     "Language" : "語言",
     "Help translate" : "幫助翻譯",
-    "Unlimited" : "無限制",
     "Developed by the {communityopen}ownCloud community{linkclose}, the {githubopen}source code{linkclose} is licensed under the {licenseopen}<abbr title=\"Affero General Public License\">AGPL</abbr>{linkclose}." : "由 {communityopen}ownCloud 社群{linkclose} 開發，{githubopen}原始碼{linkclose}使用 {licenseopen}<abbr title=\"Affero General Public License\">AGPL</abbr>{linkclose} 授權釋出",
     "Name" : "名稱",
     "Username" : "使用者名稱",

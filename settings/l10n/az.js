@@ -136,7 +136,6 @@ OC.L10N.register(
     "Change password" : "Şifrəni dəyiş",
     "Language" : "Dil",
     "Help translate" : "Tərcüməyə kömək",
-    "Unlimited" : "Limitsiz",
     "Developed by the {communityopen}ownCloud community{linkclose}, the {githubopen}source code{linkclose} is licensed under the {licenseopen}<abbr title=\"Affero General Public License\">AGPL</abbr>{linkclose}." : "Tərəfindən yaradılıb{communityopen}ownCloud cəmiyyəti{linkclose},   {githubopen}mənbə kodları{linkclose} altında lisenziya edilib {licenseopen}<abbr title=\"Affero General Public License\">AGPL</abbr>{linkclose}.",
     "Name" : "Ad",
     "Username" : "İstifadəçi adı",

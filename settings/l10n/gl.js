@@ -173,7 +173,6 @@ OC.L10N.register(
     "Change password" : "Cambiar o contrasinal",
     "Language" : "Idioma",
     "Help translate" : "Axude na tradución",
-    "Unlimited" : "Sen límites",
     "Developed by the {communityopen}ownCloud community{linkclose}, the {githubopen}source code{linkclose} is licensed under the {licenseopen}<abbr title=\"Affero General Public License\">AGPL</abbr>{linkclose}." : "Desenvolvido pola {communityopen}comunidade ownCloud{linkclose}, o {githubopen}código fonte{linkclose} está licenciado baixo a {licenseopen}<abbr title=\"Licencia Pública Xeral Affero\">AGPL</abbr>{linkclose}.",
     "Name" : "Nome",
     "Username" : "Nome de usuario",

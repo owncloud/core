@@ -186,7 +186,6 @@ OC.L10N.register(
     "Change password" : "Ubah sandi",
     "Language" : "Bahasa",
     "Help translate" : "Bantu menerjemahkan",
-    "Unlimited" : "Tak terbatas",
     "Developed by the {communityopen}ownCloud community{linkclose}, the {githubopen}source code{linkclose} is licensed under the {licenseopen}<abbr title=\"Affero General Public License\">AGPL</abbr>{linkclose}." : "Dikembangkan oleh {communityopen}komunitas ownCloud{linkclose}, {githubopen}kode sumber{linkclose} dilisensikan dibawah {licenseopen}<abbr title=\"Affero General Public License\">AGPL</abbr>{linkclose}.",
     "Name" : "Nama",
     "Username" : "Nama pengguna",

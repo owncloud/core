@@ -235,8 +235,6 @@
     "Change password" : "修改密码",
     "Language" : "语言",
     "Help translate" : "帮助翻译",
-    "Unlimited" : "无限",
-    "You are using %s of %s" : "您正在使用 %s of %s",
     "You are using %s of %s (%s %%)" : "您正在在使用 %s of %s (%s %%)",
     "Developed by the {communityopen}ownCloud community{linkclose}, the {githubopen}source code{linkclose} is licensed under the {licenseopen}<abbr title=\"Affero General Public License\">AGPL</abbr>{linkclose}." : "由 {communityopen}ownCloud 社区{linkclose}开发，{githubopen}源代码{linkclose}的发布需遵守 {licenseopen}<abbr title=\"Affero General Public License\">AGPL</abbr> 许可协议{linkclose}。",
     "Sessions" : "会话",

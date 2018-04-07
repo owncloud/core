@@ -170,7 +170,6 @@ OC.L10N.register(
     "Change password" : "Passwuert änneren",
     "Language" : "Sprooch",
     "Help translate" : "Hëllef iwwersetzen",
-    "Unlimited" : "Onlimitéiert",
     "Sessions" : "Sëtzung",
     "Browser" : "Browser",
     "Most recent activity" : "Rezentsten Aktivitéit",

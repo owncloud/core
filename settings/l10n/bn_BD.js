@@ -51,7 +51,6 @@ OC.L10N.register(
     "Change password" : "কূটশব্দ পরিবর্তন করুন",
     "Language" : "ভাষা",
     "Help translate" : "অনুবাদ করতে সহায়তা করুন",
-    "Unlimited" : "অসীম",
     "Name" : "নাম",
     "Username" : "ব্যবহারকারী",
     "Done" : "শেষ হলো",

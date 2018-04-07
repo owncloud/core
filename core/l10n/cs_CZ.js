@@ -157,6 +157,7 @@ OC.L10N.register(
     "Press ⌘-C to copy." : "Zmáčknout ⌘-C pro kopírování.",
     "Press Ctrl-C to copy." : "Zmáčknout Ctrl-C pro kopírování.",
     "Password required" : "Heslo je vyžadováno",
+    "Link name" : "Jméno odkazu",
     "Name" : "Název",
     "Filename" : "Jméno souboru",
     "Password" : "Heslo",

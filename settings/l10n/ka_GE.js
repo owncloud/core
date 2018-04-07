@@ -43,7 +43,6 @@ OC.L10N.register(
     "Change password" : "პაროლის შეცვლა",
     "Language" : "ენა",
     "Help translate" : "თარგმნის დახმარება",
-    "Unlimited" : "ულიმიტო",
     "Name" : "სახელი",
     "Username" : "მომხმარებლის სახელი",
     "Version" : "ვერსია",

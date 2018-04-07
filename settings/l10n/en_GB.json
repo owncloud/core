@@ -216,7 +216,6 @@
     "Change password" : "Change password",
     "Language" : "Language",
     "Help translate" : "Help translate",
-    "Unlimited" : "Unlimited",
     "Developed by the {communityopen}ownCloud community{linkclose}, the {githubopen}source code{linkclose} is licensed under the {licenseopen}<abbr title=\"Affero General Public License\">AGPL</abbr>{linkclose}." : "Developed by the {communityopen}ownCloud community{linkclose}, the {githubopen}source code{linkclose} is licensed under the {licenseopen}<abbr title=\"Affero General Public Licence\">AGPL</abbr>{linkclose}.",
     "Sessions" : "Sessions",
     "Browser" : "Browser",

@@ -158,6 +158,7 @@ OC.L10N.register(
     "Press Ctrl-C to copy." : "Premi Ctrl-C per copiare.",
     "Choose a password" : "Scegli una password",
     "Password required" : "Password richiesta",
+    "Link name" : "Nome collegamento",
     "Name" : "Nome",
     "Filename" : "Nome del file",
     "Password" : "Password",

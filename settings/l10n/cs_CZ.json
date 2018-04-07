@@ -237,8 +237,6 @@
     "Change password" : "Změnit heslo",
     "Language" : "Jazyk",
     "Help translate" : "Pomoci s překladem",
-    "Unlimited" : "Neomezeně",
-    "You are using %s of %s" : "Používáte %s z %s",
     "You are using %s of %s (%s %%)" : "Používáte %s z %s (%s %%)",
     "Developed by the {communityopen}ownCloud community{linkclose}, the {githubopen}source code{linkclose} is licensed under the {licenseopen}<abbr title=\"Affero General Public License\">AGPL</abbr>{linkclose}." : "Vyvíjeno {communityopen}komunitou ownCloud{linkclose}, {githubopen}zdrojový kód{linkclose} je licencován pod {licenseopen}<abbr title=\"Affero General Public License\">AGPL</abbr>{linkclose}.",
     "Sessions" : "Sezení",

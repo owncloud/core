@@ -121,7 +121,6 @@ OC.L10N.register(
     "Change password" : "Aldatu pasahitza",
     "Language" : "Hizkuntza",
     "Help translate" : "Lagundu itzultzen",
-    "Unlimited" : "Mugarik gabe",
     "Name" : "Izena",
     "Username" : "Erabiltzaile izena",
     "Done" : "Egina",

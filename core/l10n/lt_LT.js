@@ -128,6 +128,7 @@ OC.L10N.register(
     "Copied!" : "Nukopijuota!",
     "Choose a password" : "Pasirinkite slaptažodį",
     "Password required" : "Reikalingas slaptažodis",
+    "Link name" : "Nuorodos pavadinimas",
     "Name" : "Pavadinimas",
     "Filename" : "Failo pavadinimas",
     "Password" : "Slaptažodis",

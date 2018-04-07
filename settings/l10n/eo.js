@@ -101,7 +101,6 @@ OC.L10N.register(
     "Change password" : "Ŝanĝi la pasvorton",
     "Language" : "Lingvo",
     "Help translate" : "Helpu traduki",
-    "Unlimited" : "Senlima",
     "Name" : "Nomo",
     "Username" : "Uzantonomo",
     "Done" : "Farita",

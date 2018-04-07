@@ -193,8 +193,6 @@ OC.L10N.register(
     "Change password" : "Zmień hasło",
     "Language" : "Język",
     "Help translate" : "Pomóż w tłumaczeniu",
-    "Unlimited" : "Bez limitu",
-    "You are using %s of %s" : "Używasz %s z %s",
     "You are using %s of %s (%s %%)" : "Używasz %s z %s (%s %%)",
     "Sessions" : "Sesje",
     "Most recent activity" : "Ostatnia aktywność",

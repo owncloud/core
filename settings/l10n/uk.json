@@ -175,7 +175,6 @@
     "Change password" : "Змінити пароль",
     "Language" : "Мова",
     "Help translate" : "Допомогти з перекладом",
-    "Unlimited" : "Необмежено",
     "Developed by the {communityopen}ownCloud community{linkclose}, the {githubopen}source code{linkclose} is licensed under the {licenseopen}<abbr title=\"Affero General Public License\">AGPL</abbr>{linkclose}." : "Розроблено {communityopen} спільнотою ownCloud {linkclose}, {githubopen} вихідний код {linkclose} ліцензується відповідно до {licenseopen} <abbr title = \"Публічної ліцензії Affero General\"> AGPL </ abbr> {linkclose}.",
     "Name" : "Ім’я",
     "Username" : "Ім'я користувача",

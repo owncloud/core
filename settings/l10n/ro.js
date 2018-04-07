@@ -169,7 +169,6 @@ OC.L10N.register(
     "Change password" : "Schimbă parola",
     "Language" : "Limba",
     "Help translate" : "Ajută la traducere",
-    "Unlimited" : "Nelimitată",
     "Sessions" : "Sesiuni",
     "Most recent activity" : "Cea mai recentă activitate",
     "App passwords" : "Parole aplicații",
