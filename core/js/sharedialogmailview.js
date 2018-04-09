@@ -121,7 +121,7 @@
 						deferred.resolve();
 					}
 			}).fail(function(error) {
-				return deferred.reject();
+				return deferred.reject(error);
 			});
 
 			return deferred.promise();
@@ -155,7 +155,7 @@
 						deferred.resolve();
 					}, 2000);
 				}).fail(function(error) {
-					OC.dialogs.info(error.message, t('core', 'An error occured'));
+					OC.dialogs.info(error.message, t('core', 'An error occured while sending email'));
 					$formSendIndicator.addClass('hidden');
 					$formItems.prop('disabled', false);
 					deferred.reject();
