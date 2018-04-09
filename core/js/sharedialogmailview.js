@@ -143,21 +143,28 @@
 				 body    : this.$el.find('.emailPrivateLinkForm--emailBodyField').val()
 			};
 
+			var deferred = $.Deferred();
+
 			if (mail.to !== '') {
 				$formItems.prop('disabled', true);
 				$formSendIndicator.removeClass('hidden');
-				return this._sendEmailPrivateLink(mail).done(function() {
+				this._sendEmailPrivateLink(mail).done(function() {
 					setTimeout(function() {
 						$formItems.prop('disabled', false);
 						$formSendIndicator.addClass('hidden');
+						deferred.resolve();
 					}, 2000);
 				}).fail(function(error) {
 					OC.dialogs.info(error.message, t('core', 'An error occured'));
 					$formSendIndicator.addClass('hidden');
 					$formItems.prop('disabled', false);
+					deferred.reject();
 				});
+			} else {
+				deferred.resolve();
 			}
-			return $.Deferred().resolve();
+
+			return deferred.promise();
 		},
 
 		render: function() {
