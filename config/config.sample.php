@@ -1165,9 +1165,16 @@ $CONFIG = array(
 		'.user.ini',
 	),
 /**
- * The list of apps that are allowed to have no signature.json
+ * The list of apps that are allowed to have no signature.json. Besides
+ * ownCloud apps, this is particularly useful when creating ownCloud themes,
+ * because themes are treated as apps.
+ * The following example allows theme-1 and theme-2 to have no signature.
  */
-'integrity.ignore.missing.app.signature' => [],
+'integrity.ignore.missing.app.signature' =>
+	array(
+		'theme-1',
+		'theme-2',
+	),
 
 /**
  * Define a default folder for shared files and folders other than root.
