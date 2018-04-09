@@ -26,7 +26,7 @@ namespace OCP\Files\Storage;
  * Interface IVersionedStorage - storage layer to access version of a file
  *
  * @package OCP\Files\Storage
- * @since 10.0.5
+ * @since 10.0.9
  */
 interface IVersionedStorage {
 
@@ -35,7 +35,7 @@ interface IVersionedStorage {
 	 *
 	 * @param string $internalPath
 	 * @return array
-	 * @since 10.0.5
+	 * @since 10.0.9
 	 */
 	public function getVersions($internalPath);
 
@@ -45,7 +45,7 @@ interface IVersionedStorage {
 	 * @param string $internalPath
 	 * @param string $versionId
 	 * @return array
-	 * @since 10.0.5
+	 * @since 10.0.9
 	 */
 	public function getVersion($internalPath, $versionId);
 
@@ -55,7 +55,7 @@ interface IVersionedStorage {
 	 * @param string $internalPath
 	 * @param string $versionId
 	 * @return resource
-	 * @since 10.0.5
+	 * @since 10.0.9
 	 */
 	public function getContentOfVersion($internalPath, $versionId);
 
@@ -65,7 +65,7 @@ interface IVersionedStorage {
 	 * @param string $internalPath
 	 * @param string $versionId
 	 * @return boolean
-	 * @since 10.0.5
+	 * @since 10.0.9
 	 */
 	public function restoreVersion($internalPath, $versionId);
 
@@ -74,7 +74,7 @@ interface IVersionedStorage {
 	 *
 	 * @param string $internalPath
 	 * @return bool
-	 * @since 10.0.5
+	 * @since 10.0.9
 	 */
 	public function saveVersion($internalPath);
 
