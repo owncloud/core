@@ -69,6 +69,13 @@ class MailNotificationFilter {
 					['name' => 'StripTags'],
 				],
 			],
+			'senderDisplayName' => [
+				'required' => false,
+				'filters' => [
+					['name' => 'StringTrim'],
+					['name' => 'StripTags'],
+				],
+			],
 			'personalNote' => [
 				'required' => false,
 				'filters' => [
@@ -107,6 +114,13 @@ class MailNotificationFilter {
 	 */
 	public function getToAddress() {
 		return $this->inputFilter->getValue('toAddress');
+	}
+
+	/**
+	 * @return string The filtered to sender display name
+	 */
+	public function getSenderDisplayName() {
+		return $this->inputFilter->getValue('senderDisplayName');
 	}
 
 	/**
