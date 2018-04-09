@@ -170,6 +170,7 @@ OC.L10N.register(
     "Filename" : "Nome do Arquivo",
     "Password" : "Senha",
     "Upload only" : "Somente enviar",
+    "Download / View" : "Baixar/Visualizar",
     "Edit link share: {name}" : "Editar link de compartilhamento: {name}",
     "Create link share: {name}" : "Cliar link de compartilhamento: {name}",
     "Share" : "Compartilhar",
