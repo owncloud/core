@@ -67,10 +67,17 @@ class Owncloud {
 	 * @param string $app
 	 * @param string $message
 	 * @param int $level
-	 * @param string conditionalLogFile
+	 * @param array|null $extras
 	 */
-	public static function write($app, $message, $level, $conditionalLogFile = null) {
+	public static function write($app, $message, $level, $extras = null) {
 		$config = \OC::$server->getSystemConfig();
+
+		$conditionalLogFile = null;
+		if (!is_null($extras)) {
+			if (isset($extras['conditionalLogFile'])) {
+				$conditionalLogFile = $extras['conditionalLogFile'];
+			}
+		}
 
 		// default to ISO8601
 		$format = $config->getValue('logdateformat', 'c');
@@ -110,7 +117,7 @@ class Owncloud {
 			'url',
 			'message'
 		);
-		$entry = json_encode($entry);
+		$entry = json_encode($entry, JSON_UNESCAPED_SLASHES);
 		if (!is_null($conditionalLogFile)) {
 			if ($conditionalLogFile[0] !== '/') {
 				$conditionalLogFile = \OC::$server->getConfig()->getSystemValue('datadirectory') . "/" . $conditionalLogFile;

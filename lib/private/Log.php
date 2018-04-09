@@ -236,6 +236,11 @@ class Log implements ILogger {
 		}
 		$logConditionFile = null;
 
+		$exception = null;
+		if (isset($context['exception'])) {
+			$exception = $this->processException($context['exception']);
+			unset($context['exception']);
+		}
 		array_walk($context, [$this->normalizer, 'format']);
 
 		if (isset($context['app'])) {
@@ -321,7 +326,14 @@ class Log implements ILogger {
 
 		if ($level >= $minLevel) {
 			$logger = $this->logger;
-			call_user_func([$logger, 'write'], $app, $message, $level, $logConditionFile);
+			$extras = null;
+			if (!is_null($exception)) {
+				$extras['exception'] = $exception;
+			}
+			if (!is_null($logConditionFile)) {
+				$extras['conditionalLogFile'] = $logConditionFile;
+			}
+			call_user_func([$logger, 'write'], $app, $message, $level, $extras);
 		}
 	}
 
@@ -334,20 +346,39 @@ class Log implements ILogger {
 	 * @since 8.2.0
 	 */
 	public function logException($exception, array $context = []) {
-		$exception = [
-			'Exception' => get_class($exception),
-			'Message' => $exception->getMessage(),
-			'Code' => $exception->getCode(),
-			'Trace' => $exception->getTraceAsString(),
-			'File' => $exception->getFile(),
-			'Line' => $exception->getLine(),
-		];
-		$exception['Trace'] = preg_replace('!(' . implode('|', $this->methodsWithSensitiveParameters) . ')\(.*\)!', '$1(*** sensitive parameters replaced ***)', $exception['Trace']);
-		if (\OC::$server->getUserSession() && \OC::$server->getUserSession()->isLoggedIn()) {
+		$context['exception'] = $exception;
+		if (\OC::$server->getUserSession()->isLoggedIn()) {
 			$context['userid'] = \OC::$server->getUserSession()->getUser()->getUID();
 		}
 		$msg = isset($context['message']) ? $context['message'] : 'Exception';
-		$msg .= ': ' . json_encode($exception);
 		$this->error($msg, $context);
+	}
+
+	/**
+	 * Converts an exception to an associative array
+	 *
+	 * @param \Exception | \Throwable $exception
+	 * @return array
+	 */
+	private function processException($exception) {
+		$result = [
+			'Exception' => get_class($exception),
+			'Message' => $exception->getMessage(),
+			'Code' => $exception->getCode(),
+			'File' => $exception->getFile(),
+			'Line' => $exception->getLine(),
+		];
+
+		$traces = $exception->getTraceAsString();
+		// sanitize methods with sensitive parameters
+		$traces = preg_replace('!(' . implode('|', $this->methodsWithSensitiveParameters) . ')\(.*\)!', '$1(*** sensitive parameters replaced ***)', $traces);
+		// convert stack string to array
+		$parts = explode("\n", $traces);
+		$traces = [];
+		foreach ($parts as $part) {
+			$traces[] = $part;
+		}
+		$result['Trace'] = $traces;
+		return $result;
 	}
 }
