@@ -352,6 +352,7 @@ OC.L10N.register(
     "Send copy to self" : "Sende dir selbst ein Kopie",
     "Add personal message" : "Füge eine persönliche Nachricht an",
     "Error adding {addItem}: {addItem} already exists" : "Fehler beim Hinzufügen von {addItem},  {addItem} existiert schon.",
-    "federated" : "verbunden zu anderer Instanz"
+    "federated" : "verbunden zu anderer Instanz",
+    "Link name" : "Name des Links"
 },
 "nplurals=2; plural=(n != 1);");

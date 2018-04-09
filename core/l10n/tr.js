@@ -326,6 +326,7 @@ OC.L10N.register(
     "Menu" : "Menü",
     "Password changed successfully" : "Parola başarıyla değiştirildi.",
     "Social share" : "Sosyal paylaşım",
-    "An error occurred while verifying the token" : "Jeton onaylanırken bir hata oluştu"
+    "An error occurred while verifying the token" : "Jeton onaylanırken bir hata oluştu",
+    "Link name" : "Bağlantı adı"
 },
 "nplurals=2; plural=(n > 1);");

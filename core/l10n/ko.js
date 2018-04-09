@@ -347,6 +347,7 @@ OC.L10N.register(
     "Email notification not sent" : "이메일 알림을 보내지 못했습니다",
     "You took too long to login, please try again now" : "로그인이 너무 오래 걸렸습니다. 다시 시도하십시오",
     "Error adding {addItem}: {addItem} already exists" : "{addItem} 추가 오류: {addItem} 항목이 이미 존재함",
-    "federated" : "연합"
+    "federated" : "연합",
+    "Link name" : "링크 이름"
 },
 "nplurals=1; plural=0;");

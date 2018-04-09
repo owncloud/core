@@ -285,6 +285,7 @@ OC.L10N.register(
     "Choose a password" : "選擇密碼",
     "Password required" : "需要密碼",
     "Public Links" : "公共連結",
-    "Menu" : "選單"
+    "Menu" : "選單",
+    "Link name" : "連結名稱"
 },
 "nplurals=1; plural=0;");

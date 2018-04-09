@@ -349,6 +349,9 @@ OC.L10N.register(
     "Invalid email address" : "Ungültige E-Mail-Adresse",
     "Extra field to display in autocomplete results" : "Separates Feld zur Anzeige des Autovervollständigen-Ergebnisses",
     "Restrict users to only share with groups they are member of" : "Benutzer auf das Teilen innerhalb der Gruppen, deren Mitglied sie sind, beschränken",
-    "Default user and group share permissions" : "Nutzer und Gruppen Standard-Berechtigungen für das Teilen"
+    "Default user and group share permissions" : "Nutzer und Gruppen Standard-Berechtigungen für das Teilen",
+    "Enforce password protection for read-only links" : "Password-Schutz für \"nur lesen\" Links anwenden ",
+    "Enforce password protection for read & write links" : "Password-Schutz für das Lesen und Schreiben von Links anwenden",
+    "Enforce password protection for upload-only (File Drop) links" : "Password-Schutz für Upload-Links anwenden"
 },
 "nplurals=2; plural=(n != 1);");

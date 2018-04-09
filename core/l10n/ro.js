@@ -260,6 +260,7 @@ OC.L10N.register(
     "Remove link" : "Șterge legătura",
     "Copy to clipboard" : "Copiază în clipboard",
     "Anyone with the link has access to the file/folder" : "Oricine are legătura are acces la fișier/dosar",
-    "Menu" : "Meniu"
+    "Menu" : "Meniu",
+    "Link name" : "Numele legăturii"
 },
 "nplurals=3; plural=(n==1?0:(((n%100>19)||((n%100==0)&&(n!=0)))?2:1));");

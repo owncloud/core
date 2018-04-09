@@ -21,6 +21,7 @@ OC.L10N.register(
     "Folder name" : "Tên thư mục",
     "Configuration" : "Cấu hình",
     "Add storage" : "Thêm bộ nhớ",
-    "Delete" : "Xóa"
+    "Delete" : "Xóa",
+    "Domain" : "Tên miền"
 },
 "nplurals=1; plural=0;");

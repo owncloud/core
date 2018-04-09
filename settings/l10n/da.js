@@ -317,6 +317,7 @@ OC.L10N.register(
     "Apps Management" : "Apphåndtering",
     "Show enabled apps" : "Vis aktiverede apps",
     "Show disabled apps" : "Vis deaktiverede aps",
-    "Restrict enumeration to group members" : "Begræns nummereringen til gruppemedlemmer"
+    "Restrict enumeration to group members" : "Begræns nummereringen til gruppemedlemmer",
+    "You are using %s of %s (%s %%)" : "Du bruger %s af %s (%s %%)"
 },
 "nplurals=2; plural=(n != 1);");

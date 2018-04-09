@@ -343,6 +343,7 @@ OC.L10N.register(
     "Sending" : "送信中",
     "Menu" : "メニュー",
     "Read only" : "読み込みのみ",
-    "Read & Write" : "読み込みと書き込み"
+    "Read & Write" : "読み込みと書き込み",
+    "Link name" : "リンク名"
 },
 "nplurals=1; plural=0;");

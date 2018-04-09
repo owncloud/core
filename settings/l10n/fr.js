@@ -336,6 +336,7 @@ OC.L10N.register(
     "Email address" : "Adresse mail",
     "Restrict enumeration to group members" : "Restreindre l'énumération aux membres du groupe",
     "Restrict users to only share with groups they are member of" : "N'autoriser les utilisateurs qu'à partager avec les groupes dont ils sont membre",
-    "Default user and group share permissions" : "Autorisations par défaut de partage de groupe et d'utilisateur"
+    "Default user and group share permissions" : "Autorisations par défaut de partage de groupe et d'utilisateur",
+    "You are using %s of %s (%s %%)" : "Vous utilisez %s sur %s (%s %%)"
 },
 "nplurals=2; plural=(n > 1);");

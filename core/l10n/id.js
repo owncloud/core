@@ -258,6 +258,7 @@ OC.L10N.register(
     "Remove link" : "Hapus tautan",
     "Copy to clipboard" : "Salin ke klipbor",
     "Anyone with the link has access to the file/folder" : "Siapapun yang mengetahui tautan memiliki akses ke berkas/ folder",
-    "Menu" : "Menu"
+    "Menu" : "Menu",
+    "Link name" : "Nama tautan"
 },
 "nplurals=1; plural=0;");

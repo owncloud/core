@@ -338,6 +338,7 @@ OC.L10N.register(
     "Choose a password" : "Scegli una password",
     "Upload only" : "Carica solo",
     "Sending" : "Invio in corso",
-    "Menu" : "Menu"
+    "Menu" : "Menu",
+    "Link name" : "Nome collegamento"
 },
 "nplurals=2; plural=(n != 1);");

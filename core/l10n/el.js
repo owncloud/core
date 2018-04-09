@@ -339,6 +339,7 @@ OC.L10N.register(
     "Choose a password" : "Επιλογή συνθηματικού",
     "Upload only" : "Μόνο μεταφόρτωση",
     "Sending" : "Αποστολή",
-    "Menu" : "Μενού"
+    "Menu" : "Μενού",
+    "Link name" : "Όνομα συνδέσμου"
 },
 "nplurals=2; plural=(n != 1);");

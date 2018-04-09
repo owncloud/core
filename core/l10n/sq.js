@@ -352,6 +352,7 @@ OC.L10N.register(
     "Send copy to self" : "Dërgojini vetes një kopje",
     "Add personal message" : "Shtoni mesazh personal",
     "Error adding {addItem}: {addItem} already exists" : "Gabim në shtimin e {addItem}: {addItem} ekziston tashmë",
-    "federated" : "i federuar"
+    "federated" : "i federuar",
+    "Link name" : "Emër lidhjeje"
 },
 "nplurals=2; plural=(n != 1);");

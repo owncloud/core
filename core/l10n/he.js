@@ -351,6 +351,7 @@ OC.L10N.register(
     "An error occured" : "אירעה שגיאה",
     "Send copy to self" : "שליחת עותק אלי",
     "Add personal message" : "הוספת הודעה פרטית",
-    "Error adding {addItem}: {addItem} already exists" : "שגיאה בהוספת {addItem}:‏ {addItem} כבר קיים"
+    "Error adding {addItem}: {addItem} already exists" : "שגיאה בהוספת {addItem}:‏ {addItem} כבר קיים",
+    "Link name" : "שם קישור"
 },
 "nplurals=2; plural=(n != 1);");

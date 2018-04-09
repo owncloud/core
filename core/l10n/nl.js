@@ -345,6 +345,7 @@ OC.L10N.register(
     "Read only" : "Allleen lezen",
     "Read & Write" : "Lees & Schrijven",
     "Email notification not sent" : "E-mailbericht niet verzonden",
-    "federated" : "gefedereerd"
+    "federated" : "gefedereerd",
+    "Link name" : "Naam link"
 },
 "nplurals=2; plural=(n != 1);");

@@ -256,6 +256,7 @@ OC.L10N.register(
     "Error removing share" : "خطا در حذف اشتراک",
     "Trace" : "ردیابی",
     "Two-step verification" : "تأیید صحت دو مرحله ای",
-    "Detailed logs" : "log های مفصل"
+    "Detailed logs" : "log های مفصل",
+    "Link name" : "نام لینک"
 },
 "nplurals=1; plural=0;");

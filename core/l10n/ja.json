@@ -341,6 +341,7 @@
     "Sending" : "送信中",
     "Menu" : "メニュー",
     "Read only" : "読み込みのみ",
-    "Read & Write" : "読み込みと書き込み"
+    "Read & Write" : "読み込みと書き込み",
+    "Link name" : "リンク名"
 },"pluralForm" :"nplurals=1; plural=0;"
 }

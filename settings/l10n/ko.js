@@ -316,6 +316,7 @@ OC.L10N.register(
     "Enforce password protection for upload-only (File Drop) links" : "업로드 전용 링크에 대해 비밀번호 보호 적용",
     "Error while loading browser sessions and device tokens" : "웹 브라우저 세션과 장치 토큰을 불러오는 중 오류가 발생했습니다",
     "Error while creating device token" : "장치 토큰을 만드는 중 오류가 발생했습니다",
-    "Error while deleting the token" : "토큰을 삭제하는 중 오류가 발생했습니다"
+    "Error while deleting the token" : "토큰을 삭제하는 중 오류가 발생했습니다",
+    "You are using %s of %s (%s %%)" : "%s/%s 사용 중(%s%%)"
 },
 "nplurals=1; plural=0;");
