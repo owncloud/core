@@ -28,7 +28,7 @@ use OCP\IImage;
  * this interface.
  *
  * @package OCP\Files
- * @since 10.1.0
+ * @since 10.0.9
  */
 interface IPreviewNode {
 
@@ -37,7 +37,7 @@ interface IPreviewNode {
 	 *
 	 * @param array $options
 	 * @return IImage
-	 * @since 10.1.0
+	 * @since 10.0.9
 	 */
 	public function getThumbnail($options);
 }

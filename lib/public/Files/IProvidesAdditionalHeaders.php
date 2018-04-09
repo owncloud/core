@@ -28,7 +28,7 @@ namespace OCP\Files;
  * This interface allows to add additional headers to the response
  *
  * @package OCP\Files
- * @since 10.0.5
+ * @since 10.0.9
  */
 interface IProvidesAdditionalHeaders {
 
@@ -36,14 +36,14 @@ interface IProvidesAdditionalHeaders {
 	 * Returns an array of headers.
 	 *
 	 * @return array
-	 * @since 10.0.5
+	 * @since 10.0.9
 	 */
 	public function getHeaders();
 
 	/**
 	 * Returns the file name which is to be used for the content disposition
 	 * @return string
-	 * @since 10.0.5
+	 * @since 10.0.9
 	 */
 	public function getContentDispositionFileName();
 }
