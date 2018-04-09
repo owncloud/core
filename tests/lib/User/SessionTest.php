@@ -1026,6 +1026,48 @@ class SessionTest extends TestCase {
 		$this->assertEquals('user.beforelogout', $calledBeforeLogout[0]);
 	}
 
+	public function testLogout() {
+		/** @var ISession | \PHPUnit_Framework_MockObject_MockObject $session */
+		$session = $this->createMock(Memory::class);
+		$session->expects($this->once())
+			->method('set')
+			->with('user_id', 'foo');
+
+		/** @var Manager $manager */
+		$manager = $this->createMock(Manager::class);
+
+		/** @var IUser | \PHPUnit_Framework_MockObject_MockObject $user */
+		$user = $this->createMock(IUser::class);
+		$user->expects($this->once())
+			->method('getUID')
+			->will($this->returnValue('foo'));
+
+		$userSession = new Session($manager, $session, $this->timeFactory,
+			$this->tokenProvider, $this->config, $this->serviceLoader, $this->userSyncService);
+		$userSession->setUser($user);
+
+		$this->assertTrue($userSession->logout());
+
+		$calledBeforeLogout = [];
+		\OC::$server->getEventDispatcher()->addListener('user.beforelogout', function (GenericEvent $event) use (&$calledBeforeLogout) {
+			$calledBeforeLogout[] = 'user.beforelogout';
+			$calledBeforeLogout[] = $event;
+		});
+		$calledAfterLogout = [];
+		\OC::$server->getEventDispatcher()->addListener('user.afterlogout', function (GenericEvent $event) use (&$calledAfterLogout) {
+			$calledAfterLogout[] = 'user.afterlogout';
+			$calledAfterLogout[] = $event;
+		});
+
+		$this->assertEquals(true, $userSession->logout());
+		$this->assertInstanceOf(GenericEvent::class, $calledBeforeLogout[1]);
+		$this->assertArrayHasKey('uid', $calledBeforeLogout[1]);
+		$this->assertEquals('user.beforelogout', $calledBeforeLogout[0]);
+		$this->assertInstanceOf(GenericEvent::class, $calledAfterLogout[1]);
+		$this->assertArrayHasKey('uid', $calledAfterLogout[1]);
+		$this->assertEquals('user.afterlogout', $calledAfterLogout[0]);
+	}
+
 	public function testApacheLogin() {
 		/** @var IUserManager | \PHPUnit_Framework_MockObject_MockObject $userManager */
 		$userManager = $this->createMock(IUserManager::class);
