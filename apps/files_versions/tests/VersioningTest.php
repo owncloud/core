@@ -650,40 +650,6 @@ class VersioningTest extends TestCase {
 		$this->doTestRestore();
 	}
 
-	public function testRestoreNoPermission() {
-		$this->loginAsUser($this->user1);
-
-		$userHome = \OC::$server->getUserFolder($this->user1);
-		$node = $userHome->newFolder('folder');
-		$file = $node->newFile('test.txt');
-
-		$share = \OC::$server->getShareManager()->newShare();
-		$share->setNode($node)
-			->setShareType(\OCP\Share::SHARE_TYPE_USER)
-			->setSharedBy($this->user1)
-			->setSharedWith($this->user2)
-			->setPermissions(\OCP\Constants::PERMISSION_READ);
-		$share = \OC::$server->getShareManager()->createShare($share);
-
-		$versions = $this->createAndCheckVersions(
-			\OC\Files\Filesystem::getView(),
-			'folder/test.txt'
-		);
-
-		$file->putContent('test file');
-
-		$this->loginAsUser($this->user2);
-
-		$firstVersion = current($versions);
-
-		$this->assertFalse(\OCA\Files_Versions\Storage::rollback('folder/test.txt', $firstVersion['version']), 'Revert did not happen');
-
-		$this->loginAsUser($this->user1);
-
-		\OC::$server->getShareManager()->deleteShare($share);
-		$this->assertEquals('test file', $file->getContent(), 'File content has not changed');
-	}
-
 	/**
 	 * @param string $hookName name of hook called
 	 * @param array $params variable to receive parameters provided by hook
@@ -745,10 +711,10 @@ class VersioningTest extends TestCase {
 		$this->connectMockHooks('rollback', $params);
 
 		$v = $oldVersions["$t2#test.txt"];
-		$this->assertTrue(\OCA\Files_Versions\Storage::restoreVersion(self::TEST_VERSIONS_USER, $v['path'], $v['storage_location'], $t2));
+		$this->assertTrue(\OCA\Files_Versions\Storage::restoreVersion($this->user1, $v['path'], $v['storage_location'], $t2));
 		$expectedParams = [
 			'path' => '/sub/test.txt',
-			'user' => self::TEST_VERSIONS_USER,
+			'user' => $this->user1,
 			'revision' => $t2
 		];
 
