@@ -108,7 +108,7 @@ class LoginController extends Controller {
 	 * @return TemplateResponse|RedirectResponse
 	 */
 	public function showLoginForm($user, $redirect_url, $remember_login) {
-		if ($this->userSession->isLoggedIn()) {
+		if (\OC_User::handleApacheAuth() || $this->userSession->isLoggedIn()) {
 			return new RedirectResponse($this->getDefaultUrl());
 		}
 
