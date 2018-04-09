@@ -831,7 +831,6 @@ class OC {
 	 * Handle the request
 	 */
 	public static function handleRequest() {
-
 		\OC::$server->getEventLogger()->start('handle_request', 'Handle request');
 		$systemConfig = \OC::$server->getSystemConfig();
 		// load all the classpaths from the enabled apps so they are available
@@ -888,22 +887,15 @@ class OC {
 			throw $e;
 		}
 
-		// Load minimum set of apps
-		if (!self::checkUpgrade(false)
-			&& !$systemConfig->getValue('maintenance', false)) {
-			// For logged-in users: Load everything
-			$userSession = \OC::$server->getUserSession();
-			if($userSession->isLoggedIn() && $userSession->verifyAuthHeaders($request)) {
-				OC_App::loadApps();
-			} else {
-				// For guests: Load only filesystem and logging
-				OC_App::loadApps(['filesystem', 'logging']);
-			}
-		}
+		$userSession = \OC::$server->getUserSession();
 
 		if (!self::$CLI) {
 			try {
 				if (!$systemConfig->getValue('maintenance', false) && !self::checkUpgrade(false)) {
+					// Kill the session if its invalid
+					if($userSession->isLoggedIn()) {
+						$userSession->verifyAuthHeaders($request);
+					}
 					OC_App::loadApps(['filesystem', 'logging']);
 					OC_App::loadApps();
 				}

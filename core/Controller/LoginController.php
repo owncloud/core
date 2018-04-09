@@ -26,6 +26,7 @@
 namespace OC\Core\Controller;
 
 use OC\Authentication\TwoFactorAuth\Manager;
+use OC\User\LoginException;
 use OC\User\Session;
 use OC_App;
 use OC_Util;
@@ -108,7 +109,8 @@ class LoginController extends Controller {
 	 * @return TemplateResponse|RedirectResponse
 	 */
 	public function showLoginForm($user, $redirect_url, $remember_login) {
-		if ($this->userSession->isLoggedIn()) {
+		if (\OC_User::handleApacheAuth() || $this->userSession->isLoggedIn()) {
+			// FIXME getDefaultUrl should not implicitly use REQUEST redirect_url
 			return new RedirectResponse($this->getDefaultUrl());
 		}
 
