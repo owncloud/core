@@ -340,6 +340,7 @@ OC.L10N.register(
     "Anyone with the link has access to the file/folder" : "任何查看此链接的人都可以访问文件、文件夹",
     "Upload only" : "仅上传",
     "Sending" : "发送中",
-    "Menu" : "菜单"
+    "Menu" : "菜单",
+    "Link name" : "链接名称"
 },
 "nplurals=1; plural=0;");

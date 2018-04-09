@@ -332,6 +332,7 @@ OC.L10N.register(
     "Menu" : "Meny",
     "Password changed successfully" : "Lösenordet ändrades",
     "Social share" : "Social delning",
-    "An error occurred while verifying the token" : "Ett fel inträffade vid verifiering av nyckeln"
+    "An error occurred while verifying the token" : "Ett fel inträffade vid verifiering av nyckeln",
+    "Link name" : "Länknamn"
 },
 "nplurals=2; plural=(n != 1);");

@@ -181,6 +181,7 @@ OC.L10N.register(
     "Contact your system administrator if this message persists or appeared unexpectedly." : "Contacte con su administrador de sistemas si este mensaje persiste o aparece de forma inesperada.",
     "Thank you for your patience." : "Gracias por su paciencia.",
     "Copy to clipboard" : "Copiar al portapapeles",
-    "Anyone with the link has access to the file/folder" : "Cualquier persona con el enlace tiene acceso al archivo/carpeta"
+    "Anyone with the link has access to the file/folder" : "Cualquier persona con el enlace tiene acceso al archivo/carpeta",
+    "Link name" : "Nombre del enlace"
 },
 "nplurals=2; plural=(n != 1);");

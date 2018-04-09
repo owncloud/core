@@ -126,6 +126,7 @@ OC.L10N.register(
     "App name" : "Toepnaam",
     "Create new app password" : "Skep nuwe toepwagwoord",
     "Done" : "Gereed",
-    "Version" : "Weergawe"
+    "Version" : "Weergawe",
+    "You are using %s of %s (%s %%)" : "U gebruik %s van %s (%s %%)"
 },
 "nplurals=2; plural=(n != 1);");

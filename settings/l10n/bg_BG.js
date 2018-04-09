@@ -268,6 +268,7 @@ OC.L10N.register(
     "User ID" : "Потребителско ID",
     "Email address" : "Имейл адрес",
     "Picture provided by original account" : "Снимка, предоставена от оригиналния профил",
-    "For password recovery and notifications" : "За възстановяване на паролата и известия"
+    "For password recovery and notifications" : "За възстановяване на паролата и известия",
+    "You are using %s of %s (%s %%)" : "Вие използвате %s от %s (%s %%)"
 },
 "nplurals=2; plural=(n != 1);");

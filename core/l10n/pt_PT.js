@@ -340,6 +340,7 @@ OC.L10N.register(
     "Choose a password" : "Escolha uma palavra-passe",
     "Upload only" : "Apenas envio",
     "Sending" : "A Enviar",
-    "Menu" : "Menu"
+    "Menu" : "Menu",
+    "Link name" : "Nome de hiperligação"
 },
 "nplurals=2; plural=(n != 1);");

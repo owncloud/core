@@ -338,6 +338,7 @@ OC.L10N.register(
     "Copy to clipboard" : "Zkopírovat do schránky",
     "Upload only" : "Jen k nahrání",
     "Sending" : "Odesílání",
-    "Menu" : "Menu"
+    "Menu" : "Menu",
+    "Link name" : "Jméno odkazu"
 },
 "nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;");

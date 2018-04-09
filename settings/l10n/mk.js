@@ -200,6 +200,7 @@ OC.L10N.register(
     "Invalid email address" : "Невалидна адреса на Е-пошта ",
     "Restrict users to only share with groups they are member of" : "Ограничете ги корисниците само да споделуваат со групите во кои се членови",
     "Allow users to send mail notification for shared files" : "Дозволи им на корисниците да испраќаат известувања по Email за споделени датотеки",
-    "Allow users to send mail notification for shared files to other users" : "Овозможете им на корисниците да испраќаат известувања по Email за споделени датотеки на други корисници"
+    "Allow users to send mail notification for shared files to other users" : "Овозможете им на корисниците да испраќаат известувања по Email за споделени датотеки на други корисници",
+    "You are using %s of %s (%s %%)" : "Искористено %s од %s (%s %%)"
 },
 "nplurals=2; plural=(n % 10 == 1 && n % 100 != 11) ? 0 : 1;");

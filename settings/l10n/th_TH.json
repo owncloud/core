@@ -347,6 +347,9 @@
     "Invalid email address" : "ที่อยู่อีเมลไม่ถูกต้อง",
     "Extra field to display in autocomplete results" : "ฟิลด์พิเศษที่จะแสดงผลจถะถูกเติมข้อความอัตโนมัติ",
     "Restrict users to only share with groups they are member of" : "จำกัดผู้ใช้เพื่อแชร์เฉพาะกับกลุ่มที่เป็นสมาชิกของ",
-    "Default user and group share permissions" : "สิทธิ์เริ่มต้นการแชร์ของผู้ใช้และกลุ่ม"
+    "Default user and group share permissions" : "สิทธิ์เริ่มต้นการแชร์ของผู้ใช้และกลุ่ม",
+    "Enforce password protection for read-only links" : "บังคับใช้การป้องกันด้วยรหัสผ่านสำหรับลิงก์แบบอ่านอย่างเดียว",
+    "Enforce password protection for read & write links" : "บังคับใช้การป้องกันด้วยรหัสผ่านสำหรับการอ่านและเขียนลิงก์",
+    "Enforce password protection for upload-only (File Drop) links" : "บังคับใช้การป้องกันด้วยรหัสผ่านสำหรับลิงก์ที่อัพโหลด (โยนไฟล์) เท่านั้น"
 },"pluralForm" :"nplurals=1; plural=0;"
 }

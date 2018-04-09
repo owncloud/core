@@ -352,6 +352,7 @@ OC.L10N.register(
     "Send copy to self" : "Senda afrit til sjálfs þín",
     "Add personal message" : "Bættu við persónulegum skilaboðum",
     "Error adding {addItem}: {addItem} already exists" : "Villa við að bæta við {addItem}: {addItem} er þegar til",
-    "federated" : "skýjasamband (federated)"
+    "federated" : "skýjasamband (federated)",
+    "Link name" : "Heiti tengils"
 },
 "nplurals=2; plural=(n % 10 != 1 || n % 100 == 11);");

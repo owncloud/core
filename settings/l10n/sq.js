@@ -352,6 +352,7 @@ OC.L10N.register(
     "Default user and group share permissions" : "Leje parazgjedhje për ndarje nga përdorues dhe grupe",
     "Enforce password protection for read-only links" : "Zbato me detyrim mbrojtje përmes fjalëkalimi për lidhje të llojit vetëm-lexim",
     "Enforce password protection for read & write links" : "Zbato me detyrim mbrojtje përmes fjalëkalimi për lidhje të llojit lexim & shkrim",
-    "Enforce password protection for upload-only (File Drop) links" : "Zbato me detyrim mbrojtje përmes fjalëkalimi për lidhje të llojit vetëm-ngarkim (File Drop)"
+    "Enforce password protection for upload-only (File Drop) links" : "Zbato me detyrim mbrojtje përmes fjalëkalimi për lidhje të llojit vetëm-ngarkim (File Drop)",
+    "You are using %s" : "Po përdorni %s"
 },
 "nplurals=2; plural=(n != 1);");

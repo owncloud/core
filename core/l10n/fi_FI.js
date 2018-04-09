@@ -324,6 +324,7 @@ OC.L10N.register(
     "Email notification not sent" : "Sähköposti-ilmoitusta ei lähetetty",
     "You took too long to login, please try again now" : "Kirjautumisessa kesti liian kauan. Yritä uudelleen nyt",
     "Password changed successfully" : "Salasana vaihdettu onnistuneesti",
-    "Social share" : "Sosiaalinen jako"
+    "Social share" : "Sosiaalinen jako",
+    "Link name" : "Linkin nimi"
 },
 "nplurals=2; plural=(n != 1);");

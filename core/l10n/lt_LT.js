@@ -220,6 +220,7 @@ OC.L10N.register(
     "Cancel login" : "Atšaukti prisijungimą",
     "Update needed" : "Reikalingas atnaujinimas",
     "Searching other places" : "Ieškoma kitose vietose",
-    "See the documentation" : "Žiūrėti dokumentaciją"
+    "See the documentation" : "Žiūrėti dokumentaciją",
+    "Link name" : "Nuorodos pavadinimas"
 },
 "nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && (n%100<10 || n%100>=20) ? 1 : 2);");

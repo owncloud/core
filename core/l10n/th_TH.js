@@ -352,6 +352,7 @@ OC.L10N.register(
     "Send copy to self" : "ส่งสำเนาให้กับตัวเอง",
     "Add personal message" : "เพิ่มข้อความส่วนตัว",
     "Error adding {addItem}: {addItem} already exists" : "เกิดข้อผิดพลาดขณะกำลังเพิ่ม {addItem}: {addItem} ที่มีอยู่แล้ว",
-    "federated" : "สหพันธ์"
+    "federated" : "สหพันธ์",
+    "Link name" : "ชื่อลิงก์"
 },
 "nplurals=1; plural=0;");

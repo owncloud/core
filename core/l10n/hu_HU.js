@@ -328,6 +328,7 @@ OC.L10N.register(
     "An error occurred while verifying the token" : "Egy hiba merült fel a token érvényesítése közben",
     "Error adding {addItem}: {addItem} already exists" : "Hiba történt egy {addItem} hozzáadása esetén: az {addItem} már létezik",
     "federated" : "egyesített",
-    "Two-step verification" : "Kétlépcsős azonosítás"
+    "Two-step verification" : "Kétlépcsős azonosítás",
+    "Link name" : "Link neve"
 },
 "nplurals=2; plural=(n != 1);");

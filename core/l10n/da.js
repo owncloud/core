@@ -333,6 +333,7 @@ OC.L10N.register(
     "Delete {link}" : "Slet {link}",
     "Menu" : "Menu",
     "Password changed successfully" : "Kodeord succesfuldt ændret.",
-    "Social share" : "Social deling"
+    "Social share" : "Social deling",
+    "Link name" : "Linknavn"
 },
 "nplurals=2; plural=(n != 1);");

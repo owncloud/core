@@ -351,6 +351,7 @@ OC.L10N.register(
     "Send copy to self" : "Send kopi til deg selv",
     "Add personal message" : "Legg til personlig melding",
     "Error adding {addItem}: {addItem} already exists" : "Feil ved å legge til {addItem}: {addItem} eksisterer allerede",
-    "federated" : "Forent"
+    "federated" : "Forent",
+    "Link name" : "Navn på link"
 },
 "nplurals=2; plural=(n != 1);");

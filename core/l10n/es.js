@@ -352,6 +352,10 @@ OC.L10N.register(
     "Send copy to self" : "Enviarme una copia a mi mismo",
     "Add personal message" : "Añadir un mensaje personal.",
     "Error adding {addItem}: {addItem} already exists" : "Error añadiendo {addItem}: {addItem} Ya existe.",
-    "federated" : "Federado"
+    "federated" : "Federado",
+    "Recipients can view, download, edit, delete and upload contents." : "Se puede ver, descargar, editar, borrar y subir contenido.",
+    "Link name" : "Nombre del enlace",
+    "Download / View" : "Descargar / Ver",
+    "Download / View / Upload" : "Descargar / Ver / Subir"
 },
 "nplurals=2; plural=(n != 1);");
