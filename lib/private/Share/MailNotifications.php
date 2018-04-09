@@ -37,6 +37,7 @@ use OCP\Mail\IMailer;
 use OCP\ILogger;
 use OCP\Defaults;
 use OCP\Util;
+use OC\Share\Filters\MailNotificationFilter;
 
 /**
  * Class MailNotifications
@@ -122,7 +123,6 @@ class MailNotifications {
 
 			$items = $this->getItemSharedWithUser($itemSource, $itemType, $recipient);
 			$filename = trim($items[0]['file_target'], '/');
-			$subject = (string) $this->l->t('%s shared »%s« with you', [$this->senderDisplayName, $filename]);
 			$expiration = null;
 			if (isset($items[0]['expiration'])) {
 				try {
@@ -138,6 +138,15 @@ class MailNotifications {
 				['fileId' => $items[0]['item_source']]
 			);
 
+			$filter = new MailNotificationFilter([
+				'link' => $link,
+				'file' => $filename,
+			]);
+
+			$filename = $filter->getFile();
+			$link = $filter->getLink();
+
+			$subject = (string) $this->l->t('%s shared »%s« with you', [$this->senderDisplayName, $filename]);
 			list($htmlBody, $textBody) = $this->createMailBody($filename, $link, $expiration, null, 'internal');
 
 			// send it out now
