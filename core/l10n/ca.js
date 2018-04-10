@@ -152,7 +152,6 @@ OC.L10N.register(
     "Share to Diaspora. Opens in a new window." : "Compartir a Diaspora. Obrirà una nova finestra",
     "Share to Google+. Opens in a new window." : "Compartir a Google+. Obrirà una nova finestra",
     "Share via email. Opens your mail client." : "Compartir via email. Obrirà el teu gestor de correu",
-    "An error occured" : "Ha fallat",
     "Email link to person" : "Enllaç per correu electrónic amb la persona",
     "Send copy to self" : "Enviar-me copia",
     "Send link via email" : "Enviar enllaç via e-mail",

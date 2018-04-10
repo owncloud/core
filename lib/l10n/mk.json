@@ -10,7 +10,7 @@
     "last year" : "минатата година",
     "_%n year ago_::_%n years ago_" : ["пред%n 1 година","пред %n години"],
     "_%n hour ago_::_%n hours ago_" : ["пред %n час","пред %n часа"],
-    "_%n minute ago_::_%n minutes ago_" : ["пред %n 1 минута","пред %n минути"],
+    "_%n minute ago_::_%n minutes ago_" : ["пред %n минута","пред %n минути"],
     "seconds ago" : "пред неколку секунди",
     "None" : "Ништо",
     "Username" : "Корисничко име",
