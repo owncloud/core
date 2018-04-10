@@ -2603,34 +2603,6 @@ class ViewTest extends TestCase {
 		$this->assertEquals($expected, $files);
 	}
 
-	public function testFilePutContentsClearsChecksum() {
-		$storage = new Temporary([]);
-		$scanner = $storage->getScanner();
-		$storage->file_put_contents('foo.txt', 'bar');
-		Filesystem::mount($storage, [], '/test/');
-		$scanner->scan('');
-
-		$calledReadEvent = [];
-		\OC::$server->getEventDispatcher()->addListener('file.afterread', function ($event) use (&$calledReadEvent) {
-			$calledReadEvent[] = 'file.afterread';
-			$calledReadEvent[] = $event;
-		});
-		$view = new View('/test/foo.txt');
-		$view->putFileInfo('.', ['checksum' => '42']);
-
-		$this->assertEquals('bar', $view->file_get_contents(''));
-		$fh = tmpfile();
-		fwrite($fh, 'fooo');
-		rewind($fh);
-		$view->file_put_contents('', $fh);
-		$this->assertEquals('fooo', $view->file_get_contents(''));
-		$this->assertEquals('file.afterread', $calledReadEvent[0]);
-		$this->assertArrayHasKey('path', $calledReadEvent[1]);
-		$this->assertInstanceOf(GenericEvent::class, $calledReadEvent[1]);
-		$data = $view->getFileInfo('.');
-		$this->assertEquals('', $data->getChecksum());
-	}
-
 	public function testDeleteGhostFile() {
 		$storage = new Temporary([]);
 		$scanner = $storage->getScanner();
