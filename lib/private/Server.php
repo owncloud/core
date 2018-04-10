@@ -85,6 +85,7 @@ use OC\Tagging\TagMapper;
 use OC\Theme\ThemeService;
 use OC\User\AccountMapper;
 use OC\User\AccountTermMapper;
+use OC\User\Session;
 use OC\User\SyncService;
 use OCP\App\IServiceLoader;
 use OCP\AppFramework\QueryException;
@@ -317,8 +318,8 @@ class Server extends ServerContainer implements IServerContainer, IServiceLoader
 
 			$userSyncService = new SyncService($c->getConfig(), $c->getLogger(), $c->getAccountMapper());
 
-			$userSession = new \OC\User\Session($manager, $session, $timeFactory,
-				$defaultTokenProvider, $c->getConfig(), $this, $userSyncService);
+			$userSession = new Session($manager, $session, $timeFactory,
+				$defaultTokenProvider, $c->getConfig(), $c->getLogger(), $this, $userSyncService);
 			$userSession->listen('\OC\User', 'preCreateUser', function ($uid, $password) {
 				\OC_Hook::emit('OC_User', 'pre_createUser', ['run' => true, 'uid' => $uid, 'password' => $password]);
 			});
