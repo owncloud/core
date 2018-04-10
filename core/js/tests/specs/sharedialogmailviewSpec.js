@@ -101,6 +101,15 @@ describe('OC.Share.ShareDialogMailView', function() {
 	});
 
 	describe('sending emails', function() {
+		var clock;
+
+		beforeEach(function() {
+			clock = sinon.useFakeTimers();
+		});
+		afterEach(function() { 
+			clock.restore(); 
+		});
+		
 		it('sends entered emails when calling sendEmails()', function() {
 			var callback = sinon.stub();
 
@@ -136,6 +145,11 @@ describe('OC.Share.ShareDialogMailView', function() {
 					]
 				})
 			);
+
+			expect(callback.notCalled).toEqual(true);
+
+			// only call after a delay
+			clock.tick(3000);
 
 			expect(callback.calledOnce).toEqual(true);
 		});
@@ -174,6 +188,11 @@ describe('OC.Share.ShareDialogMailView', function() {
 					]
 				})
 			);
+
+			expect(callback.notCalled).toEqual(true);
+
+			// only call after a delay
+			clock.tick(3000);
 
 			expect(callback.calledOnce).toEqual(true);
 		});
