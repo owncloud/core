@@ -96,7 +96,7 @@ class ChecksumTest extends \Test\TestCase
 
 		$this->assertEquals(
 			$metaData,
-			['checksum' => '', 'mimetype' => 'application/octet-stream']
+			['mimetype' => 'application/octet-stream']
 		);
 	}
 

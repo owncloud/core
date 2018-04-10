@@ -190,7 +190,12 @@ class Checksum extends Wrapper {
 				return null;
 			}
 		}
-		$parentMetaData['checksum'] = self::getChecksumsInDbFormat($path);
+
+		$checksums = self::getChecksumsInDbFormat($path);
+
+		if (!empty($checksums)) {
+			$parentMetaData['checksum'] = $checksums;
+		}
 
 		if (!isset($parentMetaData['mimetype'])) {
 			$parentMetaData['mimetype'] = 'application/octet-stream';
