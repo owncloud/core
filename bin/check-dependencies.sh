@@ -46,21 +46,24 @@ function show_supported_distributions()
 function check_distribution()
 {
   distro=$(get_distribution)
+  is_supported=false
 
-  # Console colours
-  GREEN='\e[0;32m'      # Red
-  NC='\e[0m'          # No Color
+  for element in "${SUPPORTED_DISTRIBUTIONS[@]}"; do
+    if [[ "$element" == "$distro" ]] 
+    then
+      is_supported=true
+      break;
+    fi
+  done
 
-  case "${SUPPORTED_DISTRIBUTIONS[@]}" in 
-    "${distro}")
-      echo -e "Detected allowed distribution: ${distro}. ${GREEN}Can continue${NC}."
-      echo
-      ;;
-    *)
-      echo "This script does not support ${distro}"
-      echo "Exiting."
-      exit -1
-  esac
+  if [[ $is_supported == true ]]; then
+    echo -e "Detected allowed distribution: ${distro}. ${GREEN}Can continue${NC}."
+    echo
+  else
+    echo "This script does not support ${distro}"
+    echo "Exiting."
+    exit -1
+  fi
 }
 
 function check_dependencies()
