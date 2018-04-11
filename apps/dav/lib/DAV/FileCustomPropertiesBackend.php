@@ -39,7 +39,6 @@ use Sabre\DAV\INode;
  * @package OCA\DAV\DAV
  */
 class FileCustomPropertiesBackend extends AbstractCustomPropertiesBackend {
-
 	const SELECT_BY_ID_STMT = 'SELECT * FROM `*PREFIX*properties` WHERE `fileid` = ?';
 	const INSERT_BY_ID_STMT = 'INSERT INTO `*PREFIX*properties`'
 	. ' (`fileid`,`propertyname`,`propertyvalue`) VALUES(?,?,?)';
@@ -71,16 +70,13 @@ class FileCustomPropertiesBackend extends AbstractCustomPropertiesBackend {
 			return;
 		}
 
-		$node = $this->getNodeForPath($path);
-		if (is_null($node)) {
-			return;
+		$fileId = $this->tree->getDeletedItemFileId($path);
+		if ($fileId !== false) {
+			$statement = $this->connection->prepare(self::DELETE_BY_ID_STMT);
+			$statement->execute([$fileId]);
+			$this->offsetUnset($fileId);
+			$statement->closeCursor();
 		}
-
-		$fileId = $node->getId();
-		$statement = $this->connection->prepare(self::DELETE_BY_ID_STMT);
-		$statement->execute([$fileId]);
-		$this->offsetUnset($fileId);
-		$statement->closeCursor();
 	}
 
 	/**
@@ -254,5 +250,4 @@ class FileCustomPropertiesBackend extends AbstractCustomPropertiesBackend {
 		}
 		return $slices;
 	}
-
 }
