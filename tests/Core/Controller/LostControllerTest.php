@@ -368,6 +368,10 @@ class LostControllerTest extends TestCase {
 			->with('Use the following link to reset your password: https://ownCloud.com/index.php/lostpassword/');
 		$message
 			->expects($this->at(3))
+			->method('setHtmlBody')
+			->with('Use the following link to reset your password: <a href="https://ownCloud.com/index.php/lostpassword/">https://ownCloud.com/index.php/lostpassword/</a>');
+		$message
+			->expects($this->at(4))
 			->method('setFrom')
 			->with(['lostpassword-noreply@localhost' => null]);
 		$this->mailer
@@ -429,6 +433,10 @@ class LostControllerTest extends TestCase {
 			->with('Use the following link to reset your password: https://ownCloud.com/index.php/lostpassword/');
 		$message
 			->expects($this->at(3))
+			->method('setHtmlBody')
+			->with('Use the following link to reset your password: <a href="https://ownCloud.com/index.php/lostpassword/">https://ownCloud.com/index.php/lostpassword/</a>');
+		$message
+			->expects($this->at(4))
 			->method('setFrom')
 			->with(['lostpassword-noreply@localhost' => null]);
 		$this->mailer

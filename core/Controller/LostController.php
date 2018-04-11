@@ -336,7 +336,8 @@ class LostController extends Controller {
 			$message = $this->mailer->createMessage();
 			$message->setTo([$email => $user]);
 			$message->setSubject($this->l10n->t('%s password reset', [$this->defaults->getName()]));
-			$message->setPlainBody($msg);
+			$message->setPlainBody(\strip_tags($msg));
+			$message->setHtmlBody($msg);
 			$message->setFrom([$this->from => $this->defaults->getName()]);
 			$this->mailer->send($message);
 		} catch (\Exception $e) {
