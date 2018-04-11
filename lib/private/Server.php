@@ -159,7 +159,9 @@ class Server extends ServerContainer implements IServerContainer, IServiceLoader
 		});
 
 		$this->registerService('PreviewManager', function (Server $c) {
-			return new PreviewManager($c->getConfig());
+			return new PreviewManager($c->getConfig(),
+				$c->getLazyRootFolder(),
+				$c->getUserSession());
 		});
 
 		$this->registerService('EncryptionManager', function (Server $c) {

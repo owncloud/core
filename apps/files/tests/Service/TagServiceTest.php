@@ -24,6 +24,7 @@
 namespace OCA\Files\Tests\Service;
 
 use OCA\Files\Service\TagService;
+use OCP\Files\IRootFolder;
 use OCP\IUserSession;
 use Test\Traits\UserTrait;
 
@@ -44,7 +45,7 @@ class TagServiceTest extends \Test\TestCase {
 	private $user;
 
 	/**
-	 * @var \OCP\Files\Folder
+	 * @var IRootFolder
 	 */
 	private $root;
 
@@ -54,9 +55,9 @@ class TagServiceTest extends \Test\TestCase {
 	private $tagService;
 
 	/**
-	 * @var \OCP\ITags
+	 * @var \OCP\ITagManager
 	 */
-	private $tagger;
+	private $tagManager;
 
 	protected function setUp() {
 		parent::setUp();
@@ -71,12 +72,12 @@ class TagServiceTest extends \Test\TestCase {
 			->withAnyParameters()
 			->will($this->returnValue($user));
 
-		$this->root = \OC::$server->getUserFolder();
+		$this->root = \OC::$server->getLazyRootFolder();
 
-		$this->tagger = \OC::$server->getTagManager()->load('files');
+		$this->tagManager = \OC::$server->getTagManager();
 		$this->tagService = new TagService(
 			$userSession,
-			$this->tagger,
+			$this->tagManager,
 			$this->root
 		);
 	}
@@ -90,7 +91,7 @@ class TagServiceTest extends \Test\TestCase {
 		$tag1 = 'tag1';
 		$tag2 = 'tag2';
 
-		$subdir = $this->root->newFolder('subdir');
+		$subdir = $this->root->getUserFolder($this->user)->newFolder('subdir');
 		$testFile = $subdir->newFile('test.txt');
 		$testFile->putContent('test contents');
 
@@ -98,19 +99,20 @@ class TagServiceTest extends \Test\TestCase {
 
 		// set tags
 		$this->tagService->updateFileTags('subdir/test.txt', [$tag1, $tag2]);
+		$tags = $this->tagManager->load('files');
 
-		$this->assertEquals([$fileId], $this->tagger->getIdsForTag($tag1));
-		$this->assertEquals([$fileId], $this->tagger->getIdsForTag($tag2));
+		$this->assertEquals([$fileId], $tags->getIdsForTag($tag1));
+		$this->assertEquals([$fileId], $tags->getIdsForTag($tag2));
 
 		// remove tag
 		$this->tagService->updateFileTags('subdir/test.txt', [$tag2]);
-		$this->assertEquals([], $this->tagger->getIdsForTag($tag1));
-		$this->assertEquals([$fileId], $this->tagger->getIdsForTag($tag2));
+		$this->assertEquals([], $tags->getIdsForTag($tag1));
+		$this->assertEquals([$fileId], $tags->getIdsForTag($tag2));
 
 		// clear tags
 		$this->tagService->updateFileTags('subdir/test.txt', []);
-		$this->assertEquals([], $this->tagger->getIdsForTag($tag1));
-		$this->assertEquals([], $this->tagger->getIdsForTag($tag2));
+		$this->assertEquals([], $tags->getIdsForTag($tag1));
+		$this->assertEquals([], $tags->getIdsForTag($tag2));
 
 		// non-existing file
 		$caught = false;

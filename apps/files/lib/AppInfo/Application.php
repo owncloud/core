@@ -75,15 +75,11 @@ class Application extends App {
 		/**
 		 * Services
 		 */
-		$container->registerService('Tagger', function(IContainer $c)  {
-			return $c->query('ServerContainer')->getTagManager()->load('files');
-		});
 		$container->registerService('TagService', function(IContainer $c)  {
-			$homeFolder = $c->query('ServerContainer')->getUserFolder();
 			return new TagService(
 				$c->query('ServerContainer')->getUserSession(),
-				$c->query('Tagger'),
-				$homeFolder
+				$c->query('ServerContainer')->getTagManager(),
+				$c->query('ServerContainer')->getLazyRootFolder()
 			);
 		});
 

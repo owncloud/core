@@ -26,11 +26,16 @@
  */
 namespace OC;
 
+use OC\AppFramework\Middleware\Security\Exceptions\NotLoggedInException;
+use OCP\Files\IRootFolder;
+use OCP\IConfig;
+use OCP\IImage;
 use OCP\IPreview;
+use OCP\IUserSession;
 use OCP\Preview\IProvider;
 
 class PreviewManager implements IPreview {
-	/** @var \OCP\IConfig */
+	/** @var IConfig */
 	protected $config;
 
 	/** @var bool */
@@ -48,13 +53,23 @@ class PreviewManager implements IPreview {
 	/** @var array */
 	protected $defaultProviders;
 
+	/** @var IRootFolder */
+	private $rootFolder;
+
+	/** @var IUserSession */
+	private $userSession;
+
 	/**
 	 * Constructor
 	 *
-	 * @param \OCP\IConfig $config
+	 * @param IConfig $config
+	 * @param IRootFolder $rootFolder
+	 * @param IUserSession $userSession
 	 */
-	public function __construct(\OCP\IConfig $config) {
+	public function __construct(IConfig $config, IRootFolder $rootFolder, IUserSession $userSession) {
 		$this->config = $config;
+		$this->rootFolder = $rootFolder;
+		$this->userSession = $userSession;
 	}
 
 	/**
@@ -114,10 +129,18 @@ class PreviewManager implements IPreview {
 	 * @param int $maxX The maximum X size of the thumbnail. It can be smaller depending on the shape of the image
 	 * @param int $maxY The maximum Y size of the thumbnail. It can be smaller depending on the shape of the image
 	 * @param boolean $scaleUp Scale smaller images up to the thumbnail size or not. Might look ugly
-	 * @return \OCP\IImage
+	 * @return IImage
+	 * @throws NotLoggedInException
+	 * @throws \OCP\Files\NotFoundException
+	 * @throws \Exception
 	 */
 	public function createPreview($file, $maxX = 100, $maxY = 75, $scaleUp = false) {
-		$preview = new \OC\Preview('', '/', $file, $maxX, $maxY, $scaleUp);
+		$user = $this->userSession->getUser();
+		if ($user === null) {
+			throw new NotLoggedInException();
+		}
+		$file = $this->rootFolder->getUserFolder($user->getUID())->get($file);
+		$preview = new Preview('', '/', $file, $maxX, $maxY, $scaleUp);
 		return $preview->getPreview();
 	}
 
