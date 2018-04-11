@@ -14,6 +14,11 @@ SUPPORTED_DISTRIBUTIONS=(
 )
 LOG_FILE=output.log
 
+# Console colours
+RED='\033[0;31m'      # Red
+GREEN='\e[0;32m'      # Red
+NC='\033[0m'          # No Color
+
 usage="$(basename "$0") [-h -s -d] -- script to install ownCloud's core dependencies
 
 where:
@@ -27,8 +32,8 @@ where:
 ##
 function get_distribution()
 {
-  version=$( grep -E "^VERSION_ID" /etc/os-release | awk -F'=' '{print $2}' | tr -d '"')
-  name=$( grep -E "^NAME" /etc/os-release | awk -F'=' '{print $2}' | tr -d '"')
+  version=$( grep -E "^VERSION_ID" /etc/os-release | awk -F'=' '{print $2}' | tr -d '"' )
+  name=$( grep -E "^NAME" /etc/os-release | awk -F'=' '{print $2}' | tr -d '"' )
 
   echo "${name} ${version}"
 }
@@ -73,10 +78,6 @@ function check_dependencies()
   # Determine the correct dependencies configuration file to read in
   distro_lower=$( echo $(get_distribution) | awk '{ gsub(" ", "-"); print tolower($0) }' )
   source "bin/dependencies/${distro_lower}.cfg"
-
-  # Console colours
-  RED='\033[0;31m'      # Red
-  NC='\033[0m'          # No Color
 
   echo "Checking that the core dependencies have been installed."
   echo
