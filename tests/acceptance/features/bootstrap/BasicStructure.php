@@ -38,7 +38,6 @@ trait BasicStructure {
 	use Auth;
 	use Checksums;
 	use Comments;
-	use MailTool;
 	use Provisioning;
 	use Sharing;
 	use Tags;
@@ -125,12 +124,11 @@ trait BasicStructure {
 	 * @param string $adminUsername
 	 * @param string $adminPassword
 	 * @param string $regularUserPassword
-	 * @param string $mailhogUrl
 	 * @param string $ocPath
 	 *
 	 */
 	public function __construct(
-		$baseUrl, $adminUsername, $adminPassword, $regularUserPassword, $mailhogUrl, $ocPath
+		$baseUrl, $adminUsername, $adminPassword, $regularUserPassword, $ocPath
 	) {
 
 		// Initialize your context here
@@ -138,7 +136,6 @@ trait BasicStructure {
 		$this->adminUsername = $adminUsername;
 		$this->adminPassword = $adminPassword;
 		$this->regularUserPassword = $regularUserPassword;
-		$this->mailhogUrl = $mailhogUrl;
 		$this->localBaseUrl = $this->baseUrl;
 		$this->remoteBaseUrl = $this->baseUrl;
 		$this->currentServer = 'LOCAL';
