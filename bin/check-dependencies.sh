@@ -26,6 +26,11 @@ where:
     -h  show this help text
     -s  show a list of distributions which this script supports
     -d  do not install packages
+
+Currently, all output from the installation process is output to ${LOG_FILE}. 
+If you want to watch it during the execution of the script, perhaps because
+something's going wrong, then you should background the script and tail
+${LOG_FILE}.
 "
 
 ##
