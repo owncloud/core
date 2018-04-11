@@ -52,6 +52,7 @@ use OCP\Events\EventEmitterTrait;
 use OCP\Files\NoReadAccessException;
 use OCP\Files\NotPermittedException;
 use OCP\IConfig;
+use OCP\ILogger;
 use OCP\IRequest;
 use OCP\ISession;
 use OCP\IUser;
@@ -101,6 +102,9 @@ class Session implements IUserSession, Emitter {
 	/** @var IConfig */
 	private $config;
 
+	/** @var ILogger */
+	private $logger;
+
 	/** @var User $activeUser */
 	protected $activeUser;
 
@@ -116,18 +120,20 @@ class Session implements IUserSession, Emitter {
 	 * @param ITimeFactory $timeFactory
 	 * @param IProvider $tokenProvider
 	 * @param IConfig $config
+	 * @param ILogger $logger
 	 * @param IServiceLoader $serviceLoader
 	 * @param SyncService $userSyncService
 	 */
 	public function __construct(IUserManager $manager, ISession $session,
 								ITimeFactory $timeFactory, IProvider $tokenProvider,
-								IConfig $config, IServiceLoader $serviceLoader,
+								IConfig $config, ILogger $logger, IServiceLoader $serviceLoader,
 								SyncService $userSyncService) {
 		$this->manager = $manager;
 		$this->session = $session;
 		$this->timeFactory = $timeFactory;
 		$this->tokenProvider = $tokenProvider;
 		$this->config = $config;
+		$this->logger = $logger;
 		$this->serviceLoader = $serviceLoader;
 		$this->userSyncService = $userSyncService;
 	}
@@ -424,17 +430,17 @@ class Session implements IUserSession, Emitter {
 				\OC_Util::copySkeleton($user, $userFolder);
 			} catch (NotPermittedException $ex) {
 				// possible if files directory is in an readonly jail
-				\OC::$server->getLogger()->warning(
+				$this->logger->warning(
 					'Skeleton not created due to missing write permission'
 				);
 			} catch (NoReadAccessException $ex) {
 				// possible if the skeleton directory does not have read access
-				\OC::$server->getLogger()->warning(
+				$this->logger->warning(
 					'Skeleton not created due to missing read permission in skeleton directory'
 				);
 			} catch(\OC\HintException $hintEx) {
 				// only if Skeleton no existing Dir
-				\OC::$server->getLogger()->error($hintEx->getMessage());
+				$this->logger->error($hintEx->getMessage());
 			}
 
 			// trigger any other initialization
@@ -591,11 +597,11 @@ class Session implements IUserSession, Emitter {
 			if ($apacheBackend instanceof UserInterface) {
 				$backend = $apacheBackend;
 			} else {
-				\OC::$server->getLogger()->error("Apache backend failed to provide a valid backend for the user");
+				$this->logger->error('Apache backend failed to provide a valid backend for the user');
 				return false;
 			}
 		} else {
-			\OC::$server->getLogger()->debug("No valid user detected from apache user backend");
+			$this->logger->debug('No valid user detected from apache user backend');
 			return false;
 		}
 
@@ -1029,7 +1035,6 @@ class Session implements IUserSession, Emitter {
 	protected function getAuthModules($includeBuiltIn) {
 		if ($includeBuiltIn) {
 			yield new TokenAuthModule($this->session, $this->tokenProvider, $this->manager);
-			yield new BasicAuthModule($this->manager, $this->session);
 		}
 
 		$modules = $this->serviceLoader->load(['auth-modules']);
@@ -1039,6 +1044,10 @@ class Session implements IUserSession, Emitter {
 			} else {
 				continue;
 			}
+		}
+
+		if ($includeBuiltIn) {
+			yield new BasicAuthModule($this->config, $this->logger, $this->manager, $this->session, $this->timeFactory);
 		}
 	}
 }
