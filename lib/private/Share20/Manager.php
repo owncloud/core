@@ -647,7 +647,7 @@ class Manager implements IManager {
 		];
 		\OC_Hook::emit('OCP\Share', 'pre_shared', $preHookData);
 
-		$beforeEvent = new GenericEvent(null, ['shareData' => $preHookData]);
+		$beforeEvent = new GenericEvent(null, ['shareData' => $preHookData, 'shareObject' => $share]);
 		$this->eventDispatcher->dispatch('share.beforeCreate', $beforeEvent);
 
 		if ($run === false) {
@@ -676,7 +676,7 @@ class Manager implements IManager {
 
 		\OC_Hook::emit('OCP\Share', 'post_shared', $postHookData);
 
-		$afterEvent = new GenericEvent(null, ['shareData' => $postHookData, 'shareObject' => $share, 'result' => 'success']);
+		$afterEvent = new GenericEvent(null, ['shareData' => $postHookData, 'shareObject' => $share]);
 		$this->eventDispatcher->dispatch('share.afterCreate', $afterEvent);
 
 		return $share;
@@ -891,6 +891,12 @@ class Manager implements IManager {
 			$update = true;
 		}
 
+		if ($share->getName() !== $originalShare->getName()) {
+			$shareAfterUpdateEvent->setArgument('sharenameupdated', true);
+			$shareAfterUpdateEvent->setArgument('oldname', $originalShare->getName());
+			$update = true;
+		}
+
 		if ($update === true) {
 			$this->eventDispatcher->dispatch('share.afterupdate', $shareAfterUpdateEvent);
 		}
@@ -966,7 +972,7 @@ class Manager implements IManager {
 		// Emit pre-hook
 		\OC_Hook::emit('OCP\Share', 'pre_unshare', $hookParams);
 
-		$beforeEvent = new GenericEvent(null, ['share' => $hookParams, 'shareObject' => $share]);
+		$beforeEvent = new GenericEvent(null, ['shareData' => $hookParams, 'shareObject' => $share]);
 		$this->eventDispatcher->dispatch('share.beforeDelete', $beforeEvent);
 		// Get all children and delete them as well
 		$deletedShares = $this->deleteChildren($share);
@@ -985,7 +991,7 @@ class Manager implements IManager {
 
 		// Emit post hook
 		\OC_Hook::emit('OCP\Share', 'post_unshare', $hookParams);
-		$afterEvent = new GenericEvent(null, ['share' => $hookParams['deletedShares']]);
+		$afterEvent = new GenericEvent(null, ['shareData' => $hookParams['deletedShares'], 'shareObject' => $share]);
 		$this->eventDispatcher->dispatch('share.afterDelete', $afterEvent);
 	}
 

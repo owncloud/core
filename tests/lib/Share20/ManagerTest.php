@@ -266,9 +266,10 @@ class ManagerTest extends \Test\TestCase {
 		$this->assertEquals('share.afterDelete', $calledAfterEvent[0]);
 		$this->assertInstanceOf(GenericEvent::class, $calledBeforeEvent[1]);
 		$this->assertInstanceOf(GenericEvent::class, $calledAfterEvent[1]);
-		$this->assertArrayHasKey('share', $calledBeforeEvent[1]);
+		$this->assertArrayHasKey('shareData', $calledBeforeEvent[1]);
 		$this->assertArrayHasKey('shareObject', $calledBeforeEvent[1]);
-		$this->assertArrayHasKey('share', $calledAfterEvent[1]);
+		$this->assertArrayHasKey('shareData', $calledAfterEvent[1]);
+		$this->assertArrayHasKey('shareObject', $calledAfterEvent[1]);
 	}
 
 	public function testDeleteLazyShare() {
@@ -364,9 +365,10 @@ class ManagerTest extends \Test\TestCase {
 		$this->assertEquals('share.afterDelete', $calledAfterEvent[0]);
 		$this->assertInstanceOf(GenericEvent::class, $calledBeforeEvent[1]);
 		$this->assertInstanceOf(GenericEvent::class, $calledAfterEvent[1]);
-		$this->assertArrayHasKey('share', $calledBeforeEvent[1]);
+		$this->assertArrayHasKey('shareData', $calledBeforeEvent[1]);
 		$this->assertArrayHasKey('shareObject', $calledBeforeEvent[1]);
-		$this->assertArrayHasKey('share', $calledAfterEvent[1]);
+		$this->assertArrayHasKey('shareData', $calledAfterEvent[1]);
+		$this->assertArrayHasKey('shareObject', $calledAfterEvent[1]);
 	}
 
 	public function testDeleteNested() {
@@ -506,9 +508,10 @@ class ManagerTest extends \Test\TestCase {
 		$this->assertEquals('share.afterDelete', $calledAfterEvent[0]);
 		$this->assertInstanceOf(GenericEvent::class, $calledBeforeEvent[1]);
 		$this->assertInstanceOf(GenericEvent::class, $calledAfterEvent[1]);
-		$this->assertArrayHasKey('share', $calledBeforeEvent[1]);
+		$this->assertArrayHasKey('shareData', $calledBeforeEvent[1]);
 		$this->assertArrayHasKey('shareObject', $calledBeforeEvent[1]);
-		$this->assertArrayHasKey('share', $calledAfterEvent[1]);
+		$this->assertArrayHasKey('shareData', $calledAfterEvent[1]);
+		$this->assertArrayHasKey('shareObject', $calledAfterEvent[1]);
 	}
 
 	public function testDeleteChildren() {
@@ -2058,8 +2061,8 @@ class ManagerTest extends \Test\TestCase {
 		$this->assertInstanceOf(GenericEvent::class, $calledAfterShareCreate[1]);
 		$this->assertArrayHasKey('shareData', $calledAfterShareCreate[1]);
 		$this->assertArrayHasKey('shareObject', $calledAfterShareCreate[1]);
-		$this->assertArrayHasKey('result', $calledAfterShareCreate[1]);
 		$this->assertArrayHasKey('shareData', $calledBeforeShareCreate[1]);
+		$this->assertArrayHasKey('shareObject', $calledBeforeShareCreate[1]);
 	}
 
 	public function testCreateShareGroup() {
@@ -2133,8 +2136,8 @@ class ManagerTest extends \Test\TestCase {
 		$this->assertInstanceOf(GenericEvent::class, $calledAfterShareCreate[1]);
 		$this->assertArrayHasKey('shareData', $calledAfterShareCreate[1]);
 		$this->assertArrayHasKey('shareObject', $calledAfterShareCreate[1]);
-		$this->assertArrayHasKey('result', $calledAfterShareCreate[1]);
 		$this->assertArrayHasKey('shareData', $calledBeforeShareCreate[1]);
+		$this->assertArrayHasKey('shareObject', $calledBeforeShareCreate[1]);
 	}
 
 	public function testCreateShareLink() {
@@ -2281,8 +2284,8 @@ class ManagerTest extends \Test\TestCase {
 		$this->assertInstanceOf(GenericEvent::class, $calledAfterShareCreate[1]);
 		$this->assertArrayHasKey('shareData', $calledAfterShareCreate[1]);
 		$this->assertArrayHasKey('shareObject', $calledAfterShareCreate[1]);
-		$this->assertArrayHasKey('result', $calledAfterShareCreate[1]);
 		$this->assertArrayHasKey('shareData', $calledBeforeShareCreate[1]);
+		$this->assertArrayHasKey('shareObject', $calledBeforeShareCreate[1]);
 	}
 
 	/**
@@ -2440,8 +2443,8 @@ class ManagerTest extends \Test\TestCase {
 		$this->assertInstanceOf(GenericEvent::class, $calledAfterShareCreate[1]);
 		$this->assertArrayHasKey('shareData', $calledAfterShareCreate[1]);
 		$this->assertArrayHasKey('shareObject', $calledAfterShareCreate[1]);
-		$this->assertArrayHasKey('result', $calledAfterShareCreate[1]);
 		$this->assertArrayHasKey('shareData', $calledBeforeShareCreate[1]);
+		$this->assertArrayHasKey('shareObject', $calledBeforeShareCreate[1]);
 	}
 
 	public function testGetAllSharesBy() {
@@ -3131,6 +3134,7 @@ class ManagerTest extends \Test\TestCase {
 		$share = $this->manager->newShare();
 		$share->setProviderId('foo')
 			->setId('42')
+			->setName('newname')
 			->setShareType(\OCP\Share::SHARE_TYPE_LINK)
 			->setSharedBy('owner')
 			->setShareOwner('owner')
@@ -3176,6 +3180,10 @@ class ManagerTest extends \Test\TestCase {
 		$this->assertTrue($calledAfterUpdate[1]->getArgument('expirationdateupdated'));
 		$this->assertArrayHasKey('oldexpirationdate', $calledAfterUpdate[1]);
 		$this->assertNull($calledAfterUpdate[1]->getArgument('oldexpirationdate'));
+		$this->assertArrayHasKey('sharenameupdated', $calledAfterUpdate[1]);
+		$this->assertTrue($calledAfterUpdate[1]->getArgument('sharenameupdated'));
+		$this->assertArrayHasKey('oldname', $calledAfterUpdate[1]);
+		$this->assertNull($calledAfterUpdate[1]->getArgument('oldname'));
 		$this->assertArrayHasKey('shareobject', $calledAfterUpdate[1]);
 		$this->assertInstanceOf(Share::class, $calledAfterUpdate[1]->getArgument('shareobject'));
 	}
