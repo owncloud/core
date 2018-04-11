@@ -215,7 +215,7 @@ abstract class FilesPageBasic extends OwncloudPage {
 		$fileRowElements = [];
 		foreach ($fileNameMatch as $match) {
 			$fileRowElement = $match->find("xpath", $this->fileRowFromNameXpath);
-			if (is_null($fileRowElement)) {
+			if (\is_null($fileRowElement)) {
 				throw new ElementNotFoundException(
 					__METHOD__ .
 					" xpath $this->fileRowFromNameXpath " .

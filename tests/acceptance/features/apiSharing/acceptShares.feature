@@ -159,12 +159,12 @@ So that ....
 		When user "user1" declines the share "/PARENT/shared" offered by user "user0" using the API
 		And user "user1" accepts the share "/shared" offered by user "user0" using the API
 		Then user "user1" should not see the following elements
-			| /shared/                 |
+			| /PARENT/shared/                 |
 		But user "user1" should see the following elements
-			| /PARENT/shared/          |
+			| /shared/          |
 		And the API should report to user "user1" that these shares are in the accepted state
-			| path                     |
-			| /PARENT/shared/          |
+			| path              |
+			| /shared/          |
 
 	Scenario: move accepted share, decline it, delete parent folder, accept again
 		Given parameter "shareapi_auto_accept_share" of app "core" has been set to "yes"

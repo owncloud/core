@@ -131,9 +131,6 @@ class NotifierTest extends \Test\TestCase {
 			->method('setParsedLabel')
 			->with('Accept')
 			->will($this->returnSelf());
-		$action1->expects($this->once())
-			->method('setPrimary')
-			->with(true);
 
 		$action2 = $this->createMock(IAction::class);
 		$action2->method('getLabel')->willReturn('decline');
@@ -178,9 +175,6 @@ class NotifierTest extends \Test\TestCase {
 			->method('setParsedLabel')
 			->with('Accept')
 			->will($this->returnSelf());
-		$action1->expects($this->once())
-			->method('setPrimary')
-			->with(true);
 
 		$action2 = $this->createMock(IAction::class);
 		$action2->method('getLabel')->willReturn('decline');

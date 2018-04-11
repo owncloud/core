@@ -66,6 +66,8 @@ class NotificationPublisher {
 
 	/**
 	 * Send notification for accepting share
+	 * The notification will be sent if the share type is either user or group (not link, for example)
+	 * and only for pending shares (if the share has a different status the notification won't be sent)
 	 *
 	 * @param IShare $share share
 	 */
@@ -74,7 +76,7 @@ class NotificationPublisher {
 			$share->getShareType() !== \OCP\Share::SHARE_TYPE_GROUP) {
 
 			return;
-	   	}
+		}
 
 		if ($share->getState() !== \OCP\Share::STATE_PENDING) {
 			return;
@@ -91,6 +93,9 @@ class NotificationPublisher {
 				->setUser($userId)
 				->setDateTime(new \DateTime())
 				->setObject('local_share', $share->getFullId());
+			// the fullId is used here to be able to retrieve the share using the core's share manager
+			// in case we need to retreive the share object from the notification.
+			// it can be used later to discard the notification if the share isn't valid any longer.
 
 			$notification->setIcon(
 				$this->urlGenerator->imagePath('core', 'actions/shared.svg')
@@ -102,6 +107,7 @@ class NotificationPublisher {
 			$acceptAction = $notification->createAction();
 			$acceptAction->setLabel('accept');
 			$acceptAction->setLink($endpointUrl, 'POST');
+			$acceptAction->setPrimary(true);
 			$notification->addAction($acceptAction);
 
 			$declineAction = $notification->createAction();
@@ -125,10 +131,26 @@ class NotificationPublisher {
 			$notification = $this->notificationManager->createNotification();
 			$notification->setApp('files_sharing')
 				->setUser($userId)
-				->setObject('local_share', $share->getId());
+				->setObject('local_share', $share->getFullId());
 
 			$this->notificationManager->markProcessed($notification);
 		}
 	}
 
+	/**
+	 * Discards the notification related to the given share for the specific user.
+	 * This is useful to remove the notification when the user has seen or processed it
+	 *
+	 * @param IShare $share share
+	 * @param string $userId the user id (who should have been received the notification) that will
+	 * have his notification discarded.
+	 */
+	public function discardNotificationForUser(IShare $share, $userId) {
+		$notification = $this->notificationManager->createNotification();
+		$notification->setApp('files_sharing')
+			->setUser($userId)
+			->setObject('local_share', $share->getFullId());
+
+		$this->notificationManager->markProcessed($notification);
+	}
 }

@@ -384,7 +384,7 @@ class FileRow extends OwncloudPage {
 	 */
 	public function getShareState() {
 		$element = $this->rowElement->find("xpath", $this->shareStateXpath);
-		if (is_null($element)) {
+		if (\is_null($element)) {
 			throw new ElementNotFoundException(
 				__METHOD__ .
 				" sharing state element with xpath $this->shareStateXpath not found"
@@ -401,13 +401,13 @@ class FileRow extends OwncloudPage {
 	 */
 	public function getSharer() {
 		$element = $this->rowElement->find("xpath", $this->sharerXpath);
-		if (is_null($element)) {
+		if (\is_null($element)) {
 			throw new ElementNotFoundException(
 				__METHOD__ .
 				" sharer element with xpath $this->sharerXpath not found"
 			);
 		}
-		return trim($element->getText());
+		return \trim($element->getText());
 	}
 	/**
 	 *
@@ -417,7 +417,7 @@ class FileRow extends OwncloudPage {
 	 */
 	public function acceptShare($session) {
 		$element = $this->rowElement->find("xpath", $this->acceptShareBtnXpath);
-		if (is_null($element)) {
+		if (\is_null($element)) {
 			throw new ElementNotFoundException(
 				__METHOD__ .
 				" accept share button with xpath" .
@@ -437,11 +437,11 @@ class FileRow extends OwncloudPage {
 	public function declineShare($session) {
 		//TODO decline already accepted share
 		$element = $this->rowElement->find("xpath", $this->declinePendingShareBtnXpath);
-		if (is_null($element)) {
+		if (\is_null($element)) {
 			$this->openFileActionsMenu($session);
 			$element = $this->rowElement->find("xpath", $this->declinePendingShareBtnXpath);
 		}
-		if (is_null($element)) {
+		if (\is_null($element)) {
 			throw new ElementNotFoundException(
 				__METHOD__ .
 				" decline share button with xpath" .

@@ -1094,12 +1094,12 @@ trait Sharing {
 	/**
 	 * @Given /^user "([^"]*)" has (declined|accepted) the share "([^"]*)" offered by user "([^"]*)"$/
 	 * @When /^user "([^"]*)" (declines|accepts) the share "([^"]*)" offered by user "([^"]*)" using the API$/
-	 * 
+	 *
 	 * @param string $user
 	 * @param string $action
 	 * @param string $share
 	 * @param string $offeredBy
-	 * 
+	 *
 	 * @return void
 	 */
 	public function userReactsToShareOfferedBy($user, $action, $share, $offeredBy) {
@@ -1115,15 +1115,15 @@ trait Sharing {
 		}
 		if ($shareId === null) {
 			throw new Exception(
-				__METHOD__ . 
+				__METHOD__ .
 				" could not find share $share, offered by $offeredBy to $user"
 			);
 		}
 		$url = "/apps/files_sharing/api/v{$this->sharingApiVersion}" .
 			   "/shares/pending/$shareId";
-		if (substr($action, 0, 7) === "decline") {
+		if (\substr($action, 0, 7) === "decline") {
 			$httpRequestMethod = "DELETE";
-		} elseif (substr($action, 0, 6) === "accept") {
+		} elseif (\substr($action, 0, 6) === "accept") {
 			$httpRequestMethod = "POST";
 		}
 		
@@ -1138,14 +1138,14 @@ trait Sharing {
 	}
 
 	/**
-	 * 
+	 *
 	 * @Then /^the API should report to user "([^"]*)" that these shares are in the (pending|accepted|declined) state$/
-	 * 
+	 *
 	 * @param string $user
 	 * @param string $state
 	 * @param TableNode $table table with headings that correspond to the attributes
 	 *                         of the share e.g. "|path|uid_owner|"
-	 * 
+	 *
 	 * @return void
 	 */
 	public function assertSharesOfUserAreInState($user, $state, TableNode $table) {
@@ -1154,7 +1154,7 @@ trait Sharing {
 			$found = false;
 			//the API returns the path without trailing slash, but we want to
 			//be able to accept trailing slashes in the step definition
-			$row['path'] = rtrim($row['path'], "/");
+			$row['path'] = \rtrim($row['path'], "/");
 			foreach ($usersShares as $share) {
 				try {
 					PHPUnit_Framework_Assert::assertArraySubset($row, $share);
@@ -1166,7 +1166,7 @@ trait Sharing {
 			if (!$found) {
 				PHPUnit_Framework_Assert::fail(
 					"could not find the share with this attributes " .
-					print_r($row, true)
+					\print_r($row, true)
 				);
 			}
 		}
@@ -1175,26 +1175,26 @@ trait Sharing {
 
 	/**
 	 * @Then the API should report that no shares are shared with user :user
-	 * 
+	 *
 	 * @param string $user
-	 * 
+	 *
 	 * @return void
 	 */
 	public function assertThatNoSharesAreSharedWithUser($user) {
 		$usersShares = $this->getAllShareSharedWithUser($user);
 		PHPUnit_Framework_Assert::assertEmpty(
-			$usersShares, "user has " . count($usersShares) . " share(s)"
+			$usersShares, "user has " . \count($usersShares) . " share(s)"
 		);
 	}
 
 	/**
-	 * 
+	 *
 	 * @param string $user
 	 * @param string $state pending|accepted|declined|rejected|all
-	 * 
+	 *
 	 * @throws InvalidArgumentException
 	 * @throws Exception
-	 * 
+	 *
 	 * @return array of shares that are shared with this user
 	 */
 	private function getAllShareSharedWithUser($user, $state = "all") {
@@ -1230,8 +1230,8 @@ trait Sharing {
 			);
 		}
 		$result = $this->response->getBody()->getContents();
-		$usersShares = json_decode($result, true);
-		if (!is_array($usersShares)) {
+		$usersShares = \json_decode($result, true);
+		if (!\is_array($usersShares)) {
 			throw new Exception(
 				__METHOD__ . " API result about shares is not valid JSON"
 			);

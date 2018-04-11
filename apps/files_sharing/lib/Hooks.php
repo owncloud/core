@@ -140,8 +140,8 @@ class Hooks {
 	}
 
 	private function filterSharesByFileId($shares, $fileId) {
-		return array_filter($shares, function(IShare $share) use ($fileId) {
-			return strval($share->getNodeId()) === strval($fileId);
+		return \array_filter($shares, function(IShare $share) use ($fileId) {
+			return \strval($share->getNodeId()) === \strval($fileId);
 		});
 	}
 
