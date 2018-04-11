@@ -111,9 +111,6 @@ class File extends Node implements IFile {
 	 * @return string|null
 	 */
 	public function put($data) {
-		$path = $this->fileView->getAbsolutePath($this->path);
-		$beforeEvent = new GenericEvent(null, ['path' => $path]);
-		\OC::$server->getEventDispatcher()->dispatch('file.beforecreate', $beforeEvent);
 		try {
 			$exists = $this->fileView->file_exists($this->path);
 			if ($this->info && $exists && !$this->info->isUpdateable()) {
@@ -133,6 +130,16 @@ class File extends Node implements IFile {
 			} catch (\Exception $e) {
 				$this->convertToSabreException($e);
 			}
+		}
+
+		$newFile = false;
+		$path = $this->fileView->getAbsolutePath($this->path);
+		$beforeEvent = new GenericEvent(null, ['path' => $path]);
+		if (!$this->fileView->file_exists($this->path)) {
+			\OC::$server->getEventDispatcher()->dispatch('file.beforecreate', $beforeEvent);
+			$newFile = true;
+		} else {
+			\OC::$server->getEventDispatcher()->dispatch('file.beforeupdate', $beforeEvent);
 		}
 
 		list($partStorage) = $this->fileView->resolvePath($this->path);
@@ -265,7 +272,11 @@ class File extends Node implements IFile {
 		}
 
 		$afterEvent = new GenericEvent(null, ['path' => $path]);
-		\OC::$server->getEventDispatcher()->dispatch('file.aftercreate', $afterEvent);
+		if ($newFile === true) {
+			\OC::$server->getEventDispatcher()->dispatch('file.aftercreate', $afterEvent);
+		} else {
+			\OC::$server->getEventDispatcher()->dispatch('file.afterupdate', $afterEvent);
+		}
 		return '"' . $this->info->getEtag() . '"';
 	}
 
@@ -471,6 +482,16 @@ class File extends Node implements IFile {
 			$partFile = null;
 
 			$targetPath = $path . '/' . $info['name'];
+			$absPath = $this->fileView->getAbsolutePath($targetPath);
+			$beforeEvent = new GenericEvent(null, ['path' => $absPath]);
+			$newFile = false;
+			if (!$this->fileView->file_exists($targetPath)) {
+				\OC::$server->getEventDispatcher()->dispatch('file.beforecreate', $beforeEvent);
+				$newFile = true;
+			} else {
+				\OC::$server->getEventDispatcher()->dispatch('file.beforeupdate', $beforeEvent);
+			}
+
 			/** @var \OC\Files\Storage\Storage $targetStorage */
 			list($targetStorage, $targetInternalPath) = $this->fileView->resolvePath($targetPath);
 
@@ -553,7 +574,16 @@ class File extends Node implements IFile {
 
 				$this->fileView->unlockFile($targetPath, ILockingProvider::LOCK_SHARED);
 
-				return $info->getEtag();
+				$etag = $info->getEtag();
+				if ($etag !== null) {
+					$afterEvent = new GenericEvent(null, ['path' => $absPath]);
+					if ($newFile === true) {
+						\OC::$server->getEventDispatcher()->dispatch('file.aftercreate', $afterEvent);
+					} else {
+						\OC::$server->getEventDispatcher()->dispatch('file.afterupdate', $afterEvent);
+					}
+				}
+				return $etag;
 			} catch (\Exception $e) {
 				if ($partFile !== null) {
 					$targetStorage->unlink($targetInternalPath);
