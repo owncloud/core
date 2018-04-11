@@ -110,12 +110,12 @@ function check_dependencies()
       echo 
       echo "Updating APT cache"
       echo
-      apt-get update --quiet &>${LOG_FILE}
+      apt-get update --quiet 
 
       echo "Installing missing dependencies"
       echo
       IFS=$' '
-      apt-get install --quiet --assume-yes ${missing_dependencies[*]} &>>${LOG_FILE}
+      apt-get install --quiet --assume-yes ${missing_dependencies[*]} 
 
       echo "All dependencies have now been installed."
       echo "Check ${LOG_FILE}, if you want to know anything more about the operation of the script."
