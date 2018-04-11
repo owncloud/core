@@ -88,9 +88,9 @@ function check_dependencies()
     
     if dpkg -l ${pkg} 2>/dev/null | grep -E -q "^ii"  
     then
-      printf " \u2714 ${pkg} is installed\n"
+      echo -e " \xE2\x9c\x94 ${pkg} is installed"
     else
-      printf " \u274c ${pkg} is ${RED}not${NC} installed\n"
+      echo -e " \xE2\x9D\x8C ${pkg} is ${RED}not${NC} installed"
       missing_dependencies+=(${pkg})
     fi
   done
