@@ -82,4 +82,31 @@ class TreeTest1 extends TestCase {
 		$node = $this->tree->getNodeForPath($path);
 		$this->assertEquals($file, $node);
 	}
+
+	public function testDelete() {
+		$path = 'files/user1';
+		$fileId = 7755;
+
+		$file = $this->createMock(\OCA\DAV\Connector\Sabre\File::class);
+		$file->expects($this->any())
+			->method('getId')
+			->willReturn($fileId);
+
+		$folder = $this->createMock(ICollection::class);
+		$folder->expects($this->any())
+			->method('getChild')
+			->willReturn($file);
+
+		$this->rootNode->expects($this->any())
+			->method('getChild')
+			->willReturnMap(
+				[
+					['files', $folder]
+				]
+			);
+
+		$this->tree->delete($path);
+		$deletedFileId = $this->tree->getDeletedItemFileId($path);
+		$this->assertEquals($fileId, $deletedFileId);
+	}
 }
