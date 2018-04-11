@@ -87,7 +87,7 @@ class SecurityWarning implements ISettings {
 		];
 		$outdatedCaches = [];
 		foreach ($caches as $php_module => $data) {
-			$isOutdated = extension_loaded($php_module) && version_compare(phpversion($php_module), $data['version'], '<');
+			$isOutdated = extension_loaded($php_module) && version_compare(phpversion($php_module), $data['version'], '<') && (strpos(phpversion($php_module), 'dev')===false);
 			if ($isOutdated) {
 				$outdatedCaches[$php_module] = $data;
 			}
