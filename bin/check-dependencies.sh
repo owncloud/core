@@ -8,7 +8,9 @@
 ##
 
 SUPPORTED_DISTRIBUTIONS=( 
-  "Ubuntu 17.10"
+"Ubuntu 17.10"
+"Ubuntu 16.04.4"
+"Ubuntu 16.04"
 )
 LOG_FILE=output.log
 
