@@ -27,6 +27,7 @@
 		<command>OCA\DAV\Command\SyncBirthdayCalendar</command>
 		<command>OCA\DAV\Command\SyncSystemAddressBook</command>
 		<command>OCA\DAV\Command\CleanupChunks</command>
+		<command>OCA\DAV\Command\RepairVObjects</command>
 	</commands>
 	<repair-steps>
 		<post-migration>
