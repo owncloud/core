@@ -30,6 +30,7 @@ use \OC\Files\Storage\Storage;
 class NoopScanner extends Scanner {
 
 	public function __construct(Storage $storage) {
+		$this->storage = $storage;
 		//we don't need the storage, so do nothing here
 	}
 
@@ -55,6 +56,15 @@ class NoopScanner extends Scanner {
 	 * @return array with the meta data of the scanned file or folder
 	 */
 	public function scan($path, $recursive = self::SCAN_RECURSIVE, $reuse = -1, $lock = true) {
+		// we only update the checksums - still returning no data
+		$meta = $this->storage->getMetaData($path);
+		if (isset($meta['checksum'])) {
+			$this->storage->getCache()->put(
+				$path,
+				['checksum' => $meta['checksum']]
+			);
+		}
+
 		return [];
 	}
 
