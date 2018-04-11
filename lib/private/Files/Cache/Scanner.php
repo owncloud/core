@@ -205,6 +205,14 @@ class Scanner extends BasicEmitter implements IScanner {
 						$fileId = -1;
 					}
 					if (!empty($newData)) {
+						// Only reset checksum on file change
+						foreach (array_intersect_key($newData, $data) as $key => $value) {
+							if (in_array($key, ['size', 'storage_mtime', 'mtime', 'etag']) && $data[$key] != $newData[$key]) {
+								$newData['checksum'] = '';
+							}
+						}
+
+
 						$data['fileid'] = $this->addToCache($file, $newData, $fileId);
 					}
 					if (isset($cacheData['size'])) {
