@@ -144,7 +144,7 @@ class NotificationPublisherTest extends TestCase {
 	}
 
 	private function makeGroup($groupName, $members) {
-		$memberObjects = array_map(function($memberName) {
+		$memberObjects = \array_map(function($memberName) {
 			$memberObject = $this->createMock(IUser::class);
 			$memberObject->method('getUID')->willReturn($memberName);
 			return $memberObject;
@@ -310,7 +310,7 @@ class NotificationPublisherTest extends TestCase {
 	}
 
 	public function testDiscardNotification() {
-		$notifications = array_map(function($userId) {
+		$notifications = \array_map(function($userId) {
 			$notification = $this->createMock(INotification::class);
 			$notification->expects($this->once())
 				->method('setApp')
@@ -322,7 +322,7 @@ class NotificationPublisherTest extends TestCase {
 				->will($this->returnSelf());
 			$notification->expects($this->once())
 				->method('setObject')
-				->with('local_share', 12300)
+				->with('local_share', 12300)  // it must match the share fullId
 				->will($this->returnSelf());
 
 			return $notification;
@@ -340,6 +340,7 @@ class NotificationPublisherTest extends TestCase {
 		$share->method('getShareType')->willReturn(\OCP\Share::SHARE_TYPE_GROUP);
 		$share->method('getSharedWith')->willReturn('group1');
 		$share->method('getState')->willReturn(\OCP\Share::STATE_ACCEPTED);
+		$share->method('getFullId')->willReturn(12300);
 
 		$this->makeGroup('group1', ['groupMember1', 'groupMember2', 'shareOwner', 'sharedBy']);
 

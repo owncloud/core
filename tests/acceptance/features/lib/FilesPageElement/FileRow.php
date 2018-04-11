@@ -386,7 +386,7 @@ class FileRow extends OwncloudPage {
 	 */
 	public function getShareState() {
 		$element = $this->rowElement->find("xpath", $this->shareStateXpath);
-		if ($element === null)) {
+		if ($element === null) {
 			throw new ElementNotFoundException(
 				__METHOD__ .
 				" sharing state element with xpath $this->shareStateXpath not found"
@@ -409,7 +409,7 @@ class FileRow extends OwncloudPage {
 				" sharer element with xpath $this->sharerXpath not found"
 			);
 		}
-		return trim($element->getText());
+		return \trim($element->getText());
 	}
 	/**
 	 *

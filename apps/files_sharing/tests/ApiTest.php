@@ -32,9 +32,7 @@ use OCP\Constants;
 use OCP\IL10N;
 use OCP\IRequest;
 use OCP\Share;
-use Symfony\Component\EventDispatcher\GenericEvent;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-use Symfony\Component\EventDispatcher\EventDispatcher;
+use OCA\Files_Sharing\Service\NotificationPublisher;
 
 /**
  * Class ApiTest
@@ -51,11 +49,6 @@ class ApiTest extends TestCase {
 
 	/** @var string */
 	private $subsubfolder;
-
-	/**
-	 * @var EventDispatcherInterface
-	 */
-	private $eventDispatcher;
 
 	protected function setUp() {
 		parent::setUp();
@@ -78,8 +71,6 @@ class ApiTest extends TestCase {
 		$this->view->file_put_contents($this->folder . $this->subfolder . $this->filename, $this->data);
 
 		$this->userFolder = \OC::$server->getUserFolder(self::TEST_FILES_SHARING_API_USER1);
-
-		$this->eventDispatcher = new EventDispatcher();
 	}
 
 	protected function tearDown() {
@@ -133,7 +124,7 @@ class ApiTest extends TestCase {
 			$currentUser,
 			$l,
 			\OC::$server->getConfig(),
-			$this->eventDispatcher
+			\OC::$server->getAppContainer('files_sharing')->query(NotificationPublisher::class)
 		);
 	}
 
@@ -146,18 +137,10 @@ class ApiTest extends TestCase {
 		$data['shareWith'] = self::TEST_FILES_SHARING_API_USER2;
 		$data['shareType'] = Share::SHARE_TYPE_USER;
 
-		$calledBeforeCreate = [];
-		$this->eventDispatcher->addListener('share.beforeCreate', function (GenericEvent $event) use (&$calledBeforeCreate) {
-			$calledBeforeCreate[] = 'share.beforeCreate';
-			$calledBeforeCreate[] = $event;
-		});
 		$request = $this->createRequest($data);
 		$ocs = $this->createOCS($request, self::TEST_FILES_SHARING_API_USER1);
 		$result = $ocs->createShare();
 
-		$this->assertEquals('share.beforeCreate', $calledBeforeCreate[0]);
-		$this->assertInstanceOf(GenericEvent::class, $calledBeforeCreate[1]);
-		$this->assertTrue($calledBeforeCreate[1]->getArgument('shareData')['run']);
 		$this->assertTrue($result->succeeded());
 		$data = $result->getData();
 		$this->assertEquals(19, $data['permissions']);

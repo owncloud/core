@@ -25,6 +25,7 @@
 namespace OCA\Files_Sharing\Tests\API;
 
 use OCA\Files_Sharing\API\Share20OCS;
+use OCA\Files_Sharing\Service\NotificationPublisher;
 use OCP\Files\IRootFolder;
 use OCP\Files\NotFoundException;
 use OCP\IConfig;
@@ -36,9 +37,6 @@ use OCP\IUser;
 use OCP\IUserManager;
 use OCP\Lock\LockedException;
 use OCP\Share;
-use Symfony\Component\EventDispatcher\GenericEvent;
-use Symfony\Component\EventDispatcher\EventDispatcher;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Test\TestCase;
 use OCP\Files\Folder;
 use OCP\Files\Node;
@@ -79,8 +77,8 @@ class Share20OCSTest extends TestCase {
 	/** @var IL10N */
 	private $l;
 
-	/** @var EventDispatcherInterface */
-	private $eventDispatcher;
+	/** @var NotificationPublisher */
+	private $notificationPublisher;
 
 	protected function setUp() {
 		$this->shareManager = $this->getMockBuilder('OCP\Share\IManager')
@@ -113,7 +111,7 @@ class Share20OCSTest extends TestCase {
 				['core', 'shareapi_auto_accept_share', 'yes', 'yes'],
 			]));
 
-		$this->eventDispatcher = new EventDispatcher();
+		$this->notificationPublisher = $this->createMock(NotificationPublisher::class);
 
 		$this->ocs = new Share20OCS(
 			$this->shareManager,
@@ -125,7 +123,7 @@ class Share20OCSTest extends TestCase {
 			$this->currentUser,
 			$this->l,
 			$this->config,
-			$this->eventDispatcher
+			$this->notificationPublisher
 		);
 	}
 
@@ -145,7 +143,7 @@ class Share20OCSTest extends TestCase {
 				$this->currentUser,
 				$this->l,
 				$this->config,
-				$this->eventDispatcher,
+				$this->notificationPublisher,
 			])->setMethods(['formatShare'])
 			->getMock();
 	}
@@ -454,7 +452,7 @@ class Share20OCSTest extends TestCase {
 					$this->currentUser,
 					$this->l,
 					$this->config,
-					$this->eventDispatcher,
+					$this->notificationPublisher,
 				])->setMethods(['canAccessShare'])
 				->getMock();
 
@@ -837,12 +835,6 @@ class Share20OCSTest extends TestCase {
 					$share->getSharedBy() === 'currentUser';
 			}))
 			->will($this->returnArgument(0));
-
-		$calledAfterCreate = [];
-		$this->eventDispatcher->addListener('share.afterCreate', function (GenericEvent $event) use (&$calledAfterCreate) {
-			$calledAfterCreate[] = 'share.afterCreate';
-			$calledAfterCreate[] = $event;
-		});
 
 		$expected = new \OC\OCS\Result();
 		$result = $ocs->createShare();
@@ -2233,12 +2225,6 @@ class Share20OCSTest extends TestCase {
 
 		$folder = $this->createMock('\OCP\Files\Folder');
 
-		$calledAfterUpdate = [];
-		$this->eventDispatcher->addListener('share.afterupdate',
-			function (GenericEvent $event) use (&$calledAfterUpdate) {
-				$calledAfterUpdate[] = 'share.afterupdate';
-				$calledAfterUpdate[] = $event;
-			});
 		$share = \OC::$server->getShareManager()->newShare();
 		$share->setPermissions(\OCP\Constants::PERMISSION_READ)
 			->setSharedBy($this->currentUser->getUID())
@@ -2267,15 +2253,6 @@ class Share20OCSTest extends TestCase {
 
 		$this->assertEquals($expected->getMeta(), $result->getMeta());
 		$this->assertEquals($expected->getData(), $result->getData());
-
-		$this->assertInstanceOf(GenericEvent::class, $calledAfterUpdate[1]);
-		$this->assertEquals('share.afterupdate', $calledAfterUpdate[0]);
-		$this->assertArrayHasKey('sharenameupdated', $calledAfterUpdate[1]);
-		$this->assertTrue($calledAfterUpdate[1]->getArgument('sharenameupdated'));
-		$this->assertArrayHasKey('oldname', $calledAfterUpdate[1]);
-		$this->assertEquals('somename', $calledAfterUpdate[1]->getArgument('oldname'));
-		$this->assertArrayHasKey('shareobject', $calledAfterUpdate[1]);
-		$this->assertInstanceOf(\OC\Share20\Share::class, $calledAfterUpdate[1]->getArgument('shareobject'));
 	}
 
 	public function testUpdateLinkShareKeepNameWhenNotSpecified() {
@@ -2717,7 +2694,7 @@ class Share20OCSTest extends TestCase {
 			$this->currentUser,
 			$this->l,
 			$this->config,
-			$this->eventDispatcher
+			$this->notificationPublisher
 		);
 	}
 
@@ -2808,7 +2785,7 @@ class Share20OCSTest extends TestCase {
 			$this->currentUser,
 			$this->l,
 			$config,
-			$this->eventDispatcher
+			$this->notificationPublisher
 		);
 
 		list($file, ) = $this->getMockFileFolder();
@@ -2839,69 +2816,6 @@ class Share20OCSTest extends TestCase {
 		$result = $this->invokePrivate($ocs, 'formatShare', [$share]);
 
 		$this->assertEquals($expectedInfo, $result['share_with_additional_info']);
-	}
-
-	public function testBeforeAndAfterCreateHooksAreCalled() {
-		$ocs = $this->mockFormatShare();
-		$share = $this->newShare();
-		$this->shareManager->method('newShare')->willReturn($share);
-
-		$storage = $this->createMock('OCP\Files\Storage');
-		$storage->method('instanceOfStorage')
-			->with('OCA\Files_Sharing\External\Storage')
-			->willReturn(false);
-		$path = $this->createMock('\OCP\Files\File');
-		$path->method('getStorage')
-			->willReturn($storage);
-
-		$userFolder = $this->createMock('\OCP\Files\Folder');
-		$node = $this->createMock('\OCP\Files\Node');
-		$node->method('getStorage')
-			->willReturn($storage);
-		$userFolder->method('get')->willReturn($node);
-		$this->request
-			->method('getParam')
-			->will($this->returnValueMap([
-				['path', null, 'valid-path'],
-				['permissions', null, \OCP\Constants::PERMISSION_ALL],
-				['shareType', $this->any(), Share::SHARE_TYPE_USER],
-				['shareWith', null, 'validUser'],
-			]));
-
-		$this->rootFolder
-			->method('getUserFolder')
-			->with('currentUser')
-			->willReturn($userFolder);
-		$this->userManager->method('userExists')
-			->withAnyParameters()
-			->willReturn(true);
-		$this->shareManager
-			->method('createShare')
-			->willReturn($share);
-
-		$shareBeforeCreateCalled = false;
-
-		$this->eventDispatcher->addListener('share.beforeCreate', function (GenericEvent $event) use (&$shareBeforeCreateCalled) {
-			$shareBeforeCreateCalled = true;
-			$this->assertInstanceOf('Symfony\Component\EventDispatcher\GenericEvent', $event);
-			$args = $event->getArguments();
-			$this->assertArrayHasKey('share', $args);
-			$this->assertArrayHasKey('run', $args);
-		});
-
-		$shareAfterCreateCalled = false;
-
-		$this->eventDispatcher->addListener('share.afterCreate', function (GenericEvent $event) use (&$shareAfterCreateCalled) {
-			$shareAfterCreateCalled = true;
-			$this->assertInstanceOf('Symfony\Component\EventDispatcher\GenericEvent', $event);
-			$args = $event->getArguments();
-			$this->assertArrayHasKey('share', $args);
-		});
-
-		$ocs->createShare();
-
-		$this->assertTrue($shareBeforeCreateCalled, 'share.beforeCreate not called');
-		$this->assertTrue($shareAfterCreateCalled, 'share.afterCreate not called');
 	}
 
 	public function providesGetSharesAll() {

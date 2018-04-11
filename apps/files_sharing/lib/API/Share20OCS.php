@@ -37,8 +37,7 @@ use OCP\Share\Exceptions\GenericShareException;
 use OCP\Share\Exceptions\ShareNotFound;
 use OCP\Share\IManager;
 use OCP\Share\IShare;
-use Symfony\Component\EventDispatcher\EventDispatcher;
-use Symfony\Component\EventDispatcher\GenericEvent;
+use OCA\Files_Sharing\Service\NotificationPublisher;
 use OCA\Files_Sharing\Helper;
 
 /**
@@ -66,14 +65,13 @@ class Share20OCS {
 	private $l;
 	/** @var IConfig */
 	private $config;
+	/** @var NotificationPublisher */
+	private $notificationPublisher;
 
 	/**
 	 * @var string
 	 */
 	private $additionalInfoField;
-
-	/** @var \Symfony\Component\EventDispatcher\EventDispatcherInterface  */
-	private $eventDispatcher;
 
 	/**
 	 * Share20OCS constructor.
@@ -87,7 +85,7 @@ class Share20OCS {
 	 * @param IUser $currentUser
 	 * @param IL10N $l10n
 	 * @param IConfig $config
-	 * @param EventDispatcher $eventDispatcher
+	 * @param NotificationPublisher $notificationPublisher
 	 */
 	public function __construct(
 			IManager $shareManager,
@@ -99,7 +97,7 @@ class Share20OCS {
 			IUser $currentUser,
 			IL10N $l10n,
 			IConfig $config,
-			EventDispatcher $eventDispatcher
+			NotificationPublisher $notificationPublisher
 	) {
 		$this->shareManager = $shareManager;
 		$this->userManager = $userManager;
@@ -110,8 +108,8 @@ class Share20OCS {
 		$this->currentUser = $currentUser;
 		$this->l = $l10n;
 		$this->config = $config;
+		$this->notificationPublisher = $notificationPublisher;
 		$this->additionalInfoField = $this->config->getAppValue('core', 'user_additional_info_field', '');
-		$this->eventDispatcher = $eventDispatcher;
 	}
 
 	/**
@@ -296,7 +294,6 @@ class Share20OCS {
 	 * @return \OC\OCS\Result
 	 */
 	public function createShare() {
-		$beforeEvent = new GenericEvent(null);
 		$share = $this->shareManager->newShare();
 
 		if (!$this->shareManager->shareApiEnabled()) {
@@ -312,12 +309,6 @@ class Share20OCS {
 		}
 
 		$userFolder = $this->rootFolder->getUserFolder($this->currentUser->getUID());
-		$beforeEvent->setArgument('userFolder', $userFolder);
-		$beforeEvent->setArgument('run', true);
-
-		if ($beforeEvent->getArgument('run') === false) {
-			return new \OC\OCS\Result(null, 403, $this->l->t('No permission to create share'));
-		}
 
 		try {
 			$path = $userFolder->get($path);
@@ -493,12 +484,6 @@ class Share20OCS {
 		$share->setShareType($shareType);
 		$share->setSharedBy($this->currentUser->getUID());
 
-
-		$beforeEvent->setArgument('share', $this->formatShare($share));
-		$beforeEvent->setArgument('shareObject', $share);
-
-		$this->eventDispatcher->dispatch('share.beforeCreate', $beforeEvent);
-
 		try {
 			$share = $this->shareManager->createShare($share);
 		} catch (GenericShareException $e) {
@@ -513,11 +498,6 @@ class Share20OCS {
 		$share->getNode()->unlock(\OCP\Lock\ILockingProvider::LOCK_SHARED);
 
 		$formattedShareAfterCreate = $this->formatShare($share);
-		$afterEvent = new GenericEvent(null, []);
-		$afterEvent->setArgument('share', $formattedShareAfterCreate);
-		$afterEvent->setArgument('shareObject', $share);
-		$afterEvent->setArgument('result', 'success');
-		$this->eventDispatcher->dispatch('share.afterCreate', $afterEvent);
 
 		return new \OC\OCS\Result($formattedShareAfterCreate);
 	}
@@ -540,18 +520,13 @@ class Share20OCS {
 
 		$formatted = [];
 		foreach ($shares as $share) {
-			if ($stateFilter !== null && $share->getState() !== $stateFilter) {
-				continue;
-			}
-
-			if (!$this->canAccessShare($share)) {
-				continue;
-			}
-
-			try {
-				$formatted[] = $this->formatShare($share, true);
-			} catch (NotFoundException $e) {
-				// Ignore this share
+			if (($stateFilter === null || $share->getState() === $stateFilter) &&
+					$this->canAccessShare($share)) {
+				try {
+					$formatted[] = $this->formatShare($share, true);
+				} catch (NotFoundException $e) {
+					// Ignore this share
+				}
 			}
 		}
 
@@ -790,17 +765,6 @@ class Share20OCS {
 			if ($name !== null) {
 				$oldname = $share->getName();
 				$share->setName($name);
-
-				//Trigger update event for name change only if name differ
-				if ($name !== $oldname) {
-					$shareAfterNameUpdate = new GenericEvent(null);
-					$shareAfterNameUpdate->setArguments([
-						'sharenameupdated' => true,
-						'oldname' => $oldname,
-						'shareobject' => $share,
-					]);
-					$this->eventDispatcher->dispatch('share.afterupdate', $shareAfterNameUpdate);
-				}
 			}
 
 			if ($newPermissions !== null) {
@@ -897,6 +861,11 @@ class Share20OCS {
 			return new \OC\OCS\Result(null, 404, $this->l->t('Wrong share ID, share doesn\'t exist'));
 		}
 
+		if ($share->getState() === $state) {
+			// if there are no changes in the state, just return the share as if the change was successful
+			return new \OC\OCS\Result([$this->formatShare($share, true)]);
+		}
+
 		$node = $share->getNode();
 		$node->lock(\OCP\Lock\ILockingProvider::LOCK_SHARED);
 
@@ -916,7 +885,7 @@ class Share20OCS {
 		// we actually want to update all shares related to the node in case there are multiple
 		// incoming shares for the same node (ex: receiving simultaneously through group share and user share)
 		$allShares = $this->shareManager->getSharedWith($this->currentUser->getUID(), \OCP\Share::SHARE_TYPE_USER, $node, -1, 0);
-		$allShares = array_merge($allShares, $this->shareManager->getSharedWith($this->currentUser->getUID(), \OCP\Share::SHARE_TYPE_GROUP, $node, -1, 0));
+		$allShares = \array_merge($allShares, $this->shareManager->getSharedWith($this->currentUser->getUID(), \OCP\Share::SHARE_TYPE_GROUP, $node, -1, 0));
 
 		// resolve and deduplicate target if accepting
 		if ($state === \OCP\Share::STATE_ACCEPTED) {
@@ -944,6 +913,8 @@ class Share20OCS {
 		// before formatShare resolves it
 		$this->rootFolder->getUserFolder($this->currentUser->getUID());
 
+		$this->notificationPublisher->discardNotificationForUser($share, $this->currentUser->getUID());
+
 		return new \OC\OCS\Result([$this->formatShare($share, true)]);
 	}
 
@@ -956,15 +927,15 @@ class Share20OCS {
 	 */
 	private function deduplicateShareTarget(IShare $share) {
 		$userFolder = $this->rootFolder->getUserFolder($this->currentUser->getUID());
-		$mountPoint = basename($share->getTarget());
-		$parentDir = dirname($share->getTarget());
+		$mountPoint = \basename($share->getTarget());
+		$parentDir = \dirname($share->getTarget());
 		if (!$userFolder->nodeExists($parentDir)) {
 			$parentDir = Helper::getShareFolder();
 		}
 
 		$pathAttempt = \OC\Files\Filesystem::normalizePath($parentDir . '/' . $share->getTarget());
 
-		$pathinfo = pathinfo($pathAttempt);
+		$pathinfo = \pathinfo($pathAttempt);
 		$ext = (isset($pathinfo['extension'])) ? '.'.$pathinfo['extension'] : '';
 		$name = $pathinfo['filename'];
 
@@ -974,7 +945,7 @@ class Share20OCS {
 			$i++;
 		}
 
-		$share->setTarget(basename($pathAttempt));
+		$share->setTarget(\basename($pathAttempt));
 
 		return $share;
 	}

@@ -265,6 +265,14 @@ OCA.Sharing.App = {
 				return actions;
 			}
 
+			var targetFileData = context.fileList.elementToFile(context.$file);
+			if (targetFileData.shareLocationType === 'remote') {
+				// accept and reject will be removed for remote shares
+				delete(actions.Accept);
+				delete(actions.Reject);
+				return actions;
+			}
+
 			if (shareState === OC.Share.STATE_ACCEPTED) {
 				delete(actions.Accept);
 				// move "Reject" into drop down to replace "Delete" action

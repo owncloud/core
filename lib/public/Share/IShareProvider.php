@@ -87,7 +87,7 @@ interface IShareProvider {
 	 * @param string $recipient userId of recipient
 	 * @return \OCP\Share\IShare
 	 * @since 9.0.0
-	 * @deprecated 10.0.8 use updateForRecipient() instead
+	 * @deprecated 10.0.9 use updateForRecipient() instead
 	 */
 	public function move(\OCP\Share\IShare $share, $recipient);
 
@@ -214,7 +214,7 @@ interface IShareProvider {
 	 * @param string $recipient userId of recipient
 	 * @param int $state state to set
 	 * @return \OCP\Share\IShare
-	 * @since 10.0.6
+	 * @since 10.0.9
 	 */
 	public function updateForRecipient(\OCP\Share\IShare $share, $recipient);
 }

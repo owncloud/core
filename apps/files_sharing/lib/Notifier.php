@@ -66,9 +66,6 @@ class Notifier implements INotifier {
 		// Read the language from the notification
 		$l = $this->factory->get('files_sharing', $languageCode);
 
-		// TODO: discard if share does not exist any more
-		// TODO: discard if target user is not in target group any more
-
 		switch ($notification->getSubject()) {
 			case 'local_share':
 			case 'local_share_accepted':
@@ -109,8 +106,7 @@ class Notifier implements INotifier {
 				case 'accept':
 					$action->setParsedLabel(
 						(string) $l->t('Accept')
-					)
-					->setPrimary(true);
+					);
 					break;
 
 				case 'decline':

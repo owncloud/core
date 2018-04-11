@@ -344,7 +344,7 @@ interface IShare {
 	 * Set share accepted state
 	 *
 	 * @param int $state
-	 * @since 10.0.6
+	 * @since 10.0.9
 	 */
 	public function setState($state);
 
@@ -352,7 +352,7 @@ interface IShare {
 	 * Get share accepted state
 	 *
 	 * @return int state
-	 * @since 10.0.6
+	 * @since 10.0.9
 	 */
 	public function getState();
 }
