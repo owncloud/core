@@ -803,7 +803,6 @@ class OC_App {
 				} else {
 					$result = \OC::$server->getIntegrityCodeChecker()->verifyAppSignature($app, '', true);
 					if (empty($result)) {
-						$info['internal'] = false;
 						$info['level'] = self::approvedApp;
 						$info['removable'] = false;
 					}
@@ -864,12 +863,9 @@ class OC_App {
 
 	public static function shouldUpgrade($app) {
 		$versions = self::getAppVersions();
-		$currentVersion = OC_App::getAppVersion($app);
+		$currentVersion = self::getAppVersion($app);
 		if ($currentVersion && isset($versions[$app])) {
-			$installedVersion = $versions[$app];
-			if (!\version_compare($currentVersion, $installedVersion, '=')) {
-				return true;
-			}
+			return self::atLeastMinorVersionLevelChanged($currentVersion, $versions[$app]);
 		}
 		return false;
 	}
@@ -1143,5 +1139,31 @@ class OC_App {
 	 */
 	public static function clearAppCache($appId) {
 		unset(self::$appVersion[$appId], self::$appInfo[$appId]);
+	}
+
+	/**
+	 * @param $app
+	 * @param $currentVersion
+	 * @param $versions
+	 * @return bool
+	 */
+	public static function atLeastMinorVersionLevelChanged($currentVersion, $installedVersion): bool {
+		if ($currentVersion === $installedVersion) {
+			return false;
+		}
+
+		$p = new \Composer\Semver\VersionParser();
+		$currentVersion = $p->normalize($currentVersion);
+		$installedVersion = $p->normalize($installedVersion);
+
+		$currentVersion = \explode('.', $currentVersion);
+		$installedVersion = \explode('.', $installedVersion);
+
+		if ($currentVersion[0] === $installedVersion[0] &&
+			$currentVersion[1] === $installedVersion[1]) {
+			return false;
+		}
+
+		return true;
 	}
 }
