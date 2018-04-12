@@ -231,6 +231,10 @@ class SyncBackendTest extends TestCase {
 			->method('hasUserListings')
 			->will($this->returnValue(true));
 
+		$this->dummyBackend
+			->method('getUsers')
+			->willReturn([]);
+
 		$inputInterface
 			->expects($this->at(2))
 			->method('getOption')
