@@ -236,8 +236,6 @@ class Log implements ILogger {
 		}
 		$logConditionFile = null;
 
-		array_walk($context, [$this->normalizer, 'format']);
-
 		if (isset($context['app'])) {
 			$app = $context['app'];
 
@@ -261,14 +259,6 @@ class Log implements ILogger {
 		} else {
 			$app = 'no app in context';
 		}
-		// interpolate $message as defined in PSR-3
-		$replace = [];
-		foreach ($context as $key => $val) {
-			$replace['{' . $key . '}'] = $val;
-		}
-
-		// interpolate replacement values into the message and return
-		$message = strtr($message, $replace);
 
 		/**
 		 * check for a special log condition - this enables an increased log on
@@ -320,9 +310,30 @@ class Log implements ILogger {
 		}
 
 		if ($level >= $minLevel) {
+
+			$message = $this->interpolate($message, $context);
+
 			$logger = $this->logger;
 			call_user_func([$logger, 'write'], $app, $message, $level, $logConditionFile);
 		}
+	}
+
+	/**
+	 * interpolate $message as defined in PSR-3
+	 * @param string $message
+	 * @param array $context
+	 * @return string
+	 */
+	protected function interpolate ($message, array $context) {
+
+		$replace = [];
+		foreach ($context as $key => $val) {
+			$replace['{' . $key . '}'] = $this->normalizer->format($val);
+		}
+
+		// interpolate replacement values into the message and return
+		return strtr($message, $replace);
+
 	}
 
 	/**
