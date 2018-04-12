@@ -40,7 +40,29 @@ So that I can efficiently share my files with other users or groups
 		When the user types "doesnotexist" in the share-with-field
 		Then a tooltip with the text "No users or groups found for doesnotexist" should be shown near the share-with-field on the webUI
 		And the autocomplete list should not be displayed on the webUI
-		
+
+	@skipOnLDAP
+	Scenario: autocomplete short user names when completely typed
+		Given these users have been created but not initialized:
+			| username  | password | displayname  | email                 |
+			| uu1       | 1234     | UU One       | uu1@oc.com.np         |
+		And the user has opened the share dialog for the folder "simple-folder"
+		When the user types "uu1" in the share-with-field
+		Then all users and groups that contain the string "uu1" in their name should be listed in the autocomplete list on the webUI
+
+	Scenario: autocompletion when not enough characters typed
+		Given the user has opened the share dialog for the folder "simple-folder"
+		When the user types "use" in the share-with-field
+		Then a tooltip with the text "No users or groups found for use" should be shown near the share-with-field on the webUI
+		And the autocomplete list should not be displayed on the webUI
+
+	Scenario: autocompletion when changing minimum characters for sharing autocomplete
+		Given the administrator has set the minimum characters for sharing autocomplete to "2"
+		And the user has opened the share dialog for the folder "simple-folder"
+		When the user types "us" in the share-with-field
+		Then all users and groups that contain the string "us" in their name should be listed in the autocomplete list on the webUI
+		And the users own name should not be listed in the autocomplete list on the webUI
+
 	@skipOnLDAP @user_ldap#175
 	Scenario: autocompletion of a pattern that matches regular existing users but also a user with whom the item is already shared (folder)
 		Given the user has shared the folder "simple-folder" with the user "User One" using the webUI
@@ -70,3 +92,4 @@ So that I can efficiently share my files with other users or groups
 		When the user types "grou" in the share-with-field
 		Then all users and groups that contain the string "grou" in their name should be listed in the autocomplete list on the webUI except group "groupuser"
 		And the users own name should not be listed in the autocomplete list on the webUI
+

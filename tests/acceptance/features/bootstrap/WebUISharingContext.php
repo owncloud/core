@@ -28,6 +28,7 @@ use Page\FilesPage;
 use Page\PublicLinkFilesPage;
 use SensioLabs\Behat\PageObjectExtension\PageObject\Exception\ElementNotFoundException;
 use TestHelpers\AppConfigHelper;
+use TestHelpers\SetupHelper;
 
 require_once 'bootstrap.php';
 
@@ -59,6 +60,7 @@ class WebUISharingContext extends RawMinkContext implements Context {
 	private $webUIFilesContext;
 	private $createdPublicLinks = [];
 
+	private $oldMinCharactersForAutocomplete = null;
 	/**
 	 * WebUISharingContext constructor.
 	 *
@@ -294,6 +296,34 @@ class WebUISharingContext extends RawMinkContext implements Context {
 		foreach (array_reverse($this->filesPage->getOcDialogs()) as $ocDialog) {
 			$ocDialog->accept($this->getSession());
 		}
+	}
+
+	/**
+	 * @When the administrator sets the minimum characters for sharing autocomplete to :minCharacters
+	 * @Given the administrator has set the minimum characters for sharing autocomplete to :minCharacters
+	 * 
+	 * @param string $minCharacters
+	 * 
+	 * @return void
+	 */
+	public function setMinCharactersForAutocomplete($minCharacters) {
+		if (is_null($this->oldMinCharactersForAutocomplete)) {
+			$oldMinCharactersForAutocomplete = SetupHelper::runOcc(
+				['config:system:get', 'user.search_min_length']
+			)['stdOut'];
+			$this->oldMinCharactersForAutocomplete = trim(
+				$oldMinCharactersForAutocomplete
+			);
+		}
+		$minCharacters = (int) $minCharacters;
+		SetupHelper::runOcc(
+			[
+				'config:system:set',
+				'user.search_min_length',
+				'--value',
+				$minCharacters
+			]
+		);
 	}
 
 	/**
@@ -538,7 +568,29 @@ class WebUISharingContext extends RawMinkContext implements Context {
 		$this->webUIFilesContext = $environment->getContext('WebUIFilesContext');
 		$this->setupSharingConfigs();
 	}
-	
+
+	/**
+	 * After Scenario. Sets back old settings
+	 *
+	 * @AfterScenario @webUI
+	 *
+	 * @return void
+	 */
+	public function tearDownScenario() {
+		if ($this->oldMinCharactersForAutocomplete === "") {
+			SetupHelper::runOcc(['config:system:delete', 'user.search_min_length']);
+		} elseif (!is_null($this->oldMinCharactersForAutocomplete)) {
+			SetupHelper::runOcc(
+				[
+					'config:system:set',
+					'user.search_min_length',
+					'--value',
+					$this->oldMinCharactersForAutocomplete
+				]
+			);
+		}
+	}
+
 	/**
 	 * @return void
 	 */
