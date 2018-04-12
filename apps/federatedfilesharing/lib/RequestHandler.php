@@ -26,10 +26,12 @@
 
 namespace OCA\FederatedFileSharing;
 
+use OCA\Federation\TrustedServers;
 use OCA\Files_Sharing\Activity;
 use OCP\AppFramework\Http;
 use OCP\Constants;
 use OCP\Files\NotFoundException;
+use OCP\IConfig;
 use OCP\IDBConnection;
 use OCP\IRequest;
 use OCP\IUserManager;
@@ -40,7 +42,7 @@ use Symfony\Component\EventDispatcher\GenericEvent;
 /**
  * Class RequestHandler
  * 
- * handles OCS Request to the federated share API
+ * Handles OCS Request to the federated share API
  *
  * @package OCA\FederatedFileSharing\API
  */
@@ -70,6 +72,11 @@ class RequestHandler {
 	/** @var EventDispatcherInterface  */
 	private $eventDispatcher;
 
+	/**
+	 * @var IConfig
+	 */
+	private $config;
+
 	/** @var string */
 	private $shareTable = 'share';
 
@@ -84,15 +91,19 @@ class RequestHandler {
 	 * @param AddressHandler $addressHandler
 	 * @param IUserManager $userManager
 	 * @param EventDispatcherInterface $eventDispatcher
+	 * @param TrustedServers $trustedServers
+	 * @param IConfig $config
 	 */
 	public function __construct(FederatedShareProvider $federatedShareProvider,
-								IDBConnection $connection,
-								Share\IManager $shareManager,
-								IRequest $request,
-								Notifications $notifications,
-								AddressHandler $addressHandler,
-								IUserManager $userManager,
-								EventDispatcherInterface $eventDispatcher
+		IDBConnection $connection,
+		Share\IManager $shareManager,
+		IRequest $request,
+		Notifications $notifications,
+		AddressHandler $addressHandler,
+		IUserManager $userManager,
+		EventDispatcherInterface $eventDispatcher,
+		TrustedServers $trustedServers,
+		IConfig $config
 	) {
 		$this->federatedShareProvider = $federatedShareProvider;
 		$this->connection = $connection;
@@ -102,6 +113,8 @@ class RequestHandler {
 		$this->addressHandler = $addressHandler;
 		$this->userManager = $userManager;
 		$this->eventDispatcher = $eventDispatcher;
+		$this->trustedServers = $trustedServers;
+		$this->config = $config;
 	}
 
 	/**
@@ -113,7 +126,11 @@ class RequestHandler {
 	public function createShare($params) {
 
 		if (!$this->isS2SEnabled(true)) {
-			return new \OC_OCS_Result(null, 503, 'Server does not support federated cloud sharing');
+			return new \OC_OCS_Result(
+				null,
+				503,
+				'Server does not support federated cloud sharing'
+			);
 		}
 
 		$remote = isset($_POST['remote']) ? $_POST['remote'] : null;
@@ -128,7 +145,7 @@ class RequestHandler {
 
 		if ($remote && $token && $name && $owner && $remoteId && $shareWith) {
 
-			if(!\OCP\Util::isValidFileName($name)) {
+			if (!\OCP\Util::isValidFileName($name)) {
 				return new \OC_OCS_Result(null, 400, 'The mountpoint name contains invalid characters.');
 			}
 
@@ -173,35 +190,67 @@ class RequestHandler {
 					$sharedByFederatedId = $ownerFederatedId;
 				}
 
-				$event = new GenericEvent(null, ['name' => $name, 'targetuser' => $sharedByFederatedId,
-								'owner' => $owner, 'sharewith' => $shareWith,
-								'sharedby' => $sharedBy, 'remoteid' => $remoteId]);
+				$event = new GenericEvent(
+					null,
+					[
+						'name' => $name,
+						'targetuser' => $sharedByFederatedId,
+						'owner' => $owner,
+						'sharewith' => $shareWith,
+						'sharedby' => $sharedBy,
+						'remoteid' => $remoteId
+					]
+				);
 				$this->eventDispatcher->dispatch('\OCA\FederatedFileSharing::remote_shareReceived', $event);
 				\OC::$server->getActivityManager()->publishActivity(
-					Activity::FILES_SHARING_APP, Activity::SUBJECT_REMOTE_SHARE_RECEIVED, [$ownerFederatedId, \trim($name, '/')], '', [],
-					'', '', $shareWith, Activity::TYPE_REMOTE_SHARE, Activity::PRIORITY_LOW);
+					Activity::FILES_SHARING_APP,
+					Activity::SUBJECT_REMOTE_SHARE_RECEIVED,
+					[$ownerFederatedId, \trim($name, '/')],
+					'',
+					[],
+					'',
+					'',
+					$shareWith,
+					Activity::TYPE_REMOTE_SHARE,
+					Activity::PRIORITY_LOW
+				);
 
-				$urlGenerator = \OC::$server->getURLGenerator();
+				$canAutoAccept = $this->canAutoAccept($remote);
+				if ($canAutoAccept) {
+					$this->acceptShare(
+						\array_merge($params, ['id' => $shareId])
+					);
+					$externalManager->acceptShare($shareId);
+				} else {
+					$urlGenerator = \OC::$server->getURLGenerator();
 
-				$notificationManager = \OC::$server->getNotificationManager();
-				$notification = $notificationManager->createNotification();
-				$notification->setApp('files_sharing')
-					->setUser($shareWith)
-					->setDateTime(new \DateTime())
-					->setObject('remote_share', $shareId)
-					->setSubject('remote_share', [$ownerFederatedId, $sharedByFederatedId, \trim($name, '/')]);
+					$notificationManager = \OC::$server->getNotificationManager();
+					$notification = $notificationManager->createNotification();
+					$notification->setApp('files_sharing')
+						->setUser($shareWith)
+						->setDateTime(new \DateTime())
+						->setObject('remote_share', $shareId)
+						->setSubject(
+							'remote_share',
+							[
+								$ownerFederatedId,
+								$sharedByFederatedId,
+								\trim($name, '/')
+							]
+						);
 
-				$declineAction = $notification->createAction();
-				$declineAction->setLabel('decline')
-					->setLink($urlGenerator->getAbsoluteURL($urlGenerator->linkTo('', 'ocs/v1.php/apps/files_sharing/api/v1/remote_shares/pending/' . $shareId)), 'DELETE');
-				$notification->addAction($declineAction);
+					$declineAction = $notification->createAction();
+					$declineAction->setLabel('decline')
+						->setLink($urlGenerator->getAbsoluteURL($urlGenerator->linkTo('', 'ocs/v1.php/apps/files_sharing/api/v1/remote_shares/pending/' . $shareId)), 'DELETE');
+					$notification->addAction($declineAction);
 
-				$acceptAction = $notification->createAction();
-				$acceptAction->setLabel('accept')
-					->setLink($urlGenerator->getAbsoluteURL($urlGenerator->linkTo('', 'ocs/v1.php/apps/files_sharing/api/v1/remote_shares/pending/' . $shareId)), 'POST');
-				$notification->addAction($acceptAction);
+					$acceptAction = $notification->createAction();
+					$acceptAction->setLabel('accept')
+						->setLink($urlGenerator->getAbsoluteURL($urlGenerator->linkTo('', 'ocs/v1.php/apps/files_sharing/api/v1/remote_shares/pending/' . $shareId)), 'POST');
+					$notification->addAction($acceptAction);
 
-				$notificationManager->notify($notification);
+					$notificationManager->notify($notification);
+				}
 
 				return new \OC_OCS_Result();
 			} catch (\Exception $e) {
@@ -214,9 +263,38 @@ class RequestHandler {
 	}
 
 	/**
-	 * create re-share on behalf of another user
+	 * We can auto accept incoming shares if
+	 * - incoming shares do not add source to the trusted servers
+	 * - config option allows it
+	 * - source is already in the trusted servers list
+	 *
+	 * @param string $remote
+	 *
+	 * @return bool
+	 */
+	protected function canAutoAccept($remote) {
+		// No - if any accepted share adds source to trusted
+		if ($this->trustedServers->getAutoAddServers()) {
+			return false;
+		}
+		$autoAccept = $this->config->getAppValue(
+			'federation',
+			'auto_accept_trusted',
+			'0'
+		);
+		// No - if config option disables it
+		if ($autoAccept !== '1') {
+			return false;
+		}
+
+		return $this->trustedServers->isTrustedServer($remote);
+	}
+
+	/**
+	 * Create re-share on behalf of another user
 	 *
 	 * @param $params
+	 *
 	 * @return \OC_OCS_Result
 	 */
 	public function reShare($params) {
@@ -227,11 +305,11 @@ class RequestHandler {
 		$permission = (int)$this->request->getParam('permission', null);
 		$remoteId = (int)$this->request->getParam('remoteId', null);
 
-		if ($id === null ||
-			$token === null ||
-			$shareWith === null ||
-			$permission === null ||
-			$remoteId === null
+		if ($id === null
+			|| $token === null
+			|| $shareWith === null
+			|| $permission === null
+			|| $remoteId === null
 		) {
 			return new \OC_OCS_Result(null, Http::STATUS_BAD_REQUEST);
 		}

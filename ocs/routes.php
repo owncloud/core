@@ -84,6 +84,7 @@ API::register(
 // Server-to-Server Sharing
 if (\OC::$server->getAppManager()->isEnabledForUser('files_sharing')) {
 	$federatedSharingApp = new \OCA\FederatedFileSharing\AppInfo\Application('federatedfilesharing');
+	$federationApp = new \OCA\Federation\AppInfo\Application();
 	$addressHandler = new \OCA\FederatedFileSharing\AddressHandler(
 		\OC::$server->getURLGenerator(),
 		\OC::$server->getL10N('federatedfilesharing')
@@ -103,7 +104,9 @@ if (\OC::$server->getAppManager()->isEnabledForUser('files_sharing')) {
 		$notification,
 		$addressHandler,
 		\OC::$server->getUserManager(),
-		\OC::$server->getEventDispatcher()
+		\OC::$server->getEventDispatcher(),
+		$federationApp->getContainer()->query('TrustedServers'),
+		\OC::$server->getConfig()
 	);
 	API::register('post',
 		'/cloud/shares',

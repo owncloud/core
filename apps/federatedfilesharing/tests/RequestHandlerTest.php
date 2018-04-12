@@ -103,6 +103,7 @@ class RequestHandlerTest extends TestCase {
 		$this->userManager = $this->createMock('OCP\IUserManager');
 
 		$this->registerHttpHelper($httpHelperMock);
+		$federationApp = new \OCA\Federation\AppInfo\Application();
 
 		$this->s2s = new RequestHandler(
 			$this->federatedShareProvider,
@@ -112,7 +113,9 @@ class RequestHandlerTest extends TestCase {
 			$this->notifications,
 			$this->addressHandler,
 			$this->userManager,
-			\OC::$server->getEventDispatcher()
+			\OC::$server->getEventDispatcher(),
+			$federationApp->getContainer()->query('TrustedServers'),
+			\OC::$server->getConfig()
 		);
 
 		$this->connection = \OC::$server->getDatabaseConnection();
@@ -189,7 +192,7 @@ class RequestHandlerTest extends TestCase {
 	}
 
 	function testDeclineShare() {
-
+		$federationApp = new \OCA\Federation\AppInfo\Application();
 		$this->s2s = $this->getMockBuilder('\OCA\FederatedFileSharing\RequestHandler')
 			->setConstructorArgs(
 				[
@@ -200,7 +203,9 @@ class RequestHandlerTest extends TestCase {
 					$this->notifications,
 					$this->addressHandler,
 					$this->userManager,
-					\OC::$server->getEventDispatcher()
+					\OC::$server->getEventDispatcher(),
+					$federationApp->getContainer()->query('TrustedServers'),
+					\OC::$server->getConfig()
 				]
 			)->setMethods(['executeDeclineShare', 'verifyShare'])->getMock();
 
