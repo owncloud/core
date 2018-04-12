@@ -32,7 +32,7 @@
         "rdx/behat-variables": "^1.2"
     },
     "require": {
-        "php": ">=5.4.1",
+        "php": ">=7.1",
         "doctrine/dbal": "^2.5",
         "phpseclib/phpseclib": "^2.0",
         "rackspace/php-opencloud": "v1.9.2",
