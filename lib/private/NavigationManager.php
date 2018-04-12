@@ -52,7 +52,7 @@ class NavigationManager implements INavigationManager {
 	/** @var IGroupManager */
 	private $groupManager;
 
-	function __construct(IAppManager $appManager = null,
+	public function __construct(IAppManager $appManager = null,
 						 IURLGenerator $urlGenerator = null,
 						 IFactory $l10nFac = null,
 						 IUserSession $userSession = null,
@@ -145,13 +145,30 @@ class NavigationManager implements INavigationManager {
 			if (!isset($nav['route']) && !isset($nav['static'])) {
 				continue;
 			}
+
 			$role = isset($nav['@attributes']['role']) ? $nav['@attributes']['role'] : 'all';
-			if ($role === 'admin' && !$this->isAdmin()) {
+			/**
+			 * Can have multiple roles like role="admin,sub-admin"
+			 */
+			$role = explode(',', $role);
+			//Remove whitespace in the role elements
+			$role = array_map('trim', $role);
+
+			$shallContinue = false;
+			if ($this->isAdmin() && (in_array('admin', $role, true) === true)) {
+				$shallContinue = true;
+			}
+			if ($this->isSubAdmin() && (in_array('sub-admin', $role, true) === true)) {
+				$shallContinue = true;
+			}
+			if (in_array('all', $role, true) === true) {
+				$shallContinue = true;
+			}
+
+			if ($shallContinue === false) {
 				continue;
 			}
-			if ($role === 'sub-admin' && !$this->isSubAdmin()) {
-				continue;
-			}
+
 			$l = $this->l10nFac->get($app);
 			$order = isset($nav['order']) ? $nav['order'] : 100;
 			if (isset($nav['route'])) {
