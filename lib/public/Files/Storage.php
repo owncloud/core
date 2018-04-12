@@ -222,11 +222,11 @@ interface Storage extends IStorage {
 	public function file_get_contents($path);
 
 	/**
-	 * see http://php.net/manual/en/function.file_put_contents.php
+	 * see http://php.net/manual/en/function.file-put-contents.php
 	 *
 	 * @param string $path
 	 * @param string $data
-	 * @return bool
+	 * @return int|false the number of bytes that were written to the file, or FALSE on failure
 	 * @since 6.0.0
 	 */
 	public function file_put_contents($path, $data);

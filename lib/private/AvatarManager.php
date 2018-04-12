@@ -1,5 +1,6 @@
 <?php
 /**
+ * @author Jörn Friedrich Dreyer <jfd@butonic.de>
  * @author Arthur Schiwon <blizzz@arthur-schiwon.de>
  * @author Lukas Reschke <lukas@statuscode.ch>
  * @author Morris Jobke <hey@morrisjobke.de>
@@ -27,14 +28,13 @@
 
 namespace OC;
 
-use OCP\Files\Folder;
 use OCP\Files\NotFoundException;
+use OCP\Files\Storage\IStorage;
 use OCP\IAvatarManager;
 use OCP\ILogger;
 use OCP\IUserManager;
 use OCP\Files\IRootFolder;
 use OCP\IL10N;
-use OCP\IUser;
 
 /**
  * This class implements methods to access Avatar functionality
@@ -46,6 +46,9 @@ class AvatarManager implements IAvatarManager {
 
 	/** @var  IRootFolder */
 	private $rootFolder;
+
+	/** @var IStorage */
+	private $storage;
 
 	/** @var IL10N */
 	private $l;
@@ -75,8 +78,11 @@ class AvatarManager implements IAvatarManager {
 	/**
 	 * return a user specific instance of \OCP\IAvatar
 	 * @see \OCP\IAvatar
+	 *
 	 * @param string $userId the ownCloud user id
+	 *
 	 * @return \OCP\IAvatar
+	 *
 	 * @throws \Exception In case the username is potentially dangerous
 	 * @throws NotFoundException In case there is no user folder yet
 	 */
@@ -86,37 +92,26 @@ class AvatarManager implements IAvatarManager {
 			throw new \Exception('user does not exist');
 		}
 
-		$avatarsFolder = $this->getAvatarFolder($user);
-		return new Avatar($avatarsFolder, $this->l, $user, $this->logger);
-	}
-
-	private function getFolder(Folder $folder, $path) {
-		try {
-			return $folder->get($path);
-		} catch (NotFoundException $e) {
-			return $folder->newFolder($path);
-		}
-	}
-
-	private function buildAvatarPath($userId) {
-		$avatar = \substr_replace(\substr_replace(\md5($userId), '/', 4, 0), '/', 2, 0);
-		return \explode('/', $avatar);
+		$avatarsStorage = $this->getAvatarStorage();
+		return new Avatar($avatarsStorage, $this->l, $user, $this->logger);
 	}
 
 	/**
-	 * Returns the avatar folder for the given user
+	 * Returns the avatar storage for the given user
 	 *
-	 * @param IUser $user user
-	 * @return Folder|\OCP\Files\Node
+	 * @return \OCP\Files\Storage\IStorage
 	 *
-	 * @internal
+	 * @throws NotFoundException
+	 * @throws \OCP\Files\NotPermittedException
 	 */
-	public function getAvatarFolder(IUser $user) {
-		$avatarsFolder = $this->getFolder($this->rootFolder, 'avatars');
-		$parts = $this->buildAvatarPath($user->getUID());
-		foreach ($parts as $part) {
-			$avatarsFolder = $this->getFolder($avatarsFolder, $part);
+	public function getAvatarStorage() {
+		if (!$this->storage) {
+			try {
+				$this->storage = $this->rootFolder->get('avatars')->getStorage();
+			} catch (NotFoundException $e) {
+				$this->storage = $this->rootFolder->newFolder('avatars')->getStorage();
+			}
 		}
-		return $avatarsFolder;
+		return $this->storage;
 	}
 }
