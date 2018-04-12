@@ -167,13 +167,22 @@ class Config {
 	 * @return bool True if the file needs to be updated, false otherwise
 	 */
 	protected function set($key, $value) {
-		if (!isset($this->cache[$key]) || $this->cache[$key] !== $value) {
-			// Add change
-			$this->cache[$key] = $value;
-			return true;
-		}
+		return $this->emittingCall(function (&$afterArray) use (&$key, &$value) {
+			if (!isset($this->cache[$key]) || $this->cache[$key] !== $value) {
+				if (isset($this->cache[$key])) {
+					$afterArray['update'] = true;
+					$afterArray['oldvalue'] = $this->cache[$key];
+				}
+				// Add change
+				$this->cache[$key] = $value;
+				return true;
+			}
 
-		return false;
+			return false;
+		},[
+			'before' => ['key' => $key, 'value' => $value],
+			'after' => ['key' => $key, 'value' => $value, 'update' => false, 'oldvalue' => null]
+		], 'config', 'setvalue');
 	}
 
 	/**
@@ -184,15 +193,18 @@ class Config {
 		if ($this->isReadOnly()) {
 			throw new \Exception('Config file is read only.');
 		}
-		$this->emittingCall(function () use (&$key) {
+		$this->emittingCall(function (&$afterArray) use (&$key) {
+			if (isset($this->cache[$key])) {
+				$afterArray['value'] = $this->cache[$key];
+			}
 			if ($this->delete($key)) {
 				// Write changes
 				$this->writeData();
 			}
 			return true;
 		}, [
-			'before' => ['key' => $key],
-			'after' => ['key' => $key]
+			'before' => ['key' => $key, 'value' => null],
+			'after' => ['key' => $key, 'value' => null]
 		], 'config', 'deletevalue');
 	}
 
@@ -203,12 +215,18 @@ class Config {
 	 * @return bool True if the file needs to be updated, false otherwise
 	 */
 	protected function delete($key) {
-		if (isset($this->cache[$key])) {
-			// Delete key from cache
-			unset($this->cache[$key]);
-			return true;
-		}
-		return false;
+		return $this->emittingCall(function (&$afterArray) use (&$key) {
+			if (isset($this->cache[$key])) {
+				$afterArray['value'] = $this->cache[$key];
+				// Delete key from cache
+				unset($this->cache[$key]);
+				return true;
+			}
+			return false;
+		}, [
+			'before' => ['key' => $key, 'value' => null],
+			'after' => ['key' => $key, 'value' => null]
+		], 'config', 'deletevalue');
 	}
 
 	/**
