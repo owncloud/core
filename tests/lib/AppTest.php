@@ -566,4 +566,23 @@ class AppTest extends \Test\TestCase {
 	public function testParseAppInfo(array $data, array $expected) {
 		$this->assertSame($expected, \OC_App::parseAppInfo($data));
 	}
+
+	/**
+	 * @dataProvider providesAppVersion
+	 * @param $expected
+	 * @param $version1
+	 * @param $version2
+	 */
+	public function testAppVersionCompare($expected, $version1, $version2) {
+		$this->assertEquals($expected, \OC_App::atLeastMinorVersionLevelChanged($version1, $version2));
+	}
+
+	public function providesAppVersion() {
+		return [
+			'higher patch level' => [false, '1.2.3', '1.2.4'],
+			'changed minor level' => [true, '1.2.5', '1.3.0'],
+			'same version' => [false, '1.2.3', '1.2.3'],
+			'had no patch level' => [false, '1.2', '1.2.1'],
+		];
+	}
 }
