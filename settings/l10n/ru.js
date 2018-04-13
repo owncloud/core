@@ -352,6 +352,7 @@ OC.L10N.register(
     "Default user and group share permissions" : "Разрешения общего доступа для пользователей и групп по умолчанию",
     "Enforce password protection for read-only links" : "Принудительная защита паролем для ссылок только для чтения",
     "Enforce password protection for read & write links" : "Принудительная защита паролем для ссылок для чтения и записи",
-    "Enforce password protection for upload-only (File Drop) links" : "Принудительная защита паролем для ссылок только для записи (отправка файлов)"
+    "Enforce password protection for upload-only (File Drop) links" : "Принудительная защита паролем для ссылок только для записи (отправка файлов)",
+    "You are using %s" : "Вы используете %s"
 },
 "nplurals=4; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<12 || n%100>14) ? 1 : n%10==0 || (n%10>=5 && n%10<=9) || (n%100>=11 && n%100<=14)? 2 : 3);");
