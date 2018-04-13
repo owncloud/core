@@ -37,6 +37,8 @@ use InterfaSys\LogNormalizer\Normalizer;
 use \OCP\ILogger;
 use OCP\IUserSession;
 use OCP\Util;
+use Symfony\Component\EventDispatcher\GenericEvent;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
  * logging utilities
@@ -56,11 +58,21 @@ class Log implements ILogger {
 	/** @var SystemConfig */
 	private $config;
 
+	/** @var EventDispatcherInterface */
+	private $eventDispatcher;
+
 	/** @var boolean|null cache the result of the log condition check for the request */
 	private $logConditionSatisfied = null;
 
 	/** @var Normalizer */
 	private $normalizer;
+
+	/**
+	 * Flag whether we are within the event block
+	 *
+	 * @var bool
+	 */
+	private $inEvent = false;
 
 	protected $methodsWithSensitiveParameters = [
 		// Session/User
@@ -96,8 +108,14 @@ class Log implements ILogger {
 	 * @param string $logger The logger that should be used
 	 * @param SystemConfig $config the system config object
 	 * @param null $normalizer
+	 * @param EventDispatcherInterface $eventDispatcher event dispatcher
 	 */
-	public function __construct($logger = null, SystemConfig $config = null, $normalizer = null) {
+	public function __construct(
+		$logger = null,
+		SystemConfig $config = null,
+		$normalizer = null,
+		EventDispatcherInterface $eventDispatcher = null
+	) {
 		// FIXME: Add this for backwards compatibility, should be fixed at some point probably
 		if($config === null) {
 			$config = \OC::$server->getSystemConfig();
@@ -116,6 +134,12 @@ class Log implements ILogger {
 			$this->normalizer = new Normalizer();
 		} else {
 			$this->normalizer = $normalizer;
+		}
+
+		if ($eventDispatcher === null) {
+			$this->eventDispatcher = \OC::$server->getEventDispatcher();
+		} else {
+			$this->eventDispatcher = $eventDispatcher;
 		}
 
 	}
@@ -273,7 +297,7 @@ class Log implements ILogger {
 		}
 
 		// interpolate replacement values into the message and return
-		$message = strtr($message, $replace);
+		$formattedMessage = strtr($message, $replace);
 
 		/**
 		 * check for a special log condition - this enables an increased log on
@@ -324,15 +348,45 @@ class Log implements ILogger {
 			$minLevel = Util::DEBUG;
 		}
 
+		$skipEvents = false;
+		// avoid infinite loop in case an event handler logs something
+		if ($this->inEvent) {
+			$skipEvents = true;
+		}
+
+		$eventArgs = [
+			'app' => $app,
+			'loglevel' => $level,
+			'message' => $message,
+			'formattedMessage' => $formattedMessage,
+			'context' => $context,
+			'extraFields' => $extraFields,
+		];
+
+		// note: regardless of log level we let listeners receive messages
+		$this->inEvent = true;
+		if (!$skipEvents) {
+			$event = new GenericEvent(null);
+			$event->setArguments($eventArgs);
+			$this->eventDispatcher->dispatch('log.beforewrite', $event);
+		}
+
 		if ($level >= $minLevel) {
 			$logger = $this->logger;
 			// check if logger supports extra fields
 			if (!empty($extraFields) && is_callable($logger, 'writeExtra')) {
-				call_user_func([$logger, 'writeExtra'], $app, $message, $level, $logConditionFile, $extraFields);
+				call_user_func([$logger, 'writeExtra'], $app, $formattedMessage, $level, $logConditionFile, $extraFields);
 			} else {
-				call_user_func([$logger, 'write'], $app, $message, $level, $logConditionFile);
+				call_user_func([$logger, 'write'], $app, $formattedMessage, $level, $logConditionFile);
 			}
 		}
+
+		if (!$skipEvents) {
+			$event = new GenericEvent(null);
+			$event->setArguments($eventArgs);
+			$this->eventDispatcher->dispatch('log.afterwrite', $event);
+		}
+		$this->inEvent = false;
 	}
 
 	/**
