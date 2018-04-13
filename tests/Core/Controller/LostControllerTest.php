@@ -365,11 +365,11 @@ class LostControllerTest extends TestCase {
 		$message
 			->expects($this->at(2))
 			->method('setPlainBody')
-			->with('Use the following link to reset your password: https://ownCloud.com/index.php/lostpassword/');
+			->with($this->stringContains('Use the following link to reset your password: https://ownCloud.com/index.php/lostpassword/'));
 		$message
 			->expects($this->at(3))
 			->method('setHtmlBody')
-			->with('Use the following link to reset your password: <a href="https://ownCloud.com/index.php/lostpassword/">https://ownCloud.com/index.php/lostpassword/</a>');
+			->with($this->stringContains('Use the following link to reset your password: <a href="https://ownCloud.com/index.php/lostpassword/">https://ownCloud.com/index.php/lostpassword/</a>'));
 		$message
 			->expects($this->at(4))
 			->method('setFrom')
@@ -430,11 +430,11 @@ class LostControllerTest extends TestCase {
 		$message
 			->expects($this->at(2))
 			->method('setPlainBody')
-			->with('Use the following link to reset your password: https://ownCloud.com/index.php/lostpassword/');
+			->with($this->stringContains('Use the following link to reset your password: https://ownCloud.com/index.php/lostpassword/'));
 		$message
 			->expects($this->at(3))
 			->method('setHtmlBody')
-			->with('Use the following link to reset your password: <a href="https://ownCloud.com/index.php/lostpassword/">https://ownCloud.com/index.php/lostpassword/</a>');
+			->with($this->stringContains('Use the following link to reset your password: <a href="https://ownCloud.com/index.php/lostpassword/">https://ownCloud.com/index.php/lostpassword/</a>'));
 		$message
 			->expects($this->at(4))
 			->method('setFrom')
