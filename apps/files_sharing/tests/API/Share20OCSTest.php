@@ -2246,6 +2246,12 @@ class Share20OCSTest extends TestCase {
 
 		$folder = $this->createMock('\OCP\Files\Folder');
 
+		$calledAfterUpdate = [];
+		$this->eventDispatcher->addListener('share.afterupdate',
+			function (GenericEvent $event) use (&$calledAfterUpdate){
+				$calledAfterUpdate[] = 'share.afterupdate';
+				$calledAfterUpdate[] = $event;
+			});
 		$share = \OC::$server->getShareManager()->newShare();
 		$share->setPermissions(\OCP\Constants::PERMISSION_READ)
 			->setSharedBy($this->currentUser->getUID())
@@ -2274,6 +2280,15 @@ class Share20OCSTest extends TestCase {
 
 		$this->assertEquals($expected->getMeta(), $result->getMeta());
 		$this->assertEquals($expected->getData(), $result->getData());
+
+		$this->assertInstanceOf(GenericEvent::class, $calledAfterUpdate[1]);
+		$this->assertEquals('share.afterupdate', $calledAfterUpdate[0]);
+		$this->assertArrayHasKey('sharenameupdated', $calledAfterUpdate[1]);
+		$this->assertTrue($calledAfterUpdate[1]->getArgument('sharenameupdated'));
+		$this->assertArrayHasKey('oldname', $calledAfterUpdate[1]);
+		$this->assertEquals('somename', $calledAfterUpdate[1]->getArgument('oldname'));
+		$this->assertArrayHasKey('shareobject', $calledAfterUpdate[1]);
+		$this->assertInstanceOf(\OC\Share20\Share::class, $calledAfterUpdate[1]->getArgument('shareobject'));
 	}
 
 	public function testUpdateLinkShareKeepNameWhenNotSpecified() {

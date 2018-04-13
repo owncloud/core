@@ -749,6 +749,9 @@ class Manager implements IManager {
 		$provider = $this->factory->getProviderForType($share->getShareType());
 		$share = $provider->update($share);
 
+		$shareAfterUpdateEvent = new GenericEvent(null);
+		$shareAfterUpdateEvent->setArgument('shareobject', $share);
+		$update = false;
 		if ($expirationDateUpdated === true) {
 			\OC_Hook::emit('OCP\Share', 'post_set_expiration_date', [
 				'itemType' => $share->getNode() instanceof \OCP\Files\File ? 'file' : 'folder',
@@ -756,6 +759,9 @@ class Manager implements IManager {
 				'date' => $share->getExpirationDate(),
 				'uidOwner' => $share->getSharedBy(),
 			]);
+			$shareAfterUpdateEvent->setArgument('expirationdateupdated', true);
+			$shareAfterUpdateEvent->setArgument('oldexpirationdate', $originalShare->getExpirationDate());
+			$update = true;
 		}
 
 		if ($share->getPassword() !== $originalShare->getPassword()) {
@@ -766,6 +772,8 @@ class Manager implements IManager {
 				'token' => $share->getToken(),
 				'disabled' => is_null($share->getPassword()),
 			]);
+			$shareAfterUpdateEvent->setArgument('passwordupdate', true);
+			$update = true;
 		}
 
 		if ($share->getPermissions() !== $originalShare->getPermissions()) {
@@ -783,8 +791,15 @@ class Manager implements IManager {
 				'permissions' => $share->getPermissions(),
 				'path' => $userFolder->getRelativePath($share->getNode()->getPath()),
 			]);
+			$shareAfterUpdateEvent->setArgument('permissionupdate', true);
+			$shareAfterUpdateEvent->setArgument('oldpermissions', $originalShare->getPermissions());
+			$shareAfterUpdateEvent->setArgument('path', $userFolder->getRelativePath($share->getNode()->getPath()));
+			$update = true;
 		}
 
+		if ($update === true) {
+			$this->eventDispatcher->dispatch('share.afterupdate', $shareAfterUpdateEvent);
+		}
 		return $share;
 	}
 
