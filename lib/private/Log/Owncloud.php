@@ -115,7 +115,7 @@ class Owncloud {
 			'message'
 		);
 
-		if (!\empty($extraFields)) {
+		if (!empty($extraFields)) {
 			// augment with additional fields
 			$entry = \array_merge($entry, $extraFields);
 		}
