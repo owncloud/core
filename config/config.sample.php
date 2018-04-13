@@ -57,7 +57,9 @@ $CONFIG = array(
 /**
  * Your list of trusted domains that users can log into. Specifying trusted
  * domains prevents host header poisoning. Do not remove this, as it performs
- * necessary security checks.
+ * necessary security checks. Please consider that for backend processes like 
+ * background jobs or occ commands, the url parameter in key ``overwrite.cli.url``
+ * is used. For more details please see that key.
  */
 'trusted_domains' =>
   array (
@@ -413,6 +415,10 @@ $CONFIG = array(
  * are generated within ownCloud using any kind of command line tools (cron or
  * occ). The value should contain the full base URL:
  * ``https://www.example.com/owncloud``
+ * As an example, alerts shown in the browser to upgrade an app are triggered by
+ * a cron background process and therefore uses the url of this key, even if the user
+ * has logged on via a different domain defined in key ``trusted_domains``. When the 
+ * user clicks an alert like this, he will be redirected to that URL and must logon again.
  */
 'overwrite.cli.url' => '',
 
