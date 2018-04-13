@@ -234,6 +234,12 @@ class Log implements ILogger {
 		}
 		$logConditionFile = null;
 
+		$extraFields = [];
+		if (isset($context['extraFields'])) {
+			$extraFields = $context['extraFields'];
+			unset($context['extraFields']);
+		}
+
 		if (isset($context['app'])) {
 			$app = $context['app'];
 
@@ -310,7 +316,12 @@ class Log implements ILogger {
 			$message = $this->interpolate($message, $context);
 
 			$logger = $this->logger;
-			\call_user_func([$logger, 'write'], $app, $message, $level, $logConditionFile);
+			// check if logger supports extra fields
+			if (!empty($extraFields) && \is_callable($logger, 'writeExtra')) {
+				\call_user_func([$logger, 'writeExtra'], $app, $message, $level, $logConditionFile, $extraFields);
+			} else {
+				\call_user_func([$logger, 'write'], $app, $message, $level, $logConditionFile);
+			}
 		}
 	}
 

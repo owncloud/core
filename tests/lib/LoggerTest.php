@@ -107,6 +107,11 @@ class LoggerTest extends TestCase {
 		self::$logs[]= "$level $message";
 	}
 
+	public static function writeExtra($app, $message, $level, $logConditionFile, $extraFields) {
+		$encodedFields = \json_encode($extraFields);
+		self::$logs[]= "$level $message fields=$encodedFields";
+	}
+
 	public function userAndPasswordData() {
 		return [
 			['abc', 'def'],
@@ -195,5 +200,28 @@ class LoggerTest extends TestCase {
 			$this->assertNotContains($password, $logLine);
 			$this->assertContains('loginWithPassword(*** sensitive parameters replaced ***)', $logLine);
 		}
+	}
+
+	public function testExtraFields() {
+		$extraFields = [
+			'one' => 'un',
+			'two' => 'deux',
+			'three' => 'trois',
+		];
+
+		// with fields calls "writeExtra"
+		$this->logger->info(
+			'extra fields test', [
+				'extraFields' => $extraFields
+			]
+		);
+
+		// without fields calls "write"
+		$this->logger->info('no fields');
+
+		$logLines = $this->getLogs();
+
+		$this->assertEquals('1 extra fields test fields={"one":"un","two":"deux","three":"trois"}', $logLines[0]);
+		$this->assertEquals('1 no fields', $logLines[1]);
 	}
 }
