@@ -76,22 +76,27 @@ class SyncService {
 	/**
 	 * @param UserInterface $backend the backend to check
 	 * @param \Closure $callback is called for every user to allow progress display
-	 * @return array
+	 * @return array[] the first array contains users that were removed in the external backend
+	 *                 the second array contains users that are not enabled in oc, but are available in the external backend
 	 */
-	public function getNoLongerExistingUsers(UserInterface $backend, \Closure $callback) {
-		// detect no longer existing users
-		$toBeDeleted = [];
+	public function analyzeExistingUsers(UserInterface $backend, \Closure $callback) {
+		$removed = [];
+		$reappeared = [];
 		$backendClass = get_class($backend);
-		$this->mapper->callForAllUsers(function (Account $a) use (&$toBeDeleted, $backend, $backendClass, $callback) {
+		$this->mapper->callForAllUsers(function (Account $a) use (&$removed, &$reappeared, $backend, $backendClass, $callback) {
 			if ($a->getBackend() === $backendClass) {
-				if (!$backend->userExists($a->getUserId())) {
-					$toBeDeleted[] = $a->getUserId();
+				if ($backend->userExists($a->getUserId())) {
+					if ($a->getState() !== Account::STATE_ENABLED) {
+						$reappeared[$a->getUserId()] = $a;
+					}
+				} else {
+					$removed[$a->getUserId()] = $a;
 				}
 			}
 			$callback($a);
 		}, '', false);
 
-		return $toBeDeleted;
+		return [$removed, $reappeared];
 	}
 
 	/**
