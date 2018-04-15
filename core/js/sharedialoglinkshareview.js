@@ -330,14 +330,14 @@
 
 			if (this.model.isNew()) {
 				title = t('core', 'Create link share: {name}', {name: this.itemModel.getFileInfo().getFullPath()});
-				buttons.unshift({
+				buttons.push({
 					text: t('core', 'Share'),
 					click: _.bind(this._onClickSave, this),
 					defaultButton: true
 				})
 			}
 			else {
-				buttons.unshift({
+				buttons.push({
 					text: t('core', 'Save'),
 					click: _.bind(this._onClickSave, this),
 					defaultButton: true
