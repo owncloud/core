@@ -244,6 +244,11 @@ a.unshare:hover {
 	color: #999;
 }
 
+.emailPrivateLinkForm--dropDown {
+	/* would love to get this from vars */
+	max-width: 484px;
+}
+
 .emailPrivateLinkForm--dropDown > .select2-choices {
 	border-color: #ddd;
 	background-image: none;
