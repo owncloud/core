@@ -50,12 +50,14 @@ So that I can efficiently share my files with other users or groups
 		When the user types "uu1" in the share-with-field
 		Then all users and groups that contain the string "uu1" in their name should be listed in the autocomplete list on the webUI
 
+	@skipOnLDAP
 	Scenario: autocompletion when not enough characters typed
 		Given the user has opened the share dialog for the folder "simple-folder"
 		When the user types "use" in the share-with-field
 		Then a tooltip with the text "No users or groups found for use" should be shown near the share-with-field on the webUI
 		And the autocomplete list should not be displayed on the webUI
 
+	@skipOnLDAP
 	Scenario: autocompletion when changing minimum characters for sharing autocomplete
 		Given the administrator has set the minimum characters for sharing autocomplete to "2"
 		And the user has opened the share dialog for the folder "simple-folder"
