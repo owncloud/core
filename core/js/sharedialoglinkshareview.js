@@ -346,7 +346,7 @@
 
 			if (this.model.get('encryptedPassword')) {
 				buttons.push({
-					classes: 'removePassword -float-left',
+					classes: 'removePassword',
 					text: t('core', 'Remove password'),
 					click: _.bind(this._onClickReset, this),
 					defaultButton: false
