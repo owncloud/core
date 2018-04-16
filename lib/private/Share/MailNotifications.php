@@ -178,11 +178,11 @@ class MailNotifications {
 
 	}
 
-	public function sendLinkShareMail($recipient, $filename, $link, $expiration, $personalNote = null) {
+	public function sendLinkShareMail($recipient, $filename, $link, $expiration, $personalNote = null, $options = array()) {
 		$subject = (string)$this->l->t('%s shared »%s« with you', [$this->senderDisplayName, $filename]);
 		list($htmlBody, $textBody) = $this->createMailBody($filename, $link, $expiration, $personalNote);
 
-		return $this->sendLinkShareMailFromBody($recipient, $subject, $htmlBody, $textBody);
+		return $this->sendLinkShareMailFromBody($recipient, $subject, $htmlBody, $textBody, $options);
 	}
 
 	/**
@@ -197,7 +197,10 @@ class MailNotifications {
 	 */
 	public function sendLinkShareMailFromBody($recipient, $subject, $htmlBody, $textBody, $options = array()) {
 
-		$recipients    = $this->_mailStringToArray($recipient);
+		$recipients = [];
+		if ($recipient !== null) {
+			$recipients    = $this->_mailStringToArray($recipient);
+		}
 		$ccRecipients  = (isset($options['cc']) && $options['cc'] !== '') ? $this->_mailStringToArray($options['cc']) : null;
 		$bccRecipients = (isset($options['bcc']) && $options['bcc'] !== '') ? $this->_mailStringToArray($options['bcc']) : null;
 
