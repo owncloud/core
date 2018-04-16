@@ -20,6 +20,10 @@
  */
 namespace Test;
 
+use OC\Group\Group;
+use OC\User\User;
+use Symfony\Component\EventDispatcher\GenericEvent;
+
 class SubAdminTest extends TestCase {
 
 	/** @var \OCP\IUserManager */
@@ -96,8 +100,40 @@ class SubAdminTest extends TestCase {
 	}
 
 	public function testCreateSubAdmin() {
+		$calledBeforeCreate = [];
+		\OC::$server->getEventDispatcher()->addListener('user.beforefeaturechange',
+			function (GenericEvent $event) use (&$calledBeforeCreate) {
+				$calledBeforeCreate[] = 'user.beforefeaturechange';
+				$calledBeforeCreate[] = $event;
+			});
+		$calledAfterCreate = [];
+		\OC::$server->getEventDispatcher()->addListener('user.afterfeaturechange',
+			function (GenericEvent $event) use (&$calledAfterCreate) {
+				$calledAfterCreate[] = 'user.afterfeaturechange';
+				$calledAfterCreate[] = $event;
+			});
 		$subAdmin = new \OC\SubAdmin($this->userManager, $this->groupManager, $this->dbConn);
 		$this->assertTrue($subAdmin->createSubAdmin($this->users[0], $this->groups[0]));
+		$this->assertInstanceOf(GenericEvent::class, $calledAfterCreate[1]);
+		$this->assertInstanceOf(GenericEvent::class, $calledBeforeCreate[1]);
+		$this->assertEquals('user.beforefeaturechange', $calledBeforeCreate[0]);
+		$this->assertEquals('user.afterfeaturechange', $calledAfterCreate[0]);
+		$this->assertArrayHasKey('user', $calledAfterCreate[1]);
+		$this->assertInstanceOf(User::class, $calledAfterCreate[1]->getArgument('user'));
+		$this->assertArrayHasKey('feature', $calledAfterCreate[1]);
+		$this->assertEquals('groupAdmin', $calledAfterCreate[1]->getArgument('feature'));
+		$this->assertArrayHasKey('value', $calledAfterCreate[1]);
+		$this->assertEquals('create', $calledAfterCreate[1]->getArgument('value'));
+		$this->assertArrayHasKey('group', $calledAfterCreate[1]);
+		$this->assertInstanceOf(Group::class, $calledAfterCreate[1]->getArgument('group'));
+		$this->assertArrayHasKey('user', $calledBeforeCreate[1]);
+		$this->assertInstanceOf(User::class, $calledBeforeCreate[1]->getArgument('user'));
+		$this->assertArrayHasKey('feature', $calledBeforeCreate[1]);
+		$this->assertEquals('groupAdmin', $calledBeforeCreate[1]->getArgument('feature'));
+		$this->assertArrayHasKey('value', $calledBeforeCreate[1]);
+		$this->assertEquals('create', $calledBeforeCreate[1]->getArgument('value'));
+		$this->assertArrayHasKey('group', $calledBeforeCreate[1]);
+		$this->assertInstanceOf(Group::class, $calledBeforeCreate[1]->getArgument('group'));
 
 		// Look for subadmin in the database
 		$qb = $this->dbConn->getQueryBuilder();
@@ -123,7 +159,40 @@ class SubAdminTest extends TestCase {
 	public function testDeleteSubAdmin() {
 		$subAdmin = new \OC\SubAdmin($this->userManager, $this->groupManager, $this->dbConn);
 		$this->assertTrue($subAdmin->createSubAdmin($this->users[0], $this->groups[0]));
+		$calledBeforeCreate = [];
+		\OC::$server->getEventDispatcher()->addListener('user.beforefeaturechange',
+			function (GenericEvent $event) use (&$calledBeforeCreate) {
+				$calledBeforeCreate[] = 'user.beforefeaturechange';
+				$calledBeforeCreate[] = $event;
+			});
+		$calledAfterCreate = [];
+		\OC::$server->getEventDispatcher()->addListener('user.afterfeaturechange',
+			function (GenericEvent $event) use (&$calledAfterCreate) {
+				$calledAfterCreate[] = 'user.afterfeaturechange';
+				$calledAfterCreate[] = $event;
+			});
 		$this->assertTrue($subAdmin->deleteSubAdmin($this->users[0], $this->groups[0]));
+
+		$this->assertInstanceOf(GenericEvent::class, $calledAfterCreate[1]);
+		$this->assertInstanceOf(GenericEvent::class, $calledBeforeCreate[1]);
+		$this->assertEquals('user.beforefeaturechange', $calledBeforeCreate[0]);
+		$this->assertEquals('user.afterfeaturechange', $calledAfterCreate[0]);
+		$this->assertArrayHasKey('user', $calledAfterCreate[1]);
+		$this->assertInstanceOf(User::class, $calledAfterCreate[1]->getArgument('user'));
+		$this->assertArrayHasKey('feature', $calledAfterCreate[1]);
+		$this->assertEquals('groupAdmin', $calledAfterCreate[1]->getArgument('feature'));
+		$this->assertArrayHasKey('value', $calledAfterCreate[1]);
+		$this->assertEquals('remove', $calledAfterCreate[1]->getArgument('value'));
+		$this->assertArrayHasKey('group', $calledAfterCreate[1]);
+		$this->assertInstanceOf(Group::class, $calledAfterCreate[1]->getArgument('group'));
+		$this->assertArrayHasKey('user', $calledBeforeCreate[1]);
+		$this->assertInstanceOf(User::class, $calledBeforeCreate[1]->getArgument('user'));
+		$this->assertArrayHasKey('feature', $calledBeforeCreate[1]);
+		$this->assertEquals('groupAdmin', $calledBeforeCreate[1]->getArgument('feature'));
+		$this->assertArrayHasKey('value', $calledBeforeCreate[1]);
+		$this->assertEquals('remove', $calledBeforeCreate[1]->getArgument('value'));
+		$this->assertArrayHasKey('group', $calledBeforeCreate[1]);
+		$this->assertInstanceOf(Group::class, $calledBeforeCreate[1]->getArgument('group'));
 
 		// DB query should be empty
 		$qb = $this->dbConn->getQueryBuilder();
