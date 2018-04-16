@@ -230,7 +230,8 @@ a.unshare:hover {
 	position: relative;
 }
 
-.emailPrivateLinkForm--send-indicator {
+.emailPrivateLinkForm--sending-indicator,
+.emailPrivateLinkForm--sent-indicator {
 	z-index: 2;
 	position: absolute;
 	left: 50%;
@@ -243,6 +244,13 @@ a.unshare:hover {
 	color: #555;
 	border: 1px solid rgba(240,240,240,.9);
 	border-radius: 3px;
+}
+
+.emailPrivateLinkForm--sent-indicator {
+	background-color: MediumSeaGreen;
+	border-color: MediumSeaGreen;
+	font-weight: 600;
+	color: #fff;
 }
 
 .emailPrivateLinkForm--addAddressButton {
