@@ -352,6 +352,7 @@ OC.L10N.register(
     "Default user and group share permissions" : "Standard rettigheter ved deling med brukere og grupper",
     "Enforce password protection for read-only links" : "Krev passordbeskyttelse for skrivebeskyttede linker",
     "Enforce password protection for read & write links" : "Krev passordbeskyttelse for les og skriv linker",
-    "Enforce password protection for upload-only (File Drop) links" : "Krev passordbeskyttelse for bare opplasting (File Drop) linker"
+    "Enforce password protection for upload-only (File Drop) links" : "Krev passordbeskyttelse for bare opplasting (File Drop) linker",
+    "You are using %s" : "Du bruker %s "
 },
 "nplurals=2; plural=(n != 1);");

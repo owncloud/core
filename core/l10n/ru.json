@@ -351,6 +351,9 @@
     "Add personal message" : "Добавить личное сообщение",
     "Error adding {addItem}: {addItem} already exists" : "Ошибка при добавлении {addItem}: {addItem} уже существует",
     "federated" : "федеративный",
-    "Link name" : "Имя ссылки"
+    "Link name" : "Имя ссылки",
+    "Recipients can view, download, edit, delete and upload contents." : "Получатели могут просматривать, скачивать, править, удалять и закачивать содержимое.",
+    "Download / View" : "Скачивание / Просмотр",
+    "Download / View / Upload" : "Скачивание / Просмотр / Закачка"
 },"pluralForm" :"nplurals=4; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<12 || n%100>14) ? 1 : n%10==0 || (n%10>=5 && n%10<=9) || (n%100>=11 && n%100<=14)? 2 : 3);"
 }

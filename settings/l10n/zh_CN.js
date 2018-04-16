@@ -344,6 +344,8 @@ OC.L10N.register(
     "Add Domain" : "添加域名",
     "CORS" : "跨域资源共享",
     "Invalid email address" : "无效的电邮地址",
-    "Default user and group share permissions" : "默认的用户和组共享权限"
+    "Default user and group share permissions" : "默认的用户和组共享权限",
+    "Email address" : "电子邮件地址",
+    "You are using %s" : "你已经使用了%s"
 },
 "nplurals=1; plural=0;");

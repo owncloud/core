@@ -351,6 +351,10 @@
     "Add personal message" : "เพิ่มข้อความส่วนตัว",
     "Error adding {addItem}: {addItem} already exists" : "เกิดข้อผิดพลาดขณะกำลังเพิ่ม {addItem}: {addItem} ที่มีอยู่แล้ว",
     "federated" : "สหพันธ์",
-    "Link name" : "ชื่อลิงก์"
+    "Link name" : "ชื่อลิงก์",
+    "Recipients can view, download, edit, delete and upload contents." : "ผู้รับสามารถดู ดาวน์โหลด แก้ไข ลบและอัพโหลดเนื้อหาได้",
+    "Download / View" : "ดาวน์โหลดหรือดู",
+    "Download / View / Upload" : "ดาวน์โหลด ดู หรืออัพโหลด",
+    "An error occured while sending email" : "เกิดข้อผิดพลาดขณะส่งอีเมล"
 },"pluralForm" :"nplurals=1; plural=0;"
 }

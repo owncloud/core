@@ -354,6 +354,9 @@ OC.L10N.register(
     "Error adding {addItem}: {addItem} already exists" : "Erro ao adicionar {addItem}: {addItem} já existe",
     "federated" : "federado",
     "Link name" : "Nome do link",
-    "Download / View" : "Baixar/Visualizar"
+    "Download / View" : "Baixar/Visualizar",
+    "Recipients can view, download, edit, delete and upload contents." : "Os destinatários podem visualizar, baixar, editar, excluir e fazer upload de conteúdo.",
+    "Download / View / Upload" : "Baixar / Visualizar / Enviar",
+    "An error occured while sending email" : "Ocorreu um erro ao enviar e-mail"
 },
 "nplurals=2; plural=(n > 1);");

@@ -352,6 +352,7 @@ OC.L10N.register(
     "Default user and group share permissions" : "Permissões padrão para usuários e grupos",
     "Enforce password protection for read-only links" : "Aplicar proteção de senha para links somente de leitura",
     "Enforce password protection for read & write links" : "Aplicar proteção de senha para links de leitura e gravação",
-    "Enforce password protection for upload-only (File Drop) links" : "Aplicar proteção de senha para links de upload-only (Baixar Arquivo)"
+    "Enforce password protection for upload-only (File Drop) links" : "Aplicar proteção de senha para links de upload-only (Baixar Arquivo)",
+    "You are using %s" : "Você está usando %s"
 },
 "nplurals=2; plural=(n > 1);");

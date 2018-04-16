@@ -353,6 +353,10 @@ OC.L10N.register(
     "Add personal message" : "Shtoni mesazh personal",
     "Error adding {addItem}: {addItem} already exists" : "Gabim në shtimin e {addItem}: {addItem} ekziston tashmë",
     "federated" : "i federuar",
-    "Link name" : "Emër lidhjeje"
+    "Link name" : "Emër lidhjeje",
+    "Recipients can view, download, edit, delete and upload contents." : "Marrësit mund të shohin shkarkojnë, përpunojnë, fshijnë dhe ngarkojnë lëndë.",
+    "Download / View" : "Të shkarkojë / Të shohë",
+    "Download / View / Upload" : "Të shkarkojë / Të shohë / Të ngarkojë",
+    "An error occured while sending email" : "Ndodhi një gabim gjatë dërgimit të email-it"
 },
 "nplurals=2; plural=(n != 1);");
