@@ -331,12 +331,16 @@ class LostController extends Controller {
 		$tmpl = new \OC_Template('core', 'lostpassword/email');
 		$tmpl->assign('link', $link);
 		$msg = $tmpl->fetchPage();
+		$tmplAlt = new \OC_Template('core', 'lostpassword/altemail');
+		$tmplAlt->assign('link', $link);
+		$msgAlt = $tmplAlt->fetchPage();
 
 		try {
 			$message = $this->mailer->createMessage();
 			$message->setTo([$email => $user]);
 			$message->setSubject($this->l10n->t('%s password reset', [$this->defaults->getName()]));
-			$message->setPlainBody($msg);
+			$message->setPlainBody($msgAlt);
+			$message->setHtmlBody($msg);
 			$message->setFrom([$this->from => $this->defaults->getName()]);
 			$this->mailer->send($message);
 		} catch (\Exception $e) {
