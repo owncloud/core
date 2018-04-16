@@ -23,6 +23,8 @@
  */
 
 namespace OCA\Files\Service;
+use OC\AppFramework\Middleware\Security\Exceptions\NotLoggedInException;
+use OCP\Files\IRootFolder;
 
 /**
  * Service class to manage tags on files.
@@ -35,23 +37,23 @@ class TagService {
 	private $userSession;
 
 	/**
-	 * @var \OCP\ITags
+	 * @var \OCP\ITagManager
 	 */
-	private $tagger;
+	private $tagManager;
 
 	/**
-	 * @var \OCP\Files\Folder
+	 * @var IRootFolder
 	 */
-	private $homeFolder;
+	private $rootFolder;
 
 	public function __construct(
 		\OCP\IUserSession $userSession,
-		\OCP\ITags $tagger,
-		\OCP\Files\Folder $homeFolder
+		\OCP\ITagManager $tagManager,
+		IRootFolder $rootFolder
 	) {
 		$this->userSession = $userSession;
-		$this->tagger = $tagger;
-		$this->homeFolder = $homeFolder;
+		$this->tagManager = $tagManager;
+		$this->rootFolder = $rootFolder;
 	}
 
 	/**
@@ -60,14 +62,20 @@ class TagService {
 	 * replace the actual tag selection.
 	 *
 	 * @param string $path path
-	 * @param array  $tags array of tags
+	 * @param array $tags array of tags
 	 * @return array list of tags
 	 * @throws \OCP\Files\NotFoundException if the file does not exist
+	 * @throws NotLoggedInException
 	 */
 	public function updateFileTags($path, $tags) {
-		$fileId = $this->homeFolder->get($path)->getId();
+		$user = $this->userSession->getUser();
+		if ($user === null) {
+			throw new NotLoggedInException();
+		}
+		$fileId = $this->rootFolder->getUserFolder($user->getUID())->get($path)->getId();
+		$tagger = $this->tagManager->load('files');
 
-		$currentTags = $this->tagger->getTagsForObjects([$fileId]);
+		$currentTags = $tagger->getTagsForObjects([$fileId]);
 
 		if (!empty($currentTags)) {
 			$currentTags = current($currentTags);
@@ -75,11 +83,11 @@ class TagService {
 
 		$newTags = array_diff($tags, $currentTags);
 		foreach ($newTags as $tag) {
-			$this->tagger->tagAs($fileId, $tag);
+			$tagger->tagAs($fileId, $tag);
 		}
 		$deletedTags = array_diff($currentTags, $tags);
 		foreach ($deletedTags as $tag) {
-			$this->tagger->unTag($fileId, $tag);
+			$tagger->unTag($fileId, $tag);
 		}
 
 		// TODO: re-read from tagger to make sure the
