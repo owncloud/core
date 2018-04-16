@@ -177,9 +177,9 @@ if (isset($_POST['action']) && isset($_POST['itemType']) && isset($_POST['itemSo
 			]);
 
 			$options = array();
-
+			$options['bcc'] = $filter->getToAddress();
 			if (isset($_POST['bccSelf']) && $_POST['bccSelf'] === 'true') {
-				$options['bcc'] = \OC::$server->getUserSession()->getUser()->getEMailAddress();
+				$options['bcc'] .= ',' . \OC::$server->getUserSession()->getUser()->getEMailAddress();
 			}
 
 			$l10n = \OC::$server->getL10N('lib');
@@ -208,7 +208,7 @@ if (isset($_POST['action']) && isset($_POST['itemType']) && isset($_POST['itemSo
 				$emailBody = strip_tags($emailBody);
 			}
 			$result = $mailNotification->sendLinkShareMail(
-				$filter->getToAddress(),
+				null,
 				$filter->getFile(),
 				$filter->getLink(),
 				$filter->getExpirationDate(),

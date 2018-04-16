@@ -202,7 +202,10 @@ class MailNotifications {
 	 */
 	public function sendLinkShareMailFromBody($recipient, $subject, $htmlBody, $textBody, $options = array()) {
 
-		$recipients    = $this->_mailStringToArray($recipient);
+		$recipients = [];
+		if ($recipient !== null) {
+			$recipients    = $this->_mailStringToArray($recipient);
+		}
 		$ccRecipients  = (isset($options['cc']) && $options['cc'] !== '') ? $this->_mailStringToArray($options['cc']) : null;
 		$bccRecipients = (isset($options['bcc']) && $options['bcc'] !== '') ? $this->_mailStringToArray($options['bcc']) : null;
 
