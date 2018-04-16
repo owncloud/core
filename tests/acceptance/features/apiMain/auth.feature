@@ -28,6 +28,11 @@ Feature: auth
 		When the user requests "/index.php/apps/files" with "GET" using the browser session
 		Then the HTTP status code should be "200"
 
+	Scenario: access files app with an app password
+		Given a new browser session for "user0" has been started
+		And the user has generated a new app password named "my-client"
+		When the user requests "/index.php/apps/files" with "GET" using the generated app password
+		Then the HTTP status code should be "200"
 
 	# WebDAV
 
@@ -76,3 +81,9 @@ Feature: auth
 		Given a new browser session for "user0" has been started
 		When the user requests "/ocs/v1.php/apps/files_sharing/api/v1/remote_shares" with "GET" using the browser session
 		Then the OCS status code should be "100"
+
+	Scenario: using OCS with an app password
+		Given a new browser session for "user0" has been started
+		And the user has generated a new app password named "my-client"
+		When the user requests "/ocs/v1.php/apps/files_sharing/api/v1/remote_shares" with "GET" using the generated app password
+		Then the HTTP status code should be "200"

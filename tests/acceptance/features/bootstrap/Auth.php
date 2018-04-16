@@ -30,6 +30,7 @@ require __DIR__ . '/../../../../lib/composer/autoload.php';
 trait Auth {
 
 	private $clientToken;
+	private $appToken;
 
 	/**
 	 * @BeforeScenario
@@ -85,6 +86,42 @@ trait Auth {
 		} catch (BadResponseException $ex) {
 			$this->response = $ex->getResponse();
 		}
+	}
+
+	/**
+	 * @When the user generates a new app password named :name using the API
+	 *
+	 * @param string $name
+	 *
+	 * @return void
+	 */
+	public function userGeneratesNewAppPasswordNamed($name) {
+		$options = [];
+		$options['cookies'] = $this->cookieJar;
+		$options['body'] = ['name' => $name];
+		$request = $this->client->createRequest(
+			'POST',
+			$this->getBaseUrl() . '/index.php/settings/personal/authtokens',
+			$options
+		);
+		$request->setHeader('Content-Type', 'application/x-www-form-urlencoded');
+		$request->setHeader('OCS-APIREQUEST', 'true');
+		$request->setHeader('requesttoken', $this->requestToken);
+		$request->setHeader('X-Requested-With', 'XMLHttpRequest');
+		$this->response = $this->client->send($request);
+		$this->appToken = json_decode($this->response->getBody()->getContents())->token;
+	}
+
+	/**
+	 * @Given the user has generated a new app password named :name
+	 *
+	 * @param string $name
+	 *
+	 * @return void
+	 */
+	public function aNewAppPasswordHasBeenGenerated($name) {
+		$this->userGeneratesNewAppPasswordNamed($name);
+		$this->theHTTPStatusCodeShouldBe(200);
 	}
 
 	/**
@@ -152,6 +189,19 @@ trait Auth {
 	 */
 	public function userRequestsURLWithUsingAClientToken($url, $method) {
 		$this->sendRequest($url, $method, 'token ' . $this->clientToken);
+	}
+
+	/**
+	 * @When the user requests :url with :method using the generated app password
+	 * @Given the user has requested :url with :method using the generated app password
+	 *
+	 * @param string $url
+	 * @param string $method
+	 *
+	 * @return void
+	 */
+	public function userRequestsURLWithUsingAppPassword($url, $method) {
+		$this->sendRequest($url, $method, 'token ' . $this->appToken);
 	}
 
 	/**
