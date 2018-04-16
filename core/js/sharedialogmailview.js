@@ -15,7 +15,7 @@
 
 	var TEMPLATE =
 		'<form id="emailPrivateLink" class="emailPrivateLinkForm">' +
-		'  <span class="emailPrivateLinkForm--send-indicator success-message-global absolute-center hidden">{{sending}}</span>' +
+		'  <span class="emailPrivateLinkForm--send-indicator hidden">{{sending}}</span>' +
 		'  <label class="public-link-modal--label" for="emailPrivateLinkField-{{cid}}">{{mailLabel}}</label>' +
 		'  <input class="emailPrivateLinkForm--emailField full-width" id="emailPrivateLinkField-{{cid}}" />' +
 		'  <div class="emailPrivateLinkForm--elements hidden">' +
