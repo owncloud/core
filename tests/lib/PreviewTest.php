@@ -27,6 +27,7 @@ use OC\Files\Storage\Temporary;
 use OC\Files\View;
 use OC\Preview;
 use OC\PreviewManager;
+use OC\Server;
 use Test\Traits\MountProviderTrait;
 use Test\Traits\UserTrait;
 
@@ -111,7 +112,8 @@ class PreviewTest extends TestCase {
 		//re-initialize the preview manager due to config change above
 		unset(\OC::$server['PreviewManager']);
 		\OC::$server->registerService('PreviewManager', function ($c) {
-			return new PreviewManager($c->getConfig());
+			/** @var Server $c */
+			return new PreviewManager($c->getConfig(), $c->getLazyRootFolder(), $c->getUserSession());
 		});
 
 		// Sample is 1680x1050 JPEG
