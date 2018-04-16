@@ -176,10 +176,6 @@ if (isset($_POST['action']) && isset($_POST['itemType']) && isset($_POST['itemSo
 				'personalNote' => $emailBody
 			]);
 
-			// read post variables
-			$link = (string)$_POST['link'];
-			$file = (string)$_POST['file'];
-			$toAddress = (string)$_POST['toAddress'];
 			$options = array();
 
 			if (isset($_POST['bccSelf']) && $_POST['bccSelf'] === 'true') {
@@ -216,11 +212,13 @@ if (isset($_POST['action']) && isset($_POST['itemType']) && isset($_POST['itemSo
 				$filter->getFile(),
 				$filter->getLink(),
 				$filter->getExpirationDate(),
-				$filter->getPersonalNote()
+				$filter->getPersonalNote(),
+                $options
 			);
+
 			if(empty($result)) {
 				// Get the token from the link
-				$linkParts = explode('/', $link);
+				$linkParts = explode('/', $filter->getLink());
 				$token = array_pop($linkParts);
 
 				// Get the share for the token
