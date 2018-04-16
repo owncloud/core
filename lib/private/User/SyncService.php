@@ -76,8 +76,8 @@ class SyncService {
 	/**
 	 * @param UserInterface $backend the backend to check
 	 * @param \Closure $callback is called for every user to allow progress display
-	 * @return array[] the first array contains users that were removed in the external backend
-	 *                 the second array contains users that are not enabled in oc, but are available in the external backend
+	 * @return array[] the first array contains a uid => account map of users that were removed in the external backend
+	 *                 the second array contains a uid => account map of users that are not enabled in oc, but are available in the external backend
 	 */
 	public function analyzeExistingUsers(UserInterface $backend, \Closure $callback) {
 		$removed = [];

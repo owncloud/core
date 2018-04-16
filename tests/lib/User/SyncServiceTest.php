@@ -173,4 +173,13 @@ class SyncServiceTest extends TestCase {
 
 		$s->createOrSyncAccount($uid, $wrongBackend);
 	}
+
+	public function testAnalyseExistingUsers() {
+		$s = new SyncService($this->config, $this->logger, $this->mapper);
+		$backend = $this->createMock(UserInterface::class);
+		$result = $s->analyzeExistingUsers($backend, function() {});
+		$this->assertTrue(is_array($result));
+		$this->assertEquals(2, count($result));
+	}
+
 }
