@@ -199,7 +199,7 @@
 					var data = [{
 						"id": query.term,
 						"text" : query.term,
-                        "disabled" : !_this.validateEmail(query.term)
+						"disabled" : !_this.validateEmail(query.term)
 					}];
 
 					// return query data ASAP
