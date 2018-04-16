@@ -741,7 +741,19 @@ class Share20OCS {
 
 			// set name only if passed as parameter, empty string is allowed
 			if ($name !== null) {
+				$oldname = $share->getName();
 				$share->setName($name);
+
+				//Trigger update event for name change only if name differ
+				if ($name !== $oldname) {
+					$shareAfterNameUpdate = new GenericEvent(null);
+					$shareAfterNameUpdate->setArguments([
+						'sharenameupdated' => true,
+						'oldname' => $oldname,
+						'shareobject' => $share,
+					]);
+					$this->eventDispatcher->dispatch('share.afterupdate', $shareAfterNameUpdate);
+				}
 			}
 
 			if ($newPermissions !== null) {
