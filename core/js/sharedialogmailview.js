@@ -15,7 +15,8 @@
 
 	var TEMPLATE =
 		'<form id="emailPrivateLink" class="emailPrivateLinkForm">' +
-		'  <span class="emailPrivateLinkForm--send-indicator success-message-global absolute-center hidden">{{sending}}</span>' +
+		'  <span class="emailPrivateLinkForm--sending-indicator hidden">{{sending}}</span>' +
+		'  <span class="emailPrivateLinkForm--sent-indicator hidden">{{sent}}</span>' +
 		'  <label class="public-link-modal--label" for="emailPrivateLinkField-{{cid}}">{{mailLabel}}</label>' +
 		'  <input class="emailPrivateLinkForm--emailField full-width" id="emailPrivateLinkField-{{cid}}" />' +
 		'  <div class="emailPrivateLinkForm--elements hidden">' +
@@ -94,9 +95,10 @@
 		 * @param {string} recipientEmail recipient email address
 		 */
 		_sendEmailPrivateLink: function(mail) {
-			var deferred   = $.Deferred();
-			var itemType   = this.itemModel.get('itemType');
-			var itemSource = this.itemModel.get('itemSource');
+			var deferred           = $.Deferred();
+			var itemType           = this.itemModel.get('itemType');
+			var itemSource         = this.itemModel.get('itemSource');
+			var $formSentIndicator = this.$el.find('.emailPrivateLinkForm--sent-indicator');
 
 			var params = {
 				action      : 'email',
@@ -118,7 +120,11 @@
 							message: result.data.message
 						});
 					} else {
-						deferred.resolve();
+						$formSentIndicator.removeClass('hidden');
+						setTimeout(function() {
+							deferred.resolve();
+							$formSentIndicator.addClass('hidden');
+						}, 2000);
 					}
 			}).fail(function(error) {
 				return deferred.reject(error);
@@ -136,7 +142,7 @@
 
 		sendEmails: function() {
 			var $formItems         = this.$el.find('.emailPrivateLinkForm input, .emailPrivateLinkForm textarea');
-			var $formSendIndicator = this.$el.find('.emailPrivateLinkForm--send-indicator');
+			var $formSendIndicator = this.$el.find('.emailPrivateLinkForm--sending-indicator');
 			var  mail = {
 				 to      : this._addresses.join(','),
 				 bccSelf : this.$el.find('.emailPrivateLinkForm--emailBccSelf').is(':checked'),
@@ -149,11 +155,9 @@
 				$formItems.prop('disabled', true);
 				$formSendIndicator.removeClass('hidden');
 				this._sendEmailPrivateLink(mail).done(function() {
-					setTimeout(function() {
-						$formItems.prop('disabled', false);
-						$formSendIndicator.addClass('hidden');
-						deferred.resolve();
-					}, 2000);
+					$formItems.prop('disabled', false);
+					$formSendIndicator.addClass('hidden');
+					deferred.resolve();
 				}).fail(function(error) {
 					OC.dialogs.info(error.message, t('core', 'An error occured while sending email'));
 					$formSendIndicator.addClass('hidden');
@@ -178,7 +182,8 @@
 				bccSelf             : t('core', 'Send copy to self'),
 				mailLabel           : t('core', 'Send link via email'),
 				mailBodyPlaceholder : t('core', 'Add personal message'),
-				sending             : t('core', 'Sending') + ' ...'
+				sending             : t('core', 'Sending') + ' ...',
+				sent                : t('core', 'E-Mail sent') + '!'
 			}));
 
 			this.delegateEvents();
@@ -198,7 +203,8 @@
 					// directly from search
 					var data = [{
 						"id": query.term,
-						"text" : query.term
+						"text" : query.term,
+						"disabled" : !_this.validateEmail(query.term)
 					}];
 
 					// return query data ASAP

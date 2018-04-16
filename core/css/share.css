@@ -230,10 +230,27 @@ a.unshare:hover {
 	position: relative;
 }
 
-.emailPrivateLinkForm--send-indicator {
+.emailPrivateLinkForm--sending-indicator,
+.emailPrivateLinkForm--sent-indicator {
 	z-index: 2;
-	/* overriding default padding */
-	padding: 5px 15px !important;
+	position: absolute;
+	left: 50%;
+	bottom: -8px;
+	transform: translate(-50%, 100%);
+
+	width: auto;
+	padding: 5px;
+	background-color: rgba(240,240,240,.9);
+	color: #555;
+	border: 1px solid rgba(240,240,240,.9);
+	border-radius: 3px;
+}
+
+.emailPrivateLinkForm--sent-indicator {
+	background-color: MediumSeaGreen;
+	border-color: MediumSeaGreen;
+	font-weight: 600;
+	color: #fff;
 }
 
 .emailPrivateLinkForm--addAddressButton {
@@ -242,6 +259,11 @@ a.unshare:hover {
 	margin-top: -30px;
 	z-index: 1;
 	color: #999;
+}
+
+.emailPrivateLinkForm--dropDown {
+	/* would love to get this from vars */
+	max-width: 484px;
 }
 
 .emailPrivateLinkForm--dropDown > .select2-choices {

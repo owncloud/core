@@ -176,14 +176,10 @@ if (isset($_POST['action']) && isset($_POST['itemType']) && isset($_POST['itemSo
 				'personalNote' => $emailBody
 			]);
 
-			// read post variables
-			$link = (string)$_POST['link'];
-			$file = (string)$_POST['file'];
-			$toAddress = (string)$_POST['toAddress'];
 			$options = array();
-
+			$options['bcc'] = $filter->getToAddress();
 			if (isset($_POST['bccSelf']) && $_POST['bccSelf'] === 'true') {
-				$options['bcc'] = \OC::$server->getUserSession()->getUser()->getEMailAddress();
+				$options['bcc'] .= ',' . \OC::$server->getUserSession()->getUser()->getEMailAddress();
 			}
 
 			$l10n = \OC::$server->getL10N('lib');
@@ -212,15 +208,17 @@ if (isset($_POST['action']) && isset($_POST['itemType']) && isset($_POST['itemSo
 				$emailBody = strip_tags($emailBody);
 			}
 			$result = $mailNotification->sendLinkShareMail(
-				$filter->getToAddress(),
+				null,
 				$filter->getFile(),
 				$filter->getLink(),
 				$filter->getExpirationDate(),
-				$filter->getPersonalNote()
+				$filter->getPersonalNote(),
+				$options
 			);
+
 			if(empty($result)) {
 				// Get the token from the link
-				$linkParts = explode('/', $link);
+				$linkParts = explode('/', $filter->getLink());
 				$token = array_pop($linkParts);
 
 				// Get the share for the token
