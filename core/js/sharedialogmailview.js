@@ -98,7 +98,7 @@
 			var deferred           = $.Deferred();
 			var itemType           = this.itemModel.get('itemType');
 			var itemSource         = this.itemModel.get('itemSource');
-            var $formSentIndicator = this.$el.find('.emailPrivateLinkForm--sent-indicator');
+			var $formSentIndicator = this.$el.find('.emailPrivateLinkForm--sent-indicator');
 
 			var params = {
 				action      : 'email',
@@ -120,11 +120,11 @@
 							message: result.data.message
 						});
 					} else {
-                        $formSentIndicator.removeClass('hidden');
-                        setTimeout(function() {
-                            deferred.resolve();
-                            $formSentIndicator.addClass('hidden');
-                        }, 2000);
+						$formSentIndicator.removeClass('hidden');
+						setTimeout(function() {
+							deferred.resolve();
+							$formSentIndicator.addClass('hidden');
+						}, 2000);
 					}
 			}).fail(function(error) {
 				return deferred.reject(error);
