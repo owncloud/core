@@ -183,11 +183,11 @@ class MailNotifications {
 
 	}
 
-	public function sendLinkShareMail($recipient, $filename, $link, $expiration, $personalNote = null) {
+	public function sendLinkShareMail($recipient, $filename, $link, $expiration, $personalNote = null, $options = array()) {
 		$subject = (string)$this->l->t('%s shared »%s« with you', [$this->senderDisplayName, $filename]);
 		list($htmlBody, $textBody) = $this->createMailBody($filename, $link, $expiration, $personalNote);
 
-		return $this->sendLinkShareMailFromBody($recipient, $subject, $htmlBody, $textBody);
+		return $this->sendLinkShareMailFromBody($recipient, $subject, $htmlBody, $textBody, $options);
 	}
 
 	/**
