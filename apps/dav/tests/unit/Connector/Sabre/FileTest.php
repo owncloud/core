@@ -526,9 +526,43 @@ public function testPutWithModifyRun() {
 		
 		$_SERVER['HTTP_OC_CHUNKED'] = true;
 		$file = 'foo.txt';
+
+		$calledBeforeCreateFile = [];
+		\OC::$server->getEventDispatcher()->addListener('file.beforecreate',
+			function (GenericEvent $event) use (&$calledBeforeCreateFile) {
+				$calledBeforeCreateFile[] = 'file.beforecreate';
+				$calledBeforeCreateFile[] = $event;
+			});
+		$calledAfterCreateFile = [];
+		\OC::$server->getEventDispatcher()->addListener('file.aftercreate',
+			function (GenericEvent $event) use (&$calledAfterCreateFile) {
+				$calledAfterCreateFile[] = 'file.aftercreate';
+				$calledAfterCreateFile[] = $event;
+			});
+		$calledAfterUpdateFile = [];
+		\OC::$server->getEventDispatcher()->addListener('file.afterupdate',
+			function (GenericEvent $event) use (&$calledAfterUpdateFile) {
+				$calledAfterUpdateFile[] = 'file.afterupdate';
+				$calledAfterUpdateFile[] = $event;
+			});
 		$this->doPut($file.'-chunking-12345-2-0', null, $request);
 		$this->doPut($file.'-chunking-12345-2-1', null, $request);
 		$this->assertEquals($resultMtime, $this->getFileInfos($file)['mtime']);
+		$this->assertInstanceOf(GenericEvent::class, $calledAfterCreateFile[1]);
+		$this->assertInstanceOf(GenericEvent::class, $calledBeforeCreateFile[1]);
+		$this->assertEquals('file.aftercreate', $calledAfterCreateFile[0]);
+		$this->assertEquals('file.beforecreate', $calledBeforeCreateFile[0]);
+		$this->assertEquals('file.afterupdate', $calledAfterUpdateFile[0]);
+		$this->assertArrayHasKey('path', $calledAfterCreateFile[1]);
+		$this->assertArrayHasKey('path', $calledBeforeCreateFile[1]);
+		//Internally it even tries to call mkdir to create cache dir So lets test what ever
+		// is there in the arrays. We will test all the indices.
+		$this->assertEquals('/'.$this->user.'/cache', $calledBeforeCreateFile[1]->getArgument('path'));
+		$this->assertEquals('/'.$this->user.'/files/'.$file, $calledBeforeCreateFile[3]->getArgument('path'));
+		$this->assertEquals('/'.$this->user.'/cache', $calledAfterCreateFile[1]->getArgument('path'));
+		//The indices 1 and 3 have part files.
+		$this->assertNotFalse(strpos($calledAfterUpdateFile[1]->getArgument('path'), '/'.$this->user.'/cache/'. $file.'-chunking-12345-0'));
+		$this->assertNotFalse(strpos($calledAfterUpdateFile[3]->getArgument('path'), '/'.$this->user.'/cache/'. $file.'-chunking-12345-1'));
 	}
 
 	/**
@@ -1079,6 +1113,74 @@ public function testPutWithModifyRun() {
 			$hookPath,
 			$params[Filesystem::signal_param_path]
 		);
+	}
+
+	/**
+	 * Testing update of file when put method is called repeatedly on same file.
+	 * This test also verifies the hooks being called.
+	 */
+	public function testUpdateFileWithPut() {
+		$view = new View('/' . $this->user . '/files/');
+
+		$path = 'test-update.txt';
+		$info = new FileInfo(
+			'/' . $this->user . '/files/' . $path,
+			$this->getMockStorage(),
+			null,
+			['permissions' => Constants::PERMISSION_ALL],
+			null
+		);
+
+		$file = new File($view, $info);
+
+		$calledBeforeCreate = [];
+		\OC::$server->getEventDispatcher()->addListener('file.beforecreate',
+			function (GenericEvent $event) use (&$calledBeforeCreate) {
+				$calledBeforeCreate[] = 'file.beforecreate';
+				$calledBeforeCreate[] = $event;
+			});
+		$calledAfterCreate = [];
+		\OC::$server->getEventDispatcher()->addListener('file.aftercreate',
+			function (GenericEvent $event) use (&$calledAfterCreate) {
+				$calledAfterCreate[] = 'file.aftercreate';
+				$calledAfterCreate[] = $event;
+			});
+		$view->lockFile($path, ILockingProvider::LOCK_SHARED);
+		$file->put($this->getStream('hello'));
+		$view->unlockFile($path, ILockingProvider::LOCK_SHARED);
+
+		$this->assertInstanceOf(GenericEvent::class, $calledBeforeCreate[1]);
+		$this->assertInstanceOf(GenericEvent::class, $calledAfterCreate[1]);
+		$this->assertEquals('file.beforecreate', $calledBeforeCreate[0]);
+		$this->assertEquals('file.aftercreate', $calledAfterCreate[0]);
+		$this->assertArrayHasKey('path', $calledBeforeCreate[1]);
+		$this->assertEquals('/'.$this->user.'/files//test-update.txt', $calledBeforeCreate[1]->getArgument('path'));
+		$this->assertArrayHasKey('path', $calledAfterCreate[1]);
+		$this->assertEquals('/'.$this->user.'/files//test-update.txt', $calledAfterCreate[1]->getArgument('path'));
+
+		$calledBeforeUpdate = [];
+		\OC::$server->getEventDispatcher()->addListener('file.beforeupdate',
+			function (GenericEvent $event) use (&$calledBeforeUpdate) {
+				$calledBeforeUpdate[] = 'file.beforeupdate';
+				$calledBeforeUpdate[] = $event;
+			});
+		$calledAfterUpdte = [];
+		\OC::$server->getEventDispatcher()->addListener('file.afterupdate',
+			function (GenericEvent $event) use (&$calledAfterUpdte) {
+				$calledAfterUpdte[] = 'file.afterupdate';
+				$calledAfterUpdte[] = $event;
+			});
+		$view->lockFile($path, ILockingProvider::LOCK_SHARED);
+		$file->put($this->getStream('world'));
+		$view->unlockFile($path, ILockingProvider::LOCK_SHARED);
+		$this->assertInstanceOf(GenericEvent::class, $calledBeforeUpdate[1]);
+		$this->assertInstanceOf(GenericEvent::class, $calledAfterUpdte[1]);
+		$this->assertEquals('file.beforeupdate', $calledBeforeUpdate[0]);
+		$this->assertEquals('file.afterupdate', $calledAfterUpdte[0]);
+		$this->assertArrayHasKey('path', $calledBeforeUpdate[1]);
+		$this->assertEquals('/'.$this->user.'/files//'.$path, $calledBeforeUpdate[1]->getArgument('path'));
+		$this->assertArrayHasKey('path', $calledAfterUpdte[1]);
+		$this->assertEquals('/'.$this->user.'/files//'.$path, $calledAfterUpdte[1]->getArgument('path'));
 	}
 
 	/**
