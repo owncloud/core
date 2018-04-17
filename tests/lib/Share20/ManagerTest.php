@@ -2724,7 +2724,23 @@ class ManagerTest extends \Test\TestCase {
 			'path' => '/myPath',
 		]);
 
+		$calledAfterUpdate = [];
+		$this->eventDispatcher->addListener('share.afterupdate',
+			function (GenericEvent $event) use (&$calledAfterUpdate) {
+				$calledAfterUpdate[] = 'share.afterupdate';
+				$calledAfterUpdate[] = $event;
+			});
+
 		$manager->updateShare($share);
+		$this->assertInstanceOf(GenericEvent::class, $calledAfterUpdate[1]);
+		$this->assertEquals('share.afterupdate', $calledAfterUpdate[0]);
+		$this->assertArrayHasKey('permissionupdate', $calledAfterUpdate[1]);
+		$this->assertTrue($calledAfterUpdate[1]->getArgument('permissionupdate'));
+		$this->assertArrayHasKey('oldpermissions', $calledAfterUpdate[1]);
+		$this->assertEquals(1, $calledAfterUpdate[1]->getArgument('oldpermissions'));
+		$this->assertArrayHasKey('shareobject', $calledAfterUpdate[1]);
+		$this->assertInstanceOf(Share::class, $calledAfterUpdate[1]->getArgument('shareobject'));
+		$this->assertArrayHasKey('path', $calledAfterUpdate[1]);
 	}
 
 	public function testUpdateShareGroup() {
@@ -2831,7 +2847,22 @@ class ManagerTest extends \Test\TestCase {
 		$hookListner2->expects($this->never())->method('post');
 
 
+		$calledAfterUpdate = [];
+		$this->eventDispatcher->addListener('share.afterupdate',
+			function (GenericEvent $event) use (&$calledAfterUpdate) {
+				$calledAfterUpdate[] = 'share.afterupdate';
+				$calledAfterUpdate[] = $event;
+			});
 		$manager->updateShare($share);
+
+		$this->assertInstanceOf(GenericEvent::class, $calledAfterUpdate[1]);
+		$this->assertEquals('share.afterupdate', $calledAfterUpdate[0]);
+		$this->assertArrayHasKey('expirationdateupdated', $calledAfterUpdate[1]);
+		$this->assertTrue($calledAfterUpdate[1]->getArgument('expirationdateupdated'));
+		$this->assertArrayHasKey('oldexpirationdate', $calledAfterUpdate[1]);
+		$this->assertNull($calledAfterUpdate[1]->getArgument('oldexpirationdate'));
+		$this->assertArrayHasKey('shareobject', $calledAfterUpdate[1]);
+		$this->assertInstanceOf(Share::class, $calledAfterUpdate[1]->getArgument('shareobject'));
 	}
 
 	/**
