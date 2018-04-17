@@ -84,18 +84,37 @@ class SyncService {
 		$reappeared = [];
 		$backendClass = get_class($backend);
 		$this->mapper->callForAllUsers(function (Account $a) use (&$removed, &$reappeared, $backend, $backendClass, $callback) {
-			if ($a->getBackend() === $backendClass) {
-				if ($backend->userExists($a->getUserId())) {
-					if ($a->getState() !== Account::STATE_ENABLED) {
-						$reappeared[$a->getUserId()] = $a;
-					}
-				} else {
-					$removed[$a->getUserId()] = $a;
-				}
-			}
+			// Check if the backend matches handles this user
+			list($wasRemoved, $didReappear) = $this->checkIfAccountReappeared($a, $backend, $backendClass);
+			$removed = array_merge($removed, $wasRemoved);
+			$reappeared = array_merge($reappeared, $didReappear);
 			$callback($a);
 		}, '', false);
+		return [$removed, $reappeared];
+	}
 
+	/**
+	 * Checks a backend to see if a user reappeared relative to the accounts table
+	 * @param Account $a
+	 * @param UserInterface $backend
+	 * @param $backendClass
+	 * @return array
+	 */
+	private function checkIfAccountReappeared(Account $a, UserInterface $backend, $backendClass) {
+		$removed = [];
+		$reappeared = [];
+		if ($a->getBackend() === $backendClass) {
+			// Does the backend have this user still
+			if ($backend->userExists($a->getUserId())) {
+				// Is the user not enabled currently?
+				if ($a->getState() !== Account::STATE_ENABLED) {
+					$reappeared[$a->getUserId()] = $a;
+				}
+			} else {
+				// The backend no longer has this user
+				$removed[$a->getUserId()] = $a;
+			}
+		}
 		return [$removed, $reappeared];
 	}
 
