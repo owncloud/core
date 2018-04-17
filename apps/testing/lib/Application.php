@@ -38,19 +38,11 @@ class Application extends App {
 			$userManager->clearBackends();
 			$userManager->registerBackend($c->query(AlternativeHomeUserBackend::class));
 
-			$userManager->listen('\OC\User', 'postCreateUser', function ($user, $password) use ($c) {
-				$q = $c->getServer()->getDatabaseConnection()->getQueryBuilder();
-				$q->update('*PREFIX*accounts')
-					->set('backend', $q->expr()->literal(AlternativeHomeUserBackend::class))
-					->where($q->expr()->eq('user_id', $q->createNamedParameter($user->getUID())))
-					->execute();
-			});
-
 			// first call must adjust all existing backends
 			if ($config->getAppValue($appName, 'updated_all', 'no') === 'no') {
 				$q = $c->getServer()->getDatabaseConnection()->getQueryBuilder();
 				$q->update('*PREFIX*accounts')
-					->set('backend', $q->expr()->literal(AlternativeHomeUserBackend::class))
+					->set('backend', $q->createNamedParameter(AlternativeHomeUserBackend::class))
 					->where($q->expr()->eq('backend', $q->createNamedParameter(\OC\User\Database::class)))
 					->execute();
 
