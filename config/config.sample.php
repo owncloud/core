@@ -748,7 +748,7 @@ $CONFIG = array(
  * ``OC::$SERVERROOT`` points to the web root of your instance.
  * Please see the Apps Management description on how to move custom apps properly.
  */
- 'apps_path' => 
+'apps_paths' =>
     array (
       0 => 
       array (
@@ -759,11 +759,10 @@ $CONFIG = array(
       1 => 
       array (
         'path' => OC::$SERVERROOT.'/apps-external',
-        'url' => '/apps--external',
+        'url' => '/apps-external',
         'writable' => 'true',
       ),
     ),
-
 
 /**
  * @see appcodechecker
