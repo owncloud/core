@@ -216,9 +216,10 @@ $CONFIG = array(
 'session_keepalive' => true,
 
 /**
- * Enforce token authentication for clients, which blocks requests using the user
- * password for enhanced security. Users need to generate tokens in personal settings
- * which can be used as passwords on their clients.
+ * Enforces token only authentication for apps and clients connecting to ownCloud. 
+ * If enabled, all access requests using the users password are blocked for enhanced security. 
+ * Users have to generate special app-passwords (tokens) for their apps or clients in their personal 
+ * settings which are further used for app or client authentication. Browser logon is not affected. 
  */
 'token_auth_enforced' => false,
 
