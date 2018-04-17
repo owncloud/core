@@ -330,6 +330,14 @@ OC.L10N.register(
     "Read & Write" : "Четене и писане",
     "Email notification not sent" : "Емайл известието не е изпратено",
     "You took too long to login, please try again now" : "Отне ви много време да влезете, моля, опитайте отново сега",
-    "Password changed successfully" : "Паролата е сменена успешно"
+    "Password changed successfully" : "Паролата е сменена успешно",
+    "%s password changed successfully" : "%s паролата е сменена успешно",
+    "Edit link share: {name}" : "Промяна на споделена връзка: {name}",
+    "Create link share: {name}" : "Създаване на споделена връзка: {name}",
+    "Owner: {owner}" : "Собственик: {owner}",
+    "Email notification was sent!" : "Емайл известието беше изпратено!",
+    "Please contact the server administrator if this error reappears multiple times and include the technical details below in your report." : "Моля свържете се със системният администратор ако тази грешка се повтаря многократно и включете техническите подробности отдолу, във уведомлението ви.",
+    "You are trying to access a private link. Please log in first." : "Опитвате се да достъпите частна връзка. Моля влезте в системата.",
+    "It looks like your instance may host many files and/or users. To ensure a smooth upgrade process, please use the command line updater (occ upgrade)." : "Излгежда, че вашата система може да съдържа много файлове и/или потребители. За да сте сигурни че процеса по обновяваше ще протече без проблеми, моля използвате обновяване през конзолен ред (occ upgrade)."
 },
 "nplurals=2; plural=(n != 1);");

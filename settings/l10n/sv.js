@@ -315,6 +315,9 @@ OC.L10N.register(
     "You are using %s of %s" : "Du använder %s av %s",
     "Apps Management" : "Programhantering",
     "Show enabled apps" : "Visa aktiverade appar",
-    "Show disabled apps" : "Visa avaktiverade appar"
+    "Show disabled apps" : "Visa avaktiverade appar",
+    "%s password changed successfully" : "%s lösenord ändrades",
+    "No panels for this section." : "Inga paneler för den här sektionen.",
+    "Failed to change the email address." : "Kunde inte ändra e-postadress."
 },
 "nplurals=2; plural=(n != 1);");

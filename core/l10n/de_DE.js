@@ -353,6 +353,21 @@ OC.L10N.register(
     "Add personal message" : "Persönliche Nachricht hinzufügen",
     "Error adding {addItem}: {addItem} already exists" : "Fehler beim hinzufügen von {addItem}: {addItem} existiert bereits",
     "federated" : "föderiert",
-    "Link name" : "Name des Links"
+    "Link name" : "Name des Links",
+    "Owner: {owner}" : "Besitzer: {owner}",
+    "Email notification was sent!" : "Mail-Benachrichtigung wurde versendet!",
+    "Please contact the server administrator if this error reappears multiple times and include the technical details below in your report." : "Bitte wenden Sie sich an den Serveradministrator, wenn dieser Fehler mehrfach auftritt und geben Sie bitte die, unten stehenden, technischen Details in Ihrem Bericht mit an.",
+    "You are trying to access a private link. Please log in first." : "Sie versuchen auf einen privaten Link zuzugreifen. Bitte erst anmelden.",
+    "It looks like your instance may host many files and/or users. To ensure a smooth upgrade process, please use the command line updater (occ upgrade)." : "Es scheint, dass Ihre Instanz viele Dateien und / oder Benutzer verwaltet. Um einen reibungslosen Upgradeprozess sicherzustellen, bitte den Kommandozeilenupdater (occ upgrade) verwenden.",
+    "Couldn't send mail to following recipient(s): %s " : "Zu folgenden Empfängern konnte keine Email geschickt werden: %s",
+    "Receive files from multiple recipients without revealing the contents of the folder." : "Von mehreren Empfängern Dateien empfangen, ohne den Inhalt des Ordners preiszugeben.",
+    "Download / View" : "Herunterladen / Ansehen",
+    "Recipients can view or download contents." : "Empfänger können Inhalte sehen und herunterladen.",
+    "Download / View / Upload" : "Herunterladen / Ansehen / Hochladen",
+    "Recipients can view, download, edit, delete and upload contents." : "Empfänger können Inhalte sehen, herunterladen, ändern, löschen und hochladen.",
+    "An error occured while sending email" : "Beim Versenden der E-Mail ist ein Fehler aufgetreten",
+    "{sharee} (federated)" : "{sharee} (federated)",
+    "Personal note from the sender: %s." : "Persönliche Notiz des Absenders: 1%s.",
+    "Automatic updating is disabled in config.php. To upgrade your instance, please use the command line updater (occ upgrade)." : "Automatische Aktualisierung ist in der config.php deaktiviert. Zur Hochrüstung der Instanz, bitte den Kommandozeilenupdater (occ upgrade) verwenden."
 },
 "nplurals=2; plural=(n != 1);");

@@ -263,6 +263,7 @@ OC.L10N.register(
     "Share" : "Bagikan",
     "What to log" : "Yang akan dicatat",
     "Domain" : "Domain",
-    "Add" : "Tambah"
+    "Add" : "Tambah",
+    "Download logfile (%s)" : "Unduh berkas catatan (%s)"
 },
 "nplurals=1; plural=0;");

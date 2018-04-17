@@ -331,6 +331,11 @@
     "Password changed successfully" : "Lösenordet ändrades",
     "Social share" : "Social delning",
     "An error occurred while verifying the token" : "Ett fel inträffade vid verifiering av nyckeln",
-    "Link name" : "Länknamn"
+    "Link name" : "Länknamn",
+    "%s password changed successfully" : "%s lösenord ändrades",
+    "{fileName} link" : "{fileName} länk",
+    "Edit link share: {name}" : "Ändra länkdelningen {name}",
+    "Create link share: {name}" : "Skapa länkdelningen {name}",
+    "Please specify the port number along with the host name (e.g., localhost: 5432)." : "Specifiera portnumret och värdnamnet (ex. localhost: 1337)"
 },"pluralForm" :"nplurals=2; plural=(n != 1);"
 }

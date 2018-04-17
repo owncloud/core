@@ -322,6 +322,7 @@ OC.L10N.register(
     "Add" : "Aggiungi",
     "Change email" : "Cambia email",
     "Set email" : "Imposta email",
-    "Invalid email address" : "Indirizzo email non valido"
+    "Invalid email address" : "Indirizzo email non valido",
+    "No panels for this section." : "Nessun pannello per questa sezione."
 },
 "nplurals=2; plural=(n != 1);");

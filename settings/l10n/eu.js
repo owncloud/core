@@ -191,6 +191,7 @@ OC.L10N.register(
     "change email address" : "aldatu eposta helbidea",
     "Default" : "Lehenetsia",
     "Share" : "Partekatu",
-    "Add" : "Gehitu"
+    "Add" : "Gehitu",
+    "%s password changed successfully" : "%s pasahitza behar bezala aldatu da"
 },
 "nplurals=2; plural=(n != 1);");

@@ -353,6 +353,15 @@ OC.L10N.register(
     "Enforce password protection for read-only links" : "Zbato me detyrim mbrojtje përmes fjalëkalimi për lidhje të llojit vetëm-lexim",
     "Enforce password protection for read & write links" : "Zbato me detyrim mbrojtje përmes fjalëkalimi për lidhje të llojit lexim & shkrim",
     "Enforce password protection for upload-only (File Drop) links" : "Zbato me detyrim mbrojtje përmes fjalëkalimi për lidhje të llojit vetëm-ngarkim (File Drop)",
-    "You are using %s" : "Po përdorni %s"
+    "You are using %s" : "Po përdorni %s",
+    "No Domains." : "S’ka Përkatësi.",
+    "Are you sure you want to remove this domain?" : "Jeni i sigurt se doni të hiqet kjo përkatësi?",
+    "Add" : "Shtoni",
+    "Empty app name is not allowed." : "Nuk lejohet emër hapësire i zbrazët.",
+    "The config file is read only. Please adjust your setup by editing the config file manually." : "Kartela e formësimit është vetëm e lexueshme. Ju lutemi, përpunojeni rregullimin tuaj duke e përpunuar dorazi e formësimit.",
+    "Email changed successfully for {user}." : "Email-i për {user} u ndryshua me sukses.",
+    "You are not a member of any groups." : "S’jeni anëtar i ndonjë grupi.",
+    "In a clustered setup please make sure to sync the config.php file across all nodes." : "Në një sistem cluster sigurohuni të njëkohësoni kartelën config.php në krejt nyjet.",
+    "These are the web, desktop and mobile clients currently logged in to your %s." : "Këta janë klientët web, desktop dhe celular të futur te %s juaj këtë çast."
 },
 "nplurals=2; plural=(n != 1);");

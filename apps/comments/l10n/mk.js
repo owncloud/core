@@ -12,6 +12,15 @@ OC.L10N.register(
     "You commented" : "Вие коментиравте",
     "You commented on %2$s" : "Вие коментиравте на %2$s",
     "Error occurred while posting comment" : "Се случи грешка при објавување коментар",
-    "Delete comment" : "Избриши коментар"
+    "Delete comment" : "Избриши коментар",
+    "Type in a new comment..." : "Напиши нов коментар...",
+    "[Deleted user]" : "[Deleted user]",
+    "More comments..." : "Повеќе коментари...",
+    "Allowed characters {count} of {max}" : "Дозволени карактери {count} од {max}",
+    "{count} unread comments" : "{count} непрочитани коментари",
+    "<strong>Comments</strong> for files <em>(always listed in stream)</em>" : "<strong>Коментари</strong> за датотеки<em>(секогаш наведени во стримот)</em>",
+    "%1$s commented on %2$s" : "%1$s коментираше на %2$s",
+    "Error occurred while retrieving comment with id {id}" : "Се случи грешка при преземањето на коментар со ID {id}",
+    "Error occurred while updating comment with id {id}" : "Се случи грешка при ажурирање на коментарот со ID {id}"
 },
 "nplurals=2; plural=(n % 10 == 1 && n % 100 != 11) ? 0 : 1;");

@@ -229,6 +229,11 @@
     "Show enabled apps" : "Arată aplicații activate",
     "Show disabled apps" : "Arată aplicații dezactivate",
     "Performance tuning" : "Tuning de performanță",
-    "Improving the config.php" : "Îmbunătățirea config.php"
+    "Improving the config.php" : "Îmbunătățirea config.php",
+    "%s password changed successfully" : "parola %s a fost schimbată cu succes",
+    "Official apps are developed by and within the ownCloud community. They offer functionality central to ownCloud and are ready for production use." : "Aplicațiile oficiale sunt dezvoltate de și în cadrul comunității ownCloud. Acestea oferă funcționalitate centrală pentru ownCloud și sunt gata pentru utilizare în producție.",
+    "Download logfile (%s)" : "Descarcă fișierul cu loguri (%s)",
+    "An error occurred. Please upload an ASCII-encoded PEM certificate." : "A intervenit o eroare. Te rugăm încarcă un certificat PEM codat ASCII",
+    "Failed to change the email address." : "Schimbarea adresei de e-mail a eșuat."
 },"pluralForm" :"nplurals=3; plural=(n==1?0:(((n%100>19)||((n%100==0)&&(n!=0)))?2:1));"
 }

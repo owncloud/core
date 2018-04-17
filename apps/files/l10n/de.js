@@ -114,6 +114,10 @@ OC.L10N.register(
     "Files and folders you mark as favorite will show up here" : "Dateien und Ordner, die Du als Favoriten markierst, werden hier erscheinen",
     "Text file" : "Textdatei",
     "New text file.txt" : "Neue Textdatei.txt",
-    "Upload timeout for file \"{file}\"" : "Zeitüberschreitung beim Hochladen der Datei \"{file}\""
+    "Upload timeout for file \"{file}\"" : "Zeitüberschreitung beim Hochladen der Datei \"{file}\"",
+    "Processing files..." : "Verarbeite Dateien…",
+    "Limit notifications about creation and changes to your <strong>favorite files</strong>" : "Benachrichtigungen über Neues und Änderungen auf Deine <strong>favorisierten Dateien</strong> beschränken",
+    "You don't have permissions to access this file/folder - Please contact the owner to share it with you." : "Du hast keine Berechtigung, um auf diese(n) Datei/Ordner zuzugreifen - Bitte kontaktiere den Besitzer, damit er dies mit dir teilt.",
+    "Error when assembling chunks, status code {status}" : "Fehler beim Zusammenfügen der Datenblöcke, Statuscode {status}"
 },
 "nplurals=2; plural=(n != 1);");

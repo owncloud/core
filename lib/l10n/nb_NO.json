@@ -179,6 +179,8 @@
     "A safe home for all your data" : "Et trygt hjem for alle dine data",
     "User Authentication" : "Bruker autentisering",
     "The username must be at least 3 characters long" : "Brukernavn må være minst tre tegn langt",
-    "File cannot be read" : "Fil kan ikke leses"
+    "File cannot be read" : "Fil kan ikke leses",
+    "%s is not supported and %s will not work properly on this platform. Use it at your own risk! " : "%ser ikke støttet og %svil ikke fungere tilstrekkelig på denne platformen. Bruk på egen risiko.",
+    "Sharing %s failed, could not find %s, check spelling and server availability." : "Deling %s mislyktes, kunne ikke finne %s, kontroller input og server tilgjengelighet."
 },"pluralForm" :"nplurals=2; plural=(n != 1);"
 }

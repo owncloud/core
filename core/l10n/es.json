@@ -354,6 +354,18 @@
     "Recipients can view, download, edit, delete and upload contents." : "Se puede ver, descargar, editar, borrar y subir contenido.",
     "Link name" : "Nombre del enlace",
     "Download / View" : "Descargar / Ver",
-    "Download / View / Upload" : "Descargar / Ver / Subir"
+    "Download / View / Upload" : "Descargar / Ver / Subir",
+    "Owner: {owner}" : "Propietario: {owner}",
+    "Email notification was sent!" : "¡Se ha enviado una notificación por correo electrónico!",
+    "Please contact the server administrator if this error reappears multiple times and include the technical details below in your report." : "Por favor, ponte en contacto con el administrador del servidor si este error aparece más veces, e incluye los detalles técnicos en tu informe a continuación.",
+    "You are trying to access a private link. Please log in first." : "Estás intentando acceder a un enlace privado. Por favor, inicia sesión primero.",
+    "It looks like your instance may host many files and/or users. To ensure a smooth upgrade process, please use the command line updater (occ upgrade)." : "Parece que su instalación tiene demasiados host, archivos o usuarios. Para garantizar una actualización suave, por favor use la actualización por linea de comandos (occ upgrade)",
+    "Couldn't send mail to following recipient(s): %s " : "No se puede enviar un correo electrónico a los siguientes receptores: %s ",
+    "Receive files from multiple recipients without revealing the contents of the folder." : "Recibir archivos de multiples origenes sin revelar el contenido de la carpeta.",
+    "Recipients can view or download contents." : "Se puede ver o descargar el contenido",
+    "An error occured while sending email" : "Un error ocurrió mientras se enviaba el correo",
+    "{sharee} (federated)" : "{sharee} (federado)",
+    "Personal note from the sender: %s." : "Nota personal del origen: %s.",
+    "Automatic updating is disabled in config.php. To upgrade your instance, please use the command line updater (occ upgrade)." : "La actualización autómatica ha sido deshabilitada en config.php. Para actualizar use la linea de comandos (occ upgrade)."
 },"pluralForm" :"nplurals=2; plural=(n != 1);"
 }

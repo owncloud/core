@@ -339,6 +339,10 @@ OC.L10N.register(
     "Upload only" : "Carica solo",
     "Sending" : "Invio in corso",
     "Menu" : "Menu",
-    "Link name" : "Nome collegamento"
+    "Link name" : "Nome collegamento",
+    "Download / View" : "Scarica / visiona",
+    "Recipients can view or download contents." : "I destinatari possono vedere o scaricare contenuti",
+    "Download / View / Upload" : "Scarica / Visiona / Carica",
+    "Recipients can view, download, edit, delete and upload contents." : "I destinatari possono vedere, scaricare, modificare, cancellare ed inviare contenuti"
 },
 "nplurals=2; plural=(n != 1);");

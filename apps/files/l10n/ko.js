@@ -112,6 +112,11 @@ OC.L10N.register(
     "Text file" : "텍스트 파일",
     "New text file.txt" : "새 텍스트 파일.txt",
     "Target folder does not exist any more" : "대상 폴더가 더 이상 존재하지 않습니다",
-    "Upload timeout for file \"{file}\"" : "\"{file}\" 파일 업로드 시간 초과"
+    "Upload timeout for file \"{file}\"" : "\"{file}\" 파일 업로드 시간 초과",
+    "Processing files..." : "파일 처리 중...",
+    "No entries in this folder match {filter}" : "이 폴더에 '{filter}'와(과) 일치하는 항목 없음",
+    "Limit notifications about creation and changes to your <strong>favorite files</strong>" : "<strong>즐겨찾는 파일</strong>의 생성 및 변경의 알림 제한",
+    "You don't have permissions to access this file/folder - Please contact the owner to share it with you." : "이 파일/폴더에 접근할 권한이 없습니다 - 귀하에게 공유한 소유자에게 연락해 주십시오.",
+    "Error when assembling chunks, status code {status}" : "조각을 모으는 중 오류 발생, 상태 코드 {status}"
 },
 "nplurals=1; plural=0;");

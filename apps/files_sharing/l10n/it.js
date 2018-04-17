@@ -113,6 +113,7 @@ OC.L10N.register(
     "Add to your ownCloud" : "Aggiungi al tuo ownCloud",
     "Download" : "Scarica",
     "Download %s" : "Scarica %s",
-    "Direct link" : "Collegamento diretto"
+    "Direct link" : "Collegamento diretto",
+    "No permission to create share" : "Manca il permesso di creare la condivisione"
 },
 "nplurals=2; plural=(n != 1);");

@@ -117,6 +117,8 @@
     "User Authentication" : "用户授权",
     "Storage connection timeout. %s" : "存储连接超时。%s",
     "Avatar image is not square" : "Avatar 头像图片非方形",
-    "Empty filename is not allowed" : "不允许使用空文件名"
+    "Empty filename is not allowed" : "不允许使用空文件名",
+    "PHP with a version lower than %s is required." : "要求 PHP 的版本低于 %s。",
+    "To fix this issue update your libxml2 version and restart your web server." : "修复这个问题需要更新 libxml2 的版本并重启您的网页服务器。"
 },"pluralForm" :"nplurals=1; plural=0;"
 }

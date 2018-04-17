@@ -357,6 +357,17 @@ OC.L10N.register(
     "Download / View" : "Baixar/Visualizar",
     "Recipients can view, download, edit, delete and upload contents." : "Os destinatários podem visualizar, baixar, editar, excluir e fazer upload de conteúdo.",
     "Download / View / Upload" : "Baixar / Visualizar / Enviar",
-    "An error occured while sending email" : "Ocorreu um erro ao enviar e-mail"
+    "An error occured while sending email" : "Ocorreu um erro ao enviar e-mail",
+    "Owner: {owner}" : "Proprietário: {owner}",
+    "Email notification was sent!" : "Notificação de e-mail foi enviada!",
+    "Please contact the server administrator if this error reappears multiple times and include the technical details below in your report." : "Entre em contato com o administrador do servidor se este erro reaparecer várias vezes e inclua os detalhes técnicos abaixo no seu relatório.",
+    "You are trying to access a private link. Please log in first." : "Você está tentando acessar um linque privado. Por favor, faça o login primeiro.",
+    "It looks like your instance may host many files and/or users. To ensure a smooth upgrade process, please use the command line updater (occ upgrade)." : "Parece que sua instância pode hospedar muitos arquivos e/ou usuários. Para garantir um processo de atualização suave, use o atualizador da linha de comando (atualização do occ).",
+    "Couldn't send mail to following recipient(s): %s " : "Não foi possível enviar email para o(s) seguinte(s) destinatário(s): %s ",
+    "Receive files from multiple recipients without revealing the contents of the folder." : "Receber arquivos de vários destinatários sem revelar o conteúdo da pasta.",
+    "Recipients can view or download contents." : "Os destinatários podem visualizar ou baixar o conteúdo.",
+    "{sharee} (federated)" : "{sharee} (federated)",
+    "Personal note from the sender: %s." : "Nota pessoal do remetente: %s.",
+    "Automatic updating is disabled in config.php. To upgrade your instance, please use the command line updater (occ upgrade)." : "A atualização automática está desativada no config.php. Para atualizar sua instância, use o atualizador da linha de comando (atualização do occ)."
 },
 "nplurals=2; plural=(n > 1);");

@@ -350,6 +350,16 @@
     "Default user and group share permissions" : "Nutzer und Gruppen Standard-Berechtigungen für das Teilen",
     "Enforce password protection for read-only links" : "Password-Schutz für \"nur lesen\" Links anwenden ",
     "Enforce password protection for read & write links" : "Password-Schutz für das Lesen und Schreiben von Links anwenden",
-    "Enforce password protection for upload-only (File Drop) links" : "Password-Schutz für Upload-Links anwenden"
+    "Enforce password protection for upload-only (File Drop) links" : "Password-Schutz für Upload-Links anwenden",
+    "No Domains." : "Keine Domains.",
+    "Are you sure you want to remove this domain?" : "Soll diese Domain wirklich entfernt werden?",
+    "Add" : "Hinzufügen",
+    "Domain" : "Domain",
+    "The config file is read only. Please adjust your setup by editing the config file manually." : "Die Konfigurationsdatei ist schreibgeschützt. Bitte passe deine Einstellungen durch manuelle Bearbeitung der Konfigurationsdatei selbst an.",
+    "Email changed successfully for {user}." : "E-Mail erfolgreich für {user} geändert.",
+    "You are not a member of any groups." : "Du bist kein Mitglied einer Gruppe.",
+    "In a clustered setup please make sure to sync the config.php file across all nodes." : "In einem gruppierten Umgebung stelle bitte sicher, dass die config.php-Datei über alle Knoten synchronisiert wird.",
+    "You are using %s" : "Du verwendest %s",
+    "These are the web, desktop and mobile clients currently logged in to your %s." : "Diese Web-, Desktop- und Mobil-Anwendungen sind zur Zeit auf %s angemeldet"
 },"pluralForm" :"nplurals=2; plural=(n != 1);"
 }

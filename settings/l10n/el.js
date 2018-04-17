@@ -339,6 +339,7 @@ OC.L10N.register(
     "Default" : "Προκαθορισμένο",
     "Share" : "Μοιράσου",
     "Domain" : "Τομέας",
-    "Add Domain" : "Προσθήκη τομέα"
+    "Add Domain" : "Προσθήκη τομέα",
+    "Add" : "Προσθήκη"
 },
 "nplurals=2; plural=(n != 1);");

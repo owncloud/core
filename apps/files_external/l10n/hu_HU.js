@@ -77,6 +77,8 @@ OC.L10N.register(
     "Allow users to mount the following external storage" : "A felhasználók számára engedélyezett külső tárolók:",
     "Disable external storage" : "Külső tároló kikapcsolása",
     "Error configuring OAuth1" : "Hiba történt az OAuth1 konfigurálásakor",
-    "Invalid mount point" : "Érvénytelen csatolási pont"
+    "Invalid mount point" : "Érvénytelen csatolási pont",
+    "Please provide a valid app key and secret." : "Kérjük, adjon meg egy érvényes felhasználási kulcsot és titkosítást.",
+    "Compatibility with Mac NFD encoding (slow)" : "Kompatibilitás Mac NFD kódolással (lassú)"
 },
 "nplurals=2; plural=(n != 1);");

@@ -276,6 +276,7 @@
     "png or jpg, max. 20 MB" : "png lub jpg, maks. 20 MB",
     "You are using %s of %s" : "Używasz %s z %s",
     "For password recovery and notifications" : "Niezbędny do odzyskania Twojego hasła oraz wysyłania powiadomień",
-    "You are using %s of %s (%s %%)" : "Używasz %s z %s (%s %%)"
+    "You are using %s of %s (%s %%)" : "Używasz %s z %s (%s %%)",
+    "You are member of the following groups:" : "Jesteś członkiem następujących grup:"
 },"pluralForm" :"nplurals=4; plural=(n==1 ? 0 : (n%10>=2 && n%10<=4) && (n%100<12 || n%100>=14) ? 1 : n!=1 && (n%10>=0 && n%10<=1) || (n%10>=5 && n%10<=9) || (n%100>=12 && n%100<=14) ? 2 : 3);"
 }

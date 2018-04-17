@@ -111,6 +111,8 @@ OC.L10N.register(
     "Text file" : "Tekstbestand",
     "New text file.txt" : "Nieuw tekstbestand.txt",
     "Target folder does not exist any more" : "Doelmap bestaat niet mee",
-    "Upload timeout for file \"{file}\"" : "Upload timeout voor bestand \"{file}\""
+    "Upload timeout for file \"{file}\"" : "Upload timeout voor bestand \"{file}\"",
+    "Processing files..." : "Verwerken bestanden...",
+    "No entries in this folder match {filter}" : "Niets in deze map komt overeen met {filter}"
 },
 "nplurals=2; plural=(n != 1);");

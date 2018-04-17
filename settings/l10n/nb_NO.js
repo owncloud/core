@@ -353,6 +353,15 @@ OC.L10N.register(
     "Enforce password protection for read-only links" : "Krev passordbeskyttelse for skrivebeskyttede linker",
     "Enforce password protection for read & write links" : "Krev passordbeskyttelse for les og skriv linker",
     "Enforce password protection for upload-only (File Drop) links" : "Krev passordbeskyttelse for bare opplasting (File Drop) linker",
-    "You are using %s" : "Du bruker %s "
+    "You are using %s" : "Du bruker %s ",
+    "No Domains." : "Ingen domener",
+    "Are you sure you want to remove this domain?" : "Er du sikker på at du vil fjerne dette domenet?",
+    "Add" : "Legg til",
+    "Empty app name is not allowed." : "Tomt appnavn er ikke tillatt.",
+    "The config file is read only. Please adjust your setup by editing the config file manually." : "Konfigureringsfilen er skrivebeskyttet. Korriger oppsettet ved å redigere filen manuelt.",
+    "Email changed successfully for {user}." : "E-post ble endret for {user}.",
+    "You are not a member of any groups." : "Du er ikke medlem av noen grupper.",
+    "In a clustered setup please make sure to sync the config.php file across all nodes." : "I et klyngeoppsett må config.php synkroniseress til alle noder.",
+    "These are the web, desktop and mobile clients currently logged in to your %s." : "Dette er web-, desktop- og mobilklienter som for øyeblikket er logget på din %s,"
 },
 "nplurals=2; plural=(n != 1);");

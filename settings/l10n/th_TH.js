@@ -353,6 +353,15 @@ OC.L10N.register(
     "Enforce password protection for read-only links" : "บังคับใช้การป้องกันด้วยรหัสผ่านสำหรับลิงก์แบบอ่านอย่างเดียว",
     "Enforce password protection for read & write links" : "บังคับใช้การป้องกันด้วยรหัสผ่านสำหรับการอ่านและเขียนลิงก์",
     "Enforce password protection for upload-only (File Drop) links" : "บังคับใช้การป้องกันด้วยรหัสผ่านสำหรับลิงก์ที่อัพโหลด (โยนไฟล์) เท่านั้น",
-    "You are using %s" : "คุณกำลังใช้ %s"
+    "You are using %s" : "คุณกำลังใช้ %s",
+    "No Domains." : "ไม่มีโดเมน",
+    "Are you sure you want to remove this domain?" : "คุณแน่ใจหรือไม่ว่าต้องการลบโดเมนนี้?",
+    "Add" : "เพิ่ม",
+    "Empty app name is not allowed." : "จำเป็นต้องใส่ชื่อแอพฯ",
+    "The config file is read only. Please adjust your setup by editing the config file manually." : "ไฟล์สามารถอ่านได้อย่างเดียวเท่านั้น โปรดเปลี่ยนการตั้งค่าของคุณโดยแก้ไขไฟล์ด้วยตนเอง",
+    "Email changed successfully for {user}." : "เปลี่ยนอีเมลเรียบร้อยแล้วสำหรับผู้ใช้ {user}",
+    "You are not a member of any groups." : "คุณยังไม่ได้เป็นสมาชิกในกลุ่มใดๆเลย",
+    "In a clustered setup please make sure to sync the config.php file across all nodes." : "ในการตั้งค่าแบบคลัสเตอร์โปรดตรวจสอบให้แน่ใจว่าได้ประสานไฟล์ config.php ในโหนดทั้งหมด",
+    "These are the web, desktop and mobile clients currently logged in to your %s." : "นี่คือเว็บ เดสก์ท็อปและโทรศัพท์มือถือที่ล็อกอินเข้าสู่ระบบ %s ของคุณแล้ว"
 },
 "nplurals=1; plural=0;");

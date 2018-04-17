@@ -351,6 +351,15 @@
     "Enforce password protection for read-only links" : "Aplicar proteção de senha para links somente de leitura",
     "Enforce password protection for read & write links" : "Aplicar proteção de senha para links de leitura e gravação",
     "Enforce password protection for upload-only (File Drop) links" : "Aplicar proteção de senha para links de upload-only (Baixar Arquivo)",
-    "You are using %s" : "Você está usando %s"
+    "You are using %s" : "Você está usando %s",
+    "No Domains." : "Sem Domínios.",
+    "Are you sure you want to remove this domain?" : "Tem certeza de que deseja remover esse domínio?",
+    "Add" : "Adicionar",
+    "Empty app name is not allowed." : "O nome do aplicativo vazio não é permitido.",
+    "The config file is read only. Please adjust your setup by editing the config file manually." : "O arquivo de configuração é somente leitura. Ajuste sua configuração editando o arquivo de configuração manualmente.",
+    "Email changed successfully for {user}." : "E-mail alterado com sucesso para {user}.",
+    "You are not a member of any groups." : "Você não é membro de nenhum grupo.",
+    "In a clustered setup please make sure to sync the config.php file across all nodes." : "Em uma configuração em cluster, certifique-se de sincronizar o arquivo config.php em todos os nós.",
+    "These are the web, desktop and mobile clients currently logged in to your %s." : "Estes são os clientes Web com dispositivos móveis e desktop, atualmente conectados ao seu %s."
 },"pluralForm" :"nplurals=2; plural=(n > 1);"
 }

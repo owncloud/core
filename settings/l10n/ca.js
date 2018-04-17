@@ -235,6 +235,7 @@ OC.L10N.register(
     "change email address" : "canvi d'adreça de correu electrònic",
     "Default" : "Per defecte",
     "Share" : "Compartir",
-    "Add" : "Afegeix"
+    "Add" : "Afegeix",
+    "%s password changed successfully" : "%scontrassenya actualitzada correctament"
 },
 "nplurals=2; plural=(n != 1);");

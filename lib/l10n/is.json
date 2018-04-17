@@ -176,6 +176,10 @@
     "File cannot be read" : "Ekki hægt að lesa skrána",
     "It has been detected that the sample configuration has been copied. This can break your installation and is unsupported. Please read the documentation before performing changes on config.php" : "Komið hefur í ljós að sýniuppsetningin var afrituð. Þetta getur skemmt uppsetninguna og er ekki stutt. Endilega lestu hjálparskjölin áður en þú gerir breytingar á config.php",
     "App can't be installed because it contains the <shipped>true</shipped> tag which is not allowed for non shipped apps" : "Ekki var hægt að setja upp forritið vegna þess að það inniheldur <shipped>true</shipped>-merki sem ekki er leyfilegt í óútgefnum forritum",
-    "App can't be installed because the version in info.xml is not the same as the version reported from the app store" : "Ekki var hægt að setja upp forritið vegna þess að útgáfan í info.xml er ekki sú sama og gefin er upp í forritabúðinni"
+    "App can't be installed because the version in info.xml is not the same as the version reported from the app store" : "Ekki var hægt að setja upp forritið vegna þess að útgáfan í info.xml er ekki sú sama og gefin er upp í forritabúðinni",
+    "%s is not supported and %s will not work properly on this platform. Use it at your own risk! " : "%s er ekki stutt og %s mun ekki vinna eðlilega á þessu stýrikerfi. Notaðu þetta því á þína eigin ábyrgð! ",
+    "Sharing %s failed, could not find %s, check spelling and server availability." : "Deiling %s mistókst, gat ekki fundið %s, athugaðu stafsetninguna og hvort þjónninn sé tiltækur.",
+    "App cannot be installed because appinfo file cannot be read." : "Ekki er hægt að setja upp forritið vegna þess að ekki var hægt að lesa appinfo-skrána.",
+    "Signature could not get checked. Please contact the app developer and check your admin screen." : "Ekki var hægt að staðfesta undirritunina. Hafðu samband við forritarana og skoðaðu stjórnskjáinn þinn.."
 },"pluralForm" :"nplurals=2; plural=(n % 10 != 1 || n % 100 == 11);"
 }

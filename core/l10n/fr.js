@@ -353,6 +353,13 @@ OC.L10N.register(
     "Add personal message" : "Ajouter un message personnel",
     "Error adding {addItem}: {addItem} already exists" : "Erreur en ajoutant {addItem}: {addItem} existe déjà",
     "federated" : "fédéré",
-    "Link name" : "Nom du lien"
+    "Link name" : "Nom du lien",
+    "Owner: {owner}" : "Propriétaire: {owner}",
+    "Email notification was sent!" : "La notification via email a été envoyée !",
+    "Please contact the server administrator if this error reappears multiple times and include the technical details below in your report." : "Veuillez contacter l'administrateur du serveur si cette erreur est rencontrée plusieurs fois et incluez les détails techniques ci-dessous dans votre rapport.",
+    "You are trying to access a private link. Please log in first." : "Vous essayez d'accéder à un lien privé. Veuillez d'abord vous connecter.",
+    "It looks like your instance may host many files and/or users. To ensure a smooth upgrade process, please use the command line updater (occ upgrade)." : "Il semble que votre instance héberge de nombreux fichiers et/ou utilisateurs. Pour faciliter la mise à niveau, veuillez réaliser la mise à jour en ligne de commande (occ upgrade).",
+    "Couldn't send mail to following recipient(s): %s " : "Impossible d'envoyer de mail au(x) destinataire(s) suivant(s) : %s",
+    "Automatic updating is disabled in config.php. To upgrade your instance, please use the command line updater (occ upgrade)." : "La mise à jour uatomatique est désactivé dans le config.php. Pour mettre à jour votre instance , veuillez utiliser l'outil de mise à jour via l'interface en ligne de commande (occ upgrade)."
 },
 "nplurals=2; plural=(n > 1);");

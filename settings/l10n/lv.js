@@ -151,6 +151,8 @@ OC.L10N.register(
     "set new password" : "iestatīt jaunu paroli",
     "Default" : "Noklusējuma",
     "Share" : "Dalīties",
-    "Add" : "Pievienot"
+    "Add" : "Pievienot",
+    "%s password changed successfully" : "%s parole veiksmīgi nomainīta",
+    "Couldn't send reset email. Please contact your administrator." : "Neizdevās nosūt paroles maiņas e-pasta ziņojumu. Lūdzu sazinieties ar sistēmas administratoru."
 },
 "nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n != 0 ? 1 : 2);");

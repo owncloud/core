@@ -18,6 +18,8 @@ OC.L10N.register(
     "%1$s commented" : "%1$s 留言",
     "You commented on %2$s" : "您對 %2$s 留言",
     "%1$s commented on %2$s" : "%1$s 對 %2$s 留言",
-    "Error occurred while posting comment" : "發表留言時發生錯誤"
+    "Error occurred while posting comment" : "發表留言時發生錯誤",
+    "Error occurred while retrieving comment with id {id}" : "檢索ID為 {id} 的留言時發生錯誤",
+    "Error occurred while updating comment with id {id}" : "更新ID為 {id} 的留言時發生錯誤"
 },
 "nplurals=1; plural=0;");

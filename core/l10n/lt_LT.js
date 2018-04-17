@@ -221,6 +221,22 @@ OC.L10N.register(
     "Update needed" : "Reikalingas atnaujinimas",
     "Searching other places" : "Ieškoma kitose vietose",
     "See the documentation" : "Žiūrėti dokumentaciją",
-    "Link name" : "Nuorodos pavadinimas"
+    "Link name" : "Nuorodos pavadinimas",
+    "An error occurred. Please contact your admin." : "Įvyko klaida. Susiekite su administratorium.",
+    "%s password changed successfully" : "%sslaptažodis pakeistas",
+    "[%d / %d]: %s" : "[%d / %d]: %s",
+    "%s (3rdparty)" : "%s(trečios šalies)",
+    "%s (incompatible)" : "%s(nesuderinama)",
+    "{fileName} link" : "{fileName} nuoroda",
+    "Hello {name}, the weather is {weather}" : "Labas (name), oras (weather)",
+    "Hello {name}" : "Labas (name)",
+    "new" : "naujas",
+    "An error occurred." : "Įvyko klaida.",
+    "Only %s is available." : "Tik %sgalima.",
+    "Wrong password. Reset it?" : "Blogas slaptažodis. Pakeisti?",
+    "Wrong password." : "Neteisingas slaptažodis.",
+    "[%d / %d]: Checking table %s" : "[%d / %d]: tikrina lentelę %s",
+    "SQLite will be used as database." : "Bus naudojama SQLite bazė.",
+    "Need help?" : "Reikia pagalbos?"
 },
 "nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && (n%100<10 || n%100>=20) ? 1 : 2);");

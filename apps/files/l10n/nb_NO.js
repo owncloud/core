@@ -112,6 +112,11 @@ OC.L10N.register(
     "Text file" : "Tekstfil",
     "New text file.txt" : "Ny tekstfil.txt",
     "Target folder does not exist any more" : "Målmappen finnes ikke lenger",
-    "Upload timeout for file \"{file}\"" : "Tidsavbrudd for opplasting av fil \"{file}\""
+    "Upload timeout for file \"{file}\"" : "Tidsavbrudd for opplasting av fil \"{file}\"",
+    "Processing files..." : "Behandler filer...",
+    "No entries in this folder match {filter}" : "Ingen oppføringer i denne mappen stemmer med '{filter}'",
+    "Limit notifications about creation and changes to your <strong>favorite files</strong>" : "Begrens varsling om oppretting og endringer til <strong>favorittfilene</strong>dine",
+    "You don't have permissions to access this file/folder - Please contact the owner to share it with you." : "Du har ikke tilgangstillatelse til denne filen/mappen - Vennligst be eieren om å dele den med deg. ",
+    "Error when assembling chunks, status code {status}" : "Feil ved samling av deler for opplasting, statuskode {status}"
 },
 "nplurals=2; plural=(n != 1);");

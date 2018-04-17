@@ -355,6 +355,17 @@
     "Recipients can view, download, edit, delete and upload contents." : "ผู้รับสามารถดู ดาวน์โหลด แก้ไข ลบและอัพโหลดเนื้อหาได้",
     "Download / View" : "ดาวน์โหลดหรือดู",
     "Download / View / Upload" : "ดาวน์โหลด ดู หรืออัพโหลด",
-    "An error occured while sending email" : "เกิดข้อผิดพลาดขณะส่งอีเมล"
+    "An error occured while sending email" : "เกิดข้อผิดพลาดขณะส่งอีเมล",
+    "Owner: {owner}" : "เจ้าของ: {owner}",
+    "Email notification was sent!" : "ส่งการแจ้งเตือนทางอีเมลแล้ว!",
+    "Please contact the server administrator if this error reappears multiple times and include the technical details below in your report." : "โปรดติดต่อผู้ดูแลระบบเซิร์ฟเวอร์หากเกิดข้อผิดพลาดนี้อีก และกรอกรายละเอียดในรายงานของคุณ",
+    "You are trying to access a private link. Please log in first." : "คุณกำลังพยายามเข้าถึงลิงก์ส่วนตัว โปรดเข้าสู่ระบบก่อน",
+    "It looks like your instance may host many files and/or users. To ensure a smooth upgrade process, please use the command line updater (occ upgrade)." : "ดูเหมือนว่าอินสแตนซ์ของคุณอาจมีโฮสต์ ไฟล์หรือผู้ใช้จำนวนมากเพื่อให้แน่ใจว่ากระบวนการอัพเกรดทำงานได้ปกติดี โปรดใช้คำสั่งอัพเดท (occ upgrade)",
+    "Couldn't send mail to following recipient(s): %s " : "ไม่สามารถส่งจดหมายไปยังผู้รับต่อไปนี้: %s",
+    "Receive files from multiple recipients without revealing the contents of the folder." : "รับไฟล์จากผู้รับหลายรายโดยไม่ต้องเปิดเผยเนื้อหาของโฟลเดอร์",
+    "Recipients can view or download contents." : "ผู้รับสามารถดูหรือดาวน์โหลดเนื้อหา",
+    "{sharee} (federated)" : "{sharee} (ร่วมเป็นสหพันธ์แล้ว)",
+    "Personal note from the sender: %s." : "บันทึกส่วนบุคคลจากผู้ส่ง: %s",
+    "Automatic updating is disabled in config.php. To upgrade your instance, please use the command line updater (occ upgrade)." : "การอัพเดทโดยอัตโนมัติถูกปิดใช้งานใน config.php เพื่ออัพเกรดอินสแตนซ์ของคุณโปรดใช้คำสั่งอัพเดท (occ upgrade)"
 },"pluralForm" :"nplurals=1; plural=0;"
 }

@@ -353,6 +353,14 @@ OC.L10N.register(
     "Add personal message" : "Bættu við persónulegum skilaboðum",
     "Error adding {addItem}: {addItem} already exists" : "Villa við að bæta við {addItem}: {addItem} er þegar til",
     "federated" : "skýjasamband (federated)",
-    "Link name" : "Heiti tengils"
+    "Link name" : "Heiti tengils",
+    "Owner: {owner}" : "Eigandi: {owner}",
+    "Email notification was sent!" : "Tilkynning var send í tölvupósti!",
+    "Please contact the server administrator if this error reappears multiple times and include the technical details below in your report." : "Hafðu samband við kerfisstjóra ef þessi villa birtist oft aftur, láttu þá tæknilegu upplýsingarnar hér að neðan fylgja með.",
+    "You are trying to access a private link. Please log in first." : "Þú ert að reyna að tengjast einkatengli. Skráðu þig fyrst inn.",
+    "It looks like your instance may host many files and/or users. To ensure a smooth upgrade process, please use the command line updater (occ upgrade)." : "Það lítur út fyrir að tilvikið þitt hýsi mjög margar skrár og/eða notendur. Til að uppfærslan gangi sem best fyrir sig, ættirðu að nota uppfærslutólið af skipanalínu (occ upgrade).",
+    "Couldn't send mail to following recipient(s): %s " : "Gat ekki sent póst á eftirfarandi notendur: %s ",
+    "{sharee} (federated)" : "{sharee} (federated)",
+    "Automatic updating is disabled in config.php. To upgrade your instance, please use the command line updater (occ upgrade)." : "Sjálfvirkar uppfærslur eru gerðar óvirkar í config.php. Til að uppfæra tilvikið þitt ættirðu að nota uppfærslutólið af skipanalínu (occ upgrade)."
 },
 "nplurals=2; plural=(n % 10 != 1 || n % 100 == 11);");

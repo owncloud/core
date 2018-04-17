@@ -12,6 +12,9 @@ OC.L10N.register(
     "the item was removed" : "die item is verwyder",
     "sharing is disabled" : "deling is gedeaktiveer",
     "Download" : "Laai Af",
-    "Download %s" : "Laai %s Af"
+    "Download %s" : "Laai %s Af",
+    "Uploading..." : "Laai tans op…",
+    "The password is wrong. Try again." : "ie wagwoord is verkeerd. Probeer weer.",
+    "Reasons might be:" : "Moontlike redes is:"
 },
 "nplurals=2; plural=(n != 1);");

@@ -344,6 +344,8 @@ OC.L10N.register(
     "Menu" : "メニュー",
     "Read only" : "読み込みのみ",
     "Read & Write" : "読み込みと書き込み",
-    "Link name" : "リンク名"
+    "Link name" : "リンク名",
+    "You are trying to access a private link. Please log in first." : "プライベートリンクにアクセスしようとしています。ログインをお願いします。",
+    "Automatic updating is disabled in config.php. To upgrade your instance, please use the command line updater (occ upgrade)." : "自動更新は config.php 内で無効化されています。アップグレードするにはコマンドラインアップデータ(occ upgrade)を使用してください。"
 },
 "nplurals=1; plural=0;");

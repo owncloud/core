@@ -342,6 +342,9 @@
     "CORS" : "CORS",
     "User ID" : "User ID",
     "Email address" : "E-mailadres",
-    "Restrict enumeration to group members" : "Beperk enumeratie tot groepsleden"
+    "Restrict enumeration to group members" : "Beperk enumeratie tot groepsleden",
+    "No Domains." : "Geen domainen.",
+    "Add" : "Toevoegen",
+    "The config file is read only. Please adjust your setup by editing the config file manually." : "Het configuratiebestand is alleen-lezen. Wijzig uw setup door door het configuratiebestand handmatig te wijzigen."
 },"pluralForm" :"nplurals=2; plural=(n != 1);"
 }

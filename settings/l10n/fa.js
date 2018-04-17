@@ -228,6 +228,17 @@ OC.L10N.register(
     "log-level out of allowed range" : "log-level خارج از محدوده مجاز است",
     "Error while loading browser sessions and device tokens" : "خطا در هنگام بارگذاری جلسات مرورگر و نشانه های دستگاه",
     "Error while creating device token" : "خطا در ساخت نشانه دستگاه",
-    "Error while deleting the token" : "خطا در حذف نشانه"
+    "Error while deleting the token" : "خطا در حذف نشانه",
+    "%s password changed successfully" : "%s رمز عبور با موفقیت تغییر کرد",
+    "Official apps are developed by and within the ownCloud community. They offer functionality central to ownCloud and are ready for production use." : "برنامه های رسمی توسط و درون جامعه ownCloud توسعه می یابند. آن ها قابلیت های مرکزی خود را برای ownCloud ارائه می دهند و آماده استفاده برای تولید هستند.",
+    "Approved apps are developed by trusted developers and have passed a cursory security check. They are actively maintained in an open code repository and their maintainers deem them to be stable for casual to normal use." : "برنامه های تأیید شده توسط توسعه دهندگان معتبر توسعه داده شده اند و از یک بررسی امنیتی مدرن عبور کرده اند. آنها به طور فعال در یک مخزن کد باز نگهداری می شوند و نگه دارندگان معتقدند که  آن ها برای استفاده اتفاقی تا عادی پایدار هستند.",
+    "This app is not checked for security issues and is new or known to be unstable. Install at your own risk." : "این برنامه از نظر امنیت بررسی نشده است و جدید بوده یا ناپایدار به نظر می رسد. با مسئولیت خودتان نصب نمایید.",
+    "No apps found for {query}" : "هیچ برنامه ای برای {query} یافت نشد",
+    "cURL is using an outdated %s version (%s). Please update your operating system or features such as %s will not work reliably." : "cURL از یک %sنسخه (%s) منسوخ شده استفاده می کند. لطفا سیستم عامل خود را به روز رسانی کنید یا ویژگی‌هایی مانند %s به درستی کار نخواهند کرد.",
+    "The app has been enabled but needs to be updated. You will be redirected to the update page in 5 seconds." : "برنامه فعال شده است اما لازم است به روز رسانی شود. شما پس از 5 ثانیه به صفحه به روز رسانی برگردانده خواهید شد.",
+    "An error occurred. Please upload an ASCII-encoded PEM certificate." : "خطایی اتفاق افتاده است. لطفا یک تایید ASCII-encoded PEM بارگذاری نمایید.",
+    "Empty app name is not allowed." : "نام برنامه نمی تواند خالی باشد.",
+    "You need to set your user email before being able to send test emails." : "شما باید ایمیل کاربری خود را قبل از امکان ارسال ایمیل آزمایشی تنظیم نمایید.",
+    "Especially when using the desktop client for file syncing the use of SQLite is discouraged." : "به ویژه هنگام استفاده از مشتری دسکتاپ برای همگام سازی پرونده، استفاده از SQLite دلسرد کننده است."
 },
 "nplurals=1; plural=0;");

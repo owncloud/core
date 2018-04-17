@@ -318,6 +318,10 @@ OC.L10N.register(
     "Show enabled apps" : "Vis aktiverede apps",
     "Show disabled apps" : "Vis deaktiverede aps",
     "Restrict enumeration to group members" : "Begræns nummereringen til gruppemedlemmer",
-    "You are using %s of %s (%s %%)" : "Du bruger %s af %s (%s %%)"
+    "You are using %s of %s (%s %%)" : "Du bruger %s af %s (%s %%)",
+    "%s password changed successfully" : "App %s succesfuldt opdateret",
+    "No panels for this section." : "Intet panel for denne sektion.",
+    "Failed to change the email address." : "Fejlede i at ændre emailadressen.",
+    "We recommend to enable system cron as any other cron method has possible performance and reliability implications." : "Vi anbefaler at aktivere stystem-cron eftersom andre cron-metoder muligvis kan påvirke performance og pålidelighed."
 },
 "nplurals=2; plural=(n != 1);");

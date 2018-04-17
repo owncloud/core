@@ -199,6 +199,20 @@
     "Restrict users to only share with groups they are member of" : "Ограничете ги корисниците само да споделуваат со групите во кои се членови",
     "Allow users to send mail notification for shared files" : "Дозволи им на корисниците да испраќаат известувања по Email за споделени датотеки",
     "Allow users to send mail notification for shared files to other users" : "Овозможете им на корисниците да испраќаат известувања по Email за споделени датотеки на други корисници",
-    "You are using %s of %s (%s %%)" : "Искористено %s од %s (%s %%)"
+    "You are using %s of %s (%s %%)" : "Искористено %s од %s (%s %%)",
+    "%s password changed successfully" : "%s лозинката е успешно променета",
+    "Show description …" : "Прикажи опис ...",
+    "Hide description …" : "Сокриј го описот ...",
+    "Download logfile (%s)" : "Превземи го записот (%s)",
+    "The logfile is bigger than 100 MB. Downloading it may take some time!" : "Записот е поголем од 100 MB. Превземањето може да потрае подолго време!",
+    "You are member of the following groups:" : "Вие сте челн на следните групи:",
+    "Failed to change the email address." : "Промената на email адресата беше неуспешна.",
+    "Especially when using the desktop client for file syncing the use of SQLite is discouraged." : "Особено кога се користи десктопот клиент за синхронизација на датотеката, употребата на SQLite е обесхрабрена.",
+    "cron.php is registered at a webcron service to call cron.php every 15 minutes over http." : "cron.php е регистриран на webcron сервисот за да го повикува cron.php секој 15 минути преку http.",
+    "Everything (fatal issues, errors, warnings, info, debug)" : "Се (Фатални работи, грешки, предупредувања, информации, дебаг)",
+    "Last cron job execution: %s." : "Последно извршување на задачите: %s.",
+    "Last cron job execution: %s. Something seems wrong." : "Последно извршување на задачите: %s. Нешто не е во ред.",
+    "Cron was not executed yet!" : "Сеуште нема извршено ниедна задача!",
+    "Use system's cron service to call the cron.php file every 15 minutes." : "Го користи системскиот cron сервис и го повикува cron.php секој 15 минути."
 },"pluralForm" :"nplurals=2; plural=(n % 10 == 1 && n % 100 != 11) ? 0 : 1;"
 }

@@ -334,6 +334,10 @@ OC.L10N.register(
     "Menu" : "Menu",
     "Password changed successfully" : "Kodeord succesfuldt ændret.",
     "Social share" : "Social deling",
-    "Link name" : "Linknavn"
+    "Link name" : "Linknavn",
+    "%s password changed successfully" : "App %s succesfuldt opdateret",
+    "{fileName} link" : "{fileName} link",
+    "Edit link share: {name}" : "Rediger linkdeling: {name}",
+    "Create link share: {name}" : "Opret linkdeling: {name}"
 },
 "nplurals=2; plural=(n != 1);");

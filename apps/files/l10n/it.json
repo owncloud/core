@@ -108,6 +108,12 @@
     "No favorites" : "Nessun preferito",
     "Files and folders you mark as favorite will show up here" : "I file e le cartelle che marchi come preferiti saranno mostrati qui",
     "Text file" : "File di testo",
-    "New text file.txt" : "Nuovo file di testo.txt"
+    "New text file.txt" : "Nuovo file di testo.txt",
+    "Processing files..." : "Processando il file....",
+    "Target folder does not exist any more" : "Cartella di destinazione inesistente",
+    "No entries in this folder match {filter}" : "Nessuna file in questa cartella risponde a {filter}",
+    "Limit notifications about creation and changes to your <strong>favorite files</strong>" : "Limita notiriche di creazione e cambio al tuoi <strong> file preferito</strong>",
+    "You don't have permissions to access this file/folder - Please contact the owner to share it with you." : "Non hai il permeso di accedere a questo file/cartella - contatta il proprietario che lo ha condiviso con te.",
+    "Error when assembling chunks, status code {status}" : "Errore assemblando le parti, codice di stato {status}"
 },"pluralForm" :"nplurals=2; plural=(n != 1);"
 }
