@@ -27,6 +27,7 @@
 namespace OC;
 
 use OC\Hooks\PublicEmitter;
+use OCP\Events\EventEmitterTrait;
 use OCP\IUser;
 use OCP\IUserManager;
 use OCP\IGroup;
@@ -36,6 +37,7 @@ use OCP\ISubAdminManager;
 
 class SubAdmin extends PublicEmitter implements ISubAdminManager {
 
+	use EventEmitterTrait;
 	/** @var IUserManager */
 	private $userManager;
 
@@ -72,18 +74,23 @@ class SubAdmin extends PublicEmitter implements ISubAdminManager {
 	 * @return bool
 	 */
 	public function createSubAdmin(IUser $user, IGroup $group) {
-		$qb = $this->dbConn->getQueryBuilder();
+		return $this->emittingCall(function () use (&$user, &$group) {
+			$qb = $this->dbConn->getQueryBuilder();
 
-		$qb->insert('group_admin')
-			->values([
-				'gid' => $qb->createNamedParameter($group->getGID()),
-				'uid' => $qb->createNamedParameter($user->getUID())
-			])
-			->execute();
+			$qb->insert('group_admin')
+				->values([
+					'gid' => $qb->createNamedParameter($group->getGID()),
+					'uid' => $qb->createNamedParameter($user->getUID())
+				])
+				->execute();
 
-		$this->emit('\OC\SubAdmin', 'postCreateSubAdmin', [$user, $group]);
-		\OC_Hook::emit("OC_SubAdmin", "post_createSubAdmin", ["gid" => $group->getGID()]);
-		return true;
+			$this->emit('\OC\SubAdmin', 'postCreateSubAdmin', [$user, $group]);
+			\OC_Hook::emit("OC_SubAdmin", "post_createSubAdmin", ["gid" => $group->getGID()]);
+			return true;
+		}, [
+			'before' => ['user' => $user, 'feature' => 'groupAdmin', 'value' => 'create', 'group' => $group],
+			'after' => ['user' => $user, 'feature' => 'groupAdmin', 'value' => 'create', 'group' => $group]
+		], 'user', 'featurechange');
 	}
 
 	/**
@@ -93,16 +100,21 @@ class SubAdmin extends PublicEmitter implements ISubAdminManager {
 	 * @return bool
 	 */
 	public function deleteSubAdmin(IUser $user, IGroup $group) {
-		$qb = $this->dbConn->getQueryBuilder();
+		return $this->emittingCall(function () use (&$user, &$group) {
+			$qb = $this->dbConn->getQueryBuilder();
 
-		$qb->delete('group_admin')
-			->where($qb->expr()->eq('gid', $qb->createNamedParameter($group->getGID())))
-			->andWhere($qb->expr()->eq('uid', $qb->createNamedParameter($user->getUID())))
-			->execute();
+			$qb->delete('group_admin')
+				->where($qb->expr()->eq('gid', $qb->createNamedParameter($group->getGID())))
+				->andWhere($qb->expr()->eq('uid', $qb->createNamedParameter($user->getUID())))
+				->execute();
 
-		$this->emit('\OC\SubAdmin', 'postDeleteSubAdmin', [$user, $group]);
-		\OC_Hook::emit("OC_SubAdmin", "post_deleteSubAdmin", ["gid" => $group->getGID()]);
-		return true;
+			$this->emit('\OC\SubAdmin', 'postDeleteSubAdmin', [$user, $group]);
+			\OC_Hook::emit("OC_SubAdmin", "post_deleteSubAdmin", ["gid" => $group->getGID()]);
+			return true;
+		}, [
+			'before' => ['user' => $user, 'feature' => 'groupAdmin', 'value' => 'remove', 'group' => $group],
+			'after' => ['user' => $user, 'feature' => 'groupAdmin', 'value' => 'remove', 'group' => $group]
+		], 'user', 'featurechange');
 	}
 
 	/**
