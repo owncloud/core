@@ -78,6 +78,21 @@
     "Files and folders you mark as favorite will show up here" : "Filer og område markert som favoritt visast her",
     "Favorited" : "Favorisert",
     "An error occurred while trying to update the tags" : "Feil ved oppdatering av merke",
-    "Restored by %2$s" : "Teke i bruk av %2$s"
+    "Restored by %2$s" : "Teke i bruk av %2$s",
+    "Processing files..." : "Behandlar filer...",
+    "{loadedSize} of {totalSize} ({bitrate})" : "{loadedSize} av {totalSize} ({bitrate})",
+    "{newName} already exists" : "{newName} finst",
+    "{newname} already exists" : "{newname} finst allereie",
+    "Upload (max. %s)" : "Last opp (maks %s)",
+    "No entries in this folder match {filter}" : "Ingen samsvar med {filter}",
+    "Limit notifications about creation and changes to your <strong>favorite files</strong>" : "Avgrens varsel for oppretting og endring til dine <strong>favoriserte filar</strong>",
+    "You don't have permissions to access this file/folder - Please contact the owner to share it with you." : "Du har ikkje tilgjenge til fil/område – kontakt eigar for deling med deg.",
+    "Error when assembling chunks, status code {status}" : "Feil ved samansetjing av fil delar, status kode er {status}",
+    "Storage of {owner} is almost full ({usedSpacePercent}%)" : "Lager for {owner}  er nesten full ({usedSpacePercent}%)",
+    "Not enough free space" : "Ikkje tilstrekkeleg med disk plass",
+    "Storage of {owner} is full, files can not be updated or synced anymore!" : "Lager for {owner} er full, kan ikkje oppdatere enn synkronisere filer!",
+    "A file or folder has been <strong>restored</strong>" : "Ei fil eller ei mappe har blitt <strong>teke i bruk att</strong>",
+    "%2$s restored %1$s" : "%2$s tok i bruk %1$s",
+    "Upload some content or sync with your devices!" : "Last opp innhald eller synkroniser med dine einingar!"
 },"pluralForm" :"nplurals=2; plural=(n != 1);"
 }

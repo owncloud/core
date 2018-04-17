@@ -19,6 +19,8 @@ OC.L10N.register(
     "%1$s commented" : "%1$s comentat",
     "You commented on %2$s" : "Has comentat a %2$s",
     "%1$s commented on %2$s" : "%1$s ha comentat a %2$s",
-    "Error occurred while posting comment" : "Error mentre es penjava el comentari"
+    "Error occurred while posting comment" : "Error mentre es penjava el comentari",
+    "Error occurred while retrieving comment with id {id}" : "Error mentre es recuperava el comentari amb id {id}",
+    "Error occurred while updating comment with id {id}" : "Error mentre s'actualitzava el comentaria amb la id {id}"
 },
 "nplurals=2; plural=(n != 1);");

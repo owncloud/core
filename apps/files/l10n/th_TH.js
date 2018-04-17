@@ -114,6 +114,10 @@ OC.L10N.register(
     "Files and folders you mark as favorite will show up here" : "ไฟล์และโฟลเดอร์ที่คุณทำเครื่องหมายเป็นรายการโปรดจะปรากฏขึ้นที่นี่",
     "Text file" : "ไฟล์ข้อความ",
     "New text file.txt" : "ไฟล์ข้อความใหม่ .txt",
-    "Upload timeout for file \"{file}\"" : "หมดเวลาสำหรับการอัพโหลดสำหรับไฟล์ \"{file}\""
+    "Upload timeout for file \"{file}\"" : "หมดเวลาสำหรับการอัพโหลดสำหรับไฟล์ \"{file}\"",
+    "Processing files..." : "กำลังประมวลผลไฟล์ ...",
+    "Limit notifications about creation and changes to your <strong>favorite files</strong>" : "จำกัดการแจ้งเตือนเกี่ยวกับการสร้างและเปลี่ยนแปลง <strong>ไฟล์ที่ชื่นชอบ</strong> ของคุณ",
+    "You don't have permissions to access this file/folder - Please contact the owner to share it with you." : "คุณไม่มีสิทธิ์เข้าถึงไฟล์/โฟลเดอร์นี้ - โปรดติดต่อเจ้าของเพื่อเปิดแชร์ให้กับคุณ",
+    "Error when assembling chunks, status code {status}" : "เกิดข้อผิดพลาดขณะรวบรวมชิ้นส่วน, รหัสสถานะคือ {status}"
 },
 "nplurals=1; plural=0;");

@@ -355,6 +355,17 @@
     "Recipients can view, download, edit, delete and upload contents." : "Marrësit mund të shohin shkarkojnë, përpunojnë, fshijnë dhe ngarkojnë lëndë.",
     "Download / View" : "Të shkarkojë / Të shohë",
     "Download / View / Upload" : "Të shkarkojë / Të shohë / Të ngarkojë",
-    "An error occured while sending email" : "Ndodhi një gabim gjatë dërgimit të email-it"
+    "An error occured while sending email" : "Ndodhi një gabim gjatë dërgimit të email-it",
+    "Owner: {owner}" : "I zoti: {owner}",
+    "Email notification was sent!" : "Njoftimi me email u dërgua!",
+    "Please contact the server administrator if this error reappears multiple times and include the technical details below in your report." : "Ju lutemi, nëse ky gabim rishfaqet shumë herë, lidhuni me përgjegjësin e shërbyesit dhe në njoftimin tuaj përfshini hollësitë teknike të mëposhtme.",
+    "You are trying to access a private link. Please log in first." : "Po provoni të hapni një lidhje private. Ju lutemi, më parë bëni hyrjen.",
+    "It looks like your instance may host many files and/or users. To ensure a smooth upgrade process, please use the command line updater (occ upgrade)." : "Duket sikur instanca juaj mund të strehojë shumë kartela dhe/ose përdorues. Për të garantuar një proces të rrjedhshëm përmirësimi, ju lutemi, përdorni përpunuesin për rresht urdhrash (occ upgrade).",
+    "Couldn't send mail to following recipient(s): %s " : "S’u dërgua dot postë te marrësi(t) vijues: %s ",
+    "Receive files from multiple recipients without revealing the contents of the folder." : "Merr kartela prej të tjerësh pa e zbuluar lëndën e dosjes.",
+    "Recipients can view or download contents." : "Marrësit mund të shohin dhe shkarkojnë lëndë.",
+    "{sharee} (federated)" : "{sharee} (i federuar)",
+    "Personal note from the sender: %s." : "Shënim personal nga dërguesi: %s.",
+    "Automatic updating is disabled in config.php. To upgrade your instance, please use the command line updater (occ upgrade)." : "Përditësimi i vetvetishëm është i çaktivizuar te config.php. Që të përmirësoni instancën tuaj, ju lutemi, përdorni përditësuesin për rresht urdhrash (occ upgrade)."
 },"pluralForm" :"nplurals=2; plural=(n != 1);"
 }

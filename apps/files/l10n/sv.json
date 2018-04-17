@@ -108,6 +108,11 @@
     "New text file.txt" : "nytextfil.txt",
     "Target folder does not exist any more" : "Målmappen finns inte längre",
     "Private link:  Only people who have access to the file/folder can use it. Use it as a permanent link for yourself or to point others to files within shares" : "Privat länk: Bara de som har tillgång till filen/mappen kan använda den. Använd den som en permanent länk för dig själv eller peka andra till filer inuti delningar",
-    "Upload timeout for file \"{file}\"" : "Uppadddnings-timeout för fil \"{file}\""
+    "Upload timeout for file \"{file}\"" : "Uppadddnings-timeout för fil \"{file}\"",
+    "Processing files..." : "Behandlar filer ...",
+    "No entries in this folder match {filter}" : "Inga poster i mappen matchar {filter}",
+    "Limit notifications about creation and changes to your <strong>favorite files</strong>" : "Begränsa meddelanden om att skapa och ändra till dina <strong>favoritfiler</strong>",
+    "You don't have permissions to access this file/folder - Please contact the owner to share it with you." : "Du har inte behörighet att komma åt denna fil/mapp - Kontakta ägaren för att dela den med dig.",
+    "Error when assembling chunks, status code {status}" : "Fel vid sammanställning av bitar, statuskod {status}"
 },"pluralForm" :"nplurals=2; plural=(n != 1);"
 }

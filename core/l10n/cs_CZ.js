@@ -339,6 +339,7 @@ OC.L10N.register(
     "Upload only" : "Jen k nahrání",
     "Sending" : "Odesílání",
     "Menu" : "Menu",
-    "Link name" : "Jméno odkazu"
+    "Link name" : "Jméno odkazu",
+    "You are trying to access a private link. Please log in first." : "Pokoušíte se získat přístup k soukromému odkazu. Prosím nejdříve se přihlaste."
 },
 "nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;");

@@ -337,6 +337,14 @@ OC.L10N.register(
     "Restrict enumeration to group members" : "Restreindre l'énumération aux membres du groupe",
     "Restrict users to only share with groups they are member of" : "N'autoriser les utilisateurs qu'à partager avec les groupes dont ils sont membre",
     "Default user and group share permissions" : "Autorisations par défaut de partage de groupe et d'utilisateur",
-    "You are using %s of %s (%s %%)" : "Vous utilisez %s sur %s (%s %%)"
+    "You are using %s of %s (%s %%)" : "Vous utilisez %s sur %s (%s %%)",
+    "No Domains." : "Pas de domaines.",
+    "Are you sure you want to remove this domain?" : "Êtes-vous sûr de vouloir supprimer ce domaine ?",
+    "Add" : "Ajouter",
+    "No panels for this section." : "Pas de panneau dans cette section",
+    "Empty app name is not allowed." : "Un nom d'application vide n'est pas autorisé.",
+    "The config file is read only. Please adjust your setup by editing the config file manually." : "Le fichier de configuration est en lecture seule. Veuillez ajuster votre configuration en éditant manuellement le fichier.",
+    "Email changed successfully for {user}." : "L'Email de {utilisateur} à été mis à jour.",
+    "In a clustered setup please make sure to sync the config.php file across all nodes." : "Dans une configuration de grappe, assurez-vous de synchroniser le fichier config.php sur chaque nœud."
 },
 "nplurals=2; plural=(n > 1);");

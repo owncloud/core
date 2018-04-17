@@ -114,6 +114,10 @@ OC.L10N.register(
     "Files and folders you mark as favorite will show up here" : "Skrár og möppur sem þú merkir sem uppáhald birtast hér",
     "Text file" : "Textaskrá",
     "New text file.txt" : "Ný textaskrá.txt",
-    "Upload timeout for file \"{file}\"" : "Tímamörk innsendingar fyrir skrána \"{file}\""
+    "Upload timeout for file \"{file}\"" : "Tímamörk innsendingar fyrir skrána \"{file}\"",
+    "Processing files..." : "Meðhöndla skrár...",
+    "Limit notifications about creation and changes to your <strong>favorite files</strong>" : "Takmarka tilkynningar um gerð og breytingar á <strong>eftirlætisskrám</strong>",
+    "You don't have permissions to access this file/folder - Please contact the owner to share it with you." : "Þú hefur ekki aðgangsheimildir til að skoða þessa skrá/möppu. Hafðu samband við eigandann og biddu hann um að deila þessu með þér.",
+    "Error when assembling chunks, status code {status}" : "Villa við að setja saman búta, stöðukóði {status}"
 },
 "nplurals=2; plural=(n % 10 != 1 || n % 100 == 11);");

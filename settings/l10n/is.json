@@ -347,6 +347,14 @@
     "Invalid email address" : "Ógilt tölvupóstfang",
     "Extra field to display in autocomplete results" : "Aukareitur til að birta niðurstöður í sjálfvirkri orðaklárun",
     "Restrict users to only share with groups they are member of" : "Takmarka notendur við að deila með hópum sem þeir eru meðlimir í",
-    "Default user and group share permissions" : "Sjálfgefnar heimildir deilingar notenda og hópa"
+    "Default user and group share permissions" : "Sjálfgefnar heimildir deilingar notenda og hópa",
+    "No Domains." : "Engin lén.",
+    "Are you sure you want to remove this domain?" : "Ertu viss um að þú viljir fjarlægja þetta lén?",
+    "Add" : "Bæta við",
+    "Empty app name is not allowed." : "Autt heiti forrits er ekki leyft.",
+    "The config file is read only. Please adjust your setup by editing the config file manually." : "Uppsetningarskráin er einungis lesanleg. Lagaðu uppsetninguna þína handvirkt með því að breyta sjálfri uppsetningaskránni í ritli.",
+    "Email changed successfully for {user}." : "Tókst að breyta tölvupóstfangi fyrir {user}.",
+    "You are not a member of any groups." : "Þú ert ekki meðlimur í neinum hópi.",
+    "In a clustered setup please make sure to sync the config.php file across all nodes." : "Ef um klasauppsetningu er að ræða, gakktu úr skugga um að config.php sé samstillt yfir alla hnútana."
 },"pluralForm" :"nplurals=2; plural=(n % 10 != 1 || n % 100 == 11);"
 }

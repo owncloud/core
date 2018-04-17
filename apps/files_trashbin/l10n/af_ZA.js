@@ -15,6 +15,7 @@ OC.L10N.register(
     "You will be able to recover deleted files from here" : "U sal geskrapte lêers van hier af kan terugstel",
     "No entries found in this folder" : "Geen inskrywings in hierdie vouer gevind",
     "Select all" : "Kies alle",
-    "Name" : "Naam"
+    "Name" : "Naam",
+    "Deleted" : "Geskrap"
 },
 "nplurals=2; plural=(n != 1);");

@@ -351,6 +351,15 @@
     "Enforce password protection for read-only links" : "Принудительная защита паролем для ссылок только для чтения",
     "Enforce password protection for read & write links" : "Принудительная защита паролем для ссылок для чтения и записи",
     "Enforce password protection for upload-only (File Drop) links" : "Принудительная защита паролем для ссылок только для записи (отправка файлов)",
-    "You are using %s" : "Вы используете %s"
+    "You are using %s" : "Вы используете %s",
+    "No Domains." : "Доменов нет.",
+    "Are you sure you want to remove this domain?" : "Вы действительно хотите удалить этот домен?",
+    "Add" : "Добавить",
+    "Empty app name is not allowed." : "Пустое имя приложения недопустимо.",
+    "The config file is read only. Please adjust your setup by editing the config file manually." : "Файл конфигурации доступен только для чтения. Пожалуйста поправьте настройки путём редактирования файла конфигурации вручную.",
+    "Email changed successfully for {user}." : "Почта для  {user} изменена успешно.",
+    "You are not a member of any groups." : "Вы не состоите в каких-либо группах.",
+    "In a clustered setup please make sure to sync the config.php file across all nodes." : "В кластерной конфигурации пожалуйста убедитесь, что файл config.php синхронизирован во всех узлах.",
+    "These are the web, desktop and mobile clients currently logged in to your %s." : "Список клиентов, подключённых сейчас к вашему %s через веб, настольный или мобильный клиент."
 },"pluralForm" :"nplurals=4; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<12 || n%100>14) ? 1 : n%10==0 || (n%10>=5 && n%10<=9) || (n%100>=11 && n%100<=14)? 2 : 3);"
 }

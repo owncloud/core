@@ -41,6 +41,20 @@
     "Select all" : "Kies alle",
     "No favorites" : "Geen gunstelinge",
     "Text file" : "Tekslêer",
-    "New text file.txt" : "Nuwe tekslêer.txt"
+    "New text file.txt" : "Nuwe tekslêer.txt",
+    "Processing files..." : "Verwerk tans lêers…",
+    "Uploading..." : "Laai tans op…",
+    "..." : "…",
+    "{loadedSize} of {totalSize} ({bitrate})" : "{loadedSize} van {totalSize} ({bitrate})",
+    "{newName} already exists" : "{newName} bestaan reeds",
+    "{dirs} and {files}" : "{dirs} en {files}",
+    "File name cannot be empty." : "Lêernaam mag nie leeg wees nie.",
+    "{newname} already exists" : "{newname} bestaan reeds",
+    "Upload" : "Laai Op",
+    "%2$s created %1$s" : "%2$s het %1$s geskep",
+    "%1$s was created in a public folder" : "%1$s is in ’n openbare vouer geskep",
+    "%2$s changed %1$s" : "%2$s het %1$s verander",
+    "%2$s deleted %1$s" : "%2$s het %1$s geskrap",
+    "Upload (max. %s)" : "Laai op (maks. %s)"
 },"pluralForm" :"nplurals=2; plural=(n != 1);"
 }

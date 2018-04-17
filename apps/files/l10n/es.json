@@ -112,6 +112,10 @@
     "Files and folders you mark as favorite will show up here" : "Aquí aparecerán los archivos y carpetas que usted marque como favoritos",
     "Text file" : "Archivo de texto",
     "New text file.txt" : "Nuevo archivo de texto.txt",
-    "Upload timeout for file \"{file}\"" : "TimeOut de subida del archivo \"{file}\""
+    "Upload timeout for file \"{file}\"" : "TimeOut de subida del archivo \"{file}\"",
+    "Processing files..." : "Procesando archivos ...",
+    "Limit notifications about creation and changes to your <strong>favorite files</strong>" : "Limita la notificación a la creacción y cambios de sus <strong>archivos favoritos</strong>",
+    "You don't have permissions to access this file/folder - Please contact the owner to share it with you." : "Vd. no tiene permisos para acceder a esta carpeta/archivo. Por favor contacte con el propietario que lo ha compartido con Vd.",
+    "Error when assembling chunks, status code {status}" : "Error ensamblando chunks, codigo de error:  {status}"
 },"pluralForm" :"nplurals=2; plural=(n != 1);"
 }

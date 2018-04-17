@@ -23,6 +23,7 @@ OC.L10N.register(
     "Admin defined" : "Ադմին սահմանվեց",
     "OAuth2" : "OAuth2",
     "Client ID" : "Client ID",
-    "OpenStack" : "OpenStack"
+    "OpenStack" : "OpenStack",
+    "%s" : "%s"
 },
 "nplurals=2; plural=(n != 1);");

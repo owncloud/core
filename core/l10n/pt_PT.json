@@ -339,6 +339,7 @@
     "Upload only" : "Apenas envio",
     "Sending" : "A Enviar",
     "Menu" : "Menu",
-    "Link name" : "Nome de hiperligação"
+    "Link name" : "Nome de hiperligação",
+    "Owner: {owner}" : "Proprietário: {owner}"
 },"pluralForm" :"nplurals=2; plural=(n != 1);"
 }

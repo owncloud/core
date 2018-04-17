@@ -36,6 +36,10 @@ OC.L10N.register(
     "Configuration" : "Opstelling",
     "Available for" : "Beskikbaar vir",
     "Advanced settings" : "Gevorderde instellings",
-    "Delete" : "Skrap"
+    "Delete" : "Skrap",
+    "All users. Type to select user or group." : "Alle gebruikers. Tik om gebruiker of groep te kies.",
+    "(group)" : "(groep)",
+    "Secure https://" : "Beveiligde https://",
+    "<b>Note:</b> " : "<b>Nota:</b> "
 },
 "nplurals=2; plural=(n != 1);");

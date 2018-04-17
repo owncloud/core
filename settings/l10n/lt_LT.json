@@ -200,6 +200,10 @@
     "Allow sharing with groups" : "Leisti dalintis su grupėmis",
     "log-level out of allowed range" : "žurnalo lygis už rėžių",
     "Import root certificate" : "Įkelti pagrindinį sertifikatą",
-    "Set default expiration date" : "Nustatykite galiojimo laiką"
+    "Set default expiration date" : "Nustatykite galiojimo laiką",
+    "%s password changed successfully" : "%sslaptažodis pakeistas",
+    "Valid until" : "Galioja iki",
+    "Expire after " : "Baigsis po",
+    "Failed to change the email address." : "Nepavyko pakeisti el. pašto adreso"
 },"pluralForm" :"nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && (n%100<10 || n%100>=20) ? 1 : 2);"
 }

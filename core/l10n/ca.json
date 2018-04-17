@@ -275,6 +275,25 @@
     "Cancel login" : "Cancel·lar l'accés",
     "An error occurred while verifying the token" : "Detectat un problema al verificar l'identificador",
     "Update needed" : "Actualització necessària",
-    "An error occurred. Please contact your admin." : "Error. Contacte amb el teu administrador."
+    "An error occurred. Please contact your admin." : "Error. Contacte amb el teu administrador.",
+    "Please select a file." : "Si us plau, selecciona un fitxer",
+    "%s password changed successfully" : "%scontrassenya actualitzada correctament",
+    "[%d / %d]: %s" : "[%d/%d]:%s",
+    "{fileName} link" : "{filename} enllaç",
+    "Copied!" : "Copiat",
+    "Not supported!" : "No està suportat!",
+    "Edit link share: {name}" : "Edita l'enllaç compartit: {name}",
+    "Create link share: {name}" : "Crea un enllaç compartit: {name}",
+    "Share to Facebook. Opens in a new window." : "Compartir a Facbook. Obrirà una nova finestra",
+    "Share to Diaspora. Opens in a new window." : "Compartir a Diaspora. Obrirà una nova finestra",
+    "Share to Google+. Opens in a new window." : "Compartir a Google+. Obrirà una nova finestra",
+    "Share via email. Opens your mail client." : "Compartir via email. Obrirà el teu gestor de correu",
+    "Owner: {owner}" : "Propietari:{owner}",
+    "new" : "Nou",
+    "Updating to {version}" : "Actualitzant a la versió {version}",
+    "An error occurred." : "Ha fallat",
+    "An internal error occurred." : "Error intern",
+    "You are trying to access a private link. Please log in first." : "Estàs accedint a un enllaç privat. Necessites registrar-te primer.",
+    "Couldn't send mail to following recipient(s): %s " : "No s'ha pugut enviar l'email al(s) destinatari(s): %s"
 },"pluralForm" :"nplurals=2; plural=(n != 1);"
 }

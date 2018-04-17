@@ -179,6 +179,8 @@
     "Storage connection timeout. %s" : "หมดเวลาการเชื่อมต่อพื้นที่จัดเก็บข้อมูล %s",
     "A safe home for all your data" : "ปลอดภัยสำหรับสำหรับข้อมูลทั้งหมดของคุณ",
     "The username must be at least 3 characters long" : "ชื่อผู้ใช้ต้องมีความยาวอย่างน้อย 3 ตัวอักษร",
-    "File cannot be read" : "ไม่สามารถอ่านไฟล์ได้"
+    "File cannot be read" : "ไม่สามารถอ่านไฟล์ได้",
+    "%s is not supported and %s will not work properly on this platform. Use it at your own risk! " : "%s ไม่ได้รับการสนับสนุนและ %s จะทำงานไม่ถูกต้องบนแพลตฟอร์มนี้ มันค่อนข้างเสี่ยงนะคุณ!",
+    "Sharing %s failed, could not find %s, check spelling and server availability." : "แชร์ %s ล้มเหลวหรือไม่พบ %s โปรดตรวจสอบตัวสะกดและความพร้อมใช้งานของเซิร์ฟเวอร์"
 },"pluralForm" :"nplurals=1; plural=0;"
 }

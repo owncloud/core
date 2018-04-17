@@ -261,6 +261,7 @@
     "Share" : "Bagikan",
     "What to log" : "Yang akan dicatat",
     "Domain" : "Domain",
-    "Add" : "Tambah"
+    "Add" : "Tambah",
+    "Download logfile (%s)" : "Unduh berkas catatan (%s)"
 },"pluralForm" :"nplurals=1; plural=0;"
 }

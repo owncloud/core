@@ -121,6 +121,8 @@ OC.L10N.register(
     "Open documentation" : "Abrir documentación",
     "days" : "días",
     "What to log" : "Que registrar",
-    "Add" : "Agregar"
+    "Add" : "Agregar",
+    "Download logfile (%s)" : "Descargar archivo de registro (1%s)",
+    "The logfile is bigger than 100 MB. Downloading it may take some time!" : "El archivo de registro es mayor a 100 MB. La descarga tomara un tiempo!"
 },
 "nplurals=2; plural=(n != 1);");

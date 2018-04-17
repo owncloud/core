@@ -90,6 +90,15 @@ OC.L10N.register(
     "Show hidden files" : "نمایش پرونده های مخفی",
     "New text file.txt" : "متن جدید file.txt",
     "Storage is temporarily not available" : "فضای ذخیره سازی موقتا در دسترس نیست",
-    "Disconnect storage" : "قطع فضای ذخیره سازی"
+    "Disconnect storage" : "قطع فضای ذخیره سازی",
+    "Processing files..." : "پردازش پرونده ها...",
+    "..." : "...",
+    "{loadedSize} of {totalSize} ({bitrate})" : "{loadedSize} از {totalSize} ({bitrate})",
+    "{newName} already exists" : "{newName} اکنون وجود دارد",
+    "No entries in this folder match {filter}" : "هیچ ورودی‌ای در این پوشه با '{filter}' تطبیق ندارد",
+    "Limit notifications about creation and changes to your <strong>favorite files</strong>" : "اعلان محدودیت ها در مورد ایجاد و تغییر در <strong>پرونده های مورد علاقه شما</strong>",
+    "You don't have permissions to access this file/folder - Please contact the owner to share it with you." : "شما اجازه دسترسی به این پرونده/پوشه را ندارید - لطفا با مالک تماس بگیرید تا آن را با شما به اشتراک بگذارد.",
+    "Error when assembling chunks, status code {status}" : "خطا هنگام سرهم بندی قطعات، کد وضعیت {status}",
+    "Not enough free space" : "فضای آزاد کافی نیست"
 },
 "nplurals=1; plural=0;");

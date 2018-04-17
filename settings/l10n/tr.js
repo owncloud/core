@@ -307,6 +307,7 @@ OC.L10N.register(
     "Change" : "Değiştir",
     "Share" : "Paylaş",
     "Domain" : "Alan adı",
-    "Add" : "Ekle"
+    "Add" : "Ekle",
+    "%s password changed successfully" : "%s parola başarıyla değiştirildi"
 },
 "nplurals=2; plural=(n > 1);");

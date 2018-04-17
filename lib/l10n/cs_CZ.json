@@ -179,6 +179,8 @@
     "A safe home for all your data" : "Bezpečné místo pro všechna vaše data",
     "User Authentication" : "Ověření uživatele",
     "The username must be at least 3 characters long" : "Uživatelské jméno musí mít délku alespoň 3 znaky",
-    "File cannot be read" : "Soubor nelze přečíst"
+    "File cannot be read" : "Soubor nelze přečíst",
+    "%s is not supported and %s will not work properly on this platform. Use it at your own risk! " : "%s není podporována a %s nebude fungovat správně na této platformě. Používejte jen na vlastní nebezpečí! ",
+    "Sharing %s failed, could not find %s, check spelling and server availability." : "Sdílení %s selhalo, %s se nepodařilo nalézt, zkontrolujte dostupnost serveru."
 },"pluralForm" :"nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;"
 }

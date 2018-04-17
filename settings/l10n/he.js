@@ -349,6 +349,14 @@ OC.L10N.register(
     "Invalid email address" : "כתובת דוא״ל שגויה",
     "Extra field to display in autocomplete results" : "שדה נוסף להצגה בתוצאות ההשלמה האוטומטית.",
     "Restrict users to only share with groups they are member of" : "הגבלת משתמשים לשתף רק עם קבוצות שהם חברים בהן",
-    "Default user and group share permissions" : "משתמש ברירת מחדל וקבוצה משתפים הרשאות"
+    "Default user and group share permissions" : "משתמש ברירת מחדל וקבוצה משתפים הרשאות",
+    "No Domains." : "אין שמות מתחם.",
+    "Are you sure you want to remove this domain?" : "האם באמת להסיר שם מתחם זה?",
+    "Add" : "הוספה",
+    "Empty app name is not allowed." : "אסור להשתמש בשם ריק ליישום",
+    "The config file is read only. Please adjust your setup by editing the config file manually." : "קובץ ה- config הנו לקריאה בלבד. יש להסדיר את ההתקנה על ידי עריכת קובץ ה- config באופן ידני.",
+    "Email changed successfully for {user}." : "כתובת הדוא״ל של {user} הוחלפה בהצלחה.",
+    "You are not a member of any groups." : "אין לך חברות באף קבוצה שהיא.",
+    "In a clustered setup please make sure to sync the config.php file across all nodes." : "בהתקנת clustered יש לוודא סנכרון קובץ config.php בין כל הנקודות."
 },
 "nplurals=2; plural=(n != 1);");

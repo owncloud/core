@@ -11,6 +11,15 @@ OC.L10N.register(
     "You commented" : "Comentaste",
     "You commented on %2$s" : "Comentaste en %2$s",
     "Error occurred while posting comment" : "Error al publicar comentario",
-    "Delete comment" : "Eliminar comentario"
+    "Delete comment" : "Eliminar comentario",
+    "Type in a new comment..." : "Escriba un nuevo comentario...",
+    "[Deleted user]" : "[Usuario eliminado]",
+    "More comments..." : "Más comentarios...",
+    "Allowed characters {count} of {max}" : "Caracteres permitidos {count} de {max}",
+    "{count} unread comments" : "{count} comentarios sin leer",
+    "%1$s commented" : "%1$scomentarios",
+    "%1$s commented on %2$s" : "%1$scomentó en %2$s",
+    "Error occurred while retrieving comment with id {id}" : "Error al cargar comentario con Id {id}",
+    "Error occurred while updating comment with id {id}" : "Error al actualizar comentario con Id {id}"
 },
 "nplurals=2; plural=(n != 1);");

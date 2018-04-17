@@ -327,6 +327,13 @@ OC.L10N.register(
     "Password changed successfully" : "Parola başarıyla değiştirildi.",
     "Social share" : "Sosyal paylaşım",
     "An error occurred while verifying the token" : "Jeton onaylanırken bir hata oluştu",
-    "Link name" : "Bağlantı adı"
+    "Link name" : "Bağlantı adı",
+    "%s password changed successfully" : "%s parola başarıyla değiştirildi",
+    "Edit link share: {name}" : "Paylaşım bağlantısını düzenle: {name}",
+    "Create link share: {name}" : "Paylaşım bağlantısı oluştur: {name}",
+    "Share to Facebook. Opens in a new window." : "Facebook ile paylaş. Yeni bir pencerede açılır.",
+    "Share to Diaspora. Opens in a new window." : "Diaspora ile paylaş. Yeni bir pencerede açılır.",
+    "Share to Google+. Opens in a new window." : "Google+ ile paylaş. Yeni bir pencerede açılır.",
+    "Share via email. Opens your mail client." : "Eposta ile paylaş. Eposta istemcisinde açılır."
 },
 "nplurals=2; plural=(n > 1);");

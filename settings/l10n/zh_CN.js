@@ -346,6 +346,13 @@ OC.L10N.register(
     "Invalid email address" : "无效的电邮地址",
     "Default user and group share permissions" : "默认的用户和组共享权限",
     "Email address" : "电子邮件地址",
-    "You are using %s" : "你已经使用了%s"
+    "You are using %s" : "你已经使用了%s",
+    "No Domains." : "无域名",
+    "Are you sure you want to remove this domain?" : "你真的想要移除这个域名？",
+    "Add" : "增加",
+    "Empty app name is not allowed." : "不允许输入空白的软件名称",
+    "Email changed successfully for {user}." : "<br><div>{用户}电子邮件修改成功<br data-mce-bogus=\"1\"></div>",
+    "You are not a member of any groups." : "你现在不是任何组的成员",
+    "In a clustered setup please make sure to sync the config.php file across all nodes." : "在群集设置中，请确保所有节点都同步config.php文件"
 },
 "nplurals=1; plural=0;");

@@ -353,6 +353,15 @@ OC.L10N.register(
     "Enforce password protection for read-only links" : "Refuerza la protección de enlaces de solo-lectura con contraseña.",
     "Enforce password protection for read & write links" : "Refuerza la protección de enlaces de lectura-escritura con contraseña.",
     "Enforce password protection for upload-only (File Drop) links" : "Refuerza la protección de enlaces de solo subida (File Drop) con contraseña.",
-    "You are using %s" : "Estas usando %s"
+    "You are using %s" : "Estas usando %s",
+    "No Domains." : "Sin ominio",
+    "Are you sure you want to remove this domain?" : "¿Está seguro de que desea eliminar este dominio?",
+    "Add" : "Añadir",
+    "Empty app name is not allowed." : "No esta permitido un nombre de app en blanco",
+    "The config file is read only. Please adjust your setup by editing the config file manually." : "El archivo de configuración es de \"solo lectura\". Por favor ajuste su configuración para poder editar el archivo de configuración manualmente.",
+    "Email changed successfully for {user}." : "Este correo electrónico ha sido cambiado exitosamente por  {user}.",
+    "You are not a member of any groups." : "Tú no eres miembro de ningún grupo.",
+    "In a clustered setup please make sure to sync the config.php file across all nodes." : "En una configuración de cluster, asegurese de que el archivo config.php está sincronizado y es identico en todos los nodos.",
+    "These are the web, desktop and mobile clients currently logged in to your %s." : "Estos son los clientes mobiles, web y de escritorio , actualmente logados: %s."
 },
 "nplurals=2; plural=(n != 1);");

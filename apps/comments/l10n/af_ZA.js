@@ -10,6 +10,14 @@ OC.L10N.register(
     "Comment" : "Kommentaar",
     "You commented" : "U het kommentaar gelewer",
     "You commented on %2$s" : "U het kommentaar op %2$s gelewer",
-    "Delete comment" : "Skrap kommentaar"
+    "Delete comment" : "Skrap kommentaar",
+    "Type in a new comment..." : "Tik ’n nuwe kommentaar in…",
+    "[Deleted user]" : "[Geskrapte gebruiker]",
+    "More comments..." : "Nog kommentare…",
+    "Allowed characters {count} of {max}" : "Toegelate karakters {count} van {max}",
+    "{count} unread comments" : "{count} ongeleesde kommentare",
+    "<strong>Comments</strong> for files <em>(always listed in stream)</em>" : "<strong>Kommentare</strong> vir lêers <em>(word altyd in die stroom gelys)</em>",
+    "%1$s commented" : "%1$s het kommentaar gelewer",
+    "%1$s commented on %2$s" : "%1$s het kommentaar op %2$s gelewer"
 },
 "nplurals=2; plural=(n != 1);");

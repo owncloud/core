@@ -123,6 +123,25 @@
     "Android app" : "Ứng dụng Android",
     "iOS app" : "Ứng dụng iOS",
     "No display name set" : "Chưa đặt tên hiển thị",
-    "No email address set" : "Chưa đặt địa chỉ email"
+    "No email address set" : "Chưa đặt địa chỉ email",
+    "%s password changed successfully" : "%smật khẩu đã được thay đổi thành công",
+    "Couldn't send reset email. Please contact your administrator." : "Không thể gửi email đặt lại. Vui lòng liên hệ với quản trị viên của bạn.",
+    "Couldn't remove app." : "Không thể xóa ứng dụng.",
+    "Uninstalling ...." : "Đang gở bỏ....",
+    "Sending..." : "Đang gửi...",
+    "Documentation:" : "Tài liệu:",
+    "Show description …" : "Hiển thị mô tả ...",
+    "Hide description …" : "Ẩn mô tả ...",
+    "No Domains." : "Không có tên miền.",
+    "Are you sure you want to remove this domain?" : "Bạn có chắc chắn muốn xóa miền này?",
+    "You are member of the following groups:" : "Bạn là thành viên của các nhóm sau:",
+    "You've linked these apps." : "Bạn đã liên kết các ứng dụng này.",
+    "An app password is a passcode that gives an app or device permissions to access your %s account." : "Mật khẩu ứng dụng là mật mã cho phép ứng dụng hoặc thiết bị truy cập vào tài khoản %s của bạn.",
+    "No panels for this section." : "Không có điều khiển cho phần này.",
+    "cURL is using an outdated %s version (%s). Please update your operating system or features such as %s will not work reliably." : "cURL đang sử dụng một phiên bản %s đã lỗi thời (%s). Vui lòng cập nhật hệ thống hoặc các tính năng của bạn chẳng hạn như %s sẽ không hoạt động nhưu mong đợi.",
+    "All checks passed." : "Tất cả kiểm tra đều thông qua.",
+    "Use the credentials below to configure your app or device." : "Sử dụng các thông tin dưới đây để cấu hình ứng dụng hoặc thiết bị của bạn.",
+    "You are not a member of any groups." : "Bạn không phải là thành viên của bất kỳ nhóm nào.",
+    "You need to set your user email before being able to send test emails." : "Bạn cần đặt email người dùng của mình trước khi có gửi email thử nghiệm."
 },"pluralForm" :"nplurals=1; plural=0;"
 }

@@ -110,6 +110,11 @@
     "Text file" : "Kartelë tekst",
     "New text file.txt" : "Kartelë e re file.txt",
     "Target folder does not exist any more" : "Dosja e synuar nuk ekziston më",
-    "Upload timeout for file \"{file}\"" : "Mbarim kohe ngarkimi për kartelën \"{file}\""
+    "Upload timeout for file \"{file}\"" : "Mbarim kohe ngarkimi për kartelën \"{file}\"",
+    "Processing files..." : "Po përpunohen kartela…",
+    "No entries in this folder match {filter}" : "Në këtë dosje s’ka zëra me përputhje me {filter} ",
+    "Limit notifications about creation and changes to your <strong>favorite files</strong>" : "Kufizojini njoftimet rreth krijimit dhe ndryshimeve vetëm për <strong>kartelat tuaja të parapëlqyera</strong>",
+    "You don't have permissions to access this file/folder - Please contact the owner to share it with you." : "S’keni leje të hyni të përdorni këtë kartelë/dosje - Ju lutemi, lidhuni me të zotin e saj që ta ndajë me ju.",
+    "Error when assembling chunks, status code {status}" : "Gabim gjatë montimit të copave, kod gjendjeje {status}"
 },"pluralForm" :"nplurals=2; plural=(n != 1);"
 }

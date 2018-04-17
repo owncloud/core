@@ -325,6 +325,9 @@ OC.L10N.register(
     "You took too long to login, please try again now" : "Kirjautumisessa kesti liian kauan. Yritä uudelleen nyt",
     "Password changed successfully" : "Salasana vaihdettu onnistuneesti",
     "Social share" : "Sosiaalinen jako",
-    "Link name" : "Linkin nimi"
+    "Link name" : "Linkin nimi",
+    "Owner: {owner}" : "Omistaja: {owner}",
+    "Email notification was sent!" : "Sähköposti-ilmoitus lähetetty!",
+    "You are trying to access a private link. Please log in first." : "Yrität käyttää yksityistä linkkiä. Kirjaudu sisään ensin."
 },
 "nplurals=2; plural=(n != 1);");

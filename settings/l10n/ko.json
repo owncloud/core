@@ -315,6 +315,25 @@
     "Error while loading browser sessions and device tokens" : "웹 브라우저 세션과 장치 토큰을 불러오는 중 오류가 발생했습니다",
     "Error while creating device token" : "장치 토큰을 만드는 중 오류가 발생했습니다",
     "Error while deleting the token" : "토큰을 삭제하는 중 오류가 발생했습니다",
-    "You are using %s of %s (%s %%)" : "%s/%s 사용 중(%s%%)"
+    "You are using %s of %s (%s %%)" : "%s/%s 사용 중(%s%%)",
+    "No apps found for {query}" : "{query} 앱을 찾을 수 없음",
+    "%s-licensed" : "%s 라이선스",
+    "Download logfile (%s)" : "로그 파일 다운로드(%s)",
+    "No Domains." : "도메인이 없습니다.",
+    "Are you sure you want to remove this domain?" : "이 도메인을 삭제하시겠습니까?",
+    "Add" : "추가",
+    "You've linked these apps." : "다음 앱을 연결했습니다.",
+    "An app password is a passcode that gives an app or device permissions to access your %s account." : "앱 암호는 다른 앱이나 장치에서 %s 계정을 사용할 때 필요합니다.",
+    "No panels for this section." : "이 분류의 패널이 없습니다.",
+    "Empty app name is not allowed." : "앱 이름을 비워 둘 수 없습니다.",
+    "Failed to change the email address." : "이메일 주소를 변경할 수 없습니다.",
+    "The config file is read only. Please adjust your setup by editing the config file manually." : "설정 파일이 읽기 전용입니다. 설정 파일을 직접 편집해서 설정을 변경하십시오.",
+    "Use the credentials below to configure your app or device." : "앱 또는 장치를 구성하는 아래의 자격 증명을 사용합니다.",
+    "Email changed successfully for {user}." : "{user} 님의 이메일 주소를 변경했습니다.",
+    "You are not a member of any groups." : "어떤 그룹의 구성원도 아닙니다.",
+    "We recommend to enable system cron as any other cron method has possible performance and reliability implications." : "다른 cron 방식이 성능 및 안정성 문제가 있을 수도 있기 때문에 시스템 cron을 활성화하는 것을 추천합니다.",
+    "In a clustered setup please make sure to sync the config.php file across all nodes." : "클러스터 환경이라면 모든 노드의 config.php 파일을 동기화해야 합니다.",
+    "These are the web, desktop and mobile clients currently logged in to your %s." : "현재 %s 에 로그인한 웹, 데스크톱 및 모바일 클라이언트입니다.",
+    "%1$s below version %2$s is installed, for stability and performance reasons we recommend updating to a newer %1$s version." : "%1$s의 버전 %2$s 미만이 설치되어 있습니다. 안정성과 성능을 위해 %1$s의 새로운 버전으로 업데이트하는 것을 권장합니다."
 },"pluralForm" :"nplurals=1; plural=0;"
 }

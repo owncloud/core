@@ -289,6 +289,7 @@ OC.L10N.register(
     "Add" : "Hozzáadás",
     "Show enabled apps" : "Az engedéjezett alkalmazások mutatása",
     "Show disabled apps" : "A nem engedéjezett alkalmazások mutatása",
-    "Invalid email address" : "Érvénytelen email cím"
+    "Invalid email address" : "Érvénytelen email cím",
+    "%s password changed successfully" : "%s jelszó sikeresen megváltozott"
 },
 "nplurals=2; plural=(n != 1);");

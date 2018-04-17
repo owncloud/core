@@ -350,6 +350,15 @@
     "Add personal message" : "Legg til personlig melding",
     "Error adding {addItem}: {addItem} already exists" : "Feil ved å legge til {addItem}: {addItem} eksisterer allerede",
     "federated" : "Forent",
-    "Link name" : "Navn på link"
+    "Link name" : "Navn på link",
+    "Owner: {owner}" : "Eier: {owner}",
+    "Email notification was sent!" : "E-postvarsling ble sendt!",
+    "Please contact the server administrator if this error reappears multiple times and include the technical details below in your report." : "Ta kontakt med serveradministratoren hvis denne feilen vises flere ganger, inkluder de tekniske detaljene nedenfor i rapporten.",
+    "You are trying to access a private link. Please log in first." : "Du prøver å få tilgang til en privat lenke. Vennligst logg inn først. ",
+    "It looks like your instance may host many files and/or users. To ensure a smooth upgrade process, please use the command line updater (occ upgrade)." : "Det ser ut som instansen inneholder mange filer og/eller brukere. Bruk kommandolinje-oppdatering (occ upgrade) for å sikre en smidig oppgradering.",
+    "Couldn't send mail to following recipient(s): %s " : "Kunne ikke sende e-post til følgende mottaker (e): %s",
+    "{sharee} (federated)" : "{sharee} (federated)",
+    "Personal note from the sender: %s." : "Personlig notat fra avsenderen: %s.",
+    "Automatic updating is disabled in config.php. To upgrade your instance, please use the command line updater (occ upgrade)." : "Automatisk oppdatering er deaktivert i config.php. Bruk kommandolinje-oppdatering (occ upgrade) for å oppgradere instansen."
 },"pluralForm" :"nplurals=2; plural=(n != 1);"
 }

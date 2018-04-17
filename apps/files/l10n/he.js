@@ -114,6 +114,10 @@ OC.L10N.register(
     "Files and folders you mark as favorite will show up here" : "קבצים ותיקיות שסומנו על ידך כמועדפים יוצגו כאן",
     "Text file" : "קובץ טקסט",
     "New text file.txt" : "קובץ טקסט חדש.txt",
-    "Upload timeout for file \"{file}\"" : "פסק זמן בזמן העלאה של קובץ \"{file}\""
+    "Upload timeout for file \"{file}\"" : "פסק זמן בזמן העלאה של קובץ \"{file}\"",
+    "Processing files..." : "מעבד קבצים...",
+    "Limit notifications about creation and changes to your <strong>favorite files</strong>" : "הגבלת התראות על יצירה או שינוי של <strong>קבצים מועדפים</strong>",
+    "You don't have permissions to access this file/folder - Please contact the owner to share it with you." : "אין לך הרשאות לגשת לקובץ/תיקייה - יש ליצור קשר עם הבעלים לשיתופם איתך.",
+    "Error when assembling chunks, status code {status}" : "שגיאה בזמן בניית פיסות מידע למשלוח, קוד מצב {status}"
 },
 "nplurals=2; plural=(n != 1);");

@@ -104,6 +104,13 @@
     "Target folder does not exist any more" : "A cél mappa nem létezik már",
     "Private link:  Only people who have access to the file/folder can use it. Use it as a permanent link for yourself or to point others to files within shares" : "Privát hivatkozás: Csak azok használhatják, akik hozzáférhetnek a fájlokhoz/mappákhoz. Használja az állandó hivatkozást maga, vagy rendelje hozzá más fájlokhoz a megosztáson belül ",
     "Upload timeout for file \"{file}\"" : "Időtúllépés az állomány feltöltésekor \"{file}\"",
-    "Storage is temporarily not available" : "A tároló átmenetileg nem elérhető"
+    "Storage is temporarily not available" : "A tároló átmenetileg nem elérhető",
+    "Processing files..." : "Állományok feldolgozása...",
+    "{loadedSize} of {totalSize} ({bitrate})" : "({bitrate}) {totalSize} -nak a {loadedSize} ",
+    "No entries in this folder match {filter}" : "Nincsenek elemek, ebben a mappa összehasonlításban {filter}",
+    "Limit notifications about creation and changes to your <strong>favorite files</strong>" : "Korlát értesítések a <strong>kedvenc fájlok</strong> létrehozása és változtatása ügyében",
+    "You don't have permissions to access this file/folder - Please contact the owner to share it with you." : "Önnek nincsen engedélye, hogy hozzáférjen ehhez a fájlhoz/mappához - Kérjük, hogy vegye fel a kapcsolatot a tulajdonossal, hogy azt megossza Önnel.",
+    "Error when assembling chunks, status code {status}" : "Hiba lépett fel a darabok összeállítása közben, státusz kód {status}",
+    "Not enough free space" : "Nincs elég szabad hely"
 },"pluralForm" :"nplurals=2; plural=(n != 1);"
 }

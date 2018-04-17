@@ -341,6 +341,7 @@ OC.L10N.register(
     "Upload only" : "Apenas envio",
     "Sending" : "A Enviar",
     "Menu" : "Menu",
-    "Link name" : "Nome de hiperligação"
+    "Link name" : "Nome de hiperligação",
+    "Owner: {owner}" : "Proprietário: {owner}"
 },
 "nplurals=2; plural=(n != 1);");
