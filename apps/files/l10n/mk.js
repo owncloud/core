@@ -39,6 +39,7 @@ OC.L10N.register(
     "This operation is forbidden" : "Операцијата не е дозволена",
     "This directory is unavailable, please check the logs or contact the administrator" : "Овој директориум е недостапен, ве молиме проверете ги логовите или контактирајте со администраторот",
     "Could not move \"{file}\", target exists" : "Не може да се премести \"{file}\", веќе постои",
+    "Could not move \"{file}\": {message}" : "Неможе да се премести \"{file}\": {message}",
     "Could not move \"{file}\"" : "Не може да се премести \"{file}\"",
     "{newName} already exists" : "{newName} веќе постои",
     "Could not rename \"{fileName}\", it does not exist any more" : "Не можеше да се преименува \"{fileName}\", не постои повеќе",

@@ -35,6 +35,7 @@
     "Wrong share ID, share doesn't exist" : "ID di condivisione errato, la condivisione non esiste",
     "Could not delete share" : "impossibile eliminare la condivisione",
     "Please specify a file or folder path" : "Specifica un percorso di un file o di una cartella",
+    "No permission to create share" : "Manca il permesso di creare la condivisione",
     "Wrong path, file/folder doesn't exist" : "Percorso errato, file/cartella inesistente",
     "Cannot remove all permissions" : "Impossibile rimuovere tutti i permessi",
     "Please specify a valid user" : "Specifica un utente valido",

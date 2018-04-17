@@ -249,6 +249,7 @@ OC.L10N.register(
     "Change password" : "Passwort ändern",
     "Language" : "Sprache",
     "Help translate" : "Hilf bei der Übersetzung",
+    "You are using %s" : "Du verwendest %s",
     "You are using %s of %s (%s %%)" : "Du benutzt %s von %s (%s %%)",
     "Developed by the {communityopen}ownCloud community{linkclose}, the {githubopen}source code{linkclose} is licensed under the {licenseopen}<abbr title=\"Affero General Public License\">AGPL</abbr>{linkclose}." : "Entwickelt von der {communityopen}ownCloud-Community{linkclose}, der {githubopen}Quellcode{linkclose} ist unter den Bedingungen der {licenseopen}<abbr title=\"Affero General Public License\">AGPL</abbr>{linkclose} lizenziert.",
     "Sessions" : "Sitzungen",
