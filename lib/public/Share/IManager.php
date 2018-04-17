@@ -21,9 +21,12 @@
 
 namespace OCP\Share;
 
+use OC\User\NoUserException;
 use OCP\Files\Node;
 
+use OCP\Files\NotFoundException;
 use OCP\Share\Exceptions\ShareNotFound;
+use OCP\Share\Exceptions\TransferSharesException;
 
 /**
  * Interface IManager
@@ -112,6 +115,27 @@ interface IManager {
 	 */
 	public function getSharesBy($userId, $shareType, $path = null, $reshares = false, $limit = 50, $offset = 0);
 
+	/**
+	 * Transfer shares from oldOwner to newOwner. Both old and new owners are uid
+	 *
+	 * @param IShare $share
+	 * @param string $oldOwner - is the previous owner of the share, the uid string
+	 * @param string $newOwner - is the new owner of the share, the uid string
+	 * @param string $finalTarget - is the target folder where share has to be moved
+	 *
+	 * finalTarget is of the form "user1/files/transferred from admin on 20180509"
+	 *
+	 * TransferShareException would be thrown when:
+	 *  - oldOwner, newOwner does not exist.
+	 *  - oldOwner and newOwner are same
+	 * NotFoundException would be thrown when finalTarget does not exist in the file
+	 * system
+	 *
+	 * @throws TransferSharesException
+	 * @throws NotFoundException
+	 * @since 10.0.9
+	 */
+	public function transferShare(IShare $share, $oldOwner, $newOwner, $finalTarget);
 
 	/**
 	 * Get shares shared with $userId for specified share types.
