@@ -191,6 +191,7 @@ OC.L10N.register(
     "Send link via email" : "Enviar link por email",
     "Add personal message" : "Adicionar mensagem pessoal",
     "Sending" : "Enviando",
+    "E-Mail sent" : "E-mail enviado",
     "Owner: {owner}" : "Proprietário: {owner}",
     "Shared with you and the group {group} by {owner}" : "Compartilhado com você e com o grupo {group} por {owner}",
     "Shared with you by {owner}" : "Compartilhado com você por {owner}",

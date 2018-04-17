@@ -189,6 +189,7 @@
     "Send link via email" : "Link als E-Mail verschicken",
     "Add personal message" : "Füge eine persönliche Nachricht an",
     "Sending" : "Senden",
+    "E-Mail sent" : "E-Mail gesendet",
     "Owner: {owner}" : "Besitzer: {owner}",
     "Shared with you and the group {group} by {owner}" : "{owner} hat dies mit Dir und der Gruppe {group} geteilt",
     "Shared with you by {owner}" : "{owner} hat dies mit Dir geteilt",

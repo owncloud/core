@@ -191,6 +191,7 @@ OC.L10N.register(
     "Send link via email" : "Dërgojeni lidhjen me email",
     "Add personal message" : "Shtoni mesazh personal",
     "Sending" : "Po dërgohet",
+    "E-Mail sent" : "Email-i u dërgua",
     "Owner: {owner}" : "I zoti: {owner}",
     "Shared with you and the group {group} by {owner}" : "Ndarë me ju dhe me grupin {group} nga {owner}",
     "Shared with you by {owner}" : "Ndarë me ju nga {owner}",
