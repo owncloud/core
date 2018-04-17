@@ -327,6 +327,18 @@ trait BasicStructure {
 	}
 
 	/**
+	 * Parses the xml answer to get ocs response message which doesn't match with
+	 * http one in v1 of the api.
+	 *
+	 * @param ResponseInterface $response
+	 *
+	 * @return string
+	 */
+	public function getOCSResponseStatusMessage($response) {
+		return (string) $response->xml()->meta[0]->message;
+	}
+
+	/**
 	 * Parses the xml answer to get the requested key and sub-key
 	 *
 	 * @param ResponseInterface $response
@@ -507,12 +519,14 @@ trait BasicStructure {
 	 * @Then /^the OCS status code should be "([^"]*)"$/
 	 *
 	 * @param int $statusCode
+	 * @param string $message
 	 *
 	 * @return void
 	 */
-	public function theOCSStatusCodeShouldBe($statusCode) {
+	public function theOCSStatusCodeShouldBe($statusCode, $message = "") {
 		PHPUnit_Framework_Assert::assertEquals(
-			$statusCode, $this->getOCSResponseStatusCode($this->response)
+			$statusCode, $this->getOCSResponseStatusCode($this->response),
+			$message
 		);
 	}
 
@@ -520,12 +534,13 @@ trait BasicStructure {
 	 * @Then /^the HTTP status code should be "([^"]*)"$/
 	 *
 	 * @param int $statusCode
+	 * @param string $message
 	 *
 	 * @return void
 	 */
-	public function theHTTPStatusCodeShouldBe($statusCode) {
+	public function theHTTPStatusCodeShouldBe($statusCode, $message = "") {
 		PHPUnit_Framework_Assert::assertEquals(
-			$statusCode, $this->response->getStatusCode()
+			$statusCode, $this->response->getStatusCode(), $message
 		);
 	}
 
