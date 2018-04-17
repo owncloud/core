@@ -22,8 +22,10 @@
 
 use Behat\Behat\Context\Context;
 use Behat\Behat\Hook\Scope\BeforeScenarioScope;
+use Behat\Gherkin\Node\PyStringNode;
 use Behat\MinkExtension\Context\RawMinkContext;
 use Page\LoginPage;
+use TestHelpers\EmailHelper;
 
 require_once 'bootstrap.php';
 
@@ -37,6 +39,12 @@ class WebUILoginContext extends RawMinkContext implements Context {
 	private $loginPage;
 	private $filesPage;
 	private $expectedPage;
+	
+	/**
+	 * 
+	 * @var EmailContext
+	 */
+	private $emailContext;
 
 	/**
 	 * 
@@ -208,7 +216,66 @@ class WebUILoginContext extends RawMinkContext implements Context {
 		}
 		
 	}
+
+	/**
+	 * @When the user requests the password reset link using the webUI
+	 * 
+	 * @return void
+	 */
+	public function theUserRequestsThePasswordResetLinkUsingTheWebui() {
+		$this->loginPage->requestPasswordReset($this->getSession());
+	}
+
+	/**
+	 * @Then a message with this text should be displayed on the webUI:
+	 * 
+	 * @param PyStringNode $string
+	 * 
+	 * @return void
+	 */
+	public function thisMessageShouldBeDisplayed(PyStringNode $string) {
+		$expectedString = $string->getRaw();
+		$passwordRecoveryMessage = $this->loginPage->getLostPasswordMessage();
+		PHPUnit_Framework_Assert::assertEquals(
+			$expectedString, $passwordRecoveryMessage
+		);
+	}
+
+	/**
+	 * @When the user follows the password reset link from email address :emailAddress
+	 * 
+	 * @param string $emailAddress
+	 * 
+	 * @return void
+	 */
+	public function theUserFollowsThePasswordResetLinkFromTheirEmail($emailAddress) {
+		$content = EmailHelper::getBodyOfLastEmail(
+			$this->emailContext->getMailhogUrl(), $emailAddress
+		);
+		preg_match(
+			'/Use the following link to reset your password: (http.*user1)/',
+			$content, $matches
+		);
+		PHPUnit_Framework_Assert::assertArrayHasKey(
+			1, $matches, 
+			"Couldn't find password reset link in the email"
+		);
+		$this->visitPath($matches[1]);
+	}
+
+	/**
+	 * @When the user resets the password to :newPassword using the webUI
+	 * 
+	 * @param string $newPassword
+	 * 
+	 * @return void
+	 */
+	public function theUserResetsThePasswordToUsingTheWebui($newPassword) {
+		$this->loginPage->resetThePassword($newPassword, $this->getSession());
+	}
 	
+	
+
 	/**
 	 * This will run before EVERY scenario.
 	 * It will set the properties for this object.
@@ -225,5 +292,6 @@ class WebUILoginContext extends RawMinkContext implements Context {
 		// Get all the contexts you need in this context
 		$this->featureContext = $environment->getContext('FeatureContext');
 		$this->webUIGeneralContext = $environment->getContext('WebUIGeneralContext');
+		$this->emailContext = $environment->getContext('EmailContext');
 	}
 }
