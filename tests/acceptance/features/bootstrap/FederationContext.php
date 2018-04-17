@@ -24,6 +24,8 @@
 
 use Behat\Behat\Context\Context;
 use Behat\Behat\Context\SnippetAcceptingContext;
+use Behat\Behat\Hook\Scope\BeforeScenarioScope;
+use GuzzleHttp\Message\ResponseInterface;
 
 require_once 'bootstrap.php';
 
@@ -32,35 +34,95 @@ require_once 'bootstrap.php';
  */
 class FederationContext implements Context, SnippetAcceptingContext {
 
-	use BasicStructure;
-	use Federation;
+	/**
+	 *
+	 * @var FeatureContext
+	 */
+	private $featureContext;
 
 	/**
+	 * @When /^user "([^"]*)" from server "(LOCAL|REMOTE)" shares "([^"]*)" with user "([^"]*)" from server "(LOCAL|REMOTE)" using the API$/
+	 * @Given /^user "([^"]*)" from server "(LOCAL|REMOTE)" has shared "([^"]*)" with user "([^"]*)" from server "(LOCAL|REMOTE)"$/
+	 *
+	 * @param string $sharerUser
+	 * @param string $sharerServer "LOCAL" or "REMOTE"
+	 * @param string $sharerPath
+	 * @param string $shareeUser
+	 * @param string $shareeServer "LOCAL" or "REMOTE"
+	 *
 	 * @return void
 	 */
-	protected function resetAppConfigs() {
-		// Remember the current capabilities
-		$this->getCapabilitiesCheckResponse();
-		$this->savedCapabilitiesXml = $this->getCapabilitiesXml();
-		// Set the required starting values for testing
-		$capabilitiesArray = $this->getCommonSharingConfigs();
-		$capabilitiesArray = array_merge(
-			$capabilitiesArray,
-			$this->getCommonFederationConfigs()
+	public function federateSharing(
+		$sharerUser, $sharerServer, $sharerPath, $shareeUser, $shareeServer
+	) {
+		if ($shareeServer == "REMOTE") {
+			$shareWith = "$shareeUser@" . $this->featureContext->getRemoteBaseUrl() . '/';
+		} else {
+			$shareWith = "$shareeUser@" . $this->featureContext->getLocalBaseUrl() . '/';
+		}
+			$previous = $this->featureContext->usingServer($sharerServer);
+			$this->featureContext->createShare(
+				$sharerUser, $sharerPath, 6, $shareWith, null, null, null
+			);
+			$this->featureContext->theHTTPStatusCodeShouldBe('200');
+			$this->featureContext->theOCSStatusCodeShouldBe(
+				'100', 'Could not share file/folder! message: "' . 
+				$this->featureContext->getOCSResponseStatusMessage(
+					$this->featureContext->getResponse()
+				) . '"'
+			);
+			$this->featureContext->usingServer($previous);
+	}
+	
+	/**
+	 * @When /^user "([^"]*)" from server "(LOCAL|REMOTE)" accepts the last pending share using the API$/
+	 * @Given /^user "([^"]*)" from server "(LOCAL|REMOTE)" has accepted the last pending share$/
+	 *
+	 * @param string $user
+	 * @param string $server
+	 *
+	 * @return void
+	 */
+	public function acceptLastPendingShare($user, $server) {
+		$previous = $this->featureContext->usingServer($server);
+		$this->featureContext->asUser($user);
+		$this->featureContext->sendingToWith(
+			'GET',
+			"/apps/files_sharing/api/v1/remote_shares/pending",
+			null
 		);
-		$capabilitiesArray = array_merge(
-			$capabilitiesArray,
-			[
-				[
-					'capabilitiesApp' => 'files_sharing',
-					'capabilitiesParameter' => 'resharing',
-					'testingApp' => 'core',
-					'testingParameter' => 'shareapi_allow_resharing',
-					'testingState' => true
-				]
-			]
+		$this->featureContext->theHTTPStatusCodeShouldBe('200');
+		$this->featureContext->theOCSStatusCodeShouldBe('100');
+		/**
+		 * 
+		 * @var ResponseInterface $response
+		 */
+		$response = $this->featureContext->getResponse();
+		$share_id = $response->xml()->data[0]->element[0]->id;
+		$this->featureContext->sendingToWith(
+			'POST',
+			"/apps/files_sharing/api/v1/remote_shares/pending/{$share_id}",
+			null
 		);
+		$this->featureContext->theHTTPStatusCodeShouldBe('200');
+		$this->featureContext->theOCSStatusCodeShouldBe('100');
+		$this->featureContext->usingServer($previous);
+	}
 
-		$this->setCapabilities($capabilitiesArray);
+	/**
+	 * This will run before EVERY scenario.
+	 * It will set the properties for this object.
+	 *
+	 * @BeforeScenario
+	 *
+	 * @param BeforeScenarioScope $scope
+	 *
+	 * @return void
+	 */
+	public function before(BeforeScenarioScope $scope) {
+		// Get the environment
+		$environment = $scope->getEnvironment();
+		// Get all the contexts you need in this context
+		$this->featureContext = $environment->getContext('FeatureContext');
 	}
 }

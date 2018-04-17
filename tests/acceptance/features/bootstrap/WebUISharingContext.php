@@ -26,6 +26,7 @@ use Behat\Gherkin\Node\TableNode;
 use Behat\MinkExtension\Context\RawMinkContext;
 use Page\FilesPage;
 use Page\PublicLinkFilesPage;
+use Page\SharedWithYouPage;
 use SensioLabs\Behat\PageObjectExtension\PageObject\Exception\ElementNotFoundException;
 use TestHelpers\AppConfigHelper;
 use TestHelpers\SetupHelper;
@@ -37,8 +38,23 @@ require_once 'bootstrap.php';
  */
 class WebUISharingContext extends RawMinkContext implements Context {
 
+	/**
+	 * 
+	 * @var FilesPage
+	 */
 	private $filesPage;
+	
+	/**
+	 * 
+	 * @var PublicLinkFilesPage
+	 */
 	private $publicLinkFilesPage;
+
+	/**
+	 *
+	 * @var SharedWithYouPage
+	 */
+	private $sharedWithYouPage;
 	private $sharingDialog;
 
 	/**
@@ -66,12 +82,16 @@ class WebUISharingContext extends RawMinkContext implements Context {
 	 *
 	 * @param FilesPage $filesPage
 	 * @param PublicLinkFilesPage $publicLinkFilesPage
+	 * @param SharedWithYouPage $sharedWithYouPage
 	 */
 	public function __construct(
-		FilesPage $filesPage, PublicLinkFilesPage $publicLinkFilesPage
+		FilesPage $filesPage,
+		PublicLinkFilesPage $publicLinkFilesPage,
+		SharedWithYouPage $sharedWithYouPage
 	) {
 		$this->filesPage = $filesPage;
 		$this->publicLinkFilesPage = $publicLinkFilesPage;
+		$this->sharedWithYouPage = $sharedWithYouPage;
 	}
 
 	/**
@@ -287,7 +307,7 @@ class WebUISharingContext extends RawMinkContext implements Context {
 	}
 
 	/**
-	 * @When the user accepts the offered remote shares
+	 * @When the user accepts the offered remote shares using the webUI
 	 * @Given the user has accepted the offered remote shares
 	 *
 	 * @return void
@@ -324,6 +344,18 @@ class WebUISharingContext extends RawMinkContext implements Context {
 				$minCharacters
 			]
 		);
+	}
+
+	/**
+	 * @When the user declines the offered remote shares using the webUI
+	 * @Given the user has declined the offered remote shares
+	 *
+	 * @return void
+	 */
+	public function theUserDeclinesTheOfferedRemoteShares() {
+		foreach (array_reverse($this->filesPage->getOcDialogs()) as $ocDialog) {
+			$ocDialog->clickButton($this->getSession(), 'Cancel');
+		}
 	}
 
 	/**

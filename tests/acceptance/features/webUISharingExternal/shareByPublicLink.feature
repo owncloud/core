@@ -50,7 +50,7 @@ So that public sharing is limited according to organization policy
 		And the user logs out of the webUI
 		And the public accesses the last created public link using the webUI
 		And the public adds the public link to "%remote_server%" as user "user2" with the password "1234" using the webUI
-		And the user accepts the offered remote shares
+		And the user accepts the offered remote shares using the webUI
 		Then the folder "simple-folder (2)" should be listed on the webUI
 		When the user opens the folder "simple-folder (2)" using the webUI
 		Then the file "lorem.txt" should be listed on the webUI
@@ -67,7 +67,7 @@ So that public sharing is limited according to organization policy
 		And the user logs out of the webUI
 		And the public accesses the last created public link using the webUI
 		And the public adds the public link to "%remote_server%" as user "user2" with the password "1234" using the webUI
-		And the user accepts the offered remote shares
+		And the user accepts the offered remote shares using the webUI
 		Then the folder "simple-folder (2)" should be listed on the webUI
 		When the user opens the folder "simple-folder (2)" using the webUI
 		Then the file "lorem.txt" should be listed on the webUI
