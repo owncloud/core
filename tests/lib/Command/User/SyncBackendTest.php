@@ -218,16 +218,21 @@ class SyncBackendTest extends TestCase {
 
 		$this->assertEquals(1, static::invokePrivate($this->command, 'execute', [$inputInterface, $outputInterface]));
 	}
-/*
-	public function testSingleUserSync() {
-		$inputInterface = $this->createMock(InputInterface::class);
-		$outputInterface = $this->createMock(OutputInterface::class);
 
-		$inputInterface
-			->expects($this->at(0))
-			->method('getOption')
-			->with('list')
-			->will($this->returnValue(null));
+
+	public function executeProvider() {
+		return [
+			['foo', 'Syncing foo ...'],
+			[null, 'Analysing known accounts ...'],
+		];
+	}
+
+	/**
+	 * @dataProvider executeProvider
+	 */
+	public function testExecute($uid, $expected) {
+		$inputInterface = $this->createMock(InputInterface::class);
+		$outputInterface = $this->createPartialMock(NullOutput::class, ['writeln']);
 
 		$backendClassName = get_class($this->dummyBackend);
 
@@ -261,18 +266,16 @@ class SyncBackendTest extends TestCase {
 			->expects($this->at(4))
 			->method('getOption')
 			->with('uid')
-			->will($this->returnValue('foo'));
+			->will($this->returnValue($uid));
 
 		$outputInterface
 			->expects($this->at(0))
 			->method('writeln')
-			->with('Syncing foo ...');
-
-		// TODO add more tests
+			->with($expected);
 
 		$this->assertEquals(0, static::invokePrivate($this->command, 'execute', [$inputInterface, $outputInterface]));
 	}
-	*/
+
 	/**
 	 * @expectedException \LengthException
 	 */
@@ -295,6 +298,7 @@ class SyncBackendTest extends TestCase {
 			$missingAccountsAction,
 		]);
 	}
+
 	public function testSingleUserSyncExistingUser() {
 		$inputInterface = $this->createMock(InputInterface::class);
 		$outputInterface = $this->createMock(OutputInterface::class);
@@ -322,7 +326,7 @@ class SyncBackendTest extends TestCase {
 		]);
 	}
 
-	public function singleUserSyncRemovedUserProvider() {
+	public function removedUserProvider() {
 		return [
 			['disable', 'isEnabled', true, false],
 			['disable', 'isEnabled', false, null],
@@ -331,7 +335,7 @@ class SyncBackendTest extends TestCase {
 	}
 
 	/**
-	 * @dataProvider singleUserSyncRemovedUserProvider
+	 * @dataProvider removedUserProvider
 	 */
 	public function testSingleUserSyncDisableRemovedUser($action, $method, $isEnabled, $setEnabled) {
 		$inputInterface = $this->createMock(InputInterface::class);
@@ -374,6 +378,94 @@ class SyncBackendTest extends TestCase {
 			$syncService,
 			$this->dummyBackend,
 			'removed-uid',
+			$action,
+		]);
+	}
+
+	public function testSyncMultipleUsersExistingUsers() {
+		$inputInterface = $this->createMock(InputInterface::class);
+		$outputInterface = new NullOutput();
+		$syncService = $this->createMock(SyncService::class);
+
+		$uids = ['uid1', 'uid2'];
+		$this->dummyBackend->method('getUsers')->willReturn($uids);
+
+		// no removed or reappeared users
+		$syncService->method('analyzeExistingUsers')->willReturn([[],[]]);
+
+		$missingAccountsAction = 'disable';
+		$syncService->expects($this
+			->once())->method('run')->with(
+			$this->dummyBackend,
+			$this->callback(function(\Iterator $iterator) use ($uids) {
+				// convert to array so we can test better
+				$items = [];
+				foreach ($iterator as $item) {
+					$items[] = $item;
+				}
+				return count(array_diff($items, $uids)) === 0;
+			}),
+			$this->anything()
+		);
+
+		static::invokePrivate($this->command, 'syncMultipleUsers', [
+			$inputInterface,
+			$outputInterface,
+			$syncService,
+			$this->dummyBackend,
+			$missingAccountsAction,
+		]);
+	}
+
+	/**
+	 * @dataProvider removedUserProvider
+	 */
+	public function testSyncMultipleUsersRemovedUsers($action, $method, $isEnabled, $setEnabled) {
+		$inputInterface = $this->createMock(InputInterface::class);
+		$outputInterface = new NullOutput();
+		$syncService = $this->createMock(SyncService::class);
+
+		$uids = ['uid2'];
+		$this->dummyBackend->method('getUsers')->willReturn($uids);
+
+		$removedAccount = new Account();
+		$removedAccount->setUserId('removed-uid');
+		$removedAccounts = [$removedAccount->getUserId() => $removedAccount];
+
+		$syncService->method('analyzeExistingUsers')->willReturn([$removedAccounts,[]]);
+
+		$syncService->expects($this
+			->once())->method('run')->with(
+			$this->dummyBackend,
+			$this->callback(function(\Iterator $iterator) use ($uids) {
+				// convert to array so we can test better
+				$items = [];
+				foreach ($iterator as $item) {
+					$items[] = $item;
+				}
+				return count(array_diff($items, $uids)) === 0;
+			}),
+			$this->anything()
+		);
+
+		$removedUser = $this->createMock(IUser::class);
+		$removedUser->method('delete')->willReturn(true);
+
+		$this->userManager->method('get')->willReturnMap([
+			['removed-uid', $removedUser],
+		]);
+		$removedUser->expects($this->once())->method($method)->willReturn($isEnabled);
+		if ($setEnabled !== null) {
+			$removedUser->expects($this->once())->method('setEnabled')->with($setEnabled);
+		} else {
+			$removedUser->expects($this->never())->method('setEnabled');
+		}
+
+		static::invokePrivate($this->command, 'syncMultipleUsers', [
+			$inputInterface,
+			$outputInterface,
+			$syncService,
+			$this->dummyBackend,
 			$action,
 		]);
 	}
