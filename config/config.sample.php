@@ -280,6 +280,16 @@ $CONFIG = array(
 'accounts.enable_medial_search' => true,
 
 /**
+ * Defines the minimum characters entered before a search returns results for 
+ * users or groups in the share autocomplete form. Lower values increase search
+ * time especially for large backends.
+ * Any exact matches to a user or group will be returned, even though less than 
+ * the minimum characters have been entered. The search is case insensitive.
+ * e.g. entering "tom" will always return "Tom" if there is an exact match.
+ */
+'user.search_min_length' => 4,
+
+/**
  * Mail Parameters
  *
  * These configure the email settings for ownCloud notifications and password
