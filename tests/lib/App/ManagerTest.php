@@ -530,7 +530,15 @@ class ManagerTest extends TestCase {
 		$this->assertFalse($appPath);
 	}
 
-	public function testAppWebRootAboveOcWebroot() {
+	/**
+	 * @dataProvider appAboveWebRootDataProvider
+	 *
+	 * @param string $ocWebRoot
+	 * @param string[] $appData
+	 * @param string $expectedAppWebPath
+	 */
+	public function testAppWebRootAboveOcWebRoot($ocWebRoot, $appData,
+		$expectedAppWebPath) {
 		$appId = 'notexistingapp';
 
 		$appManager = $this->getMockBuilder(AppManager::class)
@@ -540,17 +548,51 @@ class ManagerTest extends TestCase {
 
 		$appManager->expects($this->any())
 			->method('getOcWebRoot')
-			->willReturn('some/host/path');
+			->willReturn($ocWebRoot);
 
 		$appManager->expects($this->any())
 			->method('findAppInDirectories')
 			->with($appId)
-			->willReturn([
-				'path' => '/not/essential',
-				'url' => '../../relative',
-			]);
+			->willReturn($appData);
 
 		$appWebPath = $appManager->getAppWebPath($appId);
-		$this->assertEquals('some/relative', $appWebPath);
+		$this->assertEquals($expectedAppWebPath, $appWebPath);
+	}
+
+	public function appAboveWebRootDataProvider(){
+		return [
+			[
+				'/some/host/path',
+				[
+					'path' => '/not/essential',
+					'url' => '../../relative',
+				],
+				'/some/relative'
+			],
+			[
+				'/some/host/path',
+				[
+					'path' => '/not/essential',
+					'url' => '../relative',
+				],
+				'/some/host/relative'
+			],
+			[
+				'/some/hostPath',
+				[
+					'path' => '/not/essential',
+					'url' => '../relative',
+				],
+				'/some/relative'
+			],
+			[
+				'/someHostPath',
+				[
+					'path' => '/not/essential',
+					'url' => '../relative',
+				],
+				'/relative'
+			],
+		];
 	}
 }
