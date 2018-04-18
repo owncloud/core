@@ -38,7 +38,7 @@ OC.L10N.register(
     "Unable to determine date" : "ไม่สามารถกำหนดวัน",
     "Invalid path" : "เส้นทางไม่ถูกต้อง",
     "This operation is forbidden" : "การดำเนินการนี้ถูกห้าม",
-    "This directory is unavailable, please check the logs or contact the administrator" : "ไม่สามารถใช้งานไดเรกทอรีนี้โปรดตรวจสอบไฟล์บันทึกหรือติดต่อผู้ดูแลระบบ",
+    "This directory is unavailable, please check the logs or contact the administrator" : "ไม่สามารถใช้งานไดเรกทอรีนี้โปรดตรวจสอบไฟล์ log หรือติดต่อผู้ดูแลระบบ",
     "Could not move \"{file}\", target exists" : "ไม่สามารถย้ายไฟล์ \"{file}\" ไม่มีไฟล์นั้นอยู่",
     "Could not move \"{file}\": {message}" : "ไม่สามารถย้าย \"{file}\": {message}",
     "Could not move \"{file}\"" : "ไม่สามารถย้ายไฟล์ \"{file}\"",

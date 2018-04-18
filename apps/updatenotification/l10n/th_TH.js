@@ -9,7 +9,7 @@ OC.L10N.register(
     "Updater" : "อัพเดท",
     "A new version is available: %s" : "มีรุ่นใหม่ที่สามารถใช่ได้: %s",
     "Open updater" : "เปิดตัวอัพเดท",
-    "Show changelog" : "แสดงการเปลี่ยนแปลงของบันทึก",
+    "Show changelog" : "แสดงบันทึกการเปลี่ยนแปลง",
     "Your version is up to date." : "<strong>รุ่นของคุณใหม่ล่าสุดแล้ว</strong>",
     "Checked on %s" : "ตรวจสอบเมื่อ %s แล้ว",
     "Update channel:" : "รูปแบบการอัพเดท:",
