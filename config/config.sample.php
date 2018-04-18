@@ -741,13 +741,13 @@ $CONFIG = array(
       array (
         'path' => OC::$SERVERROOT.'/apps',
         'url' => '/apps',
-        'writable' => 'false',
+        'writable' => false,
       ),
       1 => 
       array (
         'path' => OC::$SERVERROOT.'/apps-external',
         'url' => '/apps-external',
-        'writable' => 'true',
+        'writable' => true,
       ),
     ),
 
