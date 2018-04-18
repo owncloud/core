@@ -143,6 +143,7 @@
 	background-position: 8px 8px;
 	border-radius      : 50%;
 	margin-right       : 10px;
+	flex-shrink        : 0;
 }
 
 .link-entry--title {
