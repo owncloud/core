@@ -14,6 +14,10 @@ use OC\Files\Storage\Temporary;
 use OCP\Files\Storage\IStorageFactory;
 use OCP\IUser;
 use Test\Traits\UserTrait;
+use OCP\Files\Cache\ICache;
+use OCP\Files\Storage\IStorage;
+use OC\ForbiddenException;
+use OC\Files\Storage\Storage;
 
 class TestScanner extends \OC\Files\Utils\Scanner {
 	/**
@@ -201,5 +205,60 @@ class ScannerTest extends \Test\TestCase {
 		$scanner->scan('');
 
 		$scanner->backgroundScan('');
+	}
+
+	public function nonReadyHomesProvider() {
+		return [
+			[[['', false], ['files', false]], false, false, false, false],
+			[[['', true ], ['files', false]], false, false, false, false],
+			[[['', true ], ['files', false]], true, false, true, false],
+			[[['', false], ['files', true ]], false, true, true, false],
+			[[['', true ], ['files', false]], true, true, true, false],
+		];
+	}
+
+	/**
+	 * @dataProvider nonReadyHomesProvider
+	 */
+	public function testSkipNonReadyHomes($isCreatableValues, $rootFileExists = false, $rootInCache = false, $expectedException = false) {
+		$homeStorage = $this->createMock(Storage::class);
+		$homeCache = $this->createMock(ICache::class);
+		$homeMount = new MountPoint($homeStorage, '/user1/');
+		Filesystem::getMountManager()->addMount($homeMount);
+
+		$homeStorage->expects($this->any())
+			->method('instanceOfStorage')
+			->will($this->returnValueMap([
+				['\OC\Files\Storage\Home', true],
+			]));
+
+		$homeStorage->expects($this->never())
+			->method('getScanner');
+
+		$homeStorage->method('getCache')->willReturn($homeCache);
+		$homeCache->method('inCache')->with('')->willReturn($rootInCache);
+
+		$homeStorage->method('isCreatable')
+			->will($this->returnValueMap($isCreatableValues));
+		$homeStorage->method('file_exists')
+			->with('')
+			->willReturn($rootFileExists);
+
+		$scanner = new TestScanner('', \OC::$server->getDatabaseConnection(), \OC::$server->getLogger());
+		$scanner->addMount($homeMount);
+
+		try {
+			$scanner->scan('');
+			$this->assertFalse($expectedException, 'Exception must not be thrown');
+		} catch (ForbiddenException $e) {
+			$this->assertTrue($expectedException, 'Exception must be thrown');
+		}
+
+		try {
+			$scanner->backgroundScan('');
+			$this->assertFalse($expectedException, 'Exception must not be thrown');
+		} catch (ForbiddenException $e) {
+			$this->assertTrue($expectedException, 'Exception must be thrown');
+		}
 	}
 }
