@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018
+ * Copyright (c) 2014
  *
  * This file is licensed under the Affero General Public License version 3
  * or later.
@@ -320,20 +320,8 @@ OC.FileUpload.prototype = {
 		if (this.data.isChunked) {
 			this._deleteChunkFolder();
 		}
-		this.data.stalled = false;
 		this.data.abort();
 		this.deleteUpload();
-	},
-
-	/**
-	 * retry the upload
-	 */
-	retry: function() {
-		if (!this.data.stalled) {
-			console.log('Retrying upload ' + this.id);
-			this.data.stalled = true;
-			this.data.abort();
-		}
 	},
 
 	/**
@@ -484,17 +472,6 @@ OC.Uploader.prototype = _.extend({
 	 */
 	davClient: null,
 
-	/**
-	 * Upload progressbar element
-	 *
-	 * @type Object
-	 */
-	$uploadprogressbar: null,
-
-	/**
-	 * @type int
-	 */
-	_uploadStallTimeout: 60,
 	/**
 	 * Function that will allow us to know if Ajax uploads are supported
 	 * @link https://github.com/New-Bamboo/example-ajax-upload/blob/master/public/index.html
@@ -817,40 +794,34 @@ OC.Uploader.prototype = _.extend({
 		var self = this;
 		window.clearInterval(this._progressBarInterval);
 		$('#uploadprogresswrapper .stop').fadeOut();
-		this.$uploadprogressbar.fadeOut(function() {
+		$('#uploadprogressbar').fadeOut(function() {
 			self.$uploadEl.trigger(new $.Event('resized'));
 		});
 	},
 
 	_showProgressBar: function() {
-		this.$uploadprogressbar.fadeIn();
+		$('#uploadprogressbar').fadeIn();
 		this.$uploadEl.trigger(new $.Event('resized'));
 		if (this._progressBarInterval) {
 			window.clearInterval(this._progressBarInterval);
 		}
 		this._progressBarInterval = window.setInterval(_.bind(this._updateProgressBar, this), 1000);
 		this._lastProgress = 0;
+		this._lastProgressStalledSeconds = 0;
 	},
-
+	
 	_updateProgressBar: function() {
-		var progress = parseInt(this.$uploadprogressbar.attr('data-loaded'), 10);
-		var total = parseInt(this.$uploadprogressbar.attr('data-total'), 10);
+		var progress = parseInt($('#uploadprogressbar').attr('data-loaded'), 10);
+		var total = parseInt($('#uploadprogressbar').attr('data-total'), 10);
 		if (progress !== this._lastProgress) {
 			this._lastProgress = progress;
-			this._lastProgressTime = new Date().getTime();
+			this._lastProgressStalledSeconds = 0;
 		} else {
-			if (progress >= total) {
+			if (this._lastProgressStalledSeconds < 1) {
+				this._lastProgressStalledSeconds++;
+			} else if (progress >= total) {
 				// change message if we stalled at 100%
-				this.$uploadprogressbar.find('.label .desktop').text(t('core', 'Processing files...'));
-			} else if (new Date().getTime() - this._lastProgressTime >= this._uploadStallTimeout * 1000 ) {
-				// TODO: move to "fileuploadprogress" event instead and use data.uploadedBytes
-				// stalling needs to be checked here because the file upload no longer triggers events
-				// restart upload
-				this.log('progress stalled'); // retry chunk (and prevent IE from dying)
-				_.each(this._uploads, function(upload) {
-					// FIXME: harden by only retry pending, not the finished ones
-					upload.retry();
-				});
+				$('#uploadprogressbar .label .desktop').text(t('core', 'Processing files...'));
 			}
 		}
 	},
@@ -887,9 +858,6 @@ OC.Uploader.prototype = _.extend({
 		var self = this;
 		options = options || {};
 
-		this._uploads = {};
-		this._knownDirs = {};
-
 		this.fileList = options.fileList;
 		this.filesClient = options.filesClient || OC.Files.getClient();
 		this.davClient = new OC.Files.Client({
@@ -903,14 +871,9 @@ OC.Uploader.prototype = _.extend({
 		if (options.url) {
 			this.url = options.url;
 		}
-		if (options.uploadStallTimeout) {
-			this._uploadStallTimeout = options.uploadStallTimeout;
-		}
 
 		$uploadEl = $($uploadEl);
 		this.$uploadEl = $uploadEl;
-
-		this.$uploadprogressbar = $('#uploadprogressbar');
 
 		if ($uploadEl.exists()) {
 			$('#uploadprogresswrapper .stop').on('click', function() {
@@ -922,12 +885,10 @@ OC.Uploader.prototype = _.extend({
 				dropZone: options.dropZone, // restrict dropZone to content div
 				autoUpload: false,
 				sequentialUploads: true,
-				maxRetries: options.uploadStallRetries || 3,
-				retryTimeout: 500,
 				//singleFileUploads is on by default, so the data.files array will always have length 1
 				/**
 				 * on first add of every selection
-
+				 * - check all files of originalFiles array with files in dir
 				 * - on conflict show dialog
 				 *   - skip all -> remember as single skip action for all conflicting files
 				 *   - replace all -> remember as single replace action for all conflicting files
@@ -1088,53 +1049,6 @@ OC.Uploader.prototype = _.extend({
 				},
 				fail: function(e, data) {
 					var upload = self.getUpload(data);
-					if (upload && upload.data && upload.data.stalled) {
-						self.log('retry', e, upload);
-						// jQuery Widget Factory uses "namespace-widgetname" since version 1.10.0:
-						var fu = $(this).data('blueimp-fileupload') || $(this).data('fileupload'),
-							retries = upload.data.retries || 0,
-							retry = function () {
-								var uid = OC.getCurrentUser().uid;
-								upload.uploader.davClient.getFolderContents(
-									'uploads/' + uid + '/' + upload.getId()
-								)
-								.done(function (status, files) {
-									data.uploadedBytes = 0;
-									_.each(files, function(file) {
-										// only count numeric file names to omit .file and .file.zsync
-										if (!isNaN(parseFloat(file.name))
-											&& isFinite(file.name)
-											// only count full chunks
-											&& file.size === fu.options.maxChunkSize
-										) {
-											data.uploadedBytes += file.size;
-										}
-									});
-
-									// clear the previous data:
-									data.data = null;
-									// overwrite chunk
-									delete data.headers['If-None-Match'];
-									data.submit();
-								})
-								.fail(function (status, ex) {
-									self.log('failed to retry', status, ex);
-									fu._trigger('fail', e, data);
-								});
-							};
-						if (upload && upload.data && upload.data.stalled &&
-							data.uploadedBytes < data.files[0].size &&
-							retries < fu.options.maxRetries) {
-							retries += 1;
-							upload.data.retries = retries;
-							window.setTimeout(retry, retries * fu.options.retryTimeout);
-							return;
-						}
-						fu.prototype
-							.options.fail.call(this, e, data);
-						return;
-					}
-
 					var status = null;
 					if (upload) {
 						status = upload.getResponseStatus();
@@ -1232,14 +1146,14 @@ OC.Uploader.prototype = _.extend({
 					self.log('progress handle fileuploadstart', e, data);
 					$('#uploadprogresswrapper .stop').show();
 					$('#uploadprogresswrapper .label').show();
-					self.$uploadprogressbar.progressbar({value: 0});
-					self.$uploadprogressbar.find('.ui-progressbar-value').
+					$('#uploadprogressbar').progressbar({value: 0});
+					$('#uploadprogressbar .ui-progressbar-value').
 						html('<em class="label inner"><span class="desktop">'
 							+ t('files', 'Uploading...')
 							+ '</span><span class="mobile">'
 							+ t('files', '...')
 							+ '</span></em>');
-					self.$uploadprogressbar.tipsy({gravity:'n', fade:true, live:true});
+                    $('#uploadprogressbar').tipsy({gravity:'n', fade:true, live:true});
 					self._showProgressBar();
 					self.trigger('start', e, data);
 				});
@@ -1258,25 +1172,25 @@ OC.Uploader.prototype = _.extend({
 					lastSize = data.loaded;
 					diffSize = diffSize / diffUpdate; // apply timing factor, eg. 1mb/2s = 0.5mb/s
 					var remainingSeconds = ((data.total - data.loaded) / diffSize);
-					if (isFinite(remainingSeconds) && remainingSeconds >= 0) {
+					if(remainingSeconds >= 0) {
 						bufferTotal = bufferTotal - (buffer[bufferIndex]) + remainingSeconds;
 						buffer[bufferIndex] = remainingSeconds; //buffer to make it smoother
 						bufferIndex = (bufferIndex + 1) % bufferSize;
 					}
 					var smoothRemainingSeconds = (bufferTotal / bufferSize); //seconds
 					var h = moment.duration(smoothRemainingSeconds, "seconds").humanize();
-					self.$uploadprogressbar.attr('data-loaded', data.loaded);
-					self.$uploadprogressbar.attr('data-total', data.total);
-					self.$uploadprogressbar.find('.label .mobile').text(h);
-					self.$uploadprogressbar.find('.label .desktop').text(h);
-					self.$uploadprogressbar.attr('original-title',
+					$('#uploadprogressbar').attr('data-loaded', data.loaded);
+					$('#uploadprogressbar').attr('data-total', data.total);
+					$('#uploadprogressbar .label .mobile').text(h);
+					$('#uploadprogressbar .label .desktop').text(h);
+					$('#uploadprogressbar').attr('original-title',
 						t('files', '{loadedSize} of {totalSize} ({bitrate})' , {
 							loadedSize: humanFileSize(data.loaded),
 							totalSize: humanFileSize(data.total),
 							bitrate: humanFileSize(data.bitrate) + '/s'
 						})
 					);
-					self.$uploadprogressbar.progressbar('value', progress);
+					$('#uploadprogressbar').progressbar('value', progress);
 					self.trigger('progressall', e, data);
 				});
 				fileupload.on('fileuploadstop', function(e, data) {
@@ -1306,9 +1220,6 @@ OC.Uploader.prototype = _.extend({
 						'/' + encodeURIComponent(chunkId);
 					delete data.contentRange;
 					delete data.headers['Content-Range'];
-
-					// reset retries
-					upload.data.retries = 0;
 				});
 				fileupload.on('fileuploaddone', function(e, data) {
 					var upload = self.getUpload(data);
