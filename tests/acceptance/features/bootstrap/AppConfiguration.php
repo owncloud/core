@@ -314,6 +314,7 @@ trait AppConfiguration {
 	 * @return void
 	 */
 	public function restoreParametersAfterScenario() {
+		$this->deleteTokenAuthEnforcedAfterScenario();
 		$user = $this->currentUser;
 		$this->currentUser = $this->getAdminUsername();
 		$this->modifyServerConfigs($this->savedCapabilitiesChanges);

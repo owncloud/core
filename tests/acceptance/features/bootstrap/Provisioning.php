@@ -1360,6 +1360,7 @@ trait Provisioning {
 	 * @return void
 	 */
 	public function cleanupUsers() {
+		$this->deleteTokenAuthEnforcedAfterScenario();
 		$previousServer = $this->currentServer;
 		$this->usingServer('LOCAL');
 		foreach ($this->createdUsers as $user => $userData) {
@@ -1379,6 +1380,7 @@ trait Provisioning {
 	 * @return void
 	 */
 	public function cleanupGroups() {
+		$this->deleteTokenAuthEnforcedAfterScenario();
 		$previousServer = $this->currentServer;
 		$this->usingServer('LOCAL');
 		foreach ($this->createdGroups as $group => $groupData) {

@@ -19,8 +19,10 @@
  *
  */
 
+use Behat\Behat\Hook\Scope\BeforeScenarioScope;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\BadResponseException;
+use TestHelpers\SetupHelper;
 
 require __DIR__ . '/../../../../lib/composer/autoload.php';
 
@@ -31,6 +33,7 @@ trait Auth {
 
 	private $clientToken;
 	private $appToken;
+	private $tokenAuthHasBeenSet = false;
 
 	/**
 	 * @BeforeScenario
@@ -248,6 +251,61 @@ trait Auth {
 			]
 		);
 		$this->extractRequestTokenFromResponse($response);
+	}
+
+	/**
+	 * @When /^the administrator (enforces|does not enforce)\s?token auth$/
+	 * @Given /^token auth has (not|)\s?been enforced$/
+	 *
+	 * @param string $hasOrNot
+	 *
+	 * @return void
+	 * @throws Exception
+	 */
+	public function tokenAuthHasBeenEnforced($hasOrNot) {
+		$enforce = (($hasOrNot !== "not") && ($hasOrNot !== "does not enforce"));
+		if ($enforce) {
+			$value = 'true';
+		} else {
+			$value = 'false';
+		}
+		$this->runOcc(
+			[
+				'config:system:set',
+				'token_auth_enforced',
+				'--type',
+				'boolean',
+				'--value',
+				$value
+			]
+		);
+
+		// Remember that we set this value, so it can be removed after the scenario
+		$this->tokenAuthHasBeenSet = true;
+
+		// It takes some time for the change in config.php to really be
+		// recognised at the server.
+		sleep(5);
+	}
+
+	/**
+	 * delete token_auth_enforced if it was set in the scenario
+	 *
+	 * @AfterScenario
+	 *
+	 * @return void
+	 */
+	public function deleteTokenAuthEnforcedAfterScenario() {
+		if ($this->tokenAuthHasBeenSet) {
+			$this->runOcc(
+				[
+					'config:system:delete',
+					'token_auth_enforced'
+				]
+			);
+			$this->tokenAuthHasBeenSet = false;
+			sleep(5);
+		}
 	}
 
 }
