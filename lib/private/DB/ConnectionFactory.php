@@ -129,9 +129,6 @@ class ConnectionFactory {
 				$journalMode = $additionalConnectionParams['sqlite.journal_mode'];
 				$eventManager->addEventSubscriber(new SQLiteSessionInit(true, $journalMode));
 				break;
-			case 'pgsql':
-				$additionalConnectionParams['platform'] = new OCPostgreSqlPlatform();
-				break;
 		}
 		/** @var Connection $connection */
 		$connection = DriverManager::getConnection(
