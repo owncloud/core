@@ -34,6 +34,7 @@ use OCA\DAV\Connector\Sabre\File;
 use OCP\Constants;
 use OCP\Encryption\Exceptions\GenericEncryptionException;
 use OCP\Files\EntityTooLargeException;
+use OCP\Files\FileContentNotAllowedException;
 use OCP\Files\ForbiddenException;
 use OCP\Files\InvalidContentException;
 use OCP\Files\InvalidPathException;
@@ -230,6 +231,67 @@ class FileTest extends TestCase {
 		}
 
 		$this->assertEmpty($this->listPartFiles($view, ''), 'No stray part files');
+	}
+
+	/**
+	 * Test that FileContentNotAllowedException properly mapped to
+	 *  ForbiddenException
+	 *
+	 * @expectedException \OCA\DAV\Connector\Sabre\Exception\Forbidden
+	 *
+	 * @return void
+	 */
+	public function testFileContentNotAllowedConvertedToForbidden() {
+		$storage = $this->getMockBuilder(Local::class)
+			->setMethods(['fopen'])
+			->setConstructorArgs(
+				[
+					[
+						'datadir' => \OC::$server->getTempManager()
+							->getTemporaryFolder()
+					]
+				]
+			)
+			->getMock();
+		Filesystem::mount($storage, [], $this->user . '/');
+		/**
+		 * @var View | \PHPUnit_Framework_MockObject_MockObject $view
+		 */
+		$view = $this->getMockBuilder(View::class)
+			->setMethods(['getRelativePath', 'resolvePath'])
+			->setConstructorArgs([])
+			->getMock();
+		$view->expects($this->atLeastOnce())
+			->method('resolvePath')
+			->will(
+				$this->returnCallback(
+					function ($path) use ($storage) {
+						return [$storage, $path];
+					}
+				)
+			);
+
+		$storage->expects($this->once())
+			->method('fopen')
+			->will(
+				$this->throwException(
+					new FileContentNotAllowedException(
+						'Stop doing it',
+						true
+					)
+				)
+			);
+
+		$info = new FileInfo(
+			'/test.txt',
+			$this->getMockStorage(),
+			null,
+			['permissions' => Constants::PERMISSION_ALL],
+			null
+		);
+
+		$file = new File($view, $info);
+		$file->put('Look at me failing');
 	}
 
 	/**
