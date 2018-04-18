@@ -531,7 +531,9 @@ class AppManager implements IAppManager {
 				$appRoot['url'] = substr($appRoot['url'], 3);
 				$ocWebRoot = dirname($ocWebRoot);
 			}
-			return $ocWebRoot . '/' . ltrim($appRoot['url'], '/');
+			$trimmedOcWebRoot = rtrim($ocWebRoot, '/');
+			$trimmedAppRoot = ltrim($appRoot['url'], '/');
+			return "$trimmedOcWebRoot/$trimmedAppRoot";
 		}
 		return false;
 	}
