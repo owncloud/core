@@ -29,6 +29,8 @@ use OCA\FederatedFileSharing\DiscoveryManager;
 use OCA\FederatedFileSharing\Notifications;
 use OCP\BackgroundJob\IJobList;
 use OCP\Http\Client\IClientService;
+use OCP\IConfig;
+use OCA\FederatedFileSharing\BackgroundJob\RetryJob;
 
 class NotificationsTest extends \Test\TestCase {
 
@@ -44,14 +46,18 @@ class NotificationsTest extends \Test\TestCase {
 	/** @var  IJobList | \PHPUnit_Framework_MockObject_MockObject */
 	private $jobList;
 
+	/** @var  IConfig | \PHPUnit_Framework_MockObject_MockObject */
+	private $config;
+
 	public function setUp() {
 		parent::setUp();
 
-		$this->jobList = $this->createMock('OCP\BackgroundJob\IJobList');
-		$this->discoveryManager = $this->getMockBuilder('OCA\FederatedFileSharing\DiscoveryManager')
+		$this->jobList = $this->createMock(IJobList::class);
+		$this->config = $this->createMock(IConfig::class);
+		$this->discoveryManager = $this->getMockBuilder(DiscoveryManager::class)
 			->disableOriginalConstructor()->getMock();
-		$this->httpClientService = $this->createMock('OCP\Http\Client\IClientService');
-		$this->addressHandler = $this->getMockBuilder('OCA\FederatedFileSharing\AddressHandler')
+		$this->httpClientService = $this->createMock(IClientService::class);
+		$this->addressHandler = $this->getMockBuilder(AddressHandler::class)
 			->disableOriginalConstructor()->getMock();
 
 	}
@@ -68,16 +74,18 @@ class NotificationsTest extends \Test\TestCase {
 				$this->addressHandler,
 				$this->httpClientService,
 				$this->discoveryManager,
-				$this->jobList
+				$this->jobList,
+				$this->config
 			);
 		} else {
-			$instance = $this->getMockBuilder('OCA\FederatedFileSharing\Notifications')
+			$instance = $this->getMockBuilder(Notifications::class)
 				->setConstructorArgs(
 					[
 						$this->addressHandler,
 						$this->httpClientService,
 						$this->discoveryManager,
-						$this->jobList
+						$this->jobList,
+						$this->config
 					]
 				)->setMethods($mockedMethods)->getMock();
 		}
@@ -113,7 +121,7 @@ class NotificationsTest extends \Test\TestCase {
 		if ($try === 0 && $expected === false) {
 			$this->jobList->expects($this->once())->method('add')
 				->with(
-					'OCA\FederatedFileSharing\BackgroundJob\RetryJob',
+					RetryJob::class,
 					[
 						'remote' => $remote,
 						'remoteId' => $id,
