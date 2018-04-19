@@ -74,6 +74,7 @@ default:
         - WebUILoginContext:
         - WebUIFilesContext:
         - WebUIPersonalGeneralSettingsContext:
+        - EmailContext:
 
     webUIFiles:
       paths:
@@ -84,6 +85,7 @@ default:
         - WebUIGeneralContext:
         - WebUILoginContext:
         - WebUIFilesContext:
+        - EmailContext:
 
     webUIMoveFilesFolders:
       paths:
@@ -94,6 +96,7 @@ default:
         - WebUIGeneralContext:
         - WebUILoginContext:
         - WebUIFilesContext:
+        - EmailContext:
 
     webUIRenameFiles:
       paths:
@@ -104,6 +107,7 @@ default:
         - WebUIGeneralContext:
         - WebUILoginContext:
         - WebUIFilesContext:
+        - EmailContext:
 
     webUIRenameFolders:
       paths:
@@ -114,6 +118,7 @@ default:
         - WebUIGeneralContext:
         - WebUILoginContext:
         - WebUIFilesContext:
+        - EmailContext:
 
     webUITrashbin:
       paths:
@@ -124,6 +129,7 @@ default:
         - WebUIGeneralContext:
         - WebUILoginContext:
         - WebUIFilesContext:
+        - EmailContext:
 
     webUISharingInternalGroups:
       paths:
@@ -135,6 +141,7 @@ default:
         - WebUILoginContext:
         - WebUIFilesContext:
         - WebUISharingContext:
+        - EmailContext:
 
     webUISharingInternalUsers:
       paths:
@@ -146,6 +153,7 @@ default:
         - WebUILoginContext:
         - WebUIFilesContext:
         - WebUISharingContext:
+        - EmailContext:
 
     webUISharingExternal:
       paths:
@@ -158,6 +166,7 @@ default:
         - WebUIFilesContext:
         - WebUISharingContext:
         - FederationContext:
+        - EmailContext:
 
     webUIUpload:
       paths:
@@ -168,6 +177,7 @@ default:
         - WebUIGeneralContext:
         - WebUILoginContext:
         - WebUIFilesContext:
+        - EmailContext:
 
     webUIRestrictSharing:
       paths:
@@ -179,6 +189,7 @@ default:
         - WebUILoginContext:
         - WebUIFilesContext:
         - WebUISharingContext:
+        - EmailContext:
 
     webUIFavorites:
       paths:
@@ -189,6 +200,7 @@ default:
         - WebUIGeneralContext:
         - WebUILoginContext:
         - WebUIFilesContext:
+        - EmailContext:
 
     webUIPersonalSettings:
       paths:
@@ -201,6 +213,7 @@ default:
         - WebUIFilesContext:
         - WebUIPersonalSecuritySettingsContext:
         - WebUIPersonalGeneralSettingsContext:
+        - EmailContext:
 
   extensions:
       jarnaiz\JUnitFormatter\JUnitFormatterExtension:

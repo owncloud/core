@@ -38,6 +38,7 @@ class LoginPage extends OwncloudPage {
 	protected $userInputId = "user";
 	protected $passwordInputId = "password";
 	protected $submitLoginId = "submit";
+	protected $lostPasswordId = "lost-password";
 
 	/**
 	 * @param string $username
@@ -98,5 +99,56 @@ class LoginPage extends OwncloudPage {
 		}
 
 		$this->waitForOutstandingAjaxCalls($session);
+	}
+
+	/**
+	 * 
+	 * @throws ElementNotFoundException
+	 * 
+	 * @return Page
+	 */
+	private function lostPasswordField() {
+		$lostPasswordField = $this->findById($this->lostPasswordId);
+		if ($lostPasswordField === null) {
+			throw new ElementNotFoundException(
+				__METHOD__ .
+				" id $this->lostPasswordId " .
+				"could not find reset password field "
+			);
+		}
+		return $lostPasswordField;
+	}
+
+	/**
+	 * @param Session $session
+	 * 
+	 * @return void
+	 */
+	public function requestPasswordReset(Session $session) {
+		$this->lostPasswordField()->click();
+		$this->waitForAjaxCallsToStartAndFinish($session);
+	}
+
+	/**
+	 *
+	 * @return string
+	 */
+	public function getLostPasswordMessage() {
+		$passwordRecoveryMessage = $this->lostPasswordField()->getText();
+		return $passwordRecoveryMessage;
+	}
+	/**
+	 * 
+	 * @param string $newPassword
+	 * 
+	 * @param Session $session
+	 * 
+	 * @return void
+	 */
+	public function resetThePassword($newPassword, Session $session) {
+		$this->fillField($this->passwordInputId, $newPassword);
+		$this->findById($this->submitLoginId)->click();
+		$this->waitForAjaxCallsToStartAndFinish($session);
+		
 	}
 }
