@@ -172,7 +172,7 @@ if (isset($_POST['action']) && isset($_POST['itemType']) && isset($_POST['itemSo
 				'link' => $_POST['link'],
 				'file' => $_POST['file'],
 				'toAddress' => $_POST['toAddress'],
-				'expiration' => $_POST['expiration'],
+				'expirationDate' => $_POST['expiration'],
 				'personalNote' => $emailBody
 			]);
 
