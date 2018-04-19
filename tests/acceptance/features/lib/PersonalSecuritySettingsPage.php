@@ -37,7 +37,9 @@ class PersonalSecuritySettingsPage extends OwncloudPage {
 	protected $path = '/index.php/settings/personal?sectionid=security';
 
 	protected $createNewAppFormId = 'app-password-form';
+	protected $newAppPasswordId = 'new-app-password';
 	protected $appPasswordNameInputId = 'app-password-name';
+	protected $newAppLoginNameId = 'new-app-login-name';
 	protected $createNewAppPasswordButtonId = 'add-app-password';
 	protected $linkedAppsTrXpath = './/*[@id="apppasswords"]/table/tbody/tr';
 	protected $linkedAppNameXpath = '//span[@class="token-name"]';
@@ -130,8 +132,8 @@ class PersonalSecuritySettingsPage extends OwncloudPage {
 	 */
 	public function getAppPasswordResult() {
 		return array (
-			$this->findField("new-app-login-name"),
-			$this->findField("new-app-password")
+			$this->findField($this->newAppLoginNameId),
+			$this->findField($this->newAppPasswordId)
 		);
 	}
 }
