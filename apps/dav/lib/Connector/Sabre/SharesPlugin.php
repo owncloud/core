@@ -164,7 +164,7 @@ class SharesPlugin extends \Sabre\DAV\ServerPlugin {
 		// need prefetch ?
 		if ($sabreNode instanceof \OCA\DAV\Connector\Sabre\Directory
 			&& $propFind->getDepth() !== 0
-			&& !is_null($propFind->getStatus(self::SHARETYPES_PROPERTYNAME))
+			&& !\is_null($propFind->getStatus(self::SHARETYPES_PROPERTYNAME))
 		) {
 			$children = $sabreNode->getChildren();
 
@@ -185,7 +185,7 @@ class SharesPlugin extends \Sabre\DAV\ServerPlugin {
 
 				// Put node ID into an array and initialize cache for it
 				$nodeId = $childNode->getId();
-				array_push($nodeIdsArray, $nodeId);
+				\array_push($nodeIdsArray, $nodeId);
 				
 				// Initialize share types array for this node in case there would be no shares for this node
 				$initShareTypes[$nodeId] = [];
@@ -211,7 +211,7 @@ class SharesPlugin extends \Sabre\DAV\ServerPlugin {
 				$initShareTypes[$nodeId] = [];
 				$shareTypesHash = $this->convertToHashMap($returnedShares, $initShareTypes)[$nodeId];
 			}
-			$shareTypes = array_keys($shareTypesHash);
+			$shareTypes = \array_keys($shareTypesHash);
 
 			return new ShareTypeList($shareTypes);
 		});

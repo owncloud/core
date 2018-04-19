@@ -79,7 +79,7 @@ class CleanUp extends Command {
 		} else {
 			$output->writeln('Remove all deleted files');
 			foreach ($this->userManager->getBackends() as $backend) {
-				$name = get_class($backend);
+				$name = \get_class($backend);
 				if ($backend instanceof IUserBackend) {
 					$name = $backend->getBackendName();
 				}
@@ -93,7 +93,7 @@ class CleanUp extends Command {
 						$this->removeDeletedFiles($user);
 					}
 					$offset += $limit;
-				} while (count($users) >= $limit);
+				} while (\count($users) >= $limit);
 			}
 		}
 	}

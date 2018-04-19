@@ -97,7 +97,7 @@ class BasicAuthModuleTest extends TestCase {
 		]));
 
 		// check auth
-		$time = time();
+		$time = \time();
 		$this->session->method('get')->will($this->returnValueMap([
 			['user_id', $userId],
 			['last_check_timeout', $time - 60 * 5]
@@ -110,7 +110,7 @@ class BasicAuthModuleTest extends TestCase {
 			'PHP_AUTH_PW' => '123456',
 		];
 		if ($expectedResult instanceof \Exception) {
-			$this->expectException(get_class($expectedResult));
+			$this->expectException(\get_class($expectedResult));
 			$this->expectExceptionMessage($expectedResult->getMessage());
 		}
 		$this->assertEquals($expectedResult ? $this->user : null, $module->auth($this->request));
@@ -124,7 +124,7 @@ class BasicAuthModuleTest extends TestCase {
 		]));
 
 		// check auth
-		$time = time();
+		$time = \time();
 		$this->session->method('get')->will($this->returnValueMap([
 			['user_id', 'user'],
 			['last_check_timeout', $time - 60 * 5]
@@ -175,7 +175,7 @@ class BasicAuthModuleTest extends TestCase {
 			['last_check_timeout', true]
 		]));
 
-		$time = time();
+		$time = \time();
 		$this->session->method('get')->will($this->returnValueMap([
 			['last_check_timeout', $time - 60 * 4],
 			['user_id', 'user1']
@@ -217,7 +217,7 @@ class BasicAuthModuleTest extends TestCase {
 			['last_check_timeout', true]
 		]));
 
-		$time = time();
+		$time = \time();
 		$this->session->method('get')->will($this->returnValueMap([
 			['last_check_timeout', $time - 60 * 4],
 			['user_id', $userId]

@@ -48,14 +48,14 @@ class RawConnection {
 			4 => array('pipe', 'r'), // child reads from fd#4
 			5 => array('pipe', 'w')  // child writes to fd#5
 		);
-		setlocale(LC_ALL, Server::LOCALE);
-		$env = array_merge($this->env, array(
+		\setlocale(LC_ALL, Server::LOCALE);
+		$env = \array_merge($this->env, array(
 			'CLI_FORCE_INTERACTIVE' => 'y', // Needed or the prompt isn't displayed!!
 			'LC_ALL' => Server::LOCALE,
 			'LANG' => Server::LOCALE,
 			'COLUMNS' => 8192 // prevent smbclient from line-wrapping it's output
 		));
-		$this->process = proc_open($this->command, $descriptorSpec, $this->pipes, '/', $env);
+		$this->process = \proc_open($this->command, $descriptorSpec, $this->pipes, '/', $env);
 		if (!$this->isValid()) {
 			throw new ConnectionException();
 		}
@@ -67,8 +67,8 @@ class RawConnection {
 	 * @return bool
 	 */
 	public function isValid() {
-		if (is_resource($this->process)) {
-			$status = proc_get_status($this->process);
+		if (\is_resource($this->process)) {
+			$status = \proc_get_status($this->process);
 			return $status['running'];
 		} else {
 			return false;
@@ -81,8 +81,8 @@ class RawConnection {
 	 * @param string $input
 	 */
 	public function write($input) {
-		fwrite($this->getInputStream(), $input);
-		fflush($this->getInputStream());
+		\fwrite($this->getInputStream(), $input);
+		\fflush($this->getInputStream());
 	}
 
 	/**
@@ -91,7 +91,7 @@ class RawConnection {
 	 * @return string
 	 */
 	public function readLine() {
-		return stream_get_line($this->getOutputStream(), 4086, "\n");
+		return \stream_get_line($this->getOutputStream(), 4086, "\n");
 	}
 
 	/**
@@ -100,7 +100,7 @@ class RawConnection {
 	 * @return string
 	 */
 	public function readError() {
-		return trim(stream_get_line($this->getErrorStream(), 4086));
+		return \trim(\stream_get_line($this->getErrorStream(), 4086));
 	}
 
 	/**
@@ -145,34 +145,34 @@ class RawConnection {
 			? "username=$user"
 			: "username=$user\npassword=$password";
 
-		if (fwrite($this->getAuthStream(), $auth) === false) {
-			fclose($this->getAuthStream());
+		if (\fwrite($this->getAuthStream(), $auth) === false) {
+			\fclose($this->getAuthStream());
 			return false;
 		}
-		fclose($this->getAuthStream());
+		\fclose($this->getAuthStream());
 		return true;
 	}
 
 	public function close($terminate = true) {
-		if (!is_resource($this->process)) {
+		if (!\is_resource($this->process)) {
 			return;
 		}
 		if ($terminate) {
 			// if for case that posix_ functions are not available
-			if (function_exists('posix_kill')) {
-				$status = proc_get_status($this->process);
+			if (\function_exists('posix_kill')) {
+				$status = \proc_get_status($this->process);
 				$ppid = $status['pid'];
-				$pids = preg_split('/\s+/', `ps -o pid --no-heading --ppid $ppid`);
+				$pids = \preg_split('/\s+/', `ps -o pid --no-heading --ppid $ppid`);
 				foreach($pids as $pid) {
-					if(is_numeric($pid)) {
+					if(\is_numeric($pid)) {
 						//9 is the SIGKILL signal
-						posix_kill($pid, 9);
+						\posix_kill($pid, 9);
 					}
 				}
 			}
-			proc_terminate($this->process);
+			\proc_terminate($this->process);
 		}
-		proc_close($this->process);
+		\proc_close($this->process);
 	}
 
 	public function reconnect() {

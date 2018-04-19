@@ -159,7 +159,7 @@ class Scanner extends BasicEmitter implements IScanner {
 						\OC_Hook::emit('\OC\Files\Cache\Scanner', 'scan_file', ['path' => $file, 'storage' => $this->storageId]);
 					}
 
-					$parent = dirname($file);
+					$parent = \dirname($file);
 					if ($parent === '.' or $parent === '/') {
 						$parent = '';
 					}
@@ -175,7 +175,7 @@ class Scanner extends BasicEmitter implements IScanner {
 					if ($parent) {
 						$data['parent'] = $parentId;
 					}
-					if (is_null($cacheData)) {
+					if (\is_null($cacheData)) {
 						/** @var CacheEntry $cacheData */
 						$cacheData = $this->cache->get($file);
 					}
@@ -199,15 +199,15 @@ class Scanner extends BasicEmitter implements IScanner {
 							}
 						}
 						// Only update metadata that has changed
-						$newData = array_diff_assoc($data, $cacheData->getData());
+						$newData = \array_diff_assoc($data, $cacheData->getData());
 					} else {
 						$newData = $data;
 						$fileId = -1;
 					}
 					if (!empty($newData)) {
 						// Only reset checksum on file change
-						foreach (array_intersect_key($newData, $data) as $key => $value) {
-							if (in_array($key, ['size', 'storage_mtime', 'mtime', 'etag']) && $data[$key] != $newData[$key]) {
+						foreach (\array_intersect_key($newData, $data) as $key => $value) {
+							if (\in_array($key, ['size', 'storage_mtime', 'mtime', 'etag']) && $data[$key] != $newData[$key]) {
 								$newData['checksum'] = '';
 							}
 						}
@@ -360,10 +360,10 @@ class Scanner extends BasicEmitter implements IScanner {
 	protected function getNewChildren($folder) {
 		$children = [];
 		if ($dh = $this->storage->opendir($folder)) {
-			if (is_resource($dh)) {
-				while (($file = readdir($dh)) !== false) {
+			if (\is_resource($dh)) {
+				while (($file = \readdir($dh)) !== false) {
 					if (!Filesystem::isIgnoredDir($file) && !Filesystem::isForbiddenFileOrDir($file)) {
-						$children[] = trim(\OC\Files\Filesystem::normalizePath($file), '/');
+						$children[] = \trim(\OC\Files\Filesystem::normalizePath($file), '/');
 					}
 				}
 			}
@@ -388,7 +388,7 @@ class Scanner extends BasicEmitter implements IScanner {
 		}
 		$this->emit('\OC\Files\Cache\Scanner', 'scanFolder', [$path, $this->storageId]);
 		$size = 0;
-		if (!is_null($folderId)) {
+		if (!\is_null($folderId)) {
 			$folderId = $this->cache->getId($path);
 		}
 		$childQueue = $this->handleChildren($path, $recursive, $reuse, $folderId, $lock, $size);
@@ -449,7 +449,7 @@ class Scanner extends BasicEmitter implements IScanner {
 				throw $e;
 			}
 		}
-		$removedChildren = \array_diff(array_keys($existingChildren), $newChildren);
+		$removedChildren = \array_diff(\array_keys($existingChildren), $newChildren);
 		foreach ($removedChildren as $childName) {
 			$child = $path ? $path . '/' . $childName : $childName;
 			$this->removeFromCache($child);
@@ -476,10 +476,10 @@ class Scanner extends BasicEmitter implements IScanner {
 	 * @return boolean
 	 */
 	public static function isPartialFile($file) {
-		if (pathinfo($file, PATHINFO_EXTENSION) === 'part') {
+		if (\pathinfo($file, PATHINFO_EXTENSION) === 'part') {
 			return true;
 		}
-		if (strpos($file, '.part/') !== false) {
+		if (\strpos($file, '.part/') !== false) {
 			return true;
 		}
 

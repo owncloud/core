@@ -81,10 +81,10 @@ if($_['displayNameChangeSupported']) {
 
 <div id="groups" class="section">
 	<h2><?php p($l->t('Groups')); ?></h2>
-	<?php if (count($_['groups']) > 0) { ?>
+	<?php if (\count($_['groups']) > 0) { ?>
 		<p><?php p($l->t('You are member of the following groups:')); ?></p>
 		<p>
-			<?php p(implode(', ', $_['groups'])); ?>
+			<?php p(\implode(', ', $_['groups'])); ?>
 		</p>
 	<?php } else { ?>
 		<p><?php p($l->t('You are not a member of any groups.')); ?></p>

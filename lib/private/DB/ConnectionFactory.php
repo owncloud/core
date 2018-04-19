@@ -95,7 +95,7 @@ class ConnectionFactory {
 		$result = $this->defaultConnectionParams[$normalizedType];
 		// \PDO::MYSQL_ATTR_FOUND_ROWS may not be defined, e.g. when the MySQL
 		// driver is missing. In this case, we won't be able to connect anyway.
-		if ($normalizedType === 'mysql' && defined('\PDO::MYSQL_ATTR_FOUND_ROWS')) {
+		if ($normalizedType === 'mysql' && \defined('\PDO::MYSQL_ATTR_FOUND_ROWS')) {
 			$result['driverOptions'] = [
 				\PDO::MYSQL_ATTR_FOUND_ROWS => true,
 			];
@@ -126,7 +126,7 @@ class ConnectionFactory {
 				$eventManager->addEventSubscriber(new OracleSessionInit);
 				// the driverOptions are unused in dbal and need to be mapped to the parameters
 				if (isset($additionalConnectionParams['driverOptions'])) {
-					$additionalConnectionParams = array_merge($additionalConnectionParams, $additionalConnectionParams['driverOptions']);
+					$additionalConnectionParams = \array_merge($additionalConnectionParams, $additionalConnectionParams['driverOptions']);
 				}
 				break;
 			case 'sqlite3':
@@ -137,7 +137,7 @@ class ConnectionFactory {
 		}
 		/** @var Connection $connection */
 		$connection = DriverManager::getConnection(
-			array_merge($this->getDefaultConnectionParams($type), $additionalConnectionParams),
+			\array_merge($this->getDefaultConnectionParams($type), $additionalConnectionParams),
 			new Configuration(),
 			$eventManager
 		);
@@ -183,10 +183,10 @@ class ConnectionFactory {
 			$connectionParams['path'] = $dataDir . '/' . $name . '.db';
 		} else {
 			$host = $this->config->getValue('dbhost', '');
-			if (strpos($host, ':')) {
+			if (\strpos($host, ':')) {
 				// Host variable may carry a port or socket.
-				list($host, $portOrSocket) = explode(':', $host, 2);
-				if (ctype_digit($portOrSocket)) {
+				list($host, $portOrSocket) = \explode(':', $host, 2);
+				if (\ctype_digit($portOrSocket)) {
 					$connectionParams['port'] = $portOrSocket;
 				} else {
 					$connectionParams['unix_socket'] = $portOrSocket;

@@ -44,7 +44,7 @@ class ReadOnlyJail extends DirMask {
 	 * @return bool
 	 */
 	public function isDeletable($path) {
-		if (pathinfo($path, PATHINFO_EXTENSION) === 'part') {
+		if (\pathinfo($path, PATHINFO_EXTENSION) === 'part') {
 			return true;
 		}
 

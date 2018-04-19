@@ -75,7 +75,7 @@ class GroupPrincipalBackend implements BackendInterface {
 	 * @return array
 	 */
 	public function getPrincipalByPath($path) {
-		$elements = explode('/', $path);
+		$elements = \explode('/', $path);
 		if ($elements[0] !== 'principals') {
 			return null;
 		}
@@ -85,7 +85,7 @@ class GroupPrincipalBackend implements BackendInterface {
 		$name = $elements[2];
 		$group = $this->groupManager->get($name);
 
-		if (!is_null($group)) {
+		if (!\is_null($group)) {
 			return $this->groupToPrincipal($group);
 		}
 
@@ -100,7 +100,7 @@ class GroupPrincipalBackend implements BackendInterface {
 	 * @throws Exception
 	 */
 	public function getGroupMemberSet($principal) {
-		$elements = explode('/', $principal);
+		$elements = \explode('/', $principal);
 		if ($elements[0] !== 'principals') {
 			return [];
 		}
@@ -110,11 +110,11 @@ class GroupPrincipalBackend implements BackendInterface {
 		$name = $elements[2];
 		$group = $this->groupManager->get($name);
 
-		if (is_null($group)) {
+		if (\is_null($group)) {
 			return [];
 		}
 
-		return array_map(function($user) {
+		return \array_map(function($user) {
 			return $this->userToPrincipal($user);
 		}, $group->getUsers());
 	}

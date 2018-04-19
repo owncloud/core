@@ -91,7 +91,7 @@ class SystemTagsObjectMappingCollection implements ICollection {
 	function createFile($tagId, $data = null) {
 		try {
 			$tags = $this->tagManager->getTagsByIds([$tagId]);
-			$tag = current($tags);
+			$tag = \current($tags);
 			if (!$this->tagManager->canUserSeeTag($tag, $this->user)) {
 				throw new PreconditionFailed('Tag with id ' . $tagId . ' does not exist, cannot assign');
 			}
@@ -113,7 +113,7 @@ class SystemTagsObjectMappingCollection implements ICollection {
 		try {
 			if ($this->tagMapper->haveTag([$this->objectId], $this->objectType, $tagId, true)) {
 				$tag = $this->tagManager->getTagsByIds([$tagId]);
-				$tag = current($tag);
+				$tag = \current($tag);
 				if ($this->tagManager->canUserSeeTag($tag, $this->user)) {
 					return $this->makeNode($tag);
 				}
@@ -127,18 +127,18 @@ class SystemTagsObjectMappingCollection implements ICollection {
 	}
 
 	function getChildren() {
-		$tagIds = current($this->tagMapper->getTagIdsForObjects([$this->objectId], $this->objectType));
+		$tagIds = \current($this->tagMapper->getTagIdsForObjects([$this->objectId], $this->objectType));
 		if (empty($tagIds)) {
 			return [];
 		}
 		$tags = $this->tagManager->getTagsByIds($tagIds);
 
 		// filter out non-visible tags
-		$tags = array_filter($tags, function($tag) {
+		$tags = \array_filter($tags, function($tag) {
 			return $this->tagManager->canUserSeeTag($tag, $this->user);
 		});
 
-		return array_values(array_map(function($tag) {
+		return \array_values(\array_map(function($tag) {
 			return $this->makeNode($tag);
 		}, $tags));
 	}
@@ -149,7 +149,7 @@ class SystemTagsObjectMappingCollection implements ICollection {
 
 			if ($result) {
 				$tags = $this->tagManager->getTagsByIds([$tagId]);
-				$tag = current($tags);
+				$tag = \current($tags);
 				if (!$this->tagManager->canUserSeeTag($tag, $this->user)) {
 					return false;
 				}

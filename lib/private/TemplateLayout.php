@@ -58,7 +58,7 @@ class TemplateLayout extends \OC_Template {
 		// Decide which page we show
 		if($renderAs == 'user') {
 			parent::__construct( 'core', 'layout.user' );
-			if(in_array(\OC_App::getCurrentApp(), ['settings','admin', 'help']) !== false) {
+			if(\in_array(\OC_App::getCurrentApp(), ['settings','admin', 'help']) !== false) {
 				$this->assign('bodyid', 'body-settings');
 			}else{
 				$this->assign('bodyid', 'body-user');
@@ -121,11 +121,11 @@ class TemplateLayout extends \OC_Template {
 		if(\OC::$server->getSystemConfig()->getValue('installed', false)) {
 			if (empty(self::$versionHash)) {
 				$v = \OC_App::getAppVersions();
-				$v['core'] = implode('.', \OCP\Util::getVersion());
-				self::$versionHash = md5(implode(',', $v));
+				$v['core'] = \implode('.', \OCP\Util::getVersion());
+				self::$versionHash = \md5(\implode(',', $v));
 			}
 		} else {
-			self::$versionHash = md5('not installed');
+			self::$versionHash = \md5('not installed');
 		}
 
 		// Add the js files
@@ -148,7 +148,7 @@ class TemplateLayout extends \OC_Template {
 			$web = $info[1];
 			$file = $info[2];
 
-			if (substr($file, -strlen('print.css')) === 'print.css') {
+			if (\substr($file, -\strlen('print.css')) === 'print.css') {
 				$this->append( 'printcssfiles', $web.'/'.$file . '?v=' . self::$versionHash);
 			} else {
 				$this->append( 'cssfiles', $web.'/'.$file . '?v=' . self::$versionHash);
@@ -191,8 +191,8 @@ class TemplateLayout extends \OC_Template {
 	 * @throws \Exception If $filePath is not under \OC::$SERVERROOT
 	 */
 	public static function convertToRelativePath($filePath) {
-		$relativePath = explode(\OC::$SERVERROOT, $filePath);
-		if(count($relativePath) !== 2) {
+		$relativePath = \explode(\OC::$SERVERROOT, $filePath);
+		if(\count($relativePath) !== 2) {
 			throw new \Exception('$filePath is not under the \OC::$SERVERROOT');
 		}
 

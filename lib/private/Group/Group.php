@@ -89,7 +89,7 @@ class Group implements IGroup {
 	}
 
 	public function getDisplayName() {
-		if (is_null($this->displayName)) {
+		if (\is_null($this->displayName)) {
 			return $this->gid;
 		}
 		return $this->displayName;
@@ -107,12 +107,12 @@ class Group implements IGroup {
 
 		$userIds = [];
 		foreach ($this->backends as $backend) {
-			$diff = array_diff(
+			$diff = \array_diff(
 				$backend->usersInGroup($this->gid),
 				$userIds
 			);
 			if ($diff) {
-				$userIds = array_merge($userIds, $diff);
+				$userIds = \array_merge($userIds, $diff);
 			}
 		}
 
@@ -215,11 +215,11 @@ class Group implements IGroup {
 		foreach ($this->backends as $backend) {
 			$userIds = $backend->usersInGroup($this->gid, $search, $limit, $offset);
 			$users += $this->getVerifiedUsers($userIds);
-			if (!is_null($limit) and $limit <= 0) {
-				return array_values($users);
+			if (!\is_null($limit) and $limit <= 0) {
+				return \array_values($users);
 			}
 		}
-		return array_values($users);
+		return \array_values($users);
 	}
 
 	/**
@@ -256,11 +256,11 @@ class Group implements IGroup {
 		foreach ($this->backends as $backend) {
 			$userIds = $backend->usersInGroup($this->gid, $search, $limit, $offset);
 			$users = $this->getVerifiedUsers($userIds);
-			if (!is_null($limit) and $limit <= 0) {
-				return array_values($users);
+			if (!\is_null($limit) and $limit <= 0) {
+				return \array_values($users);
 			}
 		}
-		return array_values($users);
+		return \array_values($users);
 	}
 
 	/**
@@ -298,13 +298,13 @@ class Group implements IGroup {
 	 * @return \OC\User\User[] an Array with the userId as Key and \OC\User\User as value
 	 */
 	private function getVerifiedUsers($userIds) {
-		if (!is_array($userIds)) {
+		if (!\is_array($userIds)) {
 			return [];
 		}
 		$users = [];
 		foreach ($userIds as $userId) {
 			$user = $this->userManager->get($userId);
-			if (!is_null($user)) {
+			if (!\is_null($user)) {
 				$users[$userId] = $user;
 			}
 		}

@@ -50,7 +50,7 @@ class EmailContext implements Context, SnippetAcceptingContext {
 	 * @return void
 	 */
 	public function assertThatEmailContains($address, PyStringNode $content) {
-		$expectedContent = str_replace("\r\n", "\n", $content->getRaw());
+		$expectedContent = \str_replace("\r\n", "\n", $content->getRaw());
 		PHPUnit_Framework_Assert::assertContains(
 			$expectedContent,
 			EmailHelper::getBodyOfLastEmail($this->mailhogUrl, $address)

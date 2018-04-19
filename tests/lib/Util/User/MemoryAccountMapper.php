@@ -51,7 +51,7 @@ class MemoryAccountMapper extends AccountMapper {
 	}
 
 	public function getByEmail($email) {
-		$match = array_filter(self::$accounts, function (Account $a) use ($email) {
+		$match = \array_filter(self::$accounts, function (Account $a) use ($email) {
 			return $a->getEmail() === $email;
 		});
 
@@ -59,26 +59,26 @@ class MemoryAccountMapper extends AccountMapper {
 	}
 
 	public function getByUid($uid) {
-		$match = array_filter(self::$accounts, function (Account $a) use ($uid) {
-			return strtolower($a->getUserId()) === strtolower($uid);
+		$match = \array_filter(self::$accounts, function (Account $a) use ($uid) {
+			return \strtolower($a->getUserId()) === \strtolower($uid);
 		});
 		if (empty($match)) {
 			throw new DoesNotExistException('');
 		}
 
-		return array_values($match)[0];
+		return \array_values($match)[0];
 	}
 
 	public function getUserCount($hasLoggedIn) {
-		return count(self::$accounts);
+		return \count(self::$accounts);
 	}
 
 	public function search($fieldName, $pattern, $limit, $offset) {
 		if ($pattern === '') {
 			return self::$accounts;
 		}
-		$match = array_filter(self::$accounts, function (Account $a) use ($pattern) {
-			return stripos($a->getUserId(), $pattern);
+		$match = \array_filter(self::$accounts, function (Account $a) use ($pattern) {
+			return \stripos($a->getUserId(), $pattern);
 		});
 
 		return $match;

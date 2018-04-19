@@ -78,9 +78,9 @@ class WebDavClientService implements IWebDavClientService {
 		}
 
 		$certPath = null;
-		if (strpos($settings['baseUri'], 'https') === 0) {
+		if (\strpos($settings['baseUri'], 'https') === 0) {
 			$certPath = $this->certificateManager->getAbsoluteBundlePath();
-			if (!file_exists($certPath)) {
+			if (!\file_exists($certPath)) {
 				$certPath = null;
 			}
 		}

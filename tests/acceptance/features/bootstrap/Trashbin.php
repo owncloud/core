@@ -53,7 +53,7 @@ trait Trashbin {
 	 * @return array response
 	 */
 	public function listTrashbinFolder($user, $path) {
-		$params = '?dir=' . rawurlencode('/' . trim($path, '/'));
+		$params = '?dir=' . \rawurlencode('/' . \trim($path, '/'));
 		$this->sendingToWithDirectUrl(
 			$user,
 			'GET',
@@ -63,7 +63,7 @@ trait Trashbin {
 		$this->theHTTPStatusCodeShouldBe('200');
 
 
-		$decodedResponse = json_decode($this->response->getBody(), true);
+		$decodedResponse = \json_decode($this->response->getBody(), true);
 
 		return $decodedResponse['data']['files'];
 	}
@@ -78,20 +78,20 @@ trait Trashbin {
 	 * @return void
 	 */
 	public function asTheFileOrFolderExistsInTrash($user, $entryText, $path) {
-		$path = trim($path, '/');
-		$sections = explode('/', $path, 2);
+		$path = \trim($path, '/');
+		$sections = \explode('/', $path, 2);
 
-		$firstEntry = $this->findFirstTrashedEntry($user, trim($sections[0], '/'));
+		$firstEntry = $this->findFirstTrashedEntry($user, \trim($sections[0], '/'));
 
 		PHPUnit_Framework_Assert::assertNotNull($firstEntry);
 
 		// query was on the main element ?
-		if (count($sections) === 1) {
+		if (\count($sections) === 1) {
 			// already found, return
 			return;
 		}
 
-		$subdir = trim(dirname($sections[1]), '/');
+		$subdir = \trim(\dirname($sections[1]), '/');
 		if ($subdir !== '' && $subdir !== '.') {
 			$subdir = $firstEntry . '/' . $subdir;
 		} else {
@@ -99,7 +99,7 @@ trait Trashbin {
 		}
 
 		$listing = $this->listTrashbinFolder($user, $subdir);
-		$checkedName = basename($path);
+		$checkedName = \basename($path);
 
 		$found = false;
 		foreach ($listing as $entry) {
@@ -122,12 +122,12 @@ trait Trashbin {
 	 */
 	private function isInTrash($user, $originalPath) {
 		$listing = $this->listTrashbinFolder($user, null);
-		$originalPath = trim($originalPath, '/');
+		$originalPath = \trim($originalPath, '/');
 
 		$found = false;
 		foreach ($listing as $entry) {
-			if (substr($entry['extraData'], 0, 2) === "./" ) {
-				$entry['extraData'] = substr($entry['extraData'], 2);
+			if (\substr($entry['extraData'], 0, 2) === "./" ) {
+				$entry['extraData'] = \substr($entry['extraData'], 2);
 			}
 			if ($entry['extraData'] === $originalPath) {
 				$found = true;
@@ -161,16 +161,16 @@ trait Trashbin {
 	 */
 	private function restoreElement($user, $originalPath) {
 		$listing = $this->listTrashbinFolder($user, null);
-		$originalPath = trim($originalPath, '/');
+		$originalPath = \trim($originalPath, '/');
 
 		foreach ($listing as $entry) {
-			if (substr($entry['extraData'], 0, 2) === "./" ) {
-				$entry['extraData'] = substr($entry['extraData'], 2);
+			if (\substr($entry['extraData'], 0, 2) === "./" ) {
+				$entry['extraData'] = \substr($entry['extraData'], 2);
 			}
 			if ($entry['extraData'] === $originalPath) {
 				$this->sendUndeleteRequest(
 					$user,
-					$entry['name'] . '.d' . floor((integer)$entry['mtime'] / 1000)
+					$entry['name'] . '.d' . \floor((integer)$entry['mtime'] / 1000)
 				);
 				break;
 			}

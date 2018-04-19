@@ -229,9 +229,9 @@ class AddressBookImpl implements IAddressBook {
 			if ($property->name === 'PHOTO' && $property->getValueType() === 'BINARY') {
 				$url = $this->urlGenerator->getAbsoluteURL(
 					$this->urlGenerator->linkTo('', 'remote.php') . '/dav/');
-				$url .= implode('/', [
+				$url .= \implode('/', [
 					'addressbooks',
-					substr($this->addressBookInfo['principaluri'], 11), //cut off 'principals/'
+					\substr($this->addressBookInfo['principaluri'], 11), //cut off 'principals/'
 					$this->addressBookInfo['uri'],
 					$uri
 				]) . '?photo';

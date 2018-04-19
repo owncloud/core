@@ -81,11 +81,11 @@ class OC_User {
 	 */
 	public static function useBackend($backend = 'database') {
 		if ($backend instanceof \OCP\UserInterface) {
-			self::$_usedBackends[get_class($backend)] = $backend;
+			self::$_usedBackends[\get_class($backend)] = $backend;
 			\OC::$server->getUserManager()->registerBackend($backend);
 		} else {
 			// You'll never know what happens
-			if (null === $backend OR !is_string($backend)) {
+			if (null === $backend OR !\is_string($backend)) {
 				$backend = 'database';
 			}
 
@@ -104,7 +104,7 @@ class OC_User {
 					break;
 				default:
 					\OCP\Util::writeLog('core', 'Adding default user backend ' . $backend . '.', \OCP\Util::DEBUG);
-					$className = 'OC_USER_' . strtoupper($backend);
+					$className = 'OC_USER_' . \strtoupper($backend);
 					self::$_usedBackends[$backend] = new $className();
 					\OC::$server->getUserManager()->registerBackend(self::$_usedBackends[$backend]);
 					break;
@@ -132,13 +132,13 @@ class OC_User {
 			self::clearBackends();
 		}
 		foreach ($backends as $i => $config) {
-			if (!is_array($config)) {
+			if (!\is_array($config)) {
 				continue;
 			}
 			$class = $config['class'];
 			$arguments = $config['arguments'];
-			if (class_exists($class)) {
-				if (array_search($i, self::$_setupedBackends) === false) {
+			if (\class_exists($class)) {
+				if (\array_search($i, self::$_setupedBackends) === false) {
 					// make a reflection object
 					$reflectionObj = new ReflectionClass($class);
 
@@ -228,7 +228,7 @@ class OC_User {
 	 * @return bool Whether the display name could get set
 	 */
 	public static function setDisplayName($uid, $displayName = null) {
-		if (is_null($displayName)) {
+		if (\is_null($displayName)) {
 			$displayName = $uid;
 		}
 		$user = \OC::$server->getUserManager()->get($uid);
@@ -311,7 +311,7 @@ class OC_User {
 	 */
 	public static function getUser() {
 		$uid = \OC::$server->getSession() ? \OC::$server->getSession()->get('user_id') : null;
-		if (!is_null($uid) && self::$incognitoMode === false) {
+		if (!\is_null($uid) && self::$incognitoMode === false) {
 			return $uid;
 		} else {
 			return false;

@@ -92,10 +92,10 @@ class Client implements IClient {
 		$proxyUserPwd = $this->config->getSystemValue('proxyuserpwd', null);
 		$proxyUri = '';
 
-		if (!is_null($proxyUserPwd)) {
+		if (!\is_null($proxyUserPwd)) {
 			$proxyUri .= $proxyUserPwd . '@';
 		}
-		if (!is_null($proxyHost)) {
+		if (!\is_null($proxyHost)) {
 			$proxyUri .= $proxyHost;
 		}
 

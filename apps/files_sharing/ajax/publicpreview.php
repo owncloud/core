@@ -32,12 +32,12 @@ OCP\JSON::checkAppEnabled('files_sharing');
 
 \OC_User::setIncognitoMode(true);
 
-$file = array_key_exists('file', $_GET) ? (string) $_GET['file'] : '';
-$maxX = array_key_exists('x', $_GET) ? (int) $_GET['x'] : '32';
-$maxY = array_key_exists('y', $_GET) ? (int) $_GET['y'] : '32';
-$scalingUp = array_key_exists('scalingup', $_GET) ? (bool) $_GET['scalingup'] : true;
-$token = array_key_exists('t', $_GET) ? (string) $_GET['t'] : '';
-$keepAspect = array_key_exists('a', $_GET) ? true : false;
+$file = \array_key_exists('file', $_GET) ? (string) $_GET['file'] : '';
+$maxX = \array_key_exists('x', $_GET) ? (int) $_GET['x'] : '32';
+$maxY = \array_key_exists('y', $_GET) ? (int) $_GET['y'] : '32';
+$scalingUp = \array_key_exists('scalingup', $_GET) ? (bool) $_GET['scalingup'] : true;
+$token = \array_key_exists('t', $_GET) ? (string) $_GET['t'] : '';
+$keepAspect = \array_key_exists('a', $_GET) ? true : false;
 
 if($token === ''){
 	\OC_Response::setStatus(\OC_Response::STATUS_BAD_REQUEST);
@@ -55,7 +55,7 @@ try {
 }
 
 $userId = $linkedItem->getShareOwner();
-if(is_null($userId)) {
+if(\is_null($userId)) {
 	\OC_Response::setStatus(\OC_Response::STATUS_INTERNAL_SERVER_ERROR);
 	\OCP\Util::writeLog('core-preview', 'Passed token seems to be valid, but it does not contain all necessary information . ("' . $token . '")', \OCP\Util::WARN);
 	exit;
@@ -89,7 +89,7 @@ if($linkedItem->getNodeType() === 'file') {
 	$sharedFile = $node;
 }
 
-$path = ltrim(\OC\Files\Filesystem::normalizePath($path, false), '/');
+$path = \ltrim(\OC\Files\Filesystem::normalizePath($path, false), '/');
 
 if($maxX === 0 || $maxY === 0) {
 	\OC_Response::setStatus(\OC_Response::STATUS_BAD_REQUEST);
@@ -99,7 +99,7 @@ if($maxX === 0 || $maxY === 0) {
 
 // $path is relative to the data directory but Preview expects it to be relative to the user's
 // so strip the first component
-$root = substr($path, strpos($path, '/') + 1);
+$root = \substr($path, \strpos($path, '/') + 1);
 
 try{
 	$preview = new \OC\Preview($userId, $root);

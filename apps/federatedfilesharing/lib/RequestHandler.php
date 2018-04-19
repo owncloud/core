@@ -178,7 +178,7 @@ class RequestHandler {
 								'sharedby' => $sharedBy, 'remoteid' => $remoteId]);
 				$this->eventDispatcher->dispatch('\OCA\FederatedFileSharing::remote_shareReceived', $event);
 				\OC::$server->getActivityManager()->publishActivity(
-					Activity::FILES_SHARING_APP, Activity::SUBJECT_REMOTE_SHARE_RECEIVED, [$ownerFederatedId, trim($name, '/')], '', [],
+					Activity::FILES_SHARING_APP, Activity::SUBJECT_REMOTE_SHARE_RECEIVED, [$ownerFederatedId, \trim($name, '/')], '', [],
 					'', '', $shareWith, Activity::TYPE_REMOTE_SHARE, Activity::PRIORITY_LOW);
 
 				$urlGenerator = \OC::$server->getURLGenerator();
@@ -189,7 +189,7 @@ class RequestHandler {
 					->setUser($shareWith)
 					->setDateTime(new \DateTime())
 					->setObject('remote_share', $shareId)
-					->setSubject('remote_share', [$ownerFederatedId, $sharedByFederatedId, trim($name, '/')]);
+					->setSubject('remote_share', [$ownerFederatedId, $sharedByFederatedId, \trim($name, '/')]);
 
 				$declineAction = $notification->createAction();
 				$declineAction->setLabel('decline')
@@ -313,7 +313,7 @@ class RequestHandler {
 		$event->setApp(Activity::FILES_SHARING_APP)
 			->setType(Activity::TYPE_REMOTE_SHARE)
 			->setAffectedUser($this->getCorrectUid($share))
-			->setSubject(Activity::SUBJECT_REMOTE_SHARE_ACCEPTED, [$share->getSharedWith(), basename($file)])
+			->setSubject(Activity::SUBJECT_REMOTE_SHARE_ACCEPTED, [$share->getSharedWith(), \basename($file)])
 			->setObject('files', $share->getNode()->getId(), $file)
 			->setLink($link);
 		\OC::$server->getActivityManager()->publish($event);
@@ -365,7 +365,7 @@ class RequestHandler {
 		$event->setApp(Activity::FILES_SHARING_APP)
 			->setType(Activity::TYPE_REMOTE_SHARE)
 			->setAffectedUser($this->getCorrectUid($share))
-			->setSubject(Activity::SUBJECT_REMOTE_SHARE_DECLINED, [$share->getSharedWith(), basename($file)])
+			->setSubject(Activity::SUBJECT_REMOTE_SHARE_DECLINED, [$share->getSharedWith(), \basename($file)])
 			->setObject('files', $share->getNode()->getId(), $file)
 			->setLink($link);
 		\OC::$server->getActivityManager()->publish($event);
@@ -417,9 +417,9 @@ class RequestHandler {
 			$query->execute([$id, $token]);
 
 			if ($share['accepted']) {
-				$path = trim($mountpoint, '/');
+				$path = \trim($mountpoint, '/');
 			} else {
-				$path = trim($share['name'], '/');
+				$path = \trim($share['name'], '/');
 			}
 
 			$notificationManager = \OC::$server->getNotificationManager();
@@ -438,9 +438,9 @@ class RequestHandler {
 	}
 
 	private function cleanupRemote($remote) {
-		$remote = substr($remote, strpos($remote, '://') + 3);
+		$remote = \substr($remote, \strpos($remote, '://') + 3);
 
-		return rtrim($remote, '/');
+		return \rtrim($remote, '/');
 	}
 
 
@@ -503,7 +503,7 @@ class RequestHandler {
 		} catch (NotFoundException $e) {
 			$file = null;
 		}
-		$args = \OC\Files\Filesystem::is_dir($file) ? ['dir' => $file] : ['dir' => dirname($file), 'scrollto' => $file];
+		$args = \OC\Files\Filesystem::is_dir($file) ? ['dir' => $file] : ['dir' => \dirname($file), 'scrollto' => $file];
 		$link = \OCP\Util::linkToAbsolute('files', 'index.php', $args);
 
 		return [$file, $link];
@@ -564,7 +564,7 @@ class RequestHandler {
 			return new \OC_OCS_Result(null, Http::STATUS_BAD_REQUEST);
 		}
 
-		$validPermission = ctype_digit($permissions);
+		$validPermission = \ctype_digit($permissions);
 		$validToken = $this->verifyShare($share, $token);
 		if ($validPermission && $validToken) {
 			$this->updatePermissionsInDatabase($share, (int)$permissions);

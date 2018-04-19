@@ -101,7 +101,7 @@ class BasicAuthModule implements IAuthModule {
 			$this->logger->debug("Invalid password for username $authUser, trying as email.", ['app' => __METHOD__]);
 			// check email and password
 			$users = $this->manager->getByEmail($authUser);
-			$count = count($users);
+			$count = \count($users);
 			if ($count === 1) {
 				$user = $this->manager->checkPassword($users[0]->getUID(), $authPass);
 				if ($user instanceof IUser) {
@@ -113,7 +113,7 @@ class BasicAuthModule implements IAuthModule {
 					'Multiple users {users} for email {authUser}, not logging in', [
 						'app' => __METHOD__,
 						'authUser' => $authUser,
-						'users' => array_map(
+						'users' => \array_map(
 							function(IUser $user) {
 								return $user->getUID();
 							}, $users)

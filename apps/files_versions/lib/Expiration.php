@@ -130,22 +130,22 @@ class Expiration {
 	* and set private members accordingly
 	*/
 	private function parseRetentionObligation(){
-		$splitValues = explode(',', $this->retentionObligation);
+		$splitValues = \explode(',', $this->retentionObligation);
 		if (!isset($splitValues[0])) {
 			$minValue = 'auto';
 		} else {
-			$minValue = trim($splitValues[0]);
+			$minValue = \trim($splitValues[0]);
 		}
 
 		if (!isset($splitValues[1])) {
 			$maxValue = 'auto';
 		} else {
-			$maxValue = trim($splitValues[1]);
+			$maxValue = \trim($splitValues[1]);
 		}
 
 		$isValid = true;
 		// Validate
-		if (!ctype_digit($minValue) && $minValue !== 'auto') {
+		if (!\ctype_digit($minValue) && $minValue !== 'auto') {
 			$isValid = false;
 			\OC::$server->getLogger()->warning(
 					$minValue . ' is not a valid value for minimal versions retention obligation. Check versions_retention_obligation in your config.php. Falling back to auto.',
@@ -153,7 +153,7 @@ class Expiration {
 			);
 		}
 
-		if (!ctype_digit($maxValue) && $maxValue !== 'auto') {
+		if (!\ctype_digit($maxValue) && $maxValue !== 'auto') {
 			$isValid = false;
 			\OC::$server->getLogger()->warning(
 					$maxValue . ' is not a valid value for maximal versions retention obligation. Check versions_retention_obligation in your config.php. Falling back to auto.',
@@ -174,13 +174,13 @@ class Expiration {
 			$this->canPurgeToSaveSpace = true;
 		} elseif ($minValue !== 'auto' && $maxValue === 'auto') {
 			// Keep for X days but delete anytime if space needed
-			$this->minAge = intval($minValue);
+			$this->minAge = \intval($minValue);
 			$this->maxAge = self::NO_OBLIGATION;
 			$this->canPurgeToSaveSpace = true;
 		} elseif ($minValue === 'auto' && $maxValue !== 'auto') {
 			// Delete anytime if space needed, Delete all older than max automatically
 			$this->minAge = self::NO_OBLIGATION;
-			$this->maxAge = intval($maxValue);
+			$this->maxAge = \intval($maxValue);
 			$this->canPurgeToSaveSpace = true;
 		} elseif ($minValue !== 'auto' && $maxValue !== 'auto') {
 			// Delete all older than max OR older than min if space needed
@@ -190,8 +190,8 @@ class Expiration {
 				$maxValue = $minValue;
 			}
 
-			$this->minAge = intval($minValue);
-			$this->maxAge = intval($maxValue);
+			$this->minAge = \intval($minValue);
+			$this->maxAge = \intval($maxValue);
 			$this->canPurgeToSaveSpace = false;
 		}
 	}

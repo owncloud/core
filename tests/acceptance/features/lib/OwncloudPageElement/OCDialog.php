@@ -77,7 +77,7 @@ class OCDialog extends OwncloudPage {
 	 */
 	public function getTitle() {
 		$title = $this->dialogElement->find("xpath", $this->titleClassXpath);
-		if (is_null($title)) {
+		if (\is_null($title)) {
 			throw new ElementNotFoundException(
 				__METHOD__ .
 				" xpath $this->titleClassXpath " .
@@ -94,7 +94,7 @@ class OCDialog extends OwncloudPage {
 	 */
 	public function getMessage() {
 		$contentElement = $this->dialogElement->find("xpath", $this->contentClassXpath);
-		if (is_null($contentElement)) {
+		if (\is_null($contentElement)) {
 			throw new ElementNotFoundException(
 				__METHOD__ .
 				" xpath $this->contentClassXpath " .
@@ -116,7 +116,7 @@ class OCDialog extends OwncloudPage {
 		$primaryButton = $this->dialogElement->find(
 			"xpath", $this->primaryButtonXpath
 		);
-		if (is_null($primaryButton)) {
+		if (\is_null($primaryButton)) {
 			throw new ElementNotFoundException(
 				__METHOD__ .
 				" xpath $this->primaryButtonXpath " .
@@ -137,12 +137,12 @@ class OCDialog extends OwncloudPage {
 	 */
 	public function clickButton(Session $session, $label) {
 		$button = $this->dialogElement->find(
-			"xpath", sprintf($this->buttonByLabelXpath, $label)
+			"xpath", \sprintf($this->buttonByLabelXpath, $label)
 		);
-		if (is_null($button)) {
+		if (\is_null($button)) {
 			throw new ElementNotFoundException(
 				__METHOD__ .
-				" xpath " . sprintf($this->buttonByLabelXpath, $label) .
+				" xpath " . \sprintf($this->buttonByLabelXpath, $label) .
 				" could not find button with the given label"
 			);
 		}

@@ -133,7 +133,7 @@ class ServerFactory {
 
 			/** @var \OC\Files\View $view */
 			$view = $viewCallBack($server);
-			if (!is_null($userFolder)) {
+			if (!\is_null($userFolder)) {
 				// User folder exists and user is active and not anonymous
 				$rootInfo = $userFolder->getFileInfo();
 			} else {

@@ -86,9 +86,9 @@ class UtilTest extends TestCase {
 
 	public function providesHeaders() {
 		return [
-			[str_pad('HBEGIN:oc_encryption_module:0:HEND', $this->headerSize, '-', STR_PAD_RIGHT)
+			[\str_pad('HBEGIN:oc_encryption_module:0:HEND', $this->headerSize, '-', STR_PAD_RIGHT)
 				, [], '0'],
-			[str_pad('HBEGIN:oc_encryption_module:0:custom_header:foo:HEND', $this->headerSize, '-', STR_PAD_RIGHT)
+			[\str_pad('HBEGIN:oc_encryption_module:0:custom_header:foo:HEND', $this->headerSize, '-', STR_PAD_RIGHT)
 				, ['custom_header' => 'foo'], '0'],
 		];
 	}
@@ -140,7 +140,7 @@ class UtilTest extends TestCase {
 	}
 
 	public function isExcludedCallback() {
-		$args = func_get_args();
+		$args = \func_get_args();
 		if ($args[0] === 'user1') {
 			return true;
 		}

@@ -79,7 +79,7 @@ class PublicCalendarRootTest extends TestCase {
 	public function tearDown() {
 		parent::tearDown();
 
-		if (is_null($this->backend)) {
+		if (\is_null($this->backend)) {
 			return;
 		}
 		$books = $this->backend->getCalendarsForUser(self::UNIT_TEST_USER);

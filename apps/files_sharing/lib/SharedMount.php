@@ -84,8 +84,8 @@ class SharedMount extends MountPoint implements MoveableMount {
 	 */
 	private function verifyMountPoint(\OCP\Share\IShare $share, array $mountpoints) {
 
-		$mountPoint = basename($share->getTarget());
-		$parent = dirname($share->getTarget());
+		$mountPoint = \basename($share->getTarget());
+		$parent = \dirname($share->getTarget());
 
 		if (!$this->recipientView->is_dir($parent)) {
 			$parent = Helper::getShareFolder($this->recipientView);
@@ -128,7 +128,7 @@ class SharedMount extends MountPoint implements MoveableMount {
 	 * @return mixed
 	 */
 	private function generateUniqueTarget($path, $view, array $mountpoints) {
-		$pathinfo = pathinfo($path);
+		$pathinfo = \pathinfo($path);
 		$ext = (isset($pathinfo['extension'])) ? '.'.$pathinfo['extension'] : '';
 		$name = $pathinfo['filename'];
 		$dir = $pathinfo['dirname'];
@@ -160,11 +160,11 @@ class SharedMount extends MountPoint implements MoveableMount {
 	 * @throws \OCA\Files_Sharing\Exceptions\BrokenPath
 	 */
 	protected function stripUserFilesPath($path) {
-		$trimmed = ltrim($path, '/');
-		$split = explode('/', $trimmed);
+		$trimmed = \ltrim($path, '/');
+		$split = \explode('/', $trimmed);
 
 		// it is not a file relative to data/user/files
-		if (count($split) < 3 || $split[1] !== 'files') {
+		if (\count($split) < 3 || $split[1] !== 'files') {
 			\OCP\Util::writeLog('file sharing',
 				'Can not strip userid and "files/" from path: ' . $path,
 				\OCP\Util::ERROR);
@@ -172,8 +172,8 @@ class SharedMount extends MountPoint implements MoveableMount {
 		}
 
 		// skip 'user' and 'files'
-		$sliced = array_slice($split, 2);
-		$relPath = implode('/', $sliced);
+		$sliced = \array_slice($split, 2);
+		$relPath = \implode('/', $sliced);
 
 		return '/' . $relPath;
 	}
@@ -192,7 +192,7 @@ class SharedMount extends MountPoint implements MoveableMount {
 		$fileId = (int)$targetStorage->getCache()->getId($targetInternalPath);
 		if ($fileId === -1) {
 			// target might not exist, need to check parent instead
-			$fileId = (int)$targetStorage->getCache()->getId(dirname($targetInternalPath));
+			$fileId = (int)$targetStorage->getCache()->getId(\dirname($targetInternalPath));
 		}
 
 		$targetNodes = \OC::$server->getRootFolder()->getById($fileId);
@@ -203,7 +203,7 @@ class SharedMount extends MountPoint implements MoveableMount {
 		$shareManager = \OC::$server->getShareManager();
 		$targetNode = $targetNodes[0];
 		// FIXME: make it stop earlier in '/$userId/files'
-		while (!is_null($targetNode) && $targetNode->getPath() !== '/') { 
+		while (!\is_null($targetNode) && $targetNode->getPath() !== '/') { 
 			$shares = $shareManager->getSharesByPath($targetNode);
 
 			foreach ($shares as $share) {

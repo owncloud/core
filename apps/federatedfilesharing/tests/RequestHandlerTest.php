@@ -166,7 +166,7 @@ class RequestHandlerTest extends TestCase {
 		$called = array();
 		\OC::$server->getEventDispatcher()->addListener('\OCA\FederatedFileSharing::remote_shareReceived', function ($event) use (&$called) {
 			$called[] = '\OCA\FederatedFileSharing::remote_shareReceived';
-			array_push($called, $event);
+			\array_push($called, $event);
 		});
 
 		$result = $this->s2s->createShare(null);
@@ -224,8 +224,8 @@ class RequestHandlerTest extends TestCase {
 			(`share_type`, `uid_owner`, `item_type`, `item_source`, `item_target`, `file_source`, `file_target`, `permissions`, `stime`, `token`, `share_with`)
 			VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
 			');
-		$dummy->execute([\OCP\Share::SHARE_TYPE_REMOTE, self::TEST_FILES_SHARING_API_USER1, 'test', '1', '/1', '1', '/test.txt', '1', time(), 'token1', 'foo@bar']);
-		$dummy->execute([\OCP\Share::SHARE_TYPE_REMOTE, self::TEST_FILES_SHARING_API_USER1, 'test', '1', '/1', '1', '/test.txt', '1', time(), 'token2', 'bar@bar']);
+		$dummy->execute([\OCP\Share::SHARE_TYPE_REMOTE, self::TEST_FILES_SHARING_API_USER1, 'test', '1', '/1', '1', '/test.txt', '1', \time(), 'token1', 'foo@bar']);
+		$dummy->execute([\OCP\Share::SHARE_TYPE_REMOTE, self::TEST_FILES_SHARING_API_USER1, 'test', '1', '/1', '1', '/test.txt', '1', \time(), 'token2', 'bar@bar']);
 
 		$verify = \OCP\DB::prepare('SELECT * FROM `*PREFIX*share`');
 		$result = $verify->execute();
@@ -332,7 +332,7 @@ class RequestHandlerTest extends TestCase {
 
 		$connection = \OC::$server->getDatabaseConnection();
 		$query = $connection->getQueryBuilder();
-		$stime = time();
+		$stime = \time();
 		$query->insert('share')
 			->values(
 				[

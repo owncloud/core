@@ -108,7 +108,7 @@ class ManagerTest extends TestCase {
 		$shareData3['token'] = 'token3';
 
 		// Add a share for "user"
-		$this->assertNull(call_user_func_array([$this->manager, 'addShare'], $shareData1));
+		$this->assertNull(\call_user_func_array([$this->manager, 'addShare'], $shareData1));
 		$openShares = $this->manager->getOpenShares();
 		$this->assertCount(1, $openShares);
 		$this->assertExternalShareEntry($shareData1, $openShares[0], 1, '{{TemporaryMountPointName#' . $shareData1['name'] . '}}');
@@ -118,7 +118,7 @@ class ManagerTest extends TestCase {
 		$this->assertNotMount('{{TemporaryMountPointName#' . $shareData1['name'] . '}}');
 
 		// Add a second share for "user" with the same name
-		$this->assertNull(call_user_func_array([$this->manager, 'addShare'], $shareData2));
+		$this->assertNull(\call_user_func_array([$this->manager, 'addShare'], $shareData2));
 		$openShares = $this->manager->getOpenShares();
 		$this->assertCount(2, $openShares);
 		$this->assertExternalShareEntry($shareData1, $openShares[0], 1, '{{TemporaryMountPointName#' . $shareData1['name'] . '}}');
@@ -155,7 +155,7 @@ class ManagerTest extends TestCase {
 		$this->assertNotMount('{{TemporaryMountPointName#' . $shareData1['name'] . '}}-1');
 
 		// Add another share for "user" with the same name
-		$this->assertNull(call_user_func_array([$this->manager, 'addShare'], $shareData3));
+		$this->assertNull(\call_user_func_array([$this->manager, 'addShare'], $shareData3));
 		$openShares = $this->manager->getOpenShares();
 		$this->assertCount(2, $openShares);
 		$this->assertExternalShareEntry($shareData2, $openShares[0], 2, '{{TemporaryMountPointName#' . $shareData2['name'] . '}}-1');
@@ -222,7 +222,7 @@ class ManagerTest extends TestCase {
 	 *
 	 */
 	protected function verifyShareEvent(ShareEvent $event, $share, $expectedClass) {
-		return $share['remote_id'] == $event->getRemoteId() && get_class($event) === $expectedClass;
+		return $share['remote_id'] == $event->getRemoteId() && \get_class($event) === $expectedClass;
 	}
 
 	/**
@@ -242,21 +242,21 @@ class ManagerTest extends TestCase {
 	}
 
 	private function assertMount($mountPoint) {
-		$mountPoint = rtrim($mountPoint, '/');
+		$mountPoint = \rtrim($mountPoint, '/');
 		$mount = $this->mountManager->find($this->getFullPath($mountPoint));
 		$this->assertInstanceOf('\OCA\Files_Sharing\External\Mount', $mount);
 		$this->assertInstanceOf('\OCP\Files\Mount\IMountPoint', $mount);
-		$this->assertEquals($this->getFullPath($mountPoint), rtrim($mount->getMountPoint(), '/'));
+		$this->assertEquals($this->getFullPath($mountPoint), \rtrim($mount->getMountPoint(), '/'));
 		$storage = $mount->getStorage();
 		$this->assertInstanceOf('\OCA\Files_Sharing\External\Storage', $storage);
 	}
 
 	private function assertNotMount($mountPoint) {
-		$mountPoint = rtrim($mountPoint, '/');
+		$mountPoint = \rtrim($mountPoint, '/');
 		$mount = $this->mountManager->find($this->getFullPath($mountPoint));
 		if ($mount) {
 			$this->assertInstanceOf('\OCP\Files\Mount\IMountPoint', $mount);
-			$this->assertNotEquals($this->getFullPath($mountPoint), rtrim($mount->getMountPoint(), '/'));
+			$this->assertNotEquals($this->getFullPath($mountPoint), \rtrim($mount->getMountPoint(), '/'));
 		} else {
 			$this->assertNull($mount);
 		}
@@ -337,7 +337,7 @@ class ManagerTest extends TestCase {
 		$called = array();
 		\OC::$server->getEventDispatcher()->addListener('\OCA\Files_Sharing::unshareEvent', function($event) use (&$called) {
 			$called[] = '\OCA\Files_Sharing::unshareEvent';
-			array_push($called, $event);
+			\array_push($called, $event);
 		});
 
 		$this->manager->removeShare('/SharedFolder');

@@ -62,10 +62,10 @@ class CheckApp extends Base {
 	 */
 	protected function execute(InputInterface $input, OutputInterface $output) {
 		$appid = $input->getArgument('appid');
-		$path = strval($input->getOption('path'));
+		$path = \strval($input->getOption('path'));
 		$result = $this->checker->verifyAppSignature($appid, $path);
 		$this->writeArrayInOutputFormat($input, $output, $result);
-		if (count($result)>0){
+		if (\count($result)>0){
 			return 1;
 		}
 	}

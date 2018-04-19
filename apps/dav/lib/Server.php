@@ -193,7 +193,7 @@ class Server {
 			// custom properties plugin must be the last one
 			$userSession = \OC::$server->getUserSession();
 			$user = $userSession->getUser();
-			if (!is_null($user)) {
+			if (!\is_null($user)) {
 				$userHomeView = new \OC\Files\View('/'.$user->getUID());
 				$this->server->addPlugin(
 					new ChunkingPluginZsync($userHomeView)
@@ -223,7 +223,7 @@ class Server {
 				);
 				$filePropertiesPlugin->pathFilter = function($path) {
 					// oh yes, we could set custom properties on the user's storage root
-					return strpos($path, 'files/') === 0;
+					return \strpos($path, 'files/') === 0;
 				};
 				$this->server->addPlugin($filePropertiesPlugin);
 
@@ -235,11 +235,11 @@ class Server {
 					)
 				);
 				$miscPropertiesPlugin->pathFilter = function($path) {
-					return strpos($path, 'files/') !== 0;
+					return \strpos($path, 'files/') !== 0;
 				};
 				$this->server->addPlugin($miscPropertiesPlugin);
 
-				if (!is_null($view)) {
+				if (!\is_null($view)) {
 					$this->server->addPlugin(
 						new QuotaPlugin($view));
 				}
@@ -259,7 +259,7 @@ class Server {
 					\OC::$server->getCommentsManager(),
 					$userSession
 				));
-				if (!is_null($view)) {
+				if (!\is_null($view)) {
 					$this->server->addPlugin(new FilesReportPlugin(
 						$this->server->tree,
 						$view,
@@ -297,8 +297,8 @@ class Server {
 	 */
 	private function isRequestForSubtree(array $subTrees) {
 		foreach ($subTrees as $subTree) {
-		$subTree = trim($subTree, " /");
-			if (strpos($this->server->getRequestUri(), "$subTree/") === 0) {
+		$subTree = \trim($subTree, " /");
+			if (\strpos($this->server->getRequestUri(), "$subTree/") === 0) {
 				return true;
 			}
 		}

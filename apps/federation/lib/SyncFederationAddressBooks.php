@@ -54,7 +54,7 @@ class SyncFederationAddressBooks {
 			$sharedSecret = $trustedServer['shared_secret'];
 			$syncToken = $trustedServer['sync_token'];
 
-			if (is_null($sharedSecret)) {
+			if (\is_null($sharedSecret)) {
 				continue;
 			}
 			$targetBookId = $trustedServer['url_hash'];

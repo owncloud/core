@@ -118,7 +118,7 @@ class Manager {
 			// using the original share item name.
 			$tmpMountPointName = '{{TemporaryMountPointName#' . $name . '}}';
 			$mountPoint = $tmpMountPointName;
-			$hash = md5($tmpMountPointName);
+			$hash = \md5($tmpMountPointName);
 			$data = [
 				'remote'		=> $remote,
 				'share_token'	=> $token,
@@ -136,7 +136,7 @@ class Manager {
 			while (!$this->connection->insertIfNotExist('*PREFIX*share_external', $data, ['user', 'mountpoint_hash'])) {
 				// The external share already exists for the user
 				$data['mountpoint'] = $tmpMountPointName . '-' . $i;
-				$data['mountpoint_hash'] = md5($data['mountpoint']);
+				$data['mountpoint_hash'] = \md5($data['mountpoint']);
 				$i++;
 			}
 			return null;
@@ -144,7 +144,7 @@ class Manager {
 
 		$mountPoint = Files::buildNotExistingFileName('/', $name);
 		$mountPoint = Filesystem::normalizePath('/' . $mountPoint);
-		$hash = md5($mountPoint);
+		$hash = \md5($mountPoint);
 
 		$query = $this->connection->prepare('
 				INSERT INTO `*PREFIX*share_external`
@@ -192,7 +192,7 @@ class Manager {
 		if ($share) {
 			$mountPoint = Files::buildNotExistingFileName('/', $share['name']);
 			$mountPoint = Filesystem::normalizePath('/' . $mountPoint);
-			$hash = md5($mountPoint);
+			$hash = \md5($mountPoint);
 
 			$acceptShare = $this->connection->prepare('
 				UPDATE `*PREFIX*share_external`
@@ -261,7 +261,7 @@ class Manager {
 	 */
 	protected function stripPath($path) {
 		$prefix = '/' . $this->uid . '/files';
-		return rtrim(substr($path, strlen($prefix)), '/');
+		return \rtrim(\substr($path, \strlen($prefix)), '/');
 	}
 
 	public function getMount($data) {
@@ -297,8 +297,8 @@ class Manager {
 	public function setMountPoint($source, $target) {
 		$source = $this->stripPath($source);
 		$target = $this->stripPath($target);
-		$sourceHash = md5($source);
-		$targetHash = md5($target);
+		$sourceHash = \md5($source);
+		$targetHash = \md5($target);
 
 		$query = $this->connection->prepare('
 			UPDATE `*PREFIX*share_external`
@@ -317,7 +317,7 @@ class Manager {
 		$id = $mountPointObj->getStorage()->getCache()->getId('');
 
 		$mountPoint = $this->stripPath($mountPoint);
-		$hash = md5($mountPoint);
+		$hash = \md5($mountPoint);
 
 		$getShare = $this->connection->prepare('
 			SELECT `remote`, `share_token`, `remote_id`
@@ -434,7 +434,7 @@ class Manager {
 		          FROM `*PREFIX*share_external` 
 				  WHERE `user` = ?';
 		$parameters = [$this->uid];
-		if (!is_null($accepted)) {
+		if (!\is_null($accepted)) {
 			$query .= ' AND `accepted` = ?';
 			$parameters[] = (int) $accepted;
 		}

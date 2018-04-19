@@ -194,7 +194,7 @@ class Extension implements IExtension {
 	 */
 	protected function authorIsCurrentUser($user) {
 		try {
-			return strip_tags($user) === $this->activityManager->getCurrentUserId();
+			return \strip_tags($user) === $this->activityManager->getCurrentUserId();
 		} catch (\UnexpectedValueException $e) {
 			return false;
 		}
@@ -279,7 +279,7 @@ class Extension implements IExtension {
 		if ($filter === self::APP_NAME) {
 			return [self::APP_NAME];
 		}
-		if (in_array($filter, ['all', 'by', 'self', 'filter'])) {
+		if (\in_array($filter, ['all', 'by', 'self', 'filter'])) {
 			$types[] = self::APP_NAME;
 			return $types;
 		}
@@ -304,11 +304,11 @@ class Extension implements IExtension {
 	 * @return string
 	 */
 	protected function convertParameterToComment($parameter) {
-		if (preg_match('/^\<parameter\>(\d*)\<\/parameter\>$/', $parameter, $matches)) {
+		if (\preg_match('/^\<parameter\>(\d*)\<\/parameter\>$/', $parameter, $matches)) {
 			try {
 				$comment = $this->commentsManager->get((int) $matches[1]);
 				$message = $comment->getMessage();
-				$message = str_replace("\n", '<br />', str_replace(['<', '>'], ['&lt;', '&gt;'], $message));
+				$message = \str_replace("\n", '<br />', \str_replace(['<', '>'], ['&lt;', '&gt;'], $message));
 				return $message;
 			} catch (NotFoundException $e) {
 				return '';

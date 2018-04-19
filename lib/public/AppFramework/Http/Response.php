@@ -170,11 +170,11 @@ class Response {
 	 * @since 6.0.0 - return value was added in 7.0.0
 	 */
 	public function addHeader($name, $value) {
-		$name = trim($name);  // always remove leading and trailing whitespace
+		$name = \trim($name);  // always remove leading and trailing whitespace
 		                      // to be able to reliably check for security
 		                      // headers
 
-		if(is_null($value)) {
+		if(\is_null($value)) {
 			unset($this->headers[$name]);
 		} else {
 			$this->headers[$name] = $value;
@@ -211,7 +211,7 @@ class Response {
 		}
 
 		// Build Content-Security-Policy and use default if none has been specified
-		if(is_null($this->contentSecurityPolicy)) {
+		if(\is_null($this->contentSecurityPolicy)) {
 			$this->setContentSecurityPolicy(new ContentSecurityPolicy());
 		}
 		$this->headers['Content-Security-Policy'] = $this->contentSecurityPolicy->buildPolicy();
@@ -220,7 +220,7 @@ class Response {
 			$mergeWith['ETag'] = '"' . $this->ETag . '"';
 		}
 
-		return array_merge($mergeWith, $this->headers);
+		return \array_merge($mergeWith, $this->headers);
 	}
 
 

@@ -103,7 +103,7 @@ class Scanner extends PublicEmitter {
 		$mountManager = Filesystem::getMountManager();
 		$mounts = $mountManager->findIn($dir);
 		$mounts[] = $mountManager->find($dir);
-		$mounts = array_reverse($mounts); //start with the mount of $dir
+		$mounts = \array_reverse($mounts); //start with the mount of $dir
 
 		return $mounts;
 	}
@@ -175,7 +175,7 @@ class Scanner extends PublicEmitter {
 	 */
 	private function shouldScan($mount) {
 		$storage = $mount->getStorage();
-		if (is_null($storage)) {
+		if (\is_null($storage)) {
 			return false;
 		}
 
@@ -263,7 +263,7 @@ class Scanner extends PublicEmitter {
 	}
 
 	private function triggerPropagator(IStorage $storage, $internalPath) {
-		$storage->getPropagator()->propagateChange($internalPath, time());
+		$storage->getPropagator()->propagateChange($internalPath, \time());
 	}
 
 	private function postProcessEntry(IStorage $storage, $internalPath) {

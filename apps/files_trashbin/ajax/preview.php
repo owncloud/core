@@ -30,10 +30,10 @@ if(!\OC_App::isEnabled('files_trashbin')){
 	exit;
 }
 
-$file = array_key_exists('file', $_GET) ? (string) $_GET['file'] : '';
-$maxX = array_key_exists('x', $_GET) ? (int) $_GET['x'] : '44';
-$maxY = array_key_exists('y', $_GET) ? (int) $_GET['y'] : '44';
-$scalingUp = array_key_exists('scalingup', $_GET) ? (bool) $_GET['scalingup'] : true;
+$file = \array_key_exists('file', $_GET) ? (string) $_GET['file'] : '';
+$maxX = \array_key_exists('x', $_GET) ? (int) $_GET['x'] : '44';
+$maxY = \array_key_exists('y', $_GET) ? (int) $_GET['y'] : '44';
+$scalingUp = \array_key_exists('scalingup', $_GET) ? (bool) $_GET['scalingup'] : true;
 
 if($file === '') {
 	\OC_Response::setStatus(400); //400 Bad Request
@@ -57,14 +57,14 @@ try {
 	if ($file->getType() === \OCP\Files\FileInfo::TYPE_FOLDER) {
 		$mimetype = 'httpd/unix-directory';
 	} else {
-		$pathInfo = pathinfo(ltrim($file->getName(), '/'));
+		$pathInfo = \pathinfo(\ltrim($file->getName(), '/'));
 		$fileName = $pathInfo['basename'];
 		// if in root dir
 		if ($pathInfo['dirname'] === '.') {
 			// cut off the .d* suffix
-			$i = strrpos($fileName, '.');
+			$i = \strrpos($fileName, '.');
 			if ($i !== false) {
-				$fileName = substr($fileName, 0, $i);
+				$fileName = \substr($fileName, 0, $i);
 			}
 		}
 		$mimetype = \OC::$server->getMimeTypeDetector()->detectPath($fileName);

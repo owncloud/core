@@ -32,7 +32,7 @@ class SVGTest extends Provider {
 
 	public function setUp() {
 		$checkImagick = new \Imagick();
-		if (count($checkImagick->queryFormats('SVG')) === 1) {
+		if (\count($checkImagick->queryFormats('SVG')) === 1) {
 			parent::setUp();
 
 			$fileName = 'testimagelarge.svg';

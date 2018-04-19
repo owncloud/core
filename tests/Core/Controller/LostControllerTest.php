@@ -89,7 +89,7 @@ class LostControllerTest extends TestCase {
 			->expects($this->any())
 			->method('t')
 			->will($this->returnCallback(function($text, $parameters = []) {
-				return vsprintf($text, $parameters);
+				return \vsprintf($text, $parameters);
 			}));
 		$this->defaults = $this->getMockBuilder('\OC_Defaults')
 			->disableOriginalConstructor()->getMock();

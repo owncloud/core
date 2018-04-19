@@ -68,14 +68,14 @@ class FileActionsMenu extends OwncloudPage {
 		$xpathToWaitFor = null, $timeout_msec = STANDARDUIWAITTIMEOUTMILLISEC
 	) {
 		$renameBtn = $this->findButton($this->renameActionLabel);
-		if (is_null($renameBtn)) {
+		if (\is_null($renameBtn)) {
 			throw new ElementNotFoundException(
 				__METHOD__ .
 				" could not find action button with label " . $this->renameActionLabel
 			);
 		}
 		$renameBtn->click();
-		if (!is_null($xpathToWaitFor)) {
+		if (!\is_null($xpathToWaitFor)) {
 			$this->waitTillElementIsNotNull($xpathToWaitFor, $timeout_msec);
 		}
 	}
@@ -87,7 +87,7 @@ class FileActionsMenu extends OwncloudPage {
 	 */
 	public function delete() {
 		$deleteBtn = $this->findButton($this->deleteActionLabel);
-		if (is_null($deleteBtn)) {
+		if (\is_null($deleteBtn)) {
 			throw new ElementNotFoundException(
 				__METHOD__ .
 				" could not find action button with label " . $this->deleteActionLabel
@@ -106,13 +106,13 @@ class FileActionsMenu extends OwncloudPage {
 	 * @throws \SensioLabs\Behat\PageObjectExtension\PageObject\Exception\ElementNotFoundException
 	 */
 	public function findButton($action) {
-		$xpathLocator = sprintf($this->fileActionXpath, $action);
+		$xpathLocator = \sprintf($this->fileActionXpath, $action);
 		$this->waitTillElementIsNotNull($xpathLocator);
 		$button = $this->menuElement->find(
 			"xpath",
 			$xpathLocator
 		);
-		if (is_null($button)) {
+		if (\is_null($button)) {
 			throw new ElementNotFoundException(
 				__METHOD__ .
 				" xpath $xpathLocator could not find button '$action' in action Menu"

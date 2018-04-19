@@ -46,7 +46,7 @@ class ChildController extends Controller {
 
 	public function custom($in) {
 		$this->registerResponder('json', function ($response) {
-			return new JSONResponse([strlen($response)]);
+			return new JSONResponse([\strlen($response)]);
 		});
 
 		return $in;

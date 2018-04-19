@@ -227,7 +227,7 @@ class RoutingTest extends \Test\TestCase
 			->with($this->equalTo(new RouteActionHandler($container, $controllerName, $actionName)))
 			->will($this->returnValue($route));
 
-		if(count($requirements) > 0) {
+		if(\count($requirements) > 0) {
 			$route
 				->expects($this->exactly(1))
 				->method('requirements')
@@ -235,7 +235,7 @@ class RoutingTest extends \Test\TestCase
 				->will($this->returnValue($route));
 		}
 
-		if (count($defaults) > 0) {
+		if (\count($defaults) > 0) {
 			$route
 				->expects($this->exactly(1))
 				->method('defaults')

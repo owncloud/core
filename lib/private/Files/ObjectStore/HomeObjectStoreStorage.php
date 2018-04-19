@@ -54,7 +54,7 @@ class HomeObjectStoreStorage extends ObjectStoreStorage implements \OCP\Files\IH
 	 * @return false|string uid
 	 */
 	public function getOwner($path) {
-		if (is_object($this->user)) {
+		if (\is_object($this->user)) {
 			return $this->user->getUID();
 		}
 		return false;

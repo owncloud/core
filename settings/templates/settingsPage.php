@@ -23,7 +23,7 @@ style('settings', 'settings');
 		<li class="divider"><?php p($l->t('Personal')); ?></li>
 		<?php foreach($_['personalNav'] as $item): ?>
 		<li>
-			<?php if (strpos($item['icon'], '/', 1) !== false): ?>
+			<?php if (\strpos($item['icon'], '/', 1) !== false): ?>
 				<a class="svg <?php $item['active'] ? p(' active ') : p('') ?>" style="background-image: url(<?php p($item['icon']) ?>)" href='<?php p($item['link']); ?>'><?php p($item['name']) ?></a>
 			<?php else: ?>
 				<a class="svg <?php $item['active'] ? p(' active ') : p('') ?> icon-<?php p($item['icon']) ?>" href='<?php p($item['link']); ?>'><?php p($item['name']) ?></a>
@@ -35,7 +35,7 @@ style('settings', 'settings');
 			<li class="divider"><?php p($l->t('Admin')); ?></li>
 			<?php foreach($_['adminNav'] as $item): ?>
 				<li>
-					<?php if (strpos($item['icon'], '/', 1) !== false): ?>
+					<?php if (\strpos($item['icon'], '/', 1) !== false): ?>
 						<a class="svg <?php $item['active'] ? p(' active ') : p('') ?>" style="background-image: url(<?php p($item['icon']) ?>)" href='<?php p($item['link']); ?>'><?php p($item['name']) ?></a>
 					<?php else: ?>
 						<a class="svg <?php $item['active'] ? p(' active ') : p('') ?> icon-<?php p($item['icon']) ?>" href='<?php p($item['link']); ?>'><?php p($item['name']) ?></a>
@@ -51,9 +51,9 @@ style('settings', 'settings');
             <?php print_unescaped($panel['content']); ?>
         </div>
 	<?php }
-	$numPanels = count($_['panels']);
+	$numPanels = \count($_['panels']);
 	$legacyClass = OC\Settings\Panels\Personal\Legacy::class;
-	if($numPanels === 0 || ($numPanels === 1 && $_['panels'][0]['id'] === $legacyClass && empty(trim($_['panels'][0]['content'])))) { ?>
+	if($numPanels === 0 || ($numPanels === 1 && $_['panels'][0]['id'] === $legacyClass && empty(\trim($_['panels'][0]['content'])))) { ?>
 		<div class="section">
 			<h2><?php p($l->t('Error')); ?></h2>
 			<p><?php p($l->t('No panels for this section.')); ?></p>

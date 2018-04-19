@@ -89,7 +89,7 @@ class ManagerTest extends \Test\TestCase {
 		$this->l = $this->createMock('\OCP\IL10N');
 		$this->l->method('t')
 			->will($this->returnCallback(function($text, $parameters = []) {
- 				return vsprintf($text, $parameters);
+ 				return \vsprintf($text, $parameters);
  			}));
 
 		$this->factory = new DummyFactory(\OC::$server);
@@ -1566,25 +1566,25 @@ class ManagerTest extends \Test\TestCase {
 		$data[] = ['no', null, null, null, false];
 
 		// empty exclude list, user no groups
-		$data[] = ['yes', '', json_encode(['']), [], false];
+		$data[] = ['yes', '', \json_encode(['']), [], false];
 
 		// empty exclude list, user groups
-		$data[] = ['yes', '', json_encode(['']), ['group1', 'group2'], false];
+		$data[] = ['yes', '', \json_encode(['']), ['group1', 'group2'], false];
 
 		// Convert old list to json
-		$data[] = ['yes', 'group1,group2', json_encode(['group1', 'group2']), [], false];
+		$data[] = ['yes', 'group1,group2', \json_encode(['group1', 'group2']), [], false];
 
 		// Old list partly groups in common
-		$data[] = ['yes', 'group1,group2', json_encode(['group1', 'group2']), ['group1', 'group3'], false];
+		$data[] = ['yes', 'group1,group2', \json_encode(['group1', 'group2']), ['group1', 'group3'], false];
 
 		// Old list only groups in common
-		$data[] = ['yes', 'group1,group2', json_encode(['group1', 'group2']), ['group1'], true];
+		$data[] = ['yes', 'group1,group2', \json_encode(['group1', 'group2']), ['group1'], true];
 
 		// New list partly in common
-		$data[] = ['yes', json_encode(['group1', 'group2']), null, ['group1', 'group3'], false];
+		$data[] = ['yes', \json_encode(['group1', 'group2']), null, ['group1', 'group3'], false];
 
 		// New list only groups in common
-		$data[] = ['yes', json_encode(['group1', 'group2']), null, ['group2'], true];
+		$data[] = ['yes', \json_encode(['group1', 'group2']), null, ['group2'], true];
 
 		return $data;
 	}
@@ -2147,7 +2147,7 @@ class ManagerTest extends \Test\TestCase {
 			$node->expects($this->any())
 				->method('getId')
 				->will($this->returnValue($i));
-			array_push($nodes, $node->getId());
+			\array_push($nodes, $node->getId());
 		}
 
 		// Test chunking here
@@ -2158,7 +2158,7 @@ class ManagerTest extends \Test\TestCase {
 				$this->anything(),
 				$this->anything(),
 				$this->equalTo(true)
-			)->willReturn(array_fill(0, 201, $share));
+			)->willReturn(\array_fill(0, 201, $share));
 
 		$shares = $this->manager->getAllSharesBy('user', [\OCP\Share::SHARE_TYPE_USER], $nodes, true);
 
@@ -2194,11 +2194,11 @@ class ManagerTest extends \Test\TestCase {
 			$node->expects($this->any())
 				->method('getId')
 				->will($this->returnValue($i));
-			array_push($nodes, $node->getId());
+			\array_push($nodes, $node->getId());
 		}
 
 		// Add 201 shares, including expired
-		$fillShares = array_fill(0, 200, $share);
+		$fillShares = \array_fill(0, 200, $share);
 		$fillShares[] = $shareExpired;
 
 		// Test chunking here
@@ -2303,7 +2303,7 @@ class ManagerTest extends \Test\TestCase {
 		$this->defaultProvider
 			->method('getSharesBy')
 			->will($this->returnCallback(function($uid, $type, $node, $reshares, $limit, $offset) use (&$shares2) {
-				return array_slice($shares2, $offset, $limit);
+				return \array_slice($shares2, $offset, $limit);
 			}));
 
 		/*
@@ -2311,9 +2311,9 @@ class ManagerTest extends \Test\TestCase {
 		 */
 		$manager->method('deleteShare')
 			->will($this->returnCallback(function($share) use (&$shares2) {
-				for($i = 0; $i < count($shares2); $i++) {
+				for($i = 0; $i < \count($shares2); $i++) {
 					if ($shares2[$i]->getId() === $share->getId()) {
-						array_splice($shares2, $i, 1);
+						\array_splice($shares2, $i, 1);
 						break;
 					}
 				}

@@ -297,7 +297,7 @@ class CommentsPropertiesPluginTest extends \Test\TestCase {
 			->willReturn($numberOfCommentsForNodes);
 
 		$unread = $this->plugin->getUnreadCount($node);
-		if(is_null($user)) {
+		if(\is_null($user)) {
 			$this->assertNull($unread);
 		} else {
 			$this->assertSame($unread, 42);
@@ -326,7 +326,7 @@ class CommentsPropertiesPluginTest extends \Test\TestCase {
 			->willReturn($numberOfCommentsForNodes);
 
 		$unread = $this->plugin->getUnreadCount($node);
-		if(is_null($user)) {
+		if(\is_null($user)) {
 			$this->assertNull($unread);
 		} else {
 			$this->assertSame($unread, 0);

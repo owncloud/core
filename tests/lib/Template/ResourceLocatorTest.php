@@ -102,11 +102,11 @@ class ResourceLocatorTest extends \Test\TestCase {
 		$method = new \ReflectionMethod($locator, 'appendOnceIfExist');
 		$method->setAccessible(true);
 
-		$method->invoke($locator, __DIR__, basename(__FILE__), 'webroot');
-		$resource1 = [__DIR__, 'webroot', basename(__FILE__)];
+		$method->invoke($locator, __DIR__, \basename(__FILE__), 'webroot');
+		$resource1 = [__DIR__, 'webroot', \basename(__FILE__)];
 		$this->assertEquals([__FILE__ => $resource1], $locator->getResources());
 
-		$method->invoke($locator, __DIR__, basename(__FILE__));
+		$method->invoke($locator, __DIR__, \basename(__FILE__));
 		$this->assertEquals([__FILE__ => $resource1], $locator->getResources());
 
 		$method->invoke($locator, __DIR__, 'does-not-exist');

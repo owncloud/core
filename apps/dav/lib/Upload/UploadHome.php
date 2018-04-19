@@ -53,13 +53,13 @@ class UploadHome implements ICollection {
 	}
 
 	function getChildren() {
-		return array_map(function($node) {
+		return \array_map(function($node) {
 			return new UploadFolder($node);
 		}, $this->impl()->getChildren());
 	}
 
 	function childExists($name) {
-		return !is_null($this->getChild($name));
+		return !\is_null($this->getChild($name));
 	}
 
 	function delete() {

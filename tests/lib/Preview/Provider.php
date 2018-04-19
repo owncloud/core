@@ -77,10 +77,10 @@ abstract class Provider extends \Test\TestCase {
 
 	public static function dimensionsDataProvider() {
 		return [
-			[-rand(5, 100), -rand(5, 100)],
-			[rand(5, 100), rand(5, 100)],
-			[-rand(5, 100), rand(5, 100)],
-			[rand(5, 100), -rand(5, 100)],
+			[-\rand(5, 100), -\rand(5, 100)],
+			[\rand(5, 100), \rand(5, 100)],
+			[-\rand(5, 100), \rand(5, 100)],
+			[\rand(5, 100), -\rand(5, 100)],
 		];
 	}
 
@@ -94,7 +94,7 @@ abstract class Provider extends \Test\TestCase {
 	 * @param int $heightAdjustment
 	 */
 	public function testGetThumbnail($widthAdjustment, $heightAdjustment) {
-		$ratio = round($this->width / $this->height, 2);
+		$ratio = \round($this->width / $this->height, 2);
 		$this->maxWidth = $this->width - $widthAdjustment;
 		$this->maxHeight = $this->height - $heightAdjustment;
 
@@ -121,7 +121,7 @@ abstract class Provider extends \Test\TestCase {
 	 * @return Node
 	 */
 	protected function prepareTestFile($fileName, $fileContent) {
-		$imgData = file_get_contents($fileContent);
+		$imgData = \file_get_contents($fileContent);
 		$imgPath = '/' . $this->userId . '/files/' . $fileName;
 		$this->rootView->file_put_contents($imgPath, $imgData);
 
@@ -153,7 +153,7 @@ abstract class Provider extends \Test\TestCase {
 	 * @param int $ratio
 	 */
 	private function doesRatioMatch($preview, $ratio) {
-		$previewRatio = round($preview->width() / $preview->height(), 2);
+		$previewRatio = \round($preview->width() / $preview->height(), 2);
 		$this->assertEquals($ratio, $previewRatio);
 	}
 
@@ -163,8 +163,8 @@ abstract class Provider extends \Test\TestCase {
 	 * @param \OCP\IImage $preview
 	 */
 	private function doesPreviewFit($preview) {
-		$maxDimRatio = round($this->maxWidth / $this->maxHeight, 2);
-		$previewRatio = round($preview->width() / $preview->height(), 2);
+		$maxDimRatio = \round($this->maxWidth / $this->maxHeight, 2);
+		$previewRatio = \round($preview->width() / $preview->height(), 2);
 
 		// Testing code
 		/*print_r("mw $this->maxWidth ");

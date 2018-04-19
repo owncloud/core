@@ -69,7 +69,7 @@ class SignCore extends Command {
 		$privateKeyPath = $input->getOption('privateKey');
 		$keyBundlePath = $input->getOption('certificate');
 		$path = $input->getOption('path');
-		if(is_null($privateKeyPath) || is_null($keyBundlePath) || is_null($path)) {
+		if(\is_null($privateKeyPath) || \is_null($keyBundlePath) || \is_null($path)) {
 			$output->writeln('--privateKey, --certificate and --path are required.');
 			return null;
 		}
@@ -78,12 +78,12 @@ class SignCore extends Command {
 		$keyBundle = $this->fileAccessHelper->file_get_contents($keyBundlePath);
 
 		if($privateKey === false) {
-			$output->writeln(sprintf('Private key "%s" does not exists.', $privateKeyPath));
+			$output->writeln(\sprintf('Private key "%s" does not exists.', $privateKeyPath));
 			return null;
 		}
 
 		if($keyBundle === false) {
-			$output->writeln(sprintf('Certificate "%s" does not exists.', $keyBundlePath));
+			$output->writeln(\sprintf('Certificate "%s" does not exists.', $keyBundlePath));
 			return null;
 		}
 

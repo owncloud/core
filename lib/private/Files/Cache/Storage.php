@@ -170,8 +170,8 @@ class Storage {
 	 * else returns the md5 of $storageId
 	 */
 	public static function adjustStorageId($storageId) {
-		if (strlen($storageId) > 64) {
-			return md5($storageId);
+		if (\strlen($storageId) > 64) {
+			return \md5($storageId);
 		}
 		return $storageId;
 	}
@@ -240,7 +240,7 @@ class Storage {
 		self::unsetCache($this->storageId);
 		$sql = 'UPDATE `*PREFIX*storages` SET `available` = ?, `last_checked` = ? WHERE `id` = ?';
 		$available = $isAvailable ? 1 : 0;
-		\OC_DB::executeAudited($sql, [$available, time(), $this->storageId]);
+		\OC_DB::executeAudited($sql, [$available, \time(), $this->storageId]);
 	}
 
 	/**
@@ -250,7 +250,7 @@ class Storage {
 	 * @return bool
 	 */
 	public static function exists($storageId) {
-		return !is_null(self::getNumericStorageId($storageId));
+		return !\is_null(self::getNumericStorageId($storageId));
 	}
 
 	/**
@@ -267,7 +267,7 @@ class Storage {
 		// delete from local cache
 		self::unsetCache($storageId);
 		// delete from db
-		if (!is_null($numericId)) {
+		if (!\is_null($numericId)) {
 			$sql = 'DELETE FROM `*PREFIX*filecache` WHERE `storage` = ?';
 			\OC_DB::executeAudited($sql, [$numericId]);
 		}

@@ -77,7 +77,7 @@ class ResponseTest extends TestCase {
 		$this->childResponse->setContentSecurityPolicy($policy);
 		$headers = $this->childResponse->getHeaders();
 
-		$this->assertEquals(array_merge($expected, $headers), $headers);
+		$this->assertEquals(\array_merge($expected, $headers), $headers);
 	}
 
 	public function testGetCsp() {

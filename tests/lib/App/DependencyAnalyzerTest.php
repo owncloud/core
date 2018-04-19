@@ -64,7 +64,7 @@ class DependencyAnalyzerTest extends TestCase {
 		$this->l10nMock->expects($this->any())
 			->method('t')
 			->will($this->returnCallback(function($text, $parameters = []) {
-				return vsprintf($text, $parameters);
+				return \vsprintf($text, $parameters);
 			}));
 
 		$this->analyser = new DependencyAnalyzer($this->platformMock, $this->l10nMock);
@@ -84,13 +84,13 @@ class DependencyAnalyzerTest extends TestCase {
 				'php' => []
 			]
 		];
-		if (!is_null($minVersion)) {
+		if (!\is_null($minVersion)) {
 			$app['dependencies']['php']['@attributes']['min-version'] = $minVersion;
 		}
-		if (!is_null($maxVersion)) {
+		if (!\is_null($maxVersion)) {
 			$app['dependencies']['php']['@attributes']['max-version'] = $maxVersion;
 		}
-		if (!is_null($intSize)) {
+		if (!\is_null($intSize)) {
 			$app['dependencies']['php']['@attributes']['min-int-size'] = $intSize;
 		}
 		$missing = $this->analyser->analyze($app);
@@ -109,7 +109,7 @@ class DependencyAnalyzerTest extends TestCase {
 			'dependencies' => [
 			]
 		];
-		if (!is_null($databases)) {
+		if (!\is_null($databases)) {
 			$app['dependencies']['database'] = $databases;
 		}
 		$missing = $this->analyser->analyze($app);
@@ -129,7 +129,7 @@ class DependencyAnalyzerTest extends TestCase {
 			'dependencies' => [
 			]
 		];
-		if (!is_null($commands)) {
+		if (!\is_null($commands)) {
 			$app['dependencies']['command'] = $commands;
 		}
 		$missing = $this->analyser->analyze($app);
@@ -148,7 +148,7 @@ class DependencyAnalyzerTest extends TestCase {
 			'dependencies' => [
 			]
 		];
-		if (!is_null($libs)) {
+		if (!\is_null($libs)) {
 			$app['dependencies']['lib'] = $libs;
 		}
 
@@ -167,7 +167,7 @@ class DependencyAnalyzerTest extends TestCase {
 		$app = [
 			'dependencies' => []
 		];
-		if (!is_null($oss)) {
+		if (!\is_null($oss)) {
 			$app['dependencies']['os'] = $oss;
 		}
 
@@ -186,7 +186,7 @@ class DependencyAnalyzerTest extends TestCase {
 		$app = [
 			'dependencies' => []
 		];
-		if (!is_null($oc)) {
+		if (!\is_null($oc)) {
 			$app['dependencies']['owncloud'] = $oc;
 		}
 

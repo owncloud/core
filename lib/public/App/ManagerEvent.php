@@ -78,7 +78,7 @@ class ManagerEvent extends Event {
 	 * @since 9.0.0
 	 */
 	public function getGroups() {
-		return array_map(function ($group) {
+		return \array_map(function ($group) {
 			/** @var \OCP\IGroup $group */
 			return $group->getGID();
 		}, $this->groups);

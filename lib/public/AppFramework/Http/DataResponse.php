@@ -54,7 +54,7 @@ class DataResponse extends Response {
 								array $headers= []) {
 		$this->data = $data;
 		$this->setStatus($statusCode);
-		$this->setHeaders(array_merge($this->getHeaders(), $headers));
+		$this->setHeaders(\array_merge($this->getHeaders(), $headers));
 	}
 
 

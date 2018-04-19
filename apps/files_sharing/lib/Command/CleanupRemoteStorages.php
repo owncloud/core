@@ -61,11 +61,11 @@ class CleanupRemoteStorages extends Command {
 
 		$remoteStorages = $this->getRemoteStorages();
 
-		$output->writeln(count($remoteStorages) . " remote storage(s) need(s) to be checked");
+		$output->writeln(\count($remoteStorages) . " remote storage(s) need(s) to be checked");
 
 		$remoteShareIds = $this->getRemoteShareIds();
 
-		$output->writeln(count($remoteShareIds) . " remote share(s) exist");
+		$output->writeln(\count($remoteShareIds) . " remote share(s) exist");
 
 		foreach ($remoteShareIds as $id => $remoteShareId) {
 			if (isset($remoteStorages[$remoteShareId])) {
@@ -170,7 +170,7 @@ class CleanupRemoteStorages extends Command {
 		$remoteShareIds = [];
 
 		while ($row = $query->fetch()) {
-			$remoteShareIds[$row['id']] = 'shared::' . md5($row['share_token'] . '@' . $row['remote']);
+			$remoteShareIds[$row['id']] = 'shared::' . \md5($row['share_token'] . '@' . $row['remote']);
 		}
 
 		return $remoteShareIds;

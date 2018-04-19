@@ -53,7 +53,7 @@ class MiscCustomPropertiesBackend extends AbstractCustomPropertiesBackend {
 	 */
 	public function delete($path) {
 		$node = $this->getNodeForPath($path);
-		if (is_null($node)) {
+		if (\is_null($node)) {
 			return;
 		}
 
@@ -73,7 +73,7 @@ class MiscCustomPropertiesBackend extends AbstractCustomPropertiesBackend {
 	 */
 	public function move($source, $destination) {
 		$node = $this->getNodeForPath($source);
-		if (is_null($node)) {
+		if (\is_null($node)) {
 			return;
 		}
 
@@ -86,7 +86,7 @@ class MiscCustomPropertiesBackend extends AbstractCustomPropertiesBackend {
 	 * @inheritdoc
 	 */
 	protected function getProperties($path, INode $node, array $requestedProperties) {
-		if (is_null($this->offsetGet($path))) {
+		if (\is_null($this->offsetGet($path))) {
 			// TODO: chunking if more than 1000 properties
 			$sql = self::SELECT_BY_PATH_STMT;
 
@@ -118,9 +118,9 @@ class MiscCustomPropertiesBackend extends AbstractCustomPropertiesBackend {
 		// TODO: use "insert or update" strategy ?
 		$this->connection->beginTransaction();
 		foreach ($changedProperties as $propertyName => $propertyValue) {
-			$propertyExists = array_key_exists($propertyName, $existingProperties);
+			$propertyExists = \array_key_exists($propertyName, $existingProperties);
 			// If it was null, we need to delete the property
-			if (is_null($propertyValue)) {
+			if (\is_null($propertyValue)) {
 				if ($propertyExists) {
 					$this->connection->executeUpdate($deleteStatement,
 						[

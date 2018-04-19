@@ -103,7 +103,7 @@ class NativeFileInfo implements IFileInfo {
 		if (!$this->modeCache) {
 			$attribute = $this->share->getAttribute($this->path, 'system.dos_attr.mode');
 			// parse hex string
-			$this->modeCache = (int)hexdec(substr($attribute, 2));
+			$this->modeCache = (int)\hexdec(\substr($attribute, 2));
 		}
 		return $this->modeCache;
 	}

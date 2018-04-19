@@ -18,9 +18,9 @@ class EncryptionTest extends TestCase {
 	 * @return resource
 	 */
 	protected function getStream($fileName, $mode, $unencryptedSize, $wrapper = '\OC\Files\Stream\Encryption') {
-		clearstatcache();
-		$size = filesize($fileName);
-		$source = fopen($fileName, $mode);
+		\clearstatcache();
+		$size = \filesize($fileName);
+		$source = \fopen($fileName, $mode);
 		$internalPath = $fileName;
 		$fullPath = $fileName;
 		$header = [];
@@ -163,62 +163,62 @@ class EncryptionTest extends TestCase {
 	}
 
 	public function testWriteRead() {
-		$fileName = tempnam("/tmp", "FOO");
+		$fileName = \tempnam("/tmp", "FOO");
 		$stream = $this->getStream($fileName, 'w+', 0);
-		$this->assertEquals(6, fwrite($stream, 'foobar'));
-		fclose($stream);
+		$this->assertEquals(6, \fwrite($stream, 'foobar'));
+		\fclose($stream);
 
 		$stream = $this->getStream($fileName, 'r', 6);
-		$this->assertEquals('foobar', fread($stream, 100));
-		fclose($stream);
+		$this->assertEquals('foobar', \fread($stream, 100));
+		\fclose($stream);
 
 		$stream = $this->getStream($fileName, 'r+', 6);
-		$this->assertEquals(3, fwrite($stream, 'bar'));
-		fclose($stream);
+		$this->assertEquals(3, \fwrite($stream, 'bar'));
+		\fclose($stream);
 
 		$stream = $this->getStream($fileName, 'r', 6);
-		$this->assertEquals('barbar', fread($stream, 100));
-		fclose($stream);
+		$this->assertEquals('barbar', \fread($stream, 100));
+		\fclose($stream);
 
-		unlink($fileName);
+		\unlink($fileName);
 	}
 
 	public function testRewind() {
-		$fileName = tempnam("/tmp", "FOO");
+		$fileName = \tempnam("/tmp", "FOO");
 		$stream = $this->getStream($fileName, 'w+', 0);
-		$this->assertEquals(6, fwrite($stream, 'foobar'));
-		$this->assertTrue(rewind($stream));
-		$this->assertEquals('foobar', fread($stream, 100));
-		$this->assertTrue(rewind($stream));
-		$this->assertEquals(3, fwrite($stream, 'bar'));
-		fclose($stream);
+		$this->assertEquals(6, \fwrite($stream, 'foobar'));
+		$this->assertTrue(\rewind($stream));
+		$this->assertEquals('foobar', \fread($stream, 100));
+		$this->assertTrue(\rewind($stream));
+		$this->assertEquals(3, \fwrite($stream, 'bar'));
+		\fclose($stream);
 
 		$stream = $this->getStream($fileName, 'r', 6);
-		$this->assertEquals('barbar', fread($stream, 100));
-		fclose($stream);
+		$this->assertEquals('barbar', \fread($stream, 100));
+		\fclose($stream);
 
-		unlink($fileName);
+		\unlink($fileName);
 }
 
 	public function testSeek() {
-		$fileName = tempnam("/tmp", "FOO");
+		$fileName = \tempnam("/tmp", "FOO");
 		$stream = $this->getStream($fileName, 'w+', 0);
-		$this->assertEquals(6, fwrite($stream, 'foobar'));
-		$this->assertEquals(0, fseek($stream, 3));
-		$this->assertEquals(6, fwrite($stream, 'foobar'));
-		fclose($stream);
+		$this->assertEquals(6, \fwrite($stream, 'foobar'));
+		$this->assertEquals(0, \fseek($stream, 3));
+		$this->assertEquals(6, \fwrite($stream, 'foobar'));
+		\fclose($stream);
 
 		$stream = $this->getStream($fileName, 'r', 9);
-		$this->assertEquals('foofoobar', fread($stream, 100));
-		$this->assertEquals(-1, fseek($stream, 10));
-		$this->assertEquals(0, fseek($stream, 9));
-		$this->assertEquals(-1, fseek($stream, -10, SEEK_CUR));
-		$this->assertEquals(0, fseek($stream, -9, SEEK_CUR));
-		$this->assertEquals(-1, fseek($stream, -10, SEEK_END));
-		$this->assertEquals(0, fseek($stream, -9, SEEK_END));
-		fclose($stream);
+		$this->assertEquals('foofoobar', \fread($stream, 100));
+		$this->assertEquals(-1, \fseek($stream, 10));
+		$this->assertEquals(0, \fseek($stream, 9));
+		$this->assertEquals(-1, \fseek($stream, -10, SEEK_CUR));
+		$this->assertEquals(0, \fseek($stream, -9, SEEK_CUR));
+		$this->assertEquals(-1, \fseek($stream, -10, SEEK_END));
+		$this->assertEquals(0, \fseek($stream, -9, SEEK_END));
+		\fclose($stream);
 
-		unlink($fileName);
+		\unlink($fileName);
 	}
 
 	function dataFilesProvider() {
@@ -234,35 +234,35 @@ class EncryptionTest extends TestCase {
 	 */
 	public function testWriteReadBigFile($testFile) {
 
-		$expectedData = file_get_contents(\OC::$SERVERROOT . '/tests/data/' . $testFile);
+		$expectedData = \file_get_contents(\OC::$SERVERROOT . '/tests/data/' . $testFile);
 		// write it
-		$fileName = tempnam("/tmp", "FOO");
+		$fileName = \tempnam("/tmp", "FOO");
 		$stream = $this->getStream($fileName, 'w+', 0);
 		// while writing the file from the beginning to the end we should never try
 		// to read parts of the file. This should only happen for write operations
 		// in the middle of a file
 		$this->encryptionModule->expects($this->never())->method('decrypt');
-		fwrite($stream, $expectedData);
-		fclose($stream);
+		\fwrite($stream, $expectedData);
+		\fclose($stream);
 
 		// read it all
-		$stream = $this->getStream($fileName, 'r', strlen($expectedData));
-		$data = stream_get_contents($stream);
-		fclose($stream);
+		$stream = $this->getStream($fileName, 'r', \strlen($expectedData));
+		$data = \stream_get_contents($stream);
+		\fclose($stream);
 
 		$this->assertEquals($expectedData, $data);
 
 		// another read test with a loop like we do in several places:
-		$stream = $this->getStream($fileName, 'r', strlen($expectedData));
+		$stream = $this->getStream($fileName, 'r', \strlen($expectedData));
 		$data = '';
-		while (!feof($stream)) {
-			$data .= fread($stream, 8192);
+		while (!\feof($stream)) {
+			$data .= \fread($stream, 8192);
 		}
-		fclose($stream);
+		\fclose($stream);
 
 		$this->assertEquals($expectedData, $data);
 
-		unlink($fileName);
+		\unlink($fileName);
 	}
 
 	/**
@@ -276,35 +276,35 @@ class EncryptionTest extends TestCase {
 			->setMethods(['parentSeekStream'])->getMock();
 		$wrapper->expects($this->any())->method('parentSeekStream')->willReturn(false);
 
-		$expectedData = file_get_contents(\OC::$SERVERROOT . '/tests/data/' . $testFile);
+		$expectedData = \file_get_contents(\OC::$SERVERROOT . '/tests/data/' . $testFile);
 		// write it
-		$fileName = tempnam("/tmp", "FOO");
+		$fileName = \tempnam("/tmp", "FOO");
 		$stream = $this->getStream($fileName, 'w+', 0, '\Test\Files\Stream\DummyEncryptionWrapper');
 		// while writing the file from the beginning to the end we should never try
 		// to read parts of the file. This should only happen for write operations
 		// in the middle of a file
 		$this->encryptionModule->expects($this->never())->method('decrypt');
-		fwrite($stream, $expectedData);
-		fclose($stream);
+		\fwrite($stream, $expectedData);
+		\fclose($stream);
 
 		// read it all
-		$stream = $this->getStream($fileName, 'r', strlen($expectedData), '\Test\Files\Stream\DummyEncryptionWrapper');
-		$data = stream_get_contents($stream);
-		fclose($stream);
+		$stream = $this->getStream($fileName, 'r', \strlen($expectedData), '\Test\Files\Stream\DummyEncryptionWrapper');
+		$data = \stream_get_contents($stream);
+		\fclose($stream);
 
 		$this->assertEquals($expectedData, $data);
 
 		// another read test with a loop like we do in several places:
-		$stream = $this->getStream($fileName, 'r', strlen($expectedData));
+		$stream = $this->getStream($fileName, 'r', \strlen($expectedData));
 		$data = '';
-		while (!feof($stream)) {
-			$data .= fread($stream, 8192);
+		while (!\feof($stream)) {
+			$data .= \fread($stream, 8192);
 		}
-		fclose($stream);
+		\fclose($stream);
 
 		$this->assertEquals($expectedData, $data);
 
-		unlink($fileName);
+		\unlink($fileName);
 
 	}
 
@@ -325,14 +325,14 @@ class EncryptionTest extends TestCase {
 		$encryptionModule->expects($this->any())->method('encrypt')->willReturnCallback(function($data) {
 			// simulate different block size by adding some padding to the data
 			if (isset($data[6125])) {
-				return str_pad($data, 8192, 'X');
+				return \str_pad($data, 8192, 'X');
 			}
 			// last block
 			return $data;
 		});
 		$encryptionModule->expects($this->any())->method('decrypt')->willReturnCallback(function($data) {
 			if (isset($data[8191])) {
-				return substr($data, 0, 6126);
+				return \substr($data, 0, 6126);
 			}
 			// last block
 			return $data;

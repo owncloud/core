@@ -40,7 +40,7 @@ class NaturalSort {
 		// or inject an instance of \OC\NaturalSort_DefaultCollator to force using Owncloud's default collator
 		if (isset($injectedCollator)) {
 			$this->collator = $injectedCollator;
-			\OCP\Util::writeLog('core', 'forced use of '.get_class($injectedCollator), \OCP\Util::DEBUG);
+			\OCP\Util::writeLog('core', 'forced use of '.\get_class($injectedCollator), \OCP\Util::DEBUG);
 		}
 	}
 
@@ -85,7 +85,7 @@ class NaturalSort {
 		if (!isset($this->collator)) {
 			// looks like the default is en_US_POSIX which yields wrong sorting with
 			// German umlauts, so using en_US instead
-			if (class_exists('Collator')) {
+			if (\class_exists('Collator')) {
 				$this->collator = new \Collator('en_US');
 			}
 			else {
@@ -123,7 +123,7 @@ class NaturalSort {
 				return self::getCollator()->compare($aChunk, $bChunk);
 			}
 		}
-		return count($aa) - count($bb);
+		return \count($aa) - \count($bb);
 	}
 
 	/**

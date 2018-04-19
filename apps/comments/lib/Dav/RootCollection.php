@@ -89,11 +89,11 @@ class RootCollection implements ICollection {
 		if($this->entityTypeCollections !== null) {
 			return;
 		}
-		if(is_null($this->userSession)) {
+		if(\is_null($this->userSession)) {
 			throw new NotAuthenticated();
 		}
 		$user = $this->userSession->getUser();
-		if(is_null($user)) {
+		if(\is_null($user)) {
 			throw new NotAuthenticated();
 		}
 

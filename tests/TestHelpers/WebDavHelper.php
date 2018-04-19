@@ -63,7 +63,7 @@ class WebDavHelper {
 		$response = self::makeDavRequest(
 			$baseUrl, $user, $password, "PROPFIND", $path, null, $body
 		);
-		preg_match('/\<oc:fileid\>(\d+)\<\/oc:fileid\>/', $response, $matches);
+		\preg_match('/\<oc:fileid\>(\d+)\<\/oc:fileid\>/', $response, $matches);
 		if (!isset($matches[1])) {
 			throw new Exception("could not find fileId of $path");
 		}
@@ -107,27 +107,27 @@ class WebDavHelper {
 		$davPath = self::getDavPath($user, $davPathVersionToUse, $type);
 		//replace # and ? in the path, Guzzle will not encode them
 		$urlSpecialChar = [['#', '?'],['%23', '%3F']];
-		$path = str_replace($urlSpecialChar[0], $urlSpecialChar[1], $path);
+		$path = \str_replace($urlSpecialChar[0], $urlSpecialChar[1], $path);
 		$fullUrl = self::sanitizeUrl($baseUrl . $davPath . $path);
 		$client = new GClient();
 		
 		$options = [];
-		if (!is_null($requestBody)) {
+		if (!\is_null($requestBody)) {
 			$options['body'] = $requestBody;
 		}
 		$options['auth'] = [$user, $password];
 		
-		if (!is_null($sourceIpAddress)) {
+		if (!\is_null($sourceIpAddress)) {
 			$options['config']
 				= [ 'curl' => [ CURLOPT_INTERFACE => $sourceIpAddress ]];
 		}
 
 		$request = $client->createRequest($method, $fullUrl, $options);
-		if (!is_null($headers)) {
+		if (!\is_null($headers)) {
 			foreach ($headers as $key => $value) {
 				//? and # need to be encoded in the Destination URL
 				if ($key === "Destination") {
-					$value = str_replace(
+					$value = \str_replace(
 						$urlSpecialChar[0], $urlSpecialChar[1], $value
 					);
 				}
@@ -138,7 +138,7 @@ class WebDavHelper {
 				}
 			}
 		}
-		if (!is_null($body)) {
+		if (!\is_null($body)) {
 			$request->setBody($body);
 		}
 		
@@ -205,9 +205,9 @@ class WebDavHelper {
 		if ($trailingSlash === true) {
 			$url = $url . "/";
 		} else {
-			$url = rtrim($url, "/");
+			$url = \rtrim($url, "/");
 		}
-		$url = preg_replace("/([^:]\/)\/+/", '$1', $url);
+		$url = \preg_replace("/([^:]\/)\/+/", '$1', $url);
 		return $url;
 	}
 }

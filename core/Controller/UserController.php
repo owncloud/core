@@ -62,7 +62,7 @@ class UserController extends Controller {
 
 		foreach ($users as $user) {
 			$userObject = $this->userManager->get($user);
-			if (is_object($userObject)) {
+			if (\is_object($userObject)) {
 				$result[$user] = $userObject->getDisplayName();
 			} else {
 				$result[$user] = $user;

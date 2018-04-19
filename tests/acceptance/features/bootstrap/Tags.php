@@ -59,7 +59,7 @@ trait Tags {
 			);
 			$lastTagId = $createdTag['lastTagId'];
 			$this->response = $createdTag['HTTPResponse'];
-			array_push($this->createdTags, $lastTagId);
+			\array_push($this->createdTags, $lastTagId);
 		} catch (BadResponseException $e) {
 			$this->response = $e->getResponse();
 		}
@@ -176,7 +176,7 @@ trait Tags {
 	public function theFollowingTagsShouldExistFor($user, TableNode $table) {
 		foreach ($table->getRowsHash() as $rowDisplayName => $rowType) {
 			$tagData = $this->requestTagByDisplayName($user, $rowDisplayName);
-			if (is_null($tagData)) {
+			if (\is_null($tagData)) {
 				PHPUnit_Framework_Assert::fail(
 					"tag $rowDisplayName is not in propfind answer"
 				);
@@ -264,9 +264,9 @@ trait Tags {
 	 * @throws \Exception
 	 */
 	public function tagsShouldExistFor($count, $user) {
-		if ((int)$count !== count($this->requestTagsForUser($user))) {
+		if ((int)$count !== \count($this->requestTagsForUser($user))) {
 			throw new \Exception(
-				"Expected $count tags, got " . count($this->requestTagsForUser($user))
+				"Expected $count tags, got " . \count($this->requestTagsForUser($user))
 			);
 		}
 	}
@@ -398,7 +398,7 @@ trait Tags {
 	 * @return \Sabre\HTTP\ResponseInterface
 	 */
 	private function requestTagsForFile($user, $fileName, $sharingUser = null) {
-		if (!is_null($sharingUser)) {
+		if (!\is_null($sharingUser)) {
 			$fileID = $this->getFileIdForPath($sharingUser, $fileName);
 		} else {
 			$fileID = $this->getFileIdForPath($user, $fileName);
@@ -455,10 +455,10 @@ trait Tags {
 	) {
 		$tagList = $this->requestTagsForFile($sharingUser, $fileName);
 		//Check if we are looking for no tags
-		if ((!is_array($tagList)) && ($table->getRowAsString(0) === '|  |')) {
+		if ((!\is_array($tagList)) && ($table->getRowAsString(0) === '|  |')) {
 			return true;
 		}
-		array_shift($tagList);
+		\array_shift($tagList);
 		$found = false;
 		foreach ($table->getRowsHash() as $rowDisplayName => $rowType) {
 			foreach ($tagList as $path => $tagData) {

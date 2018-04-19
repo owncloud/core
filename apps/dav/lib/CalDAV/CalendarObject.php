@@ -63,7 +63,7 @@ class CalendarObject extends \Sabre\CalDAV\CalendarObject {
 		if(isset($vObject->VTODO)) {
 			$vElement = $vObject->VTODO;
 		}
-		if(!is_null($vElement)) {
+		if(!\is_null($vElement)) {
 			foreach ($vElement->children() as &$property) {
 				/** @var Property $property */
 				switch($property->name) {

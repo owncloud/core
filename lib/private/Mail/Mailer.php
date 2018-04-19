@@ -88,7 +88,7 @@ class Mailer implements IMailer {
 	public function send(Message $message) {
 		$debugMode = $this->config->getSystemValue('mail_smtpdebug', false);
 
-		if (!is_array($message->getFrom()) || count($message->getFrom()) === 0) {
+		if (!\is_array($message->getFrom()) || \count($message->getFrom()) === 0) {
 			$message->setFrom([\OCP\Util::getDefaultEmailAddress($this->defaults->getName())]);
 		}
 
@@ -99,7 +99,7 @@ class Mailer implements IMailer {
 		$mailer->send($message->getSwiftMessage(), $failedRecipients);
 
 		// Debugging logging
-		$logMessage = sprintf('Sent mail to "%s" with subject "%s"', print_r($message->getTo(), true), $message->getSubject());
+		$logMessage = \sprintf('Sent mail to "%s" with subject "%s"', \print_r($message->getTo(), true), $message->getSubject());
 		$this->logger->debug($logMessage, ['app' => 'core']);
 		if($debugMode && isset($mailLogger)) {
 			$this->logger->debug($mailLogger->dump(), ['app' => 'core']);
@@ -127,12 +127,12 @@ class Mailer implements IMailer {
 	 * @return string Converted mail address if `idn_to_ascii` exists
 	 */
 	protected function convertEmail($email) {
-		if (!function_exists('idn_to_ascii') || strpos($email, '@') === false) {
+		if (!\function_exists('idn_to_ascii') || \strpos($email, '@') === false) {
 			return $email;
 		}
 
-		list($name, $domain) = explode('@', $email, 2);
-		$domain = idn_to_ascii($domain, 0, INTL_IDNA_VARIANT_UTS46);
+		list($name, $domain) = \explode('@', $email, 2);
+		$domain = \idn_to_ascii($domain, 0, INTL_IDNA_VARIANT_UTS46);
 		return $name.'@'.$domain;
 	}
 
@@ -142,7 +142,7 @@ class Mailer implements IMailer {
 	 * @return \Swift_SmtpTransport|\Swift_SendmailTransport|\Swift_MailTransport
 	 */
 	protected function getInstance() {
-		if (!is_null($this->instance)) {
+		if (!\is_null($this->instance)) {
 			return $this->instance;
 		}
 

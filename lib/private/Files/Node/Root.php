@@ -375,16 +375,16 @@ class Root extends Folder implements IRootFolder {
 	}
 
 	private function resolveVirtualNode($fullPath) {
-		$pieces = explode('/', $fullPath);
+		$pieces = \explode('/', $fullPath);
 		if ($pieces[1] !== 'meta') {
 			return null;
 		}
-		array_shift($pieces);
-		array_shift($pieces);
+		\array_shift($pieces);
+		\array_shift($pieces);
 		$node = new MetaRootNode($this);
 		if (empty($pieces)) {
 			return $node;
 		}
-		return $node->get(implode('/', $pieces));
+		return $node->get(\implode('/', $pieces));
 	}
 }

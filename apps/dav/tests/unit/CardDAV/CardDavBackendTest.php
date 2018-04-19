@@ -507,7 +507,7 @@ class CardDavBackendTest extends TestCase {
 									'addressbookid' => $query->createNamedParameter(0),
 									'carddata' => $query->createNamedParameter($vCards[$i]->serialize(), IQueryBuilder::PARAM_LOB),
 									'uri' => $query->createNamedParameter('uri' . $i),
-									'lastmodified' => $query->createNamedParameter(time()),
+									'lastmodified' => $query->createNamedParameter(\time()),
 									'etag' => $query->createNamedParameter('etag' . $i),
 									'size' => $query->createNamedParameter(120),
 							]
@@ -553,18 +553,18 @@ class CardDavBackendTest extends TestCase {
 		$result = $this->backend->search(0, $pattern, $properties, $limit, $offset);
 
 		// check result
-		$this->assertCount(count($expected), $result);
+		$this->assertCount(\count($expected), $result);
 		$found = [];
 		foreach ($result as $r) {
 			foreach ($expected as $exp) {
-				if ($r['uri'] === $exp[0] && strpos($r['carddata'], $exp[1]) > 0) {
+				if ($r['uri'] === $exp[0] && \strpos($r['carddata'], $exp[1]) > 0) {
 					$found[$exp[1]] = true;
 					break;
 				}
 			}
 		}
 
-		$this->assertCount(count($expected), $found);
+		$this->assertCount(\count($expected), $found);
 	}
 
 	public function dataTestSearch() {
@@ -660,9 +660,9 @@ class CardDavBackendTest extends TestCase {
 
 	public function testHugeMultiGet() {
 		$bookId = 1;
-		$urls = array_map(function($number){
+		$urls = \array_map(function($number){
 			return "url-$number";
-		}, range(0, 2000));
+		}, \range(0, 2000));
 		$multipleCards = $this->backend->getMultipleCards($bookId, $urls);
 		$this->assertEquals([], $multipleCards);
 	}

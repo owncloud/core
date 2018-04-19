@@ -162,8 +162,8 @@ class LostController extends Controller {
 	private function checkPasswordResetToken($token, $userId) {
 		$user = $this->userManager->get($userId);
 
-		$splittedToken = explode(':', $this->config->getUserValue($userId, 'owncloud', 'lostpassword', null));
-		if(count($splittedToken) !== 2) {
+		$splittedToken = \explode(':', $this->config->getUserValue($userId, 'owncloud', 'lostpassword', null));
+		if(\count($splittedToken) !== 2) {
 			$this->config->deleteUserValue($userId, 'owncloud', 'lostpassword');
 			throw new \Exception($this->l10n->t('Could not reset password because the token is invalid'));
 		}
@@ -174,7 +174,7 @@ class LostController extends Controller {
 			throw new \Exception($this->l10n->t('Could not reset password because the token expired'));
 		}
 
-		if (!hash_equals($splittedToken[1], $token)) {
+		if (!\hash_equals($splittedToken[1], $token)) {
 			$this->config->deleteUserValue($userId, 'owncloud', 'lostpassword');
 			throw new \Exception($this->l10n->t('Could not reset password because the token does not match'));
 		}
@@ -186,7 +186,7 @@ class LostController extends Controller {
 	 * @return array
 	 */
 	private function error($message, array $additional= []) {
-		return array_merge(['status' => 'error', 'msg' => $message], $additional);
+		return \array_merge(['status' => 'error', 'msg' => $message], $additional);
 	}
 
 	/**
@@ -296,7 +296,7 @@ class LostController extends Controller {
 		} else {
 			$users = $this->userManager->getByEmail($user);
 
-			switch (count($users)) {
+			switch (\count($users)) {
 				case 0:
 					$this->logger->error('Could not send reset email because User does not exist. User: {user}', ['app' => 'core', 'user' => $user]);
 					return false;
@@ -313,8 +313,8 @@ class LostController extends Controller {
 
 		$token = $this->config->getUserValue($user, 'owncloud', 'lostpassword');
 		if ($token !== '') {
-			$splittedToken = explode(':', $token);
-			if ((count($splittedToken)) === 2 && $splittedToken[0] > ($this->timeFactory->getTime() - 60 * 5)) {
+			$splittedToken = \explode(':', $token);
+			if ((\count($splittedToken)) === 2 && $splittedToken[0] > ($this->timeFactory->getTime() - 60 * 5)) {
 				$this->logger->alert('The email is not sent because a password reset email was sent recently.');
 				return false;
 			}
@@ -354,7 +354,7 @@ class LostController extends Controller {
 
 	private function logout() {
 		$loginToken = $this->request->getCookie('oc_token');
-		if (!is_null($loginToken)) {
+		if (!\is_null($loginToken)) {
 			$this->config->deleteUserValue($this->userSession->getUser()->getUID(), 'login_token', $loginToken);
 		}
 		$this->userSession->logout();

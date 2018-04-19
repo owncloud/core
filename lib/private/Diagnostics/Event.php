@@ -96,7 +96,7 @@ class Event implements IEvent {
 	 */
 	public function getDuration() {
 		if (!$this->end) {
-			$this->end = microtime(true);
+			$this->end = \microtime(true);
 		}
 		return $this->end - $this->start;
 	}

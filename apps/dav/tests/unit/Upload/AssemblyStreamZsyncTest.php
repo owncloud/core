@@ -28,7 +28,7 @@ class AssemblyStreamZsyncTest extends \Test\TestCase {
 	 */
 	public function testGetContents($expected, $nodes, $backingFile, $length) {
 		$stream = \OCA\DAV\Upload\AssemblyStreamZsync::wrap($nodes, $backingFile, $length);
-		$content = stream_get_contents($stream);
+		$content = \stream_get_contents($stream);
 
 		$this->assertEquals($expected, $content);
 	}
@@ -40,8 +40,8 @@ class AssemblyStreamZsyncTest extends \Test\TestCase {
 		$stream = \OCA\DAV\Upload\AssemblyStreamZsync::wrap($nodes, $backingFile, $length);
 
 		$content = '';
-		while (!feof($stream)) {
-			$content .= fread($stream, 3);
+		while (!\feof($stream)) {
+			$content .= \fread($stream, 3);
 		}
 
 		$this->assertEquals($expected, $content);
@@ -58,12 +58,12 @@ class AssemblyStreamZsyncTest extends \Test\TestCase {
 		$tonofdata = "";
 		$start = 0;
 		for ($i = 0; $i < 101; $i++) {
-			$thisdata =  rand(0,100); // variable length and content
+			$thisdata =  \rand(0,100); // variable length and content
 			$tonofdata .= $thisdata;
-			array_push($tonofnodes, $this->buildNode($start,$thisdata));
-			$start += strlen($thisdata);
+			\array_push($tonofnodes, $this->buildNode($start,$thisdata));
+			$start += \strlen($thisdata);
 		}
-		array_push($tonofnodes, $this->buildNode('.zsync','zsync metadata'));
+		\array_push($tonofnodes, $this->buildNode('.zsync','zsync metadata'));
 
 		$file4k = $this->buildNode('file4k', $data4k);
 		$file8k = $this->buildNode('file8k', $data8k);
@@ -83,54 +83,54 @@ class AssemblyStreamZsyncTest extends \Test\TestCase {
 				$this->buildNode('1', '1234567890')
 			], $file4k, 10],
 			'two nodes multiple splices' => [
-				substr($data8k, 0, 1024).
+				\substr($data8k, 0, 1024).
 				$data4k.
-				substr($data8k, 5120, 214).
-				substr($data4k, -1521).
-				substr($data8k, 6855),
+				\substr($data8k, 5120, 214).
+				\substr($data4k, -1521).
+				\substr($data8k, 6855),
 			[
 				$this->buildNode('1024', $data4k),
-				$this->buildNode('5334', substr($data4k, -1521))
+				$this->buildNode('5334', \substr($data4k, -1521))
 			], $file8k, 8*1024],
 			'two nodes with smaller length' => [
-				substr($data512k, 0, 4).
+				\substr($data512k, 0, 4).
 				$data8k.
-				substr($data512k, 8196, 7164),
+				\substr($data512k, 8196, 7164),
 			[
 				$this->buildNode('16352', $dataLess8k),
 				$this->buildNode('4', $data8k)
 			], $file512k, 15*1024],
 			'two nodes with large gaps' => [
-				substr($data512k, 0, 4).
+				\substr($data512k, 0, 4).
 				$data8k.
-				substr($data512k, (8*1024)+4, (128*1024)-((8*1024)+4)).
+				\substr($data512k, (8*1024)+4, (128*1024)-((8*1024)+4)).
 				$data16k.
-				substr($data512k, (8*1024)+4 + (128*1024)-((8*1024)+4) + (16*1024),
+				\substr($data512k, (8*1024)+4 + (128*1024)-((8*1024)+4) + (16*1024),
 				       (512*1024)-((8*1024)+4 + (128*1024)-((8*1024)+4) + (16*1024))),
 			[
 				$this->buildNode(128*1024, $data16k),
 				$this->buildNode('4', $data8k)
 			], $file512k, 512*1024],
 			'a ton of nodes' => [
-				$tonofdata, $tonofnodes, $this->buildNode('empty', ''), strlen($tonofdata)
+				$tonofdata, $tonofnodes, $this->buildNode('empty', ''), \strlen($tonofdata)
 			],
 			'a backing file that is smaller than expected, creating a hole (30k-31k)' => [
-				substr($data512k, 0, 12*1024).
+				\substr($data512k, 0, 12*1024).
 				$data16k.
-				substr($data512k, (16+12)*1024, 2*1024),
+				\substr($data512k, (16+12)*1024, 2*1024),
 			[
 				$this->buildNode(12*1024, $data16k),
 				$this->buildNode(31*1024, $data16k)
-			], $this->buildNode('file30k', substr($data512k, 0, 30*1024)), 32*1024]
+			], $this->buildNode('file30k', \substr($data512k, 0, 30*1024)), 32*1024]
 		];
 	}
 
 	function makeData($count) {
 		$characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
-		$charactersLength = strlen($characters);
+		$charactersLength = \strlen($characters);
 		$data = '';
 		for ($i = 0; $i < $count; $i++) {
-			$data .= $characters[rand(0, $charactersLength - 1)];
+			$data .= $characters[\rand(0, $charactersLength - 1)];
 		}
 		return $data;
 	}
@@ -150,7 +150,7 @@ class AssemblyStreamZsyncTest extends \Test\TestCase {
 
 		$node->expects($this->any())
 			->method('getSize')
-			->willReturn(strlen($data));
+			->willReturn(\strlen($data));
 
 		return $node;
 	}

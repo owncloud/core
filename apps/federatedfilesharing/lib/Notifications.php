@@ -107,7 +107,7 @@ class Notifications {
 
 			$url = $this->addressHandler->removeProtocolFromUrl($url);
 			$result = $this->tryHttpPostToShareEndpoint($url, '', $fields);
-			$status = json_decode($result['result'], true);
+			$status = \json_decode($result['result'], true);
 
 			if ($result['success'] && ($status['ocs']['meta']['statuscode'] === 100 || $status['ocs']['meta']['statuscode'] === 200)) {
 				\OC_Hook::emit('OCP\Share', 'federated_share_added', ['server' => $remote]);
@@ -141,12 +141,12 @@ class Notifications {
 		];
 
 		$url = $this->addressHandler->removeProtocolFromUrl($remote);
-		$result = $this->tryHttpPostToShareEndpoint(rtrim($url, '/'), '/' . $id . '/reshare', $fields);
-		$status = json_decode($result['result'], true);
+		$result = $this->tryHttpPostToShareEndpoint(\rtrim($url, '/'), '/' . $id . '/reshare', $fields);
+		$status = \json_decode($result['result'], true);
 
 		$httpRequestSuccessful = $result['success'];
 		$ocsCallSuccessful = $status['ocs']['meta']['statuscode'] === 100 || $status['ocs']['meta']['statuscode'] === 200;
-		$validToken = isset($status['ocs']['data']['token']) && is_string($status['ocs']['data']['token']);
+		$validToken = isset($status['ocs']['data']['token']) && \is_string($status['ocs']['data']['token']);
 		$validRemoteId = isset($status['ocs']['data']['remoteId']);
 
 		if ($httpRequestSuccessful && $ocsCallSuccessful && $validToken && $validRemoteId) {
@@ -238,8 +238,8 @@ class Notifications {
 		}
 
 		$url = $this->addressHandler->removeProtocolFromUrl($remote);
-		$result = $this->tryHttpPostToShareEndpoint(rtrim($url, '/'), '/' . $remoteId . '/' . $action, $fields);
-		$status = json_decode($result['result'], true);
+		$result = $this->tryHttpPostToShareEndpoint(\rtrim($url, '/'), '/' . $remoteId . '/' . $action, $fields);
+		$status = \json_decode($result['result'], true);
 
 		if ($result['success'] &&
 			($status['ocs']['meta']['statuscode'] === 100 ||
@@ -255,7 +255,7 @@ class Notifications {
 					'remoteId' => $remoteId,
 					'token' => $token,
 					'action' => $action,
-					'data' => json_encode($data),
+					'data' => \json_encode($data),
 					'try' => $try,
 					'lastRun' => $this->getTimestamp()
 				]
@@ -271,7 +271,7 @@ class Notifications {
 	 * @return int
 	 */
 	protected function getTimestamp() {
-		return time();
+		return \time();
 	}
 
 	/**

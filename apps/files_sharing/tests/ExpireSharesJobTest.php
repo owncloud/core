@@ -145,8 +145,8 @@ class ExpireSharesJobTest extends \Test\TestCase {
 
 		$shares = $this->getShares();
 		$this->assertCount(1, $shares);
-		reset($shares);
-		$share = current($shares);
+		\reset($shares);
+		$share = \current($shares);
 
 		if ($addExpiration) {
 			$expire = new \DateTime();
@@ -201,8 +201,8 @@ class ExpireSharesJobTest extends \Test\TestCase {
 
 		$shares = $this->getShares();
 		$this->assertCount(1, $shares);
-		reset($shares);
-		$share = current($shares);
+		\reset($shares);
+		$share = \current($shares);
 
 		$this->logout();
 

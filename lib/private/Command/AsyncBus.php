@@ -67,7 +67,7 @@ class AsyncBus implements IBus {
 	 * @param string $trait
 	 */
 	public function requireSync($trait) {
-		$this->syncTraits[] = trim($trait, '\\');
+		$this->syncTraits[] = \trim($trait, '\\');
 	}
 
 	/**
@@ -88,7 +88,7 @@ class AsyncBus implements IBus {
 	private function getJobClass($command) {
 		if ($command instanceof \Closure) {
 			return 'OC\Command\ClosureJob';
-		} else if (is_callable($command)) {
+		} else if (\is_callable($command)) {
 			return 'OC\Command\CallableJob';
 		} else if ($command instanceof ICommand) {
 			return 'OC\Command\CommandJob';
@@ -105,8 +105,8 @@ class AsyncBus implements IBus {
 		if ($command instanceof \Closure) {
 			$serializer = new Serializer();
 			return $serializer->serialize($command);
-		} else if (is_callable($command) or $command instanceof ICommand) {
-			return serialize($command);
+		} else if (\is_callable($command) or $command instanceof ICommand) {
+			return \serialize($command);
 		} else {
 			throw new \InvalidArgumentException('Invalid command');
 		}
@@ -119,7 +119,7 @@ class AsyncBus implements IBus {
 	private function canRunAsync($command) {
 		$traits = $this->getTraits($command);
 		foreach ($traits as $trait) {
-			if (array_search($trait, $this->syncTraits) !== false) {
+			if (\array_search($trait, $this->syncTraits) !== false) {
 				return false;
 			}
 		}
@@ -132,7 +132,7 @@ class AsyncBus implements IBus {
 	 */
 	private function getTraits($command) {
 		if ($command instanceof ICommand) {
-			return class_uses($command);
+			return \class_uses($command);
 		} else {
 			return [];
 		}

@@ -82,6 +82,6 @@ class Report extends Command {
 	private function countUserDirectories() {
 		$dataview = new \OC\Files\View('/');
 		$userDirectories = $dataview->getDirectoryContent('/', 'httpd/unix-directory');
-		return count($userDirectories);
+		return \count($userDirectories);
 	}
 }

@@ -43,7 +43,7 @@ try {
 	$pathInfo = $request->getPathInfo();
 
 	if (!$pathInfo && $request->getParam('service', '') === '') {
-		header('HTTP/1.0 404 Not Found');
+		\header('HTTP/1.0 404 Not Found');
 		$dispatcher = \OC::$server->getEventDispatcher();
 		$dispatcher->dispatch(\OCP\Http\HttpEvents::EVENT_404, new OCP\Http\HttpEvents(
 			\OCP\Http\HttpEvents::EVENT_404,
@@ -53,12 +53,12 @@ try {
 	} elseif ($request->getParam('service', '')) {
 		$service = $request->getParam('service', '');
 	} else {
-		$pathInfo = trim($pathInfo, '/');
-		list($service) = explode('/', $pathInfo);
+		$pathInfo = \trim($pathInfo, '/');
+		list($service) = \explode('/', $pathInfo);
 	}
-	$file = OCP\Config::getAppValue('core', 'public_' . strip_tags($service));
-	if (is_null($file)) {
-		header('HTTP/1.0 404 Not Found');
+	$file = OCP\Config::getAppValue('core', 'public_' . \strip_tags($service));
+	if (\is_null($file)) {
+		\header('HTTP/1.0 404 Not Found');
 		$dispatcher = \OC::$server->getEventDispatcher();
 		$dispatcher->dispatch(\OCP\Http\HttpEvents::EVENT_404, new OCP\Http\HttpEvents(
 			\OCP\Http\HttpEvents::EVENT_404,
@@ -67,7 +67,7 @@ try {
 		exit;
 	}
 
-	$parts = explode('/', $file, 2);
+	$parts = \explode('/', $file, 2);
 	$app = $parts[0];
 
 	// Load all required applications

@@ -90,13 +90,13 @@ class SystemTagObjectMapperTest extends TestCase {
 			->method('getTagsByIds')
 			->will($this->returnCallback(function($tagIds) {
 				$result = [];
-				if (in_array(1, $tagIds)) {
+				if (\in_array(1, $tagIds)) {
 					$result[1] = $this->tag1;
 				}
-				if (in_array(2, $tagIds)) {
+				if (\in_array(2, $tagIds)) {
 					$result[2] = $this->tag2;
 				}
-				if (in_array(3, $tagIds)) {
+				if (\in_array(3, $tagIds)) {
 					$result[3] = $this->tag3;
 				}
 				return $result;

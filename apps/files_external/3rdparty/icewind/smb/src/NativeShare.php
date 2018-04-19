@@ -61,11 +61,11 @@ class NativeShare extends AbstractShare {
 
 	private function buildUrl($path) {
 		$this->verifyPath($path);
-		$url = sprintf('smb://%s/%s', $this->server->getHost(), $this->name);
+		$url = \sprintf('smb://%s/%s', $this->server->getHost(), $this->name);
 		if ($path) {
-			$path = trim($path, '/');
+			$path = \trim($path, '/');
 			$url .= '/';
-			$url .= implode('/', array_map('rawurlencode', explode('/', $path)));
+			$url .= \implode('/', \array_map('rawurlencode', \explode('/', $path)));
 		}
 		return $url;
 	}
@@ -100,7 +100,7 @@ class NativeShare extends AbstractShare {
 	 * @return \Icewind\SMB\IFileInfo[]
 	 */
 	public function stat($path) {
-		return new NativeFileInfo($this, $path, basename($path), $this->getStat($path));
+		return new NativeFileInfo($this, $path, \basename($path), $this->getStat($path));
 	}
 
 	public function getStat($path) {
@@ -177,10 +177,10 @@ class NativeShare extends AbstractShare {
 	 */
 	public function put($source, $target) {
 		$this->connect();
-		$sourceHandle = fopen($source, 'rb');
+		$sourceHandle = \fopen($source, 'rb');
 		$targetHandle = $this->state->create($this->buildUrl($target));
 
-		while ($data = fread($sourceHandle, 4096)) {
+		while ($data = \fread($sourceHandle, 4096)) {
 			$this->state->write($targetHandle, $data);
 		}
 		$this->state->close($targetHandle);
@@ -203,10 +203,10 @@ class NativeShare extends AbstractShare {
 		if (!$target) {
 			throw new InvalidPathException('Invalid target path: Filename cannot be empty');
 		}
-		$targetHandle = @fopen($target, 'wb');
+		$targetHandle = @\fopen($target, 'wb');
 		if (!$targetHandle) {
-			$error = error_get_last();
-			if (is_array($error)) {
+			$error = \error_get_last();
+			if (\is_array($error)) {
 				$reason = $error['message'];
 			} else {
 				$reason = 'Unknown error';
@@ -217,12 +217,12 @@ class NativeShare extends AbstractShare {
 		$this->connect();
 		$sourceHandle = $this->state->open($this->buildUrl($source), 'r');
 		if (!$sourceHandle) {
-			fclose($targetHandle);
+			\fclose($targetHandle);
 			throw new InvalidResourceException('Failed opening remote file "' . $source . '" for reading');
 		}
 
 		while ($data = $this->state->read($sourceHandle, 4096)) {
-			fwrite($targetHandle, $data);
+			\fwrite($targetHandle, $data);
 		}
 		$this->state->close($sourceHandle);
 		return true;
@@ -285,8 +285,8 @@ class NativeShare extends AbstractShare {
 	public function setAttribute($path, $attribute, $value) {
 		$this->connect();
 
-		if ($attribute === 'system.dos_attr.mode' and is_int($value)) {
-			$value = '0x' . dechex($value);
+		if ($attribute === 'system.dos_attr.mode' and \is_int($value)) {
+			$value = '0x' . \dechex($value);
 		}
 
 		return $this->state->setxattr($this->buildUrl($path), $attribute, $value);

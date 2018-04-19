@@ -96,7 +96,7 @@ class JSONResponseTest extends \Test\TestCase {
 	 * @requires PHP 5.5
 	 */
 	public function testRenderWithNonUtf8Encoding() {
-		$params = ['test' => hex2bin('e9')];
+		$params = ['test' => \hex2bin('e9')];
 		$this->json->setData($params);
 		$this->json->render();
 	}

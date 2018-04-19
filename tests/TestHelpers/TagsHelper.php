@@ -92,7 +92,7 @@ class TagsHelper {
 			'{http://owncloud.org/ns}can-assign'
 		];
 		if ($withGroups) {
-			array_push($properties, '{http://owncloud.org/ns}groups');
+			\array_push($properties, '{http://owncloud.org/ns}groups');
 		}
 		$appPath = '/systemtags/';
 		$fullUrl = $baseUrl
@@ -162,7 +162,7 @@ class TagsHelper {
 			'userAssignable' => $userAssignable,
 		];
 
-		if (!is_null($groups)) {
+		if (!\is_null($groups)) {
 			$body['groups'] = $groups;
 		}
 
@@ -174,13 +174,13 @@ class TagsHelper {
 			$tagsPath,
 			['Content-Type' => 'application/json',],
 			null,
-			json_encode($body),
+			\json_encode($body),
 			$davPathVersionToUse,
 			"systemtags"
 		);
 		$responseHeaders = $response->getHeaders();
 		$tagUrl = $responseHeaders['Content-Location'][0];
-		$lastTagId = substr($tagUrl, strrpos($tagUrl, '/') + 1);
+		$lastTagId = \substr($tagUrl, \strrpos($tagUrl, '/') + 1);
 		return ['lastTagId' => $lastTagId, 'HTTPResponse' => $response];
 	}
 

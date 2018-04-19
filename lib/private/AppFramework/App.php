@@ -51,11 +51,11 @@ class App {
 		// first try to parse the app's appinfo/info.xml <namespace> tag
 		$appInfo = \OC_App::getAppInfo($appId);
 		if (isset($appInfo['namespace'])) {
-			return $topNamespace . trim($appInfo['namespace']);
+			return $topNamespace . \trim($appInfo['namespace']);
 		}
 
 		// if the tag is not found, fall back to uppercasing the first letter
-		return $topNamespace . ucfirst($appId);
+		return $topNamespace . \ucfirst($appId);
 	}
 
 
@@ -68,9 +68,9 @@ class App {
 	 * @param array $urlParams list of URL parameters (optional)
 	 */
 	public static function main($controllerName, $methodName, DIContainer $container, array $urlParams = null) {
-		if (!is_null($urlParams)) {
+		if (!\is_null($urlParams)) {
 			$container['OCP\\IRequest']->setUrlParameters($urlParams);
-		} else if (isset($container['urlParams']) && !is_null($container['urlParams'])) {
+		} else if (isset($container['urlParams']) && !\is_null($container['urlParams'])) {
 			$container['OCP\\IRequest']->setUrlParameters($container['urlParams']);
 		}
 		$appName = $container['AppName'];
@@ -104,7 +104,7 @@ class App {
 
 		$io = $container['OCP\\AppFramework\\Http\\IOutput'];
 
-		if(!is_null($httpHeaders)) {
+		if(!\is_null($httpHeaders)) {
 			$io->setHeader($httpHeaders);
 		}
 
@@ -130,8 +130,8 @@ class App {
 
 		if ($response instanceof ICallbackResponse) {
 			$response->callback($io);
-		} else if(!is_null($output)) {
-			$io->setHeader('Content-Length: ' . strlen($output));
+		} else if(!\is_null($output)) {
+			$io->setHeader('Content-Length: ' . \strlen($output));
 			$io->setOutput($output);
 		}
 

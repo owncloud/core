@@ -137,7 +137,7 @@ class GetSharedSecret extends Job{
 	protected function run($argument) {
 		$target = $argument['url'];
 		$source = $this->urlGenerator->getAbsoluteURL('/');
-		$source = rtrim($source, '/');
+		$source = \rtrim($source, '/');
 		$token = $argument['token'];
 
 		$result = null;
@@ -182,7 +182,7 @@ class GetSharedSecret extends Job{
 
 		if ($status === Http::STATUS_OK && $result instanceof IResponse) {
 			$body = $result->getBody();
-			$result = json_decode($body, true);
+			$result = \json_decode($body, true);
 			if (isset($result['ocs']['data']['sharedSecret'])) {
 				$this->trustedServers->addSharedSecret(
 						$target,

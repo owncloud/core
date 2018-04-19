@@ -41,7 +41,7 @@ $eventDispatcher->addListener('OCP\Federation\TrustedServerEvent::remove',
 		$cardDavBackend = $app->getContainer()->query(CardDavBackend::class);
 		$addressBookUri = $event->getSubject();
 		$addressBook = $cardDavBackend->getAddressBooksByUri('principals/system/system', $addressBookUri);
-		if (!is_null($addressBook)) {
+		if (!\is_null($addressBook)) {
 			$cardDavBackend->deleteAddressBook($addressBook['id']);
 		}
 	}
@@ -50,7 +50,7 @@ $eventDispatcher->addListener('OCP\Federation\TrustedServerEvent::remove',
 $cm = \OC::$server->getContactsManager();
 $cm->register(function() use ($cm, $app) {
 	$user = \OC::$server->getUserSession()->getUser();
-	if (!is_null($user)) {
+	if (!\is_null($user)) {
 		$app->setupContactsProvider($cm, $user->getUID());
 	}
 });

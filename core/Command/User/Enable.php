@@ -52,7 +52,7 @@ class Enable extends Command {
 
 	protected function execute(InputInterface $input, OutputInterface $output) {
 		$user = $this->userManager->get($input->getArgument('uid'));
-		if (is_null($user)) {
+		if (\is_null($user)) {
 			$output->writeln('<error>User does not exist</error>');
 			return;
 		}

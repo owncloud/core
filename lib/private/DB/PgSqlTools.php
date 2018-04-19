@@ -47,7 +47,7 @@ class PgSqlTools {
 	* @return null
 	*/
 	public function resynchronizeDatabaseSequences(Connection $conn) {
-		$filterExpression = '/^' . preg_quote($this->config->getSystemValue('dbtableprefix', 'oc_')) . '/';
+		$filterExpression = '/^' . \preg_quote($this->config->getSystemValue('dbtableprefix', 'oc_')) . '/';
 		$databaseName = $conn->getDatabase();
 		$conn->getConfiguration()->setFilterSchemaAssetsExpression($filterExpression);
 

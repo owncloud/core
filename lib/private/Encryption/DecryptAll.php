@@ -132,7 +132,7 @@ class DecryptAll {
 		$encryptionModules = $this->encryptionManager->getEncryptionModules();
 		foreach ($encryptionModules as $moduleDesc) {
 			/** @var IEncryptionModule $module */
-			$module = call_user_func($moduleDesc['callback']);
+			$module = \call_user_func($moduleDesc['callback']);
 			$this->output->writeln('');
 			$this->output->writeln('Prepare "' . $module->getDisplayName() . '"');
 			$this->output->writeln('');
@@ -201,7 +201,7 @@ class DecryptAll {
 		$directories = [];
 		$directories[] = '/' . $uid . '/files';
 
-		while ($root = array_pop($directories)) {
+		while ($root = \array_pop($directories)) {
 			$content = $this->rootView->getDirectoryContent($root);
 			foreach ($content as $file) {
 				// only decrypt files owned by the user, exclude incoming local shares, and incoming federated shares
@@ -273,7 +273,7 @@ class DecryptAll {
 	 * @return int
 	 */
 	protected function getTimestamp() {
-		return time();
+		return \time();
 	}
 
 

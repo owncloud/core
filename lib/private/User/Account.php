@@ -75,7 +75,7 @@ class Account extends Entity {
 	 * @param string $uid
 	 */
 	public function setUserId($uid) {
-		parent::setter('lowerUserId', [strtolower($uid)]);
+		parent::setter('lowerUserId', [\strtolower($uid)]);
 		parent::setter('userId', [$uid]);
 	}
 
@@ -105,7 +105,7 @@ class Account extends Entity {
 	 * @param string[] $terms
 	 */
 	public function setSearchTerms(array $terms) {
-		if(array_diff($terms, $this->terms)) {
+		if(\array_diff($terms, $this->terms)) {
 			$this->terms = $terms;
 			$this->_termsChanged = true;
 		}

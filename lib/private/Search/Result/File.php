@@ -76,7 +76,7 @@ class File extends \OCP\Search\Result {
 
 		$path = $this->getRelativePath($data->getPath());
 
-		$info = pathinfo($path);
+		$info = \pathinfo($path);
 		$this->id = $data->getId();
 		$this->name = $info['basename'];
 		$this->link = \OC::$server->getURLGenerator()->linkToRoute(

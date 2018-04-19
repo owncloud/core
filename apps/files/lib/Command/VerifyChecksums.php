@@ -194,7 +194,7 @@ class VerifyChecksums extends Command {
 	 * @throws \OCP\Files\StorageNotAvailableException
 	 */
 	private static function calculateActualChecksums($path, IStorage $storage) {
-		return sprintf(
+		return \sprintf(
 			Checksum::CHECKSUMS_DB_FORMAT,
 			$storage->hash('sha1', $path),
 			$storage->hash('md5', $path),

@@ -136,7 +136,7 @@ class SystemTagPlugin extends \Sabre\DAV\ServerPlugin {
 				$url = $request->getUrl();
 			}
 
-			if ($url[strlen($url) - 1] !== '/') {
+			if ($url[\strlen($url) - 1] !== '/') {
 				$url .= '/';
 			}
 
@@ -160,8 +160,8 @@ class SystemTagPlugin extends \Sabre\DAV\ServerPlugin {
 	 * @throws UnsupportedMediaType if the content type is not supported
 	 */
 	private function createTag($data, $contentType = 'application/json') {
-		if (explode(';', $contentType)[0] === 'application/json') {
-			$data = json_decode($data, true);
+		if (\explode(';', $contentType)[0] === 'application/json') {
+			$data = \json_decode($data, true);
 		} else {
 			throw new UnsupportedMediaType();
 		}
@@ -185,8 +185,8 @@ class SystemTagPlugin extends \Sabre\DAV\ServerPlugin {
 		$groups = [];
 		if (isset($data['groups'])) {
 			$groups = $data['groups'];
-			if (is_string($groups)) {
-				$groups = explode('|', $groups);
+			if (\is_string($groups)) {
+				$groups = \explode('|', $groups);
 			}
 		}
 
@@ -254,7 +254,7 @@ class SystemTagPlugin extends \Sabre\DAV\ServerPlugin {
 			if ($node->getSystemTag()->isUserVisible() && !$node->getSystemTag()->isUserAssignable()) {
 				$groups = $this->tagManager->getTagGroups($node->getSystemTag());
 			}
-			return implode('|', $groups);
+			return \implode('|', $groups);
 		});
 	}
 
@@ -309,7 +309,7 @@ class SystemTagPlugin extends \Sabre\DAV\ServerPlugin {
 				}
 
 				$propValue = $props[self::GROUPS_PROPERTYNAME];
-				$groupIds = explode('|', $propValue);
+				$groupIds = \explode('|', $propValue);
 				$this->tagManager->setTagGroups($tag, $groupIds);
 			}
 

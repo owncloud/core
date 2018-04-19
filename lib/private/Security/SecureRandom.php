@@ -71,7 +71,7 @@ class SecureRandom implements ISecureRandom {
 	 */
 	public function generate($length,
 							 $characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/') {
-		$maxCharIndex = strlen($characters) - 1;
+		$maxCharIndex = \strlen($characters) - 1;
 		$randomString = '';
 
 		while($length > 0) {

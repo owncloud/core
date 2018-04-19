@@ -223,8 +223,8 @@ class PreviewTest extends TestCase {
 		$resource = $image->resource();
 
 		//http://stackoverflow.com/questions/5702953/imagecolorat-and-transparency
-		$colorIndex = imagecolorat($resource, 1, 1);
-		$colorInfo = imagecolorsforindex($resource, $colorIndex);
+		$colorIndex = \imagecolorat($resource, 1, 1);
+		$colorInfo = \imagecolorsforindex($resource, $colorIndex);
 		$this->assertSame(
 			$expectedResult,
 			$colorInfo['alpha'] === 127,
@@ -240,7 +240,7 @@ class PreviewTest extends TestCase {
 		$height = 200;
 
 		// Previews for odt files are not enabled
-		$imgData = file_get_contents(\OC::$SERVERROOT . '/tests/data/testimage.odt');
+		$imgData = \file_get_contents(\OC::$SERVERROOT . '/tests/data/testimage.odt');
 		$imgPath = '/' . self::TEST_PREVIEW_USER1 . '/files/testimage.odt';
 		$this->rootView->file_put_contents($imgPath, $imgData);
 
@@ -269,26 +269,26 @@ class PreviewTest extends TestCase {
 		$keepAspect = false;
 		$scalingUp = false;
 
-		for ($a = 0; $a < sizeof($samples); $a++) {
+		for ($a = 0; $a < \sizeof($samples); $a++) {
 			for ($b = 0; $b < 2; $b++) {
 				for ($c = 0; $c < 2; $c++) {
 					for ($d = 0; $d < 4; $d++) {
 						$coordinates = [
 							[
-								-rand($samples[$a][0], $samples[$a][1]),
-								-rand($samples[$a][0], $samples[$a][1])
+								-\rand($samples[$a][0], $samples[$a][1]),
+								-\rand($samples[$a][0], $samples[$a][1])
 							],
 							[
-								rand($samples[$a][0], $samples[$a][1]),
-								rand($samples[$a][0], $samples[$a][1])
+								\rand($samples[$a][0], $samples[$a][1]),
+								\rand($samples[$a][0], $samples[$a][1])
 							],
 							[
-								-rand($samples[$a][0], $samples[$a][1]),
-								rand($samples[$a][0], $samples[$a][1])
+								-\rand($samples[$a][0], $samples[$a][1]),
+								\rand($samples[$a][0], $samples[$a][1])
 							],
 							[
-								rand($samples[$a][0], $samples[$a][1]),
-								-rand($samples[$a][0], $samples[$a][1])
+								\rand($samples[$a][0], $samples[$a][1]),
+								-\rand($samples[$a][0], $samples[$a][1])
 							]
 						];
 						$row = [$a];
@@ -352,10 +352,10 @@ class PreviewTest extends TestCase {
 		$this->assertTrue($this->rootView->file_exists($maxThumbCacheFile), "$maxThumbCacheFile \n");
 
 		// We check the dimensions of the file we've just stored
-		$maxPreview = imagecreatefromstring($this->rootView->file_get_contents($maxThumbCacheFile));
+		$maxPreview = \imagecreatefromstring($this->rootView->file_get_contents($maxThumbCacheFile));
 
-		$this->assertEquals($this->maxPreviewWidth, imagesx($maxPreview));
-		$this->assertEquals($this->maxPreviewHeight, imagesy($maxPreview));
+		$this->assertEquals($this->maxPreviewWidth, \imagesx($maxPreview));
+		$this->assertEquals($this->maxPreviewHeight, \imagesy($maxPreview));
 
 		// A thumbnail of the asked dimensions should also have been created (within the constraints of the max preview)
 		list($limitedPreviewWidth, $limitedPreviewHeight) =
@@ -556,7 +556,7 @@ class PreviewTest extends TestCase {
 		$this->getCachedSmallThumbnail($fileId, 32, 32);
 
 		// We create a preview in order to be able to delete the cache
-		$preview = $this->createPreview(rand(), rand());
+		$preview = $this->createPreview(\rand(), \rand());
 		$preview->deleteAllPreviews();
 		$this->cachedBigger = [];
 	}
@@ -687,11 +687,11 @@ class PreviewTest extends TestCase {
 		$maxHeight = null;
 
 		foreach ($this->cachedBigger as $cached) {
-			$size = explode('-', basename($cached));
+			$size = \explode('-', \basename($cached));
 			$width = (int)$size[0];
 			$height = (int)$size[1];
 
-			if (strpos($cached, 'max')) {
+			if (\strpos($cached, 'max')) {
 				$maxWidth = $width;
 				$maxHeight = $height;
 				$maxPreview = $cached;
@@ -699,7 +699,7 @@ class PreviewTest extends TestCase {
 			}
 
 			// We pick the larger preview with no aspect ratio
-			if (!strpos($cached, 'aspect') && !strpos($cached, 'max')) {
+			if (!\strpos($cached, 'aspect') && !\strpos($cached, 'max')) {
 				$foundPreview = $cached;
 				$foundWidth = $width;
 				$foundHeight = $height;
@@ -757,7 +757,7 @@ class PreviewTest extends TestCase {
 	 * @param int $sampleHeight
 	 */
 	private function prepareSample($fileName, $sampleWidth, $sampleHeight) {
-		$imgData = file_get_contents(\OC::$SERVERROOT . '/tests/data/' . $fileName);
+		$imgData = \file_get_contents(\OC::$SERVERROOT . '/tests/data/' . $fileName);
 		$imgPath = '/' . self::TEST_PREVIEW_USER1 . '/files/' . $fileName;
 		$this->rootView->file_put_contents($imgPath, $imgData);
 		$fileInfo = $this->rootView->getFileInfo($imgPath);
@@ -811,8 +811,8 @@ class PreviewTest extends TestCase {
 		$this->keepAspect = true;
 		// We set this variable in order to be able to calculate the max preview with the proper aspect ratio
 		$this->maxPreviewRatio = $sampleWidth / $sampleHeight;
-		$maxPreviewWidth = min($sampleWidth, $this->configMaxWidth);
-		$maxPreviewHeight = min($sampleHeight, $this->configMaxHeight);
+		$maxPreviewWidth = \min($sampleWidth, $this->configMaxWidth);
+		$maxPreviewHeight = \min($sampleHeight, $this->configMaxHeight);
 		list($maxPreviewWidth, $maxPreviewHeight) =
 			$this->applyAspectRatio($maxPreviewWidth, $maxPreviewHeight);
 
@@ -829,14 +829,14 @@ class PreviewTest extends TestCase {
 	 * @return array
 	 */
 	private function simulatePreviewDimensions($askedWidth, $askedHeight) {
-		$askedWidth = min($askedWidth, $this->configMaxWidth);
-		$askedHeight = min($askedHeight, $this->configMaxHeight);
+		$askedWidth = \min($askedWidth, $this->configMaxWidth);
+		$askedHeight = \min($askedHeight, $this->configMaxHeight);
 
 		if ($this->keepAspect) {
 			// Defines the box in which the preview has to fit
 			$scaleFactor = $this->scalingUp ? $this->maxScaleFactor : 1;
-			$newPreviewWidth = min($askedWidth, $this->maxPreviewWidth * $scaleFactor);
-			$newPreviewHeight = min($askedHeight, $this->maxPreviewHeight * $scaleFactor);
+			$newPreviewWidth = \min($askedWidth, $this->maxPreviewWidth * $scaleFactor);
+			$newPreviewHeight = \min($askedHeight, $this->maxPreviewHeight * $scaleFactor);
 			list($newPreviewWidth, $newPreviewHeight) =
 				$this->applyAspectRatio($newPreviewWidth, $newPreviewHeight);
 		} else {
@@ -858,9 +858,9 @@ class PreviewTest extends TestCase {
 	private function applyAspectRatio($askedWidth, $askedHeight) {
 		$originalRatio = $this->maxPreviewRatio;
 		if ($askedWidth / $originalRatio < $askedHeight) {
-			$askedHeight = round($askedWidth / $originalRatio);
+			$askedHeight = \round($askedWidth / $originalRatio);
 		} else {
-			$askedWidth = round($askedHeight * $originalRatio);
+			$askedWidth = \round($askedHeight * $originalRatio);
 		}
 
 		return [(int)$askedWidth, (int)$askedHeight];
@@ -876,8 +876,8 @@ class PreviewTest extends TestCase {
 	 */
 	private function fixSize($askedWidth, $askedHeight) {
 		if ($this->scalingUp) {
-			$askedWidth = min($this->configMaxWidth, $askedWidth);
-			$askedHeight = min($this->configMaxHeight, $askedHeight);
+			$askedWidth = \min($this->configMaxWidth, $askedWidth);
+			$askedHeight = \min($this->configMaxHeight, $askedHeight);
 		}
 
 		return [(int)$askedWidth, (int)$askedHeight];
@@ -898,7 +898,7 @@ class PreviewTest extends TestCase {
 		$image = $preview->getPreview();
 
 		$aspectRatio = $image->width() / $image->height();
-		$this->assertEquals(round($originalAspectRation, 2), round($aspectRatio, 2));
+		$this->assertEquals(\round($originalAspectRation, 2), \round($aspectRatio, 2));
 
 		$this->assertLessThanOrEqual(150, $image->width());
 		$this->assertLessThanOrEqual(150, $image->height());
@@ -920,7 +920,7 @@ class PreviewTest extends TestCase {
 		$image = $preview->getPreview();
 
 		$aspectRatio = $image->width() / $image->height();
-		$this->assertEquals(round($originalAspectRation, 2), round($aspectRatio, 2));
+		$this->assertEquals(\round($originalAspectRation, 2), \round($aspectRatio, 2));
 
 		$this->assertGreaterThanOrEqual(150, $image->width());
 		$this->assertGreaterThanOrEqual(150, $image->height());
@@ -939,7 +939,7 @@ class PreviewTest extends TestCase {
 		\OC_Util::setupFS($userId);
 		$preview = new Preview($userId, 'files');
 		$view = new View('/' . $userId . '/files');
-		$view->file_put_contents('test.png', file_get_contents($sourceFile));
+		$view->file_put_contents('test.png', \file_get_contents($sourceFile));
 		$file = \OC::$server->getUserFolder($userId)->get('test.png');
 		$preview->setFile($file);
 

@@ -88,7 +88,7 @@ class CommentPropertiesPlugin extends ServerPlugin {
 		// Prefetch required data if we know that it is parent node
 		if ($node instanceof \OCA\DAV\Connector\Sabre\Directory
 			&& $propFind->getDepth() !== 0
-			&& !is_null($propFind->getStatus(self::PROPERTY_NAME_UNREAD))) {
+			&& !\is_null($propFind->getStatus(self::PROPERTY_NAME_UNREAD))) {
 			// Get ID of parent folder
 			$folderNodeID = $node->getId();
 			$nodeIdsArray = [$folderNodeID];
@@ -103,20 +103,20 @@ class CommentPropertiesPlugin extends ServerPlugin {
 				}
 				// Put node ID into an array
 				$nodeId = $childNode->getId();
-				array_push($nodeIdsArray, $nodeId);
+				\array_push($nodeIdsArray, $nodeId);
 				$this->numberOfCommentsForNodes[$nodeId] = 0;
 			}
 
 			// Get user session
 			$user = $this->userSession->getUser();
-			if(!is_null($user)){
+			if(!\is_null($user)){
 				// Fetch all unread comments with their nodeIDs
 				$numberOfCommentsForNodes = $this->commentsManager->getNumberOfUnreadCommentsForNodes(
 					'files',
 					$nodeIdsArray,
 					$user);
 
-				if (!is_null($numberOfCommentsForNodes)){
+				if (!\is_null($numberOfCommentsForNodes)){
 					// Map them to cached hash table
 					foreach($numberOfCommentsForNodes as $nodeID => $numberOfCommentsForNode) {
 						$this->numberOfCommentsForNodes[$nodeID] = $numberOfCommentsForNode;
@@ -127,7 +127,7 @@ class CommentPropertiesPlugin extends ServerPlugin {
 		}
 
 		$propFind->handle(self::PROPERTY_NAME_COUNT, function() use ($node) {
-			return $this->commentsManager->getNumberOfCommentsForObject('files', strval($node->getId()));
+			return $this->commentsManager->getNumberOfCommentsForObject('files', \strval($node->getId()));
 		});
 
 		$propFind->handle(self::PROPERTY_NAME_HREF, function() use ($node) {
@@ -147,13 +147,13 @@ class CommentPropertiesPlugin extends ServerPlugin {
 	 */
 	public function getCommentsLink(Node $node) {
 		$href =  $this->server->getBaseUri();
-		$entryPoint = strpos($href, '/remote.php/');
+		$entryPoint = \strpos($href, '/remote.php/');
 		if($entryPoint === false) {
 			// in case we end up somewhere else, unexpectedly.
 			return null;
 		}
-		$commentsPart = 'dav/comments/files/' . rawurldecode($node->getId());
-		$href = substr_replace($href, $commentsPart, $entryPoint + strlen('/remote.php/'));
+		$commentsPart = 'dav/comments/files/' . \rawurldecode($node->getId());
+		$href = \substr_replace($href, $commentsPart, $entryPoint + \strlen('/remote.php/'));
 		return $href;
 	}
 
@@ -172,7 +172,7 @@ class CommentPropertiesPlugin extends ServerPlugin {
 		// Check if it is cached
 		if (isset($this->numberOfCommentsForNodes[$node->getId()])) {
 			$numberOfCommentsForNode = $this->numberOfCommentsForNodes[$node->getId()];
-		} else if(!is_null($user)) {
+		} else if(!\is_null($user)) {
 			// Fetch all unread comments for this specific NodeID
 			$numberOfCommentsForNodes = $this->commentsManager->getNumberOfUnreadCommentsForNodes(
 				'files',

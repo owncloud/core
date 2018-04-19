@@ -146,7 +146,7 @@ class FilesPlugin extends ServerPlugin {
 
 		// normally these cannot be changed (RFC4918), but we want them modifiable through PROPPATCH
 		$allowedProperties = ['{DAV:}getetag'];
-		$server->protectedProperties = array_diff($server->protectedProperties, $allowedProperties);
+		$server->protectedProperties = \array_diff($server->protectedProperties, $allowedProperties);
 
 		$this->server = $server;
 		$this->server->on('propFind', [$this, 'handleGetProperties']);
@@ -157,8 +157,8 @@ class FilesPlugin extends ServerPlugin {
 		$this->server->on('afterMethod:GET', [$this, 'handleDownloadToken']);
 		$this->server->on('afterResponse', function($request, ResponseInterface $response) {
 			$body = $response->getBody();
-			if (is_resource($body)) {
-				fclose($body);
+			if (\is_resource($body)) {
+				\fclose($body);
 			}
 		});
 		$this->server->on('beforeMove', [$this, 'checkMove']);
@@ -182,7 +182,7 @@ class FilesPlugin extends ServerPlugin {
 
 		if ($sourceDir !== $destinationDir) {
 			$sourceNodeFileInfo = $sourceNode->getFileInfo();
-			if (is_null($sourceNodeFileInfo)) {
+			if (\is_null($sourceNodeFileInfo)) {
 				throw new NotFound($source . ' does not exist');
 			}
 
@@ -211,9 +211,9 @@ class FilesPlugin extends ServerPlugin {
 		if (isset($queryParams['downloadStartSecret'])) {
 			$token = $queryParams['downloadStartSecret'];
 			if (!isset($token[32])
-				&& preg_match('!^[a-zA-Z0-9]+$!', $token) === 1) {
+				&& \preg_match('!^[a-zA-Z0-9]+$!', $token) === 1) {
 				// FIXME: use $response->setHeader() instead
-				setcookie('ocDownloadStarted', $token, time() + 20, '/');
+				\setcookie('ocDownloadStarted', $token, \time() + 20, '/');
 			}
 		}
 	}
@@ -241,10 +241,10 @@ class FilesPlugin extends ServerPlugin {
 					Request::USER_AGENT_ANDROID_MOBILE_CHROME,
 					Request::USER_AGENT_FREEBOX,
 				])) {
-				$response->setHeader('Content-Disposition', 'attachment; filename="' . rawurlencode($filename) . '"');
+				$response->setHeader('Content-Disposition', 'attachment; filename="' . \rawurlencode($filename) . '"');
 			} else {
-				$response->setHeader('Content-Disposition', 'attachment; filename*=UTF-8\'\'' . rawurlencode($filename)
-													 . '; filename="' . rawurlencode($filename) . '"');
+				$response->setHeader('Content-Disposition', 'attachment; filename*=UTF-8\'\'' . \rawurlencode($filename)
+													 . '; filename="' . \rawurlencode($filename) . '"');
 			}
 		}
 
@@ -262,7 +262,7 @@ class FilesPlugin extends ServerPlugin {
 
 		if ($node instanceof IProvidesAdditionalHeaders) {
 			$headers = $node->getHeaders();
-			if (is_array($headers)) {
+			if (\is_array($headers)) {
 				$response->addHeaders($headers);
 			}
 		}
@@ -297,7 +297,7 @@ class FilesPlugin extends ServerPlugin {
 				$perms = $node->getDavPermissions();
 				if ($this->isPublic) {
 					// remove mount information
-					$perms = str_replace(['S', 'M'], '', $perms);
+					$perms = \str_replace(['S', 'M'], '', $perms);
 				}
 				return $perms;
 			});
@@ -425,7 +425,7 @@ class FilesPlugin extends ServerPlugin {
 		$node = $this->server->tree->getNodeForPath($filePath);
 		if ($node instanceof \OCA\DAV\Connector\Sabre\Node) {
 			$fileId = $node->getFileId();
-			if (!is_null($fileId)) {
+			if (!\is_null($fileId)) {
 				$this->server->httpResponse->setHeader('OC-FileId', $fileId);
 			}
 		}

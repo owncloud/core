@@ -115,7 +115,7 @@ class SystemTagManagerTest extends TestCase {
 
 		$tagList = $this->tagManager->getAllTags();
 
-		$this->assertCount(count($testTags), $tagList);
+		$this->assertCount(\count($testTags), $tagList);
 
 		foreach ($testTagsById as $testTagId => $testTag) {
 			$this->assertArrayHasKey($testTagId, $tagList);
@@ -228,7 +228,7 @@ class SystemTagManagerTest extends TestCase {
 
 		$tagList = $this->tagManager->getAllTags($visibilityFilter, $nameSearch);
 
-		$this->assertCount(count($testTagsById), $tagList);
+		$this->assertCount(\count($testTagsById), $tagList);
 
 		foreach ($testTagsById as $testTagId => $testTag) {
 			$this->assertArrayHasKey($testTagId, $tagList);

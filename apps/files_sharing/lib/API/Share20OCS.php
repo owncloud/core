@@ -171,9 +171,9 @@ class Share20OCS {
 		$result['mimetype'] = $node->getMimeType();
 		$result['storage_id'] = $node->getStorage()->getId();
 		$result['storage'] = $node->getStorage()->getCache()->getNumericStorageId();
-		$result['item_source'] = strval($node->getId());
-		$result['file_source'] = strval($node->getId());
-		$result['file_parent'] = strval($node->getParent()->getId());
+		$result['item_source'] = \strval($node->getId());
+		$result['file_source'] = \strval($node->getId());
+		$result['file_parent'] = \strval($node->getParent()->getId());
 		$result['file_target'] = $share->getTarget();
 
 		if ($share->getShareType() === \OCP\Share::SHARE_TYPE_USER) {
@@ -497,9 +497,9 @@ class Share20OCS {
 		$userShares = $this->shareManager->getSharedWith($this->currentUser->getUID(), \OCP\Share::SHARE_TYPE_USER, $node, -1, 0);
 		$groupShares = $this->shareManager->getSharedWith($this->currentUser->getUID(), \OCP\Share::SHARE_TYPE_GROUP, $node, -1, 0);
 
-		$shares = array_merge($userShares, $groupShares);
+		$shares = \array_merge($userShares, $groupShares);
 
-		$shares = array_filter($shares, function(IShare $share) {
+		$shares = \array_filter($shares, function(IShare $share) {
 			return $share->getShareOwner() !== $this->currentUser->getUID();
  		});
 
@@ -534,11 +534,11 @@ class Share20OCS {
 		/** @var \OCP\Share\IShare[] $shares */
 		$shares = [];
 		foreach ($nodes as $node) {
-			$shares = array_merge($shares, $this->shareManager->getSharesBy($this->currentUser->getUID(), \OCP\Share::SHARE_TYPE_USER, $node, false, -1, 0));
-			$shares = array_merge($shares, $this->shareManager->getSharesBy($this->currentUser->getUID(), \OCP\Share::SHARE_TYPE_GROUP, $node, false, -1, 0));
-			$shares = array_merge($shares, $this->shareManager->getSharesBy($this->currentUser->getUID(), \OCP\Share::SHARE_TYPE_LINK, $node, false, -1, 0));
+			$shares = \array_merge($shares, $this->shareManager->getSharesBy($this->currentUser->getUID(), \OCP\Share::SHARE_TYPE_USER, $node, false, -1, 0));
+			$shares = \array_merge($shares, $this->shareManager->getSharesBy($this->currentUser->getUID(), \OCP\Share::SHARE_TYPE_GROUP, $node, false, -1, 0));
+			$shares = \array_merge($shares, $this->shareManager->getSharesBy($this->currentUser->getUID(), \OCP\Share::SHARE_TYPE_LINK, $node, false, -1, 0));
 			if ($this->shareManager->outgoingServer2ServerSharesAllowed()) {
-				$shares = array_merge($shares, $this->shareManager->getSharesBy($this->currentUser->getUID(), \OCP\Share::SHARE_TYPE_REMOTE, $node, false, -1, 0));
+				$shares = \array_merge($shares, $this->shareManager->getSharesBy($this->currentUser->getUID(), \OCP\Share::SHARE_TYPE_REMOTE, $node, false, -1, 0));
 			}
 		}
 
@@ -615,11 +615,11 @@ class Share20OCS {
 		$userShares = $this->shareManager->getSharesBy($this->currentUser->getUID(), \OCP\Share::SHARE_TYPE_USER, $path, $reshares, -1, 0);
 		$groupShares = $this->shareManager->getSharesBy($this->currentUser->getUID(), \OCP\Share::SHARE_TYPE_GROUP, $path, $reshares, -1, 0);
 		$linkShares = $this->shareManager->getSharesBy($this->currentUser->getUID(), \OCP\Share::SHARE_TYPE_LINK, $path, $reshares, -1, 0);
-		$shares = array_merge($userShares, $groupShares, $linkShares);
+		$shares = \array_merge($userShares, $groupShares, $linkShares);
 
 		if ($this->shareManager->outgoingServer2ServerSharesAllowed()) {
 			$federatedShares = $this->shareManager->getSharesBy($this->currentUser->getUID(), \OCP\Share::SHARE_TYPE_REMOTE, $path, $reshares, -1, 0);
-			$shares = array_merge($shares, $federatedShares);
+			$shares = \array_merge($shares, $federatedShares);
 		}
 
 		$formatted = [];
@@ -791,7 +791,7 @@ class Share20OCS {
 		if ($permissions !== null && $share->getShareOwner() !== $this->currentUser->getUID()) {
 			/* Check if this is an incomming share */
 			$incomingShares = $this->shareManager->getSharedWith($this->currentUser->getUID(), \OCP\Share::SHARE_TYPE_USER, $share->getNode(), -1, 0);
-			$incomingShares = array_merge($incomingShares, $this->shareManager->getSharedWith($this->currentUser->getUID(), \OCP\Share::SHARE_TYPE_GROUP, $share->getNode(), -1, 0));
+			$incomingShares = \array_merge($incomingShares, $this->shareManager->getSharedWith($this->currentUser->getUID(), \OCP\Share::SHARE_TYPE_GROUP, $share->getNode(), -1, 0));
 
 			if (!empty($incomingShares)) {
 				$maxPermissions = 0;
@@ -847,7 +847,7 @@ class Share20OCS {
 
 		if ($share->getShareType() === \OCP\Share::SHARE_TYPE_GROUP) {
 			$sharedWith = $this->groupManager->get($share->getSharedWith());
-			if (!is_null($sharedWith) && $sharedWith->inGroup($this->currentUser)) {
+			if (!\is_null($sharedWith) && $sharedWith->inGroup($this->currentUser)) {
 				return true;
 			}
 		}

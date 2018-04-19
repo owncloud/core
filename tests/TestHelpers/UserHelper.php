@@ -152,7 +152,7 @@ class UserHelper {
 	public static function deleteGroup(
 		$baseUrl, $group, $adminUser, $adminPassword
 	) {
-		$group = rawurlencode($group);
+		$group = \rawurlencode($group);
 		return OcsApiHelper::sendRequest(
 			$baseUrl, $adminUser, $adminPassword,
 			"DELETE", "/cloud/groups/" . $group

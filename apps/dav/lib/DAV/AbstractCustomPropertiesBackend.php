@@ -162,14 +162,14 @@ abstract class AbstractCustomPropertiesBackend implements BackendInterface {
 	 */
 	public function propFind($path, PropFind $propFind) {
 		$node = $this->getNodeForPath($path);
-		if (is_null($node)) {
+		if (\is_null($node)) {
 			return;
 		}
 
 		$requestedProps = $propFind->get404Properties();
 
 		// these might appear
-		$requestedProps = array_diff(
+		$requestedProps = \array_diff(
 			$requestedProps,
 			$this->ignoredProperties
 		);
@@ -198,7 +198,7 @@ abstract class AbstractCustomPropertiesBackend implements BackendInterface {
 	 */
 	public function propPatch($path, PropPatch $propPatch) {
 		$node = $this->getNodeForPath($path);
-		if (is_null($node)) {
+		if (\is_null($node)) {
 			return;
 		}
 

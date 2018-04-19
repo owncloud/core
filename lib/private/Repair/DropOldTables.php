@@ -57,7 +57,7 @@ class DropOldTables implements IRepairStep {
 	 */
 	public function run(IOutput $output) {
 		$tables = $this->oldDatabaseTables();
-		$output->startProgress(count($tables));
+		$output->startProgress(\count($tables));
 		foreach ($this->oldDatabaseTables() as $tableName) {
 			if ($this->connection->tableExists($tableName)){
 				$this->connection->dropTable($tableName);

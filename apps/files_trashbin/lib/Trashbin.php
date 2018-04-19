@@ -214,10 +214,10 @@ class Trashbin {
 	private static function copyFilesToUser($sourcePath, $owner, $targetPath, $user, $timestamp) {
 		self::setUpTrash($owner);
 
-		$targetFilename = basename($targetPath);
-		$targetLocation = dirname($targetPath);
+		$targetFilename = \basename($targetPath);
+		$targetLocation = \dirname($targetPath);
 
-		$sourceFilename = basename($sourcePath);
+		$sourceFilename = \basename($sourcePath);
 
 		$view = new View('/');
 
@@ -241,9 +241,9 @@ class Trashbin {
 	public static function copyBackupForOwner($ownerPath, $owner, $timestamp) {
 		self::setUpTrash($owner);
 
-		$targetFilename = basename($ownerPath);
-		$targetLocation = dirname($ownerPath);
-		$source = $owner . '/files/' . ltrim($ownerPath, '/');
+		$targetFilename = \basename($ownerPath);
+		$targetLocation = \dirname($ownerPath);
+		$source = $owner . '/files/' . \ltrim($ownerPath, '/');
 		$target = $owner . '/files_trashbin/files/' . $targetFilename . '.d' . $timestamp;
 
 		$view = new View('/');
@@ -278,18 +278,18 @@ class Trashbin {
 	public static function move2trash($file_path) {
 		// get the user for which the filesystem is setup
 		$root = Filesystem::getRoot();
-		list(, $user) = explode('/', $root);
+		list(, $user) = \explode('/', $root);
 		list($owner, $ownerPath) = self::getUidAndFilename($file_path);
 
 		// if no owner found (ex: ext storage + share link), will use the current user's trashbin then
-		if (is_null($owner)) {
+		if (\is_null($owner)) {
 			$owner = $user;
 			$ownerPath = $file_path;
 		}
 
 		$ownerView = new View('/' . $owner);
 		// file has been deleted in between
-		if (is_null($ownerPath) || $ownerPath === '' || !$ownerView->file_exists('/files/' . $ownerPath)) {
+		if (\is_null($ownerPath) || $ownerPath === '' || !$ownerView->file_exists('/files/' . $ownerPath)) {
 			return true;
 		}
 
@@ -306,11 +306,11 @@ class Trashbin {
 			self::setUpTrash($owner);
 		}
 
-		$path_parts = pathinfo($ownerPath);
+		$path_parts = \pathinfo($ownerPath);
 
 		$filename = $path_parts['basename'];
 		$location = $path_parts['dirname'];
-		$timestamp = time();
+		$timestamp = \time();
 
 		$trashPath = '/files_trashbin/files/' . $filename . '.d' . $timestamp;
 
@@ -397,7 +397,7 @@ class Trashbin {
 
 			if ($rootView->is_dir($owner . '/files_versions/' . $ownerPath)) {
 				if ($owner !== $user || $forceCopy) {
-					self::copy_recursive($owner . '/files_versions/' . $ownerPath, $owner . '/files_trashbin/versions/' . basename($ownerPath) . '.d' . $timestamp, $rootView);
+					self::copy_recursive($owner . '/files_versions/' . $ownerPath, $owner . '/files_trashbin/versions/' . \basename($ownerPath) . '.d' . $timestamp, $rootView);
 				}
 				if (!$forceCopy) {
 					self::move($rootView, $owner . '/files_versions/' . $ownerPath, $user . '/files_trashbin/versions/' . $filename . '.d' . $timestamp);
@@ -760,7 +760,7 @@ class Trashbin {
 		$availableSpace += $delSize;
 
 		// delete files from trash until we meet the trash bin size limit again
-		self::deleteFiles(array_slice($dirContent, $count), $user, $availableSpace);
+		self::deleteFiles(\array_slice($dirContent, $count), $user, $availableSpace);
 	}
 
 	/**
@@ -801,7 +801,7 @@ class Trashbin {
 			foreach ($files as $file) {
 				if ($availableSpace < 0 && $expiration->isExpired($file['mtime'], true)) {
 					$tmp = self::delete($file['name'], $user, $file['mtime']);
-					$message = sprintf(
+					$message = \sprintf(
 						'remove "%s" (%dB) to meet the limit of trash bin size (%d%% of available quota)',
 						$file['name'],
 						$tmp,
@@ -908,19 +908,19 @@ class Trashbin {
 		if ($timestamp) {
 			// fetch for old versions
 			$matches = $view->searchRaw($filename . '.v%.d' . $timestamp);
-			$offset = -strlen($timestamp) - 2;
+			$offset = -\strlen($timestamp) - 2;
 		} else {
 			$matches = $view->searchRaw($filename . '.v%');
 		}
 
-		if (is_array($matches)) {
+		if (\is_array($matches)) {
 			foreach ($matches as $ma) {
 				if ($timestamp) {
-					$parts = explode('.v', substr($ma['path'], 0, $offset));
-					$versions[] = (end($parts));
+					$parts = \explode('.v', \substr($ma['path'], 0, $offset));
+					$versions[] = (\end($parts));
 				} else {
-					$parts = explode('.v', $ma);
-					$versions[] = (end($parts));
+					$parts = \explode('.v', $ma);
+					$versions[] = (\end($parts));
 				}
 			}
 		}
@@ -936,11 +936,11 @@ class Trashbin {
 	 * @return string with unique extension
 	 */
 	private static function getUniqueFilename($location, $filename, View $view) {
-		$ext = pathinfo($filename, PATHINFO_EXTENSION);
-		$name = pathinfo($filename, PATHINFO_FILENAME);
+		$ext = \pathinfo($filename, PATHINFO_EXTENSION);
+		$name = \pathinfo($filename, PATHINFO_FILENAME);
 		$l = \OC::$server->getL10N('files_trashbin');
 
-		$location = '/' . trim($location, '/');
+		$location = '/' . \trim($location, '/');
 
 		// if extension is not empty we set a dot in front of it
 		if ($ext !== '') {
@@ -969,7 +969,7 @@ class Trashbin {
 	 */
 	private static function calculateSize($view) {
 		$root = \OC::$server->getConfig()->getSystemValue('datadirectory') . $view->getAbsolutePath('');
-		if (!file_exists($root)) {
+		if (!\file_exists($root)) {
 			return 0;
 		}
 		$iterator = new \RecursiveIteratorIterator(new \RecursiveDirectoryIterator($root), \RecursiveIteratorIterator::CHILD_FIRST);
@@ -983,7 +983,7 @@ class Trashbin {
 		$iterator->rewind();
 		while ($iterator->valid()) {
 			$path = $iterator->current();
-			$relpath = substr($path, strlen($root) - 1);
+			$relpath = \substr($path, \strlen($root) - 1);
 			if (!$view->is_dir($relpath)) {
 				$size += $view->filesize($relpath);
 			}
@@ -1052,7 +1052,7 @@ class Trashbin {
 			$files = $baseFolder->getById($fileId);
 			if (!empty($files)) {
 				$params['view'] = 'trashbin';
-				$file = current($files);
+				$file = \current($files);
 				if ($file instanceof Folder) {
 					// set the full path to enter the folder
 					$params['dir'] = $baseFolder->getRelativePath($file->getPath());
@@ -1079,7 +1079,7 @@ class Trashbin {
 
 		$view = new View('/' . $user . '/files_trashbin');
 		if ($view->is_dir('/files') && $dh = $view->opendir('/files')) {
-			while ($file = readdir($dh)) {
+			while ($file = \readdir($dh)) {
 				if (!Filesystem::isIgnoredDir($file)) {
 					return false;
 				}

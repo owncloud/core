@@ -113,8 +113,8 @@ class Upgrade extends Command {
 					if (OutputInterface::VERBOSITY_NORMAL < $output->getVerbosity()) {
 						$output->writeln(' Checking table ' . $message);
 					} else {
-						if (strlen($message) > 60) {
-							$message = substr($message, 0, 57) . '...';
+						if (\strlen($message) > 60) {
+							$message = \substr($message, 0, 57) . '...';
 						}
 						$progress->setMessage($message);
 						if ($event[0] === 1) {

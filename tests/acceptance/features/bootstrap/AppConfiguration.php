@@ -175,10 +175,10 @@ trait AppConfiguration {
 	public function getParameterValueFromXml(
 		$xml, $capabilitiesApp, $capabilitiesPath
 	) {
-		$path_to_element = explode('@@@', $capabilitiesPath);
+		$path_to_element = \explode('@@@', $capabilitiesPath);
 		$answeredValue = $xml->{$capabilitiesApp};
 
-		for ($i = 0; $i < count($path_to_element); $i++) {
+		for ($i = 0; $i < \count($path_to_element); $i++) {
 			$answeredValue = $answeredValue->{$path_to_element[$i]};
 		}
 
@@ -219,7 +219,7 @@ trait AppConfiguration {
 			$this->savedCapabilitiesXml
 		);
 
-		$this->savedCapabilitiesChanges = array_merge(
+		$this->savedCapabilitiesChanges = \array_merge(
 			$this->savedCapabilitiesChanges,
 			$savedCapabilitiesChanges
 		);

@@ -80,7 +80,7 @@ trait Provisioning {
 	public function getCreatedUserDisplayNames() {
 		$result = array();
 		foreach ($this->getCreatedUsers() as $username => $user) {
-			if (is_null($user['displayname'])) {
+			if (\is_null($user['displayname'])) {
 				$result[] = $username;
 			} else {
 				$result[] = $user['displayname'];
@@ -99,9 +99,9 @@ trait Provisioning {
 	public function getUserPassword($username) {
 		if ($username === $this->getAdminUsername()) {
 			$password = $this->getAdminPassword();
-		} else if (array_key_exists($username, $this->createdUsers)) {
+		} else if (\array_key_exists($username, $this->createdUsers)) {
 			$password = $this->createdUsers[$username]['password'];
-		} else if (array_key_exists($username, $this->createdRemoteUsers)) {
+		} else if (\array_key_exists($username, $this->createdRemoteUsers)) {
 			$password = $this->createdRemoteUsers[$username]['password'];
 		} else {
 			throw new Exception(
@@ -121,11 +121,11 @@ trait Provisioning {
 	 * @throws Exception
 	 */
 	public function theUserShouldExist($username) {
-		if (array_key_exists($username, $this->createdUsers)) {
+		if (\array_key_exists($username, $this->createdUsers)) {
 			return $this->createdUsers[$username]['shouldExist'];
 		}
 
-		if (array_key_exists($username, $this->createdRemoteUsers)) {
+		if (\array_key_exists($username, $this->createdRemoteUsers)) {
 			return $this->createdRemoteUsers[$username]['shouldExist'];
 		}
 
@@ -142,11 +142,11 @@ trait Provisioning {
 	 * @throws Exception
 	 */
 	public function theGroupShouldExist($groupname) {
-		if (array_key_exists($groupname, $this->createdGroups)) {
+		if (\array_key_exists($groupname, $this->createdGroups)) {
 			return $this->createdGroups[$groupname]['shouldExist'];
 		}
 
-		if (array_key_exists($groupname, $this->createdRemoteGroups)) {
+		if (\array_key_exists($groupname, $this->createdRemoteGroups)) {
 			return $this->createdRemoteGroups[$groupname]['shouldExist'];
 		}
 
@@ -163,11 +163,11 @@ trait Provisioning {
 	 * @throws Exception
 	 */
 	public function theGroupShouldBeAbleToBeDeleted($groupname) {
-		if (array_key_exists($groupname, $this->createdGroups)) {
+		if (\array_key_exists($groupname, $this->createdGroups)) {
 			return $this->createdGroups[$groupname]['possibleToDelete'];
 		}
 
-		if (array_key_exists($groupname, $this->createdRemoteGroups)) {
+		if (\array_key_exists($groupname, $this->createdRemoteGroups)) {
 			return $this->createdRemoteGroups[$groupname]['possibleToDelete'];
 		}
 
@@ -302,7 +302,7 @@ trait Provisioning {
 		$should = ($shouldOrNot !== "not");
 		$groups = SetupHelper::getGroups();
 		foreach ($table as $row) {
-			if (in_array($row['groupname'], $groups, true) !== $should) {
+			if (\in_array($row['groupname'], $groups, true) !== $should) {
 				throw new Exception(
 					"group '" . $row['groupname'] .
 					"' does" . ($should ? " not" : "") .
@@ -404,7 +404,7 @@ trait Provisioning {
 	 * @return void
 	 */
 	public function rememberThatUserIsNotExpectedToExist($user) {
-		if (array_key_exists($user, $this->createdUsers)) {
+		if (\array_key_exists($user, $this->createdUsers)) {
 			$this->createdUsers[$user]['shouldExist'] = false;
 		}
 	}
@@ -426,14 +426,14 @@ trait Provisioning {
 		$user, $password, $displayName = null, $email = null, $initialize = true,
 		$method = null
 	) {
-		if ($method === null && getenv("TEST_EXTERNAL_USER_BACKENDS") === "true") {
+		if ($method === null && \getenv("TEST_EXTERNAL_USER_BACKENDS") === "true") {
 			//guess yourself
 			$method = "ldap";
 		} elseif ($method === null) {
 			$method = "api";
 		}
-		$user = trim($user);
-		$method = trim(strtolower($method));
+		$user = \trim($user);
+		$method = \trim(\strtolower($method));
 		switch ($method) {
 			case "api":
 				$results = UserHelper::createUser(
@@ -503,7 +503,7 @@ trait Provisioning {
 			$this->deleteTheGroupUsingTheAPI($group);
 		} catch (BadResponseException $e) {
 			$this->response = $e->getResponse();
-			error_log(
+			\error_log(
 				"INFORMATION: There was an unexpected problem trying to delete group '" .
 				$group . "' status code " . $this->response->getStatusCode() .
 				" message `" . $e->getMessage() . "'"
@@ -513,7 +513,7 @@ trait Provisioning {
 		if ($this->theGroupShouldBeAbleToBeDeleted($group)
 			&& $this->groupExists($group)
 		) {
-			error_log(
+			\error_log(
 				"INFORMATION: tried to delete group '" . $group .
 				"' at the end of the scenario but it seems to still exist. " .
 				"There might be problems with later scenarios."
@@ -556,7 +556,7 @@ trait Provisioning {
 
 		$this->response = $client->get($fullUrl, $options);
 		$respondedArray = $this->getArrayOfGroupsResponded($this->response);
-		sort($respondedArray);
+		\sort($respondedArray);
 		PHPUnit_Framework_Assert::assertContains($group, $respondedArray);
 		PHPUnit_Framework_Assert::assertEquals(
 			200, $this->response->getStatusCode()
@@ -579,7 +579,7 @@ trait Provisioning {
 
 		$this->response = $client->get($fullUrl, $options);
 		$respondedArray = $this->getArrayOfGroupsResponded($this->response);
-		sort($respondedArray);
+		\sort($respondedArray);
 		PHPUnit_Framework_Assert::assertNotContains($group, $respondedArray);
 		PHPUnit_Framework_Assert::assertEquals(
 			200, $this->response->getStatusCode()
@@ -603,7 +603,7 @@ trait Provisioning {
 		$this->response = $client->get($fullUrl, $options);
 		$respondedArray = $this->getArrayOfGroupsResponded($this->response);
 
-		if (in_array($group, $respondedArray)) {
+		if (\in_array($group, $respondedArray)) {
 			return true;
 		} else {
 			return false;
@@ -637,13 +637,13 @@ trait Provisioning {
 	 * @throws Exception
 	 */
 	public function userHasBeenAddedToGroup($user, $group, $method = null) {
-		if ($method === null && getenv("TEST_EXTERNAL_USER_BACKENDS") === "true") {
+		if ($method === null && \getenv("TEST_EXTERNAL_USER_BACKENDS") === "true") {
 			//guess yourself
 			$method = "ldap";
 		} elseif ($method === null) {
 			$method = "api";
 		}
-		$method = trim(strtolower($method));
+		$method = \trim(\strtolower($method));
 		switch ($method) {
 			case "api":
 				$result = UserHelper::addUserToGroup(
@@ -712,7 +712,7 @@ trait Provisioning {
 	 * @return void
 	 */
 	public function rememberThatGroupIsNotExpectedToExist($group) {
-		if (array_key_exists($group, $this->createdGroups)) {
+		if (\array_key_exists($group, $this->createdGroups)) {
 			$this->createdGroups[$group]['shouldExist'] = false;
 		}
 	}
@@ -774,14 +774,14 @@ trait Provisioning {
 	 * @throws Exception
 	 */
 	private function createTheGroup($group, $method = null) {
-		if ($method === null && getenv("TEST_EXTERNAL_USER_BACKENDS") === "true") {
+		if ($method === null && \getenv("TEST_EXTERNAL_USER_BACKENDS") === "true") {
 			//guess yourself
 			$method = "ldap";
 		} elseif ($method === null) {
 			$method = "api";
 		}
-		$group = trim($group);
-		$method = trim(strtolower($method));
+		$group = \trim($group);
+		$method = \trim(\strtolower($method));
 		$groupCanBeDeleted = false;
 		switch ($method) {
 			case "api":
@@ -861,7 +861,7 @@ trait Provisioning {
 		// there was a problem deleting the user. Because in this case there
 		// might be an effect on later tests.
 		if ($this->theUserShouldExist($user) && ($this->response->getStatusCode() !== 200)) {
-			error_log(
+			\error_log(
 				"INFORMATION: could not delete user '" . $user . "' "
 				. $this->response->getStatusCode() . " " . $this->response->getBody()
 			);
@@ -902,7 +902,7 @@ trait Provisioning {
 			&& $this->theGroupShouldBeAbleToBeDeleted($group)
 			&& ($this->response->getStatusCode() !== 200)
 		) {
-			error_log(
+			\error_log(
 				"INFORMATION: could not delete group. '" . $group . "'"
 				. $this->response->getStatusCode() . " " . $this->response->getBody()
 			);
@@ -949,7 +949,7 @@ trait Provisioning {
 		);
 		
 		if ($this->response->getStatusCode() !== 200) {
-			error_log(
+			\error_log(
 				"INFORMATION: could not remove user '" . $user
 				. "' from group. '" . $group . "'"
 				. $this->response->getStatusCode() . " " . $this->response->getBody()
@@ -975,7 +975,7 @@ trait Provisioning {
 
 		$this->response = $client->get($fullUrl, $options);
 		$respondedArray = $this->getArrayOfSubadminsResponded($this->response);
-		sort($respondedArray);
+		\sort($respondedArray);
 		PHPUnit_Framework_Assert::assertContains($user, $respondedArray);
 		PHPUnit_Framework_Assert::assertEquals(
 			200, $this->response->getStatusCode()
@@ -1026,7 +1026,7 @@ trait Provisioning {
 
 		$this->response = $client->get($fullUrl, $options);
 		$respondedArray = $this->getArrayOfSubadminsResponded($this->response);
-		sort($respondedArray);
+		\sort($respondedArray);
 		PHPUnit_Framework_Assert::assertNotContains($user, $respondedArray);
 		PHPUnit_Framework_Assert::assertEquals(
 			200, $this->response->getStatusCode()
@@ -1132,7 +1132,7 @@ trait Provisioning {
 	 */
 	public function getArrayOfUsersResponded($resp) {
 		$listCheckedElements = $resp->xml()->data[0]->users[0]->element;
-		$extractedElementsArray = json_decode(json_encode($listCheckedElements), 1);
+		$extractedElementsArray = \json_decode(\json_encode($listCheckedElements), 1);
 		return $extractedElementsArray;
 	}
 
@@ -1145,7 +1145,7 @@ trait Provisioning {
 	 */
 	public function getArrayOfGroupsResponded($resp) {
 		$listCheckedElements = $resp->xml()->data[0]->groups[0]->element;
-		$extractedElementsArray = json_decode(json_encode($listCheckedElements), 1);
+		$extractedElementsArray = \json_decode(\json_encode($listCheckedElements), 1);
 		return $extractedElementsArray;
 	}
 
@@ -1158,7 +1158,7 @@ trait Provisioning {
 	 */
 	public function getArrayOfAppsResponded($resp) {
 		$listCheckedElements = $resp->xml()->data[0]->apps[0]->element;
-		$extractedElementsArray = json_decode(json_encode($listCheckedElements), 1);
+		$extractedElementsArray = \json_decode(\json_encode($listCheckedElements), 1);
 		return $extractedElementsArray;
 	}
 
@@ -1171,7 +1171,7 @@ trait Provisioning {
 	 */
 	public function getArrayOfSubadminsResponded($resp) {
 		$listCheckedElements = $resp->xml()->data[0]->element;
-		$extractedElementsArray = json_decode(json_encode($listCheckedElements), 1);
+		$extractedElementsArray = \json_decode(\json_encode($listCheckedElements), 1);
 		return $extractedElementsArray;
 	}
 

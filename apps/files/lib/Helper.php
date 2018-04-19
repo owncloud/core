@@ -79,7 +79,7 @@ class Helper {
 			$icon = \OC::$server->getMimeTypeDetector()->mimeTypeIcon($file->getMimetype());
 		}
 
-		return substr($icon, 0, -3) . 'svg';
+		return \substr($icon, 0, -3) . 'svg';
 	}
 
 	/**
@@ -217,9 +217,9 @@ class Helper {
 			$filesById[$fileData[$fileIdentifier]] = $fileData;
 		}
 		$tagger = \OC::$server->getTagManager()->load('files');
-		$tags = $tagger->getTagsForObjects(array_keys($filesById));
+		$tags = $tagger->getTagsForObjects(\array_keys($filesById));
 
-		if (!is_array($tags)) {
+		if (!\is_array($tags)) {
 			throw new \UnexpectedValueException('$tags must be an array');
 		}
 
@@ -237,7 +237,7 @@ class Helper {
 			}
 
 			foreach ($fileList as $key => $file) {
-				if (!array_key_exists('tags', $file)) {
+				if (!\array_key_exists('tags', $file)) {
 					$fileList[$key]['tags'] = [];
 				}
 			}
@@ -261,9 +261,9 @@ class Helper {
 		} else if ($sortAttribute === 'size') {
 			$sortFunc = 'compareSize';
 		}
-		usort($files, ['\OCA\Files\Helper', $sortFunc]);
+		\usort($files, ['\OCA\Files\Helper', $sortFunc]);
 		if ($sortDescending) {
-			$files = array_reverse($files);
+			$files = \array_reverse($files);
 		}
 		return $files;
 	}

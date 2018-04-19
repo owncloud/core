@@ -66,7 +66,7 @@ class InvalidPath extends Exception {
 		$errorNode->setAttribute('xmlns:o', self::NS_OWNCLOUD);
 
 		// adding the retry node
-		$error = $errorNode->ownerDocument->createElementNS('o:','o:retry', var_export($this->retry, true));
+		$error = $errorNode->ownerDocument->createElementNS('o:','o:retry', \var_export($this->retry, true));
 		$errorNode->appendChild($error);
 
 		// adding the message node

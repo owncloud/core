@@ -52,7 +52,7 @@ function print_unescaped($string) {
  * if an array is given it will add all scripts
  */
 function script($app, $file = null) {
-	if(is_array($file)) {
+	if(\is_array($file)) {
 		foreach($file as $f) {
 			OC_Util::addScript($app, $f);
 		}
@@ -68,7 +68,7 @@ function script($app, $file = null) {
  * if an array is given it will add all scripts
  */
 function vendor_script($app, $file = null) {
-	if(is_array($file)) {
+	if(\is_array($file)) {
 		foreach($file as $f) {
 			OC_Util::addVendorScript($app, $f);
 		}
@@ -84,7 +84,7 @@ function vendor_script($app, $file = null) {
  * if an array is given it will add all styles
  */
 function style($app, $file = null) {
-	if(is_array($file)) {
+	if(\is_array($file)) {
 		foreach($file as $f) {
 			OC_Util::addStyle($app, $f);
 		}
@@ -100,7 +100,7 @@ function style($app, $file = null) {
  * if an array is given it will add all styles
  */
 function vendor_style($app, $file = null) {
-	if(is_array($file)) {
+	if(\is_array($file)) {
 		foreach($file as $f) {
 			OC_Util::addVendorStyle($app, $f);
 		}
@@ -125,7 +125,7 @@ function translation($app) {
  * if an array is given it will add all components
  */
 function component($app, $file) {
-	if(is_array($file)) {
+	if(\is_array($file)) {
 		foreach($file as $f) {
 			$url = link_to($app, 'component/' . $f . '.html');
 			OC_Util::addHeader('link', ['rel' => 'import', 'href' => $url]);
@@ -214,7 +214,7 @@ function human_file_size( $bytes ) {
 function strip_time($timestamp){
 	$date = new \DateTime("@{$timestamp}");
 	$date->setTime(0, 0, 0);
-	return intval($date->format('U'));
+	return \intval($date->format('U'));
 }
 
 /**
@@ -236,11 +236,11 @@ function relative_modified_date($timestamp, $fromTime = null, $dateOnly = false)
 }
 
 function html_select_options($options, $selected, $params= []) {
-	if (!is_array($selected)) {
+	if (!\is_array($selected)) {
 		$selected= [$selected];
 	}
 	if (isset($params['combine']) && $params['combine']) {
-		$options = array_combine($options, $options);
+		$options = \array_combine($options, $options);
 	}
 	$value_name = $label_name = false;
 	if (isset($params['value'])) {
@@ -251,13 +251,13 @@ function html_select_options($options, $selected, $params= []) {
 	}
 	$html = '';
 	foreach($options as $value => $label) {
-		if ($value_name && is_array($label)) {
+		if ($value_name && \is_array($label)) {
 			$value = $label[$value_name];
 		}
-		if ($label_name && is_array($label)) {
+		if ($label_name && \is_array($label)) {
 			$label = $label[$label_name];
 		}
-		$select = in_array($value, $selected) ? ' selected="selected"' : '';
+		$select = \in_array($value, $selected) ? ' selected="selected"' : '';
 		$html .= '<option value="' . \OCP\Util::sanitizeHTML($value) . '"' . $select . '>' . \OCP\Util::sanitizeHTML($label) . '</option>'."\n";
 	}
 	return $html;

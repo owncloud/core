@@ -87,7 +87,7 @@ class SyncBackendTest extends TestCase {
 		$outputInterface
 			->expects($this->at(0))
 			->method('writeln')
-			->with(get_class($this->dummyBackend));
+			->with(\get_class($this->dummyBackend));
 
 		$this->assertEquals(0, static::invokePrivate($this->command, 'execute', [$inputInterface, $outputInterface]));
 	}
@@ -151,7 +151,7 @@ class SyncBackendTest extends TestCase {
 			->with('list')
 			->will($this->returnValue(null));
 
-		$backendClassName = get_class($this->dummyBackend);
+		$backendClassName = \get_class($this->dummyBackend);
 		$inputInterface
 			->expects($this->at(1))
 			->method('getArgument')
@@ -181,7 +181,7 @@ class SyncBackendTest extends TestCase {
 			->with('list')
 			->will($this->returnValue(null));
 
-		$backendClassName = get_class($this->dummyBackend);
+		$backendClassName = \get_class($this->dummyBackend);
 
 		$inputInterface
 			->expects($this->at(1))
@@ -218,7 +218,7 @@ class SyncBackendTest extends TestCase {
 			->with('list')
 			->will($this->returnValue(null));
 
-		$backendClassName = get_class($this->dummyBackend);
+		$backendClassName = \get_class($this->dummyBackend);
 
 		$inputInterface
 			->expects($this->at(1))

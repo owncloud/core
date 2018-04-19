@@ -87,7 +87,7 @@ class HTTPHelper {
 	 * @return bool
 	 */
 	public function isHTTPURL($url) {
-		return stripos($url, 'https://') === 0 || stripos($url, 'http://') === 0;
+		return \stripos($url, 'https://') === 0 || \stripos($url, 'http://') === 0;
 	}
 
 	/**

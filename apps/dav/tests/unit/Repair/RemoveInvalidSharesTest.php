@@ -65,6 +65,6 @@ class RemoveInvalidSharesTest extends TestCase {
 			->where($query->expr()->eq('principaluri', $query->createNamedParameter('principal:unknown')))->execute();
 		$data = $result->fetchAll();
 		$result->closeCursor();
-		$this->assertEquals(0, count($data));
+		$this->assertEquals(0, \count($data));
 	}
 }

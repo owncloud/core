@@ -181,7 +181,7 @@ class NodeTest extends \Test\TestCase {
 
 		// Check the contract that the full id must satisfy. This is technically
 		// redundant and verifies only that our test cases are sane.
-		preg_match('/^(\d*)(.*)$/', $node->getFileId(), $matches);
+		\preg_match('/^(\d*)(.*)$/', $node->getFileId(), $matches);
 		$this->assertEquals($numericid, (int)$matches[1]);
 		$this->assertEquals($instanceid, $matches[2]);
 	}

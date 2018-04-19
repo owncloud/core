@@ -39,9 +39,9 @@ class Syslog {
 	 * Init class data
 	 */
 	public static function init() {
-		openlog(\OC::$server->getSystemConfig()->getValue("syslog_tag", "ownCloud"), LOG_PID | LOG_CONS, LOG_USER);
+		\openlog(\OC::$server->getSystemConfig()->getValue("syslog_tag", "ownCloud"), LOG_PID | LOG_CONS, LOG_USER);
 		// Close at shutdown
-		register_shutdown_function('closelog');
+		\register_shutdown_function('closelog');
 	}
 
 	/**
@@ -66,7 +66,7 @@ class Syslog {
 			'%remoteAddr%' => $request->getRemoteAddress(),
 			'%user%' => $user,
 			'%app%' => $app,
-			'%method%' => is_string($request->getMethod()) ? $request->getMethod() : '--',
+			'%method%' => \is_string($request->getMethod()) ? $request->getMethod() : '--',
 			'%url%' => ($request->getRequestUri() !== '') ? $request->getRequestUri() : '--',
 			'%message%' => $message
 		];
@@ -75,7 +75,7 @@ class Syslog {
 			'log.syslog.format', self::$DEFAULT_FORMAT
 		);
 
-		$entryLine = str_ireplace(array_keys($entry), array_values($entry), $syslogFormat);
-		syslog($syslogLevel, $entryLine);
+		$entryLine = \str_ireplace(\array_keys($entry), \array_values($entry), $syslogFormat);
+		\syslog($syslogLevel, $entryLine);
 	}
 }

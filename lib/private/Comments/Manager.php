@@ -81,14 +81,14 @@ class Manager implements ICommentsManager {
 	 * @return array
 	 */
 	protected function normalizeDatabaseData(array $data) {
-		$data['id'] = strval($data['id']);
-		$data['parent_id'] = strval($data['parent_id']);
-		$data['topmost_parent_id'] = strval($data['topmost_parent_id']);
+		$data['id'] = \strval($data['id']);
+		$data['parent_id'] = \strval($data['parent_id']);
+		$data['topmost_parent_id'] = \strval($data['topmost_parent_id']);
 		$data['creation_timestamp'] = new \DateTime($data['creation_timestamp']);
-		if (!is_null($data['latest_child_timestamp'])) {
+		if (!\is_null($data['latest_child_timestamp'])) {
 			$data['latest_child_timestamp'] = new \DateTime($data['latest_child_timestamp']);
 		}
-		$data['children_count'] = intval($data['children_count']);
+		$data['children_count'] = \intval($data['children_count']);
 		return $data;
 	}
 
@@ -117,7 +117,7 @@ class Manager implements ICommentsManager {
 			$comment->setLatestChildDateTime(null);
 		}
 
-		if(is_null($comment->getCreationDateTime())) {
+		if(\is_null($comment->getCreationDateTime())) {
 			$comment->setCreationDateTime(new \DateTime());
 		}
 
@@ -165,7 +165,7 @@ class Manager implements ICommentsManager {
 		$resultStatement = $query->execute();
 		$data = $resultStatement->fetch(\PDO::FETCH_NUM);
 		$resultStatement->closeCursor();
-		$children = intval($data[0]);
+		$children = \intval($data[0]);
 
 		$comment = $this->get($id);
 		$comment->setChildrenCount($children);
@@ -183,8 +183,8 @@ class Manager implements ICommentsManager {
 	 * @throws \InvalidArgumentException
 	 */
 	protected function checkRoleParameters($role, $type, $id) {
-		if (!is_string($type) || empty($type) ||
-		    !is_string($id) || ($id === '')
+		if (!\is_string($type) || empty($type) ||
+		    !\is_string($id) || ($id === '')
 		) {
 			throw new \InvalidArgumentException($role . ' parameters must be a non-blank string');
 		}
@@ -200,7 +200,7 @@ class Manager implements ICommentsManager {
 		if(empty($id)) {
 			return;
 		}
-		$this->commentsCache[strval($id)] = $comment;
+		$this->commentsCache[\strval($id)] = $comment;
 	}
 
 	/**
@@ -209,7 +209,7 @@ class Manager implements ICommentsManager {
 	 * @param mixed $id the comment's id
 	 */
 	protected function uncache($id) {
-		$id = strval($id);
+		$id = \strval($id);
 		if (isset($this->commentsCache[$id])) {
 			unset($this->commentsCache[$id]);
 		}
@@ -225,7 +225,7 @@ class Manager implements ICommentsManager {
 	 * @since 9.0.0
 	 */
 	public function get($id) {
-		if(intval($id) === 0) {
+		if(\intval($id) === 0) {
 			throw new \InvalidArgumentException('IDs must be translatable to a number in this implementation.');
 		}
 
@@ -352,7 +352,7 @@ class Manager implements ICommentsManager {
 		if($offset > 0) {
 			$query->setFirstResult($offset);
 		}
-		if(!is_null($notOlderThan)) {
+		if(!\is_null($notOlderThan)) {
 			$query
 				->andWhere($qb->expr()->gt('creation_timestamp', $qb->createParameter('notOlderThan')))
 				->setParameter('notOlderThan', $notOlderThan, 'datetime');
@@ -383,7 +383,7 @@ class Manager implements ICommentsManager {
 		$qbSup = $this->dbConn->getQueryBuilder();
 		
 		$unreadCountsForNodes = array();
-		$objectIdChunks = array_chunk($objectIds, 100);
+		$objectIdChunks = \array_chunk($objectIds, 100);
 		foreach ($objectIdChunks as $objectIdChunk) {
 			// Fetch only records from oc_comments which are in specified int[] NodeIDs array and satisfy specified $objectType
 			$qbMain->selectAlias('object_id', 'id')->selectAlias($qbMain->createFunction('COUNT(`object_id`)'), 'count')
@@ -412,7 +412,7 @@ class Manager implements ICommentsManager {
 			$cursor = $qbMain->execute();
 
 			while ($data = $cursor->fetch()) {
-				$unreadCountsForNodes[$data['id']] = intval($data['count']);
+				$unreadCountsForNodes[$data['id']] = \intval($data['count']);
 			}
 			$cursor->closeCursor();
 		}
@@ -437,7 +437,7 @@ class Manager implements ICommentsManager {
 				->setParameter('type', $objectType)
 				->setParameter('id', $objectId);
 
-		if(!is_null($notOlderThan)) {
+		if(!\is_null($notOlderThan)) {
 			$query
 				->andWhere($qb->expr()->gt('creation_timestamp', $qb->createParameter('notOlderThan')))
 				->setParameter('notOlderThan', $notOlderThan, 'datetime');
@@ -446,7 +446,7 @@ class Manager implements ICommentsManager {
 		$resultStatement = $query->execute();
 		$data = $resultStatement->fetch(\PDO::FETCH_NUM);
 		$resultStatement->closeCursor();
-		return intval($data[0]);
+		return \intval($data[0]);
 	}
 
 	/**
@@ -482,7 +482,7 @@ class Manager implements ICommentsManager {
 	 */
 	public function delete($id) {
 		return $this->emittingCall(function () use (&$id) {
-			if(!is_string($id)) {
+			if(!\is_string($id)) {
 				throw new \InvalidArgumentException('Parameter must be string');
 			}
 
@@ -588,7 +588,7 @@ class Manager implements ICommentsManager {
 				->execute();
 
 			if ($affectedRows > 0) {
-				$comment->setId(strval($qb->getLastInsertId()));
+				$comment->setId(\strval($qb->getLastInsertId()));
 			}
 
 			$this->dispatcher->dispatch(CommentsEvent::EVENT_ADD, new CommentsEvent(
@@ -671,7 +671,7 @@ class Manager implements ICommentsManager {
 
 		$this->commentsCache = [];
 
-		return is_int($affectedRows);
+		return \is_int($affectedRows);
 	}
 
 	/**
@@ -696,7 +696,7 @@ class Manager implements ICommentsManager {
 
 		$this->commentsCache = [];
 
-		return is_int($affectedRows);
+		return \is_int($affectedRows);
 	}
 
 	/**
@@ -791,7 +791,7 @@ class Manager implements ICommentsManager {
 
 		$data = $resultStatement->fetch();
 		$resultStatement->closeCursor();
-		if(!$data || is_null($data['marker_datetime'])) {
+		if(!$data || \is_null($data['marker_datetime'])) {
 			return null;
 		}
 

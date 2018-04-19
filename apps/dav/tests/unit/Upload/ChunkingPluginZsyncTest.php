@@ -110,9 +110,9 @@ class ChunkingPluginZsyncTest extends TestCase {
 
 		$targetNode = $this->createMock(\Sabre\DAV\IFile::class);
 
-		$stream = fopen('php://memory', 'w+');
-		fwrite($stream, 'bar');
-		rewind($stream);
+		$stream = \fopen('php://memory', 'w+');
+		\fwrite($stream, 'bar');
+		\rewind($stream);
 
 		$targetNode->expects($this->once())
 			->method('get')
@@ -126,7 +126,7 @@ class ChunkingPluginZsyncTest extends TestCase {
 			->withConsecutive(
 				['source/.file.zsync'],
 				[$target],
-				[dirname($target)],
+				[\dirname($target)],
 				['source/.zsync'])
 			->willReturnOnConsecutiveCalls(
 				$sourceNode,
@@ -179,9 +179,9 @@ class ChunkingPluginZsyncTest extends TestCase {
 
 		$targetNode = $this->createMock(\Sabre\DAV\IFile::class);
 
-		$stream = fopen('php://memory', 'w+');
-		fwrite($stream, 'bar');
-		rewind($stream);
+		$stream = \fopen('php://memory', 'w+');
+		\fwrite($stream, 'bar');
+		\rewind($stream);
 
 		$targetNode->expects($this->once())
 			->method('get')
@@ -195,7 +195,7 @@ class ChunkingPluginZsyncTest extends TestCase {
 			->withConsecutive(
 				['source/.file.zsync'],
 				[$target],
-				[dirname($target)],
+				[\dirname($target)],
 				['source/.zsync'],
 				[$target])
 			->willReturnOnConsecutiveCalls(
@@ -272,7 +272,7 @@ class ChunkingPluginZsyncTest extends TestCase {
 			->withConsecutive(
 				['source/.file.zsync'],
 				[$target],
-				[dirname($target)])
+				[\dirname($target)])
 			->willReturnOnConsecutiveCalls(
 				$sourceNode,
 				$this->throwException(new NotFound),

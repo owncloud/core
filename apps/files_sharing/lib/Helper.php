@@ -178,25 +178,25 @@ class Helper {
 
 
 		$ids = [];
-		while ($path !== dirname($path)) {
+		while ($path !== \dirname($path)) {
 			$info = $ownerView->getFileInfo($path);
 			if ($info instanceof \OC\Files\FileInfo) {
 				$ids[] = $info['fileid'];
 			} else {
 				\OCP\Util::writeLog('sharing', 'No fileinfo available for: ' . $path, \OCP\Util::WARN);
 			}
-			$path = dirname($path);
+			$path = \dirname($path);
 		}
 
 		if (!empty($ids)) {
 
-			$idList = array_chunk($ids, 99, true);
+			$idList = \array_chunk($ids, 99, true);
 
 			foreach ($idList as $subList) {
-				$statement = "SELECT `share_with`, `share_type`, `file_target` FROM `*PREFIX*share` WHERE `file_source` IN (" . implode(',', $subList) . ") AND `share_type` IN (0, 1, 2)";
+				$statement = "SELECT `share_with`, `share_type`, `file_target` FROM `*PREFIX*share` WHERE `file_source` IN (" . \implode(',', $subList) . ") AND `share_type` IN (0, 1, 2)";
 				$query = \OCP\DB::prepare($statement);
 				$r = $query->execute();
-				$result = array_merge($result, $r->fetchAll());
+				$result = \array_merge($result, $r->fetchAll());
 			}
 		}
 
@@ -239,16 +239,16 @@ class Helper {
 	 * @return string e.g. turns '/admin/files/test.txt' into 'test.txt'
 	 */
 	public static function stripUserFilesPath($path) {
-		$trimmed = ltrim($path, '/');
-		$split = explode('/', $trimmed);
+		$trimmed = \ltrim($path, '/');
+		$split = \explode('/', $trimmed);
 
 		// it is not a file relative to data/user/files
-		if (count($split) < 3 || $split[1] !== 'files') {
+		if (\count($split) < 3 || $split[1] !== 'files') {
 			return false;
 		}
 
-		$sliced = array_slice($split, 2);
-		$relPath = implode('/', $sliced);
+		$sliced = \array_slice($split, 2);
+		$relPath = \implode('/', $sliced);
 
 		return $relPath;
 	}
@@ -262,12 +262,12 @@ class Helper {
 	 * @return string $path
 	 */
 	public static function generateUniqueTarget($path, $excludeList, $view) {
-		$pathinfo = pathinfo($path);
+		$pathinfo = \pathinfo($path);
 		$ext = (isset($pathinfo['extension'])) ? '.'.$pathinfo['extension'] : '';
 		$name = $pathinfo['filename'];
 		$dir = $pathinfo['dirname'];
 		$i = 2;
-		while ($view->file_exists($path) || in_array($path, $excludeList)) {
+		while ($view->file_exists($path) || \in_array($path, $excludeList)) {
 			$path = Filesystem::normalizePath($dir . '/' . $name . ' ('.$i.')' . $ext);
 			$i++;
 		}
@@ -290,7 +290,7 @@ class Helper {
 
 		if (!$view->file_exists($shareFolder)) {
 			$dir = '';
-			$subdirs = explode('/', $shareFolder);
+			$subdirs = \explode('/', $shareFolder);
 			foreach ($subdirs as $subdir) {
 				$dir = $dir . '/' . $subdir;
 				if (!$view->is_dir($dir)) {

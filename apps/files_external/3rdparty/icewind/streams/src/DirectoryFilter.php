@@ -34,11 +34,11 @@ class DirectoryFilter extends DirectoryWrapper {
 	 * @return string
 	 */
 	public function dir_readdir() {
-		$file = readdir($this->source);
+		$file = \readdir($this->source);
 		$filter = $this->filter;
 		// keep reading untill we have an accepted entry or we're at the end of the folder
 		while ($file !== false && $filter($file) === false) {
-			$file = readdir($this->source);
+			$file = \readdir($this->source);
 		}
 		return $file;
 	}

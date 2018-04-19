@@ -45,7 +45,7 @@ class Encryption implements ISettings {
 			}
 		}
 		$backends = \OC::$server->getUserManager()->getBackends();
-		$externalBackends = (count($backends) > 1) ? true : false;
+		$externalBackends = (\count($backends) > 1) ? true : false;
 		$tmpl->assign('externalBackendsEnabled', $externalBackends);
 		$tmpl->assign('encryptionModules', $encModules);
 		return $tmpl;

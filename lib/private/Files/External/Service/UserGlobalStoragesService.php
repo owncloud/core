@@ -77,12 +77,12 @@ class UserGlobalStoragesService extends GlobalStoragesService implements IUserGl
 		$userMounts = $this->dbConfig->getAdminMountsFor(DBConfigService::APPLICABLE_TYPE_USER, $this->getUser()->getUID());
 		$globalMounts = $this->dbConfig->getAdminMountsFor(DBConfigService::APPLICABLE_TYPE_GLOBAL, null);
 		$groups = $this->groupManager->getUserGroupIds($this->getUser());
-		if (is_array($groups) && count($groups) !== 0) {
+		if (\is_array($groups) && \count($groups) !== 0) {
 			$groupMounts = $this->dbConfig->getAdminMountsForMultiple(DBConfigService::APPLICABLE_TYPE_GROUP, $groups);
 		} else {
 			$groupMounts = [];
 		}
-		return array_merge($userMounts, $groupMounts, $globalMounts);
+		return \array_merge($userMounts, $groupMounts, $globalMounts);
 	}
 
 	public function addStorage(IStorageConfig $newStorage) {
@@ -116,7 +116,7 @@ class UserGlobalStoragesService extends GlobalStoragesService implements IUserGl
 
 		$result = [];
 		foreach ($storagesByMountpoint as $storageList) {
-			$storage = array_reduce($storageList, function ($carry, $item) {
+			$storage = \array_reduce($storageList, function ($carry, $item) {
 				if (isset($carry)) {
 					$carryPriorityType = $this->getPriorityType($carry);
 					$itemPriorityType = $this->getPriorityType($item);
@@ -160,15 +160,15 @@ class UserGlobalStoragesService extends GlobalStoragesService implements IUserGl
 		$applicableUsers = $config->getApplicableUsers();
 		$applicableGroups = $config->getApplicableGroups();
 
-		if (count($applicableUsers) === 0 && count($applicableGroups) === 0) {
+		if (\count($applicableUsers) === 0 && \count($applicableGroups) === 0) {
 			return true;
 		}
-		if (in_array($this->getUser()->getUID(), $applicableUsers, true)) {
+		if (\in_array($this->getUser()->getUID(), $applicableUsers, true)) {
 			return true;
 		}
 		$groupIds = $this->groupManager->getUserGroupIds($this->getUser());
 		foreach ($groupIds as $groupId) {
-			if (in_array($groupId, $applicableGroups, true)) {
+			if (\in_array($groupId, $applicableGroups, true)) {
 				return true;
 			}
 		}

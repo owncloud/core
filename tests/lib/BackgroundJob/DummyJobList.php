@@ -29,7 +29,7 @@ class DummyJobList extends \OC\BackgroundJob\JobList {
 	 * @param mixed $argument
 	 */
 	public function add($job, $argument = null) {
-		if (is_string($job)) {
+		if (\is_string($job)) {
 			/** @var \OC\BackgroundJob\Job $job */
 			$job = new $job;
 		}
@@ -44,7 +44,7 @@ class DummyJobList extends \OC\BackgroundJob\JobList {
 	 * @param mixed $argument
 	 */
 	public function remove($job, $argument = null) {
-		$index = array_search($job, $this->jobs);
+		$index = \array_search($job, $this->jobs);
 		if ($index !== false) {
 			unset($this->jobs[$index]);
 		}
@@ -58,7 +58,7 @@ class DummyJobList extends \OC\BackgroundJob\JobList {
 	 * @return bool
 	 */
 	public function has($job, $argument) {
-		return array_search($job, $this->jobs) !== false;
+		return \array_search($job, $this->jobs) !== false;
 	}
 
 	/**
@@ -76,8 +76,8 @@ class DummyJobList extends \OC\BackgroundJob\JobList {
 	 * @return \OC\BackgroundJob\Job
 	 */
 	public function getNext() {
-		if (count($this->jobs) > 0) {
-			if ($this->last < (count($this->jobs) - 1)) {
+		if (\count($this->jobs) > 0) {
+			if ($this->last < (\count($this->jobs) - 1)) {
 				$i = $this->last + 1;
 			} else {
 				$i = 0;
@@ -94,7 +94,7 @@ class DummyJobList extends \OC\BackgroundJob\JobList {
 	 * @param \OC\BackgroundJob\Job $job
 	 */
 	public function setLastJob($job) {
-		$i = array_search($job, $this->jobs);
+		$i = \array_search($job, $this->jobs);
 		if ($i !== false) {
 			$this->last = $i;
 		} else {
@@ -130,7 +130,7 @@ class DummyJobList extends \OC\BackgroundJob\JobList {
 	 * @param \OC\BackgroundJob\Job $job
 	 */
 	public function setLastRun($job) {
-		$job->setLastRun(time());
+		$job->setLastRun(\time());
 	}
 
 	public function setExecutionTime($job, $timeTaken) {

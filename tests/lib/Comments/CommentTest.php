@@ -112,7 +112,7 @@ class CommentTest extends TestCase {
 	 */
 	public function testSetUberlongMessage() {
 		$comment = new \OC\Comments\Comment();
-		$msg = str_pad('', IComment::MAX_MESSAGE_LENGTH + 1, 'x');
+		$msg = \str_pad('', IComment::MAX_MESSAGE_LENGTH + 1, 'x');
 		$comment->setMessage($msg);
 	}
 

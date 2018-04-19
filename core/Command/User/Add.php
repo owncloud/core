@@ -114,7 +114,7 @@ class Add extends Command {
 		}
 
 		if ($input->getOption('password-from-env')) {
-			$password = getenv('OC_PASS');
+			$password = \getenv('OC_PASS');
 			if (!$password) {
 				$output->writeln('<error>--password-from-env given, but OC_PASS is empty!</error>');
 				return 1;
@@ -156,7 +156,7 @@ class Add extends Command {
 		}
 
 		// Set email if supplied & valid
-		if(!is_null($email)) {
+		if(!\is_null($email)) {
 			$user->setEMailAddress($email);
 			$output->writeln('Email address set to "' . $user->getEMailAddress() . '"');
 		}

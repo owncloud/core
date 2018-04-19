@@ -333,7 +333,7 @@ class Session implements IUserSession, Emitter {
 	 */
 	public function logClientIn($user, $password, IRequest $request) {
 		$isTokenPassword = $this->isTokenPassword($password);
-		if ($user === null || trim($user) === '') {
+		if ($user === null || \trim($user) === '') {
 			throw new \InvalidArgumentException('$user cannot be empty');
 		}
 		if (!$isTokenPassword && $this->isTokenAuthEnforced()) {
@@ -344,7 +344,7 @@ class Session implements IUserSession, Emitter {
 		}
 		if (!$this->login($user, $password) ) {
 			$users = $this->manager->getByEmail($user);
-			if (count($users) === 1) {
+			if (\count($users) === 1) {
 				return $this->login($users[0]->getUID(), $password);
 			}
 			return false;
@@ -364,7 +364,7 @@ class Session implements IUserSession, Emitter {
 		if (null !== $request->getCookie('cookie_test')) {
 			return true;
 		}
-		setcookie('cookie_test', 'test', $this->timeFactory->getTime() + 3600);
+		\setcookie('cookie_test', 'test', $this->timeFactory->getTime() + 3600);
 		return false;
 	}
 
@@ -384,7 +384,7 @@ class Session implements IUserSession, Emitter {
 			if (empty($users)) {
 				return false;
 			}
-			if (count($users) !== 1) {
+			if (\count($users) !== 1) {
 				return true;
 			}
 			$user = $users[0];
@@ -586,14 +586,14 @@ class Session implements IUserSession, Emitter {
 	public function loginWithApache(IApacheBackend $apacheBackend) {
 
 		$uidAndBackend = $apacheBackend->getCurrentUserId();
-		if (is_array($uidAndBackend)
-			&& count($uidAndBackend) === 2
+		if (\is_array($uidAndBackend)
+			&& \count($uidAndBackend) === 2
 			&& $uidAndBackend[0] !== ''
 			&& $uidAndBackend[0] !== null
 			&& $uidAndBackend[1] instanceof UserInterface
 		) {
 			list($uid, $backend) = $uidAndBackend;
-		} else if (is_string($uidAndBackend)) {
+		} else if (\is_string($uidAndBackend)) {
 			$uid = $uidAndBackend;
 			if ($apacheBackend instanceof UserInterface) {
 				$backend = $apacheBackend;
@@ -799,7 +799,7 @@ class Session implements IUserSession, Emitter {
 	 */
 	public function tryTokenLogin(IRequest $request) {
 		$authHeader = $request->getHeader('Authorization');
-		if ($authHeader === null || strpos($authHeader, 'token ') === false) {
+		if ($authHeader === null || \strpos($authHeader, 'token ') === false) {
 			// No auth header, let's try session id
 			try {
 				$token = $this->session->getId();
@@ -807,7 +807,7 @@ class Session implements IUserSession, Emitter {
 				return false;
 			}
 		} else {
-			$token = substr($authHeader, 6);
+			$token = \substr($authHeader, 6);
 		}
 
 		if (!$this->loginWithToken($token)) {
@@ -896,13 +896,13 @@ class Session implements IUserSession, Emitter {
 		// get stored tokens
 		$tokens = OC::$server->getConfig()->getUserKeys($uid, 'login_token');
 		// test cookies token against stored tokens
-		if (!in_array($currentToken, $tokens, true)) {
+		if (!\in_array($currentToken, $tokens, true)) {
 			return false;
 		}
 		// replace successfully used token with a new one
 		OC::$server->getConfig()->deleteUserValue($uid, 'login_token', $currentToken);
 		$newToken = OC::$server->getSecureRandom()->generate(32);
-		OC::$server->getConfig()->setUserValue($uid, 'login_token', $newToken, time());
+		OC::$server->getConfig()->setUserValue($uid, 'login_token', $newToken, \time());
 		$this->setMagicInCookie($user->getUID(), $newToken);
 
 		//login
@@ -955,10 +955,10 @@ class Session implements IUserSession, Emitter {
 	 */
 	public function setMagicInCookie($username, $token) {
 		$secureCookie = OC::$server->getRequest()->getServerProtocol() === 'https';
-		$expires = time() + OC::$server->getConfig()->getSystemValue('remember_login_cookie_lifetime', 60 * 60 * 24 * 15);
-		setcookie('oc_username', $username, $expires, OC::$WEBROOT, '', $secureCookie, true);
-		setcookie('oc_token', $token, $expires, OC::$WEBROOT, '', $secureCookie, true);
-		setcookie('oc_remember_login', '1', $expires, OC::$WEBROOT, '', $secureCookie, true);
+		$expires = \time() + OC::$server->getConfig()->getSystemValue('remember_login_cookie_lifetime', 60 * 60 * 24 * 15);
+		\setcookie('oc_username', $username, $expires, OC::$WEBROOT, '', $secureCookie, true);
+		\setcookie('oc_token', $token, $expires, OC::$WEBROOT, '', $secureCookie, true);
+		\setcookie('oc_remember_login', '1', $expires, OC::$WEBROOT, '', $secureCookie, true);
 	}
 
 	/**
@@ -971,14 +971,14 @@ class Session implements IUserSession, Emitter {
 		unset($_COOKIE['oc_username']); //TODO: DI
 		unset($_COOKIE['oc_token']);
 		unset($_COOKIE['oc_remember_login']);
-		setcookie('oc_username', '', time() - 3600, OC::$WEBROOT, '', $secureCookie, true);
-		setcookie('oc_token', '', time() - 3600, OC::$WEBROOT, '', $secureCookie, true);
-		setcookie('oc_remember_login', '', time() - 3600, OC::$WEBROOT, '', $secureCookie, true);
+		\setcookie('oc_username', '', \time() - 3600, OC::$WEBROOT, '', $secureCookie, true);
+		\setcookie('oc_token', '', \time() - 3600, OC::$WEBROOT, '', $secureCookie, true);
+		\setcookie('oc_remember_login', '', \time() - 3600, OC::$WEBROOT, '', $secureCookie, true);
 		// old cookies might be stored under /webroot/ instead of /webroot
 		// and Firefox doesn't like it!
-		setcookie('oc_username', '', time() - 3600, OC::$WEBROOT . '/', '', $secureCookie, true);
-		setcookie('oc_token', '', time() - 3600, OC::$WEBROOT . '/', '', $secureCookie, true);
-		setcookie('oc_remember_login', '', time() - 3600, OC::$WEBROOT . '/', '', $secureCookie, true);
+		\setcookie('oc_username', '', \time() - 3600, OC::$WEBROOT . '/', '', $secureCookie, true);
+		\setcookie('oc_token', '', \time() - 3600, OC::$WEBROOT . '/', '', $secureCookie, true);
+		\setcookie('oc_remember_login', '', \time() - 3600, OC::$WEBROOT . '/', '', $secureCookie, true);
 	}
 
 	/**

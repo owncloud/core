@@ -183,7 +183,7 @@ class Util {
 
 		$userSession = \OC::$server->getUserSession();
 		// session is null while installing OC
-		if (!is_null($userSession)){
+		if (!\is_null($userSession)){
 			$user = $userSession->getUser();
 			if ($user !== null) {
 				$user = $user->getUID();
@@ -300,7 +300,7 @@ class Util {
 		$urlGenerator = \OC::$server->getURLGenerator();
 		$remoteBase = $urlGenerator->linkTo('', 'remote.php') . '/' . $service;
 		return $urlGenerator->getAbsoluteURL(
-			$remoteBase . (($service[strlen($service) - 1] != '/') ? '/' : '')
+			$remoteBase . (($service[\strlen($service) - 1] != '/') ? '/' : '')
 		);
 	}
 
@@ -359,9 +359,9 @@ class Util {
 	public static function getServerHostName() {
 		$host_name = self::getServerHost();
 		// strip away port number (if existing)
-		$colon_pos = strpos($host_name, ':');
+		$colon_pos = \strpos($host_name, ':');
 		if ($colon_pos != FALSE) {
-			$host_name = substr($host_name, 0, $colon_pos);
+			$host_name = \substr($host_name, 0, $colon_pos);
 		}
 		return $host_name;
 	}
@@ -579,7 +579,7 @@ class Util {
 	 * @deprecated 8.2.0 Use substr_replace() instead.
 	 */
 	public static function mb_substr_replace($string, $replacement, $start, $length = null, $encoding = 'UTF-8') {
-		return substr_replace($string, $replacement, $start, $length);
+		return \substr_replace($string, $replacement, $start, $length);
 	}
 
 	/**
@@ -595,7 +595,7 @@ class Util {
 	 * @deprecated 8.2.0 Use str_replace() instead.
 	 */
 	public static function mb_str_replace($search, $replace, $subject, $encoding = 'UTF-8', &$count = null) {
-		return str_replace($search, $replace, $subject, $count);
+		return \str_replace($search, $replace, $subject, $count);
 	}
 
 	/**
@@ -741,13 +741,13 @@ class Util {
 
 		// expose version and servername details
 		if ($includeVersion || (bool) $systemConfig->getValue('version.hide', false) === false) {
-			$values['version'] = implode('.', self::getVersion());
+			$values['version'] = \implode('.', self::getVersion());
 			$values['versionstring'] = \OC_Util::getVersionString();
 			$values['edition'] = \OC_Util::getEditionString();
 			$values['productname'] = $defaults->getName();
 			// expose the servername only if allowed via version, but never when called via status.php
 			if ($serverHide === false) {
-				$values['hostname'] = gethostname();
+				$values['hostname'] = \gethostname();
 			}
 		}
 
@@ -767,15 +767,15 @@ class Util {
 	 * @since 10.0.5
 	 */
 	public static function getFullDomain($url) {
-		$parts = parse_url($url);
+		$parts = \parse_url($url);
 		if ($parts === false) {
 			throw new \InvalidArgumentException('Invalid url "' . $url . '"');
 		}
 		if (!isset($parts['scheme']) || !isset($parts['host'])) {
 			throw new \InvalidArgumentException('Invalid url "' . $url . '"');
 		}
-		$protocol = strtolower($parts['scheme']);
-		$host = strtolower($parts['host']);
+		$protocol = \strtolower($parts['scheme']);
+		$host = \strtolower($parts['host']);
 		$port = null;
 		if ($protocol === 'http') {
 			$port = 80;
@@ -789,7 +789,7 @@ class Util {
 			$port = $parts['port'];
 		}
 
-		return $protocol . '://' . strtolower($host) . ':' . $port;
+		return $protocol . '://' . \strtolower($host) . ':' . $port;
 	}
 
 	/**

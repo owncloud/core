@@ -108,7 +108,7 @@ class Avatar implements IAvatar {
 		} else {
 			$img = new OC_Image($data);
 		}
-		$type = substr($img->mimeType(), -3);
+		$type = \substr($img->mimeType(), -3);
 		if ($type === 'peg') {
 			$type = 'jpg';
 		}
@@ -138,7 +138,7 @@ class Avatar implements IAvatar {
 		$avatars = $this->folder->getDirectoryListing();
 
 		foreach ($avatars as $avatar) {
-			if (preg_match($regex, $avatar->getName())) {
+			if (\preg_match($regex, $avatar->getName())) {
 				$avatar->delete();
 			}
 		}

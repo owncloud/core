@@ -12,7 +12,7 @@ script('settings', 'panels/backgroundjobs');
 		<?php if ($_['lastcron'] !== false):
 			$relative_time = relative_modified_date($_['lastcron']);
 			$absolute_time = OC_Util::formatDate($_['lastcron']);
-			if (time() - $_['lastcron'] <= 3600): ?>
+			if (\time() - $_['lastcron'] <= 3600): ?>
 				<span class="status success"></span>
 				<span class="crondate" original-title="<?php p($absolute_time);?>">
 					<?php p($l->t("Last cron job execution: %s.", [$relative_time]));?>

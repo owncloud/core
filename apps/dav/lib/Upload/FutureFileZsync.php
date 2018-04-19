@@ -46,8 +46,8 @@ class FutureFileZsync extends FutureFile {
 
 		// Check if pathinfo starts with dav uploads target and basename is future file basename
 		if (isset($_SERVER['PATH_INFO'])
-			&& pathinfo($_SERVER['PATH_INFO'], PATHINFO_BASENAME) === FutureFileZsync::getFutureFileName()
-			&& (strpos($_SERVER['PATH_INFO'], $davUploadsTarget) === 0)) {
+			&& \pathinfo($_SERVER['PATH_INFO'], PATHINFO_BASENAME) === FutureFileZsync::getFutureFileName()
+			&& (\strpos($_SERVER['PATH_INFO'], $davUploadsTarget) === 0)) {
 			return true;
 		}
 

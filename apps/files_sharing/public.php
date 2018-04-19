@@ -30,7 +30,7 @@ $route = isset($_GET['download']) ? 'files_sharing.sharecontroller.downloadShare
 if($token !== '') {
 	OC_Response::redirect($urlGenerator->linkToRoute($route, ['token' => $token]));
 } else {
-	header('HTTP/1.0 404 Not Found');
+	\header('HTTP/1.0 404 Not Found');
 	$tmpl = new OCP\Template('', '404', 'guest');
 	print_unescaped($tmpl->fetchPage());
 }

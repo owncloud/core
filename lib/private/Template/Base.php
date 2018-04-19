@@ -159,7 +159,7 @@ class Base {
 	 * $_[$key][$position] in the template.
 	 */
 	public function append($key, $value) {
-		if( array_key_exists($key, $this->vars)) {
+		if( \array_key_exists($key, $this->vars)) {
 			$this->vars[$key][] = $value;
 		}
 		else{
@@ -212,19 +212,19 @@ class Base {
 		$l = $this->l10n;
 		$theme = $this->themeDefaults;
 
-		if( !is_null($additionalParams)) {
-			$_ = array_merge( $additionalParams, $this->vars );
+		if( !\is_null($additionalParams)) {
+			$_ = \array_merge( $additionalParams, $this->vars );
 		}
 
-		ob_start();
+		\ob_start();
 		try {
 			include $file;
-			$data = ob_get_contents();
+			$data = \ob_get_contents();
 		} catch (\Exception $e) {
-			@ob_end_clean();
+			@\ob_end_clean();
 			throw $e;
 		}
-		@ob_end_clean();
+		@\ob_end_clean();
 
 		return $data;
 	}

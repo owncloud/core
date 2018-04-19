@@ -97,20 +97,20 @@ class User implements IUser {
 		$this->mapper = $mapper;
 		$this->emitter = $emitter;
 		$this->eventDispatcher = $eventDispatcher;
-		if(is_null($config)) {
+		if(\is_null($config)) {
 			$config = \OC::$server->getConfig();
 		}
 		$this->config = $config;
 		$this->urlGenerator = $urlGenerator;
-		if (is_null($this->urlGenerator)) {
+		if (\is_null($this->urlGenerator)) {
 			$this->urlGenerator = \OC::$server->getURLGenerator();
 		}
 		$this->groupManager = $groupManager;
-		if (is_null($this->groupManager)) {
+		if (\is_null($this->groupManager)) {
 			$this->groupManager = \OC::$server->getGroupManager();
 		}
 		$this->userSession = $userSession;
-		if (is_null($this->userSession)) {
+		if (\is_null($this->userSession)) {
 			$this->userSession = \OC::$server->getUserSession();
 		}
 	}
@@ -147,7 +147,7 @@ class User implements IUser {
 		if (!$this->canChangeDisplayName()) {
 			return false;
 		}
-		$displayName = trim($displayName);
+		$displayName = \trim($displayName);
 		if ($displayName === $this->account->getDisplayName()) {
 			return false;
 		}
@@ -172,7 +172,7 @@ class User implements IUser {
 	 * @since 9.0.0
 	 */
 	public function setEMailAddress($mailAddress) {
-		$mailAddress = trim($mailAddress);
+		$mailAddress = \trim($mailAddress);
 		if ($mailAddress === $this->account->getEmail()) {
 			return;
 		}
@@ -196,7 +196,7 @@ class User implements IUser {
 	 */
 	public function updateLastLoginTimestamp() {
 		$firstTimeLogin = ($this->getLastLogin() === 0);
-		$this->account->setLastLogin(time());
+		$this->account->setLastLogin(\time());
 		$this->mapper->update($this->account);
 		return $firstTimeLogin;
 	}
@@ -214,7 +214,7 @@ class User implements IUser {
 		$homePath = $this->getHome();
 		$this->mapper->delete($this->account);
 		$bi = $this->account->getBackendInstance();
-		if (!is_null($bi)) {
+		if (!\is_null($bi)) {
 			$bi->deleteUser($this->account->getUserId());
 		}
 
@@ -311,7 +311,7 @@ class User implements IUser {
 	 */
 	public function canChangeAvatar() {
 		$backend = $this->account->getBackendInstance();
-		if (is_null($backend)) {
+		if (\is_null($backend)) {
 			return false;
 		}
 		if ($backend->implementsActions(Backend::PROVIDE_AVATAR)) {
@@ -327,7 +327,7 @@ class User implements IUser {
 	 */
 	public function canChangePassword() {
 		$backend = $this->account->getBackendInstance();
-		if (is_null($backend)) {
+		if (\is_null($backend)) {
 			return false;
 		}
 		return $backend instanceof IChangePasswordBackend || $backend->implementsActions(Backend::SET_PASSWORD);
@@ -351,7 +351,7 @@ class User implements IUser {
 			}
 		}
 		$backend = $this->account->getBackendInstance();
-		if (is_null($backend)) {
+		if (\is_null($backend)) {
 			return false;
 		}
 		return $backend->implementsActions(Backend::SET_DISPLAYNAME);
@@ -402,7 +402,7 @@ class User implements IUser {
 	 */
 	public function getQuota() {
 		$quota = $this->account->getQuota();
-		if(is_null($quota)) {
+		if(\is_null($quota)) {
 			return 'default';
 		}
 		return $quota;
@@ -434,7 +434,7 @@ class User implements IUser {
 	 */
 	public function getAvatarImage($size) {
 		// delay the initialization
-		if (is_null($this->avatarManager)) {
+		if (\is_null($this->avatarManager)) {
 			$this->avatarManager = \OC::$server->getAvatarManager();
 		}
 
@@ -456,7 +456,7 @@ class User implements IUser {
 	public function getCloudId() {
 		$uid = $this->getUID();
 		$server = $this->urlGenerator->getAbsoluteURL('/');
-		return $uid . '@' . rtrim( $this->removeProtocolFromUrl($server), '/');
+		return $uid . '@' . \rtrim( $this->removeProtocolFromUrl($server), '/');
 	}
 
 	/**
@@ -464,17 +464,17 @@ class User implements IUser {
 	 * @return string
 	 */
 	private function removeProtocolFromUrl($url) {
-		if (strpos($url, 'https://') === 0) {
-			return substr($url, strlen('https://'));
-		} else if (strpos($url, 'http://') === 0) {
-			return substr($url, strlen('http://'));
+		if (\strpos($url, 'https://') === 0) {
+			return \substr($url, \strlen('https://'));
+		} else if (\strpos($url, 'http://') === 0) {
+			return \substr($url, \strlen('http://'));
 		}
 
 		return $url;
 	}
 
 	public function triggerChange($feature, $value = null) {
-		if ($this->emitter && in_array($feature, $this->account->getUpdatedFields())) {
+		if ($this->emitter && \in_array($feature, $this->account->getUpdatedFields())) {
 			$this->emitter->emit('\OC\User', 'changeUser', [$this, $feature, $value]);
 		}
 	}
@@ -497,8 +497,8 @@ class User implements IUser {
 	 */
 	public function setSearchTerms(array $terms) {
 		// Check length of terms, cut if too long
-		$terms = array_map(function($term) {
-			return substr($term, 0, 191);
+		$terms = \array_map(function($term) {
+			return \substr($term, 0, 191);
 		}, $terms);
 		$this->mapper->setTermsForAccount($this->account->getId(), $terms);
 	}

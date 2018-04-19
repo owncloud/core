@@ -393,10 +393,10 @@ class LoginControllerTest extends TestCase {
 			->will($this->returnValue(true));
 		$this->urlGenerator->expects($this->once())
 			->method('getAbsoluteURL')
-			->with(urldecode($originalUrl))
+			->with(\urldecode($originalUrl))
 			->will($this->returnValue($redirectUrl));
 
-		$expected = new RedirectResponse(urldecode($redirectUrl));
+		$expected = new RedirectResponse(\urldecode($redirectUrl));
 		$this->assertEquals($expected, $this->loginController->tryLogin('Jane', $password, $originalUrl));
 	}
 	

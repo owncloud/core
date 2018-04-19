@@ -106,14 +106,14 @@ class Users {
 
 			$users = [];
 			foreach ($subAdminOfGroups as $group) {
-				$users = array_merge($users, $this->groupManager->displayNamesInGroup($group, $search));
+				$users = \array_merge($users, $this->groupManager->displayNamesInGroup($group, $search));
 			}
 
-			$users = array_slice($users, $offset, $limit);
+			$users = \array_slice($users, $offset, $limit);
 		} else {
 			return new Result(null, API::RESPOND_UNAUTHORISED);
 		}
-		$users = array_keys($users);
+		$users = \array_keys($users);
 
 		return new Result([
 			'users' => $users
@@ -140,7 +140,7 @@ class Users {
 			return new Result(null, 102, 'User already exists');
 		}
 
-		if(is_array($groups)) {
+		if(\is_array($groups)) {
 			foreach ($groups as $group) {
 				if(!$this->groupManager->groupExists($group)){
 					return new Result(null, 104, 'group '.$group.' does not exist');
@@ -159,7 +159,7 @@ class Users {
 			$newUser = $this->userManager->createUser($userId, $password);
 			$this->logger->info('Successful addUser call with userid: '.$userId, ['app' => 'ocs_api']);
 
-			if (is_array($groups)) {
+			if (\is_array($groups)) {
 				foreach ($groups as $group) {
 					$this->groupManager->get($group)->addUser($newUser);
 					$this->logger->info('Added userid '.$userId.' to group '.$group, ['app' => 'ocs_api']);
@@ -269,7 +269,7 @@ class Users {
 			}
 		}
 		// Check if permitted to edit this field
-		if(!in_array($parameters['_put']['key'], $permittedFields)) {
+		if(!\in_array($parameters['_put']['key'], $permittedFields)) {
 			return new Result(null, 997);
 		}
 		// Process the edit
@@ -280,8 +280,8 @@ class Users {
 			case 'quota':
 				$quota = $parameters['_put']['value'];
 				if($quota !== 'none' && $quota !== 'default') {
-					if (is_numeric($quota)) {
-						$quota = floatval($quota);
+					if (\is_numeric($quota)) {
+						$quota = \floatval($quota);
 					} else {
 						$quota = Util::computerFileSize($quota);
 					}
@@ -307,7 +307,7 @@ class Users {
 				}
 				break;
 			case 'email':
-				if(filter_var($parameters['_put']['value'], FILTER_VALIDATE_EMAIL)) {
+				if(\filter_var($parameters['_put']['value'], FILTER_VALIDATE_EMAIL)) {
 					$targetUser->setEMailAddress($parameters['_put']['value']);
 				} else {
 					return new Result(null, 102);
@@ -426,7 +426,7 @@ class Users {
 				foreach ($getSubAdminsGroups as $key => $group) {
 					$getSubAdminsGroups[$key] = $group->getGID();
 				}
-				$groups = array_intersect(
+				$groups = \array_intersect(
 					$getSubAdminsGroups,
 					$this->groupManager->getUserGroupIds($targetUser)
 				);
@@ -539,7 +539,7 @@ class Users {
 					$subAdminGroups[$key] = $group->getGID();
 				}
 
-				if(in_array($group->getGID(), $subAdminGroups, true)) {
+				if(\in_array($group->getGID(), $subAdminGroups, true)) {
 					return new Result(null, 105, 'Cannot remove yourself from this group as you are a SubAdmin');
 				}
 			}
@@ -569,7 +569,7 @@ class Users {
 			return new Result(null, 102, 'Group:'.$_POST['groupid'].' does not exist');
 		}
 		// Check if trying to make subadmin of admin group
-		if(strtolower($_POST['groupid']) === 'admin') {
+		if(\strtolower($_POST['groupid']) === 'admin') {
 			return new Result(null, 103, 'Cannot create subadmins for admin group');
 		}
 

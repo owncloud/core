@@ -131,7 +131,7 @@ class CardDavBackend implements BackendInterface, SyncSupport {
 			];
 		}
 		$result->closeCursor();
-		return array_values($addressBooks);
+		return \array_values($addressBooks);
 	}
 
 	/**
@@ -189,7 +189,7 @@ class CardDavBackend implements BackendInterface, SyncSupport {
 		}
 		$result->closeCursor();
 
-		return array_values($addressBooks);
+		return \array_values($addressBooks);
 	}
 
 	/**
@@ -470,7 +470,7 @@ class CardDavBackend implements BackendInterface, SyncSupport {
 	 */
 	function getMultipleCards($addressBookId, array $uris) {
 		$chunkSize = 998;
-		if (count($uris) <= $chunkSize) {
+		if (\count($uris) <= $chunkSize) {
 			$query = $this->db->getQueryBuilder();
 			$query->select(['id', 'uri', 'lastmodified', 'etag', 'size', 'carddata'])
 				->from('cards')
@@ -490,12 +490,12 @@ class CardDavBackend implements BackendInterface, SyncSupport {
 
 			return $cards;
 		}
-		$chunks = array_chunk($uris, $chunkSize);
-		$results = array_map(function ($chunk) use ($addressBookId) {
+		$chunks = \array_chunk($uris, $chunkSize);
+		$results = \array_map(function ($chunk) use ($addressBookId) {
 			return $this->getMultipleCards($addressBookId, $chunk);
 		}, $chunks);
 
-		return array_merge(...$results);
+		return \array_merge(...$results);
 	}
 
 	/**
@@ -525,16 +525,16 @@ class CardDavBackend implements BackendInterface, SyncSupport {
 	 * @throws \BadMethodCallException
 	 */
 	function createCard($addressBookId, $cardUri, $cardData) {
-		$etag = md5($cardData);
+		$etag = \md5($cardData);
 
 		$query = $this->db->getQueryBuilder();
 		$query->insert('cards')
 			->values([
 				'carddata' => $query->createNamedParameter($cardData, IQueryBuilder::PARAM_LOB),
 				'uri' => $query->createNamedParameter($cardUri),
-				'lastmodified' => $query->createNamedParameter(time()),
+				'lastmodified' => $query->createNamedParameter(\time()),
 				'addressbookid' => $query->createNamedParameter($addressBookId),
-				'size' => $query->createNamedParameter(strlen($cardData)),
+				'size' => $query->createNamedParameter(\strlen($cardData)),
 				'etag' => $query->createNamedParameter($etag),
 			])
 			->execute();
@@ -583,12 +583,12 @@ class CardDavBackend implements BackendInterface, SyncSupport {
 	 */
 	function updateCard($addressBookId, $cardUri, $cardData) {
 
-		$etag = md5($cardData);
+		$etag = \md5($cardData);
 		$query = $this->db->getQueryBuilder();
 		$query->update('cards')
 			->set('carddata', $query->createNamedParameter($cardData, IQueryBuilder::PARAM_LOB))
-			->set('lastmodified', $query->createNamedParameter(time()))
-			->set('size', $query->createNamedParameter(strlen($cardData)))
+			->set('lastmodified', $query->createNamedParameter(\time()))
+			->set('size', $query->createNamedParameter(\strlen($cardData)))
 			->set('etag', $query->createNamedParameter($etag))
 			->where($query->expr()->eq('uri', $query->createNamedParameter($cardUri)))
 			->andWhere($query->expr()->eq('addressbookid', $query->createNamedParameter($addressBookId)))
@@ -787,8 +787,8 @@ class CardDavBackend implements BackendInterface, SyncSupport {
 	}
 
 	private function readBlob($cardData) {
-		if (is_resource($cardData)) {
-			return stream_get_contents($cardData);
+		if (\is_resource($cardData)) {
+			return \stream_get_contents($cardData);
 		}
 
 		return $cardData;
@@ -838,7 +838,7 @@ class CardDavBackend implements BackendInterface, SyncSupport {
 
 		$result->closeCursor();
 
-		return array_map(function($array) {
+		return \array_map(function($array) {
 			$array['carddata'] = $this->readBlob($array['carddata']);
 			return $array;
 		}, $cards);
@@ -904,7 +904,7 @@ class CardDavBackend implements BackendInterface, SyncSupport {
 		$contact = $queryResult->fetch();
 		$queryResult->closeCursor();
 
-		if (is_array($contact)) {
+		if (\is_array($contact)) {
 			$result = $contact;
 		}
 
@@ -953,18 +953,18 @@ class CardDavBackend implements BackendInterface, SyncSupport {
 			);
 
 		foreach ($vCard->children() as $property) {
-			if(!in_array($property->name, self::$indexProperties)) {
+			if(!\in_array($property->name, self::$indexProperties)) {
 				continue;
 			}
 			$preferred = 0;
 			foreach($property->parameters as $parameter) {
-				if ($parameter->name == 'TYPE' && strtoupper($parameter->getValue()) == 'PREF') {
+				if ($parameter->name == 'TYPE' && \strtoupper($parameter->getValue()) == 'PREF') {
 					$preferred = 1;
 					break;
 				}
 			}
 			$query->setParameter('name', $property->name);
-			$query->setParameter('value', substr($property->getValue(), 0, 254));
+			$query->setParameter('value', \substr($property->getValue(), 0, 254));
 			$query->setParameter('preferred', $preferred);
 			$query->execute();
 		}

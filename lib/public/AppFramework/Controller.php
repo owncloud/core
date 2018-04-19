@@ -89,7 +89,7 @@ abstract class Controller {
 					if (isset($dataHeaders['Content-Type'])) {
 						unset($headers['Content-Type']);
 					}
-					$response->setHeaders(array_merge($dataHeaders, $headers));
+					$response->setHeaders(\array_merge($dataHeaders, $headers));
 					return $response;
 				} else {
 					return new JSONResponse($data);
@@ -106,15 +106,15 @@ abstract class Controller {
 	 * @since 7.0.0
 	 */
 	public function getResponderByHTTPHeader($acceptHeader) {
-		$headers = explode(',', $acceptHeader);
+		$headers = \explode(',', $acceptHeader);
 
 		// return the first matching responder
 		foreach ($headers as $header) {
-			$header = strtolower(trim($header));
+			$header = \strtolower(\trim($header));
 
-			$responder = str_replace('application/', '', $header);
+			$responder = \str_replace('application/', '', $header);
 
-			if (array_key_exists($responder, $this->responders)) {
+			if (\array_key_exists($responder, $this->responders)) {
 				return $responder;
 			}
 		}
@@ -145,7 +145,7 @@ abstract class Controller {
 	 * @since 7.0.0
 	 */
 	public function buildResponse($response, $format='json') {
-		if(array_key_exists($format, $this->responders)) {
+		if(\array_key_exists($format, $this->responders)) {
 
 			$responder = $this->responders[$format];
 

@@ -89,7 +89,7 @@ class CsrfTokenManager {
 			return false;
 		}
 
-		return hash_equals(
+		return \hash_equals(
 			$this->sessionStorage->getToken(),
 			$token->getDecryptedValue()
 		);

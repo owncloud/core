@@ -162,7 +162,7 @@ class ShareesTest extends TestCase {
 			->method('getGID')
 			->willReturn($gid);
 
-		if (is_null($displayName)) {
+		if (\is_null($displayName)) {
 			// note: this is how the Group class behaves
 			$displayName = $gid;
 		}
@@ -571,7 +571,7 @@ class ShareesTest extends TestCase {
 					->willReturn($groupResponse);
 			}
 
-			$this->groupManager->expects($this->exactly(sizeof($groupResponse)))
+			$this->groupManager->expects($this->exactly(\sizeof($groupResponse)))
 				->method('findUsersInGroup')
 				->with($this->anything(), $searchTerm, $this->invokePrivate($this->sharees, 'limit'), $this->invokePrivate($this->sharees, 'offset'))
 				->willReturnMap($userResponse);
@@ -1333,7 +1333,7 @@ class ShareesTest extends TestCase {
 		// inject previous results if needed
 		if (!empty($previousExact)) {
 			$result = $this->invokePrivate($this->sharees, 'result');
-			$result['exact'] = array_merge($result['exact'], $previousExact);
+			$result['exact'] = \array_merge($result['exact'], $previousExact);
 			$this->invokePrivate($this->sharees, 'result', [$result]);
 		}
 

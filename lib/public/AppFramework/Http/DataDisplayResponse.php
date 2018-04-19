@@ -49,7 +49,7 @@ class DataDisplayResponse extends Response {
 	                            $headers=[]) {
 		$this->data = $data;
 		$this->setStatus($statusCode);
-		$this->setHeaders(array_merge($this->getHeaders(), $headers));
+		$this->setHeaders(\array_merge($this->getHeaders(), $headers));
 		$this->addHeader('Content-Disposition', 'inline; filename=""');
 	}
 

@@ -56,7 +56,7 @@ class ListUsers extends Base {
 	protected function execute(InputInterface $input, OutputInterface $output) {
 		$userNameSubString = $input->getArgument('search-pattern');
 		$users = $this->userManager->search($userNameSubString);
-		$users = array_map(function($user) {
+		$users = \array_map(function($user) {
 			/** @var IUser $user */
 			return $user->getDisplayName();
 		}, $users);

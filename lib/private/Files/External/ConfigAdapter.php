@@ -81,7 +81,7 @@ class ConfigAdapter implements IMountProvider {
 		$objectStore = $storage->getBackendOption('objectstore');
 		if ($objectStore) {
 			$objectClass = $objectStore['class'];
-			if (!is_subclass_of($objectClass, '\OCP\Files\ObjectStore\IObjectStore')) {
+			if (!\is_subclass_of($objectClass, '\OCP\Files\ObjectStore\IObjectStore')) {
 				throw new \InvalidArgumentException('Invalid object store');
 			}
 			$storage->setBackendOption('objectstore', new $objectClass($objectStore));
@@ -193,15 +193,15 @@ class ConfigAdapter implements IMountProvider {
 	 * @return string
 	 */
 	private function setUserVars($user, $input) {
-		if (is_array($input)) {
+		if (\is_array($input)) {
 			foreach ($input as $key => $value) {
-				if (is_string($value)) {
-					$input[$key] = str_replace('$user', $user, $value);
+				if (\is_string($value)) {
+					$input[$key] = \str_replace('$user', $user, $value);
 				}
 			}
 		} else {
-			if (is_string($input)) {
-				$input = str_replace('$user', $user, $input);
+			if (\is_string($input)) {
+				$input = \str_replace('$user', $user, $input);
 			}
 		}
 		return $input;

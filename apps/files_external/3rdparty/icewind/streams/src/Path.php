@@ -45,7 +45,7 @@ class Path {
 
 	public function getProtocol() {
 		if (!$this->protocol) {
-			$this->protocol = 'auto' . uniqid();
+			$this->protocol = 'auto' . \uniqid();
 		}
 		return $this->protocol;
 	}
@@ -57,13 +57,13 @@ class Path {
 	protected function register() {
 		if (!$this->registered) {
 			$this->appendDefaultContent($this->contextOptions);
-			stream_wrapper_register($this->getProtocol(), $this->class);
+			\stream_wrapper_register($this->getProtocol(), $this->class);
 			$this->registered = true;
 		}
 	}
 
 	protected function unregister() {
-		stream_wrapper_unregister($this->getProtocol());
+		\stream_wrapper_unregister($this->getProtocol());
 		$this->unsetDefaultContent($this->getProtocol());
 		$this->registered = false;
 	}
@@ -74,15 +74,15 @@ class Path {
 	 * @param array $values
 	 */
 	protected function appendDefaultContent($values) {
-		if (!is_array(current($values))) {
+		if (!\is_array(\current($values))) {
 			$values = array($this->getProtocol() => $values);
 		}
-		$context = stream_context_get_default();
-		$defaults = stream_context_get_options($context);
+		$context = \stream_context_get_default();
+		$defaults = \stream_context_get_options($context);
 		foreach ($values as $key => $value) {
 			$defaults[$key] = $value;
 		}
-		stream_context_set_default($defaults);
+		\stream_context_set_default($defaults);
 	}
 
 	/**
@@ -91,10 +91,10 @@ class Path {
 	 * @param string $key
 	 */
 	protected function unsetDefaultContent($key) {
-		$context = stream_context_get_default();
-		$defaults = stream_context_get_options($context);
+		$context = \stream_context_get_default();
+		$defaults = \stream_context_get_options($context);
 		unset($defaults[$key]);
-		stream_context_set_default($defaults);
+		\stream_context_set_default($defaults);
 	}
 
 	public function __toString() {

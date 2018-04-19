@@ -72,7 +72,7 @@ class Crypto implements ICrypto {
 		}
 
 		// Append an "a" behind the password and hash it to prevent reusing the same password as for encryption
-		$password = hash('sha512', $password . 'a');
+		$password = \hash('sha512', $password . 'a');
 
 		$hash = new Hash('sha512');
 		$hash->setKey($password);
@@ -94,8 +94,8 @@ class Crypto implements ICrypto {
 		$iv = $this->random->generate($this->ivLength);
 		$this->cipher->setIV($iv);
 
-		$ciphertext = bin2hex($this->cipher->encrypt($plaintext));
-		$hmac = bin2hex($this->calculateHMAC($ciphertext.$iv, $password));
+		$ciphertext = \bin2hex($this->cipher->encrypt($plaintext));
+		$hmac = \bin2hex($this->calculateHMAC($ciphertext.$iv, $password));
 
 		return $ciphertext.'|'.$iv.'|'.$hmac;
 	}
@@ -113,18 +113,18 @@ class Crypto implements ICrypto {
 		}
 		$this->cipher->setPassword($password);
 
-		$parts = explode('|', $authenticatedCiphertext);
-		if(sizeof($parts) !== 3) {
+		$parts = \explode('|', $authenticatedCiphertext);
+		if(\sizeof($parts) !== 3) {
 			throw new \Exception('Authenticated ciphertext could not be decoded.');
 		}
 
-		$ciphertext = hex2bin($parts[0]);
+		$ciphertext = \hex2bin($parts[0]);
 		$iv = $parts[1];
-		$hmac = hex2bin($parts[2]);
+		$hmac = \hex2bin($parts[2]);
 
 		$this->cipher->setIV($iv);
 
-		if(!hash_equals($this->calculateHMAC($parts[0].$parts[1], $password), $hmac)) {
+		if(!\hash_equals($this->calculateHMAC($parts[0].$parts[1], $password), $hmac)) {
 			throw new \Exception('HMAC does not match.');
 		}
 

@@ -80,7 +80,7 @@ class ListConfigsTest extends TestCase {
 					]],
 				],
 				false,
-				json_encode([
+				\json_encode([
 					'system' => [
 						'secret' => IConfig::SENSITIVE_VALUE,
 						'overwrite.cli.url' => 'http://localhost',
@@ -116,7 +116,7 @@ class ListConfigsTest extends TestCase {
 					]],
 				],
 				true,
-				json_encode([
+				\json_encode([
 					'system' => [
 						'secret' => 'my secret',
 						'overwrite.cli.url' => 'http://localhost',
@@ -160,7 +160,7 @@ class ListConfigsTest extends TestCase {
 					]],
 				],
 				false,
-				json_encode([
+				\json_encode([
 					'system' => [
 						'secret' => IConfig::SENSITIVE_VALUE,
 						'objectstore' => [
@@ -195,7 +195,7 @@ class ListConfigsTest extends TestCase {
 					]],
 				],
 				true,
-				json_encode([
+				\json_encode([
 					'system' => [
 						'secret' => 'my secret',
 						'overwrite.cli.url' => 'http://localhost',
@@ -223,7 +223,7 @@ class ListConfigsTest extends TestCase {
 					]],
 				],
 				false,
-				json_encode([
+				\json_encode([
 					'apps' => [
 						'files' => [
 							'enabled' => 'yes',
@@ -252,7 +252,7 @@ class ListConfigsTest extends TestCase {
 					]],
 				],
 				true,
-				json_encode([
+				\json_encode([
 					'apps' => [
 						'files' => [
 							'enabled' => 'yes',
@@ -319,6 +319,6 @@ class ListConfigsTest extends TestCase {
 
 		$this->invokePrivate($this->command, 'execute', [$this->consoleInput, $this->consoleOutput]);
 
-		$this->assertEquals($expected, trim($output, "\n"));
+		$this->assertEquals($expected, \trim($output, "\n"));
 	}
 }
