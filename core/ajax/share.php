@@ -211,7 +211,7 @@ if (isset($_POST['action']) && isset($_POST['itemType']) && isset($_POST['itemSo
 				null,
 				$filter->getFile(),
 				$filter->getLink(),
-				$filter->getExpirationDate(),
+				$expiration,
 				$filter->getPersonalNote(),
 				$options
 			);
