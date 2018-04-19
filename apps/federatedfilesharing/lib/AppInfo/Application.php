@@ -57,7 +57,8 @@ class Application extends App {
 			$addressHandler,
 			\OC::$server->getHTTPClientService(),
 			$discoveryManager,
-			\OC::$server->getJobList()
+			\OC::$server->getJobList(),
+			\OC::$server->getConfig()
 		);
 		$tokenHandler = new \OCA\FederatedFileSharing\TokenHandler(
 			\OC::$server->getSecureRandom()
