@@ -103,7 +103,7 @@ class ThemeService implements IThemeService {
 				$webPath = \OC_App::getAppWebPath($themeName);
 			} else {
 				$directory = 'themes/' . $themeName;
-				$webPath = '/themes/' . $themeName;
+				$webPath = \OC::$WEBROOT . "/themes/$themeName";
 			}
 		}
 
