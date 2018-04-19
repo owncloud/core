@@ -5,7 +5,6 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/).
 
 ## [Unreleased]
-
 ### Added
 - Added option for user:sync to reenable formerly disabled users - [#31124](https://github.com/owncloud/core/pull/31124)
 - Ability to log extra JSON fields - [#31121](https://github.com/owncloud/core/issues/31121)
@@ -13,7 +12,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/).
 - Added command to verify and fix checksums - [#31008](https://github.com/owncloud/core/pull/31008)
 - Introduce seen and single user sync command line features - [#31025](https://github.com/owncloud/core/issues/31025) [#31032](https://github.com/owncloud/core/issues/31032)
 - Added config setting to specify minimum characters for sharing autocomplete - [#30994](https://github.com/owncloud/core/issues/30994) [#31067](https://github.com/owncloud/core/issues/31067) [#31160](https://github.com/owncloud/core/pull/31160)
-- Added personal note field for link share email - [#30486](https://github.com/owncloud/core/issues/30486) [#30571](https://github.com/owncloud/core/issues/30571) [#30813](https://github.com/owncloud/core/issues/30813) [#31057](https://github.com/owncloud/core/issues/31057)
+- Added personal note field for link share email - [#30486](https://github.com/owncloud/core/issues/30486) [#30571](https://github.com/owncloud/core/issues/30571) [#30813](https://github.com/owncloud/core/issues/30813) [#31057](https://github.com/owncloud/core/issues/31057) 
 - Add conditional Logging target logfile for shared_secret and users - [#30443](https://github.com/owncloud/core/issues/30443)
 - Add option to disable link share password enforcement for write-only shares - [#30408](https://github.com/owncloud/core/issues/30408) [#30774](https://github.com/owncloud/core/issues/30774) [#30787](https://github.com/owncloud/core/issues/30787)
 - Add Webdav-Location header in private link redirect - [#30387](https://github.com/owncloud/core/issues/30387) [#30595](https://github.com/owncloud/core/issues/30595)
@@ -28,7 +27,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/).
 - Added group option to files:scan command - [#30615](https://github.com/owncloud/core/issues/30615)
 - Added warning if no files to process in occ files:transfer-ownership command - [#30612](https://github.com/owncloud/core/issues/30612)
 - Added user:modify command to core - [#30652](https://github.com/owncloud/core/issues/30652)
-- Added config switch to enable fallback to http scheme when creating fed shares - [#30646](https://github.com/owncloud/core/issues/30646)
+- Added config switch to enable fallback to http scheme when creating fed shares - [#30646](https://github.com/owncloud/core/issues/30646) [#31196](https://github.com/owncloud/core/issues/31196)
 - Added repair step for orphaned sub-shares - [#30695](https://github.com/owncloud/core/issues/30695)
 - Added repair step to fix orphaned reshares - [#31004](https://github.com/owncloud/core/issues/31004)
 - Added Symfony events for configuration changes (config.php and appconfig) - [#30788](https://github.com/owncloud/core/issues/30788) [#30937](https://github.com/owncloud/core/issues/30937) [#31107](https://github.com/owncloud/core/issues/31107)
@@ -75,6 +74,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/).
 - Remove "Unlimited" word from quota report in personal page - [#31041](https://github.com/owncloud/core/issues/31041)
 
 ### Fixes
+- Prevent background scan to scan homes of users who never logged in - [#31189](https://github.com/owncloud/core/issues/31189)
 - Properly align three button dialogs - [#31147](https://github.com/owncloud/core/issues/31147)
 - Many documentation improvements in config.sample.php - [#31114](https://github.com/owncloud/core/issues/31114) [#31127](https://github.com/owncloud/core/issues/31127) [#31128](https://github.com/owncloud/core/issues/31128) [#31068](https://github.com/owncloud/core/issues/31068) [#31173](https://github.com/owncloud/core/issues/31173) [#31182](https://github.com/owncloud/core/pull/31182)
 - Fix some documentation paths in config.sample.php - [#30431](https://github.com/owncloud/core/issues/30431)
