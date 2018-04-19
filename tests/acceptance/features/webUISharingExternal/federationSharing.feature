@@ -5,7 +5,8 @@ I want to share files with any users on other cloud storages
 So that other users have access to these files
 
 	Background:
-		Given these users have been created:
+		Given the administrator has allowed http fallback for federation sharing
+		And these users have been created:
 		|username|password|displayname|email       |
 		|user1   |1234    |User One   |u1@oc.com.np|
 		|user2   |1234    |User Two   |u2@oc.com.np|
