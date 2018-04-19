@@ -136,25 +136,17 @@ class Scanner extends PublicEmitter {
 	public function backgroundScan($dir) {
 		$mounts = $this->getMounts($dir);
 		foreach ($mounts as $mount) {
-			$storage = $mount->getStorage();
-			if (is_null($storage)) {
+			if (!$this->shouldScan($mount)) {
 				continue;
 			}
 
-			// don't bother scanning failed storages (shortcut for same result)
-			if ($storage->instanceOfStorage('OC\Files\Storage\FailedStorage')) {
-				continue;
-			}
+			$storage = $mount->getStorage();
 
 			// don't scan the root storage
 			if ($storage->instanceOfStorage('\OC\Files\Storage\Local') && $mount->getMountPoint() === '/') {
 				continue;
 			}
 
-			// don't scan received local shares, these can be scanned when scanning the owner's storage
-			if ($storage->instanceOfStorage('OCA\Files_Sharing\ISharedStorage')) {
-				continue;
-			}
 			$scanner = $storage->getScanner();
 			$this->attachListener($mount);
 
@@ -176,6 +168,43 @@ class Scanner extends PublicEmitter {
 	}
 
 	/**
+	 * Returns whether the given mount point should be scanned
+	 *
+	 * @param $mount mount point
+	 * @return bool true to scan, false to skip
+	 */
+	private function shouldScan($mount) {
+		$storage = $mount->getStorage();
+		if (is_null($storage)) {
+			return false;
+		}
+
+		// don't bother scanning failed storages (shortcut for same result)
+		if ($storage->instanceOfStorage('OC\Files\Storage\FailedStorage')) {
+			return false;
+		}
+
+		// if the home storage isn't writable then the scanner is run as the wrong user
+		if ($storage->instanceOfStorage('\OC\Files\Storage\Home') and
+			(!$storage->isCreatable('') or !$storage->isCreatable('files'))
+		) {
+			if ($storage->file_exists('') or $storage->getCache()->inCache('')) {
+				throw new ForbiddenException();
+			} else {// if the root exists in neither the cache nor the storage the user isn't setup yet
+				return false;
+			}
+
+		}
+
+		// don't scan received local shares, these can be scanned when scanning the owner's storage
+		if ($storage->instanceOfStorage('OCA\Files_Sharing\ISharedStorage')) {
+			return false;
+		}
+
+		return true;
+	}
+
+	/**
 	 * @param string $dir
 	 * @throws \OC\ForbiddenException
 	 */
@@ -185,32 +214,11 @@ class Scanner extends PublicEmitter {
 		}
 		$mounts = $this->getMounts($dir);
 		foreach ($mounts as $mount) {
+			if (!$this->shouldScan($mount)) {
+				continue;
+			}
+
 			$storage = $mount->getStorage();
-			if (is_null($storage)) {
-				continue;
-			}
-
-			// don't bother scanning failed storages (shortcut for same result)
-			if ($storage->instanceOfStorage('OC\Files\Storage\FailedStorage')) {
-				continue;
-			}
-
-			// if the home storage isn't writable then the scanner is run as the wrong user
-			if ($storage->instanceOfStorage('\OC\Files\Storage\Home') and
-				(!$storage->isCreatable('') or !$storage->isCreatable('files'))
-			) {
-				if ($storage->file_exists('') or $storage->getCache()->inCache('')) {
-					throw new ForbiddenException();
-				} else {// if the root exists in neither the cache nor the storage the user isn't setup yet
-					break;
-				}
-
-			}
-
-			// don't scan received local shares, these can be scanned when scanning the owner's storage
-			if ($storage->instanceOfStorage('OCA\Files_Sharing\ISharedStorage')) {
-				continue;
-			}
 
 			$this->emit('\OC\Files\Utils\Scanner', 'beforeScanStorage', [$storage]);
 
