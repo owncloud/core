@@ -429,6 +429,15 @@ class FileTest extends TestCase {
 		$this->assertEquals('file.aftercreate', $calledAfterEvent[0]);
 	}
 
+	/**
+	 * Test putting a file with long name. The example name
+	 * used for testing is 249 character long name, including
+	 * '.txt'.
+	 */
+	public function testPutLongFileName() {
+		$this->assertNotEmpty($this->doPut('/hhhhhhhhhhhhhhhhhhhhhhhhheeeeeeeeeeeeeeeeeeeeeeeeeeelllllllllllllllllllllllllllllllllllloooooooooooooooooooooooooooooooooooooooooooohhhhhhhhhhhhhhhhhhhhhhhhhoooooooooooooooooooooooooooowwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwaaaaaaaaaarrrrrrrrreyoubro.txt'));
+	}
+
 	public function legalMtimeProvider() {
 		return [
 			"string" => [
