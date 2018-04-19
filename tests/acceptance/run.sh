@@ -90,6 +90,9 @@ fi
 PREVIOUS_SKELETON_DIR=$($OCC --no-warnings config:system:get skeletondirectory)
 $OCC config:system:set skeletondirectory --value="$(pwd)/skeleton"
 
+PREVIOUS_HTTP_FALLBACK_SETTING=$($OCC --no-warnings config:system:get sharing.federation.allowHttpFallback)
+$OCC config:system:set sharing.federation.allowHttpFallback --type boolean --value true
+
 #Enable external storage app
 $OCC config:app:set core enable_external_storage --value=yes
 $OCC config:system:set files_external_allow_create_new_local --value=true
@@ -175,6 +178,13 @@ if test "A$PREVIOUS_SKELETON_DIR" = "A"; then
 	$OCC config:system:delete skeletondirectory
 else
 	$OCC config:system:set skeletondirectory --value="$PREVIOUS_SKELETON_DIR"
+fi
+
+# Put back HTTP fallback setting
+if test "A$PREVIOUS_HTTP_FALLBACK_SETTING" = "A"; then
+	$OCC config:system:delete sharing.federation.allowHttpFallback
+else
+	$OCC config:system:set sharing.federation.allowHttpFallback --type boolean --value="$PREVIOUS_HTTP_FALLBACK_SETTING"
 fi
 
 # Clear storage folder

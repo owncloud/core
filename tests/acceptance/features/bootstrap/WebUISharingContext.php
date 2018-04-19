@@ -77,6 +77,8 @@ class WebUISharingContext extends RawMinkContext implements Context {
 	private $createdPublicLinks = [];
 
 	private $oldMinCharactersForAutocomplete = null;
+	private $oldFedSharingFallbackSetting = null;
+
 	/**
 	 * WebUISharingContext constructor.
 	 *
@@ -347,6 +349,30 @@ class WebUISharingContext extends RawMinkContext implements Context {
 	}
 
 	/**
+	 * @Given the administrator has allowed http fallback for federation sharing
+	 *
+	 * @return void
+	 */
+	public function allowHttpFallbackForFedSharing() {
+		if (is_null($this->oldFedSharingFallbackSetting)) {
+			$oldFedSharingFallbackSetting = SetupHelper::runOcc(
+				['config:system:get', 'sharing.federation.allowHttpFallback']
+			)['stdOut'];
+			$this->oldFedSharingFallbackSetting = trim(
+				$oldFedSharingFallbackSetting
+			);
+		}
+		SetupHelper::runOcc(
+			[
+				'config:system:set',
+				'sharing.federation.allowHttpFallback',
+				'--type boolean',
+				'--value true',
+			]
+		);
+	}
+
+	/**
 	 * @When the user declines the offered remote shares using the webUI
 	 * @Given the user has declined the offered remote shares
 	 *
@@ -609,6 +635,7 @@ class WebUISharingContext extends RawMinkContext implements Context {
 	 * @return void
 	 */
 	public function tearDownScenario() {
+		//TODO make a function that can be used for different settings
 		if ($this->oldMinCharactersForAutocomplete === "") {
 			SetupHelper::runOcc(['config:system:delete', 'user.search_min_length']);
 		} elseif (!is_null($this->oldMinCharactersForAutocomplete)) {
@@ -618,6 +645,22 @@ class WebUISharingContext extends RawMinkContext implements Context {
 					'user.search_min_length',
 					'--value',
 					$this->oldMinCharactersForAutocomplete
+				]
+			);
+		}
+
+		if ($this->oldFedSharingFallbackSetting === "") {
+			SetupHelper::runOcc(
+				['config:system:delete', 'sharing.federation.allowHttpFallback']
+			);
+		} elseif (!is_null($this->oldFedSharingFallbackSetting)) {
+			SetupHelper::runOcc(
+				[
+					'config:system:set',
+					'sharing.federation.allowHttpFallback',
+					'--type boolean',
+					'--value',
+					$this->oldFedSharingFallbackSetting
 				]
 			);
 		}
