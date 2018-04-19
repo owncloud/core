@@ -41,32 +41,32 @@ class OC_API {
 	 */
 
 	/** @deprecated Use \OCP\API::GUEST_AUTH instead */
-	const GUEST_AUTH = 0;
+	public const GUEST_AUTH = 0;
 
 	/** @deprecated Use \OCP\API::USER_AUTH instead */
-	const USER_AUTH = 1;
+	public const USER_AUTH = 1;
 
 	/** @deprecated Use \OCP\API::SUBADMIN_AUTH instead */
-	const SUBADMIN_AUTH = 2;
+	public const SUBADMIN_AUTH = 2;
 
 	/** @deprecated Use \OCP\API::ADMIN_AUTH instead */
-	const ADMIN_AUTH = 3;
+	public const ADMIN_AUTH = 3;
 
 	/**
 	 * API Response Codes
 	 */
 
 	/** @deprecated Use \OCP\API::RESPOND_UNAUTHORISED instead */
-	const RESPOND_UNAUTHORISED = 997;
+	public const RESPOND_UNAUTHORISED = 997;
 
 	/** @deprecated Use \OCP\API::RESPOND_SERVER_ERROR instead */
-	const RESPOND_SERVER_ERROR = 996;
+	public const RESPOND_SERVER_ERROR = 996;
 
 	/** @deprecated Use \OCP\API::RESPOND_NOT_FOUND instead */
-	const RESPOND_NOT_FOUND = 998;
+	public const RESPOND_NOT_FOUND = 998;
 
 	/** @deprecated Use \OCP\API::RESPOND_UNKNOWN_ERROR instead */
-	const RESPOND_UNKNOWN_ERROR = 999;
+	public const RESPOND_UNKNOWN_ERROR = 999;
 
 	/**
 	 * api actions
@@ -368,6 +368,9 @@ class OC_API {
 			return \OC_User::getUser();
 		} catch (\OC\User\LoginException $e) {
 			return false;
+		} catch (\Exception $e) {
+			\OC::$server->getLogger()->logException($e);
+			return false;
 		}
 	}
 
@@ -534,6 +537,6 @@ class OC_API {
 		$format = \OC::$server->getRequest()->getParam('format', 'xml');
 		$txt='Invalid query, please check the syntax. API specifications are here:'
 			.' http://www.freedesktop.org/wiki/Specifications/open-collaboration-services.';
-		OC_API::respond(new \OC\OCS\Result(null, API::RESPOND_UNKNOWN_ERROR, $txt), $format);
+		self::respond(new \OC\OCS\Result(null, API::RESPOND_UNKNOWN_ERROR, $txt), $format);
 	}
 }

@@ -104,20 +104,20 @@ class OC {
 	/**
 	 * @var \OC\Autoloader $loader
 	 */
-	public static $loader = null;
+	public static $loader;
 
 	/** @var \Composer\Autoload\ClassLoader $composerAutoloader */
-	public static $composerAutoloader = null;
+	public static $composerAutoloader;
 
 	/**
 	 * @var \OC\Server
 	 */
-	public static $server = null;
+	public static $server;
 
 	/**
 	 * @var \OC\Config
 	 */
-	private static $config = null;
+	private static $config;
 
 	/**
 	 * @throws \RuntimeException when the 3rdparty directory is missing or
@@ -251,6 +251,9 @@ class OC {
 		}
 	}
 
+	/**
+	 * @throws Exception
+	 */
 	public static function checkInstalled() {
 		if (\defined('OC_CONSOLE')) {
 			return;
@@ -954,20 +957,25 @@ class OC {
 	 * @return boolean
 	 */
 	public static function handleLogin(OCP\IRequest $request) {
-		$userSession = self::$server->getUserSession();
-		if (OC_User::handleApacheAuth()) {
-			return true;
+		try {
+			$userSession = self::$server->getUserSession();
+			if (OC_User::handleApacheAuth()) {
+				return true;
+			}
+			if ($userSession->tryTokenLogin($request)) {
+				return true;
+			}
+			if ($userSession->tryAuthModuleLogin($request)) {
+				return true;
+			}
+			if ($userSession->tryBasicAuthLogin($request)) {
+				return true;
+			}
+			return false;
+		} catch (Exception $ex) {
+			self::$server->getLogger()->logException($ex);
+			return false;
 		}
-		if ($userSession->tryTokenLogin($request)) {
-			return true;
-		}
-		if ($userSession->tryAuthModuleLogin($request)) {
-			return true;
-		}
-		if ($userSession->tryBasicAuthLogin($request)) {
-			return true;
-		}
-		return false;
 	}
 
 	protected static function handleAuthHeaders() {
