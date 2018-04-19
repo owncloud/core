@@ -79,6 +79,15 @@ pipeline:
       matrix:
         TEST_SUITE: lint
 
+  php-cs-fixer:
+    image: owncloudci/php:${PHP_VERSION}
+    pull: true
+    commands:
+      - make test-php-style
+    when:
+      matrix:
+        TEST_SUITE: php-cs-fixer
+
   phpunit:
     image: owncloudci/php:${PHP_VERSION}
     pull: true
@@ -375,6 +384,10 @@ matrix:
     #   DB_TYPE: oracle
     #   TEST_SUITE: phpunit
 
+
+  # php-cs-fixer
+    - TEST_SUITE: php-cs-fixer
+      PHP_VERSION: 7.2
 
   # Litmus
     - PHP_VERSION: 7.1
