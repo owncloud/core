@@ -50,14 +50,18 @@ try {
 			OC::$server->getRequest()
 		));
 		exit;
-	} elseif ($request->getParam('service', '')) {
+	}
+
+	if ($request->getParam('service', '')) {
 		$service = $request->getParam('service', '');
 	} else {
 		$pathInfo = trim($pathInfo, '/');
 		list($service) = explode('/', $pathInfo);
 	}
-	$file = OCP\Config::getAppValue('core', 'public_' . strip_tags($service));
-	if (is_null($file)) {
+	$service = strip_tags($service);
+
+	$file = OC::$server->getConfig()->getAppValue('core', "public_$service");
+	if ($file === null) {
 		header('HTTP/1.0 404 Not Found');
 		$dispatcher = \OC::$server->getEventDispatcher();
 		$dispatcher->dispatch(\OCP\Http\HttpEvents::EVENT_404, new OCP\Http\HttpEvents(
@@ -81,9 +85,8 @@ try {
 	OC_App::loadApp($app);
 	OC_User::setIncognitoMode(true);
 
-	$baseuri = OC::$WEBROOT . '/public.php/' . $service . '/';
-
-	require_once OC_App::getAppPath($app) . '/' . $parts[1];
+	$baseuri = OC::$WEBROOT . "/public.php/$service/";
+	require_once OC_App::getAppPath($app) . "/$parts[1]";
 
 } catch (Exception $ex) {
 	if ($ex instanceof \OC\ServiceUnavailableException) {

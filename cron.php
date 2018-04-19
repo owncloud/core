@@ -72,11 +72,17 @@ try {
 
 	// Exit if background jobs are disabled!
 	$appMode = \OCP\BackgroundJob::getExecutionType();
-	if ($appMode == 'none') {
+	if ($appMode === 'none') {
 		if (OC::$CLI) {
 			echo 'Background Jobs are disabled!' . PHP_EOL;
 		} else {
-			OC_JSON::error(['data' => ['message' => 'Background jobs disabled!']]);
+			$r = new \OCP\AppFramework\Http\JSONResponse([
+				'data' => [ 'message' => 'Background jobs disabled!' ],
+				'status' => 'error'
+			]
+			// TODO use 500 error response?
+			);
+			echo $r->render();
 		}
 		exit(1);
 	}
@@ -87,20 +93,20 @@ try {
 
 		// the cron job must be executed with the right user
 		if (!function_exists('posix_getuid')) {
-			echo "The posix extensions are required - see http://php.net/manual/en/book.posix.php" . PHP_EOL;
+			echo 'The posix extensions are required - see http://php.net/manual/en/book.posix.php' . PHP_EOL;
 			exit(0);
 		}
 		$user = posix_getpwuid(posix_getuid());
 		$configUser = posix_getpwuid(fileowner(OC::$SERVERROOT . '/config/config.php'));
 		if ($user['name'] !== $configUser['name']) {
-			echo "Console has to be executed with the same user as the web server is operated" . PHP_EOL;
-			echo "Current user: " . $user['name'] . PHP_EOL;
-			echo "Web server user: " . $configUser['name'] . PHP_EOL;
+			echo 'Console has to be executed with the same user as the web server is operated' . PHP_EOL;
+			echo "Current user: {$user['name']}" . PHP_EOL;
+			echo "Web server user: {$configUser['name']}" . PHP_EOL;
 			exit(0);
 		}
 
 		// We call ownCloud from the CLI (aka cron)
-		if ($appMode != 'cron') {
+		if ($appMode !== 'cron') {
 			\OCP\BackgroundJob::setExecutionType('cron');
 		}
 
@@ -133,19 +139,27 @@ try {
 
 	} else {
 		// We call cron.php from some website
-		if ($appMode == 'cron') {
+		if ($appMode === 'cron') {
 			// Cron is cron :-P
-			OC_JSON::error(['data' => ['message' => 'Backgroundjobs are using system cron!']]);
+			$r = new \OCP\AppFramework\Http\JSONResponse([
+					'data' => [ 'message' => 'Backgroundjobs are using system cron!' ],
+					'status' => 'error'
+				]
+			// TODO use 500 error response?
+			);
 		} else {
 			// Work and success :-)
 			$jobList = \OC::$server->getJobList();
 			$job = $jobList->getNext();
-			if ($job != null) {
+			if ($job !== null) {
 				$job->execute($jobList, $logger);
 				$jobList->setLastJob($job);
 			}
-			OC_JSON::success();
+			$r = new \OCP\AppFramework\Http\JSONResponse([
+					'status' => 'success'
+			]);
 		}
+		echo $r->render();
 	}
 
 	// Log the successful cron execution
