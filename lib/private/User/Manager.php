@@ -263,7 +263,7 @@ class Manager extends PublicEmitter implements IUserManager {
 	 * @return \OC\User\User[]
 	 */
 	public function search($pattern, $limit = null, $offset = null) {
-		$accounts = $this->accountMapper->search('user_id', $pattern, $limit, $offset);
+		$accounts = $this->accountMapper->search('user_name', $pattern, $limit, $offset);
 		$users = [];
 		if ($this->userSearch->isSearchable($pattern)) {
 			foreach ($accounts as $account) {

@@ -28,7 +28,9 @@ use OCP\UserInterface;
 /**
  * Class Account
  *
- * @method string getUserId()
+ * @method string getUuid()
+ * @method void setUuid(string $uuid)
+ * @method string getUserName()
  * @method string getDisplayName()
  * @method void setDisplayName(string $displayName)
  * @method string getEmail()
@@ -54,8 +56,8 @@ class Account extends Entity {
 	const STATE_DELETED = 3;
 
 	protected $email;
-	protected $userId;
-	protected $lowerUserId;
+	protected $uuid;
+	protected $userName;
 	protected $displayName;
 	protected $quota;
 	protected $lastLogin;
@@ -72,11 +74,29 @@ class Account extends Entity {
 	}
 
 	/**
+	 * @return string the uuid of this account
+	 * @deprecated use getUserName() or getUuid() properly
+	 */
+	public function getUserId () {
+		return $this->getUuid();
+	}
+
+	/**
+	 * @param string $uuid
+	 * @deprecated use getUserName() or getUuid() properly
+	 */
+	public function setUserId ($uuid) {
+		$this->setUserName($uuid);
+		$this->setUuid($uuid);
+	}
+
+	// TODO grep für upload
+
+	/**
 	 * @param string $uid
 	 */
-	public function setUserId($uid) {
-		parent::setter('lowerUserId', [strtolower($uid)]);
-		parent::setter('userId', [$uid]);
+	public function setUserName($uid) {
+		parent::setter('userName', [strtolower($uid)]);
 	}
 
 	/**

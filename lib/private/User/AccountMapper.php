@@ -120,16 +120,42 @@ class AccountMapper extends Mapper {
 	}
 
 	/**
-	 * @param string $uid
+	 * @param string $uid the uuid of this user
+	 * @throws DoesNotExistException if the account does not exist
+	 * @throws MultipleObjectsReturnedException if more than one account exists
+	 * @return Account
+	 * @deprecated use getByUserName() or getBdUuid() properly
+	 */
+	public function getByUid($uid) {
+		return $this->getByUuid($uid);
+	}
+
+	/**
+	 * @param string $uuid
 	 * @throws DoesNotExistException if the account does not exist
 	 * @throws MultipleObjectsReturnedException if more than one account exists
 	 * @return Account
 	 */
-	public function getByUid($uid) {
+	public function getByUuid($uuid) {
 		$qb = $this->db->getQueryBuilder();
 		$qb->select('*')
 			->from($this->getTableName())
-			->where($qb->expr()->eq('lower_user_id', $qb->createNamedParameter(strtolower($uid))));
+			->where($qb->expr()->eq('uuid', $qb->createNamedParameter($uuid)));
+
+		return $this->findEntity($qb->getSQL(), $qb->getParameters());
+	}
+
+	/**
+	 * @param string $userName
+	 * @throws DoesNotExistException if the account does not exist
+	 * @throws MultipleObjectsReturnedException if more than one account exists
+	 * @return Account
+	 */
+	public function getByUserName($userName) {
+		$qb = $this->db->getQueryBuilder();
+		$qb->select('*')
+			->from($this->getTableName())
+			->where($qb->expr()->eq('user_name', $qb->createNamedParameter(strtolower($userName))));
 
 		return $this->findEntity($qb->getSQL(), $qb->getParameters());
 	}
@@ -170,11 +196,11 @@ class AccountMapper extends Mapper {
 
 		$qb = $this->db->getQueryBuilder();
 		$qb->selectAlias('DISTINCT a.id', 'id')
-			->addSelect(['user_id', 'lower_user_id', 'display_name', 'email', 'last_login', 'backend', 'state', 'quota', 'home'])
+			->addSelect(['uuid', 'user_name', 'display_name', 'email', 'last_login', 'backend', 'state', 'quota', 'home'])
 			->from($this->getTableName(), 'a')
 			->leftJoin('a', 'account_terms', 't', $qb->expr()->eq('a.id', 't.account_id'))
 			->orderBy('display_name')
-			->where($qb->expr()->like('lower_user_id', $qb->createNamedParameter($loweredParameter)))
+			->where($qb->expr()->like('user_name', $qb->createNamedParameter($loweredParameter)))
 			->orWhere($qb->expr()->iLike('display_name', $qb->createNamedParameter($parameter)))
 			->orWhere($qb->expr()->iLike('email', $qb->createNamedParameter($parameter)))
 			->orWhere($qb->expr()->like('t.term', $qb->createNamedParameter($loweredParameter)));
@@ -226,7 +252,7 @@ class AccountMapper extends Mapper {
 			->from($this->getTableName());
 
 		if ($search) {
-			$qb->where($qb->expr()->iLike('user_id',
+			$qb->where($qb->expr()->iLike('user_name',
 				$qb->createNamedParameter('%' . $this->db->escapeLikeParameter($search) . '%')));
 		}
 		if ($onlySeen) {
