@@ -40,7 +40,7 @@ class EmailContext implements Context, SnippetAcceptingContext {
 	public function getMailhogUrl() {
 		return $this->mailhogUrl;
 	}
-	
+
 	/**
 	 * @Then the email address :address should have received an email with the body containing
 	 * 
@@ -65,15 +65,7 @@ class EmailContext implements Context, SnippetAcceptingContext {
 	 * @return void
 	 */
 	public function setUpScenario(BeforeScenarioScope $scope) {
-		$mailhogHost = getenv('MAILHOG_HOST');
-		if ($mailhogHost === false) {
-			$mailhogHost = "127.0.0.1";
-		}
-		$mailhogPort = getenv('MAILHOG_PORT');
-		if ($mailhogPort === false) {
-			$mailhogPort = "8025";
-		}
-		$this->mailhogUrl = "http://$mailhogHost:$mailhogPort";
+		$this->mailhogUrl = EmailHelper::getMailhogUrl();
 		$this->clearMailHogMessages();
 	}
 
