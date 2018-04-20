@@ -270,6 +270,7 @@ abstract class FilesPageBasic extends OwncloudPage {
 	 *
 	 * @param string|array $name
 	 * @param Session $session
+	 * @param bool $expectToDeleteFile
 	 * @param int $maxRetries
 	 *
 	 * @return void
@@ -461,9 +462,12 @@ abstract class FilesPageBasic extends OwncloudPage {
 
 	/**
 	 *
+	 * @param Session $session
+	 *
 	 * @return boolean
+	 * @throws \Exception
 	 */
-	public function isFolderEmpty($session) {
+	public function isFolderEmpty(Session $session) {
 		$this->waitTillPageIsLoaded($session);
 		$emptyContentElement = $this->find(
 			"xpath",
