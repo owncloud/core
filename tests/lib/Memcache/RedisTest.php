@@ -16,10 +16,9 @@ class RedisTest extends Cache {
 		if (!\OC\Memcache\Redis::isAvailable()) {
 			self::markTestSkipped('The redis extension is not available.');
 		}
-
-		$instance = new \OC\Memcache\Redis(self::getUniqueID());
-
+		
 		try {
+			$instance = new \OC\Memcache\Redis(self::getUniqueID());
 			$instance->set(self::getUniqueID(), self::getUniqueID());
 		} catch(\RedisException $ex) {
 			self::markTestSkipped('redis server seems to be down.');
