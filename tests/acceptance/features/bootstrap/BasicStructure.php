@@ -604,7 +604,7 @@ trait BasicStructure {
 	 *
 	 * @return void
 	 */
-	private function extracRequestTokenFromResponse(ResponseInterface $response) {
+	private function extractRequestTokenFromResponse(ResponseInterface $response) {
 		$this->requestToken = substr(
 			preg_replace(
 				'/(.*)data-requesttoken="(.*)">(.*)/sm', '\2',
@@ -633,7 +633,7 @@ trait BasicStructure {
 				'cookies' => $this->cookieJar,
 			]
 		);
-		$this->extracRequestTokenFromResponse($response);
+		$this->extractRequestTokenFromResponse($response);
 
 		// Login and extract new token
 		$password = $this->getPasswordForUser($user);
@@ -649,7 +649,7 @@ trait BasicStructure {
 				'cookies' => $this->cookieJar,
 			]
 		);
-		$this->extracRequestTokenFromResponse($response);
+		$this->extractRequestTokenFromResponse($response);
 	}
 
 	/**
