@@ -422,8 +422,8 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 	 * has rows of files.
 	 *
 	 * @param string $name
-	 *
 	 * @param bool $expectToDeleteFile if true, then the caller expects that the file can be deleted
+	 *
 	 * @return void
 	 * @throws Exception
 	 */
@@ -1375,8 +1375,8 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 	 * @param string $localFile
 	 * @param bool $shouldBeSame (default true) if true then check that the file contents are the same
 	 *                           otherwise check that the file contents are different
-	 *
 	 * @param bool $checkOnRemoteServer if true, then use the remote server to download the file
+	 *
 	 * @return void
 	 * @throws Exception
 	 */
