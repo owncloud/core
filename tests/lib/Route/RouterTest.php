@@ -1,5 +1,6 @@
 <?php
 /**
+ * @author Jörn Friedrich Dreyer <jfd@owncloud.com>
  * @author Thomas Müller <thomas.mueller@tmit.eu>
  *
  * @copyright Copyright (c) 2018, ownCloud GmbH
@@ -24,7 +25,33 @@ namespace Test\Route;
 use OC\Route\Router;
 use OCP\ILogger;
 
+
+class LoadableRouter extends Router {
+	/**
+	 * @param bool $loaded
+	 */
+	public function setLoaded($loaded) {
+		$this->loaded = $loaded;
+	}
+}
+
 class RouterTest extends \Test\TestCase {
+
+
+	/** @var ILogger */
+	private $l;
+
+	/**
+	 * RouterTest constructor.
+	 *
+	 * @param string $name
+	 * @param array $data
+	 * @param string $dataName
+	 */
+	public function __construct($name = null, array $data = [], $dataName = '') {
+		parent::__construct($name, $data, $dataName);
+		$this->l = $this->createMock(ILogger::class);
+	}
 
 	/**
 	 * @dataProvider providesWebRoot
@@ -32,8 +59,7 @@ class RouterTest extends \Test\TestCase {
 	 * @param $webRoot
 	 */
 	public function testWebRootSetup($expectedBase, $webRoot) {
-		$l = $this->createMock(ILogger::class);
-		$router = new Router($l, $webRoot);
+		$router = new Router($this->l, $webRoot);
 
 		$this->assertEquals($expectedBase, $router->getGenerator()->getContext()->getBaseUrl());
 	}
@@ -45,5 +71,24 @@ class RouterTest extends \Test\TestCase {
 			['/oc/index.php', '/oc'],
 			['/oc/index.php', '/oc/'],
 		];
+	}
+
+	public function testMatchURLParamContainingSlash() {
+		$router = new LoadableRouter($this->l, '');
+
+		$called = false;
+
+		$router->useCollection('root');
+		$router->create('test', '/resource/{id}')
+			->action(function() use (&$called) {
+			$called = true;
+		})->requirements(['id' => '.+']);
+
+		// don't load any apps
+		$router->setLoaded(true);
+
+		$router->match('/resource/id%2Fwith%2Fslashes');
+
+		self::assertTrue($called);
 	}
 }

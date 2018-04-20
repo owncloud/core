@@ -219,7 +219,7 @@ class RouteConfig {
 
 				$this->router->create($routeName, $url)->method($verb)->action(
 					new RouteActionHandler($this->container, $controllerName, $actionName)
-				);
+				)->requirements(['id' => '.+']); // allow / in {id} parameter
 			}
 		}
 	}
