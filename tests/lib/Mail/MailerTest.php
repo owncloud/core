@@ -120,4 +120,43 @@ class MailerTest extends TestCase {
 		$this->assertSame($expected, $this->mailer->validateMailAddress($email));
 	}
 
+	public function testLogEntry() {
+		$this->mailer = $this->getMockBuilder(Mailer::class)
+			->setConstructorArgs([$this->config, $this->logger, $this->defaults])
+			->setMethods(['getInstance'])
+			->getMock();
+
+		$this->mailer->method('getInstance')->willReturn($this->createMock(\Swift_MailTransport::class));
+
+		$message = $this->getMockBuilder('\OC\Mail\Message')
+			->disableOriginalConstructor()->getMock();
+		$message->expects($this->once())
+			->method('getSwiftMessage')
+			->will($this->returnValue(new \Swift_Message()));
+
+		$from = ['from@example.org' => 'From Address'];
+		$to = ['to1@example.org' => 'To Address 1', 'to2@example.org' => 'To Address 2'];
+		$cc = ['cc1@example.org' => 'CC Address 1', 'cc2@example.org' => 'CC Address 2'];
+		$bcc = ['bcc1@example.org' => 'BCC Address 1', 'bcc2@example.org' => 'BCC Address 2'];
+
+		$message->method('getFrom')->willReturn($from);
+		$message->method('getTo')->willReturn($to);
+		$message->method('getCc')->willReturn($cc);
+		$message->method('getBcc')->willReturn($bcc);
+		$message->method('getSubject')->willReturn('Email subject');
+
+		$this->logger->expects($this->once())
+			->method('debug')
+			->with('Sent mail from "{from}" to "{recipients}" with subject "{subject}"', [
+				'app' => 'core',
+				'from' => json_encode($from),
+				'recipients' => json_encode(array_merge($to, $cc, $bcc)),
+				'subject' => 'Email subject'
+			]);
+
+		$this->mailer->send($message);
+
+
+	}
+
 }
