@@ -443,7 +443,6 @@ if test "A$PREVIOUS_MAIL_DOMAIN" = "A"; then
 	remote_occ $ADMIN_PASSWORD $OCC_URL "config:system:delete mail_domain"
 else
 	remote_occ $ADMIN_PASSWORD $OCC_URL "config:system:set mail_domain --value=$PREVIOUS_MAIL_DOMAIN"
-	echo "config:system:set mail_domain --value=$PREVIOUS_MAIL_DOMAIN"
 fi
 if test "A$PREVIOUS_MAIL_FROM_ADDRESS" = "A"; then
 	remote_occ $ADMIN_PASSWORD $OCC_URL "config:system:delete mail_from_address"
