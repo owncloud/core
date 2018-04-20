@@ -183,7 +183,7 @@ trait Auth {
 			'cookies' => $this->cookieJar,
 			]
 		);
-		$this->extracRequestTokenFromResponse($response);
+		$this->extractRequestTokenFromResponse($response);
 
 		// Login and extract new token
 		$client = new Client();
@@ -197,7 +197,7 @@ trait Auth {
 				'cookies' => $this->cookieJar,
 			]
 		);
-		$this->extracRequestTokenFromResponse($response);
+		$this->extractRequestTokenFromResponse($response);
 	}
 
 }
