@@ -74,7 +74,8 @@ class RetryJob extends Job {
 				$addressHandler,
 				\OC::$server->getHTTPClientService(),
 				$discoveryManager,
-				\OC::$server->getJobList()
+				\OC::$server->getJobList(),
+				\OC::$server->getConfig()
 			);
 		}
 

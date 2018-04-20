@@ -29,6 +29,7 @@ namespace OCA\FederatedFileSharing;
 use OCP\AppFramework\Http;
 use OCP\BackgroundJob\IJobList;
 use OCP\Http\Client\IClientService;
+use OCP\IConfig;
 
 class Notifications {
 	const RESPONSE_FORMAT = 'json'; // default response format for ocs calls
@@ -45,22 +46,28 @@ class Notifications {
 	/** @var IJobList  */
 	private $jobList;
 
+	/** @var IConfig */
+	private $config;
+
 	/**
 	 * @param AddressHandler $addressHandler
 	 * @param IClientService $httpClientService
 	 * @param DiscoveryManager $discoveryManager
 	 * @param IJobList $jobList
+	 * @param IConfig $config
 	 */
 	public function __construct(
 		AddressHandler $addressHandler,
 		IClientService $httpClientService,
 		DiscoveryManager $discoveryManager,
-		IJobList $jobList
+		IJobList $jobList,
+		IConfig $config
 	) {
 		$this->addressHandler = $addressHandler;
 		$this->httpClientService = $httpClientService;
 		$this->discoveryManager = $discoveryManager;
 		$this->jobList = $jobList;
+		$this->config = $config;
 	}
 
 	/**
@@ -122,8 +129,7 @@ class Notifications {
 	 * @param string $shareWith
 	 * @param int $permission
 	 * @return bool
-	 * @throws \OC\HintException
-	 * @throws \OC\ServerNotAvailableException
+	 * @throws \Exception
 	 */
 	public function requestReShare($token, $id, $shareId, $remote, $shareWith, $permission) {
 
@@ -222,6 +228,7 @@ class Notifications {
 	 * @param array $data
 	 * @param int $try
 	 * @return boolean
+	 * @throws \Exception
 	 */
 	public function sendUpdateToRemote($remote, $remoteId, $token, $action, $data = [], $try = 0) {
 
@@ -302,6 +309,10 @@ class Notifications {
 				// (flat re-shares has been introduced in ownCloud 9.1)
 				if ($e->getCode() === Http::STATUS_INTERNAL_SERVER_ERROR) {
 					throw $e;
+				}
+				$allowHttpFallback = $this->config->getSystemValue('sharing.federation.allowHttpFallback',  false) === true;
+				if (!$allowHttpFallback) {
+					break;
 				}
 				$try++;
 				$protocol = 'http://';
