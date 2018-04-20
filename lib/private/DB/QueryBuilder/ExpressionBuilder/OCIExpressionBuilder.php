@@ -169,4 +169,24 @@ class OCIExpressionBuilder extends ExpressionBuilder {
 		$column = $this->helper->quoteColumnName($column);
 		return new QueryFunction("LENGTHC({$column})");
 	}
+
+	/**
+	 * Returns a query function to concatenate values within each group defined by GROUP BY clause
+	 * @param string $column
+	 * @param string $orderBy optional
+	 * @param string $separator default is ','
+	 * @return string
+	 *
+	 * Max length seems to be 4000, @see https://community.oracle.com/thread/2548234
+	 */
+	public function groupConcat($column, $orderBy = null, $separator = ',') {
+		$column = $this->helper->quoteColumnName($column);
+		if ($orderBy !== null) {
+			$orderBy = $this->helper->quoteColumnName($orderBy);
+		} else {
+			$orderBy = 'NULL';
+		}
+		$separator = str_replace(["'",'\\'], ["\'",'\\\\'], $separator);
+		return new QueryFunction("LISTAGG({$column}, '$separator') WITHIN GROUP (ORDER BY {$orderBy})");
+	}
 }
