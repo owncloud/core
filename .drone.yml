@@ -348,156 +348,13 @@ services:
         USE_EMAIL: true
 matrix:
   include:
-
-  # frontend
-    - TEST_SUITE: javascript
-      PHP_VERSION: 7.1
-      COVERAGE: true
-
-    # linting
-    - TEST_SUITE: lint
-      PHP_VERSION: 5.6
-
-    - TEST_SUITE: lint
-      PHP_VERSION: 7.0
-
-    # PHP 5.6
-    #- PHP_VERSION: 5.6
-    #  DB_TYPE: sqlite
-    #  TEST_SUITE: phpunit
-    #- PHP_VERSION: 5.6
-    #  DB_TYPE: mariadb
-    #  TEST_SUITE: phpunit
-    #- PHP_VERSION: 5.6
-    #  DB_TYPE: mysql
-    #  TEST_SUITE: phpunit
-    - PHP_VERSION: 5.6
-      DB_TYPE: postgres
-      TEST_SUITE: phpunit
-    # - PHP_VERSION: 5.6
-    #   DB_TYPE: oracle
-    #   TEST_SUITE: phpunit
-
-
-  # Litmus
-    - PHP_VERSION: 7.1
-      USE_SERVER: true
-      TEST_SUITE: litmus
-      INSTALL_SERVER: true
-      CHOWN_SERVER: true
-
-  # Unit Tests
-    - PHP_VERSION: 7.1
-      DB_TYPE: mysql
-      TEST_SUITE: phpunit
-      COVERAGE: true
-
-    - PHP_VERSION: 7.1
-      DB_TYPE: mysqlmb4
-      TEST_SUITE: phpunit
-
-#    - PHP_VERSION: 7.1
-#      DB_TYPE: mariadb
-#      TEST_SUITE: phpunit
-
-    - PHP_VERSION: 7.1
-      DB_TYPE: postgres
-      TEST_SUITE: phpunit
-      COVERAGE: true
-
-    - PHP_VERSION: 7.1
-      DB_TYPE: oracle
-      TEST_SUITE: phpunit
-      COVERAGE: true
-
-    - PHP_VERSION: 7.1
-      DB_TYPE: sqlite
-      TEST_SUITE: phpunit
-      COVERAGE: true
-
-
-    # PHP 7.2
-    - PHP_VERSION: 7.2
-      DB_TYPE: sqlite
-      TEST_SUITE: phpunit
-    #- PHP_VERSION: 7.2
-    #  DB_TYPE: mariadb
-    #  TEST_SUITE: phpunit
-    #- PHP_VERSION: 7.2
-    #  DB_TYPE: mysql
-    #  TEST_SUITE: phpunit
-    #- PHP_VERSION: 7.2
-    #  DB_TYPE: postgres
-    #  TEST_SUITE: phpunit
-    # - PHP_VERSION: 7.2
-    #   DB_TYPE: oracle
-    #   TEST_SUITE: phpunit
-#
-#    # Integration
-#    - PHP_VERSION: 7.1
-#      DB_TYPE: sqlite
-#      TEST_SUITE: integration
-
-    - PHP_VERSION: 7.2
-      DB_TYPE: mariadb
-      TEST_SUITE: phpunit
-
-    #- PHP_VERSION: 7.2
-    #  DB_TYPE: mysql
-    #  TEST_SUITE: phpunit
-    #
-    #- PHP_VERSION: 7.2
-    #  DB_TYPE: postgres
-    #  TEST_SUITE: phpunit
-    #
-    # - PHP_VERSION: 7.2
-    #   DB_TYPE: oracle
-    #   TEST_SUITE: phpunit
-
-  # Files External
-    - PHP_VERSION: 7.1
-      TEST_SUITE: phpunit
-      COVERAGE: true
-      DB_TYPE: sqlite
-      FILES_EXTERNAL_TYPE: webdav_apache
-
-    - PHP_VERSION: 7.1
-      TEST_SUITE: phpunit
-      COVERAGE: true
-      DB_TYPE: sqlite
-      FILES_EXTERNAL_TYPE: smb_samba
-
-    - PHP_VERSION: 7.1
-      TEST_SUITE: phpunit
-      COVERAGE: true
-      DB_TYPE: sqlite
-      FILES_EXTERNAL_TYPE: smb_windows
-
-    - PHP_VERSION: 7.1
-      TEST_SUITE: phpunit
-      COVERAGE: true
-      DB_TYPE: sqlite
-      FILES_EXTERNAL_TYPE: swift
-
-  # Primary Objectstorage
-    - PHP_VERSION: 5.6
-      TEST_SUITE: phpunit
-      DB_TYPE: sqlite
-      OBJECTSTORE: swift
-      PRIMARY_OBJECTSTORE: swift
-
-    - PHP_VERSION: 7.1
-      TEST_SUITE: phpunit
-      COVERAGE: true
-      DB_TYPE: sqlite
-      OBJECTSTORE: swift
-      PRIMARY_OBJECTSTORE: swift
-
   # API Acceptance tests
+
+    # postgres
     - PHP_VERSION: 7.1
       TEST_SUITE: api
       BEHAT_SUITE: apiMain
-      DB_TYPE: mariadb
+      DB_TYPE: postgres
       USE_SERVER: true
       INSTALL_SERVER: true
       CHOWN_SERVER: true
@@ -506,7 +363,7 @@ matrix:
     - PHP_VERSION: 7.1
       TEST_SUITE: api
       BEHAT_SUITE: apiCapabilities
-      DB_TYPE: mariadb
+      DB_TYPE: postgres
       USE_SERVER: true
       INSTALL_SERVER: true
       CHOWN_SERVER: true
@@ -515,7 +372,7 @@ matrix:
     - PHP_VERSION: 7.1
       TEST_SUITE: api
       BEHAT_SUITE: apiFederation
-      DB_TYPE: mariadb
+      DB_TYPE: postgres
       USE_SERVER: true
       USE_FEDERATED_SERVER: true
       INSTALL_SERVER: true
@@ -525,7 +382,7 @@ matrix:
     - PHP_VERSION: 7.1
       TEST_SUITE: api
       BEHAT_SUITE: apiProvisioning
-      DB_TYPE: mariadb
+      DB_TYPE: postgres
       USE_SERVER: true
       INSTALL_SERVER: true
       CHOWN_SERVER: true
@@ -534,7 +391,7 @@ matrix:
     - PHP_VERSION: 7.1
       TEST_SUITE: api
       BEHAT_SUITE: apiSharees
-      DB_TYPE: mariadb
+      DB_TYPE: postgres
       USE_SERVER: true
       INSTALL_SERVER: true
       CHOWN_SERVER: true
@@ -543,7 +400,7 @@ matrix:
     - PHP_VERSION: 7.1
       TEST_SUITE: api
       BEHAT_SUITE: apiSharing
-      DB_TYPE: mariadb
+      DB_TYPE: postgres
       USE_SERVER: true
       INSTALL_SERVER: true
       CHOWN_SERVER: true
@@ -552,7 +409,7 @@ matrix:
     - PHP_VERSION: 7.1
       TEST_SUITE: api
       BEHAT_SUITE: apiTrashbin
-      DB_TYPE: mariadb
+      DB_TYPE: postgres
       USE_SERVER: true
       INSTALL_SERVER: true
       CHOWN_SERVER: true
@@ -561,7 +418,7 @@ matrix:
     - PHP_VERSION: 7.1
       TEST_SUITE: api
       BEHAT_SUITE: apiWebdav
-      DB_TYPE: mariadb
+      DB_TYPE: postgres
       USE_SERVER: true
       INSTALL_SERVER: true
       CHOWN_SERVER: true
@@ -571,26 +428,24 @@ matrix:
     - PHP_VERSION: 7.1
       TEST_SUITE: selenium
       BEHAT_SUITE: webUIFavorites
-      DB_TYPE: mariadb
+      DB_TYPE: postgres
       USE_SERVER: true
       INSTALL_SERVER: true
       CHOWN_SERVER: true
       OWNCLOUD_LOG: true
-      USE_EMAIL: true
 
     - PHP_VERSION: 7.1
       TEST_SUITE: selenium
       BEHAT_SUITE: webUIManageUsersGroups
-      DB_TYPE: mariadb
+      DB_TYPE: postgres
       USE_SERVER: true
       INSTALL_SERVER: true
       CHOWN_SERVER: true
-      USE_EMAIL: true
 
     - PHP_VERSION: 7.1
       TEST_SUITE: selenium
       BEHAT_SUITE: webUIManageQuota
-      DB_TYPE: mariadb
+      DB_TYPE: postgres
       USE_SERVER: true
       INSTALL_SERVER: true
       CHOWN_SERVER: true
@@ -599,7 +454,7 @@ matrix:
     - PHP_VERSION: 7.1
       TEST_SUITE: selenium
       BEHAT_SUITE: webUIPersonalSettings
-      DB_TYPE: mariadb
+      DB_TYPE: postgres
       USE_SERVER: true
       INSTALL_SERVER: true
       CHOWN_SERVER: true
@@ -608,7 +463,7 @@ matrix:
     - PHP_VERSION: 7.1
       TEST_SUITE: selenium
       BEHAT_SUITE: webUIFiles
-      DB_TYPE: mariadb
+      DB_TYPE: postgres
       USE_SERVER: true
       INSTALL_SERVER: true
       CHOWN_SERVER: true
@@ -617,7 +472,7 @@ matrix:
     - PHP_VERSION: 7.1
       TEST_SUITE: selenium
       BEHAT_SUITE: webUIMoveFilesFolders
-      DB_TYPE: mariadb
+      DB_TYPE: postgres
       USE_SERVER: true
       INSTALL_SERVER: true
       CHOWN_SERVER: true
@@ -626,7 +481,7 @@ matrix:
     - PHP_VERSION: 7.1
       TEST_SUITE: selenium
       BEHAT_SUITE: webUIRenameFiles
-      DB_TYPE: mariadb
+      DB_TYPE: postgres
       USE_SERVER: true
       INSTALL_SERVER: true
       CHOWN_SERVER: true
@@ -635,7 +490,7 @@ matrix:
     - PHP_VERSION: 7.1
       TEST_SUITE: selenium
       BEHAT_SUITE: webUIRenameFolders
-      DB_TYPE: mariadb
+      DB_TYPE: postgres
       USE_SERVER: true
       INSTALL_SERVER: true
       CHOWN_SERVER: true
@@ -644,7 +499,7 @@ matrix:
     - PHP_VERSION: 7.1
       TEST_SUITE: selenium
       BEHAT_SUITE: webUITrashbin
-      DB_TYPE: mariadb
+      DB_TYPE: postgres
       USE_SERVER: true
       INSTALL_SERVER: true
       CHOWN_SERVER: true
@@ -653,7 +508,7 @@ matrix:
     - PHP_VERSION: 7.1
       TEST_SUITE: selenium
       BEHAT_SUITE: webUISharingInternalGroups
-      DB_TYPE: mariadb
+      DB_TYPE: postgres
       USE_SERVER: true
       INSTALL_SERVER: true
       CHOWN_SERVER: true
@@ -662,7 +517,7 @@ matrix:
     - PHP_VERSION: 7.1
       TEST_SUITE: selenium
       BEHAT_SUITE: webUISharingInternalUsers
-      DB_TYPE: mariadb
+      DB_TYPE: postgres
       USE_SERVER: true
       INSTALL_SERVER: true
       CHOWN_SERVER: true
@@ -671,7 +526,7 @@ matrix:
     - PHP_VERSION: 7.1
       TEST_SUITE: selenium
       BEHAT_SUITE: webUISharingExternal
-      DB_TYPE: mariadb
+      DB_TYPE: postgres
       USE_SERVER: true
       USE_FEDERATED_SERVER: true
       INSTALL_SERVER: true
@@ -681,7 +536,7 @@ matrix:
     - PHP_VERSION: 7.1
       TEST_SUITE: selenium
       BEHAT_SUITE: webUIRestrictSharing
-      DB_TYPE: mariadb
+      DB_TYPE: postgres
       USE_SERVER: true
       INSTALL_SERVER: true
       CHOWN_SERVER: true
@@ -690,7 +545,612 @@ matrix:
     - PHP_VERSION: 7.1
       TEST_SUITE: selenium
       BEHAT_SUITE: webUIUpload
-      DB_TYPE: mariadb
+      DB_TYPE: postgres
+      USE_SERVER: true
+      INSTALL_SERVER: true
+      CHOWN_SERVER: true
+      OWNCLOUD_LOG: true
+
+    # mysqlmb4
+    - PHP_VERSION: 7.1
+      TEST_SUITE: api
+      BEHAT_SUITE: apiMain
+      DB_TYPE: mysqlmb4
+      USE_SERVER: true
+      INSTALL_SERVER: true
+      CHOWN_SERVER: true
+      OWNCLOUD_LOG: true
+
+    - PHP_VERSION: 7.1
+      TEST_SUITE: api
+      BEHAT_SUITE: apiCapabilities
+      DB_TYPE: mysqlmb4
+      USE_SERVER: true
+      INSTALL_SERVER: true
+      CHOWN_SERVER: true
+      OWNCLOUD_LOG: true
+
+    - PHP_VERSION: 7.1
+      TEST_SUITE: api
+      BEHAT_SUITE: apiFederation
+      DB_TYPE: mysqlmb4
+      USE_SERVER: true
+      USE_FEDERATED_SERVER: true
+      INSTALL_SERVER: true
+      CHOWN_SERVER: true
+      OWNCLOUD_LOG: true
+
+    - PHP_VERSION: 7.1
+      TEST_SUITE: api
+      BEHAT_SUITE: apiProvisioning
+      DB_TYPE: mysqlmb4
+      USE_SERVER: true
+      INSTALL_SERVER: true
+      CHOWN_SERVER: true
+      OWNCLOUD_LOG: true
+
+    - PHP_VERSION: 7.1
+      TEST_SUITE: api
+      BEHAT_SUITE: apiSharees
+      DB_TYPE: mysqlmb4
+      USE_SERVER: true
+      INSTALL_SERVER: true
+      CHOWN_SERVER: true
+      OWNCLOUD_LOG: true
+
+    - PHP_VERSION: 7.1
+      TEST_SUITE: api
+      BEHAT_SUITE: apiSharing
+      DB_TYPE: mysqlmb4
+      USE_SERVER: true
+      INSTALL_SERVER: true
+      CHOWN_SERVER: true
+      OWNCLOUD_LOG: true
+
+    - PHP_VERSION: 7.1
+      TEST_SUITE: api
+      BEHAT_SUITE: apiTrashbin
+      DB_TYPE: mysqlmb4
+      USE_SERVER: true
+      INSTALL_SERVER: true
+      CHOWN_SERVER: true
+      OWNCLOUD_LOG: true
+
+    - PHP_VERSION: 7.1
+      TEST_SUITE: api
+      BEHAT_SUITE: apiWebdav
+      DB_TYPE: mysqlmb4
+      USE_SERVER: true
+      INSTALL_SERVER: true
+      CHOWN_SERVER: true
+      OWNCLOUD_LOG: true
+
+  # UI Acceptance tests
+    - PHP_VERSION: 7.1
+      TEST_SUITE: selenium
+      BEHAT_SUITE: webUIFavorites
+      DB_TYPE: mysqlmb4
+      USE_SERVER: true
+      INSTALL_SERVER: true
+      CHOWN_SERVER: true
+      OWNCLOUD_LOG: true
+      USE_EMAIL: true
+
+    - PHP_VERSION: 7.1
+      TEST_SUITE: selenium
+      BEHAT_SUITE: webUIManageUsersGroups
+      DB_TYPE: mysqlmb4
+      USE_SERVER: true
+      INSTALL_SERVER: true
+      CHOWN_SERVER: true
+      USE_EMAIL: true
+
+    - PHP_VERSION: 7.1
+      TEST_SUITE: selenium
+      BEHAT_SUITE: webUIManageQuota
+      DB_TYPE: mysqlmb4
+      USE_SERVER: true
+      INSTALL_SERVER: true
+      CHOWN_SERVER: true
+      OWNCLOUD_LOG: true
+
+    - PHP_VERSION: 7.1
+      TEST_SUITE: selenium
+      BEHAT_SUITE: webUIPersonalSettings
+      DB_TYPE: mysqlmb4
+      USE_SERVER: true
+      INSTALL_SERVER: true
+      CHOWN_SERVER: true
+      OWNCLOUD_LOG: true
+
+    - PHP_VERSION: 7.1
+      TEST_SUITE: selenium
+      BEHAT_SUITE: webUIFiles
+      DB_TYPE: mysqlmb4
+      USE_SERVER: true
+      INSTALL_SERVER: true
+      CHOWN_SERVER: true
+      OWNCLOUD_LOG: true
+
+    - PHP_VERSION: 7.1
+      TEST_SUITE: selenium
+      BEHAT_SUITE: webUIMoveFilesFolders
+      DB_TYPE: mysqlmb4
+      USE_SERVER: true
+      INSTALL_SERVER: true
+      CHOWN_SERVER: true
+      OWNCLOUD_LOG: true
+
+    - PHP_VERSION: 7.1
+      TEST_SUITE: selenium
+      BEHAT_SUITE: webUIRenameFiles
+      DB_TYPE: mysqlmb4
+      USE_SERVER: true
+      INSTALL_SERVER: true
+      CHOWN_SERVER: true
+      OWNCLOUD_LOG: true
+
+    - PHP_VERSION: 7.1
+      TEST_SUITE: selenium
+      BEHAT_SUITE: webUIRenameFolders
+      DB_TYPE: mysqlmb4
+      USE_SERVER: true
+      INSTALL_SERVER: true
+      CHOWN_SERVER: true
+      OWNCLOUD_LOG: true
+
+    - PHP_VERSION: 7.1
+      TEST_SUITE: selenium
+      BEHAT_SUITE: webUITrashbin
+      DB_TYPE: mysqlmb4
+      USE_SERVER: true
+      INSTALL_SERVER: true
+      CHOWN_SERVER: true
+      OWNCLOUD_LOG: true
+
+    - PHP_VERSION: 7.1
+      TEST_SUITE: selenium
+      BEHAT_SUITE: webUISharingInternalGroups
+      DB_TYPE: mysqlmb4
+      USE_SERVER: true
+      INSTALL_SERVER: true
+      CHOWN_SERVER: true
+      OWNCLOUD_LOG: true
+
+    - PHP_VERSION: 7.1
+      TEST_SUITE: selenium
+      BEHAT_SUITE: webUISharingInternalUsers
+      DB_TYPE: mysqlmb4
+      USE_SERVER: true
+      INSTALL_SERVER: true
+      CHOWN_SERVER: true
+      OWNCLOUD_LOG: true
+
+    - PHP_VERSION: 7.1
+      TEST_SUITE: selenium
+      BEHAT_SUITE: webUISharingExternal
+      DB_TYPE: mysqlmb4
+      USE_SERVER: true
+      USE_FEDERATED_SERVER: true
+      INSTALL_SERVER: true
+      CHOWN_SERVER: true
+      OWNCLOUD_LOG: true
+
+    - PHP_VERSION: 7.1
+      TEST_SUITE: selenium
+      BEHAT_SUITE: webUIRestrictSharing
+      DB_TYPE: mysqlmb4
+      USE_SERVER: true
+      INSTALL_SERVER: true
+      CHOWN_SERVER: true
+      OWNCLOUD_LOG: true
+
+    - PHP_VERSION: 7.1
+      TEST_SUITE: selenium
+      BEHAT_SUITE: webUIUpload
+      DB_TYPE: mysqlmb4
+      USE_SERVER: true
+      INSTALL_SERVER: true
+      CHOWN_SERVER: true
+      OWNCLOUD_LOG: true
+
+    # oracle
+    - PHP_VERSION: 7.1
+      TEST_SUITE: api
+      BEHAT_SUITE: apiMain
+      DB_TYPE: oracle
+      USE_SERVER: true
+      INSTALL_SERVER: true
+      CHOWN_SERVER: true
+      OWNCLOUD_LOG: true
+
+    - PHP_VERSION: 7.1
+      TEST_SUITE: api
+      BEHAT_SUITE: apiCapabilities
+      DB_TYPE: oracle
+      USE_SERVER: true
+      INSTALL_SERVER: true
+      CHOWN_SERVER: true
+      OWNCLOUD_LOG: true
+
+    - PHP_VERSION: 7.1
+      TEST_SUITE: api
+      BEHAT_SUITE: apiFederation
+      DB_TYPE: oracle
+      USE_SERVER: true
+      USE_FEDERATED_SERVER: true
+      INSTALL_SERVER: true
+      CHOWN_SERVER: true
+      OWNCLOUD_LOG: true
+
+    - PHP_VERSION: 7.1
+      TEST_SUITE: api
+      BEHAT_SUITE: apiProvisioning
+      DB_TYPE: oracle
+      USE_SERVER: true
+      INSTALL_SERVER: true
+      CHOWN_SERVER: true
+      OWNCLOUD_LOG: true
+
+    - PHP_VERSION: 7.1
+      TEST_SUITE: api
+      BEHAT_SUITE: apiSharees
+      DB_TYPE: oracle
+      USE_SERVER: true
+      INSTALL_SERVER: true
+      CHOWN_SERVER: true
+      OWNCLOUD_LOG: true
+
+    - PHP_VERSION: 7.1
+      TEST_SUITE: api
+      BEHAT_SUITE: apiSharing
+      DB_TYPE: oracle
+      USE_SERVER: true
+      INSTALL_SERVER: true
+      CHOWN_SERVER: true
+      OWNCLOUD_LOG: true
+
+    - PHP_VERSION: 7.1
+      TEST_SUITE: api
+      BEHAT_SUITE: apiTrashbin
+      DB_TYPE: oracle
+      USE_SERVER: true
+      INSTALL_SERVER: true
+      CHOWN_SERVER: true
+      OWNCLOUD_LOG: true
+
+    - PHP_VERSION: 7.1
+      TEST_SUITE: api
+      BEHAT_SUITE: apiWebdav
+      DB_TYPE: oracle
+      USE_SERVER: true
+      INSTALL_SERVER: true
+      CHOWN_SERVER: true
+      OWNCLOUD_LOG: true
+
+  # UI Acceptance tests
+    - PHP_VERSION: 7.1
+      TEST_SUITE: selenium
+      BEHAT_SUITE: webUIFavorites
+      DB_TYPE: oracle
+      USE_SERVER: true
+      INSTALL_SERVER: true
+      CHOWN_SERVER: true
+      OWNCLOUD_LOG: true
+
+    - PHP_VERSION: 7.1
+      TEST_SUITE: selenium
+      BEHAT_SUITE: webUIManageUsersGroups
+      DB_TYPE: oracle
+      USE_SERVER: true
+      INSTALL_SERVER: true
+      CHOWN_SERVER: true
+
+    - PHP_VERSION: 7.1
+      TEST_SUITE: selenium
+      BEHAT_SUITE: webUIManageQuota
+      DB_TYPE: oracle
+      USE_SERVER: true
+      INSTALL_SERVER: true
+      CHOWN_SERVER: true
+      OWNCLOUD_LOG: true
+
+    - PHP_VERSION: 7.1
+      TEST_SUITE: selenium
+      BEHAT_SUITE: webUIPersonalSettings
+      DB_TYPE: oracle
+      USE_SERVER: true
+      INSTALL_SERVER: true
+      CHOWN_SERVER: true
+      OWNCLOUD_LOG: true
+
+    - PHP_VERSION: 7.1
+      TEST_SUITE: selenium
+      BEHAT_SUITE: webUIFiles
+      DB_TYPE: oracle
+      USE_SERVER: true
+      INSTALL_SERVER: true
+      CHOWN_SERVER: true
+      OWNCLOUD_LOG: true
+
+    - PHP_VERSION: 7.1
+      TEST_SUITE: selenium
+      BEHAT_SUITE: webUIMoveFilesFolders
+      DB_TYPE: oracle
+      USE_SERVER: true
+      INSTALL_SERVER: true
+      CHOWN_SERVER: true
+      OWNCLOUD_LOG: true
+
+    - PHP_VERSION: 7.1
+      TEST_SUITE: selenium
+      BEHAT_SUITE: webUIRenameFiles
+      DB_TYPE: oracle
+      USE_SERVER: true
+      INSTALL_SERVER: true
+      CHOWN_SERVER: true
+      OWNCLOUD_LOG: true
+
+    - PHP_VERSION: 7.1
+      TEST_SUITE: selenium
+      BEHAT_SUITE: webUIRenameFolders
+      DB_TYPE: oracle
+      USE_SERVER: true
+      INSTALL_SERVER: true
+      CHOWN_SERVER: true
+      OWNCLOUD_LOG: true
+
+    - PHP_VERSION: 7.1
+      TEST_SUITE: selenium
+      BEHAT_SUITE: webUITrashbin
+      DB_TYPE: oracle
+      USE_SERVER: true
+      INSTALL_SERVER: true
+      CHOWN_SERVER: true
+      OWNCLOUD_LOG: true
+
+    - PHP_VERSION: 7.1
+      TEST_SUITE: selenium
+      BEHAT_SUITE: webUISharingInternalGroups
+      DB_TYPE: oracle
+      USE_SERVER: true
+      INSTALL_SERVER: true
+      CHOWN_SERVER: true
+      OWNCLOUD_LOG: true
+
+    - PHP_VERSION: 7.1
+      TEST_SUITE: selenium
+      BEHAT_SUITE: webUISharingInternalUsers
+      DB_TYPE: oracle
+      USE_SERVER: true
+      INSTALL_SERVER: true
+      CHOWN_SERVER: true
+      OWNCLOUD_LOG: true
+
+    - PHP_VERSION: 7.1
+      TEST_SUITE: selenium
+      BEHAT_SUITE: webUISharingExternal
+      DB_TYPE: oracle
+      USE_SERVER: true
+      USE_FEDERATED_SERVER: true
+      INSTALL_SERVER: true
+      CHOWN_SERVER: true
+      OWNCLOUD_LOG: true
+
+    - PHP_VERSION: 7.1
+      TEST_SUITE: selenium
+      BEHAT_SUITE: webUIRestrictSharing
+      DB_TYPE: oracle
+      USE_SERVER: true
+      INSTALL_SERVER: true
+      CHOWN_SERVER: true
+      OWNCLOUD_LOG: true
+
+    - PHP_VERSION: 7.1
+      TEST_SUITE: selenium
+      BEHAT_SUITE: webUIUpload
+      DB_TYPE: oracle
+      USE_SERVER: true
+      INSTALL_SERVER: true
+      CHOWN_SERVER: true
+      OWNCLOUD_LOG: true
+
+    # oracle
+    - PHP_VERSION: 7.1
+      TEST_SUITE: api
+      BEHAT_SUITE: apiMain
+      DB_TYPE: mysql
+      USE_SERVER: true
+      INSTALL_SERVER: true
+      CHOWN_SERVER: true
+      OWNCLOUD_LOG: true
+
+    - PHP_VERSION: 7.1
+      TEST_SUITE: api
+      BEHAT_SUITE: apiCapabilities
+      DB_TYPE: mysql
+      USE_SERVER: true
+      INSTALL_SERVER: true
+      CHOWN_SERVER: true
+      OWNCLOUD_LOG: true
+
+    - PHP_VERSION: 7.1
+      TEST_SUITE: api
+      BEHAT_SUITE: apiFederation
+      DB_TYPE: mysql
+      USE_SERVER: true
+      USE_FEDERATED_SERVER: true
+      INSTALL_SERVER: true
+      CHOWN_SERVER: true
+      OWNCLOUD_LOG: true
+
+    - PHP_VERSION: 7.1
+      TEST_SUITE: api
+      BEHAT_SUITE: apiProvisioning
+      DB_TYPE: mysql
+      USE_SERVER: true
+      INSTALL_SERVER: true
+      CHOWN_SERVER: true
+      OWNCLOUD_LOG: true
+
+    - PHP_VERSION: 7.1
+      TEST_SUITE: api
+      BEHAT_SUITE: apiSharees
+      DB_TYPE: mysql
+      USE_SERVER: true
+      INSTALL_SERVER: true
+      CHOWN_SERVER: true
+      OWNCLOUD_LOG: true
+
+    - PHP_VERSION: 7.1
+      TEST_SUITE: api
+      BEHAT_SUITE: apiSharing
+      DB_TYPE: mysql
+      USE_SERVER: true
+      INSTALL_SERVER: true
+      CHOWN_SERVER: true
+      OWNCLOUD_LOG: true
+
+    - PHP_VERSION: 7.1
+      TEST_SUITE: api
+      BEHAT_SUITE: apiTrashbin
+      DB_TYPE: mysql
+      USE_SERVER: true
+      INSTALL_SERVER: true
+      CHOWN_SERVER: true
+      OWNCLOUD_LOG: true
+
+    - PHP_VERSION: 7.1
+      TEST_SUITE: api
+      BEHAT_SUITE: apiWebdav
+      DB_TYPE: mysql
+      USE_SERVER: true
+      INSTALL_SERVER: true
+      CHOWN_SERVER: true
+      OWNCLOUD_LOG: true
+
+  # UI Acceptance tests
+    - PHP_VERSION: 7.1
+      TEST_SUITE: selenium
+      BEHAT_SUITE: webUIFavorites
+      DB_TYPE: mysql
+      USE_SERVER: true
+      INSTALL_SERVER: true
+      CHOWN_SERVER: true
+      OWNCLOUD_LOG: true
+
+    - PHP_VERSION: 7.1
+      TEST_SUITE: selenium
+      BEHAT_SUITE: webUIManageUsersGroups
+      DB_TYPE: mysql
+      USE_SERVER: true
+      INSTALL_SERVER: true
+      CHOWN_SERVER: true
+
+    - PHP_VERSION: 7.1
+      TEST_SUITE: selenium
+      BEHAT_SUITE: webUIManageQuota
+      DB_TYPE: mysql
+      USE_SERVER: true
+      INSTALL_SERVER: true
+      CHOWN_SERVER: true
+      OWNCLOUD_LOG: true
+
+    - PHP_VERSION: 7.1
+      TEST_SUITE: selenium
+      BEHAT_SUITE: webUIPersonalSettings
+      DB_TYPE: mysql
+      USE_SERVER: true
+      INSTALL_SERVER: true
+      CHOWN_SERVER: true
+      OWNCLOUD_LOG: true
+
+    - PHP_VERSION: 7.1
+      TEST_SUITE: selenium
+      BEHAT_SUITE: webUIFiles
+      DB_TYPE: mysql
+      USE_SERVER: true
+      INSTALL_SERVER: true
+      CHOWN_SERVER: true
+      OWNCLOUD_LOG: true
+
+    - PHP_VERSION: 7.1
+      TEST_SUITE: selenium
+      BEHAT_SUITE: webUIMoveFilesFolders
+      DB_TYPE: mysql
+      USE_SERVER: true
+      INSTALL_SERVER: true
+      CHOWN_SERVER: true
+      OWNCLOUD_LOG: true
+
+    - PHP_VERSION: 7.1
+      TEST_SUITE: selenium
+      BEHAT_SUITE: webUIRenameFiles
+      DB_TYPE: mysql
+      USE_SERVER: true
+      INSTALL_SERVER: true
+      CHOWN_SERVER: true
+      OWNCLOUD_LOG: true
+
+    - PHP_VERSION: 7.1
+      TEST_SUITE: selenium
+      BEHAT_SUITE: webUIRenameFolders
+      DB_TYPE: mysql
+      USE_SERVER: true
+      INSTALL_SERVER: true
+      CHOWN_SERVER: true
+      OWNCLOUD_LOG: true
+
+    - PHP_VERSION: 7.1
+      TEST_SUITE: selenium
+      BEHAT_SUITE: webUITrashbin
+      DB_TYPE: mysql
+      USE_SERVER: true
+      INSTALL_SERVER: true
+      CHOWN_SERVER: true
+      OWNCLOUD_LOG: true
+
+    - PHP_VERSION: 7.1
+      TEST_SUITE: selenium
+      BEHAT_SUITE: webUISharingInternalGroups
+      DB_TYPE: mysql
+      USE_SERVER: true
+      INSTALL_SERVER: true
+      CHOWN_SERVER: true
+      OWNCLOUD_LOG: true
+
+    - PHP_VERSION: 7.1
+      TEST_SUITE: selenium
+      BEHAT_SUITE: webUISharingInternalUsers
+      DB_TYPE: mysql
+      USE_SERVER: true
+      INSTALL_SERVER: true
+      CHOWN_SERVER: true
+      OWNCLOUD_LOG: true
+
+    - PHP_VERSION: 7.1
+      TEST_SUITE: selenium
+      BEHAT_SUITE: webUISharingExternal
+      DB_TYPE: mysql
+      USE_SERVER: true
+      USE_FEDERATED_SERVER: true
+      INSTALL_SERVER: true
+      CHOWN_SERVER: true
+      OWNCLOUD_LOG: true
+
+    - PHP_VERSION: 7.1
+      TEST_SUITE: selenium
+      BEHAT_SUITE: webUIRestrictSharing
+      DB_TYPE: mysql
+      USE_SERVER: true
+      INSTALL_SERVER: true
+      CHOWN_SERVER: true
+      OWNCLOUD_LOG: true
+
+    - PHP_VERSION: 7.1
+      TEST_SUITE: selenium
+      BEHAT_SUITE: webUIUpload
+      DB_TYPE: mysql
       USE_SERVER: true
       INSTALL_SERVER: true
       CHOWN_SERVER: true
