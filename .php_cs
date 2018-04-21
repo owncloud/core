@@ -1,9 +1,39 @@
 <?php
 
+$dirToParse = 'apps';
+$dirIterator = new DirectoryIterator(__DIR__ . '/' . $dirToParse);
+
+$bundledApps = [
+    'comments',
+    'dav',
+    'federatedfilesharing',
+    'federation',
+    'files',
+    'files_external',
+    'files_sharing',
+    'files_trashbin',
+    'files_versions',
+    'provisioning_api',
+    'systemtags',
+    'testing',
+    'updatenotification'
+];
+
+$excludeDirs = [
+    'lib/composer',
+    'build',
+    'apps/files_external/3rdparty'
+];
+
+foreach ($dirIterator as $fileinfo) {
+    $filename = $fileinfo->getFilename();
+    if ($fileinfo->isDir() && !$fileinfo->isDot() && !in_array($filename, $bundledApps)) {
+        $excludeDirs[] = $dirToParse . '/' . $filename;
+    }
+}
+
 $finder = PhpCsFixer\Finder::create()
-    ->exclude('lib/composer')
-    ->exclude('build')
-    ->exclude('apps/files_external/3rdparty')
+    ->exclude($excludeDirs)
     ->in(__DIR__)
 ;
 
