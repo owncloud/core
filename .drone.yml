@@ -203,6 +203,7 @@ pipeline:
       - SKELETON_DIR=/drone/src/tests/acceptance/webUISkeleton
       - SELENIUM_PORT=4444
       - PLATFORM=Linux
+      - MAILHOG_HOST=email
     commands:
       - bash tests/travis/start_ui_tests.sh --remote
     when:
@@ -339,6 +340,12 @@ services:
       matrix:
         FILES_EXTERNAL_TYPE: swift
 
+  email:
+    image: mailhog/mailhog
+    pull: true
+    when:
+      matrix:
+        USE_EMAIL: true
 matrix:
   include:
 
@@ -569,6 +576,7 @@ matrix:
       INSTALL_SERVER: true
       CHOWN_SERVER: true
       OWNCLOUD_LOG: true
+      USE_EMAIL: true
 
     - PHP_VERSION: 7.1
       TEST_SUITE: selenium
