@@ -10,10 +10,14 @@
     "All users. Type to select user or group." : "Tutti gli utenti. Digita per selezionare utente o gruppo.",
     "(group)" : "(gruppo)",
     "Compatibility with Mac NFD encoding (slow)" : "Compatibilità con la codifica Mac NFD (lento)",
+    "Unknown auth backend \"{b}\"" : "Auth di gestione sconosciuto \"{b}\"",
+    "Please make sure that the app that provides this backend is installed and enabled" : "Assicurarsi che l'app che fornisce questa gestione sia installata ed abilitata",
     "Admin defined" : "Definito dall'amministratore",
     "Saved" : "Salvato",
     "Disabling external storage will unmount all storages for all users, are you sure ?" : "Disabilitare gli archivi esterni smonterà tutte le archiviazioni di tutti gli utenti, sei sicuro ?",
     "Disable external storage" : "Disabilita archiviazione esterna",
+    "No URL provided by backend " : "Non fornito URL per la gestione",
+    "Error getting OAuth2 URL for " : "Errore recuperando OAuth2 Url per",
     "Empty response from the server" : "Risposta vuota dal server",
     "Couldn't access. Please logout and login to activate this mount point" : "Impossibile accedere. Chiudi la sessione e accedi nuovamente per attivare questo punto di mount",
     "Couldn't get the information from the ownCloud server: {code} {type}" : "Impossibile ottenere le informazioni dal server ownCloud: {code} {type}",
@@ -100,6 +104,7 @@
     "Advanced settings" : "Impostazioni avanzate",
     "Delete" : "Elimina",
     "Allow users to mount external storage" : "Consenti agli utenti di montare archiviazioni esterne",
-    "Allow users to mount the following external storage" : "Consenti agli utenti di montare la seguente archiviazione esterna"
+    "Allow users to mount the following external storage" : "Consenti agli utenti di montare la seguente archiviazione esterna",
+    "Allow sharing on user-mounted external storages" : "Permetti la condivisione di volumi esterni montati dall'utente"
 },"pluralForm" :"nplurals=2; plural=(n != 1);"
 }
