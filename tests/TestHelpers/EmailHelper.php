@@ -48,6 +48,29 @@ class EmailHelper {
 		$json = json_decode($response->getBody()->getContents());
 		return $json;
 	}
+	/**
+	 * 
+	 * @param string $mailhogUrl
+	 * 
+	 * @param string $address
+	 * 
+	 * @throws \Exception
+	 * 
+	 * @return mixed
+	 */
+	public static function getBodyOfLastEmail($mailhogUrl, $address) {
+		foreach (self::getEmails($mailhogUrl)->items as $item) {
+			$expectedEmail = $item->To[0]->Mailbox . "@" . $item->To[0]->Domain;
+			if ($expectedEmail === $address) {
+				$body = str_replace(
+					"\r\n", "\n",
+					quoted_printable_decode($item->Content->Body)
+				);
+				return $body;
+			}
+		}
+		throw new \Exception("Could not find the email to the address: " . $address);
+	}
 
 	/**
 	 * 

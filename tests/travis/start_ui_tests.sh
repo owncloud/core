@@ -166,6 +166,13 @@ fi
 
 BEHAT_TAG_OPTION="--tags"
 
+if [ -z "$MAILHOG_HOST" ]; then
+	MAILHOG_HOST="127.0.0.1"
+fi
+if [ -z "$MAILHOG_SMTP_PORT" ]; then
+	MAILHOG_SMTP_PORT="1025"
+fi
+
 #check if we can rely on a local ./occ command or if we are testing a remote instance (e.g. inside docker)
 #if we have a remote instance we cannot enable the testing app and we have to hope its enabled by other ways
 if test "$REMOTE_ONLY" = false
@@ -182,6 +189,24 @@ then
 else
 	TESTING_ENABLED_BY_SCRIPT=false;
 fi
+
+#set SMTP settings
+remote_occ $ADMIN_PASSWORD $OCC_URL "--no-warnings config:system:get mail_domain"
+PREVIOUS_MAIL_DOMAIN=$REMOTE_OCC_STDOUT
+remote_occ $ADMIN_PASSWORD $OCC_URL "--no-warnings config:system:get mail_from_address"
+PREVIOUS_MAIL_FROM_ADDRESS=$REMOTE_OCC_STDOUT
+remote_occ $ADMIN_PASSWORD $OCC_URL "--no-warnings config:system:get mail_smtpmode"
+PREVIOUS_MAIL_SMTP_MODE=$REMOTE_OCC_STDOUT
+remote_occ $ADMIN_PASSWORD $OCC_URL "--no-warnings config:system:get mail_smtphost"
+PREVIOUS_MAIL_SMTP_HOST=$REMOTE_OCC_STDOUT
+remote_occ $ADMIN_PASSWORD $OCC_URL "--no-warnings config:system:get mail_smtpport"
+PREVIOUS_MAIL_SMTP_PORT=$REMOTE_OCC_STDOUT
+
+remote_occ $ADMIN_PASSWORD $OCC_URL "config:system:set mail_domain --value=foobar.com"
+remote_occ $ADMIN_PASSWORD $OCC_URL "config:system:set mail_from_address --value=owncloud"
+remote_occ $ADMIN_PASSWORD $OCC_URL "config:system:set mail_smtpmode --value=smtp"
+remote_occ $ADMIN_PASSWORD $OCC_URL "config:system:set mail_smtphost --value=$MAILHOG_HOST"
+remote_occ $ADMIN_PASSWORD $OCC_URL "config:system:set mail_smtpport --value=$MAILHOG_SMTP_PORT"
 
 #get the current backgroundjobs_mode
 remote_occ $ADMIN_PASSWORD $OCC_URL "config:app:get core backgroundjobs_mode"
@@ -414,9 +439,32 @@ else
 	remote_occ $ADMIN_PASSWORD $OCC_URL "config:system:set skeletondirectory --value=$PREVIOUS_SKELETON_DIR"
 fi
 
-# Put back state of the testing app
-if test "$TESTING_ENABLED_BY_SCRIPT" = true; then
-	$OCC app:disable testing
+# Put back smtp settings
+if test "A$PREVIOUS_MAIL_DOMAIN" = "A"; then
+	remote_occ $ADMIN_PASSWORD $OCC_URL "config:system:delete mail_domain"
+else
+	remote_occ $ADMIN_PASSWORD $OCC_URL "config:system:set mail_domain --value=$PREVIOUS_MAIL_DOMAIN"
+	echo "config:system:set mail_domain --value=$PREVIOUS_MAIL_DOMAIN"
+fi
+if test "A$PREVIOUS_MAIL_FROM_ADDRESS" = "A"; then
+	remote_occ $ADMIN_PASSWORD $OCC_URL "config:system:delete mail_from_address"
+else
+	remote_occ $ADMIN_PASSWORD $OCC_URL "config:system:set mail_from_address --value=$PREVIOUS_MAIL_FROM_ADDRESS"
+fi
+if test "A$PREVIOUS_MAIL_SMTP_MODE" = "A"; then
+	remote_occ $ADMIN_PASSWORD $OCC_URL "config:system:delete mail_smtpmode"
+else
+	remote_occ $ADMIN_PASSWORD $OCC_URL "config:system:set mail_smtpmode --value=$PREVIOUS_MAIL_SMTP_MODE"
+fi
+if test "A$PREVIOUS_MAIL_SMTP_HOST" = "A"; then
+	remote_occ $ADMIN_PASSWORD $OCC_URL "config:system:delete mail_smtphost"
+else
+	remote_occ $ADMIN_PASSWORD $OCC_URL "config:system:set mail_smtphost --value=$PREVIOUS_MAIL_SMTP_HOST"
+fi
+if test "A$PREVIOUS_MAIL_SMTP_PORT" = "A"; then
+	remote_occ $ADMIN_PASSWORD $OCC_URL "config:system:delete mail_smtpport"
+else
+	remote_occ $ADMIN_PASSWORD $OCC_URL "config:system:set mail_smtpport --value=$PREVIOUS_MAIL_SMTP_PORT"
 fi
 
 for APP_TO_ENABLE in $APPS_TO_REENABLE; do
@@ -429,6 +477,11 @@ done
 
 # put back the backgroundjobs_mode
 remote_occ $ADMIN_PASSWORD $OCC_URL "config:app:set core backgroundjobs_mode --value $PREVIOUS_BACKGROUNDJOBS_MODE"
+
+# Put back state of the testing app
+if test "$TESTING_ENABLED_BY_SCRIPT" = true; then
+	$OCC app:disable testing
+fi
 
 #upload log file for later analysis
 if [ "$PASSED" = false ] && [ ! -z "$REPORTING_WEBDAV_USER" ] && [ ! -z "$REPORTING_WEBDAV_PWD" ] && [ ! -z "$REPORTING_WEBDAV_URL" ]
