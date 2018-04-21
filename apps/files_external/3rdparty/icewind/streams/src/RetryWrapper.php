@@ -19,7 +19,7 @@ class RetryWrapper extends Wrapper {
 	 * @return resource
 	 */
 	public static function wrap($source) {
-		$context = stream_context_create(array(
+		$context = \stream_context_create(array(
 			'retry' => array(
 				'source' => $source
 			)
@@ -43,22 +43,22 @@ class RetryWrapper extends Wrapper {
 	public function stream_read($count) {
 		$result = parent::stream_read($count);
 
-		$bytesReceived = strlen($result);
-		while (strlen($result) > 0 && $bytesReceived < $count && !$this->stream_eof()) {
+		$bytesReceived = \strlen($result);
+		while (\strlen($result) > 0 && $bytesReceived < $count && !$this->stream_eof()) {
 			$result .= parent::stream_read($count - $bytesReceived);
-			$bytesReceived = strlen($result);
+			$bytesReceived = \strlen($result);
 		}
 
 		return $result;
 	}
 
 	public function stream_write($data) {
-		$bytesToSend = strlen($data);
+		$bytesToSend = \strlen($data);
 		$bytesWritten = parent::stream_write($data);
 		$result = $bytesWritten;
 
 		while ($bytesWritten > 0 && $result < $bytesToSend && !$this->stream_eof()) {
-			$dataLeft = substr($data, $result);
+			$dataLeft = \substr($data, $result);
 			$bytesWritten = parent::stream_write($dataLeft);
 			$result += $bytesWritten;
 		}

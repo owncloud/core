@@ -52,7 +52,7 @@ class EventEmitterTraitTest extends TestCase {
 			return true;
 		}, ['before' => $data['before'], 'after' => $data['after']], $className, $eventName);
 
-		if (isset($data['before']) and (count($data['before']) > 0)) {
+		if (isset($data['before']) and (\count($data['before']) > 0)) {
 			$this->assertEquals($calledBeforeEvent[0], "$className.before$eventName");
 			$this->assertArrayHasKey('item1', $calledBeforeEvent[1]);
 			$this->assertInstanceOf(GenericEvent::class, $calledBeforeEvent[1]);
@@ -60,7 +60,7 @@ class EventEmitterTraitTest extends TestCase {
 			$this->assertEquals(array(), $calledBeforeEvent);
 		}
 
-		if (isset($data['after']) and (count($data['after']))) {
+		if (isset($data['after']) and (\count($data['after']))) {
 			$this->assertEquals($calledAfterEvent[0], "$className.after$eventName");
 			$this->assertArrayHasKey('item1', $calledAfterEvent[1]);
 			$this->assertInstanceOf(GenericEvent::class, $calledAfterEvent[1]);
@@ -91,7 +91,7 @@ class EventEmitterTraitTest extends TestCase {
 			return true;
 		}, ['before' => $data['before'], 'after' => $data['after']], $className, $eventName);
 
-		if (isset($data['after']) and (count($data['after']))) {
+		if (isset($data['after']) and (\count($data['after']))) {
 			$this->assertEquals($calledAfterEvent[0], "$className.after$eventName");
 			$this->assertArrayHasKey('item1', $calledAfterEvent[1]);
 			$this->assertInstanceOf(GenericEvent::class, $calledAfterEvent[1]);

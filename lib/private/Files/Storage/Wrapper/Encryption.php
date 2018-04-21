@@ -150,7 +150,7 @@ class Encryption extends Wrapper {
 				$info = $info->getData();
 				$info['encrypted'] = $info['encryptedVersion'];
 			} else {
-				if (!is_array($info)) {
+				if (!\is_array($info)) {
 					$info = [];
 				}
 				$info['encrypted'] = true;
@@ -175,7 +175,7 @@ class Encryption extends Wrapper {
 	 */
 	public function getMetaData($path) {
 		$data = $this->storage->getMetaData($path);
-		if (is_null($data)) {
+		if (\is_null($data)) {
 			return null;
 		}
 		$fullPath = $this->getFullPath($path);
@@ -214,8 +214,8 @@ class Encryption extends Wrapper {
 				if (!$handle) {
 					return false;
 				}
-				$data = stream_get_contents($handle);
-				fclose($handle);
+				$data = \stream_get_contents($handle);
+				\fclose($handle);
 				return $data;
 			}
 		}
@@ -232,9 +232,9 @@ class Encryption extends Wrapper {
 	public function file_put_contents($path, $data) {
 		// file put content will always be translated to a stream write
 		$handle = $this->fopen($path, 'w');
-		if (is_resource($handle)) {
-			$written = fwrite($handle, $data);
-			fclose($handle);
+		if (\is_resource($handle)) {
+			$written = \fwrite($handle, $data);
+			\fclose($handle);
 			return $written;
 		}
 
@@ -470,7 +470,7 @@ class Encryption extends Wrapper {
 
 				$headerSize = $this->getHeaderSize($path);
 				$source = $this->storage->fopen($path, $mode);
-				if (!is_resource($source)) {
+				if (!\is_resource($source)) {
 					return false;
 				}
 
@@ -545,7 +545,7 @@ class Encryption extends Wrapper {
 		$stream = $this->storage->fopen($path, 'r');
 
 		// if we couldn't open the file we return the old unencrypted size
-		if (!is_resource($stream)) {
+		if (!\is_resource($stream)) {
 			$this->logger->error('Could not open ' . $path . '. Recalculation of unencrypted size aborted.');
 			return $unencryptedSize;
 		}
@@ -556,7 +556,7 @@ class Encryption extends Wrapper {
 
 		// if a header exists we skip it
 		if ($headerSize > 0) {
-			fread($stream, $headerSize);
+			\fread($stream, $headerSize);
 		}
 
 		// fast path, else the calculation for $lastChunkNr is bogus
@@ -571,11 +571,11 @@ class Encryption extends Wrapper {
 		// next highest is end of chunks, one subtracted is last one
 		// we have to read the last chunk, we can't just calculate it (because of padding etc)
 
-		$lastChunkNr = ceil($size/ $blockSize)-1;
+		$lastChunkNr = \ceil($size/ $blockSize)-1;
 		// calculate last chunk position
 		$lastChunkPos = ($lastChunkNr * $blockSize);
 		// try to fseek to the last chunk, if it fails we have to read the whole file
-		if (@fseek($stream, $lastChunkPos, SEEK_CUR) === 0) {
+		if (@\fseek($stream, $lastChunkPos, SEEK_CUR) === 0) {
 			$newUnencryptedSize += $lastChunkNr * $unencryptedBlockSize;
 		}
 
@@ -583,16 +583,16 @@ class Encryption extends Wrapper {
 		$count = $blockSize;
 
 		while ($count > 0) {
-			$data=fread($stream, $blockSize);
-			$count=strlen($data);
+			$data=\fread($stream, $blockSize);
+			$count=\strlen($data);
 			$lastChunkContentEncrypted .= $data;
-			if(strlen($lastChunkContentEncrypted) > $blockSize) {
+			if(\strlen($lastChunkContentEncrypted) > $blockSize) {
 				$newUnencryptedSize += $unencryptedBlockSize;
-				$lastChunkContentEncrypted=substr($lastChunkContentEncrypted, $blockSize);
+				$lastChunkContentEncrypted=\substr($lastChunkContentEncrypted, $blockSize);
 			}
 		}
 
-		fclose($stream);
+		\fclose($stream);
 
 		// we have to decrypt the last chunk to get it actual size
 		$encryptionModule->begin($this->getFullPath($path), $this->uid, 'r', $header, [], null);
@@ -600,7 +600,7 @@ class Encryption extends Wrapper {
 		$decryptedLastChunk .= $encryptionModule->end($this->getFullPath($path), $lastChunkNr . 'end');
 
 		// calc the real file size with the size of the last chunk
-		$newUnencryptedSize += strlen($decryptedLastChunk);
+		$newUnencryptedSize += \strlen($decryptedLastChunk);
 
 		$this->updateUnencryptedSize($this->getFullPath($path), $newUnencryptedSize);
 
@@ -763,7 +763,7 @@ class Encryption extends Wrapper {
 		// first copy the keys that we reuse the existing file key on the target location
 		// and don't create a new one which would break versions for example.
 		$mount = $this->mountManager->findByStorageId($sourceStorage->getId());
-		if (is_array($mount) && count($mount) === 1) {
+		if (\is_array($mount) && \count($mount) === 1) {
 			$mountPoint = $mount[0]->getMountPoint();
 			$source = $mountPoint . '/' . $sourceInternalPath;
 			$target = $this->getFullPath($targetInternalPath);
@@ -775,8 +775,8 @@ class Encryption extends Wrapper {
 		if ($sourceStorage->is_dir($sourceInternalPath)) {
 			$dh = $sourceStorage->opendir($sourceInternalPath);
 			$result = $this->mkdir($targetInternalPath);
-			if (is_resource($dh)) {
-				while ($result and ($file = readdir($dh)) !== false) {
+			if (\is_resource($dh)) {
+				while ($result and ($file = \readdir($dh)) !== false) {
 					if (!Filesystem::isIgnoredDir($file)) {
 						$result &= $this->copyFromStorage($sourceStorage, $sourceInternalPath . '/' . $file, $targetInternalPath . '/' . $file, false, $isRename);
 					}
@@ -785,7 +785,7 @@ class Encryption extends Wrapper {
 		} else {
 			try {
 				$source = $sourceStorage->fopen($sourceInternalPath, 'r');
-				if ($isRename && (count($mount) === 1)) {
+				if ($isRename && (\count($mount) === 1)) {
 					$sourceStorageMountPoint = $mount[0]->getMountPoint();
 					$this->sourcePath[$targetInternalPath] = $sourceStorageMountPoint . '/' . $sourceInternalPath;
 				} else {
@@ -793,12 +793,12 @@ class Encryption extends Wrapper {
 				}
 				$target = $this->fopen($targetInternalPath, 'w');
 				list(, $result) = \OC_Helper::streamCopy($source, $target);
-				fclose($source);
-				fclose($target);
+				\fclose($source);
+				\fclose($target);
 			} catch (\Exception $e) {
 				Encryption::setDisableWriteEncryption(false);
-				fclose($source);
-				fclose($target);
+				\fclose($source);
+				\fclose($target);
 				throw $e;
 			}
 			if($result) {
@@ -827,7 +827,7 @@ class Encryption extends Wrapper {
 	public function getLocalFile($path) {
 		if ($this->encryptionManager->isEnabled()) {
 			$cachedFile = $this->getCachedFile($path);
-			if (is_string($cachedFile)) {
+			if (\is_string($cachedFile)) {
 				return $cachedFile;
 			}
 		}
@@ -871,10 +871,10 @@ class Encryption extends Wrapper {
 	 */
 	public function hash($type, $path, $raw = false) {
 		$fh = $this->fopen($path, 'rb');
-		$ctx = hash_init($type);
-		hash_update_stream($ctx, $fh);
-		fclose($fh);
-		return hash_final($ctx, $raw);
+		$ctx = \hash_init($type);
+		\hash_update_stream($ctx, $fh);
+		\fclose($fh);
+		return \hash_final($ctx, $raw);
 	}
 
 	/**
@@ -895,16 +895,16 @@ class Encryption extends Wrapper {
 	 * @return string
 	 */
 	protected function readFirstBlock($path) {
-		if (is_resource($path)) {
-			$firstBlock = fread($path, $this->util->getHeaderSize());
-			rewind($path);
+		if (\is_resource($path)) {
+			$firstBlock = \fread($path, $this->util->getHeaderSize());
+			\rewind($path);
 			return $firstBlock;
 		}
 		$firstBlock = '';
 		if ($this->storage->file_exists($path)) {
 			$handle = $this->storage->fopen($path, 'r');
-			$firstBlock = fread($handle, $this->util->getHeaderSize());
-			fclose($handle);
+			$firstBlock = \fread($handle, $this->util->getHeaderSize());
+			\fclose($handle);
 		}
 		return $firstBlock;
 	}
@@ -917,7 +917,7 @@ class Encryption extends Wrapper {
 	 */
 	protected function getHeaderSize($path) {
 		$headerSize = 0;
-		if (!is_resource($path)) {
+		if (!\is_resource($path)) {
 			$realFile = $this->util->stripPartialFileExtension($path);
 			if ($this->storage->file_exists($realFile)) {
 				$path = $realFile;
@@ -925,7 +925,7 @@ class Encryption extends Wrapper {
 		}
 		$firstBlock = $this->readFirstBlock($path);
 
-		if (substr($firstBlock, 0, strlen(Util::HEADER_START)) === Util::HEADER_START) {
+		if (\substr($firstBlock, 0, \strlen(Util::HEADER_START)) === Util::HEADER_START) {
 			$headerSize = $this->util->getHeaderSize();
 		}
 
@@ -940,19 +940,19 @@ class Encryption extends Wrapper {
 	 */
 	protected function parseRawHeader($rawHeader) {
 		$result = [];
-		if (substr($rawHeader, 0, strlen(Util::HEADER_START)) === Util::HEADER_START) {
+		if (\substr($rawHeader, 0, \strlen(Util::HEADER_START)) === Util::HEADER_START) {
 			$header = $rawHeader;
-			$endAt = strpos($header, Util::HEADER_END);
+			$endAt = \strpos($header, Util::HEADER_END);
 			if ($endAt !== false) {
-				$header = substr($header, 0, $endAt + strlen(Util::HEADER_END));
+				$header = \substr($header, 0, $endAt + \strlen(Util::HEADER_END));
 
 				// +1 to not start with an ':' which would result in empty element at the beginning
-				$exploded = explode(':', substr($header, strlen(Util::HEADER_START)+1));
+				$exploded = \explode(':', \substr($header, \strlen(Util::HEADER_START)+1));
 
-				$element = array_shift($exploded);
+				$element = \array_shift($exploded);
 				while ($element !== Util::HEADER_END) {
-					$result[$element] = array_shift($exploded);
-					$element = array_shift($exploded);
+					$result[$element] = \array_shift($exploded);
+					$element = \array_shift($exploded);
 				}
 			}
 		}
@@ -967,7 +967,7 @@ class Encryption extends Wrapper {
 	 * @return array
 	 */
 	protected function getHeader($path) {
-		if (is_resource($path)) {
+		if (\is_resource($path)) {
 			$exists = false;
 		} else {
 			$realFile = $this->util->stripPartialFileExtension($path);
@@ -1064,7 +1064,7 @@ class Encryption extends Wrapper {
 	 */
 	protected function isVersion($path) {
 		$normalized = Filesystem::normalizePath($path);
-		return substr($normalized, 0, strlen('/files_versions/')) === '/files_versions/';
+		return \substr($normalized, 0, \strlen('/files_versions/')) === '/files_versions/';
 	}
 
 }

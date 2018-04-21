@@ -61,7 +61,7 @@ class Principal implements BackendInterface {
 								$principalPrefix = 'principals/users/') {
 		$this->userManager = $userManager;
 		$this->groupManager = $groupManager;
-		$this->principalPrefix = trim($principalPrefix, '/');
+		$this->principalPrefix = \trim($principalPrefix, '/');
 		$this->hasGroups = ($principalPrefix === 'principals/users/');
 	}
 
@@ -104,7 +104,7 @@ class Principal implements BackendInterface {
 		if ($prefix === $this->principalPrefix) {
 			$user = $this->userManager->get($name);
 
-			if (!is_null($user)) {
+			if (!\is_null($user)) {
 				return $this->userToPrincipal($user);
 			}
 		}
@@ -147,7 +147,7 @@ class Principal implements BackendInterface {
 
 			if ($this->hasGroups || $needGroups) {
 				$groups = $this->groupManager->getUserGroups($user);
-				$groups = array_map(function($group) {
+				$groups = \array_map(function($group) {
 					/** @var IGroup $group */
 					return 'principals/groups/' . $group->getGID();
 				}, $groups);
@@ -196,15 +196,15 @@ class Principal implements BackendInterface {
 	 * @return string
 	 */
 	function findByUri($uri, $principalPrefix) {
-		if (substr($uri, 0, 7) === 'mailto:') {
-			$email = substr($uri, 7);
+		if (\substr($uri, 0, 7) === 'mailto:') {
+			$email = \substr($uri, 7);
 			$users = $this->userManager->getByEmail($email);
-			if (count($users) === 1) {
+			if (\count($users) === 1) {
 				return $this->principalPrefix . '/' . $users[0]->getUID();
 			}
 		}
-		if (substr($uri, 0, 10) === 'principal:') {
-			$principal = substr($uri, 10);
+		if (\substr($uri, 0, 10) === 'principal:') {
+			$principal = \substr($uri, 10);
 			$principal = $this->getPrincipalByPath($principal);
 			if ($principal !== null) {
 				return $principal['uri'];
@@ -223,7 +223,7 @@ class Principal implements BackendInterface {
 		$displayName = $user->getDisplayName();
 		$principal = [
 				'uri' => $this->principalPrefix . '/' . $userId,
-				'{DAV:}displayname' => is_null($displayName) ? $userId : $displayName,
+				'{DAV:}displayname' => \is_null($displayName) ? $userId : $displayName,
 		];
 
 		$email = $user->getEMailAddress();

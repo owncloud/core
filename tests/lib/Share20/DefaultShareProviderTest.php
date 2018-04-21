@@ -813,8 +813,8 @@ class DefaultShareProviderTest extends TestCase {
 			->values([
 				'storage' => $qb->expr()->literal($storage),
 				'path' => $qb->expr()->literal($path),
-				'path_hash' => $qb->expr()->literal(md5($path)),
-				'name' => $qb->expr()->literal(basename($path)),
+				'path_hash' => $qb->expr()->literal(\md5($path)),
+				'name' => $qb->expr()->literal(\basename($path)),
 			]);
 		$this->assertEquals(1, $qb->execute());
 		return $qb->getLastInsertId();
@@ -919,7 +919,7 @@ class DefaultShareProviderTest extends TestCase {
 		$id = $qb->getLastInsertId();
 
 		$groups = [];
-		foreach(range(0, 100) as $i) {
+		foreach(\range(0, 100) as $i) {
 			$group = $this->createMock(IGroup::class);
 			$group->method('getGID')->willReturn('group'.$i);
 			$groups[] = $group;
@@ -1476,7 +1476,7 @@ class DefaultShareProviderTest extends TestCase {
 		$this->rootFolder->method('getById')->with($deletedFileId)->willReturn([$file]);
 
 		$groups = [];
-		foreach(range(0, 100) as $i) {
+		foreach(\range(0, 100) as $i) {
 			$group = $this->createMock(IGroup::class);
 			$group->method('getGID')->willReturn('group'.$i);
 			$groups[] = $group;
@@ -1537,7 +1537,7 @@ class DefaultShareProviderTest extends TestCase {
 		$this->assertEquals(1, $qb->execute());
 
 		for($i = 0; $i < 200; $i++) {
-			$receiver = strval($i)."sharedWith";
+			$receiver = \strval($i)."sharedWith";
 			$qb->insert('share')
 				->values([
 					'share_type' => $qb->expr()->literal(Share::SHARE_TYPE_USER),
@@ -2725,7 +2725,7 @@ class DefaultShareProviderTest extends TestCase {
 		$data = $cursor->fetchAll();
 		$cursor->closeCursor();
 
-		$this->assertCount($shouldBeDeleted ? 0 : count($ids), $data);
+		$this->assertCount($shouldBeDeleted ? 0 : \count($ids), $data);
 	}
 
 	public function dataUserDeletedFromGroup() {

@@ -213,7 +213,7 @@ class EntityTest extends \Test\TestCase {
 	public function testGetItInt() {
 		$entity = new TestEntity();
 		$entity->setId(3);
-		$this->assertEquals('integer', gettype($entity->getId()));
+		$this->assertEquals('integer', \gettype($entity->getId()));
 	}
 
 

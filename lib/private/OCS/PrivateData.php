@@ -39,8 +39,8 @@ class PrivateData {
 	 */
 	public static function get($parameters) {
 		$user = \OC_User::getUser();
-		$app = addslashes(strip_tags($parameters['app']));
-		$key = isset($parameters['key']) ? addslashes(strip_tags($parameters['key'])) : null;
+		$app = \addslashes(\strip_tags($parameters['app']));
+		$key = isset($parameters['key']) ? \addslashes(\strip_tags($parameters['key'])) : null;
 		
 		if(empty($key)) {
 			$query = \OCP\DB::prepare('SELECT `key`, `app`, `value`  FROM `*PREFIX*privatedata` WHERE `user` = ? AND `app` = ? ');
@@ -70,8 +70,8 @@ class PrivateData {
 	 */
 	public static function set($parameters) {
 		$user = \OC_User::getUser();
-		$app = addslashes(strip_tags($parameters['app']));
-		$key = addslashes(strip_tags($parameters['key']));
+		$app = \addslashes(\strip_tags($parameters['app']));
+		$key = \addslashes(\strip_tags($parameters['key']));
 		$value = (string)$_POST['value'];
 
 		// update in DB
@@ -100,8 +100,8 @@ class PrivateData {
 			return new Result(null, 101);
 		}
 
-		$app = addslashes(strip_tags($parameters['app']));
-		$key = addslashes(strip_tags($parameters['key']));
+		$app = \addslashes(\strip_tags($parameters['app']));
+		$key = \addslashes(\strip_tags($parameters['key']));
 
 		// delete in DB
 		$query = \OCP\DB::prepare('DELETE FROM `*PREFIX*privatedata`  WHERE `user` = ? AND `app` = ? AND `key` = ? ');

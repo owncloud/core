@@ -49,7 +49,7 @@ class Server {
 	 * @return bool
 	 */
 	public static function NativeAvailable() {
-		return function_exists('smbclient_state_new');
+		return \function_exists('smbclient_state_new');
 	}
 
 	/**
@@ -74,10 +74,10 @@ class Server {
 	 * @return string[] [$workgroup, $user]
 	 */
 	public function splitUser($user) {
-		if (strpos($user, '/')) {
-			return explode('/', $user, 2);
-		} elseif (strpos($user, '\\')) {
-			return explode('\\', $user);
+		if (\strpos($user, '/')) {
+			return \explode('/', $user, 2);
+		} elseif (\strpos($user, '\\')) {
+			return \explode('\\', $user);
 		} else {
 			return array(null, $user);
 		}
@@ -125,12 +125,12 @@ class Server {
 	 * @throws \Icewind\SMB\Exception\InvalidHostException
 	 */
 	public function listShares() {
-		$workgroupArgument = ($this->workgroup) ? ' -W ' . escapeshellarg($this->workgroup) : '';
-		$command = sprintf('%s %s --authentication-file=%s -gL %s',
+		$workgroupArgument = ($this->workgroup) ? ' -W ' . \escapeshellarg($this->workgroup) : '';
+		$command = \sprintf('%s %s --authentication-file=%s -gL %s',
 			$this->system->getSmbclientPath(),
 			$workgroupArgument,
 			System::getFD(3),
-			escapeshellarg($this->getHost())
+			\escapeshellarg($this->getHost())
 		);
 		$connection = new RawConnection($command);
 		$connection->writeAuthentication($this->getUser(), $this->getPassword());
@@ -138,25 +138,25 @@ class Server {
 
 		$line = $output[0];
 
-		$line = rtrim($line, ')');
-		if (substr($line, -23) === ErrorCodes::LogonFailure) {
+		$line = \rtrim($line, ')');
+		if (\substr($line, -23) === ErrorCodes::LogonFailure) {
 			throw new AuthenticationException();
 		}
-		if (substr($line, -26) === ErrorCodes::BadHostName) {
+		if (\substr($line, -26) === ErrorCodes::BadHostName) {
 			throw new InvalidHostException();
 		}
-		if (substr($line, -22) === ErrorCodes::Unsuccessful) {
+		if (\substr($line, -22) === ErrorCodes::Unsuccessful) {
 			throw new InvalidHostException();
 		}
-		if (substr($line, -28) === ErrorCodes::ConnectionRefused) {
+		if (\substr($line, -28) === ErrorCodes::ConnectionRefused) {
 			throw new InvalidHostException();
 		}
 
 		$shareNames = array();
 		foreach ($output as $line) {
-			if (strpos($line, '|')) {
-				list($type, $name, $description) = explode('|', $line);
-				if (strtolower($type) === 'disk') {
+			if (\strpos($line, '|')) {
+				list($type, $name, $description) = \explode('|', $line);
+				if (\strtolower($type) === 'disk') {
 					$shareNames[$name] = $description;
 				}
 			}

@@ -95,8 +95,8 @@ class MailNotifications {
 	 * @return array list of individual addresses
 	 */
 	private function _mailStringToArray($mailsstring) {
-		$sanatised  = str_replace([', ', '; ', ',', ';', ' '], ',', $mailsstring);
-		$mail_array = explode(',', $sanatised);
+		$sanatised  = \str_replace([', ', '; ', ',', ';', ' '], ',', $mailsstring);
+		$mail_array = \explode(',', $sanatised);
 
 		return $mail_array;
 	}
@@ -122,7 +122,7 @@ class MailNotifications {
 			}
 
 			$items = $this->getItemSharedWithUser($itemSource, $itemType, $recipient);
-			$filename = trim($items[0]['file_target'], '/');
+			$filename = \trim($items[0]['file_target'], '/');
 			$expiration = null;
 			if (isset($items[0]['expiration'])) {
 				try {
@@ -163,7 +163,7 @@ class MailNotifications {
 							$this->defaults->getName()
 						]),
 					]);
-				if(!is_null($this->replyTo)) {
+				if(!\is_null($this->replyTo)) {
 					$message->setReplyTo([$this->replyTo]);
 				}
 
@@ -225,7 +225,7 @@ class MailNotifications {
 						$this->defaults->getName()
 					]),
 			]);
-			if(!is_null($this->replyTo)) {
+			if(!\is_null($this->replyTo)) {
 				$message->setReplyTo([$this->replyTo]);
 			}
 

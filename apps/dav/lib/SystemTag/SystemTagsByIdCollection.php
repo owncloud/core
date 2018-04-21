@@ -101,7 +101,7 @@ class SystemTagsByIdCollection implements ICollection {
 	function getChild($name) {
 		try {
 			$tag = $this->tagManager->getTagsByIds([$name]);
-			$tag = current($tag);
+			$tag = \current($tag);
 			if (!$this->tagManager->canUserSeeTag($tag, $this->userSession->getUser())) {
 				throw new NotFound('Tag with id ' . $name . ' not found');
 			}
@@ -120,7 +120,7 @@ class SystemTagsByIdCollection implements ICollection {
 		}
 
 		$tags = $this->tagManager->getAllTags($visibilityFilter);
-		return array_map(function($tag) {
+		return \array_map(function($tag) {
 			return $this->makeNode($tag);
 		}, $tags);
 	}
@@ -131,7 +131,7 @@ class SystemTagsByIdCollection implements ICollection {
 	function childExists($name) {
 		try {
 			$tag = $this->tagManager->getTagsByIds([$name]);
-			$tag = current($tag);
+			$tag = \current($tag);
 			if (!$this->tagManager->canUserSeeTag($tag, $this->userSession->getUser())) {
 				return false;
 			}

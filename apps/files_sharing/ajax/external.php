@@ -75,7 +75,7 @@ $externalManager = new \OCA\Files_Sharing\External\Manager(
 );
 
 // check for ssl cert
-if (substr($remote, 0, 5) === 'https') {
+if (\substr($remote, 0, 5) === 'https') {
 	try {
 		\OC::$server->getHTTPClientService()->newClient()->get($remote, [
 			'timeout' => 10,
@@ -100,7 +100,7 @@ try {
 	// note: checkStorageAvailability will already remove the invalid share
 	\OCP\Util::writeLog(
 		'files_sharing',
-		'Invalid remote storage: ' . get_class($e) . ': ' . $e->getMessage(),
+		'Invalid remote storage: ' . \get_class($e) . ': ' . $e->getMessage(),
 		\OCP\Util::DEBUG
 	);
 	\OCP\JSON::error(
@@ -114,7 +114,7 @@ try {
 } catch (\Exception $e) {
 	\OCP\Util::writeLog(
 		'files_sharing',
-		'Invalid remote storage: ' . get_class($e) . ': ' . $e->getMessage(),
+		'Invalid remote storage: ' . \get_class($e) . ': ' . $e->getMessage(),
 		\OCP\Util::DEBUG
 	);
 	$externalManager->removeShare($mount->getMountPoint());
@@ -135,14 +135,14 @@ try {
 } catch (\OCP\Files\StorageInvalidException $e) {
 	\OCP\Util::writeLog(
 		'files_sharing',
-		'Invalid remote storage: ' . get_class($e) . ': ' . $e->getMessage(),
+		'Invalid remote storage: ' . \get_class($e) . ': ' . $e->getMessage(),
 		\OCP\Util::DEBUG
 	);
 	\OCP\JSON::error(['data' => ['message' => $l->t('Storage not valid')]]);
 } catch (\Exception $e) {
 	\OCP\Util::writeLog(
 		'files_sharing',
-		'Invalid remote storage: ' . get_class($e) . ': ' . $e->getMessage(),
+		'Invalid remote storage: ' . \get_class($e) . ': ' . $e->getMessage(),
 		\OCP\Util::DEBUG
 	);
 	\OCP\JSON::error(['data' => ['message' => $l->t('Couldn\'t add remote share')]]);

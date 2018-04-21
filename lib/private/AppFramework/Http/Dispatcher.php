@@ -95,7 +95,7 @@ class Dispatcher {
 		} catch(\Exception $exception){
 			$response = $this->middlewareDispatcher->afterException(
 				$controller, $methodName, $exception);
-			if (is_null($response)) {
+			if (\is_null($response)) {
 				throw $exception;
 			}
 		}
@@ -106,7 +106,7 @@ class Dispatcher {
 		// depending on the cache object the headers need to be changed
 		$out[0] = $this->protocol->getStatusHeader($response->getStatus(),
 			$response->getLastModified(), $response->getETag());
-		$out[1] = array_merge($response->getHeaders());
+		$out[1] = \array_merge($response->getHeaders());
 		$out[2] = $response->getCookies();
 		$out[3] = $this->middlewareDispatcher->beforeOutput(
 			$controller, $methodName, $response->render()
@@ -143,20 +143,20 @@ class Dispatcher {
 				$value === 'false' &&
 				(
 					$this->request->method === 'GET' ||
-					strpos($this->request->getHeader('Content-Type'),
+					\strpos($this->request->getHeader('Content-Type'),
 						'application/x-www-form-urlencoded') !== false
 				)
 			) {
 				$value = false;
 
-			} elseif($value !== null && in_array($type, $types)) {
-				settype($value, $type);
+			} elseif($value !== null && \in_array($type, $types)) {
+				\settype($value, $type);
 			}
 
 			$arguments[] = $value;
 		}
 
-		$response = call_user_func_array([$controller, $methodName], $arguments);
+		$response = \call_user_func_array([$controller, $methodName], $arguments);
 
 		// format response
 		if($response instanceof DataResponse || !($response instanceof Response)) {

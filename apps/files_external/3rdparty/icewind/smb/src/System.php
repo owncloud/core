@@ -20,7 +20,7 @@ class System {
 			'/dev/fd'
 		);
 		foreach ($folders as $folder) {
-			if (file_exists($folder)) {
+			if (\file_exists($folder)) {
 				return $folder . '/' . $num;
 			}
 		}
@@ -29,14 +29,14 @@ class System {
 
 	public function getSmbclientPath() {
 		if (!$this->smbclient) {
-			$this->smbclient = trim(`which smbclient`);
+			$this->smbclient = \trim(`which smbclient`);
 		}
 		return $this->smbclient;
 	}
 
 	public function getNetPath() {
 		if (!$this->net) {
-			$this->net = trim(`which net`);
+			$this->net = \trim(`which net`);
 		}
 		return $this->net;
 	}

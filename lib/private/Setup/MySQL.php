@@ -119,10 +119,10 @@ class MySQL extends AbstractDatabase {
 		];
 
 		// adding port support
-		if (strpos($this->dbHost, ':')) {
+		if (\strpos($this->dbHost, ':')) {
 			// Host variable may carry a port or socket.
-			list($host, $portOrSocket) = explode(':', $this->dbHost, 2);
-			if (ctype_digit($portOrSocket)) {
+			list($host, $portOrSocket) = \explode(':', $this->dbHost, 2);
+			if (\ctype_digit($portOrSocket)) {
 				$connectionParams['port'] = $portOrSocket;
 			} else {
 				$connectionParams['unix_socket'] = $portOrSocket;
@@ -148,7 +148,7 @@ class MySQL extends AbstractDatabase {
 			//we don't have a dbuser specified in config
 			if ($this->dbUser !== $oldUser) {
 				//add prefix to the admin username to prevent collisions
-				$adminUser = substr('oc_' . $username, 0, 16);
+				$adminUser = \substr('oc_' . $username, 0, 16);
 
 				$i = 1;
 				while (true) {
@@ -160,7 +160,7 @@ class MySQL extends AbstractDatabase {
 					if ($result) {
 						$data = $result->fetchAll();
 						//new dbuser does not exist
-						if (count($data) === 0) {
+						if (\count($data) === 0) {
 							//use the admin login data for the new database user
 							$this->dbUser = $adminUser;
 
@@ -172,8 +172,8 @@ class MySQL extends AbstractDatabase {
 							break;
 						} else {
 							//repeat with different username
-							$length = strlen((string)$i);
-							$adminUser = substr('oc_' . $username, 0, 16 - $length) . $i;
+							$length = \strlen((string)$i);
+							$adminUser = \substr('oc_' . $username, 0, 16 - $length) . $i;
 							$i++;
 						}
 					} else {

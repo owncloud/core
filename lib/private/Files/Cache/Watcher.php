@@ -82,7 +82,7 @@ class Watcher implements IWatcher {
 	 * @return boolean true if path was updated
 	 */
 	public function checkUpdate($path, $cachedEntry = null) {
-		if (is_null($cachedEntry)) {
+		if (\is_null($cachedEntry)) {
 			$cachedEntry = $this->cache->get($path);
 		}
 		if ($this->needsUpdate($path, $cachedEntry)) {
@@ -121,7 +121,7 @@ class Watcher implements IWatcher {
 	 * @return bool
 	 */
 	public function needsUpdate($path, $cachedData) {
-		if ($this->watchPolicy === self::CHECK_ALWAYS or ($this->watchPolicy === self::CHECK_ONCE and array_search($path, $this->checkedPaths) === false)) {
+		if ($this->watchPolicy === self::CHECK_ALWAYS or ($this->watchPolicy === self::CHECK_ONCE and \array_search($path, $this->checkedPaths) === false)) {
 			$this->checkedPaths[] = $path;
 			return $this->storage->hasUpdated($path, $cachedData['storage_mtime']);
 		}

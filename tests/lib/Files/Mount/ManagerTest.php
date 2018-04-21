@@ -12,7 +12,7 @@ use OC\Files\Storage\Temporary;
 
 class LongId extends Temporary {
 	public function getId() {
-		return 'long:' . str_repeat('foo', 50) . parent::getId();
+		return 'long:' . \str_repeat('foo', 50) . parent::getId();
 	}
 }
 
@@ -63,6 +63,6 @@ class ManagerTest extends \Test\TestCase {
 		$storageId = $storage->getId();
 		$this->assertEquals([$mount], $this->manager->findByStorageId($id));
 		$this->assertEquals([$mount], $this->manager->findByStorageId($storageId));
-		$this->assertEquals([$mount], $this->manager->findByStorageId(md5($storageId)));
+		$this->assertEquals([$mount], $this->manager->findByStorageId(\md5($storageId)));
 	}
 }

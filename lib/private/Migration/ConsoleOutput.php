@@ -65,7 +65,7 @@ class ConsoleOutput implements IOutput {
 	 * @param int $max
 	 */
 	public function startProgress($max = 0) {
-		if (!is_null($this->progressBar)) {
+		if (!\is_null($this->progressBar)) {
 			$this->progressBar->finish();
 		}
 		$this->progressBar = new ProgressBar($this->output);
@@ -77,7 +77,7 @@ class ConsoleOutput implements IOutput {
 	 * @param string $description
 	 */
 	public function advance($step = 1, $description = '') {
-		if (!is_null($this->progressBar)) {
+		if (!\is_null($this->progressBar)) {
 			$this->progressBar = new ProgressBar($this->output);
 			$this->progressBar->start();
 		}
@@ -85,7 +85,7 @@ class ConsoleOutput implements IOutput {
 	}
 
 	public function finishProgress() {
-		if (is_null($this->progressBar)) {
+		if (\is_null($this->progressBar)) {
 			return;
 		}
 		$this->progressBar->finish();

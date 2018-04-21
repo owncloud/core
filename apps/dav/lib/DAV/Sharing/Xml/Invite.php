@@ -121,7 +121,7 @@ class Invite implements XmlSerializable {
 
 		$cs = '{' . Plugin::NS_OWNCLOUD . '}';
 
-		if (!is_null($this->organizer)) {
+		if (!\is_null($this->organizer)) {
 
 			$writer->startElement($cs . 'organizer');
 			$writer->writeElement('{DAV:}href', $this->organizer['href']);

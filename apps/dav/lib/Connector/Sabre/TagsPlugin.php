@@ -140,7 +140,7 @@ class TagsPlugin extends \Sabre\DAV\ServerPlugin
 		$isFav = false;
 		$tags = $this->getTags($fileId);
 		if ($tags) {
-			$favPos = array_search(self::TAG_FAVORITE, $tags);
+			$favPos = \array_search(self::TAG_FAVORITE, $tags);
 			if ($favPos !== false) {
 				$isFav = true;
 				unset($tags[$favPos]);
@@ -164,7 +164,7 @@ class TagsPlugin extends \Sabre\DAV\ServerPlugin
 				if (empty($tags)) {
 					return [];
 				}
-				return current($tags);
+				return \current($tags);
 			}
 		}
 		return null;
@@ -180,14 +180,14 @@ class TagsPlugin extends \Sabre\DAV\ServerPlugin
 		$tagger = $this->getTagger();
 		$currentTags = $this->getTags($fileId);
 
-		$newTags = array_diff($tags, $currentTags);
+		$newTags = \array_diff($tags, $currentTags);
 		foreach ($newTags as $tag) {
 			if ($tag === self::TAG_FAVORITE) {
 				continue;
 			}
 			$tagger->tagAs($fileId, $tag);
 		}
-		$deletedTags = array_diff($currentTags, $tags);
+		$deletedTags = \array_diff($currentTags, $tags);
 		foreach ($deletedTags as $tag) {
 			if ($tag === self::TAG_FAVORITE) {
 				continue;
@@ -215,8 +215,8 @@ class TagsPlugin extends \Sabre\DAV\ServerPlugin
 		// need prefetch ?
 		if ($node instanceof \OCA\DAV\Connector\Sabre\Directory
 			&& $propFind->getDepth() !== 0
-			&& (!is_null($propFind->getStatus(self::TAGS_PROPERTYNAME))
-			|| !is_null($propFind->getStatus(self::FAVORITE_PROPERTYNAME))
+			&& (!\is_null($propFind->getStatus(self::TAGS_PROPERTYNAME))
+			|| !\is_null($propFind->getStatus(self::FAVORITE_PROPERTYNAME))
 		)) {
 			// note: pre-fetching only supported for depth <= 1
 			$folderContent = $node->getChildren();
@@ -231,7 +231,7 @@ class TagsPlugin extends \Sabre\DAV\ServerPlugin
 			}
 
 			$this->cachedTags = $this->cachedTags + $tags;
-			$emptyFileIds = array_diff($fileIds, array_keys($tags));
+			$emptyFileIds = \array_diff($fileIds, \array_keys($tags));
 			// also cache the ones that were not found
 			foreach ($emptyFileIds as $fileId) {
 				$this->cachedTags[$fileId] = [];
@@ -247,7 +247,7 @@ class TagsPlugin extends \Sabre\DAV\ServerPlugin
 		});
 
 		$propFind->handle(self::FAVORITE_PROPERTYNAME, function() use ($isFav, $node) {
-			if (is_null($isFav)) {
+			if (\is_null($isFav)) {
 				list(, $isFav) = $this->getTagsAndFav($node->getId());
 			}
 			if ($isFav) {
@@ -284,7 +284,7 @@ class TagsPlugin extends \Sabre\DAV\ServerPlugin
 				$this->getTagger()->unTag($node->getId(), self::TAG_FAVORITE);
 			}
 
-			if (is_null($favState)) {
+			if (\is_null($favState)) {
 				// confirm deletion
 				return 204;
 			}

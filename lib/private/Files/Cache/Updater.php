@@ -117,8 +117,8 @@ class Updater implements IUpdater {
 		if (!$this->enabled or Scanner::isPartialFile($path)) {
 			return;
 		}
-		if (is_null($time)) {
-			$time = time();
+		if (\is_null($time)) {
+			$time = \time();
 		}
 
 		$data = $this->scanner->scan($path, Scanner::SCAN_SHALLOW, -1, false);
@@ -148,7 +148,7 @@ class Updater implements IUpdater {
 			return;
 		}
 
-		$parent = dirname($path);
+		$parent = \dirname($path);
 		if ($parent === '.') {
 			$parent = '';
 		}
@@ -159,9 +159,9 @@ class Updater implements IUpdater {
 
 		$this->correctParentStorageMtime($path);
 		if ($entry instanceof ICacheEntry) {
-			$this->propagator->propagateChange($path, time(), -$entry->getSize());
+			$this->propagator->propagateChange($path, \time(), -$entry->getSize());
 		} else {
-			$this->propagator->propagateChange($path, time());
+			$this->propagator->propagateChange($path, \time());
 			if ($this->cache instanceof Cache) {
 				$this->cache->correctFolderSize($parent);
 			}
@@ -181,7 +181,7 @@ class Updater implements IUpdater {
 			return;
 		}
 
-		$time = time();
+		$time = \time();
 
 		$sourceCache = $sourceStorage->getCache();
 		$sourceUpdater = $sourceStorage->getUpdater();
@@ -199,7 +199,7 @@ class Updater implements IUpdater {
 			}
 		}
 
-		if (pathinfo($source, PATHINFO_EXTENSION) !== pathinfo($target, PATHINFO_EXTENSION)) {
+		if (\pathinfo($source, PATHINFO_EXTENSION) !== \pathinfo($target, PATHINFO_EXTENSION)) {
 			// handle mime type change
 			$mimeType = $this->storage->getMimeType($target);
 			$fileId = $this->cache->getId($target);
@@ -240,7 +240,7 @@ class Updater implements IUpdater {
 	 */
 	private function correctParentStorageMtime($internalPath) {
 		$parentId = $this->cache->getParentId($internalPath);
-		$parent = dirname($internalPath);
+		$parent = \dirname($internalPath);
 		if ($parentId != -1) {
 			$mtime = $this->storage->filemtime($parent);
 			if ($mtime !== false) {

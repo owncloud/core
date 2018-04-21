@@ -120,7 +120,7 @@ class SettingsPageController extends Controller {
 		$icon = $section->getIconName() . '.svg';
 		$appPath = \OC_App::getAppPath($section->getID());
 
-		if (file_exists($appPath . '/img/' . $icon)) {
+		if (\file_exists($appPath . '/img/' . $icon)) {
 			$icon = $this->urlGenerator->imagePath($section->getID(), $icon);
 		} else {
 			$icon = $section->getIconName();
@@ -146,10 +146,10 @@ class SettingsPageController extends Controller {
 			$nav[] = [
 				'id' => $section->getID(),
 				'link' => $this->urlGenerator->linkToRoute(
-					'settings.SettingsPage.get'.ucwords($type),
+					'settings.SettingsPage.get'.\ucwords($type),
 					['sectionid' => $section->getID()]
 				),
-				'name' => ucfirst($section->getName()),
+				'name' => \ucfirst($section->getName()),
 				'active' => $section->getID() === $currentSectionID,
 				'icon' => $icon
 			];
@@ -168,7 +168,7 @@ class SettingsPageController extends Controller {
 			$template = $panel->getPanel();
 			if($template instanceof Template || $template instanceof TemplateResponse) {
 				$data[] = [
-					'id' => get_class($panel),
+					'id' => \get_class($panel),
 					'content' => ($template instanceof Template) ? $template->fetchPage() : $template->render()
 				];
 			}

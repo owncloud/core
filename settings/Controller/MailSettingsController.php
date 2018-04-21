@@ -98,7 +98,7 @@ class MailSettingsController extends Controller {
 									$mail_smtpauth,
 									$mail_smtpport) {
 
-		$params = get_defined_vars();
+		$params = \get_defined_vars();
 		$configs = [];
 		foreach($params as $key => $value) {
 			$configs[$key] = (empty($value)) ? null : $value;

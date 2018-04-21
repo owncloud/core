@@ -72,7 +72,7 @@ class MemcacheLockingProvider extends AbstractLockingProvider {
 	 * @throws \OCP\Lock\LockedException
 	 */
 	public function acquireLock($path, $type) {
-		if (strlen($path) > 64) { // max length in file_locks
+		if (\strlen($path) > 64) { // max length in file_locks
 			throw new \InvalidArgumentException('Lock key length too long');
 		}
 		if ($type === self::LOCK_SHARED) {

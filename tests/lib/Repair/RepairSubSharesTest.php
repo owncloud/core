@@ -83,7 +83,7 @@ class RepairSubSharesTest extends TestCase {
 		$userName = "user";
 		$groupName = "group";
 		$folderName = "/test";
-		$time = time();
+		$time = \time();
 		$groupCount = 1;
 		$totalGroups = 3;
 		$parent = 1;
@@ -117,7 +117,7 @@ class RepairSubSharesTest extends TestCase {
 			 */
 			if (($userCount % $totalGroups) === 0) {
 				$groupCount++;
-				$time = time();
+				$time = \time();
 			}
 
 			/**
@@ -151,7 +151,7 @@ class RepairSubSharesTest extends TestCase {
 	public function testLargeDuplicateShareRows() {
 		$qb = $this->connection->getQueryBuilder();
 		$userName = "user";
-		$time = time();
+		$time = \time();
 		$groupCount = 0;
 		$folderName = "/test";
 		$maxUsersPerGroup = 1000;

@@ -68,10 +68,10 @@ class CapabilitiesContext implements Context, SnippetAcceptingContext {
 		$this->savedCapabilitiesXml = $this->getCapabilitiesXml();
 		// Set the required starting values for testing
 		$capabilitiesArray = $this->getCommonSharingConfigs();
-		$capabilitiesArray = array_merge(
+		$capabilitiesArray = \array_merge(
 			$capabilitiesArray, $this->getCommonFederationConfigs()
 		);
-		$capabilitiesArray = array_merge(
+		$capabilitiesArray = \array_merge(
 			$capabilitiesArray,
 			[
 				[

@@ -134,7 +134,7 @@ class Remote {
 		$share['mtime'] = $info->getMtime();
 		$share['permissions'] = $info->getPermissions();
 		$share['type'] = $info->getType();
-		$share['file_id'] = strval($info->getId());
+		$share['file_id'] = \strval($info->getId());
 
 		return $share;
 	}
@@ -157,7 +157,7 @@ class Remote {
 
 		$shares = $externalManager->getAcceptedShares();
 
-		$shares = array_map('self::extendShareInfo', $shares);
+		$shares = \array_map('self::extendShareInfo', $shares);
 	
 		return new \OC_OCS_Result($shares);
 	}

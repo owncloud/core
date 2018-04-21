@@ -132,7 +132,7 @@ class Update {
 		$target = $params['newpath'];
 		if(
 			$this->encryptionManager->isEnabled() &&
-			dirname($source) !== dirname($target)
+			\dirname($source) !== \dirname($target)
 		) {
 				list($owner, $ownerPath) = $this->getOwnerPath($target);
 				$absPath = '/' . $owner . '/files/' . $ownerPath;

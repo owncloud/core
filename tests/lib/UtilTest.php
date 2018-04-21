@@ -36,7 +36,7 @@ class UtilTest extends \Test\TestCase {
 	}
 
 	function testFormatDate() {
-		date_default_timezone_set("UTC");
+		\date_default_timezone_set("UTC");
 
 		$result = OC_Util::formatDate(1350129205);
 		$expected = 'October 13, 2012 at 11:53:25 AM GMT+0';
@@ -48,7 +48,7 @@ class UtilTest extends \Test\TestCase {
 	}
 
 	function testFormatDateWithTZ() {
-		date_default_timezone_set("UTC");
+		\date_default_timezone_set("UTC");
 
 		$result = OC_Util::formatDate(1350129205, false, 'Europe/Berlin');
 		$expected = 'October 13, 2012 at 1:53:25 PM GMT+2';
@@ -77,7 +77,7 @@ class UtilTest extends \Test\TestCase {
 	 * @dataProvider formatDateWithTZFromSessionData
 	 */
 	function testFormatDateWithTZFromSession($offset, $expected, $expectedTimeZone) {
-		date_default_timezone_set("UTC");
+		\date_default_timezone_set("UTC");
 
 		$oldDateTimeFormatter = \OC::$server->query('DateTimeFormatter');
 		\OC::$server->getSession()->set('timezone', $offset);
@@ -139,7 +139,7 @@ class UtilTest extends \Test\TestCase {
 	}
 
 	public function testFileInfoLoaded() {
-		$expected = function_exists('finfo_open');
+		$expected = \function_exists('finfo_open');
 		$this->assertEquals($expected, \OC_Util::fileInfoLoaded());
 	}
 
@@ -170,7 +170,7 @@ class UtilTest extends \Test\TestCase {
 		\OC::$server->getConfig()->deleteSystemValue('instanceid');
 		$instanceId = OC_Util::getInstanceId();
 		$this->assertStringStartsWith('oc', $instanceId);
-		$matchesRegex = preg_match('/^[a-z0-9]+$/', $instanceId);
+		$matchesRegex = \preg_match('/^[a-z0-9]+$/', $instanceId);
 		$this->assertSame(1, $matchesRegex);
 	}
 
@@ -268,7 +268,7 @@ class UtilTest extends \Test\TestCase {
 				->expects($this->at(1))
 				->method('getAppValue')
 				->with('core', 'shareapi_exclude_groups_list')
-				->will($this->returnValue(json_encode($excludedGroups)));
+				->will($this->returnValue(\json_encode($excludedGroups)));
 
 		$groupManager
 				->expects($this->at(0))
@@ -309,7 +309,7 @@ class UtilTest extends \Test\TestCase {
 		$appManager->expects($this->any())
 			->method('isEnabledForUser')
 			->will($this->returnCallback(function($appId) use ($enabledApps){
-				return in_array($appId, $enabledApps);
+				return \in_array($appId, $enabledApps);
 		}));
 		Dummy_OC_Util::$appManager = $appManager;
 
@@ -354,21 +354,21 @@ class UtilTest extends \Test\TestCase {
 	}
 
 	public function testGetDefaultPageUrlWithRedirectUrlWithoutFrontController() {
-		putenv('front_controller_active=false');
+		\putenv('front_controller_active=false');
 
 		$_REQUEST['redirect_url'] = 'myRedirectUrl.com';
 		$this->assertSame('http://localhost'.\OC::$WEBROOT.'/myRedirectUrl.com', OC_Util::getDefaultPageUrl());
 	}
 
 	public function testGetDefaultPageUrlWithRedirectUrlRedirectBypassWithoutFrontController() {
-		putenv('front_controller_active=false');
+		\putenv('front_controller_active=false');
 
 		$_REQUEST['redirect_url'] = 'myRedirectUrl.com@foo.com:a';
 		$this->assertSame('http://localhost'.\OC::$WEBROOT.'/index.php/apps/files/', OC_Util::getDefaultPageUrl());
 	}
 
 	public function testGetDefaultPageUrlWithRedirectUrlRedirectBypassWithFrontController() {
-		putenv('front_controller_active=true');
+		\putenv('front_controller_active=true');
 		$_REQUEST['redirect_url'] = 'myRedirectUrl.com@foo.com:a';
 		$this->assertSame('http://localhost'.\OC::$WEBROOT.'/apps/files/', OC_Util::getDefaultPageUrl());
 	}
@@ -398,7 +398,7 @@ class UtilTest extends \Test\TestCase {
 
 	public function testCheckDataDirectoryValidity() {
 		$dataDir = \OCP\Files::tmpFolder();
-		touch($dataDir . '/.ocdata');
+		\touch($dataDir . '/.ocdata');
 		$errors = \OC_Util::checkDataDirectoryValidity($dataDir);
 		$this->assertEmpty($errors);
 		\OCP\Files::rmdirr($dataDir);
@@ -438,8 +438,8 @@ class UtilTest extends \Test\TestCase {
 			);
 		}
 		$skeletonDir = \OCP\Files::tmpFolder();
-		touch($skeletonDir . '/a-file');
-		chmod($skeletonDir, 0);
+		\touch($skeletonDir . '/a-file');
+		\chmod($skeletonDir, 0);
 		$config = \OC::$server->getConfig();
 		$config->setSystemValue('skeletondirectory', $skeletonDir);
 		$userFolder = $this->createMock('\OCP\Files\Folder');
@@ -460,8 +460,8 @@ class UtilTest extends \Test\TestCase {
 			);
 		}
 		$skeletonDir = \OCP\Files::tmpFolder();
-		touch($skeletonDir . '/a-file');
-		chmod($skeletonDir . '/a-file', 0);
+		\touch($skeletonDir . '/a-file');
+		\chmod($skeletonDir . '/a-file', 0);
 		$config = \OC::$server->getConfig();
 		$config->setSystemValue('skeletondirectory', $skeletonDir);
 		$userFolder = $this->createMock('\OCP\Files\Folder');

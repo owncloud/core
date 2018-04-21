@@ -29,15 +29,15 @@ use OCP\AppFramework\Http\Response;
 
 
 function rrmdir($directory) {
-	$files = array_diff(scandir($directory), ['.','..']);
+	$files = \array_diff(\scandir($directory), ['.','..']);
 	foreach ($files as $file) {
-		if (is_dir($directory . '/' . $file)) {
+		if (\is_dir($directory . '/' . $file)) {
 			rrmdir($directory . '/' . $file);
 		} else {
-			unlink($directory . '/' . $file);
+			\unlink($directory . '/' . $file);
 		}
 	}
-	return rmdir($directory);
+	return \rmdir($directory);
 }
 
 
@@ -82,14 +82,14 @@ class AppTest extends \Test\TestCase {
 
 		$this->appPath = __DIR__ . '/../../../apps/namespacetestapp';
 		$infoXmlPath = $this->appPath . '/appinfo/info.xml';
-		mkdir($this->appPath . '/appinfo', 0777, true);
+		\mkdir($this->appPath . '/appinfo', 0777, true);
 
 		$xml = '<?xml version="1.0" encoding="UTF-8"?>' .
 		'<info>' .
 		    '<id>namespacetestapp</id>' .
 			'<namespace>NameSpaceTestApp</namespace>' .
 		'</info>';
-		file_put_contents($infoXmlPath, $xml);
+		\file_put_contents($infoXmlPath, $xml);
 	}
 
 

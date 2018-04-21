@@ -52,28 +52,28 @@ class Occ {
 	 */
 	public function execute() {
 		$command = $this->request->getParam("command", "");
-		$args = preg_split("/[\s,]+/", $command);
-		$args = array_map(
+		$args = \preg_split("/[\s,]+/", $command);
+		$args = \array_map(
 			function ($arg) {
-				return escapeshellarg($arg);
+				return \escapeshellarg($arg);
 			}, $args
 		);
 
-		$args = implode(' ', $args);
+		$args = \implode(' ', $args);
 		$descriptor = [
 			0 => ['pipe', 'r'],
 			1 => ['pipe', 'w'],
 			2 => ['pipe', 'w'],
 		];
-		$process = proc_open(
+		$process = \proc_open(
 			'php console.php ' . $args,
 			$descriptor,
 			$pipes,
-			realpath("../")
+			\realpath("../")
 		);
-		$lastStdOut = stream_get_contents($pipes[1]);
-		$lastStdErr = stream_get_contents($pipes[2]);
-		$lastCode = proc_close($process);
+		$lastStdOut = \stream_get_contents($pipes[1]);
+		$lastStdErr = \stream_get_contents($pipes[2]);
+		$lastCode = \proc_close($process);
 		$result = [
 			"code" => $lastCode,
 			"stdOut" => $lastStdOut,

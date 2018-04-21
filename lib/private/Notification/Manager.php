@@ -145,7 +145,7 @@ class Manager implements IManager {
 		$this->builtAppsHolder = [];
 		$registerAppEvent = new RegisterConsumerEventImpl($this);
 		$this->dispatcher->dispatch(RegisterConsumerEvent::NAME, $registerAppEvent);
-		$this->apps = array_merge($this->apps, $this->builtAppsHolder);
+		$this->apps = \array_merge($this->apps, $this->builtAppsHolder);
 
 		return $this->apps;
 	}
@@ -188,7 +188,7 @@ class Manager implements IManager {
 		$this->notifiersInfo = [];
 		foreach ($this->notifiersInfoClosures as $closure) {
 			$notifier = $closure();
-			if (!is_array($notifier) || sizeof($notifier) !== 2 || !isset($notifier['id']) || !isset($notifier['name'])) {
+			if (!\is_array($notifier) || \sizeof($notifier) !== 2 || !isset($notifier['id']) || !isset($notifier['name'])) {
 				throw new \InvalidArgumentException('The given notifier information is invalid');
 			}
 			if (isset($this->notifiersInfo[$notifier['id']])) {

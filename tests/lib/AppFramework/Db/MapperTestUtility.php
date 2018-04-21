@@ -62,7 +62,7 @@ abstract class MapperTestUtility extends \Test\TestCase {
 	 * @return bool true if associative
 	 */
 	private function isAssocArray(array $array) {
-		return array_values($array) !== $array;
+		return \array_values($array) !== $array;
 	}
 
 	/**
@@ -71,7 +71,7 @@ abstract class MapperTestUtility extends \Test\TestCase {
 	 * @return int PDO constant
 	 */
 	private function getPDOType($value) {
-		switch (gettype($value)) {
+		switch (\gettype($value)) {
 			case 'integer':
 				return \PDO::PARAM_INT;
 			case 'boolean':
@@ -198,7 +198,7 @@ class ArgumentIterator {
 	}
 
 	public function next(){
-		$result = array_shift($this->arguments);
+		$result = \array_shift($this->arguments);
 		if($result === null){
 			return false;
 		} else {

@@ -94,24 +94,24 @@ class Adapter {
 	 */
 	public function insertIfNotExist($table, $input, array $compare = null) {
 		if (empty($compare)) {
-			$compare = array_keys($input);
+			$compare = \array_keys($input);
 		}
 		$query = 'INSERT INTO `' . $table . '` (`'
-			. implode('`,`', array_keys($input)) . '`) SELECT '
-			. str_repeat('?,', count($input) - 1) . '? ' // Is there a prettier alternative?
+			. \implode('`,`', \array_keys($input)) . '`) SELECT '
+			. \str_repeat('?,', \count($input) - 1) . '? ' // Is there a prettier alternative?
 			. 'FROM `' . $table . '` WHERE ';
 
-		$inserts = array_values($input);
+		$inserts = \array_values($input);
 		foreach ($compare as $key) {
 			$query .= '`' . $key . '`';
-			if (is_null($input[$key])) {
+			if (\is_null($input[$key])) {
 				$query .= ' IS NULL AND ';
 			} else {
 				$inserts[] = $input[$key];
 				$query .= ' = ? AND ';
 			}
 		}
-		$query = substr($query, 0, strlen($query) - 5);
+		$query = \substr($query, 0, \strlen($query) - 5);
 		$query .= ' HAVING COUNT(*) = 0';
 		return $this->conn->executeUpdate($query, $inserts);
 	}
@@ -130,7 +130,7 @@ class Adapter {
 		$done = false;
 
 		if (empty($compare)) {
-			$compare = array_keys($input);
+			$compare = \array_keys($input);
 		}
 
 		// Construct the update query
@@ -141,7 +141,7 @@ class Adapter {
 			->setParameter($col, $val);
 		}
 		foreach($compare as $key) {
-			if (is_null($input[$key]) || ($input[$key] === '' && $this->conn->getDatabasePlatform() instanceof OraclePlatform)) {
+			if (\is_null($input[$key]) || ($input[$key] === '' && $this->conn->getDatabasePlatform() instanceof OraclePlatform)) {
 				$qbu->andWhere($qbu->expr()->isNull($key));
 			} else {
 				if($this->conn->getDatabasePlatform() instanceof OraclePlatform) {
@@ -209,7 +209,7 @@ class Adapter {
 
 		// Pass through failures correctly
 		if($count === $maxTry) {
-			$params = implode(',', $input);
+			$params = \implode(',', $input);
 			$updateQuery = $qbu->getSQL();
 			$insertQuery = $qbi->getSQL();
 			throw new \RuntimeException("DB upsert failed after $count attempts. UpdateQuery: $updateQuery InsertQuery: $insertQuery");

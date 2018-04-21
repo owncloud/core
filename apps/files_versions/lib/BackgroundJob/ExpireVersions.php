@@ -47,7 +47,7 @@ class ExpireVersions extends \OC\BackgroundJob\TimedJob {
 		// Run once per 30 minutes
 		$this->setInterval(60 * 30);
 
-		if (is_null($expiration) || is_null($userManager)) {
+		if (\is_null($expiration) || \is_null($userManager)) {
 			$this->fixDIForJobs();
 		} else {
 			$this->expiration = $expiration;

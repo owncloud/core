@@ -66,9 +66,9 @@ class Storage extends DAV implements ISharedStorage {
 		$this->certificateManager = $options['certificateManager'];
 		$this->remote = $options['remote'];
 		$this->remoteUser = $options['owner'];
-		list($protocol, $remote) = explode('://', $this->remote);
-		if (strpos($remote, '/')) {
-			list($host, $root) = explode('/', $remote, 2);
+		list($protocol, $remote) = \explode('://', $this->remote);
+		if (\strpos($remote, '/')) {
+			list($host, $root) = \explode('/', $remote, 2);
 		} else {
 			$host = $remote;
 			$root = '';
@@ -97,11 +97,11 @@ class Storage extends DAV implements ISharedStorage {
 			\OC::$server->getHTTPClientService()
 		);
 
-		$this->root = rtrim($this->root, '/') . $discoveryManager->getWebDavEndpoint($this->remote);
+		$this->root = \rtrim($this->root, '/') . $discoveryManager->getWebDavEndpoint($this->remote);
 		if (!$this->root || $this->root[0] !== '/') {
 			$this->root = '/' . $this->root;
 		}
-		if (substr($this->root, -1, 1) !== '/') {
+		if (\substr($this->root, -1, 1) !== '/') {
 			$this->root .= '/';
 		}
 		parent::init();
@@ -150,11 +150,11 @@ class Storage extends DAV implements ISharedStorage {
 	 * @return string
 	 */
 	public function getId() {
-		return 'shared::' . md5($this->token . '@' . $this->remote);
+		return 'shared::' . \md5($this->token . '@' . $this->remote);
 	}
 
 	public function getCache($path = '', $storage = null) {
-		if (is_null($this->cache)) {
+		if (\is_null($this->cache)) {
 			$this->cache = new Cache($this, $this->remote, $this->remoteUser);
 		}
 		return $this->cache;
@@ -276,8 +276,8 @@ class Storage extends DAV implements ISharedStorage {
 				'timeout' => 10,
 				'connect_timeout' => 10,
 			])->getBody();
-			$data = json_decode($result);
-			$returnValue = (is_object($data) && !empty($data->version));
+			$data = \json_decode($result);
+			$returnValue = (\is_object($data) && !empty($data->version));
 		} catch (ConnectException $e) {
 			$returnValue = false;
 		} catch (ClientException $e) {
@@ -289,7 +289,7 @@ class Storage extends DAV implements ISharedStorage {
 	}
 
 	public function getOwner($path) {
-		list(, $remote) = explode('://', $this->remote, 2);
+		list(, $remote) = \explode('://', $this->remote, 2);
 		return $this->remoteUser . '@' . $remote;
 	}
 

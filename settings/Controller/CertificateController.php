@@ -100,7 +100,7 @@ class CertificateController extends Controller {
 		}
 
 		try {
-			$certificate = $certificateManager->addCertificate(file_get_contents($file['tmp_name']), $file['name']);
+			$certificate = $certificateManager->addCertificate(\file_get_contents($file['tmp_name']), $file['name']);
 			return new DataResponse(
 				[
 					'name' => $certificate->getName(),

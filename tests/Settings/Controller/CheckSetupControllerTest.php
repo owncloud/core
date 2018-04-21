@@ -80,7 +80,7 @@ class CheckSetupControllerTest extends TestCase {
 		$this->l10n->expects($this->any())
 			->method('t')
 			->will($this->returnCallback(function($message, array $replace) {
-				return vsprintf($message, $replace);
+				return \vsprintf($message, $replace);
 			}));
 		$this->checker = $this->getMockBuilder('\OC\IntegrityCheck\Checker')
 				->disableOriginalConstructor()->getMock();

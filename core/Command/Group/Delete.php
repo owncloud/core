@@ -53,7 +53,7 @@ class Delete extends Command {
 	protected function execute(InputInterface $input, OutputInterface $output) {
 		$groupName = $input->getArgument('group');
 		$group = $this->groupManager->get($groupName);
-		if (is_null($group)) {
+		if (\is_null($group)) {
 			$output->writeln('<error>Group does not exist</error>');
 			return 1;
 		}

@@ -95,7 +95,7 @@ class Auth extends AbstractBasic {
 	 * @return bool
 	 */
 	public function isDavAuthenticated($username) {
-		return !is_null($this->session->get(self::DAV_AUTHENTICATED)) &&
+		return !\is_null($this->session->get(self::DAV_AUTHENTICATED)) &&
 		$this->session->get(self::DAV_AUTHENTICATED) === $username;
 	}
 
@@ -110,7 +110,7 @@ class Auth extends AbstractBasic {
 	 * @return bool
 	 */
 	protected function validateUserPass($username, $password) {
-		if (trim($username) === '') {
+		if (\trim($username) === '') {
 			return false;
 		}
 		if ($this->userSession->isLoggedIn() &&
@@ -155,7 +155,7 @@ class Auth extends AbstractBasic {
 		} catch (NotAuthenticated $e) {
 			throw $e;
 		} catch (Exception $e) {
-			$class = get_class($e);
+			$class = \get_class($e);
 			$msg = $e->getMessage();
 			throw new ServiceUnavailable("$class: $msg");
 		}
@@ -217,7 +217,7 @@ class Auth extends AbstractBasic {
 			}
 			if (\OC_User::handleApacheAuth() ||
 				//Fix for broken webdav clients
-				($this->userSession->isLoggedIn() && is_null($this->session->get(self::DAV_AUTHENTICATED))) ||
+				($this->userSession->isLoggedIn() && \is_null($this->session->get(self::DAV_AUTHENTICATED))) ||
 				//Well behaved clients that only send the cookie are allowed
 				($this->userSession->isLoggedIn() && $this->session->get(self::DAV_AUTHENTICATED) === $this->userSession->getUser()->getUID() && $request->getHeader('Authorization') === null)
 			) {
@@ -229,7 +229,7 @@ class Auth extends AbstractBasic {
 			}
 		}
 
-		if (!$this->userSession->isLoggedIn() && in_array('XMLHttpRequest', explode(',', $request->getHeader('X-Requested-With')))) {
+		if (!$this->userSession->isLoggedIn() && \in_array('XMLHttpRequest', \explode(',', $request->getHeader('X-Requested-With')))) {
 			// do not re-authenticate over ajax, use dummy auth name to prevent browser popup
 			$response->addHeader('WWW-Authenticate','DummyBasic realm="' . $this->realm . '"');
 			$response->setStatus(401);
@@ -238,9 +238,9 @@ class Auth extends AbstractBasic {
 
 		$data = parent::check($request, $response);
 		if($data[0] === true) {
-			$startPos = strrpos($data[1], '/') + 1;
+			$startPos = \strrpos($data[1], '/') + 1;
 			$user = $this->userSession->getUser()->getUID();
-			$data[1] = substr_replace($data[1], $user, $startPos);
+			$data[1] = \substr_replace($data[1], $user, $startPos);
 		}
 		return $data;
 	}

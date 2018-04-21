@@ -117,7 +117,7 @@ class Collation implements IRepairStep {
 			$result[$row['table']] = true;
 		}
 
-		return array_keys($result);
+		return \array_keys($result);
 	}
 }
 

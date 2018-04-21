@@ -88,10 +88,10 @@ class ShareTest extends \Test\TestCase {
 		\OC::$server->getAppConfig()->setValue('core', 'shareapi_allow_resharing', 'yes');
 
 		// 20 Minutes in the past, 20 minutes in the future.
-		$now = time();
+		$now = \time();
 		$dateFormat = 'Y-m-d H:i:s';
-		$this->dateInPast = date($dateFormat, $now - 20 * 60);
-		$this->dateInFuture = date($dateFormat, $now + 20 * 60);
+		$this->dateInPast = \date($dateFormat, $now - 20 * 60);
+		$this->dateInFuture = \date($dateFormat, $now + 20 * 60);
 	}
 
 	protected function tearDown() {
@@ -412,7 +412,7 @@ class ShareTest extends \Test\TestCase {
 
 		$shares = \OCP\Share::getItemsShared('test');
 		$this->assertCount(1, $shares);
-		$share = reset($shares);
+		$share = \reset($shares);
 		$this->assertSame(\OCP\Share::SHARE_TYPE_USER, $share['share_type']);
 	}
 
@@ -684,8 +684,8 @@ class ShareTest extends \Test\TestCase {
 
 	public function verifyResult($result, $expected) {
 		foreach ($result as $r) {
-			if (in_array($r['item_target'], $expected)) {
-				$key = array_search($r['item_target'], $expected);
+			if (\in_array($r['item_target'], $expected)) {
+				$key = \array_search($r['item_target'], $expected);
 				unset($expected[$key]);
 			}
 		}
@@ -698,7 +698,7 @@ class ShareTest extends \Test\TestCase {
 		$result = \OCP\Share::getItemsSharedWithUser('test', $this->user2);
 		$this->assertCount(1, $result);
 
-		$groupShareId = array_keys($result)[0];
+		$groupShareId = \array_keys($result)[0];
 
 		// remove user from group
 		$userObject = \OC::$server->getUserManager()->get($this->user2);
@@ -720,7 +720,7 @@ class ShareTest extends \Test\TestCase {
 				'item_target' => $qb->expr()->literal('test.txt'),
 				'file_target' => $qb->expr()->literal('test2.txt'),
 				'permissions' => $qb->expr()->literal(1),
-				'stime' => $qb->expr()->literal(time()),
+				'stime' => $qb->expr()->literal(\time()),
 			])->execute();
 
 		$result = \OCP\Share::getItemsSharedWithUser('test', $this->user2);
@@ -975,7 +975,7 @@ class ShareTest extends \Test\TestCase {
 			$httpHelperMock->expects($this->at(0))
 				->method('post')
 				->with($this->stringStartsWith('https://' . $urlHost . '/ocs/v1.php/cloud/shares'), $this->anything())
-				->willReturn(['success' => true, 'result' => json_encode(['ocs' => ['meta' => ['statuscode' => 100]]])]);
+				->willReturn(['success' => true, 'result' => \json_encode(['ocs' => ['meta' => ['statuscode' => 100]]])]);
 		} else {
 			$httpHelperMock->expects($this->at(0))
 				->method('post')
@@ -987,19 +987,19 @@ class ShareTest extends \Test\TestCase {
 			$httpHelperMock->expects($this->at(1))
 				->method('post')
 				->with($this->stringStartsWith('http://' . $urlHost . '/ocs/v1.php/cloud/shares'), $this->anything())
-				->willReturn(['success' => true, 'result' => json_encode(['ocs' => ['meta' => ['statuscode' => 100]]])]);
+				->willReturn(['success' => true, 'result' => \json_encode(['ocs' => ['meta' => ['statuscode' => 100]]])]);
 		}
 
 		\OCP\Share::shareItem('test', 'test.txt', \OCP\Share::SHARE_TYPE_REMOTE, $shareWith, \OCP\Constants::PERMISSION_READ);
 
 		$shares = \OCP\Share::getItemShared('test', 'test.txt');
-		$share = array_shift($shares);
+		$share = \array_shift($shares);
 
 		if($httpsSuccess) {
 			$httpHelperMock->expects($this->at(0))
 				->method('post')
 				->with($this->stringStartsWith('https://' . $urlHost . '/ocs/v1.php/cloud/shares/' . $share['id'] . '/unshare'), $this->anything())
-				->willReturn(['success' => true, 'result' => json_encode(['ocs' => ['meta' => ['statuscode' => 100]]])]);
+				->willReturn(['success' => true, 'result' => \json_encode(['ocs' => ['meta' => ['statuscode' => 100]]])]);
 		} else {
 			$httpHelperMock->expects($this->at(0))
 				->method('post')
@@ -1012,7 +1012,7 @@ class ShareTest extends \Test\TestCase {
 			$httpHelperMock->expects($this->at(1))
 				->method('post')
 				->with($this->stringStartsWith('http://' . $urlHost . '/ocs/v1.php/cloud/shares/' . $share['id'] . '/unshare'), $this->anything())
-				->willReturn(['success' => true, 'result' => json_encode(['ocs' => ['meta' => ['statuscode' => 100]]])]);
+				->willReturn(['success' => true, 'result' => \json_encode(['ocs' => ['meta' => ['statuscode' => 100]]])]);
 		}
 
 		\OCP\Share::unshare('test', 'test.txt', \OCP\Share::SHARE_TYPE_REMOTE, $shareWith);
@@ -1036,7 +1036,7 @@ class ShareTest extends \Test\TestCase {
 
 	function compareArrays($result, $expectedResult) {
 		foreach ($expectedResult as $key => $value) {
-			if (is_array($value)) {
+			if (\is_array($value)) {
 				$this->compareArrays($result[$key], $value);
 			} else {
 				$this->assertSame($value, $result[$key]);
@@ -1425,11 +1425,11 @@ class ShareTest extends \Test\TestCase {
 		$httpHelperMock->expects($this->at(0))
 			->method('post')
 			->with($this->stringStartsWith('https://localhost/ocs/v1.php/cloud/shares'), $this->anything())
-			->willReturn(['success' => true, 'result' => json_encode(['ocs' => ['meta' => ['statuscode' => 100]]])]);
+			->willReturn(['success' => true, 'result' => \json_encode(['ocs' => ['meta' => ['statuscode' => 100]]])]);
 
 		\OCP\Share::shareItem('test', 'test.txt', \OCP\Share::SHARE_TYPE_REMOTE, 'foo@localhost', \OCP\Constants::PERMISSION_READ);
 		$shares = \OCP\Share::getItemShared('test', 'test.txt');
-		$share = array_shift($shares);
+		$share = \array_shift($shares);
 
 		//Try share again
 		try {
@@ -1442,7 +1442,7 @@ class ShareTest extends \Test\TestCase {
 		$httpHelperMock->expects($this->at(0))
 			->method('post')
 			->with($this->stringStartsWith('https://localhost/ocs/v1.php/cloud/shares/' . $share['id'] . '/unshare'), $this->anything())
-			->willReturn(['success' => true, 'result' => json_encode(['ocs' => ['meta' => ['statuscode' => 100]]])]);
+			->willReturn(['success' => true, 'result' => \json_encode(['ocs' => ['meta' => ['statuscode' => 100]]])]);
 
 		\OCP\Share::unshare('test', 'test.txt', \OCP\Share::SHARE_TYPE_REMOTE, 'foo@localhost');
 		$this->setHttpHelper($oldHttpHelper);
@@ -1457,7 +1457,7 @@ class ShareTest extends \Test\TestCase {
 		$config->setAppValue('core', 'shareapi_expire_after_n_days', '2');
 
 		// Expiration date
-		$expireAt = time() + 2 * 24*60*60;
+		$expireAt = \time() + 2 * 24*60*60;
 		$date = new \DateTime();
 		$date->setTimestamp($expireAt);
 		$date->setTime(0, 0, 0);
@@ -1473,7 +1473,7 @@ class ShareTest extends \Test\TestCase {
 		//Check if expire date is correct
 		$result = \OCP\Share::getItemShared('test', 'test.txt');
 		$this->assertCount(1, $result);
-		$result = reset($result);
+		$result = \reset($result);
 		$this->assertNotEmpty($result['expiration']);
 		$expireDate = new \DateTime($result['expiration']);
 		$this->assertEquals($date, $expireDate);

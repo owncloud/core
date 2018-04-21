@@ -54,7 +54,7 @@ class OC_DB_StatementWrapper {
 	 * pass all other function directly to the \Doctrine\DBAL\Driver\Statement
 	 */
 	public function __call($name,$arguments) {
-		return call_user_func_array([$this->statement,$name], $arguments);
+		return \call_user_func_array([$this->statement,$name], $arguments);
 	}
 
 	/**
@@ -65,7 +65,7 @@ class OC_DB_StatementWrapper {
 	 */
 	public function execute(array $input= []) {
 		$this->lastArguments = $input;
-		if (count($input) > 0) {
+		if (\count($input) > 0) {
 			$result = $this->statement->execute($input);
 		} else {
 			$result = $this->statement->execute();

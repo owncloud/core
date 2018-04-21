@@ -393,7 +393,7 @@ class SystemTagPluginTest extends \Test\TestCase {
 		if (!empty($groups)) {
 			$requestData['groups'] = $groups;
 		}
-		$requestData = json_encode($requestData);
+		$requestData = \json_encode($requestData);
 
 		$node = $this->getMockBuilder('\OCA\DAV\SystemTag\SystemTagsByIdCollection')
 			->disableOriginalConstructor()
@@ -434,7 +434,7 @@ class SystemTagPluginTest extends \Test\TestCase {
 	public function testCreateTagInByIdCollectionAsRegularUser() {
 		$systemTag = new SystemTag(1, 'Test', true, false);
 
-		$requestData = json_encode([
+		$requestData = \json_encode([
 			'name' => 'Test',
 			'userVisible' => true,
 			'userAssignable' => true,
@@ -515,7 +515,7 @@ class SystemTagPluginTest extends \Test\TestCase {
 		if (!empty($groups)) {
 			$requestData['groups'] = $groups;
 		}
-		$requestData = json_encode($requestData);
+		$requestData = \json_encode($requestData);
 
 		$node = $this->getMockBuilder('\OCA\DAV\SystemTag\SystemTagsByIdCollection')
 			->disableOriginalConstructor()
@@ -528,7 +528,7 @@ class SystemTagPluginTest extends \Test\TestCase {
 		if (!empty($groups)) {
 			$this->tagManager->expects($this->once())
 				->method('setTagGroups')
-				->with($systemTag, explode('|', $groups))
+				->with($systemTag, \explode('|', $groups))
 				->will($this->returnValue($systemTag));
 		} else {
 			$this->tagManager->expects($this->never())
@@ -590,7 +590,7 @@ class SystemTagPluginTest extends \Test\TestCase {
 
 		$systemTag = new SystemTag(1, 'Test', true, false);
 
-		$requestData = json_encode([
+		$requestData = \json_encode([
 			'name' => 'Test',
 			'userVisible' => true,
 			'userAssignable' => false,
@@ -691,7 +691,7 @@ class SystemTagPluginTest extends \Test\TestCase {
 			->with('admin')
 			->willReturn(true);
 
-		$requestData = json_encode([
+		$requestData = \json_encode([
 			'name' => 'Test',
 			'userVisible' => true,
 			'userAssignable' => false,

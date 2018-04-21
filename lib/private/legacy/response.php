@@ -46,20 +46,20 @@ class OC_Response {
 	*  null		cache indefinitely
 	*/
 	static public function enableCaching($cache_time = null) {
-		if (is_numeric($cache_time)) {
-			header('Pragma: public');// enable caching in IE
+		if (\is_numeric($cache_time)) {
+			\header('Pragma: public');// enable caching in IE
 			if ($cache_time > 0) {
 				self::setExpiresHeader('PT'.$cache_time.'S');
-				header('Cache-Control: max-age='.$cache_time.', must-revalidate');
+				\header('Cache-Control: max-age='.$cache_time.', must-revalidate');
 			}
 			else {
 				self::setExpiresHeader(0);
-				header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
+				\header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
 			}
 		}
 		else {
-			header('Cache-Control: cache');
-			header('Pragma: cache');
+			\header('Cache-Control: cache');
+			\header('Pragma: cache');
 		}
 
 	}
@@ -103,7 +103,7 @@ class OC_Response {
 				$status = $status . ' Service Unavailable';
 				break;
 		}
-		header($protocol.' '.$status);
+		\header($protocol.' '.$status);
 	}
 
 	/**
@@ -112,7 +112,7 @@ class OC_Response {
 	*/
 	static public function redirect($location) {
 		self::setStatus(self::STATUS_TEMPORARY_REDIRECT);
-		header('Location: '.$location);
+		\header('Location: '.$location);
 	}
 
 	/**
@@ -122,7 +122,7 @@ class OC_Response {
 	*  DateTime object when to expire response
 	*/
 	static public function setExpiresHeader($expires) {
-		if (is_string($expires) && $expires[0] == 'P') {
+		if (\is_string($expires) && $expires[0] == 'P') {
 			$interval = $expires;
 			$expires = new DateTime('now');
 			$expires->add(new DateInterval($interval));
@@ -131,7 +131,7 @@ class OC_Response {
 			$expires->setTimezone(new DateTimeZone('GMT'));
 			$expires = $expires->format(DateTime::RFC2822);
 		}
-		header('Expires: '.$expires);
+		\header('Expires: '.$expires);
 	}
 
 	/**
@@ -145,11 +145,11 @@ class OC_Response {
 		}
 		$etag = '"'.$etag.'"';
 		if (isset($_SERVER['HTTP_IF_NONE_MATCH']) &&
-		    trim($_SERVER['HTTP_IF_NONE_MATCH']) == $etag) {
+		    \trim($_SERVER['HTTP_IF_NONE_MATCH']) == $etag) {
 			self::setStatus(self::STATUS_NOT_MODIFIED);
 			exit;
 		}
-		header('ETag: '.$etag);
+		\header('ETag: '.$etag);
 	}
 
 	/**
@@ -161,18 +161,18 @@ class OC_Response {
 		if (empty($lastModified)) {
 			return;
 		}
-		if (is_int($lastModified)) {
-			$lastModified = gmdate(DateTime::RFC2822, $lastModified);
+		if (\is_int($lastModified)) {
+			$lastModified = \gmdate(DateTime::RFC2822, $lastModified);
 		}
 		if ($lastModified instanceof DateTime) {
 			$lastModified = $lastModified->format(DateTime::RFC2822);
 		}
 		if (isset($_SERVER['HTTP_IF_MODIFIED_SINCE']) &&
-		    trim($_SERVER['HTTP_IF_MODIFIED_SINCE']) == $lastModified) {
+		    \trim($_SERVER['HTTP_IF_MODIFIED_SINCE']) == $lastModified) {
 			self::setStatus(self::STATUS_NOT_MODIFIED);
 			exit;
 		}
-		header('Last-Modified: '.$lastModified);
+		\header('Last-Modified: '.$lastModified);
 	}
 
 	/**
@@ -187,10 +187,10 @@ class OC_Response {
 				\OC\AppFramework\Http\Request::USER_AGENT_ANDROID_MOBILE_CHROME,
 				\OC\AppFramework\Http\Request::USER_AGENT_FREEBOX,
 			])) {
-			header( 'Content-Disposition: ' . rawurlencode($type) . '; filename="' . rawurlencode( $filename ) . '"' );
+			\header( 'Content-Disposition: ' . \rawurlencode($type) . '; filename="' . \rawurlencode( $filename ) . '"' );
 		} else {
-			header( 'Content-Disposition: ' . rawurlencode($type) . '; filename*=UTF-8\'\'' . rawurlencode( $filename )
-												 . '; filename="' . rawurlencode( $filename ) . '"' );
+			\header( 'Content-Disposition: ' . \rawurlencode($type) . '; filename*=UTF-8\'\'' . \rawurlencode( $filename )
+												 . '; filename="' . \rawurlencode( $filename ) . '"' );
 		}
 	}
 
@@ -200,7 +200,7 @@ class OC_Response {
 	 */
 	static public function setContentLengthHeader($length) {
 		if (PHP_INT_SIZE === 4) {
-			if ($length > PHP_INT_MAX && stripos(PHP_SAPI, 'apache') === 0) {
+			if ($length > PHP_INT_MAX && \stripos(PHP_SAPI, 'apache') === 0) {
 				// Apache PHP SAPI casts Content-Length headers to PHP integers.
 				// This enforces a limit of PHP_INT_MAX (2147483647 on 32-bit
 				// platforms). So, if the length is greater than PHP_INT_MAX,
@@ -212,7 +212,7 @@ class OC_Response {
 			$lfh = new \OC\LargeFileHelper;
 			$length = $lfh->formatUnsignedInteger($length);
 		}
-		header('Content-Length: '.$length);
+		\header('Content-Length: '.$length);
 	}
 
 	/**
@@ -221,13 +221,13 @@ class OC_Response {
 	 * @deprecated 8.1.0 - Use \OCP\AppFramework\Http\StreamResponse or another AppFramework controller instead
 	 */
 	static public function sendFile($filepath) {
-		$fp = fopen($filepath, 'rb');
+		$fp = \fopen($filepath, 'rb');
 		if ($fp) {
-			self::setLastModifiedHeader(filemtime($filepath));
-			self::setETagHeader(md5_file($filepath));
+			self::setLastModifiedHeader(\filemtime($filepath));
+			self::setETagHeader(\md5_file($filepath));
 
-			self::setContentLengthHeader(filesize($filepath));
-			fpassthru($fp);
+			self::setContentLengthHeader(\filesize($filepath));
+			\fpassthru($fp);
 		}
 		else {
 			self::setStatus(self::STATUS_NOT_FOUND);
@@ -254,17 +254,17 @@ class OC_Response {
 			. 'font-src \'self\' data:; '
 			. 'media-src *; '
 			. 'connect-src *';
-		header('Content-Security-Policy:' . $policy);
+		\header('Content-Security-Policy:' . $policy);
 
 		// Send fallback headers for installations that don't have the possibility to send
 		// custom headers on the webserver side
-		if(getenv('modHeadersAvailable') !== 'true') {
-			header('X-XSS-Protection: 1; mode=block'); // Enforce browser based XSS filters
-			header('X-Content-Type-Options: nosniff'); // Disable sniffing the content type for IE
-			header('X-Frame-Options: SAMEORIGIN'); // Disallow iFraming from other domains
-			header('X-Robots-Tag: none'); // https://developers.google.com/webmasters/control-crawl-index/docs/robots_meta_tag
-			header('X-Download-Options: noopen'); // https://msdn.microsoft.com/en-us/library/jj542450(v=vs.85).aspx
-			header('X-Permitted-Cross-Domain-Policies: none'); // https://www.adobe.com/devnet/adobe-media-server/articles/cross-domain-xml-for-streaming.html
+		if(\getenv('modHeadersAvailable') !== 'true') {
+			\header('X-XSS-Protection: 1; mode=block'); // Enforce browser based XSS filters
+			\header('X-Content-Type-Options: nosniff'); // Disable sniffing the content type for IE
+			\header('X-Frame-Options: SAMEORIGIN'); // Disallow iFraming from other domains
+			\header('X-Robots-Tag: none'); // https://developers.google.com/webmasters/control-crawl-index/docs/robots_meta_tag
+			\header('X-Download-Options: noopen'); // https://msdn.microsoft.com/en-us/library/jj542450(v=vs.85).aspx
+			\header('X-Permitted-Cross-Domain-Policies: none'); // https://www.adobe.com/devnet/adobe-media-server/articles/cross-domain-xml-for-streaming.html
 		}
 	}
 
@@ -291,11 +291,11 @@ class OC_Response {
 		}
 		// first check if any of the global CORS domains matches
 		$globalAllowedDomains = $config->getSystemValue('cors.allowed-domains', []);
-		$isCorsRequest = (is_array($globalAllowedDomains) && in_array($domain, $globalAllowedDomains));
+		$isCorsRequest = (\is_array($globalAllowedDomains) && \in_array($domain, $globalAllowedDomains));
 		if (!$isCorsRequest) {
 			// check if any of the user specific CORS domains matches
-			$allowedDomains = json_decode($config->getUserValue($userId, 'core', 'domains'));
-			$isCorsRequest = (is_array($allowedDomains) && in_array($domain, $allowedDomains));
+			$allowedDomains = \json_decode($config->getUserValue($userId, 'core', 'domains'));
+			$isCorsRequest = (\is_array($allowedDomains) && \in_array($domain, $allowedDomains));
 		}
 		if ($isCorsRequest) {
 			// TODO: infer allowed verbs from existing known routes
@@ -304,8 +304,8 @@ class OC_Response {
 			$allHeaders['Access-Control-Allow-Methods'] =["GET", "OPTIONS", "POST", "PUT", "DELETE", "MKCOL", "PROPFIND", "PATCH", "PROPPATCH", "REPORT"];
 
 			foreach ($headers as $key => $value) {
-				if (array_key_exists($key, $allHeaders)) {
-					$allHeaders[$key] = array_unique(array_merge($allHeaders[$key], $value));
+				if (\array_key_exists($key, $allHeaders)) {
+					$allHeaders[$key] = \array_unique(\array_merge($allHeaders[$key], $value));
 				}
 			}
 
@@ -336,13 +336,13 @@ class OC_Response {
 		$allHeaders['Access-Control-Allow-Methods'] =["GET", "OPTIONS", "POST", "PUT", "DELETE", "MKCOL", "PROPFIND", "PATCH", "PROPPATCH", "REPORT"];
 
 		foreach ($headers as $key => $value) {
-			if (array_key_exists($key, $allHeaders)) {
-				$allHeaders[$key] = array_unique(array_merge($allHeaders[$key], $value));
+			if (\array_key_exists($key, $allHeaders)) {
+				$allHeaders[$key] = \array_unique(\array_merge($allHeaders[$key], $value));
 			}
 		}
 
 		foreach ($allHeaders as $key => $value) {
-			$response->addHeader($key, implode(",", $value));
+			$response->addHeader($key, \implode(",", $value));
 		}
 
 		return $response;

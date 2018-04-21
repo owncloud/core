@@ -105,7 +105,7 @@ class FakeLockerPlugin extends ServerPlugin {
 			if(isset($fileCondition['tokens'])) {
 				foreach($fileCondition['tokens'] as &$token) {
 					if(isset($token['token'])) {
-						if(substr($token['token'], 0, 16) === 'opaquelocktoken:') {
+						if(\substr($token['token'], 0, 16) === 'opaquelocktoken:') {
 							$token['validToken'] = true;
 						}
 					}
@@ -125,7 +125,7 @@ class FakeLockerPlugin extends ServerPlugin {
 									 ResponseInterface $response) {
 
 		$lockInfo = new LockInfo();
-		$lockInfo->token = md5($request->getPath());
+		$lockInfo->token = \md5($request->getPath());
 		$lockInfo->uri = $request->getPath();
 		$lockInfo->depth = \Sabre\DAV\Server::DEPTH_INFINITY;
 		$lockInfo->timeout = 1800;

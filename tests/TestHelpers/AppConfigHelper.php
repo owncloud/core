@@ -110,7 +110,7 @@ class AppConfigHelper {
 		$appParameterValues = [];
 		$originalCapabilities = [];
 
-		if (is_array($capabilitiesArray)) {
+		if (\is_array($capabilitiesArray)) {
 			foreach ($capabilitiesArray as $capabilityToSet) {
 				$originalState = self::wasCapabilitySet(
 					$capabilityToSet['capabilitiesApp'],
@@ -162,9 +162,9 @@ class AppConfigHelper {
 	public static function getParameterValueFromXml(
 		$xml, $capabilitiesApp, $capabilitiesPath
 	) {
-		$pathToElement = explode('@@@', $capabilitiesPath);
+		$pathToElement = \explode('@@@', $capabilitiesPath);
 		$answeredValue = $xml->{$capabilitiesApp};
-		for ($i = 0; $i < count($pathToElement); $i++) {
+		for ($i = 0; $i < \count($pathToElement); $i++) {
 			$answeredValue = $answeredValue->{$pathToElement[$i]};
 		}
 		return (string)$answeredValue;

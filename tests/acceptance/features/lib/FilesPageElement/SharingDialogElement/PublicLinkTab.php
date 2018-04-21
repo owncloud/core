@@ -57,7 +57,7 @@ class PublicLinkTab extends OwncloudPage {
 	 */
 	public function initElement() {
 		$publicLinkTab = $this->findById($this->publicLinkTabId);
-		if (is_null($publicLinkTab)) {
+		if (\is_null($publicLinkTab)) {
 			throw new ElementNotFoundException(
 				__METHOD__ .
 				" id $this->publicLinkTabId could not find public link tab"
@@ -88,7 +88,7 @@ class PublicLinkTab extends OwncloudPage {
 		$createLinkBtn = $this->publicLinkTabElement->find(
 			"xpath", $this->createLinkBtnXpath
 		);
-		if (is_null($createLinkBtn)) {
+		if (\is_null($createLinkBtn)) {
 			throw new ElementNotFoundException(
 				__METHOD__ .
 				" xpath $this->createLinkBtnXpath" .
@@ -106,19 +106,19 @@ class PublicLinkTab extends OwncloudPage {
 			"FilesPageElement\\SharingDialogElement\\EditPublicLinkPopup"
 		);
 		$editPublicLinkPopupPageObject->setElement($popupElement);
-		if (!is_null($name)) {
+		if (!\is_null($name)) {
 			$editPublicLinkPopupPageObject->setLinkName($name);
 		}
-		if (!is_null($permissions)) {
+		if (!\is_null($permissions)) {
 			$editPublicLinkPopupPageObject->setLinkPermissions($permissions);
 		}
-		if (!is_null($password)) {
+		if (!\is_null($password)) {
 			$editPublicLinkPopupPageObject->setLinkPassword($password);
 		}
-		if (!is_null($expirationDate)) {
+		if (!\is_null($expirationDate)) {
 			$editPublicLinkPopupPageObject->setLinkExpirationDate($expirationDate);
 		}
-		if (!is_null($email)) {
+		if (!\is_null($email)) {
 			$editPublicLinkPopupPageObject->setLinkEmail($email);
 		}
 		$linkName = $editPublicLinkPopupPageObject->getLinkName();
@@ -159,7 +159,7 @@ class PublicLinkTab extends OwncloudPage {
 	public function getLinkUrl($name) {
 		$linkEntry = $this->findLinkEntryByName($name);
 		$linkUrlInput = $linkEntry->find("xpath", $this->linkUrlInputXpath);
-		if (is_null($linkUrlInput)) {
+		if (\is_null($linkUrlInput)) {
 			throw new ElementNotFoundException(
 				__METHOD__ .
 				" xpath $this->linkUrlInputXpath" .
@@ -218,9 +218,9 @@ class PublicLinkTab extends OwncloudPage {
 	private function findLinkEntryByName($name) {
 		$xpathString = $this->quotedText($name);
 		$linkEntry = $this->publicLinkTabElement->find(
-			"xpath", sprintf($this->linkEntryByNameXpath, $xpathString)
+			"xpath", \sprintf($this->linkEntryByNameXpath, $xpathString)
 		);
-		if (is_null($linkEntry)) {
+		if (\is_null($linkEntry)) {
 			throw new ElementNotFoundException(
 				__METHOD__ .
 				" xpath $this->linkEntryByNameXpath" .

@@ -83,7 +83,7 @@ class CommentsPlugin extends ServerPlugin {
 	 */
 	function initialize(Server $server) {
 		$this->server = $server;
-		if(strpos($this->server->getRequestUri(), 'comments/') !== 0) {
+		if(\strpos($this->server->getRequestUri(), 'comments/') !== 0) {
 			return;
 		}
 
@@ -127,7 +127,7 @@ class CommentsPlugin extends ServerPlugin {
 		// having their own comments marked as unread
 		$node->setReadMarker(null);
 
-		$url = rtrim($request->getUrl(), '/') . '/' . urlencode($comment->getId());
+		$url = \rtrim($request->getUrl(), '/') . '/' . \urlencode($comment->getId());
 
 		$response->setHeader('Content-Location', $url);
 
@@ -171,13 +171,13 @@ class CommentsPlugin extends ServerPlugin {
 		];
 		$ns = '{' . $this::NS_OWNCLOUD . '}';
 		foreach($report as $parameter) {
-			if(!in_array($parameter['name'], $acceptableParameters) || empty($parameter['value'])) {
+			if(!\in_array($parameter['name'], $acceptableParameters) || empty($parameter['value'])) {
 				continue;
 			}
-			$args[str_replace($ns, '', $parameter['name'])] = $parameter['value'];
+			$args[\str_replace($ns, '', $parameter['name'])] = $parameter['value'];
 		}
 
-		if(!is_null($args['datetime'])) {
+		if(!\is_null($args['datetime'])) {
 			$args['datetime'] = new \DateTime($args['datetime']);
 		}
 
@@ -222,8 +222,8 @@ class CommentsPlugin extends ServerPlugin {
 	 * @throws UnsupportedMediaType if the content type is not supported
 	 */
 	private function createComment($objectType, $objectId, $data, $contentType = 'application/json') {
-		if (explode(';', $contentType)[0] === 'application/json') {
-			$data = json_decode($data, true);
+		if (\explode(';', $contentType)[0] === 'application/json') {
+			$data = \json_decode($data, true);
 		} else {
 			throw new UnsupportedMediaType();
 		}
@@ -232,11 +232,11 @@ class CommentsPlugin extends ServerPlugin {
 		$actorId = null;
 		if($actorType === 'users') {
 			$user = $this->userSession->getUser();
-			if(!is_null($user)) {
+			if(!\is_null($user)) {
 				$actorId = $user->getUID();
 			}
 		}
-		if(is_null($actorId)) {
+		if(\is_null($actorId)) {
 			throw new BadRequest('Invalid actor "' .  $actorType .'"');
 		}
 

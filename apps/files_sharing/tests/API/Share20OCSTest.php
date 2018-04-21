@@ -99,7 +99,7 @@ class Share20OCSTest extends TestCase {
 		$this->l = $this->createMock('\OCP\IL10N');
 		$this->l->method('t')
 			->will($this->returnCallback(function($text, $parameters = []) {
-				return vsprintf($text, $parameters);
+				return \vsprintf($text, $parameters);
 			}));
 
 		$this->config = $this->createMock(IConfig::class);

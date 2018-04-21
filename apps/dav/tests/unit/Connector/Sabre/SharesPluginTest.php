@@ -108,8 +108,8 @@ class SharesPluginTest extends \Test\TestCase {
 					$share = $this->createMock(IShare::class);
 					$share->method('getShareType')->willReturn($requestedShareType);
 					$share->method('getNodeId')->willReturn(123);
-					if (in_array($requestedShareType, $shareTypes)) {
-						array_push($allShares, $share);
+					if (\in_array($requestedShareType, $shareTypes)) {
+						\array_push($allShares, $share);
 					}
 				}
 
@@ -189,8 +189,8 @@ class SharesPluginTest extends \Test\TestCase {
 					$share = $this->createMock(IShare::class);
 					$share->method('getShareType')->willReturn($requestedShareType);
 					$share->method('getNodeId')->willReturn(111);
-					if (in_array($requestedShareType, $shareTypes)) {
-						array_push($allShares, $share);
+					if (\in_array($requestedShareType, $shareTypes)) {
+						\array_push($allShares, $share);
 					}
 				}
 

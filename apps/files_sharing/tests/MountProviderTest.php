@@ -110,7 +110,7 @@ class MountProviderTest extends \Test\TestCase {
 			$this->makeMockShare(5, 100, 'user1', '/share4', 31), 
 		];
 
-		$userGroupUserShares = array_merge($userShares, $groupShares);
+		$userGroupUserShares = \array_merge($userShares, $groupShares);
 
 		$this->user->expects($this->any())
 			->method('getUID')
@@ -300,10 +300,10 @@ class MountProviderTest extends \Test\TestCase {
 		$rootFolder = $this->createMock('\OCP\Files\IRootFolder');
 		$userManager = $this->createMock('\OCP\IUserManager');
 
-		$userShares = array_map(function($shareSpec) {
+		$userShares = \array_map(function($shareSpec) {
 			return $this->makeMockShare($shareSpec[0], $shareSpec[1], $shareSpec[2], $shareSpec[3], $shareSpec[4]);
 		}, $userShares);
-		$groupShares = array_map(function($shareSpec) {
+		$groupShares = \array_map(function($shareSpec) {
 			return $this->makeMockShare($shareSpec[0], $shareSpec[1], $shareSpec[2], $shareSpec[3], $shareSpec[4]);
 		}, $groupShares);
 
@@ -311,7 +311,7 @@ class MountProviderTest extends \Test\TestCase {
 			->method('getUID')
 			->will($this->returnValue('user1'));
 		
-		$userGroupUserShares = array_merge($userShares, $groupShares);
+		$userGroupUserShares = \array_merge($userShares, $groupShares);
 		$requiredShareTypes = [\OCP\Share::SHARE_TYPE_USER, \OCP\Share::SHARE_TYPE_GROUP];
 		$this->shareManager->expects($this->once())
 			->method('getAllSharedWith')
@@ -335,7 +335,7 @@ class MountProviderTest extends \Test\TestCase {
 
 		$mounts = $this->provider->getMountsForUser($this->user, $this->loader);
 
-		$this->assertCount(count($expectedShares), $mounts);
+		$this->assertCount(\count($expectedShares), $mounts);
 
 		foreach ($mounts as $index => $mount) {
 			$expectedShare = $expectedShares[$index];

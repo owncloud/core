@@ -41,8 +41,8 @@ class HomePropagator extends Propagator {
 	 * @param int $sizeDifference number of bytes the file has grown
 	 */
 	public function propagateChange($internalPath, $time, $sizeDifference = 0) {
-		list($baseFolder) = explode('/', $internalPath, 2);
-		if (in_array($baseFolder, $this->ignoredBaseFolders)) {
+		list($baseFolder) = \explode('/', $internalPath, 2);
+		if (\in_array($baseFolder, $this->ignoredBaseFolders)) {
 			return [];
 		} else {
 			parent::propagateChange($internalPath, $time, $sizeDifference);

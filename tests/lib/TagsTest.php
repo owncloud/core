@@ -177,14 +177,14 @@ class TagsTest extends TestCase {
 
 		$tags = $tagger->getTagsForObjects([1]);
 		$this->assertCount(1, $tags);
-		$tags = current($tags);
-		sort($tags);
+		$tags = \current($tags);
+		\sort($tags);
 		$this->assertSame(['Friends', 'Other'], $tags);
 
 		$tags = $tagger->getTagsForObjects([1, 2]);
 		$this->assertCount(2, $tags);
 		$tags1 = $tags[1];
-		sort($tags1);
+		\sort($tags1);
 		$this->assertSame(['Friends', 'Other'], $tags1);
 		$this->assertSame(['Family'], $tags[2]);
 		$this->assertEquals(

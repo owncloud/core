@@ -142,9 +142,9 @@ class FileTest extends NodeTest {
 	}
 
 	public function testFOpenRead() {
-		$stream = fopen('php://memory', 'w+');
-		fwrite($stream, 'bar');
-		rewind($stream);
+		$stream = \fopen('php://memory', 'w+');
+		\fwrite($stream, 'bar');
+		\rewind($stream);
 
 		/**
 		 * @var Manager $manager
@@ -176,11 +176,11 @@ class FileTest extends NodeTest {
 		$node = new File($root, $view, '/bar/foo');
 		$fh = $node->fopen('r');
 		$this->assertEquals($stream, $fh);
-		$this->assertEquals('bar', fread($fh, 3));
+		$this->assertEquals('bar', \fread($fh, 3));
 	}
 
 	public function testFOpenWrite() {
-		$stream = fopen('php://memory', 'w+');
+		$stream = \fopen('php://memory', 'w+');
 
 		/**
 		 * @var Manager $manager
@@ -213,9 +213,9 @@ class FileTest extends NodeTest {
 		$node = new File($root, $view, '/bar/foo');
 		$fh = $node->fopen('w');
 		$this->assertEquals($stream, $fh);
-		fwrite($fh, 'bar');
-		rewind($fh);
-		$this->assertEquals('bar', fread($stream, 3));
+		\fwrite($fh, 'bar');
+		\rewind($fh);
+		$this->assertEquals('bar', \fread($stream, 3));
 		$this->assertEquals(2, $hooksCalled);
 	}
 
@@ -316,7 +316,7 @@ class FileTest extends NodeTest {
 		$root->listen('\OC\Files', 'preWrite', $hook);
 		$root->listen('\OC\Files', 'postWrite', $hook);
 
-		$content = $stream = fopen('data://text/plain,hello world!','r');;
+		$content = $stream = \fopen('data://text/plain,hello world!','r');;
 		$view->expects($this->once())
 			->method('fopen')
 			->with('/bar/foo')

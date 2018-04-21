@@ -57,9 +57,9 @@ class LegacyDBTest extends \Test\TestCase {
 		$dbFile = \OC::$SERVERROOT.'/tests/data/db_structure.xml';
 
 		$r = $this->getUniqueID('_', 4).'_';
-		$content = file_get_contents( $dbFile );
-		$content = str_replace( '*dbprefix*', '*dbprefix*'.$r, $content );
-		file_put_contents( self::$schema_file, $content );
+		$content = \file_get_contents( $dbFile );
+		$content = \str_replace( '*dbprefix*', '*dbprefix*'.$r, $content );
+		\file_put_contents( self::$schema_file, $content );
 		OC_DB::createDbFromStructure(self::$schema_file);
 
 		$this->test_prefix = $r;
@@ -73,7 +73,7 @@ class LegacyDBTest extends \Test\TestCase {
 
 	protected function tearDown() {
 		OC_DB::removeDBStructure(self::$schema_file);
-		unlink(self::$schema_file);
+		\unlink(self::$schema_file);
 
 		parent::tearDown();
 	}
@@ -217,7 +217,7 @@ class LegacyDBTest extends \Test\TestCase {
 		$result = \OCP\DB::insertIfNotExist('*PREFIX*'.$this->table5,
 			[
 				'storage' => 1,
-				'path_hash' => md5('welcome.txt'),
+				'path_hash' => \md5('welcome.txt'),
 				'etag' => $this->getUniqueID()
 			]);
 		$this->assertEquals(1, $result);
@@ -225,7 +225,7 @@ class LegacyDBTest extends \Test\TestCase {
 		$result = \OCP\DB::insertIfNotExist('*PREFIX*'.$this->table5,
 			[
 				'storage' => 1,
-				'path_hash' => md5('welcome.txt'),
+				'path_hash' => \md5('welcome.txt'),
 				'etag' => $this->getUniqueID()
 			],['storage', 'path_hash']);
 
@@ -249,7 +249,7 @@ class LegacyDBTest extends \Test\TestCase {
 		$result = \OCP\DB::insertIfNotExist('*PREFIX*'.$this->table5,
 			[
 				'storage' => 1,
-				'path_hash' => md5('welcome.txt'),
+				'path_hash' => \md5('welcome.txt'),
 				'etag' => $this->getUniqueID()
 			]);
 		$this->assertEquals(1, $result);
@@ -257,7 +257,7 @@ class LegacyDBTest extends \Test\TestCase {
 		$result = \OCP\DB::insertIfNotExist('*PREFIX*'.$this->table5,
 			[
 				'storage' => 1,
-				'path_hash' => md5('welcome.txt'),
+				'path_hash' => \md5('welcome.txt'),
 				'etag' => $this->getUniqueID()
 			], $compareKeys);
 

@@ -105,7 +105,7 @@ abstract class OCSController extends ApiController {
 			$params[$key] = $value;
 		}
 
-		$isV2 = substr($this->request->getScriptName(), -11) === '/ocs/v2.php';
+		$isV2 = \substr($this->request->getScriptName(), -11) === '/ocs/v2.php';
 
 		$resp = new OCSResponse(
 			$format, $params['statuscode'],
@@ -132,16 +132,16 @@ abstract class OCSController extends ApiController {
 	 */
 	function buildResponse($response, $format = 'json') {
 		$format = $this->request->getParam('format');
-		if (is_null($format)) {
+		if (\is_null($format)) {
 			$format = 'xml';
 		}
 		/** @var OCSResponse $resp */
 		$resp = parent::buildResponse($response, $format);
 		$script = $this->request->getScriptName();
 
-		if (substr($script, -11) === '/ocs/v2.php') {
+		if (\substr($script, -11) === '/ocs/v2.php') {
 			$statusCode = \OC_API::mapStatusCodes($resp->getStatusCode());
-			if (!is_null($statusCode)) {
+			if (!\is_null($statusCode)) {
 				// HTTP code
 				$resp->setStatus($statusCode);
 				// OCS code

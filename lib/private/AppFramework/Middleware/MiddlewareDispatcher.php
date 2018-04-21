@@ -62,7 +62,7 @@ class MiddlewareDispatcher {
 	 * @param Middleware $middleWare the middleware which will be added
 	 */
 	public function registerMiddleware(Middleware $middleWare){
-		array_push($this->middlewares, $middleWare);
+		\array_push($this->middlewares, $middleWare);
 	}
 
 
@@ -86,7 +86,7 @@ class MiddlewareDispatcher {
 	public function beforeController(Controller $controller, $methodName){
 		// we need to count so that we know which middlewares we have to ask in
 		// case there is an exception
-		$middlewareCount = count($this->middlewares);
+		$middlewareCount = \count($this->middlewares);
 		for($i = 0; $i < $middlewareCount; $i++){
 			$this->middlewareCounter++;
 			$middleware = $this->middlewares[$i];
@@ -134,7 +134,7 @@ class MiddlewareDispatcher {
 	 * @return Response a Response object
 	 */
 	public function afterController(Controller $controller, $methodName, Response $response){
-		for($i=count($this->middlewares)-1; $i>=0; $i--){
+		for($i=\count($this->middlewares)-1; $i>=0; $i--){
 			$middleware = $this->middlewares[$i];
 			$response = $middleware->afterController($controller, $methodName, $response);
 		}
@@ -153,7 +153,7 @@ class MiddlewareDispatcher {
 	 * @return string the output that should be printed
 	 */
 	public function beforeOutput(Controller $controller, $methodName, $output){
-		for($i=count($this->middlewares)-1; $i>=0; $i--){
+		for($i=\count($this->middlewares)-1; $i>=0; $i--){
 			$middleware = $this->middlewares[$i];
 			$output = $middleware->beforeOutput($controller, $methodName, $output);
 		}

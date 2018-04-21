@@ -55,17 +55,17 @@ class ControllerMethodReflector implements IControllerMethodReflector{
 		$docs = $reflection->getDocComment();
 
 		// extract everything prefixed by @ and first letter uppercase
-		preg_match_all('/@([A-Z]\w+)/', $docs, $matches);
+		\preg_match_all('/@([A-Z]\w+)/', $docs, $matches);
 		$this->annotations = $matches[1];
 
 		// extract type parameter information
-		preg_match_all('/@param\h+(?P<type>\w+)\h+\$(?P<var>\w+)/', $docs, $matches);
-		$this->types = array_combine($matches['var'], $matches['type']);
+		\preg_match_all('/@param\h+(?P<type>\w+)\h+\$(?P<var>\w+)/', $docs, $matches);
+		$this->types = \array_combine($matches['var'], $matches['type']);
 
 		foreach ($reflection->getParameters() as $param) {
 			// extract type information from PHP 7 scalar types and prefer them
 			// over phpdoc annotations
-			if (method_exists($param, 'getType')) {
+			if (\method_exists($param, 'getType')) {
 				$type = $param->getType();
 				if ($type !== null) {
 					$this->types[$param->getName()] = (string) $type;
@@ -90,7 +90,7 @@ class ControllerMethodReflector implements IControllerMethodReflector{
 	 * would return int or null if not existing
 	 */
 	public function getType($parameter) {
-		if(array_key_exists($parameter, $this->types)) {
+		if(\array_key_exists($parameter, $this->types)) {
 			return $this->types[$parameter];
 		} else {
 			return null;
@@ -112,7 +112,7 @@ class ControllerMethodReflector implements IControllerMethodReflector{
 	 * @return bool true if the annotation is found
 	 */
 	public function hasAnnotation($name){
-		return in_array($name, $this->annotations);
+		return \in_array($name, $this->annotations);
 	}
 
 

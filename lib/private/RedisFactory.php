@@ -41,7 +41,7 @@ class RedisFactory {
 	private function create() {
 
 		if ($config = $this->config->getValue('redis.cluster', [])) {
-			if (!class_exists('RedisCluster')) {
+			if (!\class_exists('RedisCluster')) {
 				throw new \Exception('Redis Cluster support is not available');
 			}
 			// cluster config
@@ -107,8 +107,8 @@ class RedisFactory {
 	}
 
 	public function isAvailable() {
-		return extension_loaded('redis')
-		&& (version_compare(phpversion('redis'), '2.2.5', '>=')
-		|| strcmp(phpversion('redis'), 'develop')==0); // Using a developing Version?
+		return \extension_loaded('redis')
+		&& (\version_compare(\phpversion('redis'), '2.2.5', '>=')
+		|| \strcmp(\phpversion('redis'), 'develop')==0); // Using a developing Version?
 	}
 }

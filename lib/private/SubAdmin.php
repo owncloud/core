@@ -133,7 +133,7 @@ class SubAdmin extends PublicEmitter implements ISubAdminManager {
 		$groups = [];
 		while($row = $result->fetch()) {
 			$group = $this->groupManager->get($row['gid']);
-			if(!is_null($group)) {
+			if(!\is_null($group)) {
 				$groups[] = $group;
 			}
 		}
@@ -158,7 +158,7 @@ class SubAdmin extends PublicEmitter implements ISubAdminManager {
 		$users = [];
 		while($row = $result->fetch()) {
 			$user = $this->userManager->get($row['uid']);
-			if(!is_null($user)) {
+			if(!\is_null($user)) {
 				$users[] = $user;
 			}
 		}
@@ -182,7 +182,7 @@ class SubAdmin extends PublicEmitter implements ISubAdminManager {
 		while($row = $result->fetch()) {
 			$user = $this->userManager->get($row['uid']);
 			$group = $this->groupManager->get($row['gid']);
-			if(!is_null($user) && !is_null($group)) {
+			if(!\is_null($user) && !\is_null($group)) {
 				$subadmins[] = [
 					'user'  => $user,
 					'group' => $group

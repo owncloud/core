@@ -23,8 +23,8 @@ class InfoParserTest extends TestCase {
 	}
 
 	public function testParsingValidXml() {
-		$expectedData = json_decode(
-			file_get_contents(OC::$SERVERROOT . "/tests/data/app/expected-info.json"),
+		$expectedData = \json_decode(
+			\file_get_contents(OC::$SERVERROOT . "/tests/data/app/expected-info.json"),
 			true
 		);
 		$data = $this->parser->parse(OC::$SERVERROOT. "/tests/data/app/valid-info.xml");

@@ -79,7 +79,7 @@ class SettingsManagerTest extends TestCase {
 	public function testGetBuiltInPanel() {
 		$panel = $this->settingsManager->getBuiltInPanel('OC\Settings\Panels\Personal\Profile');
 		$this->assertNotFalse($panel);
-		$this->assertEquals('OC\Settings\Panels\Personal\Profile', get_class($panel));
+		$this->assertEquals('OC\Settings\Panels\Personal\Profile', \get_class($panel));
 	}
 
 	public function testGetPanelsList() {
@@ -118,7 +118,7 @@ class SettingsManagerTest extends TestCase {
 		$this->appManager->expects($this->exactly(2))->method('getAppInfo')->with('encryption')->willReturn($settingsInfo);
 		$panels = $this->invokePrivate($this->settingsManager, 'findRegisteredPanels', ['personal']);
 		$this->assertCount(1, $panels);
-		$this->assertEquals('OCA\Encryption\TestPanel', array_shift($panels));
+		$this->assertEquals('OCA\Encryption\TestPanel', \array_shift($panels));
 	}
 
 	public function testFindRegisteredPanelsPersonalMultiple() {
@@ -145,7 +145,7 @@ class SettingsManagerTest extends TestCase {
 		$this->assertNotEmpty($panels);
 		foreach($panels as $section => $panels) {
 			foreach($panels as $panel) {
-				$panelClasses[$section][] = get_class($panel);
+				$panelClasses[$section][] = \get_class($panel);
 			}
 		}
 		$this->assertArrayHasKey('additional', $panelClasses);
@@ -163,7 +163,7 @@ class SettingsManagerTest extends TestCase {
 		$this->assertNotEmpty($panels);
 		foreach($panels as $section => $panels) {
 			foreach ($panels as $panel) {
-				$panelClasses[$section][] = get_class($panel);
+				$panelClasses[$section][] = \get_class($panel);
 			}
 		}
 		$this->assertArrayHasKey('additional', $panelClasses);

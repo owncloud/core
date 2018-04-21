@@ -150,18 +150,18 @@ class NavigationManager implements INavigationManager {
 			/**
 			 * Can have multiple roles like role="admin,sub-admin"
 			 */
-			$role = explode(',', $role);
+			$role = \explode(',', $role);
 			//Remove whitespace in the role elements
-			$role = array_map('trim', $role);
+			$role = \array_map('trim', $role);
 
 			$shallContinue = false;
-			if ($this->isAdmin() && (in_array('admin', $role, true) === true)) {
+			if ($this->isAdmin() && (\in_array('admin', $role, true) === true)) {
 				$shallContinue = true;
 			}
-			if ($this->isSubAdmin() && (in_array('sub-admin', $role, true) === true)) {
+			if ($this->isSubAdmin() && (\in_array('sub-admin', $role, true) === true)) {
 				$shallContinue = true;
 			}
-			if (in_array('all', $role, true) === true) {
+			if (\in_array('all', $role, true) === true) {
 				$shallContinue = true;
 			}
 
@@ -180,7 +180,7 @@ class NavigationManager implements INavigationManager {
 				}
 				$route = $this->urlGenerator->linkTo($app, $html);
 			}
-			$name = isset($nav['name']) ? $nav['name'] : ucfirst($app);
+			$name = isset($nav['name']) ? $nav['name'] : \ucfirst($app);
 			$icon = isset($nav['icon']) ? $nav['icon'] : 'app.svg';
 			$iconPath = null;
 			foreach ([$icon, "$app.svg"] as $i) {

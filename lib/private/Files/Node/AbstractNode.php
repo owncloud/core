@@ -31,7 +31,7 @@ abstract class AbstractNode implements \OCP\Files\Node {
 	 */
 	public function getMimePart() {
 		$mime = $this->getMimetype();
-		$parts = explode('/', $mime, 2);
+		$parts = \explode('/', $mime, 2);
 		return $parts[0];
 	}
 

@@ -75,20 +75,20 @@ class ChunkingPluginZsync extends ServerPlugin {
 		try {
 			$node = $this->server->tree->getNodeForPath($destination);
 		} catch (NotFound $e) {
-			$node = $this->server->tree->getNodeForPath(dirname($destination));
+			$node = $this->server->tree->getNodeForPath(\dirname($destination));
 		}
 
 		// Disable if external storage used.
-		if (strpos($node->getDavPermissions(), 'M') === false) {
+		if (\strpos($node->getDavPermissions(), 'M') === false) {
 			$zsyncMetadataNode = $this->server->tree->getNodeForPath($path);
 			$zsyncMetadataHandle = $zsyncMetadataNode->get();
 
 			// get .zsync contents before its deletion
 			$zsyncMetadata = '';
-			while (!feof($zsyncMetadataHandle)) {
-				$zsyncMetadata .= fread($zsyncMetadataHandle, $zsyncMetadataNode->getSize());
+			while (!\feof($zsyncMetadataHandle)) {
+				$zsyncMetadata .= \fread($zsyncMetadataHandle, $zsyncMetadataNode->getSize());
 			}
-			fclose($zsyncMetadataHandle);
+			\fclose($zsyncMetadataHandle);
 
 			if ($this->server->tree->nodeExists($destination)) {
 				// set backingFile which is needed by AssemblyStreamZsync
@@ -112,7 +112,7 @@ class ChunkingPluginZsync extends ServerPlugin {
 	private function postMoveZsync(&$zsyncMetadata, $destination) {
 		if (!$zsyncMetadata)
 			return;
-		$destination = implode('/', array_slice(explode('/', $destination), 2));
+		$destination = \implode('/', \array_slice(\explode('/', $destination), 2));
 		$info = $this->view->getFileInfo('files/'.$destination);
 		$zsyncMetadataFile = 'files_zsync/'.$info->getId();
 		$this->view->file_put_contents($zsyncMetadataFile, $zsyncMetadata);
@@ -135,7 +135,7 @@ class ChunkingPluginZsync extends ServerPlugin {
 		$this->server->tree->nodeExists($destination) ? $response->setStatus(204) : $response->setStatus(201);
 
 		// copy the zsync metadata file contents, before it gets removed.
-		$zsyncMetadataPath = dirname($path).'/.zsync';
+		$zsyncMetadataPath = \dirname($path).'/.zsync';
 		$zsyncMetadata = $this->preMoveZsync($zsyncMetadataPath, $destination);
 
 		// do a move manually, skipping Sabre's default "delete" for existing nodes

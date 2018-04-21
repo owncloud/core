@@ -416,7 +416,7 @@ class EncryptionTest extends Storage {
 			->method('isEnabled')->willReturn($encryptionEnabled);
 
 		$this->instance->mkdir($source);
-		$this->instance->mkdir(dirname($target));
+		$this->instance->mkdir(\dirname($target));
 		$this->instance->rename($source, $target);
 	}
 
@@ -687,15 +687,15 @@ class EncryptionTest extends Storage {
 
 	public function dataTestParseRawHeader() {
 		return [
-			[str_pad('HBEGIN:oc_encryption_module:0:HEND', $this->headerSize, '-', STR_PAD_RIGHT)
+			[\str_pad('HBEGIN:oc_encryption_module:0:HEND', $this->headerSize, '-', STR_PAD_RIGHT)
 				, [Util::HEADER_ENCRYPTION_MODULE_KEY => '0']],
-			[str_pad('HBEGIN:oc_encryption_module:0:custom_header:foo:HEND', $this->headerSize, '-', STR_PAD_RIGHT)
+			[\str_pad('HBEGIN:oc_encryption_module:0:custom_header:foo:HEND', $this->headerSize, '-', STR_PAD_RIGHT)
 				, ['custom_header' => 'foo', Util::HEADER_ENCRYPTION_MODULE_KEY => '0']],
-			[str_pad('HelloWorld', $this->headerSize, '-', STR_PAD_RIGHT), []],
+			[\str_pad('HelloWorld', $this->headerSize, '-', STR_PAD_RIGHT), []],
 			['', []],
-			[str_pad('HBEGIN:oc_encryption_module:0', $this->headerSize, '-', STR_PAD_RIGHT)
+			[\str_pad('HBEGIN:oc_encryption_module:0', $this->headerSize, '-', STR_PAD_RIGHT)
 				, []],
-			[str_pad('oc_encryption_module:0:HEND', $this->headerSize, '-', STR_PAD_RIGHT)
+			[\str_pad('oc_encryption_module:0:HEND', $this->headerSize, '-', STR_PAD_RIGHT)
 				, []],
 		];
 	}
@@ -721,7 +721,7 @@ class EncryptionTest extends Storage {
 			->method('fopen')
 			->willReturnCallback(function($path, $mode) {
 				$temp = \OC::$server->getTempManager();
-				return fopen($temp->getTemporaryFile(), $mode);
+				return \fopen($temp->getTemporaryFile(), $mode);
 			});
 		$cache = $this->createMock('\OCP\Files\Cache\ICache');
 		$cache->expects($this->once())
@@ -770,7 +770,7 @@ class EncryptionTest extends Storage {
 			->method('fopen')
 			->willReturnCallback(function($path, $mode) {
 				$temp = \OC::$server->getTempManager();
-				return fopen($temp->getTemporaryFile(), $mode);
+				return \fopen($temp->getTemporaryFile(), $mode);
 			});
 		if($expectedEncrypted) {
 			$cache = $this->createMock('\OCP\Files\Cache\ICache');

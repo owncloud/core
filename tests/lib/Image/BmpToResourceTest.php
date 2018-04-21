@@ -35,7 +35,7 @@ class BmpToResourceTest extends TestCase {
 
 	public function testReadBitmapHeader(){
 		$headerHex = '42 4D 9A 00 00 00 00 00 00 00 7A 00 00 00';
-		$headerBin = hex2bin(str_replace(' ', '', $headerHex));
+		$headerBin = \hex2bin(\str_replace(' ', '', $headerHex));
 		$stub = $this->getReadFileStub([$headerBin]);
 		$bitmapHeader = self::invokePrivate($stub, 'readBitmapHeader');
 		$this->assertEquals(154, $bitmapHeader['filesize']);
@@ -47,7 +47,7 @@ class BmpToResourceTest extends TestCase {
 	 */
 	public function testReadWrongBitmapSignature(){
 		$headerHex = '99 4D 9A 00 00 00 00 00 00 00 7A 00 00 00';
-		$headerBin = hex2bin(str_replace(' ', '', $headerHex));
+		$headerBin = \hex2bin(\str_replace(' ', '', $headerHex));
 		$stub = $this->getReadFileStub([$headerBin]);
 		self::invokePrivate($stub, 'readBitmapHeader');
 	}
@@ -55,8 +55,8 @@ class BmpToResourceTest extends TestCase {
 	public function testReadDibHeader(){
 		$headerLengthHex = '6C 00 00 00 ';
 		$headerHex = '20 00 00 00 12 00 00 00 01 00 20 00 03 00 00 00 20 00 00 00 14 0B 00 00 13 0B 00 00 00 00 00 00 00 00 00 00';
-		$headerLengthBin = hex2bin(str_replace(' ', '', $headerLengthHex));
-		$headerBin = hex2bin(str_replace(' ', '', $headerHex));
+		$headerLengthBin = \hex2bin(\str_replace(' ', '', $headerLengthHex));
+		$headerBin = \hex2bin(\str_replace(' ', '', $headerHex));
 		$stub = $this->getReadFileStub([$headerLengthBin, $headerBin]);
 		$dibHeader = self::invokePrivate($stub, 'readDibHeader');
 		$this->assertEquals(32, $dibHeader['width']);
@@ -67,7 +67,7 @@ class BmpToResourceTest extends TestCase {
 		$this->assertEquals(32, $dibHeader['imagesize']);
 		$this->assertEquals(2836, $dibHeader['xres']);
 		$this->assertEquals(2835, $dibHeader['yres']);
-		$this->assertEquals(pow(2, $dibHeader['bits']), $dibHeader['colors']);
+		$this->assertEquals(\pow(2, $dibHeader['bits']), $dibHeader['colors']);
 		$this->assertEquals(0, $dibHeader['important']);
 	}
 
@@ -77,8 +77,8 @@ class BmpToResourceTest extends TestCase {
 	public function testReadUnsupportedDibHeaderBitDepth(){
 		$headerLengthHex = '6C 00 00 00 ';
 		$headerHex = '20 00 00 00 12 00 00 00 01 00 07 00 03 00 00 00 20 00 00 00 14 0B 00 00 13 0B 00 00 00 00 00 00 00 00 00 00';
-		$headerLengthBin = hex2bin(str_replace(' ', '', $headerLengthHex));
-		$headerBin = hex2bin(str_replace(' ', '', $headerHex));
+		$headerLengthBin = \hex2bin(\str_replace(' ', '', $headerLengthHex));
+		$headerBin = \hex2bin(\str_replace(' ', '', $headerHex));
 		$stub = $this->getReadFileStub([$headerLengthBin, $headerBin]);
 		self::invokePrivate($stub, 'readDibHeader');
 	}
@@ -88,14 +88,14 @@ class BmpToResourceTest extends TestCase {
 	 */
 	public function testReadWrongDibHeaderLength(){
 		$headerHex = '10 00 00 00 00 00 00 00 00 00 7A 00 00 00';
-		$headerBin = hex2bin(str_replace(' ', '', $headerHex));
+		$headerBin = \hex2bin(\str_replace(' ', '', $headerHex));
 		$stub = $this->getReadFileStub([$headerBin]);
 		self::invokePrivate($stub, 'readDibHeader');
 	}
 
 	public function testReadBitMasks(){
 		$bitMasksHex = '00 00 FF 00 00 FF 00 00 FF 00 00 00';
-		$bitMasksBin = hex2bin(str_replace(' ', '', $bitMasksHex));
+		$bitMasksBin = \hex2bin(\str_replace(' ', '', $bitMasksHex));
 		$stub = $this->getReadFileStub([$bitMasksBin]);
 		$bitMasks = self::invokePrivate($stub, 'readBitMasks');
 
@@ -108,7 +108,7 @@ class BmpToResourceTest extends TestCase {
 		$colors = 2;
 		// Little Endian: B  G  R  00 B  G  R  00
 		$colorTableHex = '0A FF 32 00 34 56 EF 00';
-		$colorTableBin = hex2bin(str_replace(' ', '', $colorTableHex));
+		$colorTableBin = \hex2bin(\str_replace(' ', '', $colorTableHex));
 		$stub = $this->getReadFileStub([$colorTableBin]);
 		$colorTable = self::invokePrivate($stub, 'readColorTable', [$colors]);
 		$this->assertCount(2, $colorTable);
@@ -123,7 +123,7 @@ class BmpToResourceTest extends TestCase {
 	 */
 	public function testSplitByteIntoArray($char, $bitsPerPart, $expectedArray){
 		$stub = $this->getReadFileStub([]);
-		$resultArray = self::invokePrivate($stub, 'splitByteIntoArray', [chr($char), $bitsPerPart]);
+		$resultArray = self::invokePrivate($stub, 'splitByteIntoArray', [\chr($char), $bitsPerPart]);
 		$this->assertEquals($expectedArray, $resultArray);
 	}
 

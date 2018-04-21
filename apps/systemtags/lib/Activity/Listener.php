@@ -131,7 +131,7 @@ class Listener {
 	public function mapperEvent(MapperEvent $event) {
 		$tagIds = $event->getTags();
 		if ($event->getObjectType() !== 'files' ||empty($tagIds)
-			|| !in_array($event->getEvent(), [MapperEvent::EVENT_ASSIGN, MapperEvent::EVENT_UNASSIGN])
+			|| !\in_array($event->getEvent(), [MapperEvent::EVENT_ASSIGN, MapperEvent::EVENT_UNASSIGN])
 			|| !$this->appManager->isInstalled('activity')) {
 			// System tags not for files, no tags, not (un-)assigning or no activity-app enabled (save the energy)
 			return;
@@ -162,13 +162,13 @@ class Listener {
 			$nodes = $ownerFolder->getById($event->getObjectId());
 			if (!empty($nodes)) {
 				/** @var Node $node */
-				$node = array_shift($nodes);
+				$node = \array_shift($nodes);
 				$path = $node->getPath();
-				if (strpos($path, '/' . $owner . '/files/') === 0) {
-					$path = substr($path, strlen('/' . $owner . '/files'));
+				if (\strpos($path, '/' . $owner . '/files/') === 0) {
+					$path = \substr($path, \strlen('/' . $owner . '/files'));
 				}
 				// Get all users that have access to the mount point
-				$users = array_merge($users, Share::getUsersSharingFile($path, $owner, true, true));
+				$users = \array_merge($users, Share::getUsersSharingFile($path, $owner, true, true));
 			}
 		}
 

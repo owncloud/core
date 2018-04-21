@@ -1,6 +1,6 @@
 <?php if (OC_Util::getEditionString() === OC_Util::EDITION_COMMUNITY): ?>
 	<p>
-		<?php print_unescaped(str_replace(
+		<?php print_unescaped(\str_replace(
 			[
 				'{communityopen}',
 				'{githubopen}',

@@ -43,7 +43,7 @@ class CalendarTest extends TestCase {
 			->expects($this->any())
 			->method('t')
 			->will($this->returnCallback(function ($text, $parameters = []) {
-				return vsprintf($text, $parameters);
+				return \vsprintf($text, $parameters);
 			}));
 	}
 
@@ -135,7 +135,7 @@ class CalendarTest extends TestCase {
 			'id' => 666,
 			'uri' => $uri
 		];
-		if (!is_null($readOnlyValue)) {
+		if (!\is_null($readOnlyValue)) {
 			$calendarInfo['{http://owncloud.org/ns}read-only'] = $readOnlyValue;
 		}
 		if ($hasOwnerSet) {

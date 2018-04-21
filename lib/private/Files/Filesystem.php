@@ -353,7 +353,7 @@ class Filesystem {
 		}
 		$mount = self::$mounts->find($path);
 		if ($mount) {
-			return [$mount->getStorage(), rtrim($mount->getInternalPath($path), '/')];
+			return [$mount->getStorage(), \rtrim($mount->getInternalPath($path), '/')];
 		} else {
 			return [null, null];
 		}
@@ -418,7 +418,7 @@ class Filesystem {
 		$realUid = $userObject->getUID();
 		// workaround in case of different casings
 		if ($user !== $realUid) {
-			$stack = json_encode(debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 50));
+			$stack = \json_encode(\debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 50));
 			\OCP\Util::writeLog('files', 'initMountPoints() called with wrong user casing. This could be a bug. Expected: "' . $realUid . '" got "' . $user . '". Stack: ' . $stack, \OCP\Util::WARN);
 			$user = $realUid;
 
@@ -443,7 +443,7 @@ class Filesystem {
 		// Chance to mount for other storages
 		if ($userObject) {
 			$mounts = $mountConfigManager->getMountsForUser($userObject);
-			array_walk($mounts, [self::$mounts, 'addMount']);
+			\array_walk($mounts, [self::$mounts, 'addMount']);
 			$mounts[] = $homeMount;
 			$mountConfigManager->registerMounts($userObject, $mounts);
 		}
@@ -466,7 +466,7 @@ class Filesystem {
 					$userObject = $userManager->get($user);
 					if ($userObject) {
 						$mounts = $provider->getMountsForUser($userObject, Filesystem::getLoader());
-						array_walk($mounts, [self::$mounts, 'addMount']);
+						\array_walk($mounts, [self::$mounts, 'addMount']);
 					}
 				}
 			});
@@ -558,8 +558,8 @@ class Filesystem {
 	static public function getLocalPath($path) {
 		$datadir = \OC_User::getHome(\OC_User::getUser()) . '/files';
 		$newpath = $path;
-		if (strncmp($newpath, $datadir, strlen($datadir)) == 0) {
-			$newpath = substr($path, strlen($datadir));
+		if (\strncmp($newpath, $datadir, \strlen($datadir)) == 0) {
+			$newpath = \substr($path, \strlen($datadir));
 		}
 		return $newpath;
 	}
@@ -575,7 +575,7 @@ class Filesystem {
 		if (!$path || $path[0] !== '/') {
 			$path = '/' . $path;
 		}
-		if (strpos($path, '/../') !== false || strrchr($path, '/') === '/..') {
+		if (\strpos($path, '/../') !== false || \strrchr($path, '/') === '/..') {
 			return false;
 		}
 		return true;
@@ -647,24 +647,24 @@ class Filesystem {
 			$excluded = \OC::$server->getSystemConfig()->getValue('excluded_directories', $ed);
 		}
 		// explode '/'
-		$ppx = array_filter(explode('/', $FileOrDir), 'strlen');
-		$ppx = array_map('strtolower', $ppx);
+		$ppx = \array_filter(\explode('/', $FileOrDir), 'strlen');
+		$ppx = \array_map('strtolower', $ppx);
 		// further explode each array element with '\' and add to result array if found  
 		foreach($ppx as $pp) {
 			// only add an array element if strlen != 0
-			$path_parts = array_merge($path_parts, array_filter(explode('\\', $pp), 'strlen'));
+			$path_parts = \array_merge($path_parts, \array_filter(\explode('\\', $pp), 'strlen'));
 		}
 		if ($excluded) {
-			$excluded = array_map('trim', $excluded);
-			$excluded = array_map('strtolower', $excluded);
-			$match = array_intersect($path_parts, $excluded);
+			$excluded = \array_map('trim', $excluded);
+			$excluded = \array_map('strtolower', $excluded);
+			$match = \array_intersect($path_parts, $excluded);
 			if ($match) {
 				return true;
 			}
 		}
-		$blacklist = array_map('trim', $blacklist);
-		$blacklist = array_map('strtolower', $blacklist);
-		$match = array_intersect($path_parts, $blacklist);
+		$blacklist = \array_map('trim', $blacklist);
+		$blacklist = \array_map('strtolower', $blacklist);
+		$match = \array_intersect($path_parts, $blacklist);
 		if ($match) {
 			return true;
 		}
@@ -833,7 +833,7 @@ class Filesystem {
 	 * @return string
 	 */
 	public static function normalizePath($path, $stripTrailingSlash = true, $isAbsolutePath = false, $keepUnicode = false) {
-		if (is_null(self::$normalizedPathCache)) {
+		if (\is_null(self::$normalizedPathCache)) {
 			self::$normalizedPathCache = new CappedMemoryCache();
 		}
 
@@ -845,7 +845,7 @@ class Filesystem {
 		 */
 		$path = (string)$path;
 
-		$cacheKey = json_encode([$path, $stripTrailingSlash, $isAbsolutePath, $keepUnicode]);
+		$cacheKey = \json_encode([$path, $stripTrailingSlash, $isAbsolutePath, $keepUnicode]);
 
 		if (isset(self::$normalizedPathCache[$cacheKey])) {
 			return self::$normalizedPathCache[$cacheKey];
@@ -861,7 +861,7 @@ class Filesystem {
 		}
 
 		//no windows style slashes
-		$path = str_replace('\\', '/', $path);
+		$path = \str_replace('\\', '/', $path);
 
 		//add leading slash
 		if ($path[0] !== '/') {
@@ -872,20 +872,20 @@ class Filesystem {
 		// ugly, but str_replace() can't replace them all in one go
 		// as the replacement itself is part of the search string
 		// which will only be found during the next iteration
-		while (strpos($path, '/./') !== false) {
-			$path = str_replace('/./', '/', $path);
+		while (\strpos($path, '/./') !== false) {
+			$path = \str_replace('/./', '/', $path);
 		}
 		// remove sequences of slashes
-		$path = preg_replace('#/{2,}#', '/', $path);
+		$path = \preg_replace('#/{2,}#', '/', $path);
 
 		//remove trailing slash
-		if ($stripTrailingSlash and strlen($path) > 1 and substr($path, -1, 1) === '/') {
-			$path = substr($path, 0, -1);
+		if ($stripTrailingSlash and \strlen($path) > 1 and \substr($path, -1, 1) === '/') {
+			$path = \substr($path, 0, -1);
 		}
 
 		// remove trailing '/.'
-		if (substr($path, -2) == '/.') {
-			$path = substr($path, 0, -2);
+		if (\substr($path, -2) == '/.') {
+			$path = \substr($path, 0, -2);
 		}
 
 		$normalizedPath = $path;

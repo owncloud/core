@@ -59,7 +59,7 @@ class Result {
 	public function __construct($data = null, $code = 100, $message = null, $headers = []) {
 		if ($data === null) {
 			$this->data = [];
-		} elseif (!is_array($data)) {
+		} elseif (!\is_array($data)) {
 			$this->data = [$this->data];
 		} else {
 			$this->data = $data;
@@ -135,11 +135,11 @@ class Result {
 	 * @return $this
 	 */
 	public function addHeader($name, $value) {
-		$name = trim($name);  // always remove leading and trailing whitespace
+		$name = \trim($name);  // always remove leading and trailing whitespace
 		// to be able to reliably check for security
 		// headers
 
-		if(is_null($value)) {
+		if(\is_null($value)) {
 			unset($this->headers[$name]);
 		} else {
 			$this->headers[$name] = $value;

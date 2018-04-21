@@ -57,7 +57,7 @@ class CallbackWrapper extends Wrapper {
 	 * @throws \BadMethodCallException
 	 */
 	public static function wrap($source, $read = null, $write = null, $close = null, $readDir = null) {
-		$context = stream_context_create(array(
+		$context = \stream_context_create(array(
 			'callback' => array(
 				'source' => $source,
 				'read' => $read,
@@ -89,24 +89,24 @@ class CallbackWrapper extends Wrapper {
 
 	public function stream_read($count) {
 		$result = parent::stream_read($count);
-		if (is_callable($this->readCallback)) {
-			call_user_func($this->readCallback, $count);
+		if (\is_callable($this->readCallback)) {
+			\call_user_func($this->readCallback, $count);
 		}
 		return $result;
 	}
 
 	public function stream_write($data) {
 		$result = parent::stream_write($data);
-		if (is_callable($this->writeCallback)) {
-			call_user_func($this->writeCallback, $data);
+		if (\is_callable($this->writeCallback)) {
+			\call_user_func($this->writeCallback, $data);
 		}
 		return $result;
 	}
 
 	public function stream_close() {
 		$result = parent::stream_close();
-		if (is_callable($this->closeCallback)) {
-			call_user_func($this->closeCallback);
+		if (\is_callable($this->closeCallback)) {
+			\call_user_func($this->closeCallback);
 			// prevent further calls by potential PHP 7 GC ghosts
 			$this->closeCallback = null;
 		}
@@ -115,8 +115,8 @@ class CallbackWrapper extends Wrapper {
 
 	public function dir_readdir() {
 		$result = parent::dir_readdir();
-		if (is_callable($this->readDirCallBack)) {
-			call_user_func($this->readDirCallBack);
+		if (\is_callable($this->readDirCallBack)) {
+			\call_user_func($this->readDirCallBack);
 		}
 		return $result;
 	}

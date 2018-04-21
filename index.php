@@ -29,14 +29,14 @@
 
 // Show warning if a PHP version below 7.1.0 is used, this has to happen here
 // because base.php will already use 7.1 syntax.
-if (version_compare(PHP_VERSION, '7.1.0') === -1) {
+if (\version_compare(PHP_VERSION, '7.1.0') === -1) {
 	echo 'This version of ownCloud requires at least PHP 7.1.0<br/>';
 	echo 'You are currently running PHP ' . PHP_VERSION . '. Please update your PHP version.';
 	return;
 }
 
 // Show warning if PHP 7.3 is used as ownCloud is not compatible with PHP 7.3
-if (version_compare(PHP_VERSION, '7.3.0alpha1') !== -1) {
+if (\version_compare(PHP_VERSION, '7.3.0alpha1') !== -1) {
 	echo 'This version of ownCloud is not compatible with PHP 7.3<br/>';
 	echo 'You are currently running PHP ' . PHP_VERSION . '.';
 	return;
@@ -44,7 +44,7 @@ if (version_compare(PHP_VERSION, '7.3.0alpha1') !== -1) {
 
 // running oC on Windows is unsupported since 8.1, this has to happen here because
 // is seems that the autoloader on Windows fails later and just throws an exception.
-if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {
+if (\strtoupper(\substr(PHP_OS, 0, 3)) === 'WIN') {
 	echo 'ownCloud Server does not support Microsoft Windows.';
 	return;
 }
@@ -81,7 +81,7 @@ try {
 		// so print out the exception directly
 		echo('<html><body>');
 		echo('Exception occurred while logging exception: ' . $ex->getMessage() . '<br/>');
-		echo(str_replace("\n", '<br/>', $ex->getTraceAsString()));
+		echo(\str_replace("\n", '<br/>', $ex->getTraceAsString()));
 		echo('</body></html>');
 	}
 } catch (Error $ex) {

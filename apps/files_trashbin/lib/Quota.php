@@ -52,13 +52,13 @@ class Quota  {
 	 */
 	public function calculateFreeSpace($trashbinSize, $user) {
 		$userObject = $this->userManager->get($user);
-		if(is_null($userObject)) {
+		if(\is_null($userObject)) {
 			return 0;
 		}
 		$quota = $this->getUserQuota($userObject);
 
 		$userFolder = \OC::$server->getUserFolder($user);
-		if(is_null($userFolder)) {
+		if(\is_null($userFolder)) {
 			return 0;
 		}
 

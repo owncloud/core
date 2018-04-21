@@ -167,12 +167,12 @@ class ShareesController extends OCSController  {
 			}
 		}
 
-		if (!$this->shareeEnumeration || sizeof($users) < $this->limit) {
+		if (!$this->shareeEnumeration || \sizeof($users) < $this->limit) {
 			$this->reachedEndFor[] = 'users';
 		}
 
 		$foundUserById = false;
-		$lowerSearch = strtolower($search);
+		$lowerSearch = \strtolower($search);
 		foreach ($users as $uid => $user) {
 			/* @var $user IUser */
 			$entry = [
@@ -189,14 +189,14 @@ class ShareesController extends OCSController  {
 
 			if (
 				// Check if the uid is the same
-				strtolower($uid) === $lowerSearch
+				\strtolower($uid) === $lowerSearch
 				// Check if exact display name
-				|| strtolower($user->getDisplayName()) === $lowerSearch
+				|| \strtolower($user->getDisplayName()) === $lowerSearch
 				// Check if exact first email
-				|| strtolower($user->getEMailAddress()) === $lowerSearch
+				|| \strtolower($user->getEMailAddress()) === $lowerSearch
 				// Check for exact search term matches (when mail attributes configured as search terms + no enumeration)
-				|| in_array($lowerSearch, array_map('strtolower', $user->getSearchTerms()))) {
-				if (strtolower($uid) === $lowerSearch) {
+				|| \in_array($lowerSearch, \array_map('strtolower', $user->getSearchTerms()))) {
+				if (\strtolower($uid) === $lowerSearch) {
 					$foundUserById = true;
 				}
 				$this->result['exact']['users'][] = $entry;
@@ -214,7 +214,7 @@ class ShareesController extends OCSController  {
 
 				if ($this->shareWithGroupOnly) {
 					// Only add, if we have a common group
-					$commonGroups = array_intersect($userGroups, $this->groupManager->getUserGroupIds($user));
+					$commonGroups = \array_intersect($userGroups, $this->groupManager->getUserGroupIds($user));
 					$addUser = !empty($commonGroups);
 				}
 
@@ -230,7 +230,7 @@ class ShareesController extends OCSController  {
 					if ($additionalInfo !== null) {
 						$entry['value']['shareWithAdditionalInfo'] = $additionalInfo;
 					}
-					array_push($this->result['exact']['users'], $entry);
+					\array_push($this->result['exact']['users'], $entry);
 				}
 			}
 		}
@@ -262,9 +262,9 @@ class ShareesController extends OCSController  {
 		$this->result['groups'] = $this->result['exact']['groups'] = [];
 
 		$groups = $this->groupManager->search($search, $this->limit, $this->offset, 'sharing');
-		$groupIds = array_map(function (IGroup $group) { return $group->getGID(); }, $groups);
+		$groupIds = \array_map(function (IGroup $group) { return $group->getGID(); }, $groups);
 
-		if (!$this->shareeEnumeration || sizeof($groups) < $this->limit) {
+		if (!$this->shareeEnumeration || \sizeof($groups) < $this->limit) {
 			$this->reachedEndFor[] = 'groups';
 		}
 
@@ -272,18 +272,18 @@ class ShareesController extends OCSController  {
 		if (!empty($groups) && ($this->shareWithMembershipGroupOnly || $this->shareeEnumerationGroupMembers)) {
 			// Intersect all the groups that match with the groups this user is a member of
 			$userGroups = $this->groupManager->getUserGroups($this->userSession->getUser(), 'sharing');
-			$userGroups = array_map(function (IGroup $group) { return $group->getGID(); }, $userGroups);
-			$groupIds = array_intersect($groupIds, $userGroups);
+			$userGroups = \array_map(function (IGroup $group) { return $group->getGID(); }, $userGroups);
+			$groupIds = \array_intersect($groupIds, $userGroups);
 		}
 
-		$lowerSearch = strtolower($search);
+		$lowerSearch = \strtolower($search);
 		foreach ($groups as $group) {
 			// FIXME: use a more efficient approach
 			$gid = $group->getGID();
-			if (!in_array($gid, $groupIds)) {
+			if (!\in_array($gid, $groupIds)) {
 				continue;
 			}
-			if (strtolower($gid) === $lowerSearch || strtolower($group->getDisplayName()) === $lowerSearch) {
+			if (\strtolower($gid) === $lowerSearch || \strtolower($group->getDisplayName()) === $lowerSearch) {
 				$this->result['exact']['groups'][] = [
 					'label' => $group->getDisplayName(),
 					'value' => [
@@ -306,8 +306,8 @@ class ShareesController extends OCSController  {
 			// On page one we try if the search result has a direct hit on the
 			// user id and if so, we add that to the exact match list
 			$group = $this->groupManager->get($search);
-			if ($group instanceof IGroup && (!$this->shareWithMembershipGroupOnly || in_array($group->getGID(), $userGroups))) {
-				array_push($this->result['exact']['groups'], [
+			if ($group instanceof IGroup && (!$this->shareWithMembershipGroupOnly || \in_array($group->getGID(), $userGroups))) {
+				\array_push($this->result['exact']['groups'], [
 					'label' => $group->getDisplayName(),
 					'value' => [
 						'shareType' => Share::SHARE_TYPE_GROUP,
@@ -329,7 +329,7 @@ class ShareesController extends OCSController  {
 	protected function getRemote($search) {
 		$this->result['remotes'] = [];
 		// Fetch remote search properties from app config
-		$searchProperties = explode(',', $this->config->getAppValue('dav', 'remote_search_properties', 'CLOUD,FN'));
+		$searchProperties = \explode(',', $this->config->getAppValue('dav', 'remote_search_properties', 'CLOUD,FN'));
 		// Search in contacts
 		$addressBookContacts = $this->contactsManager->search($search, $searchProperties, [], $this->limit, $this->offset);
 		$foundRemoteById = false;
@@ -346,16 +346,16 @@ class ShareesController extends OCSController  {
 
 			// we can have multiple cloud domains, always convert to an array
 			$cloudIds = $contact['CLOUD'];
-			if (!is_array($cloudIds)) {
+			if (!\is_array($cloudIds)) {
 				$cloudIds = [$cloudIds];
 			}
 
-			$lowerSearch = strtolower($search);
+			$lowerSearch = \strtolower($search);
 			foreach ($cloudIds as $cloudId) {
 				list(, $serverUrl) = $this->splitUserRemote($cloudId);
 
 
-				if (strtolower($cloudId) === $lowerSearch) {
+				if (\strtolower($cloudId) === $lowerSearch) {
 					$foundRemoteById = true;
 					// Save this as an exact match and continue with next CLOUD
 					$this->result['exact']['remotes'][] = [
@@ -379,12 +379,12 @@ class ShareesController extends OCSController  {
 					}
 					// check if we have a match
 					$values = $contact[$property];
-					if(!is_array($values)) {
+					if(!\is_array($values)) {
 						$values = [$values];
 					}
 					foreach($values as $value) {
 						// check if we have an exact match
-						if(strtolower($value) === $lowerSearch) {
+						if(\strtolower($value) === $lowerSearch) {
 							$this->result['exact']['remotes'][] = [
 								'label' => $contact['FN'],
 								'value' => [
@@ -419,7 +419,7 @@ class ShareesController extends OCSController  {
 		}
 
 
-		if (!$foundRemoteById && substr_count($search, '@') >= 1 && $this->offset === 0
+		if (!$foundRemoteById && \substr_count($search, '@') >= 1 && $this->offset === 0
 			// if an exact local user is found, only keep the remote entry if
 			// its domain does not matches the trusted domains
 			// (if it does, it is a user whose local login domain matches the ownCloud
@@ -447,35 +447,35 @@ class ShareesController extends OCSController  {
 	 * @throws \Exception
 	 */
 	public function splitUserRemote($address) {
-		if (strpos($address, '@') === false) {
+		if (\strpos($address, '@') === false) {
 			throw new \Exception('Invalid Federated Cloud ID');
 		}
 
 		// Find the first character that is not allowed in user names
-		$id = str_replace('\\', '/', $address);
-		$posSlash = strpos($id, '/');
-		$posColon = strpos($id, ':');
+		$id = \str_replace('\\', '/', $address);
+		$posSlash = \strpos($id, '/');
+		$posColon = \strpos($id, ':');
 
 		if ($posSlash === false && $posColon === false) {
-			$invalidPos = strlen($id);
+			$invalidPos = \strlen($id);
 		} else if ($posSlash === false) {
 			$invalidPos = $posColon;
 		} else if ($posColon === false) {
 			$invalidPos = $posSlash;
 		} else {
-			$invalidPos = min($posSlash, $posColon);
+			$invalidPos = \min($posSlash, $posColon);
 		}
 
 		// Find the last @ before $invalidPos
 		$pos = $lastAtPos = 0;
 		while ($lastAtPos !== false && $lastAtPos <= $invalidPos) {
 			$pos = $lastAtPos;
-			$lastAtPos = strpos($id, '@', $pos + 1);
+			$lastAtPos = \strpos($id, '@', $pos + 1);
 		}
 
 		if ($pos !== false) {
-			$user = substr($id, 0, $pos);
-			$remote = substr($id, $pos + 1);
+			$user = \substr($id, 0, $pos);
+			$remote = \substr($id, $pos + 1);
 			$remote = $this->fixRemoteURL($remote);
 			if (!empty($user) && !empty($remote)) {
 				return [$user, $remote];
@@ -498,11 +498,11 @@ class ShareesController extends OCSController  {
 	 * @return string
 	 */
 	protected function fixRemoteURL($remote) {
-		$remote = str_replace('\\', '/', $remote);
-		if ($fileNamePosition = strpos($remote, '/index.php')) {
-			$remote = substr($remote, 0, $fileNamePosition);
+		$remote = \str_replace('\\', '/', $remote);
+		if ($fileNamePosition = \strpos($remote, '/index.php')) {
+			$remote = \substr($remote, 0, $fileNamePosition);
 		}
-		$remote = rtrim($remote, '/');
+		$remote = \rtrim($remote, '/');
 
 		return $remote;
 	}
@@ -538,18 +538,18 @@ class ShareesController extends OCSController  {
 
 		$shareTypes[] = Share::SHARE_TYPE_REMOTE;
 
-		if (isset($_GET['shareType']) && is_array($_GET['shareType'])) {
-			$shareTypes = array_intersect($shareTypes, $_GET['shareType']);
-			sort($shareTypes);
+		if (isset($_GET['shareType']) && \is_array($_GET['shareType'])) {
+			$shareTypes = \array_intersect($shareTypes, $_GET['shareType']);
+			\sort($shareTypes);
 
-		} else if (isset($_GET['shareType']) && is_numeric($_GET['shareType'])) {
-			$shareTypes = array_intersect($shareTypes, [(int) $_GET['shareType']]);
-			sort($shareTypes);
+		} else if (isset($_GET['shareType']) && \is_numeric($_GET['shareType'])) {
+			$shareTypes = \array_intersect($shareTypes, [(int) $_GET['shareType']]);
+			\sort($shareTypes);
 		}
 
-		if (in_array(Share::SHARE_TYPE_REMOTE, $shareTypes) && !$this->isRemoteSharingAllowed($itemType)) {
+		if (\in_array(Share::SHARE_TYPE_REMOTE, $shareTypes) && !$this->isRemoteSharingAllowed($itemType)) {
 			// Remove remote shares from type array, because it is not allowed.
-			$shareTypes = array_diff($shareTypes, [Share::SHARE_TYPE_REMOTE]);
+			$shareTypes = \array_diff($shareTypes, [Share::SHARE_TYPE_REMOTE]);
 		}
 
 		$this->shareWithGroupOnly = $this->config->getAppValue('core', 'shareapi_only_share_with_group_members', 'no') === 'yes';
@@ -599,23 +599,23 @@ class ShareesController extends OCSController  {
 		}
 
 		// Get users
-		if (in_array(Share::SHARE_TYPE_USER, $shareTypes)) {
+		if (\in_array(Share::SHARE_TYPE_USER, $shareTypes)) {
 			$this->getUsers($search);
 		}
 
 		// Get groups
-		if (in_array(Share::SHARE_TYPE_GROUP, $shareTypes)) {
+		if (\in_array(Share::SHARE_TYPE_GROUP, $shareTypes)) {
 			$this->getGroups($search);
 		}
 
 		// Get remote
-		if (in_array(Share::SHARE_TYPE_REMOTE, $shareTypes)) {
+		if (\in_array(Share::SHARE_TYPE_REMOTE, $shareTypes)) {
 			$this->getRemote($search);
 		}
 
 		$response = new DataResponse(['data' => $this->result]);
 
-		if (sizeof($this->reachedEndFor) < 3) {
+		if (\sizeof($this->reachedEndFor) < 3) {
 			$response->addHeader('Link', $this->getPaginationLink($page, [
 				'search' => $search,
 				'itemType' => $itemType,
@@ -641,7 +641,7 @@ class ShareesController extends OCSController  {
 			$url = $this->urlGenerator->getAbsoluteURL('/ocs/v1.php/apps/files_sharing/api/v1/sharees') . '?';
 		}
 		$params['page'] = $page + 1;
-		$link = '<' . $url . http_build_query($params) . '>; rel="next"';
+		$link = '<' . $url . \http_build_query($params) . '>; rel="next"';
 
 		return $link;
 	}
@@ -661,18 +661,18 @@ class ShareesController extends OCSController  {
 	 * @return true if one match was found, false otherwise
 	 */
 	protected function isInstanceDomain($target) {
-		if (strpos($target, '/') !== false) {
+		if (\strpos($target, '/') !== false) {
 			// not a proper email-like format with domain name
 			return false;
 		}
-		$parts = explode('@', $target);
-		if (count($parts) === 1) {
+		$parts = \explode('@', $target);
+		if (\count($parts) === 1) {
 			// no "@" sign
 			return false;
 		}
-		$domainName = $parts[count($parts) - 1];
+		$domainName = $parts[\count($parts) - 1];
 		$trustedDomains = $this->config->getSystemValue('trusted_domains', []);
 
-		return in_array($domainName, $trustedDomains, true);
+		return \in_array($domainName, $trustedDomains, true);
 	}
 }

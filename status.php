@@ -41,11 +41,11 @@ try {
 		\OC::$server->getConfig()->getSystemValue('show_server_hostname', false) !== true);
 
 	if (OC::$CLI) {
-		print_r($values);
+		\print_r($values);
 	} else {
-		header('Access-Control-Allow-Origin: *');
-		header('Content-Type: application/json');
-		echo json_encode($values);
+		\header('Access-Control-Allow-Origin: *');
+		\header('Content-Type: application/json');
+		echo \json_encode($values);
 	}
 
 } catch (Exception $ex) {

@@ -73,7 +73,7 @@ trait Comments {
 			);
 			$responseHeaders =  $this->response->getHeaders();
 			$commentUrl = $responseHeaders['Content-Location'][0];
-			$this->lastCommentId = substr($commentUrl, strrpos($commentUrl, '/') + 1);
+			$this->lastCommentId = \substr($commentUrl, \strrpos($commentUrl, '/') + 1);
 		} catch (BadResponseException $ex) {
 			$this->response = $ex->getResponse();
 		}
@@ -204,7 +204,7 @@ trait Comments {
 		$keys = $this->response[0]['value'][2]['value'][0]['value'];
 		$found = false;
 		foreach ($keys as $singleKey) {
-			if ($singleKey['name'] === '{http://owncloud.org/ns}' . substr($key, 3)) {
+			if ($singleKey['name'] === '{http://owncloud.org/ns}' . \substr($key, 3)) {
 				if ($singleKey['value'] === $value) {
 					$found = true;
 				}
@@ -224,9 +224,9 @@ trait Comments {
 	 * @throws \Exception
 	 */
 	public function theResponseShouldContainOnlyComments($number) {
-		if (count($this->response) !== (int)$number) {
+		if (\count($this->response) !== (int)$number) {
 			throw new \Exception(
-				"Found more comments than $number (" . count($this->response) . ")"
+				"Found more comments than $number (" . \count($this->response) . ")"
 			);
 		}
 	}
@@ -253,7 +253,7 @@ trait Comments {
 									<d:propertyupdate  xmlns:d="DAV:" xmlns:oc="http://owncloud.org/ns">
 										<d:set>
 											<d:prop>
-												<oc:message>' . htmlspecialchars($content, ENT_XML1, 'UTF-8') . '</oc:message>
+												<oc:message>' . \htmlspecialchars($content, ENT_XML1, 'UTF-8') . '</oc:message>
 											</d:prop>
 										</d:set>
 									</d:propertyupdate>'

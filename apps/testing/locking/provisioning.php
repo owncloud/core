@@ -85,7 +85,7 @@ class Provisioning {
 		$node = \OC::$server->getRootFolder()
 			->getUserFolder($parameters['user'])
 			->get($this->request->getParam('path'));
-		return 'files/' . md5($node->getStorage()->getId() . '::' . trim($node->getInternalPath(), '/'));
+		return 'files/' . \md5($node->getStorage()->getId() . '::' . \trim($node->getInternalPath(), '/'));
 	}
 
 	/**
@@ -221,8 +221,8 @@ class Provisioning {
 			$lockingProvider->releaseAllGlobally();
 		} else {
 			foreach ($this->config->getAppKeys('testing') as $lock) {
-				if (strpos($lock, 'locking_') === 0) {
-					$path = substr($lock, strlen('locking_'));
+				if (\strpos($lock, 'locking_') === 0) {
+					$path = \substr($lock, \strlen('locking_'));
 					$testingAppLock = (int) $this->config->getAppValue(
 						'testing', $lock
 					);

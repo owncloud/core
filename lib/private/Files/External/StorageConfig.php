@@ -221,14 +221,14 @@ class StorageConfig implements IStorageConfig {
 					}
 					$backendOptions[$key] = $value;
 				}
-				if(is_string($backendOptions[$key])) {
+				if(\is_string($backendOptions[$key])) {
 					if (($key === 'public_key') || ($key === 'private_key')) {
-						if (base64_decode($backendOptions[$key], true) === false) {
-							$backendOptions[$key] = base64_encode($backendOptions[$key]);
+						if (\base64_decode($backendOptions[$key], true) === false) {
+							$backendOptions[$key] = \base64_encode($backendOptions[$key]);
 						}
 					}
 
-					$backendOptions[$key] = str_replace(["\n", "\r"], "", $backendOptions[$key]);
+					$backendOptions[$key] = \str_replace(["\n", "\r"], "", $backendOptions[$key]);
 				}
 			}
 		}
@@ -243,7 +243,7 @@ class StorageConfig implements IStorageConfig {
 	public function getBackendOption($key) {
 		if (isset($this->backendOptions[$key])) {
 			if (($key === 'private_key') || ($key === 'public_key')) {
-				$decodedString = base64_decode($this->backendOptions[$key], true);
+				$decodedString = \base64_decode($this->backendOptions[$key], true);
 				if ($decodedString !== false) {
 					return $decodedString;
 				}
@@ -295,7 +295,7 @@ class StorageConfig implements IStorageConfig {
 	 * @param array|null $applicableUsers applicable users
 	 */
 	public function setApplicableUsers($applicableUsers) {
-		if (is_null($applicableUsers)) {
+		if (\is_null($applicableUsers)) {
 			$applicableUsers = [];
 		}
 		$this->applicableUsers = $applicableUsers;
@@ -316,7 +316,7 @@ class StorageConfig implements IStorageConfig {
 	 * @param array|null $applicableGroups applicable groups
 	 */
 	public function setApplicableGroups($applicableGroups) {
-		if (is_null($applicableGroups)) {
+		if (\is_null($applicableGroups)) {
 			$applicableGroups = [];
 		}
 		$this->applicableGroups = $applicableGroups;
@@ -337,7 +337,7 @@ class StorageConfig implements IStorageConfig {
 	 * @param array $mountOptions applicable groups
 	 */
 	public function setMountOptions($mountOptions) {
-		if (is_null($mountOptions)) {
+		if (\is_null($mountOptions)) {
 			$mountOptions = [];
 		}
 		$this->mountOptions = $mountOptions;
@@ -412,14 +412,14 @@ class StorageConfig implements IStorageConfig {
 	 */
 	public function jsonSerialize() {
 		$result = [];
-		if (!is_null($this->id)) {
+		if (!\is_null($this->id)) {
 			$result['id'] = $this->id;
 		}
 		$result['mountPoint'] = $this->mountPoint;
 		$result['backend'] = $this->backend->getIdentifier();
 		$result['authMechanism'] = $this->authMechanism->getIdentifier();
 		$result['backendOptions'] = $this->backendOptions;
-		if (!is_null($this->priority)) {
+		if (!\is_null($this->priority)) {
 			$result['priority'] = $this->priority;
 		}
 		if (!empty($this->applicableUsers)) {
@@ -431,10 +431,10 @@ class StorageConfig implements IStorageConfig {
 		if (!empty($this->mountOptions)) {
 			$result['mountOptions'] = $this->mountOptions;
 		}
-		if (!is_null($this->status)) {
+		if (!\is_null($this->status)) {
 			$result['status'] = $this->status;
 		}
-		if (!is_null($this->statusMessage)) {
+		if (!\is_null($this->statusMessage)) {
 			$result['statusMessage'] = $this->statusMessage;
 		}
 		$result['userProvided'] = $this->authMechanism instanceof IUserProvided;

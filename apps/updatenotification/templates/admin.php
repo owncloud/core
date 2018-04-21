@@ -51,7 +51,7 @@
 		<br />
 		<?php p($l->t('Notify members of the following groups about available updates:')); ?>
 		<input name="oca_updatenotification_groups_list" type="hidden" id="oca_updatenotification_groups_list" value="<?php p($_['notify_groups']) ?>" style="width: 400px">
-		<em class="<?php if (!in_array($currentChannel, ['daily', 'git'])) p('hidden'); ?>">
+		<em class="<?php if (!\in_array($currentChannel, ['daily', 'git'])) p('hidden'); ?>">
 			<br />
 			<?php p($l->t('Only notification for app updates are available, because the selected update channel for ownCloud itself does not allow notifications.')); ?>
 		</em>

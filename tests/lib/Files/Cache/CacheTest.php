@@ -15,7 +15,7 @@ use Test\TestCase;
 
 class LongId extends Temporary {
 	public function getId() {
-		return 'long:' . str_repeat('foo', 50) . parent::getId();
+		return 'long:' . \str_repeat('foo', 50) . parent::getId();
 	}
 }
 
@@ -124,7 +124,7 @@ class CacheTest extends TestCase {
 		$this->cache->put($file3, $fileData['foo']);
 
 		$content = $this->cache->getFolderContents($folder);
-		$this->assertEquals(count($content), 2);
+		$this->assertEquals(\count($content), 2);
 		foreach ($content as $cachedData) {
 			$data = $fileData[$cachedData['name']];
 			foreach ($data as $name => $value) {
@@ -201,7 +201,7 @@ class CacheTest extends TestCase {
 		$this->cache->put($file3, $fileData['foo']);
 
 		$content = $this->cache->getFolderContents($file1);
-		$this->assertEquals(count($content), 2);
+		$this->assertEquals(\count($content), 2);
 		foreach ($content as $cachedData) {
 			$data = $fileData[$cachedData['name']];
 		}
@@ -353,7 +353,7 @@ class CacheTest extends TestCase {
 
 		$this->assertCount(2, $results);
 
-		usort($results, function($value1, $value2) { return $value1['name'] >= $value2['name']; });
+		\usort($results, function($value1, $value2) { return $value1['name'] >= $value2['name']; });
 
 		$this->assertEquals('folder', $results[0]['name']);
 		$this->assertEquals('foo', $results[1]['name']);
@@ -361,11 +361,11 @@ class CacheTest extends TestCase {
 		// use tag id
 		$tags = $tagManager->getTagsForUser($userId);
 		$this->assertNotEmpty($tags);
-		$tags = array_filter($tags, function($tag) { return $tag->getName() === 'tag2'; });
-		$results = $this->cache->searchByTag(current($tags)->getId(), $userId);
+		$tags = \array_filter($tags, function($tag) { return $tag->getName() === 'tag2'; });
+		$results = $this->cache->searchByTag(\current($tags)->getId(), $userId);
 		$this->assertCount(3, $results);
 
-		usort($results, function($value1, $value2) { return $value1['name'] >= $value2['name']; });
+		\usort($results, function($value1, $value2) { return $value1['name'] >= $value2['name']; });
 
 		$this->assertEquals('folder', $results[0]['name']);
 		$this->assertEquals('foo2', $results[1]['name']);
@@ -450,8 +450,8 @@ class CacheTest extends TestCase {
 		$data = ['size' => 1000, 'mtime' => 20, 'mimetype' => 'foo/file'];
 		$id = $this->cache->put('foo', $data);
 
-		if (strlen($storageId) > 64) {
-			$storageId = md5($storageId);
+		if (\strlen($storageId) > 64) {
+			$storageId = \md5($storageId);
 		}
 		$this->assertEquals([$storageId, 'foo'], Cache::getById($id));
 	}
@@ -479,7 +479,7 @@ class CacheTest extends TestCase {
 		$storageId = $storage->getId();
 		$data = ['size' => 1000, 'mtime' => 20, 'mimetype' => 'foo/file'];
 		$id = $cache->put('foo', $data);
-		$this->assertEquals([md5($storageId), 'foo'], Cache::getById($id));
+		$this->assertEquals([\md5($storageId), 'foo'], Cache::getById($id));
 	}
 
 	/**
@@ -533,7 +533,7 @@ class CacheTest extends TestCase {
 	 */
 	public function testWithNormalizer() {
 
-		if (!class_exists('Patchwork\PHP\Shim\Normalizer')) {
+		if (!\class_exists('Patchwork\PHP\Shim\Normalizer')) {
 			$this->markTestSkipped('The 3rdparty Normalizer extension is not available.');
 			return;
 		}

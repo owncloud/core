@@ -83,7 +83,7 @@ class FederatedShareProviderTest extends \Test\TestCase {
 		$this->l = $this->createMock('OCP\IL10N');
 		$this->l->method('t')
 			->will($this->returnCallback(function($text, $parameters = []) {
-				return vsprintf($text, $parameters);
+				return \vsprintf($text, $parameters);
 			}));
 		$this->logger = $this->createMock('OCP\ILogger');
 		$this->rootFolder = $this->createMock('OCP\Files\IRootFolder');
@@ -535,9 +535,9 @@ class FederatedShareProviderTest extends \Test\TestCase {
 		$this->provider->create($share2);
 
 		for($i = 0; $i < 200; $i++) {
-			$receiver = strval($i)."user2@server.com";
+			$receiver = \strval($i)."user2@server.com";
 			$share2 = $this->shareManager->newShare();
-			$share2->setSharedWith(strval($receiver))
+			$share2->setSharedWith(\strval($receiver))
 				->setSharedBy('sharedBy')
 				->setShareOwner('shareOwner')
 				->setPermissions(19)

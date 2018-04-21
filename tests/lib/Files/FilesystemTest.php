@@ -302,7 +302,7 @@ class FilesystemTest extends TestCase {
 	}
 
 	public function testNormalizePathUTF8() {
-		if (!class_exists('Patchwork\PHP\Shim\Normalizer')) {
+		if (!\class_exists('Patchwork\PHP\Shim\Normalizer')) {
 			$this->markTestSkipped('UTF8 normalizer Patchwork was not found');
 		}
 
@@ -335,8 +335,8 @@ class FilesystemTest extends TestCase {
 //		\OC\Files\Filesystem::file_put_contents('/bar//foo', 'foo');
 
 		$tmpFile = \OC::$server->getTempManager()->getTemporaryFile();
-		file_put_contents($tmpFile, 'foo');
-		$fh = fopen($tmpFile, 'r');
+		\file_put_contents($tmpFile, 'foo');
+		$fh = \fopen($tmpFile, 'r');
 //		\OC\Files\Filesystem::file_put_contents('/bar//foo', $fh);
 	}
 
@@ -403,16 +403,16 @@ class FilesystemTest extends TestCase {
 		$view = new View();
 		$this->assertFalse($view->file_exists('/' . $userId));
 
-		Filesystem::initMountPoints(strtoupper($userId));
+		Filesystem::initMountPoints(\strtoupper($userId));
 
 		list($storage1, $path1) = $view->resolvePath('/' . $userId);
-		list($storage2, $path2) = $view->resolvePath('/' . strtoupper($userId));
+		list($storage2, $path2) = $view->resolvePath('/' . \strtoupper($userId));
 
 		$this->assertTrue($storage1->instanceOfStorage('\OCP\Files\IHomeStorage'));
 		$this->assertEquals('', $path1);
 
 		// not mounted, still on the local root storage
-		$this->assertEquals(strtoupper($userId), $path2);
+		$this->assertEquals(\strtoupper($userId), $path2);
 	}
 
 	/**

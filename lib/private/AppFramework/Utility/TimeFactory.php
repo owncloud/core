@@ -37,7 +37,7 @@ class TimeFactory implements ITimeFactory {
 	 * @return int the result of a call to time()
 	 */
 	public function getTime() {
-		return time();
+		return \time();
 	}
 
 

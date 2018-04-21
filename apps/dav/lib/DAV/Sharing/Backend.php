@@ -78,7 +78,7 @@ class Backend {
 	 */
 	private function shareWith($shareable, $element) {
 		$user = $element['href'];
-		$parts = explode(':', $user, 2);
+		$parts = \explode(':', $user, 2);
 		if ($parts[0] !== 'principal') {
 			return;
 		}
@@ -130,7 +130,7 @@ class Backend {
 	 * @param string $element
 	 */
 	private function unshare($shareable, $element) {
-		$parts = explode(':', $element, 2);
+		$parts = \explode(':', $element, 2);
 		if ($parts[0] !== 'principal') {
 			return;
 		}
@@ -179,7 +179,7 @@ class Backend {
 				'status' => 1,
 				'readOnly' => ($row['access'] == self::ACCESS_READ),
 				'{http://owncloud.org/ns}principal' => $row['principaluri'],
-				'{http://owncloud.org/ns}group-share' => is_null($p)
+				'{http://owncloud.org/ns}group-share' => \is_null($p)
 			];
 		}
 

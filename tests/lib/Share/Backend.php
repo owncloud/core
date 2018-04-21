@@ -40,7 +40,7 @@ class Backend implements \OCP\Share_Backend {
 	public function generateTarget($itemSource, $shareWith, $exclude = null) {
 		// Always make target be test.txt to cause conflicts
 
-		if (substr($itemSource, 0, strlen('test')) !== 'test') {
+		if (\substr($itemSource, 0, \strlen('test')) !== 'test') {
 			$target = "test.txt";
 		} else {
 			$target = $itemSource;
@@ -55,13 +55,13 @@ class Backend implements \OCP\Share_Backend {
 		}
 
 
-		if (in_array($target, $knownTargets)) {
-			$pos = strrpos($target, '.');
-			$name = substr($target, 0, $pos);
-			$ext = substr($target, $pos);
+		if (\in_array($target, $knownTargets)) {
+			$pos = \strrpos($target, '.');
+			$name = \substr($target, 0, $pos);
+			$ext = \substr($target, $pos);
 			$append = '';
 			$i = 1;
-			while (in_array($name.$append.$ext, $knownTargets)) {
+			while (\in_array($name.$append.$ext, $knownTargets)) {
 				$append = $i;
 				$i++;
 			}

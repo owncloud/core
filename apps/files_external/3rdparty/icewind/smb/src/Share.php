@@ -52,12 +52,12 @@ class Share extends AbstractShare {
 	}
 
 	protected function getConnection() {
-		$workgroupArgument = ($this->server->getWorkgroup()) ? ' -W ' . escapeshellarg($this->server->getWorkgroup()) : '';
-		$command = sprintf('stdbuf -o0 %s %s --authentication-file=%s %s',
+		$workgroupArgument = ($this->server->getWorkgroup()) ? ' -W ' . \escapeshellarg($this->server->getWorkgroup()) : '';
+		$command = \sprintf('stdbuf -o0 %s %s --authentication-file=%s %s',
 			$this->system->getSmbclientPath(),
 			$workgroupArgument,
 			System::getFD(3),
-			escapeshellarg('//' . $this->server->getHost() . '/' . $this->name)
+			\escapeshellarg('//' . $this->server->getHost() . '/' . $this->name)
 		);
 		$connection = new Connection($command);
 		$connection->writeAuthentication($this->server->getUser(), $this->server->getPassword());
@@ -133,14 +133,14 @@ class Share extends AbstractShare {
 		// Windows and non Windows Fileserver may respond different
 		// to the allinfo command for directories. If the result is a single
 		// line = error line, redo it with a different allinfo parameter
-		if ($escapedPath == '""' && count($output) < 2) {
+		if ($escapedPath == '""' && \count($output) < 2) {
 			$output = $this->execute('allinfo ' . '"."');
 		}
-		if (count($output) < 3) {
+		if (\count($output) < 3) {
 			$this->parseOutput($output, $path);
 		}
 		$stat = $this->parser->parseStat($output);
-		return new FileInfo($path, basename($path), $stat['size'], $stat['mtime'], $stat['mode']);
+		return new FileInfo($path, \basename($path), $stat['size'], $stat['mtime'], $stat['mode']);
 	}
 
 	/**
@@ -268,19 +268,19 @@ class Share extends AbstractShare {
 		$source = $this->escapePath($source);
 		// since returned stream is closed by the caller we need to create a new instance
 		// since we can't re-use the same file descriptor over multiple calls
-		$workgroupArgument = ($this->server->getWorkgroup()) ? ' -W ' . escapeshellarg($this->server->getWorkgroup()) : '';
-		$command = sprintf('%s %s --authentication-file=%s %s',
+		$workgroupArgument = ($this->server->getWorkgroup()) ? ' -W ' . \escapeshellarg($this->server->getWorkgroup()) : '';
+		$command = \sprintf('%s %s --authentication-file=%s %s',
 			$this->system->getSmbclientPath(),
 			$workgroupArgument,
 			System::getFD(3),
-			escapeshellarg('//' . $this->server->getHost() . '/' . $this->name)
+			\escapeshellarg('//' . $this->server->getHost() . '/' . $this->name)
 		);
 		$connection = new Connection($command);
 		$connection->writeAuthentication($this->server->getUser(), $this->server->getPassword());
 		$connection->write('get ' . $source . ' ' . System::getFD(5));
 		$connection->write('exit');
 		$fh = $connection->getFileOutputStream();
-		stream_context_set_option($fh, 'file', 'connection', $connection);
+		\stream_context_set_option($fh, 'file', 'connection', $connection);
 		return $fh;
 	}
 
@@ -297,12 +297,12 @@ class Share extends AbstractShare {
 		$target = $this->escapePath($target);
 		// since returned stream is closed by the caller we need to create a new instance
 		// since we can't re-use the same file descriptor over multiple calls
-		$workgroupArgument = ($this->server->getWorkgroup()) ? ' -W ' . escapeshellarg($this->server->getWorkgroup()) : '';
-		$command = sprintf('%s %s --authentication-file=%s %s',
+		$workgroupArgument = ($this->server->getWorkgroup()) ? ' -W ' . \escapeshellarg($this->server->getWorkgroup()) : '';
+		$command = \sprintf('%s %s --authentication-file=%s %s',
 			$this->system->getSmbclientPath(),
 			$workgroupArgument,
 			System::getFD(3),
-			escapeshellarg('//' . $this->server->getHost() . '/' . $this->name)
+			\escapeshellarg('//' . $this->server->getHost() . '/' . $this->name)
 		);
 		$connection = new Connection($command);
 		$connection->writeAuthentication($this->server->getUser(), $this->server->getPassword());
@@ -359,8 +359,8 @@ class Share extends AbstractShare {
 		$command = 'notify ' . $this->escapePath($path);
 		$connection->write($command . PHP_EOL);
 		$connection->read(function ($line) use ($callback, $path) {
-			$code = (int)substr($line, 0, 4);
-			$subPath = substr($line, 5);
+			$code = (int)\substr($line, 0, 4);
+			$subPath = \substr($line, 5);
 			if ($path === '') {
 				return $callback($code, $subPath);
 			} else {
@@ -403,7 +403,7 @@ class Share extends AbstractShare {
 	 * @return string
 	 */
 	protected function escape($string) {
-		return escapeshellarg($string);
+		return \escapeshellarg($string);
 	}
 
 	/**
@@ -415,8 +415,8 @@ class Share extends AbstractShare {
 		if ($path === '/') {
 			$path = '';
 		}
-		$path = str_replace('/', '\\', $path);
-		$path = str_replace('"', '^"', $path);
+		$path = \str_replace('/', '\\', $path);
+		$path = \str_replace('"', '^"', $path);
 		return '"' . $path . '"';
 	}
 
@@ -425,7 +425,7 @@ class Share extends AbstractShare {
 	 * @return string
 	 */
 	protected function escapeLocalPath($path) {
-		$path = str_replace('"', '\"', $path);
+		$path = \str_replace('"', '\"', $path);
 		return '"' . $path . '"';
 	}
 

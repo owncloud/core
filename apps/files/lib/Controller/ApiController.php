@@ -121,7 +121,7 @@ class ApiController extends Controller {
 	public function updateFileTags($path, $tags = null) {
 		$result = [];
 		// if tags specified or empty array, update tags
-		if (!is_null($tags)) {
+		if (!\is_null($tags)) {
 			try {
 				$this->tagService->updateFileTags($path, $tags);
 			} catch (\OCP\Files\NotFoundException $e) {
@@ -154,7 +154,7 @@ class ApiController extends Controller {
 	public function updateFileSorting($mode, $direction) {
 		$allowedMode = ['name', 'size', 'mtime'];
 		$allowedDirection = ['asc', 'desc'];
-		if (!in_array($mode, $allowedMode) || !in_array($direction, $allowedDirection)) {
+		if (!\in_array($mode, $allowedMode) || !\in_array($direction, $allowedDirection)) {
 			$response = new Response();
 			$response->setStatus(Http::STATUS_UNPROCESSABLE_ENTITY);
 			return $response;

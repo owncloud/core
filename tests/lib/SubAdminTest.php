@@ -327,7 +327,7 @@ class SubAdminTest extends TestCase {
 	public function testPostDeleteUser() {
 		$subAdmin = new \OC\SubAdmin($this->userManager, $this->groupManager, $this->dbConn);
 
-		$user = array_shift($this->users);
+		$user = \array_shift($this->users);
 		foreach($this->groups as $group) {
 			$this->assertTrue($subAdmin->createSubAdmin($user, $group));
 		}
@@ -339,7 +339,7 @@ class SubAdminTest extends TestCase {
 	public function testPostDeleteGroup() {
 		$subAdmin = new \OC\SubAdmin($this->userManager, $this->groupManager, $this->dbConn);
 
-		$group = array_shift($this->groups);
+		$group = \array_shift($this->groups);
 		foreach($this->users as $user) {
 			$this->assertTrue($subAdmin->createSubAdmin($user, $group));
 		}

@@ -132,7 +132,7 @@ trait BasicStructure {
 	) {
 
 		// Initialize your context here
-		$this->baseUrl = rtrim($baseUrl, '/');
+		$this->baseUrl = \rtrim($baseUrl, '/');
 		$this->adminUsername = $adminUsername;
 		$this->adminPassword = $adminPassword;
 		$this->regularUserPassword = $regularUserPassword;
@@ -143,16 +143,16 @@ trait BasicStructure {
 		$this->ocPath = $ocPath;
 
 		// in case of CI deployment we take the server url from the environment
-		$testServerUrl = getenv('TEST_SERVER_URL');
+		$testServerUrl = \getenv('TEST_SERVER_URL');
 		if ($testServerUrl !== false) {
-			$this->baseUrl = rtrim($testServerUrl, '/');
+			$this->baseUrl = \rtrim($testServerUrl, '/');
 			$this->localBaseUrl = $this->baseUrl;
 		}
 
 		// federated server url from the environment
-		$testRemoteServerUrl = getenv('TEST_SERVER_FED_URL');
+		$testRemoteServerUrl = \getenv('TEST_SERVER_FED_URL');
 		if ($testRemoteServerUrl !== false) {
-			$this->remoteBaseUrl = rtrim($testRemoteServerUrl, '/');
+			$this->remoteBaseUrl = \rtrim($testRemoteServerUrl, '/');
 		}
 	}
 
@@ -165,7 +165,7 @@ trait BasicStructure {
 	 * @return string
 	 */
 	public function removeSchemeFromUrl($url) {
-		return preg_replace(
+		return \preg_replace(
 			"(^https?://)", "", $url
 		);
 	}
@@ -390,7 +390,7 @@ trait BasicStructure {
 	 * @return array
 	 */
 	public function simplifyArray($arrayOfArrays) {
-		$a = array_map(
+		$a = \array_map(
 			function ($subArray) {
 				return $subArray[0]; 
 			}, $arrayOfArrays
@@ -511,8 +511,8 @@ trait BasicStructure {
 	 * @return bool
 	 */
 	public function isAPublicLinkUrl($url) {
-		$urlEnding = substr($url, strlen($this->getBaseUrl() . '/'));
-		return preg_match("%^(index.php/)?s/([a-zA-Z0-9]{15})$%", $urlEnding);
+		$urlEnding = \substr($url, \strlen($this->getBaseUrl() . '/'));
+		return \preg_match("%^(index.php/)?s/([a-zA-Z0-9]{15})$%", $urlEnding);
 	}
 
 	/**
@@ -594,7 +594,7 @@ trait BasicStructure {
 			$this->response, $key1, $key2, $key3, $attribute
 		);
 		PHPUnit_Framework_Assert::assertTrue(
-			version_compare($value, '0.0.1') >= 0,
+			\version_compare($value, '0.0.1') >= 0,
 			'attribute ' . $attribute . ' value ' . $value . ' is not a valid version string'
 		);
 	}
@@ -605,8 +605,8 @@ trait BasicStructure {
 	 * @return void
 	 */
 	private function extractRequestTokenFromResponse(ResponseInterface $response) {
-		$this->requestToken = substr(
-			preg_replace(
+		$this->requestToken = \substr(
+			\preg_replace(
 				'/(.*)data-requesttoken="(.*)">(.*)/sm', '\2',
 				$response->getBody()->getContents()
 			),
@@ -710,8 +710,8 @@ trait BasicStructure {
 	 * @return void
 	 */
 	public static function removeFile($path, $filename) {
-		if (file_exists("$path" . "$filename")) {
-			unlink("$path" . "$filename");
+		if (\file_exists("$path" . "$filename")) {
+			\unlink("$path" . "$filename");
 		}
 	}
 
@@ -727,7 +727,7 @@ trait BasicStructure {
 	 */
 	public function modifyTextOfFile($user, $filename, $text) {
 		self::removeFile($this->getUserHome($user) . "/files", "$filename");
-		file_put_contents(
+		\file_put_contents(
 			$this->getUserHome($user) . "/files" . "$filename", "$text"
 		);
 	}
@@ -739,10 +739,10 @@ trait BasicStructure {
 	 * @return void
 	 */
 	public function createFileSpecificSize($name, $size) {
-		$file = fopen("work/" . "$name", 'w');
-		fseek($file, $size - 1, SEEK_CUR);
-		fwrite($file, 'a'); // write a dummy char at SIZE position
-		fclose($file);
+		$file = \fopen("work/" . "$name", 'w');
+		\fseek($file, $size - 1, SEEK_CUR);
+		\fwrite($file, 'a'); // write a dummy char at SIZE position
+		\fclose($file);
 	}
 
 	/**
@@ -752,9 +752,9 @@ trait BasicStructure {
 	 * @return void
 	 */
 	public function createFileWithText($name, $text) {
-		$file = fopen("work/" . "$name", 'w');
-		fwrite($file, $text);
-		fclose($file);
+		$file = \fopen("work/" . "$name", 'w');
+		\fwrite($file, $text);
+		\fclose($file);
 	}
 
 	/**
@@ -789,7 +789,7 @@ trait BasicStructure {
 	 * @return void
 	 */
 	public function fileHasBeenDeletedInLocalStorage($filename) {
-		unlink("work/local_storage/$filename");
+		\unlink("work/local_storage/$filename");
 	}
 
 	/**
@@ -814,9 +814,9 @@ trait BasicStructure {
 	public function getPasswordForUser($userName) {
 		if ($userName === $this->getAdminUsername()) {
 			return (string) $this->getAdminPassword();
-		} else if (array_key_exists($userName, $this->createdUsers)) {
+		} else if (\array_key_exists($userName, $this->createdUsers)) {
 			return (string) $this->createdUsers[$userName]['password'];
-		} else if (array_key_exists($userName, $this->createdRemoteUsers)) {
+		} else if (\array_key_exists($userName, $this->createdRemoteUsers)) {
 			return (string) $this->createdRemoteUsers[$userName]['password'];
 		} else {
 			// The user has not been created yet, let the caller have the
@@ -868,8 +868,8 @@ trait BasicStructure {
 	 * @return void
 	 */
 	public function jsonRespondedShouldMatch(PyStringNode $jsonExpected) {
-		$jsonExpectedEncoded = json_encode($jsonExpected->getRaw());
-		$jsonRespondedEncoded = json_encode((string) $this->response->getBody());
+		$jsonExpectedEncoded = \json_encode($jsonExpected->getRaw());
+		$jsonRespondedEncoded = \json_encode((string) $this->response->getBody());
 		PHPUnit\Framework\Assert::assertEquals(
 			$jsonExpectedEncoded, $jsonRespondedEncoded
 		);
@@ -883,17 +883,17 @@ trait BasicStructure {
 	 * @return void
 	 */
 	public function statusPhpRespondedShouldMatch(PyStringNode $jsonExpected) {
-		$jsonExpectedDecoded = json_decode($jsonExpected->getRaw(), true);
-		$jsonRespondedEncoded = json_encode(json_decode($this->response->getBody(), true));
+		$jsonExpectedDecoded = \json_decode($jsonExpected->getRaw(), true);
+		$jsonRespondedEncoded = \json_encode(\json_decode($this->response->getBody(), true));
 		if ($this->runOcc(['status']) === 0) {
-			$output = explode("- ", $this->lastStdOut);
-			$version = explode(": ", $output[2]);
+			$output = \explode("- ", $this->lastStdOut);
+			$version = \explode(": ", $output[2]);
 			PHPUnit_Framework_Assert::assertEquals("version", $version[0]);
-			$versionString = explode(": ", $output[3]);
+			$versionString = \explode(": ", $output[3]);
 			PHPUnit_Framework_Assert::assertEquals("versionstring", $versionString[0]);
-			$jsonExpectedDecoded['version'] = trim($version[1]);
-			$jsonExpectedDecoded['versionstring'] = trim($versionString[1]);
-			$jsonExpectedEncoded = json_encode($jsonExpectedDecoded);
+			$jsonExpectedDecoded['version'] = \trim($version[1]);
+			$jsonExpectedDecoded['versionstring'] = \trim($versionString[1]);
+			$jsonExpectedEncoded = \json_encode($jsonExpectedDecoded);
 		} else {
 			PHPUnit_Framework_Assert::fail('Cannot get version variables from occ');
 		}
@@ -961,9 +961,9 @@ trait BasicStructure {
 			]
 		];
 		foreach ($substitutions as $substitution) {
-			$value = str_replace(
+			$value = \str_replace(
 				$substitution["code"],
-				call_user_func_array(
+				\call_user_func_array(
 					$substitution["function"],
 					$substitution["parameter"]
 				),
@@ -983,7 +983,7 @@ trait BasicStructure {
 		$di = new RecursiveDirectoryIterator($dir, FilesystemIterator::SKIP_DOTS);
 		$ri = new RecursiveIteratorIterator($di, RecursiveIteratorIterator::CHILD_FIRST);
 		foreach ( $ri as $file ) {
-			$file->isDir() ?  rmdir($file) : unlink($file);
+			$file->isDir() ?  \rmdir($file) : \unlink($file);
 		}
 	}
 
@@ -997,7 +997,7 @@ trait BasicStructure {
 		$di = new RecursiveDirectoryIterator($dir, FilesystemIterator::SKIP_DOTS);
 		$ri = new RecursiveIteratorIterator($di, RecursiveIteratorIterator::CHILD_FIRST);
 		foreach ( $ri as $file ) {
-			$file->isDir() ?  rmdir($file) : unlink($file);
+			$file->isDir() ?  \rmdir($file) : \unlink($file);
 		}
 	}
 
@@ -1009,8 +1009,8 @@ trait BasicStructure {
 	 * @return void
 	 */
 	public static function useBigFileIDs(BeforeSuiteScope $scope) {
-		$fullUrl = getenv('TEST_SERVER_URL');
-		if (substr($fullUrl, -1) !== '/') {
+		$fullUrl = \getenv('TEST_SERVER_URL');
+		if (\substr($fullUrl, -1) !== '/') {
 			$fullUrl .= '/';
 		}
 		$fullUrl .= "ocs/v1.php/apps/testing/api/v1/increasefileid";

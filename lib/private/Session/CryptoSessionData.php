@@ -74,7 +74,7 @@ class CryptoSessionData implements \ArrayAccess, ISession {
 	protected function initializeSession() {
 		$encryptedSessionData = $this->session->get(self::encryptedSessionName);
 		try {
-			$this->sessionValues = json_decode(
+			$this->sessionValues = \json_decode(
 				$this->crypto->decrypt($encryptedSessionData, $this->passphrase),
 				true
 			);
@@ -164,7 +164,7 @@ class CryptoSessionData implements \ArrayAccess, ISession {
 	 */
 	public function close() {
 		if($this->isModified) {
-			$encryptedValue = $this->crypto->encrypt(json_encode($this->sessionValues), $this->passphrase);
+			$encryptedValue = $this->crypto->encrypt(\json_encode($this->sessionValues), $this->passphrase);
 			$this->session->set(self::encryptedSessionName, $encryptedValue);
 			$this->isModified = false;
 		}

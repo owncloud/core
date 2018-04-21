@@ -110,9 +110,9 @@ class FileTest extends TestCase {
 	 * @param string $string
 	 */
 	private function getStream($string) {
-		$stream = fopen('php://temp', 'r+');
-		fwrite($stream, $string);
-		fseek($stream, 0);
+		$stream = \fopen('php://temp', 'r+');
+		\fwrite($stream, $string);
+		\fseek($stream, 0);
 		return $stream;
 	}
 
@@ -226,7 +226,7 @@ class FileTest extends TestCase {
 
 		$this->assertInstanceOf($expectedException, $caughtException);
 		if ($checkPreviousClass) {
-			$this->assertInstanceOf(get_class($thrownException), $caughtException->getPrevious());
+			$this->assertInstanceOf(\get_class($thrownException), $caughtException->getPrevious());
 		}
 
 		$this->assertEmpty($this->listPartFiles($view, ''), 'No stray part files');
@@ -367,7 +367,7 @@ class FileTest extends TestCase {
 
 		$this->assertInstanceOf($expectedException, $caughtException);
 		if ($checkPreviousClass) {
-			$this->assertInstanceOf(get_class($thrownException), $caughtException->getPrevious());
+			$this->assertInstanceOf(\get_class($thrownException), $caughtException->getPrevious());
 		}
 
 		$this->assertEmpty($this->listPartFiles($view, ''), 'No stray part files');
@@ -383,14 +383,14 @@ class FileTest extends TestCase {
 	 */
 	private function doPut($path, $viewRoot = null, \OC\AppFramework\Http\Request $request = null) {
 		$view = Filesystem::getView();
-		if (!is_null($viewRoot)) {
+		if (!\is_null($viewRoot)) {
 			$view = new View($viewRoot);
 		} else {
 			$viewRoot = '/' . $this->user . '/files';
 		}
 
 		$info = new FileInfo(
-			$viewRoot . '/' . ltrim($path, '/'),
+			$viewRoot . '/' . \ltrim($path, '/'),
 			$this->getMockStorage(),
 			null,
 			['permissions' => Constants::PERMISSION_ALL],
@@ -1182,13 +1182,13 @@ class FileTest extends TestCase {
 		list($storage, $internalPath) = $userView->resolvePath($path);
 		if($storage instanceof Local) {
 			$realPath = $storage->getSourcePath($internalPath);
-			$dh = opendir($realPath);
-			while (($file = readdir($dh)) !== false) {
-				if (substr($file, strlen($file) - 5, 5) === '.part') {
+			$dh = \opendir($realPath);
+			while (($file = \readdir($dh)) !== false) {
+				if (\substr($file, \strlen($file) - 5, 5) === '.part') {
 					$files[] = $file;
 				}
 			}
-			closedir($dh);
+			\closedir($dh);
 		}
 		return $files;
 	}

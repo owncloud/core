@@ -119,11 +119,11 @@ class Expiration {
 	}
 
 	private function parseRetentionObligation(){
-		$splitValues = explode(',', $this->retentionObligation);
+		$splitValues = \explode(',', $this->retentionObligation);
 		if (!isset($splitValues[0])) {
 			$minValue = self::DEFAULT_RETENTION_OBLIGATION;
 		} else {
-			$minValue = trim($splitValues[0]);
+			$minValue = \trim($splitValues[0]);
 		}
 
 		if (!isset($splitValues[1]) && $minValue === 'auto') {
@@ -131,7 +131,7 @@ class Expiration {
 		} elseif (!isset($splitValues[1])) {
 			$maxValue = self::DEFAULT_RETENTION_OBLIGATION;
 		} else {
-			$maxValue = trim($splitValues[1]);
+			$maxValue = \trim($splitValues[1]);
 		}
 
 		if ($minValue === 'auto' && $maxValue === 'auto') {
@@ -141,13 +141,13 @@ class Expiration {
 			$this->canPurgeToSaveSpace = true;
 		} elseif ($minValue !== 'auto' && $maxValue === 'auto') {
 			// Keep for X days but delete anytime if space needed
-			$this->minAge = intval($minValue);
+			$this->minAge = \intval($minValue);
 			$this->maxAge = self::NO_OBLIGATION;
 			$this->canPurgeToSaveSpace = true;
 		} elseif ($minValue === 'auto' && $maxValue !== 'auto') {
 			// Delete anytime if space needed, Delete all older than max automatically
 			$this->minAge = self::NO_OBLIGATION;
-			$this->maxAge = intval($maxValue);
+			$this->maxAge = \intval($maxValue);
 			$this->canPurgeToSaveSpace = true;
 		} elseif ($minValue !== 'auto' && $maxValue !== 'auto') {
 			// Delete all older than max OR older than min if space needed
@@ -157,8 +157,8 @@ class Expiration {
 				$maxValue = $minValue;
 			}
 
-			$this->minAge = intval($minValue);
-			$this->maxAge = intval($maxValue);
+			$this->minAge = \intval($minValue);
+			$this->maxAge = \intval($maxValue);
 			$this->canPurgeToSaveSpace = false;
 		}
 	}

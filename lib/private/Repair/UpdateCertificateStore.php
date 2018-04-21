@@ -64,14 +64,14 @@ class UpdateCertificateStore implements IRepairStep {
 	public function run(IOutput $out) {
 		$rootView = new View();
 		$dataDirectory = $this->config->getSystemValue('datadirectory', null);
-		if(is_null($dataDirectory)) {
+		if(\is_null($dataDirectory)) {
 			throw new \Exception('No data directory specified');
 		}
 
 		$pathToRootCerts = '/files_external/rootcerts.crt';
 
 		foreach($rootView->getDirectoryContent('', 'httpd/unix-directory') as $fileInfo) {
-			$uid = trim($fileInfo->getPath(), '/');
+			$uid = \trim($fileInfo->getPath(), '/');
 			if($rootView->file_exists($uid . $pathToRootCerts)) {
 				// Delete the existing root certificate
 				$rootView->unlink($uid . $pathToRootCerts);

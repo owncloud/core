@@ -87,10 +87,10 @@ class BackendTest extends TestCase {
 		$count2 = 0;
 		foreach($result as $r) {
 			if ($r['path'] === 'files' . $this->folder) {
-				$this->assertSame(ltrim($this->folder, '/'), $r['collection']['path']);
+				$this->assertSame(\ltrim($this->folder, '/'), $r['collection']['path']);
 				$count1++;
 			} elseif ($r['path'] === 'files' . $this->folder . $this->subfolder . $this->subsubfolder) {
-				$this->assertSame(ltrim($this->subsubfolder, '/'), $r['collection']['path']);
+				$this->assertSame(\ltrim($this->subsubfolder, '/'), $r['collection']['path']);
 				$count2++;
 			} else {
 				$this->assertTrue(false, 'unexpected result');
@@ -102,9 +102,9 @@ class BackendTest extends TestCase {
 
 		$result1 = $backend->getParents($fileinfo3['fileid'], self::TEST_FILES_SHARING_API_USER3);
 		$this->assertCount(1, $result1);
-		$elemet = reset($result1);
+		$elemet = \reset($result1);
 		$this->assertSame('files' . $this->folder . $this->subfolder . $this->subsubfolder ,$elemet['path']);
-		$this->assertSame(ltrim($this->subsubfolder, '/') ,$elemet['collection']['path']);
+		$this->assertSame(\ltrim($this->subsubfolder, '/') ,$elemet['collection']['path']);
 
 	}
 

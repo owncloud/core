@@ -229,7 +229,7 @@ abstract class TestCase extends \Test\TestCase {
 	 * @return \OCP\Share\IShare
 	 */
 	protected function share($type, $path, $initiator, $recipient, $permissions) {
-		if (is_string($path)) {
+		if (\is_string($path)) {
 			$userFolder = $this->rootFolder->getUserFolder($initiator);
 			$node = $userFolder->get($path);
 		} else {

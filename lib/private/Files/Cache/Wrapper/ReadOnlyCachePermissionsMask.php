@@ -53,7 +53,7 @@ class ReadOnlyCachePermissionsMask extends CacheWrapper {
 	protected function formatCacheEntry($entry) {
 		$storageId = $entry->getStorageId();
 
-		if (substr($storageId, 0, strlen('home::')) === 'home::' && $entry->getPath() === "") {
+		if (\substr($storageId, 0, \strlen('home::')) === 'home::' && $entry->getPath() === "") {
 			$entry['permissions'] = Constants::PERMISSION_CREATE;
 			$this->mask = Constants::PERMISSION_CREATE;
 		}

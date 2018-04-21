@@ -45,7 +45,7 @@ class DavAclPlugin extends \Sabre\DAVACL\Plugin {
 			/** @var INode $node */
 			$node = $this->server->tree->getNodeForPath($uri);
 
-			switch(get_class($node)) {
+			switch(\get_class($node)) {
 				case 'OCA\DAV\CardDAV\AddressBook':
 					$type = 'Addressbook';
 					break;
@@ -54,7 +54,7 @@ class DavAclPlugin extends \Sabre\DAVACL\Plugin {
 					break;
 			}
 			throw new NotFound(
-				sprintf(
+				\sprintf(
 					"%s with name '%s' could not be found",
 					$type,
 					$node->getName()

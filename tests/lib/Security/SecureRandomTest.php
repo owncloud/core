@@ -46,7 +46,7 @@ class SecureRandomTest extends \Test\TestCase {
 	function testGetLowStrengthGeneratorLength($length, $expectedLength) {
 		$generator = $this->rng;
 
-		$this->assertEquals($expectedLength, strlen($generator->generate($length)));
+		$this->assertEquals($expectedLength, \strlen($generator->generate($length)));
 	}
 
 	/**
@@ -55,14 +55,14 @@ class SecureRandomTest extends \Test\TestCase {
 	function testMediumLowStrengthGeneratorLength($length, $expectedLength) {
 		$generator = $this->rng;
 
-		$this->assertEquals($expectedLength, strlen($generator->generate($length)));
+		$this->assertEquals($expectedLength, \strlen($generator->generate($length)));
 	}
 
 	/**
 	 * @dataProvider stringGenerationProvider
 	 */
 	function testUninitializedGenerate($length, $expectedLength) {
-		$this->assertEquals($expectedLength, strlen($this->rng->generate($length)));
+		$this->assertEquals($expectedLength, \strlen($this->rng->generate($length)));
 	}
 
 	/**
@@ -70,9 +70,9 @@ class SecureRandomTest extends \Test\TestCase {
 	 */
 	public function testScheme($charName, $chars) {
 		$generator = $this->rng;
-		$scheme = constant('OCP\Security\ISecureRandom::' . $charName);
+		$scheme = \constant('OCP\Security\ISecureRandom::' . $charName);
 		$randomString = $generator->generate(100, $scheme);
-		$matchesRegex = preg_match('/^'.$chars.'+$/', $randomString);
+		$matchesRegex = \preg_match('/^'.$chars.'+$/', $randomString);
 		$this->assertSame(1, $matchesRegex);
 	}
 }

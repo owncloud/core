@@ -107,7 +107,7 @@ class FileRow extends OwncloudPage {
 		$actionButton = $this->rowElement->find(
 			"xpath", $this->fileActionMenuBtnXpath
 		);
-		if (is_null($actionButton)) {
+		if (\is_null($actionButton)) {
 			throw new ElementNotFoundException(
 				__METHOD__ .
 				" xpath $this->fileActionMenuBtnXpath could not find actionButton in fileRow"
@@ -153,7 +153,7 @@ class FileRow extends OwncloudPage {
 	 */
 	public function findSharingButton() {
 		$shareBtn = $this->rowElement->find("xpath", $this->shareBtnXpath);
-		if (is_null($shareBtn)) {
+		if (\is_null($shareBtn)) {
 			throw new ElementNotFoundException(
 				__METHOD__ .
 				" xpath $this->shareBtnXpath could not find sharing button in fileRow"
@@ -185,7 +185,7 @@ class FileRow extends OwncloudPage {
 		$inputField = $this->rowElement->find(
 			"xpath", $this->fileRenameInputXpath
 		);
-		if (is_null($inputField)) {
+		if (\is_null($inputField)) {
 			throw new ElementNotFoundException(
 				__METHOD__ .
 				" xpath $this->fileRenameInputXpath could not find rename input field in fileRow"
@@ -233,7 +233,7 @@ class FileRow extends OwncloudPage {
 	 */
 	public function findTooltipElement() {
 		$element = $this->rowElement->find("xpath", $this->fileTooltipXpath);
-		if (is_null($element)) {
+		if (\is_null($element)) {
 			throw new ElementNotFoundException(
 				__METHOD__ .
 				" xpath $this->fileTooltipXpath could not find tooltip element of file " .
@@ -260,7 +260,7 @@ class FileRow extends OwncloudPage {
 	 */
 	public function findThumbnail() {
 		$thumbnail = $this->rowElement->find("xpath", $this->thumbnailXpath);
-		if (is_null($thumbnail)) {
+		if (\is_null($thumbnail)) {
 			throw new ElementNotFoundException(
 				__METHOD__ .
 				" xpath $this->thumbnailXpath could not find thumbnail of file " .
@@ -288,7 +288,7 @@ class FileRow extends OwncloudPage {
 	 */
 	public function findFileLink() {
 		$linkElement = $this->rowElement->find("xpath", $this->fileLinkXpath);
-		if (is_null($linkElement)) {
+		if (\is_null($linkElement)) {
 			throw new ElementNotFoundException(
 				__METHOD__ .
 				" xpath $this->fileLinkXpath could not find link to " .
@@ -314,7 +314,7 @@ class FileRow extends OwncloudPage {
 	 */
 	public function restore() {
 		$rowElement = $this->rowElement->find('xpath', $this->restoreLinkXpath);
-		if (is_null($rowElement)) {
+		if (\is_null($rowElement)) {
 			throw new ElementNotFoundException(
 				__METHOD__ .
 				" xpath $this->restoreLinkXpath could not find restore link to '" .
@@ -331,7 +331,7 @@ class FileRow extends OwncloudPage {
 	 */
 	public function markAsFavorite() {
 		$element = $this->rowElement->find("xpath", $this->notMarkedFavoriteXpath);
-		if (is_null($element)) {
+		if (\is_null($element)) {
 			throw new ElementNotFoundException(
 				__METHOD__ .
 				" xpath $this->notMarkedFavoriteXpath not found"
@@ -348,7 +348,7 @@ class FileRow extends OwncloudPage {
 	public function isMarkedAsFavorite() {
 		$checkFavorite = $this->rowElement->find("xpath", $this->markedFavoriteXpath);
 		
-		if (is_null($checkFavorite)) {
+		if (\is_null($checkFavorite)) {
 			return false;
 		} else {
 			return true;
@@ -362,7 +362,7 @@ class FileRow extends OwncloudPage {
 	 */
 	public function unmarkFavorite() {
 		$element = $this->rowElement->find("xpath", $this->markedFavoriteXpath);
-		if (is_null($element)) {
+		if (\is_null($element)) {
 			throw new ElementNotFoundException(
 				__METHOD__ .
 				" xpath $this->markedFavoriteXpath not found"

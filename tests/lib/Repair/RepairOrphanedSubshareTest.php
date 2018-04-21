@@ -186,8 +186,8 @@ class RepairOrphanedSubshareTest extends TestCase {
 		foreach ($totalUsers as $user) {
 			for($i=1; $i <= 100; $i++) {
 				$time = 1522762088 + $i * 60;
-				$userIndex = array_search($user, $totalUsers, true);
-				if (($userIndex+1) === count($totalUsers)) {
+				$userIndex = \array_search($user, $totalUsers, true);
+				if (($userIndex+1) === \count($totalUsers)) {
 					break;
 				}
 				$shareWithUser = $totalUsers[$userIndex+1];
@@ -259,7 +259,7 @@ class RepairOrphanedSubshareTest extends TestCase {
 				->from('share')
 				->where($qb->expr()->eq('id', $qb->createNamedParameter($rowId+ $pareReshareCountRest)))
 				->execute()->fetchAll();
-			if (count($result) === 0) {
+			if (\count($result) === 0) {
 				continue;
 			}
 			$qb->delete('share')
@@ -282,8 +282,8 @@ class RepairOrphanedSubshareTest extends TestCase {
 				->groupBy('parent')->orderBy('parent')->setMaxResults($pageLimit)->setFirstResult($offset)->execute();
 				$results = $statement->fetchAll();
 			$offset += $pageLimit;
-			$result += count($results);
-		} while(count($results) > 0);
+			$result += \count($results);
+		} while(\count($results) > 0);
 		$this->assertEquals($totalParents - 20, $result);
 	}
 
@@ -310,9 +310,9 @@ class RepairOrphanedSubshareTest extends TestCase {
 		$getAllIdsPerUser = [];
 		$totalParents = 1;
 		foreach ($totalUsers as $user) {
-			$userIndex = array_search($user, $totalUsers, true);
+			$userIndex = \array_search($user, $totalUsers, true);
 			for($i=1; $i <= 3000; $i++) {
-				if (($userIndex+1) === count($totalUsers)) {
+				if (($userIndex+1) === \count($totalUsers)) {
 					break;
 				}
 				$time = 1522762088 + $userIndex + 1 +  $i * 60;
@@ -377,29 +377,29 @@ class RepairOrphanedSubshareTest extends TestCase {
 		$checkQuery = $this->connection->getQueryBuilder();
 		//From 10 to 2509 are the entries missing. So lets validate that.
 		//Lets take some snippets
-		$missingEntries[] = range(10,20);
-		$missingEntries[] = range(190, 200);
-		$missingEntries[] = range(1500, 1510);
-		$missingEntries[] = range(2000, 2010);
-		$missingEntries[] = range(2499, 2509);
+		$missingEntries[] = \range(10,20);
+		$missingEntries[] = \range(190, 200);
+		$missingEntries[] = \range(1500, 1510);
+		$missingEntries[] = \range(2000, 2010);
+		$missingEntries[] = \range(2499, 2509);
 		foreach ($missingEntries as $missingEntry) {
 			foreach ($missingEntry as $adminIndex) {
 				$row = $checkQuery->select('parent')
 					->from('share')->where($checkQuery->expr()->eq('id', $checkQuery->createNamedParameter($getAllIdsPerUser['admin'][$adminIndex])))
 					->execute()->fetchAll();
-				$this->assertEquals(0, count($row));
+				$this->assertEquals(0, \count($row));
 			}
 		}
 
 		//Lets check range of 2900 to 2910 and 1 to 9
-		$checkRandomAvailableEntries[] = range(2900, 2910);
-		$checkRandomAvailableEntries[] = range(1, 9);
+		$checkRandomAvailableEntries[] = \range(2900, 2910);
+		$checkRandomAvailableEntries[] = \range(1, 9);
 		foreach ($checkRandomAvailableEntries as $checkRandomAvailableEntry) {
 			foreach ($checkRandomAvailableEntry as $adminIndex) {
 				$row = $checkQuery->select('parent')
 					->from('share')->where($checkQuery->expr()->eq('id', $checkQuery->createNamedParameter($getAllIdsPerUser['admin'][$adminIndex])))
 					->execute()->fetchAll();
-				$this->assertEquals(1, count($row));
+				$this->assertEquals(1, \count($row));
 			}
 		}
 	}

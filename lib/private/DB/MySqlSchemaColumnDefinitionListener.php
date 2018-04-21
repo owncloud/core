@@ -48,13 +48,13 @@ class MySqlSchemaColumnDefinitionListener{
 	public function onSchemaColumnDefinition(SchemaColumnDefinitionEventArgs $eventArgs) {
 		// We need an instance of platform with ownCloud-specific mappings
 		//  this part  can't be moved to constructor - it leads to an infinite recursion
-		if (is_null($this->_platform)) {
+		if (\is_null($this->_platform)) {
 			$this->_platform = \OC::$server->getDatabaseConnection()->getDatabasePlatform();
 		}
 
 		$version = \OC::$server->getDatabaseConnection()->getDatabaseVersionString();
-		$mariadb = false !== stripos($version, 'mariadb');
-		if ($mariadb && version_compare($this->getMariaDbMysqlVersionNumber($version), '10.2.7', '>=')) {
+		$mariadb = false !== \stripos($version, 'mariadb');
+		if ($mariadb && \version_compare($this->getMariaDbMysqlVersionNumber($version), '10.2.7', '>=')) {
 			$tableColumn = $eventArgs->getTableColumn();
 			try {
 				$column = $this->_getPortableTableColumnDefinition($tableColumn);
@@ -78,7 +78,7 @@ class MySqlSchemaColumnDefinitionListener{
 	 */
 	public function extractDoctrineTypeFromComment($comment, $currentType)
 	{
-		if (preg_match("(\(DC2Type:([a-zA-Z0-9_]+)\))", $comment, $match)) {
+		if (\preg_match("(\(DC2Type:([a-zA-Z0-9_]+)\))", $comment, $match)) {
 			$currentType = $match[1];
 		}
 
@@ -93,19 +93,19 @@ class MySqlSchemaColumnDefinitionListener{
 	 */
 	public function removeDoctrineTypeFromComment($comment, $type)
 	{
-		return str_replace('(DC2Type:'.$type.')', '', $comment);
+		return \str_replace('(DC2Type:'.$type.')', '', $comment);
 	}
 	
 	protected function _getPortableTableColumnDefinition($tableColumn)
 	{
-		$tableColumn = array_change_key_case($tableColumn, CASE_LOWER);
+		$tableColumn = \array_change_key_case($tableColumn, CASE_LOWER);
 
-		$dbType = strtolower($tableColumn['type']);
-		$dbType = strtok($dbType, '(), ');
+		$dbType = \strtolower($tableColumn['type']);
+		$dbType = \strtok($dbType, '(), ');
 		if (isset($tableColumn['length'])) {
 			$length = $tableColumn['length'];
 		} else {
-			$length = strtok('(), ');
+			$length = \strtok('(), ');
 		}
 
 		$fixed = null;
@@ -135,7 +135,7 @@ class MySqlSchemaColumnDefinitionListener{
 			case 'real':
 			case 'numeric':
 			case 'decimal':
-				if (preg_match('([A-Za-z]+\(([0-9]+)\,([0-9]+)\))', $tableColumn['type'], $match)) {
+				if (\preg_match('([A-Za-z]+\(([0-9]+)\,([0-9]+)\))', $tableColumn['type'], $match)) {
 					$precision = $match[1];
 					$scale = $match[2];
 					$length = null;
@@ -177,14 +177,14 @@ class MySqlSchemaColumnDefinitionListener{
 
 		$options = array(
 			'length'		=> $length,
-			'unsigned'	  => (bool) (strpos($tableColumn['type'], 'unsigned') !== false),
+			'unsigned'	  => (bool) (\strpos($tableColumn['type'], 'unsigned') !== false),
 			'fixed'		 => (bool) $fixed,
 			// This line was changed to fix breaking change introduced in MariaDB 10.2.6
 			'default'	   => $columnDefault,
 			'notnull'	   => (bool) ($tableColumn['null'] != 'YES'),
 			'scale'		 => null,
 			'precision'	 => null,
-			'autoincrement' => (bool) (strpos($tableColumn['extra'], 'auto_increment') !== false),
+			'autoincrement' => (bool) (\strpos($tableColumn['extra'], 'auto_increment') !== false),
 			'comment'	   => isset($tableColumn['comment']) && $tableColumn['comment'] !== ''
 				? $tableColumn['comment']
 				: null,
@@ -224,7 +224,7 @@ class MySqlSchemaColumnDefinitionListener{
 			return null;
 		}
 		if ($columnDefault[0] === "'") {
-			return preg_replace('/^\'(.*)\'$/', '$1', $columnDefault);
+			return \preg_replace('/^\'(.*)\'$/', '$1', $columnDefault);
 		}
 
 		return $columnDefault;
@@ -240,7 +240,7 @@ class MySqlSchemaColumnDefinitionListener{
 	 */
 	private function getMariaDbMysqlVersionNumber($versionString)
 	{
-		if ( !preg_match('/^(?:5\.5\.5-)?(mariadb-)?(?P<major>\d+)\.(?P<minor>\d+)\.(?P<patch>\d+)/i', $versionString, $versionParts)) {
+		if ( !\preg_match('/^(?:5\.5\.5-)?(mariadb-)?(?P<major>\d+)\.(?P<minor>\d+)\.(?P<patch>\d+)/i', $versionString, $versionParts)) {
 			throw DBALException::invalidPlatformVersionSpecified(
 				$versionString,
 				'^(?:5\.5\.5-)?(mariadb-)?<major_version>.<minor_version>.<patch_version>'

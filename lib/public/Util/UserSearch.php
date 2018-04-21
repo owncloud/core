@@ -55,8 +55,8 @@ class UserSearch {
 	 * @since 10.0.8
 	 */
 	public function isSearchable($pattern) {
-		$trimmed = trim($pattern);
-		return $trimmed === '' || strlen($trimmed) >= $this->getSearchMinLength();
+		$trimmed = \trim($pattern);
+		return $trimmed === '' || \strlen($trimmed) >= $this->getSearchMinLength();
 	}
 
 	/**

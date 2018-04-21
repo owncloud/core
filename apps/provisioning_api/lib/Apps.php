@@ -58,7 +58,7 @@ class Apps {
 					break;
 				case 'disabled':
 					$enabled = OC_App::getEnabledApps();
-					return new OC_OCS_Result(['apps' => array_diff($list, $enabled)]);
+					return new OC_OCS_Result(['apps' => \array_diff($list, $enabled)]);
 					break;
 				default:
 					// Invalid filter variable
@@ -78,7 +78,7 @@ class Apps {
 	public function getAppInfo($parameters) {
 		$app = $parameters['appid'];
 		$info = \OCP\App::getAppInfo($app);
-		if(!is_null($info)) {
+		if(!\is_null($info)) {
 			return new OC_OCS_Result(OC_App::getAppInfo($app));
 		} else {
 			return new OC_OCS_Result(null, \OCP\API::RESPOND_NOT_FOUND, 'The request app was not found');

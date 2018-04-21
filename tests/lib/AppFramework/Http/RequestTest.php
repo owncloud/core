@@ -36,10 +36,10 @@ class RequestTest extends TestCase {
 	protected function setUp() {
 		parent::setUp();
 
-		if (in_array('fakeinput', stream_get_wrappers())) {
-			stream_wrapper_unregister('fakeinput');
+		if (\in_array('fakeinput', \stream_get_wrappers())) {
+			\stream_wrapper_unregister('fakeinput');
 		}
-		stream_wrapper_register('fakeinput', 'Test\AppFramework\Http\RequestStream');
+		\stream_wrapper_register('fakeinput', 'Test\AppFramework\Http\RequestStream');
 
 		$this->secureRandom = $this->getMockBuilder('\OCP\Security\ISecureRandom')->getMock();
 		$this->config = $this->getMockBuilder('\OCP\IConfig')->getMock();
@@ -48,7 +48,7 @@ class RequestTest extends TestCase {
 	}
 
 	protected function tearDown() {
-		stream_wrapper_unregister('fakeinput');
+		\stream_wrapper_unregister('fakeinput');
 		parent::tearDown();
 	}
 
@@ -232,7 +232,7 @@ class RequestTest extends TestCase {
 
 	public function testPatch() {
 		global $data;
-		$data = http_build_query(['name' => 'John Q. Public', 'nickname' => 'Joey'], '', '&');
+		$data = \http_build_query(['name' => 'John Q. Public', 'nickname' => 'Joey'], '', '&');
 
 		$vars = [
 			'method' => 'PATCH',
@@ -302,7 +302,7 @@ class RequestTest extends TestCase {
 
 	public function testPutStream() {
 		global $data;
-		$data = file_get_contents(__DIR__ . '/../../../data/testimage.png');
+		$data = \file_get_contents(__DIR__ . '/../../../data/testimage.png');
 
 		$vars = [
 			'put' => $data,
@@ -320,7 +320,7 @@ class RequestTest extends TestCase {
 
 		$this->assertSame('PUT', $request->method);
 		$resource = $request->put;
-		$contents = stream_get_contents($resource);
+		$contents = \stream_get_contents($resource);
 		$this->assertSame($data, $contents);
 
 		try {

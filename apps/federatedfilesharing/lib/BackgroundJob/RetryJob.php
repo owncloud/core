@@ -103,7 +103,7 @@ class RetryJob extends Job {
 		$remoteId = $argument['remoteId'];
 		$token = $argument['token'];
 		$action = $argument['action'];
-		$data = json_decode($argument['data'], true);
+		$data = \json_decode($argument['data'], true);
 		$try = (int)$argument['try'] + 1;
 
 		$result = $this->notifications->sendUpdateToRemote($remote, $remoteId, $token, $action, $data, $try);
@@ -128,7 +128,7 @@ class RetryJob extends Job {
 				'data' => $argument['data'],
 				'action' => $argument['action'],
 				'try' => (int)$argument['try'] + 1,
-				'lastRun' => time()
+				'lastRun' => \time()
 			]
 		);
 	}
@@ -141,7 +141,7 @@ class RetryJob extends Job {
 	 */
 	protected function shouldRun(array $argument) {
 		$lastRun = (int)$argument['lastRun'];
-		return ((time() - $lastRun) > $this->interval);
+		return ((\time() - $lastRun) > $this->interval);
 	}
 
 }

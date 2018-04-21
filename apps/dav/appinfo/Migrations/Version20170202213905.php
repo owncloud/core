@@ -76,7 +76,7 @@ class Version20170202213905 implements ISqlMigration {
 		while ($row = $selectResult->fetch()) {
 			try {
 				$sql = $this->getRepairEntrySql($qb, $row);
-				if (!is_null($sql)) {
+				if (!\is_null($sql)) {
 					$this->statements[] = $sql;
 				}
 			} catch (\Exception $e) {

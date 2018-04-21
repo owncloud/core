@@ -91,13 +91,13 @@ class FilesPage extends FilesPageBasic {
 		Session $session, $name = null,
 		$timeoutMsec = STANDARDUIWAITTIMEOUTMILLISEC
 	) {
-		if (is_null($name)) {
-			$name = substr(str_shuffle($this->strForNormalFileName), 0, 8);
+		if (\is_null($name)) {
+			$name = \substr(\str_shuffle($this->strForNormalFileName), 0, 8);
 		}
 
 		$newButtonElement = $this->find("xpath", $this->newFileFolderButtonXpath);
 
-		if (is_null($newButtonElement)) {
+		if (\is_null($newButtonElement)) {
 			throw new ElementNotFoundException(
 				__METHOD__ .
 				" xpath $this->newFileFolderButtonXpath " .
@@ -109,7 +109,7 @@ class FilesPage extends FilesPageBasic {
 
 		$newFolderButtonElement = $this->find("xpath", $this->newFolderButtonXpath);
 
-		if (is_null($newFolderButtonElement)) {
+		if (\is_null($newFolderButtonElement)) {
 			throw new ElementNotFoundException(
 				__METHOD__ .
 				" xpath $this->newFolderButtonXpath " .
@@ -123,7 +123,7 @@ class FilesPage extends FilesPageBasic {
 			// Edge sometimes reports NoSuchElement even though we just found it.
 			// Log the event and continue, because maybe the button was clicked.
 			// TODO: Edge - if it keeps happening then find out why.
-			error_log(
+			\error_log(
 				__METHOD__
 				. " NoSuchElement while doing newFolderButtonElement->click()"
 				. "\n-------------------------\n"
@@ -140,7 +140,7 @@ class FilesPage extends FilesPageBasic {
 			// Actually all that we need does happen, so we just don't do anything
 		}
 		$timeoutMsec = (int) $timeoutMsec;
-		$currentTime = microtime(true);
+		$currentTime = \microtime(true);
 		$end = $currentTime + ($timeoutMsec / 1000);
 
 		while ($currentTime <= $end) {
@@ -148,8 +148,8 @@ class FilesPage extends FilesPageBasic {
 			if ($newFolderButton === null || !$newFolderButton->isVisible()) {
 				break;
 			}
-			usleep(STANDARDSLEEPTIMEMICROSEC);
-			$currentTime = microtime(true);
+			\usleep(STANDARDSLEEPTIMEMICROSEC);
+			$currentTime = \microtime(true);
 		}
 		while ($currentTime <= $end) {
 			try {
@@ -158,8 +158,8 @@ class FilesPage extends FilesPageBasic {
 			} catch (ElementNotFoundException $e) {
 				//loop around
 			}
-			usleep(STANDARDSLEEPTIMEMICROSEC);
-			$currentTime = microtime(true);
+			\usleep(STANDARDSLEEPTIMEMICROSEC);
+			$currentTime = \microtime(true);
 		}
 
 		if ($currentTime > $end) {
@@ -175,7 +175,7 @@ class FilesPage extends FilesPageBasic {
 	 */
 	public function getCreateFolderTooltip() {
 		$newFolderTooltip = $this->find("xpath", $this->newFolderTooltipXpath);
-		if (is_null($newFolderTooltip)) {
+		if (\is_null($newFolderTooltip)) {
 			throw new ElementNotFoundException(
 				__METHOD__ .
 				" xpath $this->newFolderTooltipXpath " .
@@ -194,14 +194,14 @@ class FilesPage extends FilesPageBasic {
 	 */
 	public function uploadFile(Session $session, $name) {
 		$uploadField = $this->findById($this->fileUploadInputId);
-		if (is_null($uploadField)) {
+		if (\is_null($uploadField)) {
 			throw new ElementNotFoundException(
 				__METHOD__ .
 				" id $this->fileUploadInputId " .
 				"could not find file upload input field"
 			);
 		}
-		$uploadField->attachFile(getenv("FILES_FOR_UPLOAD") . $name);
+		$uploadField->attachFile(\getenv("FILES_FOR_UPLOAD") . $name);
 		$this->waitForAjaxCallsToStartAndFinish($session, 20000);
 		$this->waitForUploadProgressbarToFinish();
 	}
@@ -247,8 +247,8 @@ class FilesPage extends FilesPageBasic {
 		Session $session,
 		$maxRetries = STANDARDRETRYCOUNT
 	) {
-		if (is_array($toFileName)) {
-			$toFileName = implode($toFileName);
+		if (\is_array($toFileName)) {
+			$toFileName = \implode($toFileName);
 		}
 
 		for ($counter = 0; $counter < $maxRetries; $counter++) {
@@ -258,7 +258,7 @@ class FilesPage extends FilesPageBasic {
 				break;
 			} catch (\Exception $e) {
 				$this->closeFileActionsMenu();
-				error_log(
+				\error_log(
 					"Error while renaming file"
 					. "\n-------------------------\n"
 					. $e->getMessage()
@@ -269,7 +269,7 @@ class FilesPage extends FilesPageBasic {
 		if ($counter > 0) {
 			$message = "INFORMATION: retried to rename file " . $counter . " times";
 			echo $message;
-			error_log($message);
+			\error_log($message);
 		}
 
 		$this->waitTillFileRowsAreReady($session);
@@ -299,7 +299,7 @@ class FilesPage extends FilesPageBasic {
 			$this->waitForAjaxCallsToStartAndFinish($session);
 			$countXHRRequests = $this->getSumStartedAjaxRequests($session);
 			if ($countXHRRequests === 0) {
-				error_log("Error while moving file");
+				\error_log("Error while moving file");
 			} else {
 				break;
 			}
@@ -307,7 +307,7 @@ class FilesPage extends FilesPageBasic {
 		if ($retryCounter > 0) {
 			$message = "INFORMATION: retried to move file " . $retryCounter . " times";
 			echo $message;
-			error_log($message);
+			\error_log($message);
 		}
 	}
 
@@ -342,13 +342,13 @@ class FilesPage extends FilesPageBasic {
 		$this->getDriver()->visit($url);
 
 		$this->verifyResponse();
-		if (strpos(
+		if (\strpos(
 			$this->getDriver()->getCurrentUrl(),
 			$this->getUrl($urlParameters)
 		) === false
 		) {
 			throw new UnexpectedPageException(
-				sprintf(
+				\sprintf(
 					'Expected to be on "%s" but found "%s" instead',
 					$this->getUrl($urlParameters),
 					$this->getDriver()->getCurrentUrl()
@@ -369,21 +369,21 @@ class FilesPage extends FilesPageBasic {
 		$uploadProgressbar = $this->find(
 			"xpath", $this->uploadProgressbarLabelXpath
 		);
-		if (is_null($uploadProgressbar)) {
+		if (\is_null($uploadProgressbar)) {
 			throw new ElementNotFoundException(
 				__METHOD__ .
 				" xpath $this->uploadProgressbarLabelXpath " .
 				"could not find upload progressbar"
 			);
 		}
-		$currentTime = microtime(true);
+		$currentTime = \microtime(true);
 		$end = $currentTime + (STANDARDUIWAITTIMEOUTMILLISEC / 1000);
 		while ($uploadProgressbar->isVisible()) {
 			if ($currentTime > $end) {
 				break;
 			}
-			usleep(STANDARDSLEEPTIMEMICROSEC);
-			$currentTime = microtime(true);
+			\usleep(STANDARDSLEEPTIMEMICROSEC);
+			$currentTime = \microtime(true);
 		}
 	}
 }

@@ -142,7 +142,7 @@ class PublishPlugin extends ServerPlugin {
 
 		// Only handling xml
 		$contentType = $request->getHeader('Content-Type');
-		if (strpos($contentType, 'application/xml') === false && strpos($contentType, 'text/xml') === false) {
+		if (\strpos($contentType, 'application/xml') === false && \strpos($contentType, 'text/xml') === false) {
 			return;
 		}
 

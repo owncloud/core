@@ -143,7 +143,7 @@ class Manager implements IManager {
 	 * @return string[]
 	 */
 	private function splitFullId($id) {
-		return explode(':', $id, 2);
+		return \explode(':', $id, 2);
 	}
 
 	/**
@@ -376,7 +376,7 @@ class Manager implements IManager {
 			$sharedBy = $this->userManager->get($share->getSharedBy());
 			$sharedWith = $this->userManager->get($share->getSharedWith());
 			// Verify we can share with this user
-			$groups = array_intersect(
+			$groups = \array_intersect(
 					$this->groupManager->getUserGroupIds($sharedBy),
 					$this->groupManager->getUserGroupIds($sharedWith)
 			);
@@ -410,7 +410,7 @@ class Manager implements IManager {
 			// The share is already shared with this user via a group share
 			if ($existingShare->getShareType() === \OCP\Share::SHARE_TYPE_GROUP) {
 				$group = $this->groupManager->get($existingShare->getSharedWith());
-				if (!is_null($group)) {
+				if (!\is_null($group)) {
 					$user = $this->userManager->get($share->getSharedWith());
 
 					if ($group->inGroup($user) && $existingShare->getShareOwner() !== $share->getShareOwner()) {
@@ -437,7 +437,7 @@ class Manager implements IManager {
 		if ($this->shareWithMembershipGroupOnly()) {
 			$sharedBy = $this->userManager->get($share->getSharedBy());
 			$sharedWith = $this->groupManager->get($share->getSharedWith());
-			if (is_null($sharedWith) || !$sharedWith->inGroup($sharedBy)) {
+			if (\is_null($sharedWith) || !$sharedWith->inGroup($sharedBy)) {
 				throw new \Exception('Only sharing within your own groups is allowed');
 			}
 		}
@@ -502,7 +502,7 @@ class Manager implements IManager {
 	protected function setLinkParent(\OCP\Share\IShare $share) {
 
 		// No sense in checking if the method is not there.
-		if (method_exists($share, 'setParent')) {
+		if (\method_exists($share, 'setParent')) {
 			$storage = $share->getNode()->getStorage();
 			if ($storage->instanceOfStorage('\OCA\Files_Sharing\ISharedStorage')) {
 				$share->setParent($storage->getShareId());
@@ -664,7 +664,7 @@ class Manager implements IManager {
 			'shareWith' => $share->getSharedWith(),
 			'itemTarget' => $share->getTarget(),
 			'fileTarget' => $share->getTarget(),
-			'passwordEnabled' => (!is_null($share->getPassword()) and ($share->getPassword() !== '')),
+			'passwordEnabled' => (!\is_null($share->getPassword()) and ($share->getPassword() !== '')),
 		];
 
 		\OC_Hook::emit('OCP\Share', 'post_shared', $postHookData);
@@ -770,7 +770,7 @@ class Manager implements IManager {
 				'itemSource' => $share->getNode()->getId(),
 				'uidOwner' => $share->getSharedBy(),
 				'token' => $share->getToken(),
-				'disabled' => is_null($share->getPassword()),
+				'disabled' => \is_null($share->getPassword()),
 			]);
 			$shareAfterUpdateEvent->setArgument('passwordupdate', true);
 			$update = true;
@@ -817,7 +817,7 @@ class Manager implements IManager {
 
 		foreach ($provider->getChildren($share) as $child) {
 			$deletedChildren = $this->deleteChildren($child);
-			$deletedShares = array_merge($deletedShares, $deletedChildren);
+			$deletedShares = \array_merge($deletedShares, $deletedChildren);
 
 			$provider->delete($child);
 			$deletedShares[] = $child;
@@ -844,7 +844,7 @@ class Manager implements IManager {
 			'itemSource' => $share->getNodeId(),
 			'shareType'  => $shareType,
 			'shareWith'  => $sharedWith,
-			'itemparent' => method_exists($share, 'getParent') ? $share->getParent() : '',
+			'itemparent' => \method_exists($share, 'getParent') ? $share->getParent() : '',
 			'uidOwner'   => $share->getSharedBy(),
 			'fileSource' => $share->getNodeId(),
 			'fileTarget' => $share->getTarget()
@@ -885,7 +885,7 @@ class Manager implements IManager {
 		$deletedShares[] = $share;
 
 		//Format hook info
-		$formattedDeletedShares = array_map('self::formatUnshareHookParams', $deletedShares);
+		$formattedDeletedShares = \array_map('self::formatUnshareHookParams', $deletedShares);
 
 		$hookParams['deletedShares'] = $formattedDeletedShares;
 
@@ -942,7 +942,7 @@ class Manager implements IManager {
 
 		if ($share->getShareType() === \OCP\Share::SHARE_TYPE_GROUP) {
 			$sharedWith = $this->groupManager->get($share->getSharedWith());
-			if (is_null($sharedWith)) {
+			if (\is_null($sharedWith)) {
 				throw new \InvalidArgumentException('Group "' . $share->getSharedWith() . '" does not exist');
 			}
 			$recipient = $this->userManager->get($recipientId);
@@ -987,7 +987,7 @@ class Manager implements IManager {
 					}
 					continue;
 				}
-				array_push($shares, $queriedShare);
+				\array_push($shares, $queriedShare);
 			}
 		}
 
@@ -1033,12 +1033,12 @@ class Manager implements IManager {
 					$added++;
 					$shares2[] = $share;
 
-					if (count($shares2) === $limit) {
+					if (\count($shares2) === $limit) {
 						break;
 					}
 				}
 
-				if (count($shares2) === $limit) {
+				if (\count($shares2) === $limit) {
 					break;
 				}
 
@@ -1088,7 +1088,7 @@ class Manager implements IManager {
 			
 			// Obtain all shares for all the supported provider types
 			$queriedShares = $provider->getAllSharedWith($userId, $node);
-			$shares = array_merge($shares, $queriedShares);
+			$shares = \array_merge($shares, $queriedShares);
 		}
 
 		return $shares;
@@ -1139,7 +1139,7 @@ class Manager implements IManager {
 		}
 
 		foreach ($providers as $provider) {
-			$results = array_merge($results, $provider->getSharesByPath($path));
+			$results = \array_merge($results, $provider->getSharesByPath($path));
 		}
 
 		return $results;
@@ -1413,16 +1413,16 @@ class Manager implements IManager {
 
 		if ($this->config->getAppValue('core', 'shareapi_exclude_groups', 'no') === 'yes') {
 			$groupsList = $this->config->getAppValue('core', 'shareapi_exclude_groups_list', '');
-			$excludedGroups = json_decode($groupsList);
-			if (is_null($excludedGroups)) {
-				$excludedGroups = explode(',', $groupsList);
-				$newValue = json_encode($excludedGroups);
+			$excludedGroups = \json_decode($groupsList);
+			if (\is_null($excludedGroups)) {
+				$excludedGroups = \explode(',', $groupsList);
+				$newValue = \json_encode($excludedGroups);
 				$this->config->setAppValue('core', 'shareapi_exclude_groups_list', $newValue);
 			}
 			$user = $this->userManager->get($userId);
 			$usersGroups = $this->groupManager->getUserGroupIds($user);
 			if (!empty($usersGroups)) {
-				$remainingGroups = array_diff($usersGroups, $excludedGroups);
+				$remainingGroups = \array_diff($usersGroups, $excludedGroups);
 				// if the user is only in groups which are disabled for sharing then
 				// sharing is also disabled for the user
 				if (empty($remainingGroups)) {

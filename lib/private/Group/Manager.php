@@ -128,10 +128,10 @@ class Manager extends PublicEmitter implements IGroupManager {
 	 * @return bool
 	 */
 	public function isBackendUsed($backendClass) {
-		$backendClass = strtolower(ltrim($backendClass, '\\'));
+		$backendClass = \strtolower(\ltrim($backendClass, '\\'));
 
 		foreach ($this->backends as $backend) {
-			if (strtolower(get_class($backend)) === $backendClass) {
+			if (\strtolower(\get_class($backend)) === $backendClass) {
 				return true;
 			}
 		}
@@ -178,9 +178,9 @@ class Manager extends PublicEmitter implements IGroupManager {
 		foreach ($this->backends as $backend) {
 			if ($backend->implementsActions(\OC\Group\Backend::GROUP_DETAILS)) {
 				$groupData = $backend->getGroupDetails($gid);
-				if (is_array($groupData)) {
+				if (\is_array($groupData)) {
 					// take the display name from the first backend that has a non-null one
-					if (is_null($displayName) && isset($groupData['displayName'])) {
+					if (\is_null($displayName) && isset($groupData['displayName'])) {
 						$displayName = $groupData['displayName'];
 					}
 					$backends[] = $backend;
@@ -189,7 +189,7 @@ class Manager extends PublicEmitter implements IGroupManager {
 				$backends[] = $backend;
 			}
 		}
-		if (count($backends) === 0) {
+		if (\count($backends) === 0) {
 			return null;
 		}
 		$this->cachedGroups[$gid] = new Group($gid, $backends, $this->userManager, $this->eventDispatcher, $this, $displayName);
@@ -201,7 +201,7 @@ class Manager extends PublicEmitter implements IGroupManager {
 	 * @return bool
 	 */
 	public function groupExists($gid) {
-		return !is_null($this->get($gid));
+		return !\is_null($this->get($gid));
 	}
 
 	/**
@@ -209,7 +209,7 @@ class Manager extends PublicEmitter implements IGroupManager {
 	 * @return \OC\Group\Group
 	 */
 	public function createGroup($gid) {
-		if ($gid === '' || is_null($gid)) {
+		if ($gid === '' || \is_null($gid)) {
 			return false;
 		} else if ($group = $this->get($gid)) {
 			return $group;
@@ -247,18 +247,18 @@ class Manager extends PublicEmitter implements IGroupManager {
 				$groupIds = $backend->getGroups($search, $limit, $offset);
 				foreach ($groupIds as $groupId) {
 					$aGroup = $this->get($groupId);
-					if (!is_null($aGroup)) {
+					if (!\is_null($aGroup)) {
 						$groups[$groupId] = $aGroup;
 					} else {
 						\OC::$server->getLogger()->debug('Group "' . $groupId . '" was returned by search but not found through direct access', array('app' => 'core'));
 					}
 				}
-				if (!is_null($limit) and $limit <= 0) {
-					return array_values($groups);
+				if (!\is_null($limit) and $limit <= 0) {
+					return \array_values($groups);
 				}
 			}
 		}
-		return array_values($groups);
+		return \array_values($groups);
 	}
 
 	/**
@@ -267,7 +267,7 @@ class Manager extends PublicEmitter implements IGroupManager {
 	 * @return \OC\Group\Group[]
 	 */
 	public function getUserGroups($user, $scope = null) {
-		if (is_null($user)) {
+		if (\is_null($user)) {
 			return [];
 		}
 		return $this->getUserIdGroups($user->getUID(), $scope);
@@ -299,8 +299,8 @@ class Manager extends PublicEmitter implements IGroupManager {
 	private function filterExcludedBackendsForScope($groups, $scope) {
 		$excludedBackendsForScope = $this->getExcludedBackendsForScope($scope);
 		if (!empty($excludedBackendsForScope)) {
-			return array_filter($groups, function($group) use ($excludedBackendsForScope) {
-				return !in_array($group->getBackend(), $excludedBackendsForScope);
+			return \array_filter($groups, function($group) use ($excludedBackendsForScope) {
+				return !\in_array($group->getBackend(), $excludedBackendsForScope);
 			});
 		}
 		return $groups;
@@ -317,10 +317,10 @@ class Manager extends PublicEmitter implements IGroupManager {
 
 			foreach ($this->backends as $backend) {
 				$groupIds = $backend->getUserGroups($uid);
-				if (is_array($groupIds)) {
+				if (\is_array($groupIds)) {
 					foreach ($groupIds as $groupId) {
 						$aGroup = $this->get($groupId);
-						if (!is_null($aGroup)) {
+						if (!\is_null($aGroup)) {
 							$groups[$groupId] = $aGroup;
 						} else {
 							\OC::$server->getLogger()->debug('User "' . $uid . '" belongs to deleted group: "' . $groupId . '"', array('app' => 'core'));
@@ -353,7 +353,7 @@ class Manager extends PublicEmitter implements IGroupManager {
 	 * @return bool if in group
 	 */
 	public function isInGroup($userId, $group) {
-		return array_key_exists($group, $this->getUserIdGroups($userId));
+		return \array_key_exists($group, $this->getUserIdGroups($userId));
 	}
 
 	/**
@@ -363,9 +363,9 @@ class Manager extends PublicEmitter implements IGroupManager {
 	 * @return array with group ids
 	 */
 	public function getUserGroupIds($user, $scope = null) {
-		return array_map(function($value) {
+		return \array_map(function($value) {
 			return (string) $value;
-		}, array_keys($this->getUserGroups($user, $scope)));
+		}, \array_keys($this->getUserGroups($user, $scope)));
 	}
 
 	/**
@@ -378,11 +378,11 @@ class Manager extends PublicEmitter implements IGroupManager {
 	 */
 	public function findUsersInGroup($gid, $search = '', $limit = -1, $offset = 0) {
 		$group = $this->get($gid);
-		if(is_null($group)) {
+		if(\is_null($group)) {
 			return [];
 		}
 
-		$search = trim($search);
+		$search = \trim($search);
 		$groupUsers = [];
 
 		if(!empty($search)) {
@@ -401,12 +401,12 @@ class Manager extends PublicEmitter implements IGroupManager {
 					}
 				}
 				$searchOffset += $searchLimit;
-			} while(count($groupUsers) < $searchLimit+$offset && count($filteredUsers) >= $searchLimit);
+			} while(\count($groupUsers) < $searchLimit+$offset && \count($filteredUsers) >= $searchLimit);
 
 			if($limit === -1) {
-				$groupUsers = array_slice($groupUsers, $offset);
+				$groupUsers = \array_slice($groupUsers, $offset);
 			} else {
-				$groupUsers = array_slice($groupUsers, $offset, $limit);
+				$groupUsers = \array_slice($groupUsers, $offset, $limit);
 			}
 		} else {
 			$groupUsers = $group->searchUsers('', $limit, $offset);
@@ -430,11 +430,11 @@ class Manager extends PublicEmitter implements IGroupManager {
 	 */
 	public function displayNamesInGroup($gid, $search = '', $limit = -1, $offset = 0) {
 		$group = $this->get($gid);
-		if(is_null($group)) {
+		if(\is_null($group)) {
 			return [];
 		}
 
-		$search = trim($search);
+		$search = \trim($search);
 		$groupUsers = [];
 
 		if(!empty($search)) {
@@ -453,12 +453,12 @@ class Manager extends PublicEmitter implements IGroupManager {
 					}
 				}
 				$searchOffset += $searchLimit;
-			} while(count($groupUsers) < $searchLimit+$offset && count($filteredUsers) >= $searchLimit);
+			} while(\count($groupUsers) < $searchLimit+$offset && \count($filteredUsers) >= $searchLimit);
 
 			if($limit === -1) {
-				$groupUsers = array_slice($groupUsers, $offset);
+				$groupUsers = \array_slice($groupUsers, $offset);
 			} else {
-				$groupUsers = array_slice($groupUsers, $offset, $limit);
+				$groupUsers = \array_slice($groupUsers, $offset, $limit);
 			}
 		} else {
 			$groupUsers = $group->searchUsers('', $limit, $offset);

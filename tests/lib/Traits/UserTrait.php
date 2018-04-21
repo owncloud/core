@@ -27,7 +27,7 @@ trait UserTrait {
 	private $previousUserManagerInternals;
 
 	protected function createUser($name, $password = null) {
-		if (is_null($password)) {
+		if (\is_null($password)) {
 			$password = $name;
 		}
 		$userManager = \OC::$server->getUserManager();
@@ -45,7 +45,7 @@ trait UserTrait {
 		$accountMapper = new MemoryAccountMapper($config, $db, new AccountTermMapper($db));
 		$logger = $this->createMock(ILogger::class);
 		$syncService = new SyncService($config, $logger, $accountMapper);
-		$accountMapper->testCaseName = get_class($this);
+		$accountMapper->testCaseName = \get_class($this);
 		$this->previousUserManagerInternals = \OC::$server->getUserManager()
 			->reset($accountMapper, [Dummy::class => new Dummy()], $syncService);
 

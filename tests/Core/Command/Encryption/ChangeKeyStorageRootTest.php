@@ -357,8 +357,8 @@ class ChangeKeyStorageRootTest extends TestCase {
 			);
 
 		if ($pathExists === false) {
-			$subDirs = explode('/', ltrim($path, '/'));
-			$this->view->expects($this->exactly(count($subDirs)))->method('mkdir');
+			$subDirs = \explode('/', \ltrim($path, '/'));
+			$this->view->expects($this->exactly(\count($subDirs)))->method('mkdir');
 		} else {
 			$this->view->expects($this->never())->method('mkdir');
 		}

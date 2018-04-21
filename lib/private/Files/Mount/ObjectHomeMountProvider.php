@@ -72,7 +72,7 @@ class ObjectHomeMountProvider implements IHomeMountProvider {
 	 */
 	private function getSingleBucketObjectStoreConfig(IUser $user) {
 		$config = $this->config->getSystemValue('objectstore');
-		if (!is_array($config)) {
+		if (!\is_array($config)) {
 			return null;
 		}
 
@@ -96,7 +96,7 @@ class ObjectHomeMountProvider implements IHomeMountProvider {
 	 */
 	private function getMultiBucketObjectStoreConfig(IUser $user) {
 		$config = $this->config->getSystemValue('objectstore_multibucket');
-		if (!is_array($config)) {
+		if (!\is_array($config)) {
 			return null;
 		}
 

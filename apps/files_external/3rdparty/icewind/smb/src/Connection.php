@@ -50,7 +50,7 @@ class Connection extends RawConnection {
 			$this->unknownError($promptLine);
 		}
 		while (!$this->isPrompt($line)) { //next prompt functions as delimiter
-			if (is_callable($callback)) {
+			if (\is_callable($callback)) {
 				$result = $callback($line);
 				if ($result === false) { // allow the callback to close the connection for infinite running commands
 					$this->close(true);
@@ -70,7 +70,7 @@ class Connection extends RawConnection {
 	 * @return bool
 	 */
 	private function isPrompt($line) {
-		return mb_substr($line, 0, self::DELIMITER_LENGTH) === self::DELIMITER || $line === false;
+		return \mb_substr($line, 0, self::DELIMITER_LENGTH) === self::DELIMITER || $line === false;
 	}
 
 	/**
@@ -99,26 +99,26 @@ class Connection extends RawConnection {
 	 * @throws NoLoginServerException
 	 */
 	private function checkConnectionError($line) {
-		$line = rtrim($line, ')');
-		if (substr($line, -23) === ErrorCodes::LogonFailure) {
+		$line = \rtrim($line, ')');
+		if (\substr($line, -23) === ErrorCodes::LogonFailure) {
 			throw new AuthenticationException('Invalid login');
 		}
-		if (substr($line, -26) === ErrorCodes::BadHostName) {
+		if (\substr($line, -26) === ErrorCodes::BadHostName) {
 			throw new InvalidHostException('Invalid hostname');
 		}
-		if (substr($line, -22) === ErrorCodes::Unsuccessful) {
+		if (\substr($line, -22) === ErrorCodes::Unsuccessful) {
 			throw new InvalidHostException('Connection unsuccessful');
 		}
-		if (substr($line, -28) === ErrorCodes::ConnectionRefused) {
+		if (\substr($line, -28) === ErrorCodes::ConnectionRefused) {
 			throw new InvalidHostException('Connection refused');
 		}
-		if (substr($line, -26) === ErrorCodes::NoLogonServers) {
+		if (\substr($line, -26) === ErrorCodes::NoLogonServers) {
 			throw new NoLoginServerException('No login server');
 		}
 	}
 
 	public function close($terminate = true) {
-		if (is_resource($this->getInputStream())) {
+		if (\is_resource($this->getInputStream())) {
 			$this->write('close' . PHP_EOL);
 		}
 		parent::close($terminate);

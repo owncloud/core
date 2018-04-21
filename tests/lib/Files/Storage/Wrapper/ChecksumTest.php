@@ -62,8 +62,8 @@ class ChecksumTest extends \Test\TestCase
 		$handle = $this->instance->fopen('/foo.txt','w+');
 
 		$this->assertInternalType('resource', $handle);
-		$this->assertNotFalse(fwrite($handle, self::TEST_DATA));
-		$this->assertNotFalse(fclose($handle));
+		$this->assertNotFalse(\fwrite($handle, self::TEST_DATA));
+		$this->assertNotFalse(\fclose($handle));
 
 		$metaData = $this->instance->getMetaData('/foo.txt');
 
@@ -79,8 +79,8 @@ class ChecksumTest extends \Test\TestCase
 		$this->sourceStorage->file_put_contents('/foo.txt', self::TEST_DATA);
 
 		$handle = $this->instance->fopen('/foo.txt', "r");
-		$data = fread($handle, $this->sourceStorage->filesize('/foo.txt'));
-		fclose($handle);
+		$data = \fread($handle, $this->sourceStorage->filesize('/foo.txt'));
+		\fclose($handle);
 
 		$this->assertEquals(self::TEST_DATA, $data);
 

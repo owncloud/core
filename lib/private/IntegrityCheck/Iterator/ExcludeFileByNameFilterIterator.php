@@ -78,19 +78,19 @@ class ExcludeFileByNameFilterIterator extends \RecursiveFilterIterator {
 		}
 
 		$currentFileName = $current->getFilename();
-		if (in_array($currentFileName, $this->excludedFilenames, true)){
+		if (\in_array($currentFileName, $this->excludedFilenames, true)){
 			return false;
 		}
 
 		foreach ($this->excludedFileNamePatterns as $pattern){
-			if (preg_match($pattern, $currentFileName) > 0){
+			if (\preg_match($pattern, $currentFileName) > 0){
 				return false;
 			}
 		}
 		
 		$currentFilePath = $current->getPathname();
 		foreach ($this->excludedFilePathPatterns as $pattern){
-			if (preg_match($pattern, $currentFilePath) > 0){
+			if (\preg_match($pattern, $currentFilePath) > 0){
 				return false;
 			}
 		}

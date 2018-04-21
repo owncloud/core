@@ -53,7 +53,7 @@ class Controller {
 			exit();
 	        }
 		try {
-			if (!is_null($password) && \OC_User::setPassword($username, $password)) {
+			if (!\is_null($password) && \OC_User::setPassword($username, $password)) {
 				\OC::$server->getUserSession()->updateSessionTokenPassword($password);
 
 				self::sendNotificationMail($username);

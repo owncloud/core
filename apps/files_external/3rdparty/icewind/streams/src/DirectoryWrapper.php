@@ -26,13 +26,13 @@ class DirectoryWrapper implements Directory {
 	 * @throws \Exception
 	 */
 	protected function loadContext($name) {
-		$context = stream_context_get_options($this->context);
+		$context = \stream_context_get_options($this->context);
 		if (isset($context[$name])) {
 			$context = $context[$name];
 		} else {
 			throw new \BadMethodCallException('Invalid context, "' . $name . '" options not set');
 		}
-		if (isset($context['source']) and is_resource($context['source'])) {
+		if (isset($context['source']) and \is_resource($context['source'])) {
 			$this->source = $context['source'];
 		} else {
 			throw new \BadMethodCallException('Invalid context, source not set');
@@ -54,14 +54,14 @@ class DirectoryWrapper implements Directory {
 	 * @return string
 	 */
 	public function dir_readdir() {
-		return readdir($this->source);
+		return \readdir($this->source);
 	}
 
 	/**
 	 * @return bool
 	 */
 	public function dir_closedir() {
-		closedir($this->source);
+		\closedir($this->source);
 		return true;
 	}
 
@@ -69,7 +69,7 @@ class DirectoryWrapper implements Directory {
 	 * @return bool
 	 */
 	public function dir_rewinddir() {
-		rewinddir($this->source);
+		\rewinddir($this->source);
 		return true;
 	}
 
@@ -79,10 +79,10 @@ class DirectoryWrapper implements Directory {
 	 * @return resource
 	 */
 	protected static function wrapWithOptions($options, $class) {
-		$context = stream_context_create($options);
-		stream_wrapper_register('dirwrapper', $class);
-		$wrapped = opendir('dirwrapper://', $context);
-		stream_wrapper_unregister('dirwrapper');
+		$context = \stream_context_create($options);
+		\stream_wrapper_register('dirwrapper', $class);
+		$wrapped = \opendir('dirwrapper://', $context);
+		\stream_wrapper_unregister('dirwrapper');
 		return $wrapped;
 	}
 }

@@ -94,25 +94,25 @@ class CORSMiddleware extends Middleware {
 	public function afterController($controller, $methodName, Response $response){
 		// only react if its a CORS request and if the request sends origin and
 		$userId = null;
-		if (!is_null($this->session->getUser())) {
+		if (!\is_null($this->session->getUser())) {
 			$userId = $this->session->getUser()->getUID();
 		}
 
 		if($this->request->getHeader("Origin") !== null &&
-			$this->reflector->hasAnnotation('CORS') && !is_null($userId)) {
+			$this->reflector->hasAnnotation('CORS') && !\is_null($userId)) {
 
 			$requesterDomain = $this->request->getHeader("Origin");
 
 			$headers = \OC_Response::setCorsHeaders($userId, $requesterDomain, $this->config);
 			foreach ($headers as $key => $value) {
-				$response->addHeader($key, implode(',', $value));
+				$response->addHeader($key, \implode(',', $value));
 			}
 
 			// allow credentials headers must not be true or CSRF is possible
 			// otherwise
 			foreach($response->getHeaders() as $header => $value) {
-				if(strtolower($header) === 'access-control-allow-credentials' &&
-				   strtolower(trim($value)) === 'true') {
+				if(\strtolower($header) === 'access-control-allow-credentials' &&
+				   \strtolower(\trim($value)) === 'true') {
 					$msg = 'Access-Control-Allow-Credentials must not be '.
 						   'set to true in order to prevent CSRF';
 					throw new SecurityException($msg);

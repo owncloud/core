@@ -98,15 +98,15 @@ class Converter {
 			$updated = true;
 		}
 
-		if (empty($emailAddress) && !is_null($vCard->EMAIL)) {
+		if (empty($emailAddress) && !\is_null($vCard->EMAIL)) {
 			unset($vCard->EMAIL);
 			$updated = true;
 		}
-		if (empty($cloudId) && !is_null($vCard->CLOUD)) {
+		if (empty($cloudId) && !\is_null($vCard->CLOUD)) {
 			unset($vCard->CLOUD);
 			$updated = true;
 		}
-		if (empty($image) && !is_null($vCard->PHOTO)) {
+		if (empty($image) && !\is_null($vCard->PHOTO)) {
 			unset($vCard->PHOTO);
 			$updated = true;
 		}
@@ -121,11 +121,11 @@ class Converter {
 	 * @return bool
 	 */
 	private function propertyNeedsUpdate(VCard $vCard, $name, $newValue) {
-		if (is_null($newValue)) {
+		if (\is_null($newValue)) {
 			return false;
 		}
 		$value = $vCard->__get($name);
-		if (!is_null($value)) {
+		if (!\is_null($value)) {
 			$value = $value->getValue();
 			$newValue = $newValue instanceof IImage ? $newValue->data() : $newValue;
 
@@ -142,13 +142,13 @@ class Converter {
 		// Very basic western style parsing. I'm not gonna implement
 		// https://github.com/android/platform_packages_providers_contactsprovider/blob/master/src/com/android/providers/contacts/NameSplitter.java ;)
 
-		$elements = explode(' ', $fullName);
+		$elements = \explode(' ', $fullName);
 		$result = ['', '', '', '', ''];
-		if (count($elements) > 2) {
-			$result[0] = implode(' ', array_slice($elements, count($elements)-1));
+		if (\count($elements) > 2) {
+			$result[0] = \implode(' ', \array_slice($elements, \count($elements)-1));
 			$result[1] = $elements[0];
-			$result[2] = implode(' ', array_slice($elements, 1, count($elements)-2));
-		} elseif (count($elements) === 2) {
+			$result[2] = \implode(' ', \array_slice($elements, 1, \count($elements)-2));
+		} elseif (\count($elements) === 2) {
 			$result[0] = $elements[1];
 			$result[1] = $elements[0];
 		} else {

@@ -299,8 +299,8 @@ class ManagerTest extends TestCase {
 			->method('receive')
 			->with($event)
 			->willReturnCallback(function(IEvent $event) use ($author) {
-				$this->assertLessThanOrEqual(time() + 2, $event->getTimestamp(), 'Timestamp not set correctly');
-				$this->assertGreaterThanOrEqual(time() - 2, $event->getTimestamp(), 'Timestamp not set correctly');
+				$this->assertLessThanOrEqual(\time() + 2, $event->getTimestamp(), 'Timestamp not set correctly');
+				$this->assertGreaterThanOrEqual(\time() - 2, $event->getTimestamp(), 'Timestamp not set correctly');
 				$this->assertSame($author, $event->getAuthor(), 'Author name not set correctly');
 			});
 		$this->activityManager->registerConsumer(function () use ($consumer) {
@@ -380,8 +380,8 @@ class ManagerTest extends TestCase {
 				$this->assertSame('test_link', $event->getLink(), 'Link not set correctly');
 
 				// The following values can not be used via publishActivity()
-				$this->assertLessThanOrEqual(time() + 2, $event->getTimestamp(), 'Timestamp not set correctly');
-				$this->assertGreaterThanOrEqual(time() - 2, $event->getTimestamp(), 'Timestamp not set correctly');
+				$this->assertLessThanOrEqual(\time() + 2, $event->getTimestamp(), 'Timestamp not set correctly');
+				$this->assertGreaterThanOrEqual(\time() - 2, $event->getTimestamp(), 'Timestamp not set correctly');
 				$this->assertNull($event->getAuthor(), 'Author not set correctly');
 				$this->assertSame('', $event->getObjectType(), 'Object type should not be set');
 				$this->assertSame(0, $event->getObjectId(), 'Object ID should not be set');

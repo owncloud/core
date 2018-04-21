@@ -306,7 +306,7 @@ class SettingsManager implements ISettingsManager {
 	 * @return array of strings
 	 */
 	public function getPanelsList($type) {
-		return array_merge($this->findRegisteredPanels($type), $this->getBuiltInPanels($type));
+		return \array_merge($this->findRegisteredPanels($type), $this->getBuiltInPanels($type));
 	}
 
 
@@ -323,8 +323,8 @@ class SettingsManager implements ISettingsManager {
 					if($t === $type)
 					{
 						// Allow app to register multiple panels of the same type
-						$detected = is_array($detected) ? $detected : [$detected];
-						$panels = array_merge($panels, $detected);
+						$detected = \is_array($detected) ? $detected : [$detected];
+						$panels = \array_merge($panels, $detected);
 					}
 				}
 			}
@@ -454,7 +454,7 @@ class SettingsManager implements ISettingsManager {
 	 * @return array
 	 */
 	protected function sortOrder($objects) {
-		usort($objects, function($a, $b) {
+		\usort($objects, function($a, $b) {
 			/** @var ISection | ISettings $a */
 			/** @var ISection | ISettings $b */
 			return $a->getPriority() < $b->getPriority();

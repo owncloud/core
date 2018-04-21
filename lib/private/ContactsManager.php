@@ -51,7 +51,7 @@ namespace OC {
 					$c['addressbook-key'] = $addressBook->getKey();
 					$contacts[] = $c;
 				}
-				$result = array_merge($result, $contacts);
+				$result = \array_merge($result, $contacts);
 			}
 
 			return $result;
@@ -172,7 +172,7 @@ namespace OC {
 		protected function getAddressBook($addressBookKey)
 		{
 			$this->loadAddressBooks();
-			if (!array_key_exists($addressBookKey, $this->addressBooks)) {
+			if (!\array_key_exists($addressBookKey, $this->addressBooks)) {
 				return null;
 			}
 

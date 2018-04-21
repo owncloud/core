@@ -68,8 +68,8 @@ class EntityTypeCollection extends RootCollection {
 		ILogger $logger,
 		\Closure $childExistsFunction
 	) {
-		$name = trim($name);
-		if(empty($name) || !is_string($name)) {
+		$name = \trim($name);
+		if(empty($name) || !\is_string($name)) {
 			throw new \InvalidArgumentException('"name" parameter must be non-empty string');
 		}
 		$this->name = $name;
@@ -121,7 +121,7 @@ class EntityTypeCollection extends RootCollection {
 	 * @return bool
 	 */
 	function childExists($name) {
-		return call_user_func($this->childExistsFunction, $name);
+		return \call_user_func($this->childExistsFunction, $name);
 	}
 
 }

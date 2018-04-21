@@ -37,7 +37,7 @@ class GlobalStoragesServiceTest extends StoragesServiceTest {
 	}
 
 	public function tearDown() {
-		@unlink($this->dataDir . '/mount.json');
+		@\unlink($this->dataDir . '/mount.json');
 		parent::tearDown();
 	}
 
@@ -130,8 +130,8 @@ class GlobalStoragesServiceTest extends StoragesServiceTest {
 	}
 
 	private function assertEqualsArrays($expected, $actual) {
-		sort($expected);
-		sort($actual);
+		\sort($expected);
+		\sort($actual);
 
 		$this->assertEquals($expected, $actual);
 	}
@@ -312,7 +312,7 @@ class GlobalStoragesServiceTest extends StoragesServiceTest {
 		$storage->setApplicableGroups($applicableGroups);
 		$this->service->addStorage($storage);
 
-		$this->assertCount(count($expectedCalls), self::$hookCalls);
+		$this->assertCount(\count($expectedCalls), self::$hookCalls);
 
 		foreach ($expectedCalls as $index => $call) {
 			$this->assertHookCall(
@@ -464,7 +464,7 @@ class GlobalStoragesServiceTest extends StoragesServiceTest {
 
 		$this->service->updateStorage($storage);
 
-		$this->assertCount(count($expectedCalls), self::$hookCalls);
+		$this->assertCount(\count($expectedCalls), self::$hookCalls);
 
 		foreach ($expectedCalls as $index => $call) {
 			$this->assertHookCall(
@@ -545,7 +545,7 @@ class GlobalStoragesServiceTest extends StoragesServiceTest {
 			],
 		];
 
-		$this->assertCount(count($expectedCalls), self::$hookCalls);
+		$this->assertCount(\count($expectedCalls), self::$hookCalls);
 
 		foreach ($expectedCalls as $index => $call) {
 			$this->assertHookCall(
@@ -620,7 +620,7 @@ class GlobalStoragesServiceTest extends StoragesServiceTest {
 
 		$this->service->removeStorage($storage->getId());
 
-		$this->assertCount(count($expectedCalls), self::$hookCalls);
+		$this->assertCount(\count($expectedCalls), self::$hookCalls);
 
 		foreach ($expectedCalls as $index => $call) {
 			$this->assertHookCall(

@@ -39,7 +39,7 @@ class IteratorDirectory implements Directory {
 	 * @throws \Exception
 	 */
 	protected function loadContext($name) {
-		$context = stream_context_get_options($this->context);
+		$context = \stream_context_get_options($this->context);
 		if (isset($context[$name])) {
 			$context = $context[$name];
 		} else {
@@ -103,21 +103,21 @@ class IteratorDirectory implements Directory {
 	 */
 	public static function wrap($source) {
 		if ($source instanceof \Iterator) {
-			$context = stream_context_create(array(
+			$context = \stream_context_create(array(
 				'dir' => array(
 					'iterator' => $source)
 			));
-		} else if (is_array($source)) {
-			$context = stream_context_create(array(
+		} else if (\is_array($source)) {
+			$context = \stream_context_create(array(
 				'dir' => array(
 					'array' => $source)
 			));
 		} else {
 			throw new \BadMethodCallException('$source should be an Iterator or array');
 		}
-		stream_wrapper_register('iterator', '\Icewind\Streams\IteratorDirectory');
-		$wrapped = opendir('iterator://', $context);
-		stream_wrapper_unregister('iterator');
+		\stream_wrapper_register('iterator', '\Icewind\Streams\IteratorDirectory');
+		$wrapped = \opendir('iterator://', $context);
+		\stream_wrapper_unregister('iterator');
 		return $wrapped;
 	}
 }

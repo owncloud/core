@@ -87,7 +87,7 @@ class TagsPluginTest extends \Test\TestCase {
 			->will($this->returnValue(123));
 
 		$expectedCallCount = 0;
-		if (count($requestedProperties) > 0) {
+		if (\count($requestedProperties) > 0) {
 			$expectedCallCount = 1;
 		}
 
@@ -132,7 +132,7 @@ class TagsPluginTest extends \Test\TestCase {
 			->will($this->returnValue(222));
 
 		$expectedCallCount = 0;
-		if (count($requestedProperties) > 0) {
+		if (\count($requestedProperties) > 0) {
 			// this guarantees that getTagsForObjects
 			// is only called once and then the tags
 			// are cached

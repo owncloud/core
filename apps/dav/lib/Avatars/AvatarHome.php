@@ -56,10 +56,10 @@ class AvatarHome implements ICollection {
 	}
 
 	function getChild($name) {
-		$elements = pathinfo($name);
+		$elements = \pathinfo($name);
 		$ext = isset($elements['extension']) ? $elements['extension'] : '';
-		$size = intval(isset($elements['filename']) ? $elements['filename'] : '64');
-		if (!in_array($ext, ['jpeg', 'png'])) {
+		$size = \intval(isset($elements['filename']) ? $elements['filename'] : '64');
+		if (!\in_array($ext, ['jpeg', 'png'])) {
 			throw new MethodNotAllowed('File format not allowed');
 		}
 		if ($size <= 0 || $size > 1024) {
@@ -85,7 +85,7 @@ class AvatarHome implements ICollection {
 	function childExists($name) {
 		try {
 			$ret = $this->getChild($name);
-			return !is_null($ret);
+			return !\is_null($ret);
 		} catch (NotFound $ex) {
 			return false;
 		} catch (MethodNotAllowed $ex) {

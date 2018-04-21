@@ -106,13 +106,13 @@ class CleanupTest extends TestCase {
 			->setMethods(['deleteVersions'])
 			->setConstructorArgs([$this->rootFolder, $this->userManager])
 			->getMock();
-		$instance->expects($this->exactly(count($userIds)))
+		$instance->expects($this->exactly(\count($userIds)))
 			->method('deleteVersions')
 			->willReturnCallback(function ($user) use ($userIds) {
 				$this->assertContains($user, $userIds);
 			});
 
-		$this->userManager->expects($this->exactly(count($userIds)))
+		$this->userManager->expects($this->exactly(\count($userIds)))
 			->method('userExists')->willReturn(true);
 
 		$inputInterface = $this->getMockBuilder('\Symfony\Component\Console\Input\InputInterface')
@@ -145,7 +145,7 @@ class CleanupTest extends TestCase {
 			->with('', 500, 0)
 			->willReturn($backendUsers);
 
-		$instance->expects($this->exactly(count($backendUsers)))
+		$instance->expects($this->exactly(\count($backendUsers)))
 			->method('deleteVersions')
 			->willReturnCallback(function ($user) use ($backendUsers) {
 				$this->assertContains($user, $backendUsers);

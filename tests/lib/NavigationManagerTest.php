@@ -178,12 +178,12 @@ class NavigationManagerTest extends TestCase {
 		$groupManager = $this->createMock(IGroupManager::class);
 		$l = $this->createMock(IL10N::class);
 		$l->expects($this->any())->method('t')->willReturnCallback(function($text, $parameters = []) {
-			return vsprintf($text, $parameters);
+			return \vsprintf($text, $parameters);
 		});
 
 		$appManager->expects($this->once())->method('getInstalledApps')->willReturn(['test']);
 		$appManager->expects($this->once())->method('getAppInfo')->with('test')->willReturn($config);
-		$l10nFac->expects($this->exactly(count($expected)))->method('get')->with('test')->willReturn($l);
+		$l10nFac->expects($this->exactly(\count($expected)))->method('get')->with('test')->willReturn($l);
 		$urlGenerator->expects($this->any())->method('imagePath')->willReturnCallback(function($appName, $file) {
 			return "/apps/$appName/img/$file";
 		});
@@ -191,7 +191,7 @@ class NavigationManagerTest extends TestCase {
 			$urlGenerator->expects($this->never())->method('linkToRoute')->willReturn('/apps/test/');
 			$urlGenerator->expects($this->once())->method('linkTo')->willReturn('link-to-static');
 		} else {
-			$urlGenerator->expects($this->exactly(count($expected)))->method('linkToRoute')->willReturn('/apps/test/');
+			$urlGenerator->expects($this->exactly(\count($expected)))->method('linkToRoute')->willReturn('/apps/test/');
 			$urlGenerator->expects($this->never())->method('linkTo')->willReturn('link-to-static');
 		}
 

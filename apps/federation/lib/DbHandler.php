@@ -69,7 +69,7 @@ class DbHandler {
 	 */
 	public function addServer($url) {
 		$hash = $this->hash($url);
-		$url = rtrim($url, '/');
+		$url = \rtrim($url, '/');
 		$query = $this->connection->getQueryBuilder();
 		$query->insert($this->dbTable)
 			->values(
@@ -243,7 +243,7 @@ class DbHandler {
 		$query->update($this->dbTable)
 				->set('status', $query->createNamedParameter($status))
 				->where($query->expr()->eq('url_hash', $query->createNamedParameter($hash)));
-		if (!is_null($token)) {
+		if (!\is_null($token)) {
 			$query->set('sync_token', $query->createNamedParameter($token));
 		}
 		$query->execute();
@@ -274,7 +274,7 @@ class DbHandler {
 	 */
 	protected function hash($url) {
 		$normalized = $this->normalizeUrl($url);
-		return sha1($normalized);
+		return \sha1($normalized);
 	}
 
 	/**
@@ -286,14 +286,14 @@ class DbHandler {
 	protected function normalizeUrl($url) {
 		$normalized = $url;
 
-		if (strpos($url, 'https://') === 0) {
-			$normalized = substr($url, strlen('https://'));
-		} else if (strpos($url, 'http://') === 0) {
-			$normalized = substr($url, strlen('http://'));
+		if (\strpos($url, 'https://') === 0) {
+			$normalized = \substr($url, \strlen('https://'));
+		} else if (\strpos($url, 'http://') === 0) {
+			$normalized = \substr($url, \strlen('http://'));
 		}
 
 		$normalized = Filesystem::normalizePath($normalized);
-		$normalized = trim($normalized, '/');
+		$normalized = \trim($normalized, '/');
 
 		return $normalized;
 	}

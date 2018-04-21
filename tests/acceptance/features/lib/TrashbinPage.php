@@ -80,7 +80,7 @@ class TrashbinPage extends FilesPageBasic {
 		$restoreAllSelectedBtn = $this->find(
 			"xpath", $this->restoreAllSelectedBtnXpath
 		);
-		if (is_null($restoreAllSelectedBtn)) {
+		if (\is_null($restoreAllSelectedBtn)) {
 			throw new ElementNotFoundException(
 				__METHOD__ .
 				" xpath $this->restoreAllSelectedBtnXpath " .

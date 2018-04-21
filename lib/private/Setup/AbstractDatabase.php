@@ -68,7 +68,7 @@ abstract class AbstractDatabase {
 		} else if(empty($config['dbname'])) {
 			$errors[] = $this->trans->t("%s enter the database name.", [$this->dbprettyname]);
 		}
-		if(substr_count($config['dbname'], '.') >= 1) {
+		if(\substr_count($config['dbname'], '.') >= 1) {
 			$errors[] = $this->trans->t("%s you may not use dots in the database name", [$this->dbprettyname]);
 		}
 		return $errors;
@@ -100,7 +100,7 @@ abstract class AbstractDatabase {
 	abstract public function setupDatabase($userName);
 
 	public function runMigrations() {
-		if (!is_dir(\OC::$SERVERROOT."/core/Migrations")) {
+		if (!\is_dir(\OC::$SERVERROOT."/core/Migrations")) {
 			return;
 		}
 		$ms = new MigrationService('core', \OC::$server->getDatabaseConnection());

@@ -42,15 +42,15 @@ class Plugin extends \Sabre\CardDAV\Plugin {
 	 */
 	protected function getAddressbookHomeForPrincipal($principal) {
 
-		if (strrpos($principal, 'principals/users', -strlen($principal)) !== false) {
+		if (\strrpos($principal, 'principals/users', -\strlen($principal)) !== false) {
 			list(, $principalId) = URLUtil::splitPath($principal);
 			return self::ADDRESSBOOK_ROOT . '/users/' . $principalId;
 		}
-		if (strrpos($principal, 'principals/groups', -strlen($principal)) !== false) {
+		if (\strrpos($principal, 'principals/groups', -\strlen($principal)) !== false) {
 			list(, $principalId) = URLUtil::splitPath($principal);
 			return self::ADDRESSBOOK_ROOT . '/groups/' . $principalId;
 		}
-		if (strrpos($principal, 'principals/system', -strlen($principal)) !== false) {
+		if (\strrpos($principal, 'principals/system', -\strlen($principal)) !== false) {
 			list(, $principalId) = URLUtil::splitPath($principal);
 			return self::ADDRESSBOOK_ROOT . '/system/' . $principalId;
 		}

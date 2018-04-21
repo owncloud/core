@@ -12,7 +12,7 @@
 <td width="20px">&nbsp;</td>
 <td style="font-weight:normal; font-size:0.8em; line-height:1.2em; font-family:verdana,'arial',sans;">
 <?php
-print_unescaped(str_replace('{link}', "<a href=\"{$_['link']}\">{$_['link']}</a>", $l->t('Use the following link to reset your password: {link}')));
+print_unescaped(\str_replace('{link}', "<a href=\"{$_['link']}\">{$_['link']}</a>", $l->t('Use the following link to reset your password: {link}')));
 print_unescaped("<br><br>");
 // TRANSLATORS term at the end of a mail
 p($l->t("Cheers!"));

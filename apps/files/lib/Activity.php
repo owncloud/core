@@ -337,7 +337,7 @@ class Activity implements IExtension {
 	 */
 	public function filterNotificationTypes($types, $filter) {
 		if ($filter === self::FILTER_FILES || $filter === self::FILTER_FAVORITES) {
-			return array_intersect([
+			return \array_intersect([
 				self::TYPE_SHARE_CREATED,
 				self::TYPE_SHARE_CHANGED,
 				self::TYPE_SHARE_DELETED,
@@ -369,7 +369,7 @@ class Activity implements IExtension {
 		}
 
 		// Display actions from favorites only
-		if ($filter === self::FILTER_FAVORITES || in_array($filter, ['all', 'by', 'self']) && $this->userSettingFavoritesOnly($user)) {
+		if ($filter === self::FILTER_FAVORITES || \in_array($filter, ['all', 'by', 'self']) && $this->userSettingFavoritesOnly($user)) {
 			try {
 				$favorites = $this->helper->getFavoriteFilePaths($user);
 			} catch (\RuntimeException $e) {
@@ -401,7 +401,7 @@ class Activity implements IExtension {
 			return [
 				' CASE '
 					. 'WHEN `app` <> ? THEN 1 '
-					. 'WHEN `app` = ? AND (' . implode(' OR ', $fileQueryList) . ') THEN 1 '
+					. 'WHEN `app` = ? AND (' . \implode(' OR ', $fileQueryList) . ') THEN 1 '
 					. 'ELSE 0 '
 				. 'END = 1 ',
 				$parameters,

@@ -98,15 +98,15 @@ class Installer {
 		$appId = OC_App::cleanAppId($info['id']);
 		$appsFolder = OC_App::getInstallPath();
 
-		if ($appsFolder === null || !is_writable($appsFolder)) {
+		if ($appsFolder === null || !\is_writable($appsFolder)) {
 			throw new \Exception('Apps folder is not writable');
 		}
 		$basedir = "$appsFolder/$appId";
 		//check if the destination directory already exists
-		if(is_dir($basedir)) {
+		if(\is_dir($basedir)) {
 			OC_Helper::rmdirr($extractDir);
 			if($data['source']=='http') {
-				unlink($path);
+				\unlink($path);
 			}
 			throw new \Exception($l->t("App directory already exists"));
 		}
@@ -117,16 +117,16 @@ class Installer {
 		OC_App::clearAppCache($info['id']);
 
 		//copy the app to the correct place
-		if(@!mkdir($basedir)) {
+		if(@!\mkdir($basedir)) {
 			OC_Helper::rmdirr($extractDir);
 			if($data['source']=='http') {
-				unlink($path);
+				\unlink($path);
 			}
 			throw new \Exception($l->t("Can't create app folder. Please fix permissions. %s", [$basedir]));
 		}
 
 		$extractDir .= '/' . $info['id'];
-		if(!file_exists($extractDir)) {
+		if(!\file_exists($extractDir)) {
 			OC_Helper::rmdirr($basedir);
 			throw new \Exception($l->t("Archive does not contain a directory named %s", $info['id']));
 		}
@@ -140,7 +140,7 @@ class Installer {
 			$ms = new \OC\DB\MigrationService($appId, \OC::$server->getDatabaseConnection());
 			$ms->migrate();
 		} else {
-			if(is_file($basedir.'/appinfo/database.xml')) {
+			if(\is_file($basedir.'/appinfo/database.xml')) {
 				if (\OC::$server->getAppConfig()->getValue($info['id'], 'installed_version') === null) {
 					OC_DB::createDbFromStructure($basedir . '/appinfo/database.xml');
 				} else {
@@ -230,18 +230,18 @@ class Installer {
 		$basedir .= '/';
 		$basedir .= $info['id'];
 
-		if($currentDir !== false && is_writable($currentDir)) {
+		if($currentDir !== false && \is_writable($currentDir)) {
 			$basedir = $currentDir;
 		}
-		if(is_dir("$basedir/.git")) {
+		if(\is_dir("$basedir/.git")) {
 			throw new AppAlreadyInstalledException("App <{$info['id']}> is a git clone - it will not be updated.");
 		}
-		if(is_dir($basedir)) {
+		if(\is_dir($basedir)) {
 			OC_Helper::rmdirr($basedir);
 		}
 
 		$appInExtractDir = $extractDir;
-		if (substr($extractDir, -1) !== '/') {
+		if (\substr($extractDir, -1) !== '/') {
 			$appInExtractDir .= '/';
 		}
 
@@ -266,7 +266,7 @@ class Installer {
 
 		//download the file if necessary
 		if($data['source']=='http') {
-			$pathInfo = pathinfo($data['href']);
+			$pathInfo = \pathinfo($data['href']);
 			$extension = isset($pathInfo['extension']) ? '.' . $pathInfo['extension'] : '';
 			$path = \OC::$server->getTempManager()->getTemporaryFile($extension);
 			if(!isset($data['href'])) {
@@ -283,20 +283,20 @@ class Installer {
 
 		//detect the archive type
 		$mimeType = \OC::$server->getMimeTypeDetector()->detect($path);
-		if (!in_array($mimeType, self::$allowedArchiveMimetypes)) {
+		if (!\in_array($mimeType, self::$allowedArchiveMimetypes)) {
 			throw new \Exception($l->t("Archives of type %s are not supported", [$mimeType]));
 		}
 
 		//extract the archive in a temporary folder
 		$extractDir = \OC::$server->getTempManager()->getTemporaryFolder();
 		OC_Helper::rmdirr($extractDir);
-		mkdir($extractDir);
+		\mkdir($extractDir);
 		if($archive=\OC\Archive\Archive::open($path)) {
 			$archive->extract($extractDir);
 		} else {
 			OC_Helper::rmdirr($extractDir);
 			if($data['source']=='http') {
-				unlink($path);
+				\unlink($path);
 			}
 			throw new \Exception($l->t("Failed to open archive when installing app"));
 		}
@@ -319,29 +319,29 @@ class Installer {
 	public static function checkAppsIntegrity($data, $extractDir, $path, $isShipped = false) {
 		$l = \OC::$server->getL10N('lib');
 		//load the info.xml file of the app
-		if(!is_file($extractDir.'/appinfo/info.xml')) {
+		if(!\is_file($extractDir.'/appinfo/info.xml')) {
 			//try to find it in a subdir
-			$dh=opendir($extractDir);
-			if(is_resource($dh)) {
-				while (($folder = readdir($dh)) !== false) {
-					if($folder[0]!='.' and is_dir($extractDir.'/'.$folder)) {
-						if(is_file($extractDir.'/'.$folder.'/appinfo/info.xml')) {
+			$dh=\opendir($extractDir);
+			if(\is_resource($dh)) {
+				while (($folder = \readdir($dh)) !== false) {
+					if($folder[0]!='.' and \is_dir($extractDir.'/'.$folder)) {
+						if(\is_file($extractDir.'/'.$folder.'/appinfo/info.xml')) {
 							$extractDir.='/'.$folder;
 						}
 					}
 				}
 			}
 		}
-		if(!is_file($extractDir.'/appinfo/info.xml')) {
+		if(!\is_file($extractDir.'/appinfo/info.xml')) {
 			OC_Helper::rmdirr($extractDir);
 			if($data['source'] === 'http') {
-				unlink($path);
+				\unlink($path);
 			}
 			throw new \Exception($l->t("App does not provide an info.xml file"));
 		}
 
 		$info = OC_App::getAppInfo($extractDir.'/appinfo/info.xml', true);
-		if(!is_array($info)) {
+		if(!\is_array($info)) {
 			throw new \Exception($l->t('App cannot be installed because appinfo file cannot be read.'));
 		}
 
@@ -350,13 +350,13 @@ class Installer {
 		// whether the application needs to be signed.
 		$appId = OC_App::cleanAppId(isset($data['appdata']['id']) ? $data['appdata']['id'] : '');
 		$appBelongingToId = OC_App::getInternalAppIdByOcs($appId);
-		if(is_string($appBelongingToId)) {
+		if(\is_string($appBelongingToId)) {
 			$previouslySigned = \OC::$server->getConfig()->getAppValue($appBelongingToId, 'signed', 'false');
 		} else {
 			$appBelongingToId = $info['id'];
 			$previouslySigned = 'false';
 		}
-		if (file_exists($extractDir . '/appinfo/signature.json') || $previouslySigned === 'true') {
+		if (\file_exists($extractDir . '/appinfo/signature.json') || $previouslySigned === 'true') {
 			\OC::$server->getConfig()->setAppValue($appBelongingToId, 'signed', 'true');
 			$integrityResult = \OC::$server->getIntegrityCodeChecker()->verifyAppSignature(
 					$appBelongingToId,
@@ -385,9 +385,9 @@ class Installer {
 		}
 
 		// check if the ocs version is the same as the version in info.xml/version
-		$version = trim($info['version']);
+		$version = \trim($info['version']);
 
-		if(isset($data['appdata']['version']) && $version<>trim($data['appdata']['version'])) {
+		if(isset($data['appdata']['version']) && $version<>\trim($data['appdata']['version'])) {
 			OC_Helper::rmdirr($extractDir);
 			throw new \Exception($l->t("App can't be installed because the version in info.xml is not the same as the version reported from the app store"));
 		}
@@ -409,7 +409,7 @@ class Installer {
 			$dirToTest .= $name;
 			$dirToTest .= '/';
 
-			if (is_dir($dirToTest)) {
+			if (\is_dir($dirToTest)) {
 				return true;
 			}
 		}
@@ -438,7 +438,7 @@ class Installer {
 			if ($appDir === false) {
 				return false;
 			}
-			if(is_dir("$appDir/.git")) {
+			if(\is_dir("$appDir/.git")) {
 				throw new AppAlreadyInstalledException("App <$appId> is a git clone - it will not be deleted.");
 			}
 
@@ -454,15 +454,15 @@ class Installer {
 	protected static function getShippedApps() {
 		$shippedApps = [];
 		foreach(\OC::$APPSROOTS as $app_dir) {
-			if($dir = opendir( $app_dir['path'] )) {
-				$nodes = scandir($app_dir['path']);
+			if($dir = \opendir( $app_dir['path'] )) {
+				$nodes = \scandir($app_dir['path']);
 				foreach($nodes as $filename) {
-					if( substr( $filename, 0, 1 ) != '.' and is_dir($app_dir['path']."/$filename") ) {
-						if( file_exists( $app_dir['path']."/$filename/appinfo/info.xml" )) {
+					if( \substr( $filename, 0, 1 ) != '.' and \is_dir($app_dir['path']."/$filename") ) {
+						if( \file_exists( $app_dir['path']."/$filename/appinfo/info.xml" )) {
 							if(!Installer::isInstalled($filename)) {
 								$info=OC_App::getAppInfo($filename);
 								$enabled = isset($info['default_enable']);
-								if (($enabled || in_array($filename, \OC::$server->getAppManager()->getAlwaysEnabledApps()))
+								if (($enabled || \in_array($filename, \OC::$server->getAppManager()->getAlwaysEnabledApps()))
 									&& \OC::$server->getConfig()->getAppValue($filename, 'enabled') !== 'no') {
 									$shippedApps[] = $filename;
 								}
@@ -470,15 +470,15 @@ class Installer {
 						}
 					}
 				}
-				closedir( $dir );
+				\closedir( $dir );
 			}
 		}
 
 
 		// Fix the order - make files first
-		$shippedApps = array_diff($shippedApps,['files', 'dav']);
-		array_unshift($shippedApps, 'dav');
-		array_unshift($shippedApps, 'files');
+		$shippedApps = \array_diff($shippedApps,['files', 'dav']);
+		\array_unshift($shippedApps, 'dav');
+		\array_unshift($shippedApps, 'files');
 		return $shippedApps;
 	}
 
@@ -525,7 +525,7 @@ class Installer {
 		\OC::$server->getLogger()->info('Attempting to install shipped app: '.$app);
 
 		$info = OC_App::getAppInfo($app);
-		if (is_null($info)) {
+		if (\is_null($info)) {
 			return false;
 		}
 
@@ -536,7 +536,7 @@ class Installer {
 			$ms = new MigrationService($app, \OC::$server->getDatabaseConnection());
 			$ms->migrate();
 		} else {
-			if(is_file($appPath.'/appinfo/database.xml')) {
+			if(\is_file($appPath.'/appinfo/database.xml')) {
 				\OC::$server->getLogger()->debug('Create app database from schema file');
 				OC_DB::createDbFromStructure($appPath . '/appinfo/database.xml');
 			}
@@ -556,7 +556,7 @@ class Installer {
 		$config = \OC::$server->getConfig();
 
 		$config->setAppValue($app, 'installed_version', OC_App::getAppVersion($app));
-		if (array_key_exists('ocsid', $info)) {
+		if (\array_key_exists('ocsid', $info)) {
 			$config->setAppValue($app, 'ocsid', $info['ocsid']);
 		}
 
@@ -577,7 +577,7 @@ class Installer {
 	 * @param $script
 	 */
 	private static function includeAppScript($script) {
-		if ( file_exists($script) ){
+		if ( \file_exists($script) ){
 			include $script;
 		}
 	}

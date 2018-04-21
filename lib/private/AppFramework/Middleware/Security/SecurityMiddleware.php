@@ -189,7 +189,7 @@ class SecurityMiddleware extends Middleware {
 	public function afterException($controller, $methodName, \Exception $exception) {
 		if($exception instanceof SecurityException) {
 
-			if (stripos($this->request->getHeader('Accept'),'html') === false) {
+			if (\stripos($this->request->getHeader('Accept'),'html') === false) {
 				$response = new JSONResponse(
 					['message' => $exception->getMessage()],
 					$exception->getCode()
@@ -199,7 +199,7 @@ class SecurityMiddleware extends Middleware {
 					$url = $this->urlGenerator->linkToRoute(
 						'core.login.showLoginForm',
 						[
-							'redirect_url' => urlencode($this->request->server['REQUEST_URI']),
+							'redirect_url' => \urlencode($this->request->server['REQUEST_URI']),
 						]
 					);
 					$response = new RedirectResponse($url);

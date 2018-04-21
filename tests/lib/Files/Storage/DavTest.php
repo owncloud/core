@@ -346,7 +346,7 @@ class DavTest extends TestCase {
 
 			$dir = $this->instance->opendir('/some%dir');
 			$entries = [];
-			while ($entry = readdir($dir)) {
+			while ($entry = \readdir($dir)) {
 				$entries[] = $entry;
 			}
 
@@ -519,7 +519,7 @@ class DavTest extends TestCase {
 	public function testFopenRead() {
 		$response = $this->createMock(\GuzzleHttp\Message\ResponseInterface::class);
 		$response->method('getStatusCode')->willReturn(Http::STATUS_OK);
-		$response->method('getBody')->willReturn(fopen('data://text/plain,response body', 'r'));
+		$response->method('getBody')->willReturn(\fopen('data://text/plain,response body', 'r'));
 
 		$this->httpClient->expects($this->once())
 			->method('get')
@@ -532,8 +532,8 @@ class DavTest extends TestCase {
 			->willReturn($response);
 
 		$fh = $this->instance->fopen('/some%dir/file%.txt', 'r');
-		$contents = stream_get_contents($fh);
-		fclose($fh);
+		$contents = \stream_get_contents($fh);
+		\fclose($fh);
 
 		$this->assertEquals('response body', $contents);
 	}
@@ -575,7 +575,7 @@ class DavTest extends TestCase {
 	public function testFopenReadLockedException() {
 		$response = $this->createMock(\GuzzleHttp\Message\ResponseInterface::class);
 		$response->method('getStatusCode')->willReturn(Http::STATUS_LOCKED);
-		$response->method('getBody')->willReturn(fopen('data://text/plain,response body', 'r'));
+		$response->method('getBody')->willReturn(\fopen('data://text/plain,response body', 'r'));
 
 		$this->httpClient->expects($this->once())
 			->method('get')
@@ -615,12 +615,12 @@ class DavTest extends TestCase {
 			}));
 
 		$fh = $this->instance->fopen('/some%dir/file%.txt', 'w');
-		fwrite($fh, 'whatever');
-		fclose($fh);
+		\fwrite($fh, 'whatever');
+		\fclose($fh);
 
 		$this->assertEquals('https://davhost/davroot/some%25dir/file%25.txt', $uploadUrl);
 		$this->assertEquals(['davuser', 'davpassword'], $uploadOptions['auth']);
-		$this->assertEquals('whatever', stream_get_contents($uploadOptions['body']));
+		$this->assertEquals('whatever', \stream_get_contents($uploadOptions['body']));
 	}
 
 	public function testFopenWriteNewFileNoPermission() {
@@ -663,12 +663,12 @@ class DavTest extends TestCase {
 			}));
 
 		$fh = $this->instance->fopen('/some%dir/file%.txt', 'w');
-		fwrite($fh, 'whatever');
-		fclose($fh);
+		\fwrite($fh, 'whatever');
+		\fclose($fh);
 
 		$this->assertEquals('https://davhost/davroot/some%25dir/file%25.txt', $uploadUrl);
 		$this->assertEquals(['davuser', 'davpassword'], $uploadOptions['auth']);
-		$this->assertEquals('whatever', stream_get_contents($uploadOptions['body']));
+		$this->assertEquals('whatever', \stream_get_contents($uploadOptions['body']));
 	}
 
 	public function testFopenWriteExistingFileNoPermission() {
@@ -721,8 +721,8 @@ class DavTest extends TestCase {
 			->willThrowException($this->createGuzzleClientException(Http::STATUS_FORBIDDEN));
 
 		$fh = $this->instance->fopen('/some%dir/file%.txt', 'w');
-		fwrite($fh, 'whatever');
-		fclose($fh);
+		\fwrite($fh, 'whatever');
+		\fclose($fh);
 	}
 
 	public function freespaceProvider() {
@@ -827,7 +827,7 @@ class DavTest extends TestCase {
 
 		$this->assertEquals('https://davhost/davroot/some%25dir/file%25.txt', $uploadUrl);
 		$this->assertEquals(['davuser', 'davpassword'], $uploadOptions['auth']);
-		$this->assertEquals('', stream_get_contents($uploadOptions['body']));
+		$this->assertEquals('', \stream_get_contents($uploadOptions['body']));
 	}
 
 	/**

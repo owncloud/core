@@ -105,7 +105,7 @@ class ImageExportPluginTest extends TestCase {
 
 		$this->plugin->expects($this->once())->method('getPhoto')->willReturn($getPhotoResult);
 
-		if (is_string($expectedContentType)) {
+		if (\is_string($expectedContentType)) {
 			$this->response->expects($this->exactly(2))->method('setHeader')->withConsecutive(
 				['Content-Type', $expectedContentType],
 				['Content-Disposition', 'attachment']);
@@ -114,7 +114,7 @@ class ImageExportPluginTest extends TestCase {
 		}
 
 		$result = $this->plugin->httpGet($this->request, $this->response);
-		$this->assertEquals(!is_string($expectedContentType), $result);
+		$this->assertEquals(!\is_string($expectedContentType), $result);
 	}
 
 	public function providesCardWithOrWithoutPhoto() {

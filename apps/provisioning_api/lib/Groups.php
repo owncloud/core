@@ -72,7 +72,7 @@ class Groups{
 		}
 
 		$groups = $this->groupManager->search($search, $limit, $offset, 'management');
-		$groups = array_map(function($group) {
+		$groups = \array_map(function($group) {
 			/** @var IGroup $group */
 			return $group->getGID();
 		}, $groups);
@@ -110,11 +110,11 @@ class Groups{
 		if($this->groupManager->isAdmin($user->getUID())
 		   || $isSubadminOfGroup) {
 			$users = $this->groupManager->get($groupId)->getUsers();
-			$users =  array_map(function($user) {
+			$users =  \array_map(function($user) {
 				/** @var IUser $user */
 				return $user->getUID();
 			}, $users);
-			$users = array_values($users);
+			$users = \array_values($users);
 			return new OC_OCS_Result(['users' => $users]);
 		} else {
 			return new OC_OCS_Result(null, \OCP\API::RESPOND_UNAUTHORISED, 'User does not have access to specified group');
@@ -130,7 +130,7 @@ class Groups{
 	public function addGroup($parameters) {
 		// Validate name
 		$groupId = $this->request->getParam('groupid', '');
-		if(($groupId === '') || is_null($groupId) || ($groupId === false)){
+		if(($groupId === '') || \is_null($groupId) || ($groupId === false)){
 			\OCP\Util::writeLog('provisioning_api', 'Group name not supplied', \OCP\Util::ERROR);
 			return new OC_OCS_Result(null, 101, 'Invalid group name');
 		}

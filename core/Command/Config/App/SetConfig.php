@@ -75,7 +75,7 @@ class SetConfig extends Base {
 		$appName = $input->getArgument('app');
 		$configName = $input->getArgument('name');
 
-		if (!in_array($configName, $this->config->getAppKeys($appName)) && $input->hasParameterOption('--update-only')) {
+		if (!\in_array($configName, $this->config->getAppKeys($appName)) && $input->hasParameterOption('--update-only')) {
 			$output->writeln('<comment>Config value ' . $configName . ' for app ' . $appName . ' not updated, as it has not been set before.</comment>');
 			return 1;
 		}

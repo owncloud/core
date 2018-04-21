@@ -60,23 +60,23 @@ class ScannerTest extends \Test\TestCase {
 
 		$this->assertTrue($this->cache->inCache('foo.txt'));
 		$cachedData = $this->cache->get('foo.txt');
-		$this->assertEquals($cachedData['size'], strlen($data));
+		$this->assertEquals($cachedData['size'], \strlen($data));
 		$this->assertEquals($cachedData['mimetype'], 'text/plain');
 		$this->assertNotEquals($cachedData['parent'], -1); //parent folders should be scanned automatically
 
-		$data = file_get_contents(\OC::$SERVERROOT . '/core/img/logo.png');
+		$data = \file_get_contents(\OC::$SERVERROOT . '/core/img/logo.png');
 		$this->storage->file_put_contents('foo.png', $data);
 		$this->scanner->scanFile('foo.png');
 
 		$this->assertTrue($this->cache->inCache('foo.png'));
 		$cachedData = $this->cache->get('foo.png');
-		$this->assertEquals($cachedData['size'], strlen($data));
+		$this->assertEquals($cachedData['size'], \strlen($data));
 		$this->assertEquals($cachedData['mimetype'], 'image/png');
 	}
 
 	private function fillTestFolders() {
 		$textData = "dummy file data\n";
-		$imgData = file_get_contents(\OC::$SERVERROOT . '/core/img/logo.png');
+		$imgData = \file_get_contents(\OC::$SERVERROOT . '/core/img/logo.png');
 		$this->storage->mkdir('folder');
 		$this->storage->file_put_contents('foo.txt', $textData);
 		$this->storage->file_put_contents('foo.png', $imgData);

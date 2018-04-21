@@ -117,8 +117,8 @@ class ShareTest extends TestCase {
 	 */
 	public function verifyDirContent($content, $expected) {
 		foreach ($content as $c) {
-			if (!in_array($c['name'], $expected)) {
-				$this->assertTrue(false, "folder should only contain '" . implode(',', $expected) . "', found: " .$c['name']);
+			if (!\in_array($c['name'], $expected)) {
+				$this->assertTrue(false, "folder should only contain '" . \implode(',', $expected) . "', found: " .$c['name']);
 			}
 		}
 	}

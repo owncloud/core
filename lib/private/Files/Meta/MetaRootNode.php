@@ -75,7 +75,7 @@ class MetaRootNode extends AbstractFolder {
 	 * @inheritdoc
 	 */
 	public function get($path) {
-		$pieces = explode('/', $path);
+		$pieces = \explode('/', $path);
 		$fileId = (int)$pieces[0];
 
 		// check if file exists
@@ -83,12 +83,12 @@ class MetaRootNode extends AbstractFolder {
 			throw new NotFoundException();
 		}
 
-		array_shift($pieces);
+		\array_shift($pieces);
 		$node = new MetaFileIdNode($this, $this->rootFolder, $fileId);
 		if (empty($pieces)) {
 			return $node;
 		}
-		return $node->get(implode('/', $pieces));
+		return $node->get(\implode('/', $pieces));
 	}
 
 	/**

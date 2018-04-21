@@ -64,7 +64,7 @@ class RSA extends AuthMechanism {
 		if (!$auth->loadKey($privateKey)) {
 			throw new \RuntimeException('unable to load private key');
 		}
-		$storage->setBackendOption('private_key', base64_encode($privateKey));
+		$storage->setBackendOption('private_key', \base64_encode($privateKey));
 		$storage->setBackendOption('public_key_auth', $auth);
 	}
 

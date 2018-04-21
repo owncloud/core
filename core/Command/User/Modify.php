@@ -89,8 +89,8 @@ class Modify extends Base {
 			throw new \InvalidArgumentException('The key cannot be empty');
 		}
 
-		if (in_array($input->getArgument('key'), $this->allowedKeys, true) === false) {
-			throw new \InvalidArgumentException('Supported keys are ' . implode(', ', $this->allowedKeys));
+		if (\in_array($input->getArgument('key'), $this->allowedKeys, true) === false) {
+			throw new \InvalidArgumentException('Supported keys are ' . \implode(', ', $this->allowedKeys));
 		}
 
 		$value = $input->getArgument('value');

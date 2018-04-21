@@ -270,7 +270,7 @@ abstract class StoragesController extends Controller {
 			// FIXME: convert storage exceptions to StorageNotAvailableException
 			$storage->setStatus(
 				StorageNotAvailableException::STATUS_ERROR,
-				get_class($e).': '.$e->getMessage()
+				\get_class($e).': '.$e->getMessage()
 			);
 		}
 	}

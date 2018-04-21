@@ -138,7 +138,7 @@ class ExpirationTest extends \Test\TestCase {
 	public function testParseRetentionObligation($configValue, $expectedMinAge, $expectedMaxAge, $expectedCanPurgeToSaveSpace){
 		$mockedConfig = $this->getMockedConfig($configValue);
 		$mockedTimeFactory = $this->getMockedTimeFactory(
-				time()
+				\time()
 		);
 
 		$expiration = new Expiration($mockedConfig, $mockedTimeFactory);

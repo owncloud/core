@@ -42,7 +42,7 @@ class WebdavTest extends \Test\Files\Storage\Storage {
 
 		$id = $this->getUniqueID();
 		$config = include('files_external/tests/config.webdav.php');
-		if ( ! is_array($config) or !$config['run']) {
+		if ( ! \is_array($config) or !$config['run']) {
 			$this->markTestSkipped('WebDAV backend not configured');
 		}
 		if (isset($config['wait'])) {

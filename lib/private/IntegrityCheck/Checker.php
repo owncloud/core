@@ -99,7 +99,7 @@ class Checker {
 	 */
 	public function isCodeCheckEnforced() {
 		$notSignedChannels = [ '', 'git'];
-		if (in_array($this->environmentHelper->getChannel(), $notSignedChannels, true)) {
+		if (\in_array($this->environmentHelper->getChannel(), $notSignedChannels, true)) {
 			return false;
 		}
 
@@ -132,7 +132,7 @@ class Checker {
 		if($root === '') {
 			$root = \OC::$SERVERROOT;
 		}
-		$root = rtrim($root, '/');
+		$root = \rtrim($root, '/');
 
 		$excludeGenericFilesIterator = new ExcludeFileByNameFilterIterator($dirItr);
 		$excludeFoldersIterator = new ExcludeFoldersByPathFilterIterator($excludeGenericFilesIterator, $root);
@@ -157,15 +157,15 @@ class Checker {
 		$copiedWebserverSettingFiles = false;
 		$tmpFolder = '';
 
-		$baseDirectoryLength = strlen($path);
+		$baseDirectoryLength = \strlen($path);
 		foreach($iterator as $filename => $data) {
 			/** @var \DirectoryIterator $data */
 			if($data->isDir()) {
 				continue;
 			}
 
-			$relativeFileName = substr($filename, $baseDirectoryLength);
-			$relativeFileName = ltrim($relativeFileName, '/');
+			$relativeFileName = \substr($filename, $baseDirectoryLength);
+			$relativeFileName = \ltrim($relativeFileName, '/');
 
 			// Exclude signature.json files in the appinfo and root folder
 			if($relativeFileName === 'appinfo/signature.json') {
@@ -185,17 +185,17 @@ class Checker {
 				|| $filename === $this->environmentHelper->getServerRoot() . '/.user.ini') {
 
 				if(!$copiedWebserverSettingFiles) {
-					$tmpFolder = rtrim($this->tempManager->getTemporaryFolder(), '/');
-					copy($this->environmentHelper->getServerRoot() . '/.htaccess', $tmpFolder . '/.htaccess');
-					copy($this->environmentHelper->getServerRoot() . '/.user.ini', $tmpFolder . '/.user.ini');
+					$tmpFolder = \rtrim($this->tempManager->getTemporaryFolder(), '/');
+					\copy($this->environmentHelper->getServerRoot() . '/.htaccess', $tmpFolder . '/.htaccess');
+					\copy($this->environmentHelper->getServerRoot() . '/.user.ini', $tmpFolder . '/.user.ini');
 				}
 			}
 
 			// The .user.ini file can contain custom modifications to the file size
 			// as well.
 			if($filename === $this->environmentHelper->getServerRoot() . '/.user.ini') {
-				$fileContent = file_get_contents($tmpFolder . '/.user.ini');
-				$hashes[$relativeFileName] = hash('sha512', $fileContent);
+				$fileContent = \file_get_contents($tmpFolder . '/.user.ini');
+				$hashes[$relativeFileName] = \hash('sha512', $fileContent);
 				continue;
 			}
 
@@ -207,15 +207,15 @@ class Checker {
 			// "#### DO NOT CHANGE ANYTHING ABOVE THIS LINE ####" and have the
 			// hash generated based on this.
 			if($filename === $this->environmentHelper->getServerRoot() . '/.htaccess') {
-				$fileContent = file_get_contents($tmpFolder . '/.htaccess');
-				$explodedArray = explode('#### DO NOT CHANGE ANYTHING ABOVE THIS LINE ####', $fileContent);
-				if(count($explodedArray) === 2) {
-					$hashes[$relativeFileName] = hash('sha512', $explodedArray[0]);
+				$fileContent = \file_get_contents($tmpFolder . '/.htaccess');
+				$explodedArray = \explode('#### DO NOT CHANGE ANYTHING ABOVE THIS LINE ####', $fileContent);
+				if(\count($explodedArray) === 2) {
+					$hashes[$relativeFileName] = \hash('sha512', $explodedArray[0]);
 					continue;
 				}
 			}
 
-			$hashes[$relativeFileName] = hash_file('sha512', $filename);
+			$hashes[$relativeFileName] = \hash_file('sha512', $filename);
 		}
 
 		return $hashes;
@@ -232,16 +232,16 @@ class Checker {
 	private function createSignatureData(array $hashes,
 										 X509 $certificate,
 										 RSA $privateKey) {
-		ksort($hashes);
+		\ksort($hashes);
 
 		$privateKey->setSignatureMode(RSA::SIGNATURE_PSS);
 		$privateKey->setMGFHash('sha512');
 		$privateKey->setSaltLength(0);
-		$signature = $privateKey->sign(json_encode($hashes));
+		$signature = $privateKey->sign(\json_encode($hashes));
 
 		return [
 				'hashes' => $hashes,
-				'signature' => base64_encode($signature),
+				'signature' => \base64_encode($signature),
 				'certificate' => $certificate->saveX509($certificate->currentCert),
 			];
 	}
@@ -267,7 +267,7 @@ class Checker {
 		try {
 			$this->fileAccessHelper->file_put_contents(
 				$appInfoDir . '/signature.json',
-				json_encode($signature, JSON_PRETTY_PRINT)
+				\json_encode($signature, JSON_PRETTY_PRINT)
 			);
 		} catch (\Exception $e){
 			if (!$this->fileAccessHelper->is_writeable($appInfoDir)){
@@ -298,7 +298,7 @@ class Checker {
 		try {
 			$this->fileAccessHelper->file_put_contents(
 				$coreDir . '/signature.json',
-				json_encode($signatureData, JSON_PRETTY_PRINT)
+				\json_encode($signatureData, JSON_PRETTY_PRINT)
 			);
 		} catch (\Exception $e){
 			if (!$this->fileAccessHelper->is_writeable($coreDir)){
@@ -325,14 +325,14 @@ class Checker {
 			return [];
 		}
 
-		$signatureData = json_decode($this->fileAccessHelper->file_get_contents($signaturePath), true);
-		if(!is_array($signatureData)) {
+		$signatureData = \json_decode($this->fileAccessHelper->file_get_contents($signaturePath), true);
+		if(!\is_array($signatureData)) {
 			throw new MissingSignatureException('Signature data not found.');
 		}
 
 		$expectedHashes = $signatureData['hashes'];
-		ksort($expectedHashes);
-		$signature = base64_decode($signatureData['signature']);
+		\ksort($expectedHashes);
+		$signature = \base64_decode($signatureData['signature']);
 		$certificate = $signatureData['certificate'];
 
 		// Check if certificate is signed by ownCloud Root Authority
@@ -346,7 +346,7 @@ class Checker {
 
 		// Check if the certificate has been revoked
 		$crlFileContent = $this->fileAccessHelper->file_get_contents($this->environmentHelper->getServerRoot().'/resources/codesigning/intermediate.crl.pem');
-		if ($crlFileContent && strlen($crlFileContent) > 0) {
+		if ($crlFileContent && \strlen($crlFileContent) > 0) {
 			$crl = new \phpseclib\File\X509();
 			$crl->loadCA($rootCertificatePublicKey);
 			$crl->loadCRL($crlFileContent);
@@ -376,7 +376,7 @@ class Checker {
 		$rsa->setSignatureMode(RSA::SIGNATURE_PSS);
 		$rsa->setSaltLength(0);
 		$rsa->setMGFHash('sha512');
-		if(!$rsa->verify(json_encode($expectedHashes), $signature)) {
+		if(!$rsa->verify(\json_encode($expectedHashes), $signature)) {
 			throw new InvalidSignatureException('Signature could not get verified.');
 		}
 
@@ -385,24 +385,24 @@ class Checker {
 
 		// Compare the list of files which are not identical
 		$currentInstanceHashes = $this->generateHashes($this->getFolderIterator($basePath), $basePath);
-		$differencesA = array_diff($expectedHashes, $currentInstanceHashes);
-		$differencesB = array_diff($currentInstanceHashes, $expectedHashes);
-		$differences = array_unique(array_merge($differencesA, $differencesB));
+		$differencesA = \array_diff($expectedHashes, $currentInstanceHashes);
+		$differencesB = \array_diff($currentInstanceHashes, $expectedHashes);
+		$differences = \array_unique(\array_merge($differencesA, $differencesB));
 		$differenceArray = [];
 		foreach($differences as $filename => $hash) {
 			//If filename in exclude files list, then ignore it
-			if (in_array($filename, $excludeFiles, true)) {
+			if (\in_array($filename, $excludeFiles, true)) {
 				continue;
 			}
 			// Check if file should not exist in the new signature table
-			if(!array_key_exists($filename, $expectedHashes)) {
+			if(!\array_key_exists($filename, $expectedHashes)) {
 				$differenceArray['EXTRA_FILE'][$filename]['expected'] = '';
 				$differenceArray['EXTRA_FILE'][$filename]['current'] = $hash;
 				continue;
 			}
 
 			// Check if file is missing
-			if(!array_key_exists($filename, $currentInstanceHashes)) {
+			if(!\array_key_exists($filename, $currentInstanceHashes)) {
 				$differenceArray['FILE_MISSING'][$filename]['expected'] = $expectedHashes[$filename];
 				$differenceArray['FILE_MISSING'][$filename]['current'] = '';
 				continue;
@@ -441,11 +441,11 @@ class Checker {
 	 */
 	public function getResults() {
 		$cachedResults = $this->cache->get(self::CACHE_KEY);
-		if(!is_null($cachedResults)) {
-			return json_decode($cachedResults, true);
+		if(!\is_null($cachedResults)) {
+			return \json_decode($cachedResults, true);
 		}
 
-		return json_decode($this->getAppValue(self::CACHE_KEY, '{}'), true);
+		return \json_decode($this->getAppValue(self::CACHE_KEY, '{}'), true);
 	}
 
 	/**
@@ -461,8 +461,8 @@ class Checker {
 			$resultArray[$scope] = $result;
 		}
 
-		$this->setAppValue(self::CACHE_KEY, json_encode($resultArray));
-		$this->cache->set(self::CACHE_KEY, json_encode($resultArray));
+		$this->setAppValue(self::CACHE_KEY, \json_encode($resultArray));
+		$this->cache->set(self::CACHE_KEY, \json_encode($resultArray));
 	}
 
 	/**
@@ -496,7 +496,7 @@ class Checker {
 			'integrity.ignore.missing.app.signature',
 			[]
 		);
-		if (is_array($ignoredUnsignedApps)===false) {
+		if (\is_array($ignoredUnsignedApps)===false) {
 			$ignoredUnsignedApps = [];
 		}
 		return $ignoredUnsignedApps;
@@ -582,10 +582,10 @@ class Checker {
 				$force
 			);
 		} catch (MissingSignatureException $e) {
-			if (!in_array($appId, $this->getIgnoredUnsignedApps())) {
+			if (!\in_array($appId, $this->getIgnoredUnsignedApps())) {
 				$result = [
 					'EXCEPTION' => [
-						'class' => get_class($e),
+						'class' => \get_class($e),
 						'message' => $e->getMessage(),
 					],
 				];
@@ -595,7 +595,7 @@ class Checker {
 		} catch (\Exception $e) {
 			$result = [
 					'EXCEPTION' => [
-							'class' => get_class($e),
+							'class' => \get_class($e),
 							'message' => $e->getMessage(),
 					],
 			];
@@ -645,7 +645,7 @@ class Checker {
 		} catch (\Exception $e) {
 			$result = [
 					'EXCEPTION' => [
-							'class' => get_class($e),
+							'class' => \get_class($e),
 							'message' => $e->getMessage(),
 					],
 			];
@@ -664,7 +664,7 @@ class Checker {
 		$this->verifyCoreSignature();
 
 		// FIXME: appManager === null means ownCloud is not installed. We check all apps in this case
-		$forceCheckAllApps = is_null($this->appManager);
+		$forceCheckAllApps = \is_null($this->appManager);
 		$appIds = $this->appLocator->getAllApps();
 		foreach ($appIds as $appId) {
 			// If an application is shipped a valid signature is required

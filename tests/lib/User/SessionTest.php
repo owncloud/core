@@ -209,12 +209,12 @@ class SessionTest extends TestCase {
 					}
 				}, 'foo'));
 
-		$managerMethods = get_class_methods(Manager::class);
+		$managerMethods = \get_class_methods(Manager::class);
 		//keep following methods intact in order to ensure hooks are
 		//working
 		$doNotMock = ['__construct', 'emit', 'listen'];
 		foreach ($doNotMock as $methodName) {
-			$i = array_search($methodName, $managerMethods, true);
+			$i = \array_search($methodName, $managerMethods, true);
 			if ($i !== false) {
 				unset($managerMethods[$i]);
 			}
@@ -535,7 +535,7 @@ class SessionTest extends TestCase {
 
 		//prepare login token
 		$token = 'goodToken';
-		\OC::$server->getConfig()->setUserValue('foo', 'login_token', $token, time());
+		\OC::$server->getConfig()->setUserValue('foo', 'login_token', $token, \time());
 
 		/** @var Session | \PHPUnit_Framework_MockObject_MockObject $userSession */
 		$userSession = $this->getMockBuilder(Session::class)
@@ -574,7 +574,7 @@ class SessionTest extends TestCase {
 
 		//prepare login token
 		$token = 'goodToken';
-		\OC::$server->getConfig()->setUserValue('foo', 'login_token', $token, time());
+		\OC::$server->getConfig()->setUserValue('foo', 'login_token', $token, \time());
 
 		$userSession = new Session($manager, $session, $this->timeFactory,
 			$this->tokenProvider, $this->config, $this->logger, $this->serviceLoader, $this->userSyncService);
@@ -607,7 +607,7 @@ class SessionTest extends TestCase {
 
 		//prepare login token
 		$token = 'goodToken';
-		\OC::$server->getConfig()->setUserValue('foo', 'login_token', $token, time());
+		\OC::$server->getConfig()->setUserValue('foo', 'login_token', $token, \time());
 
 		$userSession = new Session($manager, $session, $this->timeFactory,
 			$this->tokenProvider, $this->config, $this->logger, $this->serviceLoader, $this->userSyncService);

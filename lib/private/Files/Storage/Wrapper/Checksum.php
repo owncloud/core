@@ -56,7 +56,7 @@ class Checksum extends Wrapper {
 	 */
 	public function fopen($path, $mode) {
 		$stream = $this->getWrapperStorage()->fopen($path, $mode);
-		if (!is_resource($stream)) {
+		if (!\is_resource($stream)) {
 			// don't wrap on error
 			return $stream;
 		}
@@ -94,7 +94,7 @@ class Checksum extends Wrapper {
 		$isNormalFile = true;
 		if ($this->instanceOfStorage(IHomeStorage::class)) {
 			// home storage stores files in "files"
-			$isNormalFile = substr($path, 0, 6) === 'files/';
+			$isNormalFile = \substr($path, 0, 6) === 'files/';
 		}
 		$fileIsWritten = $mode !== 'r' && $mode !== 'rb';
 
@@ -110,7 +110,7 @@ class Checksum extends Wrapper {
 
 		// Cache entry is sometimes an array (partial) when encryption is enabled without id so
 		// we ignore it.
-		if ($cacheEntry && empty($cacheEntry['checksum']) && is_object($cacheEntry)) {
+		if ($cacheEntry && empty($cacheEntry['checksum']) && \is_object($cacheEntry)) {
 			$this->pathsInCacheWithoutChecksum[$cacheEntry->getId()] = $path;
 			return self::PATH_IN_CACHE_WITHOUT_CHECKSUM;
 		}
@@ -144,7 +144,7 @@ class Checksum extends Wrapper {
 			return '';
 		}
 
-		return sprintf(
+		return \sprintf(
 			self::CHECKSUMS_DB_FORMAT,
 			$checksums['sha1'],
 			$checksums['md5'],
@@ -161,7 +161,7 @@ class Checksum extends Wrapper {
 	 * @return boolean
 	 */
 	public static function isPartialFile($file) {
-		if (pathinfo($file, PATHINFO_EXTENSION) === 'part') {
+		if (\pathinfo($file, PATHINFO_EXTENSION) === 'part') {
 			return true;
 		}
 
@@ -174,11 +174,11 @@ class Checksum extends Wrapper {
 	 * @return bool
 	 */
 	public function file_put_contents($path, $data) {
-		$memoryStream = fopen('php://memory', 'r+');
+		$memoryStream = \fopen('php://memory', 'r+');
 		$checksumStream = \OC\Files\Stream\Checksum::wrap($memoryStream, $path);
 
-		fwrite($checksumStream, $data);
-		fclose($checksumStream);
+		\fwrite($checksumStream, $data);
+		\fclose($checksumStream);
 
 		return $this->getWrapperStorage()->file_put_contents($path, $data);
 	}
@@ -193,7 +193,7 @@ class Checksum extends Wrapper {
 		if(!self::isPartialFile($path)) {
 			$parentMetaData = $this->getWrapperStorage()->getMetaData($path);
 			// can be null if entry does not exist
-			if (is_null($parentMetaData)) {
+			if (\is_null($parentMetaData)) {
 				return null;
 			}
 		}

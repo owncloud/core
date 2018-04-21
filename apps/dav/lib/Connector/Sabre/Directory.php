@@ -246,7 +246,7 @@ class Directory extends Node implements ICollection, IQuota, IMoveTarget {
 		}
 
 		$path = $this->path . '/' . $name;
-		if (is_null($info)) {
+		if (\is_null($info)) {
 			try {
 				$this->fileView->verifyPath($this->path, $name);
 				$info = $this->fileView->getFileInfo($path);
@@ -282,7 +282,7 @@ class Directory extends Node implements ICollection, IQuota, IMoveTarget {
 	 * @throws SabreLocked
 	 */
 	public function getChildren() {
-		if (!is_null($this->dirContent)) {
+		if (!\is_null($this->dirContent)) {
 			return $this->dirContent;
 		}
 		try {
@@ -464,7 +464,7 @@ class Directory extends Node implements ICollection, IQuota, IMoveTarget {
 				}
 			}
 
-			$fileName = basename($destinationPath);
+			$fileName = \basename($destinationPath);
 			try {
 				$this->fileView->verifyPath($destinationDir, $fileName);
 			} catch (InvalidPathException $ex) {

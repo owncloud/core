@@ -141,7 +141,7 @@ class UpdateTest extends TestCase {
 			->method('isEnabled')
 			->willReturn($encryptionEnabled);
 
-		if (dirname($source) === dirname($target) || $encryptionEnabled === false) {
+		if (\dirname($source) === \dirname($target) || $encryptionEnabled === false) {
 			$updateMock->expects($this->never())->method('getOwnerPath');
 			$updateMock->expects($this->never())->method('update');
 		} else {

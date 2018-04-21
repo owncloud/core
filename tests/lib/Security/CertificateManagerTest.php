@@ -46,8 +46,8 @@ class CertificateManagerTest extends \Test\TestCase {
 	}
 
 	protected function assertEqualsArrays($expected, $actual) {
-		sort($expected);
-		sort($actual);
+		\sort($expected);
+		\sort($actual);
 
 		$this->assertEquals($expected, $actual);
 	}
@@ -57,14 +57,14 @@ class CertificateManagerTest extends \Test\TestCase {
 		$this->assertSame([], $this->certificateManager->listCertificates());
 
 		// Add some certificates
-		$this->certificateManager->addCertificate(file_get_contents(__DIR__ . '/../../data/certificates/goodCertificate.crt'), 'GoodCertificate');
+		$this->certificateManager->addCertificate(\file_get_contents(__DIR__ . '/../../data/certificates/goodCertificate.crt'), 'GoodCertificate');
 		$certificateStore = [];
-		$certificateStore[] = new \OC\Security\Certificate(file_get_contents(__DIR__ . '/../../data/certificates/goodCertificate.crt'), 'GoodCertificate');
+		$certificateStore[] = new \OC\Security\Certificate(\file_get_contents(__DIR__ . '/../../data/certificates/goodCertificate.crt'), 'GoodCertificate');
 		$this->assertEqualsArrays($certificateStore, $this->certificateManager->listCertificates());
 
 		// Add another certificates
-		$this->certificateManager->addCertificate(file_get_contents(__DIR__ . '/../../data/certificates/expiredCertificate.crt'), 'ExpiredCertificate');
-		$certificateStore[] = new \OC\Security\Certificate(file_get_contents(__DIR__ . '/../../data/certificates/expiredCertificate.crt'), 'ExpiredCertificate');
+		$this->certificateManager->addCertificate(\file_get_contents(__DIR__ . '/../../data/certificates/expiredCertificate.crt'), 'ExpiredCertificate');
+		$certificateStore[] = new \OC\Security\Certificate(\file_get_contents(__DIR__ . '/../../data/certificates/expiredCertificate.crt'), 'ExpiredCertificate');
 		$this->assertEqualsArrays($certificateStore, $this->certificateManager->listCertificates());
 	}
 
@@ -94,7 +94,7 @@ class CertificateManagerTest extends \Test\TestCase {
 	 * @param string $filename
 	 */
 	function testAddDangerousFile($filename) {
-		$this->certificateManager->addCertificate(file_get_contents(__DIR__ . '/../../data/certificates/expiredCertificate.crt'), $filename);
+		$this->certificateManager->addCertificate(\file_get_contents(__DIR__ . '/../../data/certificates/expiredCertificate.crt'), $filename);
 	}
 
 	function testRemoveDangerousFile() {
@@ -102,7 +102,7 @@ class CertificateManagerTest extends \Test\TestCase {
 	}
 
 	function testRemoveExistingFile() {
-		$this->certificateManager->addCertificate(file_get_contents(__DIR__ . '/../../data/certificates/goodCertificate.crt'), 'GoodCertificate');
+		$this->certificateManager->addCertificate(\file_get_contents(__DIR__ . '/../../data/certificates/goodCertificate.crt'), 'GoodCertificate');
 		$this->assertTrue($this->certificateManager->removeCertificate('GoodCertificate'));
 	}
 

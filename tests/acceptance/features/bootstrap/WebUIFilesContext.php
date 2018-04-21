@@ -144,7 +144,7 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 	 */
 	private function getCurrentPageObject() {
 		$pageObject = $this->webUIGeneralContext->getCurrentPageObject();
-		if (is_null($pageObject)) {
+		if (\is_null($pageObject)) {
 			$pageObject = $this->filesPage;
 		}
 		return $pageObject;
@@ -246,7 +246,7 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 	public function theUserCreatesAFolderUsingTheWebUI($invalid, $name) {
 		// The capturing group of the regex always includes the quotes at each
 		// end of the captured string, so trim them.
-		$name = trim($name, $name[0]);
+		$name = \trim($name, $name[0]);
 		try {
 			$this->createAFolder($name);
 			if ($invalid === "invalid") {
@@ -487,7 +487,7 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 	public function theFollowingFilesFoldersHaveBeenDeleted(TableNode $filesTable) {
 		foreach ($filesTable as $file) {
 			$username = $this->featureContext->getCurrentUser();
-			$currentTime = microtime(true);
+			$currentTime = \microtime(true);
 			$end = $currentTime + (LONGUIWAITTIMEOUTMILLISEC / 1000);
 			//retry deleting in case the file is locked (code 403)
 			while ($currentTime <= $end) {
@@ -503,14 +503,14 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 					if ($e->getResponse()->getStatusCode() === 423) {
 						$message = "INFORMATION: file '" . $file['name'] .
 								   "' is locked";
-						error_log($message);
+						\error_log($message);
 					} else {
 						throw $e;
 					}
 				}
 				
-				usleep(STANDARDSLEEPTIMEMICROSEC);
-				$currentTime = microtime(true);
+				\usleep(STANDARDSLEEPTIMEMICROSEC);
+				$currentTime = \microtime(true);
 			}
 			
 			if ($currentTime > $end) {
@@ -632,18 +632,18 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 				$notifications = [];
 			}
 
-			$currentNotificationsCount = count($notifications);
+			$currentNotificationsCount = \count($notifications);
 
 			if ($currentNotificationsCount > $previousNotificationsCount) {
 				$message
 					= "Upload overwriting " . $name .
 					  " and got " . $currentNotificationsCount .
 					  " notifications including " .
-					  end($notifications) . "\n";
+					  \end($notifications) . "\n";
 				echo $message;
-				error_log($message);
+				\error_log($message);
 				$previousNotificationsCount = $currentNotificationsCount;
-				usleep(STANDARDSLEEPTIMEMICROSEC);
+				\usleep(STANDARDSLEEPTIMEMICROSEC);
 			} else {
 				break;
 			}
@@ -654,7 +654,7 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 				= "INFORMATION: retried to upload overwriting file " .
 				  $name . " " . $retryCounter . " times";
 			echo $message;
-			error_log($message);
+			\error_log($message);
 		}
 	}
 
@@ -697,7 +697,7 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 		$dialogs = $this->filesPage->getOcDialogs();
 		$isConflictDialog = false;
 		foreach ($dialogs as $dialog) {
-			$isConflictDialog = strstr(
+			$isConflictDialog = \strstr(
 				$dialog->getTitle(), $this->uploadConflictDialogTitle
 			);
 			if ($isConflictDialog !== false) {
@@ -733,7 +733,7 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 	 */
 	public function theUserChoosesToInTheUploadDialog($label) {
 		$dialogs = $this->filesPage->getOcDialogs();
-		$dialog = end($dialogs);
+		$dialog = \end($dialogs);
 		$this->conflictDialog->setElement($dialog->getOwnElement());
 		$this->conflictDialog->clickButton($this->getSession(), $label);
 		$this->filesPage->waitForUploadProgressbarToFinish();
@@ -747,12 +747,12 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 	 * @return void
 	 */
 	public function theDeletedMovedElementsShouldBeListedOnTheWebUI($shouldOrNot) {
-		if (!is_null($this->deletedElementsTable)) {
+		if (!\is_null($this->deletedElementsTable)) {
 			foreach ($this->deletedElementsTable as $file) {
 				$this->checkIfFileFolderIsListedOnTheWebUI($file['name'], $shouldOrNot);
 			}
 		}
-		if (!is_null($this->movedElementsTable)) {
+		if (!\is_null($this->movedElementsTable)) {
 			foreach ($this->movedElementsTable as $file) {
 				$this->checkIfFileFolderIsListedOnTheWebUI($file['name'], $shouldOrNot);
 			}
@@ -873,7 +873,7 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 	) {
 		// The capturing groups of the regex include the quotes at each
 		// end of the captured string, so trim them.
-		$this->theUserOpensTheFolderUsingTheWebUI($typeOfFilesPage, $fileOrFolder, trim($name, $name[0]));
+		$this->theUserOpensTheFolderUsingTheWebUI($typeOfFilesPage, $fileOrFolder, \trim($name, $name[0]));
 	}
 
 	/**
@@ -890,8 +890,8 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 			$this->theUserBrowsesToTheTrashbinPage();
 		}
 		if ($fileOrFolder === "folder") {
-			if (is_array($name)) {
-				$this->currentFolder .= "/" . implode($name);
+			if (\is_array($name)) {
+				$this->currentFolder .= "/" . \implode($name);
 			} else {
 				$this->currentFolder .= "/" . $name;
 			}
@@ -955,11 +955,11 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 		// The capturing groups of the regex include the quotes at each
 		// end of the captured string, so trim them.
 		if ($folder !== "") {
-			$folder = trim($folder, $folder[0]);
+			$folder = \trim($folder, $folder[0]);
 		}
 
 		$this->checkIfFileFolderIsListedOnTheWebUI(
-			trim($name, $name[0]),
+			\trim($name, $name[0]),
 			$shouldOrNot,
 			$typeOfFilesPage,
 			$folder
@@ -1011,8 +1011,8 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 			$fileRow = null;
 		}
 
-		if (is_array($name)) {
-			$nameText = implode($name);
+		if (\is_array($name)) {
+			$nameText = \implode($name);
 		} else {
 			$nameText = $name;
 		}
@@ -1039,8 +1039,8 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 				"file row of " . $fileLocationText . " is not visible but should"
 			);
 		} else {
-			if (is_array($name)) {
-				$name = implode($name);
+			if (\is_array($name)) {
+				$name = \implode($name);
 			}
 			if ($fileRow === null) {
 				PHPUnit_Framework_Assert::assertContains(
@@ -1127,7 +1127,7 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 		// The capturing groups of the regex include the quotes at each
 		// end of the captured string, so trim them.
 		if ($folder !== "") {
-			$folder = trim($folder, $folder[0]);
+			$folder = \trim($folder, $folder[0]);
 		}
 
 		$this->checkIfFileFolderIsListedOnTheWebUI(
@@ -1209,7 +1209,7 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 			$actionMenu = $this->filesPage->openFileActionsMenuByNo($i);
 			
 			$timeout_msec = STANDARDUIWAITTIMEOUTMILLISEC;
-			$currentTime = microtime(true);
+			$currentTime = \microtime(true);
 			$end = $currentTime + ($timeout_msec / 1000);
 			while ($currentTime <= $end) {
 				$windowHeight = $this->filesPage->getWindowHeight(
@@ -1225,8 +1225,8 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 				if ($windowHeight >= $deleteBtnCoordinates ["top"]) {
 					break;
 				}
-				usleep(STANDARDSLEEPTIMEMICROSEC);
-				$currentTime = microtime(true);
+				\usleep(STANDARDSLEEPTIMEMICROSEC);
+				$currentTime = \microtime(true);
 			}
 			
 			PHPUnit_Framework_Assert::assertLessThan(
@@ -1253,8 +1253,8 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 		$checkOnRemoteServer = ($remoteServer === 'on the remote server');
 		// The capturing group of the regex always includes the quotes at each
 		// end of the captured string, so trim them.
-		$remoteFile = $this->currentFolder . "/" . trim($remoteFile, $remoteFile[0]);
-		$originalFile = getenv("SRC_SKELETON_DIR") . "/" . trim($originalFile, $originalFile[0]);
+		$remoteFile = $this->currentFolder . "/" . \trim($remoteFile, $remoteFile[0]);
+		$originalFile = \getenv("SRC_SKELETON_DIR") . "/" . \trim($originalFile, $originalFile[0]);
 		$shouldBeSame = ($shouldOrNot !== "not");
 		$this->assertContentOfRemoteAndLocalFileIsSame($remoteFile, $originalFile, $shouldBeSame, $checkOnRemoteServer);
 	}
@@ -1275,8 +1275,8 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 		$checkOnRemoteServer = ($remoteServer === 'on the remote server');
 		// The capturing group of the regex always includes the quotes at each
 		// end of the captured string, so trim them.
-		$remoteFile = $this->currentFolder . "/" . trim($remoteFile, $remoteFile[0]);
-		$localFile = getenv("FILES_FOR_UPLOAD") . "/" . trim($localFile, $localFile[0]);
+		$remoteFile = $this->currentFolder . "/" . \trim($remoteFile, $remoteFile[0]);
+		$localFile = \getenv("FILES_FOR_UPLOAD") . "/" . \trim($localFile, $localFile[0]);
 		$shouldBeSame = ($shouldOrNot !== "not");
 		$this->assertContentOfRemoteAndLocalFileIsSame($remoteFile, $localFile, $shouldBeSame, $checkOnRemoteServer);
 	}
@@ -1293,14 +1293,14 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 		$checkOnRemoteServer = ($remoteServer === 'on the remote server');
 		// The capturing group of the regex always includes the quotes at each
 		// end of the captured string, so trim them.
-		$fileName = trim($fileName, $fileName[0]);
+		$fileName = \trim($fileName, $fileName[0]);
 		$remoteFile = $this->currentFolder . "/" . $fileName;
 		if ($this->currentFolder !== "") {
 			$subFolderPath = $this->currentFolder . "/";
 		} else {
 			$subFolderPath = "";
 		}
-		$localFile = getenv("SRC_SKELETON_DIR") . "/" . $subFolderPath . $fileName;
+		$localFile = \getenv("SRC_SKELETON_DIR") . "/" . $subFolderPath . $fileName;
 		$this->assertContentOfRemoteAndLocalFileIsSame($remoteFile, $localFile, true, $checkOnRemoteServer);
 	}
 
@@ -1397,7 +1397,7 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 			$remoteFile
 		);
 
-		$localContent = file_get_contents($localFile);
+		$localContent = \file_get_contents($localFile);
 		$downloadedContent = $result->getBody()->getContents();
 
 		if ($shouldBeSame) {

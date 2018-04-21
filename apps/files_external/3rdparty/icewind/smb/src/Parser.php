@@ -30,23 +30,23 @@ class Parser {
 	}
 
 	public function checkForError($output, $path) {
-		if (count($output) === 0) {
+		if (\count($output) === 0) {
 			return true;
 		} else {
-			if (strpos($output[0], 'does not exist')) {
+			if (\strpos($output[0], 'does not exist')) {
 				throw new NotFoundException($path);
 			}
-			$parts = explode(' ', $output[0]);
+			$parts = \explode(' ', $output[0]);
 			$error = false;
 			foreach ($parts as $part) {
-				if (substr($part, 0, 9) === 'NT_STATUS') {
+				if (\substr($part, 0, 9) === 'NT_STATUS') {
 					$error = $part;
 				}
 			}
 
 			$notFoundMsg = 'Error opening local file ';
-			if (substr($output[0], 0, strlen($notFoundMsg)) === $notFoundMsg) {
-				$localPath = substr($output[0], strlen($notFoundMsg));
+			if (\substr($output[0], 0, \strlen($notFoundMsg)) === $notFoundMsg) {
+				$localPath = \substr($output[0], \strlen($notFoundMsg));
 				throw new InvalidResourceException('Failed opening local file "' . $localPath . '" for writing');
 			}
 
@@ -87,7 +87,7 @@ class Parser {
 			'N' => FileInfo::MODE_NORMAL
 		);
 		foreach ($modeStrings as $char => $val) {
-			if (strpos($mode, $char) !== false) {
+			if (\strpos($mode, $char) !== false) {
 				$result |= $val;
 			}
 		}
@@ -101,17 +101,17 @@ class Parser {
 		foreach ($output as $line) {
 			// A line = explode statement may not fill all array elements
 			// properly. May happen when accessing non Windows Fileservers
-			$words = explode(':', $line, 2);
+			$words = \explode(':', $line, 2);
 			$name = isset($words[0]) ? $words[0] : '';
 			$value = isset($words[1]) ? $words[1] : '';
-			$value = trim($value);
+			$value = \trim($value);
 			if ($name === 'write_time') {
-				$mtime = strtotime($value);
+				$mtime = \strtotime($value);
 			} else if ($name === 'attributes') {
-				$mode = hexdec(substr($value, 1, -1));
+				$mode = \hexdec(\substr($value, 1, -1));
 			} else if ($name === 'stream') {
-				list(, $size,) = explode(' ', $value);
-				$size = intval($size);
+				list(, $size,) = \explode(' ', $value);
+				$size = \intval($size);
 			}
 		}
 		return array(
@@ -123,16 +123,16 @@ class Parser {
 
 	public function parseDir($output, $basePath) {
 		//last line is used space
-		array_pop($output);
+		\array_pop($output);
 		$regex = '/^\s*(.*?)\s\s\s\s+(?:([NDHARS]*)\s+)?([0-9]+)\s+(.*)$/';
 		//2 spaces, filename, optional type, size, date
 		$content = array();
 		foreach ($output as $line) {
-			if (preg_match($regex, $line, $matches)) {
+			if (\preg_match($regex, $line, $matches)) {
 				list(, $name, $mode, $size, $time) = $matches;
 				if ($name !== '.' and $name !== '..') {
 					$mode = $this->parseMode($mode);
-					$time = strtotime($time . ' ' . $this->timeZoneProvider->get());
+					$time = \strtotime($time . ' ' . $this->timeZoneProvider->get());
 					$content[] = new FileInfo($basePath . '/' . $name, $name, $size, $time, $mode);
 				}
 			}

@@ -60,7 +60,7 @@ class PersonalSecuritySettingsPage extends OwncloudPage {
 			$this->createNewAppPasswordButtonId
 		);
 
-		if (is_null($createNewAppPasswordButton)) {
+		if (\is_null($createNewAppPasswordButton)) {
 			throw new ElementNotFoundException(
 				__METHOD__ .
 				" id $this->createNewAppPasswordButtonId " .
@@ -74,7 +74,7 @@ class PersonalSecuritySettingsPage extends OwncloudPage {
 			$this->createNewAppPasswordButtonId
 		);
 
-		if (is_null($createNewAppPasswordButton)) {
+		if (\is_null($createNewAppPasswordButton)) {
 			throw new ElementNotFoundException(
 				__METHOD__ .
 				" id $this->createNewAppPasswordButtonId " .
@@ -82,12 +82,12 @@ class PersonalSecuritySettingsPage extends OwncloudPage {
 			);
 		}
 
-		while (strpos(
+		while (\strpos(
 			$createNewAppPasswordButton->getAttribute("class"),
 			$this->createNewAppPasswordLoadingIndicatorClass
 		) !== false
 		) {
-			usleep(STANDARDSLEEPTIMEMICROSEC);
+			\usleep(STANDARDSLEEPTIMEMICROSEC);
 		}
 
 	}
@@ -105,7 +105,7 @@ class PersonalSecuritySettingsPage extends OwncloudPage {
 		$appTrs = $this->findAll("xpath", $this->linkedAppsTrXpath);
 		foreach ($appTrs as $appTr) {
 			$app = $appTr->find("xpath", $this->linkedAppNameXpath);
-			if (!is_null($app) && ($this->getTrimmedText($app) === $appName)) {
+			if (!\is_null($app) && ($this->getTrimmedText($app) === $appName)) {
 				return $appTr;
 			}
 		}

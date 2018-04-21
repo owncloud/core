@@ -59,8 +59,8 @@ class ActivityTest extends TestCase {
 	public function testGetDefaultTypes($method, $expectedResult) {
 		$result = $this->activity->getDefaultTypes($method);
 
-		if (is_array($expectedResult)) {
-			$this->assertCount(count($expectedResult), $result);
+		if (\is_array($expectedResult)) {
+			$this->assertCount(\count($expectedResult), $result);
 			foreach ($expectedResult as $key => $expected) {
 				$this->assertSame($expected, $result[$key]);
 			}

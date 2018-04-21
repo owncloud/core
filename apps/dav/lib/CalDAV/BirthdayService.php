@@ -101,7 +101,7 @@ class BirthdayService {
 	 */
 	public function ensureCalendarExists($principal) {
 		$book = $this->calDavBackEnd->getCalendarByUri($principal, self::BIRTHDAY_CALENDAR_URI);
-		if (!is_null($book)) {
+		if (!\is_null($book)) {
 			return $book;
 		}
 		$this->calDavBackEnd->createCalendar($principal, self::BIRTHDAY_CALENDAR_URI, [
@@ -254,7 +254,7 @@ class BirthdayService {
 				$targetPrincipals[] = $share['{http://owncloud.org/ns}principal'];
 			}
 		}
-		return array_values(array_unique($targetPrincipals, SORT_STRING));
+		return \array_values(\array_unique($targetPrincipals, SORT_STRING));
 	}
 
 	/**
@@ -268,12 +268,12 @@ class BirthdayService {
 		$objectUri = $book['uri'] . '-' . $cardUri . $type['postfix'] . '.ics';
 		$calendarData = $this->buildDateFromContact($cardData, $type['field'], $type['symbol']);
 		$existing = $this->calDavBackEnd->getCalendarObject($calendarId, $objectUri);
-		if (is_null($calendarData)) {
-			if (!is_null($existing)) {
+		if (\is_null($calendarData)) {
+			if (!\is_null($existing)) {
 				$this->calDavBackEnd->deleteCalendarObject($calendarId, $objectUri);
 			}
 		} else {
-			if (is_null($existing)) {
+			if (\is_null($existing)) {
 				$this->calDavBackEnd->createCalendarObject($calendarId, $objectUri, $calendarData->serialize());
 			} else {
 				if ($this->birthdayEvenChanged($existing['calendardata'], $calendarData)) {

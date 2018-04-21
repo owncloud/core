@@ -70,7 +70,7 @@ class Migration {
 					'type' => $share['share_type'],
 			];
 
-			if (count($owners) === 1000) {
+			if (\count($owners) === 1000) {
 				$this->updateOwners($owners);
 				$owners = [];
 			}
@@ -78,7 +78,7 @@ class Migration {
 
 		$stmt->closeCursor();
 
-		if (count($owners)) {
+		if (\count($owners)) {
 			$this->updateOwners($owners);
 		}
 	}
@@ -115,7 +115,7 @@ class Migration {
 	 */
 	private function findOwner($share) {
 		$currentShare = $share;
-		while(!is_null($currentShare['parent'])) {
+		while(!\is_null($currentShare['parent'])) {
 			if (isset($this->shareCache[$currentShare['parent']])) {
 				$currentShare = $this->shareCache[$currentShare['parent']];
 			} else {

@@ -113,7 +113,7 @@ class SyncBackend extends Command {
 		if ($input->getOption('list')) {
 			$backends = $this->userManager->getBackends();
 			foreach ($backends as $backend) {
-				$output->writeln(get_class($backend));
+				$output->writeln(\get_class($backend));
 			}
 			return 0;
 		}
@@ -136,7 +136,7 @@ class SyncBackend extends Command {
 
 		if ($input->getOption('missing-account-action') !== null) {
 			$missingAccountsAction = $input->getOption('missing-account-action');
-			if (!in_array($missingAccountsAction, $validActions, true)) {
+			if (!\in_array($missingAccountsAction, $validActions, true)) {
 				$output->writeln('<error>Unknown action. Choose between "disable" or "remove"</error>');
 				return 1;
 			}
@@ -145,7 +145,7 @@ class SyncBackend extends Command {
 			$helper = $this->getHelper('question');
 			$question = new ChoiceQuestion(
 					'If unknown users are found, what do you want to do with their accounts? (removing the account will also remove its data)',
-					array_merge($validActions, ['ask later']),
+					\array_merge($validActions, ['ask later']),
 					0
 			);
 			$missingAccountsAction = $helper->ask($input, $output, $question);
@@ -200,7 +200,7 @@ class SyncBackend extends Command {
 		$p->start($max);
 
 		if ($input->getOption('seenOnly')) {
-			$iterator = new SeenUsersIterator($this->accountMapper, get_class($backend));
+			$iterator = new SeenUsersIterator($this->accountMapper, \get_class($backend));
 		} else {
 			$iterator = new AllUsersIterator($backend);
 		}
@@ -232,10 +232,10 @@ class SyncBackend extends Command {
 	) {
 		$output->writeln("Syncing $uid ...");
 		$users = $backend->getUsers($uid, 2);
-		if (count($users) > 1) {
+		if (\count($users) > 1) {
 			$output->writeln("Multiple users returned from backend for input: $uid. Cancelling sync.");
 			return 1;
-		} elseif (count($users) === 1) {
+		} elseif (\count($users) === 1) {
 			// Run the sync using the internal username if mapped
 			$syncService->run($backend, new \ArrayIterator([$users[0]]), function (){});
 		} else {
@@ -249,13 +249,13 @@ class SyncBackend extends Command {
 	 */
 	private function getBackend($backend) {
 		$backends = $this->userManager->getBackends();
-		$match = array_filter($backends, function ($b) use ($backend) {
-			return get_class($b) === $backend;
+		$match = \array_filter($backends, function ($b) use ($backend) {
+			return \get_class($b) === $backend;
 		});
 		if (empty($match)) {
 			return null;
 		}
-		return array_pop($match);
+		return \array_pop($match);
 	}
 
 	/**

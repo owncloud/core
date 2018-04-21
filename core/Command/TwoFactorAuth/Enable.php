@@ -53,7 +53,7 @@ class Enable extends Base {
 	protected function execute(InputInterface $input, OutputInterface $output) {
 		$uid = $input->getArgument('uid');
 		$user = $this->userManager->get($uid);
-		if (is_null($user)) {
+		if (\is_null($user)) {
 			$output->writeln("<error>Invalid UID</error>");
 			return;
 		}

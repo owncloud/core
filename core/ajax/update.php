@@ -28,7 +28,7 @@
  */
 use Symfony\Component\EventDispatcher\GenericEvent;
 
-set_time_limit(0);
+\set_time_limit(0);
 require_once '../../lib/base.php';
 
 $l = \OC::$server->getL10N('core');
@@ -189,7 +189,7 @@ if (OC::checkUpgrade(false)) {
 	try {
 		$updater->upgrade();
 	} catch (\Exception $e) {
-		$eventSource->send('failure', get_class($e) . ': ' . $e->getMessage());
+		$eventSource->send('failure', \get_class($e) . ': ' . $e->getMessage());
 		$eventSource->close();
 		exit();
 	}
@@ -204,7 +204,7 @@ if (OC::checkUpgrade(false)) {
 
 	if (!empty($disabledApps)) {
 		$eventSource->send('notice',
-			(string)$l->t('Following apps have been disabled: %s', implode(', ', $disabledApps)));
+			(string)$l->t('Following apps have been disabled: %s', \implode(', ', $disabledApps)));
 	}
 } else {
 	$eventSource->send('notice', (string)$l->t('Already up to date'));

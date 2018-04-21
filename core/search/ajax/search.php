@@ -36,7 +36,7 @@ if (isset($_GET['query'])) {
 }
 if (isset($_GET['inApps'])) {
 	$inApps = $_GET['inApps'];
-	if (is_string($inApps)) {
+	if (\is_string($inApps)) {
 		$inApps = [$inApps];
 	}
 } else {

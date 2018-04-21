@@ -63,13 +63,13 @@ class ZsyncPlugin extends ServerPlugin {
 	function httpGet(RequestInterface $request, ResponseInterface $response) {
 
 		$queryParams = $request->getQueryParameters();
-		if (!array_key_exists('zsync', $queryParams)) {
+		if (!\array_key_exists('zsync', $queryParams)) {
 			return true;
 		}
 
-		$path = ltrim($request->getPath(), '/');
+		$path = \ltrim($request->getPath(), '/');
 		/* remove files/$user */
-		$path = implode('/', array_slice(explode('/', $path), 2));
+		$path = \implode('/', \array_slice(\explode('/', $path), 2));
 		/* If basefile not found this is an error */
 		if (!$this->view->file_exists('files/'.$path)) {
 			$response->setStatus(Http::STATUS_NOT_FOUND);
@@ -99,13 +99,13 @@ class ZsyncPlugin extends ServerPlugin {
 	function httpDelete(RequestInterface $request, ResponseInterface $response) {
 
 		$queryParams = $request->getQueryParameters();
-		if (!array_key_exists('zsync', $queryParams)) {
+		if (!\array_key_exists('zsync', $queryParams)) {
 			return true;
 		}
 
-		$path = ltrim($request->getPath(), '/');
+		$path = \ltrim($request->getPath(), '/');
 		/* remove files/$user */
-		$path = implode('/', array_slice(explode('/', $path), 2));
+		$path = \implode('/', \array_slice(\explode('/', $path), 2));
 		/* If basefile not found this is an error */
 		if (!$this->view->file_exists('files/'.$path)) {
 			$response->setStatus(Http::STATUS_NOT_FOUND);

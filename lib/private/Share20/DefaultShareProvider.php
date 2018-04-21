@@ -125,7 +125,7 @@ class DefaultShareProvider implements IShareProvider {
 				$qb->setValue('expiration', $qb->createNamedParameter($share->getExpirationDate(), 'datetime'));
 			}
 
-			if (method_exists($share, 'getParent')) {
+			if (\method_exists($share, 'getParent')) {
 				$qb->setValue('parent', $qb->createNamedParameter($share->getParent()));
 			}
 
@@ -160,7 +160,7 @@ class DefaultShareProvider implements IShareProvider {
 		$qb->setValue('file_target', $qb->createNamedParameter($share->getTarget()));
 
 		// Set the time this share was created
-		$qb->setValue('stime', $qb->createNamedParameter(time()));
+		$qb->setValue('stime', $qb->createNamedParameter(\time()));
 
 		// insert the data and fetch the id of the share
 		$this->dbConn->beginTransaction();
@@ -336,7 +336,7 @@ class DefaultShareProvider implements IShareProvider {
 			$group = $this->groupManager->get($share->getSharedWith());
 			$user = $this->userManager->get($recipient);
 
-			if (is_null($group)) {
+			if (\is_null($group)) {
 				throw new ProviderException('Group "' . $share->getSharedWith() . '" does not exist');
 			}
 
@@ -475,7 +475,7 @@ class DefaultShareProvider implements IShareProvider {
 		$shares = [];
 		$qb = $this->dbConn->getQueryBuilder();
 
-		$nodeIdsChunks = array_chunk($nodeIDs, 100);
+		$nodeIdsChunks = \array_chunk($nodeIDs, 100);
 		foreach ($nodeIdsChunks as $nodeIdsChunk) {
 			$qb->select('*')
 				->from('share')
@@ -611,7 +611,7 @@ class DefaultShareProvider implements IShareProvider {
 		// If the recipient is set for a group share resolve to that user
 		if ($recipientId !== null && $share->getShareType() === \OCP\Share::SHARE_TYPE_GROUP) {
 			$resolvedShares = $this->resolveGroupShares([$share], $recipientId);
-			if (count($resolvedShares) === 1){
+			if (\count($resolvedShares) === 1){
 				// If we pass to resolveGroupShares() an with one element,
 				// we expect to receive exactly one element, otherwise it is error
 				$share = $resolvedShares[0];
@@ -667,9 +667,9 @@ class DefaultShareProvider implements IShareProvider {
 		}
 
 		// exclude shares leading to trashbin on home storages
-		$pathSections = explode('/', $data['path'], 2);
+		$pathSections = \explode('/', $data['path'], 2);
 		// FIXME: would not detect rare md5'd home storage case properly
-		if ($pathSections[0] !== 'files' && explode(':', $data['storage_string_id'], 2)[0] === 'home') {
+		if ($pathSections[0] !== 'files' && \explode(':', $data['storage_string_id'], 2)[0] === 'home') {
 			return false;
 		}
 		return true;
@@ -729,7 +729,7 @@ class DefaultShareProvider implements IShareProvider {
 			$qb->andWhere($qb->expr()->eq('file_source', $qb->createNamedParameter($node->getId())));
 		}
 
-		$groups = array_map(function(IGroup $group) { return $group->getGID(); }, $groups);
+		$groups = \array_map(function(IGroup $group) { return $group->getGID(); }, $groups);
 
 		$qb->andWhere($qb->expr()->eq('share_type', $qb->createNamedParameter(\OCP\Share::SHARE_TYPE_GROUP)))
 			->andWhere($qb->expr()->in('share_with', $qb->createNamedParameter(
@@ -766,7 +766,7 @@ class DefaultShareProvider implements IShareProvider {
 			$qb->andWhere($qb->expr()->eq('file_source', $qb->createNamedParameter($node->getId())));
 		}
 
-		$groups = array_map(function(IGroup $group) { return $group->getGID(); }, $groups);
+		$groups = \array_map(function(IGroup $group) { return $group->getGID(); }, $groups);
 
 		$qb->andWhere($qb->expr()->orX(
 			$qb->expr()->andX(
@@ -820,7 +820,7 @@ class DefaultShareProvider implements IShareProvider {
 
 			$start = 0;
 			while(true) {
-				$groups = array_slice($allGroups, $start, 100);
+				$groups = \array_slice($allGroups, $start, 100);
 				$start += 100;
 
 				if ($groups === []) {
@@ -832,7 +832,7 @@ class DefaultShareProvider implements IShareProvider {
 				$qb->setFirstResult(0);
 
 				if ($limit !== -1) {
-					$qb->setMaxResults($limit - count($shares));
+					$qb->setMaxResults($limit - \count($shares));
 				}
 
 				$cursor = $qb->execute();
@@ -852,7 +852,7 @@ class DefaultShareProvider implements IShareProvider {
 			//Resolve all group shares to user specific shares
 			if (!empty($shares2)) {
 				$resolvedGroupShares = $this->resolveGroupShares($shares2, $userId);
-				$shares = array_merge($shares, $resolvedGroupShares);
+				$shares = \array_merge($shares, $resolvedGroupShares);
 			}
 		} else {
 			throw new BackendError('Invalid backend');
@@ -872,10 +872,10 @@ class DefaultShareProvider implements IShareProvider {
 		$allGroups = $this->groupManager->getUserGroups($user, 'sharing');
 
 		// Make chunks
-		$sharedWithGroupChunks = array_chunk($allGroups, 100);
+		$sharedWithGroupChunks = \array_chunk($allGroups, 100);
 
 		// Check how many group chunks do we need
-		$sharedWithGroupChunksNo = count($sharedWithGroupChunks);
+		$sharedWithGroupChunksNo = \count($sharedWithGroupChunks);
 
 		// If there are not groups, query only user, if there are groups, query both
 		$chunkedResults = [];
@@ -925,7 +925,7 @@ class DefaultShareProvider implements IShareProvider {
 		//Resolve all group shares to user specific shares
 		if (!empty($groupShares)) {
 			$resolvedGroupShares = $this->resolveGroupShares($groupShares, $userId);
-			$resolvedShares = array_merge($resolvedShares, $resolvedGroupShares);
+			$resolvedShares = \array_merge($resolvedShares, $resolvedGroupShares);
 		}
 
 		return $resolvedShares;
@@ -1097,14 +1097,14 @@ class DefaultShareProvider implements IShareProvider {
 				// If $shareParent is contained in $shareIdToShareMap, it means that needs resolving
 				if (isset($shareIdToShareMap[$shareParent])) {
 					$share = $shareIdToShareMap[$shareParent];
-					$share->setPermissions(intval($data['permissions']));
+					$share->setPermissions(\intval($data['permissions']));
 					$share->setTarget($data['file_target']);
 				}
 			}
 			$stmt->closeCursor();
 		}
 		
-		$resolvedShares = array_values($shareIdToShareMap);
+		$resolvedShares = \array_values($shareIdToShareMap);
 		return $resolvedShares;
 	}
 
@@ -1197,7 +1197,7 @@ class DefaultShareProvider implements IShareProvider {
 		$cursor->closeCursor();
 
 		if (!empty($ids)) {
-			$chunks = array_chunk($ids, 100);
+			$chunks = \array_chunk($ids, 100);
 			foreach ($chunks as $chunk) {
 				$qb->delete('share')
 					->where($qb->expr()->eq('share_type', $qb->createNamedParameter(self::SHARE_TYPE_USERGROUP)))
@@ -1240,7 +1240,7 @@ class DefaultShareProvider implements IShareProvider {
 		$cursor->closeCursor();
 
 		if (!empty($ids)) {
-			$chunks = array_chunk($ids, 100);
+			$chunks = \array_chunk($ids, 100);
 			foreach ($chunks as $chunk) {
 				/*
 				 * Delete all special shares wit this users for the found group shares
@@ -1262,7 +1262,7 @@ class DefaultShareProvider implements IShareProvider {
 	 * @throws InvalidArgumentException if the share validation failed
 	 */
 	private function validate($share) {
-		if (!is_null($share->getName()) && strlen($share->getName()) > 64) {
+		if (!\is_null($share->getName()) && \strlen($share->getName()) > 64) {
 			throw new \InvalidArgumentException('Share name cannot be more than 64 characters');
 		}
 

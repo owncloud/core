@@ -76,7 +76,7 @@ class PublicLinkFilesPage extends FilesPageBasic {
 	 */
 	public function addToServer($server) {
 		$addToYourOcBtn = $this->findById($this->addToYourOcBtnId);
-		if (is_null($addToYourOcBtn)) {
+		if (\is_null($addToYourOcBtn)) {
 			throw new ElementNotFoundException(
 				__METHOD__ .
 				" id " . $this->addToYourOcBtnId .
@@ -85,7 +85,7 @@ class PublicLinkFilesPage extends FilesPageBasic {
 		}
 		$addToYourOcBtn->click();
 		$remoteAddressInput = $this->findById($this->remoteAddressInputId);
-		if (is_null($remoteAddressInput)) {
+		if (\is_null($remoteAddressInput)) {
 			throw new ElementNotFoundException(
 				__METHOD__ .
 				" id " . $this->remoteAddressInput .
@@ -94,7 +94,7 @@ class PublicLinkFilesPage extends FilesPageBasic {
 		}
 		$remoteAddressInput->setValue($server);
 		$confirmBtn = $this->findById($this->confirmBtnId);
-		if (is_null($confirmBtn)) {
+		if (\is_null($confirmBtn)) {
 			throw new ElementNotFoundException(
 				__METHOD__ .
 				" id " . $this->confirmBtn .

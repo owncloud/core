@@ -19,7 +19,7 @@
 		/** @var Backend $backend */
 		$scripts = $backend->getCustomJs();
 		foreach ($scripts as $script) {
-			if (is_array($script)) {
+			if (\is_array($script)) {
 				list($appName, $tmpScript) = $script;
 			} else {
 				$appName = 'files_external';
@@ -56,7 +56,7 @@
 	<div id="files_external_settings" class=" <?php if (!$_['enableExternalStorage']) print('hidden'); ?>">
 
 	<?php if (isset($_['dependencies']) and ($_['dependencies']<>'')) print_unescaped(''.$_['dependencies'].''); ?>
-	<table id="externalStorage" class="grid" data-admin='<?php print_unescaped(json_encode($_['visibilityType'] === IStoragesBackendService::VISIBILITY_ADMIN)); ?>'>
+	<table id="externalStorage" class="grid" data-admin='<?php print_unescaped(\json_encode($_['visibilityType'] === IStoragesBackendService::VISIBILITY_ADMIN)); ?>'>
 		<thead>
 			<tr>
 				<th></th>
@@ -82,17 +82,17 @@
 					placeholder="<?php p($l->t('Folder name')); ?>">
 				</td>
 				<td class="backend">
-					<select id="selectBackend" class="selectBackend" data-configurations='<?php p(json_encode($_['backends'])); ?>'>
+					<select id="selectBackend" class="selectBackend" data-configurations='<?php p(\json_encode($_['backends'])); ?>'>
 						<option value="" disabled selected
 							style="display:none;">
 							<?php p($l->t('Add storage')); ?>
 						</option>
 						<?php
-							$sortedBackends = array_filter($_['backends'], function($backend) use ($_) {
+							$sortedBackends = \array_filter($_['backends'], function($backend) use ($_) {
 								return $backend->isVisibleFor($_['visibilityType']);
 							});
-							uasort($sortedBackends, function($a, $b) {
-								return strcasecmp($a->getText(), $b->getText());
+							\uasort($sortedBackends, function($a, $b) {
+								return \strcasecmp($a->getText(), $b->getText());
 							});
 						?>
 						<?php
@@ -105,7 +105,7 @@
 						<?php endforeach; ?>
 					</select>
 				</td>
-				<td class="authentication" data-mechanisms='<?php p(json_encode($_['authMechanisms'])); ?>'></td>
+				<td class="authentication" data-mechanisms='<?php p(\json_encode($_['authMechanisms'])); ?>'></td>
 				<td class="configuration"></td>
 				<?php if ($_['visibilityType'] === IStoragesBackendService::VISIBILITY_ADMIN): ?>
 					<td class="applicable" align="right">
@@ -141,11 +141,11 @@
 		<p id="userMountingBackends"<?php if ($_['allowUserMounting'] != 'yes'): ?> class="hidden"<?php endif; ?>>
 			<?php p($l->t('Allow users to mount the following external storage')); ?><br />
 			<?php
-				$userBackends = array_filter($_['backends'], function($backend) {
+				$userBackends = \array_filter($_['backends'], function($backend) {
 					return $backend->isAllowedVisibleFor(IStoragesBackendService::VISIBILITY_PERSONAL);
 				});
-				uasort($userBackends, function($a, $b) {
-					return strcasecmp($a->getText(), $b->getText());
+				\uasort($userBackends, function($a, $b) {
+					return \strcasecmp($a->getText(), $b->getText());
 				});
 			?>
 			<?php $i = 0; foreach ($userBackends as $backend): ?>

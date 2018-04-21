@@ -59,15 +59,15 @@ class SFTP extends \OCP\Files\Storage\StorageAdapter {
 	 */
 	private function splitHost($host) {
 		$input = $host;
-		if (strpos($host, '://') === false) {
+		if (\strpos($host, '://') === false) {
 			// add a protocol to fix parse_url behavior with ipv6
 			$host = 'http://' . $host;
 		}
 
-		$parsed = parse_url($host);
-		if(is_array($parsed) && isset($parsed['port'])) {
+		$parsed = \parse_url($host);
+		if(\is_array($parsed) && isset($parsed['port'])) {
 			return [$parsed['host'], $parsed['port']];
-		} else if (is_array($parsed)) {
+		} else if (\is_array($parsed)) {
 			return [$parsed['host'], 22];
 		} else {
 			return [$input, 22];
@@ -106,7 +106,7 @@ class SFTP extends \OCP\Files\Storage\StorageAdapter {
 			 $this->root = '/' . $this->root;
 		}
 
-		if (substr($this->root, -1, 1) != '/') {
+		if (\substr($this->root, -1, 1) != '/') {
 			$this->root .= '/';
 		}
 	}
@@ -118,7 +118,7 @@ class SFTP extends \OCP\Files\Storage\StorageAdapter {
 	 * @throws \Exception when the connection failed
 	 */
 	public function getConnection() {
-		if (!is_null($this->client)) {
+		if (!\is_null($this->client)) {
 			return $this->client;
 		}
 
@@ -127,7 +127,7 @@ class SFTP extends \OCP\Files\Storage\StorageAdapter {
 
 		// The SSH Host Key MUST be verified before login().
 		$currentHostKey = $this->client->getServerPublicHostKey();
-		if (array_key_exists($this->host, $hostKeys)) {
+		if (\array_key_exists($this->host, $hostKeys)) {
 			if ($hostKeys[$this->host] != $currentHostKey) {
 				throw new \Exception('Host public key does not match known key');
 			}
@@ -222,12 +222,12 @@ class SFTP extends \OCP\Files\Storage\StorageAdapter {
 	protected function writeHostKeys($keys) {
 		try {
 			$keyPath = $this->hostKeysPath();
-			if ($keyPath && file_exists($keyPath)) {
-				$fp = fopen($keyPath, 'w');
+			if ($keyPath && \file_exists($keyPath)) {
+				$fp = \fopen($keyPath, 'w');
 				foreach ($keys as $host => $key) {
-					fwrite($fp, $host . '::' . $key . "\n");
+					\fwrite($fp, $host . '::' . $key . "\n");
 				}
-				fclose($fp);
+				\fclose($fp);
 				return true;
 			}
 		} catch (\Exception $e) {
@@ -241,19 +241,19 @@ class SFTP extends \OCP\Files\Storage\StorageAdapter {
 	protected function readHostKeys() {
 		try {
 			$keyPath = $this->hostKeysPath();
-			if (file_exists($keyPath)) {
+			if (\file_exists($keyPath)) {
 				$hosts = [];
 				$keys = [];
-				$lines = file($keyPath, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
+				$lines = \file($keyPath, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
 				if ($lines) {
 					foreach ($lines as $line) {
-						$hostKeyArray = explode("::", $line, 2);
-						if (count($hostKeyArray) == 2) {
+						$hostKeyArray = \explode("::", $line, 2);
+						if (\count($hostKeyArray) == 2) {
 							$hosts[] = $hostKeyArray[0];
 							$keys[] = $hostKeyArray[1];
 						}
 					}
-					return array_combine($hosts, $keys);
+					return \array_combine($hosts, $keys);
 				}
 			}
 		} catch (\Exception $e) {
@@ -297,7 +297,7 @@ class SFTP extends \OCP\Files\Storage\StorageAdapter {
 				return false;
 			}
 
-			$id = md5('sftp:' . $path);
+			$id = \md5('sftp:' . $path);
 			$dirStream = [];
 			foreach($list as $file) {
 				if ($file != '.' && $file != '..') {
@@ -375,8 +375,8 @@ class SFTP extends \OCP\Files\Storage\StorageAdapter {
 				case 'x+':
 				case 'c':
 				case 'c+':
-					$context = stream_context_create(['sftp' => ['session' => $this->getConnection()]]);
-					$handle = fopen($this->constructUrl($path), $mode, false, $context);
+					$context = \stream_context_create(['sftp' => ['session' => $this->getConnection()]]);
+					$handle = \fopen($this->constructUrl($path), $mode, false, $context);
 					return RetryWrapper::wrap($handle);
 			}
 		} catch (\Exception $e) {
@@ -389,7 +389,7 @@ class SFTP extends \OCP\Files\Storage\StorageAdapter {
 	 */
 	public function touch($path, $mtime=null) {
 		try {
-			if (!is_null($mtime)) {
+			if (!\is_null($mtime)) {
 				return false;
 			}
 			if (!$this->file_exists($path)) {
@@ -462,7 +462,7 @@ class SFTP extends \OCP\Files\Storage\StorageAdapter {
 		// Do not pass the password here. We want to use the Net_SFTP object
 		// supplied via stream context or fail. We only supply username and
 		// hostname because this might show up in logs (they are not used).
-		$url = 'sftp://' . urlencode($this->user) . '@' . $this->host . ':' . $this->port . $this->root . $path;
+		$url = 'sftp://' . \urlencode($this->user) . '@' . $this->host . ':' . $this->port . $this->root . $path;
 		return $url;
 	}
 }

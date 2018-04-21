@@ -145,7 +145,7 @@ class FederatedShareProvider implements IShareProvider {
 		if (!empty($alreadyShared)) {
 			$message = 'Sharing %s failed, because this item is already shared with %s';
 			$message_t = $this->l->t('Sharing %s failed, because this item is already shared with %s', [$share->getNode()->getName(), $shareWith]);
-			$this->logger->debug(sprintf($message, $share->getNode()->getName(), $shareWith), ['app' => 'Federated File Sharing']);
+			$this->logger->debug(\sprintf($message, $share->getNode()->getName(), $shareWith), ['app' => 'Federated File Sharing']);
 			throw new \Exception($message_t);
 		}
 
@@ -172,11 +172,11 @@ class FederatedShareProvider implements IShareProvider {
 		if ($remoteShare) {
 			try {
 				$uidOwner = $remoteShare['owner'] . '@' . $remoteShare['remote'];
-				$shareId = $this->addShareToDB($itemSource, $itemType, $shareWith, $sharedBy, $uidOwner, $permissions, 'tmp_token_' . time());
+				$shareId = $this->addShareToDB($itemSource, $itemType, $shareWith, $sharedBy, $uidOwner, $permissions, 'tmp_token_' . \time());
 				$share->setId($shareId);
 				list($token, $remoteId) = $this->askOwnerToReShare($shareWith, $share, $shareId);
 				// remote share was create successfully if we get a valid token as return
-				$send = is_string($token) && $token !== '';
+				$send = \is_string($token) && $token !== '';
 			} catch (\Exception $e) {
 				// fall back to old re-share behavior if the remote server
 				// doesn't support flat re-shares (was introduced with ownCloud 9.1)
@@ -321,7 +321,7 @@ class FederatedShareProvider implements IShareProvider {
 			->setValue('uid_initiator', $qb->createNamedParameter($sharedBy))
 			->setValue('permissions', $qb->createNamedParameter($permissions))
 			->setValue('token', $qb->createNamedParameter($token))
-			->setValue('stime', $qb->createNamedParameter(time()));
+			->setValue('stime', $qb->createNamedParameter(\time()));
 
 		/*
 		 * Added to fix https://github.com/owncloud/core/issues/22215
@@ -425,7 +425,7 @@ class FederatedShareProvider implements IShareProvider {
 			->where($query->expr()->eq('share_id', $query->createNamedParameter((int)$share->getId())));
 		$data = $query->execute()->fetch();
 
-		if (!is_array($data) || !isset($data['remote_id'])) {
+		if (!\is_array($data) || !isset($data['remote_id'])) {
 			throw new ShareNotFound();
 		}
 
@@ -569,7 +569,7 @@ class FederatedShareProvider implements IShareProvider {
 		$shares = [];
 		$qb = $this->dbConnection->getQueryBuilder();
 
-		$nodeIdsChunks = array_chunk($nodeIDs, 100);
+		$nodeIdsChunks = \array_chunk($nodeIDs, 100);
 		foreach ($nodeIdsChunks as $nodeIdsChunk) {
 			// In federates sharing currently we have only one share_type_remote
 			$qb->select('*')

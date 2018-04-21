@@ -60,14 +60,14 @@ class Streamer {
 	 * @param string $internalDir
 	 */
 	public function addDirRecursive($dir, $internalDir='') {
-		$dirname = basename($dir);
+		$dirname = \basename($dir);
 		$rootDir = $internalDir . $dirname;
 		if (!empty($rootDir)) {
 			$this->streamerInstance->addEmptyDir($rootDir);
 		}
 		$internalDir .= $dirname . '/';
 		// prevent absolute dirs
-		$internalDir = ltrim($internalDir, '/');
+		$internalDir = \ltrim($internalDir, '/');
 
 		$files= \OC\Files\Filesystem::getDirectoryContent($dir);
 		foreach($files as $file) {
@@ -77,7 +77,7 @@ class Streamer {
 				$filesize = \OC\Files\Filesystem::filesize($file);
 				$fh = \OC\Files\Filesystem::fopen($file, 'r');
 				$this->addFileFromStream($fh, $internalDir . $filename, $filesize);
-				fclose($fh);
+				\fclose($fh);
 			}elseif(\OC\Files\Filesystem::is_dir($file)) {
 				$this->addDirRecursive($file, $internalDir);
 			}

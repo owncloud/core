@@ -56,8 +56,8 @@ class AssemblyStreamZsync extends AssemblyStream {
 		// sort the nodes
 		$nodes = $this->nodes;
 		// http://stackoverflow.com/a/10985500
-		@usort($nodes, function(IFile $a, IFile $b) {
-			return strnatcmp($a->getName(), $b->getName());
+		@\usort($nodes, function(IFile $a, IFile $b) {
+			return \strnatcmp($a->getName(), $b->getName());
 		});
 		$this->nodes = $nodes;
 
@@ -67,7 +67,7 @@ class AssemblyStreamZsync extends AssemblyStream {
 			$size = $node->getSize();
 			$name = $node->getName();
 			// ignore .zsync metadata file
-			if (!strcmp($name,".zsync"))
+			if (!\strcmp($name,".zsync"))
 				continue;
 			if ($size == 0)
 				continue;
@@ -92,7 +92,7 @@ class AssemblyStreamZsync extends AssemblyStream {
 		if ($this->currentStream === null || $this->pos == $this->next) {
 			list($node, $posInNode) = $this->getNodeForPosition($this->pos);
 			$this->currentStream = $this->getStream($node['node']);
-			fseek($this->currentStream, $posInNode);
+			\fseek($this->currentStream, $posInNode);
 			$this->currentNode = $node;
 		}
 
@@ -116,13 +116,13 @@ class AssemblyStreamZsync extends AssemblyStream {
 			$count = $this->next - $this->pos;
 
 		// read the data
-		$data = fread($this->currentStream, $count);
+		$data = \fread($this->currentStream, $count);
 		if (isset($data[$count - 1])) {
 			// we read the full count
 			$read = $count;
 		} else {
 			// reaching end of stream, which happens less often so strlen is ok
-			$read = strlen($data);
+			$read = \strlen($data);
 		}
 
 		// update position
@@ -149,13 +149,13 @@ class AssemblyStreamZsync extends AssemblyStream {
 	 * @throws \Exception
 	 */
 	protected function loadContext($name) {
-		$context = stream_context_get_options($this->context);
+		$context = \stream_context_get_options($this->context);
 		if (isset($context[$name])) {
 			$context = $context[$name];
 		} else {
 			throw new \BadMethodCallException('Invalid context, "' . $name . '" options not set');
 		}
-		if (isset($context['nodes']) and is_array($context['nodes'])) {
+		if (isset($context['nodes']) and \is_array($context['nodes'])) {
 			$this->nodes = $context['nodes'];
 		} else {
 			throw new \BadMethodCallException('Invalid context, nodes not set');
@@ -183,21 +183,21 @@ class AssemblyStreamZsync extends AssemblyStream {
 	 * @throws \BadMethodCallException
 	 */
 	public static function wrap(array $nodes, IFile $backingFile = null, $fileLength = null) {
-		$context = stream_context_create([
+		$context = \stream_context_create([
 			'assembly' => [
 				'nodes' => $nodes,
 				'backingFile' => $backingFile,
 				'fileLength' => $fileLength
 			]
 		]);
-		stream_wrapper_register('assembly', '\OCA\DAV\Upload\AssemblyStreamZsync');
+		\stream_wrapper_register('assembly', '\OCA\DAV\Upload\AssemblyStreamZsync');
 		try {
-			$wrapped = fopen('assembly://', 'r', null, $context);
+			$wrapped = \fopen('assembly://', 'r', null, $context);
 		} catch (\BadMethodCallException $e) {
-			stream_wrapper_unregister('assembly');
+			\stream_wrapper_unregister('assembly');
 			throw $e;
 		}
-		stream_wrapper_unregister('assembly');
+		\stream_wrapper_unregister('assembly');
 		return $wrapped;
 	}
 

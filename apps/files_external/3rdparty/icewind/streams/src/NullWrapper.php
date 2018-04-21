@@ -20,7 +20,7 @@ class NullWrapper extends Wrapper {
 	 * @throws \BadMethodCallException
 	 */
 	public static function wrap($source) {
-		$context = stream_context_create(array(
+		$context = \stream_context_create(array(
 			'null' => array(
 				'source' => $source)
 		));

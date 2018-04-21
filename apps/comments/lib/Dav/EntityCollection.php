@@ -66,8 +66,8 @@ class EntityCollection extends RootCollection implements IProperties {
 		ILogger $logger
 	) {
 		foreach(['id', 'name'] as $property) {
-			$$property = trim($$property);
-			if(empty($$property) || !is_string($$property)) {
+			$$property = \trim($$property);
+			if(empty($$property) || !\is_string($$property)) {
 				throw new \InvalidArgumentException('"' . $property . '" parameter must be non-empty string');
 			}
 		}
@@ -187,7 +187,7 @@ class EntityCollection extends RootCollection implements IProperties {
 	function getProperties($properties) {
 		$marker = null;
 		$user = $this->userSession->getUser();
-		if(!is_null($user)) {
+		if(!\is_null($user)) {
 			$marker = $this->commentsManager->getReadMark($this->name, $this->id, $user);
 		}
 		return [self::PROPERTY_NAME_READ_MARKER => $marker];

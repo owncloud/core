@@ -46,7 +46,7 @@ class Mapper {
 	 * @return string
 	 */
 	public function getBucket() {
-		$hash = md5($this->user->getUID());
-		return substr($hash, 0, 3);
+		$hash = \md5($this->user->getUID());
+		return \substr($hash, 0, 3);
 	}
 }

@@ -56,7 +56,7 @@ abstract class Mapper {
 		// if not given set the entity name to the class without the mapper part
 		// cache it here for later use since reflection is slow
 		if($entityClass === null) {
-			$this->entityClass = str_replace('Mapper', '', get_class($this));
+			$this->entityClass = \str_replace('Mapper', '', \get_class($this));
 		} else {
 			$this->entityClass = $entityClass;
 		}
@@ -104,13 +104,13 @@ abstract class Mapper {
 		$i = 0;
 		foreach($properties as $property => $updated) {
 			$column = $entity->propertyToColumn($property);
-			$getter = 'get' . ucfirst($property);
+			$getter = 'get' . \ucfirst($property);
 
 			$columns .= '`' . $column . '`';
 			$values .= '?';
 
 			// only append colon if there are more entries
-			if($i < count($properties)-1){
+			if($i < \count($properties)-1){
 				$columns .= ',';
 				$values .= ',';
 			}
@@ -144,7 +144,7 @@ abstract class Mapper {
 	public function update(Entity $entity){
 		// if entity wasn't changed it makes no sense to run a db query
 		$properties = $entity->getUpdatedFields();
-		if(count($properties) === 0) {
+		if(\count($properties) === 0) {
 			return $entity;
 		}
 
@@ -168,12 +168,12 @@ abstract class Mapper {
 		foreach($properties as $property => $updated) {
 
 			$column = $entity->propertyToColumn($property);
-			$getter = 'get' . ucfirst($property);
+			$getter = 'get' . \ucfirst($property);
 
 			$columns .= '`' . $column . '` = ?';
 
 			// only append colon if there are more entries
-			if($i < count($properties)-1){
+			if($i < \count($properties)-1){
 				$columns .= ',';
 			}
 
@@ -198,7 +198,7 @@ abstract class Mapper {
 	 * @since 8.1.0
 	 */
 	private function isAssocArray(array $array) {
-		return array_values($array) !== $array;
+		return \array_values($array) !== $array;
 	}
 
 	/**
@@ -208,7 +208,7 @@ abstract class Mapper {
 	 * @since 8.1.0
 	 */
 	private function getPDOType($value) {
-		switch (gettype($value)) {
+		switch (\gettype($value)) {
 			case 'integer':
 				return \PDO::PARAM_INT;
 			case 'boolean':
@@ -320,7 +320,7 @@ abstract class Mapper {
 	private function buildDebugMessage($msg, $sql, array $params=[], $limit=null, $offset=null) {
 		return $msg .
 					': query "' .	$sql . '"; ' .
-					'parameters ' . print_r($params, true) . '; ' .
+					'parameters ' . \print_r($params, true) . '; ' .
 					'limit "' . $limit . '"; '.
 					'offset "' . $offset . '"';
 	}
@@ -335,7 +335,7 @@ abstract class Mapper {
 	 */
 	protected function mapRowToEntity($row) {
 		unset($row['DOCTRINE_ROWNUM']); // Remove oracle workaround for limit
-		return call_user_func($this->entityClass .'::fromRow', $row);
+		return \call_user_func($this->entityClass .'::fromRow', $row);
 	}
 
 

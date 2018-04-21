@@ -102,7 +102,7 @@ class OccController extends Controller {
 			$this->console->setAutoExit(false);
 			$this->console->loadCommands(new ArrayInput([]), $output);
 
-			$inputArray = array_merge(['command' => $command], $params);
+			$inputArray = \array_merge(['command' => $command], $params);
 			$input = new ArrayInput($inputArray);
 
 			$exitCode = $this->console->run($input, $output);
@@ -138,15 +138,15 @@ class OccController extends Controller {
 	protected function validateRequest($command, $token){
 		$allowedHosts = ['::1', '127.0.0.1', 'localhost'];
 		if (isset($this->request->server['SERVER_ADDR'])){
-			array_push($allowedHosts, $this->request->server['SERVER_ADDR']);
+			\array_push($allowedHosts, $this->request->server['SERVER_ADDR']);
 		}
 
-		if (!in_array($this->request->getRemoteAddress(), $allowedHosts)) {
+		if (!\in_array($this->request->getRemoteAddress(), $allowedHosts)) {
 			throw new \UnexpectedValueException('Web executor is not allowed to run from a host ' . $this->request->getRemoteAddress());
 		}
 
-		if (!in_array($command, $this->allowedCommands)) {
-			throw new \UnexpectedValueException(sprintf('Command "%s" is not allowed to run via web request', $command));
+		if (!\in_array($command, $this->allowedCommands)) {
+			throw new \UnexpectedValueException(\sprintf('Command "%s" is not allowed to run via web request', $command));
 		}
 
 		$coreToken = $this->config->getSystemValue('updater.secret', '');
@@ -156,7 +156,7 @@ class OccController extends Controller {
 			);
 		}
 
-		if (!password_verify($token, $coreToken)) {
+		if (!\password_verify($token, $coreToken)) {
 			throw new \UnexpectedValueException(
 				'updater.secret does not match the provided token'
 			);

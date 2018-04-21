@@ -42,7 +42,7 @@ trait Checksums {
 	public function userUploadsFileToWithChecksumUsingTheAPI(
 		$user, $source, $destination, $checksum
 	) {
-		$file = \GuzzleHttp\Stream\Stream::factory(fopen($source, 'r'));
+		$file = \GuzzleHttp\Stream\Stream::factory(\fopen($source, 'r'));
 		$this->response = $this->makeDavRequest(
 			$user,
 			'PUT',

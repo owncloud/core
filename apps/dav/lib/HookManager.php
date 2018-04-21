@@ -140,10 +140,10 @@ class HookManager {
 	}
 
 	public function firstLogin(IUser $user = null) {
-		if (!is_null($user)) {
+		if (!\is_null($user)) {
 			$principal = 'principals/users/' . $user->getUID();
 			$calendars = $this->calDav->getCalendarsForUser($principal);
-			if (empty($calendars) || (count($calendars) === 1 && $calendars[0]['uri'] === BirthdayService::BIRTHDAY_CALENDAR_URI)) {
+			if (empty($calendars) || (\count($calendars) === 1 && $calendars[0]['uri'] === BirthdayService::BIRTHDAY_CALENDAR_URI)) {
 				try {
 					$this->calDav->createCalendar($principal, 'personal', [
 						'{DAV:}displayname' => $this->l10n->t('Personal'),
@@ -167,7 +167,7 @@ class HookManager {
 	public function deleteZsyncMetadata($params) {
 		$view = new View('/'.User::getUser());
 		$path = $params[\OC\Files\Filesystem::signal_param_path];
-		$path = 'files/' . ltrim($path, '/');
+		$path = 'files/' . \ltrim($path, '/');
 
 		/* if a file then just delete zsync metadata for file */
 		if ($view->is_file($path)) {
@@ -177,10 +177,10 @@ class HookManager {
 		} else if ($view->is_dir($path)) {
 		/* if a folder then iteratively delete all zsync metadata for all files in folder, including subdirs */
 			$array[] = $path;
-			while (count($array)) {
-				$current = array_pop($array);
+			while (\count($array)) {
+				$current = \array_pop($array);
 				$handle = $view->opendir($current);
-				while (($entry = readdir($handle)) !== false) {
+				while (($entry = \readdir($handle)) !== false) {
 					if($entry[0]!='.' and $view->is_dir($current.'/'.$entry)) {
 						$array[] = $current.'/'.$entry;
 					} else if ($view->is_file($current.'/'.$entry)) {
@@ -196,9 +196,9 @@ class HookManager {
 	public function copyZsyncMetadata($params) {
 		$view = new View('/'.User::getUser());
 		$from = $params[\OC\Files\Filesystem::signal_param_oldpath];
-		$from = 'files/' . ltrim($from, '/');
+		$from = 'files/' . \ltrim($from, '/');
 		$to = $params[\OC\Files\Filesystem::signal_param_newpath];
-		$to = 'files/' . ltrim($to, '/');
+		$to = 'files/' . \ltrim($to, '/');
 
 		/* if a file then just copy zsync metadata for file */
 		if ($view->is_file($from)) {
@@ -209,10 +209,10 @@ class HookManager {
 		} else if ($view->is_dir($from)) {
 		/* if a folder then iteratively copy all zsync metadata for all files in folder, including subdirs */
 			$array[] = [$from, $to];
-			while (count($array)) {
-				list($from_current, $to_current) = array_pop($array);
+			while (\count($array)) {
+				list($from_current, $to_current) = \array_pop($array);
 				$handle = $view->opendir($from_current);
-				while (($entry = readdir($handle)) !== false) {
+				while (($entry = \readdir($handle)) !== false) {
 					if($entry[0]!='.' and $view->is_dir($from_current.'/'.$entry)) {
 						$array[] = [$from_current.'/'.$entry, $to_current.'/'.$entry];
 					} else if ($view->is_file($from_current.'/'.$entry)) {

@@ -84,7 +84,7 @@ class SyncService {
 		// 3. apply changes
 		// TODO: use multi-get for download
 		foreach ($response['response'] as $resource => $status) {
-			$cardUri = basename($resource);
+			$cardUri = \basename($resource);
 			if (isset($status[200])) {
 				$vCard = $this->download($url, $sharedSecret, $resource);
 				$existingCard = $this->backend->getCard($addressBookId, $cardUri);
@@ -110,7 +110,7 @@ class SyncService {
 	 */
 	public function ensureSystemAddressBookExists($principal, $id, $properties) {
 		$book = $this->backend->getAddressBooksByUri($principal, $id);
-		if (!is_null($book)) {
+		if (!\is_null($book)) {
 			return $book;
 		}
 		$this->backend->createAddressBook($principal, $id, $properties);
@@ -249,7 +249,7 @@ class SyncService {
 	 * @return array|null
 	 */
 	public function getLocalSystemAddressBook() {
-		if (is_null($this->localSystemAddressBook)) {
+		if (\is_null($this->localSystemAddressBook)) {
 			$systemPrincipal = "principals/system/system";
 			$this->localSystemAddressBook = $this->ensureSystemAddressBookExists($systemPrincipal, 'system', [
 				'{' . Plugin::NS_CARDDAV . '}addressbook-description' => 'System addressbook which holds all users of this instance'
@@ -263,7 +263,7 @@ class SyncService {
 		$systemAddressBook = $this->getLocalSystemAddressBook();
 		$this->userManager->callForAllUsers(function($user) use ($systemAddressBook, $progressCallback) {
 			$this->updateUser($user);
-			if (!is_null($progressCallback)) {
+			if (!\is_null($progressCallback)) {
 				$progressCallback();
 			}
 		});

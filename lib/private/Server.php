@@ -425,13 +425,13 @@ class Server extends ServerContainer implements IServerContainer, IServiceLoader
 		$this->registerService('MemCacheFactory', function (Server $c) {
 			$config = $c->getConfig();
 
-			if ($config->getSystemValue('installed', false) && !(defined('PHPUNIT_RUN') && PHPUNIT_RUN)) {
+			if ($config->getSystemValue('installed', false) && !(\defined('PHPUNIT_RUN') && PHPUNIT_RUN)) {
 				$v = \OC_App::getAppVersions();
-				$v['core'] = md5(file_get_contents(\OC::$SERVERROOT . '/version.php'));
-				$version = implode(',', $v);
+				$v['core'] = \md5(\file_get_contents(\OC::$SERVERROOT . '/version.php'));
+				$version = \implode(',', $v);
 				$instanceId = \OC_Util::getInstanceId();
 				$path = \OC::$SERVERROOT;
-				$prefix = md5($instanceId . '-' . $version . '-' . $path);
+				$prefix = \md5($instanceId . '-' . $version . '-' . $path);
 				return new \OC\Memcache\Factory($prefix, $c->getLogger(),
 					$config->getSystemValue('memcache.local', null),
 					$config->getSystemValue('memcache.distributed', null),
@@ -466,8 +466,8 @@ class Server extends ServerContainer implements IServerContainer, IServiceLoader
 		});
 		$this->registerService('Logger', function (Server $c) {
 			$logClass = $c->query('AllConfig')->getSystemValue('log_type', 'owncloud');
-			$logger = 'OC\\Log\\' . ucfirst($logClass);
-			call_user_func([$logger, 'init']);
+			$logger = 'OC\\Log\\' . \ucfirst($logClass);
+			\call_user_func([$logger, 'init']);
 
 			return new Log($logger);
 		});
@@ -668,8 +668,8 @@ class Server extends ServerContainer implements IServerContainer, IServiceLoader
 				$urlParams = [];
 			}
 
-			if (defined('PHPUNIT_RUN') && PHPUNIT_RUN
-				&& in_array('fakeinput', stream_get_wrappers())
+			if (\defined('PHPUNIT_RUN') && PHPUNIT_RUN
+				&& \in_array('fakeinput', \stream_get_wrappers())
 			) {
 				$stream = 'fakeinput://data';
 			} else {
@@ -705,8 +705,8 @@ class Server extends ServerContainer implements IServerContainer, IServiceLoader
 		$this->registerService('LockingProvider', function (Server $c) {
 			$ini = $c->getIniWrapper();
 			$config = $c->getConfig();
-			$ttl = $config->getSystemValue('filelocking.ttl', max(3600, $ini->getNumeric('max_execution_time')));
-			if ($config->getSystemValue('filelocking.enabled', true) or (defined('PHPUNIT_RUN') && PHPUNIT_RUN)) {
+			$ttl = $config->getSystemValue('filelocking.ttl', \max(3600, $ini->getNumeric('max_execution_time')));
+			if ($config->getSystemValue('filelocking.enabled', true) or (\defined('PHPUNIT_RUN') && PHPUNIT_RUN)) {
 				/** @var \OC\Memcache\Factory $memcacheFactory */
 				$memcacheFactory = $c->getMemCacheFactory();
 				$memcache = $memcacheFactory->createLocking('lock');
@@ -1066,7 +1066,7 @@ class Server extends ServerContainer implements IServerContainer, IServiceLoader
 	 */
 	public function getSession() {
 		$userSession = $this->getUserSession();
-		if (is_null($userSession)) {
+		if (\is_null($userSession)) {
 			return new Memory('');
 		}
 		return $userSession->getSession();
@@ -1077,7 +1077,7 @@ class Server extends ServerContainer implements IServerContainer, IServiceLoader
 	 */
 	public function setSession(ISession $session) {
 		$userSession = $this->getUserSession();
-		if (is_null($userSession)) {
+		if (\is_null($userSession)) {
 			return;
 		}
 		$userSession->setSession($session);
@@ -1316,7 +1316,7 @@ class Server extends ServerContainer implements IServerContainer, IServiceLoader
 		if ($userId === '') {
 			$userSession = $this->getUserSession();
 			$user = $userSession->getUser();
-			if (is_null($user)) {
+			if (\is_null($user)) {
 				return null;
 			}
 			$userId = $user->getUID();
@@ -1626,7 +1626,7 @@ class Server extends ServerContainer implements IServerContainer, IServiceLoader
 			foreach($xmlPath as $xml) {
 				$info = isset($info[$xml]) ? $info[$xml] : [];
 			}
-			if (!is_array($info)) {
+			if (!\is_array($info)) {
 				$info = [$info];
 			}
 

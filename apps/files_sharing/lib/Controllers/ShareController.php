@@ -223,7 +223,7 @@ class ShareController extends Controller {
 			'errorCode' => $errorCode,
 			'errorMessage' => $errorMessage,
 		]);
-		if(!is_null($exception)) {
+		if(!\is_null($exception)) {
 			throw $exception;
 		}
 	}
@@ -314,7 +314,7 @@ class ShareController extends Controller {
 			 */
 			$freeSpace = $share->getNode()->getStorage()->free_space($share->getNode()->getInternalPath());
 			if ($freeSpace < \OCP\Files\FileInfo::SPACE_UNLIMITED) {
-				$freeSpace = max($freeSpace, 0);
+				$freeSpace = \max($freeSpace, 0);
 			} else {
 				$freeSpace = (INF > 0) ? INF: PHP_INT_MAX; // work around https://bugs.php.net/bug.php?id=69188
 			}
@@ -390,9 +390,9 @@ class ShareController extends Controller {
 		}
 
 		$files_list = $files;
-		if (!is_null($files)) { // download selected files
+		if (!\is_null($files)) { // download selected files
 			// in case we get only a single file
-			if (!is_array($files_list)) {
+			if (!\is_array($files_list)) {
 				$files_list = [(string)$files_list];
 			}
 		}
@@ -485,10 +485,10 @@ class ShareController extends Controller {
 		 */
 		if (!empty($downloadStartSecret)
 			&& !isset($downloadStartSecret[32])
-			&& preg_match('!^[a-zA-Z0-9]+$!', $downloadStartSecret) === 1) {
+			&& \preg_match('!^[a-zA-Z0-9]+$!', $downloadStartSecret) === 1) {
 
 			// FIXME: set on the response once we use an actual app framework response
-			setcookie('ocDownloadStarted', $downloadStartSecret, time() + 20, '/');
+			\setcookie('ocDownloadStarted', $downloadStartSecret, \time() + 20, '/');
 		}
 
 		$this->emitAccessShareHook($share);
@@ -503,7 +503,7 @@ class ShareController extends Controller {
 		}
 
 		// download selected files
-		if (!is_null($files) && $files !== '') {
+		if (!\is_null($files) && $files !== '') {
 			// FIXME: The exit is required here because otherwise the AppFramework is trying to add headers as well
 			// after dispatching the request which results in a "Cannot modify header information" notice.
 			OC_Files::get($originalSharePath, $files_list, $server_params);
@@ -511,7 +511,7 @@ class ShareController extends Controller {
 		} else {
 			// FIXME: The exit is required here because otherwise the AppFramework is trying to add headers as well
 			// after dispatching the request which results in a "Cannot modify header information" notice.
-			OC_Files::get(dirname($originalSharePath), basename($originalSharePath), $server_params);
+			OC_Files::get(\dirname($originalSharePath), \basename($originalSharePath), $server_params);
 			exit();
 		}
 	}

@@ -124,7 +124,7 @@ class MoveCopyHelper {
 		$davPathVersionToUse = 1,
 		$sourceIpAddress = null
 	) {
-		$method = strtoupper($method);
+		$method = \strtoupper($method);
 		if ($method !== "COPY" && $method !== "MOVE") {
 			throw new \InvalidArgumentException(
 				'$method has to be "copy" or "move"'

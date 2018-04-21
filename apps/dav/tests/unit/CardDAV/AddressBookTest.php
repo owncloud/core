@@ -91,7 +91,7 @@ class AddressBookTest extends TestCase {
 			'id' => 666,
 			'uri' => 'default'
 		];
-		if (!is_null($readOnlyValue)) {
+		if (!\is_null($readOnlyValue)) {
 			$calendarInfo['{http://owncloud.org/ns}read-only'] = $readOnlyValue;
 		}
 		if ($hasOwnerSet) {
