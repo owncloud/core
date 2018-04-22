@@ -37,6 +37,7 @@ OC.L10N.register(
     "Wrong share ID, share doesn't exist" : "错误的共享 ID，共享不存在",
     "Could not delete share" : "不能删除共享",
     "Please specify a file or folder path" : "请指定一个文件或文件夹路径",
+    "No permission to create share" : "没有创建分享的权限",
     "Wrong path, file/folder doesn't exist" : "路径错误，文件/文件夹不存在",
     "Cannot remove all permissions" : "无法移除全部权限",
     "Please specify a valid user" : "请指定一个有效的用户",

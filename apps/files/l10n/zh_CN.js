@@ -40,6 +40,7 @@ OC.L10N.register(
     "This operation is forbidden" : "操作被禁止",
     "This directory is unavailable, please check the logs or contact the administrator" : "此目录不可用，请检查日志或联系管理员",
     "Could not move \"{file}\", target exists" : "不能移动 \"{file}\"，目标已存在。",
+    "Could not move \"{file}\": {message}" : "不能移动 \"{file}\": {message}",
     "Could not move \"{file}\"" : "不能移动 \"{file}\"",
     "{newName} already exists" : "{newname} 已经存在",
     "Could not rename \"{fileName}\", it does not exist any more" : "不能重命名 \"{fileName}\"，此文件已经不存在",
