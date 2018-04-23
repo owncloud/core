@@ -86,4 +86,20 @@ class EmailHelper {
 		$response = $client->send($request);
 		return $response;
 	}
+
+	/**
+	 * 
+	 * @return string
+	 */
+	public static function getMailhogUrl() {
+		$mailhogHost = getenv('MAILHOG_HOST');
+		if ($mailhogHost === false) {
+			$mailhogHost = "127.0.0.1";
+		}
+		$mailhogPort = getenv('MAILHOG_PORT');
+		if ($mailhogPort === false) {
+			$mailhogPort = "8025";
+		}
+		return "http://$mailhogHost:$mailhogPort";
+	}
 }

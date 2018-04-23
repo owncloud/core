@@ -42,12 +42,6 @@ class WebUILoginContext extends RawMinkContext implements Context {
 	
 	/**
 	 * 
-	 * @var EmailContext
-	 */
-	private $emailContext;
-
-	/**
-	 * 
 	 * @var FeatureContext
 	 */
 	private $featureContext;
@@ -250,10 +244,10 @@ class WebUILoginContext extends RawMinkContext implements Context {
 	 */
 	public function theUserFollowsThePasswordResetLinkFromTheirEmail($emailAddress) {
 		$content = EmailHelper::getBodyOfLastEmail(
-			$this->emailContext->getMailhogUrl(), $emailAddress
+			EmailHelper::getMailhogUrl(), $emailAddress
 		);
 		preg_match(
-			'/Use the following link to reset your password: (http.*user1)/',
+			'/Use the following link to reset your password: (http.*)/',
 			$content, $matches
 		);
 		PHPUnit_Framework_Assert::assertArrayHasKey(
@@ -292,6 +286,5 @@ class WebUILoginContext extends RawMinkContext implements Context {
 		// Get all the contexts you need in this context
 		$this->featureContext = $environment->getContext('FeatureContext');
 		$this->webUIGeneralContext = $environment->getContext('WebUIGeneralContext');
-		$this->emailContext = $environment->getContext('EmailContext');
 	}
 }
