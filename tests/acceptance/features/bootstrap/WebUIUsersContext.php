@@ -23,10 +23,10 @@
 use Behat\Behat\Context\Context;
 use Behat\Behat\Hook\Scope\BeforeScenarioScope;
 use Behat\Gherkin\Node\TableNode;
-use Behat\Mink\Exception\ExpectationException;
 use Behat\MinkExtension\Context\RawMinkContext;
+use Behat\Mink\Exception\ExpectationException;
+use Page\LoginPage;
 use Page\UsersPage;
-use TestHelpers\OcsApiHelper;
 
 require_once 'bootstrap.php';
 
@@ -36,6 +36,12 @@ require_once 'bootstrap.php';
 class WebUIUsersContext extends RawMinkContext implements Context {
 
 	private $usersPage;
+
+	/**
+	 * 
+	 * @var LoginPage
+	 */
+	private $loginPage;
 
 	/**
 	 *
@@ -48,9 +54,11 @@ class WebUIUsersContext extends RawMinkContext implements Context {
 	 *
 	 * @param UsersPage $usersPage
 	 */
-	public function __construct(UsersPage $usersPage) {
+	public function __construct(UsersPage $usersPage, LoginPage $loginPage) {
 		$this->usersPage = $usersPage;
+		$this->loginPage = $loginPage;
 	}
+	
 
 	/**
 	 * @When the user/administrator browses to the users page
@@ -161,6 +169,7 @@ class WebUIUsersContext extends RawMinkContext implements Context {
 	 * @param string $name
 	 * 
 	 * @return void
+	 * 
 	 * @throws Exception
 	 */
 	public function theGroupNamedShouldNotBeListedOnTheWebUI($name) {
@@ -177,6 +186,7 @@ class WebUIUsersContext extends RawMinkContext implements Context {
 	 * @param TableNode $table
 	 * 
 	 * @return void
+	 * 
 	 * @throws Exception
 	 */
 	public function theseGroupsShouldBeListedOnTheWebUI($shouldOrNot, TableNode $table) {
@@ -205,12 +215,47 @@ class WebUIUsersContext extends RawMinkContext implements Context {
 	}
 
 	/**
+	 * @When the admin disables the user :username using the webUI
+	 * 
+	 * @param string $username
+	 * 
+	 * @return void
+	 */
+	public function theAdminDisablesTheUserUsingTheWebui($username) {
+		$this->usersPage->openSettingsMenu();
+		$this->usersPage->setSetting("Show enabled/disabled option");
+		$this->usersPage->disableUser($username);
+	}
+
+	/**
+	 * @When the disabled user :username tries to login using the password :password from the webUI
+	 * 
+	 * @param string $username
+	 * 
+	 * @param string $password
+	 * 
+	 * @return void
+	 */
+	public function theDisabledUserTriesToLogin($username, $password) {
+		$this->webUIGeneralContext->theUserLogsOutOfTheWebUI();
+		/**
+		 * 
+		 * @var DisabledUserPage $disabledPage
+		 */
+		$disabledPage = $this->loginPage->loginAs($username, $password, 'DisabledUserPage');
+		$disabledPage->waitTillPageIsLoaded($this->getSession());
+	}
+	
+	
+
+	/**
 	 * @Then the quota of user :username should be set to :quota on the webUI
 	 *
 	 * @param string $username
 	 * @param string $quota
 	 * 
 	 * @return void
+	 * 
 	 * @throws ExpectationException
 	 */
 	public function quotaOfUserShouldBeSetToOnTheWebUI($username, $quota) {
@@ -237,6 +282,7 @@ class WebUIUsersContext extends RawMinkContext implements Context {
 		$environment = $scope->getEnvironment();
 		// Get all the contexts you need in this context
 		$this->featureContext = $environment->getContext('FeatureContext');
+		$this->webUIGeneralContext = $environment->getContext('WebUIGeneralContext');
 	}
 
 	/**

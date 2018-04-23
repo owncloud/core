@@ -62,6 +62,7 @@ class UsersPage extends OwncloudPage {
 	protected $newUserAddGroupBtnXpath = ".//*[@id='newuser']//ul[@class='multiselectoptions down']//li[@title='add group']";
 	protected $createGroupWithNewUserInputXpath = ".//*[@id='newuser']//ul[@class='multiselectoptions down']//input[@type='text']";
 	protected $groupListId = "usergrouplist";
+	protected $disableUserCheckboxXpath = "//input[@type='checkbox']";
 	/**
 	 * @param string $username
 	 *
@@ -408,4 +409,16 @@ class UsersPage extends OwncloudPage {
 		$groupList->addGroup($groupName);
 		$this->waitForAjaxCallsToStartAndFinish($session);
 	}
+
+	/**
+	 *
+	 * @param string $username
+	 *
+	 * @return void
+	 */
+	public function disableUser($username) {
+		$userTr = $this->findUserInTable($username);
+		$userTr->find("xpath", $this->disableUserCheckboxXpath)->click();
+	}
+	
 }
