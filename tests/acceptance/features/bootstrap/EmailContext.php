@@ -58,7 +58,7 @@ class EmailContext implements Context, SnippetAcceptingContext {
 	}
 
 	/**
-	 * @BeforeScenario
+	 * @BeforeScenario @mailhog
 	 *
 	 * @param BeforeScenarioScope $scope
 	 *
