@@ -22,7 +22,8 @@ $bundledApps = [
 $excludeDirs = [
     'lib/composer',
     'build',
-    'apps/files_external/3rdparty'
+    'apps/files_external/3rdparty',
+    'config'
 ];
 
 foreach ($dirIterator as $fileinfo) {
@@ -39,7 +40,8 @@ $finder = PhpCsFixer\Finder::create()
 
 return PhpCsFixer\Config::create()
     ->setRules([
-        'native_function_invocation' => true
+        'native_function_invocation' => true,
+        '@PSR1' => true,
     ])
     ->setFinder($finder)
 ;
