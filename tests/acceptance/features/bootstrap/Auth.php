@@ -282,10 +282,6 @@ trait Auth {
 
 		// Remember that we set this value, so it can be removed after the scenario
 		$this->tokenAuthHasBeenSet = true;
-
-		// It takes some time for the change in config.php to really be
-		// recognised at the server.
-		sleep(5);
 	}
 
 	/**
@@ -304,7 +300,6 @@ trait Auth {
 				]
 			);
 			$this->tokenAuthHasBeenSet = false;
-			sleep(5);
 		}
 	}
 
