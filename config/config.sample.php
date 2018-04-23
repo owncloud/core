@@ -492,9 +492,9 @@ $CONFIG = array(
  * Available values:
  *
  * * ``auto``
- *     default setting. keeps files and folders in the trash bin for 30 days
- *     and automatically deletes anytime after that if space is needed (note:
- *     files may not be deleted if space is not needed).
+ *     default setting. Keeps files and folders in the deleted files for up to
+ *     30 days, automatically deleting them (at any time) if space is needed.
+ *     Note: files may not be removed if space is not required.
  * * ``D, auto``
  *     keeps files and folders in the trash bin for D+ days, delete anytime if
  *     space needed (note: files may not be deleted if space is not needed)
