@@ -25,7 +25,7 @@ use OCP\AppFramework\App;
 use OCP\App\ManagerEvent;
 
 class Application extends App {
-	public function __construct (array $urlParams = array()) {
+	public function __construct (array $urlParams = []) {
 		$appName = 'testing';
 		parent::__construct($appName, $urlParams);
 

@@ -410,7 +410,7 @@ class LegacyDBTest extends \Test\TestCase {
 		$table = "*PREFIX*{$this->text_table}";
 
 		$query = OC_DB::prepare("INSERT INTO `$table` (`textfield`) VALUES (?)");
-		$result = $query->execute(array($expected));
+		$result = $query->execute([$expected]);
 		$this->assertEquals(1, $result);
 
 		$actual = OC_DB::prepare("SELECT `textfield` FROM `$table`")->execute()->fetchOne();

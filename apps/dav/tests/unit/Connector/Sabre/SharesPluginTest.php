@@ -103,7 +103,7 @@ class SharesPluginTest extends \Test\TestCase {
 				$this->anything()
 			)
 			->will($this->returnCallback(function($userId, $requestedShareTypes, $node) use ($shareTypes){
-				$allShares = array();
+				$allShares = [];
 				foreach($requestedShareTypes as $requestedShareType){
 					$share = $this->createMock(IShare::class);
 					$share->method('getShareType')->willReturn($requestedShareType);
@@ -184,7 +184,7 @@ class SharesPluginTest extends \Test\TestCase {
 				$this->anything()
 			)
 			->will($this->returnCallback(function($userId, $requestedShareTypes, $node) use ($shareTypes){
-				$allShares = array();
+				$allShares = [];
 				foreach($requestedShareTypes as $requestedShareType){
 					$share = $this->createMock(IShare::class);
 					$share->method('getShareType')->willReturn($requestedShareType);

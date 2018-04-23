@@ -336,7 +336,7 @@ class FilesPage extends FilesPageBasic {
 	 * @return FilesPage
 	 * @see \SensioLabs\Behat\PageObjectExtension\PageObject\Page::open()
 	 */
-	public function open(array $urlParameters = array()) {
+	public function open(array $urlParameters = []) {
 		$url = $this->getUrl($urlParameters);
 
 		$this->getDriver()->visit($url);

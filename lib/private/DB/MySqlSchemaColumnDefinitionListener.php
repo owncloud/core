@@ -175,7 +175,7 @@ class MySqlSchemaColumnDefinitionListener{
 		$default = isset($tableColumn['default']) ? $tableColumn['default'] : null;
 		$columnDefault = $this->getMariaDb1027ColumnDefault($default);
 
-		$options = array(
+		$options = [
 			'length'		=> $length,
 			'unsigned'	  => (bool) (\strpos($tableColumn['type'], 'unsigned') !== false),
 			'fixed'		 => (bool) $fixed,
@@ -188,7 +188,7 @@ class MySqlSchemaColumnDefinitionListener{
 			'comment'	   => isset($tableColumn['comment']) && $tableColumn['comment'] !== ''
 				? $tableColumn['comment']
 				: null,
-		);
+		];
 
 		if ($scale !== null && $precision !== null) {
 			$options['scale'] = $scale;

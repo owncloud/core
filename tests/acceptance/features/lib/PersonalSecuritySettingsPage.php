@@ -131,9 +131,9 @@ class PersonalSecuritySettingsPage extends OwncloudPage {
 	 * @return NodeElement[]|NULL[]
 	 */
 	public function getAppPasswordResult() {
-		return array (
+		return  [
 			$this->findField($this->newAppLoginNameId),
 			$this->findField($this->newAppPasswordId)
-		);
+		];
 	}
 }

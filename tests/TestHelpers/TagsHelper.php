@@ -233,6 +233,6 @@ class TagsHelper {
 				throw new \Exception('Unsupported type');
 		}
 
-		return array($userVisible, $userAssignable);
+		return [$userVisible, $userAssignable];
 	}
 }

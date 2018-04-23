@@ -334,7 +334,7 @@ class ManagerTest extends TestCase {
 		$idbConnection->method('getQueryBuilder')
 			->willReturn($iqueryBuilder);
 
-		$called = array();
+		$called = [];
 		\OC::$server->getEventDispatcher()->addListener('\OCA\Files_Sharing::unshareEvent', function($event) use (&$called) {
 			$called[] = '\OCA\Files_Sharing::unshareEvent';
 			\array_push($called, $event);

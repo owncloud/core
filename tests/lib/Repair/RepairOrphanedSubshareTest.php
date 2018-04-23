@@ -138,7 +138,7 @@ class RepairOrphanedSubshareTest extends TestCase {
 		//necessarily starts with 1. Observed in drone that they do start with
 		//21.
 		$initial_id = $grabIds[0]['id'];
-		foreach (array(1,3,5) as $id) {
+		foreach ([1,3,5] as $id) {
 			$id = $initial_id + ($id - 1);
 			$qb = $this->connection->getQueryBuilder();
 			$qb->delete('share')

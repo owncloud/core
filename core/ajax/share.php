@@ -176,7 +176,7 @@ if (isset($_POST['action']) && isset($_POST['itemType']) && isset($_POST['itemSo
 				'personalNote' => $emailBody
 			]);
 
-			$options = array();
+			$options = [];
 			$options['bcc'] = $filter->getToAddress();
 			if (isset($_POST['bccSelf']) && $_POST['bccSelf'] === 'true') {
 				$options['bcc'] .= ',' . \OC::$server->getUserSession()->getUser()->getEMailAddress();

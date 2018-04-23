@@ -966,7 +966,7 @@ class Manager implements IManager {
 			throw new \InvalidArgumentException('Array of nodeIDs empty');
 		}
 		// This will ensure that if there are multiple share providers for the same share type, we will execute it in batches
-		$shares = array();
+		$shares = [];
 
 		$providerIdMap = $this->shareTypeToProviderMap($shareTypes);
 

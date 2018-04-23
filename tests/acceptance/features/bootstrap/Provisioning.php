@@ -78,7 +78,7 @@ trait Provisioning {
 	 * @return array
 	 */
 	public function getCreatedUserDisplayNames() {
-		$result = array();
+		$result = [];
 		foreach ($this->getCreatedUsers() as $username => $user) {
 			if (\is_null($user['displayname'])) {
 				$result[] = $username;

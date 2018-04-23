@@ -123,7 +123,7 @@ class SharingDialog extends OwncloudPage {
 	 */
 	public function groupStringsToMatchAutoComplete($groupNames) {
 		if (\is_array($groupNames)) {
-			$autocompleteStrings = array();
+			$autocompleteStrings = [];
 			foreach ($groupNames as $groupName => $groupData) {
 				$autocompleteStrings[] = $groupName . $this->suffixToIdentifyGroups;
 			}
@@ -140,7 +140,7 @@ class SharingDialog extends OwncloudPage {
 	 * @throws ElementNotFoundException
 	 */
 	public function getAutocompleteItemsList() {
-		$itemsArray = array();
+		$itemsArray = [];
 		$itemElements = $this->getAutocompleteNodeElement()->findAll(
 			"xpath",
 			$this->autocompleteItemsTextXpath

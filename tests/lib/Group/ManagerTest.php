@@ -548,7 +548,7 @@ class ManagerTest extends \Test\TestCase {
 		$backend->expects($this->once())
 			->method('getUserGroups')
 			->with('user1')
-			->will($this->returnValue(array('group1')));
+			->will($this->returnValue(['group1']));
 		$backend->expects($this->any())
 			->method('groupExists')
 			->with('group1')

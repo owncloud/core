@@ -382,7 +382,7 @@ class Manager implements ICommentsManager {
 		$qbMain = $this->dbConn->getQueryBuilder();
 		$qbSup = $this->dbConn->getQueryBuilder();
 		
-		$unreadCountsForNodes = array();
+		$unreadCountsForNodes = [];
 		$objectIdChunks = \array_chunk($objectIds, 100);
 		foreach ($objectIdChunks as $objectIdChunk) {
 			// Fetch only records from oc_comments which are in specified int[] NodeIDs array and satisfy specified $objectType

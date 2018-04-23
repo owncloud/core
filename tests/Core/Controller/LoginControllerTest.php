@@ -139,13 +139,13 @@ class LoginControllerTest extends TestCase {
 
 	public function testResponseForNotLoggedinUser() {
 		$params = [
-			'messages' => Array (),
+			'messages' =>  [],
 			'loginName' => '',
 			'user_autofocus' => true,
 			'redirect_url' => '%2Findex.php%2Ff%2F17',
 			'canResetPassword' => true,
 			'resetPasswordLink' => null,
-			'alt_login' => Array (),
+			'alt_login' =>  [],
 			'rememberLoginAllowed' => false,
 			'rememberLoginState' => 0
 		];

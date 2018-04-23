@@ -50,11 +50,11 @@ use OCP\App\AppAlreadyInstalledException;
  */
 class Installer {
 
-	private static $allowedArchiveMimetypes = array (
+	private static $allowedArchiveMimetypes =  [
 		'application/zip',
 		'application/x-gzip',
 		'application/x-bzip2',
-	);
+	];
 
 	/**
 	 *

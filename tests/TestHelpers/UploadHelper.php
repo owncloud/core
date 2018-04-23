@@ -58,7 +58,7 @@ class UploadHelper {
 		$password,
 		$source,
 		$destination,
-		$headers = array(),
+		$headers = [],
 		$davPathVersionToUse = 1,
 		$chunkingVersion = null,
 		$noOfChunks = 1
