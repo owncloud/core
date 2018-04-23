@@ -202,6 +202,7 @@ default:
         - WebUIFilesContext:
         - WebUIPersonalSecuritySettingsContext:
         - WebUIPersonalGeneralSettingsContext:
+        - WebUIUserContext:
 
   extensions:
       jarnaiz\JUnitFormatter\JUnitFormatterExtension:
