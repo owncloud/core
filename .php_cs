@@ -42,6 +42,7 @@ return PhpCsFixer\Config::create()
     ->setRules([
         'native_function_invocation' => true,
         '@PSR1' => true,
-    ])
+        'array_syntax' => ['syntax' => 'short'],
+       ])
     ->setFinder($finder)
 ;
