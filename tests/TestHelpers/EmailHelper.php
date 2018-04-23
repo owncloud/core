@@ -26,7 +26,7 @@ use GuzzleHttp\Message\ResponseInterface;
 
 /**
  * Helper to test email sending, using mailhog
- *
+ * Make a change to find out if/why Jenkins is "failing" with UNSTABLE status
  *
  */
 class EmailHelper {
