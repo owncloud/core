@@ -1,4 +1,4 @@
-@webUI @insulated @disablePreviews
+@webUI @insulated @disablePreviews @mailhog
 
 Feature: reset the password
 As a user
