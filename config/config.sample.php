@@ -166,7 +166,7 @@ $CONFIG = array(
  * or shared items. User's language preferences configured under "personal ->
  * language" override this setting after they have logged in.
  */
-'default_language' => 'en',
+'default_language' => 'en_GB',
 
 /**
  * Set the default app to open on login. Use the app names as they appear in the
