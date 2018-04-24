@@ -57,6 +57,8 @@
     "Error while creating device token" : "デバイストークンの作成におけるエラー",
     "Error while deleting the token" : "トークンの削除におけるエラー",
     "Sending..." : "送信中…",
+    "Unable to change mail address" : "メールアドレスを変更できません",
+    "Your full name has been changed." : "名前を変更しました。",
     "An error occurred: {message}" : "エラーが発生しました: {message}",
     "Select a profile picture" : "プロファイル画像を選択",
     "Very weak password" : "非常に弱いパスワード",

@@ -39,6 +39,7 @@ OC.L10N.register(
     "Uninstall" : "Gỡ cài đặt",
     "Disconnect" : "Ngắt kết nối",
     "Sending..." : "Đang gửi...",
+    "Your full name has been changed." : "Họ và tên đã được thay đổi.",
     "Select a profile picture" : "Chọn một ảnh hồ sơ",
     "Groups" : "Nhóm",
     "User documentation" : "Tài liệu người dùng",

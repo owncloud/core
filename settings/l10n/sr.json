@@ -42,6 +42,8 @@
     "An error occurred. Please upload an ASCII-encoded PEM certificate." : "Дошло је до грешке. Отпремите АСКИ кодирани ПЕМ сертификат.",
     "Valid until {date}" : "Важи до {date}",
     "Sending..." : "Шаљем...",
+    "Unable to change mail address" : "Не могу да изменим е-адресу",
+    "Your full name has been changed." : "Ваше пуно име је промењено.",
     "Select a profile picture" : "Изаберите слику профила",
     "Very weak password" : "Веома слаба лозинка",
     "Weak password" : "Слаба лозинка",

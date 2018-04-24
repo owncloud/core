@@ -41,6 +41,8 @@ OC.L10N.register(
     "Migration started …" : "Migració iniciada ...",
     "Valid until {date}" : "Vàlid fins {date}",
     "Sending..." : "Enviant...",
+    "Unable to change mail address" : "No es pot canviar l'adreça de correu electrònic",
+    "Your full name has been changed." : "El vostre nom complet ha canviat.",
     "An error occurred: {message}" : "S'ha produït un error: {message}",
     "Select a profile picture" : "Seleccioneu una imatge de perfil",
     "Very weak password" : "Contrasenya massa feble",

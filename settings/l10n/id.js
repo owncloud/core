@@ -47,6 +47,8 @@ OC.L10N.register(
     "An error occurred. Please upload an ASCII-encoded PEM certificate." : "Terjadi kesalahan. Mohon unggah sertifikat PEM terenkode-ASCII.",
     "Valid until {date}" : "Berlaku sampai {date}",
     "Sending..." : "Mengirim",
+    "Unable to change mail address" : "Tidak dapat mengubah alamat email",
+    "Your full name has been changed." : "Nama lengkap Anda telah diubah",
     "An error occurred: {message}" : "Sebuah kesalahan yang muncul: {message}",
     "Select a profile picture" : "Pilih foto profil",
     "Very weak password" : "Sandi sangat lemah",

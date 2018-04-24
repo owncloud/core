@@ -40,6 +40,8 @@ OC.L10N.register(
     "Migration started …" : "Migrácia spustená ...",
     "Valid until {date}" : "Platný do {date}",
     "Sending..." : "Odosielam...",
+    "Unable to change mail address" : "Nemožno zmeniť emailovú adresu",
+    "Your full name has been changed." : "Vaše meno a priezvisko bolo zmenené.",
     "Select a profile picture" : "Vybrať avatara",
     "Very weak password" : "Veľmi slabé heslo",
     "Weak password" : "Slabé heslo",

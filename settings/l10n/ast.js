@@ -57,6 +57,8 @@ OC.L10N.register(
     "Error while creating device token" : "Fallu creando'l token del preséu",
     "Error while deleting the token" : "Fallu desaniciando'l token del preséu",
     "Sending..." : "Unviando...",
+    "Unable to change mail address" : "Nun pue camudase la direición d'email",
+    "Your full name has been changed." : "Camudóse'l nome completu.",
     "An error occurred: {message}" : "Hebo un fallu: {message}",
     "Select a profile picture" : "Esbillar una imaxe de perfil",
     "Very weak password" : "Contraseña mui feble",

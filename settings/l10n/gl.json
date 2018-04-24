@@ -43,6 +43,8 @@
     "An error occurred. Please upload an ASCII-encoded PEM certificate." : "Produciuse un erro. Envíe un certificado PEM codificado en ASCII.",
     "Valid until {date}" : "Válido ata {date}",
     "Sending..." : "Enviando...",
+    "Unable to change mail address" : "Non é posíbel cambiar o enderezo de correo.",
+    "Your full name has been changed." : "O seu nome completo foi cambiado",
     "An error occurred: {message}" : "Produciuse un erro: {message}",
     "Select a profile picture" : "Seleccione unha imaxe para o perfil",
     "Very weak password" : "Contrasinal moi feble",

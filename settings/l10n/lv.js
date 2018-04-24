@@ -32,6 +32,8 @@ OC.L10N.register(
     "Uninstall" : "Atinstalēt",
     "Valid until {date}" : "Valīds līdz {date}",
     "Sending..." : "Sūta...",
+    "Unable to change mail address" : "Nevar nomainīt e-pasta adresi",
+    "Your full name has been changed." : "Jūsu pilnais vārds tika mainīts.",
     "An error occurred: {message}" : "Notika kļūda: {message}",
     "Select a profile picture" : "Izvēlieties profila attēlu",
     "Very weak password" : "Ļoti vāja parole",

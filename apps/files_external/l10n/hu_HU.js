@@ -1,7 +1,7 @@
 OC.L10N.register(
     "files_external",
     {
-    "External storage" : "Külső tárolók",
+    "External storage" : "Külső tároló",
     "Personal" : "Személyes",
     "System" : "Rendszer",
     "Grant access" : "Megadom a hozzáférést",

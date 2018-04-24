@@ -52,6 +52,8 @@ OC.L10N.register(
     "Error while creating device token" : "Feeler beim Erstelle vum Token Gerät",
     "Error while deleting the token" : "Feeler beim Läsche vum Token",
     "Sending..." : "Gëtt geschéckt...",
+    "Unable to change mail address" : "Onméiglech d'Email Adress ze änneren.",
+    "Your full name has been changed." : "Äre ganzen Numm ass geännert ginn.",
     "An error occurred: {message}" : "Et ass e Fehler opgetrueden: {Noriicht}",
     "Select a profile picture" : "Wiel e Profil Bild aus",
     "Very weak password" : "Ganz schwaacht Passwuert",

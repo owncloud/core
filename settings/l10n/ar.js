@@ -25,6 +25,7 @@ OC.L10N.register(
     "Uninstalling ...." : "جاري إلغاء التثبيت ...",
     "Uninstall" : "ألغاء التثبيت",
     "Sending..." : "جاري الارسال ...",
+    "Your full name has been changed." : "اسمك الكامل تم تغييره.",
     "Select a profile picture" : "اختر صورة الملف الشخصي ",
     "Very weak password" : "كلمة السر ضعيفة جدا",
     "Weak password" : "كلمة السر ضعيفة",

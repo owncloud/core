@@ -44,6 +44,8 @@
     "An error occurred. Please upload an ASCII-encoded PEM certificate." : "Виникла помилка. Будь ласка вивантажте PEM сертифікат в ASCII-кодуванні.",
     "Valid until {date}" : "Дійсно до {date}",
     "Sending..." : "Надсилання...",
+    "Unable to change mail address" : "Неможливо поміняти email адресу",
+    "Your full name has been changed." : "Ваше повне ім'я було змінено",
     "An error occurred: {message}" : "Сталася помилка: {message}",
     "Select a profile picture" : "Обрати зображення облікового запису",
     "Very weak password" : "Дуже слабкий пароль",

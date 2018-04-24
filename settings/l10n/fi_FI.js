@@ -55,6 +55,8 @@ OC.L10N.register(
     "Valid until {date}" : "Kelvollinen {date} asti",
     "Disconnect" : "Katkaise yhteys",
     "Sending..." : "Lähetetään...",
+    "Unable to change mail address" : "Sähköpostiosoitteen vaihtaminen ei onnistunut",
+    "Your full name has been changed." : "Koko nimesi on muutettu.",
     "An error occurred: {message}" : "Tapahtui virhe: {message}",
     "Select a profile picture" : "Valitse profiilikuva",
     "Very weak password" : "Erittäin heikko salasana",

@@ -41,6 +41,8 @@ OC.L10N.register(
     "Migration started …" : "Migración iniciada...",
     "Disconnect" : "Desconectar",
     "Sending..." : "Enviando...",
+    "Unable to change mail address" : "No se pudo cambiar la dirección de correo electrónico",
+    "Your full name has been changed." : "Se ha cambiado su nombre completo.",
     "Select a profile picture" : "Seleccionar una imagen de perfil",
     "Groups" : "Grupos",
     "Forum" : "Foro",

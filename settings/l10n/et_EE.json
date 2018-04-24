@@ -38,6 +38,8 @@
     "Migration started …" : "Kolimist on alustatud ...",
     "Valid until {date}" : "Kehtib kuni {date}",
     "Sending..." : "Saadan...",
+    "Unable to change mail address" : "E-posti aadressi muutmine ebaõnnestus",
+    "Your full name has been changed." : "Sinu täispikk nimi on muudetud.",
     "Select a profile picture" : "Vali profiili pilt",
     "Very weak password" : "Väga nõrk parool",
     "Weak password" : "Nõrk parool",

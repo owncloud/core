@@ -59,6 +59,8 @@ OC.L10N.register(
     "Error while creating device token" : "Aygıt jetonunun oluşturulmasında hata oluştu",
     "Error while deleting the token" : "Jeton silinirken hata oluştu",
     "Sending..." : "Gönderiliyor...",
+    "Unable to change mail address" : "Posta adresini değiştirme başarısız",
+    "Your full name has been changed." : "Tam adınız değiştirildi.",
     "An error occurred: {message}" : "Bir hata oluştu: {message}",
     "Select a profile picture" : "Bir profil fotoğrafı seçin",
     "Very weak password" : "Çok güçsüz parola",

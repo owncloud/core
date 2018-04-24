@@ -18,6 +18,7 @@ OC.L10N.register(
     "Experimental" : "Փորձարարական",
     "Valid until {date}" : "Վավեր մինչ {date}",
     "Disconnect" : "Անջատել",
+    "Unable to change mail address" : "Չկարողացա փոխել էլ. հասցեն",
     "Very weak password" : "Շատ թույլ գաղտնաբառ",
     "Weak password" : "Թույլ գաղտնաբառ",
     "So-so password" : "Միջինոտ գաղտնաբառ",

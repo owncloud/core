@@ -30,6 +30,8 @@
     "Uninstall" : "Sil",
     "Valid until {date}" : "Müddətədək keçərlidir {date}",
     "Sending..." : "Göndərilir...",
+    "Unable to change mail address" : "Mail ünvanını dəyişmək olmur",
+    "Your full name has been changed." : "Sizin tam adınız dəyişdirildi.",
     "Select a profile picture" : "Profil üçün şəkli seç",
     "Very weak password" : "Çox asan şifrə",
     "Weak password" : "Asan şifrə",

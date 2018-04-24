@@ -30,6 +30,8 @@ OC.L10N.register(
     "Uninstall" : "Deinstaliraj",
     "Valid until {date}" : "Validno do {date}",
     "Sending..." : "Slanje...",
+    "Unable to change mail address" : "Nemoguće je izmjeniti adresu e-pošte",
+    "Your full name has been changed." : "Vaše puno ime je promijenjeno.",
     "Select a profile picture" : "Odaberi sliku profila",
     "Very weak password" : "Veoma slaba lozinka",
     "Weak password" : "Slaba lozinka",

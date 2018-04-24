@@ -47,6 +47,8 @@ OC.L10N.register(
     "An error occurred. Please upload an ASCII-encoded PEM certificate." : "Una error s'es produsida. Provesissètz un certificat PEM encodat al format ASCII.",
     "Valid until {date}" : "Valid fins al {date}",
     "Sending..." : "Mandadís en cors...",
+    "Unable to change mail address" : "Impossible de modificar l'adreça de corrièl",
+    "Your full name has been changed." : "Vòstre nom complet es estat modificat.",
     "An error occurred: {message}" : "Una error s'es produsida : {message}",
     "Select a profile picture" : "Seleccionar una fòto de perfil ",
     "Very weak password" : "Senhal de fòrt febla seguretat",

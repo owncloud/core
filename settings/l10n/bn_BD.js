@@ -22,6 +22,7 @@ OC.L10N.register(
     "Error while updating app" : "অ্যাপ নবায়ন করতে সমস্যা দেখা দিয়েছে  ",
     "Updated" : "নবায়নকৃত",
     "Valid until {date}" : "বৈধতা বলবৎ আছে {তারিখ} অবধি ",
+    "Your full name has been changed." : "আপনার পূর্ণ নাম পরিবর্তন করা হয়েছে।",
     "Strong password" : "শক্তিশালী কুটশব্দ",
     "Groups" : "গোষ্ঠীসমূহ",
     "Forum" : "ফোরাম",

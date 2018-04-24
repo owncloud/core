@@ -29,6 +29,7 @@ OC.L10N.register(
     "Uninstall" : "Deinstalirajte",
     "Valid until {date}" : "Valid until {date}",
     "Sending..." : "Slanje...",
+    "Your full name has been changed." : "Vaše puno ime je promijenjeno.",
     "Select a profile picture" : "Odaberite sliku profila",
     "Very weak password" : "Lozinka vrlo slaba",
     "Weak password" : "Lozinka slaba",

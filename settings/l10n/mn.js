@@ -8,6 +8,7 @@ OC.L10N.register(
     "Invalid request" : "Буруу хүсэлт",
     "Couldn't remove app." : "Апп-ыг устгаж чадсангүй",
     "All" : "Бүгд",
+    "Your full name has been changed." : "Таны бүтэн нэр солигдлоо.",
     "Cron" : "Крон",
     "Sharing" : "Түгээлт",
     "Log" : "Лог бичилт",
