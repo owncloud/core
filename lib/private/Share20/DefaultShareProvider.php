@@ -1044,7 +1044,7 @@ class DefaultShareProvider implements IShareProvider {
 			$chunkedShareIds[$chunkId][] = $shareId;
 		}
 
-		$chunkedSharesToMaps = array($chunkedShareIds, $shareIdToShareMap);
+		$chunkedSharesToMaps = [$chunkedShareIds, $shareIdToShareMap];
 		return $chunkedSharesToMaps;
 	}
 

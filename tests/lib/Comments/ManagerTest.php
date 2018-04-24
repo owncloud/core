@@ -341,11 +341,11 @@ class ManagerTest extends TestCase {
 		$manager->setReadMark('files', '21', $commentsTimeStamp, $user3);
 		$manager->setReadMark('files', '15', $commentsTimeStamp, $user3);
 
-		$expectedHashMap = array();
+		$expectedHashMap = [];
 		$amount = $manager->getNumberOfUnreadCommentsForNodes('files', ['36','40','20','105'], $user1);
 		$this->assertSame($amount, $expectedHashMap);
 
-		$expectedHashMap = array();
+		$expectedHashMap = [];
 		$expectedHashMap['36'] = 200;
 		$expectedHashMap['40'] = 2;
 		$amount = $manager->getNumberOfUnreadCommentsForNodes('files', ['36','40', '80','25'], $user2);
@@ -355,7 +355,7 @@ class ManagerTest extends TestCase {
 		$commentsTimeStamp1 = new \DateTime('2017-03-02 15:00:00 EDT');
 		$manager->setReadMark('files', '36', $commentsTimeStamp1, $user2);
 		$manager->setReadMark('files', '40', $commentsTimeStamp1, $user2);
-		$expectedHashMap = array();
+		$expectedHashMap = [];
 		$amount = $manager->getNumberOfUnreadCommentsForNodes('files', ['36','40','80','25'], $user2);
 		$this->assertSame($amount, $expectedHashMap);
 
@@ -363,7 +363,7 @@ class ManagerTest extends TestCase {
 		$commentsTimeStamp2 = new \DateTime('2017-03-02 15:00:01 EDT');
 		$this->addDatabaseEntry(0, 0, $commentsTimeStamp2, $commentsTimeStamp2, 'karolina', '36');
 		$manager->setReadMark('files', '36', $commentsTimeStamp2, $user2);
-		$expectedHashMap = array();
+		$expectedHashMap = [];
 		$expectedHashMap['36'] = 1;
 		$amount = $manager->getNumberOfUnreadCommentsForNodes('files', ['36','40','20','105'], $user1);
 		$this->assertSame($amount, $expectedHashMap);

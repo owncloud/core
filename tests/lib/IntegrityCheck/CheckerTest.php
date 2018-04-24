@@ -183,7 +183,7 @@ class CheckerTest extends TestCase {
 	public function testVerifyAppSignatureWithValidSignatureData() {
 		$map = [
 			['integrity.check.disabled', false, false],
-			['integrity.excluded.files', [], array()],
+			['integrity.excluded.files', [], []],
 		];
 		$this->environmentHelper
 				->expects($this->once())
@@ -275,7 +275,7 @@ class CheckerTest extends TestCase {
 	public function testVerifyAppSignatureWithTamperedFiles() {
 		$map = [
 			['integrity.check.disabled', false, false],
-			['integrity.excluded.files', [], array()],
+			['integrity.excluded.files', [], []],
 		];
 		$this->environmentHelper
 				->expects($this->once())
@@ -341,7 +341,7 @@ class CheckerTest extends TestCase {
 	public function testVerifyAppSignatureWithTamperedFilesAndAlternatePath() {
 		$map = [
 			['integrity.check.disabled', false, false],
-			['integrity.excluded.files', [], array()],
+			['integrity.excluded.files', [], []],
 		];
 		$this->environmentHelper
 				->expects($this->once())
@@ -452,7 +452,7 @@ class CheckerTest extends TestCase {
 	public function testVerifyAppWithDifferentScopeAndAlwaysTrustedCore() {
 		$map = [
 			['integrity.check.disabled', false, false],
-			['integrity.excluded.files', [], array()],
+			['integrity.excluded.files', [], []],
 		];
 		$this->environmentHelper
 				->expects($this->once())
@@ -658,7 +658,7 @@ class CheckerTest extends TestCase {
 	public function testVerifyCoreSignatureWithValidSignatureData() {
 		$map = [
 			['integrity.check.disabled', false, false],
-			['integrity.excluded.files', [], array()],
+			['integrity.excluded.files', [], []],
 		];
 		$this->environmentHelper
 				->expects($this->once())
@@ -701,7 +701,7 @@ class CheckerTest extends TestCase {
 	public function testVerifyCoreSignatureWithValidModifiedHtaccessAndUserIniSignatureData() {
 		$map = [
 			['integrity.check.disabled', false, false],
-			['integrity.excluded.files', [], array()],
+			['integrity.excluded.files', [], []],
 		];
 		$this->environmentHelper
 			->expects($this->once())
@@ -745,7 +745,7 @@ class CheckerTest extends TestCase {
 	public function testVerifyCoreSignatureWithValidSignatureDataAndNotAlphabeticOrder() {
 		$map = [
 			['integrity.check.disabled', false, false],
-			['integrity.excluded.files', [], array()],
+			['integrity.excluded.files', [], []],
 		];
 		$this->environmentHelper
 				->expects($this->once())
@@ -835,7 +835,7 @@ class CheckerTest extends TestCase {
 	public function testVerifyCoreSignatureWithTamperedFiles() {
 		$map = [
 			['integrity.check.disabled', false, false],
-			['integrity.excluded.files', [], array()],
+			['integrity.excluded.files', [], []],
 		];
 		$this->environmentHelper
 				->expects($this->once())
@@ -899,7 +899,7 @@ class CheckerTest extends TestCase {
 	public function testVerifyCoreSignatureWithTamperedFilesExclude() {
 		$map = [
 			['integrity.check.disabled', false, false],
-			['integrity.excluded.files', [], array('AnotherFile.txt')],
+			['integrity.excluded.files', [], ['AnotherFile.txt']],
 		];
 		$this->environmentHelper
 			->expects($this->once())

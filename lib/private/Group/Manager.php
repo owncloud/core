@@ -250,7 +250,7 @@ class Manager extends PublicEmitter implements IGroupManager {
 					if (!\is_null($aGroup)) {
 						$groups[$groupId] = $aGroup;
 					} else {
-						\OC::$server->getLogger()->debug('Group "' . $groupId . '" was returned by search but not found through direct access', array('app' => 'core'));
+						\OC::$server->getLogger()->debug('Group "' . $groupId . '" was returned by search but not found through direct access', ['app' => 'core']);
 					}
 				}
 				if (!\is_null($limit) and $limit <= 0) {
@@ -323,7 +323,7 @@ class Manager extends PublicEmitter implements IGroupManager {
 						if (!\is_null($aGroup)) {
 							$groups[$groupId] = $aGroup;
 						} else {
-							\OC::$server->getLogger()->debug('User "' . $uid . '" belongs to deleted group: "' . $groupId . '"', array('app' => 'core'));
+							\OC::$server->getLogger()->debug('User "' . $uid . '" belongs to deleted group: "' . $groupId . '"', ['app' => 'core']);
 						}
 					}
 				}

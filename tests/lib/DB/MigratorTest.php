@@ -296,7 +296,7 @@ class MigratorTest extends \Test\TestCase {
 		$tableFk = $startSchema->createTable($this->tableNameTmp);
 		$tableFk->addColumn('fk_id', 'integer');
 		$tableFk->addColumn('name', 'string');
-		$tableFk->addForeignKeyConstraint($this->tableName, array('fk_id'), array('id'), array(), $fkName);
+		$tableFk->addForeignKeyConstraint($this->tableName, ['fk_id'], ['id'], [], $fkName);
 
 		$migrator = $this->manager->getMigrator();
 		$migrator->migrate($startSchema);

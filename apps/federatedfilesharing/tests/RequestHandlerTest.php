@@ -163,7 +163,7 @@ class RequestHandlerTest extends TestCase {
 		$_POST['shareWith'] = self::TEST_FILES_SHARING_API_USER2;
 		$_POST['remoteId'] = 1;
 
-		$called = array();
+		$called = [];
 		\OC::$server->getEventDispatcher()->addListener('\OCA\FederatedFileSharing::remote_shareReceived', function ($event) use (&$called) {
 			$called[] = '\OCA\FederatedFileSharing::remote_shareReceived';
 			\array_push($called, $event);

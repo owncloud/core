@@ -52,7 +52,7 @@ class MoveCopyHelper {
 		$password,
 		$fromFileName,
 		$toFileName,
-		$headers = array(),
+		$headers = [],
 		$davPathVersionToUse = 1,
 		$sourceIpAddress = null
 	) {
@@ -85,7 +85,7 @@ class MoveCopyHelper {
 		$password,
 		$fromFileName,
 		$toFileName,
-		$headers = array(),
+		$headers = [],
 		$davPathVersionToUse = 1,
 		$sourceIpAddress = null
 	) {
@@ -120,7 +120,7 @@ class MoveCopyHelper {
 		$password,
 		$fromFileName,
 		$toFileName,
-		$headers = array(),
+		$headers = [],
 		$davPathVersionToUse = 1,
 		$sourceIpAddress = null
 	) {

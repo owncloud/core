@@ -167,7 +167,7 @@ class OwncloudPage extends Page {
 	 * @return array
 	 */
 	public function getNotifications() {
-		$notificationsText = array();
+		$notificationsText = [];
 		$notifications = $this->findById($this->notificationId);
 
 		if (\is_null($notifications)) {

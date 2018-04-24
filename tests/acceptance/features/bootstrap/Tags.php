@@ -35,7 +35,7 @@ trait Tags {
 	/**
 	 * @var array 
 	 */
-	private $createdTags = array();
+	private $createdTags = [];
 
 	/**
 	 * @param string $user

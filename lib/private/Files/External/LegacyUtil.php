@@ -319,14 +319,14 @@ class LegacyUtil {
 	 */
 	public static function makeConfigHash($config) {
 		$data = \json_encode(
-			array(
+			[
 				'c' => $config['backend'],
 				'a' => $config['authMechanism'],
 				'm' => $config['mountpoint'],
 				'o' => $config['options'],
 				'p' => isset($config['priority']) ? $config['priority'] : -1,
 				'mo' => isset($config['mountOptions']) ? $config['mountOptions'] : [],
-			)
+			]
 		);
 		return \hash('md5', $data);
 	}

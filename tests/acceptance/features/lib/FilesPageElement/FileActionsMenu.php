@@ -119,7 +119,7 @@ class FileActionsMenu extends OwncloudPage {
 			);
 		} else {
 			$this->waitFor(
-				STANDARDUIWAITTIMEOUTMILLISEC / 1000, array($button, 'isVisible')
+				STANDARDUIWAITTIMEOUTMILLISEC / 1000, [$button, 'isVisible']
 			);
 			return $button;
 		}

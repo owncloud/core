@@ -37,7 +37,7 @@ class Movie implements IProvider2 {
 	 * Keep track of movies without artwork to avoid retries in same request
 	 * @var array
 	 */
-	private $noArtworkIndex = array();
+	private $noArtworkIndex = [];
 
 	/**
 	 * {@inheritDoc}
@@ -104,7 +104,7 @@ class Movie implements IProvider2 {
 				\exec($cmd, $output, $returnCode);
 
 				if ($returnCode === 0) {
-					$endings = array('.jpg', '.png');
+					$endings = ['.jpg', '.png'];
 					foreach ($endings as $ending) {
 						$extractedFile = $tmpBase.'_artwork_1'.$ending;
 						if (\is_file($extractedFile) &&

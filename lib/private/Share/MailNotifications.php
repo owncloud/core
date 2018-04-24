@@ -178,7 +178,7 @@ class MailNotifications {
 
 	}
 
-	public function sendLinkShareMail($recipient, $filename, $link, $expiration, $personalNote = null, $options = array()) {
+	public function sendLinkShareMail($recipient, $filename, $link, $expiration, $personalNote = null, $options = []) {
 		$subject = (string)$this->l->t('%s shared »%s« with you', [$this->senderDisplayName, $filename]);
 		list($htmlBody, $textBody) = $this->createMailBody($filename, $link, $expiration, $personalNote);
 
@@ -195,7 +195,7 @@ class MailNotifications {
 	 * @param int $expiration expiration date (timestamp)
 	 * @return string[] $result of failed recipients
 	 */
-	public function sendLinkShareMailFromBody($recipient, $subject, $htmlBody, $textBody, $options = array()) {
+	public function sendLinkShareMailFromBody($recipient, $subject, $htmlBody, $textBody, $options = []) {
 
 		$recipients = [];
 		if ($recipient !== null) {
