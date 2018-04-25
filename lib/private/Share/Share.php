@@ -1898,7 +1898,7 @@ class Share extends Constants {
 				}
 			}
 			// Remove root from file source paths if retrieving own shared items
-			if (isset($uidOwner) && isset($row['path'])) {
+			if (isset($uidOwner, $row['path'])  ) {
 				if (isset($row['parent'])) {
 					$query = \OC_DB::prepare('SELECT `file_target` FROM `*PREFIX*share` WHERE `id` = ?');
 					$parentResult = $query->execute([$row['parent']]);
