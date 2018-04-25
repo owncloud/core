@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "3d2cb15944599a6ed89cf02a3924a3eb",
+    "content-hash": "9def65ce9a11d6b6c87c1da1a2daafac",
     "packages": [
         {
             "name": "icewind/smb",
@@ -31,7 +31,8 @@
             "type": "library",
             "autoload": {
                 "psr-4": {
-                    "Icewind\\SMB\\": "src/"
+                    "Icewind\\SMB\\": "src/",
+                    "Icewind\\SMB\\Test\\": "tests/"
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -49,16 +50,16 @@
         },
         {
             "name": "icewind/streams",
-            "version": "0.5.2",
+            "version": "0.6.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/icewind1991/Streams.git",
-                "reference": "6bfd2fdbd99319f5e010d0a684409189a562cb1e"
+                "reference": "851b822ac29724c88c546755f52f76bf953e574c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/icewind1991/Streams/zipball/6bfd2fdbd99319f5e010d0a684409189a562cb1e",
-                "reference": "6bfd2fdbd99319f5e010d0a684409189a562cb1e",
+                "url": "https://api.github.com/repos/icewind1991/Streams/zipball/851b822ac29724c88c546755f52f76bf953e574c",
+                "reference": "851b822ac29724c88c546755f52f76bf953e574c",
                 "shasum": ""
             },
             "require": {
@@ -71,6 +72,7 @@
             "type": "library",
             "autoload": {
                 "psr-4": {
+                    "Icewind\\Streams\\Tests\\": "tests/",
                     "Icewind\\Streams\\": "src/"
                 }
             },
@@ -85,7 +87,7 @@
                 }
             ],
             "description": "A set of generic stream wrappers",
-            "time": "2016-12-02T14:21:23+00:00"
+            "time": "2018-01-30T14:09:12+00:00"
         }
     ],
     "packages-dev": [],
