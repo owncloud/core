@@ -644,7 +644,7 @@ class File extends Node implements IFile {
 	private function convertToSabreException(\Exception $e) {
 		if ($e instanceof FileContentNotAllowedException) {
 			// the file content is not permitted
-			throw new FileContentNotAllowedException($e->getMessage(), $e->getRetry(), $e);
+			throw new DAVForbiddenException($e->getMessage(), $e->getRetry(), $e);
 		}
 		if ($e instanceof \Sabre\DAV\Exception) {
 			throw $e;
