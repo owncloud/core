@@ -112,7 +112,7 @@ trait Auth {
 		$request->setHeader('requesttoken', $this->requestToken);
 		$request->setHeader('X-Requested-With', 'XMLHttpRequest');
 		$this->response = $this->client->send($request);
-		$this->appToken = json_decode($this->response->getBody()->getContents())->token;
+		$this->appToken = \json_decode($this->response->getBody()->getContents())->token;
 	}
 
 	/**
