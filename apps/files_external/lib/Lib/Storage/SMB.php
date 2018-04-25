@@ -76,7 +76,7 @@ class SMB extends \OCP\Files\Storage\StorageAdapter {
 		}
 		$this->log('enter: '.__FUNCTION__.'('.\json_encode($loggedParams).')');
 
-		if (isset($params['host']) && isset($params['user']) && isset($params['password']) && isset($params['share'])) {
+		if (isset($params['host'], $params['user'], $params['password'], $params['share'])      ) {
 			if (Server::NativeAvailable()) {
 				$this->log('using native libsmbclient');
 				$this->server = new NativeServer($params['host'], $params['user'], $params['password']);

@@ -212,7 +212,7 @@ class MDB2SchemaReader {
 
 			}
 		}
-		if (isset($name) && isset($type)) {
+		if (isset($name, $type)  ) {
 			if (isset($options['default']) && empty($options['default'])) {
 				if (empty($options['notnull']) || !$options['notnull']) {
 					unset($options['default']);

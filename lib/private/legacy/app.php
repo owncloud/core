@@ -1181,7 +1181,7 @@ class OC_App {
 	 * @param $appId
 	 */
 	public static function clearAppCache($appId) {
-		unset(self::$appVersion[$appId]);
-		unset(self::$appInfo[$appId]);
+		unset(self::$appVersion[$appId], self::$appInfo[$appId]);
+		
 	}
 }

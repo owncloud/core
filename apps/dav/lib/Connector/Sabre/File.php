@@ -527,7 +527,7 @@ class File extends Node implements IFile, IFileNode {
 				$info = $this->fileView->getFileInfo($targetPath);
 
 
-				if (isset($partStorage) && isset($partInternalPath)) {
+				if (isset($partStorage, $partInternalPath)  ) {
 					$checksums = $partStorage->getMetaData($partInternalPath)['checksum'];
 				} else {
 					$checksums = $targetStorage->getMetaData($targetInternalPath)['checksum'];
