@@ -263,7 +263,7 @@ boom@5.x.x:
   dependencies:
     hoek "4.x.x"
 
-bower@~1.8.0:
+bower@~1.8.4:
   version "1.8.4"
   resolved "https://registry.yarnpkg.com/bower/-/bower-1.8.4.tgz#e7876a076deb8137f7d06525dc5e8c66db82f28a"
 
