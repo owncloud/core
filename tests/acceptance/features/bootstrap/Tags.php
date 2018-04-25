@@ -548,6 +548,7 @@ trait Tags {
 	 * @return void
 	 */
 	public function cleanupTags() {
+		$this->deleteTokenAuthEnforcedAfterScenario();
 		foreach ($this->createdTags as $tagID) {
 			try {
 				$this->response = TagsHelper::deleteTag(

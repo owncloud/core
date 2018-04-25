@@ -19,8 +19,10 @@
  *
  */
 
+use Behat\Behat\Hook\Scope\BeforeScenarioScope;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\BadResponseException;
+use TestHelpers\SetupHelper;
 
 require __DIR__ . '/../../../../lib/composer/autoload.php';
 
@@ -30,6 +32,8 @@ require __DIR__ . '/../../../../lib/composer/autoload.php';
 trait Auth {
 
 	private $clientToken;
+	private $appToken;
+	private $tokenAuthHasBeenSet = false;
 
 	/**
 	 * @BeforeScenario
@@ -85,6 +89,42 @@ trait Auth {
 		} catch (BadResponseException $ex) {
 			$this->response = $ex->getResponse();
 		}
+	}
+
+	/**
+	 * @When the user generates a new app password named :name using the API
+	 *
+	 * @param string $name
+	 *
+	 * @return void
+	 */
+	public function userGeneratesNewAppPasswordNamed($name) {
+		$options = [];
+		$options['cookies'] = $this->cookieJar;
+		$options['body'] = ['name' => $name];
+		$request = $this->client->createRequest(
+			'POST',
+			$this->getBaseUrl() . '/index.php/settings/personal/authtokens',
+			$options
+		);
+		$request->setHeader('Content-Type', 'application/x-www-form-urlencoded');
+		$request->setHeader('OCS-APIREQUEST', 'true');
+		$request->setHeader('requesttoken', $this->requestToken);
+		$request->setHeader('X-Requested-With', 'XMLHttpRequest');
+		$this->response = $this->client->send($request);
+		$this->appToken = json_decode($this->response->getBody()->getContents())->token;
+	}
+
+	/**
+	 * @Given the user has generated a new app password named :name
+	 *
+	 * @param string $name
+	 *
+	 * @return void
+	 */
+	public function aNewAppPasswordHasBeenGenerated($name) {
+		$this->userGeneratesNewAppPasswordNamed($name);
+		$this->theHTTPStatusCodeShouldBe(200);
 	}
 
 	/**
@@ -155,6 +195,19 @@ trait Auth {
 	}
 
 	/**
+	 * @When the user requests :url with :method using the generated app password
+	 * @Given the user has requested :url with :method using the generated app password
+	 *
+	 * @param string $url
+	 * @param string $method
+	 *
+	 * @return void
+	 */
+	public function userRequestsURLWithUsingAppPassword($url, $method) {
+		$this->sendRequest($url, $method, 'token ' . $this->appToken);
+	}
+
+	/**
 	 * @When the user requests :url with :method using the browser session
 	 * @Given the user has requested :url with :method using the browser session
 	 *
@@ -198,6 +251,56 @@ trait Auth {
 			]
 		);
 		$this->extractRequestTokenFromResponse($response);
+	}
+
+	/**
+	 * @When /^the administrator (enforces|does not enforce)\s?token auth$/
+	 * @Given /^token auth has (not|)\s?been enforced$/
+	 *
+	 * @param string $hasOrNot
+	 *
+	 * @return void
+	 * @throws Exception
+	 */
+	public function tokenAuthHasBeenEnforced($hasOrNot) {
+		$enforce = (($hasOrNot !== "not") && ($hasOrNot !== "does not enforce"));
+		if ($enforce) {
+			$value = 'true';
+		} else {
+			$value = 'false';
+		}
+		$this->runOcc(
+			[
+				'config:system:set',
+				'token_auth_enforced',
+				'--type',
+				'boolean',
+				'--value',
+				$value
+			]
+		);
+
+		// Remember that we set this value, so it can be removed after the scenario
+		$this->tokenAuthHasBeenSet = true;
+	}
+
+	/**
+	 * delete token_auth_enforced if it was set in the scenario
+	 *
+	 * @AfterScenario
+	 *
+	 * @return void
+	 */
+	public function deleteTokenAuthEnforcedAfterScenario() {
+		if ($this->tokenAuthHasBeenSet) {
+			$this->runOcc(
+				[
+					'config:system:delete',
+					'token_auth_enforced'
+				]
+			);
+			$this->tokenAuthHasBeenSet = false;
+		}
 	}
 
 }
