@@ -4,6 +4,9 @@ As an admin
 I want to be able to add groups
 So that I can more easily manage access to resources by groups rather than individual users
 
+	Background:
+		Given using API version "1"
+
 	Scenario: Create a group
 		Given group "new-group" has been deleted
 		When the administrator sends a group creation request for group "new-group" using the API
