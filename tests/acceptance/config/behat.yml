@@ -29,9 +29,15 @@ default:
         - FeatureContext: *common_feature_context_params
         - FederationContext:
 
-    apiProvisioning:
+    apiProvisioning-v1:
       paths:
-        - %paths.base%/../features/apiProvisioning
+        - %paths.base%/../features/apiProvisioning-v1
+      contexts:
+        - FeatureContext: *common_feature_context_params
+
+    apiProvisioning-v2:
+      paths:
+        - %paths.base%/../features/apiProvisioning-v2
       contexts:
         - FeatureContext: *common_feature_context_params
 
