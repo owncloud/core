@@ -4,6 +4,9 @@ As an admin
 I want to be able to get the list of subadmins of a group
 So that I can manage subadmins of a group
 
+	Background:
+		Given using API version "1"
+
 	Scenario: Getting subadmin users of a group
 		Given user "brand-new-user" has been created
 		And group "new-group" has been created

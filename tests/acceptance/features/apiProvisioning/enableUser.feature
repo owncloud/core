@@ -30,7 +30,6 @@ So that I can give a user access to their files and resources again if they are 
 		And user "subadmin" has been added to group "new-group"
 		And user "admin" has been added to group "new-group"
 		And user "subadmin" has been made a subadmin of group "new-group"
-		And user "another-admin" has been disabled
 		When user "admin" sends HTTP method "PUT" to API endpoint "/cloud/users/subadmin/disable"
 		Then the OCS status code should be "100"
 		And the HTTP status code should be "200"

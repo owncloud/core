@@ -6,7 +6,7 @@ So that I can give a user access to the resources of the group
 
 	Background:
 		Given using API version "1"
-		
+
 	Scenario Outline: adding a user to a group
 		Given user "brand-new-user" has been created
 		And group "<group_id>" has been created
