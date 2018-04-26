@@ -4,6 +4,9 @@ As an admin
 I want to be able to get groups
 So that I can manage group membership
 
+	Background:
+		Given using API version "1"
+
 	Scenario: getting groups of an user
 		Given user "brand-new-user" has been created
 		And group "new-group" has been created
@@ -15,3 +18,4 @@ So that I can manage group membership
 			| new-group |
 			| 0         |
 		And the OCS status code should be "100"
+		And the HTTP status code should be "200" 

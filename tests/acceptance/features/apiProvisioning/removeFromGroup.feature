@@ -14,6 +14,7 @@ So that I can manage user access to group resources
 		When user "admin" sends HTTP method "DELETE" to API endpoint "/cloud/users/brand-new-user/groups" with body
 			| groupid | <group_id> |
 		Then the OCS status code should be "100"
+		And the HTTP status code should be "200" 
 		And user "brand-new-user" should not belong to group "<group_id>"
 		Examples:
 			| group_id  |
