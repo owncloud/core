@@ -20,7 +20,6 @@
  *
  */
 
-
 namespace OCP\Security;
 
 /**

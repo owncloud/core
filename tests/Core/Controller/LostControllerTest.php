@@ -173,7 +173,6 @@ class LostControllerTest extends TestCase {
 		$this->assertEquals($expectedResponse, $response);
 	}
 
-
 	public function testResetFormExpiredToken() {
 		$user = $this->getMockBuilder('\OCP\IUser')
 			->disableOriginalConstructor()->getMock();
@@ -532,7 +531,6 @@ class LostControllerTest extends TestCase {
 			->expects($this->at(1))
 			->method('send')
 			->with($message);
-
 
 		$response = $this->lostController->setPassword('TheOnlyAndOnlyOneTokenToResetThePassword', 'ValidTokenUser', 'NewPassword', true);
 		$expectedResponse = ['status' => 'success'];

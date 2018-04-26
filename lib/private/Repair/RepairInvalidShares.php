@@ -98,7 +98,6 @@ class RepairInvalidShares implements IRepairStep {
 		$mask = \OCP\Constants::PERMISSION_READ | \OCP\Constants::PERMISSION_UPDATE | \OCP\Constants::PERMISSION_SHARE;
 		$builder = $this->connection->getQueryBuilder();
 
-
 		if ($this->connection->getDatabasePlatform() instanceof OraclePlatform) {
 			$permsFunc = $builder->createFunction(
 				'bitand(' . $builder->getColumnName('permissions') . ', ' . $mask . ')'

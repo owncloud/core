@@ -22,7 +22,6 @@
 
 namespace OCP\AppFramework\Http;
 
-
 /**
  * Class EmptyContentSecurityPolicy is a simple helper which allows applications
  * to modify the Content-Security-Policy sent by ownCloud. Per default the policy

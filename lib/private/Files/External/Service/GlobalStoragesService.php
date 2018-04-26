@@ -25,7 +25,6 @@
 
 namespace OC\Files\External\Service;
 
-
 use OC\Files\Filesystem;
 
 use OCP\Files\External\IStorageConfig;

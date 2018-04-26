@@ -142,7 +142,6 @@ class FileCustomPropertiesBackendTest extends \Test\TestCase {
 		$this->assertEquals(200, $result['customprop2']);
 	}
 
-	
 	/**
 	 * Test getting properties when node has no fileId
 	 * Should fail gracefully with no error

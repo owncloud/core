@@ -21,7 +21,6 @@
 
 namespace Test\Repair;
 
-
 use OC\Repair\RepairUnmergedShares;
 use OC\Share\Constants;
 use OC\Share20\DefaultShareProvider;

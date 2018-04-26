@@ -212,7 +212,6 @@ class Scanner extends BasicEmitter implements IScanner {
 							}
 						}
 
-
 						$data['fileid'] = $this->addToCache($file, $newData, $fileId);
 					}
 					if (isset($cacheData['size'])) {

@@ -21,9 +21,7 @@
  *
  */
 
-
 namespace Test\AppFramework\Db;
-
 
 /**
  * Simple utility class for testing mappers
@@ -35,7 +33,6 @@ abstract class MapperTestUtility extends \Test\TestCase {
 	private $prepareAt;
 	private $fetchAt;
 	private $iterators;
-
 
 	/**
 	 * Run this function before the actual test to either set or initialize the
@@ -171,8 +168,6 @@ abstract class MapperTestUtility extends \Test\TestCase {
 			}));
 		$this->queryAt++;
 
-
-
 		if ($expectClose) {
 			$closing = $this->at($this->queryAt);
 		} else {
@@ -185,9 +180,7 @@ abstract class MapperTestUtility extends \Test\TestCase {
 		$this->fetchAt++;
 	}
 
-
 }
-
 
 class ArgumentIterator {
 

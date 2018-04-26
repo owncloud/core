@@ -23,13 +23,11 @@
  *
  */
 
-
 namespace OCP\AppFramework\Db;
 
 use OCP\DB\QueryBuilder\IQueryBuilder;
 use OCP\IDBConnection;
 use OCP\IDb;
-
 
 /**
  * Simple parent class for inheriting your data access layer from. This class
@@ -62,7 +60,6 @@ abstract class Mapper {
 		}
 	}
 
-
 	/**
 	 * @return string the table name
 	 * @since 7.0.0
@@ -70,7 +67,6 @@ abstract class Mapper {
 	public function getTableName(){
 		return $this->tableName;
 	}
-
 
 	/**
 	 * Deletes an entity from the table
@@ -84,7 +80,6 @@ abstract class Mapper {
 		$stmt->closeCursor();
 		return $entity;
 	}
-
 
 	/**
 	 * Creates a new entry in the db from an entity
@@ -131,8 +126,6 @@ abstract class Mapper {
 
 		return $entity;
 	}
-
-
 
 	/**
 	 * Updates an entry in the db from an entity
@@ -218,7 +211,6 @@ abstract class Mapper {
 		}
 	}
 
-
 	/**
 	 * Runs an sql query
 	 * @param string $sql the prepare string
@@ -262,7 +254,6 @@ abstract class Mapper {
 
 		return $query;
 	}
-
 
 	/**
 	 * Returns an db result and throws exceptions when there are more or less
@@ -325,7 +316,6 @@ abstract class Mapper {
 					'offset "' . $offset . '"';
 	}
 
-
 	/**
 	 * Creates an entity from a row. Automatically determines the entity class
 	 * from the current mapper name (MyEntityMapper -> MyEntity)
@@ -337,7 +327,6 @@ abstract class Mapper {
 		unset($row['DOCTRINE_ROWNUM']); // Remove oracle workaround for limit
 		return \call_user_func($this->entityClass .'::fromRow', $row);
 	}
-
 
 	/**
 	 * Runs a sql query and returns an array of entities
@@ -362,7 +351,6 @@ abstract class Mapper {
 		return $entities;
 	}
 
-
 	/**
 	 * Returns an db result and throws exceptions when there are more or less
 	 * results
@@ -378,6 +366,5 @@ abstract class Mapper {
 	protected function findEntity($sql, array $params=[], $limit=null, $offset=null){
 		return $this->mapRowToEntity($this->findOneQuery($sql, $params, $limit, $offset));
 	}
-
 
 }

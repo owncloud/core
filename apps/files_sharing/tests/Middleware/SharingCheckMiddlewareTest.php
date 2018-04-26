@@ -98,7 +98,6 @@ class SharingCheckMiddlewareTest extends \Test\TestCase {
 		$this->assertTrue(self::invokePrivate($this->sharingCheckMiddleware, 'isLinkSharingEnabled'));
 	}
 
-
 	public function testIsLinkSharingEnabledWithLinkSharingDisabled() {
 		$this->config
 			->expects($this->at(0))
@@ -282,6 +281,5 @@ class SharingCheckMiddlewareTest extends \Test\TestCase {
 	public function testAfterExceptionWithS2SException() {
 		$this->assertEquals(new JSONResponse('My Exception message', 405), $this->sharingCheckMiddleware->afterException($this->controllerMock, 'myMethod', new S2SException('My Exception message')));
 	}
-
 
 }

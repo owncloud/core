@@ -354,7 +354,6 @@ class ShareesController extends OCSController  {
 			foreach ($cloudIds as $cloudId) {
 				list(, $serverUrl) = $this->splitUserRemote($cloudId);
 
-
 				if (\strtolower($cloudId) === $lowerSearch) {
 					$foundRemoteById = true;
 					// Save this as an exact match and continue with next CLOUD
@@ -417,7 +416,6 @@ class ShareesController extends OCSController  {
 		if (!$this->shareeEnumeration) {
 			$this->result['remotes'] = [];
 		}
-
 
 		if (!$foundRemoteById && \substr_count($search, '@') >= 1 && $this->offset === 0
 			// if an exact local user is found, only keep the remote entry if

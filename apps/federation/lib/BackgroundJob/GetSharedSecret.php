@@ -21,7 +21,6 @@
  *
  */
 
-
 namespace OCA\Federation\BackgroundJob;
 
 use GuzzleHttp\Exception\ClientException;

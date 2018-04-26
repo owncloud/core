@@ -83,7 +83,6 @@ class Quota  {
 		return $this->config->getSystemValue('trashbin_purge_limit', self::DEFAULTMAXSIZE);
 	}
 
-
 	/**
 	 * Get user quota or free space when there is no quota set
 	 *

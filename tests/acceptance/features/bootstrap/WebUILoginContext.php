@@ -268,8 +268,6 @@ class WebUILoginContext extends RawMinkContext implements Context {
 		$this->loginPage->resetThePassword($newPassword, $this->getSession());
 	}
 	
-	
-
 	/**
 	 * This will run before EVERY scenario.
 	 * It will set the properties for this object.

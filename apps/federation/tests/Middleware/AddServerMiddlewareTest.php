@@ -20,9 +20,7 @@
  *
  */
 
-
 namespace OCA\Federation\Tests\Middleware;
-
 
 use OC\HintException;
 use OCA\Federation\Middleware\AddServerMiddleware;

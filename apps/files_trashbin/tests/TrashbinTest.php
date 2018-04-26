@@ -97,7 +97,6 @@ class TrashbinTest extends TestCase {
 		self::loginHelper(self::TEST_TRASHBIN_USER1, true);
 	}
 
-
 	public static function tearDownAfterClass() {
 		// cleanup test user
 		$user = \OC::$server->getUserManager()->get(self::TEST_TRASHBIN_USER1);
@@ -161,7 +160,6 @@ class TrashbinTest extends TestCase {
 
 		parent::tearDown();
 	}
-
 
 	/**
 	 * test expiration of files older then the max storage time defined for the trash
@@ -282,7 +280,6 @@ class TrashbinTest extends TestCase {
 		$this->assertSame('file2.txt', $element['name']);
 	}
 
-
 	/**
 	 * verify that the array contains the expected results
 	 *
@@ -326,7 +323,6 @@ class TrashbinTest extends TestCase {
 		}
 		return \OCA\Files\Helper::sortFiles($files, 'mtime');
 	}
-
 
 	/**
 	 * test expiration of old files in the trash bin until the max size

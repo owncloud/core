@@ -131,7 +131,6 @@ class CheckSetupControllerTest extends TestCase {
 			->method('newClient')
 			->will($this->returnValue($client));
 
-
 		$this->assertTrue(
 			self::invokePrivate(
 				$this->checkSetupController,
@@ -478,7 +477,6 @@ class CheckSetupControllerTest extends TestCase {
 		$this->assertSame('cURL is using an outdated NSS version (NSS/1.0.2b). Please update your operating system or features such as installing and updating apps via the market or Federated Cloud Sharing will not work reliably.', $this->invokePrivate($this->checkSetupController, 'isUsedTlsLibOutdated'));
 	}
 
-
 	public function testIsBuggyNss200() {
 		$this->config->expects($this->any())
 			->method('getSystemValue')
@@ -595,7 +593,6 @@ class CheckSetupControllerTest extends TestCase {
 		$expected = new DataDisplayResponse('Integrity checker has been disabled. Integrity cannot be verified.');
 		$this->assertEquals($expected, $this->checkSetupController->getFailedIntegrityCheckFiles());
 	}
-
 
 	public function testGetFailedIntegrityCheckFilesWithNoErrorsFound() {
 		$this->checker

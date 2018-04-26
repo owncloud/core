@@ -77,7 +77,6 @@ class HTTPHelperTest extends \Test\TestCase {
 			->method('getBody')
 			->will($this->returnValue('Body of the requested page'));
 
-
 		$response = $this->httpHelperMock->post('https://owncloud.org', ['Foo' => 'Bar']);
 		$expected = [
 			'success' => true,
@@ -107,7 +106,6 @@ class HTTPHelperTest extends \Test\TestCase {
 				]
 			)
 			->will($this->throwException(new \Exception('Something failed')));
-
 
 		$response = $this->httpHelperMock->post('https://owncloud.org', ['Foo' => 'Bar']);
 		$expected = [

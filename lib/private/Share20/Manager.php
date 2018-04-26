@@ -77,7 +77,6 @@ class Manager implements IManager {
 	/** @var EventDispatcher  */
 	private $eventDispatcher;
 
-
 	/**
 	 * Manager constructor.
 	 *
@@ -895,7 +894,6 @@ class Manager implements IManager {
 		$this->eventDispatcher->dispatch('share.afterDelete', $afterEvent);
 	}
 
-
 	/**
 	 * Unshare a file as the recipient.
 	 * This can be different from a regular delete for example when one of
@@ -1072,7 +1070,6 @@ class Manager implements IManager {
 
 		return $provider->getSharedWith($userId, $shareType, $node, $limit, $offset);
 	}
-
 
 	/**
 	 * @inheritdoc

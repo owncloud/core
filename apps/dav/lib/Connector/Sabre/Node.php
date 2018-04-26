@@ -41,7 +41,6 @@ use OCP\Files\ForbiddenException;
 use OCP\Share\Exceptions\ShareNotFound;
 use OCP\Share\IManager;
 
-
 abstract class Node implements \Sabre\DAV\INode {
 
 	/**

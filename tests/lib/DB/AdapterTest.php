@@ -166,7 +166,6 @@ class AdapterTest extends \Test\TestCase {
 
 	}
 
-
 	public function testUpsertAndThrowOtherDriverExceptions() {
 		$mockConn = $this->createMock(IDBConnection::class);
 		$qb = $this->createMock(IQueryBuilder::class);

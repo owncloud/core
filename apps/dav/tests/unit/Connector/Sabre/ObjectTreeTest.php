@@ -25,7 +25,6 @@
 
 namespace OCA\DAV\Tests\unit\Connector\Sabre;
 
-
 use OC\Files\FileInfo;
 use OC\Files\Filesystem;
 use OC\Files\Storage\Temporary;
@@ -252,7 +251,6 @@ class ObjectTreeTest extends TestCase {
 	public function testGetNodeForPathInvalidPath() {
 		$path = '/foo\bar';
 
-
 		$storage = new Temporary([]);
 
 		$view = $this->getMockBuilder(View::class)
@@ -277,7 +275,6 @@ class ObjectTreeTest extends TestCase {
 
 	public function testGetNodeForPathRoot() {
 		$path = '/';
-
 
 		$storage = new Temporary([]);
 

@@ -23,11 +23,9 @@
  *
  */
 
-
 namespace OC\AppFramework\Utility;
 
 use \OCP\AppFramework\Utility\IControllerMethodReflector;
-
 
 /**
  * Reads and parses annotations from doc comments
@@ -43,7 +41,6 @@ class ControllerMethodReflector implements IControllerMethodReflector{
 		$this->parameters = [];
 		$this->annotations = [];
 	}
-
 
 	/**
 	 * @param object|string $object an object or classname
@@ -81,7 +78,6 @@ class ControllerMethodReflector implements IControllerMethodReflector{
 		}
 	}
 
-
 	/**
 	 * Inspects the PHPDoc parameters for types
 	 * @param string $parameter the parameter whose type comments should be
@@ -97,14 +93,12 @@ class ControllerMethodReflector implements IControllerMethodReflector{
 		}
 	}
 
-
 	/**
 	 * @return array the arguments of the method with key => default value
 	 */
 	public function getParameters() {
 		return $this->parameters;
 	}
-
 
 	/**
 	 * Check if a method contains an annotation
@@ -114,6 +108,5 @@ class ControllerMethodReflector implements IControllerMethodReflector{
 	public function hasAnnotation($name){
 		return \in_array($name, $this->annotations);
 	}
-
 
 }

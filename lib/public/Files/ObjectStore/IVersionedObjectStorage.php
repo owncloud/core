@@ -19,7 +19,6 @@
  *
  */
 
-
 namespace OCP\Files\ObjectStore;
 
 /**

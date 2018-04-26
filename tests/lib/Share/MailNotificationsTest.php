@@ -48,7 +48,6 @@ class MailNotificationsTest extends TestCase {
 	/** @var IURLGenerator | \PHPUnit_Framework_MockObject_MockObject */
 	private $urlGenerator;
 
-
 	public function setUp() {
 		parent::setUp();
 

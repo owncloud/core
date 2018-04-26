@@ -62,7 +62,6 @@ class Hooks {
 		}
 	}
 
-
 	/**
 	 * Erase versions of deleted file
 	 * @param array $params

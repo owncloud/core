@@ -19,9 +19,7 @@
  *
  */
 
-
 namespace Test\Files\Node;
-
 
 use OC\Files\Node\AbstractNode;
 use Test\TestCase;

@@ -19,7 +19,6 @@
  *
  */
 
-
 namespace OCA\DAV;
 
 use OCP\Capabilities\ICapability;

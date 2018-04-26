@@ -29,7 +29,6 @@ $l = \OC::$server->getL10N('settings');
 OC_JSON::checkLoggedIn();
 OCP\JSON::callCheck();
 
-
 // Get data
 if(isset($_POST['lang'])) {
 	$languageCodes = \OC::$server->getL10NFactory()->findAvailableLanguages();

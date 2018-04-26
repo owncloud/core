@@ -38,7 +38,6 @@ use OCP\AppFramework\Http\OCSResponse;
 use OCP\AppFramework\Http\Response;
 use OCP\IRequest;
 
-
 /**
  * Base class to inherit your controllers from that are used for RESTful APIs
  * @since 8.1.0
@@ -73,7 +72,6 @@ abstract class OCSController extends ApiController {
 			return $this->buildOCSResponse('xml', $data);
 		});
 	}
-
 
 	/**
 	 * Unwrap data and build ocs response

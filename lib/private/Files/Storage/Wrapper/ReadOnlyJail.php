@@ -38,7 +38,6 @@ class ReadOnlyJail extends DirMask {
 		return parent::checkPath($path);
 	}
 
-
 	/**
 	 * @param string $path
 	 * @return bool
@@ -66,7 +65,6 @@ class ReadOnlyJail extends DirMask {
 
 		return $result;
 	}
-
 
 	/**
 	 * get a cache instance for the storage

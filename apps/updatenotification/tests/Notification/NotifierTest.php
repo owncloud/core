@@ -22,7 +22,6 @@
 
 namespace OCA\UpdateNotification\Tests\Notification;
 
-
 use OCA\UpdateNotification\Notification\Notifier;
 use OCP\L10N\IFactory;
 use OCP\Notification\IManager;

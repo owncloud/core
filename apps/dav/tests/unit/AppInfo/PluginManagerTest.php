@@ -35,7 +35,6 @@ class PluginManagerTest extends TestCase {
 	public function test() {
 		$server = $this->createMock(ServerContainer::class);
 
-
 		$appManager = $this->createMock(IAppManager::class);
 		$appManager->method('getInstalledApps')
 			->willReturn(['adavapp', 'adavapp2']);

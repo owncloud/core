@@ -118,8 +118,6 @@ class DefaultShareProviderTest extends TestCase {
 		return$qb->getLastInsertId();
 	}
 
-
-
 	/**
 	 * @expectedException \OCP\Share\Exceptions\ShareNotFound
 	 */
@@ -2432,7 +2430,6 @@ class DefaultShareProviderTest extends TestCase {
 		$this->assertSame('user4', $shares[1]['uid_initiator']);
 		$this->assertSame('user5', $shares[1]['uid_owner']);
 		$this->assertSame(0, (int)$shares[1]['permissions']);
-
 
 		$stmt->closeCursor();
 	}

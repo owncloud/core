@@ -22,13 +22,11 @@
 
 namespace OCP;
 
-
 /**
  * Small Facade for being able to inject the database connection for tests
  * @since 7.0.0 - extends IDBConnection was added in 8.1.0
  */
 interface IDb extends IDBConnection {
-
 
     /**
      * Used to abstract the owncloud database access away
@@ -40,7 +38,6 @@ interface IDb extends IDBConnection {
      */
     public function prepareQuery($sql, $limit=null, $offset=null);
 
-
     /**
      * Used to get the id of the just inserted element
      * @param string $tableName the name of the table where we inserted the item
@@ -48,6 +45,5 @@ interface IDb extends IDBConnection {
 	 * @since 7.0.0
      */
     public function getInsertId($tableName);
-
 
 }

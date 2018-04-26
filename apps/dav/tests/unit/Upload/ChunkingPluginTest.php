@@ -19,9 +19,7 @@
  *
  */
 
-
 namespace OCA\DAV\Tests\unit\Upload;
-
 
 use OCA\DAV\Connector\Sabre\Directory;
 use OCA\DAV\Upload\ChunkingPlugin;
@@ -31,7 +29,6 @@ use Sabre\HTTP\ResponseInterface;
 use Test\TestCase;
 
 class ChunkingPluginTest extends TestCase {
-
 
 	/**
 	 * @var \Sabre\DAV\Server | \PHPUnit_Framework_MockObject_MockObject

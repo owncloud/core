@@ -24,7 +24,6 @@ namespace Test\AppFramework\Utility;
 
 use OC\AppFramework\Utility\SimpleContainer;
 
-
 interface TestInterface {}
 
 class ClassEmptyConstructor implements IInterfaceConstructor {}
@@ -55,7 +54,6 @@ class ClassInterfaceConstructor {
     }
 }
 
-
 class SimpleContainerTest extends \Test\TestCase {
 
 	/** @var SimpleContainer */
@@ -70,14 +68,12 @@ class SimpleContainerTest extends \Test\TestCase {
         $this->assertEquals('abc', $this->container->query('test'));
     }
 
-
     /**
      * @expectedException \OCP\AppFramework\QueryException
      */
     public function testNothingRegistered() {
         $this->container->query('something really hard');
     }
-
 
     /**
      * @expectedException \OCP\AppFramework\QueryException
@@ -86,12 +82,10 @@ class SimpleContainerTest extends \Test\TestCase {
         $this->container->query('Test\AppFramework\Utility\TestInterface');
     }
 
-
     public function testNoConstructorClass() {
         $object = $this->container->query('Test\AppFramework\Utility\ClassEmptyConstructor');
         $this->assertInstanceOf(ClassEmptyConstructor::class, $object);
     }
-
 
     public function testInstancesOnlyOnce() {
         $object = $this->container->query('Test\AppFramework\Utility\ClassEmptyConstructor');
@@ -108,7 +102,6 @@ class SimpleContainerTest extends \Test\TestCase {
         $this->assertEquals('abc', $object->test);
     }
 
-
     public function testConstructorComplex() {
         $this->container->registerParameter('test', 'abc');
         $object = $this->container->query(
@@ -118,7 +111,6 @@ class SimpleContainerTest extends \Test\TestCase {
         $this->assertEquals('abc', $object->class->test);
         $this->assertEquals('abc', $object->test);
     }
-
 
     public function testConstructorComplexInterface() {
         $this->container->registerParameter('test', 'abc');
@@ -133,7 +125,6 @@ class SimpleContainerTest extends \Test\TestCase {
         $this->assertEquals('abc', $object->class->test);
         $this->assertEquals('abc', $object->test);
     }
-
 
     public function testOverrideService() {
         $this->container->registerService(

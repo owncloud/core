@@ -597,7 +597,6 @@ class Cache implements ICache {
 		// normalize pattern
 		$pattern = $this->normalize($pattern);
 
-
 		$sql = '
 			SELECT `fileid`, `storage`, `path`, `parent`, `name`,
 				`mimetype`, `mimepart`, `size`, `mtime`, `encrypted`,

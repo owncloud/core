@@ -176,7 +176,6 @@ class Helper {
 			$path = $target;
 		}
 
-
 		$ids = [];
 		while ($path !== \dirname($path)) {
 			$info = $ownerView->getFileInfo($path);

@@ -64,7 +64,6 @@ class SystemTagsObjectMappingCollection implements ICollection {
 	 */
 	private $user;
 
-
 	/**
 	 * Constructor
 	 *

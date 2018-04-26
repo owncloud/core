@@ -357,7 +357,6 @@ class Util {
 				return true;
 			}
 
-
 			//detect system wide folders
 			if (\in_array($root[1], $this->excludedPaths)) {
 				return true;

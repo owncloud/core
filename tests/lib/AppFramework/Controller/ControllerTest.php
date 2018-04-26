@@ -21,7 +21,6 @@
  *
  */
 
-
 namespace Test\AppFramework\Controller;
 
 use OC\AppFramework\DependencyInjection\DIContainer;
@@ -33,7 +32,6 @@ use OCP\AppFramework\Http\TemplateResponse;
 use OCP\IConfig;
 use OCP\Security\ISecureRandom;
 use Test\TestCase;
-
 
 class ChildController extends Controller {
 
@@ -98,32 +96,25 @@ class ControllerTest extends TestCase {
 		$this->controller = new ChildController($this->app, $request);
 	}
 
-
 	public function testParamsGet(){
 		$this->assertEquals('Johnny Weissmüller', $this->controller->params('name', 'Tarzan'));
 	}
-
 
 	public function testParamsGetDefault(){
 		$this->assertEquals('Tarzan', $this->controller->params('Ape Man', 'Tarzan'));
 	}
 
-
 	public function testParamsFile(){
 		$this->assertEquals('filevalue', $this->controller->params('file', 'filevalue'));
 	}
-
 
 	public function testGetUploadedFile(){
 		$this->assertEquals('filevalue', $this->controller->getUploadedFile('file'));
 	}
 
-
-
 	public function testGetUploadedFileDefault(){
 		$this->assertEquals('default', $this->controller->params('files', 'default'));
 	}
-
 
 	public function testGetParams(){
 		$params = [
@@ -134,11 +125,9 @@ class ControllerTest extends TestCase {
 		$this->assertEquals($params, $this->controller->getParams());
 	}
 
-
 	public function testRender(){
 		$this->assertInstanceOf(TemplateResponse::class, $this->controller->render(''));
 	}
-
 
 	public function testSetParams(){
 		$params = ['john' => 'foo'];
@@ -146,7 +135,6 @@ class ControllerTest extends TestCase {
 
 		$this->assertEquals($params, $response->getParams());
 	}
-
 
 	public function testRenderHeaders(){
 		$headers = ['one', 'two'];
@@ -156,16 +144,13 @@ class ControllerTest extends TestCase {
 		$this->assertContains($headers[1], $response->getHeaders());
 	}
 
-
 	public function testGetRequestMethod(){
 		$this->assertEquals('hi', $this->controller->method());
 	}
 
-
 	public function testGetEnvVariable(){
 		$this->assertEquals('daheim', $this->controller->env('PATH'));
 	}
-
 
 	/**
 	 * @expectedException \DomainException
@@ -174,14 +159,12 @@ class ControllerTest extends TestCase {
 		$this->controller->buildResponse(null, 'test');
 	}
 
-
 	public function testFormat() {
 		/** @var DataResponse $response */
 		$response = $this->controller->buildResponse(['hi'], 'json');
 
 		$this->assertEquals(['hi'], $response->getData());
 	}
-
 
 	public function testFormatDataResponseJSON() {
 		$expectedHeaders = [
@@ -200,7 +183,6 @@ class ControllerTest extends TestCase {
 		$this->assertEquals($expectedHeaders, $response->getHeaders());
 	}
 
-
 	public function testCustomFormatter() {
 		$response = $this->controller->custom('hi');
 		/** @var DataResponse $response */
@@ -209,13 +191,11 @@ class ControllerTest extends TestCase {
 		$this->assertEquals([2], $response->getData());
 	}
 
-
 	public function testDefaultResponderToJSON() {
 		$responder = $this->controller->getResponderByHTTPHeader('*/*');
 
 		$this->assertEquals('json', $responder);
 	}
-
 
 	public function testResponderAcceptHeaderParsed() {
 		$responder = $this->controller->getResponderByHTTPHeader(
@@ -225,7 +205,6 @@ class ControllerTest extends TestCase {
 		$this->assertEquals('tom', $responder);
 	}
 
-
 	public function testResponderAcceptHeaderParsedUpperCase() {
 		$responder = $this->controller->getResponderByHTTPHeader(
 			'*/*, apPlication/ToM, application/json'
@@ -233,6 +212,5 @@ class ControllerTest extends TestCase {
 
 		$this->assertEquals('tom', $responder);
 	}
-
 
 }

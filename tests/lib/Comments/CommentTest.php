@@ -116,6 +116,4 @@ class CommentTest extends TestCase {
 		$comment->setMessage($msg);
 	}
 
-
-
 }

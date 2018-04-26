@@ -22,9 +22,7 @@
  *
  */
 
-
 namespace OCA\Federation\BackgroundJob;
-
 
 use GuzzleHttp\Exception\ClientException;
 use OC\BackgroundJob\Job;
@@ -104,7 +102,6 @@ class RequestSharedSecret extends Job {
 			);
 		}
 	}
-
 
 	/**
 	 * run the job, then remove it from the joblist

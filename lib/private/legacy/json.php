@@ -120,7 +120,6 @@ class OC_JSON{
 		}
 	}
 
-
 	/**
 	 * Check if the user has administration privileges, send json error msg if not
 	 * @deprecated Use annotation based ACLs from the AppFramework instead

@@ -25,7 +25,6 @@
 
 namespace OCA\Files_External\Controller;
 
-
 use OCP\AppFramework\Http;
 use OCP\AppFramework\Http\DataResponse;
 use OCP\Files\External\Auth\AuthMechanism;

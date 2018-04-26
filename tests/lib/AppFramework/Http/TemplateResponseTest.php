@@ -21,14 +21,12 @@
  *
  */
 
-
 namespace Test\AppFramework\Http;
 
 use OCP\AppFramework\Http;
 use OCP\AppFramework\Http\TemplateResponse;
 use Test\TestCase;
 use OC\AppFramework\Core\API;
-
 
 /**
  * Class TemplateResponseTest
@@ -59,7 +57,6 @@ class TemplateResponseTest extends TestCase {
 
 		$this->assertEquals(['hi' => 'yo'], $tpl->getParams());
 	}
-
 
 	public function testGetTemplateName(){
 		$tpl = new TemplateResponse('app', 'home');

@@ -221,7 +221,6 @@ class RepairMismatchFileCachePath implements IRepairStep {
 		return $count;
 	}
 
-
 	/**
 	 * Outputs a report about storages with wrong path that need repairing in the file cache
 	 */

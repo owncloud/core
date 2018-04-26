@@ -291,7 +291,6 @@ class ManagerTest extends TestCase {
 		$this->assertNotMount('SharedFolder');
 		$this->assertNotMount('{{TemporaryMountPointName#' . $shareData1['name'] . '}}');*/
 
-
 		$this->mountManager = $this->createMock(\OC\Files\Mount\Manager::class);
 		$idbConnection = $this->createMock(\OCP\IDBConnection::class);
 		$prepare = $this->createMock(\Doctrine\DBAL\Driver\Statement::class);

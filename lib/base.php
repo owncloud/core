@@ -159,7 +159,6 @@ class OC {
 			}
 		}
 
-
 		if (OC::$CLI) {
 			OC::$WEBROOT = self::$config->getValue('overwritewebroot', '');
 		} else {

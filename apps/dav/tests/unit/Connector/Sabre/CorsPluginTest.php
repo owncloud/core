@@ -132,7 +132,6 @@ class CorsPluginTest extends TestCase {
 			'MOVE',
 		];
 
-
 		return [
 			'OPTIONS headers' =>
 			[

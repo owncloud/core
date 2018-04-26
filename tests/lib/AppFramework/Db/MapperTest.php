@@ -21,7 +21,6 @@
  *
  */
 
-
 namespace Test\AppFramework\Db;
 
 use OCP\AppFramework\Db\Entity;
@@ -41,7 +40,6 @@ class Example extends Entity {
 	protected $email;
 };
 
-
 class ExampleMapper extends Mapper {
 	public function __construct(IDBConnection $db){ parent::__construct($db, 'table'); }
 	public function find($table, $id){ return $this->findOneQuery($table, $id); }
@@ -50,7 +48,6 @@ class ExampleMapper extends Mapper {
 	public function mapRow($row){ return $this->mapRowToEntity($row); }
 	public function execSql($sql, $params){ return $this->execute($sql, $params); }
 }
-
 
 class MapperTest extends MapperTestUtility {
 
@@ -64,11 +61,9 @@ class MapperTest extends MapperTestUtility {
 		$this->mapper = new ExampleMapper($this->db);
 	}
 
-
 	public function testMapperShouldSetTableName(){
 		$this->assertEquals('*PREFIX*table', $this->mapper->getTableName());
 	}
-
 
 	public function testFindQuery(){
 		$sql = 'hi';
@@ -134,7 +129,6 @@ class MapperTest extends MapperTestUtility {
 		$this->mapper->findOneEntity($sql, $params);
 	}
 
-
 	public function testDelete(){
 		$sql = 'DELETE FROM `*PREFIX*table` WHERE `id` = ?';
 		$params = [2];
@@ -145,7 +139,6 @@ class MapperTest extends MapperTestUtility {
 
 		$this->mapper->delete($entity);
 	}
-
 
 	public function testCreate(){
 		$this->db->expects($this->once())
@@ -165,7 +158,6 @@ class MapperTest extends MapperTestUtility {
 
 		$this->mapper->insert($entity);
 	}
-
 
 	public function testCreateShouldReturnItemWithCorrectInsertId(){
 		$this->db->expects($this->once())
@@ -188,7 +180,6 @@ class MapperTest extends MapperTestUtility {
 		$this->assertEquals(3, $result->getId());
 	}
 
-
 	public function testAssocParameters() {
 		$sql = 'test';
 		$params = [':test' => 1, ':a' => 2];
@@ -196,7 +187,6 @@ class MapperTest extends MapperTestUtility {
 		$this->setMapperResult($sql, $params);
 		$this->mapper->execSql($sql, $params);
 	}
-
 
 	public function testUpdate(){
 		$sql = 'UPDATE `*PREFIX*table` ' .
@@ -216,7 +206,6 @@ class MapperTest extends MapperTestUtility {
 		$this->mapper->update($entity);
 	}
 
-
 	public function testUpdateNoId(){
 		$params = ['john', 'my@email'];
 		$entity = new Example();
@@ -227,7 +216,6 @@ class MapperTest extends MapperTestUtility {
 
 		$this->mapper->update($entity);
 	}
-
 
 	public function testUpdateNothingChangedNoQuery(){
 		$params = ['john', 'my@email'];
@@ -241,7 +229,6 @@ class MapperTest extends MapperTestUtility {
 
 		$this->mapper->update($entity);
 	}
-
 
 	public function testMapRowToEntity(){
 		$entity1 = $this->mapper->mapRow(['pre_name' => 'test1', 'email' => 'test2']);

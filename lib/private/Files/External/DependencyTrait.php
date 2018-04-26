@@ -22,7 +22,6 @@
 
 namespace OC\Files\External;
 
-
 /**
  * Trait for objects that have dependencies for use
  */

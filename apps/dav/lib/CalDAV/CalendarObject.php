@@ -19,9 +19,7 @@
  *
  */
 
-
 namespace OCA\DAV\CalDAV;
-
 
 use Sabre\VObject\Component;
 use Sabre\VObject\Property;

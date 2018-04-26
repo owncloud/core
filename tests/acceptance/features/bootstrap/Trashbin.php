@@ -62,7 +62,6 @@ trait Trashbin {
 		);
 		$this->theHTTPStatusCodeShouldBe('200');
 
-
 		$decodedResponse = \json_decode($this->response->getBody(), true);
 
 		return $decodedResponse['data']['files'];

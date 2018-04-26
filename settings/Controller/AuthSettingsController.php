@@ -178,7 +178,6 @@ class AuthSettingsController extends Controller {
 			return (new JSONResponse())->setStatus(Http::STATUS_CONFLICT);
 		}
 
-
 		if (\is_null($user)) {
 			return [];
 		}

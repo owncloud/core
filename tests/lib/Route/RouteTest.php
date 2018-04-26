@@ -19,7 +19,6 @@
  *
  */
 
-
 namespace Test\Route;
 
 use OC\Route\Route;

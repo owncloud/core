@@ -20,7 +20,6 @@
  *
  */
 
-
 namespace OC\DB;
 
 class AdapterPgSql extends Adapter {

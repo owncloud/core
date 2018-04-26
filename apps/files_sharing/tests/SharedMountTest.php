@@ -43,7 +43,6 @@ class SharedMountTest extends TestCase {
 
 		$this->filename = '/share-api-storage.txt';
 
-
 		$this->view->mkdir($this->folder);
 
 		// save file with content
@@ -267,8 +266,6 @@ class SharedMountTest extends TestCase {
 			],
 		];
 	}
-
-
 
 	/**
 	 * moved mountpoints of a group share should keep the same permission as their parent group share.

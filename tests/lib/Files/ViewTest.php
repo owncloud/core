@@ -2070,7 +2070,6 @@ class ViewTest extends TestCase {
 				return $path === 'files/test.txt';
 			});
 
-
 		$storage->getScanner()->scan('files');
 
 		$this->shallThrow = true;
@@ -2511,7 +2510,6 @@ class ViewTest extends TestCase {
 		}
 		return null;
 	}
-
 
 	public function testRemoveMoveableMountPoint() {
 		$mountPoint = '/' . $this->user . '/files/mount/';

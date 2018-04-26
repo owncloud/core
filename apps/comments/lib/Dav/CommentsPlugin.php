@@ -254,6 +254,4 @@ class CommentsPlugin extends ServerPlugin {
 		}
 	}
 
-
-
 }

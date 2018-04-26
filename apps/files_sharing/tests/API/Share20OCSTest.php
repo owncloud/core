@@ -128,7 +128,6 @@ class Share20OCSTest extends TestCase {
 		parent::tearDown();
 	}
 
-
 	private function mockFormatShare() {
 		return $this->getMockBuilder('OCA\Files_Sharing\API\Share20OCS')
 			->setConstructorArgs([
@@ -550,7 +549,6 @@ class Share20OCSTest extends TestCase {
 		$group->method('inGroup')->with($this->currentUser)->willReturn(true);
 		$group2 = $this->createMock('OCP\IGroup');
 		$group2->method('inGroup')->with($this->currentUser)->willReturn(false);
-
 
 		$this->groupManager->method('get')->will($this->returnValueMap([
 			['group', $group],
@@ -2661,8 +2659,6 @@ class Share20OCSTest extends TestCase {
 			[], $share, [], true
 		];
 
-
-
 		return $result;
 	}
 
@@ -2686,7 +2682,6 @@ class Share20OCSTest extends TestCase {
 		$this->urlGenerator->method('linkToRouteAbsolute')
 			->with('files_sharing.sharecontroller.showShare', ['token' => 'myToken'])
 			->willReturn('myLink');
-
 
 		$this->rootFolder->method('getUserFolder')
 			->with($this->currentUser->getUID())
@@ -2754,7 +2749,6 @@ class Share20OCSTest extends TestCase {
 
 		$this->assertEquals($expected, $result);
 	}
-
 
 	public function testCreateShareApiDisabled() {
 		$ocs = $this->getOcsDisabledAPI();

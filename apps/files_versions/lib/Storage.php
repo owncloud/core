@@ -206,7 +206,6 @@ class Storage {
 		}
 	}
 
-
 	/**
 	 * mark file as deleted so that we can remove the versions if the file is gone
 	 * @param string $path
@@ -318,7 +317,6 @@ class Storage {
 		}
 
 	}
-
 
 	public static function restoreVersion($uid, $filename, $fileToRestore, $revision) {
 		if(\OCP\Config::getSystemValue('files_versions', Storage::DEFAULTENABLED) !== true) {

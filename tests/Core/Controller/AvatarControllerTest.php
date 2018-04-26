@@ -262,7 +262,6 @@ class AvatarControllerTest extends TestCase {
 		$this->assertEquals(Http::STATUS_OK, $response->getStatus());
 	}
 
-
 	/**
 	 * When trying to post a new avatar a path or image should be posted.
 	 */
@@ -395,7 +394,6 @@ class AvatarControllerTest extends TestCase {
 		$this->assertEquals($expectedResponse, $this->avatarController->postAvatar('avatar.jpg'));
 	}
 
-
 	/**
 	 * Test invalid crop argument
 	 */
@@ -454,7 +452,6 @@ class AvatarControllerTest extends TestCase {
 		$expectedResponse = new Http\DataResponse(['data' => ['message' => 'An error occurred. Please contact your admin.']], Http::STATUS_BAD_REQUEST);
 		$this->assertEquals($expectedResponse, $this->avatarController->postCroppedAvatar(['x' => 0, 'y' => 0, 'w' => 10, 'h' => 11]));
 	}
-
 
 	/**
 	 * Check response when avatar is too big

@@ -26,7 +26,6 @@
 
 namespace OCP;
 
-
 /**
  * Small Interface for Search
  * @since 7.0.0

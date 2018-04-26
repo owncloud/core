@@ -21,9 +21,7 @@
  *
  */
 
-
 namespace OCA\Files_Trashbin\Tests\Command;
-
 
 use OC\User\Manager;
 use OCA\Files_Trashbin\Command\CleanUp;

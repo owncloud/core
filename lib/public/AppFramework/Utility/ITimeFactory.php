@@ -20,9 +20,7 @@
  *
  */
 
-
 namespace OCP\AppFramework\Utility;
-
 
 /**
  * Needed to mock calls to time()

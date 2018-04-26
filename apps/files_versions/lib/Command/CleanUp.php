@@ -21,7 +21,6 @@
 
 namespace OCA\Files_Versions\Command;
 
-
 use OCP\Files\IRootFolder;
 use OCP\IUserBackend;
 use OCP\IUserManager;
@@ -59,7 +58,6 @@ class CleanUp extends Command {
 			);
 	}
 
-
 	protected function execute(InputInterface $input, OutputInterface $output) {
 
 		$users = $input->getArgument('user_id');
@@ -96,7 +94,6 @@ class CleanUp extends Command {
 			}
 		}
 	}
-
 
 	/**
 	 * delete versions for the given user

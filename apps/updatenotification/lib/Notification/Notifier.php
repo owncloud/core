@@ -21,7 +21,6 @@
 
 namespace OCA\UpdateNotification\Notification;
 
-
 use OCP\L10N\IFactory;
 use OCP\Notification\IManager;
 use OCP\Notification\INotification;

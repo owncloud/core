@@ -166,7 +166,6 @@ class Expiration {
 			$maxValue = 'auto';
 		}
 
-
 		if ($minValue === 'auto' && $maxValue === 'auto') {
 			// Default: Delete anytime if space needed
 			$this->minAge = self::NO_OBLIGATION;

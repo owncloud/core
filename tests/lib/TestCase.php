@@ -79,7 +79,6 @@ abstract class TestCase extends BaseTestCase {
 				return $oldService;
 			});
 
-
 			unset($this->services[$name]);
 			return true;
 		}
@@ -507,7 +506,6 @@ abstract class TestCase extends BaseTestCase {
 		$actualHtml1 = $actual->saveHTML();
 		self::assertEquals($expectedHtml1, $actualHtml1, $message);
 	}
-
 
 	private function removeWhitespaces(DOMNode $domNode) {
 		foreach ($domNode->childNodes as $node) {

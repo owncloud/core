@@ -19,9 +19,7 @@
  *
  */
 
-
 namespace OCA\DAV\Tests\unit\DAV;
-
 
 use OCA\DAV\Connector\Sabre\Directory;
 use OCA\DAV\Connector\Sabre\File;

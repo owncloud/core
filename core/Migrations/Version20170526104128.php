@@ -28,7 +28,6 @@ class Version20170526104128 implements ISchemaMigration {
 		/** @var IDBConnection $db */
 		$db = \OC::$server->getDatabaseConnection();
 
-
 		$qb = $db->getQueryBuilder();
 		$qb->select(['id', 'term'])
 			->from('account_terms')

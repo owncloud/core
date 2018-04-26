@@ -21,7 +21,6 @@
 
 namespace OC\User\Sync;
 
-
 use OCP\UserInterface;
 use Test\TestCase;
 

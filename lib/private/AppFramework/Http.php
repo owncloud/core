@@ -25,7 +25,6 @@
  *
  */
 
-
 namespace OC\AppFramework;
 
 use OCP\AppFramework\Http as BaseHttp;
@@ -107,7 +106,6 @@ class Http extends BaseHttp {
 		];
 	}
 
-
 	/**
 	 * Gets the correct header
 	 * @param Http::CONSTANT $status the constant from the Http class
@@ -148,7 +146,5 @@ class Http extends BaseHttp {
 			$this->headers[$status];
 	}
 
-
 }
-
 

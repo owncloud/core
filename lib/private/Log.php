@@ -219,7 +219,6 @@ class Log implements ILogger {
 		$this->log(Util::DEBUG, $message, $context);
 	}
 
-
 	/**
 	 * Logs with an arbitrary level.
 	 *

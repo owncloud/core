@@ -53,7 +53,6 @@ abstract class Bitmap implements IProvider2 {
 			\fclose($stream);
 		}
 
-
 		//new bitmap image object
 		$image = new \OC_Image();
 		$image->loadFromData($bp);

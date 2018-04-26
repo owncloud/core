@@ -19,9 +19,7 @@
  *
  */
 
-
 namespace Test\Encryption;
-
 
 use OC\Encryption\Update;
 use Test\TestCase;
@@ -176,7 +174,6 @@ class UpdateTest extends TestCase {
 			['/test.txt', '/folder/testNew.txt', false],
 		];
 	}
-
 
 	/**
 	 * @dataProvider dataTestPostRestore

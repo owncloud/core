@@ -188,7 +188,6 @@ class RequestHandlerTest extends TestCase {
 		$this->assertSame(0, (int)$data['accepted']);
 	}
 
-
 	function testDeclineShare() {
 
 		$this->s2s = $this->getMockBuilder('\OCA\FederatedFileSharing\RequestHandler')

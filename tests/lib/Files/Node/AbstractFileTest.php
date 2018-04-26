@@ -19,9 +19,7 @@
  *
  */
 
-
 namespace Test\Files\Node;
-
 
 use OC\Files\Node\AbstractFile;
 use OCP\Files\FileInfo;

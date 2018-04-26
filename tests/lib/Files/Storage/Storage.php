@@ -175,7 +175,6 @@ abstract class Storage extends \Test\TestCase {
 		$this->assertEquals('image/svg+xml', $this->instance->getMimeType('/desktopapp.svg'));
 	}
 
-
 	public function copyAndMoveProvider() {
 		return [
 			['/source.txt', '/target.txt'],

@@ -20,9 +20,7 @@
  *
  */
 
-
 namespace OC\Encryption;
-
 
 use OC\Memcache\ArrayCache;
 use OC\Files\Filesystem;
