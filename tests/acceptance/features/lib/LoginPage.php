@@ -149,6 +149,5 @@ class LoginPage extends OwncloudPage {
 		$this->fillField($this->passwordInputId, $newPassword);
 		$this->findById($this->submitLoginId)->click();
 		$this->waitForAjaxCallsToStartAndFinish($session);
-		
 	}
 }

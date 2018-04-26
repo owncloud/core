@@ -669,7 +669,7 @@ class WebUISharingContext extends RawMinkContext implements Context {
 	/**
 	 * @return void
 	 */
-	protected function setupSharingConfigs() {
+	private function setupSharingConfigs() {
 		$settings = [
 			[
 				'capabilitiesApp' => 'files_sharing',

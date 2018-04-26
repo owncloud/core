@@ -41,23 +41,23 @@ class SharingDialog extends OwncloudPage {
 	 */
 	protected $path = '/index.php/apps/files/';
 
-	protected $shareWithFieldXpath = ".//*[contains(@class,'shareWithField')]";
-	protected $shareWithTooltipXpath = "/..//*[@class='tooltip-inner']";
-	protected $shareWithAutocompleteListXpath = ".//ul[contains(@class,'ui-autocomplete')]";
-	protected $autocompleteItemsTextXpath = "//*[@class='autocomplete-item-text']";
-	protected $shareWithCloseXpath = "//div[@id='app-sidebar']//*[@class='close icon-close']";
-	protected $suffixToIdentifyGroups = " (group)";
-	protected $suffixToIdentifyRemoteUsers = " (federated)";
-	protected $sharerInformationXpath = ".//*[@class='reshare']";
-	protected $sharedWithAndByRegEx = "^(?:[A-Z]\s)?Shared with you(?: and the group (.*))? by (.*)$";
-	protected $thumbnailContainerXpath = ".//*[contains(@class,'thumbnailContainer')]";
-	protected $thumbnailFromContainerXpath = "/a";
-	protected $permissionsFieldByUserName = ".//*[@id='shareWithList']//*[@class='has-tooltip username' and .='%s']/..";
-	protected $permissionLabelXpath = ".//label[@for='%s']";
-	protected $showCrudsXpath = ".//*[@class='showCruds']";
-	protected $publicShareTabLinkXpath = ".//li[contains(@class,'subtab-publicshare')]";
+	private $shareWithFieldXpath = ".//*[contains(@class,'shareWithField')]";
+	private $shareWithTooltipXpath = "/..//*[@class='tooltip-inner']";
+	private $shareWithAutocompleteListXpath = ".//ul[contains(@class,'ui-autocomplete')]";
+	private $autocompleteItemsTextXpath = "//*[@class='autocomplete-item-text']";
+	private $shareWithCloseXpath = "//div[@id='app-sidebar']//*[@class='close icon-close']";
+	private $suffixToIdentifyGroups = " (group)";
+	private $suffixToIdentifyRemoteUsers = " (federated)";
+	private $sharerInformationXpath = ".//*[@class='reshare']";
+	private $sharedWithAndByRegEx = "^(?:[A-Z]\s)?Shared with you(?: and the group (.*))? by (.*)$";
+	private $thumbnailContainerXpath = ".//*[contains(@class,'thumbnailContainer')]";
+	private $thumbnailFromContainerXpath = "/a";
+	private $permissionsFieldByUserName = ".//*[@id='shareWithList']//*[@class='has-tooltip username' and .='%s']/..";
+	private $permissionLabelXpath = ".//label[@for='%s']";
+	private $showCrudsXpath = ".//*[@class='showCruds']";
+	private $publicShareTabLinkXpath = ".//li[contains(@class,'subtab-publicshare')]";
 
-	protected $sharedWithGroupAndSharerName = null;
+	private $sharedWithGroupAndSharerName = null;
 
 	/**
 	 *
