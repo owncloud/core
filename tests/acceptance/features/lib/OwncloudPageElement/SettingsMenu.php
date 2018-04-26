@@ -31,7 +31,7 @@ use SensioLabs\Behat\PageObjectExtension\PageObject\Exception\ElementNotFoundExc
  *
  */
 class SettingsMenu extends OwncloudPage {
-	protected $logoutButtonId = 'logout';
+	private $logoutButtonId = 'logout';
 
 	/**
 	 * Logout with the logout button
