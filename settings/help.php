@@ -33,7 +33,6 @@ OC_Util::checkLoggedIn();
 OC_Util::addStyle("settings", "settings");
 \OC::$server->getNavigationManager()->setActiveEntry('help');
 
-
 if(isset($_GET['mode']) and $_GET['mode'] === 'admin') {
 	$url=\OCP\Util::linkToAbsolute('core', 'doc/admin/index.html');
 	$style1='';

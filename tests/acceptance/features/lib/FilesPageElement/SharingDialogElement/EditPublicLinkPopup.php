@@ -48,7 +48,6 @@ class EditPublicLinkPopup extends OwncloudPage {
 		'upload' => ".//label[contains(@for, 'sharingDialogAllowPublicUpload')]"
 	];
 	
-
 	/**
 	 * sets the NodeElement for the current popup
 	 * a little bit like __construct() but as we access this "sub-page-object"

@@ -27,7 +27,6 @@ abstract class UsersIterator implements \Iterator {
 
 	const LIMIT = 500;
 
-
 	public function rewind() {
 		$this->position = 0;
 		$this->page = 0;

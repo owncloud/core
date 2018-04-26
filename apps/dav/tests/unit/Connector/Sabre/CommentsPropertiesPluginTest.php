@@ -201,7 +201,6 @@ class CommentsPropertiesPluginTest extends \Test\TestCase {
 		$this->assertEquals(0, $result[200][CommentPropertiesPluginImplementation::PROPERTY_NAME_UNREAD]);
 	}
 
-
 	public function nodeProvider() {
 		$mocks = [];
 		foreach(['\OCA\DAV\Connector\Sabre\File', '\OCA\DAV\Connector\Sabre\Directory', '\Sabre\DAV\INode'] as $class) {

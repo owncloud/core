@@ -24,10 +24,8 @@
  *
  */
 
-
 namespace OC\AppFramework\Core;
 use OCP\AppFramework\IApi;
-
 
 /**
  * This is used to wrap the owncloud static api calls into an object to make the
@@ -49,7 +47,6 @@ class API implements IApi{
 		$this->appName = $appName;
 	}
 
-
 	/**
 	 * Gets the userid of the current user
 	 * @return string the user id of the current user
@@ -58,7 +55,6 @@ class API implements IApi{
 	public function getUserId(){
 		return \OCP\User::getUser();
 	}
-
 
 	/**
 	 * Adds a new javascript file
@@ -73,7 +69,6 @@ class API implements IApi{
 		\OCP\Util::addScript($appName, $scriptName);
 	}
 
-
 	/**
 	 * Adds a new css file
 	 * @deprecated include javascript and css in template files
@@ -87,7 +82,6 @@ class API implements IApi{
 		\OCP\Util::addStyle($appName, $styleName);
 	}
 
-
 	/**
 	 * @deprecated include javascript and css in template files
 	 * shorthand for addScript for files in the 3rdparty directory
@@ -97,7 +91,6 @@ class API implements IApi{
 		\OCP\Util::addScript($this->appName . '/3rdparty', $name);
 	}
 
-
 	/**
 	 * @deprecated include javascript and css in template files
 	 * shorthand for addStyle for files in the 3rdparty directory
@@ -106,7 +99,6 @@ class API implements IApi{
 	public function add3rdPartyStyle($name){
 		\OCP\Util::addStyle($this->appName . '/3rdparty', $name);
 	}
-
 
 	/**
 	 * @deprecated communication between apps should happen over built in
@@ -119,7 +111,6 @@ class API implements IApi{
 	public function isAppEnabled($appName){
 		return \OCP\App::isEnabled($appName);
 	}
-
 
 	/**
 	 * used to return and open a new event source
@@ -169,7 +160,6 @@ class API implements IApi{
 		}
 	}
 
-
 	/**
 	 * Register a backgroundjob task
 	 * @param string $className full namespace and class name of the class
@@ -180,7 +170,6 @@ class API implements IApi{
 	public function addRegularTask($className, $methodName) {
 		\OCP\Backgroundjob::addRegularTask($className, $methodName);
 	}
-
 
 	/**
 	 * Tells ownCloud to include a template in the admin overview
@@ -195,6 +184,5 @@ class API implements IApi{
 
 		\OCP\App::registerAdmin($appName, $mainPath);
 	}
-
 
 }

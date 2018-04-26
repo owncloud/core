@@ -177,7 +177,6 @@ class OC_Template extends \OC\Template\Base {
 
 	}
 
-
 	/**
 	 * find the template with the given name
 	 * @param string $name of the template file (without suffix)

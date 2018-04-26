@@ -19,9 +19,7 @@
  *
  */
 
-
 namespace OCA\DAV\CalDAV\Schedule;
-
 
 class Plugin extends \Sabre\CalDAV\Schedule\Plugin {
 

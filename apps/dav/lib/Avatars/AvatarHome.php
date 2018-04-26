@@ -19,9 +19,7 @@
  *
  */
 
-
 namespace OCA\DAV\Avatars;
-
 
 use OCP\IAvatarManager;
 use Sabre\DAV\Exception\Forbidden;
@@ -114,6 +112,5 @@ class AvatarHome implements ICollection {
 	function getLastModified() {
 		return null;
 	}
-
 
 }

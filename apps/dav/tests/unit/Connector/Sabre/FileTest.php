@@ -73,8 +73,6 @@ class FileTest extends TestCase {
 		parent::setUp();
 		unset($_SERVER['HTTP_OC_CHUNKED'], $_SERVER['CONTENT_LENGTH'], $_SERVER['REQUEST_METHOD']);
 		
-		
-
 		\OC_Hook::clear();
 
 		$this->user = $this->getUniqueID('user_');
@@ -116,7 +114,6 @@ class FileTest extends TestCase {
 		\fseek($stream, 0);
 		return $stream;
 	}
-
 
 	public function fopenFailuresProvider() {
 		return [

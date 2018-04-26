@@ -21,7 +21,6 @@
  *
  */
 
-
 namespace Test\AppFramework\Middleware;
 
 use OC\AppFramework\Http\Request;
@@ -29,7 +28,6 @@ use OCP\AppFramework\Http\Response;
 use OCP\AppFramework\Middleware;
 
 class ChildMiddleware extends Middleware {};
-
 
 class MiddlewareTest extends \Test\TestCase {
 
@@ -69,18 +67,15 @@ class MiddlewareTest extends \Test\TestCase {
 		$this->response = $this->createMock('OCP\AppFramework\Http\Response');
 	}
 
-
 	public function testBeforeController() {
 		$this->middleware->beforeController($this->controller, null);
 		$this->assertNull(null);
 	}
 
-
 	public function testAfterExceptionRaiseAgainWhenUnhandled() {
 		$this->setExpectedException('Exception');
 		$afterEx = $this->middleware->afterException($this->controller, null, $this->exception);
 	}
-
 
 	public function testAfterControllerReturnResponseWhenUnhandled() {
 		$response = $this->middleware->afterController($this->controller, null, $this->response);
@@ -88,12 +83,10 @@ class MiddlewareTest extends \Test\TestCase {
 		$this->assertEquals($this->response, $response);
 	}
 
-
 	public function testBeforeOutputReturnOutputhenUnhandled() {
 		$output = $this->middleware->beforeOutput($this->controller, null, 'test');
 
 		$this->assertEquals('test', $output);
 	}
-
 
 }

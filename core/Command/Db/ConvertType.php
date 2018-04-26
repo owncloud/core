@@ -269,7 +269,6 @@ class ConvertType extends Command {
 		$redraw = $count > $chunkSize ? 100 : ($count > 100 ? 5 : 1);
 		$progress->setRedrawFrequency($redraw);
 
-
 		$query = $fromDB->getQueryBuilder();
 		$query->automaticTablePrefix(false);
 		$query->select('*')

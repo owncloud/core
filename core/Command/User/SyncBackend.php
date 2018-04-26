@@ -22,7 +22,6 @@
 
 namespace OC\Core\Command\User;
 
-
 use OC\User\AccountMapper;
 use OC\User\Sync\AllUsersIterator;
 use OC\User\Sync\SeenUsersIterator;
@@ -163,7 +162,6 @@ class SyncBackend extends Command {
 
 		return 0;
 	}
-
 
 	/**
 	 * @param InputInterface $input

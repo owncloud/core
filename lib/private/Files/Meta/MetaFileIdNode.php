@@ -19,7 +19,6 @@
  *
  */
 
-
 namespace OC\Files\Meta;
 
 use OC\Files\Node\AbstractFolder;

@@ -21,7 +21,6 @@
 
 namespace OC;
 
-
 use OC\AppFramework\DependencyInjection\DIContainer;
 use OC\AppFramework\Utility\SimpleContainer;
 use OCP\AppFramework\QueryException;

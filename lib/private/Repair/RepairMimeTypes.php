@@ -170,7 +170,6 @@ class RepairMimeTypes implements IRepairStep {
 			'pptx' => 'application/vnd.openxmlformats-officedocument.presentationml.presentation',
 		];
 
-
 		// separate doc from docx etc
 		self::updateMimetypes($updatedMimetypes);
 

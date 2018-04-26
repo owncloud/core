@@ -36,7 +36,6 @@ use Test\TestCase;
 use OCP\Authentication\IApacheBackend;
 use OCP\UserInterface;
 
-
 /**
  * @group DB
  * @package Test\User
@@ -1008,7 +1007,6 @@ class SessionTest extends TestCase {
 		$userSession = new Session($manager, $session, $this->timeFactory,
 			$this->tokenProvider, $this->config, $this->logger, $this->serviceLoader, $this->userSyncService);
 		$userSession->setUser($user);
-
 
 		$called['cancel'] = false;
 

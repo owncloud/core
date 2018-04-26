@@ -76,7 +76,6 @@ class ManagerTest extends TestCase {
 		$this->assertEquals([$backend, $dummyDatabaseBackend], $this->manager->getBackends());
 	}
 
-
 	public function testUserExistsAccountExists() {
 		$account = $this->createMock(Account::class);
 		$this->accountMapper->expects($this->once())->method('getByUid')->with('foo')->willReturn($account);

@@ -67,7 +67,6 @@ class EncryptionTest extends Storage {
 	 */
 	private $file;
 
-
 	/**
 	 * @var \OC\Files\Mount\MountPoint | \PHPUnit_Framework_MockObject_MockObject
 	 */
@@ -90,7 +89,6 @@ class EncryptionTest extends Storage {
 
 	/** @var  \OC\Memcache\ArrayCache | \PHPUnit_Framework_MockObject_MockObject */
 	private $arrayCache;
-
 
 	/** @var  integer dummy unencrypted size */
 	private $dummySize = -1;
@@ -326,7 +324,6 @@ class EncryptionTest extends Storage {
 		$this->instance->expects($this->any())->method('verifyUnencryptedSize')
 			->willReturn(42);
 
-
 		$this->assertSame(42,
 			$this->instance->filesize('/test.txt')
 		);
@@ -478,7 +475,6 @@ class EncryptionTest extends Storage {
 					],
 					$this->encryptionManager, $util, $this->logger, $this->file, null, $this->keyStore, $this->update
 		);
-
 
 		if ($rmdirResult === true && $isExcluded === false && $encryptionEnabled === true) {
 			$this->keyStore->expects($this->once())->method('deleteAllFileKeys')->with('/mountPoint' . $path);

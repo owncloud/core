@@ -76,5 +76,4 @@ class OwncloudTest extends TestCase
 		
 	}
 
-
 }

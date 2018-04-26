@@ -28,7 +28,6 @@ use OCP\IUser;
 use OCP\IUserManager;
 use OCP\Migration\ISqlMigration;
 
-
 /*
  * Resolve userid/propertypath into fileid
  * Update all entries with actual fileid if possible

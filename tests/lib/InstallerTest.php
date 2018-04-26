@@ -8,7 +8,6 @@
 
 namespace Test;
 
-
 use OC\Installer;
 
 class InstallerTest extends TestCase {

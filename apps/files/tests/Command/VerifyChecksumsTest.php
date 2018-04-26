@@ -17,7 +17,6 @@ use Test\TestCase;
 class VerifyChecksumsTest extends TestCase {
 	use \Test\Traits\UserTrait;
 
-
 	const BROKEN_CHECKSUM_STRING = '_BROKEN_';
 
 	/** @var CommandTester */
@@ -43,8 +42,6 @@ class VerifyChecksumsTest extends TestCase {
 	 */
 	private $testFiles;
 
-
-
 	public function setUp() {
 		parent::setUp();
 
@@ -52,7 +49,6 @@ class VerifyChecksumsTest extends TestCase {
 
 		$this->user1 = $this->createRandomUser(1);
 		$this->user2 = $this->createRandomUser(2);
-
 
 		$this->testFiles =  [
 			$this->createFileForUser($this->user1, 'dir/nested/somefile.txt', 'Hello World!'),
@@ -103,8 +99,6 @@ class VerifyChecksumsTest extends TestCase {
 		$f = $userFolder->newFile("$currentDir/$fileName");
 		$f->putContent($content);
 
-
-
 		return [
 			'file' => $f,
 			'expectedChecksums' => function() use ($content) {
@@ -118,7 +112,6 @@ class VerifyChecksumsTest extends TestCase {
 		];
 	}
 
-
 	/**
 	 * @param int $number
 	 * @return bool|IUser
@@ -130,7 +123,6 @@ class VerifyChecksumsTest extends TestCase {
 
 		return $user->getUID();
 	}
-
 
 	private function breakChecksum(File &$f) {
 		$cache = $f->getStorage()->getCache();
@@ -155,7 +147,6 @@ class VerifyChecksumsTest extends TestCase {
 		}
 	}
 
-
 	public function testNoBrokenChecksums() {
 		$this->cmd->execute([]);
 		$exitCode = $this->cmd->getStatusCode();
@@ -176,10 +167,8 @@ class VerifyChecksumsTest extends TestCase {
 		$this->cmd->execute([]);
 		$this->cmd->execute([]);
 
-
 		$exitCode = $this->cmd->getStatusCode();
 		$this->assertEquals(VerifyChecksums::EXIT_CHECKSUM_ERRORS, $exitCode, 'Wrong exit code');
-
 
 		$this->assertEquals(self::BROKEN_CHECKSUM_STRING, $file1->getChecksum());
 		$this->assertEquals(self::BROKEN_CHECKSUM_STRING, $file2->getChecksum());

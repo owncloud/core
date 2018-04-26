@@ -20,7 +20,6 @@
  *
  */
 
-
 namespace OCP\Files;
 
 use OC\Hooks\Emitter;

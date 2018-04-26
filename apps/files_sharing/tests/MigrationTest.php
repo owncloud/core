@@ -25,7 +25,6 @@
 
 namespace OCA\Files_Sharing\Tests;
 
-
 use OCA\Files_Sharing\Migration;
 
 /**

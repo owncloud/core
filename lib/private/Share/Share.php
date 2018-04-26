@@ -151,7 +151,6 @@ class Share extends Constants {
 			throw new \OC\User\NoUserException($msg);
 		}
 
-
 		$ownerUser = $userObject->getUID();
 
 		Filesystem::initMountPoints($ownerUser);
@@ -569,7 +568,6 @@ class Share extends Constants {
 		}
 		return $linkItem;
 	}
-
 
 	/**
 	 * Get the shared items of item type owned by the current user
@@ -1488,11 +1486,9 @@ class Share extends Constants {
 				$expires = null;
 			}
 
-
 			// get default expiration settings
 			$defaultSettings = Helper::getDefaultExpireSetting();
 			$expires = Helper::calculateExpireDate($defaultSettings, $item['stime'], $expires);
-
 
 			if (\is_int($expires)) {
 				$now = \time();
@@ -2335,7 +2331,6 @@ class Share extends Constants {
 
 		\OC_Hook::emit('OCP\Share', 'post_shared', $postHookData);
 
-
 		return $id ? $id : false;
 	}
 
@@ -2572,7 +2567,6 @@ class Share extends Constants {
 		}
 		return $select;
 	}
-
 
 	/**
 	 * transform db results

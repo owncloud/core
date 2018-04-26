@@ -167,7 +167,6 @@ class HelperStorageTest extends TestCase {
 		$config->setSystemValue('quota_include_external_storage', $oldConfig);
 	}
 
-
 	/**
 	 * Test getting the storage info with quota enabled
 	 */

@@ -58,7 +58,6 @@ class PublisherTest extends TestCase {
 			<x1:pre-publish-url xmlns:d="DAV:" xmlns:x1="' . self::NS_CALENDARSERVER . '">urltopublish</x1:pre-publish-url>', $xml);
 	}
 
-
 	protected $elementMap = [];
 	protected $namespaceMap = ['DAV:' => 'd'];
 	protected $contextUri = '/';

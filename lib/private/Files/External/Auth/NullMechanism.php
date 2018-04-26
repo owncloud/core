@@ -22,7 +22,6 @@
 
 namespace OC\Files\External\Auth;
 
-
 use \OCP\Files\External\Auth\AuthMechanism;
 
 /**

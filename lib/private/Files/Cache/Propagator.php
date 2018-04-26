@@ -52,7 +52,6 @@ class Propagator implements IPropagator {
 		$this->connection = $connection;
 	}
 
-
 	/**
 	 * @param string $internalPath
 	 * @param int $time
@@ -182,6 +181,5 @@ class Propagator implements IPropagator {
 
 		$this->connection->commit();
 	}
-
 
 }

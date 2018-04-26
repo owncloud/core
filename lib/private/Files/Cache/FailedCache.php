@@ -40,7 +40,6 @@ class FailedCache implements ICache {
 		$this->visible = $visible;
 	}
 
-
 	public function getNumericStorageId() {
 		return -1;
 	}

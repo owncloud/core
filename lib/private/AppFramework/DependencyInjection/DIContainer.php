@@ -28,7 +28,6 @@
  *
  */
 
-
 namespace OC\AppFramework\DependencyInjection;
 
 use OC;
@@ -46,7 +45,6 @@ use OCP\AppFramework\IApi;
 use OCP\AppFramework\IAppContainer;
 use OCP\Files\Mount\IMountManager;
 use OCP\IDateTimeFormatter;
-
 
 class DIContainer extends SimpleContainer implements IAppContainer {
 
@@ -219,7 +217,6 @@ class DIContainer extends SimpleContainer implements IAppContainer {
 		$this->registerAlias('OCP\\AppFramework\\Utility\\ITimeFactory', 'OC\AppFramework\Utility\TimeFactory');
 		$this->registerAlias('TimeFactory', 'OCP\\AppFramework\\Utility\\ITimeFactory');
 
-
 		$this->registerService('OCP\\Route\\IRouter', function($c) {
 			return $this->getServer()->getRouter();
 		});
@@ -309,7 +306,6 @@ class DIContainer extends SimpleContainer implements IAppContainer {
 			return $c->query('ServerContainer')->getWebRoot();
 		});
 
-
 		/**
 		 * App Framework APIs
 		 */
@@ -340,7 +336,6 @@ class DIContainer extends SimpleContainer implements IAppContainer {
 		$this->registerService('OCP\Theme\IThemeService', function($c) {
 			return $this->getServer()->getThemeService();
 		});
-
 
 		/**
 		 * Middleware
@@ -402,7 +397,6 @@ class DIContainer extends SimpleContainer implements IAppContainer {
 		});
 
 	}
-
 
 	/**
 	 * @deprecated implements only deprecated methods

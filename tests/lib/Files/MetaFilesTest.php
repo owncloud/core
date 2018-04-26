@@ -19,9 +19,7 @@
  *
  */
 
-
 namespace Test\Files;
-
 
 use OC\Files\Meta\MetaFileIdNode;
 use OC\Files\Meta\MetaFileVersionNode;

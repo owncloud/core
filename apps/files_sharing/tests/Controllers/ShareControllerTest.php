@@ -104,7 +104,6 @@ class ShareControllerTest extends \Test\TestCase {
 			$this->federatedShareProvider
 		);
 
-
 		// Store current user
 		$this->oldUser = \OC_User::getUser();
 
@@ -307,7 +306,6 @@ class ShareControllerTest extends \Test\TestCase {
 		$this->assertEquals($expectedResponse, $response);
 	}
 
-
 	public function testShowShare() {
 		$owner = $this->createMock('OCP\IUser');
 		$owner->method('getDisplayName')->willReturn('ownerDisplay');
@@ -432,7 +430,6 @@ class ShareControllerTest extends \Test\TestCase {
 
 		$this->shareController->showShare('token');
 	}
-
 
 	public function testDownloadShare() {
 		$share = $this->createMock('\OCP\Share\IShare');

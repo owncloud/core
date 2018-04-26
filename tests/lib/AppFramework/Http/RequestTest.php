@@ -104,7 +104,6 @@ class RequestTest extends TestCase {
 		$this->assertSame('Johnny Weissmüller', $request->{'name'});
 	}
 
-
 	/**
 	 * @expectedException \RuntimeException
 	 */
@@ -331,7 +330,6 @@ class RequestTest extends TestCase {
 		$this->fail('Expected LogicException.');
 
 	}
-
 
 	public function testSetUrlParameters() {
 		$vars = [
@@ -698,7 +696,6 @@ class RequestTest extends TestCase {
 			$this->csrfTokenManager,
 			$this->stream
 		);
-
 
 		$this->assertSame('https', $requestHttps->getServerProtocol());
 		$this->assertSame('http', $requestHttp->getServerProtocol());

@@ -258,7 +258,6 @@ class Manager implements IManager {
 		Filesystem::addStorageWrapper('oc_encryption', [$encryptionWrapper, 'wrapStorage'], 2);
 	}
 
-
 	/**
 	 * check if key storage is ready
 	 *
@@ -280,6 +279,5 @@ class Manager implements IManager {
 
 		return false;
 	}
-
 
 }

@@ -38,7 +38,6 @@
 // This means that they should be used by apps instead of the internal ownCloud classes
 namespace OCP;
 
-
 /**
  * Make OC_Helper::imagePath available as a simple function
  * @param string $app
@@ -51,7 +50,6 @@ namespace OCP;
 function image_path($app, $image) {
 	return(\image_path($app, $image));
 }
-
 
 /**
  * Make OC_Helper::mimetypeIcon available as a simple function
@@ -96,7 +94,6 @@ function human_file_size($bytes) {
 	return(\human_file_size($bytes));
 }
 
-
 /**
  * Return the relative date in relation to today. Returns something like "last hour" or "two month ago"
  * @param int $timestamp unix timestamp
@@ -109,7 +106,6 @@ function relative_modified_date($timestamp, $dateOnly = false) {
 	return(\relative_modified_date($timestamp, null, $dateOnly));
 }
 
-
 /**
  * Return a human readable outout for a file size.
  * @param integer $bytes size of a file in byte
@@ -119,7 +115,6 @@ function relative_modified_date($timestamp, $dateOnly = false) {
 function simple_file_size($bytes) {
 	return(\human_file_size($bytes));
 }
-
 
 /**
  * Generate html code for an options block.
@@ -132,7 +127,6 @@ function simple_file_size($bytes) {
 function html_select_options($options, $selected, $params= []) {
 	return(\html_select_options($options, $selected, $params));
 }
-
 
 /**
  * This class provides the template system for owncloud. You can use it to load
@@ -154,7 +148,6 @@ class Template extends \OC_Template {
 	public static function image_path($app, $image) {
 		return \image_path($app, $image);
 	}
-
 
 	/**
 	 * Make OC_Helper::mimetypeIcon available as a simple function

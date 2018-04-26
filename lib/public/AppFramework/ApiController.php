@@ -31,7 +31,6 @@ namespace OCP\AppFramework;
 use OCP\AppFramework\Http\Response;
 use OCP\IRequest;
 
-
 /**
  * Base class to inherit your controllers from that are used for RESTful APIs
  * @since 7.0.0
@@ -67,7 +66,6 @@ abstract class ApiController extends Controller {
         $this->corsMaxAge = $corsMaxAge;
     }
 
-
     /**
      * This method implements a preflighted cors response for you that you can
      * link to for the options request
@@ -92,6 +90,5 @@ abstract class ApiController extends Controller {
         $response->addHeader('Access-Control-Allow-Credentials', 'false');
         return $response;
     }
-
 
 }

@@ -22,7 +22,6 @@
 
 namespace OCA\UpdateNotification\Tests\Notification;
 
-
 use OCA\UpdateNotification\Notification\BackgroundJob;
 use OCP\App\IAppManager;
 use OCP\Http\Client\IClientService;

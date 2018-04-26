@@ -474,7 +474,6 @@ class Installer {
 			}
 		}
 
-
 		// Fix the order - make files first
 		$shippedApps = \array_diff($shippedApps,['files', 'dav']);
 		\array_unshift($shippedApps, 'dav');

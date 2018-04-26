@@ -19,9 +19,7 @@
  *
  */
 
-
 namespace OCA\DAV\Files;
-
 
 use OCP\Files\Node;
 

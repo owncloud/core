@@ -966,7 +966,6 @@ class Server extends ServerContainer implements IServerContainer, IServiceLoader
 		return $this->query('SystemTagObjectMapper');
 	}
 
-
 	/**
 	 * Returns the avatar manager, used for avatar functionality
 	 *
@@ -1182,7 +1181,6 @@ class Server extends ServerContainer implements IServerContainer, IServiceLoader
 		return $this->query('RedisFactory');
 	}
 
-
 	/**
 	 * Returns the current session
 	 *
@@ -1230,7 +1228,6 @@ class Server extends ServerContainer implements IServerContainer, IServiceLoader
 	public function getSettingsManager() {
 		return $this->query('SettingsManager');
 	}
-
 
 	/**
 	 * Returns a router for generating and matching urls

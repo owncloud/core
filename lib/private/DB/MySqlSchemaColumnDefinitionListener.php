@@ -27,7 +27,6 @@ use Doctrine\DBAL\Platforms\MySqlPlatform;
 use Doctrine\DBAL\Schema\Column;
 use Doctrine\DBAL\Types\Type;
 
-
 /**
  * Class MySqlSchemaColumnDefinitionListener
  *
@@ -66,7 +65,6 @@ class MySqlSchemaColumnDefinitionListener{
 		}
 	}
 
-	
 	/**
 	 * Given a table comment this method tries to extract a typehint for Doctrine Type, or returns
 	 * the type given as default.

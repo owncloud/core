@@ -20,9 +20,7 @@
  *
  */
 
-
 namespace OCA\DAV\Tests\unit\CardDAV;
-
 
 use OCA\DAV\CardDAV\ImageExportPlugin;
 use OCP\ILogger;

@@ -48,7 +48,6 @@ class ListUsersTest extends TestCase
         \OC::$server->getUserManager()->get('testlistuser')->delete();
     }
 
-
     /**
      * @dataProvider inputProvider
      * @param array $input

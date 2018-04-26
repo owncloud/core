@@ -19,9 +19,7 @@
  *
  */
 
-
 namespace OC\User;
-
 
 use OCP\IUser;
 

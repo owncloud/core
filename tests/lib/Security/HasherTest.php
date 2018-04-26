@@ -100,7 +100,6 @@ class HasherTest extends \Test\TestCase {
 		$this->assertSame($expected, $relativePath);
 	}
 
-
 	/**
 	 * @dataProvider allHashProviders
 	 */

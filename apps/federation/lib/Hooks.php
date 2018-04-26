@@ -19,10 +19,7 @@
  *
  */
 
-
 namespace OCA\Federation;
-
-
 
 class Hooks {
 

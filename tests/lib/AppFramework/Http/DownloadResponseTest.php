@@ -21,16 +21,13 @@
  *
  */
 
-
 namespace Test\AppFramework\Http;
-
 
 use OCP\AppFramework\Http\DownloadResponse;
 
 class ChildDownloadResponse extends DownloadResponse {
 
 };
-
 
 class DownloadResponseTest extends \Test\TestCase {
 
@@ -44,13 +41,11 @@ class DownloadResponseTest extends \Test\TestCase {
 		$this->response = new ChildDownloadResponse('file', 'content');
 	}
 
-
 	public function testHeaders() {
 		$headers = $this->response->getHeaders();
 
 		$this->assertContains('attachment; filename="file"', $headers['Content-Disposition']);
 		$this->assertContains('content', $headers['Content-Type']);
 	}
-
 
 }

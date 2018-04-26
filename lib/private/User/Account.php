@@ -19,7 +19,6 @@
  *
  */
 
-
 namespace OC\User;
 
 use OCP\AppFramework\Db\Entity;

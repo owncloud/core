@@ -201,7 +201,6 @@ class Share extends \OC\Share\Constants {
 		return \OC\Share\Share::resolveReShare($linkItem);
 	}
 
-
 	/**
 	 * Get the shared items of item type owned by the current user
 	 * @param string $itemType
@@ -359,7 +358,6 @@ class Share extends \OC\Share\Constants {
 		$config = \OC::$server->getConfig();
 		return \OC\Share\Share::setPassword($userSession, $connection, $config, $shareId, $password);
 	}
-
 
 	/**
 	 * Get the backend class for the specified item type

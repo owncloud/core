@@ -21,9 +21,7 @@
  *
  */
 
-
 namespace OCA\Federation\Tests;
-
 
 use OCA\Federation\DbHandler;
 use OCA\Federation\TrustedServers;
@@ -116,7 +114,6 @@ class DbHandlerTest extends TestCase {
 		$this->assertSame('server1', $result[0]['url']);
 		$this->assertSame($id1, (int)$result[0]['id']);
 	}
-
 
 	public function testGetServerById() {
 		$this->dbHandler->addServer('server1');

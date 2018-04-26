@@ -29,7 +29,6 @@
 
 namespace OCP\AppFramework\Http;
 
-
 /**
  * Response for a normal template
  * @since 6.0.0
@@ -77,7 +76,6 @@ class TemplateResponse extends Response {
 		$this->renderAs = $renderAs;
 	}
 
-
 	/**
 	 * Sets template parameters
 	 * @param array $params an array with key => value structure which sets template
@@ -91,7 +89,6 @@ class TemplateResponse extends Response {
 		return $this;
 	}
 
-
 	/**
 	 * Used for accessing the set parameters
 	 * @return array the params
@@ -101,7 +98,6 @@ class TemplateResponse extends Response {
 		return $this->params;
 	}
 
-
 	/**
 	 * Used for accessing the name of the set template
 	 * @return string the name of the used template
@@ -110,7 +106,6 @@ class TemplateResponse extends Response {
 	public function getTemplateName(){
 		return $this->templateName;
 	}
-
 
 	/**
 	 * Sets the template page
@@ -127,7 +122,6 @@ class TemplateResponse extends Response {
 		return $this;
 	}
 
-
 	/**
 	 * Returns the set renderAs
 	 * @return string the renderAs value
@@ -136,7 +130,6 @@ class TemplateResponse extends Response {
 	public function getRenderAs(){
 		return $this->renderAs;
 	}
-
 
 	/**
 	 * Returns the rendered html

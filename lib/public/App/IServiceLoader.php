@@ -19,7 +19,6 @@
  *
  */
 
-
 namespace OCP\App;
 
 use OCP\IUser;

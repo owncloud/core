@@ -34,7 +34,6 @@ use OCP\L10N\IFactory;
 use OCP\Theme\ITheme;
 use OCP\Theme\IThemeService;
 
-
 /**
  * A factory that generates language instances
  */

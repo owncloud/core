@@ -29,13 +29,11 @@
 
 namespace OCP\AppFramework;
 
-
 /**
  * A few very basic and frequently used API functions are combined in here
  * @deprecated 8.0.0
  */
 interface IApi {
-
 
 	/**
 	 * Gets the userid of the current user
@@ -43,7 +41,6 @@ interface IApi {
 	 * @deprecated 8.0.0 Use \OC::$server->getUserSession()->getUser()->getUID()
 	 */
 	function getUserId();
-
 
 	/**
 	 * Adds a new javascript file
@@ -54,7 +51,6 @@ interface IApi {
 	 */
 	function addScript($scriptName, $appName = null);
 
-
 	/**
 	 * Adds a new css file
 	 * @deprecated 8.0.0 include javascript and css in template files
@@ -64,7 +60,6 @@ interface IApi {
 	 */
 	function addStyle($styleName, $appName = null);
 
-
 	/**
 	 * @deprecated 8.0.0 include javascript and css in template files
 	 * shorthand for addScript for files in the 3rdparty directory
@@ -73,7 +68,6 @@ interface IApi {
 	 */
 	function add3rdPartyScript($name);
 
-
 	/**
 	 * @deprecated 8.0.0 include javascript and css in template files
 	 * shorthand for addStyle for files in the 3rdparty directory
@@ -81,7 +75,6 @@ interface IApi {
 	 * @return void
 	 */
 	function add3rdPartyStyle($name);
-
 
 	/**
 	 * Checks if an app is enabled

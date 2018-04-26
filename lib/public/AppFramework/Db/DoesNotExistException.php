@@ -20,9 +20,7 @@
  *
  */
 
-
 namespace OCP\AppFramework\Db;
-
 
 /**
  * This is returned or should be returned when a find request does not find an

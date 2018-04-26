@@ -298,7 +298,6 @@ Raw output
 			$formattedTextResponse = 'No errors have been found.';
 		}
 
-
 		$response = new DataDisplayResponse(
 			$formattedTextResponse,
 			Http::STATUS_OK,

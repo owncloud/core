@@ -20,7 +20,6 @@
  */
 namespace Test\Files\ObjectStore;
 
-
 use OC\Files\ObjectStore\Mapper;
 
 class MapperTest extends \Test\TestCase {

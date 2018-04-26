@@ -207,7 +207,6 @@ class AssemblyStream implements \Icewind\Streams\File {
 		return true;
 	}
 
-
 	/**
 	 * Load the source from the stream context and return the context options
 	 *

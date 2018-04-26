@@ -19,7 +19,6 @@
  *
  */
 
-
 namespace OCA\DAV\DAV;
 
 use OCA\DAV\Connector\Sabre\Exception\Forbidden;

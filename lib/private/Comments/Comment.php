@@ -131,7 +131,6 @@ class Comment implements IComment {
 		return $this->data['topmostParentId'];
 	}
 
-
 	/**
 	 * sets the topmost parent ID and returns itself
 	 *

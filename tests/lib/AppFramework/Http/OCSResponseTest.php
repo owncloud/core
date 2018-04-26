@@ -21,15 +21,11 @@
  *
  */
 
-
 namespace Test\AppFramework\Http;
-
 
 use OCP\AppFramework\Http\OCSResponse;
 
-
 class OCSResponseTest extends \Test\TestCase {
-
 
     public function testHeadersJSON() {
         $response = new OCSResponse('json', 1, 2, 3);
@@ -37,13 +33,11 @@ class OCSResponseTest extends \Test\TestCase {
         $this->assertEquals('application/json; charset=utf-8', $type);
     }
 
-
     public function testHeadersXML() {
         $response = new OCSResponse('xml', 1, 2, 3);
         $type = $response->getHeaders()['Content-Type'];
         $this->assertEquals('application/xml; charset=utf-8', $type);
     }
-
 
     public function testRender() {
         $response = new OCSResponse(
@@ -67,6 +61,5 @@ class OCSResponseTest extends \Test\TestCase {
         $this->assertEquals($expected, $out);
 
     }
-
 
 }

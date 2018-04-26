@@ -74,7 +74,6 @@ class Updater {
 			$newOwner = $dstMount->getShare()->getShareOwner();
 		}
 
-
 		//Ownership is moved over
 		foreach ($shares as $share) {
 			/** @var \OCP\Share\IShare $share */

@@ -27,7 +27,6 @@
  *
  */
 
-
 class OC_FileChunking {
 	protected $info;
 	protected $cache;

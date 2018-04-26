@@ -43,7 +43,6 @@ class DataResponse extends Response {
 	 */
 	protected $data;
 
-
 	/**
 	 * @param array|object $data the object or array that should be transformed
 	 * @param int $statusCode the Http status code, defaults to 200
@@ -57,7 +56,6 @@ class DataResponse extends Response {
 		$this->setHeaders(\array_merge($this->getHeaders(), $headers));
 	}
 
-
 	/**
 	 * Sets values in the data json array
 	 * @param array|object $data an array or object which will be transformed
@@ -70,7 +68,6 @@ class DataResponse extends Response {
 		return $this;
 	}
 
-
 	/**
 	 * Used to get the set parameters
 	 * @return array the data
@@ -79,6 +76,5 @@ class DataResponse extends Response {
 	public function getData(){
 		return $this->data;
 	}
-
 
 }

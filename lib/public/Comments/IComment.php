@@ -83,7 +83,6 @@ interface IComment {
 	 */
 	public function getTopmostParentId();
 
-
 	/**
 	 * sets the topmost parent ID and returns itself
 	 *

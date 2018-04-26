@@ -23,7 +23,6 @@
 
 namespace OCP\AppFramework\Http;
 
-
 /**
  * Interface ICallbackResponse
  *

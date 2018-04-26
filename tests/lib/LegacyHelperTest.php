@@ -213,7 +213,6 @@ class LegacyHelperTest extends \Test\TestCase {
 		$this->assertSame($expectedResult, $result);
 	}
 
-
 	function streamCopyDataProvider() {
 		return [
 			[0, false, false, false],

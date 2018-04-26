@@ -149,7 +149,6 @@ class FederatedShareProvider implements IShareProvider {
 			throw new \Exception($message_t);
 		}
 
-
 		// don't allow federated shares if source and target server are the same
 		list($user, $remote) = $this->addressHandler->splitUserRemote($shareWith);
 		$currentServer = $this->addressHandler->generateRemoteURL();
@@ -378,7 +377,6 @@ class FederatedShareProvider implements IShareProvider {
 		}
 		$this->notifications->sendPermissionChange($remote, $remoteId, $share->getToken(), $share->getPermissions());
 	}
-
 
 	/**
 	 * update successful reShare with the correct token
@@ -725,7 +723,6 @@ class FederatedShareProvider implements IShareProvider {
 		return $shares;
 	}
 
-
 	/**
 	 * @inheritdoc
 	 */
@@ -768,7 +765,6 @@ class FederatedShareProvider implements IShareProvider {
 			$shares[] = $this->createShareObject($data);
 		}
 		$cursor->closeCursor();
-
 
 		return $shares;
 	}

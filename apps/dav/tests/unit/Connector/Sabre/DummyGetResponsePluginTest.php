@@ -52,7 +52,6 @@ class DummyGetResponsePluginTest extends TestCase {
 		$this->dummyGetResponsePlugin->initialize($server);
 	}
 
-
 	public function testHttpGet() {
 		/** @var \Sabre\HTTP\RequestInterface $request */
 		$request = $this->createMock('\Sabre\HTTP\RequestInterface');

@@ -46,7 +46,6 @@ use Sabre\HTTP\ResponseInterface;
 
 class Auth extends AbstractBasic {
 
-
 	const DAV_AUTHENTICATED = 'AUTHENTICATED_TO_DAV_BACKEND';
 
 	/** @var ISession */

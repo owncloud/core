@@ -25,7 +25,6 @@
  *
  */
 
-
 namespace OCP\Util;
 use OCP\IConfig;
 

@@ -38,7 +38,6 @@ class DataDisplayResponse extends Response {
 	 */
 	protected $data;
 
-
 	/**
 	 * @param string $data the data to display
 	 * @param int $statusCode the Http status code, defaults to 200
@@ -62,7 +61,6 @@ class DataDisplayResponse extends Response {
 		return $this->data;
 	}
 
-
 	/**
 	 * Sets values in the data
 	 * @param string $data the data to display
@@ -74,7 +72,6 @@ class DataDisplayResponse extends Response {
 
 		return $this;
 	}
-
 
 	/**
 	 * Used to get the set parameters

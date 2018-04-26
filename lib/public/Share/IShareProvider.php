@@ -137,7 +137,6 @@ interface IShareProvider {
 	 */
 	public function getSharesByPath(Node $path);
 
-
 	/**
 	 * Get shared with the given user for shares of all supported share types for this share provider,
 	 * with file_source predicate specified ($node is Node) or

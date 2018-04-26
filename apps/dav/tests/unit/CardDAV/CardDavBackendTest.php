@@ -89,7 +89,6 @@ class CardDavBackendTest extends TestCase {
 		$query = $this->db->getQueryBuilder();
 		$query->delete('cards')->execute();
 
-
 		$this->tearDown();
 	}
 

@@ -21,7 +21,6 @@
 
 namespace Test\Util\User;
 
-
 use OC\User\Account;
 use OC\User\AccountMapper;
 use OCP\AppFramework\Db\DoesNotExistException;

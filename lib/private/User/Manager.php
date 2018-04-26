@@ -369,7 +369,6 @@ class Manager extends PublicEmitter implements IUserManager {
 				}
 			}
 
-
 			return false;
 		}, ['before' => ['uid' => $uid], 'after' => ['uid' => $uid, 'password' => $password]], 'user', 'create');
 	}

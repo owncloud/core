@@ -23,7 +23,6 @@
  *
  */
 
-
 namespace OC\DB;
 
 class AdapterSqlite extends Adapter {

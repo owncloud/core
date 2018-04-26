@@ -455,7 +455,6 @@ class Scan extends Base {
 		$table->render();
 	}
 
-
 	/**
 	 * Formats microtime into a human readable format
 	 *

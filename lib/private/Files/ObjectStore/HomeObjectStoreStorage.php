@@ -68,5 +68,4 @@ class HomeObjectStoreStorage extends ObjectStoreStorage implements \OCP\Files\IH
 		return $this->user;
 	}
 
-
 }

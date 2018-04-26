@@ -51,7 +51,6 @@ class MaintenancePlugin extends ServerPlugin {
 		}
 	}
 
-
 	/**
 	 * This initializes the plugin.
 	 *

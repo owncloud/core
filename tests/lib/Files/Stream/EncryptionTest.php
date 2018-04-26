@@ -52,7 +52,6 @@ class EncryptionTest extends TestCase {
 			->method('getUidAndFilename')
 			->willReturn(['user1', $internalPath]);
 
-
 		return $wrapper::wrap($source, $internalPath,
 			$fullPath, $header, $uid, $this->encryptionModule, $storage, $encStorage,
 			$util, $file, $mode, $size, $unencryptedSize, 8192, $wrapper);

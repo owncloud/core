@@ -191,7 +191,6 @@ class OC_Util {
 
 		}, 1);
 
-
 		\OC\Files\Filesystem::addStorageWrapper('oc_encoding', function ($mountPoint, \OCP\Files\Storage $storage, \OCP\Files\Mount\IMountPoint $mount) {
 			if ($mount->getOption('encoding_compatibility', false) && !$storage->instanceOfStorage('\OCA\Files_Sharing\SharedStorage') && !$storage->isLocal()) {
 				return new \OC\Files\Storage\Wrapper\Encoding(['storage' => $storage]);
@@ -245,7 +244,6 @@ class OC_Util {
 				$readOnlyGroups = [];
 			}
 
-
 			$userGroups = \array_keys(
 				\OC::$server->getGroupManager()->getUserIdGroups($user)
 			);
@@ -255,7 +253,6 @@ class OC_Util {
 				$userGroups
 			);
 		}
-
 
 		if ($isGuest === '1' || !empty($readOnlyGroupMemberships)) {
 			\OC\Files\Filesystem::addStorageWrapper(
@@ -1194,7 +1191,6 @@ class OC_Util {
 		$encoded = \str_replace('%2F', '/', $encoded);
 		return $encoded;
 	}
-
 
 	public function createHtaccessTestFile(\OCP\IConfig $config) {
 		// php dev server does not support htaccess
