@@ -110,7 +110,7 @@ class NaturalSort {
 		$aa = self::naturalSortChunkify($a);
 		$bb = self::naturalSortChunkify($b);
 
-		for ($x = 0; isset($aa[$x], $bb[$x])  ; $x++) {
+		for ($x = 0; isset($aa[$x], $bb[$x]); $x++) {
 			$aChunk = $aa[$x];
 			$bChunk = $bb[$x];
 			if ($aChunk !== $bChunk) {
