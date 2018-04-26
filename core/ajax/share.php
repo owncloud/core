@@ -271,9 +271,7 @@ if (isset($_POST['action'], $_POST['itemType'], $_POST['itemSource'])) {
 			}
 			break;
 		case 'getItem':
-			if (isset($_GET['itemType'], $_GET['itemSource'], $_GET['checkReshare'], $_GET['checkShares'])
-				 
-				 ) {
+			if (isset($_GET['itemType'], $_GET['itemSource'], $_GET['checkReshare'], $_GET['checkShares'])) {
 				if ($_GET['checkReshare'] == 'true') {
 					$reshare = OCP\Share::getItemSharedWithBySource(
 						(string)$_GET['itemType'],
