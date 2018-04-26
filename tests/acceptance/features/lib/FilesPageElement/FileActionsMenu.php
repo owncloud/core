@@ -35,11 +35,12 @@ class FileActionsMenu extends OwncloudPage {
 	/**
 	 * @var NodeElement of this action menu
 	 */
-	private $menuElement;
-	private $fileActionXpath = "//a[@data-action='%s']";
-	private $renameActionLabel = "Rename";
-	private $deleteActionLabel = "Delete";
-	
+	protected $menuElement;
+	protected $fileActionXpath = "//a[@data-action='%s']";
+	protected $renameActionLabel = "Rename";
+	protected $deleteActionLabel = "Delete";
+	protected $declineShareDataAction = "Reject";
+
 	/**
 	 * sets the NodeElement for the current action menu
 	 * a little bit like __construct() but as we access this "sub-page-object"
@@ -96,7 +97,25 @@ class FileActionsMenu extends OwncloudPage {
 		$deleteBtn->focus();
 		$deleteBtn->click();
 	}
-	
+
+	/**
+	 * clicks the decline share button
+	 *
+	 * @return void
+	 */
+	public function declineShare() {
+		$declineBtn = $this->findButton($this->declineShareDataAction);
+		if (\is_null($declineBtn)) {
+			throw new ElementNotFoundException(
+				__METHOD__ .
+				" could not find action button with label " .
+				$this->declineShareDataAction
+			);
+		}
+		$declineBtn->focus();
+		$declineBtn->click();
+	}
+
 	/**
 	 * finds the actual action link in the action menu
 	 *
