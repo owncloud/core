@@ -145,6 +145,18 @@ pipeline:
       matrix:
         TEST_SUITE: caldav
 
+  install-notifications-app:
+    image: owncloudci/php:${PHP_VERSION}
+    pull: true
+    commands:
+      - git clone https://github.com/owncloud/notifications.git apps/notifications
+      - php occ a:e notifications
+    environment:
+      - APPS_TO_ENABLE=notifications
+    when:
+      matrix:
+        INSTALL_NOTIFICATIONS-APP: true
+
   fix-permissions:
     image: owncloudci/php:${PHP_VERSION}
     pull: true
@@ -520,6 +532,16 @@ matrix:
 
     - PHP_VERSION: 7.1
       TEST_SUITE: api
+      BEHAT_SUITE: apiSharingNotifications
+      DB_TYPE: mariadb
+      USE_SERVER: true
+      INSTALL_SERVER: true
+      CHOWN_SERVER: true
+      OWNCLOUD_LOG: true
+      INSTALL_NOTIFICATIONS-APP: true
+
+    - PHP_VERSION: 7.1
+      TEST_SUITE: api
       BEHAT_SUITE: apiCapabilities
       DB_TYPE: mariadb
       USE_SERVER: true
@@ -594,7 +616,7 @@ matrix:
   # UI Acceptance tests
     - PHP_VERSION: 7.1
       TEST_SUITE: selenium
-      BEHAT_SUITE: webUIFavorites
+      BEHAT_SUITE: webUILogin
       DB_TYPE: mariadb
       USE_SERVER: true
       INSTALL_SERVER: true
@@ -604,16 +626,18 @@ matrix:
 
     - PHP_VERSION: 7.1
       TEST_SUITE: selenium
-      BEHAT_SUITE: webUIManageUsersGroups
+      BEHAT_SUITE: webUISharingNotifications
       DB_TYPE: mariadb
       USE_SERVER: true
       INSTALL_SERVER: true
       CHOWN_SERVER: true
+      OWNCLOUD_LOG: true
       USE_EMAIL: true
+      INSTALL_NOTIFICATIONS-APP: true
 
     - PHP_VERSION: 7.1
       TEST_SUITE: selenium
-      BEHAT_SUITE: webUIManageQuota
+      BEHAT_SUITE: webUIFavorites
       DB_TYPE: mariadb
       USE_SERVER: true
       INSTALL_SERVER: true
