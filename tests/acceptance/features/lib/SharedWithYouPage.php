@@ -22,6 +22,8 @@
 
 namespace Page;
 
+use Behat\Mink\Session;
+
 /**
  * Shared with you page.
  */
@@ -63,5 +65,62 @@ class SharedWithYouPage extends FilesPageBasic {
 	 */
 	protected function getEmptyContentXpath() {
 		return $this->emptyContentXpath;
+	}
+
+	/**
+	 *
+	 * @param string|array $name
+	 * @param Session $session
+	 * @param bool $expectToDeleteFile
+	 * @param int $maxRetries
+	 *
+	 * @return void
+	 */
+	public function declineFile(
+		$name,
+		Session $session,
+		$expectToDeleteFile = true,
+		$maxRetries = STANDARDRETRYCOUNT
+	) {
+		$this->initAjaxCounters($session);
+		$this->resetSumStartedAjaxRequests($session);
+		
+		for ($counter = 0; $counter < $maxRetries; $counter++) {
+			$row = $this->findFileRowByName($name, $session);
+			try {
+				$row->declineShare($session);
+				$this->waitForAjaxCallsToStartAndFinish($session);
+				$countXHRRequests = $this->getSumStartedAjaxRequests($session);
+				//if no XHR Request were fired we assume the delete action
+				//did not work and we retry
+				if ($countXHRRequests === 0) {
+					if ($expectToDeleteFile) {
+						\error_log("Error while decline file");
+					}
+				} else {
+					break;
+				}
+			} catch (\Exception $e) {
+				$this->closeFileActionsMenu();
+				if ($expectToDeleteFile) {
+					\error_log(
+						"Error while decline file"
+						. "\n-------------------------\n"
+						. $e->getMessage()
+						. "\n-------------------------\n"
+					);
+				}
+				\usleep(STANDARDSLEEPTIMEMICROSEC);
+			}
+		}
+		if ($expectToDeleteFile && ($counter > 0)) {
+			if (\is_array($name)) {
+				$name = \implode($name);
+			}
+			$message = "INFORMATION: retried to decline file '" . $name . "' " .
+				$counter . " times";
+				echo $message;
+				\error_log($message);
+		}
 	}
 }

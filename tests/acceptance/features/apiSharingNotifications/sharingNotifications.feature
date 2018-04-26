@@ -25,7 +25,7 @@ So that ....
 			| app         | /^files_sharing$/                       |
 			| subject     | /^User user0 shared "PARENT" with you$/ |
 			| message     | /^$/                                    |
-			| link        | /^%base_url%\/index.php\/f\/(\d+)$/     |
+			| link        | /^%base_url%(\/index\.php)?\/f\/(\d+)$/ |
 			| object_type | /^local_share$/                         |
 
 	Scenario: share to group sends notification to every member
@@ -37,14 +37,14 @@ So that ....
 			| app         | /^files_sharing$/                       |
 			| subject     | /^User user0 shared "PARENT" with you$/ |
 			| message     | /^$/                                    |
-			| link        | /^%base_url%\/index.php\/f\/(\d+)$/     |
+			| link        | /^%base_url%(\/index\.php)?\/f\/(\d+)$/ |
 			| object_type | /^local_share$/                         |
 		And user "user2" should have 2 notification
 		And the last notification of user "user2" should match these regular expressions
 			| app         | /^files_sharing$/                       |
 			| subject     | /^User user0 shared "PARENT" with you$/ |
 			| message     | /^$/                                    |
-			| link        | /^%base_url%\/index.php\/f\/(\d+)$/     |
+			| link        | /^%base_url%(\/index\.php)?\/f\/(\d+)$/ |
 			| object_type | /^local_share$/                         |
 
 	Scenario: when autoaccepting is enabeled no notifications are send 
