@@ -46,6 +46,7 @@ return PhpCsFixer\Config::create()
         'combine_consecutive_issets' => true,
         'combine_consecutive_unsets' => true,
         'no_spaces_inside_parenthesis' => true,
+        'no_extra_consecutive_blank_lines' => true,
        ])
     ->setFinder($finder)
 ;
