@@ -514,7 +514,7 @@ abstract class TestCase extends BaseTestCase {
 			if($node->hasChildNodes()) {
 				$this->removeWhitespaces($node);
 			} else {
-				if ($node instanceof \DOMText && $node->isWhitespaceInElementContent() ) {
+				if ($node instanceof \DOMText && $node->isWhitespaceInElementContent()) {
 					$domNode->removeChild($node);
 				}
 			}

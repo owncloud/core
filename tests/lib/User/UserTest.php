@@ -447,7 +447,7 @@ class UserTest extends TestCase {
 			->with(
 				$this->callback(
 					function($eventName){
-						if ($eventName === User::class . '::postSetEnabled' ){
+						if ($eventName === User::class . '::postSetEnabled'){
 							return true;
 						}
 						return false;

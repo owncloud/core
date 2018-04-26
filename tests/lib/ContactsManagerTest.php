@@ -60,7 +60,7 @@ class ContactsManagerTest extends \Test\TestCase {
 	/**
 	 * @dataProvider searchProvider
 	 */
-	public function testSearch($search1, $search2, $expectedResult ){
+	public function testSearch($search1, $search2, $expectedResult){
 		$addressbook1 = $this->getMockBuilder('\OCP\IAddressBook')
 			->disableOriginalConstructor()
 			->getMock();

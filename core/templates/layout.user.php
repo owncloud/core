@@ -72,7 +72,7 @@
 					<?php foreach($_['settingsnavigation'] as $entry):?>
 						<li>
 							<a href="<?php print_unescaped($entry['href']); ?>"
-								<?php if( $entry["active"] ): ?> class="active"<?php endif; ?>>
+								<?php if($entry["active"]): ?> class="active"<?php endif; ?>>
 								<img alt="" src="<?php print_unescaped($entry['icon']); ?>">
 								<?php p($entry['name']) ?>
 							</a>
@@ -106,7 +106,7 @@
 					<?php foreach($_['navigation'] as $entry): ?>
 						<li data-id="<?php p($entry['id']); ?>">
 							<a href="<?php print_unescaped($entry['href']); ?>" tabindex="3"
-								<?php if( $entry['active'] ): ?> class="active"<?php endif; ?>>
+								<?php if($entry['active']): ?> class="active"<?php endif; ?>>
 								<img class="app-icon" alt="" src="<?php print_unescaped($entry['icon']); ?>">
 								<div class="icon-loading-dark" style="display:none;"></div>
 								<span>

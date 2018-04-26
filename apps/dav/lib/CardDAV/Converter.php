@@ -37,7 +37,7 @@ class Converter {
 
 		$uid = $user->getUID();
 		$displayName = $user->getDisplayName();
-		$displayName = empty($displayName ) ? $uid : $displayName;
+		$displayName = empty($displayName) ? $uid : $displayName;
 		$emailAddress = $user->getEMailAddress();
 		$cloudId = $user->getCloudId();
 		$image = $this->getAvatarImage($user);
@@ -71,7 +71,7 @@ class Converter {
 	public function updateCard(VCard $vCard, IUser $user) {
 		$uid = $user->getUID();
 		$displayName = $user->getDisplayName();
-		$displayName = empty($displayName ) ? $uid : $displayName;
+		$displayName = empty($displayName) ? $uid : $displayName;
 		$emailAddress = $user->getEMailAddress();
 		$cloudId = $user->getCloudId();
 		$image = $this->getAvatarImage($user);

@@ -98,7 +98,7 @@ function usersInGroup($gid, $search = '', $limit = -1, $offset = 0) {
 	}
 }
 
-if (isset($_POST['action'], $_POST['itemType'], $_POST['itemSource'])    ) {
+if (isset($_POST['action'], $_POST['itemType'], $_POST['itemSource'])) {
 	switch ($_POST['action']) {
 		case 'informRecipients':
 			$l = \OC::$server->getL10N('core');

@@ -167,7 +167,7 @@ class OCI extends AbstractDatabase {
 		if (!$stmt) {
 			$entry = $this->trans->t('DB Error: "%s"', [$this->getLastError($connection)]) . '<br />';
 			$entry .= $this->trans->t('Offending command was: "%s"', [$query]) . '<br />';
-			$this->logger->warning( $entry, ['app' => 'setup.oci']);
+			$this->logger->warning($entry, ['app' => 'setup.oci']);
 		}
 		$result = \oci_execute($stmt);
 

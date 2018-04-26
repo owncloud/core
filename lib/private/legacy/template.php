@@ -77,7 +77,7 @@ class OC_Template extends \OC\Template\Base {
 	 *                         "admin".
 	 * @param bool $registerCall = true
 	 */
-	public function __construct( $app, $name, $renderAs = "", $registerCall = true ) {
+	public function __construct($app, $name, $renderAs = "", $registerCall = true) {
 		self::initTemplateEngine($renderAs);
 		$requestToken = (OC::$server->getSession() && $registerCall) ? \OCP\Util::callRegister() : '';
 
@@ -104,8 +104,8 @@ class OC_Template extends \OC\Template\Base {
 			//so to make sure this scripts/styles here are loaded first we use OC_Util::addScript() with $prepend=true
 			//meaning the last script/style in this list will be loaded first
 			if (\OC::$server->getSystemConfig()->getValue ('installed', false) && $renderAs !== 'error' && !\OCP\Util::needUpgrade()) {
-				if (\OC::$server->getConfig ()->getAppValue ( 'core', 'backgroundjobs_mode', 'ajax' ) == 'ajax') {
-					OC_Util::addScript ( 'backgroundjobs', null, true );
+				if (\OC::$server->getConfig ()->getAppValue ('core', 'backgroundjobs_mode', 'ajax') == 'ajax') {
+					OC_Util::addScript ('backgroundjobs', null, true);
 				}
 			}
 
@@ -198,7 +198,7 @@ class OC_Template extends \OC\Template\Base {
 			$dirs = $this->getAppTemplateDirs($theme, $app, OC_App::getAppPath($app));
 		}
 
-		$locator = new \OC\Template\TemplateFileLocator( $dirs );
+		$locator = new \OC\Template\TemplateFileLocator($dirs);
 		$template = $locator->find($name);
 
 		return $template;
@@ -231,7 +231,7 @@ class OC_Template extends \OC\Template\Base {
 	public function fetchPage($additionalParams = null) {
 		$data = parent::fetchPage($additionalParams);
 
-		if( $this->renderAs ) {
+		if($this->renderAs) {
 			$page = new TemplateLayout($this->renderAs, $this->app);
 
 			// Add custom headers
@@ -279,10 +279,10 @@ class OC_Template extends \OC\Template\Base {
 	 * @param array $parameters Parameters for the template
 	 * @return boolean|null
 	 */
-	public static function printUserPage( $application, $name, $parameters = []) {
-		$content = new OC_Template( $application, $name, "user" );
-		foreach( $parameters as $key => $value ) {
-			$content->assign( $key, $value );
+	public static function printUserPage($application, $name, $parameters = []) {
+		$content = new OC_Template($application, $name, "user");
+		foreach($parameters as $key => $value) {
+			$content->assign($key, $value);
 		}
 		print $content->printPage();
 	}
@@ -294,10 +294,10 @@ class OC_Template extends \OC\Template\Base {
 	 * @param array $parameters Parameters for the template
 	 * @return bool
 	 */
-	public static function printAdminPage( $application, $name, $parameters = []) {
-		$content = new OC_Template( $application, $name, "admin" );
-		foreach( $parameters as $key => $value ) {
-			$content->assign( $key, $value );
+	public static function printAdminPage($application, $name, $parameters = []) {
+		$content = new OC_Template($application, $name, "admin");
+		foreach($parameters as $key => $value) {
+			$content->assign($key, $value);
 		}
 		return $content->printPage();
 	}
@@ -309,10 +309,10 @@ class OC_Template extends \OC\Template\Base {
 	 * @param array|string $parameters Parameters for the template
 	 * @return bool
 	 */
-	public static function printGuestPage( $application, $name, $parameters = []) {
-		$content = new OC_Template( $application, $name, "guest" );
-		foreach( $parameters as $key => $value ) {
-			$content->assign( $key, $value );
+	public static function printGuestPage($application, $name, $parameters = []) {
+		$content = new OC_Template($application, $name, "guest");
+		foreach($parameters as $key => $value) {
+			$content->assign($key, $value);
 		}
 		return $content->printPage();
 	}
@@ -323,16 +323,16 @@ class OC_Template extends \OC\Template\Base {
 		* @param string $hint An optional hint message - needs to be properly escaped
 		* @param int HTTP Status Code
 		*/
-	public static function printErrorPage( $error_msg, $hint = '', $httpStatusCode = null ) {
+	public static function printErrorPage($error_msg, $hint = '', $httpStatusCode = null) {
 		if ($error_msg === $hint) {
 			// If the hint is the same as the message there is no need to display it twice.
 			$hint = '';
 		}
 
 		try {
-			$content = new \OC_Template( '', 'error', 'error', false );
+			$content = new \OC_Template('', 'error', 'error', false);
 			$errors = [['error' => $error_msg, 'hint' => $hint]];
-			$content->assign( 'errors', $errors );
+			$content->assign('errors', $errors);
 			if ($httpStatusCode !== null) {
 				\http_response_code((int)$httpStatusCode);
 			}

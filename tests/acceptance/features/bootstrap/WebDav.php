@@ -1765,7 +1765,7 @@ trait WebDav {
 				$this->getPasswordForUser($user),
 				$path
 			);
-		} catch ( Exception $e ) {
+		} catch (Exception $e) {
 			return null;
 		}
 	}

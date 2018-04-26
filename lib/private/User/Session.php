@@ -342,7 +342,7 @@ class Session implements IUserSession, Emitter {
 		if (!$isTokenPassword && $this->isTwoFactorEnforced($user)) {
 			throw new PasswordLoginForbiddenException();
 		}
-		if (!$this->login($user, $password) ) {
+		if (!$this->login($user, $password)) {
 			$users = $this->manager->getByEmail($user);
 			if (\count($users) === 1) {
 				return $this->login($users[0]->getUID(), $password);
