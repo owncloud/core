@@ -385,7 +385,7 @@ trait Tags {
 				$this->getPasswordForUser($taggingUser),
 				$tagName, $fileName, $fileOwner, $this->getDavPathVersion('systemtags')
 			);
-		} catch ( BadResponseException $e ) {
+		} catch (BadResponseException $e) {
 			$this->response = $e->getResponse();
 		}
 	}

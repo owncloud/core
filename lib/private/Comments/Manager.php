@@ -102,7 +102,7 @@ class Manager implements ICommentsManager {
 	 * @throws \UnexpectedValueException
 	 */
 	protected function prepareCommentForDatabaseWrite(IComment $comment) {
-		if(    !$comment->getActorType()
+		if(!$comment->getActorType()
 			|| !$comment->getActorId()
 			|| !$comment->getObjectType()
 			|| !$comment->getObjectId()

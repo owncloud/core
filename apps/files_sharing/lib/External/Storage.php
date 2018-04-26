@@ -213,7 +213,7 @@ class Storage extends DAV implements ISharedStorage {
 	public function checkStorageAvailability() {
 		// see if we can find out why the share is unavailable
 		try {
-			if ( ! $this->propfind('') ) {
+			if (! $this->propfind('')) {
 				// a 404 can either mean that the share no longer exists or there is no ownCloud on the remote
 				if ($this->testRemote()) {
 					// valid ownCloud instance means that the public share no longer exists

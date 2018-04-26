@@ -140,7 +140,7 @@ abstract class Entity {
 	 * @since 7.0.0
 	 */
 	public function __call($methodName, $args){
-		$attr = \lcfirst( \substr($methodName, 3) );
+		$attr = \lcfirst(\substr($methodName, 3));
 
 		if(\strpos($methodName, 'set') === 0){
 			$this->setter($attr, $args);

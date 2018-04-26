@@ -51,8 +51,8 @@ class Response {
 	 *  null		cache indefinitely
 	 * @since 4.0.0
 	 */
-	static public function enableCaching( $cache_time = null ) {
-		\OC_Response::enableCaching( $cache_time );
+	static public function enableCaching($cache_time = null) {
+		\OC_Response::enableCaching($cache_time);
 	}
 
 	/**
@@ -61,8 +61,8 @@ class Response {
 	 * @param string $lastModified time when the response was last modified
 	 * @since 4.0.0
 	 */
-	static public function setLastModifiedHeader( $lastModified ) {
-		\OC_Response::setLastModifiedHeader( $lastModified );
+	static public function setLastModifiedHeader($lastModified) {
+		\OC_Response::setLastModifiedHeader($lastModified);
 	}
 
 	/**
@@ -71,8 +71,8 @@ class Response {
 	 * @param string $type disposition type, either 'attachment' or 'inline'
 	 * @since 7.0.0
 	 */
-	static public function setContentDispositionHeader( $filename, $type = 'attachment' ) {
-		\OC_Response::setContentDispositionHeader( $filename, $type );
+	static public function setContentDispositionHeader($filename, $type = 'attachment') {
+		\OC_Response::setContentDispositionHeader($filename, $type);
 	}
 
 	/**
@@ -99,8 +99,8 @@ class Response {
 	 * @param string $etag token to use for modification check
 	 * @since 4.0.0
 	 */
-	static public function setETagHeader( $etag ) {
-		\OC_Response::setETagHeader( $etag );
+	static public function setETagHeader($etag) {
+		\OC_Response::setETagHeader($etag);
 	}
 
 	/**
@@ -109,8 +109,8 @@ class Response {
 	 * @since 4.0.0
 	 * @deprecated 8.1.0 - Use \OCP\AppFramework\Http\StreamResponse or another AppFramework controller instead
 	 */
-	static public function sendFile( $filepath ) {
-		\OC_Response::sendFile( $filepath );
+	static public function sendFile($filepath) {
+		\OC_Response::sendFile($filepath);
 	}
 
 	/**
@@ -120,8 +120,8 @@ class Response {
 	 *  DateTime object when to expire response
 	 * @since 4.0.0
 	 */
-	static public function setExpiresHeader( $expires ) {
-		\OC_Response::setExpiresHeader( $expires );
+	static public function setExpiresHeader($expires) {
+		\OC_Response::setExpiresHeader($expires);
 	}
 
 	/**
@@ -129,7 +129,7 @@ class Response {
 	 * @param string $location to redirect to
 	 * @since 4.0.0
 	 */
-	static public function redirect( $location ) {
-		\OC_Response::redirect( $location );
+	static public function redirect($location) {
+		\OC_Response::redirect($location);
 	}
 }

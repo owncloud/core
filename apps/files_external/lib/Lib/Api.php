@@ -60,7 +60,7 @@ class Api {
 			'path' => $path,
 			'type' => 'dir',
 			'backend' => $mountConfig['backend'],
-			'scope' => ( $isSystemMount ? 'system' : 'personal' ),
+			'scope' => ($isSystemMount ? 'system' : 'personal'),
 			'permissions' => $permissions,
 			'id' => $mountConfig['id'],
 			'class' => $mountConfig['class']

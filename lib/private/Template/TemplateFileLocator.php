@@ -31,7 +31,7 @@ class TemplateFileLocator {
 	/**
 	 * @param string[] $dirs
 	 */
-	public function __construct( $dirs ) {
+	public function __construct($dirs) {
 		$this->dirs = $dirs;
 	}
 
@@ -40,7 +40,7 @@ class TemplateFileLocator {
 	 * @return string
 	 * @throws \Exception
 	 */
-	public function find( $template ) {
+	public function find($template) {
 		if ($template === '') {
 			throw new \InvalidArgumentException('Empty template name');
 		}

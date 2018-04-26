@@ -185,7 +185,7 @@ trait Provisioning {
 	 * @return void
 	 */
 	public function adminCreatesUserUsingTheAPI($user) {
-		if (!$this->userExists($user) ) {
+		if (!$this->userExists($user)) {
 			$password = $this->getPasswordForUser($user);
 			$this->createUser($user, $password, null, null, true, 'api');
 		}

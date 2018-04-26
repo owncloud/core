@@ -74,7 +74,7 @@ class BackgroundJob {
 	 * @since 5.0.0
 	 */
 	public static function setExecutionType($type) {
-		if( !\in_array( $type, ['none', 'ajax', 'webcron', 'cron'])) {
+		if(!\in_array($type, ['none', 'ajax', 'webcron', 'cron'])) {
 			return false;
 		}
 		\OC::$server->getConfig()->setAppValue('core', 'backgroundjobs_mode', $type);

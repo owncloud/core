@@ -372,7 +372,7 @@ class Comment implements IComment {
 		}
 
 		foreach(['actor', 'object'] as $role) {
-			if(isset($data[$role . '_type'], $data[$role.'_id'])    ) {
+			if(isset($data[$role . '_type'], $data[$role.'_id'])) {
 				$setter = 'set' . \ucfirst($role);
 				$this->$setter($data[$role . '_type'], $data[$role . '_id']);
 			}

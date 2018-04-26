@@ -48,8 +48,8 @@ namespace OCP;
  * @see \OCP\IURLGenerator::imagePath
  * @deprecated 8.0.0 Use \OCP\Template::image_path() instead
  */
-function image_path( $app, $image ) {
-	return(\image_path( $app, $image ));
+function image_path($app, $image) {
+	return(\image_path($app, $image));
 }
 
 
@@ -59,8 +59,8 @@ function image_path( $app, $image ) {
  * @return string to the image of this file type.
  * @deprecated 8.0.0 Use \OCP\Template::mimetype_icon() instead
  */
-function mimetype_icon( $mimetype ) {
-	return(\mimetype_icon( $mimetype ));
+function mimetype_icon($mimetype) {
+	return(\mimetype_icon($mimetype));
 }
 
 /**
@@ -69,8 +69,8 @@ function mimetype_icon( $mimetype ) {
  * @return string to the preview of the image
  * @deprecated 8.0.0 Use \OCP\Template::preview_icon() instead
  */
-function preview_icon( $path ) {
-	return(\preview_icon( $path ));
+function preview_icon($path) {
+	return(\preview_icon($path));
 }
 
 /**
@@ -81,8 +81,8 @@ function preview_icon( $path ) {
  * @return string link to the preview
  * @deprecated 8.0.0 Use \OCP\Template::publicPreview_icon() instead
  */
-function publicPreview_icon ( $path, $token ) {
-	return(\publicPreview_icon( $path, $token ));
+function publicPreview_icon ($path, $token) {
+	return(\publicPreview_icon($path, $token));
 }
 
 /**
@@ -92,8 +92,8 @@ function publicPreview_icon ( $path, $token ) {
  * @return string size as string
  * @deprecated 8.0.0 Use \OCP\Template::human_file_size() instead
  */
-function human_file_size( $bytes ) {
-	return(\human_file_size( $bytes ));
+function human_file_size($bytes) {
+	return(\human_file_size($bytes));
 }
 
 
@@ -105,7 +105,7 @@ function human_file_size( $bytes ) {
  *
  * @deprecated 8.0.0 Use \OCP\Template::relative_modified_date() instead
  */
-function relative_modified_date( $timestamp, $dateOnly = false ) {
+function relative_modified_date($timestamp, $dateOnly = false) {
 	return(\relative_modified_date($timestamp, null, $dateOnly));
 }
 

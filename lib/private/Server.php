@@ -684,7 +684,7 @@ class Server extends ServerContainer implements IServerContainer, IServiceLoader
 					'server' => $_SERVER,
 					'env' => $_ENV,
 					'cookies' => $_COOKIE,
-					'method' => (isset($_SERVER, $_SERVER['REQUEST_METHOD'])  )
+					'method' => (isset($_SERVER, $_SERVER['REQUEST_METHOD']))
 						? $_SERVER['REQUEST_METHOD']
 						: null,
 					'urlParams' => $urlParams,
@@ -764,7 +764,7 @@ class Server extends ServerContainer implements IServerContainer, IServiceLoader
 					'server' => $_SERVER,
 					'env' => $_ENV,
 					'cookies' => $_COOKIE,
-					'method' => (isset($_SERVER, $_SERVER['REQUEST_METHOD'])  )
+					'method' => (isset($_SERVER, $_SERVER['REQUEST_METHOD']))
 						? $_SERVER['REQUEST_METHOD']
 						: null,
 				],

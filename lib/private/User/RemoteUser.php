@@ -160,7 +160,7 @@ class RemoteUser implements IUser {
 	public function getCloudId() {
 		$uid = $this->getUID();
 		$server = \OC::$server->getURLGenerator()->getAbsoluteURL('/');
-		return $uid . '@' . \rtrim( $this->removeProtocolFromUrl($server), '/');
+		return $uid . '@' . \rtrim($this->removeProtocolFromUrl($server), '/');
 	}
 
 	/**

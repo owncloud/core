@@ -1149,7 +1149,7 @@ class SessionTest extends TestCase {
 		$session->expects($this->any())->method('getUser')->willReturn($loggedInUser);
 
 		$session->expects($expectedReturn ? $this->never() : $this->once())->method('logout');
-		$this->assertEquals( $expectedReturn, $session->verifyAuthHeaders($request));
+		$this->assertEquals($expectedReturn, $session->verifyAuthHeaders($request));
 	}
 
 	public function providesModulesForLogin() {
@@ -1201,6 +1201,6 @@ class SessionTest extends TestCase {
 			$session->expects($expectedReturn ? $this->once() : $this->never())->method('loginUser')->willReturn($expectedReturn);
 		}
 
-		$this->assertEquals( $expectedReturn, $session->tryAuthModuleLogin($request));
+		$this->assertEquals($expectedReturn, $session->tryAuthModuleLogin($request));
 	}
 }

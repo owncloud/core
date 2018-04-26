@@ -159,7 +159,7 @@ class Base {
 	 * $_[$key][$position] in the template.
 	 */
 	public function append($key, $value) {
-		if( \array_key_exists($key, $this->vars)) {
+		if(\array_key_exists($key, $this->vars)) {
 			$this->vars[$key][] = $value;
 		}
 		else{
@@ -175,7 +175,7 @@ class Base {
 	 */
 	public function printPage() {
 		$data = $this->fetchPage();
-		if( $data === false ) {
+		if($data === false) {
 			return false;
 		}
 		else{
@@ -212,8 +212,8 @@ class Base {
 		$l = $this->l10n;
 		$theme = $this->themeDefaults;
 
-		if( !\is_null($additionalParams)) {
-			$_ = \array_merge( $additionalParams, $this->vars );
+		if(!\is_null($additionalParams)) {
+			$_ = \array_merge($additionalParams, $this->vars);
 		}
 
 		\ob_start();

@@ -371,7 +371,7 @@ class Factory implements IFactory {
 	 */
 	protected function getActiveAppThemeDirectory() {
 		$theme = $this->themeService->getTheme();
-		if ($theme instanceof ITheme && $theme->getDirectory() !== '' ) {
+		if ($theme instanceof ITheme && $theme->getDirectory() !== '') {
 			return $theme->getBaseDirectory(). '/' . $theme->getDirectory();
 		}
 		return '';

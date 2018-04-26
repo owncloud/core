@@ -55,7 +55,7 @@ class DB {
 	 * @deprecated 8.1.0 use prepare() of \OCP\IDBConnection - \OC::$server->getDatabaseConnection()
 	 * @since 4.5.0
 	 */
-	static public function prepare( $query, $limit=null, $offset=null ) {
+	static public function prepare($query, $limit=null, $offset=null) {
 		return(\OC_DB::prepare($query, $limit, $offset));
 	}
 

@@ -180,17 +180,17 @@ class OC_Response {
 	 * @param string $filename file name
 	 * @param string $type disposition type, either 'attachment' or 'inline'
 	 */
-	static public function setContentDispositionHeader( $filename, $type = 'attachment' ) {
+	static public function setContentDispositionHeader($filename, $type = 'attachment') {
 		if (\OC::$server->getRequest()->isUserAgent(
 			[
 				\OC\AppFramework\Http\Request::USER_AGENT_IE,
 				\OC\AppFramework\Http\Request::USER_AGENT_ANDROID_MOBILE_CHROME,
 				\OC\AppFramework\Http\Request::USER_AGENT_FREEBOX,
 			])) {
-			\header( 'Content-Disposition: ' . \rawurlencode($type) . '; filename="' . \rawurlencode( $filename ) . '"' );
+			\header('Content-Disposition: ' . \rawurlencode($type) . '; filename="' . \rawurlencode($filename) . '"');
 		} else {
-			\header( 'Content-Disposition: ' . \rawurlencode($type) . '; filename*=UTF-8\'\'' . \rawurlencode( $filename )
-												 . '; filename="' . \rawurlencode( $filename ) . '"' );
+			\header('Content-Disposition: ' . \rawurlencode($type) . '; filename*=UTF-8\'\'' . \rawurlencode($filename)
+												 . '; filename="' . \rawurlencode($filename) . '"');
 		}
 	}
 

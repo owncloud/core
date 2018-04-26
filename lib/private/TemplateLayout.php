@@ -50,14 +50,14 @@ class TemplateLayout extends \OC_Template {
 	 * @param string $renderAs
 	 * @param string $appId application id
 	 */
-	public function __construct( $renderAs, $appId = '' ) {
+	public function __construct($renderAs, $appId = '') {
 
 		// yes - should be injected ....
 		$this->config = \OC::$server->getConfig();
 
 		// Decide which page we show
 		if($renderAs == 'user') {
-			parent::__construct( 'core', 'layout.user' );
+			parent::__construct('core', 'layout.user');
 			if(\in_array(\OC_App::getCurrentApp(), ['settings','admin', 'help']) !== false) {
 				$this->assign('bodyid', 'body-settings');
 			}else{
@@ -71,22 +71,22 @@ class TemplateLayout extends \OC_Template {
 			}
 
 			// Add navigation entry
-			$this->assign( 'application', '');
-			$this->assign( 'appid', $appId );
+			$this->assign('application', '');
+			$this->assign('appid', $appId);
 			$navigation = \OC_App::getNavigation();
-			$this->assign( 'navigation', $navigation);
+			$this->assign('navigation', $navigation);
 			$settingsNavigation = \OC_App::getSettingsNavigation();
-			$this->assign( 'settingsnavigation', $settingsNavigation);
+			$this->assign('settingsnavigation', $settingsNavigation);
 			foreach($navigation as $entry) {
 				if ($entry['active']) {
-					$this->assign( 'application', $entry['name'] );
+					$this->assign('application', $entry['name']);
 					break;
 				}
 			}
 
 			foreach($settingsNavigation as $entry) {
 				if ($entry['active']) {
-					$this->assign( 'application', $entry['name'] );
+					$this->assign('application', $entry['name']);
 					break;
 				}
 			}
@@ -132,12 +132,12 @@ class TemplateLayout extends \OC_Template {
 		$jsFiles = self::findJavascriptFiles(\OC_Util::$scripts);
 		$this->assign('jsfiles', []);
 		if ($this->config->getSystemValue('installed', false) && $renderAs != 'error') {
-			$this->append( 'jsfiles', \OC::$server->getURLGenerator()->linkToRoute('js_config', ['v' => self::$versionHash]));
+			$this->append('jsfiles', \OC::$server->getURLGenerator()->linkToRoute('js_config', ['v' => self::$versionHash]));
 		}
 		foreach($jsFiles as $info) {
 			$web = $info[1];
 			$file = $info[2];
-			$this->append( 'jsfiles', $web.'/'.$file . '?v=' . self::$versionHash);
+			$this->append('jsfiles', $web.'/'.$file . '?v=' . self::$versionHash);
 		}
 
 		// Add the css files
@@ -149,9 +149,9 @@ class TemplateLayout extends \OC_Template {
 			$file = $info[2];
 
 			if (\substr($file, -\strlen('print.css')) === 'print.css') {
-				$this->append( 'printcssfiles', $web.'/'.$file . '?v=' . self::$versionHash);
+				$this->append('printcssfiles', $web.'/'.$file . '?v=' . self::$versionHash);
 			} else {
-				$this->append( 'cssfiles', $web.'/'.$file . '?v=' . self::$versionHash);
+				$this->append('cssfiles', $web.'/'.$file . '?v=' . self::$versionHash);
 			}
 		}
 	}
