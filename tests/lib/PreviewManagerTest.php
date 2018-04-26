@@ -72,13 +72,11 @@ class PreviewManagerTest extends TestCase {
 	public function testCreatePreview() {
 		/** @var IConfig $config */
 		$config = $this->createMock(IConfig::class);
-		/** @var IRootFolder $rootFolder */
-		$rootFolder = $this->createMock(IRootFolder::class);
 		/** @var IUserSession | \PHPUnit_Framework_MockObject_MockObject $userSession */
 		$userSession = $this->createMock(IUserSession::class);
-
 		$userSession->method('getUser')->willReturn($this->user);
 
+		$rootFolder = \OC::$server->getLazyRootFolder();
 		$previewManager = new PreviewManager($config, $rootFolder, $userSession);
 
 		$image = $previewManager->createPreview('files/testimage.jpg');
