@@ -45,6 +45,7 @@ return PhpCsFixer\Config::create()
         'array_syntax' => ['syntax' => 'short'],
         'combine_consecutive_issets' => true,
         'combine_consecutive_unsets' => true,
+        'no_spaces_inside_parenthesis' => true,
        ])
     ->setFinder($finder)
 ;
