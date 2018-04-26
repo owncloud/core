@@ -19,3 +19,9 @@ So that I can know which users are in a group
 		And the users returned by the API should be
 			| brand-new-user |
 			| 123            |
+
+	Scenario: getting users in an empty group
+		Given group "new-group" has been created
+		When user "admin" sends HTTP method "GET" to API endpoint "/cloud/groups/new-group"
+		Then the OCS status code should be "100"
+		And the HTTP status code should be "200"
