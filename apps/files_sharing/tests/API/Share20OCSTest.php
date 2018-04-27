@@ -3026,16 +3026,20 @@ class Share20OCSTest extends TestCase {
 
 	public function providesAcceptRejectShare() {
 		return [
-			['acceptShare', \OCP\Share::STATE_ACCEPTED],
-			['declineShare', \OCP\Share::STATE_REJECTED],
+			['acceptShare', '/target', true, \OCP\Share::STATE_ACCEPTED],
+			['acceptShare', '/sfoo/target', true, \OCP\Share::STATE_ACCEPTED],
+			['acceptShare', '/target', false, \OCP\Share::STATE_ACCEPTED],
+			['acceptShare', '/sfoo/target', false, \OCP\Share::STATE_ACCEPTED],
+			['declineShare', '/target', true, \OCP\Share::STATE_REJECTED],
+			['declineShare', '/sfoo/target', true, \OCP\Share::STATE_REJECTED],
 		];
 	}
 
 	/**
 	 * @dataProvider providesAcceptRejectShare
 	 */
-	public function testAcceptRejectShare($method, $expectedState) {
-		$userShare = $this->makeReceivedUserShareForOperation();
+	public function testAcceptRejectShare($method, $target, $targetExists, $expectedState) {
+		$userShare = $this->makeReceivedUserShareForOperation($target);
 
 		$this->shareManager->expects($this->once())
 			->method('getShareById')
@@ -3058,18 +3062,25 @@ class Share20OCSTest extends TestCase {
 			// deduplicate
 			$userFolder->expects($this->at(0))
 				->method('nodeExists')
-				->with('/')
+				->with(\dirname($target))
 				->willReturn(true);
 
-			$userFolder->expects($this->at(1))
-				->method('nodeExists')
-				->with('/target')
-				->willReturn(true);
+			if ($targetExists) {
+				$userFolder->expects($this->at(1))
+					->method('nodeExists')
+					->with($target)
+					->willReturn(true);
 
-			$userFolder->expects($this->at(2))
-				->method('nodeExists')
-				->with('/target (2)')
-				->willReturn(false);
+				$userFolder->expects($this->at(2))
+					->method('nodeExists')
+					->with("$target (2)")
+					->willReturn(false);
+			} else {
+				$userFolder->expects($this->at(1))
+					->method('nodeExists')
+					->with($target)
+					->willReturn(false);
+			}
 		} else {
 			$userFolder->expects($this->never())
 				->method('nodeExists');
@@ -3085,19 +3096,25 @@ class Share20OCSTest extends TestCase {
 
 		$this->assertEquals(100, $result->getStatusCode());
 		$this->assertEquals($userShare, $result->getData()[0], 'result contains updated user share');
+		if ($method === 'acceptShare' && $targetExists) {
+			$this->assertEquals("$target (2)", $userShare->getTarget());
+		} else {
+			$this->assertEquals("$target", $userShare->getTarget());
+		}
+		$this->assertSame($expectedState, $userShare->getState());
 	}
 
 	/**
 	 * @dataProvider providesAcceptRejectShare
 	 */
-	public function testAcceptRejectShareMultiple($method, $expectedState) {
-		$userShare = $this->makeReceivedUserShareForOperation();
+	public function testAcceptRejectShareMultiple($method, $target, $targetExists, $expectedState) {
+		$userShare = $this->makeReceivedUserShareForOperation($target);
 		$groupShare = $this->newShare();
 		$groupShare->setId(234);
 		$groupShare->setShareType(Share::SHARE_TYPE_GROUP);
 		$groupShare->setSharedWith('group1');
 		$groupShare->setNode($userShare->getNode());
-		$groupShare->setTarget('/target');
+		$groupShare->setTarget($target);
 
 		$this->shareManager->expects($this->once())
 			->method('getShareById')
@@ -3120,18 +3137,25 @@ class Share20OCSTest extends TestCase {
 			// deduplicate
 			$userFolder->expects($this->at(0))
 				->method('nodeExists')
-				->with('/')
+				->with(\dirname($target))
 				->willReturn(true);
 
-			$userFolder->expects($this->at(1))
-				->method('nodeExists')
-				->with('/target')
-				->willReturn(true);
+			if ($targetExists) {
+				$userFolder->expects($this->at(1))
+					->method('nodeExists')
+					->with($target)
+					->willReturn(true);
 
-			$userFolder->expects($this->at(2))
-				->method('nodeExists')
-				->with('/target (2)')
-				->willReturn(false);
+				$userFolder->expects($this->at(2))
+					->method('nodeExists')
+					->with("$target (2)")
+					->willReturn(false);
+			} else {
+				$userFolder->expects($this->at(1))
+					->method('nodeExists')
+					->with($target)
+					->willReturn(false);
+			}
 		} else {
 			$userFolder->expects($this->never())
 				->method('nodeExists');
@@ -3147,12 +3171,18 @@ class Share20OCSTest extends TestCase {
 
 		$this->assertEquals(100, $result->getStatusCode());
 		$this->assertEquals($userShare, $result->getData()[0], 'result contains updated user share');
+		if ($method === 'acceptShare' && $targetExists) {
+			$this->assertEquals("$target (2)", $userShare->getTarget());
+		} else {
+			$this->assertEquals("$target", $userShare->getTarget());
+		}
+		$this->assertSame($expectedState, $userShare->getState());
 	}
 
 	/**
 	 * @dataProvider providesAcceptRejectShare
 	 */
-	public function testAcceptRejectShareApiDisabled($method, $expectedState) {
+	public function testAcceptRejectShareApiDisabled($method, $target, $targetExists, $expectedState) {
 		$ocs = $this->getOcsDisabledAPI();
 
 		$expected = new \OC\OCS\Result(null, 404, 'Share API is disabled');
@@ -3161,7 +3191,7 @@ class Share20OCSTest extends TestCase {
 		$this->assertEquals($expected, $result);
 	}
 
-	private function makeReceivedUserShareForOperation() {
+	private function makeReceivedUserShareForOperation($target) {
 		$node = $this->createMock(Node::class);
 		$node->expects($this->at(0))
 			->method('lock');
@@ -3175,7 +3205,7 @@ class Share20OCSTest extends TestCase {
 		$userShare->setShareType(\OCP\Share::SHARE_TYPE_USER);
 		$userShare->setState(\OCP\Share::STATE_PENDING);
 		$userShare->setPermissions(\OCP\Constants::PERMISSION_ALL);
-		$userShare->setTarget('/target');
+		$userShare->setTarget($target);
 		$userShare->setNode($node);
 
 		return $userShare;
@@ -3184,7 +3214,7 @@ class Share20OCSTest extends TestCase {
 	/**
 	 * @dataProvider providesAcceptRejectShare
 	 */
-	public function testAcceptRejectShareInvalidId($method, $expectedState) {
+	public function testAcceptRejectShareInvalidId($method, $target, $targetExists, $expectedState) {
 		$this->shareManager->expects($this->any())
 			->method('getShareById')
 			->with('ocinternal:123')
@@ -3202,8 +3232,8 @@ class Share20OCSTest extends TestCase {
 	/**
 	 * @dataProvider providesAcceptRejectShare
 	 */
-	public function testAcceptRejectShareAccessDenied($method, $expectedState) {
-		$userShare = $this->makeReceivedUserShareForOperation();
+	public function testAcceptRejectShareAccessDenied($method, $target, $targetExists, $expectedState) {
+		$userShare = $this->makeReceivedUserShareForOperation($target);
 		$userShare->setPermissions(0);
 
 		$this->shareManager->expects($this->once())
@@ -3223,8 +3253,8 @@ class Share20OCSTest extends TestCase {
 	/**
 	 * @dataProvider providesAcceptRejectShare
 	 */
-	public function testAcceptRejectShareAccessNotRecipient($method, $expectedState) {
-		$userShare = $this->makeReceivedUserShareForOperation();
+	public function testAcceptRejectShareAccessNotRecipient($method, $target, $targetExists, $expectedState) {
+		$userShare = $this->makeReceivedUserShareForOperation($target);
 
 		$this->shareManager->expects($this->any())
 			->method('getShareById')
@@ -3252,8 +3282,8 @@ class Share20OCSTest extends TestCase {
 	/**
 	 * @dataProvider providesAcceptRejectShare
 	 */
-	public function testAcceptRejectShareOperationError($method, $expectedState) {
-		$userShare = $this->makeReceivedUserShareForOperation();
+	public function testAcceptRejectShareOperationError($method, $target, $targetExists, $expectedState) {
+		$userShare = $this->makeReceivedUserShareForOperation($target);
 
 		$this->shareManager->expects($this->once())
 			->method('getShareById')
@@ -3275,12 +3305,12 @@ class Share20OCSTest extends TestCase {
 		if ($method === 'acceptShare') {
 			$userFolder->expects($this->at(0))
 				->method('nodeExists')
-				->with('/')
+				->with(\dirname($target))
 				->willReturn(true);
 
 			$userFolder->expects($this->at(1))
 				->method('nodeExists')
-				->with('/target')
+				->with($target)
 				->willReturn(false);
 		} else {
 			$userFolder->expects($this->never())

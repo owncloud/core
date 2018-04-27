@@ -18,6 +18,6 @@ tr[class*='share-state-'] .action-favorite {
 }
 
 .share-state-rejected .thumbnail {
-	background-image: url("/core/img/filetypes/folder.svg") !important;
+	background-image: url("../../../core/img/filetypes/folder.svg") !important;
 	filter: grayscale(1) brightness(1.5);
 }

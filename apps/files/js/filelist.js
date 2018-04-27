@@ -377,6 +377,8 @@
 			$('#app-content').off('appresized', this._onResize);
 			// HACK: this will make reload work when reused
 			this.$el.find('#dir').val('');
+			// remove summary
+			this.$el.find('tfoot tr.summary').remove();
 			this.$fileList.empty();
 		},
 
@@ -1634,7 +1636,7 @@
 			if (status === 500) {
 				// Go home
 				this.changeDirectory('/');
-				OC.Notification.show(t('files', 'This directory is unavailable, please check the logs or contact the administrator'), 
+				OC.Notification.show(t('files', 'This directory is unavailable, please check the logs or contact the administrator'),
 					{type: 'error'}
 				);
 				return false;
@@ -1645,7 +1647,7 @@
 				if (this.getCurrentDirectory() !== '/') {
 					this.changeDirectory('/');
 					// TODO: read error message from exception
-					OC.Notification.show(t('files', 'Storage is temporarily not available'), 
+					OC.Notification.show(t('files', 'Storage is temporarily not available'),
 						{type: 'error'}
 					);
 				}
@@ -1976,7 +1978,7 @@
 					.fail(function(status, result) {
 						if (status === 412) {
 							// TODO: some day here we should invoke the conflict dialog
-							OC.Notification.show(t('files', 'Could not move "{file}", target exists', 
+							OC.Notification.show(t('files', 'Could not move "{file}", target exists',
 								{file: fileName}, null, {escape: false}), {type: 'error'}
 							);
 						} else if (result != null && typeof result.message !== "undefined") {
@@ -2108,7 +2110,7 @@
 								// TODO: 409 means current folder does not exist, redirect ?
 								if (status === 404) {
 									// source not found, so remove it from the list
-									OC.Notification.show(t('files', 'Could not rename "{fileName}", it does not exist any more', 
+									OC.Notification.show(t('files', 'Could not rename "{fileName}", it does not exist any more',
 										{fileName: oldName}), {timeout: 7, type: 'error'}
 									);
 
@@ -2117,7 +2119,7 @@
 								} else if (status === 412) {
 									// target exists
 									OC.Notification.show(
-										t('files', 'The name "{targetName}" is already used in the folder "{dir}". Please choose a different name.', 
+										t('files', 'The name "{targetName}" is already used in the folder "{dir}". Please choose a different name.',
 										{
 											targetName: newName,
 											dir: self.getCurrentDirectory(),
@@ -2128,7 +2130,7 @@
 									);
 								} else {
 									// restore the item to its previous state
-									OC.Notification.show(t('files', 'Could not rename "{fileName}"', 
+									OC.Notification.show(t('files', 'Could not rename "{fileName}"',
 										{fileName: oldName}), {type: 'error'}
 									);
 								}
@@ -2213,18 +2215,18 @@
 					self.addAndFetchFileInfo(targetPath, '', {scrollTo: true}).then(function(status, data) {
 						deferred.resolve(status, data);
 					}, function() {
-						OC.Notification.show(t('files', 'Could not create file "{file}"', 
+						OC.Notification.show(t('files', 'Could not create file "{file}"',
 							{file: name}), {type: 'error'}
 						);
 					});
 				})
 				.fail(function(status) {
 					if (status === 412) {
-						OC.Notification.show(t('files', 'Could not create file "{file}" because it already exists', 
+						OC.Notification.show(t('files', 'Could not create file "{file}" because it already exists',
 							{file: name}), {type: 'error'}
 						);
 					} else {
-						OC.Notification.show(t('files', 'Could not create file "{file}"', 
+						OC.Notification.show(t('files', 'Could not create file "{file}"',
 							{file: name}), {type: 'error'}
 						);
 					}
@@ -2263,7 +2265,7 @@
 					self.addAndFetchFileInfo(targetPath, '', {scrollTo:true}).then(function(status, data) {
 						deferred.resolve(status, data);
 					}, function() {
-						OC.Notification.show(t('files', 'Could not create folder "{dir}"', 
+						OC.Notification.show(t('files', 'Could not create folder "{dir}"',
 							{dir: name}), {type: 'error'}
 						);
 					});
@@ -2274,20 +2276,20 @@
 						// add it to the list, for completeness
 						self.addAndFetchFileInfo(targetPath, '', {scrollTo:true})
 							.done(function(status, data) {
-								OC.Notification.show(t('files', 'Could not create folder "{dir}" because it already exists', 
+								OC.Notification.show(t('files', 'Could not create folder "{dir}" because it already exists',
 									{dir: name}), {type: 'error'}
 								);
 								// still consider a failure
 								deferred.reject(createStatus, data);
 							})
 							.fail(function() {
-								OC.Notification.show(t('files', 'Could not create folder "{dir}"', 
+								OC.Notification.show(t('files', 'Could not create folder "{dir}"',
 									{dir: name}), {type: 'error'}
 								);
 								deferred.reject(status);
 							});
 					} else {
-						OC.Notification.show(t('files', 'Could not create folder "{dir}"', 
+						OC.Notification.show(t('files', 'Could not create folder "{dir}"',
 							{dir: name}), {type: 'error'}
 						);
 						deferred.reject(createStatus);
@@ -2344,7 +2346,7 @@
 					deferred.resolve(status, data);
 				})
 				.fail(function(status) {
-					OC.Notification.show(t('files', 'Could not create file "{file}"', 
+					OC.Notification.show(t('files', 'Could not create file "{file}"',
 						{file: name}), {type: 'error'}
 					);
 					deferred.reject(status);
@@ -2455,7 +2457,7 @@
 							removeFromList(file);
 						} else {
 							// only reset the spinner for that one file
-							OC.Notification.show(t('files', 'Error deleting file "{fileName}".', 
+							OC.Notification.show(t('files', 'Error deleting file "{fileName}".',
 								{fileName: file}), {type: 'error'}
 							);
 							var deleteAction = self.findFileEl(file).find('.action.delete');
