@@ -137,6 +137,15 @@ pipeline:
       matrix:
         INSTALL_SERVER: true
 
+  setup-caldav-carddav-tests:
+    image: owncloudci/php:${PHP_VERSION}
+    pull: true
+    commands:
+      - bash apps/dav/tests/travis/${TEST_SUITE}/install.sh
+    when:
+      matrix:
+        CALDAV_CARDDAV_JOB: true
+
   fix-permissions:
     image: owncloudci/php:${PHP_VERSION}
     pull: true
@@ -209,6 +218,15 @@ pipeline:
     when:
       matrix:
         TEST_SUITE: selenium
+
+  caldav-carddav-tests:
+    image: owncloudci/php:${PHP_VERSION}
+    pull: true
+    commands:
+      - bash apps/dav/tests/travis/${TEST_SUITE}/script.sh
+    when:
+      matrix:
+        CALDAV_CARDDAV_JOB: true
 
   print-log:
     image: owncloudci/php:${PHP_VERSION}
@@ -442,205 +460,42 @@ matrix:
       DB_TYPE: sqlite
       FILES_EXTERNAL_TYPE: swift
 
-  # API Acceptance tests
+    # caldav test
     - PHP_VERSION: 7.1
-      TEST_SUITE: api
-      BEHAT_SUITE: apiMain
+      TEST_SUITE: caldav
       DB_TYPE: mariadb
       USE_SERVER: true
       INSTALL_SERVER: true
       CHOWN_SERVER: true
       OWNCLOUD_LOG: true
+      CALDAV_CARDDAV_JOB: true
 
+    # carddav test
     - PHP_VERSION: 7.1
-      TEST_SUITE: api
-      BEHAT_SUITE: apiCapabilities
+      TEST_SUITE: carddav
       DB_TYPE: mariadb
       USE_SERVER: true
       INSTALL_SERVER: true
       CHOWN_SERVER: true
       OWNCLOUD_LOG: true
+      CALDAV_CARDDAV_JOB: true
 
+    # caldav-old-endpoint test
     - PHP_VERSION: 7.1
-      TEST_SUITE: api
-      BEHAT_SUITE: apiFederation
+      TEST_SUITE: caldav-old-endpoint
       DB_TYPE: mariadb
       USE_SERVER: true
-      USE_FEDERATED_SERVER: true
       INSTALL_SERVER: true
       CHOWN_SERVER: true
       OWNCLOUD_LOG: true
+      CALDAV_CARDDAV_JOB: true
 
+    # carddav-old-endpoint test
     - PHP_VERSION: 7.1
-      TEST_SUITE: api
-      BEHAT_SUITE: apiProvisioning-v1
+      TEST_SUITE: carddav-old-endpoint
       DB_TYPE: mariadb
       USE_SERVER: true
       INSTALL_SERVER: true
       CHOWN_SERVER: true
       OWNCLOUD_LOG: true
-
-    - PHP_VERSION: 7.1
-      TEST_SUITE: api
-      BEHAT_SUITE: apiProvisioning-v2
-      DB_TYPE: mariadb
-      USE_SERVER: true
-      INSTALL_SERVER: true
-      CHOWN_SERVER: true
-      OWNCLOUD_LOG: true
-
-    - PHP_VERSION: 7.1
-      TEST_SUITE: api
-      BEHAT_SUITE: apiSharees
-      DB_TYPE: mariadb
-      USE_SERVER: true
-      INSTALL_SERVER: true
-      CHOWN_SERVER: true
-      OWNCLOUD_LOG: true
-
-    - PHP_VERSION: 7.1
-      TEST_SUITE: api
-      BEHAT_SUITE: apiSharing
-      DB_TYPE: mariadb
-      USE_SERVER: true
-      INSTALL_SERVER: true
-      CHOWN_SERVER: true
-      OWNCLOUD_LOG: true
-
-    - PHP_VERSION: 7.1
-      TEST_SUITE: api
-      BEHAT_SUITE: apiTrashbin
-      DB_TYPE: mariadb
-      USE_SERVER: true
-      INSTALL_SERVER: true
-      CHOWN_SERVER: true
-      OWNCLOUD_LOG: true
-
-    - PHP_VERSION: 7.1
-      TEST_SUITE: api
-      BEHAT_SUITE: apiWebdav
-      DB_TYPE: mariadb
-      USE_SERVER: true
-      INSTALL_SERVER: true
-      CHOWN_SERVER: true
-      OWNCLOUD_LOG: true
-
-  # UI Acceptance tests
-    - PHP_VERSION: 7.1
-      TEST_SUITE: selenium
-      BEHAT_SUITE: webUILogin
-      DB_TYPE: mariadb
-      USE_SERVER: true
-      INSTALL_SERVER: true
-      CHOWN_SERVER: true
-      OWNCLOUD_LOG: true
-      USE_EMAIL: true
-
-    - PHP_VERSION: 7.1
-      TEST_SUITE: selenium
-      BEHAT_SUITE: webUIFavorites
-      DB_TYPE: mariadb
-      USE_SERVER: true
-      INSTALL_SERVER: true
-      CHOWN_SERVER: true
-      OWNCLOUD_LOG: true
-
-    - PHP_VERSION: 7.1
-      TEST_SUITE: selenium
-      BEHAT_SUITE: webUIPersonalSettings
-      DB_TYPE: mariadb
-      USE_SERVER: true
-      INSTALL_SERVER: true
-      CHOWN_SERVER: true
-      OWNCLOUD_LOG: true
-
-    - PHP_VERSION: 7.1
-      TEST_SUITE: selenium
-      BEHAT_SUITE: webUIFiles
-      DB_TYPE: mariadb
-      USE_SERVER: true
-      INSTALL_SERVER: true
-      CHOWN_SERVER: true
-      OWNCLOUD_LOG: true
-
-    - PHP_VERSION: 7.1
-      TEST_SUITE: selenium
-      BEHAT_SUITE: webUIMoveFilesFolders
-      DB_TYPE: mariadb
-      USE_SERVER: true
-      INSTALL_SERVER: true
-      CHOWN_SERVER: true
-      OWNCLOUD_LOG: true
-
-    - PHP_VERSION: 7.1
-      TEST_SUITE: selenium
-      BEHAT_SUITE: webUIRenameFiles
-      DB_TYPE: mariadb
-      USE_SERVER: true
-      INSTALL_SERVER: true
-      CHOWN_SERVER: true
-      OWNCLOUD_LOG: true
-
-    - PHP_VERSION: 7.1
-      TEST_SUITE: selenium
-      BEHAT_SUITE: webUIRenameFolders
-      DB_TYPE: mariadb
-      USE_SERVER: true
-      INSTALL_SERVER: true
-      CHOWN_SERVER: true
-      OWNCLOUD_LOG: true
-
-    - PHP_VERSION: 7.1
-      TEST_SUITE: selenium
-      BEHAT_SUITE: webUITrashbin
-      DB_TYPE: mariadb
-      USE_SERVER: true
-      INSTALL_SERVER: true
-      CHOWN_SERVER: true
-      OWNCLOUD_LOG: true
-
-    - PHP_VERSION: 7.1
-      TEST_SUITE: selenium
-      BEHAT_SUITE: webUISharingInternalGroups
-      DB_TYPE: mariadb
-      USE_SERVER: true
-      INSTALL_SERVER: true
-      CHOWN_SERVER: true
-      OWNCLOUD_LOG: true
-
-    - PHP_VERSION: 7.1
-      TEST_SUITE: selenium
-      BEHAT_SUITE: webUISharingInternalUsers
-      DB_TYPE: mariadb
-      USE_SERVER: true
-      INSTALL_SERVER: true
-      CHOWN_SERVER: true
-      OWNCLOUD_LOG: true
-
-    - PHP_VERSION: 7.1
-      TEST_SUITE: selenium
-      BEHAT_SUITE: webUISharingExternal
-      DB_TYPE: mariadb
-      USE_SERVER: true
-      USE_FEDERATED_SERVER: true
-      INSTALL_SERVER: true
-      CHOWN_SERVER: true
-      OWNCLOUD_LOG: true
-
-    - PHP_VERSION: 7.1
-      TEST_SUITE: selenium
-      BEHAT_SUITE: webUIRestrictSharing
-      DB_TYPE: mariadb
-      USE_SERVER: true
-      INSTALL_SERVER: true
-      CHOWN_SERVER: true
-      OWNCLOUD_LOG: true
-
-    - PHP_VERSION: 7.1
-      TEST_SUITE: selenium
-      BEHAT_SUITE: webUIUpload
-      DB_TYPE: mariadb
-      USE_SERVER: true
-      INSTALL_SERVER: true
-      CHOWN_SERVER: true
-      OWNCLOUD_LOG: true
+      CALDAV_CARDDAV_JOB: true
