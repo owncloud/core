@@ -85,7 +85,12 @@ class MailNotifications {
 		$this->urlGenerator = $urlGenerator;
 
 		$this->replyTo = $this->user->getEMailAddress();
-		$this->senderDisplayName = $this->user->getDisplayName();
+
+		$filter = new MailNotificationFilter([
+			'senderDisplayName' => $this->user->getDisplayName(),
+		]);
+
+		$this->senderDisplayName = $filter->getSenderDisplayName();
 	}
 
 	/**

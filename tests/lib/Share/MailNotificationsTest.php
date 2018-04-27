@@ -82,7 +82,7 @@ class MailNotificationsTest extends TestCase {
 		$this->user
 				->expects($this->once())
 				->method('getDisplayName')
-				->willReturn('TestUser');
+				->willReturn('<evil>TestUser</evil>');
 
 	}
 
