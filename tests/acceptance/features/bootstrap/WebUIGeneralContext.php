@@ -32,7 +32,6 @@ use TestHelpers\AppConfigHelper;
 use TestHelpers\OcsApiHelper;
 use TestHelpers\SetupHelper;
 use TestHelpers\UploadHelper;
-use TestHelpers\UserHelper;
 
 require_once 'bootstrap.php';
 
