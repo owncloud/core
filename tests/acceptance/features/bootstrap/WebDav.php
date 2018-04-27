@@ -20,8 +20,8 @@
  */
 
 use Behat\Gherkin\Node\TableNode;
-use GuzzleHttp\Exception\BadResponseException;
 use GuzzleHttp\Client as GClient;
+use GuzzleHttp\Exception\BadResponseException;
 use GuzzleHttp\Message\ResponseInterface;
 use GuzzleHttp\Stream\StreamInterface;
 use Sabre\DAV\Client as SClient;

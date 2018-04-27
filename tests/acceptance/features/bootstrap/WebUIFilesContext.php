@@ -25,16 +25,16 @@ use Behat\Behat\Hook\Scope\BeforeScenarioScope;
 use Behat\Gherkin\Node\TableNode;
 use Behat\MinkExtension\Context\RawMinkContext;
 use GuzzleHttp\Exception\ClientException;
+use Page\FavoritesPage;
 use Page\FilesPage;
 use Page\FilesPageElement\ConflictDialog;
-use Page\FavoritesPage;
+use Page\FilesPageElement\FileRow;
 use Page\OwncloudPage;
+use Page\SharedWithYouPage;
 use Page\TrashbinPage;
 use SensioLabs\Behat\PageObjectExtension\PageObject\Exception\ElementNotFoundException;
 use TestHelpers\DeleteHelper;
 use TestHelpers\DownloadHelper;
-use Page\SharedWithYouPage;
-use Page\FilesPageElement\FileRow;
 
 require_once 'bootstrap.php';
 
