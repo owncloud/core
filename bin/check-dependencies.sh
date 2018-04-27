@@ -75,6 +75,8 @@ function check_distribution()
 function check_dependencies()
 {
   missing_dependencies=()
+  console_tick="\xE2\x9c\x94"
+  console_cross="\xE2\x9D\x8C"
 
   # Determine the correct dependencies configuration file to read in
   distro_lower=$( echo "$(get_distribution)" | tr 'A-Z ' 'a-z-' )
@@ -89,9 +91,9 @@ function check_dependencies()
     
     if dpkg -l ${pkg} 2>/dev/null | grep -E -q "^ii"  
     then
-      echo -e " \xE2\x9c\x94 ${pkg} is installed"
+      echo -e " $console_tick ${pkg} is installed"
     else
-      echo -e " \xE2\x9D\x8C ${pkg} is ${RED}not${NC} installed"
+      echo -e " $console_cross ${pkg} is ${RED}not${NC} installed"
       missing_dependencies+=(${pkg})
     fi
   done
