@@ -27,7 +27,6 @@ Feature: federated
 			| storage                | A_NUMBER       |
 			| mail_send              | 0              |
 			| uid_owner              | user0          |
-			| storage_id             | home::user0    |
 			| file_parent            | A_NUMBER       |
 			| displayname_owner      | user0          |
 			| share_with             | user1@REMOTE   |
@@ -53,7 +52,6 @@ Feature: federated
 			| storage                | A_NUMBER       |
 			| mail_send              | 0              |
 			| uid_owner              | user1          |
-			| storage_id             | home::user1    |
 			| file_parent            | A_NUMBER       |
 			| displayname_owner      | user1          |
 			| share_with             | user0@LOCAL    |
