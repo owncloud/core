@@ -39,6 +39,9 @@ function get_distribution()
   echo "${name} ${version}"
 }
 
+##
+## Retrieve and display the supported Linux distributions
+##
 function show_supported_distributions()
 {
   echo "Supported Linux Distributions:"
@@ -53,7 +56,7 @@ function show_supported_distributions()
 }
 
 ##
-## This checks if the distribution is supported
+## Check if the active distribution is supported
 ##
 function check_distribution()
 {
@@ -72,6 +75,9 @@ function check_distribution()
   fi
 }
 
+##
+## Check for and install any missing ownCloud dependencies
+##
 function check_dependencies()
 {
   missing_dependencies=()
