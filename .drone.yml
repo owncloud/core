@@ -144,7 +144,7 @@ pipeline:
       - bash apps/dav/tests/travis/${TEST_SUITE}/install.sh
     when:
       matrix:
-        CALDAV_CARDAV_JOB: true
+        CALDAV_CARDDAV_JOB: true
 
   fix-permissions:
     image: owncloudci/php:${PHP_VERSION}
@@ -226,7 +226,7 @@ pipeline:
       - bash apps/dav/tests/travis/${TEST_SUITE}/script.sh
     when:
       matrix:
-        CALDAV_CARDAV_JOB: true
+        CALDAV_CARDDAV_JOB: true
 
   print-log:
     image: owncloudci/php:${PHP_VERSION}
@@ -468,7 +468,7 @@ matrix:
       INSTALL_SERVER: true
       CHOWN_SERVER: true
       OWNCLOUD_LOG: true
-      CALDAV_CARDAV_JOB: true
+      CALDAV_CARDDAV_JOB: true
 
     # carddav test
     - PHP_VERSION: 7.1
@@ -478,7 +478,7 @@ matrix:
       INSTALL_SERVER: true
       CHOWN_SERVER: true
       OWNCLOUD_LOG: true
-      CALDAV_CARDAV_JOB: true
+      CALDAV_CARDDAV_JOB: true
 
     # caldav-old-endpoint test
     - PHP_VERSION: 7.1
@@ -488,7 +488,7 @@ matrix:
       INSTALL_SERVER: true
       CHOWN_SERVER: true
       OWNCLOUD_LOG: true
-      CALDAV_CARDAV_JOB: true
+      CALDAV_CARDDAV_JOB: true
 
     # carddav-old-endpoint test
     - PHP_VERSION: 7.1
@@ -498,4 +498,4 @@ matrix:
       INSTALL_SERVER: true
       CHOWN_SERVER: true
       OWNCLOUD_LOG: true
-      CALDAV_CARDAV_JOB: true
+      CALDAV_CARDDAV_JOB: true
