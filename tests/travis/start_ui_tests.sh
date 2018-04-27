@@ -152,6 +152,13 @@ then
 	BEHAT_FEATURE="$1"
 fi
 
+# If a feature file has been specified but no suite, then deduce the suite
+if [ -n "$BEHAT_FEATURE" ] && [ -z "$BEHAT_SUITE" ]
+then
+    FEATURE_PATH=`dirname $BEHAT_FEATURE`
+    BEHAT_SUITE=`basename $FEATURE_PATH`
+fi
+
 if [ -z "$BEHAT_YML" ]
 then
 	BEHAT_YML="tests/acceptance/config/behat.yml"
@@ -159,7 +166,11 @@ fi
 
 if [ -z "$BEHAT_SUITE" ]
 then
-	BEHAT_SUITE_OPTION=""
+	echo "ERROR: webUI tests must be run by suite."
+	echo "No suite specified. Specify a suite by either:"
+	echo "  setting the BEHAT_SUITE env variable"
+	echo "  using the --suite parameter"
+	exit 1
 else
 	BEHAT_SUITE_OPTION="--suite=$BEHAT_SUITE"
 fi
@@ -356,7 +367,19 @@ then
 	SELENIUM_PORT=4445
 fi
 
-echo "Running tests on '$BROWSER' ($BROWSER_VERSION) on $PLATFORM" | tee $TEST_LOG_FILE
+SUITE_FEATURE_TEXT="$BEHAT_SUITE"
+
+if [ -n $BEHAT_FEATURE ]
+then
+    # If running a whole feature, it will be something like login.feature
+    # If running just a single scenario, it will also have the line number
+    # like login.feature:36 - which will be parsed correctly like a "file"
+    # by basename.
+    BEHAT_FEATURE_FILE=`basename $BEHAT_FEATURE`
+    SUITE_FEATURE_TEXT="$SUITE_FEATURE_TEXT $BEHAT_FEATURE_FILE"
+fi
+
+echo "Running $SUITE_FEATURE_TEXT tests on '$BROWSER' ($BROWSER_VERSION) on $PLATFORM" | tee $TEST_LOG_FILE
 export BEHAT_PARAMS='{"extensions" : {"Behat\\MinkExtension" : {"browser_name": "'$BROWSER'", "base_url" : "'$BASE_URL'", "selenium2":{"capabilities": {"marionette":null, "browser": "'$BROWSER'", "version": "'$BROWSER_VERSION'", "platform": "'$PLATFORM'", "name": "'$TRAVIS_REPO_SLUG' - '$TRAVIS_JOB_NUMBER'", "extra_capabilities": {'$EXTRA_CAPABILITIES'}}, "wd_host":"http://'$SAUCE_USERNAME:$SAUCE_ACCESS_KEY'@'$SELENIUM_HOST':'$SELENIUM_PORT'/wd/hub"}}, "SensioLabs\\Behat\\PageObjectExtension" : {}}}'
 export IPV4_URL
 export IPV6_URL
