@@ -561,26 +561,40 @@ class EncryptionTest extends Storage {
 					$this->encryptionManager, $util, $this->logger, $this->file, null, $this->keyStore, $this->update, $this->mountManager, $this->arrayCache
 				]
 			)
-			->setMethods(['readFirstBlock', 'parseRawHeader'])
+			->setMethods(['readStorageFirstBlock', 'parseRawHeader'])
 			->getMock();
 
 		$instance->expects($this->once())->method(('parseRawHeader'))
 			->willReturn([Util::HEADER_ENCRYPTION_MODULE_KEY => 'OC_DEFAULT_MODULE']);
 
 		if ($strippedPathExists) {
-			$instance->expects($this->once())->method('readFirstBlock')
+			$instance->expects($this->once())->method('readStorageFirstBlock')
 				->with($strippedPath)->willReturn('');
-		} else {
-			$instance->expects($this->once())->method('readFirstBlock')
+			$sourceStorage->expects($this->once())
+				->method('file_exists')
+				->with($strippedPath)
+				->willReturn(true);
+		} elseif ($path !== $strippedPath) {
+			$instance->expects($this->once())->method('readStorageFirstBlock')
 				->with($path)->willReturn('');
+			$sourceStorage->expects($this->at(0))
+				->method('file_exists')
+				->with($strippedPath)
+				->willReturn(false);
+			$sourceStorage->expects($this->at(1))
+				->method('file_exists')
+				->with($path)
+				->willReturn(true);
+		} else {
+			$sourceStorage->expects($this->once())
+				->method('file_exists')
+				->with($strippedPath)
+				->willReturn(false);
+			$instance->expects($this->never())->method('readStorageFirstBlock');
 		}
 
 		$util->expects($this->once())->method('stripPartialFileExtension')
 			->with($path)->willReturn($strippedPath);
-		$sourceStorage->expects($this->once())
-			->method('file_exists')
-			->with($strippedPath)
-			->willReturn($strippedPathExists);
 
 		$this->invokePrivate($instance, 'getHeader', [$path]);
 	}
@@ -602,6 +616,7 @@ class EncryptionTest extends Storage {
 	 * @dataProvider dataTestGetHeaderAddLegacyModule
 	 */
 	public function testGetHeaderAddLegacyModule($header, $isEncrypted, $exists, $expected) {
+		$path = 'test.txt';
 		$sourceStorage = $this->getMockBuilder('\OC\Files\Storage\Storage')
 			->disableOriginalConstructor()->getMock();
 
@@ -615,6 +630,8 @@ class EncryptionTest extends Storage {
 		$util = $this->getMockBuilder('\OC\Encryption\Util')
 			->setConstructorArgs([new View(), $userManager, $this->groupManager, $this->config, $this->arrayCache])
 			->getMock();
+		$util->expects($this->any())->method('stripPartialFileExtension')
+			->willReturn($path);
 
 		$cache = $this->getMockBuilder('\OC\Files\Cache\Cache')
 			->disableOriginalConstructor()->getMock();
@@ -636,13 +653,13 @@ class EncryptionTest extends Storage {
 					$this->encryptionManager, $util, $this->logger, $this->file, null, $this->keyStore, $this->update, $this->mountManager, $this->arrayCache
 				]
 			)
-			->setMethods(['readFirstBlock', 'parseRawHeader', 'getCache'])
+			->setMethods(['readStorageFirstBlock', 'parseRawHeader', 'getCache'])
 			->getMock();
 
 		$instance->expects($this->once())->method(('parseRawHeader'))->willReturn($header);
 		$instance->expects($this->any())->method('getCache')->willReturn($cache);
 
-		$result = $this->invokePrivate($instance, 'getHeader', ['test.txt']);
+		$result = $this->invokePrivate($instance, 'getHeader', [$path]);
 		$this->assertSameSize($expected, $result);
 		foreach ($result as $key => $value) {
 			$this->assertArrayHasKey($key, $expected);

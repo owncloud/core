@@ -243,7 +243,7 @@ class Util {
 	}
 
 	/**
-	 * Remove .path extension from a file path
+	 * Remove .part extension from a file path
 	 * @param string $path Path that may identify a .part file
 	 * @return string File path without .part extension
 	 * @note this is needed for reusing keys
