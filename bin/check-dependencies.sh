@@ -7,15 +7,6 @@
 ## Author: Matthew Setter <matthew@matthewsetter.com>
 ##
 
-## Remove this.
-## Scanning the dependencies directory should be sufficient.
-SUPPORTED_DISTRIBUTIONS=( 
-"Ubuntu 18.04"
-"Ubuntu 17.10"
-"Ubuntu 16.04.4"
-"Ubuntu 16.04"
-"Ubuntu 14.04"
-)
 LOG_FILE=output.log
 
 # Console colours
@@ -24,7 +15,6 @@ GREEN='\e[0;32m'      # Red
 NC='\033[0m'          # No Color
 
 usage="$(basename "$0") [-h -s -d] -- script to install ownCloud's core dependencies
-
 where:
     -h  show this help text
     -s  show a list of distributions which this script supports
@@ -35,6 +25,8 @@ If you want to watch it during the execution of the script, perhaps because
 something's going wrong, then you should background the script and tail
 ${LOG_FILE}.
 "
+
+script_dir=$(dirname "$0")
 
 ##
 ## Determine the user's distribution
@@ -50,7 +42,13 @@ function get_distribution()
 function show_supported_distributions()
 {
   echo "Supported Linux Distributions:"
-  printf ' - %s\n' "${SUPPORTED_DISTRIBUTIONS[@]}"
+  echo 
+  for file in "${script_dir}/dependencies"/*
+  do
+    file=${file##*/}; 
+    echo "* ${file%.*}" | tr '-' ' ' 
+  done
+
   echo
 }
 
@@ -59,18 +57,12 @@ function show_supported_distributions()
 ##
 function check_distribution()
 {
-  distro=$(get_distribution)
-  is_supported=false
+  version=$(. /etc/os-release; echo "$VERSION_ID")
+  name=$(. /etc/os-release; echo "$NAME" | tr 'A-Z' 'a-z')
+  distro="${name}-${version}"
 
-  for element in "${SUPPORTED_DISTRIBUTIONS[@]}"; do
-    if [[ "$element" == "$distro" ]] 
-    then
-      is_supported=true
-      break;
-    fi
-  done
-
-  if [[ $is_supported == true ]]; then
+  if [ -f "${script_dir}/dependencies/${distro}.cfg" ] 
+  then
     echo -e "Detected allowed distribution: ${distro}. ${GREEN}Can continue${NC}."
     echo
   else
