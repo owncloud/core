@@ -153,7 +153,7 @@ OC.L10N.register(
     "Language" : "Јазик",
     "Help translate" : "Помогни во преводот",
     "You are using %s of %s (%s %%)" : "Искористено %s од %s (%s %%)",
-    "Developed by the {communityopen}ownCloud community{linkclose}, the {githubopen}source code{linkclose} is licensed under the {licenseopen}<abbr title=\"Affero General Public License\">AGPL</abbr>{linkclose}." : "Развиено од {communityopen}ownCloud {linkclose},  {githubopen}изворниот код{linkclose} е лиценциран под лиценцата{licenseopen}<abbr title=\"Affero General Public License\">AGPL</abbr>{linkclose}.",
+    "Developed by the {communityopen}ownCloud community{linkclose}, the {githubopen}source code{linkclose} is licensed under the {licenseopen}<abbr title=\"Affero General Public License\">AGPL</abbr>{linkclose}." : "Развиено од {communityopen}ownCloud{linkclose},  {githubopen}изворниот код{linkclose} е лиценциран под лиценцата {licenseopen}<abbr title=\"Affero General Public License\">AGPL</abbr>{linkclose}.",
     "Name" : "Име",
     "Username" : "Корисничко име",
     "Done" : "Готово",
