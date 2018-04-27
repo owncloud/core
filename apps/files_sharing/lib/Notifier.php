@@ -21,13 +21,14 @@
 
 namespace OCA\Files_sharing;
 
-
 use OCP\Notification\INotification;
 use OCP\Notification\INotifier;
 use OCP\Notification\IManager as INotificationManager;
 use OCP\Share\IManager as IShareManager;
 use OCP\Share\Exceptions\ShareNotFound;
 use OCP\IGroupManager;
+use OCP\IUserManager;
+use OCP\IConfig;
 use OC\L10N\L10N;
 
 class Notifier implements INotifier {
@@ -43,14 +44,22 @@ class Notifier implements INotifier {
 	/** @var IGroupManager */
 	protected $groupManager;
 
+	/** @var IUserManager */
+	protected $userManager;
+
+	/** @var IConfig */
+	protected $config;
+
 	/**
 	 * @param \OCP\L10N\IFactory $factory
 	 */
-	public function __construct(\OCP\L10N\IFactory $factory, INotificationManager $notificationManager, IShareManager $shareManager, IGroupManager $groupManager) {
+	public function __construct(\OCP\L10N\IFactory $factory, INotificationManager $notificationManager, IShareManager $shareManager, IGroupManager $groupManager, IUserManager $userManager, IConfig $config) {
 		$this->factory = $factory;
 		$this->notificationManager = $notificationManager;
 		$this->shareManager = $shareManager;
 		$this->groupManager = $groupManager;
+		$this->userManager = $userManager;
+		$this->config = $config;
 	}
 
 	/**
@@ -92,12 +101,15 @@ class Notifier implements INotifier {
 	private function format(INotification $notification, L10N $l) {
 		$params = $notification->getSubjectParameters();
 		if ($params[0] !== $params[1] && $params[1] !== null) {
+			$params[0] = $this->getUserString($params[0]);
+			$params[1] = $this->getUserString($params[1]);
 			$notification->setParsedSubject(
-				(string) $l->t('User %1$s shared "%3$s" with you (on behalf of %2$s)', $params)
+				(string) $l->t('User "%1$s" shared "%3$s" with you (on behalf of "%2$s")', $params)
 			);
 		} else {
+			$params[0] = $this->getUserString($params[0]);
 			$notification->setParsedSubject(
-				(string)$l->t('User %1$s shared "%3$s" with you', $params)
+				(string)$l->t('User "%1$s" shared "%3$s" with you', $params)
 			);
 		}
 
@@ -120,5 +132,29 @@ class Notifier implements INotifier {
 		}
 
 		return $notification;
+	}
+
+	/**
+	 * Get the user string that will be shown
+	 * @param string $uid the uid of the user
+	 * @return string
+	 */
+	private function getUserString($uid) {
+		$userObject = $this->userManager->get($uid);
+		if ($userObject === null) {
+			return $uid;
+		}
+
+		$displayname = $userObject->getDisplayName();
+
+		$additionalInfoField = $this->config->getAppValue('core', 'user_additional_info_field', '');
+		if ($additionalInfoField === 'email') {
+			$email = $userObject->getEMailAddress();
+			return "$displayname ($email)";
+		} else if ($additionalInfoField === 'id') {
+			return "$displayname ($uid)";
+		} else {
+			return $displayname;
+		}
 	}
 }

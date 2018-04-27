@@ -23,7 +23,7 @@ So that ....
 		Then user "user1" should have 2 notification
 		And the last notification of user "user1" should match these regular expressions
 			| app         | /^files_sharing$/                       |
-			| subject     | /^User user0 shared "PARENT" with you$/ |
+			| subject     | /^User "user0" shared "PARENT" with you$/ |
 			| message     | /^$/                                    |
 			| link        | /^%base_url%(\/index\.php)?\/f\/(\d+)$/ |
 			| object_type | /^local_share$/                         |
@@ -35,14 +35,14 @@ So that ....
 		Then user "user1" should have 2 notification
 		And the last notification of user "user1" should match these regular expressions
 			| app         | /^files_sharing$/                       |
-			| subject     | /^User user0 shared "PARENT" with you$/ |
+			| subject     | /^User "user0" shared "PARENT" with you$/ |
 			| message     | /^$/                                    |
 			| link        | /^%base_url%(\/index\.php)?\/f\/(\d+)$/ |
 			| object_type | /^local_share$/                         |
 		And user "user2" should have 2 notification
 		And the last notification of user "user2" should match these regular expressions
 			| app         | /^files_sharing$/                       |
-			| subject     | /^User user0 shared "PARENT" with you$/ |
+			| subject     | /^User "user0" shared "PARENT" with you$/ |
 			| message     | /^$/                                    |
 			| link        | /^%base_url%(\/index\.php)?\/f\/(\d+)$/ |
 			| object_type | /^local_share$/                         |

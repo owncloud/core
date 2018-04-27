@@ -938,9 +938,10 @@ class Share20OCS {
 		$parentDir = \dirname($share->getTarget());
 		if (!$userFolder->nodeExists($parentDir)) {
 			$parentDir = Helper::getShareFolder();
+			$pathAttempt = \OC\Files\Filesystem::normalizePath($parentDir . '/' . $share->getTarget());
+		} else {
+			$pathAttempt = \OC\Files\Filesystem::normalizePath($share->getTarget());
 		}
-
-		$pathAttempt = \OC\Files\Filesystem::normalizePath($parentDir . '/' . $share->getTarget());
 
 		$pathinfo = \pathinfo($pathAttempt);
 		$ext = (isset($pathinfo['extension'])) ? '.'.$pathinfo['extension'] : '';
@@ -952,7 +953,7 @@ class Share20OCS {
 			$i++;
 		}
 
-		$share->setTarget(\basename($pathAttempt));
+		$share->setTarget($pathAttempt);
 
 		return $share;
 	}
