@@ -26,6 +26,7 @@ use OCA\DAV\Connector\Sabre\Exception\Forbidden;
 use OCA\DAV\Connector\Sabre\File;
 use OCA\DAV\Files\ICopySource;
 use OCP\Files\ForbiddenException;
+use OCP\Lock\ILockingProvider;
 use Sabre\DAV\IFile;
 use Sabre\DAV\Server;
 use Sabre\DAV\ServerPlugin;
@@ -84,7 +85,9 @@ class CopyPlugin extends ServerPlugin {
 				$copySuccess = $sourceNode->copy($destinationNode->getFileInfo()->getPath());
 			}
 			if (!$copySuccess) {
+				$destinationNode->acquireLock(ILockingProvider::LOCK_SHARED);
 				$destinationNode->put($sourceNode->get());
+				$destinationNode->releaseLock(ILockingProvider::LOCK_SHARED);
 			}
 
 			$this->server->emit('afterBind', [$copyInfo['destination']]);
