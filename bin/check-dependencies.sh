@@ -153,12 +153,5 @@ while getopts ':hsd' option; do
 done
 shift $((OPTIND - 1))
 
-if [ $( whoami ) != "root" ]
-then
-  echo "This script needs to be run as root."
-  echo "Exiting."
-  exit 1
-else
-  check_distribution
-  check_dependencies
-fi
+check_distribution
+check_dependencies
