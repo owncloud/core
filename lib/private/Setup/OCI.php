@@ -99,7 +99,7 @@ class OCI extends AbstractDatabase {
 		                'CREATE SESSION',
 		                'CREATE TABLE',
 		                'CREATE SEQUENCE',
-		                'CREATE TRIGGER',
+		                'CREATE TRIGGER'
 		                ) AND a2.admin_option = 'YES')";
 		$stmt = \oci_parse($connection, $query);
 		if (!$stmt) {
