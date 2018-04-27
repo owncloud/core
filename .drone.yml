@@ -479,3 +479,23 @@ matrix:
       CHOWN_SERVER: true
       OWNCLOUD_LOG: true
       CALDAV_CARDAV_JOB: true
+
+    # caldav-old-endpoint test
+    - PHP_VERSION: 7.1
+      TEST_SUITE: caldav-old-endpoint
+      DB_TYPE: mariadb
+      USE_SERVER: true
+      INSTALL_SERVER: true
+      CHOWN_SERVER: true
+      OWNCLOUD_LOG: true
+      CALDAV_CARDAV_JOB: true
+
+    # carddav-old-endpoint test
+    - PHP_VERSION: 7.1
+      TEST_SUITE: carddav-old-endpoint
+      DB_TYPE: mariadb
+      USE_SERVER: true
+      INSTALL_SERVER: true
+      CHOWN_SERVER: true
+      OWNCLOUD_LOG: true
+      CALDAV_CARDAV_JOB: true
