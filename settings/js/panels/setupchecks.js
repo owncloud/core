@@ -7,9 +7,11 @@ $(document).ready(function() {
 		OC.SetupChecks.checkWellKnownUrl('/.well-known/carddav/', oc_defaults.docPlaceholderUrl, $('#postsetupchecks').data('check-wellknown') === 'true'),
 		OC.SetupChecks.checkSetup(),
 		OC.SetupChecks.checkGeneric(),
-		OC.SetupChecks.checkDataProtected()
-	).then(function (check1, check2, check3, check4, check5, check6) {
-		var messages = [].concat(check1, check2, check3, check4, check5, check6);
+		OC.SetupChecks.checkDataProtected(),
+		OC.SetupChecks.checkCliUrl($('#postsetupchecks').attr('data-cli-url')),
+		OC.SetupChecks.checkAbsoluteUrl($('#postsetupchecks').attr('data-absolute-url'))
+	).then(function (check1, check2, check3, check4, check5, check6, check7, check8) {
+		var messages = [].concat(check1, check2, check3, check4, check5, check6, check7, check8);
 		var $el = $('#postsetupchecks');
 		$el.find('.loading').addClass('hidden');
 
