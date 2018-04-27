@@ -145,6 +145,7 @@ class MDB2SchemaReader {
 	 */
 	private function loadField($table, $xml) {
 		$options = ['notnull' => false];
+		$primary = null;
 		foreach ($xml->children() as $child) {
 			/**
 			 * @var \SimpleXMLElement $child
@@ -197,7 +198,6 @@ class MDB2SchemaReader {
 					break;
 				case 'primary':
 					$primary = $this->asBool($child);
-					$options['primary'] = $primary;
 					break;
 				case 'precision':
 					$precision = (string)$child;
@@ -246,11 +246,12 @@ class MDB2SchemaReader {
 			if (!empty($options['autoincrement'])
 				&& !empty($options['notnull'])
 			) {
-				$options['primary'] = true;
+				$primary = true;
 			}
 
+
 			$table->addColumn($name, $type, $options);
-			if (!empty($options['primary']) && $options['primary']) {
+			if ($primary) {
 				$table->setPrimaryKey([$name]);
 			}
 		}
