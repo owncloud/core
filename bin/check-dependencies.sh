@@ -7,7 +7,10 @@
 ## Author: Matthew Setter <matthew@matthewsetter.com>
 ##
 
+## Remove this.
+## Scanning the dependencies directory should be sufficient.
 SUPPORTED_DISTRIBUTIONS=( 
+"Ubuntu 18.04"
 "Ubuntu 17.10"
 "Ubuntu 16.04.4"
 "Ubuntu 16.04"
