@@ -33,8 +33,8 @@ script_dir=$(dirname "$0")
 ##
 function get_distribution()
 {
-  version=$( grep -E "^VERSION_ID" /etc/os-release | awk -F'=' '{print $2}' | tr -d '"' )
-  name=$( grep -E "^NAME" /etc/os-release | awk -F'=' '{print $2}' | tr -d '"' )
+  version=$(. /etc/os-release; echo "$VERSION_ID")
+  name=$(. /etc/os-release; echo "$NAME")
 
   echo "${name} ${version}"
 }
@@ -77,8 +77,8 @@ function check_dependencies()
   missing_dependencies=()
 
   # Determine the correct dependencies configuration file to read in
-  distro_lower=$( echo $(get_distribution) | awk '{ gsub(" ", "-"); print tolower($0) }' )
-  source "bin/dependencies/${distro_lower}.cfg"
+  distro_lower=$( echo "$(get_distribution)" | tr 'A-Z ' 'a-z-' )
+  source "${script_dir}/dependencies/${distro_lower}.cfg"
 
   echo "Checking that the core dependencies have been installed."
   echo
