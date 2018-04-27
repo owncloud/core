@@ -18,8 +18,8 @@ So that those users can access the files and folders
 		And user "user1" has shared folder "/data.zip" with user "user2"
 		Then the user should see 2 notifications on the webUI with these details
 			| title                                          |
-			| User User One shared "simple-folder" with you  |
-			| User User One shared "data.zip" with you       |
+			| User "User One" shared "simple-folder" with you  |
+			| User "User One" shared "data.zip" with you       |
 
 	Scenario: Notification is gone after accepting a share
 		Given the setting "Automatically accept new incoming local user shares" in the section "Sharing" has been disabled

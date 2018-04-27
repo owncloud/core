@@ -24,10 +24,10 @@ So that those groups can access the files and folders
 		And user "user3" has shared folder "/data.zip" with group "grp1"
 		Then the user should see 2 notifications on the webUI with these details
 			| title                                            |
-			| User user3 shared "simple-folder" with you  |
-			| User user3 shared "data.zip" with you       |
+			| User "User Three" shared "simple-folder" with you  |
+			| User "User Three" shared "data.zip" with you       |
 		When the user re-logs in with username "user1" and password "1234" using the webUI
 		Then the user should see 2 notifications on the webUI with these details
 			| title                                            |
-			| User user3 shared "simple-folder" with you  |
-			| User user3 shared "data.zip" with you       |
+			| User "User Three" shared "simple-folder" with you  |
+			| User "User Three" shared "data.zip" with you       |
