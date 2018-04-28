@@ -69,7 +69,7 @@ class ListUsers extends Base {
 				'attributes',
 				'a',
 				InputOption::VALUE_IS_ARRAY|InputOption::VALUE_REQUIRED,
-				'Attributes to include from '.implode(', ', self::ATTRIBUTES),
+				'Attributes to include from '.\implode(', ', self::ATTRIBUTES),
 				['displayName']
 			)
 		;
