@@ -370,7 +370,7 @@ fi
 
 SUITE_FEATURE_TEXT="$BEHAT_SUITE"
 
-if [ -n $BEHAT_FEATURE ]
+if [ -n "$BEHAT_FEATURE" ]
 then
     # If running a whole feature, it will be something like login.feature
     # If running just a single scenario, it will also have the line number
