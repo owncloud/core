@@ -249,7 +249,6 @@ class MDB2SchemaReader {
 				$primary = true;
 			}
 
-
 			$table->addColumn($name, $type, $options);
 			if ($primary) {
 				$table->setPrimaryKey([$name]);
