@@ -375,7 +375,9 @@ then
     # If running just a single scenario, it will also have the line number
     # like login.feature:36 - which will be parsed correctly like a "file"
     # by basename.
+    echo "Seems to be a feature: $BEHAT_FEATURE :here"
     BEHAT_FEATURE_FILE=`basename $BEHAT_FEATURE`
+    echo "Got feature file: $BEHAT_FEATURE_FILE :hmmm"
     SUITE_FEATURE_TEXT="$SUITE_FEATURE_TEXT $BEHAT_FEATURE_FILE"
 fi
 
