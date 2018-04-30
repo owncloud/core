@@ -44,7 +44,7 @@ class OC_JSON{
 	public static function setContentTypeHeader($type='application/json') {
 		if (!self::$send_content_type_header) {
 			// We send json data
-			\header( 'Content-Type: '.$type . '; charset=utf-8');
+			\header('Content-Type: '.$type . '; charset=utf-8');
 			self::$send_content_type_header = true;
 		}
 	}
@@ -55,7 +55,7 @@ class OC_JSON{
 	 * @deprecated Use the AppFramework instead. It will automatically check if the app is enabled.
 	 */
 	public static function checkAppEnabled($app) {
-		if( !OC_App::isEnabled($app)) {
+		if(!OC_App::isEnabled($app)) {
 			$l = \OC::$server->getL10N('lib');
 			self::error(['data' => ['message' => $l->t('Application is not enabled'), 'error' => 'application_not_enabled']]);
 			exit();
@@ -74,7 +74,7 @@ class OC_JSON{
 		}
 
 		$twoFactorAuthManger = \OC::$server->getTwoFactorAuthManager();
-		if( !OC_User::isLoggedIn()
+		if(!OC_User::isLoggedIn()
 			|| $twoFactorAuthManger->needsSecondFactor()) {
 			$l = \OC::$server->getL10N('lib');
 			\http_response_code(\OCP\AppFramework\Http::STATUS_UNAUTHORIZED);
@@ -88,7 +88,7 @@ class OC_JSON{
 	 * @deprecated Use annotation based CSRF checks from the AppFramework instead
 	 */
 	public static function callCheck() {
-		if( !(\OC::$server->getRequest()->passesCSRFCheck())) {
+		if(!(\OC::$server->getRequest()->passesCSRFCheck())) {
 			$l = \OC::$server->getL10N('lib');
 			self::error(['data' => ['message' => $l->t('Token expired. Please reload page.'), 'error' => 'token_expired']]);
 			exit();
@@ -100,7 +100,7 @@ class OC_JSON{
 	 * @deprecated Use annotation based ACLs from the AppFramework instead
 	 */
 	public static function checkAdminUser() {
-		if( !OC_User::isAdminUser(OC_User::getUser())) {
+		if(!OC_User::isAdminUser(OC_User::getUser())) {
 			$l = \OC::$server->getL10N('lib');
 			self::error(['data' => ['message' => $l->t('Authentication error'), 'error' => 'authentication_error']]);
 			exit();
@@ -119,7 +119,6 @@ class OC_JSON{
 			exit;
 		}
 	}
-
 
 	/**
 	 * Check if the user has administration privileges, send json error msg if not

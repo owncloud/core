@@ -64,8 +64,8 @@ class User {
 	 * @deprecated 8.1.0 use method search() of \OCP\IUserManager - \OC::$server->getUserManager()
 	 * @since 5.0.0
 	 */
-	public static function getUsers( $search = '', $limit = null, $offset = null ) {
-		return \OC_User::getUsers( $search, $limit, $offset );
+	public static function getUsers($search = '', $limit = null, $offset = null) {
+		return \OC_User::getUsers($search, $limit, $offset);
 	}
 
 	/**
@@ -76,8 +76,8 @@ class User {
 	 *                   get() of \OCP\IUserManager - \OC::$server->getUserManager()
 	 * @since 5.0.0
 	 */
-	public static function getDisplayName( $user = null ) {
-		return \OC_User::getDisplayName( $user );
+	public static function getDisplayName($user = null) {
+		return \OC_User::getDisplayName($user);
 	}
 
 	/**
@@ -89,8 +89,8 @@ class User {
 	 * @deprecated 8.1.0 use method searchDisplayName() of \OCP\IUserManager - \OC::$server->getUserManager()
 	 * @since 5.0.0
 	 */
-	public static function getDisplayNames( $search = '', $limit = null, $offset = null ) {
-		return \OC_User::getDisplayNames( $search, $limit, $offset );
+	public static function getDisplayNames($search = '', $limit = null, $offset = null) {
+		return \OC_User::getDisplayNames($search, $limit, $offset);
 	}
 
 	/**
@@ -110,8 +110,8 @@ class User {
 	 * @deprecated 8.1.0 use method userExists() of \OCP\IUserManager - \OC::$server->getUserManager()
 	 * @since 5.0.0
 	 */
-	public static function userExists( $uid, $excludingBackend = null ) {
-		return \OC_User::userExists( $uid);
+	public static function userExists($uid, $excludingBackend = null) {
+		return \OC_User::userExists($uid);
 	}
 	/**
 	 * Logs the user out including all the session data
@@ -133,8 +133,8 @@ class User {
 	 * @deprecated 8.0.0 Use \OC::$server->getUserManager()->checkPassword();
 	 * @since 5.0.0
 	 */
-	public static function checkPassword( $uid, $password ) {
-		return \OC_User::checkPassword( $uid, $password );
+	public static function checkPassword($uid, $password) {
+		return \OC_User::checkPassword($uid, $password);
 	}
 
 	/**

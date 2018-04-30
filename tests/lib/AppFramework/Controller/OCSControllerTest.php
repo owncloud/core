@@ -21,7 +21,6 @@
  *
  */
 
-
 namespace Test\AppFramework\Controller;
 
 use OC\AppFramework\Http\Request;
@@ -32,9 +31,7 @@ use OCP\IConfig;
 use OCP\Security\ISecureRandom;
 use Test\TestCase;
 
-
 class ChildOCSController extends OCSController {}
-
 
 class OCSControllerTest extends TestCase {
 
@@ -61,7 +58,6 @@ class OCSControllerTest extends TestCase {
 		$this->assertEquals('false', $headers['Access-Control-Allow-Credentials']);
 		$this->assertEquals(100, $headers['Access-Control-Max-Age']);
 	}
-
 
 	public function testXML() {
 		$controller = new ChildOCSController('app', new Request(
@@ -98,7 +94,6 @@ class OCSControllerTest extends TestCase {
 		$out = $controller->buildResponse($params, 'xml')->render();
 		$this->assertEquals($expected, $out);
 	}
-
 
 	public function testXMLDataResponse() {
 		$controller = new ChildOCSController('app', new Request(

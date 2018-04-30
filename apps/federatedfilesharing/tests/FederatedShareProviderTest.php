@@ -24,7 +24,6 @@
  */
 namespace OCA\FederatedFileSharing\Tests;
 
-
 use OCA\FederatedFileSharing\AddressHandler;
 use OCA\FederatedFileSharing\FederatedShareProvider;
 use OCA\FederatedFileSharing\Notifications;
@@ -68,7 +67,6 @@ class FederatedShareProviderTest extends \Test\TestCase {
 	protected $shareManager;
 	/** @var FederatedShareProvider */
 	protected $provider;
-
 
 	public function setUp() {
 		parent::setUp();
@@ -344,7 +342,6 @@ class FederatedShareProviderTest extends \Test\TestCase {
 		$node->method('getId')->willReturn(42);
 		$node->method('getName')->willReturn('myFile');
 
-
 		$this->addressHandler->expects($this->any())->method('splitUserRemote')
 			->willReturn(['user', 'server.com']);
 
@@ -410,7 +407,6 @@ class FederatedShareProviderTest extends \Test\TestCase {
 		$node->method('getId')->willReturn(42);
 		$node->method('getName')->willReturn('myFile');
 
-
 		$this->addressHandler->expects($this->any())->method('splitUserRemote')
 			->willReturn(['user', 'server.com']);
 
@@ -466,7 +462,6 @@ class FederatedShareProviderTest extends \Test\TestCase {
 		$shares = $this->provider->getAllSharedWith('shared', null);
 		$this->assertCount(0, $shares);
 	}
-
 
 	public function testGetAllSharesByNodes() {
 		$node = $this->createMock('\OCP\Files\File');

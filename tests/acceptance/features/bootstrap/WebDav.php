@@ -675,7 +675,6 @@ trait WebDav {
 		}
 	}
 
-
 	/**
 	 * @Then the response should contain a share-types property with
 	 *
@@ -916,7 +915,6 @@ trait WebDav {
 							 <oc:filter-comments xmlns:a="DAV:" xmlns:oc="http://owncloud.org/ns" >
 									' . $properties . '
 							 </oc:filter-comments>';
-
 
 		$response = $client->request(
 			'REPORT', $this->makeSabrePathNotForFiles($path), $body
@@ -1278,7 +1276,6 @@ trait WebDav {
 		}
 	}
 
-
 	/**
 	 * @When user :user uploads file with checksum :checksum and content :content to :destination using the API
 	 * @Given user :user has uploaded file with checksum :checksum and content :content to :destination
@@ -1307,7 +1304,6 @@ trait WebDav {
 			$this->response = $e->getResponse();
 		}
 	}
-
 
 	/**
 	 * @Given file :file has been deleted for user :user
@@ -1765,7 +1761,7 @@ trait WebDav {
 				$this->getPasswordForUser($user),
 				$path
 			);
-		} catch ( Exception $e ) {
+		} catch (Exception $e) {
 			return null;
 		}
 	}

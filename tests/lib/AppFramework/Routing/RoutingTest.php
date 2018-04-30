@@ -63,7 +63,6 @@ class RoutingTest extends \Test\TestCase
 		$this->assertSimpleRoute($routes, 'folders.open', 'DELETE', '/folders/{folderId}/open', 'FoldersController', 'open', [], [], '_something');
 	}
 
-
 	/**
 	 * @expectedException \UnexpectedValueException
 	 */

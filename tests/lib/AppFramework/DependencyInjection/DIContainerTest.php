@@ -23,9 +23,7 @@
  *
  */
 
-
 namespace Test\AppFramework\DependencyInjection;
-
 
 use OC\AppFramework\Http\Request;
 
@@ -49,31 +47,25 @@ class DIContainerTest extends \Test\TestCase {
 		$this->assertTrue(isset($this->container['API']));
 	}
 
-
 	public function testProvidesRequest(){
 		$this->assertTrue(isset($this->container['Request']));
 	}
-
 
 	public function testProvidesSecurityMiddleware(){
 		$this->assertTrue(isset($this->container['SecurityMiddleware']));
 	}
 
-
 	public function testProvidesMiddlewareDispatcher(){
 		$this->assertTrue(isset($this->container['MiddlewareDispatcher']));
 	}
-
 
 	public function testProvidesAppName(){
 		$this->assertTrue(isset($this->container['AppName']));
 	}
 
-
 	public function testAppNameIsSetCorrectly(){
 		$this->assertEquals('name', $this->container['AppName']);
 	}
-
 
 	public function testMiddlewareDispatcherIncludesSecurityMiddleware(){
 		$this->container['Request'] = new Request(
@@ -86,6 +78,5 @@ class DIContainerTest extends \Test\TestCase {
 
 		$this->assertContains($security, $dispatcher->getMiddlewares());
 	}
-
 
 }

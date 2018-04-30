@@ -163,7 +163,6 @@ abstract class LockingProvider extends TestCase {
 		$this->instance->releaseLock('foo', ILockingProvider::LOCK_SHARED);
 	}
 
-
 	/**
 	 * @expectedException \OCP\Lock\LockedException
 	 */

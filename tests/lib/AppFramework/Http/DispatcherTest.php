@@ -21,7 +21,6 @@
  *
  */
 
-
 namespace Test\AppFramework\Http;
 
 use OC\AppFramework\Http;
@@ -33,7 +32,6 @@ use OCP\AppFramework\Controller;
 use OCP\AppFramework\Http\DataResponse;
 use OCP\AppFramework\Http\JSONResponse;
 use OCP\AppFramework\Http\Response;
-
 
 class TestController extends Controller {
 	/**
@@ -58,7 +56,6 @@ class TestController extends Controller {
 		return [$int, $bool, $test, $test2];
 	}
 
-
 	/**
 	 * @param int $int
 	 * @param bool $bool
@@ -73,7 +70,6 @@ class TestController extends Controller {
 	}
 
 }
-
 
 class DispatcherTest extends \Test\TestCase {
 	/** @var MiddlewareDispatcher | \PHPUnit_Framework_MockObject_MockObject */
@@ -139,7 +135,6 @@ class DispatcherTest extends \Test\TestCase {
 		$this->lastModified = new \DateTime(null, new \DateTimeZone('GMT'));
 		$this->etag = 'hi';
 	}
-
 
 	/**
 	 * @param string $out
@@ -226,7 +221,6 @@ class DispatcherTest extends \Test\TestCase {
 			->will($this->returnValue($out));
 	}
 
-
 	public function testDispatcherReturnsArrayWith2Entries() {
 		$this->setMiddlewareExpectations();
 
@@ -236,7 +230,6 @@ class DispatcherTest extends \Test\TestCase {
 		$this->assertEquals([], $response[1]);
 		$this->assertNull($response[2]);
 	}
-
 
 	public function testHeadersAndOutputAreReturned(){
 		$out = 'yo';
@@ -252,7 +245,6 @@ class DispatcherTest extends \Test\TestCase {
 		$this->assertEquals($out, $response[3]);
 	}
 
-
 	public function testExceptionCallsAfterException() {
 		$out = 'yo';
 		$httpHeaders = 'Http';
@@ -267,7 +259,6 @@ class DispatcherTest extends \Test\TestCase {
 		$this->assertEquals($out, $response[3]);
 	}
 
-
 	public function testExceptionThrowsIfCanNotBeHandledByAfterException() {
 		$out = 'yo';
 		$httpHeaders = 'Http';
@@ -279,7 +270,6 @@ class DispatcherTest extends \Test\TestCase {
 			$this->controllerMethod);
 
 	}
-
 
 	private function dispatcherPassthrough() {
 		$this->middlewareDispatcher->expects($this->once())
@@ -295,7 +285,6 @@ class DispatcherTest extends \Test\TestCase {
 				return $in;
 			}));
 	}
-
 
 	public function testControllerParametersInjected() {
 		$this->request = new Request(
@@ -322,7 +311,6 @@ class DispatcherTest extends \Test\TestCase {
 		$this->assertEquals('[3,true,4,1]', $response[3]);
 	}
 
-
 	public function testControllerParametersInjectedDefaultOverwritten() {
 		$this->request = new Request(
 			[
@@ -348,8 +336,6 @@ class DispatcherTest extends \Test\TestCase {
 
 		$this->assertEquals('[3,true,4,7]', $response[3]);
 	}
-
-
 
 	public function testResponseTransformedByUrlFormat() {
 		$this->request = new Request(
@@ -379,7 +365,6 @@ class DispatcherTest extends \Test\TestCase {
 		$this->assertEquals('{"text":[3,false,4,1]}', $response[3]);
 	}
 
-
 	public function testResponseTransformsDataResponse() {
 		$this->request = new Request(
 			[
@@ -407,7 +392,6 @@ class DispatcherTest extends \Test\TestCase {
 
 		$this->assertEquals('{"text":[3,false,4,1]}', $response[3]);
 	}
-
 
 	public function testResponseTransformedByAcceptHeader() {
 		$this->request = new Request(
@@ -437,7 +421,6 @@ class DispatcherTest extends \Test\TestCase {
 
 		$this->assertEquals('{"text":[3,false,4,1]}', $response[3]);
 	}
-
 
 	public function testResponsePrimarilyTransformedByParameterFormat() {
 		$this->request = new Request(
@@ -469,8 +452,5 @@ class DispatcherTest extends \Test\TestCase {
 
 		$this->assertEquals('{"text":[3,true,4,1]}', $response[3]);
 	}
-
-
-
 
 }

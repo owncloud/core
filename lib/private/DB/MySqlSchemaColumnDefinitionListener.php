@@ -27,7 +27,6 @@ use Doctrine\DBAL\Platforms\MySqlPlatform;
 use Doctrine\DBAL\Schema\Column;
 use Doctrine\DBAL\Types\Type;
 
-
 /**
  * Class MySqlSchemaColumnDefinitionListener
  *
@@ -66,7 +65,6 @@ class MySqlSchemaColumnDefinitionListener{
 		}
 	}
 
-	
 	/**
 	 * Given a table comment this method tries to extract a typehint for Doctrine Type, or returns
 	 * the type given as default.
@@ -110,7 +108,7 @@ class MySqlSchemaColumnDefinitionListener{
 
 		$fixed = null;
 
-		if ( ! isset($tableColumn['name'])) {
+		if (! isset($tableColumn['name'])) {
 			$tableColumn['name'] = '';
 		}
 
@@ -240,7 +238,7 @@ class MySqlSchemaColumnDefinitionListener{
 	 */
 	private function getMariaDbMysqlVersionNumber($versionString)
 	{
-		if ( !\preg_match('/^(?:5\.5\.5-)?(mariadb-)?(?P<major>\d+)\.(?P<minor>\d+)\.(?P<patch>\d+)/i', $versionString, $versionParts)) {
+		if (!\preg_match('/^(?:5\.5\.5-)?(mariadb-)?(?P<major>\d+)\.(?P<minor>\d+)\.(?P<patch>\d+)/i', $versionString, $versionParts)) {
 			throw DBALException::invalidPlatformVersionSpecified(
 				$versionString,
 				'^(?:5\.5\.5-)?(mariadb-)?<major_version>.<minor_version>.<patch_version>'

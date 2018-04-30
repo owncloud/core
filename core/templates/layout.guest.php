@@ -28,7 +28,7 @@
 		<?php include('layout.noscript.warning.php'); ?>
 		<div class="wrapper">
 			<div class="v-align">
-				<?php if ($_['bodyid'] === 'body-login' ): ?>
+				<?php if ($_['bodyid'] === 'body-login'): ?>
 					<header role="banner">
 						<div id="header">
 							<div class="logo">

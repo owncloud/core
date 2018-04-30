@@ -103,7 +103,6 @@ class CodeChecker extends BasicEmitter {
 		return $errors;
 	}
 
-
 	/**
 	 * @param string $file
 	 * @return array

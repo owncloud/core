@@ -76,9 +76,9 @@ foreach ($list as $file) {
 	}
 }
 
-if ( $error ) {
+if ($error) {
 	$filelist = '';
-	foreach ( $error as $e ) {
+	foreach ($error as $e) {
 		$filelist .= $e.', ';
 	}
 	$l = \OC::$server->getL10N('files_trashbin');

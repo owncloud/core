@@ -577,7 +577,6 @@ class UtilTest extends \Test\TestCase {
 			['notsupportscheme://host.tld:port', false],
 			['http://host.tld:this-is-no-port', false],
 
-
 			// default ports
 			['http://host.tld/some/path', 'http://host.tld:80'],
 			['http://host.tld:/some/path', 'http://host.tld:80'],

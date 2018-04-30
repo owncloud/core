@@ -38,7 +38,6 @@ use Symfony\Component\Console\Output\OutputInterface;
 */
 abstract class Base extends Command {
 
-
 	abstract protected function getMode();
 
 	/**
@@ -71,7 +70,7 @@ abstract class Base extends Command {
 	*/
 	protected function execute(InputInterface $input, OutputInterface $output) {
 		$mode = $this->getMode();
-		$this->config->setAppValue( 'core', 'backgroundjobs_mode', $mode );
+		$this->config->setAppValue('core', 'backgroundjobs_mode', $mode);
 		$output->writeln("Set mode for background jobs to '$mode'");
 	}
 }

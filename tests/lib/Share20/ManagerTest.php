@@ -227,7 +227,6 @@ class ManagerTest extends \Test\TestCase {
 			],
 		];
 
-
 		$hookListner
 			->expects($this->exactly(1))
 			->method('pre')
@@ -324,7 +323,6 @@ class ManagerTest extends \Test\TestCase {
 				],
 			],
 		];
-
 
 		$hookListner
 			->expects($this->exactly(1))
@@ -798,7 +796,6 @@ class ManagerTest extends \Test\TestCase {
 		$userFolder = $this->createMock('\OCP\Files\Folder');
 		$userFolder->method('getPath')->willReturn('myrootfolder');
 		$this->rootFolder->method('getUserFolder')->willReturn($userFolder);
-
 
 		try {
 			$this->invokePrivate($this->manager, 'generalCreateChecks', [$share]);
@@ -2181,7 +2178,6 @@ class ManagerTest extends \Test\TestCase {
 		$today = new \DateTime();
 		$shareExpired->method('getExpirationDate')->willReturn($today);
 
-
 		$node = $this->createMock('OCP\Files\Folder');
 		$node->expects($this->any())
 			->method('getId')
@@ -2845,7 +2841,6 @@ class ManagerTest extends \Test\TestCase {
 		$hookListner2 = $this->getMockBuilder('Dummy')->setMethods(['post'])->getMock();
 		\OCP\Util::connectHook('OCP\Share', 'post_update_permissions', $hookListner2, 'post');
 		$hookListner2->expects($this->never())->method('post');
-
 
 		$calledAfterUpdate = [];
 		$this->eventDispatcher->addListener('share.afterupdate',

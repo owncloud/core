@@ -151,7 +151,6 @@ class Share extends Constants {
 			throw new \OC\User\NoUserException($msg);
 		}
 
-
 		$ownerUser = $userObject->getUID();
 
 		Filesystem::initMountPoints($ownerUser);
@@ -570,7 +569,6 @@ class Share extends Constants {
 		return $linkItem;
 	}
 
-
 	/**
 	 * Get the shared items of item type owned by the current user
 	 * @param string $itemType
@@ -984,7 +982,7 @@ class Share extends Constants {
 	 */
 	public static function unshareAll($itemType, $itemSource) {
 		// Get all of the owners of shares of this item.
-		$query = \OC_DB::prepare( 'SELECT `uid_owner` from `*PREFIX*share` WHERE `item_type`=? AND `item_source`=?' );
+		$query = \OC_DB::prepare('SELECT `uid_owner` from `*PREFIX*share` WHERE `item_type`=? AND `item_source`=?');
 		$result = $query->execute([$itemType, $itemSource]);
 		$shares = [];
 		// Add each owner's shares to the array of all shares for this item.
@@ -1488,11 +1486,9 @@ class Share extends Constants {
 				$expires = null;
 			}
 
-
 			// get default expiration settings
 			$defaultSettings = Helper::getDefaultExpireSetting();
 			$expires = Helper::calculateExpireDate($defaultSettings, $item['stime'], $expires);
-
 
 			if (\is_int($expires)) {
 				$now = \time();
@@ -1898,7 +1894,7 @@ class Share extends Constants {
 				}
 			}
 			// Remove root from file source paths if retrieving own shared items
-			if (isset($uidOwner, $row['path'])  ) {
+			if (isset($uidOwner, $row['path'])) {
 				if (isset($row['parent'])) {
 					$query = \OC_DB::prepare('SELECT `file_target` FROM `*PREFIX*share` WHERE `id` = ?');
 					$parentResult = $query->execute([$row['parent']]);
@@ -1944,7 +1940,7 @@ class Share extends Constants {
 			}
 			// Add display names to result
 			$row['share_with_displayname'] = $row['share_with'];
-			if ( isset($row['share_with']) && $row['share_with'] != '' &&
+			if (isset($row['share_with']) && $row['share_with'] != '' &&
 				$row['share_type'] === self::SHARE_TYPE_USER) {
 				$row['share_with_displayname'] = \OCP\User::getDisplayName($row['share_with']);
 			} else if(isset($row['share_with']) && $row['share_with'] != '' &&
@@ -1958,7 +1954,7 @@ class Share extends Constants {
 					}
 				}
 			}
-			if ( isset($row['uid_owner']) && $row['uid_owner'] != '') {
+			if (isset($row['uid_owner']) && $row['uid_owner'] != '') {
 				$row['displayname_owner'] = \OCP\User::getDisplayName($row['uid_owner']);
 			}
 
@@ -2106,7 +2102,7 @@ class Share extends Constants {
 				// for file/folder shares we need to compare file_source, otherwise we compare item_source
 				// only group shares if they already point to the same target, otherwise the file where shared
 				// before grouping of shares was added. In this case we don't group them toi avoid confusions
-				if (( $fileSharing && $item['file_source'] === $r['file_source'] && $item['file_target'] === $r['file_target']) ||
+				if (($fileSharing && $item['file_source'] === $r['file_source'] && $item['file_target'] === $r['file_target']) ||
 					(!$fileSharing && $item['item_source'] === $r['item_source'] && $item['item_target'] === $r['item_target'])) {
 					// add the first item to the list of grouped shares
 					if (!isset($result[$key]['grouped'])) {
@@ -2335,7 +2331,6 @@ class Share extends Constants {
 
 		\OC_Hook::emit('OCP\Share', 'post_shared', $postHookData);
 
-
 		return $id ? $id : false;
 	}
 
@@ -2516,8 +2511,8 @@ class Share extends Constants {
 			return true;
 		}
 
-		if ( \OC::$server->getSession()->exists('public_link_authenticated')
-			&& \OC::$server->getSession()->get('public_link_authenticated') === (string)$linkItem['id'] ) {
+		if (\OC::$server->getSession()->exists('public_link_authenticated')
+			&& \OC::$server->getSession()->get('public_link_authenticated') === (string)$linkItem['id']) {
 			return true;
 		}
 
@@ -2572,7 +2567,6 @@ class Share extends Constants {
 		}
 		return $select;
 	}
-
 
 	/**
 	 * transform db results

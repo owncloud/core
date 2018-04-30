@@ -142,7 +142,6 @@ class CertificateControllerTest extends \Test\TestCase {
 			->with('date', new \DateTime('@1529099555'))
 			->will($this->returnValue('Valid Till as String'));
 
-
 		$expected = new DataResponse([
 			'name' => 'Name',
 			'commonName' => 'CommonName',

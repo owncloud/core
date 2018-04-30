@@ -199,7 +199,7 @@ class ScanTest extends TestCase {
 		$groups = \explode(',', $input['--groups']);
 		$user = "user";
 		$userObj = [];
-		for ($i = 1; $i <= (10 * \count($groups)); $i++ ) {
+		for ($i = 1; $i <= (10 * \count($groups)); $i++) {
 			$userObj[] = $this->createUser($user.$i);
 		}
 

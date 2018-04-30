@@ -204,7 +204,7 @@ class Manager extends PublicEmitter implements IUserManager {
 			return $this->cachedUsers->get($account->getUserId());
 		}
 
-		$user = new User($account, $this->accountMapper, $this, $this->config, null, \OC::$server->getEventDispatcher() );
+		$user = new User($account, $this->accountMapper, $this, $this->config, null, \OC::$server->getEventDispatcher());
 		if ($cacheUser) {
 			$this->cachedUsers->set($account->getUserId(), $user);
 		}
@@ -368,7 +368,6 @@ class Manager extends PublicEmitter implements IUserManager {
 					return $user === null ? false : $user;
 				}
 			}
-
 
 			return false;
 		}, ['before' => ['uid' => $uid], 'after' => ['uid' => $uid, 'password' => $password]], 'user', 'create');

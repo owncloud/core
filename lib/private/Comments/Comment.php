@@ -131,7 +131,6 @@ class Comment implements IComment {
 		return $this->data['topmostParentId'];
 	}
 
-
 	/**
 	 * sets the topmost parent ID and returns itself
 	 *
@@ -372,7 +371,7 @@ class Comment implements IComment {
 		}
 
 		foreach(['actor', 'object'] as $role) {
-			if(isset($data[$role . '_type'], $data[$role.'_id'])    ) {
+			if(isset($data[$role . '_type'], $data[$role.'_id'])) {
 				$setter = 'set' . \ucfirst($role);
 				$this->$setter($data[$role . '_type'], $data[$role . '_id']);
 			}

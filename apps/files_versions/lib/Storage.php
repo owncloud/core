@@ -101,7 +101,7 @@ class Storage {
 			$uid = User::getUser();
 		}
 		Filesystem::initMountPoints($uid);
-		if ( $uid != User::getUser() ) {
+		if ($uid != User::getUser()) {
 			$info = Filesystem::getFileInfo($filename);
 			$ownerView = new View('/'.$uid.'/files');
 			try {
@@ -205,7 +205,6 @@ class Storage {
 			$users_view->getFileInfo('files_versions/' . $filename . '.v' . $mtime);
 		}
 	}
-
 
 	/**
 	 * mark file as deleted so that we can remove the versions if the file is gone
@@ -318,7 +317,6 @@ class Storage {
 		}
 
 	}
-
 
 	public static function restoreVersion($uid, $filename, $fileToRestore, $revision) {
 		if(\OCP\Config::getSystemValue('files_versions', Storage::DEFAULTENABLED) !== true) {

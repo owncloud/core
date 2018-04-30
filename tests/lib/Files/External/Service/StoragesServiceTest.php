@@ -232,7 +232,6 @@ abstract class StoragesServiceTest extends TestCase {
 		return $storage;
 	}
 
-
 	/**
 	 * @expectedException \OCP\Files\External\NotFoundException
 	 */

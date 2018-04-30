@@ -24,7 +24,6 @@
 
 namespace OCP\AppFramework\Http;
 
-
 /**
  * Very thin wrapper class to make output testable
  * @since 8.1.0

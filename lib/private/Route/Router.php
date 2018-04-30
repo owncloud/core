@@ -396,7 +396,6 @@ class Router implements IRouter {
 		$this->setupRoutes(include_once $file, $appName);
 	}
 
-
 	/**
 	 * If a routes.php file returns an array, try to set up the application and
 	 * register the routes for the app. The application class will be chosen by

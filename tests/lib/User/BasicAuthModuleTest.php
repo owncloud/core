@@ -20,9 +20,7 @@
  *
  */
 
-
 namespace Test\User;
-
 
 use OC\User\BasicAuthModule;
 use OCP\AppFramework\Utility\ITimeFactory;
@@ -166,7 +164,6 @@ class BasicAuthModuleTest extends TestCase {
 			'user2 is not known' => [new \Exception('Invalid credentials'), 'user2'],
 		];
 	}
-
 
 	public function testTimeout() {
 

@@ -62,7 +62,6 @@ trait Trashbin {
 		);
 		$this->theHTTPStatusCodeShouldBe('200');
 
-
 		$decodedResponse = \json_decode($this->response->getBody(), true);
 
 		return $decodedResponse['data']['files'];
@@ -126,7 +125,7 @@ trait Trashbin {
 
 		$found = false;
 		foreach ($listing as $entry) {
-			if (\substr($entry['extraData'], 0, 2) === "./" ) {
+			if (\substr($entry['extraData'], 0, 2) === "./") {
 				$entry['extraData'] = \substr($entry['extraData'], 2);
 			}
 			if ($entry['extraData'] === $originalPath) {
@@ -164,7 +163,7 @@ trait Trashbin {
 		$originalPath = \trim($originalPath, '/');
 
 		foreach ($listing as $entry) {
-			if (\substr($entry['extraData'], 0, 2) === "./" ) {
+			if (\substr($entry['extraData'], 0, 2) === "./") {
 				$entry['extraData'] = \substr($entry['extraData'], 2);
 			}
 			if ($entry['extraData'] === $originalPath) {

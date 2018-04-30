@@ -22,7 +22,6 @@
 
 namespace OC\Files\Stream;
 
-
 use Icewind\Streams\Wrapper;
 use OC\Cache\CappedMemoryCache;
 
@@ -50,7 +49,6 @@ class Checksum extends Wrapper {
 	/** @var CappedMemoryCache Key is path, value is array of checksums */
 	private static $checksums;
 
-
 	public function __construct(array $algos = ['sha1', 'md5', 'adler32']) {
 
 		foreach ($algos as $algo) {
@@ -61,7 +59,6 @@ class Checksum extends Wrapper {
 			self::$checksums = new CappedMemoryCache();
 		}
 	}
-
 
 	/**
 	 * @param $source
@@ -80,7 +77,6 @@ class Checksum extends Wrapper {
 			$source, $context, 'occhecksum', self::class
 		);
 	}
-
 
 	/**
 	 * @param string $path
@@ -140,7 +136,7 @@ class Checksum extends Wrapper {
 	private function stripPartialFileExtension($path) {
 		$extension = \pathinfo($path, PATHINFO_EXTENSION);
 
-		if ( $extension === 'part') {
+		if ($extension === 'part') {
 
 			$newLength = \strlen($path) - 5; // 5 = strlen(".part")
 			$fPath = \substr($path, 0, $newLength);

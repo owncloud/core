@@ -34,7 +34,6 @@ class HomePropagator extends Propagator {
 		$this->ignoredBaseFolders = ['files_encryption'];
 	}
 
-
 	/**
 	 * @param string $internalPath
 	 * @param int $time

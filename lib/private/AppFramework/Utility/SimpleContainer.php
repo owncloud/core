@@ -40,7 +40,6 @@ use OCP\IContainer;
  */
 class SimpleContainer extends Container implements IContainer {
 
-
 	/**
 	 * @param ReflectionClass $class the class to instantiate
 	 * @return \stdClass the created class
@@ -76,7 +75,6 @@ class SimpleContainer extends Container implements IContainer {
 		}
 	}
 
-
 	/**
 	 * If a parameter is not registered in the container try to instantiate it
 	 * by using reflection to find out how to build the class
@@ -98,7 +96,6 @@ class SimpleContainer extends Container implements IContainer {
 			throw new QueryException($baseMsg . ' ' . $e->getMessage());
 		}
 	}
-
 
 	/**
 	 * @param string $name name of the service to query for

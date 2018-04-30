@@ -120,7 +120,6 @@ class Encryption extends Wrapper {
 		];
 	}
 
-
 	/**
 	 * Wraps a stream with the provided callbacks
 	 *

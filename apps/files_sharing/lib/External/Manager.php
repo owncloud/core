@@ -362,7 +362,6 @@ class Manager {
 			->where($selectQuery->expr()->eq('file_source', $query->createNamedParameter($mountPointId)));
 		$select = $selectQuery->getSQL();
 
-
 		$query->delete('federated_reshares')
 			->where($query->expr()->in('share_id', $query->createFunction('(' . $select . ')')));
 		$query->execute();

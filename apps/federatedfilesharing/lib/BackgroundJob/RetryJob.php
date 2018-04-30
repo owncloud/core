@@ -19,9 +19,7 @@
  *
  */
 
-
 namespace OCA\FederatedFileSharing\BackgroundJob;
-
 
 use OC\BackgroundJob\Job;
 use OC\BackgroundJob\JobList;

@@ -330,7 +330,6 @@ class SyncService {
 			throw new \Exception("The database returned multiple accounts for this uid: $uid");
 		}
 
-
 		// The account exists, sync
 		$account = $this->syncAccount($account, $backend);
 		if($account->getId() === null) {

@@ -51,7 +51,6 @@ class OC_Files {
 
 	const UPLOAD_MIN_LIMIT_BYTES = 1048576; // 1 MiB
 
-
 	private static $multipartBoundary = '';
 
 	/**

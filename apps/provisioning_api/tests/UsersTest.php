@@ -655,11 +655,9 @@ class UsersTest extends OriginalTest {
 			)
 			->willReturn(true);
 
-
 		$expected = new Result(null, 100);
 		$this->assertEquals($expected, $this->api->addUser());
 	}
-
 
 	public function testGetUserNotLoggedIn() {
 		$this->userSession
@@ -1120,7 +1118,6 @@ class UsersTest extends OriginalTest {
 			'0' => [ '0 B', '0'],
 		];
 	}
-
 
 	/**
 	 * @dataProvider providesQuota
@@ -1634,7 +1631,6 @@ class UsersTest extends OriginalTest {
 		$expected = new Result(['groups' => ['Group1']]);
 		$this->assertEquals($expected, $this->api->getUsersGroups(['userid' => 'UserToLookup']));
 	}
-
 
 	public function testGetUsersGroupsForSubAdminUserAndUserIsInaccessible() {
 		$loggedInUser = $this->createMock(IUser::class);

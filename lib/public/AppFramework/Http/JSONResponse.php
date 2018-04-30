@@ -45,7 +45,6 @@ class JSONResponse extends Response {
 	 */
 	protected $data;
 
-
 	/**
 	 * constructor of JSONResponse
 	 * @param array|object $data the object or array that should be transformed
@@ -57,7 +56,6 @@ class JSONResponse extends Response {
 		$this->setStatus($statusCode);
 		$this->addHeader('Content-Type', 'application/json; charset=utf-8');
 	}
-
 
 	/**
 	 * Returns the rendered json
@@ -93,7 +91,6 @@ class JSONResponse extends Response {
 
 		return $this;
 	}
-
 
 	/**
 	 * Used to get the set parameters

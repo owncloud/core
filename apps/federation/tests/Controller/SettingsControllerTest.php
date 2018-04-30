@@ -20,9 +20,7 @@
  *
  */
 
-
 namespace OCA\Federation\Tests\Controller;
-
 
 use OCA\Federation\Controller\SettingsController;
 use OCP\AppFramework\Http\DataResponse;

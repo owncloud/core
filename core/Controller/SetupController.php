@@ -96,7 +96,7 @@ class SetupController {
 	}
 
 	public function finishSetup() {
-		if( \file_exists( $this->autoConfigFile )) {
+		if(\file_exists($this->autoConfigFile)) {
 			\unlink($this->autoConfigFile);
 		}
 		\OC::$server->getIntegrityCodeChecker()->runInstanceVerification();
@@ -104,7 +104,7 @@ class SetupController {
 	}
 
 	public function loadAutoConfig($post) {
-		if( \file_exists($this->autoConfigFile)) {
+		if(\file_exists($this->autoConfigFile)) {
 			\OCP\Util::writeLog('core', 'Autoconfig file found, setting up ownCloud…', \OCP\Util::INFO);
 			$AUTOCONFIG = [];
 			include $this->autoConfigFile;

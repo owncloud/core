@@ -43,7 +43,6 @@ class StreamResponse extends Response implements ICallbackResponse {
 		$this->filePath = $filePath;
 	}
 
-
 	/**
 	 * Streams the file using readfile
 	 *

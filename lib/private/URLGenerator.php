@@ -100,10 +100,10 @@ class URLGenerator implements IURLGenerator {
 	 *
 	 * Returns a url to the given app and file.
 	 */
-	public function linkTo( $app, $file, $args = []) {
+	public function linkTo($app, $file, $args = []) {
 		$frontControllerActive = (\getenv('front_controller_active') === 'true');
 
-		if( $app != '' ) {
+		if($app != '') {
 			$app_path = \OC_App::getAppPath($app);
 			// Check if the app is in the app folder
 			if ($app_path && \file_exists($app_path . '/' . $file)) {
@@ -190,7 +190,7 @@ class URLGenerator implements IURLGenerator {
 			$file = $directory . $imageName;
 
 			if ($themeDirectory !== ''
-				&& $imagePath = $this->getImagePathOrFallback( $this->theme->getBaseDirectory() . '/' . $themeDirectory . $file)
+				&& $imagePath = $this->getImagePathOrFallback($this->theme->getBaseDirectory() . '/' . $themeDirectory . $file)
 			) {
 				return $this->theme->getWebPath() . $file;
 			}

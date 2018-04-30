@@ -194,7 +194,6 @@ class AllConfig implements \OCP\IConfig {
 		\OC::$server->getAppConfig()->deleteApp($appName);
 	}
 
-
 	/**
 	 * Set a user defined value
 	 *
@@ -420,7 +419,6 @@ class AllConfig implements \OCP\IConfig {
 				'configkey', $queryBuilder->createNamedParameter($key))
 			)
 			->andWhere($queryBuilder->expr()->isNotNull('configvalue'));
-
 
 		if ($this->connection->getDatabasePlatform() instanceof OraclePlatform) {
 			//oracle can only compare the first 4000 bytes of a CLOB column

@@ -20,9 +20,7 @@
  *
  */
 
-
 namespace OCA\FederatedFileSharing\Tests;
-
 
 use OCA\FederatedFileSharing\AddressHandler;
 use OCA\FederatedFileSharing\DiscoveryManager;
@@ -93,7 +91,6 @@ class NotificationsTest extends \Test\TestCase {
 		return $instance;
 	}
 
-
 	/**
 	 * @dataProvider dataTestSendUpdateToRemote
 	 *
@@ -141,7 +138,6 @@ class NotificationsTest extends \Test\TestCase {
 		);
 
 	}
-
 
 	public function dataTestSendUpdateToRemote() {
 		return [

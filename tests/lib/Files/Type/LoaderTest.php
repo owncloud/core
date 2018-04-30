@@ -44,7 +44,6 @@ class LoaderTest extends \Test\TestCase {
 		$deleteMimetypes->execute();
 	}
 
-
 	public function testGetMimetype() {
 		$qb = $this->db->getQueryBuilder();
 		$qb->insert('mimetypes')

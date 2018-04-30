@@ -19,9 +19,7 @@
  *
  */
 
-
 namespace OCA\DAV\Tests\unit\DAV;
-
 
 use OCA\DAV\Connector\Sabre\Directory;
 use OCA\DAV\Connector\Sabre\File;
@@ -57,7 +55,7 @@ class CopyPluginTest extends TestCase {
 		/** @var RequestInterface | \PHPUnit_Framework_MockObject_MockObject $request */
 		$this->request = $this->createMock(RequestInterface::class);
 		/** @var ResponseInterface | \PHPUnit_Framework_MockObject_MockObject $response */
-		$this->response = $this->createMock( ResponseInterface::class);
+		$this->response = $this->createMock(ResponseInterface::class);
 
 		$this->plugin->initialize($this->server);
 	}

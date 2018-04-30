@@ -519,7 +519,6 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 				);
 			}
 
-			
 		}
 	}
 

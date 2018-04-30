@@ -110,7 +110,6 @@ class ExpirationTest extends \Test\TestCase {
 		$this->assertEquals($expectedResult, $actualResult);
 	}
 
-
 	public function configData(){
 		return [
 			[ 'disabled', null, null, null],
@@ -125,7 +124,6 @@ class ExpirationTest extends \Test\TestCase {
 			[ '-3,8',  Expiration::NO_OBLIGATION, Expiration::NO_OBLIGATION, true ]
 		];
 	}
-
 
 	/**
 	 * @dataProvider configData

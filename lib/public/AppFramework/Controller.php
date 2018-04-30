@@ -37,7 +37,6 @@ use OCP\AppFramework\Http\DataResponse;
 use OCP\AppFramework\Http\Response;
 use OCP\IRequest;
 
-
 /**
  * Base class to inherit your controllers from
  * @since 6.0.0
@@ -98,7 +97,6 @@ abstract class Controller {
 		];
 	}
 
-
 	/**
 	 * Parses an HTTP accept header and returns the supported responder type
 	 * @param string $acceptHeader
@@ -123,7 +121,6 @@ abstract class Controller {
 		return 'json';
 	}
 
-
 	/**
 	 * Registers a formatter for a type
 	 * @param string $format
@@ -133,7 +130,6 @@ abstract class Controller {
 	protected function registerResponder($format, \Closure $responder) {
 		$this->responders[$format] = $responder;
 	}
-
 
 	/**
 	 * Serializes and formats a response
@@ -157,7 +153,6 @@ abstract class Controller {
 		}
 	}
 
-
 	/**
 	 * Lets you access post and get parameters by the index
 	 * @deprecated 7.0.0 write your parameters as method arguments instead
@@ -175,7 +170,6 @@ abstract class Controller {
 		return $this->request->getParam($key, $default);
 	}
 
-
 	/**
 	 * Returns all params that were received, be it from the request
 	 * (as GET or POST) or through the URL by the route
@@ -187,7 +181,6 @@ abstract class Controller {
 		return $this->request->getParams();
 	}
 
-
 	/**
 	 * Returns the method of the request
 	 * @deprecated 7.0.0 use $this->request instead
@@ -197,7 +190,6 @@ abstract class Controller {
 	public function method() {
 		return $this->request->getMethod();
 	}
-
 
 	/**
 	 * Shortcut for accessing an uploaded file through the $_FILES array
@@ -210,7 +202,6 @@ abstract class Controller {
 		return $this->request->getUploadedFile($key);
 	}
 
-
 	/**
 	 * Shortcut for getting env variables
 	 * @deprecated 7.0.0 use $this->request instead
@@ -222,7 +213,6 @@ abstract class Controller {
 		return $this->request->getEnv($key);
 	}
 
-
 	/**
 	 * Shortcut for getting cookie variables
 	 * @deprecated 7.0.0 use $this->request instead
@@ -233,7 +223,6 @@ abstract class Controller {
 	public function cookie($key) {
 		return $this->request->getCookie($key);
 	}
-
 
 	/**
 	 * Shortcut for rendering a template
@@ -258,6 +247,5 @@ abstract class Controller {
 
 		return $response;
 	}
-
 
 }

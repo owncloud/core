@@ -21,7 +21,6 @@
 
 namespace Test\User;
 
-
 use OC\User\Account;
 use OC\User\AccountMapper;
 use OC\User\AccountTermMapper;
@@ -169,7 +168,6 @@ class AccountMapperTest extends TestCase {
 		$this->assertEquals("TestFind3", \array_shift($result)->getUserId());
 		$this->assertEquals("TestFind4", \array_shift($result)->getUserId());
 	}
-
 
 	public function findUserIdsDataProvider() {
 		return [

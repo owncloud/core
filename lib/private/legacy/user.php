@@ -204,7 +204,6 @@ class OC_User {
 		return null;
 	}
 
-
 	/**
 	 * Sets user id for session and triggers emit
 	 *
@@ -302,7 +301,6 @@ class OC_User {
 		}
 		return false;
 	}
-
 
 	/**
 	 * get the user id of the user currently logged in.

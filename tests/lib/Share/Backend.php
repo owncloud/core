@@ -46,14 +46,12 @@ class Backend implements \OCP\Share_Backend {
 			$target = $itemSource;
 		}
 
-
 		$shares = \OCP\Share::getItemsSharedWithUser('test', $shareWith);
 
 		$knownTargets = [];
 		foreach ($shares as $share) {
 			$knownTargets[] = $share['item_target'];
 		}
-
 
 		if (\in_array($target, $knownTargets)) {
 			$pos = \strrpos($target, '.');

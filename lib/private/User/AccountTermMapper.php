@@ -22,7 +22,6 @@
 
 namespace OC\User;
 
-
 use OCP\AppFramework\Db\Mapper;
 use OCP\IDBConnection;
 

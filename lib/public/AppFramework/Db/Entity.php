@@ -23,7 +23,6 @@
 
 namespace OCP\AppFramework\Db;
 
-
 /**
  * @method integer getId()
  * @method void setId(integer $id)
@@ -35,7 +34,6 @@ abstract class Entity {
 
 	private $_updatedFields = [];
 	private $_fieldTypes = ['id' => 'integer'];
-
 
 	/**
 	 * Simple alternative constructor for building entities from a request
@@ -54,7 +52,6 @@ abstract class Entity {
 
 		return $instance;
 	}
-
 
 	/**
 	 * Maps the keys of the row array to the attributes
@@ -75,7 +72,6 @@ abstract class Entity {
 		return $instance;
 	}
 
-
 	/**
 	 * @return array with attribute and type
 	 * @since 7.0.0
@@ -84,7 +80,6 @@ abstract class Entity {
 		return $this->_fieldTypes;
 	}
 
-	
 	/**
 	 * Marks the entity as clean needed for setting the id after the insertion
 	 * @since 7.0.0
@@ -131,7 +126,6 @@ abstract class Entity {
 		}
 	}
 
-
 	/**
 	 * Each time a setter is called, push the part after set
 	 * into an array: for instance setId will save Id in the 
@@ -140,7 +134,7 @@ abstract class Entity {
 	 * @since 7.0.0
 	 */
 	public function __call($methodName, $args){
-		$attr = \lcfirst( \substr($methodName, 3) );
+		$attr = \lcfirst(\substr($methodName, 3));
 
 		if(\strpos($methodName, 'set') === 0){
 			$this->setter($attr, $args);
@@ -153,7 +147,6 @@ abstract class Entity {
 
 	}
 
-
 	/**
 	 * Mark am attribute as updated
 	 * @param string $attribute the name of the attribute
@@ -162,7 +155,6 @@ abstract class Entity {
 	protected function markFieldUpdated($attribute){
 		$this->_updatedFields[$attribute] = true;
 	}
-
 
 	/**
 	 * Transform a database columnname to a property 
@@ -185,7 +177,6 @@ abstract class Entity {
 		return $property;
 	}
 
-
 	/**
 	 * Transform a property to a database column name
 	 * @param string $property the name of the property
@@ -207,7 +198,6 @@ abstract class Entity {
 		return $column;
 	}
 
-
 	/**
 	 * @return array array of updated fields for update query
 	 * @since 7.0.0
@@ -215,7 +205,6 @@ abstract class Entity {
 	public function getUpdatedFields(){
 		return $this->_updatedFields;
 	}
-
 
 	/**
 	 * Adds type information for a field so that its automatically casted to
@@ -227,7 +216,6 @@ abstract class Entity {
 	protected function addType($fieldName, $type){
 		$this->_fieldTypes[$fieldName] = $type;
 	}
-
 
 	/**
 	 * Slugify the value of a given attribute

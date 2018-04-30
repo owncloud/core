@@ -19,9 +19,7 @@
  *
  */
 
-
 namespace OCA\DAV\Tests\Unit\Repair;
-
 
 use OCA\DAV\Connector\Sabre\Principal;
 use OCA\DAV\Repair\RemoveInvalidShares;

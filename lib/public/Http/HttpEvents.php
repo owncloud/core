@@ -54,7 +54,6 @@ class HttpEvents extends Event {
 		return $this->event;
 	}
 
-
 	/**
 	 * @return IRequest
 	 * @since 10.0.3

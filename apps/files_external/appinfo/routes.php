@@ -52,7 +52,6 @@ $this->create('files_external_oauth1', 'ajax/oauth1.php')
 $this->create('files_external_oauth2', 'ajax/oauth2.php')
 	->actionInclude('files_external/ajax/oauth2.php');
 
-
 $this->create('files_external_list_applicable', '/applicable')
 	->actionInclude('files_external/ajax/applicable.php');
 

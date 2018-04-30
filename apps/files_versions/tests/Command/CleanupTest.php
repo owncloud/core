@@ -20,9 +20,7 @@
  *
  */
 
-
 namespace OCA\Files_Versions\Tests\Command;
-
 
 use OC\User\Manager;
 use OCA\Files_Versions\Command\CleanUp;
@@ -55,7 +53,6 @@ class CleanupTest extends TestCase {
 		$this->userManager = $this->getMockBuilder('OC\User\Manager')
 			->disableOriginalConstructor()->getMock();
 
-
 		$this->cleanup = new CleanUp($this->rootFolder, $this->userManager);
 	}
 
@@ -69,7 +66,6 @@ class CleanupTest extends TestCase {
 			->method('nodeExists')
 			->with('/testUser/files_versions')
 			->willReturn($nodeExists);
-
 
 		if($nodeExists) {
 			$this->rootFolder->expects($this->once())
@@ -94,7 +90,6 @@ class CleanupTest extends TestCase {
 			[false]
 		];
 	}
-
 
 	/**
 	 * test delete versions from users given as parameter

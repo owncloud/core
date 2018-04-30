@@ -23,7 +23,6 @@
 
 namespace OC\User;
 
-
 use OC\DB\QueryBuilder\Literal;
 use OCP\AppFramework\Db\DoesNotExistException;
 use OCP\AppFramework\Db\Entity;

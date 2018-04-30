@@ -21,7 +21,6 @@
 
 namespace OCP;
 
-
 /**
  * Sub admin manager
  *

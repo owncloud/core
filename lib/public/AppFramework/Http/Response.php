@@ -49,13 +49,11 @@ class Response {
 		'Cache-Control' => 'no-cache, must-revalidate'
 	];
 
-
 	/**
 	 * Cookies that will be need to be constructed as header
 	 * @var array
 	 */
 	private $cookies = [];
-
 
 	/**
 	 * HTTP status code - defaults to STATUS OK
@@ -63,13 +61,11 @@ class Response {
 	 */
 	private $status = Http::STATUS_OK;
 
-
 	/**
 	 * Last modified date
 	 * @var \DateTime
 	 */
 	private $lastModified;
-
 
 	/**
 	 * ETag
@@ -79,7 +75,6 @@ class Response {
 
 	/** @var ContentSecurityPolicy|null Used Content-Security-Policy */
 	private $contentSecurityPolicy = null;
-
 
 	/**
 	 * Caches the response
@@ -115,7 +110,6 @@ class Response {
 		return $this;
 	}
 
-
 	/**
 	 * Set the specified cookies
 	 * @param array $cookies array('foo' => array('value' => 'bar', 'expire' => null))
@@ -126,7 +120,6 @@ class Response {
 		$this->cookies = $cookies;
 		return $this;
 	}
-
 
 	/**
 	 * Invalidates the specified cookie
@@ -183,7 +176,6 @@ class Response {
 		return $this;
 	}
 
-
 	/**
 	 * Set the headers
 	 * @param array $headers value header pairs
@@ -195,7 +187,6 @@ class Response {
 
 		return $this;
 	}
-
 
 	/**
 	 * Returns the set headers
@@ -223,7 +214,6 @@ class Response {
 		return \array_merge($mergeWith, $this->headers);
 	}
 
-
 	/**
 	 * By default renders no output
 	 * @return null
@@ -232,7 +222,6 @@ class Response {
 	public function render() {
 		return null;
 	}
-
 
 	/**
 	 * Set response status
@@ -267,7 +256,6 @@ class Response {
 		return $this->contentSecurityPolicy;
 	}
 
-
 	/**
 	 * Get response status
 	 * @since 6.0.0
@@ -275,7 +263,6 @@ class Response {
 	public function getStatus() {
 		return $this->status;
 	}
-
 
 	/**
 	 * Get the ETag
@@ -286,7 +273,6 @@ class Response {
 		return $this->ETag;
 	}
 
-
 	/**
 	 * Get "last modified" date
 	 * @return \DateTime RFC2822 formatted last modified date
@@ -295,7 +281,6 @@ class Response {
 	public function getLastModified() {
 		return $this->lastModified;
 	}
-
 
 	/**
 	 * Set the ETag
@@ -309,7 +294,6 @@ class Response {
 		return $this;
 	}
 
-
 	/**
 	 * Set "last modified" date
 	 * @param \DateTime $lastModified
@@ -321,6 +305,5 @@ class Response {
 
 		return $this;
 	}
-
 
 }

@@ -154,7 +154,6 @@ class Hasher implements IHasher {
 			return $this->legacyHashVerify($message, $hash, $newHash);
 		}
 
-
 		return false;
 	}
 

@@ -70,7 +70,7 @@ function handleException($e) {
 		$server->exec();
 	} else {
 		$statusCode = OC_Response::STATUS_INTERNAL_SERVER_ERROR;
-		if ($e instanceof \OC\ServiceUnavailableException ) {
+		if ($e instanceof \OC\ServiceUnavailableException) {
 			$statusCode = OC_Response::STATUS_SERVICE_UNAVAILABLE;
 		}
 		if ($e instanceof RemoteException) {

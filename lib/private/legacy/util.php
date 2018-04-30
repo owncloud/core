@@ -191,7 +191,6 @@ class OC_Util {
 
 		}, 1);
 
-
 		\OC\Files\Filesystem::addStorageWrapper('oc_encoding', function ($mountPoint, \OCP\Files\Storage $storage, \OCP\Files\Mount\IMountPoint $mount) {
 			if ($mount->getOption('encoding_compatibility', false) && !$storage->instanceOfStorage('\OCA\Files_Sharing\SharedStorage') && !$storage->isLocal()) {
 				return new \OC\Files\Storage\Wrapper\Encoding(['storage' => $storage]);
@@ -245,7 +244,6 @@ class OC_Util {
 				$readOnlyGroups = [];
 			}
 
-
 			$userGroups = \array_keys(
 				\OC::$server->getGroupManager()->getUserIdGroups($user)
 			);
@@ -255,7 +253,6 @@ class OC_Util {
 				$userGroups
 			);
 		}
-
 
 		if ($isGuest === '1' || !empty($readOnlyGroupMemberships)) {
 			\OC\Files\Filesystem::addStorageWrapper(
@@ -564,7 +561,7 @@ class OC_Util {
 
 		// core js files need separate handling
 		if ($application !== 'core' && $file !== null) {
-			self::addTranslations ( $application );
+			self::addTranslations ($application);
 		}
 		self::addExternalResource($application, $prepend, $path, "script");
 	}
@@ -641,7 +638,7 @@ class OC_Util {
 		if ($type === "style") {
 			if (!\in_array($path, self::$styles)) {
 				if ($prepend === true) {
-					\array_unshift ( self::$styles, $path );
+					\array_unshift (self::$styles, $path);
 				} else {
 					self::$styles[] = $path;
 				}
@@ -649,7 +646,7 @@ class OC_Util {
 		} elseif ($type === "script") {
 			if (!\in_array($path, self::$scripts)) {
 				if ($prepend === true) {
-					\array_unshift ( self::$scripts, $path );
+					\array_unshift (self::$scripts, $path);
 				} else {
 					self::$scripts [] = $path;
 				}
@@ -1194,7 +1191,6 @@ class OC_Util {
 		$encoded = \str_replace('%2F', '/', $encoded);
 		return $encoded;
 	}
-
 
 	public function createHtaccessTestFile(\OCP\IConfig $config) {
 		// php dev server does not support htaccess

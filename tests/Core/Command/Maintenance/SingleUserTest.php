@@ -21,7 +21,6 @@
 
 namespace Tests\Core\Command\Maintenance;
 
-
 use OC\Core\Command\Maintenance\SingleUser;
 use Test\TestCase;
 

@@ -182,7 +182,7 @@ class ShareController extends Controller {
 			}
 		} else {
 			// not authenticated ?
-			if ( ! $this->session->exists('public_link_authenticated')
+			if (! $this->session->exists('public_link_authenticated')
 				|| $this->session->get('public_link_authenticated') !== (string)$share->getId()) {
 				return false;
 			}
@@ -348,7 +348,7 @@ class ShareController extends Controller {
 		$shareTmpl['previewMaxX'] = $this->config->getSystemValue('preview_max_x', 1024);
 		$shareTmpl['previewMaxY'] = $this->config->getSystemValue('preview_max_y', 1024);
 		if ($shareTmpl['previewSupported']) {
-			$shareTmpl['previewImage'] = $this->urlGenerator->linkToRouteAbsolute( 'core_ajax_public_preview',
+			$shareTmpl['previewImage'] = $this->urlGenerator->linkToRouteAbsolute('core_ajax_public_preview',
 				['x' => 200, 'y' => 200, 'file' => $shareTmpl['directory_path'], 't' => $shareTmpl['dirToken']]);
 		} else {
 			$shareTmpl['previewImage'] = $this->urlGenerator->getAbsoluteURL($this->urlGenerator->imagePath('core', 'favicon-fb.png'));

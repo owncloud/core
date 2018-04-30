@@ -135,7 +135,6 @@ class AsyncBusTest extends TestCase {
 		$this->assertEquals('closure-self', self::$lastCommand);
 	}
 
-
 	public function testClosureThis() {
 		// clean class to prevent phpunit putting closure in $this
 		$test = new ThisClosureTest();
@@ -168,7 +167,6 @@ class AsyncBusTest extends TestCase {
 		$this->runJobs();
 		$this->assertEquals('', self::$lastCommand);
 	}
-
 
 	private function runJobs() {
 		$jobs = $this->jobList->getAll();

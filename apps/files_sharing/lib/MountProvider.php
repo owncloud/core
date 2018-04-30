@@ -59,7 +59,6 @@ class MountProvider implements IMountProvider {
 		$this->logger = $logger;
 	}
 
-
 	/**
 	 * Get all mountpoints applicable for the user and check for shares where we need to update the etags
 	 *

@@ -145,7 +145,7 @@ function component($app, $file) {
  *
  * For further information have a look at \OCP\IURLGenerator::linkTo
  */
-function link_to( $app, $file, $args = []) {
+function link_to($app, $file, $args = []) {
 	return \OC::$server->getURLGenerator()->linkTo($app, $file, $args);
 }
 
@@ -165,8 +165,8 @@ function link_to_docs($key) {
  *
  * For further information have a look at \OCP\IURLGenerator::imagePath
  */
-function image_path( $app, $image ) {
-	return \OC::$server->getURLGenerator()->imagePath( $app, $image );
+function image_path($app, $image) {
+	return \OC::$server->getURLGenerator()->imagePath($app, $image);
 }
 
 /**
@@ -174,8 +174,8 @@ function image_path( $app, $image ) {
  * @param string $mimetype mimetype
  * @return string link to the image
  */
-function mimetype_icon( $mimetype ) {
-	return \OC::$server->getMimeTypeDetector()->mimeTypeIcon( $mimetype );
+function mimetype_icon($mimetype) {
+	return \OC::$server->getMimeTypeDetector()->mimeTypeIcon($mimetype);
 }
 
 /**
@@ -184,14 +184,14 @@ function mimetype_icon( $mimetype ) {
  * @param string $path path of file
  * @return string link to the preview
  */
-function preview_icon( $path ) {
+function preview_icon($path) {
 	return \OC::$server->getURLGenerator()->linkToRoute('core_ajax_preview', ['x' => 32, 'y' => 32, 'file' => $path]);
 }
 
 /**
  * @param string $path
  */
-function publicPreview_icon ( $path, $token ) {
+function publicPreview_icon ($path, $token) {
 	return \OC::$server->getURLGenerator()->linkToRoute('core_ajax_public_preview', ['x' => 32, 'y' => 32, 'file' => $path, 't' => $token]);
 }
 
@@ -202,8 +202,8 @@ function publicPreview_icon ( $path, $token ) {
  *
  * For further information have a look at OC_Helper::humanFileSize
  */
-function human_file_size( $bytes ) {
-	return OC_Helper::humanFileSize( $bytes );
+function human_file_size($bytes) {
+	return OC_Helper::humanFileSize($bytes);
 }
 
 /**

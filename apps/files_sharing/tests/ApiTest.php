@@ -51,7 +51,6 @@ class ApiTest extends TestCase {
 	/** @var string */
 	private $subsubfolder;
 
-
 	protected function setUp() {
 		parent::setUp();
 
@@ -186,7 +185,6 @@ class ApiTest extends TestCase {
 		$result = $ocs->deleteShare($data['id']);
 		$this->assertTrue($result->succeeded());
 	}
-
 
 	function testCreateShareGroupFile() {
 		// simulate a post request
@@ -429,7 +427,6 @@ class ApiTest extends TestCase {
 		\OC::$server->getAppConfig()->setValue('core', 'shareapi_exclude_groups_list', '');
 	}
 
-
 	/**
 	 * @medium
 	 */
@@ -667,7 +664,6 @@ class ApiTest extends TestCase {
 			->setShareType(Share::SHARE_TYPE_LINK)
 			->setPermissions(1);
 		$share2 = $this->shareManager->createShare($share2);
-
 
 		$request = $this->createRequest(['path' => $this->folder, 'subfiles' => 'true']);
 		$ocs = $this->createOCS($request, self::TEST_FILES_SHARING_API_USER1);
@@ -1173,7 +1169,6 @@ class ApiTest extends TestCase {
 		$this->assertFalse($result->succeeded());
 
 		$share1 = $this->shareManager->getShareById($share1->getFullId());
-
 
 		// date shouldn't be changed
 		$this->assertEquals($dateWithinRange, $share1->getExpirationDate());

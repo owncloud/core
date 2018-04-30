@@ -145,5 +145,4 @@ class PublicCalendarRootTest extends TestCase {
 		return $calendar;
 	}
 
-
 }

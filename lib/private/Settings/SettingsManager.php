@@ -309,7 +309,6 @@ class SettingsManager implements ISettingsManager {
 		return \array_merge($this->findRegisteredPanels($type), $this->getBuiltInPanels($type));
 	}
 
-
 	/**
 	 * Searches through the currently enabled apps and returns the panels registered
 	 * @param string $type the type of panels to return

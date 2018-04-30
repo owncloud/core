@@ -20,9 +20,7 @@
  *
  */
 
-
 namespace OCA\Federation\Tests;
-
 
 use OCA\Federation\Hooks;
 use OCA\Federation\TrustedServers;

@@ -21,7 +21,6 @@
  */
 namespace OC;
 
-
 use OCP\Capabilities\ICapability;
 
 class CapabilitiesManager {

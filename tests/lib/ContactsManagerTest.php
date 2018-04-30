@@ -60,7 +60,7 @@ class ContactsManagerTest extends \Test\TestCase {
 	/**
 	 * @dataProvider searchProvider
 	 */
-	public function testSearch($search1, $search2, $expectedResult ){
+	public function testSearch($search1, $search2, $expectedResult){
 		$addressbook1 = $this->getMockBuilder('\OCP\IAddressBook')
 			->disableOriginalConstructor()
 			->getMock();
@@ -85,13 +85,11 @@ class ContactsManagerTest extends \Test\TestCase {
 			->method('getKey')
 			->willReturn('simple:2');
 
-
 		$this->cm->registerAddressBook($addressbook1);
 		$this->cm->registerAddressBook($addressbook2);
 		$result =  $this->cm->search('');
 		$this->assertEquals($expectedResult, $result);
 	}
-
 
 	public function testDeleteHavePermission(){
 		$addressbook = $this->getMockBuilder('\OCP\IAddressBook')
@@ -105,7 +103,6 @@ class ContactsManagerTest extends \Test\TestCase {
 		$addressbook->expects($this->once())
 			->method('delete')
 			->willReturn('returnMe');
-
 
 		$this->cm->registerAddressBook($addressbook);
 		$result = $this->cm->delete(1, $addressbook->getKey());

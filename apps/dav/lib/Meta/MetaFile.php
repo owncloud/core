@@ -19,9 +19,7 @@
  *
  */
 
-
 namespace OCA\DAV\Meta;
-
 
 use OC\Files\Meta\MetaFileVersionNode;
 use OCA\DAV\Files\ICopySource;

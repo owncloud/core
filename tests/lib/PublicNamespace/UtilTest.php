@@ -21,7 +21,6 @@
 
 namespace Test\PublicNamespace;
 
-
 class UtilTest extends \Test\TestCase {
 	protected function setUp() {
 		parent::setUp();

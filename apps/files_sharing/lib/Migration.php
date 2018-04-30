@@ -160,7 +160,6 @@ class Migration {
 			->orderBy('id', 'asc');
 		return $query->execute();
 
-
 		$shares = $result->fetchAll();
 		$result->closeCursor();
 
@@ -251,7 +250,6 @@ class Migration {
 				$query->update($this->table)
 					->set('uid_owner', $query->createNamedParameter($owner['owner']))
 					->set('uid_initiator', $query->createNamedParameter($owner['initiator']));
-
 
 				if ((int)$owner['type'] !== \OCP\Share::SHARE_TYPE_LINK) {
 					$query->set('parent', $query->createNamedParameter(null));

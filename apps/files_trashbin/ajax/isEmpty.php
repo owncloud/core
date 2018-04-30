@@ -30,4 +30,3 @@ $trashStatus = OCA\Files_Trashbin\Trashbin::isEmpty(OCP\User::getUser());
 
 OCP\JSON::success(["data" => ["isEmpty" => $trashStatus]]);
 
-

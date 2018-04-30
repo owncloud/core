@@ -817,7 +817,6 @@ class ManagerTest extends \Test\TestCase {
 					}
 			}));
 
-
 		$this->userManager->expects($this->any())
 			->method('searchDisplayName')
 			->with('user3')
@@ -1007,7 +1006,6 @@ class ManagerTest extends \Test\TestCase {
 			->method('usersInGroup')
 			->with('testgroup', '', 1, 1)
 			->will($this->returnValue(['user33']));
-
 
 		$this->userManager->expects($this->any())
 			->method('get')
@@ -1430,7 +1428,6 @@ class ManagerTest extends \Test\TestCase {
 			->method('usersInGroup')
 			->with('testgroup', '', 1, 1)
 			->will($this->returnValue(['user33']));
-
 
 		$this->userManager->expects($this->any())
 			->method('get')

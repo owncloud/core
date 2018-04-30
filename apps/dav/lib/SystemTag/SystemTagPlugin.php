@@ -207,7 +207,6 @@ class SystemTagPlugin extends \Sabre\DAV\ServerPlugin {
 		}
 	}
 
-
 	/**
 	 * Retrieves system tag properties
 	 *

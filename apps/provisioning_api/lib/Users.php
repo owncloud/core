@@ -65,7 +65,7 @@ class Users {
 								IGroupManager $groupManager,
 								IUserSession $userSession,
 								ILogger $logger,
-								\OC\Authentication\TwoFactorAuth\Manager $twoFactorAuthManager ) {
+								\OC\Authentication\TwoFactorAuth\Manager $twoFactorAuthManager) {
 		$this->userManager = $userManager;
 		$this->groupManager = $groupManager;
 		$this->userSession = $userSession;

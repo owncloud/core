@@ -193,7 +193,7 @@ class TransferOwnership extends Command {
 		$progress->start();
 		$self = $this;
 		$walkPath = "$this->sourceUser/files";
-		if ( \strlen($this->inputPath) > 0) {
+		if (\strlen($this->inputPath) > 0) {
 			if ($this->inputPath !== "$this->sourceUser/files") {
 				$walkPath = $this->inputPath;
 				$this->foldersExist = true;

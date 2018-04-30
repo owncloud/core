@@ -442,7 +442,7 @@ class CacheTest extends TestCase {
 	 */
 	private function verifyFiles($examples, $results) {
 		$this->assertCount(\count($examples), $results,
-			'Files found: ' . \implode(', ', \array_map(function( $f) {
+			'Files found: ' . \implode(', ', \array_map(function($f) {
 				/** @var FileInfo | ICacheEntry $f */
 				return $f->getPath();
 			}, $results)));
