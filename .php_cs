@@ -43,6 +43,8 @@ return PhpCsFixer\Config::create()
         'native_function_invocation' => true,
         '@PSR1' => true,
         'array_syntax' => ['syntax' => 'short'],
+        'combine_consecutive_issets' => true,
+        'combine_consecutive_unsets' => true,
        ])
     ->setFinder($finder)
 ;
