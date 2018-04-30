@@ -93,7 +93,7 @@ pipeline:
       - ./tests/drone/install-server.sh
       - ./tests/drone/test-phpunit.sh
     when:
-      event: [push, pull_request]
+#      event: [push, pull_request]
       matrix:
         TEST_SUITE: phpunit
 
@@ -265,11 +265,9 @@ services:
         DB_TYPE: postgres
 
   oracle:
-    image: deepdiver/docker-oracle-xe-11g
+    image: deepdiver/docker-oracle-xe-11g:2.0
     environment:
-       - ORACLE_USER=system
-       - ORACLE_PASSWORD=oracle
-       - ORACLE_DB=owncloud
+      - ORACLE_DISABLE_ASYNCH_IO=true
     when:
       matrix:
         DB_TYPE: oracle
