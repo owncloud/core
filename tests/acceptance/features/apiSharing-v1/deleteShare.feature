@@ -27,6 +27,7 @@ Feature: sharing
 
 	Scenario: orphaned shares
 		Given user "user0" has been created
+		And a new browser session for "user0" has been started
 		And user "user1" has been created
 		And user "user0" has created a folder "/common"
 		And user "user0" has created a folder "/common/sub"

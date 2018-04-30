@@ -82,6 +82,7 @@ Feature: trashbin-new-endpoint
 
 	Scenario: Trashbin can be emptied
 		Given user "user0" has been created
+		And a new browser session for "user0" has been started
 		And user "user0" has deleted file "/textfile0.txt"
 		And user "user0" has deleted file "/textfile1.txt"
 		And as "user0" the file "/textfile0.txt" should exist in trash
