@@ -141,7 +141,7 @@ pipeline:
     image: owncloudci/php:${PHP_VERSION}
     pull: true
     commands:
-      - bash apps/dav/tests/travis/${TEST_SUITE}/install.sh
+      - bash apps/dav/tests/travis/installCaldavCarddavTestEnvironment.sh
     when:
       matrix:
         CALDAV_CARDDAV_JOB: true
@@ -219,11 +219,38 @@ pipeline:
       matrix:
         TEST_SUITE: selenium
 
-  caldav-carddav-tests:
+  caldav-tests:
     image: owncloudci/php:${PHP_VERSION}
     pull: true
     commands:
-      - bash apps/dav/tests/travis/${TEST_SUITE}/script.sh
+      - bash apps/dav/tests/travis/caldav/script.sh
+    when:
+      matrix:
+        CALDAV_CARDDAV_JOB: true
+
+  carddav-tests:
+    image: owncloudci/php:${PHP_VERSION}
+    pull: true
+    commands:
+      - bash apps/dav/tests/travis/carddav/script.sh
+    when:
+      matrix:
+        CALDAV_CARDDAV_JOB: true
+
+  caldav-old-endpoint-tests:
+    image: owncloudci/php:${PHP_VERSION}
+    pull: true
+    commands:
+      - bash apps/dav/tests/travis/caldav-old-endpoint/script.sh
+    when:
+      matrix:
+        CALDAV_CARDDAV_JOB: true
+
+  carddav-old-endpoint-tests:
+    image: owncloudci/php:${PHP_VERSION}
+    pull: true
+    commands:
+      - bash apps/dav/tests/travis/carddav-old-endpoint/script.sh
     when:
       matrix:
         CALDAV_CARDDAV_JOB: true
@@ -663,39 +690,8 @@ matrix:
       CHOWN_SERVER: true
       OWNCLOUD_LOG: true
 
-    # caldav test
+  # Caldav and Carddav tests run in a single matrix entry
     - PHP_VERSION: 7.1
-      TEST_SUITE: caldav
-      DB_TYPE: mariadb
-      USE_SERVER: true
-      INSTALL_SERVER: true
-      CHOWN_SERVER: true
-      OWNCLOUD_LOG: true
-      CALDAV_CARDDAV_JOB: true
-
-    # carddav test
-    - PHP_VERSION: 7.1
-      TEST_SUITE: carddav
-      DB_TYPE: mariadb
-      USE_SERVER: true
-      INSTALL_SERVER: true
-      CHOWN_SERVER: true
-      OWNCLOUD_LOG: true
-      CALDAV_CARDDAV_JOB: true
-
-    # caldav-old-endpoint test
-    - PHP_VERSION: 7.1
-      TEST_SUITE: caldav-old-endpoint
-      DB_TYPE: mariadb
-      USE_SERVER: true
-      INSTALL_SERVER: true
-      CHOWN_SERVER: true
-      OWNCLOUD_LOG: true
-      CALDAV_CARDDAV_JOB: true
-
-    # carddav-old-endpoint test
-    - PHP_VERSION: 7.1
-      TEST_SUITE: carddav-old-endpoint
       DB_TYPE: mariadb
       USE_SERVER: true
       INSTALL_SERVER: true
