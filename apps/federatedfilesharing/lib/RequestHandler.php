@@ -443,7 +443,6 @@ class RequestHandler {
 		return \rtrim($remote, '/');
 	}
 
-
 	/**
 	 * federated share was revoked, either by the owner or the re-sharer
 	 *

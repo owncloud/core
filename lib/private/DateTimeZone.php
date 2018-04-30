@@ -22,7 +22,6 @@
 
 namespace OC;
 
-
 use OCP\IConfig;
 use OCP\IDateTimeZone;
 use OCP\ISession;

@@ -388,7 +388,6 @@ class VersioningTest extends TestCase {
 		$this->assertTrue($this->rootView->file_exists($v2Renamed));
 	}
 
-
 	public function testCopy() {
 
 		\OC\Files\Filesystem::file_put_contents("test.txt", "test file");

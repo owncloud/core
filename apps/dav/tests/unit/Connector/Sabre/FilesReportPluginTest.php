@@ -403,7 +403,6 @@ class FilesReportPluginTest extends \Test\TestCase {
 			->method('getPath')
 			->will($this->returnValue('/sub1/sub2'));
 
-
 		$subNode = $this->getMockBuilder('\OCP\Files\Folder')
 			->disableOriginalConstructor()
 			->getMock();
@@ -469,7 +468,6 @@ class FilesReportPluginTest extends \Test\TestCase {
 				['123', 'files', 0, '', ['111', '222']],
 				['456', 'files', 0, '', ['222', '333']],
 			]);
-
 
 		$rules = [
 			'systemtag' => ['123', '456'],

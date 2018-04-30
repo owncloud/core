@@ -480,8 +480,6 @@ class Share20OCS {
 			return new \OC\OCS\Result(null, 403, $e->getMessage());
 		}
 
-
-
 		$share->getNode()->unlock(\OCP\Lock\ILockingProvider::LOCK_SHARED);
 
 		$formattedShareAfterCreate = $this->formatShare($share);

@@ -22,9 +22,7 @@
  *
  */
 
-
 namespace OCA\Federation\Tests;
-
 
 use OCA\Federation\DbHandler;
 use OCA\Federation\TrustedServers;
@@ -225,7 +223,6 @@ class TrustedServersTest extends TestCase {
 			$this->trustedServers->getServers()
 		);
 	}
-
 
 	public function testIsTrustedServer() {
 		$this->dbHandler->expects($this->once())->method('serverExists')->with('url')

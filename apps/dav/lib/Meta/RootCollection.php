@@ -19,9 +19,7 @@
  *
  */
 
-
 namespace OCA\DAV\Meta;
-
 
 use OC\Files\Meta\MetaFileIdNode;
 use OCP\Files\IRootFolder;

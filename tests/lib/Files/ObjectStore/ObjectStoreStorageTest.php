@@ -21,7 +21,6 @@
 
 namespace Test\Files\ObjectStore;
 
-
 /**
  * Class ObjectStoreStorageTest
  *

@@ -189,7 +189,7 @@ class Scanner extends BasicEmitter implements IScanner {
 						$fileId = $cacheData['fileid'];
 						$data['fileid'] = $fileId;
 						// only reuse data if the file hasn't explicitly changed
-						if (isset($data['storage_mtime']) && isset($cacheData['storage_mtime']) && $data['storage_mtime'] === $cacheData['storage_mtime']) {
+						if (isset($data['storage_mtime'], $cacheData['storage_mtime']) && $data['storage_mtime'] === $cacheData['storage_mtime']) {
 							$data['mtime'] = $cacheData['mtime'];
 							if (($reuseExisting & self::REUSE_SIZE) && ($data['size'] === -1)) {
 								$data['size'] = $cacheData['size'];
@@ -211,7 +211,6 @@ class Scanner extends BasicEmitter implements IScanner {
 								$newData['checksum'] = '';
 							}
 						}
-
 
 						$data['fileid'] = $this->addToCache($file, $newData, $fileId);
 					}

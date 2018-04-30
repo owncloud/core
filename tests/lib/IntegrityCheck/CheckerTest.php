@@ -156,7 +156,6 @@ class CheckerTest extends TestCase {
 		$this->assertSame($expected, $this->checker->verifyAppSignature('SomeApp'));
 	}
 
-
 	public function testVerifyAppSignatureWithoutSignatureData() {
 		$this->environmentHelper
 				->expects($this->once())
@@ -313,7 +312,6 @@ class CheckerTest extends TestCase {
 				)
 				->will($this->returnValue(\file_get_contents(__DIR__ .'/../../data/integritycheck/root.crt')));
 
-
 		$expected = [
 			'INVALID_HASH' => [
 				'AnotherFile.txt' => [
@@ -377,7 +375,6 @@ class CheckerTest extends TestCase {
 						'/resources/codesigning/root.crt'
 				)
 				->will($this->returnValue(\file_get_contents(__DIR__ .'/../../data/integritycheck/root.crt')));
-
 
 		$expected = [
 				'INVALID_HASH' => [

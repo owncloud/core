@@ -347,7 +347,6 @@ class RepairMismatchFileCachePathTest extends TestCase {
 		$untouchedFolderId_parallel = $this->createFileCacheEntry($storageId2, 'files/untouched_folder', $baseId2);
 		// End parallel storage
 
-
 		$outputMock = $this->createMock(IOutput::class);
 		$this->repair->setStorageNumericId($storageId);
 		$this->repair->run($outputMock);
@@ -519,7 +518,6 @@ class RepairMismatchFileCachePathTest extends TestCase {
 
 		// end testing parallel storage
 	}
-
 
 	/**
 	 * Test repair wrong parent id
@@ -701,7 +699,6 @@ class RepairMismatchFileCachePathTest extends TestCase {
 		$testStorageId = 2;
 		$baseId = $this->createFileCacheEntry($testStorageId, '');
 		$noRootid = $this->createFileCacheEntry($testStorageId, 'noroot', $baseId);
-
 
 		$outputMock = $this->createMock(IOutput::class);
 		$this->repair->setStorageNumericId($storageId);

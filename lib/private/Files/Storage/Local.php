@@ -38,7 +38,6 @@ namespace OC\Files\Storage;
 
 use OCP\Files\ForbiddenException;
 
-
 /**
  * for local filestore, we only have to map the paths
  */

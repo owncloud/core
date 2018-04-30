@@ -21,7 +21,6 @@
 
 namespace OC\Repair;
 
-
 use OCP\App\IAppManager;
 use OCP\IAppConfig;
 use OCP\IConfig;

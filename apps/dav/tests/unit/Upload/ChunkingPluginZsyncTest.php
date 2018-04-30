@@ -18,7 +18,6 @@
  */
 namespace OCA\DAV\Tests\unit\Upload;
 
-
 use OCA\DAV\Upload\ChunkingPluginZsync;
 use Sabre\HTTP\RequestInterface;
 use Sabre\HTTP\ResponseInterface;

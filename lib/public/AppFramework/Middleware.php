@@ -31,7 +31,6 @@ namespace OCP\AppFramework;
 
 use OCP\AppFramework\Http\Response;
 
-
 /**
  * Middleware is used to provide hooks before or after controller methods and
  * deal with possible exceptions raised in the controller methods.
@@ -40,7 +39,6 @@ use OCP\AppFramework\Http\Response;
  * @since 6.0.0
  */
 abstract class Middleware {
-
 
 	/**
 	 * This is being run in normal order before the controller is being
@@ -54,7 +52,6 @@ abstract class Middleware {
 	public function beforeController($controller, $methodName){
 
 	}
-
 
 	/**
 	 * This is being run when either the beforeController method or the
@@ -75,7 +72,6 @@ abstract class Middleware {
 		throw $exception;
 	}
 
-
 	/**
 	 * This is being run after a successful controllermethod call and allows
 	 * the manipulation of a Response object. The middleware is run in reverse order
@@ -90,7 +86,6 @@ abstract class Middleware {
 	public function afterController($controller, $methodName, Response $response){
 		return $response;
 	}
-
 
 	/**
 	 * This is being run after the response object has been rendered and

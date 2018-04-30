@@ -21,7 +21,6 @@
 
 namespace OC\User\Sync;
 
-
 use OCP\UserInterface;
 use Test\TestCase;
 
@@ -77,11 +76,11 @@ class AllUsersIteratorTest extends TestCase {
 
 		// create pages for 1001 users (0..1000)
 		$page1 = [];
-		for ( $i=0; $i<500; $i++ ) {
+		for ($i=0; $i<500; $i++) {
 			$page1[] = "user$i";
 		}
 		$page2 = [];
-		for ( $i=500; $i<1000; $i++ ) {
+		for ($i=500; $i<1000; $i++) {
 			$page2[] = "user$i";
 		}
 		$page3 = ['user1000'];
@@ -111,7 +110,7 @@ class AllUsersIteratorTest extends TestCase {
 		$this->assertTrue($this->iterator->valid());
 		$this->assertEquals('user0', $this->iterator->current());
 		$this->assertEquals(0, $this->iterator->key());
-		for ( $i=1; $i<=1000; $i++ ) {
+		for ($i=1; $i<=1000; $i++) {
 			$this->iterator->next();
 			$this->assertTrue($this->iterator->valid());
 			$this->assertEquals("user$i", $this->iterator->current());

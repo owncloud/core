@@ -251,7 +251,6 @@ class LostController extends Controller {
 		return $this->success();
 	}
 
-
 	/**
 	 * @param string $userId
 	 * @throws \Exception

@@ -21,12 +21,10 @@
  *
  */
 
-
 namespace Test\AppFramework\Http;
 
 use OCP\AppFramework\Http;
 use OCP\AppFramework\Http\RedirectResponse;
-
 
 class RedirectResponseTest extends \Test\TestCase {
 
@@ -40,7 +38,6 @@ class RedirectResponseTest extends \Test\TestCase {
 		$this->response = new RedirectResponse('/url');
 	}
 
-
 	public function testHeaders() {
 		$headers = $this->response->getHeaders();
 		$this->assertEquals('/url', $headers['Location']);
@@ -48,10 +45,8 @@ class RedirectResponseTest extends \Test\TestCase {
 			$this->response->getStatus());
 	}
 
-
 	public function testGetRedirectUrl(){
 		$this->assertEquals('/url', $this->response->getRedirectUrl());
 	}
-
 
 }

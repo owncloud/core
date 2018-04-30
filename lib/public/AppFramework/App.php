@@ -32,7 +32,6 @@
 namespace OCP\AppFramework;
 use OC\AppFramework\Routing\RouteConfig;
 
-
 /**
  * Class App
  * @package OCP\AppFramework
@@ -42,7 +41,6 @@ use OC\AppFramework\Routing\RouteConfig;
  * @since 6.0.0
  */
 class App {
-
 
 	/**
 	 * Turns an app id into a namespace by convetion. The id is split at the
@@ -57,7 +55,6 @@ class App {
 	public static function buildAppNamespace($appId, $topNamespace='OCA\\') {
 		return \OC\AppFramework\App::buildAppNamespace($appId, $topNamespace);
 	}
-
 
 	/**
 	 * @param array $urlParams an array with variables extracted from the routes

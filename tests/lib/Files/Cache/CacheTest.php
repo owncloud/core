@@ -8,7 +8,6 @@
 
 namespace Test\Files\Cache;
 
-
 use OC\Files\Cache\Cache;
 use OC\Files\Storage\Temporary;
 use Test\TestCase;

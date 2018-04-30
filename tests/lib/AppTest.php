@@ -482,7 +482,6 @@ class AppTest extends \Test\TestCase {
 		$user1->delete();
 	}
 
-
 	private function setupAppConfigMock() {
 		$appConfig = $this->createMock(
 			'\OC\AppConfig',

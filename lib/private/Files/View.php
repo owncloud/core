@@ -43,7 +43,6 @@
  *
  */
 
-
 namespace OC\Files;
 
 use Icewind\Streams\CallbackWrapper;
@@ -104,7 +103,6 @@ class View {
 	private $logger;
 
 	private $eventDispatcher;
-
 
 	/**
 	 * @param string $root
@@ -1090,7 +1088,6 @@ class View {
 			return false;
 		}
 	}
-
 
 	/**
 	 * @param string $path

@@ -21,7 +21,6 @@
 
 namespace OC\Core\Command\Encryption;
 
-
 use OCP\Encryption\IManager;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;

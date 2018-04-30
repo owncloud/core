@@ -20,9 +20,7 @@
  *
  */
 
-
 namespace OC\User;
-
 
 use OCP\AppFramework\Utility\ITimeFactory;
 use OCP\Authentication\IAuthModule;
@@ -34,7 +32,6 @@ use OCP\IUser;
 use OCP\IUserManager;
 
 class BasicAuthModule implements IAuthModule {
-
 
 	/** @var IConfig */
 	private $config;

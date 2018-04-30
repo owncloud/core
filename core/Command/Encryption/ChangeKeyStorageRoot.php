@@ -19,7 +19,6 @@
  *
  */
 
-
 namespace OC\Core\Command\Encryption;
 
 use OC\Encryption\Keys\Storage;
@@ -167,7 +166,6 @@ class ChangeKeyStorageRoot extends Command {
 		}
 	}
 
-
 	/**
 	 * setup file system for the given user
 	 *
@@ -177,7 +175,6 @@ class ChangeKeyStorageRoot extends Command {
 		\OC_Util::tearDownFS();
 		\OC_Util::setupFS($uid);
 	}
-
 
 	/**
 	 * iterate over each user and move the keys to the new storage
@@ -190,7 +187,6 @@ class ChangeKeyStorageRoot extends Command {
 
 		$progress = new ProgressBar($output);
 		$progress->start();
-
 
 		foreach($this->userManager->getBackends() as $backend) {
 			$limit = 500;

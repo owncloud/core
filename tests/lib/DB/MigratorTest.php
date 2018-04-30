@@ -301,7 +301,6 @@ class MigratorTest extends \Test\TestCase {
 		$migrator = $this->manager->getMigrator();
 		$migrator->migrate($startSchema);
 
-
 		$this->assertTrue($startSchema->getTable($this->tableNameTmp)->hasForeignKey($fkName));
 	}
 }

@@ -134,5 +134,4 @@ class SystemPrincipalBackendTest extends TestCase {
 		$this->assertEquals([], $result);
 	}
 
-
 }

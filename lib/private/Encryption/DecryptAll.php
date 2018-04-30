@@ -23,7 +23,6 @@
  *
  */
 
-
 namespace OC\Encryption;
 
 use OC\Encryption\Exceptions\DecryptionFailedException;
@@ -275,7 +274,6 @@ class DecryptAll {
 	protected function getTimestamp() {
 		return \time();
 	}
-
 
 	/**
 	 * setup user file system

@@ -84,7 +84,6 @@ class ExcludeFileByNameFilterIteratorTest extends TestCase {
 		$this->assertEquals($expectedResult, $actualResult);
 	}
 	
-
 	/**
 	 * @dataProvider fileNameProvider
 	 * @param string $fileName

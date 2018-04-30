@@ -136,7 +136,6 @@ class GlobalStoragesServiceTest extends StoragesServiceTest {
 		$this->assertEquals($expected, $actual);
 	}
 
-
 	/**
 	 * @dataProvider storageDataProvider
 	 */

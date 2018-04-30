@@ -50,7 +50,6 @@ class Expire implements ICommand {
 		$this->fileName = $fileName;
 	}
 
-
 	public function handle() {
 		$userManager = \OC::$server->getUserManager();
 		if (!$userManager->userExists($this->user)) {

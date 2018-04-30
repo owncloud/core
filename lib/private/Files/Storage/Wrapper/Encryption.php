@@ -492,7 +492,6 @@ class Encryption extends Wrapper {
 		return $this->storage->fopen($path, $mode);
 	}
 
-
 	/**
 	 * perform some plausibility checks if the the unencrypted size is correct.
 	 * If not, we calculate the correct unencrypted size and return it

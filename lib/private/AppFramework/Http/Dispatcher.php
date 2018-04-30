@@ -24,7 +24,6 @@
  *
  */
 
-
 namespace OC\AppFramework\Http;
 
 use \OC\AppFramework\Middleware\MiddlewareDispatcher;
@@ -35,7 +34,6 @@ use OCP\AppFramework\Controller;
 use OCP\AppFramework\Http\Response;
 use OCP\AppFramework\Http\DataResponse;
 use OCP\IRequest;
-
 
 /**
  * Class to dispatch the request to the middleware dispatcher
@@ -64,7 +62,6 @@ class Dispatcher {
 		$this->reflector = $reflector;
 		$this->request = $request;
 	}
-
 
 	/**
 	 * Handles a request and calls the dispatcher on the controller
@@ -115,7 +112,6 @@ class Dispatcher {
 
 		return $out;
 	}
-
 
 	/**
 	 * Uses the reflected parameters, types and request parameters to execute

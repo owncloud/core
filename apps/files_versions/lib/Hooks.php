@@ -52,7 +52,7 @@ class Hooks {
 	/**
 	 * listen to write event.
 	 */
-	public static function write_hook( $params ) {
+	public static function write_hook($params) {
 
 		if (\OCP\App::isEnabled('files_versions')) {
 			$path = $params[\OC\Files\Filesystem::signal_param_path];
@@ -61,7 +61,6 @@ class Hooks {
 			}
 		}
 	}
-
 
 	/**
 	 * Erase versions of deleted file

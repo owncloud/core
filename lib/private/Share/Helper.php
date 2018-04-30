@@ -202,7 +202,6 @@ class Helper extends \OC\Share\Constants {
 			$defaultExpires = $creationTime + $defaultExpireSettings['expireAfterDays'] * 86400;
 		}
 
-
 		if (isset($userExpireDate)) {
 			// if the admin decided to enforce the default expire date then we only take
 			// the user defined expire date of it is before the default expire date

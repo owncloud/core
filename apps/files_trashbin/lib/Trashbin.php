@@ -201,7 +201,6 @@ class Trashbin {
 		return true;
 	}
 
-
 	/**
 	 * copy file to owners trash
 	 *
@@ -267,7 +266,6 @@ class Trashbin {
 			\OCP\Util::writeLog('files_trashbin', 'trash bin database couldn\'t be updated for the files owner', \OCP\Util::ERROR);
 		}
 	}
-
 
 	/**
 	 * move file to the trash bin

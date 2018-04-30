@@ -65,7 +65,6 @@ class ExcludeFileByNameFilterIterator extends \RecursiveFilterIterator {
 		'|/core/js/mimetypelist.js$|', // this file can be regenerated with additional entries with occ maintenance:mimetype:update-js
  	];
 
-
 	/**
 	 * @return bool
 	 */

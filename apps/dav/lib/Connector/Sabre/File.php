@@ -500,7 +500,6 @@ class File extends Node implements IFile, IFileNode {
 					/** @var \OC\Files\Storage\Storage $targetStorage */
 					list($partStorage, $partInternalPath) = $this->fileView->resolvePath($partFile);
 
-
 					$chunk_handler->file_assemble($partStorage, $partInternalPath);
 
 					if (!self::isChecksumValid($partStorage, $partInternalPath)) {
@@ -547,8 +546,7 @@ class File extends Node implements IFile, IFileNode {
 				// FIXME: should call refreshInfo but can't because $this->path is not the of the final file
 				$info = $this->fileView->getFileInfo($targetPath);
 
-
-				if (isset($partStorage) && isset($partInternalPath)) {
+				if (isset($partStorage, $partInternalPath)) {
 					$checksums = $partStorage->getMetaData($partInternalPath)['checksum'];
 				} else {
 					$checksums = $targetStorage->getMetaData($targetInternalPath)['checksum'];

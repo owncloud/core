@@ -56,7 +56,7 @@ if(!\OCP\Util::isValidFileName($name)) {
 
 $currentUser = \OC::$server->getUserSession()->getUser()->getUID();
 $currentServer = \OC::$server->getURLGenerator()->getAbsoluteURL('/');
-if (\OC\Share\Helper::isSameUserOnSameServer($owner, $remote, $currentUser, $currentServer )) {
+if (\OC\Share\Helper::isSameUserOnSameServer($owner, $remote, $currentUser, $currentServer)) {
 	\OCP\JSON::error(['data' => ['message' => $l->t('Not allowed to create a federated share with the same user server')]]);
 	exit();
 }

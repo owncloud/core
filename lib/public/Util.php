@@ -152,7 +152,7 @@ class Util {
 	 * @param int $level
 	 * @since 4.0.0
 	 */
-	public static function writeLog( $app, $message, $level ) {
+	public static function writeLog($app, $message, $level) {
 		$context = ['app' => $app];
 		\OC::$server->getLogger()->log($level, $message, $context);
 	}
@@ -165,7 +165,7 @@ class Util {
 	 * @since ....0.0 - parameter $level was added in 7.0.0
 	 * @deprecated 8.2.0 use logException of \OCP\ILogger
 	 */
-	public static function logException( $app, \Exception $ex, $level = \OCP\Util::FATAL ) {
+	public static function logException($app, \Exception $ex, $level = \OCP\Util::FATAL) {
 		\OC::$server->getLogger()->logException($ex, ['app' => $app]);
 	}
 
@@ -212,8 +212,8 @@ class Util {
 	 * @param string $file
 	 * @since 4.0.0
 	 */
-	public static function addStyle( $application, $file = null ) {
-		\OC_Util::addStyle( $application, $file );
+	public static function addStyle($application, $file = null) {
+		\OC_Util::addStyle($application, $file);
 	}
 
 	/**
@@ -222,8 +222,8 @@ class Util {
 	 * @param string $file
 	 * @since 4.0.0
 	 */
-	public static function addScript( $application, $file = null ) {
-		\OC_Util::addScript( $application, $file );
+	public static function addScript($application, $file = null) {
+		\OC_Util::addScript($application, $file);
 	}
 
 	/**
@@ -283,7 +283,7 @@ class Util {
 	 * @return string the url
 	 * @since 4.0.0 - parameter $args was added in 4.5.0
 	 */
-	public static function linkToAbsolute( $app, $file, $args = []) {
+	public static function linkToAbsolute($app, $file, $args = []) {
 		$urlGenerator = \OC::$server->getURLGenerator();
 		return $urlGenerator->getAbsoluteURL(
 			$urlGenerator->linkTo($app, $file, $args)
@@ -296,7 +296,7 @@ class Util {
 	 * @return string the url
 	 * @since 4.0.0
 	 */
-	public static function linkToRemote( $service ) {
+	public static function linkToRemote($service) {
 		$urlGenerator = \OC::$server->getURLGenerator();
 		$remoteBase = $urlGenerator->linkTo('', 'remote.php') . '/' . $service;
 		return $urlGenerator->getAbsoluteURL(
@@ -323,7 +323,7 @@ class Util {
 	 * @deprecated 8.1.0 Use \OC::$server->getURLGenerator()->linkToRoute($route, $parameters)
 	 * @since 5.0.0
 	 */
-	public static function linkToRoute( $route, $parameters = []) {
+	public static function linkToRoute($route, $parameters = []) {
 		return \OC::$server->getURLGenerator()->linkToRoute($route, $parameters);
 	}
 
@@ -337,7 +337,7 @@ class Util {
 	 * @deprecated 8.1.0 Use \OC::$server->getURLGenerator()->linkTo($app, $file, $args)
 	 * @since 4.0.0 - parameter $args was added in 4.5.0
 	 */
-	public static function linkTo( $app, $file, $args = []) {
+	public static function linkTo($app, $file, $args = []) {
 		return \OC::$server->getURLGenerator()->linkTo($app, $file, $args);
 	}
 
@@ -436,7 +436,7 @@ class Util {
 	 * @deprecated 8.1.0 Use \OC::$server->getURLGenerator()->imagePath($app, $image)
 	 * @since 4.0.0
 	 */
-	public static function imagePath( $app, $image ) {
+	public static function imagePath($app, $image) {
 		return \OC::$server->getURLGenerator()->imagePath($app, $image);
 	}
 
@@ -446,8 +446,8 @@ class Util {
 	 * @return string a human readable file size
 	 * @since 4.0.0
 	 */
-	public static function humanFileSize( $bytes ) {
-		return(\OC_Helper::humanFileSize( $bytes ));
+	public static function humanFileSize($bytes) {
+		return(\OC_Helper::humanFileSize($bytes));
 	}
 
 	/**
@@ -458,8 +458,8 @@ class Util {
 	 * Inspired by: http://www.php.net/manual/en/function.filesize.php#92418
 	 * @since 4.0.0
 	 */
-	public static function computerFileSize( $str ) {
-		return(\OC_Helper::computerFileSize( $str ));
+	public static function computerFileSize($str) {
+		return(\OC_Helper::computerFileSize($str));
 	}
 
 	/**
@@ -476,8 +476,8 @@ class Util {
 	 * TODO: write example
 	 * @since 4.0.0
 	 */
-	static public function connectHook($signalClass, $signalName, $slotClass, $slotName ) {
-		return(\OC_Hook::connect($signalClass, $signalName, $slotClass, $slotName ));
+	static public function connectHook($signalClass, $signalName, $slotClass, $slotName) {
+		return(\OC_Hook::connect($signalClass, $signalName, $slotClass, $slotName));
 	}
 
 	/**
@@ -490,8 +490,8 @@ class Util {
 	 * TODO: write example
 	 * @since 4.0.0
 	 */
-	static public function emitHook( $signalclass, $signalname, $params = []) {
-		return(\OC_Hook::emit( $signalclass, $signalname, $params ));
+	static public function emitHook($signalclass, $signalname, $params = []) {
+		return(\OC_Hook::emit($signalclass, $signalname, $params));
 	}
 
 	/**

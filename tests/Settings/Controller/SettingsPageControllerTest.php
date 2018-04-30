@@ -147,5 +147,4 @@ class SettingsPageControllerTest extends TestCase {
 		$this->assertContains('testAdminSectionID', $response->getParams()['adminNav'][0]['id']);
 	}
 
-
 }

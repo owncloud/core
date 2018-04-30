@@ -62,7 +62,6 @@ class TestDoubleFileView extends \OC\Files\View {
 	}
 }
 
-
 /**
  * @group DB
  */

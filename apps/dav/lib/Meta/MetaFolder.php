@@ -19,9 +19,7 @@
  *
  */
 
-
 namespace OCA\DAV\Meta;
-
 
 use OCP\Files\File;
 use OCP\Files\Folder;

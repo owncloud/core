@@ -111,5 +111,4 @@ class StatusCommand extends Command {
 		return $migration;
 	}
 
-
 }

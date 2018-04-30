@@ -92,7 +92,7 @@ class DAV extends Common {
 		$this->statCache = new ArrayCache();
 		$this->httpClientService = \OC::$server->getHTTPClientService();
 		$this->webDavClientService = \OC::$server->getWebDavClientService();
-		if (isset($params['host']) && isset($params['user']) && isset($params['password'])) {
+		if (isset($params['host'], $params['user'], $params['password'])) {
 			$host = $params['host'];
 			//remove leading http[s], will be generated in createBaseUri()
 			if (\substr($host, 0, 8) == "https://") $host = \substr($host, 8);

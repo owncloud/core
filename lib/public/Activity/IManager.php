@@ -204,7 +204,6 @@ interface IManager {
 	 */
 	public function getQueryForFilter($filter);
 
-
 	/**
 	 * Set the user we need to use
 	 *

@@ -19,9 +19,7 @@
  *
  */
 
-
 namespace Tests\Core\Command\Encryption;
-
 
 use OC\Core\Command\Encryption\ChangeKeyStorageRoot;
 use OC\Encryption\Util;
@@ -263,7 +261,6 @@ class ChangeKeyStorageRootTest extends TestCase {
 		];
 	}
 
-
 	public function testMoveUserKeys() {
 
 		$changeKeyStorageRoot = $this->getMockBuilder('OC\Core\Command\Encryption\ChangeKeyStorageRoot')
@@ -340,7 +337,6 @@ class ChangeKeyStorageRootTest extends TestCase {
 			[false, false, false, false]
 		];
 	}
-
 
 	/**
 	 * @dataProvider dataTestPrepareParentFolder

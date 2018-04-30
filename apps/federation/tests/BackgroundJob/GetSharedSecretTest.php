@@ -21,9 +21,7 @@
  *
  */
 
-
 namespace OCA\Federation\Tests\BackgroundJob;
-
 
 use OCA\Federation\BackgroundJob\GetSharedSecret;
 use OCA\Federation\DbHandler;

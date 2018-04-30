@@ -22,7 +22,6 @@
 
 namespace OCA\Comments\Dav;
 
-
 use OCP\Comments\IComment;
 use OCP\Comments\ICommentsManager;
 use OCP\Comments\MessageTooLongException;
@@ -118,7 +117,7 @@ class CommentNode implements \Sabre\DAV\INode, \Sabre\DAV\IProperties {
 
 	protected function checkWriteAccessOnComment() {
 		$user = $this->userSession->getUser();
-		if(    $this->comment->getActorType() !== 'users'
+		if($this->comment->getActorType() !== 'users'
 			|| \is_null($user)
 			|| $this->comment->getActorId() !== $user->getUID()
 		) {

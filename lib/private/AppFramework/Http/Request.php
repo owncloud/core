@@ -445,7 +445,6 @@ class Request implements \ArrayAccess, \Countable, IRequest {
 		$this->contentDecoded = true;
 	}
 
-
 	/**
 	 * Checks if the CSRF check was correct
 	 * @return bool true if CSRF check passed
@@ -759,7 +758,6 @@ class Request implements \ArrayAccess, \Countable, IRequest {
 		}
 		return $host;
 	}
-
 
 	/**
 	 * Returns the server host from the headers, or the first configured

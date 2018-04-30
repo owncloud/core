@@ -20,8 +20,6 @@
  *
  */
 
-
-
 namespace Test\AppFramework\Middleware\Security;
 
 use OC\AppFramework\Http;
@@ -50,7 +48,6 @@ use OCP\IRequest;
 use OCP\IURLGenerator;
 use OCP\INavigationManager;
 use OCP\ILogger;
-
 
 class SecurityMiddlewareTest extends TestCase {
 
@@ -128,7 +125,6 @@ class SecurityMiddlewareTest extends TestCase {
 		);
 	}
 
-
 	/**
 	 * @PublicPage
 	 * @NoCSRFRequired
@@ -143,7 +139,6 @@ class SecurityMiddlewareTest extends TestCase {
 		$this->reader->reflect(__CLASS__, __FUNCTION__);
 		$this->middleware->beforeController(__CLASS__, __FUNCTION__);
 	}
-
 
 	/**
 	 * @param string $method
@@ -242,7 +237,6 @@ class SecurityMiddlewareTest extends TestCase {
 		);
 	}
 
-
 	/**
 	 * @PublicPage
 	 * @NoCSRFRequired
@@ -259,7 +253,6 @@ class SecurityMiddlewareTest extends TestCase {
 		$this->reader->reflect(__CLASS__, __FUNCTION__);
 		$sec->beforeController(__CLASS__, __FUNCTION__);
 	}
-
 
 	/**
 	 * @param string $method
@@ -290,7 +283,6 @@ class SecurityMiddlewareTest extends TestCase {
 		$sec->beforeController(__CLASS__, $method);
 	}
 
-
 	/**
 	 * @PublicPage
 	 * @expectedException \OC\AppFramework\Middleware\Security\Exceptions\CrossSiteRequestForgeryException
@@ -305,7 +297,6 @@ class SecurityMiddlewareTest extends TestCase {
 		$this->reader->reflect(__CLASS__, __FUNCTION__);
 		$this->middleware->beforeController(__CLASS__, __FUNCTION__);
 	}
-
 
 	/**
 	 * @PublicPage
@@ -322,7 +313,6 @@ class SecurityMiddlewareTest extends TestCase {
 		$this->middleware->beforeController(__CLASS__, __FUNCTION__);
 	}
 
-
 	/**
 	 * @PublicPage
 	 * @throws SecurityException
@@ -337,7 +327,6 @@ class SecurityMiddlewareTest extends TestCase {
 		$this->middleware->beforeController(__CLASS__, __FUNCTION__);
 	}
 
-
 	/**
 	 * @NoCSRFRequired
 	 * @NoAdminRequired
@@ -347,7 +336,6 @@ class SecurityMiddlewareTest extends TestCase {
 	public function testLoggedInCheck(){
 		$this->securityCheck(__FUNCTION__, 'isLoggedIn');
 	}
-
 
 	/**
 	 * @NoCSRFRequired
@@ -359,7 +347,6 @@ class SecurityMiddlewareTest extends TestCase {
 		$this->securityCheck(__FUNCTION__, 'isLoggedIn', true);
 	}
 
-
 	/**
 	 * @NoCSRFRequired
 	 * @throws SecurityException
@@ -369,7 +356,6 @@ class SecurityMiddlewareTest extends TestCase {
 		$this->securityCheck(__FUNCTION__, 'isAdminUser');
 	}
 
-
 	/**
 	 * @NoCSRFRequired
 	 * @throws SecurityException
@@ -378,7 +364,6 @@ class SecurityMiddlewareTest extends TestCase {
 	public function testFailIsAdminCheck(){
 		$this->securityCheck(__FUNCTION__, 'isAdminUser', true);
 	}
-
 
 	/**
 	 * @throws \Exception

@@ -173,7 +173,7 @@ class Detection implements IMimeTypeDetector {
 			//try to guess the type by the file extension
 			$extension = \strtolower(\strrchr($fileName, '.'));
 			$extension = \substr($extension, 1); //remove leading .
-			return (isset($this->mimetypes[$extension]) && isset($this->mimetypes[$extension][0]))
+			return (isset($this->mimetypes[$extension], $this->mimetypes[$extension][0]))
 				? $this->mimetypes[$extension][0]
 				: 'application/octet-stream';
 		} else {

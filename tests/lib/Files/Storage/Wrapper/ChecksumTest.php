@@ -21,7 +21,6 @@
 
 namespace Test\Files\Storage\Wrapper;
 
-
 use OC\Files\Storage\Wrapper\Checksum;
 
 /**
@@ -49,7 +48,6 @@ class ChecksumTest extends \Test\TestCase
 		]);
 	}
 
-
 	public function testFilePutContentsCalculatesChecksum() {
 		$this->instance->file_put_contents('/foo.txt', 'somedata');
 		$metaData = $this->instance->getMetaData('/foo.txt');
@@ -67,12 +65,9 @@ class ChecksumTest extends \Test\TestCase
 
 		$metaData = $this->instance->getMetaData('/foo.txt');
 
-
 		$this->assertArrayHasKey('checksum', $metaData);
 		$this->assertEquals(self::EXPECTED_CHECKSUMS, $metaData['checksum']);
 	}
-
-
 
 	public function testReadFromFileHandleOnNewFileCalculatesChecksum() {
 

@@ -22,7 +22,6 @@
  *
  */
 
-
 namespace OC\Security;
 
 use phpseclib\Crypt\AES;

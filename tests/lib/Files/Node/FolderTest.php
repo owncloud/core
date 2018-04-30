@@ -535,7 +535,6 @@ class FolderTest extends NodeTest {
 			->with('/bar/foo')
 			->will($this->returnValue($mount));
 
-
 		$node = new Folder($root, $view, '/bar/foo');
 		$result = $node->search('qw');
 		$this->assertCount(2, $result);

@@ -68,7 +68,6 @@ interface IManager {
 	 */
 	public function getEncryptionModules();
 
-
 	/**
 	 * get a specific encryption module
 	 *

@@ -21,7 +21,6 @@
 
 namespace OCP\Files\External\Backend;
 
-
 /**
  * Invalid storage backend representing a backend
  * that could not be resolved

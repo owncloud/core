@@ -159,7 +159,6 @@ class OC {
 			}
 		}
 
-
 		if (OC::$CLI) {
 			OC::$WEBROOT = self::$config->getValue('overwritewebroot', '');
 		} else {
@@ -190,7 +189,7 @@ class OC {
 		$config_paths = self::$config->getValue('apps_paths', []);
 		if (!empty($config_paths)) {
 			foreach ($config_paths as $paths) {
-				if (isset($paths['url']) && isset($paths['path'])) {
+				if (isset($paths['url'], $paths['path'])) {
 					$paths['url'] = \rtrim($paths['url'], '/');
 					$paths['path'] = \rtrim($paths['path'], '/');
 					OC::$APPSROOTS[] = $paths;

@@ -113,7 +113,6 @@ class PublicAuthTest extends \Test\TestCase {
 		$this->assertFalse($result);
 	}
 
-
 	public function testSharePasswordRemote() {
 		$share = $this->createMock('OCP\Share\IShare');
 		$share->method('getPassword')->willReturn('password');

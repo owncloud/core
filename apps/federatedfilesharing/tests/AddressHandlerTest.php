@@ -21,9 +21,7 @@
  *
  */
 
-
 namespace OCA\FederatedFileSharing\Tests;
-
 
 use OCA\FederatedFileSharing\AddressHandler;
 use OCP\IL10N;

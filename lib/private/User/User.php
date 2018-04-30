@@ -456,7 +456,7 @@ class User implements IUser {
 	public function getCloudId() {
 		$uid = $this->getUID();
 		$server = $this->urlGenerator->getAbsoluteURL('/');
-		return $uid . '@' . \rtrim( $this->removeProtocolFromUrl($server), '/');
+		return $uid . '@' . \rtrim($this->removeProtocolFromUrl($server), '/');
 	}
 
 	/**

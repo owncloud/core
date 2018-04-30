@@ -273,7 +273,6 @@ class Client implements IClient {
 		return new Response($response);
 	}
 
-
 	/**
 	 * Sends a options request
 	 *

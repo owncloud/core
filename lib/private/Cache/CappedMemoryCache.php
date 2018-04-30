@@ -76,7 +76,6 @@ class CappedMemoryCache implements ICache, \ArrayAccess {
 		$this->remove($offset);
 	}
 
-
 	private function garbageCollect() {
 		while (\count($this->cache) > $this->capacity) {
 			\reset($this->cache);

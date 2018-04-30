@@ -21,7 +21,6 @@
 
 namespace OCA\Files\Command;
 
-
 use OC\Files\FileInfo;
 use OC\Files\Storage\Wrapper\Checksum;
 use OCP\Files\IRootFolder;
@@ -35,7 +34,6 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
-
 /**
  * Recomputes checksums for all files and compares them to filecache
  * entries. Provides repair option on mismatch.
@@ -43,7 +41,6 @@ use Symfony\Component\Console\Output\OutputInterface;
  * @package OCA\Files\Command
  */
 class VerifyChecksums extends Command {
-
 
 	const EXIT_NO_ERRORS = 0;
 	const EXIT_CHECKSUM_ERRORS = 1;
@@ -150,10 +147,8 @@ class VerifyChecksums extends Command {
 			$this->userManager->callForAllUsers($scanUserFunction);
 		}
 
-
 		return $this->exitStatus;
 	}
-
 
 	/**
 	 * Recursive walk nodes

@@ -156,7 +156,7 @@ class Helper {
 		}
 		else {
 			// not authenticated ?
-			if ( ! \OC::$server->getSession()->exists('public_link_authenticated')
+			if (! \OC::$server->getSession()->exists('public_link_authenticated')
 				|| \OC::$server->getSession()->get('public_link_authenticated') !== (string)$linkItem['id']) {
 				return false;
 			}
@@ -170,12 +170,11 @@ class Helper {
 		Filesystem::initMountPoints($owner);
 		$info = Filesystem::getFileInfo($target);
 		$ownerView = new View('/'.$owner.'/files');
-		if ( $owner != User::getUser() ) {
+		if ($owner != User::getUser()) {
 			$path = $ownerView->getPath($info['fileid']);
 		} else {
 			$path = $target;
 		}
-
 
 		$ids = [];
 		while ($path !== \dirname($path)) {
@@ -221,7 +220,7 @@ class Helper {
 			$uid = User::getUser();
 		}
 		Filesystem::initMountPoints($uid);
-		if ( $uid != User::getUser() ) {
+		if ($uid != User::getUser()) {
 			$info = Filesystem::getFileInfo($filename);
 			$ownerView = new View('/'.$uid.'/files');
 			try {

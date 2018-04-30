@@ -120,7 +120,6 @@ class SharedMount extends MountPoint implements MoveableMount {
 		}
 	}
 
-
 	/**
 	 * @param string $path
 	 * @param View $view
@@ -220,7 +219,6 @@ class SharedMount extends MountPoint implements MoveableMount {
 
 		return true;
 	}
-
 
 	/**
 	 * Move the mount point to $target

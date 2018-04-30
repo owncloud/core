@@ -89,7 +89,7 @@ class Installer {
 	 * @throws \Exception
 	 * @return integer
 	 */
-	public static function installApp( $data = []) {
+	public static function installApp($data = []) {
 		$l = \OC::$server->getL10N('lib');
 
 		list($extractDir, $path) = self::downloadApp($data);
@@ -183,7 +183,7 @@ class Installer {
 	 *
 	 * Checks whether or not an app is installed, i.e. registered in apps table.
 	 */
-	public static function isInstalled( $app ) {
+	public static function isInstalled($app) {
 		return (\OC::$server->getConfig()->getAppValue($app, "installed_version", null) !== null);
 	}
 
@@ -402,7 +402,7 @@ class Installer {
 	 *
 	 * The function will check if the app is already downloaded in the apps repository
 	 */
-	public static function isDownloaded( $name ) {
+	public static function isDownloaded($name) {
 		foreach(\OC::$APPSROOTS as $dir) {
 			$dirToTest  = $dir['path'];
 			$dirToTest .= '/';
@@ -433,7 +433,7 @@ class Installer {
 	 */
 	public static function removeApp($appId) {
 
-		if(Installer::isDownloaded( $appId )) {
+		if(Installer::isDownloaded($appId)) {
 			$appDir = OC_App::getAppPath($appId);
 			if ($appDir === false) {
 				return false;
@@ -454,11 +454,11 @@ class Installer {
 	protected static function getShippedApps() {
 		$shippedApps = [];
 		foreach(\OC::$APPSROOTS as $app_dir) {
-			if($dir = \opendir( $app_dir['path'] )) {
+			if($dir = \opendir($app_dir['path'])) {
 				$nodes = \scandir($app_dir['path']);
 				foreach($nodes as $filename) {
-					if( \substr( $filename, 0, 1 ) != '.' and \is_dir($app_dir['path']."/$filename") ) {
-						if( \file_exists( $app_dir['path']."/$filename/appinfo/info.xml" )) {
+					if(\substr($filename, 0, 1) != '.' and \is_dir($app_dir['path']."/$filename")) {
+						if(\file_exists($app_dir['path']."/$filename/appinfo/info.xml")) {
 							if(!Installer::isInstalled($filename)) {
 								$info=OC_App::getAppInfo($filename);
 								$enabled = isset($info['default_enable']);
@@ -470,10 +470,9 @@ class Installer {
 						}
 					}
 				}
-				\closedir( $dir );
+				\closedir($dir);
 			}
 		}
-
 
 		// Fix the order - make files first
 		$shippedApps = \array_diff($shippedApps,['files', 'dav']);
@@ -577,7 +576,7 @@ class Installer {
 	 * @param $script
 	 */
 	private static function includeAppScript($script) {
-		if ( \file_exists($script) ){
+		if (\file_exists($script)){
 			include $script;
 		}
 	}

@@ -21,9 +21,7 @@
  *
  */
 
-
 namespace OCA\Federation\Tests\API;
-
 
 use OC\BackgroundJob\JobList;
 use OCA\Federation\Controller\OCSAuthAPIController;

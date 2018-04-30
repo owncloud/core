@@ -19,9 +19,7 @@
  *
  */
 
-
 namespace OC\Files\Node;
-
 
 use OC\Files\FileInfo;
 use OCP\Files\NotFoundException;

@@ -75,7 +75,6 @@ class StorageTest extends TestCase {
 		$this->user = $this->getUniqueId('user');
 		$this->createUser($this->user, $this->user);
 
-
 		// this will setup the FS
 		$this->loginAsUser($this->user);
 

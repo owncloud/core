@@ -342,7 +342,7 @@ class Session implements IUserSession, Emitter {
 		if (!$isTokenPassword && $this->isTwoFactorEnforced($user)) {
 			throw new PasswordLoginForbiddenException();
 		}
-		if (!$this->login($user, $password) ) {
+		if (!$this->login($user, $password)) {
 			$users = $this->manager->getByEmail($user);
 			if (\count($users) === 1) {
 				return $this->login($users[0]->getUID(), $password);
@@ -968,9 +968,8 @@ class Session implements IUserSession, Emitter {
 		//TODO: DI for cookies and IRequest
 		$secureCookie = OC::$server->getRequest()->getServerProtocol() === 'https';
 
-		unset($_COOKIE['oc_username']); //TODO: DI
-		unset($_COOKIE['oc_token']);
-		unset($_COOKIE['oc_remember_login']);
+		unset($_COOKIE['oc_username'], $_COOKIE['oc_token'], $_COOKIE['oc_remember_login']); //TODO: DI
+		
 		\setcookie('oc_username', '', \time() - 3600, OC::$WEBROOT, '', $secureCookie, true);
 		\setcookie('oc_token', '', \time() - 3600, OC::$WEBROOT, '', $secureCookie, true);
 		\setcookie('oc_remember_login', '', \time() - 3600, OC::$WEBROOT, '', $secureCookie, true);

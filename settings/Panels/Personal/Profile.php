@@ -61,7 +61,7 @@ class Profile implements ISettings {
 
 		// Assign some data
 		$lang = $this->lfactory->findLanguage();
-		$userLang = $this->config->getUserValue( $this->userSession->getUser()->getUID(), 'core', 'lang', $lang);
+		$userLang = $this->config->getUserValue($this->userSession->getUser()->getUID(), 'core', 'lang', $lang);
 		$languageCodes = $this->lfactory->findAvailableLanguages();
 		// array of common languages
 		$commonLangCodes = [
@@ -100,7 +100,7 @@ class Profile implements ISettings {
 		}
 		\ksort($commonLanguages);
 		// sort now by displayed language not the iso-code
-		\usort( $languages, function ($a, $b) {
+		\usort($languages, function ($a, $b) {
 			if ($a['code'] === $a['name'] && $b['code'] !== $b['name']) {
 				// If a doesn't have a name, but b does, list b before a
 				return 1;

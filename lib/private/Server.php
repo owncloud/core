@@ -684,7 +684,7 @@ class Server extends ServerContainer implements IServerContainer, IServiceLoader
 					'server' => $_SERVER,
 					'env' => $_ENV,
 					'cookies' => $_COOKIE,
-					'method' => (isset($_SERVER) && isset($_SERVER['REQUEST_METHOD']))
+					'method' => (isset($_SERVER, $_SERVER['REQUEST_METHOD']))
 						? $_SERVER['REQUEST_METHOD']
 						: null,
 					'urlParams' => $urlParams,
@@ -764,7 +764,7 @@ class Server extends ServerContainer implements IServerContainer, IServiceLoader
 					'server' => $_SERVER,
 					'env' => $_ENV,
 					'cookies' => $_COOKIE,
-					'method' => (isset($_SERVER) && isset($_SERVER['REQUEST_METHOD']))
+					'method' => (isset($_SERVER, $_SERVER['REQUEST_METHOD']))
 						? $_SERVER['REQUEST_METHOD']
 						: null,
 				],
@@ -965,7 +965,6 @@ class Server extends ServerContainer implements IServerContainer, IServiceLoader
 	public function getSystemTagObjectMapper() {
 		return $this->query('SystemTagObjectMapper');
 	}
-
 
 	/**
 	 * Returns the avatar manager, used for avatar functionality
@@ -1182,7 +1181,6 @@ class Server extends ServerContainer implements IServerContainer, IServiceLoader
 		return $this->query('RedisFactory');
 	}
 
-
 	/**
 	 * Returns the current session
 	 *
@@ -1230,7 +1228,6 @@ class Server extends ServerContainer implements IServerContainer, IServiceLoader
 	public function getSettingsManager() {
 		return $this->query('SettingsManager');
 	}
-
 
 	/**
 	 * Returns a router for generating and matching urls

@@ -25,7 +25,6 @@
  *
  */
 
-
 namespace OC\AppFramework\Middleware\Security;
 
 use OC\AppFramework\Middleware\Security\Exceptions\AppNotEnabledException;
@@ -106,7 +105,6 @@ class SecurityMiddleware extends Middleware {
 		$this->isAdminUser = $isAdminUser;
 		$this->contentSecurityPolicyManager = $contentSecurityPolicyManager;
 	}
-
 
 	/**
 	 * This runs all the security checks before a method call. The

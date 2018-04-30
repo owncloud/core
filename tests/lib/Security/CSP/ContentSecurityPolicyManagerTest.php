@@ -21,7 +21,6 @@
 
 namespace Test\Security\CSP;
 
-
 use OC\Security\CSP\ContentSecurityPolicy;
 use OC\Security\CSP\ContentSecurityPolicyManager;
 use OCP\AppFramework\Http\EmptyContentSecurityPolicy;

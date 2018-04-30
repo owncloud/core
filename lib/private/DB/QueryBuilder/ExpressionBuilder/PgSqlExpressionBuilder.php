@@ -22,7 +22,6 @@
 
 namespace OC\DB\QueryBuilder\ExpressionBuilder;
 
-
 use OC\DB\QueryBuilder\QueryFunction;
 use OCP\DB\QueryBuilder\IQueryBuilder;
 

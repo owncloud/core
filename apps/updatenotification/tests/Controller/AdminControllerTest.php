@@ -174,7 +174,6 @@ class AdminControllerTest extends TestCase {
 		$this->assertEquals($expected, $this->adminController->displayPanel());
 	}
 
-
 	public function testCreateCredentials() {
 		$this->jobList
 			->expects($this->once())

@@ -36,7 +36,6 @@ use Test\TestCase;
 use OCP\Authentication\IApacheBackend;
 use OCP\UserInterface;
 
-
 /**
  * @group DB
  * @package Test\User
@@ -1009,7 +1008,6 @@ class SessionTest extends TestCase {
 			$this->tokenProvider, $this->config, $this->logger, $this->serviceLoader, $this->userSyncService);
 		$userSession->setUser($user);
 
-
 		$called['cancel'] = false;
 
 		\OC::$server->getEventDispatcher()->addListener('\OC\User\Session::pre_logout', function ($event) use (&$called) {
@@ -1149,7 +1147,7 @@ class SessionTest extends TestCase {
 		$session->expects($this->any())->method('getUser')->willReturn($loggedInUser);
 
 		$session->expects($expectedReturn ? $this->never() : $this->once())->method('logout');
-		$this->assertEquals( $expectedReturn, $session->verifyAuthHeaders($request));
+		$this->assertEquals($expectedReturn, $session->verifyAuthHeaders($request));
 	}
 
 	public function providesModulesForLogin() {
@@ -1201,6 +1199,6 @@ class SessionTest extends TestCase {
 			$session->expects($expectedReturn ? $this->once() : $this->never())->method('loginUser')->willReturn($expectedReturn);
 		}
 
-		$this->assertEquals( $expectedReturn, $session->tryAuthModuleLogin($request));
+		$this->assertEquals($expectedReturn, $session->tryAuthModuleLogin($request));
 	}
 }

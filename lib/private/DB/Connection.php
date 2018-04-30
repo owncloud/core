@@ -153,7 +153,7 @@ class Connection extends \Doctrine\DBAL\Connection implements IDBConnection {
 	 * @param int $offset
 	 * @return \Doctrine\DBAL\Driver\Statement The prepared statement.
 	 */
-	public function prepare( $statement, $limit=null, $offset=null ) {
+	public function prepare($statement, $limit=null, $offset=null) {
 		if ($limit === -1) {
 			$limit = null;
 		}
@@ -393,7 +393,7 @@ class Connection extends \Doctrine\DBAL\Connection implements IDBConnection {
 	 * @return string
 	 */
 	protected function replaceTablePrefix($statement) {
-		return \str_replace( '*PREFIX*', $this->tablePrefix, $statement );
+		return \str_replace('*PREFIX*', $this->tablePrefix, $statement);
 	}
 
 	/**

@@ -21,7 +21,6 @@
 
 namespace Tests\Core\Command\Encryption;
 
-
 use OC\Core\Command\Encryption\SetDefaultModule;
 use Test\TestCase;
 
@@ -48,7 +47,6 @@ class SetDefaultModuleTest extends TestCase {
 		/** @var \OCP\Encryption\IManager $manager */
 		$this->command = new SetDefaultModule($manager);
 	}
-
 
 	public function dataSetDefaultModule() {
 		return [

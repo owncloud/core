@@ -19,9 +19,7 @@
  *
  */
 
-
 namespace Test\Encryption;
-
 
 use OC\Encryption\DecryptAll;
 use OC\Encryption\Exceptions\DecryptionFailedException;
@@ -139,7 +137,6 @@ class DecryptAllTest extends TestCase {
 			->setMethods(['prepareEncryptionModules', 'decryptAllUsersFiles'])
 			->getMock();
 
-
 		\OC::$server->getAppConfig()->setValue('encryption', 'useMasterKey', '1');
 
 		$instance->expects($this->once())
@@ -230,7 +227,6 @@ class DecryptAllTest extends TestCase {
 		$this->invokePrivate($instance, 'input', [$this->inputInterface]);
 		$this->invokePrivate($instance, 'output', [$this->outputInterface]);
 
-
 		$function = function (IUser $user)  {
 			$users[] = $user->getUID();
 		};
@@ -263,7 +259,6 @@ class DecryptAllTest extends TestCase {
 
 		$this->invokePrivate($instance, 'input', [$this->inputInterface]);
 		$this->invokePrivate($instance, 'output', [$this->outputInterface]);
-
 
 		$function = function (IUser $user)  {
 			$users[] = $user->getUID();

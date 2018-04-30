@@ -110,7 +110,6 @@ class ExpirationTest extends \Test\TestCase {
 		$this->assertEquals($expectedResult, $actualResult);
 	}
 
-
 	public function configData(){
 		return [
 			[ 'disabled', null, null, null],
@@ -123,7 +122,6 @@ class ExpirationTest extends \Test\TestCase {
 			[ '10, 3', 10, 10, false ],
 		];
 	}
-
 
 	/**
 	 * @dataProvider configData
@@ -145,7 +143,6 @@ class ExpirationTest extends \Test\TestCase {
 		$this->assertAttributeEquals($expectedCanPurgeToSaveSpace, 'canPurgeToSaveSpace', $expiration);
 	}
 
-
 	public function timestampTestData(){
 		return [
 			[ 'disabled', false],
@@ -158,7 +155,6 @@ class ExpirationTest extends \Test\TestCase {
 			[ '10, 3', self::FAKE_TIME_NOW - (10*self::SECONDS_PER_DAY) ],
 		];
 	}
-
 
 	/**
 	 * @dataProvider timestampTestData

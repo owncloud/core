@@ -22,7 +22,6 @@
  *
  */
 
-
 namespace OC\AppFramework;
 
 use OC\AppFramework\Http\Dispatcher;
@@ -37,7 +36,6 @@ use OCP\AppFramework\Http\ICallbackResponse;
  * Handles all the dependency injection, controllers and output flow
  */
 class App {
-
 
 	/**
 	 * Turns an app id into a namespace by either reading the appinfo.xml's
@@ -57,7 +55,6 @@ class App {
 		// if the tag is not found, fall back to uppercasing the first letter
 		return $topNamespace . \ucfirst($appId);
 	}
-
 
 	/**
 	 * Shortcut for calling a controller method and printing the result

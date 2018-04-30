@@ -43,7 +43,7 @@ class SharePropagation implements IRepairStep {
 		return 'Remove old share propagation app entries';
 	}
 
-	public function run(IOutput $out ) {
+	public function run(IOutput $out) {
 		$keys = $this->config->getAppKeys('files_sharing');
 
 		foreach ($keys as $key) {
