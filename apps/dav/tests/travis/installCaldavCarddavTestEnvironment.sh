@@ -12,10 +12,10 @@ if [ ! -f pycalendar/setup.py ]; then
 fi
 
 # create test user
-cd "$SCRIPTPATH/../../../../../"
+cd "$SCRIPTPATH/../../../../"
 OC_PASS=user01 php occ user:add --password-from-env user01
 php occ dav:create-calendar user01 calendar
 php occ dav:create-calendar user01 shared
 OC_PASS=user02 php occ user:add --password-from-env user02
 php occ dav:create-calendar user02 calendar
-cd "$SCRIPTPATH/../../../../../"
+cd "$SCRIPTPATH/../../../../"
