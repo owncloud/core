@@ -35,10 +35,10 @@ class FileActionsMenu extends OwncloudPage {
 	/**
 	 * @var NodeElement of this action menu
 	 */
-	protected $menuElement;
-	protected $fileActionXpath = "//a[@data-action='%s']";
-	protected $renameActionLabel = "Rename";
-	protected $deleteActionLabel = "Delete";
+	private $menuElement;
+	private $fileActionXpath = "//a[@data-action='%s']";
+	private $renameActionLabel = "Rename";
+	private $deleteActionLabel = "Delete";
 	
 	/**
 	 * sets the NodeElement for the current action menu
