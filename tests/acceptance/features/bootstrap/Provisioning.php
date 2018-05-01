@@ -1157,6 +1157,48 @@ trait Provisioning {
 	}
 
 	/**
+	 * @Then /^the user "([^"]*)" should be the subadmin of the group "([^"]*)"$/
+	 *
+	 * @param string $user
+	 * @param string $group
+	 * 
+	 * @return void
+	 */
+	public function theUserIsTheSubadminOfTheGroup($user, $group) {
+		$fullUrl = $this->getBaseUrl() . "/ocs/v2.php/cloud/groups/$group/subadmins";
+		$client = new Client();
+		$options = [];
+		$options['auth'] = [$this->getAdminUsername(),$this->getAdminPassword()];
+		$this->response = $client->get($fullUrl, $options);
+		$listOfSubadmins = $this->getArrayOfSubadminsResponded($this->response);
+		PHPUnit_Framework_Assert::assertContains(
+			$user,
+			$listOfSubadmins
+		);
+	}
+
+	/**
+	 * @Then /^the user "([^"]*)" should not be the subadmin of the group "([^"]*)"$/
+	 * 
+	 * @param string $user
+	 * @param string $group
+	 * 
+	 * @return void
+	 */
+	public function theUserIsNotTheSubadminOfTheGroup($user, $group) {
+		$fullUrl = $this->getBaseUrl() . "/ocs/v2.php/cloud/groups/$group/subadmins";
+		$client = new Client();
+		$options = [];
+		$options['auth'] = [$this->getAdminUsername(),$this->getAdminPassword()];
+		$this->response = $client->get($fullUrl, $options);
+		$listOfSubadmins = $this->getArrayOfSubadminsResponded($this->response);
+		PHPUnit_Framework_Assert::assertNotContains(
+			$user,
+			$listOfSubadmins
+		);
+	}
+
+	/**
 	 * Parses the xml answer to get the array of users returned.
 	 *
 	 * @param ResponseInterface $resp
