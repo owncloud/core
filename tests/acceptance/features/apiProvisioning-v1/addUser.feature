@@ -19,3 +19,17 @@ So that I can give people controlled individual access to resources on the ownCl
 		When the administrator sends a user creation request for user "brand-new-user" password "456newpwd" using the API
 		Then the OCS status code should be "102"
 		And the HTTP status code should be "200"
+
+	Scenario: Create an existing disabled user
+		Given user "brand-new-user" has been created
+		And user "brand-new-user" has been disabled
+		When the administrator sends a user creation request for user "brand-new-user" password "456newpwd" using the API
+		Then the OCS status code should be "102"
+		And the HTTP status code should be "200"
+
+	Scenario: Admin creates a new user and adds him directly to a group
+		Given group "newgroup" has been created
+		When the administrator sends a user creation request for user "newuser" password "456firstpwd" group "newgroup" using the API
+		Then the OCS status code should be "100"
+		And the HTTP status code should be "200"
+		And user "newuser" should belong to group "newgroup"
