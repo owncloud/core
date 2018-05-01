@@ -46,9 +46,11 @@ class WebUIPersonalSecuritySettingsContext extends RawMinkContext implements Con
 	 * WebUIPersonalSecuritySettingsContext constructor.
 	 *
 	 * @param PersonalSecuritySettingsPage $personalSecuritySettingsPage
+	 * @param LoginPage $loginPage
 	 */
 	public function __construct(
-		PersonalSecuritySettingsPage $personalSecuritySettingsPage, LoginPage $loginPage
+		PersonalSecuritySettingsPage $personalSecuritySettingsPage,
+		LoginPage $loginPage
 	) {
 		$this->personalSecuritySettingsPage = $personalSecuritySettingsPage;
 		$this->appName = substr(str_shuffle($this->strForAppName), 0, 8);
