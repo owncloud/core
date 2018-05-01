@@ -189,7 +189,7 @@ trait Provisioning {
 			$password = $this->getPasswordForUser($user);
 			$this->createUser($user, $password, null, null, true, 'api');
 		}
-		PHPUnit_Framework_Assert::assertTrue($this->userExists($user));
+		$this->userShouldExist($user);
 	}
 
 	/**
@@ -252,7 +252,10 @@ trait Provisioning {
 	 * @return void
 	 */
 	public function userShouldExist($user) {
-		PHPUnit_Framework_Assert::assertTrue($this->userExists($user));
+		PHPUnit_Framework_Assert::assertTrue(
+			$this->userExists($user),
+			"User '$user' should exist but does not exist"
+		);
 	}
 
 	/**
@@ -263,7 +266,10 @@ trait Provisioning {
 	 * @return void
 	 */
 	public function userShouldNotExist($user) {
-		PHPUnit_Framework_Assert::assertFalse($this->userExists($user));
+		PHPUnit_Framework_Assert::assertFalse(
+			$this->userExists($user),
+			"User '$user' should not exist but does exist"
+		);
 	}
 
 	/**
@@ -274,7 +280,10 @@ trait Provisioning {
 	 * @return void
 	 */
 	public function groupShouldExist($group) {
-		PHPUnit_Framework_Assert::assertTrue($this->groupExists($group));
+		PHPUnit_Framework_Assert::assertTrue(
+			$this->groupExists($group),
+			"Group '$group' should exist but does not exist"
+		);
 	}
 
 	/**
@@ -285,7 +294,10 @@ trait Provisioning {
 	 * @return void
 	 */
 	public function groupShouldNotExist($group) {
-		PHPUnit_Framework_Assert::assertFalse($this->groupExists($group));
+		PHPUnit_Framework_Assert::assertFalse(
+			$this->groupExists($group),
+			"Group '$group' should not exist but does exist"
+		);
 	}
 
 	/**
@@ -324,7 +336,7 @@ trait Provisioning {
 		if ($this->userExists($user)) {
 			$this->deleteTheUserUsingTheAPI($user);
 		}
-		PHPUnit_Framework_Assert::assertFalse($this->userExists($user));
+		$this->userShouldNotExist($user);
 	}
 
 	/**
@@ -486,7 +498,7 @@ trait Provisioning {
 	 */
 	public function deleteUser($user) {
 		$this->deleteTheUserUsingTheAPI($user);
-		PHPUnit_Framework_Assert::assertFalse($this->userExists($user));
+		$this->userShouldNotExist($user);
 	}
 
 	/**
@@ -729,7 +741,7 @@ trait Provisioning {
 		if (!$this->groupExists($group)) {
 			$this->createTheGroup($group, 'api');
 		}
-		PHPUnit_Framework_Assert::assertTrue($this->groupExists($group));
+		$this->groupShouldExist($group);
 	}
 
 	/**
@@ -881,7 +893,7 @@ trait Provisioning {
 		if ($this->groupExists($group)) {
 			$this->deleteTheGroupUsingTheAPI($group);
 		}
-		PHPUnit_Framework_Assert::assertFalse($this->groupExists($group));
+		$this->groupShouldNotExist($group);
 	}
 
 	/**
