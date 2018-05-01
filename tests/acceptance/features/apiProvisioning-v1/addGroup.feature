@@ -13,7 +13,7 @@ So that I can more easily manage access to resources by groups rather than indiv
 		And the HTTP status code should be "200"
 		And group "<group_id>" should exist
 		Examples:
-			| group-id            | comment                                 |
+			| group_id            | comment                                 |
 			| new-group           | dash                                    |
 			| the.group           | dot                                     |
 			| España              | special European characters             |
@@ -26,14 +26,11 @@ So that I can more easily manage access to resources by groups rather than indiv
 			| maint+eng           | Plus sign                               |
 			| $x<=>[y*z^2]!       | Maths symbols                           |
 			| Mgmt\Middle         | Backslash                               |
-			| Mgmt/Sydney         | Slash (special escaping happens)        |
-			| Mgmt//NSW/Sydney    | Multiple slash                          |
 			| 50%pass             | Percent sign (special escaping happens) |
 			| 50%25=0             | %25 literal looks like an escaped "%"   |
 			| 50%2Eagle           | %2E literal looks like an escaped "."   |
 			| 50%2Fix             | %2F literal looks like an escaped slash |
 			| staff?group         | Question mark                           |
-			| /                   | forward slash                           |
 
 	Scenario: Create a group that already exists
 		Given group "new-group" has been created
