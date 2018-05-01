@@ -35,25 +35,25 @@ class FileRow extends OwncloudPage {
 	/**
 	 * @var NodeElement of this row
 	 */
-	protected $rowElement;
+	private $rowElement;
 
 	/**
 	 * name of the file
 	 *
 	 * @var string
 	 */
-	protected $name;
-	protected $fileActionMenuBtnXpath = "//a[@data-action='menu']";
-	protected $shareBtnXpath = "//a[@data-action='Share']";
-	protected $loadingIndicatorXpath = ".//*[@class='loading']";
-	protected $fileRenameInputXpath = "//input[contains(@class,'filename')]";
-	protected $fileBusyIndicatorXpath = ".//*[@class='thumbnail' and contains(@style,'loading')]";
-	protected $fileTooltipXpath = ".//*[@class='tooltip-inner']";
-	protected $thumbnailXpath = "//*[@class='thumbnail']";
-	protected $fileLinkXpath = "//span[contains(@class,'nametext')]";
-	protected $restoreLinkXpath = '//a[@data-action="Restore"]';
-	protected $notMarkedFavoriteXpath = "//span[contains(@class,'icon-star')]";
-	protected $markedFavoriteXpath = "//span[contains(@class,'icon-starred')]";
+	private $name;
+	private $fileActionMenuBtnXpath = "//a[@data-action='menu']";
+	private $shareBtnXpath = "//a[@data-action='Share']";
+	private $loadingIndicatorXpath = ".//*[@class='loading']";
+	private $fileRenameInputXpath = "//input[contains(@class,'filename')]";
+	private $fileBusyIndicatorXpath = ".//*[@class='thumbnail' and contains(@style,'loading')]";
+	private $fileTooltipXpath = ".//*[@class='tooltip-inner']";
+	private $thumbnailXpath = "//*[@class='thumbnail']";
+	private $fileLinkXpath = "//span[contains(@class,'nametext')]";
+	private $restoreLinkXpath = '//a[@data-action="Restore"]';
+	private $notMarkedFavoriteXpath = "//span[contains(@class,'icon-star')]";
+	private $markedFavoriteXpath = "//span[contains(@class,'icon-starred')]";
 
 	/**
 	 * 
