@@ -454,7 +454,6 @@ trait BasicStructure {
 			$this->getBaseUrl(),
 			$user, $password, $verb, $url, $bodyArray, $this->apiVersion
 		);
-
 	}
 
 	/**

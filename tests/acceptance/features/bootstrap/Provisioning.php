@@ -245,6 +245,30 @@ trait Provisioning {
 	}
 
 	/**
+	 * @When /^the administrator sends a user creation request for user "([^"]*)" password "([^"]*)" group "([^"]*)" using the API$/
+	 * 
+	 * @param string $user
+	 * @param string $password
+	 * @param string $group
+	 * 
+	 * @return void
+	 */
+	public function theAdministratorCreatesUserPasswordGroupUsingTheApi(
+		$user, $password, $group
+	) {
+		$bodyTable = new TableNode(
+			[['userid', $user], ['password', $password], ['groups[]', $group]]
+		);
+		$this->userSendsHTTPMethodToAPIEndpointWithBody(
+			$this->getAdminUsername(),
+			"POST",
+			"/cloud/users",
+			$bodyTable
+		);
+		$this->addUserToCreatedUsersList($user, $password);
+	}
+
+	/**
 	 * @Then /^user "([^"]*)" should exist$/
 	 *
 	 * @param string $user
