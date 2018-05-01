@@ -929,6 +929,7 @@ trait Provisioning {
 	 * @return bool
 	 */
 	public function groupExists($group) {
+		$group = \rawurlencode($group);
 		$fullUrl = $this->getBaseUrl() . "/ocs/v2.php/cloud/groups/$group";
 		$client = new Client();
 		$options = [];
