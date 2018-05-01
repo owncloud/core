@@ -608,9 +608,7 @@ trait Provisioning {
 		$fullUrl = $this->getBaseUrl() . "/ocs/v2.php/cloud/users/$user/groups";
 		$client = new Client();
 		$options = [];
-		if ($this->currentUser === $this->getAdminUsername()) {
-			$options['auth'] = $this->getAuthOptionForAdmin();
-		}
+		$options['auth'] = $this->getAuthOptionForAdmin();
 
 		$this->response = $client->get($fullUrl, $options);
 		$respondedArray = $this->getArrayOfGroupsResponded($this->response);
@@ -983,9 +981,7 @@ trait Provisioning {
 		$fullUrl = $this->getBaseUrl() . "/ocs/v2.php/cloud/groups/$group/subadmins";
 		$client = new Client();
 		$options = [];
-		if ($this->currentUser === $this->getAdminUsername()) {
-			$options['auth'] = $this->getAuthOptionForAdmin();
-		}
+		$options['auth'] = $this->getAuthOptionForAdmin();
 
 		$this->response = $client->get($fullUrl, $options);
 		$respondedArray = $this->getArrayOfSubadminsResponded($this->response);
@@ -1034,9 +1030,7 @@ trait Provisioning {
 		$fullUrl = $this->getBaseUrl() . "/ocs/v2.php/cloud/groups/$group/subadmins";
 		$client = new Client();
 		$options = [];
-		if ($this->currentUser === $this->getAdminUsername()) {
-			$options['auth'] = $this->getAuthOptionForAdmin();
-		}
+		$options['auth'] = $this->getAuthOptionForAdmin();
 
 		$this->response = $client->get($fullUrl, $options);
 		$respondedArray = $this->getArrayOfSubadminsResponded($this->response);
@@ -1200,9 +1194,7 @@ trait Provisioning {
 		$fullUrl = $this->getBaseUrl() . "/ocs/v2.php/cloud/apps?filter=disabled";
 		$client = new Client();
 		$options = [];
-		if ($this->currentUser === $this->getAdminUsername()) {
-			$options['auth'] = $this->getAuthOptionForAdmin();
-		}
+		$options['auth'] = $this->getAuthOptionForAdmin();
 
 		$this->response = $client->get($fullUrl, $options);
 		$respondedArray = $this->getArrayOfAppsResponded($this->response);
@@ -1223,9 +1215,7 @@ trait Provisioning {
 		$fullUrl = $this->getBaseUrl() . "/ocs/v2.php/cloud/apps?filter=enabled";
 		$client = new Client();
 		$options = [];
-		if ($this->currentUser === $this->getAdminUsername()) {
-			$options['auth'] = $this->getAuthOptionForAdmin();
-		}
+		$options['auth'] = $this->getAuthOptionForAdmin();
 
 		$this->response = $client->get($fullUrl, $options);
 		$respondedArray = $this->getArrayOfAppsResponded($this->response);
