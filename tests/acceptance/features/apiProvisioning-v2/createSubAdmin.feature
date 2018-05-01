@@ -14,6 +14,7 @@ So that I can give administrative privilege of a group to a user
 			| groupid | new-group |
 		Then the OCS status code should be "200"
 		And the HTTP status code should be "200"
+		And the user "brand-new-user" should be the subadmin of the group "new-group"
 
 	Scenario: create a subadmin using a user which does not exist
 		Given user "not-user" has been deleted
@@ -22,6 +23,7 @@ So that I can give administrative privilege of a group to a user
 			| groupid | new-group |
 		Then the OCS status code should be "400"
 		And the HTTP status code should be "400"
+		And the user "not-user" should not be the subadmin of the group "new-group"
 
 	Scenario: create a subadmin using a group which does not exist
 		Given user "brand-new-user" has been created
@@ -30,3 +32,18 @@ So that I can give administrative privilege of a group to a user
 			| groupid | not-group |
 		Then the OCS status code should be "400"
 		And the HTTP status code should be "400"
+
+	@skip @issue-31276
+		Scenario: subadmin of a group cannot make another user subadmin of their group
+		Given user "subadmin" has been created
+		And user "brand-new-user" has been created
+		And group "new-group" has been created
+		And user "subadmin" has been made a subadmin of group "new-group"
+		And user "admin" has sent HTTP method "POST" to API endpoint "/cloud/users/brand-new-user/groups" with body
+			| groupid | new-group |
+		When user "subadmin" sends HTTP method "POST" to API endpoint "/cloud/users/brand-new-user/subadmins" with body
+			| groupid | new-group |
+		Then the OCS status code should be "401"
+		And the HTTP status code should be "401"
+		And the user "not-user" should not be the subadmin of the group "new-group"
+	
