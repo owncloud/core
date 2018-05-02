@@ -58,7 +58,7 @@ class NoopScanner extends Scanner {
 	public function scan($path, $recursive = self::SCAN_RECURSIVE, $reuse = -1, $lock = true) {
 		// we only update the checksums - still returning no data
 		$meta = $this->storage->getMetaData($path);
-		if (isset($meta['checksum'])) {
+		if (!empty($meta['checksum'])) {
 			$this->storage->getCache()->put(
 				$path,
 				['checksum' => $meta['checksum']]
