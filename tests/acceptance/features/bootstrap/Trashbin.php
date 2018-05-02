@@ -154,6 +154,10 @@ trait Trashbin {
 			$user, 'POST', "/index.php/apps/files_trashbin/ajax/undelete.php", $body
 		);
 		$this->theHTTPStatusCodeShouldBe('200');
+		$decodedResponse = \json_decode($this->response->getBody(), true);
+		if (isset($decodedResponse['status'])) {
+			PHPUnit_Framework_Assert::assertNotEquals('error', $decodedResponse['status']);
+		}
 	}
 
 	/**
