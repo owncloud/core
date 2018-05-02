@@ -113,7 +113,7 @@ class AccountMapper extends Mapper {
 		// it's the whole email
 		$qb->select('*')
 			->from($this->getTableName())
-			->where($qb->expr()->eq($qb->createFunction('LOWER(`email`)'), $qb->createFunction('LOWER(' . $qb->createNamedParameter($email) . ')')));
+			->where($qb->expr()->iLike('email', $qb->createNamedParameter($this->db->escapeLikeParameter($email))));
 
 		return $this->findEntities($qb->getSQL(), $qb->getParameters());
 	}
@@ -128,7 +128,22 @@ class AccountMapper extends Mapper {
 		$qb = $this->db->getQueryBuilder();
 		$qb->select('*')
 			->from($this->getTableName())
-			->where($qb->expr()->eq('lower_user_id', $qb->createNamedParameter(\strtolower($uid))));
+			->where($qb->expr()->iLike('user_id', $qb->createNamedParameter($this->db->escapeLikeParameter($uid))));
+
+		return $this->findEntity($qb->getSQL(), $qb->getParameters());
+	}
+
+	/**
+	 * @param string $userName
+	 * @throws DoesNotExistException if the account does not exist
+	 * @throws MultipleObjectsReturnedException if more than one account exists
+	 * @return Account
+	 */
+	public function getByUserName($userName) {
+		$qb = $this->db->getQueryBuilder();
+		$qb->select('*')
+			->from($this->getTableName())
+			->where($qb->expr()->iLike('lower_user_id', $qb->createNamedParameter($this->db->escapeLikeParameter($userName))));
 
 		return $this->findEntity($qb->getSQL(), $qb->getParameters());
 	}
@@ -172,7 +187,8 @@ class AccountMapper extends Mapper {
 			->from($this->getTableName(), 'a')
 			->leftJoin('a', 'account_terms', 't', $qb->expr()->eq('a.id', 't.account_id'))
 			->orderBy('display_name')
-			->where($qb->expr()->like('lower_user_id', $qb->createNamedParameter($loweredParameter)))
+			->where($qb->expr()->iLike('lower_user_id', $qb->createNamedParameter($parameter)))
+			->orWhere($qb->expr()->iLike('user_id', $qb->createNamedParameter($parameter)))
 			->orWhere($qb->expr()->iLike('display_name', $qb->createNamedParameter($parameter)))
 			->orWhere($qb->expr()->iLike('email', $qb->createNamedParameter($parameter)))
 			->orWhere($qb->expr()->like('t.term', $qb->createNamedParameter($loweredParameter)));

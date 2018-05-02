@@ -28,6 +28,7 @@ use OCP\UserInterface;
  * Class Account
  *
  * @method string getUserId()
+ * @method void setUserId(string $userId)
  * @method string getDisplayName()
  * @method void setDisplayName(string $displayName)
  * @method string getEmail()
@@ -37,7 +38,7 @@ use OCP\UserInterface;
  * @method string getBackend()
  * @method void setBackend(string $backEnd)
  * @method int getState()
- * @method void setState(integer $state)
+ * @method void setState(int $state)
  * @method string getQuota()
  * @method void setQuota(string $quota)
  * @method string getHome()
@@ -70,11 +71,17 @@ class Account extends Entity {
 	}
 
 	/**
-	 * @param string $uid
+	 * @return string
 	 */
-	public function setUserId($uid) {
-		parent::setter('lowerUserId', [\strtolower($uid)]);
-		parent::setter('userId', [$uid]);
+	public function getUserName() {
+		return parent::getter('lowerUserId');
+	}
+
+	/**
+	 * @param string $userName
+	 */
+	public function setUserName($userName) {
+		parent::setter('lowerUserId', [$userName]);
 	}
 
 	/**

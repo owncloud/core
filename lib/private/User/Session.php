@@ -307,13 +307,13 @@ class Session implements IUserSession, Emitter {
 	 * @return boolean|null
 	 * @throws LoginException
 	 */
-	public function login($uid, $password) {
+	public function login($loginName, $password) {
 		$this->session->regenerateId();
 
-		if ($this->validateToken($password, $uid)) {
+		if ($this->validateToken($password, $loginName)) {
 			return $this->loginWithToken($password);
 		}
-		return $this->loginWithPassword($uid, $password);
+		return $this->loginWithPassword($loginName, $password);
 	}
 
 	/**
@@ -322,7 +322,7 @@ class Session implements IUserSession, Emitter {
 	 * Checks token auth enforced
 	 * Checks 2FA enabled
 	 *
-	 * @param string $user
+	 * @param string $loginName
 	 * @param string $password
 	 * @param IRequest $request
 	 * @throws \InvalidArgumentException
@@ -344,7 +344,7 @@ class Session implements IUserSession, Emitter {
 		if (!$this->login($user, $password)) {
 			$users = $this->manager->getByEmail($user);
 			if (\count($users) === 1) {
-				return $this->login($users[0]->getUID(), $password);
+				return $this->login($users[0]->getUserName(), $password);
 			}
 			return false;
 		}
@@ -616,8 +616,10 @@ class Session implements IUserSession, Emitter {
 			return false;
 		}
 
+		$userName = $uid; // FIXME does apache auth return username or uid? auth actually only returns a login -> username
+
 		// Now we try to create the account or sync
-		$this->userSyncService->createOrSyncAccount($uid, $backend);
+		$this->userSyncService->createOrSyncAccount($uid, $backend, $userName);
 
 		$user = $this->manager->get($uid);
 		if ($user === null) {

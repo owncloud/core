@@ -303,14 +303,15 @@ class SyncService {
 	}
 
 	/**
-	 * @param $uid
+	 * @param string $uid
 	 * @param UserInterface $backend
+	 * @param string $userName used when creating a new user
 	 * @return Account
 	 * @throws \Exception
 	 * @throws \InvalidArgumentException if you try to sync with a backend
-	 * that doesnt match an existing account
+	 * that doesn't match an existing account
 	 */
-	public function createOrSyncAccount($uid, UserInterface $backend) {
+	public function createOrSyncAccount($uid, UserInterface $backend, $userName = null) {
 		// Try to find the account based on the uid
 		try {
 			$account = $this->mapper->getByUid($uid);
@@ -325,7 +326,11 @@ class SyncService {
 			}
 		} catch (DoesNotExistException $e) {
 			// Create a new account for this uid and backend pairing and sync
-			$account = $this->createNewAccount(\get_class($backend), $uid);
+			if ($userName === null) {
+				$userName = $uid;
+				$uid = \uniqid('user', false); // todo use uuid
+			}
+			$account = $this->createNewAccount(\get_class($backend), $uid, $userName);
 		} catch (MultipleObjectsReturnedException $e) {
 			throw new \Exception("The database returned multiple accounts for this uid: $uid");
 		}
@@ -344,12 +349,14 @@ class SyncService {
 	/**
 	 * @param string $backend of the user
 	 * @param string $uid of the user
+	 * @param string $userName of the user
 	 * @return Account
 	 */
-	public function createNewAccount($backend, $uid) {
+	public function createNewAccount($backend, $uid, $userName) {
 		$this->logger->info("Creating new account with UID $uid and backend $backend");
 		$a = new Account();
 		$a->setUserId($uid);
+		$a->setUserName($userName);
 		$a->setState(Account::STATE_ENABLED);
 		$a->setBackend($backend);
 		return $a;

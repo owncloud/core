@@ -76,8 +76,27 @@ interface IUserManager {
 	 * @param string $uid
 	 * @return \OCP\IUser|null Either the user or null if the specified user does not exist
 	 * @since 8.0.0
+	 * @deprecated use getByUserId or getByUserName to clarify code
 	 */
 	public function get($uid);
+
+	/**
+	 * get a user by user id
+	 *
+	 * @param string $uid
+	 * @return \OCP\IUser|null Either the user or null if the specified user does not exist
+	 * @since 10.0.9
+	 */
+	public function getByUserId($uid);
+
+	/**
+	 * get a user by user name
+	 *
+	 * @param string $userName
+	 * @return \OCP\IUser|null Either the user or null if the specified user does not exist
+	 * @since 10.0.9
+	 */
+	public function getByUserName($userName);
 
 	/**
 	 * check if a user exists
@@ -134,11 +153,12 @@ interface IUserManager {
 	/**
 	 * @param string $uid
 	 * @param string $password
+	 * @param string $userName
 	 * @throws \Exception
 	 * @return bool|\OCP\IUser the created user of false
 	 * @since 8.0.0
 	 */
-	public function createUser($uid, $password);
+	public function createUser($uid = null, $password, $userName = null);
 
 	/**
 	 * returns how many users per backend exist (if supported by backend)
@@ -180,8 +200,9 @@ interface IUserManager {
 	 * @param string $uid
 	 * @param string $password
 	 * @param UserInterface $backend
+	 * @param string $userName
 	 * @return IUser | null
 	 * @since 10.0
 	 */
-	public function createUserFromBackend($uid, $password, $backend);
+	public function createUserFromBackend($uid, $password, $backend, $userName);
 }

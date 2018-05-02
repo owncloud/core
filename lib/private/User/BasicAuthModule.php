@@ -100,7 +100,7 @@ class BasicAuthModule implements IAuthModule {
 			$users = $this->manager->getByEmail($authUser);
 			$count = \count($users);
 			if ($count === 1) {
-				$user = $this->manager->checkPassword($users[0]->getUID(), $authPass);
+				$user = $this->manager->checkPassword($users[0]->getUserName(), $authPass);
 				if ($user instanceof IUser) {
 					// only update timeout on success
 					$this->session->set('last_check_timeout', $now);

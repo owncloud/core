@@ -173,9 +173,21 @@ class Manager extends PublicEmitter implements IUserManager {
 	 *
 	 * @param string $uid
 	 * @return \OC\User\User|null Either the user or null if the specified user does not exist
+	 * @throws \OCP\AppFramework\Db\MultipleObjectsReturnedException
+	 * @deprecated use getByUserId or getByUserName to clarify code
 	 */
 	public function get($uid) {
-		// fix numeric uid that was cast by storing it in an array key
+		return $this->getByUserId($uid);
+	}
+
+	/**
+	 * get a user by user id
+	 *
+	 * @param string $uid
+	 * @return \OC\User\User|null Either the user or null if the specified user does not exist
+	 * @throws \OCP\AppFramework\Db\MultipleObjectsReturnedException
+	 */
+	public function getByUserId($uid) {
 		if (\is_numeric($uid)) {
 			$uid = (string)$uid;
 		}
@@ -187,8 +199,7 @@ class Manager extends PublicEmitter implements IUserManager {
 			return $this->cachedUsers->get($uid);
 		}
 		try {
-			$account = $this->accountMapper->getByUid($uid);
-			return $this->getUserObject($account);
+			return $this->getUserObject($this->accountMapper->getByUid($uid));
 		} catch (DoesNotExistException $ex) {
 			$this->cachedUsers->set($uid, null);
 			return null;
@@ -198,6 +209,27 @@ class Manager extends PublicEmitter implements IUserManager {
 				['app' => __CLASS__]
 			);
 			$this->cachedUsers->set($uid, null);
+			return null;
+		}
+	}
+
+	public function getByUserName($userName) {
+		if ($userName === null || (!\is_string($userName) && !\is_numeric($userName))) {
+			return null;
+		}
+		// FIXME separate by userid cache from by username cache ... what about an by email cache
+		if ($this->cachedUsers->hasKey($userName)) { //check the cache first to prevent having to loop over the backends
+			return $this->cachedUsers->get($userName);
+		}
+		try {
+			$account = $this->accountMapper->getByUserName($userName);
+			if ($account === null) {
+				$this->cachedUsers->set($userName, null);
+				return null;
+			}
+			return $this->getUserObject($account);
+		} catch (DoesNotExistException $ex) {
+			$this->cachedUsers->set($userName, null);
 			return null;
 		}
 	}
@@ -251,7 +283,8 @@ class Manager extends PublicEmitter implements IUserManager {
 			if ($backend->implementsActions(Backend::CHECK_PASSWORD)) {
 				$uid = $backend->checkPassword($loginName, $password);
 				if ($uid !== false) {
-					$account = $this->syncService->createOrSyncAccount($uid, $backend);
+					$userName = $loginName; // FIXME does checkPassword return username or uid? check for array as with apache backend?
+					$account = $this->syncService->createOrSyncAccount($uid, $backend, $userName);
 					return $this->getUserObject($account);
 				}
 			}
@@ -283,7 +316,7 @@ class Manager extends PublicEmitter implements IUserManager {
 	}
 
 	/**
-	 * find a user account by checking user_id, display name and email fields
+	 * find a user account by checking user id, user name, display name and email fields
 	 *
 	 * @param string $pattern
 	 * @param int $limit
@@ -323,47 +356,79 @@ class Manager extends PublicEmitter implements IUserManager {
 	/**
 	 * @param string $uid
 	 * @param string $password
+	 * @param string $userName
 	 * @throws \Exception
 	 * @return bool|IUser the created user or false
 	 */
-	public function createUser($uid, $password) {
-		return $this->emittingCall(function () use (&$uid, &$password) {
+	public function createUser($uid = null, $password, $userName = null) {
+		return $this->emittingCall(function () use (&$uid, &$password, &$userName) {
 			$l = \OC::$server->getL10N('lib');
+
+			if ($uid === null && $userName === null) {
+				throw new \Exception($l->t('A valid user name must be provided'));
+			}
+
+			if ($uid !== null && $userName === null) {
+				// use uid as username, generate uid
+				$userName = $uid;
+				$uid = null;
+			}
+
+			if ($uid === null) {
+				$uid = \uniqid('user', false); // TODO use uuid
+			}
 
 			// Check the name for bad characters
 			// Allowed are: "a-z", "A-Z", "0-9" and "_.@-'"
 			if (\preg_match('/[^a-zA-Z0-9 _\.@\-\']/', $uid)) {
-				throw new \Exception($l->t('Only the following characters are allowed in a username:'
+				throw new \Exception($l->t('Only the following characters are allowed in a userId:'
 					. ' "a-z", "A-Z", "0-9", and "_.@-\'"'));
 			}
-			// No empty username
+			// No empty userId
 			if (\trim($uid) == '') {
-				throw new \Exception($l->t('A valid username must be provided'));
+				throw new \Exception($l->t('A valid user id must be provided'));
 			}
-			// No whitespace at the beginning or at the end
-			if (\strlen(\trim($uid, "\t\n\r\0\x0B\xe2\x80\x8b")) !== \strlen(\trim($uid))) {
+			// No empty userName
+			if (\trim($userName) == '') {
+				throw new \Exception($l->t('A valid user name must be provided'));
+			}
+			// No whitespace at the beginning or at the end of the userName
+			// TODO the user id might contain it ... hmmm
+			if (\strlen(\trim($userName, "\t\n\r\0\x0B\xe2\x80\x8b")) !== \strlen(\trim($userName))) {
 				throw new \Exception($l->t('Username contains whitespace at the beginning or at the end'));
 			}
 
-			// Username must be at least 3 characters long
 			if (\strlen($uid) < 3) {
-				throw new \Exception($l->t('The username must be at least 3 characters long'));
+				throw new \Exception($l->t('The user id must be at least 3 characters long'));
+			}
+
+			if (\strlen($userName) < 3) {
+				throw new \Exception($l->t('The user name must be at least 3 characters long'));
 			}
 
 			// No empty password
-			if (\trim($password) == '') {
+			if (\trim($password) === '') {
 				throw new \Exception($l->t('A valid password must be provided'));
 			}
 
 			// Check if user already exists
 			if ($this->userExists($uid)) {
-				throw new \Exception($l->t('The username is already being used'));
+				throw new \Exception($l->t('The user id is already being used'));
 			}
 
-			$this->emit('\OC\User', 'preCreateUser', [$uid, $password]);
+			// Check if user already exists
+			if ($this->getByUserName($userName)) {
+				throw new \Exception($l->t('The user name is already being used'));
+			}
+
+			$this->emit('\OC\User', 'preCreateUser', [$uid, $password, $userName]); // FIXME document
 			\OC::$server->getEventDispatcher()->dispatch(
 				'OCP\User::validatePassword',
-				new GenericEvent(null, ['uid' => $uid, 'password' => $password])
+				new GenericEvent(null, [
+					'uid' => $uid,
+					'userName' => $userName,
+					'password' => $password
+				])
 			);
 
 			if (empty($this->backends)) {
@@ -372,8 +437,8 @@ class Manager extends PublicEmitter implements IUserManager {
 
 			foreach ($this->backends as $backend) {
 				if ($backend->implementsActions(Backend::CREATE_USER)) {
-					$backend->createUser($uid, $password);
-					$user = $this->createUserFromBackend($uid, $password, $backend);
+					$backend->createUser($uid, $password, $userName);
+					$user = $this->createUserFromBackend($uid, $password, $backend, $userName); // FIXME ... what a hack! always store in account table or make backend configurable any use db by default
 					return $user === null ? false : $user;
 				}
 			}
@@ -384,15 +449,17 @@ class Manager extends PublicEmitter implements IUserManager {
 
 	/**
 	 * @param string $uid
+	 * @param string $password
 	 * @param UserInterface $backend
+	 * @param string $userName
 	 * @return IUser | null
 	 * @deprecated core is responsible for creating accounts, see user_ldap how it is done
 	 */
-	public function createUserFromBackend($uid, $password, $backend) {
-		return $this->emittingCall(function () use (&$uid, &$password, &$backend) {
-			$this->emit('\OC\User', 'preCreateUser', [$uid, $password]);
+	public function createUserFromBackend($uid, $password, $backend, $userName) {
+		return $this->emittingCall(function () use (&$uid, &$password, &$backend, &$userName) {
+			$this->emit('\OC\User', 'preCreateUser', [$uid, $password, $userName]);
 			try {
-				$account = $this->syncService->createOrSyncAccount($uid, $backend);
+				$account = $this->syncService->createOrSyncAccount($uid, $backend, $userName);
 			} catch (\InvalidArgumentException $e) {
 				return null; // because that's what this method should do
 			}

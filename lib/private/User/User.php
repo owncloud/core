@@ -118,11 +118,49 @@ class User implements IUser {
 	 * get the user id
 	 *
 	 * @return string
+	 * @deprecated use getUserId or getUserName to clarify code
 	 */
 	public function getUID() {
+		// TODO log deprecation warning
+		return $this->getUserId();
+	}
+
+	/**
+	 * get the user id
+	 *
+	 * @return string
+	 */
+	public function getUserId() {
 		return $this->account->getUserId();
 	}
 
+	/**
+	 * get the user name
+	 *
+	 * @return string
+	 * @since 10.0.9
+	 */
+	public function getUserName() {
+		return $this->account->getUserName();
+	}
+
+	/**
+	 * set the user name
+	 *
+	 * @param string|null $userName
+	 * @return void
+	 * @since 10.0.9
+	 */
+	public function setUserName($userName) {
+		// TODO add check if allowed?
+		$userName = \trim($userName);
+		if ($userName === $this->account->getUserName()) {
+			return;
+		}
+		$this->account->setUserName($userName);
+		$this->mapper->update($this->account);
+		$this->triggerChange('userName', $userName);
+	}
 	/**
 	 * get the display name for the user, if no specific display name is set it will fallback to the user id
 	 *
@@ -131,7 +169,7 @@ class User implements IUser {
 	public function getDisplayName() {
 		$displayName = $this->account->getDisplayName();
 		if (empty($displayName)) {
-			$displayName = $this->getUID();
+			$displayName = $this->getUserName();
 		}
 		return $displayName;
 	}

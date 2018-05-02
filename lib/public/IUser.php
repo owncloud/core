@@ -38,8 +38,32 @@ interface IUser {
 	 *
 	 * @return string
 	 * @since 8.0.0
+	 * @deprecated use getUserId or getUserName to clarify code
 	 */
 	public function getUID();
+	/**
+	 * get the user id
+	 *
+	 * @return string
+	 * @since 10.0.9
+	 */
+	public function getUserId();
+
+	/**
+	 * get the user name
+	 *
+	 * @return string
+	 * @since 10.0.9
+	 */
+	public function getUserName();
+
+	/**
+	 * set the user name
+	 *
+	 * @param string $userName
+	 * @since 10.0.9
+	 */
+	public function setUserName($userName);
 
 	/**
 	 * get the display name for the user, if no specific display name is set it will fallback to the user id

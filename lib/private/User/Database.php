@@ -51,6 +51,7 @@
 namespace OC\User;
 
 use OC\Cache\CappedMemoryCache;
+use OCP\AppFramework\Db\DoesNotExistException;
 use OCP\IUserBackend;
 use OCP\User\IProvidesDisplayNameBackend;
 use OCP\User\IProvidesEMailBackend;
@@ -80,7 +81,19 @@ class Database extends Backend implements IUserBackend, IProvidesHomeBackend, IP
 	 * Creates a new user. Basic checking of username is done in OC_User
 	 * itself, not in its subclasses.
 	 */
-	public function createUser($uid, $password) {
+	public function createUser($uid, $password, $userName = null) {
+
+		// TODO ... we could use the displayname column to store the login.
+		// that way the login works because checkPassword can lookump the uid,
+		// based on login and can check the password
+
+		// or we always lookup the user in the account table
+		// actually login and email together must be unique, otherwise how do we
+		// distinguish a user with a login from a user with the same email when
+		// trying the password. currently username can contain an @.
+		// forbid that? might break existing users? force them to change their
+		// username on next login?
+
 		unset($this->cache[$uid]); // make sure we are reading from the db
 		if (!$this->userExists($uid)) {
 			$query = \OC_DB::prepare('INSERT INTO `*PREFIX*users` ( `uid`, `password` ) VALUES( ?, ? )');
@@ -88,6 +101,9 @@ class Database extends Backend implements IUserBackend, IProvidesHomeBackend, IP
 
 			if ($result) {
 				unset($this->cache[$uid]); // invalidate non existing user in cache
+				if ($userName !== null) {
+					$this->setDisplayName($uid, $userName);
+				}
 			}
 
 			return $result ? true : false;
@@ -203,7 +219,14 @@ class Database extends Backend implements IUserBackend, IProvidesHomeBackend, IP
 	 * Check if the password is correct without logging in the user
 	 * returns the user id or false
 	 */
-	public function checkPassword($uid, $password) {
+	public function checkPassword($loginName, $password) {
+		try {
+			$account = \OC::$server->getAccountMapper()->getByUserName($loginName);
+		} catch (DoesNotExistException $ex) {
+			return false;
+		}
+		$uid = $account->getUserId();
+
 		$query = \OC_DB::prepare('SELECT `uid`, `password` FROM `*PREFIX*users` WHERE LOWER(`uid`) = LOWER(?)');
 		$result = $query->execute([$uid]);
 
@@ -216,7 +239,7 @@ class Database extends Backend implements IUserBackend, IProvidesHomeBackend, IP
 					$this->setPassword($uid, $password);
 					unset($this->cache[$uid]); // invalidate cache
 				}
-				return $row['uid'];
+				return $uid;
 			}
 		}
 
