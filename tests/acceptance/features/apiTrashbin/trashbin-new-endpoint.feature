@@ -182,6 +182,7 @@ Feature: trashbin-new-endpoint
 
 	@local_storage
 	@no_default_encryption
+	@skip_on_objectstore
 	Scenario: Deleting a folder in external storage moves it to the trashbin
 		Given the administrator has invoked occ command "files:scan --all"
 		And user "user0" has been created
@@ -192,6 +193,7 @@ Feature: trashbin-new-endpoint
 
 	@local_storage
 	@no_default_encryption
+	@skip_on_objectstore
 	Scenario: Deleting a file in external storage moves it to the trashbin and can be restored
 		Given the administrator has invoked occ command "files:scan --all"
 		And user "user0" has been created
