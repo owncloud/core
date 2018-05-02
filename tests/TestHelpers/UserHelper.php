@@ -111,14 +111,16 @@ class UserHelper {
 	 * @return ResponseInterface
 	 */
 	public static function deleteUser(
-		$baseUrl, $userName, $adminUser, $adminPassword
+		$baseUrl, $userName, $adminUser, $adminPassword, $apiVersion = 2
 	) {
 		return OcsApiHelper::sendRequest(
 			$baseUrl,
 			$adminUser,
 			$adminPassword,
 			"DELETE",
-			"/cloud/users/" . $userName
+			"/cloud/users/" . $userName,
+			[],
+			$apiVersion
 		);
 	}
 
