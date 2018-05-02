@@ -487,7 +487,7 @@ services:
         DB_TYPE: mysqlmb4
 
   postgres:
-    image: postgres:9.4
+    image: ${POSTGRES_IMAGE=postgres:9.4}
     environment:
       - POSTGRES_USER=owncloud
       - POSTGRES_PASSWORD=owncloud
@@ -670,6 +670,15 @@ matrix:
 
     - PHP_VERSION: 7.1
       DB_TYPE: postgres
+      POSTGRES_IMAGE: postgres:9.4
+      TEST_SUITE: phpunit
+      COVERAGE: true
+      INSTALL_SERVER: true
+      INSTALL_TESTING_APP: true
+
+    - PHP_VERSION: 7.1
+      DB_TYPE: postgres
+      POSTGRES_IMAGE: postgres:10.3
       TEST_SUITE: phpunit
       COVERAGE: true
       INSTALL_SERVER: true
