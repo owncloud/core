@@ -648,6 +648,22 @@ trait WebDav {
 	public function theSingleResponseShouldContainAPropertyWithValue(
 		$key, $expectedValue
 	) {
+		$this->theSingleResponseShouldContainAPropertyWithValueAndAlternative($key, $expectedValue, $expectedValue);
+	}
+
+	/**
+	 * @Then the single response should contain a property :key with value :value or with value :altValue
+	 *
+	 * @param string $key
+	 * @param string $expectedValue
+	 * @param string $altExpectedValue
+	 *
+	 * @return int
+	 * @throws \Exception
+	 */
+	public function theSingleResponseShouldContainAPropertyWithValueAndAlternative(
+		$key, $expectedValue, $altExpectedValue
+	) {
 		$keys = $this->response;
 		if (!\array_key_exists($key, $keys)) {
 			throw new \Exception(
@@ -675,7 +691,7 @@ trait WebDav {
 			}
 		}
 
-		if ($value != $expectedValue) {
+		if ($value != $expectedValue && $value != $altExpectedValue) {
 			throw new \Exception(
 				"Property \"$key\" found with value \"$value\", expected \"$expectedValue\""
 			);
