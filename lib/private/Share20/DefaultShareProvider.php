@@ -632,7 +632,8 @@ class DefaultShareProvider implements IShareProvider {
 		// exclude shares leading to trashbin on home storages
 		$pathSections = explode('/', $data['path'], 2);
 		// FIXME: would not detect rare md5'd home storage case properly
-		if ($pathSections[0] !== 'files' && explode(':', $data['storage_string_id'], 2)[0] === 'home') {
+		$storagePrefix = \explode(':', $data['storage_string_id'], 2)[0];
+		if ($pathSections[0] !== 'files' && \in_array($storagePrefix, ['home', 'object'], true)) {
 			return false;
 		}
 		return true;
