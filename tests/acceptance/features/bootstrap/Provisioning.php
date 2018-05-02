@@ -269,6 +269,37 @@ trait Provisioning {
 	}
 
 	/**
+	 * @When /^the administrator sends a user deletion request for user "([^"]*)" using the API$/
+	 * 
+	 * @param string $user
+	 * 
+	 * @return void
+	 */
+	public function theAdminDeletesTheUserUsingAPI($user) {
+		$this->deleteTheUserUsingTheAPI($user);
+		$this->rememberThatUserIsNotExpectedToExist($user);
+	}
+
+	/**
+	 * @When /^the subadmin "([^"]*)" sends a user deletion request for user "([^"]*)" using the API$/
+	 * 
+	 * @param string $subadmin
+	 * @param string $user
+	 * 
+	 * @return void
+	 */
+	public function theSubAdminDeletesTheUser($subadmin, $user) {
+		$this->response = UserHelper::deleteUser(
+			$this->getBaseUrl(),
+			$user,
+			$subadmin,
+			$this->getUserPassword($subadmin),
+			$this->apiVersion
+		);
+		$this->rememberThatUserIsNotExpectedToExist($user);
+	}
+
+	/**
 	 * @Then /^user "([^"]*)" should exist$/
 	 *
 	 * @param string $user
@@ -887,7 +918,8 @@ trait Provisioning {
 			$this->getBaseUrl(),
 			$user,
 			$this->getAdminUsername(),
-			$this->getAdminPassword()
+			$this->getAdminPassword(),
+			$this->apiVersion
 		);
 
 		// Only log a message if the test really expected the user to have been
