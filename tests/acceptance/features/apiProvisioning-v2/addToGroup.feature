@@ -76,9 +76,9 @@ So that I can give a user access to the resources of the group
 		And user "subadmin" has been made a subadmin of group "new-group"
 		When user "subadmin" sends HTTP method "POST" to API endpoint "/cloud/users/brand-new-user/groups" with body
 			| groupid | new-group |
-		Then the OCS status code should be "200"
-		And the HTTP status code should be "200"
-		And user "brand-new-user" should belong to group "new-group"
+		Then the OCS status code should be "403"
+		And the HTTP status code should be "403"
+		And user "brand-new-user" should not belong to group "new-group"
 
 	Scenario: subadmin tries to add user to groups the subadmin is not responsible for
 		Given user "other-subadmin" has been created
@@ -88,6 +88,6 @@ So that I can give a user access to the resources of the group
 		And user "other-subadmin" has been made a subadmin of group "other-group"
 		When user "other-subadmin" sends HTTP method "POST" to API endpoint "/cloud/users/brand-new-user/groups" with body
 			| groupid | new-group |
-		Then the OCS status code should be "400"
-		And the HTTP status code should be "400"
+		Then the OCS status code should be "403"
+		And the HTTP status code should be "403"
 		And user "brand-new-user" should not belong to group "new-group"
