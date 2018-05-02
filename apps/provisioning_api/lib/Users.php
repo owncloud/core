@@ -480,8 +480,7 @@ class Users {
 			return new Result(null, 102);
 		}
 
-		// Check they're an admin or subadmin of the group
-		if (!$this->canUserManageGroup($user, $group)) {
+		if (!$this->groupManager->isAdmin($user->getUID())) {
 			return new Result(null, 104);
 		}
 

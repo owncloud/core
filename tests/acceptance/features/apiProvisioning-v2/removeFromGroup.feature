@@ -66,8 +66,8 @@ So that I can manage user access to group resources
 		And user "other-subadmin" has been made a subadmin of group "other-group"
 		When user "other-subadmin" sends HTTP method "DELETE" to API endpoint "/cloud/users/brand-new-user/groups" with body
 			| groupid | new-group |
-		Then the OCS status code should be "400"
-		And the HTTP status code should be "400"
+		Then the OCS status code should be "403"
+		And the HTTP status code should be "403"
 		And user "brand-new-user" should belong to group "new-group"
 
 	@skip @issue-31276
