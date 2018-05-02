@@ -560,7 +560,7 @@ class OC_API {
 	public static function notFound() {
 		$format = \OC::$server->getRequest()->getParam('format', 'xml');
 		$txt='Invalid query, please check the syntax. API specifications are here:'
-			.' http://www.freedesktop.org/wiki/Specifications/open-collaboration-services. DEBUG OUTPUT:'."\n";
+			.' http://www.freedesktop.org/wiki/Specifications/open-collaboration-services.';
 		OC_API::respond(new \OC\OCS\Result(null, API::RESPOND_UNKNOWN_ERROR, $txt), $format);
 	}
 }
