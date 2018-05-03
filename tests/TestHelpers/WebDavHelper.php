@@ -77,7 +77,7 @@ class WebDavHelper {
 	 * should include the subfolder if owncloud runs in a subfolder
 	 * e.g. http://localhost:8080/owncloud-core
 	 * @param string $user
-	 * @param string $password
+	 * @param string $password or token when bearer auth is used
 	 * @param string $method PUT, GET, DELETE, etc.
 	 * @param string $path
 	 * @param array $headers
@@ -86,6 +86,7 @@ class WebDavHelper {
 	 * @param int $davPathVersionToUse (1|2)
 	 * @param string $type of request
 	 * @param string $sourceIpAddress to initiate the request from
+	 * @param string $authType basic|bearer
 	 *
 	 * @return \GuzzleHttp\Message\FutureResponse|\GuzzleHttp\Message\ResponseInterface|NULL
 	 * @throws \GuzzleHttp\Exception\BadResponseException
@@ -101,7 +102,8 @@ class WebDavHelper {
 		$requestBody = null,
 		$davPathVersionToUse = 1,
 		$type = "files",
-		$sourceIpAddress = null
+		$sourceIpAddress = null,
+		$authType = "basic"
 	) {
 		$baseUrl = self::sanitizeUrl($baseUrl, true);
 		$davPath = self::getDavPath($user, $davPathVersionToUse, $type);
@@ -115,7 +117,13 @@ class WebDavHelper {
 		if (!is_null($requestBody)) {
 			$options['body'] = $requestBody;
 		}
-		$options['auth'] = [$user, $password];
+		
+		if ($authType === 'basic') {
+			$options['auth'] = [$user, $password];
+		}
+		if ($authType === 'bearer') {
+			$headers['Authorization'] = 'Bearer ' . $password;
+		}
 		
 		if (!is_null($sourceIpAddress)) {
 			$options['config']
