@@ -149,6 +149,13 @@ if test "$BEHAT_FILTER_TAGS"; then
 	}'
 fi
 
+# If a feature file has been specified but no suite, then deduce the suite
+if test -n "$SCENARIO_TO_RUN" && test -z "$BEHAT_SUITE"
+then
+    FEATURE_PATH=`dirname $SCENARIO_TO_RUN`
+    BEHAT_SUITE=`basename $FEATURE_PATH`
+fi
+
 if test "$BEHAT_SUITE"; then
 	BEHAT_SUITE_OPTION="--suite=$BEHAT_SUITE"
 else
