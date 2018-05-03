@@ -56,8 +56,8 @@ class Checksum extends Wrapper {
 	 */
 	public function fopen($path, $mode) {
 		$stream = $this->getWrapperStorage()->fopen($path, $mode);
-		if (!\is_resource($stream)) {
-			// don't wrap on error
+		if (!\is_resource($stream) || $this->isReadWriteStream($mode)) {
+			// don't wrap on error or mixed mode streams (could cause checksum corruption)
 			return $stream;
 		}
 
@@ -116,6 +116,14 @@ class Checksum extends Wrapper {
 		}
 
 		return self::NOT_REQUIRED;
+	}
+
+	/**
+	 * @param $mode
+	 * @return bool
+	 */
+	private function isReadWriteStream($mode) {
+		return \strpos($mode, '+') !== false;
 	}
 
 	/**
