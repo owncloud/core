@@ -28,6 +28,7 @@ use Doctrine\DBAL\Platforms\OraclePlatform;
 use Doctrine\DBAL\Platforms\SqlitePlatform;
 use OCA\DAV\Connector\Sabre\Directory;
 use OCA\DAV\Connector\Sabre\Node;
+use OC\Cache\CappedMemoryCache;
 use Sabre\DAV\INode;
 
 /**
@@ -49,6 +50,11 @@ class FileCustomPropertiesBackend extends AbstractCustomPropertiesBackend {
 	. ' WHERE `fileid` = ? AND `propertyname` = ?';
 
 	/**
+	 * @var CappedMemoryCache
+	 */
+	protected $deletedItemsCache;
+
+	/**
 	 * @var string the source path of a move action.
 	 * This is set during a move so the delete action can know if a move has been called before
 	 * in order to not fetch the source node again (which would cause an error)
@@ -56,22 +62,49 @@ class FileCustomPropertiesBackend extends AbstractCustomPropertiesBackend {
 	private $moveSource = null;
 
 	/**
+	 * Store fileId before deletion
+	 *
+	 * @param string $path
+	 *
+	 * @return void
+	 */
+	public function beforeDelete($path) {
+		try {
+			$node = $this->getNodeForPath($path);
+			if ($node !== null && $node->getId()) {
+				if ($this->deletedItemsCache === null) {
+					$this->deletedItemsCache = new CappedMemoryCache();
+				}
+				$this->deletedItemsCache->set($path, $node->getId());
+			}
+		} catch (\Exception $e) {
+			// do nothing, delete will throw the same exception anyway
+		}
+	}
+
+	/**
 	 * This method is called after a node is deleted.
 	 *
 	 * @param string $path path of node for which to delete properties
+	 *
+	 * @return void
 	 */
 	public function delete($path) {
 		$moveSource = $this->moveSource;
 		$this->moveSource = null;
 
 		if ($moveSource === $path) {
-			// trying to delete a file that has been moved -> ignoring because the file
-			// exists in another path
+			// trying to delete a file that has been moved -> ignoring because
+			// the file exists in another path
 			return;
 		}
 
-		$fileId = $this->tree->getDeletedItemFileId($path);
-		if ($fileId !== false) {
+		if ($this->deletedItemsCache === null) {
+			return;
+		}
+
+		$fileId = $this->deletedItemsCache->get($path);
+		if ($fileId !== null) {
 			$statement = $this->connection->prepare(self::DELETE_BY_ID_STMT);
 			$statement->execute([$fileId]);
 			$this->offsetUnset($fileId);

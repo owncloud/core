@@ -29,6 +29,7 @@
 namespace OCA\DAV\Connector\Sabre;
 
 use OCA\DAV\DAV\FileCustomPropertiesBackend;
+use OCA\DAV\DAV\FileCustomPropertiesPlugin;
 use OCA\DAV\Files\BrowserErrorPagePlugin;
 use OCP\Files\Mount\IMountManager;
 use OCP\IConfig;
@@ -182,7 +183,7 @@ class ServerFactory {
 
 				// custom properties plugin must be the last one
 				$server->addPlugin(
-					new \Sabre\DAV\PropertyStorage\Plugin(
+					new FileCustomPropertiesPlugin(
 						new FileCustomPropertiesBackend(
 							$objectTree,
 							$this->databaseConnection,
