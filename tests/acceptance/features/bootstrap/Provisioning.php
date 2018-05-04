@@ -1441,6 +1441,22 @@ trait Provisioning {
 	}
 
 	/**
+	 * @Then the attributes of user :user returned by the API should include
+	 *
+	 * @param string $user
+	 * @param \Behat\Gherkin\Node\TableNode $body
+	 *
+	 * @return void
+	 */
+	public function checkAttributesForUser($user, $body) {
+		$this->userSendsHTTPMethodToAPIEndpointWithBody(
+			$this->getAdminUsername(), "GET", "/cloud/users/$user",
+			null
+		);
+		$this->checkUserAttributes($body);
+	}
+
+	/**
 	 * @BeforeScenario
 	 * @AfterScenario
 	 *
