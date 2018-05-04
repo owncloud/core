@@ -64,7 +64,7 @@ trait Auth {
 	 *
 	 * @return void
 	 */
-	private function sendRequest(
+	public function sendRequest(
 		$url, $method, $authHeader = null, $useCookies = false
 	) {
 		$fullUrl = $this->getBaseUrl() . $url;
@@ -82,7 +82,9 @@ trait Auth {
 				$request->setHeader('Authorization', $authHeader);
 			}
 			$request->setHeader('OCS-APIREQUEST', 'true');
-			$request->setHeader('requesttoken', $this->requestToken);
+			if (isset($this->requestToken)) {
+				$request->setHeader('requesttoken', $this->requestToken);
+			}
 			$this->response = $this->client->send($request);
 		} catch (BadResponseException $ex) {
 			$this->response = $ex->getResponse();
