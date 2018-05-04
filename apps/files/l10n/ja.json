@@ -9,6 +9,7 @@
     "Favorites" : "お気に入り",
     "Could not create folder \"{dir}\"" : "フォルダー \"{dir}\" を作成できませんでした",
     "Upload cancelled." : "アップロードはキャンセルされました。",
+    "Processing files..." : "処理中…",
     "Unable to upload {filename} as it is a directory or has 0 bytes" : "ディレクトリもしくは0バイトのため {filename} をアップロードできません",
     "Not enough free space, you are uploading {size1} but only {size2} is left" : "空き容量が十分でなく、 {size1} をアップロードしていますが、 {size2} しか残っていません。",
     "Target folder \"{dir}\" does not exist any more" : "ターゲットフォルダー \"{dir}\" はもう存在しません",
