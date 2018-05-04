@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-#composer install
+# composer install
 
 # from http://stackoverflow.com/a/630387
 SCRIPT_PATH="`dirname \"$0\"`"              # relative
@@ -58,7 +58,8 @@ declare -x TEST_SERVER_FED_URL
 declare -x TEST_WITH_PHPDEVSERVER
 [[ -z "${TEST_SERVER_URL}" || -z "${TEST_SERVER_FED_URL}" ]] && TEST_WITH_PHPDEVSERVER="true"
 
-if [ "${TEST_WITH_PHPDEVSERVER}" != "true" ]; then
+if [ "${TEST_WITH_PHPDEVSERVER}" != "true" ]
+then
     echo "Not using php inbuilt server for running scenario ..."
     echo "Updating .htaccess for proper rewrites"
     $OCC config:system:set htaccess.RewriteBase --value /
@@ -86,18 +87,19 @@ else
     export TEST_SERVER_FED_URL="http://localhost:$PORT_FED"
 fi
 
-#Set up personalized skeleton
+# Set up personalized skeleton
 PREVIOUS_SKELETON_DIR=$($OCC --no-warnings config:system:get skeletondirectory)
 $OCC config:system:set skeletondirectory --value="$(pwd)/skeleton"
 
 PREVIOUS_HTTP_FALLBACK_SETTING=$($OCC --no-warnings config:system:get sharing.federation.allowHttpFallback)
 $OCC config:system:set sharing.federation.allowHttpFallback --type boolean --value true
 
-#Enable external storage app
+# Enable external storage app
 $OCC config:app:set core enable_external_storage --value=yes
 $OCC config:system:set files_external_allow_create_new_local --value=true
 
 PREVIOUS_TESTING_APP_STATUS=$($OCC --no-warnings app:list "^testing$")
+
 if [[ "$PREVIOUS_TESTING_APP_STATUS" =~ ^Disabled: ]]
 then
 	$OCC app:enable testing || { echo "Unable to enable testing app" >&2; exit 1; }
@@ -113,24 +115,30 @@ ID_STORAGE=`echo $OUTPUT_CREATE_STORAGE | awk {'print $5'}`
 
 $OCC files_external:option $ID_STORAGE enable_sharing true
 
-if test "$OC_TEST_ALT_HOME" = "1"; then
+if [ "$OC_TEST_ALT_HOME" = "1" ]
+then
 	env_alt_home_enable
 fi
 
 # Enable encryption if requested
-if test "$OC_TEST_ENCRYPTION_ENABLED" = "1"; then
+if [ "$OC_TEST_ENCRYPTION_ENABLED" = "1" ]
+then
 	env_encryption_enable
 	BEHAT_FILTER_TAGS="~@no_encryption&&~@no_default_encryption"
-elif test "$OC_TEST_ENCRYPTION_MASTER_KEY_ENABLED" = "1"; then
+elif [ "$OC_TEST_ENCRYPTION_MASTER_KEY_ENABLED" = "1" ]
+then
 	env_encryption_enable_master_key
 	BEHAT_FILTER_TAGS="~@no_encryption&&~@no_masterkey_encryption"
-elif test "$OC_TEST_ENCRYPTION_USER_KEYS_ENABLED" = "1"; then
+elif [ "$OC_TEST_ENCRYPTION_USER_KEYS_ENABLED" = "1" ]
+then
 	env_encryption_enable_user_keys
 	BEHAT_FILTER_TAGS="~@no_encryption&&~@no_userkeys_encryption"
 fi
 
-if test "$BEHAT_FILTER_TAGS"; then
-    if [[ $BEHAT_FILTER_TAGS != *@skip* ]]; then
+if [ -n "$BEHAT_FILTER_TAGS" ]
+then
+    if [[ $BEHAT_FILTER_TAGS != *@skip* ]]
+    then
     	BEHAT_FILTER_TAGS="$BEHAT_FILTER_TAGS&&~@skip"
    	fi
 else
@@ -139,7 +147,8 @@ fi
 
 BEHAT_FILTER_TAGS="$BEHAT_FILTER_TAGS&&@api"
 
-if test "$BEHAT_FILTER_TAGS"; then
+if [ -n "$BEHAT_FILTER_TAGS" ]
+then
 	BEHAT_PARAMS='{ 
 		"gherkin": {
 			"filters": {
@@ -150,13 +159,14 @@ if test "$BEHAT_FILTER_TAGS"; then
 fi
 
 # If a feature file has been specified but no suite, then deduce the suite
-if test -n "$SCENARIO_TO_RUN" && test -z "$BEHAT_SUITE"
+if [ -n "$SCENARIO_TO_RUN" ] && [ -z "$BEHAT_SUITE" ]
 then
     FEATURE_PATH=`dirname $SCENARIO_TO_RUN`
     BEHAT_SUITE=`basename $FEATURE_PATH`
 fi
 
-if test "$BEHAT_SUITE"; then
+if [ "$BEHAT_SUITE" ]
+then
 	BEHAT_SUITE_OPTION="--suite=$BEHAT_SUITE"
 else
 	BEHAT_SUITE_OPTION=""
@@ -165,30 +175,34 @@ fi
 BEHAT_PARAMS="$BEHAT_PARAMS" $BEHAT --strict -f junit -f pretty $BEHAT_SUITE_OPTION $SCENARIO_TO_RUN
 RESULT=$?
 
-if [ "${TEST_WITH_PHPDEVSERVER}" == "true" ]; then
+if [ "${TEST_WITH_PHPDEVSERVER}" == "true" ]
+then
     kill $PHPPID
     kill $PHPPID_FED
 fi
 
 $OCC files_external:delete -y $ID_STORAGE
 
-#Disable external storage app
+# Disable external storage app
 $OCC config:app:set core enable_external_storage --value=no
 
 # Put back state of the testing app
-if test "$TESTING_ENABLED_BY_SCRIPT" = true; then
+if [ "$TESTING_ENABLED_BY_SCRIPT" = true ]
+then
 	$OCC app:disable testing
 fi
 
 # Put back personalized skeleton
-if test "A$PREVIOUS_SKELETON_DIR" = "A"; then
+if [ "A$PREVIOUS_SKELETON_DIR" = "A" ]
+then
 	$OCC config:system:delete skeletondirectory
 else
 	$OCC config:system:set skeletondirectory --value="$PREVIOUS_SKELETON_DIR"
 fi
 
 # Put back HTTP fallback setting
-if test "A$PREVIOUS_HTTP_FALLBACK_SETTING" = "A"; then
+if [ "A$PREVIOUS_HTTP_FALLBACK_SETTING" = "A" ]
+then
 	$OCC config:system:delete sharing.federation.allowHttpFallback
 else
 	$OCC config:system:set sharing.federation.allowHttpFallback --type boolean --value="$PREVIOUS_HTTP_FALLBACK_SETTING"
@@ -197,24 +211,29 @@ fi
 # Clear storage folder
 rm -Rf work/local_storage/*
 
-if test "$OC_TEST_ALT_HOME" = "1"; then
+if [ "$OC_TEST_ALT_HOME" = "1" ]
+then
 	env_alt_home_clear
 fi
 
 # Disable encryption if requested
-if test "$OC_TEST_ENCRYPTION_ENABLED" = "1"; then
+if [ "$OC_TEST_ENCRYPTION_ENABLED" = "1" ]
+then
 	env_encryption_disable
 fi
 
-if test "$OC_TEST_ENCRYPTION_MASTER_KEY_ENABLED" = "1"; then
+if [ "$OC_TEST_ENCRYPTION_MASTER_KEY_ENABLED" = "1" ]
+then
 	env_encryption_disable_master_key
 fi
 
-if test "$OC_TEST_ENCRYPTION_USER_KEYS_ENABLED" = "1"; then
+if [ "$OC_TEST_ENCRYPTION_USER_KEYS_ENABLED" = "1" ]
+then
 	env_encryption_disable_user_keys
 fi
 
-if [ -z $HIDE_OC_LOGS ]; then
+if [ -z $HIDE_OC_LOGS ]
+then
 	tail "${OC_PATH}/data/owncloud.log"
 fi
 
