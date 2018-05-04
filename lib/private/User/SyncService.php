@@ -220,7 +220,8 @@ class SyncService {
 			if ($quota !== null) {
 				$a->setQuota($quota);
 			}
-		} else {
+		}
+		if ($quota === null) {
 			list($hasKey, $quota) = $this->readUserConfig($uid, 'files', 'quota');
 			if ($hasKey) {
 				$a->setQuota($quota);
