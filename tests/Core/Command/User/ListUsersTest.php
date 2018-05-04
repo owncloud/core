@@ -53,16 +53,26 @@ class ListUsersTest extends TestCase
      * @param array $input
      * @param string $expectedOutput
      */
-    public function testCommandInput($input, $expectedOutput) {
+    public function testCommandInput($input, $expectedOutputs) {
         $this->commandTester->execute($input);
         $output = $this->commandTester->getDisplay();
-        $this->assertContains($expectedOutput, $output);
+        foreach ($expectedOutputs as $expectedOutput) {
+			$this->assertContains($expectedOutput, $output);
+		}
     }
 
     public function inputProvider() {
         return [
-            [[], 'testlistuser'],
-            [['search-pattern' => 'testlist'], 'testlistuser']
+            [[], ['testlistuser']],
+			[['search-pattern' => 'testlist'], ['testlistuser']],
+			[['--attributes' => [
+				'uid', 'displayname', 'email', 'quota', 'enabled', 'lastlogin',
+				'home', 'backend', 'cloudid', 'searchterms'
+			]], [
+				'uid', 'displayName', 'email', 'quota', 'enabled', 'lastLogin',
+				'home', 'backend', 'cloudId', 'searchTerms'
+				]
+			]
         ];
     }
 
