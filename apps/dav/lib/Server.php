@@ -46,6 +46,7 @@ use OCA\DAV\Connector\Sabre\SharesPlugin;
 use OCA\DAV\Connector\Sabre\TagsPlugin;
 use OCA\DAV\Connector\Sabre\ValidateRequestPlugin;
 use OCA\DAV\DAV\FileCustomPropertiesBackend;
+use OCA\DAV\DAV\FileCustomPropertiesPlugin;
 use OCA\DAV\DAV\MiscCustomPropertiesBackend;
 use OCA\DAV\DAV\PublicAuth;
 use OCA\DAV\Files\BrowserErrorPagePlugin;
@@ -214,7 +215,7 @@ class Server {
 					)
 				);
 
-				$filePropertiesPlugin = new \Sabre\DAV\PropertyStorage\Plugin(
+				$filePropertiesPlugin = new FileCustomPropertiesPlugin(
 					new FileCustomPropertiesBackend(
 						$this->server->tree,
 						\OC::$server->getDatabaseConnection(),

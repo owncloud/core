@@ -26,7 +26,9 @@ namespace OCA\DAV\Tests\unit\DAV;
 use Doctrine\DBAL\Platforms\AbstractPlatform;
 use Doctrine\DBAL\Platforms\MySqlPlatform;
 use Doctrine\DBAL\Platforms\SqlitePlatform;
+use OCA\DAV\Connector\Sabre\File;
 use OCA\DAV\DAV\FileCustomPropertiesBackend;
+use OCA\DAV\DAV\FileCustomPropertiesPlugin;
 use OCA\DAV\Tree;
 use Sabre\DAV\PropFind;
 use Sabre\DAV\SimpleCollection;
@@ -53,6 +55,11 @@ class FileCustomPropertiesBackendTest extends \Test\TestCase {
 	/**
 	 * @var FileCustomPropertiesBackend
 	 */
+	private $backend;
+
+	/**
+	 * @var FileCustomPropertiesPlugin
+	 */
 	private $plugin;
 
 	/**
@@ -77,11 +84,12 @@ class FileCustomPropertiesBackendTest extends \Test\TestCase {
 			->method('getUID')
 			->will($this->returnValue($userId));
 
-		$this->plugin = new FileCustomPropertiesBackend(
+		$this->backend = new FileCustomPropertiesBackend(
 			$this->tree,
 			\OC::$server->getDatabaseConnection(),
 			$this->user
 		);
+		$this->plugin = new FileCustomPropertiesPlugin($this->backend);
 		
 		$connection = \OC::$server->getDatabaseConnection();
 		$qb = $connection->getQueryBuilder();
@@ -129,7 +137,7 @@ class FileCustomPropertiesBackendTest extends \Test\TestCase {
 			'customprop2' => 'value2',
 		]);
 
-		$this->plugin->propPatch(
+		$this->backend->propPatch(
 			$path,
 			$propPatch
 		);
@@ -171,7 +179,7 @@ class FileCustomPropertiesBackendTest extends \Test\TestCase {
 			0
 		);
 
-		$this->plugin->propFind(
+		$this->backend->propFind(
 			'/dummypath',
 			$propFind
 		);
@@ -203,12 +211,12 @@ class FileCustomPropertiesBackendTest extends \Test\TestCase {
 			0
 		);
 
-		$this->plugin->propFind(
+		$this->backend->propFind(
 			'/dummypath',
 			$propFind
 		);
 
-		$this->plugin->propFind(
+		$this->backend->propFind(
 			'/dummypath',
 			$propFind
 		);
@@ -239,7 +247,7 @@ class FileCustomPropertiesBackendTest extends \Test\TestCase {
 			0
 		);
 
-		$this->plugin->propFind(
+		$this->backend->propFind(
 			'/dummypath',
 			$propFind
 		);
@@ -311,12 +319,12 @@ class FileCustomPropertiesBackendTest extends \Test\TestCase {
 			0
 		);
 
-		$this->plugin->propFind(
+		$this->backend->propFind(
 			'/dummypath',
 			$propFindRoot
 		);
 
-		$this->plugin->propFind(
+		$this->backend->propFind(
 			'/dummypath/test.txt',
 			$propFindSub
 		);
@@ -338,11 +346,7 @@ class FileCustomPropertiesBackendTest extends \Test\TestCase {
 	 */
 	public function testDeleteProperty() {
 		$path = '/dummypath';
-		$node = $this->createTestNode('\OCA\DAV\Connector\Sabre\File');
-		$this->tree->expects($this->any())
-			->method('getDeletedItemFileId')
-			->with($path)
-			->will($this->returnValue($node->getId()));
+		$node = $this->createTestNode(File::class);
 
 		$this->tree->expects($this->any())
 			->method('getNodeForPath')
@@ -354,7 +358,7 @@ class FileCustomPropertiesBackendTest extends \Test\TestCase {
 		$propPatch = new \Sabre\DAV\PropPatch([
 			'customprop' => 'propvalue',
 		]);
-		$this->plugin->propPatch($path,	$propPatch);
+		$this->backend->propPatch($path, $propPatch);
 		$propPatch->commit();
 		$this->assertEmpty($propPatch->getRemainingMutations());
 
@@ -366,17 +370,18 @@ class FileCustomPropertiesBackendTest extends \Test\TestCase {
 			[ 'customprop' ],
 			0
 		);
-		$this->plugin->propFind($path, $propFindBefore);
+		$this->backend->propFind($path, $propFindBefore);
 		$this->assertEquals('propvalue', $propFindBefore->get('customprop'));
 
-		$this->plugin->delete($path);
+		$this->plugin->beforeUnbind($path);
+		$this->backend->delete($path);
 
 		$propFindAfter = new PropFind(
 			$path,
 			[ 'customprop' ],
 			0
 		);
-		$this->plugin->propFind($path, $propFindAfter);
+		$this->backend->propFind($path, $propFindAfter);
 		$this->assertNull($propFindAfter->get('customprop'));
 	}
 
@@ -428,13 +433,17 @@ class FileCustomPropertiesBackendTest extends \Test\TestCase {
 			->method('getDatabasePlatform')
 			->will($this->returnValue($platform));
 
-		$this->plugin = new FileCustomPropertiesBackend(
+		$this->backend = new FileCustomPropertiesBackend(
 			$this->tree,
 			$dbConnectionMock,
 			$this->user
 		);
 
-		$actual = $this->invokePrivate($this->plugin, 'getChunks', [$toSlice, $otherPlaceholdersCount]);
+		$actual = $this->invokePrivate(
+			$this->backend,
+			'getChunks',
+			[$toSlice, $otherPlaceholdersCount]
+		);
 		$this->assertEquals($expected, $actual);
 	}
 }
