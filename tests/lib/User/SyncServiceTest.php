@@ -33,6 +33,7 @@ use OCP\AppFramework\Db\MultipleObjectsReturnedException;
 use OCP\IConfig;
 use OCP\ILogger;
 use OCP\User\IProvidesHomeBackend;
+use OCP\User\IProvidesQuotaBackend;
 use OCP\UserInterface;
 use Test\TestCase;
 
@@ -224,6 +225,55 @@ class SyncServiceTest extends TestCase {
 		$this->assertTrue(is_array($response));
 		$this->assertEquals(1, count($response[0]));
 		$this->assertEquals(0, count($response[1]));
+	}
+
+	public function providesSyncQuota() {
+		return [
+			[true, null, null, null],
+			[true, '1', null, '1'],
+			[true, null, '2', '2'],
+			[false, null, null, null],
+			[false, null, '3', '3'],
+		];
+	}
+
+	/**
+	 * @dataProvider providesSyncQuota
+	 * @param $backendProvidesQuota
+	 * @param $backendQuota
+	 * @param $preferencesQuota
+	 * @param $expectedQuota
+	 */
+	public function testSyncQuota($backendProvidesQuota, $backendQuota, $preferencesQuota, $expectedQuota) {
+
+		/** @var UserInterface | \PHPUnit_Framework_MockObject_MockObject $backend */
+		$a = $this->getMockBuilder(Account::class)->setMethods(['setQuota'])->getMock();
+
+		if ($backendProvidesQuota) {
+			/** @var UserInterface | IProvidesQuotaBackend | \PHPUnit_Framework_MockObject_MockObject $backend */
+			$backend = $this->createMock([UserInterface::class, IProvidesQuotaBackend::class]);
+			$backend->expects($this->exactly(1))->method('getQuota')->willReturn($backendQuota);
+		} else {
+			$backend = $this->createMock(UserInterface::class);
+		}
+
+		// legacy preferences has a quota value
+		if ($preferencesQuota) {
+			$this->config->method('getUserKeys')->willReturn(['quota']);
+			$this->config->method('getUserValue')->willReturn($preferencesQuota);
+		} else {
+			$this->config->method('getUserKeys')->willReturn([]);
+		}
+
+		// Account gets the existing quota
+		if ($expectedQuota) {
+			$a->expects($this->exactly(1))->method('setQuota')->with($expectedQuota);
+		} else {
+			$a->expects($this->never())->method('setQuota');
+		}
+
+		$s = new SyncService($this->config, $this->logger, $this->mapper);
+		static::invokePrivate($s, 'syncQuota', [$a, $backend]);
 	}
 
 }
