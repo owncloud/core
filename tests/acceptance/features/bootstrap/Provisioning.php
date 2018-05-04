@@ -1429,12 +1429,16 @@ trait Provisioning {
 	 * @return void
 	 */
 	public function checkUserAttributes($body) {
-		$data = $this->response->xml()->data[0];
 		$fd = $body->getRowsHash();
 		foreach ($fd as $field => $value) {
-			if ($data->$field != $value) {
+			$data = $this->response->xml()->data[0];
+			$field_array = \explode(' ', $field);
+			foreach ($field_array as $field_name) {
+				$data = $data->$field_name;
+			}
+			if ($data != $value) {
 				PHPUnit_Framework_Assert::fail(
-					"$field" . " has value " . "$data->$field"
+					"$field" . " has value " . "$data"
 				);
 			}
 		}
