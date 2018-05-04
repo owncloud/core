@@ -3062,7 +3062,7 @@ class Share20OCSTest extends TestCase {
 			// deduplicate
 			$userFolder->expects($this->at(0))
 				->method('nodeExists')
-				->with(dirname($target))
+				->with(\dirname($target))
 				->willReturn(true);
 
 			if ($targetExists) {
@@ -3137,7 +3137,7 @@ class Share20OCSTest extends TestCase {
 			// deduplicate
 			$userFolder->expects($this->at(0))
 				->method('nodeExists')
-				->with(dirname($target))
+				->with(\dirname($target))
 				->willReturn(true);
 
 			if ($targetExists) {
@@ -3305,7 +3305,7 @@ class Share20OCSTest extends TestCase {
 		if ($method === 'acceptShare') {
 			$userFolder->expects($this->at(0))
 				->method('nodeExists')
-				->with(dirname($target))
+				->with(\dirname($target))
 				->willReturn(true);
 
 			$userFolder->expects($this->at(1))

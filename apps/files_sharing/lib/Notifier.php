@@ -21,7 +21,6 @@
 
 namespace OCA\Files_sharing;
 
-
 use OCP\Notification\INotification;
 use OCP\Notification\INotifier;
 use OCP\Notification\IManager as INotificationManager;
