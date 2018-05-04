@@ -279,15 +279,10 @@ done
 
 # we need to skip some tests in certain browsers
 # and also skip tests if tags were given in the call of this script
-if [ "$BROWSER" == "internet explorer" ] || [ "$BROWSER" == "MicrosoftEdge" ] || ([ "$BROWSER" == "firefox" ] && verlt "47.0" "$BROWSER_VERSION")
+if [ "$BROWSER" == "internet explorer" ] || [ "$BROWSER" == "MicrosoftEdge" ] || [ "$BROWSER" == "firefox" ]
 then
 	BROWSER_IN_CAPITALS=${BROWSER//[[:blank:]]/}
 	BROWSER_IN_CAPITALS=${BROWSER_IN_CAPITALS^^}
-	
-	if [ "$BROWSER" == "firefox" ]
-	then
-		BROWSER_IN_CAPITALS="$BROWSER_IN_CAPITALS"47+
-	fi
 	
 	if [ "$BEHAT_TAGS_OPTION_FOUND" = true ]
 	then
@@ -340,14 +335,10 @@ then
 	# set screen resolution so that hopefully dragable elements will be visible
 	# FF gives problems if the destination element is not visible
 	EXTRA_CAPABILITIES='"screenResolution":"1920x1080",'
-	
-	# FF 47 needs a specific selenium version
-	if verlte "$BROWSER_VERSION" "47.0"
-	then
-		EXTRA_CAPABILITIES='"seleniumVersion":"2.53.1",'$EXTRA_CAPABILITIES
-	else
-		EXTRA_CAPABILITIES='"seleniumVersion":"3.4.0",'$EXTRA_CAPABILITIES
-	fi
+
+	# this selenium version works for Firefox after V47
+	# we no longer need to support testing of Firefox V47 or earlier
+	EXTRA_CAPABILITIES='"seleniumVersion":"3.4.0",'$EXTRA_CAPABILITIES
 fi
 
 if [ "$BROWSER" == "internet explorer" ]
