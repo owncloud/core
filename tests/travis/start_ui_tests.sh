@@ -9,7 +9,7 @@ RED='\033[0;31m'
 BLUE='\033[0;34m'
 NC='\033[0m' # No Color
 
-#Functions to compare version strings
+# Functions to compare version strings
 verlte() {
 	[ "$1" = "`echo -e "$1\n$2" | sort -V | head -n1`" ]
 }
@@ -18,15 +18,15 @@ verlt() {
 	[ "$1" = "$2" ] && return 1 || verlte $1 $2
 }
 
-#@param $1 admin password
-#@param $2 occ url
-#@param $3 command
-#sets $REMOTE_OCC_STDOUT and $REMOTE_OCC_STDERR from returned xml date
-#@return occ return code given in the xml data
+# @param $1 admin password
+# @param $2 occ url
+# @param $3 command
+# sets $REMOTE_OCC_STDOUT and $REMOTE_OCC_STDERR from returned xml date
+# @return occ return code given in the xml data
 remote_occ() {
 	RESULT=`curl -s -u admin:$1 $2 -d "command=$3"`
 	RETURN=`echo $RESULT | xmllint --xpath "string(ocs/data/code)" - | sed 's/ //g'`
-	#we could not find a proper return of the testing app, so something went wrong
+	# we could not find a proper return of the testing app, so something went wrong
 	if [ -z "$RETURN" ]
 	then
 		RETURN=1
@@ -38,8 +38,8 @@ remote_occ() {
 	return $RETURN
 }
 
-#save the current language and set the language to "C"
-#we want to have it all in english to be able to parse outputs
+# save the current language and set the language to "C"
+# we want to have it all in english to be able to parse outputs
 OLD_LANG=$LANG
 export LANG=C
 
@@ -197,18 +197,22 @@ fi
 
 BEHAT_TAG_OPTION="--tags"
 
-if [ -z "$MAILHOG_HOST" ]; then
+if [ -z "$MAILHOG_HOST" ]
+then
 	MAILHOG_HOST="127.0.0.1"
 fi
-if [ -z "$MAILHOG_SMTP_PORT" ]; then
+if [ -z "$MAILHOG_SMTP_PORT" ]
+then
 	MAILHOG_SMTP_PORT="1025"
 fi
 
-#check if we can rely on a local ./occ command or if we are testing a remote instance (e.g. inside docker)
-#if we have a remote instance we cannot enable the testing app and we have to hope its enabled by other ways
-if test "$REMOTE_ONLY" = false
+# check if we can rely on a local ./occ command or if we are testing
+# a remote instance (e.g. inside docker).
+# if we have a remote instance we cannot enable the testing app and
+# we have to hope it is enabled by other ways
+if [ "$REMOTE_ONLY" = false ]
 then
-	#enable testing app
+	# enable testing app
 	PREVIOUS_TESTING_APP_STATUS=$($OCC --no-warnings app:list "^testing$")
 	if [[ "$PREVIOUS_TESTING_APP_STATUS" =~ ^Disabled: ]]
 	then
@@ -221,7 +225,7 @@ else
 	TESTING_ENABLED_BY_SCRIPT=false;
 fi
 
-#set SMTP settings
+# set SMTP settings
 remote_occ $ADMIN_PASSWORD $OCC_URL "--no-warnings config:system:get mail_domain"
 PREVIOUS_MAIL_DOMAIN=$REMOTE_OCC_STDOUT
 remote_occ $ADMIN_PASSWORD $OCC_URL "--no-warnings config:system:get mail_from_address"
@@ -239,10 +243,10 @@ remote_occ $ADMIN_PASSWORD $OCC_URL "config:system:set mail_smtpmode --value=smt
 remote_occ $ADMIN_PASSWORD $OCC_URL "config:system:set mail_smtphost --value=$MAILHOG_HOST"
 remote_occ $ADMIN_PASSWORD $OCC_URL "config:system:set mail_smtpport --value=$MAILHOG_SMTP_PORT"
 
-#get the current backgroundjobs_mode
+# get the current backgroundjobs_mode
 remote_occ $ADMIN_PASSWORD $OCC_URL "config:app:get core backgroundjobs_mode"
 PREVIOUS_BACKGROUNDJOBS_MODE=$REMOTE_OCC_STDOUT
-#switch to webcron
+# switch to webcron
 remote_occ $ADMIN_PASSWORD $OCC_URL "config:app:set core backgroundjobs_mode --value webcron"
 if [ $? -ne 0 ]
 then
@@ -273,8 +277,8 @@ for APP_TO_ENABLE in $APPS_TO_ENABLE; do
 	fi
 done
 
-#we need to skip some tests in certain browsers
-#and also skip tests if tags were given in the call of this script
+# we need to skip some tests in certain browsers
+# and also skip tests if tags were given in the call of this script
 if [ "$BROWSER" == "internet explorer" ] || [ "$BROWSER" == "MicrosoftEdge" ] || ([ "$BROWSER" == "firefox" ] && verlt "47.0" "$BROWSER_VERSION")
 then
 	BROWSER_IN_CAPITALS=${BROWSER//[[:blank:]]/}
@@ -308,12 +312,12 @@ else
 	fi
 fi
 
-#skip tests tagged with the current oC version
-#one, two or three parts of the version can be used
-#e.g.
-#@skipOnOcV10.0.4
-#@skipOnOcV10.0
-#@skipOnOcV10
+# skip tests tagged with the current oC version
+# one, two or three parts of the version can be used
+# e.g.
+# @skipOnOcV10.0.4
+# @skipOnOcV10.0
+# @skipOnOcV10
 
 remote_occ $ADMIN_PASSWORD $OCC_URL "config:system:get version"
 OWNCLOUD_VERSION=`echo $REMOTE_OCC_STDOUT | cut -d"." -f1-3`
@@ -323,8 +327,8 @@ BEHAT_TAGS='~@skipOnOcV'$OWNCLOUD_VERSION'&&'$BEHAT_TAGS
 OWNCLOUD_VERSION=`echo $OWNCLOUD_VERSION | cut -d"." -f1`
 BEHAT_TAGS='~@skipOnOcV'$OWNCLOUD_VERSION'&&'$BEHAT_TAGS
 
-#if we running remote only tests add an other skip '@skipWhenTestingRemoteSystems'
-if test "$REMOTE_ONLY" = true
+# if we running remote only tests add an other skip '@skipWhenTestingRemoteSystems'
+if [ "$REMOTE_ONLY" = true ]
 then
 	BEHAT_TAGS='~@skipWhenTestingRemoteSystems&&'$BEHAT_TAGS
 fi
@@ -333,11 +337,11 @@ BEHAT_TAGS='@webUI&&'$BEHAT_TAGS
 
 if [ "$BROWSER" == "firefox" ]
 then
-	#set screen resolution so that hopefully dragable elements will be visible
-	#FF gives problems if the destination element is not visible
+	# set screen resolution so that hopefully dragable elements will be visible
+	# FF gives problems if the destination element is not visible
 	EXTRA_CAPABILITIES='"screenResolution":"1920x1080",'
 	
-	#FF 47 needs a specific selenium version
+	# FF 47 needs a specific selenium version
 	if verlte "$BROWSER_VERSION" "47.0"
 	then
 		EXTRA_CAPABILITIES='"seleniumVersion":"2.53.1",'$EXTRA_CAPABILITIES
@@ -353,16 +357,16 @@ fi
 
 EXTRA_CAPABILITIES=$EXTRA_CAPABILITIES'"browserVersion":"'$BROWSER_VERSION'","maxDuration":"3600"'
 
-#Set up personalized skeleton
+# Set up personalized skeleton
 remote_occ $ADMIN_PASSWORD $OCC_URL "--no-warnings config:system:get skeletondirectory"
 
 PREVIOUS_SKELETON_DIR=$REMOTE_OCC_STDOUT
 
-#$SRC_SKELETON_DIR is the path to the skeleton folder on the machine where the tests are executed
-#it is used for file comparisons in various tests
+# $SRC_SKELETON_DIR is the path to the skeleton folder on the machine where the tests are executed
+# it is used for file comparisons in various tests
 export SRC_SKELETON_DIR=$(pwd)/tests/acceptance/webUISkeleton
-#$SKELETON_DIR is the path to the skeleton folder on the machine where oC runs (system under test)
-#it is used to give users a defined set of files and folders for the tests
+# $SKELETON_DIR is the path to the skeleton folder on the machine where oC runs (system under test)
+# it is used to give users a defined set of files and folders for the tests
 if [ -z "$SKELETON_DIR" ]
 then
 	export SKELETON_DIR="$SRC_SKELETON_DIR"
@@ -480,34 +484,44 @@ then
 fi
 
 # Put back personalized skeleton
-if test "A$PREVIOUS_SKELETON_DIR" = "A"; then
+if [ "A$PREVIOUS_SKELETON_DIR" = "A" ]
+then
 	remote_occ $ADMIN_PASSWORD $OCC_URL "config:system:delete skeletondirectory"
 else
 	remote_occ $ADMIN_PASSWORD $OCC_URL "config:system:set skeletondirectory --value=$PREVIOUS_SKELETON_DIR"
 fi
 
 # Put back smtp settings
-if test "A$PREVIOUS_MAIL_DOMAIN" = "A"; then
+if [ "A$PREVIOUS_MAIL_DOMAIN" = "A" ]
+then
 	remote_occ $ADMIN_PASSWORD $OCC_URL "config:system:delete mail_domain"
 else
 	remote_occ $ADMIN_PASSWORD $OCC_URL "config:system:set mail_domain --value=$PREVIOUS_MAIL_DOMAIN"
 fi
-if test "A$PREVIOUS_MAIL_FROM_ADDRESS" = "A"; then
+
+if [ "A$PREVIOUS_MAIL_FROM_ADDRESS" = "A" ]
+then
 	remote_occ $ADMIN_PASSWORD $OCC_URL "config:system:delete mail_from_address"
 else
 	remote_occ $ADMIN_PASSWORD $OCC_URL "config:system:set mail_from_address --value=$PREVIOUS_MAIL_FROM_ADDRESS"
 fi
-if test "A$PREVIOUS_MAIL_SMTP_MODE" = "A"; then
+
+if [ "A$PREVIOUS_MAIL_SMTP_MODE" = "A" ]
+then
 	remote_occ $ADMIN_PASSWORD $OCC_URL "config:system:delete mail_smtpmode"
 else
 	remote_occ $ADMIN_PASSWORD $OCC_URL "config:system:set mail_smtpmode --value=$PREVIOUS_MAIL_SMTP_MODE"
 fi
-if test "A$PREVIOUS_MAIL_SMTP_HOST" = "A"; then
+
+if [ "A$PREVIOUS_MAIL_SMTP_HOST" = "A" ]
+then
 	remote_occ $ADMIN_PASSWORD $OCC_URL "config:system:delete mail_smtphost"
 else
 	remote_occ $ADMIN_PASSWORD $OCC_URL "config:system:set mail_smtphost --value=$PREVIOUS_MAIL_SMTP_HOST"
 fi
-if test "A$PREVIOUS_MAIL_SMTP_PORT" = "A"; then
+
+if [ "A$PREVIOUS_MAIL_SMTP_PORT" = "A" ]
+then
 	remote_occ $ADMIN_PASSWORD $OCC_URL "config:system:delete mail_smtpport"
 else
 	remote_occ $ADMIN_PASSWORD $OCC_URL "config:system:set mail_smtpport --value=$PREVIOUS_MAIL_SMTP_PORT"
@@ -525,7 +539,8 @@ done
 remote_occ $ADMIN_PASSWORD $OCC_URL "config:app:set core backgroundjobs_mode --value $PREVIOUS_BACKGROUNDJOBS_MODE"
 
 # Put back state of the testing app
-if test "$TESTING_ENABLED_BY_SCRIPT" = true; then
+if [ "$TESTING_ENABLED_BY_SCRIPT" = true ]
+then
 	$OCC app:disable testing
 fi
 
