@@ -720,15 +720,15 @@ class Manager implements IManager {
 			// Password updated.
 			if ($share->getPassword() !== $originalShare->getPassword() ||
 					$share->getPermissions() !== $originalShare->getPermissions()) {
-				//Verify the password
+				//Verify the password. Permissions must be taken into account in case the password must be enforced
 				if ($this->passwordMustBeEnforced($share->getPermissions()) && $share->getPassword() === null) {
 					throw new \InvalidArgumentException('Passwords are enforced for link shares');
 				} else {
 					$this->verifyPassword($share->getPassword(), $share->getPermissions());
 				}
 
-				// If a password is set. Hash it!
-				if ($share->getPassword() !== null) {
+				// If a password is set. Hash it! (only if the password has changed)
+				if ($share->getPassword() !== null && $share->getPassword() !== $originalShare->getPassword()) {
 					$share->setPassword($this->hasher->hash($share->getPassword()));
 				}
 			}
