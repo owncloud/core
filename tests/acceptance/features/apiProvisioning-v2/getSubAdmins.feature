@@ -23,3 +23,24 @@ So that I can manage subadmins of a group
 		When user "admin" sends HTTP method "GET" to API endpoint "/cloud/groups/not-group/subadmins"
 		Then the OCS status code should be "400"
 		And the HTTP status code should be "400"
+
+	@skip @issue-31276
+	Scenario: subadmin tries to get other subadmins of the same group
+		Given user "subadmin" has been created
+		And user "newsubadmin" has been created
+		And group "new-group" has been created
+		And user "subadmin" has been made a subadmin of group "new-group"
+		And user "newsubadmin" has been made a subadmin of group "new-group"
+		When user "subadmin" sends HTTP method "GET" to API endpoint "/cloud/groups/new-group/subadmins"
+		Then the OCS status code should be "401"
+		And the HTTP status code should be "401"
+
+	@skip @issue-31276
+	Scenario: normal user tries to get the subadmins of the group
+		Given user "newuser" has been created
+		And user "subadmin" has been created
+		And group "new-group" has been created
+		And user "subadmin" has been made a subadmin of group "new-group"
+		When user "newuser" sends HTTP method "GET" to API endpoint "/cloud/groups/new-group/subadmins"
+		Then the OCS status code should be "401"
+		And the HTTP status code should be "401"
