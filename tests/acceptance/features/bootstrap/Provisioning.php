@@ -48,6 +48,16 @@ trait Provisioning {
 	private $createdRemoteUsers = [];
 
 	/**
+	 * @var array
+	 */
+	private $enabledApps = [];
+
+	/**
+	 * @var array
+	 */
+	private $disabledApps = [];
+
+	/**
 	 * @var array 
 	 */
 	private $createdRemoteGroups = [];
@@ -223,6 +233,21 @@ trait Provisioning {
 				($doNotInitialize === "")
 			);
 		}
+	}
+
+	/**
+	 * @Given /^the app "([^"]*)" has been disabled$/
+	 * 
+	 * @param string $app
+	 * 
+	 * @return void
+	 */
+	public function theAppHasBeenDisabled($app) {
+		$client = new Client();
+		$fullUrl = $this->getBaseUrl() . "/ocs/v{$this->apiVersion}.php/cloud/apps/" . $app;
+		$options = [];
+		$options['auth'] = $this->getAuthOptionForAdmin();
+		$this->client->delete($fullUrl, $options);
 	}
 
 	/**
@@ -1499,5 +1524,71 @@ trait Provisioning {
 		}
 		$this->usingServer($previousServer);
 	}
+	
+	/**
+	 * @BeforeScenario
+	 * 
+	 * @return void
+	 */
+	public function rememberEnabledApps() {
+		$this->enabledApps = $this->getEnabledApps();
+	}
+	
+	/**
+	 * @AfterScenario
+	 * 
+	 * @return void
+	 */
+	public function restoreDisabledApps() {
+		$this->disabledApps = $this->getDisabledApps();
+		
+		foreach ($this->disabledApps as $disabledApp) {
+			if (\in_array($disabledApp, $this->enabledApps)) {
+				$this->enableApp($disabledApp);
+			}
+		}
+	}
 
+	/**
+	 * Returns array of enabled apps
+	 * 
+	 * @return void
+	 */
+	public function getEnabledApps() {
+		$fullUrl = $this->getBaseUrl() . "/ocs/v2.php/cloud/apps?filter=enabled";
+		$client = new Client();
+		$options = [];
+		$options['auth'] = $this->getAuthOptionForAdmin();
+		$this->response = $client->get($fullUrl, $options);
+		return ($this->getArrayOfAppsResponded($this->response));
+	}
+
+	/**
+	 * Returns array of disabled apps
+	 *
+	 * @return void
+	 */
+	public function getDisabledApps() {
+		$fullUrl = $this->getBaseUrl() . "/ocs/v2.php/cloud/apps?filter=disabled";
+		$client = new Client();
+		$options = [];
+		$options['auth'] = $this->getAuthOptionForAdmin();
+		$this->response = $client->get($fullUrl, $options);
+		return ($this->getArrayOfAppsResponded($this->response));
+	}
+
+	/**
+	 * Enable app
+	 *
+	 * @param string $app
+	 *
+	 * @return void
+	 */
+	public function enableApp($app) {
+		$fullUrl = $this->getBaseUrl() . "/ocs/v2.php/cloud/apps/$app";
+		$client = new Client();
+		$options = [];
+		$options['auth'] = $this->getAuthOptionForAdmin();
+		$this->response = $client->post($fullUrl, $options);
+	}
 }
