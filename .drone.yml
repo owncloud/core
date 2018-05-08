@@ -218,7 +218,7 @@ pipeline:
       - PLATFORM=Linux
       - MAILHOG_HOST=email
     commands:
-      - if [ -f /tmp/environment.sh  ]; then . /tmp/environment.sh; fi
+      - if [ -f environment.sh  ]; then . environment.sh; fi
       - bash tests/travis/start_ui_tests.sh --remote
     when:
       matrix:
