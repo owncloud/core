@@ -221,7 +221,7 @@ pipeline:
       - pwd
       - ls -l
       - cat environment.sh
-      - source environment.sh
+      - . environment.sh 2> /dev/null || true
       - bash tests/travis/start_ui_tests.sh --remote
     when:
       matrix:
