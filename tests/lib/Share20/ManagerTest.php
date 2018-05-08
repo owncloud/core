@@ -23,6 +23,8 @@ namespace Test\Share20;
 use OC\Share20\Manager;
 use OC\Share20\Share;
 use OCP\Files\IRootFolder;
+use OCP\Files\File;
+use OCP\Files\Folder;
 use OCP\Files\Mount\IMountManager;
 use OCP\IConfig;
 use OCP\IGroupManager;
@@ -2867,6 +2869,85 @@ class ManagerTest extends \Test\TestCase {
 		$this->assertNull($calledAfterUpdate[1]->getArgument('oldexpirationdate'));
 		$this->assertArrayHasKey('shareobject', $calledAfterUpdate[1]);
 		$this->assertInstanceOf(Share::class, $calledAfterUpdate[1]->getArgument('shareobject'));
+	}
+
+	public function testUpdateShareLinkNoPasswordChange() {
+		\OC_Hook::clear('\OC\Share', 'verifyPassword');
+
+		$this->config->method('getAppValue')
+			->will($this->returnValueMap([
+				['core', 'shareapi_enabled', 'yes', 'yes'],
+				['core', 'shareapi_exclude_groups', 'no', 'no'],
+				['core', 'shareapi_allow_links', 'yes', 'yes'],
+				['core', 'shareapi_allow_public_upload', 'yes', 'yes'],
+			]));
+
+		$this->userManager->method('userExists')
+			->will($this->returnValueMap([
+				['user1', true],
+			]));
+
+		$userFolder = $this->createMock(Folder::class);
+		$userFolder->method('getPath')->willReturn('/user1/files');
+
+		$this->rootFolder->method('getUserFolder')->willReturn($userFolder);
+
+		$node = $this->createMock(File::class);
+		$node->method('getPath')->willReturn('/user1/files/path/to/share');
+		$node->method('isShareable')->willReturn(true);
+		$node->method('getPermissions')->willReturn(\OCP\Constants::PERMISSION_ALL);
+
+		$originalShare = $this->createMock(IShare::class);
+		$originalShare->method('getId')->willReturn(10);
+		$originalShare->method('getFullId')->willReturn('foo:10');
+		$originalShare->method('getShareType')->willReturn(\OCP\Share::SHARE_TYPE_LINK);
+		$originalShare->method('getPassword')->willReturn('123456');
+		$originalShare->method('getPermissions')->willReturn(\OCP\Constants::PERMISSION_READ);
+		$originalShare->method('getSharedBy')->willReturn('user1');
+		$originalShare->method('getNode')->willReturn($node);
+
+		$provider = $this->createMock(IShareProvider::class);
+		$provider->method('getShareById')
+			->with($this->equalTo(10), $this->anything())
+			->willReturn($originalShare);
+
+		// TODO: Mocking the factory should be done in the setup.
+		$this->factory = $this->createMock(IProviderFactory::class);
+		$this->factory->method('getProvider')->willReturn($provider);
+		$this->factory->method('getProviderForType')->willReturn($provider);
+
+		$this->manager = new Manager(
+			$this->logger,
+			$this->config,
+			$this->secureRandom,
+			$this->hasher,
+			$this->mountManager,
+			$this->groupManager,
+			$this->l,
+			$this->factory,
+			$this->userManager,
+			$this->rootFolder,
+			$this->eventDispatcher
+		);
+
+		$share = $this->createMock(IShare::class);
+		$share->method('getId')->willReturn(10);
+		$share->method('getFullId')->willReturn('foo:10');
+		$share->method('getShareType')->willReturn(\OCP\Share::SHARE_TYPE_LINK);
+		$share->method('getPassword')->willReturn('123456');
+		$share->method('getPermissions')->willReturn(\OCP\Constants::PERMISSION_UPDATE);
+		$share->method('getSharedBy')->willReturn('user1');
+		$share->method('getNode')->willReturn($node);
+
+		$share->expects($this->never())
+			->method('setPassword');
+
+		$provider->expects($this->once())
+			->method('update')
+			->with($share)
+			->will($this->returnArgument(0));
+
+		$updatedShare = $this->manager->updateShare($share);
 	}
 
 	/**

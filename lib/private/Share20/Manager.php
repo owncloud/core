@@ -165,7 +165,7 @@ class Manager implements IManager {
 			throw new \Exception($message);
 		}
 
-		\OC::$server->getEventDispatcher()->dispatch(
+		$this->eventDispatcher->dispatch(
 			'OCP\Share::validatePassword',
 			new GenericEvent(null, ['password' => $password])
 		);
@@ -921,7 +921,7 @@ class Manager implements IManager {
 			'recipientPath' => $share->getTarget(),
 			'ownerPath' => $share->getNode()->getPath(),
 			'nodeType' => $share->getNodeType()]);
-		\OC::$server->getEventDispatcher()->dispatch('fromself.unshare', $event);
+		$this->eventDispatcher->dispatch('fromself.unshare', $event);
 	}
 
 	/**
