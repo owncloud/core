@@ -162,6 +162,7 @@ function link_to_docs($key) {
  * @param string $app app
  * @param string $image image
  * @return string link to the image
+ * @throws \RuntimeException
  *
  * For further information have a look at \OCP\IURLGenerator::imagePath
  */
