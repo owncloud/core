@@ -29,3 +29,27 @@ So that I can manage group membership
 			| नेपाली               |
 		And the OCS status code should be "200"
 		And the HTTP status code should be "200"
+
+	Scenario: subadmin tries to get other groups of the user in his group
+		Given user "newuser" has been created
+		And user "subadmin" has been created
+		And group "newgroup" has been created
+		And group "anothergroup" has been created
+		And user "subadmin" has been made a subadmin of group "newgroup"
+		And user "newuser" has been added to group "newgroup"
+		And user "newuser" has been added to group "anothergroup"
+		When user "subadmin" sends HTTP method "GET" to API endpoint "/cloud/users/newuser/groups"
+		Then the groups returned by the API should include "newgroup"
+		And the groups returned by the API should not include "anothergroup"
+		And the OCS status code should be "200"
+		And the HTTP status code should be "200"
+
+	@skip @issue-31276
+	Scenario: normal user tries to get the groups of another user
+		Given user "newuser" has been created
+		And user "anotheruser" has been created
+		And group "newgroup" has been created
+		And user "newuser" has been added to group "newgroup"
+		When user "anotheruser" sends HTTP method "GET" to API endpoint "/cloud/users/newuser/groups"
+		Then the OCS status code should be "401"
+		And the HTTP status code should be "401"
