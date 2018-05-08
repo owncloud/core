@@ -14,6 +14,8 @@ env:
   global:
     - TEST_DAV=$(tests/travis/changed_app.sh dav)
     - TC=litmus-v2
+    - TEST_SERVER_URL=http://owncloud:8889
+    - TEST_SERVER_FED_URL=http://owncloud:8989
     - SRV_HOST_NAME=owncloud
     - SRV_HOST_PORT=8889
     - REMOTE_FED_SRV_HOST_NAME=owncloud
@@ -52,7 +54,7 @@ script:
   - sh -c "if [ '$TEST_DAV' = '1' ]; then echo \"Testing DAV\"; fi"
 
   - sh -c "if [ '$TEST_DAV' = '1' ]; then bash apps/dav/tests/ci/$TC/script.sh; fi"
-  - sh -c "if [ '$TC' = 'selenium' ]; then bash tests/travis/start_ui_tests.sh --tags ~@mailhog; fi"
+  - sh -c "if [ '$TC' = 'selenium' ]; then cd tests/acceptance; ./run.sh --tags ~@mailhog; fi"
 
 matrix:
   include:
