@@ -67,3 +67,15 @@ So that I can manage user access to group resources
 		Then the OCS status code should be "104"
 		And the HTTP status code should be "200"
 		And user "brand-new-user" should belong to group "new-group"
+
+	Scenario: normal user tries to remove the user in his group
+		Given user "newuser" has been created
+		And user "anotheruser" has been created
+		And group "new-group" has been created
+		And user "newuser" has been added to group "new-group"
+		And user "anotheruser" has been added to group "new-group"
+		When user "newuser" sends HTTP method "DELETE" to API endpoint "/cloud/users/anotheruser/groups" with body
+			| groupid | new-group |
+		Then the OCS status code should be "997"
+		And the HTTP status code should be "401"
+		And user "anotheruser" should belong to group "new-group"
