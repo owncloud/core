@@ -20,7 +20,17 @@
  */
 namespace OCA\Files_Sharing\API;
 
+use OCA\Files_Sharing\AppInfo\Application;
+use OCA\Files_Sharing\Service\NotificationPublisher;
+
 class OCSShareWrapper {
+
+	/** @var Application */
+	private $application;
+
+	public function __construct(Application $application) {
+		$this->application = $application;
+	}
 
 	/**
 	 * @return Share20OCS
@@ -36,7 +46,7 @@ class OCSShareWrapper {
 			\OC::$server->getUserSession()->getUser(),
 			\OC::$server->getL10N('files_sharing'),
 			\OC::$server->getConfig(),
-			\OC::$server->getEventDispatcher()
+			$this->application->getContainer()->query(NotificationPublisher::class)
 		);
 	}
 
@@ -61,5 +71,15 @@ class OCSShareWrapper {
 	public function deleteShare($params) {
 		$id = $params['id'];
 		return $this->getShare20OCS()->deleteShare($id);
+	}
+
+	public function acceptShare($params) {
+		$id = $params['id'];
+		return $this->getShare20OCS()->acceptShare($id);
+	}
+
+	public function declineShare($params) {
+		$id = $params['id'];
+		return $this->getShare20OCS()->declineShare($id);
 	}
 }

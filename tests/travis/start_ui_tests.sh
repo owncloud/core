@@ -243,12 +243,14 @@ done
 
 APPS_TO_REDISABLE="";
 
+echo $APPS_TO_ENABLE
 for APP_TO_ENABLE in $APPS_TO_ENABLE; do
 	remote_occ $ADMIN_PASSWORD $OCC_URL "--no-warnings app:list ^$APP_TO_ENABLE$"
 	PREVIOUS_APP_STATUS=$REMOTE_OCC_STDOUT
 	if [[ "$PREVIOUS_APP_STATUS" =~ ^Disabled: ]]
 	then
 		APPS_TO_REDISABLE="$APPS_TO_REDISABLE $APP_TO_ENABLE";
+		echo "enable $APP_TO_ENABLE" 
 		remote_occ $ADMIN_PASSWORD $OCC_URL "--no-warnings app:enable $APP_TO_ENABLE"
 	fi
 done

@@ -137,6 +137,19 @@ pipeline:
       matrix:
         INSTALL_SERVER: true
 
+  install-notifications-app:
+    image: owncloudci/php:${PHP_VERSION}
+    pull: true
+    commands:
+      - git clone https://github.com/owncloud/notifications.git apps/notifications
+      - php occ a:e notifications
+      - echo "export APPS_TO_ENABLE=notifications" > environment.sh
+      - pwd
+      - ls -l
+    when:
+      matrix:
+        INSTALL_NOTIFICATIONS-APP: true
+
   fix-permissions:
     image: owncloudci/php:${PHP_VERSION}
     pull: true
@@ -205,6 +218,7 @@ pipeline:
       - PLATFORM=Linux
       - MAILHOG_HOST=email
     commands:
+      - if [ -f ./environment.sh  ]; then . ./environment.sh; fi
       - bash tests/travis/start_ui_tests.sh --remote
     when:
       matrix:
@@ -459,6 +473,16 @@ matrix:
 
     - PHP_VERSION: 7.1
       TEST_SUITE: api
+      BEHAT_SUITE: apiSharingNotifications
+      DB_TYPE: mariadb
+      USE_SERVER: true
+      INSTALL_SERVER: true
+      CHOWN_SERVER: true
+      OWNCLOUD_LOG: true
+      INSTALL_NOTIFICATIONS-APP: true
+
+    - PHP_VERSION: 7.1
+      TEST_SUITE: api
       BEHAT_SUITE: apiCapabilities
       DB_TYPE: mariadb
       USE_SERVER: true
@@ -540,6 +564,17 @@ matrix:
       CHOWN_SERVER: true
       OWNCLOUD_LOG: true
       USE_EMAIL: true
+
+    - PHP_VERSION: 7.1
+      TEST_SUITE: selenium
+      BEHAT_SUITE: webUISharingNotifications
+      DB_TYPE: mariadb
+      USE_SERVER: true
+      INSTALL_SERVER: true
+      CHOWN_SERVER: true
+      OWNCLOUD_LOG: true
+      USE_EMAIL: true
+      INSTALL_NOTIFICATIONS-APP: true
 
     - PHP_VERSION: 7.1
       TEST_SUITE: selenium

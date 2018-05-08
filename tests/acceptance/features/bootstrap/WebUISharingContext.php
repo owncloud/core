@@ -39,13 +39,13 @@ require_once 'bootstrap.php';
 class WebUISharingContext extends RawMinkContext implements Context {
 
 	/**
-	 * 
+	 *
 	 * @var FilesPage
 	 */
 	private $filesPage;
-	
+
 	/**
-	 * 
+	 *
 	 * @var PublicLinkFilesPage
 	 */
 	private $publicLinkFilesPage;
@@ -58,7 +58,7 @@ class WebUISharingContext extends RawMinkContext implements Context {
 	private $sharingDialog;
 
 	/**
-	 * 
+	 *
 	 * @var FeatureContext
 	 */
 	private $featureContext;
@@ -70,7 +70,7 @@ class WebUISharingContext extends RawMinkContext implements Context {
 	private $webUIGeneralContext;
 
 	/**
-	 * 
+	 *
 	 * @var WebUIFilesContext
 	 */
 	private $webUIFilesContext;
@@ -97,10 +97,10 @@ class WebUISharingContext extends RawMinkContext implements Context {
 	}
 
 	/**
-	 * 
+	 *
 	 * @param string $name
 	 * @param string $url
-	 * 
+	 *
 	 * @return void
 	 */
 	private function addToListOfCreatedPublicLinks($name, $url) {
@@ -116,7 +116,7 @@ class WebUISharingContext extends RawMinkContext implements Context {
 	 * @param string $user
 	 * @param int $maxRetries
 	 * @param boolean $quiet
-	 * 
+	 *
 	 * @return void
 	 */
 	public function theUserSharesTheFileFolderWithTheUserUsingTheWebUI(
@@ -150,7 +150,7 @@ class WebUISharingContext extends RawMinkContext implements Context {
 	 *
 	 * @param string $folder
 	 * @param string $group
-	 * 
+	 *
 	 * @return void
 	 */
 	public function theUserSharesTheFileFolderWithTheGroupUsingTheWebUI(
@@ -174,7 +174,7 @@ class WebUISharingContext extends RawMinkContext implements Context {
 	 * @Given the user has opened the share dialog for the file/folder :name
 	 *
 	 * @param string $name
-	 * 
+	 *
 	 * @return void
 	 */
 	public function theUserOpensTheShareDialogForTheFileFolder($name) {
@@ -189,7 +189,7 @@ class WebUISharingContext extends RawMinkContext implements Context {
 	 * @Given the user has created a new public link for the file/folder :name using the webUI
 	 *
 	 * @param string $name
-	 * 
+	 *
 	 * @return void
 	 */
 	public function theUserCreatesANewPublicLinkForUsingTheWebUI($name) {
@@ -206,7 +206,7 @@ class WebUISharingContext extends RawMinkContext implements Context {
 	 *                            password, expiration, email
 	 *                            the permissions values has to be written exactly
 	 *                            the way its written in the UI
-	 * 
+	 *
 	 * @return void
 	 */
 	public function theUserCreatesANewPublicLinkForUsingTheWebUIWith(
@@ -276,7 +276,7 @@ class WebUISharingContext extends RawMinkContext implements Context {
 	 * @When the user types :input in the share-with-field
 	 *
 	 * @param string $input
-	 * 
+	 *
 	 * @return void
 	 */
 	public function theUserTypesInTheShareWithField($input) {
@@ -295,7 +295,7 @@ class WebUISharingContext extends RawMinkContext implements Context {
 	 *                                    second column yes|no
 	 *                                    not mentioned permissions will not be
 	 *                                    touched
-	 * 
+	 *
 	 * @return void
 	 */
 	public function theUserSetsTheSharingPermissionsOfForOnTheWebUI(
@@ -323,9 +323,9 @@ class WebUISharingContext extends RawMinkContext implements Context {
 	/**
 	 * @When the administrator sets the minimum characters for sharing autocomplete to :minCharacters
 	 * @Given the administrator has set the minimum characters for sharing autocomplete to :minCharacters
-	 * 
+	 *
 	 * @param string $minCharacters
-	 * 
+	 *
 	 * @return void
 	 */
 	public function setMinCharactersForAutocomplete($minCharacters) {
@@ -408,7 +408,7 @@ class WebUISharingContext extends RawMinkContext implements Context {
 	 * @param string $server
 	 * @param string $username
 	 * @param string $password
-	 * 
+	 *
 	 * @return void
 	 * @throws Exception
 	 */
@@ -424,10 +424,47 @@ class WebUISharingContext extends RawMinkContext implements Context {
 	}
 
 	/**
+	 * @When /^the user (declines|accepts) the share "([^"]*)" offered by user "([^"]*)" using the webUI$/
+	 *
+	 * @param string $action
+	 * @param string $share
+	 * @param string $offeredBy
+	 *
+	 * @return void
+	 */
+	public function userReactsToShareOfferedByUsingWebUI(
+		$action, $share, $offeredBy
+	) {
+		$this->webUIFilesContext->theUserBrowsesToTheSharedWithYouPage();
+		$fileRows = $this->sharedWithYouPage->findAllFileRowsByName(
+			$share, $this->getSession()
+		);
+		
+		$found = false;
+		foreach ($fileRows as $fileRow) {
+			if ($offeredBy === $fileRow->getSharer()) {
+				if ($action === "accepts") {
+					$fileRow->acceptShare($this->getSession());
+				} else {
+					$fileRow->declineShare($this->getSession());
+				}
+				$found = true;
+				break;
+			}
+		}
+		if ($found === false) {
+			throw new Exception(
+				__METHOD__ .
+				" could not find share '$share' offered by '$offeredBy'"
+			);
+		}
+
+	}
+	/**
 	 * @Then all users and groups that contain the string :requiredString in their name should be listed in the autocomplete list on the webUI
 	 *
 	 * @param string $requiredString
-	 * 
+	 *
 	 * @return void
 	 */
 	public function allUsersAndGroupsThatContainTheStringInTheirNameShouldBeListedInTheAutocompleteList(
@@ -444,7 +481,7 @@ class WebUISharingContext extends RawMinkContext implements Context {
 	 * @param string $requiredString
 	 * @param string $userOrGroup
 	 * @param string $notToBeListed
-	 * 
+	 *
 	 * @return void
 	 */
 	public function allUsersAndGroupsThatContainTheStringInTheirNameShouldBeListedInTheAutocompleteListExcept(
@@ -496,12 +533,12 @@ class WebUISharingContext extends RawMinkContext implements Context {
 	 * @Then a tooltip with the text :text should be shown near the share-with-field on the webUI
 	 *
 	 * @param string $text
-	 * 
+	 *
 	 * @return void
 	 */
 	public function aTooltipWithTheTextShouldBeShownNearTheShareWithField($text) {
 		PHPUnit_Framework_Assert::assertEquals(
-			$text, 
+			$text,
 			$this->sharingDialog->getShareWithTooltip()
 		);
 	}
@@ -524,7 +561,7 @@ class WebUISharingContext extends RawMinkContext implements Context {
 	 * @param string $itemName
 	 * @param string $sharedWithGroup
 	 * @param string $sharerName
-	 * 
+	 *
 	 * @return void
 	 */
 	public function theFileFolderShouldBeMarkedAsSharedBy(
@@ -568,11 +605,70 @@ class WebUISharingContext extends RawMinkContext implements Context {
 	}
 
 	/**
+	 * @Then the file/folder :item should be in state :state in the shared-with-you page on the webUI
+	 *
+	 * @param string $item
+	 * @param string $state
+	 *
+	 * @return void
+	 */
+	public function assertShareIsInStateOnWebUI($item, $state) {
+		$this->webUIFilesContext->theUserBrowsesToTheSharedWithYouPage();
+		$fileRow = $this->sharedWithYouPage->findFileRowByName(
+			$item, $this->getSession()
+		);
+		PHPUnit_Framework_Assert::assertSame($state, $fileRow->getShareState());
+	}
+
+	/**
+	 * @Then the file/folder :item shared by :sharedBy should be in state :state in the shared-with-you page on the webUI
+	 *
+	 * @param string $item
+	 * @param string $sharedBy
+	 * @param string $state
+	 *
+	 * @return void
+	 */
+	public function assertShareSharedByIsInStateOnWebUI($item, $sharedBy, $state) {
+		$this->webUIFilesContext->theUserBrowsesToTheSharedWithYouPage();
+		$fileRows = $this->sharedWithYouPage->findAllFileRowsByName(
+			$item, $this->getSession()
+		);
+		$found = false;
+		$currentState = null;
+		foreach ($fileRows as $fileRow) {
+			if ($sharedBy === $fileRow->getSharer()) {
+				$found = true;
+				$currentState = $fileRow->getShareState();
+				break;
+			}
+		}
+		PHPUnit_Framework_Assert::assertTrue(
+			$found, "could not find item called $item shared by $sharedBy"
+		);
+		PHPUnit_Framework_Assert::assertSame($state, $currentState);
+	}
+
+	/**
+	 * @Then the file/folder :item should be in state :state in the shared-with-you page on the webUI after a page reload
+	 *
+	 * @param string $item
+	 * @param string $state
+	 *
+	 * @return void
+	 */
+	public function assertSharesIsInStateOnWebUIAfterPageReload($item, $state) {
+		$this->webUIGeneralContext->theUserReloadsTheCurrentPageOfTheWebUI();
+		$this->sharedWithYouPage->waitForAjaxCallsToStartAndFinish($this->getSession());
+		$this->assertShareIsInStateOnWebUI($item, $state);
+	}
+	
+	/**
 	 * @Then /^it should not be possible to share the (?:file|folder) "([^"]*)"(?: with "([^"]*)")? using the webUI$/
 	 *
 	 * @param string $fileName
 	 * @param string|null $shareWith
-	 * 
+	 *
 	 * @return void
 	 * @throws Exception
 	 */
@@ -614,7 +710,7 @@ class WebUISharingContext extends RawMinkContext implements Context {
 	 * @BeforeScenario @webUI
 	 *
 	 * @param BeforeScenarioScope $scope
-	 * 
+	 *
 	 * @return void
 	 */
 	public function before(BeforeScenarioScope $scope) {

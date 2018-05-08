@@ -65,6 +65,13 @@ default:
       contexts:
         - FeatureContext: *common_feature_context_params
 
+    apiSharingNotifications:
+      paths:
+        - %paths.base%/../features/apiSharingNotifications
+      contexts:
+        - FeatureContext: *common_feature_context_params
+        - NotificationsContext:
+
     webUILogin:
       paths:
         - %paths.base%/../features/webUILogin
@@ -209,6 +216,19 @@ default:
         - WebUIPersonalSecuritySettingsContext:
         - WebUIPersonalGeneralSettingsContext:
         - WebUIUserContext:
+
+    webUISharingNotifications:
+      paths:
+        - %paths.base%/../features/webUISharingNotifications
+      context: *common_webui_suite_context
+      contexts:
+        - FeatureContext: *common_feature_context_params
+        - WebUIGeneralContext:
+        - WebUILoginContext:
+        - WebUIFilesContext:
+        - WebUISharingContext:
+        - WebUINotificationsContext
+        - NotificationsContext
 
   extensions:
       jarnaiz\JUnitFormatter\JUnitFormatterExtension:

@@ -25,6 +25,7 @@
 namespace OCA\Files_Sharing\Tests\API;
 
 use OCA\Files_Sharing\API\Share20OCS;
+use OCA\Files_Sharing\Service\NotificationPublisher;
 use OCP\Files\IRootFolder;
 use OCP\Files\NotFoundException;
 use OCP\IConfig;
@@ -36,9 +37,10 @@ use OCP\IUser;
 use OCP\IUserManager;
 use OCP\Lock\LockedException;
 use OCP\Share;
-use Symfony\Component\EventDispatcher\GenericEvent;
-use Symfony\Component\EventDispatcher\EventDispatcher;
 use Test\TestCase;
+use OCP\Files\Folder;
+use OCP\Files\Node;
+use OCP\Share\Exceptions\ShareNotFound;
 
 /**
  * Class Share20OCSTest
@@ -75,8 +77,8 @@ class Share20OCSTest extends TestCase {
 	/** @var IL10N */
 	private $l;
 
-	/** @var  EventDispatcher */
-	private $eventDispatcher;
+	/** @var NotificationPublisher */
+	private $notificationPublisher;
 
 	protected function setUp() {
 		$this->shareManager = $this->getMockBuilder('OCP\Share\IManager')
@@ -105,10 +107,11 @@ class Share20OCSTest extends TestCase {
 		$this->config = $this->createMock(IConfig::class);
 		$this->config->method('getAppValue')
 			->will($this->returnValueMap([
-				['core', 'shareapi_default_permissions', \OCP\Constants::PERMISSION_ALL, \OCP\Constants::PERMISSION_READ | \OCP\Constants::PERMISSION_CREATE]
+				['core', 'shareapi_default_permissions', \OCP\Constants::PERMISSION_ALL, \OCP\Constants::PERMISSION_READ | \OCP\Constants::PERMISSION_CREATE],
+				['core', 'shareapi_auto_accept_share', 'yes', 'yes'],
 			]));
 
-		$this->eventDispatcher = new EventDispatcher();
+		$this->notificationPublisher = $this->createMock(NotificationPublisher::class);
 
 		$this->ocs = new Share20OCS(
 			$this->shareManager,
@@ -120,7 +123,7 @@ class Share20OCSTest extends TestCase {
 			$this->currentUser,
 			$this->l,
 			$this->config,
-			$this->eventDispatcher
+			$this->notificationPublisher
 		);
 	}
 
@@ -129,7 +132,7 @@ class Share20OCSTest extends TestCase {
 	}
 
 	private function mockFormatShare() {
-		return $this->getMockBuilder('OCA\Files_Sharing\API\Share20OCS')
+		return $this->getMockBuilder(\OCA\Files_Sharing\API\Share20OCS::class)
 			->setConstructorArgs([
 				$this->shareManager,
 				$this->groupManager,
@@ -140,7 +143,7 @@ class Share20OCSTest extends TestCase {
 				$this->currentUser,
 				$this->l,
 				$this->config,
-				$this->eventDispatcher,
+				$this->notificationPublisher,
 			])->setMethods(['formatShare'])
 			->getMock();
 	}
@@ -449,7 +452,7 @@ class Share20OCSTest extends TestCase {
 					$this->currentUser,
 					$this->l,
 					$this->config,
-					$this->eventDispatcher,
+					$this->notificationPublisher,
 				])->setMethods(['canAccessShare'])
 				->getMock();
 
@@ -571,6 +574,21 @@ class Share20OCSTest extends TestCase {
 		$share = $this->createMock('OCP\Share\IShare');
 		$share->method('getShareType')->willReturn(Share::SHARE_TYPE_LINK);
 		$this->assertFalse($this->invokePrivate($this->ocs, 'canAccessShare', [$share]));
+
+		// should not happen ever again, but who knows... let's cover it
+		$share = $this->createMock('OCP\Share\IShare');
+		$share->method('getShareType')->willReturn(Share::SHARE_TYPE_USER);
+		$share->method('getState')->willReturn(Share::STATE_ACCEPTED);
+		$share->method('getPermissions')->willReturn(0);
+		$this->assertFalse($this->invokePrivate($this->ocs, 'canAccessShare', [$share]));
+
+		// legacy zero permission entries from group sub-shares, let it pass
+		$share = $this->createMock('OCP\Share\IShare');
+		$share->method('getShareType')->willReturn(Share::SHARE_TYPE_GROUP);
+		$share->method('getSharedWith')->willReturn('group');
+		$share->method('getState')->willReturn(Share::STATE_REJECTED);
+		$share->method('getPermissions')->willReturn(0);
+		$this->assertTrue($this->invokePrivate($this->ocs, 'canAccessShare', [$share]));
 	}
 
 	public function testCreateShareNoPath() {
@@ -765,20 +783,9 @@ class Share20OCSTest extends TestCase {
 		$share = $this->newShare();
 		$this->shareManager->method('newShare')->willReturn($share);
 
-		$ocs = $this->getMockBuilder('OCA\Files_Sharing\API\Share20OCS')
-			->setConstructorArgs([
-				$this->shareManager,
-				$this->groupManager,
-				$this->userManager,
-				$this->request,
-				$this->rootFolder,
-				$this->urlGenerator,
-				$this->currentUser,
-				$this->l,
-				$this->config,
-				$this->eventDispatcher,
-			])->setMethods(['formatShare'])
-			->getMock();
+		$share->setShareOwner('shareOwner');
+
+		$ocs = $this->mockFormatShare();
 
 		$this->request
 			->method('getParam')
@@ -883,20 +890,7 @@ class Share20OCSTest extends TestCase {
 		$share = $this->newShare();
 		$this->shareManager->method('newShare')->willReturn($share);
 
-		$ocs = $this->getMockBuilder('OCA\Files_Sharing\API\Share20OCS')
-			->setConstructorArgs([
-				$this->shareManager,
-				$this->groupManager,
-				$this->userManager,
-				$this->request,
-				$this->rootFolder,
-				$this->urlGenerator,
-				$this->currentUser,
-				$this->l,
-				$this->config,
-				$this->eventDispatcher,
-			])->setMethods(['formatShare'])
-			->getMock();
+		$ocs = $this->mockFormatShare();
 
 		$this->request
 			->method('getParam')
@@ -1421,20 +1415,7 @@ class Share20OCSTest extends TestCase {
 		$share = \OC::$server->getShareManager()->newShare();
 		$this->shareManager->method('newShare')->willReturn($share);
 
-		$ocs = $this->getMockBuilder('OCA\Files_Sharing\API\Share20OCS')
-			->setConstructorArgs([
-				$this->shareManager,
-				$this->groupManager,
-				$this->userManager,
-				$this->request,
-				$this->rootFolder,
-				$this->urlGenerator,
-				$this->currentUser,
-				$this->l,
-				$this->config,
-				$this->eventDispatcher,
-			])->setMethods(['formatShare'])
-			->getMock();
+		$ocs = $this->mockFormatShare();
 
 		$this->request
 			->method('getParam')
@@ -2112,7 +2093,7 @@ class Share20OCSTest extends TestCase {
 
 		$this->shareManager->method('getShareById')->with('ocinternal:42')->willReturn($share);
 
-		$this->shareManager->expects($this->any(0))
+		$this->shareManager->expects($this->any())
 			->method('getSharedWith')
 			->will($this->returnValueMap([
 				['currentUser', Share::SHARE_TYPE_USER, $share->getNode(), -1, 0, []],
@@ -2244,12 +2225,6 @@ class Share20OCSTest extends TestCase {
 
 		$folder = $this->createMock('\OCP\Files\Folder');
 
-		$calledAfterUpdate = [];
-		$this->eventDispatcher->addListener('share.afterupdate',
-			function (GenericEvent $event) use (&$calledAfterUpdate){
-				$calledAfterUpdate[] = 'share.afterupdate';
-				$calledAfterUpdate[] = $event;
-			});
 		$share = \OC::$server->getShareManager()->newShare();
 		$share->setPermissions(\OCP\Constants::PERMISSION_READ)
 			->setSharedBy($this->currentUser->getUID())
@@ -2278,15 +2253,6 @@ class Share20OCSTest extends TestCase {
 
 		$this->assertEquals($expected->getMeta(), $result->getMeta());
 		$this->assertEquals($expected->getData(), $result->getData());
-
-		$this->assertInstanceOf(GenericEvent::class, $calledAfterUpdate[1]);
-		$this->assertEquals('share.afterupdate', $calledAfterUpdate[0]);
-		$this->assertArrayHasKey('sharenameupdated', $calledAfterUpdate[1]);
-		$this->assertTrue($calledAfterUpdate[1]->getArgument('sharenameupdated'));
-		$this->assertArrayHasKey('oldname', $calledAfterUpdate[1]);
-		$this->assertEquals('somename', $calledAfterUpdate[1]->getArgument('oldname'));
-		$this->assertArrayHasKey('shareobject', $calledAfterUpdate[1]);
-		$this->assertInstanceOf(\OC\Share20\Share::class, $calledAfterUpdate[1]->getArgument('shareobject'));
 	}
 
 	public function testUpdateLinkShareKeepNameWhenNotSpecified() {
@@ -2728,7 +2694,7 @@ class Share20OCSTest extends TestCase {
 			$this->currentUser,
 			$this->l,
 			$this->config,
-			$this->eventDispatcher
+			$this->notificationPublisher
 		);
 	}
 
@@ -2819,7 +2785,7 @@ class Share20OCSTest extends TestCase {
 			$this->currentUser,
 			$this->l,
 			$config,
-			$this->eventDispatcher
+			$this->notificationPublisher
 		);
 
 		list($file,) = $this->getMockFileFolder();
@@ -2850,6 +2816,515 @@ class Share20OCSTest extends TestCase {
 		$result = $this->invokePrivate($ocs, 'formatShare', [$share]);
 
 		$this->assertEquals($expectedInfo, $result['share_with_additional_info']);
+	}
+
+	public function providesGetSharesAll() {
+		return [
+			[
+				null,
+				false,
+			],
+			[
+				'/requested/path',
+				true,
+			],
+			[
+				'/requested/path',
+				false,
+			],
+			[
+				'/requested/path',
+				true,
+				true
+			],
+		];
+	}
+
+	/**
+	 * @dataProvider providesGetSharesAll
+	 */
+	public function testGetSharesAll($requestedPath, $requestedReshares, $fedAllowed = false) {
+		$userShare = $this->newShare();
+		$groupShare = $this->newShare();
+		$linkShare = $this->newShare();
+		$federatedShare = $this->newShare();
+
+		$node = null;
+		if ($requestedPath !== null) {
+			$node = $this->createMock(Node::class);
+			$node->expects($this->at(0))
+				->method('lock');
+			$node->expects($this->at(1))
+				->method('unlock');
+
+			$userFolder = $this->createMock(Folder::class);
+			$userFolder->expects($this->once())
+				->method('get')
+				->with($requestedPath)
+				->willReturn($node);
+			$this->rootFolder->expects($this->once())
+				->method('getUserFolder')
+				->with('currentUser')
+				->willReturn($userFolder);
+		} else {
+			$this->rootFolder->expects($this->never())->method('getUserFolder');
+		}
+
+		$this->shareManager->method('getSharesBy')
+			->will($this->returnValueMap([
+				['currentUser', \OCP\Share::SHARE_TYPE_USER, $node, $requestedReshares, -1, 0, [$userShare]],
+				['currentUser', \OCP\Share::SHARE_TYPE_GROUP, $node, $requestedReshares, -1, 0, [$groupShare]],
+				['currentUser', \OCP\Share::SHARE_TYPE_LINK, $node, $requestedReshares, -1, 0, [$linkShare]],
+				['currentUser', \OCP\Share::SHARE_TYPE_REMOTE, $node, $requestedReshares, -1, 0, [$federatedShare]],
+			]));
+
+		$this->request
+			->method('getParam')
+			->will($this->returnValueMap([
+				['path', null, $requestedPath],
+				['reshares', null, $requestedReshares ? 'true' : 'false'],
+		]));
+
+		$this->shareManager->method('outgoingServer2ServerSharesAllowed')->willReturn($fedAllowed);
+
+		$ocs = $this->mockFormatShare();
+		$ocs->method('formatShare')->will($this->returnArgument(0));
+		$result = $ocs->getShares();
+
+		if ($fedAllowed) {
+			$this->assertCount(4, $result->getData());
+			$this->assertContains($federatedShare, $result->getData(), 'result contains federated share');
+		} else {
+			$this->assertCount(3, $result->getData());
+		}
+
+		$this->assertContains($userShare, $result->getData(), 'result contains user share');
+		$this->assertContains($groupShare, $result->getData(), 'result contains group share');
+		$this->assertContains($linkShare, $result->getData(), 'result contains link share');
+	}
+
+	public function providesGetSharesSharedWithMe() {
+		return [
+			[
+				null,
+				'all',
+			],
+			[
+				'/requested/path',
+				'all',
+			],
+			[
+				'/requested/path',
+				\OCP\Share::STATE_PENDING,
+			],
+			[
+				'/requested/path',
+				\OCP\Share::STATE_ACCEPTED,
+			],
+			[
+				'/requested/path',
+				'',
+			],
+		];
+	}
+
+	/**
+	 * @dataProvider providesGetSharesSharedWithMe
+	 */
+	public function testGetSharesSharedWithMe($requestedPath, $stateFilter) {
+		$testStateFilter = $stateFilter;
+		if ($testStateFilter === '' || $testStateFilter === 'all') {
+			$testStateFilter = \OCP\Share::STATE_ACCEPTED;
+		}
+		$userShare = $this->newShare();
+		$userShare->setShareOwner('shareOwner');
+		$userShare->setSharedWith('currentUser');
+		$userShare->setShareType(\OCP\Share::SHARE_TYPE_USER);
+		$userShare->setState($testStateFilter);
+		$userShare->setPermissions(\OCP\Constants::PERMISSION_ALL);
+		$userShareNoAccess = $this->newShare();
+		$userShareNoAccess->setShareOwner('shareOwner');
+		$userShareNoAccess->setSharedWith('currentUser');
+		$userShareNoAccess->setShareType(\OCP\Share::SHARE_TYPE_USER);
+		$userShareNoAccess->setState($testStateFilter);
+		$userShareNoAccess->setPermissions(0);
+		$userShareDifferentState = $this->newShare();
+		$userShareDifferentState->setShareOwner('shareOwner');
+		$userShareDifferentState->setSharedWith('currentUser');
+		$userShareDifferentState->setShareType(\OCP\Share::SHARE_TYPE_USER);
+		$userShareDifferentState->setState($testStateFilter + 1);
+		$userShareDifferentState->setPermissions(\OCP\Constants::PERMISSION_ALL);
+		$groupShare = $this->newShare();
+		$groupShare->setShareOwner('shareOwner');
+		$groupShare->setSharedWith('group1');
+		$groupShare->setState($testStateFilter);
+		$groupShare->setPermissions(\OCP\Constants::PERMISSION_ALL);
+		$groupShare->setShareType(\OCP\Share::SHARE_TYPE_GROUP);
+		$groupShareNonOwner = $this->newShare();
+		$groupShareNonOwner->setShareOwner('currentUser');
+		$groupShareNonOwner->setSharedWith('group1');
+		$groupShareNonOwner->setState($testStateFilter);
+		$groupShareNonOwner->setShareType(\OCP\Share::SHARE_TYPE_GROUP);
+		$groupShareNonOwner->setPermissions(\OCP\Constants::PERMISSION_ALL);
+
+		$group = $this->createMock('OCP\IGroup');
+		$group->method('inGroup')->with($this->currentUser)->willReturn(true);
+
+		$this->groupManager->method('get')->with('group1')->willReturn($group);
+
+		$node = null;
+		if ($requestedPath !== null) {
+			$node = $this->createMock(Node::class);
+			$node->expects($this->at(0))
+				->method('lock');
+			$node->expects($this->at(1))
+				->method('unlock');
+
+			$userFolder = $this->createMock(Folder::class);
+			$userFolder->expects($this->once())
+				->method('get')
+				->with($requestedPath)
+				->willReturn($node);
+			$this->rootFolder->expects($this->once())
+				->method('getUserFolder')
+				->with('currentUser')
+				->willReturn($userFolder);
+		} else {
+			$this->rootFolder->expects($this->never())->method('getUserFolder');
+		}
+
+		$this->shareManager->method('getSharedWith')
+			->will($this->returnValueMap([
+				['currentUser', \OCP\Share::SHARE_TYPE_USER, $node, -1, 0, [$userShare, $userShareDifferentState, $userShareNoAccess]],
+				['currentUser', \OCP\Share::SHARE_TYPE_GROUP, $node, -1, 0, [$groupShare, $groupShareNonOwner]],
+			]));
+
+		$this->request
+			->method('getParam')
+			->will($this->returnValueMap([
+				['path', null, $requestedPath],
+				['state', \OCP\Share::STATE_ACCEPTED, $stateFilter],
+				['shared_with_me', null, 'true'],
+		]));
+
+		$ocs = $this->mockFormatShare();
+		$ocs->method('formatShare')->will($this->returnArgument(0));
+		$result = $ocs->getShares();
+
+		$this->assertContains($userShare, $result->getData(), 'result contains user share');
+		$this->assertContains($groupShare, $result->getData(), 'result contains group share');
+		$this->assertNotContains($groupShareNonOwner, $result->getData(), 'result does not contain share from same owner');
+		$this->assertNotContains($userShareNoAccess, $result->getData(), 'result does not contain inaccessible share');
+		if ($stateFilter === 'all') {
+			$this->assertCount(3, $result->getData());
+			$this->assertContains($userShareDifferentState, $result->getData(), 'result contains shares from all states');
+		} else {
+			$this->assertCount(2, $result->getData());
+			$this->assertNotContains($userShareDifferentState, $result->getData(), 'result contains only share from requested state');
+		}
+	}
+
+	public function providesAcceptRejectShare() {
+		return [
+			['acceptShare', '/target', true, \OCP\Share::STATE_ACCEPTED],
+			['acceptShare', '/sfoo/target', true, \OCP\Share::STATE_ACCEPTED],
+			['acceptShare', '/target', false, \OCP\Share::STATE_ACCEPTED],
+			['acceptShare', '/sfoo/target', false, \OCP\Share::STATE_ACCEPTED],
+			['declineShare', '/target', true, \OCP\Share::STATE_REJECTED],
+			['declineShare', '/sfoo/target', true, \OCP\Share::STATE_REJECTED],
+		];
+	}
+
+	/**
+	 * @dataProvider providesAcceptRejectShare
+	 */
+	public function testAcceptRejectShare($method, $target, $targetExists, $expectedState) {
+		$userShare = $this->makeReceivedUserShareForOperation($target);
+
+		$this->shareManager->expects($this->once())
+			->method('getShareById')
+			->with('ocinternal:123', 'currentUser')
+			->willReturn($userShare);
+
+		$this->shareManager->expects($this->exactly(2))
+			->method('getSharedWith')
+			->will($this->returnValueMap([
+				['currentUser', Share::SHARE_TYPE_USER, $userShare->getNode(), -1, 0, [$userShare]],
+				['currentUser', Share::SHARE_TYPE_GROUP, $userShare->getNode(), -1, 0, []]
+			]));
+
+		$this->shareManager->expects($this->once())
+			->method('updateShareForRecipient')
+			->with($userShare, 'currentUser');
+
+		$userFolder = $this->createMock('OCP\Files\Folder');
+		if ($method === 'acceptShare') {
+			// deduplicate
+			$userFolder->expects($this->at(0))
+				->method('nodeExists')
+				->with(\dirname($target))
+				->willReturn(true);
+
+			if ($targetExists) {
+				$userFolder->expects($this->at(1))
+					->method('nodeExists')
+					->with($target)
+					->willReturn(true);
+
+				$userFolder->expects($this->at(2))
+					->method('nodeExists')
+					->with("$target (2)")
+					->willReturn(false);
+			} else {
+				$userFolder->expects($this->at(1))
+					->method('nodeExists')
+					->with($target)
+					->willReturn(false);
+			}
+		} else {
+			$userFolder->expects($this->never())
+				->method('nodeExists');
+		}
+
+		$this->rootFolder->method('getUserFolder')
+			->with($this->currentUser->getUID())
+			->willReturn($userFolder);
+
+		$ocs = $this->mockFormatShare();
+		$ocs->method('formatShare')->will($this->returnArgument(0));
+		$result = $ocs->$method(123);
+
+		$this->assertEquals(100, $result->getStatusCode());
+		$this->assertEquals($userShare, $result->getData()[0], 'result contains updated user share');
+		if ($method === 'acceptShare' && $targetExists) {
+			$this->assertEquals("$target (2)", $userShare->getTarget());
+		} else {
+			$this->assertEquals("$target", $userShare->getTarget());
+		}
+		$this->assertSame($expectedState, $userShare->getState());
+	}
+
+	/**
+	 * @dataProvider providesAcceptRejectShare
+	 */
+	public function testAcceptRejectShareMultiple($method, $target, $targetExists, $expectedState) {
+		$userShare = $this->makeReceivedUserShareForOperation($target);
+		$groupShare = $this->newShare();
+		$groupShare->setId(234);
+		$groupShare->setShareType(Share::SHARE_TYPE_GROUP);
+		$groupShare->setSharedWith('group1');
+		$groupShare->setNode($userShare->getNode());
+		$groupShare->setTarget($target);
+
+		$this->shareManager->expects($this->once())
+			->method('getShareById')
+			->with('ocinternal:123', 'currentUser')
+			->willReturn($userShare);
+
+		$this->shareManager->expects($this->exactly(2))
+			->method('getSharedWith')
+			->will($this->returnValueMap([
+				['currentUser', Share::SHARE_TYPE_USER, $userShare->getNode(), -1, 0, [$userShare]],
+				['currentUser', Share::SHARE_TYPE_GROUP, $userShare->getNode(), -1, 0, [$groupShare]]
+			]));
+
+		$this->shareManager->expects($this->exactly(2))
+			->method('updateShareForRecipient')
+			->withConsecutive($userShare, $groupShare);
+
+		$userFolder = $this->createMock('OCP\Files\Folder');
+		if ($method === 'acceptShare') {
+			// deduplicate
+			$userFolder->expects($this->at(0))
+				->method('nodeExists')
+				->with(\dirname($target))
+				->willReturn(true);
+
+			if ($targetExists) {
+				$userFolder->expects($this->at(1))
+					->method('nodeExists')
+					->with($target)
+					->willReturn(true);
+
+				$userFolder->expects($this->at(2))
+					->method('nodeExists')
+					->with("$target (2)")
+					->willReturn(false);
+			} else {
+				$userFolder->expects($this->at(1))
+					->method('nodeExists')
+					->with($target)
+					->willReturn(false);
+			}
+		} else {
+			$userFolder->expects($this->never())
+				->method('nodeExists');
+		}
+
+		$this->rootFolder->method('getUserFolder')
+			->with($this->currentUser->getUID())
+			->willReturn($userFolder);
+
+		$ocs = $this->mockFormatShare();
+		$ocs->method('formatShare')->will($this->returnArgument(0));
+		$result = $ocs->$method(123);
+
+		$this->assertEquals(100, $result->getStatusCode());
+		$this->assertEquals($userShare, $result->getData()[0], 'result contains updated user share');
+		if ($method === 'acceptShare' && $targetExists) {
+			$this->assertEquals("$target (2)", $userShare->getTarget());
+		} else {
+			$this->assertEquals("$target", $userShare->getTarget());
+		}
+		$this->assertSame($expectedState, $userShare->getState());
+	}
+
+	/**
+	 * @dataProvider providesAcceptRejectShare
+	 */
+	public function testAcceptRejectShareApiDisabled($method, $target, $targetExists, $expectedState) {
+		$ocs = $this->getOcsDisabledAPI();
+
+		$expected = new \OC\OCS\Result(null, 404, 'Share API is disabled');
+		$result = $ocs->$method(123);
+
+		$this->assertEquals($expected, $result);
+	}
+
+	private function makeReceivedUserShareForOperation($target) {
+		$node = $this->createMock(Node::class);
+		$node->expects($this->at(0))
+			->method('lock');
+		$node->expects($this->at(1))
+			->method('unlock');
+
+		$userShare = $this->newShare();
+		$userShare->setId(123);
+		$userShare->setShareOwner('shareOwner');
+		$userShare->setSharedWith('currentUser');
+		$userShare->setShareType(\OCP\Share::SHARE_TYPE_USER);
+		$userShare->setState(\OCP\Share::STATE_PENDING);
+		$userShare->setPermissions(\OCP\Constants::PERMISSION_ALL);
+		$userShare->setTarget($target);
+		$userShare->setNode($node);
+
+		return $userShare;
+	}
+
+	/**
+	 * @dataProvider providesAcceptRejectShare
+	 */
+	public function testAcceptRejectShareInvalidId($method, $target, $targetExists, $expectedState) {
+		$this->shareManager->expects($this->any())
+			->method('getShareById')
+			->with('ocinternal:123')
+			->will($this->throwException(new ShareNotFound()));
+
+		$this->shareManager->expects($this->never())
+			->method('updateShareForRecipient');
+
+		$expected = new \OC\OCS\Result(null, 404, 'Wrong share ID, share doesn\'t exist');
+		$result = $this->ocs->$method(123);
+
+		$this->assertEquals($expected, $result);
+	}
+
+	/**
+	 * @dataProvider providesAcceptRejectShare
+	 */
+	public function testAcceptRejectShareAccessDenied($method, $target, $targetExists, $expectedState) {
+		$userShare = $this->makeReceivedUserShareForOperation($target);
+		$userShare->setPermissions(0);
+
+		$this->shareManager->expects($this->once())
+			->method('getShareById')
+			->with('ocinternal:123', 'currentUser')
+			->willReturn($userShare);
+
+		$this->shareManager->expects($this->never())
+			->method('updateShareForRecipient');
+
+		$expected = new \OC\OCS\Result(null, 404, 'Wrong share ID, share doesn\'t exist');
+		$result = $this->ocs->$method(123);
+
+		$this->assertEquals($expected, $result);
+	}
+
+	/**
+	 * @dataProvider providesAcceptRejectShare
+	 */
+	public function testAcceptRejectShareAccessNotRecipient($method, $target, $targetExists, $expectedState) {
+		$userShare = $this->makeReceivedUserShareForOperation($target);
+
+		$this->shareManager->expects($this->any())
+			->method('getShareById')
+			->with('ocinternal:123', 'currentUser')
+			->willReturn($userShare);
+
+		$this->shareManager->expects($this->never())
+			->method('updateShareForRecipient');
+
+		$userShare->setShareOwner('currentUser');
+
+		$expected = new \OC\OCS\Result(null, 403, 'Only recipient can change accepted state');
+		$result = $this->ocs->$method(123);
+
+		$this->assertEquals($expected, $result);
+
+		$userShare->setShareOwner('anotherUser');
+		$userShare->setSharedBy('currentUser');
+
+		$result = $this->ocs->$method(123);
+
+		$this->assertEquals($expected, $result);
+	}
+
+	/**
+	 * @dataProvider providesAcceptRejectShare
+	 */
+	public function testAcceptRejectShareOperationError($method, $target, $targetExists, $expectedState) {
+		$userShare = $this->makeReceivedUserShareForOperation($target);
+
+		$this->shareManager->expects($this->once())
+			->method('getShareById')
+			->with('ocinternal:123', 'currentUser')
+			->willReturn($userShare);
+
+		$this->shareManager->expects($this->once())
+			->method('updateShareForRecipient')
+			->will($this->throwException(new \Exception('operation error')));
+
+		$this->shareManager->expects($this->exactly(2))
+			->method('getSharedWith')
+			->will($this->returnValueMap([
+				['currentUser', Share::SHARE_TYPE_USER, $userShare->getNode(), -1, 0, [$userShare]],
+				['currentUser', Share::SHARE_TYPE_GROUP, $userShare->getNode(), -1, 0, []]
+			]));
+
+		$userFolder = $this->createMock('OCP\Files\Folder');
+		if ($method === 'acceptShare') {
+			$userFolder->expects($this->at(0))
+				->method('nodeExists')
+				->with(\dirname($target))
+				->willReturn(true);
+
+			$userFolder->expects($this->at(1))
+				->method('nodeExists')
+				->with($target)
+				->willReturn(false);
+		} else {
+			$userFolder->expects($this->never())
+				->method('nodeExists');
+		}
+
+		$this->rootFolder->method('getUserFolder')
+			->with($this->currentUser->getUID())
+			->willReturn($userFolder);
+
+		$expected = new \OC\OCS\Result(null, 400, 'operation error');
+		$result = $this->ocs->$method(123);
+
+		$this->assertEquals($expected, $result);
 	}
 }
 

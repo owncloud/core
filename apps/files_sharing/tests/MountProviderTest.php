@@ -64,7 +64,7 @@ class MountProviderTest extends \Test\TestCase {
 		$this->provider = new MountProvider($this->config, $this->shareManager, $this->logger);
 	}
 
-	private function makeMockShare($id, $nodeId, $owner = 'user2', $target = null, $permissions = 31) {
+	private function makeMockShare($id, $nodeId, $owner = 'user2', $target = null, $permissions = 31, $state = null) {
 		$share = $this->createMock('\OCP\Share\IShare');
 		$share->expects($this->any())
 			->method('getPermissions')
@@ -87,6 +87,13 @@ class MountProviderTest extends \Test\TestCase {
 				// compute share time based on id, simulating share order
 				new \DateTime('@' . (1469193980 + 1000 * $id))
 			));
+
+		if ($state === null) {
+			$state = \OCP\Share::STATE_ACCEPTED;
+		}
+		$share->expects($this->any())
+			->method('getState')
+			->willReturn($state);
 		return $share;
 	}
 
@@ -94,6 +101,8 @@ class MountProviderTest extends \Test\TestCase {
 	 * Tests excluding shares from the current view. This includes:
 	 * - shares that were opted out of (permissions === 0)
 	 * - shares with a group in which the owner is already in
+	 * - rejected shares
+	 * - pending shares
 	 */
 	public function testExcludeShares() {
 		$rootFolder = $this->createMock('\OCP\Files\IRootFolder');
@@ -102,6 +111,8 @@ class MountProviderTest extends \Test\TestCase {
 		$userShares = [
 			$this->makeMockShare(1, 100, 'user2', '/share2', 0), 
 			$this->makeMockShare(2, 100, 'user2', '/share2', 31),
+			$this->makeMockShare(6, 100, 'user2', '/share2', 31, \OCP\Share::STATE_PENDING),
+			$this->makeMockShare(7, 100, 'user2', '/share2', 31, \OCP\Share::STATE_REJECTED),
 		];
 
 		$groupShares = [

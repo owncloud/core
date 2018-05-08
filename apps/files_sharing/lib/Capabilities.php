@@ -93,6 +93,8 @@ class Capabilities implements ICapability {
 
 			$res['group_sharing'] = $this->config->getAppValue('core', 'shareapi_allow_group_sharing', 'yes') === 'yes';
 
+			$res['auto_accept_share'] = $this->config->getAppValue('core', 'shareapi_auto_accept_share', 'yes') === 'yes';
+
 			$res['share_with_group_members_only'] = $this->config->getAppValue('core', 'shareapi_only_share_with_group_members', 'yes') === 'yes';
 			$res['share_with_membership_groups_only'] = $this->config->getAppValue('core', 'shareapi_only_share_with_membership_groups', 'yes') === 'yes';
 
