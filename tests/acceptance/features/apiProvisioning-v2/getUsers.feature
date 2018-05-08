@@ -19,6 +19,7 @@ So that I can see who has access to ownCloud
 
 	Scenario: get users using a subadmin
 		Given user "brand-new-user" has been created
+		And user "another-new-user" has been created
 		And group "new-group" has been created
 		And user "brand-new-user" has been added to group "new-group"
 		And user "brand-new-user" has been made a subadmin of group "new-group"
@@ -27,3 +28,11 @@ So that I can see who has access to ownCloud
 			| brand-new-user |
 		And the OCS status code should be "200"
 		And the HTTP status code should be "200"
+
+	@skip @issue-31276
+	Scenario: normal user tries to get other users
+		Given user "normaluser" has been created
+		And user "newuser" has been created
+		When user "normaluser" sends HTTP method "GET" to API endpoint "/cloud/users"
+		And the OCS status code should be "401"
+		And the HTTP status code should be "401"
