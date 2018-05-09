@@ -198,6 +198,8 @@ class Storage {
 
 			self::scheduleExpire($uid, $filename);
 
+			$filename = \ltrim($filename, '/');
+
 			// store a new version of a file
 			$mtime = $users_view->filemtime('files/' . $filename);
 			$users_view->copy('files/' . $filename, 'files_versions/' . $filename . '.v' . $mtime);
