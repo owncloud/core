@@ -28,6 +28,7 @@ namespace OCA\DAV\CardDAV;
 
 use OC\Cache\CappedMemoryCache;
 use OCA\DAV\Connector\Sabre\Principal;
+use OCA\DAV\DAV\GroupPrincipalBackend;
 use OCA\DAV\DAV\Sharing\Backend;
 use OCA\DAV\DAV\Sharing\IShareable;
 use OCP\DB\QueryBuilder\IQueryBuilder;
@@ -78,16 +79,19 @@ class CardDavBackend implements BackendInterface, SyncSupport {
 	 *
 	 * @param IDBConnection $db
 	 * @param Principal $principalBackend
+	 * @param GroupPrincipalBackend $groupPrincipalBackend
 	 * @param EventDispatcherInterface $dispatcher
+	 * @param bool $legacyMode
 	 */
 	public function __construct(IDBConnection $db,
 								Principal $principalBackend,
+								GroupPrincipalBackend $groupPrincipalBackend,
 								EventDispatcherInterface $dispatcher = null,
 								$legacyMode = false) {
 		$this->db = $db;
 		$this->principalBackend = $principalBackend;
 		$this->dispatcher = $dispatcher;
-		$this->sharingBackend = new Backend($this->db, $principalBackend, 'addressbook');
+		$this->sharingBackend = new Backend($this->db, $principalBackend, $groupPrincipalBackend, 'addressbook');
 		$this->legacyMode = $legacyMode;
 		$this->idCache = new CappedMemoryCache();
 	}
