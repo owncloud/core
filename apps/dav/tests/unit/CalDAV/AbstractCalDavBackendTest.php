@@ -24,6 +24,7 @@ namespace OCA\DAV\Tests\unit\CalDAV;
 
 use OCA\DAV\CalDAV\CalDavBackend;
 use OCA\DAV\Connector\Sabre\Principal;
+use OCA\DAV\DAV\GroupPrincipalBackend;
 use OCP\IConfig;
 use OCP\Security\ISecureRandom;
 use Sabre\CalDAV\Xml\Property\SupportedCalendarComponentSet;
@@ -43,6 +44,9 @@ abstract class AbstractCalDavBackendTest extends TestCase {
 
 	/** @var Principal | \PHPUnit_Framework_MockObject_MockObject */
 	protected $principal;
+
+	/** @var GroupPrincipalBackend | \PHPUnit_Framework_MockObject_MockObject */
+	protected $groupPrincipal;
 
 	/** @var IConfig */
 	protected $config;
@@ -69,10 +73,11 @@ abstract class AbstractCalDavBackendTest extends TestCase {
 			->withAnyParameters()
 			->willReturn([self::UNIT_TEST_GROUP]);
 
+		$this->groupPrincipal = $this->createMock(GroupPrincipalBackend::class);
 		$db = \OC::$server->getDatabaseConnection();
 		$this->config = \OC::$server->getConfig();
 		$this->random = \OC::$server->getSecureRandom();
-		$this->backend = new CalDavBackend($db, $this->principal, $this->config, $this->random);
+		$this->backend = new CalDavBackend($db, $this->principal, $this->groupPrincipal, $this->random);
 
 		$this->tearDown();
 	}
