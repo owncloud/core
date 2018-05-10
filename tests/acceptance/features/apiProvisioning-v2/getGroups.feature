@@ -7,7 +7,7 @@ So that I can see all the groups in my ownCloud
 	Background:
 		Given using API version "2"
 
-	Scenario: Getting all groups
+	Scenario: admin gets all the groups
 		Given group "0" has been created
 		And group "new-group" has been created
 		And group "admin" has been created

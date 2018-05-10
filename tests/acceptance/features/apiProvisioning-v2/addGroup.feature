@@ -7,7 +7,7 @@ So that I can more easily manage access to resources by groups rather than indiv
 	Background:
 		Given using API version "2"
 
-	Scenario Outline: Create a group
+	Scenario Outline: admin creates a group
 		Given the administrator sends a group creation request for group "<group_id>" using the API
 		Then the OCS status code should be "200"
 		And the HTTP status code should be "200"
@@ -32,7 +32,7 @@ So that I can more easily manage access to resources by groups rather than indiv
 			| 50%2Fix             | %2F literal looks like an escaped slash |
 			| staff?group         | Question mark                           |
 
-	Scenario: Create a group that already exists
+	Scenario: admin tries to create a group that already exists
 		Given group "new-group" has been created
 		When the administrator sends a group creation request for group "new-group" using the API
 		Then the OCS status code should be "400"

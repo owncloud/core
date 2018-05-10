@@ -7,7 +7,7 @@ So that I can remove unnecessary groups
 	Background:
 		Given using API version "2"
 
-	Scenario Outline: Delete a group
+	Scenario Outline: admin deletes a group
 		Given group "<group_id>" has been created
 		When the administrator deletes group "<group_id>" using the API
 		Then the OCS status code should be "200"

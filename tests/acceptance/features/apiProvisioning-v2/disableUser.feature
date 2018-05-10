@@ -7,7 +7,7 @@ So that I can remove access to files and resources for a user, without actually 
 	Background:
 		Given using API version "2"
 
-	Scenario: disable an user
+	Scenario: admin disables an user
 		Given user "user1" has been created
 		When user "admin" sends HTTP method "PUT" to API endpoint "/cloud/users/user1/disable"
 		Then the OCS status code should be "200"

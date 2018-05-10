@@ -7,7 +7,7 @@ So that I can give a user access to their files and resources again if they are 
 	Background:
 		Given using API version "2"
 
-	Scenario: enable an user
+	Scenario: admin enables an user
 		Given user "user1" has been created
 		And user "user1" has been disabled
 		When user "admin" sends HTTP method "PUT" to API endpoint "/cloud/users/user1/enable"
@@ -15,7 +15,7 @@ So that I can give a user access to their files and resources again if they are 
 		And the HTTP status code should be "200"
 		And user "user1" should be enabled
 
-	Scenario: Admin can enable another admin user
+	Scenario: admin enables another admin user
 		Given user "another-admin" has been created
 		And user "another-admin" has been added to group "admin"
 		And user "another-admin" has been disabled
@@ -24,7 +24,7 @@ So that I can give a user access to their files and resources again if they are 
 		And the HTTP status code should be "200"
 		And user "another-admin" should be enabled
 
-	Scenario: Admin can enable subadmins in the same group
+	Scenario: admin enables subadmins in the same group
 		Given user "subadmin" has been created
 		And group "new-group" has been created
 		And user "subadmin" has been added to group "new-group"
@@ -35,7 +35,7 @@ So that I can give a user access to their files and resources again if they are 
 		And the HTTP status code should be "200"
 		And user "subadmin" should be disabled
 
-	Scenario:Admin user cannot enable himself
+	Scenario: admin tries to enable himself
 		And user "another-admin" has been created
 		And user "another-admin" has been added to group "admin"
 		And user "another-admin" has been disabled
@@ -43,7 +43,7 @@ So that I can give a user access to their files and resources again if they are 
 		Then user "another-admin" should be disabled
 
 	@skip @issue-31276
-	Scenario: enable an user with a regular user
+	Scenario: normal user tries to enable other user
 		Given user "user1" has been created
 		And user "user2" has been created
 		And user "user2" has been disabled
@@ -52,7 +52,7 @@ So that I can give a user access to their files and resources again if they are 
 		And the HTTP status code should be "401"
 		And user "user2" should be disabled
 
-	Scenario: Subadmin should not be able to enable himself
+	Scenario: subadmin tries to enable himself
 		Given user "subadmin" has been created
 		And group "new-group" has been created
 		And user "subadmin" has been added to group "new-group"

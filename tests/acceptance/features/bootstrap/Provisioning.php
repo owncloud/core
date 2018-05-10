@@ -1543,6 +1543,16 @@ trait Provisioning {
 	}
 
 	/**
+	 * @Then /^the list of users returned by the API should be empty$/
+	 * 
+	 * @return void
+	 */
+	public function theListOfUsersReturnedByTheApiShouldBeEmpty() {
+		$usersList = $this->response->xml()->data[0]->users[0];
+		PHPUnit_Framework_Assert::assertEmpty($usersList, "Users list is not empty but it should be empty");
+	}
+
+	/**
 	 * @BeforeScenario
 	 * @AfterScenario
 	 *
