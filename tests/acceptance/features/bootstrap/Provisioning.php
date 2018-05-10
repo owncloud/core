@@ -350,6 +350,7 @@ trait Provisioning {
 			$this->userExists($user),
 			"User '$user' should not exist but does exist"
 		);
+		$this->rememberThatUserIsNotExpectedToExist($user);
 	}
 
 	/**
@@ -1139,7 +1140,6 @@ trait Provisioning {
 				$usersSimplified, $respondedArray, "", 0.0, 10, true
 			);
 		}
-
 	}
 
 	/**
@@ -1158,7 +1158,6 @@ trait Provisioning {
 				$groupsSimplified, $respondedArray, "", 0.0, 10, true
 			);
 		}
-
 	}
 
 	/**
@@ -1183,6 +1182,18 @@ trait Provisioning {
 	public function theGroupsReturnedByTheApiShouldNotInclude($group) {
 		$respondedArray = $this->getArrayOfGroupsResponded($this->response);
 		PHPUnit_Framework_Assert::assertNotContains($group, $respondedArray);
+	}
+
+	/**
+	 * @Then /^the users returned by the API should not include "([^"]*)"$/
+	 *
+	 * @param string $user
+	 *
+	 * @return void
+	 */
+	public function theUsersReturnedByTheApiShouldNotInclude($user) {
+		$respondedArray = $this->getArrayOfUsersResponded($this->response);
+		PHPUnit_Framework_Assert::assertNotContains($user, $respondedArray);
 	}
 
 	/**
@@ -1277,6 +1288,18 @@ trait Provisioning {
 			$user,
 			$listOfSubadmins
 		);
+	}
+
+	/**
+	 * @Then /^the display name returned by the API should be "([^"]*)"$/
+	 * 
+	 * @param string $displayname
+	 * 
+	 * @return void
+	 */
+	public function theDisplayNameReturnedByTheApiShouldBe($displayname) {
+		$responseName = $this->response->xml()->data[0]->displayname;
+		PHPUnit_Framework_Assert::assertEquals($displayname, $responseName);
 	}
 
 	/**
@@ -1507,6 +1530,16 @@ trait Provisioning {
 			null
 		);
 		$this->checkUserAttributes($body);
+	}
+
+	/**
+	 * @Then /^the API should not return any data$/
+	 * 
+	 * @return void
+	 */
+	public function theApiShouldNotReturnAnyData() {
+		$responseData = $this->response->xml()->data[0];
+		PHPUnit_Framework_Assert::assertEmpty($responseData, "Response data is not empty but it should be empty");
 	}
 
 	/**
