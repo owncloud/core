@@ -260,14 +260,18 @@ class SMB extends \OCP\Files\Storage\StorageAdapter {
 
 		try {
 			$result = $this->share->rename($this->root . $source, $this->root . $target);
-			$this->removeFromCache($this->root . $source);
-			$this->removeFromCache($this->root . $target);
+			if ($result) {
+				$this->removeFromCache($this->root . $source);
+				$this->removeFromCache($this->root . $target);
+			}
 		} catch (AlreadyExistsException $e) {
 			$this->swallow(__FUNCTION__, $e);
 			if ($this->unlink($target)) {
 				$result = $this->share->rename($this->root . $source, $this->root . $target);
-				$this->removeFromCache($this->root . $source);
-				$this->removeFromCache($this->root . $target);
+				if ($result) {
+					$this->removeFromCache($this->root . $source);
+					$this->removeFromCache($this->root . $target);
+				}
 			} else {
 				$result = false;
 			}
@@ -277,8 +281,10 @@ class SMB extends \OCP\Files\Storage\StorageAdapter {
 			if ($e->getCode() === 22) {
 				if ($this->unlink($target)) {
 					$result = $this->share->rename($this->root . $source, $this->root . $target);
-					$this->removeFromCache($this->root . $source);
-					$this->removeFromCache($this->root . $target);
+					if ($result) {
+						$this->removeFromCache($this->root . $source);
+						$this->removeFromCache($this->root . $target);
+					}
 				} else {
 					$result = false;
 				}
