@@ -7,7 +7,7 @@ So that I can manage group membership
 	Background:
 		Given using API version "2"
 
-	Scenario: getting groups of an user
+	Scenario: admin gets groups of an user
 		Given user "brand-new-user" has been created
 		And group "unused-group" has been created
 		And group "new-group" has been created
@@ -53,3 +53,4 @@ So that I can manage group membership
 		When user "anotheruser" sends HTTP method "GET" to API endpoint "/cloud/users/newuser/groups"
 		Then the OCS status code should be "401"
 		And the HTTP status code should be "401"
+		And the API should not return any data

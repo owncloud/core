@@ -7,7 +7,7 @@ So that I cam manage administrative access rights for groups
 	Background:
 		Given using API version "2"
 
-	Scenario: Removing subadmin from a group
+	Scenario: admin removes subadmin from a group
 		Given user "brand-new-user" has been created
 		And group "new-group" has been created
 		And user "brand-new-user" has been made a subadmin of group "new-group"
@@ -15,6 +15,7 @@ So that I cam manage administrative access rights for groups
 			| groupid | new-group |
 		Then the OCS status code should be "200"
 		And the HTTP status code should be "200"
+		And the user "brand-new-user" should not be the subadmin of the group "new-group"
 
 	@skip @issue-31276
 	Scenario: subadmin tries to remove other subadmin in the group
@@ -27,6 +28,7 @@ So that I cam manage administrative access rights for groups
 			| groupid | new-group |
 		Then the OCS status code should be "401"
 		And the HTTP status code should be "401"
+		And the user "newsubadmin" should be the subadmin of the group "new-group"
 
 	@skip @issue-31276
 	Scenario: normal user tries to remove subadmin in the group
@@ -39,3 +41,4 @@ So that I cam manage administrative access rights for groups
 			| groupid | new-group |
 		Then the OCS status code should be "997"
 		And the HTTP status code should be "401"
+		And the user "subadmin" should be the subadmin of the group "new-group"

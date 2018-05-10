@@ -7,7 +7,7 @@ So that I can manage user access to group resources
 	Background:
 		Given using API version "2"
 
-	Scenario Outline: removing a user from a group
+	Scenario Outline: admin removes a user from a group
 		Given user "brand-new-user" has been created
 		And group "<group_id>" has been created
 		And user "brand-new-user" has been added to group "<group_id>"
@@ -36,12 +36,14 @@ So that I can manage user access to group resources
 			| 50%2Fix             | %2F literal looks like an escaped slash |
 			| staff?group         | Question mark                           |
 
-		Scenario: removing a user from a group which doesn't exist
+		Scenario: admin tries to remove a user from a group which does not exist
 		Given user "brand-new-user" has been created
 		And group "not-group" has been deleted
 		When user "admin" sends HTTP method "DELETE" to API endpoint "/cloud/users/brand-new-user/groups" with body
 			| groupid | not-group |
 		Then the OCS status code should be "400"
+		And the HTTP status code should be "400"
+		And the API should not return any data
 
 	Scenario: a subadmin can remove users from groups the subadmin is responsible for
 		Given user "subadmin" has been created

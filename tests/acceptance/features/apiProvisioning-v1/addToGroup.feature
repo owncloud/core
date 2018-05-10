@@ -34,37 +34,41 @@ So that I can give a user access to the resources of the group
 			| 50%2Fix             | %2F literal looks like an escaped slash |
 			| staff?group         | Question mark                           |
 
-	Scenario: adding user to a group without privileges
+	Scenario: normal user tries to add himself to a group
 		Given user "brand-new-user" has been created
 		When user "brand-new-user" sends HTTP method "POST" to API endpoint "/cloud/users/brand-new-user/groups" with body
 			| groupid | new-group |
 		Then the OCS status code should be "997"
 		And the HTTP status code should be "401"
+		And the API should not return any data
 
-	Scenario: adding user to a group which doesn't exist
+	Scenario: admin tries to add user to a group which does not exist
 		Given user "brand-new-user" has been created
 		And group "not-group" has been deleted
 		When user "admin" sends HTTP method "POST" to API endpoint "/cloud/users/brand-new-user/groups" with body
 			| groupid | not-group |
 		Then the OCS status code should be "102"
 		And the HTTP status code should be "200"
+		And the API should not return any data
 
-	Scenario: adding user to a group without sending the group
+	Scenario: admin tries to add user to a group without sending the group
 		Given user "brand-new-user" has been created
 		When user "admin" sends HTTP method "POST" to API endpoint "/cloud/users/brand-new-user/groups" with body
 			| groupid |  |
 		Then the OCS status code should be "101"
 		And the HTTP status code should be "200"
+		And the API should not return any data
 
-	Scenario: adding a user which doesn't exist to a group
+	Scenario: admin tries to add a user which does not exist to a group
 		Given user "not-user" has been deleted
 		And group "new-group" has been created
 		When user "admin" sends HTTP method "POST" to API endpoint "/cloud/users/not-user/groups" with body
 			| groupid | new-group |
 		Then the OCS status code should be "103"
 		And the HTTP status code should be "200"
+		And the API should not return any data
 
-	Scenario: a subadmin can add users to groups the subadmin is responsible for
+	Scenario: subadmin adds users to groups the subadmin is responsible for
 		Given user "subadmin" has been created
 		And user "brand-new-user" has been created
 		And group "new-group" has been created
@@ -75,7 +79,7 @@ So that I can give a user access to the resources of the group
 		And the HTTP status code should be "200"
 		And user "brand-new-user" should belong to group "new-group"
 
-	Scenario: a subadmin cannot add users to groups the subadmin is not responsible for
+	Scenario: subadmin tries to add user to groups the subadmin is not responsible for
 		Given user "other-subadmin" has been created
 		And user "brand-new-user" has been created
 		And group "new-group" has been created

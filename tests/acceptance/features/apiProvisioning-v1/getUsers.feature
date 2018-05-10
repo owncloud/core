@@ -7,7 +7,7 @@ So that I can see who has access to ownCloud
 	Background:
 		Given using API version "1"
 
-	Scenario: Getting all users
+	Scenario: admin gets all users
 		Given user "brand-new-user" has been created
 		And user "admin" has been created
 		When user "admin" sends HTTP method "GET" to API endpoint "/cloud/users"
@@ -17,7 +17,7 @@ So that I can see who has access to ownCloud
 			| brand-new-user |
 			| admin          |
 
-	Scenario: get users using a subadmin
+	Scenario: subadmin gets the users in his group
 		Given user "brand-new-user" has been created
 		And user "another-new-user" has been created
 		And group "new-group" has been created
@@ -35,3 +35,4 @@ So that I can see who has access to ownCloud
 		When user "normaluser" sends HTTP method "GET" to API endpoint "/cloud/users"
 		And the OCS status code should be "997"
 		And the HTTP status code should be "401"
+		And the API should not return any data
