@@ -20,9 +20,11 @@ BEHAT=${OC_PATH}lib/composer/bin/behat
 # --remote - the server under test is remote, so we cannot locally enable the
 #            testing app. We have to assume it is already enabled.
 # --hide-oc-logs - do not tail the ownCloud log after the test run
+# --norerun - do not rerun failed webUI scenarios
 BEHAT_TAGS_OPTION_FOUND=false
 REMOTE_ONLY=false
 HIDE_OC_LOGS=false
+RERUN_FAILED_WEBUI_SCENARIOS=true
 
 while [[ $# -gt 0 ]]
 do
@@ -50,6 +52,9 @@ do
 			;;
 		--hide-oc-logs)
 			HIDE_OC_LOGS=true
+			;;
+		--norerun)
+			RERUN_FAILED_WEBUI_SCENARIOS=false
 			;;
 		*)
 			# A "random" parameter is presumed to be a feature file to run.
@@ -519,7 +524,7 @@ else
 fi
 
 # With webUI tests, we try running failed tests again.
-if [ "${PASSED}" = false ] && [ "${RUNNING_WEBUI_TESTS}" = true ]
+if [ "${PASSED}" = false ] && [ "${RUNNING_WEBUI_TESTS}" = true ] && [ "${RERUN_FAILED_WEBUI_SCENARIOS}" = true ]
 then
 	echo "webUI test run failed with exit status: ${BEHAT_EXIT_STATUS}"
 	PASSED=true
