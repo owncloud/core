@@ -7,7 +7,7 @@ So that I can know which users are in a group
 	Background:
 		Given using API version "1"
 
-	Scenario: getting users in a group
+	Scenario: admin gets users in the group
 		Given user "brand-new-user" has been created
 		And user "123" has been created
 		And group "new-group" has been created
@@ -20,11 +20,12 @@ So that I can know which users are in a group
 			| brand-new-user |
 			| 123            |
 
-	Scenario: getting users in an empty group
+	Scenario: admin tries to get users in the empty group
 		Given group "new-group" has been created
 		When user "admin" sends HTTP method "GET" to API endpoint "/cloud/groups/new-group"
 		Then the OCS status code should be "100"
 		And the HTTP status code should be "200"
+		And the list of users returned by the API should be empty
 
 	Scenario: subadmin gets users in a group he is responsible for
 		Given user "user1" has been created

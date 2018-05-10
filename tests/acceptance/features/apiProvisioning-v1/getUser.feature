@@ -6,16 +6,18 @@ So that I can get information about user
 	Background:
 		Given using API version "1"
 
-	Scenario: Get an existing user
+	Scenario: admin gets existing user
 		Given user "brand-new-user" has been created
 		When user "admin" sends HTTP method "GET" to API endpoint "/cloud/users/brand-new-user"
 		Then the OCS status code should be "100"
 		And the HTTP status code should be "200"
+		And the display name returned by the API should be "brand-new-user"
 
-	Scenario: Getting a not existing user
+	Scenario: admin tries to get a not existing user
 		When user "admin" sends HTTP method "GET" to API endpoint "/cloud/users/test"
 		Then the OCS status code should be "998"
 		And the HTTP status code should be "200"
+		And the API should not return any data
 
 	Scenario: subadmin gets information of a user in his group
 		Given user "subadmin" has been created
@@ -26,6 +28,7 @@ So that I can get information about user
 		When user "subadmin" sends HTTP method "GET" to API endpoint "/cloud/users/newuser"
 		Then the OCS status code should be "100"
 		And the HTTP status code should be "200"
+		And the display name returned by the API should be "newuser"
 
 	Scenario: subadmin tries to get information of a user not in his group
 		Given user "subadmin" has been created
@@ -35,6 +38,7 @@ So that I can get information about user
 		When user "subadmin" sends HTTP method "GET" to API endpoint "/cloud/users/newuser"
 		Then the OCS status code should be "997"
 		And the HTTP status code should be "401"
+		And the API should not return any data
 
 	Scenario: normal user tries to get information of another user
 		Given user "newuser" has been created
@@ -42,9 +46,11 @@ So that I can get information about user
 		When user "anotheruser" sends HTTP method "GET" to API endpoint "/cloud/users/newuser"
 		Then the OCS status code should be "997"
 		And the HTTP status code should be "401"
+		And the API should not return any data
 
 	Scenario: normal user gets his own information
 		Given user "newuser" has been created
 		When user "newuser" sends HTTP method "GET" to API endpoint "/cloud/users/newuser"
 		Then the OCS status code should be "100"
 		And the HTTP status code should be "200"
+		And the display name returned by the API should be "newuser"

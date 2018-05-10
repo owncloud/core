@@ -7,7 +7,7 @@ So that I can know in which groups the user has administrative rights
 	Background:
 		Given using API version "2"
 
-	Scenario: Getting subadmin groups of a user
+	Scenario: admin gets subadmin groups of a user
 		Given user "brand-new-user" has been created
 		And group "new-group" has been created
 		And user "brand-new-user" has been made a subadmin of group "new-group"
@@ -17,9 +17,10 @@ So that I can know in which groups the user has administrative rights
 		And the OCS status code should be "200"
 		And the HTTP status code should be "200"
 
-	Scenario: Getting subadmin groups of a user which do not exist
+	Scenario: admin tries to get subadmin groups of a user which do not exist
 		Given user "not-user" has been deleted
 		And group "new-group" has been created
 		When user "admin" sends HTTP method "GET" to API endpoint "/cloud/users/not-user/subadmins"
 		Then the OCS status code should be "400"
 		And the HTTP status code should be "400"
+		And the API should not return any data

@@ -8,7 +8,7 @@ So that I can manage apps
 		Given using API version "1"
 
 	@no_encryption
-	Scenario: get enabled apps
+	Scenario: admin gets enabled apps
 		When user "admin" sends HTTP method "GET" to API endpoint "/cloud/apps?filter=enabled"
 		Then the OCS status code should be "100"
 		And the HTTP status code should be "200"
