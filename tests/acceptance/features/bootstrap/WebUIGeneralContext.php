@@ -660,6 +660,8 @@ class WebUIGeneralContext extends RawMinkContext implements Context {
 		if ($sauceUsername && $sauceAccessKey) {
 			error_log("SAUCELABS RESULT: ($passOrFail) https://saucelabs.com/jobs/$jobId");
 			exec('curl -X PUT -s -d "{\"passed\": ' . $passed . '}" -u ' . $sauceUsername . ':' . $sauceAccessKey . ' https://saucelabs.com/rest/v1/$SAUCE_USERNAME/jobs/' . $jobId);
+		} else {
+			\error_log("SCENARIO RESULT: ($passOrFail)");
 		}
 	}
 }
