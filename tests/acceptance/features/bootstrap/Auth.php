@@ -228,7 +228,7 @@ trait Auth {
 	 * @return void
 	 */
 	public function aNewBrowserSessionForHasBeenStarted($user) {
-		$loginUrl = $this->getBaseUrl() . '/login';
+		$loginUrl = $this->getBaseUrl() . '/index.php/login';
 		// Request a new session and extract CSRF token
 		$client = new Client();
 		$response = $client->get(
