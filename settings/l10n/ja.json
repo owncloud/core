@@ -57,6 +57,7 @@
     "Error while creating device token" : "デバイストークンの作成におけるエラー",
     "Error while deleting the token" : "トークンの削除におけるエラー",
     "Sending..." : "送信中…",
+    "Email has been changed successfully." : "電子メールが正常に変更されました。",
     "Unable to change mail address" : "メールアドレスを変更できません",
     "Your full name has been changed." : "名前を変更しました。",
     "An error occurred: {message}" : "エラーが発生しました: {message}",
