@@ -90,7 +90,7 @@ class VerifyChecksumsTest extends TestCase {
 			if (!empty($subDir)) {
 				$currentDir = "$currentDir/$subDir";
 				if (!$userFolder->nodeExists($currentDir)) {
-					$userFolder->newFolder("$currentDir");
+					$userFolder->newFolder($currentDir);
 				}
 			}
 		}
@@ -189,8 +189,8 @@ class VerifyChecksumsTest extends TestCase {
 
 		$output = $this->cmd->getDisplay();
 
-		$this->assertContains("Mismatch for {$file1->getInternalPath()}", $output);
-		$this->assertContains("Mismatch for {$file2->getInternalPath()}", $output);
+		$this->assertContains($file1->getInternalPath(), $output);
+		$this->assertContains($file2->getInternalPath(), $output);
 		$this->assertContains(self::BROKEN_CHECKSUM_STRING, $output);
 		$this->assertContains($this->testFiles[4]['expectedChecksums'](), $output);
 		$this->assertContains($this->testFiles[7]['expectedChecksums'](), $output);
