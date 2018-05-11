@@ -599,6 +599,10 @@ class SMB extends \OCP\Files\Storage\StorageAdapter {
 		$path = $this->buildPath($path);
 		try {
 			$result = $this->share->mkdir($path);
+		} catch (ForbiddenException $e) {
+			$this->swallow(__FUNCTION__, $e);
+		} catch (AlreadyExistsException $e) {
+			$this->swallow(__FUNCTION__, $e);
 		} catch (Exception $e) {
 			if ($e->getCode() === 16) {
 				$this->swallow(__FUNCTION__, $e);
