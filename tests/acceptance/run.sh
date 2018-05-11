@@ -47,6 +47,10 @@ do
 			BEHAT_TAGS_OPTION_FOUND=true
 			shift
 			;;
+		--browser)
+			BROWSER="$2"
+			shift
+			;;
 		--remote)
 			REMOTE_ONLY=true
 			;;
@@ -254,6 +258,11 @@ fi
 if [ -z "${SELENIUM_PORT}" ]
 then
 	SELENIUM_PORT=4445
+fi
+
+if [ -z "$BROWSER" ]
+then
+	BROWSER="chrome"
 fi
 
 # Check if we can rely on a local ./occ command or if we are testing
