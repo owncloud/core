@@ -47,9 +47,9 @@ default:
       contexts:
         - ShareesContext: *common_feature_context_params
 
-    apiSharing:
+    apiSharing-v1:
       paths:
-        - %paths.base%/../features/apiSharing
+        - %paths.base%/../features/apiSharing-v1
       contexts:
         - FeatureContext: *common_feature_context_params
 
