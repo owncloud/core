@@ -551,7 +551,7 @@ matrix:
 
     - PHP_VERSION: 7.1
       TEST_SUITE: api
-      BEHAT_SUITE: apiSharing
+      BEHAT_SUITE: apiSharing-v1
       DB_TYPE: mariadb
       USE_SERVER: true
       INSTALL_SERVER: true
