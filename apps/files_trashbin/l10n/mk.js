@@ -11,6 +11,8 @@ OC.L10N.register(
     "This operation is forbidden" : "Операцијата не е дозволена",
     "This directory is unavailable, please check the logs or contact the administrator" : "Овој директориум е недостапен, ве молиме проверете ги логовите или контактирајте со администраторот",
     "restored" : "повратени",
+    "No deleted files" : "Нема избришани датотеки",
+    "You will be able to recover deleted files from here" : "Можете да ги вратите избришаните датотеки од тука",
     "No entries found in this folder" : "Нема ништо во оваа папка",
     "Select all" : "Избери се",
     "Name" : "Име",

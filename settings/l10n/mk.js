@@ -16,6 +16,8 @@ OC.L10N.register(
     "Change" : "Промени",
     "Delete" : "Избриши",
     "Share" : "Сподели",
+    "APCu" : "APCu",
+    "Redis" : "Redis",
     "__language_name__" : "__language_name__",
     "Language changed" : "Јазикот е сменет",
     "Invalid request" : "Неправилно барање",
@@ -57,6 +59,7 @@ OC.L10N.register(
     "Forum" : "Форум",
     "Apps Management" : "Апликации",
     "Developer documentation" : "Документација за програмери",
+    "by %s" : "од%s",
     "Documentation:" : "Документација:",
     "Show description …" : "Прикажи опис ...",
     "Hide description …" : "Сокриј го описот ...",
@@ -152,7 +155,8 @@ OC.L10N.register(
     "Change password" : "Промени лозинка",
     "Language" : "Јазик",
     "Help translate" : "Помогни во преводот",
-    "You are using %s of %s (%s %%)" : "Искористено %s од %s (%s %%)",
+    "You are using %s" : "Вие користите %s",
+    "You are using %s of %s (%s %%)" : "Вие користите%s од %s (%s %%)",
     "Developed by the {communityopen}ownCloud community{linkclose}, the {githubopen}source code{linkclose} is licensed under the {licenseopen}<abbr title=\"Affero General Public License\">AGPL</abbr>{linkclose}." : "Развиено од {communityopen}ownCloud{linkclose},  {githubopen}изворниот код{linkclose} е лиценциран под лиценцата {licenseopen}<abbr title=\"Affero General Public License\">AGPL</abbr>{linkclose}.",
     "Name" : "Име",
     "Username" : "Корисничко име",
@@ -160,6 +164,7 @@ OC.L10N.register(
     "Version" : "Верзија",
     "Personal" : "Персонално",
     "Admin" : "Админ",
-    "Error" : "Грешка"
+    "Error" : "Грешка",
+    "No panels for this section." : "Нема панели за овој дел."
 },
 "nplurals=2; plural=(n % 10 == 1 && n % 100 != 11) ? 0 : 1;");
