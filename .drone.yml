@@ -137,6 +137,15 @@ pipeline:
       matrix:
         INSTALL_SERVER: true
 
+  setup-caldav-tests:
+    image: owncloudci/php:${PHP_VERSION}
+    pull: true
+    commands:
+      - bash apps/dav/tests/travis/caldav/install.sh
+    when:
+      matrix:
+        TEST_SUITE: caldav
+
   fix-permissions:
     image: owncloudci/php:${PHP_VERSION}
     pull: true
@@ -209,6 +218,15 @@ pipeline:
     when:
       matrix:
         TEST_SUITE: selenium
+
+  caldav-tests:
+    image: owncloudci/php:${PHP_VERSION}
+    pull: true
+    commands:
+      - bash apps/dav/tests/travis/caldav/script.sh
+    when:
+      matrix:
+        TEST_SUITE: caldav
 
   print-log:
     image: owncloudci/php:${PHP_VERSION}
@@ -644,6 +662,15 @@ matrix:
     - PHP_VERSION: 7.1
       TEST_SUITE: selenium
       BEHAT_SUITE: webUIUpload
+      DB_TYPE: mariadb
+      USE_SERVER: true
+      INSTALL_SERVER: true
+      CHOWN_SERVER: true
+      OWNCLOUD_LOG: true
+
+    # caldav test
+    - PHP_VERSION: 7.1
+      TEST_SUITE: caldav
       DB_TYPE: mariadb
       USE_SERVER: true
       INSTALL_SERVER: true
