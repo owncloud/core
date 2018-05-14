@@ -19,11 +19,11 @@ BEHAT=${OC_PATH}lib/composer/bin/behat
 # --tags - specify tags for scenarios to run (or not)
 # --remote - the server under test is remote, so we cannot locally enable the
 #            testing app. We have to assume it is already enabled.
-# --hide-oc-logs - do not tail the ownCloud log after the test run
+# --show-oc-logs - tail the ownCloud log after the test run
 # --norerun - do not rerun failed webUI scenarios
 BEHAT_TAGS_OPTION_FOUND=false
 REMOTE_ONLY=false
-HIDE_OC_LOGS=false
+SHOW_OC_LOGS=false
 RERUN_FAILED_WEBUI_SCENARIOS=true
 
 while [[ $# -gt 0 ]]
@@ -54,8 +54,8 @@ do
 		--remote)
 			REMOTE_ONLY=true
 			;;
-		--hide-oc-logs)
-			HIDE_OC_LOGS=true
+		--show-oc-logs)
+			SHOW_OC_LOGS=true
 			;;
 		--norerun)
 			RERUN_FAILED_WEBUI_SCENARIOS=false
@@ -706,7 +706,7 @@ then
 	kill ${PHPPID_FED}
 fi
 
-if [ -z ${HIDE_OC_LOGS} ]
+if [ "${SHOW_OC_LOGS}" = true ]
 then
 	tail "${OC_PATH}/data/owncloud.log"
 fi
