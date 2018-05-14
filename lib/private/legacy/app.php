@@ -121,45 +121,16 @@ class OC_App {
 		}
 
 		// prevent app.php from printing output
-		ob_start();
+		\ob_start();
 		foreach ($apps as $app) {
 			if ((is_null($types) or self::isType($app, $types)) && !in_array($app, self::$loadedApps)) {
 				self::loadApp($app);
 			}
 		}
-		ob_end_clean();
+		\ob_end_clean();
 
-		// once all authentication apps are loaded we can validate the session
-		if (is_null($types) || in_array('authentication', $types)) {
-			if (\OC::$server->getUserSession()) {
-				$request = \OC::$server->getRequest();
-				$session = \OC::$server->getUserSession();
-				$davUser = \OC::$server->getUserSession()->getSession()->get(\OCA\DAV\Connector\Sabre\Auth::DAV_AUTHENTICATED);
-				if (is_null($davUser)) {
-					$session->validateSession();
-				} else {
-					/** @var \OC\Authentication\Token\DefaultTokenProvider $tokenProvider */
-					$tokenProvider = \OC::$server->query('\OC\Authentication\Token\DefaultTokenProvider');
-					$token = null;
-					try {
-						$token = $tokenProvider->getToken($session->getSession()->getId());
-					} catch (\Exception $ex) {
-						$password = null;
-						if (isset($_SERVER['PHP_AUTH_PW'])) {
-							$password = $_SERVER['PHP_AUTH_PW'];
-						}
-
-						$session->createSessionToken($request, $session->getUser()->getUID(), $session->getLoginName(), $password);
-					}
-
-					if ($token) {
-						$tokenProvider->updateToken($token);
-					}
-				}
-			}
-		}
-		if (is_array($types)) {
-			self::$loadedTypes = array_merge(self::$loadedTypes, $types);
+		if (\is_array($types)) {
+			self::$loadedTypes = \array_merge(self::$loadedTypes, $types);
 		}
 
 		\OC_Hook::emit('OC_App', 'loadedApps');
