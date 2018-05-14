@@ -29,7 +29,7 @@ RERUN_FAILED_WEBUI_SCENARIOS=true
 while [[ $# -gt 0 ]]
 do
 	key="$1"
-	case $key in
+	case ${key} in
 		-c|--config)
 			BEHAT_YML="$2"
 			shift
@@ -84,7 +84,7 @@ remote_occ() {
 	CURL_OCC_RESULT=`curl -s -u $1 $2 -d "command=$3"`
 	RETURN=`echo ${CURL_OCC_RESULT} | xmllint --xpath "string(ocs/data/code)" - | sed 's/ //g'`
 	# We could not find a proper return of the testing app, so something went wrong
-	if [ -z "$RETURN" ]
+	if [ -z "${RETURN}" ]
 	then
 		RETURN=1
 		REMOTE_OCC_STDERR=${CURL_OCC_RESULT}
@@ -208,15 +208,18 @@ fi
 if [ -n "${BEHAT_SUITE}" ]
 then
 	BEHAT_SUITE_OPTION="--suite=${BEHAT_SUITE}"
-	if [[ ${BEHAT_SUITE} == api* ]]
+
+	# If the suite name begins with "webUI" then we will setup for webUI testing
+	# and run tests tagged as @webUI, otherwise it is just API tests.
+	if [[ "${BEHAT_SUITE}" == webUI* ]]
 	then
-		TEST_TYPE_TAG="@api"
-		RUNNING_API_TESTS=true
-		RUNNING_WEBUI_TESTS=false
-	else
 		TEST_TYPE_TAG="@webUI"
 		RUNNING_API_TESTS=false
 		RUNNING_WEBUI_TESTS=true
+	else
+		TEST_TYPE_TAG="@api"
+		RUNNING_API_TESTS=true
+		RUNNING_WEBUI_TESTS=false
 	fi
 else
 	BEHAT_SUITE_OPTION=""
@@ -225,6 +228,7 @@ else
 	# So just run all the API tests.
 	TEST_TYPE_TAG="@api"
 	RUNNING_API_TESTS=true
+	RUNNING_WEBUI_TESTS=false
 fi
 
 # Always have one of "@api" or "@webUI" filter tags
@@ -260,7 +264,7 @@ then
 	SELENIUM_PORT=4445
 fi
 
-if [ -z "$BROWSER" ]
+if [ -z "${BROWSER}" ]
 then
 	BROWSER="chrome"
 fi
@@ -285,19 +289,19 @@ else
 fi
 
 # The endpoint to use to do occ commands via the testing app
-OCC_URL="$TEST_SERVER_URL/ocs/v2.php/apps/testing/api/v1/occ"
+OCC_URL="${TEST_SERVER_URL}/ocs/v2.php/apps/testing/api/v1/occ"
 
 # Set SMTP settings
 remote_occ ${ADMIN_AUTH} ${OCC_URL} "--no-warnings config:system:get mail_domain"
-PREVIOUS_MAIL_DOMAIN=$REMOTE_OCC_STDOUT
+PREVIOUS_MAIL_DOMAIN=${REMOTE_OCC_STDOUT}
 remote_occ ${ADMIN_AUTH} ${OCC_URL} "--no-warnings config:system:get mail_from_address"
-PREVIOUS_MAIL_FROM_ADDRESS=$REMOTE_OCC_STDOUT
+PREVIOUS_MAIL_FROM_ADDRESS=${REMOTE_OCC_STDOUT}
 remote_occ ${ADMIN_AUTH} ${OCC_URL} "--no-warnings config:system:get mail_smtpmode"
-PREVIOUS_MAIL_SMTP_MODE=$REMOTE_OCC_STDOUT
+PREVIOUS_MAIL_SMTP_MODE=${REMOTE_OCC_STDOUT}
 remote_occ ${ADMIN_AUTH} ${OCC_URL} "--no-warnings config:system:get mail_smtphost"
-PREVIOUS_MAIL_SMTP_HOST=$REMOTE_OCC_STDOUT
+PREVIOUS_MAIL_SMTP_HOST=${REMOTE_OCC_STDOUT}
 remote_occ ${ADMIN_AUTH} ${OCC_URL} "--no-warnings config:system:get mail_smtpport"
-PREVIOUS_MAIL_SMTP_PORT=$REMOTE_OCC_STDOUT
+PREVIOUS_MAIL_SMTP_PORT=${REMOTE_OCC_STDOUT}
 
 remote_occ ${ADMIN_AUTH} ${OCC_URL} "config:system:set mail_domain --value=foobar.com"
 remote_occ ${ADMIN_AUTH} ${OCC_URL} "config:system:set mail_from_address --value=owncloud"
@@ -410,7 +414,7 @@ if [ "${BROWSER}" == "internet explorer" ] || [ "${BROWSER}" == "MicrosoftEdge" 
 then
 	BROWSER_IN_CAPITALS=${BROWSER//[[:blank:]]/}
 	BROWSER_IN_CAPITALS=${BROWSER_IN_CAPITALS^^}
-	BEHAT_FILTER_TAGS="${BEHAT_FILTER_TAGS}&&~@skipOn"${BROWSER_IN_CAPITALS}
+	BEHAT_FILTER_TAGS="${BEHAT_FILTER_TAGS}&&~@skipOn${BROWSER_IN_CAPITALS}"
 fi
 
 # Skip tests tagged with the current oC version
@@ -464,10 +468,56 @@ then
 	BEHAT_FILTER_TAGS="${BEHAT_FILTER_TAGS}&&~@skip"
 fi
 
+if [ -n "${BROWSER_VERSION}" ]
+then
+	BROWSER_VERSION_EXTRA_CAPABILITIES_STRING='"browserVersion":"'${BROWSER_VERSION}'",'
+	BROWSER_VERSION_SELENIUM_STRING='"version": "'${BROWSER_VERSION}'", '
+	BROWSER_VERSION_TEXT='('${BROWSER_VERSION}') '
+else
+	BROWSER_VERSION_EXTRA_CAPABILITIES_STRING=""
+	BROWSER_VERSION_SELENIUM_STRING=""
+	BROWSER_VERSION_TEXT=""
+fi
+
+if [ -n "${PLATFORM}" ]
+then
+	PLATFORM_SELENIUM_STRING='"platform": "'${PLATFORM}'", '
+	PLATFORM_TEXT="on platform '${PLATFORM}' "
+else
+	PLATFORM_SELENIUM_STRING=""
+	PLATFORM_TEXT=""
+fi
+
 if [ "${RUNNING_API_TESTS}" = true ]
 then
 	EXTRA_CAPABILITIES=""
+	BROWSER_TEXT=""
 else
+	BROWSER_TEXT="on browser '${BROWSER}' "
+
+	# If we are running on Travis, use the Travis details as the name
+	if [ -n "${TRAVIS_REPO_SLUG}" ]
+	then
+		CAPABILITIES_NAME_TEXT="${TRAVIS_REPO_SLUG} - ${TRAVIS_JOB_NUMBER}"
+	else
+		# If we are running in some automated CI, use the provided details
+		if [ -n "${CI_REPO}" ]
+		then
+			CAPABILITIES_NAME_TEXT="${CI_REPO} - ${CI_BRANCH}"
+		else
+			# Otherwise this is a non-CI run, probably a local developer run
+			CAPABILITIES_NAME_TEXT="ownCloud non-CI"
+		fi
+	fi
+
+	# If SauceLabs credentials have been passed, then use them
+	if [ -n "${SAUCE_USERNAME}" ] && [ -n "${SAUCE_ACCESS_KEY}" ]
+	then
+		SAUCE_CREDENTIALS="${SAUCE_USERNAME}:${SAUCE_ACCESS_KEY}@"
+	else
+		SAUCE_CREDENTIALS=""
+	fi
+
 	if [ "${BROWSER}" == "firefox" ]
 	then
 		# Set the screen resolution so that hopefully draggable elements will be visible
@@ -484,9 +534,12 @@ else
 		EXTRA_CAPABILITIES='"iedriverVersion": "3.4.0","requiresWindowFocus":true,"screenResolution":"1920x1080",'
 	fi
 
-	EXTRA_CAPABILITIES=$EXTRA_CAPABILITIES'"browserVersion":"'${BROWSER_VERSION}'","maxDuration":"3600"'
-	export BEHAT_PARAMS='{"extensions" : {"Behat\\MinkExtension" : {"browser_name": "'${BROWSER}'", "base_url" : "'${TEST_SERVER_URL}'", "selenium2":{"capabilities": {"marionette":null, "browser": "'${BROWSER}'", "version": "'${BROWSER_VERSION}'", "platform": "'${PLATFORM}'", "name": "'${TRAVIS_REPO_SLUG}' - '${TRAVIS_JOB_NUMBER}'", "extra_capabilities": {'${EXTRA_CAPABILITIES}'}}, "wd_host":"http://'${SAUCE_USERNAME}:${SAUCE_ACCESS_KEY}'@'${SELENIUM_HOST}':'${SELENIUM_PORT}'/wd/hub"}}, "SensioLabs\\Behat\\PageObjectExtension" : {}}}'
+	EXTRA_CAPABILITIES=${EXTRA_CAPABILITIES}${BROWSER_VERSION_EXTRA_CAPABILITIES_STRING}'"maxDuration":"3600"'
+	export BEHAT_PARAMS='{"extensions" : {"Behat\\MinkExtension" : {"browser_name": "'${BROWSER}'", "base_url" : "'${TEST_SERVER_URL}'", "selenium2":{"capabilities": {"marionette":null, "browser": "'${BROWSER}'", '${BROWSER_VERSION_SELENIUM_STRING}${PLATFORM_SELENIUM_STRING}'"name": "'${CAPABILITIES_NAME_TEXT}'", "extra_capabilities": {'${EXTRA_CAPABILITIES}'}}, "wd_host":"http://'${SAUCE_CREDENTIALS}${SELENIUM_HOST}':'${SELENIUM_PORT}'/wd/hub"}}, "SensioLabs\\Behat\\PageObjectExtension" : {}}}'
 fi
+
+echo ${EXTRA_CAPABILITIES}
+echo ${BEHAT_PARAMS}
 
 export IPV4_URL
 export IPV6_URL
@@ -514,12 +567,7 @@ fi
 
 TEST_LOG_FILE=$(mktemp)
 
-if [ "${RUNNING_API_TESTS}" = true ]
-then
-	echo "Running ${SUITE_FEATURE_TEXT} tests tagged ${BEHAT_FILTER_TAGS}" | tee ${TEST_LOG_FILE}
-else
-	echo "Running ${SUITE_FEATURE_TEXT} tests tagged ${BEHAT_FILTER_TAGS} on '${BROWSER}' (${BROWSER_VERSION}) on ${PLATFORM}" | tee ${TEST_LOG_FILE}
-fi
+echo "Running ${SUITE_FEATURE_TEXT} tests tagged ${BEHAT_FILTER_TAGS} ${BROWSER_TEXT}${BROWSER_VERSION_TEXT}${PLATFORM_TEXT}" | tee ${TEST_LOG_FILE}
 
 ${BEHAT} --colors --strict -c ${BEHAT_YML} -f junit -f pretty ${BEHAT_SUITE_OPTION} --tags ${BEHAT_FILTER_TAGS} ${BEHAT_FEATURE} -v  2>&1 | tee -a ${TEST_LOG_FILE}
 
@@ -664,7 +712,7 @@ fi
 # Put back state of the testing app
 if [ "${TESTING_ENABLED_BY_SCRIPT}" = true ]
 then
-	$OCC app:disable testing
+	${OCC} app:disable testing
 fi
 
 # Upload log file for later analysis
