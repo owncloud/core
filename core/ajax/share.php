@@ -172,7 +172,7 @@ if (isset($_POST['action'], $_POST['itemType'], $_POST['itemSource'])) {
 				'link' => $_POST['link'],
 				'file' => $_POST['file'],
 				'toAddress' => $_POST['toAddress'],
-				'expiration' => $_POST['expiration'],
+				'expirationDate' => $_POST['expiration'],
 				'personalNote' => $emailBody
 			]);
 
@@ -211,7 +211,7 @@ if (isset($_POST['action'], $_POST['itemType'], $_POST['itemSource'])) {
 				null,
 				$filter->getFile(),
 				$filter->getLink(),
-				$filter->getExpirationDate(),
+				$expiration,
 				$filter->getPersonalNote(),
 				$options
 			);
