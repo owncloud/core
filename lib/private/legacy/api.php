@@ -519,6 +519,8 @@ class OC_API {
 				return null;
 			case 100:
 				return Http::STATUS_OK;
+			case 104:
+				return Http::STATUS_FORBIDDEN;
 		}
 		// any 2xx, 4xx and 5xx will be used as is
 		if ($sc >= 200 && $sc < 600) {
