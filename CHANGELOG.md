@@ -6,6 +6,12 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/).
 
 ## [Unreleased]
 ### Added
+### Changed
+### Removed
+### Fixed
+
+## 10.0.8 - 2018-04-27
+### Added
 - Added option for user:sync to reenable formerly disabled users - [#31124](https://github.com/owncloud/core/pull/31124)
 - Ability to log extra JSON fields - [#31121](https://github.com/owncloud/core/issues/31121)
 - Trigger event when logging - [#31121](https://github.com/owncloud/core/issues/31121)
