@@ -35,18 +35,8 @@ foreach ($dirIterator as $fileinfo) {
 
 $finder = PhpCsFixer\Finder::create()
     ->exclude($excludeDirs)
-    ->in(__DIR__)
-;
+    ->in(__DIR__);
 
-return PhpCsFixer\Config::create()
-    ->setRules([
-        'native_function_invocation' => true,
-        '@PSR1' => true,
-        'array_syntax' => ['syntax' => 'short'],
-        'combine_consecutive_issets' => true,
-        'combine_consecutive_unsets' => true,
-        'no_spaces_inside_parenthesis' => true,
-        'no_extra_consecutive_blank_lines' => true,
-       ])
-    ->setFinder($finder)
-;
+$config = new OC\CodingStandard\Config();
+$config->setFinder($finder);
+return $config;
