@@ -30,10 +30,10 @@ Feature: tokenAuth
 		Then the HTTP status code should be "401"
 
 	Scenario: using WebDAV with basic auth should be blocked when token auth is enforced
-		When user "user0" requests "/remote.php/webdav" with "PROPFIND" using basic auth
+		When user "user1" requests "/remote.php/webdav" with "PROPFIND" using basic auth
 		Then the HTTP status code should be "401"
 
 	Scenario: using OCS with basic auth should be blocked when token auth is enforced
-		When user "user0" requests "/ocs/v1.php/apps/files_sharing/api/v1/remote_shares" with "GET" using basic auth
+		When user "user1" requests "/ocs/v1.php/apps/files_sharing/api/v1/remote_shares" with "GET" using basic auth
 		Then the OCS status code should be "997"
 		And the HTTP status code should be "401"
