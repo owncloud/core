@@ -331,7 +331,6 @@ trait WebDav {
 	public function downloadPublicFileInsideAFolderWithRange($path, $range) {
 		$token = $this->lastShareData->data->token;
 		$fullUrl = $this->getBaseUrl() . "/public.php/webdav" . "$path";
-
 		$client = new GClient();
 		$options = [];
 		$options['auth'] = [$token, ""];
@@ -341,6 +340,50 @@ trait WebDav {
 		$request->addHeader('Range', $range);
 
 		$this->response = $client->send($request);
+	}
+
+	/**
+	 * @When /^the public downloads file "([^"]*)" from inside the last public shared folder with password "([^"]*)" with range "([^"]*)" using the API$/
+	 *
+	 * @param string $path
+	 * @param string $password
+	 * @param string $range
+	 *
+	 * @return void
+	 */
+	public function publicDownloadsTheFileInsideThePublicSharedFolderWithPassword(
+		$path, $password, $range
+	) {
+		$token = $this->lastShareData->data->token;
+		$fullUrl = $this->getBaseUrl() . "/public.php/webdav" . "$path";
+		$client = new GClient();
+		$options = [];
+		$options['auth'] = [$token, $password];
+		$options['headers']['X-Requested-With'] = 'XMLHttpRequest';
+		
+		$request = $client->createRequest("GET", $fullUrl, $options);
+		$request->addHeader('Range', $range);
+		
+		$this->response = $client->send($request);
+	}
+
+	/**
+	 * @Then /^the public should be able to download the range "([^"]*)" of file "([^"]*)" from inside the last public shared folder with password "([^"]*)" and the content should be "([^"]*)"$/
+	 *
+	 * @param string $range
+	 * @param string $path
+	 * @param string $password
+	 * @param string $content
+	 *
+	 * @return void
+	 */
+	public function shouldBeAbleToDownloadFileInsidePublicSharedFolderWithPassword(
+		$range, $path, $password, $content
+	) {
+			$this->publicDownloadsTheFileInsideThePublicSharedFolderWithPassword(
+				$path, $password, $range
+			);
+			$this->downloadedContentShouldBe($content);
 	}
 
 	/**
