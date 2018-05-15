@@ -34,3 +34,90 @@ Feature: sharing
 		And user "user2" should see the following elements
 			| /common/sub/textfile0.txt |
 			| /textfile0%20(2).txt      |
+
+	Scenario: Download a file that is in a folder contained in a folder that has been shared with a user with default permissions
+		Given user "user0" has been created
+		And user "user1" has been created
+		And user "user0" creates a share using the API with settings
+			| path      | PARENT     |
+			| shareType | 0          |
+			| shareWith | user1      |
+		Then the user "user1" should be able to download the file "/PARENT (2)/CHILD/child.txt" using the API
+
+	Scenario: Download a file that is in a folder contained in a folder that has been shared with a group with default permissions
+		Given user "user0" has been created
+		And user "user1" has been created
+		And group "sharegroup" has been created
+		And user "user1" has been added to group "sharegroup"
+		And user "user0" has shared folder "PARENT" with group "sharegroup"
+		Then the user "user1" should be able to download the file "/PARENT (2)/CHILD/child.txt" using the API
+
+	Scenario: Download a file that is in a folder contained in a folder that has been shared with public with default permissions
+		Given user "user0" has been created
+		When user "user0" creates a share using the API with settings
+			| path         | PARENT   |
+			| shareType    | 3        |
+			| password     | publicpw |
+		Then the public should be able to download the range "bytes=1-7" of file "/CHILD/child.txt" from inside the last public shared folder with password "publicpw" and the content should be "wnCloud"
+
+	Scenario: Download a file that is in a folder contained in a folder that has been shared with a user with Read/Write permission 
+		Given user "user0" has been created
+		And user "user1" has been created
+		When user "user0" creates a share using the API with settings
+			| path        | PARENT |
+			| shareType   | 0      |
+			| shareWith   | user1  |
+			| permissions | 15     |
+		Then the user "user1" should be able to download the file "/PARENT (2)/CHILD/child.txt" using the API
+
+	Scenario: Download a file that is in a folder contained in a folder that has been shared with a group with Read/Write permission 
+		Given user "user0" has been created
+		And user "user1" has been created
+		And group "sharegroup" has been created
+		And user "user1" has been added to group "sharegroup"
+		When user "user0" creates a share using the API with settings
+			| path        | PARENT      |
+			| shareType   | 1           |
+			| shareWith   | sharegroup  |
+			| permissions | 15          |
+		Then the user "user1" should be able to download the file "/PARENT (2)/CHILD/child.txt" using the API
+
+	Scenario: Download a file that is in a folder contained in a folder that has been shared with public with Read/Write permission 
+		Given user "user0" has been created
+		When user "user0" creates a share using the API with settings
+			| path         | PARENT   |
+			| shareType    | 3        |
+			| password     | publicpw |
+			| permissions | 15        |
+		Then the public should be able to download the range "bytes=1-7" of file "/CHILD/child.txt" from inside the last public shared folder with password "publicpw" and the content should be "wnCloud"
+
+	Scenario: Download a file that is in a folder contained in a folder that has been shared with a user with Read only permission 
+		Given user "user0" has been created
+		And user "user1" has been created
+		When user "user0" creates a share using the API with settings
+			| path        | PARENT |
+			| shareType   | 0      |
+			| shareWith   | user1  |
+			| permissions | 1     |
+		Then the user "user1" should be able to download the file "/PARENT (2)/CHILD/child.txt" using the API
+
+	Scenario: Download a file that is in a folder contained in a folder that has been shared with a group with Read only permission 
+		Given user "user0" has been created
+		And user "user1" has been created
+		And group "sharegroup" has been created
+		And user "user1" has been added to group "sharegroup"
+		When user "user0" creates a share using the API with settings
+			| path        | PARENT      |
+			| shareType   | 1           |
+			| shareWith   | sharegroup  |
+			| permissions | 1          |
+		Then the user "user1" should be able to download the file "/PARENT (2)/CHILD/child.txt" using the API
+
+	Scenario: Download a file that is in a folder contained in a folder that has been shared with public with Read only permission 
+		Given user "user0" has been created
+		When user "user0" creates a share using the API with settings
+			| path         | PARENT   |
+			| shareType    | 3        |
+			| password     | publicpw |
+			| permissions | 1        |
+		Then the public should be able to download the range "bytes=1-7" of file "/CHILD/child.txt" from inside the last public shared folder with password "publicpw" and the content should be "wnCloud"
