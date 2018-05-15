@@ -93,7 +93,6 @@ pipeline:
       - ./tests/drone/install-server.sh
       - ./tests/drone/test-phpunit.sh
     when:
-      event: [push, pull_request]
       matrix:
         TEST_SUITE: phpunit
 
