@@ -1,10 +1,10 @@
 {
     "_readme": [
         "This file locks the dependencies of your project to a known state",
-        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "8f6b260eabe36815aaee16a685271904",
+    "content-hash": "ea3e68d97d1936adbc464695dc7991c3",
     "packages": [
         {
             "name": "bantu/ini-get-wrapper",
@@ -4429,6 +4429,55 @@
                 "service proxies"
             ],
             "time": "2017-05-04T11:12:50+00:00"
+        },
+        {
+            "name": "owncloud/coding-standard",
+            "version": "1.0.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/owncloud/coding-standard.git",
+                "reference": "548ba3b83e590e946a5aa1da33f7f4c8a55e61c5"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/owncloud/coding-standard/zipball/548ba3b83e590e946a5aa1da33f7f4c8a55e61c5",
+                "reference": "548ba3b83e590e946a5aa1da33f7f4c8a55e61c5",
+                "shasum": ""
+            },
+            "require": {
+                "friendsofphp/php-cs-fixer": "^2.11"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "OC\\CodingStandard\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "AGPL-3.0"
+            ],
+            "authors": [
+                {
+                    "name": "Thomas Müller",
+                    "email": "thomas.mueller@tmit.eu"
+                },
+                {
+                    "name": "Patrick Jahns",
+                    "email": "github@patrickjahns.de"
+                }
+            ],
+            "description": "ownCloud Coding Standard",
+            "homepage": "http://www.owncloud.org",
+            "keywords": [
+                "code",
+                "coding",
+                "owncloud",
+                "php-cs-fixer",
+                "standard",
+                "style"
+            ],
+            "time": "2018-05-16T13:47:45+00:00"
         },
         {
             "name": "paragonie/random_compat",
