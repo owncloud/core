@@ -7,12 +7,15 @@ Feature: sharing
 	Scenario: Creating a new share with user
 		Given user "user0" has been created
 		And user "user1" has been created
-		When user "user0" sends HTTP method "POST" to API endpoint "/apps/files_sharing/api/v1/shares" with body
-			| path      | welcome.txt |
-			| shareWith | user1       |
-			| shareType | 0           |
+		When user "user0" shares file "welcome.txt" with user "user1" using the API
 		Then the OCS status code should be "100"
 		And the HTTP status code should be "200"
+		And the share fields of the last share should include
+			| share_with             | user1              |
+			| file_target            | /welcome.txt       |
+			| path                   | /welcome.txt       |
+			| permissions            | 19                 |
+			| uid_owner              | user0              |
 
 	Scenario: Creating a share with a group
 		Given user "user0" has been created
@@ -24,6 +27,12 @@ Feature: sharing
 			| shareType | 1             |
 		Then the OCS status code should be "100"
 		And the HTTP status code should be "200"
+		And the share fields of the last share should include
+			| share_with             | sharing-group      |
+			| file_target            | /welcome.txt       |
+			| path                   | /welcome.txt       |
+			| permissions            | 19                 |
+			| uid_owner              | user0              |
 
 	Scenario: Creating a new share with user who already received a share through their group
 		Given user "user0" has been created
@@ -37,6 +46,12 @@ Feature: sharing
 			| shareType | 0           |
 		Then the OCS status code should be "100"
 		And the HTTP status code should be "200"
+		And the share fields of the last share should include
+			| share_with             | user1              |
+			| file_target            | /welcome.txt       |
+			| path                   | /welcome.txt       |
+			| permissions            | 19                 |
+			| uid_owner              | user0              |
 
 	Scenario: Creating a new public share
 		Given user "user0" has been created
@@ -60,21 +75,12 @@ Feature: sharing
 	Scenario: Creating a new public share of a folder
 		Given user "user0" has been created
 		When user "user0" creates a share using the API with settings
-			| path         | FOLDER   |
-			| shareType    | 3        |
-			| password     | publicpw |
-			| expireDate   | +3 days  |
-			| publicUpload | true     |
-			| permissions  | 7        |
+			| path      | PARENT   |
+			| shareType | 3        |
+			| password  | publicpw |
 		Then the OCS status code should be "100"
 		And the HTTP status code should be "200"
-		And the share fields of the last share should include
-			| id          | A_NUMBER             |
-			| permissions | 15                   |
-			| expiration  | +3 days              |
-			| url         | AN_URL               |
-			| token       | A_TOKEN              |
-			| mimetype    | httpd/unix-directory |
+		Then the public should be able to download the range "bytes=1-7" of file "/parent.txt" from inside the last public shared folder with password "publicpw" and the content should be "wnCloud"
 
 	Scenario: Creating a new share with a disabled user
 		Given user "user0" has been created
