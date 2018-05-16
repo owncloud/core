@@ -277,6 +277,54 @@ trait Sharing {
 	}
 
 	/**
+	 * @Then /^the user "([^"]*)" should be able to download the file "([^"]*)" using the API$/
+	 * 
+	 * @param string $user
+	 * @param string $path
+	 * 
+	 * @return void
+	 */
+	public function theUserShouldBeAbleToDownloadTheFileUsingTheApi($user, $path) {
+		$path = ltrim($path, "/");
+		$options = [];
+		$options['auth'] = $this->getAuthOptionForUser($user);
+		
+		$fullUrl = $this->getBaseUrl() . "/remote.php/webdav/$path";
+		$this->checkUserDownload($fullUrl, $options, "text/plain");
+	}
+
+	/**
+	 * @param string $url
+	 * @param array $options
+	 * @param string $mimeType 
+	 * 
+	 * @return void
+	 */
+	private  function checkUserDownload($url, $options, $mimeType) {
+		$client = new Client();
+		$this->response = $client->get($url, $options);
+		PHPUnit_Framework_Assert::assertEquals(
+			200,
+			$this->response->getStatusCode()
+		);
+		
+		$buf = '';
+		$body = $this->response->getBody();
+		while (!$body->eof()) {
+			// read everything
+			$buf .= $body->read(8192);
+		}
+		$mimeType = 'text/plain';
+		if ($mimeType !== null) {
+			$finfo = new finfo;
+			PHPUnit_Framework_Assert::assertEquals(
+				$mimeType,
+				$finfo->buffer($buf, FILEINFO_MIME_TYPE)
+			);
+		}
+	}
+
+	/**
 	 * @param string $url
 	 * @param string $auth
 	 * @param string $mimeType
