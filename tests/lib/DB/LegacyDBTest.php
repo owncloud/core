@@ -16,7 +16,7 @@ use OC_DB;
  * @group DB
  */
 class LegacyDBTest extends \Test\TestCase {
-	protected $backupGlobals = FALSE;
+	protected $backupGlobals = false;
 
 	protected static $schema_file = 'static://test_db_scheme';
 	protected $test_prefix;
@@ -139,7 +139,7 @@ class LegacyDBTest extends \Test\TestCase {
 				['user' => 'test', 'type' => 'contact', 'category' => 'School',    'expectedResult' => 1],
 		];
 
-		foreach($categoryEntries as $entry) {
+		foreach ($categoryEntries as $entry) {
 			$result = \OCP\DB::insertIfNotExist('*PREFIX*'.$this->table3,
 				[
 					'uid' => $entry['user'],
@@ -162,7 +162,7 @@ class LegacyDBTest extends \Test\TestCase {
 			['addressbookid' => 123, 'fullname' => 'test', 'expectedResult' => 1],
 		];
 
-		foreach($categoryEntries as $entry) {
+		foreach ($categoryEntries as $entry) {
 			$result = \OCP\DB::insertIfNotExist('*PREFIX*'.$this->table2,
 				[
 					'addressbookid' => $entry['addressbookid'],
@@ -227,7 +227,7 @@ class LegacyDBTest extends \Test\TestCase {
 				'storage' => 1,
 				'path_hash' => \md5('welcome.txt'),
 				'etag' => $this->getUniqueID()
-			],['storage', 'path_hash']);
+			], ['storage', 'path_hash']);
 
 		$this->assertEquals(0, $result);
 	}
@@ -401,9 +401,8 @@ class LegacyDBTest extends \Test\TestCase {
 	 * @dataProvider insertAndSelectDataProvider
 	 */
 	public function testInsertAndSelectData($expected, $requires4ByteSupport) {
-
 		$connection = \OC::$server->getDatabaseConnection();
-		if($requires4ByteSupport && !$connection->allows4ByteCharacters()) {
+		if ($requires4ByteSupport && !$connection->allows4ByteCharacters()) {
 			$this->markTestSkipped('Test requires 4-byte support which is not present');
 		}
 

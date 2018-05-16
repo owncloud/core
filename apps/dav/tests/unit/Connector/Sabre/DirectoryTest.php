@@ -30,7 +30,6 @@ use OCP\Files\FileContentNotAllowedException;
 use OCP\Files\ForbiddenException;
 
 class TestDoubleFileView extends \OC\Files\View {
-
 	private $updatables;
 	private $deletables;
 	private $canRename;
@@ -358,13 +357,13 @@ class DirectoryTest extends \Test\TestCase {
 		$this->moveTest($source, $destination, $updatables, $deletables);
 	}
 
-	function moveFailedInvalidCharsProvider() {
+	public function moveFailedInvalidCharsProvider() {
 		return [
 			['a/b', 'a/*', ['a' => true, 'a/b' => true, 'a/c*' => false], []],
 		];
 	}
 
-	function moveFailedProvider() {
+	public function moveFailedProvider() {
 		return [
 			['a/b', 'a/c', ['a' => false, 'a/b' => false, 'a/c' => false], []],
 			['a/b', 'b/b', ['a' => false, 'a/b' => false, 'b' => false, 'b/b' => false], []],
@@ -375,7 +374,7 @@ class DirectoryTest extends \Test\TestCase {
 		];
 	}
 
-	function moveSuccessProvider() {
+	public function moveSuccessProvider() {
 		return [
 			['a/b', 'b/b', ['a' => true, 'a/b' => true, 'b' => true, 'b/b' => false], ['a/b' => true]],
 			// older files with special chars can still be renamed to valid names

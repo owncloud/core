@@ -80,5 +80,4 @@ class ReadOnlyJail extends DirMask {
 		$sourceCache = parent::getCache($path, $storage);
 		return new ReadOnlyCachePermissionsMask($sourceCache, $this->mask);
 	}
-
 }

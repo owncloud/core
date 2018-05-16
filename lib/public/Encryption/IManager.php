@@ -94,5 +94,4 @@ interface IManager {
 	 * @since 8.1.0
 	 */
 	public function setDefaultEncryptionModule($moduleId);
-
 }

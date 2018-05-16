@@ -95,7 +95,7 @@ class ApiController extends Controller {
 	 * @return DataResponse|DataDisplayResponse
 	 */
 	public function getThumbnail($x, $y, $file) {
-		if($x < 1 || $y < 1) {
+		if ($x < 1 || $y < 1) {
 			return new DataResponse(['message' => 'Requested size must be numeric and a positive value.'], Http::STATUS_BAD_REQUEST);
 		}
 
@@ -121,7 +121,7 @@ class ApiController extends Controller {
 	public function updateFileTags($path, $tags = null) {
 		$result = [];
 		// if tags specified or empty array, update tags
-		if (!\is_null($tags)) {
+		if ($tags !== null) {
 			try {
 				$this->tagService->updateFileTags($path, $tags);
 			} catch (\OCP\Files\NotFoundException $e) {
@@ -176,5 +176,4 @@ class ApiController extends Controller {
 		$this->config->setUserValue($this->userSession->getUser()->getUID(), 'files', 'show_hidden', (int) $show);
 		return new Response();
 	}
-
 }

@@ -26,7 +26,7 @@ use PHPUnit_Framework_Assert;
 
 /**
  * Helper to set various configurations through the testing app
- * 
+ *
  * @author Artur Neumann <artur@jankaritech.com>
  */
 class AppConfigHelper {
@@ -191,7 +191,7 @@ class AppConfigHelper {
 	/**
 	 * Parses the xml answer to get ocs response which doesn't match with
 	 * http one in v1 of the api.
-	 * 
+	 *
 	 * @param ResponseInterface $response
 	 *
 	 * @return string
@@ -202,7 +202,7 @@ class AppConfigHelper {
 
 	/**
 	 * retrieve the capabilities
-	 * 
+	 *
 	 * @param string $baseUrl
 	 * @param string $user
 	 * @param string $password
@@ -296,5 +296,4 @@ class AppConfigHelper {
 			);
 		}
 	}
-
 }

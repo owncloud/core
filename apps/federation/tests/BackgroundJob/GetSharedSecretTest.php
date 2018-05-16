@@ -126,7 +126,6 @@ class GetSharedSecretTest extends TestCase {
 		}
 
 		$getSharedSecret->execute($this->jobList);
-
 	}
 
 	public function dataTestExecute() {
@@ -143,7 +142,6 @@ class GetSharedSecretTest extends TestCase {
 	 * @param int $statusCode
 	 */
 	public function testRun($statusCode) {
-
 		$target = 'targetURL';
 		$source = 'sourceURL';
 		$token = 'token';
@@ -174,7 +172,7 @@ class GetSharedSecretTest extends TestCase {
 			&& $statusCode !== Http::STATUS_FORBIDDEN
 		) {
 			$this->dbHandler->expects($this->never())->method('addToken');
-		}  else {
+		} else {
 			$this->dbHandler->expects($this->once())->method('addToken')->with($target, '');
 		}
 
@@ -196,7 +194,6 @@ class GetSharedSecretTest extends TestCase {
 		} else {
 			$this->assertFalse($this->invokePrivate($this->getSharedSecret, 'retainJob'));
 		}
-
 	}
 
 	public function dataTestRun() {
@@ -206,5 +203,4 @@ class GetSharedSecretTest extends TestCase {
 			[Http::STATUS_CONFLICT],
 		];
 	}
-
 }

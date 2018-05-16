@@ -71,7 +71,7 @@ class PluginManager {
 	 * @return array
 	 */
 	public function getAppPlugins() {
-		if (\is_null($this->plugins)) {
+		if ($this->plugins === null) {
 			$this->populate();
 		}
 		return $this->plugins;
@@ -83,7 +83,7 @@ class PluginManager {
 	 * @return array
 	 */
 	public function getAppCollections() {
-		if (\is_null($this->collections)) {
+		if ($this->collections === null) {
 			$this->populate();
 		}
 		return $this->collections;
@@ -166,5 +166,4 @@ class PluginManager {
 			}
 		};
 	}
-
 }

@@ -120,7 +120,6 @@ class DecryptAll extends Command {
 	}
 
 	protected function execute(InputInterface $input, OutputInterface $output) {
-
 		try {
 			if ($this->encryptionManager->isEnabled() === true) {
 				$output->write('Disable server side encryption... ');
@@ -153,7 +152,7 @@ class DecryptAll extends Command {
 					$output->writeln(' aborted.');
 					$output->writeln('Server side encryption remains enabled');
 					$this->config->setAppValue('core', 'encryption_enabled', 'yes');
-				} else if ($uid !== '') {
+				} elseif ($uid !== '') {
 					$output->writeln('Server side encryption remains enabled');
 					$this->config->setAppValue('core', 'encryption_enabled', 'yes');
 				}
@@ -170,6 +169,5 @@ class DecryptAll extends Command {
 			$this->resetSingleUserAndTrashbin();
 			throw $e;
 		}
-
 	}
 }

@@ -71,9 +71,9 @@ class LargeFileHelper {
 		if (\is_float($number)) {
 			// Undo the effect of the php.ini setting 'precision'.
 			return \number_format($number, 0, '', '');
-		} else if (\is_string($number) && \ctype_digit($number)) {
+		} elseif (\is_string($number) && \ctype_digit($number)) {
 			return $number;
-		} else if (\is_int($number)) {
+		} elseif (\is_int($number)) {
 			// Interpret signed integer as unsigned integer.
 			return \sprintf('%u', $number);
 		} else {
@@ -94,11 +94,11 @@ class LargeFileHelper {
 	*/
 	public function getFileSize($filename) {
 		$fileSize = $this->getFileSizeViaCurl($filename);
-		if (!\is_null($fileSize)) {
+		if ($fileSize !== null) {
 			return $fileSize;
 		}
 		$fileSize = $this->getFileSizeViaExec($filename);
-		if (!\is_null($fileSize)) {
+		if ($fileSize !== null) {
 			return $fileSize;
 		}
 		return $this->getFileSizeNative($filename);
@@ -146,7 +146,7 @@ class LargeFileHelper {
 			$result = null;
 			if (\OC_Util::runningOn('linux')) {
 				$result = $this->exec("stat -c %s $arg");
-			} else if (\OC_Util::runningOn('bsd') || \OC_Util::runningOn('mac')) {
+			} elseif (\OC_Util::runningOn('bsd') || \OC_Util::runningOn('mac')) {
 				$result = $this->exec("stat -f %z $arg");
 			}
 			return $result;

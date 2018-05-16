@@ -137,7 +137,7 @@ try {
 
 	$file = resolveService($service);
 
-	if(\is_null($file)) {
+	if ($file === null) {
 		$dispatcher = \OC::$server->getEventDispatcher();
 		$dispatcher->dispatch(\OCP\Http\HttpEvents::EVENT_404, new OCP\Http\HttpEvents(
 			\OCP\Http\HttpEvents::EVENT_404,
@@ -173,7 +173,6 @@ try {
 	}
 	$baseuri = OC::$WEBROOT . '/remote.php/'.$service.'/';
 	require_once $file;
-
 } catch (Exception $ex) {
 	handleException($ex);
 } catch (Error $e) {

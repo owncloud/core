@@ -25,7 +25,7 @@
 namespace OC\Log;
 
 class Syslog {
-	static protected $levels = [
+	protected static $levels = [
 		\OCP\Util::DEBUG => LOG_DEBUG,
 		\OCP\Util::INFO => LOG_INFO,
 		\OCP\Util::WARN => LOG_WARNING,
@@ -54,7 +54,7 @@ class Syslog {
 		$syslogLevel = self::$levels[$level];
 
 		$request = \OC::$server->getRequest();
-		if(\OC::$server->getConfig()->getSystemValue('installed', false)) {
+		if (\OC::$server->getConfig()->getSystemValue('installed', false)) {
 			$user = (\OC_User::getUser()) ? \OC_User::getUser() : '--';
 		} else {
 			$user = '--';

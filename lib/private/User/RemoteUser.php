@@ -168,7 +168,7 @@ class RemoteUser implements IUser {
 	private function removeProtocolFromUrl($url) {
 		if (\strpos($url, 'https://') === 0) {
 			return \substr($url, \strlen('https://'));
-		} else if (\strpos($url, 'http://') === 0) {
+		} elseif (\strpos($url, 'http://') === 0) {
 			return \substr($url, \strlen('http://'));
 		}
 
@@ -206,5 +206,4 @@ class RemoteUser implements IUser {
 	 */
 	public function setSearchTerms(array $terms) {
 	}
-
 }

@@ -95,8 +95,11 @@ class DAV extends Common {
 		if (isset($params['host'], $params['user'], $params['password'])) {
 			$host = $params['host'];
 			//remove leading http[s], will be generated in createBaseUri()
-			if (\substr($host, 0, 8) == "https://") $host = \substr($host, 8);
-			else if (\substr($host, 0, 7) == "http://") $host = \substr($host, 7);
+			if (\substr($host, 0, 8) == "https://") {
+				$host = \substr($host, 8);
+			} elseif (\substr($host, 0, 7) == "http://") {
+				$host = \substr($host, 7);
+			}
 			$this->host = $host;
 			$this->user = $params['user'];
 			$this->password = $params['password'];
@@ -246,7 +249,7 @@ class DAV extends Common {
 		$path = $this->cleanPath($path);
 		$cachedResponse = $this->statCache->get($path);
 		// we either don't know it, or we know it exists but need more details
-		if (\is_null($cachedResponse) || $cachedResponse === true) {
+		if ($cachedResponse === null || $cachedResponse === true) {
 			$this->init();
 			try {
 				$response = $this->client->propfind(
@@ -305,7 +308,7 @@ class DAV extends Common {
 			if ($cachedState === false) {
 				// we know the file doesn't exist
 				return false;
-			} else if (!\is_null($cachedState)) {
+			} elseif ($cachedState !== null) {
 				return true;
 			}
 			// need to get from server
@@ -432,7 +435,7 @@ class DAV extends Common {
 	/** {@inheritdoc} */
 	public function touch($path, $mtime = null) {
 		$this->init();
-		if (\is_null($mtime)) {
+		if ($mtime === null) {
 			$mtime = \OC::$server->getTimeFactory()->getTime();
 		}
 		$path = $this->cleanPath($path);
@@ -704,9 +707,9 @@ class DAV extends Common {
 		}
 		if (isset($response['{http://owncloud.org/ns}permissions'])) {
 			return $this->parsePermissions($response['{http://owncloud.org/ns}permissions']);
-		} else if ($this->is_dir($path)) {
+		} elseif ($this->is_dir($path)) {
 			return Constants::PERMISSION_ALL;
-		} else if ($this->file_exists($path)) {
+		} elseif ($this->file_exists($path)) {
 			return Constants::PERMISSION_ALL - Constants::PERMISSION_CREATE;
 		} else {
 			return 0;
@@ -776,10 +779,10 @@ class DAV extends Common {
 				$etag = \trim($response['{DAV:}getetag'], '"');
 				if (!empty($etag) && $cachedData['etag'] !== $etag) {
 					return true;
-				} else if (isset($response['{http://open-collaboration-services.org/ns}share-permissions'])) {
+				} elseif (isset($response['{http://open-collaboration-services.org/ns}share-permissions'])) {
 					$sharePermissions = (int)$response['{http://open-collaboration-services.org/ns}share-permissions'];
 					return $sharePermissions !== $cachedData['permissions'];
-				} else if (isset($response['{http://owncloud.org/ns}permissions'])) {
+				} elseif (isset($response['{http://owncloud.org/ns}permissions'])) {
 					$permissions = $this->parsePermissions($response['{http://owncloud.org/ns}permissions']);
 					return $permissions !== $cachedData['permissions'];
 				} else {
@@ -824,17 +827,17 @@ class DAV extends Common {
 		Util::writeLog('files_external', $e->getMessage(), Util::ERROR);
 		if ($e instanceof ClientHttpException) {
 			$this->throwByStatusCode($e->getHttpStatus(), $e, $path);
-		} else if ($e instanceof \GuzzleHttp\Exception\RequestException) {
+		} elseif ($e instanceof \GuzzleHttp\Exception\RequestException) {
 			if ($e->getResponse() instanceof ResponseInterface) {
 				$this->throwByStatusCode($e->getResponse()->getStatusCode(), $e);
 			}
 			// connection timeout or refused, server could be temporarily down
 			throw new StorageNotAvailableException(\get_class($e) . ': ' . $e->getMessage());
-		} else if ($e instanceof \InvalidArgumentException) {
+		} elseif ($e instanceof \InvalidArgumentException) {
 			// parse error because the server returned HTML instead of XML,
 			// possibly temporarily down
 			throw new StorageNotAvailableException(\get_class($e) . ': ' . $e->getMessage());
-		} else if (($e instanceof StorageNotAvailableException)
+		} elseif (($e instanceof StorageNotAvailableException)
 			|| ($e instanceof StorageInvalidException)
 			|| ($e instanceof \Sabre\DAV\Exception
 		)) {
@@ -867,4 +870,3 @@ class DAV extends Common {
 		throw new StorageNotAvailableException(\get_class($e) . ': ' . $e->getMessage());
 	}
 }
-

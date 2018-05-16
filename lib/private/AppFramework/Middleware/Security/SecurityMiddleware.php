@@ -122,13 +122,13 @@ class SecurityMiddleware extends Middleware {
 
 		// security checks
 		$isPublicPage = $this->reflector->hasAnnotation('PublicPage');
-		if(!$isPublicPage) {
-			if(!$this->isLoggedIn()) {
+		if (!$isPublicPage) {
+			if (!$this->isLoggedIn()) {
 				throw new NotLoggedInException();
 			}
 
-			if(!$this->reflector->hasAnnotation('NoAdminRequired')) {
-				if(!$this->isAdminUser) {
+			if (!$this->reflector->hasAnnotation('NoAdminRequired')) {
+				if (!$this->isAdminUser) {
 					throw new NotAdminException();
 				}
 			}
@@ -136,8 +136,8 @@ class SecurityMiddleware extends Middleware {
 
 		// CSRF check - also registers the CSRF token since the session may be closed later
 		Util::callRegister();
-		if(!$this->reflector->hasAnnotation('NoCSRFRequired')) {
-			if(!$this->request->passesCSRFCheck()) {
+		if (!$this->reflector->hasAnnotation('NoCSRFRequired')) {
+			if (!$this->request->passesCSRFCheck()) {
 				throw new CrossSiteRequestForgeryException();
 			}
 		}
@@ -148,10 +148,9 @@ class SecurityMiddleware extends Middleware {
 		 * The getAppPath() check is here since components such as settings also use the AppFramework and
 		 * therefore won't pass this check.
 		 */
-		if(\OC_App::getAppPath($this->appName) !== false && !\OC_App::isEnabled($this->appName)) {
+		if (\OC_App::getAppPath($this->appName) !== false && !\OC_App::isEnabled($this->appName)) {
 			throw new AppNotEnabledException();
 		}
-
 	}
 
 	/**
@@ -185,15 +184,14 @@ class SecurityMiddleware extends Middleware {
 	 * @return Response a Response object or null in case that the exception could not be handled
 	 */
 	public function afterException($controller, $methodName, \Exception $exception) {
-		if($exception instanceof SecurityException) {
-
-			if (\stripos($this->request->getHeader('Accept'),'html') === false) {
+		if ($exception instanceof SecurityException) {
+			if (\stripos($this->request->getHeader('Accept'), 'html') === false) {
 				$response = new JSONResponse(
 					['message' => $exception->getMessage()],
 					$exception->getCode()
 				);
 			} else {
-				if($exception instanceof NotLoggedInException) {
+				if ($exception instanceof NotLoggedInException) {
 					$url = $this->urlGenerator->linkToRoute(
 						'core.login.showLoginForm',
 						[
@@ -236,5 +234,4 @@ class SecurityMiddleware extends Middleware {
 		}
 		return $this->session->isLoggedIn();
 	}
-
 }

@@ -229,24 +229,24 @@ class Scan extends Base {
 				}
 			});
 		}
-		$scanner->listen('\OC\Files\Utils\Scanner', 'scanFile', function($path) use ($output) {
+		$scanner->listen('\OC\Files\Utils\Scanner', 'scanFile', function ($path) use ($output) {
 			$this->checkScanWarning($path, $output);
 		});
-		$scanner->listen('\OC\Files\Utils\Scanner', 'scanFolder', function($path) use ($output) {
+		$scanner->listen('\OC\Files\Utils\Scanner', 'scanFolder', function ($path) use ($output) {
 			$this->checkScanWarning($path, $output);
 		});
 
 		try {
 			if ($backgroundScan) {
 				$scanner->backgroundScan($path);
-			}else {
+			} else {
 				$scanner->scan($path, $shouldRepair);
 			}
 		} catch (ForbiddenException $e) {
 			$output->writeln("<error>Home storage for user $user not writable</error>");
 			$output->writeln("Make sure you're running the scan command only as the user the web server runs as");
 		} catch (InterruptedException $e) {
-			# exit the function if ctrl-c has been pressed 
+			# exit the function if ctrl-c has been pressed
 			$output->writeln('Interrupted by user');
 			return;
 		} catch (\Exception $e) {
@@ -291,11 +291,11 @@ class Scan extends Base {
 					}
 				}
 			}
-		} else if ($inputPath) {
+		} elseif ($inputPath) {
 			$inputPath = '/' . \trim($inputPath, '/');
-			list (, $user,) = \explode('/', $inputPath, 3);
+			list(, $user, ) = \explode('/', $inputPath, 3);
 			$users = [$user];
-		} else if ($input->getOption('all')) {
+		} elseif ($input->getOption('all')) {
 			// we can only repair all storages in bulk (more efficient) if singleuser or maintenance mode
 			// is enabled to prevent concurrent user access
 			if ($input->getOption('repair')) {
@@ -348,7 +348,6 @@ class Scan extends Base {
 			if ($group !== null) {
 				$output->writeln("Scanning group $group");
 				$this->userScan($users[$group], $inputPath, $shouldRepairStoragesIndividually, $input, $output, $verbose);
-
 			} elseif ($users_total >= 1) {
 				$output->writeln("\nScanning files for $users_total users");
 				$this->userScan($users, $inputPath, $shouldRepairStoragesIndividually, $input, $output, $verbose);
@@ -382,7 +381,9 @@ class Scan extends Base {
 			$user_count += 1;
 			if ($this->userManager->userExists($user)) {
 				# add an extra line when verbose is set to optical separate users
-				if ($verbose) {$output->writeln(""); }
+				if ($verbose) {
+					$output->writeln("");
+				}
 				$r = $shouldRepairStoragesIndividually ? ' (and repair)' : '';
 				$output->writeln("Starting scan$r for user $user_count out of $users_total ($user)");
 				# full: printout data if $verbose was set
@@ -488,5 +489,4 @@ class Scan extends Base {
 		}
 		return $connection;
 	}
-
 }

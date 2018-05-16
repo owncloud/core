@@ -88,7 +88,6 @@ class Storage {
 				self::getDistributedCache()->set(
 					$this->storageId, $storageData, self::$distributedCacheTTL
 				);
-
 			} else {
 				if ($row = self::getStorageById($this->storageId)) {
 					$this->numericId = (int)$row['numeric_id'];
@@ -137,7 +136,7 @@ class Storage {
 		if ($result === null || !isset($result['numeric_id'])) {
 			$result = self::getStorageByIdFromDb($storageId);
 			self::getDistributedCache()->set(
-				$storageId,	$result, self::$distributedCacheTTL
+				$storageId, $result, self::$distributedCacheTTL
 			);
 		}
 		return $result;
@@ -156,7 +155,7 @@ class Storage {
 
 	private static function unsetCache($storageId) {
 		// delete from local cache
-		if(self::$localCache !== null) {
+		if (self::$localCache !== null) {
 			self::$localCache->remove($storageId);
 		}
 		// delete from distributed cache
@@ -192,7 +191,6 @@ class Storage {
 	 * @return string|null either the storage id string or null if the numeric id is not known
 	 */
 	public static function getStorageId($numericId) {
-
 		$sql = 'SELECT `id` FROM `*PREFIX*storages` WHERE `numeric_id` = ?';
 		$result = \OC_DB::executeAudited($sql, [$numericId]);
 		if ($row = $result->fetchRow()) {
@@ -250,7 +248,7 @@ class Storage {
 	 * @return bool
 	 */
 	public static function exists($storageId) {
-		return !\is_null(self::getNumericStorageId($storageId));
+		return self::getNumericStorageId($storageId) !== null;
 	}
 
 	/**
@@ -267,7 +265,7 @@ class Storage {
 		// delete from local cache
 		self::unsetCache($storageId);
 		// delete from db
-		if (!\is_null($numericId)) {
+		if ($numericId !== null) {
 			$sql = 'DELETE FROM `*PREFIX*filecache` WHERE `storage` = ?';
 			\OC_DB::executeAudited($sql, [$numericId]);
 		}

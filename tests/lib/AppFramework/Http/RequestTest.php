@@ -79,7 +79,6 @@ class RequestTest extends TestCase {
 		$this->assertSame('Joey', $request->get['nickname']);
 		// Always returns null if variable not set.
 		$this->assertNull($request->{'flickname'});
-
 	}
 
 	// urlParams has precedence over POST which has precedence over GET
@@ -324,11 +323,10 @@ class RequestTest extends TestCase {
 
 		try {
 			$resource = $request->put;
-		} catch(\LogicException $e) {
+		} catch (\LogicException $e) {
 			return;
 		}
 		$this->fail('Expected LogicException.');
-
 	}
 
 	public function testSetUrlParameters() {
@@ -846,7 +844,7 @@ class RequestTest extends TestCase {
 	/**
 	 * @return array
 	 */
-	function userAgentProvider() {
+	public function userAgentProvider() {
 		return [
 			[
 				'Mozilla/4.0 (compatible; MSIE 8.0; Windows NT 5.1; Trident/4.0)',
@@ -929,7 +927,7 @@ class RequestTest extends TestCase {
 			$this->stream
 		);
 
-		$this->assertSame('from.server.name:8080',  $request->getInsecureServerHost());
+		$this->assertSame('from.server.name:8080', $request->getInsecureServerHost());
 	}
 
 	public function testInsecureServerHostHttpHostHeader() {
@@ -946,7 +944,7 @@ class RequestTest extends TestCase {
 			$this->stream
 		);
 
-		$this->assertSame('from.host.header:8080',  $request->getInsecureServerHost());
+		$this->assertSame('from.host.header:8080', $request->getInsecureServerHost());
 	}
 
 	public function testInsecureServerHostHttpFromForwardedHeaderSingle() {
@@ -964,7 +962,7 @@ class RequestTest extends TestCase {
 			$this->stream
 		);
 
-		$this->assertSame('from.forwarded.host:8080',  $request->getInsecureServerHost());
+		$this->assertSame('from.forwarded.host:8080', $request->getInsecureServerHost());
 	}
 
 	public function testInsecureServerHostHttpFromForwardedHeaderStacked() {
@@ -982,7 +980,7 @@ class RequestTest extends TestCase {
 			$this->stream
 		);
 
-		$this->assertSame('from.forwarded.host2:8080',  $request->getInsecureServerHost());
+		$this->assertSame('from.forwarded.host2:8080', $request->getInsecureServerHost());
 	}
 
 	public function testGetServerHostWithOverwriteHost() {
@@ -1010,7 +1008,7 @@ class RequestTest extends TestCase {
 			$this->stream
 		);
 
-		$this->assertSame('my.overwritten.host',  $request->getServerHost());
+		$this->assertSame('my.overwritten.host', $request->getServerHost());
 	}
 
 	public function testGetServerHostWithTrustedDomain() {
@@ -1032,7 +1030,7 @@ class RequestTest extends TestCase {
 			$this->stream
 		);
 
-		$this->assertSame('my.trusted.host',  $request->getServerHost());
+		$this->assertSame('my.trusted.host', $request->getServerHost());
 	}
 
 	public function testGetServerHostWithUntrustedDomain() {
@@ -1059,7 +1057,7 @@ class RequestTest extends TestCase {
 			$this->stream
 		);
 
-		$this->assertSame('my.trusted.host',  $request->getServerHost());
+		$this->assertSame('my.trusted.host', $request->getServerHost());
 	}
 
 	public function testGetServerHostWithNoTrustedDomain() {
@@ -1086,7 +1084,7 @@ class RequestTest extends TestCase {
 			$this->stream
 		);
 
-		$this->assertSame('',  $request->getServerHost());
+		$this->assertSame('', $request->getServerHost());
 	}
 
 	public function testGetOverwriteHostDefaultNull() {
@@ -1147,7 +1145,7 @@ class RequestTest extends TestCase {
 			$this->stream
 		);
 
-		$this->assertSame('apps/files/',  $request->getPathInfo());
+		$this->assertSame('apps/files/', $request->getPathInfo());
 	}
 
 	public function testGetPathInfoWithPathInfoBeingEmpty() {
@@ -1165,7 +1163,7 @@ class RequestTest extends TestCase {
 			$this->stream
 		);
 
-		$this->assertSame('/apps/files/',  $request->getPathInfo());
+		$this->assertSame('/apps/files/', $request->getPathInfo());
 	}
 
 	/**
@@ -1557,5 +1555,4 @@ class RequestTest extends TestCase {
 
 		$this->assertFalse($request->passesCSRFCheck());
 	}
-
 }

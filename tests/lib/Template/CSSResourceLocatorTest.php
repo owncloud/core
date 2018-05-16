@@ -101,5 +101,4 @@ class CSSResourceLocatorTest extends TestCase {
 
 		$locator->find(['randomapp/css/style']);
 	}
-
 }

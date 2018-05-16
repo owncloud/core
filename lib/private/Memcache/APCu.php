@@ -58,7 +58,7 @@ class APCu extends Cache implements IMemcache {
 	public function clear($prefix = '') {
 		$ns = $this->getPrefix() . $prefix;
 		$ns = \preg_quote($ns, '/');
-		if(\class_exists('\APCIterator')) {
+		if (\class_exists('\APCIterator')) {
 			$iter = new \APCIterator('user', '/^' . $ns . '/', APC_ITER_KEY);
 		} else {
 			$iter = new \APCUIterator('/^' . $ns . '/', APC_ITER_KEY);
@@ -120,7 +120,7 @@ class APCu extends Cache implements IMemcache {
 	/**
 	 * @return bool
 	 */
-	static public function isAvailable() {
+	public static function isAvailable() {
 		if (!\extension_loaded('apcu')) {
 			return false;
 		}

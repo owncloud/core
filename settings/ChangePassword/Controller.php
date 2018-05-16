@@ -51,9 +51,9 @@ class Controller {
 			$l = \OC::$server->getL10NFactory()->get('settings');
 			\OC_JSON::error(["data" => ["message" => $l->t("The new password can not be the same as the previous one")]]);
 			exit();
-	        }
+		}
 		try {
-			if (!\is_null($password) && \OC_User::setPassword($username, $password)) {
+			if ($password !== null && \OC_User::setPassword($username, $password)) {
 				\OC::$server->getUserSession()->updateSessionTokenPassword($password);
 
 				self::sendNotificationMail($username);

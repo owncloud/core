@@ -48,13 +48,13 @@ class ManagerTest extends TestCase {
 		$this->assertSame([], $this->invokePrivate($this->activityManager, 'getConsumers'));
 		$this->assertSame([], $this->invokePrivate($this->activityManager, 'getExtensions'));
 
-		$this->activityManager->registerConsumer(function() {
+		$this->activityManager->registerConsumer(function () {
 			return new NoOpConsumer();
 		});
-		$this->activityManager->registerExtension(function() {
+		$this->activityManager->registerExtension(function () {
 			return new NoOpExtension();
 		});
-		$this->activityManager->registerExtension(function() {
+		$this->activityManager->registerExtension(function () {
 			return new SimpleExtension();
 		});
 
@@ -74,7 +74,7 @@ class ManagerTest extends TestCase {
 	 * @expectedException \InvalidArgumentException
 	 */
 	public function testGetConsumersInvalidConsumer() {
-		$this->activityManager->registerConsumer(function() {
+		$this->activityManager->registerConsumer(function () {
 			return new \stdClass();
 		});
 
@@ -91,7 +91,7 @@ class ManagerTest extends TestCase {
 	 * @expectedException \InvalidArgumentException
 	 */
 	public function testGetExtensionsInvalidExtension() {
-		$this->activityManager->registerExtension(function() {
+		$this->activityManager->registerExtension(function () {
 			return new \stdClass();
 		});
 
@@ -169,7 +169,7 @@ class ManagerTest extends TestCase {
 
 	public function testQueryForFilter() {
 		// Register twice, to test the created sql part
-		$this->activityManager->registerExtension(function() {
+		$this->activityManager->registerExtension(function () {
 			return new SimpleExtension();
 		});
 
@@ -344,7 +344,7 @@ class ManagerTest extends TestCase {
 		$consumer->expects($this->once())
 			->method('receive')
 			->with($event)
-			->willReturnCallback(function(\OCP\Activity\IEvent $event) use ($author) {
+			->willReturnCallback(function (\OCP\Activity\IEvent $event) use ($author) {
 				$this->assertLessThanOrEqual(\time() + 2, $event->getTimestamp(), 'Timestamp not set correctly');
 				$this->assertGreaterThanOrEqual(\time() - 2, $event->getTimestamp(), 'Timestamp not set correctly');
 				$this->assertSame($author, $event->getAuthor(), 'Author name not set correctly');
@@ -374,7 +374,7 @@ class ManagerTest extends TestCase {
 			->getMock();
 		$consumer->expects($this->once())
 			->method('receive')
-			->willReturnCallback(function(\OCP\Activity\IEvent $event) {
+			->willReturnCallback(function (\OCP\Activity\IEvent $event) {
 				$this->assertSame('test_app', $event->getApp(), 'App not set correctly');
 				$this->assertSame('test_type', $event->getType(), 'Type not set correctly');
 				$this->assertSame('test_affected', $event->getAffectedUser(), 'Affected user not set correctly');
@@ -414,7 +414,7 @@ class ManagerTest extends TestCase {
 			->getMock();
 		$consumer->expects($this->once())
 			->method('receive')
-			->willReturnCallback(function(\OCP\Activity\IEvent $event) {
+			->willReturnCallback(function (\OCP\Activity\IEvent $event) {
 				$this->assertSame('test_app', $event->getApp(), 'App not set correctly');
 				$this->assertSame('test_type', $event->getType(), 'Type not set correctly');
 				$this->assertSame('test_affected', $event->getAffectedUser(), 'Affected user not set correctly');
@@ -450,7 +450,6 @@ class ManagerTest extends TestCase {
 }
 
 class SimpleExtension implements \OCP\Activity\IExtension {
-
 	public function getNotificationTypes($languageCode) {
 		return ['NT1', 'NT2'];
 	}
@@ -522,7 +521,6 @@ class SimpleExtension implements \OCP\Activity\IExtension {
 }
 
 class NoOpExtension implements \OCP\Activity\IExtension {
-
 	public function getNotificationTypes($languageCode) {
 		return false;
 	}
@@ -565,8 +563,6 @@ class NoOpExtension implements \OCP\Activity\IExtension {
 }
 
 class NoOpConsumer implements \OCP\Activity\IConsumer {
-
 	public function receive(\OCP\Activity\IEvent $event) {
-
 	}
 }

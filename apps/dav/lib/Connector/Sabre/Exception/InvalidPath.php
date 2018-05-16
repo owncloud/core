@@ -24,7 +24,6 @@ namespace OCA\DAV\Connector\Sabre\Exception;
 use Sabre\DAV\Exception;
 
 class InvalidPath extends Exception {
-
 	const NS_OWNCLOUD = 'http://owncloud.org/ns';
 
 	/**
@@ -47,9 +46,7 @@ class InvalidPath extends Exception {
 	 * @return int
 	 */
 	public function getHTTPCode() {
-
 		return 400;
-
 	}
 
 	/**
@@ -60,18 +57,17 @@ class InvalidPath extends Exception {
 	 * @param \DOMElement $errorNode
 	 * @return void
 	 */
-	public function serialize(\Sabre\DAV\Server $server,\DOMElement $errorNode) {
+	public function serialize(\Sabre\DAV\Server $server, \DOMElement $errorNode) {
 
 		// set ownCloud namespace
 		$errorNode->setAttribute('xmlns:o', self::NS_OWNCLOUD);
 
 		// adding the retry node
-		$error = $errorNode->ownerDocument->createElementNS('o:','o:retry', \var_export($this->retry, true));
+		$error = $errorNode->ownerDocument->createElementNS('o:', 'o:retry', \var_export($this->retry, true));
 		$errorNode->appendChild($error);
 
 		// adding the message node
-		$error = $errorNode->ownerDocument->createElementNS('o:','o:reason', $this->getMessage());
+		$error = $errorNode->ownerDocument->createElementNS('o:', 'o:reason', $this->getMessage());
 		$errorNode->appendChild($error);
 	}
-
 }

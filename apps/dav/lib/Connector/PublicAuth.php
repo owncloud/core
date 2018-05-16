@@ -97,19 +97,19 @@ class PublicAuth extends AbstractBasic {
 			if ($share->getShareType() === \OCP\Share::SHARE_TYPE_LINK) {
 				if ($this->shareManager->checkPassword($share, $password)) {
 					return true;
-				} else if ($this->session->exists('public_link_authenticated')
+				} elseif ($this->session->exists('public_link_authenticated')
 					&& $this->session->get('public_link_authenticated') === (string)$share->getId()) {
 					return true;
 				} else {
 					if (\in_array('XMLHttpRequest', \explode(',', $this->request->getHeader('X-Requested-With')))) {
 						// do not re-authenticate over ajax, use dummy auth name to prevent browser popup
 						\http_response_code(401);
-						\header('WWW-Authenticate','DummyBasic realm="' . $this->realm . '"');
+						\header('WWW-Authenticate', 'DummyBasic realm="' . $this->realm . '"');
 						throw new \Sabre\DAV\Exception\NotAuthenticated('Cannot authenticate over ajax calls');
 					}
 					return false;
 				}
-			} else if ($share->getShareType() === \OCP\Share::SHARE_TYPE_REMOTE) {
+			} elseif ($share->getShareType() === \OCP\Share::SHARE_TYPE_REMOTE) {
 				return true;
 			} else {
 				return false;

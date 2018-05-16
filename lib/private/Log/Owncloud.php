@@ -37,7 +37,7 @@ namespace OC\Log;
  */
 
 class Owncloud {
-	static protected $logFile;
+	protected static $logFile;
 
 	/**
 	 * Init class data
@@ -52,10 +52,10 @@ class Owncloud {
 		 * and can not be created.
 		 */
 		if (!\file_exists(self::$logFile)) {
-			if(!\is_writable(\dirname(self::$logFile))) {
+			if (!\is_writable(\dirname(self::$logFile))) {
 				self::$logFile = $defaultLogFile;
 			} else {
-				if(!\touch(self::$logFile)) {
+				if (!\touch(self::$logFile)) {
 					self::$logFile = $defaultLogFile;
 				}
 			}
@@ -94,7 +94,7 @@ class Owncloud {
 		$time = $time->format($format);
 		$url = ($request->getRequestUri() !== '') ? $request->getRequestUri() : '--';
 		$method = \is_string($request->getMethod()) ? $request->getMethod() : '--';
-		if(\OC::$server->getConfig()->getSystemValue('installed', false)) {
+		if (\OC::$server->getConfig()->getSystemValue('installed', false)) {
 			$user = (\OC_User::getUser()) ? \OC_User::getUser() : '--';
 		} else {
 			$user = '--';
@@ -111,7 +111,7 @@ class Owncloud {
 			'message'
 		);
 		$entry = \json_encode($entry);
-		if (!\is_null($conditionalLogFile)) {
+		if ($conditionalLogFile !== null) {
 			if ($conditionalLogFile[0] !== '/') {
 				$conditionalLogFile = \OC::$server->getConfig()->getSystemValue('datadirectory') . "/" . $conditionalLogFile;
 			}

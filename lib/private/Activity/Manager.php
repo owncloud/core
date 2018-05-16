@@ -99,7 +99,7 @@ class Manager implements IManager {
 		}
 
 		$this->consumers = [];
-		foreach($this->consumersClosures as $consumer) {
+		foreach ($this->consumersClosures as $consumer) {
 			$c = $consumer();
 			if ($c instanceof IConsumer) {
 				$this->consumers[] = $c;
@@ -120,7 +120,7 @@ class Manager implements IManager {
 		}
 
 		$this->extensions = [];
-		foreach($this->extensionsClosures as $extension) {
+		foreach ($this->extensionsClosures as $extension) {
 			$e = $extension();
 			if ($e instanceof IExtension) {
 				$this->extensions[] = $e;
@@ -500,7 +500,7 @@ class Manager implements IManager {
 	public function getCurrentUserId() {
 		if ($this->currentUserId !== null) {
 			return $this->currentUserId;
-		} else if ($this->session === null || !$this->session->isLoggedIn()) {
+		} elseif ($this->session === null || !$this->session->isLoggedIn()) {
 			return $this->getUserFromToken();
 		} else {
 			return $this->session->getUser()->getUID();

@@ -79,7 +79,7 @@ class CheckSetupControllerTest extends TestCase {
 			->disableOriginalConstructor()->getMock();
 		$this->l10n->expects($this->any())
 			->method('t')
-			->will($this->returnCallback(function($message, array $replace) {
+			->will($this->returnCallback(function ($message, array $replace) {
 				return \vsprintf($message, $replace);
 			}));
 		$this->checker = $this->getMockBuilder('\OC\IntegrityCheck\Checker')
@@ -221,7 +221,6 @@ class CheckSetupControllerTest extends TestCase {
 	}
 
 	public function testIsPhpSupportedFalse() {
-
 		$this->checkSetupController
 			->expects($this->once())
 			->method('isEndOfLive')
@@ -234,7 +233,6 @@ class CheckSetupControllerTest extends TestCase {
 	}
 
 	public function testIsPhpSupportedTrue() {
-
 		$this->checkSetupController
 			->expects($this->exactly(2))
 			->method('isEndOfLive')
@@ -429,7 +427,7 @@ class CheckSetupControllerTest extends TestCase {
 			->expects($this->once())
 			->method('getCurlVersion')
 			->will($this->returnValue(['ssl_version' => 'OpenSSL/1.0.1d']));
-			$this->assertSame('', $this->invokePrivate($this->checkSetupController, 'isUsedTlsLibOutdated'));
+		$this->assertSame('', $this->invokePrivate($this->checkSetupController, 'isUsedTlsLibOutdated'));
 	}
 
 	public function testIsUsedTlsLibOutdatedWithMatchingOpenSslVersion1() {
@@ -521,7 +519,6 @@ class CheckSetupControllerTest extends TestCase {
 	}
 
 	public function testIsUsedTlsLibOutdatedWithAppstoreDisabledAndServerToServerSharingEnabled() {
-
 		$this->config
 			->expects($this->at(0))
 			->method('getSystemValue')
@@ -546,7 +543,6 @@ class CheckSetupControllerTest extends TestCase {
 	}
 
 	public function testIsUsedTlsLibOutdatedWithAppstoreDisabledAndServerToServerSharingDisabled() {
-
 		$this->config
 			->expects($this->at(0))
 			->method('getSystemValue')

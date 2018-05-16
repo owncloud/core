@@ -60,18 +60,18 @@ class FederationContext implements Context, SnippetAcceptingContext {
 		} else {
 			$shareWith = "$shareeUser@" . $this->featureContext->getLocalBaseUrl() . '/';
 		}
-			$previous = $this->featureContext->usingServer($sharerServer);
-			$this->featureContext->createShare(
+		$previous = $this->featureContext->usingServer($sharerServer);
+		$this->featureContext->createShare(
 				$sharerUser, $sharerPath, 6, $shareWith, null, null, null
 			);
-			$this->featureContext->theHTTPStatusCodeShouldBe('200');
-			$this->featureContext->theOCSStatusCodeShouldBe(
-				'100', 'Could not share file/folder! message: "' . 
+		$this->featureContext->theHTTPStatusCodeShouldBe('200');
+		$this->featureContext->theOCSStatusCodeShouldBe(
+				'100', 'Could not share file/folder! message: "' .
 				$this->featureContext->getOCSResponseStatusMessage(
 					$this->featureContext->getResponse()
 				) . '"'
 			);
-			$this->featureContext->usingServer($previous);
+		$this->featureContext->usingServer($previous);
 	}
 	
 	/**
@@ -94,7 +94,7 @@ class FederationContext implements Context, SnippetAcceptingContext {
 		$this->featureContext->theHTTPStatusCodeShouldBe('200');
 		$this->featureContext->theOCSStatusCodeShouldBe('100');
 		/**
-		 * 
+		 *
 		 * @var ResponseInterface $response
 		 */
 		$response = $this->featureContext->getResponse();

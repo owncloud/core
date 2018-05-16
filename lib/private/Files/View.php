@@ -109,7 +109,7 @@ class View {
 	 * @throws \Exception If $root contains an invalid path
 	 */
 	public function __construct($root = '') {
-		if (\is_null($root)) {
+		if ($root === null) {
 			throw new \InvalidArgumentException('Root can\'t be null');
 		}
 		if (!Filesystem::isValidPath($root)) {
@@ -323,7 +323,7 @@ class View {
 
 	protected function writeUpdate(Storage $storage, $internalPath, $time = null) {
 		if ($this->updaterEnabled) {
-			if (\is_null($time)) {
+			if ($time === null) {
 				$time = \time();
 			}
 			$storage->getUpdater()->update($internalPath, $time);
@@ -354,7 +354,6 @@ class View {
 				return $this->removeMount($mount, $absolutePath);
 			}
 			if ($this->is_dir($path)) {
-
 				$result = $this->basicOperation('rmdir', $path, ['delete']);
 			} else {
 				$result = false;
@@ -548,7 +547,7 @@ class View {
 	 * @return bool
 	 */
 	public function touch($path, $mtime = null) {
-		if (!\is_null($mtime) and !\is_numeric($mtime)) {
+		if ($mtime !== null and !\is_numeric($mtime)) {
 			$mtime = \strtotime($mtime);
 		}
 
@@ -565,7 +564,7 @@ class View {
 			if (!$this->file_exists($path)) {
 				return false;
 			}
-			if (\is_null($mtime)) {
+			if ($mtime === null) {
 				$mtime = \time();
 			}
 			//if native touch fails, we emulate it by changing the mtime in the cache
@@ -636,12 +635,11 @@ class View {
 	 */
 	protected function emit_file_hooks_post($exists, $path) {
 		// A post event so no before event args required
-		return $this->emittingCall(function () use (&$exists, &$path){
+		return $this->emittingCall(function () use (&$exists, &$path) {
 			if (!$exists) {
 				\OC_Hook::emit(Filesystem::CLASSNAME, Filesystem::signal_post_create, [
 					Filesystem::signal_param_path => $this->getHookPath($path),
 				]);
-
 			} else {
 				\OC_Hook::emit(Filesystem::CLASSNAME, Filesystem::signal_post_update, [
 					Filesystem::signal_param_path => $this->getHookPath($path),
@@ -686,7 +684,7 @@ class View {
 					list($storage, $internalPath) = $this->resolvePath($path);
 					$target = $storage->fopen($internalPath, 'w');
 					if ($target) {
-						list (, $result) = \OC_Helper::streamCopy($data, $target);
+						list(, $result) = \OC_Helper::streamCopy($data, $target);
 						\fclose($target);
 						\fclose($data);
 
@@ -843,7 +841,7 @@ class View {
 						// if it was a rename from a part file to a regular file it was a write and not a rename operation
 
 						$this->writeUpdate($storage2, $internalPath2);
-					} else if ($result) {
+					} elseif ($result) {
 						if ($internalPath1 !== '') { // don't do a cache update for moved mounts
 							$this->renameUpdate($storage1, $storage2, $internalPath1, $internalPath2);
 						}
@@ -915,7 +913,6 @@ class View {
 				$lockTypePath2 = ILockingProvider::LOCK_SHARED;
 
 				try {
-
 					$exists = $this->file_exists($path2);
 					if ($this->shouldEmitHooks()) {
 						\OC_Hook::emit(
@@ -966,7 +963,6 @@ class View {
 							);
 							$this->emit_file_hooks_post($exists, $path2);
 						}
-
 					}
 				} catch (\Exception $e) {
 					$this->unlockFile($path2, $lockTypePath2);
@@ -976,7 +972,6 @@ class View {
 
 				$this->unlockFile($path2, $lockTypePath2);
 				$this->unlockFile($path1, $lockTypePath1);
-
 			}
 
 			return $result;
@@ -1065,7 +1060,7 @@ class View {
 			// Create the directories if any
 			if (!$this->file_exists($filePath)) {
 				$result = $this->createParentDirectories($filePath);
-				if($result === false) {
+				if ($result === false) {
 					return false;
 				}
 			}
@@ -1178,7 +1173,7 @@ class View {
 					$this->changeLock($path, ILockingProvider::LOCK_EXCLUSIVE);
 				}
 				try {
-					if (!\is_null($extraParam)) {
+					if ($extraParam !== null) {
 						$result = $storage->$operation($internalPath, $extraParam);
 					} else {
 						$result = $storage->$operation($internalPath);
@@ -1186,7 +1181,7 @@ class View {
 				} catch (\Exception $e) {
 					if (\in_array('write', $hooks) || \in_array('delete', $hooks)) {
 						$this->unlockFile($path, ILockingProvider::LOCK_EXCLUSIVE);
-					} else if (\in_array('read', $hooks)) {
+					} elseif (\in_array('read', $hooks)) {
 						$this->unlockFile($path, ILockingProvider::LOCK_SHARED);
 					}
 					throw $e;
@@ -1214,7 +1209,7 @@ class View {
 					$result = CallbackWrapper::wrap($result, null, null, function () use ($hooks, $path) {
 						if (\in_array('write', $hooks)) {
 							$this->unlockFile($path, ILockingProvider::LOCK_EXCLUSIVE);
-						} else if (\in_array('read', $hooks)) {
+						} elseif (\in_array('read', $hooks)) {
 							$this->unlockFile($path, ILockingProvider::LOCK_SHARED);
 						}
 					});
@@ -1366,7 +1361,7 @@ class View {
 				$scanner->scan($internalPath, Cache\Scanner::SCAN_SHALLOW);
 				$data = $cache->get($internalPath);
 				$this->unlockFile($relativePath, ILockingProvider::LOCK_SHARED);
-			} else if (!Cache\Scanner::isPartialFile($internalPath) && $watcher->needsUpdate($internalPath, $data)) {
+			} elseif (!Cache\Scanner::isPartialFile($internalPath) && $watcher->needsUpdate($internalPath, $data)) {
 				$this->lockFile($relativePath, ILockingProvider::LOCK_SHARED);
 				$watcher->update($internalPath, $data);
 				$storage->getPropagator()->propagateChange($internalPath, \time());
@@ -1477,7 +1472,7 @@ class View {
 			/**
 			 * @var \OC\Files\FileInfo[] $files
 			 */
-			$files = \array_filter($contents, function(ICacheEntry $content) {
+			$files = \array_filter($contents, function (ICacheEntry $content) {
 				return (!\OC\Files\Filesystem::isForbiddenFileOrDir($content['path']));
 			});
 			$files = \array_map(function (ICacheEntry $content) use ($path, $storage, $mount, $sharingDisabled) {
@@ -1769,7 +1764,7 @@ class View {
 				$internalPath = $cache->getPathById($id);
 				if (\is_string($internalPath)) {
 					$fullPath = $mount->getMountPoint() . $internalPath;
-					if (!\is_null($path = $this->getRelativePath($fullPath))) {
+					if (($path = $this->getRelativePath($fullPath)) !== null) {
 						return $path;
 					}
 				}
@@ -1802,7 +1797,6 @@ class View {
 	 * @return boolean
 	 */
 	private function canMove(MoveableMount $mount1, $target) {
-
 		list($targetStorage, $targetInternalPath) = \OC\Files\Filesystem::resolvePath($target);
 		if (!$targetStorage->instanceOfStorage('\OCP\Files\IHomeStorage')) {
 			Util::writeLog('files',
@@ -1850,7 +1844,6 @@ class View {
 	 * @throws InvalidPathException
 	 */
 	public function verifyPath($path, $fileName) {
-
 		$l10n = \OC::$server->getL10N('lib');
 
 		// verify empty and dot files
@@ -2187,9 +2180,9 @@ class View {
 	 */
 	private function createParentDirectories($filePath) {
 		$parentDirectory = \dirname($filePath);
-		while(!$this->file_exists($parentDirectory)) {
+		while (!$this->file_exists($parentDirectory)) {
 			$result = $this->createParentDirectories($parentDirectory);
-			if($result === false) {
+			if ($result === false) {
 				return false;
 			}
 		}

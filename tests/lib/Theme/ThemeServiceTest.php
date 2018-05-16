@@ -5,7 +5,6 @@ namespace Test\Theme;
 use OC\Theme\ThemeService;
 
 class ThemeServiceTest extends \PHPUnit\Framework\TestCase {
-
 	public function testCreatesThemeByGivenName() {
 		$themeService = new ThemeService('theme-name', \OC::$SERVERROOT);
 		$theme = $themeService->getTheme();

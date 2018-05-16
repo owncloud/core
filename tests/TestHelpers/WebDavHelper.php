@@ -30,14 +30,14 @@ use Sabre\DAV\Client as SClient;
 
 /**
  * Helper to make WebDav Requests
- * 
+ *
  * @author Artur Neumann <artur@jankaritech.com>
  *
  */
 class WebDavHelper {
 	/**
 	 * returns the id of a file
-	 * 
+	 *
 	 * @param string $baseUrl
 	 * @param string $user
 	 * @param string $password
@@ -71,7 +71,7 @@ class WebDavHelper {
 	}
 
 	/**
-	 * 
+	 *
 	 * @param string $baseUrl
 	 * URL of owncloud e.g. http://localhost:8080
 	 * should include the subfolder if owncloud runs in a subfolder
@@ -114,7 +114,7 @@ class WebDavHelper {
 		$client = new GClient();
 		
 		$options = [];
-		if (!\is_null($requestBody)) {
+		if ($requestBody !== null) {
 			$options['body'] = $requestBody;
 		}
 		
@@ -125,13 +125,13 @@ class WebDavHelper {
 			$headers['Authorization'] = 'Bearer ' . $password;
 		}
 		
-		if (!\is_null($sourceIpAddress)) {
+		if ($sourceIpAddress !== null) {
 			$options['config']
 				= [ 'curl' => [ CURLOPT_INTERFACE => $sourceIpAddress ]];
 		}
 
 		$request = $client->createRequest($method, $fullUrl, $options);
-		if (!\is_null($headers)) {
+		if ($headers !== null) {
 			foreach ($headers as $key => $value) {
 				//? and # need to be encoded in the Destination URL
 				if ($key === "Destination") {
@@ -146,7 +146,7 @@ class WebDavHelper {
 				}
 			}
 		}
-		if (!\is_null($body)) {
+		if ($body !== null) {
 			$request->setBody($body);
 		}
 		
@@ -155,7 +155,7 @@ class WebDavHelper {
 
 	/**
 	 * get the dav path
-	 * 
+	 *
 	 * @param string $user
 	 * @param int $davPathVersionToUse (1|2)
 	 * @param string $type
@@ -183,7 +183,7 @@ class WebDavHelper {
 
 	/**
 	 * returns a Sabre client
-	 * 
+	 *
 	 * @param string $baseUrl
 	 * @param string $user
 	 * @param string $password
@@ -203,7 +203,7 @@ class WebDavHelper {
 
 	/**
 	 * make sure there are no double slash in the URL
-	 * 
+	 *
 	 * @param string $url
 	 * @param bool $trailingSlash forces a trailing slash
 	 *

@@ -72,7 +72,6 @@ class LostControllerTest extends TestCase {
 	private $userSession;
 
 	protected function setUp() {
-
 		$this->existingUser = $this->getMockBuilder('OCP\IUser')
 				->disableOriginalConstructor()->getMock();
 
@@ -88,7 +87,7 @@ class LostControllerTest extends TestCase {
 		$this->l10n
 			->expects($this->any())
 			->method('t')
-			->will($this->returnCallback(function($text, $parameters = []) {
+			->will($this->returnCallback(function ($text, $parameters = []) {
 				return \vsprintf($text, $parameters);
 			}));
 		$this->defaults = $this->getMockBuilder('\OC_Defaults')
@@ -629,5 +628,4 @@ class LostControllerTest extends TestCase {
 			];
 		$this->assertSame($expectedResponse, $response);
 	}
-
 }

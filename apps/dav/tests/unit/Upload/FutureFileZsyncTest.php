@@ -19,7 +19,6 @@
 namespace OCA\DAV\Tests\unit\Upload;
 
 class FutureFileTestZsync extends \Test\TestCase {
-
 	public function testGetContentType() {
 		$f = $this->mockFutureFile();
 		$this->assertEquals('application/octet-stream', $f->getContentType());
@@ -117,4 +116,3 @@ class FutureFileTestZsync extends \Test\TestCase {
 		return new \OCA\DAV\Upload\FutureFileZsync($d, 'foo.txt');
 	}
 }
-

@@ -95,5 +95,4 @@ class Admin implements ISettings {
 		$template->assign('autoAddServers', $trustedServers->getAutoAddServers());
 		return $template;
 	}
-
 }

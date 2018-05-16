@@ -138,7 +138,7 @@ class OC_Util {
 		// If we are not forced to load a specific user we load the one that is logged in
 		if ($user === null) {
 			$user = '';
-		} else if ($user == "" && OC_User::isLoggedIn()) {
+		} elseif ($user == "" && OC_User::isLoggedIn()) {
 			$user = OC_User::getUser();
 		}
 
@@ -188,7 +188,6 @@ class OC_Util {
 			}
 
 			return $storage;
-
 		}, 1);
 
 		\OC\Files\Filesystem::addStorageWrapper('oc_encoding', function ($mountPoint, \OCP\Files\Storage $storage, \OCP\Files\Mount\IMountPoint $mount) {
@@ -288,7 +287,6 @@ class OC_Util {
 
 		//if we aren't logged in, there is no use to set up the filesystem
 		if ($user != "") {
-
 			$userDir = '/' . $user . '/files';
 
 			//jail the user into his "home" directory
@@ -326,7 +324,7 @@ class OC_Util {
 		if ($config->getAppValue('core', 'shareapi_exclude_groups', 'no') === 'yes') {
 			$groupsList = $config->getAppValue('core', 'shareapi_exclude_groups_list', '');
 			$excludedGroups = \json_decode($groupsList);
-			if (\is_null($excludedGroups)) {
+			if ($excludedGroups === null) {
 				$excludedGroups = \explode(',', $groupsList);
 				$newValue = \json_encode($excludedGroups);
 				$config->setAppValue('core', 'shareapi_exclude_groups_list', $newValue);
@@ -372,7 +370,7 @@ class OC_Util {
 		} else {
 			$user = \OC::$server->getUserManager()->get($userId);
 		}
-		if (\is_null($user)) {
+		if ($user === null) {
 			return \OCP\Files\FileInfo::SPACE_UNLIMITED;
 		}
 		$userQuota = $user->getQuota();
@@ -393,10 +391,9 @@ class OC_Util {
 	 * @throws \OC\HintException
 	 */
 	public static function copySkeleton($userId, \OCP\Files\Folder $userDirectory) {
-
 		$skeletonDirectory = \OCP\Config::getSystemValue('skeletondirectory', \OC::$SERVERROOT . '/core/skeleton');
 
-		if (!\is_dir($skeletonDirectory))  {
+		if (!\is_dir($skeletonDirectory)) {
 			throw new \OC\HintException('The skeleton folder '.$skeletonDirectory.' is not accessible');
 		}
 
@@ -422,17 +419,17 @@ class OC_Util {
 	 */
 	public static function copyr($source, \OCP\Files\Folder $target) {
 		$dir = @\opendir($source);
-		if (false === $dir) {
+		if ($dir === false) {
 			throw new NoReadAccessException('No read permission for folder ' . $source);
 		}
-		while (false !== ($file = \readdir($dir))) {
+		while (($file = \readdir($dir)) !== false) {
 			if (!\OC\Files\Filesystem::isIgnoredDir($file)) {
 				if (\is_dir($source . '/' . $file)) {
 					$child = $target->newFolder($file);
 					self::copyr($source . '/' . $file, $child);
 				} else {
-					$sourceFileHandle = @\fopen($source . '/' . $file,'r');
-					if (false === $sourceFileHandle) {
+					$sourceFileHandle = @\fopen($source . '/' . $file, 'r');
+					if ($sourceFileHandle === false) {
 						throw new NoReadAccessException('No read permission for file ' . $file);
 					}
 					$child = $target->newFile($file);
@@ -480,10 +477,10 @@ class OC_Util {
 	 */
 	public static function getEditionString() {
 		if (OC_App::isEnabled('enterprise_key')) {
- 			return OC_Util::EDITION_ENTERPRISE;
- 		} else {
-			return OC_Util::EDITION_COMMUNITY;		}
-
+			return OC_Util::EDITION_ENTERPRISE;
+		} else {
+			return OC_Util::EDITION_COMMUNITY;
+		}
 	}
 
 	/**
@@ -537,7 +534,7 @@ class OC_Util {
 	 * @return string the path
 	 */
 	private static function generatePath($application, $directory, $file) {
-		if (\is_null($file)) {
+		if ($file === null) {
 			$file = $application;
 			$application = "";
 		}
@@ -561,7 +558,7 @@ class OC_Util {
 
 		// core js files need separate handling
 		if ($application !== 'core' && $file !== null) {
-			self::addTranslations ($application);
+			self::addTranslations($application);
 		}
 		self::addExternalResource($application, $prepend, $path, "script");
 	}
@@ -587,7 +584,7 @@ class OC_Util {
 	 * @param bool $prepend prepend the Script to the beginning of the list
 	 */
 	public static function addTranslations($application, $languageCode = null, $prepend = false) {
-		if (\is_null($languageCode)) {
+		if ($languageCode === null) {
 			$languageCode = \OC::$server->getL10NFactory()->findLanguage($application);
 		}
 		if (!empty($application)) {
@@ -634,11 +631,10 @@ class OC_Util {
 	 * @return void
 	 */
 	private static function addExternalResource($application, $prepend, $path, $type = "script") {
-
 		if ($type === "style") {
 			if (!\in_array($path, self::$styles)) {
 				if ($prepend === true) {
-					\array_unshift (self::$styles, $path);
+					\array_unshift(self::$styles, $path);
 				} else {
 					self::$styles[] = $path;
 				}
@@ -646,7 +642,7 @@ class OC_Util {
 		} elseif ($type === "script") {
 			if (!\in_array($path, self::$scripts)) {
 				if ($prepend === true) {
-					\array_unshift (self::$scripts, $path);
+					\array_unshift(self::$scripts, $path);
 				} else {
 					self::$scripts [] = $path;
 				}
@@ -730,7 +726,7 @@ class OC_Util {
 		}
 
 		// Check if config folder is writable.
-		if(!\OC::$server->getConfig()->isSystemConfigReadOnly()) {
+		if (!\OC::$server->getConfig()->isSystemConfigReadOnly()) {
 			if (!\is_writable(OC::$configDir) or !\is_readable(OC::$configDir)) {
 				$errors[] = [
 					'error' => $l->t('Cannot write into "config" directory'),
@@ -755,7 +751,7 @@ class OC_Util {
 							[$urlGenerator->linkToDocs('admin-dir_permissions')])
 					];
 				}
-			} else if (!\is_writable($CONFIG_DATADIRECTORY) or !\is_readable($CONFIG_DATADIRECTORY)) {
+			} elseif (!\is_writable($CONFIG_DATADIRECTORY) or !\is_readable($CONFIG_DATADIRECTORY)) {
 				//common hint for all file permissions error messages
 				$permissionsHint = $l->t('Permissions can usually be fixed by '
 					. '%sgiving the webserver write access to the root directory%s.',
@@ -859,15 +855,15 @@ class OC_Util {
 			}
 		}
 
-		foreach($missingDependencies as $missingDependency) {
+		foreach ($missingDependencies as $missingDependency) {
 			$errors[] = [
 				'error' => $l->t('PHP module %s not installed.', [$missingDependency]),
 				'hint' => $moduleHint
 			];
 			$webServerRestart = true;
 		}
-		foreach($invalidIniSettings as $setting) {
-			if(\is_bool($setting[1])) {
+		foreach ($invalidIniSettings as $setting) {
+			if (\is_bool($setting[1])) {
 				$setting[1] = ($setting[1]) ? 'on' : 'off';
 			}
 			$errors[] = [
@@ -885,7 +881,7 @@ class OC_Util {
 		 * TODO: Should probably be implemented in the above generic dependency
 		 *       check somehow in the long-term.
 		 */
-		if($iniWrapper->getBool('mbstring.func_overload') !== null &&
+		if ($iniWrapper->getBool('mbstring.func_overload') !== null &&
 			$iniWrapper->getBool('mbstring.func_overload') === true) {
 			$errors[] = [
 				'error' => $l->t('mbstring.func_overload is set to "%s" instead of the expected value "0"', [$iniWrapper->getString('mbstring.func_overload')]),
@@ -893,7 +889,7 @@ class OC_Util {
 			];
 		}
 
-		if(\function_exists('xml_parser_create') &&
+		if (\function_exists('xml_parser_create') &&
 			\version_compare('2.7.0', LIBXML_DOTTED_VERSION) === 1) {
 			$errors[] = [
 				'error' => $l->t('libxml2 2.7.0 is at least required. Currently %s is installed.', [LIBXML_DOTTED_VERSION]),
@@ -1053,7 +1049,6 @@ class OC_Util {
 	 * @return bool
 	 */
 	public static function rememberLoginAllowed() {
-
 		$apps = OC_App::getEnabledApps();
 
 		foreach ($apps as $app) {
@@ -1061,7 +1056,6 @@ class OC_Util {
 			if (isset($appInfo['rememberlogin']) && $appInfo['rememberlogin'] === 'false') {
 				return false;
 			}
-
 		}
 		return true;
 	}
@@ -1075,7 +1069,7 @@ class OC_Util {
 		OC_Util::checkLoggedIn();
 		$hasUserManagementPrivileges = false;
 		$userObject = \OC::$server->getUserSession()->getUser();
-		if($userObject !== null) {
+		if ($userObject !== null) {
 			//Admin and SubAdmins are allowed to access user management
 			$hasUserManagementPrivileges = \OC::$server->getGroupManager()->isAdmin($userObject->getUID())
 				|| \OC::$server->getGroupManager()->getSubAdmin()->isSubAdmin($userObject);
@@ -1116,7 +1110,7 @@ class OC_Util {
 					}
 				}
 
-				if(\getenv('front_controller_active') === 'true') {
+				if (\getenv('front_controller_active') === 'true') {
 					$location = $urlGenerator->getAbsoluteURL('/apps/' . $appId . '/');
 				} else {
 					$location = $urlGenerator->getAbsoluteURL('/index.php/apps/' . $appId . '/');
@@ -1147,7 +1141,7 @@ class OC_Util {
 	 */
 	public static function getInstanceId() {
 		$id = \OC::$server->getSystemConfig()->getValue('instanceid', null);
-		if (\is_null($id)) {
+		if ($id === null) {
 			// We need to guarantee at least one letter in instanceid so it can be used as the session_name
 			$id = 'oc' . \OC::$server->getSecureRandom()->generate(10, \OCP\Security\ISecureRandom::CHAR_LOWER.\OCP\Security\ISecureRandom::CHAR_DIGITS);
 			\OC::$server->getSystemConfig()->setValue('instanceid', $id);
@@ -1166,7 +1160,7 @@ class OC_Util {
 	 */
 	public static function sanitizeHTML($value) {
 		if (\is_array($value)) {
-			$value = \array_map(function($value) {
+			$value = \array_map(function ($value) {
 				return self::sanitizeHTML($value);
 			}, $value);
 		} else {
@@ -1230,7 +1224,7 @@ class OC_Util {
 	 */
 	public static function isSetLocaleWorking() {
 		\Patchwork\Utf8\Bootup::initLocale();
-		if ('' === \basename('§')) {
+		if (\basename('§') === '') {
 			return false;
 		}
 		return true;
@@ -1368,7 +1362,7 @@ class OC_Util {
 	 * @return bool|string
 	 */
 	public static function normalizeUnicode($value) {
-		if(Normalizer::isNormalized($value)) {
+		if (Normalizer::isNormalized($value)) {
 			return $value;
 		}
 
@@ -1450,7 +1444,7 @@ class OC_Util {
 			$versionDiff = \version_compare($currentVersion, $installedVersion);
 			if ($versionDiff > 0) {
 				return true;
-			} else if ($config->getSystemValue('debug', false) && $versionDiff < 0) {
+			} elseif ($config->getSystemValue('debug', false) && $versionDiff < 0) {
 				// downgrade with debug
 				$installedMajor = \explode('.', $installedVersion);
 				$installedMajor = $installedMajor[0] . '.' . $installedMajor[1];
@@ -1463,7 +1457,7 @@ class OC_Util {
 					// downgrade attempt, throw exception
 					throw new \OC\HintException('Downgrading is not supported and is likely to cause unpredictable issues (from ' . $installedVersion . ' to ' . $currentVersion . ')');
 				}
-			} else if ($versionDiff < 0) {
+			} elseif ($versionDiff < 0) {
 				// downgrade attempt, throw exception
 				throw new \OC\HintException('Downgrading is not supported and is likely to cause unpredictable issues (from ' . $installedVersion . ' to ' . $currentVersion . ')');
 			}
@@ -1482,5 +1476,4 @@ class OC_Util {
 			return false;
 		}
 	}
-
 }

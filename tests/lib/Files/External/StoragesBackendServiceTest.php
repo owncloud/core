@@ -203,6 +203,4 @@ class StoragesBackendServiceTest extends \Test\TestCase {
 		$this->assertArrayHasKey('identifier:\Backend\Available', $availableBackends);
 		$this->assertArrayNotHasKey('identifier:\Backend\NotAvailable', $availableBackends);
 	}
-
 }
-

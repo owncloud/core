@@ -71,7 +71,6 @@ class QuotaPlugin extends \Sabre\DAV\ServerPlugin {
 	 * @return void
 	 */
 	public function initialize(\Sabre\DAV\Server $server) {
-
 		$this->server = $server;
 
 		$server->on('beforeWriteContent', [$this, 'handleBeforeWriteContent'], 10);
@@ -148,7 +147,7 @@ class QuotaPlugin extends \Sabre\DAV\ServerPlugin {
 		}
 		if ($length) {
 			list($parentPath, $newName) = URLUtil::splitPath($path);
-			if(\is_null($parentPath)) {
+			if ($parentPath === null) {
 				$parentPath = '';
 			}
 			$req = $this->server->httpRequest;

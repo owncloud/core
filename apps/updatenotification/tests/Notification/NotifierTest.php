@@ -51,7 +51,8 @@ class NotifierTest extends TestCase {
 				$this->notificationManager,
 				$this->l10nFactory
 			);
-		} {
+		}
+		{
 			return $this->getMockBuilder('OCA\UpdateNotification\Notification\Notifier')
 				->setConstructorArgs([
 					$this->notificationManager,

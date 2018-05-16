@@ -103,12 +103,11 @@ class URLGenerator implements IURLGenerator {
 	public function linkTo($app, $file, $args = []) {
 		$frontControllerActive = (\getenv('front_controller_active') === 'true');
 
-		if($app != '') {
+		if ($app != '') {
 			$app_path = \OC_App::getAppPath($app);
 			// Check if the app is in the app folder
 			if ($app_path && \file_exists($app_path . '/' . $file)) {
 				if (\substr($file, -3) == 'php') {
-
 					$urlLinkTo = \OC::$WEBROOT . '/index.php/apps/' . $app;
 					if ($frontControllerActive) {
 						$urlLinkTo = \OC::$WEBROOT . '/apps/' . $app;
@@ -151,13 +150,13 @@ class URLGenerator implements IURLGenerator {
 	public function imagePath($app, $image) {
 		$cache = $this->cacheFactory->create('imagePath');
 		$cacheKey = $this->theme->getName().'-'.$app.'-'.$image;
-		if($key = $cache->get($cacheKey)) {
+		if ($key = $cache->get($cacheKey)) {
 			return $key;
 		}
 
 		$path = $this->getImagePath($app, $image);
 
-		if($path !== '' && !\is_null($path)) {
+		if ($path !== '' && $path !== null) {
 			$cache->set($cacheKey, $path);
 			return $path;
 		} else {
@@ -185,7 +184,7 @@ class URLGenerator implements IURLGenerator {
 		}
 
 		$themeDirectory = $this->theme->getDirectory();
-		foreach($directories as $directory) {
+		foreach ($directories as $directory) {
 			$directory = $directory . "/img/";
 			$file = $directory . $imageName;
 

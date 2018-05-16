@@ -80,7 +80,7 @@ class Version20170116170538 implements ISchemaMigration {
 					'length' => 20,
 				]);
 			}
-			if (!$table->hasIndex('fileid_index')){
+			if (!$table->hasIndex('fileid_index')) {
 				$table->addIndex(['fileid'], 'fileid_index');
 			}
 		}

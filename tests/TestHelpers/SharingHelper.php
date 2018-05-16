@@ -80,7 +80,6 @@ class SharingHelper {
 		$apiVersion = 1,
 		$sharingApiVersion = 1
 	) {
-
 		$fd = [];
 		$options = [];
 		foreach ([$path, $baseUrl, $user, $password] as $variableToCheck) {
@@ -100,7 +99,7 @@ class SharingHelper {
 		if (!\in_array($shareType, $validShareTypes, true)) {
 			throw new \InvalidArgumentException("invalid share type");
 		}
-		if (!\is_null($permissions)) {
+		if ($permissions !== null) {
 			if (\is_numeric($permissions)) {
 				$permissionSum = (int) $permissions;
 			} else {
@@ -156,16 +155,16 @@ class SharingHelper {
 		$fd['path'] = $path;
 		$fd['shareType'] = $shareType;
 
-		if (!\is_null($shareWith)) {
+		if ($shareWith !== null) {
 			$fd['shareWith'] = $shareWith;
 		}
-		if (!\is_null($publicUpload)) {
+		if ($publicUpload !== null) {
 			$fd['publicUpload'] = (bool) $publicUpload;
 		}
-		if (!\is_null($sharePassword)) {
+		if ($sharePassword !== null) {
 			$fd['password'] = $sharePassword;
 		}
-		if (!\is_null($linkName)) {
+		if ($linkName !== null) {
 			$fd['name'] = $linkName;
 		}
 

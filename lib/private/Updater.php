@@ -94,7 +94,7 @@ class Updater extends BasicEmitter {
 
 		$wasMaintenanceModeEnabled = $this->config->getSystemValue('maintenance', false);
 
-		if(!$wasMaintenanceModeEnabled) {
+		if (!$wasMaintenanceModeEnabled) {
 			$this->config->setSystemValue('maintenance', true);
 			$this->emit('\OC\Updater', 'maintenanceEnabled');
 		}
@@ -114,7 +114,7 @@ class Updater extends BasicEmitter {
 
 		$this->emit('\OC\Updater', 'updateEnd', [$success]);
 
-		if(!$wasMaintenanceModeEnabled && $success) {
+		if (!$wasMaintenanceModeEnabled && $success) {
 			$this->config->setSystemValue('maintenance', false);
 			$this->emit('\OC\Updater', 'maintenanceDisabled');
 		} else {
@@ -249,7 +249,7 @@ class Updater extends BasicEmitter {
 		$this->config->setAppValue('core', 'lastupdatedat', 0);
 
 		// Check for code integrity if not disabled
-		if(\OC::$server->getIntegrityCodeChecker()->isCodeCheckEnforced()) {
+		if (\OC::$server->getIntegrityCodeChecker()->isCodeCheckEnforced()) {
 			$this->emit('\OC\Updater', 'startCheckCodeIntegrity');
 			$this->checker->runInstanceVerification();
 			$this->emit('\OC\Updater', 'finishedCheckCodeIntegrity');
@@ -287,7 +287,7 @@ class Updater extends BasicEmitter {
 		foreach ($apps as $appId) {
 			$priorityType = false;
 			foreach ($priorityTypes as $type) {
-				if(!isset($stacks[$type])) {
+				if (!isset($stacks[$type])) {
 					$stacks[$type] = [];
 				}
 				if (\OC_App::isType($appId, $type)) {
@@ -307,7 +307,7 @@ class Updater extends BasicEmitter {
 					\OC_App::updateApp($appId);
 					$this->emit('\OC\Updater', 'appUpgrade', [$appId, \OC_App::getAppVersion($appId)]);
 				}
-				if($type !== $pseudoOtherType) {
+				if ($type !== $pseudoOtherType) {
 					// load authentication, filesystem and logging apps after
 					// upgrading them. Other apps my need to rely on modifying
 					// user and/or filesystem aspects.
@@ -343,6 +343,4 @@ class Updater extends BasicEmitter {
 			}
 		});
 	}
-
 }
-

@@ -63,7 +63,6 @@ use Sabre\DAV\IFile;
 use Symfony\Component\EventDispatcher\GenericEvent;
 
 class File extends Node implements IFile, IFileNode {
-
 	use EventEmitterTrait;
 	protected $request;
 	
@@ -190,7 +189,6 @@ class File extends Node implements IFile, IFileNode {
 					throw new BadRequest('expected filesize ' . $expected . ' got ' . $count);
 				}
 			}
-
 		} catch (\Exception $e) {
 			if ($needsPartFile) {
 				$partStorage->unlink($internalPartPath);
@@ -282,7 +280,7 @@ class File extends Node implements IFile, IFileNode {
 	 * @param string $path
 	 */
 	private function emitPreHooks($exists, $path = null) {
-		if (\is_null($path)) {
+		if ($path === null) {
 			$path = $this->path;
 		}
 		$hookPath = Filesystem::getView()->getRelativePath($this->fileView->getAbsolutePath($path));
@@ -326,7 +324,7 @@ class File extends Node implements IFile, IFileNode {
 	 * @param string $path
 	 */
 	private function emitPostHooks($exists, $path = null) {
-		if (\is_null($path)) {
+		if ($path === null) {
 			$path = $this->path;
 		}
 		$hookPath = Filesystem::getView()->getRelativePath($this->fileView->getAbsolutePath($path));
@@ -427,7 +425,7 @@ class File extends Node implements IFile, IFileNode {
 		}
 		/** @var \OCP\Files\Storage $storage */
 		list($storage, $internalPath) = $this->fileView->resolvePath($this->path);
-		if (\is_null($storage)) {
+		if ($storage === null) {
 			return [];
 		}
 
@@ -454,7 +452,7 @@ class File extends Node implements IFile, IFileNode {
 		$bytesWritten = $chunk_handler->store($info['index'], $data);
 
 		//detect aborted upload
-		if (isset ($_SERVER['REQUEST_METHOD']) && $_SERVER['REQUEST_METHOD'] === 'PUT') {
+		if (isset($_SERVER['REQUEST_METHOD']) && $_SERVER['REQUEST_METHOD'] === 'PUT') {
 			if (isset($_SERVER['CONTENT_LENGTH'])) {
 				$expected = $_SERVER['CONTENT_LENGTH'];
 				if ($bytesWritten != $expected) {
@@ -466,7 +464,7 @@ class File extends Node implements IFile, IFileNode {
 		}
 
 		if ($chunk_handler->isComplete()) {
-			list($storage,) = $this->fileView->resolvePath($path);
+			list($storage, ) = $this->fileView->resolvePath($path);
 			$needsPartFile = $this->needsPartFile($storage);
 			$partFile = null;
 
@@ -602,7 +600,6 @@ class File extends Node implements IFile, IFileNode {
 		$computedChecksums = $meta['checksum'];
 
 		return \strpos($computedChecksums, $expectedChecksum) !== false;
-
 	}
 
 	/**

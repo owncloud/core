@@ -79,7 +79,7 @@ class MetaVersionCollection extends AbstractFolder {
 		}
 		/** @var IVersionedStorage | Storage $storage */
 		$versions = $storage->getVersions($internalPath);
-		return \array_values(\array_map(function($version) use ($storage, $internalPath, $view, $path) {
+		return \array_values(\array_map(function ($version) use ($storage, $internalPath, $view, $path) {
 			if (!isset($version['mimetype'])) {
 				$version['mimetype'] = $view->getMimeType($path);
 			}

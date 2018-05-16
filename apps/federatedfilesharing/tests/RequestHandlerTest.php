@@ -42,7 +42,6 @@ use Symfony\Component\EventDispatcher\GenericEvent;
  * @group DB
  */
 class RequestHandlerTest extends TestCase {
-
 	const TEST_FOLDER_NAME = '/folder_share_api_test';
 
 	/**
@@ -154,7 +153,7 @@ class RequestHandlerTest extends TestCase {
 	/**
 	 * @medium
 	 */
-	function testCreateShare() {
+	public function testCreateShare() {
 		// simulate a post request
 		$_POST['remote'] = 'localhost';
 		$_POST['token'] = 'token';
@@ -188,8 +187,7 @@ class RequestHandlerTest extends TestCase {
 		$this->assertSame(0, (int)$data['accepted']);
 	}
 
-	function testDeclineShare() {
-
+	public function testDeclineShare() {
 		$this->s2s = $this->getMockBuilder('\OCA\FederatedFileSharing\RequestHandler')
 			->setConstructorArgs(
 				[
@@ -211,11 +209,9 @@ class RequestHandlerTest extends TestCase {
 		$_POST['token'] = 'token';
 
 		$this->s2s->declineShare(['id' => 42]);
-
 	}
 
-	function XtestDeclineShareMultiple() {
-
+	public function XtestDeclineShareMultiple() {
 		$this->share->expects($this->any())->method('verifyShare')->willReturn(true);
 
 		$dummy = \OCP\DB::prepare('
@@ -252,7 +248,7 @@ class RequestHandlerTest extends TestCase {
 	/**
 	 * @dataProvider dataTestDeleteUser
 	 */
-	function testDeleteUser($toDelete, $expected, $remainingUsers) {
+	public function testDeleteUser($toDelete, $expected, $remainingUsers) {
 		$this->createDummyS2SShares();
 
 		$discoveryManager = new DiscoveryManager(
@@ -287,10 +283,9 @@ class RequestHandlerTest extends TestCase {
 				$this->assertSame($value, $remainingShares[$key]);
 			}
 		}
-
 	}
 
-	function dataTestDeleteUser() {
+	public function dataTestDeleteUser() {
 		return [
 			['user1', ['user1' => 0, 'user2' => 3, 'user3' => 3], 2],
 			['user2', ['user1' => 4, 'user2' => 0, 'user3' => 3], 2],
@@ -328,7 +323,6 @@ class RequestHandlerTest extends TestCase {
 	 * @param bool $correctToken
 	 */
 	public function testGetShare($found, $correctId, $correctToken) {
-
 		$connection = \OC::$server->getDatabaseConnection();
 		$query = $connection->getQueryBuilder();
 		$stime = \time();
@@ -392,5 +386,4 @@ class RequestHandlerTest extends TestCase {
 			[false, false, false],
 		];
 	}
-
 }

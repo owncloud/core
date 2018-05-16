@@ -98,7 +98,7 @@ class Share20OCSTest extends TestCase {
 
 		$this->l = $this->createMock('\OCP\IL10N');
 		$this->l->method('t')
-			->will($this->returnCallback(function($text, $parameters = []) {
+			->will($this->returnCallback(function ($text, $parameters = []) {
 				return \vsprintf($text, $parameters);
 			}));
 
@@ -153,7 +153,7 @@ class Share20OCSTest extends TestCase {
 		$this->shareManager
 			->expects($this->exactly(2))
 			->method('getShareById')
-			->will($this->returnCallback(function($id) {
+			->will($this->returnCallback(function ($id) {
 				if ($id === 'ocinternal:42' || $id === 'ocFederatedSharing:42') {
 					throw new \OCP\Share\Exceptions\ShareNotFound();
 				} else {
@@ -1362,7 +1362,7 @@ class Share20OCSTest extends TestCase {
 		$this->shareManager->expects($this->once())->method('createShare')->with(
 			$this->callback(function (\OCP\Share\IShare $share) use ($path) {
 				$date = new \DateTime('2000-01-01');
-				$date->setTime(0,0,0);
+				$date->setTime(0, 0, 0);
 
 				return $share->getNode() === $path &&
 				$share->getShareType() === Share::SHARE_TYPE_LINK &&
@@ -1608,7 +1608,7 @@ class Share20OCSTest extends TestCase {
 		$this->shareManager->expects($this->once())->method('updateShare')->with(
 			$this->callback(function (\OCP\Share\IShare $share) {
 				$date = new \DateTime('2000-01-01');
-				$date->setTime(0,0,0);
+				$date->setTime(0, 0, 0);
 
 				return $share->getPermissions() === (\OCP\Constants::PERMISSION_READ | \OCP\Constants::PERMISSION_CREATE | \OCP\Constants::PERMISSION_UPDATE | \OCP\Constants::PERMISSION_DELETE) &&
 				$share->getPassword() === 'password' &&
@@ -1772,7 +1772,7 @@ class Share20OCSTest extends TestCase {
 		$ocs = $this->mockFormatShare();
 
 		$date = new \DateTime('2000-01-01');
-		$date->setTime(0,0,0);
+		$date->setTime(0, 0, 0);
 
 		$node = $this->createMock('\OCP\Files\File');
 		$share = $this->newShare();
@@ -1845,7 +1845,7 @@ class Share20OCSTest extends TestCase {
 		$this->shareManager->expects($this->once())->method('updateShare')->with(
 			$this->callback(function (\OCP\Share\IShare $share) {
 				$date = new \DateTime('2010-12-23');
-				$date->setTime(0,0,0);
+				$date->setTime(0, 0, 0);
 
 				return $share->getPermissions() === \OCP\Constants::PERMISSION_ALL &&
 				$share->getPassword() === 'password' &&
@@ -2246,7 +2246,7 @@ class Share20OCSTest extends TestCase {
 
 		$calledAfterUpdate = [];
 		$this->eventDispatcher->addListener('share.afterupdate',
-			function (GenericEvent $event) use (&$calledAfterUpdate){
+			function (GenericEvent $event) use (&$calledAfterUpdate) {
 				$calledAfterUpdate[] = 'share.afterupdate';
 				$calledAfterUpdate[] = $event;
 			});
@@ -2822,7 +2822,7 @@ class Share20OCSTest extends TestCase {
 			$this->eventDispatcher
 		);
 
-		list($file,) = $this->getMockFileFolder();
+		list($file, ) = $this->getMockFileFolder();
 
 		$share = \OC::$server->getShareManager()->newShare();
 		$share->setShareType(Share::SHARE_TYPE_USER)
@@ -2852,4 +2852,3 @@ class Share20OCSTest extends TestCase {
 		$this->assertEquals($expectedInfo, $result['share_with_additional_info']);
 	}
 }
-

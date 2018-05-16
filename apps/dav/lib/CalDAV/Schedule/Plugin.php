@@ -22,7 +22,6 @@
 namespace OCA\DAV\CalDAV\Schedule;
 
 class Plugin extends \Sabre\CalDAV\Schedule\Plugin {
-
 	public function getAddressesForPrincipal($principal) {
 		$result =  parent::getAddressesForPrincipal($principal);
 		if ($result === null) {
@@ -31,5 +30,4 @@ class Plugin extends \Sabre\CalDAV\Schedule\Plugin {
 
 		return $result;
 	}
-	
 }

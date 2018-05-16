@@ -136,5 +136,4 @@ class AbstractFolder extends AbstractNode implements \OCP\Files\Folder {
 	public function getRelativePath($path) {
 		throw new NotPermittedException();
 	}
-
 }

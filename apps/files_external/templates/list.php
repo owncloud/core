@@ -14,9 +14,7 @@
 				'">' .
 				$l->t('You can add external storages in the storage settings') .
 				'</a></p>';
-		}
-
-		else {
+		} else {
 			echo 	'<p><a href="' .
 				link_to('', 'index.php/settings/personal?sectionid=storage') .
 				'">' .

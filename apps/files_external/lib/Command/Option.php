@@ -67,7 +67,7 @@ class Option extends Config {
 	 */
 	protected function setOption(IStorageConfig $mount, $key, $value, OutputInterface $output) {
 		$decoded = \json_decode($value, true);
-		if (!\is_null($decoded)) {
+		if ($decoded !== null) {
 			$value = $decoded;
 		}
 		$mount->setMountOption($key, $value);

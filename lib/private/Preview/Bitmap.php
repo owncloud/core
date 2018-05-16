@@ -40,7 +40,6 @@ abstract class Bitmap implements IProvider2 {
 	 * {@inheritDoc}
 	 */
 	public function getThumbnail(File $file, $maxX, $maxY, $scalingUp) {
-
 		$stream = $file->fopen('r');
 
 		// Creates \Imagick object from bitmap or vector file
@@ -116,5 +115,4 @@ abstract class Bitmap implements IProvider2 {
 
 		return $bp;
 	}
-
 }

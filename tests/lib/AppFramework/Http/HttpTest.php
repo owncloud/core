@@ -26,7 +26,6 @@ namespace Test\AppFramework\Http;
 use OC\AppFramework\Http;
 
 class HttpTest extends \Test\TestCase {
-
 	private $server;
 
 	/**
@@ -34,7 +33,7 @@ class HttpTest extends \Test\TestCase {
 	 */
 	private $http;
 
-	protected function setUp(){
+	protected function setUp() {
 		parent::setUp();
 
 		$this->server = [];
@@ -86,5 +85,4 @@ class HttpTest extends \Test\TestCase {
 		$this->assertEquals('HTTP/1.0 302 Found', $header);
 	}
 	// TODO: write unittests for http codes
-
 }

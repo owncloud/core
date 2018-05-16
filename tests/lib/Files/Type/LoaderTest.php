@@ -88,5 +88,4 @@ class LoaderTest extends \Test\TestCase {
 
 		$this->assertEquals($mimetypeId, $mimetypeId2);
 	}
-
 }

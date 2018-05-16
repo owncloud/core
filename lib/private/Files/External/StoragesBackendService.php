@@ -183,7 +183,7 @@ class StoragesBackendService implements IStoragesBackendService {
 	 * @return Backend[]
 	 */
 	public function getAvailableBackends() {
-		return \array_filter($this->getBackends(), function($backend) {
+		return \array_filter($this->getBackends(), function ($backend) {
 			return !($backend->checkDependencies());
 		});
 	}
@@ -222,7 +222,7 @@ class StoragesBackendService implements IStoragesBackendService {
 	 * @return AuthMechanism[]
 	 */
 	public function getAuthMechanismsByScheme(array $schemes) {
-		return \array_filter($this->getAuthMechanisms(), function($authMech) use ($schemes) {
+		return \array_filter($this->getAuthMechanisms(), function ($authMech) use ($schemes) {
 			return \in_array($authMech->getScheme(), $schemes, true);
 		});
 	}

@@ -193,5 +193,4 @@ class AddressHandlerTest extends \Test\TestCase {
 			['http://localhost/index.php/s/AShareToken', 'http://localhost'],
 		];
 	}
-
 }

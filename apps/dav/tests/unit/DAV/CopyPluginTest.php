@@ -41,7 +41,7 @@ class CopyPluginTest extends TestCase {
 	/** @var Tree | \PHPUnit_Framework_MockObject_MockObject */
 	private $tree;
 	/** @var RequestInterface | \PHPUnit_Framework_MockObject_MockObject */
-	private  $request;
+	private $request;
 	/** @var ResponseInterface | \PHPUnit_Framework_MockObject_MockObject */
 	private $response;
 
@@ -67,7 +67,6 @@ class CopyPluginTest extends TestCase {
 	 * @param $sourceNode
 	 */
 	public function testCopyPluginReturnTrue($destinationExists, $destinationNode, $sourceNode) {
-
 		$this->tree->expects($this->once())->method('getNodeForPath')->willReturn($sourceNode);
 		$this->server->expects($this->once())->method('getCopyAndMoveInfo')->willReturn([
 			'destinationExists' => $destinationExists,
@@ -87,7 +86,6 @@ class CopyPluginTest extends TestCase {
 	}
 
 	public function testCopyPluginReturnFalse() {
-
 		$destinationNode = $this->createMock(File::class);
 		$sourceNode = $this->createMock(IFile::class);
 

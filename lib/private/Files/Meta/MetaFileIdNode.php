@@ -88,7 +88,7 @@ class MetaFileIdNode extends AbstractFolder {
 	 */
 	public function get($path) {
 		$pieces = \explode('/', $path);
-		if($pieces[0] === 'v') {
+		if ($pieces[0] === 'v') {
 			\array_shift($pieces);
 			$node = new MetaVersionCollection($this->fileId, $this->root);
 			if (empty($pieces)) {
@@ -97,7 +97,6 @@ class MetaFileIdNode extends AbstractFolder {
 			return $node->get(\implode('/', $pieces));
 		}
 		throw new NotFoundException();
-
 	}
 
 	/**
@@ -169,5 +168,4 @@ class MetaFileIdNode extends AbstractFolder {
 	public function getName() {
 		return "{$this->fileId}";
 	}
-
 }

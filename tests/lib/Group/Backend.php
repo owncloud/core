@@ -44,7 +44,7 @@ abstract class Backend extends \Test\TestCase {
 	 * @return string
 	 */
 	public function getGroupName($name = null) {
-		if (\is_null($name)) {
+		if ($name === null) {
 			return $this->getUniqueID('test_');
 		} else {
 			return $name;

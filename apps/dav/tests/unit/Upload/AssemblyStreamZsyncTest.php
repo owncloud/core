@@ -47,7 +47,7 @@ class AssemblyStreamZsyncTest extends \Test\TestCase {
 		$this->assertEquals($expected, $content);
 	}
 
-	function providesNodes() {
+	public function providesNodes() {
 		$data512k = $this->makeData(512*1024);
 		$data16k = $this->makeData(16*1024);
 		$data8k = $this->makeData(8*1024);
@@ -58,12 +58,12 @@ class AssemblyStreamZsyncTest extends \Test\TestCase {
 		$tonofdata = "";
 		$start = 0;
 		for ($i = 0; $i < 101; $i++) {
-			$thisdata =  \rand(0,100); // variable length and content
+			$thisdata =  \rand(0, 100); // variable length and content
 			$tonofdata .= $thisdata;
-			\array_push($tonofnodes, $this->buildNode($start,$thisdata));
+			\array_push($tonofnodes, $this->buildNode($start, $thisdata));
 			$start += \strlen($thisdata);
 		}
-		\array_push($tonofnodes, $this->buildNode('.zsync','zsync metadata'));
+		\array_push($tonofnodes, $this->buildNode('.zsync', 'zsync metadata'));
 
 		$file4k = $this->buildNode('file4k', $data4k);
 		$file8k = $this->buildNode('file8k', $data8k);
@@ -106,7 +106,7 @@ class AssemblyStreamZsyncTest extends \Test\TestCase {
 				\substr($data512k, (8*1024)+4, (128*1024)-((8*1024)+4)).
 				$data16k.
 				\substr($data512k, (8*1024)+4 + (128*1024)-((8*1024)+4) + (16*1024),
-				       (512*1024)-((8*1024)+4 + (128*1024)-((8*1024)+4) + (16*1024))),
+					   (512*1024)-((8*1024)+4 + (128*1024)-((8*1024)+4) + (16*1024))),
 			[
 				$this->buildNode(128*1024, $data16k),
 				$this->buildNode('4', $data8k)
@@ -125,7 +125,7 @@ class AssemblyStreamZsyncTest extends \Test\TestCase {
 		];
 	}
 
-	function makeData($count) {
+	public function makeData($count) {
 		$characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
 		$charactersLength = \strlen($characters);
 		$data = '';
@@ -155,4 +155,3 @@ class AssemblyStreamZsyncTest extends \Test\TestCase {
 		return $node;
 	}
 }
-

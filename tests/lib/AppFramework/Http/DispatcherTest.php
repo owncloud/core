@@ -50,7 +50,7 @@ class TestController extends Controller {
 	 * @return array
 	 */
 	public function exec($int, $bool, $test=4, $test2=1) {
-		$this->registerResponder('text', function($in) {
+		$this->registerResponder('text', function ($in) {
 			return new JSONResponse(['text' => $in]);
 		});
 		return [$int, $bool, $test, $test2];
@@ -68,7 +68,6 @@ class TestController extends Controller {
 			'text' => [$int, $bool, $test, $test2]
 		]);
 	}
-
 }
 
 class DispatcherTest extends \Test\TestCase {
@@ -143,15 +142,14 @@ class DispatcherTest extends \Test\TestCase {
 	private function setMiddlewareExpectations($out=null,
 		$httpHeaders=null, $responseHeaders= [],
 		$ex=false, $catchEx=true) {
-
-		if($ex) {
+		if ($ex) {
 			$exception = new \Exception();
 			$this->middlewareDispatcher->expects($this->once())
 				->method('beforeController')
 				->with($this->equalTo($this->controller),
 					$this->equalTo($this->controllerMethod))
 				->will($this->throwException($exception));
-			if($catchEx) {
+			if ($catchEx) {
 				$this->middlewareDispatcher->expects($this->once())
 					->method('afterException')
 					->with($this->equalTo($this->controller),
@@ -231,7 +229,7 @@ class DispatcherTest extends \Test\TestCase {
 		$this->assertNull($response[2]);
 	}
 
-	public function testHeadersAndOutputAreReturned(){
+	public function testHeadersAndOutputAreReturned() {
 		$out = 'yo';
 		$httpHeaders = 'Http';
 		$responseHeaders = ['hell' => 'yeah'];
@@ -268,7 +266,6 @@ class DispatcherTest extends \Test\TestCase {
 		$this->expectException('\Exception');
 		$response = $this->dispatcher->dispatch($this->controller,
 			$this->controllerMethod);
-
 	}
 
 	private function dispatcherPassthrough() {
@@ -276,12 +273,12 @@ class DispatcherTest extends \Test\TestCase {
 				->method('beforeController');
 		$this->middlewareDispatcher->expects($this->once())
 			->method('afterController')
-			->will($this->returnCallback(function($a, $b, $in) {
+			->will($this->returnCallback(function ($a, $b, $in) {
 				return $in;
 			}));
 		$this->middlewareDispatcher->expects($this->once())
 			->method('beforeOutput')
-			->will($this->returnCallback(function($a, $b, $in) {
+			->will($this->returnCallback(function ($a, $b, $in) {
 				return $in;
 			}));
 	}
@@ -452,5 +449,4 @@ class DispatcherTest extends \Test\TestCase {
 
 		$this->assertEquals('{"text":[3,true,4,1]}', $response[3]);
 	}
-
 }

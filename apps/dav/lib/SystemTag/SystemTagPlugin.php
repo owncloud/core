@@ -99,7 +99,6 @@ class SystemTagPlugin extends \Sabre\DAV\ServerPlugin {
 	 * @return void
 	 */
 	public function initialize(\Sabre\DAV\Server $server) {
-
 		$server->xml->namespaceMap[self::NS_OWNCLOUD] = 'oc';
 
 		$server->protectedProperties[] = self::ID_PROPERTYNAME;
@@ -190,8 +189,8 @@ class SystemTagPlugin extends \Sabre\DAV\ServerPlugin {
 			}
 		}
 
-		if($userVisible === false || $userAssignable === false || !empty($groups)) {
-			if(!$this->userSession->isLoggedIn() || !$this->groupManager->isAdmin($this->userSession->getUser()->getUID())) {
+		if ($userVisible === false || $userAssignable === false || !empty($groups)) {
+			if (!$this->userSession->isLoggedIn() || !$this->groupManager->isAdmin($this->userSession->getUser()->getUID())) {
 				throw new BadRequest('Not sufficient permissions');
 			}
 		}
@@ -221,29 +220,29 @@ class SystemTagPlugin extends \Sabre\DAV\ServerPlugin {
 			return;
 		}
 
-		$propFind->handle(self::ID_PROPERTYNAME, function() use ($node) {
+		$propFind->handle(self::ID_PROPERTYNAME, function () use ($node) {
 			return $node->getSystemTag()->getId();
 		});
 
-		$propFind->handle(self::DISPLAYNAME_PROPERTYNAME, function() use ($node) {
+		$propFind->handle(self::DISPLAYNAME_PROPERTYNAME, function () use ($node) {
 			return $node->getSystemTag()->getName();
 		});
 
-		$propFind->handle(self::USERVISIBLE_PROPERTYNAME, function() use ($node) {
+		$propFind->handle(self::USERVISIBLE_PROPERTYNAME, function () use ($node) {
 			return $node->getSystemTag()->isUserVisible() ? 'true' : 'false';
 		});
 
-		$propFind->handle(self::USERASSIGNABLE_PROPERTYNAME, function() use ($node) {
+		$propFind->handle(self::USERASSIGNABLE_PROPERTYNAME, function () use ($node) {
 			// this is the tag's inherent property "is user assignable"
 			return $node->getSystemTag()->isUserAssignable() ? 'true' : 'false';
 		});
 
-		$propFind->handle(self::CANASSIGN_PROPERTYNAME, function() use ($node) {
+		$propFind->handle(self::CANASSIGN_PROPERTYNAME, function () use ($node) {
 			// this is the effective permission for the current user
 			return $this->tagManager->canUserAssignTag($node->getSystemTag(), $this->userSession->getUser()) ? 'true' : 'false';
 		});
 
-		$propFind->handle(self::GROUPS_PROPERTYNAME, function() use ($node) {
+		$propFind->handle(self::GROUPS_PROPERTYNAME, function () use ($node) {
 			if (!$this->groupManager->isAdmin($this->userSession->getUser()->getUID())) {
 				// property only available for admins
 				throw new Forbidden();
@@ -276,7 +275,7 @@ class SystemTagPlugin extends \Sabre\DAV\ServerPlugin {
 			self::USERVISIBLE_PROPERTYNAME,
 			self::USERASSIGNABLE_PROPERTYNAME,
 			self::GROUPS_PROPERTYNAME,
-		], function($props) use ($node) {
+		], function ($props) use ($node) {
 			$tag = $node->getSystemTag();
 			$name = $tag->getName();
 			$userVisible = $tag->isUserVisible();
@@ -318,6 +317,5 @@ class SystemTagPlugin extends \Sabre\DAV\ServerPlugin {
 
 			return true;
 		});
-
 	}
 }

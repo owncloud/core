@@ -25,7 +25,6 @@ use OCP\IUserSession;
  * Class CORSMiddlewareTest
  */
 class CORSMiddlewareTest extends \Test\TestCase {
-
 	private $reflector;
 	private $session;
 
@@ -211,5 +210,4 @@ class CORSMiddlewareTest extends \Test\TestCase {
 		);
 		$middleware->afterException($this, __FUNCTION__, new \Exception('A regular exception'));
 	}
-
 }

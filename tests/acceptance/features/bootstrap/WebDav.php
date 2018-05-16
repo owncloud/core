@@ -44,7 +44,7 @@ trait WebDav {
 	 */
 	private $usingOldDavPath = true;
 	/**
-	 * @var ResponseInterface[] 
+	 * @var ResponseInterface[]
 	 */
 	private $uploadResponses;
 	/**
@@ -53,7 +53,7 @@ trait WebDav {
 	 */
 	private $storedETAG = null;
 	/**
-	 * @var integer 
+	 * @var integer
 	 */
 	private $storedFileID = null;
 
@@ -380,10 +380,10 @@ trait WebDav {
 	public function shouldBeAbleToDownloadFileInsidePublicSharedFolderWithPassword(
 		$range, $path, $password, $content
 	) {
-			$this->publicDownloadsTheFileInsideThePublicSharedFolderWithPassword(
+		$this->publicDownloadsTheFileInsideThePublicSharedFolderWithPassword(
 				$path, $password, $range
 			);
-			$this->downloadedContentShouldBe($content);
+		$this->downloadedContentShouldBe($content);
 	}
 
 	/**
@@ -1017,13 +1017,13 @@ trait WebDav {
 
 	/**
 	 * asserts that a the user can or can not see a list of files/folders by propfind
-	 * 
+	 *
 	 * @param string $user
 	 * @param TableNode $elements
 	 * @param boolean $expectedToBeListed
-	 * 
+	 *
 	 * @throws InvalidArgumentException
-	 * 
+	 *
 	 * @return void
 	 */
 	public function checkElementList($user, $elements, $expectedToBeListed = true) {
@@ -1444,7 +1444,7 @@ trait WebDav {
 			$data = \GuzzleHttp\Stream\Stream::factory($data);
 			$file = $destination . '-chunking-42-' . $total . '-' . $num;
 			$this->makeDavRequest(
-				$user, 'PUT', $file, ['OC-Chunked' => '1'], $data,  "uploads"
+				$user, 'PUT', $file, ['OC-Chunked' => '1'], $data, "uploads"
 			);
 		} catch (\GuzzleHttp\Exception\RequestException $ex) {
 			$this->response = $ex->getResponse();
@@ -1837,7 +1837,7 @@ trait WebDav {
 	/**
 	 * @When user :user restores version index :versionIndex of file :path using the API
 	 * @Given user :user has restored version index :versionIndex of file :path
-	 * 
+	 *
 	 * @param string $user
 	 * @param int $versionIndex
 	 * @param string $path
@@ -1857,5 +1857,4 @@ trait WebDav {
 			['Destination' => $this->makeSabrePath($user, $path)]
 		);
 	}
-
 }

@@ -112,8 +112,7 @@ class OccController extends Controller {
 				'exitCode' => $exitCode,
 				'response' => $response
 			];
-
-		} catch (\UnexpectedValueException $e){
+		} catch (\UnexpectedValueException $e) {
 			$this->logger->warning(
 				'Invalid request to occ controller. Details: "{details}"',
 				[
@@ -135,9 +134,9 @@ class OccController extends Controller {
 	 * @param $command
 	 * @param $token
 	 */
-	protected function validateRequest($command, $token){
+	protected function validateRequest($command, $token) {
 		$allowedHosts = ['::1', '127.0.0.1', 'localhost'];
-		if (isset($this->request->server['SERVER_ADDR'])){
+		if (isset($this->request->server['SERVER_ADDR'])) {
 			\array_push($allowedHosts, $this->request->server['SERVER_ADDR']);
 		}
 

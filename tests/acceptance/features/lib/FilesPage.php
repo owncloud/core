@@ -91,13 +91,13 @@ class FilesPage extends FilesPageBasic {
 		Session $session, $name = null,
 		$timeoutMsec = STANDARDUIWAITTIMEOUTMILLISEC
 	) {
-		if (\is_null($name)) {
+		if ($name === null) {
 			$name = \substr(\str_shuffle($this->strForNormalFileName), 0, 8);
 		}
 
 		$newButtonElement = $this->find("xpath", $this->newFileFolderButtonXpath);
 
-		if (\is_null($newButtonElement)) {
+		if ($newButtonElement === null) {
 			throw new ElementNotFoundException(
 				__METHOD__ .
 				" xpath $this->newFileFolderButtonXpath " .
@@ -109,7 +109,7 @@ class FilesPage extends FilesPageBasic {
 
 		$newFolderButtonElement = $this->find("xpath", $this->newFolderButtonXpath);
 
-		if (\is_null($newFolderButtonElement)) {
+		if ($newFolderButtonElement === null) {
 			throw new ElementNotFoundException(
 				__METHOD__ .
 				" xpath $this->newFolderButtonXpath " .
@@ -169,13 +169,13 @@ class FilesPage extends FilesPageBasic {
 	}
 
 	/**
-	 * 
+	 *
 	 * @throws ElementNotFoundException
 	 * @return string
 	 */
 	public function getCreateFolderTooltip() {
 		$newFolderTooltip = $this->find("xpath", $this->newFolderTooltipXpath);
-		if (\is_null($newFolderTooltip)) {
+		if ($newFolderTooltip === null) {
 			throw new ElementNotFoundException(
 				__METHOD__ .
 				" xpath $this->newFolderTooltipXpath " .
@@ -194,7 +194,7 @@ class FilesPage extends FilesPageBasic {
 	 */
 	public function uploadFile(Session $session, $name) {
 		$uploadField = $this->findById($this->fileUploadInputId);
-		if (\is_null($uploadField)) {
+		if ($uploadField === null) {
 			throw new ElementNotFoundException(
 				__METHOD__ .
 				" id $this->fileUploadInputId " .
@@ -361,7 +361,7 @@ class FilesPage extends FilesPageBasic {
 
 	/**
 	 * waits till the upload progressbar is not visible anymore
-	 * 
+	 *
 	 * @throws ElementNotFoundException
 	 * @return void
 	 */
@@ -369,7 +369,7 @@ class FilesPage extends FilesPageBasic {
 		$uploadProgressbar = $this->find(
 			"xpath", $this->uploadProgressbarLabelXpath
 		);
-		if (\is_null($uploadProgressbar)) {
+		if ($uploadProgressbar === null) {
 			throw new ElementNotFoundException(
 				__METHOD__ .
 				" xpath $this->uploadProgressbarLabelXpath " .

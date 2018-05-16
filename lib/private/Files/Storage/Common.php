@@ -66,7 +66,6 @@ use OCP\Lock\ILockingProvider;
  * in classes which extend it, e.g. $this->stat() .
  */
 abstract class Common implements Storage, ILockingStorage, IVersionedStorage {
-
 	use LocalTempFileTrait;
 
 	protected $cache;
@@ -91,7 +90,7 @@ abstract class Common implements Storage, ILockingStorage, IVersionedStorage {
 	protected function remove($path) {
 		if ($this->is_dir($path)) {
 			return $this->rmdir($path);
-		} else if ($this->is_file($path)) {
+		} elseif ($this->is_file($path)) {
 			return $this->unlink($path);
 		} else {
 			return false;
@@ -285,7 +284,9 @@ abstract class Common implements Storage, ILockingStorage, IVersionedStorage {
 		$dh = $this->opendir($dir);
 		if (\is_resource($dh)) {
 			while (($item = \readdir($dh)) !== false) {
-				if (Filesystem::isIgnoredDir($item)) continue;
+				if (Filesystem::isIgnoredDir($item)) {
+					continue;
+				}
 				if (\strstr(\strtolower($item), \strtolower($query)) !== false) {
 					$files[] = $dir . '/' . $item;
 				}
@@ -422,7 +423,7 @@ abstract class Common implements Storage, ILockingStorage, IVersionedStorage {
 		foreach (\explode('/', $path) as $chunk) {
 			if ($chunk == '..') {
 				\array_pop($output);
-			} else if ($chunk == '.') {
+			} elseif ($chunk == '.') {
 			} else {
 				$output[] = $chunk;
 			}
@@ -693,7 +694,7 @@ abstract class Common implements Storage, ILockingStorage, IVersionedStorage {
 		if (!\OC_App::isEnabled('files_versions')) {
 			return [];
 		}
-		list ($uid, $filename) =  $this->convertInternalPathToGlobalPath($internalPath);
+		list($uid, $filename) =  $this->convertInternalPathToGlobalPath($internalPath);
 
 		return \array_map(function ($version) use ($internalPath) {
 			$version['mimetype'] = $this->getMimeType($internalPath);
@@ -720,7 +721,7 @@ abstract class Common implements Storage, ILockingStorage, IVersionedStorage {
 
 	public function getVersion($internalPath, $versionId) {
 		$versions = $this->getVersions($internalPath);
-		$versions = \array_filter($versions, function ($version) use($versionId){
+		$versions = \array_filter($versions, function ($version) use ($versionId) {
 			return $version['version'] === $versionId;
 		});
 		return \array_shift($versions);

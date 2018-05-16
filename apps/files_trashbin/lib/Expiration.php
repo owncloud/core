@@ -46,7 +46,7 @@ class Expiration {
 	/** @var bool */
 	private $canPurgeToSaveSpace;
 
-	public function __construct(IConfig $config,ITimeFactory $timeFactory){
+	public function __construct(IConfig $config, ITimeFactory $timeFactory) {
 		$this->timeFactory = $timeFactory;
 		$this->retentionObligation = $config->getSystemValue('trashbin_retention_obligation', 'auto');
 
@@ -59,7 +59,7 @@ class Expiration {
 	 * Is trashbin expiration enabled
 	 * @return bool
 	 */
-	public function isEnabled(){
+	public function isEnabled() {
 		return $this->retentionObligation !== 'disabled';
 	}
 
@@ -69,7 +69,7 @@ class Expiration {
 	 * @param bool $quotaExceeded
 	 * @return bool
 	 */
-	public function isExpired($timestamp, $quotaExceeded = false){
+	public function isExpired($timestamp, $quotaExceeded = false) {
 		// No expiration if disabled
 		if (!$this->isEnabled()) {
 			return false;
@@ -118,7 +118,7 @@ class Expiration {
 		return $maxAge;
 	}
 
-	private function parseRetentionObligation(){
+	private function parseRetentionObligation() {
 		$splitValues = \explode(',', $this->retentionObligation);
 		if (!isset($splitValues[0])) {
 			$minValue = self::DEFAULT_RETENTION_OBLIGATION;

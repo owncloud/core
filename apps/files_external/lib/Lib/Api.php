@@ -80,7 +80,7 @@ class Api {
 		$user = \OC::$server->getUserSession()->getUser()->getUID();
 
 		$mounts = \OC_Mount_Config::getAbsoluteMountPoints($user);
-		foreach($mounts as $mountPoint => $mount) {
+		foreach ($mounts as $mountPoint => $mount) {
 			$entries[] = self::formatMount($mountPoint, $mount);
 		}
 

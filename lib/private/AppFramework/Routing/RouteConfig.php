@@ -113,13 +113,13 @@ class RouteConfig {
 
 			// optionally register requirements for route. This is used to
 			// tell the route parser how url parameters should be matched
-			if(\array_key_exists('requirements', $ocsRoute)) {
+			if (\array_key_exists('requirements', $ocsRoute)) {
 				$router->requirements($ocsRoute['requirements']);
 			}
 
 			// optionally register defaults for route. This is used to
 			// tell the route parser how url parameters should be default valued
-			if(\array_key_exists('defaults', $ocsRoute)) {
+			if (\array_key_exists('defaults', $ocsRoute)) {
 				$router->defaults($ocsRoute['defaults']);
 			}
 		}
@@ -130,8 +130,7 @@ class RouteConfig {
 	 * @param array $routes
 	 * @throws \UnexpectedValueException
 	 */
-	private function processSimpleRoutes($routes)
-	{
+	private function processSimpleRoutes($routes) {
 		$simpleRoutes = isset($routes['routes']) ? $routes['routes'] : [];
 		foreach ($simpleRoutes as $simpleRoute) {
 			$name = $simpleRoute['name'];
@@ -162,13 +161,13 @@ class RouteConfig {
 
 			// optionally register requirements for route. This is used to
 			// tell the route parser how url parameters should be matched
-			if(\array_key_exists('requirements', $simpleRoute)) {
+			if (\array_key_exists('requirements', $simpleRoute)) {
 				$router->requirements($simpleRoute['requirements']);
 			}
 
 			// optionally register defaults for route. This is used to
 			// tell the route parser how url parameters should be default valued
-			if(\array_key_exists('defaults', $simpleRoute)) {
+			if (\array_key_exists('defaults', $simpleRoute)) {
 				$router->defaults($simpleRoute['defaults']);
 			}
 		}
@@ -185,8 +184,7 @@ class RouteConfig {
 	 *
 	 * @param array $routes
 	 */
-	private function processResources($routes)
-	{
+	private function processResources($routes) {
 		// declaration of all restful actions
 		$actions = [
 			['name' => 'index', 'verb' => 'GET', 'on-collection' => true],
@@ -200,7 +198,7 @@ class RouteConfig {
 		foreach ($resources as $resource => $config) {
 
 			// the url parameter used as id to the resource
-			foreach($actions as $action) {
+			foreach ($actions as $action) {
 				$url = $config['url'];
 				$method = $action['name'];
 				$verb = isset($action['verb']) ? \strtoupper($action['verb']) : 'GET';
@@ -231,8 +229,7 @@ class RouteConfig {
 	 * @param string $controller
 	 * @return string
 	 */
-	private function buildControllerName($controller)
-	{
+	private function buildControllerName($controller) {
 		return $this->underScoreToCamelCase(\ucfirst($controller)) . 'Controller';
 	}
 

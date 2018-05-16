@@ -250,5 +250,4 @@ class DefaultTokenProviderTest extends TestCase {
 
 		$this->tokenProvider->invalidateOldTokens();
 	}
-
 }

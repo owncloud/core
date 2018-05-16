@@ -52,5 +52,4 @@ interface ISettings {
 	 * @return int between 0 and 100, with 100 being the highest priority
 	 */
 	public function getPriority();
-
 }

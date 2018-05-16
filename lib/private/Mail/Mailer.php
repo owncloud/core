@@ -58,7 +58,7 @@ class Mailer implements IMailer {
 	 * @param ILogger $logger
 	 * @param \OC_Defaults $defaults
 	 */
-	function __construct(IConfig $config,
+	public function __construct(IConfig $config,
 						 ILogger $logger,
 						 \OC_Defaults $defaults) {
 		$this->config = $config;
@@ -101,7 +101,7 @@ class Mailer implements IMailer {
 		// Debugging logging
 		$logMessage = \sprintf('Sent mail to "%s" with subject "%s"', \print_r($message->getTo(), true), $message->getSubject());
 		$this->logger->debug($logMessage, ['app' => 'core']);
-		if($debugMode && isset($mailLogger)) {
+		if ($debugMode && isset($mailLogger)) {
 			$this->logger->debug($mailLogger->dump(), ['app' => 'core']);
 		}
 
@@ -142,7 +142,7 @@ class Mailer implements IMailer {
 	 * @return \Swift_SmtpTransport|\Swift_SendmailTransport|\Swift_MailTransport
 	 */
 	protected function getInstance() {
-		if (!\is_null($this->instance)) {
+		if ($this->instance !== null) {
 			return $this->instance;
 		}
 
@@ -164,7 +164,7 @@ class Mailer implements IMailer {
 		// Register plugins
 
 		// Enable logger if debug mode is enabled
-		if($this->config->getSystemValue('mail_smtpdebug', false)) {
+		if ($this->config->getSystemValue('mail_smtpdebug', false)) {
 			$mailLogger = new \Swift_Plugins_Loggers_ArrayLogger();
 			$instance->registerPlugin(new \Swift_Plugins_LoggerPlugin($mailLogger));
 		}
@@ -226,5 +226,4 @@ class Mailer implements IMailer {
 	protected function getMailInstance() {
 		return \Swift_MailTransport::newInstance();
 	}
-
 }

@@ -121,6 +121,5 @@ class MetaFilesTest extends TestCase {
 		$this->assertEquals('1234567890', $target->getContent());
 		$metaNodeOfFile->copy($fileName);
 		$this->assertEquals('1234', $target->getContent());
-
 	}
 }

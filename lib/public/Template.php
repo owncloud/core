@@ -79,7 +79,7 @@ function preview_icon($path) {
  * @return string link to the preview
  * @deprecated 8.0.0 Use \OCP\Template::publicPreview_icon() instead
  */
-function publicPreview_icon ($path, $token) {
+function publicPreview_icon($path, $token) {
 	return(\publicPreview_icon($path, $token));
 }
 

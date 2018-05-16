@@ -34,7 +34,6 @@ use OCP\Security\ISecureRandom;
 use Test\TestCase;
 
 class ChildController extends Controller {
-
 	public function __construct($appName, $request) {
 		parent::__construct($appName, $request);
 		$this->registerResponder('tom', function ($response) {
@@ -68,7 +67,7 @@ class ControllerTest extends TestCase {
 	/** @var DIContainer */
 	private $app;
 
-	protected function setUp(){
+	protected function setUp() {
 		parent::setUp();
 
 		$request = new Request(
@@ -96,27 +95,27 @@ class ControllerTest extends TestCase {
 		$this->controller = new ChildController($this->app, $request);
 	}
 
-	public function testParamsGet(){
+	public function testParamsGet() {
 		$this->assertEquals('Johnny Weissmüller', $this->controller->params('name', 'Tarzan'));
 	}
 
-	public function testParamsGetDefault(){
+	public function testParamsGetDefault() {
 		$this->assertEquals('Tarzan', $this->controller->params('Ape Man', 'Tarzan'));
 	}
 
-	public function testParamsFile(){
+	public function testParamsFile() {
 		$this->assertEquals('filevalue', $this->controller->params('file', 'filevalue'));
 	}
 
-	public function testGetUploadedFile(){
+	public function testGetUploadedFile() {
 		$this->assertEquals('filevalue', $this->controller->getUploadedFile('file'));
 	}
 
-	public function testGetUploadedFileDefault(){
+	public function testGetUploadedFileDefault() {
 		$this->assertEquals('default', $this->controller->params('files', 'default'));
 	}
 
-	public function testGetParams(){
+	public function testGetParams() {
 		$params = [
 				'name' => 'Johnny Weissmüller',
 				'nickname' => 'Janey',
@@ -125,18 +124,18 @@ class ControllerTest extends TestCase {
 		$this->assertEquals($params, $this->controller->getParams());
 	}
 
-	public function testRender(){
+	public function testRender() {
 		$this->assertInstanceOf(TemplateResponse::class, $this->controller->render(''));
 	}
 
-	public function testSetParams(){
+	public function testSetParams() {
 		$params = ['john' => 'foo'];
 		$response = $this->controller->render('home', $params);
 
 		$this->assertEquals($params, $response->getParams());
 	}
 
-	public function testRenderHeaders(){
+	public function testRenderHeaders() {
 		$headers = ['one', 'two'];
 		$response = $this->controller->render('', [], '', $headers);
 
@@ -144,11 +143,11 @@ class ControllerTest extends TestCase {
 		$this->assertContains($headers[1], $response->getHeaders());
 	}
 
-	public function testGetRequestMethod(){
+	public function testGetRequestMethod() {
 		$this->assertEquals('hi', $this->controller->method());
 	}
 
-	public function testGetEnvVariable(){
+	public function testGetEnvVariable() {
 		$this->assertEquals('daheim', $this->controller->env('PATH'));
 	}
 
@@ -212,5 +211,4 @@ class ControllerTest extends TestCase {
 
 		$this->assertEquals('tom', $responder);
 	}
-
 }

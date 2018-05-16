@@ -146,7 +146,7 @@ trait FrontendDefinitionTrait {
 	public function validateStorageDefinition(IStorageConfig $storage) {
 		foreach ($this->getParameters() as $name => $parameter) {
 			$value = $storage->getBackendOption($name);
-			if (!\is_null($value) || !$parameter->isOptional()) {
+			if ($value !== null || !$parameter->isOptional()) {
 				if (!$parameter->validateValue($value)) {
 					return false;
 				}
@@ -159,5 +159,4 @@ trait FrontendDefinitionTrait {
 		}
 		return true;
 	}
-
 }

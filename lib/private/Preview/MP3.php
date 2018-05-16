@@ -41,7 +41,6 @@ class MP3 implements IProvider2 {
 	 * {@inheritDoc}
 	 */
 	public function getThumbnail(File $file, $maxX, $maxY, $scalingUp) {
-
 		$useFileDirectly = (!$file->isEncrypted() && !$file->isMounted());
 		if ($useFileDirectly) {
 			$absPath = $file->getStorage()->getLocalFile($file->getInternalPath());
@@ -57,11 +56,11 @@ class MP3 implements IProvider2 {
 		$tags = $getID3->analyze($absPath);
 		\unlink($absPath);
 		$picture = isset($tags['id3v2']['APIC'][0]['data']) ? $tags['id3v2']['APIC'][0]['data'] : null;
-		if(\is_null($picture) && isset($tags['id3v2']['PIC'][0]['data'])) {
+		if ($picture === null && isset($tags['id3v2']['PIC'][0]['data'])) {
 			$picture = $tags['id3v2']['PIC'][0]['data'];
 		}
 
-		if(!\is_null($picture)) {
+		if ($picture !== null) {
 			$image = new \OC_Image();
 			$image->loadFromData($picture);
 
@@ -83,7 +82,7 @@ class MP3 implements IProvider2 {
 	private function getNoCoverThumbnail() {
 		$icon = \OC::$SERVERROOT . '/core/img/filetypes/audio.svg';
 
-		if(!\file_exists($icon)) {
+		if (!\file_exists($icon)) {
 			return false;
 		}
 

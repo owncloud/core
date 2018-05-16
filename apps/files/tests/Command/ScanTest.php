@@ -171,7 +171,7 @@ class ScanTest extends TestCase {
 		//First we populate the users
 		$user = 'user';
 		$numberOfUsersInGroup = 210;
-		for($i = 2; $i <= 210; $i++) {
+		for ($i = 2; $i <= 210; $i++) {
 			$userObj = $this->createUser($user.$i);
 			$this->groupManager->get('group1')->addUser($userObj);
 		}
@@ -194,7 +194,7 @@ class ScanTest extends TestCase {
 	 * @dataProvider multipleGroupTest
 	 * @param $input
 	 */
-	public  function testMultipleGroups($input) {
+	public function testMultipleGroups($input) {
 		//Create 10 users in each group
 		$groups = \explode(',', $input['--groups']);
 		$user = "user";
@@ -254,7 +254,6 @@ class ScanTest extends TestCase {
 		$storageId2 = $this->getStorageId('home::' . $this->scanUser2->getUID());
 		$entry2 = $this->getFileCacheEntry($storageId2, 'files/toscan2');
 		$this->assertEquals('files/toscan2', $entry2['path']);
-
 	}
 
 	public function testScanOne() {
@@ -403,4 +402,3 @@ class ScanTest extends TestCase {
 		$this->assertEquals(0, $result);
 	}
 }
-

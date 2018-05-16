@@ -100,14 +100,15 @@ class SyncServiceTest extends TestCase {
 		$account->expects($this->any())->method('getUpdatedFields')->willReturn([]);
 
 		// Then we should try to setup a new account and insert
-		$this->mapper->expects($this->once())->method('insert')->with($this->callback(function($arg) use ($backendUids) {
+		$this->mapper->expects($this->once())->method('insert')->with($this->callback(function ($arg) use ($backendUids) {
 			return $arg instanceof Account && $arg->getUserId() === $backendUids[0];
 		}));
 
 		// Ignore state flag
 
 		$s = new SyncService($this->config, $this->logger, $this->mapper);
-		$s->run($backend, new AllUsersIterator($backend), function($uid) {});
+		$s->run($backend, new AllUsersIterator($backend), function ($uid) {
+		});
 
 		static::invokePrivate($s, 'syncHome', [$account, $backend]);
 	}
@@ -130,8 +131,8 @@ class SyncServiceTest extends TestCase {
 		$this->logger->expects($this->at(1))->method('logException');
 
 		$s = new SyncService($this->config, $this->logger, $this->mapper);
-		$s->run($backend, new AllUsersIterator($backend), function($uid) {});
-
+		$s->run($backend, new AllUsersIterator($backend), function ($uid) {
+		});
 	}
 
 	public function testSyncHomeLogsWhenBackendDiffersFromExisting() {

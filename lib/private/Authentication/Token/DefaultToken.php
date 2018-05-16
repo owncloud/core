@@ -150,5 +150,4 @@ class DefaultToken extends Entity implements IToken {
 		}
 		parent::setLoginName($loginName);
 	}
-
 }

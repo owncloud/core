@@ -154,7 +154,7 @@ class Storage extends DAV implements ISharedStorage {
 	}
 
 	public function getCache($path = '', $storage = null) {
-		if (\is_null($this->cache)) {
+		if ($this->cache === null) {
 			$this->cache = new Cache($this, $this->remote, $this->remoteUser);
 		}
 		return $this->cache;
@@ -266,7 +266,7 @@ class Storage extends DAV implements ISharedStorage {
 	 */
 	private function testRemoteUrl($url) {
 		$cache = $this->memcacheFactory->create('files_sharing_remote_url');
-		if($cache->hasKey($url)) {
+		if ($cache->hasKey($url)) {
 			return (bool)$cache->get($url);
 		}
 
@@ -315,5 +315,4 @@ class Storage extends DAV implements ISharedStorage {
 
 		return $permissions;
 	}
-
 }

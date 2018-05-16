@@ -39,13 +39,13 @@ require_once 'bootstrap.php';
 class WebUISharingContext extends RawMinkContext implements Context {
 
 	/**
-	 * 
+	 *
 	 * @var FilesPage
 	 */
 	private $filesPage;
 	
 	/**
-	 * 
+	 *
 	 * @var PublicLinkFilesPage
 	 */
 	private $publicLinkFilesPage;
@@ -58,7 +58,7 @@ class WebUISharingContext extends RawMinkContext implements Context {
 	private $sharingDialog;
 
 	/**
-	 * 
+	 *
 	 * @var FeatureContext
 	 */
 	private $featureContext;
@@ -70,7 +70,7 @@ class WebUISharingContext extends RawMinkContext implements Context {
 	private $webUIGeneralContext;
 
 	/**
-	 * 
+	 *
 	 * @var WebUIFilesContext
 	 */
 	private $webUIFilesContext;
@@ -97,10 +97,10 @@ class WebUISharingContext extends RawMinkContext implements Context {
 	}
 
 	/**
-	 * 
+	 *
 	 * @param string $name
 	 * @param string $url
-	 * 
+	 *
 	 * @return void
 	 */
 	private function addToListOfCreatedPublicLinks($name, $url) {
@@ -116,7 +116,7 @@ class WebUISharingContext extends RawMinkContext implements Context {
 	 * @param string $user
 	 * @param int $maxRetries
 	 * @param boolean $quiet
-	 * 
+	 *
 	 * @return void
 	 */
 	public function theUserSharesTheFileFolderWithTheUserUsingTheWebUI(
@@ -150,7 +150,7 @@ class WebUISharingContext extends RawMinkContext implements Context {
 	 *
 	 * @param string $folder
 	 * @param string $group
-	 * 
+	 *
 	 * @return void
 	 */
 	public function theUserSharesTheFileFolderWithTheGroupUsingTheWebUI(
@@ -174,7 +174,7 @@ class WebUISharingContext extends RawMinkContext implements Context {
 	 * @Given the user has opened the share dialog for the file/folder :name
 	 *
 	 * @param string $name
-	 * 
+	 *
 	 * @return void
 	 */
 	public function theUserOpensTheShareDialogForTheFileFolder($name) {
@@ -189,7 +189,7 @@ class WebUISharingContext extends RawMinkContext implements Context {
 	 * @Given the user has created a new public link for the file/folder :name using the webUI
 	 *
 	 * @param string $name
-	 * 
+	 *
 	 * @return void
 	 */
 	public function theUserCreatesANewPublicLinkForUsingTheWebUI($name) {
@@ -206,7 +206,7 @@ class WebUISharingContext extends RawMinkContext implements Context {
 	 *                            password, expiration, email
 	 *                            the permissions values has to be written exactly
 	 *                            the way its written in the UI
-	 * 
+	 *
 	 * @return void
 	 */
 	public function theUserCreatesANewPublicLinkForUsingTheWebUIWith(
@@ -224,7 +224,7 @@ class WebUISharingContext extends RawMinkContext implements Context {
 			$name, $this->getSession()
 		);
 		$publicShareTab = $this->sharingDialog->openPublicShareTab();
-		if (!\is_null($settings)) {
+		if ($settings !== null) {
 			$settingsArray = $settings->getRowsHash();
 			if (!isset($settingsArray['name'])) {
 				$settingsArray['name'] = null;
@@ -249,7 +249,7 @@ class WebUISharingContext extends RawMinkContext implements Context {
 				$settingsArray ['expiration'],
 				$settingsArray ['email']
 			);
-			if (!\is_null($settingsArray['name'])) {
+			if ($settingsArray['name'] !== null) {
 				PHPUnit_Framework_Assert::assertSame(
 					$settingsArray ['name'], $linkName,
 					"set and retrieved public link names are not the same"
@@ -276,7 +276,7 @@ class WebUISharingContext extends RawMinkContext implements Context {
 	 * @When the user types :input in the share-with-field
 	 *
 	 * @param string $input
-	 * 
+	 *
 	 * @return void
 	 */
 	public function theUserTypesInTheShareWithField($input) {
@@ -295,7 +295,7 @@ class WebUISharingContext extends RawMinkContext implements Context {
 	 *                                    second column yes|no
 	 *                                    not mentioned permissions will not be
 	 *                                    touched
-	 * 
+	 *
 	 * @return void
 	 */
 	public function theUserSetsTheSharingPermissionsOfForOnTheWebUI(
@@ -323,13 +323,13 @@ class WebUISharingContext extends RawMinkContext implements Context {
 	/**
 	 * @When the administrator sets the minimum characters for sharing autocomplete to :minCharacters
 	 * @Given the administrator has set the minimum characters for sharing autocomplete to :minCharacters
-	 * 
+	 *
 	 * @param string $minCharacters
-	 * 
+	 *
 	 * @return void
 	 */
 	public function setMinCharactersForAutocomplete($minCharacters) {
-		if (\is_null($this->oldMinCharactersForAutocomplete)) {
+		if ($this->oldMinCharactersForAutocomplete === null) {
 			$oldMinCharactersForAutocomplete = SetupHelper::runOcc(
 				['config:system:get', 'user.search_min_length']
 			)['stdOut'];
@@ -354,7 +354,7 @@ class WebUISharingContext extends RawMinkContext implements Context {
 	 * @return void
 	 */
 	public function allowHttpFallbackForFedSharing() {
-		if (\is_null($this->oldFedSharingFallbackSetting)) {
+		if ($this->oldFedSharingFallbackSetting === null) {
 			$oldFedSharingFallbackSetting = SetupHelper::runOcc(
 				['config:system:get', 'sharing.federation.allowHttpFallback']
 			)['stdOut'];
@@ -408,7 +408,7 @@ class WebUISharingContext extends RawMinkContext implements Context {
 	 * @param string $server
 	 * @param string $username
 	 * @param string $password
-	 * 
+	 *
 	 * @return void
 	 * @throws Exception
 	 */
@@ -427,7 +427,7 @@ class WebUISharingContext extends RawMinkContext implements Context {
 	 * @Then all users and groups that contain the string :requiredString in their name should be listed in the autocomplete list on the webUI
 	 *
 	 * @param string $requiredString
-	 * 
+	 *
 	 * @return void
 	 */
 	public function allUsersAndGroupsThatContainTheStringInTheirNameShouldBeListedInTheAutocompleteList(
@@ -444,7 +444,7 @@ class WebUISharingContext extends RawMinkContext implements Context {
 	 * @param string $requiredString
 	 * @param string $userOrGroup
 	 * @param string $notToBeListed
-	 * 
+	 *
 	 * @return void
 	 */
 	public function allUsersAndGroupsThatContainTheStringInTheirNameShouldBeListedInTheAutocompleteListExcept(
@@ -496,12 +496,12 @@ class WebUISharingContext extends RawMinkContext implements Context {
 	 * @Then a tooltip with the text :text should be shown near the share-with-field on the webUI
 	 *
 	 * @param string $text
-	 * 
+	 *
 	 * @return void
 	 */
 	public function aTooltipWithTheTextShouldBeShownNearTheShareWithField($text) {
 		PHPUnit_Framework_Assert::assertEquals(
-			$text, 
+			$text,
 			$this->sharingDialog->getShareWithTooltip()
 		);
 	}
@@ -524,7 +524,7 @@ class WebUISharingContext extends RawMinkContext implements Context {
 	 * @param string $itemName
 	 * @param string $sharedWithGroup
 	 * @param string $sharerName
-	 * 
+	 *
 	 * @return void
 	 */
 	public function theFileFolderShouldBeMarkedAsSharedBy(
@@ -572,7 +572,7 @@ class WebUISharingContext extends RawMinkContext implements Context {
 	 *
 	 * @param string $fileName
 	 * @param string|null $shareWith
-	 * 
+	 *
 	 * @return void
 	 * @throws Exception
 	 */
@@ -614,7 +614,7 @@ class WebUISharingContext extends RawMinkContext implements Context {
 	 * @BeforeScenario @webUI
 	 *
 	 * @param BeforeScenarioScope $scope
-	 * 
+	 *
 	 * @return void
 	 */
 	public function before(BeforeScenarioScope $scope) {
@@ -638,7 +638,7 @@ class WebUISharingContext extends RawMinkContext implements Context {
 		//TODO make a function that can be used for different settings
 		if ($this->oldMinCharactersForAutocomplete === "") {
 			SetupHelper::runOcc(['config:system:delete', 'user.search_min_length']);
-		} elseif (!\is_null($this->oldMinCharactersForAutocomplete)) {
+		} elseif ($this->oldMinCharactersForAutocomplete !== null) {
 			SetupHelper::runOcc(
 				[
 					'config:system:set',
@@ -653,7 +653,7 @@ class WebUISharingContext extends RawMinkContext implements Context {
 			SetupHelper::runOcc(
 				['config:system:delete', 'sharing.federation.allowHttpFallback']
 			);
-		} elseif (!\is_null($this->oldFedSharingFallbackSetting)) {
+		} elseif ($this->oldFedSharingFallbackSetting !== null) {
 			SetupHelper::runOcc(
 				[
 					'config:system:set',
@@ -752,5 +752,4 @@ class WebUISharingContext extends RawMinkContext implements Context {
 		);
 		$this->webUIGeneralContext->addToSavedCapabilitiesChanges($change);
 	}
-
 }

@@ -91,7 +91,7 @@ class CheckerTest extends TestCase {
 	/**
 	 * @expectedException \Exception
 	 */
-	public function testWriteAppSignatureWrongPermissions(){
+	public function testWriteAppSignatureWrongPermissions() {
 		$this->fileAccessHelper
 			->expects($this->once())
 			->method('file_put_contents')
@@ -1251,5 +1251,4 @@ class CheckerTest extends TestCase {
 
 		$this->assertSame($expected, $this->checker->verifyAppSignature('SomeApp'));
 	}
-
 }

@@ -237,7 +237,7 @@ class FilesReportPluginTest extends \Test\TestCase {
 		$responses = null;
 		$this->server->expects($this->once())
 			->method('generateMultiStatus')
-			->will($this->returnCallback(function($responsesArg) use (&$responses) {
+			->will($this->returnCallback(function ($responsesArg) use (&$responses) {
 				$responses = $responsesArg;
 			})
 		);
@@ -326,7 +326,7 @@ class FilesReportPluginTest extends \Test\TestCase {
 		$responses = null;
 		$this->server->expects($this->once())
 			->method('generateMultiStatus')
-			->will($this->returnCallback(function($responsesArg) use (&$responses) {
+			->will($this->returnCallback(function ($responsesArg) use (&$responses) {
 				$responses = $responsesArg;
 			})
 		);

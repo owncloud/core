@@ -79,7 +79,6 @@ class VerifyChecksumsTest extends TestCase {
 	 * @throws \OCP\Files\NotPermittedException
 	 */
 	private function createFileForUser($uid, $path, $content) {
-
 		$userFolder = \OC::$server->getUserFolder($uid);
 
 		$parts = \explode('/', \ltrim($path, '/'));
@@ -101,7 +100,7 @@ class VerifyChecksumsTest extends TestCase {
 
 		return [
 			'file' => $f,
-			'expectedChecksums' => function() use ($content) {
+			'expectedChecksums' => function () use ($content) {
 				return \sprintf(
 					Checksum::CHECKSUMS_DB_FORMAT,
 					\hash('sha1', $content),
@@ -116,7 +115,7 @@ class VerifyChecksumsTest extends TestCase {
 	 * @param int $number
 	 * @return bool|IUser
 	 */
-	private function createRandomUser($number)  {
+	private function createRandomUser($number) {
 		$userName = $this->getUniqueID("$number-verifycheksums");
 		$user = $this->createUser($userName);
 		$this->loginAsUser($userName);
@@ -212,7 +211,6 @@ class VerifyChecksumsTest extends TestCase {
 
 		$exitCode = $this->cmd->getStatusCode();
 		$this->assertEquals(VerifyChecksums::EXIT_CHECKSUM_ERRORS, $exitCode, 'Wrong exit code');
-
 	}
 
 	/**

@@ -145,7 +145,7 @@ class Autoloader {
 			$pathsToRequire = $this->memoryCache->get($class);
 		}
 
-		if(\class_exists($class, false)) {
+		if (\class_exists($class, false)) {
 			return false;
 		}
 

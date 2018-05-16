@@ -313,10 +313,9 @@ class Manager extends PublicEmitter implements IUserManager {
 	public function searchDisplayName($pattern, $limit = null, $offset = null) {
 		if ($this->userSearch->isSearchable($pattern)) {
 			$accounts = $this->accountMapper->search('display_name', $pattern, $limit, $offset);
-			return \array_map(function(Account $account) {
+			return \array_map(function (Account $account) {
 				return $this->getUserObject($account);
 			}, $accounts);
-
 		}
 		return [];
 	}
@@ -347,7 +346,7 @@ class Manager extends PublicEmitter implements IUserManager {
 			}
 
 			// Username must be at least 3 characters long
-			if(\strlen($uid) < 3) {
+			if (\strlen($uid) < 3) {
 				throw new \Exception($l->t('The username must be at least 3 characters long'));
 			}
 
@@ -449,7 +448,7 @@ class Manager extends PublicEmitter implements IUserManager {
 	 * @param \Closure $callback
 	 * @since 10.0
 	 */
-	public function callForSeenUsers (\Closure $callback) {
+	public function callForSeenUsers(\Closure $callback) {
 		$this->callForAllUsers($callback, '', true);
 	}
 
@@ -463,7 +462,7 @@ class Manager extends PublicEmitter implements IUserManager {
 			throw new \InvalidArgumentException('$email cannot be empty');
 		}
 		$accounts = $this->accountMapper->getByEmail($email);
-		return \array_map(function(Account $account) {
+		return \array_map(function (Account $account) {
 			return $this->getUserObject($account);
 		}, $accounts);
 	}
@@ -474,5 +473,4 @@ class Manager extends PublicEmitter implements IUserManager {
 		}
 		return null;
 	}
-
 }

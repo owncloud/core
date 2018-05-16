@@ -98,31 +98,31 @@ class OC_Template extends \OC\Template\Base {
 	 * @throws Exception
 	 */
 	public static function initTemplateEngine($renderAs) {
-		if (self::$initTemplateEngineFirstRun){
+		if (self::$initTemplateEngineFirstRun) {
 
 			//apps that started before the template initialization can load their own scripts/styles
 			//so to make sure this scripts/styles here are loaded first we use OC_Util::addScript() with $prepend=true
 			//meaning the last script/style in this list will be loaded first
-			if (\OC::$server->getSystemConfig()->getValue ('installed', false) && $renderAs !== 'error' && !\OCP\Util::needUpgrade()) {
-				if (\OC::$server->getConfig ()->getAppValue ('core', 'backgroundjobs_mode', 'ajax') == 'ajax') {
-					OC_Util::addScript ('backgroundjobs', null, true);
+			if (\OC::$server->getSystemConfig()->getValue('installed', false) && $renderAs !== 'error' && !\OCP\Util::needUpgrade()) {
+				if (\OC::$server->getConfig()->getAppValue('core', 'backgroundjobs_mode', 'ajax') == 'ajax') {
+					OC_Util::addScript('backgroundjobs', null, true);
 				}
 			}
 
-			OC_Util::addStyle("tooltip",null,true);
-			OC_Util::addStyle('jquery-ui-fixes',null,true);
-			OC_Util::addVendorStyle('jquery-ui/themes/base/jquery-ui',null,true);
-			OC_Util::addVendorStyle('select2/select2',null,true);
-			OC_Util::addStyle("mobile",null,true);
-			OC_Util::addStyle("multiselect",null,true);
-			OC_Util::addStyle("fixes",null,true);
-			OC_Util::addStyle("global",null,true);
-			OC_Util::addStyle("apps",null,true);
-			OC_Util::addStyle("fonts",null,true);
-			OC_Util::addStyle("icons",null,true);
-			OC_Util::addStyle("header",null,true);
-			OC_Util::addStyle("inputs",null,true);
-			OC_Util::addStyle("styles",null,true);
+			OC_Util::addStyle("tooltip", null, true);
+			OC_Util::addStyle('jquery-ui-fixes', null, true);
+			OC_Util::addVendorStyle('jquery-ui/themes/base/jquery-ui', null, true);
+			OC_Util::addVendorStyle('select2/select2', null, true);
+			OC_Util::addStyle("mobile", null, true);
+			OC_Util::addStyle("multiselect", null, true);
+			OC_Util::addStyle("fixes", null, true);
+			OC_Util::addStyle("global", null, true);
+			OC_Util::addStyle("apps", null, true);
+			OC_Util::addStyle("fonts", null, true);
+			OC_Util::addStyle("icons", null, true);
+			OC_Util::addStyle("header", null, true);
+			OC_Util::addStyle("inputs", null, true);
+			OC_Util::addStyle("styles", null, true);
 
 			// avatars
 			if (\OC::$server->getSystemConfig()->getValue('enable_avatars', true) === true) {
@@ -154,12 +154,12 @@ class OC_Template extends \OC\Template\Base {
 			// following logic will import all vendor libraries that are
 			// specified in core/js/core.json
 			$fileContent = \file_get_contents(OC::$SERVERROOT . '/core/js/core.json');
-			if($fileContent !== false) {
+			if ($fileContent !== false) {
 				$coreDependencies = \json_decode($fileContent, true);
-				foreach(\array_reverse($coreDependencies['vendor']) as $vendorLibrary) {
+				foreach (\array_reverse($coreDependencies['vendor']) as $vendorLibrary) {
 					// remove trailing ".js" as addVendorScript will append it
 					OC_Util::addVendorScript(
-							\substr($vendorLibrary, 0, \strlen($vendorLibrary) - 3),null,true);
+							\substr($vendorLibrary, 0, \strlen($vendorLibrary) - 3), null, true);
 				}
 			} else {
 				throw new \Exception('Cannot read core/js/core.json');
@@ -174,7 +174,6 @@ class OC_Template extends \OC\Template\Base {
 
 			self::$initTemplateEngineFirstRun = false;
 		}
-
 	}
 
 	/**
@@ -189,7 +188,7 @@ class OC_Template extends \OC\Template\Base {
 	 */
 	protected function findTemplate($theme, $app, $name) {
 		// Check if it is a app template or not.
-		if($app === '' || $app === 'core') {
+		if ($app === '' || $app === 'core') {
 			$dirs = $this->getCoreTemplateDirs($theme, OC::$SERVERROOT);
 		} elseif ($app === 'settings') {
 			$dirs = $this->getSettingsTemplateDirs($theme, OC::$SERVERROOT);
@@ -230,14 +229,14 @@ class OC_Template extends \OC\Template\Base {
 	public function fetchPage($additionalParams = null) {
 		$data = parent::fetchPage($additionalParams);
 
-		if($this->renderAs) {
+		if ($this->renderAs) {
 			$page = new TemplateLayout($this->renderAs, $this->app);
 
 			// Add custom headers
 			$headers = '';
-			foreach(OC_Util::$headers as $header) {
+			foreach (OC_Util::$headers as $header) {
 				$headers .= '<'.\OCP\Util::sanitizeHTML($header['tag']);
-				foreach($header['attributes'] as $name=>$value) {
+				foreach ($header['attributes'] as $name=>$value) {
 					$headers .= ' '.\OCP\Util::sanitizeHTML($name).'="'.\OCP\Util::sanitizeHTML($value).'"';
 				}
 				if ($header['text'] !== null) {
@@ -280,7 +279,7 @@ class OC_Template extends \OC\Template\Base {
 	 */
 	public static function printUserPage($application, $name, $parameters = []) {
 		$content = new OC_Template($application, $name, "user");
-		foreach($parameters as $key => $value) {
+		foreach ($parameters as $key => $value) {
 			$content->assign($key, $value);
 		}
 		print $content->printPage();
@@ -295,7 +294,7 @@ class OC_Template extends \OC\Template\Base {
 	 */
 	public static function printAdminPage($application, $name, $parameters = []) {
 		$content = new OC_Template($application, $name, "admin");
-		foreach($parameters as $key => $value) {
+		foreach ($parameters as $key => $value) {
 			$content->assign($key, $value);
 		}
 		return $content->printPage();
@@ -310,7 +309,7 @@ class OC_Template extends \OC\Template\Base {
 	 */
 	public static function printGuestPage($application, $name, $parameters = []) {
 		$content = new OC_Template($application, $name, "guest");
-		foreach($parameters as $key => $value) {
+		foreach ($parameters as $key => $value) {
 			$content->assign($key, $value);
 		}
 		return $content->printPage();
@@ -402,7 +401,7 @@ class OC_Template extends \OC\Template\Base {
 			'HTTP/1.1',
 			'HTTP/2',
 		];
-		if(\in_array($claimedProtocol, $validProtocols, true)) {
+		if (\in_array($claimedProtocol, $validProtocols, true)) {
 			return $claimedProtocol;
 		}
 		return 'HTTP/1.1';

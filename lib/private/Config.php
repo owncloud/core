@@ -41,7 +41,6 @@ use OCP\Events\EventEmitterTrait;
  * configuration file of ownCloud.
  */
 class Config {
-
 	use EventEmitterTrait;
 	const ENV_PREFIX = 'OC_';
 
@@ -179,7 +178,7 @@ class Config {
 			}
 
 			return false;
-		},[
+		}, [
 			'before' => ['key' => $key, 'value' => $value],
 			'after' => ['key' => $key, 'value' => $value, 'update' => false, 'oldvalue' => null]
 		], 'config', 'setvalue');
@@ -250,7 +249,7 @@ class Config {
 		// Include file and merge config
 		foreach ($configFiles as $file) {
 			$filePointer = \file_exists($file) ? \fopen($file, 'r') : false;
-			if($file === $this->configFilePath &&
+			if ($file === $this->configFilePath &&
 				$filePointer === false &&
 				@!\file_exists($this->configFilePath)) {
 				// Opening the main config might not be possible, e.g. if the wrong
@@ -259,13 +258,13 @@ class Config {
 			}
 
 			// Try to acquire a file lock
-			if(!\flock($filePointer, LOCK_SH)) {
+			if (!\flock($filePointer, LOCK_SH)) {
 				throw new \Exception(\sprintf('Could not acquire a shared lock on the config file %s', $file));
 			}
 
 			unset($CONFIG);
 			include $file;
-			if(isset($CONFIG) && \is_array($CONFIG)) {
+			if (isset($CONFIG) && \is_array($CONFIG)) {
 				$this->cache = \array_merge($this->cache, $CONFIG);
 			}
 
@@ -290,14 +289,14 @@ class Config {
 		$content .= \var_export($this->cache, true);
 		$content .= ";\n";
 
-		\touch ($this->configFilePath);
+		\touch($this->configFilePath);
 		$filePointer = \fopen($this->configFilePath, 'r+');
 
 		// Prevent others not to read the config
 		\chmod($this->configFilePath, 0640);
 
 		// File does not exist, this can happen when doing a fresh install
-		if(!\is_resource ($filePointer)) {
+		if (!\is_resource($filePointer)) {
 			// TODO fix this via DI once it is very clear that this doesn't cause side effects due to initialization order
 			// currently this breaks app routes but also could have other side effects especially during setup and exception handling
 			$url = \OC::$server->getURLGenerator()->linkToDocs('admin-dir_permissions');
@@ -308,12 +307,12 @@ class Config {
 		}
 
 		// Try to acquire a file lock
-		if(!\flock($filePointer, LOCK_EX)) {
+		if (!\flock($filePointer, LOCK_EX)) {
 			throw new \Exception(\sprintf('Could not acquire an exclusive lock on the config file %s', $this->configFilePath));
 		}
 
 		// Write the config and release the lock
-		\ftruncate ($filePointer, 0);
+		\ftruncate($filePointer, 0);
 		\fwrite($filePointer, $content);
 		\fflush($filePointer);
 		\flock($filePointer, LOCK_UN);
@@ -337,4 +336,3 @@ class Config {
 		return $this->getValue('config_is_read_only', false);
 	}
 }
-

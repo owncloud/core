@@ -35,7 +35,7 @@ abstract class Office implements IProvider2 {
 	 */
 	public function getThumbnail(File $file, $maxX, $maxY, $scalingUp) {
 		$this->initCmd();
-		if (\is_null($this->cmd)) {
+		if ($this->cmd === null) {
 			return false;
 		}
 
@@ -86,7 +86,6 @@ abstract class Office implements IProvider2 {
 			return $image;
 		}
 		return false;
-
 	}
 
 	/**

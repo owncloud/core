@@ -113,7 +113,7 @@ trait Checksums {
 		 */
 		$checksums = $parsed[0]['value'][1]['value'][0]['value'][0];
 
-		if ($checksums['value'][0]['value'] !== $checksum) {
+		if ($checksum !== $checksums['value'][0]['value']) {
 			throw new \Exception(
 				"Expected $checksum, got " . $checksums['value'][0]['value']
 			);

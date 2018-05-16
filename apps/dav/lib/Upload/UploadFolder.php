@@ -26,23 +26,22 @@ use Sabre\DAV\Exception\Forbidden;
 use Sabre\DAV\ICollection;
 
 class UploadFolder implements ICollection {
-
 	private $node;
 
-	function __construct(Directory $node) {
+	public function __construct(Directory $node) {
 		$this->node = $node;
 	}
 
-	function createFile($name, $data = null) {
+	public function createFile($name, $data = null) {
 		// need to bypass hooks for individual chunks
 		$this->node->createFileDirectly($name, $data);
 	}
 
-	function createDirectory($name) {
+	public function createDirectory($name) {
 		throw new Forbidden('Permission denied to create file (filename ' . $name . ')');
 	}
 
-	function getChild($name) {
+	public function getChild($name) {
 		if ($name === FutureFile::getFutureFileName()) {
 			return new FutureFile($this->node, FutureFile::getFutureFileName());
 		}
@@ -52,14 +51,14 @@ class UploadFolder implements ICollection {
 		return $this->node->getChild($name);
 	}
 
-	function getChildren() {
+	public function getChildren() {
 		$children = $this->node->getChildren();
 		$children[] = new FutureFile($this->node, FutureFile::getFutureFileName());
 		$children[] = new FutureFileZsync($this->node, FutureFileZsync::getFutureFileName());
 		return $children;
 	}
 
-	function childExists($name) {
+	public function childExists($name) {
 		if ($name === FutureFile::getFutureFileName()) {
 			return true;
 		}
@@ -69,19 +68,19 @@ class UploadFolder implements ICollection {
 		return $this->node->childExists($name);
 	}
 
-	function delete() {
+	public function delete() {
 		$this->node->delete();
 	}
 
-	function getName() {
+	public function getName() {
 		return $this->node->getName();
 	}
 
-	function setName($name) {
+	public function setName($name) {
 		throw new Forbidden('Permission denied to rename this folder');
 	}
 
-	function getLastModified() {
+	public function getLastModified() {
 		return $this->node->getLastModified();
 	}
 }

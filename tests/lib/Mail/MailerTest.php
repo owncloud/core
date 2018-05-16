@@ -24,7 +24,7 @@ class MailerTest extends TestCase {
 	/** @var Mailer */
 	private $mailer;
 
-	function setUp() {
+	public function setUp() {
 		parent::setUp();
 
 		$this->config = $this->getMockBuilder('\OCP\IConfig')
@@ -119,5 +119,4 @@ class MailerTest extends TestCase {
 	public function testValidateMailAddress($email, $expected) {
 		$this->assertSame($expected, $this->mailer->validateMailAddress($email));
 	}
-
 }

@@ -108,9 +108,9 @@ class AvatarControllerTest extends TestCase {
 		$this->avatarController
 			->expects($this->any())
 			->method('isUploadFile')
-			->willReturnCallback(function ($file){
-			return \file_exists($file);
-		});
+			->willReturnCallback(function ($file) {
+				return \file_exists($file);
+			});
 
 		// Configure userMock
 		$this->userMock->expects($this->any())->method('getDisplayName')->willReturn('displayName');
@@ -466,5 +466,4 @@ class AvatarControllerTest extends TestCase {
 
 		$this->assertEquals('File is too big', $response->getData()['data']['message']);
 	}
-
 }

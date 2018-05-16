@@ -31,7 +31,6 @@
  *
  */
 class OC_Defaults {
-
 	private $theme;
 	private $l;
 
@@ -49,7 +48,7 @@ class OC_Defaults {
 	private $defaultLogoClaim;
 	private $defaultMailHeaderColor;
 
-	function __construct() {
+	public function __construct() {
 		$this->l = \OC::$server->getL10N('lib');
 		$version = \OCP\Util::getVersion();
 
@@ -286,5 +285,4 @@ class OC_Defaults {
 			return $this->defaultMailHeaderColor;
 		}
 	}
-
 }

@@ -157,7 +157,6 @@ class Helper extends \OC\Share\Constants {
 	 * @return array contains 'defaultExpireDateSet', 'enforceExpireDate', 'expireAfterDays'
 	 */
 	public static function getDefaultExpireSetting() {
-
 		$config = \OC::$server->getConfig();
 
 		$defaultExpireSettings = ['defaultExpireDateSet' => false];
@@ -183,7 +182,6 @@ class Helper extends \OC\Share\Constants {
 		//$dateString = $date->format('Y-m-d') . ' 00:00:00';
 
 		return $date;
-
 	}
 
 	/**
@@ -194,7 +192,6 @@ class Helper extends \OC\Share\Constants {
 	 * @return mixed integer timestamp or False
 	 */
 	public static function calculateExpireDate($defaultExpireSettings, $creationTime, $userExpireDate = null) {
-
 		$expires = false;
 		$defaultExpires = null;
 
@@ -210,7 +207,7 @@ class Helper extends \OC\Share\Constants {
 			} else {
 				$expires = $userExpireDate;
 			}
-		} else if ($defaultExpires && !empty($defaultExpireSettings['enforceExpireDate'])) {
+		} elseif ($defaultExpires && !empty($defaultExpireSettings['enforceExpireDate'])) {
 			$expires = $defaultExpires;
 		}
 
@@ -260,9 +257,9 @@ class Helper extends \OC\Share\Constants {
 
 		if ($posSlash === false && $posColon === false) {
 			$invalidPos = \strlen($id);
-		} else if ($posSlash === false) {
+		} elseif ($posSlash === false) {
 			$invalidPos = $posColon;
-		} else if ($posColon === false) {
+		} elseif ($posColon === false) {
 			$invalidPos = $posSlash;
 		} else {
 			$invalidPos = \min($posSlash, $posColon);

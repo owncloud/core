@@ -102,7 +102,7 @@ class MDB2SchemaReader {
 				case 'charset':
 					break;
 				case 'declaration':
-					if (\is_null($table)) {
+					if ($table === null) {
 						throw new \DomainException('Table declaration before table name');
 					}
 					$this->loadDeclaration($table, $child);
@@ -236,7 +236,7 @@ class MDB2SchemaReader {
 				$length = $options['length'];
 				if ($length < 4) {
 					$type = 'smallint';
-				} else if ($length > 4) {
+				} elseif ($length > 4) {
 					$type = 'bigint';
 				}
 			}
@@ -333,5 +333,4 @@ class MDB2SchemaReader {
 		}
 		return (bool)$result;
 	}
-
 }

@@ -38,7 +38,6 @@ use OCP\IUser;
  * Manager class for system tags
  */
 class SystemTagManager implements ISystemTagManager {
-
 	const TAG_TABLE = 'systemtag';
 	const TAG_GROUP_TABLE = 'systemtag_group';
 
@@ -133,7 +132,7 @@ class SystemTagManager implements ISystemTagManager {
 		$query->select('*')
 			->from(self::TAG_TABLE);
 
-		if (!\is_null($visibilityFilter)) {
+		if ($visibilityFilter !== null) {
 			$query->andWhere($query->expr()->eq('visibility', $query->createNamedParameter((int)$visibilityFilter)));
 		}
 

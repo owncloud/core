@@ -73,5 +73,4 @@ interface IOutput {
 	 * @since 8.1.0
 	 */
 	public function setCookie($name, $value, $expire, $path, $domain, $secure, $httpOnly);
-
 }

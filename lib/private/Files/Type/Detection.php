@@ -206,7 +206,6 @@ class Detection implements IMimeTypeDetector {
 				$mimeType = \substr($info, 0, \strpos($info, ';'));
 				return empty($mimeType) ? 'application/octet-stream' : $mimeType;
 			}
-
 		}
 		$isWrapped = (\strpos($path, '://') !== false) and (\substr($path, 0, 7) === 'file://');
 		if (!$isWrapped and $mimeType === 'application/octet-stream' && \function_exists("mime_content_type")) {
@@ -227,7 +226,6 @@ class Detection implements IMimeTypeDetector {
 			if (empty($mimeType)) {
 				$mimeType = 'application/octet-stream';
 			}
-
 		}
 		return $mimeType;
 	}

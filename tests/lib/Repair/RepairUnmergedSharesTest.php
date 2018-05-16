@@ -561,7 +561,7 @@ class RepairUnmergedSharesTest extends TestCase {
 			->will($this->returnValue([2]));
 		$this->userManager->expects($this->once())
 			->method('callForAllUsers')
-			->will($this->returnCallback(function(\Closure $closure) use ($users) {
+			->will($this->returnCallback(function (\Closure $closure) use ($users) {
 				foreach ($users as $user) {
 					$closure($user);
 				}
@@ -619,4 +619,3 @@ class RepairUnmergedSharesTest extends TestCase {
 		$this->assertEquals($expectedResult, $this->invokePrivate($this->repair, 'isPotentialDuplicateName', [$name]));
 	}
 }
-

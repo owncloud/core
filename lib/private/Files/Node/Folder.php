@@ -64,7 +64,7 @@ class Folder extends Node implements \OCP\Files\Folder {
 		}
 		if ($path === $this->path) {
 			return '/';
-		} else if (\strpos($path, $this->path . '/') !== 0) {
+		} elseif (\strpos($path, $this->path . '/') !== 0) {
 			return null;
 		} else {
 			$path = \substr($path, \strlen($this->path));
@@ -91,7 +91,7 @@ class Folder extends Node implements \OCP\Files\Folder {
 	public function getDirectoryListing() {
 		$folderContent = $this->view->getDirectoryContent($this->path);
 
-		return \array_map(function(FileInfo $info) {
+		return \array_map(function (FileInfo $info) {
 			if ($info->getMimetype() === 'httpd/unix-directory') {
 				return new Folder($this->root, $this->view, $info->getPath(), $info);
 			} else {
@@ -106,7 +106,7 @@ class Folder extends Node implements \OCP\Files\Folder {
 	 * @return File|Folder
 	 */
 	protected function createNode($path, FileInfo $info = null) {
-		if (\is_null($info)) {
+		if ($info === null) {
 			$isDir = $this->view->is_dir($path);
 		} else {
 			$isDir = $info->getType() === FileInfo::TYPE_FOLDER;
@@ -261,7 +261,7 @@ class Folder extends Node implements \OCP\Files\Folder {
 			}
 		}
 
-		return \array_map(function(FileInfo $file) {
+		return \array_map(function (FileInfo $file) {
 			return $this->createNode($file->getPath(), $file);
 		}, $files);
 	}
@@ -287,7 +287,7 @@ class Folder extends Node implements \OCP\Files\Folder {
 				$internalPath = $cache->getPathById($id);
 				if (\is_string($internalPath)) {
 					$fullPath = $mount->getMountPoint() . $internalPath;
-					if (!\is_null($path = $this->getRelativePath($fullPath))) {
+					if (($path = $this->getRelativePath($fullPath)) !== null) {
 						$nodes[] = $this->get($path);
 					}
 				}

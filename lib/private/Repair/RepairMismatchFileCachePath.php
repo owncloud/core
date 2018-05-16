@@ -34,7 +34,6 @@ use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
  * Repairs file cache entry which path do not match the parent-child relationship
  */
 class RepairMismatchFileCachePath implements IRepairStep {
-
 	const CHUNK_SIZE = 10000;
 
 	/** @var IDBConnection */
@@ -102,7 +101,7 @@ class RepairMismatchFileCachePath implements IRepairStep {
 	 * @param int $fileId file id of the entry to fix
 	 * @param string $wrongPath wrong path of the entry to fix
 	 * @param int $correctStorageNumericId numeric idea of the correct storage
-	 * @param string $correctPath value to which to set the path of the entry 
+	 * @param string $correctPath value to which to set the path of the entry
 	 * @return bool true for success
 	 */
 	private function fixEntryPath(IOutput $out, $fileId, $wrongPath, $correctStorageNumericId, $correctPath) {
@@ -424,7 +423,7 @@ class RepairMismatchFileCachePath implements IRepairStep {
 		}
 
 		// If we reused the fileid then this is the id to return
-		if($reuseFileId !== null) {
+		if ($reuseFileId !== null) {
 			// with Oracle, the trigger gets in the way and does not let us specify
 			// a fileid value on insert
 			if ($this->connection->getDatabasePlatform() instanceof OraclePlatform) {
@@ -486,7 +485,7 @@ class RepairMismatchFileCachePath implements IRepairStep {
 	/**
 	 * Repair entries where the parent id doesn't point to any existing entry
 	 * by finding the actual parent entry matching the entry's path dirname.
-	 * 
+	 *
 	 * @param IOutput $out output
 	 * @param int|null $storageNumericId storage to fix or null for all
 	 * @return int number of results that were fixed
@@ -538,7 +537,6 @@ class RepairMismatchFileCachePath implements IRepairStep {
 	 * @param IOutput $out output
 	 */
 	public function run(IOutput $out) {
-
 		$this->dirMimeTypeId = $this->mimeLoader->getId('httpd/unix-directory');
 		$this->dirMimePartId = $this->mimeLoader->getId('httpd');
 

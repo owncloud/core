@@ -89,5 +89,4 @@ class SessionMiddlewareTest extends \Test\TestCase {
 			->method('close');
 		return $session;
 	}
-
 }

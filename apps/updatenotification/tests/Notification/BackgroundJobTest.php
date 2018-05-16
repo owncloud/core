@@ -72,7 +72,8 @@ class BackgroundJobTest extends TestCase {
 				$this->client,
 				$this->urlGenerator
 			);
-		} {
+		}
+		{
 			return $this->getMockBuilder('OCA\UpdateNotification\Notification\BackgroundJob')
 				->setConstructorArgs([
 					$this->config,

@@ -41,11 +41,11 @@ class TXT implements IProvider2 {
 	 */
 	public function getThumbnail(File $file, $maxX, $maxY, $scalingUp) {
 		$stream = $file->fopen('r');
-		$content = \stream_get_contents($stream,3000);
+		$content = \stream_get_contents($stream, 3000);
 		\fclose($stream);
 
 		//don't create previews of empty text files
-		if(\trim($content) === '') {
+		if (\trim($content) === '') {
 			return false;
 		}
 
@@ -64,7 +64,7 @@ class TXT implements IProvider2 {
 
 		$canUseTTF = \function_exists('imagettftext');
 
-		foreach($lines as $index => $line) {
+		foreach ($lines as $index => $line) {
 			$index = $index + 1;
 
 			$x = (int) 1;
@@ -77,7 +77,7 @@ class TXT implements IProvider2 {
 				\imagestring($image, 1, $x, $y, $line, $textColor);
 			}
 
-			if(($index * $lineSize) >= $maxY) {
+			if (($index * $lineSize) >= $maxY) {
 				break;
 			}
 		}

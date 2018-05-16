@@ -39,7 +39,6 @@ function rrmdir($directory) {
 }
 
 class AppTest extends \Test\TestCase {
-
 	private $container;
 	private $io;
 	private $api;
@@ -83,13 +82,13 @@ class AppTest extends \Test\TestCase {
 
 		$xml = '<?xml version="1.0" encoding="UTF-8"?>' .
 		'<info>' .
-		    '<id>namespacetestapp</id>' .
+			'<id>namespacetestapp</id>' .
 			'<namespace>NameSpaceTestApp</namespace>' .
 		'</info>';
 		\file_put_contents($infoXmlPath, $xml);
 	}
 
-	public function testControllerNameAndMethodAreBeingPassed(){
+	public function testControllerNameAndMethodAreBeingPassed() {
 		$return = [null, [], [], null, new Response()];
 		$this->dispatcher->expects($this->once())
 			->method('dispatch')
@@ -124,7 +123,7 @@ class AppTest extends \Test\TestCase {
 		parent::tearDown();
 	}
 
-	public function testOutputIsPrinted(){
+	public function testOutputIsPrinted() {
 		$return = [null, [], [], $this->output, new Response()];
 		$this->dispatcher->expects($this->once())
 			->method('dispatch')
@@ -137,7 +136,7 @@ class AppTest extends \Test\TestCase {
 		App::main($this->controllerName, $this->controllerMethod, $this->container, []);
 	}
 
-	public function testCallbackIsCalled(){
+	public function testCallbackIsCalled() {
 		$mock = $this->getMockBuilder('OCP\AppFramework\Http\ICallbackResponse')
 			->getMock();
 
@@ -151,5 +150,4 @@ class AppTest extends \Test\TestCase {
 			->method('callback');
 		App::main($this->controllerName, $this->controllerMethod, $this->container, []);
 	}
-
 }

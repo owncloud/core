@@ -94,5 +94,4 @@ class EncryptionWrapperTest extends TestCase {
 			[false, ['OCA\Files_Sharing\SharedStorage', 'OCA\Files_Sharing\External\Storage', 'OC\Files\Storage\OwnCloud']],
 		];
 	}
-
 }

@@ -141,7 +141,7 @@ class UserStoragesController extends StoragesController {
 			$backendOptions,
 			$mountOptions
 		);
-		if ($newStorage instanceOf DataResponse) {
+		if ($newStorage instanceof DataResponse) {
 			return $newStorage;
 		}
 
@@ -190,7 +190,7 @@ class UserStoragesController extends StoragesController {
 			$backendOptions,
 			$mountOptions
 		);
-		if ($storage instanceOf DataResponse) {
+		if ($storage instanceof DataResponse) {
 			return $storage;
 		}
 		$storage->setId($id);
@@ -217,7 +217,6 @@ class UserStoragesController extends StoragesController {
 			$storage,
 			Http::STATUS_OK
 		);
-
 	}
 
 	/**
@@ -230,5 +229,4 @@ class UserStoragesController extends StoragesController {
 	public function destroy($id) {
 		return parent::destroy($id);
 	}
-
 }

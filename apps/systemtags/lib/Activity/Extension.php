@@ -140,7 +140,6 @@ class Extension implements IExtension {
 	 * @return bool|string
 	 */
 	protected function translateShort($text, IL10N $l, array $params) {
-
 		switch ($text) {
 			case self::ASSIGN_TAG:
 				$params[2] = $this->convertParameterToTag($params[2], $l);
@@ -166,7 +165,6 @@ class Extension implements IExtension {
 	 * @return bool|string
 	 */
 	protected function translateLong($text, IL10N $l, array $params) {
-
 		switch ($text) {
 			case self::CREATE_TAG:
 				$params[1] = $this->convertParameterToTag($params[1], $l);

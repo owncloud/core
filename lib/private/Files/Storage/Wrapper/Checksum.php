@@ -190,10 +190,10 @@ class Checksum extends Wrapper {
 	public function getMetaData($path) {
 		// Check if it is partial file. Partial file metadata are only checksums
 		$parentMetaData = [];
-		if(!self::isPartialFile($path)) {
+		if (!self::isPartialFile($path)) {
 			$parentMetaData = $this->getWrapperStorage()->getMetaData($path);
 			// can be null if entry does not exist
-			if (\is_null($parentMetaData)) {
+			if ($parentMetaData === null) {
 				return null;
 			}
 		}

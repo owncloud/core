@@ -119,5 +119,4 @@ class AvatarHomeTest extends TestCase {
 	public function testGetLastModified() {
 		self::assertNull($this->home->getLastModified());
 	}
-
 }

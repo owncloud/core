@@ -34,7 +34,6 @@ use Sabre\DAV\INode;
  * @package OCA\DAV\DAV
  */
 class MiscCustomPropertiesBackend extends AbstractCustomPropertiesBackend {
-
 	const SELECT_BY_PATH_STMT = 'SELECT * FROM `*PREFIX*dav_properties` WHERE `propertypath` = ?';
 	const INSERT_BY_PATH_STMT = 'INSERT INTO `*PREFIX*dav_properties`'
 	. ' (`propertypath`, `propertyname`, `propertyvalue`) VALUES(?,?,?)';
@@ -53,7 +52,7 @@ class MiscCustomPropertiesBackend extends AbstractCustomPropertiesBackend {
 	 */
 	public function delete($path) {
 		$node = $this->getNodeForPath($path);
-		if (\is_null($node)) {
+		if ($node === null) {
 			return;
 		}
 
@@ -73,7 +72,7 @@ class MiscCustomPropertiesBackend extends AbstractCustomPropertiesBackend {
 	 */
 	public function move($source, $destination) {
 		$node = $this->getNodeForPath($source);
-		if (\is_null($node)) {
+		if ($node === null) {
 			return;
 		}
 
@@ -86,7 +85,7 @@ class MiscCustomPropertiesBackend extends AbstractCustomPropertiesBackend {
 	 * @inheritdoc
 	 */
 	protected function getProperties($path, INode $node, array $requestedProperties) {
-		if (\is_null($this->offsetGet($path))) {
+		if ($this->offsetGet($path) === null) {
 			// TODO: chunking if more than 1000 properties
 			$sql = self::SELECT_BY_PATH_STMT;
 
@@ -120,7 +119,7 @@ class MiscCustomPropertiesBackend extends AbstractCustomPropertiesBackend {
 		foreach ($changedProperties as $propertyName => $propertyValue) {
 			$propertyExists = \array_key_exists($propertyName, $existingProperties);
 			// If it was null, we need to delete the property
-			if (\is_null($propertyValue)) {
+			if ($propertyValue === null) {
 				if ($propertyExists) {
 					$this->connection->executeUpdate($deleteStatement,
 						[
@@ -167,5 +166,4 @@ class MiscCustomPropertiesBackend extends AbstractCustomPropertiesBackend {
 	protected function loadChildrenProperties(INode $node, $requestedProperties) {
 		// Not supported
 	}
-
 }

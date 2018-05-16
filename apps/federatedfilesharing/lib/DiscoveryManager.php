@@ -77,7 +77,7 @@ class DiscoveryManager {
 	 */
 	private function discover($remote) {
 		// Check if something is in the cache
-		if($cacheData = $this->cache->get($remote)) {
+		if ($cacheData = $this->cache->get($remote)) {
 			return \json_decode($cacheData, true);
 		}
 
@@ -96,18 +96,18 @@ class DiscoveryManager {
 				'timeout' => 10,
 				'connect_timeout' => 10,
 			]);
-			if($response->getStatusCode() === 200) {
+			if ($response->getStatusCode() === 200) {
 				$decodedService = \json_decode($response->getBody(), true);
-				if(\is_array($decodedService)) {
+				if (\is_array($decodedService)) {
 					$endpoints = [
 						'webdav',
 						'share',
 					];
 
-					foreach($endpoints as $endpoint) {
-						if(isset($decodedService['services']['FEDERATED_SHARING']['endpoints'][$endpoint])) {
+					foreach ($endpoints as $endpoint) {
+						if (isset($decodedService['services']['FEDERATED_SHARING']['endpoints'][$endpoint])) {
 							$endpointUrl = (string)$decodedService['services']['FEDERATED_SHARING']['endpoints'][$endpoint];
-							if($this->isSafeUrl($endpointUrl)) {
+							if ($this->isSafeUrl($endpointUrl)) {
 								$discoveredServices[$endpoint] = $endpointUrl;
 							}
 						}

@@ -72,7 +72,7 @@ class WebDavClientService implements IWebDavClientService {
 	public function newClient($settings) {
 		if (!isset($settings['proxy'])) {
 			$proxy = $this->config->getSystemValue('proxy', '');
-			if($proxy !== '') {
+			if ($proxy !== '') {
 				$settings['proxy'] = $proxy;
 			}
 		}

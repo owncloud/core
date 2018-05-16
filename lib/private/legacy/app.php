@@ -56,14 +56,14 @@ use OC\Repair;
  * upgrading and removing apps.
  */
 class OC_App {
-	static private $appVersion = [];
-	static private $adminForms = [];
-	static private $personalForms = [];
-	static private $appInfo = [];
-	static private $appTypes = [];
-	static private $loadedApps = [];
-	static private $loadedTypes = [];
-	static private $altLogin = [];
+	private static $appVersion = [];
+	private static $adminForms = [];
+	private static $personalForms = [];
+	private static $appInfo = [];
+	private static $appTypes = [];
+	private static $loadedApps = [];
+	private static $loadedTypes = [];
+	private static $altLogin = [];
 	const officialApp = 200;
 	const approvedApp = 100;
 
@@ -110,12 +110,12 @@ class OC_App {
 		$apps = self::getEnabledApps();
 
 		// Add each apps' folder as allowed class path
-		foreach($apps as $app) {
+		foreach ($apps as $app) {
 			if (self::isAppLoaded($app)) {
 				continue;
 			}
 			$path = self::getAppPath($app);
-			if($path !== false) {
+			if ($path !== false) {
 				self::registerAutoloading($app, $path);
 			}
 		}
@@ -123,7 +123,7 @@ class OC_App {
 		// prevent app.php from printing output
 		\ob_start();
 		foreach ($apps as $app) {
-			if ((\is_null($types) or self::isType($app, $types)) && !\in_array($app, self::$loadedApps)) {
+			if (($types === null or self::isType($app, $types)) && !\in_array($app, self::$loadedApps)) {
 				self::loadApp($app);
 			}
 		}
@@ -147,7 +147,7 @@ class OC_App {
 	public static function loadApp($app, $checkUpgrade = true) {
 		self::$loadedApps[] = $app;
 		$appPath = self::getAppPath($app);
-		if($appPath === false) {
+		if ($appPath === false) {
 			return;
 		}
 
@@ -270,7 +270,7 @@ class OC_App {
 	 */
 	public static function setAppTypes($app) {
 		$appData = self::getAppInfo($app);
-		if(!\is_array($appData)) {
+		if (!\is_array($appData)) {
 			return;
 		}
 
@@ -321,7 +321,7 @@ class OC_App {
 			$user = \OC::$server->getUserSession()->getUser();
 		}
 
-		if (\is_null($user)) {
+		if ($user === null) {
 			$apps = $appManager->getInstalledApps();
 		} else {
 			$apps = $appManager->getEnabledAppsForUser($user);
@@ -374,7 +374,7 @@ class OC_App {
 		}
 
 		$appManager = \OC::$server->getAppManager();
-		if (!\is_null($groups)) {
+		if ($groups !== null) {
 			$groupManager = \OC::$server->getGroupManager();
 			$groupsList = [];
 			foreach ($groups as $group) {
@@ -409,7 +409,7 @@ class OC_App {
 	 */
 	public static function disable($app) {
 		// Convert OCS ID to regular application identifier
-		if(self::getInternalAppIdByOcs($app) !== false) {
+		if (self::getInternalAppIdByOcs($app) !== false) {
 			$app = self::getInternalAppIdByOcs($app);
 		}
 
@@ -418,7 +418,7 @@ class OC_App {
 
 		// run uninstall steps
 		$appData = OC_App::getAppInfo($app);
-		if (!\is_null($appData)) {
+		if ($appData !== null) {
 			OC_App::executeRepairSteps($app, $appData['repair-steps']['uninstall']);
 		}
 
@@ -485,12 +485,12 @@ class OC_App {
 		}
 		unset($navEntry);
 
-		\usort($list, function($a, $b) {
+		\usort($list, function ($a, $b) {
 			if ($a["order"] == $b["order"]) {
 				return 0;
 			}
 
-			if($a["order"] < $b["order"]) {
+			if ($a["order"] < $b["order"]) {
 				return -1;
 			}
 
@@ -593,7 +593,7 @@ class OC_App {
 				return self::$appInfo[$appId];
 			}
 			$appPath = self::getAppPath($appId);
-			if($appPath === false) {
+			if ($appPath === false) {
 				return null;
 			}
 			$file = $appPath . '/appinfo/info.xml';
@@ -610,9 +610,9 @@ class OC_App {
 		if (\is_array($data)) {
 			$data = OC_App::parseAppInfo($data);
 		}
-		if(isset($data['ocsid'])) {
+		if (isset($data['ocsid'])) {
 			$storedId = \OC::$server->getConfig()->getAppValue($appId, 'ocsid');
-			if($storedId !== '' && $storedId !== $data['ocsid']) {
+			if ($storedId !== '' && $storedId !== $data['ocsid']) {
 				$data['ocsid'] = $storedId;
 			}
 		}
@@ -734,7 +734,6 @@ class OC_App {
 	 * @todo: change the name of this method to getInstalledApps, which is more accurate
 	 */
 	public static function getAllApps() {
-
 		$apps = [];
 
 		foreach (OC::$APPSROOTS as $apps_dir) {
@@ -746,9 +745,7 @@ class OC_App {
 
 			if (\is_resource($dh)) {
 				while (($file = \readdir($dh)) !== false) {
-
 					if ($file[0] != '.' and \is_dir($apps_dir['path'] . '/' . $file) and \is_file($apps_dir['path'] . '/' . $file . '/appinfo/info.xml')) {
-
 						$apps[] = $file;
 					}
 				}
@@ -779,7 +776,6 @@ class OC_App {
 
 		foreach ($installedApps as $app) {
 			if (\array_search($app, $blacklist) === false) {
-
 				$info = OC_App::getAppInfo($app);
 				if (!\is_array($info)) {
 					\OCP\Util::writeLog('core', 'Could not read app info file for app "' . $app . '"', \OCP\Util::ERROR);
@@ -795,7 +791,7 @@ class OC_App {
 				$info['groups'] = null;
 				if ($enabled === 'yes') {
 					$active = true;
-				} else if ($enabled === 'no') {
+				} elseif ($enabled === 'no') {
 					$active = false;
 				} else {
 					$active = true;
@@ -821,7 +817,7 @@ class OC_App {
 				}
 
 				$appPath = self::getAppPath($app);
-				if($appPath !== false) {
+				if ($appPath !== false) {
 					$appIcon = $appPath . '/img/' . $app . '.svg';
 					if (\file_exists($appIcon)) {
 						$info['preview'] = \OC::$server->getURLGenerator()->imagePath($app, $app . '.svg');
@@ -861,9 +857,9 @@ class OC_App {
 	 * @return string|false
 	 */
 	public static function getInternalAppIdByOcs($ocsID) {
-		if(\is_numeric($ocsID)) {
+		if (\is_numeric($ocsID)) {
 			$idArray = \OC::$server->getAppConfig()->getValues(false, 'ocsid');
-			if(\array_search($ocsID, $idArray)) {
+			if (\array_search($ocsID, $idArray)) {
 				return \array_search($ocsID, $idArray);
 			}
 		}
@@ -925,15 +921,15 @@ class OC_App {
 		$requireMax = '';
 		if (isset($appInfo['dependencies']['owncloud']['@attributes']['min-version'])) {
 			$requireMin = $appInfo['dependencies']['owncloud']['@attributes']['min-version'];
-		} else if (isset($appInfo['requiremin'])) {
+		} elseif (isset($appInfo['requiremin'])) {
 			$requireMin = $appInfo['requiremin'];
-		} else if (isset($appInfo['require'])) {
+		} elseif (isset($appInfo['require'])) {
 			$requireMin = $appInfo['require'];
 		}
 
 		if (isset($appInfo['dependencies']['owncloud']['@attributes']['max-version'])) {
 			$requireMax = $appInfo['dependencies']['owncloud']['@attributes']['max-version'];
-		} else if (isset($appInfo['requiremax'])) {
+		} elseif (isset($appInfo['requiremax'])) {
 			$requireMax = $appInfo['requiremax'];
 		}
 
@@ -944,7 +940,6 @@ class OC_App {
 		if (!empty($requireMin)
 			&& \version_compare(self::adjustVersionParts($ocVersion, $requireMin), $requireMin, '<')
 		) {
-
 			return false;
 		}
 
@@ -963,7 +958,7 @@ class OC_App {
 	public static function getAppVersions() {
 		static $versions;
 
-		if(!$versions) {
+		if (!$versions) {
 			$appConfig = \OC::$server->getAppConfig();
 			$versions = $appConfig->getValues(false, 'installed_version');
 		}
@@ -978,7 +973,7 @@ class OC_App {
 	 */
 	public static function updateApp($appId) {
 		$appPath = self::getAppPath($appId);
-		if($appPath === false) {
+		if ($appPath === false) {
 			return false;
 		}
 		$appData = self::getAppInfo($appId);
@@ -1004,7 +999,7 @@ class OC_App {
 		//set remote/public handlers
 		if (\array_key_exists('ocsid', $appData)) {
 			\OC::$server->getConfig()->setAppValue($appId, 'ocsid', $appData['ocsid']);
-		} elseif(\OC::$server->getConfig()->getAppValue($appId, 'ocsid', null) !== null) {
+		} elseif (\OC::$server->getConfig()->getAppValue($appId, 'ocsid', null) !== null) {
 			\OC::$server->getConfig()->deleteAppValue($appId, 'ocsid');
 		}
 		foreach ($appData['remote'] as $name => $path) {
@@ -1120,7 +1115,6 @@ class OC_App {
 
 				// join the single paragraphs with a empty line in between
 				$data['description'] = \implode("\n\n", $result);
-
 			} else {
 				$data['description'] = '';
 			}
@@ -1153,6 +1147,5 @@ class OC_App {
 	 */
 	public static function clearAppCache($appId) {
 		unset(self::$appVersion[$appId], self::$appInfo[$appId]);
-		
 	}
 }

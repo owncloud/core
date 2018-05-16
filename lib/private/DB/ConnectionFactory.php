@@ -76,7 +76,7 @@ class ConnectionFactory {
 	 */
 	public function __construct(SystemConfig $systemConfig) {
 		$this->config = $systemConfig;
-		if($this->config->getValue('mysql.utf8mb4', false)) {
+		if ($this->config->getValue('mysql.utf8mb4', false)) {
 			$this->defaultConnectionParams['mysql']['charset'] = 'utf8mb4';
 		}
 	}
@@ -211,7 +211,7 @@ class ConnectionFactory {
 			'tablePrefix' => $connectionParams['tablePrefix']
 		];
 
-		if($this->config->getValue('mysql.utf8mb4', false)) {
+		if ($this->config->getValue('mysql.utf8mb4', false)) {
 			$connectionParams['defaultTableOptions'] = [
 				'collate' => 'utf8mb4_bin',
 				'charset' => 'utf8mb4',

@@ -83,7 +83,6 @@ class SharedMount extends MountPoint implements MoveableMount {
 	 * @return string
 	 */
 	private function verifyMountPoint(\OCP\Share\IShare $share, array $mountpoints) {
-
 		$mountPoint = \basename($share->getTarget());
 		$parent = \dirname($share->getTarget());
 
@@ -133,7 +132,7 @@ class SharedMount extends MountPoint implements MoveableMount {
 		$dir = $pathinfo['dirname'];
 
 		// Helper function to find existing mount points
-		$mountpointExists = function($path) use ($mountpoints) {
+		$mountpointExists = function ($path) use ($mountpoints) {
 			foreach ($mountpoints as $mountpoint) {
 				if ($mountpoint->getShare()->getTarget() === $path) {
 					return true;
@@ -202,7 +201,7 @@ class SharedMount extends MountPoint implements MoveableMount {
 		$shareManager = \OC::$server->getShareManager();
 		$targetNode = $targetNodes[0];
 		// FIXME: make it stop earlier in '/$userId/files'
-		while (!\is_null($targetNode) && $targetNode->getPath() !== '/') { 
+		while ($targetNode !== null && $targetNode->getPath() !== '/') {
 			$shares = $shareManager->getSharesByPath($targetNode);
 
 			foreach ($shares as $share) {

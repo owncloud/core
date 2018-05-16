@@ -69,7 +69,7 @@ class TemplateResponse extends Response {
 	 * @since 6.0.0 - parameters $params and $renderAs were added in 7.0.0
 	 */
 	public function __construct($appName, $templateName, array $params= [],
-	                            $renderAs='user') {
+								$renderAs='user') {
 		$this->templateName = $templateName;
 		$this->appName = $appName;
 		$this->params = $params;
@@ -83,7 +83,7 @@ class TemplateResponse extends Response {
 	 * @return TemplateResponse Reference to this object
 	 * @since 6.0.0 - return value was added in 7.0.0
 	 */
-	public function setParams(array $params){
+	public function setParams(array $params) {
 		$this->params = $params;
 
 		return $this;
@@ -94,7 +94,7 @@ class TemplateResponse extends Response {
 	 * @return array the params
 	 * @since 6.0.0
 	 */
-	public function getParams(){
+	public function getParams() {
 		return $this->params;
 	}
 
@@ -103,7 +103,7 @@ class TemplateResponse extends Response {
 	 * @return string the name of the used template
 	 * @since 6.0.0
 	 */
-	public function getTemplateName(){
+	public function getTemplateName() {
 		return $this->templateName;
 	}
 
@@ -116,7 +116,7 @@ class TemplateResponse extends Response {
 	 * @return TemplateResponse Reference to this object
 	 * @since 6.0.0 - return value was added in 7.0.0
 	 */
-	public function renderAs($renderAs){
+	public function renderAs($renderAs) {
 		$this->renderAs = $renderAs;
 
 		return $this;
@@ -127,7 +127,7 @@ class TemplateResponse extends Response {
 	 * @return string the renderAs value
 	 * @since 6.0.0
 	 */
-	public function getRenderAs(){
+	public function getRenderAs() {
 		return $this->renderAs;
 	}
 
@@ -136,17 +136,16 @@ class TemplateResponse extends Response {
 	 * @return string the rendered html
 	 * @since 6.0.0
 	 */
-	public function render(){
+	public function render() {
 		// \OCP\Template needs an empty string instead of 'blank' for an unwrapped response
 		$renderAs = $this->renderAs === 'blank' ? '' : $this->renderAs;
 
 		$template = new \OCP\Template($this->appName, $this->templateName, $renderAs);
 
-		foreach($this->params as $key => $value){
+		foreach ($this->params as $key => $value) {
 			$template->assign($key, $value);
 		}
 
 		return $template->fetchPage();
 	}
-
 }

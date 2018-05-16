@@ -154,9 +154,9 @@ abstract class ResourceLocator {
 	 * @param string[] $parts path parts to concatenate
 	 * @return string $parts concatenated
 	 */
-	protected function buildPath($parts){
+	protected function buildPath($parts) {
 		$trimmedParts = \array_map(
-			function($part){
+			function ($part) {
 				return \rtrim($part, '/');
 			},
 			$parts

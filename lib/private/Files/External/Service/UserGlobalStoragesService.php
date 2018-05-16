@@ -35,7 +35,6 @@ use OCP\Files\External\Service\IUserGlobalStoragesService;
  * Read-only access available, attempting to write will throw DomainException
  */
 class UserGlobalStoragesService extends GlobalStoragesService implements IUserGlobalStoragesService {
-
 	use UserTrait;
 
 	/** @var IGroupManager */

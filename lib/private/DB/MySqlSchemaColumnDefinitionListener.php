@@ -38,7 +38,7 @@ use Doctrine\DBAL\Types\Type;
  *
  * TODO: remove once https://github.com/owncloud/core/issues/28695 is fixed and Doctrine upgraded
  */
-class MySqlSchemaColumnDefinitionListener{
+class MySqlSchemaColumnDefinitionListener {
 	/**
 	 * @var \Doctrine\DBAL\Platforms\AbstractPlatform
 	 */
@@ -47,19 +47,19 @@ class MySqlSchemaColumnDefinitionListener{
 	public function onSchemaColumnDefinition(SchemaColumnDefinitionEventArgs $eventArgs) {
 		// We need an instance of platform with ownCloud-specific mappings
 		//  this part  can't be moved to constructor - it leads to an infinite recursion
-		if (\is_null($this->_platform)) {
+		if ($this->_platform === null) {
 			$this->_platform = \OC::$server->getDatabaseConnection()->getDatabasePlatform();
 		}
 
 		$version = \OC::$server->getDatabaseConnection()->getDatabaseVersionString();
-		$mariadb = false !== \stripos($version, 'mariadb');
+		$mariadb = \stripos($version, 'mariadb') !== false;
 		if ($mariadb && \version_compare($this->getMariaDbMysqlVersionNumber($version), '10.2.7', '>=')) {
 			$tableColumn = $eventArgs->getTableColumn();
 			try {
 				$column = $this->_getPortableTableColumnDefinition($tableColumn);
 				$eventArgs->preventDefault();
 				$eventArgs->setColumn($column);
-			} catch (DBALException $e){
+			} catch (DBALException $e) {
 				// Pass
 			}
 		}
@@ -74,8 +74,7 @@ class MySqlSchemaColumnDefinitionListener{
 	 *
 	 * @return string
 	 */
-	public function extractDoctrineTypeFromComment($comment, $currentType)
-	{
+	public function extractDoctrineTypeFromComment($comment, $currentType) {
 		if (\preg_match("(\(DC2Type:([a-zA-Z0-9_]+)\))", $comment, $match)) {
 			$currentType = $match[1];
 		}
@@ -89,13 +88,11 @@ class MySqlSchemaColumnDefinitionListener{
 	 *
 	 * @return string
 	 */
-	public function removeDoctrineTypeFromComment($comment, $type)
-	{
+	public function removeDoctrineTypeFromComment($comment, $type) {
 		return \str_replace('(DC2Type:'.$type.')', '', $comment);
 	}
 	
-	protected function _getPortableTableColumnDefinition($tableColumn)
-	{
+	protected function _getPortableTableColumnDefinition($tableColumn) {
 		$tableColumn = \array_change_key_case($tableColumn, CASE_LOWER);
 
 		$dbType = \strtolower($tableColumn['type']);
@@ -216,8 +213,7 @@ class MySqlSchemaColumnDefinitionListener{
 	 * @param null|string $columnDefault default value as stored in information_schema for MariaDB >= 10.2.7
 	 * @return string
 	 */
-	private function getMariaDb1027ColumnDefault($columnDefault)
-	{
+	private function getMariaDb1027ColumnDefault($columnDefault) {
 		if ($columnDefault === 'NULL' || $columnDefault === null) {
 			return null;
 		}
@@ -236,8 +232,7 @@ class MySqlSchemaColumnDefinitionListener{
 	 * @return string
 	 * @throws DBALException
 	 */
-	private function getMariaDbMysqlVersionNumber($versionString)
-	{
+	private function getMariaDbMysqlVersionNumber($versionString) {
 		if (!\preg_match('/^(?:5\.5\.5-)?(mariadb-)?(?P<major>\d+)\.(?P<minor>\d+)\.(?P<patch>\d+)/i', $versionString, $versionParts)) {
 			throw DBALException::invalidPlatformVersionSpecified(
 				$versionString,
@@ -246,5 +241,4 @@ class MySqlSchemaColumnDefinitionListener{
 		}
 		return $versionParts['major'] . '.' . $versionParts['minor'] . '.' . $versionParts['patch'];
 	}
-
 }

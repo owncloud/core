@@ -27,7 +27,8 @@ use OC\AppFramework\Http\Request;
 use OCP\AppFramework\Http\Response;
 use OCP\AppFramework\Middleware;
 
-class ChildMiddleware extends Middleware {};
+class ChildMiddleware extends Middleware {
+};
 
 class MiddlewareTest extends \Test\TestCase {
 
@@ -41,7 +42,7 @@ class MiddlewareTest extends \Test\TestCase {
 	/** @var Response */
 	private $response;
 
-	protected function setUp(){
+	protected function setUp() {
 		parent::setUp();
 
 		$this->middleware = new ChildMiddleware();
@@ -88,5 +89,4 @@ class MiddlewareTest extends \Test\TestCase {
 
 		$this->assertEquals('test', $output);
 	}
-
 }

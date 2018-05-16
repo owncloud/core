@@ -94,7 +94,7 @@ class AppsTest extends TestCase {
 		$data = $result->getData();
 		$apps = \OC_App::listAllApps(false, true);
 		$list =  [];
-		foreach($apps as $app) {
+		foreach ($apps as $app) {
 			$list[] = $app['id'];
 		}
 		$disabled = \array_diff($list, \OC_App::getEnabledApps());

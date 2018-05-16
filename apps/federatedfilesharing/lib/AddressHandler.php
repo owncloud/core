@@ -72,9 +72,9 @@ class AddressHandler {
 
 		if ($posSlash === false && $posColon === false) {
 			$invalidPos = \strlen($id);
-		} else if ($posSlash === false) {
+		} elseif ($posSlash === false) {
 			$invalidPos = $posColon;
-		} else if ($posColon === false) {
+		} elseif ($posColon === false) {
 			$invalidPos = $posSlash;
 		} else {
 			$invalidPos = \min($posSlash, $posColon);
@@ -153,7 +153,7 @@ class AddressHandler {
 	public function removeProtocolFromUrl($url) {
 		if (\strpos($url, 'https://') === 0) {
 			return \substr($url, \strlen('https://'));
-		} else if (\strpos($url, 'http://') === 0) {
+		} elseif (\strpos($url, 'http://') === 0) {
 			return \substr($url, \strlen('http://'));
 		}
 
@@ -181,5 +181,4 @@ class AddressHandler {
 
 		return $remote;
 	}
-
 }

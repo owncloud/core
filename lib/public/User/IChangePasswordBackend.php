@@ -40,4 +40,3 @@ interface IChangePasswordBackend {
 	 */
 	public function setPassword($uid, $password);
 }
-

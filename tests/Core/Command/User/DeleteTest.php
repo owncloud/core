@@ -51,7 +51,6 @@ class DeleteTest extends TestCase {
 		$command = new Delete($this->userManager);
 		$command->setApplication($application);
 		$this->commandTester = new CommandTester($command);
-
 	}
 
 	public function validUserLastSeen() {

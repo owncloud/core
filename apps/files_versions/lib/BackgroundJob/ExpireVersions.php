@@ -30,7 +30,6 @@ use OCP\IUser;
 use OCP\IUserManager;
 
 class ExpireVersions extends \OC\BackgroundJob\TimedJob {
-
 	const ITEMS_PER_SESSION = 1000;
 
 	/**
@@ -47,7 +46,7 @@ class ExpireVersions extends \OC\BackgroundJob\TimedJob {
 		// Run once per 30 minutes
 		$this->setInterval(60 * 30);
 
-		if (\is_null($expiration) || \is_null($userManager)) {
+		if ($expiration === null || $userManager === null) {
 			$this->fixDIForJobs();
 		} else {
 			$this->expiration = $expiration;
@@ -67,7 +66,7 @@ class ExpireVersions extends \OC\BackgroundJob\TimedJob {
 			return;
 		}
 
-		$this->userManager->callForSeenUsers(function(IUser $user) {
+		$this->userManager->callForSeenUsers(function (IUser $user) {
 			$uid = $user->getUID();
 			if (!$this->setupFS($uid)) {
 				return;

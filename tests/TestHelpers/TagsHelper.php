@@ -162,7 +162,7 @@ class TagsHelper {
 			'userAssignable' => $userAssignable,
 		];
 
-		if (!\is_null($groups)) {
+		if ($groups !== null) {
 			$body['groups'] = $groups;
 		}
 
@@ -221,15 +221,15 @@ class TagsHelper {
 		$userVisible = true;
 		$userAssignable = true;
 		switch ($type) {
-			case 'normal' :
+			case 'normal':
 				break;
-			case 'not user-assignable' :
+			case 'not user-assignable':
 				$userAssignable = false;
 				break;
-			case 'not user-visible' :
+			case 'not user-visible':
 				$userVisible = false;
 				break;
-			default :
+			default:
 				throw new \Exception('Unsupported type');
 		}
 

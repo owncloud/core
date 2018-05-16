@@ -35,7 +35,6 @@ use OCP\IConfig;
  */
 
 class UserSearch {
-
 	protected $config;
 
 	/**

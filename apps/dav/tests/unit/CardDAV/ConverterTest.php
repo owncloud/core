@@ -28,7 +28,7 @@ use OCP\IUser;
 use PHPUnit_Framework_MockObject_MockObject;
 use Test\TestCase;
 
-class ConverterTest extends  TestCase {
+class ConverterTest extends TestCase {
 
 	/**
 	 * @dataProvider providesNewUsers
@@ -104,7 +104,6 @@ class ConverterTest extends  TestCase {
 	 * @param $fullName
 	 */
 	public function testNameSplitter($expected, $fullName) {
-
 		$converter = new Converter();
 		$r = $converter->splitFullName($fullName);
 		$r = \implode(';', $r);

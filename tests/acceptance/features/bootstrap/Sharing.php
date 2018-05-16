@@ -278,10 +278,10 @@ trait Sharing {
 
 	/**
 	 * @Then /^the user "([^"]*)" should be able to download the file "([^"]*)" using the API$/
-	 * 
+	 *
 	 * @param string $user
 	 * @param string $path
-	 * 
+	 *
 	 * @return void
 	 */
 	public function theUserShouldBeAbleToDownloadTheFileUsingTheApi($user, $path) {
@@ -296,11 +296,11 @@ trait Sharing {
 	/**
 	 * @param string $url
 	 * @param array $options
-	 * @param string $mimeType 
-	 * 
+	 * @param string $mimeType
+	 *
 	 * @return void
 	 */
-	private  function checkUserDownload($url, $options, $mimeType) {
+	private function checkUserDownload($url, $options, $mimeType) {
 		$client = new Client();
 		$this->response = $client->get($url, $options);
 		PHPUnit_Framework_Assert::assertEquals(
@@ -569,7 +569,6 @@ trait Sharing {
 		$permissions = null,
 		$linkName = null
 	) {
-
 		try {
 			$this->response = SharingHelper::createShare(
 				$this->getBaseUrl(),
@@ -620,13 +619,13 @@ trait Sharing {
 			return false;
 		} else {
 			if ($contentExpected == "A_TOKEN") {
-					return (\strlen((string)$data->$field) == 15);
+				return (\strlen((string)$data->$field) == 15);
 			} elseif ($contentExpected == "A_NUMBER") {
-					return \is_numeric((string)$data->$field);
+				return \is_numeric((string)$data->$field);
 			} elseif ($contentExpected == "AN_URL") {
-					return $this->isAPublicLinkUrl((string)$data->$field);
-			} elseif ($data->$field == $contentExpected) {
-					return true;
+				return $this->isAPublicLinkUrl((string)$data->$field);
+			} elseif ($contentExpected == $data->$field) {
+				return true;
 			}
 			return false;
 		}

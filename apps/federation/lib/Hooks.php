@@ -43,5 +43,4 @@ class Hooks {
 			$this->trustedServers->addServer($params['server']);
 		}
 	}
-
 }

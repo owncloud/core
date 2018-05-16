@@ -46,7 +46,6 @@ class CalDavBackendTest extends AbstractCalDavBackendTest {
 	 * @throws \Sabre\DAV\Exception
 	 */
 	public function testCalendarOperations() {
-
 		$calendarId = $this->createTestCalendar();
 
 		// update it's display name
@@ -273,7 +272,6 @@ EOD;
 	 * @throws \Sabre\DAV\Exception\BadRequest
 	 */
 	public function testCalendarObjectsOperations($initialCalendar, $updatedCalendar) {
-
 		$calendarId = $this->createTestCalendar();
 
 		// create a card
@@ -312,7 +310,6 @@ EOD;
 	 * @throws \Sabre\DAV\Exception
 	 */
 	public function testMultiCalendarObjects() {
-
 		$calendarId = $this->createTestCalendar();
 
 		// create an event
@@ -346,7 +343,7 @@ EOD;
 		// get the cards
 		$calendarObjects = $this->backend->getMultipleCalendarObjects($calendarId, [$uri1, $uri2]);
 		$this->assertCount(2, $calendarObjects);
-		foreach($calendarObjects as $card) {
+		foreach ($calendarObjects as $card) {
 			$this->assertArrayHasKey('id', $card);
 			$this->assertArrayHasKey('uri', $card);
 			$this->assertArrayHasKey('lastmodified', $card);
@@ -382,7 +379,7 @@ EOD;
 			'comp-filters' => $compFilter
 		]);
 
-		$expectedEventsInResult = \array_map(function($index) use($events) {
+		$expectedEventsInResult = \array_map(function ($index) use ($events) {
 			return $events[$index];
 		}, $expectedEventsInResult);
 		$this->assertEquals($expectedEventsInResult, $result, '', 0.0, 10, true);
@@ -612,7 +609,7 @@ EOS;
 	 */
 	public function testHugeMultiGet() {
 		$calendarId = $this->createTestCalendar();
-		$urls = \array_map(function($number){
+		$urls = \array_map(function ($number) {
 			return "url-$number";
 		}, \range(0, 2000));
 		$calendarObjects = $this->backend->getMultipleCalendarObjects($calendarId, $urls);

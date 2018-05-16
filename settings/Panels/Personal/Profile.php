@@ -70,11 +70,11 @@ class Profile implements ISettings {
 		$languageNames = $this->getLanguageCodes();
 		$languages= [];
 		$commonLanguages = [];
-		foreach($languageCodes as $lang) {
+		foreach ($languageCodes as $lang) {
 			$l = $this->lfactory->get('settings', $lang);
 			// TRANSLATORS this is the language name for the language switcher in the personal settings and should be the localized version
 			$potentialName = (string) $l->t('__language_name__');
-			if($l->getLanguageCode() === $lang && \substr($potentialName, 0, 1) !== '_') {//first check if the language name is in the translation file
+			if ($l->getLanguageCode() === $lang && \substr($potentialName, 0, 1) !== '_') {//first check if the language name is in the translation file
 				$ln = ['code'=>$lang, 'name'=> $potentialName];
 			} elseif (isset($languageNames[$lang])) {
 				$ln = ['code'=>$lang, 'name'=>$languageNames[$lang]];
@@ -170,5 +170,4 @@ class Profile implements ISettings {
 	public function getSectionID() {
 		return 'general';
 	}
-
 }

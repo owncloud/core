@@ -89,7 +89,7 @@ class Group implements IGroup {
 	}
 
 	public function getDisplayName() {
-		if (\is_null($this->displayName)) {
+		if ($this->displayName === null) {
 			return $this->gid;
 		}
 		return $this->displayName;
@@ -215,7 +215,7 @@ class Group implements IGroup {
 		foreach ($this->backends as $backend) {
 			$userIds = $backend->usersInGroup($this->gid, $search, $limit, $offset);
 			$users += $this->getVerifiedUsers($userIds);
-			if (!\is_null($limit) and $limit <= 0) {
+			if ($limit !== null and $limit <= 0) {
 				return \array_values($users);
 			}
 		}
@@ -231,8 +231,8 @@ class Group implements IGroup {
 	public function count($search = '') {
 		$users = false;
 		foreach ($this->backends as $backend) {
-			if($backend->implementsActions(\OC\Group\Backend::COUNT_USERS)) {
-				if($users === false) {
+			if ($backend->implementsActions(\OC\Group\Backend::COUNT_USERS)) {
+				if ($users === false) {
 					//we could directly add to a bool variable, but this would
 					//be ugly
 					$users = 0;
@@ -256,7 +256,7 @@ class Group implements IGroup {
 		foreach ($this->backends as $backend) {
 			$userIds = $backend->usersInGroup($this->gid, $search, $limit, $offset);
 			$users = $this->getVerifiedUsers($userIds);
-			if (!\is_null($limit) and $limit <= 0) {
+			if ($limit !== null and $limit <= 0) {
 				return \array_values($users);
 			}
 		}
@@ -304,7 +304,7 @@ class Group implements IGroup {
 		$users = [];
 		foreach ($userIds as $userId) {
 			$user = $this->userManager->get($userId);
-			if (!\is_null($user)) {
+			if ($user !== null) {
 				$users[$userId] = $user;
 			}
 		}

@@ -56,12 +56,10 @@ class Migration {
 	 * upgrade from oC 8.2 to 9.0 with the new sharing
 	 */
 	public function removeReShares() {
-
 		$stmt = $this->getReShares();
 
 		$owners = [];
-		while($share = $stmt->fetch()) {
-
+		while ($share = $stmt->fetch()) {
 			$this->shareCache[$share['id']] = $share;
 
 			$owners[$share['id']] = [
@@ -115,7 +113,7 @@ class Migration {
 	 */
 	private function findOwner($share) {
 		$currentShare = $share;
-		while(!\is_null($currentShare['parent'])) {
+		while ($currentShare['parent'] !== null) {
 			if (isset($this->shareCache[$currentShare['parent']])) {
 				$currentShare = $this->shareCache[$currentShare['parent']];
 			} else {
@@ -240,11 +238,9 @@ class Migration {
 	 * @throws \Exception
 	 */
 	private function updateOwners($owners) {
-
 		$this->connection->beginTransaction();
 
 		try {
-
 			foreach ($owners as $id => $owner) {
 				$query = $this->connection->getQueryBuilder();
 				$query->update($this->table)
@@ -261,12 +257,9 @@ class Migration {
 			}
 
 			$this->connection->commit();
-
 		} catch (\Exception $e) {
 			$this->connection->rollBack();
 			throw $e;
 		}
-
 	}
-
 }

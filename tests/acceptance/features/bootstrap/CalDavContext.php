@@ -31,15 +31,15 @@ use GuzzleHttp\Message\ResponseInterface;
  */
 class CalDavContext implements \Behat\Behat\Context\Context {
 	/**
-	 * @var Client 
+	 * @var Client
 	 */
 	private $client;
 	/**
-	 * @var ResponseInterface 
+	 * @var ResponseInterface
 	 */
 	private $response;
 	/**
-	 * @var array 
+	 * @var array
 	 */
 	private $responseXml = '';
 
@@ -199,5 +199,4 @@ class CalDavContext implements \Behat\Behat\Context\Context {
 		$this->response = $this->client->send($request);
 		$this->theCalDavHttpStatusCodeShouldBe(201);
 	}
-
 }

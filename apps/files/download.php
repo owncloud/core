@@ -31,7 +31,7 @@ OCP\User::checkLoggedIn();
 
 $filename = $_GET["file"];
 
-if(!\OC\Files\Filesystem::file_exists($filename)) {
+if (!\OC\Files\Filesystem::file_exists($filename)) {
 	\header("HTTP/1.0 404 Not Found");
 	$tmpl = new OCP\Template('', '404', 'guest');
 	$tmpl->assign('file', $filename);

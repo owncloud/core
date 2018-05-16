@@ -26,7 +26,7 @@ use Exception;
 
 /**
  * Helper to setup UI / Integration tests
- * 
+ *
  * @author Artur Neumann <artur@jankaritech.com>
  *
  */
@@ -66,10 +66,10 @@ class SetupHelper {
 		$email = null
 	) {
 		$occCommand = ['user:add', '--password-from-env'];
-		if (!\is_null($displayName)) {
+		if ($displayName !== null) {
 			$occCommand = \array_merge($occCommand, ["--display-name", $displayName]);
 		}
-		if (!\is_null($email)) {
+		if ($email !== null) {
 			$occCommand = \array_merge($occCommand, ["--email", $email]);
 		}
 		\putenv("OC_PASS=" . $password);
@@ -155,7 +155,7 @@ class SetupHelper {
 	}
 
 	/**
-	 * 
+	 *
 	 * @return string[]
 	 */
 	public static function getGroups() {
@@ -202,7 +202,7 @@ class SetupHelper {
 	 * @throws Exception if ocPath has not been set yet
 	 */
 	public static function getOcPath() {
-		if (\is_null(self::$ocPath)) {
+		if (self::$ocPath === null) {
 			throw new Exception(
 				"getOcPath called before ocPath is set by init"
 			);
@@ -270,10 +270,10 @@ class SetupHelper {
 	 * @return string[] associated array with "code", "stdOut", "stdErr"
 	 */
 	public static function runOcc($args) {
-		if (\is_null(self::$adminUsername)
-			|| \is_null(self::$adminPassword)
-			|| \is_null(self::$baseUrl)
-			|| \is_null(self::$ocPath)
+		if (self::$adminUsername === null
+			|| self::$adminPassword === null
+			|| self::$baseUrl === null
+			|| self::$ocPath === null
 		) {
 			throw new Exception(
 				"runOcc called before init"
@@ -313,5 +313,4 @@ class SetupHelper {
 		$return['stdErr'] = $return['stdErr'][0]->__toString();
 		return $return;
 	}
-
 }

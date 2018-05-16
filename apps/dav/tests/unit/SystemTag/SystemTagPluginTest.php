@@ -33,7 +33,6 @@ use OCP\SystemTag\ISystemTag;
 use OCP\SystemTag\TagAlreadyExistsException;
 
 class SystemTagPluginTest extends \Test\TestCase {
-
 	const ID_PROPERTYNAME = \OCA\DAV\SystemTag\SystemTagPlugin::ID_PROPERTYNAME;
 	const DISPLAYNAME_PROPERTYNAME = \OCA\DAV\SystemTag\SystemTagPlugin::DISPLAYNAME_PROPERTYNAME;
 	const USERVISIBLE_PROPERTYNAME = \OCA\DAV\SystemTag\SystemTagPlugin::USERVISIBLE_PROPERTYNAME;
@@ -558,7 +557,7 @@ class SystemTagPluginTest extends \Test\TestCase {
 		$request->expects($this->once())
 			->method('getHeader')
 			->with('Content-Type')
-			->will($this->returnValue('application/json'));	
+			->will($this->returnValue('application/json'));
 
 		$request->expects($this->once())
 			->method('getUrl')
@@ -632,7 +631,7 @@ class SystemTagPluginTest extends \Test\TestCase {
 		$request->expects($this->once())
 			->method('getHeader')
 			->with('Content-Type')
-			->will($this->returnValue('application/json'));	
+			->will($this->returnValue('application/json'));
 
 		$request->expects($this->once())
 			->method('getBaseUrl')
@@ -728,9 +727,8 @@ class SystemTagPluginTest extends \Test\TestCase {
 		$request->expects($this->once())
 			->method('getHeader')
 			->with('Content-Type')
-			->will($this->returnValue('application/json'));	
+			->will($this->returnValue('application/json'));
 
 		$this->plugin->httpPost($request, $response);
 	}
-
 }

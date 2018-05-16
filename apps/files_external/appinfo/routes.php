@@ -59,4 +59,3 @@ $this->create('files_external_list_applicable', '/applicable')
 		'/apps/files_external/api/v1/mounts',
 		['\OCA\Files_External\Lib\Api', 'getUserMounts'],
 		'files_external');
-

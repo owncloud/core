@@ -60,7 +60,7 @@ class Quota extends Wrapper {
 	 * @param \OC\Files\Storage\Storage $storage
 	 */
 	protected function getSize($path, $storage = null) {
-		if (\is_null($storage)) {
+		if ($storage === null) {
 			$cache = $this->getCache();
 		} else {
 			$cache = $storage->getCache();

@@ -56,14 +56,14 @@ class MigrationService {
 	 * @param IOutput|null $output
 	 * @throws \Exception
 	 */
-	function __construct($appName,
+	public function __construct($appName,
 						 IDBConnection $connection,
 						 IOutput $output = null,
 						 AppLocator $appLocator = null) {
 		$this->appName = $appName;
 		$this->connection = $connection;
 		$this->output = $output;
-		if (\is_null($this->output)) {
+		if ($this->output === null) {
 			$this->output = new SimpleOutput(\OC::$server->getLogger(), $appName);
 		}
 
@@ -71,7 +71,7 @@ class MigrationService {
 			$this->migrationsPath = \OC::$SERVERROOT . '/core/Migrations';
 			$this->migrationsNamespace = 'OC\\Migrations';
 		} else {
-			if (\is_null($appLocator)) {
+			if ($appLocator === null) {
 				$appLocator = new AppLocator();
 			}
 			$appPath = $appLocator->getAppPath($appName);
@@ -278,7 +278,7 @@ class MigrationService {
 	 * @return mixed|null|string
 	 */
 	public function getMigration($alias) {
-		switch($alias) {
+		switch ($alias) {
 			case 'current':
 				return $this->getCurrentVersion();
 			case 'next':
@@ -385,7 +385,6 @@ class MigrationService {
 	 * @param string $version
 	 */
 	public function executeStep($version) {
-
 		$instance = $this->createInstance($version);
 		if ($instance instanceof ISimpleMigration) {
 			$instance->run($this->output);

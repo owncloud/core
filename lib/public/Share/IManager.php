@@ -323,5 +323,4 @@ interface IManager {
 	 * @since 9.0.0
 	 */
 	public function outgoingServer2ServerSharesAllowed();
-
 }

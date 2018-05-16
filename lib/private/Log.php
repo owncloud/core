@@ -99,14 +99,14 @@ class Log implements ILogger {
 	 */
 	public function __construct($logger = null, SystemConfig $config = null, $normalizer = null) {
 		// FIXME: Add this for backwards compatibility, should be fixed at some point probably
-		if($config === null) {
+		if ($config === null) {
 			$config = \OC::$server->getSystemConfig();
 		}
 
 		$this->config = $config;
 
 		// FIXME: Add this for backwards compatibility, should be fixed at some point probably
-		if($logger === null) {
+		if ($logger === null) {
 			$this->logger = 'OC\\Log\\'.\ucfirst($this->config->getValue('log_type', 'owncloud'));
 			\call_user_func([$this->logger, 'init']);
 		} else {
@@ -117,7 +117,6 @@ class Log implements ILogger {
 		} else {
 			$this->normalizer = $normalizer;
 		}
-
 	}
 
 	/**
@@ -242,9 +241,9 @@ class Log implements ILogger {
 			 * check log condition based on the context of each log message
 			 * once this is met -> change the required log level to debug
 			 */
-			if(!empty($logConditions)) {
+			if (!empty($logConditions)) {
 				foreach ($logConditions as $logCondition) {
-					if(!empty($logCondition['apps'])
+					if (!empty($logCondition['apps'])
 					   && \in_array($app, $logCondition['apps'], true)) {
 						$minLevel = Util::DEBUG;
 						if (!empty($logCondition['logfile'])) {
@@ -254,7 +253,6 @@ class Log implements ILogger {
 					}
 				}
 			}
-
 		} else {
 			$app = 'no app in context';
 		}
@@ -263,10 +261,10 @@ class Log implements ILogger {
 		 * check for a special log condition - this enables an increased log on
 		 * a per request/user base
 		 */
-		if($this->logConditionSatisfied === null) {
+		if ($this->logConditionSatisfied === null) {
 			// default to false to just process this once per request
 			$this->logConditionSatisfied = false;
-			if(!empty($logConditions)) {
+			if (!empty($logConditions)) {
 				foreach ($logConditions as $logCondition) {
 
 					// check for secret token in the request
@@ -304,12 +302,11 @@ class Log implements ILogger {
 		}
 
 		// if log condition is satisfied change the required log level to DEBUG
-		if($this->logConditionSatisfied) {
+		if ($this->logConditionSatisfied) {
 			$minLevel = Util::DEBUG;
 		}
 
 		if ($level >= $minLevel) {
-
 			$message = $this->interpolate($message, $context);
 
 			$logger = $this->logger;
@@ -323,8 +320,7 @@ class Log implements ILogger {
 	 * @param array $context
 	 * @return string
 	 */
-	protected function interpolate ($message, array $context) {
-
+	protected function interpolate($message, array $context) {
 		$replace = [];
 		foreach ($context as $key => $val) {
 			$replace['{' . $key . '}'] = $this->normalizer->format($val);
@@ -332,7 +328,6 @@ class Log implements ILogger {
 
 		// interpolate replacement values into the message and return
 		return \strtr($message, $replace);
-
 	}
 
 	/**

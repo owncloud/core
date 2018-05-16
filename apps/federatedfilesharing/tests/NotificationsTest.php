@@ -57,12 +57,11 @@ class NotificationsTest extends \Test\TestCase {
 		$this->httpClientService = $this->createMock(IClientService::class);
 		$this->addressHandler = $this->getMockBuilder(AddressHandler::class)
 			->disableOriginalConstructor()->getMock();
-
 	}
 
 	/**
 	 * get instance of Notifications class
-	 * 
+	 *
 	 * @param array $mockedMethods methods which should be mocked
 	 * @return Notifications | \PHPUnit_Framework_MockObject_MockObject
 	 */
@@ -136,7 +135,6 @@ class NotificationsTest extends \Test\TestCase {
 		$this->assertSame($expected,
 			$instance->sendUpdateToRemote($remote, $id, $token, 'unshare', ['data1Key' => 'data1Value'], $try)
 		);
-
 	}
 
 	public function dataTestSendUpdateToRemote() {
@@ -155,5 +153,4 @@ class NotificationsTest extends \Test\TestCase {
 			[0, ['success' => false, 'result' => \json_encode(['ocs' => ['meta' => ['statuscode' => 400]]])], false],
 		];
 	}
-
 }

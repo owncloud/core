@@ -40,7 +40,6 @@ use Symfony\Component\EventDispatcher\GenericEvent;
  * @group DB
  */
 class ApiTest extends TestCase {
-
 	const TEST_FOLDER_NAME = '/folder_share_api_test';
 
 	private static $tempStorage;
@@ -75,7 +74,7 @@ class ApiTest extends TestCase {
 	}
 
 	protected function tearDown() {
-		if($this->view instanceof \OC\Files\View) {
+		if ($this->view instanceof \OC\Files\View) {
 			$this->view->unlink($this->filename);
 			$this->view->deleteAll($this->folder);
 		}
@@ -92,7 +91,7 @@ class ApiTest extends TestCase {
 	private function createRequest(array $data) {
 		$request = $this->createMock(IRequest::class);
 		$request->method('getParam')
-			->will($this->returnCallback(function($param, $default = null) use ($data) {
+			->will($this->returnCallback(function ($param, $default = null) use ($data) {
 				if (isset($data[$param])) {
 					return $data[$param];
 				}
@@ -111,7 +110,7 @@ class ApiTest extends TestCase {
 
 		$l = $this->createMock(IL10N::class);
 		$l->method('t')
-			->will($this->returnCallback(function($text, $parameters = []) {
+			->will($this->returnCallback(function ($text, $parameters = []) {
 				return \vsprintf($text, $parameters);
 			}));
 
@@ -132,7 +131,7 @@ class ApiTest extends TestCase {
 	/**
 	 * @medium
 	 */
-	function testCreateShareUserFile() {
+	public function testCreateShareUserFile() {
 		// simulate a post request
 		$data['path'] = $this->filename;
 		$data['shareWith'] = self::TEST_FILES_SHARING_API_USER2;
@@ -163,7 +162,7 @@ class ApiTest extends TestCase {
 		$this->assertTrue($result->succeeded());
 	}
 
-	function testCreateShareUserFolder() {
+	public function testCreateShareUserFolder() {
 		// simulate a post request
 		$data['path'] = $this->folder;
 		$data['shareWith'] = self::TEST_FILES_SHARING_API_USER2;
@@ -186,7 +185,7 @@ class ApiTest extends TestCase {
 		$this->assertTrue($result->succeeded());
 	}
 
-	function testCreateShareGroupFile() {
+	public function testCreateShareGroupFile() {
 		// simulate a post request
 		$data['path'] = $this->filename;
 		$data['shareWith'] = self::TEST_FILES_SHARING_API_GROUP1;
@@ -209,7 +208,7 @@ class ApiTest extends TestCase {
 		$this->assertTrue($result->succeeded());
 	}
 
-	function testCreateShareGroupFolder() {
+	public function testCreateShareGroupFolder() {
 		// simulate a post request
 		$data['path'] = $this->folder;
 		$data['shareWith'] = self::TEST_FILES_SHARING_API_GROUP1;
@@ -297,8 +296,7 @@ class ApiTest extends TestCase {
 		$this->assertTrue($result->succeeded());
 	}
 
-	function testEnfoceLinkPassword() {
-
+	public function testEnfoceLinkPassword() {
 		$appConfig = \OC::$server->getAppConfig();
 		$appConfig->setValue('core', 'shareapi_enforce_links_password_read_only', 'yes');
 
@@ -365,7 +363,7 @@ class ApiTest extends TestCase {
 	/**
 	 * @medium
 	*/
-	function testSharePermissions() {
+	public function testSharePermissions() {
 		// sharing file to a user should work if shareapi_exclude_groups is set
 		// to no
 		\OC::$server->getAppConfig()->setValue('core', 'shareapi_exclude_groups', 'no');
@@ -430,7 +428,7 @@ class ApiTest extends TestCase {
 	/**
 	 * @medium
 	 */
-	function testGetAllShares() {
+	public function testGetAllShares() {
 		$node = $this->userFolder->get($this->filename);
 
 		$share = $this->shareManager->newShare();
@@ -452,7 +450,7 @@ class ApiTest extends TestCase {
 		$this->shareManager->deleteShare($share);
 	}
 
-	function testGetAllSharesWithMe() {
+	public function testGetAllSharesWithMe() {
 		$node1 = $this->userFolder->get($this->filename);
 		$share1 = $this->shareManager->newShare();
 		$share1->setNode($node1)
@@ -485,7 +483,7 @@ class ApiTest extends TestCase {
 	/**
 	 * @medium
 	 */
-	function testPublicLinkUrl() {
+	public function testPublicLinkUrl() {
 		// simulate a post request
 		$post['path'] = $this->folder;
 		$post['shareType'] = Share::SHARE_TYPE_LINK;
@@ -543,7 +541,7 @@ class ApiTest extends TestCase {
 	 * @depends testCreateShareUserFile
 	 * @depends testCreateShareLink
 	 */
-	function testGetShareFromSource() {
+	public function testGetShareFromSource() {
 		$node = $this->userFolder->get($this->filename);
 		$share = $this->shareManager->newShare();
 		$share->setNode($node)
@@ -577,7 +575,7 @@ class ApiTest extends TestCase {
 	 * @depends testCreateShareUserFile
 	 * @depends testCreateShareLink
 	 */
-	function testGetShareFromSourceWithReshares() {
+	public function testGetShareFromSourceWithReshares() {
 		$node = $this->userFolder->get($this->filename);
 		$share1 = $this->shareManager->newShare();
 		$share1->setNode($node)
@@ -622,7 +620,7 @@ class ApiTest extends TestCase {
 	 * @medium
 	 * @depends testCreateShareUserFile
 	 */
-	function testGetShareFromId() {
+	public function testGetShareFromId() {
 		$node = $this->userFolder->get($this->filename);
 		$share1 = $this->shareManager->newShare();
 		$share1->setNode($node)
@@ -647,7 +645,7 @@ class ApiTest extends TestCase {
 	/**
 	 * @medium
 	 */
-	function testGetShareFromFolder() {
+	public function testGetShareFromFolder() {
 		$node1 = $this->userFolder->get($this->filename);
 		$share1 = $this->shareManager->newShare();
 		$share1->setNode($node1)
@@ -677,7 +675,7 @@ class ApiTest extends TestCase {
 		$this->shareManager->deleteShare($share2);
 	}
 
-	function testGetShareFromFolderWithFile() {
+	public function testGetShareFromFolderWithFile() {
 		$node1 = $this->userFolder->get($this->filename);
 		$share1 = $this->shareManager->newShare();
 		$share1->setNode($node1)
@@ -702,7 +700,7 @@ class ApiTest extends TestCase {
 	 * share a folder, than reshare a file within the shared folder and check if we construct the correct path
 	 * @medium
 	 */
-	function testGetShareFromFolderReshares() {
+	public function testGetShareFromFolderReshares() {
 		$node1 = $this->userFolder->get($this->folder);
 		$share1 = $this->shareManager->newShare();
 		$share1->setNode($node1)
@@ -735,7 +733,6 @@ class ApiTest extends TestCase {
 				'expectedResult' => $this->folder . $this->subfolder . $this->filename],
 		];
 		foreach ($testValues as $value) {
-
 			$request = $this->createRequest(['path' => $value['query'], 'subfiles' => 'true']);
 			$ocs = $this->createOCS($request, self::TEST_FILES_SHARING_API_USER2);
 			$result = $ocs->getShares();
@@ -757,7 +754,7 @@ class ApiTest extends TestCase {
 	 * reshare a sub folder and check if we get the correct path
 	 * @medium
 	 */
-	function testGetShareFromSubFolderReShares() {
+	public function testGetShareFromSubFolderReShares() {
 		$node1 = $this->userFolder->get($this->folder . $this->subfolder);
 		$share1 = $this->shareManager->newShare();
 		$share1->setNode($node1)
@@ -796,7 +793,7 @@ class ApiTest extends TestCase {
 	 * test re-re-share of folder if the path gets constructed correctly
 	 * @medium
 	 */
-	function testGetShareFromFolderReReShares() {
+	public function testGetShareFromFolderReReShares() {
 		$node1 = $this->userFolder->get($this->folder . $this->subfolder);
 		$share1 = $this->shareManager->newShare();
 		$share1->setNode($node1)
@@ -876,7 +873,7 @@ class ApiTest extends TestCase {
 	 * test multiple shared folder if the path gets constructed correctly
 	 * @medium
 	 */
-	function testGetShareMultipleSharedFolder() {
+	public function testGetShareMultipleSharedFolder() {
 		$node1 = $this->userFolder->get($this->folder . $this->subfolder);
 		$share1 = $this->shareManager->newShare();
 		$share1->setNode($node1)
@@ -934,7 +931,7 @@ class ApiTest extends TestCase {
 	 * test re-re-share of folder if the path gets constructed correctly
 	 * @medium
 	 */
-	function testGetShareFromFileReReShares() {
+	public function testGetShareFromFileReReShares() {
 		$node1 = $this->userFolder->get($this->folder . $this->subfolder);
 		$share1 = $this->shareManager->newShare();
 		$share1->setNode($node1)
@@ -984,7 +981,7 @@ class ApiTest extends TestCase {
 	/**
 	 * @medium
 	 */
-	function testGetShareFromUnknownId() {
+	public function testGetShareFromUnknownId() {
 		$request = $this->createRequest(['path' => '/', 'subfiles' => 'true']);
 		$ocs = $this->createOCS($request, self::TEST_FILES_SHARING_API_USER3);
 		$result = $ocs->getShare(0);
@@ -1000,7 +997,7 @@ class ApiTest extends TestCase {
 	 * @depends testCreateShareUserFile
 	 * @depends testCreateShareLink
 	 */
-	function testUpdateShare() {
+	public function testUpdateShare() {
 		$node1 = $this->userFolder->get($this->filename);
 		$share1 = $this->shareManager->newShare();
 		$share1->setNode($node1)
@@ -1087,7 +1084,7 @@ class ApiTest extends TestCase {
 	/**
 	 * @medium
 	 */
-	function testUpdateShareUpload() {
+	public function testUpdateShareUpload() {
 		$node1 = $this->userFolder->get($this->folder);
 		$share1 = $this->shareManager->newShare();
 		$share1->setNode($node1)
@@ -1118,7 +1115,7 @@ class ApiTest extends TestCase {
 	/**
 	 * @medium
 	 */
-	function testUpdateShareExpireDate() {
+	public function testUpdateShareExpireDate() {
 		$node1 = $this->userFolder->get($this->folder);
 		$share1 = $this->shareManager->newShare();
 		$share1->setNode($node1)
@@ -1134,10 +1131,10 @@ class ApiTest extends TestCase {
 		$config->setAppValue('core', 'shareapi_enforce_expire_date', 'yes');
 
 		$dateWithinRange = new \DateTime();
-		$dateWithinRange->setTime(0,0,0);
+		$dateWithinRange->setTime(0, 0, 0);
 		$dateWithinRange->add(new \DateInterval('P5D'));
 		$dateOutOfRange = new \DateTime();
-		$dateOutOfRange->setTime(0,0,0);
+		$dateOutOfRange->setTime(0, 0, 0);
 		$dateOutOfRange->add(new \DateInterval('P8D'));
 
 		// update expire date to a valid value
@@ -1182,7 +1179,7 @@ class ApiTest extends TestCase {
 	 * @medium
 	 * @depends testCreateShareUserFile
 	 */
-	function testDeleteShare() {
+	public function testDeleteShare() {
 		$node1 = $this->userFolder->get($this->filename);
 		$share1 = $this->shareManager->newShare();
 		$share1->setNode($node1)
@@ -1216,7 +1213,7 @@ class ApiTest extends TestCase {
 	/**
 	 * test unshare of a reshared file
 	 */
-	function testDeleteReshare() {
+	public function testDeleteReshare() {
 		$node1 = $this->userFolder->get($this->folder);
 		$share1 = $this->shareManager->newShare();
 		$share1->setNode($node1)
@@ -1410,7 +1407,7 @@ class ApiTest extends TestCase {
 		$result = Share::shareItem('file', $info->getId(), Share::SHARE_TYPE_USER, self::TEST_FILES_SHARING_API_USER2, 31);
 		$this->assertTrue($result);
 
-		$result = Share::setExpirationDate('file', $info->getId() , $expireDate, $now);
+		$result = Share::setExpirationDate('file', $info->getId(), $expireDate, $now);
 		$this->assertTrue($result);
 
 		//manipulate stime so that both shares are older then the default expire date
@@ -1435,7 +1432,6 @@ class ApiTest extends TestCase {
 		$this->assertTrue($result);
 		$config->setAppValue('core', 'shareapi_default_expire_date', 'no');
 		$config->setAppValue('core', 'shareapi_enforce_expire_date', 'no');
-
 	}
 
 	public function datesProvider() {
@@ -1515,7 +1511,7 @@ class ApiTest extends TestCase {
 		$this->assertEquals($url, $data['url']);
 
 		$share = $this->shareManager->getShareById('ocinternal:'.$data['id']);
-		$date->setTime(0,0,0);
+		$date->setTime(0, 0, 0);
 		$this->assertEquals($date, $share->getExpirationDate());
 
 		$this->shareManager->deleteShare($share);

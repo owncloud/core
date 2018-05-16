@@ -49,9 +49,9 @@ class MetaFolder extends Collection {
 	/**
 	 * @inheritdoc
 	 */
-	function getChildren() {
+	public function getChildren() {
 		$nodes = $this->folder->getDirectoryListing();
-		return \array_map(function($node) {
+		return \array_map(function ($node) {
 			return $this->nodeFactory($node);
 		}, $nodes);
 	}
@@ -59,7 +59,7 @@ class MetaFolder extends Collection {
 	/**
 	 * @inheritdoc
 	 */
-	function getName() {
+	public function getName() {
 		return $this->folder->getName();
 	}
 
@@ -72,5 +72,4 @@ class MetaFolder extends Collection {
 		}
 		throw new \InvalidArgumentException();
 	}
-
 }

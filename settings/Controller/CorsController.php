@@ -160,5 +160,4 @@ class CorsController extends Controller {
 	private static function isValidUrl($url) {
 		return (\filter_var($url, FILTER_VALIDATE_URL) !== false);
 	}
-
 }

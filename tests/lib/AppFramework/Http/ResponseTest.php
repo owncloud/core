@@ -37,12 +37,12 @@ class ResponseTest extends TestCase {
 	 */
 	private $childResponse;
 
-	protected function setUp(){
+	protected function setUp() {
 		parent::setUp();
 		$this->childResponse = new Response();
 	}
 
-	public function testAddHeader(){
+	public function testAddHeader() {
 		$this->childResponse->addHeader(' hello ', 'world');
 		$headers = $this->childResponse->getHeaders();
 		$this->assertEquals('world', $headers['hello']);
@@ -87,13 +87,13 @@ class ResponseTest extends TestCase {
 		$this->assertNull($this->childResponse->getContentSecurityPolicy());
 	}
 
-	public function testAddHeaderValueNullDeletesIt(){
+	public function testAddHeaderValueNullDeletesIt() {
 		$this->childResponse->addHeader('hello', 'world');
 		$this->childResponse->addHeader('hello', null);
 		$this->assertCount(2, $this->childResponse->getHeaders());
 	}
 
-	public function testCacheHeadersAreDisabledByDefault(){
+	public function testCacheHeadersAreDisabledByDefault() {
 		$headers = $this->childResponse->getHeaders();
 		$this->assertEquals('no-cache, must-revalidate', $headers['Cache-Control']);
 	}
@@ -115,7 +115,7 @@ class ResponseTest extends TestCase {
 		$this->assertEquals($expectedResponse, $this->childResponse->getCookies());
 	}
 
-	function testSetCookies() {
+	public function testSetCookies() {
 		$expected = [
 			'foo' => [
 				'value' => 'bar',
@@ -133,7 +133,7 @@ class ResponseTest extends TestCase {
 		$this->assertEquals($expected, $cookies);
 	}
 
-	function testInvalidateCookie() {
+	public function testInvalidateCookie() {
 		$this->childResponse->addCookie('foo', 'bar');
 		$this->childResponse->invalidateCookie('foo');
 		$expected = [
@@ -148,7 +148,7 @@ class ResponseTest extends TestCase {
 		$this->assertEquals($expected, $cookies);
 	}
 
-	function testInvalidateCookies() {
+	public function testInvalidateCookies() {
 		$this->childResponse->addCookie('foo', 'bar');
 		$this->childResponse->addCookie('bar', 'foo');
 		$expected = [
@@ -180,7 +180,7 @@ class ResponseTest extends TestCase {
 		$this->assertEquals($expected, $cookies);
 	}
 
-	public function testRenderReturnNullByDefault(){
+	public function testRenderReturnNullByDefault() {
 		$this->assertNull($this->childResponse->render());
 	}
 
@@ -246,7 +246,5 @@ class ResponseTest extends TestCase {
 		$this->assertEquals('Thu, 01 Jan 1970 00:00:01 +0000', $headers['Last-Modified']);
 		$this->assertEquals('max-age=33, must-revalidate',
 			$headers['Cache-Control']);
-
 	}
-
 }

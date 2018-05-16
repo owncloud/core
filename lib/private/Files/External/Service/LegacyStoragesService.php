@@ -101,7 +101,7 @@ class LegacyStoragesService {
 				$applicableUsers[] = $applicable;
 				$storageConfig->setApplicableUsers($applicableUsers);
 			}
-		} else if ($mountType === LegacyUtil::MOUNT_TYPE_GROUP) {
+		} elseif ($mountType === LegacyUtil::MOUNT_TYPE_GROUP) {
 			$applicableGroups = $storageConfig->getApplicableGroups();
 			$applicableGroups[] = $applicable;
 			$storageConfig->setApplicableGroups($applicableGroups);
@@ -189,7 +189,7 @@ class LegacyStoragesService {
 							$currentStorage = $storagesWithConfigHash[$configId];
 						}
 					}
-					if (\is_null($currentStorage)) {
+					if ($currentStorage === null) {
 						// create new
 						$currentStorage = new StorageConfig($configId);
 						$currentStorage->setMountPoint($relativeMountPath);

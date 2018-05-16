@@ -109,7 +109,7 @@ if (isset($_POST['action'], $_POST['itemType'], $_POST['itemSource'])) {
 
 			$userManager = \OC::$server->getUserManager();
 			$recipientList = [];
-			if($shareType === \OCP\Share::SHARE_TYPE_USER) {
+			if ($shareType === \OCP\Share::SHARE_TYPE_USER) {
 				$recipientList[] = $userManager->get($recipient);
 			} elseif ($shareType === \OCP\Share::SHARE_TYPE_GROUP) {
 				$recipientList = usersInGroup($recipient);
@@ -117,7 +117,7 @@ if (isset($_POST['action'], $_POST['itemType'], $_POST['itemSource'])) {
 				$recipientList = $group->searchUsers('');
 			}
 			// don't send a mail to the user who shared the file
-			$recipientList = \array_filter($recipientList, function($user) {
+			$recipientList = \array_filter($recipientList, function ($user) {
 				/** @var IUser $user */
 				return $user->getUID() !== \OCP\User::getUser();
 			});
@@ -216,7 +216,7 @@ if (isset($_POST['action'], $_POST['itemType'], $_POST['itemSource'])) {
 				$options
 			);
 
-			if(empty($result)) {
+			if (empty($result)) {
 				// Get the token from the link
 				$linkParts = \explode('/', $filter->getLink());
 				$token = \array_pop($linkParts);
@@ -262,7 +262,7 @@ if (isset($_POST['action'], $_POST['itemType'], $_POST['itemSource'])) {
 
 			break;
 	}
-} else if (isset($_GET['fetch'])) {
+} elseif (isset($_GET['fetch'])) {
 	switch ($_GET['fetch']) {
 		case 'getItemsSharedStatuses':
 			if (isset($_GET['itemType'])) {
@@ -328,7 +328,7 @@ if (isset($_POST['action'], $_POST['itemType'], $_POST['itemSource'])) {
 							$emails = [$emails];
 						}
 
-						foreach($emails as $email) {
+						foreach ($emails as $email) {
 							$result[] = [
 								'email' => $email,
 								'displayname' => $contact['FN'],
@@ -346,7 +346,7 @@ if (isset($_POST['action'], $_POST['itemType'], $_POST['itemSource'])) {
 				$groups = getGroups((string)$_GET['search']);
 				if ($shareWithinGroupOnly) {
 					$usergroups = \OC::$server->getGroupManager()->getUserIdGroups(OC_User::getUser());
-					$usergroups = \array_values(\array_map(function(\OCP\IGroup $g) {
+					$usergroups = \array_values(\array_map(function (\OCP\IGroup $g) {
 						return $g->getGID();
 					}, $usergroups));
 					$groups = \array_intersect($groups, $usergroups);
@@ -463,7 +463,7 @@ if (isset($_POST['action'], $_POST['itemType'], $_POST['itemSource'])) {
 
 				if ($sharingAutocompletion !== 'yes') {
 					$searchTerm = \strtolower($_GET['search']);
-					$shareWith = \array_filter($shareWith, function($user) use ($searchTerm) {
+					$shareWith = \array_filter($shareWith, function ($user) use ($searchTerm) {
 						return \strtolower($user['label']) === $searchTerm
 							|| \strtolower($user['value']['shareWith']) === $searchTerm;
 					});

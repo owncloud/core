@@ -79,4 +79,3 @@ interface IScanner {
 	 */
 	public function backgroundScan();
 }
-

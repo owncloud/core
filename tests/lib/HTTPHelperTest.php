@@ -46,7 +46,7 @@ class HTTPHelperTest extends \Test\TestCase {
 	 * @dataProvider isHttpTestData
 	 */
 	public function testIsHTTP($url, $expected) {
-			$this->assertSame($expected, $this->httpHelperMock->isHTTPURL($url));
+		$this->assertSame($expected, $this->httpHelperMock->isHTTPURL($url));
 	}
 
 	public function testPostSuccess() {
@@ -114,5 +114,4 @@ class HTTPHelperTest extends \Test\TestCase {
 		];
 		$this->assertSame($expected, $response);
 	}
-
 }

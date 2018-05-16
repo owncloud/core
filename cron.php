@@ -32,7 +32,6 @@
  */
 
 try {
-
 	require_once __DIR__ . '/lib/base.php';
 
 	if (\OCP\Util::needUpgrade()) {
@@ -130,7 +129,6 @@ try {
 				break;
 			}
 		}
-
 	} else {
 		// We call cron.php from some website
 		if ($appMode == 'cron') {
@@ -153,7 +151,6 @@ try {
 		\OC::$server->getConfig()->setAppValue('core', 'lastcron', \time());
 	}
 	exit();
-
 } catch (Exception $ex) {
 	\OCP\Util::writeLog('cron', $ex->getMessage(), \OCP\Util::FATAL);
 } catch (Error $ex) {

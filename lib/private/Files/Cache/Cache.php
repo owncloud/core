@@ -135,7 +135,7 @@ class Cache implements ICache {
 		}
 
 		//merge partial data
-		if($data) {
+		if ($data) {
 			//fix types
 			$data['fileid'] = (int)$data['fileid'];
 			$data['parent'] = (int)$data['parent'];
@@ -152,14 +152,14 @@ class Cache implements ICache {
 			}
 			$data['permissions'] = (int)$data['permissions'];
 			// Oracle stores empty strings as null...
-			if (\is_null($data['name'])) {
+			if ($data['name'] === null) {
 				$data['name'] = '';
 			}
-			if (\is_null($data['path'])) {
+			if ($data['path'] === null) {
 				$data['path'] = '';
 			}
 			return new CacheEntry($data);
-		} else if (!$data and \is_string($file)) {
+		} elseif (!$data and \is_string($file)) {
 			if (isset($this->partial[$file])) {
 				$data = $this->partial[$file];
 			}
@@ -280,7 +280,6 @@ class Cache implements ICache {
 		// Now return the id for this row - crappy that we have to select here
 		// GetID should already return a value if upsert returned a positive value
 		return (int)$this->getId($file);
-
 	}
 
 	/**
@@ -290,7 +289,6 @@ class Cache implements ICache {
 	 * @param array $data [$key => $value] the metadata to update, only the fields provided in the array will be updated, non-provided values will remain unchanged
 	 */
 	public function update($id, array $data) {
-
 		if (isset($data['path'])) {
 			// normalize path
 			$data['path'] = $this->normalize($data['path']);
@@ -315,7 +313,6 @@ class Cache implements ICache {
 			\implode(' IS NULL OR ', $queryParts) . ' IS NULL' .
 			') AND `fileid` = ? ';
 		$this->connection->executeQuery($sql, $params);
-
 	}
 
 	/**
@@ -355,7 +352,7 @@ class Cache implements ICache {
 						$queryParts[] = '`mtime`';
 					}
 				} elseif ($name === 'encrypted') {
-					if(isset($data['encryptedVersion'])) {
+					if (isset($data['encryptedVersion'])) {
 						$value = $data['encryptedVersion'];
 					} else {
 						// Boolean to integer conversion
@@ -513,10 +510,10 @@ class Cache implements ICache {
 			list($sourceStorageId, $sourcePath) = $sourceCache->getMoveInfo($sourcePath);
 			list($targetStorageId, $targetPath) = $this->getMoveInfo($targetPath);
 
-			if (\is_null($sourceStorageId) || $sourceStorageId === false) {
+			if ($sourceStorageId === null || $sourceStorageId === false) {
 				throw new \Exception('Invalid source storage id: ' . $sourceStorageId);
 			}
-			if (\is_null($targetStorageId) || $targetStorageId === false) {
+			if ($targetStorageId === null || $targetStorageId === false) {
 				throw new \Exception('Invalid target storage id: ' . $targetStorageId);
 			}
 
@@ -613,7 +610,7 @@ class Cache implements ICache {
 			$row['mimepart'] = $this->mimetypeLoader->getMimetypeById($row['mimepart']);
 			$files[] = $row;
 		}
-		return \array_map(function(array $data) {
+		return \array_map(function (array $data) {
 			return new CacheEntry($data);
 		}, $files);
 	}
@@ -719,7 +716,7 @@ class Cache implements ICache {
 	 */
 	public function calculateFolderSize($path, $entry = null) {
 		$totalSize = 0;
-		if (\is_null($entry) or !isset($entry['fileid'])) {
+		if ($entry === null or !isset($entry['fileid'])) {
 			$entry = $this->get($path);
 		}
 		if (isset($entry['mimetype']) && $entry['mimetype'] === 'httpd/unix-directory') {
@@ -816,7 +813,7 @@ class Cache implements ICache {
 	 * @deprecated use getPathById() instead
 	 * @return array first element holding the storage id, second the path
 	 */
-	static public function getById($id) {
+	public static function getById($id) {
 		$connection = \OC::$server->getDatabaseConnection();
 		$sql = 'SELECT `storage`, `path` FROM `*PREFIX*filecache` WHERE `fileid` = ?';
 		$result = $connection->executeQuery($sql, [$id]);
@@ -841,7 +838,6 @@ class Cache implements ICache {
 	 * @return string
 	 */
 	public function normalize($path) {
-
 		return \trim(\OC_Util::normalizeUnicode($path), '/');
 	}
 }

@@ -53,7 +53,7 @@ $defaults = new OC_Defaults();
 
 // Get the config
 $apps_paths = [];
-foreach(OC_App::getEnabledApps() as $app) {
+foreach (OC_App::getEnabledApps() as $app) {
 	$apps_paths[$app] = OC_App::getAppWebPath($app);
 }
 
@@ -76,7 +76,7 @@ $countOfDataLocation = 0;
 $value = $config->getAppValue('core', 'shareapi_enable_link_password_by_default', 'no');
 
 $dataLocation = \str_replace(OC::$SERVERROOT .'/', '', $config->getSystemValue('datadirectory', ''), $countOfDataLocation);
-if($countOfDataLocation !== 1 || !OC_User::isAdminUser(OC_User::getUser())){
+if ($countOfDataLocation !== 1 || !OC_User::isAdminUser(OC_User::getUser())) {
 	$dataLocation = false;
 }
 

@@ -27,11 +27,11 @@ class UtilTest extends \Test\TestCase {
 		\OCP\Contacts::clear();
 	}
 	
-	 /**
-	 * @dataProvider channelProvider
-	 *
-	 * @param string $channel
-	 */
+	/**
+	* @dataProvider channelProvider
+	*
+	* @param string $channel
+	*/
 	public function testOverrideChannel($channel) {
 		\OCP\Util::setChannel($channel);
 		$actual = \OCP\Util::getChannel($channel);

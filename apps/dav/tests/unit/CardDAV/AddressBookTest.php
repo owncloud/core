@@ -28,7 +28,6 @@ use Sabre\DAV\PropPatch;
 use Test\TestCase;
 
 class AddressBookTest extends TestCase {
-
 	public function testDelete() {
 		/** @var \PHPUnit_Framework_MockObject_MockObject | CardDavBackend $backend */
 		$backend = $this->getMockBuilder('OCA\DAV\CardDAV\CardDavBackend')->disableOriginalConstructor()->getMock();
@@ -91,7 +90,7 @@ class AddressBookTest extends TestCase {
 			'id' => 666,
 			'uri' => 'default'
 		];
-		if (!\is_null($readOnlyValue)) {
+		if ($readOnlyValue !== null) {
 			$calendarInfo['{http://owncloud.org/ns}read-only'] = $readOnlyValue;
 		}
 		if ($hasOwnerSet) {
@@ -137,4 +136,5 @@ class AddressBookTest extends TestCase {
 			'read-only property is false and no owner' => [true, false, false],
 			'read-only property is true and no owner' => [false, true, false],
 		];
-	}}
+	}
+}

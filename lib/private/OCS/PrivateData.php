@@ -42,7 +42,7 @@ class PrivateData {
 		$app = \addslashes(\strip_tags($parameters['app']));
 		$key = isset($parameters['key']) ? \addslashes(\strip_tags($parameters['key'])) : null;
 		
-		if(empty($key)) {
+		if (empty($key)) {
 			$query = \OCP\DB::prepare('SELECT `key`, `app`, `value`  FROM `*PREFIX*privatedata` WHERE `user` = ? AND `app` = ? ');
 			$result = $query->execute([$user, $app]);
 		} else {
@@ -56,7 +56,7 @@ class PrivateData {
 			$data['key']=$row['key'];
 			$data['app']=$row['app'];
 			$data['value']=$row['value'];
-		 	$xml[] = $data;
+			$xml[] = $data;
 		}
 
 		return new Result($xml);
@@ -77,7 +77,7 @@ class PrivateData {
 		// update in DB
 		$query = \OCP\DB::prepare('UPDATE `*PREFIX*privatedata` SET `value` = ?  WHERE `user` = ? AND `app` = ? AND `key` = ?');
 		$numRows = $query->execute([$value, $user, $app, $key]);
-                
+				
 		if ($numRows === false || $numRows === 0) {
 			// store in DB
 			$query = \OCP\DB::prepare('INSERT INTO `*PREFIX*privatedata` (`user`, `app`, `key`, `value`)' . ' VALUES(?, ?, ?, ?)');
@@ -110,4 +110,3 @@ class PrivateData {
 		return new Result(null, 100);
 	}
 }
-

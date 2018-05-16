@@ -225,7 +225,7 @@ trait Trashbin {
 		$user, $entryText, $originalPath
 	) {
 		PHPUnit_Framework_Assert::assertFalse(
-			$this->isInTrash($user, $entryText, $originalPath), 
+			$this->isInTrash($user, $entryText, $originalPath),
 			"File previously located at $originalPath was found in the trashbin"
 		);
 	}

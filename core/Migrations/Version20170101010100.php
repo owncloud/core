@@ -28,7 +28,6 @@ use OCP\Migration\ISchemaMigration;
  * Migration from stable8.2 to stable9
  */
 class Version20170101010100 implements ISchemaMigration {
-
 	public function changeSchema(Schema $schema, array $options) {
 		$prefix = $options['tablePrefix'];
 
@@ -1085,7 +1084,6 @@ class Version20170101010100 implements ISchemaMigration {
 
 			$systemTagTable->setPrimaryKey(['id']);
 			$systemTagTable->addUniqueIndex(['name', 'visibility', 'editable'], 'tag_ident');
-
 		}
 
 		if (!$schema->hasTable("${prefix}systemtag_object_mapping")) {
@@ -1120,7 +1118,6 @@ class Version20170101010100 implements ISchemaMigration {
 			);
 
 			$systemTagObjectMappingTable->addUniqueIndex(['objecttype', 'objectid', 'systemtagid'], 'mapping');
-
 		}
 
 		if ($schema->hasTable("${prefix}file_map")) {
@@ -1141,7 +1138,6 @@ class Version20170101010100 implements ISchemaMigration {
 					]
 				);
 			}
-
 		}
 
 		if ($schema->hasTable("${prefix}share")) {

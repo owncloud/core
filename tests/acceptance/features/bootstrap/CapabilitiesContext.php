@@ -32,7 +32,6 @@ require_once 'bootstrap.php';
  * Capabilities context.
  */
 class CapabilitiesContext implements Context, SnippetAcceptingContext {
-
 	use BasicStructure;
 
 	/**
@@ -55,7 +54,6 @@ class CapabilitiesContext implements Context, SnippetAcceptingContext {
 				),
 				"Failed field " . $row['capability'] . " " . $row['path_to_element']
 			);
-
 		}
 	}
 

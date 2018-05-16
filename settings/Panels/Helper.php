@@ -21,8 +21,7 @@
 
 namespace OC\Settings\Panels;
 
-class Helper  {
-
+class Helper {
 	public function getStorageInfo($path) {
 		return \OC_Helper::getStorageInfo($path);
 	}
@@ -62,5 +61,4 @@ class Helper  {
 	public function getMountDepMessage($backends) {
 		return \OC_Mount_Config::dependencyMessage($backends);
 	}
-
 }

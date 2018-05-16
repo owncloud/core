@@ -57,7 +57,7 @@ use Symfony\Component\EventDispatcher\GenericEvent;
 use OC\Repair\MoveAvatarOutsideHome;
 use OC\Repair\RepairMismatchFileCachePath;
 
-class Repair implements IOutput{
+class Repair implements IOutput {
 	/* @var IRepairStep[] */
 	private $repairSteps;
 	/** @var EventDispatcher */
@@ -214,7 +214,7 @@ class Repair implements IOutput{
 	 * @param array $arguments
 	 */
 	public function emit($scope, $method, array $arguments = []) {
-		if (!\is_null($this->dispatcher)) {
+		if ($this->dispatcher !== null) {
 			$this->dispatcher->dispatch("$scope::$method",
 				new GenericEvent("$scope::$method", $arguments));
 		}

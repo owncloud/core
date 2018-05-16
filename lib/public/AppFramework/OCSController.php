@@ -62,7 +62,7 @@ abstract class OCSController extends ApiController {
 								IRequest $request,
 								$corsMethods='PUT, POST, GET, DELETE, PATCH',
 								$corsAllowedHeaders='Authorization, Content-Type, Accept',
-								$corsMaxAge=1728000){
+								$corsMaxAge=1728000) {
 		parent::__construct($appName, $request, $corsMethods,
 							$corsAllowedHeaders, $corsMaxAge);
 		$this->registerResponder('json', function ($data) {
@@ -128,9 +128,9 @@ abstract class OCSController extends ApiController {
 	 * @return Response
 	 * @since 7.0.0
 	 */
-	function buildResponse($response, $format = 'json') {
+	public function buildResponse($response, $format = 'json') {
 		$format = $this->request->getParam('format');
-		if (\is_null($format)) {
+		if ($format === null) {
 			$format = 'xml';
 		}
 		/** @var OCSResponse $resp */
@@ -139,7 +139,7 @@ abstract class OCSController extends ApiController {
 
 		if (\substr($script, -11) === '/ocs/v2.php') {
 			$statusCode = \OC_API::mapStatusCodes($resp->getStatusCode());
-			if (!\is_null($statusCode)) {
+			if ($statusCode !== null) {
 				// HTTP code
 				$resp->setStatus($statusCode);
 				// OCS code

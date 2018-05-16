@@ -168,7 +168,7 @@ class MailNotifications {
 							$this->defaults->getName()
 						]),
 					]);
-				if(!\is_null($this->replyTo)) {
+				if ($this->replyTo !== null) {
 					$message->setReplyTo([$this->replyTo]);
 				}
 
@@ -180,7 +180,6 @@ class MailNotifications {
 		}
 
 		return $noMail;
-
 	}
 
 	public function sendLinkShareMail($recipient, $filename, $link, $expiration, $personalNote = null, $options = []) {
@@ -201,7 +200,6 @@ class MailNotifications {
 	 * @return string[] $result of failed recipients
 	 */
 	public function sendLinkShareMailFromBody($recipient, $subject, $htmlBody, $textBody, $options = []) {
-
 		$recipients = [];
 		if ($recipient !== null) {
 			$recipients    = $this->_mailStringToArray($recipient);
@@ -230,7 +228,7 @@ class MailNotifications {
 						$this->defaults->getName()
 					]),
 			]);
-			if(!\is_null($this->replyTo)) {
+			if ($this->replyTo !== null) {
 				$message->setReplyTo([$this->replyTo]);
 			}
 
@@ -258,7 +256,7 @@ class MailNotifications {
 		$html->assign('link', $link);
 		$html->assign('user_displayname', $this->senderDisplayName);
 		$html->assign('filename', $filename);
-		$html->assign('expiration',  $formattedDate);
+		$html->assign('expiration', $formattedDate);
 		if ($personalNote !== null && $personalNote !== '') {
 			$html->assign('personal_note', $personalNote);
 		}
@@ -286,5 +284,4 @@ class MailNotifications {
 	protected function getItemSharedWithUser($itemSource, $itemType, $recipient) {
 		return Share::getItemSharedWithUser($itemType, $itemSource, $recipient->getUID());
 	}
-
 }

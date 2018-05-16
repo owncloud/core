@@ -64,7 +64,6 @@ class HooksTest extends TestCase {
 		}
 
 		$this->hooks->addServerHook(['server' => 'url']);
-
 	}
 
 	public function dataTestAddServerHook() {

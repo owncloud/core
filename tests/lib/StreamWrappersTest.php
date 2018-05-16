@@ -28,7 +28,6 @@ namespace Test;
  * @group DB
  */
 class StreamWrappersTest extends \Test\TestCase {
-
 	private static $trashBinStatus;
 
 	public static function setUpBeforeClass() {
@@ -70,7 +69,9 @@ class StreamWrappersTest extends \Test\TestCase {
 		$tmpFile = \OC::$server->getTempManager()->getTemporaryFile('.txt');
 		$file = 'close://' . $tmpFile;
 		$actual = false;
-		$callback = function($path) use (&$actual) { $actual = $path; };
+		$callback = function ($path) use (&$actual) {
+			$actual = $path;
+		};
 		\OC\Files\Stream\Close::registerCallback($tmpFile, $callback);
 		$fh = \fopen($file, 'w');
 		\fwrite($fh, 'asd');

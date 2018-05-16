@@ -95,4 +95,3 @@ class TagService {
 		return $tags;
 	}
 }
-

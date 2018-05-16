@@ -93,7 +93,7 @@ class DisableExtraThemes implements IRepairStep {
 		$appTypes = $this->appConfig->getValues(false, 'types');
 		$allThemes = \array_filter(
 			$appTypes,
-			function ($appTypes){
+			function ($appTypes) {
 				return \in_array('theme', \explode(',', $appTypes));
 			}
 		);

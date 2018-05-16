@@ -70,7 +70,7 @@ abstract class Controller {
 	 * @since 6.0.0 - parameter $appName was added in 7.0.0 - parameter $app was removed in 7.0.0
 	 */
 	public function __construct($appName,
-	                            IRequest $request) {
+								IRequest $request) {
 		$this->appName = $appName;
 		$this->request = $request;
 
@@ -141,12 +141,10 @@ abstract class Controller {
 	 * @since 7.0.0
 	 */
 	public function buildResponse($response, $format='json') {
-		if(\array_key_exists($format, $this->responders)) {
-
+		if (\array_key_exists($format, $this->responders)) {
 			$responder = $this->responders[$format];
 
 			return $responder($response);
-
 		} else {
 			throw new \DomainException('No responder registered for format ' .
 				$format . '!');
@@ -166,7 +164,7 @@ abstract class Controller {
 	 * @return mixed the content of the array
 	 * @since 6.0.0
 	 */
-	public function params($key, $default=null){
+	public function params($key, $default=null) {
 		return $this->request->getParam($key, $default);
 	}
 
@@ -236,16 +234,15 @@ abstract class Controller {
 	 * @since 6.0.0
 	 */
 	public function render($templateName, array $params= [],
-							$renderAs='user', array $headers= []){
+							$renderAs='user', array $headers= []) {
 		$response = new TemplateResponse($this->appName, $templateName);
 		$response->setParams($params);
 		$response->renderAs($renderAs);
 
-		foreach($headers as $name => $value){
+		foreach ($headers as $name => $value) {
 			$response->addHeader($name, $value);
 		}
 
 		return $response;
 	}
-
 }

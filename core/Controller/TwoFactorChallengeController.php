@@ -119,7 +119,7 @@ class TwoFactorChallengeController extends Controller {
 	public function showChallenge($challengeProviderId, $redirect_url) {
 		$user = $this->userSession->getUser();
 		$provider = $this->twoFactorManager->getProvider($user, $challengeProviderId);
-		if (\is_null($provider)) {
+		if ($provider === null) {
 			return new RedirectResponse($this->urlGenerator->linkToRoute('core.TwoFactorChallenge.selectChallenge'));
 		}
 
@@ -149,7 +149,7 @@ class TwoFactorChallengeController extends Controller {
 			$response->setContentSecurityPolicy($provider->getCSP());
 		}
 		return $response;
-	}	
+	}
 
 	/**
 	 * @NoAdminRequired
@@ -164,13 +164,13 @@ class TwoFactorChallengeController extends Controller {
 	public function solveChallenge($challengeProviderId, $challenge, $redirect_url = null) {
 		$user = $this->userSession->getUser();
 		$provider = $this->twoFactorManager->getProvider($user, $challengeProviderId);
-		if (\is_null($provider)) {
+		if ($provider === null) {
 			return new RedirectResponse($this->urlGenerator->linkToRoute('core.TwoFactorChallenge.selectChallenge'));
 		}
 
 		try {
 			if ($this->twoFactorManager->verifyChallenge($challengeProviderId, $user, $challenge)) {
-				if (!\is_null($redirect_url)) {
+				if ($redirect_url !== null) {
 					return new RedirectResponse($this->urlGenerator->getAbsoluteURL(\urldecode($redirect_url)));
 				}
 				return new RedirectResponse($this->urlGenerator->linkToRoute('files.view.index'));
@@ -191,5 +191,4 @@ class TwoFactorChallengeController extends Controller {
 			'redirect_url' => $redirect_url,
 		]));
 	}
-
 }

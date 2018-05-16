@@ -241,7 +241,7 @@ class DbHandler {
 		$query->update($this->dbTable)
 				->set('status', $query->createNamedParameter($status))
 				->where($query->expr()->eq('url_hash', $query->createNamedParameter($hash)));
-		if (!\is_null($token)) {
+		if ($token !== null) {
 			$query->set('sync_token', $query->createNamedParameter($token));
 		}
 		$query->execute();
@@ -286,7 +286,7 @@ class DbHandler {
 
 		if (\strpos($url, 'https://') === 0) {
 			$normalized = \substr($url, \strlen('https://'));
-		} else if (\strpos($url, 'http://') === 0) {
+		} elseif (\strpos($url, 'http://') === 0) {
 			$normalized = \substr($url, \strlen('http://'));
 		}
 
@@ -312,5 +312,4 @@ class DbHandler {
 		$result = $query->execute()->fetch();
 		return !empty($result);
 	}
-
 }
