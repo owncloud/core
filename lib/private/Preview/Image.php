@@ -56,7 +56,7 @@ abstract class Image extends Provider {
 		$image->loadFromFile($fileName);
 		$image->fixOrientation();
 		if ($useTempFile) {
-			unlink($fileName);
+			\unlink($fileName);
 		}
 		if ($image->valid()) {
 			$image->scaleDownToFit($maxX, $maxY);
@@ -65,5 +65,4 @@ abstract class Image extends Provider {
 		}
 		return false;
 	}
-
 }

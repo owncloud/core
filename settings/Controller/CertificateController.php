@@ -100,7 +100,7 @@ class CertificateController extends Controller {
 		}
 
 		try {
-			$certificate = $certificateManager->addCertificate(file_get_contents($file['tmp_name']), $file['name']);
+			$certificate = $certificateManager->addCertificate(\file_get_contents($file['tmp_name']), $file['name']);
 			return new DataResponse(
 				[
 					'name' => $certificate->getName(),
@@ -130,7 +130,6 @@ class CertificateController extends Controller {
 	 * @return DataResponse
 	 */
 	public function removePersonalRootCertificate($certificateIdentifier) {
-
 		if ($this->isCertificateImportAllowed() === false) {
 			return new DataResponse('Individual certificate management disabled', Http::STATUS_FORBIDDEN);
 		}
@@ -172,7 +171,6 @@ class CertificateController extends Controller {
 	 * @return DataResponse
 	 */
 	public function removeSystemRootCertificate($certificateIdentifier) {
-
 		if ($this->isCertificateImportAllowed() === false) {
 			return new DataResponse('Individual certificate management disabled', Http::STATUS_FORBIDDEN);
 		}

@@ -61,8 +61,8 @@ class FileCacheTest extends TestCache {
 		$this->storage = \OC\Files\Filesystem::getStorage('/');
 		\OC\Files\Filesystem::clearMounts();
 		$storage = new \OC\Files\Storage\Temporary([]);
-		\OC\Files\Filesystem::mount($storage, [],'/');
-		$datadir = str_replace('local::', '', $storage->getId());
+		\OC\Files\Filesystem::mount($storage, [], '/');
+		$datadir = \str_replace('local::', '', $storage->getId());
 		$config = \OC::$server->getConfig();
 		$this->datadir = $config->getSystemValue('cachedirectory', \OC::$SERVERROOT.'/data/cache');
 		$config->setSystemValue('cachedirectory', $datadir);
@@ -129,7 +129,7 @@ class FileCacheTest extends TestCache {
 
 		$mockStorage->expects($this->atLeastOnce())
 			->method('filemtime')
-			->will($this->returnValue(time() + 3600));
+			->will($this->returnValue(\time() + 3600));
 		$mockStorage->expects($this->never())
 			->method('unlink')
 			->with('key1');

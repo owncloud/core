@@ -63,7 +63,7 @@ class DiscoveryManager {
 	 * @return bool
 	 */
 	private function isSafeUrl($url) {
-		return (bool)preg_match('/^[\/\.A-Za-z0-9]+$/', $url);
+		return (bool)\preg_match('/^[\/\.A-Za-z0-9]+$/', $url);
 	}
 
 	/**
@@ -77,8 +77,8 @@ class DiscoveryManager {
 	 */
 	private function discover($remote) {
 		// Check if something is in the cache
-		if($cacheData = $this->cache->get($remote)) {
-			return json_decode($cacheData, true);
+		if ($cacheData = $this->cache->get($remote)) {
+			return \json_decode($cacheData, true);
 		}
 
 		// Default response body
@@ -87,7 +87,7 @@ class DiscoveryManager {
 			'share' => '/ocs/v1.php/cloud/shares',
 		];
 
-		if (defined('PHPUNIT_RUN') && !$this->underTest) {
+		if (\defined('PHPUNIT_RUN') && !$this->underTest) {
 			return $discoveredServices;
 		}
 		// Read the data from the response body
@@ -96,18 +96,18 @@ class DiscoveryManager {
 				'timeout' => 10,
 				'connect_timeout' => 10,
 			]);
-			if($response->getStatusCode() === 200) {
-				$decodedService = json_decode($response->getBody(), true);
-				if(is_array($decodedService)) {
+			if ($response->getStatusCode() === 200) {
+				$decodedService = \json_decode($response->getBody(), true);
+				if (\is_array($decodedService)) {
 					$endpoints = [
 						'webdav',
 						'share',
 					];
 
-					foreach($endpoints as $endpoint) {
-						if(isset($decodedService['services']['FEDERATED_SHARING']['endpoints'][$endpoint])) {
+					foreach ($endpoints as $endpoint) {
+						if (isset($decodedService['services']['FEDERATED_SHARING']['endpoints'][$endpoint])) {
 							$endpointUrl = (string)$decodedService['services']['FEDERATED_SHARING']['endpoints'][$endpoint];
-							if($this->isSafeUrl($endpointUrl)) {
+							if ($this->isSafeUrl($endpointUrl)) {
 								$discoveredServices[$endpoint] = $endpointUrl;
 							}
 						}
@@ -121,7 +121,7 @@ class DiscoveryManager {
 		}
 
 		// Write into cache
-		$this->cache->set($remote, json_encode($discoveredServices));
+		$this->cache->set($remote, \json_encode($discoveredServices));
 		return $discoveredServices;
 	}
 

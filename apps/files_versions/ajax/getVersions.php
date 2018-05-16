@@ -30,17 +30,16 @@ OCP\JSON::checkAppEnabled('files_versions');
 
 $source = (string)$_GET['source'];
 $start = (int)$_GET['start'];
-list ($uid, $filename) = OCA\Files_Versions\Storage::getUidAndFilename($source);
+list($uid, $filename) = OCA\Files_Versions\Storage::getUidAndFilename($source);
 $count = 5; //show the newest revisions
 $versions = OCA\Files_Versions\Storage::getVersions($uid, $filename, $source);
-if( $versions ) {
-
+if ($versions) {
 	$endReached = false;
-	if (count($versions) <= $start+$count) {
+	if (\count($versions) <= $start+$count) {
 		$endReached = true;
 	}
 
-	$versions = array_slice($versions, $start, $count);
+	$versions = \array_slice($versions, $start, $count);
 
 	// remove owner path from request to not disclose it to the recipient
 	foreach ($versions as $version) {
@@ -48,9 +47,6 @@ if( $versions ) {
 	}
 
 	\OCP\JSON::success(['data' => ['versions' => $versions, 'endReached' => $endReached]]);
-
 } else {
-
 	\OCP\JSON::success(['data' => ['versions' => [], 'endReached' => true]]);
-
 }

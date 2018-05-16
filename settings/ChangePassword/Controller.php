@@ -51,9 +51,9 @@ class Controller {
 			$l = \OC::$server->getL10NFactory()->get('settings');
 			\OC_JSON::error(["data" => ["message" => $l->t("The new password can not be the same as the previous one")]]);
 			exit();
-	        }
+		}
 		try {
-			if (!is_null($password) && \OC_User::setPassword($username, $password)) {
+			if ($password !== null && \OC_User::setPassword($username, $password)) {
 				\OC::$server->getUserSession()->updateSessionTokenPassword($password);
 
 				self::sendNotificationMail($username);
@@ -86,7 +86,7 @@ class Controller {
 		$isUserAccessible = false;
 		$currentUserObject = \OC::$server->getUserSession()->getUser();
 		$targetUserObject = \OC::$server->getUserManager()->get($username);
-		if($currentUserObject !== null && $targetUserObject !== null) {
+		if ($currentUserObject !== null && $targetUserObject !== null) {
 			$isUserAccessible = \OC::$server->getGroupManager()->getSubAdmin()->isUserAccessible($currentUserObject, $targetUserObject);
 		}
 
@@ -157,16 +157,15 @@ class Controller {
 						]
 					]);
 				} elseif (!$result && !$recoveryEnabledForUser) {
-					\OC_JSON::error(["data" => ["message" => $l->t("Unable to change password" )]]);
+					\OC_JSON::error(["data" => ["message" => $l->t("Unable to change password")]]);
 				} else {
 					self::sendNotificationMail($username);
 					\OC_JSON::success(["data" => ["username" => $username]]);
 				}
-
 			}
 		} else { // if encryption is disabled, proceed
 			try {
-				if (!is_null($password) && \OC_User::setPassword($username, $password)) {
+				if ($password !== null && \OC_User::setPassword($username, $password)) {
 					self::sendNotificationMail($username);
 					\OC_JSON::success(['data' => ['username' => $username]]);
 				} else {

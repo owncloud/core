@@ -14,7 +14,6 @@ namespace Test;
  * @group DB
  */
 class UtilCheckServerTest extends TestCase {
-
 	private $datadir;
 
 	/**
@@ -40,13 +39,13 @@ class UtilCheckServerTest extends TestCase {
 
 		$this->datadir = \OC::$server->getTempManager()->getTemporaryFolder();
 
-		file_put_contents($this->datadir . '/.ocdata', '');
+		\file_put_contents($this->datadir . '/.ocdata', '');
 		\OC::$server->getSession()->set('checkServer_succeeded', false);
 	}
 
 	protected function tearDown() {
 		// clean up
-		@unlink($this->datadir . '/.ocdata');
+		@\unlink($this->datadir . '/.ocdata');
 		parent::tearDown();
 	}
 
@@ -67,7 +66,7 @@ class UtilCheckServerTest extends TestCase {
 	 */
 	public function testCheckServerSkipDataDirValidityOnSetup() {
 		// simulate old version that didn't have it
-		unlink($this->datadir . '/.ocdata');
+		\unlink($this->datadir . '/.ocdata');
 
 		// even though ".ocdata" is missing, the error isn't
 		// triggered to allow setup to run
@@ -84,7 +83,7 @@ class UtilCheckServerTest extends TestCase {
 	 */
 	public function testCheckServerSkipDataDirValidityOnUpgrade() {
 		// simulate old version that didn't have it
-		unlink($this->datadir . '/.ocdata');
+		\unlink($this->datadir . '/.ocdata');
 
 		$session = \OC::$server->getSession();
 		$oldCurrentVersion = $session->get('OC_Version');
@@ -118,13 +117,13 @@ class UtilCheckServerTest extends TestCase {
 	 * both return an error when ".ocdata" is missing.
 	 */
 	public function testCheckDataDirValidityWhenFileMissing() {
-		unlink($this->datadir . '/.ocdata');
+		\unlink($this->datadir . '/.ocdata');
 		$result = \OC_Util::checkDataDirectoryValidity($this->datadir);
 		$this->assertCount(1, $result);
 
 		$result = \OC_Util::checkServer($this->getConfig([
 			'installed' => true,
-			'version' => implode('.', \OCP\Util::getVersion())
+			'version' => \implode('.', \OCP\Util::getVersion())
 		]));
 		$this->assertCount(1, $result);
 	}
@@ -135,7 +134,7 @@ class UtilCheckServerTest extends TestCase {
 	public function testDataDirWritable() {
 		$result = \OC_Util::checkServer($this->getConfig([
 			'installed' => true,
-			'version' => implode('.', \OCP\Util::getVersion())
+			'version' => \implode('.', \OCP\Util::getVersion())
 		]));
 		$this->assertEmpty($result);
 	}
@@ -148,10 +147,10 @@ class UtilCheckServerTest extends TestCase {
 			$this->markTestSkipped('You are running tests as root - this test will not work in this case.');
 		}
 
-		chmod($this->datadir, 0300);
+		\chmod($this->datadir, 0300);
 		$result = \OC_Util::checkServer($this->getConfig([
 			'installed' => true,
-			'version' => implode('.', \OCP\Util::getVersion())
+			'version' => \implode('.', \OCP\Util::getVersion())
 		]));
 		$this->assertCount(1, $result);
 	}
@@ -160,12 +159,12 @@ class UtilCheckServerTest extends TestCase {
 	 * Tests no error is given when the datadir is not writable during setup
 	 */
 	public function testDataDirNotWritableSetup() {
-		chmod($this->datadir, 0300);
+		\chmod($this->datadir, 0300);
 		$result = \OC_Util::checkServer($this->getConfig([
 			'installed' => false,
-			'version' => implode('.', \OCP\Util::getVersion())
+			'version' => \implode('.', \OCP\Util::getVersion())
 		]));
-		chmod($this->datadir, 0700); //needed for cleanup
+		\chmod($this->datadir, 0700); //needed for cleanup
 		$this->assertEmpty($result);
 	}
 }

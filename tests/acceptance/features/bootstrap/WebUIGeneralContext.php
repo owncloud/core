@@ -39,7 +39,6 @@ require_once 'bootstrap.php';
  * WebUI General context.
  */
 class WebUIGeneralContext extends RawMinkContext implements Context {
-
 	private $owncloudPage;
 	private $loginPage;
 	private $oldCSRFSetting = null;
@@ -79,16 +78,16 @@ class WebUIGeneralContext extends RawMinkContext implements Context {
 	/**
 	 * table of capabilities to map the human readable terms from the settings page
 	 * to terms in the capabilities XML and testing app
-	 * 
+	 *
 	 * @var array
 	 */
-	private $capabilities = [ 
-		'sharing' => [ 
-			'Allow apps to use the Share API' => [ 
+	private $capabilities = [
+		'sharing' => [
+			'Allow apps to use the Share API' => [
 				'capabilitiesApp' => 'files_sharing',
 				'capabilitiesParameter' => 'api_enabled',
 				'testingApp' => 'core',
-				'testingParameter' => 'shareapi_enabled' 
+				'testingParameter' => 'shareapi_enabled'
 			],
 			'Allow resharing' => [
 				'capabilitiesApp' => 'files_sharing',
@@ -102,19 +101,19 @@ class WebUIGeneralContext extends RawMinkContext implements Context {
 				'testingApp' => 'core',
 				'testingParameter' => 'shareapi_allow_group_sharing',
 			],
-			'Restrict users to only share with users in their groups' => [ 
+			'Restrict users to only share with users in their groups' => [
 				'capabilitiesApp' => 'files_sharing',
 				'capabilitiesParameter' => 'share_with_group_members_only',
 				'testingApp' => 'core',
 				'testingParameter' => 'shareapi_only_share_with_group_members'
 			],
-			'Restrict users to only share with groups they are member of' => [ 
+			'Restrict users to only share with groups they are member of' => [
 				'capabilitiesApp' => 'files_sharing',
 				'capabilitiesParameter' => 'share_with_membership_groups_only',
 				'testingApp' => 'core',
 				'testingParameter' => 'shareapi_only_share_with_membership_groups'
 			]
-		] 
+		]
 	];
 
 	/**
@@ -129,7 +128,7 @@ class WebUIGeneralContext extends RawMinkContext implements Context {
 	}
 
 	/**
-	 * 
+	 *
 	 * @param OwncloudPage $pageObject
 	 *
 	 * @return void
@@ -139,7 +138,7 @@ class WebUIGeneralContext extends RawMinkContext implements Context {
 	}
 
 	/**
-	 * 
+	 *
 	 * @return OwncloudPage
 	 */
 	public function getCurrentPageObject() {
@@ -155,7 +154,7 @@ class WebUIGeneralContext extends RawMinkContext implements Context {
 
 	/**
 	 * @param string $currentServer
-	 * 
+	 *
 	 * @return void
 	 */
 	public function setCurrentServer($currentServer) {
@@ -261,9 +260,9 @@ class WebUIGeneralContext extends RawMinkContext implements Context {
 		$matching, TableNode $table
 	) {
 		$actualNotifications = $this->owncloudPage->getNotifications();
-		$numActualNotifications = count($actualNotifications);
+		$numActualNotifications = \count($actualNotifications);
 		$expectedNotifications = $table->getRows();
-		$numExpectedNotifications = count($expectedNotifications);
+		$numExpectedNotifications = \count($expectedNotifications);
 
 		PHPUnit_Framework_Assert::assertGreaterThanOrEqual(
 			$numExpectedNotifications,
@@ -276,7 +275,7 @@ class WebUIGeneralContext extends RawMinkContext implements Context {
 			$expectedNotificationText = $expectedNotification[0];
 			$actualNotificationText = $actualNotifications[$notificationCounter];
 			if ($matching === "matching") {
-				if (!preg_match($expectedNotificationText, $actualNotificationText)) {
+				if (!\preg_match($expectedNotificationText, $actualNotificationText)) {
 					throw new Exception(
 						$actualNotificationText . " does not match " . $expectedNotificationText
 					);
@@ -311,14 +310,14 @@ class WebUIGeneralContext extends RawMinkContext implements Context {
 			} else {
 				$count = (int) $count;
 			}
-			$currentTime = microtime(true);
+			$currentTime = \microtime(true);
 			$end = $currentTime + (STANDARDUIWAITTIMEOUTMILLISEC / 1000);
-			while ($currentTime <= $end && ($count !== count($dialogs))) {
-				usleep(STANDARDSLEEPTIMEMICROSEC);
-				$currentTime = microtime(true);
+			while ($currentTime <= $end && ($count !== \count($dialogs))) {
+				\usleep(STANDARDSLEEPTIMEMICROSEC);
+				$currentTime = \microtime(true);
 				$dialogs = $this->owncloudPage->getOcDialogs();
 			}
-			PHPUnit_Framework_Assert::assertEquals($count, count($dialogs));
+			PHPUnit_Framework_Assert::assertEquals($count, \count($dialogs));
 		}
 		if ($table !== null) {
 			$expectedDialogs = $table->getHash();
@@ -327,13 +326,13 @@ class WebUIGeneralContext extends RawMinkContext implements Context {
 			foreach ($dialogs as $dialog) {
 				$content = $dialog->getMessage();
 				$title = $dialog->getTitle();
-				for ($dialogI = 0; $dialogI < count($expectedDialogs); $dialogI++) {
+				for ($dialogI = 0; $dialogI < \count($expectedDialogs); $dialogI++) {
 					$expectedDialogs[$dialogI]['content']
 						= $this->featureContext->substituteInLineCodes(
 							$expectedDialogs[$dialogI]['content']
 						);
-					if ($expectedDialogs[$dialogI]['content'] === $content
-						&& $expectedDialogs[$dialogI]['title'] === $title
+					if ($content === $expectedDialogs[$dialogI]['content']
+						&& $title === $expectedDialogs[$dialogI]['title']
 					) {
 						$expectedDialogs[$dialogI]['found'] = true;
 					}
@@ -362,7 +361,7 @@ class WebUIGeneralContext extends RawMinkContext implements Context {
 		$actualTitle = $this->getSession()->getPage()->find(
 			'xpath', './/title'
 		)->getHtml();
-		PHPUnit_Framework_Assert::assertEquals($title, trim($actualTitle));
+		PHPUnit_Framework_Assert::assertEquals($title, \trim($actualTitle));
 	}
 
 	/**
@@ -385,7 +384,7 @@ class WebUIGeneralContext extends RawMinkContext implements Context {
 			);
 		}
 		
-		$capability = $this->capabilities[strtolower($section)][$setting];
+		$capability = $this->capabilities[\strtolower($section)][$setting];
 		$change = AppConfigHelper::setCapability(
 			$this->featureContext->getBaseUrl(),
 			$this->featureContext->getAdminUsername(),
@@ -398,7 +397,6 @@ class WebUIGeneralContext extends RawMinkContext implements Context {
 			$this->getSavedCapabilitiesXml()
 		);
 		$this->addToSavedCapabilitiesChanges($change);
-
 	}
 
 	/**
@@ -411,8 +409,8 @@ class WebUIGeneralContext extends RawMinkContext implements Context {
 	 * @return void
 	 */
 	public function aFileWithSizeAndNameHasBeenCreatedLocally($size, $name) {
-		$fullPath = getenv("FILES_FOR_UPLOAD") . $name;
-		if (file_exists($fullPath)) {
+		$fullPath = \getenv("FILES_FOR_UPLOAD") . $name;
+		if (\file_exists($fullPath)) {
 			throw new InvalidArgumentException(
 				__METHOD__ . " could not create '$fullPath' file exists"
 			);
@@ -422,7 +420,7 @@ class WebUIGeneralContext extends RawMinkContext implements Context {
 	}
 
 	/**
-	 * 
+	 *
 	 * @When the user reloads the current page of the webUI
 	 * @Given the user has reloaded the current page of the webUI
 	 *
@@ -440,7 +438,7 @@ class WebUIGeneralContext extends RawMinkContext implements Context {
 
 	/**
 	 * returns the saved capabilities as XML
-	 * 
+	 *
 	 * @return string
 	 */
 	public function getSavedCapabilitiesXml() {
@@ -449,7 +447,7 @@ class WebUIGeneralContext extends RawMinkContext implements Context {
 
 	/**
 	 * adds a capability to the list of changed capabilities
-	 * 
+	 *
 	 * @param array $change
 	 *        [
 	 *         'appid' => string,
@@ -460,8 +458,8 @@ class WebUIGeneralContext extends RawMinkContext implements Context {
 	 * @return void
 	 */
 	public function addToSavedCapabilitiesChanges($change) {
-		if (sizeof($change) > 0) {
-			$this->savedCapabilitiesChanges = array_merge(
+		if (\sizeof($change) > 0) {
+			$this->savedCapabilitiesChanges = \array_merge(
 				$this->savedCapabilitiesChanges, $change
 			);
 		}
@@ -506,11 +504,11 @@ class WebUIGeneralContext extends RawMinkContext implements Context {
 		$this->savedCapabilitiesXml = AppConfigHelper::getCapabilitiesXml(
 			$response
 		);
-		if (is_null($this->oldCSRFSetting)) {
+		if ($this->oldCSRFSetting === null) {
 			$oldCSRFSetting = SetupHelper::runOcc(
 				['config:system:get', 'csrf.disabled']
 			)['stdOut'];
-			$this->oldCSRFSetting = trim($oldCSRFSetting);
+			$this->oldCSRFSetting = \trim($oldCSRFSetting);
 		}
 		SetupHelper::runOcc(
 			[
@@ -524,7 +522,7 @@ class WebUIGeneralContext extends RawMinkContext implements Context {
 		);
 
 		//TODO make it smarter to be able also to work with other backends
-		if (getenv("TEST_EXTERNAL_USER_BACKENDS") === "true") {
+		if (\getenv("TEST_EXTERNAL_USER_BACKENDS") === "true") {
 			$result = SetupHelper::runOcc(
 				["user:sync", "OCA\User_LDAP\User_Proxy", "-m remove"]
 			);
@@ -541,18 +539,18 @@ class WebUIGeneralContext extends RawMinkContext implements Context {
 
 	/**
 	 * disable the previews on all tests tagged with '@disablePreviews'
-	 * 
+	 *
 	 * @BeforeScenario @webUI&&@disablePreviews
 	 *
 	 * @return void
 	 * @throws \Exception
 	 */
 	public function disablePreviewBeforeScenario() {
-		if (is_null($this->oldPreviewSetting)) {
+		if ($this->oldPreviewSetting === null) {
 			$oldPreviewSetting = SetupHelper::runOcc(
 				['config:system:get', 'enable_previews']
 			)['stdOut'];
-			$this->oldPreviewSetting = trim($oldPreviewSetting);
+			$this->oldPreviewSetting = \trim($oldPreviewSetting);
 		}
 		SetupHelper::runOcc(
 			[
@@ -571,8 +569,8 @@ class WebUIGeneralContext extends RawMinkContext implements Context {
 	 */
 	public function getSessionId() {
 		$url = $this->getSession()->getDriver()->getWebDriverSession()->getUrl();
-		$parts = explode('/', $url);
-		$sessionId = array_pop($parts);
+		$parts = \explode('/', $url);
+		$sessionId = \array_pop($parts);
 		return $sessionId;
 	}
 
@@ -594,7 +592,7 @@ class WebUIGeneralContext extends RawMinkContext implements Context {
 
 		if ($this->oldPreviewSetting === "") {
 			SetupHelper::runOcc(['config:system:delete', 'enable_previews']);
-		} elseif (!is_null($this->oldPreviewSetting)) {
+		} elseif ($this->oldPreviewSetting !== null) {
 			SetupHelper::runOcc(
 				[
 					'config:system:set',
@@ -609,7 +607,7 @@ class WebUIGeneralContext extends RawMinkContext implements Context {
 		
 		if ($this->oldCSRFSetting === "") {
 			SetupHelper::runOcc(['config:system:delete', 'csrf.disabled']);
-		} elseif (!is_null($this->oldCSRFSetting)) {
+		} elseif ($this->oldCSRFSetting !== null) {
 			SetupHelper::runOcc(
 				[
 					'config:system:set',
@@ -623,7 +621,7 @@ class WebUIGeneralContext extends RawMinkContext implements Context {
 		}
 		
 		foreach ($this->createdFiles as $file) {
-			unlink($file);
+			\unlink($file);
 		}
 	}
 
@@ -665,12 +663,12 @@ class WebUIGeneralContext extends RawMinkContext implements Context {
 		}
 
 		$jobId = $this->getSessionId();
-		$sauceUsername = getenv('SAUCE_USERNAME');
-		$sauceAccessKey = getenv('SAUCE_ACCESS_KEY');
+		$sauceUsername = \getenv('SAUCE_USERNAME');
+		$sauceAccessKey = \getenv('SAUCE_ACCESS_KEY');
 
 		if ($sauceUsername && $sauceAccessKey) {
-			error_log("SAUCELABS RESULT: ($passOrFail) https://saucelabs.com/jobs/$jobId");
-			exec('curl -X PUT -s -d "{\"passed\": ' . $passed . '}" -u ' . $sauceUsername . ':' . $sauceAccessKey . ' https://saucelabs.com/rest/v1/$SAUCE_USERNAME/jobs/' . $jobId);
+			\error_log("SAUCELABS RESULT: ($passOrFail) https://saucelabs.com/jobs/$jobId");
+			\exec('curl -X PUT -s -d "{\"passed\": ' . $passed . '}" -u ' . $sauceUsername . ':' . $sauceAccessKey . ' https://saucelabs.com/rest/v1/$SAUCE_USERNAME/jobs/' . $jobId);
 		} else {
 			\error_log("SCENARIO RESULT: ($passOrFail)");
 		}

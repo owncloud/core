@@ -17,7 +17,7 @@ class APITest extends \Test\TestCase {
 	/**
 	 * @param string $message
 	 */
-	function buildResponse($shipped, $data, $code, $message=null) {
+	public function buildResponse($shipped, $data, $code, $message=null) {
 		$resp = new Result($data, $code, $message);
 		$resp->addHeader('KEY', 'VALUE');
 		return [
@@ -32,7 +32,7 @@ class APITest extends \Test\TestCase {
 	/**
 	 * @param \OC_OCS_Result $result
 	 */
-	function checkResult($result, $success) {
+	public function checkResult($result, $success) {
 		// Check response is of correct type
 		$this->assertInstanceOf(Result::class, $result);
 		// Check if it succeeded
@@ -84,7 +84,7 @@ class APITest extends \Test\TestCase {
 		$this->assertEquals($expected, $this->invokePrivate(new \OC_API, 'isV2', [$request]));
 	}
 
-	function dataProviderTestOneResult() {
+	public function dataProviderTestOneResult() {
 		return [
 			[100, true],
 			[101, false],
@@ -117,7 +117,7 @@ class APITest extends \Test\TestCase {
 		$this->checkResult($result, $succeeded);
 	}
 
-	function dataProviderTestMergeResponses() {
+	public function dataProviderTestMergeResponses() {
 		return [
 			// Two shipped success results
 			[true, 100, true, 100, true],
@@ -150,7 +150,7 @@ class APITest extends \Test\TestCase {
 	 * @param $statusCode2
 	 * @param $succeeded
 	 */
-	public function testMultipleMergeResponses($shipped1, $statusCode1, $shipped2, $statusCode2, $succeeded){
+	public function testMultipleMergeResponses($shipped1, $statusCode1, $shipped2, $statusCode2, $succeeded) {
 		// Tests that app responses are merged correctly
 		// Setup some data arrays
 		$data1 = [
@@ -195,7 +195,5 @@ class APITest extends \Test\TestCase {
 		} elseif ($resultStatusCode === 100) {
 			$this->assertNull($resultMeta['message']);
 		}
-
 	}
-
 }

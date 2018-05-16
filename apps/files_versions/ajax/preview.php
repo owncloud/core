@@ -24,23 +24,23 @@
  */
 \OC_Util::checkLoggedIn();
 
-if(!\OC_App::isEnabled('files_versions')){
+if (!\OC_App::isEnabled('files_versions')) {
 	exit;
 }
 
-$file = array_key_exists('file', $_GET) ? (string) urldecode($_GET['file']) : '';
-$maxX = array_key_exists('x', $_GET) ? (int) $_GET['x'] : 44;
-$maxY = array_key_exists('y', $_GET) ? (int) $_GET['y'] : 44;
-$version = array_key_exists('version', $_GET) ? $_GET['version'] : '';
-$scalingUp = array_key_exists('scalingup', $_GET) ? (bool) $_GET['scalingup'] : true;
+$file = \array_key_exists('file', $_GET) ? (string) \urldecode($_GET['file']) : '';
+$maxX = \array_key_exists('x', $_GET) ? (int) $_GET['x'] : 44;
+$maxY = \array_key_exists('y', $_GET) ? (int) $_GET['y'] : 44;
+$version = \array_key_exists('version', $_GET) ? $_GET['version'] : '';
+$scalingUp = \array_key_exists('scalingup', $_GET) ? (bool) $_GET['scalingup'] : true;
 
-if($file === '' && $version === '') {
+if ($file === '' && $version === '') {
 	\OC_Response::setStatus(400); //400 Bad Request
 	\OCP\Util::writeLog('versions-preview', 'No file parameter was passed', \OCP\Util::DEBUG);
 	exit;
 }
 
-if($maxX === 0 || $maxY === 0) {
+if ($maxX === 0 || $maxY === 0) {
 	\OC_Response::setStatus(400); //400 Bad Request
 	\OCP\Util::writeLog('versions-preview', 'x and/or y set to 0', \OCP\Util::DEBUG);
 	exit;

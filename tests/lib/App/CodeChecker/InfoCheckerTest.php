@@ -39,7 +39,7 @@ class InfoCheckerTest extends TestCase {
 
 	public static function tearDownAfterClass() {
 		// remove last element
-		array_pop(\OC::$APPSROOTS);
+		\array_pop(\OC::$APPSROOTS);
 	}
 
 	protected function setUp() {

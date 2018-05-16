@@ -43,7 +43,7 @@ class CalendarHome extends \Sabre\CalDAV\CalendarHome {
 	/**
 	 * @inheritdoc
 	 */
-	function getChildren() {
+	public function getChildren() {
 		$calendars = $this->caldavBackend->getCalendarsForUser($this->principalInfo['uri']);
 		$objects = [];
 		foreach ($calendars as $calendar) {
@@ -73,7 +73,7 @@ class CalendarHome extends \Sabre\CalDAV\CalendarHome {
 	/**
 	 * @inheritdoc
 	 */
-	function getChild($name) {
+	public function getChild($name) {
 		// Special nodes
 		if ($name === 'inbox' && $this->caldavBackend instanceof SchedulingSupport) {
 			return new Inbox($this->caldavBackend, $this->principalInfo['uri']);
@@ -98,7 +98,6 @@ class CalendarHome extends \Sabre\CalDAV\CalendarHome {
 					return new Subscription($this->caldavBackend, $subscription);
 				}
 			}
-
 		}
 
 		throw new NotFound('Node with name \'' . $name . '\' could not be found');

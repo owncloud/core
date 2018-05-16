@@ -113,7 +113,7 @@ class File implements ICache {
 			if ($ttl === 0) {
 				$ttl = 86400; // 60*60*24
 			}
-			$result = $storage->touch($keyPart, time() + $ttl);
+			$result = $storage->touch($keyPart, \time() + $ttl);
 			$result &= $storage->rename($keyPart, $key);
 		}
 		return $result;
@@ -154,9 +154,9 @@ class File implements ICache {
 		$storage = $this->getStorage();
 		if ($storage and $storage->is_dir('/')) {
 			$dh = $storage->opendir('/');
-			if (is_resource($dh)) {
-				while (($file = readdir($dh)) !== false) {
-					if ($file != '.' and $file != '..' and ($prefix === '' || strpos($file, $prefix) === 0)) {
+			if (\is_resource($dh)) {
+				while (($file = \readdir($dh)) !== false) {
+					if ($file != '.' and $file != '..' and ($prefix === '' || \strpos($file, $prefix) === 0)) {
 						$storage->unlink('/' . $file);
 					}
 				}
@@ -174,12 +174,12 @@ class File implements ICache {
 		if ($storage and $storage->is_dir('/')) {
 			// extra hour safety, in case of stray part chunks that take longer to write,
 			// because touch() is only called after the chunk was finished
-			$now = time() - 3600;
+			$now = \time() - 3600;
 			$dh = $storage->opendir('/');
-			if (!is_resource($dh)) {
+			if (!\is_resource($dh)) {
 				return null;
 			}
-			while (($file = readdir($dh)) !== false) {
+			while (($file = \readdir($dh)) !== false) {
 				if ($file != '.' and $file != '..') {
 					try {
 						$mtime = $storage->filemtime('/' . $file);

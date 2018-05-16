@@ -19,7 +19,7 @@ use Symfony\Component\EventDispatcher\GenericEvent;
 class LoggerTest extends TestCase {
 	/** @var \OCP\ILogger */
 	private $logger;
-	static private $logs = [];
+	private static $logs = [];
 
 	/** @var IConfig | \PHPUnit_Framework_MockObject_MockObject */
 	private $config;
@@ -115,7 +115,7 @@ class LoggerTest extends TestCase {
 	}
 
 	public static function writeExtra($app, $message, $level, $logConditionFile, $extraFields) {
-		$encodedFields = json_encode($extraFields);
+		$encodedFields = \json_encode($extraFields);
 		self::$logs[]= "$level $message fields=$encodedFields";
 	}
 
@@ -141,7 +141,7 @@ class LoggerTest extends TestCase {
 		$this->logger->logException($e);
 
 		$logLines = $this->getLogs();
-		foreach($logLines as $logLine) {
+		foreach ($logLines as $logLine) {
 			$this->assertNotContains($user, $logLine);
 			$this->assertNotContains($password, $logLine);
 			$this->assertContains('login(*** sensitive parameters replaced ***)', $logLine);
@@ -156,7 +156,7 @@ class LoggerTest extends TestCase {
 		$this->logger->logException($e);
 		$logLines = $this->getLogs();
 
-		foreach($logLines as $logLine) {
+		foreach ($logLines as $logLine) {
 			$this->assertNotContains($user, $logLine);
 			$this->assertNotContains($password, $logLine);
 			$this->assertContains('checkPassword(*** sensitive parameters replaced ***)', $logLine);
@@ -171,7 +171,7 @@ class LoggerTest extends TestCase {
 		$this->logger->logException($e);
 		$logLines = $this->getLogs();
 
-		foreach($logLines as $logLine) {
+		foreach ($logLines as $logLine) {
 			$this->assertNotContains($user, $logLine);
 			$this->assertNotContains($password, $logLine);
 			$this->assertContains('validateUserPass(*** sensitive parameters replaced ***)', $logLine);
@@ -186,7 +186,7 @@ class LoggerTest extends TestCase {
 		$this->logger->logException($e);
 		$logLines = $this->getLogs();
 
-		foreach($logLines as $logLine) {
+		foreach ($logLines as $logLine) {
 			$this->assertNotContains($user, $logLine);
 			$this->assertNotContains($password, $logLine);
 			$this->assertContains('tryLogin(*** sensitive parameters replaced ***)', $logLine);
@@ -202,7 +202,7 @@ class LoggerTest extends TestCase {
 		$this->logger->logException($e);
 		$logLines = $this->getLogs();
 
-		foreach($logLines as $logLine) {
+		foreach ($logLines as $logLine) {
 			$this->assertNotContains($user, $logLine);
 			$this->assertNotContains($password, $logLine);
 			$this->assertContains('loginWithPassword(*** sensitive parameters replaced ***)', $logLine);
@@ -242,14 +242,14 @@ class LoggerTest extends TestCase {
 		$beforeWriteEvent = null;
 		$this->eventDispatcher->addListener(
 			'log.beforewrite',
-			function(GenericEvent $event) use (&$beforeWriteEvent) {
+			function (GenericEvent $event) use (&$beforeWriteEvent) {
 				$beforeWriteEvent = $event;
 			}
 		);
 		$afterWriteEvent = null;
 		$this->eventDispatcher->addListener(
 			'log.afterwrite',
-			function(GenericEvent $event) use (&$afterWriteEvent) {
+			function (GenericEvent $event) use (&$afterWriteEvent) {
 				$afterWriteEvent = $event;
 			}
 		);

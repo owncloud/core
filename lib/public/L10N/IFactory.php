@@ -67,7 +67,6 @@ interface IFactory {
 	 */
 	public function setLanguageFromRequest($app = null);
 
-
 	/**
 	 * Creates a function from the plural string
 	 *

@@ -79,5 +79,4 @@ interface ISecureRandom {
 	 */
 	public function generate($length,
 							 $characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/');
-
 }

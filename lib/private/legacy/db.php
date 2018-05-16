@@ -52,7 +52,7 @@ class OC_DB {
 	 *
 	 * SQL query via Doctrine prepare(), needs to be execute()'d!
 	 */
-	static public function prepare( $query , $limit = null, $offset = null, $isManipulation = null) {
+	public static function prepare($query, $limit = null, $offset = null, $isManipulation = null) {
 		$connection = \OC::$server->getDatabaseConnection();
 
 		if ($isManipulation === null) {
@@ -78,20 +78,20 @@ class OC_DB {
 	 * @param string $sql
 	 * @return bool
 	 */
-	static public function isManipulation( $sql ) {
-		$selectOccurrence = stripos($sql, 'SELECT');
+	public static function isManipulation($sql) {
+		$selectOccurrence = \stripos($sql, 'SELECT');
 		if ($selectOccurrence !== false && $selectOccurrence < 10) {
 			return false;
 		}
-		$insertOccurrence = stripos($sql, 'INSERT');
+		$insertOccurrence = \stripos($sql, 'INSERT');
 		if ($insertOccurrence !== false && $insertOccurrence < 10) {
 			return true;
 		}
-		$updateOccurrence = stripos($sql, 'UPDATE');
+		$updateOccurrence = \stripos($sql, 'UPDATE');
 		if ($updateOccurrence !== false && $updateOccurrence < 10) {
 			return true;
 		}
-		$deleteOccurrence = stripos($sql, 'DELETE');
+		$deleteOccurrence = \stripos($sql, 'DELETE');
 		if ($deleteOccurrence !== false && $deleteOccurrence < 10) {
 			return true;
 		}
@@ -107,10 +107,10 @@ class OC_DB {
 	 * @return OC_DB_StatementWrapper
 	 * @throws \OC\DatabaseException
 	 */
-	static public function executeAudited( $stmt, array $parameters = null) {
-		if (is_string($stmt)) {
+	public static function executeAudited($stmt, array $parameters = null) {
+		if (\is_string($stmt)) {
 			// convert to an array with 'sql'
-			if (stripos($stmt, 'LIMIT') !== false) { //OFFSET requires LIMIT, so we only need to check for LIMIT
+			if (\stripos($stmt, 'LIMIT') !== false) { //OFFSET requires LIMIT, so we only need to check for LIMIT
 				// TODO try to convert LIMIT OFFSET notation to parameters
 				$message = 'LIMIT and OFFSET are forbidden for portability reasons,'
 						 . ' pass an array with \'limit\' and \'offset\' instead';
@@ -118,16 +118,16 @@ class OC_DB {
 			}
 			$stmt = ['sql' => $stmt, 'limit' => null, 'offset' => null];
 		}
-		if (is_array($stmt)) {
+		if (\is_array($stmt)) {
 			// convert to prepared statement
-			if ( ! array_key_exists('sql', $stmt) ) {
+			if (! \array_key_exists('sql', $stmt)) {
 				$message = 'statement array must at least contain key \'sql\'';
 				throw new \OC\DatabaseException($message);
 			}
-			if ( ! array_key_exists('limit', $stmt) ) {
+			if (! \array_key_exists('limit', $stmt)) {
 				$stmt['limit'] = null;
 			}
-			if ( ! array_key_exists('limit', $stmt) ) {
+			if (! \array_key_exists('limit', $stmt)) {
 				$stmt['offset'] = null;
 			}
 			$stmt = self::prepare($stmt['sql'], $stmt['limit'], $stmt['offset']);
@@ -137,10 +137,10 @@ class OC_DB {
 			$result = $stmt->execute($parameters === null ? [] : $parameters);
 			self::raiseExceptionOnError($result, 'Could not execute statement');
 		} else {
-			if (is_object($stmt)) {
-				$message = 'Expected a prepared statement or array got ' . get_class($stmt);
+			if (\is_object($stmt)) {
+				$message = 'Expected a prepared statement or array got ' . \get_class($stmt);
 			} else {
-				$message = 'Expected a prepared statement or array got ' . gettype($stmt);
+				$message = 'Expected a prepared statement or array got ' . \gettype($stmt);
 			}
 			throw new \OC\DatabaseException($message);
 		}
@@ -167,7 +167,7 @@ class OC_DB {
 	 *
 	 * TODO: write more documentation
 	 */
-	public static function createDbFromStructure( $file ) {
+	public static function createDbFromStructure($file) {
 		$schemaManager = self::getMDB2SchemaManager();
 		$result = $schemaManager->createDbFromStructure($file);
 		return $result;
@@ -207,7 +207,7 @@ class OC_DB {
 	 * @throws \OC\DatabaseException
 	 */
 	public static function raiseExceptionOnError($result, $message = null) {
-		if($result === false) {
+		if ($result === false) {
 			if ($message === null) {
 				$message = self::getErrorMessage();
 			} else {

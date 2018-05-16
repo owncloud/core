@@ -72,15 +72,15 @@ class WebDavClientService implements IWebDavClientService {
 	public function newClient($settings) {
 		if (!isset($settings['proxy'])) {
 			$proxy = $this->config->getSystemValue('proxy', '');
-			if($proxy !== '') {
+			if ($proxy !== '') {
 				$settings['proxy'] = $proxy;
 			}
 		}
 
 		$certPath = null;
-		if (strpos($settings['baseUri'], 'https') === 0) {
+		if (\strpos($settings['baseUri'], 'https') === 0) {
 			$certPath = $this->certificateManager->getAbsoluteBundlePath();
-			if (!file_exists($certPath)) {
+			if (!\file_exists($certPath)) {
 				$certPath = null;
 			}
 		}

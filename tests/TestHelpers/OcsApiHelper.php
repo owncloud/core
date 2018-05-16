@@ -24,9 +24,10 @@ namespace TestHelpers;
 use GuzzleHttp\Client;
 use GuzzleHttp\Message\ResponseInterface;
 use GuzzleHttp\Exception\ClientException;
+
 /**
  * Helper to make requests to the OCS API
- * 
+ *
  * @author Artur Neumann <artur@jankaritech.com>
  *
  */
@@ -47,7 +48,7 @@ class OcsApiHelper {
 		$baseUrl, $user, $password, $method, $path, $body = [], $apiVersion = 2
 	) {
 		$fullUrl = $baseUrl;
-		if (substr($fullUrl, -1) !== '/') {
+		if (\substr($fullUrl, -1) !== '/') {
 			$fullUrl .= '/';
 		}
 		$fullUrl .= "ocs/v{$apiVersion}.php" . $path;

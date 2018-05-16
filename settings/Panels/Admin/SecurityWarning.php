@@ -66,7 +66,7 @@ class SecurityWarning implements ISettings {
 
 		$template = new Template('settings', 'panels/admin/securitywarning');
 		// warn if php is not setup properly to get system variables with getenv
-		$path = getenv('PATH');
+		$path = \getenv('PATH');
 		$template->assign('getenvServerNotWorking', empty($path));
 		$template->assign('readOnlyConfigEnabled', $this->config->isSystemConfigReadOnly());
 		$template->assign('isAnnotationsWorking', $this->helper->isAnnotationsWorking());
@@ -87,18 +87,18 @@ class SecurityWarning implements ISettings {
 		];
 		$outdatedCaches = [];
 		foreach ($caches as $php_module => $data) {
-			$isOutdated = extension_loaded($php_module) && version_compare(phpversion($php_module), $data['version'], '<') && (strpos(phpversion($php_module), 'dev')===false);
+			$isOutdated = \extension_loaded($php_module) && \version_compare(\phpversion($php_module), $data['version'], '<') && (\strpos(\phpversion($php_module), 'dev')===false);
 			if ($isOutdated) {
 				$outdatedCaches[$php_module] = $data;
 			}
 		}
 		$template->assign('OutdatedCacheWarning', $outdatedCaches);
 		$template->assign('has_fileinfo', $this->helper->fileInfoLoaded());
-		$databaseOverload = (strpos($this->config->getSystemValue('dbtype'), 'sqlite') !== false);
+		$databaseOverload = (\strpos($this->config->getSystemValue('dbtype'), 'sqlite') !== false);
 		$template->assign('databaseOverload', $databaseOverload);
 		if ($this->lockingProvider instanceof NoopLockingProvider) {
 			$template->assign('fileLockingType', 'none');
-		} else if ($this->lockingProvider instanceof \OC\Lock\DBLockingProvider) {
+		} elseif ($this->lockingProvider instanceof \OC\Lock\DBLockingProvider) {
 			$template->assign('fileLockingType', 'db');
 		} else {
 			$template->assign('fileLockingType', 'cache');
@@ -121,5 +121,4 @@ class SecurityWarning implements ISettings {
 	public function getSectionID() {
 		return 'general';
 	}
-
 }

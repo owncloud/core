@@ -102,8 +102,8 @@ class AppConfig implements IAppConfig {
 	}
 
 	public function getSortedKeys($data) {
-		$keys = array_keys($data);
-		sort($keys);
+		$keys = \array_keys($data);
+		\sort($keys);
 		return $keys;
 	}
 
@@ -191,7 +191,7 @@ class AppConfig implements IAppConfig {
 					->setParameter('configvalue', $value);
 			}
 
-			if (isset($this->cache[$app]) && isset($this->cache[$app][$key])) {
+			if (isset($this->cache[$app], $this->cache[$app][$key])) {
 				$afterArray['update'] = true;
 				$afterArray['oldvalue'] = $this->cache[$app][$key];
 			}
@@ -201,7 +201,7 @@ class AppConfig implements IAppConfig {
 			$this->cache[$app][$key] = $value;
 
 			return $changedRow;
-		},[
+		}, [
 			'before' => ['key' => $key, 'value' => $value, 'app' => $app],
 			'after' => ['key' => $key, 'value' => $value, 'app' => $app, 'update' => false, 'oldvalue' => null]
 		], 'appconfig', 'setvalue');
@@ -276,12 +276,12 @@ class AppConfig implements IAppConfig {
 			return $this->getAppValues($app);
 		} else {
 			$appIds = $this->getApps();
-			$values = array_map(function($appId) use ($key) {
+			$values = \array_map(function ($appId) use ($key) {
 				return isset($this->cache[$appId][$key]) ? $this->cache[$appId][$key] : null;
 			}, $appIds);
-			$result = array_combine($appIds, $values);
+			$result = \array_combine($appIds, $values);
 
-			return array_filter($result);
+			return \array_filter($result);
 		}
 	}
 
@@ -310,7 +310,7 @@ class AppConfig implements IAppConfig {
 			// check if installed_version matches the pattern
 			// one_or_more_digits-dot-one_or_more_digits-any-other-characters
 			if ($row['configkey'] === 'installed_version'
-				&& preg_match('/\d+\.\d+.*$/', $row['configvalue']) !== 1
+				&& \preg_match('/\d+\.\d+.*$/', $row['configvalue']) !== 1
 			) {
 				$row['configvalue'] = '0.0.1';
 			}

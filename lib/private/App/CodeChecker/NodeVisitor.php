@@ -54,30 +54,30 @@ class NodeVisitor extends NodeVisitorAbstract {
 
 		$this->blackListedClassNames = [];
 		foreach ($list->getClasses() as $class => $blackListInfo) {
-			if (is_numeric($class) && is_string($blackListInfo)) {
+			if (\is_numeric($class) && \is_string($blackListInfo)) {
 				$class = $blackListInfo;
 				$blackListInfo = null;
 			}
 
-			$class = strtolower($class);
+			$class = \strtolower($class);
 			$this->blackListedClassNames[$class] = $class;
 		}
 
 		$this->blackListedConstants = [];
 		foreach ($list->getConstants() as $constantName => $blackListInfo) {
-			$constantName = strtolower($constantName);
+			$constantName = \strtolower($constantName);
 			$this->blackListedConstants[$constantName] = $constantName;
 		}
 
 		$this->blackListedFunctions = [];
 		foreach ($list->getFunctions() as $functionName => $blackListInfo) {
-			$functionName = strtolower($functionName);
+			$functionName = \strtolower($functionName);
 			$this->blackListedFunctions[$functionName] = $functionName;
 		}
 
 		$this->blackListedMethods = [];
 		foreach ($list->getMethods() as $functionName => $blackListInfo) {
-			$functionName = strtolower($functionName);
+			$functionName = \strtolower($functionName);
 			$this->blackListedMethods[$functionName] = $functionName;
 		}
 
@@ -117,7 +117,7 @@ class NodeVisitor extends NodeVisitorAbstract {
 			];
 		}
 		if ($node instanceof Node\Stmt\Class_) {
-			if (!is_null($node->extends)) {
+			if ($node->extends !== null) {
 				$this->checkBlackList($node->extends->toString(), CodeChecker::CLASS_EXTENDS_NOT_ALLOWED, $node);
 			}
 			foreach ($node->implements as $implements) {
@@ -125,7 +125,7 @@ class NodeVisitor extends NodeVisitorAbstract {
 			}
 		}
 		if ($node instanceof Node\Expr\StaticCall) {
-			if (!is_null($node->class)) {
+			if ($node->class !== null) {
 				if ($node->class instanceof Name) {
 					$this->checkBlackList($node->class->toString(), CodeChecker::STATIC_CALL_NOT_ALLOWED, $node);
 
@@ -144,7 +144,7 @@ class NodeVisitor extends NodeVisitorAbstract {
 			}
 		}
 		if ($node instanceof Node\Expr\MethodCall) {
-			if (!is_null($node->var)) {
+			if ($node->var !== null) {
 				if ($node->var instanceof Node\Expr\Variable) {
 					/**
 					 * TODO: find a way to detect something like this:
@@ -157,7 +157,7 @@ class NodeVisitor extends NodeVisitorAbstract {
 			}
 		}
 		if ($node instanceof Node\Expr\ClassConstFetch) {
-			if (!is_null($node->class)) {
+			if ($node->class !== null) {
 				if ($node->class instanceof Name) {
 					$this->checkBlackList($node->class->toString(), CodeChecker::CLASS_CONST_FETCH_NOT_ALLOWED, $node);
 				}
@@ -173,7 +173,7 @@ class NodeVisitor extends NodeVisitorAbstract {
 			}
 		}
 		if ($node instanceof Node\Expr\New_) {
-			if (!is_null($node->class)) {
+			if ($node->class !== null) {
 				if ($node->class instanceof Name) {
 					$this->checkBlackList($node->class->toString(), CodeChecker::CLASS_NEW_NOT_ALLOWED, $node);
 				}
@@ -209,40 +209,40 @@ class NodeVisitor extends NodeVisitorAbstract {
 	 * @param string $alias
 	 */
 	private function addUseNameToBlackList($name, $alias) {
-		$name = strtolower($name);
-		$alias = strtolower($alias);
+		$name = \strtolower($name);
+		$alias = \strtolower($alias);
 
 		foreach ($this->blackListedClassNames as $blackListedAlias => $blackListedClassName) {
-			if (strpos($blackListedClassName, $name . '\\') === 0) {
-				$aliasedClassName = str_replace($name, $alias, $blackListedClassName);
+			if (\strpos($blackListedClassName, $name . '\\') === 0) {
+				$aliasedClassName = \str_replace($name, $alias, $blackListedClassName);
 				$this->blackListedClassNames[$aliasedClassName] = $blackListedClassName;
 			}
 		}
 
 		foreach ($this->blackListedConstants as $blackListedAlias => $blackListedConstant) {
-			if (strpos($blackListedConstant, $name . '\\') === 0 || strpos($blackListedConstant, $name . '::') === 0) {
-				$aliasedConstantName = str_replace($name, $alias, $blackListedConstant);
+			if (\strpos($blackListedConstant, $name . '\\') === 0 || \strpos($blackListedConstant, $name . '::') === 0) {
+				$aliasedConstantName = \str_replace($name, $alias, $blackListedConstant);
 				$this->blackListedConstants[$aliasedConstantName] = $blackListedConstant;
 			}
 		}
 
 		foreach ($this->blackListedFunctions as $blackListedAlias => $blackListedFunction) {
-			if (strpos($blackListedFunction, $name . '\\') === 0 || strpos($blackListedFunction, $name . '::') === 0) {
-				$aliasedFunctionName = str_replace($name, $alias, $blackListedFunction);
+			if (\strpos($blackListedFunction, $name . '\\') === 0 || \strpos($blackListedFunction, $name . '::') === 0) {
+				$aliasedFunctionName = \str_replace($name, $alias, $blackListedFunction);
 				$this->blackListedFunctions[$aliasedFunctionName] = $blackListedFunction;
 			}
 		}
 
 		foreach ($this->blackListedMethods as $blackListedAlias => $blackListedMethod) {
-			if (strpos($blackListedMethod, $name . '\\') === 0 || strpos($blackListedMethod, $name . '::') === 0) {
-				$aliasedMethodName = str_replace($name, $alias, $blackListedMethod);
+			if (\strpos($blackListedMethod, $name . '\\') === 0 || \strpos($blackListedMethod, $name . '::') === 0) {
+				$aliasedMethodName = \str_replace($name, $alias, $blackListedMethod);
 				$this->blackListedMethods[$aliasedMethodName] = $blackListedMethod;
 			}
 		}
 	}
 
 	private function checkBlackList($name, $errorCode, Node $node) {
-		$lowerName = strtolower($name);
+		$lowerName = \strtolower($name);
 
 		if (isset($this->blackListedClassNames[$lowerName])) {
 			$this->errors[]= [
@@ -256,7 +256,7 @@ class NodeVisitor extends NodeVisitorAbstract {
 
 	private function checkBlackListConstant($class, $constantName, Node $node) {
 		$name = $class . '::' . $constantName;
-		$lowerName = strtolower($name);
+		$lowerName = \strtolower($name);
 
 		if (isset($this->blackListedConstants[$lowerName])) {
 			$this->errors[]= [
@@ -270,7 +270,7 @@ class NodeVisitor extends NodeVisitorAbstract {
 
 	private function checkBlackListFunction($class, $functionName, Node $node) {
 		$name = $class . '::' . $functionName;
-		$lowerName = strtolower($name);
+		$lowerName = \strtolower($name);
 
 		if (isset($this->blackListedFunctions[$lowerName])) {
 			$this->errors[]= [
@@ -284,7 +284,7 @@ class NodeVisitor extends NodeVisitorAbstract {
 
 	private function checkBlackListMethod($class, $functionName, Node $node) {
 		$name = $class . '::' . $functionName;
-		$lowerName = strtolower($name);
+		$lowerName = \strtolower($name);
 
 		if (isset($this->blackListedMethods[$lowerName])) {
 			$this->errors[]= [
@@ -299,7 +299,7 @@ class NodeVisitor extends NodeVisitorAbstract {
 	private function buildReason($name, $errorCode) {
 		if (isset($this->errorMessages[$errorCode])) {
 			$desc = $this->list->getDescription($errorCode, $name);
-			return sprintf($this->errorMessages[$errorCode], $desc);
+			return \sprintf($this->errorMessages[$errorCode], $desc);
 		}
 
 		return "$name usage not allowed - error: $errorCode";

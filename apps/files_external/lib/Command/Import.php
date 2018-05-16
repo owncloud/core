@@ -60,7 +60,7 @@ class Import extends Base {
 	/** @var IStoragesBackendService */
 	private $backendService;
 
-	function __construct(IGlobalStoragesService $globalService,
+	public function __construct(IGlobalStoragesService $globalService,
 						 IUserStoragesService $userService,
 						 IUserSession $userSession,
 						 IUserManager $userManager,
@@ -102,20 +102,20 @@ class Import extends Base {
 		$user = $input->getOption('user');
 		$path = $input->getArgument('path');
 		if ($path === '-') {
-			$json = file_get_contents('php://stdin');
+			$json = \file_get_contents('php://stdin');
 		} else {
-			if (!file_exists($path)) {
+			if (!\file_exists($path)) {
 				$output->writeln('<error>File not found: ' . $path . '</error>');
 				return 1;
 			}
-			$json = file_get_contents($path);
+			$json = \file_get_contents($path);
 		}
-		if (!is_string($json) || strlen($json) < 2) {
+		if (!\is_string($json) || \strlen($json) < 2) {
 			$output->writeln('<error>Error while reading json</error>');
 			return 1;
 		}
-		$data = json_decode($json, true);
-		if (!is_array($data)) {
+		$data = \json_decode($json, true);
+		if (!\is_array($data)) {
 			$output->writeln('<error>Error while parsing json</error>');
 			return 1;
 		}
@@ -130,7 +130,7 @@ class Import extends Base {
 			if (!isset($data[0])) { //normalize to an array of mounts
 				$data = [$data];
 			}
-			$mounts = array_map(function($entry) use ($storageService) {
+			$mounts = \array_map(function ($entry) use ($storageService) {
 				return $this->parseData($entry, $storageService);
 			}, $data);
 		}
@@ -160,7 +160,7 @@ class Import extends Base {
 		}
 
 		if ($input->getOption('dry')) {
-			if (count($mounts) === 0) {
+			if (\count($mounts) === 0) {
 				$output->writeln('<error>No mounts to be imported</error>');
 				return 1;
 			}
@@ -204,7 +204,7 @@ class Import extends Base {
 	protected function getStorageService($userId) {
 		if (!empty($userId)) {
 			$user = $this->userManager->get($userId);
-			if (is_null($user)) {
+			if ($user === null) {
 				throw new NoUserException("user $userId not found");
 			}
 			$this->userSession->setUser($user);

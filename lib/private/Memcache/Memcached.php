@@ -44,7 +44,7 @@ class Memcached extends Cache implements IMemcache {
 
 	public function __construct($prefix = '') {
 		parent::__construct($prefix);
-		if (is_null(self::$cache)) {
+		if (self::$cache === null) {
 			self::$cache = new \Memcached();
 
 			$defaultOptions = [
@@ -69,7 +69,7 @@ class Memcached extends Cache implements IMemcache {
 					\Memcached::SERIALIZER_IGBINARY;
 			}
 			$options = \OC::$server->getConfig()->getSystemValue('memcached_options', []);
-			if (is_array($options)) {
+			if (\is_array($options)) {
 				$options = $options + $defaultOptions;
 				self::$cache->setOptions($options);
 			} else {
@@ -139,13 +139,13 @@ class Memcached extends Cache implements IMemcache {
 			return true;
 		}
 		$keys = [];
-		$prefixLength = strlen($prefix);
+		$prefixLength = \strlen($prefix);
 		foreach ($allKeys as $key) {
-			if (substr($key, 0, $prefixLength) === $prefix) {
+			if (\substr($key, 0, $prefixLength) === $prefix) {
 				$keys[] = $key;
 			}
 		}
-		if (method_exists(self::$cache, 'deleteMulti')) {
+		if (\method_exists(self::$cache, 'deleteMulti')) {
 			self::$cache->deleteMulti($keys);
 		} else {
 			foreach ($keys as $key) {
@@ -207,8 +207,8 @@ class Memcached extends Cache implements IMemcache {
 		return $result;
 	}
 
-	static public function isAvailable() {
-		return extension_loaded('memcached');
+	public static function isAvailable() {
+		return \extension_loaded('memcached');
 	}
 
 	/**

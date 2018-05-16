@@ -92,11 +92,14 @@ class DAV extends Common {
 		$this->statCache = new ArrayCache();
 		$this->httpClientService = \OC::$server->getHTTPClientService();
 		$this->webDavClientService = \OC::$server->getWebDavClientService();
-		if (isset($params['host']) && isset($params['user']) && isset($params['password'])) {
+		if (isset($params['host'], $params['user'], $params['password'])) {
 			$host = $params['host'];
 			//remove leading http[s], will be generated in createBaseUri()
-			if (substr($host, 0, 8) == "https://") $host = substr($host, 8);
-			else if (substr($host, 0, 7) == "http://") $host = substr($host, 7);
+			if (\substr($host, 0, 8) == "https://") {
+				$host = \substr($host, 8);
+			} elseif (\substr($host, 0, 7) == "http://") {
+				$host = \substr($host, 7);
+			}
 			$this->host = $host;
 			$this->user = $params['user'];
 			$this->password = $params['password'];
@@ -104,7 +107,7 @@ class DAV extends Common {
 				$this->authType = $params['authType'];
 			}
 			if (isset($params['secure'])) {
-				if (is_string($params['secure'])) {
+				if (\is_string($params['secure'])) {
 					$this->secure = ($params['secure'] === 'true');
 				} else {
 					$this->secure = (bool)$params['secure'];
@@ -116,7 +119,7 @@ class DAV extends Common {
 			if (!$this->root || $this->root[0] != '/') {
 				$this->root = '/' . $this->root;
 			}
-			if (substr($this->root, -1, 1) != '/') {
+			if (\substr($this->root, -1, 1) != '/') {
 				$this->root .= '/';
 			}
 		} else {
@@ -201,19 +204,19 @@ class DAV extends Common {
 				return false;
 			}
 			$content = [];
-			$files = array_keys($response);
-			array_shift($files); //the first entry is the current directory
+			$files = \array_keys($response);
+			\array_shift($files); //the first entry is the current directory
 
 			if (!$this->statCache->hasKey($path)) {
 				$this->statCache->set($path, true);
 			}
 			foreach ($files as $file) {
-				$file = urldecode($file);
+				$file = \urldecode($file);
 				// do not store the real entry, we might not have all properties
 				if (!$this->statCache->hasKey($path)) {
 					$this->statCache->set($file, true);
 				}
-				$file = basename($file);
+				$file = \basename($file);
 				$content[] = $file;
 			}
 			return IteratorDirectory::wrap($content);
@@ -246,7 +249,7 @@ class DAV extends Common {
 		$path = $this->cleanPath($path);
 		$cachedResponse = $this->statCache->get($path);
 		// we either don't know it, or we know it exists but need more details
-		if (is_null($cachedResponse) || $cachedResponse === true) {
+		if ($cachedResponse === null || $cachedResponse === true) {
 			$this->init();
 			try {
 				$response = $this->client->propfind(
@@ -290,7 +293,7 @@ class DAV extends Common {
 				/** @var ResourceType[] $response */
 				$responseType = $response["{DAV:}resourcetype"]->getValue();
 			}
-			return (count($responseType) > 0 and $responseType[0] == "{DAV:}collection") ? 'dir' : 'file';
+			return (\count($responseType) > 0 and $responseType[0] == "{DAV:}collection") ? 'dir' : 'file';
 		} catch (\Exception $e) {
 			$this->convertException($e, $path);
 		}
@@ -305,7 +308,7 @@ class DAV extends Common {
 			if ($cachedState === false) {
 				// we know the file doesn't exist
 				return false;
-			} else if (!is_null($cachedState)) {
+			} elseif ($cachedState !== null) {
 				return true;
 			}
 			// need to get from server
@@ -373,8 +376,8 @@ class DAV extends Common {
 			case 'c+':
 				//emulate these
 				$tempManager = \OC::$server->getTempManager();
-				if (strrpos($path, '.') !== false) {
-					$ext = substr($path, strrpos($path, '.'));
+				if (\strrpos($path, '.') !== false) {
+					$ext = \substr($path, \strrpos($path, '.'));
 				} else {
 					$ext = '';
 				}
@@ -388,14 +391,14 @@ class DAV extends Common {
 						$tmpFile = $this->getCachedFile($path);
 					}
 				} else {
-					if (!$this->isCreatable(dirname($path))) {
+					if (!$this->isCreatable(\dirname($path))) {
 						return false;
 					}
 					$tmpFile = $tempManager->getTemporaryFile($ext);
 				}
 				Close::registerCallback($tmpFile, [$this, 'writeBack']);
 				self::$tempFiles[$tmpFile] = $path;
-				return fopen('close://' . $tmpFile, $mode);
+				return \fopen('close://' . $tmpFile, $mode);
 		}
 	}
 
@@ -405,7 +408,7 @@ class DAV extends Common {
 	public function writeBack($tmpFile) {
 		if (isset(self::$tempFiles[$tmpFile])) {
 			$this->uploadFile($tmpFile, self::$tempFiles[$tmpFile]);
-			unlink($tmpFile);
+			\unlink($tmpFile);
 		}
 	}
 
@@ -432,7 +435,7 @@ class DAV extends Common {
 	/** {@inheritdoc} */
 	public function touch($path, $mtime = null) {
 		$this->init();
-		if (is_null($mtime)) {
+		if ($mtime === null) {
 			$mtime = \OC::$server->getTimeFactory()->getTime();
 		}
 		$path = $this->cleanPath($path);
@@ -449,7 +452,7 @@ class DAV extends Common {
 					return false;
 				}
 				if (isset($response['{DAV:}getlastmodified'])) {
-					$remoteMtime = strtotime($response['{DAV:}getlastmodified']);
+					$remoteMtime = \strtotime($response['{DAV:}getlastmodified']);
 					if ($remoteMtime !== $mtime) {
 						// server has not accepted the mtime
 						return false;
@@ -493,7 +496,7 @@ class DAV extends Common {
 		// invalidate
 		$target = $this->cleanPath($target);
 		$this->statCache->remove($target);
-		$source = fopen($path, 'r');
+		$source = \fopen($path, 'r');
 
 		$this->removeCachedFile($target);
 		try {
@@ -517,7 +520,7 @@ class DAV extends Common {
 			// overwrite directory ?
 			if ($this->is_dir($path2)) {
 				// needs trailing slash in destination
-				$path2 = rtrim($path2, '/') . '/';
+				$path2 = \rtrim($path2, '/') . '/';
 			}
 			$this->client->request(
 				'MOVE',
@@ -549,7 +552,7 @@ class DAV extends Common {
 			// overwrite directory ?
 			if ($this->is_dir($path2)) {
 				// needs trailing slash in destination
-				$path2 = rtrim($path2, '/') . '/';
+				$path2 = \rtrim($path2, '/') . '/';
 			}
 			$this->client->request(
 				'COPY',
@@ -577,7 +580,7 @@ class DAV extends Common {
 				return [];
 			}
 			return [
-				'mtime' => strtotime($response['{DAV:}getlastmodified']),
+				'mtime' => \strtotime($response['{DAV:}getlastmodified']),
 				'size' => (int)isset($response['{DAV:}getcontentlength']) ? $response['{DAV:}getcontentlength'] : 0,
 			];
 		} catch (\Exception $e) {
@@ -598,7 +601,7 @@ class DAV extends Common {
 				/** @var ResourceType[] $response */
 				$responseType = $response["{DAV:}resourcetype"]->getValue();
 			}
-			$type = (count($responseType) > 0 and $responseType[0] == "{DAV:}collection") ? 'dir' : 'file';
+			$type = (\count($responseType) > 0 and $responseType[0] == "{DAV:}collection") ? 'dir' : 'file';
 			if ($type == 'dir') {
 				return 'httpd/unix-directory';
 			} elseif (isset($response['{DAV:}getcontenttype'])) {
@@ -622,7 +625,7 @@ class DAV extends Common {
 		}
 		$path = Filesystem::normalizePath($path);
 		// remove leading slash
-		return substr($path, 1);
+		return \substr($path, 1);
 	}
 
 	/**
@@ -633,7 +636,7 @@ class DAV extends Common {
 	 */
 	private function encodePath($path) {
 		// slashes need to stay
-		return str_replace('%2F', '/', rawurlencode($path));
+		return \str_replace('%2F', '/', \rawurlencode($path));
 	}
 
 	/**
@@ -704,9 +707,9 @@ class DAV extends Common {
 		}
 		if (isset($response['{http://owncloud.org/ns}permissions'])) {
 			return $this->parsePermissions($response['{http://owncloud.org/ns}permissions']);
-		} else if ($this->is_dir($path)) {
+		} elseif ($this->is_dir($path)) {
 			return Constants::PERMISSION_ALL;
-		} else if ($this->file_exists($path)) {
+		} elseif ($this->file_exists($path)) {
 			return Constants::PERMISSION_ALL - Constants::PERMISSION_CREATE;
 		} else {
 			return 0;
@@ -722,7 +725,7 @@ class DAV extends Common {
 			return null;
 		}
 		if (isset($response['{DAV:}getetag'])) {
-			return trim($response['{DAV:}getetag'], '"');
+			return \trim($response['{DAV:}getetag'], '"');
 		}
 		return parent::getEtag($path);
 	}
@@ -733,16 +736,16 @@ class DAV extends Common {
 	 */
 	protected function parsePermissions($permissionsString) {
 		$permissions = Constants::PERMISSION_READ;
-		if (strpos($permissionsString, 'R') !== false) {
+		if (\strpos($permissionsString, 'R') !== false) {
 			$permissions |= Constants::PERMISSION_SHARE;
 		}
-		if (strpos($permissionsString, 'D') !== false) {
+		if (\strpos($permissionsString, 'D') !== false) {
 			$permissions |= Constants::PERMISSION_DELETE;
 		}
-		if (strpos($permissionsString, 'W') !== false) {
+		if (\strpos($permissionsString, 'W') !== false) {
 			$permissions |= Constants::PERMISSION_UPDATE;
 		}
-		if (strpos($permissionsString, 'CK') !== false) {
+		if (\strpos($permissionsString, 'CK') !== false) {
 			$permissions |= Constants::PERMISSION_CREATE;
 			$permissions |= Constants::PERMISSION_UPDATE;
 		}
@@ -773,27 +776,27 @@ class DAV extends Common {
 			}
 			if (isset($response['{DAV:}getetag'])) {
 				$cachedData = $this->getCache()->get($path);
-				$etag = trim($response['{DAV:}getetag'], '"');
+				$etag = \trim($response['{DAV:}getetag'], '"');
 				if (!empty($etag) && $cachedData['etag'] !== $etag) {
 					return true;
-				} else if (isset($response['{http://open-collaboration-services.org/ns}share-permissions'])) {
+				} elseif (isset($response['{http://open-collaboration-services.org/ns}share-permissions'])) {
 					$sharePermissions = (int)$response['{http://open-collaboration-services.org/ns}share-permissions'];
 					return $sharePermissions !== $cachedData['permissions'];
-				} else if (isset($response['{http://owncloud.org/ns}permissions'])) {
+				} elseif (isset($response['{http://owncloud.org/ns}permissions'])) {
 					$permissions = $this->parsePermissions($response['{http://owncloud.org/ns}permissions']);
 					return $permissions !== $cachedData['permissions'];
 				} else {
 					return false;
 				}
 			} else {
-				$remoteMtime = strtotime($response['{DAV:}getlastmodified']);
+				$remoteMtime = \strtotime($response['{DAV:}getlastmodified']);
 				return $remoteMtime > $time;
 			}
 		} catch (ClientHttpException $e) {
 			if ($e->getHttpStatus() === 405) {
 				if ($path === '') {
 					// if root is gone it means the storage is not available
-					throw new StorageNotAvailableException(get_class($e) . ': ' . $e->getMessage());
+					throw new StorageNotAvailableException(\get_class($e) . ': ' . $e->getMessage());
 				}
 				return false;
 			}
@@ -824,17 +827,17 @@ class DAV extends Common {
 		Util::writeLog('files_external', $e->getMessage(), Util::ERROR);
 		if ($e instanceof ClientHttpException) {
 			$this->throwByStatusCode($e->getHttpStatus(), $e, $path);
-		} else if ($e instanceof \GuzzleHttp\Exception\RequestException) {
+		} elseif ($e instanceof \GuzzleHttp\Exception\RequestException) {
 			if ($e->getResponse() instanceof ResponseInterface) {
 				$this->throwByStatusCode($e->getResponse()->getStatusCode(), $e);
 			}
 			// connection timeout or refused, server could be temporarily down
-			throw new StorageNotAvailableException(get_class($e) . ': ' . $e->getMessage());
-		} else if ($e instanceof \InvalidArgumentException) {
+			throw new StorageNotAvailableException(\get_class($e) . ': ' . $e->getMessage());
+		} elseif ($e instanceof \InvalidArgumentException) {
 			// parse error because the server returned HTML instead of XML,
 			// possibly temporarily down
-			throw new StorageNotAvailableException(get_class($e) . ': ' . $e->getMessage());
-		} else if (($e instanceof StorageNotAvailableException)
+			throw new StorageNotAvailableException(\get_class($e) . ': ' . $e->getMessage());
+		} elseif (($e instanceof StorageNotAvailableException)
 			|| ($e instanceof StorageInvalidException)
 			|| ($e instanceof \Sabre\DAV\Exception
 		)) {
@@ -858,13 +861,12 @@ class DAV extends Common {
 				throw new \OCP\Lock\LockedException($path);
 			case Http::STATUS_UNAUTHORIZED:
 				// either password was changed or was invalid all along
-				throw new StorageInvalidException(get_class($e) . ': ' . $e->getMessage());
+				throw new StorageInvalidException(\get_class($e) . ': ' . $e->getMessage());
 			case Http::STATUS_INSUFFICIENT_STORAGE:
 				throw new InsufficientStorage();
 			case Http::STATUS_FORBIDDEN:
 				throw new Forbidden('Forbidden');
 		}
-		throw new StorageNotAvailableException(get_class($e) . ': ' . $e->getMessage());
+		throw new StorageNotAvailableException(\get_class($e) . ': ' . $e->getMessage());
 	}
 }
-

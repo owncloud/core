@@ -22,7 +22,6 @@
 
 namespace OC\Core\Command\User;
 
-
 use OC\User\Account;
 use OC\User\AccountMapper;
 use OC\User\Sync\AllUsersIterator;
@@ -42,7 +41,6 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Input\InputArgument;
 
 class SyncBackend extends Command {
-
 	const VALID_ACTIONS = ['disable', 'remove'];
 
 	/** @var AccountMapper */
@@ -127,7 +125,7 @@ class SyncBackend extends Command {
 		if ($input->getOption('list')) {
 			$backends = $this->userManager->getBackends();
 			foreach ($backends as $backend) {
-				$output->writeln(get_class($backend));
+				$output->writeln(\get_class($backend));
 			}
 			return 0;
 		}
@@ -148,7 +146,7 @@ class SyncBackend extends Command {
 
 		if ($input->getOption('missing-account-action') !== null) {
 			$missingAccountsAction = $input->getOption('missing-account-action');
-			if (!in_array($missingAccountsAction, self::VALID_ACTIONS, true)) {
+			if (!\in_array($missingAccountsAction, self::VALID_ACTIONS, true)) {
 				$output->writeln('<error>Unknown action. Choose between "disable" or "remove"</error>');
 				return 1;
 			}
@@ -157,7 +155,7 @@ class SyncBackend extends Command {
 			$helper = $this->getHelper('question');
 			$question = new ChoiceQuestion(
 					'If unknown users are found, what do you want to do with their accounts? (removing the account will also remove its data)',
-					array_merge(self::VALID_ACTIONS, ['ask later']),
+					\array_merge(self::VALID_ACTIONS, ['ask later']),
 					0
 			);
 			$missingAccountsAction = $helper->ask($input, $output, $question);
@@ -182,7 +180,7 @@ class SyncBackend extends Command {
 	 * @param UserInterface $backend
 	 * @param string $missingAccountsAction
 	 */
-	private function syncMultipleUsers (
+	private function syncMultipleUsers(
 		InputInterface $input,
 		OutputInterface $output,
 		SyncService $syncService,
@@ -207,7 +205,7 @@ class SyncBackend extends Command {
 		}
 
 		$output->writeln('');
-		$backendClass = get_class($backend);
+		$backendClass = \get_class($backend);
 		if ($input->getOption('seenOnly')) {
 			$output->writeln("Updating seen accounts from $backendClass ...");
 			$iterator = new SeenUsersIterator($this->accountMapper, $backendClass);
@@ -251,14 +249,15 @@ class SyncBackend extends Command {
 	) {
 		$output->writeln("Syncing $uid ...");
 		$users = $backend->getUsers($uid, 2);
-		if (count($users) > 1) {
+		if (\count($users) > 1) {
 			throw new \LengthException("Multiple users returned from backend for: $uid. Cancelling sync.");
 		}
 
 		$dummy = new Account(); // to prevent null pointer when writing messages
-		if (count($users) === 1) {
+		if (\count($users) === 1) {
 			// Run the sync using the internal username if mapped
-			$syncService->run($backend, new \ArrayIterator([$users[0]]), function (){});
+			$syncService->run($backend, new \ArrayIterator([$users[0]]), function () {
+			});
 		} else {
 			// Not found
 			$this->handleRemovedUsers([$uid => $dummy], $input, $output, $missingAccountsAction);
@@ -276,13 +275,13 @@ class SyncBackend extends Command {
 	 */
 	private function getBackend($backend) {
 		$backends = $this->userManager->getBackends();
-		$match = array_filter($backends, function ($b) use ($backend) {
-			return get_class($b) === $backend;
+		$match = \array_filter($backends, function ($b) use ($backend) {
+			return \get_class($b) === $backend;
 		});
 		if (empty($match)) {
 			return null;
 		}
-		return array_pop($match);
+		return \array_pop($match);
 	}
 
 	/**
@@ -310,7 +309,6 @@ class SyncBackend extends Command {
 	 * @param $missingAccountsAction
 	 */
 	private function handleRemovedUsers(array $removedUsers, InputInterface $input, OutputInterface $output, $missingAccountsAction) {
-
 		if (empty($removedUsers)) {
 			$output->writeln('No removed users have been detected.');
 		} else {
@@ -415,7 +413,5 @@ class SyncBackend extends Command {
 				}
 			);
 		}
-
-
 	}
 }

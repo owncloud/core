@@ -35,8 +35,7 @@ use OC\DB\OCPostgreSqlPlatform;
  */
  
 class OCPostgreSqlPlatformTest extends \Test\TestCase {
-
-	public function testAlterBigint(){
+	public function testAlterBigint() {
 		$platform = new OCPostgreSqlPlatform();
 		$sourceSchema = new Schema();
 		$targetSchema = new Schema();
@@ -60,7 +59,7 @@ class OCPostgreSqlPlatformTest extends \Test\TestCase {
 		);
 	}
 	
-	protected function createTableAndColumn($schema, $type){
+	protected function createTableAndColumn($schema, $type) {
 		$table = $schema->createTable("poor_yorick");
 		$table->addColumn('id', $type, [
 			'autoincrement' => true,
@@ -69,5 +68,4 @@ class OCPostgreSqlPlatformTest extends \Test\TestCase {
 				'length' => 11,
 		]);
 	}
-	
 }

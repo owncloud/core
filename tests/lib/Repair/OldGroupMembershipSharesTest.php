@@ -118,7 +118,7 @@ class OldGroupMembershipSharesTest extends \Test\TestCase {
 			'file_source' => $qb->expr()->literal(123),
 			'file_target' => $qb->expr()->literal('/test'),
 			'permissions' => $qb->expr()->literal(1),
-			'stime' => $qb->expr()->literal(time()),
+			'stime' => $qb->expr()->literal(\time()),
 			'expiration' => $qb->expr()->literal('2015-09-25 00:00:00'),
 		];
 

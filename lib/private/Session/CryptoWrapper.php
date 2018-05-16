@@ -72,18 +72,18 @@ class CryptoWrapper {
 		$this->config = $config;
 		$this->random = $random;
 
-		if (!is_null($request->getCookie(self::COOKIE_NAME))) {
+		if ($request->getCookie(self::COOKIE_NAME) !== null) {
 			$this->passphrase = $request->getCookie(self::COOKIE_NAME);
 		} else {
 			$this->passphrase = $this->random->generate(128);
 			$secureCookie = $request->getServerProtocol() === 'https';
 			// FIXME: Required for CI
-			if (!defined('PHPUNIT_RUN')) {
+			if (!\defined('PHPUNIT_RUN')) {
 				$webRoot = \OC::$WEBROOT;
-				if($webRoot === '') {
+				if ($webRoot === '') {
 					$webRoot = '/';
 				}
-				setcookie(self::COOKIE_NAME, $this->passphrase, 0, $webRoot, '', $secureCookie, true);
+				\setcookie(self::COOKIE_NAME, $this->passphrase, 0, $webRoot, '', $secureCookie, true);
 			}
 		}
 	}

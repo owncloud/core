@@ -64,21 +64,17 @@ class CacheEntry implements ICacheEntry, \ArrayAccess {
 		return $this->data['storage'];
 	}
 
-
 	public function getPath() {
 		return $this->data['path'];
 	}
-
 
 	public function getName() {
 		return $this->data['name'];
 	}
 
-
 	public function getMimeType() {
 		return $this->data['mimetype'];
 	}
-
 
 	public function getMimePart() {
 		return $this->data['mimepart'];

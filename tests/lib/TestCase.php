@@ -39,13 +39,13 @@ abstract class TestCase extends BaseTestCase {
 	private $commandBus;
 
 	/** @var IDBConnection */
-	static protected $realDatabase = null;
+	protected static $realDatabase = null;
 
 	/** @var bool */
-	static private $wasDatabaseAllowed = false;
+	private static $wasDatabaseAllowed = false;
 
 	/** @var string */
-	static private $lastTest = '';
+	private static $lastTest = '';
 
 	/** @var array */
 	protected $services = [];
@@ -79,7 +79,6 @@ abstract class TestCase extends BaseTestCase {
 				return $oldService;
 			});
 
-
 			unset($this->services[$name]);
 			return true;
 		}
@@ -91,14 +90,14 @@ abstract class TestCase extends BaseTestCase {
 		$traits = [];
 		$class = $this;
 		do {
-			$traits = array_merge(class_uses($class), $traits);
-		} while ($class = get_parent_class($class));
+			$traits = \array_merge(\class_uses($class), $traits);
+		} while ($class = \get_parent_class($class));
 		foreach ($traits as $trait => $same) {
-			$traits = array_merge(class_uses($trait), $traits);
+			$traits = \array_merge(\class_uses($trait), $traits);
 		}
-		$traits = array_unique($traits);
-		return array_filter($traits, function ($trait) {
-			return substr($trait, 0, 5) === 'Test\\';
+		$traits = \array_unique($traits);
+		return \array_filter($traits, function ($trait) {
+			return \substr($trait, 0, 5) === 'Test\\';
 		});
 	}
 
@@ -107,7 +106,7 @@ abstract class TestCase extends BaseTestCase {
 		self::$wasDatabaseAllowed = true;
 		if (!$this->IsDatabaseAccessAllowed()) {
 			self::$wasDatabaseAllowed = false;
-			if (is_null(self::$realDatabase)) {
+			if (self::$realDatabase === null) {
 				self::$realDatabase = \OC::$server->getDatabaseConnection();
 			}
 			\OC::$server->registerService('DatabaseConnection', function () {
@@ -123,16 +122,16 @@ abstract class TestCase extends BaseTestCase {
 
 		$traits = $this->getTestTraits();
 		foreach ($traits as $trait) {
-			$methodName = 'setUp' . basename(str_replace('\\', '/', $trait));
-			if (method_exists($this, $methodName)) {
-				call_user_func([$this, $methodName]);
+			$methodName = 'setUp' . \basename(\str_replace('\\', '/', $trait));
+			if (\method_exists($this, $methodName)) {
+				\call_user_func([$this, $methodName]);
 			}
 		}
 	}
 
 	protected function tearDown() {
 		// store testname in static attr for use in class teardown
-		self::$lastTest = get_class($this) . ':' . $this->getName();
+		self::$lastTest = \get_class($this) . ':' . $this->getName();
 
 		// restore database connection
 		if (!$this->IsDatabaseAccessAllowed()) {
@@ -150,8 +149,8 @@ abstract class TestCase extends BaseTestCase {
 		}
 
 		// fail hard if xml errors have not been cleaned up
-		$errors = libxml_get_errors();
-		libxml_clear_errors();
+		$errors = \libxml_get_errors();
+		\libxml_clear_errors();
 		if (!empty($errors)) {
 			self::assertEquals([], $errors, "There have been xml parsing errors");
 		}
@@ -159,9 +158,9 @@ abstract class TestCase extends BaseTestCase {
 		// tearDown the traits
 		$traits = $this->getTestTraits();
 		foreach ($traits as $trait) {
-			$methodName = 'tearDown' . basename(str_replace('\\', '/', $trait));
-			if (method_exists($this, $methodName)) {
-				call_user_func([$this, $methodName]);
+			$methodName = 'tearDown' . \basename(\str_replace('\\', '/', $trait));
+			if (\method_exists($this, $methodName)) {
+				\call_user_func([$this, $methodName]);
 			}
 		}
 	}
@@ -175,10 +174,10 @@ abstract class TestCase extends BaseTestCase {
 	 * @return mixed
 	 */
 	protected static function invokePrivate($object, $methodName, array $parameters = []) {
-		if (is_string($object)) {
+		if (\is_string($object)) {
 			$className = $object;
 		} else {
-			$className = get_class($object);
+			$className = \get_class($object);
 		}
 		$reflection = new \ReflectionClass($className);
 
@@ -198,7 +197,7 @@ abstract class TestCase extends BaseTestCase {
 			$property->setAccessible(true);
 
 			if (!empty($parameters)) {
-				$property->setValue($object, array_pop($parameters));
+				$property->setValue($object, \array_pop($parameters));
 			}
 
 			return $property->getValue($object);
@@ -224,7 +223,7 @@ abstract class TestCase extends BaseTestCase {
 
 	public static function tearDownAfterClass() {
 		// fail if still in a transaction after test run
-		if(self::$wasDatabaseAllowed && \OC::$server->getDatabaseConnection()->inTransaction()) {
+		if (self::$wasDatabaseAllowed && \OC::$server->getDatabaseConnection()->inTransaction()) {
 			// This is bad. But we cannot fail the unit test since we are already
 			// outside of it. We cannot throw an exception since this hides
 			// potentially the real cause of this issue. So let's just output
@@ -233,10 +232,12 @@ abstract class TestCase extends BaseTestCase {
 			// attempt to reset it so you can continue running testing unaffected
 			try {
 				\OC::$server->getDatabaseConnection()->commit();
-			} catch (\Exception $e) {}
+			} catch (\Exception $e) {
+			}
 			try {
 				\OC::$server->getDatabaseConnection()->rollBack();
-			} catch (\Exception $e) {}
+			} catch (\Exception $e) {
+			}
 		}
 
 		if (!self::$wasDatabaseAllowed && self::$realDatabase !== null) {
@@ -270,7 +271,7 @@ abstract class TestCase extends BaseTestCase {
 	 *
 	 * @param IQueryBuilder $queryBuilder
 	 */
-	static protected function tearDownAfterClassCleanShares(IQueryBuilder $queryBuilder) {
+	protected static function tearDownAfterClassCleanShares(IQueryBuilder $queryBuilder) {
 		$queryBuilder->delete('share')
 			->execute();
 	}
@@ -280,7 +281,7 @@ abstract class TestCase extends BaseTestCase {
 	 *
 	 * @param IQueryBuilder $queryBuilder
 	 */
-	static protected function tearDownAfterClassCleanStorages(IQueryBuilder $queryBuilder) {
+	protected static function tearDownAfterClassCleanStorages(IQueryBuilder $queryBuilder) {
 		$queryBuilder->delete('storages')
 			->execute();
 	}
@@ -290,7 +291,7 @@ abstract class TestCase extends BaseTestCase {
 	 *
 	 * @param IQueryBuilder $queryBuilder
 	 */
-	static protected function tearDownAfterClassCleanFileCache(IQueryBuilder $queryBuilder) {
+	protected static function tearDownAfterClassCleanFileCache(IQueryBuilder $queryBuilder) {
 		$queryBuilder->delete('filecache')
 			->execute();
 	}
@@ -300,7 +301,7 @@ abstract class TestCase extends BaseTestCase {
 	 *
 	 * @param string $dataDir
 	 */
-	static protected function tearDownAfterClassCleanStrayDataFiles($dataDir) {
+	protected static function tearDownAfterClassCleanStrayDataFiles($dataDir) {
 		$knownEntries = [
 			'owncloud.log' => true,
 			'owncloud.db' => true,
@@ -309,13 +310,13 @@ abstract class TestCase extends BaseTestCase {
 			'.' => true,
 		];
 
-		if ($dh = @opendir($dataDir)) {
-			while (($file = readdir($dh)) !== false) {
+		if ($dh = @\opendir($dataDir)) {
+			while (($file = \readdir($dh)) !== false) {
 				if (!isset($knownEntries[$file])) {
 					self::tearDownAfterClassCleanStrayDataUnlinkDir($dataDir . '/' . $file);
 				}
 			}
-			closedir($dh);
+			\closedir($dh);
 		}
 	}
 
@@ -324,37 +325,37 @@ abstract class TestCase extends BaseTestCase {
 	 *
 	 * @param string $dir
 	 */
-	static protected function tearDownAfterClassCleanStrayDataUnlinkDir($dir) {
-		if (is_dir($dir)) {
-			if ($dh = @opendir($dir)) {
-				while (($file = readdir($dh)) !== false) {
+	protected static function tearDownAfterClassCleanStrayDataUnlinkDir($dir) {
+		if (\is_dir($dir)) {
+			if ($dh = @\opendir($dir)) {
+				while (($file = \readdir($dh)) !== false) {
 					if (\OC\Files\Filesystem::isIgnoredDir($file)) {
 						continue;
 					}
 					$path = $dir . '/' . $file;
-					if (is_dir($path)) {
+					if (\is_dir($path)) {
 						self::tearDownAfterClassCleanStrayDataUnlinkDir($path);
 					} else {
-						@unlink($path);
+						@\unlink($path);
 					}
 				}
-				closedir($dh);
+				\closedir($dh);
 			}
-			@rmdir($dir);
+			@\rmdir($dir);
 		}
 	}
 
 	/**
 	 * Clean up the list of hooks
 	 */
-	static protected function tearDownAfterClassCleanStrayHooks() {
+	protected static function tearDownAfterClassCleanStrayHooks() {
 		\OC_Hook::clear();
 	}
 
 	/**
 	 * Clean up the list of locks
 	 */
-	static protected function tearDownAfterClassCleanStrayLocks() {
+	protected static function tearDownAfterClassCleanStrayLocks() {
 		\OC::$server->getLockingProvider()->releaseAll();
 	}
 
@@ -364,12 +365,12 @@ abstract class TestCase extends BaseTestCase {
 	 *
 	 * @param string $user user id or empty for a generic FS
 	 */
-	static protected function loginAsUser($user = '') {
+	protected static function loginAsUser($user = '') {
 		self::logout();
 		\OC\Files\Filesystem::tearDown();
 		\OC_User::setUserId($user);
 		$userObject = \OC::$server->getUserManager()->get($user);
-		if (!is_null($userObject)) {
+		if ($userObject !== null) {
 			$userObject->updateLastLoginTimestamp();
 		}
 		\OC_Util::setupFS($user);
@@ -381,7 +382,7 @@ abstract class TestCase extends BaseTestCase {
 	/**
 	 * Logout the current user and tear down the filesystem.
 	 */
-	static protected function logout() {
+	protected static function logout() {
 		\OC_Util::tearDownFS();
 		\OC_User::setUserId('');
 		// needed for fully logout
@@ -395,7 +396,7 @@ abstract class TestCase extends BaseTestCase {
 		// get the user for which the fs is setup
 		$view = Filesystem::getView();
 		if ($view) {
-			list(, $user) = explode('/', $view->getRoot());
+			list(, $user) = \explode('/', $view->getRoot());
 		} else {
 			$user = null;
 		}
@@ -449,11 +450,11 @@ abstract class TestCase extends BaseTestCase {
 	private function IsDatabaseAccessAllowed() {
 		// on travis-ci.org we allow database access in any case - otherwise
 		// this will break all apps right away
-		if (true == getenv('TRAVIS')) {
+		if (\getenv('TRAVIS') == true) {
 			return true;
 		}
 		$annotations = $this->getAnnotations();
-		if (isset($annotations['class']['group']) && in_array('DB', $annotations['class']['group'])) {
+		if (isset($annotations['class']['group']) && \in_array('DB', $annotations['class']['group'])) {
 			return true;
 		}
 
@@ -466,7 +467,6 @@ abstract class TestCase extends BaseTestCase {
 	 * @param array $vars
 	 */
 	protected function assertTemplate($expectedHtml, $template, $vars = []) {
-
 		require_once __DIR__.'/../../lib/private/legacy/template/functions.php';
 
 		$requestToken = 12345;
@@ -477,8 +477,8 @@ abstract class TestCase extends BaseTestCase {
 		$l10n
 			->expects($this->any())
 			->method('t')
-			->will($this->returnCallback(function($text, $parameters = []) {
-				return vsprintf($text, $parameters);
+			->will($this->returnCallback(function ($text, $parameters = []) {
+				return \vsprintf($text, $parameters);
 			}));
 
 		$t = new Base($template, $requestToken, $l10n, null, $theme);
@@ -508,13 +508,12 @@ abstract class TestCase extends BaseTestCase {
 		self::assertEquals($expectedHtml1, $actualHtml1, $message);
 	}
 
-
 	private function removeWhitespaces(DOMNode $domNode) {
 		foreach ($domNode->childNodes as $node) {
-			if($node->hasChildNodes()) {
+			if ($node->hasChildNodes()) {
 				$this->removeWhitespaces($node);
 			} else {
-				if ($node instanceof \DOMText && $node->isWhitespaceInElementContent() ) {
+				if ($node instanceof \DOMText && $node->isWhitespaceInElementContent()) {
 					$domNode->removeChild($node);
 				}
 			}
@@ -522,7 +521,7 @@ abstract class TestCase extends BaseTestCase {
 	}
 
 	public function getCurrentUser() {
-		$processUser = posix_getpwuid(posix_geteuid());
+		$processUser = \posix_getpwuid(\posix_geteuid());
 		return $processUser['name'];
 	}
 
@@ -531,9 +530,9 @@ abstract class TestCase extends BaseTestCase {
 	 * @return bool|resource
 	 */
 	protected function createStreamFor($string) {
-		$stream = fopen('php://memory', 'r+');
-		fwrite($stream, $string);
-		rewind($stream);
+		$stream = \fopen('php://memory', 'r+');
+		\fwrite($stream, $string);
+		\rewind($stream);
 		return $stream;
 	}
 
@@ -544,5 +543,4 @@ abstract class TestCase extends BaseTestCase {
 		}
 		return false;
 	}
-
 }

@@ -60,36 +60,36 @@ class AddressHandler {
 	 * @throws HintException
 	 */
 	public function splitUserRemote($address) {
-		if (strpos($address, '@') === false) {
+		if (\strpos($address, '@') === false) {
 			$hint = $this->l->t('Invalid Federated Cloud ID');
 			throw new HintException('Invalid Federated Cloud ID', $hint);
 		}
 
 		// Find the first character that is not allowed in user names
-		$id = str_replace('\\', '/', $address);
-		$posSlash = strpos($id, '/');
-		$posColon = strpos($id, ':');
+		$id = \str_replace('\\', '/', $address);
+		$posSlash = \strpos($id, '/');
+		$posColon = \strpos($id, ':');
 
 		if ($posSlash === false && $posColon === false) {
-			$invalidPos = strlen($id);
-		} else if ($posSlash === false) {
+			$invalidPos = \strlen($id);
+		} elseif ($posSlash === false) {
 			$invalidPos = $posColon;
-		} else if ($posColon === false) {
+		} elseif ($posColon === false) {
 			$invalidPos = $posSlash;
 		} else {
-			$invalidPos = min($posSlash, $posColon);
+			$invalidPos = \min($posSlash, $posColon);
 		}
 
 		// Find the last @ before $invalidPos
 		$pos = $lastAtPos = 0;
 		while ($lastAtPos !== false && $lastAtPos <= $invalidPos) {
 			$pos = $lastAtPos;
-			$lastAtPos = strpos($id, '@', $pos + 1);
+			$lastAtPos = \strpos($id, '@', $pos + 1);
 		}
 
 		if ($pos !== false) {
-			$user = substr($id, 0, $pos);
-			$remote = substr($id, $pos + 1);
+			$user = \substr($id, 0, $pos);
+			$remote = \substr($id, $pos + 1);
 			$remote = $this->fixRemoteURL($remote);
 			if (!empty($user) && !empty($remote)) {
 				return [$user, $remote];
@@ -120,10 +120,10 @@ class AddressHandler {
 	 * @return bool true if both users and servers are the same
 	 */
 	public function compareAddresses($user1, $server1, $user2, $server2) {
-		$normalizedServer1 = strtolower($this->removeProtocolFromUrl($server1));
-		$normalizedServer2 = strtolower($this->removeProtocolFromUrl($server2));
+		$normalizedServer1 = \strtolower($this->removeProtocolFromUrl($server1));
+		$normalizedServer2 = \strtolower($this->removeProtocolFromUrl($server2));
 
-		if (rtrim($normalizedServer1, '/') === rtrim($normalizedServer2, '/')) {
+		if (\rtrim($normalizedServer1, '/') === \rtrim($normalizedServer2, '/')) {
 			// FIXME this should be a method in the user management instead
 			\OCP\Util::emitHook(
 				'\OCA\Files_Sharing\API\Server2Server',
@@ -151,10 +151,10 @@ class AddressHandler {
 	 * @return string
 	 */
 	public function removeProtocolFromUrl($url) {
-		if (strpos($url, 'https://') === 0) {
-			return substr($url, strlen('https://'));
-		} else if (strpos($url, 'http://') === 0) {
-			return substr($url, strlen('http://'));
+		if (\strpos($url, 'https://') === 0) {
+			return \substr($url, \strlen('https://'));
+		} elseif (\strpos($url, 'http://') === 0) {
+			return \substr($url, \strlen('http://'));
 		}
 
 		return $url;
@@ -173,13 +173,12 @@ class AddressHandler {
 	 * @return string
 	 */
 	protected function fixRemoteURL($remote) {
-		$remote = str_replace('\\', '/', $remote);
-		if ($fileNamePosition = strpos($remote, '/index.php')) {
-			$remote = substr($remote, 0, $fileNamePosition);
+		$remote = \str_replace('\\', '/', $remote);
+		if ($fileNamePosition = \strpos($remote, '/index.php')) {
+			$remote = \substr($remote, 0, $fileNamePosition);
 		}
-		$remote = rtrim($remote, '/');
+		$remote = \rtrim($remote, '/');
 
 		return $remote;
 	}
-
 }

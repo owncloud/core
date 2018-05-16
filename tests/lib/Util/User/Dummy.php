@@ -118,11 +118,11 @@ class Dummy extends Backend implements \OCP\IUserBackend {
 	 */
 	public function getUsers($search = '', $limit = null, $offset = null) {
 		if (empty($search)) {
-			return array_keys($this->users);
+			return \array_keys($this->users);
 		}
 		$result = [];
-		foreach (array_keys($this->users) as $user) {
-			if (stripos($user, $search) !== false) {
+		foreach (\array_keys($this->users) as $user) {
+			if (\stripos($user, $search) !== false) {
 				$result[] = $user;
 			}
 		}
@@ -167,7 +167,7 @@ class Dummy extends Backend implements \OCP\IUserBackend {
 	 * Backend name to be shown in user management
 	 * @return string the name of the backend to be shown
 	 */
-	public function getBackendName(){
+	public function getBackendName() {
 		return 'Dummy';
 	}
 }

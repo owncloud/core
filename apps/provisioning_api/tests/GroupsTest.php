@@ -118,7 +118,7 @@ class GroupsTest extends \Test\TestCase {
 
 		$this->subAdminManager
 			->method('isSubAdminOfGroup')
-			->will($this->returnCallback(function($_user, $_group) use ($user, $group) {
+			->will($this->returnCallback(function ($_user, $_group) use ($user, $group) {
 				if ($_user === $user && $_group === $group) {
 					return true;
 				}
@@ -175,7 +175,6 @@ class GroupsTest extends \Test\TestCase {
 		$this->assertInstanceOf('OC_OCS_Result', $result);
 		$this->assertFalse($result->succeeded());
 		$this->assertEquals(API::RESPOND_UNAUTHORISED, $result->getStatusCode());
-
 	}
 
 	public function testGetGroupAsSubadmin() {

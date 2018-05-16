@@ -40,7 +40,7 @@ class MySqlTools {
 			if ($rows === false) {
 				return false;
 			}
-			if (strcasecmp($rows['Value'], $val) !== 0) {
+			if (\strcasecmp($rows['Value'], $val) !== 0) {
 				return false;
 			}
 		}

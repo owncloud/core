@@ -1,6 +1,7 @@
 <div id="app-navigation">
 	<ul>
-	<?php if($_['admin']) { ?>
+	<?php if ($_['admin']) {
+	?>
 		<li>
 			<a class="<?php p($_['style1']); ?>"
 				href="<?php print_unescaped($_['url1']); ?>">
@@ -13,7 +14,8 @@
 				<?php p($l->t('Administrator documentation')); ?>
 			</a>
 		</li>
-	<?php } ?>
+	<?php
+} ?>
 
 		<li>
 			<a href="https://owncloud.org/support" target="_blank" rel="noreferrer">
@@ -26,14 +28,16 @@
 			</a>
 		</li>
 
-	<?php if($_['admin']) { ?>
+	<?php if ($_['admin']) {
+		?>
 		<li>
 			<a href="https://github.com/owncloud/core/blob/master/.github/CONTRIBUTING.md"
 				target="_blank" rel="noreferrer">
 				<?php p($l->t('Issue tracker')); ?> ↗
 			</a>
 		</li>
-	<?php } ?>
+	<?php
+	} ?>
 
 	<li>
 		<a href="https://owncloud.com/subscriptions/" target="_blank" rel="noreferrer">

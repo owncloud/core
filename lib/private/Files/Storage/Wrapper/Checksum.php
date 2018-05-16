@@ -94,7 +94,7 @@ class Checksum extends Wrapper {
 		$isNormalFile = true;
 		if ($this->instanceOfStorage(IHomeStorage::class)) {
 			// home storage stores files in "files"
-			$isNormalFile = substr($path, 0, 6) === 'files/';
+			$isNormalFile = \substr($path, 0, 6) === 'files/';
 		}
 		$fileIsWritten = $mode !== 'r' && $mode !== 'rb';
 
@@ -110,7 +110,7 @@ class Checksum extends Wrapper {
 
 		// Cache entry is sometimes an array (partial) when encryption is enabled without id so
 		// we ignore it.
-		if ($cacheEntry && empty($cacheEntry['checksum']) && is_object($cacheEntry)) {
+		if ($cacheEntry && empty($cacheEntry['checksum']) && \is_object($cacheEntry)) {
 			$this->pathsInCacheWithoutChecksum[$cacheEntry->getId()] = $path;
 			return self::PATH_IN_CACHE_WITHOUT_CHECKSUM;
 		}

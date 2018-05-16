@@ -67,8 +67,8 @@ class FileSharing implements ISettings {
 		$excludeGroups = $this->config->getAppValue('core', 'shareapi_exclude_groups', 'no') === 'yes' ? true : false;
 		$template->assign('shareExcludeGroups', $excludeGroups);
 		$excludedGroupsList = $this->config->getAppValue('core', 'shareapi_exclude_groups_list', '');
-		$excludedGroupsList = json_decode($excludedGroupsList);
-		$template->assign('shareExcludedGroupsList', !is_null($excludedGroupsList) ? implode('|', $excludedGroupsList) : '');
+		$excludedGroupsList = \json_decode($excludedGroupsList);
+		$template->assign('shareExcludedGroupsList', $excludedGroupsList !== null ? \implode('|', $excludedGroupsList) : '');
 		$template->assign('shareExpireAfterNDays', $this->config->getAppValue('core', 'shareapi_expire_after_n_days', '7'));
 		$template->assign('shareEnforceExpireDate', $this->config->getAppValue('core', 'shareapi_enforce_expire_date', 'no'));
 
@@ -103,5 +103,4 @@ class FileSharing implements ISettings {
 	public function getSectionID() {
 		return 'sharing';
 	}
-
 }

@@ -33,7 +33,6 @@ use OCP\ISearch;
  * Provide an interface to all search providers
  */
 class Search implements ISearch {
-
 	private $providers = [];
 	private $registeredProviders = [];
 
@@ -59,20 +58,20 @@ class Search implements ISearch {
 	public function searchPaged($query, array $inApps = [], $page = 1, $size = 30) {
 		$this->initProviders();
 		$results = [];
-		foreach($this->providers as $provider) {
+		foreach ($this->providers as $provider) {
 			/** @var $provider Provider */
-			if ( ! $provider->providesResultsFor($inApps) ) {
+			if (! $provider->providesResultsFor($inApps)) {
 				continue;
 			}
 			if ($provider instanceof PagedProvider) {
-				$results = array_merge($results, $provider->searchPaged($query, $page, $size));
-			} else if ($provider instanceof Provider) {
+				$results = \array_merge($results, $provider->searchPaged($query, $page, $size));
+			} elseif ($provider instanceof Provider) {
 				$providerResults = $provider->search($query);
 				if ($size > 0) {
-					$slicedResults = array_slice($providerResults, ($page - 1) * $size, $size);
-					$results = array_merge($results, $slicedResults);
+					$slicedResults = \array_slice($providerResults, ($page - 1) * $size, $size);
+					$results = \array_merge($results, $slicedResults);
 				} else {
-					$results = array_merge($results, $providerResults);
+					$results = \array_merge($results, $providerResults);
 				}
 			} else {
 				\OC::$server->getLogger()->warning('Ignoring Unknown search provider', ['provider' => $provider]);
@@ -94,7 +93,7 @@ class Search implements ISearch {
 	 * @param string $provider class name of a OC\Search\Provider
 	 */
 	public function removeProvider($provider) {
-		$this->registeredProviders = array_filter(
+		$this->registeredProviders = \array_filter(
 			$this->registeredProviders,
 			function ($element) use ($provider) {
 				return ($element['class'] != $provider);
@@ -117,14 +116,13 @@ class Search implements ISearch {
 	 * Create instances of all the registered search providers
 	 */
 	private function initProviders() {
-		if( ! empty($this->providers) ) {
+		if (! empty($this->providers)) {
 			return;
 		}
-		foreach($this->registeredProviders as $provider) {
+		foreach ($this->registeredProviders as $provider) {
 			$class = $provider['class'];
 			$options = $provider['options'];
 			$this->providers[] = new $class($options);
 		}
 	}
-
 }

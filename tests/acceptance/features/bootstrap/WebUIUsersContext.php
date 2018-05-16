@@ -34,11 +34,10 @@ require_once 'bootstrap.php';
  * WebUI Users context.
  */
 class WebUIUsersContext extends RawMinkContext implements Context {
-
 	private $usersPage;
 
 	/**
-	 * 
+	 *
 	 * @var LoginPage
 	 */
 	private $loginPage;
@@ -59,7 +58,6 @@ class WebUIUsersContext extends RawMinkContext implements Context {
 		$this->loginPage = $loginPage;
 	}
 	
-
 	/**
 	 * @When the user/administrator browses to the users page
 	 * @Given the user/administrator has browsed to the users page
@@ -77,7 +75,7 @@ class WebUIUsersContext extends RawMinkContext implements Context {
 	 *
 	 * @param string $username
 	 * @param string $quota
-	 * 
+	 *
 	 * @return void
 	 */
 	public function theAdministratorSetsTheQuotaOfUserUsingTheWebUI($username, $quota) {
@@ -92,13 +90,13 @@ class WebUIUsersContext extends RawMinkContext implements Context {
 	 * @param string $password
 	 * @param string $email
 	 * @param TableNode $groupsTable table of groups with a heading | group |
-	 * 
+	 *
 	 * @return void
 	 */
 	public function theAdminCreatesAUserUsingTheWebUI(
 		$attemptTo, $username, $password, $email=null, TableNode $groupsTable=null
 	) {
-		if (!is_null($groupsTable)) {
+		if ($groupsTable !== null) {
 			$groups = $groupsTable->getColumn(0);
 			//get rid of the header
 			unset($groups[0]);
@@ -114,7 +112,7 @@ class WebUIUsersContext extends RawMinkContext implements Context {
 		$this->featureContext->addUserToCreatedUsersList(
 			$username, $password, "", $email, $shouldExist
 		);
-		if (is_array($groups)) {
+		if (\is_array($groups)) {
 			foreach ($groups as $group) {
 				$this->featureContext->addGroupToCreatedGroupsList($group);
 			}
@@ -122,11 +120,11 @@ class WebUIUsersContext extends RawMinkContext implements Context {
 	}
 
 	/**
-	 * 
+	 *
 	 * @When the administrator deletes the group named :name using the webUI
 	 *
 	 * @param string $name
-	 * 
+	 *
 	 * @return void
 	 */
 	public function theAdminDeletesTheGroupUsingTheWebUI($name) {
@@ -139,7 +137,7 @@ class WebUIUsersContext extends RawMinkContext implements Context {
 	 * expects a table of groups with the heading "groupname"
 	 *
 	 * @param TableNode $table
-	 * 
+	 *
 	 * @return void
 	 */
 	public function theAdminDeletesTheseGroupsUsingTheWebUI(TableNode $table) {
@@ -148,12 +146,11 @@ class WebUIUsersContext extends RawMinkContext implements Context {
 		}
 	}
 
-	
 	/**
 	 * @Then the group name :groupName should be listed on the webUI
 	 *
 	 * @param string $groupName
-	 * 
+	 *
 	 * @return void
 	 */
 	public function theGroupNameShouldBeListed($groupName) {
@@ -167,13 +164,13 @@ class WebUIUsersContext extends RawMinkContext implements Context {
 	 * @Then the group name :name should not be listed on the webUI
 	 *
 	 * @param string $name
-	 * 
+	 *
 	 * @return void
-	 * 
+	 *
 	 * @throws Exception
 	 */
 	public function theGroupNamedShouldNotBeListedOnTheWebUI($name) {
-		if (in_array($name, $this->usersPage->getAllGroups(), true)) {
+		if (\in_array($name, $this->usersPage->getAllGroups(), true)) {
 			throw new Exception("group '" . $name . "' is listed but should not");
 		}
 	}
@@ -184,16 +181,16 @@ class WebUIUsersContext extends RawMinkContext implements Context {
 	 *
 	 * @param string $shouldOrNot (not|)
 	 * @param TableNode $table
-	 * 
+	 *
 	 * @return void
-	 * 
+	 *
 	 * @throws Exception
 	 */
 	public function theseGroupsShouldBeListedOnTheWebUI($shouldOrNot, TableNode $table) {
 		$should = ($shouldOrNot !== "not");
 		$groups = $this->usersPage->getAllGroups();
 		foreach ($table as $row) {
-			if (in_array($row['groupname'], $groups, true) !== $should) {
+			if (\in_array($row['groupname'], $groups, true) !== $should) {
 				throw new Exception(
 					"group '" . $row['groupname'] .
 					"' is" . ($should ? " not" : "") .
@@ -216,9 +213,9 @@ class WebUIUsersContext extends RawMinkContext implements Context {
 
 	/**
 	 * @When the admin disables the user :username using the webUI
-	 * 
+	 *
 	 * @param string $username
-	 * 
+	 *
 	 * @return void
 	 */
 	public function theAdminDisablesTheUserUsingTheWebui($username) {
@@ -229,33 +226,31 @@ class WebUIUsersContext extends RawMinkContext implements Context {
 
 	/**
 	 * @When the disabled user :username tries to login using the password :password from the webUI
-	 * 
+	 *
 	 * @param string $username
-	 * 
+	 *
 	 * @param string $password
-	 * 
+	 *
 	 * @return void
 	 */
 	public function theDisabledUserTriesToLogin($username, $password) {
 		$this->webUIGeneralContext->theUserLogsOutOfTheWebUI();
 		/**
-		 * 
+		 *
 		 * @var DisabledUserPage $disabledPage
 		 */
 		$disabledPage = $this->loginPage->loginAs($username, $password, 'DisabledUserPage');
 		$disabledPage->waitTillPageIsLoaded($this->getSession());
 	}
 	
-	
-
 	/**
 	 * @Then the quota of user :username should be set to :quota on the webUI
 	 *
 	 * @param string $username
 	 * @param string $quota
-	 * 
+	 *
 	 * @return void
-	 * 
+	 *
 	 * @throws ExpectationException
 	 */
 	public function quotaOfUserShouldBeSetToOnTheWebUI($username, $quota) {
@@ -274,7 +269,7 @@ class WebUIUsersContext extends RawMinkContext implements Context {
 	 * @BeforeScenario @webUI
 	 *
 	 * @param BeforeScenarioScope $scope
-	 * 
+	 *
 	 * @return void
 	 */
 	public function before(BeforeScenarioScope $scope) {
@@ -289,7 +284,7 @@ class WebUIUsersContext extends RawMinkContext implements Context {
 	 * @When the administrator adds group :groupName using the webUI
 	 *
 	 * @param string $groupName
-	 * 
+	 *
 	 * @return void
 	 */
 	public function theAdminAddsGroupUsingTheWebUI($groupName) {

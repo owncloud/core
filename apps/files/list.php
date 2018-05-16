@@ -31,4 +31,3 @@ $publicUploadEnabled = $config->getAppValue('core', 'shareapi_allow_public_uploa
 $tmpl = new OCP\Template('files', 'list', '');
 $tmpl->assign('publicUploadEnabled', $publicUploadEnabled);
 $tmpl->printPage();
-

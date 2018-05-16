@@ -33,11 +33,11 @@ if ($argc !== 6) {
  */
 function request($client, $method, $uploadUrl, $data = null, $headers = []) {
 	echo "$method $uploadUrl ... ";
-	$t0 = microtime(true);
+	$t0 = \microtime(true);
 	$result = $client->request($method, $uploadUrl, $data, $headers);
-	$t1 = microtime(true);
+	$t1 = \microtime(true);
 	echo $result['statusCode'] . " - " . ($t1 - $t0) . ' seconds' . PHP_EOL;
-	if (!in_array($result['statusCode'],  [200, 201])) {
+	if (!\in_array($result['statusCode'], [200, 201])) {
 		echo $result['body'] . PHP_EOL;
 	}
 	return $result;
@@ -55,24 +55,24 @@ $client = new \Sabre\DAV\Client([
 	'password' => $password
 ]);
 
-$transfer = uniqid('transfer', true);
+$transfer = \uniqid('transfer', true);
 $uploadUrl = "$baseUri/uploads/$userName/$transfer";
 
 request($client, 'MKCOL', $uploadUrl);
 
-$size = filesize($file);
-$stream = fopen($file, 'r');
+$size = \filesize($file);
+$stream = \fopen($file, 'r');
 
 $index = 0;
-while(!feof($stream)) {
-	request($client, 'PUT', "$uploadUrl/$index", fread($stream, $chunkSize));
+while (!\feof($stream)) {
+	request($client, 'PUT', "$uploadUrl/$index", \fread($stream, $chunkSize));
 	$index++;
 }
 
-$destination = pathinfo($file, PATHINFO_BASENAME);
+$destination = \pathinfo($file, PATHINFO_BASENAME);
 //echo "Moving $uploadUrl/.file to it's final destination $baseUri/files/$userName/$destination" . PHP_EOL;
 request($client, 'MOVE', "$uploadUrl/.file", null, [
 	'Destination' => "$baseUri/files/$userName/$destination",
-	'OC-Total-Length' => filesize($file),
-	'X-OC-MTime' => filemtime($file)
+	'OC-Total-Length' => \filesize($file),
+	'X-OC-MTime' => \filemtime($file)
 ]);

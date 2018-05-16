@@ -27,7 +27,6 @@ use Doctrine\DBAL\Platforms\MySqlPlatform;
 use Doctrine\DBAL\Schema\Column;
 use Doctrine\DBAL\Types\Type;
 
-
 /**
  * Class MySqlSchemaColumnDefinitionListener
  *
@@ -39,7 +38,7 @@ use Doctrine\DBAL\Types\Type;
  *
  * TODO: remove once https://github.com/owncloud/core/issues/28695 is fixed and Doctrine upgraded
  */
-class MySqlSchemaColumnDefinitionListener{
+class MySqlSchemaColumnDefinitionListener {
 	/**
 	 * @var \Doctrine\DBAL\Platforms\AbstractPlatform
 	 */
@@ -48,25 +47,24 @@ class MySqlSchemaColumnDefinitionListener{
 	public function onSchemaColumnDefinition(SchemaColumnDefinitionEventArgs $eventArgs) {
 		// We need an instance of platform with ownCloud-specific mappings
 		//  this part  can't be moved to constructor - it leads to an infinite recursion
-		if (is_null($this->_platform)) {
+		if ($this->_platform === null) {
 			$this->_platform = \OC::$server->getDatabaseConnection()->getDatabasePlatform();
 		}
 
 		$version = \OC::$server->getDatabaseConnection()->getDatabaseVersionString();
-		$mariadb = false !== stripos($version, 'mariadb');
-		if ($mariadb && version_compare($this->getMariaDbMysqlVersionNumber($version), '10.2.7', '>=')) {
+		$mariadb = \stripos($version, 'mariadb') !== false;
+		if ($mariadb && \version_compare($this->getMariaDbMysqlVersionNumber($version), '10.2.7', '>=')) {
 			$tableColumn = $eventArgs->getTableColumn();
 			try {
 				$column = $this->_getPortableTableColumnDefinition($tableColumn);
 				$eventArgs->preventDefault();
 				$eventArgs->setColumn($column);
-			} catch (DBALException $e){
+			} catch (DBALException $e) {
 				// Pass
 			}
 		}
 	}
 
-	
 	/**
 	 * Given a table comment this method tries to extract a typehint for Doctrine Type, or returns
 	 * the type given as default.
@@ -76,9 +74,8 @@ class MySqlSchemaColumnDefinitionListener{
 	 *
 	 * @return string
 	 */
-	public function extractDoctrineTypeFromComment($comment, $currentType)
-	{
-		if (preg_match("(\(DC2Type:([a-zA-Z0-9_]+)\))", $comment, $match)) {
+	public function extractDoctrineTypeFromComment($comment, $currentType) {
+		if (\preg_match("(\(DC2Type:([a-zA-Z0-9_]+)\))", $comment, $match)) {
 			$currentType = $match[1];
 		}
 
@@ -91,26 +88,24 @@ class MySqlSchemaColumnDefinitionListener{
 	 *
 	 * @return string
 	 */
-	public function removeDoctrineTypeFromComment($comment, $type)
-	{
-		return str_replace('(DC2Type:'.$type.')', '', $comment);
+	public function removeDoctrineTypeFromComment($comment, $type) {
+		return \str_replace('(DC2Type:'.$type.')', '', $comment);
 	}
 	
-	protected function _getPortableTableColumnDefinition($tableColumn)
-	{
-		$tableColumn = array_change_key_case($tableColumn, CASE_LOWER);
+	protected function _getPortableTableColumnDefinition($tableColumn) {
+		$tableColumn = \array_change_key_case($tableColumn, CASE_LOWER);
 
-		$dbType = strtolower($tableColumn['type']);
-		$dbType = strtok($dbType, '(), ');
+		$dbType = \strtolower($tableColumn['type']);
+		$dbType = \strtok($dbType, '(), ');
 		if (isset($tableColumn['length'])) {
 			$length = $tableColumn['length'];
 		} else {
-			$length = strtok('(), ');
+			$length = \strtok('(), ');
 		}
 
 		$fixed = null;
 
-		if ( ! isset($tableColumn['name'])) {
+		if (! isset($tableColumn['name'])) {
 			$tableColumn['name'] = '';
 		}
 
@@ -135,7 +130,7 @@ class MySqlSchemaColumnDefinitionListener{
 			case 'real':
 			case 'numeric':
 			case 'decimal':
-				if (preg_match('([A-Za-z]+\(([0-9]+)\,([0-9]+)\))', $tableColumn['type'], $match)) {
+				if (\preg_match('([A-Za-z]+\(([0-9]+)\,([0-9]+)\))', $tableColumn['type'], $match)) {
 					$precision = $match[1];
 					$scale = $match[2];
 					$length = null;
@@ -175,20 +170,20 @@ class MySqlSchemaColumnDefinitionListener{
 		$default = isset($tableColumn['default']) ? $tableColumn['default'] : null;
 		$columnDefault = $this->getMariaDb1027ColumnDefault($default);
 
-		$options = array(
+		$options = [
 			'length'		=> $length,
-			'unsigned'	  => (bool) (strpos($tableColumn['type'], 'unsigned') !== false),
+			'unsigned'	  => (bool) (\strpos($tableColumn['type'], 'unsigned') !== false),
 			'fixed'		 => (bool) $fixed,
 			// This line was changed to fix breaking change introduced in MariaDB 10.2.6
 			'default'	   => $columnDefault,
 			'notnull'	   => (bool) ($tableColumn['null'] != 'YES'),
 			'scale'		 => null,
 			'precision'	 => null,
-			'autoincrement' => (bool) (strpos($tableColumn['extra'], 'auto_increment') !== false),
+			'autoincrement' => (bool) (\strpos($tableColumn['extra'], 'auto_increment') !== false),
 			'comment'	   => isset($tableColumn['comment']) && $tableColumn['comment'] !== ''
 				? $tableColumn['comment']
 				: null,
-		);
+		];
 
 		if ($scale !== null && $precision !== null) {
 			$options['scale'] = $scale;
@@ -218,13 +213,12 @@ class MySqlSchemaColumnDefinitionListener{
 	 * @param null|string $columnDefault default value as stored in information_schema for MariaDB >= 10.2.7
 	 * @return string
 	 */
-	private function getMariaDb1027ColumnDefault($columnDefault)
-	{
+	private function getMariaDb1027ColumnDefault($columnDefault) {
 		if ($columnDefault === 'NULL' || $columnDefault === null) {
 			return null;
 		}
 		if ($columnDefault[0] === "'") {
-			return preg_replace('/^\'(.*)\'$/', '$1', $columnDefault);
+			return \preg_replace('/^\'(.*)\'$/', '$1', $columnDefault);
 		}
 
 		return $columnDefault;
@@ -238,9 +232,8 @@ class MySqlSchemaColumnDefinitionListener{
 	 * @return string
 	 * @throws DBALException
 	 */
-	private function getMariaDbMysqlVersionNumber($versionString)
-	{
-		if ( !preg_match('/^(?:5\.5\.5-)?(mariadb-)?(?P<major>\d+)\.(?P<minor>\d+)\.(?P<patch>\d+)/i', $versionString, $versionParts)) {
+	private function getMariaDbMysqlVersionNumber($versionString) {
+		if (!\preg_match('/^(?:5\.5\.5-)?(mariadb-)?(?P<major>\d+)\.(?P<minor>\d+)\.(?P<patch>\d+)/i', $versionString, $versionParts)) {
 			throw DBALException::invalidPlatformVersionSpecified(
 				$versionString,
 				'^(?:5\.5\.5-)?(mariadb-)?<major_version>.<minor_version>.<patch_version>'
@@ -248,5 +241,4 @@ class MySqlSchemaColumnDefinitionListener{
 		}
 		return $versionParts['major'] . '.' . $versionParts['minor'] . '.' . $versionParts['patch'];
 	}
-
 }

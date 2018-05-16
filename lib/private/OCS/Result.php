@@ -59,7 +59,7 @@ class Result {
 	public function __construct($data = null, $code = 100, $message = null, $headers = []) {
 		if ($data === null) {
 			$this->data = [];
-		} elseif (!is_array($data)) {
+		} elseif (!\is_array($data)) {
 			$this->data = [$this->data];
 		} else {
 			$this->data = $data;
@@ -102,14 +102,13 @@ class Result {
 		$meta['status'] = $this->succeeded() ? 'ok' : 'failure';
 		$meta['statuscode'] = $this->statusCode;
 		$meta['message'] = $this->message;
-		if(isset($this->items)) {
+		if (isset($this->items)) {
 			$meta['totalitems'] = $this->items;
 		}
-		if(isset($this->perPage)) {
+		if (isset($this->perPage)) {
 			$meta['itemsperpage'] = $this->perPage;
 		}
 		return $meta;
-
 	}
 
 	/**
@@ -135,11 +134,11 @@ class Result {
 	 * @return $this
 	 */
 	public function addHeader($name, $value) {
-		$name = trim($name);  // always remove leading and trailing whitespace
+		$name = \trim($name);  // always remove leading and trailing whitespace
 		// to be able to reliably check for security
 		// headers
 
-		if(is_null($value)) {
+		if ($value === null) {
 			unset($this->headers[$name]);
 		} else {
 			$this->headers[$name] = $value;
@@ -155,5 +154,4 @@ class Result {
 	public function getHeaders() {
 		return $this->headers;
 	}
-
 }

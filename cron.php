@@ -32,7 +32,6 @@
  */
 
 try {
-
 	require_once __DIR__ . '/lib/base.php';
 
 	if (\OCP\Util::needUpgrade()) {
@@ -83,15 +82,15 @@ try {
 
 	if (OC::$CLI) {
 		// set to run indefinitely if needed
-		set_time_limit(0);
+		\set_time_limit(0);
 
 		// the cron job must be executed with the right user
-		if (!function_exists('posix_getuid')) {
+		if (!\function_exists('posix_getuid')) {
 			echo "The posix extensions are required - see http://php.net/manual/en/book.posix.php" . PHP_EOL;
 			exit(0);
 		}
-		$user = posix_getpwuid(posix_getuid());
-		$configUser = posix_getpwuid(fileowner(OC::$SERVERROOT . '/config/config.php'));
+		$user = \posix_getpwuid(\posix_getuid());
+		$configUser = \posix_getpwuid(\fileowner(OC::$SERVERROOT . '/config/config.php'));
 		if ($user['name'] !== $configUser['name']) {
 			echo "Console has to be executed with the same user as the web server is operated" . PHP_EOL;
 			echo "Current user: " . $user['name'] . PHP_EOL;
@@ -109,7 +108,7 @@ try {
 
 		// We only ask for jobs for 14 minutes, because after 15 minutes the next
 		// system cron task should spawn.
-		$endTime = time() + 14 * 60;
+		$endTime = \time() + 14 * 60;
 
 		$executedJobs = [];
 		while ($job = $jobList->getNext()) {
@@ -126,11 +125,10 @@ try {
 			$executedJobs[$job->getId()] = true;
 			unset($job);
 
-			if (time() > $endTime) {
+			if (\time() > $endTime) {
 				break;
 			}
 		}
-
 	} else {
 		// We call cron.php from some website
 		if ($appMode == 'cron') {
@@ -150,10 +148,9 @@ try {
 
 	// Log the successful cron execution
 	if (\OC::$server->getConfig()->getSystemValue('cron_log', true)) {
-		\OC::$server->getConfig()->setAppValue('core', 'lastcron', time());
+		\OC::$server->getConfig()->setAppValue('core', 'lastcron', \time());
 	}
 	exit();
-
 } catch (Exception $ex) {
 	\OCP\Util::writeLog('cron', $ex->getMessage(), \OCP\Util::FATAL);
 } catch (Error $ex) {

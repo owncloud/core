@@ -47,14 +47,14 @@ class DisabledUserPage extends OwncloudPage {
 		Session $session,
 		$timeout_msec = STANDARDUIWAITTIMEOUTMILLISEC
 	) {
-		$currentTime = microtime(true);
+		$currentTime = \microtime(true);
 		$end = $currentTime + ($timeout_msec / 1000);
 		while ($currentTime <= $end) {
 			if ($this->findAll("xpath", $this->userDisabledXpath)) {
 				break;
 			}
-			usleep(STANDARDSLEEPTIMEMICROSEC);
-			$currentTime = microtime(true);
+			\usleep(STANDARDSLEEPTIMEMICROSEC);
+			$currentTime = \microtime(true);
 		}
 
 		if ($currentTime > $end) {

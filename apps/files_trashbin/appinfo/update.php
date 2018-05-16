@@ -23,14 +23,14 @@
 $config = \OC::$server->getConfig();
 $installedVersion = $config->getAppValue('files_trashbin', 'installed_version');
 
-if (version_compare($installedVersion, '0.6.4', '<')) {
+if (\version_compare($installedVersion, '0.6.4', '<')) {
 	$isExpirationEnabled = $config->getSystemValue('trashbin_auto_expire', true);
 	$oldObligation = $config->getSystemValue('trashbin_retention_obligation', null);
 
 	$newObligation = 'auto';
 	if ($isExpirationEnabled) {
-		if (!is_null($oldObligation)) {
-			$newObligation = strval($oldObligation) . ', auto';
+		if ($oldObligation !== null) {
+			$newObligation = \strval($oldObligation) . ', auto';
 		}
 	} else {
 		$newObligation = 'disabled';

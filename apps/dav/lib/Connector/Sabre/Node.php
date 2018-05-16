@@ -41,7 +41,6 @@ use OCP\Files\ForbiddenException;
 use OCP\Share\Exceptions\ShareNotFound;
 use OCP\Share\IManager;
 
-
 abstract class Node implements \Sabre\DAV\INode {
 
 	/**
@@ -131,7 +130,7 @@ abstract class Node implements \Sabre\DAV\INode {
 		// verify path of the source
 		$this->verifyPath();
 
-		list($parentPath,) = \Sabre\HTTP\URLUtil::splitPath($this->path);
+		list($parentPath, ) = \Sabre\HTTP\URLUtil::splitPath($this->path);
 		list(, $newName) = \Sabre\HTTP\URLUtil::splitPath($name);
 
 		// verify path of target
@@ -149,9 +148,9 @@ abstract class Node implements \Sabre\DAV\INode {
 
 		try {
 			$this->fileView->rename($this->path, $newPath);
-		} catch (ForbiddenException $ex) { 
+		} catch (ForbiddenException $ex) {
 			throw new Forbidden($ex->getMessage(), $ex->getRetry());
-		} 
+		}
 
 		$this->path = $newPath;
 
@@ -236,7 +235,7 @@ abstract class Node implements \Sabre\DAV\INode {
 	public function getFileId() {
 		if ($this->info->getId()) {
 			$instanceId = \OC_Util::getInstanceId();
-			$id = sprintf('%08d', $this->info->getId());
+			$id = \sprintf('%08d', $this->info->getId());
 			return $id . $instanceId;
 		}
 
@@ -284,8 +283,8 @@ abstract class Node implements \Sabre\DAV\INode {
 		$mountpoint = $this->info->getMountPoint();
 		if (!($mountpoint instanceof MoveableMount)) {
 			$mountpointpath = $mountpoint->getMountPoint();
-			if (substr($mountpointpath, -1) === '/') {
-				$mountpointpath = substr($mountpointpath, 0, -1);
+			if (\substr($mountpointpath, -1) === '/') {
+				$mountpointpath = \substr($mountpointpath, 0, -1);
 			}
 
 			if ($mountpointpath === $this->info->getPath()) {
@@ -345,7 +344,7 @@ abstract class Node implements \Sabre\DAV\INode {
 		}
 
 		try {
-			$fileName = basename($this->info->getPath());
+			$fileName = \basename($this->info->getPath());
 			$this->fileView->verifyPath($this->path, $fileName);
 		} catch (\OCP\Files\InvalidPathException $ex) {
 			throw new InvalidPath($ex->getMessage());
@@ -377,7 +376,7 @@ abstract class Node implements \Sabre\DAV\INode {
 		return $this->info;
 	}
 
-	protected function sanitizeMtime ($mtimeFromRequest) {
+	protected function sanitizeMtime($mtimeFromRequest) {
 		$mtime = (float) $mtimeFromRequest;
 		if ($mtime >= PHP_INT_MAX) {
 			$mtime = PHP_INT_MAX;

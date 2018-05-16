@@ -40,7 +40,7 @@ class Application extends App {
 		/*
 		 * Register expiration
 		 */
-		$container->registerService('Expiration', function($c) {
+		$container->registerService('Expiration', function ($c) {
 			return  new Expiration(
 				$c->query('ServerContainer')->getConfig(),
 				$c->query('OCP\AppFramework\Utility\ITimeFactory')

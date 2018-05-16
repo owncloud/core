@@ -126,7 +126,6 @@ if (\OC::$server->getAppManager()->isEnabledForUser('files_sharing')) {
 		API::GUEST_AUTH
 	);
 
-
 	API::register('post',
 		'/cloud/shares/{id}/accept',
 		[$s2s, 'acceptShare'],

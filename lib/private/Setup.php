@@ -66,7 +66,7 @@ class Setup {
 	 * @param ILogger $logger
 	 * @param ISecureRandom $random
 	 */
-	function __construct(IConfig $config,
+	public function __construct(IConfig $config,
 						 IniGetWrapper $iniWrapper,
 						 IL10N $l10n,
 						 \OC_Defaults $defaults,
@@ -81,7 +81,7 @@ class Setup {
 		$this->random = $random;
 	}
 
-	static $dbSetupClasses = [
+	public static $dbSetupClasses = [
 		'mysql' => \OC\Setup\MySQL::class,
 		'pgsql' => \OC\Setup\PostgreSQL::class,
 		'oci'   => \OC\Setup\OCI::class,
@@ -95,7 +95,7 @@ class Setup {
 	 * @return bool
 	 */
 	protected function IsClassExisting($name) {
-		return class_exists($name);
+		return \class_exists($name);
 	}
 
 	/**
@@ -104,7 +104,7 @@ class Setup {
 	 * @return bool
 	 */
 	protected function is_callable($name) {
-		return is_callable($name);
+		return \is_callable($name);
 	}
 
 	/**
@@ -147,31 +147,31 @@ class Setup {
 			]
 		];
 		if ($allowAllDatabases) {
-			$configuredDatabases = array_keys($availableDatabases);
+			$configuredDatabases = \array_keys($availableDatabases);
 		} else {
 			$configuredDatabases = $this->config->getSystemValue('supportedDatabases',
 				['sqlite', 'mysql', 'pgsql']);
 		}
-		if(!is_array($configuredDatabases)) {
+		if (!\is_array($configuredDatabases)) {
 			throw new Exception('Supported databases are not properly configured.');
 		}
 
 		$supportedDatabases = [];
 
-		foreach($configuredDatabases as $database) {
-			if(array_key_exists($database, $availableDatabases)) {
+		foreach ($configuredDatabases as $database) {
+			if (\array_key_exists($database, $availableDatabases)) {
 				$working = false;
 				$type = $availableDatabases[$database]['type'];
 				$call = $availableDatabases[$database]['call'];
 
-				if($type === 'class') {
+				if ($type === 'class') {
 					$working = $this->IsClassExisting($call);
 				} elseif ($type === 'function') {
 					$working = $this->is_callable($call);
-				} elseif($type === 'pdo') {
-					$working = in_array($call, $this->getAvailableDbDriversForPdo(), TRUE);
+				} elseif ($type === 'pdo') {
+					$working = \in_array($call, $this->getAvailableDbDriversForPdo(), true);
 				}
-				if($working) {
+				if ($working) {
 					$supportedDatabases[$database] = $availableDatabases[$database]['name'];
 				}
 			}
@@ -197,10 +197,10 @@ class Setup {
 		// Create data directory to test whether the .htaccess works
 		// Notice that this is not necessarily the same data directory as the one
 		// that will effectively be used.
-		if(!file_exists($dataDir)) {
-			@mkdir($dataDir);
+		if (!\file_exists($dataDir)) {
+			@\mkdir($dataDir);
 		}
-		if (is_dir($dataDir) && is_writable($dataDir)) {
+		if (\is_dir($dataDir) && \is_writable($dataDir)) {
 			// Protect data directory here, so we can test if the protection is working
 			\OC\Setup::protectDataDirectory();
 		}
@@ -222,7 +222,7 @@ class Setup {
 			];
 		}
 
-		if($this->iniWrapper->getString('open_basedir') !== '' && PHP_INT_SIZE === 4) {
+		if ($this->iniWrapper->getString('open_basedir') !== '' && PHP_INT_SIZE === 4) {
 			$errors[] = [
 				'error' => $this->l10n->t(
 					'It seems that this %s instance is running on a 32-bit PHP environment and the open_basedir has been configured in php.ini. ' .
@@ -254,13 +254,13 @@ class Setup {
 		$error = [];
 		$dbType = $options['dbtype'];
 
-		if(empty($options['adminlogin'])) {
+		if (empty($options['adminlogin'])) {
 			$error[] = $l->t('Set an admin username.');
 		}
-		if(empty($options['adminpass'])) {
+		if (empty($options['adminpass'])) {
 			$error[] = $l->t('Set an admin password.');
 		}
-		if(empty($options['directory'])) {
+		if (empty($options['directory'])) {
 			$options['directory'] = \OC::$SERVERROOT."/data";
 		}
 
@@ -268,40 +268,40 @@ class Setup {
 			$dbType = 'sqlite';
 		}
 
-		$username = htmlspecialchars_decode($options['adminlogin']);
-		$password = htmlspecialchars_decode($options['adminpass']);
-		$dataDir = htmlspecialchars_decode($options['directory']);
+		$username = \htmlspecialchars_decode($options['adminlogin']);
+		$password = \htmlspecialchars_decode($options['adminpass']);
+		$dataDir = \htmlspecialchars_decode($options['directory']);
 
 		$class = self::$dbSetupClasses[$dbType];
 		/** @var \OC\Setup\AbstractDatabase $dbSetup */
 		$dbSetup = new $class($l, 'db_structure.xml', $this->config,
 			$this->logger, $this->random);
-		$error = array_merge($error, $dbSetup->validate($options));
+		$error = \array_merge($error, $dbSetup->validate($options));
 
 		// validate the data directory
 		if (
-			(!is_dir($dataDir) and !mkdir($dataDir)) or
-			!is_writable($dataDir)
+			(!\is_dir($dataDir) and !\mkdir($dataDir)) or
+			!\is_writable($dataDir)
 		) {
 			$error[] = $l->t("Can't create or write into the data directory %s", [$dataDir]);
 		}
 
-		if(count($error) != 0) {
+		if (\count($error) != 0) {
 			return $error;
 		}
 
 		$request = \OC::$server->getRequest();
 
 		//no errors, good
-		if(isset($options['trusted_domains'])
-		    && is_array($options['trusted_domains'])) {
+		if (isset($options['trusted_domains'])
+			&& \is_array($options['trusted_domains'])) {
 			$trustedDomains = $options['trusted_domains'];
 		} else {
 			$trustedDomains = [$request->getInsecureServerHost()];
 		}
 
 		//use sqlite3 when available, otherwise sqlite2 will be used.
-		if($dbType=='sqlite' and $this->IsClassExisting('SQLite3')) {
+		if ($dbType=='sqlite' and $this->IsClassExisting('SQLite3')) {
 			$dbType='sqlite3';
 		}
 
@@ -318,7 +318,7 @@ class Setup {
 			'datadirectory'		=> $dataDir,
 			'overwrite.cli.url'	=> $request->getServerProtocol() . '://' . $request->getInsecureServerHost() . \OC::$WEBROOT,
 			'dbtype'			=> $dbType,
-			'version'			=> implode('.', \OCP\Util::getVersion()),
+			'version'			=> \implode('.', \OCP\Util::getVersion()),
 		]);
 
 		try {
@@ -348,14 +348,14 @@ class Setup {
 			if (!$user) {
 				$error[] = "User <$username> could not be created.";
 			}
-		} catch(Exception $exception) {
+		} catch (Exception $exception) {
 			$error[] = $exception->getMessage();
 		}
 
-		if(count($error) == 0) {
+		if (\count($error) == 0) {
 			$config = \OC::$server->getConfig();
-			$config->setAppValue('core', 'installedat', microtime(true));
-			$config->setAppValue('core', 'lastupdatedat', microtime(true));
+			$config->setAppValue('core', 'installedat', \microtime(true));
+			$config->setAppValue('core', 'lastupdatedat', \microtime(true));
 
 			\OC::$server->getGroupManager()->addBackend(new \OC\Group\Database());
 
@@ -367,15 +367,15 @@ class Setup {
 
 			// create empty file in data dir, so we can later find
 			// out that this is indeed an ownCloud data directory
-			file_put_contents($config->getSystemValue('datadirectory', \OC::$SERVERROOT.'/data').'/.ocdata', '');
+			\file_put_contents($config->getSystemValue('datadirectory', \OC::$SERVERROOT.'/data').'/.ocdata', '');
 
 			// Update .htaccess files
 			Setup::updateHtaccess();
 			Setup::protectDataDirectory();
 
 			//try to write logtimezone
-			if (date_default_timezone_get()) {
-				$config->setSystemValue('logtimezone', date_default_timezone_get());
+			if (\date_default_timezone_get()) {
+				$config->setSystemValue('logtimezone', \date_default_timezone_get());
 			}
 
 			self::installBackgroundJobs();
@@ -405,13 +405,13 @@ class Setup {
 		$config = \OC::$server->getConfig();
 
 		// For CLI read the value from overwrite.cli.url
-		if(\OC::$CLI) {
+		if (\OC::$CLI) {
 			$webRoot = $config->getSystemValue('overwrite.cli.url', '');
-			if($webRoot === '') {
+			if ($webRoot === '') {
 				return;
 			}
-			$webRoot = parse_url($webRoot, PHP_URL_PATH);
-			$webRoot = rtrim($webRoot, '/');
+			$webRoot = \parse_url($webRoot, PHP_URL_PATH);
+			$webRoot = \rtrim($webRoot, '/');
 		} else {
 			$webRoot = !empty(\OC::$WEBROOT) ? \OC::$WEBROOT : '/';
 		}
@@ -420,9 +420,9 @@ class Setup {
 			\OC::$server->getL10N('lib'), new \OC_Defaults(), \OC::$server->getLogger(),
 			\OC::$server->getSecureRandom());
 
-		$htaccessContent = file_get_contents($setupHelper->pathToHtaccess());
+		$htaccessContent = \file_get_contents($setupHelper->pathToHtaccess());
 		$content = "#### DO NOT CHANGE ANYTHING ABOVE THIS LINE ####\n";
-		$htaccessContent = explode($content, $htaccessContent, 2)[0];
+		$htaccessContent = \explode($content, $htaccessContent, 2)[0];
 
 		//custom 403 error page
 		$content.= "\nErrorDocument 403 ".$webRoot."/core/templates/403.php";
@@ -432,7 +432,7 @@ class Setup {
 
 		// Add rewrite rules if the RewriteBase is configured
 		$rewriteBase = $config->getSystemValue('htaccess.RewriteBase', '');
-		if($rewriteBase !== '') {
+		if ($rewriteBase !== '') {
 			$content .= "\n<IfModule mod_rewrite.c>";
 			$content .= "\n  Options -MultiViews";
 			$content .= "\n  RewriteRule ^core/js/oc.js$ index.php [PT,E=PATH_INFO:$1]";
@@ -462,14 +462,13 @@ class Setup {
 
 		if ($content !== '') {
 			//suppress errors in case we don't have permissions for it
-			@file_put_contents($setupHelper->pathToHtaccess(), $htaccessContent.$content . "\n");
+			@\file_put_contents($setupHelper->pathToHtaccess(), $htaccessContent.$content . "\n");
 		}
-
 	}
 
 	public static function protectDataDirectory() {
 		//Require all denied
-		$now =  date('Y-m-d H:i:s');
+		$now =  \date('Y-m-d H:i:s');
 		$content = "# Generated by ownCloud on $now\n";
 		$content.= "# line below if for Apache 2.4\n";
 		$content.= "<ifModule mod_authz_core.c>\n";
@@ -486,7 +485,7 @@ class Setup {
 		$content.= "</ifModule>\n";
 
 		$baseDir = \OC::$server->getConfig()->getSystemValue('datadirectory', \OC::$SERVERROOT . '/data');
-		file_put_contents($baseDir . '/.htaccess', $content);
-		file_put_contents($baseDir . '/index.html', '');
+		\file_put_contents($baseDir . '/.htaccess', $content);
+		\file_put_contents($baseDir . '/index.html', '');
 	}
 }

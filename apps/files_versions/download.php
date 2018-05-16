@@ -38,8 +38,8 @@ $view = new OC\Files\View('/');
 
 $ftype = \OC::$server->getMimeTypeDetector()->getSecureMimeType($view->getMimeType('/'.$uid.'/files/'.$filename));
 
-header('Content-Type:'.$ftype);
-OCP\Response::setContentDispositionHeader(basename($filename), 'attachment');
+\header('Content-Type:'.$ftype);
+OCP\Response::setContentDispositionHeader(\basename($filename), 'attachment');
 OCP\Response::disableCaching();
 OCP\Response::setContentLengthHeader($view->filesize($versionName));
 

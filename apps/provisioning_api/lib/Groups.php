@@ -29,7 +29,7 @@ use OC_OCS_Result;
 use OCP\IGroup;
 use OCP\IUser;
 
-class Groups{
+class Groups {
 
 	/** @var \OCP\IGroupManager */
 	private $groupManager;
@@ -72,7 +72,7 @@ class Groups{
 		}
 
 		$groups = $this->groupManager->search($search, $limit, $offset, 'management');
-		$groups = array_map(function($group) {
+		$groups = \array_map(function ($group) {
 			/** @var IGroup $group */
 			return $group->getGID();
 		}, $groups);
@@ -96,7 +96,7 @@ class Groups{
 		$groupId = $parameters['groupid'];
 
 		// Check the group exists
-		if(!$this->groupManager->groupExists($groupId)) {
+		if (!$this->groupManager->groupExists($groupId)) {
 			return new OC_OCS_Result(null, \OCP\API::RESPOND_NOT_FOUND, 'The requested group could not be found');
 		}
 
@@ -107,14 +107,14 @@ class Groups{
 		}
 
 		// Check subadmin has access to this group
-		if($this->groupManager->isAdmin($user->getUID())
+		if ($this->groupManager->isAdmin($user->getUID())
 		   || $isSubadminOfGroup) {
 			$users = $this->groupManager->get($groupId)->getUsers();
-			$users =  array_map(function($user) {
+			$users =  \array_map(function ($user) {
 				/** @var IUser $user */
 				return $user->getUID();
 			}, $users);
-			$users = array_values($users);
+			$users = \array_values($users);
 			return new OC_OCS_Result(['users' => $users]);
 		} else {
 			return new OC_OCS_Result(null, \OCP\API::RESPOND_UNAUTHORISED, 'User does not have access to specified group');
@@ -130,12 +130,12 @@ class Groups{
 	public function addGroup($parameters) {
 		// Validate name
 		$groupId = $this->request->getParam('groupid', '');
-		if(($groupId === '') || is_null($groupId) || ($groupId === false)){
+		if (($groupId === '') || $groupId === null || ($groupId === false)) {
 			\OCP\Util::writeLog('provisioning_api', 'Group name not supplied', \OCP\Util::ERROR);
 			return new OC_OCS_Result(null, 101, 'Invalid group name');
 		}
 		// Check if it exists
-		if($this->groupManager->groupExists($groupId)){
+		if ($this->groupManager->groupExists($groupId)) {
 			return new OC_OCS_Result(null, 102);
 		}
 		$this->groupManager->createGroup($groupId);
@@ -148,9 +148,9 @@ class Groups{
 	 */
 	public function deleteGroup($parameters) {
 		// Check it exists
-		if(!$this->groupManager->groupExists($parameters['groupid'])){
+		if (!$this->groupManager->groupExists($parameters['groupid'])) {
 			return new OC_OCS_Result(null, 101);
-		} else if($parameters['groupid'] === 'admin' || !$this->groupManager->get($parameters['groupid'])->delete()){
+		} elseif ($parameters['groupid'] === 'admin' || !$this->groupManager->get($parameters['groupid'])->delete()) {
 			// Cannot delete admin group
 			return new OC_OCS_Result(null, 102);
 		} else {
@@ -166,7 +166,7 @@ class Groups{
 		$group = $parameters['groupid'];
 		// Check group exists
 		$targetGroup = $this->groupManager->get($group);
-		if($targetGroup === null) {
+		if ($targetGroup === null) {
 			return new OC_OCS_Result(null, 101, 'Group does not exist');
 		}
 
@@ -179,5 +179,4 @@ class Groups{
 
 		return new OC_OCS_Result($uids);
 	}
-
 }

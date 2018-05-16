@@ -23,7 +23,6 @@
 namespace OC\OCS;
 
 class Exception extends \Exception {
-
 	public function __construct(Result $result) {
 		$this->result = $result;
 	}
@@ -31,5 +30,4 @@ class Exception extends \Exception {
 	public function getResult() {
 		return $this->result;
 	}
-
 }

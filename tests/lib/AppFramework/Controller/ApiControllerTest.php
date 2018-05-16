@@ -21,38 +21,35 @@
  *
  */
 
-
 namespace Test\AppFramework\Controller;
 
 use OC\AppFramework\Http\Request;
 use OCP\AppFramework\ApiController;
 
-
-class ChildApiController extends ApiController {};
-
+class ChildApiController extends ApiController {
+};
 
 class ApiControllerTest extends \Test\TestCase {
-    /** @var ChildApiController */
-    protected $controller;
+	/** @var ChildApiController */
+	protected $controller;
 
-    public function testCors() {
-        $request = new Request(
-            ['server' => ['HTTP_ORIGIN' => 'test']],
-            $this->createMock('\OCP\Security\ISecureRandom'),
-            $this->createMock('\OCP\IConfig')
-        );
-        $this->controller = new ChildApiController('app', $request, 'verbs',
-            'headers', 100);
+	public function testCors() {
+		$request = new Request(
+			['server' => ['HTTP_ORIGIN' => 'test']],
+			$this->createMock('\OCP\Security\ISecureRandom'),
+			$this->createMock('\OCP\IConfig')
+		);
+		$this->controller = new ChildApiController('app', $request, 'verbs',
+			'headers', 100);
 
-        $response = $this->controller->preflightedCors();
+		$response = $this->controller->preflightedCors();
 
-        $headers = $response->getHeaders();
+		$headers = $response->getHeaders();
 
-        $this->assertEquals('test', $headers['Access-Control-Allow-Origin']);
-        $this->assertEquals('verbs', $headers['Access-Control-Allow-Methods']);
-        $this->assertEquals('headers', $headers['Access-Control-Allow-Headers']);
-        $this->assertEquals('false', $headers['Access-Control-Allow-Credentials']);
-        $this->assertEquals(100, $headers['Access-Control-Max-Age']);
-    }
-
+		$this->assertEquals('test', $headers['Access-Control-Allow-Origin']);
+		$this->assertEquals('verbs', $headers['Access-Control-Allow-Methods']);
+		$this->assertEquals('headers', $headers['Access-Control-Allow-Headers']);
+		$this->assertEquals('false', $headers['Access-Control-Allow-Credentials']);
+		$this->assertEquals(100, $headers['Access-Control-Max-Age']);
+	}
 }

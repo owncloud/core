@@ -62,21 +62,21 @@ class Base extends Command {
 	protected function writeArrayInOutputFormat(InputInterface $input, OutputInterface $output, $items, $prefix = self::DEFAULT_OUTPUT_PREFIX, $showIntKeys = false) {
 		switch ($input->getOption('output')) {
 			case self::OUTPUT_FORMAT_JSON:
-				$output->writeln(json_encode($items));
+				$output->writeln(\json_encode($items));
 				break;
 			case self::OUTPUT_FORMAT_JSON_PRETTY:
-				$output->writeln(json_encode($items, JSON_PRETTY_PRINT));
+				$output->writeln(\json_encode($items, JSON_PRETTY_PRINT));
 				break;
 			default:
 				foreach ($items as $key => $item) {
-					if (is_array($item)) {
+					if (\is_array($item)) {
 						$output->writeln($prefix . $key . ':');
 						$this->writeArrayInOutputFormat($input, $output, $item, '  ' . $prefix);
 						continue;
 					}
-					if ($showIntKeys || !is_int($key)) {
+					if ($showIntKeys || !\is_int($key)) {
 						$value = $this->valueToString($item);
-						if (!is_null($value)) {
+						if ($value !== null) {
 							$output->writeln($prefix . $key . ': ' . $value);
 						} else {
 							$output->writeln($prefix . $key);
@@ -95,17 +95,17 @@ class Base extends Command {
 	 * @param mixed $item
 	 */
 	protected function writeMixedInOutputFormat(InputInterface $input, OutputInterface $output, $item) {
-		if (is_array($item)) {
+		if (\is_array($item)) {
 			$this->writeArrayInOutputFormat($input, $output, $item, '');
 			return;
 		}
 
 		switch ($input->getOption('output')) {
 			case self::OUTPUT_FORMAT_JSON:
-				$output->writeln(json_encode($item));
+				$output->writeln(\json_encode($item));
 				break;
 			case self::OUTPUT_FORMAT_JSON_PRETTY:
-				$output->writeln(json_encode($item, JSON_PRETTY_PRINT));
+				$output->writeln(\json_encode($item, JSON_PRETTY_PRINT));
 				break;
 			default:
 				$output->writeln($this->valueToString($item, false));
@@ -116,9 +116,9 @@ class Base extends Command {
 	protected function valueToString($value, $returnNull = true) {
 		if ($value === false) {
 			return 'false';
-		} else if ($value === true) {
+		} elseif ($value === true) {
 			return 'true';
-		} else if ($value === null) {
+		} elseif ($value === null) {
 			return ($returnNull) ? null : 'null';
 		} else {
 			return $value;
@@ -131,7 +131,7 @@ class Base extends Command {
 	protected function hasBeenInterrupted() {
 		// return always false if pcntl_signal functions are not accessible
 		if ($this->php_pcntl_signal) {
-			pcntl_signal_dispatch();
+			\pcntl_signal_dispatch();
 			return $this->interrupted;
 		} else {
 			return false;
@@ -149,14 +149,13 @@ class Base extends Command {
 
 	public function run(InputInterface $input, OutputInterface $output) {
 		// check if the php pcntl_signal functions are accessible
-		$this->php_pcntl_signal = function_exists('pcntl_signal');
+		$this->php_pcntl_signal = \function_exists('pcntl_signal');
 		if ($this->php_pcntl_signal) {
 			// Collect interrupts and notify the running command
-			pcntl_signal(SIGTERM, [$this, 'cancelOperation']);
-			pcntl_signal(SIGINT, [$this, 'cancelOperation']);
+			\pcntl_signal(SIGTERM, [$this, 'cancelOperation']);
+			\pcntl_signal(SIGINT, [$this, 'cancelOperation']);
 		}
 
 		return parent::run($input, $output);
 	}
 }
-

@@ -68,7 +68,7 @@ class ShareesContext implements Context, SnippetAcceptingContext {
 				$parameters[] = $key . '=' . $value;
 			}
 			if (!empty($parameters)) {
-				$url .= '?' . implode('&', $parameters);
+				$url .= '?' . \implode('&', $parameters);
 			}
 		}
 
@@ -117,15 +117,15 @@ class ShareesContext implements Context, SnippetAcceptingContext {
 		ResponseInterface $response, $shareeType
 	) {
 		$elements = $response->xml()->data;
-		$elements = json_decode(json_encode($elements), 1);
-		if (strpos($shareeType, 'exact ') === 0) {
+		$elements = \json_decode(\json_encode($elements), 1);
+		if (\strpos($shareeType, 'exact ') === 0) {
 			$elements = $elements['exact'];
-			$shareeType = substr($shareeType, 6);
+			$shareeType = \substr($shareeType, 6);
 		}
 
 		$sharees = [];
 		foreach ($elements[$shareeType] as $element) {
-			if (is_int(key($element))) {
+			if (\is_int(\key($element))) {
 				// this is a list of elements instead of just one item,
 				// so return the list
 				foreach ($element as $innerItem) {

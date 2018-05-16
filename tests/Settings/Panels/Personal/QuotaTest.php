@@ -49,5 +49,4 @@ class QuotaTest extends \Test\TestCase {
 		$this->assertContains('<div id="quota"', $templateHtml);
 		$this->assertContains('You are using', $templateHtml);
 	}
-
 }

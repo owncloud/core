@@ -78,7 +78,7 @@ class AuthSettingsController extends Controller {
 	 */
 	public function index() {
 		$user = $this->userManager->get($this->uid);
-		if (is_null($user)) {
+		if ($user === null) {
 			return [];
 		}
 		$tokens = $this->tokenProvider->getTokenByUser($user);
@@ -94,7 +94,7 @@ class AuthSettingsController extends Controller {
 			return $this->getServiceNotAvailableResponse();
 		}
 
-		return array_map(function(IToken $token) use ($sessionToken) {
+		return \array_map(function (IToken $token) use ($sessionToken) {
 			$data = $token->jsonSerialize();
 			if ($sessionToken->getId() === $token->getId()) {
 				$data['canDelete'] = false;
@@ -158,9 +158,9 @@ class AuthSettingsController extends Controller {
 	private function generateRandomDeviceToken() {
 		$groups = [];
 		for ($i = 0; $i < 4; $i++) {
-			$groups[] = $this->random->generate(5, implode('', range('A', 'Z')));
+			$groups[] = $this->random->generate(5, \implode('', \range('A', 'Z')));
 		}
-		return implode('-', $groups);
+		return \implode('-', $groups);
 	}
 
 	/**
@@ -170,21 +170,18 @@ class AuthSettingsController extends Controller {
 	 * @return JSONResponse | array
 	 */
 	public function destroy($id) {
-
 		$user = $this->userManager->get($this->uid);
 		$currentToken = $this->tokenProvider->getToken($this->session->getId());
 
-		if ($currentToken && ($currentToken->getId() === intval($id))) {
+		if ($currentToken && ($currentToken->getId() === \intval($id))) {
 			return (new JSONResponse())->setStatus(Http::STATUS_CONFLICT);
 		}
 
-
-		if (is_null($user)) {
+		if ($user === null) {
 			return [];
 		}
 
 		$this->tokenProvider->invalidateTokenById($user, $id);
 		return [];
 	}
-
 }

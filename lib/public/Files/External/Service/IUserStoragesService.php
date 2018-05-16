@@ -28,5 +28,4 @@ namespace OCP\Files\External\Service;
  * @since 10.0
  */
 interface IUserStoragesService extends IStoragesService {
-
 }

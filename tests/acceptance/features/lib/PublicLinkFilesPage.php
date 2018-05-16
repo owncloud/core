@@ -68,15 +68,15 @@ class PublicLinkFilesPage extends FilesPageBasic {
 
 	/**
 	 * adding public share to particular server
-	 * 
+	 *
 	 * @param string $server
-	 * 
+	 *
 	 * @throws ElementNotFoundException
 	 * @return void
 	 */
 	public function addToServer($server) {
 		$addToYourOcBtn = $this->findById($this->addToYourOcBtnId);
-		if (is_null($addToYourOcBtn)) {
+		if ($addToYourOcBtn === null) {
 			throw new ElementNotFoundException(
 				__METHOD__ .
 				" id " . $this->addToYourOcBtnId .
@@ -85,7 +85,7 @@ class PublicLinkFilesPage extends FilesPageBasic {
 		}
 		$addToYourOcBtn->click();
 		$remoteAddressInput = $this->findById($this->remoteAddressInputId);
-		if (is_null($remoteAddressInput)) {
+		if ($remoteAddressInput === null) {
 			throw new ElementNotFoundException(
 				__METHOD__ .
 				" id " . $this->remoteAddressInput .
@@ -94,7 +94,7 @@ class PublicLinkFilesPage extends FilesPageBasic {
 		}
 		$remoteAddressInput->setValue($server);
 		$confirmBtn = $this->findById($this->confirmBtnId);
-		if (is_null($confirmBtn)) {
+		if ($confirmBtn === null) {
 			throw new ElementNotFoundException(
 				__METHOD__ .
 				" id " . $this->confirmBtn .
@@ -109,7 +109,7 @@ class PublicLinkFilesPage extends FilesPageBasic {
 	 * If name is not given a random one is chosen
 	 *
 	 * @param string $name
-	 * 
+	 *
 	 * @throws ElementNotFoundException
 	 * @return string name of the created file
 	 */
@@ -124,7 +124,7 @@ class PublicLinkFilesPage extends FilesPageBasic {
 	 * @param string|array $toFileName
 	 * @param Session $session
 	 * @param int $maxRetries
-	 * 
+	 *
 	 * @return void
 	 */
 	public function renameFile(
@@ -143,7 +143,7 @@ class PublicLinkFilesPage extends FilesPageBasic {
 	 * @param string|array $destination
 	 * @param Session $session
 	 * @param int $maxRetries
-	 * 
+	 *
 	 * @return void
 	 */
 	public function moveFileTo(
@@ -158,7 +158,7 @@ class PublicLinkFilesPage extends FilesPageBasic {
 	 *
 	 * @param string $fileName
 	 * @param Session $session
-	 * 
+	 *
 	 * @return string
 	 * @throws ElementNotFoundException
 	 */

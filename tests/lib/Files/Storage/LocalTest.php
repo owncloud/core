@@ -61,7 +61,7 @@ class LocalTest extends Storage {
 
 	public function testEtagChange() {
 		$this->instance->file_put_contents('test.txt', 'foo');
-		$this->instance->touch('test.txt', time() - 2);
+		$this->instance->touch('test.txt', \time() - 2);
 		$etag1 = $this->instance->getETag('test.txt');
 		$this->instance->file_put_contents('test.txt', 'bar');
 		$etag2 = $this->instance->getETag('test.txt');
@@ -89,10 +89,10 @@ class LocalTest extends Storage {
 		$subDir1 = $this->tmpDir . 'sub1';
 		$subDir2 = $this->tmpDir . 'sub2';
 		$sym = $this->tmpDir . 'sub1/sym';
-		mkdir($subDir1);
-		mkdir($subDir2);
+		\mkdir($subDir1);
+		\mkdir($subDir2);
 
-		symlink($subDir2, $sym);
+		\symlink($subDir2, $sym);
 
 		$storage = new \OC\Files\Storage\Local(['datadir' => $subDir1]);
 
@@ -103,10 +103,10 @@ class LocalTest extends Storage {
 		$subDir1 = $this->tmpDir . 'sub1';
 		$subDir2 = $this->tmpDir . 'sub1/sub2';
 		$sym = $this->tmpDir . 'sub1/sym';
-		mkdir($subDir1);
-		mkdir($subDir2);
+		\mkdir($subDir1);
+		\mkdir($subDir2);
 
-		symlink($subDir2, $sym);
+		\symlink($subDir2, $sym);
 
 		$storage = new \OC\Files\Storage\Local(['datadir' => $subDir1]);
 
@@ -117,15 +117,13 @@ class LocalTest extends Storage {
 	 * @expectedException \OCP\Files\ForbiddenException
 	 */
 	public function testBrokenSymlink() {
-
 		$linkTarget = $this->tmpDir . 'link_target';
 		$linkName = $this->tmpDir . 'broken_symlink';
 
-		mkdir($linkTarget);
-		symlink($linkTarget, $linkName);
-		rmdir($linkTarget);
+		\mkdir($linkTarget);
+		\symlink($linkTarget, $linkName);
+		\rmdir($linkTarget);
 
 		$this->instance->getSourcePath('broken_symlink');
 	}
 }
-

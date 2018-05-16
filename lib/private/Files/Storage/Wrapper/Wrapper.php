@@ -402,7 +402,6 @@ class Wrapper implements \OC\Files\Storage\Storage, ILockingStorage {
 		return $this->getWrapperStorage()->getScanner($path, $storage);
 	}
 
-
 	/**
 	 * get the user id of the owner of a file or folder
 	 *
@@ -483,11 +482,11 @@ class Wrapper implements \OC\Files\Storage\Storage, ILockingStorage {
 	 * @return bool
 	 */
 	public function instanceOfStorage($class) {
-		if (ltrim($class, '\\') === 'OC\Files\Storage\Shared') {
+		if (\ltrim($class, '\\') === 'OC\Files\Storage\Shared') {
 			// FIXME Temporary fix to keep existing checks working
 			$class = '\OCA\Files_Sharing\SharedStorage';
 		}
-		return is_a($this, $class) or $this->getWrapperStorage()->instanceOfStorage($class);
+		return \is_a($this, $class) or $this->getWrapperStorage()->instanceOfStorage($class);
 	}
 
 	/**
@@ -498,7 +497,7 @@ class Wrapper implements \OC\Files\Storage\Storage, ILockingStorage {
 	 * @return mixed
 	 */
 	public function __call($method, $args) {
-		return call_user_func_array([$this->getWrapperStorage(), $method], $args);
+		return \call_user_func_array([$this->getWrapperStorage(), $method], $args);
 	}
 
 	/**

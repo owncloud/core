@@ -297,7 +297,7 @@ class AppConfigTest extends TestCase {
 				$calledBeforeDeleteValue[] = $event;
 			});
 		\OC::$server->getEventDispatcher()->addListener('appconfig.afterdeletevalue',
-			function (GenericEvent $event) use (&$calledAfterDeleteValue){
+			function (GenericEvent $event) use (&$calledAfterDeleteValue) {
 				$calledAfterDeleteValue[] = 'appconfig.afterdeletevalue';
 				$calledAfterDeleteValue[] = $event;
 			});
@@ -341,7 +341,7 @@ class AppConfigTest extends TestCase {
 				$calledBeforeDeleteApp[] = $event;
 			});
 		\OC::$server->getEventDispatcher()->addListener('appconfig.afterdeleteapp',
-			function (GenericEvent $event) use (&$calledAfterDeleteApp){
+			function (GenericEvent $event) use (&$calledAfterDeleteApp) {
 				$calledAfterDeleteApp[] = 'appconfig.afterdeleteapp';
 				$calledAfterDeleteApp[] = $event;
 			});

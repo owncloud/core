@@ -41,11 +41,10 @@ class GroupsControllerTest extends \Test\TestCase {
 		$this->container['L10N']
 			->expects($this->any())
 					->method('t')
-					->will($this->returnCallback(function($text, $parameters = []) {
-							return vsprintf($text, $parameters);
+					->will($this->returnCallback(function ($text, $parameters = []) {
+						return \vsprintf($text, $parameters);
 					}));
 		$this->groupsController = $this->container['GroupsController'];
-
 	}
 
 	/**
@@ -350,5 +349,4 @@ class GroupsControllerTest extends \Test\TestCase {
 		$response = $this->groupsController->destroy('ExistingGroup');
 		$this->assertEquals($expectedResponse, $response);
 	}
-
 }

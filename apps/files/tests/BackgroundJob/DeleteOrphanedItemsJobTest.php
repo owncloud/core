@@ -69,7 +69,7 @@ class DeleteOrphanedItemsJobTest extends \Test\TestCase {
 			->values([
 				'storage' => $query->createNamedParameter(1337, IQueryBuilder::PARAM_INT),
 				'path' => $query->createNamedParameter('apps/files/tests/deleteorphanedtagsjobtest.php'),
-				'path_hash' => $query->createNamedParameter(md5('apps/files/tests/deleteorphanedtagsjobtest.php')),
+				'path_hash' => $query->createNamedParameter(\md5('apps/files/tests/deleteorphanedtagsjobtest.php')),
 			])->execute();
 		$fileId = $query->getLastInsertId();
 
@@ -118,7 +118,7 @@ class DeleteOrphanedItemsJobTest extends \Test\TestCase {
 			->values([
 				'storage' => $query->createNamedParameter(1337, IQueryBuilder::PARAM_INT),
 				'path' => $query->createNamedParameter('apps/files/tests/deleteorphanedtagsjobtest.php'),
-				'path_hash' => $query->createNamedParameter(md5('apps/files/tests/deleteorphanedtagsjobtest.php')),
+				'path_hash' => $query->createNamedParameter(\md5('apps/files/tests/deleteorphanedtagsjobtest.php')),
 			])->execute();
 		$fileId = $query->getLastInsertId();
 
@@ -167,7 +167,7 @@ class DeleteOrphanedItemsJobTest extends \Test\TestCase {
 			->values([
 				'storage' => $query->createNamedParameter(1337, IQueryBuilder::PARAM_INT),
 				'path' => $query->createNamedParameter('apps/files/tests/deleteorphanedtagsjobtest.php'),
-				'path_hash' => $query->createNamedParameter(md5('apps/files/tests/deleteorphanedtagsjobtest.php')),
+				'path_hash' => $query->createNamedParameter(\md5('apps/files/tests/deleteorphanedtagsjobtest.php')),
 			])->execute();
 		$fileId = $query->getLastInsertId();
 
@@ -218,7 +218,7 @@ class DeleteOrphanedItemsJobTest extends \Test\TestCase {
 			->values([
 				'storage' => $query->createNamedParameter(1337, IQueryBuilder::PARAM_INT),
 				'path' => $query->createNamedParameter('apps/files/tests/deleteorphanedtagsjobtest.php'),
-				'path_hash' => $query->createNamedParameter(md5('apps/files/tests/deleteorphanedtagsjobtest.php')),
+				'path_hash' => $query->createNamedParameter(\md5('apps/files/tests/deleteorphanedtagsjobtest.php')),
 			])->execute();
 		$fileId = $query->getLastInsertId();
 
@@ -255,5 +255,4 @@ class DeleteOrphanedItemsJobTest extends \Test\TestCase {
 			->execute();
 		$this->cleanMapping('comments_read_markers');
 	}
-
 }

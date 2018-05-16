@@ -34,7 +34,6 @@ namespace OCA\Files_Sharing\Tests;
  * @package OCA\Files_Sharing\Tests
  */
 class UnshareChildrenTest extends TestCase {
-
 	protected $subsubfolder;
 
 	const TEST_FOLDER_NAME = '/folder_share_api_test';
@@ -73,8 +72,7 @@ class UnshareChildrenTest extends TestCase {
 	/**
 	 * @medium
 	 */
-	function testUnshareChildren() {
-
+	public function testUnshareChildren() {
 		$fileInfo2 = \OC\Files\Filesystem::getFileInfo($this->folder);
 
 		$this->share(
