@@ -34,6 +34,20 @@ So that I can remove unnecessary groups
 			| 50%2Fix             | %2F literal looks like an escaped slash |
 			| staff?group         | Question mark                           |
 
+	@skip @issue-31015
+	Scenario Outline: admin deletes a group that has a forward-slash in the group name
+		Given group "<group_id>" has been created
+		When the administrator deletes group "<group_id>" using the provisioning API
+		Then the OCS status code should be "200"
+		And the HTTP status code should be "200"
+		And group "<group_id>" should not exist
+		Examples:
+			| group_id            | comment                                 |
+			| Mgmt/Sydney         | Slash (special escaping happens)        |
+			| Mgmt//NSW/Sydney    | Multiple slash                          |
+			| var/../etc          | using slash-dot-dot                     |
+			| priv/subadmins/1    | Subadmins mentioned not at the end      |
+
 	@skip @issue-31276
 	Scenario: normal user tries to delete the group
 		Given user "brand-new-user" has been created
