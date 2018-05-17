@@ -428,8 +428,10 @@ trait Sharing {
 			PHPUnit_Framework_Assert::fail('Publicly uploading must fail');
 		} catch (BadResponseException $e) {
 			// expected
-			PHPUnit_Framework_Assert::assertGreaterThanOrEqual(400, $e->getCode());
-			PHPUnit_Framework_Assert::assertLessThanOrEqual(499, $e->getCode());
+			PHPUnit_Framework_Assert::assertTrue(
+				($e->getCode() == 507) || (($e->getCode() >= 400) && ($e->getCode() <= 499)),
+				"upload should have failed but passed with code" . $e->getCode()
+			);
 			$this->response = $e->getResponse();
 		}
 	}
