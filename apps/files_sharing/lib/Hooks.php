@@ -109,7 +109,7 @@ class Hooks {
 	public function registerListeners() {
 		$this->eventDispatcher->addListener(
 			'files.resolvePrivateLink',
-			function(GenericEvent $event) {
+			function (GenericEvent $event) {
 				$uid = $event->getArgument('uid');
 				$fileId = $event->getArgument('fileid');
 
@@ -123,7 +123,7 @@ class Hooks {
 
 		$this->eventDispatcher->addListener(
 			'share.afterCreate',
-			function(GenericEvent $event) {
+			function (GenericEvent $event) {
 				$shareObject = $event->getArgument('shareObject');
 				$this->notificationPublisher->sendNotification($shareObject);
 			}
@@ -131,7 +131,7 @@ class Hooks {
 
 		$this->eventDispatcher->addListener(
 			'share.afterDelete',
-			function(GenericEvent $event) {
+			function (GenericEvent $event) {
 				$shareObject = $event->getArgument('shareObject');
 				$this->notificationPublisher->discardNotification($shareObject);
 			}
@@ -139,7 +139,7 @@ class Hooks {
 	}
 
 	private function filterSharesByFileId($shares, $fileId) {
-		return \array_filter($shares, function(IShare $share) use ($fileId) {
+		return \array_filter($shares, function (IShare $share) use ($fileId) {
 			return \strval($share->getNodeId()) === \strval($fileId);
 		});
 	}

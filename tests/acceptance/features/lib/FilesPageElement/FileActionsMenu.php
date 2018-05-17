@@ -105,7 +105,7 @@ class FileActionsMenu extends OwncloudPage {
 	 */
 	public function declineShare() {
 		$declineBtn = $this->findButton($this->declineShareDataAction);
-		if (\is_null($declineBtn)) {
+		if ($declineBtn === null) {
 			throw new ElementNotFoundException(
 				__METHOD__ .
 				" could not find action button with label " .

@@ -469,7 +469,6 @@ class WebUISharingContext extends RawMinkContext implements Context {
 				" could not find share '$share' offered by '$offeredBy'"
 			);
 		}
-
 	}
 	/**
 	 * @Then all users and groups that contain the string :requiredString in their name should be listed in the autocomplete list on the webUI

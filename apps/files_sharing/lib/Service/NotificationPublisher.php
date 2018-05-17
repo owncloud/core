@@ -59,7 +59,7 @@ class NotificationPublisher {
 					yield $user->getUID();
 				}
 			}
-		} else if ($share->getShareType() === \OCP\Share::SHARE_TYPE_USER) {
+		} elseif ($share->getShareType() === \OCP\Share::SHARE_TYPE_USER) {
 			yield $share->getSharedWith();
 		}
 	}
@@ -74,7 +74,6 @@ class NotificationPublisher {
 	public function sendNotification(IShare $share) {
 		if ($share->getShareType() !== \OCP\Share::SHARE_TYPE_USER &&
 			$share->getShareType() !== \OCP\Share::SHARE_TYPE_GROUP) {
-
 			return;
 		}
 

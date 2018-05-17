@@ -609,7 +609,7 @@ class Share20OCS {
 			$stateFilter = $this->request->getParam('state', \OCP\Share::STATE_ACCEPTED);
 			if ($stateFilter === '') {
 				$stateFilter = \OCP\Share::STATE_ACCEPTED;
-			} else if ($stateFilter === 'all') {
+			} elseif ($stateFilter === 'all') {
 				$stateFilter = null; // which means all
 			} else {
 				$stateFilter = (int)$stateFilter;
@@ -1036,5 +1036,4 @@ class Share20OCS {
 
 		return $share;
 	}
-
 }

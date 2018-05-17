@@ -151,7 +151,7 @@ class Notifier implements INotifier {
 		if ($additionalInfoField === 'email') {
 			$email = $userObject->getEMailAddress();
 			return "$displayname ($email)";
-		} else if ($additionalInfoField === 'id') {
+		} elseif ($additionalInfoField === 'id') {
 			return "$displayname ($uid)";
 		} else {
 			return $displayname;

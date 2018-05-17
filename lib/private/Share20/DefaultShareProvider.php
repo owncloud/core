@@ -368,7 +368,7 @@ class DefaultShareProvider implements IShareProvider {
 			$group = $this->groupManager->get($share->getSharedWith());
 			$user = $this->userManager->get($recipient);
 
-			if (\is_null($group)) {
+			if ($group === null) {
 				throw new ProviderException('Group "' . $share->getSharedWith() . '" does not exist');
 			}
 

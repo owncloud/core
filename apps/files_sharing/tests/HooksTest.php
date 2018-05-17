@@ -81,7 +81,6 @@ class HooksTest extends TestCase {
 			$this->notificationPublisher
 		);
 		$this->hooks->registerListeners();
-
 	}
 
 	public function testPrivateLink() {
@@ -173,4 +172,3 @@ class HooksTest extends TestCase {
 		$this->eventDispatcher->dispatch('share.afterDelete', $event);
 	}
 }
-
