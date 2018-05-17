@@ -96,7 +96,7 @@ class MoveCopyHelper {
 	}
 
 	/**
-	 * 
+	 *
 	 * @param string $baseUrl URL of owncloud
 	 *                        e.g. http://localhost:8080
 	 *                        should include the subfolder

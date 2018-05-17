@@ -50,16 +50,16 @@ class AssemblyStreamTest extends \Test\TestCase {
 		$this->assertEquals($expected, $content);
 	}
 
-	function providesNodes() {
+	public function providesNodes() {
 		$data8k = $this->makeData(8192);
 		$dataLess8k = $this->makeData(8191);
 
 		$tonofnodes = [];
 		$tonofdata = "";
 		for ($i = 0; $i < 101; $i++) {
-			$thisdata =  \rand(0,100); // variable length and content
+			$thisdata =  \rand(0, 100); // variable length and content
 			$tonofdata .= $thisdata;
-			\array_push($tonofnodes, $this->buildNode($i,$thisdata));
+			\array_push($tonofnodes, $this->buildNode($i, $thisdata));
 		}
 
 		return[
@@ -140,4 +140,3 @@ class AssemblyStreamTest extends \Test\TestCase {
 		return $node;
 	}
 }
-

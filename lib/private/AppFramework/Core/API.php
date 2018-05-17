@@ -35,15 +35,14 @@ use OCP\AppFramework\IApi;
  * class and add your methods
  * @deprecated
  */
-class API implements IApi{
-
+class API implements IApi {
 	private $appName;
 
 	/**
 	 * constructor
 	 * @param string $appName the name of your application
 	 */
-	public function __construct($appName){
+	public function __construct($appName) {
 		$this->appName = $appName;
 	}
 
@@ -52,7 +51,7 @@ class API implements IApi{
 	 * @return string the user id of the current user
 	 * @deprecated Use \OC::$server->getUserSession()->getUser()->getUID()
 	 */
-	public function getUserId(){
+	public function getUserId() {
 		return \OCP\User::getUser();
 	}
 
@@ -62,8 +61,8 @@ class API implements IApi{
 	 * @param string $scriptName the name of the javascript in js/ without the suffix
 	 * @param string $appName the name of the app, defaults to the current one
 	 */
-	public function addScript($scriptName, $appName=null){
-		if($appName === null){
+	public function addScript($scriptName, $appName=null) {
+		if ($appName === null) {
 			$appName = $this->appName;
 		}
 		\OCP\Util::addScript($appName, $scriptName);
@@ -75,8 +74,8 @@ class API implements IApi{
 	 * @param string $styleName the name of the css file in css/without the suffix
 	 * @param string $appName the name of the app, defaults to the current one
 	 */
-	public function addStyle($styleName, $appName=null){
-		if($appName === null){
+	public function addStyle($styleName, $appName=null) {
+		if ($appName === null) {
 			$appName = $this->appName;
 		}
 		\OCP\Util::addStyle($appName, $styleName);
@@ -87,7 +86,7 @@ class API implements IApi{
 	 * shorthand for addScript for files in the 3rdparty directory
 	 * @param string $name the name of the file without the suffix
 	 */
-	public function add3rdPartyScript($name){
+	public function add3rdPartyScript($name) {
 		\OCP\Util::addScript($this->appName . '/3rdparty', $name);
 	}
 
@@ -96,7 +95,7 @@ class API implements IApi{
 	 * shorthand for addStyle for files in the 3rdparty directory
 	 * @param string $name the name of the file without the suffix
 	 */
-	public function add3rdPartyStyle($name){
+	public function add3rdPartyStyle($name) {
 		\OCP\Util::addStyle($this->appName . '/3rdparty', $name);
 	}
 
@@ -108,7 +107,7 @@ class API implements IApi{
 	 * @param string $appName the name of an app
 	 * @return bool true if app is enabled
 	 */
-	public function isAppEnabled($appName){
+	public function isAppEnabled($appName) {
 		return \OCP\App::isEnabled($appName);
 	}
 
@@ -117,7 +116,7 @@ class API implements IApi{
 	 * @return \OCP\IEventSource a new open EventSource class
 	 * @deprecated Use \OC::$server->createEventSource();
 	 */
-	public function openEventSource(){
+	public function openEventSource() {
 		return \OC::$server->createEventSource();
 	}
 
@@ -178,11 +177,10 @@ class API implements IApi{
 	 * @param string $appName the name of the app, defaults to the current one
 	 */
 	public function registerAdmin($mainPath, $appName=null) {
-		if($appName === null){
+		if ($appName === null) {
 			$appName = $this->appName;
 		}
 
 		\OCP\App::registerAdmin($appName, $mainPath);
 	}
-
 }

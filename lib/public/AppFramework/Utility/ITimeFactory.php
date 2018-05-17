@@ -33,5 +33,4 @@ interface ITimeFactory {
 	 * @since 8.0.0
 	 */
 	public function getTime();
-
 }

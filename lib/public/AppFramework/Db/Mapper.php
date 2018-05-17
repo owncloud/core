@@ -35,7 +35,6 @@ use OCP\IDb;
  * @since 7.0.0
  */
 abstract class Mapper {
-
 	protected $tableName;
 	protected $entityClass;
 	protected $db;
@@ -47,13 +46,13 @@ abstract class Mapper {
 	 * mapped to queries without using sql
 	 * @since 7.0.0
 	 */
-	public function __construct(IDBConnection $db, $tableName, $entityClass=null){
+	public function __construct(IDBConnection $db, $tableName, $entityClass=null) {
 		$this->db = $db;
 		$this->tableName = '*PREFIX*' . $tableName;
 
 		// if not given set the entity name to the class without the mapper part
 		// cache it here for later use since reflection is slow
-		if($entityClass === null) {
+		if ($entityClass === null) {
 			$this->entityClass = \str_replace('Mapper', '', \get_class($this));
 		} else {
 			$this->entityClass = $entityClass;
@@ -64,7 +63,7 @@ abstract class Mapper {
 	 * @return string the table name
 	 * @since 7.0.0
 	 */
-	public function getTableName(){
+	public function getTableName() {
 		return $this->tableName;
 	}
 
@@ -74,7 +73,7 @@ abstract class Mapper {
 	 * @return Entity the deleted entity
 	 * @since 7.0.0 - return value added in 8.1.0
 	 */
-	public function delete(Entity $entity){
+	public function delete(Entity $entity) {
 		$sql = 'DELETE FROM `' . $this->tableName . '` WHERE `id` = ?';
 		$stmt = $this->execute($sql, [$entity->getId()]);
 		$stmt->closeCursor();
@@ -87,7 +86,7 @@ abstract class Mapper {
 	 * @return Entity the saved entity with the set id
 	 * @since 7.0.0
 	 */
-	public function insert(Entity $entity){
+	public function insert(Entity $entity) {
 		// get updated fields to save, fields have to be set using a setter to
 		// be saved
 		$properties = $entity->getUpdatedFields();
@@ -97,7 +96,7 @@ abstract class Mapper {
 
 		// build the fields
 		$i = 0;
-		foreach($properties as $property => $updated) {
+		foreach ($properties as $property => $updated) {
 			$column = $entity->propertyToColumn($property);
 			$getter = 'get' . \ucfirst($property);
 
@@ -105,14 +104,13 @@ abstract class Mapper {
 			$values .= '?';
 
 			// only append colon if there are more entries
-			if($i < \count($properties)-1){
+			if ($i < \count($properties)-1) {
 				$columns .= ',';
 				$values .= ',';
 			}
 
 			$params[] = $entity->$getter();
 			$i++;
-
 		}
 
 		$sql = 'INSERT INTO `' . $this->tableName . '`(' .
@@ -134,16 +132,16 @@ abstract class Mapper {
 	 * @return Entity the saved entity with the set id
 	 * @since 7.0.0 - return value was added in 8.0.0
 	 */
-	public function update(Entity $entity){
+	public function update(Entity $entity) {
 		// if entity wasn't changed it makes no sense to run a db query
 		$properties = $entity->getUpdatedFields();
-		if(\count($properties) === 0) {
+		if (\count($properties) === 0) {
 			return $entity;
 		}
 
 		// entity needs an id
 		$id = $entity->getId();
-		if($id === null){
+		if ($id === null) {
 			throw new \InvalidArgumentException(
 				'Entity which should be updated has no id');
 		}
@@ -158,15 +156,14 @@ abstract class Mapper {
 
 		// build the fields
 		$i = 0;
-		foreach($properties as $property => $updated) {
-
+		foreach ($properties as $property => $updated) {
 			$column = $entity->propertyToColumn($property);
 			$getter = 'get' . \ucfirst($property);
 
 			$columns .= '`' . $column . '` = ?';
 
 			// only append colon if there are more entries
-			if($i < \count($properties)-1){
+			if ($i < \count($properties)-1) {
 				$columns .= ',';
 			}
 
@@ -269,7 +266,6 @@ abstract class Mapper {
 	 * @since 7.0.0
 	 */
 	protected function findOneQuery($sql, array $params=[], $limit=null, $offset=null) {
-
 		if ($sql instanceof IQueryBuilder) {
 			$stmt = $sql->execute();
 		} else {
@@ -277,7 +273,7 @@ abstract class Mapper {
 		}
 		$row = $stmt->fetch();
 
-		if($row === false || $row === null){
+		if ($row === false || $row === null) {
 			$stmt->closeCursor();
 			$msg = $this->buildDebugMessage(
 				'Did expect one result but found none when executing', $sql, $params, $limit, $offset
@@ -287,7 +283,7 @@ abstract class Mapper {
 		$row2 = $stmt->fetch();
 		$stmt->closeCursor();
 		//MDB2 returns null, PDO and doctrine false when no row is available
-		if(! ($row2 === false || $row2 === null)) {
+		if (! ($row2 === false || $row2 === null)) {
 			$msg = $this->buildDebugMessage(
 				'Did not expect more than one result when executing', $sql, $params, $limit, $offset
 			);
@@ -342,7 +338,7 @@ abstract class Mapper {
 
 		$entities = [];
 
-		while($row = $stmt->fetch()){
+		while ($row = $stmt->fetch()) {
 			$entities[] = $this->mapRowToEntity($row);
 		}
 
@@ -363,8 +359,7 @@ abstract class Mapper {
 	 * @return Entity the entity
 	 * @since 7.0.0
 	 */
-	protected function findEntity($sql, array $params=[], $limit=null, $offset=null){
+	protected function findEntity($sql, array $params=[], $limit=null, $offset=null) {
 		return $this->mapRowToEntity($this->findOneQuery($sql, $params, $limit, $offset));
 	}
-
 }

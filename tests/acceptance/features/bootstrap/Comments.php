@@ -30,11 +30,11 @@ require __DIR__ . '/../../../../lib/composer/autoload.php';
 trait Comments {
 
 	/**
-	 * @var int 
+	 * @var int
 	 */
 	private $lastCommentId;
 	/**
-	 * @var int 
+	 * @var int
 	 */
 	private $lastFileId;
 
@@ -110,8 +110,8 @@ trait Comments {
 			foreach ($elementRows as $expectedElement) {
 				$commentFound = false;
 				foreach ($elementList as $id => $answer) {
-					if (($answer[200]['{http://owncloud.org/ns}actorDisplayName'] === $expectedElement[0])
-						and ($answer[200]['{http://owncloud.org/ns}message'] === $expectedElement[1])
+					if (($expectedElement[0] === $answer[200]['{http://owncloud.org/ns}actorDisplayName'])
+						and ($expectedElement[1] === $answer[200]['{http://owncloud.org/ns}message'])
 					) {
 						$commentFound = true;
 						break;
@@ -278,5 +278,4 @@ trait Comments {
 			$user, $content, $this->lastFileId, $this->lastCommentId
 		);
 	}
-
 }

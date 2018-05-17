@@ -27,7 +27,6 @@ use OCP\AppFramework\Db\DoesNotExistException;
 use OCP\AppFramework\Db\Entity;
 
 class MemoryAccountMapper extends AccountMapper {
-
 	private static $accounts = [];
 	private static $counter = 1000;
 

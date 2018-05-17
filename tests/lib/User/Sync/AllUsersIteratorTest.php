@@ -54,7 +54,6 @@ class AllUsersIteratorTest extends TestCase {
 	 * Iterators are initialized by a call to rewind
 	 */
 	public function testRewind() {
-
 		$this->backend->expects($this->once())
 			->method('getUsers')
 			->with(
@@ -92,11 +91,11 @@ class AllUsersIteratorTest extends TestCase {
 					$this->equalTo(''),					// all users
 					$this->equalTo(UsersIterator::LIMIT),	// limit 500
 					$this->equalTo(0)						// at the beginning
-				],[
+				], [
 				$this->equalTo(''),					// all users
 				$this->equalTo(UsersIterator::LIMIT),	// limit 500
 				$this->equalTo(500)					// second page
-			],[
+			], [
 					$this->equalTo(''),					// all users
 					$this->equalTo(UsersIterator::LIMIT),	// limit 500
 					$this->equalTo(1000)					// last page
@@ -119,5 +118,4 @@ class AllUsersIteratorTest extends TestCase {
 		$this->iterator->next();
 		$this->assertFalse($this->iterator->valid());
 	}
-
 }

@@ -62,7 +62,7 @@ class Create extends Base {
 	/** @var IUserSession */
 	private $userSession;
 
-	function __construct(IGlobalStoragesService $globalService,
+	public function __construct(IGlobalStoragesService $globalService,
 						 IUserStoragesService $userService,
 						 IUserManager $userManager,
 						 IUserSession $userSession,
@@ -130,11 +130,11 @@ class Create extends Base {
 			$output->writeln('<error>Invalid mountpoint "' . $mountPoint . '"</error>');
 			return 1;
 		}
-		if (\is_null($storageBackend)) {
+		if ($storageBackend === null) {
 			$output->writeln('<error>Storage backend with identifier "' . $storageIdentifier . '" not found (see `occ files_external:backends` for possible values)</error>');
 			return 404;
 		}
-		if (\is_null($authBackend)) {
+		if ($authBackend === null) {
 			$output->writeln('<error>Authentication backend with identifier "' . $authIdentifier . '" not found (see `occ files_external:backends` for possible values)</error>');
 			return 404;
 		}
@@ -210,7 +210,7 @@ class Create extends Base {
 	protected function getStorageService($userId) {
 		if (!empty($userId)) {
 			$user = $this->userManager->get($userId);
-			if (\is_null($user)) {
+			if ($user === null) {
 				throw new NoUserException("user $userId not found");
 			}
 			$this->userSession->setUser($user);

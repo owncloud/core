@@ -39,4 +39,3 @@ interface IProvidesDisplayNameBackend {
 	 */
 	public function getDisplayName($uid);
 }
-

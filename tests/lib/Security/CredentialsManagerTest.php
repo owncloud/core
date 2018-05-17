@@ -100,5 +100,4 @@ class CredentialsManagerTest extends \Test\TestCase {
 
 		$this->manager->retrieve($userId, $identifier);
 	}
-
 }

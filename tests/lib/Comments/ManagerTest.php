@@ -14,7 +14,6 @@ use Test\Traits\UserTrait;
  * @group DB
  */
 class ManagerTest extends TestCase {
-
 	use UserTrait;
 
 	/** @var IDBConnection */
@@ -37,10 +36,10 @@ class ManagerTest extends TestCase {
 	}
 
 	protected function addDatabaseEntry($parentId, $topmostParentId, $creationDT = null, $latestChildDT = null, $actor_id = 'alice', $object_id = 'file64') {
-		if(\is_null($creationDT)) {
+		if ($creationDT === null) {
 			$creationDT = new \DateTime();
 		}
-		if(\is_null($latestChildDT)) {
+		if ($latestChildDT === null) {
 			$latestChildDT = new \DateTime('yesterday');
 		}
 
@@ -162,7 +161,7 @@ class ManagerTest extends TestCase {
 		$this->assertSame(\count($tree['replies']), 3);
 
 		// one level deep
-		foreach($tree['replies'] as $reply) {
+		foreach ($tree['replies'] as $reply) {
 			$this->assertInstanceOf(\OCP\Comments\IComment::class, $reply['comment']);
 			$this->assertSame($reply['comment']->getId(), \strval($id));
 			$this->assertSame(\count($reply['replies']), 0);
@@ -184,7 +183,7 @@ class ManagerTest extends TestCase {
 		$this->assertSame(\count($tree['replies']), 0);
 
 		// one level deep
-		foreach($tree['replies'] as $reply) {
+		foreach ($tree['replies'] as $reply) {
 			throw new \Exception('This ain`t happen');
 		}
 	}
@@ -246,14 +245,14 @@ class ManagerTest extends TestCase {
 			$comments = $manager->getForObject('files', 'file64', 3, $offset);
 
 			$this->assertInternalType('array', $comments);
-			foreach($comments as $comment) {
+			foreach ($comments as $comment) {
 				$this->assertInstanceOf(\OCP\Comments\IComment::class, $comment);
 				$this->assertSame($comment->getMessage(), 'nice one');
 				$this->assertSame($comment->getId(), \strval($idToVerify));
 				$idToVerify--;
 			}
 			$offset += 3;
-		} while(\count($comments) > 0);
+		} while (\count($comments) > 0);
 	}
 
 	public function testGetForObjectWithDateTimeConstraint() {
@@ -285,7 +284,7 @@ class ManagerTest extends TestCase {
 			$comments = $manager->getForObject('files', 'file64', 3, $offset, new \DateTime('-4 hours'));
 
 			$this->assertInternalType('array', $comments);
-			foreach($comments as $comment) {
+			foreach ($comments as $comment) {
 				$this->assertInstanceOf(\OCP\Comments\IComment::class, $comment);
 				$this->assertSame($comment->getMessage(), 'nice one');
 				$this->assertSame($comment->getId(), \strval($idToVerify));
@@ -293,11 +292,11 @@ class ManagerTest extends TestCase {
 				$idToVerify--;
 			}
 			$offset += 3;
-		} while(\count($comments) > 0);
+		} while (\count($comments) > 0);
 	}
 
 	public function testGetNumberOfCommentsForObject() {
-		for($i = 1; $i < 5; $i++) {
+		for ($i = 1; $i < 5; $i++) {
 			$this->addDatabaseEntry(0, 0);
 		}
 
@@ -558,7 +557,7 @@ class ManagerTest extends TestCase {
 
 		$manager = $this->getManager();
 
-		for($i = 0; $i < 3; $i++) {
+		for ($i = 0; $i < 3; $i++) {
 			$comment = new \OC\Comments\Comment();
 			$comment
 					->setActor('users', 'alice')
@@ -612,7 +611,7 @@ class ManagerTest extends TestCase {
 		$wasSuccessful = $manager->deleteReferencesOfActor('users', 'alice');
 		$this->assertTrue($wasSuccessful);
 
-		foreach($ids as $id) {
+		foreach ($ids as $id) {
 			$comment = $manager->get(\strval($id));
 			$this->assertSame($comment->getActorType(), ICommentsManager::DELETED_USER);
 			$this->assertSame($comment->getActorId(), ICommentsManager::DELETED_USER);
@@ -679,7 +678,7 @@ class ManagerTest extends TestCase {
 		$this->assertTrue($wasSuccessful);
 
 		$verified = 0;
-		foreach($ids as $id) {
+		foreach ($ids as $id) {
 			try {
 				$manager->get(\strval($id));
 			} catch (\OCP\Comments\NotFoundException $e) {
@@ -705,7 +704,7 @@ class ManagerTest extends TestCase {
 		$manager = $this->getManager();
 		$manager->setReadMark('robot', '36', $dateTimeSet, $user);
 
-		$dateTimeGet = $manager->getReadMark('robot', '36',  $user);
+		$dateTimeGet = $manager->getReadMark('robot', '36', $user);
 
 		$this->assertEquals($dateTimeGet->format(\DateTime::ISO8601), $dateTimeSet->format(\DateTime::ISO8601));
 	}
@@ -724,7 +723,7 @@ class ManagerTest extends TestCase {
 		$dateTimeSet = new \DateTime('today');
 		$manager->setReadMark('robot', '36', $dateTimeSet, $user);
 
-		$dateTimeGet = $manager->getReadMark('robot', '36',  $user);
+		$dateTimeGet = $manager->getReadMark('robot', '36', $user);
 
 		$this->assertEquals($dateTimeGet, $dateTimeSet);
 	}
@@ -741,7 +740,7 @@ class ManagerTest extends TestCase {
 		$manager->setReadMark('robot', '36', $dateTimeSet, $user);
 
 		$manager->deleteReadMarksFromUser($user);
-		$dateTimeGet = $manager->getReadMark('robot', '36',  $user);
+		$dateTimeGet = $manager->getReadMark('robot', '36', $user);
 
 		$this->assertNull($dateTimeGet);
 	}
@@ -758,9 +757,8 @@ class ManagerTest extends TestCase {
 		$manager->setReadMark('robot', '36', $dateTimeSet, $user);
 
 		$manager->deleteReadMarksOnObject('robot', '36');
-		$dateTimeGet = $manager->getReadMark('robot', '36',  $user);
+		$dateTimeGet = $manager->getReadMark('robot', '36', $user);
 
 		$this->assertNull($dateTimeGet);
 	}
-
 }

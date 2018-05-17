@@ -51,5 +51,4 @@ class PgSqlExpressionBuilder extends ExpressionBuilder {
 		$y = $this->helper->quoteColumnName($y);
 		return $this->expressionBuilder->comparison($x, 'ILIKE', $y);
 	}
-
 }

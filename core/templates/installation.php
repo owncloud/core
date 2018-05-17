@@ -10,12 +10,12 @@ script('core', [
 <input type='hidden' id='hasOracle' value='<?php p($_['hasOracle']) ?>'>
 <form action="index.php" method="post">
 <input type="hidden" name="install" value="true">
-	<?php if(\count($_['errors']) > 0): ?>
+	<?php if (\count($_['errors']) > 0): ?>
 	<fieldset class="warning">
 		<legend><strong><?php p($l->t('Error'));?></strong></legend>
-		<?php foreach($_['errors'] as $err): ?>
+		<?php foreach ($_['errors'] as $err): ?>
 		<p>
-			<?php if(\is_array($err)):?>
+			<?php if (\is_array($err)):?>
 				<?php print_unescaped($err['error']); ?>
 				<span class='hint'><?php print_unescaped($err['hint']); ?></span>
 			<?php else: ?>
@@ -45,13 +45,13 @@ script('core', [
 		</p>
 	</fieldset>
 
-	<?php if(!$_['directoryIsSet'] OR !$_['dbIsSet'] OR \count($_['errors']) > 0): ?>
+	<?php if (!$_['directoryIsSet'] or !$_['dbIsSet'] or \count($_['errors']) > 0): ?>
 	<fieldset id="advancedHeader">
 		<legend><a id="showAdvanced"><?php p($l->t('Storage & database')); ?> <img src="<?php print_unescaped(image_path('', 'actions/caret.svg')); ?>" /></a></legend>
 	</fieldset>
 	<?php endif; ?>
 
-	<?php if(!$_['directoryIsSet'] OR \count($_['errors']) > 0): ?>
+	<?php if (!$_['directoryIsSet'] or \count($_['errors']) > 0): ?>
 	<fieldset id="datadirField">
 		<div id="datadirContent">
 			<label for="directory"><?php p($l->t('Data folder')); ?></label>
@@ -63,14 +63,17 @@ script('core', [
 	</fieldset>
 	<?php endif; ?>
 
-	<?php if(!$_['dbIsSet'] OR \count($_['errors']) > 0): ?>
+	<?php if (!$_['dbIsSet'] or \count($_['errors']) > 0): ?>
 	<fieldset id='databaseBackend'>
-		<?php if($_['hasMySQL'] or $_['hasPostgreSQL'] or $_['hasOracle'])
-			$hasOtherDB = true; else $hasOtherDB =false; //other than SQLite ?>
+		<?php if ($_['hasMySQL'] or $_['hasPostgreSQL'] or $_['hasOracle']) {
+	$hasOtherDB = true;
+} else {
+	$hasOtherDB =false;
+} //other than SQLite?>
 		<legend><?php p($l->t('Configure the database')); ?></legend>
 		<div id="selectDbType">
-		<?php foreach($_['databases'] as $type => $label): ?>
-		<?php if(\count($_['databases']) === 1): ?>
+		<?php foreach ($_['databases'] as $type => $label): ?>
+		<?php if (\count($_['databases']) === 1): ?>
 		<p class="info">
 			<?php p($l->t('Only %s is available.', [$label])); ?>
 			<?php p($l->t('Install and activate additional PHP modules to choose other database types.')); ?><br>
@@ -87,7 +90,7 @@ script('core', [
 		</div>
 	</fieldset>
 
-		<?php if($hasOtherDB): ?>
+		<?php if ($hasOtherDB): ?>
 		<fieldset id='databaseField'>
 		<div id="use_other_db">
 			<p class="grouptop">
@@ -114,7 +117,7 @@ script('core', [
 					autocomplete="off" autocapitalize="off" autocorrect="off"
 					pattern="[0-9a-zA-Z$_-]+">
 			</p>
-			<?php if($_['hasOracle']): ?>
+			<?php if ($_['hasOracle']): ?>
 			<div id="use_oracle_db">
 				<p class="groupmiddle">
 					<label for="dbtablespace" class="infield"><?php p($l->t('Database tablespace')); ?></label>
@@ -142,7 +145,7 @@ script('core', [
 
 	<div class="icon-loading-dark float-spinner">&nbsp;</div>
 
-	<?php if(!$_['dbIsSet'] OR \count($_['errors']) > 0): ?>
+	<?php if (!$_['dbIsSet'] or \count($_['errors']) > 0): ?>
 		<fieldset id="sqliteInformation" class="warning">
 			<legend><?php p($l->t('Performance warning'));?></legend>
 			<p><?php p($l->t('SQLite will be used as database.'));?></p>

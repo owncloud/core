@@ -42,7 +42,7 @@ interface IShareProvider {
 
 	/**
 	 * Create a share
-	 * 
+	 *
 	 * @param \OCP\Share\IShare $share
 	 * @return \OCP\Share\IShare The share object
 	 * @since 9.0.0

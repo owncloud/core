@@ -43,7 +43,7 @@ class OCDialog extends OwncloudPage {
 	protected $buttonByLabelXpath = "//button[.='%s']";
 	/**
 	 * the accept button, regardless of the label
-	 * 
+	 *
 	 * @var string
 	 */
 	protected $primaryButtonXpath = "//button[@class='primary']";
@@ -64,20 +64,20 @@ class OCDialog extends OwncloudPage {
 
 	/**
 	 * returns the Element that was set by setElement()
-	 * 
+	 *
 	 * @return \Behat\Mink\Element\NodeElement
 	 */
 	public function getOwnElement() {
 		return $this->dialogElement;
 	}
 	/**
-	 * 
+	 *
 	 * @throws ElementNotFoundException
 	 * @return string
 	 */
 	public function getTitle() {
 		$title = $this->dialogElement->find("xpath", $this->titleClassXpath);
-		if (\is_null($title)) {
+		if ($title === null) {
 			throw new ElementNotFoundException(
 				__METHOD__ .
 				" xpath $this->titleClassXpath " .
@@ -88,13 +88,13 @@ class OCDialog extends OwncloudPage {
 	}
 
 	/**
-	 * 
+	 *
 	 * @throws ElementNotFoundException
 	 * @return string
 	 */
 	public function getMessage() {
 		$contentElement = $this->dialogElement->find("xpath", $this->contentClassXpath);
-		if (\is_null($contentElement)) {
+		if ($contentElement === null) {
 			throw new ElementNotFoundException(
 				__METHOD__ .
 				" xpath $this->contentClassXpath " .
@@ -106,7 +106,7 @@ class OCDialog extends OwncloudPage {
 
 	/**
 	 * clicks the accept (primary) button
-	 * 
+	 *
 	 * @param Session $session
 	 *
 	 * @throws ElementNotFoundException
@@ -116,7 +116,7 @@ class OCDialog extends OwncloudPage {
 		$primaryButton = $this->dialogElement->find(
 			"xpath", $this->primaryButtonXpath
 		);
-		if (\is_null($primaryButton)) {
+		if ($primaryButton === null) {
 			throw new ElementNotFoundException(
 				__METHOD__ .
 				" xpath $this->primaryButtonXpath " .
@@ -129,7 +129,7 @@ class OCDialog extends OwncloudPage {
 
 	/**
 	 * clicks the button with the given label
-	 * 
+	 *
 	 * @param Session $session
 	 * @param string $label
 	 *
@@ -139,7 +139,7 @@ class OCDialog extends OwncloudPage {
 		$button = $this->dialogElement->find(
 			"xpath", \sprintf($this->buttonByLabelXpath, $label)
 		);
-		if (\is_null($button)) {
+		if ($button === null) {
 			throw new ElementNotFoundException(
 				__METHOD__ .
 				" xpath " . \sprintf($this->buttonByLabelXpath, $label) .
@@ -150,4 +150,3 @@ class OCDialog extends OwncloudPage {
 		$this->waitForOutstandingAjaxCalls($session);
 	}
 }
-	

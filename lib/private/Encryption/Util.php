@@ -36,7 +36,6 @@ use OCP\IConfig;
 use OCP\IUser;
 
 class Util {
-
 	const HEADER_START = 'HBEGIN';
 	const HEADER_END = 'HEND';
 	const HEADER_PADDING_CHAR = '-';
@@ -87,7 +86,6 @@ class Util {
 		\OC\User\Manager $userManager,
 		\OC\Group\Manager $groupManager,
 		IConfig $config) {
-
 		$this->ocHeaderKeys = [
 			self::HEADER_ENCRYPTION_MODULE_KEY
 		];
@@ -180,7 +178,6 @@ class Util {
 					$result[] =  $c->getPath();
 				}
 			}
-
 		}
 
 		return $result;
@@ -227,7 +224,6 @@ class Util {
 	 * @throws \BadMethodCallException
 	 */
 	public function getUidAndFilename($path) {
-
 		$parts = \explode('/', $path);
 		$uid = '';
 		if (\count($parts) > 2) {
@@ -242,7 +238,6 @@ class Util {
 		$ownerPath = \implode('/', \array_slice($parts, 2));
 
 		return [$uid, Filesystem::normalizePath($ownerPath)];
-
 	}
 
 	/**
@@ -255,18 +250,16 @@ class Util {
 		$extension = \pathinfo($path, PATHINFO_EXTENSION);
 
 		if ($extension === 'part') {
-
 			$newLength = \strlen($path) - 5; // 5 = strlen(".part")
 			$fPath = \substr($path, 0, $newLength);
 
 			// if path also contains a transaction id, we remove it too
 			$extension = \pathinfo($fPath, PATHINFO_EXTENSION);
-			if(\substr($extension, 0, 12) === 'ocTransferId') { // 12 = strlen("ocTransferId")
+			if (\substr($extension, 0, 12) === 'ocTransferId') { // 12 = strlen("ocTransferId")
 				$newLength = \strlen($fPath) - \strlen($extension) -1;
 				$fPath = \substr($fPath, 0, $newLength);
 			}
 			return $fPath;
-
 		} else {
 			return $path;
 		}
@@ -280,8 +273,8 @@ class Util {
 			$result = \array_merge($result, $users);
 			foreach ($groups as $group) {
 				$g = \OC::$server->getGroupManager()->get($group);
-				if (!\is_null($g)) {
-					$users = \array_values(\array_map(function(IUser $u){
+				if ($g !== null) {
+					$users = \array_values(\array_map(function (IUser $u) {
 						return $u->getUID();
 					}, $g->getUsers()));
 					$result = \array_merge($result, $users);
@@ -349,10 +342,10 @@ class Util {
 			// detect alternative key storage root
 			$rootDir = $this->getKeyStorageRoot();
 			if ($rootDir !== '' &&
-				0 === \strpos(
+				\strpos(
 					Filesystem::normalizePath($path),
 					Filesystem::normalizePath($rootDir)
-				)
+				) === 0
 			) {
 				return true;
 			}
@@ -365,7 +358,6 @@ class Util {
 			// detect user specific folders
 			if ($this->userManager->userExists($root[1])
 				&& \in_array($root[2], $this->excludedPaths)) {
-
 				return true;
 			}
 		}
@@ -401,5 +393,4 @@ class Util {
 	public function getKeyStorageRoot() {
 		return $this->config->getAppValue('core', 'encryption_key_storage_root', '');
 	}
-
 }

@@ -39,7 +39,7 @@ $scalingUp = \array_key_exists('scalingup', $_GET) ? (bool) $_GET['scalingup'] :
 $token = \array_key_exists('t', $_GET) ? (string) $_GET['t'] : '';
 $keepAspect = \array_key_exists('a', $_GET) ? true : false;
 
-if($token === ''){
+if ($token === '') {
 	\OC_Response::setStatus(\OC_Response::STATUS_BAD_REQUEST);
 	\OCP\Util::writeLog('core-preview', 'No token parameter was passed', \OCP\Util::DEBUG);
 	exit;
@@ -55,7 +55,7 @@ try {
 }
 
 $userId = $linkedItem->getShareOwner();
-if(\is_null($userId)) {
+if ($userId === null) {
 	\OC_Response::setStatus(\OC_Response::STATUS_INTERNAL_SERVER_ERROR);
 	\OCP\Util::writeLog('core-preview', 'Passed token seems to be valid, but it does not contain all necessary information . ("' . $token . '")', \OCP\Util::WARN);
 	exit;
@@ -74,9 +74,9 @@ try {
 
 $path = $node->getPath();
 
-if($linkedItem->getNodeType() === 'folder') {
+if ($linkedItem->getNodeType() === 'folder') {
 	$isValid = \OC\Files\Filesystem::isValidPath($file);
-	if(!$isValid) {
+	if (!$isValid) {
 		\OC_Response::setStatus(\OC_Response::STATUS_BAD_REQUEST);
 		\OCP\Util::writeLog('core-preview', 'Passed filename is not valid, might be malicious (file:"' . $file . '";ip:"' . \OC::$server->getRequest()->getRemoteAddress() . '")', \OCP\Util::WARN);
 		exit;
@@ -84,14 +84,14 @@ if($linkedItem->getNodeType() === 'folder') {
 	$sharedFile = $node->get($file);
 }
 
-if($linkedItem->getNodeType() === 'file') {
+if ($linkedItem->getNodeType() === 'file') {
 	$path = $node->getParent()->getPath();
 	$sharedFile = $node;
 }
 
 $path = \ltrim(\OC\Files\Filesystem::normalizePath($path, false), '/');
 
-if($maxX === 0 || $maxY === 0) {
+if ($maxX === 0 || $maxY === 0) {
 	\OC_Response::setStatus(\OC_Response::STATUS_BAD_REQUEST);
 	\OCP\Util::writeLog('core-preview', 'x and/or y set to 0', \OCP\Util::DEBUG);
 	exit;
@@ -101,7 +101,7 @@ if($maxX === 0 || $maxY === 0) {
 // so strip the first component
 $root = \substr($path, \strpos($path, '/') + 1);
 
-try{
+try {
 	$preview = new \OC\Preview($userId, $root);
 	$preview->setFile($sharedFile);
 	$preview->setMaxX($maxX);

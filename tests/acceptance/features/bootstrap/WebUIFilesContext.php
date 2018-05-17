@@ -68,7 +68,7 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 	private $sharedWithYouPage;
 	
 	/**
-	 * 
+	 *
 	 * @var ConflictDialog
 	 */
 	private $conflictDialog;
@@ -92,7 +92,7 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 
 	/**
 	 * variable to remember in which folder we are currently working
-	 * 
+	 *
 	 * @var string
 	 */
 	private $currentFolder = "";
@@ -139,12 +139,12 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 	/**
 	 * returns the set page object from WebUIGeneralContext::getCurrentPageObject()
 	 * or if that is null the files page object
-	 * 
+	 *
 	 * @return OwncloudPage
 	 */
 	private function getCurrentPageObject() {
 		$pageObject = $this->webUIGeneralContext->getCurrentPageObject();
-		if (\is_null($pageObject)) {
+		if ($pageObject === null) {
 			$pageObject = $this->filesPage;
 		}
 		return $pageObject;
@@ -414,7 +414,6 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 		foreach ($table->getRows() as $row) {
 			$this->filesPage->renameFile($fromName, $row[0], $this->getSession());
 		}
-
 	}
 
 	/**
@@ -518,7 +517,6 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 					__METHOD__ . " timeout deleting files by WebDAV"
 				);
 			}
-
 		}
 	}
 
@@ -746,12 +744,12 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 	 * @return void
 	 */
 	public function theDeletedMovedElementsShouldBeListedOnTheWebUI($shouldOrNot) {
-		if (!\is_null($this->deletedElementsTable)) {
+		if ($this->deletedElementsTable !== null) {
 			foreach ($this->deletedElementsTable as $file) {
 				$this->checkIfFileFolderIsListedOnTheWebUI($file['name'], $shouldOrNot);
 			}
 		}
-		if (!\is_null($this->movedElementsTable)) {
+		if ($this->movedElementsTable !== null) {
 			foreach ($this->movedElementsTable as $file) {
 				$this->checkIfFileFolderIsListedOnTheWebUI($file['name'], $shouldOrNot);
 			}
@@ -862,7 +860,7 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 	 * @Given /^the user has opened the (trashbin|)\s?(file|folder) ((?:'[^']*')|(?:"[^"]*")) using the webUI$/
 	 *
 	 * @param string $typeOfFilesPage
-	 * @param string $fileOrFolder 
+	 * @param string $fileOrFolder
 	 * @param string $name enclosed in single or double quotes
 	 *
 	 * @return void
@@ -877,7 +875,7 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 
 	/**
 	 * @param string $typeOfFilesPage
-	 * @param string $fileOrFolder 
+	 * @param string $fileOrFolder
 	 * @param string|array $name
 	 *
 	 * @return void
@@ -1000,7 +998,7 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 
 		try {
 			/**
-			 * 
+			 *
 			 * @var FileRow $fileRow
 			 */
 			$fileRow = $pageObject->findFileRowByName($name, $this->getSession());

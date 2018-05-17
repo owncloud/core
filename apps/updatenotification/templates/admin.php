@@ -19,7 +19,7 @@
 <form id="oca_updatenotification_section" class="section">
 	<h2 id="updater" class="app-name"><?php p($l->t('Updater')); ?></h2>
 
-	<?php if($isNewVersionAvailable === true): ?>
+	<?php if ($isNewVersionAvailable === true): ?>
 		<strong><?php p($l->t('A new version is available: %s', [$newVersionString])); ?></strong>
 		<input type="button" id="oca_updatenotification_button" value="<?php p($l->t('Open updater')) ?>">
 		<?php if ($changeLogUrl): ?>
@@ -34,11 +34,13 @@
 		<label for="release-channel"><?php p($l->t('Update channel:')) ?></label>
 		<select id="release-channel">
 			<option value="<?php p($currentChannel); ?>"><?php p($currentChannel); ?></option>
-			<?php foreach ($channels as $channel => $channelTitle){ ?>
+			<?php foreach ($channels as $channel => $channelTitle) {
+	?>
 				<option value="<?php p($channelTitle) ?>">
 					<?php p($channelTitle) ?>
 				</option>
-			<?php } ?>
+			<?php
+} ?>
 		</select>
 		<span id="channel_save_msg"></span>
 	</p>
@@ -51,7 +53,9 @@
 		<br />
 		<?php p($l->t('Notify members of the following groups about available updates:')); ?>
 		<input name="oca_updatenotification_groups_list" type="hidden" id="oca_updatenotification_groups_list" value="<?php p($_['notify_groups']) ?>" style="width: 400px">
-		<em class="<?php if (!\in_array($currentChannel, ['daily', 'git'])) p('hidden'); ?>">
+		<em class="<?php if (!\in_array($currentChannel, ['daily', 'git'])) {
+		p('hidden');
+	} ?>">
 			<br />
 			<?php p($l->t('Only notification for app updates are available, because the selected update channel for ownCloud itself does not allow notifications.')); ?>
 		</em>

@@ -299,5 +299,4 @@ class CorsPluginTest extends TestCase {
 		// if it has DAV headers, it means we did not bypass further processing
 		$this->assertEquals($expectDavHeaders, $this->server->httpResponse->hasHeader('DAV'));
 	}
-
 }

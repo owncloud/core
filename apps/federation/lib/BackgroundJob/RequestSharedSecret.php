@@ -132,7 +132,6 @@ class RequestSharedSecret extends Job {
 	}
 
 	protected function run($argument) {
-
 		$target = $argument['url'];
 		$source = $this->urlGenerator->getAbsoluteURL('/');
 		$source = \rtrim($source, '/');
@@ -152,7 +151,6 @@ class RequestSharedSecret extends Job {
 			);
 
 			$status = $result->getStatusCode();
-
 		} catch (ClientException $e) {
 			$status = $e->getCode();
 			if ($status === Http::STATUS_FORBIDDEN) {
@@ -177,6 +175,5 @@ class RequestSharedSecret extends Job {
 			// clear token if remote server refuses to ask for shared secret
 			$this->dbHandler->addToken($target, '');
 		}
-
 	}
 }

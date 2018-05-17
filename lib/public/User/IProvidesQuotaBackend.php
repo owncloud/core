@@ -40,4 +40,3 @@ interface IProvidesQuotaBackend {
 	 */
 	public function getQuota($uid);
 }
-

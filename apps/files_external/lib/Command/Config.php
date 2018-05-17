@@ -36,7 +36,7 @@ class Config extends Base {
 	 */
 	protected $globalService;
 
-	function __construct(IGlobalStoragesService $globalService) {
+	public function __construct(IGlobalStoragesService $globalService) {
 		parent::__construct();
 		$this->globalService = $globalService;
 	}
@@ -104,7 +104,7 @@ class Config extends Base {
 	 */
 	protected function setOption(IStorageConfig $mount, $key, $value, OutputInterface $output) {
 		$decoded = \json_decode($value, true);
-		if (!\is_null($decoded)) {
+		if ($decoded !== null) {
 			$value = $decoded;
 		}
 		if ($key === 'mountpoint' || $key === 'mount_point') {

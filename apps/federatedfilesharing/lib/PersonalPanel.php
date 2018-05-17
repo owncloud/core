@@ -80,5 +80,4 @@ class PersonalPanel implements ISettings {
 		$tmpl->assign('urlGenerator', $this->urlGenerator);
 		return $tmpl;
 	}
-
 }

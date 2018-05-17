@@ -280,14 +280,14 @@ class Trashbin {
 		list($owner, $ownerPath) = self::getUidAndFilename($file_path);
 
 		// if no owner found (ex: ext storage + share link), will use the current user's trashbin then
-		if (\is_null($owner)) {
+		if ($owner === null) {
 			$owner = $user;
 			$ownerPath = $file_path;
 		}
 
 		$ownerView = new View('/' . $owner);
 		// file has been deleted in between
-		if (\is_null($ownerPath) || $ownerPath === '' || !$ownerView->file_exists('/files/' . $ownerPath)) {
+		if ($ownerPath === null || $ownerPath === '' || !$ownerView->file_exists('/files/' . $ownerPath)) {
 			return true;
 		}
 
@@ -379,7 +379,6 @@ class Trashbin {
 	 */
 	private static function retainVersions($filename, $owner, $ownerPath, $timestamp, $sourceStorage = null, $forceCopy = false) {
 		if (\OCP\App::isEnabled('files_versions') && !empty($ownerPath)) {
-
 			$copyKeysResult = false;
 
 			/**
@@ -400,8 +399,7 @@ class Trashbin {
 				if (!$forceCopy) {
 					self::move($rootView, $owner . '/files_versions/' . $ownerPath, $user . '/files_trashbin/versions/' . $filename . '.d' . $timestamp);
 				}
-			} else if ($versions = \OCA\Files_Versions\Storage::getVersions($owner, $ownerPath)) {
-
+			} elseif ($versions = \OCA\Files_Versions\Storage::getVersions($owner, $ownerPath)) {
 				foreach ($versions as $v) {
 					if ($owner !== $user || $forceCopy) {
 						self::copy($rootView, $owner . '/files_versions' . $v['path'] . '.v' . $v['version'], $owner . '/files_trashbin/versions/' . $v['name'] . '.v' . $v['version'] . '.d' . $timestamp);
@@ -540,9 +538,7 @@ class Trashbin {
 	 * @return false|null
 	 */
 	private static function restoreVersions(View $view, $file, $filename, $uniqueFilename, $location, $timestamp) {
-
 		if (\OCP\App::isEnabled('files_versions')) {
-
 			$user = User::getUser();
 			$rootView = new View('/');
 
@@ -563,7 +559,7 @@ class Trashbin {
 
 			if ($view->is_dir('/files_trashbin/versions/' . $file)) {
 				$rootView->rename(Filesystem::normalizePath($user . '/files_trashbin/versions/' . $file), Filesystem::normalizePath($owner . '/files_versions/' . $ownerPath));
-			} else if ($versions = self::getVersionsFromTrash($versionedFile, $timestamp, $user)) {
+			} elseif ($versions = self::getVersionsFromTrash($versionedFile, $timestamp, $user)) {
 				foreach ($versions as $v) {
 					if ($timestamp) {
 						$rootView->rename($user . '/files_trashbin/versions/' . $versionedFile . '.v' . $v . '.d' . $timestamp, $owner . '/files_versions/' . $ownerPath . '.v' . $v);
@@ -585,7 +581,7 @@ class Trashbin {
 
 		// Array to store the relative path in (after the file is deleted, the view won't be able to relativise the path anymore)
 		$filePaths = [];
-		foreach($fileInfos as $fileInfo){
+		foreach ($fileInfos as $fileInfo) {
 			$filePaths[] = $view->getRelativePath($fileInfo->getPath());
 		}
 		unset($fileInfos); // save memory
@@ -594,7 +590,7 @@ class Trashbin {
 		\OC_Hook::emit('\OCP\Trashbin', 'preDeleteAll', ['paths' => $filePaths]);
 
 		// Single-File Hooks
-		foreach($filePaths as $path){
+		foreach ($filePaths as $path) {
 			self::emitTrashbinPreDelete($path);
 		}
 
@@ -607,7 +603,7 @@ class Trashbin {
 		\OC_Hook::emit('\OCP\Trashbin', 'deleteAll', ['paths' => $filePaths]);
 
 		// Single-File Hooks
-		foreach($filePaths as $path){
+		foreach ($filePaths as $path) {
 			self::emitTrashbinPostDelete($path);
 		}
 
@@ -621,7 +617,7 @@ class Trashbin {
 	 * wrapper function to emit the 'preDelete' hook of \OCP\Trashbin before a file is deleted
 	 * @param string $path
 	 */
-	protected static function emitTrashbinPreDelete($path){
+	protected static function emitTrashbinPreDelete($path) {
 		\OC_Hook::emit('\OCP\Trashbin', 'preDelete', ['path' => $path]);
 	}
 
@@ -629,7 +625,7 @@ class Trashbin {
 	 * wrapper function to emit the 'delete' hook of \OCP\Trashbin after a file has been deleted
 	 * @param string $path
 	 */
-	protected static function emitTrashbinPostDelete($path){
+	protected static function emitTrashbinPostDelete($path) {
 		\OC_Hook::emit('\OCP\Trashbin', 'delete', ['path' => $path]);
 	}
 
@@ -682,7 +678,7 @@ class Trashbin {
 			if ($view->is_dir('files_trashbin/versions/' . $file)) {
 				$size += self::calculateSize(new View('/' . $user . '/files_trashbin/versions/' . $file));
 				$view->unlink('files_trashbin/versions/' . $file);
-			} else if ($versions = self::getVersionsFromTrash($filename, $timestamp, $user)) {
+			} elseif ($versions = self::getVersionsFromTrash($filename, $timestamp, $user)) {
 				foreach ($versions as $v) {
 					if ($timestamp) {
 						$size += $view->filesize('/files_trashbin/versions/' . $filename . '.v' . $v . '.d' . $timestamp);
@@ -898,7 +894,7 @@ class Trashbin {
 		//force rescan of versions, local storage may not have updated the cache
 		if (!self::$scannedVersions) {
 			/** @var \OC\Files\Storage\Storage $storage */
-			list($storage,) = $view->resolvePath('/');
+			list($storage, ) = $view->resolvePath('/');
 			$storage->getScanner()->scan('files_trashbin/versions');
 			self::$scannedVersions = true;
 		}
@@ -1008,7 +1004,7 @@ class Trashbin {
 	public function registerListeners() {
 		$this->eventDispatcher->addListener(
 			'files.resolvePrivateLink',
-			function(GenericEvent $event) {
+			function (GenericEvent $event) {
 				$uid = $event->getArgument('uid');
 				$fileId = $event->getArgument('fileid');
 
@@ -1074,7 +1070,6 @@ class Trashbin {
 	 * @return bool
 	 */
 	public static function isEmpty($user) {
-
 		$view = new View('/' . $user . '/files_trashbin');
 		if ($view->is_dir('/files') && $dh = $view->opendir('/files')) {
 			while ($file = \readdir($dh)) {

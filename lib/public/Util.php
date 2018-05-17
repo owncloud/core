@@ -119,11 +119,11 @@ class Util {
 		$message->setSubject($subject);
 		$message->setPlainBody($mailtext);
 		$message->setFrom([$fromaddress => $fromname]);
-		if($html === 1) {
+		if ($html === 1) {
 			$message->setHtmlBody($altbody);
 		}
 
-		if($altbody === '') {
+		if ($altbody === '') {
 			$message->setHtmlBody($mailtext);
 			$message->setPlainBody('');
 		} else {
@@ -131,14 +131,14 @@ class Util {
 			$message->setPlainBody($altbody);
 		}
 
-		if(!empty($ccaddress)) {
-			if(!empty($ccname)) {
+		if (!empty($ccaddress)) {
+			if (!empty($ccname)) {
 				$message->setCc([$ccaddress => $ccname]);
 			} else {
 				$message->setCc([$ccaddress]);
 			}
 		}
-		if(!empty($bcc)) {
+		if (!empty($bcc)) {
 			$message->setBcc([$bcc]);
 		}
 
@@ -183,7 +183,7 @@ class Util {
 
 		$userSession = \OC::$server->getUserSession();
 		// session is null while installing OC
-		if (!\is_null($userSession)){
+		if ($userSession !== null) {
 			$user = $userSession->getUser();
 			if ($user !== null) {
 				$user = $user->getUID();
@@ -360,7 +360,7 @@ class Util {
 		$host_name = self::getServerHost();
 		// strip away port number (if existing)
 		$colon_pos = \strpos($host_name, ':');
-		if ($colon_pos != FALSE) {
+		if ($colon_pos != false) {
 			$host_name = \substr($host_name, 0, $colon_pos);
 		}
 		return $host_name;
@@ -476,7 +476,7 @@ class Util {
 	 * TODO: write example
 	 * @since 4.0.0
 	 */
-	static public function connectHook($signalClass, $signalName, $slotClass, $slotName) {
+	public static function connectHook($signalClass, $signalName, $slotClass, $slotName) {
 		return(\OC_Hook::connect($signalClass, $signalName, $slotClass, $slotName));
 	}
 
@@ -490,7 +490,7 @@ class Util {
 	 * TODO: write example
 	 * @since 4.0.0
 	 */
-	static public function emitHook($signalclass, $signalname, $params = []) {
+	public static function emitHook($signalclass, $signalname, $params = []) {
 		return(\OC_Hook::emit($signalclass, $signalname, $params));
 	}
 
@@ -507,7 +507,7 @@ class Util {
 	 * @since 4.5.0
 	 */
 	public static function callRegister() {
-		if(self::$token === '') {
+		if (self::$token === '') {
 			self::$token = \OC::$server->getCsrfTokenManager()->getToken()->getEncryptedValue();
 		}
 		return self::$token;
@@ -710,7 +710,7 @@ class Util {
 	public static function needUpgrade() {
 		if (!isset(self::$needUpgradeCache)) {
 			self::$needUpgradeCache=\OC_Util::needUpgrade(\OC::$server->getConfig());
-		}		
+		}
 		return self::$needUpgradeCache;
 	}
 
@@ -779,7 +779,7 @@ class Util {
 		$port = null;
 		if ($protocol === 'http') {
 			$port = 80;
-		} else if ($protocol === 'https') {
+		} elseif ($protocol === 'https') {
 			$port = 443;
 		} else {
 			throw new \InvalidArgumentException('Only http based URLs supported');
@@ -808,5 +808,4 @@ class Util {
 	public static function isSameDomain($url1, $url2) {
 		return self::getFullDomain($url1) === self::getFullDomain($url2);
 	}
-
 }

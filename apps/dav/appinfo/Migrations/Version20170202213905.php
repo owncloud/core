@@ -75,7 +75,7 @@ class Version20170202213905 implements ISqlMigration {
 		while ($row = $selectResult->fetch()) {
 			try {
 				$sql = $this->getRepairEntrySql($qb, $row);
-				if (!\is_null($sql)) {
+				if ($sql !== null) {
 					$this->statements[] = $sql;
 				}
 			} catch (\Exception $e) {
@@ -127,7 +127,7 @@ class Version20170202213905 implements ISqlMigration {
 	 * @param string $propertyPath
 	 * @return IQueryBuilder
 	 */
-	private function getRepairQuery(IQueryBuilder $qb, $fileId, $userId, $propertyPath){
+	private function getRepairQuery(IQueryBuilder $qb, $fileId, $userId, $propertyPath) {
 		return $qb->resetQueryParts()
 			->update('properties')
 			->set(

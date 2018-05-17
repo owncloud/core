@@ -23,7 +23,6 @@ use OCP\IImage;
  * @package Test\Files\Node
  */
 class FileTest extends NodeTest {
-
 	public $viewDeleteMethod = 'unlink';
 	public $nodeClass = File::class;
 	public $nonExistingNodeClass = NonExistingFile::class;
@@ -316,7 +315,8 @@ class FileTest extends NodeTest {
 		$root->listen('\OC\Files', 'preWrite', $hook);
 		$root->listen('\OC\Files', 'postWrite', $hook);
 
-		$content = $stream = \fopen('data://text/plain,hello world!','r');;
+		$content = $stream = \fopen('data://text/plain,hello world!', 'r');
+		;
 		$view->expects($this->once())
 			->method('fopen')
 			->with('/bar/foo')
@@ -337,5 +337,4 @@ class FileTest extends NodeTest {
 		$this->assertEquals(32, $image->height());
 		$this->assertEquals(32, $image->width());
 	}
-
 }

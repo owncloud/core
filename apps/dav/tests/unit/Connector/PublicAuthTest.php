@@ -32,7 +32,7 @@ use OCP\Share\IManager;
  * Class PublicAuthTest
  *
  * @group DB
- * 
+ *
  * @package OCA\DAV\Tests\unit\Connector
  */
 class PublicAuthTest extends \Test\TestCase {

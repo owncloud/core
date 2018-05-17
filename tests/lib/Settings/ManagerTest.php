@@ -143,8 +143,8 @@ class SettingsManagerTest extends TestCase {
 		$this->appManager->expects($this->exactly(1))->method('getAppInfo')->with('encryption')->willReturn([]);
 		$panels = $this->settingsManager->loadPanels('personal');
 		$this->assertNotEmpty($panels);
-		foreach($panels as $section => $panels) {
-			foreach($panels as $panel) {
+		foreach ($panels as $section => $panels) {
+			foreach ($panels as $panel) {
 				$panelClasses[$section][] = \get_class($panel);
 			}
 		}
@@ -161,7 +161,7 @@ class SettingsManagerTest extends TestCase {
 		$this->appManager->expects($this->exactly(1))->method('getAppInfo')->with('encryption')->willReturn([]);
 		$panels = $this->settingsManager->loadPanels('admin');
 		$this->assertNotEmpty($panels);
-		foreach($panels as $section => $panels) {
+		foreach ($panels as $section => $panels) {
 			foreach ($panels as $panel) {
 				$panelClasses[$section][] = \get_class($panel);
 			}
@@ -171,5 +171,4 @@ class SettingsManagerTest extends TestCase {
 		$this->assertContains('OC\Settings\Panels\Admin\Legacy', $panelClasses['additional']);
 		$this->assertContains('OC\Settings\Panels\Admin\SecurityWarning', $panelClasses['general']);
 	}
-
 }

@@ -68,7 +68,7 @@ class ResetPassword extends Command {
 
 		/** @var $user \OCP\IUser */
 		$user = $this->userManager->get($username);
-		if (\is_null($user)) {
+		if ($user === null) {
 			$output->writeln('<error>User does not exist</error>');
 			return 1;
 		}

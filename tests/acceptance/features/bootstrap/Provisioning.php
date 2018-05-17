@@ -43,7 +43,7 @@ trait Provisioning {
 	private $createdUsers = [];
 
 	/**
-	 * @var array 
+	 * @var array
 	 */
 	private $createdRemoteUsers = [];
 
@@ -58,12 +58,12 @@ trait Provisioning {
 	private $disabledApps = [];
 
 	/**
-	 * @var array 
+	 * @var array
 	 */
 	private $createdRemoteGroups = [];
 
 	/**
-	 * @var array 
+	 * @var array
 	 */
 	private $createdGroups = [];
 
@@ -90,7 +90,7 @@ trait Provisioning {
 	public function getCreatedUserDisplayNames() {
 		$result = [];
 		foreach ($this->getCreatedUsers() as $username => $user) {
-			if (\is_null($user['displayname'])) {
+			if ($user['displayname'] === null) {
 				$result[] = $username;
 			} else {
 				$result[] = $user['displayname'];
@@ -109,9 +109,9 @@ trait Provisioning {
 	public function getUserPassword($username) {
 		if ($username === $this->getAdminUsername()) {
 			$password = $this->getAdminPassword();
-		} else if (\array_key_exists($username, $this->createdUsers)) {
+		} elseif (\array_key_exists($username, $this->createdUsers)) {
 			$password = $this->createdUsers[$username]['password'];
-		} else if (\array_key_exists($username, $this->createdRemoteUsers)) {
+		} elseif (\array_key_exists($username, $this->createdRemoteUsers)) {
 			$password = $this->createdRemoteUsers[$username]['password'];
 		} else {
 			throw new Exception(
@@ -237,9 +237,9 @@ trait Provisioning {
 
 	/**
 	 * @Given /^the app "([^"]*)" has been disabled$/
-	 * 
+	 *
 	 * @param string $app
-	 * 
+	 *
 	 * @return void
 	 */
 	public function theAppHasBeenDisabled($app) {
@@ -271,11 +271,11 @@ trait Provisioning {
 
 	/**
 	 * @When /^the administrator sends a user creation request for user "([^"]*)" password "([^"]*)" group "([^"]*)" using the API$/
-	 * 
+	 *
 	 * @param string $user
 	 * @param string $password
 	 * @param string $group
-	 * 
+	 *
 	 * @return void
 	 */
 	public function theAdministratorCreatesUserPasswordGroupUsingTheApi(
@@ -295,9 +295,9 @@ trait Provisioning {
 
 	/**
 	 * @When /^the administrator sends a user deletion request for user "([^"]*)" using the API$/
-	 * 
+	 *
 	 * @param string $user
-	 * 
+	 *
 	 * @return void
 	 */
 	public function theAdminDeletesTheUserUsingAPI($user) {
@@ -307,10 +307,10 @@ trait Provisioning {
 
 	/**
 	 * @When /^the subadmin "([^"]*)" sends a user deletion request for user "([^"]*)" using the API$/
-	 * 
+	 *
 	 * @param string $subadmin
 	 * @param string $user
-	 * 
+	 *
 	 * @return void
 	 */
 	public function theSubAdminDeletesTheUser($subadmin, $user) {
@@ -1028,7 +1028,7 @@ trait Provisioning {
 	/**
 	 * @When the administrator removes user :user from group :group using the API
 	 * @Given user :user has been removed from group :group
-	 * 
+	 *
 	 * @param string $user
 	 * @param string $group
 	 *
@@ -1162,9 +1162,9 @@ trait Provisioning {
 
 	/**
 	 * @Then /^the groups returned by the API should include "([^"]*)"$/
-	 * 
+	 *
 	 * @param string $group
-	 * 
+	 *
 	 * @return void
 	 */
 	public function theGroupsReturnedByTheApiShouldInclude($group) {
@@ -1174,9 +1174,9 @@ trait Provisioning {
 
 	/**
 	 * @Then /^the groups returned by the API should not include "([^"]*)"$/
-	 * 
+	 *
 	 * @param string $group
-	 * 
+	 *
 	 * @return void
 	 */
 	public function theGroupsReturnedByTheApiShouldNotInclude($group) {
@@ -1253,7 +1253,7 @@ trait Provisioning {
 	 *
 	 * @param string $user
 	 * @param string $group
-	 * 
+	 *
 	 * @return void
 	 */
 	public function theUserIsTheSubadminOfTheGroup($user, $group) {
@@ -1271,10 +1271,10 @@ trait Provisioning {
 
 	/**
 	 * @Then /^the user "([^"]*)" should not be the subadmin of the group "([^"]*)"$/
-	 * 
+	 *
 	 * @param string $user
 	 * @param string $group
-	 * 
+	 *
 	 * @return void
 	 */
 	public function theUserIsNotTheSubadminOfTheGroup($user, $group) {
@@ -1292,9 +1292,9 @@ trait Provisioning {
 
 	/**
 	 * @Then /^the display name returned by the API should be "([^"]*)"$/
-	 * 
+	 *
 	 * @param string $displayname
-	 * 
+	 *
 	 * @return void
 	 */
 	public function theDisplayNameReturnedByTheApiShouldBe($displayname) {
@@ -1534,7 +1534,7 @@ trait Provisioning {
 
 	/**
 	 * @Then /^the API should not return any data$/
-	 * 
+	 *
 	 * @return void
 	 */
 	public function theApiShouldNotReturnAnyData() {
@@ -1544,7 +1544,7 @@ trait Provisioning {
 
 	/**
 	 * @Then /^the list of users returned by the API should be empty$/
-	 * 
+	 *
 	 * @return void
 	 */
 	public function theListOfUsersReturnedByTheApiShouldBeEmpty() {
@@ -1594,7 +1594,7 @@ trait Provisioning {
 	
 	/**
 	 * @BeforeScenario
-	 * 
+	 *
 	 * @return void
 	 */
 	public function rememberEnabledApps() {
@@ -1603,7 +1603,7 @@ trait Provisioning {
 	
 	/**
 	 * @AfterScenario
-	 * 
+	 *
 	 * @return void
 	 */
 	public function restoreDisabledApps() {
@@ -1618,7 +1618,7 @@ trait Provisioning {
 
 	/**
 	 * Returns array of enabled apps
-	 * 
+	 *
 	 * @return void
 	 */
 	public function getEnabledApps() {

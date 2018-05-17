@@ -260,9 +260,7 @@ class TrustedServers {
 			\strpos($url, 'https://') === 0
 			|| \strpos($url, 'http://') === 0
 		) {
-
 			return $url;
-
 		}
 
 		return 'https://' . $url;

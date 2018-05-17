@@ -34,7 +34,7 @@ use Sabre\DAV\Server;
 use OCA\DAV\Connector\Sabre\Exception\Forbidden;
 
 /**
- * 
+ *
  * @author Artur Neumann <artur@jankaritech.com>
  *
  */
@@ -55,12 +55,11 @@ class PreviewPluginTest extends TestCase {
 	
 	/**
 	 * {@inheritDoc}
-	 * 
+	 *
 	 * @see \Test\TestCase::setUp()
 	 * @return void
 	 */
 	protected function setUp() {
-		
 		$this->request = $this->createMock(RequestInterface::class);
 		$this->response = $this->createMock(ResponseInterface::class);
 		$logger = $this->createMock(ILogger::class);
@@ -126,5 +125,4 @@ class PreviewPluginTest extends TestCase {
 		$this->expectException(Forbidden::class);
 		$this->plugin->httpGet($this->request, $this->response);
 	}
-
 }

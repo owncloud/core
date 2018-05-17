@@ -92,7 +92,6 @@ class TrustedServersTest extends TestCase {
 			$this->config,
 			$this->dispatcher
 		);
-
 	}
 
 	/**
@@ -205,7 +204,7 @@ class TrustedServersTest extends TestCase {
 			->willReturn($server);
 		$this->dispatcher->expects($this->once())->method('dispatch')
 			->willReturnCallback(
-				function($eventId, $event) {
+				function ($eventId, $event) {
 					$this->assertSame($eventId, 'OCP\Federation\TrustedServerEvent::remove');
 					$this->assertInstanceOf('Symfony\Component\EventDispatcher\GenericEvent', $event);
 					/** @var \Symfony\Component\EventDispatcher\GenericEvent $event */
@@ -255,7 +254,6 @@ class TrustedServersTest extends TestCase {
 	 * @param bool $expected
 	 */
 	public function testIsOwnCloudServer($statusCode, $isValidOwnCloudVersion, $expected) {
-
 		$server = 'server1';
 
 		/** @var \PHPUnit_Framework_MockObject_MockObject | TrustedServers $trustedServers */
@@ -293,7 +291,6 @@ class TrustedServersTest extends TestCase {
 		$this->assertSame($expected,
 			$trustedServers->isOwnCloudServer($server)
 		);
-
 	}
 
 	public function dataTestIsOwnCloudServer() {

@@ -510,7 +510,6 @@ class Encoding extends Wrapper {
 			$result = $this->rename($sourceInternalPath, $this->findPathToUse($targetInternalPath));
 			if ($result) {
 				unset($this->namesCache[$sourceInternalPath], $this->namesCache[$targetInternalPath]);
-				
 			}
 			return $result;
 		}
@@ -518,7 +517,6 @@ class Encoding extends Wrapper {
 		$result = $this->storage->moveFromStorage($sourceStorage, $sourceInternalPath, $this->findPathToUse($targetInternalPath));
 		if ($result) {
 			unset($this->namesCache[$sourceInternalPath], $this->namesCache[$targetInternalPath]);
-			
 		}
 		return $result;
 	}

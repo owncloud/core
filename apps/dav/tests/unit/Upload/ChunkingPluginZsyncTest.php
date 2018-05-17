@@ -284,5 +284,4 @@ class ChunkingPluginZsyncTest extends TestCase {
 
 		$this->assertFalse($this->plugin->beforeMove('source/.file.zsync', $target));
 	}
-
 }

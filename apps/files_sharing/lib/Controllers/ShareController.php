@@ -127,7 +127,7 @@ class ShareController extends Controller {
 	public function showAuthenticate($token) {
 		$share = $this->shareManager->getShareByToken($token);
 
-		if($this->linkShareAuth($share)) {
+		if ($this->linkShareAuth($share)) {
 			return new RedirectResponse($this->urlGenerator->linkToRoute('files_sharing.sharecontroller.showShare', ['token' => $token]));
 		}
 
@@ -154,7 +154,7 @@ class ShareController extends Controller {
 
 		$authenticate = $this->linkShareAuth($share, $password);
 
-		if($authenticate === true) {
+		if ($authenticate === true) {
 			return new RedirectResponse($this->urlGenerator->linkToRoute('files_sharing.sharecontroller.showShare', ['token' => $token]));
 		}
 
@@ -204,7 +204,7 @@ class ShareController extends Controller {
 		$itemType = $itemSource = $uidOwner = '';
 		$token = $share;
 		$exception = null;
-		if($share instanceof \OCP\Share\IShare) {
+		if ($share instanceof \OCP\Share\IShare) {
 			try {
 				$token = $share->getToken();
 				$uidOwner = $share->getSharedBy();
@@ -223,7 +223,7 @@ class ShareController extends Controller {
 			'errorCode' => $errorCode,
 			'errorMessage' => $errorMessage,
 		]);
-		if(!\is_null($exception)) {
+		if ($exception !== null) {
 			throw $exception;
 		}
 	}
@@ -390,7 +390,7 @@ class ShareController extends Controller {
 		}
 
 		$files_list = $files;
-		if (!\is_null($files)) { // download selected files
+		if ($files !== null) { // download selected files
 			// in case we get only a single file
 			if (!\is_array($files_list)) {
 				$files_list = [(string)$files_list];
@@ -441,7 +441,7 @@ class ShareController extends Controller {
 					->setAffectedUser($share->getShareOwner())
 					->setObject('files', $node->getId(), $userFolder->getRelativePath($node->getPath()));
 				$this->activityManager->publish($event);
-			} else if (!empty($files_list)) {
+			} elseif (!empty($files_list)) {
 				/** @var \OCP\Files\Folder $node */
 
 				// Subset of files is downloaded
@@ -503,7 +503,7 @@ class ShareController extends Controller {
 		}
 
 		// download selected files
-		if (!\is_null($files) && $files !== '') {
+		if ($files !== null && $files !== '') {
 			// FIXME: The exit is required here because otherwise the AppFramework is trying to add headers as well
 			// after dispatching the request which results in a "Cannot modify header information" notice.
 			OC_Files::get($originalSharePath, $files_list, $server_params);

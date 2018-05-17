@@ -101,7 +101,7 @@ class ObjectStoreStorage extends \OC\Files\Storage\Common {
 					// something went wrong
 					return false;
 				}
-			} else if ($parentType === 'file') {
+			} elseif ($parentType === 'file') {
 				// parent is a file
 				return false;
 			}
@@ -275,6 +275,7 @@ class ObjectStoreStorage extends \OC\Files\Storage\Common {
 				} else {
 					return false;
 				}
+				// no break
 			case 'w':
 			case 'wb':
 			case 'a':
@@ -347,7 +348,7 @@ class ObjectStoreStorage extends \OC\Files\Storage\Common {
 	}
 
 	public function touch($path, $mtime = null) {
-		if (\is_null($mtime)) {
+		if ($mtime === null) {
 			$mtime = \time();
 		}
 
@@ -488,5 +489,4 @@ class ObjectStoreStorage extends \OC\Files\Storage\Common {
 		}
 		return parent::restoreVersion($internalPath, $versionId);
 	}
-
 }

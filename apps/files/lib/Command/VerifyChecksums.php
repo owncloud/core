@@ -41,7 +41,6 @@ use Symfony\Component\Console\Output\OutputInterface;
  * @package OCA\Files\Command
  */
 class VerifyChecksums extends Command {
-
 	const EXIT_NO_ERRORS = 0;
 	const EXIT_CHECKSUM_ERRORS = 1;
 	const EXIT_INVALID_ARGS = 2;
@@ -90,7 +89,6 @@ class VerifyChecksums extends Command {
 		if ($pathOption && $userName) {
 			$output->writeln('<error>Please use either path or user exclusively</error>');
 			$this->exitStatus = self::EXIT_INVALID_ARGS;
-
 		}
 
 		$walkFunction = function (Node $node) use ($input, $output) {
@@ -121,18 +119,17 @@ class VerifyChecksums extends Command {
 			}
 		};
 
-		$scanUserFunction = function(IUser $user) use ($input, $output, $walkFunction) {
+		$scanUserFunction = function (IUser $user) use ($input, $output, $walkFunction) {
 			$userFolder = $this->rootFolder->getUserFolder($user->getUID())->getParent();
 			$this->walkNodes($userFolder->getDirectoryListing(), $walkFunction);
 		};
 
 		if ($userName && $this->userManager->userExists($userName)) {
 			$scanUserFunction($this->userManager->get($userName));
-		} else if ($userName && !$this->userManager->userExists($userName)) {
+		} elseif ($userName && !$this->userManager->userExists($userName)) {
 			$output->writeln("<error>User \"$userName\" does not exist</error>");
 			$this->exitStatus = self::EXIT_INVALID_ARGS;
-		} else if ($input->getOption('path')) {
-
+		} elseif ($input->getOption('path')) {
 			try {
 				$node = $this->rootFolder->get($input->getOption('path'));
 			} catch (NotFoundException $ex) {
@@ -142,7 +139,6 @@ class VerifyChecksums extends Command {
 			}
 
 			$this->walkNodes([$node], $walkFunction);
-
 		} else {
 			$this->userManager->callForAllUsers($scanUserFunction);
 		}
@@ -197,4 +193,3 @@ class VerifyChecksums extends Command {
 		);
 	}
 }
-

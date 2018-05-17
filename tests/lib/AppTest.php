@@ -25,7 +25,7 @@ class AppTest extends \Test\TestCase {
 	const TEST_GROUP1 = 'group1';
 	const TEST_GROUP2 = 'group2';
 
-	function appVersionsProvider() {
+	public function appVersionsProvider() {
 		return [
 			// exact match
 			[
@@ -305,7 +305,7 @@ class AppTest extends \Test\TestCase {
 	/**
 	 * Providers for the app config values
 	 */
-	function appConfigValuesProvider() {
+	public function appConfigValuesProvider() {
 		return [
 			// logged in user1
 			[
@@ -460,20 +460,20 @@ class AppTest extends \Test\TestCase {
 		$apps = \OC_App::getEnabledApps();
 		$this->assertEquals([
 			'files',
-		   	'app3',
-		   	'dav',
-		   	'federatedfilesharing',
-		   	'files_external',
+			'app3',
+			'dav',
+			'federatedfilesharing',
+			'files_external',
 		], $apps);
 
 		// mock should not be called again here
 		$apps = \OC_App::getEnabledApps();
 		$this->assertEquals([
 			'files',
-		   	'app3',
-		   	'dav',
-		   	'federatedfilesharing',
-		   	'files_external',
+			'app3',
+			'dav',
+			'federatedfilesharing',
+			'files_external',
 		], $apps);
 
 		$this->restoreAppConfig();
@@ -531,7 +531,7 @@ class AppTest extends \Test\TestCase {
 	/**
 	 * Providers for the app data values
 	 */
-	function appDataProvider() {
+	public function appDataProvider() {
 		return [
 			[
 				['description' => " \t  This is a multiline \n test with \n \t \n \n some new lines   "],
@@ -567,4 +567,3 @@ class AppTest extends \Test\TestCase {
 		$this->assertSame($expected, \OC_App::parseAppInfo($data));
 	}
 }
-

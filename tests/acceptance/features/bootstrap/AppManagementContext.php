@@ -26,12 +26,11 @@ require __DIR__ . '/../../../../lib/composer/autoload.php';
 /**
  * App Management context.
  */
-class AppManagementContext implements  Context {
-	
+class AppManagementContext implements Context {
 	private $oldAppPath;
 	
 	/**
-	 * @var string stdout of last command 
+	 * @var string stdout of last command
 	 */
 	private $cmdOutput;
 	
@@ -57,7 +56,7 @@ class AppManagementContext implements  Context {
 	 * @return void
 	 */
 	public function undoChangingParameters() {
-		if (!\is_null($this->oldAppPath)) {
+		if ($this->oldAppPath !== null) {
 			\OC::$server->getConfig()->setSystemValue(
 				'apps_paths', $this->oldAppPath
 			);
@@ -80,7 +79,7 @@ class AppManagementContext implements  Context {
 		\OC::$server->getConfig()->setSystemValue(
 			'apps_paths',
 			[
-				['path' => $fullpath1, 'url' => $dir1, 'writable' => true], 
+				['path' => $fullpath1, 'url' => $dir1, 'writable' => true],
 				['path' => $fullpath2, 'url' => $dir2, 'writable' => true]
 			]
 		);

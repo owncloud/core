@@ -34,7 +34,7 @@ class EmailHelper {
 	 * retrieving emails sent from mailhog
 	 *
 	 * @param string $mailhogUrl
-	 * 
+	 *
 	 * @return mixed JSON encoded contents
 	 */
 	public static function getEmails($mailhogUrl) {
@@ -49,13 +49,13 @@ class EmailHelper {
 		return $json;
 	}
 	/**
-	 * 
+	 *
 	 * @param string $mailhogUrl
-	 * 
+	 *
 	 * @param string $address
-	 * 
+	 *
 	 * @throws \Exception
-	 * 
+	 *
 	 * @return mixed
 	 */
 	public static function getBodyOfLastEmail($mailhogUrl, $address) {
@@ -73,9 +73,9 @@ class EmailHelper {
 	}
 
 	/**
-	 * 
+	 *
 	 * @param string $mailhogUrl
-	 * 
+	 *
 	 * @return ResponseInterface
 	 */
 	public static function deleteAllMessages($mailhogUrl) {
@@ -88,7 +88,7 @@ class EmailHelper {
 	}
 
 	/**
-	 * 
+	 *
 	 * @return string
 	 */
 	public static function getMailhogUrl() {

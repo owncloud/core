@@ -126,5 +126,4 @@ class JSResourceLocatorTest extends TestCase {
 
 		$locator->find(['randomapp/l10n/en_GB']);
 	}
-
 }

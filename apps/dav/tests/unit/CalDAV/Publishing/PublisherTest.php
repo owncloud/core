@@ -25,7 +25,6 @@ use Sabre\Xml\Writer;
 use PHPUnit\Framework\TestCase;
 
 class PublisherTest extends TestCase {
-
 	const NS_CALENDARSERVER = 'http://calendarserver.org/ns/';
 
 	public function testSerializePublished() {

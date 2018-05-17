@@ -28,7 +28,7 @@ abstract class NodeTest extends TestCase {
 		$this->user = $this->createMock(IUser::class);
 	}
 
-	protected abstract function createTestNode($root, $view, $path);
+	abstract protected function createTestNode($root, $view, $path);
 
 	protected function getMockStorage() {
 		$storage = $this->createMock('\OCP\Files\Storage');

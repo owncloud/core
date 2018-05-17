@@ -714,7 +714,7 @@ class FolderTest extends NodeTest {
 			->method('file_exists')
 			->will($this->returnCallback(function ($path) use ($existingFiles, $folderPath) {
 				foreach ($existingFiles as $existing) {
-					if ($folderPath . '/' . $existing === $path){
+					if ($folderPath . '/' . $existing === $path) {
 						return true;
 					}
 				}

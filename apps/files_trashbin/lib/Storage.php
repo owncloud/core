@@ -31,7 +31,6 @@ use OC\Files\View;
 use OCP\IUserManager;
 
 class Storage extends Wrapper {
-
 	private $mountPoint;
 	// remember already deleted files to avoid infinite loops if the trash bin
 	// move files across storages
@@ -47,7 +46,7 @@ class Storage extends Wrapper {
 	/** @var  IUserManager */
 	private $userManager;
 
-	function __construct($parameters, IUserManager $userManager = null) {
+	public function __construct($parameters, IUserManager $userManager = null) {
 		$this->mountPoint = $parameters['mountPoint'];
 		$this->userManager = $userManager;
 		parent::__construct($parameters);
@@ -138,7 +137,7 @@ class Storage extends Wrapper {
 	 * @param $path
 	 * @return bool
 	 */
-	protected function shouldMoveToTrash($path){
+	protected function shouldMoveToTrash($path) {
 		$normalized = Filesystem::normalizePath($this->mountPoint . '/' . $path);
 		$parts = \explode('/', $normalized);
 		if (\count($parts) < 4) {
@@ -192,7 +191,7 @@ class Storage extends Wrapper {
 				$result = \call_user_func_array([$this->storage, $method], [$path]);
 			}
 			unset($this->deletedFiles[$normalized]);
-		} else if ($this->storage->file_exists($path)) {
+		} elseif ($this->storage->file_exists($path)) {
 			$result = \call_user_func_array([$this->storage, $method], [$path]);
 		}
 
@@ -232,5 +231,4 @@ class Storage extends Wrapper {
 			);
 		}, 1);
 	}
-
 }

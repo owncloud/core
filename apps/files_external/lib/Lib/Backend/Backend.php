@@ -26,6 +26,4 @@ namespace OCA\Files_External\Lib\Backend;
  * @deprecated use \OCP\Files\External\Backend instead
  */
 class Backend extends \OCP\Files\External\Backend\Backend {
-
 }
-

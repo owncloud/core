@@ -365,7 +365,7 @@ class FileCustomPropertiesBackendTest extends \Test\TestCase {
 		$emptyFileIds = [];
 		$fiveFileIds = [1, 2, 3, 4, 5];
 		$thousandFileIds = [];
-		for ($i=0;$i<1000;$i++){
+		for ($i=0;$i<1000;$i++) {
 			$thousandFileIds[] = $i;
 		}
 

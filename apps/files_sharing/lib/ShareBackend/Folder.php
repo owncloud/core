@@ -104,5 +104,4 @@ class Folder extends File implements \OCP\Share_Backend_Collection {
 		}
 		return $children;
 	}
-
 }

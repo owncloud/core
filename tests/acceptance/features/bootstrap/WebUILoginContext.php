@@ -33,7 +33,6 @@ require_once 'bootstrap.php';
  * WebUI Login context.
  */
 class WebUILoginContext extends RawMinkContext implements Context {
-
 	private $loginFailedPageTitle = "ownCloud";
 	private $loginSuccessPageTitle = "Files - ownCloud";
 	private $loginPage;
@@ -41,7 +40,7 @@ class WebUILoginContext extends RawMinkContext implements Context {
 	private $expectedPage;
 	
 	/**
-	 * 
+	 *
 	 * @var FeatureContext
 	 */
 	private $featureContext;
@@ -178,7 +177,7 @@ class WebUILoginContext extends RawMinkContext implements Context {
 
 	/**
 	 * @Then /^it should (not|)\s?be possible to login with the username ((?:'[^']*')|(?:"[^"]*")) and password ((?:'[^']*')|(?:"[^"]*")) using the WebUI$/
-	 * 
+	 *
 	 * @param string $shouldOrNot
 	 * @param string $username
 	 * @param string $password
@@ -208,12 +207,11 @@ class WebUILoginContext extends RawMinkContext implements Context {
 				$this->loginFailedPageTitle
 			);
 		}
-		
 	}
 
 	/**
 	 * @When the user requests the password reset link using the webUI
-	 * 
+	 *
 	 * @return void
 	 */
 	public function theUserRequestsThePasswordResetLinkUsingTheWebui() {
@@ -222,9 +220,9 @@ class WebUILoginContext extends RawMinkContext implements Context {
 
 	/**
 	 * @Then a message with this text should be displayed on the webUI:
-	 * 
+	 *
 	 * @param PyStringNode $string
-	 * 
+	 *
 	 * @return void
 	 */
 	public function thisMessageShouldBeDisplayed(PyStringNode $string) {
@@ -237,9 +235,9 @@ class WebUILoginContext extends RawMinkContext implements Context {
 
 	/**
 	 * @When the user follows the password reset link from email address :emailAddress
-	 * 
+	 *
 	 * @param string $emailAddress
-	 * 
+	 *
 	 * @return void
 	 */
 	public function theUserFollowsThePasswordResetLinkFromTheirEmail($emailAddress) {
@@ -251,7 +249,7 @@ class WebUILoginContext extends RawMinkContext implements Context {
 			$content, $matches
 		);
 		PHPUnit_Framework_Assert::assertArrayHasKey(
-			1, $matches, 
+			1, $matches,
 			"Couldn't find password reset link in the email"
 		);
 		$this->visitPath($matches[1]);
@@ -259,9 +257,9 @@ class WebUILoginContext extends RawMinkContext implements Context {
 
 	/**
 	 * @When the user resets the password to :newPassword using the webUI
-	 * 
+	 *
 	 * @param string $newPassword
-	 * 
+	 *
 	 * @return void
 	 */
 	public function theUserResetsThePasswordToUsingTheWebui($newPassword) {

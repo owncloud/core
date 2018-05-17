@@ -188,7 +188,7 @@ class Local extends Common {
 				$returnVar = 0;
 				if (\OC_Util::runningOn('linux')) {
 					$result = (int)\exec('stat -c %Y ' . \escapeshellarg($fullPath), $output, $returnVar);
-				} else if (\OC_Util::runningOn('bsd') || \OC_Util::runningOn('mac')) {
+				} elseif (\OC_Util::runningOn('bsd') || \OC_Util::runningOn('mac')) {
 					$result = (int)\exec('stat -f %m ' . \escapeshellarg($fullPath), $output, $returnVar);
 				}
 
@@ -211,7 +211,7 @@ class Local extends Common {
 		if ($this->file_exists($path) and !$this->isUpdatable($path)) {
 			return false;
 		}
-		if (!\is_null($mtime)) {
+		if ($mtime !== null) {
 			$result = \touch($this->getSourcePath($path), $mtime);
 		} else {
 			$result = \touch($this->getSourcePath($path));
@@ -234,12 +234,11 @@ class Local extends Common {
 	public function unlink($path) {
 		if ($this->is_dir($path)) {
 			return $this->rmdir($path);
-		} else if ($this->is_file($path)) {
+		} elseif ($this->is_file($path)) {
 			return \unlink($this->getSourcePath($path));
 		} else {
 			return false;
 		}
-
 	}
 
 	public function rename($path1, $path2) {
@@ -263,7 +262,7 @@ class Local extends Common {
 
 		if ($this->is_dir($path2)) {
 			$this->rmdir($path2);
-		} else if ($this->is_file($path2)) {
+		} elseif ($this->is_file($path2)) {
 			$this->unlink($path2);
 		}
 
@@ -309,7 +308,7 @@ class Local extends Common {
 			$sourcePath = \dirname($sourcePath);
 		}
 		$space = @\disk_free_space($sourcePath);
-		if ($space === false || \is_null($space)) {
+		if ($space === false || $space === null) {
 			return \OCP\Files\FileInfo::SPACE_UNKNOWN;
 		}
 		return $space;
@@ -337,8 +336,9 @@ class Local extends Common {
 		$files = [];
 		$physicalDir = $this->getSourcePath($dir);
 		foreach (\scandir($physicalDir) as $item) {
-			if (\OC\Files\Filesystem::isIgnoredDir($item))
+			if (\OC\Files\Filesystem::isIgnoredDir($item)) {
 				continue;
+			}
 			$physicalItem = $physicalDir . '/' . $item;
 
 			if (\strstr(\strtolower($item), \strtolower($query)) !== false) {

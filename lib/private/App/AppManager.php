@@ -117,7 +117,7 @@ class AppManager implements IAppManager {
 			$values = $this->appConfig->getValues(false, 'enabled');
 
 			$alwaysEnabledApps = $this->getAlwaysEnabledApps();
-			foreach($alwaysEnabledApps as $appId) {
+			foreach ($alwaysEnabledApps as $appId) {
 				$values[$appId] = 'yes';
 			}
 
@@ -163,7 +163,7 @@ class AppManager implements IAppManager {
 		if ($this->isAlwaysEnabled($appId)) {
 			return true;
 		}
-		if (\is_null($user) && !\is_null($this->userSession)) {
+		if ($user === null && $this->userSession !== null) {
 			$user = $this->userSession->getUser();
 		}
 		$installedApps = $this->getInstalledAppsValues();
@@ -182,10 +182,10 @@ class AppManager implements IAppManager {
 	private function checkAppForUser($enabled, $user) {
 		if ($enabled === 'yes') {
 			return true;
-		} elseif (\is_null($user)) {
+		} elseif ($user === null) {
 			return false;
 		} else {
-			if(empty($enabled)){
+			if (empty($enabled)) {
 				return false;
 			}
 
@@ -225,7 +225,7 @@ class AppManager implements IAppManager {
 	 * @throws \Exception
 	 */
 	public function enableApp($appId) {
-		if($this->getAppPath($appId) === false) {
+		if ($this->getAppPath($appId) === false) {
 			throw new \Exception("$appId can't be enabled since it is not installed.");
 		}
 		$this->canEnableTheme($appId);
@@ -267,7 +267,7 @@ class AppManager implements IAppManager {
 	 * @return bool
 	 */
 	protected function isTheme($appId) {
-		return \OC_App::isType($appId,'theme');
+		return \OC_App::isType($appId, 'theme');
 	}
 
 	/**
@@ -406,7 +406,7 @@ class AppManager implements IAppManager {
 	}
 
 	private function loadShippedJson() {
-		if (\is_null($this->shippedApps)) {
+		if ($this->shippedApps === null) {
 			$shippedJson = \OC::$SERVERROOT . '/core/shipped.json';
 			if (!\file_exists($shippedJson)) {
 				throw new \Exception("File not found: $shippedJson");
@@ -607,7 +607,7 @@ class AppManager implements IAppManager {
 	 * Wrapper for easy mocking
 	 * @return string[][]
 	 */
-	protected function getAppRoots(){
+	protected function getAppRoots() {
 		return \OC::$APPSROOTS;
 	}
 

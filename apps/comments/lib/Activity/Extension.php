@@ -151,7 +151,6 @@ class Extension implements IExtension {
 	 * @return bool|string
 	 */
 	protected function translateShort($text, IL10N $l, array $params) {
-
 		switch ($text) {
 			case self::ADD_COMMENT_SUBJECT:
 				if ($this->authorIsCurrentUser($params[0])) {
@@ -172,7 +171,6 @@ class Extension implements IExtension {
 	 * @return bool|string
 	 */
 	protected function translateLong($text, IL10N $l, array $params) {
-
 		switch ($text) {
 			case self::ADD_COMMENT_SUBJECT:
 				if ($this->authorIsCurrentUser($params[0])) {

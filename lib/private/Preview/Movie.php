@@ -93,7 +93,7 @@ class Movie implements IProvider2 {
 
 		if (self::$atomicParsleyBinary) {
 			$suffix = \substr($absPath, -4);
-			if ('.mp4' === \strtolower($suffix)) {
+			if (\strtolower($suffix) === '.mp4') {
 				$tmpFolder = \OC::$server->getTempManager()->getTemporaryFolder();
 				$tmpBase = $tmpFolder.'/Cover';
 				$cmd = self::$atomicParsleyBinary . ' ' .
@@ -157,9 +157,8 @@ class Movie implements IProvider2 {
 	 * @return bool|\OCP\IImage
 	 */
 	private function generateThumbNail($maxX, $maxY, $absPath, $second) {
-
 		$extractedCover = $this->extractMp4CoverArtwork($absPath);
-		if (false !== $extractedCover) {
+		if ($extractedCover !== false) {
 			$tmpPath = $extractedCover;
 		} else {
 			$tmpPath = $this->generateFromMovie($absPath, $second);

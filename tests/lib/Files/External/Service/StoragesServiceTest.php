@@ -368,7 +368,6 @@ abstract class StoragesServiceTest extends TestCase {
 		);
 
 		$this->assertInstanceOf(InvalidBackend::class, $storageConfig->getBackend());
-
 	}
 
 	/**

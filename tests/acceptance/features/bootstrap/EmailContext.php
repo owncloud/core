@@ -43,10 +43,10 @@ class EmailContext implements Context, SnippetAcceptingContext {
 
 	/**
 	 * @Then the email address :address should have received an email with the body containing
-	 * 
+	 *
 	 * @param string $address
 	 * @param PyStringNode $content
-	 * 
+	 *
 	 * @return void
 	 */
 	public function assertThatEmailContains($address, PyStringNode $content) {

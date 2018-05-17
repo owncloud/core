@@ -54,7 +54,7 @@ class Crypto implements ICrypto {
 	 * @param IConfig $config
 	 * @param ISecureRandom $random
 	 */
-	function __construct(IConfig $config, ISecureRandom $random) {
+	public function __construct(IConfig $config, ISecureRandom $random) {
 		$this->cipher = new AES();
 		$this->config = $config;
 		$this->random = $random;
@@ -66,7 +66,7 @@ class Crypto implements ICrypto {
 	 * @return string Calculated HMAC
 	 */
 	public function calculateHMAC($message, $password = '') {
-		if($password === '') {
+		if ($password === '') {
 			$password = $this->config->getSystemValue('secret');
 		}
 
@@ -85,7 +85,7 @@ class Crypto implements ICrypto {
 	 * @return string Authenticated ciphertext
 	 */
 	public function encrypt($plaintext, $password = '') {
-		if($password === '') {
+		if ($password === '') {
 			$password = $this->config->getSystemValue('secret');
 		}
 		$this->cipher->setPassword($password);
@@ -107,13 +107,13 @@ class Crypto implements ICrypto {
 	 * @throws \Exception If the HMAC does not match
 	 */
 	public function decrypt($authenticatedCiphertext, $password = '') {
-		if($password === '') {
+		if ($password === '') {
 			$password = $this->config->getSystemValue('secret');
 		}
 		$this->cipher->setPassword($password);
 
 		$parts = \explode('|', $authenticatedCiphertext);
-		if(\sizeof($parts) !== 3) {
+		if (\sizeof($parts) !== 3) {
 			throw new \Exception('Authenticated ciphertext could not be decoded.');
 		}
 
@@ -123,11 +123,10 @@ class Crypto implements ICrypto {
 
 		$this->cipher->setIV($iv);
 
-		if(!\hash_equals($this->calculateHMAC($parts[0].$parts[1], $password), $hmac)) {
+		if (!\hash_equals($this->calculateHMAC($parts[0].$parts[1], $password), $hmac)) {
 			throw new \Exception('HMAC does not match.');
 		}
 
 		return $this->cipher->decrypt($ciphertext);
 	}
-
 }

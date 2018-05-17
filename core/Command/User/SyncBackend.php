@@ -171,7 +171,7 @@ class SyncBackend extends Command {
 	 * @param string $missingAccountsAction
 	 * @param array $validActions
 	 */
-	private function syncMultipleUsers (
+	private function syncMultipleUsers(
 		InputInterface $input,
 		OutputInterface $output,
 		SyncService $syncService,
@@ -235,7 +235,8 @@ class SyncBackend extends Command {
 			return 1;
 		} elseif (\count($users) === 1) {
 			// Run the sync using the internal username if mapped
-			$syncService->run($backend, new \ArrayIterator([$users[0]]), function (){});
+			$syncService->run($backend, new \ArrayIterator([$users[0]]), function () {
+			});
 		} else {
 			// Not found
 			$this->handleUnknownUsers([$uid], $input, $output, $missingAccountsAction, $validActions);
@@ -282,7 +283,6 @@ class SyncBackend extends Command {
 	 * @param $validActions
 	 */
 	private function handleUnknownUsers(array $unknownUsers, InputInterface $input, OutputInterface $output, $missingAccountsAction, $validActions) {
-
 		if (empty($unknownUsers)) {
 			$output->writeln('No unknown users have been detected.');
 		} else {

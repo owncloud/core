@@ -217,7 +217,7 @@ class ViewController extends Controller {
 		$user = $this->userSession->getUser()->getUID();
 
 		$navItems = \OCA\Files\App::getNavigationManager()->getAll();
-		\usort($navItems, function($item1, $item2) {
+		\usort($navItems, function ($item1, $item2) {
 			return $item1['order'] - $item2['order'];
 		});
 		$nav->assign('navigationItems', $navItems);

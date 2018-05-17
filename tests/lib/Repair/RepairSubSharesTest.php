@@ -76,7 +76,6 @@ class RepairSubSharesTest extends TestCase {
 	 * if the step is working properly
 	 */
 	public function testPopulateDBAndRemoveDuplicates() {
-
 		$qb = $this->connection->getQueryBuilder();
 		//Create 10 users and 3 groups.
 		//add 3 users to each group
@@ -88,7 +87,7 @@ class RepairSubSharesTest extends TestCase {
 		$totalGroups = 3;
 		$parent = 1;
 		$multipleOf = 2;
-		for($userCount = 1; $userCount <= 10; $userCount++) {
+		for ($userCount = 1; $userCount <= 10; $userCount++) {
 			$user = $this->createUser($userName.$userCount);
 			if (\OC::$server->getGroupManager()->groupExists($groupName.$groupCount) === false) {
 				\OC::$server->getGroupManager()->createGroup($groupName.$groupCount);

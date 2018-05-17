@@ -35,7 +35,6 @@ use OCP\AppFramework\Db\Entity;
  * @package OC\User
  */
 class AccountTerm extends Entity {
-
 	protected $accountId;
 	protected $term;
 	public function __construct() {

@@ -113,7 +113,6 @@ class ChangeKeyStorageRoot extends Command {
 	 * @throws \Exception
 	 */
 	protected function moveAllKeys($oldRoot, $newRoot, OutputInterface $output) {
-
 		$output->writeln("Start to move keys:");
 
 		if ($this->rootView->is_dir(($oldRoot)) === false) {
@@ -148,7 +147,6 @@ class ChangeKeyStorageRoot extends Command {
 		if ($result === false) {
 			throw new \Exception("Can't write to new root folder. Please check the permissions and try again");
 		}
-
 	}
 
 	/**
@@ -184,11 +182,10 @@ class ChangeKeyStorageRoot extends Command {
 	 * @param OutputInterface $output
 	 */
 	protected function moveUserKeys($oldRoot, $newRoot, OutputInterface $output) {
-
 		$progress = new ProgressBar($output);
 		$progress->start();
 
-		foreach($this->userManager->getBackends() as $backend) {
+		foreach ($this->userManager->getBackends() as $backend) {
 			$limit = 500;
 			$offset = 0;
 			do {
@@ -199,7 +196,7 @@ class ChangeKeyStorageRoot extends Command {
 					$this->moveUserEncryptionFolder($user, $oldRoot, $newRoot);
 				}
 				$offset += $limit;
-			} while(\count($users) >= $limit);
+			} while (\count($users) >= $limit);
 		}
 		$progress->finish();
 	}
@@ -213,9 +210,7 @@ class ChangeKeyStorageRoot extends Command {
 	 * @throws \Exception
 	 */
 	protected function moveUserEncryptionFolder($user, $oldRoot, $newRoot) {
-
 		if ($this->userManager->userExists($user)) {
-
 			$source = $oldRoot . '/' . $user . '/files_encryption';
 			$target = $newRoot . '/' . $user . '/files_encryption';
 			if (
@@ -262,5 +257,4 @@ class ChangeKeyStorageRoot extends Command {
 
 		return false;
 	}
-
 }

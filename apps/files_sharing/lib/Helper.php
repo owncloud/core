@@ -36,7 +36,6 @@ use OCP\Files\NotFoundException;
 use OCP\User;
 
 class Helper {
-
 	public static function registerHooks() {
 		\OCP\Util::connectHook('OC_Filesystem', 'post_rename', '\OCA\Files_Sharing\Updater', 'renameHook');
 		\OCP\Util::connectHook('OC_Filesystem', 'post_delete', '\OCA\Files_Sharing\Hooks', 'unshareChildren');
@@ -55,13 +54,13 @@ class Helper {
 		\OC_User::setIncognitoMode(true);
 
 		$linkItem = \OCP\Share::getShareByToken($token, !$password);
-		if($linkItem === false || ($linkItem['item_type'] !== 'file' && $linkItem['item_type'] !== 'folder')) {
+		if ($linkItem === false || ($linkItem['item_type'] !== 'file' && $linkItem['item_type'] !== 'folder')) {
 			\OC_Response::setStatus(404);
 			\OCP\Util::writeLog('core-preview', 'Passed token parameter is not valid', \OCP\Util::DEBUG);
 			exit;
 		}
 
-		if(!isset($linkItem['uid_owner']) || !isset($linkItem['file_source'])) {
+		if (!isset($linkItem['uid_owner']) || !isset($linkItem['file_source'])) {
 			\OC_Response::setStatus(500);
 			\OCP\Util::writeLog('core-preview', 'Passed token seems to be valid, but it does not contain all necessary information . ("' . $token . '")', \OCP\Util::WARN);
 			exit;
@@ -125,7 +124,7 @@ class Helper {
 			if ($linkItem['share_type'] == \OCP\Share::SHARE_TYPE_LINK) {
 				// Check Password
 				$newHash = '';
-				if(\OC::$server->getHasher()->verify($password, $linkItem['share_with'], $newHash)) {
+				if (\OC::$server->getHasher()->verify($password, $linkItem['share_with'], $newHash)) {
 					// Save item id in session for future requests
 					\OC::$server->getSession()->set('public_link_authenticated', (string) $linkItem['id']);
 
@@ -141,8 +140,7 @@ class Helper {
 					 *
 					 * @link https://github.com/owncloud/core/issues/10671
 					 */
-					if(!empty($newHash)) {
-
+					if (!empty($newHash)) {
 					}
 				} else {
 					return false;
@@ -152,9 +150,7 @@ class Helper {
 					.' for share id '.$linkItem['id'], \OCP\Util::ERROR);
 				return false;
 			}
-
-		}
-		else {
+		} else {
 			// not authenticated ?
 			if (! \OC::$server->getSession()->exists('public_link_authenticated')
 				|| \OC::$server->getSession()->get('public_link_authenticated') !== (string)$linkItem['id']) {
@@ -188,7 +184,6 @@ class Helper {
 		}
 
 		if (!empty($ids)) {
-
 			$idList = \array_chunk($ids, 99, true);
 
 			foreach ($idList as $subList) {
@@ -299,7 +294,6 @@ class Helper {
 		}
 
 		return $shareFolder;
-
 	}
 
 	/**
@@ -310,5 +304,4 @@ class Helper {
 	public static function setShareFolder($shareFolder) {
 		\OC::$server->getConfig()->setSystemValue('share_folder', $shareFolder);
 	}
-
 }

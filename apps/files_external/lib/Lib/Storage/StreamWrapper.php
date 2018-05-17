@@ -88,7 +88,7 @@ abstract class StreamWrapper extends \OCP\Files\Storage\StorageAdapter {
 
 	public function touch($path, $mtime = null) {
 		if ($this->file_exists($path)) {
-			if (\is_null($mtime)) {
+			if ($mtime === null) {
 				$fh = $this->fopen($path, 'a');
 				\fwrite($fh, '');
 				\fclose($fh);
@@ -125,5 +125,4 @@ abstract class StreamWrapper extends \OCP\Files\Storage\StorageAdapter {
 	public function stat($path) {
 		return \stat($this->constructUrl($path));
 	}
-
 }

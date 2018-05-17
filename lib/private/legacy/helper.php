@@ -160,7 +160,7 @@ class OC_Helper {
 		];
 
 		\preg_match('/^([0-9]*)(\.([0-9]+))?( +)?([kmgtp]?b?)$/i', $str, $matches);
-		if(empty($matches)) {
+		if (empty($matches)) {
 			return false;
 		}
 
@@ -184,7 +184,7 @@ class OC_Helper {
 	 * @param string $dest target folder
 	 *
 	 */
-	static function copyr($src, $dest) {
+	public static function copyr($src, $dest) {
 		if (\is_dir($src)) {
 			if (!\is_dir($dest)) {
 				\mkdir($dest);
@@ -206,7 +206,7 @@ class OC_Helper {
 	 * @param bool $deleteSelf if set to false only the content of the folder will be deleted
 	 * @return bool
 	 */
-	static function rmdirr($dir, $deleteSelf = true) {
+	public static function rmdirr($dir, $deleteSelf = true) {
 		if (\is_dir($dir)) {
 			$files = new RecursiveIteratorIterator(
 				new RecursiveDirectoryIterator($dir, RecursiveDirectoryIterator::SKIP_DOTS),
@@ -217,7 +217,7 @@ class OC_Helper {
 				/** @var SplFileInfo $fileInfo */
 				if ($fileInfo->isLink()) {
 					\unlink($fileInfo->getPathname());
-				} else if ($fileInfo->isDir()) {
+				} elseif ($fileInfo->isDir()) {
 					\rmdir($fileInfo->getRealPath());
 				} else {
 					\unlink($fileInfo->getRealPath());
@@ -241,7 +241,7 @@ class OC_Helper {
 	/**
 	 * @return \OC\Files\Type\TemplateManager
 	 */
-	static public function getFileTemplateManager() {
+	public static function getFileTemplateManager() {
 		if (!self::$templateManager) {
 			self::$templateManager = new \OC\Files\Type\TemplateManager();
 		}
@@ -279,8 +279,9 @@ class OC_Helper {
 		}
 		foreach ($dirs as $dir) {
 			foreach ($exts as $ext) {
-				if ($check_fn("$dir/$name" . $ext))
+				if ($check_fn("$dir/$name" . $ext)) {
 					return true;
+				}
 			}
 		}
 		return false;
@@ -392,7 +393,7 @@ class OC_Helper {
 		// realpath() may return false in case the directory does not exist
 		// since we can not be sure how different PHP versions may behave here
 		// we do an additional check whether realpath returned false
-		if($realpathSub === false ||  $realpathParent === false) {
+		if ($realpathSub === false ||  $realpathParent === false) {
 			return false;
 		}
 
@@ -441,7 +442,7 @@ class OC_Helper {
 		$it = new RecursiveIteratorIterator($aIt);
 
 		while ($it->valid()) {
-			if (((isset($index) AND ($it->key() == $index)) OR (!isset($index))) AND ($it->current() == $needle)) {
+			if (((isset($index) and ($it->key() == $index)) or (!isset($index))) and ($it->current() == $needle)) {
 				return $aIt->key();
 			}
 
@@ -459,7 +460,7 @@ class OC_Helper {
 	 * @return int number of bytes representing
 	 */
 	public static function maxUploadFilesize($dir, $freeSpace = null) {
-		if (\is_null($freeSpace) || $freeSpace < 0){
+		if ($freeSpace === null || $freeSpace < 0) {
 			$freeSpace = self::freeSpace($dir);
 		}
 		return \min($freeSpace, self::uploadLimit());
@@ -633,7 +634,7 @@ class OC_Helper {
 		$ownerId = $storage->getOwner($path);
 		$ownerDisplayName = '';
 		$owner = \OC::$server->getUserManager()->get($ownerId);
-		if($owner) {
+		if ($owner) {
 			$ownerDisplayName = $owner->getDisplayName();
 		}
 
@@ -676,6 +677,5 @@ class OC_Helper {
 		}
 
 		return ['free' => $free, 'used' => $used, 'total' => $total, 'relative' => $relative];
-
 	}
 }

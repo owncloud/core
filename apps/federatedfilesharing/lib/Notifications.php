@@ -85,7 +85,6 @@ class Notifications {
 	 * @throws \OC\ServerNotAvailableException
 	 */
 	public function sendRemoteShare($token, $shareWith, $name, $remote_id, $owner, $ownerFederatedId, $sharedBy, $sharedByFederatedId) {
-
 		list($user, $remote) = $this->addressHandler->splitUserRemote($shareWith);
 
 		if ($user && $remote) {
@@ -112,7 +111,6 @@ class Notifications {
 				\OC_Hook::emit('OCP\Share', 'federated_share_added', ['server' => $remote]);
 				return true;
 			}
-
 		}
 
 		return false;
@@ -131,7 +129,6 @@ class Notifications {
 	 * @throws \Exception
 	 */
 	public function requestReShare($token, $id, $shareId, $remote, $shareWith, $permission) {
-
 		$fields = [
 			'shareWith' => $shareWith,
 			'token' => $token,
@@ -197,7 +194,7 @@ class Notifications {
 
 	/**
 	 * forward accept reShare to remote server
-	 * 
+	 *
 	 * @param string $remote
 	 * @param int $remoteId
 	 * @param string $token
@@ -230,7 +227,6 @@ class Notifications {
 	 * @throws \Exception
 	 */
 	public function sendUpdateToRemote($remote, $remoteId, $token, $action, $data = [], $try = 0) {
-
 		$fields = ['token' => $token];
 		foreach ($data as $key => $value) {
 			$fields[$key] = $value;
@@ -309,7 +305,7 @@ class Notifications {
 				if ($e->getCode() === Http::STATUS_INTERNAL_SERVER_ERROR) {
 					throw $e;
 				}
-				$allowHttpFallback = $this->config->getSystemValue('sharing.federation.allowHttpFallback',  false) === true;
+				$allowHttpFallback = $this->config->getSystemValue('sharing.federation.allowHttpFallback', false) === true;
 				if (!$allowHttpFallback) {
 					break;
 				}

@@ -71,7 +71,6 @@ class SyncBackendTest extends TestCase {
 			$this->userManager,
 			$this->logger
 		);
-
 	}
 
 	public function testListBackends() {
@@ -261,5 +260,4 @@ class SyncBackendTest extends TestCase {
 
 		$this->assertEquals(0, static::invokePrivate($this->command, 'execute', [$inputInterface, $outputInterface]));
 	}
-
 }

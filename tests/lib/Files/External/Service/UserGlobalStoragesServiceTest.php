@@ -148,10 +148,8 @@ class UserGlobalStoragesServiceTest extends GlobalStoragesServiceTest {
 				$this->service->getStorage($newStorage->getId());
 				$this->fail('Failed asserting that storage can\'t be accessed by id');
 			} catch (NotFoundException $e) {
-
 			}
 		}
-
 	}
 
 	/**

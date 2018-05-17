@@ -67,7 +67,7 @@ class AllConfig implements \OCP\IConfig {
 	/**
 	 * @param SystemConfig $systemConfig
 	 */
-	function __construct(SystemConfig $systemConfig) {
+	public function __construct(SystemConfig $systemConfig) {
 		$this->userCache = new CappedMemoryCache();
 		$this->systemConfig = $systemConfig;
 	}
@@ -86,7 +86,7 @@ class AllConfig implements \OCP\IConfig {
 	 * because the database connection was created with an uninitialized config
 	 */
 	private function fixDIInit() {
-		if($this->connection === null) {
+		if ($this->connection === null) {
 			$this->connection = \OC::$server->getDatabaseConnection();
 		}
 	}

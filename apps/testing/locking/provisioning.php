@@ -202,7 +202,7 @@ class Provisioning {
 	 * releases all locks that were set by the testing app
 	 * if $parameters['_delete']['global'] is set to "true"
 	 * all locks in the files_lock table are released (set to "0")
-	 * 
+	 *
 	 * @param array $parameters
 	 * @return \OC_OCS_Result
 	 */

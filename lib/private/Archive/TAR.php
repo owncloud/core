@@ -48,7 +48,7 @@ class TAR extends Archive {
 	/**
 	 * @param string $source
 	 */
-	function __construct($source) {
+	public function __construct($source) {
 		$types = [null, 'gz', 'bz2'];
 		$this->path = $source;
 		$this->tar = new \Archive_Tar($source, $types[self::getTarType($source)]);
@@ -60,7 +60,7 @@ class TAR extends Archive {
 	 * @param string $file
 	 * @return integer
 	 */
-	static public function getTarType($file) {
+	public static function getTarType($file) {
 		if (\strpos($file, '.')) {
 			$extension = \substr($file, \strrpos($file, '.'));
 			switch ($extension) {
@@ -86,7 +86,7 @@ class TAR extends Archive {
 	 * @param string $path
 	 * @return bool
 	 */
-	function addFolder($path) {
+	public function addFolder($path) {
 		$tmpBase = \OC::$server->getTempManager()->getTemporaryFolder();
 		if (\substr($path, -1, 1) != '/') {
 			$path .= '/';
@@ -116,7 +116,7 @@ class TAR extends Archive {
 	 * @param string $source either a local file or string data
 	 * @return bool
 	 */
-	function addFile($path, $source = '') {
+	public function addFile($path, $source = '') {
 		if ($this->fileExists($path)) {
 			$this->remove($path);
 		}
@@ -136,7 +136,7 @@ class TAR extends Archive {
 	 * @param string $dest
 	 * @return bool
 	 */
-	function rename($source, $dest) {
+	public function rename($source, $dest) {
 		//no proper way to delete, rename entire archive, rename file and remake archive
 		$tmp = \OCP\Files::tmpFolder();
 		$this->tar->extract($tmp);
@@ -176,7 +176,7 @@ class TAR extends Archive {
 	 * @param string $path
 	 * @return int
 	 */
-	function filesize($path) {
+	public function filesize($path) {
 		$stat = $this->getHeader($path);
 		return $stat['size'];
 	}
@@ -187,7 +187,7 @@ class TAR extends Archive {
 	 * @param string $path
 	 * @return int
 	 */
-	function mtime($path) {
+	public function mtime($path) {
 		$stat = $this->getHeader($path);
 		return $stat['mtime'];
 	}
@@ -198,7 +198,7 @@ class TAR extends Archive {
 	 * @param string $path
 	 * @return array
 	 */
-	function getFolder($path) {
+	public function getFolder($path) {
 		$files = $this->getFiles();
 		$folderContent = [];
 		$pathLength = \strlen($path);
@@ -224,7 +224,7 @@ class TAR extends Archive {
 	 *
 	 * @return array
 	 */
-	function getFiles() {
+	public function getFiles() {
 		if ($this->fileList) {
 			return $this->fileList;
 		}
@@ -245,7 +245,7 @@ class TAR extends Archive {
 	 * @param string $path
 	 * @return string
 	 */
-	function getFile($path) {
+	public function getFile($path) {
 		return $this->tar->extractInString($path);
 	}
 
@@ -256,7 +256,7 @@ class TAR extends Archive {
 	 * @param string $dest
 	 * @return bool
 	 */
-	function extractFile($path, $dest) {
+	public function extractFile($path, $dest) {
 		$tmp = \OCP\Files::tmpFolder();
 		if (!$this->fileExists($path)) {
 			return false;
@@ -279,7 +279,7 @@ class TAR extends Archive {
 	 * @param string $dest
 	 * @return bool
 	 */
-	function extract($dest) {
+	public function extract($dest) {
 		return $this->tar->extract($dest);
 	}
 
@@ -289,7 +289,7 @@ class TAR extends Archive {
 	 * @param string $path
 	 * @return bool
 	 */
-	function fileExists($path) {
+	public function fileExists($path) {
 		$files = $this->getFiles();
 		if ((\array_search($path, $files) !== false) or (\array_search($path . '/', $files) !== false)) {
 			return true;
@@ -318,7 +318,7 @@ class TAR extends Archive {
 	 * @param string $path
 	 * @return bool
 	 */
-	function remove($path) {
+	public function remove($path) {
 		if (!$this->fileExists($path)) {
 			return false;
 		}
@@ -342,7 +342,7 @@ class TAR extends Archive {
 	 * @param string $mode
 	 * @return resource
 	 */
-	function getStream($path, $mode) {
+	public function getStream($path, $mode) {
 		if (\strrpos($path, '.') !== false) {
 			$ext = \substr($path, \strrpos($path, '.'));
 		} else {
@@ -368,7 +368,7 @@ class TAR extends Archive {
 	/**
 	 * write back temporary files
 	 */
-	function writeBack($tmpFile) {
+	public function writeBack($tmpFile) {
 		if (isset(self::$tempFiles[$tmpFile])) {
 			$this->addFile(self::$tempFiles[$tmpFile], $tmpFile);
 			\unlink($tmpFile);

@@ -67,7 +67,6 @@ class CertificateManager implements ICertificateManager {
 	 * @return \OCP\ICertificate[]
 	 */
 	public function listCertificates() {
-
 		if (!$this->config->getSystemValue('installed', false)) {
 			return [];
 		}
@@ -81,7 +80,7 @@ class CertificateManager implements ICertificateManager {
 		if (!\is_resource($handle)) {
 			return [];
 		}
-		while (false !== ($file = \readdir($handle))) {
+		while (($file = \readdir($handle)) !== false) {
 			if ($file != '.' && $file != '..') {
 				try {
 					$result[] = new Certificate($this->view->file_get_contents($path . $file), $file);
@@ -157,7 +156,6 @@ class CertificateManager implements ICertificateManager {
 		} catch (\Exception $e) {
 			throw $e;
 		}
-
 	}
 
 	/**
@@ -202,7 +200,7 @@ class CertificateManager implements ICertificateManager {
 			$uid = $this->uid;
 		}
 		if ($this->needsRebundling($uid)) {
-			if (\is_null($uid)) {
+			if ($uid === null) {
 				$manager = new CertificateManager(null, $this->view, $this->config);
 				$manager->createCertificateBundle();
 			} else {
@@ -220,7 +218,7 @@ class CertificateManager implements ICertificateManager {
 		if ($uid === '') {
 			$uid = $this->uid;
 		}
-		$path = \is_null($uid) ? '/files_external/' : '/' . $uid . '/files_external/';
+		$path = $uid === null ? '/files_external/' : '/' . $uid . '/files_external/';
 
 		return $path;
 	}
@@ -240,7 +238,7 @@ class CertificateManager implements ICertificateManager {
 		if (!$this->view->file_exists($targetBundle)) {
 			return true;
 		}
-		if (!\is_null($uid)) { // also depend on the system bundle
+		if ($uid !== null) { // also depend on the system bundle
 			$sourceBundles[] = $this->view->filemtime($this->getCertificateBundle(null));
 		}
 

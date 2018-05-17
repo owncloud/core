@@ -44,5 +44,4 @@ class MySqlExpressionBuilder extends ExpressionBuilder {
 		$column = $this->helper->quoteColumnName($column);
 		return new QueryFunction("CHAR_LENGTH({$column})");
 	}
-
 }

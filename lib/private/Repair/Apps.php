@@ -37,7 +37,6 @@ use Symfony\Component\EventDispatcher\GenericEvent;
 use OCP\IConfig;
 
 class Apps implements IRepairStep {
-
 	const KEY_COMPATIBLE = 'compatible';
 	const KEY_INCOMPATIBLE = 'incompatible';
 	const KEY_MISSING = 'missing';
@@ -101,7 +100,6 @@ class Apps implements IRepairStep {
 			return false;
 		}
 		return true;
-
 	}
 
 	/**
@@ -109,7 +107,6 @@ class Apps implements IRepairStep {
 	 * @throws RepairException
 	 */
 	public function run(IOutput $output) {
-
 		if ($this->config->getSystemValue('has_internet_connection', true) !== true) {
 			$link = $this->defaults->buildDocLinkToKey('admin-marketplace-apps');
 			$output->info('No internet connection available - no app updates will be taken from the marketplace.');
@@ -262,7 +259,7 @@ class Apps implements IRepairStep {
 
 		foreach ($installedApps as $appId) {
 			$info = $this->appManager->getAppInfo($appId);
-			if (!isset($info['id']) || \is_null($info['id'])) {
+			if (!isset($info['id']) || $info['id'] === null) {
 				$appsToUpgrade[self::KEY_MISSING][] = $appId;
 				continue;
 			}

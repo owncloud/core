@@ -52,7 +52,7 @@ class OC_DB {
 	 *
 	 * SQL query via Doctrine prepare(), needs to be execute()'d!
 	 */
-	static public function prepare($query , $limit = null, $offset = null, $isManipulation = null) {
+	public static function prepare($query, $limit = null, $offset = null, $isManipulation = null) {
 		$connection = \OC::$server->getDatabaseConnection();
 
 		if ($isManipulation === null) {
@@ -78,7 +78,7 @@ class OC_DB {
 	 * @param string $sql
 	 * @return bool
 	 */
-	static public function isManipulation($sql) {
+	public static function isManipulation($sql) {
 		$selectOccurrence = \stripos($sql, 'SELECT');
 		if ($selectOccurrence !== false && $selectOccurrence < 10) {
 			return false;
@@ -107,7 +107,7 @@ class OC_DB {
 	 * @return OC_DB_StatementWrapper
 	 * @throws \OC\DatabaseException
 	 */
-	static public function executeAudited($stmt, array $parameters = null) {
+	public static function executeAudited($stmt, array $parameters = null) {
 		if (\is_string($stmt)) {
 			// convert to an array with 'sql'
 			if (\stripos($stmt, 'LIMIT') !== false) { //OFFSET requires LIMIT, so we only need to check for LIMIT
@@ -207,7 +207,7 @@ class OC_DB {
 	 * @throws \OC\DatabaseException
 	 */
 	public static function raiseExceptionOnError($result, $message = null) {
-		if($result === false) {
+		if ($result === false) {
 			if ($message === null) {
 				$message = self::getErrorMessage();
 			} else {

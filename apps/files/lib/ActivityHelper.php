@@ -51,7 +51,7 @@ class ActivityHelper {
 
 		if (empty($favorites)) {
 			throw new \RuntimeException('No favorites', 1);
-		} else if (isset($favorites[self::FAVORITE_LIMIT])) {
+		} elseif (isset($favorites[self::FAVORITE_LIMIT])) {
 			throw new \RuntimeException('Too many favorites', 2);
 		}
 

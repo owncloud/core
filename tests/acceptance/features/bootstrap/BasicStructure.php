@@ -33,7 +33,6 @@ require __DIR__ . '/../../../../lib/composer/autoload.php';
  * Basic functions needed by mostly everything
  */
 trait BasicStructure {
-
 	use AppConfiguration;
 	use Auth;
 	use Checksums;
@@ -46,7 +45,7 @@ trait BasicStructure {
 	use CommandLine;
 
 	/**
-	 * @var array 
+	 * @var array
 	 */
 	private $adminUsername = '';
 
@@ -61,12 +60,12 @@ trait BasicStructure {
 	private $regularUserPassword = '';
 
 	/**
-	 * @var string 
+	 * @var string
 	 */
 	private $currentUser = '';
 
 	/**
-	 * @var string 
+	 * @var string
 	 */
 	private $currentServer = '';
 
@@ -98,22 +97,22 @@ trait BasicStructure {
 	private $remoteBaseUrl = '';
 
 	/**
-	 * @var int 
+	 * @var int
 	 */
 	private $apiVersion = 1;
 
 	/**
-	 * @var ResponseInterface 
+	 * @var ResponseInterface
 	 */
 	private $response = null;
 
 	/**
-	 * @var \GuzzleHttp\Cookie\CookieJar 
+	 * @var \GuzzleHttp\Cookie\CookieJar
 	 */
 	private $cookieJar;
 
 	/**
-	 * @var string 
+	 * @var string
 	 */
 	private $requestToken;
 
@@ -256,7 +255,7 @@ trait BasicStructure {
 	/**
 	 * returns $this->response
 	 * some steps use that private var to store the response for other steps
-	 * 
+	 *
 	 * @return ResponseInterface
 	 */
 	public function getResponse() {
@@ -392,7 +391,7 @@ trait BasicStructure {
 	public function simplifyArray($arrayOfArrays) {
 		$a = \array_map(
 			function ($subArray) {
-				return $subArray[0]; 
+				return $subArray[0];
 			}, $arrayOfArrays
 		);
 		return $a;
@@ -813,9 +812,9 @@ trait BasicStructure {
 	public function getPasswordForUser($userName) {
 		if ($userName === $this->getAdminUsername()) {
 			return (string) $this->getAdminPassword();
-		} else if (\array_key_exists($userName, $this->createdUsers)) {
+		} elseif (\array_key_exists($userName, $this->createdUsers)) {
 			return (string) $this->createdUsers[$userName]['password'];
-		} else if (\array_key_exists($userName, $this->createdRemoteUsers)) {
+		} elseif (\array_key_exists($userName, $this->createdRemoteUsers)) {
 			return (string) $this->createdRemoteUsers[$userName]['password'];
 		} else {
 			// The user has not been created yet, let the caller have the
@@ -1036,4 +1035,3 @@ trait BasicStructure {
 		$client->send($client->createRequest('POST', $fullUrl, $options));
 	}
 }
-

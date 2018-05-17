@@ -49,7 +49,7 @@ $name = $_POST['name'];
 $password = $_POST['password'];
 
 // Check for invalid name
-if(!\OCP\Util::isValidFileName($name)) {
+if (!\OCP\Util::isValidFileName($name)) {
 	\OCP\JSON::error(['data' => ['message' => $l->t('The mountpoint name contains invalid characters.')]]);
 	exit();
 }
@@ -147,4 +147,3 @@ try {
 	);
 	\OCP\JSON::error(['data' => ['message' => $l->t('Couldn\'t add remote share')]]);
 }
-

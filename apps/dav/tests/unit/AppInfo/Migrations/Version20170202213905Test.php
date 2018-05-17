@@ -26,14 +26,14 @@ use OCP\DB\QueryBuilder\IExpressionBuilder;
 use OCP\DB\QueryBuilder\IQueryBuilder;
 use Test\TestCase;
 
-require_once (\str_replace('/dav/tests/unit/AppInfo/', '/dav/appinfo/', __DIR__) . '/Version20170202213905.php');
+require_once(\str_replace('/dav/tests/unit/AppInfo/', '/dav/appinfo/', __DIR__) . '/Version20170202213905.php');
 
 class Version20170202213905Test extends TestCase {
-	public function testGetRepairQuery(){
+	public function testGetRepairQuery() {
 		$expressionBuilder = $this->createMock(IExpressionBuilder::class);
 		$expressionBuilder->expects($this->any())->method('eq')->will($this->returnArgument(1));
 		$expressionBuilder->expects($this->any())->method('literal')->will(
-			$this->returnCallback(function ($arg){
+			$this->returnCallback(function ($arg) {
 				return \sprintf("'%s'", $arg);
 			})
 		);

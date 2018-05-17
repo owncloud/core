@@ -40,4 +40,3 @@ interface IProvidesEMailBackend {
 	 */
 	public function getEMailAddress($uid);
 }
-

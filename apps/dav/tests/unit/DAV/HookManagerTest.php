@@ -216,5 +216,4 @@ class HookManagerTest extends TestCase {
 		$hm->preDeleteUser(['uid' => 'newUser']);
 		$hm->postDeleteUser(['uid' => 'newUser']);
 	}
-
 }

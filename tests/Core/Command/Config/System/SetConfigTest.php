@@ -169,5 +169,4 @@ class SetConfigTest extends TestCase {
 	public function testCastValueInvalid($value, $type) {
 		$this->invokePrivate($this->command, 'castValue', [$value, $type]);
 	}
-
 }

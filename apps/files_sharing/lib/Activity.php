@@ -192,7 +192,6 @@ class Activity implements IExtension {
 	 * @return bool|string
 	 */
 	protected function translateLong($text, IL10N $l, array $params) {
-
 		switch ($text) {
 			case self::SUBJECT_REMOTE_SHARE_RECEIVED:
 				if (\sizeof($params) === 2) {
@@ -480,5 +479,4 @@ class Activity implements IExtension {
 		}
 		return false;
 	}
-
 }

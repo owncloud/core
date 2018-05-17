@@ -197,7 +197,7 @@ class SessionTest extends TestCase {
 		$session->expects($this->exactly(2))
 			->method('set')
 			->with($this->callback(function ($key) {
-					switch ($key) {
+				switch ($key) {
 						case 'user_id':
 						case 'loginname':
 							return true;
@@ -206,7 +206,7 @@ class SessionTest extends TestCase {
 							return false;
 							break;
 					}
-				}, 'foo'));
+			}, 'foo'));
 
 		$managerMethods = \get_class_methods(Manager::class);
 		//keep following methods intact in order to ensure hooks are
@@ -509,13 +509,13 @@ class SessionTest extends TestCase {
 		$session->expects($this->exactly(1))
 			->method('set')
 			->with($this->callback(function ($key) {
-					switch ($key) {
+				switch ($key) {
 						case 'user_id':
 							return true;
 						default:
 							return false;
 					}
-				}, 'foo'));
+			}, 'foo'));
 		$session->expects($this->once())
 			->method('regenerateId');
 
@@ -630,8 +630,8 @@ class SessionTest extends TestCase {
 		$manager->expects($this->any())
 			->method('get')
 			->will($this->returnCallback(function ($uid) use ($users) {
-					return $users[$uid];
-				}));
+				return $users[$uid];
+			}));
 
 		$session = new Memory('');
 		$session->set('user_id', 'foo');

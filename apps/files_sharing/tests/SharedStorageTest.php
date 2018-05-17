@@ -39,7 +39,6 @@ use OCP\Share\IShare;
  * @group DB
  */
 class SharedStorageTest extends TestCase {
-
 	protected function setUp() {
 		parent::setUp();
 		\OCA\Files_Trashbin\Trashbin::registerHooks();
@@ -435,7 +434,7 @@ class SharedStorageTest extends TestCase {
 		/**
 		 * @var \OCP\Files\Storage $sharedStorage
 		 */
-		list($sharedStorage,) = $view->resolvePath($this->folder);
+		list($sharedStorage, ) = $view->resolvePath($this->folder);
 		$this->assertTrue($sharedStorage->instanceOfStorage('OCA\Files_Sharing\ISharedStorage'));
 
 		$sourceStorage = new \OC\Files\Storage\Temporary([]);
@@ -468,7 +467,7 @@ class SharedStorageTest extends TestCase {
 		/**
 		 * @var \OCP\Files\Storage $sharedStorage
 		 */
-		list($sharedStorage,) = $view->resolvePath($this->folder);
+		list($sharedStorage, ) = $view->resolvePath($this->folder);
 		$this->assertTrue($sharedStorage->instanceOfStorage('OCA\Files_Sharing\ISharedStorage'));
 
 		$sourceStorage = new \OC\Files\Storage\Temporary([]);

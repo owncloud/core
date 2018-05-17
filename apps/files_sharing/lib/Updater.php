@@ -29,7 +29,7 @@ class Updater {
 	/**
 	 * @param array $params
 	 */
-	static public function renameHook($params) {
+	public static function renameHook($params) {
 		self::renameChildren($params['oldpath'], $params['newpath']);
 		self::moveShareToShare($params['newpath']);
 	}
@@ -44,7 +44,7 @@ class Updater {
 	 *
 	 * @param string $path
 	 */
-	static private function moveShareToShare($path) {
+	private static function moveShareToShare($path) {
 		$userFolder = \OC::$server->getUserFolder();
 
 		// If the user folder can't be constructed (e.g. link share) just return.
@@ -92,8 +92,7 @@ class Updater {
 	 * @param string $oldPath old path relative to data/user/files
 	 * @param string $newPath new path relative to data/user/files
 	 */
-	static private function renameChildren($oldPath, $newPath) {
-
+	private static function renameChildren($oldPath, $newPath) {
 		$absNewPath =  \OC\Files\Filesystem::normalizePath('/' . \OCP\User::getUser() . '/files/' . $newPath);
 		$absOldPath =  \OC\Files\Filesystem::normalizePath('/' . \OCP\User::getUser() . '/files/' . $oldPath);
 
@@ -107,5 +106,4 @@ class Updater {
 			}
 		}
 	}
-
 }

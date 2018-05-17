@@ -98,7 +98,7 @@ class JobList implements IJobList {
 		$query = $this->connection->getQueryBuilder();
 		$query->delete('jobs')
 			->where($query->expr()->eq('class', $query->createNamedParameter($class)));
-		if (!\is_null($argument)) {
+		if ($argument !== null) {
 			$argument = \json_encode($argument);
 			$query->andWhere($query->expr()->eq('argument', $query->createNamedParameter($argument)));
 		}

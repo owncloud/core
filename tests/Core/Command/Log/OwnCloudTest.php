@@ -116,5 +116,4 @@ class OwnCloudTest extends TestCase {
 
 		self::invokePrivate($this->command, 'execute', [$this->consoleInput, $this->consoleOutput]);
 	}
-
 }

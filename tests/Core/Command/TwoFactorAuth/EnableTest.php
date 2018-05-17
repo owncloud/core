@@ -31,39 +31,36 @@ use Test\Traits\UserTrait;
  *
  * @group DB
  */
-class EnableTest extends TestCase
-{
-    use UserTrait;
+class EnableTest extends TestCase {
+	use UserTrait;
 
-    /** @var CommandTester */
-    private $commandTester;
+	/** @var CommandTester */
+	private $commandTester;
 
-    protected function setUp()
-    {
-        parent::setUp();
+	protected function setUp() {
+		parent::setUp();
 
-        $command = new Enable(\OC::$server->getTwoFactorAuthManager(), \OC::$server->getUserManager());
-        $this->commandTester = new CommandTester($command);
+		$command = new Enable(\OC::$server->getTwoFactorAuthManager(), \OC::$server->getUserManager());
+		$this->commandTester = new CommandTester($command);
 
-        $this->createUser('user1');
-    }
+		$this->createUser('user1');
+	}
 
-    /**
-     * @dataProvider inputProvider
-     * @param array $input
-     * @param string $expectedOutput
-     */
-    public function testCommandInput($input, $expectedOutput) {
-        $this->commandTester->execute($input);
-        $output = $this->commandTester->getDisplay();
-        $this->assertContains($expectedOutput, $output);
-    }
+	/**
+	 * @dataProvider inputProvider
+	 * @param array $input
+	 * @param string $expectedOutput
+	 */
+	public function testCommandInput($input, $expectedOutput) {
+		$this->commandTester->execute($input);
+		$output = $this->commandTester->getDisplay();
+		$this->assertContains($expectedOutput, $output);
+	}
 
-    public function inputProvider() {
-        return [
-            [['uid' => 'user2'], 'Invalid UID'],
-            [['uid' => 'user1'], 'Two-factor authentication enabled for user'],
-        ];
-    }
-
+	public function inputProvider() {
+		return [
+			[['uid' => 'user2'], 'Invalid UID'],
+			[['uid' => 'user1'], 'Two-factor authentication enabled for user'],
+		];
+	}
 }

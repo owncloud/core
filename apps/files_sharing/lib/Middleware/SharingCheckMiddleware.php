@@ -73,14 +73,14 @@ class SharingCheckMiddleware extends Middleware {
 	 * @throws NotFoundException
 	 */
 	public function beforeController($controller, $methodName) {
-		if(!$this->isSharingEnabled()) {
+		if (!$this->isSharingEnabled()) {
 			throw new NotFoundException('Sharing is disabled.');
 		}
 
 		if ($controller instanceof \OCA\Files_Sharing\Controllers\ExternalSharesController &&
 			!$this->externalSharesChecks()) {
 			throw new S2SException('Federated sharing not allowed');
-		} else if ($controller instanceof \OCA\Files_Sharing\Controllers\ShareController &&
+		} elseif ($controller instanceof \OCA\Files_Sharing\Controllers\ShareController &&
 			!$this->isLinkSharingEnabled()) {
 			throw new NotFoundException('Link sharing is disabled');
 		}
@@ -96,7 +96,7 @@ class SharingCheckMiddleware extends Middleware {
 	 * @throws \Exception
 	 */
 	public function afterException($controller, $methodName, \Exception $exception) {
-		if(\is_a($exception, '\OCP\Files\NotFoundException')) {
+		if (\is_a($exception, '\OCP\Files\NotFoundException')) {
 			return new NotFoundResponse();
 		}
 
@@ -112,14 +112,13 @@ class SharingCheckMiddleware extends Middleware {
 	 * @return bool
 	 */
 	private function externalSharesChecks() {
-
 		if (!$this->reflector->hasAnnotation('NoIncomingFederatedSharingRequired') &&
 			$this->config->getAppValue('files_sharing', 'incoming_server2server_share_enabled', 'yes') !== 'yes') {
 			return false;
 		}
 
 		if (!$this->reflector->hasAnnotation('NoOutgoingFederatedSharingRequired') &&
-		    $this->config->getAppValue('files_sharing', 'outgoing_server2server_share_enabled', 'yes') !== 'yes') {
+			$this->config->getAppValue('files_sharing', 'outgoing_server2server_share_enabled', 'yes') !== 'yes') {
 			return false;
 		}
 
@@ -133,7 +132,7 @@ class SharingCheckMiddleware extends Middleware {
 	private function isSharingEnabled() {
 		// FIXME: This check is done here since the route is globally defined and not inside the files_sharing app
 		// Check whether the sharing application is enabled
-		if(!$this->appManager->isEnabledForUser($this->appName)) {
+		if (!$this->appManager->isEnabledForUser($this->appName)) {
 			return false;
 		}
 
@@ -151,11 +150,10 @@ class SharingCheckMiddleware extends Middleware {
 		}
 
 		// Check whether public sharing is enabled
-		if($this->config->getAppValue('core', 'shareapi_allow_links', 'yes') !== 'yes') {
+		if ($this->config->getAppValue('core', 'shareapi_allow_links', 'yes') !== 'yes') {
 			return false;
 		}
 
 		return true;
 	}
-
 }

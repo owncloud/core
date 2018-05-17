@@ -69,9 +69,9 @@ class AdapterSqlite extends Adapter {
 			. " WHERE NOT EXISTS (SELECT 1 FROM `$table` WHERE ";
 
 		$inserts = \array_values($input);
-		foreach($compare as $key) {
+		foreach ($compare as $key) {
 			$query .= '`' . $key . '`';
-			if (\is_null($input[$key])) {
+			if ($input[$key] === null) {
 				$query .= ' IS NULL AND ';
 			} else {
 				$inserts[] = $input[$key];

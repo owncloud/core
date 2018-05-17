@@ -33,7 +33,6 @@ use Test\TestCase;
  * @package OC\Core\Controller
  */
 class OccControllerTest extends TestCase {
-
 	const TEMP_SECRET = 'test';
 
 	/** @var \OC\AppFramework\Http\Request | \PHPUnit_Framework_MockObject_MockObject */
@@ -45,7 +44,7 @@ class OccControllerTest extends TestCase {
 	/** @var  Application | \PHPUnit_Framework_MockObject_MockObject */
 	private $console;
 
-	public function testFromInvalidLocation(){
+	public function testFromInvalidLocation() {
 		$fakeHost = 'example.org';
 		$this->getControllerMock($fakeHost);
 
@@ -59,7 +58,7 @@ class OccControllerTest extends TestCase {
 		$this->assertEquals('Web executor is not allowed to run from a host ' . $fakeHost, $responseData['details']);
 	}
 
-	public function testNotWhiteListedCommand(){
+	public function testNotWhiteListedCommand() {
 		$this->getControllerMock('localhost');
 
 		$response = $this->controller->execute('missing_command', '');
@@ -72,7 +71,7 @@ class OccControllerTest extends TestCase {
 		$this->assertEquals('Command "missing_command" is not allowed to run via web request', $responseData['details']);
 	}
 
-	public function testWrongToken(){
+	public function testWrongToken() {
 		$this->getControllerMock('localhost');
 
 		$response = $this->controller->execute('status', self::TEMP_SECRET . '-');
@@ -85,7 +84,7 @@ class OccControllerTest extends TestCase {
 		$this->assertEquals('updater.secret does not match the provided token', $responseData['details']);
 	}
 
-	public function testSuccess(){
+	public function testSuccess() {
 		$this->getControllerMock('localhost');
 		$this->console->expects($this->once())->method('run')
 			->willReturnCallback(
@@ -109,7 +108,7 @@ class OccControllerTest extends TestCase {
 		$this->assertTrue($decoded['installed']);
 	}
 
-	private function getControllerMock($host){
+	private function getControllerMock($host) {
 		$this->request = $this->getMockBuilder('OC\AppFramework\Http\Request')
 			->setConstructorArgs([
 				['server' => []],
@@ -143,5 +142,4 @@ class OccControllerTest extends TestCase {
 				->getMock()
 		);
 	}
-
 }

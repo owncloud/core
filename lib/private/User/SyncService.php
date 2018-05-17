@@ -219,7 +219,7 @@ class SyncService {
 		$proividesHome = $backend instanceof IProvidesHomeBackend || $backend->implementsActions(\OC_User_Backend::GET_HOME);
 		$uid = $a->getUserId();
 		// Log when the backend returns a string that is a different home to the current value
-		if($proividesHome && \is_string($backend->getHome($uid)) && $a->getHome() !== $backend->getHome($uid)) {
+		if ($proividesHome && \is_string($backend->getHome($uid)) && $a->getHome() !== $backend->getHome($uid)) {
 			$existing = $a->getHome();
 			$backendHome = $backend->getHome($uid);
 			$class = \get_class($backend);
@@ -229,8 +229,7 @@ class SyncService {
 		}
 		// Home is handled differently, it should only be set on account creation, when there is no home already set
 		// Otherwise it could change on a sync and result in a new user folder being created
-		if($a->getHome() === null) {
-
+		if ($a->getHome() === null) {
 			$home = false;
 			if ($proividesHome) {
 				$home = $backend->getHome($uid);
@@ -333,7 +332,7 @@ class SyncService {
 
 		// The account exists, sync
 		$account = $this->syncAccount($account, $backend);
-		if($account->getId() === null) {
+		if ($account->getId() === null) {
 			// New account, insert
 			$this->mapper->insert($account);
 		} else {
@@ -380,5 +379,4 @@ class SyncService {
 		$this->config->deleteUserValue($uid, 'settings', 'email');
 		$this->config->deleteUserValue($uid, 'files', 'quota');
 	}
-
 }

@@ -147,5 +147,4 @@ class ZsyncPluginTest extends TestCase {
 
 		$this->assertNull($this->plugin->handleGetProperties($propFind, $node));
 	}
-
 }

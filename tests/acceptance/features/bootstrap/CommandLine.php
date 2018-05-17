@@ -26,15 +26,15 @@ require __DIR__ . '/../../../../lib/composer/autoload.php';
  */
 trait CommandLine {
 	/**
-	 * @var int return code of last command 
+	 * @var int return code of last command
 	 */
 	private $lastCode;
 	/**
-	 * @var string stdout of last command 
+	 * @var string stdout of last command
 	 */
 	private $lastStdOut;
 	/**
-	 * @var string stderr of last command 
+	 * @var string stderr of last command
 	 */
 	private $lastStdErr;
 
@@ -139,7 +139,7 @@ trait CommandLine {
 				$msg .= ' Exceptions: ' . \implode(', ', $exceptions);
 			}
 			throw new \Exception($msg);
-		} else if (!empty($exceptions)) {
+		} elseif (!empty($exceptions)) {
 			$msg = 'The command was successful but triggered exceptions: ' . \implode(', ', $exceptions);
 			throw new \Exception($msg);
 		}

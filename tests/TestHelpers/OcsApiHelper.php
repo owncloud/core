@@ -24,9 +24,10 @@ namespace TestHelpers;
 use GuzzleHttp\Client;
 use GuzzleHttp\Message\ResponseInterface;
 use GuzzleHttp\Exception\ClientException;
+
 /**
  * Helper to make requests to the OCS API
- * 
+ *
  * @author Artur Neumann <artur@jankaritech.com>
  *
  */

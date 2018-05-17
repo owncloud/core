@@ -131,7 +131,7 @@ class SecurityMiddlewareTest extends TestCase {
 	 * @throws SecurityException
 	 * @throws \ReflectionException
 	 */
-	public function testSetNavigationEntry(){
+	public function testSetNavigationEntry() {
 		$this->navigationManager->expects($this->once())
 			->method('setActiveEntry')
 			->with($this->equalTo('files'));
@@ -160,7 +160,7 @@ class SecurityMiddlewareTest extends TestCase {
 		try {
 			$this->reader->reflect(__CLASS__, $method);
 			$sec->beforeController(__CLASS__, $method);
-		} catch (SecurityException $ex){
+		} catch (SecurityException $ex) {
 			$this->assertEquals($status, $ex->getCode());
 		}
 
@@ -243,7 +243,7 @@ class SecurityMiddlewareTest extends TestCase {
 	 * @throws SecurityException
 	 * @throws \ReflectionException
 	 */
-	public function testNoChecks(){
+	public function testNoChecks() {
 		$this->request->expects($this->never())
 				->method('passesCSRFCheck')
 				->will($this->returnValue(false));
@@ -261,7 +261,7 @@ class SecurityMiddlewareTest extends TestCase {
 	 * @throws SecurityException
 	 * @throws \ReflectionException
 	 */
-	private function securityCheck($method, $expects, $shouldFail=false){
+	private function securityCheck($method, $expects, $shouldFail=false) {
 		// admin check requires login
 		if ($expects === 'isAdminUser') {
 			$isLoggedIn = true;
@@ -273,7 +273,7 @@ class SecurityMiddlewareTest extends TestCase {
 
 		$sec = $this->getMiddleware($isLoggedIn, $isAdminUser);
 
-		if($shouldFail) {
+		if ($shouldFail) {
 			$this->expectException(SecurityException::class);
 		} else {
 			$this->assertTrue(true);
@@ -289,7 +289,7 @@ class SecurityMiddlewareTest extends TestCase {
 	 * @throws SecurityException
 	 * @throws \ReflectionException
 	 */
-	public function testCsrfCheck(){
+	public function testCsrfCheck() {
 		$this->request->expects($this->once())
 			->method('passesCSRFCheck')
 			->will($this->returnValue(false));
@@ -304,7 +304,7 @@ class SecurityMiddlewareTest extends TestCase {
 	 * @throws SecurityException
 	 * @throws \ReflectionException
 	 */
-	public function testNoCsrfCheck(){
+	public function testNoCsrfCheck() {
 		$this->request->expects($this->never())
 			->method('passesCSRFCheck')
 			->will($this->returnValue(false));
@@ -318,7 +318,7 @@ class SecurityMiddlewareTest extends TestCase {
 	 * @throws SecurityException
 	 * @throws \ReflectionException
 	 */
-	public function testFailCsrfCheck(){
+	public function testFailCsrfCheck() {
 		$this->request->expects($this->once())
 			->method('passesCSRFCheck')
 			->will($this->returnValue(true));
@@ -333,7 +333,7 @@ class SecurityMiddlewareTest extends TestCase {
 	 * @throws SecurityException
 	 * @throws \ReflectionException
 	 */
-	public function testLoggedInCheck(){
+	public function testLoggedInCheck() {
 		$this->securityCheck(__FUNCTION__, 'isLoggedIn');
 	}
 
@@ -343,7 +343,7 @@ class SecurityMiddlewareTest extends TestCase {
 	 * @throws SecurityException
 	 * @throws \ReflectionException
 	 */
-	public function testFailLoggedInCheck(){
+	public function testFailLoggedInCheck() {
 		$this->securityCheck(__FUNCTION__, 'isLoggedIn', true);
 	}
 
@@ -352,7 +352,7 @@ class SecurityMiddlewareTest extends TestCase {
 	 * @throws SecurityException
 	 * @throws \ReflectionException
 	 */
-	public function testIsAdminCheck(){
+	public function testIsAdminCheck() {
 		$this->securityCheck(__FUNCTION__, 'isAdminUser');
 	}
 
@@ -361,14 +361,14 @@ class SecurityMiddlewareTest extends TestCase {
 	 * @throws SecurityException
 	 * @throws \ReflectionException
 	 */
-	public function testFailIsAdminCheck(){
+	public function testFailIsAdminCheck() {
 		$this->securityCheck(__FUNCTION__, 'isAdminUser', true);
 	}
 
 	/**
 	 * @throws \Exception
 	 */
-	public function testAfterExceptionNotCaughtThrowsItAgain(){
+	public function testAfterExceptionNotCaughtThrowsItAgain() {
 		$ex = new \Exception();
 		$this->expectException(\Exception::class);
 		$this->middleware->afterException($this->controller, 'test', $ex);
@@ -411,7 +411,7 @@ class SecurityMiddlewareTest extends TestCase {
 		);
 
 		$expected = new RedirectResponse('http://localhost/index.php/login?redirect_url=owncloud%2Findex.php%2Fapps%2Fspecialapp');
-		$this->assertEquals($expected , $response);
+		$this->assertEquals($expected, $response);
 	}
 
 	/**
@@ -461,7 +461,7 @@ class SecurityMiddlewareTest extends TestCase {
 
 		$expected = new TemplateResponse('core', '403', ['file' => $exception->getMessage()], 'guest');
 		$expected->setStatus($exception->getCode());
-		$this->assertEquals($expected , $response);
+		$this->assertEquals($expected, $response);
 	}
 
 	/**
@@ -509,13 +509,12 @@ class SecurityMiddlewareTest extends TestCase {
 			'tryLogin',
 			$exception
 		);
-
 	}
 
 	/**
 	 * @throws \Exception
 	 */
-	public function testAfterAjaxExceptionReturnsJSONError(){
+	public function testAfterAjaxExceptionReturnsJSONError() {
 		$response = $this->middleware->afterException($this->controller, 'test',
 				$this->secAjaxException);
 

@@ -190,5 +190,4 @@ class GlobalStoragesController extends StoragesController {
 			Http::STATUS_OK
 		);
 	}
-
 }

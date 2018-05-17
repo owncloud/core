@@ -79,7 +79,7 @@ class NavigationManager implements INavigationManager {
 		}
 
 		$entry['active'] = false;
-		if(!isset($entry['icon'])) {
+		if (!isset($entry['icon'])) {
 			$entry['icon'] = '';
 		}
 		$this->entries[] = $entry;
@@ -221,5 +221,4 @@ class NavigationManager implements INavigationManager {
 		}
 		return false;
 	}
-
 }

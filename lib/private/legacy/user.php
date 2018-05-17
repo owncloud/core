@@ -85,7 +85,7 @@ class OC_User {
 			\OC::$server->getUserManager()->registerBackend($backend);
 		} else {
 			// You'll never know what happens
-			if (null === $backend OR !\is_string($backend)) {
+			if ($backend === null or !\is_string($backend)) {
 				$backend = 'database';
 			}
 
@@ -227,7 +227,7 @@ class OC_User {
 	 * @return bool Whether the display name could get set
 	 */
 	public static function setDisplayName($uid, $displayName = null) {
-		if (\is_null($displayName)) {
+		if ($displayName === null) {
 			$displayName = $uid;
 		}
 		$user = \OC::$server->getUserManager()->get($uid);
@@ -309,7 +309,7 @@ class OC_User {
 	 */
 	public static function getUser() {
 		$uid = \OC::$server->getSession() ? \OC::$server->getSession()->get('user_id') : null;
-		if (!\is_null($uid) && self::$incognitoMode === false) {
+		if ($uid !== null && self::$incognitoMode === false) {
 			return $uid;
 		} else {
 			return false;

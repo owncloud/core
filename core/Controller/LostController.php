@@ -163,7 +163,7 @@ class LostController extends Controller {
 		$user = $this->userManager->get($userId);
 
 		$splittedToken = \explode(':', $this->config->getUserValue($userId, 'owncloud', 'lostpassword', null));
-		if(\count($splittedToken) !== 2) {
+		if (\count($splittedToken) !== 2) {
 			$this->config->deleteUserValue($userId, 'owncloud', 'lostpassword');
 			throw new \Exception($this->l10n->t('Could not reset password because the token is invalid'));
 		}
@@ -202,11 +202,11 @@ class LostController extends Controller {
 	 * @param string $user
 	 * @return array
 	 */
-	public function email($user){
+	public function email($user) {
 		// FIXME: use HTTP error codes
 		try {
 			$this->sendEmail($user);
-		} catch (\Exception $e){
+		} catch (\Exception $e) {
 			return $this->error($e->getMessage());
 		}
 
@@ -236,13 +236,13 @@ class LostController extends Controller {
 
 			\OC_Hook::emit('\OC\Core\LostPassword\Controller\LostController', 'post_passwordReset', ['uid' => $userId, 'password' => $password]);
 			@\OC_User::unsetMagicInCookie();
-		} catch (\Exception $e){
+		} catch (\Exception $e) {
 			return $this->error($e->getMessage());
 		}
 
 		try {
 			$this->sendNotificationMail($userId);
-		} catch (\Exception $e){
+		} catch (\Exception $e) {
 			return $this->error($e->getMessage());
 		}
 
@@ -353,10 +353,9 @@ class LostController extends Controller {
 
 	private function logout() {
 		$loginToken = $this->request->getCookie('oc_token');
-		if (!\is_null($loginToken)) {
+		if ($loginToken !== null) {
 			$this->config->deleteUserValue($this->userSession->getUser()->getUID(), 'login_token', $loginToken);
 		}
 		$this->userSession->logout();
 	}
-
 }

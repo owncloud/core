@@ -22,7 +22,6 @@ namespace OC\Theme;
 use OCP\Theme\IThemeService;
 
 class ThemeService implements IThemeService {
-
 	const DEFAULT_THEME_PATH = '/themes/default';
 
 	/**
@@ -107,7 +106,7 @@ class ThemeService implements IThemeService {
 			}
 		}
 
-		if (\is_null($this->theme)) {
+		if ($this->theme === null) {
 			$this->theme = new Theme($themeName, $directory, $webPath);
 		} else {
 			$this->theme->setName($themeName);
@@ -146,7 +145,7 @@ class ThemeService implements IThemeService {
 		$themes = [];
 		if (\is_dir($this->serverRoot . '/themes')) {
 			if ($handle = \opendir($this->serverRoot . '/themes')) {
-				while (false !== ($entry = \readdir($handle))) {
+				while (($entry = \readdir($handle)) !== false) {
 					if ($entry === '.' || $entry === '..') {
 						continue;
 					}

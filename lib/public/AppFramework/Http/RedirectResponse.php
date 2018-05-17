@@ -31,7 +31,6 @@ use OCP\AppFramework\Http;
  * @since 7.0.0
  */
 class RedirectResponse extends Response {
-
 	private $redirectURL;
 
 	/**
@@ -52,5 +51,4 @@ class RedirectResponse extends Response {
 	public function getRedirectURL() {
 		return $this->redirectURL;
 	}
-
 }

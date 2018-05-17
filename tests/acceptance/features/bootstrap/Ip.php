@@ -89,7 +89,7 @@ trait Ip {
 
 		if (\filter_var($sourceIpAddress, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4)) {
 			$this->baseUrlForSourceIp = $this->ipv4Url;
-		} else if (\filter_var($sourceIpAddress, FILTER_VALIDATE_IP, FILTER_FLAG_IPV6)) {
+		} elseif (\filter_var($sourceIpAddress, FILTER_VALIDATE_IP, FILTER_FLAG_IPV6)) {
 			$this->baseUrlForSourceIp = $this->ipv6Url;
 		} else {
 			$this->baseUrlForSourceIp = $this->featureContext->getBaseUrl();

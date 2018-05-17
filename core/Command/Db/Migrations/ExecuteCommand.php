@@ -62,5 +62,4 @@ class ExecuteCommand extends Command {
 
 		$ms->executeStep($version);
 	}
-
 }

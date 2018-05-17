@@ -54,7 +54,7 @@ class UpdateJS extends Command {
 		$dir = new \DirectoryIterator(\OC::$SERVERROOT . '/core/img/filetypes');
 
 		$files = [];
-		foreach($dir as $fileInfo) {
+		foreach ($dir as $fileInfo) {
 			if ($fileInfo->isFile()) {
 				$files[] = \preg_replace('/.[^.]*$/', '', $fileInfo->getFilename());
 			}
@@ -108,7 +108,7 @@ class UpdateJS extends Command {
 		$apps = \OC_App::getEnabledApps();
 
 		foreach ($apps as $app) {
-			if(\OC_App::isType($app, 'theme')) {
+			if (\OC_App::isType($app, 'theme')) {
 				$themes[$app] = $this->getFileTypeIcons(\OC_App::getAppPath($app));
 			}
 		}
@@ -125,7 +125,7 @@ class UpdateJS extends Command {
 		if (\is_dir(\OC::$SERVERROOT . '/themes/')) {
 			$legacyThemeDirectories = new \DirectoryIterator(\OC::$SERVERROOT . '/themes/');
 
-			foreach($legacyThemeDirectories as $legacyThemeDirectory) {
+			foreach ($legacyThemeDirectories as $legacyThemeDirectory) {
 				if ($legacyThemeDirectory->isFile() || $legacyThemeDirectory->isDot()) {
 					continue;
 				}

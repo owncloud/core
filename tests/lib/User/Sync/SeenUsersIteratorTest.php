@@ -57,7 +57,6 @@ class SeenUsersIteratorTest extends TestCase {
 	 * Iterators are initialized by a call to rewind
 	 */
 	public function testRewind() {
-
 		$this->mapper->expects($this->once())
 			->method('findUserIds')
 			->with(
@@ -97,12 +96,12 @@ class SeenUsersIteratorTest extends TestCase {
 					$this->equalTo(true),					// only logged in users
 					$this->equalTo(UsersIterator::LIMIT),	// limit 500
 					$this->equalTo(0)						// at the beginning
-				],[
+				], [
 				$this->equalTo(self::TEST_BACKEND),	// only from this backend
 				$this->equalTo(true),					// only logged in users
 				$this->equalTo(UsersIterator::LIMIT),	// limit 500
 				$this->equalTo(500)					// second page
-			],[
+			], [
 					$this->equalTo(self::TEST_BACKEND),	// only from this backend
 					$this->equalTo(true),					// only logged in users
 					$this->equalTo(UsersIterator::LIMIT),	// limit 500
@@ -126,5 +125,4 @@ class SeenUsersIteratorTest extends TestCase {
 		$this->iterator->next();
 		$this->assertFalse($this->iterator->valid());
 	}
-	
 }

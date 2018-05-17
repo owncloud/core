@@ -65,9 +65,9 @@ class App {
 	 * @param array $urlParams list of URL parameters (optional)
 	 */
 	public static function main($controllerName, $methodName, DIContainer $container, array $urlParams = null) {
-		if (!\is_null($urlParams)) {
+		if ($urlParams !== null) {
 			$container['OCP\\IRequest']->setUrlParameters($urlParams);
-		} else if (isset($container['urlParams']) && !\is_null($container['urlParams'])) {
+		} elseif (isset($container['urlParams']) && $container['urlParams'] !== null) {
 			$container['OCP\\IRequest']->setUrlParameters($container['urlParams']);
 		}
 		$appName = $container['AppName'];
@@ -75,7 +75,7 @@ class App {
 		// first try $controllerName then go for \OCA\AppName\Controller\$controllerName
 		try {
 			$controller = $container->query($controllerName);
-		} catch(QueryException $e) {
+		} catch (QueryException $e) {
 			$appNameSpace = self::buildAppNamespace($appName);
 			$controllerName = $appNameSpace . '\\Controller\\' . $controllerName;
 			try {
@@ -101,17 +101,17 @@ class App {
 
 		$io = $container['OCP\\AppFramework\\Http\\IOutput'];
 
-		if(!\is_null($httpHeaders)) {
+		if ($httpHeaders !== null) {
 			$io->setHeader($httpHeaders);
 		}
 
-		foreach($responseHeaders as $name => $value) {
+		foreach ($responseHeaders as $name => $value) {
 			$io->setHeader($name . ': ' . $value);
 		}
 
-		foreach($responseCookies as $name => $value) {
+		foreach ($responseCookies as $name => $value) {
 			$expireDate = null;
-			if($value['expireDate'] instanceof \DateTime) {
+			if ($value['expireDate'] instanceof \DateTime) {
 				$expireDate = $value['expireDate']->getTimestamp();
 			}
 			$io->setCookie(
@@ -127,11 +127,10 @@ class App {
 
 		if ($response instanceof ICallbackResponse) {
 			$response->callback($io);
-		} else if(!\is_null($output)) {
+		} elseif ($output !== null) {
 			$io->setHeader('Content-Length: ' . \strlen($output));
 			$io->setOutput($output);
 		}
-
 	}
 
 	/**
@@ -147,8 +146,7 @@ class App {
 	 * @param DIContainer $container an instance of a pimple container.
 	 */
 	public static function part($controllerName, $methodName, array $urlParams,
-								DIContainer $container){
-
+								DIContainer $container) {
 		$container['urlParams'] = $urlParams;
 		$controller = $container[$controllerName];
 
@@ -157,5 +155,4 @@ class App {
 		list(, , $output) =  $dispatcher->dispatch($controller, $methodName);
 		return $output;
 	}
-
 }

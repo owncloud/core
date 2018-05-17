@@ -31,10 +31,10 @@ use OCP\IConfig;
 use OCP\Security\ISecureRandom;
 use Test\TestCase;
 
-class ChildOCSController extends OCSController {}
+class ChildOCSController extends OCSController {
+}
 
 class OCSControllerTest extends TestCase {
-
 	public function testCors() {
 		$request = new Request(
 			[
@@ -150,7 +150,7 @@ class OCSControllerTest extends TestCase {
 			$this->createMock(IConfig::class)
 		));
 		$expected = '{"ocs":{"meta":{"status":"failure","statuscode":400,"message":"OK",' .
-		            '"totalitems":"","itemsperpage":""},"data":{"test":"hi"}}}';
+					'"totalitems":"","itemsperpage":""},"data":{"test":"hi"}}}';
 
 		$out = $controller->buildResponse($params, 'json')->render();
 		$this->assertEquals($expected, $out);
@@ -187,7 +187,7 @@ class OCSControllerTest extends TestCase {
 			$configMock
 		));
 		$expected = '{"ocs":{"meta":{"status":"ok","statuscode":200,"message":"OK",' .
-		            '"totalitems":"","itemsperpage":""},"data":{"test":"hi"}}}';
+					'"totalitems":"","itemsperpage":""},"data":{"test":"hi"}}}';
 		$params = [
 			'data' => [
 				'test' => 'hi'

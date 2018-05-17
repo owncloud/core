@@ -50,7 +50,6 @@ use Symfony\Component\EventDispatcher\GenericEvent;
  * @group DB
  */
 class TrashbinTest extends TestCase {
-
 	const TEST_TRASHBIN_USER1 = "test-trashbin-user1";
 	const TEST_TRASHBIN_USER2 = "test-trashbin-user2";
 
@@ -168,7 +167,6 @@ class TrashbinTest extends TestCase {
 	 * correctly
 	 */
 	public function testExpireOldFilesShared() {
-
 		$currentTime = \time();
 		$folder = "trashTest-" . $currentTime . '/';
 		$expiredDate = $currentTime - 3 * 24 * 60 * 60;
@@ -241,7 +239,6 @@ class TrashbinTest extends TestCase {
 	 * test expiration of files older then the max storage time defined for the trash
 	 */
 	public function testExpireOldFiles() {
-
 		$currentTime = \time();
 		$expiredDate = $currentTime - 3 * 24 * 60 * 60;
 
@@ -744,7 +741,6 @@ class TrashbinTest extends TestCase {
 			try {
 				\OC::$server->getUserManager()->createUser($user, $user);
 			} catch (\Exception $e) { // catch username is already being used from previous aborted runs
-
 			}
 		}
 
@@ -756,4 +752,3 @@ class TrashbinTest extends TestCase {
 		\OC::$server->getUserFolder($user);
 	}
 }
-

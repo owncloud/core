@@ -111,7 +111,7 @@ class BackgroundJob extends TimedJob {
 		if ($lastNotification === $version) {
 			// We already notified about this update
 			return;
-		} else if ($lastNotification !== false) {
+		} elseif ($lastNotification !== false) {
 			// Delete old updates
 			$this->deleteOutdatedNotifications($app, $lastNotification);
 		}

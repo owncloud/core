@@ -82,7 +82,7 @@ class Principal implements BackendInterface {
 		$principals = [];
 
 		if ($prefixPath === $this->principalPrefix) {
-			foreach($this->userManager->search('') as $user) {
+			foreach ($this->userManager->search('') as $user) {
 				$principals[] = $this->userToPrincipal($user);
 			}
 		}
@@ -104,7 +104,7 @@ class Principal implements BackendInterface {
 		if ($prefix === $this->principalPrefix) {
 			$user = $this->userManager->get($name);
 
-			if (!\is_null($user)) {
+			if ($user !== null) {
 				return $this->userToPrincipal($user);
 			}
 		}
@@ -147,7 +147,7 @@ class Principal implements BackendInterface {
 
 			if ($this->hasGroups || $needGroups) {
 				$groups = $this->groupManager->getUserGroups($user);
-				$groups = \array_map(function($group) {
+				$groups = \array_map(function ($group) {
 					/** @var IGroup $group */
 					return 'principals/groups/' . $group->getGID();
 				}, $groups);
@@ -176,7 +176,7 @@ class Principal implements BackendInterface {
 	 * @param PropPatch $propPatch
 	 * @return int
 	 */
-	function updatePrincipal($path, PropPatch $propPatch) {
+	public function updatePrincipal($path, PropPatch $propPatch) {
 		return 0;
 	}
 
@@ -186,7 +186,7 @@ class Principal implements BackendInterface {
 	 * @param string $test
 	 * @return array
 	 */
-	function searchPrincipals($prefixPath, array $searchProperties, $test = 'allof') {
+	public function searchPrincipals($prefixPath, array $searchProperties, $test = 'allof') {
 		return [];
 	}
 
@@ -195,7 +195,7 @@ class Principal implements BackendInterface {
 	 * @param string $principalPrefix
 	 * @return string
 	 */
-	function findByUri($uri, $principalPrefix) {
+	public function findByUri($uri, $principalPrefix) {
 		if (\substr($uri, 0, 7) === 'mailto:') {
 			$email = \substr($uri, 7);
 			$users = $this->userManager->getByEmail($email);
@@ -223,7 +223,7 @@ class Principal implements BackendInterface {
 		$displayName = $user->getDisplayName();
 		$principal = [
 				'uri' => $this->principalPrefix . '/' . $userId,
-				'{DAV:}displayname' => \is_null($displayName) ? $userId : $displayName,
+				'{DAV:}displayname' => $displayName === null ? $userId : $displayName,
 		];
 
 		$email = $user->getEMailAddress();
@@ -237,5 +237,4 @@ class Principal implements BackendInterface {
 	public function getPrincipalPrefix() {
 		return $this->principalPrefix;
 	}
-
 }

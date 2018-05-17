@@ -43,7 +43,7 @@ class HomeObjectStoreStorage extends ObjectStoreStorage implements \OCP\Files\IH
 		}
 	}
 
-	public function getId () {
+	public function getId() {
 		return 'object::user:' . $this->user->getUID();
 	}
 
@@ -67,5 +67,4 @@ class HomeObjectStoreStorage extends ObjectStoreStorage implements \OCP\Files\IH
 	public function getUser($path = null) {
 		return $this->user;
 	}
-
 }

@@ -115,5 +115,4 @@ class HTTPHelper {
 
 		return ['success' => true, 'result' => $response->getBody()];
 	}
-
 }

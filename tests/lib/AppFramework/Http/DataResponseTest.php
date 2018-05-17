@@ -80,5 +80,4 @@ class DataResponseTest extends TestCase {
 		$this->assertEquals(Http::STATUS_NOT_FOUND, $this->response->getStatus());
 		$this->assertEquals(['hi', 'yo'], $this->response->getData());
 	}
-
 }

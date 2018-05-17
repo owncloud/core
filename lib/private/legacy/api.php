@@ -92,7 +92,7 @@ class OC_API {
 				$requirements = [], $cors = true) {
 		$name = \strtolower($method).$url;
 		$name = \str_replace(['/', '{', '}'], '_', $name);
-		if(!isset(self::$actions[$name])) {
+		if (!isset(self::$actions[$name])) {
 			$oldCollection = OC::$server->getRouter()->getCurrentCollection();
 			OC::$server->getRouter()->useCollection('ocs');
 			OC::$server->getRouter()->create($name, $url)
@@ -115,17 +115,17 @@ class OC_API {
 		$method = $request->getMethod();
 
 		// Prepare the request variables
-		if($method === 'PUT') {
+		if ($method === 'PUT') {
 			$parameters['_put'] = $request->getParams();
-		} else if($method === 'DELETE') {
+		} elseif ($method === 'DELETE') {
 			$parameters['_delete'] = $request->getParams();
 		}
 		$name = $parameters['_route'];
 		// Foreach registered action
 		$responses = [];
-		foreach(self::$actions[$name] as $action) {
+		foreach (self::$actions[$name] as $action) {
 			// Check authentication and availability
-			if(!self::isAuthorised($action)) {
+			if (!self::isAuthorised($action)) {
 				$responses[] = [
 					'app' => $action['app'],
 					'response' => new \OC\OCS\Result(null, API::RESPOND_UNAUTHORISED, 'Unauthorised'),
@@ -133,7 +133,7 @@ class OC_API {
 				];
 				continue;
 			}
-			if(!\is_callable($action['action'])) {
+			if (!\is_callable($action['action'])) {
 				$responses[] = [
 					'app' => $action['app'],
 					'response' => new \OC\OCS\Result(null, API::RESPOND_NOT_FOUND, 'Api method not found'),
@@ -152,8 +152,8 @@ class OC_API {
 
 		// If CORS is set to active for some method, try to add CORS headers
 		if (self::$actions[$name][0]['cors'] &&
-			!\is_null(\OC::$server->getUserSession()->getUser()) &&
-			!\is_null(\OC::$server->getRequest()->getHeader('Origin'))) {
+			\OC::$server->getUserSession()->getUser() !== null &&
+			\OC::$server->getRequest()->getHeader('Origin') !== null) {
 			$requesterDomain = \OC::$server->getRequest()->getHeader('Origin');
 			$userId = \OC::$server->getUserSession()->getUser()->getUID();
 			$headers = \OC_Response::setCorsHeaders($userId, $requesterDomain);
@@ -186,15 +186,15 @@ class OC_API {
 			'failed' => [],
 		];
 
-		foreach($responses as $response) {
-			if($response['shipped'] || ($response['app'] === 'core')) {
-				if($response['response']->succeeded()) {
+		foreach ($responses as $response) {
+			if ($response['shipped'] || ($response['app'] === 'core')) {
+				if ($response['response']->succeeded()) {
 					$shipped['succeeded'][$response['app']] = $response;
 				} else {
 					$shipped['failed'][$response['app']] = $response;
 				}
 			} else {
-				if($response['response']->succeeded()) {
+				if ($response['response']->succeeded()) {
 					$thirdparty['succeeded'][$response['app']] = $response;
 				} else {
 					$thirdparty['failed'][$response['app']] = $response;
@@ -203,14 +203,14 @@ class OC_API {
 		}
 
 		// Remove any error responses if there is one shipped response that succeeded
-		if(!empty($shipped['failed'])) {
+		if (!empty($shipped['failed'])) {
 			// Which shipped response do we use if they all failed?
 			// They may have failed for different reasons (different status codes)
 			// Which response code should we return?
 			// Maybe any that are not \OCP\API::RESPOND_SERVER_ERROR
 			// Merge failed responses if more than one
 			$data = [];
-			foreach($shipped['failed'] as $failure) {
+			foreach ($shipped['failed'] as $failure) {
 				$data = \array_merge_recursive($data, $failure['response']->getData());
 			}
 			$picked = \reset($shipped['failed']);
@@ -219,12 +219,12 @@ class OC_API {
 			$headers = $picked['response']->getHeaders();
 			$response = new \OC\OCS\Result($data, $code, $meta['message'], $headers);
 			return $response;
-		} elseif(!empty($shipped['succeeded'])) {
+		} elseif (!empty($shipped['succeeded'])) {
 			$responses = \array_merge($shipped['succeeded'], $thirdparty['succeeded']);
-		} elseif(!empty($thirdparty['failed'])) {
+		} elseif (!empty($thirdparty['failed'])) {
 			// Merge failed responses if more than one
 			$data = [];
-			foreach($thirdparty['failed'] as $failure) {
+			foreach ($thirdparty['failed'] as $failure) {
 				$data = \array_merge_recursive($data, $failure['response']->getData());
 			}
 			$picked = \reset($thirdparty['failed']);
@@ -241,8 +241,8 @@ class OC_API {
 		$codes = [];
 		$header = [];
 
-		foreach($responses as $response) {
-			if($response['shipped']) {
+		foreach ($responses as $response) {
+			if ($response['shipped']) {
 				$data = \array_merge_recursive($response['response']->getData(), $data);
 			} else {
 				$data = \array_merge_recursive($data, $response['response']->getData());
@@ -255,8 +255,8 @@ class OC_API {
 		// Use any non 100 status codes
 		$statusCode = 100;
 		$statusMessage = null;
-		foreach($codes as $code) {
-			if($code['code'] != 100) {
+		foreach ($codes as $code) {
+			if ($code['code'] != 100) {
 				$statusCode = $code['code'];
 				$statusMessage = $code['meta']['message'];
 				break;
@@ -273,7 +273,7 @@ class OC_API {
 	 */
 	private static function isAuthorised($action) {
 		$level = $action['authlevel'];
-		switch($level) {
+		switch ($level) {
 			case API::GUEST_AUTH:
 				// Anyone can access
 				return true;
@@ -283,7 +283,7 @@ class OC_API {
 			case API::SUBADMIN_AUTH:
 				// Check for subadmin privilages
 				$user = self::loginUser();
-				if(!$user) {
+				if (!$user) {
 					return false;
 				} else {
 					// Check whether user is an admin, since admin has
@@ -294,20 +294,22 @@ class OC_API {
 
 					// Check whether user is a subadmin
 					$userObject = \OC::$server->getUserSession()->getUser();
-					if($userObject != null && \OC::$server->getGroupManager()->getSubAdmin()->isSubAdmin($userObject)) {
+					if ($userObject != null && \OC::$server->getGroupManager()->getSubAdmin()->isSubAdmin($userObject)) {
 						return true;
 					}
 
 					return false;
 				}
+				// no break
 			case API::ADMIN_AUTH:
 				// Check for admin
 				$user = self::loginUser();
-				if(!$user) {
+				if (!$user) {
 					return false;
 				} else {
 					return OC_User::isAdminUser($user);
 				}
+				// no break
 			default:
 				// oops looks like invalid level supplied
 				return false;
@@ -319,7 +321,7 @@ class OC_API {
 	 * @return string|false (username, or false on failure)
 	 */
 	private static function loginUser() {
-		if(self::$isLoggedIn === true) {
+		if (self::$isLoggedIn === true) {
 			return \OC_User::getUser();
 		}
 
@@ -352,7 +354,7 @@ class OC_API {
 		try {
 			if (OC_User::handleApacheAuth()) {
 				self::$logoutRequired = false;
-			} else if ($userSession->tryTokenLogin($request)
+			} elseif ($userSession->tryTokenLogin($request)
 				|| $userSession->tryAuthModuleLogin($request)
 				|| $userSession->tryBasicAuthLogin($request)) {
 				self::$logoutRequired = true;
@@ -378,9 +380,9 @@ class OC_API {
 		$request = \OC::$server->getRequest();
 
 		// Send 401 headers if unauthorised
-		if($result->getStatusCode() === API::RESPOND_UNAUTHORISED) {
+		if ($result->getStatusCode() === API::RESPOND_UNAUTHORISED) {
 			// If request comes from JS return dummy auth request
-			if($request->getHeader('X-Requested-With') === 'XMLHttpRequest') {
+			if ($request->getHeader('X-Requested-With') === 'XMLHttpRequest') {
 				\header('WWW-Authenticate: DummyBasic realm="Authorisation Required"');
 			} else {
 				\header('WWW-Authenticate: Basic realm="Authorisation Required"');
@@ -388,7 +390,7 @@ class OC_API {
 			\header('HTTP/1.0 401 Unauthorized');
 		}
 
-		foreach($result->getHeaders() as $name => $value) {
+		foreach ($result->getHeaders() as $name => $value) {
 			\header($name . ': ' . $value);
 		}
 
@@ -396,7 +398,7 @@ class OC_API {
 		$data = $result->getData();
 		if (self::isV2($request)) {
 			$statusCode = self::mapStatusCodes($result->getStatusCode());
-			if (!\is_null($statusCode)) {
+			if ($statusCode !== null) {
 				$meta['statuscode'] = $statusCode;
 				OC_Response::setStatus($statusCode);
 			}
@@ -411,7 +413,7 @@ class OC_API {
 	 * @param XMLWriter $writer
 	 */
 	private static function toXML($array, $writer) {
-		foreach($array as $k => $v) {
+		foreach ($array as $k => $v) {
 			if ($k[0] === '@') {
 				if (\is_array($v)) {
 					foreach ($v as $name => $value) {
@@ -421,10 +423,10 @@ class OC_API {
 					$writer->writeAttribute(\substr($k, 1), $v);
 				}
 				continue;
-			} else if (\is_numeric($k)) {
+			} elseif (\is_numeric($k)) {
 				$k = 'element';
 			}
-			if(\is_array($v)) {
+			if (\is_array($v)) {
 				$writer->startElement($k);
 				self::toXML($v, $writer);
 				$writer->endElement();
@@ -449,7 +451,7 @@ class OC_API {
 	 * @param string $format
 	 */
 	public static function setContentType($format = null) {
-		$format = \is_null($format) ? self::requestedFormat() : $format;
+		$format = $format === null ? self::requestedFormat() : $format;
 		if ($format === 'xml') {
 			\header('Content-type: text/xml; charset=UTF-8');
 			return;

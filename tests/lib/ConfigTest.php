@@ -244,5 +244,4 @@ class ConfigTest extends TestCase {
 		// Cleanup
 		\unlink($additionalConfigPath);
 	}
-
 }

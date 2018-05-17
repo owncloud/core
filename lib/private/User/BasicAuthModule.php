@@ -105,13 +105,13 @@ class BasicAuthModule implements IAuthModule {
 					// only update timeout on success
 					$this->session->set('last_check_timeout', $now);
 				}
-			} else if ($count > 1) {
+			} elseif ($count > 1) {
 				$this->logger->debug(
 					'Multiple users {users} for email {authUser}, not logging in', [
 						'app' => __METHOD__,
 						'authUser' => $authUser,
 						'users' => \array_map(
-							function(IUser $user) {
+							function (IUser $user) {
 								return $user->getUID();
 							}, $users)
 					]);

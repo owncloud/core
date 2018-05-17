@@ -427,7 +427,7 @@ abstract class StoragesService implements IStoragesService {
 
 		if ($wasGlobal && !$isGlobal) {
 			$this->dbConfig->removeApplicable($id, DBConfigService::APPLICABLE_TYPE_GLOBAL, null);
-		} else if (!$wasGlobal && $isGlobal) {
+		} elseif (!$wasGlobal && $isGlobal) {
 			$this->dbConfig->addApplicable($id, DBConfigService::APPLICABLE_TYPE_GLOBAL, null);
 		}
 

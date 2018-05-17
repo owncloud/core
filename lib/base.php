@@ -124,11 +124,11 @@ class OC {
 	 * the app path list is empty or contains an invalid path
 	 */
 	public static function initPaths() {
-		if(\defined('PHPUNIT_CONFIG_DIR')) {
+		if (\defined('PHPUNIT_CONFIG_DIR')) {
 			self::$configDir = OC::$SERVERROOT . '/' . PHPUNIT_CONFIG_DIR . '/';
-		} elseif(\defined('PHPUNIT_RUN') and PHPUNIT_RUN and \is_dir(OC::$SERVERROOT . '/tests/config/')) {
+		} elseif (\defined('PHPUNIT_RUN') and PHPUNIT_RUN and \is_dir(OC::$SERVERROOT . '/tests/config/')) {
 			self::$configDir = OC::$SERVERROOT . '/tests/config/';
-		} elseif($dir = \getenv('OWNCLOUD_CONFIG_DIR')) {
+		} elseif ($dir = \getenv('OWNCLOUD_CONFIG_DIR')) {
 			self::$configDir = \rtrim($dir, '/') . '/';
 		} else {
 			self::$configDir = OC::$SERVERROOT . '/config/';
@@ -178,7 +178,7 @@ class OC {
 
 			// Resolve /owncloud to /owncloud/ to ensure to always have a trailing
 			// slash which is required by URL generation.
-			if($_SERVER['REQUEST_URI'] === \OC::$WEBROOT &&
+			if ($_SERVER['REQUEST_URI'] === \OC::$WEBROOT &&
 					\substr($_SERVER['REQUEST_URI'], -1) !== '/') {
 				\header('Location: '.\OC::$WEBROOT.'/');
 				exit();
@@ -224,7 +224,7 @@ class OC {
 
 		// Create config if it does not already exist
 		$configFilePath = self::$configDir .'/config.php';
-		if(!\file_exists($configFilePath)) {
+		if (!\file_exists($configFilePath)) {
 			@\touch($configFilePath);
 		}
 
@@ -232,7 +232,6 @@ class OC {
 		$configFileWritable = \is_writable($configFilePath);
 		if (!$configFileWritable && !\OC::$server->getConfig()->isSystemConfigReadOnly()
 			|| !$configFileWritable && self::checkUpgrade(false)) {
-
 			$urlGenerator = \OC::$server->getURLGenerator();
 
 			if (self::$CLI) {
@@ -306,7 +305,7 @@ class OC {
 				return;
 			}
 		} else {
-			if(!$lockIfNoUserLoggedIn) {
+			if (!$lockIfNoUserLoggedIn) {
 				return;
 			}
 		}
@@ -532,7 +531,7 @@ class OC {
 		@\ini_set('display_errors', 0);
 		@\ini_set('log_errors', 1);
 
-		if(!\date_default_timezone_set('UTC')) {
+		if (!\date_default_timezone_set('UTC')) {
 			\OC::$server->getLogger()->error('Could not set timezone to UTC');
 		};
 
@@ -587,7 +586,7 @@ class OC {
 		self::checkInstalled();
 
 		OC_Response::addSecurityHeaders();
-		if(self::$server->getRequest()->getServerProtocol() === 'https') {
+		if (self::$server->getRequest()->getServerProtocol() === 'https') {
 			\ini_set('session.cookie_secure', true);
 		}
 
@@ -674,7 +673,7 @@ class OC {
 		\register_shutdown_function([$lockProvider, 'releaseAll']);
 
 		// Check whether the sample configuration has been copied
-		if($systemConfig->getValue('copied_sample_config', false)) {
+		if ($systemConfig->getValue('copied_sample_config', false)) {
 			$l = \OC::$server->getL10N('lib');
 			\header('HTTP/1.1 503 Service Temporarily Unavailable');
 			\header('Status: 503 Service Temporarily Unavailable');
@@ -826,7 +825,6 @@ class OC {
 	 * Handle the request
 	 */
 	public static function handleRequest() {
-
 		\OC::$server->getEventLogger()->start('handle_request', 'Handle request');
 		$systemConfig = \OC::$server->getSystemConfig();
 		// load all the classpaths from the enabled apps so they are available
@@ -876,7 +874,7 @@ class OC {
 			// Always load authentication apps
 			OC_App::loadApps(['authentication']);
 		} catch (\OC\NeedsUpdateException $e) {
-			if ($isOccControllerRequested && $needUpgrade){
+			if ($isOccControllerRequested && $needUpgrade) {
 				OC::$server->getRouter()->match(\OC::$server->getRequest()->getRawPathInfo());
 				return;
 			}
@@ -888,7 +886,7 @@ class OC {
 			&& !$systemConfig->getValue('maintenance', false)) {
 			// For logged-in users: Load everything
 			$userSession = \OC::$server->getUserSession();
-			if($userSession->isLoggedIn() && $userSession->verifyAuthHeaders($request)) {
+			if ($userSession->isLoggedIn() && $userSession->verifyAuthHeaders($request)) {
 				OC_App::loadApps();
 			} else {
 				// For guests: Load only filesystem and logging
@@ -907,7 +905,7 @@ class OC {
 				OC::$server->getRouter()->match(\OC::$server->getRequest()->getRawPathInfo());
 				return;
 			} catch (\OC\NeedsUpdateException $e) {
-				if ($isOccControllerRequested && $needUpgrade){
+				if ($isOccControllerRequested && $needUpgrade) {
 					OC::$server->getRouter()->match(\OC::$server->getRequest()->getRawPathInfo());
 					return;
 				}
@@ -936,7 +934,7 @@ class OC {
 		}
 
 		// Someone is logged in
-		if($userSession->isLoggedIn() && $userSession->verifyAuthHeaders($request)) {
+		if ($userSession->isLoggedIn() && $userSession->verifyAuthHeaders($request)) {
 			OC_App::loadApps();
 			OC_User::setupBackends();
 			OC_Util::setupFS();
@@ -955,7 +953,7 @@ class OC {
 	 * @param OCP\IRequest $request
 	 * @return boolean
 	 */
-	static function handleLogin(OCP\IRequest $request) {
+	public static function handleLogin(OCP\IRequest $request) {
 		$userSession = self::$server->getUserSession();
 		if (OC_User::handleApacheAuth()) {
 			return true;

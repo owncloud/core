@@ -100,7 +100,7 @@ class TwoFactorMiddleware extends Middleware {
 			}
 			if ($this->twoFactorManager->isTwoFactorAuthenticated($user)) {
 				$this->checkTwoFactor($controller, $methodName);
-			} else if ($controller instanceof TwoFactorChallengeController) {
+			} elseif ($controller instanceof TwoFactorChallengeController) {
 				// two-factor authentication is in progress.
 				throw new UserAlreadyLoggedInException('Grant access to the two-factor controllers');
 			}
@@ -150,5 +150,4 @@ class TwoFactorMiddleware extends Middleware {
 		}
 		throw $exception;
 	}
-
 }

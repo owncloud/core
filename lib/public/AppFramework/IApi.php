@@ -40,7 +40,7 @@ interface IApi {
 	 * @return string the user id of the current user
 	 * @deprecated 8.0.0 Use \OC::$server->getUserSession()->getUser()->getUID()
 	 */
-	function getUserId();
+	public function getUserId();
 
 	/**
 	 * Adds a new javascript file
@@ -49,7 +49,7 @@ interface IApi {
 	 * @param string $appName the name of the app, defaults to the current one
 	 * @return void
 	 */
-	function addScript($scriptName, $appName = null);
+	public function addScript($scriptName, $appName = null);
 
 	/**
 	 * Adds a new css file
@@ -58,7 +58,7 @@ interface IApi {
 	 * @param string $appName the name of the app, defaults to the current one
 	 * @return void
 	 */
-	function addStyle($styleName, $appName = null);
+	public function addStyle($styleName, $appName = null);
 
 	/**
 	 * @deprecated 8.0.0 include javascript and css in template files
@@ -66,7 +66,7 @@ interface IApi {
 	 * @param string $name the name of the file without the suffix
 	 * @return void
 	 */
-	function add3rdPartyScript($name);
+	public function add3rdPartyScript($name);
 
 	/**
 	 * @deprecated 8.0.0 include javascript and css in template files
@@ -74,7 +74,7 @@ interface IApi {
 	 * @param string $name the name of the file without the suffix
 	 * @return void
 	 */
-	function add3rdPartyStyle($name);
+	public function add3rdPartyStyle($name);
 
 	/**
 	 * Checks if an app is enabled
@@ -86,5 +86,4 @@ interface IApi {
 	 * @return bool true if app is enabled
 	 */
 	public function isAppEnabled($appName);
-
 }

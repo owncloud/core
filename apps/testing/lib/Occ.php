@@ -1,7 +1,7 @@
 <?php
 /**
  * ownCloud
- * 
+ *
  * @author Artur Neumann <artur@jankaritech.com>
  * @copyright Copyright (c) 2017 Artur Neumann artur@jankaritech.com
  *
@@ -26,20 +26,20 @@ use OCP\IRequest;
 
 /**
  * run the occ command from an API call
- * 
+ *
  * @author Artur Neumann <artur@jankaritech.com>
  *
  */
 class Occ {
 
 	/**
-	 * 
+	 *
 	 * @var IRequest
 	 */
 	private $request;
 	
 	/**
-	 * 
+	 *
 	 * @param IRequest $request
 	 */
 	public function __construct(IRequest $request) {
@@ -47,7 +47,7 @@ class Occ {
 	}
 
 	/**
-	 * 
+	 *
 	 * @return Result
 	 */
 	public function execute() {

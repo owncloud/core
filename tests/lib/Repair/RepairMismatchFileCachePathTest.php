@@ -209,7 +209,7 @@ class RepairMismatchFileCachePathTest extends TestCase {
 		$doNotTouchId = $this->createFileCacheEntry($sourceStorageId, 'files/source/do_not_touch', $sourceId);
 
 		$outputMock = $this->createMock(IOutput::class);
-		if (\is_null($repairStoragesOrder)) {
+		if ($repairStoragesOrder === null) {
 			// no storage selected, full repair
 			$this->repair->setStorageNumericId(null);
 			$this->repair->run($outputMock);
@@ -263,7 +263,6 @@ class RepairMismatchFileCachePathTest extends TestCase {
 		$this->assertEquals((string)$sourceStorageId, $entry['storage']);
 		$this->assertEquals('files/source/do_not_touch', $entry['path']);
 		$this->assertEquals(\md5('files/source/do_not_touch'), $entry['path_hash']);
-
 	}
 
 	/**

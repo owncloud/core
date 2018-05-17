@@ -469,5 +469,4 @@ class LazyRoot implements IRootFolder {
 	public function unlock($type) {
 		return $this->__call(__FUNCTION__, \func_get_args());
 	}
-
 }

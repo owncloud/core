@@ -106,7 +106,7 @@ class ActivityTest extends TestCase {
 			$this->config
 		);
 
-		$this->activityManager->registerExtension(function() use ($activityExtension) {
+		$this->activityManager->registerExtension(function () use ($activityExtension) {
 			return $activityExtension;
 		});
 	}

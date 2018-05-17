@@ -31,7 +31,6 @@ use InvalidArgumentException;
  *
  */
 class IpHelper {
-
 	const IPV6_LOOPBACK_ADDRESS = '::1';
 	const IPV6_LOOPBACK_ADDRESS_SUBNET = '::0';
 	const IPV4_LOOPBACK_ADDRESS_TOP = '127.';
@@ -49,7 +48,7 @@ class IpHelper {
 	 * @return array of elements that match the inner part of the regex
 	 */
 	private static function parseIfconfigOutput($regex, $except = null) {
-		if (!\is_null($except)) {
+		if ($except !== null) {
 			// device names are at the start of a line
 			$invalid_device_regex = '/^\d+:\s' . $except . '/';
 		}

@@ -127,7 +127,7 @@ abstract class Storage extends \Test\TestCase {
 		];
 	}
 
-	function loremFileProvider() {
+	public function loremFileProvider() {
 		$root = \OC::$SERVERROOT . '/tests/data/';
 		return [
 			// small file

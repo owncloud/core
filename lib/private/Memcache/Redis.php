@@ -33,7 +33,7 @@ class Redis extends Cache implements IMemcacheTTL {
 
 	public function __construct($prefix = '') {
 		parent::__construct($prefix);
-		if (\is_null(self::$cache)) {
+		if (self::$cache === null) {
 			self::$cache = \OC::$server->getGetRedisFactory()->getInstance();
 		}
 	}
@@ -171,8 +171,7 @@ class Redis extends Cache implements IMemcacheTTL {
 		self::$cache->expire($this->getNameSpace() . $key, $ttl);
 	}
 
-	static public function isAvailable() {
+	public static function isAvailable() {
 		return \OC::$server->getGetRedisFactory()->isAvailable();
 	}
 }
-

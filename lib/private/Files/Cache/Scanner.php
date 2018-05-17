@@ -175,7 +175,7 @@ class Scanner extends BasicEmitter implements IScanner {
 					if ($parent) {
 						$data['parent'] = $parentId;
 					}
-					if (\is_null($cacheData)) {
+					if ($cacheData === null) {
 						/** @var CacheEntry $cacheData */
 						$cacheData = $this->cache->get($file);
 					}
@@ -229,7 +229,6 @@ class Scanner extends BasicEmitter implements IScanner {
 						$this->emit('\OC\Files\Cache\Scanner', 'postScanFile', [$file, $this->storageId]);
 						\OC_Hook::emit('\OC\Files\Cache\Scanner', 'post_scan_file', ['path' => $file, 'storage' => $this->storageId]);
 					}
-
 				} else {
 					$this->removeFromCache($file);
 				}
@@ -387,7 +386,7 @@ class Scanner extends BasicEmitter implements IScanner {
 		}
 		$this->emit('\OC\Files\Cache\Scanner', 'scanFolder', [$path, $this->storageId]);
 		$size = 0;
-		if (!\is_null($folderId)) {
+		if ($folderId !== null) {
 			$folderId = $this->cache->getId($path);
 		}
 		$childQueue = $this->handleChildren($path, $recursive, $reuse, $folderId, $lock, $size);
@@ -396,7 +395,7 @@ class Scanner extends BasicEmitter implements IScanner {
 			$childSize = $this->scanChildren($child, $recursive, $reuse, $childId, $lock);
 			if ($childSize === -1) {
 				$size = -1;
-			} else if ($size !== -1) {
+			} elseif ($size !== -1) {
 				$size += $childSize;
 			}
 		}
@@ -426,12 +425,12 @@ class Scanner extends BasicEmitter implements IScanner {
 				if ($data) {
 					if ($data['mimetype'] === 'httpd/unix-directory' and $recursive === self::SCAN_RECURSIVE) {
 						$childQueue[$child] = $data['fileid'];
-					} else if ($data['mimetype'] === 'httpd/unix-directory' and $recursive === self::SCAN_RECURSIVE_INCOMPLETE and $data['size'] === -1) {
+					} elseif ($data['mimetype'] === 'httpd/unix-directory' and $recursive === self::SCAN_RECURSIVE_INCOMPLETE and $data['size'] === -1) {
 						// only recurse into folders which aren't fully scanned
 						$childQueue[$child] = $data['fileid'];
-					} else if ($data['size'] === -1) {
+					} elseif ($data['size'] === -1) {
 						$size = -1;
-					} else if ($size !== -1) {
+					} elseif ($size !== -1) {
 						$size += $data['size'];
 					}
 				}
@@ -496,7 +495,7 @@ class Scanner extends BasicEmitter implements IScanner {
 		} else {
 			$lastPath = null;
 			while (($path = $this->cache->getIncomplete()) !== false && $path !== $lastPath) {
-				$this->runBackgroundScanJob(function() use ($path) {
+				$this->runBackgroundScanJob(function () use ($path) {
 					$this->scan($path, self::SCAN_RECURSIVE_INCOMPLETE, self::REUSE_ETAG | self::REUSE_SIZE);
 				}, $path);
 				// FIXME: this won't proceed with the next item, needs revamping of getIncomplete()

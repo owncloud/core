@@ -40,4 +40,3 @@ interface IProvidesHomeBackend {
 	 */
 	public function getHome($uid);
 }
-

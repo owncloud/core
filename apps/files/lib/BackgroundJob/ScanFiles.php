@@ -59,7 +59,7 @@ class ScanFiles extends \OC\BackgroundJob\TimedJob {
 		// Run once per 10 minutes
 		$this->setInterval(60 * 10);
 
-		if (\is_null($userManager) || \is_null($config)) {
+		if ($userManager === null || $config === null) {
 			$this->fixDIForJobs();
 		} else {
 			$this->config = $config;

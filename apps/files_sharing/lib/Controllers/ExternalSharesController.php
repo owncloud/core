@@ -176,5 +176,4 @@ class ExternalSharesController extends Controller {
 			return new DataResponse(false);
 		}
 	}
-
 }

@@ -82,5 +82,4 @@ class SessionCredentials extends AuthMechanism {
 	public function wrapStorage(Storage $storage) {
 		return new SessionStorageWrapper(['storage' => $storage]);
 	}
-
 }

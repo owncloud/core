@@ -33,7 +33,6 @@ use Test\TestCase;
  * @group DB
  */
 class RemoveInvalidSharesTest extends TestCase {
-
 	public function setUp() {
 		parent::setUp();
 		$db = \OC::$server->getDatabaseConnection();

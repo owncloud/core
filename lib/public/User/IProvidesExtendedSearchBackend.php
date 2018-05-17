@@ -41,4 +41,3 @@ interface IProvidesExtendedSearchBackend {
 	 */
 	public function getSearchTerms($uid);
 }
-

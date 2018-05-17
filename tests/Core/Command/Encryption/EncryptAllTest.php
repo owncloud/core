@@ -70,7 +70,6 @@ class EncryptAllTest extends TestCase {
 			->getMock();
 		$this->consoleInput = $this->createMock('Symfony\Component\Console\Input\InputInterface');
 		$this->consoleOutput = $this->createMock('Symfony\Component\Console\Output\OutputInterface');
-
 	}
 
 	public function testEncryptAll() {
@@ -92,7 +91,6 @@ class EncryptAllTest extends TestCase {
 	 * @dataProvider dataTestExecute
 	 */
 	public function testExecute($answer, $askResult) {
-
 		$command = new EncryptAll($this->encryptionManager, $this->appManager, $this->config, $this->questionHelper);
 
 		$this->encryptionManager->expects($this->once())->method('isEnabled')->willReturn(true);
@@ -127,5 +125,4 @@ class EncryptAllTest extends TestCase {
 		$this->encryptionModule->expects($this->never())->method('encryptAll');
 		$this->invokePrivate($command, 'execute', [$this->consoleInput, $this->consoleOutput]);
 	}
-
 }

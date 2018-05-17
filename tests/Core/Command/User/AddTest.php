@@ -34,54 +34,54 @@ use Test\Traits\UserTrait;
  * @group DB
  */
 class AddTest extends TestCase {
-    use UserTrait;
+	use UserTrait;
 
-    /** @var CommandTester */
-    private $commandTester;
+	/** @var CommandTester */
+	private $commandTester;
 
-    protected function setUp() {
-        parent::setUp();
+	protected function setUp() {
+		parent::setUp();
 
-        $application = new Application(\OC::$server->getConfig(), \OC::$server->getEventDispatcher(), \OC::$server->getRequest());
-        $command = new Add(\OC::$server->getUserManager(), \OC::$server->getGroupManager(),\OC::$server->getMailer());
-        $command->setApplication($application);
-        $this->commandTester = new CommandTester($command);
-        $this->createUser('user1');
-    }
+		$application = new Application(\OC::$server->getConfig(), \OC::$server->getEventDispatcher(), \OC::$server->getRequest());
+		$command = new Add(\OC::$server->getUserManager(), \OC::$server->getGroupManager(), \OC::$server->getMailer());
+		$command->setApplication($application);
+		$this->commandTester = new CommandTester($command);
+		$this->createUser('user1');
+	}
 
-    protected function tearDown() {
-        parent::tearDown();
-        if(\OC::$server->getUserManager()->get('user2') instanceof User) {
-            \OC::$server->getUserManager()->get('user2')->delete();
-        }
-    }
+	protected function tearDown() {
+		parent::tearDown();
+		if (\OC::$server->getUserManager()->get('user2') instanceof User) {
+			\OC::$server->getUserManager()->get('user2')->delete();
+		}
+	}
 
-    /**
-     * @dataProvider inputProvider
-     * @param array $input
-     * @param array $answers
-     * @param string $expectedOutput
-     */
-    public function testCommandInput($input, $answers, $expectedOutput) {
-        $this->commandTester->setInputs($answers);
-        $this->commandTester->execute($input);
-        $output = $this->commandTester->getDisplay();
-        $this->assertContains($expectedOutput, $output);
-    }
+	/**
+	 * @dataProvider inputProvider
+	 * @param array $input
+	 * @param array $answers
+	 * @param string $expectedOutput
+	 */
+	public function testCommandInput($input, $answers, $expectedOutput) {
+		$this->commandTester->setInputs($answers);
+		$this->commandTester->execute($input);
+		$output = $this->commandTester->getDisplay();
+		$this->assertContains($expectedOutput, $output);
+	}
 
-    /**
-     * @TODO Drone is failing for interactive tests cases, remove commented code after fix of drone
-     */
-    public function inputProvider() {
-        return [
-            [['uid' => 'user1', ''],[], 'already exists.'],
-            [['uid' => 'user2', '--email' => 'invalidemail'], [], 'Invalid email address supplied'],
-            [['uid' => 'user2', '--password-from-env' => NULL], [], '--password-from-env given, but OC_PASS is empty!'],
-            /*[['uid' => 'user2'], ['p@ssw0rd', 'password'], 'Passwords did not match'],
-            [['uid' => 'user2'], ['p@ssw0rd', 'p@ssw0rd'], 'was created successfully'],
-            [['uid' => 'user2', '--display-name' => 'John Doe'], ['p@ssw0rd', 'p@ssw0rd'], 'Display name set to '],
-            [['uid' => 'user2', '--email' => 'user1@example.com'], ['p@ssw0rd', 'p@ssw0rd'], 'Email address set to '],
-            [['uid' => 'user2', '--group' => ['admin']], ['p@ssw0rd', 'p@ssw0rd'], 'added to group '],*/
-        ];
-    }
+	/**
+	 * @TODO Drone is failing for interactive tests cases, remove commented code after fix of drone
+	 */
+	public function inputProvider() {
+		return [
+			[['uid' => 'user1', ''],[], 'already exists.'],
+			[['uid' => 'user2', '--email' => 'invalidemail'], [], 'Invalid email address supplied'],
+			[['uid' => 'user2', '--password-from-env' => null], [], '--password-from-env given, but OC_PASS is empty!'],
+			/*[['uid' => 'user2'], ['p@ssw0rd', 'password'], 'Passwords did not match'],
+			[['uid' => 'user2'], ['p@ssw0rd', 'p@ssw0rd'], 'was created successfully'],
+			[['uid' => 'user2', '--display-name' => 'John Doe'], ['p@ssw0rd', 'p@ssw0rd'], 'Display name set to '],
+			[['uid' => 'user2', '--email' => 'user1@example.com'], ['p@ssw0rd', 'p@ssw0rd'], 'Email address set to '],
+			[['uid' => 'user2', '--group' => ['admin']], ['p@ssw0rd', 'p@ssw0rd'], 'added to group '],*/
+		];
+	}
 }

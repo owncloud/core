@@ -161,14 +161,14 @@ class Database extends \OC\Group\Backend {
 		$this->fixDI();
 
 		// No duplicate entries!
-		if(!$this->inGroup($uid, $gid)) {
+		if (!$this->inGroup($uid, $gid)) {
 			$qb = $this->dbConn->getQueryBuilder();
 			$qb->insert('group_user')
 				->setValue('uid', $qb->createNamedParameter($uid))
 				->setValue('gid', $qb->createNamedParameter($gid))
 				->execute();
 			return true;
-		}else{
+		} else {
 			return false;
 		}
 	}
@@ -212,7 +212,7 @@ class Database extends \OC\Group\Backend {
 			->execute();
 
 		$groups = [];
-		while($row = $cursor->fetch()) {
+		while ($row = $cursor->fetch()) {
 			$groups[] = $row["gid"];
 			$this->groupCache[$row['gid']] = $row['gid'];
 		}
@@ -320,10 +320,9 @@ class Database extends \OC\Group\Backend {
 		$stmt = \OC_DB::prepare('SELECT COUNT(`uid`) AS `count` FROM `*PREFIX*group_user` WHERE `gid` = ?' . $searchLike);
 		$result = $stmt->execute($parameters);
 		$count = $result->fetchOne();
-		if($count !== false) {
+		if ($count !== false) {
 			$count = \intval($count);
 		}
 		return $count;
 	}
-
 }

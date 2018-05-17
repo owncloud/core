@@ -38,5 +38,4 @@ interface IProvidesAdditionalHeaders {
 	 * @return string
 	 */
 	public function getContentDispositionFileName();
-
 }

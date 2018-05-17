@@ -57,7 +57,7 @@ class FileActionsMenu extends OwncloudPage {
 	
 	/**
 	 * clicks the rename button
-	 * 
+	 *
 	 * @param string $xpathToWaitFor wait for this element to appear before returning
 	 * @param int $timeout_msec
 	 *
@@ -68,26 +68,26 @@ class FileActionsMenu extends OwncloudPage {
 		$xpathToWaitFor = null, $timeout_msec = STANDARDUIWAITTIMEOUTMILLISEC
 	) {
 		$renameBtn = $this->findButton($this->renameActionLabel);
-		if (\is_null($renameBtn)) {
+		if ($renameBtn === null) {
 			throw new ElementNotFoundException(
 				__METHOD__ .
 				" could not find action button with label " . $this->renameActionLabel
 			);
 		}
 		$renameBtn->click();
-		if (!\is_null($xpathToWaitFor)) {
+		if ($xpathToWaitFor !== null) {
 			$this->waitTillElementIsNotNull($xpathToWaitFor, $timeout_msec);
 		}
 	}
 
 	/**
 	 * clicks the delete button
-	 * 
+	 *
 	 * @return void
 	 */
 	public function delete() {
 		$deleteBtn = $this->findButton($this->deleteActionLabel);
-		if (\is_null($deleteBtn)) {
+		if ($deleteBtn === null) {
 			throw new ElementNotFoundException(
 				__METHOD__ .
 				" could not find action button with label " . $this->deleteActionLabel
@@ -99,7 +99,7 @@ class FileActionsMenu extends OwncloudPage {
 	
 	/**
 	 * finds the actual action link in the action menu
-	 * 
+	 *
 	 * @param string $action
 	 *
 	 * @return \Behat\Mink\Element\NodeElement
@@ -112,7 +112,7 @@ class FileActionsMenu extends OwncloudPage {
 			"xpath",
 			$xpathLocator
 		);
-		if (\is_null($button)) {
+		if ($button === null) {
 			throw new ElementNotFoundException(
 				__METHOD__ .
 				" xpath $xpathLocator could not find button '$action' in action Menu"
@@ -128,7 +128,7 @@ class FileActionsMenu extends OwncloudPage {
 	/**
 	 * just so the label can be reused in other places
 	 * and does not need to be redefined
-	 * 
+	 *
 	 * @return string
 	 */
 	public function getDeleteActionLabel() {

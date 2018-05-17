@@ -29,5 +29,4 @@ interface IFileNode {
 	 * @return Node
 	 */
 	public function getNode();
-
 }

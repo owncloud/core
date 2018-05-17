@@ -64,5 +64,4 @@ class Certificates implements ISettings {
 	public function getSectionID() {
 		return 'general';
 	}
-
 }

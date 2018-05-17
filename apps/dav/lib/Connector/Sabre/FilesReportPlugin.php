@@ -136,7 +136,6 @@ class FilesReportPlugin extends ServerPlugin {
 	 * @return void
 	 */
 	public function initialize(\Sabre\DAV\Server $server) {
-
 		$server->xml->namespaceMap[self::NS_OWNCLOUD] = 'oc';
 
 		$server->xml->elementMap[self::REPORT_NAME] = FilterRequest::class;
@@ -169,7 +168,6 @@ class FilesReportPlugin extends ServerPlugin {
 	 * @internal param $ [] $report
 	 */
 	public function onReport($reportName, $report, $uri) {
-
 		$reportTargetNode = $this->server->tree->getNodeForPath($uri);
 		if (!$reportTargetNode instanceof Directory || $reportName !== self::REPORT_NAME) {
 			return;
@@ -179,7 +177,7 @@ class FilesReportPlugin extends ServerPlugin {
 		$filterRules = $report->filters;
 
 		// "systemtag" is always an array of tags, favorite a string/int/null
-		if (empty($filterRules['systemtag']) && \is_null($filterRules['favorite'])) {
+		if (empty($filterRules['systemtag']) && $filterRules['favorite'] === null) {
 			// FIXME: search currently not possible because results are missing properties!
 			throw new BadRequest('No filter criteria specified');
 		} else {
@@ -216,7 +214,7 @@ class FilesReportPlugin extends ServerPlugin {
 	}
 
 	private function slice($results, $report) {
-		if (!\is_null($report->search)) {
+		if ($report->search !== null) {
 			$length = $report->search['limit'];
 			$offset = $report->search['offset'];
 			$results = \array_slice($results, $offset, $length);
@@ -378,7 +376,7 @@ class FilesReportPlugin extends ServerPlugin {
 	private function makeSabreNode(\OCP\Files\Node $filesNode) {
 		if ($filesNode instanceof \OCP\Files\File) {
 			return new File($this->fileView, $filesNode);
-		} else if ($filesNode instanceof \OCP\Files\Folder) {
+		} elseif ($filesNode instanceof \OCP\Files\Folder) {
 			return new Directory($this->fileView, $filesNode);
 		}
 		throw new \Exception('Unrecognized Files API node returned, aborting');

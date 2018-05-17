@@ -45,7 +45,6 @@ use OCP\Share\IShareProvider;
  * @package OCA\FederatedFileSharing
  */
 class FederatedShareProvider implements IShareProvider {
-
 	const SHARE_TYPE_REMOTE = 6;
 
 	/** @var IDBConnection */
@@ -131,7 +130,6 @@ class FederatedShareProvider implements IShareProvider {
 	 * @throws \Exception
 	 */
 	public function create(IShare $share) {
-
 		$shareWith = $share->getSharedWith();
 		$itemSource = $share->getNodeId();
 		$itemType = $share->getNodeType();
@@ -190,7 +188,6 @@ class FederatedShareProvider implements IShareProvider {
 				$message_t = $this->l->t('File is already shared with %s', [$shareWith]);
 				throw new \Exception($message_t);
 			}
-
 		} else {
 			$shareId = $this->createFederatedShare($share);
 		}
@@ -257,7 +254,6 @@ class FederatedShareProvider implements IShareProvider {
 	 * @throws \Exception
 	 */
 	protected function askOwnerToReShare($shareWith, IShare $share, $shareId) {
-
 		$remoteShare = $this->getShareFromExternalShareTable($share);
 		$token = $remoteShare['share_token'];
 		$remoteId = $remoteShare['remote_id'];
@@ -345,7 +341,7 @@ class FederatedShareProvider implements IShareProvider {
 		 * We allow updating the permissions of federated shares
 		 */
 		$qb = $this->dbConnection->getQueryBuilder();
-			$qb->update('share')
+		$qb->update('share')
 				->where($qb->expr()->eq('id', $qb->createNamedParameter($share->getId())))
 				->set('permissions', $qb->createNamedParameter($share->getPermissions()))
 				->set('uid_owner', $qb->createNamedParameter($share->getShareOwner()))
@@ -458,7 +454,7 @@ class FederatedShareProvider implements IShareProvider {
 			->orderBy('id');
 
 		$cursor = $qb->execute();
-		while($data = $cursor->fetch()) {
+		while ($data = $cursor->fetch()) {
 			$children[] = $this->createShareObject($data);
 		}
 		$cursor->closeCursor();
@@ -472,7 +468,6 @@ class FederatedShareProvider implements IShareProvider {
 	 * @param IShare $share
 	 */
 	public function delete(IShare $share) {
-
 		list(, $remote) = $this->addressHandler->splitUserRemote($share->getSharedWith());
 
 		$isOwner = false;
@@ -606,7 +601,7 @@ class FederatedShareProvider implements IShareProvider {
 			$qb->orderBy('id');
 
 			$cursor = $qb->execute();
-			while($data = $cursor->fetch()) {
+			while ($data = $cursor->fetch()) {
 				$shares[] = $this->createShareObject($data);
 			}
 			$cursor->closeCursor();
@@ -663,7 +658,7 @@ class FederatedShareProvider implements IShareProvider {
 
 		$cursor = $qb->execute();
 		$shares = [];
-		while($data = $cursor->fetch()) {
+		while ($data = $cursor->fetch()) {
 			$shares[] = $this->createShareObject($data);
 		}
 		$cursor->closeCursor();
@@ -715,7 +710,7 @@ class FederatedShareProvider implements IShareProvider {
 			->execute();
 
 		$shares = [];
-		while($data = $cursor->fetch()) {
+		while ($data = $cursor->fetch()) {
 			$shares[] = $this->createShareObject($data);
 		}
 		$cursor->closeCursor();
@@ -761,7 +756,7 @@ class FederatedShareProvider implements IShareProvider {
 
 		$cursor = $qb->execute();
 
-		while($data = $cursor->fetch()) {
+		while ($data = $cursor->fetch()) {
 			$shares[] = $this->createShareObject($data);
 		}
 		$cursor->closeCursor();
@@ -835,7 +830,6 @@ class FederatedShareProvider implements IShareProvider {
 	 * @throws ShareNotFound
 	 */
 	private function createShareObject($data) {
-
 		$share = new Share($this->rootFolder, $this->userManager);
 		$share->setId((int)$data['id'])
 			->setShareType((int)$data['share_type'])

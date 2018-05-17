@@ -29,7 +29,7 @@ class ExcludeFoldersByPathFilterIterator extends \RecursiveFilterIterator {
 		parent::__construct($iterator);
 
 		$appFolders = \OC::$APPSROOTS;
-		foreach($appFolders as $key => $appFolder) {
+		foreach ($appFolders as $key => $appFolder) {
 			$appFolders[$key] = \rtrim($appFolder['path'], '/');
 		}
 
@@ -42,7 +42,7 @@ class ExcludeFoldersByPathFilterIterator extends \RecursiveFilterIterator {
 			\rtrim($root . '/lost+found', '/'),
 		];
 		$customDataDir = \OC::$server->getConfig()->getSystemValue('datadirectory', '');
-		if($customDataDir !== '') {
+		if ($customDataDir !== '') {
 			$excludedFolders[] = \rtrim($customDataDir, '/');
 		}
 

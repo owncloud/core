@@ -74,7 +74,6 @@ class DecryptAllTest extends TestCase {
 		$this->appManager->expects($this->any())
 			->method('isEnabledForUser')
 			->with('files_trashbin')->willReturn(true);
-
 	}
 
 	public function testSingleUserAndTrashbin() {
@@ -118,7 +117,6 @@ class DecryptAllTest extends TestCase {
 	 * @dataProvider dataTestExecute
 	 */
 	public function testExecute($encryptionEnabled, $continue) {
-
 		$instance = new DecryptAll(
 			$this->encryptionManager,
 			$this->appManager,
@@ -208,9 +206,10 @@ class DecryptAllTest extends TestCase {
 		$this->decryptAll->expects($this->once())
 			->method('decryptAll')
 			->with($this->consoleInput, $this->consoleOutput, 'user1')
-			->willReturnCallback(function() { throw new \Exception(); });
+			->willReturnCallback(function () {
+				throw new \Exception();
+			});
 
 		$this->invokePrivate($instance, 'execute', [$this->consoleInput, $this->consoleOutput]);
 	}
-
 }

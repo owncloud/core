@@ -442,7 +442,7 @@ class FileTest extends TestCase {
 	 */
 	private function doPut($path, $viewRoot = null, \OC\AppFramework\Http\Request $request = null) {
 		$view = Filesystem::getView();
-		if (!\is_null($viewRoot)) {
+		if ($viewRoot !== null) {
 			$view = new View($viewRoot);
 		} else {
 			$viewRoot = '/' . $this->user . '/files';
@@ -1341,7 +1341,7 @@ class FileTest extends TestCase {
 		}
 		$files = [];
 		list($storage, $internalPath) = $userView->resolvePath($path);
-		if($storage instanceof Local) {
+		if ($storage instanceof Local) {
 			$realPath = $storage->getSourcePath($internalPath);
 			$dh = \opendir($realPath);
 			while (($file = \readdir($dh)) !== false) {

@@ -71,7 +71,7 @@ class ObjectTree extends \Sabre\DAV\Tree {
 	 * is present.
 	 *
 	 * @param string $path chunk file path to convert
-	 * 
+	 *
 	 * @return string path to real file
 	 */
 	private function resolveChunkFile($path) {
@@ -104,9 +104,9 @@ class ObjectTree extends \Sabre\DAV\Tree {
 	 * @param string $path
 	 * @return bool
 	 */
-	function nodeExists($path) {
+	public function nodeExists($path) {
 		$path = \trim($path, '/');
-		if (isset($this->cache[$path]) && $this->cache[$path] === false){
+		if (isset($this->cache[$path]) && $this->cache[$path] === false) {
 			// Node is not existing, as it was explicitely set in the cache
 			// Next call to getNodeForPath will create cache instance and unset the cached value
 			return false;
@@ -201,7 +201,6 @@ class ObjectTree extends \Sabre\DAV\Tree {
 
 		$this->cache[$path] = $node;
 		return $node;
-
 	}
 
 	/**
@@ -256,7 +255,7 @@ class ObjectTree extends \Sabre\DAV\Tree {
 			throw new FileLocked($e->getMessage(), $e->getCode(), $e);
 		}
 
-		list($destinationDir,) = \Sabre\HTTP\URLUtil::splitPath($destination);
+		list($destinationDir, ) = \Sabre\HTTP\URLUtil::splitPath($destination);
 		$this->markDirty($destinationDir);
 	}
 

@@ -479,7 +479,7 @@ class UsersTest extends OriginalTest {
 			->willReturn($subAdminManager);
 
 		$expected = new Result(null, API::RESPOND_UNAUTHORISED);
-		$this->assertEquals($expected, $this->api->addUser());	
+		$this->assertEquals($expected, $this->api->addUser());
 	}
 
 	public function testAddUserAsSubAdminNoGroup() {
@@ -513,7 +513,7 @@ class UsersTest extends OriginalTest {
 			->willReturn($subAdminManager);
 
 		$expected = new Result(null, 106, 'no group specified (required for subadmins)');
-		$this->assertEquals($expected, $this->api->addUser());	
+		$this->assertEquals($expected, $this->api->addUser());
 	}
 
 	public function testAddUserAsSubAdminValidGroupNotSubAdmin() {
@@ -564,7 +564,7 @@ class UsersTest extends OriginalTest {
 			->willReturn(true);
 
 		$expected = new Result(null, 105, 'insufficient privileges for group ExistingGroup');
-		$this->assertEquals($expected, $this->api->addUser());	
+		$this->assertEquals($expected, $this->api->addUser());
 	}
 
 	public function testAddUserAsSubAdminExistingGroups() {

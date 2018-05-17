@@ -534,5 +534,4 @@ class SystemTagManagerTest extends TestCase {
 		$this->assertEquals($tag1->isUserVisible(), $tag2->isUserVisible());
 		$this->assertEquals($tag1->isUserAssignable(), $tag2->isUserAssignable());
 	}
-
 }

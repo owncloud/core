@@ -37,11 +37,11 @@ class FutureFileZsync extends FutureFile {
 	/** @var string */
 	private $fileLength = 0;
 
-	static public function getFutureFileName() {
+	public static function getFutureFileName() {
 		return '.file.zsync';
 	}
 
-	static public function isFutureFile() {
+	public static function isFutureFile() {
 		$davUploadsTarget = '/dav/uploads';
 
 		// Check if pathinfo starts with dav uploads target and basename is future file basename
@@ -57,7 +57,7 @@ class FutureFileZsync extends FutureFile {
 	/**
 	 * @inheritdoc
 	 */
-	function get() {
+	public function get() {
 		$nodes = $this->root->getChildren();
 		return $this->root->childExists('.zsync') && $this->backingFile && $this->fileLength ?
 			AssemblyStreamZsync::wrap($nodes, $this->backingFile, $this->fileLength) :
@@ -67,14 +67,14 @@ class FutureFileZsync extends FutureFile {
 	/**
 	 * @param IFile $file
 	 */
-	function setBackingFile(IFile $file) {
+	public function setBackingFile(IFile $file) {
 		$this->backingFile = $file;
 	}
 
 	/**
 	 * @param string $fileLength
 	 */
-	function setFileLength($fileLength) {
+	public function setFileLength($fileLength) {
 		$this->fileLength = $fileLength;
 	}
 }

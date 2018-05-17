@@ -142,7 +142,7 @@ class Remote {
 	/**
 	 * List accepted remote shares
 	 *
-	 * @param array $params 
+	 * @param array $params
 	 * @return \OC_OCS_Result
 	 */
 	public static function getShares($params) {

@@ -52,7 +52,7 @@ class CertificateManagerTest extends \Test\TestCase {
 		$this->assertEquals($expected, $actual);
 	}
 
-	function testListCertificates() {
+	public function testListCertificates() {
 		// Test empty certificate bundle
 		$this->assertSame([], $this->certificateManager->listCertificates());
 
@@ -72,7 +72,7 @@ class CertificateManagerTest extends \Test\TestCase {
 	 * @expectedException \Exception
 	 * @expectedExceptionMessage Certificate could not get parsed.
 	 */
-	function testAddInvalidCertificate() {
+	public function testAddInvalidCertificate() {
 		$this->certificateManager->addCertificate('InvalidCertificate', 'invalidCertificate');
 	}
 
@@ -93,21 +93,20 @@ class CertificateManagerTest extends \Test\TestCase {
 	 * @dataProvider dangerousFileProvider
 	 * @param string $filename
 	 */
-	function testAddDangerousFile($filename) {
+	public function testAddDangerousFile($filename) {
 		$this->certificateManager->addCertificate(\file_get_contents(__DIR__ . '/../../data/certificates/expiredCertificate.crt'), $filename);
 	}
 
-	function testRemoveDangerousFile() {
+	public function testRemoveDangerousFile() {
 		$this->assertFalse($this->certificateManager->removeCertificate('../../foo.txt'));
 	}
 
-	function testRemoveExistingFile() {
+	public function testRemoveExistingFile() {
 		$this->certificateManager->addCertificate(\file_get_contents(__DIR__ . '/../../data/certificates/goodCertificate.crt'), 'GoodCertificate');
 		$this->assertTrue($this->certificateManager->removeCertificate('GoodCertificate'));
 	}
 
-	function testGetCertificateBundle() {
+	public function testGetCertificateBundle() {
 		$this->assertSame('/' . $this->username . '/files_external/rootcerts.crt', $this->certificateManager->getCertificateBundle());
 	}
-
 }

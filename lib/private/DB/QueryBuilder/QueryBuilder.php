@@ -93,9 +93,9 @@ class QueryBuilder implements IQueryBuilder {
 	public function expr() {
 		if ($this->connection instanceof OracleConnection) {
 			return new OCIExpressionBuilder($this->connection);
-		} else if ($this->connection->getDatabasePlatform() instanceof PostgreSqlPlatform) {
+		} elseif ($this->connection->getDatabasePlatform() instanceof PostgreSqlPlatform) {
 			return new PgSqlExpressionBuilder($this->connection);
-		} else if ($this->connection->getDatabasePlatform() instanceof MySqlPlatform) {
+		} elseif ($this->connection->getDatabasePlatform() instanceof MySqlPlatform) {
 			return new MySqlExpressionBuilder($this->connection);
 		} else {
 			return new ExpressionBuilder($this->connection);
@@ -336,7 +336,6 @@ class QueryBuilder implements IQueryBuilder {
 	 * @return \OCP\DB\QueryBuilder\IQueryBuilder This QueryBuilder instance.
 	 */
 	public function selectAlias($select, $alias) {
-
 		$this->queryBuilder->addSelect(
 			$this->helper->quoteColumnName($select) . ' AS ' . $this->helper->quoteColumnName($alias)
 		);
@@ -358,7 +357,6 @@ class QueryBuilder implements IQueryBuilder {
 	 * @return \OCP\DB\QueryBuilder\IQueryBuilder This QueryBuilder instance.
 	 */
 	public function selectDistinct($select) {
-
 		$this->queryBuilder->addSelect(
 			'DISTINCT ' . $this->helper->quoteColumnName($select)
 		);

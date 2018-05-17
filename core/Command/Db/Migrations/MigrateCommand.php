@@ -59,5 +59,4 @@ class MigrateCommand extends Command {
 
 		$ms->migrate($version);
 	}
-
 }

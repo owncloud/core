@@ -79,7 +79,6 @@ foreach ($list as $file) {
 		$success[$i]['timestamp'] = $timestamp;
 		$i++;
 	}
-
 }
 
 if ($error) {

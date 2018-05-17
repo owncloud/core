@@ -101,18 +101,42 @@ class DefaultShareProviderTest extends TestCase {
 		$qb = $this->dbConn->getQueryBuilder();
 		$qb->insert('share');
 
-		if ($shareType) $qb->setValue('share_type', $qb->expr()->literal($shareType));
-		if ($sharedWith) $qb->setValue('share_with', $qb->expr()->literal($sharedWith));
-		if ($sharedBy) $qb->setValue('uid_initiator', $qb->expr()->literal($sharedBy));
-		if ($shareOwner) $qb->setValue('uid_owner', $qb->expr()->literal($shareOwner));
-		if ($itemType) $qb->setValue('item_type', $qb->expr()->literal($itemType));
-		if ($fileSource) $qb->setValue('file_source', $qb->expr()->literal($fileSource));
-		if ($fileTarget) $qb->setValue('file_target', $qb->expr()->literal($fileTarget));
-		if ($permissions) $qb->setValue('permissions', $qb->expr()->literal($permissions));
-		if ($token) $qb->setValue('token', $qb->expr()->literal($token));
-		if ($expiration) $qb->setValue('expiration', $qb->createNamedParameter($expiration, IQueryBuilder::PARAM_DATE));
-		if ($parent) $qb->setValue('parent', $qb->expr()->literal($parent));
-		if ($name) $qb->setValue('share_name', $qb->expr()->literal($name));
+		if ($shareType) {
+			$qb->setValue('share_type', $qb->expr()->literal($shareType));
+		}
+		if ($sharedWith) {
+			$qb->setValue('share_with', $qb->expr()->literal($sharedWith));
+		}
+		if ($sharedBy) {
+			$qb->setValue('uid_initiator', $qb->expr()->literal($sharedBy));
+		}
+		if ($shareOwner) {
+			$qb->setValue('uid_owner', $qb->expr()->literal($shareOwner));
+		}
+		if ($itemType) {
+			$qb->setValue('item_type', $qb->expr()->literal($itemType));
+		}
+		if ($fileSource) {
+			$qb->setValue('file_source', $qb->expr()->literal($fileSource));
+		}
+		if ($fileTarget) {
+			$qb->setValue('file_target', $qb->expr()->literal($fileTarget));
+		}
+		if ($permissions) {
+			$qb->setValue('permissions', $qb->expr()->literal($permissions));
+		}
+		if ($token) {
+			$qb->setValue('token', $qb->expr()->literal($token));
+		}
+		if ($expiration) {
+			$qb->setValue('expiration', $qb->createNamedParameter($expiration, IQueryBuilder::PARAM_DATE));
+		}
+		if ($parent) {
+			$qb->setValue('parent', $qb->expr()->literal($parent));
+		}
+		if ($name) {
+			$qb->setValue('share_name', $qb->expr()->literal($name));
+		}
 
 		$this->assertEquals(1, $qb->execute());
 		return$qb->getLastInsertId();
@@ -869,7 +893,7 @@ class DefaultShareProviderTest extends TestCase {
 		$this->rootFolder->method('getUserFolder')->with('shareOwner')->will($this->returnSelf());
 		$this->rootFolder->method('getById')->with($fileId)->willReturn([$file]);
 
-		$share = $this->provider->getSharedWith('sharedWith', Share::SHARE_TYPE_USER, null, 1 , 0);
+		$share = $this->provider->getSharedWith('sharedWith', Share::SHARE_TYPE_USER, null, 1, 0);
 		$this->assertCount(1, $share);
 
 		$share = $share[0];
@@ -917,7 +941,7 @@ class DefaultShareProviderTest extends TestCase {
 		$id = $qb->getLastInsertId();
 
 		$groups = [];
-		foreach(\range(0, 100) as $i) {
+		foreach (\range(0, 100) as $i) {
 			$group = $this->createMock(IGroup::class);
 			$group->method('getGID')->willReturn('group'.$i);
 			$groups[] = $group;
@@ -946,7 +970,7 @@ class DefaultShareProviderTest extends TestCase {
 		$this->rootFolder->method('getUserFolder')->with('shareOwner')->will($this->returnSelf());
 		$this->rootFolder->method('getById')->with($fileId)->willReturn([$file]);
 
-		$share = $this->provider->getSharedWith('sharedWith', Share::SHARE_TYPE_GROUP, null, 20 , 1);
+		$share = $this->provider->getSharedWith('sharedWith', Share::SHARE_TYPE_GROUP, null, 20, 1);
 		$this->assertCount(1, $share);
 
 		$share = $share[0];
@@ -1150,7 +1174,7 @@ class DefaultShareProviderTest extends TestCase {
 			['user1', $user1],
 		]);
 
-		for($i = 0; $i < 105; $i++) {
+		for ($i = 0; $i < 105; $i++) {
 			$group = $this->createMock(IGroup::class);
 			$groupId = "group$i";
 			$group->method('getGID')->willReturn($groupId);
@@ -1214,7 +1238,7 @@ class DefaultShareProviderTest extends TestCase {
 		$node2 = $this->createMock(File::class);
 		$node2->method('getId')->willReturn($fileId2);
 		$this->rootFolder->method('getById')->willReturnCallback(function ($id) use ($node1, $node2) {
-			if($node1->getId() === $id){
+			if ($node1->getId() === $id) {
 				return [$node1];
 			}
 			return [$node2];
@@ -1235,7 +1259,7 @@ class DefaultShareProviderTest extends TestCase {
 		// Check targeting specific node with $node2
 		$recShares = $this->provider->getAllSharedWith('user0', $node2);
 		$this->assertCount(2, $recShares);
-		foreach($recShares as $share) {
+		foreach ($recShares as $share) {
 			if ($share->getShareType() === Share::SHARE_TYPE_USER) {
 				$this->assertEquals($id2, $share->getId());
 				$this->assertSame('user0', $share->getSharedWith());
@@ -1292,7 +1316,7 @@ class DefaultShareProviderTest extends TestCase {
 		$this->groupManager->method('get')->with('meow')->willReturn($groupMeow);
 		$this->groupManager->method('getUserGroups')->willReturnCallback(function ($user) use ($groupMeow) {
 			$userUID = $user->getUID();
-			if($userUID === 'user1'){
+			if ($userUID === 'user1') {
 				return [$groupMeow];
 			}
 			return [];
@@ -1322,7 +1346,7 @@ class DefaultShareProviderTest extends TestCase {
 		$node2 = $this->createMock(File::class);
 		$node2->method('getId')->willReturn($fileId2);
 		$this->rootFolder->method('getById')->willReturnCallback(function ($id) use ($node1, $node2) {
-			if($node1->getId() === $id){
+			if ($node1->getId() === $id) {
 				return [$node1];
 			}
 			return [$node2];
@@ -1374,7 +1398,7 @@ class DefaultShareProviderTest extends TestCase {
 			'file', $fileId1, 'for_meow_user', 31, null, null, null);
 
 		$fileId2 = $this->createTestFileEntry($fileName2, $storageId);
-		for($i = 0; $i < 205; $i++) {
+		for ($i = 0; $i < 205; $i++) {
 			$groupId = 'group'.$i;
 			$group = $this->createMock(IGroup::class);
 			$group->method('getGID')->willReturn($groupId);
@@ -1386,7 +1410,7 @@ class DefaultShareProviderTest extends TestCase {
 		$this->groupManager->method('get')->with('group')->willReturn($group);
 		$this->groupManager->method('getUserGroups')->willReturnCallback(function ($user) use ($groupArray) {
 			$userUID = $user->getUID();
-			if($userUID === 'user2'){
+			if ($userUID === 'user2') {
 				return $groupArray;
 			}
 			return [];
@@ -1404,7 +1428,7 @@ class DefaultShareProviderTest extends TestCase {
 		$node2 = $this->createMock(File::class);
 		$node2->method('getId')->willReturn($fileId2);
 		$this->rootFolder->method('getById')->willReturnCallback(function ($id) use ($node1, $node2) {
-			if($node1->getId() === $id){
+			if ($node1->getId() === $id) {
 				return [$node1];
 			}
 			return [$node2];
@@ -1415,7 +1439,7 @@ class DefaultShareProviderTest extends TestCase {
 
 		$recShares = $this->provider->getAllSharedWith('user2', null);
 		$this->assertCount(206, $recShares);
-		foreach($recShares as $share) {
+		foreach ($recShares as $share) {
 			if ($share->getShareType() === Share::SHARE_TYPE_USER) {
 				$this->assertEquals($idUser, $share->getId());
 				$this->assertSame('user2', $share->getSharedWith());
@@ -1474,7 +1498,7 @@ class DefaultShareProviderTest extends TestCase {
 		$this->rootFolder->method('getById')->with($deletedFileId)->willReturn([$file]);
 
 		$groups = [];
-		foreach(\range(0, 100) as $i) {
+		foreach (\range(0, 100) as $i) {
 			$group = $this->createMock(IGroup::class);
 			$group->method('getGID')->willReturn('group'.$i);
 			$groups[] = $group;
@@ -1499,7 +1523,7 @@ class DefaultShareProviderTest extends TestCase {
 		$this->groupManager->method('getUserGroups')->with($user)->willReturn($groups);
 		$this->groupManager->method('get')->with('sharedWith')->willReturn($group);
 
-		$share = $this->provider->getSharedWith('sharedWith', $shareType, null, 1 , 0);
+		$share = $this->provider->getSharedWith('sharedWith', $shareType, null, 1, 0);
 		$this->assertCount(0, $share);
 	}
 
@@ -1534,7 +1558,7 @@ class DefaultShareProviderTest extends TestCase {
 			]);
 		$this->assertEquals(1, $qb->execute());
 
-		for($i = 0; $i < 200; $i++) {
+		for ($i = 0; $i < 200; $i++) {
 			$receiver = \strval($i)."sharedWith";
 			$qb->insert('share')
 				->values([
@@ -2130,14 +2154,14 @@ class DefaultShareProviderTest extends TestCase {
 			'file', 42, 'target', 31, null, null);
 
 		$users = [];
-		for($i = 0; $i < 6; $i++) {
+		for ($i = 0; $i < 6; $i++) {
 			$user = $this->createMock(IUser::class);
 			$user->method('getUID')->willReturn('user'.$i);
 			$users['user'.$i] = $user;
 		}
 
 		$this->userManager->method('get')->will(
-			$this->returnCallback(function($userId) use ($users) {
+			$this->returnCallback(function ($userId) use ($users) {
 				return $users[$userId];
 			})
 		);
@@ -2179,14 +2203,14 @@ class DefaultShareProviderTest extends TestCase {
 			'file', 42, 'target', 31, 'tehtoken', null, null, 'some_name');
 
 		$users = [];
-		for($i = 0; $i < 6; $i++) {
+		for ($i = 0; $i < 6; $i++) {
 			$user = $this->createMock(IUser::class);
 			$user->method('getUID')->willReturn('user'.$i);
 			$users['user'.$i] = $user;
 		}
 
 		$this->userManager->method('get')->will(
-			$this->returnCallback(function($userId) use ($users) {
+			$this->returnCallback(function ($userId) use ($users) {
 				return $users[$userId];
 			})
 		);
@@ -2237,14 +2261,14 @@ class DefaultShareProviderTest extends TestCase {
 			'file', 42, 'target', 31, null, null);
 
 		$users = [];
-		for($i = 0; $i < 6; $i++) {
+		for ($i = 0; $i < 6; $i++) {
 			$user = $this->createMock(IUser::class);
 			$user->method('getUID')->willReturn('user'.$i);
 			$users['user'.$i] = $user;
 		}
 
 		$this->userManager->method('get')->will(
-			$this->returnCallback(function($userId) use ($users) {
+			$this->returnCallback(function ($userId) use ($users) {
 				return $users[$userId];
 			})
 		);
@@ -2286,27 +2310,27 @@ class DefaultShareProviderTest extends TestCase {
 			'file', 42, 'target', 31, null, null);
 
 		$users = [];
-		for($i = 0; $i < 6; $i++) {
+		for ($i = 0; $i < 6; $i++) {
 			$user = $this->createMock(IUser::class);
 			$user->method('getUID')->willReturn('user'.$i);
 			$users['user'.$i] = $user;
 		}
 
 		$this->userManager->method('get')->will(
-			$this->returnCallback(function($userId) use ($users) {
+			$this->returnCallback(function ($userId) use ($users) {
 				return $users[$userId];
 			})
 		);
 
 		$groups = [];
-		for($i = 0; $i < 2; $i++) {
+		for ($i = 0; $i < 2; $i++) {
 			$group = $this->createMock(IGroup::class);
 			$group->method('getGID')->willReturn('group'.$i);
 			$groups['group'.$i] = $group;
 		}
 
 		$this->groupManager->method('get')->will(
-			$this->returnCallback(function($groupId) use ($groups) {
+			$this->returnCallback(function ($groupId) use ($groups) {
 				return $groups[$groupId];
 			})
 		);
@@ -2355,27 +2379,27 @@ class DefaultShareProviderTest extends TestCase {
 			'file', 42, 'mytarget2', 0, null, null, $id);
 
 		$users = [];
-		for($i = 0; $i < 6; $i++) {
+		for ($i = 0; $i < 6; $i++) {
 			$user = $this->createMock(IUser::class);
 			$user->method('getUID')->willReturn('user'.$i);
 			$users['user'.$i] = $user;
 		}
 
 		$this->userManager->method('get')->will(
-			$this->returnCallback(function($userId) use ($users) {
+			$this->returnCallback(function ($userId) use ($users) {
 				return $users[$userId];
 			})
 		);
 
 		$groups = [];
-		for($i = 0; $i < 2; $i++) {
+		for ($i = 0; $i < 2; $i++) {
 			$group = $this->createMock(IGroup::class);
 			$group->method('getGID')->willReturn('group'.$i);
 			$groups['group'.$i] = $group;
 		}
 
 		$this->groupManager->method('get')->will(
-			$this->returnCallback(function($groupId) use ($groups) {
+			$this->returnCallback(function ($groupId) use ($groups) {
 				return $groups[$groupId];
 			})
 		);

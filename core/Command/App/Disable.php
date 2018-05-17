@@ -60,7 +60,7 @@ class Disable extends Command {
 			try {
 				$this->manager->disableApp($appId);
 				$output->writeln($appId . ' disabled');
-			} catch(\Exception $e) {
+			} catch (\Exception $e) {
 				$output->writeln($e->getMessage());
 				return 2;
 			}

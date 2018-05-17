@@ -60,7 +60,7 @@ class RemoveGetETagEntriesTest extends TestCase {
 		$entries = $stmt->fetchAll(\PDO::FETCH_NUM);
 
 		$this->assertCount(2, $entries, 'Asserts that two entries are returned as we have inserted two');
-		foreach($entries as $entry) {
+		foreach ($entries as $entry) {
 			$this->assertContains($entry, $data, 'Asserts that the entries are the ones from the test data set');
 		}
 

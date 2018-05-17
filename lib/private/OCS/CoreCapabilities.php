@@ -54,7 +54,7 @@ class CoreCapabilities implements ICapability {
 				'pollinterval' => $this->config->getSystemValue('pollinterval', 60),
 				'webdav-root' => $this->config->getSystemValue('webdav-root', 'remote.php/webdav'),
 				# show version details, hide server hostname
-				'status' => Util::getStatusInfo(true,true),
+				'status' => Util::getStatusInfo(true, true),
 			]
 		];
 	}

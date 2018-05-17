@@ -39,7 +39,6 @@ require_once 'bootstrap.php';
  * WebUI General context.
  */
 class WebUIGeneralContext extends RawMinkContext implements Context {
-
 	private $owncloudPage;
 	private $loginPage;
 	private $oldCSRFSetting = null;
@@ -59,7 +58,7 @@ class WebUIGeneralContext extends RawMinkContext implements Context {
 	private $webUIFilesContext = null;
 
 	/**
-	 * 
+	 *
 	 * @var Page\OwncloudPage
 	 */
 	private $currentPageObject = null;
@@ -79,16 +78,16 @@ class WebUIGeneralContext extends RawMinkContext implements Context {
 	/**
 	 * table of capabilities to map the human readable terms from the settings page
 	 * to terms in the capabilities XML and testing app
-	 * 
+	 *
 	 * @var array
 	 */
-	private $capabilities = [ 
-		'sharing' => [ 
-			'Allow apps to use the Share API' => [ 
+	private $capabilities = [
+		'sharing' => [
+			'Allow apps to use the Share API' => [
 				'capabilitiesApp' => 'files_sharing',
 				'capabilitiesParameter' => 'api_enabled',
 				'testingApp' => 'core',
-				'testingParameter' => 'shareapi_enabled' 
+				'testingParameter' => 'shareapi_enabled'
 			],
 			'Allow resharing' => [
 				'capabilitiesApp' => 'files_sharing',
@@ -102,19 +101,19 @@ class WebUIGeneralContext extends RawMinkContext implements Context {
 				'testingApp' => 'core',
 				'testingParameter' => 'shareapi_allow_group_sharing',
 			],
-			'Restrict users to only share with users in their groups' => [ 
+			'Restrict users to only share with users in their groups' => [
 				'capabilitiesApp' => 'files_sharing',
 				'capabilitiesParameter' => 'share_with_group_members_only',
 				'testingApp' => 'core',
 				'testingParameter' => 'shareapi_only_share_with_group_members'
 			],
-			'Restrict users to only share with groups they are member of' => [ 
+			'Restrict users to only share with groups they are member of' => [
 				'capabilitiesApp' => 'files_sharing',
 				'capabilitiesParameter' => 'share_with_membership_groups_only',
 				'testingApp' => 'core',
 				'testingParameter' => 'shareapi_only_share_with_membership_groups'
 			]
-		] 
+		]
 	];
 
 	/**
@@ -129,7 +128,7 @@ class WebUIGeneralContext extends RawMinkContext implements Context {
 	}
 
 	/**
-	 * 
+	 *
 	 * @param OwncloudPage $pageObject
 	 *
 	 * @return void
@@ -139,7 +138,7 @@ class WebUIGeneralContext extends RawMinkContext implements Context {
 	}
 
 	/**
-	 * 
+	 *
 	 * @return OwncloudPage
 	 */
 	public function getCurrentPageObject() {
@@ -155,7 +154,7 @@ class WebUIGeneralContext extends RawMinkContext implements Context {
 
 	/**
 	 * @param string $currentServer
-	 * 
+	 *
 	 * @return void
 	 */
 	public function setCurrentServer($currentServer) {
@@ -327,8 +326,8 @@ class WebUIGeneralContext extends RawMinkContext implements Context {
 						= $this->featureContext->substituteInLineCodes(
 							$expectedDialogs[$dialogI]['content']
 						);
-					if ($expectedDialogs[$dialogI]['content'] === $content
-						&& $expectedDialogs[$dialogI]['title'] === $title
+					if ($content === $expectedDialogs[$dialogI]['content']
+						&& $title === $expectedDialogs[$dialogI]['title']
 					) {
 						$expectedDialogs[$dialogI]['found'] = true;
 					}
@@ -391,7 +390,6 @@ class WebUIGeneralContext extends RawMinkContext implements Context {
 			$this->getSavedCapabilitiesXml()
 		);
 		$this->addToSavedCapabilitiesChanges($change);
-
 	}
 
 	/**
@@ -415,7 +413,7 @@ class WebUIGeneralContext extends RawMinkContext implements Context {
 	}
 
 	/**
-	 * 
+	 *
 	 * @When the user reloads the current page of the webUI
 	 * @Given the user has reloaded the current page of the webUI
 	 *
@@ -432,7 +430,7 @@ class WebUIGeneralContext extends RawMinkContext implements Context {
 
 	/**
 	 * returns the saved capabilities as XML
-	 * 
+	 *
 	 * @return string
 	 */
 	public function getSavedCapabilitiesXml() {
@@ -441,7 +439,7 @@ class WebUIGeneralContext extends RawMinkContext implements Context {
 
 	/**
 	 * adds a capability to the list of changed capabilities
-	 * 
+	 *
 	 * @param array $change
 	 *        [
 	 *         'appid' => string,
@@ -497,7 +495,7 @@ class WebUIGeneralContext extends RawMinkContext implements Context {
 		$this->savedCapabilitiesXml = AppConfigHelper::getCapabilitiesXml(
 			$response
 		);
-		if (\is_null($this->oldCSRFSetting)) {
+		if ($this->oldCSRFSetting === null) {
 			$oldCSRFSetting = SetupHelper::runOcc(
 				['config:system:get', 'csrf.disabled']
 			)['stdOut'];
@@ -532,13 +530,13 @@ class WebUIGeneralContext extends RawMinkContext implements Context {
 
 	/**
 	 * disable the previews on all tests tagged with '@disablePreviews'
-	 * 
+	 *
 	 * @BeforeScenario @webUI&&@disablePreviews
 	 *
 	 * @return void
 	 */
 	public function disablePreviewBeforeScenario() {
-		if (\is_null($this->oldPreviewSetting)) {
+		if ($this->oldPreviewSetting === null) {
 			$oldPreviewSetting = SetupHelper::runOcc(
 				['config:system:get', 'enable_previews']
 			)['stdOut'];
@@ -583,7 +581,7 @@ class WebUIGeneralContext extends RawMinkContext implements Context {
 
 		if ($this->oldPreviewSetting === "") {
 			SetupHelper::runOcc(['config:system:delete', 'enable_previews']);
-		} elseif (!\is_null($this->oldPreviewSetting)) {
+		} elseif ($this->oldPreviewSetting !== null) {
 			SetupHelper::runOcc(
 				[
 					'config:system:set',
@@ -598,7 +596,7 @@ class WebUIGeneralContext extends RawMinkContext implements Context {
 		
 		if ($this->oldCSRFSetting === "") {
 			SetupHelper::runOcc(['config:system:delete', 'csrf.disabled']);
-		} elseif (!\is_null($this->oldCSRFSetting)) {
+		} elseif ($this->oldCSRFSetting !== null) {
 			SetupHelper::runOcc(
 				[
 					'config:system:set',

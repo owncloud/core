@@ -103,7 +103,6 @@ class Share extends \OC\Share\Constants {
 	 */
 	public static function getItemsSharedWith($itemType, $format = self::FORMAT_NONE,
 		$parameters = null, $limit = -1, $includeCollections = false) {
-
 		return \OC\Share\Share::getItemsSharedWith($itemType, $format, $parameters, $limit, $includeCollections);
 	}
 
@@ -120,7 +119,6 @@ class Share extends \OC\Share\Constants {
 	 */
 	public static function getItemsSharedWithUser($itemType, $user, $format = self::FORMAT_NONE,
 		$parameters = null, $limit = -1, $includeCollections = false) {
-
 		return \OC\Share\Share::getItemsSharedWithUser($itemType, $user, $format, $parameters, $limit, $includeCollections);
 	}
 
@@ -136,7 +134,6 @@ class Share extends \OC\Share\Constants {
 	 */
 	public static function getItemSharedWith($itemType, $itemTarget, $format = self::FORMAT_NONE,
 		$parameters = null, $includeCollections = false) {
-
 		return \OC\Share\Share::getItemSharedWith($itemType, $itemTarget, $format, $parameters, $includeCollections);
 	}
 
@@ -213,7 +210,6 @@ class Share extends \OC\Share\Constants {
 	 */
 	public static function getItemsShared($itemType, $format = self::FORMAT_NONE, $parameters = null,
 		$limit = -1, $includeCollections = false) {
-
 		return \OC\Share\Share::getItemsShared($itemType, $format, $parameters, $limit, $includeCollections);
 	}
 
@@ -228,8 +224,7 @@ class Share extends \OC\Share\Constants {
 	 * @since 5.0.0
 	 */
 	public static function getItemShared($itemType, $itemSource, $format = self::FORMAT_NONE,
-	                                     $parameters = null, $includeCollections = false) {
-
+										 $parameters = null, $includeCollections = false) {
 		return \OC\Share\Share::getItemShared($itemType, $itemSource, $format, $parameters, $includeCollections);
 	}
 

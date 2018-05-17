@@ -117,7 +117,7 @@ class Updater implements IUpdater {
 		if (!$this->enabled or Scanner::isPartialFile($path)) {
 			return;
 		}
-		if (\is_null($time)) {
+		if ($time === null) {
 			$time = \time();
 		}
 
@@ -166,7 +166,6 @@ class Updater implements IUpdater {
 				$this->cache->correctFolderSize($parent);
 			}
 		}
-
 	}
 
 	/**

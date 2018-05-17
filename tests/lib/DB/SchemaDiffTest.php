@@ -67,7 +67,6 @@ class SchemaDiffTest extends TestCase {
 	 * @param string $xml
 	 */
 	public function testZeroChangeOnSchemaMigrations($xml) {
-
 		$xml = \str_replace('*dbprefix*', $this->testPrefix, $xml);
 		$schemaFile = 'static://test_db_scheme';
 		\file_put_contents($schemaFile, $xml);

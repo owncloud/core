@@ -157,7 +157,6 @@ class AccountMapper extends Mapper {
 	 * @return Account[]
 	 */
 	public function find($pattern, $limit = null, $offset = null) {
-
 		$allowMedialSearches = $this->config->getSystemValue('accounts.enable_medial_search', true);
 		if ($allowMedialSearches) {
 			$parameter = '%' . $this->db->escapeLikeParameter($pattern) . '%';
@@ -260,7 +259,7 @@ class AccountMapper extends Mapper {
 		}
 		if ($hasLoggedIn === true) {
 			$qb->andWhere($qb->expr()->gt('last_login', new Literal(0)));
-		} else if ($hasLoggedIn === false) {
+		} elseif ($hasLoggedIn === false) {
 			$qb->andWhere($qb->expr()->eq('last_login', new Literal(0)));
 		}
 		if ($limit !== null) {
@@ -275,5 +274,4 @@ class AccountMapper extends Mapper {
 		$stmt->closeCursor();
 		return $rows;
 	}
-
 }

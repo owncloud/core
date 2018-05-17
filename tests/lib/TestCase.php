@@ -39,13 +39,13 @@ abstract class TestCase extends BaseTestCase {
 	private $commandBus;
 
 	/** @var IDBConnection */
-	static protected $realDatabase = null;
+	protected static $realDatabase = null;
 
 	/** @var bool */
-	static private $wasDatabaseAllowed = false;
+	private static $wasDatabaseAllowed = false;
 
 	/** @var string */
-	static private $lastTest = '';
+	private static $lastTest = '';
 
 	/** @var array */
 	protected $services = [];
@@ -106,7 +106,7 @@ abstract class TestCase extends BaseTestCase {
 		self::$wasDatabaseAllowed = true;
 		if (!$this->IsDatabaseAccessAllowed()) {
 			self::$wasDatabaseAllowed = false;
-			if (\is_null(self::$realDatabase)) {
+			if (self::$realDatabase === null) {
 				self::$realDatabase = \OC::$server->getDatabaseConnection();
 			}
 			\OC::$server->registerService('DatabaseConnection', function () {
@@ -223,7 +223,7 @@ abstract class TestCase extends BaseTestCase {
 
 	public static function tearDownAfterClass() {
 		// fail if still in a transaction after test run
-		if(self::$wasDatabaseAllowed && \OC::$server->getDatabaseConnection()->inTransaction()) {
+		if (self::$wasDatabaseAllowed && \OC::$server->getDatabaseConnection()->inTransaction()) {
 			// This is bad. But we cannot fail the unit test since we are already
 			// outside of it. We cannot throw an exception since this hides
 			// potentially the real cause of this issue. So let's just output
@@ -232,10 +232,12 @@ abstract class TestCase extends BaseTestCase {
 			// attempt to reset it so you can continue running testing unaffected
 			try {
 				\OC::$server->getDatabaseConnection()->commit();
-			} catch (\Exception $e) {}
+			} catch (\Exception $e) {
+			}
 			try {
 				\OC::$server->getDatabaseConnection()->rollBack();
-			} catch (\Exception $e) {}
+			} catch (\Exception $e) {
+			}
 		}
 
 		if (!self::$wasDatabaseAllowed && self::$realDatabase !== null) {
@@ -269,7 +271,7 @@ abstract class TestCase extends BaseTestCase {
 	 *
 	 * @param IQueryBuilder $queryBuilder
 	 */
-	static protected function tearDownAfterClassCleanShares(IQueryBuilder $queryBuilder) {
+	protected static function tearDownAfterClassCleanShares(IQueryBuilder $queryBuilder) {
 		$queryBuilder->delete('share')
 			->execute();
 	}
@@ -279,7 +281,7 @@ abstract class TestCase extends BaseTestCase {
 	 *
 	 * @param IQueryBuilder $queryBuilder
 	 */
-	static protected function tearDownAfterClassCleanStorages(IQueryBuilder $queryBuilder) {
+	protected static function tearDownAfterClassCleanStorages(IQueryBuilder $queryBuilder) {
 		$queryBuilder->delete('storages')
 			->execute();
 	}
@@ -289,7 +291,7 @@ abstract class TestCase extends BaseTestCase {
 	 *
 	 * @param IQueryBuilder $queryBuilder
 	 */
-	static protected function tearDownAfterClassCleanFileCache(IQueryBuilder $queryBuilder) {
+	protected static function tearDownAfterClassCleanFileCache(IQueryBuilder $queryBuilder) {
 		$queryBuilder->delete('filecache')
 			->execute();
 	}
@@ -299,7 +301,7 @@ abstract class TestCase extends BaseTestCase {
 	 *
 	 * @param string $dataDir
 	 */
-	static protected function tearDownAfterClassCleanStrayDataFiles($dataDir) {
+	protected static function tearDownAfterClassCleanStrayDataFiles($dataDir) {
 		$knownEntries = [
 			'owncloud.log' => true,
 			'owncloud.db' => true,
@@ -323,7 +325,7 @@ abstract class TestCase extends BaseTestCase {
 	 *
 	 * @param string $dir
 	 */
-	static protected function tearDownAfterClassCleanStrayDataUnlinkDir($dir) {
+	protected static function tearDownAfterClassCleanStrayDataUnlinkDir($dir) {
 		if (\is_dir($dir)) {
 			if ($dh = @\opendir($dir)) {
 				while (($file = \readdir($dh)) !== false) {
@@ -346,14 +348,14 @@ abstract class TestCase extends BaseTestCase {
 	/**
 	 * Clean up the list of hooks
 	 */
-	static protected function tearDownAfterClassCleanStrayHooks() {
+	protected static function tearDownAfterClassCleanStrayHooks() {
 		\OC_Hook::clear();
 	}
 
 	/**
 	 * Clean up the list of locks
 	 */
-	static protected function tearDownAfterClassCleanStrayLocks() {
+	protected static function tearDownAfterClassCleanStrayLocks() {
 		\OC::$server->getLockingProvider()->releaseAll();
 	}
 
@@ -363,12 +365,12 @@ abstract class TestCase extends BaseTestCase {
 	 *
 	 * @param string $user user id or empty for a generic FS
 	 */
-	static protected function loginAsUser($user = '') {
+	protected static function loginAsUser($user = '') {
 		self::logout();
 		\OC\Files\Filesystem::tearDown();
 		\OC_User::setUserId($user);
 		$userObject = \OC::$server->getUserManager()->get($user);
-		if (!\is_null($userObject)) {
+		if ($userObject !== null) {
 			$userObject->updateLastLoginTimestamp();
 		}
 		\OC_Util::setupFS($user);
@@ -380,7 +382,7 @@ abstract class TestCase extends BaseTestCase {
 	/**
 	 * Logout the current user and tear down the filesystem.
 	 */
-	static protected function logout() {
+	protected static function logout() {
 		\OC_Util::tearDownFS();
 		\OC_User::setUserId('');
 		// needed for fully logout
@@ -448,7 +450,7 @@ abstract class TestCase extends BaseTestCase {
 	private function IsDatabaseAccessAllowed() {
 		// on travis-ci.org we allow database access in any case - otherwise
 		// this will break all apps right away
-		if (true == \getenv('TRAVIS')) {
+		if (\getenv('TRAVIS') == true) {
 			return true;
 		}
 		$annotations = $this->getAnnotations();
@@ -465,7 +467,6 @@ abstract class TestCase extends BaseTestCase {
 	 * @param array $vars
 	 */
 	protected function assertTemplate($expectedHtml, $template, $vars = []) {
-
 		require_once __DIR__.'/../../lib/private/legacy/template/functions.php';
 
 		$requestToken = 12345;
@@ -476,7 +477,7 @@ abstract class TestCase extends BaseTestCase {
 		$l10n
 			->expects($this->any())
 			->method('t')
-			->will($this->returnCallback(function($text, $parameters = []) {
+			->will($this->returnCallback(function ($text, $parameters = []) {
 				return \vsprintf($text, $parameters);
 			}));
 
@@ -509,7 +510,7 @@ abstract class TestCase extends BaseTestCase {
 
 	private function removeWhitespaces(DOMNode $domNode) {
 		foreach ($domNode->childNodes as $node) {
-			if($node->hasChildNodes()) {
+			if ($node->hasChildNodes()) {
 				$this->removeWhitespaces($node);
 			} else {
 				if ($node instanceof \DOMText && $node->isWhitespaceInElementContent()) {
@@ -542,5 +543,4 @@ abstract class TestCase extends BaseTestCase {
 		}
 		return false;
 	}
-
 }

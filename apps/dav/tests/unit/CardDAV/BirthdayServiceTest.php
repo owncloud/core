@@ -59,7 +59,7 @@ class BirthdayServiceTest extends TestCase {
 	 */
 	public function testBuildBirthdayFromContact($expectedSummary, $data) {
 		$cal = $this->service->buildDateFromContact($data, 'BDAY', '*');
-		if (\is_null($expectedSummary)) {
+		if ($expectedSummary === null) {
 			$this->assertNull($cal);
 		} else {
 			$this->assertInstanceOf('Sabre\VObject\Component\VCalendar', $cal);
@@ -223,7 +223,7 @@ class BirthdayServiceTest extends TestCase {
 		];
 	}
 
-	public function providesCardChanges(){
+	public function providesCardChanges() {
 		return[
 			['delete'],
 			['create'],

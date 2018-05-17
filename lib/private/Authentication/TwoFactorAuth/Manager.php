@@ -33,7 +33,6 @@ use OCP\ISession;
 use OCP\IUser;
 
 class Manager {
-
 	const SESSION_UID_KEY = 'two_factor_auth_uid';
 
 	/** @var AppManager */
@@ -151,7 +150,7 @@ class Manager {
 	 */
 	public function verifyChallenge($providerId, IUser $user, $challenge) {
 		$provider = $this->getProvider($user, $providerId);
-		if (\is_null($provider)) {
+		if ($provider === null) {
 			return false;
 		}
 
@@ -179,5 +178,4 @@ class Manager {
 	public function prepareTwoFactorLogin(IUser $user) {
 		$this->session->set(self::SESSION_UID_KEY, $user->getUID());
 	}
-
 }

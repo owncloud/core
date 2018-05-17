@@ -29,7 +29,6 @@ use OCP\Files\External\DefinitionParameter;
 use OCP\IL10N;
 
 class Swift extends Backend {
-
 	use LegacyDependencyCheckPolyfill;
 
 	public function __construct(IL10N $l) {
@@ -50,5 +49,4 @@ class Swift extends Backend {
 			->addAuthScheme(AuthMechanism::SCHEME_OPENSTACK)
 		;
 	}
-
 }

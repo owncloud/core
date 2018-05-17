@@ -31,15 +31,15 @@ use GuzzleHttp\Message\ResponseInterface;
  */
 class CardDavContext implements \Behat\Behat\Context\Context {
 	/**
-	 * @var Client 
+	 * @var Client
 	 */
 	private $client;
 	/**
-	 * @var ResponseInterface 
+	 * @var ResponseInterface
 	 */
 	private $response;
 	/**
-	 * @var array 
+	 * @var array
 	 */
 	private $responseXml = '';
 
@@ -213,5 +213,4 @@ class CardDavContext implements \Behat\Behat\Context\Context {
 			);
 		}
 	}
-
 }

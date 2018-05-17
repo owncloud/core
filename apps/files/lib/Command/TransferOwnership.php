@@ -55,7 +55,7 @@ class TransferOwnership extends Command {
 	private $encryptionManager;
 
 	/** @var ILogger  */
-	private  $logger;
+	private $logger;
 
 	/** @var bool */
 	private $filesExist = false;
@@ -115,11 +115,11 @@ class TransferOwnership extends Command {
 	protected function execute(InputInterface $input, OutputInterface $output) {
 		$sourceUserObject = $this->userManager->get($input->getArgument('source-user'));
 		$destinationUserObject = $this->userManager->get($input->getArgument('destination-user'));
-		if (\is_null($sourceUserObject)) {
+		if ($sourceUserObject === null) {
 			$output->writeln("<error>Unknown source user $this->sourceUser</error>");
 			return 1;
 		}
-		if (\is_null($destinationUserObject)) {
+		if ($destinationUserObject === null) {
 			$output->writeln("<error>Unknown destination user $this->destinationUser</error>");
 			return 1;
 		}
@@ -233,13 +233,12 @@ class TransferOwnership extends Command {
 		// no file is allowed to be encrypted
 		if (!empty($this->encryptedFiles)) {
 			$output->writeln("<error>Some files are encrypted - please decrypt them first</error>");
-			foreach($this->encryptedFiles as $encryptedFile) {
+			foreach ($this->encryptedFiles as $encryptedFile) {
 				/** @var FileInfo $encryptedFile */
 				$output->writeln("  " . $encryptedFile->getPath());
 			}
 			throw new \Exception('Execution terminated.');
 		}
-
 	}
 
 	/**
@@ -249,8 +248,8 @@ class TransferOwnership extends Command {
 		$output->writeln("Collecting all share information for files and folder of $this->sourceUser ...");
 
 		$progress = new ProgressBar($output, \count($this->shares));
-		foreach([\OCP\Share::SHARE_TYPE_GROUP, \OCP\Share::SHARE_TYPE_USER, \OCP\Share::SHARE_TYPE_LINK, \OCP\Share::SHARE_TYPE_REMOTE] as $shareType) {
-		$offset = 0;
+		foreach ([\OCP\Share::SHARE_TYPE_GROUP, \OCP\Share::SHARE_TYPE_USER, \OCP\Share::SHARE_TYPE_LINK, \OCP\Share::SHARE_TYPE_REMOTE] as $shareType) {
+			$offset = 0;
 			while (true) {
 				$sharePage = $this->shareManager->getSharesBy($this->sourceUser, $shareType, null, true, 50, $offset);
 				$progress->advance(\count($sharePage));
@@ -276,7 +275,7 @@ class TransferOwnership extends Command {
 		// This change will help user to transfer the folder specified using --path option.
 		// Else only the content inside folder is transferred which is not correct.
 		if (\strlen($this->inputPath) > 0) {
-			if($this->inputPath !== \ltrim("$this->sourceUser/files", '/')) {
+			if ($this->inputPath !== \ltrim("$this->sourceUser/files", '/')) {
 				$view->mkdir($this->finalTarget);
 				$this->finalTarget = $this->finalTarget . '/' . \basename($sourcePath);
 			}
@@ -297,7 +296,7 @@ class TransferOwnership extends Command {
 		$output->writeln("Restoring shares ...");
 		$progress = new ProgressBar($output, \count($this->shares));
 
-		foreach($this->shares as $share) {
+		foreach ($this->shares as $share) {
 			try {
 				if ($share->getSharedWith() === $this->destinationUser) {
 					// Unmount the shares before deleting, so we don't try to get the storage later on.

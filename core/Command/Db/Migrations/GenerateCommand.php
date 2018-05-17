@@ -31,7 +31,6 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
 class GenerateCommand extends Command {
-
 	private static $_templateSimple =
 		'<?php
 namespace <namespace>;
@@ -119,7 +118,6 @@ class Version<version> implements ISqlMigration {
 		$path = $this->generateMigration($ms, $version, $kind);
 
 		$output->writeln("New migration class has been generated to <info>$path</info>");
-
 	}
 
 	/**
@@ -160,5 +158,4 @@ class Version<version> implements ISqlMigration {
 		}
 		throw new \InvalidArgumentException('Kind can only be one of the following: simple, schema or sql');
 	}
-
 }

@@ -111,7 +111,7 @@ class AppSettingsController extends Controller {
 
 		// fix groups to be an array
 		$dependencyAnalyzer = new DependencyAnalyzer(new Platform($this->config), $this->l10n);
-		$apps = \array_map(function($app) use ($dependencyAnalyzer) {
+		$apps = \array_map(function ($app) use ($dependencyAnalyzer) {
 
 			// fix groups
 			$groups = [];
@@ -152,5 +152,4 @@ class AppSettingsController extends Controller {
 		});
 		return $apps;
 	}
-
 }

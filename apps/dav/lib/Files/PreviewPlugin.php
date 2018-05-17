@@ -48,8 +48,7 @@ class PreviewPlugin extends ServerPlugin {
 	 * @param Server $server
 	 * @return void
 	 */
-	function initialize(Server $server) {
-
+	public function initialize(Server $server) {
 		$this->server = $server;
 		$this->server->on('method:GET', [$this, 'httpGet'], 90);
 	}
@@ -65,8 +64,7 @@ class PreviewPlugin extends ServerPlugin {
 	 * @throws \Sabre\DAVACL\Exception\NeedPrivileges
 	 * @throws \Sabre\DAV\Exception\NotAuthenticated
 	 */
-	function httpGet(RequestInterface $request, ResponseInterface $response) {
-
+	public function httpGet(RequestInterface $request, ResponseInterface $response) {
 		$queryParams = $request->getQueryParameters();
 		if (!\array_key_exists('preview', $queryParams)) {
 			return true;
@@ -115,7 +113,7 @@ class PreviewPlugin extends ServerPlugin {
 			$response->setHeader('Content-Disposition', 'attachment');
 			// cache 24h
 			$response->setHeader('Cache-Control', 'max-age=86400, must-revalidate');
-			$response->setHeader('Expires', \gmdate ("D, d M Y H:i:s", \time() + 86400) . " GMT");
+			$response->setHeader('Expires', \gmdate("D, d M Y H:i:s", \time() + 86400) . " GMT");
 
 			$response->setStatus(200);
 			$response->setBody($imageData);

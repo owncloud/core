@@ -56,7 +56,7 @@ class ResourceLocatorTest extends \Test\TestCase {
 	}
 
 	public function testConstructor() {
-		$locator = $this->getResourceLocator('theme',	['core'=>'map'], ['foo'=>'bar']);
+		$locator = $this->getResourceLocator('theme', ['core'=>'map'], ['foo'=>'bar']);
 		$this->assertAttributeInstanceOf('OC\Theme\Theme', 'theme', $locator);
 		$this->assertAttributeEquals('core', 'serverroot', $locator);
 		$this->assertAttributeEquals(['core'=>'map'], 'mapping', $locator);
@@ -78,7 +78,7 @@ class ResourceLocatorTest extends \Test\TestCase {
 	}
 
 	public function testFindNotFound() {
-		$locator = $this->getResourceLocator('theme',	['core'=>'map'], ['foo'=>'bar']);
+		$locator = $this->getResourceLocator('theme', ['core'=>'map'], ['foo'=>'bar']);
 		$locator->expects($this->once())
 			->method('doFind')
 			->with('foo')
@@ -113,4 +113,3 @@ class ResourceLocatorTest extends \Test\TestCase {
 		$this->assertEquals([__FILE__ => $resource1], $locator->getResources());
 	}
 }
-

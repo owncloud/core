@@ -28,7 +28,6 @@
  * Class Helper
  */
 class HelperTest extends \Test\TestCase {
-
 	private function makeFileInfo($name, $size, $mtime, $isDir = false) {
 		return new \OC\Files\FileInfo(
 			'/' . $name,
@@ -59,7 +58,7 @@ class HelperTest extends \Test\TestCase {
 		];
 	}
 
-	function sortDataProvider() {
+	public function sortDataProvider() {
 		return [
 			[
 				'name',
@@ -109,5 +108,4 @@ class HelperTest extends \Test\TestCase {
 			$fileNames
 		);
 	}
-
 }

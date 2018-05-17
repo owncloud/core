@@ -56,7 +56,7 @@ class EditPublicLinkPopup extends OwncloudPage {
 	 * there is no real __construct() that can take arguments
 	 *
 	 * @param \Behat\Mink\Element\NodeElement $popupElement
-	 * 
+	 *
 	 * @return void
 	 */
 	public function setElement(NodeElement $popupElement) {
@@ -65,13 +65,13 @@ class EditPublicLinkPopup extends OwncloudPage {
 
 	/**
 	 * finds and returns the NodeElement of the name input field
-	 * 
+	 *
 	 * @throws ElementNotFoundException
 	 * @return NodeElement
 	 */
 	private function findNameInput() {
 		$nameInput = $this->popupElement->find("xpath", $this->nameInputXpath);
-		if (\is_null($nameInput)) {
+		if ($nameInput === null) {
 			throw new ElementNotFoundException(
 				__METHOD__ .
 				" xpath $this->nameInputXpath" .
@@ -82,9 +82,9 @@ class EditPublicLinkPopup extends OwncloudPage {
 	}
 
 	/**
-	 * 
+	 *
 	 * @param string $name
-	 * 
+	 *
 	 * @return void
 	 */
 	public function setLinkName($name) {
@@ -93,7 +93,7 @@ class EditPublicLinkPopup extends OwncloudPage {
 	}
 
 	/**
-	 * 
+	 *
 	 * @return string
 	 */
 	public function getLinkName() {
@@ -102,9 +102,9 @@ class EditPublicLinkPopup extends OwncloudPage {
 	}
 
 	/**
-	 * 
+	 *
 	 * @param string $permissions
-	 * 
+	 *
 	 * @return void
 	 */
 	public function setLinkPermissions($permissions) {
@@ -113,7 +113,7 @@ class EditPublicLinkPopup extends OwncloudPage {
 			$permissionsCheckbox = $this->popupElement->find(
 				"xpath", $this->permissionLabelXpath[$permissions]
 			);
-			if (\is_null($permissionsCheckbox)) {
+			if ($permissionsCheckbox === null) {
 				throw new ElementNotFoundException(
 					__METHOD__ .
 					" findField($permissions)" .
@@ -131,14 +131,14 @@ class EditPublicLinkPopup extends OwncloudPage {
 	/**
 	 *
 	 * @param string $password
-	 * 
+	 *
 	 * @return void
 	 */
 	public function setLinkPassword($password) {
 		$passwordInput = $this->popupElement->find(
 			"xpath", $this->passwordInputXpath
 		);
-		if (\is_null($passwordInput)) {
+		if ($passwordInput === null) {
 			throw new ElementNotFoundException(
 				__METHOD__ .
 				" xpath $this->passwordInputXpath" .
@@ -151,14 +151,14 @@ class EditPublicLinkPopup extends OwncloudPage {
 	/**
 	 *
 	 * @param string $date
-	 * 
+	 *
 	 * @return void
 	 */
 	public function setLinkExpirationDate($date) {
 		$expirationDateInput = $this->popupElement->find(
 			"xpath", $this->expirationDateInputXpath
 		);
-		if (\is_null($expirationDateInput)) {
+		if ($expirationDateInput === null) {
 			throw new ElementNotFoundException(
 				__METHOD__ .
 				" xpath $this->expirationDateInputXpath" .
@@ -175,7 +175,7 @@ class EditPublicLinkPopup extends OwncloudPage {
 		$expirationDateLabel = $this->popupElement->find(
 			"xpath", $this->expirationDateLabelXpath
 		);
-		if (!\is_null($expirationDateLabel)) {
+		if ($expirationDateLabel !== null) {
 			$expirationDateLabel->click();
 		}
 	}
@@ -183,12 +183,12 @@ class EditPublicLinkPopup extends OwncloudPage {
 	/**
 	 *
 	 * @param string $email
-	 * 
+	 *
 	 * @return void
 	 */
 	public function setLinkEmail($email) {
 		$emailInput = $this->popupElement->find("xpath", $this->emailInputXpath);
-		if (\is_null($emailInput)) {
+		if ($emailInput === null) {
 			throw new ElementNotFoundException(
 				__METHOD__ .
 				" xpath $this->emailInputXpath" .
@@ -199,12 +199,12 @@ class EditPublicLinkPopup extends OwncloudPage {
 	}
 
 	/**
-	 * 
+	 *
 	 * @return void
 	 */
 	public function save() {
 		$saveButton = $this->popupElement->find("xpath", $this->shareButtonXpath);
-		if (\is_null($saveButton)) {
+		if ($saveButton === null) {
 			throw new ElementNotFoundException(
 				__METHOD__ .
 				" xpath $this->shareButtonXpath" .

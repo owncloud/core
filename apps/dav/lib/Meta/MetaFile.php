@@ -51,14 +51,14 @@ class MetaFile extends File implements ICopySource, IFileNode, IProvidesAddition
 	/**
 	 * @inheritdoc
 	 */
-	function getName() {
+	public function getName() {
 		return $this->file->getName();
 	}
 
 	/**
 	 * @inheritdoc
 	 */
-	function getSize() {
+	public function getSize() {
 		return $this->file->getSize();
 	}
 

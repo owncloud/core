@@ -78,7 +78,7 @@ class DefaultTokenProvider implements IProvider {
 		$dbToken = new DefaultToken();
 		$dbToken->setUid($uid);
 		$dbToken->setLoginName($loginName);
-		if (!\is_null($password)) {
+		if ($password !== null) {
 			$dbToken->setPassword($this->encryptPassword($password, $token));
 		}
 		$dbToken->setName($name);
@@ -160,7 +160,7 @@ class DefaultTokenProvider implements IProvider {
 	 */
 	public function getPassword(IToken $savedToken, $tokenId) {
 		$password = $savedToken->getPassword();
-		if (\is_null($password)) {
+		if ($password === null) {
 			throw new PasswordlessTokenException();
 		}
 		return $this->decryptPassword($password, $tokenId);
@@ -254,5 +254,4 @@ class DefaultTokenProvider implements IProvider {
 			throw new InvalidTokenException();
 		}
 	}
-
 }

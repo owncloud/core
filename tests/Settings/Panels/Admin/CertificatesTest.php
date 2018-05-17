@@ -79,5 +79,4 @@ class CertificatesTest extends \Test\TestCase {
 		$template = $this->panel->getPanel();
 		$this->assertNull($template);
 	}
-
 }

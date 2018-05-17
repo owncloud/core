@@ -131,61 +131,61 @@ class SMB extends \OCP\Files\Storage\StorageAdapter {
 	 */
 	protected function getFileInfo($path) {
 		$this->log('enter: '.__FUNCTION__."($path)");
-			$path = $this->buildPath($path);
-			if (!isset($this->statCache[$path])) {
+		$path = $this->buildPath($path);
+		if (!isset($this->statCache[$path])) {
+			try {
+				$this->log("stat fetching '$path'");
 				try {
-					$this->log("stat fetching '$path'");
-					try {
-						$this->statCache[$path] = $this->share->stat($path);
-					} catch (NotFoundException $e) {
-						if ($this->share instanceof Share) {
-							// smbclient may have problems with the allinfo cmd
-							$this->log("stat for '$path' failed, trying to read parent dir");
-							$infos = $this->share->dir(\dirname($path));
-							foreach ($infos as $fileInfo) {
-								if ($fileInfo->getName() === \basename($path)) {
-									$this->statCache[$path] = $fileInfo;
-									break;
-								}
+					$this->statCache[$path] = $this->share->stat($path);
+				} catch (NotFoundException $e) {
+					if ($this->share instanceof Share) {
+						// smbclient may have problems with the allinfo cmd
+						$this->log("stat for '$path' failed, trying to read parent dir");
+						$infos = $this->share->dir(\dirname($path));
+						foreach ($infos as $fileInfo) {
+							if ($fileInfo->getName() === \basename($path)) {
+								$this->statCache[$path] = $fileInfo;
+								break;
 							}
-							if (empty($this->statCache[$path])) {
-								$this->leave(__FUNCTION__, $e);
-								throw $e;
-							}
-						} else {
-							// trust the results of libsmb
+						}
+						if (empty($this->statCache[$path])) {
 							$this->leave(__FUNCTION__, $e);
 							throw $e;
 						}
-					}
-					if ($this->isRootDir($path) && $this->statCache[$path]->isHidden()) {
-						$this->log("unhiding stat for '$path'");
-						// make root never hidden, may happen when accessing a shared drive (mode is 22, archived and readonly - neither is true ... whatever)
-						if ($this->statCache[$path]->isReadOnly()) {
-							$mode = FileInfo::MODE_DIRECTORY & FileInfo::MODE_READONLY;
-						} else {
-							$mode = FileInfo::MODE_DIRECTORY;
-						}
-						$this->statCache[$path] = new FileInfo($path, '', 0, $this->statCache[$path]->getMTime(), $mode);
-					}
-				} catch (ConnectException $e) {
-					$ex = new StorageNotAvailableException(
-						$e->getMessage(), $e->getCode(), $e);
-					$this->leave(__FUNCTION__, $ex);
-					throw $ex;
-				} catch (ForbiddenException $e) {
-					if ($this->remoteIsShare() && $this->isRootDir($path)) { //mtime may not work for share root
-						$this->log("faking stat for forbidden '$path'");
-						$this->statCache[$path] = new FileInfo($path, '', 0, $this->shareMTime(), FileInfo::MODE_DIRECTORY);
 					} else {
+						// trust the results of libsmb
 						$this->leave(__FUNCTION__, $e);
 						throw $e;
 					}
 				}
-			} else {
-				$this->log("stat cache hit for '$path'");
+				if ($this->isRootDir($path) && $this->statCache[$path]->isHidden()) {
+					$this->log("unhiding stat for '$path'");
+					// make root never hidden, may happen when accessing a shared drive (mode is 22, archived and readonly - neither is true ... whatever)
+					if ($this->statCache[$path]->isReadOnly()) {
+						$mode = FileInfo::MODE_DIRECTORY & FileInfo::MODE_READONLY;
+					} else {
+						$mode = FileInfo::MODE_DIRECTORY;
+					}
+					$this->statCache[$path] = new FileInfo($path, '', 0, $this->statCache[$path]->getMTime(), $mode);
+				}
+			} catch (ConnectException $e) {
+				$ex = new StorageNotAvailableException(
+						$e->getMessage(), $e->getCode(), $e);
+				$this->leave(__FUNCTION__, $ex);
+				throw $ex;
+			} catch (ForbiddenException $e) {
+				if ($this->remoteIsShare() && $this->isRootDir($path)) { //mtime may not work for share root
+					$this->log("faking stat for forbidden '$path'");
+					$this->statCache[$path] = new FileInfo($path, '', 0, $this->shareMTime(), FileInfo::MODE_DIRECTORY);
+				} else {
+					$this->leave(__FUNCTION__, $e);
+					throw $e;
+				}
 			}
-			$result = $this->statCache[$path];
+		} else {
+			$this->log("stat cache hit for '$path'");
+		}
+		$result = $this->statCache[$path];
 		return $this->leave(__FUNCTION__, $result);
 	}
 
@@ -681,15 +681,15 @@ class SMB extends \OCP\Files\Storage\StorageAdapter {
 		if (\OC::$server->getConfig()->getSystemValue('smb.logging.enable', false) === false) {
 			//don't bother building log strings
 			return $result;
-		} else if ($result === true) {
+		} elseif ($result === true) {
 			Util::writeLog('smb', "leave: $function, return true", Util::DEBUG);
-		} else if ($result === false) {
+		} elseif ($result === false) {
 			Util::writeLog('smb', "leave: $function, return false", Util::DEBUG);
-		} else if (\is_string($result)) {
+		} elseif (\is_string($result)) {
 			Util::writeLog('smb', "leave: $function, return '$result'", Util::DEBUG);
-		} else if (\is_resource($result)) {
+		} elseif (\is_resource($result)) {
 			Util::writeLog('smb', "leave: $function, return resource", Util::DEBUG);
-		} else if ($result instanceof \Exception) {
+		} elseif ($result instanceof \Exception) {
 			Util::writeLog('smb', "leave: $function, throw ".\get_class($result)
 				.' - code: '.$result->getCode()
 				.' message: '.$result->getMessage()
