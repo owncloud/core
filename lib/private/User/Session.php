@@ -32,6 +32,7 @@
 
 namespace OC\User;
 
+use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
 use Exception;
 use OC;
 use OC\Authentication\Exceptions\InvalidTokenException;
@@ -247,6 +248,7 @@ class Session implements IUserSession, Emitter {
 			try {
 				$token = $this->session->getId();
 			} catch (SessionNotAvailableException $ex) {
+				$this->logger->logException($ex, ['app' => __METHOD__]);
 				return;
 			}
 		} else {
@@ -314,6 +316,14 @@ class Session implements IUserSession, Emitter {
 	 * @throws LoginException
 	 */
 	public function login($uid, $password) {
+		$this->logger->debug(
+			'regenerating session id for uid {uid}, password {password}',
+			[
+				'app' => __METHOD__,
+				'uid' => $uid,
+				'password' => empty($password) ? 'empty' : 'set'
+			]
+		);
 		$this->session->regenerateId();
 
 		if ($this->validateToken($password, $uid)) {
@@ -474,6 +484,7 @@ class Session implements IUserSession, Emitter {
 					 * necessary but the iOS App reads cookies from anywhere instead
 					 * only the DAV endpoint.
 					 * This makes sure that the cookies will be valid for the whole scope
+					 *
 					 * @see https://github.com/owncloud/core/issues/22893
 					 */
 					$this->session->set(
@@ -629,6 +640,13 @@ class Session implements IUserSession, Emitter {
 		if ($this->getUser() !== null && $uid === $this->getUser()->getUID()) {
 			return true; // nothing to do
 		}
+		$this->logger->debug(
+			'regenerating session id for uid {uid}',
+			[
+				'app' => __METHOD__,
+				'uid' => $uid
+			]
+		);
 		$this->session->regenerateId();
 
 		$this->manager->emit('\OC\User', 'preLogin', [$uid, '']);
@@ -701,7 +719,17 @@ class Session implements IUserSession, Emitter {
 		} catch (SessionNotAvailableException $ex) {
 			// This can happen with OCC, where a memory session is used
 			// if a memory session is used, we shouldn't create a session token anyway
+			$this->logger->logException($ex, ['app' => __METHOD__]);
 			return false;
+		} catch (UniqueConstraintViolationException $ex) {
+			$this->logger->error(
+				'There are code paths that trigger the generation of an auth ' .
+				'token for the same session twice. We log this to trace the code ' .
+				'paths. Please send all log lines belonging to this request id.',
+				['app' => __METHOD__]
+			);
+			$this->logger->logException($ex, ['app' => __METHOD__]);
+			return true; // the session already has an auth token, go ahead.
 		}
 	}
 
@@ -747,16 +775,39 @@ class Session implements IUserSession, Emitter {
 			// Checked performed recently, nothing to do now
 			return true;
 		}
+		$this->logger->debug(
+			'checking credentials for token {token} with token id {tokenId}, last check at {lastCheck} was more than {last_check_timeout} min ago',
+			[
+				'app' => __METHOD__,
+				'token' => $this->hashToken($token),
+				'tokenId' => $dbToken->getId(),
+				'lastCheck' => $lastCheck,
+				'last_check_timeout' => $last_check_timeout
+			]
+		);
 
 		try {
 			$pwd = $this->tokenProvider->getPassword($dbToken, $token);
 		} catch (InvalidTokenException $ex) {
-			// An invalid token password was used -> log user out
+			$this->logger->error(
+				'An invalid token password was used for token {token} with token id {tokenId}',
+				['app' => __METHOD__, 'token' => $this->hashToken($token), 'tokenId' => $dbToken->getId()]
+			);
+			$this->logger->logException($ex, ['app' => __METHOD__]);
 			return false;
 		} catch (PasswordlessTokenException $ex) {
 			// Token has no password
 
 			if ($this->activeUser !== null && !$this->activeUser->isEnabled()) {
+				$this->logger->debug(
+					'user {uid}, {email}, {displayName} was disabled',
+					[
+						'app' => __METHOD__,
+						'uid' => $this->activeUser->getUID(),
+						'email' => $this->activeUser->getEMailAddress(),
+						'displayName' => $this->activeUser->getDisplayName(),
+					]
+				);
 				$this->tokenProvider->invalidateToken($token);
 				return false;
 			}
@@ -768,6 +819,15 @@ class Session implements IUserSession, Emitter {
 
 		if ($this->manager->checkPassword($dbToken->getLoginName(), $pwd) === false
 			|| ($this->activeUser !== null && !$this->activeUser->isEnabled())) {
+			$this->logger->debug(
+				'user uid {uid}, email {email}, displayName {displayName} was disabled or password changed',
+				[
+					'app' => __METHOD__,
+					'uid' => $this->activeUser->getUID(),
+					'email' => $this->activeUser->getEMailAddress(),
+					'displayName' => $this->activeUser->getDisplayName(),
+				]
+			);
 			$this->tokenProvider->invalidateToken($token);
 			// Password has changed or user was disabled -> log user out
 			return false;
@@ -790,18 +850,45 @@ class Session implements IUserSession, Emitter {
 		try {
 			$dbToken = $this->tokenProvider->getToken($token);
 		} catch (InvalidTokenException $ex) {
+			$this->logger->debug(
+				'token {token}, not found',
+				['app' => __METHOD__, 'token' => $this->hashToken($token)]
+			);
 			return false;
 		}
+		$this->logger->debug(
+			'token {token} with token id {tokenId} found, validating',
+			['app' => __METHOD__, 'token' => $this->hashToken($token), 'tokenId' => $dbToken->getId()]
+		);
 
 		// Check if login names match
 		if ($user !== null && $dbToken->getLoginName() !== $user) {
 			// TODO: this makes it impossible to use different login names on browser and client
 			// e.g. login by e-mail 'user@example.com' on browser for generating the token will not
 			//      allow to use the client token with the login name 'user'.
+			$this->logger->error(
+				'user {user} does not match login {tokenLogin} of user {tokenUid} in token {token} with token id {tokenId}',
+				[
+					'app' => __METHOD__,
+					'user' => $user,
+					'tokenUid' => $dbToken->getLoginName(),
+					'tokenLogin' => $dbToken->getLoginName(),
+					'token' => $this->hashToken($token),
+					'tokenId' => $dbToken->getId()
+				]
+			);
 			return false;
 		}
 
 		if (!$this->checkTokenCredentials($dbToken, $token)) {
+			$this->logger->error(
+				'invalid credentials in token {token} with token id {tokenId}',
+				[
+					'app' => __METHOD__,
+					'token' => $this->hashToken($token),
+					'tokenId' => $dbToken->getId()
+				]
+			);
 			return false;
 		}
 
@@ -913,6 +1000,10 @@ class Session implements IUserSession, Emitter {
 	 * @throws \OCP\PreConditionNotMetException
 	 */
 	public function loginWithCookie($uid, $currentToken) {
+		$this->logger->debug(
+			'regenerating session id for uid {uid}, currentToken {currentToken}',
+			['app' => __METHOD__, 'uid' => $uid, 'currentToken' => $currentToken]
+		);
 		$this->session->regenerateId();
 		$this->manager->emit('\OC\User', 'preRememberedLogin', [$uid]);
 		$user = $this->manager->get($uid);
@@ -963,6 +1054,7 @@ class Session implements IUserSession, Emitter {
 				try {
 					$this->tokenProvider->invalidateToken($this->session->getId());
 				} catch (SessionNotAvailableException $ex) {
+					$this->logger->logException($ex, ['app' => __METHOD__]);
 				}
 			}
 			$this->setUser(null);
@@ -1087,5 +1179,14 @@ class Session implements IUserSession, Emitter {
 
 		$loginFailedEvent = new GenericEvent(null, ['user' => $user]);
 		$this->eventDispatcher->dispatch('user.loginfailed', $loginFailedEvent);
+	}
+
+	/**
+	 * @param string $token
+	 * @return string
+	 */
+	private function hashToken($token) {
+		$secret = $this->config->getSystemValue('secret');
+		return \hash('sha512', $token . $secret);
 	}
 }
