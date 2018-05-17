@@ -93,7 +93,7 @@ OC.L10N.register(
     "Ok" : "Gerai",
     "Error loading message template: {error}" : "Klaida įkeliant žinutės ruošinį: {error}",
     "read-only" : "tik skaitymui",
-    "_{count} file conflict_::_{count} file conflicts_" : ["{count} failas konfliktuoja","{count} failai konfliktuoja","{count} failų konfliktų"],
+    "_{count} file conflict_::_{count} file conflicts_" : ["{count} failas konfliktuoja","{count} failai konfliktuoja","{count} failų konfliktų","{count} failų konfliktų"],
     "One file conflict" : "Vienas failo konfliktas",
     "New Files" : "Naujas failas",
     "Already existing files" : "Egzistuojantys failai",
@@ -230,4 +230,4 @@ OC.L10N.register(
     "Cancel login" : "Atšaukti prisijungimą",
     "Update needed" : "Reikalingas atnaujinimas"
 },
-"nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && (n%100<10 || n%100>=20) ? 1 : 2);");
+"nplurals=4; plural=(n % 10 == 1 && (n % 100 > 19 || n % 100 < 11) ? 1 : (n%10 >= 2 && n % 10 <=9) && (n % 100 > 19 || n % 100 < 11) ? 3 : n % 1 != 0 ? 4);");

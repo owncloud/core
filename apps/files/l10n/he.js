@@ -53,12 +53,8 @@ OC.L10N.register(
     "Name" : "שם",
     "Size" : "גודל",
     "Modified" : "זמן שינוי",
-    "_%n folder_::_%n folders_" : ["%n תיקייה","%n תיקיות"],
-    "_%n file_::_%n files_" : ["%n קובץ","%n קבצים"],
     "{dirs} and {files}" : "{dirs} וכן {files}",
-    "_including %n hidden_::_including %n hidden_" : ["מכיל %n מוסתר","מכיל %n מוסתרים"],
     "You don’t have permission to upload or create files here" : "אין לך הרשאות להעלות או ליצור קבצים כאן",
-    "_Uploading %n file_::_Uploading %n files_" : ["מעלה %n קובץ","מעלה %n קבצים"],
     "New" : "חדש",
     "\"{name}\" is an invalid file name." : "\"{name}\" הנו שם קובץ לא חוקי.",
     "File name cannot be empty." : "שם קובץ אינו יכול להיות ריק",
@@ -68,9 +64,7 @@ OC.L10N.register(
     "Your storage is full, files can not be updated or synced anymore!" : "האחסון שלך מלא, כבר לא ניתן לעדכן ולסנכרן קבצים!",
     "Storage of {owner} is almost full ({usedSpacePercent}%)" : "האחסון של {owner} כמעט מלא ({usedSpacePercent}%)",
     "Your storage is almost full ({usedSpacePercent}%)" : "שטח האחסון שלך כמעט מלא ({usedSpacePercent}%)",
-    "_matches '{filter}'_::_match '{filter}'_" : ["מתאים ל- '{filter}'","מתאים ל- '{filter}'"],
     "Path" : "נתיב",
-    "_%n byte_::_%n bytes_" : ["%n בייט","%n בייטים"],
     "Favorited" : "מועדף",
     "Favorite" : "מועדף",
     "Private link:  Only people who have access to the file/folder can use it. Use it as a permanent link for yourself or to point others to files within shares" : "קישור פרטי: רק אנשים שיש להם גישה לקובץ/ספריה יכולים להשתמש בו. ניתן להשתמש בו כקישור קבע לעצמך או להפנות אחרים לקבצים השייכים לשיתוף",
@@ -113,4 +107,4 @@ OC.L10N.register(
     "Text file" : "קובץ טקסט",
     "New text file.txt" : "קובץ טקסט חדש.txt"
 },
-"nplurals=2; plural=(n != 1);");
+"nplurals=4; plural=(n==1 ? 1: n == 2 ? 2 : (n % 10 == 0 and n > 10) ? 4);");

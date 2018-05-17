@@ -3,4 +3,4 @@ OC.L10N.register(
     {
     "Location" : "Papan panggonan"
 },
-"nplurals=2; plural=(n != 1);");
+"nplurals=1; plural=0;");

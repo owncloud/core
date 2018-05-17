@@ -105,7 +105,7 @@ OC.L10N.register(
     "Ok" : "قبول",
     "Error loading message template: {error}" : "خطا در بارگذاری قالب پیام : {error}",
     "read-only" : "فقط-خواندنی",
-    "_{count} file conflict_::_{count} file conflicts_" : ["{شمارش} پرونده های ناسازگار"],
+    "_{count} file conflict_::_{count} file conflicts_" : ["{شمارش} پرونده های ناسازگار","{شمارش} پرونده های ناسازگار"],
     "One file conflict" : "یک فایل متضاد",
     "New Files" : "فایل های جدید",
     "Already existing files" : "فایل های موجود در حال حاضر ",
@@ -224,7 +224,7 @@ OC.L10N.register(
     "Hello {name}, the weather is {weather}" : "سلام {name}, هوا  {weather} است",
     "Hello {name}" : "سلام {name}",
     "new" : "جدید",
-    "_download %n file_::_download %n files_" : ["دانلود %n فایل"],
+    "_download %n file_::_download %n files_" : ["دانلود %n فایل","دانلود %n فایل"],
     "The upgrade is in progress, leaving this page might interrupt the process in some environments." : "ارتقا در حال پیشرفت است، ترک این صفحه ممکن است در برخی محیط ها پردازش را متوقف کند.",
     "Updating to {version}" : "به روز رسانی در {نسخه}",
     "An error occurred." : "یک خطا رخ‌داده است.",
@@ -235,7 +235,7 @@ OC.L10N.register(
     "The update was successful. Redirecting you to ownCloud now." : "به روزرسانی موفقیت آمیز بود. در حال انتقال شما به OwnCloud.",
     "Searching other places" : "جستجو در مکان‌های دیگر",
     "No search results in other folders" : "نتایج جستجو در سایر پوشه‌ها موجود نیست",
-    "_{count} search result in another folder_::_{count} search results in other folders_" : ["{شمارش} نتایج جستجو در سایر پوشه‌هاست"],
+    "_{count} search result in another folder_::_{count} search results in other folders_" : ["{شمارش} نتایج جستجو در سایر پوشه‌هاست","{شمارش} نتایج جستجو در سایر پوشه‌هاست"],
     "Personal" : "شخصی",
     "Apps" : "  برنامه ها",
     "Admin" : "مدیر",
@@ -328,4 +328,4 @@ OC.L10N.register(
     "This %s instance is currently in maintenance mode, which may take a while." : "این نمونه %s اکنون در حالت تعمیر است، که ممکن است زمانی طول بکشد.",
     "This page will refresh itself when the %s instance is available again." : "این صفحه زمانی که نمونه %s مجددا موجود باشد خود را refresh می کند."
 },
-"nplurals=1; plural=0;");
+"nplurals=2; plural=((n<=1 && n>= 0) ? 1);");

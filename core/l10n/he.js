@@ -107,7 +107,6 @@ OC.L10N.register(
     "Ok" : "בסדר",
     "Error loading message template: {error}" : "שגיאה בטעינת תבנית ההודעות: {error}",
     "read-only" : "לקריאה בלבד",
-    "_{count} file conflict_::_{count} file conflicts_" : ["{count} הנגשות קובץ","{count} התנגשויות קבצים"],
     "One file conflict" : "התנגשות קובץ אחת",
     "New Files" : "קבצים חדשים",
     "Already existing files" : "קבצים קיימים כבר",
@@ -234,7 +233,6 @@ OC.L10N.register(
     "Hello {name}, the weather is {weather}" : "שלום {name}, מזג האוויר הנו {weather}",
     "Hello {name}" : "שלום {name}",
     "new" : "חדש",
-    "_download %n file_::_download %n files_" : ["הורד %n קובץ","הורדו %n קבצים"],
     "The upgrade is in progress, leaving this page might interrupt the process in some environments." : "מתבצע עכשיו שדרוג, מעבר מדף זה עלול לפגוע בתהליך בסביבות הפעלה מסויימות.",
     "Updating to {version}" : "מעדכן ל- {version}",
     "An error occurred." : "אירעה שגיאה.",
@@ -245,7 +243,6 @@ OC.L10N.register(
     "The update was successful. Redirecting you to ownCloud now." : "תהליך העדכון הסתיים בהצלחה. עכשיו מנתב אותך אל ownCloud.",
     "Searching other places" : "מחפש במקומות אחרים",
     "No search results in other folders" : "אין תוצאות חיפוש בתיקיות אחרות",
-    "_{count} search result in another folder_::_{count} search results in other folders_" : ["{count} תוצאת חיפוש בתיקייה אחרות","{count} תוצאות חיפוש בתיקיות אחרות"],
     "Personal" : "אישי",
     "Apps" : "יישומים",
     "Admin" : "ניהול",
@@ -341,4 +338,4 @@ OC.L10N.register(
     "This %s instance is currently in maintenance mode, which may take a while." : "הפעלה %s זו כרגע במצב אחזקה, שתמשך זמן מה.",
     "This page will refresh itself when the %s instance is available again." : "עמוד זה ירענן את עצמו כשהפעלת %s תהיה זמינה שוב."
 },
-"nplurals=2; plural=(n != 1);");
+"nplurals=4; plural=(n==1 ? 1: n == 2 ? 2 : (n % 10 == 0 and n > 10) ? 4);");

@@ -100,7 +100,7 @@
     "Ok" : "Ok",
     "Error loading message template: {error}" : "Chyba při nahrávání šablony zprávy: {error}",
     "read-only" : "pouze ke čtení",
-    "_{count} file conflict_::_{count} file conflicts_" : ["{count} souborový konflikt","{count} souborové konflikty","{count} souborových konfliktů"],
+    "_{count} file conflict_::_{count} file conflicts_" : ["{count} souborový konflikt","{count} souborové konflikty","{count} souborových konfliktů","{count} souborových konfliktů"],
     "One file conflict" : "Jeden konflikt souboru",
     "New Files" : "Nové soubory",
     "Already existing files" : "Již existující soubory",
@@ -219,7 +219,7 @@
     "Hello {name}, the weather is {weather}" : "Ahoj {name}, je {weather}",
     "Hello {name}" : "Vítej, {name}",
     "new" : "nový",
-    "_download %n file_::_download %n files_" : ["stáhnout %n soubor","stáhnout %n soubory","stáhnout %n souborů"],
+    "_download %n file_::_download %n files_" : ["stáhnout %n soubor","stáhnout %n soubory","stáhnout %n souborů","stáhnout %n souborů"],
     "The upgrade is in progress, leaving this page might interrupt the process in some environments." : "Probíhá aktualizace, opuštění této stránky může v některých prostředích přerušit proces.",
     "Updating to {version}" : "Aktualizace na {version}",
     "An error occurred." : "Došlo k chybě.",
@@ -230,7 +230,7 @@
     "The update was successful. Redirecting you to ownCloud now." : "Aktualizace byla úspěšná. Přesměrovávám na ownCloud.",
     "Searching other places" : "Prohledávání ostatních umístění",
     "No search results in other folders" : "V ostatních adresářích nebylo nic nalezeno",
-    "_{count} search result in another folder_::_{count} search results in other folders_" : ["{count} nález v dalším adresáři","{count} nálezy v dalších adresářích","{count} nálezů v dalších adresářích"],
+    "_{count} search result in another folder_::_{count} search results in other folders_" : ["{count} nález v dalším adresáři","{count} nálezy v dalších adresářích","{count} nálezů v dalších adresářích","{count} nálezů v dalších adresářích"],
     "Personal" : "Osobní",
     "Apps" : "Aplikace",
     "Admin" : "Administrace",
@@ -318,5 +318,5 @@
     "For help, see the  <a target=\"_blank\" rel=\"noreferrer\" href=\"%s\">documentation</a>." : "Pro pomoc, shlédněte  <a target=\"_blank\" rel=\"noreferrer\" href=\"%s\">dokumentaci</a>.",
     "This %s instance is currently in maintenance mode, which may take a while." : "Tato instalace %s je právě ve stavu údržby a to může chvíli trvat.",
     "This page will refresh itself when the %s instance is available again." : "Tato stránka se automaticky načte poté, co bude opět dostupná instance %s."
-},"pluralForm" :"nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;"
+},"pluralForm" :"nplurals=4; plural=(n < 10 && n % 1 == 0) ? 1 : (n < 9999 && n >= 10 && n % 1 == 0) ? 3 : (n % 1 != 0) : 4;"
 }

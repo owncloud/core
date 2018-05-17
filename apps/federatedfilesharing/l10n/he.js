@@ -25,4 +25,4 @@ OC.L10N.register(
     "Share with me via ownCloud" : "שיתוף איתי באמצעות ownCloud",
     "HTML Code:" : "קוד HTML:"
 },
-"nplurals=2; plural=(n != 1);");
+"nplurals=4; plural=(n==1 ? 1: n == 2 ? 2 : (n % 10 == 0 and n > 10) ? 4);");

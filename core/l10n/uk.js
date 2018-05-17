@@ -101,7 +101,7 @@ OC.L10N.register(
     "Ok" : "Гаразд",
     "Error loading message template: {error}" : "Помилка при завантаженні шаблону повідомлення: {error}",
     "read-only" : "Тільки для читання",
-    "_{count} file conflict_::_{count} file conflicts_" : ["{count} файловий конфлікт","{count} файлових конфліктів","{count} файлових конфліктів"],
+    "_{count} file conflict_::_{count} file conflicts_" : ["{count} файловий конфлікт","{count} файлових конфліктів","{count} файлових конфліктів","{count} файлових конфліктів"],
     "One file conflict" : "Один файловий конфлікт",
     "New Files" : "Нових Файлів",
     "Already existing files" : "Файли що вже існують",
@@ -193,7 +193,7 @@ OC.L10N.register(
     "Hello {name}, the weather is {weather}" : "Привіт {name}, погода {weather} ",
     "Hello {name}" : "Привіт {name}",
     "new" : "новий",
-    "_download %n file_::_download %n files_" : ["завантаження %n файлу","завантаження %n файлів","завантаження %n файлів"],
+    "_download %n file_::_download %n files_" : ["завантаження %n файлу","завантаження %n файлів","завантаження %n файлів","завантаження %n файлів"],
     "The upgrade is in progress, leaving this page might interrupt the process in some environments." : "Триває оновлення, якщо ви покинете сторінку, це може перервати процес в деяких оточеннях.",
     "Updating to {version}" : "Оновлення до {version}",
     "An error occurred." : "Виникла помилка.",
@@ -204,7 +204,7 @@ OC.L10N.register(
     "The update was successful. Redirecting you to ownCloud now." : "Оновлення виконалось успішно. Перенаправляємо вас на  ownCloud.",
     "Searching other places" : "Йде пошук в інших місцях",
     "No search results in other folders" : "В інших теках нічого не знайдено",
-    "_{count} search result in another folder_::_{count} search results in other folders_" : ["{count} результат пошуку в інших теках","{count} результатів пошуку в інших теках","{count} результатів пошуку в інших теках"],
+    "_{count} search result in another folder_::_{count} search results in other folders_" : ["{count} результат пошуку в інших теках","{count} результатів пошуку в інших теках","{count} результатів пошуку в інших теках","{count} результатів пошуку в інших теках"],
     "Personal" : "Особисте",
     "Apps" : "Додатки",
     "Admin" : "Адмін",
@@ -289,4 +289,4 @@ OC.L10N.register(
     "This %s instance is currently in maintenance mode, which may take a while." : "Цей %s знаходиться в режимі технічного обслуговування, яке може зайняти деякий час.",
     "This page will refresh itself when the %s instance is available again." : "Ця сторінка автоматично перезавантажиться коли екземпляр %s стане знову доступний."
 },
-"nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);");
+"nplurals=4; plural=( n % 1 == 0 && n % 10 =1 && n % 100 != 11) ? 1 : ( n %1 == 0 && ( n >= 2 && n <=4) && ( n % 100 <12 || n % 100 > 14)) ? 3 : ( n % 1 ==0 && (n% 10 ==0 || (n % 10 >=5 && n % 10 <=9) || (n % 100 >=11 && n % 100 <=14));");

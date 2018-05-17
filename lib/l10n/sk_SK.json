@@ -20,13 +20,13 @@
     "Invalid image" : "Chybný obrázok",
     "today" : "dnes",
     "yesterday" : "včera",
-    "_%n day ago_::_%n days ago_" : ["včera","pred %n dňami","pred %n dňami"],
+    "_%n day ago_::_%n days ago_" : ["včera","pred %n dňami","pred %n dňami","pred %n dňami"],
     "last month" : "minulý mesiac",
-    "_%n month ago_::_%n months ago_" : ["pred %n mesiacom","pred %n mesiacmi","pred %n mesiacmi"],
+    "_%n month ago_::_%n months ago_" : ["pred %n mesiacom","pred %n mesiacmi","pred %n mesiacmi","pred %n mesiacmi"],
     "last year" : "minulý rok",
-    "_%n year ago_::_%n years ago_" : ["vlani","pred %n rokmi","pred %n rokmi"],
-    "_%n hour ago_::_%n hours ago_" : ["pred %n hodinou","pred %n hodinami","pred %n hodinami"],
-    "_%n minute ago_::_%n minutes ago_" : ["pred %n minútou","pred %n minútami","pred %n minútami"],
+    "_%n year ago_::_%n years ago_" : ["vlani","pred %n rokmi","pred %n rokmi","pred %n rokmi"],
+    "_%n hour ago_::_%n hours ago_" : ["pred %n hodinou","pred %n hodinami","pred %n hodinami","pred %n hodinami"],
+    "_%n minute ago_::_%n minutes ago_" : ["pred %n minútou","pred %n minútami","pred %n minútami","pred %n minútami"],
     "seconds ago" : "pred sekundami",
     "Module with id: %s does not exist. Please enable it in your apps settings or contact your administrator." : "Modul s ID: %s neexistuje. Povoľte ho prosím vo vašom nastavení aplikácií alebo konaktujte správcu.",
     "Builtin" : "Vstavaný",
@@ -159,5 +159,5 @@
     "Storage connection error. %s" : "Chyba pripojenia k úložisku. %s",
     "Storage is temporarily not available" : "Úložisko je dočasne nedostupné",
     "Storage connection timeout. %s" : "Čas na nadviazanie pripojenia k úložisku vypršal. %s"
-},"pluralForm" :"nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;"
+},"pluralForm" :"nplurals=4; plural=(n % 1 == 0 ? 4: n==1 ? 1: n % 1 == 0 && n>=2 && n<=4 ? 3);"
 }

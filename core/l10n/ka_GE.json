@@ -97,5 +97,5 @@
     "Use the following link to reset your password: {link}" : "გამოიყენე შემდეგი ლინკი პაროლის შესაცვლელად: {link}",
     "New password" : "ახალი პაროლი",
     "Reset password" : "პაროლის შეცვლა"
-},"pluralForm" :"nplurals=1; plural=0;"
+},"pluralForm" :"nplurals=2; plural=(n==1);"
 }

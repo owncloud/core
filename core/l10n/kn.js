@@ -98,7 +98,7 @@ OC.L10N.register(
     "Hello world!" : "ಹೇ ಲೋಕವೇ ನಿನಗೆ ನಮಸ್ಕಾರ!",
     "sunny" : "ಬಿಸಿಲಿನ",
     "Hello {name}, the weather is {weather}" : "ನಮಸ್ಕಾರ {name}, ಸದ್ಯ {weather} ಹವಾಮಾನವಿದೆ",
-    "_download %n file_::_download %n files_" : ["%n ಕಡತಗಳನ್ನು ಸ್ಥಳೀಯ ಪ್ರತಿಯಾಗಿಸಿ"],
+    "_download %n file_::_download %n files_" : ["%n ಕಡತಗಳನ್ನು ಸ್ಥಳೀಯ ಪ್ರತಿಯಾಗಿಸಿ","%n ಕಡತಗಳನ್ನು ಸ್ಥಳೀಯ ಪ್ರತಿಯಾಗಿಸಿ"],
     "Please reload the page." : "﻿ಪುಟವನ್ನು ಪುನಃ ನವೀಕರಿಸಿ.",
     "Personal" : "﻿ವೈಯಕ್ತಿಕ",
     "Apps" : "ಕಾರ್ಯಕ್ರಮಗಳು",
@@ -141,4 +141,4 @@ OC.L10N.register(
     "Thank you for your patience." : "﻿ನಿಮ್ಮ ತಾಳ್ಮೆಗೆ ಧನ್ಯವಾದಗಳು.",
     "Start update" : "ನವೀಕರಿಣವನ್ನು ಆರಂಭಿಸಿ"
 },
-"nplurals=1; plural=0;");
+"nplurals=2; plural=((n<=1 && n>= 0) ? 1);");

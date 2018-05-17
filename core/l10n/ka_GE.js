@@ -100,4 +100,4 @@ OC.L10N.register(
     "New password" : "ახალი პაროლი",
     "Reset password" : "პაროლის შეცვლა"
 },
-"nplurals=1; plural=0;");
+"nplurals=2; plural=(n==1);");

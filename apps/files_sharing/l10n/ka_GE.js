@@ -11,4 +11,4 @@ OC.L10N.register(
     "Expiration date" : "ვადის გასვლის დრო",
     "Download" : "ჩამოტვირთვა"
 },
-"nplurals=1; plural=0;");
+"nplurals=2; plural=(n==1);");
