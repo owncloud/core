@@ -133,6 +133,11 @@ class Groups {
 			\OCP\Util::writeLog('provisioning_api', 'Group name not supplied', \OCP\Util::ERROR);
 			return new OC_OCS_Result(null, 101, 'Invalid group name');
 		}
+		if ((\substr($groupId, -10) === '/subadmins')) {
+			\OCP\Util::writeLog('provisioning_api', 'Group name cannot end with /subadmins', \OCP\Util::ERROR);
+			return new OC_OCS_Result(null, 101, 'Invalid group name, group name cannot end with /subadmins');
+		}
+
 		// Check if it exists
 		if ($this->groupManager->groupExists($groupId)) {
 			return new OC_OCS_Result(null, 102);
