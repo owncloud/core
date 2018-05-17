@@ -35,7 +35,7 @@ So that I can more easily manage access to resources by groups rather than indiv
 
 	# Note: these groups do get created OK, but the "should exist" step fails
 	# because the API to check their existence does not work.
-	@skip @issue-31015
+	@issue-31015
 	Scenario Outline: admin creates a group with a forward-slash in the group name
 		When the administrator sends a group creation request for group "<group_id>" using the provisioning API
 		Then the OCS status code should be "100"
@@ -50,7 +50,7 @@ So that I can more easily manage access to resources by groups rather than indiv
 
 	# A group name must not end in "/subadmins" because that would create ambiguity
 	# with the endpoint for getting the subadmins of a group
-	@skip @issue-31015
+	@issue-31015
 	Scenario: admin tries to create a group with name ending in "/subadmins"
 		Given group "new-group" has been created
 		When the administrator tries to send a group creation request for group "priv/subadmins" using the provisioning API

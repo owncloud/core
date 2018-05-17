@@ -34,7 +34,7 @@ So that I can remove unnecessary groups
 			| 50%2Fix             | %2F literal looks like an escaped slash |
 			| staff?group         | Question mark                           |
 
-	@skip @issue-31015
+	@issue-31015
 	Scenario Outline: admin deletes a group that has a forward-slash in the group name
 		Given group "<group_id>" has been created
 		When the administrator deletes group "<group_id>" using the provisioning API

@@ -37,7 +37,7 @@ So that I can manage user access to group resources
 			| 50%2Fix             | %2F literal looks like an escaped slash |
 			| staff?group         | Question mark                           |
 
-	@skip @issue-31015
+	@issue-31015
 	Scenario Outline: admin removes a user from a group that has a forward-slash in the group name
 		Given user "brand-new-user" has been created
 		And group "<group_id>" has been created

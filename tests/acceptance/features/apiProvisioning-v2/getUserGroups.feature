@@ -31,7 +31,7 @@ So that I can manage group membership
 		And the HTTP status code should be "200"
 
 	# Note: when the issue is fixed, use this scenario and delete the scenario above.
-	@skip @issue-31015
+	@issue-31015
 	Scenario: admin gets groups of an user, including groups containing a slash
 		Given user "brand-new-user" has been created
 		And group "unused-group" has been created
