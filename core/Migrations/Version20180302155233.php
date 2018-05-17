@@ -38,7 +38,6 @@ use OCP\Migration\ISqlMigration;
  * accepted=1 (rejected)
  */
 class Version20180302155233 implements ISqlMigration {
-
 	public function sql(IDBConnection $connection) {
 		$qb = $connection->getQueryBuilder();
 
@@ -52,6 +51,5 @@ class Version20180302155233 implements ISqlMigration {
 			->where($qb->expr()->eq('share_type', $qb->expr()->literal(2)))
 			->andWhere($qb->expr()->eq('permissions', $qb->expr()->literal(0)))
 			->execute();
-
-    }
+	}
 }

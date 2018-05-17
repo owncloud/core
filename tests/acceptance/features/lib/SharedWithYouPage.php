@@ -119,8 +119,8 @@ class SharedWithYouPage extends FilesPageBasic {
 			}
 			$message = "INFORMATION: retried to decline file '" . $name . "' " .
 				$counter . " times";
-				echo $message;
-				\error_log($message);
+			echo $message;
+			\error_log($message);
 		}
 	}
 }
