@@ -22,7 +22,9 @@
 namespace OCA\Files\Command;
 
 use OC\Files\FileInfo;
+use OC\Files\Storage\FailedStorage;
 use OC\Files\Storage\Wrapper\Checksum;
+use OCA\Files_Sharing\ISharedStorage;
 use OCP\Files\IRootFolder;
 use OCP\Files\Node;
 use OCP\Files\NotFoundException;
@@ -94,9 +96,19 @@ class VerifyChecksums extends Command {
 			$path = $node->getInternalPath();
 			$currentChecksums = $node->getChecksum();
 			$owner = $node->getOwner()->getUID();
+			$storage = $node->getStorage();
+
+			if ($storage->instanceOfStorage(ISharedStorage::class) || $storage->instanceOfStorage(FailedStorage::class)) {
+				return;
+			}
 
 			if (!self::fileExistsOnDisk($node)) {
-				$output->writeln("Skipping $owner/$path => File is in file-cache but doesn`t exist on storage/disk", OutputInterface::VERBOSITY_VERBOSE);
+				$output->writeln("Skipping $owner/$path => File is in file-cache but doesn't exist on storage/disk", OutputInterface::VERBOSITY_VERBOSE);
+				return;
+			}
+
+			if (!$node->isReadable()) {
+				$output->writeln("Skipping $owner/$path => File not readable", OutputInterface::VERBOSITY_VERBOSE);
 				return;
 			}
 
@@ -188,7 +200,7 @@ class VerifyChecksums extends Command {
 	 * @return bool
 	 */
 	private static function fileExistsOnDisk(Node $node) {
-		$statResult = $node->stat();
+		$statResult = @$node->stat();
 		return \is_array($statResult) && isset($statResult['size']) && $statResult['size'] !== false;
 	}
 
