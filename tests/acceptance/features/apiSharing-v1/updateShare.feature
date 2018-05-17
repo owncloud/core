@@ -40,7 +40,6 @@ Feature: sharing
 			| storage           | A_NUMBER             |
 			| mail_send         | 0                    |
 			| uid_owner         | user0                |
-			| storage_id        | home::user0          |
 			| file_parent       | A_NUMBER             |
 			| displayname_owner | user0                |
 			| url               | AN_URL               |
@@ -84,7 +83,6 @@ Feature: sharing
 			| storage           | A_NUMBER             |
 			| mail_send         | 0                    |
 			| uid_owner         | user0                |
-			| storage_id        | home::user0          |
 			| file_parent       | A_NUMBER             |
 			| displayname_owner | user0                |
 			| url               | AN_URL               |
@@ -114,7 +112,6 @@ Feature: sharing
 			| storage           | A_NUMBER             |
 			| mail_send         | 0                    |
 			| uid_owner         | user0                |
-			| storage_id        | home::user0          |
 			| file_parent       | A_NUMBER             |
 			| displayname_owner | user0                |
 			| url               | AN_URL               |
@@ -144,7 +141,6 @@ Feature: sharing
 			| storage           | A_NUMBER             |
 			| mail_send         | 0                    |
 			| uid_owner         | user0                |
-			| storage_id        | home::user0          |
 			| file_parent       | A_NUMBER             |
 			| displayname_owner | user0                |
 			| url               | AN_URL               |
@@ -174,7 +170,6 @@ Feature: sharing
 			| storage           | A_NUMBER             |
 			| mail_send         | 0                    |
 			| uid_owner         | user0                |
-			| storage_id        | home::user0          |
 			| file_parent       | A_NUMBER             |
 			| displayname_owner | user0                |
 			| url               | AN_URL               |
@@ -205,7 +200,6 @@ Feature: sharing
 			| storage           | A_NUMBER       |
 			| mail_send         | 0              |
 			| uid_owner         | user0          |
-			| storage_id        | home::user0    |
 			| file_parent       | A_NUMBER       |
 			| displayname_owner | user0          |
 			| mimetype          | text/plain     |

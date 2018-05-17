@@ -106,7 +106,7 @@ Feature: sharing
 		And user "user0" shares folder "/merge-test-inside-twogroups-perms" with group "group2" using the API
 		And user "user0" gets the following properties of folder "/merge-test-inside-twogroups-perms" using the API
 			|{http://owncloud.org/ns}permissions|
-		Then the single response should contain a property "{http://owncloud.org/ns}permissions" with value "RDNVCK"
+		Then the single response should contain a property "{http://owncloud.org/ns}permissions" with value "RDNVCK" or with value "RMDNVCK"
 		And as "user0" the folder "/merge-test-inside-twogroups-perms (2)" should not exist
 		And as "user0" the folder "/merge-test-inside-twogroups-perms (3)" should not exist
 

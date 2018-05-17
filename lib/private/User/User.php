@@ -235,6 +235,7 @@ class User implements IUser {
 
 		// Delete the users entry in the storage table
 		Storage::remove('home::' . $this->getUID());
+		Storage::remove('object::user:' . $this->getUID());
 
 		\OC::$server->getCommentsManager()->deleteReferencesOfActor('users', $this->getUID());
 		\OC::$server->getCommentsManager()->deleteReadMarksFromUser($this);

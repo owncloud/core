@@ -82,6 +82,7 @@ Feature: trashbin-new-endpoint
 
 	Scenario: Trashbin can be emptied
 		Given user "user0" has been created
+		And a new browser session for "user0" has been started
 		And user "user0" has deleted file "/textfile0.txt"
 		And user "user0" has deleted file "/textfile1.txt"
 		And as "user0" the file "/textfile0.txt" should exist in trash
@@ -181,6 +182,7 @@ Feature: trashbin-new-endpoint
 
 	@local_storage
 	@no_default_encryption
+	@skip_on_objectstore
 	Scenario: Deleting a folder into external storage moves it to the trashbin
 		Given the administrator has invoked occ command "files:scan --all"
 		And user "user0" has been created
@@ -191,6 +193,7 @@ Feature: trashbin-new-endpoint
 
 	@local_storage
 	@no_default_encryption
+	@skip_on_objectstore
 	Scenario: Deleting a file into external storage moves it to the trashbin and can be restored
 		Given the administrator has invoked occ command "files:scan --all"
 		And user "user0" has been created
@@ -208,6 +211,7 @@ Feature: trashbin-new-endpoint
 
 	@local_storage
 	@no_default_encryption
+	@skip_on_objectstore
 	Scenario: Deleting an updated file into external storage moves it to the trashbin and can be restored
 		Given the administrator has invoked occ command "files:scan --all"
 		And user "user0" has been created
