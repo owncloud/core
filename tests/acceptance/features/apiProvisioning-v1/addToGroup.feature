@@ -35,6 +35,21 @@ So that I can give a user access to the resources of the group
 			| 50%2Fix             | %2F literal looks like an escaped slash |
 			| staff?group         | Question mark                           |
 
+	@skip @issue-31015
+	Scenario Outline: adding a user to a group that has a forward-slash in the group name
+		Given user "brand-new-user" has been created
+		And group "<group_id>" has been created
+		When user "admin" sends HTTP method "POST" to OCS API endpoint "/cloud/users/brand-new-user/groups" with body
+			| groupid | <group_id> |
+		Then the OCS status code should be "100"
+		And the HTTP status code should be "200"
+		Examples:
+			| group_id            | comment                                 |
+			| Mgmt/Sydney         | Slash (special escaping happens)        |
+			| Mgmt//NSW/Sydney    | Multiple slash                          |
+			| var/../etc          | using slash-dot-dot                     |
+			| priv/subadmins/1    | Subadmins mentioned not at the end      |
+
 	Scenario: normal user tries to add himself to a group
 		Given user "brand-new-user" has been created
 		When user "brand-new-user" sends HTTP method "POST" to OCS API endpoint "/cloud/users/brand-new-user/groups" with body
