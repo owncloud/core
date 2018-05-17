@@ -28,6 +28,9 @@ So that I can give a user access to the resources of the group
 			| maint+eng           | Plus sign                               |
 			| $x<=>[y*z^2]!       | Maths symbols                           |
 			| Mgmt\Middle         | Backslash                               |
+			| Mgmt/Sydney         | Slash (special escaping happens)        |
+			| Mgmt//NSW/Sydney    | Multiple slash                          |
+			| priv/subadmins/1    | Subadmins mentioned not at the end      |
 			| 50%pass             | Percent sign (special escaping happens) |
 			| 50%25=0             | %25 literal looks like an escaped "%"   |
 			| 50%2Eagle           | %2E literal looks like an escaped "."   |

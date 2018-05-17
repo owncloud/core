@@ -934,6 +934,18 @@ trait Provisioning {
 	}
 
 	/**
+	 * @When /^the administrator tries to send a group creation request for group "([^"]*)" using the API$/
+	 *
+	 * @param string $group
+	 *
+	 * @return void
+	 */
+	public function adminTriesToSendGroupCreationRequestUsingTheAPI($group) {
+		$this->adminSendsGroupCreationRequestUsingTheAPI($group);
+		$this->rememberThatGroupIsNotExpectedToExist($group);
+	}
+
+	/**
 	 * creates a single group
 	 *
 	 * @param string $group
