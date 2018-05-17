@@ -6,6 +6,7 @@ use OC\Files\Node\File;
 use OC\Files\Storage\Wrapper\Checksum;
 use OCA\Files\Command\VerifyChecksums;
 use OCP\IUser;
+use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Tester\CommandTester;
 use Test\TestCase;
 
@@ -270,6 +271,7 @@ class VerifyChecksumsTest extends TestCase {
 	}
 
 	public function testOnlyFilesOfAGivenUserAreRepaired() {
+
 		/** @var File $file1 */
 		$file1 = $this->testFiles[0]['file'];
 		/** @var File $file2 */
@@ -298,5 +300,63 @@ class VerifyChecksumsTest extends TestCase {
 		$this->cmd->execute(['-r' => null]);
 
 		$this->assertChecksumsAreCorrect($this->testFiles);
+	}
+
+	public function testFileWithoutChecksumIsIgnored() {
+		/** @var File $file */
+		$file = $this->testFiles[0]['file'];
+		$file->getStorage()->getCache()->update(
+			$file->getId(),
+			['checksum' => '']
+		);
+
+		$this->cmd->execute([], ['verbosity' => OutputInterface::VERBOSITY_VERBOSE]);
+		$output = $this->cmd->getDisplay();
+
+		$this->assertContains('somefile.txt => No Checksum', $output);
+		$this->assertContains('Skipping', $output);
+	}
+
+	public function testFileInCacheButNotOnDiskIsIgnored() {
+		/** @var File $file */
+		$file = $this->testFiles[0]['file'];
+		$file->getStorage()->getCache()->update(
+			$file->getId(),
+			['path' => '/does/not/exist', 'name' => 'x-file.txt']
+		);
+
+		$this->cmd->execute([], ['verbosity' => OutputInterface::VERBOSITY_VERBOSE]);
+		$output = $this->cmd->getDisplay();
+
+		$this->assertContains('x-file.txt => File is in file-cache but doesn\'t exist on storage/disk', $output);
+	}
+
+	public function testInvalidArgs() {
+		$this->cmd->execute(['-p' => '/does/not/exist']);
+
+		$this->assertEquals(
+			VerifyChecksums::EXIT_INVALID_ARGS,
+			$this->cmd->getStatusCode(),
+			'Not existing path must return invalid args status code'
+		);
+
+		$this->cmd->execute(['-u' => 'doesnotexist@example.com']);
+
+		$this->assertEquals(
+			VerifyChecksums::EXIT_INVALID_ARGS,
+			$this->cmd->getStatusCode(),
+			'Not existing user must return invalid args status code'
+		);
+
+		$this->cmd->execute([
+			'-u' => 'foo@example.com',
+			'-p' => '/some/path'
+		]);
+
+		$this->assertEquals(
+			VerifyChecksums::EXIT_INVALID_ARGS,
+			$this->cmd->getStatusCode(),
+			'User and path must return invalid args status code when combined'
+		);
 	}
 }
