@@ -62,6 +62,7 @@ use OCP\IUserSession;
 use OCP\Session\Exceptions\SessionNotAvailableException;
 use OCP\UserInterface;
 use OCP\Util;
+use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\EventDispatcher\GenericEvent;
 
 /**
@@ -113,6 +114,9 @@ class Session implements IUserSession, Emitter {
 	/** @var SyncService */
 	protected $userSyncService;
 
+	/** @var EventDispatcher  */
+	protected $eventDispatcher;
+
 	/**
 	 * @param IUserManager $manager
 	 * @param ISession $session
@@ -126,7 +130,7 @@ class Session implements IUserSession, Emitter {
 	public function __construct(IUserManager $manager, ISession $session,
 								ITimeFactory $timeFactory, IProvider $tokenProvider,
 								IConfig $config, ILogger $logger, IServiceLoader $serviceLoader,
-								SyncService $userSyncService) {
+								SyncService $userSyncService, EventDispatcher $eventDispatcher) {
 		$this->manager = $manager;
 		$this->session = $session;
 		$this->timeFactory = $timeFactory;
@@ -135,6 +139,7 @@ class Session implements IUserSession, Emitter {
 		$this->logger = $logger;
 		$this->serviceLoader = $serviceLoader;
 		$this->userSyncService = $userSyncService;
+		$this->eventDispatcher = $eventDispatcher;
 	}
 
 	/**
@@ -444,7 +449,7 @@ class Session implements IUserSession, Emitter {
 			}
 
 			// trigger any other initialization
-			\OC::$server->getEventDispatcher()->dispatch(IUser::class . '::firstLogin', new GenericEvent($this->getUser()));
+			$this->eventDispatcher->dispatch(IUser::class . '::firstLogin', new GenericEvent($this->getUser()));
 		}
 	}
 
@@ -492,6 +497,7 @@ class Session implements IUserSession, Emitter {
 			$user = $this->manager->checkPassword($uid, $password);
 			if ($user === false) {
 				$this->manager->emit('\OC\User', 'failedLogin', [$uid]);
+				$this->emitFailedLogin($uid);
 				return false;
 			}
 
@@ -544,6 +550,7 @@ class Session implements IUserSession, Emitter {
 		$user = $this->manager->get($uid);
 		if ($user === null) {
 			// user does not exist
+			$this->emitFailedLogin($uid);
 			return false;
 		}
 		if (!$user->isEnabled()) {
@@ -622,6 +629,7 @@ class Session implements IUserSession, Emitter {
 		$user = $this->manager->get($uid);
 		if ($user === null) {
 			$this->manager->emit('\OC\User', 'failedLogin', [$uid]);
+			$this->emitFailedLogin($uid);
 			return false;
 		}
 
@@ -849,6 +857,8 @@ class Session implements IUserSession, Emitter {
 	protected function loginUser($user, $password) {
 		return $this->emittingCall(function () use (&$user, &$password) {
 			if ($user === null) {
+				//Cannot extract the uid when $user is null, hence pass null
+				$this->emitFailedLogin(null);
 				return false;
 			}
 
@@ -856,6 +866,7 @@ class Session implements IUserSession, Emitter {
 
 			if (!$user->isEnabled()) {
 				$message = \OC::$server->getL10N('lib')->t('User disabled');
+				$this->emitFailedLogin($user->getUID());
 				throw new LoginException($message);
 			}
 
@@ -895,6 +906,7 @@ class Session implements IUserSession, Emitter {
 		$tokens = OC::$server->getConfig()->getUserKeys($uid, 'login_token');
 		// test cookies token against stored tokens
 		if (!\in_array($currentToken, $tokens, true)) {
+			$this->emitFailedLogin($uid);
 			return false;
 		}
 		// replace successfully used token with a new one
@@ -918,8 +930,7 @@ class Session implements IUserSession, Emitter {
 	public function logout() {
 		return $this->emittingCall(function () {
 			$event = new GenericEvent(null, ['cancel' => false]);
-			$eventDispatcher = \OC::$server->getEventDispatcher();
-			$eventDispatcher->dispatch('\OC\User\Session::pre_logout', $event);
+			$this->eventDispatcher->dispatch('\OC\User\Session::pre_logout', $event);
 
 			$this->manager->emit('\OC\User', 'preLogout');
 
@@ -966,7 +977,7 @@ class Session implements IUserSession, Emitter {
 		$secureCookie = OC::$server->getRequest()->getServerProtocol() === 'https';
 
 		unset($_COOKIE['oc_username'], $_COOKIE['oc_token'], $_COOKIE['oc_remember_login']); //TODO: DI
-		
+
 		\setcookie('oc_username', '', \time() - 3600, OC::$WEBROOT, '', $secureCookie, true);
 		\setcookie('oc_token', '', \time() - 3600, OC::$WEBROOT, '', $secureCookie, true);
 		\setcookie('oc_remember_login', '', \time() - 3600, OC::$WEBROOT, '', $secureCookie, true);
@@ -1045,5 +1056,14 @@ class Session implements IUserSession, Emitter {
 		if ($includeBuiltIn) {
 			yield new BasicAuthModule($this->config, $this->logger, $this->manager, $this->session, $this->timeFactory);
 		}
+	}
+
+	/**
+	 * This method triggers symfony event for failed login
+	 * @param string $user
+	 */
+	protected function emitFailedLogin($user) {
+		$loginFailedEvent = new GenericEvent(null, ['user' => $user]);
+		$this->eventDispatcher->dispatch('user.loginfailed', $loginFailedEvent);
 	}
 }

@@ -53,6 +53,8 @@ use OCP\IUserManager;
 use OCP\Share;
 use OCP\Share\Exceptions\ShareNotFound;
 use OCP\Template;
+use Symfony\Component\EventDispatcher\EventDispatcher;
+use Symfony\Component\EventDispatcher\GenericEvent;
 
 /**
  * Class ShareController
@@ -79,6 +81,8 @@ class ShareController extends Controller {
 	protected $previewManager;
 	/** @var IRootFolder */
 	protected $rootFolder;
+	/** @var EventDispatcher  */
+	protected $eventDispatcher;
 
 	/**
 	 * @param string $appName
@@ -103,7 +107,8 @@ class ShareController extends Controller {
 								\OCP\Share\IManager $shareManager,
 								ISession $session,
 								IPreview $previewManager,
-								IRootFolder $rootFolder) {
+								IRootFolder $rootFolder,
+								EventDispatcher $eventDispatcher) {
 		parent::__construct($appName, $request);
 
 		$this->config = $config;
@@ -115,6 +120,7 @@ class ShareController extends Controller {
 		$this->session = $session;
 		$this->previewManager = $previewManager;
 		$this->rootFolder = $rootFolder;
+		$this->eventDispatcher = $eventDispatcher;
 	}
 
 	/**
@@ -223,6 +229,16 @@ class ShareController extends Controller {
 			'errorCode' => $errorCode,
 			'errorMessage' => $errorMessage,
 		]);
+
+		if ($share instanceof \OCP\Share\IShare) {
+			$cloneShare = clone $share;
+			$publicShareLinkAccessEvent = new GenericEvent(null,
+				['shareObject' => $cloneShare, 'errorCode' => $errorCode,
+					'errorMessage' => $errorMessage]);
+
+			$this->eventDispatcher->dispatch('share.linkaccess', $publicShareLinkAccessEvent);
+		}
+
 		if ($exception !== null) {
 			throw $exception;
 		}
