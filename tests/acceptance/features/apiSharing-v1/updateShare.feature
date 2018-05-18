@@ -254,7 +254,6 @@ Feature: sharing
 			| storage           | A_NUMBER             |
 			| mail_send         | 0                    |
 			| uid_owner         | user1                |
-			| storage_id        | home::user1          |
 			| file_parent       | A_NUMBER             |
 			| displayname_owner | user1                |
 			| mimetype          | httpd/unix-directory |
