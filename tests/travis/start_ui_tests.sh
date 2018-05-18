@@ -112,8 +112,14 @@ fi
 # --feature - specify a single feature to run
 # --suite - specify a single suite to run
 # --tags - specify tags for scenarios to run (or not)
+# --remote - the server under test is remote, so we cannot locally enable the
+#            testing app. We have to assume it is already enabled.
+# --all-suites - run all Behat test suites
+# --norerun - do not rerun failed webUI scenarios
 BEHAT_TAGS_OPTION_FOUND=false
 REMOTE_ONLY=false
+ALL_SUITES=false
+RERUN_FAILED_WEBUI_SCENARIOS=true
 
 while [[ $# -gt 0 ]]
 do
@@ -138,6 +144,12 @@ do
 			;;
 		--remote)
 			REMOTE_ONLY=true
+			;;
+		--all-suites)
+			ALL_SUITES=true
+			;;
+		--norerun)
+			RERUN_FAILED_WEBUI_SCENARIOS=false
 			;;
 		*)
 			# ignore unknown options
@@ -164,15 +176,23 @@ then
 	BEHAT_YML="tests/acceptance/config/behat.yml"
 fi
 
-if [ -z "$BEHAT_SUITE" ]
+if [ -z "$BEHAT_SUITE" ] && [ "$ALL_SUITES" = false ]
 then
 	echo "ERROR: webUI tests must be run by suite."
 	echo "No suite specified. Specify a suite by either:"
 	echo "  setting the BEHAT_SUITE env variable"
 	echo "  using the --suite parameter"
+	echo "To run all webUI suites in a single run, specify"
+	echo "  --all-suites"
+	echo "Running all webUI suites in a single run will take significant time"
 	exit 1
 else
-	BEHAT_SUITE_OPTION="--suite=$BEHAT_SUITE"
+	if [ "$ALL_SUITES" = true ]
+	then
+		BEHAT_SUITE_OPTION=""
+	else
+		BEHAT_SUITE_OPTION="--suite=$BEHAT_SUITE"
+	fi
 fi
 
 BEHAT_TAG_OPTION="--tags"
@@ -367,7 +387,12 @@ then
 	SELENIUM_PORT=4445
 fi
 
-SUITE_FEATURE_TEXT="$BEHAT_SUITE"
+if [ "$ALL_SUITES" = true ]
+then
+	SUITE_FEATURE_TEXT="all"
+else
+	SUITE_FEATURE_TEXT="$BEHAT_SUITE"
+fi
 
 if [ -n "$BEHAT_FEATURE" ]
 then
@@ -406,7 +431,7 @@ else
 	PASSED=false
 fi
 
-if [ "$PASSED" = false ]
+if [ "$PASSED" = false ] && [ "${RERUN_FAILED_WEBUI_SCENARIOS}" = true ]
 then
 	echo test run failed with exit status: $BEHAT_EXIT_STATUS
 	PASSED=true
