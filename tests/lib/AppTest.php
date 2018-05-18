@@ -393,7 +393,7 @@ class AppTest extends \Test\TestCase {
 	 *
 	 * @dataProvider appConfigValuesProvider
 	 */
-	public function testEnabledApps($user, $expectedApps, $forceAll) {
+	public function testEnabledApps($userName, $expectedApps, $forceAll) {
 		$groupManager = \OC::$server->getGroupManager();
 		$user1 = $this->createUser(self::TEST_USER1, self::TEST_USER1);
 		$user2 = $this->createUser(self::TEST_USER2, self::TEST_USER2);
@@ -406,7 +406,12 @@ class AppTest extends \Test\TestCase {
 		$group2->addUser($user2);
 		$group2->addUser($user3);
 
-		\OC_User::setUserId($user);
+		if ($userName !== null) {
+			$user = \OC::$server->getUserManager()->getByUserName($userName);
+			\OC_User::setUserId($user->getUserId());
+		} else {
+			\OC_User::setUserId(null);
+		}
 
 		$this->setupAppConfigMock()->expects($this->once())
 			->method('getValues')

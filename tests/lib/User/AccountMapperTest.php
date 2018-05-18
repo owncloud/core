@@ -60,7 +60,8 @@ class AccountMapperTest extends TestCase {
 			}
 
 			$account = new Account();
-			$account->setUserId("TestFind$i");
+			$account->setUserId("TestId$i");
+			$account->setUserName("TestFind$i");
 			$account->setDisplayName("Test Find $i");
 			$account->setEmail("test$i@find.tld");
 			$account->setBackend(self::class);
@@ -95,7 +96,7 @@ class AccountMapperTest extends TestCase {
 	 * find all, use lower case
 	 */
 	public function testFindAll() {
-		$result = $this->mapper->find("testfind");
+		$result = $this->mapper->find('testfind');
 		$this->assertCount(4, $result);
 	}
 
@@ -103,9 +104,9 @@ class AccountMapperTest extends TestCase {
 	 * find by userid, use lower case
 	 */
 	public function testFindByUserId() {
-		$result = $this->mapper->find("testfind1");
+		$result = $this->mapper->find('testid1');
 		$this->assertCount(1, $result);
-		$this->assertEquals("TestFind1", \array_shift($result)->getUserId());
+		$this->assertEquals('TestId1', \array_shift($result)->getUserId());
 	}
 
 	/**
@@ -114,7 +115,7 @@ class AccountMapperTest extends TestCase {
 	public function testFindByDisplayName() {
 		$result = $this->mapper->find('test find 2');
 		$this->assertCount(1, $result);
-		$this->assertEquals("TestFind2", \array_shift($result)->getUserId());
+		$this->assertEquals('TestId2', \array_shift($result)->getUserId());
 	}
 
 	public function findByEmailDataProvider() {
@@ -133,7 +134,7 @@ class AccountMapperTest extends TestCase {
 	public function testFindByEmail($email) {
 		$result = $this->mapper->find($email);
 		$this->assertCount(1, $result);
-		$this->assertEquals("TestFind3", \array_shift($result)->getUserId());
+		$this->assertEquals('TestId3', \array_shift($result)->getUserId());
 	}
 
 	/**
@@ -144,7 +145,7 @@ class AccountMapperTest extends TestCase {
 	public function testGetByEmail($email) {
 		$result = $this->mapper->getByEmail($email);
 		$this->assertCount(1, $result);
-		$this->assertEquals("TestFind3", \array_shift($result)->getUserId());
+		$this->assertEquals('TestId3', \array_shift($result)->getUserId());
 	}
 
 	/**
@@ -153,7 +154,7 @@ class AccountMapperTest extends TestCase {
 	public function testFindBySearchTerm() {
 		$result = $this->mapper->find('term 4 b');
 		$this->assertCount(1, $result);
-		$this->assertEquals("TestFind4", \array_shift($result)->getUserId());
+		$this->assertEquals('TestId4', \array_shift($result)->getUserId());
 	}
 
 	/**
@@ -163,17 +164,17 @@ class AccountMapperTest extends TestCase {
 		$result = $this->mapper->find('Term', 2, 2);
 		$this->assertCount(2, $result);
 		//results are ordered by display name
-		$this->assertEquals("TestFind3", \array_shift($result)->getUserId());
-		$this->assertEquals("TestFind4", \array_shift($result)->getUserId());
+		$this->assertEquals('TestId3', \array_shift($result)->getUserId());
+		$this->assertEquals('TestId4', \array_shift($result)->getUserId());
 	}
 
 	public function findUserIdsDataProvider() {
 		return [
-			[self::class, null, null, ['TestFind1','TestFind2','TestFind3','TestFind4']],
+			[self::class, null, null, ['TestId1','TestId2','TestId3','TestId4']],
 			['not existing backend', null, null, []],
-			[self::class, 1, null, ['TestFind1']],
-			[self::class, 2, 2, ['TestFind3', 'TestFind4']],
-			[self::class, 1, 3, ['TestFind4']],
+			[self::class, 1, null, ['TestId1']],
+			[self::class, 2, 2, ['TestId3', 'TestId4']],
+			[self::class, 1, 3, ['TestId4']],
 		];
 	}
 
@@ -189,10 +190,10 @@ class AccountMapperTest extends TestCase {
 
 	public function findUserIdsLoggedInDataProvider() {
 		return [
-			[self::class, null, null, ['TestFind2','TestFind4']],
+			[self::class, null, null, ['TestId2','TestId4']],
 			['not existing backend', null, null, []],
-			[self::class, 1, null, ['TestFind2']],
-			[self::class, 1, 1, ['TestFind4']],
+			[self::class, 1, null, ['TestId2']],
+			[self::class, 1, 1, ['TestId4']],
 		];
 	}
 
@@ -202,10 +203,10 @@ class AccountMapperTest extends TestCase {
 	 * @dataProvider findUserIdsLoggedInDataProvider
 	 */
 	public function testFindUserIdsLoggedIn($backend, $limit, $offset, $expected) {
-		$accounts = $this->mapper->find("TestFind2");
+		$accounts = $this->mapper->find('TestFind2');
 		$accounts[0]->setLastLogin(\time());
 		$this->mapper->update($accounts[0]);
-		$accounts = $this->mapper->find("TestFind4");
+		$accounts = $this->mapper->find('TestFind4');
 		$accounts[0]->setLastLogin(\time());
 		$this->mapper->update($accounts[0]);
 

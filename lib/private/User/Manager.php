@@ -354,9 +354,9 @@ class Manager extends PublicEmitter implements IUserManager {
 	}
 
 	/**
-	 * @param string $uid
+	 * @param string $uid (optional) required if $userName is null
 	 * @param string $password
-	 * @param string $userName
+	 * @param string $userName (optional) if omitted uid will be used
 	 * @throws \Exception
 	 * @return bool|IUser the created user or false
 	 */
@@ -365,13 +365,12 @@ class Manager extends PublicEmitter implements IUserManager {
 			$l = \OC::$server->getL10N('lib');
 
 			if ($uid === null && $userName === null) {
-				throw new \Exception($l->t('A valid user name must be provided'));
+				throw new \Exception($l->t('A user id or user name must be provided'));
 			}
 
 			if ($uid !== null && $userName === null) {
-				// use uid as username, generate uid
+				// use uid as username
 				$userName = $uid;
-				$uid = null;
 			}
 
 			if ($uid === null) {

@@ -94,6 +94,10 @@ class Database extends Backend implements IUserBackend, IProvidesHomeBackend, IP
 		// forbid that? might break existing users? force them to change their
 		// username on next login?
 
+		if ($userName === null) {
+			$userName = $uid;
+		}
+
 		unset($this->cache[$uid]); // make sure we are reading from the db
 		if (!$this->userExists($uid)) {
 			$query = \OC_DB::prepare('INSERT INTO `*PREFIX*users` ( `uid`, `password` ) VALUES( ?, ? )');

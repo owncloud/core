@@ -26,15 +26,29 @@ trait UserTrait {
 
 	private $previousUserManagerInternals;
 
-	protected function createUser($name, $password = null) {
-		if ($password === null) {
-			$password = $name;
+	// FIXME add username
+	protected function createUser($userId = null, $password = null, $userName = null) {
+		if ($userId === null && $userName === null) {
+			throw new \Exception('A user id or user name must be provided');
 		}
+
 		$userManager = \OC::$server->getUserManager();
-		if ($userManager->userExists($name)) {
-			$userManager->get($name)->delete();
+		if ($password === null) {
+			if ($userName) { // frefer username as password
+				$password = $userName;
+			} else {
+				$password = $userId;
+			}
 		}
-		$user = $userManager->createUser($name, $password);
+
+		if ($user = $userManager->getByUserId($userId)) {
+			$user->delete();
+		}
+		if ($user = $userManager->getByUserName($userName)) {
+			$user->delete();
+		}
+
+		$user = $userManager->createUser($userId, $password, $userName);
 		$this->users[] = $user;
 		return $user;
 	}

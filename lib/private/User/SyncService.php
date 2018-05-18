@@ -103,7 +103,7 @@ class SyncService {
 		// update existing and insert new users
 		foreach ($userIds as $uid) {
 			try {
-				$account = $this->createOrSyncAccount($uid, $backend);
+				$account = $this->createOrSyncAccount($uid, $backend, $uid);
 				$uid = $account->getUserId(); // get correct case
 				// clean the user's preferences
 				$this->cleanPreferences($uid);

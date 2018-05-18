@@ -22,6 +22,7 @@
 
 namespace Test\Cache;
 
+use OCP\User;
 use Test\Traits\UserTrait;
 
 /**
@@ -38,6 +39,10 @@ class FileCacheTest extends TestCache {
 	 * @var string
 	 * */
 	private $user;
+	/**
+	 * @var User
+	 * */
+	private $testUser;
 	/**
 	 * @var string
 	 * */
@@ -68,14 +73,14 @@ class FileCacheTest extends TestCache {
 		$config->setSystemValue('cachedirectory', $datadir);
 
 		//login
-		$this->createUser('test', 'test');
+		$this->testUser = $this->createUser('test', 'test');
 
 		$this->user = \OC_User::getUser();
-		\OC_User::setUserId('test');
+		\OC_User::setUserId($this->testUser->getUserId());
 
 		//set up the users dir
 		$this->rootView = new \OC\Files\View('');
-		$this->rootView->mkdir('/test');
+		$this->rootView->mkdir("/{$this->testUser->getUserId()}");
 
 		$this->instance=new \OC\Cache\File();
 
@@ -104,7 +109,7 @@ class FileCacheTest extends TestCache {
 			->setConstructorArgs([['datadir' => \OC::$server->getTempManager()->getTemporaryFolder()]])
 			->getMock();
 
-		\OC\Files\Filesystem::mount($mockStorage, [], '/test/cache');
+		\OC\Files\Filesystem::mount($mockStorage, [], "/{$this->testUser->getUserId()}/cache");
 
 		return $mockStorage;
 	}

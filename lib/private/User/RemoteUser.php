@@ -33,6 +33,9 @@ class RemoteUser implements IUser {
 	/** @var string */
 	private $userId;
 
+	/** @var string */
+	private $userName;
+
 	/**
 	 * RemoteUser constructor.
 	 *
@@ -40,13 +43,34 @@ class RemoteUser implements IUser {
 	 */
 	public function __construct($userId) {
 		$this->userId = $userId;
+		// FIXME set username correctly
+		$this->userName = $userId;
+	}
+
+	/**
+	 * @inheritdoc
+	 * @deprecated
+	 */
+	public function getUID() {
+		return $this->getUserId();
 	}
 
 	/**
 	 * @inheritdoc
 	 */
-	public function getUID() {
+	public function getUserId() {
 		return $this->userId;
+	}
+
+	/**
+	 * @inheritdoc
+	 */
+	public function getUserName() {
+		return $this->userName;
+	}
+
+	public function setUserName($userName) {
+		$this->userName = \trim($userName);
 	}
 
 	/**
@@ -156,9 +180,18 @@ class RemoteUser implements IUser {
 	 * @inheritdoc
 	 */
 	public function getCloudId() {
-		$uid = $this->getUID();
+		$uid = $this->getUserId();
 		$server = \OC::$server->getURLGenerator()->getAbsoluteURL('/');
 		return $uid . '@' . \rtrim($this->removeProtocolFromUrl($server), '/');
+	}
+
+	/**
+	 * @inheritdoc
+	 */
+	public function getCloudName() {
+		$name = $this->getUserName();
+		$server = \OC::$server->getURLGenerator()->getAbsoluteURL('/');
+		return $name . '@' . \rtrim($this->removeProtocolFromUrl($server), '/');
 	}
 
 	/**

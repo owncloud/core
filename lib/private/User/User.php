@@ -171,6 +171,9 @@ class User implements IUser {
 		if (empty($displayName)) {
 			$displayName = $this->getUserName();
 		}
+		if (empty($displayName)) {
+			$displayName = $this->getUserId();
+		}
 		return $displayName;
 	}
 
@@ -491,9 +494,18 @@ class User implements IUser {
 	 * @since 9.0.0
 	 */
 	public function getCloudId() {
-		$uid = $this->getUID();
+		$uid = $this->getUserId();
 		$server = $this->urlGenerator->getAbsoluteURL('/');
 		return $uid . '@' . \rtrim($this->removeProtocolFromUrl($server), '/');
+	}
+
+	/**
+	 * @inheritdoc
+	 */
+	public function getCloudName() {
+		$name = $this->getUserName();
+		$server = $this->urlGenerator->getAbsoluteURL('/');
+		return $name . '@' . \rtrim($this->removeProtocolFromUrl($server), '/');
 	}
 
 	/**

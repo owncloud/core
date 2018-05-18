@@ -59,13 +59,15 @@ class BasicAuthModuleTest extends TestCase {
 		$this->timeFactory = $this->createMock(ITimeFactory::class);
 
 		$this->user = $this->createMock(IUser::class);
-		$this->user->expects($this->any())->method('getUID')->willReturn('user1');
+		$this->user->method('getUID')->willReturn('userId1');
+		$this->user->method('getUserId')->willReturn('userId1');
+		$this->user->method('getUserName')->willReturn('userName1');
 
 		$this->manager->expects($this->any())->method('checkPassword')
 			->willReturnMap([
-				['user1', '123456', $this->user],
+				['userName1', '123456', $this->user],
 				['user@example.com', '123456', $this->user],
-				['user2', '123456', null],
+				['userName2', '123456', null],
 				['not-unique@example.com', '123456', null],
 				['unique@example.com', '123456', null],
 			]);
@@ -85,8 +87,10 @@ class BasicAuthModuleTest extends TestCase {
 	 * @dataProvider providesCredentials
 	 * @param mixed $expectedResult
 	 * @param string $userId
+	 * @param string $userName
+	 * @throws \Exception
 	 */
-	public function testAuth($expectedResult, $userId) {
+	public function testAuth($expectedResult, $userId, $userName) {
 		$this->session->method('exists')->will($this->returnValueMap([
 			['app_password', false],
 			['last_check_timeout', true]
@@ -102,7 +106,7 @@ class BasicAuthModuleTest extends TestCase {
 
 		$module = new BasicAuthModule($this->config, $this->logger, $this->manager, $this->session, $this->timeFactory);
 		$this->request->server = [
-			'PHP_AUTH_USER' => $userId,
+			'PHP_AUTH_USER' => $userName,
 			'PHP_AUTH_PW' => '123456',
 		];
 		if ($expectedResult instanceof \Exception) {
@@ -141,7 +145,7 @@ class BasicAuthModuleTest extends TestCase {
 	public function testGetUserPassword() {
 		$module = new BasicAuthModule($this->config, $this->logger, $this->manager, $this->session, $this->timeFactory);
 		$this->request->server = [
-			'PHP_AUTH_USER' => 'user1',
+			'PHP_AUTH_USER' => 'userName1',
 			'PHP_AUTH_PW' => '123456',
 		];
 		$this->assertEquals('123456', $module->getUserPassword($this->request));
@@ -152,12 +156,12 @@ class BasicAuthModuleTest extends TestCase {
 
 	public function providesCredentials() {
 		return [
-			'no user is' => [false, ''],
-			'user1 can login' => [true, 'user1'],
-			'user1 can login with email' => [true, 'user@example.com'],
-			'unique email can login' => [true, 'unique@example.com'],
-			'not unique email can not login' => [new \Exception('Invalid credentials'), 'not-unique@example.com'],
-			'user2 is not known' => [new \Exception('Invalid credentials'), 'user2'],
+			'no user is' => [false, '', ''],
+			'user1 can login' => [true, 'userId1', 'userName1'],
+			'user1 can login with email' => [true, 'userId1', 'user@example.com'],
+			'unique email can login' => [true, 'unique@example.com', 'unique@example.com'],
+			'not unique email can not login' => [new \Exception('Invalid credentials'), 'not-unique@example.com', 'not-unique@example.com'],
+			'user2 is not known' => [new \Exception('Invalid credentials'), 'userId2', 'userName2'],
 		];
 	}
 
@@ -170,7 +174,7 @@ class BasicAuthModuleTest extends TestCase {
 		$time = \time();
 		$this->session->method('get')->will($this->returnValueMap([
 			['last_check_timeout', $time - 60 * 4],
-			['user_id', 'user1']
+			['user_id', 'userId1']
 		]));
 
 		$this->timeFactory->method('getTime')->willReturn($time);
@@ -180,12 +184,12 @@ class BasicAuthModuleTest extends TestCase {
 			->method('checkPassword');
 
 		$this->manager->expects($this->once())->method('get')
-			->with('user1')->willReturn($this->user);
+			->with('userId1')->willReturn($this->user);
 
 		$module = new BasicAuthModule($this->config, $this->logger, $this->manager, $this->session, $this->timeFactory);
 
 		$this->request->server = [
-			'PHP_AUTH_USER' => 'user1',
+			'PHP_AUTH_USER' => 'userName1',
 			'PHP_AUTH_PW' => '123456',
 		];
 
@@ -227,7 +231,7 @@ class BasicAuthModuleTest extends TestCase {
 		$module = new BasicAuthModule($this->config, $this->logger, $this->manager, $this->session, $this->timeFactory);
 
 		$this->request->server = [
-			'PHP_AUTH_USER' => 'user1',
+			'PHP_AUTH_USER' => 'userName1',
 			'PHP_AUTH_PW' => '123456',
 		];
 

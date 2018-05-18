@@ -91,10 +91,10 @@ class SyncServiceTest extends TestCase {
 		$this->mapper->expects($this->once())->method('getByUid')->with($backendUids[0])->willThrowException(new DoesNotExistException('entity not found'));
 
 		// Lets provide some config for the user
-		$this->config->expects($this->at(0))->method('getUserKeys')->with($backendUids[0], 'core')->willReturn([]);
-		$this->config->expects($this->at(1))->method('getUserKeys')->with($backendUids[0], 'login')->willReturn([]);
-		$this->config->expects($this->at(2))->method('getUserKeys')->with($backendUids[0], 'settings')->willReturn([]);
-		$this->config->expects($this->at(3))->method('getUserKeys')->with($backendUids[0], 'files')->willReturn([]);
+		$this->config->expects($this->at(0))->method('getUserKeys')->with($this->anything(), 'core')->willReturn([]);
+		$this->config->expects($this->at(1))->method('getUserKeys')->with($this->anything(), 'login')->willReturn([]);
+		$this->config->expects($this->at(2))->method('getUserKeys')->with($this->anything(), 'settings')->willReturn([]);
+		$this->config->expects($this->at(3))->method('getUserKeys')->with($this->anything(), 'files')->willReturn([]);
 
 		// Pretend we dont update anything
 		$account->expects($this->any())->method('getUpdatedFields')->willReturn([]);

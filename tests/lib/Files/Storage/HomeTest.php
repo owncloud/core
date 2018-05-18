@@ -42,7 +42,7 @@ class DummyUser extends User {
 		return $this->home;
 	}
 
-	public function getUID() {
+	public function getUserId() {
 		return $this->uid;
 	}
 }

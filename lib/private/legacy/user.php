@@ -212,11 +212,8 @@ class OC_User {
 	public static function setUserId($uid) {
 		$userSession = \OC::$server->getUserSession();
 		$userManager = \OC::$server->getUserManager();
-		if ($user = $userManager->get($uid)) {
-			$userSession->setUser($user);
-		} else {
-			\OC::$server->getSession()->set('user_id', $uid);
-		}
+		$user = $userManager->get($uid);
+		$userSession->setUser($user);
 	}
 
 	/**

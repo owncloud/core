@@ -197,6 +197,14 @@ interface IUser {
 	public function getCloudId();
 
 	/**
+	 * get the federation cloud name
+	 *
+	 * @return string
+	 * @since 10.0.9
+	 */
+	public function getCloudName();
+
+	/**
 	 * set the email address of the user
 	 *
 	 * @param string|null $mailAddress

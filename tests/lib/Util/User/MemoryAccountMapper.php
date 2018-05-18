@@ -67,6 +67,17 @@ class MemoryAccountMapper extends AccountMapper {
 		return \array_values($match)[0];
 	}
 
+	public function getByUserName($userName) {
+		$match = \array_filter(self::$accounts, function (Account $a) use ($userName) {
+			return \strtolower($a->getUserName()) === \strtolower($userName);
+		});
+		if (empty($match)) {
+			throw new DoesNotExistException('');
+		}
+
+		return \array_values($match)[0];
+	}
+
 	public function getUserCount($hasLoggedIn) {
 		return \count(self::$accounts);
 	}

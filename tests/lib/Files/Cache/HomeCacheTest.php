@@ -38,7 +38,7 @@ class DummyUser extends \OC\User\User {
 	/**
 	 * @return string
 	 */
-	public function getUID() {
+	public function getUserId() {
 		return $this->uid;
 	}
 }

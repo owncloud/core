@@ -156,6 +156,7 @@ class Users {
 		}
 
 		try {
+			// FIXME add username
 			$newUser = $this->userManager->createUser($userId, $password);
 			$this->logger->info('Successful addUser call with userid: '.$userId, ['app' => 'ocs_api']);
 
