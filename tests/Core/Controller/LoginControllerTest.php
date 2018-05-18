@@ -347,7 +347,7 @@ class LoginControllerTest extends TestCase {
 
 		$expected = new RedirectResponse($indexPageUrl);
 
-		$this->loginController = $this->getMockBuilder('OC\Core\Controller\LoginController')
+		$this->loginController = $this->getMockBuilder(LoginController::class)
 			->setMethods(['getDefaultUrl'])
 			->setConstructorArgs([
 				'core',
