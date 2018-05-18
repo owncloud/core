@@ -36,14 +36,12 @@ namespace OC\User;
 use OC\Cache\CappedMemoryCache;
 use OC\Hooks\PublicEmitter;
 use OCP\AppFramework\Db\DoesNotExistException;
+use OCP\AppFramework\Db\MultipleObjectsReturnedException;
 use OCP\Events\EventEmitterTrait;
 use OCP\ILogger;
 use OCP\IUser;
 use OCP\IUserManager;
 use OCP\IConfig;
-use OCP\User\IProvidesExtendedSearchBackend;
-use OCP\User\IProvidesEMailBackend;
-use OCP\User\IProvidesQuotaBackend;
 use OCP\UserInterface;
 use OCP\Util\UserSearch;
 use Symfony\Component\EventDispatcher\GenericEvent;
@@ -177,10 +175,15 @@ class Manager extends PublicEmitter implements IUserManager {
 	 * @return \OC\User\User|null Either the user or null if the specified user does not exist
 	 */
 	public function get($uid) {
-		if (is_null($uid) || (!is_string($uid) && !is_numeric($uid))) {
+		// fix numeric uid that was cast by storing it in an array key
+		if (\is_numeric($uid)) {
+			$uid = (string)$uid;
+		}
+		if (!\is_string($uid)) {
 			return null;
 		}
-		if ($this->cachedUsers->hasKey($uid)) { //check the cache first to prevent having to loop over the backends
+		//check the cache first to prevent having to loop over the backends
+		if ($this->cachedUsers->hasKey($uid)) {
 			return $this->cachedUsers->get($uid);
 		}
 		try {
@@ -191,6 +194,13 @@ class Manager extends PublicEmitter implements IUserManager {
 			}
 			return $this->getUserObject($account);
 		} catch (DoesNotExistException $ex) {
+			return null;
+		} catch (MultipleObjectsReturnedException $ex) {
+			$this->logger->error(
+				"More than one user found for $uid, treating as not existing.",
+				['app' => __CLASS__]
+			);
+			$this->cachedUsers->set($uid, null);
 			return null;
 		}
 	}
