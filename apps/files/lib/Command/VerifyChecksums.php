@@ -87,7 +87,7 @@ class VerifyChecksums extends Command {
 		$userName = $input->getOption('user');
 
 		if (!$pathOption && !$userName) {
-			$output->writeln('<info>This operation might take very long.</info>');
+			$output->writeln('<info>This operation might take quite some time.</info>');
 		}
 
 		if ($pathOption && $userName) {
