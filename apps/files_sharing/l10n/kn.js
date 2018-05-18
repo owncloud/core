@@ -9,4 +9,4 @@ OC.L10N.register(
     "Expiration date" : "ಮುಕ್ತಾಯ ದಿನಾಂಕ",
     "Download" : "ಪ್ರತಿಯನ್ನು ಸ್ಥಳೀಯವಾಗಿ ಉಳಿಸಿಕೊಳ್ಳಿ"
 },
-"nplurals=2; plural=((n<=1 && n>= 0) ? 1);");
+"nplurals=2; plural=(n > 1);");

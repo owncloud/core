@@ -1,5 +1,5 @@
 { "translations": {
     "Personal" : "პირადი",
     "Contacts" : "კონტაქტები"
-},"pluralForm" :"nplurals=2; plural=(n==1);"
+},"pluralForm" :"nplurals=2; plural=(n!=1);"
 }

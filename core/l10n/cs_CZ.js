@@ -321,4 +321,4 @@ OC.L10N.register(
     "This %s instance is currently in maintenance mode, which may take a while." : "Tato instalace %s je právě ve stavu údržby a to může chvíli trvat.",
     "This page will refresh itself when the %s instance is available again." : "Tato stránka se automaticky načte poté, co bude opět dostupná instance %s."
 },
-"nplurals=4; plural=(n < 10 && n % 1 == 0) ? 1 : (n < 9999 && n >= 10 && n % 1 == 0) ? 3 : (n % 1 != 0) : 4;");
+"nplurals=4; plural=(n == 1 && n % 1 == 0) ? 0 : (n >= 2 && n <= 4 && n % 1 == 0) ? 1: (n % 1 != 0 ) ? 2 : 3;");

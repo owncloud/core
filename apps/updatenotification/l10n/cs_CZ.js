@@ -17,4 +17,4 @@ OC.L10N.register(
     "Notify members of the following groups about available updates:" : "Upozorňovat členy následujících skupin na dostupné aktualizace:",
     "Only notification for app updates are available, because the selected update channel for ownCloud itself does not allow notifications." : "Jsou dostupná pouze upozornění na aktualizace aplikací, protože vybraný kanál aktualizací přímo pro ownCloud neumožňuje upozorňování."
 },
-"nplurals=4; plural=(n < 10 && n % 1 == 0) ? 1 : (n < 9999 && n >= 10 && n % 1 == 0) ? 3 : (n % 1 != 0) : 4;");
+"nplurals=4; plural=(n == 1 && n % 1 == 0) ? 0 : (n >= 2 && n <= 4 && n % 1 == 0) ? 1: (n % 1 != 0 ) ? 2 : 3;");

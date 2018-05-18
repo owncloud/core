@@ -41,4 +41,4 @@ OC.L10N.register(
     "Files and folders you mark as favorite will show up here" : "ನೀವು ಗುರುತು ಮಾಡಿರುವ ನೆಚ್ಚಿನ ಕಡತ ಮತ್ತು ಕಡತಕೋಶಗಳನ್ನು ಇಲ್ಲಿ ತೋರಿಸಲಾಗುತ್ತಿದೆ",
     "Text file" : "ಸರಳಾಕ್ಷರದ ಕಡತ"
 },
-"nplurals=2; plural=((n<=1 && n>= 0) ? 1);");
+"nplurals=2; plural=(n > 1);");

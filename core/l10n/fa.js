@@ -328,4 +328,4 @@ OC.L10N.register(
     "This %s instance is currently in maintenance mode, which may take a while." : "این نمونه %s اکنون در حالت تعمیر است، که ممکن است زمانی طول بکشد.",
     "This page will refresh itself when the %s instance is available again." : "این صفحه زمانی که نمونه %s مجددا موجود باشد خود را refresh می کند."
 },
-"nplurals=2; plural=((n<=1 && n>= 0) ? 1);");
+"nplurals=2; plural=(n > 1);");

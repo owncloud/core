@@ -141,4 +141,4 @@ OC.L10N.register(
     "Thank you for your patience." : "﻿ನಿಮ್ಮ ತಾಳ್ಮೆಗೆ ಧನ್ಯವಾದಗಳು.",
     "Start update" : "ನವೀಕರಿಣವನ್ನು ಆರಂಭಿಸಿ"
 },
-"nplurals=2; plural=((n<=1 && n>= 0) ? 1);");
+"nplurals=2; plural=(n > 1);");

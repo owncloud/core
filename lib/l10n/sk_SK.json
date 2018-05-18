@@ -159,5 +159,5 @@
     "Storage connection error. %s" : "Chyba pripojenia k úložisku. %s",
     "Storage is temporarily not available" : "Úložisko je dočasne nedostupné",
     "Storage connection timeout. %s" : "Čas na nadviazanie pripojenia k úložisku vypršal. %s"
-},"pluralForm" :"nplurals=4; plural=(n % 1 == 0 ? 4: n==1 ? 1: n % 1 == 0 && n>=2 && n<=4 ? 3);"
+},"pluralForm" :"nplurals=4; plural=(n % 1 == 0 && n == 1 ? 0 : n % 1 == 0 && n >= 2 && n <= 4 ? 1 : n % 1 != 0 ? 2: 3);"
 }

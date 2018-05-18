@@ -86,4 +86,4 @@ OC.L10N.register(
     "Admin" : "﻿ನಿರ್ವಹಕ",
     "Error" : "﻿ತಪ್ಪಾಗಿದೆ"
 },
-"nplurals=2; plural=((n<=1 && n>= 0) ? 1);");
+"nplurals=2; plural=(n > 1);");

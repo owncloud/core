@@ -38,5 +38,5 @@
     "No favorites" : "ಯಾವ ಅಚ್ಚುಮೆಚ್ಚಿನವುಗಳು ಇಲ್ಲ",
     "Files and folders you mark as favorite will show up here" : "ನೀವು ಗುರುತು ಮಾಡಿರುವ ನೆಚ್ಚಿನ ಕಡತ ಮತ್ತು ಕಡತಕೋಶಗಳನ್ನು ಇಲ್ಲಿ ತೋರಿಸಲಾಗುತ್ತಿದೆ",
     "Text file" : "ಸರಳಾಕ್ಷರದ ಕಡತ"
-},"pluralForm" :"nplurals=2; plural=((n<=1 && n>= 0) ? 1);"
+},"pluralForm" :"nplurals=2; plural=(n > 1);"
 }

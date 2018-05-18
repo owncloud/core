@@ -104,5 +104,5 @@
     "Files and folders you mark as favorite will show up here" : "קבצים ותיקיות שסומנו על ידך כמועדפים יוצגו כאן",
     "Text file" : "קובץ טקסט",
     "New text file.txt" : "קובץ טקסט חדש.txt"
-},"pluralForm" :"nplurals=4; plural=(n==1 ? 1: n == 2 ? 2 : (n % 10 == 0 and n > 10) ? 4);"
+},"pluralForm" :"nplurals=4; plural=(n == 1 && n % 1 == 0) ? 0 : (n == 2 && n % 1 == 0) ? 1: (n % 10 == 0 && n % 1 == 0 && n > 10) ? 2 : 3;"
 }

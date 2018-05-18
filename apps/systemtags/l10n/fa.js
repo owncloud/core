@@ -16,4 +16,4 @@ OC.L10N.register(
     "Size" : "اندازه",
     "Modified" : "ویرایش شده"
 },
-"nplurals=2; plural=((n<=1 && n>= 0) ? 1);");
+"nplurals=2; plural=(n > 1);");

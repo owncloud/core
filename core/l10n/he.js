@@ -338,4 +338,4 @@ OC.L10N.register(
     "This %s instance is currently in maintenance mode, which may take a while." : "הפעלה %s זו כרגע במצב אחזקה, שתמשך זמן מה.",
     "This page will refresh itself when the %s instance is available again." : "עמוד זה ירענן את עצמו כשהפעלת %s תהיה זמינה שוב."
 },
-"nplurals=4; plural=(n==1 ? 1: n == 2 ? 2 : (n % 10 == 0 and n > 10) ? 4);");
+"nplurals=4; plural=(n == 1 && n % 1 == 0) ? 0 : (n == 2 && n % 1 == 0) ? 1: (n % 10 == 0 && n % 1 == 0 && n > 10) ? 2 : 3;");

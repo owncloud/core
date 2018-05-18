@@ -294,4 +294,4 @@ OC.L10N.register(
     "This %s instance is currently in maintenance mode, which may take a while." : "Táto %s inštancia je v súčasnej dobe v režime údržby. Počkajte prosím.",
     "This page will refresh itself when the %s instance is available again." : "Táto stránka sa obnoví sama hneď ako bude %s inštancia znovu dostupná."
 },
-"nplurals=4; plural=(n % 1 == 0 ? 4: n==1 ? 1: n % 1 == 0 && n>=2 && n<=4 ? 3);");
+"nplurals=4; plural=(n % 1 == 0 && n == 1 ? 0 : n % 1 == 0 && n >= 2 && n <= 4 ? 1 : n % 1 != 0 ? 2: 3);");

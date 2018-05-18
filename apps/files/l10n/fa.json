@@ -110,5 +110,5 @@
     "Files and folders you mark as favorite will show up here" : "فایل‌ها و پوشه‌های انتخاب شده به عنوان برگزیده توسط شما، در اینجا نمایش داده می‌شود",
     "Text file" : "فایل متنی",
     "New text file.txt" : "متن جدید file.txt"
-},"pluralForm" :"nplurals=2; plural=((n<=1 && n>= 0) ? 1);"
+},"pluralForm" :"nplurals=2; plural=(n > 1);"
 }

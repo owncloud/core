@@ -8,5 +8,5 @@
     "Name" : "სახელი",
     "Expiration date" : "ვადის გასვლის დრო",
     "Download" : "ჩამოტვირთვა"
-},"pluralForm" :"nplurals=2; plural=(n==1);"
+},"pluralForm" :"nplurals=2; plural=(n!=1);"
 }

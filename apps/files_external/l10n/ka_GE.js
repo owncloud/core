@@ -22,4 +22,4 @@ OC.L10N.register(
     "Add storage" : "საცავის დამატება",
     "Delete" : "წაშლა"
 },
-"nplurals=2; plural=(n==1);");
+"nplurals=2; plural=(n!=1);");

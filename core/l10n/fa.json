@@ -325,5 +325,5 @@
     "For help, see the  <a target=\"_blank\" rel=\"noreferrer\" href=\"%s\">documentation</a>." : "برای کمک، <a target=\"_blank\" rel=\"noreferrer\" href=\"%s\">documentation</a> را مشاهده کنید.",
     "This %s instance is currently in maintenance mode, which may take a while." : "این نمونه %s اکنون در حالت تعمیر است، که ممکن است زمانی طول بکشد.",
     "This page will refresh itself when the %s instance is available again." : "این صفحه زمانی که نمونه %s مجددا موجود باشد خود را refresh می کند."
-},"pluralForm" :"nplurals=2; plural=((n<=1 && n>= 0) ? 1);"
+},"pluralForm" :"nplurals=2; plural=(n > 1);"
 }

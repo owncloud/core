@@ -138,5 +138,5 @@
     "This means only administrators can use the instance." : "ಇದರ ಅರ್ಥ, ಸದ್ಯದ ನಿದರ್ಶನದಲ್ಲಿ ನಿರ್ವಾಹಕರು ಮಾತ್ರ ಬಳಸಬಹುದಾಗಿದೆ.",
     "Thank you for your patience." : "﻿ನಿಮ್ಮ ತಾಳ್ಮೆಗೆ ಧನ್ಯವಾದಗಳು.",
     "Start update" : "ನವೀಕರಿಣವನ್ನು ಆರಂಭಿಸಿ"
-},"pluralForm" :"nplurals=2; plural=((n<=1 && n>= 0) ? 1);"
+},"pluralForm" :"nplurals=2; plural=(n > 1);"
 }

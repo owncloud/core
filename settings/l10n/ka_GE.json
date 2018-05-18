@@ -47,5 +47,5 @@
     "Personal" : "პირადი",
     "Admin" : "ადმინისტრატორი",
     "Error" : "შეცდომა"
-},"pluralForm" :"nplurals=2; plural=(n==1);"
+},"pluralForm" :"nplurals=2; plural=(n!=1);"
 }

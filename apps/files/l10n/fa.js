@@ -113,4 +113,4 @@ OC.L10N.register(
     "Text file" : "فایل متنی",
     "New text file.txt" : "متن جدید file.txt"
 },
-"nplurals=2; plural=((n<=1 && n>= 0) ? 1);");
+"nplurals=2; plural=(n > 1);");
