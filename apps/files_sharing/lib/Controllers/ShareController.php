@@ -257,6 +257,8 @@ class ShareController extends Controller {
 	}
 
 	/**
+	 * Renders and displays the public link page template
+	 *
 	 * @PublicPage
 	 * @NoCSRFRequired
 	 *
@@ -371,6 +373,8 @@ class ShareController extends Controller {
 		} else {
 			$shareTmpl['previewImage'] = $this->urlGenerator->getAbsoluteURL($this->urlGenerator->imagePath('core', 'favicon-fb.png'));
 		}
+
+		$this->eventDispatcher->dispatch('OCA\Files_Sharing::loadAdditionalScripts');
 
 		$csp = new OCP\AppFramework\Http\ContentSecurityPolicy();
 		$csp->addAllowedFrameDomain('\'self\'');
