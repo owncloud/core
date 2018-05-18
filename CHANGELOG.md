@@ -6,9 +6,26 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/).
 
 ## [Unreleased]
 ### Added
+- occ user:list now takes a list of attributes to display - [#31115](https://github.com/owncloud/core/issues/31115)
 ### Changed
+- Bump symfony to 3.4.8 and other pending minor bumps - [#31221](https://github.com/owncloud/core/issues/31221)
+- Bump karma from 2.0.0 to 2.0.2 in /build - [#31253](https://github.com/owncloud/core/issues/31253)
+- Bump karma-jasmine from 1.1.1 to 1.1.2 in /build - [#31378](https://github.com/owncloud/core/issues/31378)
+- Bump karma-coverage from 1.1.1 to 1.1.2 in /build - [#31380](https://github.com/owncloud/core/issues/31380)
+- Update jsdoc requirement to ~3.5.5 - [#30036](https://github.com/owncloud/core/issues/30036)
+
 ### Removed
 ### Fixed
+- Subadmin shouldn't be able to add users to their groups via API - [#31337](https://github.com/owncloud/core/issues/31337)
+- Remove session token creation for dav requests during loadApps - [#31428](https://github.com/owncloud/core/issues/31428)
+- Fix overflowing public share names in the share panel - [#31369](https://github.com/owncloud/core/issues/31369)
+- Fix occ user:sync to sync quota from preferences after upgrade if backend provided no quota - [#31360](https://github.com/owncloud/core/issues/31360)
+- Fix for Redis dev editions - [#31282](https://github.com/owncloud/core/issues/31282)
+- Fix mail debug message recipient field - [#31227](https://github.com/owncloud/core/issues/31227)
+- Prevent infinite loop in case of error in "log" event handler - [#31247](https://github.com/owncloud/core/issues/31247)
+- Fix HTTP status code when uploading virus-infected files - [#31260](https://github.com/owncloud/core/issues/31260)
+- Add back robots.txt in the release - [#31248](https://github.com/owncloud/core/issues/31248)
+- Fix share email with wrong expiration date - [#31212](https://github.com/owncloud/core/issues/31212)
 
 ## 10.0.8 - 2018-04-27
 ### Added
