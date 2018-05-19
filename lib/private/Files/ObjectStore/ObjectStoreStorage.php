@@ -501,4 +501,18 @@ class ObjectStoreStorage extends \OC\Files\Storage\Common {
 		}
 		return parent::restoreVersion($internalPath, $versionId);
 	}
+
+	public function getCache($path = '', $storage = null) {
+		// If storage is not specified, it means ObjectStoreStorage storage has to be used
+		if (!$storage) {
+			$storage = $this;
+		}
+
+		// ObjectStore uses oc_filecache as storage metadata representation, thus
+		// set and return ObjectStoreMetadata as filecache (storage metadata caching layer)
+		if (!isset($storage->cache)) {
+			$storage->cache = new ObjectStoreMetadata($storage);
+		}
+		return $storage->cache;
+	}
 }
