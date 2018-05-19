@@ -16,6 +16,8 @@ BEHAT=${OC_PATH}lib/composer/bin/behat
 # -c or --config - specify a behat.yml to use
 # --feature - specify a single feature to run
 # --suite - specify a single suite to run
+# --type - api or webui - if no individual feature or suite is specified, then
+#          specify the type of acceptance tests to run. Default api.
 # --tags - specify tags for scenarios to run (or not)
 # --remote - the server under test is remote, so we cannot locally enable the
 #            testing app. We have to assume it is already enabled.
@@ -25,6 +27,7 @@ BEHAT_TAGS_OPTION_FOUND=false
 REMOTE_ONLY=false
 SHOW_OC_LOGS=false
 RERUN_FAILED_WEBUI_SCENARIOS=true
+ACCEPTANCE_TEST_TYPE="api"
 
 while [[ $# -gt 0 ]]
 do
@@ -40,6 +43,11 @@ do
 			;;
 		--suite)
 			BEHAT_SUITE="$2"
+			shift
+			;;
+		--type)
+			# Lowercase the parameter value, so the user can provide "API", "webUI" etc
+			ACCEPTANCE_TEST_TYPE="${2,,}"
 			shift
 			;;
 		--tags)
@@ -208,25 +216,23 @@ fi
 if [ -n "${BEHAT_SUITE}" ]
 then
 	BEHAT_SUITE_OPTION="--suite=${BEHAT_SUITE}"
-
-	# If the suite name begins with "webUI" then we will setup for webUI testing
-	# and run tests tagged as @webUI, otherwise it is just API tests.
-	if [[ "${BEHAT_SUITE}" == webUI* ]]
-	then
-		TEST_TYPE_TAG="@webUI"
-		RUNNING_API_TESTS=false
-		RUNNING_WEBUI_TESTS=true
-	else
-		TEST_TYPE_TAG="@api"
-		RUNNING_API_TESTS=true
-		RUNNING_WEBUI_TESTS=false
-	fi
 else
 	BEHAT_SUITE_OPTION=""
-	# We are running "all" suites in a single run.
-	# It is not practical/reasonable to do that with the webUI tests.
-	# So just run all the API tests.
+fi
+
+# If the suite name begins with "webUI" or the user explicitly specified type "webui"
+# then we will setup for webUI testing and run tests tagged as @webUI,
+# otherwise it is API tests.
+# Currently, running both API and webUI tests in a single run is not supported.
+if [[ "${BEHAT_SUITE}" == webUI* ]] || [ "${ACCEPTANCE_TEST_TYPE}" = "webui" ]
+then
+	TEST_TYPE_TAG="@webUI"
+	TEST_TYPE_TEXT="webUI"
+	RUNNING_API_TESTS=false
+	RUNNING_WEBUI_TESTS=true
+else
 	TEST_TYPE_TAG="@api"
+	TEST_TYPE_TEXT="API"
 	RUNNING_API_TESTS=true
 	RUNNING_WEBUI_TESTS=false
 fi
@@ -547,7 +553,7 @@ export FILES_FOR_UPLOAD="${SCRIPT_PATH}/filesForUpload/"
 
 if [ -z "${BEHAT_SUITE}" ] && [ -z "${BEHAT_FEATURE}" ]
 then
-	SUITE_FEATURE_TEXT="all"
+	SUITE_FEATURE_TEXT="all ${TEST_TYPE_TEXT}"
 else
 	if [ -n "${BEHAT_SUITE}" ]
 	then
