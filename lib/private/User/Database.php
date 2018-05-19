@@ -216,21 +216,17 @@ class Database extends Backend implements IUserBackend, IProvidesHomeBackend, IP
 
 	/**
 	 * Check if the password is correct
+	 *
 	 * @param string $uid The username
 	 * @param string $password The password
-	 * @return string
+	 * @param string $login the username or email
+	 * @return string|false
 	 *
 	 * Check if the password is correct without logging in the user
 	 * returns the user id or false
+	 * @throws \OC\DatabaseException
 	 */
-	public function checkPassword($loginName, $password) {
-		try {
-			$account = \OC::$server->getAccountMapper()->getByUserName($loginName);
-		} catch (DoesNotExistException $ex) {
-			return false;
-		}
-		$uid = $account->getUserId();
-
+	public function checkPassword($uid, $password, $login = null) {
 		$query = \OC_DB::prepare('SELECT `uid`, `password` FROM `*PREFIX*users` WHERE LOWER(`uid`) = LOWER(?)');
 		$result = $query->execute([$uid]);
 
@@ -243,7 +239,7 @@ class Database extends Backend implements IUserBackend, IProvidesHomeBackend, IP
 					$this->setPassword($uid, $password);
 					unset($this->cache[$uid]); // invalidate cache
 				}
-				return $uid;
+				return $row['uid'];
 			}
 		}
 

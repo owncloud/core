@@ -52,6 +52,8 @@ class ManagerTest extends TestCase {
 		/** @var ILogger | \PHPUnit_Framework_MockObject_MockObject $logger */
 		$logger = $this->createMock(ILogger::class);
 		$this->accountMapper = $this->createMock(AccountMapper::class);
+		$this->accountMapper->method('getByEmail')->willReturn([]);
+
 		$this->syncService = $this->createMock(SyncService::class);
 
 		$this->userSearch = $this->getMockBuilder(\OCP\Util\UserSearch::class)

@@ -265,32 +265,48 @@ class Manager extends PublicEmitter implements IUserManager {
 	}
 
 	/**
+	 * @param string $login username, email or userid (as a fallback)
+	 * @return string[]
+	 */
+	private function resolveUserIdAndName($login) {
+		// try to lookup the userId
+		if ($user = $this->getByUserName($login)) { // by login
+			return [$user->getUserId(), $user->getUserName()];
+		}
+		if ($user = $this->getByEmail($login)) { // by email
+			return [$user->getUserId(), $user->getUserName()];
+		}
+		return [$login, $login];
+	}
+
+	/**
 	 * Check if the password is valid for the user
 	 *
-	 * @param string $loginName
+	 * @param string $login username or email
 	 * @param string $password
 	 * @return mixed the User object on success, false otherwise
 	 */
-	public function checkPassword($loginName, $password) {
-		$loginName = \str_replace("\0", '', $loginName);
+	public function checkPassword($login, $password) {
+		$login = \str_replace("\0", '', $login);
 		$password = \str_replace("\0", '', $password);
 
 		if (empty($this->backends)) {
 			$this->registerBackend(new Database());
 		}
 
+		[$userId, $userName] = $this->resolveUserIdAndName($login);
+
 		foreach ($this->backends as $backend) {
 			if ($backend->implementsActions(Backend::CHECK_PASSWORD)) {
-				$uid = $backend->checkPassword($loginName, $password);
-				if ($uid !== false) {
-					$userName = $loginName; // FIXME does checkPassword return username or uid? check for array as with apache backend?
-					$account = $this->syncService->createOrSyncAccount($uid, $backend, $userName);
+				$userId = $backend->checkPassword($userId, $password, $userName);
+				if ($userId !== false) {
+					$account = $this->syncService->createOrSyncAccount($userId, $backend, $userName);
 					return $this->getUserObject($account);
 				}
 			}
 		}
 
-		$this->logger->warning('Login failed: \''. $loginName .'\' (Remote IP: \''. \OC::$server->getRequest()->getRemoteAddress(). '\')', ['app' => 'core']);
+		$this->logger->warning('Login failed: \''. $login .'\' (Remote IP: \''. \OC::$server->getRequest()->getRemoteAddress(). '\')', ['app' => 'core']);
 		return false;
 	}
 

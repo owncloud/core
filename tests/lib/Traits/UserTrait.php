@@ -34,7 +34,7 @@ trait UserTrait {
 
 		$userManager = \OC::$server->getUserManager();
 		if ($password === null) {
-			if ($userName) { // frefer username as password
+			if ($userName) { // prefer username as password
 				$password = $userName;
 			} else {
 				$password = $userId;
