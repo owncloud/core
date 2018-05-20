@@ -34,6 +34,10 @@ use OCP\Files\ObjectStore\IVersionedObjectStorage;
 class ObjectStoreStorage extends \OC\Files\Storage\Common {
 
 	/**
+	 * @var \OC\Files\ObjectStore\StatCache $statCache
+	 */
+	private $statCache;
+	/**
 	 * @var array
 	 */
 	private static $tmpFiles = [];
@@ -66,6 +70,10 @@ class ObjectStoreStorage extends \OC\Files\Storage\Common {
 		if (isset($params['objectPrefix'])) {
 			$this->objectPrefix = $params['objectPrefix'];
 		}
+
+		// Initialize stat cache
+		$this->statCache = new StatCache();
+
 		//initialize cache with root directory in cache
 		if (!$this->is_dir('/')) {
 			$this->mkdir('/');
@@ -205,8 +213,17 @@ class ObjectStoreStorage extends \OC\Files\Storage\Common {
 
 	public function stat($path) {
 		$path = $this->normalizePath($path);
-		$cacheEntry = $this->getCache()->get($path);
+
+		// Try to get from stat cache if possible
+		$cacheEntry = $this->statCache->get($path);
+		if (!$cacheEntry) {
+			// No stat, fetch from filecache
+			$cacheEntry = $this->getCache()->get($path);
+		}
+
 		if ($cacheEntry instanceof CacheEntry) {
+			// Try to put filecache entry in stat cache if possible
+			$this->statCache->put($path, $cacheEntry);
 			return $cacheEntry->getData();
 		} else {
 			return false;
@@ -488,5 +505,16 @@ class ObjectStoreStorage extends \OC\Files\Storage\Common {
 			return $this->objectStore->restoreVersion($this->getURN($stat['fileid']), $versionId);
 		}
 		return parent::restoreVersion($internalPath, $versionId);
+	}
+
+	/**
+	 * @inheritdoc
+	 */
+	public function getMetaData($path) {
+		$this->statCache->enable($path);
+		$data = parent::getMetaData($path);
+		$this->statCache->disable($path);
+
+		return $data;
 	}
 }
