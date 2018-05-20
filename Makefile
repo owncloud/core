@@ -204,7 +204,7 @@ test-php-lint: $(composer_dev_deps)
 
 .PHONY: test-php-style
 test-php-style: $(composer_dev_deps)
-	$(composer_deps)/bin/php-cs-fixer fix -v --diff --dry-run --allow-risky yes
+	$(composer_deps)/bin/php-cs-fixer fix -v --diff --diff-format udiff --dry-run --allow-risky yes
 
 .PHONY: test
 test: test-php-lint test-php-style test-php test-js test-acceptance
