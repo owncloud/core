@@ -110,7 +110,6 @@ class ViewTest extends TestCase {
 		\OC_User::setUserId($this->user);
 		foreach ($this->storages as $storage) {
 			$cache = $storage->getCache();
-			$ids = $cache->getAll();
 			$cache->clear();
 		}
 
