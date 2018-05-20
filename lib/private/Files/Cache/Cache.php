@@ -707,6 +707,29 @@ class Cache implements ICache {
 		}
 	}
 
+	public function getFolderSize($folderId) {
+		$sql = 'SELECT SUM(`size`) AS f1, MIN(`size`) AS f2 ' .
+			'FROM `*PREFIX*filecache` ' .
+			'WHERE `parent` = ? AND `storage` = ?';
+		$result = $this->connection->executeQuery($sql, [$folderId, $this->getNumericStorageId()]);
+		if ($row = $result->fetch()) {
+			$result->closeCursor();
+			list($sum, $min) = \array_values($row);
+			$sum = 0 + $sum;
+			$min = 0 + $min;
+			if ($min === -1) {
+				$totalSize = $min;
+			} else {
+				$totalSize = $sum;
+			}
+			return $totalSize;
+		} else {
+			$result->closeCursor();
+			return null;
+		}
+
+	}
+
 	/**
 	 * calculate the size of a folder and set it in the cache
 	 *
@@ -715,26 +738,12 @@ class Cache implements ICache {
 	 * @return int
 	 */
 	public function calculateFolderSize($path, $entry = null) {
-		$totalSize = 0;
 		if ($entry === null or !isset($entry['fileid'])) {
 			$entry = $this->get($path);
 		}
 		if (isset($entry['mimetype']) && $entry['mimetype'] === 'httpd/unix-directory') {
 			$id = $entry['fileid'];
-			$sql = 'SELECT SUM(`size`) AS f1, MIN(`size`) AS f2 ' .
-				'FROM `*PREFIX*filecache` ' .
-				'WHERE `parent` = ? AND `storage` = ?';
-			$result = $this->connection->executeQuery($sql, [$id, $this->getNumericStorageId()]);
-			if ($row = $result->fetch()) {
-				$result->closeCursor();
-				list($sum, $min) = \array_values($row);
-				$sum = 0 + $sum;
-				$min = 0 + $min;
-				if ($min === -1) {
-					$totalSize = $min;
-				} else {
-					$totalSize = $sum;
-				}
+			if ($totalSize = $this->getFolderSize($id)) {
 				$update = [];
 				if ($entry['size'] !== $totalSize) {
 					$update['size'] = $totalSize;
@@ -742,11 +751,10 @@ class Cache implements ICache {
 				if (\count($update) > 0) {
 					$this->update($id, $update);
 				}
-			} else {
-				$result->closeCursor();
+				return $totalSize;
 			}
 		}
-		return $totalSize;
+		return 0;
 	}
 
 	/**
