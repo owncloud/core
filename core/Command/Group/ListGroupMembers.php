@@ -56,7 +56,7 @@ class ListGroupMembers extends Base {
 	protected function execute(InputInterface $input, OutputInterface $output) {
 		$groupName = $input->getArgument('group');
 		$group = $this->groupManager->get($groupName);
-		if (!$group) {
+		if(!$group) {
 			$output->writeln("<error>Group $groupName does not exist</error>");
 			return 1;
 		}
