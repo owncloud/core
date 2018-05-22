@@ -18,13 +18,13 @@ verlt() {
 	[ "$1" = "$2" ] && return 1 || verlte $1 $2
 }
 
-# @param $1 admin password
+# @param $1 admin authentication string username:password
 # @param $2 occ url
 # @param $3 command
 # sets $REMOTE_OCC_STDOUT and $REMOTE_OCC_STDERR from returned xml date
 # @return occ return code given in the xml data
 remote_occ() {
-	RESULT=`curl -s -u admin:$1 $2 -d "command=$3"`
+	RESULT=`curl -s -u $1 $2 -d "command=$3"`
 	RETURN=`echo ${RESULT} | xmllint --xpath "string(ocs/data/code)" - | sed 's/ //g'`
 	# we could not find a proper return of the testing app, so something went wrong
 	if [ -z "${RETURN}" ]
@@ -92,10 +92,20 @@ then
 fi
 
 OCC_URL="${BASE_URL}/ocs/v2.php/apps/testing/api/v1/occ"
+
+# Provide a default admin username and password.
+# But let the caller pass them if they wish
+if [ -z "${ADMIN_USERNAME}" ]
+then
+	ADMIN_USERNAME="admin"
+fi
+
 if [ -z "${ADMIN_PASSWORD}" ]
 then
 	ADMIN_PASSWORD="admin"
 fi
+
+ADMIN_AUTH="${ADMIN_USERNAME}:${ADMIN_PASSWORD}"
 
 if [ -z "${APPS_TO_DISABLE}" ]
 then
@@ -226,28 +236,28 @@ else
 fi
 
 # set SMTP settings
-remote_occ ${ADMIN_PASSWORD} ${OCC_URL} "--no-warnings config:system:get mail_domain"
+remote_occ ${ADMIN_AUTH} ${OCC_URL} "--no-warnings config:system:get mail_domain"
 PREVIOUS_MAIL_DOMAIN=${REMOTE_OCC_STDOUT}
-remote_occ ${ADMIN_PASSWORD} ${OCC_URL} "--no-warnings config:system:get mail_from_address"
+remote_occ ${ADMIN_AUTH} ${OCC_URL} "--no-warnings config:system:get mail_from_address"
 PREVIOUS_MAIL_FROM_ADDRESS=${REMOTE_OCC_STDOUT}
-remote_occ ${ADMIN_PASSWORD} ${OCC_URL} "--no-warnings config:system:get mail_smtpmode"
+remote_occ ${ADMIN_AUTH} ${OCC_URL} "--no-warnings config:system:get mail_smtpmode"
 PREVIOUS_MAIL_SMTP_MODE=${REMOTE_OCC_STDOUT}
-remote_occ ${ADMIN_PASSWORD} ${OCC_URL} "--no-warnings config:system:get mail_smtphost"
+remote_occ ${ADMIN_AUTH} ${OCC_URL} "--no-warnings config:system:get mail_smtphost"
 PREVIOUS_MAIL_SMTP_HOST=${REMOTE_OCC_STDOUT}
-remote_occ ${ADMIN_PASSWORD} ${OCC_URL} "--no-warnings config:system:get mail_smtpport"
+remote_occ ${ADMIN_AUTH} ${OCC_URL} "--no-warnings config:system:get mail_smtpport"
 PREVIOUS_MAIL_SMTP_PORT=${REMOTE_OCC_STDOUT}
 
-remote_occ ${ADMIN_PASSWORD} ${OCC_URL} "config:system:set mail_domain --value=foobar.com"
-remote_occ ${ADMIN_PASSWORD} ${OCC_URL} "config:system:set mail_from_address --value=owncloud"
-remote_occ ${ADMIN_PASSWORD} ${OCC_URL} "config:system:set mail_smtpmode --value=smtp"
-remote_occ ${ADMIN_PASSWORD} ${OCC_URL} "config:system:set mail_smtphost --value=${MAILHOG_HOST}"
-remote_occ ${ADMIN_PASSWORD} ${OCC_URL} "config:system:set mail_smtpport --value=${MAILHOG_SMTP_PORT}"
+remote_occ ${ADMIN_AUTH} ${OCC_URL} "config:system:set mail_domain --value=foobar.com"
+remote_occ ${ADMIN_AUTH} ${OCC_URL} "config:system:set mail_from_address --value=owncloud"
+remote_occ ${ADMIN_AUTH} ${OCC_URL} "config:system:set mail_smtpmode --value=smtp"
+remote_occ ${ADMIN_AUTH} ${OCC_URL} "config:system:set mail_smtphost --value=${MAILHOG_HOST}"
+remote_occ ${ADMIN_AUTH} ${OCC_URL} "config:system:set mail_smtpport --value=${MAILHOG_SMTP_PORT}"
 
 # get the current backgroundjobs_mode
-remote_occ ${ADMIN_PASSWORD} ${OCC_URL} "config:app:get core backgroundjobs_mode"
+remote_occ ${ADMIN_AUTH} ${OCC_URL} "config:app:get core backgroundjobs_mode"
 PREVIOUS_BACKGROUNDJOBS_MODE=${REMOTE_OCC_STDOUT}
 # switch to webcron
-remote_occ ${ADMIN_PASSWORD} ${OCC_URL} "config:app:set core backgroundjobs_mode --value webcron"
+remote_occ ${ADMIN_AUTH} ${OCC_URL} "config:app:set core backgroundjobs_mode --value webcron"
 if [ $? -ne 0 ]
 then
 	echo "WARNING: Could not set backgroundjobs mode to 'webcron'"
@@ -256,24 +266,24 @@ fi
 APPS_TO_REENABLE="";
 
 for APP_TO_DISABLE in ${APPS_TO_DISABLE}; do
-	remote_occ ${ADMIN_PASSWORD} ${OCC_URL} "--no-warnings app:list ^${APP_TO_DISABLE}$"
+	remote_occ ${ADMIN_AUTH} ${OCC_URL} "--no-warnings app:list ^${APP_TO_DISABLE}$"
 	PREVIOUS_APP_STATUS=${REMOTE_OCC_STDOUT}
 	if [[ "${PREVIOUS_APP_STATUS}" =~ ^Enabled: ]]
 	then
 		APPS_TO_REENABLE="${APPS_TO_REENABLE} ${APP_TO_DISABLE}";
-		remote_occ ${ADMIN_PASSWORD} ${OCC_URL} "--no-warnings app:disable ${APP_TO_DISABLE}"
+		remote_occ ${ADMIN_AUTH} ${OCC_URL} "--no-warnings app:disable ${APP_TO_DISABLE}"
 	fi
 done
 
 APPS_TO_REDISABLE="";
 
 for APP_TO_ENABLE in ${APPS_TO_ENABLE}; do
-	remote_occ ${ADMIN_PASSWORD} ${OCC_URL} "--no-warnings app:list ^${APP_TO_ENABLE}$"
+	remote_occ ${ADMIN_AUTH} ${OCC_URL} "--no-warnings app:list ^${APP_TO_ENABLE}$"
 	PREVIOUS_APP_STATUS=${REMOTE_OCC_STDOUT}
 	if [[ "${PREVIOUS_APP_STATUS}" =~ ^Disabled: ]]
 	then
 		APPS_TO_REDISABLE="${APPS_TO_REDISABLE} ${APP_TO_ENABLE}";
-		remote_occ ${ADMIN_PASSWORD} ${OCC_URL} "--no-warnings app:enable ${APP_TO_ENABLE}"
+		remote_occ ${ADMIN_AUTH} ${OCC_URL} "--no-warnings app:enable ${APP_TO_ENABLE}"
 	fi
 done
 
@@ -314,7 +324,7 @@ fi
 # @skipOnOcV10.0
 # @skipOnOcV10
 
-remote_occ ${ADMIN_PASSWORD} ${OCC_URL} "config:system:get version"
+remote_occ ${ADMIN_AUTH} ${OCC_URL} "config:system:get version"
 OWNCLOUD_VERSION=`echo ${REMOTE_OCC_STDOUT} | cut -d"." -f1-3`
 BEHAT_TAGS='~@skipOnOcV'${OWNCLOUD_VERSION}'&&'${BEHAT_TAGS}
 OWNCLOUD_VERSION=`echo ${OWNCLOUD_VERSION} | cut -d"." -f1-2`
@@ -349,7 +359,7 @@ fi
 EXTRA_CAPABILITIES=$EXTRA_CAPABILITIES'"browserVersion":"'${BROWSER_VERSION}'","maxDuration":"3600"'
 
 # Set up personalized skeleton
-remote_occ ${ADMIN_PASSWORD} ${OCC_URL} "--no-warnings config:system:get skeletondirectory"
+remote_occ ${ADMIN_AUTH} ${OCC_URL} "--no-warnings config:system:get skeletondirectory"
 
 PREVIOUS_SKELETON_DIR=${REMOTE_OCC_STDOUT}
 
@@ -363,7 +373,7 @@ then
 	export SKELETON_DIR="${SRC_SKELETON_DIR}"
 fi
 
-remote_occ ${ADMIN_PASSWORD} ${OCC_URL} "config:system:set skeletondirectory --value=${SKELETON_DIR}"
+remote_occ ${ADMIN_AUTH} ${OCC_URL} "config:system:set skeletondirectory --value=${SKELETON_DIR}"
 if [ $? -ne 0 ]
 then
 	echo -e "Could not set skeleton directory. Result:\n'${REMOTE_OCC_STDERR}'"
@@ -477,57 +487,57 @@ fi
 # Put back personalized skeleton
 if [ "A${PREVIOUS_SKELETON_DIR}" = "A" ]
 then
-	remote_occ ${ADMIN_PASSWORD} ${OCC_URL} "config:system:delete skeletondirectory"
+	remote_occ ${ADMIN_AUTH} ${OCC_URL} "config:system:delete skeletondirectory"
 else
-	remote_occ ${ADMIN_PASSWORD} ${OCC_URL} "config:system:set skeletondirectory --value=${PREVIOUS_SKELETON_DIR}"
+	remote_occ ${ADMIN_AUTH} ${OCC_URL} "config:system:set skeletondirectory --value=${PREVIOUS_SKELETON_DIR}"
 fi
 
 # Put back smtp settings
 if [ "A${PREVIOUS_MAIL_DOMAIN}" = "A" ]
 then
-	remote_occ ${ADMIN_PASSWORD} ${OCC_URL} "config:system:delete mail_domain"
+	remote_occ ${ADMIN_AUTH} ${OCC_URL} "config:system:delete mail_domain"
 else
-	remote_occ ${ADMIN_PASSWORD} ${OCC_URL} "config:system:set mail_domain --value=${PREVIOUS_MAIL_DOMAIN}"
+	remote_occ ${ADMIN_AUTH} ${OCC_URL} "config:system:set mail_domain --value=${PREVIOUS_MAIL_DOMAIN}"
 fi
 
 if [ "A${PREVIOUS_MAIL_FROM_ADDRESS}" = "A" ]
 then
-	remote_occ ${ADMIN_PASSWORD} ${OCC_URL} "config:system:delete mail_from_address"
+	remote_occ ${ADMIN_AUTH} ${OCC_URL} "config:system:delete mail_from_address"
 else
-	remote_occ ${ADMIN_PASSWORD} ${OCC_URL} "config:system:set mail_from_address --value=${PREVIOUS_MAIL_FROM_ADDRESS}"
+	remote_occ ${ADMIN_AUTH} ${OCC_URL} "config:system:set mail_from_address --value=${PREVIOUS_MAIL_FROM_ADDRESS}"
 fi
 
 if [ "A${PREVIOUS_MAIL_SMTP_MODE}" = "A" ]
 then
-	remote_occ ${ADMIN_PASSWORD} ${OCC_URL} "config:system:delete mail_smtpmode"
+	remote_occ ${ADMIN_AUTH} ${OCC_URL} "config:system:delete mail_smtpmode"
 else
-	remote_occ ${ADMIN_PASSWORD} ${OCC_URL} "config:system:set mail_smtpmode --value=${PREVIOUS_MAIL_SMTP_MODE}"
+	remote_occ ${ADMIN_AUTH} ${OCC_URL} "config:system:set mail_smtpmode --value=${PREVIOUS_MAIL_SMTP_MODE}"
 fi
 
 if [ "A${PREVIOUS_MAIL_SMTP_HOST}" = "A" ]
 then
-	remote_occ ${ADMIN_PASSWORD} ${OCC_URL} "config:system:delete mail_smtphost"
+	remote_occ ${ADMIN_AUTH} ${OCC_URL} "config:system:delete mail_smtphost"
 else
-	remote_occ ${ADMIN_PASSWORD} ${OCC_URL} "config:system:set mail_smtphost --value=${PREVIOUS_MAIL_SMTP_HOST}"
+	remote_occ ${ADMIN_AUTH} ${OCC_URL} "config:system:set mail_smtphost --value=${PREVIOUS_MAIL_SMTP_HOST}"
 fi
 
 if [ "A${PREVIOUS_MAIL_SMTP_PORT}" = "A" ]
 then
-	remote_occ ${ADMIN_PASSWORD} ${OCC_URL} "config:system:delete mail_smtpport"
+	remote_occ ${ADMIN_AUTH} ${OCC_URL} "config:system:delete mail_smtpport"
 else
-	remote_occ ${ADMIN_PASSWORD} ${OCC_URL} "config:system:set mail_smtpport --value=${PREVIOUS_MAIL_SMTP_PORT}"
+	remote_occ ${ADMIN_AUTH} ${OCC_URL} "config:system:set mail_smtpport --value=${PREVIOUS_MAIL_SMTP_PORT}"
 fi
 
 for APP_TO_ENABLE in ${APPS_TO_REENABLE}; do
-	remote_occ ${ADMIN_PASSWORD} ${OCC_URL} "--no-warnings app:enable ${APP_TO_ENABLE}"
+	remote_occ ${ADMIN_AUTH} ${OCC_URL} "--no-warnings app:enable ${APP_TO_ENABLE}"
 done
 
 for APP_TO_DISABLE in ${APPS_TO_REDISABLE}; do
-	remote_occ ${ADMIN_PASSWORD} ${OCC_URL} "--no-warnings app:disable ${APP_TO_DISABLE}"
+	remote_occ ${ADMIN_AUTH} ${OCC_URL} "--no-warnings app:disable ${APP_TO_DISABLE}"
 done
 
 # put back the backgroundjobs_mode
-remote_occ ${ADMIN_PASSWORD} ${OCC_URL} "config:app:set core backgroundjobs_mode --value ${PREVIOUS_BACKGROUNDJOBS_MODE}"
+remote_occ ${ADMIN_AUTH} ${OCC_URL} "config:app:set core backgroundjobs_mode --value ${PREVIOUS_BACKGROUNDJOBS_MODE}"
 
 # Put back state of the testing app
 if [ "${TESTING_ENABLED_BY_SCRIPT}" = true ]

@@ -154,6 +154,36 @@ trait BasicStructure {
 		if ($testRemoteServerUrl !== false) {
 			$this->remoteBaseUrl = rtrim($testRemoteServerUrl, '/');
 		}
+
+		// get the admin username from the environment (if defined)
+		$adminUsernameFromEnvironment = $this->getAdminUsernameFromEnvironment();
+		if ($adminUsernameFromEnvironment !== false) {
+			$this->adminUsername = $adminUsernameFromEnvironment;
+		}
+
+		// get the admin password from the environment (if defined)
+		$adminPasswordFromEnvironment = $this->getAdminPasswordFromEnvironment();
+		if ($adminPasswordFromEnvironment !== false) {
+			$this->adminPassword = $adminPasswordFromEnvironment;
+		}
+	}
+
+	/**
+	 * Get the externally-defined admin username, if any
+	 *
+	 * @return string|false
+	 */
+	private static function getAdminUsernameFromEnvironment() {
+		return \getenv('ADMIN_USERNAME');
+	}
+
+	/**
+	 * Get the externally-defined admin password, if any
+	 *
+	 * @return string|false
+	 */
+	private static function getAdminPasswordFromEnvironment() {
+		return \getenv('ADMIN_PASSWORD');
 	}
 
 	/**
@@ -1024,6 +1054,18 @@ trait BasicStructure {
 				$adminPassword = $context[__CLASS__]['adminPassword'];
 				break;
 			}
+		}
+
+		// get the admin username from the environment (if defined)
+		$adminUsernameFromEnvironment = self::getAdminUsernameFromEnvironment();
+		if ($adminUsernameFromEnvironment !== false) {
+			$adminUsername = $adminUsernameFromEnvironment;
+		}
+
+		// get the admin password from the environment (if defined)
+		$adminPasswordFromEnvironment = self::getAdminPasswordFromEnvironment();
+		if ($adminPasswordFromEnvironment !== false) {
+			$adminPassword = $adminPasswordFromEnvironment;
 		}
 
 		if (($adminUsername === null) || ($adminPassword === null)) {

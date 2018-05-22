@@ -15,6 +15,23 @@ BEHAT=${OC_PATH}lib/composer/behat/behat/bin/behat
 SCENARIO_TO_RUN=$1
 HIDE_OC_LOGS=$2
 
+# Provide a default admin username and password.
+# But let the caller pass them if they wish
+if [ -z "${ADMIN_USERNAME}" ]
+then
+	ADMIN_USERNAME="admin"
+fi
+
+if [ -z "${ADMIN_PASSWORD}" ]
+then
+	ADMIN_PASSWORD="admin"
+fi
+
+ADMIN_AUTH="${ADMIN_USERNAME}:${ADMIN_PASSWORD}"
+
+export ADMIN_USERNAME
+export ADMIN_PASSWORD
+
 function env_alt_home_enable {
 	${OCC} config:app:set testing enable_alt_user_backend --value yes
 }
