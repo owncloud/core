@@ -71,9 +71,6 @@ default:
       context: &common_webui_suite_context
         parameters:
           ocPath: apps/testing/api/v1/occ
-          adminUsername: admin
-          adminPassword: admin
-          regularUserPassword: 123456
       contexts:
         - FeatureContext: *common_feature_context_params
         - WebUIGeneralContext:
