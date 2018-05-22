@@ -53,7 +53,7 @@ Feature: sharing
 			| permissions            | 19                 |
 			| uid_owner              | user0              |
 
-	Scenario: Creating a new public share
+	Scenario: Creating a new public share of a file
 		Given user "user0" has been created
 		When user "user0" creates a share using the API with settings
 			| path      | welcome.txt |
@@ -62,7 +62,7 @@ Feature: sharing
 		And the HTTP status code should be "200"
 		And the last public shared file should be able to be downloaded without a password
 
-	Scenario: Creating a new public share with password
+	Scenario: Creating a new public share of a file with password
 		Given user "user0" has been created
 		When user "user0" creates a share using the API with settings
 			| path      | welcome.txt |
@@ -71,6 +71,23 @@ Feature: sharing
 		Then the OCS status code should be "100"
 		And the HTTP status code should be "200"
 		And the last public shared file should be able to be downloaded with password "publicpw"
+
+	Scenario: Trying to create a new public share of a file with edit permissions results in a read-only share
+		Given user "user0" has been created
+		When user "user0" creates a share using the API with settings
+			| path        | welcome.txt |
+			| shareType   | 3           |
+			| permissions | 31          |
+		Then the OCS status code should be "100"
+		And the HTTP status code should be "200"
+		And the share fields of the last share should include
+			| file_target            | /welcome.txt       |
+			| path                   | /welcome.txt       |
+			| item_type              | file               |
+			| share_type             | 3                  |
+			| permissions            | 1                  |
+			| uid_owner              | user0              |
+		And the last public shared file should be able to be downloaded without a password
 
 	Scenario: Creating a new public share of a folder
 		Given user "user0" has been created
