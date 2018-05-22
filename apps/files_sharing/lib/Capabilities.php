@@ -70,7 +70,14 @@ class Capabilities implements ICapability {
 			$public['enabled'] = $this->config->getAppValue('core', 'shareapi_allow_links', 'yes') === 'yes';
 			if ($public['enabled']) {
 				$public['password'] = [];
-				$public['password']['enforced'] = ($this->config->getAppValue('core', 'shareapi_enforce_links_password', 'no') === 'yes');
+				$public['password']['enforced_for'] = [];
+				$roPasswordEnforced = $this->config->getAppValue('core', 'shareapi_enforce_links_password_read_only', 'no') === 'yes';
+				$rwPasswordEnforced = $this->config->getAppValue('core', 'shareapi_enforce_links_password_read_write', 'no') === 'yes';
+				$woPasswordEnforced = $this->config->getAppValue('core', 'shareapi_enforce_links_password_write_only', 'no') === 'yes';
+				$public['password']['enforced_for']['read_only'] = $roPasswordEnforced;
+				$public['password']['enforced_for']['read_write'] = $rwPasswordEnforced;
+				$public['password']['enforced_for']['upload_only'] = $woPasswordEnforced;
+				$public['password']['enforced'] = $roPasswordEnforced || $rwPasswordEnforced || $woPasswordEnforced;
 
 				$public['expire_date'] = [];
 				$public['expire_date']['enabled'] = $this->config->getAppValue('core', 'shareapi_default_expire_date', 'no') === 'yes';
