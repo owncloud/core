@@ -81,21 +81,21 @@ class CapabilitiesContext implements Context, SnippetAcceptingContext {
 				],
 				[
 					'capabilitiesApp' => 'files_sharing',
-					'capabilitiesParameter' => 'public@@@password@@@enforced_read_only',
+					'capabilitiesParameter' => 'public@@@password@@@enforced_for@@@read_only',
 					'testingApp' => 'core',
 					'testingParameter' => 'shareapi_enforce_links_password_read_only',
 					'testingState' => false
 				],
 				[
 					'capabilitiesApp' => 'files_sharing',
-					'capabilitiesParameter' => 'public@@@password@@@enforced_read_write',
+					'capabilitiesParameter' => 'public@@@password@@@enforced_for@@@read_write',
 					'testingApp' => 'core',
 					'testingParameter' => 'shareapi_enforce_links_password_read_write',
 					'testingState' => false
 				],
 				[
 					'capabilitiesApp' => 'files_sharing',
-					'capabilitiesParameter' => 'public@@@password@@@enforced_write_only',
+					'capabilitiesParameter' => 'public@@@password@@@enforced_for@@@upload_only',
 					'testingApp' => 'core',
 					'testingParameter' => 'shareapi_enforce_links_password_write_only',
 					'testingState' => false
