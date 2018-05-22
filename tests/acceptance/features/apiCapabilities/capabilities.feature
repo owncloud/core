@@ -180,29 +180,77 @@ Feature: capabilities
 			| files         | undelete                              | 1                 |
 			| files         | versioning                            | 1                 |
 
-	Scenario: Changing password enforce
-		Given parameter "shareapi_enforce_links_password" of app "core" has been set to "yes"
+	Scenario: Changing "password enforced for read-only public link shares"
+		Given parameter "shareapi_enforce_links_password_read_only" of app "core" has been set to "yes"
 		When the user retrieves the capabilities using the API
 		Then the capabilities should contain
-			| capability    | path_to_element                       | value             |
-			| core          | pollinterval                          | 60                |
-			| core          | webdav-root                           | remote.php/webdav |
-			| files_sharing | api_enabled                           | 1                 |
-			| files_sharing | public@@@enabled                      | 1                 |
-			| files_sharing | public@@@upload                       | 1                 |
-			| files_sharing | public@@@send_mail                    | EMPTY             |
-			| files_sharing | public@@@social_share                 | 1                 |
-			| files_sharing | public@@@password@@@enforced          | 1                 |
-			| files_sharing | resharing                             | 1                 |
-			| files_sharing | federation@@@outgoing                 | 1                 |
-			| files_sharing | federation@@@incoming                 | 1                 |
-			| files_sharing | group_sharing                         | 1                 |
-			| files_sharing | share_with_group_members_only         | EMPTY             |
-			| files_sharing | user_enumeration@@@enabled            | 1                 |
-			| files_sharing | user_enumeration@@@group_members_only | EMPTY             |
-			| files         | bigfilechunking                       | 1                 |
-			| files         | undelete                              | 1                 |
-			| files         | versioning                            | 1                 |
+			| capability    | path_to_element                        | value             |
+			| core          | pollinterval                           | 60                |
+			| core          | webdav-root                            | remote.php/webdav |
+			| files_sharing | api_enabled                            | 1                 |
+			| files_sharing | public@@@enabled                       | 1                 |
+			| files_sharing | public@@@upload                        | 1                 |
+			| files_sharing | public@@@send_mail                     | EMPTY             |
+			| files_sharing | public@@@social_share                  | 1                 |
+			| files_sharing | public@@@password@@@enforced_read_only | 1                 |
+			| files_sharing | resharing                              | 1                 |
+			| files_sharing | federation@@@outgoing                  | 1                 |
+			| files_sharing | federation@@@incoming                  | 1                 |
+			| files_sharing | group_sharing                          | 1                 |
+			| files_sharing | share_with_group_members_only          | EMPTY             |
+			| files_sharing | user_enumeration@@@enabled             | 1                 |
+			| files_sharing | user_enumeration@@@group_members_only  | EMPTY             |
+			| files         | bigfilechunking                        | 1                 |
+			| files         | undelete                               | 1                 |
+			| files         | versioning                             | 1                 |
+
+	Scenario: Changing "password enforced for read-write public link shares"
+		Given parameter "shareapi_enforce_links_password_read_write" of app "core" has been set to "yes"
+		When the user retrieves the capabilities using the API
+		Then the capabilities should contain
+			| capability    | path_to_element                         | value             |
+			| core          | pollinterval                            | 60                |
+			| core          | webdav-root                             | remote.php/webdav |
+			| files_sharing | api_enabled                             | 1                 |
+			| files_sharing | public@@@enabled                        | 1                 |
+			| files_sharing | public@@@upload                         | 1                 |
+			| files_sharing | public@@@send_mail                      | EMPTY             |
+			| files_sharing | public@@@social_share                   | 1                 |
+			| files_sharing | public@@@password@@@enforced_read_write | 1                 |
+			| files_sharing | resharing                               | 1                 |
+			| files_sharing | federation@@@outgoing                   | 1                 |
+			| files_sharing | federation@@@incoming                   | 1                 |
+			| files_sharing | group_sharing                           | 1                 |
+			| files_sharing | share_with_group_members_only           | EMPTY             |
+			| files_sharing | user_enumeration@@@enabled              | 1                 |
+			| files_sharing | user_enumeration@@@group_members_only   | EMPTY             |
+			| files         | bigfilechunking                         | 1                 |
+			| files         | undelete                                | 1                 |
+			| files         | versioning                              | 1                 |
+
+	Scenario: Changing "password enforced for write-only public link shares"
+		Given parameter "shareapi_enforce_links_password_write_only" of app "core" has been set to "yes"
+		When the user retrieves the capabilities using the API
+		Then the capabilities should contain
+			| capability    | path_to_element                         | value             |
+			| core          | pollinterval                            | 60                |
+			| core          | webdav-root                             | remote.php/webdav |
+			| files_sharing | api_enabled                             | 1                 |
+			| files_sharing | public@@@enabled                        | 1                 |
+			| files_sharing | public@@@upload                         | 1                 |
+			| files_sharing | public@@@send_mail                      | EMPTY             |
+			| files_sharing | public@@@social_share                   | 1                 |
+			| files_sharing | public@@@password@@@enforced_write_only | 1                 |
+			| files_sharing | resharing                               | 1                 |
+			| files_sharing | federation@@@outgoing                   | 1                 |
+			| files_sharing | federation@@@incoming                   | 1                 |
+			| files_sharing | group_sharing                           | 1                 |
+			| files_sharing | share_with_group_members_only           | EMPTY             |
+			| files_sharing | user_enumeration@@@enabled              | 1                 |
+			| files_sharing | user_enumeration@@@group_members_only   | EMPTY             |
+			| files         | bigfilechunking                         | 1                 |
+			| files         | undelete                                | 1                 |
+			| files         | versioning                              | 1                 |
 
 	Scenario: Changing public notifications
 		Given parameter "shareapi_allow_public_notification" of app "core" has been set to "yes"

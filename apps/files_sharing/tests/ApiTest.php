@@ -296,7 +296,7 @@ class ApiTest extends TestCase {
 		$this->assertTrue($result->succeeded());
 	}
 
-	public function testEnfoceLinkPassword() {
+	public function testEnforceLinkPassword() {
 		$appConfig = \OC::$server->getAppConfig();
 		$appConfig->setValue('core', 'shareapi_enforce_links_password_read_only', 'yes');
 
