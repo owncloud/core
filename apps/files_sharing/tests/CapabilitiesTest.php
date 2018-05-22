@@ -119,28 +119,56 @@ class CapabilitiesTest extends \Test\TestCase {
 		$this->assertTrue($result['public']['enabled']);
 	}
 
-	public function testLinkPassword() {
+	public function linkPasswordProvider() {
+		return [
+			['no', 'no', 'yes'],
+			['no', 'yes', 'no'],
+			['no', 'yes', 'yes'],
+			['yes', 'no', 'no'],
+			['yes', 'no', 'yes'],
+			['yes', 'yes', 'no'],
+			['yes', 'yes', 'yes'],
+		];
+	}
+
+	/**
+	 * @dataProvider linkPasswordProvider
+	 */
+	public function testLinkPassword($readOnly, $readWrite, $writeOnly) {
 		$map = [
 			['core', 'shareapi_enabled', 'yes', 'yes'],
 			['core', 'shareapi_allow_links', 'yes', 'yes'],
-			['core', 'shareapi_enforce_links_password', 'no', 'yes'],
+			['core', 'shareapi_enforce_links_password_read_only', 'no', $readOnly],
+			['core', 'shareapi_enforce_links_password_read_write', 'no', $readWrite],
+			['core', 'shareapi_enforce_links_password_write_only', 'no', $writeOnly],
 		];
 		$result = $this->getResults($map);
 		$this->assertArrayHasKey('password', $result['public']);
 		$this->assertArrayHasKey('enforced', $result['public']['password']);
+		$this->assertArrayHasKey('enforced_for', $result['public']['password']);
 		$this->assertTrue($result['public']['password']['enforced']);
+
+		$this->assertEquals($readOnly === 'yes', $result['public']['password']['enforced_for']['read_only']);
+		$this->assertEquals($readWrite === 'yes', $result['public']['password']['enforced_for']['read_write']);
+		$this->assertEquals($writeOnly === 'yes', $result['public']['password']['enforced_for']['upload_only']);
 	}
 
 	public function testLinkNoPassword() {
 		$map = [
 			['core', 'shareapi_enabled', 'yes', 'yes'],
 			['core', 'shareapi_allow_links', 'yes', 'yes'],
-			['core', 'shareapi_enforce_links_password', 'no', 'no'],
+			['core', 'shareapi_enforce_links_password_read_only', 'no', 'no'],
+			['core', 'shareapi_enforce_links_password_read_write', 'no', 'no'],
+			['core', 'shareapi_enforce_links_password_write_only', 'no', 'no'],
 		];
 		$result = $this->getResults($map);
 		$this->assertArrayHasKey('password', $result['public']);
 		$this->assertArrayHasKey('enforced', $result['public']['password']);
+		$this->assertArrayHasKey('enforced_for', $result['public']['password']);
 		$this->assertFalse($result['public']['password']['enforced']);
+		$this->assertFalse($result['public']['password']['enforced_for']['read_only']);
+		$this->assertFalse($result['public']['password']['enforced_for']['read_write']);
+		$this->assertFalse($result['public']['password']['enforced_for']['upload_only']);
 	}
 
 	public function testLinkNoExpireDate() {
