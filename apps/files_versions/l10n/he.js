@@ -3,6 +3,7 @@ OC.L10N.register(
     {
     "Versions" : "גרסאות",
     "Failed to revert {file} to revision {timestamp}." : "נכשל אחזור {file} לגרסה {timestamp}.",
+    "_%n byte_::_%n bytes_" : ["%n ביט","%n ביטים","%n ביטים","%n ביטים"],
     "Restore" : "שחזור",
     "No other versions available" : "אין גרסאות אחרות זמינות"
 },
