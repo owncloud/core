@@ -165,6 +165,11 @@ class DecryptAll {
 				return false;
 			}
 			$this->userManager->callForSeenUsers(function (IUser $user) use ($progress, &$userNo, $numberOfUsers) {
+				if (\OC::$server->getAppConfig()->getValue('encryption', 'userSpecificKey', '0') !== 0) {
+					if ($this->prepareEncryptionModules($user->getUID()) === false) {
+						return false;
+					}
+				}
 				$this->decryptUsersFiles(
 					$user->getUID(),
 					$progress,
