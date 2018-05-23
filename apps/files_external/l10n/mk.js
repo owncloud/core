@@ -17,6 +17,7 @@ OC.L10N.register(
     "ownCloud" : "ownCloud",
     "Host" : "Домаќин",
     "Share" : "Сподели",
+    "Domain" : "Домен",
     "Region" : "Регион",
     "Name" : "Име",
     "Storage type" : "Тип на чување",
