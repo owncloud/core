@@ -112,7 +112,6 @@ class OC_Template extends \OC\Template\Base {
 			OC_Util::addStyle("tooltip", null, true);
 			OC_Util::addStyle('jquery-ui-fixes', null, true);
 			OC_Util::addVendorStyle('jquery-ui/themes/base/jquery-ui', null, true);
-			OC_Util::addVendorStyle('select2/select2', null, true);
 			OC_Util::addStyle("mobile", null, true);
 			OC_Util::addStyle("multiselect", null, true);
 			OC_Util::addStyle("fixes", null, true);
@@ -132,6 +131,8 @@ class OC_Template extends \OC\Template\Base {
 
 			OC_Util::addScript('oc-backbone', null, true);
 			OC_Util::addVendorScript('core', 'backbone/backbone', true);
+			OC_Util::addVendorScript('core', 'select2/select2', true);
+			OC_Util::addVendorStyle('select2/select2', null, true);
 			OC_Util::addVendorScript('snapjs/dist/latest/snap', null, true);
 			OC_Util::addScript('mimetypelist', null, true);
 			OC_Util::addScript('mimetype', null, true);
