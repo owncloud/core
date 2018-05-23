@@ -16,7 +16,7 @@ So that I can organise my data structure
 		When the user renames the folder "simple-empty-folder" to "simple-folder/simple-empty-folder" using the webUI
 		Then near the folder "simple-empty-folder" a tooltip with the text 'File name cannot contain "/".' should be displayed on the webUI
 
-	@skipOnFIREFOX47+
+	@skipOnFIREFOX
 	Scenario: move a folder into another folder
 		When the user moves the folder "simple-folder" into the folder "simple-empty-folder" using the webUI
 		Then the folder "simple-folder" should not be listed on the webUI
@@ -26,14 +26,14 @@ So that I can organise my data structure
 		Then the folder "strängé नेपाली folder" should not be listed on the webUI
 		But the folder "strängé नेपाली folder" should be listed in the folder "strängé नेपाली folder empty" on the webUI
 
-	@skipOnFIREFOX47+
+	@skipOnFIREFOX
 	Scenario: move a folder into another folder where a folder with the same name already exists
 		When the user moves the folder "simple-empty-folder" into the folder "simple-folder" using the webUI
 		Then notifications should be displayed on the webUI with the text
 			|Could not move "simple-empty-folder", target exists|
 		And the folder "simple-empty-folder" should be listed on the webUI
 
-	@skipOnFIREFOX47+
+	@skipOnFIREFOX
 	Scenario: Move multiple folders at once
 		When the user batch moves these folders into the folder "simple-empty-folder" using the webUI
 		| name               |
@@ -43,7 +43,7 @@ So that I can organise my data structure
 		And the moved elements should not be listed on the webUI after a page reload
 		But the moved elements should be listed in the folder "simple-empty-folder" on the webUI
 
-	@skipOnFIREFOX47+
+	@skipOnFIREFOX
 	Scenario: move a folder into another folder (problematic characters)
 		When the user renames the following folder using the webUI
 			| from-name-parts         | to-name-parts          |
