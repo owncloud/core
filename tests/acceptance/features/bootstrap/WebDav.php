@@ -659,7 +659,7 @@ trait WebDav {
 	 * @param string $key
 	 * @param string $expectedValue
 	 *
-	 * @return int
+	 * @return void
 	 * @throws \Exception
 	 */
 	public function theSingleResponseShouldContainAPropertyWithValue(
@@ -677,7 +677,7 @@ trait WebDav {
 	 * @param string $expectedValue
 	 * @param string $altExpectedValue
 	 *
-	 * @return int
+	 * @return void
 	 * @throws \Exception
 	 */
 	public function theSingleResponseShouldContainAPropertyWithValueAndAlternative(
@@ -702,7 +702,7 @@ trait WebDav {
 
 		if ($expectedValue === "a_comment_url") {
 			if (\preg_match("#^/remote.php/dav/comments/files/([0-9]+)$#", $value)) {
-				return 0;
+				return;
 			} else {
 				throw new \Exception(
 					"Property \"$key\" found with value \"$value\", expected \"$expectedValue\""
@@ -744,9 +744,7 @@ trait WebDav {
 			}
 		}
 
-		if (\preg_match($regex, $value)) {
-			return 0;
-		} else {
+		if (!\preg_match($regex, $value)) {
 			throw new \Exception(
 				"Property \"$key\" found with value \"$value\", expected \"$regex\""
 			);
@@ -1358,6 +1356,10 @@ trait WebDav {
 			// 4xx and 5xx responses cause an exception
 			$this->response = $e->getResponse();
 		}
+
+		// Return an invalid file id so that any later step that tries to use it
+		// will fail.
+		return "";
 	}
 
 	/**

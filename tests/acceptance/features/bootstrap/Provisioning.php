@@ -1494,7 +1494,7 @@ trait Provisioning {
 	 *
 	 * @param string $user
 	 *
-	 * @return void
+	 * @return string
 	 */
 	public function getUserHome($user) {
 		$fullUrl = $this->getBaseUrl()
@@ -1638,7 +1638,7 @@ trait Provisioning {
 	/**
 	 * Returns array of enabled apps
 	 *
-	 * @return void
+	 * @return array
 	 */
 	public function getEnabledApps() {
 		$fullUrl = $this->getBaseUrl() . "/ocs/v2.php/cloud/apps?filter=enabled";
@@ -1652,7 +1652,7 @@ trait Provisioning {
 	/**
 	 * Returns array of disabled apps
 	 *
-	 * @return void
+	 * @return array
 	 */
 	public function getDisabledApps() {
 		$fullUrl = $this->getBaseUrl() . "/ocs/v2.php/cloud/apps?filter=disabled";
