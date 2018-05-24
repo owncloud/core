@@ -243,7 +243,6 @@ trait Provisioning {
 	 * @return void
 	 */
 	public function theAppHasBeenDisabled($app) {
-		$client = new Client();
 		$fullUrl = $this->getBaseUrl()
 			. "/ocs/v{$this->apiVersion}.php/cloud/apps/" . $app;
 		$options = [];

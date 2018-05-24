@@ -432,35 +432,33 @@ trait Tags {
 	}
 
 	/**
-	 * @When /^user "([^"]*)" adds the tag "([^"]*)" to "([^"]*)" (shared|owned) by "([^"]*)" using the API$/
-	 * @Given /^user "([^"]*)" has added the tag "([^"]*)" to "([^"]*)" (shared|owned) by "([^"]*)"$/
+	 * @When /^user "([^"]*)" adds the tag "([^"]*)" to "([^"]*)" (?:shared|owned) by "([^"]*)" using the API$/
+	 * @Given /^user "([^"]*)" has added the tag "([^"]*)" to "([^"]*)" (?:shared|owned) by "([^"]*)"$/
 	 *
 	 * @param string $taggingUser
 	 * @param string $tagName
 	 * @param string $fileName
-	 * @param string $sharedOrOwnedBy unused
 	 * @param string $sharingUser
 	 *
 	 * @return void
 	 */
 	public function addsTheTagToSharedBy(
-		$taggingUser, $tagName, $fileName, $sharedOrOwnedBy, $sharingUser
+		$taggingUser, $tagName, $fileName, $sharingUser
 	) {
 		$this->tag($taggingUser, $tagName, $fileName, $sharingUser);
 	}
 
 	/**
-	 * @Then /^(?:file|folder|entry) "([^"]*)" (shared|owned) by "([^"]*)" should have the following tags$/
+	 * @Then /^(?:file|folder|entry) "([^"]*)" (?:shared|owned) by "([^"]*)" should have the following tags$/
 	 *
 	 * @param string $fileName
-	 * @param string $sharedOrOwnedBy unused
 	 * @param string $sharingUser
 	 * @param TableNode $table
 	 *
 	 * @return bool
 	 */
 	public function sharedByHasTheFollowingTags(
-		$fileName, $sharedOrOwnedBy, $sharingUser, TableNode $table
+		$fileName, $sharingUser, TableNode $table
 	) {
 		$tagList = $this->requestTagsForFile($sharingUser, $fileName);
 		//Check if we are looking for no tags
@@ -489,20 +487,18 @@ trait Tags {
 	}
 
 	/**
-	 * @Then file :fileName shared by :sharingUser should have the following tags for :user
+	 * @Then file :fileName should have the following tags for user :user
 	 *
 	 * @param string $fileName
-	 * @param string $sharingUser unused
 	 * @param string $user
 	 * @param TableNode $table
 	 *
 	 * @return void
-	 * @throws \Exception
 	 */
-	public function sharedByHasTheFollowingTagsFor(
-		$fileName, $sharingUser, $user, TableNode $table
+	public function fileHasTheFollowingTagsForUser(
+		$fileName, $user, TableNode $table
 	) {
-		$this->sharedByHasTheFollowingTags($fileName, 'shared', $user, $table);
+		$this->sharedByHasTheFollowingTags($fileName, $user, $table);
 	}
 
 	/**
