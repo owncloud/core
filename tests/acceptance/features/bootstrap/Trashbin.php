@@ -73,17 +73,16 @@ trait Trashbin {
 	}
 
 	/**
-	 * @Then /^as "([^"]*)" the (file|folder|entry) "([^"]*)" should exist in trash$/
+	 * @Then /^as "([^"]*)" the (?:file|folder|entry) "([^"]*)" should exist in trash$/
 	 *
 	 * @param string $user
-	 * @param string $entryText unused
 	 * @param string $path
 	 *
 	 * @return void
 	 */
-	public function asTheFileOrFolderExistsInTrash($user, $entryText, $path) {
-		$path = trim($path, '/');
-		$sections = explode('/', $path, 2);
+	public function asTheFileOrFolderExistsInTrash($user, $path) {
+		$path = \trim($path, '/');
+		$sections = \explode('/', $path, 2);
 
 		$firstEntry = $this->findFirstTrashedEntry($user, trim($sections[0], '/'));
 
@@ -182,16 +181,15 @@ trait Trashbin {
 	}
 
 	/**
-	 * @When /^user "([^"]*)" restores the (file|folder|entry) with original path "([^"]*)" using the API$/
-	 * @Given /^user "([^"]*)" has restored the (file|folder|entry) with original path "([^"]*)"$/
+	 * @When /^user "([^"]*)" restores the (?:file|folder|entry) with original path "([^"]*)" using the API$/
+	 * @Given /^user "([^"]*)" has restored the (?:file|folder|entry) with original path "([^"]*)"$/
 	 *
 	 * @param string $user
-	 * @param string $entryText unused
 	 * @param string $originalPath
 	 *
 	 * @return void
 	 */
-	public function elementInTrashIsRestored($user, $entryText, $originalPath) {
+	public function elementInTrashIsRestored($user, $originalPath) {
 		$this->restoreElement($user, $originalPath);
 		PHPUnit_Framework_Assert::assertFalse(
 			$this->isInTrash($user, $originalPath),

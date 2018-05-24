@@ -209,17 +209,16 @@ trait WebDav {
 	}
 
 	/**
-	 * @Given /^user "([^"]*)" has moved (file|folder|entry) "([^"]*)" to "([^"]*)"$/
+	 * @Given /^user "([^"]*)" has moved (?:file|folder|entry) "([^"]*)" to "([^"]*)"$/
 	 *
 	 * @param string $user
-	 * @param string $entry unused
 	 * @param string $fileSource
 	 * @param string $fileDestination
 	 *
 	 * @return void
 	 */
 	public function userHasMovedFile(
-		$user, $entry, $fileSource, $fileDestination
+		$user, $fileSource, $fileDestination
 	) {
 		$fullUrl = $this->getBaseUrl() . '/' . $this->getDavFilesPath($user);
 		$headers['Destination'] = $fullUrl . $fileDestination;
@@ -232,17 +231,16 @@ trait WebDav {
 	}
 
 	/**
-	 * @When /^user "([^"]*)" moves (file|folder|entry) "([^"]*)" to "([^"]*)" using the API$/
+	 * @When /^user "([^"]*)" moves (?:file|folder|entry) "([^"]*)" to "([^"]*)" using the API$/
 	 *
 	 * @param string $user
-	 * @param string $entry unused
 	 * @param string $fileSource
 	 * @param string $fileDestination
 	 *
 	 * @return void
 	 */
 	public function userMovesFileUsingTheAPI(
-		$user, $entry, $fileSource, $fileDestination
+		$user, $fileSource, $fileDestination
 	) {
 		$fullUrl = $this->getBaseUrl() . '/' . $this->getDavFilesPath($user);
 		$headers['Destination'] = $fullUrl . $fileDestination;
@@ -519,17 +517,16 @@ trait WebDav {
 	}
 
 	/**
-	 * @When /^user "([^"]*)" gets the following properties of (file|folder|entry) "([^"]*)" using the API$/
+	 * @When /^user "([^"]*)" gets the following properties of (?:file|folder|entry) "([^"]*)" using the API$/
 	 *
 	 * @param string $user
-	 * @param string $elementType unused
 	 * @param string $path
 	 * @param TableNode|null $propertiesTable
 	 *
 	 * @return void
 	 */
 	public function userGetsPropertiesOfFolder(
-		$user, $elementType, $path, $propertiesTable
+		$user, $path, $propertiesTable
 	) {
 		$properties = null;
 		if ($propertiesTable instanceof TableNode) {
@@ -563,19 +560,20 @@ trait WebDav {
 	}
 
 	/**
-	 * @When /^user "([^"]*)" sets property "([^"]*)" of (file|folder|entry) "([^"]*)" to "([^"]*)" using the API$/
-	 * @Given /^user "([^"]*)" has set property "([^"]*)" of (file|folder|entry) "([^"]*)" to "([^"]*)"$/
+	 * @When /^user "([^"]*)" sets property "([^"]*)" of (?:file|folder|entry) "([^"]*)" to "([^"]*)" using the API$/
+	 * @Given /^user "([^"]*)" has set property "([^"]*)" of (?:file|folder|entry) "([^"]*)" to "([^"]*)"$/
 	 *
 	 * @param string $user
 	 * @param string $propertyName
-	 * @param string $elementType unused
 	 * @param string $path
 	 * @param string $propertyValue
 	 *
 	 * @return void
+	 * @throws \Sabre\HTTP\ClientException
+	 * @throws \Sabre\HTTP\ClientHttpException
 	 */
 	public function userHasSetPropertyOfEntryTo(
-		$user, $propertyName, $elementType, $path, $propertyValue
+		$user, $propertyName, $path, $propertyValue
 	) {
 		$client = $this->getSabreClient($user);
 		$properties = [
@@ -589,13 +587,11 @@ trait WebDav {
 	 *
 	 * @param string $propertyName
 	 * @param string $propertyValue
-	 * @param null $table unused
-	 *
 	 * @return void
 	 * @throws Exception
 	 */
 	public function theResponseShouldContainACustomPropertyWithValue(
-		$propertyName, $propertyValue, $table=null
+		$propertyName, $propertyValue
 	) {
 		$keys = $this->response;
 		if (!array_key_exists($propertyName, $keys)) {
@@ -1301,7 +1297,7 @@ trait WebDav {
 	 * @return void
 	 */
 	public function fileHasBeenDeleted($file, $user) {
-		$this->userDeletesFile($user, 'file', $file);
+		$this->userDeletesFile($user, $file);
 	}
 
 	/**
@@ -1309,34 +1305,32 @@ trait WebDav {
 	 * entries with the same timestamp. Only use this step to avoid the problem
 	 * in core issue 23151 when wanting to demonstrate other correct behavior
 	 *
-	 * @When /^user "([^"]*)" waits and deletes (file|folder) "([^"]*)" using the API$/
-	 * @Given /^user "([^"]*)" has waited and deleted (file|folder) "([^"]*)"$/
+	 * @When /^user "([^"]*)" waits and deletes (?:file|folder) "([^"]*)" using the API$/
+	 * @Given /^user "([^"]*)" has waited and deleted (?:file|folder) "([^"]*)"$/
 	 *
 	 * @param string $user
-	 * @param string $type unused
 	 * @param string $file
 	 *
 	 * @return void
 	 */
-	public function userWaitsAndDeletesFile($user, $type, $file) {
+	public function userWaitsAndDeletesFile($user, $file) {
 		// prevent creating two files in the trashbin with the same timestamp
 		// which is based on seconds. e.g. deleting a/file.txt and b/file.txt
 		// might result in a name clash file.txt.d1456657282 in the trashbin
-		sleep(1);
-		$this->userDeletesFile($user, $type, $file);
+		\sleep(1);
+		$this->userDeletesFile($user, $file);
 	}
 
 	/**
-	 * @When /^user "([^"]*)" deletes (file|folder) "([^"]*)" using the API$/
-	 * @Given /^user "([^"]*)" has deleted (file|folder) "([^"]*)"$/
+	 * @When /^user "([^"]*)" deletes (?:file|folder) "([^"]*)" using the API$/
+	 * @Given /^user "([^"]*)" has deleted (?:file|folder) "([^"]*)"$/
 	 *
 	 * @param string $user
-	 * @param string $type unused
 	 * @param string $file
 	 *
 	 * @return void
 	 */
-	public function userDeletesFile($user, $type, $file) {
+	public function userDeletesFile($user, $file) {
 		try {
 			$this->response = $this->makeDavRequest($user, 'DELETE', $file, []);
 		} catch (BadResponseException $e) {
@@ -1601,7 +1595,7 @@ trait WebDav {
 	public function userStoresEtagOfElement($user, $path) {
 		$propertiesTable = new TableNode([['{DAV:}getetag']]);
 		$this->userGetsPropertiesOfFolder(
-			$user, null, $path, $propertiesTable
+			$user, $path, $propertiesTable
 		);
 		$pathETAG[$path] = $this->response['{DAV:}getetag'];
 		$this->storedETAG[$user] = $pathETAG;
@@ -1618,7 +1612,7 @@ trait WebDav {
 	public function etagOfElementOfUserShouldNotHaveChanged($path, $user) {
 		$propertiesTable = new TableNode([['{DAV:}getetag']]);
 		$this->userGetsPropertiesOfFolder(
-			$user, null, $path, $propertiesTable
+			$user, $path, $propertiesTable
 		);
 		PHPUnit_Framework_Assert::assertEquals(
 			$this->response['{DAV:}getetag'], $this->storedETAG[$user][$path]
@@ -1636,7 +1630,7 @@ trait WebDav {
 	public function etagOfElementOfUserShouldHaveChanged($path, $user) {
 		$propertiesTable = new TableNode([['{DAV:}getetag']]);
 		$this->userGetsPropertiesOfFolder(
-			$user, null, $path, $propertiesTable
+			$user, $path, $propertiesTable
 		);
 		PHPUnit_Framework_Assert::assertNotEquals(
 			$this->response['{DAV:}getetag'], $this->storedETAG[$user][$path]
@@ -1744,7 +1738,7 @@ trait WebDav {
 				if (substr($element, 0, strlen($davPrefix)) == $davPrefix) {
 					$element = substr($element, strlen($davPrefix));
 				}
-				$this->userDeletesFile($user, "element", $element);
+				$this->userDeletesFile($user, $element);
 			}
 		}
 	}

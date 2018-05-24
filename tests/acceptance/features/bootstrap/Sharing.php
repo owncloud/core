@@ -321,7 +321,6 @@ trait Sharing {
 			// read everything
 			$buf .= $body->read(8192);
 		}
-		$mimeType = 'text/plain';
 		if ($mimeType !== null) {
 			$finfo = new finfo;
 			PHPUnit_Framework_Assert::assertEquals(
@@ -755,20 +754,18 @@ trait Sharing {
 	}
 
 	/**
-	 * @When /^user "([^"]*)" shares (file|folder|entry) "([^"]*)" with user "([^"]*)"( with permissions ([\d]*))? using the API$/
-	 * @Given /^user "([^"]*)" has shared (file|folder|entry) "([^"]*)" with user "([^"]*)"( with permissions ([\d]*))?$/
+	 * @When /^user "([^"]*)" shares (?:file|folder|entry) "([^"]*)" with user "([^"]*)"(?: with permissions ([\d]*))? using the API$/
+	 * @Given /^user "([^"]*)" has shared (?:file|folder|entry) "([^"]*)" with user "([^"]*)"(?: with permissions ([\d]*))?$/
 	 *
 	 * @param string $user1
-	 * @param string $entry unused
 	 * @param string $filepath
 	 * @param string $user2
-	 * @param null $withPerms unused
 	 * @param int $permissions
 	 *
 	 * @return void
 	 */
 	public function userSharesFileWithUserUsingTheAPI(
-		$user1, $entry, $filepath, $user2, $withPerms = null, $permissions = null
+		$user1, $filepath, $user2, $permissions = null
 	) {
 		$fullUrl = $this->getBaseUrl()
 			. "/ocs/v{$this->apiVersion}.php/apps/files_sharing/api/v{$this->sharingApiVersion}/shares" . "?path=$filepath";
@@ -799,40 +796,36 @@ trait Sharing {
 	}
 
 	/**
-	 * @When /^the user shares (file|folder|entry) "([^"]*)" with group "([^"]*)"( with permissions ([\d]*))? using the API$/
-	 * @Given /^the user has shared (file|folder|entry) "([^"]*)" with group "([^"]*)"( with permissions ([\d]*))?$/
+	 * @When /^the user shares (?:file|folder|entry) "([^"]*)" with group "([^"]*)"(?: with permissions ([\d]*))? using the API$/
+	 * @Given /^the user has shared (?:file|folder|entry) "([^"]*)" with group "([^"]*)"(?: with permissions ([\d]*))?$/
 	 *
-	 * @param string $entry unused
 	 * @param string $filepath
 	 * @param string $group
-	 * @param null $withPerms unused
 	 * @param int $permissions
 	 *
 	 * @return void
 	 */
 	public function theUserSharesFileWithGroupUsingTheAPI(
-		$entry, $filepath, $group, $withPerms = null, $permissions = null
+		$filepath, $group, $permissions = null
 	) {
 		$this->userSharesFileWithGroupUsingTheAPI(
-			$this->currentUser, $entry, $filepath, $group, $withPerms, $permissions
+			$this->currentUser, $filepath, $group, $permissions
 		);
 	}
 
 	/**
-	 * @When /^user "([^"]*)" shares (file|folder|entry) "([^"]*)" with group "([^"]*)"( with permissions ([\d]*))? using the API$/
-	 * @Given /^user "([^"]*)" has shared (file|folder|entry) "([^"]*)" with group "([^"]*)"( with permissions ([\d]*))?$/
+	 * @When /^user "([^"]*)" shares (?:file|folder|entry) "([^"]*)" with group "([^"]*)"(?: with permissions ([\d]*))? using the API$/
+	 * @Given /^user "([^"]*)" has shared (?:file|folder|entry) "([^"]*)" with group "([^"]*)"(?: with permissions ([\d]*))?$/
 	 *
 	 * @param string $user
-	 * @param string $entry unused
 	 * @param string $filepath
 	 * @param string $group
-	 * @param null $withPerms unused
 	 * @param int $permissions
 	 *
 	 * @return void
 	 */
 	public function userSharesFileWithGroupUsingTheAPI(
-		$user, $entry, $filepath, $group, $withPerms = null, $permissions = null
+		$user, $filepath, $group, $permissions = null
 	) {
 		$fullUrl = $this->getBaseUrl()
 			. "/ocs/v{$this->apiVersion}.php/apps/files_sharing/api/v{$this->sharingApiVersion}/shares" . "?path=$filepath";
@@ -1082,16 +1075,15 @@ trait Sharing {
 	}
 
 	/**
-	 * @Then /^as user "([^"]*)" the public shares of (file|folder) "([^"]*)" should be$/
+	 * @Then /^as user "([^"]*)" the public shares of (?:file|folder) "([^"]*)" should be$/
 	 *
 	 * @param string $user
-	 * @param string $type
 	 * @param string $path
 	 * @param TableNode|null $TableNode
 	 *
 	 * @return void
 	 */
-	public function checkPublicShares($user, $type, $path, $TableNode) {
+	public function checkPublicShares($user, $path, $TableNode) {
 		$dataResponded = $this->getShares($user, $path);
 
 		if ($TableNode instanceof TableNode) {
@@ -1146,18 +1138,17 @@ trait Sharing {
 	}
 
 	/**
-	 * @When /^user "([^"]*)" deletes public share named "([^"]*)" in (file|folder) "([^"]*)" using the API$/
-	 * @Given /^user "([^"]*)" has deleted public share named "([^"]*)" in (file|folder) "([^"]*)"$/
+	 * @When /^user "([^"]*)" deletes public share named "([^"]*)" in (?:file|folder) "([^"]*)" using the API$/
+	 * @Given /^user "([^"]*)" has deleted public share named "([^"]*)" in (?:file|folder) "([^"]*)"$/
 	 *
 	 * @param string $user
 	 * @param string $name
-	 * @param string $type unused
 	 * @param string $path
 	 *
 	 * @return void
 	 */
 	public function userDeletesPublicShareNamedUsingTheAPI(
-		$user, $name, $type, $path
+		$user, $name, $path
 	) {
 		$share_id = $this->getPublicShareIDByName($user, $path, $name);
 		$url = "/apps/files_sharing/api/v{$this->sharingApiVersion}/shares/$share_id";
