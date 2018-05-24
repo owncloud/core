@@ -547,6 +547,7 @@ trait WebDav {
 	 * @param string $path
 	 *
 	 * @return void
+	 * @throws \Sabre\HTTP\ClientHttpException
 	 */
 	public function userGetsPropertiesOfFile($user, $propertyName, $path) {
 		$client = $this->getSabreClient($user);
@@ -588,7 +589,7 @@ trait WebDav {
 	 * @param string $propertyName
 	 * @param string $propertyValue
 	 * @return void
-	 * @throws Exception
+	 * @throws \Exception
 	 */
 	public function theResponseShouldContainACustomPropertyWithValue(
 		$propertyName, $propertyValue
@@ -612,7 +613,7 @@ trait WebDav {
 	 * @param string $path
 	 *
 	 * @return array
-	 * @throws Exception
+	 * @throws \Exception
 	 */
 	public function asTheFileOrFolderShouldNotExist($user, $entry, $path) {
 		$client = $this->getSabreClient($user);
@@ -638,7 +639,7 @@ trait WebDav {
 	 * @param string $path
 	 *
 	 * @return void
-	 * @throws Exception
+	 * @throws \Exception
 	 */
 	public function asTheFileOrFolderShouldExist($user, $entry, $path) {
 		$this->response = $this->listFolder($user, $path, 0);
@@ -736,7 +737,7 @@ trait WebDav {
 	 * @param TableNode $table
 	 *
 	 * @return void
-	 * @throws Exception
+	 * @throws \Exception
 	 */
 	public function theResponseShouldContainAShareTypesPropertyWith($table) {
 		$keys = $this->response;
@@ -1197,6 +1198,7 @@ trait WebDav {
 	 * @param string $destination
 	 *
 	 * @return void
+	 * @throws \Exception
 	 */
 	public function filesUploadedToWithAllMechanismsShouldExist(
 		$user, $destination
@@ -1531,6 +1533,8 @@ trait WebDav {
 	 * @param string $path
 	 *
 	 * @return void
+	 * @throws \Sabre\HTTP\ClientException
+	 * @throws \Sabre\HTTP\ClientHttpException
 	 */
 	public function userFavoritesElement($user, $path) {
 		$this->response = $this->changeFavStateOfAnElement(
@@ -1546,6 +1550,8 @@ trait WebDav {
 	 * @param string $path
 	 *
 	 * @return void
+	 * @throws \Sabre\HTTP\ClientException
+	 * @throws \Sabre\HTTP\ClientHttpException
 	 */
 	public function userUnfavoritesElement($user, $path) {
 		$this->response = $this->changeFavStateOfAnElement(
@@ -1559,6 +1565,7 @@ trait WebDav {
 	 * @param string $user
 	 * @param string $path
 	 * @param int $favOrUnfav 1 = favorite, 0 = unfavorite
+	 *
 	 * @return bool
 	 * @throws \Sabre\HTTP\ClientException
 	 * @throws \Sabre\HTTP\ClientHttpException
@@ -1657,6 +1664,7 @@ trait WebDav {
 	 * @Then there should be no duplicate headers
 	 *
 	 * @return void
+	 * @throws \Exception
 	 */
 	public function thereAreNoDuplicateHeaders() {
 		$headers = $this->response->getHeaders();

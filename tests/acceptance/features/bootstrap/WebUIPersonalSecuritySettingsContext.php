@@ -87,6 +87,7 @@ class WebUIPersonalSecuritySettingsContext extends RawMinkContext implements Con
 	 * @Then the new app should be listed in the App passwords list on the webUI
 	 *
 	 * @return void
+	 * @throws \Exception
 	 */
 	public function theAppShouldBeListedInTheAppPasswordsListOnTheWebUI() {
 		$appTr = $this->personalSecuritySettingsPage->getLinkedAppByName(
@@ -134,6 +135,7 @@ class WebUIPersonalSecuritySettingsContext extends RawMinkContext implements Con
 	 * @When the user deletes the app password
 	 * 
 	 * @return void
+	 * @throws \Exception
 	 */
 	public function theUserDeletesTheAppPassword() {
 		$appTr = $this->personalSecuritySettingsPage->getLinkedAppByName(
@@ -152,6 +154,7 @@ class WebUIPersonalSecuritySettingsContext extends RawMinkContext implements Con
 	 * @param string $username
 	 * 
 	 * @return void
+	 * @throws \Exception
 	 */
 	public function reLogInWithDeletedAppPassword($username) {	
 		$this->webUIGeneralContext->theUserLogsOutOfTheWebUI();

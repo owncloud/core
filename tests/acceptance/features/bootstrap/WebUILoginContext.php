@@ -78,6 +78,7 @@ class WebUILoginContext extends RawMinkContext implements Context {
 	 * @param string $password
 	 *
 	 * @return void
+	 * @throws \Exception
 	 */
 	public function theUserRelogsInWithUsernameAndPasswordUsingTheWebUI(
 		$username, $password
@@ -96,6 +97,7 @@ class WebUILoginContext extends RawMinkContext implements Context {
 	 * @param string $password
 	 *
 	 * @return void
+	 * @throws \Exception
 	 */
 	public function theUserLogsInWithUsernameAndPasswordUsingTheWebUI(
 		$username, $password
@@ -111,6 +113,7 @@ class WebUILoginContext extends RawMinkContext implements Context {
 	 * @param string $server
 	 *
 	 * @return void
+	 * @throws \Exception
 	 */
 	public function theUserRelogsInWithUsernameAndPasswordToUsingTheWebUI(
 		$username, $password, $server
@@ -129,6 +132,7 @@ class WebUILoginContext extends RawMinkContext implements Context {
 	 * @param string $server
 	 *
 	 * @return void
+	 * @throws \Exception
 	 */
 	public function theUserLogsInWithUsernameAndPasswordToUsingTheWebUI(
 		$username, $password, $server
@@ -153,6 +157,7 @@ class WebUILoginContext extends RawMinkContext implements Context {
 	 * @param string $password
 	 *
 	 * @return void
+	 * @throws \Exception
 	 */
 	public function theUserLogsInWithUsernameAndInvalidPasswordUsingTheWebUI(
 		$username, $password
@@ -169,6 +174,7 @@ class WebUILoginContext extends RawMinkContext implements Context {
 	 * @param string $page text name of a page that I expect to be taken to
 	 *
 	 * @return void
+	 * @throws \Exception
 	 */
 	public function theUserLogsInWithUsernameAndPasswordAfterRedirectFromThePage(
 		$username,
@@ -190,6 +196,7 @@ class WebUILoginContext extends RawMinkContext implements Context {
 	 * @param string $password
 	 *
 	 * @return void
+	 * @throws \Exception
 	 */
 	public function itShouldBePossibleToLogin($shouldOrNot, $username, $password) {
 		$should = ($shouldOrNot !== "not");
@@ -251,6 +258,7 @@ class WebUILoginContext extends RawMinkContext implements Context {
 	 * @param string $emailAddress
 	 * 
 	 * @return void
+	 * @throws \Exception
 	 */
 	public function theUserFollowsThePasswordResetLinkFromTheirEmail($emailAddress) {
 		$content = EmailHelper::getBodyOfLastEmail(

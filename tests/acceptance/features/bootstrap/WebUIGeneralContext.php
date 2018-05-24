@@ -167,6 +167,7 @@ class WebUIGeneralContext extends RawMinkContext implements Context {
 	 * @Given user admin has logged in using the webUI
 	 *
 	 * @return void
+	 * @throws \Exception
 	 */
 	public function adminLogsInUsingTheWebUI() {
 		$this->loginPage->open();
@@ -182,6 +183,7 @@ class WebUIGeneralContext extends RawMinkContext implements Context {
 	 * @param string $target
 	 *
 	 * @return OwncloudPage
+	 * @throws \Exception
 	 */
 	public function loginAs($username, $password, $target = 'FilesPage') {
 		$session = $this->getSession();
@@ -201,6 +203,7 @@ class WebUIGeneralContext extends RawMinkContext implements Context {
 	 * @Given the user/administrator has logged out of the webUI
 	 *
 	 * @return void
+	 * @throws \Exception
 	 */
 	public function theUserLogsOutOfTheWebUI() {
 		$settingsMenu = $this->owncloudPage->openSettingsMenu();
@@ -252,7 +255,7 @@ class WebUIGeneralContext extends RawMinkContext implements Context {
 	 * @param TableNode $table of expected notification text
 	 *
 	 * @return void
-	 * @throws Exception
+	 * @throws \Exception
 	 */
 	public function notificationsShouldBeDisplayedOnTheWebUIWithTheText(
 		$matching, TableNode $table
@@ -424,6 +427,7 @@ class WebUIGeneralContext extends RawMinkContext implements Context {
 	 * @Given the user has reloaded the current page of the webUI
 	 *
 	 * @return void
+	 * @throws \Exception
 	 */
 	public function theUserReloadsTheCurrentPageOfTheWebUI() {
 		$this->getSession()->reload();
@@ -469,6 +473,7 @@ class WebUIGeneralContext extends RawMinkContext implements Context {
 	 * @param BeforeScenarioScope $scope
 	 *
 	 * @return void
+	 * @throws \Exception
 	 */
 	public function setUpScenario(BeforeScenarioScope $scope) {
 		// Get the environment
@@ -540,6 +545,7 @@ class WebUIGeneralContext extends RawMinkContext implements Context {
 	 * @BeforeScenario @webUI&&@disablePreviews
 	 *
 	 * @return void
+	 * @throws \Exception
 	 */
 	public function disablePreviewBeforeScenario() {
 		if (is_null($this->oldPreviewSetting)) {
@@ -576,6 +582,7 @@ class WebUIGeneralContext extends RawMinkContext implements Context {
 	 * @AfterScenario @webUI
 	 *
 	 * @return void
+	 * @throws \Exception
 	 */
 	public function tearDownSuite() {
 		AppConfigHelper::modifyServerConfigs(
