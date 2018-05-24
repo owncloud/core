@@ -881,7 +881,7 @@ trait WebDav {
 	 *
 	 * @return void
 	 */
-	public function theVersionFolderOfFilehouldContainElements(
+	public function theVersionFolderOfFileShouldContainElements(
 		$path, $user, $count
 	) {
 		$fileId = $this->getFileIdForPath($user, $path);

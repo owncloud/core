@@ -247,7 +247,7 @@ trait AppConfiguration {
 	}
 
 	/**
-	 * @param string $appParameterValues
+	 * @param array $appParameterValues
 	 *
 	 * @return void
 	 */
