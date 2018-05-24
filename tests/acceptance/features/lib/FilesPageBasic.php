@@ -136,7 +136,9 @@ abstract class FilesPageBasic extends OwncloudPage {
 		//loop to keep on scrolling down to load not viewed files
 		//when the scroll does not retrieve any new files, the file is not there
 		do {
-			$fileListElement = $this->waitTillElementIsNotNull($this->getFileListXpath());
+			$fileListElement = $this->waitTillElementIsNotNull(
+				$this->getFileListXpath()
+			);
 
 			if ($fileListElement === null) {
 				throw new ElementNotFoundException(
@@ -515,8 +517,8 @@ abstract class FilesPageBasic extends OwncloudPage {
 					);
 					$fileListIsVisible = false;
 				} catch (StaleElementReference $e) {
-					// Somehow on Edge this can throw StaleElementReference even though
-					// we just found the file list.
+					// Somehow on Edge this can throw StaleElementReference
+					// even though we just found the file list.
 					// TODO: Edge - if it keeps happening then find out why.
 					\error_log(
 						__METHOD__
@@ -579,7 +581,9 @@ abstract class FilesPageBasic extends OwncloudPage {
 			$fileList = $this->find('xpath', $this->getFileListXpath());
 
 			if ($fileList !== null) {
-				$busyFileRows = $fileList->findAll('xpath', $this->fileRowsBusyXpath);
+				$busyFileRows = $fileList->findAll(
+					'xpath', $this->fileRowsBusyXpath
+				);
 
 				if (\count($busyFileRows) === 0) {
 					break;

@@ -84,7 +84,8 @@ trait Sharing {
 	 * @return void
 	 */
 	public function userCreatesAShareWithSettings($user, $body) {
-		$fullUrl = $this->getBaseUrl() . "/ocs/v{$this->apiVersion}.php/apps/files_sharing/api/v{$this->sharingApiVersion}/shares";
+		$fullUrl = $this->getBaseUrl()
+			. "/ocs/v{$this->apiVersion}.php/apps/files_sharing/api/v{$this->sharingApiVersion}/shares";
 		$client = new Client();
 		$options = [];
 		$options['auth'] = $this->getAuthOptionForUser($user);
@@ -143,7 +144,11 @@ trait Sharing {
 	 * @return void
 	 */
 	public function createAPublicShare(
-		$user, $path, $publicUpload = false, $sharePassword = null, $permissions = null
+		$user,
+		$path,
+		$publicUpload = false,
+		$sharePassword = null,
+		$permissions = null
 	) {
 		$this->response = SharingHelper::createShare(
 			$this->getBaseUrl(),
@@ -228,7 +233,8 @@ trait Sharing {
 	 */
 	public function publicSharedFileCannotBeDownloaded($path) {
 		$token = $this->getLastShareToken();
-		$fullUrl = $this->getBaseUrl() . "/public.php/webdav/" . \rawurlencode(\ltrim($path, '/'));
+		$fullUrl = $this->getBaseUrl()
+			. "/public.php/webdav/" . \rawurlencode(\ltrim($path, '/'));
 
 		$client = new Client();
 		$options = [];
@@ -444,7 +450,11 @@ trait Sharing {
 	 * @return void
 	 */
 	private function publicUploadContent(
-		$filename, $password = '', $body = 'test', $autorename = false, $overwriting = false
+		$filename,
+		$password = '',
+		$body = 'test',
+		$autorename = false,
+		$overwriting = false
 	) {
 		$url = $this->getBaseUrl() . "/public.php/webdav/";
 		$url .= \rawurlencode(\ltrim($filename, '/'));
@@ -481,7 +491,8 @@ trait Sharing {
 	 */
 	public function theUserAddsExpirationDateToLastShare() {
 		$share_id = (string) $this->lastShareData->data[0]->id;
-		$fullUrl = $this->getBaseUrl() . "/ocs/v{$this->apiVersion}.php/apps/files_sharing/api/v{$this->sharingApiVersion}/shares/$share_id";
+		$fullUrl = $this->getBaseUrl()
+			. "/ocs/v{$this->apiVersion}.php/apps/files_sharing/api/v{$this->sharingApiVersion}/shares/$share_id";
 		$client = new Client();
 		$options = [];
 		$options['auth'] = $this->getAuthOptionForUser($this->currentUser);
@@ -519,7 +530,8 @@ trait Sharing {
 	 */
 	public function userUpdatesTheLastShareWith($user, $body) {
 		$share_id = (string) $this->lastShareData->data[0]->id;
-		$fullUrl = $this->getBaseUrl() . "/ocs/v{$this->apiVersion}.php/apps/files_sharing/api/v{$this->sharingApiVersion}/shares/$share_id";
+		$fullUrl = $this->getBaseUrl()
+			. "/ocs/v{$this->apiVersion}.php/apps/files_sharing/api/v{$this->sharingApiVersion}/shares/$share_id";
 		$client = new Client();
 		$options = [];
 		$options['auth'] = $this->getAuthOptionForUser($user);
@@ -599,7 +611,8 @@ trait Sharing {
 	public function isFieldInResponse($field, $contentExpected) {
 		$data = $this->response->xml()->data[0];
 		if ((string)$field == 'expiration') {
-			$contentExpected = \date('Y-m-d', \strtotime($contentExpected)) . " 00:00:00";
+			$contentExpected
+				= \date('Y-m-d', \strtotime($contentExpected)) . " 00:00:00";
 		}
 		if (\count($data->element) > 0) {
 			foreach ($data as $element) {
@@ -753,7 +766,8 @@ trait Sharing {
 	public function userSharesFileWithUserUsingTheAPI(
 		$user1, $entry, $filepath, $user2, $withPerms = null, $permissions = null
 	) {
-		$fullUrl = $this->getBaseUrl() . "/ocs/v{$this->apiVersion}.php/apps/files_sharing/api/v{$this->sharingApiVersion}/shares" . "?path=$filepath";
+		$fullUrl = $this->getBaseUrl()
+			. "/ocs/v{$this->apiVersion}.php/apps/files_sharing/api/v{$this->sharingApiVersion}/shares" . "?path=$filepath";
 		$client = new Client();
 		$options = [];
 		$options['auth'] = $this->getAuthOptionForUser($user1);
@@ -816,7 +830,8 @@ trait Sharing {
 	public function userSharesFileWithGroupUsingTheAPI(
 		$user, $entry, $filepath, $group, $withPerms = null, $permissions = null
 	) {
-		$fullUrl = $this->getBaseUrl() . "/ocs/v{$this->apiVersion}.php/apps/files_sharing/api/v{$this->sharingApiVersion}/shares" . "?path=$filepath";
+		$fullUrl = $this->getBaseUrl()
+			. "/ocs/v{$this->apiVersion}.php/apps/files_sharing/api/v{$this->sharingApiVersion}/shares" . "?path=$filepath";
 		$client = new Client();
 		$options = [];
 		$options['auth'] = $this->getAuthOptionForUser($user);
@@ -856,7 +871,9 @@ trait Sharing {
 	public function userDeletesLastShareUsingTheAPI($user) {
 		$share_id = $this->lastShareData->data[0]->id;
 		$url = "/apps/files_sharing/api/v{$this->sharingApiVersion}/shares/$share_id";
-		$this->userSendsHTTPMethodToAPIEndpointWithBody($user, "DELETE", $url, null);
+		$this->userSendsHTTPMethodToAPIEndpointWithBody(
+			$user, "DELETE", $url, null
+		);
 	}
 
 	/**
@@ -878,7 +895,9 @@ trait Sharing {
 	public function userGetsInfoOfLastShareUsingTheAPI($user) {
 		$share_id = $this->lastShareData->data[0]->id;
 		$url = "/apps/files_sharing/api/v{$this->sharingApiVersion}/shares/$share_id";
-		$this->userSendsHTTPMethodToAPIEndpointWithBody($user, "GET", $url, null);
+		$this->userSendsHTTPMethodToAPIEndpointWithBody(
+			$user, "GET", $url, null
+		);
 	}
 
 	/**
@@ -977,7 +996,8 @@ trait Sharing {
 	 * @return void
 	 */
 	public function userRemovesAllSharesFromTheFileNamed($user, $fileName) {
-		$url = $this->getBaseUrl() . "/ocs/v{$this->apiVersion}.php/apps/files_sharing/api/v{$this->sharingApiVersion}/shares?format=json";
+		$url = $this->getBaseUrl()
+			. "/ocs/v{$this->apiVersion}.php/apps/files_sharing/api/v{$this->sharingApiVersion}/shares?format=json";
 		$client = new \GuzzleHttp\Client();
 		$res = $client->get(
 			$url,
@@ -994,7 +1014,8 @@ trait Sharing {
 			if (\stripslashes($data['path']) === $fileName) {
 				$id = $data['id'];
 				$client->delete(
-					$this->getBaseUrl() . "/ocs/v{$this->apiVersion}.php/apps/files_sharing/api/v{$this->sharingApiVersion}/shares/{$id}",
+					$this->getBaseUrl()
+					. "/ocs/v{$this->apiVersion}.php/apps/files_sharing/api/v{$this->sharingApiVersion}/shares/{$id}",
 					[
 						'auth' => $this->getAuthOptionForUser($user),
 						'headers' => [
@@ -1042,7 +1063,8 @@ trait Sharing {
 	 * @return array
 	 */
 	public function getShares($user, $path) {
-		$fullUrl = $this->getBaseUrl() . "/ocs/v{$this->apiVersion}.php/apps/files_sharing/api/v{$this->sharingApiVersion}/shares";
+		$fullUrl = $this->getBaseUrl()
+			. "/ocs/v{$this->apiVersion}.php/apps/files_sharing/api/v{$this->sharingApiVersion}/shares";
 		$fullUrl = $fullUrl . '?path=' . $path;
 
 		$client = new Client();
@@ -1198,16 +1220,20 @@ trait Sharing {
 			],
 			[
 				'capabilitiesApp' => 'files_sharing',
-				'capabilitiesParameter' => 'user_enumeration@@@enabled',
+				'capabilitiesParameter' =>
+					'user_enumeration@@@enabled',
 				'testingApp' => 'core',
-				'testingParameter' => 'shareapi_allow_share_dialog_user_enumeration',
+				'testingParameter' =>
+					'shareapi_allow_share_dialog_user_enumeration',
 				'testingState' => true
 			],
 			[
 				'capabilitiesApp' => 'files_sharing',
-				'capabilitiesParameter' => 'user_enumeration@@@group_members_only',
+				'capabilitiesParameter' =>
+					'user_enumeration@@@group_members_only',
 				'testingApp' => 'core',
-				'testingParameter' => 'shareapi_share_dialog_user_enumeration_group_members',
+				'testingParameter' =>
+					'shareapi_share_dialog_user_enumeration_group_members',
 				'testingState' => false
 			],
 		];

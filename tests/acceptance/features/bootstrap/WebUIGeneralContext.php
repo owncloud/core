@@ -253,7 +253,9 @@ class WebUIGeneralContext extends RawMinkContext implements Context {
 	 * @return void
 	 * @throws Exception
 	 */
-	public function notificationsShouldBeDisplayedOnTheWebUIWithTheText($matching, TableNode $table) {
+	public function notificationsShouldBeDisplayedOnTheWebUIWithTheText(
+		$matching, TableNode $table
+	) {
 		$actualNotifications = $this->owncloudPage->getNotifications();
 		$numActualNotifications = \count($actualNotifications);
 		$expectedNotifications = $table->getRows();
@@ -374,7 +376,9 @@ class WebUIGeneralContext extends RawMinkContext implements Context {
 		} elseif ($value === "disabled") {
 			$value = false;
 		} else {
-			throw new InvalidArgumentException("$value can only be 'disabled' or 'enabled'");
+			throw new InvalidArgumentException(
+				"$value can only be 'disabled' or 'enabled'"
+			);
 		}
 		
 		$capability = $this->capabilities[\strtolower($section)][$setting];

@@ -80,8 +80,8 @@ trait Tags {
 			|| ($tagData['{http://owncloud.org/ns}user-assignable'] !== $userAssignable)
 		) {
 			PHPUnit_Framework_Assert::fail(
-					"tag $tagDisplayName is not of type $type"
-				);
+				"tag $tagDisplayName is not of type $type"
+			);
 		}
 	}
 
@@ -249,8 +249,11 @@ trait Tags {
 		);
 		$this->assertTypeOfTag($tagData, $type);
 		PHPUnit_Framework_Assert::assertEquals(
-			$tagData['{http://owncloud.org/ns}groups'], $groups,
-			'Tag has groups "' . $tagData['{http://owncloud.org/ns}groups'] . '" instead of the expected "' . $groups . '"'
+			$tagData['{http://owncloud.org/ns}groups'],
+			$groups,
+			'Tag has groups "'
+			. $tagData['{http://owncloud.org/ns}groups']
+			. '" instead of the expected "' . $groups . '"'
 		);
 	}
 
@@ -266,7 +269,8 @@ trait Tags {
 	public function tagsShouldExistFor($count, $user) {
 		if ((int)$count !== \count($this->requestTagsForUser($user))) {
 			throw new \Exception(
-				"Expected $count tags, got " . \count($this->requestTagsForUser($user))
+				"Expected $count tags, got "
+				. \count($this->requestTagsForUser($user))
 			);
 		}
 	}
@@ -296,7 +300,8 @@ trait Tags {
 		$appPath = '/systemtags/';
 		$tagID = $this->findTagIdByName($tagDisplayName);
 		PHPUnit_Framework_Assert::assertNotNull($tagID, "Tag wasn't found");
-		$fullUrl = $this->getBaseUrl() . '/' . $this->getDavPath('systemtags') . $appPath . $tagID;
+		$fullUrl = $this->getBaseUrl()
+			. '/' . $this->getDavPath('systemtags') . $appPath . $tagID;
 		try {
 			$response = $client->proppatch($fullUrl, $properties, 1);
 			$this->response = $response;
@@ -383,7 +388,10 @@ trait Tags {
 				$this->getBaseUrl(),
 				$taggingUser,
 				$this->getPasswordForUser($taggingUser),
-				$tagName, $fileName, $fileOwner, $this->getDavPathVersion('systemtags')
+				$tagName,
+				$fileName,
+				$fileOwner,
+				$this->getDavPathVersion('systemtags')
 			);
 		} catch (BadResponseException $e) {
 			$this->response = $e->getResponse();
@@ -412,7 +420,8 @@ trait Tags {
 						'{http://owncloud.org/ns}can-assign'
 					  ];
 		$appPath = '/systemtags-relations/files/';
-		$fullUrl = $this->getBaseUrl() . '/' . $this->getDavPath('systemtags') . $appPath . $fileID;
+		$fullUrl = $this->getBaseUrl()
+			. '/' . $this->getDavPath('systemtags') . $appPath . $fileID;
 		try {
 			$response = $client->propfind($fullUrl, $properties, 1);
 		} catch (Sabre\HTTP\ClientHttpException $e) {
@@ -472,8 +481,8 @@ trait Tags {
 			}
 			if ($found === false) {
 				PHPUnit_Framework_Assert::fail(
-						"tag $rowDisplayName is not in propfind answer"
-					);
+					"tag $rowDisplayName is not in propfind answer"
+				);
 			}
 		}
 		return $found;

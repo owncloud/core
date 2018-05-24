@@ -70,7 +70,8 @@ class CalDavContext implements \Behat\Behat\Context\Context {
 	 * @return void
 	 */
 	public function afterScenario() {
-		$davUrl = $this->featureContext->getBaseUrl() . '/remote.php/dav/calendars/admin/MyCalendar';
+		$davUrl = $this->featureContext->getBaseUrl()
+			. '/remote.php/dav/calendars/admin/MyCalendar';
 		try {
 			$this->client->delete(
 				$davUrl,
@@ -91,7 +92,8 @@ class CalDavContext implements \Behat\Behat\Context\Context {
 	 * @return void
 	 */
 	public function userRequestsCalendarUsingTheAPI($user, $calendar) {
-		$davUrl = $this->featureContext->getBaseUrl() . '/remote.php/dav/calendars/' . $calendar;
+		$davUrl = $this->featureContext->getBaseUrl()
+			. '/remote.php/dav/calendars/' . $calendar;
 
 		try {
 			$this->response = $this->client->get(
@@ -185,7 +187,8 @@ class CalDavContext implements \Behat\Behat\Context\Context {
 	 * @return void
 	 */
 	public function userHasCreatedACalendarNamed($user, $name) {
-		$davUrl = $this->featureContext->getBaseUrl() . '/remote.php/dav/calendars/' . $user . '/' . $name;
+		$davUrl = $this->featureContext->getBaseUrl()
+			. '/remote.php/dav/calendars/' . $user . '/' . $name;
 
 		$request = $this->client->createRequest(
 			'MKCALENDAR',

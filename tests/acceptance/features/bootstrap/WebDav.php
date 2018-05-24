@@ -217,10 +217,14 @@ trait WebDav {
 	 *
 	 * @return void
 	 */
-	public function userHasMovedFile($user, $entry, $fileSource, $fileDestination) {
+	public function userHasMovedFile(
+		$user, $entry, $fileSource, $fileDestination
+	) {
 		$fullUrl = $this->getBaseUrl() . '/' . $this->getDavFilesPath($user);
 		$headers['Destination'] = $fullUrl . $fileDestination;
-		$this->response = $this->makeDavRequest($user, "MOVE", $fileSource, $headers);
+		$this->response = $this->makeDavRequest(
+			$user, "MOVE", $fileSource, $headers
+		);
 		PHPUnit_Framework_Assert::assertEquals(
 			201, $this->response->getStatusCode()
 		);
@@ -260,7 +264,9 @@ trait WebDav {
 	 *
 	 * @return void
 	 */
-	public function userCopiesFileUsingTheAPI($user, $fileSource, $fileDestination) {
+	public function userCopiesFileUsingTheAPI(
+		$user, $fileSource, $fileDestination
+	) {
 		$fullUrl = $this->getBaseUrl() . '/' . $this->getDavFilesPath($user);
 		$headers['Destination'] = $fullUrl . $fileDestination;
 		try {
@@ -281,7 +287,9 @@ trait WebDav {
 	 * @return void
 	 */
 	public function downloadFileWithRange($fileSource, $range) {
-		$this->userDownloadsFileWithRange($this->currentUser, $fileSource, $range);
+		$this->userDownloadsFileWithRange(
+			$this->currentUser, $fileSource, $range
+		);
 	}
 
 	/**
@@ -295,7 +303,9 @@ trait WebDav {
 	 */
 	public function userDownloadsFileWithRange($user, $fileSource, $range) {
 		$headers['Range'] = $range;
-		$this->response = $this->makeDavRequest($user, "GET", $fileSource, $headers);
+		$this->response = $this->makeDavRequest(
+			$user, "GET", $fileSource, $headers
+		);
 	}
 
 	/**
@@ -381,8 +391,8 @@ trait WebDav {
 		$range, $path, $password, $content
 	) {
 		$this->publicDownloadsTheFileInsideThePublicSharedFolderWithPassword(
-				$path, $password, $range
-			);
+			$path, $password, $range
+		);
 		$this->downloadedContentShouldBe($content);
 	}
 
@@ -453,7 +463,9 @@ trait WebDav {
 	 */
 	public function userDownloadsTheFileUsingTheAPI($user, $fileName) {
 		try {
-			$this->response = $this->makeDavRequest($user, 'GET', $fileName, []);
+			$this->response = $this->makeDavRequest(
+				$user, 'GET', $fileName, []
+			);
 		} catch (BadResponseException $ex) {
 			$this->response = $ex->getResponse();
 		}
@@ -524,7 +536,9 @@ trait WebDav {
 				$properties[] = $row[0];
 			}
 		}
-		$this->response = $this->listFolder($user, $path, 0, $properties);
+		$this->response = $this->listFolder(
+			$user, $path, 0, $properties
+		);
 	}
 
 	/**
@@ -606,7 +620,9 @@ trait WebDav {
 	public function asTheFileOrFolderShouldNotExist($user, $entry, $path) {
 		$client = $this->getSabreClient($user);
 		$response = $client->request(
-			'HEAD', $this->makeSabrePath($user, '/' . \ltrim($path, '/'))
+			'HEAD', $this->makeSabrePath(
+				$user, '/' . \ltrim($path, '/')
+			)
 		);
 		if ($response['statusCode'] !== 404) {
 			throw new \Exception(
@@ -648,7 +664,9 @@ trait WebDav {
 	public function theSingleResponseShouldContainAPropertyWithValue(
 		$key, $expectedValue
 	) {
-		$this->theSingleResponseShouldContainAPropertyWithValueAndAlternative($key, $expectedValue, $expectedValue);
+		$this->theSingleResponseShouldContainAPropertyWithValueAndAlternative(
+			$key, $expectedValue, $expectedValue
+		);
 	}
 
 	/**
@@ -1042,7 +1060,9 @@ trait WebDav {
 	 *
 	 * @return void
 	 */
-	public function checkElementList($user, $elements, $expectedToBeListed = true) {
+	public function checkElementList(
+		$user, $elements, $expectedToBeListed = true
+	) {
 		if (!($elements instanceof TableNode)) {
 			throw new InvalidArgumentException(
 				'$expectedElements has to be an instance of TableNode'
@@ -1216,7 +1236,9 @@ trait WebDav {
 				if (!$overwriteMode) {
 					$suffix = '-' . $dav . 'dav-regular';
 				}
-				$this->userUploadsAFileTo($user, $source, $destination . $suffix);
+				$this->userUploadsAFileTo(
+					$user, $source, $destination . $suffix
+				);
 				$responses[] = $this->response;
 			} catch (BadResponseException $e) {
 				$responses[] = $e->getResponse();
@@ -1322,7 +1344,9 @@ trait WebDav {
 	 *
 	 * @return string
 	 */
-	public function userUploadsAFileWithContentTo($user, $content, $destination) {
+	public function userUploadsAFileWithContentTo(
+		$user, $content, $destination
+	) {
 		$file = \GuzzleHttp\Stream\Stream::factory($content);
 		try {
 			$this->response = $this->makeDavRequest(
@@ -1479,7 +1503,9 @@ trait WebDav {
 	public function userCreatesANewChunkingUploadWithId($user, $id) {
 		try {
 			$destination = '/uploads/' . $user . '/' . $id;
-			$this->makeDavRequest($user, 'MKCOL', $destination, [], null, "uploads");
+			$this->makeDavRequest(
+				$user, 'MKCOL', $destination, [], null, "uploads"
+			);
 		} catch (\GuzzleHttp\Exception\RequestException $ex) {
 			$this->response = $ex->getResponse();
 		}
@@ -1500,7 +1526,9 @@ trait WebDav {
 		try {
 			$data = \GuzzleHttp\Stream\Stream::factory($data);
 			$destination = '/uploads/' . $user . '/' . $id . '/' . $num;
-			$this->makeDavRequest($user, 'PUT', $destination, [], $data, "uploads");
+			$this->makeDavRequest(
+				$user, 'PUT', $destination, [], $data, "uploads"
+			);
 		} catch (\GuzzleHttp\Exception\RequestException $ex) {
 			$this->response = $ex->getResponse();
 		}
@@ -1516,7 +1544,9 @@ trait WebDav {
 	 *
 	 * @return void
 	 */
-	public function userMovesNewChunkFileWithIdToMychunkedfile($user, $id, $dest) {
+	public function userMovesNewChunkFileWithIdToMychunkedfile(
+		$user, $id, $dest
+	) {
 		$this->moveNewDavChunkToFinalFile($user, $id, $dest, []);
 	}
 
@@ -1605,7 +1635,9 @@ trait WebDav {
 	 * @return void
 	 */
 	public function userFavoritesElement($user, $path) {
-		$this->response = $this->changeFavStateOfAnElement($user, $path, 1, 0, null);
+		$this->response = $this->changeFavStateOfAnElement(
+			$user, $path, 1, 0, null
+		);
 	}
 
 	/**
@@ -1618,7 +1650,9 @@ trait WebDav {
 	 * @return void
 	 */
 	public function userUnfavoritesElement($user, $path) {
-		$this->response = $this->changeFavStateOfAnElement($user, $path, 0, 0, null);
+		$this->response = $this->changeFavStateOfAnElement(
+			$user, $path, 0, 0, null
+		);
 	}
 
 	/**
@@ -1665,7 +1699,9 @@ trait WebDav {
 	 */
 	public function userStoresEtagOfElement($user, $path) {
 		$propertiesTable = new TableNode([['{DAV:}getetag']]);
-		$this->userGetsPropertiesOfFolder($user, null, $path, $propertiesTable);
+		$this->userGetsPropertiesOfFolder(
+			$user, null, $path, $propertiesTable
+		);
 		$pathETAG[$path] = $this->response['{DAV:}getetag'];
 		$this->storedETAG[$user] = $pathETAG;
 	}
@@ -1680,7 +1716,9 @@ trait WebDav {
 	 */
 	public function etagOfElementOfUserShouldNotHaveChanged($path, $user) {
 		$propertiesTable = new TableNode([['{DAV:}getetag']]);
-		$this->userGetsPropertiesOfFolder($user, null, $path, $propertiesTable);
+		$this->userGetsPropertiesOfFolder(
+			$user, null, $path, $propertiesTable
+		);
 		PHPUnit_Framework_Assert::assertEquals(
 			$this->response['{DAV:}getetag'], $this->storedETAG[$user][$path]
 		);
@@ -1696,7 +1734,9 @@ trait WebDav {
 	 */
 	public function etagOfElementOfUserShouldHaveChanged($path, $user) {
 		$propertiesTable = new TableNode([['{DAV:}getetag']]);
-		$this->userGetsPropertiesOfFolder($user, null, $path, $propertiesTable);
+		$this->userGetsPropertiesOfFolder(
+			$user, null, $path, $propertiesTable
+		);
 		PHPUnit_Framework_Assert::assertNotEquals(
 			$this->response['{DAV:}getetag'], $this->storedETAG[$user][$path]
 		);
@@ -1710,7 +1750,9 @@ trait WebDav {
 	 */
 	public function connectingToDavEndpoint() {
 		try {
-			$this->response = $this->makeDavRequest(null, 'PROPFIND', '', []);
+			$this->response = $this->makeDavRequest(
+				null, 'PROPFIND', '', []
+			);
 		} catch (BadResponseException $e) {
 			$this->response = $e->getResponse();
 		}
@@ -1847,7 +1889,9 @@ trait WebDav {
 	 */
 	public function userFileShouldHaveStoredId($user, $path) {
 		$currentFileID = $this->getFileIdForPath($user, $path);
-		PHPUnit_Framework_Assert::assertEquals($currentFileID, $this->storedFileID);
+		PHPUnit_Framework_Assert::assertEquals(
+			$currentFileID, $this->storedFileID
+		);
 	}
 
 	/**

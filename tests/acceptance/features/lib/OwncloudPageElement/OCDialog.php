@@ -93,7 +93,9 @@ class OCDialog extends OwncloudPage {
 	 * @return string
 	 */
 	public function getMessage() {
-		$contentElement = $this->dialogElement->find("xpath", $this->contentClassXpath);
+		$contentElement = $this->dialogElement->find(
+			"xpath", $this->contentClassXpath
+		);
 		if ($contentElement === null) {
 			throw new ElementNotFoundException(
 				__METHOD__ .

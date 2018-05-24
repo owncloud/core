@@ -598,7 +598,9 @@ trait BasicStructure {
 	 *
 	 * @return void
 	 */
-	public function theXMLKey1Key2Key3ValueShouldBe($key1, $key2, $key3, $idText) {
+	public function theXMLKey1Key2Key3ValueShouldBe(
+		$key1, $key2, $key3, $idText
+	) {
 		PHPUnit_Framework_Assert::assertEquals(
 			$idText,
 			$this->getXMLKey1Key2Key3Value($this->response, $key1, $key2, $key3)
@@ -912,20 +914,27 @@ trait BasicStructure {
 	 */
 	public function statusPhpRespondedShouldMatch(PyStringNode $jsonExpected) {
 		$jsonExpectedDecoded = \json_decode($jsonExpected->getRaw(), true);
-		$jsonRespondedEncoded = \json_encode(\json_decode($this->response->getBody(), true));
+		$jsonRespondedEncoded
+			= \json_encode(\json_decode($this->response->getBody(), true));
 		if ($this->runOcc(['status']) === 0) {
 			$output = \explode("- ", $this->lastStdOut);
 			$version = \explode(": ", $output[2]);
-			PHPUnit_Framework_Assert::assertEquals("version", $version[0]);
+			PHPUnit_Framework_Assert::assertEquals(
+				"version", $version[0]
+			);
 			$versionString = \explode(": ", $output[3]);
-			PHPUnit_Framework_Assert::assertEquals("versionstring", $versionString[0]);
+			PHPUnit_Framework_Assert::assertEquals(
+				"versionstring", $versionString[0]
+			);
 			$jsonExpectedDecoded['version'] = \trim($version[1]);
 			$jsonExpectedDecoded['versionstring'] = \trim($versionString[1]);
 			$jsonExpectedEncoded = \json_encode($jsonExpectedDecoded);
 		} else {
 			PHPUnit_Framework_Assert::fail('Cannot get version variables from occ');
 		}
-		PHPUnit\Framework\Assert::assertEquals($jsonExpectedEncoded, $jsonRespondedEncoded);
+		PHPUnit\Framework\Assert::assertEquals(
+			$jsonExpectedEncoded, $jsonRespondedEncoded
+		);
 	}
 
 	/**
@@ -1008,8 +1017,12 @@ trait BasicStructure {
 	 */
 	public static function removeFilesFromLocalStorageBefore() {
 		$dir = "./work/local_storage/";
-		$di = new RecursiveDirectoryIterator($dir, FilesystemIterator::SKIP_DOTS);
-		$ri = new RecursiveIteratorIterator($di, RecursiveIteratorIterator::CHILD_FIRST);
+		$di = new RecursiveDirectoryIterator(
+			$dir, FilesystemIterator::SKIP_DOTS
+		);
+		$ri = new RecursiveIteratorIterator(
+			$di, RecursiveIteratorIterator::CHILD_FIRST
+		);
 		foreach ($ri as $file) {
 			$file->isDir() ?  \rmdir($file) : \unlink($file);
 		}
@@ -1022,8 +1035,12 @@ trait BasicStructure {
 	 */
 	public static function removeFilesFromLocalStorageAfter() {
 		$dir = "./work/local_storage/";
-		$di = new RecursiveDirectoryIterator($dir, FilesystemIterator::SKIP_DOTS);
-		$ri = new RecursiveIteratorIterator($di, RecursiveIteratorIterator::CHILD_FIRST);
+		$di = new RecursiveDirectoryIterator(
+			$dir, FilesystemIterator::SKIP_DOTS
+		);
+		$ri = new RecursiveIteratorIterator(
+			$di, RecursiveIteratorIterator::CHILD_FIRST
+		);
 		foreach ($ri as $file) {
 			$file->isDir() ?  \rmdir($file) : \unlink($file);
 		}

@@ -69,7 +69,7 @@ class FileRow extends OwncloudPage {
 	 * from an other Page Object by $this->getPage("FilesPageElement\\FileRow")
 	 * there is no real __construct() that can take arguments
 	 *
-	 * @param \Behat\Mink\Element\NodeElement $rowElement
+	 * @param NodeElement $rowElement
 	 *
 	 * @return void
 	 */
@@ -100,8 +100,8 @@ class FileRow extends OwncloudPage {
 	/**
 	 * finds the Action Button
 	 *
-	 * @return \Behat\Mink\Element\NodeElement
-	 * @throws \SensioLabs\Behat\PageObjectExtension\PageObject\Exception\ElementNotFoundException
+	 * @return NodeElement
+	 * @throws ElementNotFoundException
 	 */
 	public function findFileActionButton() {
 		$actionButton = $this->rowElement->find(
@@ -120,7 +120,7 @@ class FileRow extends OwncloudPage {
 	/**
 	 * finds and clicks the file actions button
 	 *
-	 * @throws \SensioLabs\Behat\PageObjectExtension\PageObject\Exception\ElementNotFoundException
+	 * @throws ElementNotFoundException
 	 * @return void
 	 */
 	public function clickFileActionButton() {
@@ -132,7 +132,7 @@ class FileRow extends OwncloudPage {
 	 *
 	 * @param Session $session
 	 *
-	 * @throws \SensioLabs\Behat\PageObjectExtension\PageObject\Exception\ElementNotFoundException
+	 * @throws ElementNotFoundException
 	 * @return FileActionsMenu
 	 */
 	public function openFileActionsMenu(Session $session) {
@@ -149,7 +149,7 @@ class FileRow extends OwncloudPage {
 	 * finds and returns the share button element
 	 *
 	 * @throws ElementNotFoundException
-	 * @return \Behat\Mink\Element\NodeElement
+	 * @return NodeElement
 	 */
 	public function findSharingButton() {
 		$shareBtn = $this->rowElement->find("xpath", $this->shareBtnXpath);
@@ -179,7 +179,7 @@ class FileRow extends OwncloudPage {
 	 * finds the input field to rename the file/folder
 	 *
 	 * @throws ElementNotFoundException
-	 * @return \Behat\Mink\Element\NodeElement
+	 * @return NodeElement
 	 */
 	public function findRenameInputField() {
 		$inputField = $this->rowElement->find(
@@ -229,7 +229,7 @@ class FileRow extends OwncloudPage {
 	 * finds and returns the tooltip element
 	 *
 	 * @throws ElementNotFoundException
-	 * @return \Behat\Mink\Element\NodeElement
+	 * @return NodeElement
 	 */
 	public function findTooltipElement() {
 		$element = $this->rowElement->find("xpath", $this->fileTooltipXpath);
@@ -256,7 +256,7 @@ class FileRow extends OwncloudPage {
 	 * finds and returns the thumbnail of the file
 	 *
 	 * @throws ElementNotFoundException
-	 * @return \Behat\Mink\Element\NodeElement
+	 * @return NodeElement
 	 */
 	public function findThumbnail() {
 		$thumbnail = $this->rowElement->find("xpath", $this->thumbnailXpath);
@@ -284,7 +284,7 @@ class FileRow extends OwncloudPage {
 	 * find and return the link to the file/folder
 	 *
 	 * @throws ElementNotFoundException
-	 * @return \Behat\Mink\Element\NodeElement
+	 * @return NodeElement
 	 */
 	public function findFileLink() {
 		$linkElement = $this->rowElement->find("xpath", $this->fileLinkXpath);
@@ -346,7 +346,9 @@ class FileRow extends OwncloudPage {
 	 * @return bool
 	 */
 	public function isMarkedAsFavorite() {
-		$checkFavorite = $this->rowElement->find("xpath", $this->markedFavoriteXpath);
+		$checkFavorite = $this->rowElement->find(
+			"xpath", $this->markedFavoriteXpath
+		);
 		
 		if ($checkFavorite === null) {
 			return false;

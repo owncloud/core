@@ -44,7 +44,9 @@ trait Trashbin {
 		$this->theHTTPStatusCodeShouldBe('200');
 		$decodedResponse = \json_decode($this->response->getBody(), true);
 		if (isset($decodedResponse['status'])) {
-			PHPUnit_Framework_Assert::assertNotEquals('error', $decodedResponse['status']);
+			PHPUnit_Framework_Assert::assertNotEquals(
+				'error', $decodedResponse['status']
+			);
 		}
 	}
 
@@ -156,7 +158,9 @@ trait Trashbin {
 		$this->theHTTPStatusCodeShouldBe('200');
 		$decodedResponse = \json_decode($this->response->getBody(), true);
 		if (isset($decodedResponse['status'])) {
-			PHPUnit_Framework_Assert::assertNotEquals('error', $decodedResponse['status']);
+			PHPUnit_Framework_Assert::assertNotEquals(
+				'error', $decodedResponse['status']
+			);
 		}
 	}
 
