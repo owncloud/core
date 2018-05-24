@@ -593,6 +593,7 @@ class WebUISharingContext extends RawMinkContext implements Context {
 				'could not find sharing button in fileRow',
 				'could not share with \'' . $shareWith . '\''
 			];
+			$foundMessage = false;
 			foreach ($possibleMessages as $message) {
 				$foundMessage = \strpos($e->getMessage(), $message);
 				if ($foundMessage !== false) {

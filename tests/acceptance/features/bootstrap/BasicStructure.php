@@ -929,12 +929,12 @@ trait BasicStructure {
 			$jsonExpectedDecoded['version'] = \trim($version[1]);
 			$jsonExpectedDecoded['versionstring'] = \trim($versionString[1]);
 			$jsonExpectedEncoded = \json_encode($jsonExpectedDecoded);
+			PHPUnit\Framework\Assert::assertEquals(
+				$jsonExpectedEncoded, $jsonRespondedEncoded
+			);
 		} else {
 			PHPUnit_Framework_Assert::fail('Cannot get version variables from occ');
 		}
-		PHPUnit\Framework\Assert::assertEquals(
-			$jsonExpectedEncoded, $jsonRespondedEncoded
-		);
 	}
 
 	/**
