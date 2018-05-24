@@ -22,7 +22,7 @@
  *
  */
 
-use Behat\Behat\Hook\Scope\BeforeScenarioScope;
+use Behat\Gherkin\Node\TableNode;
 use TestHelpers\AppConfigHelper;
 
 require __DIR__ . '/../../../../lib/composer/autoload.php';
@@ -58,7 +58,7 @@ trait AppConfiguration {
 	/**
 	 * @param string $verb
 	 * @param string $url
-	 * @param \Behat\Gherkin\Node\TableNode $body
+	 * @param TableNode $body
 	 *
 	 * @return void
 	 */
@@ -300,10 +300,9 @@ trait AppConfiguration {
 	/**
 	 * @BeforeScenario
 	 *
-	 * @param BeforeScenarioScope $scope
 	 * @return void
 	 */
-	public function prepareParametersBeforeScenario(BeforeScenarioScope $scope) {
+	public function prepareParametersBeforeScenario() {
 		$user = $this->currentUser;
 		$this->currentUser = $this->getAdminUsername();
 		$this->resetAppConfigs();

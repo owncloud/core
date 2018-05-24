@@ -22,6 +22,7 @@
  *
  */
 
+use Behat\Gherkin\Node\TableNode;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\BadResponseException;
 use TestHelpers\SharingHelper;
@@ -79,7 +80,7 @@ trait Sharing {
 	 * @Given /^user "([^"]*)" has created a share with settings$/
 	 *
 	 * @param string $user
-	 * @param \Behat\Gherkin\Node\TableNode|null $body
+	 * @param TableNode|null $body
 	 *
 	 * @return void
 	 */
@@ -90,7 +91,7 @@ trait Sharing {
 		$options = [];
 		$options['auth'] = $this->getAuthOptionForUser($user);
 
-		if ($body instanceof \Behat\Gherkin\Node\TableNode) {
+		if ($body instanceof TableNode) {
 			$fd = $body->getRowsHash();
 			if (\array_key_exists('expireDate', $fd)) {
 				$dateModification = $fd['expireDate'];
@@ -113,7 +114,7 @@ trait Sharing {
 	/**
 	 * @When /^the user creates a share using the API with settings$/
 	 *
-	 * @param \Behat\Gherkin\Node\TableNode|null $body
+	 * @param TableNode|null $body
 	 *
 	 * @return void
 	 */
@@ -124,7 +125,7 @@ trait Sharing {
 	/**
 	 * @Given /^the user has created a share with settings$/
 	 *
-	 * @param \Behat\Gherkin\Node\TableNode|null $body
+	 * @param TableNode|null $body
 	 *
 	 * @return void
 	 */
@@ -513,7 +514,7 @@ trait Sharing {
 	 * @When /^the user updates the last share using the API with$/
 	 * @Given /^the user has updated the last share with$/
 	 *
-	 * @param \Behat\Gherkin\Node\TableNode|null $body
+	 * @param TableNode|null $body
 	 *
 	 * @return void
 	 */
@@ -526,7 +527,7 @@ trait Sharing {
 	 * @Given /^user "([^"]*)" has updated the last share with$/
 	 *
 	 * @param string $user
-	 * @param \Behat\Gherkin\Node\TableNode|null $body
+	 * @param TableNode|null $body
 	 *
 	 * @return void
 	 */
@@ -538,7 +539,7 @@ trait Sharing {
 		$options = [];
 		$options['auth'] = $this->getAuthOptionForUser($user);
 
-		if ($body instanceof \Behat\Gherkin\Node\TableNode) {
+		if ($body instanceof TableNode) {
 			$fd = $body->getRowsHash();
 			if (\array_key_exists('expireDate', $fd)) {
 				$dateModification = $fd['expireDate'];
@@ -945,12 +946,12 @@ trait Sharing {
 	/**
 	 * @Then /^the share fields of the last share should include$/
 	 *
-	 * @param \Behat\Gherkin\Node\TableNode|null $body
+	 * @param TableNode|null $body
 	 *
 	 * @return void
 	 */
 	public function checkShareFields($body) {
-		if ($body instanceof \Behat\Gherkin\Node\TableNode) {
+		if ($body instanceof TableNode) {
 			$fd = $body->getRowsHash();
 
 			foreach ($fd as $field => $value) {
@@ -1085,14 +1086,14 @@ trait Sharing {
 	 * @param string $user
 	 * @param string $type
 	 * @param string $path
-	 * @param \Behat\Gherkin\Node\TableNode|null $TableNode
+	 * @param TableNode|null $TableNode
 	 *
 	 * @return int|void
 	 */
 	public function checkPublicShares($user, $type, $path, $TableNode) {
 		$dataResponded = $this->getShares($user, $path);
 
-		if ($TableNode instanceof \Behat\Gherkin\Node\TableNode) {
+		if ($TableNode instanceof TableNode) {
 			$elementRows = $TableNode->getRows();
 
 			if ($elementRows[0][0] === '') {

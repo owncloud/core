@@ -160,7 +160,7 @@ class PublicLinkFilesPage extends FilesPageBasic {
 	 * @param Session $session
 	 *
 	 * @return string
-	 * @throws \SensioLabs\Behat\PageObjectExtension\PageObject\Exception\ElementNotFoundException
+	 * @throws ElementNotFoundException
 	 */
 	public function getTooltipOfFile($fileName, Session $session) {
 		throw new \Exception("not implemented");

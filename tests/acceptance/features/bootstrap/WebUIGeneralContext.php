@@ -59,7 +59,7 @@ class WebUIGeneralContext extends RawMinkContext implements Context {
 
 	/**
 	 *
-	 * @var Page\OwncloudPage
+	 * @var OwncloudPage
 	 */
 	private $currentPageObject = null;
 
@@ -180,7 +180,7 @@ class WebUIGeneralContext extends RawMinkContext implements Context {
 	 * @param string $password
 	 * @param string $target
 	 *
-	 * @return \Page\OwncloudPage
+	 * @return OwncloudPage
 	 */
 	public function loginAs($username, $password, $target = 'FilesPage') {
 		$session = $this->getSession();

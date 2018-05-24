@@ -22,7 +22,6 @@
 
 use Behat\Behat\Context\Context;
 use Behat\Behat\Context\SnippetAcceptingContext;
-use Behat\Behat\Hook\Scope\BeforeScenarioScope;
 use Behat\Gherkin\Node\PyStringNode;
 use TestHelpers\EmailHelper;
 
@@ -60,11 +59,9 @@ class EmailContext implements Context, SnippetAcceptingContext {
 	/**
 	 * @BeforeScenario @mailhog
 	 *
-	 * @param BeforeScenarioScope $scope
-	 *
 	 * @return void
 	 */
-	public function setUpScenario(BeforeScenarioScope $scope) {
+	public function setUpScenario() {
 		$this->mailhogUrl = EmailHelper::getMailhogUrl();
 		$this->clearMailHogMessages();
 	}
