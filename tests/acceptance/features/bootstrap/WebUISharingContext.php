@@ -118,6 +118,7 @@ class WebUISharingContext extends RawMinkContext implements Context {
 	 * @param boolean $quiet
 	 *
 	 * @return void
+	 * @throws \Exception
 	 */
 	public function theUserSharesTheFileFolderWithTheUserUsingTheWebUI(
 		$folder, $remote, $user, $maxRetries = STANDARDRETRYCOUNT, $quiet = false
@@ -152,6 +153,7 @@ class WebUISharingContext extends RawMinkContext implements Context {
 	 * @param string $group
 	 *
 	 * @return void
+	 * @throws \Exception
 	 */
 	public function theUserSharesTheFileFolderWithTheGroupUsingTheWebUI(
 		$folder, $group
@@ -176,6 +178,7 @@ class WebUISharingContext extends RawMinkContext implements Context {
 	 * @param string $name
 	 *
 	 * @return void
+	 * @throws \Exception
 	 */
 	public function theUserOpensTheShareDialogForTheFileFolder($name) {
 		$this->filesPage->waitTillPageIsloaded($this->getSession());
@@ -191,6 +194,7 @@ class WebUISharingContext extends RawMinkContext implements Context {
 	 * @param string $name
 	 *
 	 * @return void
+	 * @throws \Exception
 	 */
 	public function theUserCreatesANewPublicLinkForUsingTheWebUI($name) {
 		$this->theUserCreatesANewPublicLinkForUsingTheWebUIWith($name);
@@ -208,6 +212,7 @@ class WebUISharingContext extends RawMinkContext implements Context {
 	 *                            the way its written in the UI
 	 *
 	 * @return void
+	 * @throws \Exception
 	 */
 	public function theUserCreatesANewPublicLinkForUsingTheWebUIWith(
 		$name, TableNode $settings = null
@@ -297,6 +302,7 @@ class WebUISharingContext extends RawMinkContext implements Context {
 	 *                                    touched
 	 *
 	 * @return void
+	 * @throws \Exception
 	 */
 	public function theUserSetsTheSharingPermissionsOfForOnTheWebUI(
 		$userName, $fileName, TableNode $permissionsTable
@@ -327,6 +333,7 @@ class WebUISharingContext extends RawMinkContext implements Context {
 	 * @param string $minCharacters
 	 *
 	 * @return void
+	 * @throws \Exception
 	 */
 	public function setMinCharactersForAutocomplete($minCharacters) {
 		if ($this->oldMinCharactersForAutocomplete === null) {
@@ -352,6 +359,7 @@ class WebUISharingContext extends RawMinkContext implements Context {
 	 * @Given the administrator has allowed http fallback for federation sharing
 	 *
 	 * @return void
+	 * @throws \Exception
 	 */
 	public function allowHttpFallbackForFedSharing() {
 		if ($this->oldFedSharingFallbackSetting === null) {
@@ -388,6 +396,7 @@ class WebUISharingContext extends RawMinkContext implements Context {
 	 * @When the public accesses the last created public link using the webUI
 	 *
 	 * @return void
+	 * @throws \Exception
 	 */
 	public function thePublicAccessesTheLastCreatedPublicLinkUsingTheWebUI() {
 		$lastCreatedLink = \end($this->createdPublicLinks);
@@ -410,7 +419,7 @@ class WebUISharingContext extends RawMinkContext implements Context {
 	 * @param string $password
 	 *
 	 * @return void
-	 * @throws Exception
+	 * @throws \Exception
 	 */
 	public function thePublicAddsThePublicLinkToUsingTheWebUI(
 		$server, $username, $password
@@ -528,6 +537,7 @@ class WebUISharingContext extends RawMinkContext implements Context {
 	 * @param string $sharerName
 	 *
 	 * @return void
+	 * @throws \Exception
 	 */
 	public function theFileFolderShouldBeMarkedAsSharedBy(
 		$fileOrFolder, $itemName, $sharedWithGroup, $sharerName
@@ -576,7 +586,7 @@ class WebUISharingContext extends RawMinkContext implements Context {
 	 * @param string|null $shareWith
 	 *
 	 * @return void
-	 * @throws Exception
+	 * @throws \Exception
 	 */
 	public function itShouldNotBePossibleToShareUsingTheWebUI(
 		$fileName, $shareWith = null
@@ -641,6 +651,7 @@ class WebUISharingContext extends RawMinkContext implements Context {
 	 * @AfterScenario @webUI
 	 *
 	 * @return void
+	 * @throws \Exception
 	 */
 	public function tearDownScenario() {
 		//TODO make a function that can be used for different settings

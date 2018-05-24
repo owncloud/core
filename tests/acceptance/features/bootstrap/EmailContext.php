@@ -47,6 +47,7 @@ class EmailContext implements Context, SnippetAcceptingContext {
 	 * @param PyStringNode $content
 	 *
 	 * @return void
+	 * @throws \Exception
 	 */
 	public function assertThatEmailContains($address, PyStringNode $content) {
 		$expectedContent = \str_replace("\r\n", "\n", $content->getRaw());

@@ -141,6 +141,8 @@ trait Checksums {
 	 * @Then the webdav checksum should be empty
 	 *
 	 * @return void
+	 * @throws \Sabre\Xml\ParseException
+	 * @throws \Exception
 	 */
 	public function theWebdavChecksumShouldBeEmpty() {
 		$service = new Sabre\Xml\Service();
@@ -163,6 +165,7 @@ trait Checksums {
 	 * @Then the OC-Checksum header should not be there
 	 *
 	 * @return void
+	 * @throws \Exception
 	 */
 	public function theOcChecksumHeaderShouldNotBeThere() {
 		if ($this->response->hasHeader('OC-Checksum')) {

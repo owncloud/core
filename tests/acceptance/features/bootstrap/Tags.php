@@ -70,6 +70,7 @@ trait Tags {
 	 * @param string $type
 	 *
 	 * @return void
+	 * @throws \Exception
 	 */
 	private function assertTypeOfTag($tagData, $type) {
 		$userAttributes = TagsHelper::validateTypeOfTag($type);
@@ -210,7 +211,7 @@ trait Tags {
 	 * @param string $tagDisplayName
 	 *
 	 * @return void
-	 * @throws Exception
+	 * @throws \Exception
 	 */
 	public function theUserCanAssignTheTag(
 		$user, $shouldOrNot, $type, $tagDisplayName
@@ -239,6 +240,7 @@ trait Tags {
 	 * @param string $groups list of groups separated by "|"
 	 *
 	 * @return void
+	 * @throws \Exception
 	 */
 	public function theTagHasGroup($type, $tagName, $groups) {
 		$tagData = $this->requestTagByDisplayName(
@@ -456,6 +458,7 @@ trait Tags {
 	 * @param TableNode $table
 	 *
 	 * @return bool
+	 * @throws \Exception
 	 */
 	public function sharedByHasTheFollowingTags(
 		$fileName, $sharingUser, TableNode $table
@@ -494,6 +497,7 @@ trait Tags {
 	 * @param TableNode $table
 	 *
 	 * @return void
+	 * @throws \Exception
 	 */
 	public function fileHasTheFollowingTagsForUser(
 		$fileName, $user, TableNode $table

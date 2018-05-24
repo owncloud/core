@@ -104,7 +104,7 @@ trait Provisioning {
 	 * @param string $username
 	 *
 	 * @return string password
-	 * @throws Exception
+	 * @throws \Exception
 	 */
 	public function getUserPassword($username) {
 		if ($username === $this->getAdminUsername()) {
@@ -128,7 +128,7 @@ trait Provisioning {
 	 * @param string $username
 	 *
 	 * @return boolean
-	 * @throws Exception
+	 * @throws \Exception
 	 */
 	public function theUserShouldExist($username) {
 		if (\array_key_exists($username, $this->createdUsers)) {
@@ -149,7 +149,7 @@ trait Provisioning {
 	 * @param string $groupname
 	 *
 	 * @return boolean
-	 * @throws Exception
+	 * @throws \Exception
 	 */
 	public function theGroupShouldExist($groupname) {
 		if (\array_key_exists($groupname, $this->createdGroups)) {
@@ -170,7 +170,7 @@ trait Provisioning {
 	 * @param string $groupname
 	 *
 	 * @return boolean
-	 * @throws Exception
+	 * @throws \Exception
 	 */
 	public function theGroupShouldBeAbleToBeDeleted($groupname) {
 		if (\array_key_exists($groupname, $this->createdGroups)) {
@@ -193,6 +193,7 @@ trait Provisioning {
 	 * @param string $user
 	 *
 	 * @return void
+	 * @throws \Exception
 	 */
 	public function adminCreatesUserUsingTheAPI($user) {
 		if (!$this->userExists($user)) {
@@ -212,6 +213,7 @@ trait Provisioning {
 	 * @param TableNode $table
 	 *
 	 * @return void
+	 * @throws \Exception
 	 */
 	public function theseUsersHaveBeenCreated($doNotInitialize, TableNode $table) {
 		foreach ($table as $row) {
@@ -299,6 +301,7 @@ trait Provisioning {
 	 * @param string $user
 	 *
 	 * @return void
+	 * @throws \Exception
 	 */
 	public function theAdminDeletesTheUserUsingAPI($user) {
 		$this->deleteTheUserUsingTheAPI($user);
@@ -312,6 +315,7 @@ trait Provisioning {
 	 * @param string $user
 	 *
 	 * @return void
+	 * @throws \Exception
 	 */
 	public function theSubAdminDeletesTheUser($subadmin, $user) {
 		$this->response = UserHelper::deleteUser(
@@ -389,7 +393,7 @@ trait Provisioning {
 	 * @param TableNode $table
 	 *
 	 * @return void
-	 * @throws Exception
+	 * @throws \Exception
 	 */
 	public function theseGroupsShouldNotExist($shouldOrNot, TableNode $table) {
 		$should = ($shouldOrNot !== "not");
@@ -412,6 +416,7 @@ trait Provisioning {
 	 * @param string $user
 	 *
 	 * @return void
+	 * @throws \Exception
 	 */
 	public function adminDeletesUserUsingTheAPI($user) {
 		if ($this->userExists($user)) {
@@ -514,7 +519,7 @@ trait Provisioning {
 	 * @param string $method how to create the user api|occ
 	 *
 	 * @return void
-	 * @throws Exception
+	 * @throws \Exception
 	 */
 	private function createUser(
 		$user, $password, $displayName = null, $email = null, $initialize = true,
@@ -577,6 +582,7 @@ trait Provisioning {
 	 * @param string $user
 	 *
 	 * @return void
+	 * @throws \Exception
 	 */
 	public function deleteUser($user) {
 		$this->deleteTheUserUsingTheAPI($user);
@@ -591,6 +597,7 @@ trait Provisioning {
 	 * @param string $group
 	 *
 	 * @return void
+	 * @throws \Exception
 	 */
 	public function cleanupGroup($group) {
 		try {
@@ -709,6 +716,7 @@ trait Provisioning {
 	 * @param string $group
 	 *
 	 * @return void
+	 * @throws \Exception
 	 */
 	public function adminAddsUserToGroupUsingTheAPI($user, $group) {
 		if (!$this->userBelongsToGroup($user, $group)) {
@@ -726,7 +734,7 @@ trait Provisioning {
 	 * @param string $method how to add the user to the group api|occ
 	 *
 	 * @return void
-	 * @throws Exception
+	 * @throws \Exception
 	 */
 	public function userHasBeenAddedToGroup($user, $group, $method = null) {
 		if ($method === null && \getenv("TEST_EXTERNAL_USER_BACKENDS") === "true") {
@@ -816,6 +824,7 @@ trait Provisioning {
 	 * @param string $group
 	 *
 	 * @return void
+	 * @throws \Exception
 	 */
 	public function adminCreatesGroupUsingTheAPI($group) {
 		if (!$this->groupExists($group)) {
@@ -831,6 +840,7 @@ trait Provisioning {
 	 * @param TableNode $table
 	 *
 	 * @return void
+	 * @throws \Exception
 	 */
 	public function theseGroupsHaveBeenCreated(TableNode $table) {
 		foreach ($table as $row) {
@@ -863,7 +873,7 @@ trait Provisioning {
 	 * @param string $method how to create the group api|occ
 	 *
 	 * @return void
-	 * @throws Exception
+	 * @throws \Exception
 	 */
 	private function createTheGroup($group, $method = null) {
 		if ($method === null && \getenv("TEST_EXTERNAL_USER_BACKENDS") === "true") {
@@ -939,6 +949,7 @@ trait Provisioning {
 	 * @param string $user
 	 *
 	 * @return void
+	 * @throws \Exception
 	 */
 	public function deleteTheUserUsingTheAPI($user) {
 		// Always try to delete the user
@@ -972,6 +983,7 @@ trait Provisioning {
 	 * @param string $group
 	 *
 	 * @return void
+	 * @throws \Exception
 	 */
 	public function groupHasBeenDeletedUsingTheAPI($group) {
 		if ($this->groupExists($group)) {
@@ -986,6 +998,7 @@ trait Provisioning {
 	 * @param string $group
 	 *
 	 * @return void
+	 * @throws \Exception
 	 */
 	public function deleteTheGroupUsingTheAPI($group) {
 		$this->response = UserHelper::deleteGroup(
@@ -1575,6 +1588,7 @@ trait Provisioning {
 	 * @AfterScenario
 	 *
 	 * @return void
+	 * @throws \Exception
 	 */
 	public function cleanupUsers() {
 		$this->deleteTokenAuthEnforcedAfterScenario();
@@ -1595,6 +1609,7 @@ trait Provisioning {
 	 * @AfterScenario
 	 *
 	 * @return void
+	 * @throws \Exception
 	 */
 	public function cleanupGroups() {
 		$this->deleteTokenAuthEnforcedAfterScenario();

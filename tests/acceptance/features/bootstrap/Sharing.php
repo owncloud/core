@@ -988,7 +988,7 @@ trait Sharing {
 	 * @param string $user
 	 * @param string $fileName
 	 *
-	 * @throws Exception
+	 * @throws \Exception
 	 * @return void
 	 */
 	public function userRemovesAllSharesFromTheFileNamed($user, $fileName) {
@@ -1043,6 +1043,7 @@ trait Sharing {
 	 * @Then the share ids should match
 	 *
 	 * @return void
+	 * @throws \Exception
 	 */
 	public function shareIdsShouldMatch() {
 		if ($this->savedShareId !== $this->lastShareData['data']['id']) {

@@ -1052,6 +1052,7 @@ trait BasicStructure {
 	 * @param BeforeSuiteScope $scope
 	 *
 	 * @return void
+	 * @throws \Exception
 	 */
 	public static function useBigFileIDs(BeforeSuiteScope $scope) {
 		$fullUrl = \getenv('TEST_SERVER_URL');

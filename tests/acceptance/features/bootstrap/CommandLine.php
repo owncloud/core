@@ -130,6 +130,7 @@ trait CommandLine {
 	 * @Then /^the command should have been successful$/
 	 *
 	 * @return void
+	 * @throws \Exception
 	 */
 	public function theCommandShouldHaveBeenSuccessful() {
 		$exceptions = $this->findExceptions();
@@ -153,7 +154,7 @@ trait CommandLine {
 	 * @param int $exitCode
 	 *
 	 * @return void
-	 * @throws Exception
+	 * @throws \Exception
 	 */
 	public function theCommandFailedWithExitCode($exitCode) {
 		if ($this->lastCode !== (int)$exitCode) {
@@ -170,7 +171,7 @@ trait CommandLine {
 	 * @param string $exceptionText
 	 *
 	 * @return void
-	 * @throws Exception
+	 * @throws \Exception
 	 */
 	public function theCommandFailedWithExceptionText($exceptionText) {
 		$exceptions = $this->findExceptions();
@@ -192,7 +193,7 @@ trait CommandLine {
 	 * @param string $text
 	 *
 	 * @return void
-	 * @throws Exception
+	 * @throws \Exception
 	 */
 	public function theCommandOutputContainsTheText($text) {
 		$lines = $this->findLines($this->lastStdOut, $text);
@@ -210,7 +211,7 @@ trait CommandLine {
 	 * @param string $text
 	 *
 	 * @return void
-	 * @throws Exception
+	 * @throws \Exception
 	 */
 	public function theCommandErrorOutputContainsTheText($text) {
 		$lines = $this->findLines($this->lastStdErr, $text);
@@ -289,6 +290,7 @@ trait CommandLine {
 	 * @Given /^the administrator has successfully recreated the encryption masterkey$/
 	 *
 	 * @return void
+	 * @throws \Exception
 	 */
 	public function recreateMasterKeyUsingOccCommand() {
 		$this->runOcc(['encryption:recreate-master-key', '-y']);
