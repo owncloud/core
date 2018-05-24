@@ -124,3 +124,12 @@ Scenario: Share of folder to a group, remove user from that group
 		But user "user2" should not see the following elements
 			| /PARENT%20(2)/           |
 			| /PARENT%20(2)/parent.txt |
+
+	Scenario: getting all the shares inside the folder
+		Given user "user0" has been created
+		And user "user1" has been created
+		And user "user0" has shared file "PARENT/parent.txt" with user "user1"
+		When user "user0" sends HTTP method "GET" to API endpoint "/apps/files_sharing/api/v1/shares?path=PARENT&subfiles=true"
+		Then the OCS status code should be "100"
+		And the HTTP status code should be "200"
+		And file "parent.txt" should be included in the response
