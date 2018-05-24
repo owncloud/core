@@ -412,7 +412,9 @@ class WebUISharingContext extends RawMinkContext implements Context {
 	 * @return void
 	 * @throws Exception
 	 */
-	public function thePublicAddsThePublicLinkToUsingTheWebUI($server, $username, $password) {
+	public function thePublicAddsThePublicLinkToUsingTheWebUI(
+		$server, $username, $password
+	) {
 		if (!$this->publicLinkFilesPage->isOpen()) {
 			throw new Exception('Not on public link page!');
 		}
@@ -576,10 +578,14 @@ class WebUISharingContext extends RawMinkContext implements Context {
 	 * @return void
 	 * @throws Exception
 	 */
-	public function itShouldNotBePossibleToShareUsingTheWebUI($fileName, $shareWith = null) {
+	public function itShouldNotBePossibleToShareUsingTheWebUI(
+		$fileName, $shareWith = null
+	) {
 		$sharingWasPossible = false;
 		try {
-			$this->theUserSharesTheFileFolderWithTheUserUsingTheWebUI($fileName, null, $shareWith, 2, true);
+			$this->theUserSharesTheFileFolderWithTheUserUsingTheWebUI(
+				$fileName, null, $shareWith, 2, true
+			);
 			$sharingWasPossible = true;
 		} catch (ElementNotFoundException $e) {
 			$possibleMessages = [
@@ -595,7 +601,8 @@ class WebUISharingContext extends RawMinkContext implements Context {
 			}
 			if ($foundMessage === false) {
 				throw new Exception(
-					'exception message has to contain "could not find share-with-field",' .
+					'exception message has to contain' .
+					' "could not find share-with-field",' .
 					' "could not find sharing button in fileRow" or' .
 					' "could not share with \'...\'"but was: "' .
 					$e->getMessage() . '"'
@@ -715,16 +722,20 @@ class WebUISharingContext extends RawMinkContext implements Context {
 			],
 			[
 				'capabilitiesApp' => 'files_sharing',
-				'capabilitiesParameter' => 'user_enumeration@@@enabled',
+				'capabilitiesParameter' =>
+					'user_enumeration@@@enabled',
 				'testingApp' => 'core',
-				'testingParameter' => 'shareapi_allow_share_dialog_user_enumeration',
+				'testingParameter' =>
+					'shareapi_allow_share_dialog_user_enumeration',
 				'testingState' => true
 			],
 			[
 				'capabilitiesApp' => 'files_sharing',
-				'capabilitiesParameter' => 'user_enumeration@@@group_members_only',
+				'capabilitiesParameter' =>
+					'user_enumeration@@@group_members_only',
 				'testingApp' => 'core',
-				'testingParameter' => 'shareapi_share_dialog_user_enumeration_group_members',
+				'testingParameter' =>
+					'shareapi_share_dialog_user_enumeration_group_members',
 				'testingState' => false
 			],
 			[

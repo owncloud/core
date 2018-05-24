@@ -83,7 +83,9 @@ class WebUILoginContext extends RawMinkContext implements Context {
 		$username, $password
 	) {
 		$this->webUIGeneralContext->theUserLogsOutOfTheWebUI();
-		$this->theUserLogsInWithUsernameAndPasswordUsingTheWebUI($username, $password);
+		$this->theUserLogsInWithUsernameAndPasswordUsingTheWebUI(
+			$username, $password
+		);
 	}
 
 	/**
@@ -95,7 +97,9 @@ class WebUILoginContext extends RawMinkContext implements Context {
 	 *
 	 * @return void
 	 */
-	public function theUserLogsInWithUsernameAndPasswordUsingTheWebUI($username, $password) {
+	public function theUserLogsInWithUsernameAndPasswordUsingTheWebUI(
+		$username, $password
+	) {
 		$this->filesPage = $this->webUIGeneralContext->loginAs($username, $password);
 	}
 
@@ -135,7 +139,9 @@ class WebUILoginContext extends RawMinkContext implements Context {
 			$server . $this->loginPage->getOriginalPath()
 		);
 		$this->loginPage->open();
-		$this->theUserLogsInWithUsernameAndPasswordUsingTheWebUI($username, $password);
+		$this->theUserLogsInWithUsernameAndPasswordUsingTheWebUI(
+			$username, $password
+		);
 	}
 
 	/**
@@ -198,12 +204,16 @@ class WebUILoginContext extends RawMinkContext implements Context {
 		}
 		$this->theUserBrowsesToTheLoginPage();
 		if ($should) {
-			$this->theUserLogsInWithUsernameAndPasswordUsingTheWebUI($username, $password);
+			$this->theUserLogsInWithUsernameAndPasswordUsingTheWebUI(
+				$username, $password
+			);
 			$this->webUIGeneralContext->theUserShouldBeRedirectedToAWebUIPageWithTheTitle(
 				$this->loginSuccessPageTitle
 			);
 		} else {
-			$this->theUserLogsInWithUsernameAndInvalidPasswordUsingTheWebUI($username, $password);
+			$this->theUserLogsInWithUsernameAndInvalidPasswordUsingTheWebUI(
+				$username, $password
+			);
 			$this->webUIGeneralContext->theUserShouldBeRedirectedToAWebUIPageWithTheTitle(
 				$this->loginFailedPageTitle
 			);

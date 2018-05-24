@@ -131,7 +131,8 @@ trait Checksums {
 	public function theHeaderChecksumShouldMatch($checksum) {
 		if ($this->response->getHeader('OC-Checksum') !== $checksum) {
 			throw new \Exception(
-				"Expected $checksum, got " . $this->response->getHeader('OC-Checksum')
+				"Expected $checksum, got "
+				. $this->response->getHeader('OC-Checksum')
 			);
 		}
 	}
@@ -166,7 +167,8 @@ trait Checksums {
 	public function theOcChecksumHeaderShouldNotBeThere() {
 		if ($this->response->hasHeader('OC-Checksum')) {
 			throw new \Exception(
-				"Expected no checksum header but got " . $this->response->getHeader('OC-Checksum')
+				"Expected no checksum header but got "
+				. $this->response->getHeader('OC-Checksum')
 			);
 		}
 	}
