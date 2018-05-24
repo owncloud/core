@@ -59,21 +59,22 @@ trait Comments {
 				$user,
 				"POST",
 				$commentsPath,
-				['Content-Type' => 'application/json',
-								   ],
+				['Content-Type' => 'application/json'],
 				null,
 				"uploads",
 				'{"actorId":"user0",
-								    "actorDisplayName":"user0",
-								    "actorType":"users",
-								    "verb":"comment",
-								    "message":"' . $content . '",
-								    "creationDateTime":"Thu, 18 Feb 2016 17:04:18 GMT",
-								    "objectType":"files"}'
+					"actorDisplayName":"user0",
+					"actorType":"users",
+					"verb":"comment",
+					"message":"' . $content . '",
+					"creationDateTime":"Thu, 18 Feb 2016 17:04:18 GMT",
+					"objectType":"files"}'
 			);
 			$responseHeaders =  $this->response->getHeaders();
 			$commentUrl = $responseHeaders['Content-Location'][0];
-			$this->lastCommentId = substr($commentUrl, strrpos($commentUrl, '/') + 1);
+			$this->lastCommentId = \substr(
+				$commentUrl, \strrpos($commentUrl, '/') + 1
+			);
 		} catch (BadResponseException $ex) {
 			$this->response = $ex->getResponse();
 		}
@@ -250,13 +251,13 @@ trait Comments {
 				null,
 				"uploads",
 				'<?xml version="1.0"?>
-									<d:propertyupdate  xmlns:d="DAV:" xmlns:oc="http://owncloud.org/ns">
-										<d:set>
-											<d:prop>
-												<oc:message>' . htmlspecialchars($content, ENT_XML1, 'UTF-8') . '</oc:message>
-											</d:prop>
-										</d:set>
-									</d:propertyupdate>'
+					<d:propertyupdate  xmlns:d="DAV:" xmlns:oc="http://owncloud.org/ns">
+						<d:set>
+							<d:prop>
+								<oc:message>' . \htmlspecialchars($content, ENT_XML1, 'UTF-8') . '</oc:message>
+							</d:prop>
+						</d:set>
+					</d:propertyupdate>'
 			);
 		} catch (BadResponseException $ex) {
 			$this->response = $ex->getResponse();

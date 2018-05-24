@@ -56,22 +56,24 @@ class FederationContext implements Context, SnippetAcceptingContext {
 		$sharerUser, $sharerServer, $sharerPath, $shareeUser, $shareeServer
 	) {
 		if ($shareeServer == "REMOTE") {
-			$shareWith = "$shareeUser@" . $this->featureContext->getRemoteBaseUrl() . '/';
+			$shareWith
+				= "$shareeUser@" . $this->featureContext->getRemoteBaseUrl() . '/';
 		} else {
-			$shareWith = "$shareeUser@" . $this->featureContext->getLocalBaseUrl() . '/';
+			$shareWith
+				= "$shareeUser@" . $this->featureContext->getLocalBaseUrl() . '/';
 		}
-			$previous = $this->featureContext->usingServer($sharerServer);
-			$this->featureContext->createShare(
-				$sharerUser, $sharerPath, 6, $shareWith, null, null, null
-			);
-			$this->featureContext->theHTTPStatusCodeShouldBe('200');
-			$this->featureContext->theOCSStatusCodeShouldBe(
-				'100', 'Could not share file/folder! message: "' . 
+		$previous = $this->featureContext->usingServer($sharerServer);
+		$this->featureContext->createShare(
+			$sharerUser, $sharerPath, 6, $shareWith, null, null, null
+		);
+		$this->featureContext->theHTTPStatusCodeShouldBe('200');
+		$this->featureContext->theOCSStatusCodeShouldBe(
+			'100', 'Could not share file/folder! message: "' .
 				$this->featureContext->getOCSResponseStatusMessage(
 					$this->featureContext->getResponse()
 				) . '"'
-			);
-			$this->featureContext->usingServer($previous);
+		);
+		$this->featureContext->usingServer($previous);
 	}
 	
 	/**

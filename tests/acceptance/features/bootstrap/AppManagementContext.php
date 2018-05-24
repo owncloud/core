@@ -96,8 +96,10 @@ class AppManagementContext implements  Context {
 	 * @return void
 	 */
 	public function appHasBeenPutInDir($appId, $version, $dir) {
-		$ocVersion = \OC::$server->getConfig()->getSystemValue('version', '0.0.0');
-		$appInfo = sprintf(
+		$ocVersion = \OC::$server->getConfig()->getSystemValue(
+			'version', '0.0.0'
+		);
+		$appInfo = \sprintf(
 			'<?xml version="1.0"?>
 			<info>
 				<id>%s</id>

@@ -295,7 +295,9 @@ class FilesPage extends FilesPageBasic {
 		$this->resetSumStartedAjaxRequests($session);
 		
 		for ($retryCounter = 0; $retryCounter < $maxRetries; $retryCounter++) {
-			$toMoveFileRow->findFileLink()->dragTo($destinationFileRow->findFileLink());
+			$toMoveFileRow->findFileLink()->dragTo(
+				$destinationFileRow->findFileLink()
+			);
 			$this->waitForAjaxCallsToStartAndFinish($session);
 			$countXHRRequests = $this->getSumStartedAjaxRequests($session);
 			if ($countXHRRequests === 0) {
@@ -305,7 +307,8 @@ class FilesPage extends FilesPageBasic {
 			}
 		}
 		if ($retryCounter > 0) {
-			$message = "INFORMATION: retried to move file " . $retryCounter . " times";
+			$message
+				= "INFORMATION: retried to move file " . $retryCounter . " times";
 			echo $message;
 			error_log($message);
 		}

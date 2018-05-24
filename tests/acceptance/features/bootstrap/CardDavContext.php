@@ -70,7 +70,8 @@ class CardDavContext implements \Behat\Behat\Context\Context {
 	 * @return void
 	 */
 	public function afterScenario() {
-		$davUrl = $this->featureContext->getBaseUrl() . '/remote.php/dav/addressbooks/users/admin/MyAddressbook';
+		$davUrl = $this->featureContext->getBaseUrl()
+			. '/remote.php/dav/addressbooks/users/admin/MyAddressbook';
 		try {
 			$this->client->delete(
 				$davUrl,
@@ -92,7 +93,8 @@ class CardDavContext implements \Behat\Behat\Context\Context {
 	 * @throws \Exception
 	 */
 	public function userRequestsAddressbookUsingTheAPI($user, $addressBook) {
-		$davUrl = $this->featureContext->getBaseUrl() . '/remote.php/dav/addressbooks/users/' . $addressBook;
+		$davUrl = $this->featureContext->getBaseUrl()
+			. '/remote.php/dav/addressbooks/users/' . $addressBook;
 
 		try {
 			$this->response = $this->client->get(
@@ -116,7 +118,8 @@ class CardDavContext implements \Behat\Behat\Context\Context {
 	 * @throws \Exception
 	 */
 	public function userHasCreatedAnAddressbookNamed($user, $addressBook) {
-		$davUrl = $this->featureContext->getBaseUrl() . '/remote.php/dav/addressbooks/users/' . $user . '/' . $addressBook;
+		$davUrl = $this->featureContext->getBaseUrl()
+			. '/remote.php/dav/addressbooks/users/' . $user . '/' . $addressBook;
 
 		$request = $this->client->createRequest(
 			'MKCOL',

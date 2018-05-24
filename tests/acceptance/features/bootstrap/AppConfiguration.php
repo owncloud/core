@@ -87,7 +87,9 @@ trait AppConfiguration {
 	 *
 	 * @return void
 	 */
-	public function adminSetsServerParameterToUsingAPI($parameter, $app, $value) {
+	public function adminSetsServerParameterToUsingAPI(
+		$parameter, $app, $value
+	) {
 		$user = $this->currentUser;
 		$this->currentUser = $this->getAdminUsername();
 

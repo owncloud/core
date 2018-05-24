@@ -244,7 +244,8 @@ trait Provisioning {
 	 */
 	public function theAppHasBeenDisabled($app) {
 		$client = new Client();
-		$fullUrl = $this->getBaseUrl() . "/ocs/v{$this->apiVersion}.php/cloud/apps/" . $app;
+		$fullUrl = $this->getBaseUrl()
+			. "/ocs/v{$this->apiVersion}.php/cloud/apps/" . $app;
 		$options = [];
 		$options['auth'] = $this->getAuthOptionForAdmin();
 		$this->client->delete($fullUrl, $options);
@@ -448,7 +449,8 @@ trait Provisioning {
 	 * @return void
 	 */
 	public function initializeUser($user, $password) {
-		$url = $this->getBaseUrl() . "/ocs/v{$this->apiVersion}.php/cloud/users/" . $user;
+		$url = $this->getBaseUrl()
+			. "/ocs/v{$this->apiVersion}.php/cloud/users/" . $user;
 		$client = new Client();
 		$options = [
 			'auth' => [$user, $password],
@@ -923,7 +925,8 @@ trait Provisioning {
 	 * @return void
 	 */
 	public function adminDisablesUserUsingTheAPI($user) {
-		$fullUrl = $this->getBaseUrl() . "/ocs/v{$this->apiVersion}.php/cloud/users/$user/disable";
+		$fullUrl = $this->getBaseUrl()
+			. "/ocs/v{$this->apiVersion}.php/cloud/users/$user/disable";
 		$client = new Client();
 		$options = [];
 		$options['auth'] = $this->getAuthOptionForAdmin();
@@ -952,8 +955,10 @@ trait Provisioning {
 		// successfully created (i.e. the delete is expected to work) and
 		// there was a problem deleting the user. Because in this case there
 		// might be an effect on later tests.
-		if ($this->theUserShouldExist($user) && ($this->response->getStatusCode() !== 200)) {
-			error_log(
+		if ($this->theUserShouldExist($user)
+			&& ($this->response->getStatusCode() !== 200)
+		) {
+			\error_log(
 				"INFORMATION: could not delete user '" . $user . "' "
 				. $this->response->getStatusCode() . " " . $this->response->getBody()
 			);
@@ -1085,7 +1090,8 @@ trait Provisioning {
 	 * @return void
 	 */
 	public function adminMakesUserSubadminOfGroupUsingTheAPI($user, $group) {
-		$fullUrl = $this->getBaseUrl() . "/ocs/v{$this->apiVersion}.php/cloud/users/$user/subadmins";
+		$fullUrl = $this->getBaseUrl()
+			. "/ocs/v{$this->apiVersion}.php/cloud/users/$user/subadmins";
 		$client = new Client();
 		$options = [];
 		$options['auth'] = $this->getAuthOptionForAdmin();
@@ -1311,7 +1317,8 @@ trait Provisioning {
 	 */
 	public function getArrayOfUsersResponded($resp) {
 		$listCheckedElements = $resp->xml()->data[0]->users[0]->element;
-		$extractedElementsArray = json_decode(json_encode($listCheckedElements), 1);
+		$extractedElementsArray
+			= \json_decode(\json_encode($listCheckedElements), 1);
 		return $extractedElementsArray;
 	}
 
@@ -1324,7 +1331,8 @@ trait Provisioning {
 	 */
 	public function getArrayOfGroupsResponded($resp) {
 		$listCheckedElements = $resp->xml()->data[0]->groups[0]->element;
-		$extractedElementsArray = json_decode(json_encode($listCheckedElements), 1);
+		$extractedElementsArray
+			= \json_decode(\json_encode($listCheckedElements), 1);
 		return $extractedElementsArray;
 	}
 
@@ -1337,7 +1345,8 @@ trait Provisioning {
 	 */
 	public function getArrayOfAppsResponded($resp) {
 		$listCheckedElements = $resp->xml()->data[0]->apps[0]->element;
-		$extractedElementsArray = json_decode(json_encode($listCheckedElements), 1);
+		$extractedElementsArray
+			= \json_decode(\json_encode($listCheckedElements), 1);
 		return $extractedElementsArray;
 	}
 
@@ -1350,7 +1359,8 @@ trait Provisioning {
 	 */
 	public function getArrayOfSubadminsResponded($resp) {
 		$listCheckedElements = $resp->xml()->data[0]->element;
-		$extractedElementsArray = json_decode(json_encode($listCheckedElements), 1);
+		$extractedElementsArray
+			= \json_decode(\json_encode($listCheckedElements), 1);
 		return $extractedElementsArray;
 	}
 
@@ -1404,7 +1414,8 @@ trait Provisioning {
 	 * @return void
 	 */
 	public function userShouldBeDisabled($user) {
-		$fullUrl = $this->getBaseUrl() . "/ocs/v{$this->apiVersion}.php/cloud/users/$user";
+		$fullUrl = $this->getBaseUrl()
+			. "/ocs/v{$this->apiVersion}.php/cloud/users/$user";
 		$client = new Client();
 		$options = [];
 		$options['auth'] = $this->getAuthOptionForAdmin();
@@ -1423,7 +1434,8 @@ trait Provisioning {
 	 * @return void
 	 */
 	public function useShouldBeEnabled($user) {
-		$fullUrl = $this->getBaseUrl() . "/ocs/v{$this->apiVersion}.php/cloud/users/$user";
+		$fullUrl = $this->getBaseUrl()
+			. "/ocs/v{$this->apiVersion}.php/cloud/users/$user";
 		$client = new Client();
 		$options = [];
 		$options['auth'] = $this->getAuthOptionForAdmin();
@@ -1485,7 +1497,8 @@ trait Provisioning {
 	 * @return void
 	 */
 	public function getUserHome($user) {
-		$fullUrl = $this->getBaseUrl() . "/ocs/v{$this->apiVersion}.php/cloud/users/$user";
+		$fullUrl = $this->getBaseUrl()
+			. "/ocs/v{$this->apiVersion}.php/cloud/users/$user";
 		$client = new Client();
 		$options = [];
 		$options['auth'] = $this->getAuthOptionForAdmin();
@@ -1539,7 +1552,10 @@ trait Provisioning {
 	 */
 	public function theApiShouldNotReturnAnyData() {
 		$responseData = $this->response->xml()->data[0];
-		PHPUnit_Framework_Assert::assertEmpty($responseData, "Response data is not empty but it should be empty");
+		PHPUnit_Framework_Assert::assertEmpty(
+			$responseData,
+			"Response data is not empty but it should be empty"
+		);
 	}
 
 	/**
@@ -1549,7 +1565,10 @@ trait Provisioning {
 	 */
 	public function theListOfUsersReturnedByTheApiShouldBeEmpty() {
 		$usersList = $this->response->xml()->data[0]->users[0];
-		PHPUnit_Framework_Assert::assertEmpty($usersList, "Users list is not empty but it should be empty");
+		PHPUnit_Framework_Assert::assertEmpty(
+			$usersList,
+			"Users list is not empty but it should be empty"
+		);
 	}
 
 	/**
