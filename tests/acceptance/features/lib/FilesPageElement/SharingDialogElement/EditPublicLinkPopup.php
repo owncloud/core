@@ -56,8 +56,8 @@ class EditPublicLinkPopup extends OwncloudPage {
 	 * $this->getPage("FilesPageElement\\SharingDialogElement\\EditPublicLinkPopup")
 	 * there is no real __construct() that can take arguments
 	 *
-	 * @param \Behat\Mink\Element\NodeElement $popupElement
-	 * 
+	 * @param NodeElement $popupElement
+	 *
 	 * @return void
 	 */
 	public function setElement(NodeElement $popupElement) {

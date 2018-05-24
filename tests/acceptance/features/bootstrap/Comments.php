@@ -20,6 +20,7 @@
  *
  */
 
+use Behat\Gherkin\Node\TableNode;
 use GuzzleHttp\Exception\BadResponseException;
 
 require __DIR__ . '/../../../../lib/composer/autoload.php';
@@ -86,7 +87,7 @@ trait Comments {
 	 * @param string $user
 	 * @param string $type
 	 * @param string $path
-	 * @param \Behat\Gherkin\Node\TableNode|null $expectedElements
+	 * @param TableNode|null $expectedElements
 	 *
 	 * @return void
 	 */
@@ -106,7 +107,7 @@ trait Comments {
 			);
 		}
 
-		if ($expectedElements instanceof \Behat\Gherkin\Node\TableNode) {
+		if ($expectedElements instanceof TableNode) {
 			$elementRows = $expectedElements->getRows();
 			foreach ($elementRows as $expectedElement) {
 				$commentFound = false;

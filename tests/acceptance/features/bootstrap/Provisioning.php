@@ -1133,12 +1133,12 @@ trait Provisioning {
 	/**
 	 * @Then /^the users returned by the API should be$/
 	 *
-	 * @param \Behat\Gherkin\Node\TableNode|null $usersList
+	 * @param TableNode|null $usersList
 	 *
 	 * @return void
 	 */
 	public function theUsersShouldBe($usersList) {
-		if ($usersList instanceof \Behat\Gherkin\Node\TableNode) {
+		if ($usersList instanceof TableNode) {
 			$users = $usersList->getRows();
 			$usersSimplified = $this->simplifyArray($users);
 			$respondedArray = $this->getArrayOfUsersResponded($this->response);
@@ -1151,12 +1151,12 @@ trait Provisioning {
 	/**
 	 * @Then /^the groups returned by the API should be$/
 	 *
-	 * @param \Behat\Gherkin\Node\TableNode|null $groupsList
+	 * @param TableNode|null $groupsList
 	 *
 	 * @return void
 	 */
 	public function theGroupsShouldBe($groupsList) {
-		if ($groupsList instanceof \Behat\Gherkin\Node\TableNode) {
+		if ($groupsList instanceof TableNode) {
 			$groups = $groupsList->getRows();
 			$groupsSimplified = $this->simplifyArray($groups);
 			$respondedArray = $this->getArrayOfGroupsResponded($this->response);
@@ -1203,7 +1203,7 @@ trait Provisioning {
 	}
 
 	/**
-	 * @param \Behat\Gherkin\Node\TableNode|null $groupsOrUsersList
+	 * @param TableNode|null $groupsOrUsersList
 	 *
 	 * @return void
 	 */
@@ -1219,7 +1219,7 @@ trait Provisioning {
 	/**
 	 * @Then /^the subadmin groups returned by the API should be$/
 	 *
-	 * @param \Behat\Gherkin\Node\TableNode|null $groupsList
+	 * @param TableNode|null $groupsList
 	 *
 	 * @return void
 	 */
@@ -1230,7 +1230,7 @@ trait Provisioning {
 	/**
 	 * @Then /^the subadmin users returned by the API should be$/
 	 *
-	 * @param \Behat\Gherkin\Node\TableNode|null $usersList
+	 * @param TableNode|null $usersList
 	 *
 	 * @return void
 	 */
@@ -1241,7 +1241,7 @@ trait Provisioning {
 	/**
 	 * @Then /^the apps returned by the API should include$/
 	 *
-	 * @param \Behat\Gherkin\Node\TableNode|null $appList
+	 * @param TableNode|null $appList
 	 *
 	 * @return void
 	 */
@@ -1509,7 +1509,7 @@ trait Provisioning {
 	/**
 	 * @Then /^the user attributes returned by the API should include$/
 	 *
-	 * @param \Behat\Gherkin\Node\TableNode|null $body
+	 * @param TableNode|null $body
 	 *
 	 * @return void
 	 */
@@ -1533,7 +1533,7 @@ trait Provisioning {
 	 * @Then the attributes of user :user returned by the API should include
 	 *
 	 * @param string $user
-	 * @param \Behat\Gherkin\Node\TableNode $body
+	 * @param TableNode $body
 	 *
 	 * @return void
 	 */
