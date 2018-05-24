@@ -1089,7 +1089,7 @@ trait Sharing {
 	 * @param string $path
 	 * @param TableNode|null $TableNode
 	 *
-	 * @return int|void
+	 * @return void
 	 */
 	public function checkPublicShares($user, $type, $path, $TableNode) {
 		$dataResponded = $this->getShares($user, $path);
@@ -1099,8 +1099,8 @@ trait Sharing {
 
 			if ($elementRows[0][0] === '') {
 				//It shouldn't have public shares
-				PHPUnit_Framework_Assert::assertEquals(count($dataResponded), 0);
-				return 0;
+				PHPUnit_Framework_Assert::assertEquals(\count($dataResponded), 0);
+				return;
 			}
 
 			foreach ($elementRows as $expectedElementsArray) {
