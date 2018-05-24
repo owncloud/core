@@ -166,7 +166,9 @@ class SharingDialog extends OwncloudPage {
 		$nameToType, $nameToMatch, Session $session, $maxRetries = 5, $quiet = false
 	) {
 		for ($retryCounter = 0; $retryCounter < $maxRetries; $retryCounter++) {
-			$autocompleteNodeElement = $this->fillShareWithField($nameToType, $session);
+			$autocompleteNodeElement = $this->fillShareWithField(
+				$nameToType, $session
+			);
 			$userElements = $autocompleteNodeElement->findAll(
 				"xpath", $this->autocompleteItemsTextXpath
 			);
@@ -266,7 +268,9 @@ class SharingDialog extends OwncloudPage {
 		$shareReceiverName,
 		$permissions
 	) {
-		$xpathLocator = \sprintf($this->permissionsFieldByUserName, $shareReceiverName);
+		$xpathLocator = \sprintf(
+			$this->permissionsFieldByUserName, $shareReceiverName
+		);
 		$permissionsField = $this->find("xpath", $xpathLocator);
 		if ($permissionsField === null) {
 			throw new ElementNotFoundException(

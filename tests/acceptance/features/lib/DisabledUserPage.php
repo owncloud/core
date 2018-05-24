@@ -59,8 +59,8 @@ class DisabledUserPage extends OwncloudPage {
 			
 		if ($currentTime > $end) {
 			throw new \Exception(
-					__METHOD__ . " timeout waiting for page to load"
-				);
+				__METHOD__ . " timeout waiting for page to load"
+			);
 		}
 			
 		$this->waitForOutstandingAjaxCalls($session);
