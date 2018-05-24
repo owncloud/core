@@ -134,7 +134,7 @@ RERUN_FAILED_WEBUI_SCENARIOS=true
 while [[ $# -gt 0 ]]
 do
 	key="$1"
-	case $key in
+	case ${key} in
 		-c|--config)
 			BEHAT_YML="$2"
 			shift
@@ -356,7 +356,7 @@ then
 	EXTRA_CAPABILITIES='"iedriverVersion": "3.4.0","requiresWindowFocus":true,"screenResolution":"1920x1080",'
 fi
 
-EXTRA_CAPABILITIES=$EXTRA_CAPABILITIES'"browserVersion":"'${BROWSER_VERSION}'","maxDuration":"3600"'
+EXTRA_CAPABILITIES=${EXTRA_CAPABILITIES}'"browserVersion":"'${BROWSER_VERSION}'","maxDuration":"3600"'
 
 # Set up personalized skeleton
 remote_occ ${ADMIN_AUTH} ${OCC_URL} "--no-warnings config:system:get skeletondirectory"
@@ -471,7 +471,7 @@ then
 	# Report them in a dry-run so they can be seen
 	# Big red error output is displayed if there are no matching scenarios - send it to null
 	DRY_RUN_FILE=$(mktemp)
-	lib/composer/bin/behat --dry-run --colors -c ${BEHAT_YML} --tags '@webUI&&@skip' ${BEHAT_FEATURE} 1>$DRY_RUN_FILE 2>/dev/null
+	lib/composer/bin/behat --dry-run --colors -c ${BEHAT_YML} --tags '@webUI&&@skip' ${BEHAT_FEATURE} 1>${DRY_RUN_FILE} 2>/dev/null
 	if grep -q -m 1 'No scenarios' "${DRY_RUN_FILE}"
 	then
 		# If there are no skip scenarios, then no need to report that
@@ -542,7 +542,7 @@ remote_occ ${ADMIN_AUTH} ${OCC_URL} "config:app:set core backgroundjobs_mode --v
 # Put back state of the testing app
 if [ "${TESTING_ENABLED_BY_SCRIPT}" = true ]
 then
-	$OCC app:disable testing
+	${OCC} app:disable testing
 fi
 
 #upload log file for later analysis
