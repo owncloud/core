@@ -1637,7 +1637,7 @@ trait WebDav {
 	 */
 	public function userFavoritesElement($user, $path) {
 		$this->response = $this->changeFavStateOfAnElement(
-			$user, $path, 1, 0, null
+			$user, $path, 1
 		);
 	}
 
@@ -1652,7 +1652,7 @@ trait WebDav {
 	 */
 	public function userUnfavoritesElement($user, $path) {
 		$this->response = $this->changeFavStateOfAnElement(
-			$user, $path, 0, 0, null
+			$user, $path, 0
 		);
 	}
 
@@ -1662,13 +1662,12 @@ trait WebDav {
 	 * @param string $user
 	 * @param string $path
 	 * @param int $favOrUnfav 1 = favorite, 0 = unfavorite
-	 * @param int $folderDepth requires 1 to see elements without children
-	 * @param array|null $properties
-	 *
 	 * @return bool
+	 * @throws \Sabre\HTTP\ClientException
+	 * @throws \Sabre\HTTP\ClientHttpException
 	 */
 	public function changeFavStateOfAnElement(
-		$user, $path, $favOrUnfav, $folderDepth, $properties = null
+		$user, $path, $favOrUnfav
 	) {
 		$settings = [
 			'baseUri' => $this->getBaseUrl() . '/',
@@ -1677,14 +1676,12 @@ trait WebDav {
 			'authType' => SClient::AUTH_BASIC
 		];
 		$client = new SClient($settings);
-		if (!$properties) {
-			$properties = [
-				'{http://owncloud.org/ns}favorite' => $favOrUnfav
-			];
-		}
+		$properties = [
+			'{http://owncloud.org/ns}favorite' => $favOrUnfav
+		];
 
 		$response = $client->proppatch(
-			$this->getDavFilesPath($user) . $path, $properties, $folderDepth
+			$this->getDavFilesPath($user) . $path, $properties
 		);
 		return $response;
 	}
