@@ -407,6 +407,10 @@ class OC {
 		$cookie_path = OC::$WEBROOT ? : '/';
 		\ini_set('session.cookie_path', $cookie_path);
 
+		if (self::$server->getRequest()->getServerProtocol() === 'https') {
+			\ini_set('session.cookie_secure', true);
+		}
+
 		// Let the session name be changed in the initSession Hook
 		$sessionName = OC_Util::getInstanceId();
 
@@ -586,9 +590,6 @@ class OC {
 		self::checkInstalled();
 
 		OC_Response::addSecurityHeaders();
-		if (self::$server->getRequest()->getServerProtocol() === 'https') {
-			\ini_set('session.cookie_secure', true);
-		}
 
 		if (!\defined('OC_CONSOLE')) {
 			$errors = OC_Util::checkServer(\OC::$server->getConfig());
