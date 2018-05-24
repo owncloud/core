@@ -84,7 +84,7 @@ class CardDavContext implements \Behat\Behat\Context\Context {
 	}
 
 	/**
-	 * @When user :user requests addressbook :addressBook using the API
+	 * @When user :user requests address book :addressBook using the API
 	 *
 	 * @param string $user
 	 * @param string $addressBook
@@ -92,7 +92,7 @@ class CardDavContext implements \Behat\Behat\Context\Context {
 	 * @return void
 	 * @throws \Exception
 	 */
-	public function userRequestsAddressbookUsingTheAPI($user, $addressBook) {
+	public function userRequestsAddressBookUsingTheAPI($user, $addressBook) {
 		$davUrl = $this->featureContext->getBaseUrl()
 			. '/remote.php/dav/addressbooks/users/' . $addressBook;
 
@@ -109,7 +109,7 @@ class CardDavContext implements \Behat\Behat\Context\Context {
 	}
 
 	/**
-	 * @Given user :user has successfully created an addressbook named :addressBook
+	 * @Given user :user has successfully created an address book named :addressBook
 	 *
 	 * @param string $user
 	 * @param string $addressBook
@@ -117,7 +117,7 @@ class CardDavContext implements \Behat\Behat\Context\Context {
 	 * @return void
 	 * @throws \Exception
 	 */
-	public function userHasCreatedAnAddressbookNamed($user, $addressBook) {
+	public function userHasCreatedAnAddressBookNamed($user, $addressBook) {
 		$davUrl = $this->featureContext->getBaseUrl()
 			. '/remote.php/dav/addressbooks/users/' . $user . '/' . $addressBook;
 
