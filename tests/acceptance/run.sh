@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 
+# add a line to trigger CI
 # composer install
 
 # from http://stackoverflow.com/a/630387
