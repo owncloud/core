@@ -1145,7 +1145,7 @@ trait Provisioning {
 	/**
 	 * @Then /^the users returned by the API should be$/
 	 *
-	 * @param TableNode|null $usersList
+	 * @param TableNode $usersList
 	 *
 	 * @return void
 	 */
@@ -1163,7 +1163,7 @@ trait Provisioning {
 	/**
 	 * @Then /^the groups returned by the API should be$/
 	 *
-	 * @param TableNode|null $groupsList
+	 * @param TableNode $groupsList
 	 *
 	 * @return void
 	 */
