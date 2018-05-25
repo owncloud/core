@@ -298,9 +298,9 @@ abstract class Storage extends \Test\TestCase {
 		$this->assertTrue($this->instance->hasUpdated('/lorem.txt', $ctimeStart - 5));
 		$this->assertTrue($this->instance->hasUpdated('/', $ctimeStart - 5));
 
-		// check that ($ctimeStart - 5) <= $mTime <= ($ctimeEnd + 1)
+		// check that ($ctimeStart - 5) <= $mTime <= ($ctimeEnd + 5)
 		$this->assertGreaterThanOrEqual(($ctimeStart - 5), $mTime);
-		$this->assertLessThanOrEqual(($ctimeEnd + 1), $mTime);
+		$this->assertLessThanOrEqual(($ctimeEnd + 5), $mTime);
 		$this->assertEquals(filesize($textFile), $this->instance->filesize('/lorem.txt'));
 
 		$stat = $this->instance->stat('/lorem.txt');
