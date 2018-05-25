@@ -38,6 +38,8 @@ use OCP\ILogger;
 use OCP\Defaults;
 use OCP\Util;
 use OC\Share\Filters\MailNotificationFilter;
+use Symfony\Component\EventDispatcher\EventDispatcher;
+use Symfony\Component\EventDispatcher\GenericEvent;
 
 /**
  * Class MailNotifications
@@ -62,6 +64,8 @@ class MailNotifications {
 	private $logger;
 	/** @var IURLGenerator */
 	private $urlGenerator;
+	/** @var EventDispatcher  */
+	private $eventDispatcher;
 
 	/**
 	 * @param IUser $user
@@ -76,13 +80,15 @@ class MailNotifications {
 								IMailer $mailer,
 								ILogger $logger,
 								Defaults $defaults,
-								IURLGenerator $urlGenerator) {
+								IURLGenerator $urlGenerator,
+								EventDispatcher $eventDispatcher) {
 		$this->l = $l10n;
 		$this->user = $user;
 		$this->mailer = $mailer;
 		$this->logger = $logger;
 		$this->defaults = $defaults;
 		$this->urlGenerator = $urlGenerator;
+		$this->eventDispatcher = $eventDispatcher;
 
 		$this->replyTo = $this->user->getEMailAddress();
 
@@ -186,6 +192,17 @@ class MailNotifications {
 		$subject = (string)$this->l->t('%s shared »%s« with you', [$this->senderDisplayName, $filename]);
 		list($htmlBody, $textBody) = $this->createMailBody($filename, $link, $expiration, $personalNote);
 
+		/**
+		 * The event consumer of share.sendmail would have following data
+		 * - link ( the public link created )
+		 * - to ( the to recipient in mail )
+		 * - cc ( the cc recipient in mail )
+		 * - bcc ( the bcc recipient in mail )
+		 */
+		$ccRecipients = isset($options['cc']) ? $options['cc'] : '';
+		$bccRecipients = isset($options['bcc']) ? $options['bcc'] : '';
+		$event = new GenericEvent(null, ['link' => $link, 'to' => $recipient, 'cc' => $ccRecipients, 'bcc' => $bccRecipients]);
+		$this->eventDispatcher->dispatch('share.sendmail', $event);
 		return $this->sendLinkShareMailFromBody($recipient, $subject, $htmlBody, $textBody, $options);
 	}
 
