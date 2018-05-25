@@ -53,3 +53,11 @@ So that I can manage group membership
 		Then the OCS status code should be "997"
 		And the HTTP status code should be "401"
 		And the API should not return any data
+
+	Scenario: admin gets groups of an user who is not in any groups
+		Given user "brand-new-user" has been created
+		And group "unused-group" has been created
+		When user "admin" sends HTTP method "GET" to API endpoint "/cloud/users/brand-new-user/groups"
+		Then the OCS status code should be "100"
+		And the HTTP status code should be "200"
+		And the list of groups returned by the API should be empty
