@@ -1584,6 +1584,19 @@ trait Provisioning {
 	}
 
 	/**
+	 * @Then /^the list of groups returned by the API should be empty$/
+	 *
+	 * @return void
+	 */
+	public function theListOfGroupsReturnedByTheApiShouldBeEmpty() {
+		$groupsList = $this->response->xml()->data[0]->groups[0];
+		PHPUnit_Framework_Assert::assertEmpty(
+			$groupsList,
+			"Groups list is not empty but it should be empty"
+		);
+	}
+
+	/**
 	 * @BeforeScenario
 	 * @AfterScenario
 	 *
