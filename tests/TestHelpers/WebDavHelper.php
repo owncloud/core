@@ -149,7 +149,6 @@ class WebDavHelper {
 		if ($body !== null) {
 			$request->setBody($body);
 		}
-		
 		return $client->send($request);
 	}
 
