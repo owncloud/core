@@ -22,7 +22,6 @@
 
 use Behat\Behat\Context\Context;
 use Behat\Behat\Context\SnippetAcceptingContext;
-use Behat\Behat\Hook\Scope\BeforeScenarioScope;
 use Behat\Gherkin\Node\PyStringNode;
 use TestHelpers\EmailHelper;
 
@@ -48,6 +47,7 @@ class EmailContext implements Context, SnippetAcceptingContext {
 	 * @param PyStringNode $content
 	 *
 	 * @return void
+	 * @throws \Exception
 	 */
 	public function assertThatEmailContains($address, PyStringNode $content) {
 		$expectedContent = \str_replace("\r\n", "\n", $content->getRaw());
@@ -60,11 +60,9 @@ class EmailContext implements Context, SnippetAcceptingContext {
 	/**
 	 * @BeforeScenario @mailhog
 	 *
-	 * @param BeforeScenarioScope $scope
-	 *
 	 * @return void
 	 */
-	public function setUpScenario(BeforeScenarioScope $scope) {
+	public function setUpScenario() {
 		$this->mailhogUrl = EmailHelper::getMailhogUrl();
 		$this->clearMailHogMessages();
 	}

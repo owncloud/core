@@ -47,7 +47,7 @@ class FileActionsMenu extends OwncloudPage {
 	 * $this->getPage("FilesPageElement\\FileActionsMenu")
 	 * there is no real __construct() that can take arguments
 	 *
-	 * @param \Behat\Mink\Element\NodeElement $menuElement
+	 * @param NodeElement $menuElement
 	 *
 	 * @return void
 	 */
@@ -102,7 +102,7 @@ class FileActionsMenu extends OwncloudPage {
 	 *
 	 * @param string $action
 	 *
-	 * @return \Behat\Mink\Element\NodeElement
+	 * @return NodeElement
 	 * @throws \SensioLabs\Behat\PageObjectExtension\PageObject\Exception\ElementNotFoundException
 	 */
 	public function findButton($action) {

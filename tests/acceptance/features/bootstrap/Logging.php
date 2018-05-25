@@ -44,6 +44,7 @@ trait Logging {
 	 *                                      |user|app|method|message|
 	 *
 	 * @return void
+	 * @throws \Exception
 	 */
 	public function theLastLinesOfTheLogFileShouldContainEntriesWithTheseAttributes(
 		TableNode $expectedLogEntries
@@ -93,6 +94,7 @@ trait Logging {
 	 *                                                |user|app|method|message|
 	 *
 	 * @return void
+	 * @throws \Exception
 	 */
 	public function theLogFileShouldNotContainAnyLogEntriesWithTheseAttributes(
 		TableNode $logEntriesExpectedNotToExist
@@ -131,6 +133,7 @@ trait Logging {
 	 * @param string $logLevel (debug|info|warning|error)
 	 *
 	 * @return void
+	 * @throws \Exception
 	 */
 	public function owncloudLogLevelIsSetTo($logLevel) {
 		LoggingHelper::setLogLevel($logLevel);
@@ -143,6 +146,7 @@ trait Logging {
 	 * @param string $backend (owncloud|syslog|errorlog)
 	 *
 	 * @return void
+	 * @throws \Exception
 	 */
 	public function owncloudLogBackendIsSetTo($backend) {
 		LoggingHelper::setLogBackend($backend);
@@ -155,6 +159,7 @@ trait Logging {
 	 * @param string $timezone
 	 *
 	 * @return void
+	 * @throws \Exception
 	 */
 	public function owncloudLogTimezoneIsSetTo($timezone) {
 		LoggingHelper::setLogTimezone($timezone);
@@ -165,6 +170,7 @@ trait Logging {
 	 * @Given the owncloud log has been cleared
 	 *
 	 * @return void
+	 * @throws \Exception
 	 */
 	public function theOwncloudLogIsCleared() {
 		LoggingHelper::clearLogFile();
@@ -176,6 +182,7 @@ trait Logging {
 	 * @BeforeScenario
 	 *
 	 * @return void
+	 * @throws \Exception
 	 */
 	public function setUpScenarioLogging() {
 		$this->oldLogLevel = LoggingHelper::getLogLevel();
@@ -189,6 +196,7 @@ trait Logging {
 	 * @AfterScenario
 	 *
 	 * @return void
+	 * @throws \Exception
 	 */
 	public function tearDownScenarioLogging() {
 		if ($this->oldLogLevel !== null

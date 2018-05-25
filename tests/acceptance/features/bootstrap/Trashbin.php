@@ -36,7 +36,7 @@ trait Trashbin {
 	 */
 	public function emptyTrashbin($user) {
 		$body = new \Behat\Gherkin\Node\TableNode(
-			[['allfiles', 'true'], ['dir', '%2F']]
+			[['allfiles', 'true'], ['dir', '/']]
 		);
 		$this->sendingToWithDirectUrl(
 			$user, 'POST', "/index.php/apps/files_trashbin/ajax/delete.php", $body
@@ -74,15 +74,14 @@ trait Trashbin {
 	}
 
 	/**
-	 * @Then /^as "([^"]*)" the (file|folder|entry) "([^"]*)" should exist in trash$/
+	 * @Then /^as "([^"]*)" the (?:file|folder|entry) "([^"]*)" should exist in trash$/
 	 *
 	 * @param string $user
-	 * @param string $entryText unused
 	 * @param string $path
 	 *
 	 * @return void
 	 */
-	public function asTheFileOrFolderExistsInTrash($user, $entryText, $path) {
+	public function asTheFileOrFolderExistsInTrash($user, $path) {
 		$path = \trim($path, '/');
 		$sections = \explode('/', $path, 2);
 
@@ -189,16 +188,15 @@ trait Trashbin {
 	}
 
 	/**
-	 * @When /^user "([^"]*)" restores the (file|folder|entry) with original path "([^"]*)" using the API$/
-	 * @Given /^user "([^"]*)" has restored the (file|folder|entry) with original path "([^"]*)"$/
+	 * @When /^user "([^"]*)" restores the (?:file|folder|entry) with original path "([^"]*)" using the API$/
+	 * @Given /^user "([^"]*)" has restored the (?:file|folder|entry) with original path "([^"]*)"$/
 	 *
 	 * @param string $user
-	 * @param string $entryText unused
 	 * @param string $originalPath
 	 *
 	 * @return void
 	 */
-	public function elementInTrashIsRestored($user, $entryText, $originalPath) {
+	public function elementInTrashIsRestored($user, $originalPath) {
 		$this->restoreElement($user, $originalPath);
 		PHPUnit_Framework_Assert::assertFalse(
 			$this->isInTrash($user, $originalPath),
@@ -207,16 +205,15 @@ trait Trashbin {
 	}
 
 	/**
-	 * @Then /^as "([^"]*)" the (file|folder|entry) with original path "([^"]*)" should exist in trash$/
+	 * @Then /^as "([^"]*)" the (?:file|folder|entry) with original path "([^"]*)" should exist in trash$/
 	 *
 	 * @param string $user
-	 * @param string $entryText unused
 	 * @param string $originalPath
 	 *
 	 * @return void
 	 */
 	public function elementIsInTrashCheckingOriginalPath(
-		$user, $entryText, $originalPath
+		$user, $originalPath
 	) {
 		PHPUnit_Framework_Assert::assertTrue(
 			$this->isInTrash($user, $originalPath),
@@ -225,19 +222,18 @@ trait Trashbin {
 	}
 
 	/**
-	 * @Then /^as "([^"]*)" the (file|folder|entry) with original path "([^"]*)" should not exist in trash$/
+	 * @Then /^as "([^"]*)" the (?:file|folder|entry) with original path "([^"]*)" should not exist in trash$/
 	 *
 	 * @param string $user
-	 * @param string $entryText
 	 * @param string $originalPath
 	 *
 	 * @return void
 	 */
 	public function elementIsNotInTrashCheckingOriginalPath(
-		$user, $entryText, $originalPath
+		$user, $originalPath
 	) {
 		PHPUnit_Framework_Assert::assertFalse(
-			$this->isInTrash($user, $entryText, $originalPath),
+			$this->isInTrash($user, $originalPath),
 			"File previously located at $originalPath was found in the trashbin"
 		);
 	}

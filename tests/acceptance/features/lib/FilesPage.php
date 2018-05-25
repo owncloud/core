@@ -223,7 +223,7 @@ class FilesPage extends FilesPageBasic {
 	/**
 	 * closes an open sharing dialog
 	 *
-	 * @throws \SensioLabs\Behat\PageObjectExtension\PageObject\Exception\ElementNotFoundException
+	 * @throws ElementNotFoundException
 	 * if no sharing dialog is open
 	 * @return void
 	 */
@@ -322,7 +322,7 @@ class FilesPage extends FilesPageBasic {
 	 * @param Session $session
 	 *
 	 * @return string
-	 * @throws \SensioLabs\Behat\PageObjectExtension\PageObject\Exception\ElementNotFoundException
+	 * @throws ElementNotFoundException
 	 */
 	public function getTooltipOfFile($fileName, Session $session) {
 		$fileRow = $this->findFileRowByName($fileName, $session);

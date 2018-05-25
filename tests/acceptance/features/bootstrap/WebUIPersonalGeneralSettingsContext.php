@@ -101,13 +101,14 @@ class WebUIPersonalGeneralSettingsContext extends RawMinkContext implements Cont
 			$this->getSession()
 		);
 	}
-	
+
 	/**
 	 * @When the user changes the password to :newPassword using the webUI
 	 *
 	 * @param string $newPassword
 	 *
 	 * @return void
+	 * @throws \Exception
 	 */
 	public function theUserChangesThePasswordToUsingTheWebUI($newPassword) {
 		$username = $this->featureContext->getCurrentUser();

@@ -22,6 +22,7 @@
  *
  */
 
+use Behat\Gherkin\Node\TableNode;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\BadResponseException;
 use TestHelpers\SharingHelper;
@@ -79,7 +80,7 @@ trait Sharing {
 	 * @Given /^user "([^"]*)" has created a share with settings$/
 	 *
 	 * @param string $user
-	 * @param \Behat\Gherkin\Node\TableNode|null $body
+	 * @param TableNode|null $body
 	 *
 	 * @return void
 	 */
@@ -90,7 +91,7 @@ trait Sharing {
 		$options = [];
 		$options['auth'] = $this->getAuthOptionForUser($user);
 
-		if ($body instanceof \Behat\Gherkin\Node\TableNode) {
+		if ($body instanceof TableNode) {
 			$fd = $body->getRowsHash();
 			if (\array_key_exists('expireDate', $fd)) {
 				$dateModification = $fd['expireDate'];
@@ -113,7 +114,7 @@ trait Sharing {
 	/**
 	 * @When /^the user creates a share using the API with settings$/
 	 *
-	 * @param \Behat\Gherkin\Node\TableNode|null $body
+	 * @param TableNode|null $body
 	 *
 	 * @return void
 	 */
@@ -124,7 +125,7 @@ trait Sharing {
 	/**
 	 * @Given /^the user has created a share with settings$/
 	 *
-	 * @param \Behat\Gherkin\Node\TableNode|null $body
+	 * @param TableNode|null $body
 	 *
 	 * @return void
 	 */
@@ -320,7 +321,6 @@ trait Sharing {
 			// read everything
 			$buf .= $body->read(8192);
 		}
-		$mimeType = 'text/plain';
 		if ($mimeType !== null) {
 			$finfo = new finfo;
 			PHPUnit_Framework_Assert::assertEquals(
@@ -513,7 +513,7 @@ trait Sharing {
 	 * @When /^the user updates the last share using the API with$/
 	 * @Given /^the user has updated the last share with$/
 	 *
-	 * @param \Behat\Gherkin\Node\TableNode|null $body
+	 * @param TableNode|null $body
 	 *
 	 * @return void
 	 */
@@ -526,7 +526,7 @@ trait Sharing {
 	 * @Given /^user "([^"]*)" has updated the last share with$/
 	 *
 	 * @param string $user
-	 * @param \Behat\Gherkin\Node\TableNode|null $body
+	 * @param TableNode|null $body
 	 *
 	 * @return void
 	 */
@@ -538,7 +538,7 @@ trait Sharing {
 		$options = [];
 		$options['auth'] = $this->getAuthOptionForUser($user);
 
-		if ($body instanceof \Behat\Gherkin\Node\TableNode) {
+		if ($body instanceof TableNode) {
 			$fd = $body->getRowsHash();
 			if (\array_key_exists('expireDate', $fd)) {
 				$dateModification = $fd['expireDate'];
@@ -753,20 +753,18 @@ trait Sharing {
 	}
 
 	/**
-	 * @When /^user "([^"]*)" shares (file|folder|entry) "([^"]*)" with user "([^"]*)"( with permissions ([\d]*))? using the API$/
-	 * @Given /^user "([^"]*)" has shared (file|folder|entry) "([^"]*)" with user "([^"]*)"( with permissions ([\d]*))?$/
+	 * @When /^user "([^"]*)" shares (?:file|folder|entry) "([^"]*)" with user "([^"]*)"(?: with permissions ([\d]*))? using the API$/
+	 * @Given /^user "([^"]*)" has shared (?:file|folder|entry) "([^"]*)" with user "([^"]*)"(?: with permissions ([\d]*))?$/
 	 *
 	 * @param string $user1
-	 * @param string $entry unused
 	 * @param string $filepath
 	 * @param string $user2
-	 * @param null $withPerms unused
 	 * @param int $permissions
 	 *
 	 * @return void
 	 */
 	public function userSharesFileWithUserUsingTheAPI(
-		$user1, $entry, $filepath, $user2, $withPerms = null, $permissions = null
+		$user1, $filepath, $user2, $permissions = null
 	) {
 		$fullUrl = $this->getBaseUrl()
 			. "/ocs/v{$this->apiVersion}.php/apps/files_sharing/api/v{$this->sharingApiVersion}/shares" . "?path=$filepath";
@@ -797,40 +795,36 @@ trait Sharing {
 	}
 
 	/**
-	 * @When /^the user shares (file|folder|entry) "([^"]*)" with group "([^"]*)"( with permissions ([\d]*))? using the API$/
-	 * @Given /^the user has shared (file|folder|entry) "([^"]*)" with group "([^"]*)"( with permissions ([\d]*))?$/
+	 * @When /^the user shares (?:file|folder|entry) "([^"]*)" with group "([^"]*)"(?: with permissions ([\d]*))? using the API$/
+	 * @Given /^the user has shared (?:file|folder|entry) "([^"]*)" with group "([^"]*)"(?: with permissions ([\d]*))?$/
 	 *
-	 * @param string $entry unused
 	 * @param string $filepath
 	 * @param string $group
-	 * @param null $withPerms unused
 	 * @param int $permissions
 	 *
 	 * @return void
 	 */
 	public function theUserSharesFileWithGroupUsingTheAPI(
-		$entry, $filepath, $group, $withPerms = null, $permissions = null
+		$filepath, $group, $permissions = null
 	) {
 		$this->userSharesFileWithGroupUsingTheAPI(
-			$this->currentUser, $entry, $filepath, $group, $withPerms, $permissions
+			$this->currentUser, $filepath, $group, $permissions
 		);
 	}
 
 	/**
-	 * @When /^user "([^"]*)" shares (file|folder|entry) "([^"]*)" with group "([^"]*)"( with permissions ([\d]*))? using the API$/
-	 * @Given /^user "([^"]*)" has shared (file|folder|entry) "([^"]*)" with group "([^"]*)"( with permissions ([\d]*))?$/
+	 * @When /^user "([^"]*)" shares (?:file|folder|entry) "([^"]*)" with group "([^"]*)"(?: with permissions ([\d]*))? using the API$/
+	 * @Given /^user "([^"]*)" has shared (?:file|folder|entry) "([^"]*)" with group "([^"]*)"(?: with permissions ([\d]*))?$/
 	 *
 	 * @param string $user
-	 * @param string $entry unused
 	 * @param string $filepath
 	 * @param string $group
-	 * @param null $withPerms unused
 	 * @param int $permissions
 	 *
 	 * @return void
 	 */
 	public function userSharesFileWithGroupUsingTheAPI(
-		$user, $entry, $filepath, $group, $withPerms = null, $permissions = null
+		$user, $filepath, $group, $permissions = null
 	) {
 		$fullUrl = $this->getBaseUrl()
 			. "/ocs/v{$this->apiVersion}.php/apps/files_sharing/api/v{$this->sharingApiVersion}/shares" . "?path=$filepath";
@@ -945,12 +939,12 @@ trait Sharing {
 	/**
 	 * @Then /^the share fields of the last share should include$/
 	 *
-	 * @param \Behat\Gherkin\Node\TableNode|null $body
+	 * @param TableNode|null $body
 	 *
 	 * @return void
 	 */
 	public function checkShareFields($body) {
-		if ($body instanceof \Behat\Gherkin\Node\TableNode) {
+		if ($body instanceof TableNode) {
 			$fd = $body->getRowsHash();
 
 			foreach ($fd as $field => $value) {
@@ -994,7 +988,7 @@ trait Sharing {
 	 * @param string $user
 	 * @param string $fileName
 	 *
-	 * @throws Exception
+	 * @throws \Exception
 	 * @return void
 	 */
 	public function userRemovesAllSharesFromTheFileNamed($user, $fileName) {
@@ -1049,6 +1043,7 @@ trait Sharing {
 	 * @Then the share ids should match
 	 *
 	 * @return void
+	 * @throws \Exception
 	 */
 	public function shareIdsShouldMatch() {
 		if ($this->savedShareId !== $this->lastShareData['data']['id']) {
@@ -1080,25 +1075,24 @@ trait Sharing {
 	}
 
 	/**
-	 * @Then /^as user "([^"]*)" the public shares of (file|folder) "([^"]*)" should be$/
+	 * @Then /^as user "([^"]*)" the public shares of (?:file|folder) "([^"]*)" should be$/
 	 *
 	 * @param string $user
-	 * @param string $type
 	 * @param string $path
-	 * @param \Behat\Gherkin\Node\TableNode|null $TableNode
+	 * @param TableNode|null $TableNode
 	 *
-	 * @return int|void
+	 * @return void
 	 */
-	public function checkPublicShares($user, $type, $path, $TableNode) {
+	public function checkPublicShares($user, $path, $TableNode) {
 		$dataResponded = $this->getShares($user, $path);
 
-		if ($TableNode instanceof \Behat\Gherkin\Node\TableNode) {
+		if ($TableNode instanceof TableNode) {
 			$elementRows = $TableNode->getRows();
 
 			if ($elementRows[0][0] === '') {
 				//It shouldn't have public shares
 				PHPUnit_Framework_Assert::assertEquals(\count($dataResponded), 0);
-				return 0;
+				return;
 			}
 
 			foreach ($elementRows as $expectedElementsArray) {
@@ -1144,18 +1138,17 @@ trait Sharing {
 	}
 
 	/**
-	 * @When /^user "([^"]*)" deletes public share named "([^"]*)" in (file|folder) "([^"]*)" using the API$/
-	 * @Given /^user "([^"]*)" has deleted public share named "([^"]*)" in (file|folder) "([^"]*)"$/
+	 * @When /^user "([^"]*)" deletes public share named "([^"]*)" in (?:file|folder) "([^"]*)" using the API$/
+	 * @Given /^user "([^"]*)" has deleted public share named "([^"]*)" in (?:file|folder) "([^"]*)"$/
 	 *
 	 * @param string $user
 	 * @param string $name
-	 * @param string $type unused
 	 * @param string $path
 	 *
 	 * @return void
 	 */
 	public function userDeletesPublicShareNamedUsingTheAPI(
-		$user, $name, $type, $path
+		$user, $name, $path
 	) {
 		$share_id = $this->getPublicShareIDByName($user, $path, $name);
 		$url = "/apps/files_sharing/api/v{$this->sharingApiVersion}/shares/$share_id";

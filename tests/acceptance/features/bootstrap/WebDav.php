@@ -22,6 +22,7 @@
 use Behat\Gherkin\Node\TableNode;
 use GuzzleHttp\Client as GClient;
 use GuzzleHttp\Exception\BadResponseException;
+use GuzzleHttp\Message\FutureResponse;
 use GuzzleHttp\Message\ResponseInterface;
 use GuzzleHttp\Stream\StreamInterface;
 use Sabre\DAV\Client as SClient;
@@ -179,7 +180,7 @@ trait WebDav {
 	 * @param string|null $requestBody
 	 * @param string|null $davPathVersion
 	 *
-	 * @return \GuzzleHttp\Message\FutureResponse|ResponseInterface|NULL
+	 * @return FutureResponse|ResponseInterface|NULL
 	 */
 	public function makeDavRequest(
 		$user,
@@ -208,17 +209,16 @@ trait WebDav {
 	}
 
 	/**
-	 * @Given /^user "([^"]*)" has moved (file|folder|entry) "([^"]*)" to "([^"]*)"$/
+	 * @Given /^user "([^"]*)" has moved (?:file|folder|entry) "([^"]*)" to "([^"]*)"$/
 	 *
 	 * @param string $user
-	 * @param string $entry unused
 	 * @param string $fileSource
 	 * @param string $fileDestination
 	 *
 	 * @return void
 	 */
 	public function userHasMovedFile(
-		$user, $entry, $fileSource, $fileDestination
+		$user, $fileSource, $fileDestination
 	) {
 		$fullUrl = $this->getBaseUrl() . '/' . $this->getDavFilesPath($user);
 		$headers['Destination'] = $fullUrl . $fileDestination;
@@ -231,17 +231,16 @@ trait WebDav {
 	}
 
 	/**
-	 * @When /^user "([^"]*)" moves (file|folder|entry) "([^"]*)" to "([^"]*)" using the API$/
+	 * @When /^user "([^"]*)" moves (?:file|folder|entry) "([^"]*)" to "([^"]*)" using the API$/
 	 *
 	 * @param string $user
-	 * @param string $entry unused
 	 * @param string $fileSource
 	 * @param string $fileDestination
 	 *
 	 * @return void
 	 */
 	public function userMovesFileUsingTheAPI(
-		$user, $entry, $fileSource, $fileDestination
+		$user, $fileSource, $fileDestination
 	) {
 		$fullUrl = $this->getBaseUrl() . '/' . $this->getDavFilesPath($user);
 		$headers['Destination'] = $fullUrl . $fileDestination;
@@ -518,17 +517,16 @@ trait WebDav {
 	}
 
 	/**
-	 * @When /^user "([^"]*)" gets the following properties of (file|folder|entry) "([^"]*)" using the API$/
+	 * @When /^user "([^"]*)" gets the following properties of (?:file|folder|entry) "([^"]*)" using the API$/
 	 *
 	 * @param string $user
-	 * @param string $elementType unused
 	 * @param string $path
 	 * @param TableNode|null $propertiesTable
 	 *
 	 * @return void
 	 */
 	public function userGetsPropertiesOfFolder(
-		$user, $elementType, $path, $propertiesTable
+		$user, $path, $propertiesTable
 	) {
 		$properties = null;
 		if ($propertiesTable instanceof TableNode) {
@@ -549,6 +547,7 @@ trait WebDav {
 	 * @param string $path
 	 *
 	 * @return void
+	 * @throws \Sabre\HTTP\ClientHttpException
 	 */
 	public function userGetsPropertiesOfFile($user, $propertyName, $path) {
 		$client = $this->getSabreClient($user);
@@ -562,19 +561,20 @@ trait WebDav {
 	}
 
 	/**
-	 * @When /^user "([^"]*)" sets property "([^"]*)" of (file|folder|entry) "([^"]*)" to "([^"]*)" using the API$/
-	 * @Given /^user "([^"]*)" has set property "([^"]*)" of (file|folder|entry) "([^"]*)" to "([^"]*)"$/
+	 * @When /^user "([^"]*)" sets property "([^"]*)" of (?:file|folder|entry) "([^"]*)" to "([^"]*)" using the API$/
+	 * @Given /^user "([^"]*)" has set property "([^"]*)" of (?:file|folder|entry) "([^"]*)" to "([^"]*)"$/
 	 *
 	 * @param string $user
 	 * @param string $propertyName
-	 * @param string $elementType unused
 	 * @param string $path
 	 * @param string $propertyValue
 	 *
 	 * @return void
+	 * @throws \Sabre\HTTP\ClientException
+	 * @throws \Sabre\HTTP\ClientHttpException
 	 */
 	public function userHasSetPropertyOfEntryTo(
-		$user, $propertyName, $elementType, $path, $propertyValue
+		$user, $propertyName, $path, $propertyValue
 	) {
 		$client = $this->getSabreClient($user);
 		$properties = [
@@ -588,13 +588,11 @@ trait WebDav {
 	 *
 	 * @param string $propertyName
 	 * @param string $propertyValue
-	 * @param null $table unused
-	 *
 	 * @return void
-	 * @throws Exception
+	 * @throws \Exception
 	 */
 	public function theResponseShouldContainACustomPropertyWithValue(
-		$propertyName, $propertyValue, $table=null
+		$propertyName, $propertyValue
 	) {
 		$keys = $this->response;
 		if (!\array_key_exists($propertyName, $keys)) {
@@ -615,7 +613,7 @@ trait WebDav {
 	 * @param string $path
 	 *
 	 * @return array
-	 * @throws Exception
+	 * @throws \Exception
 	 */
 	public function asTheFileOrFolderShouldNotExist($user, $entry, $path) {
 		$client = $this->getSabreClient($user);
@@ -641,7 +639,7 @@ trait WebDav {
 	 * @param string $path
 	 *
 	 * @return void
-	 * @throws Exception
+	 * @throws \Exception
 	 */
 	public function asTheFileOrFolderShouldExist($user, $entry, $path) {
 		$this->response = $this->listFolder($user, $path, 0);
@@ -658,7 +656,7 @@ trait WebDav {
 	 * @param string $key
 	 * @param string $expectedValue
 	 *
-	 * @return int
+	 * @return void
 	 * @throws \Exception
 	 */
 	public function theSingleResponseShouldContainAPropertyWithValue(
@@ -676,7 +674,7 @@ trait WebDav {
 	 * @param string $expectedValue
 	 * @param string $altExpectedValue
 	 *
-	 * @return int
+	 * @return void
 	 * @throws \Exception
 	 */
 	public function theSingleResponseShouldContainAPropertyWithValueAndAlternative(
@@ -701,7 +699,7 @@ trait WebDav {
 
 		if ($expectedValue === "a_comment_url") {
 			if (\preg_match("#^/remote.php/dav/comments/files/([0-9]+)$#", $value)) {
-				return 0;
+				return;
 			} else {
 				throw new \Exception(
 					"Property \"$key\" found with value \"$value\", expected \"$expectedValue\""
@@ -743,9 +741,7 @@ trait WebDav {
 			}
 		}
 
-		if (\preg_match($regex, $value)) {
-			return 0;
-		} else {
+		if (!\preg_match($regex, $value)) {
 			throw new \Exception(
 				"Property \"$key\" found with value \"$value\", expected \"$regex\""
 			);
@@ -758,7 +754,7 @@ trait WebDav {
 	 * @param TableNode $table
 	 *
 	 * @return void
-	 * @throws Exception
+	 * @throws \Exception
 	 */
 	public function theResponseShouldContainAShareTypesPropertyWith($table) {
 		$keys = $this->response;
@@ -880,7 +876,7 @@ trait WebDav {
 	 *
 	 * @return void
 	 */
-	public function theVersionFolderOfFilehouldContainElements(
+	public function theVersionFolderOfFileShouldContainElements(
 		$path, $user, $count
 	) {
 		$fileId = $this->getFileIdForPath($user, $path);
@@ -1302,6 +1298,7 @@ trait WebDav {
 	 * @param string $destination
 	 *
 	 * @return void
+	 * @throws \Exception
 	 */
 	public function filesUploadedToWithAllMechanismsShouldExist(
 		$user, $destination
@@ -1357,6 +1354,10 @@ trait WebDav {
 			// 4xx and 5xx responses cause an exception
 			$this->response = $e->getResponse();
 		}
+
+		// Return an invalid file id so that any later step that tries to use it
+		// will fail.
+		return "";
 	}
 
 	/**
@@ -1397,7 +1398,7 @@ trait WebDav {
 	 * @return void
 	 */
 	public function fileHasBeenDeleted($file, $user) {
-		$this->userDeletesFile($user, 'file', $file);
+		$this->userDeletesFile($user, $file);
 	}
 
 	/**
@@ -1405,34 +1406,32 @@ trait WebDav {
 	 * entries with the same timestamp. Only use this step to avoid the problem
 	 * in core issue 23151 when wanting to demonstrate other correct behavior
 	 *
-	 * @When /^user "([^"]*)" waits and deletes (file|folder) "([^"]*)" using the API$/
-	 * @Given /^user "([^"]*)" has waited and deleted (file|folder) "([^"]*)"$/
+	 * @When /^user "([^"]*)" waits and deletes (?:file|folder) "([^"]*)" using the API$/
+	 * @Given /^user "([^"]*)" has waited and deleted (?:file|folder) "([^"]*)"$/
 	 *
 	 * @param string $user
-	 * @param string $type unused
 	 * @param string $file
 	 *
 	 * @return void
 	 */
-	public function userWaitsAndDeletesFile($user, $type, $file) {
+	public function userWaitsAndDeletesFile($user, $file) {
 		// prevent creating two files in the trashbin with the same timestamp
 		// which is based on seconds. e.g. deleting a/file.txt and b/file.txt
 		// might result in a name clash file.txt.d1456657282 in the trashbin
 		\sleep(1);
-		$this->userDeletesFile($user, $type, $file);
+		$this->userDeletesFile($user, $file);
 	}
 
 	/**
-	 * @When /^user "([^"]*)" deletes (file|folder) "([^"]*)" using the API$/
-	 * @Given /^user "([^"]*)" has deleted (file|folder) "([^"]*)"$/
+	 * @When /^user "([^"]*)" deletes (?:file|folder) "([^"]*)" using the API$/
+	 * @Given /^user "([^"]*)" has deleted (?:file|folder) "([^"]*)"$/
 	 *
 	 * @param string $user
-	 * @param string $type unused
 	 * @param string $file
 	 *
 	 * @return void
 	 */
-	public function userDeletesFile($user, $type, $file) {
+	public function userDeletesFile($user, $file) {
 		try {
 			$this->response = $this->makeDavRequest($user, 'DELETE', $file, []);
 		} catch (BadResponseException $e) {
@@ -1633,10 +1632,12 @@ trait WebDav {
 	 * @param string $path
 	 *
 	 * @return void
+	 * @throws \Sabre\HTTP\ClientException
+	 * @throws \Sabre\HTTP\ClientHttpException
 	 */
 	public function userFavoritesElement($user, $path) {
 		$this->response = $this->changeFavStateOfAnElement(
-			$user, $path, 1, 0, null
+			$user, $path, 1
 		);
 	}
 
@@ -1648,10 +1649,12 @@ trait WebDav {
 	 * @param string $path
 	 *
 	 * @return void
+	 * @throws \Sabre\HTTP\ClientException
+	 * @throws \Sabre\HTTP\ClientHttpException
 	 */
 	public function userUnfavoritesElement($user, $path) {
 		$this->response = $this->changeFavStateOfAnElement(
-			$user, $path, 0, 0, null
+			$user, $path, 0
 		);
 	}
 
@@ -1661,13 +1664,13 @@ trait WebDav {
 	 * @param string $user
 	 * @param string $path
 	 * @param int $favOrUnfav 1 = favorite, 0 = unfavorite
-	 * @param int $folderDepth requires 1 to see elements without children
-	 * @param array|null $properties
 	 *
 	 * @return bool
+	 * @throws \Sabre\HTTP\ClientException
+	 * @throws \Sabre\HTTP\ClientHttpException
 	 */
 	public function changeFavStateOfAnElement(
-		$user, $path, $favOrUnfav, $folderDepth, $properties = null
+		$user, $path, $favOrUnfav
 	) {
 		$settings = [
 			'baseUri' => $this->getBaseUrl() . '/',
@@ -1676,14 +1679,12 @@ trait WebDav {
 			'authType' => SClient::AUTH_BASIC
 		];
 		$client = new SClient($settings);
-		if (!$properties) {
-			$properties = [
-				'{http://owncloud.org/ns}favorite' => $favOrUnfav
-			];
-		}
+		$properties = [
+			'{http://owncloud.org/ns}favorite' => $favOrUnfav
+		];
 
 		$response = $client->proppatch(
-			$this->getDavFilesPath($user) . $path, $properties, $folderDepth
+			$this->getDavFilesPath($user) . $path, $properties
 		);
 		return $response;
 	}
@@ -1700,7 +1701,7 @@ trait WebDav {
 	public function userStoresEtagOfElement($user, $path) {
 		$propertiesTable = new TableNode([['{DAV:}getetag']]);
 		$this->userGetsPropertiesOfFolder(
-			$user, null, $path, $propertiesTable
+			$user, $path, $propertiesTable
 		);
 		$pathETAG[$path] = $this->response['{DAV:}getetag'];
 		$this->storedETAG[$user] = $pathETAG;
@@ -1717,7 +1718,7 @@ trait WebDav {
 	public function etagOfElementOfUserShouldNotHaveChanged($path, $user) {
 		$propertiesTable = new TableNode([['{DAV:}getetag']]);
 		$this->userGetsPropertiesOfFolder(
-			$user, null, $path, $propertiesTable
+			$user, $path, $propertiesTable
 		);
 		PHPUnit_Framework_Assert::assertEquals(
 			$this->response['{DAV:}getetag'], $this->storedETAG[$user][$path]
@@ -1735,7 +1736,7 @@ trait WebDav {
 	public function etagOfElementOfUserShouldHaveChanged($path, $user) {
 		$propertiesTable = new TableNode([['{DAV:}getetag']]);
 		$this->userGetsPropertiesOfFolder(
-			$user, null, $path, $propertiesTable
+			$user, $path, $propertiesTable
 		);
 		PHPUnit_Framework_Assert::assertNotEquals(
 			$this->response['{DAV:}getetag'], $this->storedETAG[$user][$path]
@@ -1762,6 +1763,7 @@ trait WebDav {
 	 * @Then there should be no duplicate headers
 	 *
 	 * @return void
+	 * @throws \Exception
 	 */
 	public function thereAreNoDuplicateHeaders() {
 		$headers = $this->response->getHeaders();
@@ -1843,7 +1845,7 @@ trait WebDav {
 				if (\substr($element, 0, \strlen($davPrefix)) == $davPrefix) {
 					$element = \substr($element, \strlen($davPrefix));
 				}
-				$this->userDeletesFile($user, "element", $element);
+				$this->userDeletesFile($user, $element);
 			}
 		}
 	}

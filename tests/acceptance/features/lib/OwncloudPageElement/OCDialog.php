@@ -54,7 +54,7 @@ class OCDialog extends OwncloudPage {
 	 * from an other Page Object by $this->getPage("OwncloudPageElement\\OCDialog")
 	 * there is no real __construct() that can take arguments
 	 *
-	 * @param \Behat\Mink\Element\NodeElement $dialogElement
+	 * @param NodeElement $dialogElement
 	 *
 	 * @return void
 	 */
@@ -65,7 +65,7 @@ class OCDialog extends OwncloudPage {
 	/**
 	 * returns the Element that was set by setElement()
 	 *
-	 * @return \Behat\Mink\Element\NodeElement
+	 * @return NodeElement
 	 */
 	public function getOwnElement() {
 		return $this->dialogElement;
