@@ -7,7 +7,7 @@ Feature: sharing
 	Scenario: Correct webdav share-permissions for owned file
 		Given user "user0" has been created
 		And user "user0" has uploaded file with content "foo" to "/tmp.txt"
-		When user "user0" gets the following properties of folder "/tmp.txt" using the API
+		When user "user0" gets the following properties of file "/tmp.txt" using the API
 			|{http://open-collaboration-services.org/ns}share-permissions |
 		Then the single response should contain a property "{http://open-collaboration-services.org/ns}share-permissions" with value "19"
 
@@ -16,7 +16,22 @@ Feature: sharing
 		And user "user1" has been created
 		And user "user0" has uploaded file with content "foo" to "/tmp.txt"
 		And user "user0" has shared file "/tmp.txt" with user "user1"
-		When user "user1" gets the following properties of folder "/tmp.txt" using the API
+		When user "user1" gets the following properties of file "/tmp.txt" using the API
+			|{http://open-collaboration-services.org/ns}share-permissions |
+		Then the single response should contain a property "{http://open-collaboration-services.org/ns}share-permissions" with value "19"
+
+	Scenario: Correct webdav share-permissions for received group shared file with edit and reshare permissions
+		Given user "user0" has been created
+		And user "user1" has been created
+		And group "sharegroup" has been created
+		And user "user1" has been added to group "sharegroup"
+		And user "user0" has uploaded file with content "foo" to "/tmp.txt"
+		And user "user0" has created a share with settings
+			| path        | /tmp.txt   |
+			| shareType   | 1          |
+			| permissions | 19         |
+			| shareWith   | sharegroup |
+		When user "user1" gets the following properties of file "/tmp.txt" using the API
 			|{http://open-collaboration-services.org/ns}share-permissions |
 		Then the single response should contain a property "{http://open-collaboration-services.org/ns}share-permissions" with value "19"
 
@@ -27,7 +42,22 @@ Feature: sharing
 		And user "user0" has shared file "tmp.txt" with user "user1"
 		When user "user0" updates the last share using the API with
 			| permissions | 3 |
-		And user "user1" gets the following properties of folder "/tmp.txt" using the API
+		And user "user1" gets the following properties of file "/tmp.txt" using the API
+			|{http://open-collaboration-services.org/ns}share-permissions |
+		Then the single response should contain a property "{http://open-collaboration-services.org/ns}share-permissions" with value "3"
+
+	Scenario: Correct webdav share-permissions for received group shared file with edit permissions but no reshare permissions
+		Given user "user0" has been created
+		And user "user1" has been created
+		And group "sharegroup" has been created
+		And user "user1" has been added to group "sharegroup"
+		And user "user0" has uploaded file with content "foo" to "/tmp.txt"
+		And user "user0" has created a share with settings
+			| path        | /tmp.txt   |
+			| shareType   | 1          |
+			| permissions | 3          |
+			| shareWith   | sharegroup |
+		And user "user1" gets the following properties of file "/tmp.txt" using the API
 			|{http://open-collaboration-services.org/ns}share-permissions |
 		Then the single response should contain a property "{http://open-collaboration-services.org/ns}share-permissions" with value "3"
 
@@ -38,7 +68,22 @@ Feature: sharing
 		And user "user0" has shared file "tmp.txt" with user "user1"
 		When user "user0" updates the last share using the API with
 			| permissions | 17 |
-		And user "user1" gets the following properties of folder "/tmp.txt" using the API
+		And user "user1" gets the following properties of file "/tmp.txt" using the API
+			|{http://open-collaboration-services.org/ns}share-permissions |
+		Then the single response should contain a property "{http://open-collaboration-services.org/ns}share-permissions" with value "17"
+
+	Scenario: Correct webdav share-permissions for received group shared file with reshare permissions but no edit permissions
+		Given user "user0" has been created
+		And user "user1" has been created
+		And group "sharegroup" has been created
+		And user "user1" has been added to group "sharegroup"
+		And user "user0" has uploaded file with content "foo" to "/tmp.txt"
+		And user "user0" has created a share with settings
+			| path        | /tmp.txt   |
+			| shareType   | 1          |
+			| permissions | 17         |
+			| shareWith   | sharegroup |
+		And user "user1" gets the following properties of file "/tmp.txt" using the API
 			|{http://open-collaboration-services.org/ns}share-permissions |
 		Then the single response should contain a property "{http://open-collaboration-services.org/ns}share-permissions" with value "17"
 
@@ -58,6 +103,20 @@ Feature: sharing
 			|{http://open-collaboration-services.org/ns}share-permissions |
 		Then the single response should contain a property "{http://open-collaboration-services.org/ns}share-permissions" with value "31"
 
+	Scenario: Correct webdav share-permissions for received group shared folder with all permissions
+		Given user "user0" has been created
+		And user "user1" has been created
+		And group "sharegroup" has been created
+		And user "user1" has been added to group "sharegroup"
+		And user "user0" has created a folder "/tmp"
+		And user "user0" has created a share with settings
+			| path        | tmp        |
+			| shareType   | 1          |
+			| shareWith   | sharegroup |
+		When user "user1" gets the following properties of folder "/tmp" using the API
+			|{http://open-collaboration-services.org/ns}share-permissions |
+		Then the single response should contain a property "{http://open-collaboration-services.org/ns}share-permissions" with value "31"
+
 	Scenario: Correct webdav share-permissions for received folder with all permissions but edit
 		Given user "user0" has been created
 		And user "user1" has been created
@@ -65,6 +124,21 @@ Feature: sharing
 		And user "user0" has shared file "/tmp" with user "user1"
 		When user "user0" updates the last share using the API with
 			| permissions | 29 |
+		And user "user1" gets the following properties of folder "/tmp" using the API
+			|{http://open-collaboration-services.org/ns}share-permissions |
+		Then the single response should contain a property "{http://open-collaboration-services.org/ns}share-permissions" with value "29"
+
+	Scenario: Correct webdav share-permissions for received group shared folder with all permissions but edit
+		Given user "user0" has been created
+		And user "user1" has been created
+		And group "sharegroup" has been created
+		And user "user1" has been added to group "sharegroup"
+		And user "user0" has created a folder "/tmp"
+		And user "user0" has created a share with settings
+			| path        | tmp        |
+			| shareType   | 1          |
+			| shareWith   | sharegroup |
+			| permissions | 29         |
 		And user "user1" gets the following properties of folder "/tmp" using the API
 			|{http://open-collaboration-services.org/ns}share-permissions |
 		Then the single response should contain a property "{http://open-collaboration-services.org/ns}share-permissions" with value "29"
@@ -80,6 +154,21 @@ Feature: sharing
 			|{http://open-collaboration-services.org/ns}share-permissions |
 		Then the single response should contain a property "{http://open-collaboration-services.org/ns}share-permissions" with value "27"
 
+	Scenario: Correct webdav share-permissions for received group shared folder with all permissions but create
+		Given user "user0" has been created
+		And user "user1" has been created
+		And group "sharegroup" has been created
+		And user "user1" has been added to group "sharegroup"
+		And user "user0" has created a folder "/tmp"
+		And user "user0" has created a share with settings
+			| path        | tmp        |
+			| shareType   | 1          |
+			| shareWith   | sharegroup |
+			| permissions | 27         |
+		And user "user1" gets the following properties of folder "/tmp" using the API
+			|{http://open-collaboration-services.org/ns}share-permissions |
+		Then the single response should contain a property "{http://open-collaboration-services.org/ns}share-permissions" with value "27"
+
 	Scenario: Correct webdav share-permissions for received folder with all permissions but delete
 		Given user "user0" has been created
 		And user "user1" has been created
@@ -91,6 +180,21 @@ Feature: sharing
 			|{http://open-collaboration-services.org/ns}share-permissions |
 		Then the single response should contain a property "{http://open-collaboration-services.org/ns}share-permissions" with value "23"
 
+	Scenario: Correct webdav share-permissions for received group shared folder with all permissions but delete
+		Given user "user0" has been created
+		And user "user1" has been created
+		And group "sharegroup" has been created
+		And user "user1" has been added to group "sharegroup"
+		And user "user0" has created a folder "/tmp"
+		And user "user0" has created a share with settings
+			| path        | tmp        |
+			| shareType   | 1          |
+			| shareWith   | sharegroup |
+			| permissions | 23         |
+		And user "user1" gets the following properties of folder "/tmp" using the API
+			|{http://open-collaboration-services.org/ns}share-permissions |
+		Then the single response should contain a property "{http://open-collaboration-services.org/ns}share-permissions" with value "23"
+
 	Scenario: Correct webdav share-permissions for received folder with all permissions but share
 		Given user "user0" has been created
 		And user "user1" has been created
@@ -98,6 +202,21 @@ Feature: sharing
 		And user "user0" has shared file "/tmp" with user "user1"
 		When user "user0" updates the last share using the API with
 			| permissions | 15 |
+		And user "user1" gets the following properties of folder "/tmp" using the API
+			|{http://open-collaboration-services.org/ns}share-permissions |
+		Then the single response should contain a property "{http://open-collaboration-services.org/ns}share-permissions" with value "15"
+
+	Scenario: Correct webdav share-permissions for received group shared folder with all permissions but share
+		Given user "user0" has been created
+		And user "user1" has been created
+		And group "sharegroup" has been created
+		And user "user1" has been added to group "sharegroup"
+		And user "user0" has created a folder "/tmp"
+		And user "user0" has created a share with settings
+			| path        | tmp        |
+			| shareType   | 1          |
+			| shareWith   | sharegroup |
+			| permissions | 15         |
 		And user "user1" gets the following properties of folder "/tmp" using the API
 			|{http://open-collaboration-services.org/ns}share-permissions |
 		Then the single response should contain a property "{http://open-collaboration-services.org/ns}share-permissions" with value "15"
