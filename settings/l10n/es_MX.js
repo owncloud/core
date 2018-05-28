@@ -115,7 +115,6 @@ OC.L10N.register(
     "Language" : "Idioma",
     "Help translate" : "Ayúdanos a traducir",
     "Sessions" : "Sesiones",
-    "App passwords" : "Contraseñas de aplicaciones",
     "Name" : "Nombre",
     "Username" : "Nombre de usuario",
     "Version" : "Versión",

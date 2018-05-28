@@ -174,7 +174,6 @@ OC.L10N.register(
     "Help translate" : "Ajută la traducere",
     "Sessions" : "Sesiuni",
     "Most recent activity" : "Cea mai recentă activitate",
-    "App passwords" : "Parole aplicații",
     "Name" : "Nume",
     "App name" : "Nume aplicație",
     "Username" : "Nume utilizator",
