@@ -40,6 +40,7 @@ use OC\Settings\Controller\AuthSettingsController;
 use OC\Settings\Controller\CertificateController;
 use OC\Settings\Controller\CheckSetupController;
 use OC\Settings\Controller\GroupsController;
+use OC\Settings\Controller\LegalSettingsController;
 use OC\Settings\Controller\LogSettingsController;
 use OC\Settings\Controller\MailSettingsController;
 use OC\Settings\Controller\UsersController;
@@ -130,6 +131,14 @@ class Application extends App {
 				$c->query('Request'),
 				$c->query('Config'),
 				$c->query('L10N')
+			);
+		});
+		$container->registerService('LegalSettingsController', function (IContainer $c) {
+			return new LegalSettingsController(
+				$c->query('AppName'),
+				$c->query('Request'),
+				$c->query('L10N'),
+				$c->query('Config')
 			);
 		});
 		$container->registerService('CheckSetupController', function (IContainer $c) {
