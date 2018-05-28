@@ -19,6 +19,7 @@ Feature: capabilities
 	Scenario: Check that group sharing can be enabled
 		Given parameter "shareapi_allow_group_sharing" of app "core" has been set to "no"
 		And the capabilities setting of "files_sharing" path "group_sharing" has been confirmed to be ""
+
 		When the administrator sets parameter "shareapi_allow_group_sharing" of app "core" to "yes" using the API
 		Then the capabilities setting of "files_sharing" path "group_sharing" should be "1"
 
@@ -35,6 +36,7 @@ Feature: capabilities
 			| core          | pollinterval                          | 60                |
 			| core          | webdav-root                           | remote.php/webdav |
 			| files_sharing | api_enabled                           | 1                 |
+			| files_sharing | can_share                             | 1                 |
 			| files_sharing | public@@@enabled                      | 1                 |
 			| files_sharing | public@@@upload                       | 1                 |
 			| files_sharing | public@@@send_mail                    | EMPTY             |
@@ -58,6 +60,7 @@ Feature: capabilities
 			| core          | pollinterval                          | 60                |
 			| core          | webdav-root                           | remote.php/webdav |
 			| files_sharing | api_enabled                           | 1                 |
+			| files_sharing | can_share                             | 1                 |
 			| files_sharing | public@@@enabled                      | 1                 |
 			| files_sharing | public@@@upload                       | EMPTY             |
 			| files_sharing | public@@@send_mail                    | EMPTY             |
@@ -81,6 +84,7 @@ Feature: capabilities
 			| core          | pollinterval          | 60                |
 			| core          | webdav-root           | remote.php/webdav |
 			| files_sharing | api_enabled           | EMPTY             |
+			| files_sharing | can_share             | EMPTY             |
 			| files_sharing | public@@@enabled      | EMPTY             |
 			| files_sharing | public@@@upload       | EMPTY             |
 			| files_sharing | resharing             | EMPTY             |
@@ -98,6 +102,7 @@ Feature: capabilities
 			| core          | pollinterval                          | 60                |
 			| core          | webdav-root                           | remote.php/webdav |
 			| files_sharing | api_enabled                           | 1                 |
+			| files_sharing | can_share                             | 1                 |
 			| files_sharing | public@@@enabled                      | EMPTY             |
 			| files_sharing | public@@@upload                       | EMPTY             |
 			| files_sharing | resharing                             | 1                 |
@@ -119,6 +124,7 @@ Feature: capabilities
 			| core          | pollinterval                          | 60                |
 			| core          | webdav-root                           | remote.php/webdav |
 			| files_sharing | api_enabled                           | 1                 |
+			| files_sharing | can_share                             | 1                 |
 			| files_sharing | public@@@enabled                      | 1                 |
 			| files_sharing | public@@@upload                       | 1                 |
 			| files_sharing | public@@@send_mail                    | EMPTY             |
@@ -142,6 +148,7 @@ Feature: capabilities
 			| core          | pollinterval                          | 60                |
 			| core          | webdav-root                           | remote.php/webdav |
 			| files_sharing | api_enabled                           | 1                 |
+			| files_sharing | can_share                             | 1                 |
 			| files_sharing | public@@@enabled                      | 1                 |
 			| files_sharing | public@@@upload                       | 1                 |
 			| files_sharing | public@@@send_mail                    | EMPTY             |
@@ -165,6 +172,7 @@ Feature: capabilities
 			| core          | pollinterval                          | 60                |
 			| core          | webdav-root                           | remote.php/webdav |
 			| files_sharing | api_enabled                           | 1                 |
+			| files_sharing | can_share                             | 1                 |
 			| files_sharing | public@@@enabled                      | 1                 |
 			| files_sharing | public@@@upload                       | 1                 |
 			| files_sharing | public@@@send_mail                    | EMPTY             |
@@ -188,6 +196,7 @@ Feature: capabilities
 			| core          | pollinterval                                   | 60                |
 			| core          | webdav-root                                    | remote.php/webdav |
 			| files_sharing | api_enabled                                    | 1                 |
+			| files_sharing | can_share                                      | 1                 |
 			| files_sharing | public@@@enabled                               | 1                 |
 			| files_sharing | public@@@upload                                | 1                 |
 			| files_sharing | public@@@send_mail                             | EMPTY             |
@@ -214,6 +223,7 @@ Feature: capabilities
 			| core          | pollinterval                                   | 60                |
 			| core          | webdav-root                                    | remote.php/webdav |
 			| files_sharing | api_enabled                                    | 1                 |
+			| files_sharing | can_share                                      | 1                 |
 			| files_sharing | public@@@enabled                               | 1                 |
 			| files_sharing | public@@@upload                                | 1                 |
 			| files_sharing | public@@@send_mail                             | EMPTY             |
@@ -240,6 +250,7 @@ Feature: capabilities
 			| core          | pollinterval                                   | 60                |
 			| core          | webdav-root                                    | remote.php/webdav |
 			| files_sharing | api_enabled                                    | 1                 |
+			| files_sharing | can_share                                      | 1                 |
 			| files_sharing | public@@@enabled                               | 1                 |
 			| files_sharing | public@@@upload                                | 1                 |
 			| files_sharing | public@@@send_mail                             | EMPTY             |
@@ -266,6 +277,7 @@ Feature: capabilities
 			| core          | pollinterval                          | 60                |
 			| core          | webdav-root                           | remote.php/webdav |
 			| files_sharing | api_enabled                           | 1                 |
+			| files_sharing | can_share                             | 1                 |
 			| files_sharing | public@@@enabled                      | 1                 |
 			| files_sharing | public@@@upload                       | 1                 |
 			| files_sharing | public@@@send_mail                    | 1                 |
@@ -289,6 +301,7 @@ Feature: capabilities
 			| core          | pollinterval                          | 60                |
 			| core          | webdav-root                           | remote.php/webdav |
 			| files_sharing | api_enabled                           | 1                 |
+			| files_sharing | can_share                             | 1                 |
 			| files_sharing | public@@@enabled                      | 1                 |
 			| files_sharing | public@@@upload                       | 1                 |
 			| files_sharing | public@@@send_mail                    | EMPTY             |
@@ -312,6 +325,7 @@ Feature: capabilities
 			| core          | pollinterval                          | 60                |
 			| core          | webdav-root                           | remote.php/webdav |
 			| files_sharing | api_enabled                           | 1                 |
+			| files_sharing | can_share                             | 1                 |
 			| files_sharing | public@@@enabled                      | 1                 |
 			| files_sharing | public@@@upload                       | 1                 |
 			| files_sharing | public@@@send_mail                    | EMPTY             |
@@ -337,6 +351,7 @@ Feature: capabilities
 			| core          | pollinterval                          | 60                |
 			| core          | webdav-root                           | remote.php/webdav |
 			| files_sharing | api_enabled                           | 1                 |
+			| files_sharing | can_share                             | 1                 |
 			| files_sharing | public@@@enabled                      | 1                 |
 			| files_sharing | public@@@upload                       | 1                 |
 			| files_sharing | public@@@send_mail                    | EMPTY             |
@@ -362,6 +377,7 @@ Feature: capabilities
 			| core          | pollinterval                          | 60                |
 			| core          | webdav-root                           | remote.php/webdav |
 			| files_sharing | api_enabled                           | 1                 |
+			| files_sharing | can_share                             | 1                 |
 			| files_sharing | public@@@enabled                      | 1                 |
 			| files_sharing | public@@@upload                       | 1                 |
 			| files_sharing | public@@@send_mail                    | EMPTY             |
@@ -385,6 +401,7 @@ Feature: capabilities
 			| core          | pollinterval                          | 60                |
 			| core          | webdav-root                           | remote.php/webdav |
 			| files_sharing | api_enabled                           | 1                 |
+			| files_sharing | can_share                             | 1                 |
 			| files_sharing | public@@@enabled                      | 1                 |
 			| files_sharing | public@@@upload                       | 1                 |
 			| files_sharing | public@@@send_mail                    | EMPTY             |
@@ -408,6 +425,7 @@ Feature: capabilities
 			| core          | pollinterval                  | 60                |
 			| core          | webdav-root                   | remote.php/webdav |
 			| files_sharing | api_enabled                   | 1                 |
+			| files_sharing | can_share                     | 1                 |
 			| files_sharing | public@@@enabled              | 1                 |
 			| files_sharing | public@@@upload               | 1                 |
 			| files_sharing | public@@@send_mail            | EMPTY             |
@@ -430,6 +448,7 @@ Feature: capabilities
 			| core          | pollinterval                          | 60                |
 			| core          | webdav-root                           | remote.php/webdav |
 			| files_sharing | api_enabled                           | 1                 |
+			| files_sharing | can_share                             | 1                 |
 			| files_sharing | public@@@enabled                      | 1                 |
 			| files_sharing | public@@@upload                       | 1                 |
 			| files_sharing | public@@@send_mail                    | EMPTY             |
@@ -444,3 +463,128 @@ Feature: capabilities
 			| files         | bigfilechunking                       | 1                 |
 			| files         | undelete                              | 1                 |
 			| files         | versioning                            | 1                 |
+
+	Scenario: Changing exclude groups from sharing
+		Given parameter "shareapi_exclude_groups" of app "core" has been set to "yes"
+		And group "grp1" has been created
+		And group "hash#group" has been created
+		And group "group-3" has been created
+		And parameter "shareapi_exclude_groups_list" of app "core" has been set to '["grp1","hash#group","group-3"]'
+		When the user retrieves the capabilities using the API
+		Then the capabilities should contain
+			| capability    | path_to_element                           | value             |
+			| core          | pollinterval                              | 60                |
+			| core          | webdav-root                               | remote.php/webdav |
+			| files_sharing | api_enabled                               | 1                 |
+			| files_sharing | can_share                                 | 1                 |
+			| files_sharing | public@@@enabled                          | 1                 |
+			| files_sharing | public@@@upload                           | 1                 |
+			| files_sharing | public@@@send_mail                        | EMPTY             |
+			| files_sharing | public@@@social_share                     | 1                 |
+			| files_sharing | resharing                                 | 1                 |
+			| files_sharing | federation@@@outgoing                     | 1                 |
+			| files_sharing | federation@@@incoming                     | 1                 |
+			| files_sharing | group_sharing                             | 1                 |
+			| files_sharing | share_with_group_members_only             | EMPTY             |
+			| files_sharing | user_enumeration@@@enabled                | 1                 |
+			| files_sharing | user_enumeration@@@group_members_only     | EMPTY             |
+			| files         | bigfilechunking                           | 1                 |
+			| files         | undelete                                  | 1                 |
+			| files         | versioning                                | 1                 |
+
+	Scenario: When in a group that is excluded from sharing, can_share is off
+		Given parameter "shareapi_exclude_groups" of app "core" has been set to "yes"
+		And user "user0" has been created
+		And group "grp1" has been created
+		And group "hash#group" has been created
+		And group "group-3" has been created
+		And group "ordinary-group" has been created
+		And user "user0" has been added to group "hash#group"
+		And parameter "shareapi_exclude_groups_list" of app "core" has been set to '["grp1","hash#group","group-3"]'
+		And as user "user0"
+		When the user retrieves the capabilities using the API
+		Then the capabilities should contain
+			| capability    | path_to_element                           | value             |
+			| core          | pollinterval                              | 60                |
+			| core          | webdav-root                               | remote.php/webdav |
+			| files_sharing | api_enabled                               | 1                 |
+			| files_sharing | can_share                                 | EMPTY             |
+			| files_sharing | public@@@enabled                          | 1                 |
+			| files_sharing | public@@@upload                           | 1                 |
+			| files_sharing | public@@@send_mail                        | EMPTY             |
+			| files_sharing | public@@@social_share                     | 1                 |
+			| files_sharing | resharing                                 | 1                 |
+			| files_sharing | federation@@@outgoing                     | 1                 |
+			| files_sharing | federation@@@incoming                     | 1                 |
+			| files_sharing | group_sharing                             | 1                 |
+			| files_sharing | share_with_group_members_only             | EMPTY             |
+			| files_sharing | user_enumeration@@@enabled                | 1                 |
+			| files_sharing | user_enumeration@@@group_members_only     | EMPTY             |
+			| files         | bigfilechunking                           | 1                 |
+			| files         | undelete                                  | 1                 |
+			| files         | versioning                                | 1                 |
+
+	Scenario: When not in any group that is excluded from sharing, can_share is on
+		Given parameter "shareapi_exclude_groups" of app "core" has been set to "yes"
+		And user "user0" has been created
+		And group "grp1" has been created
+		And group "hash#group" has been created
+		And group "group-3" has been created
+		And group "ordinary-group" has been created
+		And user "user0" has been added to group "ordinary-group"
+		And parameter "shareapi_exclude_groups_list" of app "core" has been set to '["grp1","hash#group","group-3"]'
+		And as user "user0"
+		When the user retrieves the capabilities using the API
+		Then the capabilities should contain
+			| capability    | path_to_element                           | value             |
+			| core          | pollinterval                              | 60                |
+			| core          | webdav-root                               | remote.php/webdav |
+			| files_sharing | api_enabled                               | 1                 |
+			| files_sharing | can_share                                 | 1                 |
+			| files_sharing | public@@@enabled                          | 1                 |
+			| files_sharing | public@@@upload                           | 1                 |
+			| files_sharing | public@@@send_mail                        | EMPTY             |
+			| files_sharing | public@@@social_share                     | 1                 |
+			| files_sharing | resharing                                 | 1                 |
+			| files_sharing | federation@@@outgoing                     | 1                 |
+			| files_sharing | federation@@@incoming                     | 1                 |
+			| files_sharing | group_sharing                             | 1                 |
+			| files_sharing | share_with_group_members_only             | EMPTY             |
+			| files_sharing | user_enumeration@@@enabled                | 1                 |
+			| files_sharing | user_enumeration@@@group_members_only     | EMPTY             |
+			| files         | bigfilechunking                           | 1                 |
+			| files         | undelete                                  | 1                 |
+			| files         | versioning                                | 1                 |
+
+	Scenario: When in a group that is excluded from sharing and in another group, can_share is off
+		Given parameter "shareapi_exclude_groups" of app "core" has been set to "yes"
+		And user "user0" has been created
+		And group "grp1" has been created
+		And group "hash#group" has been created
+		And group "group-3" has been created
+		And group "ordinary-group" has been created
+		And user "user0" has been added to group "hash#group"
+		And user "user0" has been added to group "ordinary-group"
+		And parameter "shareapi_exclude_groups_list" of app "core" has been set to '["grp1","hash#group","group-3"]'
+		And as user "user0"
+		When the user retrieves the capabilities using the API
+		Then the capabilities should contain
+			| capability    | path_to_element                           | value             |
+			| core          | pollinterval                              | 60                |
+			| core          | webdav-root                               | remote.php/webdav |
+			| files_sharing | api_enabled                               | 1                 |
+			| files_sharing | can_share                                 | EMPTY             |
+			| files_sharing | public@@@enabled                          | 1                 |
+			| files_sharing | public@@@upload                           | 1                 |
+			| files_sharing | public@@@send_mail                        | EMPTY             |
+			| files_sharing | public@@@social_share                     | 1                 |
+			| files_sharing | resharing                                 | 1                 |
+			| files_sharing | federation@@@outgoing                     | 1                 |
+			| files_sharing | federation@@@incoming                     | 1                 |
+			| files_sharing | group_sharing                             | 1                 |
+			| files_sharing | share_with_group_members_only             | EMPTY             |
+			| files_sharing | user_enumeration@@@enabled                | 1                 |
+			| files_sharing | user_enumeration@@@group_members_only     | EMPTY             |
+			| files         | bigfilechunking                           | 1                 |
+			| files         | undelete                                  | 1                 |
+			| files         | versioning                                | 1                 |
