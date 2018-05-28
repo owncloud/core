@@ -104,7 +104,7 @@ trait Provisioning {
 	 * @param string $username
 	 *
 	 * @return string password
-	 * @throws Exception
+	 * @throws \Exception
 	 */
 	public function getUserPassword($username) {
 		if ($username === $this->getAdminUsername()) {
@@ -128,7 +128,7 @@ trait Provisioning {
 	 * @param string $username
 	 *
 	 * @return boolean
-	 * @throws Exception
+	 * @throws \Exception
 	 */
 	public function theUserShouldExist($username) {
 		if (array_key_exists($username, $this->createdUsers)) {
@@ -149,7 +149,7 @@ trait Provisioning {
 	 * @param string $groupname
 	 *
 	 * @return boolean
-	 * @throws Exception
+	 * @throws \Exception
 	 */
 	public function theGroupShouldExist($groupname) {
 		if (array_key_exists($groupname, $this->createdGroups)) {
@@ -170,7 +170,7 @@ trait Provisioning {
 	 * @param string $groupname
 	 *
 	 * @return boolean
-	 * @throws Exception
+	 * @throws \Exception
 	 */
 	public function theGroupShouldBeAbleToBeDeleted($groupname) {
 		if (array_key_exists($groupname, $this->createdGroups)) {
@@ -193,6 +193,7 @@ trait Provisioning {
 	 * @param string $user
 	 *
 	 * @return void
+	 * @throws \Exception
 	 */
 	public function adminCreatesUserUsingTheAPI($user) {
 		if (!$this->userExists($user) ) {
@@ -212,6 +213,7 @@ trait Provisioning {
 	 * @param TableNode $table
 	 *
 	 * @return void
+	 * @throws \Exception
 	 */
 	public function theseUsersHaveBeenCreated($doNotInitialize, TableNode $table) {
 		foreach ($table as $row) {
@@ -243,7 +245,6 @@ trait Provisioning {
 	 * @return void
 	 */
 	public function theAppHasBeenDisabled($app) {
-		$client = new Client();
 		$fullUrl = $this->getBaseUrl()
 			. "/ocs/v{$this->apiVersion}.php/cloud/apps/" . $app;
 		$options = [];
@@ -300,6 +301,7 @@ trait Provisioning {
 	 * @param string $user
 	 * 
 	 * @return void
+	 * @throws \Exception
 	 */
 	public function theAdminDeletesTheUserUsingAPI($user) {
 		$this->deleteTheUserUsingTheAPI($user);
@@ -313,6 +315,7 @@ trait Provisioning {
 	 * @param string $user
 	 * 
 	 * @return void
+	 * @throws \Exception
 	 */
 	public function theSubAdminDeletesTheUser($subadmin, $user) {
 		$this->response = UserHelper::deleteUser(
@@ -390,7 +393,7 @@ trait Provisioning {
 	 * @param TableNode $table
 	 *
 	 * @return void
-	 * @throws Exception
+	 * @throws \Exception
 	 */
 	public function theseGroupsShouldNotExist($shouldOrNot, TableNode $table) {
 		$should = ($shouldOrNot !== "not");
@@ -413,6 +416,7 @@ trait Provisioning {
 	 * @param string $user
 	 *
 	 * @return void
+	 * @throws \Exception
 	 */
 	public function adminDeletesUserUsingTheAPI($user) {
 		if ($this->userExists($user)) {
@@ -515,7 +519,7 @@ trait Provisioning {
 	 * @param string $method how to create the user api|occ
 	 *
 	 * @return void
-	 * @throws Exception
+	 * @throws \Exception
 	 */
 	private function createUser(
 		$user, $password, $displayName = null, $email = null, $initialize = true,
@@ -578,6 +582,7 @@ trait Provisioning {
 	 * @param string $user
 	 *
 	 * @return void
+	 * @throws \Exception
 	 */
 	public function deleteUser($user) {
 		$this->deleteTheUserUsingTheAPI($user);
@@ -592,6 +597,7 @@ trait Provisioning {
 	 * @param string $group
 	 *
 	 * @return void
+	 * @throws \Exception
 	 */
 	public function cleanupGroup($group) {
 		try {
@@ -710,6 +716,7 @@ trait Provisioning {
 	 * @param string $group
 	 *
 	 * @return void
+	 * @throws \Exception
 	 */
 	public function adminAddsUserToGroupUsingTheAPI($user, $group) {
 		if (!$this->userBelongsToGroup($user, $group)) {
@@ -727,7 +734,7 @@ trait Provisioning {
 	 * @param string $method how to add the user to the group api|occ
 	 *
 	 * @return void
-	 * @throws Exception
+	 * @throws \Exception
 	 */
 	public function userHasBeenAddedToGroup($user, $group, $method = null) {
 		if ($method === null && getenv("TEST_EXTERNAL_USER_BACKENDS") === "true") {
@@ -817,6 +824,7 @@ trait Provisioning {
 	 * @param string $group
 	 *
 	 * @return void
+	 * @throws \Exception
 	 */
 	public function adminCreatesGroupUsingTheAPI($group) {
 		if (!$this->groupExists($group)) {
@@ -832,6 +840,7 @@ trait Provisioning {
 	 * @param TableNode $table
 	 *
 	 * @return void
+	 * @throws \Exception
 	 */
 	public function theseGroupsHaveBeenCreated(TableNode $table) {
 		foreach ($table as $row) {
@@ -864,7 +873,7 @@ trait Provisioning {
 	 * @param string $method how to create the group api|occ
 	 *
 	 * @return void
-	 * @throws Exception
+	 * @throws \Exception
 	 */
 	private function createTheGroup($group, $method = null) {
 		if ($method === null && getenv("TEST_EXTERNAL_USER_BACKENDS") === "true") {
@@ -940,6 +949,7 @@ trait Provisioning {
 	 * @param string $user
 	 *
 	 * @return void
+	 * @throws \Exception
 	 */
 	public function deleteTheUserUsingTheAPI($user) {
 		// Always try to delete the user
@@ -973,6 +983,7 @@ trait Provisioning {
 	 * @param string $group
 	 *
 	 * @return void
+	 * @throws \Exception
 	 */
 	public function groupHasBeenDeletedUsingTheAPI($group) {
 		if ($this->groupExists($group)) {
@@ -987,6 +998,7 @@ trait Provisioning {
 	 * @param string $group
 	 *
 	 * @return void
+	 * @throws \Exception
 	 */
 	public function deleteTheGroupUsingTheAPI($group) {
 		$this->response = UserHelper::deleteGroup(
@@ -1133,12 +1145,12 @@ trait Provisioning {
 	/**
 	 * @Then /^the users returned by the API should be$/
 	 *
-	 * @param \Behat\Gherkin\Node\TableNode|null $usersList
+	 * @param TableNode $usersList
 	 *
 	 * @return void
 	 */
 	public function theUsersShouldBe($usersList) {
-		if ($usersList instanceof \Behat\Gherkin\Node\TableNode) {
+		if ($usersList instanceof TableNode) {
 			$users = $usersList->getRows();
 			$usersSimplified = $this->simplifyArray($users);
 			$respondedArray = $this->getArrayOfUsersResponded($this->response);
@@ -1151,12 +1163,12 @@ trait Provisioning {
 	/**
 	 * @Then /^the groups returned by the API should be$/
 	 *
-	 * @param \Behat\Gherkin\Node\TableNode|null $groupsList
+	 * @param TableNode $groupsList
 	 *
 	 * @return void
 	 */
 	public function theGroupsShouldBe($groupsList) {
-		if ($groupsList instanceof \Behat\Gherkin\Node\TableNode) {
+		if ($groupsList instanceof TableNode) {
 			$groups = $groupsList->getRows();
 			$groupsSimplified = $this->simplifyArray($groups);
 			$respondedArray = $this->getArrayOfGroupsResponded($this->response);
@@ -1203,7 +1215,7 @@ trait Provisioning {
 	}
 
 	/**
-	 * @param \Behat\Gherkin\Node\TableNode|null $groupsOrUsersList
+	 * @param TableNode|null $groupsOrUsersList
 	 *
 	 * @return void
 	 */
@@ -1219,7 +1231,7 @@ trait Provisioning {
 	/**
 	 * @Then /^the subadmin groups returned by the API should be$/
 	 *
-	 * @param \Behat\Gherkin\Node\TableNode|null $groupsList
+	 * @param TableNode|null $groupsList
 	 *
 	 * @return void
 	 */
@@ -1230,7 +1242,7 @@ trait Provisioning {
 	/**
 	 * @Then /^the subadmin users returned by the API should be$/
 	 *
-	 * @param \Behat\Gherkin\Node\TableNode|null $usersList
+	 * @param TableNode|null $usersList
 	 *
 	 * @return void
 	 */
@@ -1241,7 +1253,7 @@ trait Provisioning {
 	/**
 	 * @Then /^the apps returned by the API should include$/
 	 *
-	 * @param \Behat\Gherkin\Node\TableNode|null $appList
+	 * @param TableNode|null $appList
 	 *
 	 * @return void
 	 */
@@ -1494,7 +1506,7 @@ trait Provisioning {
 	 *
 	 * @param string $user
 	 *
-	 * @return void
+	 * @return string
 	 */
 	public function getUserHome($user) {
 		$fullUrl = $this->getBaseUrl()
@@ -1509,7 +1521,7 @@ trait Provisioning {
 	/**
 	 * @Then /^the user attributes returned by the API should include$/
 	 *
-	 * @param \Behat\Gherkin\Node\TableNode|null $body
+	 * @param TableNode|null $body
 	 *
 	 * @return void
 	 */
@@ -1533,7 +1545,7 @@ trait Provisioning {
 	 * @Then the attributes of user :user returned by the API should include
 	 *
 	 * @param string $user
-	 * @param \Behat\Gherkin\Node\TableNode $body
+	 * @param TableNode $body
 	 *
 	 * @return void
 	 */
@@ -1572,10 +1584,24 @@ trait Provisioning {
 	}
 
 	/**
+	 * @Then /^the list of groups returned by the API should be empty$/
+	 *
+	 * @return void
+	 */
+	public function theListOfGroupsReturnedByTheApiShouldBeEmpty() {
+		$groupsList = $this->response->xml()->data[0]->groups[0];
+		PHPUnit_Framework_Assert::assertEmpty(
+			$groupsList,
+			"Groups list is not empty but it should be empty"
+		);
+	}
+
+	/**
 	 * @BeforeScenario
 	 * @AfterScenario
 	 *
 	 * @return void
+	 * @throws \Exception
 	 */
 	public function cleanupUsers() {
 		$this->deleteTokenAuthEnforcedAfterScenario();
@@ -1596,6 +1622,7 @@ trait Provisioning {
 	 * @AfterScenario
 	 *
 	 * @return void
+	 * @throws \Exception
 	 */
 	public function cleanupGroups() {
 		$this->deleteTokenAuthEnforcedAfterScenario();
@@ -1637,8 +1664,8 @@ trait Provisioning {
 
 	/**
 	 * Returns array of enabled apps
-	 * 
-	 * @return void
+	 *
+	 * @return array
 	 */
 	public function getEnabledApps() {
 		$fullUrl = $this->getBaseUrl() . "/ocs/v2.php/cloud/apps?filter=enabled";
@@ -1652,7 +1679,7 @@ trait Provisioning {
 	/**
 	 * Returns array of disabled apps
 	 *
-	 * @return void
+	 * @return array
 	 */
 	public function getDisabledApps() {
 		$fullUrl = $this->getBaseUrl() . "/ocs/v2.php/cloud/apps?filter=disabled";

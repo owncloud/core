@@ -185,6 +185,7 @@ class CalDavContext implements \Behat\Behat\Context\Context {
 	 * @param string $name
 	 *
 	 * @return void
+	 * @throws \Exception
 	 */
 	public function userHasCreatedACalendarNamed($user, $name) {
 		$davUrl = $this->featureContext->getBaseUrl()

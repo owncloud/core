@@ -20,6 +20,7 @@
  *
  */
 
+use Behat\Gherkin\Node\TableNode;
 use GuzzleHttp\Exception\BadResponseException;
 
 require __DIR__ . '/../../../../lib/composer/autoload.php';
@@ -39,18 +40,16 @@ trait Comments {
 	private $lastFileId;
 
 	/**
-	 * @When /^user "([^"]*)" comments with content "([^"]*)" on (file|folder) "([^"]*)" using the API$/
-	 * @Given /^user "([^"]*)" has commented with content "([^"]*)" on (file|folder) "([^"]*)"$/
+	 * @When /^user "([^"]*)" comments with content "([^"]*)" on (?:file|folder) "([^"]*)" using the API$/
+	 * @Given /^user "([^"]*)" has commented with content "([^"]*)" on (?:file|folder) "([^"]*)"$/
 	 *
 	 * @param string $user
 	 * @param string $content
-	 * @param string $type
 	 * @param string $path
 	 *
 	 * @return void
-	 * @throws \Exception
 	 */
-	public function userCommentsWithContentOnEntry($user, $content, $type, $path) {
+	public function userCommentsWithContentOnEntry($user, $content, $path) {
 		$fileId = $this->getFileIdForPath($user, $path);
 		$this->lastFileId = $fileId;
 		$commentsPath = '/comments/files/' . $fileId . '/';
@@ -81,16 +80,15 @@ trait Comments {
 	}
 
 	/**
-	 * @Then /^user "([^"]*)" should have the following comments on (file|folder) "([^"]*)"$/
+	 * @Then /^user "([^"]*)" should have the following comments on (?:file|folder) "([^"]*)"$/
 	 *
 	 * @param string $user
-	 * @param string $type
 	 * @param string $path
-	 * @param \Behat\Gherkin\Node\TableNode|null $expectedElements
+	 * @param TableNode|null $expectedElements
 	 *
 	 * @return void
 	 */
-	public function checkComments($user, $type, $path, $expectedElements) {
+	public function checkComments($user, $path, $expectedElements) {
 		$fileId = $this->getFileIdForPath($user, $path);
 		$commentsPath = '/comments/files/' . $fileId . '/';
 		$properties = '<oc:limit>200</oc:limit><oc:offset>0</oc:offset>';
@@ -106,7 +104,7 @@ trait Comments {
 			);
 		}
 
-		if ($expectedElements instanceof \Behat\Gherkin\Node\TableNode) {
+		if ($expectedElements instanceof TableNode) {
 			$elementRows = $expectedElements->getRows();
 			foreach ($elementRows as $expectedElement) {
 				$commentFound = false;
@@ -126,16 +124,15 @@ trait Comments {
 	}
 
 	/**
-	 * @Then /^user "([^"]*)" should have (\d+) comments on (file|folder) "([^"]*)"$/
+	 * @Then /^user "([^"]*)" should have (\d+) comments on (?:file|folder) "([^"]*)"$/
 	 *
 	 * @param string $user
 	 * @param string $numberOfComments
-	 * @param string $type
 	 * @param string $path
 	 *
 	 * @return void
 	 */
-	public function checkNumberOfComments($user, $numberOfComments, $type, $path) {
+	public function checkNumberOfComments($user, $numberOfComments, $path) {
 		$fileId = $this->getFileIdForPath($user, $path);
 		$commentsPath = '/comments/files/' . $fileId . '/';
 		$properties = '<oc:limit>200</oc:limit><oc:offset>0</oc:offset>';

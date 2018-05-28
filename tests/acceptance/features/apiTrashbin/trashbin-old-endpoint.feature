@@ -82,10 +82,11 @@ Feature: trashbin-new-endpoint
 
 	Scenario: Trashbin can be emptied
 		Given user "user0" has been created
+		And a new browser session for "user0" has been started
 		And user "user0" has deleted file "/textfile0.txt"
 		And user "user0" has deleted file "/textfile1.txt"
 		And as "user0" the file "/textfile0.txt" should exist in trash
-		And as "user0" the file "/textfile0.txt" should exist in trash
+		And as "user0" the file "/textfile1.txt" should exist in trash
 		When user "user0" empties the trashbin using the API
 		Then as "user0" the file with original path "/textfile0.txt" should not exist in trash
 		And as "user0" the file with original path "/textfile1.txt" should not exist in trash

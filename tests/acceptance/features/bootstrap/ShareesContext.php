@@ -24,6 +24,7 @@
 
 use Behat\Behat\Context\Context;
 use Behat\Behat\Context\SnippetAcceptingContext;
+use Behat\Gherkin\Node\TableNode;
 use GuzzleHttp\Message\ResponseInterface;
 
 require_once 'bootstrap.php';
@@ -37,7 +38,7 @@ class ShareesContext implements Context, SnippetAcceptingContext {
 	/**
 	 * @When /^the user gets the sharees using the API with parameters$/
 	 *
-	 * @param \Behat\Gherkin\Node\TableNode $body
+	 * @param TableNode $body
 	 *
 	 * @return void
 	 */
@@ -49,13 +50,13 @@ class ShareesContext implements Context, SnippetAcceptingContext {
 	 * @When /^user "([^"]*)" gets the sharees using the API with parameters$/
 	 *
 	 * @param string $user
-	 * @param \Behat\Gherkin\Node\TableNode $body
+	 * @param TableNode $body
 	 *
 	 * @return void
 	 */
 	public function userGetsTheShareesWithParameters($user, $body) {
 		$url = '/apps/files_sharing/api/v1/sharees';
-		if ($body instanceof \Behat\Gherkin\Node\TableNode) {
+		if ($body instanceof TableNode) {
 			$parameters = [];
 			foreach ($body->getRowsHash() as $key => $value) {
 				$parameters[] = $key . '=' . $value;
@@ -74,7 +75,7 @@ class ShareesContext implements Context, SnippetAcceptingContext {
 	 * @Then /^the "([^"]*)" sharees returned should be$/
 	 *
 	 * @param string $shareeType
-	 * @param \Behat\Gherkin\Node\TableNode $shareesList
+	 * @param TableNode $shareesList
 	 *
 	 * @return void
 	 */

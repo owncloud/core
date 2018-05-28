@@ -185,10 +185,10 @@ Feature: tags
     When user "user0" adds the tag "MyFirstTag" to "/myFileToTag.txt" owned by "user0" using the API
     And user "another_admin" adds the tag "MySecondTag" to "/myFileToTag.txt" shared by "user0" using the API
     Then the HTTP status code should be "201"
-    And file "/myFileToTag.txt" shared by "user0" should have the following tags for "another_admin"
+    And file "/myFileToTag.txt" should have the following tags for user "another_admin"
       | MyFirstTag  | normal           |
       | MySecondTag | not user-visible |
-    And file "/myFileToTag.txt" shared by "user0" should have the following tags for "user0"
+    And file "/myFileToTag.txt" should have the following tags for user "user0"
       | MyFirstTag | normal |
 
   Scenario: Assigning a not user-assignable tag to a file shared by someone else as admin user should work
@@ -202,10 +202,10 @@ Feature: tags
     When user "user0" adds the tag "MyFirstTag" to "/myFileToTag.txt" shared by "user0" using the API
     And user "another_admin" adds the tag "MySecondTag" to "/myFileToTag.txt" shared by "user0" using the API
     Then the HTTP status code should be "201"
-    And file "/myFileToTag.txt" shared by "user0" should have the following tags for "another_admin"
+    And file "/myFileToTag.txt" should have the following tags for user "another_admin"
       | MyFirstTag  | normal              |
       | MySecondTag | not user-assignable |
-    And file "/myFileToTag.txt" shared by "user0" should have the following tags for "user0"
+    And file "/myFileToTag.txt" should have the following tags for user "user0"
       | MyFirstTag  | normal              |
       | MySecondTag | not user-assignable |
 
@@ -220,7 +220,7 @@ Feature: tags
     And user "user0" has added the tag "MySecondTag" to "/myFileToTag.txt" owned by "user0"
     When user "user1" removes the tag "MyFirstTag" from "/myFileToTag.txt" shared by "user0" using the API
     Then the HTTP status code should be "204"
-    And file "/myFileToTag.txt" shared by "user0" should have the following tags for "user0"
+    And file "/myFileToTag.txt" should have the following tags for user "user0"
       | MySecondTag | normal |
 
   Scenario: Unassigning a normal tag from a file unshared by someone else as regular user should fail
@@ -233,7 +233,7 @@ Feature: tags
     And user "user0" has added the tag "MySecondTag" to "/myFileToTag.txt" shared by "user0"
     When user "user1" removes the tag "MyFirstTag" from "/myFileToTag.txt" shared by "user0" using the API
     Then the HTTP status code should be "404"
-    And file "/myFileToTag.txt" shared by "user0" should have the following tags for "user0"
+    And file "/myFileToTag.txt" should have the following tags for user "user0"
       | MyFirstTag  | normal |
       | MySecondTag | normal |
 
@@ -251,9 +251,9 @@ Feature: tags
     And user "user0" has added the tag "MySecondTag" to "/myFileToTag.txt" shared by "user0"
     When user "user1" removes the tag "MyFirstTag" from "/myFileToTag.txt" shared by "user0" using the API
     Then the HTTP status code should be "404"
-    And file "/myFileToTag.txt" shared by "user0" should have the following tags for "user0"
+    And file "/myFileToTag.txt" should have the following tags for user "user0"
       | MySecondTag | normal |
-    And file "/myFileToTag.txt" shared by "user0" should have the following tags for "another_admin"
+    And file "/myFileToTag.txt" should have the following tags for user "another_admin"
       | MyFirstTag  | not user-visible |
       | MySecondTag | normal           |
 
@@ -271,9 +271,9 @@ Feature: tags
     And user "user0" has added the tag "MySecondTag" to "/myFileToTag.txt" shared by "user0"
     When user "another_admin" removes the tag "MyFirstTag" from "/myFileToTag.txt" shared by "user0" using the API
     Then the HTTP status code should be "204"
-    And file "/myFileToTag.txt" shared by "user0" should have the following tags for "user0"
+    And file "/myFileToTag.txt" should have the following tags for user "user0"
       | MySecondTag | normal |
-    And file "/myFileToTag.txt" shared by "user0" should have the following tags for "another_admin"
+    And file "/myFileToTag.txt" should have the following tags for user "another_admin"
       | MySecondTag | normal |
 
   Scenario: Unassigning a not user-visible tag from a file unshared by someone else should fail
@@ -306,10 +306,10 @@ Feature: tags
     And user "user0" has added the tag "MySecondTag" to "/myFileToTag.txt" shared by "user0"
     When user "user1" removes the tag "MyFirstTag" from "/myFileToTag.txt" shared by "user0" using the API
     Then the HTTP status code should be "403"
-    And file "/myFileToTag.txt" shared by "user0" should have the following tags for "user0"
+    And file "/myFileToTag.txt" should have the following tags for user "user0"
       | MyFirstTag  | not user-assignable |
       | MySecondTag | normal              |
-    And file "/myFileToTag.txt" shared by "user0" should have the following tags for "another_admin"
+    And file "/myFileToTag.txt" should have the following tags for user "another_admin"
       | MyFirstTag  | not user-assignable |
       | MySecondTag | normal              |
 
@@ -327,9 +327,9 @@ Feature: tags
     And user "user0" has added the tag "MySecondTag" to "/myFileToTag.txt" shared by "user0"
     When user "another_admin" removes the tag "MyFirstTag" from "/myFileToTag.txt" shared by "user0" using the API
     Then the HTTP status code should be "204"
-    And file "/myFileToTag.txt" shared by "user0" should have the following tags for "user0"
+    And file "/myFileToTag.txt" should have the following tags for user "user0"
       | MySecondTag | normal |
-    And file "/myFileToTag.txt" shared by "user0" should have the following tags for "another_admin"
+    And file "/myFileToTag.txt" should have the following tags for user "another_admin"
       | MySecondTag | normal |
 
   Scenario: Unassigning a not user-assignable tag from a file unshared by someone else should fail
@@ -370,9 +370,9 @@ Feature: tags
     And user "admin" has created a "normal" tag with name "MyFirstTag"
     And user "user0" has uploaded file "data/textfile.txt" to "/myFileToTag.txt"
     When user "user0" adds the tag "MyFirstTag" to "/myFileToTag.txt" shared by "user0" using the API
-    Then file "/myFileToTag.txt" shared by "user0" should have the following tags for "user0"
+    Then file "/myFileToTag.txt" should have the following tags for user "user0"
       | MyFirstTag | normal |
-    And file "/myFileToTag.txt" shared by "user0" should have the following tags for "user1"
+    And file "/myFileToTag.txt" should have the following tags for user "user1"
       ||
 
   Scenario: User can assign tags when in the tag's groups

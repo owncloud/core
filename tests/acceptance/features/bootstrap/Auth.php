@@ -264,7 +264,7 @@ trait Auth {
 	 * @param string $hasOrNot
 	 *
 	 * @return void
-	 * @throws Exception
+	 * @throws \Exception
 	 */
 	public function tokenAuthHasBeenEnforced($hasOrNot) {
 		$enforce = (($hasOrNot !== "not") && ($hasOrNot !== "does not enforce"));
