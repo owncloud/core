@@ -60,6 +60,7 @@ use OCP\Files\NoReadAccessException;
 use OCP\IConfig;
 use OCP\IGroupManager;
 use OCP\IUser;
+use OC\Authentication\Exceptions\AccountCheckException;
 
 class OC_Util {
 	public static $scripts = [];
@@ -1017,7 +1018,8 @@ class OC_Util {
 	 */
 	public static function checkLoggedIn() {
 		// Check if we are a user
-		if (!OC_User::isLoggedIn()) {
+		$userSession = \OC::$server->getUserSession();
+		if (!$userSession->isLoggedIn()) {
 			\header('Location: ' . \OC::$server->getURLGenerator()->linkToRoute(
 						'core.login.showLoginForm',
 						[
@@ -1029,6 +1031,13 @@ class OC_Util {
 		}
 		// Redirect to index page if 2FA challenge was not solved yet
 		if (\OC::$server->getTwoFactorAuthManager()->needsSecondFactor()) {
+			\header('Location: ' . \OCP\Util::linkToAbsolute('', 'index.php'));
+			exit();
+		}
+		// Redirect to index page if any IAuthModule check fails
+		try {
+			\OC::$server->getAccountModuleManager()->check($userSession->getUser());
+		} catch (AccountCheckException $ex) {
 			\header('Location: ' . \OCP\Util::linkToAbsolute('', 'index.php'));
 			exit();
 		}

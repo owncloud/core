@@ -30,6 +30,7 @@
  */
 
 use OC\L10N\L10NString;
+use OC\Authentication\Exceptions\AccountCheckException;
 
 /**
  * Class OC_JSON
@@ -62,24 +63,35 @@ class OC_JSON {
 		}
 	}
 
+	private static function sendErrorAndExit() {
+		$l = \OC::$server->getL10N('lib');
+		\http_response_code(\OCP\AppFramework\Http::STATUS_UNAUTHORIZED);
+		self::error(['data' => ['message' => $l->t('Authentication error'), 'error' => 'authentication_error']]);
+		exit();
+	}
+
 	/**
 	 * Check if the user is logged in, send json error msg if not
 	 * @deprecated Use annotation based ACLs from the AppFramework instead
 	 */
 	public static function checkLoggedIn() {
 		static $loginCalled = false;
-		if (!$loginCalled && !OC_User::isLoggedIn()) {
+		$userSession = \OC::$server->getUserSession();
+		if (!$loginCalled && !$userSession->isLoggedIn()) {
 			\OC::handleLogin(\OC::$server->getRequest());
 			$loginCalled = true;
 		}
 
-		$twoFactorAuthManger = \OC::$server->getTwoFactorAuthManager();
-		if (!OC_User::isLoggedIn()
-			|| $twoFactorAuthManger->needsSecondFactor()) {
-			$l = \OC::$server->getL10N('lib');
-			\http_response_code(\OCP\AppFramework\Http::STATUS_UNAUTHORIZED);
-			self::error(['data' => ['message' => $l->t('Authentication error'), 'error' => 'authentication_error']]);
-			exit();
+		if (!$userSession->isLoggedIn()) {
+			self::sendErrorAndExit();
+		}
+		if (\OC::$server->getTwoFactorAuthManager()->needsSecondFactor()) {
+			self::sendErrorAndExit();
+		}
+		try {
+			\OC::$server->getAccountModuleManager()->check($userSession->getUser());
+		} catch (AccountCheckException $ex) {
+			self::sendErrorAndExit();
 		}
 	}
 

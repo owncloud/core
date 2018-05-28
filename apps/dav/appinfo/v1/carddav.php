@@ -38,6 +38,7 @@ $authBackend = new Auth(
 	\OC::$server->getUserSession(),
 	\OC::$server->getRequest(),
 	\OC::$server->getTwoFactorAuthManager(),
+	\OC::$server->getAccountModuleManager(),
 	'principals/'
 );
 $principalBackend = new Principal(
