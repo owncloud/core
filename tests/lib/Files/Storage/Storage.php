@@ -298,8 +298,8 @@ abstract class Storage extends \Test\TestCase {
 		$this->assertTrue($this->instance->hasUpdated('/', $ctimeStart - 5));
 
 		// check that ($ctimeStart - 5) <= $mTime <= ($ctimeEnd + 5)
-		$this->assertGreaterThanOrEqual(($ctimeStart - 5), $mTime);
-		$this->assertLessThanOrEqual(($ctimeEnd + 5), $mTime);
+		$this->assertGreaterThanOrEqual(($ctimeStart - 10), $mTime);
+		$this->assertLessThanOrEqual(($ctimeEnd + 10), $mTime);
 		$this->assertEquals(\filesize($textFile), $this->instance->filesize('/lorem.txt'));
 
 		$stat = $this->instance->stat('/lorem.txt');
