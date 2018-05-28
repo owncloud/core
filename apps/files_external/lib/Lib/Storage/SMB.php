@@ -36,10 +36,13 @@ use Icewind\SMB\Exception\ConnectException;
 use Icewind\SMB\Exception\Exception;
 use Icewind\SMB\Exception\ForbiddenException;
 use Icewind\SMB\Exception\NotFoundException;
-use Icewind\SMB\FileInfo;
-use Icewind\SMB\NativeServer;
-use Icewind\SMB\Server;
-use Icewind\SMB\Share;
+use Icewind\SMB\BasicAuth;
+use Icewind\SMB\IFileInfo;
+use Icewind\SMB\Native\NativeServer;
+use Icewind\SMB\Wrapped\FileInfo;
+use Icewind\SMB\ServerFactory;
+use Icewind\SMB\System;
+use Icewind\SMB\IShare;
 use Icewind\Streams\CallbackWrapper;
 use Icewind\Streams\IteratorDirectory;
 use OC\Cache\CappedMemoryCache;
@@ -49,12 +52,12 @@ use OCP\Util;
 
 class SMB extends \OCP\Files\Storage\StorageAdapter {
 	/**
-	 * @var \Icewind\SMB\Server
+	 * @var \Icewind\SMB\IServer
 	 */
 	protected $server;
 
 	/**
-	 * @var \Icewind\SMB\Share
+	 * @var \Icewind\SMB\IShare
 	 */
 	protected $share;
 
@@ -64,7 +67,7 @@ class SMB extends \OCP\Files\Storage\StorageAdapter {
 	protected $root;
 
 	/**
-	 * @var \Icewind\SMB\FileInfo[]
+	 * @var \Icewind\SMB\IFileInfo[]
 	 */
 	protected $statCache;
 
@@ -77,14 +80,13 @@ class SMB extends \OCP\Files\Storage\StorageAdapter {
 		$this->log('enter: '.__FUNCTION__.'('.\json_encode($loggedParams).')');
 
 		if (isset($params['host'], $params['user'], $params['password'], $params['share'])) {
-			if (Server::NativeAvailable()) {
-				$this->log('using native libsmbclient');
-				$this->server = new NativeServer($params['host'], $params['user'], $params['password']);
-			} else {
-				$this->log('falling back to smbclient');
-				$this->server = new Server($params['host'], $params['user'], $params['password']);
-			}
+			$auth = new BasicAuth($params['user'], '', $params['password']);
+			$serverFactory = new ServerFactory();
+			$this->server = $serverFactory->createServer($params['host'], $auth);
 			$this->share = $this->server->getShare(\trim($params['share'], '/'));
+
+			$shareClass = \get_class($this->share);
+			$this->log("using $shareClass for the connection");
 
 			$this->root = isset($params['root']) ? $params['root'] : '/';
 			if (!$this->root || $this->root[0] != '/') {
@@ -109,7 +111,7 @@ class SMB extends \OCP\Files\Storage\StorageAdapter {
 		// FIXME: double slash to keep compatible with the old storage ids,
 		// failure to do so will lead to creation of a new storage id and
 		// loss of shares from the storage
-		return 'smb::' . $this->server->getUser() . '@' . $this->server->getHost() . '//' . $this->share->getName() . '/' . $this->root;
+		return 'smb::' . $this->server->getAuth()->getUsername() . '@' . $this->server->getHost() . '//' . $this->share->getName() . '/' . $this->root;
 	}
 
 	/**
@@ -138,7 +140,7 @@ class SMB extends \OCP\Files\Storage\StorageAdapter {
 				try {
 					$this->statCache[$path] = $this->share->stat($path);
 				} catch (NotFoundException $e) {
-					if ($this->share instanceof Share) {
+					if ($this->share instanceof IShare) {
 						// smbclient may have problems with the allinfo cmd
 						$this->log("stat for '$path' failed, trying to read parent dir");
 						$infos = $this->share->dir(\dirname($path));
@@ -162,9 +164,9 @@ class SMB extends \OCP\Files\Storage\StorageAdapter {
 					$this->log("unhiding stat for '$path'");
 					// make root never hidden, may happen when accessing a shared drive (mode is 22, archived and readonly - neither is true ... whatever)
 					if ($this->statCache[$path]->isReadOnly()) {
-						$mode = FileInfo::MODE_DIRECTORY & FileInfo::MODE_READONLY;
+						$mode = IFileInfo::MODE_DIRECTORY & IFileInfo::MODE_READONLY;
 					} else {
-						$mode = FileInfo::MODE_DIRECTORY;
+						$mode = IFileInfo::MODE_DIRECTORY;
 					}
 					$this->statCache[$path] = new FileInfo($path, '', 0, $this->statCache[$path]->getMTime(), $mode);
 				}
@@ -176,7 +178,7 @@ class SMB extends \OCP\Files\Storage\StorageAdapter {
 			} catch (ForbiddenException $e) {
 				if ($this->remoteIsShare() && $this->isRootDir($path)) { //mtime may not work for share root
 					$this->log("faking stat for forbidden '$path'");
-					$this->statCache[$path] = new FileInfo($path, '', 0, $this->shareMTime(), FileInfo::MODE_DIRECTORY);
+					$this->statCache[$path] = new FileInfo($path, '', 0, $this->shareMTime(), IFileInfo::MODE_DIRECTORY);
 				} else {
 					$this->leave(__FUNCTION__, $e);
 					throw $e;
@@ -638,7 +640,7 @@ class SMB extends \OCP\Files\Storage\StorageAdapter {
 	public static function checkDependencies() {
 		return (
 			(bool)\OC_Helper::findBinaryPath('smbclient')
-			|| Server::NativeAvailable()
+			|| NativeServer::available(new System())
 		) ? true : ['smbclient'];
 	}
 
