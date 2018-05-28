@@ -14,13 +14,15 @@ class System {
 
 	private $net;
 
+	private $stdbuf;
+
 	public static function getFD($num) {
-		$folders = array(
+		$folders = [
 			'/proc/self/fd',
 			'/dev/fd'
-		);
+		];
 		foreach ($folders as $folder) {
-			if (\file_exists($folder)) {
+			if (file_exists($folder)) {
 				return $folder . '/' . $num;
 			}
 		}
@@ -29,15 +31,25 @@ class System {
 
 	public function getSmbclientPath() {
 		if (!$this->smbclient) {
-			$this->smbclient = \trim(`which smbclient`);
+			$this->smbclient = trim(`which smbclient`);
 		}
 		return $this->smbclient;
 	}
 
 	public function getNetPath() {
 		if (!$this->net) {
-			$this->net = \trim(`which net`);
+			$this->net = trim(`which net`);
 		}
 		return $this->net;
+	}
+
+	public function hasStdBuf() {
+		if (!$this->stdbuf) {
+			$result = null;
+			$output = array();
+			exec('which stdbuf 2>&1', $output, $result);
+			$this->stdbuf = $result === 0;
+		}
+		return $this->stdbuf;
 	}
 }
