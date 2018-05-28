@@ -46,6 +46,7 @@ Feature: capabilities
 			| files_sharing | federation@@@incoming                 | 1                 |
 			| files_sharing | group_sharing                         | 1                 |
 			| files_sharing | share_with_group_members_only         | EMPTY             |
+			| files_sharing | exclude_groups_from_sharing           | EMPTY             |
 			| files_sharing | user_enumeration@@@enabled            | 1                 |
 			| files_sharing | user_enumeration@@@group_members_only | EMPTY             |
 			| files         | bigfilechunking                       | 1                 |
@@ -70,6 +71,7 @@ Feature: capabilities
 			| files_sharing | federation@@@incoming                 | 1                 |
 			| files_sharing | group_sharing                         | 1                 |
 			| files_sharing | share_with_group_members_only         | EMPTY             |
+			| files_sharing | exclude_groups_from_sharing           | EMPTY             |
 			| files_sharing | user_enumeration@@@enabled            | 1                 |
 			| files_sharing | user_enumeration@@@group_members_only | EMPTY             |
 			| files         | bigfilechunking                       | 1                 |
@@ -110,6 +112,7 @@ Feature: capabilities
 			| files_sharing | federation@@@incoming                 | 1                 |
 			| files_sharing | group_sharing                         | 1                 |
 			| files_sharing | share_with_group_members_only         | EMPTY             |
+			| files_sharing | exclude_groups_from_sharing           | EMPTY             |
 			| files_sharing | user_enumeration@@@enabled            | 1                 |
 			| files_sharing | user_enumeration@@@group_members_only | EMPTY             |
 			| files         | bigfilechunking                       | 1                 |
@@ -134,6 +137,7 @@ Feature: capabilities
 			| files_sharing | federation@@@incoming                 | 1                 |
 			| files_sharing | group_sharing                         | 1                 |
 			| files_sharing | share_with_group_members_only         | EMPTY             |
+			| files_sharing | exclude_groups_from_sharing           | EMPTY             |
 			| files_sharing | user_enumeration@@@enabled            | 1                 |
 			| files_sharing | user_enumeration@@@group_members_only | EMPTY             |
 			| files         | bigfilechunking                       | 1                 |
@@ -158,6 +162,7 @@ Feature: capabilities
 			| files_sharing | federation@@@incoming                 | 1                 |
 			| files_sharing | group_sharing                         | 1                 |
 			| files_sharing | share_with_group_members_only         | EMPTY             |
+			| files_sharing | exclude_groups_from_sharing           | EMPTY             |
 			| files_sharing | user_enumeration@@@enabled            | 1                 |
 			| files_sharing | user_enumeration@@@group_members_only | EMPTY             |
 			| files         | bigfilechunking                       | 1                 |
@@ -182,6 +187,7 @@ Feature: capabilities
 			| files_sharing | federation@@@incoming                 | EMPTY             |
 			| files_sharing | group_sharing                         | 1                 |
 			| files_sharing | share_with_group_members_only         | EMPTY             |
+			| files_sharing | exclude_groups_from_sharing           | EMPTY             |
 			| files_sharing | user_enumeration@@@enabled            | 1                 |
 			| files_sharing | user_enumeration@@@group_members_only | EMPTY             |
 			| files         | bigfilechunking                       | 1                 |
@@ -209,6 +215,7 @@ Feature: capabilities
 			| files_sharing | federation@@@incoming                          | 1                 |
 			| files_sharing | group_sharing                                  | 1                 |
 			| files_sharing | share_with_group_members_only                  | EMPTY             |
+			| files_sharing | exclude_groups_from_sharing                    | EMPTY             |
 			| files_sharing | user_enumeration@@@enabled                     | 1                 |
 			| files_sharing | user_enumeration@@@group_members_only          | EMPTY             |
 			| files         | bigfilechunking                                | 1                 |
@@ -236,6 +243,7 @@ Feature: capabilities
 			| files_sharing | federation@@@incoming                          | 1                 |
 			| files_sharing | group_sharing                                  | 1                 |
 			| files_sharing | share_with_group_members_only                  | EMPTY             |
+			| files_sharing | exclude_groups_from_sharing                    | EMPTY             |
 			| files_sharing | user_enumeration@@@enabled                     | 1                 |
 			| files_sharing | user_enumeration@@@group_members_only          | EMPTY             |
 			| files         | bigfilechunking                                | 1                 |
@@ -263,6 +271,7 @@ Feature: capabilities
 			| files_sharing | federation@@@incoming                          | 1                 |
 			| files_sharing | group_sharing                                  | 1                 |
 			| files_sharing | share_with_group_members_only                  | EMPTY             |
+			| files_sharing | exclude_groups_from_sharing                    | EMPTY             |
 			| files_sharing | user_enumeration@@@enabled                     | 1                 |
 			| files_sharing | user_enumeration@@@group_members_only          | EMPTY             |
 			| files         | bigfilechunking                                | 1                 |
@@ -287,6 +296,7 @@ Feature: capabilities
 			| files_sharing | federation@@@incoming                 | 1                 |
 			| files_sharing | group_sharing                         | 1                 |
 			| files_sharing | share_with_group_members_only         | EMPTY             |
+			| files_sharing | exclude_groups_from_sharing           | EMPTY             |
 			| files_sharing | user_enumeration@@@enabled            | 1                 |
 			| files_sharing | user_enumeration@@@group_members_only | EMPTY             |
 			| files         | bigfilechunking                       | 1                 |
@@ -311,6 +321,7 @@ Feature: capabilities
 			| files_sharing | federation@@@incoming                 | 1                 |
 			| files_sharing | group_sharing                         | 1                 |
 			| files_sharing | share_with_group_members_only         | EMPTY             |
+			| files_sharing | exclude_groups_from_sharing           | EMPTY             |
 			| files_sharing | user_enumeration@@@enabled            | 1                 |
 			| files_sharing | user_enumeration@@@group_members_only | EMPTY             |
 			| files         | bigfilechunking                       | 1                 |
@@ -336,6 +347,7 @@ Feature: capabilities
 			| files_sharing | federation@@@incoming                 | 1                 |
 			| files_sharing | group_sharing                         | 1                 |
 			| files_sharing | share_with_group_members_only         | EMPTY             |
+			| files_sharing | exclude_groups_from_sharing           | EMPTY             |
 			| files_sharing | user_enumeration@@@enabled            | 1                 |
 			| files_sharing | user_enumeration@@@group_members_only | EMPTY             |
 			| files         | bigfilechunking                       | 1                 |
@@ -363,6 +375,7 @@ Feature: capabilities
 			| files_sharing | federation@@@incoming                 | 1                 |
 			| files_sharing | group_sharing                         | 1                 |
 			| files_sharing | share_with_group_members_only         | EMPTY             |
+			| files_sharing | exclude_groups_from_sharing           | EMPTY             |
 			| files_sharing | user_enumeration@@@enabled            | 1                 |
 			| files_sharing | user_enumeration@@@group_members_only | EMPTY             |
 			| files         | bigfilechunking                       | 1                 |
@@ -387,6 +400,7 @@ Feature: capabilities
 			| files_sharing | federation@@@incoming                 | 1                 |
 			| files_sharing | group_sharing                         | EMPTY             |
 			| files_sharing | share_with_group_members_only         | EMPTY             |
+			| files_sharing | exclude_groups_from_sharing           | EMPTY             |
 			| files_sharing | user_enumeration@@@enabled            | 1                 |
 			| files_sharing | user_enumeration@@@group_members_only | EMPTY             |
 			| files         | bigfilechunking                       | 1                 |
@@ -411,6 +425,7 @@ Feature: capabilities
 			| files_sharing | federation@@@incoming                 | 1                 |
 			| files_sharing | group_sharing                         | 1                 |
 			| files_sharing | share_with_group_members_only         | 1                 |
+			| files_sharing | exclude_groups_from_sharing           | EMPTY             |
 			| files_sharing | user_enumeration@@@enabled            | 1                 |
 			| files_sharing | user_enumeration@@@group_members_only | EMPTY             |
 			| files         | bigfilechunking                       | 1                 |
@@ -435,6 +450,7 @@ Feature: capabilities
 			| files_sharing | federation@@@incoming         | 1                 |
 			| files_sharing | group_sharing                 | 1                 |
 			| files_sharing | share_with_group_members_only | EMPTY             |
+			| files_sharing | exclude_groups_from_sharing   | EMPTY             |
 			| files_sharing | user_enumeration@@@enabled    | EMPTY             |
 			| files         | bigfilechunking               | 1                 |
 			| files         | undelete                      | 1                 |
@@ -458,6 +474,7 @@ Feature: capabilities
 			| files_sharing | federation@@@incoming                 | 1                 |
 			| files_sharing | group_sharing                         | 1                 |
 			| files_sharing | share_with_group_members_only         | EMPTY             |
+			| files_sharing | exclude_groups_from_sharing           | EMPTY             |
 			| files_sharing | user_enumeration@@@enabled            | 1                 |
 			| files_sharing | user_enumeration@@@group_members_only | 1                 |
 			| files         | bigfilechunking                       | 1                 |
@@ -486,13 +503,17 @@ Feature: capabilities
 			| files_sharing | federation@@@incoming                     | 1                 |
 			| files_sharing | group_sharing                             | 1                 |
 			| files_sharing | share_with_group_members_only             | EMPTY             |
+			| files_sharing | exclude_groups_from_sharing               | 1                 |
+			| files_sharing | groups_excluded_from_sharing@@@element[0] | grp1              |
+			| files_sharing | groups_excluded_from_sharing@@@element[1] | hash#group        |
+			| files_sharing | groups_excluded_from_sharing@@@element[2] | group-3           |
 			| files_sharing | user_enumeration@@@enabled                | 1                 |
 			| files_sharing | user_enumeration@@@group_members_only     | EMPTY             |
 			| files         | bigfilechunking                           | 1                 |
 			| files         | undelete                                  | 1                 |
 			| files         | versioning                                | 1                 |
 
-	Scenario: When in a group that is excluded from sharing, can_share is off
+	Scenario: When in a group that is excluded from sharing, can_share is off and "exclude groups from sharing" details are not reported
 		Given parameter "shareapi_exclude_groups" of app "core" has been set to "yes"
 		And user "user0" has been created
 		And group "grp1" has been created
@@ -523,8 +544,14 @@ Feature: capabilities
 			| files         | bigfilechunking                           | 1                 |
 			| files         | undelete                                  | 1                 |
 			| files         | versioning                                | 1                 |
+		And the capabilities should not contain
+			| capability    | path_to_element                           |
+			| files_sharing | exclude_groups_from_sharing               |
+			| files_sharing | groups_excluded_from_sharing@@@element[0] |
+			| files_sharing | groups_excluded_from_sharing@@@element[1] |
+			| files_sharing | groups_excluded_from_sharing@@@element[2] |
 
-	Scenario: When not in any group that is excluded from sharing, can_share is on
+	Scenario: When not in any group that is excluded from sharing, can_share is on and "exclude groups from sharing" details are not reported
 		Given parameter "shareapi_exclude_groups" of app "core" has been set to "yes"
 		And user "user0" has been created
 		And group "grp1" has been created
@@ -555,8 +582,50 @@ Feature: capabilities
 			| files         | bigfilechunking                           | 1                 |
 			| files         | undelete                                  | 1                 |
 			| files         | versioning                                | 1                 |
+		And the capabilities should not contain
+			| capability    | path_to_element                           |
+			| files_sharing | exclude_groups_from_sharing               |
+			| files_sharing | groups_excluded_from_sharing@@@element[0] |
+			| files_sharing | groups_excluded_from_sharing@@@element[1] |
+			| files_sharing | groups_excluded_from_sharing@@@element[2] |
 
-	Scenario: When in a group that is excluded from sharing and in another group, can_share is off
+	Scenario: When not in any group at all, can_share is on and "exclude groups from sharing" details are not reported
+		Given parameter "shareapi_exclude_groups" of app "core" has been set to "yes"
+		And group "grp1" has been created
+		And group "hash#group" has been created
+		And group "group-3" has been created
+		And parameter "shareapi_exclude_groups_list" of app "core" has been set to '["grp1","hash#group","group-3"]'
+		And user "user0" has been created
+		And as user "user0"
+		When the user retrieves the capabilities using the API
+		Then the capabilities should contain
+			| capability    | path_to_element                           | value             |
+			| core          | pollinterval                              | 60                |
+			| core          | webdav-root                               | remote.php/webdav |
+			| files_sharing | api_enabled                               | 1                 |
+			| files_sharing | can_share                                 | 1                 |
+			| files_sharing | public@@@enabled                          | 1                 |
+			| files_sharing | public@@@upload                           | 1                 |
+			| files_sharing | public@@@send_mail                        | EMPTY             |
+			| files_sharing | public@@@social_share                     | 1                 |
+			| files_sharing | resharing                                 | 1                 |
+			| files_sharing | federation@@@outgoing                     | 1                 |
+			| files_sharing | federation@@@incoming                     | 1                 |
+			| files_sharing | group_sharing          			        | 1                 |
+			| files_sharing | share_with_group_members_only             | EMPTY             |
+			| files_sharing | user_enumeration@@@enabled                | 1                 |
+			| files_sharing | user_enumeration@@@group_members_only     | EMPTY             |
+			| files         | bigfilechunking                           | 1                 |
+			| files         | undelete                                  | 1                 |
+			| files         | versioning                                | 1                 |
+		And the capabilities should not contain
+			| capability    | path_to_element                           |
+			| files_sharing | exclude_groups_from_sharing               |
+			| files_sharing | groups_excluded_from_sharing@@@element[0] |
+			| files_sharing | groups_excluded_from_sharing@@@element[1] |
+			| files_sharing | groups_excluded_from_sharing@@@element[2] |
+
+	Scenario: When in a group that is excluded from sharing and in another group, can_share is off and "exclude groups from sharing" details are not reported
 		Given parameter "shareapi_exclude_groups" of app "core" has been set to "yes"
 		And user "user0" has been created
 		And group "grp1" has been created
@@ -588,3 +657,9 @@ Feature: capabilities
 			| files         | bigfilechunking                           | 1                 |
 			| files         | undelete                                  | 1                 |
 			| files         | versioning                                | 1                 |
+		And the capabilities should not contain
+			| capability    | path_to_element                           |
+			| files_sharing | exclude_groups_from_sharing               |
+			| files_sharing | groups_excluded_from_sharing@@@element[0] |
+			| files_sharing | groups_excluded_from_sharing@@@element[1] |
+			| files_sharing | groups_excluded_from_sharing@@@element[2] |
