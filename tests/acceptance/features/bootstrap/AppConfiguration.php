@@ -99,7 +99,7 @@ trait AppConfiguration {
 	}
 
 	/**
-	 * @Given /^parameter "([^"]*)" of app "([^"]*)" has been set to "([^"]*)"$/
+	 * @Given /^parameter "([^"]*)" of app "([^"]*)" has been set to ((?:'[^']*')|(?:"[^"]*"))$/
 	 *
 	 * @param string $parameter
 	 * @param string $app
@@ -108,6 +108,9 @@ trait AppConfiguration {
 	 * @return void
 	 */
 	public function serverParameterHasBeenSetTo($parameter, $app, $value) {
+		// The capturing group of the regex always includes the quotes at each
+		// end of the captured string, so trim them.
+		$value = \trim($value, $value[0]);
 		$this->adminSetsServerParameterToUsingAPI($parameter, $app, $value);
 	}
 
@@ -180,11 +183,61 @@ trait AppConfiguration {
 		$path_to_element = \explode('@@@', $capabilitiesPath);
 		$answeredValue = $xml->{$capabilitiesApp};
 
-		for ($i = 0; $i < \count($path_to_element); $i++) {
-			$answeredValue = $answeredValue->{$path_to_element[$i]};
+		foreach ($path_to_element as $element) {
+			$nameIndexParts = \explode('[', $element);
+			if (isset($nameIndexParts[1])) {
+				// This part of the path should be something like "some_element[1]"
+				// Separately extract the name and the index
+				$name = $nameIndexParts[0];
+				$index = (int) \explode(']', $nameIndexParts[1])[0];
+				// and use those to construct the reference into the next XML level
+				$answeredValue = $answeredValue->{$name}[$index];
+			} else {
+				$answeredValue = $answeredValue->{$element};
+			}
 		}
 
 		return (string)$answeredValue;
+	}
+
+	/**
+	 * @param string $xml of the capabilities
+	 * @param string $capabilitiesApp the "app" name in the capabilities response
+	 * @param string $capabilitiesPath the path to the element
+	 *
+	 * @return boolean
+	 */
+	public function parameterValueExistsInXml(
+		$xml, $capabilitiesApp, $capabilitiesPath
+	) {
+		$path_to_element = \explode('@@@', $capabilitiesPath);
+		$answeredValue = $xml->{$capabilitiesApp};
+
+		foreach ($path_to_element as $element) {
+			$nameIndexParts = \explode('[', $element);
+			if (isset($nameIndexParts[1])) {
+				// This part of the path should be something like "some_element[1]"
+				// Separately extract the name and the index
+				$name = $nameIndexParts[0];
+				$index = (int) \explode(']', $nameIndexParts[1])[0];
+				// and use those to construct the reference into the next XML level
+				if (isset($answeredValue->{$name}[$index])) {
+					$answeredValue = $answeredValue->{$name}[$index];
+				} else {
+					// The path ends at this level
+					return false;
+				}
+			} else {
+				if (isset($answeredValue->{$element})) {
+					$answeredValue = $answeredValue->{$element};
+				} else {
+					// The path ends at this level
+					return false;
+				}
+			}
+		}
+
+		return true;
 	}
 
 	/**

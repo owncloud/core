@@ -1446,6 +1446,13 @@ trait Sharing {
 			],
 			[
 				'capabilitiesApp' => 'files_sharing',
+				'capabilitiesParameter' => 'exclude_groups_from_sharing',
+				'testingApp' => 'core',
+				'testingParameter' => 'shareapi_exclude_groups',
+				'testingState' => false
+			],
+			[
+				'capabilitiesApp' => 'files_sharing',
 				'capabilitiesParameter' =>
 					'user_enumeration@@@enabled',
 				'testingApp' => 'core',
