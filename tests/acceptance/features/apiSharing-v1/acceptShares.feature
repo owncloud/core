@@ -1,8 +1,9 @@
 @api
-Feature: accept/decline shares comming from an internal users
-As a user
-I want to ....
-So that ....
+Feature: accept/decline shares coming from internal users
+	As a user
+	I want to have control of which received shares I accept
+	So that I can keep my file system clean
+
 	Background:
 		Given using API version "1"
 		And using new DAV path

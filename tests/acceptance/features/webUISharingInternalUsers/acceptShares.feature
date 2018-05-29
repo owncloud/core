@@ -1,8 +1,8 @@
 @webUI @insulated @disablePreviews
-Feature: accept/decline shares comming from an internal users
-As a user
-I want to ....
-So that ....
+Feature: accept/decline shares coming from internal users
+	As a user
+	I want to have control of which received shares I accept
+	So that I can keep my file system clean
 
 	Background:
 		Given these users have been created:
@@ -17,7 +17,7 @@ So that ....
 		And user "user2" has been added to group "grp1"
 		And the user has browsed to the login page
 
-	Scenario: Autoaccept disabled results in "Pending" shares
+	Scenario: Auto-accept disabled results in "Pending" shares
 		Given the setting "Automatically accept new incoming local user shares" in the section "Sharing" has been disabled
 		And user "user2" has shared folder "/simple-folder" with group "grp1"
 		And user "user2" has shared file "/testimage.jpg" with user "user1"
@@ -167,7 +167,7 @@ So that ....
 		And the folder "simple-folder (2)" should be in state "Declined" in the shared-with-you page on the webUI
 		And the file "testimage (2).jpg" should be in state "Declined" in the shared-with-you page on the webUI
 
-	Scenario: Autoaccept shares
+	Scenario: Auto-accept shares
 		Given the setting "Automatically accept new incoming local user shares" in the section "Sharing" has been enabled
 		And user "user2" has shared folder "/simple-folder" with group "grp1"
 		And user "user2" has shared folder "/testimage.jpg" with user "user1"
@@ -179,7 +179,7 @@ So that ....
 		And the folder "simple-folder (2)" should be in state "" in the shared-with-you page on the webUI
 		And the file "testimage (2).jpg" should be in state "" in the shared-with-you page on the webUI
 
-	Scenario: decline autoaccepted shares
+	Scenario: decline auto-accepted shares
 		Given the setting "Automatically accept new incoming local user shares" in the section "Sharing" has been enabled
 		And user "user2" has shared folder "/simple-folder" with group "grp1"
 		And user "user2" has shared folder "/testimage.jpg" with user "user1"
@@ -192,7 +192,7 @@ So that ....
 		And the folder "simple-folder (2)" should be in state "Declined" in the shared-with-you page on the webUI
 		And the file "testimage (2).jpg" should be in state "Declined" in the shared-with-you page on the webUI
 
-	Scenario: unshare autoaccepted shares
+	Scenario: unshare auto-accepted shares
 		Given the setting "Automatically accept new incoming local user shares" in the section "Sharing" has been enabled
 		And user "user2" has shared folder "/simple-folder" with group "grp1"
 		And user "user2" has shared folder "/testimage.jpg" with user "user1"
