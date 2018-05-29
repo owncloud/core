@@ -24,6 +24,7 @@ Feature: sharing
 		When user "user0" deletes the last share using the API
 		Then the OCS status code should be "100"
 		And the HTTP status code should be "200"
+		And the last share_id should not be included in the response
 
 	Scenario: orphaned shares
 		Given user "user0" has been created
@@ -31,10 +32,10 @@ Feature: sharing
 		And user "user1" has been created
 		And user "user0" has created a folder "/common"
 		And user "user0" has created a folder "/common/sub"
-		And user "user0" has shared file "/common/sub" with user "user1"
-		And user "user0" has deleted folder "/common"
-		When user "user0" empties the trashbin using the API
-		Then as "user1" the folder "/sub" should not exist
+		And user "user0" has shared folder "/common/sub" with user "user1"
+		When user "user0" deletes folder "/common" using the API
+		Then the HTTP status code should be "204"
+		And as "user1" the folder "/sub" should not exist
 
 	Scenario: sharing subfolder of already shared folder, GET result is correct
 		Given user "user0" has been created
@@ -67,7 +68,8 @@ Feature: sharing
 		And user "user0" has moved file "/textfile0.txt" to "/shared/shared_file.txt"
 		And user "user0" has shared folder "/shared" with user "user1"
 		When user "user1" deletes file "/shared/shared_file.txt" using the API
-		Then as "user1" the file "/shared/shared_file.txt" should not exist
+		Then the HTTP status code should be "204"
+		And as "user1" the file "/shared/shared_file.txt" should not exist
 		And as "user0" the file "/shared/shared_file.txt" should not exist
 		And as "user0" the file "/shared_file.txt" should exist in trash
 		And as "user1" the file "/shared_file.txt" should exist in trash
@@ -80,7 +82,8 @@ Feature: sharing
 		And user "user0" has moved file "/textfile0.txt" to "/shared/sub/shared_file.txt"
 		And user "user0" has shared folder "/shared" with user "user1"
 		When user "user1" deletes folder "/shared/sub" using the API
-		Then as "user1" the folder "/shared/sub" should not exist
+		Then the HTTP status code should be "204"
+		And as "user1" the folder "/shared/sub" should not exist
 		And as "user0" the folder "/shared/sub" should not exist
 		And as "user0" the folder "/sub" should exist in trash
 		And as "user0" the file "/sub/shared_file.txt" should exist in trash
@@ -97,5 +100,48 @@ Feature: sharing
 		And user "user0" has stored etag of element "/PARENT"
 		And user "user1" has stored etag of element "/"
 		When user "user1" deletes the last share using the API
-		Then the etag of element "/" of user "user1" should have changed
+		Then the HTTP status code should be "200"
+		And the etag of element "/" of user "user1" should have changed
 		And the etag of element "/PARENT" of user "user0" should not have changed
+
+	Scenario: sharee of a read-only share folder tries to delete the shared folder
+		Given user "user0" has been created
+		And user "user1" has been created
+		And user "user0" has created a folder "/shared"
+		And user "user0" has moved file "/textfile0.txt" to "/shared/shared_file.txt"
+		And user "user0" has sent HTTP method "POST" to API endpoint "/apps/files_sharing/api/v1/shares" with body
+			| path        | shared |
+			| shareWith   | user1  |
+			| shareType   | 0      |
+			| permissions | 1      |
+		When user "user1" deletes file "/shared/shared_file.txt" using the API
+		Then the HTTP status code should be "403"
+		And as "user1" the file "/shared/shared_file.txt" should exist
+
+	Scenario: sharee of a upload-only shared folder tries to delete a file in the shared folder
+		Given user "user0" has been created
+		And user "user1" has been created
+		And user "user0" has created a folder "/shared"
+		And user "user0" has moved file "/textfile0.txt" to "/shared/shared_file.txt"
+		And user "user0" has sent HTTP method "POST" to API endpoint "/apps/files_sharing/api/v1/shares" with body
+			| path        | shared |
+			| shareWith   | user1  |
+			| shareType   | 0      |
+			| permissions | 4      |
+		When user "user1" deletes file "/shared/shared_file.txt" using the API
+		Then the HTTP status code should be "403"
+		And as "user0" the file "/shared/shared_file.txt" should exist
+
+	Scenario: sharee of a upload-only share folder tries to delete his file in the folder
+		Given user "user0" has been created
+		And user "user1" has been created
+		And user "user0" has created a folder "/shared"
+		And user "user0" has sent HTTP method "POST" to API endpoint "/apps/files_sharing/api/v1/shares" with body
+			| path        | shared |
+			| shareWith   | user1  |
+			| shareType   | 0      |
+			| permissions | 4      |
+		When user "user1" uploads file "data/textfile.txt" to "shared/textfile.txt" using the API
+		And user "user1" deletes file "/shared/textfile.txt" using the API
+		Then the HTTP status code should be "403"
+		And as "user0" the file "/shared/textfile.txt" should exist
