@@ -59,6 +59,8 @@ class DecryptAll {
 	protected $logger;
 
 	/**
+	 * DecryptAll constructor.
+	 *
 	 * @param Manager $encryptionManager
 	 * @param IUserManager $userManager
 	 * @param View $rootView
@@ -165,7 +167,7 @@ class DecryptAll {
 				return false;
 			}
 			$this->userManager->callForSeenUsers(function (IUser $user) use ($progress, &$userNo, $numberOfUsers) {
-				if (\OC::$server->getAppConfig()->getValue('encryption', 'userSpecificKey', '0') !== 0) {
+				if (\OC::$server->getAppConfig()->getValue('encryption', 'userSpecificKey', '0') !== '0') {
 					if ($this->prepareEncryptionModules($user->getUID()) === false) {
 						return false;
 					}
@@ -250,7 +252,7 @@ class DecryptAll {
 	 */
 	protected function decryptFile($path) {
 		$source = $path;
-		$target = $path . '.decrypted.' . $this->getTimestamp();
+		$target = $path . '.decrypted.' . $this->getTimestamp() . '.part';
 
 		try {
 			\OC\Files\Storage\Wrapper\Encryption::setDisableWriteEncryption(true);

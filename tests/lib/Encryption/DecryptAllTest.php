@@ -318,18 +318,7 @@ class DecryptAllTest extends TestCase {
 			'home' => '',
 			'state' => 1
 		];
-		$user2 = [
-			'id' => 1,
-			'email' => null,
-			'user_id' => 'user1',
-			'lower_user_id' => 'user1',
-			'display_name' => 'user1',
-			'quota' => null,
-			'last_login' => '1527174420',
-			'backend' => 'OC\User\Database',
-			'home' => '',
-			'state' => 1
-		];
+
 		$iConfig = $this->createMock(IConfig::class);
 		$idbConnection = $this->createMock(IDBConnection::class);
 		$iqueryBuilder = $this->createMock(IQueryBuilder::class);
@@ -337,7 +326,7 @@ class DecryptAllTest extends TestCase {
 		$resultStatment = $this->createMock(Statement::class);
 		$resultStatment->expects($this->at(0))
 			->method('fetch')
-			->willReturn(['count' => '2']);
+			->willReturn(['count' => '1']);
 		$resultStatment->expects($this->at(1))
 			->method('fetch')
 			->willReturn($user1);
@@ -400,7 +389,7 @@ class DecryptAllTest extends TestCase {
 		$this->invokePrivate($instance, 'input', [$this->inputInterface]);
 		$this->invokePrivate($instance, 'output', [$this->outputInterface]);
 
-		\OC::$server->getAppConfig()->setValue('encryption', 'userSpecificKey', 1);
+		\OC::$server->getAppConfig()->setValue('encryption', 'userSpecificKey', '1');
 
 		if (empty($user)) {
 			$instance->expects($this->any())
@@ -521,14 +510,52 @@ class DecryptAllTest extends TestCase {
 
 		$this->view->expects($this->once())
 			->method('copy')
-			->with($path, $path . '.decrypted.42');
+			->with($path, $path . '.decrypted.42.part');
 		$this->view->expects($this->once())
 			->method('rename')
-			->with($path . '.decrypted.42', $path);
+			->with($path . '.decrypted.42.part', $path);
 
 		$this->assertTrue(
 			$this->invokePrivate($instance, 'decryptFile', [$path])
 		);
+	}
+
+	/**
+	 * Test to verify the fileid after the decryptFile method should be same
+	 */
+	public function testDecryptFileForFileId() {
+		$this->createUser('user1', 'user1');
+		//To create /user1/files folder
+		\OC::$server->getUserFolder('user1');
+
+		$view = new View('/');
+		$view->touch('/user1/files/test.txt');
+		$fileInfo = $view->getFileInfo('/user1/files/test.txt');
+
+		$path = '/user1/files/test.txt';
+
+		/** @var DecryptAll | \PHPUnit_Framework_MockObject_MockObject  $instance */
+		$instance = $this->getMockBuilder(DecryptAll::class)
+			->setConstructorArgs(
+				[
+					$this->encryptionManager,
+					$this->userManager,
+					$view,
+					$this->logger
+				]
+			)
+			->setMethods(['getTimestamp'])
+			->getMock();
+
+		$instance->expects($this->any())->method('getTimestamp')->willReturn(42);
+
+		$this->assertTrue(
+			$this->invokePrivate($instance, 'decryptFile', [$path])
+		);
+
+		$view1 = new View('/');
+		$newFileInfo = $view1->getFileInfo($path);
+		$this->assertEquals($newFileInfo->getId(), $fileInfo->getId());
 	}
 
 	public function testDecryptFileFailure() {
@@ -551,7 +578,7 @@ class DecryptAllTest extends TestCase {
 
 		$this->view->expects($this->once())
 			->method('copy')
-			->with($path, $path . '.decrypted.42')
+			->with($path, $path . '.decrypted.42.part')
 			->willReturnCallback(function () {
 				throw new DecryptionFailedException();
 			});
@@ -559,11 +586,11 @@ class DecryptAllTest extends TestCase {
 		$this->view->expects($this->never())->method('rename');
 		$this->view->expects($this->once())
 			->method('file_exists')
-			->with($path . '.decrypted.42')
+			->with($path . '.decrypted.42.part')
 			->willReturn(true);
 		$this->view->expects($this->once())
 			->method('unlink')
-			->with($path . '.decrypted.42');
+			->with($path . '.decrypted.42.part');
 
 		$this->assertFalse(
 			$this->invokePrivate($instance, 'decryptFile', [$path])
