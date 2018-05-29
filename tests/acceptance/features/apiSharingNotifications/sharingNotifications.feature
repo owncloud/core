@@ -1,8 +1,8 @@
 @api
-Feature: check notifications when receiving a share
-As a user
-I want to ....
-So that ....
+Feature: Display notifications when receiving a share
+	As a user
+	I want to see notifications about shares that have been offered to me
+	So that I can easily decide what I want to do with new received shares
 
 	Background:
 		Given using API version "1"
@@ -20,7 +20,7 @@ So that ....
 		Given parameter "shareapi_auto_accept_share" of app "core" has been set to "no"
 		When user "user0" shares folder "/PARENT" with user "user1" using the API
 		And user "user0" shares file "/textfile0.txt" with user "user1" using the API
-		Then user "user1" should have 2 notification
+		Then user "user1" should have 2 notifications
 		And the last notification of user "user1" should match these regular expressions
 			| app         | /^files_sharing$/                       |
 			| subject     | /^User "user0" shared "PARENT" with you$/ |
@@ -32,14 +32,14 @@ So that ....
 		Given parameter "shareapi_auto_accept_share" of app "core" has been set to "no"
 		When user "user0" shares folder "/PARENT" with group "grp1" using the API
 		And user "user0" shares file "/textfile0.txt" with group "grp1" using the API
-		Then user "user1" should have 2 notification
+		Then user "user1" should have 2 notifications
 		And the last notification of user "user1" should match these regular expressions
 			| app         | /^files_sharing$/                       |
 			| subject     | /^User "user0" shared "PARENT" with you$/ |
 			| message     | /^$/                                    |
 			| link        | /^%base_url%(\/index\.php)?\/f\/(\d+)$/ |
 			| object_type | /^local_share$/                         |
-		And user "user2" should have 2 notification
+		And user "user2" should have 2 notifications
 		And the last notification of user "user2" should match these regular expressions
 			| app         | /^files_sharing$/                       |
 			| subject     | /^User "user0" shared "PARENT" with you$/ |
@@ -47,11 +47,11 @@ So that ....
 			| link        | /^%base_url%(\/index\.php)?\/f\/(\d+)$/ |
 			| object_type | /^local_share$/                         |
 
-	Scenario: when autoaccepting is enabeled no notifications are send 
+	Scenario: when auto-accepting is enabled no notifications are sent
 		Given parameter "shareapi_auto_accept_share" of app "core" has been set to "yes"
 		When user "user0" shares folder "/PARENT" with user "user1" using the API
 		And user "user0" shares file "/textfile0.txt" with user "user1" using the API
-		Then user "user1" should have 0 notification
+		Then user "user1" should have 0 notifications
 
 	Scenario: discard notification if target user is not member of the group anymore
 		Given parameter "shareapi_auto_accept_share" of app "core" has been set to "no"
@@ -65,4 +65,4 @@ So that ....
 		When user "user0" shares folder "/PARENT" with group "grp1" using the API
 		And the administrator deletes group "grp1" using the API
 		Then user "user1" should have 0 notifications
-		Then user "user2" should have 0 notification
+		Then user "user2" should have 0 notifications
