@@ -50,3 +50,22 @@ Feature: dav-versions
       | shareWith   | user1        |
       | permissions | 8            |
     Then the version folder of fileId "<<FILEID>>" for user "user1" should contain "1" element
+
+	Scenario: sharer of a file see the old version information when the sharee changes the content of the file
+		Given user "user0" has been created
+		And user "user1" has been created
+		And user "user0" has uploaded file with content "user0 content" to "sharefile.txt"
+		And user "user0" has shared file "sharefile.txt" with user "user1"
+		When user "user1" has uploaded file with content "user1 content" to "/sharefile.txt"
+		Then the HTTP status code should be "204"
+		And the version folder of file "/sharefile.txt" for user "user0" should contain "1" element
+
+	Scenario: sharer of a file can restore the original content of the file after the file has been modified by the sharee
+		Given user "user0" has been created
+		And user "user1" has been created
+		And user "user0" has uploaded file with content "user0 content" to "sharefile.txt"
+		And user "user0" has shared file "sharefile.txt" with user "user1"
+		And user "user1" has uploaded file with content "user1 content" to "/sharefile.txt"
+		When user "user0" restores version index "1" of file "/sharefile.txt" using the API
+		Then the HTTP status code should be "204"
+		And the downloaded content when downloading file "/sharefile.txt" for user "user0" with range "bytes=0-12" should be "user0 content"
