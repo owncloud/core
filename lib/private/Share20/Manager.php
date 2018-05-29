@@ -166,7 +166,7 @@ class Manager implements IManager {
 			throw new \Exception($message);
 		}
 
-		\OC::$server->getEventDispatcher()->dispatch(
+		$this->eventDispatcher->dispatch(
 			'OCP\Share::validatePassword',
 			new GenericEvent(null, ['password' => $password])
 		);
@@ -722,15 +722,15 @@ class Manager implements IManager {
 			// Password updated.
 			if ($share->getPassword() !== $originalShare->getPassword() ||
 					$share->getPermissions() !== $originalShare->getPermissions()) {
-				//Verify the password
+				//Verify the password. Permissions must be taken into account in case the password must be enforced
 				if ($this->passwordMustBeEnforced($share->getPermissions()) && $share->getPassword() === null) {
 					throw new \InvalidArgumentException('Passwords are enforced for link shares');
 				} else {
 					$this->verifyPassword($share->getPassword(), $share->getPermissions());
 				}
 
-				// If a password is set. Hash it!
-				if ($share->getPassword() !== null) {
+				// If a password is set. Hash it! (only if the password has changed)
+				if ($share->getPassword() !== null && $share->getPassword() !== $originalShare->getPassword()) {
 					$share->setPassword($this->hasher->hash($share->getPassword()));
 				}
 			}
@@ -925,7 +925,7 @@ class Manager implements IManager {
 			'recipientPath' => $share->getTarget(),
 			'ownerPath' => $share->getNode()->getPath(),
 			'nodeType' => $share->getNodeType()]);
-		\OC::$server->getEventDispatcher()->dispatch('fromself.unshare',$event);
+		$this->eventDispatcher->dispatch('fromself.unshare',$event);
 	}
 
 	/**
