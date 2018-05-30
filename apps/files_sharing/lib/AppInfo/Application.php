@@ -57,7 +57,8 @@ class Application extends App {
 				$server->getShareManager(),
 				$server->getSession(),
 				$server->getPreviewManager(),
-				$server->getRootFolder()
+				$server->getRootFolder(),
+				$server->getEventDispatcher()
 			);
 		});
 		$container->registerService('ExternalSharesController', function (SimpleContainer $c) use ($server) {
