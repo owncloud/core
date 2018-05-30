@@ -83,9 +83,9 @@ class CapabilitiesTest extends \Test\TestCase {
 		];
 		$result = $this->getResults($map);
 		$this->assertTrue($result['api_enabled']);
-		$this->assertContains('public', $result);
-		$this->assertContains('user', $result);
-		$this->assertContains('resharing', $result);
+		$this->assertArrayHasKey('public', $result);
+		$this->assertArrayHasKey('user', $result);
+		$this->assertArrayHasKey('resharing', $result);
 	}
 
 	public function testDisabledSharingAPI() {
@@ -94,9 +94,9 @@ class CapabilitiesTest extends \Test\TestCase {
 		];
 		$result = $this->getResults($map);
 		$this->assertFalse($result['api_enabled']);
-		$this->assertNotContains('public', $result);
-		$this->assertNotContains('user', $result);
-		$this->assertNotContains('resharing', $result);
+		$this->assertFalse($result['public']['enabled']);
+		$this->assertFalse($result['user']['send_mail']);
+		$this->assertFalse($result['resharing']);
 	}
 
 	public function testNoLinkSharing() {
@@ -399,7 +399,7 @@ class CapabilitiesTest extends \Test\TestCase {
 		$this->assertTrue($result['user_enumeration']['group_members_only']);
 	}
 
-	public function testFederatedSharingIncomming() {
+	public function testFederatedSharingIncoming() {
 		$map = [
 			['files_sharing', 'incoming_server2server_share_enabled', 'yes', 'yes'],
 		];
@@ -408,7 +408,7 @@ class CapabilitiesTest extends \Test\TestCase {
 		$this->assertTrue($result['federation']['incoming']);
 	}
 
-	public function testFederatedSharingNoIncomming() {
+	public function testFederatedSharingNoIncoming() {
 		$map = [
 			['files_sharing', 'incoming_server2server_share_enabled', 'yes', 'no'],
 		];
