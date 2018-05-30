@@ -25,7 +25,6 @@ use OC\Share20\Manager;
 use OCP\Files\File;
 use OC\Share20\Share;
 use OCP\Files\IRootFolder;
-use OCP\Files\File;
 use OCP\Files\Folder;
 use OCP\Files\Mount\IMountManager;
 use OCP\Files\Storage;
@@ -3237,7 +3236,8 @@ class ManagerTest extends \Test\TestCase {
 			$this->factory,
 			$this->userManager,
 			$this->rootFolder,
-			$this->eventDispatcher
+			$this->eventDispatcher,
+			$this->view
 		);
 
 		$share = $this->createMock(IShare::class);

@@ -53,6 +53,8 @@ use OCP\IUserManager;
 use OCP\Share;
 use OCP\Share\Exceptions\ShareNotFound;
 use OCP\Template;
+use Symfony\Component\EventDispatcher\EventDispatcher;
+use Symfony\Component\EventDispatcher\GenericEvent;
 
 /**
  * Class ShareController
@@ -79,8 +81,12 @@ class ShareController extends Controller {
 	protected $previewManager;
 	/** @var IRootFolder */
 	protected $rootFolder;
+	/** @var EventDispatcher */
+	protected $eventDispatcher;
 
 	/**
+	 * ShareController constructor.
+	 *
 	 * @param string $appName
 	 * @param IRequest $request
 	 * @param IConfig $config
@@ -88,10 +94,11 @@ class ShareController extends Controller {
 	 * @param IUserManager $userManager
 	 * @param ILogger $logger
 	 * @param OCP\Activity\IManager $activityManager
-	 * @param \OCP\Share\IManager $shareManager
+	 * @param Share\IManager $shareManager
 	 * @param ISession $session
 	 * @param IPreview $previewManager
 	 * @param IRootFolder $rootFolder
+	 * @param EventDispatcher $eventDispatcher
 	 */
 	public function __construct($appName,
 								IRequest $request,
@@ -103,7 +110,8 @@ class ShareController extends Controller {
 								\OCP\Share\IManager $shareManager,
 								ISession $session,
 								IPreview $previewManager,
-								IRootFolder $rootFolder) {
+								IRootFolder $rootFolder,
+								EventDispatcher $eventDispatcher) {
 		parent::__construct($appName, $request);
 
 		$this->config = $config;
@@ -115,6 +123,7 @@ class ShareController extends Controller {
 		$this->session = $session;
 		$this->previewManager = $previewManager;
 		$this->rootFolder = $rootFolder;
+		$this->eventDispatcher = $eventDispatcher;
 	}
 
 	/**
@@ -223,6 +232,15 @@ class ShareController extends Controller {
 			'errorCode' => $errorCode,
 			'errorMessage' => $errorMessage,
 		]);
+
+		if ($share instanceof \OCP\Share\IShare) {
+			$cloneShare = clone $share;
+			$publicShareLinkAccessEvent = new GenericEvent(null,
+				['shareObject' => $cloneShare, 'errorCode' => $errorCode,
+					'errorMessage' => $errorMessage]);
+			$this->eventDispatcher->dispatch('share.linkaccess', $publicShareLinkAccessEvent);
+		}
+
 		if(!is_null($exception)) {
 			throw $exception;
 		}
