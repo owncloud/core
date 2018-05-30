@@ -5,7 +5,7 @@
  * http://opensource.org/licenses/MIT
  */
 
-namespace Icewind\SMB;
+namespace Icewind\SMB\Wrapped;
 
 use Icewind\SMB\Exception\AuthenticationException;
 use Icewind\SMB\Exception\ConnectException;
@@ -17,6 +17,14 @@ class Connection extends RawConnection {
 	const DELIMITER = 'smb:';
 	const DELIMITER_LENGTH = 4;
 
+	/** @var Parser */
+	private $parser;
+
+	public function __construct($command, Parser $parser, $env = array()) {
+		parent::__construct($command, $env);
+		$this->parser = $parser;
+	}
+
 	/**
 	 * send input to smbclient
 	 *
@@ -27,10 +35,23 @@ class Connection extends RawConnection {
 	}
 
 	/**
+	 * @throws ConnectException
+	 */
+	public function clearTillPrompt() {
+		$this->write('');
+		do {
+			$promptLine = $this->readLine();
+			$this->parser->checkConnectionError($promptLine);
+		} while (!$this->isPrompt($promptLine));
+		$this->write('');
+		$this->readLine();
+	}
+
+	/**
 	 * get all unprocessed output from smbclient until the next prompt
 	 *
 	 * @param callable $callback (optional) callback to call for every line read
-	 * @return string
+	 * @return string[]
 	 * @throws AuthenticationException
 	 * @throws ConnectException
 	 * @throws ConnectionException
@@ -42,7 +63,7 @@ class Connection extends RawConnection {
 			throw new ConnectionException('Connection not valid');
 		}
 		$promptLine = $this->readLine(); //first line is prompt
-		$this->checkConnectionError($promptLine);
+		$this->parser->checkConnectionError($promptLine);
 
 		$output = array();
 		$line = $this->readLine();
@@ -50,10 +71,11 @@ class Connection extends RawConnection {
 			$this->unknownError($promptLine);
 		}
 		while (!$this->isPrompt($line)) { //next prompt functions as delimiter
-			if (\is_callable($callback)) {
+			if (is_callable($callback)) {
 				$result = $callback($line);
 				if ($result === false) { // allow the callback to close the connection for infinite running commands
 					$this->close(true);
+					break;
 				}
 			} else {
 				$output[] .= $line;
@@ -70,7 +92,7 @@ class Connection extends RawConnection {
 	 * @return bool
 	 */
 	private function isPrompt($line) {
-		return \mb_substr($line, 0, self::DELIMITER_LENGTH) === self::DELIMITER || $line === false;
+		return mb_substr($line, 0, self::DELIMITER_LENGTH) === self::DELIMITER || $line === false;
 	}
 
 	/**
@@ -90,35 +112,8 @@ class Connection extends RawConnection {
 		}
 	}
 
-	/**
-	 * check if the first line holds a connection failure
-	 *
-	 * @param $line
-	 * @throws AuthenticationException
-	 * @throws InvalidHostException
-	 * @throws NoLoginServerException
-	 */
-	private function checkConnectionError($line) {
-		$line = \rtrim($line, ')');
-		if (\substr($line, -23) === ErrorCodes::LogonFailure) {
-			throw new AuthenticationException('Invalid login');
-		}
-		if (\substr($line, -26) === ErrorCodes::BadHostName) {
-			throw new InvalidHostException('Invalid hostname');
-		}
-		if (\substr($line, -22) === ErrorCodes::Unsuccessful) {
-			throw new InvalidHostException('Connection unsuccessful');
-		}
-		if (\substr($line, -28) === ErrorCodes::ConnectionRefused) {
-			throw new InvalidHostException('Connection refused');
-		}
-		if (\substr($line, -26) === ErrorCodes::NoLogonServers) {
-			throw new NoLoginServerException('No login server');
-		}
-	}
-
 	public function close($terminate = true) {
-		if (\is_resource($this->getInputStream())) {
+		if (is_resource($this->getInputStream())) {
 			$this->write('close' . PHP_EOL);
 		}
 		parent::close($terminate);

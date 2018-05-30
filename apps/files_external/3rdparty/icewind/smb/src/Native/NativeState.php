@@ -5,21 +5,25 @@
  * http://opensource.org/licenses/MIT
  */
 
-namespace Icewind\SMB;
+namespace Icewind\SMB\Native;
 
 use Icewind\SMB\Exception\AlreadyExistsException;
 use Icewind\SMB\Exception\ConnectionRefusedException;
 use Icewind\SMB\Exception\Exception;
+use Icewind\SMB\Exception\FileInUseException;
 use Icewind\SMB\Exception\ForbiddenException;
 use Icewind\SMB\Exception\HostDownException;
+use Icewind\SMB\Exception\InvalidArgumentException;
 use Icewind\SMB\Exception\InvalidTypeException;
 use Icewind\SMB\Exception\NoRouteToHostException;
 use Icewind\SMB\Exception\NotEmptyException;
 use Icewind\SMB\Exception\NotFoundException;
+use Icewind\SMB\Exception\OutOfSpaceException;
 use Icewind\SMB\Exception\TimedOutException;
+use Icewind\SMB\IAuth;
 
 /**
- * Low level wrapper for libsmbclient-php for error handling
+ * Low level wrapper for libsmbclient-php with error handling
  */
 class NativeState {
 	/**
@@ -31,60 +35,57 @@ class NativeState {
 
 	protected $connected = false;
 
+	// see error.h
+	const EXCEPTION_MAP = [
+		1   => ForbiddenException::class,
+		2   => NotFoundException::class,
+		13  => ForbiddenException::class,
+		16  => FileInUseException::class,
+		17  => AlreadyExistsException::class,
+		20  => InvalidTypeException::class,
+		21  => InvalidTypeException::class,
+		22  => InvalidArgumentException::class,
+		28  => OutOfSpaceException::class,
+		39  => NotEmptyException::class,
+		110 => TimedOutException::class,
+		111 => ConnectionRefusedException::class,
+		112 => HostDownException::class,
+		113 => NoRouteToHostException::class
+	];
+
 	protected function handleError($path) {
 		$error = smbclient_state_errno($this->state);
-		switch ($error) {
-			// see error.h
-			case 0;
-				return;
-			case 1:
-			case 13:
-				throw new ForbiddenException($path, $error);
-			case 2:
-				throw new NotFoundException($path, $error);
-			case 17:
-				throw new AlreadyExistsException($path, $error);
-			case 20:
-				throw new InvalidTypeException($path, $error);
-			case 21:
-				throw new InvalidTypeException($path, $error);
-			case 39:
-				throw new NotEmptyException($path, $error);
-			case 110:
-				throw new TimedOutException($path, $error);
-			case 111:
-				throw new ConnectionRefusedException($path, $error);
-			case 112:
-				throw new HostDownException($path, $error);
-			case 113:
-				throw new NoRouteToHostException($path, $error);
-			default:
-				$message = 'Unknown error (' . $error . ')';
-				if ($path) {
-					$message .= ' for ' . $path;
-				}
-				throw new Exception($message, $error);
+		if ($error === 0) {
+			return;
 		}
+		throw Exception::fromMap(self::EXCEPTION_MAP, $error, $path);
 	}
 
-	protected function testResult($result, $path) {
+	protected function testResult($result, $uri) {
 		if ($result === false or $result === null) {
+			// smb://host/share/path
+			if (is_string($uri) && count(explode('/', $uri, 5)) > 4) {
+				list(, , , , $path) = explode('/', $uri, 5);
+				$path = '/' . $path;
+			} else {
+				$path = null;
+			}
 			$this->handleError($path);
 		}
 	}
 
 	/**
-	 * @param string $workGroup
-	 * @param string $user
-	 * @param string $password
+	 * @param IAuth $auth
 	 * @return bool
 	 */
-	public function init($workGroup, $user, $password) {
+	public function init(IAuth $auth) {
 		if ($this->connected) {
 			return true;
 		}
 		$this->state = smbclient_state_new();
-		$result = @smbclient_state_init($this->state, $workGroup, $user, $password);
+		smbclient_option_set($this->state, SMBCLIENT_OPT_AUTO_ANONYMOUS_LOGIN, false);
+		$auth->setExtraSmbClientOptions($this->state);
+		$result = @smbclient_state_init($this->state, $auth->getWorkgroup(), $auth->getUsername(), $auth->getPassword());
 
 		$this->testResult($result, '');
 		$this->connected = true;
@@ -246,7 +247,7 @@ class NativeState {
 	 * @param resource $file
 	 * @param int $offset
 	 * @param int $whence SEEK_SET | SEEK_CUR | SEEK_END
-	 * @return int | bool new file offset as measured from the start of the file on success, false on failure.
+	 * @return int|bool new file offset as measured from the start of the file on success, false on failure.
 	 */
 	public function lseek($file, $offset, $whence = SEEK_SET) {
 		$result = @smbclient_lseek($this->state, $file, $offset, $whence);
