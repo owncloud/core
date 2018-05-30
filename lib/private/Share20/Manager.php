@@ -28,6 +28,7 @@ namespace OC\Share20;
 
 use OC\Cache\CappedMemoryCache;
 use OC\Files\Mount\MoveableMount;
+use OC\Files\View;
 use OCP\Files\File;
 use OCP\Files\Folder;
 use OCP\Files\IRootFolder;
@@ -42,8 +43,10 @@ use OCP\Security\IHasher;
 use OCP\Security\ISecureRandom;
 use OCP\Share\Exceptions\GenericShareException;
 use OCP\Share\Exceptions\ShareNotFound;
+use OCP\Share\Exceptions\TransferSharesException;
 use OCP\Share\IManager;
 use OCP\Share\IProviderFactory;
+use OCP\Share\IShare;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\EventDispatcher\GenericEvent;
 
@@ -77,6 +80,9 @@ class Manager implements IManager {
 	/** @var EventDispatcher  */
 	private $eventDispatcher;
 
+	/** @var View */
+	private $view;
+
 	/**
 	 * Manager constructor.
 	 *
@@ -102,7 +108,8 @@ class Manager implements IManager {
 			IProviderFactory $factory,
 			IUserManager $userManager,
 			IRootFolder $rootFolder,
-			EventDispatcher $eventDispatcher
+			EventDispatcher $eventDispatcher,
+			View $view
 	) {
 		$this->logger = $logger;
 		$this->config = $config;
@@ -116,6 +123,7 @@ class Manager implements IManager {
 		$this->rootFolder = $rootFolder;
 		$this->sharingDisabledForUsersCache = new CappedMemoryCache();
 		$this->eventDispatcher = $eventDispatcher;
+		$this->view = $view;
 	}
 
 	/**
@@ -671,6 +679,93 @@ class Manager implements IManager {
 		$this->eventDispatcher->dispatch('share.afterCreate', $afterEvent);
 
 		return $share;
+	}
+
+	/**
+	 * Transfer shares from oldOwner to newOwner. Both old and new owners are uid
+	 *
+	 * finalTarget is of the form "user1/files/transferred from admin on 20180509"
+	 *
+	 * TransferShareException would be thrown when:
+	 *  - oldOwner, newOwner does not exist.
+	 *  - oldOwner and newOwner are same
+	 * NotFoundException would be thrown when finalTarget does not exist in the file
+	 * system
+	 *
+	 * @param IShare $share
+	 * @param string $oldOwner
+	 * @param string $newOwner
+	 * @param string $finalTarget
+	 * @throws TransferSharesException
+	 * @throws NotFoundException
+	 */
+	public function transferShare(IShare $share, $oldOwner, $newOwner, $finalTarget) {
+		if ($this->userManager->get($oldOwner) === null) {
+			throw new TransferSharesException("The current owner of the share $oldOwner doesn't exist");
+		}
+		if ($this->userManager->get($newOwner) === null) {
+			throw new TransferSharesException("The future owner $newOwner, where the share has to be moved doesn't exist");
+		}
+
+		if ($oldOwner === $newOwner) {
+			throw new TransferSharesException("The current owner of the share and the future owner of the share are same");
+		}
+
+		//If the destination location, i.e finalTarget is not present, then
+		//throw an exception
+		if (!$this->view->file_exists($finalTarget)) {
+			throw new NotFoundException("The target location $finalTarget doesn't exist");
+		}
+
+		/**
+		 * If the share was already shared with new owner, then we can delete it
+		 */
+		if ($share->getSharedWith() === $newOwner) {
+			// Unmount the shares before deleting, so we don't try to get the storage later on.
+			$shareMountPoint = $this->mountManager->find('/' . $newOwner . '/files' . $share->getTarget());
+			if ($shareMountPoint) {
+				$this->mountManager->removeMount($shareMountPoint->getMountPoint());
+			}
+			$this->deleteShare($share);
+		} else {
+			$sharedWith = $share->getSharedWith();
+
+			$targetFile = '/' . \rtrim(\basename($finalTarget), '/') . '/' . \ltrim(\basename($share->getTarget()), '/');
+			/**
+			 * Scenario where share is made by old owner to a user different
+			 * from new owner
+			 */
+			if (($sharedWith !== null) && ($sharedWith !== $oldOwner) && ($sharedWith !== $newOwner)) {
+				$sharedBy = $share->getSharedBy();
+				$sharedOwner = $share->getShareOwner();
+				//The origin of the share now has to be the destination user.
+				if ($sharedBy === $oldOwner) {
+					$share->setSharedBy($newOwner);
+				}
+				if ($sharedOwner === $oldOwner) {
+					$share->setShareOwner($newOwner);
+				}
+				if (($sharedBy === $oldOwner) || ($sharedOwner === $oldOwner)) {
+					$share->setTarget($targetFile);
+				}
+			} else {
+				if ($share->getShareOwner() === $oldOwner) {
+					$share->setShareOwner($newOwner);
+				}
+				if ($share->getSharedBy() === $oldOwner) {
+					$share->setSharedBy($newOwner);
+				}
+			}
+
+			/**
+			 * Here we update the target when the share is link
+			 */
+			if ($share->getShareType() === \OCP\Share::SHARE_TYPE_LINK) {
+				$share->setTarget($targetFile);
+			}
+
+			$this->updateShare($share);
+		}
 	}
 
 	/**
