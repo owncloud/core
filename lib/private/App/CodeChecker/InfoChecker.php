@@ -49,7 +49,6 @@ class InfoChecker extends BasicEmitter {
 		'default_enable',
 		'documentation',
 		'namespace',
-		'ocsid',
 		'public',
 		'remote',
 		'repository',
@@ -58,6 +57,7 @@ class InfoChecker extends BasicEmitter {
 	];
 	private $deprecatedFields = [
 		'info',
+		'ocsid',
 		'shipped',
 		'standalone',
 	];

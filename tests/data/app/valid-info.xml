@@ -31,4 +31,21 @@
 		<os>Linux</os>
 		<owncloud min-version="7.0.1" max-version="8" />
 	</dependencies>
+	<repair-steps>
+		<install>
+			<step>OCA\FilesEncryption\Migration\Install</step>
+		</install>
+		<pre-migration>
+			<step>OCA\FilesEncryption\Migration\PreMigration</step>
+		</pre-migration>
+		<post-migration>
+			<step>OCA\FilesEncryption\Migration\PostMigration</step>
+		</post-migration>
+		<live-migration>
+			<step>OCA\FilesEncryption\Migration\LiveMigration</step>
+		</live-migration>
+		<uninstall>
+			<step>OCA\FilesEncryption\Migration\Uninstall</step>
+		</uninstall>
+	</repair-steps>
 </info>
