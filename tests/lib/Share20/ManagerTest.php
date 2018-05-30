@@ -3268,19 +3268,6 @@ class ManagerTest extends \Test\TestCase {
 		$updatedShare = $this->manager->updateShare($share);
 	}
 
-	/**
-	 * @expectedException \InvalidArgumentException
-	 * @expectedExceptionMessage Can't change target of link share
-	 */
-	public function testMoveShareLink() {
-		$share = $this->manager->newShare();
-		$share->setShareType(\OCP\Share::SHARE_TYPE_LINK);
-
-		$recipient = $this->createMock('\OCP\IUser');
-
-		$this->manager->moveShare($share, $recipient);
-	}
-
 	public function testMoveCallsUpdateShareForRecipient() {
 		$manager = $this->createManagerMock()
 			->setMethods(['updateShareForRecipient'])
