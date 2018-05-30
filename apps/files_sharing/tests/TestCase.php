@@ -74,6 +74,7 @@ abstract class TestCase extends \Test\TestCase {
 
 		$application = new Application();
 		$application->registerMountProviders();
+		$application->registerNotifier();
 		
 		// reset backend
 		\OC::$server->getGroupManager()->clearBackends();

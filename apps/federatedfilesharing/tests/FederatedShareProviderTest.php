@@ -35,6 +35,7 @@ use OCP\IL10N;
 use OCP\ILogger;
 use OCP\IUserManager;
 use OCP\Share\IManager;
+use OCP\Share\IShare;
 
 /**
  * Class FederatedShareProviderTest
@@ -783,5 +784,12 @@ class FederatedShareProviderTest extends \Test\TestCase {
 			['yes', true],
 			['no', false]
 		];
+	}
+
+	public function testUpdateForRecipientReturnsShare() {
+		$share = $this->createMock(IShare::class);
+		$returnedShare = $this->provider->updateForRecipient($share, 'recipient1');
+
+		$this->assertEquals($share, $returnedShare);
 	}
 }

@@ -112,7 +112,13 @@ class WebUIGeneralContext extends RawMinkContext implements Context {
 				'capabilitiesParameter' => 'share_with_membership_groups_only',
 				'testingApp' => 'core',
 				'testingParameter' => 'shareapi_only_share_with_membership_groups'
-			]
+			],
+			'Automatically accept new incoming local user shares' => [
+				'capabilitiesApp' => 'files_sharing',
+				'capabilitiesParameter' => 'auto_accept_share',
+				'testingApp' => 'core',
+				'testingParameter' => 'shareapi_auto_accept_share'
+			],
 		]
 	];
 

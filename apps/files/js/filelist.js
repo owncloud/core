@@ -375,6 +375,11 @@
 			this.fileActions.off('setDefault', this._onFileActionsUpdated);
 			OC.Plugins.detach('OCA.Files.FileList', this);
 			$('#app-content').off('appresized', this._onResize);
+			// HACK: this will make reload work when reused
+			this.$el.find('#dir').val('');
+			// remove summary
+			this.$el.find('tfoot tr.summary').remove();
+			this.$fileList.empty();
 		},
 
 		/**
@@ -477,11 +482,13 @@
 		 * @param {string} [tabId] optional tab id to select
 		 */
 		showDetailsView: function(fileName, tabId) {
-			this._updateDetailsView(fileName);
+			if (!this._detailsView) {
+				return;
+			}
+			this._updateDetailsView(fileName, true);
 			if (tabId) {
 				this._detailsView.selectTab(tabId);
 			}
-			OC.Apps.showAppSidebar(this._detailsView.$el);
 		},
 
 		/**
@@ -497,7 +504,7 @@
 
 			// show defaults to true
 			show = _.isUndefined(show) || !!show;
-			var oldFileInfo = this._detailsView.getFileInfo();
+			var oldFileInfo = this._currentFileModel;
 			if (oldFileInfo) {
 				// TODO: use more efficient way, maybe track the highlight
 				this.$fileList.children().filterAttr('data-id', '' + oldFileInfo.get('id')).removeClass('highlighted');
@@ -516,6 +523,8 @@
 
 			if (show && this._detailsView.$el.hasClass('disappear')) {
 				OC.Apps.showAppSidebar(this._detailsView.$el);
+			} else if (show === false) {
+				OC.Apps.hideAppSidebar(this._detailsView.$el);
 			}
 
 			var $tr = this.findFileEl(fileName);
@@ -525,8 +534,12 @@
 
 			$tr.addClass('highlighted');
 
-			this._detailsView.setFileInfo(model);
-			this._detailsView.$el.scrollTop(0);
+			if (show === false) {
+				this._detailsView.setFileInfo(null);
+			} else {
+				this._detailsView.setFileInfo(model);
+				this._detailsView.$el.scrollTop(0);
+			}
 		},
 
 		/**
@@ -606,6 +619,11 @@
 		 * Event handler for when clicking on files to select them
 		 */
 		_onClickFile: function(event) {
+			var $link = $(event.target).closest('a');
+			if ($link.attr('href') === '#' || $link.hasClass('disable-click')) {
+				event.preventDefault();
+				return;
+			}
 			var $tr = $(event.target).closest('tr');
 			if ($tr.hasClass('dragging')) {
 				return;
@@ -1548,7 +1566,8 @@
 			if (persist && OC.getCurrentUser().uid !== null) {
 				$.post(OC.generateUrl('/apps/files/api/v1/sorting'), {
 					mode: sort,
-					direction: direction
+					direction: direction,
+					view: this.id
 				});
 			}
 		},
@@ -1617,7 +1636,7 @@
 			if (status === 500) {
 				// Go home
 				this.changeDirectory('/');
-				OC.Notification.show(t('files', 'This directory is unavailable, please check the logs or contact the administrator'), 
+				OC.Notification.show(t('files', 'This directory is unavailable, please check the logs or contact the administrator'),
 					{type: 'error'}
 				);
 				return false;
@@ -1628,7 +1647,7 @@
 				if (this.getCurrentDirectory() !== '/') {
 					this.changeDirectory('/');
 					// TODO: read error message from exception
-					OC.Notification.show(t('files', 'Storage is temporarily not available'), 
+					OC.Notification.show(t('files', 'Storage is temporarily not available'),
 						{type: 'error'}
 					);
 				}
@@ -1959,7 +1978,7 @@
 					.fail(function(status, result) {
 						if (status === 412) {
 							// TODO: some day here we should invoke the conflict dialog
-							OC.Notification.show(t('files', 'Could not move "{file}", target exists', 
+							OC.Notification.show(t('files', 'Could not move "{file}", target exists',
 								{file: fileName}, null, {escape: false}), {type: 'error'}
 							);
 						} else if (result != null && typeof result.message !== "undefined") {
@@ -2091,7 +2110,7 @@
 								// TODO: 409 means current folder does not exist, redirect ?
 								if (status === 404) {
 									// source not found, so remove it from the list
-									OC.Notification.show(t('files', 'Could not rename "{fileName}", it does not exist any more', 
+									OC.Notification.show(t('files', 'Could not rename "{fileName}", it does not exist any more',
 										{fileName: oldName}), {timeout: 7, type: 'error'}
 									);
 
@@ -2100,7 +2119,7 @@
 								} else if (status === 412) {
 									// target exists
 									OC.Notification.show(
-										t('files', 'The name "{targetName}" is already used in the folder "{dir}". Please choose a different name.', 
+										t('files', 'The name "{targetName}" is already used in the folder "{dir}". Please choose a different name.',
 										{
 											targetName: newName,
 											dir: self.getCurrentDirectory(),
@@ -2111,7 +2130,7 @@
 									);
 								} else {
 									// restore the item to its previous state
-									OC.Notification.show(t('files', 'Could not rename "{fileName}"', 
+									OC.Notification.show(t('files', 'Could not rename "{fileName}"',
 										{fileName: oldName}), {type: 'error'}
 									);
 								}
@@ -2196,18 +2215,18 @@
 					self.addAndFetchFileInfo(targetPath, '', {scrollTo: true}).then(function(status, data) {
 						deferred.resolve(status, data);
 					}, function() {
-						OC.Notification.show(t('files', 'Could not create file "{file}"', 
+						OC.Notification.show(t('files', 'Could not create file "{file}"',
 							{file: name}), {type: 'error'}
 						);
 					});
 				})
 				.fail(function(status) {
 					if (status === 412) {
-						OC.Notification.show(t('files', 'Could not create file "{file}" because it already exists', 
+						OC.Notification.show(t('files', 'Could not create file "{file}" because it already exists',
 							{file: name}), {type: 'error'}
 						);
 					} else {
-						OC.Notification.show(t('files', 'Could not create file "{file}"', 
+						OC.Notification.show(t('files', 'Could not create file "{file}"',
 							{file: name}), {type: 'error'}
 						);
 					}
@@ -2246,7 +2265,7 @@
 					self.addAndFetchFileInfo(targetPath, '', {scrollTo:true}).then(function(status, data) {
 						deferred.resolve(status, data);
 					}, function() {
-						OC.Notification.show(t('files', 'Could not create folder "{dir}"', 
+						OC.Notification.show(t('files', 'Could not create folder "{dir}"',
 							{dir: name}), {type: 'error'}
 						);
 					});
@@ -2257,20 +2276,20 @@
 						// add it to the list, for completeness
 						self.addAndFetchFileInfo(targetPath, '', {scrollTo:true})
 							.done(function(status, data) {
-								OC.Notification.show(t('files', 'Could not create folder "{dir}" because it already exists', 
+								OC.Notification.show(t('files', 'Could not create folder "{dir}" because it already exists',
 									{dir: name}), {type: 'error'}
 								);
 								// still consider a failure
 								deferred.reject(createStatus, data);
 							})
 							.fail(function() {
-								OC.Notification.show(t('files', 'Could not create folder "{dir}"', 
+								OC.Notification.show(t('files', 'Could not create folder "{dir}"',
 									{dir: name}), {type: 'error'}
 								);
 								deferred.reject(status);
 							});
 					} else {
-						OC.Notification.show(t('files', 'Could not create folder "{dir}"', 
+						OC.Notification.show(t('files', 'Could not create folder "{dir}"',
 							{dir: name}), {type: 'error'}
 						);
 						deferred.reject(createStatus);
@@ -2327,7 +2346,7 @@
 					deferred.resolve(status, data);
 				})
 				.fail(function(status) {
-					OC.Notification.show(t('files', 'Could not create file "{file}"', 
+					OC.Notification.show(t('files', 'Could not create file "{file}"',
 						{file: name}), {type: 'error'}
 					);
 					deferred.reject(status);
@@ -2438,7 +2457,7 @@
 							removeFromList(file);
 						} else {
 							// only reset the spinner for that one file
-							OC.Notification.show(t('files', 'Error deleting file "{fileName}".', 
+							OC.Notification.show(t('files', 'Error deleting file "{fileName}".',
 								{fileName: file}), {type: 'error'}
 							);
 							var deleteAction = self.findFileEl(file).find('.action.delete');
@@ -2874,6 +2893,36 @@
 		},
 
 		/**
+		 * Scrolls the container to make the given row visible
+		 *
+		 * @param $fileRow row to make visible
+		 * @param {Function} callback callback to call after scroll is complete
+		 */
+		_scrollToRow: function($fileRow, callback) {
+			var currentOffset = this.$container.scrollTop();
+			var additionalOffset = 0;
+			var $controls = this.$el.find('#controls');
+			if ($controls.exists()) {
+				additionalOffset += $controls.height() + $controls.offset().top;
+			}
+
+			// Animation
+			var $scrollContainer = this.$container;
+			if ($scrollContainer[0] === window) {
+				// need to use "body" to animate scrolling
+				// when the scroll container is the window
+				$scrollContainer = $('body');
+			}
+			$scrollContainer.animate({
+				// Scrolling to the top of the new element
+				scrollTop: currentOffset + $fileRow.offset().top - $fileRow.height() * 2 - additionalOffset
+			}, {
+				duration: 500,
+				complete: callback
+			});
+		},
+
+		/**
 		 * Scroll to the last file of the given list
 		 * Highlight the list of files
 		 * @param files array of filenames,
@@ -2893,44 +2942,27 @@
 				return;
 			}
 
-			var currentOffset = this.$container.scrollTop();
-			var additionalOffset = this.$el.find("#controls").height()+this.$el.find("#controls").offset().top;
-
-			// Animation
 			var _this = this;
-			var $scrollContainer = this.$container;
-			if ($scrollContainer[0] === window) {
-				// need to use "body" to animate scrolling
-				// when the scroll container is the window
-				$scrollContainer = $('body');
-			}
-			$scrollContainer.animate({
-				// Scrolling to the top of the new element
-				scrollTop: currentOffset + $fileRow.offset().top - $fileRow.height() * 2 - additionalOffset
-			}, {
-				duration: 500,
-				complete: function() {
-					// Highlighting function
-					var highlightRow = highlightFunction;
+			this._scrollToRow($fileRow, function() {
+				// Highlighting function
+				var highlightRow = highlightFunction;
 
-					if (!highlightRow) {
-						highlightRow = function($fileRow) {
-							$fileRow.addClass("highlightUploaded");
-							setTimeout(function() {
-								$fileRow.removeClass("highlightUploaded");
-							}, 2500);
-						};
+				if (!highlightRow) {
+					highlightRow = function($fileRow) {
+						$fileRow.addClass("highlightUploaded");
+						setTimeout(function() {
+							$fileRow.removeClass("highlightUploaded");
+						}, 2500);
+					};
+				}
+
+				// Loop over uploaded files
+				for(var i=0; i<files.length; i++) {
+					var $fileRow = _this.findFileEl(files[i]);
+
+					if($fileRow.length !== 0) { // Checking element existence
+						highlightRow($fileRow);
 					}
-
-					// Loop over uploaded files
-					for(var i=0; i<files.length; i++) {
-						var $fileRow = _this.findFileEl(files[i]);
-
-						if($fileRow.length !== 0) { // Checking element existence
-							highlightRow($fileRow);
-						}
-					}
-
 				}
 			});
 		},

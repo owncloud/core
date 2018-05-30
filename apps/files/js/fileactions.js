@@ -37,6 +37,8 @@
 		defaults: {},
 		icons: {},
 
+		_actionFilters: [],
+
 		/**
 		 * @deprecated
 		 */
@@ -175,6 +177,7 @@
 			this.icons = {};
 			this.currentFile = null;
 			this._updateListeners = [];
+			this._actionFilters = [];
 		},
 		/**
 		 * Sets the default action for a given mime type.
@@ -427,7 +430,7 @@
 					}
 
 					if (!context.fileInfoModel && context.fileList) {
-						callContext.fileInfoModel = context.fileList.getModelForFile(fileName);
+						callContext.fileInfoModel = context.fileList.getModelForFile($file);
 						if (!callContext.fileInfoModel) {
 							console.warn('No file info model found for file "' + fileName + '"');
 						}
@@ -521,6 +524,14 @@
 				this.getCurrentType(),
 				this.getCurrentPermissions()
 			);
+
+			var context = {
+				$file: $tr,
+				fileActions: this,
+				fileList: fileList
+			};
+
+			actions = this._advancedFilter(actions, context);
 			var nameLinks;
 			if ($tr.data('renaming')) {
 				return;
@@ -536,23 +547,24 @@
 				this.getCurrentPermissions()
 			);
 
-			var context = {
-				$file: $tr,
-				fileActions: this,
-				fileList: fileList
-			};
-
+			var hasDropDownActions = false;
 			$.each(actions, function (name, actionSpec) {
-				if (actionSpec.type === FileActions.TYPE_INLINE) {
+				var isDefault = !!(defaultAction && actionSpec.name === defaultAction.name);
+				if (actionSpec.type && actionSpec.type === FileActions.TYPE_INLINE) {
 					self._renderInlineAction(
 						actionSpec,
-						defaultAction && actionSpec.name === defaultAction.name,
+						isDefault,
 						context
 					);
 				}
+				if (!isDefault && (!actionSpec.type || actionSpec.type === FileActions.TYPE_DROPDOWN)) {
+					hasDropDownActions = true;
+				}
 			});
 
-			this._renderMenuTrigger($tr, context);
+			if (hasDropDownActions) {
+				this._renderMenuTrigger($tr, context);
+			}
 
 			if (triggerEvent){
 				fileList.$fileList.trigger(jQuery.Event("fileActionsReady", {fileList: fileList, $files: $tr}));
@@ -650,6 +662,30 @@
 			});
 
 			this.setDefault('dir', 'Open');
+		},
+
+		/**
+		 * To be overridden by subclasses to add additional filtering of actions based
+		 * on file properties
+		 *
+		 * @param {String.<String,OCA.Files.FileAction>} actions action list with action name as string
+		 * @param {OCA.Files.FileActionContext} context context
+		 */
+		_advancedFilter: function(actions, context) {
+			for (var i = 0; i < this._actionFilters.length; i++) {
+				actions = this._actionFilters[i](actions, context);
+			}
+
+			return actions;
+		},
+
+		/**
+		 * Adds a callback to filter actions
+		 *
+		 * @param {Function} callback callback
+		 */
+		addAdvancedFilter: function(callback) {
+			this._actionFilters.push(callback);
 		}
 	};
 
