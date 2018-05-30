@@ -2350,7 +2350,7 @@ class ManagerTest extends \Test\TestCase {
 		$manager->createShare($share);
 	}
 
-	public function testCreateShareOfIncommingFederatedShare() {
+	public function testCreateShareOfIncomingFederatedShare() {
 		$manager = $this->createManagerMock()
 			->setMethods(['canShare', 'generalCreateChecks', 'userCreateChecks', 'pathCreateChecks'])
 			->getMock();
