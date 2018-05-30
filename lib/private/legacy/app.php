@@ -45,7 +45,6 @@
  *
  */
 use OC\App\DependencyAnalyzer;
-use OC\App\InfoParser;
 use OC\App\Platform;
 use OC\Installer;
 use OC\Repair;
@@ -56,10 +55,8 @@ use OC\Repair;
  * upgrading and removing apps.
  */
 class OC_App {
-	private static $appVersion = [];
 	private static $adminForms = [];
 	private static $personalForms = [];
-	private static $appInfo = [];
 	private static $appTypes = [];
 	private static $loadedApps = [];
 	private static $loadedTypes = [];
@@ -433,11 +430,6 @@ class OC_App {
 	 * @throws Exception
 	 */
 	public static function disable($app) {
-		// Convert OCS ID to regular application identifier
-		if (self::getInternalAppIdByOcs($app) !== false) {
-			$app = self::getInternalAppIdByOcs($app);
-		}
-
 		// flush
 		self::$enabledAppsCache = [];
 
@@ -598,70 +590,32 @@ class OC_App {
 	 *
 	 * @param string $appId
 	 * @return string
+	 * @deprecated use \OC::$server->getAppManager()->getAppInfo($appId)
 	 */
 	public static function getAppVersion($appId) {
-		if (!isset(self::$appVersion[$appId])) {
-			$file = self::getAppPath($appId);
-			self::$appVersion[$appId] = ($file !== false) ? self::getAppVersionByPath($file) : '0';
+		$info = \OC::$server->getAppManager()->getAppInfo($appId);
+		if (isset($info['version'])) {
+			return $info['version'];
 		}
-		return self::$appVersion[$appId];
-	}
-
-	/**
-	 * get app's version based on it's path
-	 *
-	 * @param string $path
-	 * @return string
-	 */
-	public static function getAppVersionByPath($path) {
-		$infoFile = $path . '/appinfo/info.xml';
-		$appData = self::getAppInfo($infoFile, true);
-		return isset($appData['version']) ? $appData['version'] : '';
+		return '0';
 	}
 
 	/**
 	 * Read all app metadata from the info.xml file
 	 *
 	 * @param string $appId id of the app or the path of the info.xml file
-	 * @param boolean $path (optional)
+	 * @param bool $path
 	 * @return array|null
 	 * @note all data is read from info.xml, not just pre-defined fields
+	 * @deprecated use \OC::$server->getAppManager()->getAppInfo($appId)
 	 */
 	public static function getAppInfo($appId, $path = false) {
+		/** @var \OC\App\AppManager $am */
+		$am = \OC::$server->getAppManager();
 		if ($path) {
-			$file = $appId;
-		} else {
-			if (isset(self::$appInfo[$appId])) {
-				return self::$appInfo[$appId];
-			}
-			$appPath = self::getAppPath($appId);
-			if ($appPath === false) {
-				return null;
-			}
-			$file = $appPath . '/appinfo/info.xml';
+			return $am->getAppInfoByPath($appId);
 		}
-
-		$parser = new InfoParser();
-		try {
-			$data = $parser->parse($file);
-		} catch (\Exception $e) {
-			\OC::$server->getLogger()->logException($e);
-			throw $e;
-		}
-
-		if (\is_array($data)) {
-			$data = OC_App::parseAppInfo($data);
-		}
-		if (isset($data['ocsid'])) {
-			$storedId = \OC::$server->getConfig()->getAppValue($appId, 'ocsid');
-			if ($storedId !== '' && $storedId !== $data['ocsid']) {
-				$data['ocsid'] = $storedId;
-			}
-		}
-
-		self::$appInfo[$appId] = $data;
-
-		return $data;
+		return $am->getAppInfo($appId);
 	}
 
 	/**
@@ -883,8 +837,6 @@ class OC_App {
 						$info['documentation'][$key] = $url;
 					}
 				}
-
-				$info['version'] = OC_App::getAppVersion($app);
 				$appList[] = $info;
 			}
 		}
@@ -892,30 +844,16 @@ class OC_App {
 		return $appList;
 	}
 
-	/**
-	 * Returns the internal app ID or false
-	 * @param string $ocsID
-	 * @return string|false
-	 */
-	public static function getInternalAppIdByOcs($ocsID) {
-		if (\is_numeric($ocsID)) {
-			$idArray = \OC::$server->getAppConfig()->getValues(false, 'ocsid');
-			if (\array_search($ocsID, $idArray)) {
-				return \array_search($ocsID, $idArray);
-			}
-		}
-		return false;
-	}
-
 	public static function shouldUpgrade($app) {
 		$versions = self::getAppVersions();
-		$currentVersion = self::getAppVersion($app);
-		if ($currentVersion && isset($versions[$app])) {
-			if ($currentVersion === $versions[$app]) {
+		$info = \OC::$server->getAppManager()->getAppInfo($app);
+
+		if ($info && isset($versions[$app])) {
+			if ($info['version'] === $versions[$app]) {
 				return false;
 			}
 
-			if (self::atLeastMinorVersionLevelChanged($currentVersion, $versions[$app])) {
+			if (self::atLeastMinorVersionLevelChanged($info['version'], $versions[$app])) {
 				return true;
 			}
 			// update app version in db
@@ -1034,7 +972,7 @@ class OC_App {
 		}
 		self::executeRepairSteps($appId, $appData['repair-steps']['post-migration']);
 		self::setupLiveMigrations($appId, $appData['repair-steps']['live-migration']);
-		self::clearAppCache($appId);
+		\OC::$server->getAppManager()->clearAppsCache();
 		// run upgrade code
 		if (\file_exists($appPath . '/appinfo/update.php')) {
 			self::loadApp($appId, false);
@@ -1043,11 +981,6 @@ class OC_App {
 		self::setupBackgroundJobs($appData['background-jobs']);
 
 		//set remote/public handlers
-		if (\array_key_exists('ocsid', $appData)) {
-			\OC::$server->getConfig()->setAppValue($appId, 'ocsid', $appData['ocsid']);
-		} elseif (\OC::$server->getConfig()->getAppValue($appId, 'ocsid', null) !== null) {
-			\OC::$server->getConfig()->deleteAppValue($appId, 'ocsid');
-		}
 		foreach ($appData['remote'] as $name => $path) {
 			\OC::$server->getConfig()->setAppValue('core', 'remote_' . $name, $appId . '/' . $path);
 		}
@@ -1057,8 +990,7 @@ class OC_App {
 
 		self::setAppTypes($appId);
 
-		$version = self::getAppVersion($appId);
-		\OC::$server->getConfig()->setAppValue($appId, 'installed_version', $version);
+		\OC::$server->getConfig()->setAppValue($appId, 'installed_version', $appData['version']);
 
 		return true;
 	}
@@ -1186,13 +1118,6 @@ class OC_App {
 				)
 			);
 		}
-	}
-
-	/**
-	 * @param $appId
-	 */
-	public static function clearAppCache($appId) {
-		unset(self::$appVersion[$appId], self::$appInfo[$appId]);
 	}
 
 	/**
