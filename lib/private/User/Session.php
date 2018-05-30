@@ -486,40 +486,50 @@ class Session implements IUserSession, Emitter {
 	/**
 	 * Log an user in via login name and password
 	 *
-	 * @param string $uid
+	 * @param string $login
 	 * @param string $password
 	 * @return boolean
 	 * @throws LoginException if an app canceld the login process or the user is not enabled
+	 *
+	 * Two new keys 'login' in the before event and 'user' in the after event
+	 * are introduced. We should use this keys in future when trying to listen
+	 * the events emitted from this method. We have kept the key 'uid' for
+	 * compatibility.
 	 */
-	private function loginWithPassword($uid, $password) {
-		return $this->emittingCall(function () use (&$uid, &$password) {
-			$this->manager->emit('\OC\User', 'preLogin', [$uid, $password]);
-			$user = $this->manager->checkPassword($uid, $password);
-			if ($user === false) {
-				$this->manager->emit('\OC\User', 'failedLogin', [$uid]);
-				$this->emitFailedLogin($uid);
-				return false;
-			}
+	private function loginWithPassword($login, $password) {
+		$beforeEvent = new GenericEvent(null, ['login' => $login, 'uid' => $login, '_uid' => 'deprecated: please use \'login\', the real uid is not yet known', 'password' => $password]);
+		$this->eventDispatcher->dispatch('user.beforelogin', $beforeEvent);
+		$this->manager->emit('\OC\User', 'preLogin', [$login, $password]);
 
-			if ($user->isEnabled()) {
-				$this->setUser($user);
-				$this->setLoginName($uid);
-				$firstTimeLogin = $user->updateLastLoginTimestamp();
-				$this->manager->emit('\OC\User', 'postLogin', [$user, $password]);
-				if ($this->isLoggedIn()) {
-					$this->prepareUserLogin($firstTimeLogin);
-					return true;
-				} else {
-					// injecting l10n does not work - there is a circular dependency between session and \OCP\L10N\IFactory
-					$message = \OC::$server->getL10N('lib')->t('Login canceled by app');
-					throw new LoginException($message);
-				}
+		$user = $this->manager->checkPassword($login, $password);
+		if ($user === false) {
+			$this->manager->emit('\OC\User', 'failedLogin', [$login]);
+			$this->emitFailedLogin($login);
+			return false;
+		}
+
+		if ($user->isEnabled()) {
+			$this->setUser($user);
+			$this->setLoginName($login);
+			$firstTimeLogin = $user->updateLastLoginTimestamp();
+			$this->manager->emit('\OC\User', 'postLogin', [$user, $password]);
+			if ($this->isLoggedIn()) {
+				$this->prepareUserLogin($firstTimeLogin);
+
+				$afterEvent = new GenericEvent(null, ['user' => $user, 'uid' => $user->getUID(), 'password' => $password]);
+				$this->eventDispatcher->dispatch('user.afterlogin', $afterEvent);
+
+				return true;
 			} else {
 				// injecting l10n does not work - there is a circular dependency between session and \OCP\L10N\IFactory
-				$message = \OC::$server->getL10N('lib')->t('User disabled');
+				$message = \OC::$server->getL10N('lib')->t('Login canceled by app');
 				throw new LoginException($message);
 			}
-		}, ['before' => ['uid' => $uid, 'password' => $password], 'after' => ['uid' => $uid, 'password' => $password]], 'user', 'login');
+		} else {
+			// injecting l10n does not work - there is a circular dependency between session and \OCP\L10N\IFactory
+			$message = \OC::$server->getL10N('lib')->t('User disabled');
+			throw new LoginException($message);
+		}
 	}
 
 	/**
