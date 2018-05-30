@@ -124,7 +124,7 @@ Feature: accept/decline shares coming from internal users
 	Scenario: accept a share that you received as user and as group member
 		Given the setting "Automatically accept new incoming local user shares" in the section "Sharing" has been disabled
 		And user "user2" has shared folder "/simple-folder" with user "user1"
-		And user "user2" has shared file "/testimage.jpg" with group "grp1"
+		And user "user2" has shared folder "/simple-folder" with group "grp1"
 		And the user has logged in with username "user1" and password "1234" using the webUI
 		When the user accepts the share "simple-folder" offered by user "User Two" using the webUI
 		And the user reloads the current page of the webUI
@@ -134,7 +134,7 @@ Feature: accept/decline shares coming from internal users
 	Scenario: reject a share that you received as user and as group member
 		Given the setting "Automatically accept new incoming local user shares" in the section "Sharing" has been disabled
 		And user "user2" has shared folder "/simple-folder" with user "user1"
-		And user "user2" has shared file "/testimage.jpg" with group "grp1"
+		And user "user2" has shared folder "/simple-folder" with group "grp1"
 		And the user has logged in with username "user1" and password "1234" using the webUI
 		When the user declines the share "simple-folder" offered by user "User Two" using the webUI
 		And the user reloads the current page of the webUI
