@@ -299,35 +299,7 @@ class TransferOwnership extends Command {
 
 		foreach($this->shares as $share) {
 			try {
-				if ($share->getSharedWith() === $this->destinationUser) {
-					// Unmount the shares before deleting, so we don't try to get the storage later on.
-					$shareMountPoint = $this->mountManager->find('/' . $this->destinationUser . '/files' . $share->getTarget());
-					if ($shareMountPoint) {
-						$this->mountManager->removeMount($shareMountPoint->getMountPoint());
-					}
-					$this->shareManager->deleteShare($share);
-				} else {
-					if ($share->getShareOwner() === $this->sourceUser) {
-						$share->setShareOwner($this->destinationUser);
-					}
-					if ($share->getSharedBy() === $this->sourceUser) {
-						$share->setSharedBy($this->destinationUser);
-					}
-					/*
-					 * If the share is already moved then updateShare would cause exception
-					 * This can happen if the folder is shared and file(s) inside the folder
-					 * has shares, for example public link
-					 */
-					if ($share->getShareType() === \OCP\Share::SHARE_TYPE_LINK) {
-						$sharePath = ltrim($share->getNode()->getPath(), '/');
-						if (strpos($sharePath, $this->finalTarget) !== false) {
-							//The share is already moved
-							continue;
-						}
-					}
-
-					$this->shareManager->updateShare($share);
-				}
+				$this->shareManager->transferShare($share, $this->sourceUser, $this->destinationUser, $this->finalTarget);
 			} catch (\OCP\Files\NotFoundException $e) {
 				$output->writeln('<error>Share with id ' . $share->getId() . ' points at deleted file, skipping</error>');
 			} catch (\Exception $e) {
