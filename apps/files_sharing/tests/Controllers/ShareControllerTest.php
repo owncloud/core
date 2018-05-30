@@ -40,6 +40,8 @@ use OCP\IURLGenerator;
 use OCP\IUserManager;
 use OCP\Security\ISecureRandom;
 use OCP\Share\Exceptions\ShareNotFound;
+use Symfony\Component\EventDispatcher\EventDispatcher;
+use Symfony\Component\EventDispatcher\GenericEvent;
 
 /**
  * @group DB
@@ -71,6 +73,7 @@ class ShareControllerTest extends \Test\TestCase {
 	private $userManager;
 	/** @var  FederatedShareProvider | \PHPUnit_Framework_MockObject_MockObject */
 	private $federatedShareProvider;
+	private $eventDispatcher;
 
 	protected function setUp() {
 		parent::setUp();
@@ -88,6 +91,7 @@ class ShareControllerTest extends \Test\TestCase {
 			->method('isOutgoingServer2serverShareEnabled')->willReturn(true);
 		$this->federatedShareProvider->expects($this->any())
 			->method('isIncomingServer2serverShareEnabled')->willReturn(true);
+		$this->eventDispatcher = new EventDispatcher();
 
 		$this->shareController = new \OCA\Files_Sharing\Controllers\ShareController(
 			$this->appName,
@@ -101,6 +105,7 @@ class ShareControllerTest extends \Test\TestCase {
 			$this->session,
 			$this->previewManager,
 			$this->createMock('\OCP\Files\IRootFolder'),
+			$this->eventDispatcher,
 			$this->federatedShareProvider
 		);
 
@@ -258,6 +263,13 @@ class ShareControllerTest extends \Test\TestCase {
 		$hookListner = $this->getMockBuilder('Dummy')->setMethods(['access'])->getMock();
 		\OCP\Util::connectHook('OCP\Share', 'share_link_access', $hookListner, 'access');
 
+		$calledShareLinkAccess = [];
+		$this->eventDispatcher->addListener('share.linkaccess',
+			function (GenericEvent $event) use (&$calledShareLinkAccess) {
+				$calledShareLinkAccess[] = 'share.linkaccess';
+				$calledShareLinkAccess[] = $event;
+			});
+
 		$hookListner->expects($this->once())
 			->method('access')
 			->with($this->callback(function (array $data) {
@@ -272,6 +284,16 @@ class ShareControllerTest extends \Test\TestCase {
 		$response = $this->shareController->authenticate('token', 'invalidpassword');
 		$expectedResponse =  new TemplateResponse($this->appName, 'authenticate', ['wrongpw' => true], 'guest');
 		$this->assertEquals($expectedResponse, $response);
+
+		$this->assertEquals('share.linkaccess', $calledShareLinkAccess[0]);
+		$this->assertInstanceOf(GenericEvent::class, $calledShareLinkAccess[1]);
+		$this->assertArrayHasKey('shareObject', $calledShareLinkAccess[1]);
+		$this->assertEquals('42', $calledShareLinkAccess[1]->getArgument('shareObject')->getId());
+		$this->assertEquals('file', $calledShareLinkAccess[1]->getArgument('shareObject')->getNodeType());
+		$this->assertEquals('initiator', $calledShareLinkAccess[1]->getArgument('shareObject')->getSharedBy());
+		$this->assertEquals('token', $calledShareLinkAccess[1]->getArgument('shareObject')->getToken());
+		$this->assertEquals(403, $calledShareLinkAccess[1]->getArgument('errorCode'));
+		$this->assertEquals('Wrong password', $calledShareLinkAccess[1]->getArgument('errorMessage'));
 	}
 
 	public function testShowShareInvalidToken() {
