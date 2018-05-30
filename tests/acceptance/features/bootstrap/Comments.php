@@ -109,7 +109,7 @@ trait Comments {
 			foreach ($elementRows as $expectedElement) {
 				$commentFound = false;
 				foreach ($elementList as $id => $answer) {
-					if (($expectedElement[0] === $answer[200]['{http://owncloud.org/ns}actorDisplayName'])
+					if (($expectedElement[0] === $answer[200]['{http://owncloud.org/ns}actorId'])
 						and ($expectedElement[1] === $answer[200]['{http://owncloud.org/ns}message'])
 					) {
 						$commentFound = true;

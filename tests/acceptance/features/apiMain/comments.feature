@@ -98,9 +98,52 @@ Feature: Comments
       | {http://owncloud.org/ns}comments-href   |
       | {http://owncloud.org/ns}comments-count  |
       | {http://owncloud.org/ns}comments-unread |
-    #Then the single response should contain a property "{http://owncloud.org/ns}comments-count" with value "1"
+    Then the single response should contain a property "{http://owncloud.org/ns}comments-count" with value "1"
     And the single response should contain a property "{http://owncloud.org/ns}comments-unread" with value "0"
     And the single response should contain a property "{http://owncloud.org/ns}comments-href" with value "a_comment_url"
+
+	Scenario: sharee comments on a group shared file
+		Given user "user0" has been created
+		And user "user1" has been created
+		And group "sharinggroup" has been created
+		And user "user1" has been added to group "sharinggroup"
+		And user "user0" has uploaded file "data/textfile.txt" to "/myFileToComment.txt"
+		And user "user0" has shared file "/myFileToComment.txt" with group "sharinggroup"
+		When user "user1" comments with content "Comment from sharee" on file "/myFileToComment.txt" using the API
+		Then the HTTP status code should be "201"
+		And user "user0" should have the following comments on file "/myFileToComment.txt"
+			| user1 | Comment from sharee |
+
+	Scenario: sharee comments on read-only shared file
+		Given user "user0" has been created
+		And user "user1" has been created
+		And group "sharinggroup" has been created
+		And user "user1" has been added to group "sharinggroup"
+		And user "user0" has uploaded file "data/textfile.txt" to "/myFileToComment.txt"
+		And user "user0" has created a share with settings
+			| path        | /myFileToComment.txt |
+			| shareType   | 0                    |
+			| shareWith   | user1                |
+			| permissions | 1                    |
+		When user "user1" comments with content "Comment from sharee" on file "/myFileToComment.txt" using the API
+		Then the HTTP status code should be "201"
+		And user "user0" should have the following comments on file "/myFileToComment.txt"
+			| user1 | Comment from sharee |
+
+	Scenario: sharee comments on upload-only shared file
+		Given user "user0" has been created
+		And user "user1" has been created
+		And group "sharinggroup" has been created
+		And user "user1" has been added to group "sharinggroup"
+		And user "user0" has uploaded file "data/textfile.txt" to "/myFileToComment.txt"
+		And user "user0" has created a share with settings
+			| path        | /myFileToComment.txt |
+			| shareType   | 0                    |
+			| shareWith   | user1                |
+			| permissions | 4                    |
+		When user "user1" comments with content "Comment from sharee" on file "/myFileToComment.txt" using the API
+		Then the HTTP status code should be "501"
+		And user "user0" should have 0 comments on file "/myFileToComment.txt"
 
   Scenario: Creating a comment on a folder belonging to myself
     Given user "user0" has been created
@@ -119,3 +162,88 @@ Feature: Comments
     And user "user1" should have the following comments on file "/FOLDER_TO_SHARE"
       | user1 | A comment from sharee |
       | user0 | A comment from sharer |
+
+	Scenario: Deleting my own comments on a folder belonging to myself
+		Given user "user0" has been created
+		And user "user0" has created a folder "/FOLDER_TO_COMMENT_AND_DELETE"
+		And user "user0" has commented with content "My first comment" on folder "/FOLDER_TO_COMMENT_AND_DELETE"
+		When user "user0" deletes the last created comment using the API
+		Then the HTTP status code should be "204"
+		And user "user0" should have 0 comments on folder "/FOLDER_TO_COMMENT_AND_DELETE"
+
+	Scenario: Deleting a comment on a file belonging to myself having several comments
+		Given user "user0" has been created
+		And user "user0" has created a folder "/FOLDER_TO_COMMENT"
+		And user "user0" has commented with content "My first comment" on folder "/FOLDER_TO_COMMENT"
+		And user "user0" has commented with content "My second comment" on folder "/FOLDER_TO_COMMENT"
+		And user "user0" has commented with content "My third comment" on folder "/FOLDER_TO_COMMENT"
+		And user "user0" has commented with content "My fourth comment" on folder "/FOLDER_TO_COMMENT"
+		When user "user0" deletes the last created comment using the API
+		Then the HTTP status code should be "204"
+		And user "user0" should have 3 comments on folder "/FOLDER_TO_COMMENT"
+
+	Scenario: Deleting my own comments on a file shared by somebody else
+		Given user "user0" has been created
+		And user "user1" has been created
+		And user "user0" has created a folder "/FOLDER_TO_COMMENT"
+		And user "user0" has shared folder "/FOLDER_TO_COMMENT" with user "user1"
+		And user "user0" has commented with content "Folder owner comment" on folder "/FOLDER_TO_COMMENT"
+		And user "user1" has commented with content "Sharee comment" on folder "/FOLDER_TO_COMMENT"
+		And user "user1" should have the following comments on folder "/FOLDER_TO_COMMENT"
+			| user0 | Folder owner comment |
+			| user1 | Sharee comment     |
+		When user "user1" deletes the last created comment using the API
+		Then the HTTP status code should be "204"
+		And user "user1" should have 1 comments on folder "/FOLDER_TO_COMMENT"
+
+	Scenario: Edit my own comments on a folder belonging to myself
+		Given user "user0" has been created
+		And user "user0" has created a folder "/FOLDER_TO_COMMENT"
+		And user "user0" has commented with content "Folder owner comment" on folder "/FOLDER_TO_COMMENT"
+		When user "user0" edits the last created comment with content "My edited comment" using the API
+		Then the HTTP status code should be "207"
+		And user "user0" should have the following comments on folder "/FOLDER_TO_COMMENT"
+			| user0 | My edited comment |
+
+	Scenario: sharee comments on a group shared folder
+		Given user "user0" has been created
+		And user "user1" has been created
+		And group "sharinggroup" has been created
+		And user "user1" has been added to group "sharinggroup"
+		And user "user0" has created a folder "/FOLDER_TO_COMMENT"
+		And user "user0" has shared folder "/FOLDER_TO_COMMENT" with group "sharinggroup"
+		When user "user1" comments with content "Comment from sharee" on folder "/FOLDER_TO_COMMENT" using the API
+		Then the HTTP status code should be "201"
+		And user "user0" should have the following comments on folder "/FOLDER_TO_COMMENT"
+			| user1 | Comment from sharee |
+
+	Scenario: deleting a folder removes existing comments on the folder
+		Given user "user0" has been created
+		And user "user0" has created a folder "/FOLDER_TO_DELETE"
+		When user "user0" comments with content "This should be deleted" on folder "/FOLDER_TO_DELETE" using the API
+		Then user "user0" should have 1 comments on folder "/FOLDER_TO_DELETE"
+		When user "user0" deletes folder "/FOLDER_TO_DELETE" using the API
+		And user "user0" has created a folder "/FOLDER_TO_DELETE"
+		Then user "user0" should have 0 comments on folder "/FOLDER_TO_DELETE"
+
+	Scenario: deleting a user does not remove the comment
+		Given user "user0" has been created
+		And user "user1" has been created
+		And user "user0" has created a folder "/FOLDER_TO_COMMENT"
+		And user "user0" has shared folder "/FOLDER_TO_COMMENT" with user "user1"
+		And user "user1" has commented with content "Comment from sharee" on folder "/FOLDER_TO_COMMENT"
+		Then user "user0" should have the following comments on folder "/FOLDER_TO_COMMENT"
+			| user1 | Comment from sharee |
+		And user "user1" has been deleted
+		Then user "user0" should have 1 comments on folder "/FOLDER_TO_COMMENT"
+		Then user "user0" should have the following comments on folder "/FOLDER_TO_COMMENT"
+			| deleted_users | Comment from sharee |
+
+	Scenario: deleting a content owner deletes the comment
+		Given user "user0" has been created
+		And user "user0" has created a folder "/FOLDER_TO_COMMENT"
+		And user "user0" has commented with content "Comment from owner" on folder "/FOLDER_TO_COMMENT"
+		And user "user0" has been deleted
+		And user "user0" has been created
+		When user "user0" creates a folder "/FOLDER_TO_COMMENT" using the API
+		Then user "user0" should have 0 comments on folder "/FOLDER_TO_COMMENT"
