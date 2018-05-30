@@ -179,13 +179,14 @@ class SyncServiceTest extends TestCase {
 		$s = new SyncService($this->config, $this->logger, $this->mapper);
 		$this->mapper->expects($this->once())
 			->method('callForAllUsers')
-			->with($this->callback(function($param) {
-				return is_callable($param);
+			->with($this->callback(function ($param) {
+				return \is_callable($param);
 			}));
 		$backend = $this->createMock(UserInterface::class);
-		$result = $s->analyzeExistingUsers($backend, function() {});
-		$this->assertTrue(is_array($result));
-		$this->assertEquals(2, count($result));
+		$result = $s->analyzeExistingUsers($backend, function () {
+		});
+		$this->assertInternalType('array', $result);
+		$this->assertCount(2, $result);
 	}
 
 	/**
@@ -202,10 +203,9 @@ class SyncServiceTest extends TestCase {
 		$account->expects($this->exactly(2))->method('getUserId')->willReturn('test');
 		$s = new SyncService($this->config, $this->logger, $this->mapper);
 		$response = static::invokePrivate($s, 'checkIfAccountReappeared', [$account, $backend, $backendClass]);
-		$this->assertTrue(is_array($response));
-		$this->assertEquals(0, count($response[0]));
-		$this->assertEquals(1, count($response[1]));
-
+		$this->assertInternalType('array', $response);
+		$this->assertCount(0, $response[0]);
+		$this->assertCount(1, $response[1]);
 	}
 
 	/**
@@ -222,9 +222,9 @@ class SyncServiceTest extends TestCase {
 		$account->expects($this->exactly(2))->method('getUserId')->willReturn('test');
 		$s = new SyncService($this->config, $this->logger, $this->mapper);
 		$response = static::invokePrivate($s, 'checkIfAccountReappeared', [$account, $backend, $backendClass]);
-		$this->assertTrue(is_array($response));
-		$this->assertEquals(1, count($response[0]));
-		$this->assertEquals(0, count($response[1]));
+		$this->assertInternalType('array', $response);
+		$this->assertCount(1, $response[0]);
+		$this->assertCount(0, $response[1]);
 	}
 
 	public function providesSyncQuota() {
@@ -275,5 +275,4 @@ class SyncServiceTest extends TestCase {
 		$s = new SyncService($this->config, $this->logger, $this->mapper);
 		static::invokePrivate($s, 'syncQuota', [$a, $backend]);
 	}
-
 }

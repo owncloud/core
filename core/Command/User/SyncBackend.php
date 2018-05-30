@@ -42,7 +42,6 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Input\InputArgument;
 
 class SyncBackend extends Command {
-
 	const VALID_ACTIONS = ['disable', 'remove'];
 
 	/** @var AccountMapper */
@@ -78,31 +77,34 @@ class SyncBackend extends Command {
 			->addArgument(
 				'backend-class',
 				InputArgument::OPTIONAL,
-				'The PHP class name - e.g., "OCA\User_LDAP\User_Proxy". Please wrap the class name in double quotes. You can use the option --list to list all known backend classes.'
+				"The quoted PHP class name for the backend, eg\n"
+						." - LDAP:\t\t\"OCA\User_LDAP\User_Proxy\"\n"
+						." - Samba:\t\t\"OCA\User\SMB\"\n"
+						." - Shibboleth:\t\"OCA\User_Shibboleth\UserBackend\""
 			)
 			->addOption(
 				'list',
 				'l',
 				InputOption::VALUE_NONE,
-				'List all known backend classes'
+				'List all enabled backend classes'
 			)
 			->addOption(
 				'uid',
 				'u',
 				InputOption::VALUE_REQUIRED,
-				'sync only the user with the given user id'
+				'Sync only the user with the given user id'
 			)
 			->addOption(
 				'seenOnly',
 				's',
 				InputOption::VALUE_NONE,
-				'sync only seen users'
+				'Sync only seen users'
 			)
 			->addOption(
 				'showCount',
 				'c',
 				InputOption::VALUE_NONE,
-				'calculate user count before syncing'
+				'Calculate user count before syncing'
 			)
 			->addOption(
 				'missing-account-action',
@@ -207,7 +209,7 @@ class SyncBackend extends Command {
 		}
 
 		$output->writeln('');
-		$backendClass = get_class($backend);
+		$backendClass = \get_class($backend);
 		if ($input->getOption('seenOnly')) {
 			$output->writeln("Updating seen accounts from $backendClass ...");
 			$iterator = new SeenUsersIterator($this->accountMapper, $backendClass);
@@ -415,7 +417,5 @@ class SyncBackend extends Command {
 				}
 			);
 		}
-
-
 	}
 }

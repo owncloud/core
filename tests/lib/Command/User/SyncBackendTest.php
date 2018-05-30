@@ -219,7 +219,6 @@ class SyncBackendTest extends TestCase {
 		$this->assertEquals(1, static::invokePrivate($this->command, 'execute', [$inputInterface, $outputInterface]));
 	}
 
-
 	public function executeProvider() {
 		return [
 			['foo', 'Syncing foo ...'],
@@ -310,8 +309,8 @@ class SyncBackendTest extends TestCase {
 		$syncService->expects($this
 			->once())->method('run')->with(
 			$this->dummyBackend,
-			$this->callback(function($subject){
-				return count($subject) === 1 && $subject[0] === 'existing-uid';
+			$this->callback(function ($subject) {
+				return \count($subject) === 1 && $subject[0] === 'existing-uid';
 			}),
 			$this->anything()
 		);
@@ -397,13 +396,13 @@ class SyncBackendTest extends TestCase {
 		$syncService->expects($this
 			->once())->method('run')->with(
 			$this->dummyBackend,
-			$this->callback(function(\Iterator $iterator) use ($uids) {
+			$this->callback(function (\Iterator $iterator) use ($uids) {
 				// convert to array so we can test better
 				$items = [];
 				foreach ($iterator as $item) {
 					$items[] = $item;
 				}
-				return count(array_diff($items, $uids)) === 0;
+				return \count(\array_diff($items, $uids)) === 0;
 			}),
 			$this->anything()
 		);
@@ -437,13 +436,13 @@ class SyncBackendTest extends TestCase {
 		$syncService->expects($this
 			->once())->method('run')->with(
 			$this->dummyBackend,
-			$this->callback(function(\Iterator $iterator) use ($uids) {
+			$this->callback(function (\Iterator $iterator) use ($uids) {
 				// convert to array so we can test better
 				$items = [];
 				foreach ($iterator as $item) {
 					$items[] = $item;
 				}
-				return count(array_diff($items, $uids)) === 0;
+				return \count(\array_diff($items, $uids)) === 0;
 			}),
 			$this->anything()
 		);
@@ -481,6 +480,4 @@ class SyncBackendTest extends TestCase {
 		$this->userManager->expects($this->once())->method('get')->willReturn($user);
 		static::invokePrivate($this->command, 'reEnableUsers', [$reappearedUsers, $nullOutput]);
 	}
-
-
 }
