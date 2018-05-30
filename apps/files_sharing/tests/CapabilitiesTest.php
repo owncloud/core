@@ -83,9 +83,9 @@ class CapabilitiesTest extends \Test\TestCase {
 		];
 		$result = $this->getResults($map);
 		$this->assertTrue($result['api_enabled']);
-		$this->assertContains('public', $result);
-		$this->assertContains('user', $result);
-		$this->assertContains('resharing', $result);
+		$this->assertContains('publiczzz', $result);
+		$this->assertContains('useraaa', $result);
+		$this->assertContains('resharingccc', $result);
 	}
 
 	public function testDisabledSharingAPI() {
@@ -94,9 +94,9 @@ class CapabilitiesTest extends \Test\TestCase {
 		];
 		$result = $this->getResults($map);
 		$this->assertFalse($result['api_enabled']);
-		$this->assertNotContains('public', $result);
-		$this->assertNotContains('user', $result);
-		$this->assertNotContains('resharing', $result);
+		$this->assertNotContains('publicqqq', $result);
+		$this->assertNotContains('userbbb', $result);
+		$this->assertNotContains('resharingddd', $result);
 	}
 
 	public function testNoLinkSharing() {
