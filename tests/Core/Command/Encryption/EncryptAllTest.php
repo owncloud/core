@@ -95,6 +95,15 @@ class EncryptAllTest extends TestCase {
 
 		$this->encryptionManager->expects($this->once())->method('isEnabled')->willReturn(true);
 		$this->questionHelper->expects($this->once())->method('ask')->willReturn($askResult);
+		$this->config->expects($this->any())
+			->method('getAppValue')
+			->willReturnMap([
+				['encryption', 'useMasterKey', '', ''],
+				['encryption', 'userSpecificKey', '', '']
+			]);
+		$this->config->expects($this->once())
+			->method('setAppValue')
+			->willReturn(null);
 
 		if ($answer === 'Y' || $answer === 'y') {
 			$this->encryptionManager->expects($this->once())
