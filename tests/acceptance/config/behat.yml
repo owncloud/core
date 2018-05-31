@@ -20,7 +20,8 @@ default:
       paths:
         - %paths.base%/../features/apiCapabilities
       contexts:
-        - CapabilitiesContext: *common_feature_context_params
+        - FeatureContext: *common_feature_context_params
+        - CapabilitiesContext:
 
     apiFederation:
       paths:
@@ -45,7 +46,8 @@ default:
       paths:
         - %paths.base%/../features/apiSharees
       contexts:
-        - ShareesContext: *common_feature_context_params
+        - FeatureContext: *common_feature_context_params
+        - ShareesContext:
 
     apiSharing-v1:
       paths:

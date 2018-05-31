@@ -1384,14 +1384,68 @@ trait Sharing {
 					'shareapi_share_dialog_user_enumeration_group_members',
 				'testingState' => false
 			],
-		];
-	}
-
-	/**
-	 * @return array of common federation capability settings for testing
-	 */
-	protected function getCommonFederationConfigs() {
-		return [
+			[
+				'capabilitiesApp' => 'files_sharing',
+				'capabilitiesParameter' => 'resharing',
+				'testingApp' => 'core',
+				'testingParameter' => 'shareapi_allow_resharing',
+				'testingState' => true
+			],
+			[
+				'capabilitiesApp' => 'files_sharing',
+				'capabilitiesParameter' =>
+				'public@@@password@@@enforced_for@@@read_only',
+				'testingApp' => 'core',
+				'testingParameter' =>
+				'shareapi_enforce_links_password_read_only',
+				'testingState' => false
+			],
+			[
+				'capabilitiesApp' => 'files_sharing',
+				'capabilitiesParameter' =>
+				'public@@@password@@@enforced_for@@@read_write',
+				'testingApp' => 'core',
+				'testingParameter' =>
+				'shareapi_enforce_links_password_read_write',
+				'testingState' => false
+			],
+			[
+				'capabilitiesApp' => 'files_sharing',
+				'capabilitiesParameter' =>
+				'public@@@password@@@enforced_for@@@upload_only',
+				'testingApp' => 'core',
+				'testingParameter' =>
+				'shareapi_enforce_links_password_write_only',
+				'testingState' => false
+			],
+			[
+				'capabilitiesApp' => 'files_sharing',
+				'capabilitiesParameter' => 'public@@@send_mail',
+				'testingApp' => 'core',
+				'testingParameter' => 'shareapi_allow_public_notification',
+				'testingState' => false
+			],
+			[
+				'capabilitiesApp' => 'files_sharing',
+				'capabilitiesParameter' => 'public@@@social_share',
+				'testingApp' => 'core',
+				'testingParameter' => 'shareapi_allow_social_share',
+				'testingState' => true
+			],
+			[
+				'capabilitiesApp' => 'files_sharing',
+				'capabilitiesParameter' => 'public@@@expire_date@@@enabled',
+				'testingApp' => 'core',
+				'testingParameter' => 'shareapi_default_expire_date',
+				'testingState' => false
+			],
+			[
+				'capabilitiesApp' => 'files_sharing',
+				'capabilitiesParameter' => 'public@@@expire_date@@@enforced',
+				'testingApp' => 'core',
+				'testingParameter' => 'shareapi_enforce_expire_date',
+				'testingState' => false
+			],
 			[
 				'capabilitiesApp' => 'federation',
 				'capabilitiesParameter' => 'outgoing',
@@ -1405,7 +1459,7 @@ trait Sharing {
 				'testingApp' => 'files_sharing',
 				'testingParameter' => 'incoming_server2server_share_enabled',
 				'testingState' => true
-			],
+			]
 		];
 	}
 }
