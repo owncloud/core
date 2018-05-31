@@ -94,7 +94,7 @@ class Application extends \OCP\AppFramework\App {
 					$container->query('Util'),
 					$container->query('Session'),
 					$container->query('Crypt'),
-					$container->query('Recovery'))
+					$container->query('Recovery'), $server->getConfig())
 			]);
 
 			$hookManager->fireHooks();
