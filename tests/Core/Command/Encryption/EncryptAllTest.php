@@ -125,4 +125,22 @@ class EncryptAllTest extends TestCase {
 		$this->encryptionModule->expects($this->never())->method('encryptAll');
 		$this->invokePrivate($command, 'execute', [$this->consoleInput, $this->consoleOutput]);
 	}
+
+	/**
+	 * @expectedException \Exception
+	 * @expectedExceptionMessage Select encryption type masterkey or user-keys to continue.
+	 */
+	public function testExecuteExceptionForNoModeSelection() {
+		$command = new EncryptAll($this->encryptionManager, $this->appManager, $this->config, $this->questionHelper);
+
+		$this->encryptionManager->expects($this->once())->method('isEnabled')->willReturn(true);
+		$this->config->expects($this->any())
+			->method('getAppValue')
+			->willReturnMap([
+				['encryption', 'useMasterKey', '', ''],
+				['encryption', 'userSpecificKey', '', '']
+			]);
+
+		$this->invokePrivate($command, 'execute', [$this->consoleInput, $this->consoleOutput]);
+	}
 }
