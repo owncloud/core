@@ -255,7 +255,7 @@ class SessionTest extends TestCase {
 		$userSession->expects($this->once())
 			->method('prepareUserLogin');
 		$calledUserLogin = [];
-		\OC::$server->getEventDispatcher()->addListener('user.afterlogin', function (GenericEvent $event) use (&$calledUserLogin) {
+		$this->eventDispatcher->addListener('user.afterlogin', function (GenericEvent $event) use (&$calledUserLogin) {
 			$calledUserLogin[] = 'user.afterlogin';
 			$calledUserLogin[] = $event;
 		});
@@ -1210,6 +1210,10 @@ class SessionTest extends TestCase {
 		$iUser->expects($this->any())
 			->method('isEnabled')
 			->willReturn(true);
+		$iUser->expects($this->any())
+			->method('getUID')
+			->willReturn('foo');
+
 		$userManager->expects($this->once())->method('checkPassword')->willReturn($iUser);
 
 		$userSession = new Session($userManager, $session, $timeFactory,
@@ -1217,13 +1221,13 @@ class SessionTest extends TestCase {
 			$this->userSyncService, $this->eventDispatcher);
 
 		$calledUserBeforeLogin = [];
-		\OC::$server->getEventDispatcher()->addListener('user.beforelogin',
+		$this->eventDispatcher->addListener('user.beforelogin',
 			function (GenericEvent $event) use (&$calledUserBeforeLogin) {
 				$calledUserBeforeLogin[] = 'user.beforelogin';
 				$calledUserBeforeLogin[] = $event;
 			});
 		$calledUserAfterLogin = [];
-		\OC::$server->getEventDispatcher()->addListener('user.afterlogin',
+		$this->eventDispatcher->addListener('user.afterlogin',
 			function (GenericEvent $event) use (&$calledUserAfterLogin) {
 				$calledUserAfterLogin[] = 'user.afterlogin';
 				$calledUserAfterLogin[] = $event;
@@ -1235,13 +1239,21 @@ class SessionTest extends TestCase {
 
 		$this->assertEquals('user.beforelogin', $calledUserBeforeLogin[0]);
 		$this->assertInstanceOf(GenericEvent::class, $calledUserBeforeLogin[1]);
+		$this->assertArrayHasKey('login', $calledUserBeforeLogin[1]);
+		$this->assertEquals('foo', $calledUserBeforeLogin[1]->getArgument('login'));
 		$this->assertArrayHasKey('uid', $calledUserBeforeLogin[1]);
 		$this->assertEquals('foo', $calledUserBeforeLogin[1]->getArgument('uid'));
 		$this->assertArrayHasKey('password', $calledUserBeforeLogin[1]);
 		$this->assertEquals('foopass', $calledUserBeforeLogin[1]->getArgument('password'));
+		$this->assertArrayHasKey('_uid', $calledUserBeforeLogin[1]);
+		$this->assertEquals('deprecated: please use \'login\', the real uid is not yet known', $calledUserBeforeLogin[1]->getArgument('_uid'));
+
 		$this->assertEquals('user.afterlogin', $calledUserAfterLogin[0]);
 		$this->assertInstanceOf(GenericEvent::class, $calledUserAfterLogin[1]);
+		$this->assertArrayHasKey('user', $calledUserAfterLogin[1]);
+		$this->assertInstanceOf(IUser::class, $calledUserAfterLogin[1]->getArgument('user'));
 		$this->assertArrayHasKey('uid', $calledUserAfterLogin[1]);
+		$this->assertEquals('foo', $calledUserAfterLogin[1]->getArgument('user')->getUID());
 		$this->assertEquals('foo', $calledUserAfterLogin[1]->getArgument('uid'));
 		$this->assertArrayHasKey('password', $calledUserAfterLogin[1]);
 		$this->assertEquals('foopass', $calledUserAfterLogin[1]->getArgument('password'));
