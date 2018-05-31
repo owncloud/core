@@ -154,3 +154,34 @@ Feature: favorite
         Then user "user0" in folder "/subfolder" should have favorited the following elements from offset 3 and limit 2
             | /subfolder/textfile2.txt |
             | /subfolder/textfile3.txt |
+
+	Scenario: sharer file favorite state should not change the favorite state of sharee
+		Given using old DAV path
+		And user "user0" has been created
+		And user "user1" has been created
+		And user "user0" has moved file "/textfile0.txt" to "/favoriteFile.txt"
+		And user "user0" has shared file "/favoriteFile.txt" with user "user1"
+		When user "user0" favorites element "/favoriteFile.txt" using the API
+		And user "user1" gets the following properties of file "/favoriteFile.txt" using the API
+			|{http://owncloud.org/ns}favorite|
+		Then the single response should contain a property "{http://owncloud.org/ns}favorite" with value "0"
+
+	Scenario: sharee file favorite state should not change the favorite state of sharer
+		Given using old DAV path
+		And user "user0" has been created
+		And user "user1" has been created
+		And user "user0" has moved file "/textfile0.txt" to "/favoriteFile.txt"
+		And user "user0" has shared file "/favoriteFile.txt" with user "user1"
+		When user "user1" favorites element "/favoriteFile.txt" using the API
+		And user "user0" gets the following properties of file "/favoriteFile.txt" using the API
+			|{http://owncloud.org/ns}favorite|
+		Then the single response should contain a property "{http://owncloud.org/ns}favorite" with value "0"
+
+	Scenario: favoriting a folder does not change the favorite state of elements inside the folder
+		Given using old DAV path
+		And user "user0" has been created
+		When user "user0" favorites element "/PARENT/parent.txt" using the API
+		And user "user0" favorites element "/PARENT" using the API
+		Then user "user0" in folder "/" should have favorited the following elements
+			| /PARENT            |
+			| /PARENT/parent.txt |
