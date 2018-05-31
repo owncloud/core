@@ -3,6 +3,7 @@ OC.L10N.register(
     {
     "Cancel" : "﻿ರದ್ದು",
     "Share" : "﻿ಹಂಚಿಕೊಳ್ಳಿ",
+    "Pending" : "﻿ಬಾಕಿ ಇದೆ",
     "Sharing" : "﻿ಹಂಚಿಕೆ",
     "Password" : "ಗುಪ್ತ ಪದ",
     "Name" : "﻿ಹೆಸರು",

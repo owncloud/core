@@ -26,6 +26,7 @@ OC.L10N.register(
     "No ownCloud installation (7 or higher) found at {remote}" : "Yüklənmiş (7 yada yuxarı) ownCloud {uzaq} unvanında tapılmadı ",
     "Invalid ownCloud url" : "Yalnış ownCloud url-i",
     "Share" : "Paylaş",
+    "Pending" : "Gözləmə",
     "Shared by" : "Tərəfindən yayımlanıb",
     "Sharing" : "Paylaşılır",
     "A file or folder has been <strong>shared</strong>" : "Fayl və ya direktoriya <strong>yayımlandı</strong>",

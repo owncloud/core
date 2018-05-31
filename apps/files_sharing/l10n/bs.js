@@ -3,6 +3,7 @@ OC.L10N.register(
     {
     "Cancel" : "Odustani",
     "Share" : "Dijeli",
+    "Pending" : "Na čekanju",
     "Shared by" : "Dijeli",
     "Sharing" : "Dijeljenje",
     "Password" : "Lozinka",

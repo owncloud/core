@@ -24,6 +24,8 @@ OC.L10N.register(
     "No ownCloud installation (7 or higher) found at {remote}" : "Ez da ownClouden instalaziorik (7 edo haundiago) aurkitu {remote}n",
     "Invalid ownCloud url" : "ownCloud url baliogabea",
     "Share" : "Partekatu",
+    "Declined" : "Ez onartua",
+    "Pending" : "Zain",
     "Shared by" : "Honek elkarbanatuta",
     "Sharing" : "Partekatzea",
     "A file or folder has been <strong>shared</strong>" : "Fitxategia edo karpeta <strong>konpartitu</strong> da",

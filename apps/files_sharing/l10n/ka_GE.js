@@ -4,6 +4,7 @@ OC.L10N.register(
     "Uploading..." : "მიმდინარეობს ატვირთვა...",
     "Cancel" : "უარყოფა",
     "Share" : "გაზიარება",
+    "Pending" : "მოცდის რეჟიმში",
     "Shared by" : "აზიარებს",
     "Sharing" : "გაზიარება",
     "Password" : "პაროლი",

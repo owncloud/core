@@ -11,6 +11,7 @@ OC.L10N.register(
     "Cancel" : "বাতিল",
     "Invalid ownCloud url" : "অবৈধ ওউনক্লাউড url",
     "Share" : "ভাগাভাগি কর",
+    "Pending" : "মুলতুবি",
     "Shared by" : "যাদের মাঝে ভাগাভাগি করা হয়েছে",
     "Sharing" : "ভাগাভাগিরত",
     "A file or folder has been <strong>shared</strong>" : "একটি ফাইল বা ফোলডার <strong>ভাগাভাগি</strong> করা হয়েছে",
