@@ -265,6 +265,10 @@ class EncryptAll {
 		while($root = array_pop($directories)) {
 			$content = $this->rootView->getDirectoryContent($root);
 			foreach ($content as $file) {
+				// only encrypt files owned by the user, exclude incoming local shares, and incoming federated shares
+				if ($file->getStorage()->instanceOfStorage('\OCA\Files_Sharing\ISharedStorage')) {
+					continue;
+				}
 				$path = $root . '/' . $file['name'];
 				if ($this->rootView->is_dir($path)) {
 					$directories[] = $path;
@@ -290,7 +294,7 @@ class EncryptAll {
 	protected function encryptFile($path) {
 
 		$source = $path;
-		$target = $path . '.encrypted.' . time();
+		$target = $path . '.encrypted.' . $this->getTimeStamp() . '.part';
 
 		try {
 			$this->keyManager->setVersion($source, 0, $this->rootView);
@@ -377,6 +381,15 @@ class EncryptAll {
 	protected function setupUserFS($uid) {
 		\OC_Util::tearDownFS();
 		\OC_Util::setupFS($uid);
+	}
+
+	/**
+	 * get current timestamp
+	 *
+	 * @return int
+	 */
+	protected function getTimeStamp() {
+		return \time();
 	}
 
 	/**

@@ -27,6 +27,7 @@ namespace OCA\Encryption\Tests;
 
 use OCA\Encryption\HookManager;
 use OCA\Encryption\Hooks\Contracts\IHook;
+use OCA\Encryption\Hooks\UserHooks;
 use Test\TestCase;
 
 class HookManagerTest extends TestCase {
@@ -79,7 +80,14 @@ class HookManagerTest extends TestCase {
 
 		$hookInstances = self::invokePrivate(self::$instance, 'hookInstances');
 		$this->assertCount(3, $hookInstances);
-
 	}
 
+	public function testFireHooks() {
+		$userHookMock = $this->createMock(UserHooks::class);
+		$userHookMock->expects($this->once())
+			->method('addHooks')
+			->willReturn(null);
+		self::invokePrivate(self::$instance, 'hookInstances', array([$userHookMock]));
+		$this->assertNull(self::$instance->fireHooks());
+	}
 }
