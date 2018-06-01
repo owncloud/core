@@ -63,6 +63,8 @@ class ReadOnlyCachePermissionsMask extends CacheWrapper {
 	protected function formatCacheEntry($entry) {
 		$storageId = $entry->getStorageId();
 
+		// Give all permissions to whitelisted "internal" paths and their
+		// subdirectories
 		if ($this->isHomeStorage($storageId)) {
 			foreach ($this->whitelist as $path) {
 				if ($this->startsWith($entry->getPath(), $path)) {
@@ -72,6 +74,7 @@ class ReadOnlyCachePermissionsMask extends CacheWrapper {
 			}
 		}
 
+		// Allow creation of skeleton files
 		if ($this->isHomeStorage($storageId) && $entry->getPath() === '') {
 			$entry['permissions'] = Constants::PERMISSION_CREATE;
 			$this->mask = Constants::PERMISSION_CREATE;
