@@ -36,8 +36,9 @@ trait Logging {
 	 * order of the table has to be the same as in the log file
 	 * empty cells in the table will not be checked!
 	 *
-	 * @Then the last lines of the log file should contain log-entries with these attributes:
+	 * @Then /^the last lines of the log file should contain log-entries (with|containing) these attributes:$/
 	 *
+	 * @param string $withOrContaining
 	 * @param TableNode $expectedLogEntries table with headings that correspond
 	 *                                      to the json keys in the log entry
 	 *                                      e.g.
@@ -47,7 +48,7 @@ trait Logging {
 	 * @throws \Exception
 	 */
 	public function theLastLinesOfTheLogFileShouldContainEntriesWithTheseAttributes(
-		TableNode $expectedLogEntries
+		$withOrContaining, TableNode $expectedLogEntries
 	) {
 		//-1 because getRows gives also the header
 		$linesToRead = \count($expectedLogEntries->getRows()) - 1;
@@ -69,10 +70,18 @@ trait Logging {
 					"' in log entry: '" . $logLines[$lineNo] . "'"
 				);
 				if ($expectedLogEntry[$attribute] !== "") {
-					PHPUnit_Framework_Assert::assertEquals(
-						$expectedLogEntry[$attribute], $logEntry[$attribute],
-						"log entry:\n" . $logLines[$lineNo] . "\n"
-					);
+					$message = "log entry:\n" . $logLines[$lineNo] . "\n";
+					if ($withOrContaining === 'with') {
+						PHPUnit_Framework_Assert::assertEquals(
+							$expectedLogEntry[$attribute], $logEntry[$attribute],
+							$message
+						);
+					} else {
+						PHPUnit_Framework_Assert::assertContains(
+							$expectedLogEntry[$attribute], $logEntry[$attribute],
+							$message
+						);
+					}
 				}
 			}
 			$lineNo++;
@@ -85,8 +94,9 @@ trait Logging {
 	 * attributes in the table that are empty will match any value in the
 	 * corresponding attribute in the log file
 	 *
-	 * @Then the log file should not contain any log-entries with these attributes:
+	 * @Then /^the log file should not contain any log-entries (with|containing) these attributes:$/
 	 *
+	 * @param string $withOrContaining
 	 * @param TableNode $logEntriesExpectedNotToExist table with headings that
 	 *                                                correspond to the json
 	 *                                                keys in the log entry
@@ -97,25 +107,28 @@ trait Logging {
 	 * @throws \Exception
 	 */
 	public function theLogFileShouldNotContainAnyLogEntriesWithTheseAttributes(
-		TableNode $logEntriesExpectedNotToExist
+		$withOrContaining, TableNode $logEntriesExpectedNotToExist
 	) {
 		$logLines = \file(LoggingHelper::getLogFilePath());
 		foreach ($logLines as $logLine) {
-			$logEntries = \json_decode($logLine, true);
+			$logEntry = \json_decode($logLine, true);
 			foreach ($logEntriesExpectedNotToExist as $logEntryExpectedNotToExist) {
+				$match = true; // start by assuming the worst, we match the unwanted log entry
 				foreach (\array_keys($logEntryExpectedNotToExist) as $attribute) {
 					$logEntryExpectedNotToExist[$attribute]
 						= $this->featureContext->substituteInLineCodes(
 							$logEntryExpectedNotToExist[$attribute]
 						);
-					if (isset($logEntries[$attribute])
-						&& ($logEntryExpectedNotToExist[$attribute] === ""
-						|| $logEntryExpectedNotToExist[$attribute] === $logEntries[$attribute])
-					) {
-						$match = true;
-					} else {
-						$match = false;
-						break;
+
+					if (isset($logEntry[$attribute]) && ($logEntryExpectedNotToExist[$attribute] !== "")) {
+						if ($withOrContaining === 'with') {
+							$match = ($logEntryExpectedNotToExist[$attribute] === $logEntry[$attribute]);
+						} else {
+							$match = (\strpos($logEntry[$attribute], $logEntryExpectedNotToExist[$attribute]) !== false);
+						}
+						if (!$match) {
+							break;
+						}
 					}
 				}
 			}
