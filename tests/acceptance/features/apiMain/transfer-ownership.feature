@@ -16,9 +16,10 @@ Feature: transfer-ownership
 		Given user "user0" has been created
 		And user "user1" has been created
 		And user "user0" has uploaded file "data/file_to_overwrite.txt" to "/PARENT/textfile0.txt"
-		And user "user0" has uploaded chunk file "1" of "3" with "AA" to "/PARENT/textfile0.txt"
-		And user "user0" has uploaded chunk file "2" of "3" with "BB" to "/PARENT/textfile0.txt"
-		And user "user0" has uploaded chunk file "3" of "3" with "CC" to "/PARENT/textfile0.txt"
+		And user "user0" has uploaded the following "3" chunks to "/PARENT/textfile0.txt" with old chunking and using the API
+			| 1 | AA |
+			| 2 | BB |
+			| 3 | CC |
 		When the administrator transfers ownership from "user0" to "user1" using the occ command
 		Then the command should have been successful
 		And using received transfer folder of "user1" as dav path

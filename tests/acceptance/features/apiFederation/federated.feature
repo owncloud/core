@@ -156,9 +156,10 @@ Feature: federated
 		And user "user0" from server "LOCAL" has shared "/textfile0.txt" with user "user1" from server "REMOTE"
 		And user "user1" from server "REMOTE" has accepted the last pending share
 		And using server "REMOTE"
-		When user "user1" uploads chunk file "1" of "3" with "AAAAA" to "/textfile0 (2).txt" using the API
-		And user "user1" uploads chunk file "2" of "3" with "BBBBB" to "/textfile0 (2).txt" using the API
-		And user "user1" uploads chunk file "3" of "3" with "CCCCC" to "/textfile0 (2).txt" using the API
+		When user "user1" uploads the following "3" chunks to "/textfile0 (2).txt" with old chunking and using the API
+			| 1 | AAAAA |
+			| 2 | BBBBB |
+			| 3 | CCCCC |
 		Then the content of file "/textfile0 (2).txt" for user "user1" should be "AAAAABBBBBCCCCC"
 
 	Scenario: Overwrite a federated shared folder as recipient using old chunking
@@ -170,9 +171,10 @@ Feature: federated
 		And user "user0" from server "LOCAL" has shared "/PARENT" with user "user1" from server "REMOTE"
 		And user "user1" from server "REMOTE" has accepted the last pending share
 		And using server "REMOTE"
-		When user "user1" uploads chunk file "1" of "3" with "AAAAA" to "/PARENT (2)/textfile0.txt" using the API
-		And user "user1" uploads chunk file "2" of "3" with "BBBBB" to "/PARENT (2)/textfile0.txt" using the API
-		And user "user1" uploads chunk file "3" of "3" with "CCCCC" to "/PARENT (2)/textfile0.txt" using the API
+		When user "user1" uploads the following "3" chunks to "/PARENT (2)/textfile0.txt" with old chunking and using the API
+			| 1 | AAAAA |
+			| 2 | BBBBB |
+			| 3 | CCCCC |
 		Then the content of file "/PARENT (2)/textfile0.txt" for user "user1" should be "AAAAABBBBBCCCCC"
 
 	Scenario: Trusted server handshake does not require authenticated requests - we force 403 by sending an empty body

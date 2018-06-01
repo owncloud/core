@@ -452,33 +452,37 @@ Feature: webdav-related-old-endpoint
 
 	Scenario: Upload chunked file asc
 		Given user "user0" has been created
-		When user "user0" uploads chunk file "1" of "3" with "AAAAA" to "/myChunkedFile.txt" using the API
-		And user "user0" uploads chunk file "2" of "3" with "BBBBB" to "/myChunkedFile.txt" using the API
-		And user "user0" uploads chunk file "3" of "3" with "CCCCC" to "/myChunkedFile.txt" using the API
+		When user "user0" uploads the following "3" chunks to "/myChunkedFile.txt" with old chunking and using the API
+			| 1 | AAAAA |
+			| 2 | BBBBB |
+			| 3 | CCCCC |
 		Then as "user0" the file "/myChunkedFile.txt" should exist
 		And the content of file "/myChunkedFile.txt" for user "user0" should be "AAAAABBBBBCCCCC"
 
 	Scenario: Upload chunked file desc
 		Given user "user0" has been created
-		When user "user0" uploads chunk file "3" of "3" with "CCCCC" to "/myChunkedFile.txt" using the API
-		And user "user0" uploads chunk file "2" of "3" with "BBBBB" to "/myChunkedFile.txt" using the API
-		And user "user0" uploads chunk file "1" of "3" with "AAAAA" to "/myChunkedFile.txt" using the API
+		When user "user0" uploads the following "3" chunks to "/myChunkedFile.txt" with old chunking and using the API
+			| 3 | CCCCC |
+			| 2 | BBBBB |
+			| 1 | AAAAA |
 		Then as "user0" the file "/myChunkedFile.txt" should exist
 		And the content of file "/myChunkedFile.txt" for user "user0" should be "AAAAABBBBBCCCCC"
 
 	Scenario: Upload chunked file random
 		Given user "user0" has been created
-		When user "user0" uploads chunk file "2" of "3" with "BBBBB" to "/myChunkedFile.txt" using the API
-		And user "user0" uploads chunk file "3" of "3" with "CCCCC" to "/myChunkedFile.txt" using the API
-		And user "user0" uploads chunk file "1" of "3" with "AAAAA" to "/myChunkedFile.txt" using the API
+		When user "user0" uploads the following "3" chunks to "/myChunkedFile.txt" with old chunking and using the API
+			| 2 | BBBBB |
+			| 3 | CCCCC |
+			| 1 | AAAAA |
 		Then as "user0" the file "/myChunkedFile.txt" should exist
 		And the content of file "/myChunkedFile.txt" for user "user0" should be "AAAAABBBBBCCCCC"
 
 	Scenario Outline: Chunked upload files with difficult name
 		Given user "user0" has been created
-		And user "user0" uploads chunk file "1" of "3" with "AAAAA" to "/<file-name>" using the API
-		And user "user0" uploads chunk file "2" of "3" with "BBBBB" to "/<file-name>" using the API
-		And user "user0" uploads chunk file "3" of "3" with "CCCCC" to "/<file-name>" using the API
+		When user "user0" uploads the following "3" chunks to "/<file-name>" with old chunking and using the API
+			| 1 | AAAAA |
+			| 2 | BBBBB |
+			| 3 | CCCCC |
 		Then as "user0" the file "/<file-name>" should exist
 		And the content of file "/<file-name>" for user "user0" should be "AAAAABBBBBCCCCC"
 		Examples:
