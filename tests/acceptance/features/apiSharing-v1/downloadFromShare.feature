@@ -27,8 +27,8 @@ Feature: sharing
 		And user "user1" has shared file "textfile0.txt" with user "user2"
 		And user "user1" has moved file "/textfile0.txt" to "/common/textfile0.txt"
 		And user "user1" has moved file "/common/textfile0.txt" to "/common/sub/textfile0.txt"
-		And user "user2" uploads file "data/file_to_overwrite.txt" to "/textfile0 (2).txt" using the API
-		When user "user2" downloads file "/common/sub/textfile0.txt" with range "bytes=0-8" using the API
+		When user "user2" uploads file "data/file_to_overwrite.txt" to "/textfile0 (2).txt" using the API
+		And user "user2" downloads file "/common/sub/textfile0.txt" with range "bytes=0-8" using the API
 		Then the downloaded content should be "BLABLABLA"
 		And the downloaded content when downloading file "/textfile0 (2).txt" for user "user2" with range "bytes=0-8" should be "BLABLABLA"
 		And user "user2" should see the following elements
