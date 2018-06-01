@@ -464,47 +464,48 @@ Feature: webdav-related-new-endpoint
 	Scenario: Upload chunked file asc with new chunking
 		Given using new DAV path
 		And user "user0" has been created
-		And user "user0" has created a new chunking upload with id "chunking-42"
-		And user "user0" has uploaded new chunk file "1" with "AAAAA" to id "chunking-42"
-		And user "user0" has uploaded new chunk file "2" with "BBBBB" to id "chunking-42"
-		And user "user0" has uploaded new chunk file "3" with "CCCCC" to id "chunking-42"
-		And user "user0" has moved new chunk file with id "chunking-42" to "/myChunkedFile.txt"
-		When user "user0" downloads the file "/myChunkedFile.txt" using the API
-		Then the downloaded content should be "AAAAABBBBBCCCCC"
+		When user "user0" creates a new chunking upload with id "chunking-42" using the API
+		And user "user0" uploads new chunk file "1" with "AAAAA" to id "chunking-42" using the API
+		And user "user0" uploads new chunk file "2" with "BBBBB" to id "chunking-42" using the API
+		And user "user0" uploads new chunk file "3" with "CCCCC" to id "chunking-42" using the API
+		And user "user0" moves new chunk file with id "chunking-42" to "/myChunkedFile.txt" using the API
+		Then as "user0" the file "/myChunkedFile.txt" should exist
+		And the content of file "/myChunkedFile.txt" for user "user0" should be "AAAAABBBBBCCCCC"
 
 	Scenario: Upload chunked file desc with new chunking
 		Given using new DAV path
 		And user "user0" has been created
-		And user "user0" has created a new chunking upload with id "chunking-42"
-		And user "user0" has uploaded new chunk file "3" with "CCCCC" to id "chunking-42"
-		And user "user0" has uploaded new chunk file "2" with "BBBBB" to id "chunking-42"
-		And user "user0" has uploaded new chunk file "1" with "AAAAA" to id "chunking-42"
-		And user "user0" has moved new chunk file with id "chunking-42" to "/myChunkedFile.txt"
-		When user "user0" downloads the file "/myChunkedFile.txt" using the API
-		Then the downloaded content should be "AAAAABBBBBCCCCC"
+		When user "user0" creates a new chunking upload with id "chunking-42" using the API
+		And user "user0" uploads new chunk file "3" with "CCCCC" to id "chunking-42" using the API
+		And user "user0" uploads new chunk file "2" with "BBBBB" to id "chunking-42" using the API
+		And user "user0" uploads new chunk file "1" with "AAAAA" to id "chunking-42" using the API
+		And user "user0" moves new chunk file with id "chunking-42" to "/myChunkedFile.txt" using the API
+		Then as "user0" the file "/myChunkedFile.txt" should exist
+		And the content of file "/myChunkedFile.txt" for user "user0" should be "AAAAABBBBBCCCCC"
 
 	Scenario: Upload chunked file random with new chunking
 		Given using new DAV path
 		And user "user0" has been created
-		And user "user0" has created a new chunking upload with id "chunking-42"
-		And user "user0" has uploaded new chunk file "2" with "BBBBB" to id "chunking-42"
-		And user "user0" has uploaded new chunk file "3" with "CCCCC" to id "chunking-42"
-		And user "user0" has uploaded new chunk file "1" with "AAAAA" to id "chunking-42"
-		And user "user0" has moved new chunk file with id "chunking-42" to "/myChunkedFile.txt"
-		When user "user0" downloads the file "/myChunkedFile.txt" using the API
-		Then the downloaded content should be "AAAAABBBBBCCCCC"
+		When user "user0" creates a new chunking upload with id "chunking-42" using the API
+		And user "user0" uploads new chunk file "2" with "BBBBB" to id "chunking-42" using the API
+		And user "user0" uploads new chunk file "3" with "CCCCC" to id "chunking-42" using the API
+		And user "user0" uploads new chunk file "1" with "AAAAA" to id "chunking-42" using the API
+		And user "user0" moves new chunk file with id "chunking-42" to "/myChunkedFile.txt" using the API
+		Then as "user0" the file "/myChunkedFile.txt" should exist
+		And the content of file "/myChunkedFile.txt" for user "user0" should be "AAAAABBBBBCCCCC"
 
 	Scenario: Checking file id after a move overwrite using new chunking endpoint
 		Given using new DAV path
 		And user "user0" has been created
 		And user "user0" has copied file "/textfile0.txt" to "/existingFile.txt"
 		And user "user0" has stored id of file "/existingFile.txt"
-		And user "user0" has created a new chunking upload with id "chunking-42"
-		And user "user0" has uploaded new chunk file "1" with "AAAAA" to id "chunking-42"
-		And user "user0" has uploaded new chunk file "2" with "BBBBB" to id "chunking-42"
-		And user "user0" has uploaded new chunk file "3" with "CCCCC" to id "chunking-42"
-		When user "user0" moves new chunk file with id "chunking-42" to "/existingFile.txt" using the API
+		When user "user0" creates a new chunking upload with id "chunking-42" using the API
+		And user "user0" uploads new chunk file "1" with "AAAAA" to id "chunking-42" using the API
+		And user "user0" uploads new chunk file "2" with "BBBBB" to id "chunking-42" using the API
+		And user "user0" uploads new chunk file "3" with "CCCCC" to id "chunking-42" using the API
+		And user "user0" moves new chunk file with id "chunking-42" to "/existingFile.txt" using the API
 		Then user "user0" file "/existingFile.txt" should have the previously stored id
+		And the content of file "/existingFile.txt" for user "user0" should be "AAAAABBBBBCCCCC"
 
 	Scenario: Checking file id after a move between received shares
 		Given using new DAV path
@@ -578,17 +579,19 @@ Feature: webdav-related-new-endpoint
 		And user "user0" has uploaded new chunk file "3" with "CCCCC" to id "chunking-42"
 		When user "user0" moves new chunk file with id "chunking-42" to "/myChunkedFile.txt" with size 15 using the API
 		Then the HTTP status code should be "201"
+		And as "user0" the file "/myChunkedFile.txt" should exist
+		And the content of file "/myChunkedFile.txt" for user "user0" should be "AAAAABBBBBCCCCC"
 
 	Scenario Outline: Upload files with difficult names using new chunking
 		Given using new DAV path
 		And user "user0" has been created
-		And user "user0" has created a new chunking upload with id "chunking-42"
-		And user "user0" has uploaded new chunk file "1" with "AAAAA" to id "chunking-42"
-		And user "user0" has uploaded new chunk file "2" with "BBBBB" to id "chunking-42"
-		And user "user0" has uploaded new chunk file "3" with "CCCCC" to id "chunking-42"
-		And user "user0" has moved new chunk file with id "chunking-42" to "/<file-name>"
-		When user "user0" downloads the file "/<file-name>" using the API
-		Then the downloaded content should be "AAAAABBBBBCCCCC"
+		When user "user0" creates a new chunking upload with id "chunking-42" using the API
+		And user "user0" uploads new chunk file "1" with "AAAAA" to id "chunking-42" using the API
+		And user "user0" uploads new chunk file "2" with "BBBBB" to id "chunking-42" using the API
+		And user "user0" uploads new chunk file "3" with "CCCCC" to id "chunking-42" using the API
+		And user "user0" moves new chunk file with id "chunking-42" to "/<file-name>" using the API
+		Then as "user0" the file "/<file-name>" should exist
+		And the content of file "/<file-name>" for user "user0" should be "AAAAABBBBBCCCCC"
 		Examples:
 			| file-name |
 			| &#?       |
@@ -599,14 +602,14 @@ Feature: webdav-related-new-endpoint
 	Scenario: Upload a file called "0" using new chunking
 		Given using new DAV path
 		And user "user0" has been created
-		And user "user0" has created a new chunking upload with id "chunking-42"
-		And user "user0" has uploaded new chunk file "1" with "AAAAA" to id "chunking-42"
-		And user "user0" has uploaded new chunk file "2" with "BBBBB" to id "chunking-42"
-		And user "user0" has uploaded new chunk file "3" with "CCCCC" to id "chunking-42"
-		And user "user0" has moved new chunk file with id "chunking-42" to "/0"
-		When user "user0" downloads the file "/0" using the API
-		Then the downloaded content should be "AAAAABBBBBCCCCC"
-		
+		When user "user0" creates a new chunking upload with id "chunking-42" using the API
+		And user "user0" uploads new chunk file "1" with "AAAAA" to id "chunking-42" using the API
+		And user "user0" uploads new chunk file "2" with "BBBBB" to id "chunking-42" using the API
+		And user "user0" uploads new chunk file "3" with "CCCCC" to id "chunking-42" using the API
+		And user "user0" moves new chunk file with id "chunking-42" to "/0" using the API
+		And as "user0" the file "/0" should exist
+		And the content of file "/0" for user "user0" should be "AAAAABBBBBCCCCC"
+
 	Scenario: Retrieving private link
 		Given using new DAV path
 		And user "user0" has been created

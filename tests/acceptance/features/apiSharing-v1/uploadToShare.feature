@@ -11,12 +11,10 @@ Feature: sharing
 			| path        | FOLDER |
 			| shareType   | 3      |
 			| permissions | 4      |
-		And the public has uploaded file "test.txt" with content "test"
-		And the public has uploaded file "test.txt" with content "test2" with autorename mode
-		When the user downloads the file "/FOLDER/test.txt" using the API
-		Then the downloaded content should be "test"
-		And the user downloads the file "/FOLDER/test (2).txt" using the API
-		And the downloaded content should be "test2"
+		When the public uploads file "test.txt" with content "test" using the API
+		And the public uploads file "test.txt" with content "test2" with autorename mode using the API
+		Then the content of file "/FOLDER/test.txt" for user "user0" should be "test"
+		And the content of file "/FOLDER/test (2).txt" for user "user0" should be "test2"
 
 	Scenario: Uploading file to a public upload-only share that was deleted does not work
 		Given user "user0" has been created
@@ -68,9 +66,8 @@ Feature: sharing
 			| path        | FOLDER |
 			| shareType   | 3      |
 			| permissions | 4      |
-		And the public has uploaded file "test.txt" with content "test"
-		When the user downloads the file "/FOLDER/test.txt" using the API
-		Then the downloaded content should be "test"
+		When the public uploads file "test.txt" with content "test" using the API
+		Then the content of file "/FOLDER/test.txt" for user "user0" should be "test"
 
 	Scenario: Uploading to a public upload-only share with password
 		Given user "user0" has been created
@@ -80,9 +77,8 @@ Feature: sharing
 			| shareType   | 3        |
 			| password    | publicpw |
 			| permissions | 4        |
-		And the public has uploaded file "test.txt" with password "publicpw" and content "test"
-		When the user downloads the file "/FOLDER/test.txt" using the API
-		Then the downloaded content should be "test"
+		When the public uploads file "test.txt" with password "publicpw" and content "test" using the API
+		Then the content of file "/FOLDER/test.txt" for user "user0" should be "test"
 
 	Scenario: Uploading file to a user upload-only share folder works
 		Given user "user0" has been created
@@ -116,9 +112,8 @@ Feature: sharing
 			| shareType   | 3        |
 			| password    | publicpw |
 			| permissions | 15       |
-		And the public has uploaded file "test.txt" with password "publicpw" and content "test"
-		When the user downloads the file "/FOLDER/test.txt" using the API
-		Then the downloaded content should be "test"
+		When the public uploads file "test.txt" with password "publicpw" and content "test" using the API
+		Then the content of file "/FOLDER/test.txt" for user "user0" should be "test"
 
 	Scenario: Uploading file to a user read/write share folder works
 		Given user "user0" has been created
@@ -161,9 +156,8 @@ Feature: sharing
 			| shareType   | 3        |
 			| password    | publicpw |
 			| permissions | 15       |
-		And the public has uploaded file "test.txt" with password "publicpw" and content "test"
-		When the user downloads the file "/FOLDER/test.txt" using the API
-		Then the downloaded content should be "test"
+		When the public uploads file "test.txt" with password "publicpw" and content "test" using the API
+		Then the content of file "/FOLDER/test.txt" for user "user0" should be "test"
 
 	Scenario: Uploading to a user shared folder with read/write permission when the sharer has unsufficient quota does not work
 		Given user "user0" has been created
