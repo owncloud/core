@@ -56,8 +56,8 @@ class Checksum extends Wrapper {
 	 */
 	public function fopen($path, $mode) {
 		$stream = $this->getWrapperStorage()->fopen($path, $mode);
-		if (!is_resource($stream)) {
-			// don't wrap on error
+		if (!\is_resource($stream) || $this->isReadWriteStream($mode)) {
+			// don't wrap on error or mixed mode streams (could cause checksum corruption)
 			return $stream;
 		}
 
@@ -119,6 +119,14 @@ class Checksum extends Wrapper {
 	}
 
 	/**
+	 * @param $mode
+	 * @return bool
+	 */
+	private function isReadWriteStream($mode) {
+		return \strpos($mode, '+') !== false;
+	}
+
+	/**
 	 * Callback registered in fopen
 	 */
 	public function onClose() {
@@ -144,7 +152,7 @@ class Checksum extends Wrapper {
 			return '';
 		}
 
-		return sprintf(
+		return \sprintf(
 			self::CHECKSUMS_DB_FORMAT,
 			$checksums['sha1'],
 			$checksums['md5'],
@@ -161,7 +169,7 @@ class Checksum extends Wrapper {
 	 * @return boolean
 	 */
 	public static function isPartialFile($file) {
-		if (pathinfo($file, PATHINFO_EXTENSION) === 'part') {
+		if (\pathinfo($file, PATHINFO_EXTENSION) === 'part') {
 			return true;
 		}
 
@@ -174,11 +182,11 @@ class Checksum extends Wrapper {
 	 * @return bool
 	 */
 	public function file_put_contents($path, $data) {
-		$memoryStream = fopen('php://memory', 'r+');
+		$memoryStream = \fopen('php://memory', 'r+');
 		$checksumStream = \OC\Files\Stream\Checksum::wrap($memoryStream, $path);
 
-		fwrite($checksumStream, $data);
-		fclose($checksumStream);
+		\fwrite($checksumStream, $data);
+		\fclose($checksumStream);
 
 		return $this->getWrapperStorage()->file_put_contents($path, $data);
 	}
@@ -190,10 +198,10 @@ class Checksum extends Wrapper {
 	public function getMetaData($path) {
 		// Check if it is partial file. Partial file metadata are only checksums
 		$parentMetaData = [];
-		if(!self::isPartialFile($path)) {
+		if (!self::isPartialFile($path)) {
 			$parentMetaData = $this->getWrapperStorage()->getMetaData($path);
 			// can be null if entry does not exist
-			if (is_null($parentMetaData)) {
+			if ($parentMetaData === null) {
 				return null;
 			}
 		}
