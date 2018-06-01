@@ -47,12 +47,23 @@ abstract class Job implements IJob {
 	 * @param ILogger $logger
 	 */
 	public function execute($jobList, ILogger $logger = null) {
+		if ($logger === null) {
+			$logger = \OC::$server->getLogger();
+		}
+
 		$jobList->setLastRun($this);
 		try {
 			//storing job start time
 			$jobStartTime = \time();
 
-			\OCP\Util::writeLog('cron', 'Started background job of class : ' . \get_class($this) . ' with arguments : ' . \print_r($this->argument, true), \OCP\Util::DEBUG);
+			$logger->debug(
+				'Started background job of class : {class} with arguments : {arguments}',
+				[
+					'app' => 'cron',
+					'class' => \get_class($this),
+					'arguments' => \print_r($this->argument, true)
+				]
+			);
 
 			$this->run($this->argument);
 
@@ -60,8 +71,15 @@ abstract class Job implements IJob {
 			$jobEndTime = \time();
 			$timeTaken = $jobEndTime - $jobStartTime;
 
-			\OCP\Util::writeLog('cron', "Finished background job, the job took : $timeTaken seconds, " .
-				"this job is an instance of class : " . \get_class($this) . ' with arguments : ' . \print_r($this->argument, true), \OCP\Util::DEBUG);
+			$logger->debug(
+				'Finished background job, the job took : {timeTaken} seconds, this job is an instance of class : {class} with arguments : {arguments}',
+				[
+					'app' => 'cron',
+					'timeTaken' => $timeTaken,
+					'class' => \get_class($this),
+					'arguments' => \print_r($this->argument, true)
+				]
+			);
 
 			$jobList->setExecutionTime($this, $timeTaken);
 		} catch (\Exception $e) {

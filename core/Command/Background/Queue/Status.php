@@ -51,7 +51,7 @@ class Status extends Command {
 	 */
 	protected function execute(InputInterface $input, OutputInterface $output) {
 		$t = new Table($output);
-		$t->setHeaders(['Id', 'Job', 'Last run', 'Job Arguments']);
+		$t->setHeaders(['Job ID', 'Job', 'Last Run', 'Job Arguments']);
 		$this->jobList->listJobs(function (IJob $job) use ($t) {
 			$t->addRow([$job->getId(), \get_class($job), \date('c', $job->getLastRun()), $job->getArgument()]);
 		});

@@ -265,6 +265,7 @@ class JobList implements IJobList {
 			$job->setId($row['id']);
 			$job->setLastRun($row['last_run']);
 			$job->setArgument(\json_decode($row['argument'], true));
+
 			return $job;
 		} catch (AutoloadNotAllowedException $e) {
 			// job is from a disabled app, ignore
