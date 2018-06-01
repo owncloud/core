@@ -134,8 +134,7 @@ Feature: federated
 		And using server "REMOTE"
 		When user "user1" uploads file "data/file_to_overwrite.txt" to "/textfile0 (2).txt" using the API
 		And using server "LOCAL"
-		And user "user0" downloads file "/textfile0.txt" with range "bytes=0-8" using the API
-		Then the downloaded content should be "BLABLABLA"
+		Then the content of file "/textfile0.txt" for user "user0" should be "BLABLABLA" plus end-of-line
 
 	Scenario: Overwrite a federated shared folder as recipient
 		Given using server "REMOTE"
@@ -148,8 +147,7 @@ Feature: federated
 		And using server "REMOTE"
 		When user "user1" uploads file "data/file_to_overwrite.txt" to "/PARENT (2)/textfile0.txt" using the API
 		And using server "LOCAL"
-		And user "user0" downloads file "/PARENT/textfile0.txt" with range "bytes=0-8" using the API
-		Then the downloaded content should be "BLABLABLA"
+		Then the content of file "/PARENT/textfile0.txt" for user "user0" should be "BLABLABLA" plus end-of-line
 
 	Scenario: Overwrite a federated shared file as recipient using old chunking
 		Given using server "REMOTE"
@@ -160,11 +158,10 @@ Feature: federated
 		And user "user0" from server "LOCAL" has shared "/textfile0.txt" with user "user1" from server "REMOTE"
 		And user "user1" from server "REMOTE" has accepted the last pending share
 		And using server "REMOTE"
-		And user "user1" has uploaded chunk file "1" of "3" with "AAAAA" to "/textfile0 (2).txt"
-		And user "user1" has uploaded chunk file "2" of "3" with "BBBBB" to "/textfile0 (2).txt"
-		And user "user1" has uploaded chunk file "3" of "3" with "CCCCC" to "/textfile0 (2).txt"
-		When user "user1" downloads file "/textfile0 (2).txt" with range "bytes=0-4" using the API
-		Then the downloaded content should be "AAAAA"
+		When user "user1" uploads chunk file "1" of "3" with "AAAAA" to "/textfile0 (2).txt" using the API
+		And user "user1" uploads chunk file "2" of "3" with "BBBBB" to "/textfile0 (2).txt" using the API
+		And user "user1" uploads chunk file "3" of "3" with "CCCCC" to "/textfile0 (2).txt" using the API
+		Then the content of file "/textfile0 (2).txt" for user "user1" should be "AAAAABBBBBCCCCC"
 
 	Scenario: Overwrite a federated shared folder as recipient using old chunking
 		Given using server "REMOTE"
@@ -175,11 +172,10 @@ Feature: federated
 		And user "user0" from server "LOCAL" has shared "/PARENT" with user "user1" from server "REMOTE"
 		And user "user1" from server "REMOTE" has accepted the last pending share
 		And using server "REMOTE"
-		And user "user1" has uploaded chunk file "1" of "3" with "AAAAA" to "/PARENT (2)/textfile0.txt"
-		And user "user1" has uploaded chunk file "2" of "3" with "BBBBB" to "/PARENT (2)/textfile0.txt"
-		And user "user1" has uploaded chunk file "3" of "3" with "CCCCC" to "/PARENT (2)/textfile0.txt"
-		When user "user1" downloads file "/PARENT (2)/textfile0.txt" with range "bytes=3-13" using the API
-		Then the downloaded content should be "AABBBBBCCCC"
+		When user "user1" uploads chunk file "1" of "3" with "AAAAA" to "/PARENT (2)/textfile0.txt" using the API
+		And user "user1" uploads chunk file "2" of "3" with "BBBBB" to "/PARENT (2)/textfile0.txt" using the API
+		And user "user1" uploads chunk file "3" of "3" with "CCCCC" to "/PARENT (2)/textfile0.txt" using the API
+		Then the content of file "/PARENT (2)/textfile0.txt" for user "user1" should be "AAAAABBBBBCCCCC"
 
 	Scenario: Trusted server handshake does not require authenticated requests - we force 403 by sending an empty body
 		Given using server "LOCAL"

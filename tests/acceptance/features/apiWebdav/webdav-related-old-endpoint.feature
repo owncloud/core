@@ -452,35 +452,35 @@ Feature: webdav-related-old-endpoint
 
 	Scenario: Upload chunked file asc
 		Given user "user0" has been created
-		And user "user0" has uploaded chunk file "1" of "3" with "AAAAA" to "/myChunkedFile.txt"
-		And user "user0" has uploaded chunk file "2" of "3" with "BBBBB" to "/myChunkedFile.txt"
-		And user "user0" has uploaded chunk file "3" of "3" with "CCCCC" to "/myChunkedFile.txt"
-		When user "user0" downloads the file "/myChunkedFile.txt" using the API
-		Then the downloaded content should be "AAAAABBBBBCCCCC"
+		When user "user0" uploads chunk file "1" of "3" with "AAAAA" to "/myChunkedFile.txt" using the API
+		And user "user0" uploads chunk file "2" of "3" with "BBBBB" to "/myChunkedFile.txt" using the API
+		And user "user0" uploads chunk file "3" of "3" with "CCCCC" to "/myChunkedFile.txt" using the API
+		Then as "user0" the file "/myChunkedFile.txt" should exist
+		And the content of file "/myChunkedFile.txt" for user "user0" should be "AAAAABBBBBCCCCC"
 
 	Scenario: Upload chunked file desc
 		Given user "user0" has been created
-		And user "user0" has uploaded chunk file "3" of "3" with "CCCCC" to "/myChunkedFile.txt"
-		And user "user0" has uploaded chunk file "2" of "3" with "BBBBB" to "/myChunkedFile.txt"
-		And user "user0" has uploaded chunk file "1" of "3" with "AAAAA" to "/myChunkedFile.txt"
-		When user "user0" downloads the file "/myChunkedFile.txt" using the API
-		Then the downloaded content should be "AAAAABBBBBCCCCC"
+		When user "user0" uploads chunk file "3" of "3" with "CCCCC" to "/myChunkedFile.txt" using the API
+		And user "user0" uploads chunk file "2" of "3" with "BBBBB" to "/myChunkedFile.txt" using the API
+		And user "user0" uploads chunk file "1" of "3" with "AAAAA" to "/myChunkedFile.txt" using the API
+		Then as "user0" the file "/myChunkedFile.txt" should exist
+		And the content of file "/myChunkedFile.txt" for user "user0" should be "AAAAABBBBBCCCCC"
 
 	Scenario: Upload chunked file random
 		Given user "user0" has been created
-		And user "user0" has uploaded chunk file "2" of "3" with "BBBBB" to "/myChunkedFile.txt"
-		And user "user0" has uploaded chunk file "3" of "3" with "CCCCC" to "/myChunkedFile.txt"
-		And user "user0" has uploaded chunk file "1" of "3" with "AAAAA" to "/myChunkedFile.txt"
-		When user "user0" downloads the file "/myChunkedFile.txt" using the API
-		Then the downloaded content should be "AAAAABBBBBCCCCC"
+		When user "user0" uploads chunk file "2" of "3" with "BBBBB" to "/myChunkedFile.txt" using the API
+		And user "user0" uploads chunk file "3" of "3" with "CCCCC" to "/myChunkedFile.txt" using the API
+		And user "user0" uploads chunk file "1" of "3" with "AAAAA" to "/myChunkedFile.txt" using the API
+		Then as "user0" the file "/myChunkedFile.txt" should exist
+		And the content of file "/myChunkedFile.txt" for user "user0" should be "AAAAABBBBBCCCCC"
 
 	Scenario Outline: Chunked upload files with difficult name
 		Given user "user0" has been created
-		And user "user0" has uploaded chunk file "1" of "3" with "AAAAA" to "/<file-name>"
-		And user "user0" has uploaded chunk file "2" of "3" with "BBBBB" to "/<file-name>"
-		And user "user0" has uploaded chunk file "3" of "3" with "CCCCC" to "/<file-name>"
-		When user "user0" downloads the file "/<file-name>" using the API
-		Then the downloaded content should be "AAAAABBBBBCCCCC"
+		And user "user0" uploads chunk file "1" of "3" with "AAAAA" to "/<file-name>" using the API
+		And user "user0" uploads chunk file "2" of "3" with "BBBBB" to "/<file-name>" using the API
+		And user "user0" uploads chunk file "3" of "3" with "CCCCC" to "/<file-name>" using the API
+		Then as "user0" the file "/<file-name>" should exist
+		And the content of file "/<file-name>" for user "user0" should be "AAAAABBBBBCCCCC"
 		Examples:
 			| file-name |
 			| 0         |
