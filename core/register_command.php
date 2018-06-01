@@ -74,6 +74,7 @@ if (\OC::$server->getConfig()->getSystemValue('installed', false)) {
 	$application->add(new OC\Core\Command\Background\Ajax(\OC::$server->getConfig()));
 	$application->add(new OC\Core\Command\Background\Queue\Status(\OC::$server->getJobList()));
 	$application->add(new OC\Core\Command\Background\Queue\Delete(\OC::$server->getJobList()));
+	$application->add(new OC\Core\Command\Background\Queue\Execute(\OC::$server->getJobList()));
 
 	$application->add(new OC\Core\Command\Config\App\DeleteConfig(\OC::$server->getConfig()));
 	$application->add(new OC\Core\Command\Config\App\GetConfig(\OC::$server->getConfig()));
@@ -144,6 +145,7 @@ if (\OC::$server->getConfig()->getSystemValue('installed', false)) {
 	$application->add(new OC\Core\Command\User\Delete(\OC::$server->getUserManager()));
 	$application->add(new OC\Core\Command\User\Disable(\OC::$server->getUserManager()));
 	$application->add(new OC\Core\Command\User\Enable(\OC::$server->getUserManager()));
+	$application->add(new OC\Core\Command\User\Inactive(\OC::$server->getUserManager()));
 	$application->add(new OC\Core\Command\User\LastSeen(\OC::$server->getUserManager()));
 	$application->add(new OC\Core\Command\User\ListUsers(\OC::$server->getUserManager()));
 	$application->add(new OC\Core\Command\User\ListUserGroups(\OC::$server->getUserManager(), \OC::$server->getGroupManager()));
@@ -157,7 +159,6 @@ if (\OC::$server->getConfig()->getSystemValue('installed', false)) {
 	$application->add(new OC\Core\Command\User\Setting(\OC::$server->getUserManager(), \OC::$server->getConfig(), \OC::$server->getDatabaseConnection()));
 	$application->add(new OC\Core\Command\User\Modify(\OC::$server->getUserManager(), \OC::$server->getMailer()));
 	$application->add(new OC\Core\Command\User\SyncBackend(\OC::$server->getAccountMapper(), \OC::$server->getConfig(), \OC::$server->getUserManager(), \OC::$server->getLogger()));
-	$application->add(new \OC\Core\Command\User\Inactive(\OC::$server->getUserManager()));
 
 	$application->add(new OC\Core\Command\Group\Add(\OC::$server->getGroupManager()));
 	$application->add(new OC\Core\Command\Group\Delete(\OC::$server->getGroupManager()));
