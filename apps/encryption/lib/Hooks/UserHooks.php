@@ -26,6 +26,7 @@ namespace OCA\Encryption\Hooks;
 
 
 use OC\Files\Filesystem;
+use OCP\IConfig;
 use OCP\IUserManager;
 use OCP\Util as OCUtil;
 use OCA\Encryption\Hooks\Contracts\IHook;
@@ -76,6 +77,10 @@ class UserHooks implements IHook {
 	 * @var Crypt
 	 */
 	private $crypt;
+	/**
+	 * @var IConfig
+	 */
+	private $config;
 
 	/**
 	 * UserHooks constructor.
@@ -89,6 +94,7 @@ class UserHooks implements IHook {
 	 * @param Session $session
 	 * @param Crypt $crypt
 	 * @param Recovery $recovery
+	 * @param IConfig $config
 	 */
 	public function __construct(KeyManager $keyManager,
 								IUserManager $userManager,
@@ -98,7 +104,7 @@ class UserHooks implements IHook {
 								Util $util,
 								Session $session,
 								Crypt $crypt,
-								Recovery $recovery) {
+								Recovery $recovery, IConfig $config) {
 
 		$this->keyManager = $keyManager;
 		$this->userManager = $userManager;
@@ -109,6 +115,7 @@ class UserHooks implements IHook {
 		$this->session = $session;
 		$this->recovery = $recovery;
 		$this->crypt = $crypt;
+		$this->config = $config;
 	}
 
 	/**
@@ -164,6 +171,11 @@ class UserHooks implements IHook {
 		}
 		if ($this->util->isMasterKeyEnabled() === false) {
 			$this->userSetup->setupUser($params['uid'], $params['password']);
+		}
+
+		if (($this->util->isMasterKeyEnabled() === false) &&
+			($this->config->getAppValue('encryption', 'userSpecificKey', '') === '')) {
+			$this->config->setAppValue('encryption', 'userSpecificKey', '1');
 		}
 
 		$this->keyManager->init($params['uid'], $params['password']);
