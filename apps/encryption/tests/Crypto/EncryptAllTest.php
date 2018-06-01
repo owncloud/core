@@ -650,7 +650,7 @@ class EncryptAllTest extends TestCase {
 		$this->assertFalse($this->invokePrivate($encryptAll, 'encryptFile', [$path]));
 	}
 
-	/** A dummy test for getTimeStamp */
+	/** A dummy test for getTimeStamp  */
 	public function testGetTimeStamp() {
 		/** @var EncryptAll  | \PHPUnit_Framework_MockObject_MockObject  $encryptAll */
 		$encryptAll = $this->getMockBuilder(EncryptAll::class)
