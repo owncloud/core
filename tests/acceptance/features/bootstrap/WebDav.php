@@ -1590,6 +1590,21 @@ trait WebDav {
 	}
 
 	/**
+	 * @When user :user cancels chunking-upload with id :id using the API
+	 * @Given user :user has canceled new chunking-uploadwith id :id
+	 *
+	 * @param string $user
+	 * @param string $id
+	 *
+	 * @return void
+	 */
+	public function userCancelsUploadWithId(
+		$user, $id
+	) {
+		$this->deleteUpload($user, $id, []);
+	}
+
+	/**
 	 * @When user :user moves new chunk file with id :id to :dest with size :size using the API
 	 * @Given user :user has moved new chunk file with id :id to :dest with size :size
 	 *
@@ -1646,6 +1661,27 @@ trait WebDav {
 		try {
 			$this->response = $this->makeDavRequest(
 				$user, 'MOVE', $source, $headers, null, "uploads"
+			);
+		} catch (BadResponseException $ex) {
+			$this->response = $ex->getResponse();
+		}
+	}
+
+	/**
+	 * Delete chunked-upload directory
+	 *
+	 * @param string $user user
+	 * @param string $id upload id
+	 * @param array $headers extra headers
+	 *
+	 * @return void
+	 */
+	private function deleteUpload($user, $id, $headers) {
+		$source = '/uploads/' . $user . '/' . $id;
+
+		try {
+			$this->response = $this->makeDavRequest(
+				$user, 'DELETE', $source, $headers, null, "uploads"
 			);
 		} catch (BadResponseException $ex) {
 			$this->response = $ex->getResponse();
