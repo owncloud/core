@@ -1100,22 +1100,17 @@ trait WebDav {
 			}
 		}
 		if ($chunkingVersion === 'old') {
-			foreach ($chunks as $index => $chunk) {
+			foreach ($chunks as $index => $chunkContent) {
 				$this->userUploadsChunkedFile(
-					$user, $index + 1, count($chunks), $chunk, $destination
+					$user, $index + 1, \count($chunks), $chunkContent, $destination
 				);
 			}
 		} else {
-			$id = 'chunking-43';
-			$this->userCreatesANewChunkingUploadWithId($user, $id);
-			foreach ($chunks as $index => $chunk) {
-				$this->userUploadsNewChunkFileOfWithToId(
-					$user, $index + 1, $chunk, $id
-				);
+			$chunkDetails = [];
+			foreach ($chunks as $index => $chunkContent) {
+				$chunkDetails[] = [$index + 1, $chunkContent];
 			}
-			$this->userMovesNewChunkFileWithIdToMychunkedfile(
-				$user, $id, $destination
-			);
+			$this->userUploadsChunksUsingNewChunking($user, $destination, 'chunking-43', $chunkDetails);
 		}
 	}
 
@@ -1419,6 +1414,31 @@ trait WebDav {
 	/**
 	 * Old style chunking upload
 	 *
+	 * @When user :user uploads the following :total chunks to :file with old chunking and using the API
+	 * @Given user :user has uploaded the following :total chunks to :file with old chunking and using the API
+	 *
+	 * @param string $user
+	 * @param string $total
+	 * @param string $file
+	 * @param TableNode $chunkDetails table of 2 columns, chunk number and chunk
+	 *                                content without column headings, e.g.
+	 *                                | 1 | first data              |
+	 *                                | 2 | followed by second data |
+	 *                                Chunks may be numbered out-of-order if desired.
+	 *
+	 * @return void
+	 */
+	public function userUploadsTheFollowingChunksUsingOldChunking($user, $total, $file, TableNode $chunkDetails) {
+		foreach ($chunkDetails->getTable() as $chunkDetail) {
+			$chunkNumber = $chunkDetail[0];
+			$chunkContent = $chunkDetail[1];
+			$this->userUploadsChunkedFile($user, $chunkNumber, $total, $chunkContent, $file);
+		}
+	}
+
+	/**
+	 * Old style chunking upload
+	 *
 	 * @When user :user uploads chunk file :num of :total with :data to :destination using the API
 	 * @Given user :user has uploaded chunk file :num of :total with :data to :destination
 	 *
@@ -1443,6 +1463,52 @@ trait WebDav {
 		} catch (\GuzzleHttp\Exception\RequestException $ex) {
 			$this->response = $ex->getResponse();
 		}
+	}
+
+	/**
+	 * New style chunking upload
+	 *
+	 * @When user :user uploads the following chunks to :file with new chunking and using the API
+	 * @Given user :user has uploaded the following chunks to :file with new chunking and using the API
+	 *
+	 * @param string $user
+	 * @param string $file
+	 * @param TableNode $chunkDetails table of 2 columns, chunk number and chunk
+	 *                                content without column headings, e.g.
+	 *                                | 1 | first data              |
+	 *                                | 2 | followed by second data |
+	 *                                Chunks may be numbered out-of-order if desired.
+	 *
+	 * @return void
+	 */
+	public function userUploadsTheFollowingChunksUsingNewChunking($user, $file, TableNode $chunkDetails) {
+		$this->userUploadsChunksUsingNewChunking(
+			$user, $file, 'chunking-42', $chunkDetails->getTable()
+		);
+	}
+
+	/**
+	 * New style chunking upload
+	 *
+	 * @param string $user
+	 * @param string $file
+	 * @param string $chunkingId
+	 * @param array $chunkDetails of chunks of the file. Each array entry is
+	 *                            itself an array of 2 items:
+	 *                            [0] the chunk number
+	 *                            [1] data content of the chunk
+	 *                            Chunks may be numbered out-of-order if desired.
+	 *
+	 * @return void
+	 */
+	public function userUploadsChunksUsingNewChunking($user, $file, $chunkingId, $chunkDetails) {
+		$this->userCreatesANewChunkingUploadWithId($user, $chunkingId);
+		foreach ($chunkDetails as $chunkDetail) {
+			$chunkNumber = $chunkDetail[0];
+			$chunkContent = $chunkDetail[1];
+			$this->userUploadsNewChunkFileOfWithToId($user, $chunkNumber, $chunkContent, $chunkingId);
+		}
+		$this->userMovesNewChunkFileWithIdToMychunkedfile($user, $chunkingId, $file);
 	}
 
 	/**
