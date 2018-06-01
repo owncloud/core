@@ -409,6 +409,46 @@ trait WebDav {
 	}
 
 	/**
+	 * @Then /^the content of file "([^"]*)" should be "([^"]*)"$/
+	 *
+	 * @param string $fileName
+	 * @param string $content
+	 *
+	 * @return void
+	 */
+	public function contentOfFileShouldBe($fileName, $content) {
+		$this->theUserDownloadsTheFileUsingTheAPI($fileName);
+		$this->downloadedContentShouldBe($content);
+	}
+
+	/**
+	 * @Then /^the content of file "([^"]*)" for user "([^"]*)" should be "([^"]*)"$/
+	 *
+	 * @param string $fileName
+	 * @param string $user
+	 * @param string $content
+	 *
+	 * @return void
+	 */
+	public function contentOfFileForUserShouldBe($fileName, $user, $content) {
+		$this->userDownloadsTheFileUsingTheAPI($user, $fileName);
+		$this->downloadedContentShouldBe($content);
+	}
+
+	/**
+	 * @Then /^the content of file "([^"]*)" for user "([^"]*)" should be "([^"]*)" plus end-of-line$/
+	 *
+	 * @param string $fileName
+	 * @param string $user
+	 * @param string $content
+	 *
+	 * @return void
+	 */
+	public function contentOfFileForUserShouldBePlusEndOfLine($fileName, $user, $content) {
+		$this->contentOfFileForUserShouldBe($fileName, $user, $content . "\n");
+	}
+
+	/**
 	 * @Then /^the downloaded content when downloading file "([^"]*)" with range "([^"]*)" should be "([^"]*)"$/
 	 *
 	 * @param string $fileSource
@@ -417,7 +457,7 @@ trait WebDav {
 	 *
 	 * @return void
 	 */
-	public function downloadedContentWhenDownloadingShouldBe(
+	public function downloadedContentWhenDownloadingWithRangeShouldBe(
 		$fileSource, $range, $content
 	) {
 		$this->downloadFileWithRange($fileSource, $range);
@@ -434,7 +474,7 @@ trait WebDav {
 	 *
 	 * @return void
 	 */
-	public function downloadedContentWhenDownloadingForUserShouldBe(
+	public function downloadedContentWhenDownloadingForUserWithRangeShouldBe(
 		$fileSource, $user, $range, $content
 	) {
 		$this->userDownloadsFileWithRange($user, $fileSource, $range);

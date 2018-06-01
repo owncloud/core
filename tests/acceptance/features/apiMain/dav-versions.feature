@@ -29,8 +29,7 @@ Feature: dav-versions
     And user "user0" has uploaded file with content "12345" to "/davtest.txt"
     And the version folder of file "/davtest.txt" for user "user0" should contain "1" element
     When user "user0" restores version index "1" of file "/davtest.txt" using the API
-    And user "user0" downloads the file "davtest.txt" using the API
-    Then the downloaded content should be "123"
+    Then the content of file "/davtest.txt" for user "user0" should be "123"
 
   Scenario: User cannot access meta folder of a file which is owned by somebody else
     Given user "user1" has been created

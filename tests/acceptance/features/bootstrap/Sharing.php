@@ -369,7 +369,7 @@ trait Sharing {
 	}
 
 	/**
-	 * @When the public uploads file ":filename" with content ":body"
+	 * @When the public uploads file ":filename" with content ":body" using the API
 	 * @Given the public has uploaded file ":filename" with content ":body"
 	 *
 	 * @param string $filename target file name
@@ -383,7 +383,7 @@ trait Sharing {
 
 	/**
 	 * @When the public overwrites file ":filename" with content ":body" using the API
-	 * @Given the public has overwritten file ":filename" with content ":body" using the API
+	 * @Given the public has overwritten file ":filename" with content ":body"
 	 *
 	 * @param string $filename target file name
 	 * @param string $body content to upload
@@ -395,7 +395,7 @@ trait Sharing {
 	}
 
 	/**
-	 * @When the public uploads file ":filename" with password ":password" and content ":body"
+	 * @When the public uploads file ":filename" with password ":password" and content ":body" using the API
 	 * @Given the public has uploaded file ":filename" with password ":password" and content ":body"
 	 *
 	 * @param string $filename target file name
@@ -411,7 +411,7 @@ trait Sharing {
 	}
 
 	/**
-	 * @When the public uploads file ":filename" with content ":body" with autorename mode
+	 * @When the public uploads file ":filename" with content ":body" with autorename mode using the API
 	 * @Given the public has uploaded file ":filename" with content ":body" with autorename mode
 	 *
 	 * @param string $filename target file name
@@ -487,7 +487,7 @@ trait Sharing {
 
 	/**
 	 * @When /^the user adds an expiration date to the last share using the API$/
-	 * @Given /^the user has added an expiration date to the last share using the API$/
+	 * @Given /^the user has added an expiration date to the last share$/
 	 *
 	 * @return void
 	 */
@@ -848,7 +848,7 @@ trait Sharing {
 
 	/**
 	 * @When /^the user deletes the last share using the API$/
-	 * @Given /^the user has deleted the last share using the API$/
+	 * @Given /^the user has deleted the last share$/
 	 *
 	 * @return void
 	 */
@@ -1155,8 +1155,8 @@ trait Sharing {
 	}
 
 	/**
-	 * @Given /^user "([^"]*)" has (declined|accepted) the share "([^"]*)" offered by user "([^"]*)"$/
 	 * @When /^user "([^"]*)" (declines|accepts) the share "([^"]*)" offered by user "([^"]*)" using the API$/
+	 * @Given /^user "([^"]*)" has (declined|accepted) the share "([^"]*)" offered by user "([^"]*)"$/
 	 *
 	 * @param string $user
 	 * @param string $action
