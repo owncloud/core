@@ -106,6 +106,15 @@ class EncryptAll extends Command {
 			throw new \Exception('Server side encryption is not enabled');
 		}
 
+		$masterKeyEnabled = $this->config->getAppValue('encryption', 'useMasterKey', '');
+		$userKeyEnabled = $this->config->getAppValue('encryption', 'userSpecificKey', '');
+		if (($masterKeyEnabled === '') && ($userKeyEnabled === '')) {
+			/**
+			 * Enable user specific encryption if nothing is enabled.
+			 */
+			$this->config->setAppValue('encryption', 'userSpecificKey', '1');
+		}
+
 		$output->writeln("\n");
 		$output->writeln('You are about to encrypt all files stored in your ownCloud installation.');
 		$output->writeln('Depending on the number of available files, and their size, this may take quite some time.');
