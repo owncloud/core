@@ -21,7 +21,7 @@
     "require-dev": {
         "jakub-onderka/php-parallel-lint": "^1.0.0",
         "jakub-onderka/php-console-highlighter": "^0.3.2",
-        "phpunit/phpunit": "^5.7",
+        "phpunit/phpunit": "^7.1",
         "mikey179/vfsStream": "^1.6",
         "behat/mink-extension": "^2.2",
         "behat/mink-goutte-driver": "^1.2",
