@@ -7,5 +7,6 @@ $baseDir = $vendorDir;
 
 return array(
     'Icewind\\Streams\\' => array($vendorDir . '/icewind/streams/src'),
+    'Icewind\\SMB\\Test\\' => array($vendorDir . '/icewind/smb/tests'),
     'Icewind\\SMB\\' => array($vendorDir . '/icewind/smb/src'),
 );
