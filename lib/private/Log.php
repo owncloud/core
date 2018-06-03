@@ -264,6 +264,12 @@ class Log implements ILogger {
 			unset($context['extraFields']);
 		}
 
+		$exception = null;
+		if (isset($context['exception'])) {
+			$exception = $context['exception'];
+			unset($context['exception']);
+		}
+
 		if (isset($context['app'])) {
 			$app = $context['app'];
 
@@ -351,6 +357,7 @@ class Log implements ILogger {
 			'formattedMessage' => $formattedMessage,
 			'context' => $context,
 			'extraFields' => $extraFields,
+			'exception' => $exception
 		];
 
 		// note: regardless of log level we let listeners receive messages
@@ -404,6 +411,7 @@ class Log implements ILogger {
 	 * @since 8.2.0
 	 */
 	public function logException($exception, array $context = []) {
+		$context['exception'] =  $exception;
 		$exception = [
 			'Exception' => \get_class($exception),
 			'Message' => $exception->getMessage(),
