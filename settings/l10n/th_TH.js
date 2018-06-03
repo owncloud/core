@@ -140,6 +140,7 @@ OC.L10N.register(
     "Expire after " : "หลังจากหมดอายุ",
     "days" : "วัน",
     "Enforce expiration date" : "บังคับให้มีวันที่หมดอายุ",
+    "Automatically accept new incoming local user shares" : "ยอมรับแชร์ที่เข้ามาใหม่โดยอัตโนมัติ",
     "Allow resharing" : "อนุญาตให้แชร์ข้อมูลซ้ำอีกครั้งได้",
     "Allow sharing with groups" : "อนุญาตให้แชร์กับกลุ่ม",
     "Restrict users to only share with users in their groups" : "จำกัดให้ผู้ใช้สามารถแชร์กับผู้ใช้ในกลุ่มของพวกเขาเท่านั้น",
