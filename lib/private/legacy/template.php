@@ -37,6 +37,7 @@
  */
 
 use OC\TemplateLayout;
+use OCP\IL10N;
 use OCP\Theme\ITheme;
 
 require_once __DIR__.'/template/functions.php';
@@ -76,13 +77,18 @@ class OC_Template extends \OC\Template\Base {
 	 *                         now, $renderAs can be set to "guest", "user" or
 	 *                         "admin".
 	 * @param bool $registerCall = true
+	 * @param IL10N|null $l10n
+	 * @throws Exception
 	 */
-	public function __construct($app, $name, $renderAs = "", $registerCall = true) {
+	public function __construct($app, $name, $renderAs = "", $registerCall = true, $l10n = null) {
 		self::initTemplateEngine($renderAs);
 		$requestToken = (OC::$server->getSession() && $registerCall) ? \OCP\Util::callRegister() : '';
 
 		$parts = \explode('/', $app); // fix translation when app is something like core/lostpassword
-		$l10n = \OC::$server->getL10N($parts[0]);
+
+		if ($l10n === null) {
+			$l10n = \OC::$server->getL10N($parts[0]);
+		}
 
 		$theme = OC_Util::getTheme();
 		$template = $this->findTemplate($theme, $app, $name);
