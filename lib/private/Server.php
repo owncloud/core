@@ -388,7 +388,8 @@ class Server extends ServerContainer implements IServerContainer, IServiceLoader
 		});
 		$this->registerService('AllConfig', function (Server $c) {
 			return new \OC\AllConfig(
-				$c->getSystemConfig()
+				$c->getSystemConfig(),
+				$c->getEventDispatcher()
 			);
 		});
 		$this->registerService('SystemConfig', function ($c) use ($config) {
