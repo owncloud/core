@@ -37,6 +37,8 @@ use OCP\SystemTag\ISystemTagManager;
 use OCP\SystemTag\ManagerEvent;
 use OCP\SystemTag\MapperEvent;
 use OCP\SystemTag\TagNotFoundException;
+use Symfony\Component\EventDispatcher\EventDispatcher;
+use Symfony\Component\EventDispatcher\GenericEvent;
 
 class Listener {
 	/** @var IGroupManager */
@@ -53,6 +55,8 @@ class Listener {
 	protected $mountCollection;
 	/** @var \OCP\Files\IRootFolder */
 	protected $rootFolder;
+	/** @var EventDispatcher  */
+	protected $eventDispatcher;
 
 	/**
 	 * Listener constructor.
@@ -64,6 +68,7 @@ class Listener {
 	 * @param IAppManager $appManager
 	 * @param IMountProviderCollection $mountCollection
 	 * @param IRootFolder $rootFolder
+	 * @param EventDispatcher $eventDispatcher
 	 */
 	public function __construct(IGroupManager $groupManager,
 								IManager $activityManager,
@@ -71,7 +76,8 @@ class Listener {
 								ISystemTagManager $tagManager,
 								IAppManager $appManager,
 								IMountProviderCollection $mountCollection,
-								IRootFolder $rootFolder) {
+								IRootFolder $rootFolder,
+								EventDispatcher $eventDispatcher) {
 		$this->groupManager = $groupManager;
 		$this->activityManager = $activityManager;
 		$this->session = $session;
@@ -79,15 +85,16 @@ class Listener {
 		$this->appManager = $appManager;
 		$this->mountCollection = $mountCollection;
 		$this->rootFolder = $rootFolder;
+		$this->eventDispatcher = $eventDispatcher;
 	}
 
 	/**
 	 * @param ManagerEvent $event
 	 */
 	public function event(ManagerEvent $event) {
-		$actor = $this->session->getUser();
-		if ($actor instanceof IUser) {
-			$actor = $actor->getUID();
+		$user = $this->session->getUser();
+		if ($user instanceof IUser) {
+			$actor = $user->getUID();
 		} else {
 			$actor = '';
 		}
@@ -97,21 +104,36 @@ class Listener {
 			->setType(Extension::APP_NAME)
 			->setAuthor($actor);
 		if ($event->getEvent() === ManagerEvent::EVENT_CREATE) {
+			$genericEvent = new GenericEvent(null,
+				['action' => 'create',
+					'user' => $user,
+					'tag' => $event->getTag()]);
 			$activity->setSubject(Extension::CREATE_TAG, [
 				$actor,
 				$this->prepareTagAsParameter($event->getTag()),
 			]);
+			$this->eventDispatcher->dispatch('tag.created', $genericEvent);
 		} elseif ($event->getEvent() === ManagerEvent::EVENT_UPDATE) {
+			$genericEvent = new GenericEvent(null,
+				['action' => 'update',
+					'user' => $user,
+					'tag' => $event->getTag(), 'oldTag' => $event->getTagBefore()]);
 			$activity->setSubject(Extension::UPDATE_TAG, [
 				$actor,
 				$this->prepareTagAsParameter($event->getTag()),
 				$this->prepareTagAsParameter($event->getTagBefore()),
 			]);
+			$this->eventDispatcher->dispatch('tag.updated', $genericEvent);
 		} elseif ($event->getEvent() === ManagerEvent::EVENT_DELETE) {
+			$genericEvent = new GenericEvent(null,
+				['action' => 'delete',
+					'user' => $user,
+					'tag' => $event->getTag()]);
 			$activity->setSubject(Extension::DELETE_TAG, [
 				$actor,
 				$this->prepareTagAsParameter($event->getTag()),
 			]);
+			$this->eventDispatcher->dispatch('tag.deleted', $genericEvent);
 		} else {
 			return;
 		}
