@@ -95,7 +95,21 @@ trait WebDav {
 	}
 
 	/**
-	 * @Given /^using old (?:dav|DAV) path$/
+	 * @Given /^using (old|new) (?:dav|DAV) path$/
+	 *
+	 * @param string $oldOrNewDavPath
+	 * @return void
+	 */
+	public function usingOldOrNewDavPath($oldOrNewDavPath) {
+		if ($oldOrNewDavPath === 'old') {
+			$this->usingOldDavPath();
+		} else {
+			$this->usingNewDavPath();
+		}
+	}
+
+	/**
+	 * Select the old DAV path as the default for later scenario steps
 	 *
 	 * @return void
 	 */
@@ -106,7 +120,7 @@ trait WebDav {
 	}
 
 	/**
-	 * @Given /^using new (?:dav|DAV) path$/
+	 * Select the new DAV path as the default for later scenario steps
 	 *
 	 * @return void
 	 */
