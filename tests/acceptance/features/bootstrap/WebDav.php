@@ -59,6 +59,11 @@ trait WebDav {
 	private $storedFileID = null;
 
 	/**
+	 * @var int
+	 */
+	private $lastUploadTime = null;
+
+	/**
 	 * a variable that contains the dav path without "remote.php/(web)dav"
 	 * when setting $this->davPath directly by usingDavPath()
 	 *
@@ -1295,9 +1300,17 @@ trait WebDav {
 	) {
 		$file = \GuzzleHttp\Stream\Stream::factory($content);
 		try {
+			$time = \time();
+			if ($this->lastUploadTime !== null && $time - $this->lastUploadTime < 1) {
+				// prevent creating two uploads with the same "stime" which is
+				// based on seconds, this prevents creation of uploads with same etag
+				\sleep(1);
+			}
 			$this->response = $this->makeDavRequest(
 				$user, "PUT", $destination, [], $file
 			);
+			$this->lastUploadTime = \time();
+			return $this->response->getHeader('oc-fileid');
 		} catch (BadResponseException $e) {
 			// 4xx and 5xx responses cause an exception
 			$this->response = $e->getResponse();
