@@ -68,3 +68,85 @@ Feature: dav-versions
 		When user "user0" restores version index "1" of file "/sharefile.txt" using the API
 		Then the HTTP status code should be "204"
 		And the downloaded content when downloading file "/sharefile.txt" for user "user0" with range "bytes=0-12" should be "user0 content"
+
+	Scenario: sharer restores the file inside a shared folder modified by sharee
+		Given user "user0" has been created
+		And user "user1" has been created
+		And user "user0" has created a folder "/sharingfolder"
+		And user "user0" has shared folder "/sharingfolder" with user "user1"
+		And user "user0" has uploaded file with content "user0 content" to "/sharingfolder/sharefile.txt"
+		And user "user1" has uploaded file with content "user1 content" to "/sharingfolder/sharefile.txt"
+		When user "user0" restores version index "1" of file "/sharingfolder/sharefile.txt" using the API
+		Then the HTTP status code should be "204"
+		And the downloaded content when downloading file "/sharingfolder/sharefile.txt" for user "user0" with range "bytes=0-12" should be "user0 content"
+
+	Scenario: sharee restores the file inside a shared folder modified by sharee
+		Given user "user0" has been created
+		And user "user1" has been created
+		And user "user0" has created a folder "/sharingfolder"
+		And user "user0" has shared folder "/sharingfolder" with user "user1"
+		And user "user0" has uploaded file with content "user0 content" to "/sharingfolder/sharefile.txt"
+		And user "user1" has uploaded file with content "user1 content" to "/sharingfolder/sharefile.txt"
+		When user "user1" restores version index "1" of file "/sharingfolder/sharefile.txt" using the API
+		Then the HTTP status code should be "204"
+		And the downloaded content when downloading file "/sharingfolder/sharefile.txt" for user "user1" with range "bytes=0-12" should be "user0 content"
+
+	Scenario: sharer restores the file inside a shared folder created by sharee and modified by sharer
+		Given user "user0" has been created
+		And user "user1" has been created
+		And user "user0" has created a folder "/sharingfolder"
+		And user "user0" has shared folder "/sharingfolder" with user "user1"
+		And user "user1" has uploaded file with content "user1 content" to "/sharingfolder/sharefile.txt"
+		And user "user0" has uploaded file with content "user0 content" to "/sharingfolder/sharefile.txt"
+		When user "user0" restores version index "1" of file "/sharingfolder/sharefile.txt" using the API
+		Then the HTTP status code should be "204"
+		And the downloaded content when downloading file "/sharingfolder/sharefile.txt" for user "user0" with range "bytes=0-12" should be "user1 content"
+
+	Scenario: sharee restores the file inside a shared folder created by sharee and modified by sharer
+		Given user "user0" has been created
+		And user "user1" has been created
+		And user "user0" has created a folder "/sharingfolder"
+		And user "user0" has shared folder "/sharingfolder" with user "user1"
+		And user "user1" has uploaded file with content "user1 content" to "/sharingfolder/sharefile.txt"
+		And user "user0" has uploaded file with content "user0 content" to "/sharingfolder/sharefile.txt"
+		When user "user1" restores version index "1" of file "/sharingfolder/sharefile.txt" using the API
+		Then the HTTP status code should be "204"
+		And the downloaded content when downloading file "/sharingfolder/sharefile.txt" for user "user1" with range "bytes=0-12" should be "user1 content"
+
+	Scenario: sharer restores the file inside a shared folder created by sharee and modified by sharee
+		Given user "user0" has been created
+		And user "user1" has been created
+		And user "user0" has created a folder "/sharingfolder"
+		And user "user0" has shared folder "/sharingfolder" with user "user1"
+		And user "user1" has uploaded file with content "old content" to "/sharingfolder/sharefile.txt"
+		And user "user1" has uploaded file with content "new content" to "/sharingfolder/sharefile.txt"
+		When user "user0" restores version index "1" of file "/sharingfolder/sharefile.txt" using the API
+		Then the HTTP status code should be "204"
+		And the downloaded content when downloading file "/sharingfolder/sharefile.txt" for user "user0" with range "bytes=0-12" should be "old content"
+
+	Scenario: sharee restores the file inside a shared folder created by sharer and modified by sharer
+		Given user "user0" has been created
+		And user "user1" has been created
+		And user "user0" has created a folder "/sharingfolder"
+		And user "user0" has shared folder "/sharingfolder" with user "user1"
+		And user "user0" has uploaded file with content "old content" to "/sharingfolder/sharefile.txt"
+		And user "user0" has uploaded file with content "new content" to "/sharingfolder/sharefile.txt"
+		When user "user1" restores version index "1" of file "/sharingfolder/sharefile.txt" using the API
+		Then the HTTP status code should be "204"
+		And the downloaded content when downloading file "/sharingfolder/sharefile.txt" for user "user1" with range "bytes=0-12" should be "old content"
+
+	Scenario: sharer restores the file inside a group shared folder modified by sharee
+		Given user "user0" has been created
+		And user "user1" has been created
+		And user "user2" has been created
+		And group "newgroup" has been created
+		And user "user1" has been added to group "newgroup"
+		And user "user2" has been added to group "newgroup"
+		And user "user0" has created a folder "/sharingfolder"
+		And user "user0" has shared folder "/sharingfolder" with group "newgroup"
+		And user "user0" has uploaded file with content "user0 content" to "/sharingfolder/sharefile.txt"
+		And user "user1" has uploaded file with content "user1 content" to "/sharingfolder/sharefile.txt"
+		And user "user2" has uploaded file with content "user2 content" to "/sharingfolder/sharefile.txt"
+		When user "user0" restores version index "2" of file "/sharingfolder/sharefile.txt" using the API
+		Then the HTTP status code should be "204"
+		And the downloaded content when downloading file "/sharingfolder/sharefile.txt" for user "user0" with range "bytes=0-12" should be "user0 content"
