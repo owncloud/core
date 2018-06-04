@@ -27,14 +27,13 @@ use OCP\Share\IShare;
 use OCP\IURLGenerator;
 use OCP\Files\IRootFolder;
 use Symfony\Component\EventDispatcher\EventDispatcher;
-use Test\TestCase;
 use OCA\Files_Sharing\Service\NotificationPublisher;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
  * @group DB
  */
-class HooksTest extends TestCase {
+class HooksTest extends \Test\TestCase {
 
 	/**
 	 * @var EventDispatcherInterface | \PHPUnit_Framework_MockObject_MockObject
