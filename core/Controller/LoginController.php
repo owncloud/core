@@ -173,8 +173,8 @@ class LoginController extends Controller {
 		 * user is trying to access files for which he needs to login.
 		 */
 
-		if ((!empty($redirect_url)) and ($remember_login === null) and
-			($this->userSession->isLoggedIn() === false) and
+		if (!empty($redirect_url) && ($remember_login === null) &&
+			($this->userSession->isLoggedIn() === false) &&
 			(strpos($this->urlGenerator->getAbsoluteURL(urldecode($redirect_url)),
 					$this->urlGenerator->getAbsoluteURL('/index.php/f/')) !== false)) {
 
@@ -193,9 +193,12 @@ class LoginController extends Controller {
 	 * @param string $user
 	 * @param string $password
 	 * @param string $redirect_url
+	 * @param string $timezone
 	 * @return RedirectResponse
+	 * @throws \OCP\PreConditionNotMetException
+	 * @throws \OC\User\LoginException
 	 */
-	public function tryLogin($user, $password, $redirect_url) {
+	public function tryLogin($user, $password, $redirect_url, $timezone = null) {
 		$originalUser = $user;
 		// TODO: Add all the insane error handling
 		$loginResult = $this->userSession->login($user, $password);
@@ -230,6 +233,11 @@ class LoginController extends Controller {
 
 		// User has successfully logged in, now remove the password reset link, when it is available
 		$this->config->deleteUserValue($userObject->getUID(), 'owncloud', 'lostpassword');
+
+		// Save the timezone
+		if ($timezone !== null) {
+			$this->config->setUserValue($userObject->getUID(), 'core', 'timezone', $timezone);
+		}
 
 		if ($this->twoFactorManager->isTwoFactorAuthenticated($userObject)) {
 			$this->twoFactorManager->prepareTwoFactorLogin($userObject);
