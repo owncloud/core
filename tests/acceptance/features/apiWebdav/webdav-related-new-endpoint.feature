@@ -598,7 +598,6 @@ Feature: webdav-related-new-endpoint
 			| TIÄFÜ     |
 
 	#this test should be integrated into the previous scenario after fixing the issue
-	@skip @issue-29599
 	Scenario: Upload a file called "0" using new chunking
 		Given using new DAV path
 		And user "user0" has been created
