@@ -91,9 +91,7 @@ Feature: File Upload
       | "&#"      |
       | "TIÄFÜ"   |
 		
-	#this test should be intergrated into the previous scenario after fixing the issue
-	#uploading into "simple-folder" because there is a folder called "0" in the root
-  @skip @issue-29599
+  # upload into "simple-folder" because there is already a folder called "0" in the root
   Scenario: Upload a file called "0" using chunking
     Given a file with the size of "30000000" bytes and the name "0" has been created locally
     When the user opens the folder "simple-folder" using the webUI
