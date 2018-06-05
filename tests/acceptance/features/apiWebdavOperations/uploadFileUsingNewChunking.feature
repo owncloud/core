@@ -120,7 +120,6 @@ Feature: upload file using new chunking
       | TIÄFÜ     |
 
 	#this test should be integrated into the previous Scenario after fixing the issue
-  @skip @issue-29599
   Scenario: Upload a file called "0" using new chunking
     When user "user0" creates a new chunking upload with id "chunking-42" using the WebDAV API
     And user "user0" uploads new chunk file "1" with "AAAAA" to id "chunking-42" using the WebDAV API
