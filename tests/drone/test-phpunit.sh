@@ -44,6 +44,12 @@ else
   GROUP="--group DB"
 fi
 
+# still required on stable10 to run unit tests for encryption
+php occ app:enable encryption
+
+# show a little debug information
+php occ app:list
+
 phpunit_cmd="php ./lib/composer/bin/phpunit"
 if [[ "${COVERAGE}" == "true" ]]; then
     phpunit_cmd="phpdbg -d memory_limit=4096M -rr ./lib/composer/bin/phpunit"
