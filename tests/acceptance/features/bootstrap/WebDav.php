@@ -1605,7 +1605,7 @@ trait WebDav {
 
 	/**
 	 * @When user :user cancels chunking-upload with id :id using the API
-	 * @Given user :user has canceled new chunking-uploadwith id :id
+	 * @Given user :user has canceled new chunking-upload with id :id
 	 *
 	 * @param string $user
 	 * @param string $id
