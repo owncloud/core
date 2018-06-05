@@ -146,7 +146,14 @@ class OC {
 				'SCRIPT_FILENAME' => $_SERVER['SCRIPT_FILENAME'],
 			],
 		];
-		$fakeRequest = new \OC\AppFramework\Http\Request($params, null, new \OC\AllConfig(new \OC\SystemConfig(self::$config)));
+		/**
+		 * The event dispatcher added here will not be used to listen any event.
+		 * So if the modifications made in the configuration, by fakeRequest
+		 * will not throw events.
+		 */
+		$fakeRequest = new \OC\AppFramework\Http\Request($params, null,
+			new \OC\AllConfig(new \OC\SystemConfig(self::$config),
+				new \Symfony\Component\EventDispatcher\EventDispatcher()));
 		$scriptName = $fakeRequest->getScriptName();
 		if (\substr($scriptName, -1) == '/') {
 			$scriptName .= 'index.php';
