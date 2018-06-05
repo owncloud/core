@@ -98,9 +98,26 @@ class Mailer implements IMailer {
 
 		$mailer->send($message->getSwiftMessage(), $failedRecipients);
 
+		$allRecipients = [];
+		if (!empty($message->getTo())) {
+			$allRecipients = \array_merge($allRecipients, $message->getTo());
+		}
+		if (!empty($message->getCc())) {
+			$allRecipients = \array_merge($allRecipients, $message->getCc());
+		}
+		if (!empty($message->getBcc())) {
+			$allRecipients = \array_merge($allRecipients, $message->getBcc());
+		}
+
 		// Debugging logging
-		$logMessage = \sprintf('Sent mail to "%s" with subject "%s"', \print_r($message->getTo(), true), $message->getSubject());
-		$this->logger->debug($logMessage, ['app' => 'core']);
+		$logMessage = 'Sent mail from "{from}" to "{recipients}" with subject "{subject}"';
+		$this->logger->debug($logMessage, [
+			'app' => 'core',
+			'from' => \json_encode($message->getFrom()),
+			'recipients' => \json_encode($allRecipients),
+			'subject' => $message->getSubject()
+		]);
+
 		if ($debugMode && isset($mailLogger)) {
 			$this->logger->debug($mailLogger->dump(), ['app' => 'core']);
 		}
