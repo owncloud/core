@@ -1,10 +1,10 @@
 {
     "_readme": [
         "This file locks the dependencies of your project to a known state",
-        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "ea3e68d97d1936adbc464695dc7991c3",
+    "content-hash": "c9222ffe1fe2830cb3a75a91f286ae5e",
     "packages": [
         {
             "name": "bantu/ini-get-wrapper",
@@ -2050,16 +2050,16 @@
         },
         {
             "name": "sabre/dav",
-            "version": "3.2.2",
+            "version": "3.3.x-dev",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sabre-io/dav.git",
-                "reference": "e987775e619728f12205606c9cc3ee565ffb1516"
+                "reference": "6fd5483ef1713d15d6288e970b8ff4977218bbe1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sabre-io/dav/zipball/e987775e619728f12205606c9cc3ee565ffb1516",
-                "reference": "e987775e619728f12205606c9cc3ee565ffb1516",
+                "url": "https://api.github.com/repos/sabre-io/dav/zipball/6fd5483ef1713d15d6288e970b8ff4977218bbe1",
+                "reference": "6fd5483ef1713d15d6288e970b8ff4977218bbe1",
                 "shasum": ""
             },
             "require": {
@@ -2095,11 +2095,6 @@
                 "bin/naturalselection"
             ],
             "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "3.1.0-dev"
-                }
-            },
             "autoload": {
                 "psr-4": {
                     "Sabre\\DAV\\": "lib/DAV/",
@@ -2129,7 +2124,7 @@
                 "framework",
                 "iCalendar"
             ],
-            "time": "2017-02-15T03:06:08+00:00"
+            "time": "2018-06-05T06:29:46+00:00"
         },
         {
             "name": "sabre/event",
@@ -6797,6 +6792,7 @@
     "aliases": [],
     "minimum-stability": "stable",
     "stability-flags": {
+        "sabre/dav": 20,
         "behat/mink-selenium2-driver": 20
     },
     "prefer-stable": false,
