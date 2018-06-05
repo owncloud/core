@@ -37,7 +37,6 @@ use OCA\DAV\Connector\Sabre\CopyEtagHeaderPlugin;
 use OCA\DAV\Connector\Sabre\CorsPlugin;
 use OCA\DAV\Connector\Sabre\DavAclPlugin;
 use OCA\DAV\Connector\Sabre\DummyGetResponsePlugin;
-use OCA\DAV\Connector\Sabre\FakeLockerPlugin;
 use OCA\DAV\Connector\Sabre\FilesPlugin;
 use OCA\DAV\Connector\Sabre\FilesReportPlugin;
 use OCA\DAV\Connector\Sabre\MaintenancePlugin;
@@ -185,17 +184,6 @@ class Server {
 
 		$this->server->addPlugin(new CopyEtagHeaderPlugin());
 		$this->server->addPlugin(new ChunkingPlugin());
-
-		// Some WebDAV clients do require Class 2 WebDAV support (locking), since
-		// we do not provide locking we emulate it using a fake locking plugin.
-		if ($request->isUserAgent([
-			'/WebDAVFS/',
-			'/OneNote/',
-			'/Microsoft Office OneNote 2013/',
-			'/Microsoft-WebDAV-MiniRedir/',
-		])) {
-			$this->server->addPlugin(new FakeLockerPlugin());
-		}
 
 		if (BrowserErrorPagePlugin::isBrowserRequest($request)) {
 			$this->server->addPlugin(new BrowserErrorPagePlugin());
