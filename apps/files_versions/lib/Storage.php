@@ -614,7 +614,7 @@ class Storage {
 
 		$interval = 1;
 		$step = Storage::$max_versions_per_interval[$interval]['step'];
-		if (-1 == Storage::$max_versions_per_interval[$interval]['intervalEndsAfter']) {
+		if (Storage::$max_versions_per_interval[$interval]['intervalEndsAfter'] == -1) {
 			$nextInterval = -1;
 		} else {
 			$nextInterval = $time - Storage::$max_versions_per_interval[$interval]['intervalEndsAfter'];
@@ -644,7 +644,7 @@ class Storage {
 					$interval++;
 					$step = Storage::$max_versions_per_interval[$interval]['step'];
 					$nextVersion = $prevTimestamp - $step;
-					if (-1 == Storage::$max_versions_per_interval[$interval]['intervalEndsAfter']) {
+					if (Storage::$max_versions_per_interval[$interval]['intervalEndsAfter'] == -1) {
 						$nextInterval = -1;
 					} else {
 						$nextInterval = $time - Storage::$max_versions_per_interval[$interval]['intervalEndsAfter'];
