@@ -462,12 +462,16 @@ class ViewTest extends TestCase {
 
 		$rootView = new View('');
 		$rootView->mkdir('substorage/emptyfolder');
-		$rootView->copy('substorage', 'anotherfolder');
+		// paths should not start or end in /
+		$rootView->copy('substorage/', '/anotherfolder');
 		$this->assertArrayHasKey('path', $calledEvent[1]);
 		$this->assertEquals('file.aftercreate', $calledEvent[0]);
 		$this->assertArrayHasKey('oldpath', $calledCopyEvent[1]);
 		$this->assertArrayHasKey('newpath', $calledCopyEvent[1]);
+		// mak sure paths in events have been normalized
 		$this->assertEquals('file.aftercopy', $calledCopyEvent[0]);
+		$this->assertSame('/substorage', $calledCopyEvent[1]['oldpath']);
+		$this->assertSame('/anotherfolder', $calledCopyEvent[1]['newpath']);
 		$this->assertTrue($rootView->is_dir('/anotherfolder'));
 		$this->assertTrue($rootView->is_dir('/substorage'));
 		$this->assertTrue($rootView->is_dir('/anotherfolder/emptyfolder'));

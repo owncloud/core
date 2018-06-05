@@ -889,20 +889,21 @@ class View {
 	 *
 	 * @return bool|mixed
 	 */
+
 	public function copy($path1, $path2, $preserveMtime = false) {
-		return $this->emittingCall(function () use (&$path1, &$path2, &$preserveMtime) {
-			$absolutePath1 = Filesystem::normalizePath($this->getAbsolutePath($path1));
-			$absolutePath2 = Filesystem::normalizePath($this->getAbsolutePath($path2));
+		$absolutePath1 = Filesystem::normalizePath($this->getAbsolutePath($path1));
+		$absolutePath2 = Filesystem::normalizePath($this->getAbsolutePath($path2));
+		return $this->emittingCall(function () use ($absolutePath1, $absolutePath2) {
 			$result = false;
 			if (
-				Filesystem::isValidPath($path2)
-				and Filesystem::isValidPath($path1)
-				and !Filesystem::isForbiddenFileOrDir($path2)
+				Filesystem::isValidPath($absolutePath2)
+				&& Filesystem::isValidPath($absolutePath1)
+				&& !Filesystem::isForbiddenFileOrDir($absolutePath2)
 			) {
 				$path1 = $this->getRelativePath($absolutePath1);
 				$path2 = $this->getRelativePath($absolutePath2);
 
-				if ($path1 == null or $path2 == null) {
+				if ($path1 === null || $path2 === null) {
 					return false;
 				}
 				$run = true;
@@ -937,7 +938,7 @@ class View {
 						$this->changeLock($path2, ILockingProvider::LOCK_EXCLUSIVE);
 						$lockTypePath2 = ILockingProvider::LOCK_EXCLUSIVE;
 
-						if ($mount1->getMountPoint() == $mount2->getMountPoint()) {
+						if ($mount1->getMountPoint() === $mount2->getMountPoint()) {
 							if ($storage1) {
 								$result = $storage1->copy($internalPath1, $internalPath2);
 							} else {
@@ -952,7 +953,7 @@ class View {
 						$this->changeLock($path2, ILockingProvider::LOCK_SHARED);
 						$lockTypePath2 = ILockingProvider::LOCK_SHARED;
 
-						if ($this->shouldEmitHooks() && $result !== false) {
+						if ($result !== false && $this->shouldEmitHooks()) {
 							\OC_Hook::emit(
 								Filesystem::CLASSNAME,
 								Filesystem::signal_post_copy,
@@ -973,15 +974,17 @@ class View {
 				$this->unlockFile($path2, $lockTypePath2);
 				$this->unlockFile($path1, $lockTypePath1);
 			}
-
 			return $result;
-		}, ['before' => [
-				'oldpath' => $this->getAbsolutePath($path1),
-				'newpath' => $this->getAbsolutePath($path2)],
+		}, [
+			'before' => [
+				'oldpath' => $absolutePath1,
+				'newpath' => $absolutePath2
+			],
 			'after' => [
-				'oldpath' => $this->getAbsolutePath($path1),
-				'newpath' => $this->getAbsolutePath($path2)
-			]], 'file', 'copy');
+				'oldpath' => $absolutePath1,
+				'newpath' => $absolutePath2
+			]
+		], 'file', 'copy');
 	}
 
 	/**
