@@ -63,7 +63,7 @@ abstract class Office implements IProvider2 {
 		$pdfPreview = null;
 		try {
 			$pathInfo = \pathinfo($absPath);
-			$pdfPreview = $pathInfo['dirname'] . '/' . $pathInfo['filename'] . '.pdf';
+			$pdfPreview = $tmpDir . '/' . $pathInfo['filename'] . '.pdf';
 
 			$pdf = new \imagick($pdfPreview . '[0]');
 			$pdf->setImageFormat('jpg');
@@ -77,7 +77,6 @@ abstract class Office implements IProvider2 {
 		$image = new \OC_Image();
 		$image->loadFromData($pdf);
 
-		\unlink($absPath);
 		\unlink($pdfPreview);
 
 		if ($image->valid()) {
