@@ -117,24 +117,40 @@ ${OCC} config:system:set files_external_allow_create_new_local --value=true
 
 PREVIOUS_TESTING_APP_STATUS=$(${OCC} --no-warnings app:list "^testing$")
 
-#Enable needed apps
-if [ -z "$APPS_TO_ENABLE" ]
+#Enable and disable apps as required for default
+if [ -z "${APPS_TO_DISABLE}" ]
+then
+	APPS_TO_DISABLE="firstrunwizard notifications"
+fi
+
+if [ -z "${APPS_TO_ENABLE}" ]
 then
 	APPS_TO_ENABLE=""
 fi
 
-APPS_TO_REDISABLE="";
+APPS_TO_REENABLE="";
 
-for APP_TO_ENABLE in $APPS_TO_ENABLE; do
-	PREVIOUS_APP_STATUS=$($OCC --no-warnings app:list "^$APP_TO_ENABLE$")
-	if [[ "$PREVIOUS_APP_STATUS" =~ ^Disabled: ]]
+for APP_TO_DISABLE in ${APPS_TO_DISABLE}; do
+	PREVIOUS_APP_STATUS=$(${OCC} --no-warnings app:list "^${APP_TO_DISABLE}$")
+	if [[ "${PREVIOUS_APP_STATUS}" =~ ^Enabled: ]]
 	then
-		APPS_TO_REDISABLE="$APPS_TO_REDISABLE $APP_TO_ENABLE";
-		$OCC app:enable $APP_TO_ENABLE || { echo "Unable to enable $APP_TO_ENABLE app" >&2; exit 1; }
+		APPS_TO_REENABLE="${APPS_TO_REENABLE} ${APP_TO_DISABLE}";
+		${OCC} app:disable ${APP_TO_DISABLE} || { echo "Unable to disable ${APP_TO_DISABLE} app" >&2; exit 1; }
 	fi
 done
 
-PREVIOUS_TESTING_APP_STATUS=$($OCC --no-warnings app:list "^testing$")
+APPS_TO_REDISABLE="";
+
+for APP_TO_ENABLE in ${APPS_TO_ENABLE}; do
+	PREVIOUS_APP_STATUS=$(${OCC} --no-warnings app:list "^${APP_TO_ENABLE}$")
+	if [[ "${PREVIOUS_APP_STATUS}" =~ ^Disabled: ]]
+	then
+		APPS_TO_REDISABLE="${APPS_TO_REDISABLE} ${APP_TO_ENABLE}";
+		${OCC} app:enable ${APP_TO_ENABLE} || { echo "Unable to enable ${APP_TO_ENABLE} app" >&2; exit 1; }
+	fi
+done
+
+PREVIOUS_TESTING_APP_STATUS=$(${OCC} --no-warnings app:list "^testing$")
 if [[ "${PREVIOUS_TESTING_APP_STATUS}" =~ ^Disabled: ]]
 then
 	${OCC} app:enable testing || { echo "Unable to enable testing app" >&2; exit 1; }
@@ -225,6 +241,16 @@ ${OCC} files_external:delete -y ${ID_STORAGE}
 
 # Disable external storage app
 ${OCC} config:app:set core enable_external_storage --value=no
+
+# Enable any apps that were disabled for the test run
+for APP_TO_ENABLE in ${APPS_TO_REENABLE}; do
+	${OCC} app:enable ${APP_TO_ENABLE} || { echo "Unable to enable ${APP_TO_ENABLE} app at end of test run" >&2; exit 1; }
+done
+
+# Disable any apps that were enabled for the test run
+for APP_TO_DISABLE in ${APPS_TO_REDISABLE}; do
+	${OCC} app:disable ${APP_TO_DISABLE} || { echo "Unable to disable ${APP_TO_DISABLE} app at end of test run" >&2; exit 1; }
+done
 
 # Put back state of the testing app
 if [ "${TESTING_ENABLED_BY_SCRIPT}" = true ]

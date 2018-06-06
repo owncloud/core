@@ -5,7 +5,8 @@ I want to share files and folders with groups
 So that those groups can access the files and folders
 
 	Background:
-		Given these users have been created:
+		Given the app "notifications" has been enabled
+		And these users have been created:
 			|username|password|displayname|email       |
 			|user1   |1234    |User One   |u1@oc.com.np|
 			|user2   |1234    |User Two   |u2@oc.com.np|
