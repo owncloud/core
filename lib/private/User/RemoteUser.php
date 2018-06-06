@@ -206,4 +206,12 @@ class RemoteUser implements IUser {
 	 */
 	public function setSearchTerms(array $terms) {
 	}
+
+	/**
+	 * @return integer
+	 * @since 11.0.0
+	 */
+	public function getAccountId() {
+		return null;
+	}
 }

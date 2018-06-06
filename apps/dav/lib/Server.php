@@ -49,6 +49,7 @@ use OCA\DAV\DAV\FileCustomPropertiesPlugin;
 use OCA\DAV\DAV\MiscCustomPropertiesBackend;
 use OCA\DAV\DAV\PublicAuth;
 use OCA\DAV\Files\BrowserErrorPagePlugin;
+use OCA\DAV\Files\FileLocksBackend;
 use OCA\DAV\Files\PreviewPlugin;
 use OCA\DAV\Files\ZsyncPlugin;
 use OCA\DAV\SystemTag\SystemTagPlugin;
@@ -124,6 +125,7 @@ class Server {
 		$this->server->addPlugin(new \OCA\DAV\Connector\Sabre\ExceptionLoggerPlugin('webdav', $logger));
 		$this->server->addPlugin(new \OCA\DAV\Connector\Sabre\LockPlugin());
 		$this->server->addPlugin(new \Sabre\DAV\Sync\Plugin());
+		$this->server->addPlugin(new \Sabre\DAV\Locks\Plugin(new FileLocksBackend($this->server->tree, false)));
 
 		// ACL plugin not used in files subtree, also it causes issues
 		// with performance and locking issues because it will query

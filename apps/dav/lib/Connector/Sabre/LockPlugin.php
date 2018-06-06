@@ -24,10 +24,14 @@
 
 namespace OCA\DAV\Connector\Sabre;
 
+use OC\Lock\Persistent\LockMapper;
 use OCA\DAV\Connector\Sabre\Exception\FileLocked;
 use OCP\Lock\ILockingProvider;
 use OCP\Lock\LockedException;
+use Sabre\DAV\Exception\Forbidden;
 use Sabre\DAV\Exception\NotFound;
+use Sabre\DAV\Exception\NotImplemented;
+use Sabre\DAV\Locks\LockInfo;
 use Sabre\DAV\ServerPlugin;
 use Sabre\HTTP\RequestInterface;
 
@@ -46,6 +50,7 @@ class LockPlugin extends ServerPlugin {
 		$this->server = $server;
 		$this->server->on('beforeMethod', [$this, 'getLock'], 50);
 		$this->server->on('afterMethod', [$this, 'releaseLock'], 50);
+		$this->server->on('beforeUnlock', [$this, 'beforeUnlock'], 20);
 	}
 
 	public function getLock(RequestInterface $request) {
@@ -79,6 +84,28 @@ class LockPlugin extends ServerPlugin {
 		}
 		if ($node instanceof Node) {
 			$node->releaseLock(ILockingProvider::LOCK_SHARED);
+		}
+	}
+
+	/**
+	 * @param $uri
+	 * @param LockInfo $lock
+	 * @throws Forbidden
+	 * @throws \OCP\AppFramework\Db\DoesNotExistException
+	 * @throws \OCP\AppFramework\Db\MultipleObjectsReturnedException
+	 * @throws \OCP\AppFramework\QueryException
+	 */
+	public function beforeUnlock($uri, LockInfo $lock) {
+		/** @var LockMapper $mapper */
+		$mapper = \OC::$server->query(LockMapper::class);
+
+		$lock = $mapper->getLockByToken($lock->token);
+		if ($lock === null || $lock->getOwnerAccountId() === null) {
+			return;
+		}
+		$currentUser = \OC::$server->getUserSession()->getUser();
+		if ($currentUser === null || $lock->getOwnerAccountId() !== $currentUser->getAccountId()) {
+			throw new Forbidden();
 		}
 	}
 }
