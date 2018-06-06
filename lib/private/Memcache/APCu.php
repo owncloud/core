@@ -36,7 +36,7 @@ class APCu extends Cache implements IMemcache {
 	use CADTrait;
 
 	public function get($key) {
-		$result = apcu_fetch($this->getPrefix() . $key, $success);
+		$result = \apcu_fetch($this->getPrefix() . $key, $success);
 		if (!$success) {
 			return null;
 		}
@@ -44,15 +44,15 @@ class APCu extends Cache implements IMemcache {
 	}
 
 	public function set($key, $value, $ttl = 0) {
-		return apcu_store($this->getPrefix() . $key, $value, $ttl);
+		return \apcu_store($this->getPrefix() . $key, $value, $ttl);
 	}
 
 	public function hasKey($key) {
-		return apcu_exists($this->getPrefix() . $key);
+		return \apcu_exists($this->getPrefix() . $key);
 	}
 
 	public function remove($key) {
-		return apcu_delete($this->getPrefix() . $key);
+		return \apcu_delete($this->getPrefix() . $key);
 	}
 
 	public function clear($prefix = '') {
@@ -63,7 +63,7 @@ class APCu extends Cache implements IMemcache {
 		} else {
 			$iter = new \APCUIterator('/^' . $ns . '/', APC_ITER_KEY);
 		}
-		return apcu_delete($iter);
+		return \apcu_delete($iter);
 	}
 
 	/**
@@ -75,7 +75,7 @@ class APCu extends Cache implements IMemcache {
 	 * @return bool
 	 */
 	public function add($key, $value, $ttl = 0) {
-		return apcu_add($this->getPrefix() . $key, $value, $ttl);
+		return \apcu_add($this->getPrefix() . $key, $value, $ttl);
 	}
 
 	/**
@@ -87,7 +87,7 @@ class APCu extends Cache implements IMemcache {
 	 */
 	public function inc($key, $step = 1) {
 		$this->add($key, 0);
-		return apcu_inc($this->getPrefix() . $key, $step);
+		return \apcu_inc($this->getPrefix() . $key, $step);
 	}
 
 	/**
@@ -98,7 +98,7 @@ class APCu extends Cache implements IMemcache {
 	 * @return int | bool
 	 */
 	public function dec($key, $step = 1) {
-		return apcu_dec($this->getPrefix() . $key, $step);
+		return \apcu_dec($this->getPrefix() . $key, $step);
 	}
 
 	/**
@@ -112,7 +112,7 @@ class APCu extends Cache implements IMemcache {
 	public function cas($key, $old, $new) {
 		// apc only does cas for ints
 		if (\is_int($old) and \is_int($new)) {
-			return apcu_cas($this->getPrefix() . $key, $old, $new);
+			return \apcu_cas($this->getPrefix() . $key, $old, $new);
 		} else {
 			return $this->casEmulated($key, $old, $new);
 		}
