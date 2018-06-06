@@ -41,6 +41,7 @@ use OCP\Files\Cache\ICacheEntry;
 use OCP\Files\NotFoundException;
 use OCP\Files\Storage\IStorage;
 use OCP\Lock\ILockingProvider;
+use OCP\Lock\Persistent\ILock;
 
 /**
  * Convert target path to source path and pass the function call to the correct storage provider
@@ -455,5 +456,24 @@ class SharedStorage extends \OC\Files\Storage\Wrapper\Jail implements ISharedSto
 		$this->init();
 
 		return $this->sourceStorage;
+	}
+
+	public function getLocks(string $internalPath, bool $returnChildLocks = false): array {
+		$locks = parent::getLocks($this->getSourcePath($internalPath), $returnChildLocks);
+		return \array_map(function (ILock $lock) {
+			// TODO: if path starts with rootpath
+			$mountedPath = \substr($lock->getPath(), \strlen($this->rootPath)+1);
+			$lock->setGlobalUserId($this->user);
+			$lock->setGlobalFileName($this->getMountPoint() . '/' .$mountedPath);
+			return $lock;
+		}, $locks);
+	}
+
+	public function lockNodePersistent(string $internalPath, array $lockInfo) : bool {
+		parent::lockNodePersistent($this->getSourcePath($internalPath), $lockInfo);
+	}
+
+	public function unlockNodePersistent(string $internalPath, array $lockInfo) {
+		parent::unlockNodePersistent($this->getSourcePath($internalPath), $lockInfo);
 	}
 }

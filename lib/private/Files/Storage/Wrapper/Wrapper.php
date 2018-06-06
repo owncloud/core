@@ -28,9 +28,10 @@ namespace OC\Files\Storage\Wrapper;
 
 use OCP\Files\InvalidPathException;
 use OCP\Files\Storage\ILockingStorage;
+use OCP\Files\Storage\IPersistentLockingStorage;
 use OCP\Lock\ILockingProvider;
 
-class Wrapper implements \OC\Files\Storage\Storage, ILockingStorage {
+class Wrapper implements \OC\Files\Storage\Storage, ILockingStorage, IPersistentLockingStorage {
 	/**
 	 * @var \OC\Files\Storage\Storage $storage
 	 */
@@ -584,7 +585,7 @@ class Wrapper implements \OC\Files\Storage\Storage, ILockingStorage {
 	 */
 	public function acquireLock($path, $type, ILockingProvider $provider) {
 		$storage = $this->getWrapperStorage();
-		if ($storage->instanceOfStorage('\OCP\Files\Storage\ILockingStorage')) {
+		if ($storage->instanceOfStorage(ILockingStorage::class)) {
 			$storage->acquireLock($path, $type, $provider);
 		}
 	}
@@ -596,7 +597,7 @@ class Wrapper implements \OC\Files\Storage\Storage, ILockingStorage {
 	 */
 	public function releaseLock($path, $type, ILockingProvider $provider) {
 		$storage = $this->getWrapperStorage();
-		if ($storage->instanceOfStorage('\OCP\Files\Storage\ILockingStorage')) {
+		if ($storage->instanceOfStorage(ILockingStorage::class)) {
 			$storage->releaseLock($path, $type, $provider);
 		}
 	}
@@ -608,8 +609,31 @@ class Wrapper implements \OC\Files\Storage\Storage, ILockingStorage {
 	 */
 	public function changeLock($path, $type, ILockingProvider $provider) {
 		$storage = $this->getWrapperStorage();
-		if ($storage->instanceOfStorage('\OCP\Files\Storage\ILockingStorage')) {
+		if ($storage->instanceOfStorage(ILockingStorage::class)) {
 			$storage->changeLock($path, $type, $provider);
 		}
+	}
+
+	public function lockNodePersistent(string $internalPath, array $lockInfo) {
+		$storage = $this->getWrapperStorage();
+		if ($storage->instanceOfStorage(IPersistentLockingStorage::class)) {
+			$storage->lockNodePersistent($internalPath, $lockInfo);
+		}
+	}
+
+	public function unlockNodePersistent(string $internalPath, array $lockInfo) {
+		$storage = $this->getWrapperStorage();
+		if ($storage->instanceOfStorage(IPersistentLockingStorage::class)) {
+			$storage->unlockNodePersistent($internalPath, $lockInfo);
+		}
+	}
+
+	public function getLocks(string $internalPath, bool $returnChildLocks = false) : array {
+		$storage = $this->getWrapperStorage();
+		if ($storage->instanceOfStorage(IPersistentLockingStorage::class)) {
+			return $storage->getLocks($internalPath, $returnChildLocks);
+		}
+
+		return [];
 	}
 }
