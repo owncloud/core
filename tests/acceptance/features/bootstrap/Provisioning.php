@@ -1686,8 +1686,9 @@ trait Provisioning {
 	 * 
 	 * @return void
 	 */
-	public function rememberEnabledApps() {
+	public function rememberAppEnabledDisabledState() {
 		$this->enabledApps = $this->getEnabledApps();
+		$this->disabledApps = $this->getDisabledApps();
 	}
 	
 	/**
@@ -1695,12 +1696,19 @@ trait Provisioning {
 	 * 
 	 * @return void
 	 */
-	public function restoreDisabledApps() {
-		$this->disabledApps = $this->getDisabledApps();
-		
-		foreach ($this->disabledApps as $disabledApp) {
+	public function restoreAppEnabledDisabledState() {
+		$currentlyDisabledApps = $this->getDisabledApps();
+		$currentlyEnabledApps = $this->getEnabledApps();
+
+		foreach ($currentlyDisabledApps as $disabledApp) {
 			if (\in_array($disabledApp, $this->enabledApps)) {
-				$this->enableApp($disabledApp);
+				$this->adminEnablesOrDisablesApp('enables', $disabledApp);
+			}
+		}
+
+		foreach ($currentlyEnabledApps as $enabledApp) {
+			if (\in_array($enabledApp, $this->disabledApps)) {
+				$this->adminEnablesOrDisablesApp('disables', $enabledApp);
 			}
 		}
 	}
@@ -1731,20 +1739,5 @@ trait Provisioning {
 		$options['auth'] = $this->getAuthOptionForAdmin();
 		$this->response = $client->get($fullUrl, $options);
 		return ($this->getArrayOfAppsResponded($this->response));
-	}
-
-	/**
-	 * Enable app
-	 *
-	 * @param string $app
-	 *
-	 * @return void
-	 */
-	public function enableApp($app) {
-		$fullUrl = $this->getBaseUrl() . "/ocs/v2.php/cloud/apps/$app";
-		$client = new Client();
-		$options = [];
-		$options['auth'] = $this->getAuthOptionForAdmin();
-		$this->response = $client->post($fullUrl, $options);
 	}
 }
