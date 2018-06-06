@@ -424,6 +424,22 @@ trait Sharing {
 	}
 
 	/**
+	 * @Then /^user "([^"]*)" should not be able to create public share of (?:file|folder) "([^"]*)" using the API$/
+	 *
+	 * @param string $sharer
+	 * @param string $filepath
+	 *
+	 * @return void
+	 */
+	public function shouldNotBeAbleToCreatePublicShare($sharer, $filepath) {
+		$this->createAPublicShare($sharer, $filepath);
+		PHPUnit_Framework_Assert::assertEquals(
+			404,
+			$this->getOCSResponseStatusCode($this->response)
+		);
+	}
+
+	/**
 	 * @Then publicly uploading a file should not work
 	 *
 	 * @return void
@@ -845,6 +861,35 @@ trait Sharing {
 		PHPUnit_Framework_Assert::assertEquals(
 			true,
 			$this->isUserOrGroupInSharedData($group, $permissions)
+		);
+	}
+
+	/**
+	 * @Then /^user "([^"]*)" should not be able to share (?:file|folder|entry) "([^"]*)" with (?:user|group) "([^"]*)"(?: with permissions ([\d]*))? using the API$/
+	 *
+	 * @param string $sharer
+	 * @param string $filepath
+	 * @param string $sharee
+	 * @param int $permissions
+	 *
+	 * @return void
+	 */
+	public function userTriesToShareFileWithUserUsingTheApi($sharer, $filepath, $sharee, $permissions = null) {
+		$time = \time();
+		if ($this->lastShareTime !== null && $time - $this->lastShareTime < 1) {
+			// prevent creating two shares with the same "stime" which is
+			// based on seconds, this affects share merging order and could
+			// affect expected test result order
+			\sleep(1);
+		}
+		$this->lastShareTime = $time;
+		$this->createShare(
+			$sharer, $filepath, 0, $sharee, null, null, $permissions
+		);
+		$responseMessage = \json_decode(\json_encode($this->response->xml()->meta->message), 1);
+		PHPUnit_Framework_Assert::assertEquals(
+			404,
+			$this->getOCSResponseStatusCode($this->response)
 		);
 	}
 
