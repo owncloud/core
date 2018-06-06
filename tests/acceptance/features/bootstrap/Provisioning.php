@@ -238,18 +238,61 @@ trait Provisioning {
 	}
 
 	/**
-	 * @Given /^the app "([^"]*)" has been disabled$/
-	 * 
+	 * @When /^user "([^"]*)" (enables|disables) the app "([^"]*)"$/
+	 *
+	 * @param string $user
+	 * @param string $action enables or disables
 	 * @param string $app
 	 * 
 	 * @return void
 	 */
-	public function theAppHasBeenDisabled($app) {
+	public function userEnablesOrDisablesApp($user, $action, $app) {
 		$fullUrl = $this->getBaseUrl()
 			. "/ocs/v{$this->apiVersion}.php/cloud/apps/" . $app;
 		$options = [];
-		$options['auth'] = $this->getAuthOptionForAdmin();
-		$this->client->delete($fullUrl, $options);
+		$options['auth'] = $this->getAuthOptionForUser($user);
+		try {
+			if ($action === 'enables') {
+				$this->response = $this->client->post($fullUrl, $options);
+			} else {
+				$this->response = $this->client->delete($fullUrl, $options);
+			}
+		} catch (BadResponseException $e) {
+			$this->response = $e->getResponse();
+		}
+	}
+
+	/**
+	 * @When /^the administrator (enables|disables) the app "([^"]*)"$/
+	 *
+	 * @param string $action enables or disables
+	 * @param string $app
+	 *
+	 * @return void
+	 */
+	public function adminEnablesOrDisablesApp($action, $app) {
+		$this->userEnablesOrDisablesApp(
+			$this->getAdminUsername(), $action, $app
+		);
+	}
+
+	/**
+	 * @Given /^the app "([^"]*)" has been (enabled|disabled)$/
+	 *
+	 * @param string $app
+	 * @param string $action enabled or disabled
+	 *
+	 * @return void
+	 */
+	public function theAppHasBeenDisabled($app, $action) {
+		if ($action === 'enabled') {
+			$action = 'enables';
+		} else {
+			$action = 'disables';
+		}
+		$this->userEnablesOrDisablesApp(
+			$this->getAdminUsername(), $action, $app
+		);
 	}
 
 	/**
