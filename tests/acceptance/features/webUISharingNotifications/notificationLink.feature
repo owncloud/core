@@ -5,7 +5,8 @@ I want to use the notification header as a link
 So that I will be redirected to the most appropriate screen
 
 	Background:
-		Given these users have been created:
+		Given the app "notifications" has been enabled
+		And these users have been created:
 			|username|password|displayname|email       |
 			|user1   |1234    |User One   |u1@oc.com.np|
 			|user2   |1234    |User Two   |u2@oc.com.np|
