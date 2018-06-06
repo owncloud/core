@@ -41,6 +41,7 @@ use OC\Settings\Controller\CertificateController;
 use OC\Settings\Controller\CheckSetupController;
 use OC\Settings\Controller\EncryptionController;
 use OC\Settings\Controller\GroupsController;
+use OC\Settings\Controller\LegalSettingsController;
 use OC\Settings\Controller\LogSettingsController;
 use OC\Settings\Controller\MailSettingsController;
 use OC\Settings\Controller\SecuritySettingsController;
@@ -184,7 +185,15 @@ class Application extends App {
 				$c->query('L10N')
 			);
 		});
-		$container->registerService('CheckSetupController', function(IContainer $c) {
+		$container->registerService('LegalSettingsController', function (IContainer $c) {
+			return new LegalSettingsController(
+				$c->query('AppName'),
+				$c->query('Request'),
+				$c->query('L10N'),
+				$c->query('Config')
+			);
+		});
+		$container->registerService('CheckSetupController', function (IContainer $c) {
 			return new CheckSetupController(
 				$c->query('AppName'),
 				$c->query('Request'),
