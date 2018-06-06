@@ -1329,8 +1329,8 @@ class OC_Util {
 	 */
 	public static function clearOpcodeCache() {
 		// APC
-		if (function_exists('apc_clear_cache')) {
-			apc_clear_cache();
+		if (\function_exists('apc_clear_cache')) {
+			\apc_clear_cache();
 		}
 		// Zend Opcache
 		if (function_exists('accelerator_reset')) {
