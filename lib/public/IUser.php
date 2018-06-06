@@ -34,6 +34,12 @@ namespace OCP;
 interface IUser {
 
 	/**
+	 * @return integer
+	 * @since 11.0.0
+	 */
+	public function getAccountId();
+
+	/**
 	 * get the user id
 	 *
 	 * @return string

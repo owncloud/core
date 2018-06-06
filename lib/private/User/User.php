@@ -542,4 +542,12 @@ class User implements IUser {
 		}, $terms);
 		$this->mapper->setTermsForAccount($this->account->getId(), $terms);
 	}
+
+	/**
+	 * @return integer
+	 * @since 11.0.0
+	 */
+	public function getAccountId() {
+		return $this->account->getId();
+	}
 }
