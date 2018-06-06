@@ -140,6 +140,7 @@ OC.L10N.register(
     "Expire after " : "Истечение через",
     "days" : "дней",
     "Enforce expiration date" : "Срок действия обязателен",
+    "Automatically accept new incoming local user shares" : "Автоматически принимать новые входящие предоставления доступа от локальных пользователей",
     "Allow resharing" : "Разрешить повторное открытие общего доступа",
     "Allow sharing with groups" : "Разрешить общий доступ для групп",
     "Restrict users to only share with users in their groups" : "Разрешить пользователям делиться только с членами их групп",
