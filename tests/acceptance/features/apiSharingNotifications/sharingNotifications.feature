@@ -5,7 +5,8 @@ Feature: Display notifications when receiving a share
 	So that I can easily decide what I want to do with new received shares
 
 	Background:
-		Given using API version "1"
+		Given the app "notifications" has been enabled
+		And using API version "1"
 		And using new DAV path
 		And user "user0" has been created
 		And user "user1" has been created
