@@ -31,7 +31,7 @@ $application = new Application();
 
 /** @var $this \OCP\Route\IRouter */
 $this->create('core_ajax_versions_preview', '/preview')->action(
-function() {
+function () {
 	require_once __DIR__ . '/../ajax/preview.php';
 });
 
@@ -41,4 +41,3 @@ $this->create('files_versions_ajax_getVersions', 'ajax/getVersions.php')
 	->actionInclude('files_versions/ajax/getVersions.php');
 $this->create('files_versions_ajax_rollbackVersion', 'ajax/rollbackVersion.php')
 	->actionInclude('files_versions/ajax/rollbackVersion.php');
-

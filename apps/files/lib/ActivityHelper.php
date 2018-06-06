@@ -51,7 +51,7 @@ class ActivityHelper {
 
 		if (empty($favorites)) {
 			throw new \RuntimeException('No favorites', 1);
-		} else if (isset($favorites[self::FAVORITE_LIMIT])) {
+		} elseif (isset($favorites[self::FAVORITE_LIMIT])) {
 			throw new \RuntimeException('Too many favorites', 2);
 		}
 
@@ -62,8 +62,8 @@ class ActivityHelper {
 			$nodes = $rootFolder->getById($favorite);
 			if (!empty($nodes)) {
 				/** @var \OCP\Files\Node $node */
-				$node = array_shift($nodes);
-				$path = substr($node->getPath(), strlen($user . '/files/'));
+				$node = \array_shift($nodes);
+				$path = \substr($node->getPath(), \strlen($user . '/files/'));
 
 				$items[] = $path;
 				if ($node instanceof Folder) {

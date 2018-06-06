@@ -58,417 +58,415 @@ class LazyRoot implements IRootFolder {
 	 */
 	public function __call($method, $args) {
 		if ($this->rootFolder === null) {
-			$this->rootFolder = call_user_func($this->rootFolderClosure);
+			$this->rootFolder = \call_user_func($this->rootFolderClosure);
 		}
 
-		return call_user_func_array([$this->rootFolder, $method], $args);
+		return \call_user_func_array([$this->rootFolder, $method], $args);
 	}
 
 	/**
 	 * @inheritDoc
 	 */
 	public function getUser() {
-		return $this->__call(__FUNCTION__, func_get_args());
+		return $this->__call(__FUNCTION__, \func_get_args());
 	}
 
 	/**
 	 * @inheritDoc
 	 */
 	public function listen($scope, $method, callable $callback) {
-		$this->__call(__FUNCTION__, func_get_args());
+		$this->__call(__FUNCTION__, \func_get_args());
 	}
 
 	/**
 	 * @inheritDoc
 	 */
 	public function removeListener($scope = null, $method = null, callable $callback = null) {
-		$this->__call(__FUNCTION__, func_get_args());
+		$this->__call(__FUNCTION__, \func_get_args());
 	}
 
 	/**
 	 * @inheritDoc
 	 */
 	public function emit($scope, $method, $arguments = []) {
-		$this->__call(__FUNCTION__, func_get_args());
+		$this->__call(__FUNCTION__, \func_get_args());
 	}
 
 	/**
 	 * @inheritDoc
 	 */
 	public function mount($storage, $mountPoint, $arguments = []) {
-		$this->__call(__FUNCTION__, func_get_args());
+		$this->__call(__FUNCTION__, \func_get_args());
 	}
 
 	/**
 	 * @inheritDoc
 	 */
 	public function getMount($mountPoint) {
-		return $this->__call(__FUNCTION__, func_get_args());
+		return $this->__call(__FUNCTION__, \func_get_args());
 	}
 
 	/**
 	 * @inheritDoc
 	 */
 	public function getMountsIn($mountPoint) {
-		return $this->__call(__FUNCTION__, func_get_args());
+		return $this->__call(__FUNCTION__, \func_get_args());
 	}
 
 	/**
 	 * @inheritDoc
 	 */
 	public function getMountByStorageId($storageId) {
-		return $this->__call(__FUNCTION__, func_get_args());
+		return $this->__call(__FUNCTION__, \func_get_args());
 	}
 
 	/**
 	 * @inheritDoc
 	 */
 	public function getMountByNumericStorageId($numericId) {
-		return $this->__call(__FUNCTION__, func_get_args());
+		return $this->__call(__FUNCTION__, \func_get_args());
 	}
 
 	/**
 	 * @inheritDoc
 	 */
 	public function unMount($mount) {
-		$this->__call(__FUNCTION__, func_get_args());
+		$this->__call(__FUNCTION__, \func_get_args());
 	}
 
 	/**
 	 * @inheritDoc
 	 */
 	public function get($path) {
-		return $this->__call(__FUNCTION__, func_get_args());
+		return $this->__call(__FUNCTION__, \func_get_args());
 	}
 
 	/**
 	 * @inheritDoc
 	 */
 	public function rename($targetPath) {
-		return $this->__call(__FUNCTION__, func_get_args());
+		return $this->__call(__FUNCTION__, \func_get_args());
 	}
 
 	/**
 	 * @inheritDoc
 	 */
 	public function delete() {
-		return $this->__call(__FUNCTION__, func_get_args());
+		return $this->__call(__FUNCTION__, \func_get_args());
 	}
 
 	/**
 	 * @inheritDoc
 	 */
 	public function copy($targetPath) {
-		return $this->__call(__FUNCTION__, func_get_args());
+		return $this->__call(__FUNCTION__, \func_get_args());
 	}
 
 	/**
 	 * @inheritDoc
 	 */
 	public function touch($mtime = null) {
-		$this->__call(__FUNCTION__, func_get_args());
+		$this->__call(__FUNCTION__, \func_get_args());
 	}
 
 	/**
 	 * @inheritDoc
 	 */
 	public function getStorage() {
-		return $this->__call(__FUNCTION__, func_get_args());
+		return $this->__call(__FUNCTION__, \func_get_args());
 	}
 
 	/**
 	 * @inheritDoc
 	 */
 	public function getPath() {
-		return $this->__call(__FUNCTION__, func_get_args());
+		return $this->__call(__FUNCTION__, \func_get_args());
 	}
 
 	/**
 	 * @inheritDoc
 	 */
 	public function getInternalPath() {
-		return $this->__call(__FUNCTION__, func_get_args());
+		return $this->__call(__FUNCTION__, \func_get_args());
 	}
 
 	/**
 	 * @inheritDoc
 	 */
 	public function getId() {
-		return $this->__call(__FUNCTION__, func_get_args());
+		return $this->__call(__FUNCTION__, \func_get_args());
 	}
 
 	/**
 	 * @inheritDoc
 	 */
 	public function stat() {
-		return $this->__call(__FUNCTION__, func_get_args());
+		return $this->__call(__FUNCTION__, \func_get_args());
 	}
 
 	/**
 	 * @inheritDoc
 	 */
 	public function getMTime() {
-		return $this->__call(__FUNCTION__, func_get_args());
+		return $this->__call(__FUNCTION__, \func_get_args());
 	}
 
 	/**
 	 * @inheritDoc
 	 */
 	public function getSize() {
-		return $this->__call(__FUNCTION__, func_get_args());
+		return $this->__call(__FUNCTION__, \func_get_args());
 	}
 
 	/**
 	 * @inheritDoc
 	 */
 	public function getEtag() {
-		return $this->__call(__FUNCTION__, func_get_args());
+		return $this->__call(__FUNCTION__, \func_get_args());
 	}
 
 	/**
 	 * @inheritDoc
 	 */
 	public function getPermissions() {
-		return $this->__call(__FUNCTION__, func_get_args());
+		return $this->__call(__FUNCTION__, \func_get_args());
 	}
 
 	/**
 	 * @inheritDoc
 	 */
 	public function isReadable() {
-		return $this->__call(__FUNCTION__, func_get_args());
+		return $this->__call(__FUNCTION__, \func_get_args());
 	}
 
 	/**
 	 * @inheritDoc
 	 */
 	public function isUpdateable() {
-		return $this->__call(__FUNCTION__, func_get_args());
+		return $this->__call(__FUNCTION__, \func_get_args());
 	}
 
 	/**
 	 * @inheritDoc
 	 */
 	public function isDeletable() {
-		return $this->__call(__FUNCTION__, func_get_args());
+		return $this->__call(__FUNCTION__, \func_get_args());
 	}
 
 	/**
 	 * @inheritDoc
 	 */
 	public function isShareable() {
-		return $this->__call(__FUNCTION__, func_get_args());
+		return $this->__call(__FUNCTION__, \func_get_args());
 	}
 
 	/**
 	 * @inheritDoc
 	 */
 	public function getParent() {
-		return $this->__call(__FUNCTION__, func_get_args());
+		return $this->__call(__FUNCTION__, \func_get_args());
 	}
 
 	/**
 	 * @inheritDoc
 	 */
 	public function getName() {
-		return $this->__call(__FUNCTION__, func_get_args());
+		return $this->__call(__FUNCTION__, \func_get_args());
 	}
 
 	/**
 	 * @inheritDoc
 	 */
 	public function getUserFolder($userId) {
-		return $this->__call(__FUNCTION__, func_get_args());
+		return $this->__call(__FUNCTION__, \func_get_args());
 	}
 
 	/**
 	 * @inheritDoc
 	 */
 	public function getMimetype() {
-		return $this->__call(__FUNCTION__, func_get_args());
+		return $this->__call(__FUNCTION__, \func_get_args());
 	}
 
 	/**
 	 * @inheritDoc
 	 */
 	public function getMimePart() {
-		return $this->__call(__FUNCTION__, func_get_args());
+		return $this->__call(__FUNCTION__, \func_get_args());
 	}
 
 	/**
 	 * @inheritDoc
 	 */
 	public function isEncrypted() {
-		return $this->__call(__FUNCTION__, func_get_args());
+		return $this->__call(__FUNCTION__, \func_get_args());
 	}
 
 	/**
 	 * @inheritDoc
 	 */
 	public function getType() {
-		return $this->__call(__FUNCTION__, func_get_args());
+		return $this->__call(__FUNCTION__, \func_get_args());
 	}
 
 	/**
 	 * @inheritDoc
 	 */
 	public function isShared() {
-		return $this->__call(__FUNCTION__, func_get_args());
+		return $this->__call(__FUNCTION__, \func_get_args());
 	}
 
 	/**
 	 * @inheritDoc
 	 */
 	public function isMounted() {
-		return $this->__call(__FUNCTION__, func_get_args());
+		return $this->__call(__FUNCTION__, \func_get_args());
 	}
 
 	/**
 	 * @inheritDoc
 	 */
 	public function getMountPoint() {
-		return $this->__call(__FUNCTION__, func_get_args());
+		return $this->__call(__FUNCTION__, \func_get_args());
 	}
 
 	/**
 	 * @inheritDoc
 	 */
 	public function getOwner() {
-		return $this->__call(__FUNCTION__, func_get_args());
+		return $this->__call(__FUNCTION__, \func_get_args());
 	}
 
 	/**
 	 * @inheritDoc
 	 */
 	public function getChecksum() {
-		return $this->__call(__FUNCTION__, func_get_args());
+		return $this->__call(__FUNCTION__, \func_get_args());
 	}
 
 	/**
 	 * @inheritDoc
 	 */
 	public function getFullPath($path) {
-		return $this->__call(__FUNCTION__, func_get_args());
+		return $this->__call(__FUNCTION__, \func_get_args());
 	}
 
 	/**
 	 * @inheritDoc
 	 */
 	public function getRelativePath($path) {
-		return $this->__call(__FUNCTION__, func_get_args());
+		return $this->__call(__FUNCTION__, \func_get_args());
 	}
 
 	/**
 	 * @inheritDoc
 	 */
 	public function isSubNode($node) {
-		return $this->__call(__FUNCTION__, func_get_args());
+		return $this->__call(__FUNCTION__, \func_get_args());
 	}
 
 	/**
 	 * @inheritDoc
 	 */
 	public function getDirectoryListing() {
-		return $this->__call(__FUNCTION__, func_get_args());
+		return $this->__call(__FUNCTION__, \func_get_args());
 	}
 
 	/**
 	 * @inheritDoc
 	 */
 	public function nodeExists($path) {
-		return $this->__call(__FUNCTION__, func_get_args());
+		return $this->__call(__FUNCTION__, \func_get_args());
 	}
 
 	/**
 	 * @inheritDoc
 	 */
 	public function newFolder($path) {
-		return $this->__call(__FUNCTION__, func_get_args());
+		return $this->__call(__FUNCTION__, \func_get_args());
 	}
 
 	/**
 	 * @inheritDoc
 	 */
 	public function newFile($path) {
-		return $this->__call(__FUNCTION__, func_get_args());
+		return $this->__call(__FUNCTION__, \func_get_args());
 	}
 
 	/**
 	 * @inheritDoc
 	 */
 	public function search($query) {
-		return $this->__call(__FUNCTION__, func_get_args());
+		return $this->__call(__FUNCTION__, \func_get_args());
 	}
 
 	/**
 	 * @inheritDoc
 	 */
 	public function searchByMime($mimetype) {
-		return $this->__call(__FUNCTION__, func_get_args());
+		return $this->__call(__FUNCTION__, \func_get_args());
 	}
 
 	/**
 	 * @inheritDoc
 	 */
 	public function searchByTag($tag, $userId) {
-		return $this->__call(__FUNCTION__, func_get_args());
+		return $this->__call(__FUNCTION__, \func_get_args());
 	}
 
 	/**
 	 * @inheritDoc
 	 */
 	public function getById($id) {
-		return $this->__call(__FUNCTION__, func_get_args());
+		return $this->__call(__FUNCTION__, \func_get_args());
 	}
 
 	/**
 	 * @inheritDoc
 	 */
 	public function getFreeSpace() {
-		return $this->__call(__FUNCTION__, func_get_args());
+		return $this->__call(__FUNCTION__, \func_get_args());
 	}
 
 	/**
 	 * @inheritDoc
 	 */
 	public function isCreatable() {
-		return $this->__call(__FUNCTION__, func_get_args());
+		return $this->__call(__FUNCTION__, \func_get_args());
 	}
 
 	/**
 	 * @inheritDoc
 	 */
 	public function getNonExistingName($name) {
-		return $this->__call(__FUNCTION__, func_get_args());
+		return $this->__call(__FUNCTION__, \func_get_args());
 	}
 
 	/**
 	 * @inheritDoc
 	 */
 	public function move($targetPath) {
-		return $this->__call(__FUNCTION__, func_get_args());
+		return $this->__call(__FUNCTION__, \func_get_args());
 	}
 
 	/**
 	 * @inheritDoc
 	 */
 	public function lock($type) {
-		return $this->__call(__FUNCTION__, func_get_args());
+		return $this->__call(__FUNCTION__, \func_get_args());
 	}
 
 	/**
 	 * @inheritDoc
 	 */
 	public function changeLock($targetType) {
-		return $this->__call(__FUNCTION__, func_get_args());
+		return $this->__call(__FUNCTION__, \func_get_args());
 	}
 
 	/**
 	 * @inheritDoc
 	 */
 	public function unlock($type) {
-		return $this->__call(__FUNCTION__, func_get_args());
+		return $this->__call(__FUNCTION__, \func_get_args());
 	}
-
-
 }

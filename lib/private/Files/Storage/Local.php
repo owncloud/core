@@ -38,7 +38,6 @@ namespace OC\Files\Storage;
 
 use OCP\Files\ForbiddenException;
 
-
 /**
  * for local filestore, we only have to map the paths
  */
@@ -52,7 +51,7 @@ class Local extends \OC\Files\Storage\Common {
 	protected $realDataDir;
 
 	public function __construct($arguments) {
-		if (!isset($arguments['datadir']) || !is_string($arguments['datadir'])) {
+		if (!isset($arguments['datadir']) || !\is_string($arguments['datadir'])) {
 			throw new \InvalidArgumentException('No data directory set for local storage');
 		}
 		$this->datadir = $arguments['datadir'];
@@ -60,12 +59,12 @@ class Local extends \OC\Files\Storage\Common {
 		if ($this->datadir === '/') {
 			$this->realDataDir = $this->datadir;
 		} else {
-			$this->realDataDir = rtrim(realpath($this->datadir), '/') . '/';
+			$this->realDataDir = \rtrim(\realpath($this->datadir), '/') . '/';
 		}
-		if (substr($this->datadir, -1) !== '/') {
+		if (\substr($this->datadir, -1) !== '/') {
 			$this->datadir .= '/';
 		}
-		$this->dataDirLength = strlen($this->realDataDir);
+		$this->dataDirLength = \strlen($this->realDataDir);
 	}
 
 	public function __destruct() {
@@ -76,7 +75,7 @@ class Local extends \OC\Files\Storage\Common {
 	}
 
 	public function mkdir($path) {
-		return @mkdir($this->getSourcePath($path), 0777, true);
+		return @\mkdir($this->getSourcePath($path), 0777, true);
 	}
 
 	public function rmdir($path) {
@@ -99,41 +98,41 @@ class Local extends \OC\Files\Storage\Common {
 				 * @var \SplFileInfo $file
 				 */
 				$file = $it->current();
-				if (in_array($file->getBasename(), ['.', '..'])) {
+				if (\in_array($file->getBasename(), ['.', '..'])) {
 					$it->next();
 					continue;
 				} elseif ($file->isDir()) {
-					rmdir($file->getPathname());
+					\rmdir($file->getPathname());
 				} elseif ($file->isFile() || $file->isLink()) {
-					unlink($file->getPathname());
+					\unlink($file->getPathname());
 				}
 				$it->next();
 			}
-			return rmdir($this->getSourcePath($path));
+			return \rmdir($this->getSourcePath($path));
 		} catch (\UnexpectedValueException $e) {
 			return false;
 		}
 	}
 
 	public function opendir($path) {
-		return opendir($this->getSourcePath($path));
+		return \opendir($this->getSourcePath($path));
 	}
 
 	public function is_dir($path) {
-		if (substr($path, -1) === '/') {
-			$path = substr($path, 0, -1);
+		if (\substr($path, -1) === '/') {
+			$path = \substr($path, 0, -1);
 		}
-		return is_dir($this->getSourcePath($path));
+		return \is_dir($this->getSourcePath($path));
 	}
 
 	public function is_file($path) {
-		return is_file($this->getSourcePath($path));
+		return \is_file($this->getSourcePath($path));
 	}
 
 	public function stat($path) {
-		clearstatcache();
+		\clearstatcache();
 		$fullPath = $this->getSourcePath($path);
-		$statResult = stat($fullPath);
+		$statResult = \stat($fullPath);
 		if (PHP_INT_SIZE === 4 && !$this->is_dir($path)) {
 			$filesize = $this->filesize($path);
 			$statResult['size'] = $filesize;
@@ -143,9 +142,9 @@ class Local extends \OC\Files\Storage\Common {
 	}
 
 	public function filetype($path) {
-		$filetype = filetype($this->getSourcePath($path));
+		$filetype = \filetype($this->getSourcePath($path));
 		if ($filetype === 'link') {
-			$filetype = filetype(realpath($this->getSourcePath($path)));
+			$filetype = \filetype(\realpath($this->getSourcePath($path)));
 		}
 		return $filetype;
 	}
@@ -159,24 +158,24 @@ class Local extends \OC\Files\Storage\Common {
 			$helper = new \OC\LargeFileHelper;
 			return $helper->getFileSize($fullPath);
 		}
-		return filesize($fullPath);
+		return \filesize($fullPath);
 	}
 
 	public function isReadable($path) {
-		return is_readable($this->getSourcePath($path));
+		return \is_readable($this->getSourcePath($path));
 	}
 
 	public function isUpdatable($path) {
-		return is_writable($this->getSourcePath($path));
+		return \is_writable($this->getSourcePath($path));
 	}
 
 	public function file_exists($path) {
-		return file_exists($this->getSourcePath($path));
+		return \file_exists($this->getSourcePath($path));
 	}
 
 	public function filemtime($path) {
 		$fullPath = $this->getSourcePath($path);
-		clearstatcache($fullPath);
+		\clearstatcache($fullPath);
 		if (!$this->file_exists($path)) {
 			return false;
 		}
@@ -184,13 +183,13 @@ class Local extends \OC\Files\Storage\Common {
 			/**
 			 * Check if exec is available to use before calling it.
 			 */
-			if (function_exists('exec') === true) {
+			if (\function_exists('exec') === true) {
 				$result = 0;
 				$returnVar = 0;
 				if (\OC_Util::runningOn('linux')) {
-					$result = (int)exec('stat -c %Y ' . escapeshellarg($fullPath), $output, $returnVar);
-				} else if (\OC_Util::runningOn('bsd') || \OC_Util::runningOn('mac')) {
-					$result = (int)exec('stat -f %m ' . escapeshellarg($fullPath), $output, $returnVar);
+					$result = (int)\exec('stat -c %Y ' . \escapeshellarg($fullPath), $output, $returnVar);
+				} elseif (\OC_Util::runningOn('bsd') || \OC_Util::runningOn('mac')) {
+					$result = (int)\exec('stat -f %m ' . \escapeshellarg($fullPath), $output, $returnVar);
 				}
 
 				/**
@@ -202,7 +201,7 @@ class Local extends \OC\Files\Storage\Common {
 				}
 			}
 		}
-		return filemtime($fullPath);
+		return \filemtime($fullPath);
 	}
 
 	public function touch($path, $mtime = null) {
@@ -212,40 +211,39 @@ class Local extends \OC\Files\Storage\Common {
 		if ($this->file_exists($path) and !$this->isUpdatable($path)) {
 			return false;
 		}
-		if (!is_null($mtime)) {
-			$result = touch($this->getSourcePath($path), $mtime);
+		if ($mtime !== null) {
+			$result = \touch($this->getSourcePath($path), $mtime);
 		} else {
-			$result = touch($this->getSourcePath($path));
+			$result = \touch($this->getSourcePath($path));
 		}
 		if ($result) {
-			clearstatcache(true, $this->getSourcePath($path));
+			\clearstatcache(true, $this->getSourcePath($path));
 		}
 
 		return $result;
 	}
 
 	public function file_get_contents($path) {
-		return file_get_contents($this->getSourcePath($path));
+		return \file_get_contents($this->getSourcePath($path));
 	}
 
 	public function file_put_contents($path, $data) {
-		return file_put_contents($this->getSourcePath($path), $data);
+		return \file_put_contents($this->getSourcePath($path), $data);
 	}
 
 	public function unlink($path) {
 		if ($this->is_dir($path)) {
 			return $this->rmdir($path);
-		} else if ($this->is_file($path)) {
-			return unlink($this->getSourcePath($path));
+		} elseif ($this->is_file($path)) {
+			return \unlink($this->getSourcePath($path));
 		} else {
 			return false;
 		}
-
 	}
 
 	public function rename($path1, $path2) {
-		$srcParent = dirname($path1);
-		$dstParent = dirname($path2);
+		$srcParent = \dirname($path1);
+		$dstParent = \dirname($path2);
 
 		if (!$this->isUpdatable($srcParent)) {
 			\OCP\Util::writeLog('core', 'unable to rename, source directory is not writable : ' . $srcParent, \OCP\Util::ERROR);
@@ -264,14 +262,14 @@ class Local extends \OC\Files\Storage\Common {
 
 		if ($this->is_dir($path2)) {
 			$this->rmdir($path2);
-		} else if ($this->is_file($path2)) {
+		} elseif ($this->is_file($path2)) {
 			$this->unlink($path2);
 		}
 
 		if ($this->is_dir($path1)) {
 			// we can't move folders across devices, use copy instead
-			$stat1 = stat(dirname($this->getSourcePath($path1)));
-			$stat2 = stat(dirname($this->getSourcePath($path2)));
+			$stat1 = \stat(\dirname($this->getSourcePath($path1)));
+			$stat2 = \stat(\dirname($this->getSourcePath($path2)));
 			if ($stat1['dev'] !== $stat2['dev']) {
 				$result = $this->copy($path1, $path2);
 				if ($result) {
@@ -281,23 +279,23 @@ class Local extends \OC\Files\Storage\Common {
 			}
 		}
 
-		return rename($this->getSourcePath($path1), $this->getSourcePath($path2));
+		return \rename($this->getSourcePath($path1), $this->getSourcePath($path2));
 	}
 
 	public function copy($path1, $path2) {
 		if ($this->is_dir($path1)) {
 			return parent::copy($path1, $path2);
 		} else {
-			return copy($this->getSourcePath($path1), $this->getSourcePath($path2));
+			return \copy($this->getSourcePath($path1), $this->getSourcePath($path2));
 		}
 	}
 
 	public function fopen($path, $mode) {
-		return fopen($this->getSourcePath($path), $mode);
+		return \fopen($this->getSourcePath($path), $mode);
 	}
 
 	public function hash($type, $path, $raw = false) {
-		return hash_file($type, $this->getSourcePath($path), $raw);
+		return \hash_file($type, $this->getSourcePath($path), $raw);
 	}
 
 	public function free_space($path) {
@@ -305,12 +303,12 @@ class Local extends \OC\Files\Storage\Common {
 		// using !is_dir because $sourcePath might be a part file or
 		// non-existing file, so we'd still want to use the parent dir
 		// in such cases
-		if (!is_dir($sourcePath)) {
+		if (!\is_dir($sourcePath)) {
 			// disk_free_space doesn't work on files
-			$sourcePath = dirname($sourcePath);
+			$sourcePath = \dirname($sourcePath);
 		}
-		$space = @disk_free_space($sourcePath);
-		if ($space === false || is_null($space)) {
+		$space = @\disk_free_space($sourcePath);
+		if ($space === false || $space === null) {
 			return \OCP\Files\FileInfo::SPACE_UNKNOWN;
 		}
 		return $space;
@@ -337,16 +335,17 @@ class Local extends \OC\Files\Storage\Common {
 	protected function searchInDir($query, $dir = '') {
 		$files = [];
 		$physicalDir = $this->getSourcePath($dir);
-		foreach (scandir($physicalDir) as $item) {
-			if (\OC\Files\Filesystem::isIgnoredDir($item))
+		foreach (\scandir($physicalDir) as $item) {
+			if (\OC\Files\Filesystem::isIgnoredDir($item)) {
 				continue;
+			}
 			$physicalItem = $physicalDir . '/' . $item;
 
-			if (strstr(strtolower($item), strtolower($query)) !== false) {
+			if (\strstr(\strtolower($item), \strtolower($query)) !== false) {
 				$files[] = $dir . '/' . $item;
 			}
-			if (is_dir($physicalItem)) {
-				$files = array_merge($files, $this->searchInDir($query, $dir . '/' . $item));
+			if (\is_dir($physicalItem)) {
+				$files = \array_merge($files, $this->searchInDir($query, $dir . '/' . $item));
 			}
 		}
 		return $files;
@@ -380,21 +379,21 @@ class Local extends \OC\Files\Storage\Common {
 			return $fullPath;
 		}
 		$pathToResolve = $fullPath;
-		$realPath = realpath($pathToResolve);
+		$realPath = \realpath($pathToResolve);
 		while ($realPath === false) { // for non existing files check the parent directory
-			$pathToResolve = dirname($pathToResolve);
-			$realPath = realpath($pathToResolve);
+			$pathToResolve = \dirname($pathToResolve);
+			$realPath = \realpath($pathToResolve);
 		}
 		if ($realPath) {
 			$realPath .= '/';
 		}
 
 		// Is broken symlink?
-		if (is_link($fullPath) && !file_exists($fullPath)) {
+		if (\is_link($fullPath) && !\file_exists($fullPath)) {
 			throw new ForbiddenException("$fullPath is a broken/dead symlink", false);
 		}
 
-		if (substr($realPath, 0, $this->dataDirLength) === $this->realDataDir) {
+		if (\substr($realPath, 0, $this->dataDirLength) === $this->realDataDir) {
 			return $fullPath;
 		} else {
 			throw new ForbiddenException("Following symlinks is not allowed ('$fullPath' -> '$realPath' not inside '{$this->realDataDir}')", false);
@@ -417,7 +416,7 @@ class Local extends \OC\Files\Storage\Common {
 	public function getETag($path) {
 		if ($this->is_file($path)) {
 			$stat = $this->stat($path);
-			return md5(
+			return \md5(
 				$stat['mtime'] .
 				$stat['ino'] .
 				$stat['dev'] .

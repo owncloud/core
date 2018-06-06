@@ -44,14 +44,14 @@ namespace OC {
 		public function search($pattern, $searchProperties = [], $options = [], $limit = 100, $offset = 0) {
 			$this->loadAddressBooks();
 			$result = [];
-			foreach($this->addressBooks as $addressBook) {
+			foreach ($this->addressBooks as $addressBook) {
 				$r = $addressBook->search($pattern, $searchProperties, $options, $limit, $offset);
 				$contacts = [];
-				foreach($r as $c){
+				foreach ($r as $c) {
 					$c['addressbook-key'] = $addressBook->getKey();
 					$contacts[] = $c;
 				}
-				$result = array_merge($result, $contacts);
+				$result = \array_merge($result, $contacts);
 			}
 
 			return $result;
@@ -127,7 +127,7 @@ namespace OC {
 		public function getAddressBooks() {
 			$this->loadAddressBooks();
 			$result = [];
-			foreach($this->addressBooks as $addressBook) {
+			foreach ($this->addressBooks as $addressBook) {
 				$result[$addressBook->getKey()] = $addressBook->getDisplayName();
 			}
 
@@ -158,8 +158,7 @@ namespace OC {
 		 *
 		 * @param \Closure $callable
 		 */
-		public function register(\Closure $callable)
-		{
+		public function register(\Closure $callable) {
 			$this->addressBookLoaders[] = $callable;
 		}
 
@@ -169,10 +168,9 @@ namespace OC {
 		 * @param string $addressBookKey
 		 * @return \OCP\IAddressBook
 		 */
-		protected function getAddressBook($addressBookKey)
-		{
+		protected function getAddressBook($addressBookKey) {
 			$this->loadAddressBooks();
-			if (!array_key_exists($addressBookKey, $this->addressBooks)) {
+			if (!\array_key_exists($addressBookKey, $this->addressBooks)) {
 				return null;
 			}
 
@@ -182,9 +180,8 @@ namespace OC {
 		/**
 		 * Load all address books registered with 'register'
 		 */
-		protected function loadAddressBooks()
-		{
-			foreach($this->addressBookLoaders as $callable) {
+		protected function loadAddressBooks() {
+			foreach ($this->addressBookLoaders as $callable) {
 				$callable($this);
 			}
 			$this->addressBookLoaders = [];

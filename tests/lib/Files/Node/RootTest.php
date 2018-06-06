@@ -132,7 +132,7 @@ class RootTest extends TestCase {
 		$this->assertEquals('/' . $user2 . '/files', $folder->getPath());
 
 		// case difference must not matter here
-		$folder = $root->getUserFolder(strtoupper($user2));
+		$folder = $root->getUserFolder(\strtoupper($user2));
 		$this->assertEquals('/' . $user2 . '/files', $folder->getPath());
 
 		$root->getUserFolder($this->getUniqueID('unexist'));

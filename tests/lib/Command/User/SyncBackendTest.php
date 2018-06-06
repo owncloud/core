@@ -77,7 +77,6 @@ class SyncBackendTest extends TestCase {
 			$this->userManager,
 			$this->logger
 		);
-
 	}
 
 	public function testListBackends() {
@@ -93,7 +92,7 @@ class SyncBackendTest extends TestCase {
 		$outputInterface
 			->expects($this->at(0))
 			->method('writeln')
-			->with(get_class($this->dummyBackend));
+			->with(\get_class($this->dummyBackend));
 
 		$this->assertEquals(0, static::invokePrivate($this->command, 'execute', [$inputInterface, $outputInterface]));
 	}
@@ -157,7 +156,7 @@ class SyncBackendTest extends TestCase {
 			->with('list')
 			->will($this->returnValue(null));
 
-		$backendClassName = get_class($this->dummyBackend);
+		$backendClassName = \get_class($this->dummyBackend);
 		$inputInterface
 			->expects($this->at(1))
 			->method('getArgument')
@@ -187,7 +186,7 @@ class SyncBackendTest extends TestCase {
 			->with('list')
 			->will($this->returnValue(null));
 
-		$backendClassName = get_class($this->dummyBackend);
+		$backendClassName = \get_class($this->dummyBackend);
 
 		$inputInterface
 			->expects($this->at(1))
@@ -219,7 +218,6 @@ class SyncBackendTest extends TestCase {
 		$this->assertEquals(1, static::invokePrivate($this->command, 'execute', [$inputInterface, $outputInterface]));
 	}
 
-
 	public function executeProvider() {
 		return [
 			['foo', 'Syncing foo ...'],
@@ -234,7 +232,7 @@ class SyncBackendTest extends TestCase {
 		$inputInterface = $this->createMock(InputInterface::class);
 		$outputInterface = $this->createPartialMock(NullOutput::class, ['writeln']);
 
-		$backendClassName = get_class($this->dummyBackend);
+		$backendClassName = \get_class($this->dummyBackend);
 
 		$inputInterface
 			->expects($this->at(1))
@@ -310,8 +308,8 @@ class SyncBackendTest extends TestCase {
 		$syncService->expects($this
 			->once())->method('run')->with(
 			$this->dummyBackend,
-			$this->callback(function($subject){
-				return count($subject) === 1 && $subject[0] === 'existing-uid';
+			$this->callback(function ($subject) {
+				return \count($subject) === 1 && $subject[0] === 'existing-uid';
 			}),
 			$this->anything()
 		);
@@ -397,13 +395,13 @@ class SyncBackendTest extends TestCase {
 		$syncService->expects($this
 			->once())->method('run')->with(
 			$this->dummyBackend,
-			$this->callback(function(\Iterator $iterator) use ($uids) {
+			$this->callback(function (\Iterator $iterator) use ($uids) {
 				// convert to array so we can test better
 				$items = [];
 				foreach ($iterator as $item) {
 					$items[] = $item;
 				}
-				return count(array_diff($items, $uids)) === 0;
+				return \count(\array_diff($items, $uids)) === 0;
 			}),
 			$this->anything()
 		);
@@ -437,13 +435,13 @@ class SyncBackendTest extends TestCase {
 		$syncService->expects($this
 			->once())->method('run')->with(
 			$this->dummyBackend,
-			$this->callback(function(\Iterator $iterator) use ($uids) {
+			$this->callback(function (\Iterator $iterator) use ($uids) {
 				// convert to array so we can test better
 				$items = [];
 				foreach ($iterator as $item) {
 					$items[] = $item;
 				}
-				return count(array_diff($items, $uids)) === 0;
+				return \count(\array_diff($items, $uids)) === 0;
 			}),
 			$this->anything()
 		);
@@ -481,6 +479,4 @@ class SyncBackendTest extends TestCase {
 		$this->userManager->expects($this->once())->method('get')->willReturn($user);
 		static::invokePrivate($this->command, 'reEnableUsers', [$reappearedUsers, $nullOutput]);
 	}
-
-
 }

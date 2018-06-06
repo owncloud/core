@@ -96,7 +96,7 @@ class FederationContext implements Context, SnippetAcceptingContext {
 		$this->featureContext->theHTTPStatusCodeShouldBe('200');
 		$this->featureContext->theOCSStatusCodeShouldBe('100');
 		/**
-		 * 
+		 *
 		 * @var ResponseInterface $response
 		 */
 		$response = $this->featureContext->getResponse();

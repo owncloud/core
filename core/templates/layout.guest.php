@@ -8,20 +8,22 @@
 		<meta http-equiv="X-UA-Compatible" content="IE=edge">
 		<meta name="referrer" content="never">
 		<meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0">
-		<?php if($theme->getiTunesAppId() !== '') { ?>
+		<?php if ($theme->getiTunesAppId() !== '') {
+	?>
 			<meta name="apple-itunes-app" content="app-id=<?php p($theme->getiTunesAppId()); ?>">
-		<?php } ?>
+		<?php
+} ?>
 		<meta name="theme-color" content="<?php p($theme->getMailHeaderColor()); ?>">
 		<link rel="icon" href="<?php print_unescaped(image_path('', 'favicon.ico')); /* IE11+ supports png */ ?>">
 		<link rel="apple-touch-icon-precomposed" href="<?php print_unescaped(image_path('', 'favicon-touch.png')); ?>">
 		<link rel="mask-icon" sizes="any" href="<?php print_unescaped(image_path('', 'favicon-mask.svg')); ?>" color="#1d2d44">
-		<?php foreach($_['cssfiles'] as $cssfile): ?>
+		<?php foreach ($_['cssfiles'] as $cssfile): ?>
 			<link rel="stylesheet" href="<?php print_unescaped($cssfile); ?>">
 		<?php endforeach; ?>
-		<?php foreach($_['printcssfiles'] as $cssfile): ?>
+		<?php foreach ($_['printcssfiles'] as $cssfile): ?>
 			<link rel="stylesheet" href="<?php print_unescaped($cssfile); ?>" media="print">
 		<?php endforeach; ?>
-		<?php foreach($_['jsfiles'] as $jsfile): ?>
+		<?php foreach ($_['jsfiles'] as $jsfile): ?>
 			<script src="<?php print_unescaped($jsfile); ?>"></script>
 		<?php endforeach; ?>
 		<?php print_unescaped($_['headers']); ?>
@@ -30,7 +32,7 @@
 		<?php include('layout.noscript.warning.php'); ?>
 		<div class="wrapper">
 			<div class="v-align">
-				<?php if ($_['bodyid'] === 'body-login' ): ?>
+				<?php if ($_['bodyid'] === 'body-login'): ?>
 					<header role="banner">
 						<div id="header">
 							<div class="logo">

@@ -51,7 +51,6 @@ class OC_Files {
 
 	const UPLOAD_MIN_LIMIT_BYTES = 1048576; // 1 MiB
 
-
 	private static $multipartBoundary = '';
 
 	/**
@@ -59,7 +58,7 @@ class OC_Files {
 	 */
 	private static function getBoundary() {
 		if (empty(self::$multipartBoundary)) {
-			self::$multipartBoundary = md5(mt_rand());
+			self::$multipartBoundary = \md5(\mt_rand());
 		}
 		return self::$multipartBoundary;
 	}
@@ -71,28 +70,26 @@ class OC_Files {
 	 */
 	private static function sendHeaders($filename, $name, array $rangeArray) {
 		OC_Response::setContentDispositionHeader($name, 'attachment');
-		header('Content-Transfer-Encoding: binary', true);
+		\header('Content-Transfer-Encoding: binary', true);
 		OC_Response::disableCaching();
 		$fileSize = \OC\Files\Filesystem::filesize($filename);
 		$type = \OC::$server->getMimeTypeDetector()->getSecureMimeType(\OC\Files\Filesystem::getMimeType($filename));
 		if ($fileSize > -1) {
 			if (!empty($rangeArray)) {
-			    header('HTTP/1.1 206 Partial Content', true);
-			    header('Accept-Ranges: bytes', true);
-			    if (count($rangeArray) > 1) {
-				$type = 'multipart/byteranges; boundary='.self::getBoundary();
+				\header('HTTP/1.1 206 Partial Content', true);
+				\header('Accept-Ranges: bytes', true);
+				if (\count($rangeArray) > 1) {
+					$type = 'multipart/byteranges; boundary='.self::getBoundary();
 				// no Content-Length header here
-			    }
-			    else {
-				header(sprintf('Content-Range: bytes %d-%d/%d', $rangeArray[0]['from'], $rangeArray[0]['to'], $fileSize), true);
-				OC_Response::setContentLengthHeader($rangeArray[0]['to'] - $rangeArray[0]['from'] + 1);
-			    }
-			}
-			else {
-			    OC_Response::setContentLengthHeader($fileSize);
+				} else {
+					\header(\sprintf('Content-Range: bytes %d-%d/%d', $rangeArray[0]['from'], $rangeArray[0]['to'], $fileSize), true);
+					OC_Response::setContentLengthHeader($rangeArray[0]['to'] - $rangeArray[0]['from'] + 1);
+				}
+			} else {
+				OC_Response::setContentLengthHeader($fileSize);
 			}
 		}
-		header('Content-Type: '.$type, true);
+		\header('Content-Type: '.$type, true);
 	}
 
 	/**
@@ -103,28 +100,26 @@ class OC_Files {
 	 * @param array $params ; 'head' boolean to only send header of the request ; 'range' http range header
 	 */
 	public static function get($dir, $files, $params = null) {
-
 		$view = \OC\Files\Filesystem::getView();
 		$getType = self::FILE;
 		$filename = $dir;
 		try {
-
-			if (is_array($files) && count($files) === 1) {
+			if (\is_array($files) && \count($files) === 1) {
 				$files = $files[0];
 			}
 
-			if (!is_array($files)) {
+			if (!\is_array($files)) {
 				$filename = $dir . '/' . $files;
 				if (!$view->is_dir($filename)) {
-					self::getSingleFile($view, $dir, $files, is_null($params) ? [] : $params);
+					self::getSingleFile($view, $dir, $files, $params === null ? [] : $params);
 					return;
 				}
 			}
 
 			$name = 'download';
-			if (is_array($files)) {
+			if (\is_array($files)) {
 				$getType = self::ZIP_FILES;
-				$basename = basename($dir);
+				$basename = \basename($dir);
 				if ($basename) {
 					$name = $basename;
 				}
@@ -152,17 +147,17 @@ class OC_Files {
 			self::lockFiles($view, $dir, $files);
 
 			$streamer->sendHeaders($name);
-			$executionTime = intval(OC::$server->getIniWrapper()->getNumeric('max_execution_time'));
-			set_time_limit(0);
-			ignore_user_abort(true);
+			$executionTime = \intval(OC::$server->getIniWrapper()->getNumeric('max_execution_time'));
+			\set_time_limit(0);
+			\ignore_user_abort(true);
 			if ($getType === self::ZIP_FILES) {
 				foreach ($files as $file) {
 					$file = $dir . '/' . $file;
 					if (\OC\Files\Filesystem::is_file($file)) {
 						$fileSize = \OC\Files\Filesystem::filesize($file);
 						$fh = \OC\Files\Filesystem::fopen($file, 'r');
-						$streamer->addFileFromStream($fh, basename($file), $fileSize);
-						fclose($fh);
+						$streamer->addFileFromStream($fh, \basename($file), $fileSize);
+						\fclose($fh);
 					} elseif (\OC\Files\Filesystem::is_dir($file)) {
 						$streamer->addDirRecursive($file);
 					}
@@ -172,16 +167,15 @@ class OC_Files {
 				$streamer->addDirRecursive($file);
 			}
 			$streamer->finalize();
-			set_time_limit($executionTime);
+			\set_time_limit($executionTime);
 			self::unlockAllTheFiles($dir, $files, $getType, $view, $filename);
 			$event = new \Symfony\Component\EventDispatcher\GenericEvent(null, ['result' => 'success', 'dir' => $dir, 'files' => $files]);
 			OC::$server->getEventDispatcher()->dispatch('file.afterCreateZip', $event);
-
 		} catch (\OCP\Lock\LockedException $ex) {
 			self::unlockAllTheFiles($dir, $files, $getType, $view, $filename);
 			OC::$server->getLogger()->logException($ex);
 			$l = \OC::$server->getL10N('core');
-			$hint = method_exists($ex, 'getHint') ? $ex->getHint() : '';
+			$hint = \method_exists($ex, 'getHint') ? $ex->getHint() : '';
 			\OC_Template::printErrorPage($l->t('File is currently busy, please try again later'), $hint);
 		} catch (\OCP\Files\ForbiddenException $ex) {
 			self::unlockAllTheFiles($dir, $files, $getType, $view, $filename);
@@ -192,7 +186,7 @@ class OC_Files {
 			self::unlockAllTheFiles($dir, $files, $getType, $view, $filename);
 			OC::$server->getLogger()->logException($ex);
 			$l = \OC::$server->getL10N('core');
-			$hint = method_exists($ex, 'getHint') ? $ex->getHint() : '';
+			$hint = \method_exists($ex, 'getHint') ? $ex->getHint() : '';
 			if ($event->hasArgument('message')) {
 				$hint .= ' ' . $event->getArgument('message');
 			}
@@ -206,15 +200,15 @@ class OC_Files {
 	 * @return array $rangeArray ('from'=>int,'to'=>int), ...
 	 */
 	private static function parseHttpRangeHeader($rangeHeaderPos, $fileSize) {
-		$rArray=explode(',', $rangeHeaderPos);
+		$rArray=\explode(',', $rangeHeaderPos);
 		$minOffset = 0;
 		$ind = 0;
 
 		$rangeArray = [];
 
 		foreach ($rArray as $value) {
-			$ranges = explode('-', $value);
-			if (is_numeric($ranges[0])) {
+			$ranges = \explode('-', $value);
+			if (\is_numeric($ranges[0])) {
 				if ($ranges[0] < $minOffset) { // case: bytes=500-700,601-999
 					$ranges[0] = $minOffset;
 				}
@@ -224,7 +218,7 @@ class OC_Files {
 				}
 			}
 
-			if (is_numeric($ranges[0]) && is_numeric($ranges[1]) && $ranges[0] < $fileSize && $ranges[0] <= $ranges[1]) {
+			if (\is_numeric($ranges[0]) && \is_numeric($ranges[1]) && $ranges[0] < $fileSize && $ranges[0] <= $ranges[1]) {
 				// case: x-x
 				if ($ranges[1] >= $fileSize) {
 					$ranges[1] = $fileSize-1;
@@ -234,13 +228,11 @@ class OC_Files {
 				if ($minOffset >= $fileSize) {
 					break;
 				}
-			}
-			elseif (is_numeric($ranges[0]) && $ranges[0] < $fileSize) {
+			} elseif (\is_numeric($ranges[0]) && $ranges[0] < $fileSize) {
 				// case: x-
 				$rangeArray[$ind++] = ['from' => $ranges[0], 'to' => $fileSize-1, 'size' => $fileSize];
 				break;
-			}
-			elseif (is_numeric($ranges[1])) {
+			} elseif (\is_numeric($ranges[1])) {
 				// case: -x
 				if ($ranges[1] > $fileSize) {
 					$ranges[1] = $fileSize;
@@ -265,20 +257,20 @@ class OC_Files {
 		
 		$rangeArray = [];
 
-		if (isset($params['range']) && substr($params['range'], 0, 6) === 'bytes=') {
-			$rangeArray = self::parseHttpRangeHeader(substr($params['range'], 6), 
+		if (isset($params['range']) && \substr($params['range'], 0, 6) === 'bytes=') {
+			$rangeArray = self::parseHttpRangeHeader(\substr($params['range'], 6),
 								 \OC\Files\Filesystem::filesize($filename));
 		}
 		
 		if (\OC\Files\Filesystem::isReadable($filename)) {
 			self::sendHeaders($filename, $name, $rangeArray);
 		} elseif (!\OC\Files\Filesystem::file_exists($filename)) {
-			header("HTTP/1.1 404 Not Found");
+			\header("HTTP/1.1 404 Not Found");
 			$tmpl = new OC_Template('', '404', 'guest');
 			$tmpl->printPage();
 			exit();
 		} else {
-			header("HTTP/1.1 403 Forbidden");
+			\header("HTTP/1.1 403 Forbidden");
 			die('403 Forbidden');
 		}
 		if (isset($params['head']) && $params['head']) {
@@ -286,35 +278,33 @@ class OC_Files {
 		}
 		if (!empty($rangeArray)) {
 			try {
-			    if (count($rangeArray) == 1) {
-				$view->readfilePart($filename, $rangeArray[0]['from'], $rangeArray[0]['to']);
-			    }
-			    else {
-				// check if file is seekable (if not throw UnseekableException)
-				// we have to check it before body contents
-				$view->readfilePart($filename, $rangeArray[0]['size'], $rangeArray[0]['size']);
+				if (\count($rangeArray) == 1) {
+					$view->readfilePart($filename, $rangeArray[0]['from'], $rangeArray[0]['to']);
+				} else {
+					// check if file is seekable (if not throw UnseekableException)
+					// we have to check it before body contents
+					$view->readfilePart($filename, $rangeArray[0]['size'], $rangeArray[0]['size']);
 
-				$type = \OC::$server->getMimeTypeDetector()->getSecureMimeType(\OC\Files\Filesystem::getMimeType($filename));
+					$type = \OC::$server->getMimeTypeDetector()->getSecureMimeType(\OC\Files\Filesystem::getMimeType($filename));
 
-				foreach ($rangeArray as $range) {
-				    echo "\r\n--".self::getBoundary()."\r\n".
-				         "Content-type: ".$type."\r\n".
-				         "Content-range: bytes ".$range['from']."-".$range['to']."/".$range['size']."\r\n\r\n";
-				    $view->readfilePart($filename, $range['from'], $range['to']);
+					foreach ($rangeArray as $range) {
+						echo "\r\n--".self::getBoundary()."\r\n".
+						 "Content-type: ".$type."\r\n".
+						 "Content-range: bytes ".$range['from']."-".$range['to']."/".$range['size']."\r\n\r\n";
+						$view->readfilePart($filename, $range['from'], $range['to']);
+					}
+					echo "\r\n--".self::getBoundary()."--\r\n";
 				}
-				echo "\r\n--".self::getBoundary()."--\r\n";
-			    }
 			} catch (\OCP\Files\UnseekableException $ex) {
-			    // file is unseekable
-			    header_remove('Accept-Ranges');
-			    header_remove('Content-Range');
-			    header("HTTP/1.1 200 OK");
-			    self::sendHeaders($filename, $name, []);
-			    $view->readfile($filename);
+				// file is unseekable
+				\header_remove('Accept-Ranges');
+				\header_remove('Content-Range');
+				\header("HTTP/1.1 200 OK");
+				self::sendHeaders($filename, $name, []);
+				$view->readfile($filename);
 			}
-		}
-		else {
-		    $view->readfile($filename);
+		} else {
+			$view->readfile($filename);
 		}
 	}
 
@@ -324,7 +314,7 @@ class OC_Files {
 	 * @param string[]|string $files
 	 */
 	public static function lockFiles($view, $dir, $files) {
-		if (!is_array($files)) {
+		if (!\is_array($files)) {
 			$file = $dir . '/' . $files;
 			$files = [$file];
 		}
@@ -333,7 +323,7 @@ class OC_Files {
 			$view->lockFile($file, ILockingProvider::LOCK_SHARED);
 			if ($view->is_dir($file)) {
 				$contents = $view->getDirectoryContent($file);
-				$contents = array_map(function($fileInfo) use ($file) {
+				$contents = \array_map(function ($fileInfo) use ($file) {
 					/** @var \OCP\Files\FileInfo $fileInfo */
 					return $file . '/' . $fileInfo->getName();
 				}, $contents);
@@ -364,5 +354,4 @@ class OC_Files {
 			$view->unlockFile($file, ILockingProvider::LOCK_SHARED);
 		}
 	}
-
 }

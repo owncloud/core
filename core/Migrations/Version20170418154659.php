@@ -27,7 +27,6 @@ use OCP\Migration\ISchemaMigration;
  * Remove unique constraint on account table email column
  */
 class Version20170418154659 implements ISchemaMigration {
-
 	public function changeSchema(Schema $schema, array $options) {
 		$prefix = $options['tablePrefix'];
 		$table = $schema->getTable("{$prefix}accounts");

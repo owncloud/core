@@ -28,7 +28,6 @@ require __DIR__ . '/../../../../lib/composer/autoload.php';
  * Authentication functions
  */
 trait Auth {
-
 	private $clientToken;
 	private $appToken;
 	private $tokenAuthHasBeenSet = false;
@@ -181,7 +180,7 @@ trait Auth {
 		$this->sendRequest(
 			$url,
 			$method,
-			'basic ' . base64_encode($user . ':' . $this->clientToken)
+			'basic ' . \base64_encode($user . ':' . $this->clientToken)
 		);
 	}
 
@@ -306,5 +305,4 @@ trait Auth {
 			$this->tokenAuthHasBeenSet = false;
 		}
 	}
-
 }

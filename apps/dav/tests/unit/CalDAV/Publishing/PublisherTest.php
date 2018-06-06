@@ -25,7 +25,6 @@ use Sabre\Xml\Writer;
 use PHPUnit\Framework\TestCase;
 
 class PublisherTest extends TestCase {
-
 	const NS_CALENDARSERVER = 'http://calendarserver.org/ns/';
 
 	public function testSerializePublished() {
@@ -57,7 +56,6 @@ class PublisherTest extends TestCase {
 			'<?xml version="1.0"?>
 			<x1:pre-publish-url xmlns:d="DAV:" xmlns:x1="' . self::NS_CALENDARSERVER . '">urltopublish</x1:pre-publish-url>', $xml);
 	}
-
 
 	protected $elementMap = [];
 	protected $namespaceMap = ['DAV:' => 'd'];

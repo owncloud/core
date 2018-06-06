@@ -32,7 +32,7 @@ use OCP\Share\IManager;
  * Class PublicAuthTest
  *
  * @group DB
- * 
+ *
  * @package OCA\DAV\Tests\unit\Connector
  */
 class PublicAuthTest extends \Test\TestCase {
@@ -112,7 +112,6 @@ class PublicAuthTest extends \Test\TestCase {
 
 		$this->assertFalse($result);
 	}
-
 
 	public function testSharePasswordRemote() {
 		$share = $this->createMock('OCP\Share\IShare');

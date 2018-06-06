@@ -37,7 +37,6 @@ use OCP\AppFramework\Http\DataResponse;
 use OCP\AppFramework\Http\Response;
 use OCP\IRequest;
 
-
 /**
  * Base class to inherit your controllers from
  * @since 6.0.0
@@ -71,7 +70,7 @@ abstract class Controller {
 	 * @since 6.0.0 - parameter $appName was added in 7.0.0 - parameter $app was removed in 7.0.0
 	 */
 	public function __construct($appName,
-	                            IRequest $request) {
+								IRequest $request) {
 		$this->appName = $appName;
 		$this->request = $request;
 
@@ -89,7 +88,7 @@ abstract class Controller {
 					if (isset($dataHeaders['Content-Type'])) {
 						unset($headers['Content-Type']);
 					}
-					$response->setHeaders(array_merge($dataHeaders, $headers));
+					$response->setHeaders(\array_merge($dataHeaders, $headers));
 					return $response;
 				} else {
 					return new JSONResponse($data);
@@ -98,7 +97,6 @@ abstract class Controller {
 		];
 	}
 
-
 	/**
 	 * Parses an HTTP accept header and returns the supported responder type
 	 * @param string $acceptHeader
@@ -106,15 +104,15 @@ abstract class Controller {
 	 * @since 7.0.0
 	 */
 	public function getResponderByHTTPHeader($acceptHeader) {
-		$headers = explode(',', $acceptHeader);
+		$headers = \explode(',', $acceptHeader);
 
 		// return the first matching responder
 		foreach ($headers as $header) {
-			$header = strtolower(trim($header));
+			$header = \strtolower(\trim($header));
 
-			$responder = str_replace('application/', '', $header);
+			$responder = \str_replace('application/', '', $header);
 
-			if (array_key_exists($responder, $this->responders)) {
+			if (\array_key_exists($responder, $this->responders)) {
 				return $responder;
 			}
 		}
@@ -122,7 +120,6 @@ abstract class Controller {
 		// no matching header defaults to json
 		return 'json';
 	}
-
 
 	/**
 	 * Registers a formatter for a type
@@ -134,7 +131,6 @@ abstract class Controller {
 		$this->responders[$format] = $responder;
 	}
 
-
 	/**
 	 * Serializes and formats a response
 	 * @param mixed $response the value that was returned from a controller and
@@ -145,18 +141,15 @@ abstract class Controller {
 	 * @since 7.0.0
 	 */
 	public function buildResponse($response, $format='json') {
-		if(array_key_exists($format, $this->responders)) {
-
+		if (\array_key_exists($format, $this->responders)) {
 			$responder = $this->responders[$format];
 
 			return $responder($response);
-
 		} else {
 			throw new \DomainException('No responder registered for format ' .
 				$format . '!');
 		}
 	}
-
 
 	/**
 	 * Lets you access post and get parameters by the index
@@ -171,10 +164,9 @@ abstract class Controller {
 	 * @return mixed the content of the array
 	 * @since 6.0.0
 	 */
-	public function params($key, $default=null){
+	public function params($key, $default=null) {
 		return $this->request->getParam($key, $default);
 	}
-
 
 	/**
 	 * Returns all params that were received, be it from the request
@@ -187,7 +179,6 @@ abstract class Controller {
 		return $this->request->getParams();
 	}
 
-
 	/**
 	 * Returns the method of the request
 	 * @deprecated 7.0.0 use $this->request instead
@@ -197,7 +188,6 @@ abstract class Controller {
 	public function method() {
 		return $this->request->getMethod();
 	}
-
 
 	/**
 	 * Shortcut for accessing an uploaded file through the $_FILES array
@@ -210,7 +200,6 @@ abstract class Controller {
 		return $this->request->getUploadedFile($key);
 	}
 
-
 	/**
 	 * Shortcut for getting env variables
 	 * @deprecated 7.0.0 use $this->request instead
@@ -222,7 +211,6 @@ abstract class Controller {
 		return $this->request->getEnv($key);
 	}
 
-
 	/**
 	 * Shortcut for getting cookie variables
 	 * @deprecated 7.0.0 use $this->request instead
@@ -233,7 +221,6 @@ abstract class Controller {
 	public function cookie($key) {
 		return $this->request->getCookie($key);
 	}
-
 
 	/**
 	 * Shortcut for rendering a template
@@ -247,17 +234,15 @@ abstract class Controller {
 	 * @since 6.0.0
 	 */
 	public function render($templateName, array $params= [],
-							$renderAs='user', array $headers= []){
+							$renderAs='user', array $headers= []) {
 		$response = new TemplateResponse($this->appName, $templateName);
 		$response->setParams($params);
 		$response->renderAs($renderAs);
 
-		foreach($headers as $name => $value){
+		foreach ($headers as $name => $value) {
 			$response->addHeader($name, $value);
 		}
 
 		return $response;
 	}
-
-
 }

@@ -9,7 +9,6 @@
  * @copyright Bernhard Posselt 2014
  */
 
-
 namespace Test\AppFramework\Middleware\Security;
 
 use OC\AppFramework\Http\Request;
@@ -22,12 +21,10 @@ use OCP\IConfig;
 use OCP\IUser;
 use OCP\IUserSession;
 
-
 /**
  * Class CORSMiddlewareTest
  */
 class CORSMiddlewareTest extends \Test\TestCase {
-
 	private $reflector;
 	private $session;
 
@@ -79,7 +76,6 @@ class CORSMiddlewareTest extends \Test\TestCase {
 		$this->assertEquals('http://www.test.com', $headers['Access-Control-Allow-Origin']);
 	}
 
-
 	public function testNoAnnotationNoCORSHEADER() {
 		$request = new Request(
 			[
@@ -102,7 +98,6 @@ class CORSMiddlewareTest extends \Test\TestCase {
 		$this->assertArrayNotHasKey('Access-Control-Allow-Origin', $headers);
 	}
 
-
 	/**
 	 * @CORS
 	 */
@@ -124,7 +119,6 @@ class CORSMiddlewareTest extends \Test\TestCase {
 		$headers = $response->getHeaders();
 		$this->assertArrayNotHasKey('Access-Control-Allow-Origin', $headers);
 	}
-
 
 	/**
 	 * @CORS
@@ -216,5 +210,4 @@ class CORSMiddlewareTest extends \Test\TestCase {
 		);
 		$middleware->afterException($this, __FUNCTION__, new \Exception('A regular exception'));
 	}
-
 }

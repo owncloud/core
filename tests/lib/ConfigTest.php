@@ -33,12 +33,12 @@ class ConfigTest extends TestCase {
 
 		$this->randomTmpDir = \OC::$server->getTempManager()->getTemporaryFolder();
 		$this->configFile = $this->randomTmpDir.'testconfig.php';
-		file_put_contents($this->configFile, self::TESTCONTENT);
+		\file_put_contents($this->configFile, self::TESTCONTENT);
 		$this->config = new \OC\Config($this->randomTmpDir, 'testconfig.php');
 	}
 
 	protected function tearDown() {
-		unlink($this->configFile);
+		\unlink($this->configFile);
 		parent::tearDown();
 	}
 
@@ -58,7 +58,7 @@ class ConfigTest extends TestCase {
 
 	public function testGetValueReturnsEnvironmentValueIfSet() {
 		$this->assertEquals('bar', $this->config->getValue('foo'));
-		putenv('OC_foo=baz');
+		\putenv('OC_foo=baz');
 		$this->assertEquals('baz', $this->config->getValue('foo'));
 	}
 
@@ -225,7 +225,7 @@ class ConfigTest extends TestCase {
 		// Create additional config
 		$additionalConfig = '<?php $CONFIG=array("php53"=>"totallyOutdated");';
 		$additionalConfigPath = $this->randomTmpDir.'additionalConfig.testconfig.php';
-		file_put_contents($additionalConfigPath, $additionalConfig);
+		\file_put_contents($additionalConfigPath, $additionalConfig);
 
 		// Reinstantiate the config to force a read-in of the additional configs
 		$this->config = new \OC\Config($this->randomTmpDir, 'testconfig.php');
@@ -242,7 +242,6 @@ class ConfigTest extends TestCase {
 		$this->assertStringEqualsFile($this->configFile, $expected);
 
 		// Cleanup
-		unlink($additionalConfigPath);
+		\unlink($additionalConfigPath);
 	}
-
 }

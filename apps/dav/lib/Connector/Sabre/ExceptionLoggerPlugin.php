@@ -79,7 +79,6 @@ class ExceptionLoggerPlugin extends \Sabre\DAV\ServerPlugin {
 	 * @return void
 	 */
 	public function initialize(\Sabre\DAV\Server $server) {
-
 		$server->on('exception', [$this, 'logException'], 10);
 	}
 
@@ -93,7 +92,7 @@ class ExceptionLoggerPlugin extends \Sabre\DAV\ServerPlugin {
 			//app or so.
 			return null;
 		}
-		$exceptionClass = get_class($ex);
+		$exceptionClass = \get_class($ex);
 		$level = \OCP\Util::FATAL;
 		if (isset($this->nonFatalExceptions[$exceptionClass])) {
 			$level = \OCP\Util::DEBUG;
@@ -101,7 +100,7 @@ class ExceptionLoggerPlugin extends \Sabre\DAV\ServerPlugin {
 
 		$previous = $ex->getPrevious();
 		if ($previous !== null) {
-			$previousExceptionClass = get_class($previous);
+			$previousExceptionClass = \get_class($previous);
 			if (isset($this->nonFatalExceptions[$previousExceptionClass])) {
 				$level = \OCP\Util::DEBUG;
 			}
@@ -127,6 +126,6 @@ class ExceptionLoggerPlugin extends \Sabre\DAV\ServerPlugin {
 			'Line' => $ex->getLine(),
 			'User' => $user,
 		];
-		$this->logger->log($level, 'Exception: ' . json_encode($exception), ['app' => $this->appName]);
+		$this->logger->log($level, 'Exception: ' . \json_encode($exception), ['app' => $this->appName]);
 	}
 }

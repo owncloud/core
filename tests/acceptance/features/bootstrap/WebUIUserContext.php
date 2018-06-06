@@ -33,7 +33,7 @@ require_once 'bootstrap.php';
 class WebUIUserContext extends RawMinkContext implements Context {
 	
 	/**
-	 * 
+	 *
 	 * @var OwncloudPage
 	 */
 	private $owncloudPage;
@@ -49,7 +49,7 @@ class WebUIUserContext extends RawMinkContext implements Context {
 	
 	/**
 	 * @Then :displayname should be shown as the name of the current user on the WebUI
-	 * 
+	 *
 	 * @param string $displayname
 	 * @return void
 	 */
@@ -63,9 +63,9 @@ class WebUIUserContext extends RawMinkContext implements Context {
 	
 	/**
 	 * @Then /^the display name should (not|)\s?be visible on the WebUI$/
-	 * 
+	 *
 	 * @param string $shouldOrNot
-	 * 
+	 *
 	 * @return void
 	 */
 	public function displayNameOfTheCurrentUserShouldBeVisibleOnTheWebUI(
@@ -87,9 +87,9 @@ class WebUIUserContext extends RawMinkContext implements Context {
 
 	/**
 	 * @Then /^(no|an) avatar should be shown for the current user on the WebUI$/
-	 * 
+	 *
 	 * @param string $shouldOrNot
-	 * 
+	 *
 	 * @return void
 	 */
 	public function avatarShouldBeShownOnTheWebUI($shouldOrNot) {

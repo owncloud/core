@@ -21,7 +21,6 @@
 
 namespace Tests\Core\Command\Maintenance;
 
-
 use OC\Core\Command\Maintenance\SingleUser;
 use Test\TestCase;
 
@@ -50,7 +49,6 @@ class SingleUserTest extends TestCase {
 	}
 
 	public function testChangeStateToOn() {
-
 		$this->consoleInput->expects($this->once())
 			->method('getOption')
 			->with('on')
@@ -68,7 +66,6 @@ class SingleUserTest extends TestCase {
 	}
 
 	public function testChangeStateToOff() {
-
 		$this->consoleInput->expects($this->at(0))
 			->method('getOption')
 			->with('on')
@@ -104,7 +101,6 @@ class SingleUserTest extends TestCase {
 	 * @param $expectedOutput
 	 */
 	public function testState($state, $expectedOutput) {
-
 		$this->consoleInput->expects($this->at(0))
 			->method('getOption')
 			->with('on')

@@ -46,7 +46,6 @@ use Test\Traits\UserTrait;
  * Base class for sharing tests.
  */
 abstract class TestCase extends \Test\TestCase {
-
 	use UserTrait;
 
 	const TEST_FILES_SHARING_API_USER1 = "test-share-user1";
@@ -129,7 +128,9 @@ abstract class TestCase extends \Test\TestCase {
 	public static function tearDownAfterClass() {
 		// delete group
 		$group = \OC::$server->getGroupManager()->get(self::TEST_FILES_SHARING_API_GROUP1);
-		if ($group !== null) { $group->delete(); }
+		if ($group !== null) {
+			$group->delete();
+		}
 
 		\OC_Util::tearDownFS();
 		\OC_User::setUserId('');
@@ -148,7 +149,6 @@ abstract class TestCase extends \Test\TestCase {
 	 * @param bool $password
 	 */
 	protected static function loginHelper($user, $create = false, $password = false) {
-
 		if ($password === false) {
 			$password = $user;
 		}
@@ -210,14 +210,13 @@ abstract class TestCase extends \Test\TestCase {
 		$query = \OCP\DB::prepare($sql);
 		$result = $query->execute($args);
 
-		$share = Null;
+		$share = null;
 
 		if ($result) {
 			$share = $result->fetchRow();
 		}
 
 		return $share;
-
 	}
 
 	/**
@@ -229,7 +228,7 @@ abstract class TestCase extends \Test\TestCase {
 	 * @return \OCP\Share\IShare
 	 */
 	protected function share($type, $path, $initiator, $recipient, $permissions) {
-		if (is_string($path)) {
+		if (\is_string($path)) {
 			$userFolder = $this->rootFolder->getUserFolder($initiator);
 			$node = $userFolder->get($path);
 		} else {

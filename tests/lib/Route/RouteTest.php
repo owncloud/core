@@ -19,14 +19,12 @@
  *
  */
 
-
 namespace Test\Route;
 
 use OC\Route\Route;
 use Test\TestCase;
 
 class RouteTest extends TestCase {
-
 	const code = <<<EOL
 <?php
 namespace Test\Route;
@@ -37,19 +35,19 @@ EOL;
 	public function testActionInclude() {
 
 		// create temp file with code to be required in the include action
-		$temp_file = tempnam(sys_get_temp_dir(), 'code');
-		file_put_contents($temp_file, self::code);
+		$temp_file = \tempnam(\sys_get_temp_dir(), 'code');
+		\file_put_contents($temp_file, self::code);
 
 		$route = new Route('/');
 		$route->actionInclude($temp_file);
 
 		// class does not yet exist
-		$this->assertFalse(class_exists('Test\Route\DummyClass'));
+		$this->assertFalse(\class_exists('Test\Route\DummyClass'));
 
 		$f = $route->getDefault('action');
 		$f([]);
 
 		// no class shall exist
-		$this->assertTrue(class_exists('Test\Route\DummyClass'));
+		$this->assertTrue(\class_exists('Test\Route\DummyClass'));
 	}
 }

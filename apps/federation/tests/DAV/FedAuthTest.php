@@ -19,7 +19,6 @@
  *
  */
 
-
 namespace OCA\Federation\Tests\DAV;
 
 use OCA\Federation\DAV\FedAuth;

@@ -31,7 +31,6 @@ use Symfony\Component\Console\Output\OutputInterface;
  * Delete all file entries that have no matching entries in the storage table.
  */
 class DeleteOrphanedFiles extends Command {
-
 	const CHUNK_SIZE = 200;
 
 	/**
@@ -78,5 +77,4 @@ class DeleteOrphanedFiles extends Command {
 
 		$output->writeln("$deletedEntries orphaned file cache entries deleted");
 	}
-
 }

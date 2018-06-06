@@ -78,7 +78,7 @@ class RepairCollationTest extends TestCase {
 
 	public function testCollationConvert() {
 		$tables = $this->repair->getAllNonUTF8BinTables($this->connection);
-		$this->assertGreaterThanOrEqual(1, count($tables));
+		$this->assertGreaterThanOrEqual(1, \count($tables));
 
 		/** @var IOutput | \PHPUnit_Framework_MockObject_MockObject $outputMock */
 		$outputMock = $this->getMockBuilder('\OCP\Migration\IOutput')

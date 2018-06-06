@@ -50,7 +50,7 @@ class CacheJail extends CacheWrapper {
 		if ($path === '') {
 			return $this->root;
 		} else {
-			return $this->root . '/' . ltrim($path, '/');
+			return $this->root . '/' . \ltrim($path, '/');
 		}
 	}
 
@@ -62,11 +62,11 @@ class CacheJail extends CacheWrapper {
 		if ($this->root === '') {
 			return $path;
 		}
-		$rootLength = strlen($this->root) + 1;
+		$rootLength = \strlen($this->root) + 1;
 		if ($path === $this->root) {
 			return '';
-		} else if (substr($path, 0, $rootLength) === $this->root . '/') {
-			return substr($path, $rootLength);
+		} elseif (\substr($path, 0, $rootLength) === $this->root . '/') {
+			return \substr($path, $rootLength);
 		} else {
 			return null;
 		}
@@ -84,8 +84,8 @@ class CacheJail extends CacheWrapper {
 	}
 
 	protected function filterCacheEntry($entry) {
-		$rootLength = strlen($this->root) + 1;
-		return ($entry['path'] === $this->root) or (substr($entry['path'], 0, $rootLength) === $this->root . '/');
+		$rootLength = \strlen($this->root) + 1;
+		return ($entry['path'] === $this->root) or (\substr($entry['path'], 0, $rootLength) === $this->root . '/');
 	}
 
 	/**
@@ -95,7 +95,7 @@ class CacheJail extends CacheWrapper {
 	 * @return array|false
 	 */
 	public function get($file) {
-		if (is_string($file) or $file == '') {
+		if (\is_string($file) or $file == '') {
 			$file = $this->getSourcePath($file);
 		}
 		return parent::get($file);
@@ -194,9 +194,9 @@ class CacheJail extends CacheWrapper {
 	}
 
 	private function formatSearchResults($results) {
-		$results = array_filter($results, [$this, 'filterCacheEntry']);
-		$results = array_values($results);
-		return array_map([$this, 'formatCacheEntry'], $results);
+		$results = \array_filter($results, [$this, 'filterCacheEntry']);
+		$results = \array_values($results);
+		return \array_map([$this, 'formatCacheEntry'], $results);
 	}
 
 	/**
@@ -258,7 +258,6 @@ class CacheJail extends CacheWrapper {
 		} else {
 			return 0;
 		}
-
 	}
 
 	/**

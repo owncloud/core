@@ -121,5 +121,4 @@ class CacheTest extends TestCase {
 			$results[0]['displayname_owner']
 		);
 	}
-
 }

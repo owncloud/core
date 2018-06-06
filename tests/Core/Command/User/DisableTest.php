@@ -32,35 +32,34 @@ use Test\Traits\UserTrait;
  * @group DB
  */
 class DisableTest extends TestCase {
-    use UserTrait;
+	use UserTrait;
 
-    /** @var CommandTester */
-    private $commandTester;
+	/** @var CommandTester */
+	private $commandTester;
 
-    protected function setUp() {
-        parent::setUp();
+	protected function setUp() {
+		parent::setUp();
 
-        $command = new Disable(\OC::$server->getUserManager());
-        $this->commandTester = new CommandTester($command);
-        $this->createUser('user1');
-    }
+		$command = new Disable(\OC::$server->getUserManager());
+		$this->commandTester = new CommandTester($command);
+		$this->createUser('user1');
+	}
 
-    /**
-     * @dataProvider inputProvider
-     * @param array $input
-     * @param string $expectedOutput
-     */
-    public function testCommandInput($input, $expectedOutput) {
-        $this->commandTester->execute($input);
-        $output = $this->commandTester->getDisplay();
-        $this->assertContains($expectedOutput, $output);
-    }
+	/**
+	 * @dataProvider inputProvider
+	 * @param array $input
+	 * @param string $expectedOutput
+	 */
+	public function testCommandInput($input, $expectedOutput) {
+		$this->commandTester->execute($input);
+		$output = $this->commandTester->getDisplay();
+		$this->assertContains($expectedOutput, $output);
+	}
 
-    public function inputProvider() {
-        return [
-            [['uid' => 'user2'], 'User does not exist'],
-            [['uid' => 'user1'], 'The specified user is disabled'],
-        ];
-    }
-
+	public function inputProvider() {
+		return [
+			[['uid' => 'user2'], 'User does not exist'],
+			[['uid' => 'user1'], 'The specified user is disabled'],
+		];
+	}
 }

@@ -20,7 +20,6 @@
  *
  */
 
-
 namespace OCP\Security;
 
 /**
@@ -42,6 +41,6 @@ class StringUtils {
 	 * @deprecated 9.0.0 Use hash_equals
 	 */
 	public static function equals($expected, $input) {
-		return hash_equals($expected, $input);
+		return \hash_equals($expected, $input);
 	}
 }

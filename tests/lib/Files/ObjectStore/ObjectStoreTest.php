@@ -100,7 +100,6 @@ class ObjectStoreTest extends TestCase {
 	public function testGetMime($expectedMime, $path) {
 		$this->assertTrue($this->objectStore->touch($path));
 		$this->assertEquals($expectedMime, $this->objectStore->getMimeType($path));
-
 	}
 
 	public function providersPathAndMime() {

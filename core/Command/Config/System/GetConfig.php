@@ -69,14 +69,14 @@ class GetConfig extends Base {
 	 */
 	protected function execute(InputInterface $input, OutputInterface $output) {
 		$configNames = $input->getArgument('name');
-		$configName = array_shift($configNames);
+		$configName = \array_shift($configNames);
 		$defaultValue = $input->getOption('default-value');
 
-		if (!in_array($configName, $this->systemConfig->getKeys()) && !$input->hasParameterOption('--default-value')) {
+		if (!\in_array($configName, $this->systemConfig->getKeys()) && !$input->hasParameterOption('--default-value')) {
 			return 1;
 		}
 
-		if (!in_array($configName, $this->systemConfig->getKeys())) {
+		if (!\in_array($configName, $this->systemConfig->getKeys())) {
 			$configValue = $defaultValue;
 		} else {
 			$configValue = $this->systemConfig->getValue($configName);
@@ -84,7 +84,7 @@ class GetConfig extends Base {
 				foreach ($configNames as $configName) {
 					if (isset($configValue[$configName])) {
 						$configValue = $configValue[$configName];
-					} else if (!$input->hasParameterOption('--default-value')) {
+					} elseif (!$input->hasParameterOption('--default-value')) {
 						return 1;
 					} else {
 						$configValue = $defaultValue;

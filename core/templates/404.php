@@ -3,10 +3,10 @@
 /** @var $l \OCP\IL10N */
 /** @var $theme OC_Theme */
 // @codeCoverageIgnoreStart
-if(!isset($_)) {//also provide standalone error page
+if (!isset($_)) {//also provide standalone error page
 	require_once '../../lib/base.php';
 	
-	$tmpl = new OC_Template( '', '404', 'guest' );
+	$tmpl = new OC_Template('', '404', 'guest');
 	$tmpl->printPage();
 	exit;
 }

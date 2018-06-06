@@ -24,9 +24,9 @@
 
 namespace OC\Tagging;
 
-use \OCP\AppFramework\Db\Mapper,
-    \OCP\AppFramework\Db\DoesNotExistException,
-    \OCP\IDBConnection;
+use \OCP\AppFramework\Db\Mapper;
+use \OCP\AppFramework\Db\DoesNotExistException;
+use \OCP\IDBConnection;
 
 /**
  * Mapper for Tag entity
@@ -50,13 +50,13 @@ class TagMapper extends Mapper {
 	* @return array An array of Tag objects.
 	*/
 	public function loadTags($owners, $type) {
-		if(!is_array($owners)) {
+		if (!\is_array($owners)) {
 			$owners = [$owners];
 		}
 
 		$sql = 'SELECT `id`, `uid`, `type`, `category` FROM `' . $this->getTableName() . '` '
-			. 'WHERE `uid` IN (' . str_repeat('?,', count($owners)-1) . '?) AND `type` = ? ORDER BY `category`';
-		return $this->findEntities($sql, array_merge($owners, [$type]));
+			. 'WHERE `uid` IN (' . \str_repeat('?,', \count($owners)-1) . '?) AND `type` = ? ORDER BY `category`';
+		return $this->findEntities($sql, \array_merge($owners, [$type]));
 	}
 
 	/**
@@ -76,4 +76,3 @@ class TagMapper extends Mapper {
 		return true;
 	}
 }
-

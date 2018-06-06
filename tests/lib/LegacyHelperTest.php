@@ -15,14 +15,12 @@ class LegacyHelperTest extends \Test\TestCase {
 	/**
 	 * @dataProvider humanFileSizeProvider
 	 */
-	public function testHumanFileSize($expected, $input)
-	{
+	public function testHumanFileSize($expected, $input) {
 		$result = OC_Helper::humanFileSize($input);
 		$this->assertEquals($expected, $result);
 	}
 
-	public function humanFileSizeProvider()
-	{
+	public function humanFileSizeProvider() {
 		return [
 			['0 B', 0],
 			['1 KB', 1024],
@@ -37,14 +35,12 @@ class LegacyHelperTest extends \Test\TestCase {
 	/**
 	 * @dataProvider phpFileSizeProvider
 	 */
-	public function testPhpFileSize($expected, $input)
-	{
+	public function testPhpFileSize($expected, $input) {
 		$result = OC_Helper::phpFileSize($input);
 		$this->assertEquals($expected, $result);
 	}
 
-	public function phpFileSizeProvider()
-	{
+	public function phpFileSizeProvider() {
 		return [
 			['0B', 0],
 			['1K', 1024],
@@ -59,12 +55,12 @@ class LegacyHelperTest extends \Test\TestCase {
 	/**
 	 * @dataProvider providesComputerFileSize
 	 */
-	function testComputerFileSize($expected, $input) {
+	public function testComputerFileSize($expected, $input) {
 		$result = OC_Helper::computerFileSize($input);
 		$this->assertEquals($expected, $result);
 	}
 
-	function providesComputerFileSize(){
+	public function providesComputerFileSize() {
 		return [
 			[0.0, "0 B"],
 			[1024.0, "1 KB"],
@@ -75,20 +71,20 @@ class LegacyHelperTest extends \Test\TestCase {
 		];
 	}
 
-	function testIsSubDirectory() {
+	public function testIsSubDirectory() {
 		$result = OC_Helper::isSubDirectory("./data/", "/anotherDirectory/");
 		$this->assertFalse($result);
 
 		$result = OC_Helper::isSubDirectory("./data/", "./data/");
 		$this->assertTrue($result);
 
-		mkdir("data/TestSubdirectory", 0777);
+		\mkdir("data/TestSubdirectory", 0777);
 		$result = OC_Helper::isSubDirectory("data/TestSubdirectory/", "data");
-		rmdir("data/TestSubdirectory");
+		\rmdir("data/TestSubdirectory");
 		$this->assertTrue($result);
 	}
 
-	function testMb_array_change_key_case() {
+	public function testMb_array_change_key_case() {
 		$arrayStart = [
 			"Foo" => "bar",
 			"Bar" => "foo",
@@ -114,7 +110,7 @@ class LegacyHelperTest extends \Test\TestCase {
 		$this->assertEquals($result, $expected);
 	}
 
-	function testRecursiveArraySearch() {
+	public function testRecursiveArraySearch() {
 		$haystack = [
 			"Foo" => "own",
 			"Bar" => "Cloud",
@@ -128,7 +124,7 @@ class LegacyHelperTest extends \Test\TestCase {
 		$this->assertFalse($result);
 	}
 
-	function testBuildNotExistingFileNameForView() {
+	public function testBuildNotExistingFileNameForView() {
 		$viewMock = $this->createMock('\OC\Files\View', [], [], '', false);
 		$this->assertEquals('/filename', OC_Helper::buildNotExistingFileNameForView('/', 'filename', $viewMock));
 		$this->assertEquals('dir/filename.ext', OC_Helper::buildNotExistingFileNameForView('dir', 'filename.ext', $viewMock));
@@ -192,33 +188,31 @@ class LegacyHelperTest extends \Test\TestCase {
 	 * @dataProvider streamCopyDataProvider
 	 */
 	public function testStreamCopy($expectedCount, $expectedResult, $source, $target) {
-
-		if (is_string($source)) {
-			$source = fopen($source, 'r');
+		if (\is_string($source)) {
+			$source = \fopen($source, 'r');
 		}
-		if (is_string($target)) {
-			$target = fopen($target, 'w');
+		if (\is_string($target)) {
+			$target = \fopen($target, 'w');
 		}
 
 		list($count, $result) = \OC_Helper::streamCopy($source, $target);
 
-		if (is_resource($source)) {
-			fclose($source);
+		if (\is_resource($source)) {
+			\fclose($source);
 		}
-		if (is_resource($target)) {
-			fclose($target);
+		if (\is_resource($target)) {
+			\fclose($target);
 		}
 
 		$this->assertSame($expectedCount, $count);
 		$this->assertSame($expectedResult, $result);
 	}
 
-
-	function streamCopyDataProvider() {
+	public function streamCopyDataProvider() {
 		return [
 			[0, false, false, false],
 			[0, false, \OC::$SERVERROOT . '/tests/data/lorem.txt', false],
-			[filesize(\OC::$SERVERROOT . '/tests/data/lorem.txt'), true, \OC::$SERVERROOT . '/tests/data/lorem.txt', \OC::$SERVERROOT . '/tests/data/lorem-copy.txt'],
+			[\filesize(\OC::$SERVERROOT . '/tests/data/lorem.txt'), true, \OC::$SERVERROOT . '/tests/data/lorem.txt', \OC::$SERVERROOT . '/tests/data/lorem-copy.txt'],
 			[3670, true, \OC::$SERVERROOT . '/tests/data/testimage.png', \OC::$SERVERROOT . '/tests/data/testimage-copy.png'],
 		];
 	}
@@ -266,17 +260,17 @@ class LegacyHelperTest extends \Test\TestCase {
 	 */
 	public function testRecursiveFolderDeletion() {
 		$baseDir = \OC::$server->getTempManager()->getTemporaryFolder() . '/';
-		mkdir($baseDir . 'a/b/c/d/e', 0777, true);
-		mkdir($baseDir . 'a/b/c1/d/e', 0777, true);
-		mkdir($baseDir . 'a/b/c2/d/e', 0777, true);
-		mkdir($baseDir . 'a/b1/c1/d/e', 0777, true);
-		mkdir($baseDir . 'a/b2/c1/d/e', 0777, true);
-		mkdir($baseDir . 'a/b3/c1/d/e', 0777, true);
-		mkdir($baseDir . 'a1/b', 0777, true);
-		mkdir($baseDir . 'a1/c', 0777, true);
-		file_put_contents($baseDir . 'a/test.txt', 'Hello file!');
-		file_put_contents($baseDir . 'a/b1/c1/test one.txt', 'Hello file one!');
-		file_put_contents($baseDir . 'a1/b/test two.txt', 'Hello file two!');
+		\mkdir($baseDir . 'a/b/c/d/e', 0777, true);
+		\mkdir($baseDir . 'a/b/c1/d/e', 0777, true);
+		\mkdir($baseDir . 'a/b/c2/d/e', 0777, true);
+		\mkdir($baseDir . 'a/b1/c1/d/e', 0777, true);
+		\mkdir($baseDir . 'a/b2/c1/d/e', 0777, true);
+		\mkdir($baseDir . 'a/b3/c1/d/e', 0777, true);
+		\mkdir($baseDir . 'a1/b', 0777, true);
+		\mkdir($baseDir . 'a1/c', 0777, true);
+		\file_put_contents($baseDir . 'a/test.txt', 'Hello file!');
+		\file_put_contents($baseDir . 'a/b1/c1/test one.txt', 'Hello file one!');
+		\file_put_contents($baseDir . 'a1/b/test two.txt', 'Hello file two!');
 		\OC_Helper::rmdirr($baseDir . 'a');
 
 		$this->assertFileNotExists($baseDir . 'a');

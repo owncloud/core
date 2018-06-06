@@ -99,7 +99,6 @@ class SystemTagPlugin extends \Sabre\DAV\ServerPlugin {
 	 * @return void
 	 */
 	public function initialize(\Sabre\DAV\Server $server) {
-
 		$server->xml->namespaceMap[self::NS_OWNCLOUD] = 'oc';
 
 		$server->protectedProperties[] = self::ID_PROPERTYNAME;
@@ -136,7 +135,7 @@ class SystemTagPlugin extends \Sabre\DAV\ServerPlugin {
 				$url = $request->getUrl();
 			}
 
-			if ($url[strlen($url) - 1] !== '/') {
+			if ($url[\strlen($url) - 1] !== '/') {
 				$url .= '/';
 			}
 
@@ -160,8 +159,8 @@ class SystemTagPlugin extends \Sabre\DAV\ServerPlugin {
 	 * @throws UnsupportedMediaType if the content type is not supported
 	 */
 	private function createTag($data, $contentType = 'application/json') {
-		if (explode(';', $contentType)[0] === 'application/json') {
-			$data = json_decode($data, true);
+		if (\explode(';', $contentType)[0] === 'application/json') {
+			$data = \json_decode($data, true);
 		} else {
 			throw new UnsupportedMediaType();
 		}
@@ -185,13 +184,13 @@ class SystemTagPlugin extends \Sabre\DAV\ServerPlugin {
 		$groups = [];
 		if (isset($data['groups'])) {
 			$groups = $data['groups'];
-			if (is_string($groups)) {
-				$groups = explode('|', $groups);
+			if (\is_string($groups)) {
+				$groups = \explode('|', $groups);
 			}
 		}
 
-		if($userVisible === false || $userAssignable === false || !empty($groups)) {
-			if(!$this->userSession->isLoggedIn() || !$this->groupManager->isAdmin($this->userSession->getUser()->getUID())) {
+		if ($userVisible === false || $userAssignable === false || !empty($groups)) {
+			if (!$this->userSession->isLoggedIn() || !$this->groupManager->isAdmin($this->userSession->getUser()->getUID())) {
 				throw new BadRequest('Not sufficient permissions');
 			}
 		}
@@ -207,7 +206,6 @@ class SystemTagPlugin extends \Sabre\DAV\ServerPlugin {
 		}
 	}
 
-
 	/**
 	 * Retrieves system tag properties
 	 *
@@ -222,29 +220,29 @@ class SystemTagPlugin extends \Sabre\DAV\ServerPlugin {
 			return;
 		}
 
-		$propFind->handle(self::ID_PROPERTYNAME, function() use ($node) {
+		$propFind->handle(self::ID_PROPERTYNAME, function () use ($node) {
 			return $node->getSystemTag()->getId();
 		});
 
-		$propFind->handle(self::DISPLAYNAME_PROPERTYNAME, function() use ($node) {
+		$propFind->handle(self::DISPLAYNAME_PROPERTYNAME, function () use ($node) {
 			return $node->getSystemTag()->getName();
 		});
 
-		$propFind->handle(self::USERVISIBLE_PROPERTYNAME, function() use ($node) {
+		$propFind->handle(self::USERVISIBLE_PROPERTYNAME, function () use ($node) {
 			return $node->getSystemTag()->isUserVisible() ? 'true' : 'false';
 		});
 
-		$propFind->handle(self::USERASSIGNABLE_PROPERTYNAME, function() use ($node) {
+		$propFind->handle(self::USERASSIGNABLE_PROPERTYNAME, function () use ($node) {
 			// this is the tag's inherent property "is user assignable"
 			return $node->getSystemTag()->isUserAssignable() ? 'true' : 'false';
 		});
 
-		$propFind->handle(self::CANASSIGN_PROPERTYNAME, function() use ($node) {
+		$propFind->handle(self::CANASSIGN_PROPERTYNAME, function () use ($node) {
 			// this is the effective permission for the current user
 			return $this->tagManager->canUserAssignTag($node->getSystemTag(), $this->userSession->getUser()) ? 'true' : 'false';
 		});
 
-		$propFind->handle(self::GROUPS_PROPERTYNAME, function() use ($node) {
+		$propFind->handle(self::GROUPS_PROPERTYNAME, function () use ($node) {
 			if (!$this->groupManager->isAdmin($this->userSession->getUser()->getUID())) {
 				// property only available for admins
 				throw new Forbidden();
@@ -254,7 +252,7 @@ class SystemTagPlugin extends \Sabre\DAV\ServerPlugin {
 			if ($node->getSystemTag()->isUserVisible() && !$node->getSystemTag()->isUserAssignable()) {
 				$groups = $this->tagManager->getTagGroups($node->getSystemTag());
 			}
-			return implode('|', $groups);
+			return \implode('|', $groups);
 		});
 	}
 
@@ -277,7 +275,7 @@ class SystemTagPlugin extends \Sabre\DAV\ServerPlugin {
 			self::USERVISIBLE_PROPERTYNAME,
 			self::USERASSIGNABLE_PROPERTYNAME,
 			self::GROUPS_PROPERTYNAME,
-		], function($props) use ($node) {
+		], function ($props) use ($node) {
 			$tag = $node->getSystemTag();
 			$name = $tag->getName();
 			$userVisible = $tag->isUserVisible();
@@ -309,7 +307,7 @@ class SystemTagPlugin extends \Sabre\DAV\ServerPlugin {
 				}
 
 				$propValue = $props[self::GROUPS_PROPERTYNAME];
-				$groupIds = explode('|', $propValue);
+				$groupIds = \explode('|', $propValue);
 				$this->tagManager->setTagGroups($tag, $groupIds);
 			}
 
@@ -319,6 +317,5 @@ class SystemTagPlugin extends \Sabre\DAV\ServerPlugin {
 
 			return true;
 		});
-
 	}
 }

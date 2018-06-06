@@ -91,7 +91,7 @@ class UsersPage extends OwncloudPage {
 		$userTr = $this->findUserInTable($username);
 		$selectField = $userTr->find('xpath', $this->quotaSelectXpath);
 
-		if (is_null($selectField)) {
+		if ($selectField === null) {
 			throw new ElementNotFoundException(
 				__METHOD__ .
 				" xpath $this->quotaSelectXpath " .
@@ -102,7 +102,7 @@ class UsersPage extends OwncloudPage {
 		$xpathLocator = "//option[@value='" . $selectField->getValue() . "']";
 		$selectField = $selectField->find('xpath', $xpathLocator);
 
-		if (is_null($selectField)) {
+		if ($selectField === null) {
 			throw new ElementNotFoundException(
 				__METHOD__ .
 				" xpath $xpathLocator " .
@@ -121,7 +121,7 @@ class UsersPage extends OwncloudPage {
 	 */
 	public function openSettingsMenu() {
 		$settingsBtn = $this->find("xpath", $this->settingsBtnXpath);
-		if (is_null($settingsBtn)) {
+		if ($settingsBtn === null) {
 			throw new ElementNotFoundException(
 				__METHOD__ .
 				" xpath $this->settingsBtnXpath " .
@@ -142,7 +142,7 @@ class UsersPage extends OwncloudPage {
 	 */
 	public function setSetting($setting, $value = true) {
 		$settingContent = $this->findById($this->settingContentId);
-		if (is_null($settingContent)) {
+		if ($settingContent === null) {
 			throw new ElementNotFoundException(
 				__METHOD__ .
 				" id $this->settingContentId " .
@@ -156,7 +156,7 @@ class UsersPage extends OwncloudPage {
 			// Somehow on Edge this can throw NoSuchElement even though
 			// we just found the element.
 			// TODO: Edge - if it keeps happening then find out why.
-			error_log(
+			\error_log(
 				__METHOD__
 				. " NoSuchElement while doing settingContent->isVisible()"
 				. "\n-------------------------\n"
@@ -170,9 +170,9 @@ class UsersPage extends OwncloudPage {
 			$this->openSettingsMenu();
 		}
 
-		$xpathLocator = sprintf($this->settingByTextXpath, $setting);
+		$xpathLocator = \sprintf($this->settingByTextXpath, $setting);
 		$settingLabel = $this->find("xpath", $xpathLocator);
-		if (is_null($settingLabel)) {
+		if ($settingLabel === null) {
 			throw new ElementNotFoundException(
 				__METHOD__ .
 				" xpath $xpathLocator " .
@@ -182,7 +182,7 @@ class UsersPage extends OwncloudPage {
 		//the checkbox is not visible, but we need it to find the status
 		$checkBoxId = $settingLabel->getAttribute("for");
 		$checkBox = $this->findById($checkBoxId);
-		if (is_null($checkBox)) {
+		if ($checkBox === null) {
 			throw new ElementNotFoundException(
 				__METHOD__ .
 				" could not find checkbox with the id '" . $checkBoxId . "'"
@@ -211,12 +211,12 @@ class UsersPage extends OwncloudPage {
 	) {
 		$this->fillField($this->newUserUsernameFieldId, $username);
 		$this->fillField($this->newUserPasswordFieldId, $password);
-		$this->setSetting("Send email to new user", !is_null($email));
-		if (!is_null($email)) {
+		$this->setSetting("Send email to new user", $email !== null);
+		if ($email !== null) {
 			$this->fillField($this->newUserEmailFieldId, $email);
 		}
 		$createUserBtn = $this->find("xpath", $this->createUserBtnXpath);
-		if (is_null($createUserBtn)) {
+		if ($createUserBtn === null) {
 			throw new ElementNotFoundException(
 				__METHOD__ .
 				" xpath $this->createUserBtnXpath " .
@@ -226,7 +226,7 @@ class UsersPage extends OwncloudPage {
 		$newUserGroupsDropDown = $this->find(
 			"xpath", $this->newUserGroupsDropDownXpath
 		);
-		if (is_null($newUserGroupsDropDown)) {
+		if ($newUserGroupsDropDown === null) {
 			throw new ElementNotFoundException(
 				__METHOD__ .
 				" xpath $this->newUserGroupsDropDownXpath " .
@@ -235,7 +235,7 @@ class UsersPage extends OwncloudPage {
 		}
 		$newUserGroupsDropDown->click();
 		$groupDropDownList = $this->find("xpath", $this->newUserGroupsListXpath);
-		if (is_null($groupDropDownList)) {
+		if ($groupDropDownList === null) {
 			throw new ElementNotFoundException(
 				__METHOD__ .
 				" xpath $this->newUserGroupsListXpath " .
@@ -254,18 +254,18 @@ class UsersPage extends OwncloudPage {
 		}
 
 		//now select all groups that we need to have
-		if (is_array($groups)) {
+		if (\is_array($groups)) {
 			foreach ($groups as $group) {
 				$groupItem = $this->find(
-					"xpath", sprintf($this->newUserGroupXpath, $group)
+					"xpath", \sprintf($this->newUserGroupXpath, $group)
 				);
-				if (!is_null($groupItem)) {
+				if ($groupItem !== null) {
 					$groupItem->click();
 				} else {
 					$newUserAddGroupBtn = $this->find(
 						"xpath", $this->newUserAddGroupBtnXpath
 					);
-					if (is_null($newUserAddGroupBtn)) {
+					if ($newUserAddGroupBtn === null) {
 						throw new ElementNotFoundException(
 							__METHOD__ .
 							" xpath $this->newUserAddGroupBtnXpath " .
@@ -276,7 +276,7 @@ class UsersPage extends OwncloudPage {
 					$createUserInput = $this->find(
 						"xpath", $this->createGroupWithNewUserInputXpath
 					);
-					if (is_null($createUserInput)) {
+					if ($createUserInput === null) {
 						throw new ElementNotFoundException(
 							__METHOD__ .
 							" xpath $this->createGroupWithNewUserInputXpath " .
@@ -309,7 +309,7 @@ class UsersPage extends OwncloudPage {
 		$userTr = $this->findUserInTable($username);
 		$selectField = $userTr->find('xpath', $this->quotaSelectXpath);
 
-		if (is_null($selectField)) {
+		if ($selectField === null) {
 			throw new ElementNotFoundException(
 				__METHOD__ .
 				" xpath $this->quotaSelectXpath " .
@@ -318,13 +318,13 @@ class UsersPage extends OwncloudPage {
 		}
 
 		$selectOption = $selectField->find(
-			'xpath', sprintf($this->quotaOptionXpath, $quota)
+			'xpath', \sprintf($this->quotaOptionXpath, $quota)
 		);
-		if (is_null($selectOption)) {
-			$xpathLocator = sprintf($this->quotaOptionXpath, "Other");
+		if ($selectOption === null) {
+			$xpathLocator = \sprintf($this->quotaOptionXpath, "Other");
 			$selectOption = $selectField->find('xpath', $xpathLocator);
 
-			if (is_null($selectOption)) {
+			if ($selectOption === null) {
 				throw new ElementNotFoundException(
 					__METHOD__ .
 					" xpath $xpathLocator " .
@@ -335,7 +335,7 @@ class UsersPage extends OwncloudPage {
 			$selectOption->click();
 			$manualQuotaInputElement = $this->find('xpath', $this->manualQuotaInputXpath);
 
-			if (is_null($manualQuotaInputElement)) {
+			if ($manualQuotaInputElement === null) {
 				throw new ElementNotFoundException(
 					__METHOD__ .
 					" xpath $this->manualQuotaInputXpath " .
@@ -357,7 +357,7 @@ class UsersPage extends OwncloudPage {
 	 */
 	private function getGroupListElement() {
 		$groupListElement = $this->findById($this->groupListId);
-		if (is_null($groupListElement)) {
+		if ($groupListElement === null) {
 			throw new ElementNotFoundException(
 				__METHOD__ .
 				" id $this->groupListId " .
@@ -397,8 +397,8 @@ class UsersPage extends OwncloudPage {
 		$this->waitForAjaxCallsToStartAndFinish($session);
 	}
 
-	/** 
-	 * 
+	/**
+	 *
 	 * @param string $groupName
 	 * @param Session $session
 	 *
@@ -420,5 +420,4 @@ class UsersPage extends OwncloudPage {
 		$userTr = $this->findUserInTable($username);
 		$userTr->find("xpath", $this->disableUserCheckboxXpath)->click();
 	}
-	
 }

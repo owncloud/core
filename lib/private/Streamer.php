@@ -33,7 +33,7 @@ class Streamer {
 	// streamer instance
 	private $streamerInstance;
 	
-	public function __construct(){
+	public function __construct() {
 		/** @var \OCP\IRequest */
 		$request = \OC::$server->getRequest();
 		
@@ -46,9 +46,9 @@ class Streamer {
 	
 	/**
 	 * Send HTTP headers
-	 * @param string $name 
+	 * @param string $name
 	 */
-	public function sendHeaders($name){
+	public function sendHeaders($name) {
 		$extension = $this->streamerInstance instanceof ZipStreamer ? '.zip' : '.tar';
 		$fullName = $name . $extension;
 		$this->streamerInstance->sendHeaders($fullName);
@@ -60,25 +60,25 @@ class Streamer {
 	 * @param string $internalDir
 	 */
 	public function addDirRecursive($dir, $internalDir='') {
-		$dirname = basename($dir);
+		$dirname = \basename($dir);
 		$rootDir = $internalDir . $dirname;
 		if (!empty($rootDir)) {
 			$this->streamerInstance->addEmptyDir($rootDir);
 		}
 		$internalDir .= $dirname . '/';
 		// prevent absolute dirs
-		$internalDir = ltrim($internalDir, '/');
+		$internalDir = \ltrim($internalDir, '/');
 
 		$files= \OC\Files\Filesystem::getDirectoryContent($dir);
-		foreach($files as $file) {
+		foreach ($files as $file) {
 			$filename = $file['name'];
 			$file = $dir . '/' . $filename;
-			if(\OC\Files\Filesystem::is_file($file)) {
+			if (\OC\Files\Filesystem::is_file($file)) {
 				$filesize = \OC\Files\Filesystem::filesize($file);
 				$fh = \OC\Files\Filesystem::fopen($file, 'r');
 				$this->addFileFromStream($fh, $internalDir . $filename, $filesize);
-				fclose($fh);
-			}elseif(\OC\Files\Filesystem::is_dir($file)) {
+				\fclose($fh);
+			} elseif (\OC\Files\Filesystem::is_dir($file)) {
 				$this->addDirRecursive($file, $internalDir);
 			}
 		}
@@ -92,7 +92,7 @@ class Streamer {
 	 * @param int $size Filesize
 	 * @return bool $success
 	 */
-	public function addFileFromStream($stream, $internalName, $size){
+	public function addFileFromStream($stream, $internalName, $size) {
 		if ($this->streamerInstance instanceof ZipStreamer) {
 			return $this->streamerInstance->addFileFromStream($stream, $internalName);
 		} else {
@@ -106,7 +106,7 @@ class Streamer {
 	 * @param string $dirName Directory Path and name to be added to the archive.
 	 * @return bool $success
 	 */
-	public function addEmptyDir($dirName){
+	public function addEmptyDir($dirName) {
 		return $this->streamerInstance->addEmptyDir($dirName);
 	}
 
@@ -116,7 +116,7 @@ class Streamer {
 	 * closing, the file is completely written to the output stream.
 	 * @return bool $success
 	 */
-	public function finalize(){
+	public function finalize() {
 		return $this->streamerInstance->finalize();
 	}
 }

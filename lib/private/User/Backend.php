@@ -67,8 +67,8 @@ abstract class Backend implements UserInterface {
 	*/
 	public function getSupportedActions() {
 		$actions = 0;
-		foreach($this->possibleActions AS $action => $methodName) {
-			if(method_exists($this, $methodName)) {
+		foreach ($this->possibleActions as $action => $methodName) {
+			if (\method_exists($this, $methodName)) {
 				$actions |= $action;
 			}
 		}
@@ -95,7 +95,7 @@ abstract class Backend implements UserInterface {
 	 *
 	 * Deletes a user
 	 */
-	public function deleteUser( $uid ) {
+	public function deleteUser($uid) {
 		return false;
 	}
 
@@ -149,7 +149,7 @@ abstract class Backend implements UserInterface {
 	public function getDisplayNames($search = '', $limit = null, $offset = null) {
 		$displayNames = [];
 		$users = $this->getUsers($search, $limit, $offset);
-		foreach ( $users as $user) {
+		foreach ($users as $user) {
 			$displayNames[$user] = $user;
 		}
 		return $displayNames;

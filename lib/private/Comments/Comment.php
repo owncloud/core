@@ -27,7 +27,6 @@ use OCP\Comments\IllegalIDChangeException;
 use OCP\Comments\MessageTooLongException;
 
 class Comment implements IComment {
-
 	protected $data = [
 		'id'              => '',
 		'parentId'        => '0',
@@ -50,7 +49,7 @@ class Comment implements IComment {
 	 * 					the comments database scheme
 	 */
 	public function __construct(array $data = null) {
-		if(is_array($data)) {
+		if (\is_array($data)) {
 			$this->fromArray($data);
 		}
 	}
@@ -83,12 +82,12 @@ class Comment implements IComment {
 	 * @since 9.0.0
 	 */
 	public function setId($id) {
-		if(!is_string($id)) {
+		if (!\is_string($id)) {
 			throw new \InvalidArgumentException('String expected.');
 		}
 
-		$id = trim($id);
-		if($this->data['id'] === '' || ($this->data['id'] !== '' && $id === '')) {
+		$id = \trim($id);
+		if ($this->data['id'] === '' || ($this->data['id'] !== '' && $id === '')) {
 			$this->data['id'] = $id;
 			return $this;
 		}
@@ -114,10 +113,10 @@ class Comment implements IComment {
 	 * @since 9.0.0
 	 */
 	public function setParentId($parentId) {
-		if(!is_string($parentId)) {
+		if (!\is_string($parentId)) {
 			throw new \InvalidArgumentException('String expected.');
 		}
-		$this->data['parentId'] = trim($parentId);
+		$this->data['parentId'] = \trim($parentId);
 		return $this;
 	}
 
@@ -131,7 +130,6 @@ class Comment implements IComment {
 		return $this->data['topmostParentId'];
 	}
 
-
 	/**
 	 * sets the topmost parent ID and returns itself
 	 *
@@ -140,10 +138,10 @@ class Comment implements IComment {
 	 * @since 9.0.0
 	 */
 	public function setTopmostParentId($id) {
-		if(!is_string($id)) {
+		if (!\is_string($id)) {
 			throw new \InvalidArgumentException('String expected.');
 		}
-		$this->data['topmostParentId'] = trim($id);
+		$this->data['topmostParentId'] = \trim($id);
 		return $this;
 	}
 
@@ -165,7 +163,7 @@ class Comment implements IComment {
 	 * @since 9.0.0
 	 */
 	public function setChildrenCount($count) {
-		if(!is_int($count)) {
+		if (!\is_int($count)) {
 			throw new \InvalidArgumentException('Integer expected.');
 		}
 		$this->data['childrenCount'] = $count;
@@ -191,11 +189,11 @@ class Comment implements IComment {
 	 * @since 9.0.0
 	 */
 	public function setMessage($message) {
-		if(!is_string($message)) {
+		if (!\is_string($message)) {
 			throw new \InvalidArgumentException('String expected.');
 		}
-		$message = trim($message);
-		if(mb_strlen($message, 'UTF-8') > IComment::MAX_MESSAGE_LENGTH) {
+		$message = \trim($message);
+		if (\mb_strlen($message, 'UTF-8') > IComment::MAX_MESSAGE_LENGTH) {
 			throw new MessageTooLongException('Comment message must not exceed ' . IComment::MAX_MESSAGE_LENGTH . ' characters');
 		}
 		$this->data['message'] = $message;
@@ -220,10 +218,10 @@ class Comment implements IComment {
 	 * @since 9.0.0
 	 */
 	public function setVerb($verb) {
-		if(!is_string($verb) || !trim($verb)) {
+		if (!\is_string($verb) || !\trim($verb)) {
 			throw new \InvalidArgumentException('Non-empty String expected.');
 		}
-		$this->data['verb'] = trim($verb);
+		$this->data['verb'] = \trim($verb);
 		return $this;
 	}
 
@@ -256,14 +254,14 @@ class Comment implements IComment {
 	 * @since 9.0.0
 	 */
 	public function setActor($actorType, $actorId) {
-		if(
-		       !is_string($actorType) || !trim($actorType)
-		    || !is_string($actorId)   || !trim($actorId)
+		if (
+			   !\is_string($actorType) || !\trim($actorType)
+			|| !\is_string($actorId)   || !\trim($actorId)
 		) {
 			throw new \InvalidArgumentException('String expected.');
 		}
-		$this->data['actorType'] = trim($actorType);
-		$this->data['actorId']   = trim($actorId);
+		$this->data['actorType'] = \trim($actorType);
+		$this->data['actorId']   = \trim($actorId);
 		return $this;
 	}
 
@@ -342,14 +340,14 @@ class Comment implements IComment {
 	 * @since 9.0.0
 	 */
 	public function setObject($objectType, $objectId) {
-		if(
-		       !is_string($objectType) || !trim($objectType)
-		    || !is_string($objectId)   || !trim($objectId)
+		if (
+			   !\is_string($objectType) || !\trim($objectType)
+			|| !\is_string($objectId)   || !\trim($objectId)
 		) {
 			throw new \InvalidArgumentException('String expected.');
 		}
-		$this->data['objectType'] = trim($objectType);
-		$this->data['objectId']   = trim($objectId);
+		$this->data['objectType'] = \trim($objectType);
+		$this->data['objectId']   = \trim($objectId);
 		return $this;
 	}
 
@@ -361,19 +359,19 @@ class Comment implements IComment {
 	 * @return IComment
 	 */
 	protected function fromArray($data) {
-		foreach(array_keys($data) as $key) {
+		foreach (\array_keys($data) as $key) {
 			// translate DB keys to internal setter names
-			$setter = 'set' . implode('', array_map('ucfirst', explode('_', $key)));
-			$setter = str_replace('Timestamp', 'DateTime', $setter);
+			$setter = 'set' . \implode('', \array_map('ucfirst', \explode('_', $key)));
+			$setter = \str_replace('Timestamp', 'DateTime', $setter);
 
-			if(method_exists($this, $setter)) {
+			if (\method_exists($this, $setter)) {
 				$this->$setter($data[$key]);
 			}
 		}
 
-		foreach(['actor', 'object'] as $role) {
-			if(isset($data[$role . '_type']) && isset($data[$role . '_id'])) {
-				$setter = 'set' . ucfirst($role);
+		foreach (['actor', 'object'] as $role) {
+			if (isset($data[$role . '_type'], $data[$role.'_id'])) {
+				$setter = 'set' . \ucfirst($role);
 				$this->$setter($data[$role . '_type'], $data[$role . '_id']);
 			}
 		}
