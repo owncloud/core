@@ -350,6 +350,11 @@ class Manager extends PublicEmitter implements IUserManager {
 				throw new \Exception($l->t('The username must be at least 3 characters long'));
 			}
 
+			// Username can only be a maximum of 64 characters long
+			if (\strlen($uid) > 64) {
+				throw new \Exception($l->t('The username can not be longer than 64 characters'));
+			}
+
 			// No empty password
 			if (\trim($password) == '') {
 				throw new \Exception($l->t('A valid password must be provided'));

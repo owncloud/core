@@ -297,6 +297,13 @@ class ManagerTest extends TestCase {
 		$user4->delete();
 	}
 
+	public function testUsernameMaxLength() {
+		$this->expectException(\Exception::class);
+		$this->expectExceptionMessage('The username can not be longer than 64 characters');
+		$this->manager = \OC::$server->getUserManager();
+		$user = $this->manager->createUser('testuser123456789012345678901234567890123456789012345678901234567890', 'testuser1');
+	}
+
 	public function testNullUidMakesNoQueryToAccountsTable() {
 		// migration from versions below 10.0. accounts table hasn't been created yet.
 		$this->accountMapper->expects($this->never())->method('getByUid');
