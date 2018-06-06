@@ -21,7 +21,6 @@
 
 namespace Test\Repair;
 
-
 use OC\Repair\RepairUnmergedShares;
 use OC\Share\Constants;
 use OC\Share20\DefaultShareProvider;
@@ -74,7 +73,7 @@ class RepairUnmergedSharesTest extends TestCase {
 		$this->groupManager = $this->createMock(IGroupManager::class);
 
 		// used to generate incremental stimes
-		$this->lastShareTime = time();
+		$this->lastShareTime = \time();
 
 		/** @var \OCP\IConfig $config */
 		$this->repair = new RepairUnmergedShares($config, $this->connection, $this->userManager, $this->groupManager);
@@ -562,7 +561,7 @@ class RepairUnmergedSharesTest extends TestCase {
 			->will($this->returnValue([2]));
 		$this->userManager->expects($this->once())
 			->method('callForAllUsers')
-			->will($this->returnCallback(function(\Closure $closure) use ($users) {
+			->will($this->returnCallback(function (\Closure $closure) use ($users) {
 				foreach ($users as $user) {
 					$closure($user);
 				}
@@ -620,4 +619,3 @@ class RepairUnmergedSharesTest extends TestCase {
 		$this->assertEquals($expectedResult, $this->invokePrivate($this->repair, 'isPotentialDuplicateName', [$name]));
 	}
 }
-

@@ -20,9 +20,7 @@
  *
  */
 
-
 namespace OCP\AppFramework\Utility;
-
 
 /**
  * Needed to mock calls to time()
@@ -35,5 +33,4 @@ interface ITimeFactory {
 	 * @since 8.0.0
 	 */
 	public function getTime();
-
 }

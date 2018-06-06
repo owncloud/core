@@ -67,7 +67,6 @@ class CertificateManager implements ICertificateManager {
 	 * @return \OCP\ICertificate[]
 	 */
 	public function listCertificates() {
-
 		if (!$this->config->getSystemValue('installed', false)) {
 			return [];
 		}
@@ -78,10 +77,10 @@ class CertificateManager implements ICertificateManager {
 		}
 		$result = [];
 		$handle = $this->view->opendir($path);
-		if (!is_resource($handle)) {
+		if (!\is_resource($handle)) {
 			return [];
 		}
-		while (false !== ($file = readdir($handle))) {
+		while (($file = \readdir($handle)) !== false) {
 			if ($file != '.' && $file != '..') {
 				try {
 					$result[] = new Certificate($this->view->file_get_contents($path . $file), $file);
@@ -89,7 +88,7 @@ class CertificateManager implements ICertificateManager {
 				}
 			}
 		}
-		closedir($handle);
+		\closedir($handle);
 		return $result;
 	}
 
@@ -110,24 +109,24 @@ class CertificateManager implements ICertificateManager {
 		foreach ($certs as $cert) {
 			$file = $path . '/uploads/' . $cert->getName();
 			$data = $this->view->file_get_contents($file);
-			if (strpos($data, 'BEGIN CERTIFICATE')) {
-				fwrite($fhCerts, $data);
-				fwrite($fhCerts, "\r\n");
+			if (\strpos($data, 'BEGIN CERTIFICATE')) {
+				\fwrite($fhCerts, $data);
+				\fwrite($fhCerts, "\r\n");
 			}
 		}
 
 		// Append the default certificates
-		$defaultCertificates = file_get_contents(\OC::$SERVERROOT . '/resources/config/ca-bundle.crt');
-		fwrite($fhCerts, $defaultCertificates);
+		$defaultCertificates = \file_get_contents(\OC::$SERVERROOT . '/resources/config/ca-bundle.crt');
+		\fwrite($fhCerts, $defaultCertificates);
 
 		// Append the system certificate bundle
 		$systemBundle = $this->getCertificateBundle(null);
 		if ($this->view->file_exists($systemBundle)) {
 			$systemCertificates = $this->view->file_get_contents($systemBundle);
-			fwrite($fhCerts, $systemCertificates);
+			\fwrite($fhCerts, $systemCertificates);
 		}
 
-		fclose($fhCerts);
+		\fclose($fhCerts);
 	}
 
 	/**
@@ -157,7 +156,6 @@ class CertificateManager implements ICertificateManager {
 		} catch (\Exception $e) {
 			throw $e;
 		}
-
 	}
 
 	/**
@@ -202,7 +200,7 @@ class CertificateManager implements ICertificateManager {
 			$uid = $this->uid;
 		}
 		if ($this->needsRebundling($uid)) {
-			if (is_null($uid)) {
+			if ($uid === null) {
 				$manager = new CertificateManager(null, $this->view, $this->config);
 				$manager->createCertificateBundle();
 			} else {
@@ -220,7 +218,7 @@ class CertificateManager implements ICertificateManager {
 		if ($uid === '') {
 			$uid = $this->uid;
 		}
-		$path = is_null($uid) ? '/files_external/' : '/' . $uid . '/files_external/';
+		$path = $uid === null ? '/files_external/' : '/' . $uid . '/files_external/';
 
 		return $path;
 	}
@@ -235,17 +233,17 @@ class CertificateManager implements ICertificateManager {
 		if ($uid === '') {
 			$uid = $this->uid;
 		}
-		$sourceMTimes = [filemtime(\OC::$SERVERROOT . '/resources/config/ca-bundle.crt')];
+		$sourceMTimes = [\filemtime(\OC::$SERVERROOT . '/resources/config/ca-bundle.crt')];
 		$targetBundle = $this->getCertificateBundle($uid);
 		if (!$this->view->file_exists($targetBundle)) {
 			return true;
 		}
-		if (!is_null($uid)) { // also depend on the system bundle
+		if ($uid !== null) { // also depend on the system bundle
 			$sourceBundles[] = $this->view->filemtime($this->getCertificateBundle(null));
 		}
 
-		$sourceMTime = array_reduce($sourceMTimes, function ($max, $mtime) {
-			return max($max, $mtime);
+		$sourceMTime = \array_reduce($sourceMTimes, function ($max, $mtime) {
+			return \max($max, $mtime);
 		}, 0);
 		return $sourceMTime > $this->view->filemtime($targetBundle);
 	}

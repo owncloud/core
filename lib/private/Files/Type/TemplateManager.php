@@ -54,7 +54,7 @@ class TemplateManager {
 	public function getTemplate($mimetype) {
 		$path = $this->getTemplatePath($mimetype);
 		if ($path) {
-			return file_get_contents($path);
+			return \file_get_contents($path);
 		} else {
 			return '';
 		}

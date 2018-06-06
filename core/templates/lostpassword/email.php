@@ -18,4 +18,4 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>
  *
  */
-echo str_replace('{link}', $_['link'], $l->t('Use the following link to reset your password: {link}'));
+echo \str_replace('{link}', $_['link'], $l->t('Use the following link to reset your password: {link}'));

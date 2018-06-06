@@ -37,7 +37,7 @@ namespace OC\Log;
  */
 
 class Owncloud {
-	static protected $logFile;
+	protected static $logFile;
 
 	/**
 	 * Init class data
@@ -51,11 +51,11 @@ class Owncloud {
 		 * Fall back to default log file if specified logfile does not exist
 		 * and can not be created.
 		 */
-		if (!file_exists(self::$logFile)) {
-			if(!is_writable(dirname(self::$logFile))) {
+		if (!\file_exists(self::$logFile)) {
+			if (!\is_writable(\dirname(self::$logFile))) {
 				self::$logFile = $defaultLogFile;
 			} else {
-				if(!touch(self::$logFile)) {
+				if (!\touch(self::$logFile)) {
 					self::$logFile = $defaultLogFile;
 				}
 			}
@@ -78,13 +78,13 @@ class Owncloud {
 
 		// default to ISO8601
 		$format = $config->getValue('logdateformat', 'c');
-		$logTimeZone = $config->getValue( "logtimezone", 'UTC' );
+		$logTimeZone = $config->getValue("logtimezone", 'UTC');
 		try {
 			$timezone = new \DateTimeZone($logTimeZone);
 		} catch (\Exception $e) {
 			$timezone = new \DateTimeZone('UTC');
 		}
-		$time = \DateTime::createFromFormat("U.u", number_format(microtime(true), 4, ".", ""));
+		$time = \DateTime::createFromFormat("U.u", \number_format(\microtime(true), 4, ".", ""));
 		if ($time === false) {
 			$time = new \DateTime(null, $timezone);
 		} else {
@@ -97,13 +97,13 @@ class Owncloud {
 		// remove username/passwords from URLs before writing the to the log file
 		$time = $time->format($format);
 		$url = ($request->getRequestUri() !== '') ? $request->getRequestUri() : '--';
-		$method = is_string($request->getMethod()) ? $request->getMethod() : '--';
-		if(\OC::$server->getConfig()->getSystemValue('installed', false)) {
+		$method = \is_string($request->getMethod()) ? $request->getMethod() : '--';
+		if (\OC::$server->getConfig()->getSystemValue('installed', false)) {
 			$user = (\OC_User::getUser()) ? \OC_User::getUser() : '--';
 		} else {
 			$user = '--';
 		}
-		$entry = compact(
+		$entry = \compact(
 			'reqId',
 			'level',
 			'time',
@@ -117,29 +117,29 @@ class Owncloud {
 
 		if (!empty($extraFields)) {
 			// augment with additional fields
-			$entry = array_merge($entry, $extraFields);
+			$entry = \array_merge($entry, $extraFields);
 		}
 
-		$entry = json_encode($entry);
-		if (!is_null($conditionalLogFile)) {
+		$entry = \json_encode($entry);
+		if ($conditionalLogFile !== null) {
 			if ($conditionalLogFile[0] !== '/') {
 				$conditionalLogFile = \OC::$server->getConfig()->getSystemValue('datadirectory') . "/" . $conditionalLogFile;
 			}
-			$handle = @fopen($conditionalLogFile, 'a');
-			@chmod($conditionalLogFile, 0640);
+			$handle = @\fopen($conditionalLogFile, 'a');
+			@\chmod($conditionalLogFile, 0640);
 		} else {
-			$handle = @fopen(self::$logFile, 'a');
-			@chmod(self::$logFile, 0640);
+			$handle = @\fopen(self::$logFile, 'a');
+			@\chmod(self::$logFile, 0640);
 		}
 		if ($handle) {
-			fwrite($handle, $entry."\n");
-			fclose($handle);
+			\fwrite($handle, $entry."\n");
+			\fclose($handle);
 		} else {
 			// Fall back to error_log
-			error_log($entry);
+			\error_log($entry);
 		}
-		if (php_sapi_name() === 'cli-server') {
-			error_log($message, 4);
+		if (\php_sapi_name() === 'cli-server') {
+			\error_log($message, 4);
 		}
 	}
 

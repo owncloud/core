@@ -43,7 +43,6 @@ class Cors implements ISettings {
 		IUserSession $userSession,
 		IURLGenerator $urlGenerator,
 		IConfig $config) {
-
 		$this->config = $config;
 		$this->userSession = $userSession;
 		$this->urlGenerator = $urlGenerator;
@@ -58,7 +57,7 @@ class Cors implements ISettings {
 	 */
 	public function getPanel() {
 		$userId = $this->userSession->getUser()->getUID();
-		$domains = json_decode($this->config->getUserValue($userId, 'core', 'domains', '[]'), true);
+		$domains = \json_decode($this->config->getUserValue($userId, 'core', 'domains', '[]'), true);
 
 		$t = new Template('settings', 'panels/personal/cors');
 		$t->assign('user_id', $userId);
@@ -67,9 +66,7 @@ class Cors implements ISettings {
 		return $t;
 	}
 
-
 	public function getPriority() {
 		return 20;
 	}
-
 }

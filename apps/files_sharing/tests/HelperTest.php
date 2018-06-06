@@ -34,7 +34,7 @@ class HelperTest extends TestCase {
 	/**
 	 * test set and get share folder
 	 */
-	function testSetGetShareFolder() {
+	public function testSetGetShareFolder() {
 		$this->assertSame('/', \OCA\Files_Sharing\Helper::getShareFolder());
 
 		\OCA\Files_Sharing\Helper::setShareFolder('/Shared/Folder');
@@ -45,7 +45,5 @@ class HelperTest extends TestCase {
 
 		// cleanup
 		\OC::$server->getConfig()->deleteSystemValue('share_folder');
-
 	}
-
 }

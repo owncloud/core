@@ -42,10 +42,10 @@ class UpdateChecker {
 		$data = $this->updater->check();
 		$result = [];
 
-		if(isset($data['version']) && $data['version'] !== '' && $data['version'] !== []) {
+		if (isset($data['version']) && $data['version'] !== '' && $data['version'] !== []) {
 			$result['updateAvailable'] = true;
 			$result['updateVersion'] = $data['versionstring'];
-			if(substr($data['web'], 0, 8) === 'https://') {
+			if (\substr($data['web'], 0, 8) === 'https://') {
 				$result['updateLink'] = $data['web'];
 			}
 
@@ -59,7 +59,7 @@ class UpdateChecker {
 	 * @param array $data
 	 */
 	public function getJavaScript(array $data) {
-		$data['array']['oc_updateState'] =  json_encode([
+		$data['array']['oc_updateState'] =  \json_encode([
 			'updateAvailable' => true,
 			'updateVersion' => $this->getUpdateState()['updateVersion'],
 			'updateLink' => isset($this->getUpdateState()['updateLink']) ? $this->getUpdateState()['updateLink'] : '',

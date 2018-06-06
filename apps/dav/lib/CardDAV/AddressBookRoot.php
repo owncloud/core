@@ -32,23 +32,18 @@ class AddressBookRoot extends \Sabre\CardDAV\AddressBookRoot {
 	 * @param array $principal
 	 * @return \Sabre\DAV\INode
 	 */
-	function getChildForPrincipal(array $principal) {
-
+	public function getChildForPrincipal(array $principal) {
 		return new UserAddressBooks($this->carddavBackend, $principal['uri']);
-
 	}
 
-	function getName() {
-
+	public function getName() {
 		if ($this->principalPrefix === 'principals') {
 			return parent::getName();
 		}
 		// Grabbing all the components of the principal path.
-		$parts = explode('/', $this->principalPrefix);
+		$parts = \explode('/', $this->principalPrefix);
 
 		// We are only interested in the second part.
 		return $parts[1];
-
 	}
-
 }

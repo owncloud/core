@@ -49,7 +49,7 @@ abstract class TimedJob extends Job {
 	 * @param ILogger $logger
 	 */
 	public function execute($jobList, ILogger $logger = null) {
-		if ((time() - $this->lastRun) > $this->interval) {
+		if ((\time() - $this->lastRun) > $this->interval) {
 			parent::execute($jobList, $logger);
 		}
 	}

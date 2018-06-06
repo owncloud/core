@@ -43,7 +43,7 @@ trait Provisioning {
 	private $createdUsers = [];
 
 	/**
-	 * @var array 
+	 * @var array
 	 */
 	private $createdRemoteUsers = [];
 
@@ -58,12 +58,12 @@ trait Provisioning {
 	private $disabledApps = [];
 
 	/**
-	 * @var array 
+	 * @var array
 	 */
 	private $createdRemoteGroups = [];
 
 	/**
-	 * @var array 
+	 * @var array
 	 */
 	private $createdGroups = [];
 
@@ -88,9 +88,9 @@ trait Provisioning {
 	 * @return array
 	 */
 	public function getCreatedUserDisplayNames() {
-		$result = array();
+		$result = [];
 		foreach ($this->getCreatedUsers() as $username => $user) {
-			if (is_null($user['displayname'])) {
+			if ($user['displayname'] === null) {
 				$result[] = $username;
 			} else {
 				$result[] = $user['displayname'];
@@ -109,9 +109,9 @@ trait Provisioning {
 	public function getUserPassword($username) {
 		if ($username === $this->getAdminUsername()) {
 			$password = $this->getAdminPassword();
-		} else if (array_key_exists($username, $this->createdUsers)) {
+		} elseif (\array_key_exists($username, $this->createdUsers)) {
 			$password = $this->createdUsers[$username]['password'];
-		} else if (array_key_exists($username, $this->createdRemoteUsers)) {
+		} elseif (\array_key_exists($username, $this->createdRemoteUsers)) {
 			$password = $this->createdRemoteUsers[$username]['password'];
 		} else {
 			throw new Exception(
@@ -131,11 +131,11 @@ trait Provisioning {
 	 * @throws \Exception
 	 */
 	public function theUserShouldExist($username) {
-		if (array_key_exists($username, $this->createdUsers)) {
+		if (\array_key_exists($username, $this->createdUsers)) {
 			return $this->createdUsers[$username]['shouldExist'];
 		}
 
-		if (array_key_exists($username, $this->createdRemoteUsers)) {
+		if (\array_key_exists($username, $this->createdRemoteUsers)) {
 			return $this->createdRemoteUsers[$username]['shouldExist'];
 		}
 
@@ -152,11 +152,11 @@ trait Provisioning {
 	 * @throws \Exception
 	 */
 	public function theGroupShouldExist($groupname) {
-		if (array_key_exists($groupname, $this->createdGroups)) {
+		if (\array_key_exists($groupname, $this->createdGroups)) {
 			return $this->createdGroups[$groupname]['shouldExist'];
 		}
 
-		if (array_key_exists($groupname, $this->createdRemoteGroups)) {
+		if (\array_key_exists($groupname, $this->createdRemoteGroups)) {
 			return $this->createdRemoteGroups[$groupname]['shouldExist'];
 		}
 
@@ -173,11 +173,11 @@ trait Provisioning {
 	 * @throws \Exception
 	 */
 	public function theGroupShouldBeAbleToBeDeleted($groupname) {
-		if (array_key_exists($groupname, $this->createdGroups)) {
+		if (\array_key_exists($groupname, $this->createdGroups)) {
 			return $this->createdGroups[$groupname]['possibleToDelete'];
 		}
 
-		if (array_key_exists($groupname, $this->createdRemoteGroups)) {
+		if (\array_key_exists($groupname, $this->createdRemoteGroups)) {
 			return $this->createdRemoteGroups[$groupname]['possibleToDelete'];
 		}
 
@@ -196,7 +196,7 @@ trait Provisioning {
 	 * @throws \Exception
 	 */
 	public function adminCreatesUserUsingTheAPI($user) {
-		if (!$this->userExists($user) ) {
+		if (!$this->userExists($user)) {
 			$password = $this->getPasswordForUser($user);
 			$this->createUser($user, $password, null, null, true, 'api');
 		}
@@ -239,9 +239,9 @@ trait Provisioning {
 
 	/**
 	 * @Given /^the app "([^"]*)" has been disabled$/
-	 * 
+	 *
 	 * @param string $app
-	 * 
+	 *
 	 * @return void
 	 */
 	public function theAppHasBeenDisabled($app) {
@@ -273,11 +273,11 @@ trait Provisioning {
 
 	/**
 	 * @When /^the administrator sends a user creation request for user "([^"]*)" password "([^"]*)" group "([^"]*)" using the API$/
-	 * 
+	 *
 	 * @param string $user
 	 * @param string $password
 	 * @param string $group
-	 * 
+	 *
 	 * @return void
 	 */
 	public function theAdministratorCreatesUserPasswordGroupUsingTheApi(
@@ -297,9 +297,9 @@ trait Provisioning {
 
 	/**
 	 * @When /^the administrator sends a user deletion request for user "([^"]*)" using the API$/
-	 * 
+	 *
 	 * @param string $user
-	 * 
+	 *
 	 * @return void
 	 * @throws \Exception
 	 */
@@ -310,10 +310,10 @@ trait Provisioning {
 
 	/**
 	 * @When /^the subadmin "([^"]*)" sends a user deletion request for user "([^"]*)" using the API$/
-	 * 
+	 *
 	 * @param string $subadmin
 	 * @param string $user
-	 * 
+	 *
 	 * @return void
 	 * @throws \Exception
 	 */
@@ -399,7 +399,7 @@ trait Provisioning {
 		$should = ($shouldOrNot !== "not");
 		$groups = SetupHelper::getGroups();
 		foreach ($table as $row) {
-			if (in_array($row['groupname'], $groups, true) !== $should) {
+			if (\in_array($row['groupname'], $groups, true) !== $should) {
 				throw new Exception(
 					"group '" . $row['groupname'] .
 					"' does" . ($should ? " not" : "") .
@@ -503,7 +503,7 @@ trait Provisioning {
 	 * @return void
 	 */
 	public function rememberThatUserIsNotExpectedToExist($user) {
-		if (array_key_exists($user, $this->createdUsers)) {
+		if (\array_key_exists($user, $this->createdUsers)) {
 			$this->createdUsers[$user]['shouldExist'] = false;
 		}
 	}
@@ -525,14 +525,14 @@ trait Provisioning {
 		$user, $password, $displayName = null, $email = null, $initialize = true,
 		$method = null
 	) {
-		if ($method === null && getenv("TEST_EXTERNAL_USER_BACKENDS") === "true") {
+		if ($method === null && \getenv("TEST_EXTERNAL_USER_BACKENDS") === "true") {
 			//guess yourself
 			$method = "ldap";
 		} elseif ($method === null) {
 			$method = "api";
 		}
-		$user = trim($user);
-		$method = trim(strtolower($method));
+		$user = \trim($user);
+		$method = \trim(\strtolower($method));
 		switch ($method) {
 			case "api":
 				$results = UserHelper::createUser(
@@ -604,7 +604,7 @@ trait Provisioning {
 			$this->deleteTheGroupUsingTheAPI($group);
 		} catch (BadResponseException $e) {
 			$this->response = $e->getResponse();
-			error_log(
+			\error_log(
 				"INFORMATION: There was an unexpected problem trying to delete group '" .
 				$group . "' status code " . $this->response->getStatusCode() .
 				" message `" . $e->getMessage() . "'"
@@ -614,7 +614,7 @@ trait Provisioning {
 		if ($this->theGroupShouldBeAbleToBeDeleted($group)
 			&& $this->groupExists($group)
 		) {
-			error_log(
+			\error_log(
 				"INFORMATION: tried to delete group '" . $group .
 				"' at the end of the scenario but it seems to still exist. " .
 				"There might be problems with later scenarios."
@@ -657,7 +657,7 @@ trait Provisioning {
 
 		$this->response = $client->get($fullUrl, $options);
 		$respondedArray = $this->getArrayOfGroupsResponded($this->response);
-		sort($respondedArray);
+		\sort($respondedArray);
 		PHPUnit_Framework_Assert::assertContains($group, $respondedArray);
 		PHPUnit_Framework_Assert::assertEquals(
 			200, $this->response->getStatusCode()
@@ -680,7 +680,7 @@ trait Provisioning {
 
 		$this->response = $client->get($fullUrl, $options);
 		$respondedArray = $this->getArrayOfGroupsResponded($this->response);
-		sort($respondedArray);
+		\sort($respondedArray);
 		PHPUnit_Framework_Assert::assertNotContains($group, $respondedArray);
 		PHPUnit_Framework_Assert::assertEquals(
 			200, $this->response->getStatusCode()
@@ -702,7 +702,7 @@ trait Provisioning {
 		$this->response = $client->get($fullUrl, $options);
 		$respondedArray = $this->getArrayOfGroupsResponded($this->response);
 
-		if (in_array($group, $respondedArray)) {
+		if (\in_array($group, $respondedArray)) {
 			return true;
 		} else {
 			return false;
@@ -737,13 +737,13 @@ trait Provisioning {
 	 * @throws \Exception
 	 */
 	public function userHasBeenAddedToGroup($user, $group, $method = null) {
-		if ($method === null && getenv("TEST_EXTERNAL_USER_BACKENDS") === "true") {
+		if ($method === null && \getenv("TEST_EXTERNAL_USER_BACKENDS") === "true") {
 			//guess yourself
 			$method = "ldap";
 		} elseif ($method === null) {
 			$method = "api";
 		}
-		$method = trim(strtolower($method));
+		$method = \trim(\strtolower($method));
 		switch ($method) {
 			case "api":
 				$result = UserHelper::addUserToGroup(
@@ -812,7 +812,7 @@ trait Provisioning {
 	 * @return void
 	 */
 	public function rememberThatGroupIsNotExpectedToExist($group) {
-		if (array_key_exists($group, $this->createdGroups)) {
+		if (\array_key_exists($group, $this->createdGroups)) {
 			$this->createdGroups[$group]['shouldExist'] = false;
 		}
 	}
@@ -876,14 +876,14 @@ trait Provisioning {
 	 * @throws \Exception
 	 */
 	private function createTheGroup($group, $method = null) {
-		if ($method === null && getenv("TEST_EXTERNAL_USER_BACKENDS") === "true") {
+		if ($method === null && \getenv("TEST_EXTERNAL_USER_BACKENDS") === "true") {
 			//guess yourself
 			$method = "ldap";
 		} elseif ($method === null) {
 			$method = "api";
 		}
-		$group = trim($group);
-		$method = trim(strtolower($method));
+		$group = \trim($group);
+		$method = \trim(\strtolower($method));
 		$groupCanBeDeleted = false;
 		switch ($method) {
 			case "api":
@@ -1013,7 +1013,7 @@ trait Provisioning {
 			&& $this->theGroupShouldBeAbleToBeDeleted($group)
 			&& ($this->response->getStatusCode() !== 200)
 		) {
-			error_log(
+			\error_log(
 				"INFORMATION: could not delete group. '" . $group . "'"
 				. $this->response->getStatusCode() . " " . $this->response->getBody()
 			);
@@ -1045,7 +1045,7 @@ trait Provisioning {
 	/**
 	 * @When the administrator removes user :user from group :group using the API
 	 * @Given user :user has been removed from group :group
-	 * 
+	 *
 	 * @param string $user
 	 * @param string $group
 	 *
@@ -1061,7 +1061,7 @@ trait Provisioning {
 		);
 		
 		if ($this->response->getStatusCode() !== 200) {
-			error_log(
+			\error_log(
 				"INFORMATION: could not remove user '" . $user
 				. "' from group. '" . $group . "'"
 				. $this->response->getStatusCode() . " " . $this->response->getBody()
@@ -1085,7 +1085,7 @@ trait Provisioning {
 
 		$this->response = $client->get($fullUrl, $options);
 		$respondedArray = $this->getArrayOfSubadminsResponded($this->response);
-		sort($respondedArray);
+		\sort($respondedArray);
 		PHPUnit_Framework_Assert::assertContains($user, $respondedArray);
 		PHPUnit_Framework_Assert::assertEquals(
 			200, $this->response->getStatusCode()
@@ -1135,7 +1135,7 @@ trait Provisioning {
 
 		$this->response = $client->get($fullUrl, $options);
 		$respondedArray = $this->getArrayOfSubadminsResponded($this->response);
-		sort($respondedArray);
+		\sort($respondedArray);
 		PHPUnit_Framework_Assert::assertNotContains($user, $respondedArray);
 		PHPUnit_Framework_Assert::assertEquals(
 			200, $this->response->getStatusCode()
@@ -1180,9 +1180,9 @@ trait Provisioning {
 
 	/**
 	 * @Then /^the groups returned by the API should include "([^"]*)"$/
-	 * 
+	 *
 	 * @param string $group
-	 * 
+	 *
 	 * @return void
 	 */
 	public function theGroupsReturnedByTheApiShouldInclude($group) {
@@ -1192,9 +1192,9 @@ trait Provisioning {
 
 	/**
 	 * @Then /^the groups returned by the API should not include "([^"]*)"$/
-	 * 
+	 *
 	 * @param string $group
-	 * 
+	 *
 	 * @return void
 	 */
 	public function theGroupsReturnedByTheApiShouldNotInclude($group) {
@@ -1271,7 +1271,7 @@ trait Provisioning {
 	 *
 	 * @param string $user
 	 * @param string $group
-	 * 
+	 *
 	 * @return void
 	 */
 	public function theUserIsTheSubadminOfTheGroup($user, $group) {
@@ -1289,10 +1289,10 @@ trait Provisioning {
 
 	/**
 	 * @Then /^the user "([^"]*)" should not be the subadmin of the group "([^"]*)"$/
-	 * 
+	 *
 	 * @param string $user
 	 * @param string $group
-	 * 
+	 *
 	 * @return void
 	 */
 	public function theUserIsNotTheSubadminOfTheGroup($user, $group) {
@@ -1310,9 +1310,9 @@ trait Provisioning {
 
 	/**
 	 * @Then /^the display name returned by the API should be "([^"]*)"$/
-	 * 
+	 *
 	 * @param string $displayname
-	 * 
+	 *
 	 * @return void
 	 */
 	public function theDisplayNameReturnedByTheApiShouldBe($displayname) {
@@ -1559,7 +1559,7 @@ trait Provisioning {
 
 	/**
 	 * @Then /^the API should not return any data$/
-	 * 
+	 *
 	 * @return void
 	 */
 	public function theApiShouldNotReturnAnyData() {
@@ -1572,7 +1572,7 @@ trait Provisioning {
 
 	/**
 	 * @Then /^the list of users returned by the API should be empty$/
-	 * 
+	 *
 	 * @return void
 	 */
 	public function theListOfUsersReturnedByTheApiShouldBeEmpty() {
@@ -1640,7 +1640,7 @@ trait Provisioning {
 	
 	/**
 	 * @BeforeScenario
-	 * 
+	 *
 	 * @return void
 	 */
 	public function rememberEnabledApps() {
@@ -1649,7 +1649,7 @@ trait Provisioning {
 	
 	/**
 	 * @AfterScenario
-	 * 
+	 *
 	 * @return void
 	 */
 	public function restoreDisabledApps() {

@@ -64,7 +64,7 @@ class PreviewManagerTest extends TestCase {
 		$this->rootView->mkdir('/' . self::TEST_PREVIEW_USER1);
 		$this->rootView->mkdir('/' . self::TEST_PREVIEW_USER1 . '/files');
 
-		$imgData = file_get_contents(\OC::$SERVERROOT . '/tests/data/testimage.jpg');
+		$imgData = \file_get_contents(\OC::$SERVERROOT . '/tests/data/testimage.jpg');
 		$imgPath = '/' . self::TEST_PREVIEW_USER1 . '/files/testimage.jpg';
 		$this->rootView->file_put_contents($imgPath, $imgData);
 	}

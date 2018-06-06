@@ -36,9 +36,9 @@ class ConflictDialog extends OCDialog {
 	
 	/**
 	 * takes the xpath and selects the option with that xpath
-	 * 
+	 *
 	 * @param string $xpath
-	 * 
+	 *
 	 * @throws ElementNotFoundException
 	 * @return void
 	 */

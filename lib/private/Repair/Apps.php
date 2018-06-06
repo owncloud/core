@@ -37,7 +37,6 @@ use Symfony\Component\EventDispatcher\GenericEvent;
 use OCP\IConfig;
 
 class Apps implements IRepairStep {
-
 	const KEY_COMPATIBLE = 'compatible';
 	const KEY_INCOMPATIBLE = 'incompatible';
 	const KEY_MISSING = 'missing';
@@ -82,8 +81,8 @@ class Apps implements IRepairStep {
 	 */
 	private function isCoreUpdate() {
 		$installedVersion = $this->config->getSystemValue('version', '0.0.0');
-		$currentVersion = implode('.', Util::getVersion());
-		$versionDiff = version_compare($currentVersion, $installedVersion);
+		$currentVersion = \implode('.', Util::getVersion());
+		$versionDiff = \version_compare($currentVersion, $installedVersion);
 		if ($versionDiff > 0) {
 			return true;
 		}
@@ -96,12 +95,11 @@ class Apps implements IRepairStep {
 	 */
 	private function requiresMarketEnable() {
 		$installedVersion = $this->config->getSystemValue('version', '0.0.0');
-		$versionDiff = version_compare('10.0.0', $installedVersion);
+		$versionDiff = \version_compare('10.0.0', $installedVersion);
 		if ($versionDiff < 0) {
 			return false;
 		}
 		return true;
-
 	}
 
 	/**
@@ -109,7 +107,6 @@ class Apps implements IRepairStep {
 	 * @throws RepairException
 	 */
 	public function run(IOutput $output) {
-
 		if ($this->config->getSystemValue('has_internet_connection', true) !== true) {
 			$link = $this->defaults->buildDocLinkToKey('admin-marketplace-apps');
 			$output->info('No internet connection available - no app updates will be taken from the marketplace.');
@@ -141,7 +138,7 @@ class Apps implements IRepairStep {
 				try {
 					// Try to update incompatible apps
 					if (!empty($appsToUpgrade[self::KEY_INCOMPATIBLE])) {
-						$output->info('Attempting to update the following existing but incompatible app from market: ' . implode(', ', $appsToUpgrade[self::KEY_INCOMPATIBLE]));
+						$output->info('Attempting to update the following existing but incompatible app from market: ' . \implode(', ', $appsToUpgrade[self::KEY_INCOMPATIBLE]));
 						$failedIncompatibleApps = $this->getAppsFromMarket(
 							$output,
 							$appsToUpgrade[self::KEY_INCOMPATIBLE],
@@ -151,7 +148,7 @@ class Apps implements IRepairStep {
 
 					// Try to download missing apps
 					if (!empty($appsToUpgrade[self::KEY_MISSING])) {
-						$output->info('Attempting to update the following missing apps from market: ' . implode(', ', $appsToUpgrade[self::KEY_MISSING]));
+						$output->info('Attempting to update the following missing apps from market: ' . \implode(', ', $appsToUpgrade[self::KEY_MISSING]));
 						$failedMissingApps = $this->getAppsFromMarket(
 							$output,
 							$appsToUpgrade[self::KEY_MISSING],
@@ -161,7 +158,7 @@ class Apps implements IRepairStep {
 
 					// Try to update compatible apps
 					if (!empty($appsToUpgrade[self::KEY_COMPATIBLE])) {
-						$output->info('Attempting to update the following existing compatible apps from market: ' . implode(', ', $appsToUpgrade[self::KEY_MISSING]));
+						$output->info('Attempting to update the following existing compatible apps from market: ' . \implode(', ', $appsToUpgrade[self::KEY_MISSING]));
 						$failedCompatibleApps = $this->getAppsFromMarket(
 							$output,
 							$appsToUpgrade[self::KEY_COMPATIBLE],
@@ -169,7 +166,7 @@ class Apps implements IRepairStep {
 						);
 					}
 
-					$hasNotUpdatedCompatibleApps = count($failedCompatibleApps);
+					$hasNotUpdatedCompatibleApps = \count($failedCompatibleApps);
 				} catch (AppManagerException $e) {
 					$output->warning($e->getMessage());
 				}
@@ -180,15 +177,15 @@ class Apps implements IRepairStep {
 			}
 		}
 
-		$hasBlockingMissingApps = count($failedMissingApps);
-		$hasBlockingIncompatibleApps = count($failedIncompatibleApps);
+		$hasBlockingMissingApps = \count($failedMissingApps);
+		$hasBlockingIncompatibleApps = \count($failedIncompatibleApps);
 
 		if ($hasBlockingIncompatibleApps || $hasBlockingMissingApps) {
 			// fail
 			$output->warning('You have incompatible or missing apps enabled that could not be found or updated via the marketplace.');
 			$output->warning(
 				'Please install or update the following apps manually or disable them with:'
-				. $this->getOccDisableMessage(array_merge($failedIncompatibleApps, $failedMissingApps))
+				. $this->getOccDisableMessage(\array_merge($failedIncompatibleApps, $failedMissingApps))
 			);
 			$link = $this->defaults->buildDocLinkToKey('admin-marketplace-apps');
 			$output->warning("For manually updating, see $link");
@@ -218,7 +215,7 @@ class Apps implements IRepairStep {
 			$output->info("Fetching app from market: $app");
 			try {
 				$this->eventDispatcher->dispatch(
-					sprintf('%s::%s', IRepairStep::class, $event),
+					\sprintf('%s::%s', IRepairStep::class, $event),
 					new GenericEvent($app)
 				);
 			} catch (AppAlreadyInstalledException $e) {
@@ -239,7 +236,7 @@ class Apps implements IRepairStep {
 			} catch (\Exception $e) {
 				// TODO: check the reason
 				$failedApps[] = $app;
-				$output->warning(get_class($e));
+				$output->warning(\get_class($e));
 
 				$output->warning($e->getMessage());
 			}
@@ -262,7 +259,7 @@ class Apps implements IRepairStep {
 
 		foreach ($installedApps as $appId) {
 			$info = $this->appManager->getAppInfo($appId);
-			if (!isset($info['id']) || is_null($info['id'])) {
+			if (!isset($info['id']) || $info['id'] === null) {
 				$appsToUpgrade[self::KEY_MISSING][] = $appId;
 				continue;
 			}
@@ -274,16 +271,16 @@ class Apps implements IRepairStep {
 	}
 
 	protected function getOccDisableMessage($appList) {
-		if (!count($appList)) {
+		if (!\count($appList)) {
 			return '';
 		}
-		$appList = array_map(
+		$appList = \array_map(
 			function ($appId) {
 				return "occ app:disable $appId";
 			},
 			$appList
 		);
-		return "\n" . implode("\n", $appList);
+		return "\n" . \implode("\n", $appList);
 	}
 
 	/**

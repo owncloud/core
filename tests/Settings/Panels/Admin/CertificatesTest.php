@@ -57,7 +57,7 @@ class CertificatesTest extends \Test\TestCase {
 		$mockCert = $this->getMockBuilder(ICertificate::class)->getMock();
 		$mockCert->expects($this->once())->method('isExpired')->willReturn(false);
 		$mockCert->expects($this->once())->method('getCommonName')->willReturn('commonname');
-		$mockCert->expects($this->exactly(2))->method('getExpireDate')->willReturn(time()+60*60*24*10);
+		$mockCert->expects($this->exactly(2))->method('getExpireDate')->willReturn(\time()+60*60*24*10);
 		$mockCert->expects($this->once())->method('getIssuerOrganization')->willReturn('issueOrg');
 		$mockCert->expects($this->once())->method('getIssuerName')->willReturn('issuer');
 		$mockCert->expects($this->once())->method('getOrganization')->willReturn('org');
@@ -79,5 +79,4 @@ class CertificatesTest extends \Test\TestCase {
 		$template = $this->panel->getPanel();
 		$this->assertNull($template);
 	}
-
 }

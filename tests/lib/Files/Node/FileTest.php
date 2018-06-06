@@ -16,7 +16,6 @@ namespace Test\Files\Node;
  * @package Test\Files\Node
  */
 class FileTest extends NodeTest {
-
 	public $viewDeleteMethod = 'unlink';
 	public $nodeClass = '\OC\Files\Node\File';
 	public $nonExistingNodeClass = '\OC\Files\Node\NonExistingFile';
@@ -141,9 +140,9 @@ class FileTest extends NodeTest {
 	}
 
 	public function testFOpenRead() {
-		$stream = fopen('php://memory', 'w+');
-		fwrite($stream, 'bar');
-		rewind($stream);
+		$stream = \fopen('php://memory', 'w+');
+		\fwrite($stream, 'bar');
+		\rewind($stream);
 
 		/**
 		 * @var \OC\Files\Mount\Manager $manager
@@ -175,11 +174,11 @@ class FileTest extends NodeTest {
 		$node = new \OC\Files\Node\File($root, $view, '/bar/foo');
 		$fh = $node->fopen('r');
 		$this->assertEquals($stream, $fh);
-		$this->assertEquals('bar', fread($fh, 3));
+		$this->assertEquals('bar', \fread($fh, 3));
 	}
 
 	public function testFOpenWrite() {
-		$stream = fopen('php://memory', 'w+');
+		$stream = \fopen('php://memory', 'w+');
 
 		/**
 		 * @var \OC\Files\Mount\Manager $manager
@@ -212,9 +211,9 @@ class FileTest extends NodeTest {
 		$node = new \OC\Files\Node\File($root, $view, '/bar/foo');
 		$fh = $node->fopen('w');
 		$this->assertEquals($stream, $fh);
-		fwrite($fh, 'bar');
-		rewind($fh);
-		$this->assertEquals('bar', fread($stream, 3));
+		\fwrite($fh, 'bar');
+		\rewind($fh);
+		$this->assertEquals('bar', \fread($stream, 3));
 		$this->assertEquals(2, $hooksCalled);
 	}
 
@@ -298,6 +297,4 @@ class FileTest extends NodeTest {
 		$node = new \OC\Files\Node\File($root, $view, '/bar/foo');
 		$node->fopen('w');
 	}
-
-
 }

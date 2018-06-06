@@ -31,15 +31,15 @@ use GuzzleHttp\Message\ResponseInterface;
  */
 class CardDavContext implements \Behat\Behat\Context\Context {
 	/**
-	 * @var Client 
+	 * @var Client
 	 */
 	private $client;
 	/**
-	 * @var ResponseInterface 
+	 * @var ResponseInterface
 	 */
 	private $response;
 	/**
-	 * @var array 
+	 * @var array
 	 */
 	private $responseXml = '';
 
@@ -157,7 +157,7 @@ class CardDavContext implements \Behat\Behat\Context\Context {
 	public function theCardDavHttpStatusCodeShouldBe($code) {
 		if ((int)$code !== $this->response->getStatusCode()) {
 			throw new \Exception(
-				sprintf(
+				\sprintf(
 					'Expected %s got %s',
 					(int)$code,
 					$this->response->getStatusCode()
@@ -166,7 +166,7 @@ class CardDavContext implements \Behat\Behat\Context\Context {
 		}
 
 		$body = $this->response->getBody()->getContents();
-		if ($body && substr($body, 0, 1) === '<') {
+		if ($body && \substr($body, 0, 1) === '<') {
 			$reader = new Sabre\Xml\Reader();
 			$reader->xml($body);
 			$this->responseXml = $reader->parse();
@@ -186,7 +186,7 @@ class CardDavContext implements \Behat\Behat\Context\Context {
 
 		if ($message !== $result) {
 			throw new \Exception(
-				sprintf(
+				\sprintf(
 					'Expected %s got %s',
 					$message,
 					$result
@@ -208,7 +208,7 @@ class CardDavContext implements \Behat\Behat\Context\Context {
 
 		if ($message !== $result) {
 			throw new \Exception(
-				sprintf(
+				\sprintf(
 					'Expected %s got %s',
 					$message,
 					$result
@@ -216,5 +216,4 @@ class CardDavContext implements \Behat\Behat\Context\Context {
 			);
 		}
 	}
-
 }

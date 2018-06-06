@@ -25,7 +25,6 @@
 
 namespace OC;
 
-
 use OCP\IConfig;
 
 /**
@@ -151,7 +150,7 @@ class SystemConfig {
 			return IConfig::SENSITIVE_VALUE;
 		}
 
-		if (is_array($value)) {
+		if (\is_array($value)) {
 			foreach ($keysToRemove as $keyToRemove => $valueToRemove) {
 				if (isset($value[$keyToRemove])) {
 					$value[$keyToRemove] = $this->removeSensitiveValue($valueToRemove, $value[$keyToRemove]);

@@ -32,7 +32,6 @@ require_once 'bootstrap.php';
  * WebUI PersonalSecuritySettings context.
  */
 class WebUIPersonalSecuritySettingsContext extends RawMinkContext implements Context {
-
 	private $personalSecuritySettingsPage;
 	private $appName;
 	private $strForAppName = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
@@ -53,7 +52,7 @@ class WebUIPersonalSecuritySettingsContext extends RawMinkContext implements Con
 		LoginPage $loginPage
 	) {
 		$this->personalSecuritySettingsPage = $personalSecuritySettingsPage;
-		$this->appName = substr(str_shuffle($this->strForAppName), 0, 8);
+		$this->appName = \substr(\str_shuffle($this->strForAppName), 0, 8);
 		$this->loginPage = $loginPage;
 	}
 
@@ -80,7 +79,6 @@ class WebUIPersonalSecuritySettingsContext extends RawMinkContext implements Con
 		$this->personalSecuritySettingsPage->createNewAppPassword($this->appName);
 		$this->newAppPassword = $this->personalSecuritySettingsPage
 			->getAppPasswordResult()[1]->getValue();
-		
 	}
 
 	/**
@@ -112,7 +110,7 @@ class WebUIPersonalSecuritySettingsContext extends RawMinkContext implements Con
 		);
 
 		PHPUnit_Framework_Assert::assertEquals(
-			1, preg_match(
+			1, \preg_match(
 				'/(([A-Z]){5}-){3}([A-Z]){5}/', $result[1]->getValue()
 			)
 		);
@@ -120,9 +118,9 @@ class WebUIPersonalSecuritySettingsContext extends RawMinkContext implements Con
 
 	/**
 	 * @When the user re-logs in with username :username and generated app password using the webUI
-	 * 
+	 *
 	 * @param string $username
-	 * 
+	 *
 	 * @return void
 	 */
 	public function theUserLogsInWithNewAppPassword($username) {
@@ -133,7 +131,7 @@ class WebUIPersonalSecuritySettingsContext extends RawMinkContext implements Con
 
 	/**
 	 * @When the user deletes the app password
-	 * 
+	 *
 	 * @return void
 	 * @throws \Exception
 	 */
@@ -141,7 +139,7 @@ class WebUIPersonalSecuritySettingsContext extends RawMinkContext implements Con
 		$appTr = $this->personalSecuritySettingsPage->getLinkedAppByName(
 			$this->appName
 		);
-		$deleteButton 
+		$deleteButton
 			= $this->personalSecuritySettingsPage->getDisconnectButton(
 				$appTr
 			);
@@ -150,13 +148,13 @@ class WebUIPersonalSecuritySettingsContext extends RawMinkContext implements Con
 
 	/**
 	 * @When the user re-logs in with username :username and deleted app password using the webUI
-	 * 
+	 *
 	 * @param string $username
-	 * 
+	 *
 	 * @return void
 	 * @throws \Exception
 	 */
-	public function reLogInWithDeletedAppPassword($username) {	
+	public function reLogInWithDeletedAppPassword($username) {
 		$this->webUIGeneralContext->theUserLogsOutOfTheWebUI();
 		$this->loginPage->loginAs($username, $this->newAppPassword);
 		$this->loginPage->waitTillPageIsLoaded($this->getSession());

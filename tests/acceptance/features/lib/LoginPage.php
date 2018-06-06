@@ -80,16 +80,16 @@ class LoginPage extends OwncloudPage {
 		Session $session,
 		$timeout_msec = STANDARDUIWAITTIMEOUTMILLISEC
 	) {
-		$currentTime = microtime(true);
+		$currentTime = \microtime(true);
 		$end = $currentTime + ($timeout_msec / 1000);
 		while ($currentTime <= $end) {
-			if ((!is_null($this->findById($this->userInputId)))
-				&& (!is_null($this->findById($this->passwordInputId)))
+			if (($this->findById($this->userInputId) !== null)
+				&& ($this->findById($this->passwordInputId) !== null)
 			) {
 				break;
 			}
-			usleep(STANDARDSLEEPTIMEMICROSEC);
-			$currentTime = microtime(true);
+			\usleep(STANDARDSLEEPTIMEMICROSEC);
+			$currentTime = \microtime(true);
 		}
 
 		if ($currentTime > $end) {
@@ -102,9 +102,9 @@ class LoginPage extends OwncloudPage {
 	}
 
 	/**
-	 * 
+	 *
 	 * @throws ElementNotFoundException
-	 * 
+	 *
 	 * @return Page
 	 */
 	private function lostPasswordField() {
@@ -121,7 +121,7 @@ class LoginPage extends OwncloudPage {
 
 	/**
 	 * @param Session $session
-	 * 
+	 *
 	 * @return void
 	 */
 	public function requestPasswordReset(Session $session) {
@@ -138,11 +138,11 @@ class LoginPage extends OwncloudPage {
 		return $passwordRecoveryMessage;
 	}
 	/**
-	 * 
+	 *
 	 * @param string $newPassword
-	 * 
+	 *
 	 * @param Session $session
-	 * 
+	 *
 	 * @return void
 	 */
 	public function resetThePassword($newPassword, Session $session) {

@@ -190,7 +190,7 @@ class DefinitionParameter implements \JsonSerializable {
 	public function validateValue(&$value) {
 		switch ($this->getType()) {
 			case self::VALUE_BOOLEAN:
-				if (!is_bool($value)) {
+				if (!\is_bool($value)) {
 					switch ($value) {
 						case 'true':
 							$value = true;

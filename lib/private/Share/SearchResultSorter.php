@@ -42,7 +42,7 @@ class SearchResultSorter {
 		$this->encoding = $encoding;
 		$this->key = $key;
 		$this->log = $log;
-		$this->search = mb_strtolower($search, $this->encoding);
+		$this->search = \mb_strtolower($search, $this->encoding);
 	}
 
 	/**
@@ -51,21 +51,21 @@ class SearchResultSorter {
 	 * Callback function for usort. http://php.net/usort
 	 */
 	public function sort($a, $b) {
-		if(!isset($a[$this->key]) || !isset($b[$this->key])) {
-			if(!is_null($this->log)) {
+		if (!isset($a[$this->key]) || !isset($b[$this->key])) {
+			if ($this->log !== null) {
 				$this->log->error('Sharing dialogue: cannot sort due to ' .
 								  'missing array key', ['app' => 'core']);
 			}
 			return 0;
 		}
-		$nameA = mb_strtolower($a[$this->key], $this->encoding);
-		$nameB = mb_strtolower($b[$this->key], $this->encoding);
-		$i = mb_strpos($nameA, $this->search, 0, $this->encoding);
-		$j = mb_strpos($nameB, $this->search, 0, $this->encoding);
+		$nameA = \mb_strtolower($a[$this->key], $this->encoding);
+		$nameB = \mb_strtolower($b[$this->key], $this->encoding);
+		$i = \mb_strpos($nameA, $this->search, 0, $this->encoding);
+		$j = \mb_strpos($nameB, $this->search, 0, $this->encoding);
 
-		if($i === $j || $i > 0 && $j > 0) {
-			return strcmp(mb_strtolower($nameA, $this->encoding),
-						  mb_strtolower($nameB, $this->encoding));
+		if ($i === $j || $i > 0 && $j > 0) {
+			return \strcmp(\mb_strtolower($nameA, $this->encoding),
+						  \mb_strtolower($nameB, $this->encoding));
 		} elseif ($i === 0) {
 			return -1;
 		} else {
@@ -73,4 +73,3 @@ class SearchResultSorter {
 		}
 	}
 }
-

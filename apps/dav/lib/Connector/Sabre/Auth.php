@@ -45,8 +45,6 @@ use Sabre\HTTP\RequestInterface;
 use Sabre\HTTP\ResponseInterface;
 
 class Auth extends AbstractBasic {
-
-
 	const DAV_AUTHENTICATED = 'AUTHENTICATED_TO_DAV_BACKEND';
 
 	/** @var ISession */
@@ -95,7 +93,7 @@ class Auth extends AbstractBasic {
 	 * @return bool
 	 */
 	public function isDavAuthenticated($username) {
-		return !is_null($this->session->get(self::DAV_AUTHENTICATED)) &&
+		return $this->session->get(self::DAV_AUTHENTICATED) !== null &&
 		$this->session->get(self::DAV_AUTHENTICATED) === $username;
 	}
 
@@ -110,7 +108,7 @@ class Auth extends AbstractBasic {
 	 * @return bool
 	 */
 	protected function validateUserPass($username, $password) {
-		if (trim($username) === '') {
+		if (\trim($username) === '') {
 			return false;
 		}
 		if ($this->userSession->isLoggedIn() &&
@@ -146,7 +144,7 @@ class Auth extends AbstractBasic {
 	 * @throws NotAuthenticated
 	 * @throws ServiceUnavailable
 	 */
-	function check(RequestInterface $request, ResponseInterface $response) {
+	public function check(RequestInterface $request, ResponseInterface $response) {
 		try {
 			$result = $this->auth($request, $response);
 			return $result;
@@ -155,7 +153,7 @@ class Auth extends AbstractBasic {
 		} catch (NotAuthenticated $e) {
 			throw $e;
 		} catch (Exception $e) {
-			$class = get_class($e);
+			$class = \get_class($e);
 			$msg = $e->getMessage();
 			throw new ServiceUnavailable("$class: $msg");
 		}
@@ -167,13 +165,13 @@ class Auth extends AbstractBasic {
 	 * @return bool
 	 */
 	private function requiresCSRFCheck() {
-		// If not POST no check is required 
-		if($this->request->getMethod() !== 'POST') {
+		// If not POST no check is required
+		if ($this->request->getMethod() !== 'POST') {
 			return false;
 		}
 
 		// Official ownCloud clients require no checks
-		if($this->request->isUserAgent([
+		if ($this->request->isUserAgent([
 			Request::USER_AGENT_OWNCLOUD_DESKTOP,
 			Request::USER_AGENT_OWNCLOUD_ANDROID,
 			Request::USER_AGENT_OWNCLOUD_IOS,
@@ -182,12 +180,12 @@ class Auth extends AbstractBasic {
 		}
 
 		// If not logged-in no check is required
-		if(!$this->userSession->isLoggedIn()) {
+		if (!$this->userSession->isLoggedIn()) {
 			return false;
 		}
 
 		// If logged-in AND DAV authenticated no check is required
-		if($this->userSession->isLoggedIn() &&
+		if ($this->userSession->isLoggedIn() &&
 			$this->isDavAuthenticated($this->userSession->getUser()->getUID())) {
 			return false;
 		}
@@ -203,13 +201,13 @@ class Auth extends AbstractBasic {
 	 */
 	private function auth(RequestInterface $request, ResponseInterface $response) {
 		$forcedLogout = false;
-		if(!$this->request->passesCSRFCheck() &&
+		if (!$this->request->passesCSRFCheck() &&
 			$this->requiresCSRFCheck()) {
 			// In case of a fail with POST we need to recheck the credentials
 			$forcedLogout = true;
 		}
 
-		if($forcedLogout) {
+		if ($forcedLogout) {
 			$this->userSession->logout();
 		} else {
 			if ($this->twoFactorManager->needsSecondFactor()) {
@@ -217,7 +215,7 @@ class Auth extends AbstractBasic {
 			}
 			if (\OC_User::handleApacheAuth() ||
 				//Fix for broken webdav clients
-				($this->userSession->isLoggedIn() && is_null($this->session->get(self::DAV_AUTHENTICATED))) ||
+				($this->userSession->isLoggedIn() && $this->session->get(self::DAV_AUTHENTICATED) === null) ||
 				//Well behaved clients that only send the cookie are allowed
 				($this->userSession->isLoggedIn() && $this->session->get(self::DAV_AUTHENTICATED) === $this->userSession->getUser()->getUID() && $request->getHeader('Authorization') === null)
 			) {
@@ -229,18 +227,18 @@ class Auth extends AbstractBasic {
 			}
 		}
 
-		if (!$this->userSession->isLoggedIn() && in_array('XMLHttpRequest', explode(',', $request->getHeader('X-Requested-With')))) {
+		if (!$this->userSession->isLoggedIn() && \in_array('XMLHttpRequest', \explode(',', $request->getHeader('X-Requested-With')))) {
 			// do not re-authenticate over ajax, use dummy auth name to prevent browser popup
-			$response->addHeader('WWW-Authenticate','DummyBasic realm="' . $this->realm . '"');
+			$response->addHeader('WWW-Authenticate', 'DummyBasic realm="' . $this->realm . '"');
 			$response->setStatus(401);
 			throw new \Sabre\DAV\Exception\NotAuthenticated('Cannot authenticate over ajax calls');
 		}
 
 		$data = parent::check($request, $response);
-		if($data[0] === true) {
-			$startPos = strrpos($data[1], '/') + 1;
+		if ($data[0] === true) {
+			$startPos = \strrpos($data[1], '/') + 1;
 			$user = $this->userSession->getUser()->getUID();
-			$data[1] = substr_replace($data[1], $user, $startPos);
+			$data[1] = \substr_replace($data[1], $user, $startPos);
 		}
 		return $data;
 	}

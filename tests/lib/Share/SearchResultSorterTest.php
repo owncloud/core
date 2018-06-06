@@ -33,7 +33,7 @@ class SearchResultSorterTest extends \Test\TestCase {
 			['foobar' => 'Bicyclerepairwoman'],
 		];
 
-		usort($result, [$sorter, 'sort']);
+		\usort($result, [$sorter, 'sort']);
 		$this->assertSame('Linus', $result[0]['foobar']);
 		$this->assertSame('linux', $result[1]['foobar']);
 		$this->assertSame('Bicyclerepairwoman', $result[2]['foobar']);

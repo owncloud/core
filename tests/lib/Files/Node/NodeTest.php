@@ -28,7 +28,7 @@ abstract class NodeTest extends TestCase {
 		$this->user = $this->createMock(IUser::class);
 	}
 
-	protected abstract function createTestNode($root, $view, $path);
+	abstract protected function createTestNode($root, $view, $path);
 
 	protected function getMockStorage() {
 		$storage = $this->createMock('\OCP\Files\Storage');
@@ -151,7 +151,6 @@ abstract class NodeTest extends TestCase {
 		$node->delete();
 	}
 
-
 	public function testStat() {
 		/**
 		 * @var \OC\Files\View | \PHPUnit_Framework_MockObject_MockObject $view
@@ -214,7 +213,6 @@ abstract class NodeTest extends TestCase {
 		$root->expects($this->any())
 			->method('getUser')
 			->will($this->returnValue($this->user));
-
 
 		$stat = $this->getFileInfo([
 			'fileid' => 1,
@@ -303,7 +301,6 @@ abstract class NodeTest extends TestCase {
 			->with('/bar/foo')
 			->will($this->returnValue([$storage, 'foo']));
 
-
 		$node = $this->createTestNode($root, $view, '/bar/foo');
 		$this->assertEquals($storage, $node->getStorage());
 	}
@@ -340,7 +337,6 @@ abstract class NodeTest extends TestCase {
 			->method('resolvePath')
 			->with('/bar/foo')
 			->will($this->returnValue([$storage, 'foo']));
-
 
 		$node = $this->createTestNode($root, $view, '/bar/foo');
 		$this->assertEquals('foo', $node->getInternalPath());

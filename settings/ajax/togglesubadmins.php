@@ -31,12 +31,12 @@ $targetUserObject = \OC::$server->getUserManager()->get($username);
 $targetGroupObject = \OC::$server->getGroupManager()->get($group);
 
 $isSubAdminOfGroup = false;
-if($targetUserObject !== null && $targetUserObject !== null) {
+if ($targetUserObject !== null && $targetUserObject !== null) {
 	$isSubAdminOfGroup = $subAdminManager->isSubAdminofGroup($targetUserObject, $targetGroupObject);
 }
 
 // Toggle group
-if($isSubAdminOfGroup) {
+if ($isSubAdminOfGroup) {
 	$subAdminManager->deleteSubAdmin($targetUserObject, $targetGroupObject);
 } else {
 	$subAdminManager->createSubAdmin($targetUserObject, $targetGroupObject);

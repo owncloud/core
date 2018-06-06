@@ -34,7 +34,6 @@ use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
  * Repairs file cache entry which path do not match the parent-child relationship
  */
 class RepairMismatchFileCachePath implements IRepairStep {
-
 	const CHUNK_SIZE = 10000;
 
 	/** @var IDBConnection */
@@ -102,7 +101,7 @@ class RepairMismatchFileCachePath implements IRepairStep {
 	 * @param int $fileId file id of the entry to fix
 	 * @param string $wrongPath wrong path of the entry to fix
 	 * @param int $correctStorageNumericId numeric idea of the correct storage
-	 * @param string $correctPath value to which to set the path of the entry 
+	 * @param string $correctPath value to which to set the path of the entry
 	 * @return bool true for success
 	 */
 	private function fixEntryPath(IOutput $out, $fileId, $wrongPath, $correctStorageNumericId, $correctPath) {
@@ -114,14 +113,14 @@ class RepairMismatchFileCachePath implements IRepairStep {
 		if ($correctPath === '' && $this->connection->getDatabasePlatform() instanceof OraclePlatform) {
 			$qb->andWhere($qb->expr()->isNull('path'));
 		} else {
-			$qb->andWhere($qb->expr()->eq('path_hash', $qb->createNamedParameter(md5($correctPath))));
+			$qb->andWhere($qb->expr()->eq('path_hash', $qb->createNamedParameter(\md5($correctPath))));
 		}
 		$entryExisted = $qb->execute() > 0;
 
 		$qb = $this->connection->getQueryBuilder();
 		$qb->update('filecache')
 			->set('path', $qb->createNamedParameter($correctPath))
-			->set('path_hash', $qb->createNamedParameter(md5($correctPath)))
+			->set('path_hash', $qb->createNamedParameter(\md5($correctPath)))
 			->set('storage', $qb->createNamedParameter($correctStorageNumericId))
 			->where($qb->expr()->eq('fileid', $qb->createNamedParameter($fileId)));
 		$qb->execute();
@@ -221,7 +220,6 @@ class RepairMismatchFileCachePath implements IRepairStep {
 		return $count;
 	}
 
-
 	/**
 	 * Outputs a report about storages with wrong path that need repairing in the file cache
 	 */
@@ -243,7 +241,7 @@ class RepairMismatchFileCachePath implements IRepairStep {
 		}
 
 		if (!empty($storageIds)) {
-			$out->warning('The file cache contains entries with invalid path values for the following storage numeric ids: ' . implode(' ', $storageIds));
+			$out->warning('The file cache contains entries with invalid path values for the following storage numeric ids: ' . \implode(' ', $storageIds));
 			$out->warning('Please run `occ files:scan --all --repair` to repair'
 			.'all affected storages or run `occ files:scan userid --repair for '
 			.'each user with affected storages');
@@ -271,7 +269,7 @@ class RepairMismatchFileCachePath implements IRepairStep {
 		}
 
 		if (!empty($storageIds)) {
-			$out->warning('The file cache contains entries where the parent id does not point to any existing entry for the following storage numeric ids: ' . implode(' ', $storageIds));
+			$out->warning('The file cache contains entries where the parent id does not point to any existing entry for the following storage numeric ids: ' . \implode(' ', $storageIds));
 			$out->warning('Please run `occ files:scan --all --repair` to repair all affected storages');
 		}
 	}
@@ -313,7 +311,7 @@ class RepairMismatchFileCachePath implements IRepairStep {
 				$wrongPath = $row['path'];
 				$correctPath = $row['parentpath'] . '/' . $row['name'];
 				// make sure the target is on a different subtree
-				if (substr($correctPath, 0, strlen($wrongPath)) === $wrongPath) {
+				if (\substr($correctPath, 0, \strlen($wrongPath)) === $wrongPath) {
 					// the path based parent entry is referencing one of its own children,
 					// fix the entry's parent id instead
 					// note: fixEntryParent cannot fail to find the parent entry by path
@@ -352,7 +350,7 @@ class RepairMismatchFileCachePath implements IRepairStep {
 			$out->info("Fixed $totalResultsCount file cache entries with wrong path");
 		}
 
-		return array_keys($affectedStorages);
+		return \array_keys($affectedStorages);
 	}
 
 	/**
@@ -379,7 +377,7 @@ class RepairMismatchFileCachePath implements IRepairStep {
 		if ($path === '' && $this->connection->getDatabasePlatform() instanceof OraclePlatform) {
 			$qb->andWhere($qb->expr()->isNull('path'));
 		} else {
-			$qb->andWhere($qb->expr()->eq('path_hash', $qb->createNamedParameter(md5($path))));
+			$qb->andWhere($qb->expr()->eq('path_hash', $qb->createNamedParameter(\md5($path))));
 		}
 		$results = $qb->execute();
 		$rows = $results->fetchAll();
@@ -390,7 +388,7 @@ class RepairMismatchFileCachePath implements IRepairStep {
 		}
 
 		if ($path !== '') {
-			$parentId = $this->getOrCreateEntry($storageId, dirname($path));
+			$parentId = $this->getOrCreateEntry($storageId, \dirname($path));
 		} else {
 			// root entry missing, create it
 			$parentId = -1;
@@ -400,8 +398,8 @@ class RepairMismatchFileCachePath implements IRepairStep {
 		$values = [
 			'storage' => $qb->createNamedParameter($storageId),
 			'path' => $qb->createNamedParameter($path),
-			'path_hash' => $qb->createNamedParameter(md5($path)),
-			'name' => $qb->createNamedParameter(basename($path)),
+			'path_hash' => $qb->createNamedParameter(\md5($path)),
+			'name' => $qb->createNamedParameter(\basename($path)),
 			'parent' => $qb->createNamedParameter($parentId),
 			'size' => $qb->createNamedParameter(-1),
 			'etag' => $qb->createNamedParameter('zombie'),
@@ -425,7 +423,7 @@ class RepairMismatchFileCachePath implements IRepairStep {
 		}
 
 		// If we reused the fileid then this is the id to return
-		if($reuseFileId !== null) {
+		if ($reuseFileId !== null) {
 			// with Oracle, the trigger gets in the way and does not let us specify
 			// a fileid value on insert
 			if ($this->connection->getDatabasePlatform() instanceof OraclePlatform) {
@@ -462,10 +460,10 @@ class RepairMismatchFileCachePath implements IRepairStep {
 	private function fixEntryParent(IOutput $out, $storageId, $fileId, $path, $wrongParentId, $parentIdExists = false) {
 		if (!$parentIdExists) {
 			// if the parent doesn't exist, let us reuse its id in case there is metadata to salvage
-			$correctParentId = $this->getOrCreateEntry($storageId, dirname($path), $wrongParentId);
+			$correctParentId = $this->getOrCreateEntry($storageId, \dirname($path), $wrongParentId);
 		} else {
 			// parent exists and is the wrong one, so recreating would need a new fileid
-			$correctParentId = $this->getOrCreateEntry($storageId, dirname($path));
+			$correctParentId = $this->getOrCreateEntry($storageId, \dirname($path));
 		}
 
 		$this->connection->beginTransaction();
@@ -487,7 +485,7 @@ class RepairMismatchFileCachePath implements IRepairStep {
 	/**
 	 * Repair entries where the parent id doesn't point to any existing entry
 	 * by finding the actual parent entry matching the entry's path dirname.
-	 * 
+	 *
 	 * @param IOutput $out output
 	 * @param int|null $storageNumericId storage to fix or null for all
 	 * @return int number of results that were fixed
@@ -539,7 +537,6 @@ class RepairMismatchFileCachePath implements IRepairStep {
 	 * @param IOutput $out output
 	 */
 	public function run(IOutput $out) {
-
 		$this->dirMimeTypeId = $this->mimeLoader->getId('httpd/unix-directory');
 		$this->dirMimePartId = $this->mimeLoader->getId('httpd');
 

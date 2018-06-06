@@ -41,8 +41,8 @@ class EventLogger implements IEventLogger {
 	 * @inheritdoc
 	 */
 	public function start($id, $description) {
-		if ($this->activated){
-			$this->events[$id] = new Event($id, $description, microtime(true));
+		if ($this->activated) {
+			$this->events[$id] = new Event($id, $description, \microtime(true));
 		}
 	}
 
@@ -52,7 +52,7 @@ class EventLogger implements IEventLogger {
 	public function end($id) {
 		if ($this->activated && isset($this->events[$id])) {
 			$timing = $this->events[$id];
-			$timing->end(microtime(true));
+			$timing->end(\microtime(true));
 		}
 	}
 

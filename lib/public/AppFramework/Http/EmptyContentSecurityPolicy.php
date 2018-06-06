@@ -22,7 +22,6 @@
 
 namespace OCP\AppFramework\Http;
 
-
 /**
  * Class EmptyContentSecurityPolicy is a simple helper which allows applications
  * to modify the Content-Security-Policy sent by ownCloud. Per default the policy
@@ -110,7 +109,7 @@ class EmptyContentSecurityPolicy {
 	 * @since 8.1.0
 	 */
 	public function disallowScriptDomain($domain) {
-		$this->allowedScriptDomains = array_diff($this->allowedScriptDomains, [$domain]);
+		$this->allowedScriptDomains = \array_diff($this->allowedScriptDomains, [$domain]);
 		return $this;
 	}
 
@@ -145,7 +144,7 @@ class EmptyContentSecurityPolicy {
 	 * @since 8.1.0
 	 */
 	public function disallowStyleDomain($domain) {
-		$this->allowedStyleDomains = array_diff($this->allowedStyleDomains, [$domain]);
+		$this->allowedStyleDomains = \array_diff($this->allowedStyleDomains, [$domain]);
 		return $this;
 	}
 
@@ -169,7 +168,7 @@ class EmptyContentSecurityPolicy {
 	 * @since 8.1.0
 	 */
 	public function disallowFontDomain($domain) {
-		$this->allowedFontDomains = array_diff($this->allowedFontDomains, [$domain]);
+		$this->allowedFontDomains = \array_diff($this->allowedFontDomains, [$domain]);
 		return $this;
 	}
 
@@ -193,7 +192,7 @@ class EmptyContentSecurityPolicy {
 	 * @since 8.1.0
 	 */
 	public function disallowImageDomain($domain) {
-		$this->allowedImageDomains = array_diff($this->allowedImageDomains, [$domain]);
+		$this->allowedImageDomains = \array_diff($this->allowedImageDomains, [$domain]);
 		return $this;
 	}
 
@@ -216,7 +215,7 @@ class EmptyContentSecurityPolicy {
 	 * @since 8.1.0
 	 */
 	public function disallowConnectDomain($domain) {
-		$this->allowedConnectDomains = array_diff($this->allowedConnectDomains, [$domain]);
+		$this->allowedConnectDomains = \array_diff($this->allowedConnectDomains, [$domain]);
 		return $this;
 	}
 
@@ -239,7 +238,7 @@ class EmptyContentSecurityPolicy {
 	 * @since 8.1.0
 	 */
 	public function disallowMediaDomain($domain) {
-		$this->allowedMediaDomains = array_diff($this->allowedMediaDomains, [$domain]);
+		$this->allowedMediaDomains = \array_diff($this->allowedMediaDomains, [$domain]);
 		return $this;
 	}
 
@@ -262,7 +261,7 @@ class EmptyContentSecurityPolicy {
 	 * @since 8.1.0
 	 */
 	public function disallowObjectDomain($domain) {
-		$this->allowedObjectDomains = array_diff($this->allowedObjectDomains, [$domain]);
+		$this->allowedObjectDomains = \array_diff($this->allowedObjectDomains, [$domain]);
 		return $this;
 	}
 
@@ -285,7 +284,7 @@ class EmptyContentSecurityPolicy {
 	 * @since 8.1.0
 	 */
 	public function disallowFrameDomain($domain) {
-		$this->allowedFrameDomains = array_diff($this->allowedFrameDomains, [$domain]);
+		$this->allowedFrameDomains = \array_diff($this->allowedFrameDomains, [$domain]);
 		return $this;
 	}
 
@@ -308,7 +307,7 @@ class EmptyContentSecurityPolicy {
 	 * @since 8.1.0
 	 */
 	public function disallowChildSrcDomain($domain) {
-		$this->allowedChildSrcDomains = array_diff($this->allowedChildSrcDomains, [$domain]);
+		$this->allowedChildSrcDomains = \array_diff($this->allowedChildSrcDomains, [$domain]);
 		return $this;
 	}
 
@@ -320,66 +319,66 @@ class EmptyContentSecurityPolicy {
 	public function buildPolicy() {
 		$policy = "default-src 'none';manifest-src 'self';";
 
-		if(!empty($this->allowedScriptDomains) || $this->inlineScriptAllowed || $this->evalScriptAllowed) {
+		if (!empty($this->allowedScriptDomains) || $this->inlineScriptAllowed || $this->evalScriptAllowed) {
 			$policy .= 'script-src ';
-			if(is_array($this->allowedScriptDomains)) {
-				$policy .= implode(' ', $this->allowedScriptDomains);
+			if (\is_array($this->allowedScriptDomains)) {
+				$policy .= \implode(' ', $this->allowedScriptDomains);
 			}
-			if($this->inlineScriptAllowed) {
+			if ($this->inlineScriptAllowed) {
 				$policy .= ' \'unsafe-inline\'';
 			}
-			if($this->evalScriptAllowed) {
+			if ($this->evalScriptAllowed) {
 				$policy .= ' \'unsafe-eval\'';
 			}
 			$policy .= ';';
 		}
 
-		if(!empty($this->allowedStyleDomains) || $this->inlineStyleAllowed) {
+		if (!empty($this->allowedStyleDomains) || $this->inlineStyleAllowed) {
 			$policy .= 'style-src ';
-			if(is_array($this->allowedStyleDomains)) {
-				$policy .= implode(' ', $this->allowedStyleDomains);
+			if (\is_array($this->allowedStyleDomains)) {
+				$policy .= \implode(' ', $this->allowedStyleDomains);
 			}
-			if($this->inlineStyleAllowed) {
+			if ($this->inlineStyleAllowed) {
 				$policy .= ' \'unsafe-inline\'';
 			}
 			$policy .= ';';
 		}
 
-		if(!empty($this->allowedImageDomains)) {
-			$policy .= 'img-src ' . implode(' ', $this->allowedImageDomains);
+		if (!empty($this->allowedImageDomains)) {
+			$policy .= 'img-src ' . \implode(' ', $this->allowedImageDomains);
 			$policy .= ';';
 		}
 
-		if(!empty($this->allowedFontDomains)) {
-			$policy .= 'font-src ' . implode(' ', $this->allowedFontDomains);
+		if (!empty($this->allowedFontDomains)) {
+			$policy .= 'font-src ' . \implode(' ', $this->allowedFontDomains);
 			$policy .= ';';
 		}
 
-		if(!empty($this->allowedConnectDomains)) {
-			$policy .= 'connect-src ' . implode(' ', $this->allowedConnectDomains);
+		if (!empty($this->allowedConnectDomains)) {
+			$policy .= 'connect-src ' . \implode(' ', $this->allowedConnectDomains);
 			$policy .= ';';
 		}
 
-		if(!empty($this->allowedMediaDomains)) {
-			$policy .= 'media-src ' . implode(' ', $this->allowedMediaDomains);
+		if (!empty($this->allowedMediaDomains)) {
+			$policy .= 'media-src ' . \implode(' ', $this->allowedMediaDomains);
 			$policy .= ';';
 		}
 
-		if(!empty($this->allowedObjectDomains)) {
-			$policy .= 'object-src ' . implode(' ', $this->allowedObjectDomains);
+		if (!empty($this->allowedObjectDomains)) {
+			$policy .= 'object-src ' . \implode(' ', $this->allowedObjectDomains);
 			$policy .= ';';
 		}
 
-		if(!empty($this->allowedFrameDomains)) {
-			$policy .= 'frame-src ' . implode(' ', $this->allowedFrameDomains);
- 			$policy .= ' blob:;';
+		if (!empty($this->allowedFrameDomains)) {
+			$policy .= 'frame-src ' . \implode(' ', $this->allowedFrameDomains);
+			$policy .= ' blob:;';
 		}
 
-		if(!empty($this->allowedChildSrcDomains)) {
-			$policy .= 'child-src ' . implode(' ', $this->allowedChildSrcDomains);
+		if (!empty($this->allowedChildSrcDomains)) {
+			$policy .= 'child-src ' . \implode(' ', $this->allowedChildSrcDomains);
 			$policy .= ';';
 		}
 
-		return rtrim($policy, ';');
+		return \rtrim($policy, ';');
 	}
 }

@@ -27,7 +27,6 @@ use OCP\Migration\IOutput;
 use OCP\Migration\IRepairStep;
 
 class SearchLuceneTables implements IRepairStep {
-
 	public function getName() {
 		return 'Repair duplicate entries in oc_lucene_status';
 	}
@@ -74,6 +73,4 @@ class SearchLuceneTables implements IRepairStep {
 			$out->info('lucene_status table does not exist -> nothing to do');
 		}
 	}
-
 }
-

@@ -29,7 +29,6 @@ use OC\Files\Filesystem;
 use OCA\FederatedFileSharing\DiscoveryManager;
 
 class Hooks {
-
 	public static function deleteUser($params) {
 		$discoveryManager = new DiscoveryManager(
 			\OC::$server->getMemCacheFactory(),

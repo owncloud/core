@@ -365,6 +365,5 @@ class Root extends Folder implements IRootFolder {
 		}
 
 		return $folder;
-
 	}
 }

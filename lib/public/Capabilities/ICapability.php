@@ -43,4 +43,3 @@ interface ICapability {
 	 */
 	public function getCapabilities();
 }
-

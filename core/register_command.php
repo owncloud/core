@@ -54,7 +54,6 @@ $application->add(new \OC\Core\Command\Integrity\CheckCore(
 		\OC::$server->getIntegrityCodeChecker()
 ));
 
-
 if (\OC::$server->getConfig()->getSystemValue('installed', false)) {
 	$application->add(new OC\Core\Command\App\Disable(\OC::$server->getAppManager()));
 	$application->add(new OC\Core\Command\App\Enable(\OC::$server->getAppManager()));

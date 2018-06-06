@@ -67,5 +67,4 @@ interface ICredentialsManager {
 	 * @since 8.2.0
 	 */
 	public function erase($userId);
-
 }

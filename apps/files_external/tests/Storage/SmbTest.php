@@ -37,16 +37,15 @@ use OCA\Files_External\Lib\Storage\SMB;
  * @package OCA\Files_External\Tests\Storage
  */
 class SmbTest extends \Test\Files\Storage\Storage {
-
 	protected function setUp() {
 		parent::setUp();
 
 		$id = $this->getUniqueID();
 		$config = include('files_external/tests/config.smb.php');
-		if (!is_array($config) or !$config['run']) {
+		if (!\is_array($config) or !$config['run']) {
 			$this->markTestSkipped('Samba backend not configured');
 		}
-		if (substr($config['root'], -1, 1) != '/') {
+		if (\substr($config['root'], -1, 1) != '/') {
 			$config['root'] .= '/';
 		}
 		$config['root'] .= $id; //make sure we have an new empty folder to work in

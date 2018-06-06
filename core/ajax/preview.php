@@ -26,13 +26,13 @@
 \OC_Util::checkLoggedIn();
 \OC::$server->getSession()->close();
 
-$file = array_key_exists('file', $_GET) ? (string)$_GET['file'] : '';
-$maxX = array_key_exists('x', $_GET) ? (int)$_GET['x'] : '32';
-$maxY = array_key_exists('y', $_GET) ? (int)$_GET['y'] : '32';
-$scalingUp = array_key_exists('scalingup', $_GET) ? (bool)$_GET['scalingup'] : true;
-$keepAspect = array_key_exists('a', $_GET) ? true : false;
-$always = array_key_exists('forceIcon', $_GET) ? (bool)$_GET['forceIcon'] : true;
-$mode = array_key_exists('mode', $_GET) ? $_GET['mode'] : 'fill';
+$file = \array_key_exists('file', $_GET) ? (string)$_GET['file'] : '';
+$maxX = \array_key_exists('x', $_GET) ? (int)$_GET['x'] : '32';
+$maxY = \array_key_exists('y', $_GET) ? (int)$_GET['y'] : '32';
+$scalingUp = \array_key_exists('scalingup', $_GET) ? (bool)$_GET['scalingup'] : true;
+$keepAspect = \array_key_exists('a', $_GET) ? true : false;
+$always = \array_key_exists('forceIcon', $_GET) ? (bool)$_GET['forceIcon'] : true;
+$mode = \array_key_exists('mode', $_GET) ? $_GET['mode'] : 'fill';
 
 if ($file === '') {
 	//400 Bad Request

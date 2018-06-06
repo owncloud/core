@@ -38,7 +38,6 @@
 // This means that they should be used by apps instead of the internal ownCloud classes
 namespace OCP;
 
-
 /**
  * Make OC_Helper::imagePath available as a simple function
  * @param string $app
@@ -48,10 +47,9 @@ namespace OCP;
  * @see \OCP\IURLGenerator::imagePath
  * @deprecated 8.0.0 Use \OCP\Template::image_path() instead
  */
-function image_path( $app, $image ) {
-	return(\image_path( $app, $image ));
+function image_path($app, $image) {
+	return(\image_path($app, $image));
 }
-
 
 /**
  * Make OC_Helper::mimetypeIcon available as a simple function
@@ -59,8 +57,8 @@ function image_path( $app, $image ) {
  * @return string to the image of this file type.
  * @deprecated 8.0.0 Use \OCP\Template::mimetype_icon() instead
  */
-function mimetype_icon( $mimetype ) {
-	return(\mimetype_icon( $mimetype ));
+function mimetype_icon($mimetype) {
+	return(\mimetype_icon($mimetype));
 }
 
 /**
@@ -69,8 +67,8 @@ function mimetype_icon( $mimetype ) {
  * @return string to the preview of the image
  * @deprecated 8.0.0 Use \OCP\Template::preview_icon() instead
  */
-function preview_icon( $path ) {
-	return(\preview_icon( $path ));
+function preview_icon($path) {
+	return(\preview_icon($path));
 }
 
 /**
@@ -81,8 +79,8 @@ function preview_icon( $path ) {
  * @return string link to the preview
  * @deprecated 8.0.0 Use \OCP\Template::publicPreview_icon() instead
  */
-function publicPreview_icon ( $path, $token ) {
-	return(\publicPreview_icon( $path, $token ));
+function publicPreview_icon($path, $token) {
+	return(\publicPreview_icon($path, $token));
 }
 
 /**
@@ -92,10 +90,9 @@ function publicPreview_icon ( $path, $token ) {
  * @return string size as string
  * @deprecated 8.0.0 Use \OCP\Template::human_file_size() instead
  */
-function human_file_size( $bytes ) {
-	return(\human_file_size( $bytes ));
+function human_file_size($bytes) {
+	return(\human_file_size($bytes));
 }
-
 
 /**
  * Return the relative date in relation to today. Returns something like "last hour" or "two month ago"
@@ -105,10 +102,9 @@ function human_file_size( $bytes ) {
  *
  * @deprecated 8.0.0 Use \OCP\Template::relative_modified_date() instead
  */
-function relative_modified_date( $timestamp, $dateOnly = false ) {
+function relative_modified_date($timestamp, $dateOnly = false) {
 	return(\relative_modified_date($timestamp, null, $dateOnly));
 }
-
 
 /**
  * Return a human readable outout for a file size.
@@ -119,7 +115,6 @@ function relative_modified_date( $timestamp, $dateOnly = false ) {
 function simple_file_size($bytes) {
 	return(\human_file_size($bytes));
 }
-
 
 /**
  * Generate html code for an options block.
@@ -132,7 +127,6 @@ function simple_file_size($bytes) {
 function html_select_options($options, $selected, $params= []) {
 	return(\html_select_options($options, $selected, $params));
 }
-
 
 /**
  * This class provides the template system for owncloud. You can use it to load
@@ -154,7 +148,6 @@ class Template extends \OC_Template {
 	public static function image_path($app, $image) {
 		return \image_path($app, $image);
 	}
-
 
 	/**
 	 * Make OC_Helper::mimetypeIcon available as a simple function

@@ -38,7 +38,7 @@ class CleanupChunks extends Command {
 	/**
 	 * @param IUserManager $userManager
 	 */
-	function __construct(IUserManager $userManager) {
+	public function __construct(IUserManager $userManager) {
 		parent::__construct();
 		$this->userManager = $userManager;
 	}
@@ -54,7 +54,7 @@ class CleanupChunks extends Command {
 
 	protected function execute(InputInterface $input, OutputInterface $output) {
 		$d = $input->getArgument('age-in-days');
-		$d = max(2, min($d, 100));
+		$d = \max(2, \min($d, 100));
 		$cutOffTime = new \DateTime("$d days ago");
 		$output->writeln("Cleaning chunks older than $d days({$cutOffTime->format('c')})");
 		$this->userManager->callForSeenUsers(function (IUser $user) use ($output, $cutOffTime) {
@@ -66,7 +66,7 @@ class CleanupChunks extends Command {
 			$uploads = $home->getChildren();
 
 			$p = new ProgressBar($output);
-			$p->start(count($uploads));
+			$p->start(\count($uploads));
 			foreach ($uploads as $upload) {
 				$p->advance();
 				/** @var UploadFolder $upload */
@@ -77,7 +77,6 @@ class CleanupChunks extends Command {
 
 			$p->finish();
 			$output->writeln('');
-
 		});
 	}
 }

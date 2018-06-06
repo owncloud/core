@@ -99,7 +99,7 @@ class GroupsController extends Controller {
 	 * @return DataResponse
 	 */
 	public function create($id) {
-		if($this->groupManager->groupExists($id)) {
+		if ($this->groupManager->groupExists($id)) {
 			return new DataResponse(
 				[
 					'message' => (string)$this->l10n->t('Group already exists.')
@@ -107,7 +107,7 @@ class GroupsController extends Controller {
 				Http::STATUS_CONFLICT
 			);
 		}
-		if($this->groupManager->createGroup($id)) {
+		if ($this->groupManager->createGroup($id)) {
 			return new DataResponse(
 				[
 					'groupname' => $id
@@ -132,7 +132,7 @@ class GroupsController extends Controller {
 	 * @return DataResponse
 	 */
 	public function destroy($id) {
-		$group = $this->groupManager->get(urldecode($id));
+		$group = $this->groupManager->get(\urldecode($id));
 		if ($group) {
 			if ($group->delete()) {
 				return new DataResponse(
@@ -156,5 +156,4 @@ class GroupsController extends Controller {
 			Http::STATUS_FORBIDDEN
 		);
 	}
-
 }

@@ -103,14 +103,15 @@ class SyncServiceTest extends TestCase {
 		$account->expects($this->any())->method('getUpdatedFields')->willReturn([]);
 
 		// Then we should try to setup a new account and insert
-		$this->mapper->expects($this->once())->method('insert')->with($this->callback(function($arg) use ($backendUids) {
+		$this->mapper->expects($this->once())->method('insert')->with($this->callback(function ($arg) use ($backendUids) {
 			return $arg instanceof Account && $arg->getUserId() === $backendUids[0];
 		}));
 
 		// Ignore state flag
 
 		$s = new SyncService($this->config, $this->logger, $this->mapper);
-		$s->run($backend, new AllUsersIterator($backend), function($uid) {});
+		$s->run($backend, new AllUsersIterator($backend), function ($uid) {
+		});
 
 		static::invokePrivate($s, 'syncHome', [$account, $backend]);
 	}
@@ -133,8 +134,8 @@ class SyncServiceTest extends TestCase {
 		$this->logger->expects($this->at(1))->method('logException');
 
 		$s = new SyncService($this->config, $this->logger, $this->mapper);
-		$s->run($backend, new AllUsersIterator($backend), function($uid) {});
-
+		$s->run($backend, new AllUsersIterator($backend), function ($uid) {
+		});
 	}
 
 	public function testSyncHomeLogsWhenBackendDiffersFromExisting() {
@@ -179,13 +180,14 @@ class SyncServiceTest extends TestCase {
 		$s = new SyncService($this->config, $this->logger, $this->mapper);
 		$this->mapper->expects($this->once())
 			->method('callForAllUsers')
-			->with($this->callback(function($param) {
-				return is_callable($param);
+			->with($this->callback(function ($param) {
+				return \is_callable($param);
 			}));
 		$backend = $this->createMock(UserInterface::class);
-		$result = $s->analyzeExistingUsers($backend, function() {});
-		$this->assertTrue(is_array($result));
-		$this->assertEquals(2, count($result));
+		$result = $s->analyzeExistingUsers($backend, function () {
+		});
+		$this->assertTrue(\is_array($result));
+		$this->assertEquals(2, \count($result));
 	}
 
 	/**
@@ -202,10 +204,9 @@ class SyncServiceTest extends TestCase {
 		$account->expects($this->exactly(2))->method('getUserId')->willReturn('test');
 		$s = new SyncService($this->config, $this->logger, $this->mapper);
 		$response = static::invokePrivate($s, 'checkIfAccountReappeared', [$account, $backend, $backendClass]);
-		$this->assertTrue(is_array($response));
-		$this->assertEquals(0, count($response[0]));
-		$this->assertEquals(1, count($response[1]));
-
+		$this->assertTrue(\is_array($response));
+		$this->assertEquals(0, \count($response[0]));
+		$this->assertEquals(1, \count($response[1]));
 	}
 
 	/**
@@ -222,9 +223,9 @@ class SyncServiceTest extends TestCase {
 		$account->expects($this->exactly(2))->method('getUserId')->willReturn('test');
 		$s = new SyncService($this->config, $this->logger, $this->mapper);
 		$response = static::invokePrivate($s, 'checkIfAccountReappeared', [$account, $backend, $backendClass]);
-		$this->assertTrue(is_array($response));
-		$this->assertEquals(1, count($response[0]));
-		$this->assertEquals(0, count($response[1]));
+		$this->assertTrue(\is_array($response));
+		$this->assertEquals(1, \count($response[0]));
+		$this->assertEquals(0, \count($response[1]));
 	}
 
 	public function providesSyncQuota() {
@@ -275,5 +276,4 @@ class SyncServiceTest extends TestCase {
 		$s = new SyncService($this->config, $this->logger, $this->mapper);
 		static::invokePrivate($s, 'syncQuota', [$a, $backend]);
 	}
-
 }

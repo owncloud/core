@@ -33,7 +33,6 @@ use OCP\ISession;
 use OCP\IUser;
 
 class Manager {
-
 	const SESSION_UID_KEY = 'two_factor_auth_uid';
 
 	/** @var AppManager */
@@ -64,7 +63,7 @@ class Manager {
 	 */
 	public function isTwoFactorAuthenticated(IUser $user) {
 		$twoFactorEnabled = ((int) $this->config->getUserValue($user->getUID(), 'core', 'two_factor_auth_disabled', 0)) === 0;
-		return $twoFactorEnabled && count($this->getProviders($user)) > 0;
+		return $twoFactorEnabled && \count($this->getProviders($user)) > 0;
 	}
 
 	/**
@@ -124,7 +123,7 @@ class Manager {
 			}
 		}
 
-		return array_filter($providers, function ($provider) use ($user) {
+		return \array_filter($providers, function ($provider) use ($user) {
 			/* @var $provider IProvider */
 			return $provider->isTwoFactorAuthEnabledForUser($user);
 		});
@@ -151,7 +150,7 @@ class Manager {
 	 */
 	public function verifyChallenge($providerId, IUser $user, $challenge) {
 		$provider = $this->getProvider($user, $providerId);
-		if (is_null($provider)) {
+		if ($provider === null) {
 			return false;
 		}
 
@@ -179,5 +178,4 @@ class Manager {
 	public function prepareTwoFactorLogin(IUser $user) {
 		$this->session->set(self::SESSION_UID_KEY, $user->getUID());
 	}
-
 }
