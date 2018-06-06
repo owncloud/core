@@ -72,7 +72,7 @@ default:
         - %paths.base%/../features/apiSharingNotifications
       contexts:
         - FeatureContext: *common_feature_context_params
-        - NotificationsContext:
+        - NotificationsCoreContext:
 
     webUILogin:
       paths:
