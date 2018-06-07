@@ -1,4 +1,21 @@
 #files_sharing textarea {
-	min-width: 280px;
+	width: 400px;
 	min-height: 80px;
+	margin-left: 5px;
+}
+
+#files_sharing .horizontal-layout {
+	display: flex;
+	flex-wrap: wrap;
+	vertical-align: top;
+}
+
+#files_sharing ul.groupBackends {
+	list-style: initial;
+}
+
+@media only screen and (max-width: 400px) {
+	#files_sharing textarea {
+		width: 100%;
+	}
 }
