@@ -152,6 +152,10 @@ pipeline:
       - git clone https://github.com/owncloud/notifications.git apps/notifications
       - php occ a:e notifications
       - echo "export APPS_TO_ENABLE=notifications" > environment.sh
+      - pwd
+      - ls -l apps
+      - ls -l apps/notifications
+      - php occ a:l
     when:
       matrix:
         INSTALL_NOTIFICATIONS-APP: true
