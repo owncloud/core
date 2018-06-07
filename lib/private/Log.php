@@ -409,6 +409,11 @@ class Log implements ILogger {
 	 */
 	public function logException($exception, array $context = []) {
 		$context['exception'] =  $exception;
+		$level = Util::ERROR;
+		if (isset($context['level'])) {
+			$level = $context['level'];
+			unset($context['level']);
+		}
 		$exception = [
 			'Exception' => get_class($exception),
 			'Message' => $exception->getMessage(),
@@ -423,6 +428,6 @@ class Log implements ILogger {
 		}
 		$msg = isset($context['message']) ? $context['message'] : 'Exception';
 		$msg .= ': ' . json_encode($exception);
-		$this->error($msg, $context);
+		$this->log($level, $msg, $context);
 	}
 }
