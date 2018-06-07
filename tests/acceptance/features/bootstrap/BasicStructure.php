@@ -262,7 +262,7 @@ trait BasicStructure {
 	 * @return void
 	 */
 	public function usingApiVersion($version) {
-		$this->apiVersion = $version;
+		$this->apiVersion = (int) $version;
 	}
 
 	/**
