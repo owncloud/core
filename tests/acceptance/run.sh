@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-
+# dummy CI  test
 # composer install
 
 # from http://stackoverflow.com/a/630387
