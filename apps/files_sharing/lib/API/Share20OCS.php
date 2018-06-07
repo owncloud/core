@@ -39,6 +39,7 @@ use OCP\Share\IManager;
 use OCP\Share\IShare;
 use OCA\Files_Sharing\Service\NotificationPublisher;
 use OCA\Files_Sharing\Helper;
+use OCA\Files_Sharing\SharingBlacklist;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\EventDispatcher\GenericEvent;
 
@@ -71,6 +72,8 @@ class Share20OCS {
 	private $notificationPublisher;
 	/** @var EventDispatcher  */
 	private $eventDispatcher;
+	/** @var SharingBlacklist */
+	private $sharingBlacklist;
 
 	/**
 	 * @var string
@@ -102,7 +105,8 @@ class Share20OCS {
 			IL10N $l10n,
 			IConfig $config,
 			NotificationPublisher $notificationPublisher,
-			EventDispatcher $eventDispatcher
+			EventDispatcher $eventDispatcher,
+			SharingBlacklist $sharingBlacklist
 	) {
 		$this->shareManager = $shareManager;
 		$this->userManager = $userManager;
@@ -115,6 +119,7 @@ class Share20OCS {
 		$this->config = $config;
 		$this->notificationPublisher = $notificationPublisher;
 		$this->eventDispatcher = $eventDispatcher;
+		$this->sharingBlacklist = $sharingBlacklist;
 		$this->additionalInfoField = $this->config->getAppValue('core', 'user_additional_info_field', '');
 	}
 
@@ -401,6 +406,9 @@ class Share20OCS {
 			if ($shareWith === null || !$this->groupManager->groupExists($shareWith)) {
 				$share->getNode()->unlock(ILockingProvider::LOCK_SHARED);
 				return new \OC\OCS\Result(null, 404, $this->l->t('Please specify a valid group'));
+			}
+			if ($this->sharingBlacklist->isGroupBlacklisted($this->groupManager->get($shareWith))) {
+				return new \OC\OCS\Result(null, 403, $this->l->t('The group is blacklisted for sharing'));
 			}
 			$share->setSharedWith($shareWith);
 			$share->setPermissions($permissions);
