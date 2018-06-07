@@ -2,8 +2,8 @@ OC.L10N.register(
     "settings",
     {
     "Wrong password" : "Yalnış şifrə",
-    "log-level out of allowed range" : "jurnal-səviyyəsi izin verilən aralıqdan kənardır",
     "Saved" : "Saxlanıldı",
+    "log-level out of allowed range" : "jurnal-səviyyəsi izin verilən aralıqdan kənardır",
     "test email settings" : "sınaq məktubu quraşdırmaları",
     "A problem occurred while sending the email. Please revise your settings. (Error: %s)" : "Məktubun yollanmasında səhv baş verdi. Xahiş olunur öz quraşdırmalarınıza yenidən göz yetirəsiniz.(Error: %s)",
     "Email sent" : "Məktub göndərildi",

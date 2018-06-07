@@ -1,8 +1,8 @@
 { "translations": {
     "Wrong password" : "Nesprávne heslo",
     "Couldn't send reset email. Please contact your administrator." : "Nemožno poslať email pre obnovu. Kontaktujte prosím vášho administrátora.",
-    "log-level out of allowed range" : "úroveň logovania z povoleného rozpätia",
     "Saved" : "Uložené",
+    "log-level out of allowed range" : "úroveň logovania z povoleného rozpätia",
     "test email settings" : "nastavenia testovacieho emailu",
     "A problem occurred while sending the email. Please revise your settings. (Error: %s)" : "Vyskytol sa problém pri odosielaní emailu. Prosím, znovu skontrolujte svoje nastavenia. (Chyba: %s)",
     "Email sent" : "Email odoslaný",

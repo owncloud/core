@@ -3,8 +3,8 @@ OC.L10N.register(
     {
     "Wrong password" : "Погрешна лозинка",
     "Couldn't send reset email. Please contact your administrator." : "Не могу да пошаљем е-пошту за ресетовање лозинке. Контактирајте администратора.",
-    "log-level out of allowed range" : "ниво бележења је ван дозвољеног опсега",
     "Saved" : "Сачувано",
+    "log-level out of allowed range" : "ниво бележења је ван дозвољеног опсега",
     "test email settings" : "тестирајте поставке е-поште",
     "A problem occurred while sending the email. Please revise your settings. (Error: %s)" : "Појавио се проблем приликом слања е-поште. Проверите ваше поставке. (Грешка: %s)",
     "Email sent" : "Порука је послата",
