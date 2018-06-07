@@ -25,5 +25,15 @@ script('files_sharing', 'settings');
 <div class="section" id="files_sharing">
 	<h2 class="app-name"><?php p($l->t('Files Sharing')); ?></h2>
 	<p><?php p($l->t('Blacklist the following groups so noone can share with them. Use the format "{backendName}::{groupDisplayName}", one per line.')); ?></p>
-	<textarea placeholder="OC\Group\Database::localGroups&#10OCA\User_LDAP\Group_Proxy::ldapGroup" class="files_sharing_settings" name="blacklisted_group_displaynames"><?php p($_['blacklistedDisplaynames']); ?></textarea>
+	<div class="horizontal-layout">
+		<div>
+			<p><?php p($l->t('Available backends names are:')); ?></p>
+			<ul class="groupBackends">
+				<?php foreach($_['backendNames'] as $backendName): ?>
+				<li><?php p($backendName); ?></li>
+				<?php endforeach; ?>
+			</ul>
+		</div>
+		<textarea placeholder="OC\Group\Database::localGroups&#10OCA\User_LDAP\Group_Proxy::ldapGroup" class="files_sharing_settings" name="blacklisted_group_displaynames"><?php p($_['blacklistedDisplaynames']); ?></textarea>
+	</div>
 </div>

@@ -22,25 +22,41 @@ namespace OCA\Files_Sharing\Panels\Admin;
 use OCP\Settings\ISettings;
 use OCP\Template;
 use OCP\IL10N;
+use OCP\IGroupManager;
 use OCA\Files_Sharing\SharingBlacklist;
 
 class SettingsPanel implements ISettings {
+	/** @var IGroupManager */
+	private $groupManager;
+
 	/** @var SharingBlacklist */
 	private $sharingBlacklist;
+
 	/** @var IL10N */
 	private $l10n;
-	public function __construct(SharingBlacklist $sharingBlacklist, IL10N $l10n) {
+
+	public function __construct(IGroupManager $groupManager, SharingBlacklist $sharingBlacklist, IL10N $l10n) {
+		$this->groupManager = $groupManager;
 		$this->sharingBlacklist = $sharingBlacklist;
 		$this->l10n = $l10n;
 	}
+
 	public function getPanel() {
+		$groupBackendList = $this->groupManager->getBackends();
+		$backendNames = \array_map(function($backend) {
+			return \get_class($backend);
+		}, $groupBackendList);
+
 		$tmpl = new Template('files_sharing', 'settings');
+		$tmpl->assign('backendNames', $backendNames);
 		$tmpl->assign('blacklistedDisplaynames', $this->sharingBlacklist->getBlacklistedGroupDisplaynames());
 		return $tmpl;
 	}
+
 	public function getPriority() {
 		return 0;
 	}
+
 	public function getSectionID() {
 		return 'sharing';
 	}
