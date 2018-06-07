@@ -228,6 +228,11 @@ class AppManager implements IAppManager {
 		if ($this->getAppPath($appId) === false) {
 			throw new \Exception("$appId can't be enabled since it is not installed.");
 		}
+
+		if (!Installer::isInstalled($appId)) {
+			Installer::installShippedApp($appId);
+		}
+
 		$this->canEnableTheme($appId);
 
 		$this->installedAppsCache[$appId] = 'yes';
@@ -287,6 +292,10 @@ class AppManager implements IAppManager {
 			if (!empty($protectedTypes)) {
 				throw new \Exception("$appId can't be enabled for groups.");
 			}
+		}
+
+		if (!Installer::isInstalled($appId)) {
+			Installer::installShippedApp($appId);
 		}
 
 		$groupIds = \array_map(function ($group) {
