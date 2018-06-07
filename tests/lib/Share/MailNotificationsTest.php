@@ -23,6 +23,7 @@ namespace Test\Share;
 
 use OC\Share\MailNotifications;
 use OCP\Defaults;
+use OCP\IConfig;
 use OCP\IL10N;
 use OCP\ILogger;
 use OCP\IURLGenerator;
@@ -45,6 +46,8 @@ class MailNotificationsTest extends TestCase {
 	private $mailer;
 	/** @var ILogger */
 	private $logger;
+	/** @var IConfig */
+	private $config;
 	/** @var Defaults | \PHPUnit_Framework_MockObject_MockObject */
 	private $defaults;
 	/** @var IUser | \PHPUnit_Framework_MockObject_MockObject */
@@ -61,6 +64,8 @@ class MailNotificationsTest extends TestCase {
 		$this->mailer = $this->getMockBuilder('\OCP\Mail\IMailer')
 			->disableOriginalConstructor()->getMock();
 		$this->logger = $this->getMockBuilder('\OCP\ILogger')
+			->disableOriginalConstructor()->getMock();
+		$this->config = $this->getMockBuilder(IConfig::class)
 			->disableOriginalConstructor()->getMock();
 		$this->defaults = $this->getMockBuilder('\OCP\Defaults')
 				->disableOriginalConstructor()->getMock();
@@ -127,6 +132,7 @@ class MailNotificationsTest extends TestCase {
 			$this->user,
 			$this->l10n,
 			$this->mailer,
+			$this->config,
 			$this->logger,
 			$this->defaults,
 			$this->urlGenerator,
@@ -177,6 +183,7 @@ class MailNotificationsTest extends TestCase {
 			$this->user,
 			$this->l10n,
 			$this->mailer,
+			$this->config,
 			$this->logger,
 			$this->defaults,
 			$this->urlGenerator,
@@ -243,6 +250,7 @@ class MailNotificationsTest extends TestCase {
 			$this->user,
 			$this->l10n,
 			$this->mailer,
+			$this->config,
 			$this->logger,
 			$this->defaults,
 			$this->urlGenerator,
@@ -321,6 +329,7 @@ class MailNotificationsTest extends TestCase {
 			$this->user,
 			$this->l10n,
 			$this->mailer,
+			$this->config,
 			$this->logger,
 			$this->defaults,
 			$this->urlGenerator,
@@ -336,6 +345,7 @@ class MailNotificationsTest extends TestCase {
 			$this->user,
 			$this->l10n,
 			$this->mailer,
+			$this->config,
 			$this->logger,
 			$this->defaults,
 			$this->urlGenerator,
@@ -355,6 +365,7 @@ class MailNotificationsTest extends TestCase {
 				$this->user,
 				$this->l10n,
 				$this->mailer,
+				$this->config,
 				$this->logger,
 				$this->defaults,
 				$this->urlGenerator,
@@ -403,6 +414,7 @@ class MailNotificationsTest extends TestCase {
 				$this->user,
 				$this->l10n,
 				$this->mailer,
+				$this->config,
 				$this->logger,
 				$this->defaults,
 				$this->urlGenerator,
@@ -450,6 +462,7 @@ class MailNotificationsTest extends TestCase {
 			$this->user,
 			$this->l10n,
 			$this->mailer,
+			$this->config,
 			$this->logger,
 			$this->defaults,
 			$this->urlGenerator,
@@ -495,6 +508,7 @@ class MailNotificationsTest extends TestCase {
 				$this->user,
 				$this->l10n,
 				$this->mailer,
+				$this->config,
 				$this->logger,
 				$this->defaults,
 				$this->urlGenerator,
@@ -526,6 +540,41 @@ class MailNotificationsTest extends TestCase {
 		$recipientList = [$recipient, $recipient2];
 		$result = $mailNotifications->sendInternalShareMail($recipientList, '3', 'file');
 		$this->assertSame(['No mail 1', 'No mail 2'], $result);
+	}
+
+	public function testPublicLinkNotificationIsTranslated() {
+		$mailNotifications = new MailNotifications(
+			$this->user,
+			$this->l10n,
+			$this->mailer,
+			$this->config,
+			$this->logger,
+			$this->defaults,
+			$this->urlGenerator,
+			$this->eventDispatcher
+		);
+		$this->config->expects($this->once())
+			->method('getAppValue')
+			->with('core', 'shareapi_public_notification_lang', null)
+			->willReturn('ru');
+		$message = $this->getMockBuilder(\OC\Mail\Message::class)
+			->disableOriginalConstructor()->getMock();
+		$message
+			->expects($this->once())
+			->method('setFrom')
+			->with([Util::getDefaultEmailAddress('sharing-noreply') => 'TestUser через UnitTestCloud']);
+
+		$this->mailer
+			->expects($this->once())
+			->method('createMessage')
+			->will($this->returnValue($message));
+
+		$this->l10n->expects($this->never())
+			->method('t');
+
+		$mailNotifications->sendLinkShareMail(
+			'justin@piper.com', 'MyFile', 'https://owncloud.com/file/?foo=bar', 3600
+		);
 	}
 
 	/**

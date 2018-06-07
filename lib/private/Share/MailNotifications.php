@@ -30,6 +30,7 @@
 namespace OC\Share;
 
 use DateTime;
+use OCP\IConfig;
 use OCP\IL10N;
 use OCP\IURLGenerator;
 use OCP\IUser;
@@ -58,6 +59,8 @@ class MailNotifications {
 	private $l;
 	/** @var IMailer */
 	private $mailer;
+	/** @var IConfig */
+	private $config;
 	/** @var Defaults */
 	private $defaults;
 	/** @var ILogger */
@@ -71,6 +74,7 @@ class MailNotifications {
 	 * @param IUser $user
 	 * @param IL10N $l10n
 	 * @param IMailer $mailer
+	 * @param IConfig $config
 	 * @param ILogger $logger
 	 * @param Defaults $defaults
 	 * @param IURLGenerator $urlGenerator
@@ -78,6 +82,7 @@ class MailNotifications {
 	public function __construct(IUser $user,
 								IL10N $l10n,
 								IMailer $mailer,
+								IConfig $config,
 								ILogger $logger,
 								Defaults $defaults,
 								IURLGenerator $urlGenerator,
@@ -85,6 +90,7 @@ class MailNotifications {
 		$this->l = $l10n;
 		$this->user = $user;
 		$this->mailer = $mailer;
+		$this->config = $config;
 		$this->logger = $logger;
 		$this->defaults = $defaults;
 		$this->urlGenerator = $urlGenerator;
@@ -167,13 +173,7 @@ class MailNotifications {
 				$message->setTo([$to => $recipientDisplayName]);
 				$message->setHtmlBody($htmlBody);
 				$message->setPlainBody($textBody);
-				$message->setFrom([
-					Util::getDefaultEmailAddress('sharing-noreply') =>
-						(string)$this->l->t('%s via %s', [
-							$this->senderDisplayName,
-							$this->defaults->getName()
-						]),
-					]);
+				$message->setFrom($this->getFrom($this->l));
 				if ($this->replyTo !== null) {
 					$message->setReplyTo([$this->replyTo]);
 				}
@@ -189,8 +189,18 @@ class MailNotifications {
 	}
 
 	public function sendLinkShareMail($recipient, $filename, $link, $expiration, $personalNote = null, $options = []) {
-		$subject = (string)$this->l->t('%s shared »%s« with you', [$this->senderDisplayName, $filename]);
-		list($htmlBody, $textBody) = $this->createMailBody($filename, $link, $expiration, $personalNote);
+		$notificationLang = $this->config->getAppValue(
+			'core',
+			'shareapi_public_notification_lang',
+			null
+		);
+		if ($notificationLang !== null) {
+			$l10n = \OC::$server->getL10N('lib', $notificationLang);
+		} else {
+			$l10n = $this->l;
+		}
+		$subject = (string)$l10n->t('%s shared »%s« with you', [$this->senderDisplayName, $filename]);
+		list($htmlBody, $textBody) = $this->createMailBody($filename, $link, $expiration, $personalNote, '', $l10n);
 
 		/**
 		 * The event consumer of share.sendmail would have following data
@@ -203,6 +213,7 @@ class MailNotifications {
 		$bccRecipients = isset($options['bcc']) ? $options['bcc'] : '';
 		$event = new GenericEvent(null, ['link' => $link, 'to' => $recipient, 'cc' => $ccRecipients, 'bcc' => $bccRecipients]);
 		$this->eventDispatcher->dispatch('share.sendmail', $event);
+		$options['l10n'] = $l10n;
 		return $this->sendLinkShareMailFromBody($recipient, $subject, $htmlBody, $textBody, $options);
 	}
 
@@ -223,6 +234,7 @@ class MailNotifications {
 		}
 		$ccRecipients  = (isset($options['cc']) && $options['cc'] !== '') ? $this->_mailStringToArray($options['cc']) : null;
 		$bccRecipients = (isset($options['bcc']) && $options['bcc'] !== '') ? $this->_mailStringToArray($options['bcc']) : null;
+		$l10n = (isset($options['l10n'])) ? $options['l10n'] : $this->l;
 
 		try {
 			$message = $this->mailer->createMessage();
@@ -238,13 +250,7 @@ class MailNotifications {
 				$message->setCc($ccRecipients);
 			}
 			$message->setPlainBody($textBody);
-			$message->setFrom([
-				Util::getDefaultEmailAddress('sharing-noreply') =>
-					(string)$this->l->t('%s via %s', [
-						$this->senderDisplayName,
-						$this->defaults->getName()
-					]),
-			]);
+			$message->setFrom($this->getFrom($l10n));
 			if ($this->replyTo !== null) {
 				$message->setReplyTo([$this->replyTo]);
 			}
@@ -264,12 +270,27 @@ class MailNotifications {
 	 * @param int $expiration expiration date (timestamp)
 	 * @param string $personalNote optional personal note
 	 * @param string $prefix prefix of mail template files
+	 * @param IL10N|null $overrideL10n
+	 *
 	 * @return array an array of the html mail body and the plain text mail body
 	 */
-	public function createMailBody($filename, $link, $expiration, $personalNote = null, $prefix = '') {
-		$formattedDate = $expiration ? $this->l->l('date', $expiration) : null;
+	public function createMailBody($filename,
+								   $link,
+								   $expiration,
+								   $personalNote = null,
+								   $prefix = '',
+								   $overrideL10n = null
+	) {
+		$l10n = $overrideL10n === null ? $this->l : $overrideL10n;
+		$formattedDate = $expiration ?  $l10n->l('date', $expiration) : null;
 
-		$html = new \OC_Template('core', $prefix . 'mail', '');
+		$html = new \OC_Template(
+			'core',
+			$prefix . 'mail',
+			'',
+			true,
+			$l10n->getLanguageCode()
+		);
 		$html->assign('link', $link);
 		$html->assign('user_displayname', $this->senderDisplayName);
 		$html->assign('filename', $filename);
@@ -279,7 +300,13 @@ class MailNotifications {
 		}
 		$htmlMail = $html->fetchPage();
 
-		$plainText = new \OC_Template('core', $prefix . 'altmail', '');
+		$plainText = new \OC_Template(
+			'core',
+			$prefix . 'altmail',
+			'',
+			true,
+			$l10n->getLanguageCode()
+		);
 		$plainText->assign('link', $link);
 		$plainText->assign('user_displayname', $this->senderDisplayName);
 		$plainText->assign('filename', $filename);
@@ -300,5 +327,24 @@ class MailNotifications {
 	 */
 	protected function getItemSharedWithUser($itemSource, $itemType, $recipient) {
 		return Share::getItemSharedWithUser($itemType, $itemSource, $recipient->getUID());
+	}
+
+	/**
+	 * Get default sender details
+	 *
+	 * @param IL10N $l10n
+	 *
+	 * @return string[]
+	 */
+	protected function getFrom($l10n) {
+		return [
+			Util::getDefaultEmailAddress('sharing-noreply') => (string) $l10n->t(
+				'%s via %s',
+				[
+					$this->senderDisplayName,
+					$this->defaults->getName()
+				]
+			)
+		];
 	}
 }
