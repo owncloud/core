@@ -46,10 +46,14 @@ class OC_Defaults {
 	private $defaultDocVersion;
 	private $defaultSlogan;
 	private $defaultLogoClaim;
-	private $defaultMailHeaderColor;
+	/**
+	 * @var \OCP\IConfig
+	 */
+	private $config;
 
 	public function __construct() {
 		$this->l = \OC::$server->getL10N('lib');
+		$this->config = \OC::$server->getConfig();
 		$version = \OCP\Util::getVersion();
 
 		$this->defaultEntity = 'ownCloud'; /* e.g. company name, used for footers and copyright notices */
@@ -284,5 +288,21 @@ class OC_Defaults {
 		} else {
 			return $this->defaultMailHeaderColor;
 		}
+	}
+
+	/**
+	 * Returns URL to imprint
+	 * @return string
+	 */
+	public function getImprintUrl() {
+		return $this->config->getAppValue('core', 'legal.imprint_url', '');
+	}
+
+	/**
+	 * Returns URL to Privacy Policy
+	 * @return string
+	 */
+	public function getPrivacyPolicyUrl() {
+		return $this->config->getAppValue('core', 'legal.privacy_policy_url', '');
 	}
 }
