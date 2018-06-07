@@ -265,11 +265,14 @@ class OC_Template extends \OC\Template\Base {
 	 * @param array|null $additionalParams
 	 * @return string returns content of included template
 	 *
-	 * Includes another template. use <?php echo $this->inc('template'); ?> to
-	 * do this.
+	 * Includes another template.
+	 * use <?php print_unescaped($this->inc('template')); ?> to do this.
+	 * use <?php print_unescaped($this->inc('template', ['app'=>'appName'])); ?>
+	 * to include template from a different app.
 	 */
 	public function inc($file, $additionalParams = null) {
-		$template = $this->findTemplate($this->theme, $this->app, $file);
+		$app = (isset($additionalParams['app'])) ? $additionalParams['app'] : $this->app;
+		$template = $this->findTemplate($this->theme, $app, $file);
 		return $this->load($template, $additionalParams);
 	}
 
