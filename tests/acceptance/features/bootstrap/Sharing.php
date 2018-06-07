@@ -596,6 +596,7 @@ trait Sharing {
 				$password,
 				$permissions,
 				$linkName,
+				null, //expireDate
 				$this->apiVersion,
 				$this->sharingApiVersion
 			);
