@@ -151,7 +151,6 @@ pipeline:
     commands:
       - git clone https://github.com/owncloud/notifications.git apps/notifications
       - php occ a:e notifications
-      - echo "export APPS_TO_ENABLE=notifications" > environment.sh
     when:
       matrix:
         INSTALL_NOTIFICATIONS-APP: true
@@ -224,7 +223,6 @@ pipeline:
       - PLATFORM=Linux
       - MAILHOG_HOST=email
     commands:
-      - if [ -f ./environment.sh  ]; then . ./environment.sh; fi
       - bash tests/travis/start_ui_tests.sh --remote
     when:
       matrix:
