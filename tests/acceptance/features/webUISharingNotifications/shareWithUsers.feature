@@ -1,4 +1,4 @@
-@webUI @insulated @disablePreviews
+@webUI @insulated @disablePreviews @app-required @notifications-app-required
 Feature: Sharing files and folders with internal users
 As a user
 I want to share files and folders with other users
