@@ -369,10 +369,6 @@ class OC_App {
 
 		self::checkAppDependencies($config, $l, $info);
 
-		if (!Installer::isInstalled($app)) {
-			Installer::installShippedApp($app);
-		}
-
 		$appManager = \OC::$server->getAppManager();
 		if ($groups !== null) {
 			$groupManager = \OC::$server->getGroupManager();
