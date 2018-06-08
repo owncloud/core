@@ -1505,14 +1505,11 @@ class Manager implements IManager {
 			}
 			$user = $this->userManager->get($userId);
 			$usersGroups = $this->groupManager->getUserGroupIds($user);
-			if (!empty($usersGroups)) {
-				$remainingGroups = \array_diff($usersGroups, $excludedGroups);
-				// if the user is only in groups which are disabled for sharing then
-				// sharing is also disabled for the user
-				if (empty($remainingGroups)) {
-					$this->sharingDisabledForUsersCache[$userId] = true;
-					return true;
-				}
+			$matchingGroups = \array_intersect($usersGroups, $excludedGroups);
+			if (!empty($matchingGroups)) {
+				// If the user is a member of any of the excluded groups they cannot use sharing
+				$this->sharingDisabledForUsersCache[$userId] = true;
+				return true;
 			}
 		}
 
