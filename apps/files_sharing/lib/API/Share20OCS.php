@@ -39,6 +39,8 @@ use OCP\Share\IManager;
 use OCP\Share\IShare;
 use OCA\Files_Sharing\Service\NotificationPublisher;
 use OCA\Files_Sharing\Helper;
+use Symfony\Component\EventDispatcher\EventDispatcher;
+use Symfony\Component\EventDispatcher\GenericEvent;
 
 /**
  * Class Share20OCS
@@ -67,6 +69,8 @@ class Share20OCS {
 	private $config;
 	/** @var NotificationPublisher */
 	private $notificationPublisher;
+	/** @var EventDispatcher  */
+	private $eventDispatcher;
 
 	/**
 	 * @var string
@@ -97,7 +101,8 @@ class Share20OCS {
 			IUser $currentUser,
 			IL10N $l10n,
 			IConfig $config,
-			NotificationPublisher $notificationPublisher
+			NotificationPublisher $notificationPublisher,
+			EventDispatcher $eventDispatcher
 	) {
 		$this->shareManager = $shareManager;
 		$this->userManager = $userManager;
@@ -109,6 +114,7 @@ class Share20OCS {
 		$this->l = $l10n;
 		$this->config = $config;
 		$this->notificationPublisher = $notificationPublisher;
+		$this->eventDispatcher = $eventDispatcher;
 		$this->additionalInfoField = $this->config->getAppValue('core', 'user_additional_info_field', '');
 	}
 
@@ -850,18 +856,34 @@ class Share20OCS {
 		return $this->updateShareState($id, \OCP\Share::STATE_REJECTED);
 	}
 
+	/**
+	 * @param $id
+	 * @param $state
+	 * @return \OC\OCS\Result
+	 */
 	private function updateShareState($id, $state) {
+		$eventName = '';
+		if ($state === \OCP\Share::STATE_ACCEPTED) {
+			$eventName = 'accept';
+		} elseif ($state === \OCP\Share::STATE_REJECTED) {
+			$eventName = 'reject';
+		}
+
 		if (!$this->shareManager->shareApiEnabled()) {
 			return new \OC\OCS\Result(null, 404, $this->l->t('Share API is disabled'));
 		}
 
 		try {
 			$share = $this->getShareById($id, $this->currentUser->getUID());
+			$this->eventDispatcher->dispatch('share.before' . $eventName, new GenericEvent(null, ['share' => $share]));
 		} catch (ShareNotFound $e) {
 			return new \OC\OCS\Result(null, 404, $this->l->t('Wrong share ID, share doesn\'t exist'));
 		}
 
 		if ($share->getState() === $state) {
+			if ($eventName !== '') {
+				$this->eventDispatcher->dispatch('share.after' . $eventName, new GenericEvent(null, ['share' => $share]));
+			}
 			// if there are no changes in the state, just return the share as if the change was successful
 			return new \OC\OCS\Result([$this->formatShare($share, true)]);
 		}
@@ -915,6 +937,9 @@ class Share20OCS {
 
 		$this->notificationPublisher->discardNotificationForUser($share, $this->currentUser->getUID());
 
+		if ($eventName !== '') {
+			$this->eventDispatcher->dispatch('share.after' . $eventName, new GenericEvent(null, ['share' => $share]));
+		}
 		return new \OC\OCS\Result([$this->formatShare($share, true)]);
 	}
 

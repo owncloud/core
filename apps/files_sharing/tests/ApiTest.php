@@ -124,7 +124,8 @@ class ApiTest extends TestCase {
 			$currentUser,
 			$l,
 			\OC::$server->getConfig(),
-			\OC::$server->getAppContainer('files_sharing')->query(NotificationPublisher::class)
+			\OC::$server->getAppContainer('files_sharing')->query(NotificationPublisher::class),
+			\OC::$server->getEventDispatcher()
 		);
 	}
 

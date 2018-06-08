@@ -24,6 +24,7 @@
  */
 namespace OCA\Files_Sharing\Tests\API;
 
+use OC\OCS\Result;
 use OCA\Files_Sharing\API\Share20OCS;
 use OCA\Files_Sharing\Service\NotificationPublisher;
 use OCP\Files\IRootFolder;
@@ -37,6 +38,8 @@ use OCP\IUser;
 use OCP\IUserManager;
 use OCP\Lock\LockedException;
 use OCP\Share;
+use Symfony\Component\EventDispatcher\EventDispatcher;
+use Symfony\Component\EventDispatcher\GenericEvent;
 use Test\TestCase;
 use OCP\Files\Folder;
 use OCP\Files\Node;
@@ -80,6 +83,8 @@ class Share20OCSTest extends TestCase {
 	/** @var NotificationPublisher */
 	private $notificationPublisher;
 
+	private $eventDispatcher;
+
 	protected function setUp() {
 		$this->shareManager = $this->getMockBuilder('OCP\Share\IManager')
 			->disableOriginalConstructor()
@@ -112,6 +117,7 @@ class Share20OCSTest extends TestCase {
 			]));
 
 		$this->notificationPublisher = $this->createMock(NotificationPublisher::class);
+		$this->eventDispatcher = $this->createMock(EventDispatcher::class);
 
 		$this->ocs = new Share20OCS(
 			$this->shareManager,
@@ -123,7 +129,8 @@ class Share20OCSTest extends TestCase {
 			$this->currentUser,
 			$this->l,
 			$this->config,
-			$this->notificationPublisher
+			$this->notificationPublisher,
+			$this->eventDispatcher
 		);
 	}
 
@@ -144,6 +151,7 @@ class Share20OCSTest extends TestCase {
 				$this->l,
 				$this->config,
 				$this->notificationPublisher,
+				$this->eventDispatcher
 			])->setMethods(['formatShare'])
 			->getMock();
 	}
@@ -453,6 +461,7 @@ class Share20OCSTest extends TestCase {
 					$this->l,
 					$this->config,
 					$this->notificationPublisher,
+					$this->eventDispatcher
 				])->setMethods(['canAccessShare'])
 				->getMock();
 
@@ -2694,7 +2703,8 @@ class Share20OCSTest extends TestCase {
 			$this->currentUser,
 			$this->l,
 			$this->config,
-			$this->notificationPublisher
+			$this->notificationPublisher,
+			$this->eventDispatcher
 		);
 	}
 
@@ -2785,7 +2795,8 @@ class Share20OCSTest extends TestCase {
 			$this->currentUser,
 			$this->l,
 			$config,
-			$this->notificationPublisher
+			$this->notificationPublisher,
+			$this->eventDispatcher
 		);
 
 		list($file, ) = $this->getMockFileFolder();
@@ -3041,7 +3052,7 @@ class Share20OCSTest extends TestCase {
 	public function testAcceptRejectShare($method, $target, $targetExists, $expectedState) {
 		$userShare = $this->makeReceivedUserShareForOperation($target);
 
-		$this->shareManager->expects($this->once())
+		$this->shareManager->expects($this->exactly(1))
 			->method('getShareById')
 			->with('ocinternal:123', 'currentUser')
 			->willReturn($userShare);
@@ -3081,9 +3092,21 @@ class Share20OCSTest extends TestCase {
 					->with($target)
 					->willReturn(false);
 			}
+			$this->eventDispatcher->expects($this->exactly(2))
+				->method('dispatch')
+				->withConsecutive(
+					[$this->equalTo('share.beforeaccept'), $this->equalTo(new GenericEvent(null, ['share' => $userShare]))],
+					[$this->equalTo('share.afteraccept'), $this->equalTo(new GenericEvent(null, ['share' => $userShare]))]
+				);
 		} else {
 			$userFolder->expects($this->never())
 				->method('nodeExists');
+			$this->eventDispatcher->expects($this->exactly(2))
+				->method('dispatch')
+				->withConsecutive(
+					[$this->equalTo('share.beforereject'), $this->equalTo(new GenericEvent(null, ['share' => $userShare]))],
+					[$this->equalTo('share.afterreject'), $this->equalTo(new GenericEvent(null, ['share' => $userShare]))]
+				);
 		}
 
 		$this->rootFolder->method('getUserFolder')
@@ -3104,6 +3127,53 @@ class Share20OCSTest extends TestCase {
 		$this->assertSame($expectedState, $userShare->getState());
 	}
 
+	public function providesAcceptRejectShareSameState() {
+		return [
+			['acceptShare', '/target', true, \OCP\Share::STATE_ACCEPTED],
+			['declineShare', '/sfoo/target', true, \OCP\Share::STATE_REJECTED],
+		];
+	}
+
+	/**
+	 * @dataProvider providesAcceptRejectShareSameState
+	 */
+	public function testAcceptRejectShareSameState($method, $target) {
+		$node = $this->createMock(Node::class);
+
+		$userShare = $this->newShare();
+		$userShare->setId(123);
+		$userShare->setNode($node);
+
+		$this->shareManager->expects($this->exactly(1))
+			->method('getShareById')
+			->with('ocinternal:123', 'currentUser')
+			->willReturn($userShare);
+
+		if ($method === 'acceptShare') {
+			$userShare->setState(\OCP\Share::STATE_ACCEPTED);
+			$this->eventDispatcher->expects($this->exactly(2))
+				->method('dispatch')
+				->withConsecutive(
+					[$this->equalTo('share.beforeaccept'), $this->equalTo(new GenericEvent(null, ['share' => $userShare]))],
+					[$this->equalTo('share.afteraccept'), $this->equalTo(new GenericEvent(null, ['share' => $userShare]))]
+				);
+		} else {
+			$userShare->setState(\OCP\Share::STATE_REJECTED);
+			$this->eventDispatcher->expects($this->exactly(2))
+				->method('dispatch')
+				->withConsecutive(
+					[$this->equalTo('share.beforereject'), $this->equalTo(new GenericEvent(null, ['share' => $userShare]))],
+					[$this->equalTo('share.afterreject'), $this->equalTo(new GenericEvent(null, ['share' => $userShare]))]
+				);
+		}
+
+		$ocs = $this->mockFormatShare();
+		$result = $ocs->$method(123);
+		$this->assertInstanceOf(Result::class, $result);
+		$this->assertNull($result->getData()[0]);
+		$this->assertEquals(100, $result->getStatusCode());
+	}
+
 	/**
 	 * @dataProvider providesAcceptRejectShare
 	 */
@@ -3116,7 +3186,7 @@ class Share20OCSTest extends TestCase {
 		$groupShare->setNode($userShare->getNode());
 		$groupShare->setTarget($target);
 
-		$this->shareManager->expects($this->once())
+		$this->shareManager->expects($this->exactly(1))
 			->method('getShareById')
 			->with('ocinternal:123', 'currentUser')
 			->willReturn($userShare);
@@ -3156,9 +3226,21 @@ class Share20OCSTest extends TestCase {
 					->with($target)
 					->willReturn(false);
 			}
+			$this->eventDispatcher->expects($this->exactly(2))
+				->method('dispatch')
+				->withConsecutive(
+					[$this->equalTo('share.beforeaccept'), $this->equalTo(new GenericEvent(null, ['share' => $userShare]))],
+					[$this->equalTo('share.afteraccept'), $this->equalTo(new GenericEvent(null, ['share' => $userShare]))]
+				);
 		} else {
 			$userFolder->expects($this->never())
 				->method('nodeExists');
+			$this->eventDispatcher->expects($this->exactly(2))
+				->method('dispatch')
+				->withConsecutive(
+					[$this->equalTo('share.beforereject'), $this->equalTo(new GenericEvent(null, ['share' => $userShare]))],
+					[$this->equalTo('share.afterreject'), $this->equalTo(new GenericEvent(null, ['share' => $userShare]))]
+				);
 		}
 
 		$this->rootFolder->method('getUserFolder')
