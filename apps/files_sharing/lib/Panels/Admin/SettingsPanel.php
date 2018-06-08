@@ -43,7 +43,7 @@ class SettingsPanel implements ISettings {
 
 	public function getPanel() {
 		$groupBackendList = $this->groupManager->getBackends();
-		$backendNames = \array_map(function($backend) {
+		$backendNames = \array_map(function ($backend) {
 			return \get_class($backend);
 		}, $groupBackendList);
 
