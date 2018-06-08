@@ -886,7 +886,6 @@ trait Sharing {
 		$this->createShare(
 			$sharer, $filepath, 0, $sharee, null, null, $permissions
 		);
-		$responseMessage = \json_decode(\json_encode($this->response->xml()->meta->message), 1);
 		PHPUnit_Framework_Assert::assertEquals(
 			404,
 			$this->getOCSResponseStatusCode($this->response)
