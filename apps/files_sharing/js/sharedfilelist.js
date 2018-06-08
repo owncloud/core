@@ -7,6 +7,8 @@
  * See the COPYING-README file.
  *
  */
+
+/* global moment */
 (function() {
 
 	/**
@@ -56,6 +58,16 @@
 			if (options && options.linksOnly) {
 				this._linksOnly = true;
 			}
+
+			if (options && options.sorting) {
+				this.setSort(options.sorting.mode, options.sorting.direction, false, false);
+			} else if (this._sharedWithUser) {
+				this.setSort('sharestate', 'asc', false, false);
+			}
+
+			if (!this._sharedWithUser) {
+				this.$el.find('.column-sharestate').remove();
+			}
 		},
 
 		_renderRow: function() {
@@ -68,17 +80,15 @@
 		_createRow: function(fileData) {
 			// TODO: hook earlier and render the whole row here
 			var $tr = OCA.Files.FileList.prototype._createRow.apply(this, arguments);
+			var td;
+			var formatted;
+			var text;
+			var $dateColumn = $tr.find('td.date');
 			$tr.find('.filesize').remove();
-			$tr.find('td.date').before($tr.children('td:first'));
+			$dateColumn.before($tr.children('td:first'));
 			$tr.find('td.filename input:checkbox').remove();
+			$tr.attr('data-share-location-type', fileData.shareLocationType);
 			$tr.attr('data-share-id', _.pluck(fileData.shares, 'id').join(','));
-			if (this._sharedWithUser) {
-				$tr.attr('data-share-owner', fileData.shareOwner);
-				$tr.attr('data-mounttype', 'shared-root');
-				var permission = parseInt($tr.attr('data-permissions')) | OC.PERMISSION_DELETE;
-				$tr.attr('data-permissions', permission);
-			}
-
 			// add row with expiration date for link only shares - influenced by _createRow of filelist
 			if (this._linksOnly) {
 				var expirationTimestamp = 0;
@@ -103,6 +113,7 @@
 					text = '';
 					modifiedColor = 160;
 				}
+
 				td = $('<td></td>').attr({"class": "date"});
 				td.append($('<span></span>').attr({
 						"class": "modified",
@@ -114,6 +125,38 @@
 
 				$tr.append(td);
 			}
+			if (this._sharedWithUser) {
+				$tr.attr('data-share-owner', fileData.shareOwner);
+				$tr.attr('data-mounttype', 'shared-root');
+				var permission = parseInt($tr.attr('data-permissions')) | OC.PERMISSION_DELETE;
+				$tr.attr('data-permissions', permission);
+				$tr.attr('data-share-state', fileData.shareState);
+
+				text = '';
+				var shareStateClass;
+				if (fileData.shareState === OC.Share.STATE_REJECTED) {
+					text = t('files_sharing', 'Declined');
+					shareStateClass = 'share-state-rejected';
+				} else if (fileData.shareState === OC.Share.STATE_PENDING) {
+					text = t('files_sharing', 'Pending');
+					shareStateClass = 'share-state-pending';
+				} else {
+					shareStateClass = 'share-state-accepted';
+				}
+				td = $('<td>', {"class": "share-state"});
+				td.append($('<span></span>').attr({
+						"class": "state",
+					}).text(text)
+				);
+				$tr.addClass(shareStateClass);
+				$dateColumn.before(td);
+
+				if (fileData.shareState !== OC.Share.STATE_ACCEPTED) {
+					// remove link
+					$tr.find('a.name').attr('href', '#');
+				}
+			}
+
 			return $tr;
 		},
 
@@ -127,6 +170,19 @@
 			this._sharedWithUser = !!state;
 		},
 
+		_updateDetailsView: function(fileName, show) {
+			// prevent opening details sidebar for pending shares
+			if (this._sharedWithUser) {
+				var $tr = this.findFileEl(fileName);
+				var shareState = parseInt($tr.attr('data-share-state'), 10);
+				if (shareState !== OC.Share.STATE_ACCEPTED) {
+					show = false;
+				}
+			}
+
+			return OCA.Files.FileList.prototype._updateDetailsView.call(this, fileName, show);
+		},
+
 		updateEmptyContent: function() {
 			var dir = this.getCurrentDirectory();
 			if (dir === '/') {
@@ -137,6 +193,10 @@
 				// hide expiration date header for non link only shares
 				if (!this._linksOnly) {
 					this.$el.find('th.column-expiration').addClass('hidden');
+				}
+				if (!this._sharedWithUser) {
+					// hide state column
+					this.$el.find('th.column-state').addClass('hidden');
 				}
 			}
 			else {
@@ -163,14 +223,18 @@
 			this._setCurrentDir('/', false);
 
 			var promises = [];
+			var requestData = {
+				format: 'json'
+			};
+			if (this._sharedWithUser) {
+				requestData.shared_with_me = true;
+				requestData.state = 'all';
+			}
+			requestData.include_tags = true;
 			var shares = $.ajax({
 				url: OC.linkToOCS('apps/files_sharing/api/v1') + 'shares',
 				/* jshint camelcase: false */
-				data: {
-					format: 'json',
-					shared_with_me: !!this._sharedWithUser,
-					include_tags: true
-				},
+				data: requestData,
 				type: 'GET',
 				beforeSend: function(xhr) {
 					xhr.setRequestHeader('OCS-APIREQUEST', 'true');
@@ -220,12 +284,54 @@
 				files = files.concat(this._makeFilesFromRemoteShares(remoteShares[0].ocs.data));
 			}
 
+			files = files.sort(this._sortComparator);
+
 			this.setFiles(files);
 			return true;
 		},
 
+		elementToFile: function($el) {
+			var fileInfo = OCA.Files.FileList.prototype.elementToFile.apply(this, arguments);
+			var shareIds = ($el.attr('data-share-id') || '').split(',');
+			if (_.isArray(shareIds)) {
+				fileInfo.shares = _.map(shareIds, function(id) {
+					return {id: id};
+				});
+			} else {
+				fileInfo.shares = [{id: shareIds}];
+			}
+
+			fileInfo.shareState = parseInt($el.attr('data-share-state'), 10);
+			fileInfo.shareLocationType =  $el.attr('data-share-location-type');
+			return fileInfo;
+		},
+
+		scrollTo: function(fileId) {
+			var rows = this.$fileList.find('tr');
+
+			function filterId(el) {
+				return $(el).attr('data-id') === fileId;
+			}
+
+			var fileRows = _.filter(rows, filterId);
+			while(!fileRows.length && (rows = this._nextPage(false)) !== false) { // Checking element existence
+				fileRows = _.filter(rows, filterId);
+			}
+
+			if (!fileRows.length) {
+				return;
+			}
+
+			var $fileRow = $(fileRows[0]);
+			this._scrollToRow($fileRow, function() {
+				$fileRow.addClass('searchresult');
+				$fileRow.one('hover', function() {
+					$fileRow.removeClass('searchresult');
+				});
+			});
+		},
+
 		_makeFilesFromRemoteShares: function(data) {
-			var self = this;
 			var files = data;
 
 			files = _.chain(files)
@@ -233,6 +339,7 @@
 				.map(function(share) {
 					var file = {
 						shareOwner: share.owner + '@' + share.remote.replace(/.*?:\/\//g, ""),
+						shareState: share.accepted ? OC.Share.STATE_ACCEPTED : OC.Share.STATE_PENDING,
 						name: OC.basename(share.mountpoint),
 						mtime: share.mtime * 1000,
 						mimetype: share.mimetype,
@@ -240,7 +347,8 @@
 						id: share.file_id,
 						path: OC.dirname(share.mountpoint),
 						permissions: share.permissions,
-						tags: share.tags || []
+						tags: share.tags || [],
+						shareLocationType: 'remote'
 					};
 
 					file.shares = [{
@@ -279,7 +387,8 @@
 						id: share.file_source,
 						icon: OC.MimeType.getIconUrl(share.mimetype),
 						mimetype: share.mimetype,
-						tags: share.tags || []
+						tags: share.tags || [],
+						shareLocationType: 'local'
 					};
 					if (share.item_type === 'folder') {
 						file.type = 'dir';
@@ -293,10 +402,11 @@
 						type: share.share_type,
 						target: share.share_with,
 						stime: share.stime * 1000,
-						expiration: share.expiration,
+						expiration: share.expiration
 					};
 					if (self._sharedWithUser) {
 						file.shareOwner = share.displayname_owner;
+						file.shareState = share.state;
 						file.name = OC.basename(share.file_target);
 						file.path = OC.dirname(share.file_target);
 						file.permissions = share.permissions;
@@ -383,8 +493,7 @@
 				// Finish the chain by getting the result
 				.value();
 
-			// Sort by expected sort comparator
-			return files.sort(this._sortComparator);
+			return files;
 		}
 	});
 
@@ -415,6 +524,20 @@
 	 * (this is mostly for display purposes)
 	 * @property {String} recipientsDisplayName display name
 	 */
+
+
+	OCA.Files.FileList.Comparators.SHARE_STATE_ORDER = {};
+	OCA.Files.FileList.Comparators.SHARE_STATE_ORDER[OC.Share.STATE_PENDING] = 0;
+	OCA.Files.FileList.Comparators.SHARE_STATE_ORDER[OC.Share.STATE_ACCEPTED] = 1;
+	OCA.Files.FileList.Comparators.SHARE_STATE_ORDER[OC.Share.STATE_REJECTED] = 2;
+	OCA.Files.FileList.Comparators.sharestate = function(fileInfo1, fileInfo2) {
+		var result = OCA.Files.FileList.Comparators.SHARE_STATE_ORDER[fileInfo1.shareState] - OCA.Files.FileList.Comparators.SHARE_STATE_ORDER[fileInfo2.shareState];
+		if (result === 0) {
+			result = OCA.Files.FileList.Comparators.name(fileInfo1, fileInfo2)
+		}
+
+		return result;
+	};
 
 	OCA.Sharing.FileList = FileList;
 })();

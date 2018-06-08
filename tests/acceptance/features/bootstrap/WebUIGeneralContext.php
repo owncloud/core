@@ -79,16 +79,16 @@ class WebUIGeneralContext extends RawMinkContext implements Context {
 	/**
 	 * table of capabilities to map the human readable terms from the settings page
 	 * to terms in the capabilities XML and testing app
-	 * 
+	 *
 	 * @var array
 	 */
-	private $capabilities = [ 
-		'sharing' => [ 
-			'Allow apps to use the Share API' => [ 
+	private $capabilities = [
+		'sharing' => [
+			'Allow apps to use the Share API' => [
 				'capabilitiesApp' => 'files_sharing',
 				'capabilitiesParameter' => 'api_enabled',
 				'testingApp' => 'core',
-				'testingParameter' => 'shareapi_enabled' 
+				'testingParameter' => 'shareapi_enabled'
 			],
 			'Allow resharing' => [
 				'capabilitiesApp' => 'files_sharing',
@@ -102,19 +102,25 @@ class WebUIGeneralContext extends RawMinkContext implements Context {
 				'testingApp' => 'core',
 				'testingParameter' => 'shareapi_allow_group_sharing',
 			],
-			'Restrict users to only share with users in their groups' => [ 
+			'Restrict users to only share with users in their groups' => [
 				'capabilitiesApp' => 'files_sharing',
 				'capabilitiesParameter' => 'share_with_group_members_only',
 				'testingApp' => 'core',
 				'testingParameter' => 'shareapi_only_share_with_group_members'
 			],
-			'Restrict users to only share with groups they are member of' => [ 
+			'Restrict users to only share with groups they are member of' => [
 				'capabilitiesApp' => 'files_sharing',
 				'capabilitiesParameter' => 'share_with_membership_groups_only',
 				'testingApp' => 'core',
 				'testingParameter' => 'shareapi_only_share_with_membership_groups'
-			]
-		] 
+			],
+			'Automatically accept new incoming local user shares' => [
+				'capabilitiesApp' => 'files_sharing',
+				'capabilitiesParameter' => 'auto_accept_share',
+				'testingApp' => 'core',
+				'testingParameter' => 'shareapi_auto_accept_share'
+			],
+		]
 	];
 
 	/**
@@ -129,7 +135,7 @@ class WebUIGeneralContext extends RawMinkContext implements Context {
 	}
 
 	/**
-	 * 
+	 *
 	 * @param OwncloudPage $pageObject
 	 *
 	 * @return void
@@ -139,7 +145,7 @@ class WebUIGeneralContext extends RawMinkContext implements Context {
 	}
 
 	/**
-	 * 
+	 *
 	 * @return OwncloudPage
 	 */
 	public function getCurrentPageObject() {
@@ -155,7 +161,7 @@ class WebUIGeneralContext extends RawMinkContext implements Context {
 
 	/**
 	 * @param string $currentServer
-	 * 
+	 *
 	 * @return void
 	 */
 	public function setCurrentServer($currentServer) {
@@ -422,7 +428,7 @@ class WebUIGeneralContext extends RawMinkContext implements Context {
 	}
 
 	/**
-	 * 
+	 *
 	 * @When the user reloads the current page of the webUI
 	 * @Given the user has reloaded the current page of the webUI
 	 *
@@ -440,7 +446,7 @@ class WebUIGeneralContext extends RawMinkContext implements Context {
 
 	/**
 	 * returns the saved capabilities as XML
-	 * 
+	 *
 	 * @return string
 	 */
 	public function getSavedCapabilitiesXml() {
@@ -449,7 +455,7 @@ class WebUIGeneralContext extends RawMinkContext implements Context {
 
 	/**
 	 * adds a capability to the list of changed capabilities
-	 * 
+	 *
 	 * @param array $change
 	 *        [
 	 *         'appid' => string,
@@ -541,7 +547,7 @@ class WebUIGeneralContext extends RawMinkContext implements Context {
 
 	/**
 	 * disable the previews on all tests tagged with '@disablePreviews'
-	 * 
+	 *
 	 * @BeforeScenario @webUI&&@disablePreviews
 	 *
 	 * @return void

@@ -370,7 +370,8 @@ class SharedMountTest extends TestCase {
 
 		// Verify we do not get a share
 		$result = $this->shareManager->getShareById($share->getFullId(), self::TEST_FILES_SHARING_API_USER2);
-		$this->assertEquals(0, $result->getPermissions());
+		$this->assertEquals(\OCP\Constants::PERMISSION_READ, $result->getPermissions());
+		$this->assertEquals(\OCP\Share::STATE_REJECTED, $result->getState());
 
 		// Login as user 1 again and change permissions
 		self::loginHelper(self::TEST_FILES_SHARING_API_USER1);
@@ -381,7 +382,8 @@ class SharedMountTest extends TestCase {
 		self::loginHelper(self::TEST_FILES_SHARING_API_USER2);
 		$this->assertFalse(\OC\Files\Filesystem::file_exists($this->folder));
 		$result = $this->shareManager->getShareById($share->getFullId(), self::TEST_FILES_SHARING_API_USER2);
-		$this->assertEquals(0, $result->getPermissions());
+		$this->assertEquals(\OCP\Constants::PERMISSION_ALL, $result->getPermissions());
+		$this->assertEquals(\OCP\Share::STATE_REJECTED, $result->getState());
 
 		$this->shareManager->deleteShare($share);
 

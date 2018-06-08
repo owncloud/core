@@ -32,8 +32,12 @@ use OCA\Files_Sharing\Controllers\ExternalSharesController;
 use OCA\Files_Sharing\Controllers\ShareController;
 use OCA\Files_Sharing\Middleware\SharingCheckMiddleware;
 use OCA\Files_Sharing\MountProvider;
+use OCA\Files_Sharing\Notifier;
 use OCP\AppFramework\App;
 use OCP\IContainer;
+use OCA\Files_Sharing\Hooks;
+use OCA\Files_Sharing\Service\NotificationPublisher;
+use OCP\Notification\Events\RegisterNotifierEvent;
 
 class Application extends App {
 	public function __construct(array $urlParams = []) {
@@ -127,6 +131,19 @@ class Application extends App {
 		});
 
 		/*
+		 * Register trashbin service
+		 */
+		$container->registerService('Hooks', function ($c) {
+			return new Hooks(
+				$c->getServer()->getLazyRootFolder(),
+				$c->getServer()->getUrlGenerator(),
+				$c->getServer()->getEventDispatcher(),
+				$c->getServer()->getShareManager(),
+				$c->query(NotificationPublisher::class)
+			);
+		});
+
+		/*
 		 * Register capabilities
 		 */
 		$container->registerCapability('OCA\Files_Sharing\Capabilities');
@@ -138,5 +155,23 @@ class Application extends App {
 		$mountProviderCollection = $server->getMountProviderCollection();
 		$mountProviderCollection->registerProvider($this->getContainer()->query('MountProvider'));
 		$mountProviderCollection->registerProvider($this->getContainer()->query('ExternalMountProvider'));
+	}
+
+	/**
+	 * Registers the notifier
+	 */
+	public function registerNotifier() {
+		$container = $this->getContainer();
+
+		$dispatcher = $container->getServer()->getEventDispatcher();
+
+		$dispatcher->addListener(RegisterNotifierEvent::NAME, function (RegisterNotifierEvent $event) use ($container) {
+			$l10n = $container->getServer()->getL10N('files_sharing');
+			$event->registerNotifier($container->query(Notifier::class), 'files_sharing', $l10n->t('File sharing'));
+		});
+	}
+
+	public function registerEvents() {
+		$this->getContainer()->query('Hooks')->registerListeners();
 	}
 }

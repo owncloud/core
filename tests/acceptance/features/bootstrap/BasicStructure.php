@@ -46,7 +46,7 @@ trait BasicStructure {
 	use CommandLine;
 
 	/**
-	 * @var array 
+	 * @var array
 	 */
 	private $adminUsername = '';
 
@@ -61,12 +61,12 @@ trait BasicStructure {
 	private $regularUserPassword = '';
 
 	/**
-	 * @var string 
+	 * @var string
 	 */
 	private $currentUser = '';
 
 	/**
-	 * @var string 
+	 * @var string
 	 */
 	private $currentServer = '';
 
@@ -98,22 +98,22 @@ trait BasicStructure {
 	private $remoteBaseUrl = '';
 
 	/**
-	 * @var int 
+	 * @var int
 	 */
 	private $apiVersion = 1;
 
 	/**
-	 * @var ResponseInterface 
+	 * @var ResponseInterface
 	 */
 	private $response = null;
 
 	/**
-	 * @var \GuzzleHttp\Cookie\CookieJar 
+	 * @var \GuzzleHttp\Cookie\CookieJar
 	 */
 	private $cookieJar;
 
 	/**
-	 * @var string 
+	 * @var string
 	 */
 	private $requestToken;
 
@@ -286,7 +286,7 @@ trait BasicStructure {
 	/**
 	 * returns $this->response
 	 * some steps use that private var to store the response for other steps
-	 * 
+	 *
 	 * @return ResponseInterface
 	 */
 	public function getResponse() {
@@ -422,7 +422,7 @@ trait BasicStructure {
 	public function simplifyArray($arrayOfArrays) {
 		$a = array_map(
 			function ($subArray) {
-				return $subArray[0]; 
+				return $subArray[0];
 			}, $arrayOfArrays
 		);
 		return $a;
@@ -454,7 +454,7 @@ trait BasicStructure {
 	 * @param string $user
 	 * @param string $verb
 	 * @param string $url
-	 * @param TableNode $body
+	 * @param TableNode|null $body
 	 *
 	 * @return void
 	 */
@@ -944,10 +944,17 @@ trait BasicStructure {
 	 * then it is returned unmodified
 	 *
 	 * @param string $value
+	 * @param array $functions associative array of functions and parameters to be
+	 *                         called on every replacement string before the
+	 *                         replacement
+	 *                         function name has to be the key and the parameters an
+	 *                         own array
+	 *                         the replacement itself will be used as first parameter
+	 *                         e.g. substituteInLineCodes($value, ['preg_quote' => ['/']])
 	 *
 	 * @return string
 	 */
-	public function substituteInLineCodes($value) {
+	public function substituteInLineCodes($value, $functions = []) {
 		$substitutions = [
 			[
 				"code" => "%base_url%",
@@ -998,13 +1005,21 @@ trait BasicStructure {
 				"parameter" => []
 			]
 		];
+
 		foreach ($substitutions as $substitution) {
-			$value = str_replace(
+			$replacement = \call_user_func_array(
+				$substitution["function"],
+				$substitution["parameter"]
+			);
+			foreach ($functions as $function => $parameters) {
+				$replacement = \call_user_func_array(
+					$function,
+					\array_merge([$replacement], $parameters)
+				);
+			}
+			$value = \str_replace(
 				$substitution["code"],
-				call_user_func_array(
-					$substitution["function"],
-					$substitution["parameter"]
-				),
+				$replacement,
 				$value
 			);
 		}

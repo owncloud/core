@@ -27,6 +27,7 @@ use OCP\Files\Node;
 use OCP\Files\NotFoundException;
 use OCP\IUserManager;
 use OCP\Share\Exceptions\IllegalIDChangeException;
+use OC\Share\Constants;
 
 class Share implements \OCP\Share\IShare {
 
@@ -66,6 +67,8 @@ class Share implements \OCP\Share\IShare {
 	private $mailSend;
 	/** @var string */
 	private $name;
+	/** @var int */
+	private $state;
 
 	/** @var IRootFolder */
 	private $rootFolder;
@@ -76,6 +79,7 @@ class Share implements \OCP\Share\IShare {
 	public function __construct(IRootFolder $rootFolder, IUserManager $userManager) {
 		$this->rootFolder = $rootFolder;
 		$this->userManager = $userManager;
+		$this->state = Constants::STATE_ACCEPTED;
 	}
 
 	/**
@@ -433,5 +437,20 @@ class Share implements \OCP\Share\IShare {
 	 */
 	public function getName() {
 		return $this->name;
+	}
+
+	/**
+	 * @inheritdoc
+	 */
+	public function setState($state) {
+		$this->state = $state;
+		return $this;
+	}
+
+	/**
+	 * @inheritdoc
+	 */
+	public function getState() {
+		return $this->state;
 	}
 }

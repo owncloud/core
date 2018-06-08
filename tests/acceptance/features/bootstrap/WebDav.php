@@ -1373,8 +1373,8 @@ trait WebDav {
 	}
 
 	/**
-	 * @When /^user "([^"]*)" deletes (?:file|folder) "([^"]*)" using the API$/
-	 * @Given /^user "([^"]*)" has deleted (?:file|folder) "([^"]*)"$/
+	 * @When /^user "([^"]*)" (?:deletes|unshares) (?:file|folder) "([^"]*)" using the API$/
+	 * @Given /^user "([^"]*)" has (?:deleted|unshared) (?:file|folder) "([^"]*)"$/
 	 *
 	 * @param string $user
 	 * @param string $file

@@ -32,8 +32,8 @@ class FavoritesPage extends FilesPageBasic {
 	 * @var string $path
 	 */
 	protected $path = '/index.php/apps/files/?view=favorites';
-	protected $fileNamesXpath = "//span[contains(@class,'nametext')]";
-	protected $fileNameMatchXpath = "//span[contains(@class,'nametext') and .=%s]";
+	protected $fileNamesXpath = "//span[@class='nametext']";
+	protected $fileNameMatchXpath = "//span[@class='nametext' and .=%s]";
 	protected $fileListXpath = ".//div[@id='app-content-favorites']//tbody[@id='fileList']";
 	protected $emptyContentXpath = ".//div[@id='app-content-favorites']//div[@id='emptycontent']";
 	
