@@ -22,14 +22,13 @@
  */
 
 use Behat\Behat\Context\Context;
-use Behat\Behat\Context\SnippetAcceptingContext;
 
 require_once 'bootstrap.php';
 
 /**
  * Features context.
  */
-class FeatureContext implements Context, SnippetAcceptingContext {
+class FeatureContext implements Context {
 	use BasicStructure;
 
 	/**
