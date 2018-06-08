@@ -13,6 +13,4 @@ if (isset($_['personal_note'])) {
 p($l->t("Cheers!"));
 ?>
 
---
-<?php p($theme->getName() . ' - ' . $theme->getSlogan()); ?>
-<?php print_unescaped("\n".$theme->getBaseUrl());
+<?php print_unescaped($this->inc('plain.mail.footer'));
