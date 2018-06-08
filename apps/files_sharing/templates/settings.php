@@ -20,6 +20,9 @@
  */
 style('files_sharing', 'settings');
 script('files_sharing', 'settings');
+
+$newlineEntity = '&#10';
+$textareaPlaceholder = "OC\Group\Database::localGroups{$newlineEntity}OCA\User_LDAP\Group_Proxy::ldapGroup";
 ?>
 
 <div class="section" id="files_sharing">
@@ -34,6 +37,6 @@ script('files_sharing', 'settings');
 				<?php endforeach; ?>
 			</ul>
 		</div>
-		<textarea placeholder="OC\Group\Database::localGroups&#10OCA\User_LDAP\Group_Proxy::ldapGroup" class="files_sharing_settings" name="blacklisted_group_displaynames"><?php p($_['blacklistedDisplaynames']); ?></textarea>
+		<textarea placeholder="<?php print_unescaped($textareaPlaceholder); ?>" class="files_sharing_settings" name="blacklisted_group_displaynames"><?php p($_['blacklistedDisplaynames']); ?></textarea>
 	</div>
 </div>

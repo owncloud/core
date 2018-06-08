@@ -10,8 +10,7 @@
 
 $(document).ready(function(){
 	$('#files_sharing .files_sharing_settings').change(function(){
-		var data = {};
-		data[$(this).prop('name')] = $(this).val();
-		$.post(OC.generateUrl('apps/files_sharing/settings'), data);
+		var $element = $(this);
+		OC.AppConfig.setValue('files_sharing', $element.prop('name'), $element.val());
 	});
 });
