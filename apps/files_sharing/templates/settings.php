@@ -32,7 +32,7 @@ $textareaPlaceholder = "OC\Group\Database::localGroups{$newlineEntity}OCA\User_L
 		<div>
 			<p><?php p($l->t('Available backends names are:')); ?></p>
 			<ul class="groupBackends">
-				<?php foreach($_['backendNames'] as $backendName): ?>
+				<?php foreach ($_['backendNames'] as $backendName): ?>
 				<li><?php p($backendName); ?></li>
 				<?php endforeach; ?>
 			</ul>

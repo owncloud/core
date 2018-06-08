@@ -49,7 +49,7 @@ class SharingBlacklist {
 	public function isGroupBlacklisted(IGroup $group) {
 		$this->initCache();
 
-		$groupBackend = get_class($group->getBackend());
+		$groupBackend = \get_class($group->getBackend());
 		$groupDisplayname = $group->getDisplayName();
 
 		if (isset($this->blacklistCache['displaynames'][$groupBackend][$groupDisplayname])) {
@@ -90,7 +90,6 @@ class SharingBlacklist {
 
 	private function initCache() {
 		if ($this->blacklistCache === null) {
-
 			$this->blacklistCache = [
 				'displaynames' => $this->fetchBlacklistedGroupDisplaynames(),
 				// blacklist by group id or other reason could be added at some point
@@ -100,13 +99,13 @@ class SharingBlacklist {
 
 	private function fetchBlacklistedGroupDisplaynames() {
 		$configuredBlacklist = $this->config->getAppValue('files_sharing', 'blacklisted_group_displaynames');
-		$blacklistedComponents = explode("\n", $configuredBlacklist);
+		$blacklistedComponents = \explode("\n", $configuredBlacklist);
 
 		$result = [];
 		foreach ($blacklistedComponents as $blacklistedComponent) {
 			$blacklistedComponent = \trim($blacklistedComponent);  // trim black chars
 
-			$splittedName = explode('::', $blacklistedComponent, 2);
+			$splittedName = \explode('::', $blacklistedComponent, 2);
 			if (\count($splittedName) !== 2) {
 				// missing backend in the blacklisted name? Ignore
 				continue;

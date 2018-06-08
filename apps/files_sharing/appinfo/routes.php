@@ -39,16 +39,6 @@ $application->registerRoutes($this, [
 			'url' => '/testremote',
 			'verb' => 'GET'
 		],
-		[
-			'name' => 'settings#saveSettings',
-			'url' => '/settings',
-			'verb' => 'POST'
-		],
-		[
-			'name' => 'settings#getSettings',
-			'url' => '/settings',
-			'verb' => 'GET'
-		],
 	],
 	'ocs' => [
 		[

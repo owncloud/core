@@ -27,6 +27,7 @@
 namespace OCA\Files_Sharing\Tests\API;
 
 use OCA\Files_Sharing\Controller\ShareesController;
+use OCA\Files_Sharing\SharingBlacklist;
 use OCA\Files_Sharing\Tests\TestCase;
 use OCP\AppFramework\Http;
 use OCP\Contacts\IManager;
@@ -73,6 +74,9 @@ class ShareesTest extends TestCase {
 	/** @var \OCP\Share\IManager|\PHPUnit_Framework_MockObject_MockObject */
 	protected $shareManager;
 
+	/** @var SharingBlacklist|\PHPUnit_Framework_MockObject_MockObject */
+	protected $sharingBlacklist;
+
 	protected function setUp() {
 		parent::setUp();
 
@@ -104,6 +108,10 @@ class ShareesTest extends TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
+		$this->sharingBlacklist = $this->getMockBuilder(SharingBlacklist::class)
+			->disableOriginalConstructor()
+			->getMock();
+
 		$this->sharees = new ShareesController(
 			'files_sharing',
 			$this->request,
@@ -114,7 +122,8 @@ class ShareesTest extends TestCase {
 			$this->session,
 			$this->getMockBuilder(IURLGenerator::class)->disableOriginalConstructor()->getMock(),
 			$this->getMockBuilder(ILogger::class)->disableOriginalConstructor()->getMock(),
-			$this->shareManager
+			$this->shareManager,
+			$this->sharingBlacklist
 		);
 	}
 
@@ -534,7 +543,8 @@ class ShareesTest extends TestCase {
 			$this->session,
 			$this->getMockBuilder(IURLGenerator::class)->disableOriginalConstructor()->getMock(),
 			$this->getMockBuilder(ILogger::class)->disableOriginalConstructor()->getMock(),
-			$this->shareManager
+			$this->shareManager,
+			$this->sharingBlacklist
 		);
 		$this->invokePrivate($this->sharees, 'limit', [2]);
 		$this->invokePrivate($this->sharees, 'offset', [0]);
@@ -1484,7 +1494,8 @@ class ShareesTest extends TestCase {
 				$this->session,
 				$this->getMockBuilder('OCP\IURLGenerator')->disableOriginalConstructor()->getMock(),
 				$this->getMockBuilder('OCP\ILogger')->disableOriginalConstructor()->getMock(),
-				$this->shareManager
+				$this->shareManager,
+				$this->sharingBlacklist
 			])
 			->setMethods(['searchSharees', 'isRemoteSharingAllowed'])
 			->getMock();
@@ -1633,7 +1644,8 @@ class ShareesTest extends TestCase {
 				$this->session,
 				$this->getMockBuilder(IURLGenerator::class)->disableOriginalConstructor()->getMock(),
 				$this->getMockBuilder(ILogger::class)->disableOriginalConstructor()->getMock(),
-				$this->shareManager
+				$this->shareManager,
+				$this->sharingBlacklist
 			])
 			->setMethods(['getShareesForShareIds', 'getUsers', 'getGroups', 'getRemote'])
 			->getMock();
