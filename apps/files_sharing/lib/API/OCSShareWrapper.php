@@ -46,7 +46,8 @@ class OCSShareWrapper {
 			\OC::$server->getUserSession()->getUser(),
 			\OC::$server->getL10N('files_sharing'),
 			\OC::$server->getConfig(),
-			$this->application->getContainer()->query(NotificationPublisher::class)
+			$this->application->getContainer()->query(NotificationPublisher::class),
+			\OC::$server->getEventDispatcher()
 		);
 	}
 
