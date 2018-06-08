@@ -21,7 +21,6 @@
  */
 
 use Behat\Behat\Context\Context;
-use Behat\Behat\Context\SnippetAcceptingContext;
 use Behat\Gherkin\Node\PyStringNode;
 use TestHelpers\EmailHelper;
 
@@ -30,7 +29,7 @@ require_once 'bootstrap.php';
 /**
  * context file for email related steps.
  */
-class EmailContext implements Context, SnippetAcceptingContext {
+class EmailContext implements Context {
 	private $mailhogUrl = null;
 	
 	/**
