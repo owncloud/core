@@ -8,7 +8,6 @@
 
 namespace Test\Archive;
 
-
 abstract class TestBase extends \Test\TestCase {
 	/**
 	 * @var \OC\Archive\Archive
@@ -30,8 +29,8 @@ abstract class TestBase extends \Test\TestCase {
 		$this->instance=$this->getExisting();
 		$allFiles=$this->instance->getFiles();
 		$expected= ['lorem.txt','logo-wide.png','dir/', 'dir/lorem.txt'];
-		$this->assertCount(4, $allFiles, 'only found '.count($allFiles).' out of 4 expected files');
-		foreach($expected as $file) {
+		$this->assertCount(4, $allFiles, 'only found '.\count($allFiles).' out of 4 expected files');
+		foreach ($expected as $file) {
 			$this->assertContains($file, $allFiles, 'cant find '.  $file . ' in archive');
 			$this->assertTrue($this->instance->fileExists($file), 'file '.$file.' does not exist in archive');
 		}
@@ -40,14 +39,14 @@ abstract class TestBase extends \Test\TestCase {
 		$rootContent=$this->instance->getFolder('');
 		$expected= ['lorem.txt','logo-wide.png', 'dir/'];
 		$this->assertCount(3, $rootContent);
-		foreach($expected as $file) {
+		foreach ($expected as $file) {
 			$this->assertContains($file, $rootContent, 'cant find '.  $file . ' in archive');
 		}
 
 		$dirContent=$this->instance->getFolder('dir/');
 		$expected= ['lorem.txt'];
 		$this->assertCount(1, $dirContent);
-		foreach($expected as $file) {
+		foreach ($expected as $file) {
 			$this->assertContains($file, $dirContent, 'cant find '.  $file . ' in archive');
 		}
 	}
@@ -83,18 +82,18 @@ abstract class TestBase extends \Test\TestCase {
 		$this->instance=$this->getExisting();
 		$fh=$this->instance->getStream('lorem.txt', 'r');
 		$this->assertTrue((bool)$fh);
-		$content=fread($fh, $this->instance->filesize('lorem.txt'));
-		fclose($fh);
+		$content=\fread($fh, $this->instance->filesize('lorem.txt'));
+		\fclose($fh);
 		$this->assertStringEqualsFile($dir.'/lorem.txt', $content);
 	}
 	public function testWriteStream() {
 		$dir=\OC::$SERVERROOT.'/tests/data';
 		$this->instance=$this->getNew();
 		$fh=$this->instance->getStream('lorem.txt', 'w');
-		$source=fopen($dir.'/lorem.txt', 'r');
+		$source=\fopen($dir.'/lorem.txt', 'r');
 		\OCP\Files::streamCopy($source, $fh);
-		fclose($source);
-		fclose($fh);
+		\fclose($source);
+		\fclose($fh);
 		$this->assertTrue($this->instance->fileExists('lorem.txt'));
 		$this->assertStringEqualsFile($dir.'/lorem.txt', $this->instance->getFile('lorem.txt'));
 	}

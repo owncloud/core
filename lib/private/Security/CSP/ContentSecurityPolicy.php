@@ -195,5 +195,4 @@ class ContentSecurityPolicy extends \OCP\AppFramework\Http\ContentSecurityPolicy
 	public function setAllowedChildSrcDomains($allowedChildSrcDomains) {
 		$this->allowedChildSrcDomains = $allowedChildSrcDomains;
 	}
-
 }

@@ -101,7 +101,7 @@ class HookManager {
 
 	public function postDeleteUser($params) {
 		$uid = $params['uid'];
-		if (isset($this->usersToDelete[$uid])){
+		if (isset($this->usersToDelete[$uid])) {
 			$this->syncService->deleteUser($this->usersToDelete[$uid]);
 		}
 
@@ -121,10 +121,10 @@ class HookManager {
 	}
 
 	public function firstLogin(IUser $user = null) {
-		if (!is_null($user)) {
+		if ($user !== null) {
 			$principal = 'principals/users/' . $user->getUID();
 			$calendars = $this->calDav->getCalendarsForUser($principal);
-			if (empty($calendars) || (count($calendars) === 1 && $calendars[0]['uri'] === BirthdayService::BIRTHDAY_CALENDAR_URI)) {
+			if (empty($calendars) || (\count($calendars) === 1 && $calendars[0]['uri'] === BirthdayService::BIRTHDAY_CALENDAR_URI)) {
 				try {
 					$this->calDav->createCalendar($principal, 'personal', [
 						'{DAV:}displayname' => $this->l10n->t('Personal'),

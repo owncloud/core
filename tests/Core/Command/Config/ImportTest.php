@@ -21,7 +21,6 @@
 
 namespace Tests\Core\Command\Config;
 
-
 use OC\Core\Command\Config\Import;
 use Test\TestCase;
 
@@ -56,7 +55,7 @@ class ImportTest extends TestCase {
 			[1],
 			[null],
 			['new \Exception()'],
-			[json_encode([])],
+			[\json_encode([])],
 		];
 	}
 
@@ -99,7 +98,7 @@ class ImportTest extends TestCase {
 			[1],
 			[null],
 			['new \Exception()'],
-			[json_encode([])],
+			[\json_encode([])],
 			[false],
 			[true],
 			[[]],

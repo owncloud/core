@@ -47,7 +47,7 @@ class Manager implements IMountManager {
 	 */
 	public function removeMount($mountPoint) {
 		$mountPoint = Filesystem::normalizePath($mountPoint);
-		if (strlen($mountPoint) > 1) {
+		if (\strlen($mountPoint) > 1) {
 			$mountPoint .= '/';
 		}
 		unset($this->mounts[$mountPoint]);
@@ -57,7 +57,7 @@ class Manager implements IMountManager {
 	 * @param string $mountPoint
 	 * @param string $target
 	 */
-	public function moveMount($mountPoint, $target){
+	public function moveMount($mountPoint, $target) {
 		$this->mounts[$target] = $this->mounts[$mountPoint];
 		unset($this->mounts[$mountPoint]);
 	}
@@ -77,9 +77,9 @@ class Manager implements IMountManager {
 
 		\OC_Hook::emit('OC_Filesystem', 'get_mountpoint', ['path' => $path]);
 		$foundMountPoint = '';
-		$mountPoints = array_keys($this->mounts);
+		$mountPoints = \array_keys($this->mounts);
 		foreach ($mountPoints as $mountpoint) {
-			if (strpos($path, $mountpoint) === 0 and strlen($mountpoint) > strlen($foundMountPoint)) {
+			if (\strpos($path, $mountpoint) === 0 and \strlen($mountpoint) > \strlen($foundMountPoint)) {
 				$foundMountPoint = $mountpoint;
 			}
 		}
@@ -100,10 +100,10 @@ class Manager implements IMountManager {
 		\OC_Util::setupFS();
 		$path = $this->formatPath($path);
 		$result = [];
-		$pathLength = strlen($path);
-		$mountPoints = array_keys($this->mounts);
+		$pathLength = \strlen($path);
+		$mountPoints = \array_keys($this->mounts);
 		foreach ($mountPoints as $mountPoint) {
-			if (substr($mountPoint, 0, $pathLength) === $path and strlen($mountPoint) > $pathLength) {
+			if (\substr($mountPoint, 0, $pathLength) === $path and \strlen($mountPoint) > $pathLength) {
 				$result[] = $this->mounts[$mountPoint];
 			}
 		}
@@ -122,8 +122,8 @@ class Manager implements IMountManager {
 	 */
 	public function findByStorageId($id) {
 		\OC_Util::setupFS();
-		if (strlen($id) > 64) {
-			$id = md5($id);
+		if (\strlen($id) > 64) {
+			$id = \md5($id);
 		}
 		$result = [];
 		foreach ($this->mounts as $mount) {
@@ -158,7 +158,7 @@ class Manager implements IMountManager {
 	 */
 	private function formatPath($path) {
 		$path = Filesystem::normalizePath($path);
-		if (strlen($path) > 1) {
+		if (\strlen($path) > 1) {
 			$path .= '/';
 		}
 		return $path;

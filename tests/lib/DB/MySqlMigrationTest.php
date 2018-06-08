@@ -50,5 +50,4 @@ class MySqlMigrationTest extends \Test\TestCase {
 		$this->connection->createSchema();
 		$this->assertTrue(true);
 	}
-
 }

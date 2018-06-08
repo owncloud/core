@@ -18,8 +18,7 @@ class HasherTest extends \Test\TestCase {
 	/**
 	 * @return array
 	 */
-	public function versionHashProvider()
-	{
+	public function versionHashProvider() {
 		return [
 			['asf32äà$$a.|3', null],
 			['asf32äà$$a.|3|5', null],
@@ -31,8 +30,7 @@ class HasherTest extends \Test\TestCase {
 	/**
 	 * @return array
 	 */
-	public function allHashProviders()
-	{
+	public function allHashProviders() {
 		return [
 			// Bogus values
 			[null, 'asf32äà$$a.|3', false],
@@ -87,7 +85,7 @@ class HasherTest extends \Test\TestCase {
 		$this->hasher = new Hasher($this->config);
 	}
 
-	function testHash() {
+	public function testHash() {
 		$hash = $this->hasher->hash('String To Hash');
 		$this->assertNotNull($hash);
 	}
@@ -95,16 +93,15 @@ class HasherTest extends \Test\TestCase {
 	/**
 	 * @dataProvider versionHashProvider
 	 */
-	function testSplitHash($hash, $expected) {
+	public function testSplitHash($hash, $expected) {
 		$relativePath = self::invokePrivate($this->hasher, 'splitHash', [$hash]);
 		$this->assertSame($expected, $relativePath);
 	}
 
-
 	/**
 	 * @dataProvider allHashProviders
 	 */
-	function testVerify($password, $hash, $expected) {
+	public function testVerify($password, $hash, $expected) {
 		$this->config
 			->expects($this->any())
 			->method('getSystemValue')
@@ -114,5 +111,4 @@ class HasherTest extends \Test\TestCase {
 		$result = $this->hasher->verify($password, $hash);
 		$this->assertSame($expected, $result);
 	}
-
 }

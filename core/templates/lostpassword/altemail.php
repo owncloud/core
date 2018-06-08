@@ -18,7 +18,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>
  *
  */
-print_unescaped(str_replace('{link}', $_['link'], $l->t('Use the following link to reset your password: {link}')));
+print_unescaped(\str_replace('{link}', $_['link'], $l->t('Use the following link to reset your password: {link}')));
 print_unescaped("\n\n");
 // TRANSLATORS term at the end of a mail
 p($l->t("Cheers!"));
@@ -27,4 +27,3 @@ p($l->t("Cheers!"));
 --
 <?php p($theme->getName() . ' - ' . $theme->getSlogan()); ?>
 <?php print_unescaped("\n".$theme->getBaseUrl());
-

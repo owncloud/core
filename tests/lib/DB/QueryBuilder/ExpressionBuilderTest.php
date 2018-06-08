@@ -60,7 +60,7 @@ class ExpressionBuilderTest extends TestCase {
 		$testSets = [];
 		foreach ($comparisonOperators as $operator) {
 			foreach ($valueSets as $values) {
-				$testSets[] = array_merge([$operator], $values);
+				$testSets[] = \array_merge([$operator], $values);
 			}
 		}
 		return $testSets;
@@ -294,11 +294,11 @@ class ExpressionBuilderTest extends TestCase {
 
 	protected function helpWithLiteral($input, $isLiteral) {
 		if ($isLiteral) {
-			if (is_array($input)) {
-				$doctrineInput = array_map(function ($ident) {
+			if (\is_array($input)) {
+				$doctrineInput = \array_map(function ($ident) {
 					return $this->doctrineExpressionBuilder->literal($ident);
 				}, $input);
-				$ocInput = array_map(function ($ident) {
+				$ocInput = \array_map(function ($ident) {
 					return $this->expressionBuilder->literal($ident);
 				}, $input);
 			} else {
@@ -306,8 +306,8 @@ class ExpressionBuilderTest extends TestCase {
 				$ocInput = $this->expressionBuilder->literal($input);
 			}
 		} else {
-			if (is_array($input)) {
-				$doctrineInput = array_map(function ($input) {
+			if (\is_array($input)) {
+				$doctrineInput = \array_map(function ($input) {
 					return '`' . $input . '`';
 				}, $input);
 				$ocInput = $input;
@@ -397,10 +397,10 @@ class ExpressionBuilderTest extends TestCase {
 		$query->select($query->createFunction('COUNT(*) AS `count`'))
 			->from('appconfig')
 			->where($query->expr()->eq('appid', $query->createNamedParameter($appId)))
-			->andWhere(call_user_func([$query->expr(), $function], 'configvalue', $query->createNamedParameter($value, $type), IQueryBuilder::PARAM_STR));
+			->andWhere(\call_user_func([$query->expr(), $function], 'configvalue', $query->createNamedParameter($value, $type), IQueryBuilder::PARAM_STR));
 
 		if ($compareKeyToValue) {
-			$query->andWhere(call_user_func([$query->expr(), $function], 'configkey', 'configvalue', IQueryBuilder::PARAM_STR));
+			$query->andWhere(\call_user_func([$query->expr(), $function], 'configkey', 'configvalue', IQueryBuilder::PARAM_STR));
 		}
 
 		$result = $query->execute();

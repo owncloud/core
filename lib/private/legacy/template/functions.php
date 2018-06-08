@@ -52,8 +52,8 @@ function print_unescaped($string) {
  * if an array is given it will add all scripts
  */
 function script($app, $file = null) {
-	if(is_array($file)) {
-		foreach($file as $f) {
+	if (\is_array($file)) {
+		foreach ($file as $f) {
 			OC_Util::addScript($app, $f);
 		}
 	} else {
@@ -68,8 +68,8 @@ function script($app, $file = null) {
  * if an array is given it will add all scripts
  */
 function vendor_script($app, $file = null) {
-	if(is_array($file)) {
-		foreach($file as $f) {
+	if (\is_array($file)) {
+		foreach ($file as $f) {
 			OC_Util::addVendorScript($app, $f);
 		}
 	} else {
@@ -84,8 +84,8 @@ function vendor_script($app, $file = null) {
  * if an array is given it will add all styles
  */
 function style($app, $file = null) {
-	if(is_array($file)) {
-		foreach($file as $f) {
+	if (\is_array($file)) {
+		foreach ($file as $f) {
 			OC_Util::addStyle($app, $f);
 		}
 	} else {
@@ -100,8 +100,8 @@ function style($app, $file = null) {
  * if an array is given it will add all styles
  */
 function vendor_style($app, $file = null) {
-	if(is_array($file)) {
-		foreach($file as $f) {
+	if (\is_array($file)) {
+		foreach ($file as $f) {
 			OC_Util::addVendorStyle($app, $f);
 		}
 	} else {
@@ -125,8 +125,8 @@ function translation($app) {
  * if an array is given it will add all components
  */
 function component($app, $file) {
-	if(is_array($file)) {
-		foreach($file as $f) {
+	if (\is_array($file)) {
+		foreach ($file as $f) {
 			$url = link_to($app, 'component/' . $f . '.html');
 			OC_Util::addHeader('link', ['rel' => 'import', 'href' => $url]);
 		}
@@ -145,7 +145,7 @@ function component($app, $file) {
  *
  * For further information have a look at \OCP\IURLGenerator::linkTo
  */
-function link_to( $app, $file, $args = []) {
+function link_to($app, $file, $args = []) {
 	return \OC::$server->getURLGenerator()->linkTo($app, $file, $args);
 }
 
@@ -165,8 +165,8 @@ function link_to_docs($key) {
  *
  * For further information have a look at \OCP\IURLGenerator::imagePath
  */
-function image_path( $app, $image ) {
-	return \OC::$server->getURLGenerator()->imagePath( $app, $image );
+function image_path($app, $image) {
+	return \OC::$server->getURLGenerator()->imagePath($app, $image);
 }
 
 /**
@@ -174,8 +174,8 @@ function image_path( $app, $image ) {
  * @param string $mimetype mimetype
  * @return string link to the image
  */
-function mimetype_icon( $mimetype ) {
-	return \OC::$server->getMimeTypeDetector()->mimeTypeIcon( $mimetype );
+function mimetype_icon($mimetype) {
+	return \OC::$server->getMimeTypeDetector()->mimeTypeIcon($mimetype);
 }
 
 /**
@@ -184,14 +184,14 @@ function mimetype_icon( $mimetype ) {
  * @param string $path path of file
  * @return link to the preview
  */
-function preview_icon( $path ) {
+function preview_icon($path) {
 	return \OC::$server->getURLGenerator()->linkToRoute('core_ajax_preview', ['x' => 32, 'y' => 32, 'file' => $path]);
 }
 
 /**
  * @param string $path
  */
-function publicPreview_icon ( $path, $token ) {
+function publicPreview_icon($path, $token) {
 	return \OC::$server->getURLGenerator()->linkToRoute('core_ajax_public_preview', ['x' => 32, 'y' => 32, 'file' => $path, 't' => $token]);
 }
 
@@ -202,8 +202,8 @@ function publicPreview_icon ( $path, $token ) {
  *
  * For further information have a look at OC_Helper::humanFileSize
  */
-function human_file_size( $bytes ) {
-	return OC_Helper::humanFileSize( $bytes );
+function human_file_size($bytes) {
+	return OC_Helper::humanFileSize($bytes);
 }
 
 /**
@@ -211,10 +211,10 @@ function human_file_size( $bytes ) {
  * @param int $timestamp UNIX timestamp to strip
  * @return $timestamp without time value
  */
-function strip_time($timestamp){
+function strip_time($timestamp) {
 	$date = new \DateTime("@{$timestamp}");
 	$date->setTime(0, 0, 0);
-	return intval($date->format('U'));
+	return \intval($date->format('U'));
 }
 
 /**
@@ -229,18 +229,18 @@ function relative_modified_date($timestamp, $fromTime = null, $dateOnly = false)
 	/** @var \OC\DateTimeFormatter $formatter */
 	$formatter = \OC::$server->query('DateTimeFormatter');
 
-	if ($dateOnly){
+	if ($dateOnly) {
 		return $formatter->formatDateSpan($timestamp, $fromTime);
 	}
 	return $formatter->formatTimeSpan($timestamp, $fromTime);
 }
 
 function html_select_options($options, $selected, $params= []) {
-	if (!is_array($selected)) {
+	if (!\is_array($selected)) {
 		$selected= [$selected];
 	}
 	if (isset($params['combine']) && $params['combine']) {
-		$options = array_combine($options, $options);
+		$options = \array_combine($options, $options);
 	}
 	$value_name = $label_name = false;
 	if (isset($params['value'])) {
@@ -250,14 +250,14 @@ function html_select_options($options, $selected, $params= []) {
 		$label_name = $params['label'];
 	}
 	$html = '';
-	foreach($options as $value => $label) {
-		if ($value_name && is_array($label)) {
+	foreach ($options as $value => $label) {
+		if ($value_name && \is_array($label)) {
 			$value = $label[$value_name];
 		}
-		if ($label_name && is_array($label)) {
+		if ($label_name && \is_array($label)) {
 			$label = $label[$label_name];
 		}
-		$select = in_array($value, $selected) ? ' selected="selected"' : '';
+		$select = \in_array($value, $selected) ? ' selected="selected"' : '';
 		$html .= '<option value="' . \OCP\Util::sanitizeHTML($value) . '"' . $select . '>' . \OCP\Util::sanitizeHTML($label) . '</option>'."\n";
 	}
 	return $html;

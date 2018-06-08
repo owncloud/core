@@ -30,7 +30,7 @@ OCP\JSON::callCheck();
 $username = (string)$_POST['username'];
 $group = (string)$_POST['group'];
 
-if($username === OC_User::getUser() && $group === "admin" &&  OC_User::isAdminUser($username)) {
+if ($username === OC_User::getUser() && $group === "admin" &&  OC_User::isAdminUser($username)) {
 	$l = \OC::$server->getL10N('core');
 	OC_JSON::error(['data' => ['message' => $l->t('Admins can\'t remove themself from the admin group')]]);
 	exit();
@@ -41,12 +41,12 @@ $isGroupAccessible = false;
 $currentUserObject = \OC::$server->getUserSession()->getUser();
 $targetUserObject = \OC::$server->getUserManager()->get($username);
 $targetGroupObject = \OC::$server->getGroupManager()->get($group);
-if($targetUserObject !== null && $currentUserObject !== null && $targetGroupObject !== null) {
+if ($targetUserObject !== null && $currentUserObject !== null && $targetGroupObject !== null) {
 	$isUserAccessible = \OC::$server->getGroupManager()->getSubAdmin()->isUserAccessible($currentUserObject, $targetUserObject);
 	$isGroupAccessible = \OC::$server->getGroupManager()->getSubAdmin()->isSubAdminofGroup($currentUserObject, $targetGroupObject);
 }
 
-if(!OC_User::isAdminUser(OC_User::getUser())
+if (!OC_User::isAdminUser(OC_User::getUser())
 	&& (!$isUserAccessible
 		|| !$isGroupAccessible)) {
 	$l = \OC::$server->getL10N('core');
@@ -54,12 +54,12 @@ if(!OC_User::isAdminUser(OC_User::getUser())
 	exit();
 }
 
-if (is_null($targetUserObject)) {
+if ($targetUserObject === null) {
 	OC_JSON::error(['data' => ['message' => $l->t('Unknown user')]]);
 	exit();
 }
 
-if(!\OC::$server->getGroupManager()->groupExists($group)) {
+if (!\OC::$server->getGroupManager()->groupExists($group)) {
 	$targetGroupObject = \OC::$server->getGroupManager()->createGroup($group);
 }
 
@@ -68,11 +68,11 @@ $l = \OC::$server->getL10N('settings');
 $action = "add";
 
 // Toggle group
-if( \OC::$server->getGroupManager()->inGroup( $username, $group )) {
+if (\OC::$server->getGroupManager()->inGroup($username, $group)) {
 	$action = "remove";
 	$targetGroupObject->removeUser($targetUserObject);
 	$usersInGroup = $targetGroupObject->getUsers();
-	$usersInGroup = array_values(array_map(function(\OCP\IUser $g) {
+	$usersInGroup = \array_values(\array_map(function (\OCP\IUser $g) {
 		return $g->getUID();
 	}, $usersInGroup));
 } else {

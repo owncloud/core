@@ -122,7 +122,7 @@ class Share20OCS {
 	private function getAdditionalUserInfo(IUser $user) {
 		if ($this->additionalInfoField === 'email') {
 			return $user->getEMailAddress();
-		} else if ($this->additionalInfoField === 'id') {
+		} elseif ($this->additionalInfoField === 'id') {
 			return $user->getUID();
 		}
 		return null;
@@ -163,7 +163,7 @@ class Share20OCS {
 		$node = $nodes[0];
 
 		$result['path'] = $userFolder->getRelativePath($node->getPath());
-		if ($node instanceOf \OCP\Files\Folder) {
+		if ($node instanceof \OCP\Files\Folder) {
 			$result['item_type'] = 'folder';
 		} else {
 			$result['item_type'] = 'file';
@@ -183,12 +183,11 @@ class Share20OCS {
 			if ($sharedWith !== null) {
 				$result['share_with_additional_info'] = $this->getAdditionalUserInfo($sharedWith);
 			}
-		} else if ($share->getShareType() === \OCP\Share::SHARE_TYPE_GROUP) {
+		} elseif ($share->getShareType() === \OCP\Share::SHARE_TYPE_GROUP) {
 			$group = $this->groupManager->get($share->getSharedWith());
 			$result['share_with'] = $share->getSharedWith();
 			$result['share_with_displayname'] = $group !== null ? $group->getDisplayName() : $share->getSharedWith();
-		} else if ($share->getShareType() === \OCP\Share::SHARE_TYPE_LINK) {
-
+		} elseif ($share->getShareType() === \OCP\Share::SHARE_TYPE_LINK) {
 			$result['share_with'] = $share->getPassword();
 			$result['share_with_displayname'] = $share->getPassword();
 			$result['name'] = $share->getName();
@@ -202,8 +201,7 @@ class Share20OCS {
 			if ($expiration !== null) {
 				$result['expiration'] = $expiration->format('Y-m-d 00:00:00');
 			}
-
-		} else if ($share->getShareType() === \OCP\Share::SHARE_TYPE_REMOTE) {
+		} elseif ($share->getShareType() === \OCP\Share::SHARE_TYPE_REMOTE) {
 			$result['share_with'] = $share->getSharedWith();
 			$result['share_with_displayname'] = $share->getSharedWith();
 			$result['token'] = $share->getToken();
@@ -375,7 +373,7 @@ class Share20OCS {
 			}
 			$share->setSharedWith($shareWith);
 			$share->setPermissions($permissions);
-		} else if ($shareType === \OCP\Share::SHARE_TYPE_GROUP) {
+		} elseif ($shareType === \OCP\Share::SHARE_TYPE_GROUP) {
 			if (!$this->shareManager->allowGroupSharing()) {
 				$share->getNode()->unlock(ILockingProvider::LOCK_SHARED);
 				return new \OC\OCS\Result(null, 404, $this->l->t('Group sharing is disabled by the administrator'));
@@ -388,7 +386,7 @@ class Share20OCS {
 			}
 			$share->setSharedWith($shareWith);
 			$share->setPermissions($permissions);
-		} else if ($shareType === \OCP\Share::SHARE_TYPE_LINK) {
+		} elseif ($shareType === \OCP\Share::SHARE_TYPE_LINK) {
 			//Can we even share links?
 			if (!$this->shareManager->shareApiAllowLinks()) {
 				$share->getNode()->unlock(ILockingProvider::LOCK_SHARED);
@@ -420,7 +418,7 @@ class Share20OCS {
 					\OCP\Constants::PERMISSION_UPDATE |
 					\OCP\Constants::PERMISSION_DELETE
 				);
-			} else if ($permissions === \OCP\Constants::PERMISSION_CREATE ||
+			} elseif ($permissions === \OCP\Constants::PERMISSION_CREATE ||
 					$permissions === (\OCP\Constants::PERMISSION_READ | \OCP\Constants::PERMISSION_CREATE | \OCP\Constants::PERMISSION_UPDATE | \OCP\Constants::PERMISSION_DELETE)) {
 				$share->setPermissions($permissions);
 			} else {
@@ -453,8 +451,7 @@ class Share20OCS {
 					return new \OC\OCS\Result(null, 404, $this->l->t('Invalid date, date format must be YYYY-MM-DD'));
 				}
 			}
-
-		} else if ($shareType === \OCP\Share::SHARE_TYPE_REMOTE) {
+		} elseif ($shareType === \OCP\Share::SHARE_TYPE_REMOTE) {
 			if (!$this->shareManager->outgoingServer2ServerSharesAllowed()) {
 				$share->getNode()->unlock(ILockingProvider::LOCK_SHARED);
 				return new \OC\OCS\Result(null, 403, $this->l->t('Sharing %s failed because the back end does not allow shares from type %s', [$path->getPath(), $shareType]));
@@ -476,15 +473,12 @@ class Share20OCS {
 			$code = $e->getCode() === 0 ? 403 : $e->getCode();
 			$share->getNode()->unlock(ILockingProvider::LOCK_SHARED);
 			return new \OC\OCS\Result(null, $code, $e->getHint());
-		}catch (\Exception $e) {
+		} catch (\Exception $e) {
 			$share->getNode()->unlock(ILockingProvider::LOCK_SHARED);
 			return new \OC\OCS\Result(null, 403, $e->getMessage());
 		}
 
-
-
 		$share->getNode()->unlock(\OCP\Lock\ILockingProvider::LOCK_SHARED);
-
 
 		$formattedShareAfterCreate = $this->formatShare($share);
 		return new \OC\OCS\Result($formattedShareAfterCreate);
@@ -499,11 +493,11 @@ class Share20OCS {
 		$userShares = $this->shareManager->getSharedWith($this->currentUser->getUID(), \OCP\Share::SHARE_TYPE_USER, $node, -1, 0);
 		$groupShares = $this->shareManager->getSharedWith($this->currentUser->getUID(), \OCP\Share::SHARE_TYPE_GROUP, $node, -1, 0);
 
-		$shares = array_merge($userShares, $groupShares);
+		$shares = \array_merge($userShares, $groupShares);
 
-		$shares = array_filter($shares, function(IShare $share) {
+		$shares = \array_filter($shares, function (IShare $share) {
 			return $share->getShareOwner() !== $this->currentUser->getUID();
- 		});
+		});
 
 		$formatted = [];
 		foreach ($shares as $share) {
@@ -536,11 +530,11 @@ class Share20OCS {
 		/** @var \OCP\Share\IShare[] $shares */
 		$shares = [];
 		foreach ($nodes as $node) {
-			$shares = array_merge($shares, $this->shareManager->getSharesBy($this->currentUser->getUID(), \OCP\Share::SHARE_TYPE_USER, $node, false, -1, 0));
-			$shares = array_merge($shares, $this->shareManager->getSharesBy($this->currentUser->getUID(), \OCP\Share::SHARE_TYPE_GROUP, $node, false, -1, 0));
-			$shares = array_merge($shares, $this->shareManager->getSharesBy($this->currentUser->getUID(), \OCP\Share::SHARE_TYPE_LINK, $node, false, -1, 0));
+			$shares = \array_merge($shares, $this->shareManager->getSharesBy($this->currentUser->getUID(), \OCP\Share::SHARE_TYPE_USER, $node, false, -1, 0));
+			$shares = \array_merge($shares, $this->shareManager->getSharesBy($this->currentUser->getUID(), \OCP\Share::SHARE_TYPE_GROUP, $node, false, -1, 0));
+			$shares = \array_merge($shares, $this->shareManager->getSharesBy($this->currentUser->getUID(), \OCP\Share::SHARE_TYPE_LINK, $node, false, -1, 0));
 			if ($this->shareManager->outgoingServer2ServerSharesAllowed()) {
-				$shares = array_merge($shares, $this->shareManager->getSharesBy($this->currentUser->getUID(), \OCP\Share::SHARE_TYPE_REMOTE, $node, false, -1, 0));
+				$shares = \array_merge($shares, $this->shareManager->getSharesBy($this->currentUser->getUID(), \OCP\Share::SHARE_TYPE_REMOTE, $node, false, -1, 0));
 			}
 		}
 
@@ -617,11 +611,11 @@ class Share20OCS {
 		$userShares = $this->shareManager->getSharesBy($this->currentUser->getUID(), \OCP\Share::SHARE_TYPE_USER, $path, $reshares, -1, 0);
 		$groupShares = $this->shareManager->getSharesBy($this->currentUser->getUID(), \OCP\Share::SHARE_TYPE_GROUP, $path, $reshares, -1, 0);
 		$linkShares = $this->shareManager->getSharesBy($this->currentUser->getUID(), \OCP\Share::SHARE_TYPE_LINK, $path, $reshares, -1, 0);
-		$shares = array_merge($userShares, $groupShares, $linkShares);
+		$shares = \array_merge($userShares, $groupShares, $linkShares);
 
 		if ($this->shareManager->outgoingServer2ServerSharesAllowed()) {
 			$federatedShares = $this->shareManager->getSharesBy($this->currentUser->getUID(), \OCP\Share::SHARE_TYPE_REMOTE, $path, $reshares, -1, 0);
-			$shares = array_merge($shares, $federatedShares);
+			$shares = \array_merge($shares, $federatedShares);
 		}
 
 		$formatted = [];
@@ -684,7 +678,7 @@ class Share20OCS {
 			$newPermissions = null;
 			if ($publicUpload === 'true') {
 				$newPermissions = \OCP\Constants::PERMISSION_READ | \OCP\Constants::PERMISSION_CREATE | \OCP\Constants::PERMISSION_UPDATE | \OCP\Constants::PERMISSION_DELETE;
-			} else if ($publicUpload === 'false') {
+			} elseif ($publicUpload === 'false') {
 				$newPermissions = \OCP\Constants::PERMISSION_READ;
 			}
 
@@ -763,7 +757,7 @@ class Share20OCS {
 
 			if ($expireDate === '') {
 				$share->setExpirationDate(null);
-			} else if ($expireDate !== null) {
+			} elseif ($expireDate !== null) {
 				try {
 					$expireDate = $this->parseDate($expireDate);
 				} catch (\Exception $e) {
@@ -775,10 +769,9 @@ class Share20OCS {
 
 			if ($password === '') {
 				$share->setPassword(null);
-			} else if ($password !== null) {
+			} elseif ($password !== null) {
 				$share->setPassword($password);
 			}
-
 		} else {
 			// For other shares only permissions is valid.
 			if ($permissions === null) {
@@ -793,7 +786,7 @@ class Share20OCS {
 		if ($permissions !== null && $share->getShareOwner() !== $this->currentUser->getUID()) {
 			/* Check if this is an incoming share */
 			$incomingShares = $this->shareManager->getSharedWith($this->currentUser->getUID(), \OCP\Share::SHARE_TYPE_USER, $share->getNode(), -1, 0);
-			$incomingShares = array_merge($incomingShares, $this->shareManager->getSharedWith($this->currentUser->getUID(), \OCP\Share::SHARE_TYPE_GROUP, $share->getNode(), -1, 0));
+			$incomingShares = \array_merge($incomingShares, $this->shareManager->getSharedWith($this->currentUser->getUID(), \OCP\Share::SHARE_TYPE_GROUP, $share->getNode(), -1, 0));
 
 			if (!empty($incomingShares)) {
 				$maxPermissions = 0;
@@ -849,7 +842,7 @@ class Share20OCS {
 
 		if ($share->getShareType() === \OCP\Share::SHARE_TYPE_GROUP) {
 			$sharedWith = $this->groupManager->get($share->getSharedWith());
-			if (!is_null($sharedWith) && $sharedWith->inGroup($this->currentUser)) {
+			if ($sharedWith !== null && $sharedWith->inGroup($this->currentUser)) {
 				return true;
 			}
 		}
@@ -878,7 +871,7 @@ class Share20OCS {
 			throw new \Exception('Invalid date. Format must be YYYY-MM-DD');
 		}
 
-		$date->setTime(0,0,0);
+		$date->setTime(0, 0, 0);
 
 		return $date;
 	}

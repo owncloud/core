@@ -69,7 +69,7 @@ class RemoveMember extends Command {
 
 		$members = $input->getOption('member');
 
-		if (!count($members)) {
+		if (!\count($members)) {
 			$output->writeln('<error>No members specified</error>');
 			return 1;
 		}

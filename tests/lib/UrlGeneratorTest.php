@@ -63,7 +63,6 @@ class UrlGeneratorTest extends TestCase {
 
 		$result = $this->urlGenerator->linkToRouteAbsolute($route);
 		$this->assertEquals('http://localhost/owncloud/index.php/apps/files/ajax/list.php', $result);
-
 	}
 
 	public function provideDocRootAppUrlParts() {
@@ -87,8 +86,7 @@ class UrlGeneratorTest extends TestCase {
 	 * test absolute URL construction
 	 * @dataProvider provideDocRootURLs
 	 */
-	function testGetAbsoluteURLDocRoot($url, $expectedResult) {
-
+	public function testGetAbsoluteURLDocRoot($url, $expectedResult) {
 		\OC::$WEBROOT = '';
 		$result = $this->urlGenerator->getAbsoluteURL($url);
 
@@ -100,8 +98,7 @@ class UrlGeneratorTest extends TestCase {
 	 * test absolute URL construction
 	 * @dataProvider provideSubDirURLs
 	 */
-	function testGetAbsoluteURLSubDir($url, $expectedResult) {
-
+	public function testGetAbsoluteURLSubDir($url, $expectedResult) {
 		\OC::$WEBROOT = '/owncloud';
 		$result = $this->urlGenerator->getAbsoluteURL($url);
 
@@ -126,4 +123,3 @@ class UrlGeneratorTest extends TestCase {
 		];
 	}
 }
-

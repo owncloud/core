@@ -37,7 +37,6 @@ abstract class Bitmap extends Provider {
 	 * {@inheritDoc}
 	 */
 	public function getThumbnail($path, $maxX, $maxY, $scalingup, $fileview) {
-
 		$tmpPath = $fileview->toTmpFile($path);
 		if (!$tmpPath) {
 			return false;
@@ -51,7 +50,7 @@ abstract class Bitmap extends Provider {
 			return false;
 		}
 
-		unlink($tmpPath);
+		\unlink($tmpPath);
 
 		//new bitmap image object
 		$image = new \OC_Image();
@@ -100,7 +99,7 @@ abstract class Bitmap extends Provider {
 	 * @return \Imagick
 	 */
 	private function resize($bp, $maxX, $maxY) {
-		list($previewWidth, $previewHeight) = array_values($bp->getImageGeometry());
+		list($previewWidth, $previewHeight) = \array_values($bp->getImageGeometry());
 
 		// We only need to resize a preview which doesn't fit in the maximum dimensions
 		if ($previewWidth > $maxX || $previewHeight > $maxY) {
@@ -110,5 +109,4 @@ abstract class Bitmap extends Provider {
 
 		return $bp;
 	}
-
 }

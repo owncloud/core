@@ -94,7 +94,7 @@ class AvatarManagerTest extends TestCase {
 	 */
 	public function testPathBuilding($expectedPath, $userId) {
 		$path = $this->invokePrivate($this->avatarManager, 'buildAvatarPath', [$userId]);
-		$this->assertEquals($expectedPath, implode('/', $path));
+		$this->assertEquals($expectedPath, \implode('/', $path));
 	}
 
 	public function providesUserIds() {

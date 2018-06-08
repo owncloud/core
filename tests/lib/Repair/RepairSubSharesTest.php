@@ -76,19 +76,18 @@ class RepairSubSharesTest extends TestCase {
 	 * if the step is working properly
 	 */
 	public function testPopulateDBAndRemoveDuplicates() {
-
 		$qb = $this->connection->getQueryBuilder();
 		//Create 10 users and 3 groups.
 		//add 3 users to each group
 		$userName = "user";
 		$groupName = "group";
 		$folderName = "/test";
-		$time = time();
+		$time = \time();
 		$groupCount = 1;
 		$totalGroups = 3;
 		$parent = 1;
 		$multipleOf = 2;
-		for($userCount = 1; $userCount <= 10; $userCount++) {
+		for ($userCount = 1; $userCount <= 10; $userCount++) {
 			$user = $this->createUser($userName.$userCount);
 			if (\OC::$server->getGroupManager()->groupExists($groupName.$groupCount) === false) {
 				\OC::$server->getGroupManager()->createGroup($groupName.$groupCount);
@@ -117,7 +116,7 @@ class RepairSubSharesTest extends TestCase {
 			 */
 			if (($userCount % $totalGroups) === 0) {
 				$groupCount++;
-				$time = time();
+				$time = \time();
 			}
 
 			/**
@@ -151,7 +150,7 @@ class RepairSubSharesTest extends TestCase {
 	public function testLargeDuplicateShareRows() {
 		$qb = $this->connection->getQueryBuilder();
 		$userName = "user";
-		$time = time();
+		$time = \time();
 		$groupCount = 0;
 		$folderName = "/test";
 		$maxUsersPerGroup = 1000;

@@ -36,7 +36,7 @@ class Config extends Base {
 	 */
 	protected $globalService;
 
-	function __construct(IGlobalStoragesService $globalService) {
+	public function __construct(IGlobalStoragesService $globalService) {
 		parent::__construct();
 		$this->globalService = $globalService;
 	}
@@ -90,8 +90,8 @@ class Config extends Base {
 		} else {
 			$value = $mount->getBackendOption($key);
 		}
-		if (!is_string($value)) { // show bools and objects correctly
-			$value = json_encode($value);
+		if (!\is_string($value)) { // show bools and objects correctly
+			$value = \json_encode($value);
 		}
 		$output->writeln($value);
 	}
@@ -103,8 +103,8 @@ class Config extends Base {
 	 * @param OutputInterface $output
 	 */
 	protected function setOption(IStorageConfig $mount, $key, $value, OutputInterface $output) {
-		$decoded = json_decode($value, true);
-		if (!is_null($decoded)) {
+		$decoded = \json_decode($value, true);
+		if ($decoded !== null) {
 			$value = $decoded;
 		}
 		if ($key === 'mountpoint' || $key === 'mount_point') {

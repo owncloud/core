@@ -32,7 +32,7 @@ abstract class Office extends Provider {
 	 */
 	public function getThumbnail($path, $maxX, $maxY, $scalingup, $fileview) {
 		$this->initCmd();
-		if (is_null($this->cmd)) {
+		if ($this->cmd === null) {
 			return false;
 		}
 
@@ -40,24 +40,24 @@ abstract class Office extends Provider {
 
 		$tmpDir = \OC::$server->getTempManager()->getTempBaseDir();
 
-		$defaultParameters = ' -env:UserInstallation=file://' . escapeshellarg($tmpDir . '/owncloud-' . \OC_Util::getInstanceId() . '/') . ' --headless --nologo --nofirststartwizard --invisible --norestore --convert-to pdf --outdir ';
+		$defaultParameters = ' -env:UserInstallation=file://' . \escapeshellarg($tmpDir . '/owncloud-' . \OC_Util::getInstanceId() . '/') . ' --headless --nologo --nofirststartwizard --invisible --norestore --convert-to pdf --outdir ';
 		$clParameters = \OCP\Config::getSystemValue('preview_office_cl_parameters', $defaultParameters);
 
-		$exec = $this->cmd . $clParameters . escapeshellarg($tmpDir) . ' ' . escapeshellarg($absPath);
+		$exec = $this->cmd . $clParameters . \escapeshellarg($tmpDir) . ' ' . \escapeshellarg($absPath);
 
-		shell_exec($exec);
+		\shell_exec($exec);
 
 		//create imagick object from pdf
 		$pdfPreview = null;
 		try {
-			list($dirname, , , $filename) = array_values(pathinfo($absPath));
+			list($dirname, , , $filename) = \array_values(\pathinfo($absPath));
 			$pdfPreview = $dirname . '/' . $filename . '.pdf';
 
 			$pdf = new \imagick($pdfPreview . '[0]');
 			$pdf->setImageFormat('jpg');
 		} catch (\Exception $e) {
-			unlink($absPath);
-			unlink($pdfPreview);
+			\unlink($absPath);
+			\unlink($pdfPreview);
 			\OCP\Util::writeLog('core', $e->getmessage(), \OCP\Util::ERROR);
 			return false;
 		}
@@ -65,8 +65,8 @@ abstract class Office extends Provider {
 		$image = new \OC_Image();
 		$image->loadFromData($pdf);
 
-		unlink($absPath);
-		unlink($pdfPreview);
+		\unlink($absPath);
+		\unlink($pdfPreview);
 
 		if ($image->valid()) {
 			$image->scaleDownToFit($maxX, $maxY);
@@ -74,23 +74,22 @@ abstract class Office extends Provider {
 			return $image;
 		}
 		return false;
-
 	}
 
 	private function initCmd() {
 		$cmd = '';
 
 		$libreOfficePath = \OC::$server->getConfig()->getSystemValue('preview_libreoffice_path', null);
-		if (is_string($libreOfficePath)) {
+		if (\is_string($libreOfficePath)) {
 			$cmd = $libreOfficePath;
 		}
 
-		$whichLibreOffice = shell_exec('command -v libreoffice');
+		$whichLibreOffice = \shell_exec('command -v libreoffice');
 		if ($cmd === '' && !empty($whichLibreOffice)) {
 			$cmd = 'libreoffice';
 		}
 
-		$whichOpenOffice = shell_exec('command -v openoffice');
+		$whichOpenOffice = \shell_exec('command -v openoffice');
 		if ($cmd === '' && !empty($whichOpenOffice)) {
 			$cmd = 'openoffice';
 		}

@@ -23,7 +23,6 @@
 
 namespace OCP\DB\QueryBuilder;
 
-
 use Doctrine\DBAL\Query\Expression\ExpressionBuilder;
 
 /**

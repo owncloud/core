@@ -184,7 +184,7 @@ class Migrator {
 	 * @param \Doctrine\DBAL\Connection $connection
 	 */
 	protected function applySchema(Schema $targetSchema, \Doctrine\DBAL\Connection $connection = null) {
-		if (is_null($connection)) {
+		if ($connection === null) {
 			$connection = $this->connection;
 		}
 
@@ -194,7 +194,7 @@ class Migrator {
 		$sqls = $schemaDiff->toSql($connection->getDatabasePlatform());
 		$step = 0;
 		foreach ($sqls as $sql) {
-			$this->emit($sql, $step++, count($sqls));
+			$this->emit($sql, $step++, \count($sqls));
 			$connection->query($sql);
 		}
 		$connection->commit();
@@ -231,21 +231,21 @@ class Migrator {
 	}
 
 	protected function getFilterExpression() {
-		return '/^' . preg_quote($this->config->getSystemValue('dbtableprefix', 'oc_')) . '/';
+		return '/^' . \preg_quote($this->config->getSystemValue('dbtableprefix', 'oc_')) . '/';
 	}
 
 	protected function emit($sql, $step, $max) {
 		if ($this->noEmit) {
 			return;
 		}
-		if(is_null($this->dispatcher)) {
+		if ($this->dispatcher === null) {
 			return;
 		}
 		$this->dispatcher->dispatch('\OC\DB\Migrator::executeSql', new GenericEvent($sql, [$step+1, $max]));
 	}
 
 	private function emitCheckStep($tableName, $step, $max) {
-		if(is_null($this->dispatcher)) {
+		if ($this->dispatcher === null) {
 			return;
 		}
 		$this->dispatcher->dispatch('\OC\DB\Migrator::checkTable', new GenericEvent($tableName, [$step+1, $max]));

@@ -40,7 +40,6 @@ use OCP\IContainer;
  */
 class SimpleContainer extends Container implements IContainer {
 
-
 	/**
 	 * @param ReflectionClass $class the class to instantiate
 	 * @return \stdClass the created class
@@ -76,7 +75,6 @@ class SimpleContainer extends Container implements IContainer {
 		}
 	}
 
-
 	/**
 	 * If a parameter is not registered in the container try to instantiate it
 	 * by using reflection to find out how to build the class
@@ -94,11 +92,10 @@ class SimpleContainer extends Container implements IContainer {
 				throw new QueryException($baseMsg .
 					' Class can not be instantiated');
 			}
-		} catch(ReflectionException $e) {
+		} catch (ReflectionException $e) {
 			throw new QueryException($baseMsg . ' ' . $e->getMessage());
 		}
 	}
-
 
 	/**
 	 * @param string $name name of the service to query for
@@ -137,7 +134,7 @@ class SimpleContainer extends Container implements IContainer {
 	 */
 	public function registerService($name, Closure $closure, $shared = true) {
 		$name = $this->sanitizeName($name);
-		if (isset($this[$name]))  {
+		if (isset($this[$name])) {
 			unset($this[$name]);
 		}
 		if ($shared) {
@@ -165,7 +162,6 @@ class SimpleContainer extends Container implements IContainer {
 	 * @return string
 	 */
 	protected function sanitizeName($name) {
-		return ltrim($name, '\\');
+		return \ltrim($name, '\\');
 	}
-
 }

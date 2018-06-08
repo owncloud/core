@@ -26,8 +26,7 @@ use OC\Files\Storage\Wrapper\Checksum;
 /**
  * @group DB
  */
-class ChecksumTest extends \Test\TestCase
-{
+class ChecksumTest extends \Test\TestCase {
 	/**
 	 * @var \OC\Files\Storage\Temporary
 	 */
@@ -64,8 +63,8 @@ class ChecksumTest extends \Test\TestCase
 		$handle = $this->instance->fopen($this->testFileName, 'w');
 
 		$this->assertInternalType('resource', $handle);
-		$this->assertNotFalse(fwrite($handle, self::TEST_DATA));
-		$this->assertNotFalse(fclose($handle));
+		$this->assertNotFalse(\fwrite($handle, self::TEST_DATA));
+		$this->assertNotFalse(\fclose($handle));
 
 		$metaData = $this->instance->getMetaData($this->testFileName);
 

@@ -31,7 +31,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>
  *
  */
-print_unescaped(str_replace('{link}', "<a href=\"{$_['link']}\">{$_['link']}</a>", $l->t('Use the following link to reset your password: {link}')));
+print_unescaped(\str_replace('{link}', "<a href=\"{$_['link']}\">{$_['link']}</a>", $l->t('Use the following link to reset your password: {link}')));
 print_unescaped("<br><br>");
 // TRANSLATORS term at the end of a mail
 p($l->t("Cheers!"));

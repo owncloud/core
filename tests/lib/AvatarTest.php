@@ -32,7 +32,7 @@ class AvatarTest extends \Test\TestCase {
 	}
 
 	public function testGetNoAvatar() {
-		$this->assertFalse( $this->avatar->get());
+		$this->assertFalse($this->avatar->get());
 	}
 
 	public function testGetAvatarSizeMatch() {
@@ -82,7 +82,7 @@ class AvatarTest extends \Test\TestCase {
 
 		$this->folder->method('get')
 			->will($this->returnCallback(
-				function($path) use ($file) {
+				function ($path) use ($file) {
 					if ($path === 'avatar.png') {
 						return $file;
 					} else {
@@ -168,5 +168,4 @@ class AvatarTest extends \Test\TestCase {
 
 		$this->avatar->set($image->data());
 	}
-
 }

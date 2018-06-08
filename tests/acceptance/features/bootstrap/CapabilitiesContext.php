@@ -60,7 +60,6 @@ class CapabilitiesContext implements Context, SnippetAcceptingContext {
 				),
 				"Failed field " . $row['capability'] . " " . $row['path_to_element']
 			);
-
 		}
 	}
 

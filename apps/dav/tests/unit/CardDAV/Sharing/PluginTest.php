@@ -22,7 +22,6 @@
 
 namespace OCA\DAV\Tests\unit\CardDAV\Sharing;
 
-
 use OCA\DAV\Connector\Sabre\Auth;
 use OCA\DAV\DAV\Sharing\IShareable;
 use OCA\DAV\DAV\Sharing\Plugin;
@@ -63,7 +62,6 @@ class PluginTest extends TestCase {
 	}
 
 	public function testSharing() {
-
 		$this->book->expects($this->once())->method('updateShares')->with([[
 				'href' => 'principal:principals/admin',
 				'commonName' => null,

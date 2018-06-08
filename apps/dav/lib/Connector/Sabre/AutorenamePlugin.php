@@ -74,7 +74,6 @@ class AutorenamePlugin extends ServerPlugin {
 		}
 
 		if ($this->server->tree->nodeExists($path)) {
-
 			$node = $this->server->tree->getNodeForPath($path);
 
 			// only continue for file nodes
@@ -99,7 +98,9 @@ class AutorenamePlugin extends ServerPlugin {
 			}
 
 			$response->setHeader('Content-Length', '0');
-			if ($etag) $response->setHeader('ETag', $etag);
+			if ($etag) {
+				$response->setHeader('ETag', $etag);
+			}
 			$response->setStatus(201);
 
 			// handled

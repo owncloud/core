@@ -79,7 +79,6 @@ class MiscCustomPropertiesBackendTest extends \Test\TestCase {
 			$this->user
 		);
 		
-		
 		$connection = \OC::$server->getDatabaseConnection();
 		$qb = $connection->getQueryBuilder();
 		$maxFunction = $qb->createFunction(
@@ -174,7 +173,6 @@ class MiscCustomPropertiesBackendTest extends \Test\TestCase {
 		$this->assertEquals('value2', $propFind->get('customprop2'));
 		$this->assertEquals(['unsetprop'], $propFind->get404Properties());
 	}
-
 
 	/**
 	 * Test delete property

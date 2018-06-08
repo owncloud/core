@@ -51,5 +51,4 @@ class AdminPanel implements ISettings {
 		$tmpl->assign('incomingServer2serverShareEnabled', $this->shareProvider->isIncomingServer2serverShareEnabled());
 		return $tmpl;
 	}
-
 }

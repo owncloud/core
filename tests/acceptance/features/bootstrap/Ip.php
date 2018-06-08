@@ -87,9 +87,9 @@ trait Ip {
 	public function theClientAccessesTheServerFromIpAddress($sourceIpAddress) {
 		$this->sourceIpAddress = $sourceIpAddress;
 
-		if (filter_var($sourceIpAddress, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4)) {
+		if (\filter_var($sourceIpAddress, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4)) {
 			$this->baseUrlForSourceIp = $this->ipv4Url;
-		} else if (filter_var($sourceIpAddress, FILTER_VALIDATE_IP, FILTER_FLAG_IPV6)) {
+		} elseif (\filter_var($sourceIpAddress, FILTER_VALIDATE_IP, FILTER_FLAG_IPV6)) {
 			$this->baseUrlForSourceIp = $this->ipv6Url;
 		} else {
 			$this->baseUrlForSourceIp = $this->featureContext->getBaseUrl();
@@ -102,7 +102,7 @@ trait Ip {
 	 * @return void
 	 */
 	public function setUpScenarioGetIpUrls() {
-		$this->ipv4Url = getenv('IPV4_URL');
-		$this->ipv6Url = getenv('IPV6_URL');
+		$this->ipv4Url = \getenv('IPV4_URL');
+		$this->ipv6Url = \getenv('IPV6_URL');
 	}
 }

@@ -28,7 +28,6 @@ use OCP\Migration\IOutput;
 use OCP\Migration\IRepairStep;
 
 class InnoDB implements IRepairStep {
-
 	public function getName() {
 		return 'Repair MySQL database engine';
 	}
@@ -46,7 +45,7 @@ class InnoDB implements IRepairStep {
 		}
 
 		$tables = $this->getAllMyIsamTables($connection);
-		if (is_array($tables)) {
+		if (\is_array($tables)) {
 			foreach ($tables as $table) {
 				$connection->exec("ALTER TABLE $table ENGINE=InnoDB;");
 				$output->info("Fixed $table");
@@ -69,4 +68,3 @@ class InnoDB implements IRepairStep {
 		return $result;
 	}
 }
-

@@ -84,7 +84,7 @@ class UserMountCache implements IUserMountCache {
 
 	public function registerMounts(IUser $user, array $mounts) {
 		/** @var ICachedMountInfo[] $newMounts */
-		$newMounts = array_map(function (IMountPoint $mount) use ($user) {
+		$newMounts = \array_map(function (IMountPoint $mount) use ($user) {
 			// filter out any storages which aren't scanned yet since we aren't interested in files from those storages (yet)
 			if ($mount->getStorageRootId() === -1) {
 				return null;
@@ -92,7 +92,7 @@ class UserMountCache implements IUserMountCache {
 				return new LazyStorageMountInfo($user, $mount);
 			}
 		}, $mounts);
-		$newMounts = array_values(array_filter($newMounts));
+		$newMounts = \array_values(\array_filter($newMounts));
 
 		$cachedMounts = $this->getMountsForUser($user);
 		$mountDiff = function (ICachedMountInfo $mount1, ICachedMountInfo $mount2) {
@@ -101,11 +101,11 @@ class UserMountCache implements IUserMountCache {
 		};
 
 		/** @var ICachedMountInfo[] $addedMounts */
-		$addedMounts = array_udiff($newMounts, $cachedMounts, $mountDiff);
+		$addedMounts = \array_udiff($newMounts, $cachedMounts, $mountDiff);
 		/** @var ICachedMountInfo[] $removedMounts */
-		$removedMounts = array_udiff($cachedMounts, $newMounts, $mountDiff);
+		$removedMounts = \array_udiff($cachedMounts, $newMounts, $mountDiff);
 
-		$changedMounts = array_uintersect($newMounts, $cachedMounts, function (ICachedMountInfo $mount1, ICachedMountInfo $mount2) {
+		$changedMounts = \array_uintersect($newMounts, $cachedMounts, function (ICachedMountInfo $mount1, ICachedMountInfo $mount2) {
 			// filter mounts with the same root id and different mountpoints
 			if ($mount1->getRootId() !== $mount2->getRootId()) {
 				return -1;
@@ -119,7 +119,7 @@ class UserMountCache implements IUserMountCache {
 		}
 		foreach ($removedMounts as $mount) {
 			$this->removeFromCache($mount);
-			$index = array_search($mount, $this->mountsForUsers[$user->getUID()]);
+			$index = \array_search($mount, $this->mountsForUsers[$user->getUID()]);
 			unset($this->mountsForUsers[$user->getUID()][$index]);
 		}
 		foreach ($changedMounts as $mount) {
@@ -184,7 +184,7 @@ class UserMountCache implements IUserMountCache {
 		$mountInfos = [];
 		foreach ($rows as $row) {
 			$mountInfo = $this->dbRowToMountInfo($row);
-			if (!is_null($mountInfo)) {
+			if ($mountInfo !== null) {
 				$mountInfos[] = $mountInfo;
 			}
 		}
@@ -253,7 +253,7 @@ class UserMountCache implements IUserMountCache {
 				->where($builder->expr()->eq('fileid', $builder->createNamedParameter($fileId, IQueryBuilder::PARAM_INT)));
 
 			$row = $query->execute()->fetch();
-			if (is_array($row)) {
+			if (\is_array($row)) {
 				$this->cacheInfoCache[$fileId] = [
 					(int)$row['storage'],
 					$row['path']
@@ -279,7 +279,7 @@ class UserMountCache implements IUserMountCache {
 		$mountsForStorage = $this->getMountsForStorageId($storageId);
 
 		// filter mounts that are from the same storage but a different directory
-		return array_filter($mountsForStorage, function (ICachedMountInfo $mount) use ($internalPath, $fileId) {
+		return \array_filter($mountsForStorage, function (ICachedMountInfo $mount) use ($internalPath, $fileId) {
 			if ($fileId === $mount->getRootId()) {
 				return true;
 			}
@@ -289,9 +289,8 @@ class UserMountCache implements IUserMountCache {
 				return false;
 			}
 
-			return $internalMountPath === '' || substr($internalPath, 0, strlen($internalMountPath) + 1) === $internalMountPath . '/';
+			return $internalMountPath === '' || \substr($internalPath, 0, \strlen($internalMountPath) + 1) === $internalMountPath . '/';
 		});
-
 	}
 
 	/**

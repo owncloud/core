@@ -32,20 +32,20 @@ class DBSchemaTest extends TestCase {
 
 		$r = '_' . \OC::$server->getSecureRandom()->
 			generate(4, ISecureRandom::CHAR_LOWER . ISecureRandom::CHAR_DIGITS) . '_';
-		$content = file_get_contents( $dbfile );
-		$content = str_replace( '*dbprefix*', '*dbprefix*'.$r, $content );
-		file_put_contents( $this->schema_file, $content );
-		$content = file_get_contents( $dbfile2 );
-		$content = str_replace( '*dbprefix*', '*dbprefix*'.$r, $content );
-		file_put_contents( $this->schema_file2, $content );
+		$content = \file_get_contents($dbfile);
+		$content = \str_replace('*dbprefix*', '*dbprefix*'.$r, $content);
+		\file_put_contents($this->schema_file, $content);
+		$content = \file_get_contents($dbfile2);
+		$content = \str_replace('*dbprefix*', '*dbprefix*'.$r, $content);
+		\file_put_contents($this->schema_file2, $content);
 
 		$this->table1 = $r.'cntcts_addrsbks';
 		$this->table2 = $r.'cntcts_cards';
 	}
 
 	protected function tearDown() {
-		unlink($this->schema_file);
-		unlink($this->schema_file2);
+		\unlink($this->schema_file);
+		\unlink($this->schema_file2);
 
 		parent::tearDown();
 	}
@@ -75,7 +75,7 @@ class DBSchemaTest extends TestCase {
 	public function doTestSchemaDumping() {
 		$outfile = 'static://db_out.xml';
 		OC_DB::getDbStructure($outfile);
-		$content = file_get_contents($outfile);
+		$content = \file_get_contents($outfile);
 		$this->assertContains($this->table1, $content);
 		$this->assertContains($this->table2, $content);
 	}

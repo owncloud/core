@@ -9,7 +9,6 @@ use OCP\Migration\ISchemaMigration;
  * Updates column type from integer to bigint
  */
 class Version20170711193427 implements ISchemaMigration {
-
 	public function changeSchema(Schema $schema, array $options) {
 		$prefix = $options['tablePrefix'];
 
@@ -17,13 +16,13 @@ class Version20170711193427 implements ISchemaMigration {
 			$table = $schema->getTable("{$prefix}properties");
 
 			$idColumn = $table->getColumn('id');
-			if ($idColumn){
+			if ($idColumn) {
 				$idColumn->setType(Type::getType(Type::BIGINT));
 				$idColumn->setOptions(['length' => 20]);
 			}
 
 			$fileidColumn = $table->getColumn('fileid');
-			if ($fileidColumn){
+			if ($fileidColumn) {
 				$fileidColumn->setType(Type::getType(Type::BIGINT));
 				$fileidColumn->setOptions(['length' => 20]);
 			}

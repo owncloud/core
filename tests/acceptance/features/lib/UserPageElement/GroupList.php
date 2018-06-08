@@ -59,7 +59,7 @@ class GroupList extends OwncloudPage {
 	}
 
 	/**
-	 * 
+	 *
 	 * @param string $name
 	 *
 	 * @throws ElementNotFoundException
@@ -67,11 +67,11 @@ class GroupList extends OwncloudPage {
 	 */
 	public function selectGroup($name) {
 		$name = $this->quotedText($name);
-		$xpathLocator = sprintf($this->groupLiXpath, $name);
+		$xpathLocator = \sprintf($this->groupLiXpath, $name);
 		$groupLi = $this->groupListElement->find(
 			"xpath", $xpathLocator
 		);
-		if (is_null($groupLi)) {
+		if ($groupLi === null) {
 			throw new ElementNotFoundException(
 				__METHOD__ .
 				" xpath $xpathLocator " .
@@ -84,7 +84,7 @@ class GroupList extends OwncloudPage {
 
 	/**
 	 * deletes a group in the UI
-	 * 
+	 *
 	 * @param string $name
 	 *
 	 * @throws ElementNotFoundException
@@ -93,7 +93,7 @@ class GroupList extends OwncloudPage {
 	public function deleteGroup($name) {
 		$groupLi = $this->selectGroup($name);
 		$deleteButton = $groupLi->find("xpath", $this->deleteBtnXpath);
-		if (is_null($deleteButton)) {
+		if ($deleteButton === null) {
 			throw new ElementNotFoundException(
 				__METHOD__ .
 				" xpath $this->deleteBtnXpath " .
@@ -104,7 +104,7 @@ class GroupList extends OwncloudPage {
 	}
 
 	/**
-	 * 
+	 *
 	 * @param string  $groupName
 	 *
 	 * @throws ElementNotFoundException
@@ -112,7 +112,7 @@ class GroupList extends OwncloudPage {
 	 */
 	public function addGroup($groupName) {
 		$addLink = $this->find("xpath", $this->addGroupXpath);
-		if (is_null($addLink)) {
+		if ($addLink === null) {
 			throw new ElementNotFoundException(
 				__METHOD__ .
 				" xpath $this->addGroupXpath " .
@@ -122,7 +122,7 @@ class GroupList extends OwncloudPage {
 		$addLink->click();
 		$this->fillField($this->addNewGroupInputBoxId, $groupName);
 		$addButton = $this->find("xpath", $this->addNewGroupButtonXpath);
-		if (is_null($addButton)) {
+		if ($addButton === null) {
 			throw new ElementNotFoundException(
 				__METHOD__ .
 				" xpath $this->addNewGroupButtonXpath " .
@@ -134,7 +134,7 @@ class GroupList extends OwncloudPage {
 
 	/**
 	 * returns all group names in an array
-	 * 
+	 *
 	 * @return string[]
 	 */
 	public function namesToArray() {
@@ -148,4 +148,3 @@ class GroupList extends OwncloudPage {
 		return $allGroups;
 	}
 }
-	

@@ -19,7 +19,6 @@
  *
  */
 
-
 namespace OC\Core\Command\Encryption;
 
 use OC\Encryption\Keys\Storage;
@@ -114,7 +113,6 @@ class ChangeKeyStorageRoot extends Command {
 	 * @throws \Exception
 	 */
 	protected function moveAllKeys($oldRoot, $newRoot, OutputInterface $output) {
-
 		$output->writeln("Start to move keys:");
 
 		if ($this->rootView->is_dir(($oldRoot)) === false) {
@@ -149,7 +147,6 @@ class ChangeKeyStorageRoot extends Command {
 		if ($result === false) {
 			throw new \Exception("Can't write to new root folder. Please check the permissions and try again");
 		}
-
 	}
 
 	/**
@@ -167,7 +164,6 @@ class ChangeKeyStorageRoot extends Command {
 		}
 	}
 
-
 	/**
 	 * setup file system for the given user
 	 *
@@ -178,7 +174,6 @@ class ChangeKeyStorageRoot extends Command {
 		\OC_Util::setupFS($uid);
 	}
 
-
 	/**
 	 * iterate over each user and move the keys to the new storage
 	 *
@@ -187,12 +182,10 @@ class ChangeKeyStorageRoot extends Command {
 	 * @param OutputInterface $output
 	 */
 	protected function moveUserKeys($oldRoot, $newRoot, OutputInterface $output) {
-
 		$progress = new ProgressBar($output);
 		$progress->start();
 
-
-		foreach($this->userManager->getBackends() as $backend) {
+		foreach ($this->userManager->getBackends() as $backend) {
 			$limit = 500;
 			$offset = 0;
 			do {
@@ -203,7 +196,7 @@ class ChangeKeyStorageRoot extends Command {
 					$this->moveUserEncryptionFolder($user, $oldRoot, $newRoot);
 				}
 				$offset += $limit;
-			} while(count($users) >= $limit);
+			} while (\count($users) >= $limit);
 		}
 		$progress->finish();
 	}
@@ -217,9 +210,7 @@ class ChangeKeyStorageRoot extends Command {
 	 * @throws \Exception
 	 */
 	protected function moveUserEncryptionFolder($user, $oldRoot, $newRoot) {
-
 		if ($this->userManager->userExists($user)) {
-
 			$source = $oldRoot . '/' . $user . '/files_encryption';
 			$target = $newRoot . '/' . $user . '/files_encryption';
 			if (
@@ -241,7 +232,7 @@ class ChangeKeyStorageRoot extends Command {
 		$path = Filesystem::normalizePath($path);
 		// If the file resides within a subdirectory, create it
 		if ($this->rootView->file_exists($path) === false) {
-			$sub_dirs = explode('/', ltrim($path, '/'));
+			$sub_dirs = \explode('/', \ltrim($path, '/'));
 			$dir = '';
 			foreach ($sub_dirs as $sub_dir) {
 				$dir .= '/' . $sub_dir;
@@ -266,5 +257,4 @@ class ChangeKeyStorageRoot extends Command {
 
 		return false;
 	}
-
 }

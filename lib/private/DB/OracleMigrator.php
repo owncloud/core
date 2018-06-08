@@ -69,7 +69,7 @@ class OracleMigrator extends Migrator {
 		return new Index(
 		//TODO migrate existing uppercase indexes, then $this->connection->quoteIdentifier($index->getName()),
 			$index->getName(),
-			array_map(function($columnName) {
+			\array_map(function ($columnName) {
 				return $this->connection->quoteIdentifier($columnName);
 			}, $index->getColumns()),
 			$index->isUnique(),
@@ -88,13 +88,13 @@ class OracleMigrator extends Migrator {
 		$schemaDiff = parent::getDiff($targetSchema, $connection);
 
 		// oracle forces us to quote the identifiers
-		$schemaDiff->newTables = array_map(function(Table $table) {
+		$schemaDiff->newTables = \array_map(function (Table $table) {
 			return new Table(
 				$this->connection->quoteIdentifier($table->getName()),
-				array_map(function(Column $column) {
+				\array_map(function (Column $column) {
 					return $this->quoteColumn($column);
 				}, $table->getColumns()),
-				array_map(function(Index $index) {
+				\array_map(function (Index $index) {
 					return $this->quoteIndex($index);
 				}, $table->getIndexes()),
 				$table->getForeignKeys(),
@@ -103,7 +103,7 @@ class OracleMigrator extends Migrator {
 			);
 		}, $schemaDiff->newTables);
 
-		$schemaDiff->removedTables = array_map(function(Table $table) {
+		$schemaDiff->removedTables = \array_map(function (Table $table) {
 			return new Table(
 				$this->connection->quoteIdentifier($table->getName()),
 				$table->getColumns(),
@@ -117,41 +117,41 @@ class OracleMigrator extends Migrator {
 		foreach ($schemaDiff->changedTables as $tableDiff) {
 			$tableDiff->name = $this->connection->quoteIdentifier($tableDiff->name);
 
-			$tableDiff->addedColumns = array_map(function(Column $column) {
+			$tableDiff->addedColumns = \array_map(function (Column $column) {
 				return $this->quoteColumn($column);
 			}, $tableDiff->addedColumns);
 
 			foreach ($tableDiff->changedColumns as $column) {
 				$column->oldColumnName = $this->connection->quoteIdentifier($column->oldColumnName);
 				// auto increment is not relevant for oracle and can anyhow not be applied on change
-				$column->changedProperties = array_diff($column->changedProperties, ['autoincrement', 'unsigned']);
+				$column->changedProperties = \array_diff($column->changedProperties, ['autoincrement', 'unsigned']);
 			}
 			// remove columns that no longer have changed (because autoincrement and unsigned are not supported)
-			$tableDiff->changedColumns = array_filter($tableDiff->changedColumns, function (ColumnDiff $column) {
-				return count($column->changedProperties) > 0;
+			$tableDiff->changedColumns = \array_filter($tableDiff->changedColumns, function (ColumnDiff $column) {
+				return \count($column->changedProperties) > 0;
 			});
 
-			$tableDiff->removedColumns = array_map(function(Column $column) {
+			$tableDiff->removedColumns = \array_map(function (Column $column) {
 				return $this->quoteColumn($column);
 			}, $tableDiff->removedColumns);
 
-			$tableDiff->renamedColumns = array_map(function(Column $column) {
+			$tableDiff->renamedColumns = \array_map(function (Column $column) {
 				return $this->quoteColumn($column);
 			}, $tableDiff->renamedColumns);
 
-			$tableDiff->addedIndexes = array_map(function(Index $index) {
+			$tableDiff->addedIndexes = \array_map(function (Index $index) {
 				return $this->quoteIndex($index);
 			}, $tableDiff->addedIndexes);
 
-			$tableDiff->changedIndexes = array_map(function(Index $index) {
+			$tableDiff->changedIndexes = \array_map(function (Index $index) {
 				return $this->quoteIndex($index);
 			}, $tableDiff->changedIndexes);
 
-			$tableDiff->removedIndexes = array_map(function(Index $index) {
+			$tableDiff->removedIndexes = \array_map(function (Index $index) {
 				return $this->quoteIndex($index);
 			}, $tableDiff->removedIndexes);
 
-			$tableDiff->renamedIndexes = array_map(function(Index $index) {
+			$tableDiff->renamedIndexes = \array_map(function (Index $index) {
 				return $this->quoteIndex($index);
 			}, $tableDiff->renamedIndexes);
 
@@ -168,7 +168,7 @@ class OracleMigrator extends Migrator {
 	 * @return string
 	 */
 	protected function generateTemporaryTableName($name) {
-		return 'oc_' . uniqid();
+		return 'oc_' . \uniqid();
 	}
 
 	/**
@@ -176,7 +176,7 @@ class OracleMigrator extends Migrator {
 	 * @return string
 	 */
 	protected function convertStatementToScript($statement) {
-		if (substr($statement, -1) === ';') {
+		if (\substr($statement, -1) === ';') {
 			return $statement . PHP_EOL . '/' . PHP_EOL;
 		}
 		$script = $statement . ';';
@@ -186,7 +186,6 @@ class OracleMigrator extends Migrator {
 	}
 
 	protected function getFilterExpression() {
-		return '/^"' . preg_quote($this->config->getSystemValue('dbtableprefix', 'oc_')) . '/';
+		return '/^"' . \preg_quote($this->config->getSystemValue('dbtableprefix', 'oc_')) . '/';
 	}
-
 }

@@ -71,10 +71,8 @@ class FileTest extends TestCase {
 
 	public function setUp() {
 		parent::setUp();
-		unset($_SERVER['HTTP_OC_CHUNKED']);
-		unset($_SERVER['CONTENT_LENGTH']);
-		unset($_SERVER['REQUEST_METHOD']);
-
+		unset($_SERVER['HTTP_OC_CHUNKED'], $_SERVER['CONTENT_LENGTH'], $_SERVER['REQUEST_METHOD']);
+		
 		\OC_Hook::clear();
 
 		$this->user = $this->getUniqueID('user_');
@@ -111,12 +109,11 @@ class FileTest extends TestCase {
 	 * @param string $string
 	 */
 	private function getStream($string) {
-		$stream = fopen('php://temp', 'r+');
-		fwrite($stream, $string);
-		fseek($stream, 0);
+		$stream = \fopen('php://temp', 'r+');
+		\fwrite($stream, $string);
+		\fseek($stream, 0);
 		return $stream;
 	}
-
 
 	public function fopenFailuresProvider() {
 		return [
@@ -227,7 +224,7 @@ class FileTest extends TestCase {
 
 		$this->assertInstanceOf($expectedException, $caughtException);
 		if ($checkPreviousClass) {
-			$this->assertInstanceOf(get_class($thrownException), $caughtException->getPrevious());
+			$this->assertInstanceOf(\get_class($thrownException), $caughtException->getPrevious());
 		}
 
 		$this->assertEmpty($this->listPartFiles($view, ''), 'No stray part files');
@@ -302,7 +299,7 @@ class FileTest extends TestCase {
 	 *
 	 * @expectedException \Sabre\DAV\Exception
 	 */
-public function testPutWithModifyRun() {
+	public function testPutWithModifyRun() {
 		$calledUploadAllowed = [];
 		\OC::$server->getEventDispatcher()->addListener('file.beforeUpdate', function (GenericEvent $event) use (&$calledUploadAllowed) {
 			$calledUploadAllowed[] = 'file.beforeUpdate';
@@ -346,7 +343,7 @@ public function testPutWithModifyRun() {
 		$this->assertArrayHasKey('run', $calledUploadAllowed[1]);
 		$this->assertFalse($calledUploadAllowed[1]->getArgument('run'));
 		$this->assertEquals('file.beforeUpdate', $calledUploadAllowed[0]);
-}
+	}
 
 	/**
 	 * Test putting a file using chunking
@@ -429,7 +426,7 @@ public function testPutWithModifyRun() {
 
 		$this->assertInstanceOf($expectedException, $caughtException);
 		if ($checkPreviousClass) {
-			$this->assertInstanceOf(get_class($thrownException), $caughtException->getPrevious());
+			$this->assertInstanceOf(\get_class($thrownException), $caughtException->getPrevious());
 		}
 
 		$this->assertEmpty($this->listPartFiles($view, ''), 'No stray part files');
@@ -445,14 +442,14 @@ public function testPutWithModifyRun() {
 	 */
 	private function doPut($path, $viewRoot = null, \OC\AppFramework\Http\Request $request = null) {
 		$view = Filesystem::getView();
-		if (!is_null($viewRoot)) {
+		if ($viewRoot !== null) {
 			$view = new View($viewRoot);
 		} else {
 			$viewRoot = '/' . $this->user . '/files';
 		}
 
 		$info = new FileInfo(
-			$viewRoot . '/' . ltrim($path, '/'),
+			$viewRoot . '/' . \ltrim($path, '/'),
 			$this->getMockStorage(),
 			null,
 			['permissions' => Constants::PERMISSION_ALL],
@@ -541,19 +538,19 @@ public function testPutWithModifyRun() {
 					'HTTP_X_OC_MTIME' => -34.43,
 					'expected result' => -34
 			],
-			"long int" => [ 
+			"long int" => [
 					'HTTP_X_OC_MTIME' => PHP_INT_MAX,
-					'expected result' => PHP_INT_MAX 
+					'expected result' => PHP_INT_MAX
 			],
-			"too long int" => [ 
+			"too long int" => [
 					'HTTP_X_OC_MTIME' => PHP_INT_MAX + 1,
-					'expected result' => PHP_INT_MAX 
+					'expected result' => PHP_INT_MAX
 			],
-			"long negative int" => [ 
+			"long negative int" => [
 					'HTTP_X_OC_MTIME' => PHP_INT_MAX * - 1,
 					'expected result' => (PHP_INT_MAX * - 1)
 			],
-			"too long negative int" => [ 
+			"too long negative int" => [
 					'HTTP_X_OC_MTIME' => (PHP_INT_MAX * - 1) - 1,
 					'expected result' => (PHP_INT_MAX * - 1)
 			],
@@ -623,8 +620,8 @@ public function testPutWithModifyRun() {
 		$this->assertEquals('/'.$this->user.'/files/'.$file, $calledBeforeCreateFile[3]->getArgument('path'));
 		$this->assertEquals('/'.$this->user.'/cache', $calledAfterCreateFile[1]->getArgument('path'));
 		//The indices 1 and 3 have part files.
-		$this->assertNotFalse(strpos($calledAfterUpdateFile[1]->getArgument('path'), '/'.$this->user.'/cache/'. $file.'-chunking-12345-0'));
-		$this->assertNotFalse(strpos($calledAfterUpdateFile[3]->getArgument('path'), '/'.$this->user.'/cache/'. $file.'-chunking-12345-1'));
+		$this->assertNotFalse(\strpos($calledAfterUpdateFile[1]->getArgument('path'), '/'.$this->user.'/cache/'. $file.'-chunking-12345-0'));
+		$this->assertNotFalse(\strpos($calledAfterUpdateFile[3]->getArgument('path'), '/'.$this->user.'/cache/'. $file.'-chunking-12345-1'));
 	}
 
 	/**
@@ -1344,15 +1341,15 @@ public function testPutWithModifyRun() {
 		}
 		$files = [];
 		list($storage, $internalPath) = $userView->resolvePath($path);
-		if($storage instanceof Local) {
+		if ($storage instanceof Local) {
 			$realPath = $storage->getSourcePath($internalPath);
-			$dh = opendir($realPath);
-			while (($file = readdir($dh)) !== false) {
-				if (substr($file, strlen($file) - 5, 5) === '.part') {
+			$dh = \opendir($realPath);
+			while (($file = \readdir($dh)) !== false) {
+				if (\substr($file, \strlen($file) - 5, 5) === '.part') {
 					$files[] = $file;
 				}
 			}
-			closedir($dh);
+			\closedir($dh);
 		}
 		return $files;
 	}

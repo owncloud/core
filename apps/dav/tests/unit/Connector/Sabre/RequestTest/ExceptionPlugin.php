@@ -30,7 +30,7 @@ class ExceptionPlugin extends \OCA\DAV\Connector\Sabre\ExceptionLoggerPlugin {
 	protected $exceptions = [];
 
 	public function logException(\Exception $ex) {
-		$exceptionClass = get_class($ex);
+		$exceptionClass = \get_class($ex);
 		if (!isset($this->nonFatalExceptions[$exceptionClass])) {
 			$this->exceptions[] = $ex;
 		}

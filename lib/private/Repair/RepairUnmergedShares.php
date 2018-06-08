@@ -126,7 +126,6 @@ class RepairUnmergedShares implements IRepairStep {
 			->where($query->expr()->eq('id', $query->createParameter('shareid')));
 
 		$this->queryUpdateSharePermissionsAndTarget = $query;
-
 	}
 
 	private function getSharesWithUser($shareType, $shareWiths) {
@@ -150,7 +149,7 @@ class RepairUnmergedShares implements IRepairStep {
 	}
 
 	private function isPotentialDuplicateName($name) {
-		return (preg_match('/\(\d+\)(\.[^\.]+)?$/', $name) === 1);
+		return (\preg_match('/\(\d+\)(\.[^\.]+)?$/', $name) === 1);
 	}
 
 	/**
@@ -173,7 +172,7 @@ class RepairUnmergedShares implements IRepairStep {
 	private function findBestTargetName($groupShares, $subShares) {
 		$pickedShare = null;
 		// sort by stime, this also properly sorts the direct user share if any
-		@usort($subShares, function($a, $b) {
+		@\usort($subShares, function ($a, $b) {
 			return ((int)$a['stime'] - (int)$b['stime']);
 		});
 
@@ -278,7 +277,7 @@ class RepairUnmergedShares implements IRepairStep {
 		// every group share needs to have exactly one matching subshare
 		foreach ($subShares as $subShare) {
 			$foundTargets[$subShare['file_target']] = true;
-			if (count($foundTargets) > 1) {
+			if (\count($foundTargets) > 1) {
 				// not all the same target path value => invalid
 				return false;
 			}
@@ -329,7 +328,7 @@ class RepairUnmergedShares implements IRepairStep {
 
 			if (isset($userSharesByItemSource[$itemSource])) {
 				// add it to the subshares to get a similar treatment
-				$subShares = array_merge($subShares, $userSharesByItemSource[$itemSource]);
+				$subShares = \array_merge($subShares, $userSharesByItemSource[$itemSource]);
 			}
 
 			$this->fixThisShare($groupShares, $subShares);
@@ -340,10 +339,10 @@ class RepairUnmergedShares implements IRepairStep {
 		$ocVersionFromBeforeUpdate = $this->config->getSystemValue('version', '0.0.0');
 		// this situation was only possible between 9.0.0 and 9.0.3 included, and 9.1.0
 		if (
-			version_compare($ocVersionFromBeforeUpdate, '9.1.0', '>=')
-			&& version_compare($ocVersionFromBeforeUpdate, '9.1.0.16', '<')
+			\version_compare($ocVersionFromBeforeUpdate, '9.1.0', '>=')
+			&& \version_compare($ocVersionFromBeforeUpdate, '9.1.0.16', '<')
 			) {
-			$function = function(IUser $user) use ($output) {
+			$function = function (IUser $user) use ($output) {
 				$this->fixUnmergedShares($output, $user);
 				$output->advance();
 			};

@@ -27,11 +27,12 @@ script('settings', 'panels/cors');
     <h3><?php p($l->t('White-listed Domains')); ?></h3>
     <p id="noDomains">
         <?php if (empty($_['domains'])) {
-            p($l->t('No Domains.'));
-        } ?>
+	p($l->t('No Domains.'));
+} ?>
     </p>
 
-    <?php if (!empty($_['domains'])) { ?>
+    <?php if (!empty($_['domains'])) {
+	?>
     <table class="grid">
         <thead>
         <tr>
@@ -40,17 +41,20 @@ script('settings', 'panels/cors');
         </tr>
         </thead>
         <tbody>
-            <?php foreach ($_['domains'] as $id => $domain) { ?>
+            <?php foreach ($_['domains'] as $id => $domain) {
+		?>
                 <tr>
                     <td><?php p($domain); ?></td>
                     <td>
                         <input data-id="<?php p($id); ?>" type="button" class="button icon-delete removeDomainButton" data-confirm="<?php p($l->t('Are you sure you want to remove this domain?')); ?>" value="">
                     </td>
                 </tr>
-            <?php } ?>
+            <?php
+	} ?>
         </tbody>
     </table>
-    <?php } ?>
+    <?php
+} ?>
 
     <h3><?php p($l->t('Add Domain')); ?></h3>
     <form action="<?php p($_['urlGenerator']->linkToRoute('settings.Cors.addDomain')); ?>" method="post">

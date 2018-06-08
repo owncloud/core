@@ -45,7 +45,6 @@ class FakeDBLockingProvider extends \OC\Lock\DBLockingProvider {
 		$this->db = $connection;
 	}
 
-
 	/**
 	 * @param string $path
 	 * @param int $type self::LOCK_SHARED or self::LOCK_EXCLUSIVE

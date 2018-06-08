@@ -1,11 +1,13 @@
 <?php /** @var $l \OCP\IL10N */ ?>
 <?php $_['appNavigation']->printPage(); ?>
 <div id="app-content">
-	<?php foreach ($_['appContents'] as $content) { ?>
+	<?php foreach ($_['appContents'] as $content) {
+	?>
 	<div id="app-content-<?php p($content['id']) ?>" class="hidden viewcontainer">
 	<?php print_unescaped($content['content']) ?>
 	</div>
-	<?php } ?>
+	<?php
+} ?>
 	<div id="searchresults" class="hidden"></div>
 </div><!-- closing app-content -->
 

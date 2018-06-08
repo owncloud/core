@@ -9,7 +9,6 @@ use OCP\Migration\ISqlMigration;
  * https://github.com/owncloud/core/issues/30792
  */
 class Version20180319102121 implements ISqlMigration {
-
 	public function sql(IDBConnection $connection) {
 		$q = $connection->getQueryBuilder();
 		$q->update('authtoken')
@@ -17,6 +16,5 @@ class Version20180319102121 implements ISqlMigration {
 			->where($q->expr()->eq('name', $q->expr()->literal('')))
 			->orWhere($q->expr()->isNull('name'));
 		return [$q->getSQL()];
-    }
+	}
 }
-

@@ -27,7 +27,6 @@ use TestHelpers\LoggingHelper;
  * Logging trait
  */
 trait Logging {
-
 	private $oldLogLevel = null;
 	private $oldLogBackend = null;
 	private $oldLogTimezone = null;
@@ -52,15 +51,15 @@ trait Logging {
 		$withOrContaining, TableNode $expectedLogEntries
 	) {
 		//-1 because getRows gives also the header
-		$linesToRead = count($expectedLogEntries->getRows()) - 1;
+		$linesToRead = \count($expectedLogEntries->getRows()) - 1;
 		$logLines = LoggingHelper::tailFile(
 			LoggingHelper::getLogFilePath(),
 			$linesToRead
 		);
 		$lineNo = 0;
 		foreach ($expectedLogEntries as $expectedLogEntry) {
-			$logEntry = json_decode($logLines[$lineNo], true);
-			foreach (array_keys($expectedLogEntry) as $attribute) {
+			$logEntry = \json_decode($logLines[$lineNo], true);
+			foreach (\array_keys($expectedLogEntry) as $attribute) {
 				$expectedLogEntry [$attribute]
 					= $this->featureContext->substituteInLineCodes(
 						$expectedLogEntry [$attribute]
@@ -110,7 +109,7 @@ trait Logging {
 	public function theLogFileShouldNotContainAnyLogEntriesWithTheseAttributes(
 		$withOrContaining, TableNode $logEntriesExpectedNotToExist
 	) {
-		$logLines = file(LoggingHelper::getLogFilePath());
+		$logLines = \file(LoggingHelper::getLogFilePath());
 		foreach ($logLines as $logLine) {
 			$logEntry = \json_decode($logLine, true);
 			foreach ($logEntriesExpectedNotToExist as $logEntryExpectedNotToExist) {
@@ -213,17 +212,17 @@ trait Logging {
 	 * @throws \Exception
 	 */
 	public function tearDownScenarioLogging() {
-		if (!is_null($this->oldLogLevel)
+		if ($this->oldLogLevel !== null
 			&& $this->oldLogLevel !== LoggingHelper::getLogLevel()
 		) {
 			LoggingHelper::setLogLevel($this->oldLogLevel);
 		}
-		if (!is_null($this->oldLogBackend)
+		if ($this->oldLogBackend !== null
 			&& $this->oldLogBackend !== LoggingHelper::getLogBackend()
 		) {
 			LoggingHelper::setLogBackend($this->oldLogBackend);
 		}
-		if (!is_null($this->oldLogTimezone)
+		if ($this->oldLogTimezone !== null
 			&& $this->oldLogTimezone !== LoggingHelper::getLogTimezone()
 		) {
 			LoggingHelper::setLogTimezone($this->oldLogTimezone);

@@ -23,7 +23,6 @@
 
 namespace OC\User;
 
-
 use OC\DB\QueryBuilder\Literal;
 use OCP\AppFramework\Db\Entity;
 use OCP\AppFramework\Db\Mapper;
@@ -104,7 +103,7 @@ class AccountMapper extends Mapper {
 	 * @return Account[]
 	 */
 	public function getByEmail($email) {
-		if ($email === null || trim($email) === '') {
+		if ($email === null || \trim($email) === '') {
 			throw new \InvalidArgumentException('$email must be defined');
 		}
 		$qb = $this->db->getQueryBuilder();
@@ -125,7 +124,7 @@ class AccountMapper extends Mapper {
 		$qb = $this->db->getQueryBuilder();
 		$qb->select('*')
 			->from($this->getTableName())
-			->where($qb->expr()->eq('lower_user_id', $qb->createNamedParameter(strtolower($uid))));
+			->where($qb->expr()->eq('lower_user_id', $qb->createNamedParameter(\strtolower($uid))));
 
 		return $this->findEntity($qb->getSQL(), $qb->getParameters());
 	}
@@ -154,14 +153,13 @@ class AccountMapper extends Mapper {
 	 * @return Account[]
 	 */
 	public function find($pattern, $limit = null, $offset = null) {
-
 		$allowMedialSearches = $this->config->getSystemValue('accounts.enable_medial_search', true);
 		if ($allowMedialSearches) {
 			$parameter = '%' . $this->db->escapeLikeParameter($pattern) . '%';
-			$loweredParameter = '%' . $this->db->escapeLikeParameter(strtolower($pattern)) . '%';
+			$loweredParameter = '%' . $this->db->escapeLikeParameter(\strtolower($pattern)) . '%';
 		} else {
 			$parameter = $this->db->escapeLikeParameter($pattern) . '%';
-			$loweredParameter = $this->db->escapeLikeParameter(strtolower($pattern)) . '%';
+			$loweredParameter = $this->db->escapeLikeParameter(\strtolower($pattern)) . '%';
 		}
 
 		$qb = $this->db->getQueryBuilder();
@@ -257,7 +255,7 @@ class AccountMapper extends Mapper {
 		}
 		if ($hasLoggedIn === true) {
 			$qb->andWhere($qb->expr()->gt('last_login', new Literal(0)));
-		} else if ($hasLoggedIn === false) {
+		} elseif ($hasLoggedIn === false) {
 			$qb->andWhere($qb->expr()->eq('last_login', new Literal(0)));
 		}
 		if ($limit !== null) {
@@ -272,5 +270,4 @@ class AccountMapper extends Mapper {
 		$stmt->closeCursor();
 		return $rows;
 	}
-
 }
