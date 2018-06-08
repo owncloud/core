@@ -24,6 +24,13 @@ namespace OCA\Files_Sharing;
 use OCP\IConfig;
 use OCP\IGroup;
 
+/**
+ * Class to handle a blacklist for sharing. The main functionality is to check if a particular group
+ * has been blacklisted for sharing, which means that noone should share with that group.
+ *
+ * Note that this class will only handle the configuration and perform the checks against the configuration
+ * This class won't prevent the sharing action by itself.
+ */
 class SharingBlacklist {
 	/** @var IConfig */
 	private $config;
@@ -37,6 +44,7 @@ class SharingBlacklist {
 	/**
 	 * Check if the target group is blacklisted
 	 * @param IGroup $group the group to check
+	 * @return bool true if the group is blacklisted, false otherwise
 	 */
 	public function isGroupBlacklisted(IGroup $group) {
 		$this->initCache();
@@ -48,6 +56,15 @@ class SharingBlacklist {
 			return true;
 		}
 		return false;
+	}
+
+	/**
+	 * Clear the internal cache of this class. Use this function if any of the keys used by this class is changed
+	 * outside of this class, such as a direct change of the 'blacklisted_group_displaynames' in the appconfig table
+	 * Note that this is an object-based cache. It won't persist for multiple HTTP requests
+	 */
+	public function clearCache() {
+		$this->blacklistCache = null;
 	}
 
 	/**
@@ -87,11 +104,14 @@ class SharingBlacklist {
 
 		$result = [];
 		foreach ($blacklistedComponents as $blacklistedComponent) {
+			$blacklistedComponent = \trim($blacklistedComponent);  // trim black chars
+
 			$splittedName = explode('::', $blacklistedComponent, 2);
 			if (\count($splittedName) !== 2) {
 				// missing backend in the blacklisted name? Ignore
 				continue;
 			}
+
 			$blacklistedBackend = $splittedName[0];
 			$blacklistedDisplayname = $splittedName[1];
 
