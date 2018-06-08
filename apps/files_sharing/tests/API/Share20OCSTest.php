@@ -917,6 +917,55 @@ class Share20OCSTest extends TestCase {
 		$this->assertEquals($expected->getData(), $result->getData());
 	}
 
+	public function testCreateShareGroupBlacklisted() {
+		$share = $this->newShare();
+		$this->shareManager->method('newShare')->willReturn($share);
+
+		$this->request->method('getParam')
+			->will($this->returnValueMap([
+				['path', null, 'valid-path'],
+				['permissions', null, \OCP\Constants::PERMISSION_ALL],
+				['shareType', '-1', Share::SHARE_TYPE_GROUP],
+				['shareWith', null, 'validGroup'],
+			]));
+
+		$userFolder = $this->createMock('\OCP\Files\Folder');
+		$this->rootFolder->expects($this->once())
+			->method('getUserFolder')
+			->with('currentUser')
+			->willReturn($userFolder);
+
+		$path = $this->createMock('\OCP\Files\Folder');
+		$storage = $this->createMock('OCP\Files\Storage');
+		$storage->method('instanceOfStorage')
+			->with('OCA\Files_Sharing\External\Storage')
+			->willReturn(false);
+		$path->method('getStorage')->willReturn($storage);
+		$userFolder->expects($this->once())
+			->method('get')
+			->with('valid-path')
+			->willReturn($path);
+
+		$this->groupManager->method('groupExists')->with('validGroup')->willReturn(true);
+		$this->groupManager->method('get')
+			->with('validGroup')
+			->willReturn($this->getGroupMock(['guid' => 'gegege1', 'displayname' => 'validGroup']));
+
+		$this->shareManager->expects($this->once())
+			->method('allowGroupSharing')
+			->willReturn(true);
+
+		$this->sharingBlacklist->method('isGroupBlacklisted')->willReturn(true);
+
+		$expected = new \OC\OCS\Result(null, 403, 'The group is blacklisted for sharing');
+
+		$result = $this->ocs->createShare();
+
+		$this->assertEquals($expected->getMeta(), $result->getMeta());
+		$this->assertEquals($expected->getData(), $result->getData());
+
+	}
+
 	public function testCreateShareGroup() {
 		$share = $this->newShare();
 		$this->shareManager->method('newShare')->willReturn($share);
