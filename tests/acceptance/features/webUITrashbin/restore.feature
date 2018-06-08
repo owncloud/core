@@ -50,6 +50,29 @@ So that I can recover accidentally deleted files/folders in ownCloud
 		But the file "data.zip" should not be listed in the files page on the webUI
 		And the folder "simple-folder" should not be listed in the files page on the webUI
 
+	Scenario: Select all except for some trashbin files and restore them in a batch
+		Given the following files have been deleted
+			| name          |
+			| data.zip      |
+			| lorem.txt     |
+			| lorem-big.txt |
+			| simple-folder |
+		And the user has browsed to the trashbin page
+		When the user marks all files for batch action using the webUI
+		And the user unmarks these files for batch action using the webUI
+			| name          |
+			| lorem.txt     |
+			| lorem-big.txt |
+		And the user batch restores the marked files using the webUI
+		Then the file "lorem.txt" should be listed on the webUI
+		And the file "lorem-big.txt" should be listed on the webUI
+		But the file "data.zip" should not be listed on the webUI
+		And the folder "simple-folder" should not be listed on the webUI
+		And the file "data.zip" should be listed in the files page on the webUI
+		And the folder "simple-folder" should be listed in the files page on the webUI
+		But the file "lorem.txt" should not be listed in the files page on the webUI
+		And the file "lorem-big.txt" should not be listed in the files page on the webUI
+
 	Scenario: Select all trashbin files and restore them in a batch
 		Given the following files have been deleted
 			| name          |
