@@ -23,7 +23,6 @@
  */
 
 use Behat\Behat\Context\Context;
-use Behat\Behat\Context\SnippetAcceptingContext;
 use Behat\Behat\Hook\Scope\BeforeScenarioScope;
 use Behat\Gherkin\Node\TableNode;
 
@@ -32,7 +31,7 @@ require_once 'bootstrap.php';
 /**
  * Capabilities context.
  */
-class CapabilitiesContext implements Context, SnippetAcceptingContext {
+class CapabilitiesContext implements Context {
 
 	/**
 	 *

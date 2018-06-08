@@ -21,7 +21,6 @@
  */
 
 use Behat\Behat\Context\Context;
-use Behat\Behat\Context\SnippetAcceptingContext;
 use Behat\Behat\Hook\Scope\BeforeScenarioScope;
 use GuzzleHttp\Message\ResponseInterface;
 use TestHelpers\OcsApiHelper;
@@ -31,7 +30,7 @@ require_once 'bootstrap.php';
 /**
  * Defines application features from the specific context.
  */
-class NotificationsCoreContext implements Context, SnippetAcceptingContext {
+class NotificationsCoreContext implements Context {
 
 	/**
 	 * @var array[]
