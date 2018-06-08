@@ -23,7 +23,6 @@
  */
 
 use Behat\Behat\Context\Context;
-use Behat\Behat\Context\SnippetAcceptingContext;
 use Behat\Behat\Hook\Scope\BeforeScenarioScope;
 use Behat\Gherkin\Node\TableNode;
 use GuzzleHttp\Message\ResponseInterface;
@@ -33,7 +32,7 @@ require_once 'bootstrap.php';
 /**
  * Sharees context.
  */
-class ShareesContext implements Context, SnippetAcceptingContext {
+class ShareesContext implements Context {
 
 	/**
 	 *
