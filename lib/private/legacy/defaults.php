@@ -46,6 +46,7 @@ class OC_Defaults {
 	private $defaultDocVersion;
 	private $defaultSlogan;
 	private $defaultLogoClaim;
+	private $defaultMailHeaderColor;
 	/**
 	 * @var \OCP\IConfig
 	 */
