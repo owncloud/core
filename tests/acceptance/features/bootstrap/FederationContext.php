@@ -23,7 +23,6 @@
  */
 
 use Behat\Behat\Context\Context;
-use Behat\Behat\Context\SnippetAcceptingContext;
 use Behat\Behat\Hook\Scope\BeforeScenarioScope;
 use GuzzleHttp\Message\ResponseInterface;
 
@@ -32,7 +31,7 @@ require_once 'bootstrap.php';
 /**
  * Federation context.
  */
-class FederationContext implements Context, SnippetAcceptingContext {
+class FederationContext implements Context {
 
 	/**
 	 *
