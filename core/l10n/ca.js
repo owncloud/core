@@ -219,6 +219,7 @@ OC.L10N.register(
     "File: %s" : "Fitxer: %s",
     "Line: %s" : "Línia: %s",
     "Trace" : "Traça",
+    "Imprint" : "Imprint",
     "Create an <strong>admin account</strong>" : "Crea un <strong>compte d'administrador</strong>",
     "Username" : "Nom d'usuari",
     "Storage & database" : "Emmagatzematge i base de dades",

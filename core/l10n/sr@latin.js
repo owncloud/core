@@ -148,6 +148,7 @@ OC.L10N.register(
     "File: %s" : "Fajl: %s",
     "Line: %s" : "Linija: %s",
     "Trace" : "Zapisnik: ",
+    "Imprint" : "Žig",
     "Create an <strong>admin account</strong>" : "Napravi <strong>administrativni nalog</strong>",
     "Username" : "Korisničko ime",
     "Storage & database" : "Skladište i baza podataka",

@@ -280,6 +280,7 @@ OC.L10N.register(
     "File: %s" : "ไฟล์: %s",
     "Line: %s" : "ไลน์: %s",
     "Trace" : "ร่องรอย",
+    "Imprint" : "ประทับ",
     "Create an <strong>admin account</strong>" : "สร้าง <strong>บัญชีผู้ดูแลระบบ</strong>",
     "Username" : "ชื่อผู้ใช้งาน",
     "Storage & database" : "ที่จัดเก็บข้อมูลและฐานข้อมูล",

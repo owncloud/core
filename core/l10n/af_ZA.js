@@ -215,6 +215,7 @@ OC.L10N.register(
     "Message: %s" : "Boodskap: %s",
     "File: %s" : "Lêer: %s",
     "Line: %s" : "Lyn: %s",
+    "Imprint" : "Afdruk",
     "Create an <strong>admin account</strong>" : "Skep ’n <strong>adminrekening</strong>",
     "Username" : "Gebruikersnaam",
     "Data folder" : "Datavouer",

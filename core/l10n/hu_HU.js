@@ -265,6 +265,7 @@ OC.L10N.register(
     "File: %s" : "Fájl: %s",
     "Line: %s" : "Sor: %s",
     "Trace" : "Lekövetés",
+    "Imprint" : "Impresszum",
     "Create an <strong>admin account</strong>" : "<strong>Rendszergazdai fiók</strong> létrehozása",
     "Username" : "Felhasználónév",
     "Storage & database" : "Tárhely és adatbázis",

@@ -79,6 +79,7 @@ OC.L10N.register(
     "Admin" : "Gweinyddu",
     "Help" : "Cymorth",
     "Access forbidden" : "Mynediad wedi'i wahardd",
+    "Imprint" : "Imprint",
     "Create an <strong>admin account</strong>" : "Crewch <strong>gyfrif gweinyddol</strong>",
     "Username" : "Enw defnyddiwr",
     "Data folder" : "Plygell data",

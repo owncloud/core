@@ -259,6 +259,7 @@ OC.L10N.register(
     "File: %s" : "فایل : %s",
     "Line: %s" : "خط: %s",
     "Trace" : "ردیابی",
+    "Imprint" : "مهر زدن",
     "Create an <strong>admin account</strong>" : "لطفا یک <strong> شناسه برای مدیر</strong> بسازید",
     "Username" : "نام کاربری",
     "Storage & database" : "انبارش و پایگاه داده",

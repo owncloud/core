@@ -175,6 +175,7 @@ OC.L10N.register(
     "File: %s" : "Фајл: %s",
     "Line: %s" : "Линија: %s",
     "Trace" : "Траг",
+    "Imprint" : "Жиг",
     "Create an <strong>admin account</strong>" : "Направи <strong>административни налог</strong>",
     "Username" : "Корисничко име",
     "Storage & database" : "Складиште и база података",

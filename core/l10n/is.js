@@ -272,6 +272,7 @@ OC.L10N.register(
     "File: %s" : "Skrá: %s",
     "Line: %s" : "Lína: %s",
     "Trace" : "Rekja",
+    "Imprint" : "Prenta",
     "Create an <strong>admin account</strong>" : "Útbúa <strong>kerfisstjóraaðgang</strong>",
     "Username" : "Notandanafn",
     "Storage & database" : "Geymsla & gagnagrunnur",

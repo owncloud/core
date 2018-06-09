@@ -258,6 +258,7 @@ OC.L10N.register(
     "File: %s" : "Fil: %s",
     "Line: %s" : "Linje: %s",
     "Trace" : "Spor",
+    "Imprint" : "Impressum",
     "Create an <strong>admin account</strong>" : "Lag ein <strong>admin-konto</strong>",
     "Username" : "Brukarnamn",
     "Storage & database" : "Lager og database",

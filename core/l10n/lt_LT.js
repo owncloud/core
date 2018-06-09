@@ -193,6 +193,7 @@ OC.L10N.register(
     "File: %s" : "Failas: %s",
     "Line: %s" : "Eilutė: %s",
     "Trace" : "Sekti",
+    "Imprint" : "Imprint",
     "Create an <strong>admin account</strong>" : "Sukurti <strong>administratoriaus paskyrą</strong>",
     "Username" : "Prisijungimo vardas",
     "Storage & database" : "Saugykla ir duomenų bazė",

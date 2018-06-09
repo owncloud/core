@@ -260,6 +260,7 @@ OC.L10N.register(
     "File: %s" : "文件: %s",
     "Line: %s" : "行: %s",
     "Trace" : "追踪",
+    "Imprint" : "版本说明",
     "Create an <strong>admin account</strong>" : "创建<strong>管理员账号</strong>",
     "Username" : "用户名",
     "Storage & database" : "存储 & 数据库",

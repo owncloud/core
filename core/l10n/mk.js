@@ -280,6 +280,7 @@ OC.L10N.register(
     "File: %s" : "Датотека: %s",
     "Line: %s" : "Линија: %s",
     "Trace" : "Следи",
+    "Imprint" : "Печат",
     "Create an <strong>admin account</strong>" : "Направете <strong>администраторска сметка</strong>",
     "Username" : "Корисничко име",
     "Storage & database" : "Складирање & база на податоци",

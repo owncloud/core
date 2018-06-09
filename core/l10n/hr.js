@@ -151,6 +151,7 @@ OC.L10N.register(
     "File: %s" : "Datoteka: %s",
     "Line: %s" : "Red: %s",
     "Trace" : "Prati",
+    "Imprint" : "Otisak",
     "Create an <strong>admin account</strong>" : "Kreirajte <strong>admin račun</strong>",
     "Username" : "Korisničko ime",
     "Storage & database" : "Pohrana & baza podataka",

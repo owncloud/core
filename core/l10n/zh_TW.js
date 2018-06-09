@@ -217,6 +217,7 @@ OC.L10N.register(
     "File: %s" : "檔案：%s",
     "Line: %s" : "行數：%s",
     "Trace" : "追蹤",
+    "Imprint" : "法律聲明",
     "Create an <strong>admin account</strong>" : "建立一個<strong>管理者帳號</strong>",
     "Username" : "使用者名稱",
     "Storage & database" : "儲存空間和資料庫",

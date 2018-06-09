@@ -264,6 +264,7 @@ OC.L10N.register(
     "File: %s" : "Bestand: %s",
     "Line: %s" : "Regel: %s",
     "Trace" : "Trace",
+    "Imprint" : "afdruk",
     "Create an <strong>admin account</strong>" : "Maak een <strong>beheerdersaccount</strong> aan",
     "Username" : "Gebruikersnaam",
     "Storage & database" : "Opslag & database",

@@ -268,6 +268,7 @@ OC.L10N.register(
     "File: %s" : "ファイル: %s",
     "Line: %s" : "行: %s",
     "Trace" : "トレース",
+    "Imprint" : "インプリント",
     "Create an <strong>admin account</strong>" : "<strong>管理者アカウント</strong>を作成してください",
     "Username" : "ユーザー名",
     "Storage & database" : "ストレージとデータベース",

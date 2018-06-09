@@ -148,6 +148,7 @@ OC.L10N.register(
     "Message: %s" : "Mensaje: %s",
     "File: %s" : "Archivo: %s",
     "Line: %s" : "Línea: %s",
+    "Imprint" : "pie de imprenta",
     "Create an <strong>admin account</strong>" : "Crear una <strong>cuenta de administrador</strong>",
     "Username" : "Nombre de usuario",
     "Data folder" : "Directorio de datos",

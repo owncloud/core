@@ -193,6 +193,7 @@ OC.L10N.register(
     "File: %s" : "Berkas: %s",
     "Line: %s" : "Baris: %s",
     "Trace" : "Jejak",
+    "Imprint" : "Jejak",
     "Create an <strong>admin account</strong>" : "Buat sebuah <strong>akun admin</strong>",
     "Username" : "Nama pengguna",
     "Storage & database" : "Penyimpanan & Basis data",

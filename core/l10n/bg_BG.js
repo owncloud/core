@@ -252,6 +252,7 @@ OC.L10N.register(
     "File: %s" : "Файл: %s",
     "Line: %s" : "Линия: %s",
     "Trace" : "Проследяване на грешките",
+    "Imprint" : "Imprint",
     "Create an <strong>admin account</strong>" : "Създаване на <strong>администраторски профил</strong>.",
     "Username" : "Потребителско име",
     "Storage & database" : "Дисково пространство и база данни",

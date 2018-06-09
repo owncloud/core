@@ -270,6 +270,7 @@ OC.L10N.register(
     "File: %s" : "קובץ: %s",
     "Line: %s" : "שורה: %s",
     "Trace" : "עקבות",
+    "Imprint" : "חותמת",
     "Create an <strong>admin account</strong>" : "יצירת <strong>חשבון מנהל</strong>",
     "Username" : "שם משתמש",
     "Storage & database" : "אחסון ומסד נתונים",

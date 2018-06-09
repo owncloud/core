@@ -232,6 +232,7 @@ OC.L10N.register(
     "File: %s" : "Ficheru: %s",
     "Line: %s" : "Llínea: %s",
     "Trace" : "Traza",
+    "Imprint" : "Imprint",
     "Create an <strong>admin account</strong>" : "Crea una <strong>cuenta d'alministrador</strong>",
     "Username" : "Nome d'usuariu",
     "Storage & database" : "Almacenamientu y Base de datos",

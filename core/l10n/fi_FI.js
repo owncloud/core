@@ -244,6 +244,7 @@ OC.L10N.register(
     "File: %s" : "Tiedosto: %s",
     "Line: %s" : "Rivi: %s",
     "Trace" : "Jälki",
+    "Imprint" : "Tiedot",
     "Create an <strong>admin account</strong>" : "Luo <strong>ylläpitäjän tunnus</strong>",
     "Username" : "Käyttäjätunnus",
     "Storage & database" : "Tallennus ja tietokanta",

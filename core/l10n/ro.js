@@ -196,6 +196,7 @@ OC.L10N.register(
     "Code: %s" : "Cod: %s",
     "Message: %s" : "Mesaj: %s",
     "File: %s" : "Fișier: %s",
+    "Imprint" : "Imprint",
     "Create an <strong>admin account</strong>" : "Crează un <strong>cont de administrator</strong>",
     "Username" : "Nume utilizator",
     "Storage & database" : "Stocare și baza de date",

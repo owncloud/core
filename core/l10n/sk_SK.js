@@ -232,6 +232,7 @@ OC.L10N.register(
     "File: %s" : "Súbor: %s",
     "Line: %s" : "Riadok: %s",
     "Trace" : "Trasa",
+    "Imprint" : "Podmienky používania",
     "Create an <strong>admin account</strong>" : "Vytvoriť <strong>administrátorský účet</strong>",
     "Username" : "Meno používateľa",
     "Storage & database" : "Úložislo & databáza",

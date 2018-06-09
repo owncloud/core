@@ -256,6 +256,7 @@ OC.L10N.register(
     "File: %s" : "Αρχείο: %s",
     "Line: %s" : "Γραμμή: %s",
     "Trace" : "Ανίχνευση",
+    "Imprint" : "Αποτύπωμα",
     "Create an <strong>admin account</strong>" : "Δημιουργήστε έναν <strong>λογαριασμό διαχειριστή</strong>",
     "Username" : "Όνομα χρήστη",
     "Storage & database" : "Αποθήκευση & βάση δεδομένων",

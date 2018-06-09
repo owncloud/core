@@ -227,6 +227,7 @@ OC.L10N.register(
     "File: %s" : "Файл: %s",
     "Line: %s" : "Рядок: %s",
     "Trace" : "Трасування",
+    "Imprint" : "Відбиток",
     "Create an <strong>admin account</strong>" : "Створити <strong>обліковий запис адміністратора</strong>",
     "Username" : "Ім'я користувача",
     "Storage & database" : "Сховище і база даних",

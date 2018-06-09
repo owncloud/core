@@ -115,6 +115,7 @@ OC.L10N.register(
     "Access forbidden" : "التوصّل محظور",
     "Technical details" : "تفاصيل فنية",
     "Request ID: %s" : "معرف الطلب: %s",
+    "Imprint" : "الدمغة.",
     "Create an <strong>admin account</strong>" : "أضف </strong>مستخدم رئيسي <strong>",
     "Username" : "إسم المستخدم",
     "Data folder" : "مجلد المعلومات",

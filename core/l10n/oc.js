@@ -218,6 +218,7 @@ OC.L10N.register(
     "File: %s" : "Fichièr : %s",
     "Line: %s" : "Linha : %s",
     "Trace" : "Traça",
+    "Imprint" : "Mencions",
     "Create an <strong>admin account</strong>" : "Crear un <strong>compte administrator</strong>",
     "Username" : "Nom d'utilizaire",
     "Storage & database" : "Emmagazinatge & banca de donadas",

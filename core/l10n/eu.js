@@ -208,6 +208,7 @@ OC.L10N.register(
     "File: %s" : "Fitxategia: %s",
     "Line: %s" : "Lerroa: %s",
     "Trace" : "Arrastoa",
+    "Imprint" : "Imprint",
     "Create an <strong>admin account</strong>" : "Sortu <strong>kudeatzaile kontu<strong> bat",
     "Username" : "Erabiltzaile izena",
     "Storage & database" : "Biltegia & datubasea",

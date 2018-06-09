@@ -268,6 +268,7 @@ OC.L10N.register(
     "File: %s" : "파일: %s",
     "Line: %s" : "줄: %s",
     "Trace" : "추적",
+    "Imprint" : "법적 고지",
     "Create an <strong>admin account</strong>" : "<strong>관리자 계정</strong> 만들기",
     "Username" : "사용자 이름",
     "Storage & database" : "저장소 및 데이터베이스",

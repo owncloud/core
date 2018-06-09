@@ -253,6 +253,7 @@ OC.L10N.register(
     "File: %s" : "Dosya: %s",
     "Line: %s" : "Satır: %s",
     "Trace" : "İz",
+    "Imprint" : "İzlenim",
     "Create an <strong>admin account</strong>" : "Bir <strong>yönetici hesabı</strong> oluşturun",
     "Username" : "Kullanıcı Adı",
     "Storage & database" : "Depolama ve veritabanı",

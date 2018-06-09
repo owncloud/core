@@ -82,6 +82,7 @@ OC.L10N.register(
     "Admin" : "ადმინისტრატორი",
     "Help" : "დახმარება",
     "Access forbidden" : "წვდომა აკრძალულია",
+    "Imprint" : "ბეჭედი",
     "Create an <strong>admin account</strong>" : "შექმენი <strong>ადმინ ექაუნტი</strong>",
     "Username" : "მომხმარებლის სახელი",
     "Data folder" : "მონაცემთა საქაღალდე",

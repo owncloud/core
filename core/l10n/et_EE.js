@@ -227,6 +227,7 @@ OC.L10N.register(
     "File: %s" : "Fail: %s",
     "Line: %s" : "Rida: %s",
     "Trace" : "Jälita",
+    "Imprint" : "Impressum",
     "Create an <strong>admin account</strong>" : "Loo <strong>admini konto</strong>",
     "Username" : "Kasutajanimi",
     "Storage & database" : "Andmehoidla ja andmebaas",

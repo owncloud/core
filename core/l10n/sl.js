@@ -260,6 +260,7 @@ OC.L10N.register(
     "File: %s" : "Datoteka: %s",
     "Line: %s" : "Vrstica: %s",
     "Trace" : "Sledenje povezav",
+    "Imprint" : "Natis",
     "Create an <strong>admin account</strong>" : "Ustvari <strong>skrbniški račun</strong>",
     "Username" : "Uporabniško ime",
     "Storage & database" : "Shramba in podatkovna zbirka",

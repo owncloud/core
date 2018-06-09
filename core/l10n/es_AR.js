@@ -124,6 +124,7 @@ OC.L10N.register(
     "Technical details" : "Detalles técnicos",
     "Remote Address: %s" : "Dirección Remota: %s",
     "Request ID: %s" : "ID requiriente: %s",
+    "Imprint" : "Imprint",
     "Create an <strong>admin account</strong>" : "Crear una <strong>cuenta de administrador</strong>",
     "Username" : "Nombre de usuario",
     "Data folder" : "Directorio de almacenamiento",

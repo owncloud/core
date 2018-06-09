@@ -280,6 +280,7 @@ OC.L10N.register(
     "File: %s" : "Файл: %s",
     "Line: %s" : "Линия: %s",
     "Trace" : "Трассировка",
+    "Imprint" : "Штамп",
     "Create an <strong>admin account</strong>" : "Создать <strong>учётную запись администратора</strong>",
     "Username" : "Имя пользователя",
     "Storage & database" : "Хранилище и база данных",

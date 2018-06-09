@@ -190,6 +190,7 @@ OC.L10N.register(
     "File: %s" : "Fichier: %s",
     "Line: %s" : "Zeil: %s",
     "Trace" : "Spuren",
+    "Imprint" : "Impressum",
     "Create an <strong>admin account</strong>" : "En <strong>Admin-Account</strong> uleeën",
     "Username" : "Benotzernumm",
     "Storage & database" : "Speicherplaz & Datebank",

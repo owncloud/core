@@ -118,6 +118,7 @@ OC.L10N.register(
     "Resharing is not allowed" : "Weiterteilen ist nicht erlaubt",
     "Delete" : "Löschen",
     "Personal" : "Persönlich",
+    "Imprint" : "Impressum",
     "Username" : "Benutzername"
 },
 "nplurals=2; plural=(n != 1);");

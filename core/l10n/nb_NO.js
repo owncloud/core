@@ -280,6 +280,7 @@ OC.L10N.register(
     "File: %s" : "Fil: %s",
     "Line: %s" : "Linje: %s",
     "Trace" : "Trace",
+    "Imprint" : "Avtrykk",
     "Create an <strong>admin account</strong>" : "Opprett en <strong>administrator-konto</strong>",
     "Username" : "Brukernavn",
     "Storage & database" : "Lagring og database",

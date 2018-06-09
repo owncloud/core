@@ -280,6 +280,7 @@ OC.L10N.register(
     "File: %s" : "Kartelë: %s",
     "Line: %s" : "Rresht: %s",
     "Trace" : "Gjurmim",
+    "Imprint" : "Imprint",
     "Create an <strong>admin account</strong>" : "Krijoni një <strong>llogari administruesi</strong>",
     "Username" : "Emër përdoruesi",
     "Storage & database" : "Depozitë & bazë të dhënash",
