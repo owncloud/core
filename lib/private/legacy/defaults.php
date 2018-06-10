@@ -251,10 +251,10 @@ class OC_Defaults {
 			$footer .= ' &ndash; ' . $this->getSlogan();
 
 			if ($this->getImprintUrl() !== '')
-				$footer .= '<span class="nowrap"> | <a href="' . $this->getImprintUrl() . '">' . $this->l->t('Imprint') . '</a></span>';
+				$footer .= '<span class="nowrap"> | <a href="' . $this->getImprintUrl() . '" target="_blank">' . $this->l->t('Imprint') . '</a></span>';
 
 			if ($this->getPrivacyPolicyUrl() !== '')
-				$footer .= '<span class="nowrap"> | <a href="'. $this->getPrivacyPolicyUrl() .'">'. $this->l->t('Privacy Policy') .'</a></span>';
+				$footer .= '<span class="nowrap"> | <a href="'. $this->getPrivacyPolicyUrl() .'" target="_blank">'. $this->l->t('Privacy Policy') .'</a></span>';
 		}
 
 		return $footer;
