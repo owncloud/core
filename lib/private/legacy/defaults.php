@@ -247,9 +247,14 @@ class OC_Defaults {
 		if ($this->themeExist('getShortFooter')) {
 			$footer = $this->theme->getShortFooter();
 		} else {
-			$footer = '<a href="'. $this->getBaseUrl() . '" target="_blank"' .
-				' rel="noreferrer">' .$this->getEntity() . '</a>'.
-				' – ' . $this->getSlogan();
+			$footer  = '<a href="' . $this->getBaseUrl() . '" target="_blank" rel="noreferrer">' . $this->getEntity() . '</a>';
+			$footer .= ' &ndash; ' . $this->getSlogan();
+
+			if ($this->getImprintUrl() !== '')
+				$footer .= '<span class="nowrap"> | <a href="' . $this->getImprintUrl() . '">' . $this->l->t('Imprint') . '</a></span>';
+
+			if ($this->getPrivacyPolicyUrl() !== '')
+				$footer .= '<span class="nowrap"> | <a href="'. $this->getPrivacyPolicyUrl() .'">'. $this->l->t('Privacy Policy') .'</a></span>';
 		}
 
 		return $footer;
