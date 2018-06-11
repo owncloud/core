@@ -29,6 +29,7 @@ $textareaPlaceholder = "OC\Group\Database::localGroups{$newlineEntity}OCA\User_L
 	<h2 class="app-name"><?php p($l->t('Files Sharing')); ?></h2>
 	<p><?php p($l->t('Blacklist the following groups so noone can share with them. Use the format "{backendName}::{groupDisplayName}", one per line.')); ?></p>
 	<div class="horizontal-layout">
+		<textarea placeholder="<?php print_unescaped($textareaPlaceholder); ?>" class="files_sharing_settings" name="blacklisted_group_displaynames"><?php p($_['blacklistedDisplaynames']); ?></textarea>
 		<div>
 			<p><?php p($l->t('Available backends names are:')); ?></p>
 			<ul class="groupBackends">
@@ -37,6 +38,5 @@ $textareaPlaceholder = "OC\Group\Database::localGroups{$newlineEntity}OCA\User_L
 				<?php endforeach; ?>
 			</ul>
 		</div>
-		<textarea placeholder="<?php print_unescaped($textareaPlaceholder); ?>" class="files_sharing_settings" name="blacklisted_group_displaynames"><?php p($_['blacklistedDisplaynames']); ?></textarea>
 	</div>
 </div>
