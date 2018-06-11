@@ -963,7 +963,6 @@ class Share20OCSTest extends TestCase {
 
 		$this->assertEquals($expected->getMeta(), $result->getMeta());
 		$this->assertEquals($expected->getData(), $result->getData());
-
 	}
 
 	public function testCreateShareGroup() {

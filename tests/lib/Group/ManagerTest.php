@@ -144,6 +144,18 @@ class ManagerTest extends \Test\TestCase {
 		return $eventDispatcher;
 	}
 
+	public function testGetBackendsEmpty() {
+		$this->assertEmpty($this->manager->getBackends());
+	}
+
+	public function testGetBackends() {
+		$backend = $this->getMockBuilder(GroupInterface::class)
+			->disableOriginalConstructor()
+			->getMock();
+		$this->manager->addBackend($backend);
+		$this->assertSame([$backend], $this->manager->getBackends());
+	}
+
 	public function testGet() {
 		/**
 		 * @var \PHPUnit_Framework_MockObject_MockObject | \OC\Group\Backend $backend
