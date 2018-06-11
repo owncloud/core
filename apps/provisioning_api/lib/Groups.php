@@ -116,9 +116,8 @@ class Groups {
 			}, $users);
 			$users = \array_values($users);
 			return new OC_OCS_Result(['users' => $users]);
-		} else {
-			return new OC_OCS_Result(null, \OCP\API::RESPOND_UNAUTHORISED, 'User does not have access to specified group');
 		}
+		return new OC_OCS_Result(null, \OCP\API::RESPOND_UNAUTHORISED, 'User does not have access to specified group');
 	}
 
 	/**
@@ -138,8 +137,17 @@ class Groups {
 		if ($this->groupManager->groupExists($groupId)) {
 			return new OC_OCS_Result(null, 102);
 		}
-		$this->groupManager->createGroup($groupId);
-		return new OC_OCS_Result(null, 100);
+		$user = $this->userSession->getUser();
+		if ($user === null) {
+			return new OC_OCS_Result(null, 102);
+		}
+		// Only admin has got privilege to create group
+		if ($this->groupManager->isAdmin($user->getUID())) {
+			$this->groupManager->createGroup($groupId);
+			return new OC_OCS_Result(null, 100);
+		}
+
+		return new OC_OCS_Result(null, 997);
 	}
 
 	/**
@@ -150,12 +158,14 @@ class Groups {
 		// Check it exists
 		if (!$this->groupManager->groupExists($parameters['groupid'])) {
 			return new OC_OCS_Result(null, 101);
-		} elseif ($parameters['groupid'] === 'admin' || !$this->groupManager->get($parameters['groupid'])->delete()) {
+		}
+
+		if ($parameters['groupid'] === 'admin' || !$this->groupManager->get($parameters['groupid'])->delete()) {
 			// Cannot delete admin group
 			return new OC_OCS_Result(null, 102);
-		} else {
-			return new OC_OCS_Result(null, 100);
 		}
+
+		return new OC_OCS_Result(null, 100);
 	}
 
 	/**
