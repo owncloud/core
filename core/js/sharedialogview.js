@@ -276,7 +276,7 @@
 							}
 							var suggestStarts = OC.getCapabilities().files_sharing.search_min_length;
 							if (suggestStarts > $('.shareWithField').val().length) {
-								title = title + "\n" + n(
+								title = title + " " + n(
 									'core',
 									'Please enter at least {chars} character for suggestions',
 									'Please enter at least {chars} characters for suggestions',
