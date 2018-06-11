@@ -230,3 +230,35 @@ Feature: sharing
 		When the quota of user "user0" has been set to "0"
 		Then publicly uploading a file should not work
 		And the HTTP status code should be "507"
+
+	Scenario: Uploading file to a public shared folder does not work when allow public uploads has been disabled after sharing the folder
+		Given user "user0" has been created
+		And user "user0" has created a share with settings
+			| path        | FOLDER |
+			| shareType   | 3      |
+			| permissions | 4      |
+		When the administrator sets parameter "shareapi_allow_public_upload" of app "core" to "no" using the API
+		Then publicly uploading a file should not work
+		And the HTTP status code should be "403"
+
+	Scenario: Uploading file to a public shared folder does not work when allow public uploads has been disabled before sharing and again enabled after sharing the folder
+		Given user "user0" has been created
+		And parameter "shareapi_allow_public_upload" of app "core" has been set to "no"
+		And user "user0" has created a share with settings
+			| path        | FOLDER |
+			| shareType   | 3      |
+			| permissions | 31      |
+		When the administrator sets parameter "shareapi_allow_public_upload" of app "core" to "yes" using the API
+		Then publicly uploading a file should not work
+		And the HTTP status code should be "403"
+
+	Scenario: Uploading file to a public shared folder works when allow public uploads has been disabled and again enabled after sharing the folder
+		Given user "user0" has been created
+		And user "user0" has created a share with settings
+			| path        | FOLDER |
+			| shareType   | 3      |
+			| permissions | 4      |
+		And parameter "shareapi_allow_public_upload" of app "core" has been set to "no"
+		And parameter "shareapi_allow_public_upload" of app "core" has been set to "yes"
+		When the public uploads file "test.txt" with content "test" using the API
+		Then the content of file "/FOLDER/test.txt" for user "user0" should be "test"
