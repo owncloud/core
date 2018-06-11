@@ -1015,7 +1015,7 @@ class ShareesTest extends TestCase {
 		// just mark the group as blacklisted based on the displayname
 		$this->sharingBlacklist->method('isGroupBlacklisted')
 			->will($this->returnCallback(function (IGroup $group) use ($blacklistedGroupNames) {
-				return in_array($group->getDisplayName(), $blacklistedGroupNames, true);
+				return \in_array($group->getDisplayName(), $blacklistedGroupNames, true);
 			}));
 
 		$this->invokePrivate($this->sharees, 'getGroups', [$searchTerm]);

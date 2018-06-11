@@ -21,7 +21,7 @@
 style('files_sharing', 'settings');
 script('files_sharing', 'settings');
 
-$newlineEntity = '&#10';
+$newlineEntity = '&#10;';
 $textareaPlaceholder = "OC\Group\Database::localGroups{$newlineEntity}OCA\User_LDAP\Group_Proxy::ldapGroup";
 ?>
 
