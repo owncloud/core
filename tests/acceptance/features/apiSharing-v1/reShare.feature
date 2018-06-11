@@ -94,3 +94,21 @@ Feature: sharing
 			| publicUpload | false |
 		Then the OCS status code should be "404"
 		And the HTTP status code should be "200"
+
+	Scenario: resharing a file is not allowed when allow resharing has been disabled
+		Given user "user0" has been created
+		And user "user1" has been created
+		And user "user2" has been created
+		And user "user0" has created a share with settings
+			| path        | /textfile0.txt |
+			| shareType   | 0              |
+			| shareWith   | user1          |
+			| permissions | 31             |
+		And parameter "shareapi_allow_resharing" of app "core" has been set to "no"
+		When user "user1" creates a share using the API with settings
+			| path        | /textfile0 (2).txt |
+			| shareType   | 0                  |
+			| shareWith   | user2              |
+			| permissions | 31                 |
+		Then the OCS status code should be "404"
+		And as "user2" the file "/textfile0 (2).txt" should not exist
