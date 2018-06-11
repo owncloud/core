@@ -3,7 +3,7 @@ OC.L10N.register(
     {
     "Please select a file." : "Seleccione un archivo, por favor.",
     "File is too big" : "El archivo es demasiado grande",
-    "Invalid file provided" : "Archivo provisto no válido/a",
+    "Invalid file provided" : "Archivo no válido/a",
     "No image or file provided" : "No se especificó ningún archivo o imagen",
     "Unknown filetype" : "Tipo de archivo desconocido",
     "Invalid image" : "Imagen inválida",
@@ -281,6 +281,7 @@ OC.L10N.register(
     "Line: %s" : "Línea: %s",
     "Trace" : "Trazas",
     "Imprint" : "Imprimir",
+    "Privacy Policy" : "Política de privacidad",
     "Create an <strong>admin account</strong>" : "Crear una <strong>cuenta de administrador</strong>",
     "Username" : "Nombre de usuario",
     "Storage & database" : "Almacenamiento y base de datos",
