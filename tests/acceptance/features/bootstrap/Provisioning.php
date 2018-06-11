@@ -82,7 +82,33 @@ trait Provisioning {
 	}
 
 	/**
-	 * returns an array of the real displayed names
+	 * returns the display name of the current user
+	 * if no "Display Name" is set the user-name is returned instead
+	 *
+	 * @return array
+	 */
+	public function getCurrentUserDisplayName() {
+		return $this->getUserDisplayName($this->getCurrentUser());
+	}
+
+	/**
+	 * returns the display name of a user
+	 * if no "Display Name" is set the user-name is returned instead
+	 *
+	 * @param string $username
+	 *
+	 * @return array
+	 */
+	public function getUserDisplayName($username) {
+		$displayName = $this->createdUsers[$username]['displayname'];
+		if (($displayName === null) || ($displayName === '')) {
+			$displayName = $username;
+		}
+		return $displayName;
+	}
+
+	/**
+	 * returns an array of the display names, keyed by username
 	 * if no "Display Name" is set the user-name is returned instead
 	 *
 	 * @return array
@@ -90,11 +116,7 @@ trait Provisioning {
 	public function getCreatedUserDisplayNames() {
 		$result = array();
 		foreach ($this->getCreatedUsers() as $username => $user) {
-			if (is_null($user['displayname'])) {
-				$result[] = $username;
-			} else {
-				$result[] = $user['displayname'];
-			}
+			$result[$username] = $this->getUserDisplayName($username);
 		}
 		return $result;
 	}
