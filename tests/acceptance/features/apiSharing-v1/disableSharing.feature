@@ -11,7 +11,6 @@ So that ownCloud users cannot share file or folder
 	Scenario: user tries to share a file with another user when the sharing api has been disabled
 		Given user "user0" has been created
 		And user "user1" has been created
-		And as user "admin"
 		When parameter "shareapi_enabled" of app "core" has been set to "no"
 		Then user "user0" should not be able to share file "welcome.txt" with user "user1" using the API
 		And the OCS status code should be "404"
@@ -20,7 +19,6 @@ So that ownCloud users cannot share file or folder
 	Scenario: user tries to share a folder with another user when the sharing api has been disabled
 		Given user "user0" has been created
 		And user "user1" has been created
-		And as user "admin"
 		When parameter "shareapi_enabled" of app "core" has been set to "no"
 		Then user "user0" should not be able to share folder "/FOLDER" with user "user1" using the API
 		And the OCS status code should be "404"
@@ -93,12 +91,23 @@ So that ownCloud users cannot share file or folder
 		And the OCS status code should be "100"
 		And the HTTP status code should be "200"
 
-	Scenario: user shares a file with the group he is member of when sharing outside the group has been restricted
+	Scenario: user who is not a member of a group tries to share a file in the group when group sharing has been disabled
+		Given user "user0" has been created
+		And user "user1" has been created
+		And group "sharinggroup" has been created
+		And user "user1" has been added to group "sharinggroup"
+		When parameter "shareapi_allow_group_sharing" of app "core" has been set to "no"
+		Then user "user0" should not be able to share file "welcome.txt" with group "sharinggroup" using the API
+		And the OCS status code should be "404"
+		And the HTTP status code should be "200"
+
+	Scenario: user who is a member of a group tries to share a file in the group when group sharing has been disabled
 		Given user "user0" has been created
 		And user "user1" has been created
 		And group "sharinggroup" has been created
 		And user "user0" has been added to group "sharinggroup"
-		When parameter "shareapi_only_share_with_group_members" of app "core" has been set to "yes"
-		Then user "user0" should be able to share file "welcome.txt" with group "sharinggroup" using the API
-		And the OCS status code should be "100"
+		And user "user1" has been added to group "sharinggroup"
+		When parameter "shareapi_allow_group_sharing" of app "core" has been set to "no"
+		Then user "user0" should not be able to share file "welcome.txt" with group "sharinggroup" using the API
+		And the OCS status code should be "404"
 		And the HTTP status code should be "200"
