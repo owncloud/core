@@ -864,7 +864,7 @@ trait Sharing {
 	}
 
 	/**
-	 * @Then /^user "([^"]*)" should not be able to share (?:file|folder|entry) "([^"]*)" with (?:user|group) "([^"]*)"(?: with permissions ([\d]*))? using the API$/
+	 * @Then /^user "([^"]*)" should not be able to share (?:file|folder|entry) "([^"]*)" with user "([^"]*)"(?: with permissions ([\d]*))? using the API$/
 	 *
 	 * @param string $sharer
 	 * @param string $filepath
@@ -884,6 +884,34 @@ trait Sharing {
 		$this->lastShareTime = $time;
 		$this->createShare(
 			$sharer, $filepath, 0, $sharee, null, null, $permissions
+		);
+		PHPUnit_Framework_Assert::assertEquals(
+			404,
+			$this->getOCSResponseStatusCode($this->response)
+		);
+	}
+
+	/**
+	 * @Then /^user "([^"]*)" should not be able to share (?:file|folder|entry) "([^"]*)" with group "([^"]*)"(?: with permissions ([\d]*))? using the API$/
+	 *
+	 * @param string $sharer
+	 * @param string $filepath
+	 * @param string $sharee
+	 * @param int $permissions
+	 *
+	 * @return void
+	 */
+	public function userTriesToShareFileWithGroupUsingTheApi($sharer, $filepath, $sharee, $permissions = null) {
+		$time = \time();
+		if ($this->lastShareTime !== null && $time - $this->lastShareTime < 1) {
+			// prevent creating two shares with the same "stime" which is
+			// based on seconds, this affects share merging order and could
+			// affect expected test result order
+			\sleep(1);
+		}
+		$this->lastShareTime = $time;
+		$this->createShare(
+			$sharer, $filepath, 1, $sharee, null, null, $permissions
 		);
 		PHPUnit_Framework_Assert::assertEquals(
 			404,
