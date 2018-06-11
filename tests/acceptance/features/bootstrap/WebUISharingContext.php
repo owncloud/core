@@ -470,6 +470,30 @@ class WebUISharingContext extends RawMinkContext implements Context {
 			);
 		}
 	}
+
+	/**
+	 * @Then only :userOrGroupName should be listed in the autocomplete list on the webUI
+	 *
+	 * @param string $userOrGroupName
+	 *
+	 * @return void
+	 */
+	public function onlyUserOrGroupNameShouldBeListedInTheAutocompleteList(
+		$userOrGroupName
+	) {
+		$autocompleteItems = $this->sharingDialog->getAutocompleteItemsList();
+		PHPUnit_Framework_Assert::assertCount(
+			1,
+			$autocompleteItems,
+			"expected 1 autocomplete item but there are " . count($autocompleteItems)
+		);
+		PHPUnit_Framework_Assert::assertContains(
+			$userOrGroupName,
+			$autocompleteItems,
+			"'" . $userOrGroupName . "' not in autocomplete list"
+		);
+	}
+
 	/**
 	 * @Then all users and groups that contain the string :requiredString in their name should be listed in the autocomplete list on the webUI
 	 *
@@ -502,25 +526,38 @@ class WebUISharingContext extends RawMinkContext implements Context {
 				= $this->sharingDialog->groupStringsToMatchAutoComplete($notToBeListed);
 		}
 		$autocompleteItems = $this->sharingDialog->getAutocompleteItemsList();
-		$createdGroups = $this->sharingDialog->groupStringsToMatchAutoComplete(
+		// Keep separate arrays of users and groups, because the names can overlap
+		$createdElements = [];
+		$createdElements['groups'] = $this->sharingDialog->groupStringsToMatchAutoComplete(
 			$this->featureContext->getCreatedGroups()
 		);
-		$usersAndGroups = \array_merge(
-			$this->featureContext->getCreatedUserDisplayNames(),
-			$createdGroups
-		);
-		foreach ($usersAndGroups as $expectedUserOrGroup) {
-			if (\strpos($expectedUserOrGroup, $requiredString) !== false
-				&& $expectedUserOrGroup !== $notToBeListed
-				&& $expectedUserOrGroup !== $this->featureContext->getCurrentUser()
-			) {
-				PHPUnit_Framework_Assert::assertContains(
-					$expectedUserOrGroup,
-					$autocompleteItems,
-					"'" . $expectedUserOrGroup . "' not in autocomplete list"
-				);
+		$createdElements['users'] = $this->featureContext->getCreatedUserDisplayNames();
+		$numExpectedItems = 0;
+		foreach ($createdElements as $elementArray) {
+			foreach ($elementArray as $internalName => $displayName) {
+				// Matching should be case-insensitive on the internal or display name
+				if (((\stripos($internalName, $requiredString) !== false)
+						|| (\stripos($displayName, $requiredString) !== false))
+					&& ($displayName !== $notToBeListed)
+					&& ($displayName !== $this->featureContext->getCurrentUser())
+					&& ($displayName !== $this->featureContext->getCurrentUserDisplayName())
+				) {
+					PHPUnit_Framework_Assert::assertContains(
+						$displayName,
+						$autocompleteItems,
+						"'" . $displayName . "' not in autocomplete list"
+					);
+					$numExpectedItems = $numExpectedItems + 1;
+				}
 			}
 		}
+
+		PHPUnit_Framework_Assert::assertCount(
+			$numExpectedItems,
+			$autocompleteItems,
+			'expected ' . $numExpectedItems . ' in autocomplete list but there are ' . count($autocompleteItems)
+		);
+
 		PHPUnit_Framework_Assert::assertNotContains(
 			$notToBeListed,
 			$this->sharingDialog->getAutocompleteItemsList()
