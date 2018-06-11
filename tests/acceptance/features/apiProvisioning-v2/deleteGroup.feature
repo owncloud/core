@@ -17,6 +17,7 @@ So that I can remove unnecessary groups
 			| group_id            | comment                                 |
 			| new-group           | dash                                    |
 			| the.group           | dot                                     |
+			| left,right          | comma                                   |
 			| España              | special European characters             |
 			| नेपाली              | Unicode group name                      |
 			| 0                   | The "false" group                       |

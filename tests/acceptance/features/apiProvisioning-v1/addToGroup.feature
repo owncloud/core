@@ -18,6 +18,7 @@ So that I can give a user access to the resources of the group
 			| group_id            | comment                                 |
 			| new-group           | dash                                    |
 			| the.group           | dot                                     |
+			| left,right          | comma                                   |
 			| España              | special European characters             |
 			| नेपाली              | Unicode group name                      |
 			| 0                   | The "false" group                       |
