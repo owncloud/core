@@ -218,7 +218,7 @@ class DecryptAllTest extends TestCase {
 	}
 
 	public function testNoUsersSeen() {
-		static::createUser('user1', 'user1');
+		$this->createUser('user1', 'user1');
 		/** @var DecryptAll | \PHPUnit_Framework_MockObject_MockObject |  $instance */
 		$instance = $this->getMockBuilder(DecryptAll::class)
 			->setConstructorArgs(
@@ -461,10 +461,7 @@ class DecryptAllTest extends TestCase {
 		$this->view->expects($this->any())->method('is_dir')
 			->willReturnCallback(
 				function ($path) {
-					if ($path === '/user1/files/foo') {
-						return true;
-					}
-					return false;
+					return $path === '/user1/files/foo';
 				}
 			);
 
@@ -524,6 +521,9 @@ class DecryptAllTest extends TestCase {
 	 * Test to verify the fileid after the decryptFile method should be same
 	 */
 	public function testDecryptFileForFileId() {
+		if ($this->runsWithPrimaryObjectstorage()) {
+			$this->markTestSkipped('Objectstore cannot yet ensure to keep the file-id when copying/renaming files');
+		}
 		$this->createUser('user1', 'user1');
 		//To create /user1/files folder
 		\OC::$server->getUserFolder('user1');
