@@ -194,6 +194,11 @@ else
 	BEHAT_FILTER_TAGS="~@skip&&~@masterkey_encryption"
 fi
 
+if [ "${OC_TEST_ON_OBJECTSTORE}" = "1" ]
+then
+   	BEHAT_FILTER_TAGS="${BEHAT_FILTER_TAGS}&&~@skip_on_objectstore"
+fi
+
 BEHAT_FILTER_TAGS="${BEHAT_FILTER_TAGS}&&@api"
 
 if [ -n "${BEHAT_FILTER_TAGS}" ]

@@ -35,7 +35,9 @@ namespace OCA\Files_Versions\Tests;
 
 require_once __DIR__ . '/../appinfo/app.php';
 
+use OC\Files\ObjectStore\ObjectStoreStorage;
 use OC\Files\Storage\Temporary;
+use OCP\Files\Storage;
 use Test\TestCase;
 
 /**
@@ -127,7 +129,6 @@ class VersioningTest extends TestCase {
 
 		parent::tearDown();
 	}
-
 
 	public function testMoveFileIntoSharedFolderAsRecipient() {
 
@@ -649,43 +650,9 @@ class VersioningTest extends TestCase {
 		$this->doTestRestore();
 	}
 
-	public function testRestoreNoPermission() {
-		$this->loginAsUser($this->user1);
-
-		$userHome = \OC::$server->getUserFolder($this->user1);
-		$node = $userHome->newFolder('folder');
-		$file = $node->newFile('test.txt');
-
-		$share = \OC::$server->getShareManager()->newShare();
-		$share->setNode($node)
-			->setShareType(\OCP\Share::SHARE_TYPE_USER)
-			->setSharedBy($this->user1)
-			->setSharedWith($this->user2)
-			->setPermissions(\OCP\Constants::PERMISSION_READ);
-		$share = \OC::$server->getShareManager()->createShare($share);
-
-		$versions = $this->createAndCheckVersions(
-			\OC\Files\Filesystem::getView(),
-			'folder/test.txt'
-		);
-
-		$file->putContent('test file');
-
-		$this->loginAsUser($this->user2);
-
-		$firstVersion = current($versions);
-
-		$this->assertFalse(\OCA\Files_Versions\Storage::rollback('folder/test.txt', $firstVersion['version']), 'Revert did not happen');
-
-		$this->loginAsUser($this->user1);
-
-		\OC::$server->getShareManager()->deleteShare($share);
-		$this->assertEquals('test file', $file->getContent(), 'File content has not changed');
-	}
-
 	/**
 	 * @param string $hookName name of hook called
-	 * @param string $params variable to receive parameters provided by hook
+	 * @param array $params variable to receive parameters provided by hook
 	 */
 	private function connectMockHooks($hookName, &$params) {
 		if ($hookName === null) {
@@ -744,16 +711,14 @@ class VersioningTest extends TestCase {
 		$this->connectMockHooks('rollback', $params);
 
 		$v = $oldVersions["$t2#test.txt"];
-		$this->assertTrue(\OCA\Files_Versions\Storage::rollback($v['path'], $t2));
+		$this->assertTrue(\OCA\Files_Versions\Storage::restoreVersion($this->user1, $v['path'], $v['storage_location'], $t2));
 		$expectedParams = [
 			'path' => '/sub/test.txt',
 			'user' => $this->user1,
 			'revision' => $t2
 		];
 
-		$this->assertEquals($expectedParams['path'], $params['path']);
-		$this->assertTrue(array_key_exists('revision', $params));
-		$this->assertTrue($params['revision'] > 0);
+		$this->assertEquals($expectedParams, $params);
 
 		$this->assertEquals('version2', $this->rootView->file_get_contents($filePath));
 		$info2 = $this->rootView->getFileInfo($filePath);
@@ -876,6 +841,8 @@ class VersioningTest extends TestCase {
 	 * @param string $path
 	 */
 	private function createAndCheckVersions(\OC\Files\View $view, $path) {
+		$this->markTestSkippedIfStorageHasOwnVersioning();
+
 		$view->file_put_contents($path, 'test file');
 		$view->file_put_contents($path, 'version 1');
 		$view->file_put_contents($path, 'version 2');
@@ -921,6 +888,13 @@ class VersioningTest extends TestCase {
 		\OC::$server->getUserFolder($user);
 	}
 
+	private function markTestSkippedIfStorageHasOwnVersioning() {
+		/** @var Storage $storage */
+		list($storage, $internalPath) = $this->rootView->resolvePath(self::USERS_VERSIONS_ROOT);
+		if ($storage->instanceOfStorage(ObjectStoreStorage::class)) {
+			$this->markTestSkipped();
+		}
+	}
 }
 
 // extend the original class to make it possible to test protected methods

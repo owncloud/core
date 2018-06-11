@@ -21,18 +21,21 @@
 
 namespace Test\Preview;
 
+use OCP\Files\File;
+use OCP\Files\Node;
+use OCP\Preview\IProvider2;
 use Test\Traits\UserTrait;
 
 abstract class Provider extends \Test\TestCase {
 	use UserTrait;
 
-	/** @var string */
+	/** @var File */
 	protected $imgPath;
 	/** @var int */
 	protected $width;
 	/** @var int */
 	protected $height;
-	/** @var \OC\Preview\Provider */
+	/** @var IProvider2 */
 	protected $provider;
 	/** @var int */
 	protected $maxWidth = 1024;
@@ -44,8 +47,6 @@ abstract class Provider extends \Test\TestCase {
 	protected $userId;
 	/** @var \OC\Files\View */
 	protected $rootView;
-	/** @var \OC\Files\Storage\Storage */
-	protected $storage;
 
 	protected function setUp() {
 		parent::setUp();
@@ -57,12 +58,7 @@ abstract class Provider extends \Test\TestCase {
 		$this->createUser($userId, $userId);
 		$this->loginAsUser($userId);
 
-		$this->storage = new \OC\Files\Storage\Temporary([]);
-		\OC\Files\Filesystem::mount($this->storage, [], '/' . $userId . '/');
-
 		$this->rootView = new \OC\Files\View('');
-		$this->rootView->mkdir('/' . $userId);
-		$this->rootView->mkdir('/' . $userId . '/files');
 
 		$this->userId = $userId;
 	}
@@ -75,10 +71,10 @@ abstract class Provider extends \Test\TestCase {
 
 	public static function dimensionsDataProvider() {
 		return [
-			[-rand(5, 100), -rand(5, 100)],
-			[rand(5, 100), rand(5, 100)],
-			[-rand(5, 100), rand(5, 100)],
-			[rand(5, 100), -rand(5, 100)],
+			[-\random_int(5, 100), -\random_int(5, 100)],
+			[\random_int(5, 100), \random_int(5, 100)],
+			[-\random_int(5, 100), \random_int(5, 100)],
+			[\random_int(5, 100), -\random_int(5, 100)],
 		];
 	}
 
@@ -116,31 +112,34 @@ abstract class Provider extends \Test\TestCase {
 	 * @param string $fileName name of the file to create
 	 * @param string $fileContent path to file to use for test
 	 *
-	 * @return string
+	 * @return Node
+	 * @throws \Exception
+	 * @throws \OCP\Files\NotFoundException
 	 */
 	protected function prepareTestFile($fileName, $fileContent) {
 		$imgData = file_get_contents($fileContent);
 		$imgPath = '/' . $this->userId . '/files/' . $fileName;
 		$this->rootView->file_put_contents($imgPath, $imgData);
 
-		$scanner = $this->storage->getScanner();
-		$scanner->scan('');
-
-		return $imgPath;
+		return \OC::$server->getUserFolder($this->userId)->get($fileName);
 	}
 
 	/**
 	 * Retrieves a max size thumbnail can be created
 	 *
-	 * @param \OC\Preview\Provider $provider
+	 * @param IProvider2 $provider
 	 *
 	 * @return bool|\OCP\IImage
+	 * @throws \OCP\Files\NotPermittedException
 	 */
 	private function getPreview($provider) {
-		$preview = $provider->getThumbnail($this->imgPath, $this->maxWidth, $this->maxHeight, $this->scalingUp, $this->rootView);
+		$preview = $provider->getThumbnail($this->imgPath, $this->maxWidth, $this->maxHeight, $this->scalingUp);
 
 		$this->assertNotFalse($preview);
 		$this->assertTrue($preview->valid());
+
+		// test that the file still exists
+		$this->assertNotNull($this->imgPath->getContent());
 
 		return $preview;
 	}

@@ -2,7 +2,11 @@
 /**
  * @author Thomas Müller <thomas.mueller@tmit.eu>
  *
+<<<<<<< HEAD
  * @copyright Copyright (c) 2018, ownCloud GmbH
+=======
+ * @copyright Copyright (c) 2017, ownCloud GmbH
+>>>>>>> 478c4d51eb... Add versioning to objectstore
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -27,6 +31,7 @@ use OC\Files\ObjectStore\NoopScanner;
 use OC\Files\ObjectStore\ObjectStoreStorage;
 use OCP\Files\NotFoundException;
 use OCP\Files\ObjectStore\IObjectStore;
+use OCP\Files\ObjectStore\IVersionedObjectStorage;
 use Test\TestCase;
 
 /**
@@ -38,14 +43,14 @@ use Test\TestCase;
  */
 class ObjectStoreTest extends TestCase {
 
-	/** @var IObjectStore | \PHPUnit_Framework_MockObject_MockObject */
+	/** @var IObjectStore | IVersionedObjectStorage | \PHPUnit_Framework_MockObject_MockObject */
 	private $impl;
 	/** @var ObjectStoreStorage | \PHPUnit_Framework_MockObject_MockObject */
 	private $objectStore;
 
 	public function setUp() {
 		parent::setUp();
-		$this->impl = $this->createMock(IObjectStore::class);
+		$this->impl = $this->createMock([IObjectStore::class, IVersionedObjectStorage::class]);
 		$this->impl->expects($this->any())
 			->method('getStorageId')
 			->willReturn('object-store-test');
@@ -135,7 +140,7 @@ class ObjectStoreTest extends TestCase {
 
 		$this->objectStore = $this->getMockBuilder(ObjectStoreStorage::class)
 			->setMethods(['getUpdater'])
-			->setConstructorArgs([[ 'objectstore' => $this->impl]])
+			->setConstructorArgs([['objectstore' => $this->impl]])
 			->getMock();
 
 		$updater = $this->createMock(Updater::class);
@@ -143,5 +148,37 @@ class ObjectStoreTest extends TestCase {
 		$sourceInternalPath = 'text.txt';
 		$targetInternalPath = 'foo/bar.txt';
 		$this->assertEquals(true, $this->objectStore->moveFromStorage($sourceStorage, $sourceInternalPath, $targetInternalPath));
+	}
+
+	/**
+	 * @dataProvider providesMethods
+	 * @expectedException \OCP\Files\NotFoundException
+	 */
+	public function testGetVersionsOfUnknownFile($method, $ignore = false) {
+		if ($ignore) {
+			throw new NotFoundException();
+		}
+		$this->impl->expects($this->never())->method($method)->willReturn([]);
+		$this->assertEquals([], $this->objectStore->$method('unknown-file.txt', '1'));
+	}
+
+	/**
+	 * @dataProvider providesMethods
+	 */
+	public function testGetVersions($method) {
+		$path = 'file-with-versions.txt';
+		$this->assertTrue($this->objectStore->touch($path));
+		$this->impl->expects($this->once())->method($method)->willReturn([]);
+		$this->assertEquals([], $this->objectStore->$method($path, '1'));
+	}
+
+	public function providesMethods() {
+		return [
+			'saveVersion' => ['saveVersion', true],
+			'getVersions' => ['getVersions'],
+			'getVersion' => ['getVersion'],
+			'getContentOfVersion' => ['getContentOfVersion'],
+			'restoreVersion' => ['restoreVersion'],
+		];
 	}
 }

@@ -24,6 +24,8 @@
 
 namespace OCA\DAV\Connector\Sabre;
 
+use OCA\DAV\DAV\CopyPlugin;
+
 /**
  * Class \OCA\DAV\Connector\Sabre\Server
  *
@@ -41,5 +43,6 @@ class Server extends \Sabre\DAV\Server {
 		parent::__construct($treeOrNode);
 		self::$exposeVersion = false;
 		$this->enablePropfindDepthInfinity = true;
+		$this->addPlugin(new CopyPlugin());
 	}
 }

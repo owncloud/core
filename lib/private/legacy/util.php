@@ -439,7 +439,16 @@ class OC_Util {
 						throw new NoReadAccessException('No read permission for file ' . $file);
 					}
 					$child = $target->newFile($file);
-					stream_copy_to_stream($sourceFileHandle, $child->fopen('w'));
+					$targetFileHandle = $child->fopen('w');
+					\stream_copy_to_stream($sourceFileHandle, $targetFileHandle);
+					\fclose($targetFileHandle);
+					\fclose($sourceFileHandle);
+
+					// update cache sizes
+					$cache = $target->getStorage()->getCache();
+					if ($cache instanceof \OC\Files\Cache\Cache) {
+						$cache->correctFolderSize($child->getInternalPath());
+					}
 				}
 			}
 		}

@@ -42,7 +42,7 @@ use OCP\Files\ForbiddenException;
 /**
  * for local filestore, we only have to map the paths
  */
-class Local extends \OC\Files\Storage\Common {
+class Local extends Common {
 	protected $datadir;
 
 	protected $dataDirLength;

@@ -1711,6 +1711,8 @@ class ManagerTest extends \Test\TestCase {
 				'pathCreateChecks', 'deleteChildren', 'groupCreateChecks'])
 			->getMock();
 
+		$this->loginAsUser('user1');
+		$this->loginAsUser('user2');
 		$user1Folder = \OC::$server->getUserFolder('user1');
 		$user2Folder = \OC::$server->getUserFolder('user2');
 		$user1Folder->newFolder('test_share');

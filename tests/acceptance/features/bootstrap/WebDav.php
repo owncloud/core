@@ -721,6 +721,22 @@ trait WebDav {
 	public function theSingleResponseShouldContainAPropertyWithValue(
 		$key, $expectedValue
 	) {
+		$this->theSingleResponseShouldContainAPropertyWithValueAndAlternative($key, $expectedValue, $expectedValue);
+	}
+
+	/**
+	 * @Then the single response should contain a property :key with value :value or with value :altValue
+	 *
+	 * @param string $key
+	 * @param string $expectedValue
+	 * @param string $altExpectedValue
+	 *
+	 * @return int
+	 * @throws \Exception
+	 */
+	public function theSingleResponseShouldContainAPropertyWithValueAndAlternative(
+		$key, $expectedValue, $altExpectedValue
+	) {
 		$keys = $this->response;
 		if (!array_key_exists($key, $keys)) {
 			throw new \Exception(
@@ -748,7 +764,7 @@ trait WebDav {
 			}
 		}
 
-		if ($value != $expectedValue) {
+		if ($value != $expectedValue && $value != $altExpectedValue) {
 			throw new \Exception(
 				"Property \"$key\" found with value \"$value\", expected \"$expectedValue\""
 			);
@@ -879,6 +895,90 @@ trait WebDav {
 			$response = $e->getResponse();
 		}
 		return $response;
+	}
+
+	/**
+	 * @param string $user
+	 * @param string $path
+	 * @param int $folderDepth
+	 * @param array|null $properties
+	 *
+	 * @return array|\Sabre\HTTP\ResponseInterface
+	 */
+	public function listVersionFolder(
+		$user, $path, $folderDepth, $properties = null
+	) {
+		$client = $this->getSabreClient($user);
+		if (!$properties) {
+			$properties = [
+				'{DAV:}getetag'
+			];
+		}
+
+		try {
+			$response = $client->propfind(
+				$this->makeSabrePathNotForFiles($path), $properties, $folderDepth
+			);
+		} catch (Sabre\HTTP\ClientHttpException $e) {
+			$response = $e->getResponse();
+		}
+		return $response;
+	}
+
+	/**
+	 * @Then the version folder of file :path for user :user should contain :count element(s)
+	 *
+	 * @param string $path
+	 * @param string $user
+	 * @param int $count
+	 *
+	 * @return void
+	 */
+	public function theVersionFolderOfFilehouldContainElements(
+		$path, $user, $count
+	) {
+		$fileId = $this->getFileIdForPath($user, $path);
+		$elements = $this->listVersionFolder($user, '/meta/' . $fileId . '/v', 1);
+		PHPUnit_Framework_Assert::assertEquals($count, count($elements) - 1);
+	}
+
+	/**
+	 * @Then the version folder of fileId :fileId for user :user should contain :count element(s)
+	 *
+	 * @param int $fileId
+	 * @param string $user
+	 * @param int $count
+	 *
+	 * @return void
+	 */
+	public function theVersionFolderOfFileIdShouldContainElements(
+		$fileId, $user, $count
+	) {
+		$elements = $this->listVersionFolder($user, '/meta/' . $fileId . '/v', 1);
+		PHPUnit_Framework_Assert::assertEquals($count, count($elements) - 1);
+	}
+
+	/**
+	 * @Then the content length of file :path with version index :index for user :user in versions folder should be :length
+	 *
+	 * @param string $path
+	 * @param int $index
+	 * @param string $user
+	 * @param int $length
+	 *
+	 * @return void
+	 */
+	public function theContentLengthOfFileForUserInVersionsFolderIs(
+		$path, $index, $user, $length
+	) {
+		$fileId = $this->getFileIdForPath($user, $path);
+		$elements = $this->listVersionFolder(
+			$user, '/meta/' . $fileId . '/v', 1, ['{DAV:}getcontentlength']
+		);
+		$elements = array_values($elements);
+		PHPUnit_Framework_Assert::assertEquals(
+			$length, $elements[$index]['{DAV:}getcontentlength']
+		);
 	}
 
 	/**
@@ -1293,7 +1393,7 @@ trait WebDav {
 	 * @param string $content
 	 * @param string $destination
 	 *
-	 * @return void
+	 * @return string
 	 */
 	public function userUploadsAFileWithContentTo(
 		$user, $content, $destination
@@ -1965,4 +2065,29 @@ trait WebDav {
 			$currentFileID, $this->storedFileID
 		);
 	}
+
+	/**
+	 * @When user :user restores version index :versionIndex of file :path using the API
+	 * @Given user :user has restored version index :versionIndex of file :path
+	 *
+	 * @param string $user
+	 * @param int $versionIndex
+	 * @param string $path
+	 *
+	 * @return void
+	 */
+	public function userRestoresVersionIndexOfFile($user, $versionIndex, $path) {
+		$fileId = $this->getFileIdForPath($user, $path);
+		$client = $this->getSabreClient($user);
+		$versions = array_keys(
+			$this->listVersionFolder($user, '/meta/' . $fileId . '/v', 1)
+		);
+		$client->request(
+			'COPY',
+			$versions[$versionIndex],
+			null,
+			['Destination' => $this->makeSabrePath($user, $path)]
+		);
+	}
+
 }

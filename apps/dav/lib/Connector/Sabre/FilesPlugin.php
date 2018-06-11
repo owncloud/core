@@ -31,6 +31,8 @@
 namespace OCA\DAV\Connector\Sabre;
 
 use OC\AppFramework\Http\Request;
+use OCA\DAV\Files\IProvidesAdditionalHeaders;
+use OCA\DAV\Meta\MetaFile;
 use OCP\Files\ForbiddenException;
 use OCP\Files\StorageNotAvailableException;
 use OCP\IConfig;
@@ -231,15 +233,18 @@ class FilesPlugin extends ServerPlugin {
 		// adds a 'Content-Disposition: attachment' header
 		if ($this->downloadAttachment) {
 			$filename = $node->getName();
+			if ($node instanceof IProvidesAdditionalHeaders) {
+				$filename = $node->getContentDispositionFileName();
+			}
 			if ($this->request->isUserAgent(
 				[
 					Request::USER_AGENT_IE,
 					Request::USER_AGENT_ANDROID_MOBILE_CHROME,
 					Request::USER_AGENT_FREEBOX,
 				])) {
-				$response->addHeader('Content-Disposition', 'attachment; filename="' . rawurlencode($filename) . '"');
+				$response->setHeader('Content-Disposition', 'attachment; filename="' . rawurlencode($filename) . '"');
 			} else {
-				$response->addHeader('Content-Disposition', 'attachment; filename*=UTF-8\'\'' . rawurlencode($filename)
+				$response->setHeader('Content-Disposition', 'attachment; filename*=UTF-8\'\'' . rawurlencode($filename)
 													 . '; filename="' . rawurlencode($filename) . '"');
 			}
 		}
@@ -254,6 +259,13 @@ class FilesPlugin extends ServerPlugin {
 			// disable nginx buffering so big downloads through ownCloud won't
 			// cause memory problems in the nginx process.
 			$response->addHeader('X-Accel-Buffering', 'no');
+		}
+
+		if ($node instanceof IProvidesAdditionalHeaders) {
+			$headers = $node->getHeaders();
+			if (is_array($headers)) {
+				$response->addHeaders($headers);
+			}
 		}
 	}
 

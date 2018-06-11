@@ -75,10 +75,6 @@ $this->create('core_ajax_share', '/core/ajax/share.php')
 $this->create('js_config', '/core/js/oc.js')
 	->actionInclude('core/js/config.php');
 // Routing
-$this->create('core_ajax_preview', '/core/preview')
-	->actionInclude('core/ajax/preview.php');
-$this->create('core_ajax_preview', '/core/preview.png')
-	->actionInclude('core/ajax/preview.php');
 $this->create('core_ajax_update', '/core/ajax/update.php')
 	->actionInclude('core/ajax/update.php');
 

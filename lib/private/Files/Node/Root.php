@@ -29,9 +29,10 @@
 
 namespace OC\Files\Node;
 
-use OC\Files\Mount\Manager;
+use OC\Files\Meta\MetaRootNode;
 use OC\Files\Mount\MountPoint;
 use OC\User\NoUserException;
+use OCP\Constants;
 use OCP\Files\NotFoundException;
 use OCP\Files\NotPermittedException;
 use OC\Hooks\PublicEmitter;
@@ -174,12 +175,16 @@ class Root extends Folder implements IRootFolder {
 	 * @param string $path
 	 * @throws \OCP\Files\NotFoundException
 	 * @throws \OCP\Files\NotPermittedException
-	 * @return string
+	 * @return File|Folder
 	 */
 	public function get($path) {
 		$path = $this->normalizePath($path);
 		if ($this->isValidPath($path)) {
 			$fullPath = $this->getFullPath($path);
+			$virtualNode = $this->resolveVirtualNode($fullPath);
+			if ($virtualNode !== null) {
+				return $virtualNode;
+			}
 			$fileInfo = $this->view->getFileInfo($fullPath);
 			if ($fileInfo) {
 				return $this->createNode($fullPath, $fileInfo);
@@ -284,7 +289,7 @@ class Root extends Folder implements IRootFolder {
 	 * @return int
 	 */
 	public function getPermissions() {
-		return \OCP\Constants::PERMISSION_CREATE;
+		return Constants::PERMISSION_CREATE;
 	}
 
 	/**
@@ -335,6 +340,7 @@ class Root extends Folder implements IRootFolder {
 	 *
 	 * @param String $userId user ID
 	 * @return \OCP\Files\Folder
+	 * @throws NoUserException
 	 */
 	public function getUserFolder($userId) {
 		$userObject = \OC::$server->getUserManager()->get($userId);
@@ -366,5 +372,19 @@ class Root extends Folder implements IRootFolder {
 
 		return $folder;
 
+	}
+
+	private function resolveVirtualNode($fullPath) {
+		$pieces = explode('/', $fullPath);
+		if ($pieces[1] !== 'meta') {
+			return null;
+		}
+		array_shift($pieces);
+		array_shift($pieces);
+		$node = new MetaRootNode($this);
+		if (empty($pieces)) {
+			return $node;
+		}
+		return $node->get(implode('/', $pieces));
 	}
 }

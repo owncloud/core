@@ -40,6 +40,7 @@ use OCA\DAV\Connector\Sabre\Exception\EntityTooLarge;
 use OCA\DAV\Connector\Sabre\Exception\FileLocked;
 use OCA\DAV\Connector\Sabre\Exception\Forbidden as DAVForbiddenException;
 use OCA\DAV\Connector\Sabre\Exception\UnsupportedMediaType;
+use OCA\DAV\Files\IFileNode;
 use OCP\Encryption\Exceptions\GenericEncryptionException;
 use OCP\Events\EventEmitterTrait;
 use OCP\Files\EntityTooLargeException;
@@ -61,7 +62,7 @@ use Sabre\DAV\Exception\ServiceUnavailable;
 use Sabre\DAV\IFile;
 use Symfony\Component\EventDispatcher\GenericEvent;
 
-class File extends Node implements IFile {
+class File extends Node implements IFile, IFileNode {
 
 	use EventEmitterTrait;
 	protected $request;
@@ -713,5 +714,12 @@ class File extends Node implements IFile {
 
 	protected function header($string) {
 		\header($string);
+	}
+
+	/**
+	 * @return \OCP\Files\Node
+	 */
+	public function getNode() {
+		return \OC::$server->getRootFolder()->get($this->getFileInfo()->getPath());
 	}
 }
