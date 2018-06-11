@@ -108,7 +108,7 @@ describe('OC.Share.ShareDialogView', function() {
 		capsSpec = sinon.stub(OC, 'getCapabilities');
 		capsSpec.returns({
 			'files_sharing': {
-				'search_min_length': 4
+				'search_min_length': 2
 			}
 		});
 	});
