@@ -31,6 +31,7 @@ namespace OCA\DAV\Connector\Sabre;
 use OCA\DAV\DAV\FileCustomPropertiesBackend;
 use OCA\DAV\DAV\FileCustomPropertiesPlugin;
 use OCA\DAV\Files\BrowserErrorPagePlugin;
+use OCA\DAV\Files\FileLocksBackend;
 use OCP\Files\Mount\IMountManager;
 use OCP\IConfig;
 use OCP\IDBConnection;
@@ -111,6 +112,7 @@ class ServerFactory {
 		$server->addPlugin(new \OCA\DAV\Connector\Sabre\DummyGetResponsePlugin());
 		$server->addPlugin(new \OCA\DAV\Connector\Sabre\ExceptionLoggerPlugin('webdav', $this->logger));
 		$server->addPlugin(new \OCA\DAV\Connector\Sabre\LockPlugin());
+		$server->addPlugin(new \Sabre\DAV\Locks\Plugin(new FileLocksBackend($server->tree, true)));
 
 		if (BrowserErrorPagePlugin::isBrowserRequest($this->request)) {
 			$server->addPlugin(new BrowserErrorPagePlugin());
