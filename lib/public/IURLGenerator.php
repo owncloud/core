@@ -75,7 +75,6 @@ interface IURLGenerator {
 	 */
 	public function imagePath($appName, $file);
 
-
 	/**
 	 * Makes an URL absolute
 	 * @param string $url the url in the ownCloud host

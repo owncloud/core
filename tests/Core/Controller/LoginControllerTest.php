@@ -139,13 +139,13 @@ class LoginControllerTest extends TestCase {
 
 	public function testResponseForNotLoggedinUser() {
 		$params = [
-			'messages' => Array (),
+			'messages' => [],
 			'loginName' => '',
 			'user_autofocus' => true,
 			'redirect_url' => '%2Findex.php%2Ff%2F17',
 			'canResetPassword' => true,
 			'resetPasswordLink' => null,
-			'alt_login' => Array (),
+			'alt_login' => [],
 			'rememberLoginAllowed' => false,
 			'rememberLoginState' => 0
 		];
@@ -393,10 +393,10 @@ class LoginControllerTest extends TestCase {
 			->will($this->returnValue(true));
 		$this->urlGenerator->expects($this->once())
 			->method('getAbsoluteURL')
-			->with(urldecode($originalUrl))
+			->with(\urldecode($originalUrl))
 			->will($this->returnValue($redirectUrl));
 
-		$expected = new RedirectResponse(urldecode($redirectUrl));
+		$expected = new RedirectResponse(\urldecode($redirectUrl));
 		$this->assertEquals($expected, $this->loginController->tryLogin('Jane', $password, $originalUrl));
 	}
 	

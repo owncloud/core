@@ -346,7 +346,7 @@ class DavTest extends TestCase {
 
 			$dir = $this->instance->opendir('/some%dir');
 			$entries = [];
-			while ($entry = readdir($dir)) {
+			while ($entry = \readdir($dir)) {
 				$entries[] = $entry;
 			}
 
@@ -519,7 +519,7 @@ class DavTest extends TestCase {
 	public function testFopenRead() {
 		$response = $this->createMock(\GuzzleHttp\Message\ResponseInterface::class);
 		$response->method('getStatusCode')->willReturn(Http::STATUS_OK);
-		$response->method('getBody')->willReturn(fopen('data://text/plain,response body', 'r'));
+		$response->method('getBody')->willReturn(\fopen('data://text/plain,response body', 'r'));
 
 		$this->httpClient->expects($this->once())
 			->method('get')
@@ -532,8 +532,8 @@ class DavTest extends TestCase {
 			->willReturn($response);
 
 		$fh = $this->instance->fopen('/some%dir/file%.txt', 'r');
-		$contents = stream_get_contents($fh);
-		fclose($fh);
+		$contents = \stream_get_contents($fh);
+		\fclose($fh);
 
 		$this->assertEquals('response body', $contents);
 	}
@@ -575,7 +575,7 @@ class DavTest extends TestCase {
 	public function testFopenReadLockedException() {
 		$response = $this->createMock(\GuzzleHttp\Message\ResponseInterface::class);
 		$response->method('getStatusCode')->willReturn(Http::STATUS_LOCKED);
-		$response->method('getBody')->willReturn(fopen('data://text/plain,response body', 'r'));
+		$response->method('getBody')->willReturn(\fopen('data://text/plain,response body', 'r'));
 
 		$this->httpClient->expects($this->once())
 			->method('get')
@@ -609,18 +609,18 @@ class DavTest extends TestCase {
 		$uploadOptions = null;
 		$this->httpClient->expects($this->once())
 			->method('put')
-			->will($this->returnCallback(function($url, $options) use (&$uploadUrl, &$uploadOptions) {
+			->will($this->returnCallback(function ($url, $options) use (&$uploadUrl, &$uploadOptions) {
 				$uploadUrl = $url;
 				$uploadOptions = $options;
 			}));
 
 		$fh = $this->instance->fopen('/some%dir/file%.txt', 'w');
-		fwrite($fh, 'whatever');
-		fclose($fh);
+		\fwrite($fh, 'whatever');
+		\fclose($fh);
 
 		$this->assertEquals('https://davhost/davroot/some%25dir/file%25.txt', $uploadUrl);
 		$this->assertEquals(['davuser', 'davpassword'], $uploadOptions['auth']);
-		$this->assertEquals('whatever', stream_get_contents($uploadOptions['body']));
+		$this->assertEquals('whatever', \stream_get_contents($uploadOptions['body']));
 	}
 
 	public function testFopenWriteNewFileNoPermission() {
@@ -657,18 +657,18 @@ class DavTest extends TestCase {
 		$uploadOptions = null;
 		$this->httpClient->expects($this->once())
 			->method('put')
-			->will($this->returnCallback(function($url, $options) use (&$uploadUrl, &$uploadOptions) {
+			->will($this->returnCallback(function ($url, $options) use (&$uploadUrl, &$uploadOptions) {
 				$uploadUrl = $url;
 				$uploadOptions = $options;
 			}));
 
 		$fh = $this->instance->fopen('/some%dir/file%.txt', 'w');
-		fwrite($fh, 'whatever');
-		fclose($fh);
+		\fwrite($fh, 'whatever');
+		\fclose($fh);
 
 		$this->assertEquals('https://davhost/davroot/some%25dir/file%25.txt', $uploadUrl);
 		$this->assertEquals(['davuser', 'davpassword'], $uploadOptions['auth']);
-		$this->assertEquals('whatever', stream_get_contents($uploadOptions['body']));
+		$this->assertEquals('whatever', \stream_get_contents($uploadOptions['body']));
 	}
 
 	public function testFopenWriteExistingFileNoPermission() {
@@ -721,8 +721,8 @@ class DavTest extends TestCase {
 			->willThrowException($this->createGuzzleClientException(Http::STATUS_FORBIDDEN));
 
 		$fh = $this->instance->fopen('/some%dir/file%.txt', 'w');
-		fwrite($fh, 'whatever');
-		fclose($fh);
+		\fwrite($fh, 'whatever');
+		\fclose($fh);
 	}
 
 	public function freespaceProvider() {
@@ -818,7 +818,7 @@ class DavTest extends TestCase {
 		$uploadOptions = null;
 		$this->httpClient->expects($this->once())
 			->method('put')
-			->will($this->returnCallback(function($url, $options) use (&$uploadUrl, &$uploadOptions) {
+			->will($this->returnCallback(function ($url, $options) use (&$uploadUrl, &$uploadOptions) {
 				$uploadUrl = $url;
 				$uploadOptions = $options;
 			}));
@@ -827,7 +827,7 @@ class DavTest extends TestCase {
 
 		$this->assertEquals('https://davhost/davroot/some%25dir/file%25.txt', $uploadUrl);
 		$this->assertEquals(['davuser', 'davpassword'], $uploadOptions['auth']);
-		$this->assertEquals('', stream_get_contents($uploadOptions['body']));
+		$this->assertEquals('', \stream_get_contents($uploadOptions['body']));
 	}
 
 	/**
@@ -896,7 +896,7 @@ class DavTest extends TestCase {
 		$mock = $this->davClient->expects($this->once())
 			->method('propfind')
 			->with('new%25path/new%25file.txt', $this->contains('{DAV:}resourcetype'));
-			$mock->willReturn([
+		$mock->willReturn([
 				'{DAV:}resourcetype' => $this->getResourceTypeResponse($isDir)
 			]);
 
@@ -1008,7 +1008,7 @@ class DavTest extends TestCase {
 			->method('propfind')
 			->willThrowException($this->createClientHttpException(Http::STATUS_FORBIDDEN));
 
-		 $this->instance->getMimeType('/some%dir/file%type');
+		$this->instance->getMimeType('/some%dir/file%type');
 	}
 
 	public function permissionsDataProvider() {
@@ -1051,7 +1051,6 @@ class DavTest extends TestCase {
 		$this->assertTrue($this->instance->isUpdatable($path));
 		$this->assertTrue($this->instance->isDeletable($path));
 		$this->assertTrue($this->instance->isSharable($path));
-
 	}
 
 	public function testNoPermissionsFile() {
@@ -1066,7 +1065,6 @@ class DavTest extends TestCase {
 		$this->assertTrue($this->instance->isUpdatable($path));
 		$this->assertTrue($this->instance->isDeletable($path));
 		$this->assertTrue($this->instance->isSharable($path));
-
 	}
 
 	public function testGetPermissionsUnexist() {
@@ -1241,7 +1239,7 @@ class DavTest extends TestCase {
 	public function testHasUpdated($davResponse, $cacheResponse, $expectedResult) {
 		$this->davClient->expects($this->once())
 			->method('propfind')
-			->with('some%25dir', 
+			->with('some%25dir',
 				$this->logicalAnd(
 					$this->contains('{DAV:}getetag'),
 					$this->contains('{DAV:}getlastmodified'),
@@ -1316,4 +1314,3 @@ class DavTest extends TestCase {
 		$this->instance->hasUpdated('some%dir', 1508496363);
 	}
 }
-

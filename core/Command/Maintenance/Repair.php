@@ -83,7 +83,7 @@ class Repair extends Command {
 				continue;
 			}
 			$info = \OC_App::getAppInfo($app);
-			if (!is_array($info)) {
+			if (!\is_array($info)) {
 				continue;
 			}
 			\OC_App::loadApp($app);

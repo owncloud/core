@@ -19,9 +19,7 @@
  *
  */
 
-
 namespace OCA\DAV\Tests\Unit\Avatars;
-
 
 use OCA\DAV\Avatars\AvatarNode;
 use OCP\IAvatar;
@@ -29,7 +27,6 @@ use OCP\IImage;
 use Test\TestCase;
 
 class AvatarNodeTest extends TestCase {
-
 	public function testGetName() {
 		/** @var IAvatar | \PHPUnit_Framework_MockObject_MockObject $a */
 		$a = $this->createMock(IAvatar::class);
@@ -58,17 +55,17 @@ class AvatarNodeTest extends TestCase {
 		$a->expects($this->once())->method('get')->with(1024)->willReturn($image);
 		$n = new AvatarNode(1024, $mime, $a);
 
-		ob_start();
+		\ob_start();
 		$imageFunction($realImage);
 
-		$expected = ob_get_clean();
+		$expected = \ob_get_clean();
 		$this->assertEquals($expected, $n->get());
 	}
 
 	public function providesFormats() {
 		return [
-			'jpeg' => [imagecreatefromjpeg(\OC::$SERVERROOT . '/tests/data/testimage.jpg'), 'jpeg', 'imagejpeg'],
-			'png' => [imagecreatefrompng(\OC::$SERVERROOT . '/tests/data/testimage.png'), 'png', 'imagepng']
+			'jpeg' => [\imagecreatefromjpeg(\OC::$SERVERROOT . '/tests/data/testimage.jpg'), 'jpeg', 'imagejpeg'],
+			'png' => [\imagecreatefrompng(\OC::$SERVERROOT . '/tests/data/testimage.png'), 'png', 'imagepng']
 		];
 	}
 }

@@ -26,7 +26,7 @@ class LargeFileHelperGetFileSizeTest extends TestCase {
 	}
 
 	public function dataFileNameProvider() {
-		$path = dirname(__DIR__) . DIRECTORY_SEPARATOR . 'data' . DIRECTORY_SEPARATOR;
+		$path = \dirname(__DIR__) . DIRECTORY_SEPARATOR . 'data' . DIRECTORY_SEPARATOR;
 
 		$filePaths = [[$path . 'lorem.txt', 446]];
 		$filePaths[] = [$path . 'strängé filename (duplicate #2).txt', 446];
@@ -38,7 +38,7 @@ class LargeFileHelperGetFileSizeTest extends TestCase {
 	 * @dataProvider dataFileNameProvider
 	 */
 	public function testGetFileSizeViaCurl($filename, $fileSize) {
-		if (!extension_loaded('curl')) {
+		if (!\extension_loaded('curl')) {
 			$this->markTestSkipped(
 				'The PHP curl extension is required for this test.'
 			);

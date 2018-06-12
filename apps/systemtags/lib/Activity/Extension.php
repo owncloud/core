@@ -140,7 +140,6 @@ class Extension implements IExtension {
 	 * @return bool|string
 	 */
 	protected function translateShort($text, IL10N $l, array $params) {
-
 		switch ($text) {
 			case self::ASSIGN_TAG:
 				$params[2] = $this->convertParameterToTag($params[2], $l);
@@ -166,7 +165,6 @@ class Extension implements IExtension {
 	 * @return bool|string
 	 */
 	protected function translateLong($text, IL10N $l, array $params) {
-
 		switch ($text) {
 			case self::CREATE_TAG:
 				$params[1] = $this->convertParameterToTag($params[1], $l);
@@ -212,7 +210,7 @@ class Extension implements IExtension {
 	 */
 	protected function actorIsCurrentUser($user) {
 		try {
-			return strip_tags($user) === $this->activityManager->getCurrentUserId();
+			return \strip_tags($user) === $this->activityManager->getCurrentUserId();
 		} catch (\UnexpectedValueException $e) {
 			return false;
 		}
@@ -321,7 +319,7 @@ class Extension implements IExtension {
 	 * @return string
 	 */
 	protected function convertParameterToTag($parameter, IL10N $l) {
-		if (preg_match('/^\<parameter\>\{\{\{(.*)\|\|\|(.*)\}\}\}\<\/parameter\>$/', $parameter, $matches)) {
+		if (\preg_match('/^\<parameter\>\{\{\{(.*)\|\|\|(.*)\}\}\}\<\/parameter\>$/', $parameter, $matches)) {
 			switch ($matches[2]) {
 				case 'assignable':
 					return '<parameter>' . $matches[1] . '</parameter>';

@@ -113,7 +113,7 @@ class Server {
 		$authPlugin->addBackend($authBackend);
 
 		// debugging
-		if(\OC::$server->getConfig()->getSystemValue('debug', false)) {
+		if (\OC::$server->getConfig()->getSystemValue('debug', false)) {
 			$this->server->addPlugin(new \Sabre\DAV\Browser\Plugin());
 		} else {
 			$this->server->addPlugin(new DummyGetResponsePlugin());
@@ -173,7 +173,7 @@ class Server {
 
 		// Some WebDAV clients do require Class 2 WebDAV support (locking), since
 		// we do not provide locking we emulate it using a fake locking plugin.
-		if($request->isUserAgent([
+		if ($request->isUserAgent([
 			'/WebDAVFS/',
 			'/OneNote/',
 			'/Microsoft Office OneNote 2013/',
@@ -192,7 +192,7 @@ class Server {
 			// custom properties plugin must be the last one
 			$userSession = \OC::$server->getUserSession();
 			$user = $userSession->getUser();
-			if (!is_null($user)) {
+			if ($user !== null) {
 				$view = Filesystem::getView();
 				$this->server->addPlugin(
 					new FilesPlugin(
@@ -211,9 +211,9 @@ class Server {
 						\OC::$server->getUserSession()->getUser()
 					)
 				);
-				$filePropertiesPlugin->pathFilter = function($path) {
+				$filePropertiesPlugin->pathFilter = function ($path) {
 					// oh yes, we could set custom properties on the user's storage root
-					return strpos($path, 'files/') === 0;
+					return \strpos($path, 'files/') === 0;
 				};
 				$this->server->addPlugin($filePropertiesPlugin);
 
@@ -224,12 +224,12 @@ class Server {
 						\OC::$server->getUserSession()->getUser()
 					)
 				);
-				$miscPropertiesPlugin->pathFilter = function($path) {
-					return strpos($path, 'files/') !== 0;
+				$miscPropertiesPlugin->pathFilter = function ($path) {
+					return \strpos($path, 'files/') !== 0;
 				};
 				$this->server->addPlugin($miscPropertiesPlugin);
 
-				if (!is_null($view)) {
+				if ($view !== null) {
 					$this->server->addPlugin(
 						new QuotaPlugin($view));
 				}
@@ -249,7 +249,7 @@ class Server {
 					\OC::$server->getCommentsManager(),
 					$userSession
 				));
-				if (!is_null($view)) {
+				if ($view !== null) {
 					$this->server->addPlugin(new FilesReportPlugin(
 						$this->server->tree,
 						$view,
@@ -287,8 +287,8 @@ class Server {
 	 */
 	private function isRequestForSubtree(array $subTrees) {
 		foreach ($subTrees as $subTree) {
-		$subTree = trim($subTree, " /");
-			if (strpos($this->server->getRequestUri(), "$subTree/") === 0) {
+			$subTree = \trim($subTree, " /");
+			if (\strpos($this->server->getRequestUri(), "$subTree/") === 0) {
 				return true;
 			}
 		}

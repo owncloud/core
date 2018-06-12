@@ -69,22 +69,22 @@ class Install extends Command {
 			$server->getSecureRandom());
 		$sysInfo = $setupHelper->getSystemInfo(true);
 		$errors = $sysInfo['errors'];
-		if (count($errors) > 0) {
+		if (\count($errors) > 0) {
 			$this->printErrors($output, $errors);
 
 			// ignore the OS X setup warning
-			if(count($errors) !== 1 ||
+			if (\count($errors) !== 1 ||
 				(string)($errors[0]['error']) !== 'Mac OS X is not supported and ownCloud will not work properly on this platform. Use it at your own risk! ') {
 				return 1;
 			}
 		}
 
 		// validate user input
-		$options = $this->validateInput($input, $output, array_keys($sysInfo['databases']));
+		$options = $this->validateInput($input, $output, \array_keys($sysInfo['databases']));
 
 		// perform installation
 		$errors = $setupHelper->install($options);
-		if (count($errors) > 0) {
+		if (\count($errors) > 0) {
 			$this->printErrors($output, $errors);
 			return 1;
 		}
@@ -99,9 +99,9 @@ class Install extends Command {
 	 * @return array
 	 */
 	protected function validateInput(InputInterface $input, OutputInterface $output, $supportedDatabases) {
-		$db = strtolower($input->getOption('database'));
+		$db = \strtolower($input->getOption('database'));
 
-		if (!in_array($db, $supportedDatabases)) {
+		if (!\in_array($db, $supportedDatabases)) {
 			throw new InvalidArgumentException("Database <$db> is not supported.");
 		}
 
@@ -117,7 +117,7 @@ class Install extends Command {
 		$dbTablePrefix = 'oc_';
 		if ($input->hasParameterOption('--database-table-prefix')) {
 			$dbTablePrefix = (string) $input->getOption('database-table-prefix');
-			$dbTablePrefix = trim($dbTablePrefix);
+			$dbTablePrefix = \trim($dbTablePrefix);
 		}
 		if ($input->hasParameterOption('--database-pass')) {
 			$dbPass = (string) $input->getOption('database-pass');
@@ -127,13 +127,13 @@ class Install extends Command {
 		$dataDir = $input->getOption('data-dir');
 
 		if ($db !== 'sqlite') {
-			if (is_null($dbUser)) {
+			if ($dbUser === null) {
 				throw new InvalidArgumentException("Database user not provided.");
 			}
-			if (is_null($dbName)) {
+			if ($dbName === null) {
 				throw new InvalidArgumentException("Database name not provided.");
 			}
-			if (is_null($dbPass)) {
+			if ($dbPass === null) {
 				/** @var $dialog \Symfony\Component\Console\Helper\QuestionHelper */
 				$dialog = $this->getHelperSet()->get('question');
 				$q = new Question("<question>What is the password to access the database with user <$dbUser>?</question>", false);
@@ -142,7 +142,7 @@ class Install extends Command {
 			}
 		}
 
-		if (is_null($adminPassword)) {
+		if ($adminPassword === null) {
 			/** @var $dialog \Symfony\Component\Console\Helper\QuestionHelper */
 			$dialog = $this->getHelperSet()->get('question');
 			$q = new Question("<question>What is the password you like to use for the admin account <$adminLogin>?</question>", false);
@@ -170,7 +170,7 @@ class Install extends Command {
 	 */
 	protected function printErrors(OutputInterface $output, $errors) {
 		foreach ($errors as $error) {
-			if (is_array($error)) {
+			if (\is_array($error)) {
 				$output->writeln('<error>' . (string)$error['error'] . '</error>');
 				$output->writeln('<info> -> ' . (string)$error['hint'] . '</info>');
 			} else {

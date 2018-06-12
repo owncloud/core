@@ -19,7 +19,6 @@
  *
  */
 
-
 namespace OCA\DAV\DAV;
 
 use OCA\DAV\Connector\Sabre\Exception\Forbidden;
@@ -49,9 +48,9 @@ class CopyPlugin extends ServerPlugin {
 	/**
 	 * @param Server $server
 	 */
-	function initialize(Server $server) {
+	public function initialize(Server $server) {
 		$this->server = $server;
-		$server->on('method:COPY',      [$this, 'httpCopy'], 90);
+		$server->on('method:COPY', [$this, 'httpCopy'], 90);
 	}
 
 	/**
@@ -65,10 +64,8 @@ class CopyPlugin extends ServerPlugin {
 	 * @return bool
 	 * @throws Forbidden
 	 */
-	function httpCopy(RequestInterface $request, ResponseInterface $response) {
-
+	public function httpCopy(RequestInterface $request, ResponseInterface $response) {
 		try {
-
 			$path = $request->getPath();
 
 			$copyInfo = $this->server->getCopyAndMoveInfo($request);
@@ -78,7 +75,9 @@ class CopyPlugin extends ServerPlugin {
 				return true;
 			}
 
-			if (!$this->server->emit('beforeBind', [$copyInfo['destination']])) return false;
+			if (!$this->server->emit('beforeBind', [$copyInfo['destination']])) {
+				return false;
+			}
 
 			$copySuccess = false;
 			if ($sourceNode instanceof ICopySource) {
@@ -102,5 +101,4 @@ class CopyPlugin extends ServerPlugin {
 			throw new Forbidden($ex->getMessage(), $ex->getRetry());
 		}
 	}
-
 }

@@ -21,9 +21,7 @@
  *
  */
 
-
 namespace OCA\Files_Trashbin\Tests\Command;
-
 
 use OC\User\Manager;
 use OCA\Files_Trashbin\Command\CleanUp;
@@ -102,7 +100,7 @@ class CleanUpTest extends TestCase {
 			->method('nodeExists')
 			->with('/' . $this->user0 . '/files_trashbin')
 			->willReturn($nodeExists);
-		if($nodeExists) {
+		if ($nodeExists) {
 			$this->rootFolder->expects($this->once())
 				->method('get')
 				->with('/' . $this->user0 . '/files_trashbin')
@@ -136,7 +134,6 @@ class CleanUpTest extends TestCase {
 				->fetchAll();
 			$this->assertCount(10, $result);
 		}
-
 	}
 	public function dataTestRemoveDeletedFiles() {
 		return [
@@ -154,12 +151,12 @@ class CleanUpTest extends TestCase {
 			->setMethods(['removeDeletedFiles'])
 			->setConstructorArgs([$this->rootFolder, $this->userManager, $this->dbConnection])
 			->getMock();
-		$instance->expects($this->exactly(count($userIds)))
+		$instance->expects($this->exactly(\count($userIds)))
 			->method('removeDeletedFiles')
 			->willReturnCallback(function ($user) use ($userIds) {
 				$this->assertContains($user, $userIds);
 			});
-		$this->userManager->expects($this->exactly(count($userIds)))
+		$this->userManager->expects($this->exactly(\count($userIds)))
 			->method('userExists')->willReturn(true);
 		$inputInterface = $this->getMockBuilder('\Symfony\Component\Console\Input\InputInterface')
 			->disableOriginalConstructor()->getMock();
@@ -186,7 +183,7 @@ class CleanUpTest extends TestCase {
 		$backend->expects($this->once())->method('getUsers')
 			->with('', 500, 0)
 			->willReturn($backendUsers);
-		$instance->expects($this->exactly(count($backendUsers)))
+		$instance->expects($this->exactly(\count($backendUsers)))
 			->method('removeDeletedFiles')
 			->willReturnCallback(function ($user) use ($backendUsers) {
 				$this->assertContains($user, $backendUsers);
@@ -203,5 +200,4 @@ class CleanUpTest extends TestCase {
 			->willReturn([$backend]);
 		$this->invokePrivate($instance, 'execute', [$inputInterface, $outputInterface]);
 	}
-
 }

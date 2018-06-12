@@ -48,7 +48,7 @@ class LargeFileHelper {
 	*                           PHP platform.
 	*/
 	public function __construct() {
-		$pow_2_53 = floatval(self::POW_2_53_MINUS_1) + 1.0;
+		$pow_2_53 = \floatval(self::POW_2_53_MINUS_1) + 1.0;
 		if ($this->formatUnsignedInteger($pow_2_53) !== self::POW_2_53) {
 			throw new \RuntimeException(
 				'This class assumes floats to be double precision or "better".'
@@ -68,14 +68,14 @@ class LargeFileHelper {
 	* @return string Unsigned integer base-10 string
 	*/
 	public function formatUnsignedInteger($number) {
-		if (is_float($number)) {
+		if (\is_float($number)) {
 			// Undo the effect of the php.ini setting 'precision'.
-			return number_format($number, 0, '', '');
-		} else if (is_string($number) && ctype_digit($number)) {
+			return \number_format($number, 0, '', '');
+		} elseif (\is_string($number) && \ctype_digit($number)) {
 			return $number;
-		} else if (is_int($number)) {
+		} elseif (\is_int($number)) {
 			// Interpret signed integer as unsigned integer.
-			return sprintf('%u', $number);
+			return \sprintf('%u', $number);
 		} else {
 			throw new \UnexpectedValueException(
 				'Expected int, float or base-10 string'
@@ -94,11 +94,11 @@ class LargeFileHelper {
 	*/
 	public function getFileSize($filename) {
 		$fileSize = $this->getFileSizeViaCurl($filename);
-		if (!is_null($fileSize)) {
+		if ($fileSize !== null) {
 			return $fileSize;
 		}
 		$fileSize = $this->getFileSizeViaExec($filename);
-		if (!is_null($fileSize)) {
+		if ($fileSize !== null) {
 			return $fileSize;
 		}
 		return $this->getFileSizeNative($filename);
@@ -114,16 +114,16 @@ class LargeFileHelper {
 	*/
 	public function getFileSizeViaCurl($fileName) {
 		if (\OC::$server->getIniWrapper()->getString('open_basedir') === '') {
-			$encodedFileName = rawurlencode($fileName);
-			$ch = curl_init("file://$encodedFileName");
-			curl_setopt($ch, CURLOPT_NOBODY, true);
-			curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-			curl_setopt($ch, CURLOPT_HEADER, true);
-			$data = curl_exec($ch);
-			curl_close($ch);
+			$encodedFileName = \rawurlencode($fileName);
+			$ch = \curl_init("file://$encodedFileName");
+			\curl_setopt($ch, CURLOPT_NOBODY, true);
+			\curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+			\curl_setopt($ch, CURLOPT_HEADER, true);
+			$data = \curl_exec($ch);
+			\curl_close($ch);
 			if ($data !== false) {
 				$matches = [];
-				preg_match('/Content-Length: (\d+)/', $data, $matches);
+				\preg_match('/Content-Length: (\d+)/', $data, $matches);
 				if (isset($matches[1])) {
 					return 0 + $matches[1];
 				}
@@ -142,11 +142,11 @@ class LargeFileHelper {
 	*/
 	public function getFileSizeViaExec($filename) {
 		if (\OC_Helper::is_function_enabled('exec')) {
-			$arg = escapeshellarg($filename);
+			$arg = \escapeshellarg($filename);
 			$result = null;
 			if (\OC_Util::runningOn('linux')) {
 				$result = $this->exec("stat -c %s $arg");
-			} else if (\OC_Util::runningOn('bsd') || \OC_Util::runningOn('mac')) {
+			} elseif (\OC_Util::runningOn('bsd') || \OC_Util::runningOn('mac')) {
 				$result = $this->exec("stat -f %z $arg");
 			}
 			return $result;
@@ -165,18 +165,18 @@ class LargeFileHelper {
 	* @return int|float Number of bytes as number (float or int).
 	*/
 	public function getFileSizeNative($filename) {
-		$result = filesize($filename);
+		$result = \filesize($filename);
 		if ($result < 0) {
 			// For file sizes between 2 GiB and 4 GiB, filesize() will return a
 			// negative int, as the PHP data type int is signed. Interpret the
 			// returned int as an unsigned integer and put it into a float.
-			return (float) sprintf('%u', $result);
+			return (float) \sprintf('%u', $result);
 		}
 		return $result;
 	}
 
 	protected function exec($cmd) {
-		$result = trim(exec($cmd));
-		return ctype_digit($result) ? 0 + $result : null;
+		$result = \trim(\exec($cmd));
+		return \ctype_digit($result) ? 0 + $result : null;
 	}
 }

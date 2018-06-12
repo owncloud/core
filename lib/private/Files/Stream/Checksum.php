@@ -22,7 +22,6 @@
 
 namespace OC\Files\Stream;
 
-
 use Icewind\Streams\Wrapper;
 use OC\Cache\CappedMemoryCache;
 
@@ -45,16 +44,14 @@ class Checksum extends Wrapper {
 	 *
 	 * @var  resource[]
 	 */
- 	private $hashingContexts;
+	private $hashingContexts;
 
 	/** @var CappedMemoryCache Key is path, value is array of checksums */
 	private static $checksums;
 
-
 	public function __construct(array $algos = ['sha1', 'md5', 'adler32']) {
-
 		foreach ($algos as $algo) {
-			$this->hashingContexts[$algo] = hash_init($algo);
+			$this->hashingContexts[$algo] = \hash_init($algo);
 		}
 
 		if (!self::$checksums) {
@@ -62,14 +59,13 @@ class Checksum extends Wrapper {
 		}
 	}
 
-
 	/**
 	 * @param $source
 	 * @param $path
 	 * @return resource
 	 */
 	public static function wrap($source, $path) {
-		$context = stream_context_create([
+		$context = \stream_context_create([
 			'occhecksum' => [
 				'source' => $source,
 				'path' => $path
@@ -80,7 +76,6 @@ class Checksum extends Wrapper {
 			$source, $context, 'occhecksum', self::class
 		);
 	}
-
 
 	/**
 	 * @param string $path
@@ -128,7 +123,7 @@ class Checksum extends Wrapper {
 
 	private function updateHashingContexts($data) {
 		foreach ($this->hashingContexts as $ctx) {
-			hash_update($ctx, $data);
+			\hash_update($ctx, $data);
 		}
 	}
 
@@ -149,7 +144,7 @@ class Checksum extends Wrapper {
 		$hashes = [];
 
 		foreach ($this->hashingContexts as $algo => $ctx) {
-			$hashes[$algo] = hash_final($ctx);
+			$hashes[$algo] = \hash_final($ctx);
 		}
 
 		return $hashes;
@@ -167,7 +162,7 @@ class Checksum extends Wrapper {
 	 * @return string
 	 */
 	private function getPathFromStreamContext() {
-		$ctx = stream_context_get_options($this->context);
+		$ctx = \stream_context_get_options($this->context);
 
 		return $ctx['occhecksum']['path'];
 	}

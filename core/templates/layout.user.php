@@ -11,9 +11,11 @@
 		<meta http-equiv="X-UA-Compatible" content="IE=edge">
 		<meta name="referrer" content="never">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0">
-		<?php if($theme->getiTunesAppId() !== '') { ?>
+		<?php if ($theme->getiTunesAppId() !== '') {
+				?>
 			<meta name="apple-itunes-app" content="app-id=<?php p($theme->getiTunesAppId()); ?>">
-		<?php } ?>
+		<?php
+			} ?>
 		<meta name="apple-mobile-web-app-capable" content="yes">
 		<meta name="apple-mobile-web-app-status-bar-style" content="black">
 		<meta name="apple-mobile-web-app-title" content="<?php p((!empty($_['application']) && $_['appid']!='files')? $_['application']:'ownCloud'); ?>">
@@ -23,13 +25,13 @@
 		<link rel="apple-touch-icon-precomposed" href="<?php print_unescaped(image_path($_['appid'], 'favicon-touch.png')); ?>">
 		<link rel="mask-icon" sizes="any" href="<?php print_unescaped(image_path($_['appid'], 'favicon-mask.svg')); ?>" color="#1d2d44">
 		<link rel="manifest" href="<?php print_unescaped(image_path($_['appid'], 'manifest.json')); ?>">
-		<?php foreach($_['cssfiles'] as $cssfile): ?>
+		<?php foreach ($_['cssfiles'] as $cssfile): ?>
 			<link rel="stylesheet" href="<?php print_unescaped($cssfile); ?>">
 		<?php endforeach; ?>
-		<?php foreach($_['printcssfiles'] as $cssfile): ?>
+		<?php foreach ($_['printcssfiles'] as $cssfile): ?>
 			<link rel="stylesheet" href="<?php print_unescaped($cssfile); ?>" media="print">
 		<?php endforeach; ?>
-		<?php foreach($_['jsfiles'] as $jsfile): ?>
+		<?php foreach ($_['jsfiles'] as $jsfile): ?>
 			<script src="<?php print_unescaped($jsfile); ?>"></script>
 		<?php endforeach; ?>
 		<?php print_unescaped($_['headers']); ?>
@@ -58,7 +60,11 @@
 				<div id="settings">
 					<div id="expand" tabindex="6" role="link" class="menutoggle">
 						<?php if ($_['enableAvatars']): ?>
-						<div class="avatardiv<?php if ($_['userAvatarSet']) { print_unescaped(' avatardiv-shown'); } else { print_unescaped('" style="display: none'); } ?>">
+						<div class="avatardiv<?php if ($_['userAvatarSet']) {
+				print_unescaped(' avatardiv-shown');
+			} else {
+				print_unescaped('" style="display: none');
+			} ?>">
 							<?php if ($_['userAvatarSet']): ?>
 								<img alt="" width="32" height="32"
 								src="<?php p(\OC::$server->getURLGenerator()->linkToRoute('core.avatar.getAvatar', ['userId' => $_['user_uid'], 'size' => 32]));?>"
@@ -67,14 +73,14 @@
 							<?php endif; ?>
 						</div>
 						<?php endif; ?>
-						<span id="expandDisplayName"><?php  p(trim($_['user_displayname']) != '' ? $_['user_displayname'] : $_['user_uid']) ?></span>
+						<span id="expandDisplayName"><?php  p(\trim($_['user_displayname']) != '' ? $_['user_displayname'] : $_['user_uid']) ?></span>
 					</div>
 					<div id="expanddiv">
 					<ul>
-					<?php foreach($_['settingsnavigation'] as $entry):?>
+					<?php foreach ($_['settingsnavigation'] as $entry):?>
 						<li>
 							<a href="<?php print_unescaped($entry['href']); ?>"
-								<?php if( $entry["active"] ): ?> class="active"<?php endif; ?>>
+								<?php if ($entry["active"]): ?> class="active"<?php endif; ?>>
 								<img alt="" src="<?php print_unescaped($entry['icon']); ?>">
 								<?php p($entry['name']) ?>
 							</a>
@@ -105,10 +111,10 @@
 			<div id="navigation">
 				<div id="apps">
 					<ul>
-					<?php foreach($_['navigation'] as $entry): ?>
+					<?php foreach ($_['navigation'] as $entry): ?>
 						<li data-id="<?php p($entry['id']); ?>">
 							<a href="<?php print_unescaped($entry['href']); ?>" tabindex="3"
-								<?php if( $entry['active'] ): ?> class="active"<?php endif; ?>>
+								<?php if ($entry['active']): ?> class="active"<?php endif; ?>>
 								<img class="app-icon" alt="" src="<?php print_unescaped($entry['icon']); ?>">
 								<div class="icon-loading-dark" style="display:none;"></div>
 								<span>

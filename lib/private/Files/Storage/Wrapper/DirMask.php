@@ -21,7 +21,6 @@
 
 namespace OC\Files\Storage\Wrapper;
 
-
 /**
  * While PermissionMask can mask a whole storage this  can
  * mask a certain directory inside a storage
@@ -48,11 +47,11 @@ class DirMask extends PermissionsMask {
 	public function __construct($arguments) {
 		parent::__construct($arguments);
 		$this->path = $arguments['path'];
-		$this->pathLength = strlen($arguments['path']);
+		$this->pathLength = \strlen($arguments['path']);
 	}
 
 	protected function checkPath($path) {
-		return substr($path, 0, $this->pathLength) === $this->path;
+		return \substr($path, 0, $this->pathLength) === $this->path;
 	}
 
 	public function isUpdatable($path) {

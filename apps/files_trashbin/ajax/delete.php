@@ -31,33 +31,32 @@ OCP\JSON::callCheck();
 $folder = isset($_POST['dir']) ? $_POST['dir'] : '/';
 
 // "empty trash" command
-if (isset($_POST['allfiles']) && (string)$_POST['allfiles'] === 'true'){
+if (isset($_POST['allfiles']) && (string)$_POST['allfiles'] === 'true') {
 	$deleteAll = true;
 	if ($folder === '/' || $folder === '') {
 		OCA\Files_Trashbin\Trashbin::deleteAll();
 		$list = [];
 	} else {
 		$list[] = $folder;
-		$folder = dirname($folder);
+		$folder = \dirname($folder);
 	}
-}
-else {
+} else {
 	$deleteAll = false;
 	$files = (string)$_POST['files'];
-	$list = json_decode($files);
+	$list = \json_decode($files);
 }
 
-$folder = rtrim($folder, '/') . '/';
+$folder = \rtrim($folder, '/') . '/';
 $error = [];
 $success = [];
 
 $i = 0;
 foreach ($list as $file) {
 	if ($folder === '/') {
-		$file = ltrim($file, '/');
-		$delimiter = strrpos($file, '.d');
-		$filename = substr($file, 0, $delimiter);
-		$timestamp =  substr($file, $delimiter+2);
+		$file = \ltrim($file, '/');
+		$delimiter = \strrpos($file, '.d');
+		$filename = \substr($file, 0, $delimiter);
+		$timestamp =  \substr($file, $delimiter+2);
 	} else {
 		$filename = $folder . '/' . $file;
 		$timestamp = null;
@@ -66,25 +65,25 @@ foreach ($list as $file) {
 	OCA\Files_Trashbin\Trashbin::delete($filename, \OCP\User::getUser(), $timestamp);
 	if (OCA\Files_Trashbin\Trashbin::file_exists($filename, $timestamp)) {
 		$error[] = $filename;
-		\OCP\Util::writeLog('trashbin','can\'t delete ' . $filename . ' permanently.', \OCP\Util::ERROR);
+		\OCP\Util::writeLog('trashbin', 'can\'t delete ' . $filename . ' permanently.', \OCP\Util::ERROR);
 	}
 	// only list deleted files if not deleting everything
-	else if (!$deleteAll) {
+	elseif (!$deleteAll) {
 		$success[$i]['filename'] = $file;
 		$success[$i]['timestamp'] = $timestamp;
 		$i++;
 	}
 }
 
-if ( $error ) {
+if ($error) {
 	$filelist = '';
-	foreach ( $error as $e ) {
+	foreach ($error as $e) {
 		$filelist .= $e.', ';
 	}
 	$l = \OC::$server->getL10N('files_trashbin');
-	$message = $l->t("Couldn't delete %s permanently", [rtrim($filelist, ', ')]);
+	$message = $l->t("Couldn't delete %s permanently", [\rtrim($filelist, ', ')]);
 	OCP\JSON::error(["data" => ["message" => $message,
-			                               "success" => $success, "error" => $error]]);
+										   "success" => $success, "error" => $error]]);
 } else {
 	OCP\JSON::success(["data" => ["success" => $success]]);
 }

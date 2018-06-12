@@ -42,7 +42,7 @@ interface IShareProvider {
 
 	/**
 	 * Create a share
-	 * 
+	 *
 	 * @param \OCP\Share\IShare $share
 	 * @return \OCP\Share\IShare The share object
 	 * @since 9.0.0
@@ -137,7 +137,6 @@ interface IShareProvider {
 	 * @since 9.0.0
 	 */
 	public function getSharesByPath(Node $path);
-
 
 	/**
 	 * Get shared with the given user for shares of all supported share types for this share provider,

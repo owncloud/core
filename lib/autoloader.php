@@ -63,7 +63,7 @@ class Autoloader {
 	 * @param string $root
 	 */
 	public function addValidRoot($root) {
-		$root = stream_resolve_include_path($root);
+		$root = \stream_resolve_include_path($root);
 		$this->validRoots[$root] = true;
 	}
 
@@ -88,29 +88,29 @@ class Autoloader {
 	 * @return array|bool an array of possible paths or false if the class is not part of ownCloud
 	 */
 	public function findClass($class) {
-		$class = trim($class, '\\');
+		$class = \trim($class, '\\');
 
 		$paths = [];
-		if ($this->useGlobalClassPath && array_key_exists($class, \OC::$CLASSPATH)) {
+		if ($this->useGlobalClassPath && \array_key_exists($class, \OC::$CLASSPATH)) {
 			$paths[] = \OC::$CLASSPATH[$class];
 			/**
 			 * @TODO: Remove this when necessary
 			 * Remove "apps/" from inclusion path for smooth migration to multi app dir
 			 */
-			if (strpos(\OC::$CLASSPATH[$class], 'apps/') === 0) {
+			if (\strpos(\OC::$CLASSPATH[$class], 'apps/') === 0) {
 				\OCP\Util::writeLog('core', 'include path for class "' . $class . '" starts with "apps/"', \OCP\Util::DEBUG);
-				$paths[] = str_replace('apps/', '', \OC::$CLASSPATH[$class]);
+				$paths[] = \str_replace('apps/', '', \OC::$CLASSPATH[$class]);
 			}
-		} elseif (strpos($class, 'OC_') === 0) {
-			$paths[] = \OC::$SERVERROOT . '/lib/private/legacy/' . strtolower(str_replace('_', '/', substr($class, 3)) . '.php');
-		} elseif (strpos($class, 'OCA\\') === 0) {
-			list(, $app, $rest) = explode('\\', $class, 3);
-			$app = strtolower($app);
+		} elseif (\strpos($class, 'OC_') === 0) {
+			$paths[] = \OC::$SERVERROOT . '/lib/private/legacy/' . \strtolower(\str_replace('_', '/', \substr($class, 3)) . '.php');
+		} elseif (\strpos($class, 'OCA\\') === 0) {
+			list(, $app, $rest) = \explode('\\', $class, 3);
+			$app = \strtolower($app);
 			$appPath = \OC_App::getAppPath($app);
-			if ($appPath && stream_resolve_include_path($appPath)) {
-				$paths[] = $appPath . '/' . strtolower(str_replace('\\', '/', $rest) . '.php');
+			if ($appPath && \stream_resolve_include_path($appPath)) {
+				$paths[] = $appPath . '/' . \strtolower(\str_replace('\\', '/', $rest) . '.php');
 				// If not found in the root of the app directory, insert '/lib' after app id and try again.
-				$paths[] = $appPath . '/lib/' . strtolower(str_replace('\\', '/', $rest) . '.php');
+				$paths[] = $appPath . '/lib/' . \strtolower(\str_replace('\\', '/', $rest) . '.php');
 			}
 		} elseif ($class === 'Test\\TestCase') {
 			// This File is considered public API, so we make sure that the class
@@ -126,7 +126,7 @@ class Autoloader {
 	 */
 	protected function isValidPath($fullPath) {
 		foreach ($this->validRoots as $root => $true) {
-			if (substr($fullPath, 0, strlen($root) + 1) === $root . '/') {
+			if (\substr($fullPath, 0, \strlen($root) + 1) === $root . '/') {
 				return true;
 			}
 		}
@@ -145,15 +145,15 @@ class Autoloader {
 			$pathsToRequire = $this->memoryCache->get($class);
 		}
 
-		if(class_exists($class, false)) {
+		if (\class_exists($class, false)) {
 			return false;
 		}
 
-		if (!is_array($pathsToRequire)) {
+		if (!\is_array($pathsToRequire)) {
 			// No cache or cache miss
 			$pathsToRequire = [];
 			foreach ($this->findClass($class) as $path) {
-				$fullPath = stream_resolve_include_path($path);
+				$fullPath = \stream_resolve_include_path($path);
 				if ($fullPath && $this->isValidPath($fullPath)) {
 					$pathsToRequire[] = $fullPath;
 				}

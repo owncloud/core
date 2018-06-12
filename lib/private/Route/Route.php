@@ -134,7 +134,7 @@ class Route extends SymfonyRoute implements IRoute {
 	 */
 	public function action($class, $function = null) {
 		$action = [$class, $function];
-		if (is_null($function)) {
+		if ($function === null) {
 			$action = $class;
 		}
 		$this->setDefault('action', $action);
@@ -148,9 +148,9 @@ class Route extends SymfonyRoute implements IRoute {
 	 * @return void
 	 */
 	public function actionInclude($file) {
-		$this->action(function($param) use ($file) {
+		$this->action(function ($param) use ($file) {
 			unset($param["_route"]);
-			$_GET = array_merge($_GET, $param);
+			$_GET = \array_merge($_GET, $param);
 			unset($param);
 			require_once $file;
 		});

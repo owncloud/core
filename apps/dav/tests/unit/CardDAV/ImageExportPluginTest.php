@@ -20,9 +20,7 @@
  *
  */
 
-
 namespace OCA\DAV\Tests\unit\CardDAV;
-
 
 use OCA\DAV\CardDAV\ImageExportPlugin;
 use OCP\ILogger;
@@ -48,7 +46,7 @@ class ImageExportPluginTest extends TestCase {
 	/** @var ILogger | \PHPUnit_Framework_MockObject_MockObject */
 	private $logger;
 
-	function setUp() {
+	public function setUp() {
 		parent::setUp();
 
 		$this->request = $this->getMockBuilder('Sabre\HTTP\RequestInterface')->getMock();
@@ -105,7 +103,7 @@ class ImageExportPluginTest extends TestCase {
 
 		$this->plugin->expects($this->once())->method('getPhoto')->willReturn($getPhotoResult);
 
-		if (is_string($expectedContentType)) {
+		if (\is_string($expectedContentType)) {
 			$this->response->expects($this->exactly(2))->method('setHeader')->withConsecutive(
 				['Content-Type', $expectedContentType],
 				['Content-Disposition', 'attachment']);
@@ -114,7 +112,7 @@ class ImageExportPluginTest extends TestCase {
 		}
 
 		$result = $this->plugin->httpGet($this->request, $this->response);
-		$this->assertEquals(!is_string($expectedContentType), $result);
+		$this->assertEquals(!\is_string($expectedContentType), $result);
 	}
 
 	public function providesCardWithOrWithoutPhoto() {

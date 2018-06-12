@@ -71,7 +71,7 @@ class DBConfigService {
 			->from('external_mounts', 'm')
 			->where($builder->expr()->eq('mount_id', $builder->createNamedParameter($mountId, IQueryBuilder::PARAM_INT)));
 		$mounts = $this->getMountsFromQuery($query);
-		if (count($mounts) > 0) {
+		if (\count($mounts) > 0) {
 			return $mounts[0];
 		} else {
 			return null;
@@ -109,7 +109,7 @@ class DBConfigService {
 			->innerJoin('m', 'external_applicable', 'a', $builder->expr()->eq('m.mount_id', 'a.mount_id'))
 			->where($builder->expr()->eq('a.type', $builder->createNamedParameter($type, IQueryBuilder::PARAM_INT)));
 
-		if (is_null($value)) {
+		if ($value === null) {
 			$query = $query->andWhere($builder->expr()->isNull('a.value'));
 		} else {
 			$query = $query->andWhere($builder->expr()->eq('a.value', $builder->createNamedParameter($value)));
@@ -156,7 +156,7 @@ class DBConfigService {
 	 */
 	public function getAdminMountsForMultiple($type, array $values) {
 		$builder = $this->connection->getQueryBuilder();
-		$params = array_map(function ($value) use ($builder) {
+		$params = \array_map(function ($value) use ($builder) {
 			return $builder->createNamedParameter($value, IQueryBuilder::PARAM_STR);
 		}, $values);
 
@@ -294,16 +294,15 @@ class DBConfigService {
 	 * @param string $value
 	 */
 	public function setOption($mountId, $key, $value) {
-
 		$count = $this->connection->insertIfNotExist('*PREFIX*external_options', [
 			'mount_id' => $mountId,
 			'key' => $key,
-			'value' => json_encode($value)
+			'value' => \json_encode($value)
 		], ['mount_id', 'key']);
 		if ($count === 0) {
 			$builder = $this->connection->getQueryBuilder();
 			$query = $builder->update('external_options')
-				->set('value', $builder->createNamedParameter(json_encode($value), IQueryBuilder::PARAM_STR))
+				->set('value', $builder->createNamedParameter(\json_encode($value), IQueryBuilder::PARAM_STR))
 				->where($builder->expr()->eq('mount_id', $builder->createNamedParameter($mountId, IQueryBuilder::PARAM_INT)))
 				->andWhere($builder->expr()->eq('key', $builder->createNamedParameter($key, IQueryBuilder::PARAM_STR)));
 			$query->execute();
@@ -324,7 +323,7 @@ class DBConfigService {
 			->where($builder->expr()->eq('mount_id', $builder->createNamedParameter($mountId, IQueryBuilder::PARAM_INT)))
 			->andWhere($builder->expr()->eq('type', $builder->createNamedParameter($type, IQueryBuilder::PARAM_INT)));
 
-		if (is_null($value)) {
+		if ($value === null) {
 			$query = $query->andWhere($builder->expr()->isNull('value'));
 		} else {
 			$query = $query->andWhere($builder->expr()->eq('value', $builder->createNamedParameter($value, IQueryBuilder::PARAM_STR)));
@@ -343,18 +342,18 @@ class DBConfigService {
 				$uniqueMounts[$id] = $mount;
 			}
 		}
-		$uniqueMounts = array_values($uniqueMounts);
+		$uniqueMounts = \array_values($uniqueMounts);
 
-		$mountIds = array_map(function ($mount) {
+		$mountIds = \array_map(function ($mount) {
 			return $mount['mount_id'];
 		}, $uniqueMounts);
-		$mountIds = array_values(array_unique($mountIds));
+		$mountIds = \array_values(\array_unique($mountIds));
 
 		$applicable = $this->getApplicableForMounts($mountIds);
 		$config = $this->getConfigForMounts($mountIds);
 		$options = $this->getOptionsForMounts($mountIds);
 
-		return array_map(function ($mount, $applicable, $config, $options) {
+		return \array_map(function ($mount, $applicable, $config, $options) {
 			$mount['type'] = (int)$mount['type'];
 			$mount['priority'] = (int)$mount['priority'];
 			$mount['applicable'] = $applicable;
@@ -373,12 +372,12 @@ class DBConfigService {
 	 * @return array [$mountId => [['field1' => $value1, ...], ...], ...]
 	 */
 	private function selectForMounts($table, array $fields, array $mountIds) {
-		if (count($mountIds) === 0) {
+		if (\count($mountIds) === 0) {
 			return [];
 		}
 		$builder = $this->connection->getQueryBuilder();
 		$fields[] = 'mount_id';
-		$placeHolders = array_map(function ($id) use ($builder) {
+		$placeHolders = \array_map(function ($id) use ($builder) {
 			return $builder->createPositionalParameter($id, IQueryBuilder::PARAM_INT);
 		}, $mountIds);
 		$query = $builder->select($fields)
@@ -413,7 +412,7 @@ class DBConfigService {
 	 */
 	public function getConfigForMounts($mountIds) {
 		$mountConfigs = $this->selectForMounts('external_config', ['key', 'value'], $mountIds);
-		return array_map([$this, 'createKeyValueMap'], $mountConfigs);
+		return \array_map([$this, 'createKeyValueMap'], $mountConfigs);
 	}
 
 	/**
@@ -422,10 +421,10 @@ class DBConfigService {
 	 */
 	public function getOptionsForMounts($mountIds) {
 		$mountOptions = $this->selectForMounts('external_options', ['key', 'value'], $mountIds);
-		$optionsMap = array_map([$this, 'createKeyValueMap'], $mountOptions);
-		return array_map(function (array $options) {
-			return array_map(function ($option) {
-				return json_decode($option);
+		$optionsMap = \array_map([$this, 'createKeyValueMap'], $mountOptions);
+		return \array_map(function (array $options) {
+			return \array_map(function ($option) {
+				return \json_decode($option);
 			}, $options);
 		}, $optionsMap);
 	}
@@ -435,20 +434,20 @@ class DBConfigService {
 	 * @return array ['key1' => $value1, ...]
 	 */
 	private function createKeyValueMap(array $keyValuePairs) {
-		$decryptedPairts = array_map(function ($pair) {
+		$decryptedPairts = \array_map(function ($pair) {
 			if ($pair['key'] === 'password') {
 				$pair['value'] = $this->decryptValue($pair['value']);
 			}
 			return $pair;
 		}, $keyValuePairs);
-		$keys = array_map(function ($pair) {
+		$keys = \array_map(function ($pair) {
 			return $pair['key'];
 		}, $decryptedPairts);
-		$values = array_map(function ($pair) {
+		$values = \array_map(function ($pair) {
 			return $pair['value'];
 		}, $decryptedPairts);
 
-		return array_combine($keys, $values);
+		return \array_combine($keys, $values);
 	}
 
 	private function encryptValue($value) {

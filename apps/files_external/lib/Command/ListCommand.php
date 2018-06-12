@@ -60,7 +60,7 @@ class ListCommand extends Base {
 
 	const ALL = -1;
 
-	function __construct(IGlobalStoragesService $globalService, IUserStoragesService $userService, IUserSession $userSession, IUserManager $userManager) {
+	public function __construct(IGlobalStoragesService $globalService, IUserStoragesService $userService, IUserSession $userSession, IUserManager $userManager) {
 		parent::__construct();
 		$this->globalService = $globalService;
 		$this->userService = $userService;
@@ -119,13 +119,13 @@ class ListCommand extends Base {
 	 */
 	public function listMounts($userId, array $mounts, InputInterface $input, OutputInterface $output) {
 		$outputType = $input->getOption('output');
-		if (count($mounts) === 0) {
+		if (\count($mounts) === 0) {
 			if ($outputType === self::OUTPUT_FORMAT_JSON || $outputType === self::OUTPUT_FORMAT_JSON_PRETTY) {
 				$output->writeln('[]');
 			} else {
 				if ($userId === self::ALL) {
 					$output->writeln("<info>No mounts configured</info>");
-				} else if ($userId) {
+				} elseif ($userId) {
 					$output->writeln("<info>No mounts configured by $userId</info>");
 				} else {
 					$output->writeln("<info>No admin mounts configured</info>");
@@ -149,7 +149,7 @@ class ListCommand extends Base {
 			foreach ($mounts as $mount) {
 				$config = $mount->getBackendOptions();
 				foreach ($config as $key => $value) {
-					if (in_array($key, $hideKeys)) {
+					if (\in_array($key, $hideKeys)) {
 						$mount->setBackendOption($key, '***');
 					}
 				}
@@ -157,11 +157,11 @@ class ListCommand extends Base {
 		}
 
 		if ($outputType === self::OUTPUT_FORMAT_JSON || $outputType === self::OUTPUT_FORMAT_JSON_PRETTY) {
-			$keys = array_map(function ($header) {
-				return strtolower(str_replace(' ', '_', $header));
+			$keys = \array_map(function ($header) {
+				return \strtolower(\str_replace(' ', '_', $header));
 			}, $headers);
 
-			$pairs = array_map(function (IStorageConfig $config) use ($keys, $userId) {
+			$pairs = \array_map(function (IStorageConfig $config) use ($keys, $userId) {
 				$values = [
 					$config->getId(),
 					$config->getMountPoint(),
@@ -178,12 +178,12 @@ class ListCommand extends Base {
 					$values[] = $config->getType() === IStorageConfig::MOUNT_TYPE_ADMIN ? 'admin' : 'personal';
 				}
 
-				return array_combine($keys, $values);
+				return \array_combine($keys, $values);
 			}, $mounts);
 			if ($outputType === self::OUTPUT_FORMAT_JSON) {
-				$output->writeln(json_encode(array_values($pairs)));
+				$output->writeln(\json_encode(\array_values($pairs)));
 			} else {
-				$output->writeln(json_encode(array_values($pairs), JSON_PRETTY_PRINT));
+				$output->writeln(\json_encode(\array_values($pairs), JSON_PRETTY_PRINT));
 			}
 		} else {
 			$full = $input->getOption('full');
@@ -195,28 +195,28 @@ class ListCommand extends Base {
 				'encoding_compatibility' => false
 			];
 			$countInvalid = 0;
-			$rows = array_map(function (IStorageConfig $config) use ($userId, $defaultMountOptions, $full, &$countInvalid) {
+			$rows = \array_map(function (IStorageConfig $config) use ($userId, $defaultMountOptions, $full, &$countInvalid) {
 				if ($config->getBackend() instanceof InvalidBackend || $config->getAuthMechanism() instanceof InvalidAuth) {
 					$countInvalid++;
 				}
 				$storageConfig = $config->getBackendOptions();
-				$keys = array_keys($storageConfig);
-				$values = array_values($storageConfig);
+				$keys = \array_keys($storageConfig);
+				$values = \array_values($storageConfig);
 
 				if (!$full) {
-					$values = array_map(function ($value) {
-						if (is_string($value) && strlen($value) > 32) {
-							return substr($value, 0, 6) . '...' . substr($value, -6, 6);
+					$values = \array_map(function ($value) {
+						if (\is_string($value) && \strlen($value) > 32) {
+							return \substr($value, 0, 6) . '...' . \substr($value, -6, 6);
 						} else {
 							return $value;
 						}
 					}, $values);
 				}
 
-				$configStrings = array_map(function ($key, $value) {
-					return $key . ': ' . json_encode($value);
+				$configStrings = \array_map(function ($key, $value) {
+					return $key . ': ' . \json_encode($value);
 				}, $keys, $values);
-				$configString = implode(', ', $configStrings);
+				$configString = \implode(', ', $configStrings);
 
 				$mountOptions = $config->getMountOptions();
 				// hide defaults
@@ -225,13 +225,13 @@ class ListCommand extends Base {
 						unset($mountOptions[$key]);
 					}
 				}
-				$keys = array_keys($mountOptions);
-				$values = array_values($mountOptions);
+				$keys = \array_keys($mountOptions);
+				$values = \array_values($mountOptions);
 
-				$optionsStrings = array_map(function ($key, $value) {
-					return $key . ': ' . json_encode($value);
+				$optionsStrings = \array_map(function ($key, $value) {
+					return $key . ': ' . \json_encode($value);
 				}, $keys, $values);
-				$optionsString = implode(', ', $optionsStrings);
+				$optionsString = \implode(', ', $optionsStrings);
 
 				$values = [
 					$config->getId(),
@@ -243,8 +243,8 @@ class ListCommand extends Base {
 				];
 
 				if (!$userId || $userId === self::ALL) {
-					$applicableUsers = implode(', ', $config->getApplicableUsers());
-					$applicableGroups = implode(', ', $config->getApplicableGroups());
+					$applicableUsers = \implode(', ', $config->getApplicableUsers());
+					$applicableGroups = \implode(', ', $config->getApplicableGroups());
 					if ($applicableUsers === '' && $applicableGroups === '') {
 						$applicableUsers = 'All';
 					}
@@ -276,7 +276,7 @@ class ListCommand extends Base {
 	protected function getStorageService($userId) {
 		if (!empty($userId)) {
 			$user = $this->userManager->get($userId);
-			if (is_null($user)) {
+			if ($user === null) {
 				throw new NoUserException("user $userId not found");
 			}
 			$this->userSession->setUser($user);

@@ -20,9 +20,7 @@
  *
  */
 
-
 namespace OCA\Federation\Tests\Middleware;
-
 
 use OC\HintException;
 use OCA\Federation\Middleware\AddServerMiddleware;
@@ -68,13 +66,12 @@ class AddServerMiddlewareTest extends TestCase {
 	 * @param string $hint
 	 */
 	public function testAfterException($exception, $message, $hint) {
-
 		$this->logger->expects($this->once())->method('error')
 			->with($message, ['app' => 'AddServerMiddlewareTest']);
 
 		$this->l10n->expects($this->any())->method('t')
 			->willReturnCallback(
-				function($message) {
+				function ($message) {
 					return $message;
 				}
 			);
@@ -98,5 +95,4 @@ class AddServerMiddlewareTest extends TestCase {
 			[new \Exception('message'), 'message', 'message'],
 		];
 	}
-
 }

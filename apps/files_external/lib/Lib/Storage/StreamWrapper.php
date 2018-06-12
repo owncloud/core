@@ -36,16 +36,16 @@ abstract class StreamWrapper extends \OCP\Files\Storage\StorageAdapter {
 	abstract public function constructUrl($path);
 
 	public function mkdir($path) {
-		return mkdir($this->constructUrl($path));
+		return \mkdir($this->constructUrl($path));
 	}
 
 	public function rmdir($path) {
 		if ($this->is_dir($path) && $this->isDeletable($path)) {
 			$dh = $this->opendir($path);
-			if (!is_resource($dh)) {
+			if (!\is_resource($dh)) {
 				return false;
 			}
-			while (($file = readdir($dh)) !== false) {
+			while (($file = \readdir($dh)) !== false) {
 				if ($this->is_dir($path . '/' . $file)) {
 					$this->rmdir($path . '/' . $file);
 				} else {
@@ -53,8 +53,8 @@ abstract class StreamWrapper extends \OCP\Files\Storage\StorageAdapter {
 				}
 			}
 			$url = $this->constructUrl($path);
-			$success = rmdir($url);
-			clearstatcache(false, $url);
+			$success = \rmdir($url);
+			\clearstatcache(false, $url);
 			return $success;
 		} else {
 			return false;
@@ -62,36 +62,36 @@ abstract class StreamWrapper extends \OCP\Files\Storage\StorageAdapter {
 	}
 
 	public function opendir($path) {
-		return opendir($this->constructUrl($path));
+		return \opendir($this->constructUrl($path));
 	}
 
 	public function filetype($path) {
-		return @filetype($this->constructUrl($path));
+		return @\filetype($this->constructUrl($path));
 	}
 
 	public function file_exists($path) {
-		return file_exists($this->constructUrl($path));
+		return \file_exists($this->constructUrl($path));
 	}
 
 	public function unlink($path) {
 		$url = $this->constructUrl($path);
-		$success = unlink($url);
+		$success = \unlink($url);
 		// normally unlink() is supposed to do this implicitly,
 		// but doing it anyway just to be sure
-		clearstatcache(false, $url);
+		\clearstatcache(false, $url);
 		return $success;
 	}
 
 	public function fopen($path, $mode) {
-		return fopen($this->constructUrl($path), $mode);
+		return \fopen($this->constructUrl($path), $mode);
 	}
 
 	public function touch($path, $mtime = null) {
 		if ($this->file_exists($path)) {
-			if (is_null($mtime)) {
+			if ($mtime === null) {
 				$fh = $this->fopen($path, 'a');
-				fwrite($fh, '');
-				fclose($fh);
+				\fwrite($fh, '');
+				\fclose($fh);
 
 				return true;
 			} else {
@@ -108,22 +108,21 @@ abstract class StreamWrapper extends \OCP\Files\Storage\StorageAdapter {
 	 * @param string $target
 	 */
 	public function getFile($path, $target) {
-		return copy($this->constructUrl($path), $target);
+		return \copy($this->constructUrl($path), $target);
 	}
 
 	/**
 	 * @param string $target
 	 */
 	public function uploadFile($path, $target) {
-		return copy($path, $this->constructUrl($target));
+		return \copy($path, $this->constructUrl($target));
 	}
 
 	public function rename($path1, $path2) {
-		return rename($this->constructUrl($path1), $this->constructUrl($path2));
+		return \rename($this->constructUrl($path1), $this->constructUrl($path2));
 	}
 
 	public function stat($path) {
-		return stat($this->constructUrl($path));
+		return \stat($this->constructUrl($path));
 	}
-
 }

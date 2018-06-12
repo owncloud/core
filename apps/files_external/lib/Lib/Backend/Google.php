@@ -29,7 +29,6 @@ use OCP\Files\External\Backend\Backend;
 use OCA\Files_External\Lib\LegacyDependencyCheckPolyfill;
 
 class Google extends Backend {
-
 	use LegacyDependencyCheckPolyfill;
 
 	public function __construct(IL10N $l) {
@@ -45,5 +44,4 @@ class Google extends Backend {
 			->addCustomJs('gdrive')
 		;
 	}
-
 }

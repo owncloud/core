@@ -57,5 +57,4 @@ class Clients implements ISettings {
 	public function getSectionID() {
 		return 'general';
 	}
-
 }

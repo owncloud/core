@@ -42,7 +42,6 @@ use Symfony\Component\EventDispatcher\GenericEvent;
  * @group DB
  */
 class RequestHandlerTest extends TestCase {
-
 	const TEST_FOLDER_NAME = '/folder_share_api_test';
 
 	/**
@@ -154,7 +153,7 @@ class RequestHandlerTest extends TestCase {
 	/**
 	 * @medium
 	 */
-	function testCreateShare() {
+	public function testCreateShare() {
 		// simulate a post request
 		$_POST['remote'] = 'localhost';
 		$_POST['token'] = 'token';
@@ -163,10 +162,10 @@ class RequestHandlerTest extends TestCase {
 		$_POST['shareWith'] = self::TEST_FILES_SHARING_API_USER2;
 		$_POST['remoteId'] = 1;
 
-		$called = array();
+		$called = [];
 		\OC::$server->getEventDispatcher()->addListener('\OCA\FederatedFileSharing::remote_shareReceived', function ($event) use (&$called) {
 			$called[] = '\OCA\FederatedFileSharing::remote_shareReceived';
-			array_push($called, $event);
+			\array_push($called, $event);
 		});
 
 		$result = $this->s2s->createShare(null);
@@ -188,9 +187,7 @@ class RequestHandlerTest extends TestCase {
 		$this->assertSame(0, (int)$data['accepted']);
 	}
 
-
-	function testDeclineShare() {
-
+	public function testDeclineShare() {
 		$this->s2s = $this->getMockBuilder('\OCA\FederatedFileSharing\RequestHandler')
 			->setConstructorArgs(
 				[
@@ -212,11 +209,9 @@ class RequestHandlerTest extends TestCase {
 		$_POST['token'] = 'token';
 
 		$this->s2s->declineShare(['id' => 42]);
-
 	}
 
-	function XtestDeclineShareMultiple() {
-
+	public function XtestDeclineShareMultiple() {
 		$this->share->expects($this->any())->method('verifyShare')->willReturn(true);
 
 		$dummy = \OCP\DB::prepare('
@@ -224,8 +219,8 @@ class RequestHandlerTest extends TestCase {
 			(`share_type`, `uid_owner`, `item_type`, `item_source`, `item_target`, `file_source`, `file_target`, `permissions`, `stime`, `token`, `share_with`)
 			VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
 			');
-		$dummy->execute([\OCP\Share::SHARE_TYPE_REMOTE, self::TEST_FILES_SHARING_API_USER1, 'test', '1', '/1', '1', '/test.txt', '1', time(), 'token1', 'foo@bar']);
-		$dummy->execute([\OCP\Share::SHARE_TYPE_REMOTE, self::TEST_FILES_SHARING_API_USER1, 'test', '1', '/1', '1', '/test.txt', '1', time(), 'token2', 'bar@bar']);
+		$dummy->execute([\OCP\Share::SHARE_TYPE_REMOTE, self::TEST_FILES_SHARING_API_USER1, 'test', '1', '/1', '1', '/test.txt', '1', \time(), 'token1', 'foo@bar']);
+		$dummy->execute([\OCP\Share::SHARE_TYPE_REMOTE, self::TEST_FILES_SHARING_API_USER1, 'test', '1', '/1', '1', '/test.txt', '1', \time(), 'token2', 'bar@bar']);
 
 		$verify = \OCP\DB::prepare('SELECT * FROM `*PREFIX*share`');
 		$result = $verify->execute();
@@ -253,7 +248,7 @@ class RequestHandlerTest extends TestCase {
 	/**
 	 * @dataProvider dataTestDeleteUser
 	 */
-	function testDeleteUser($toDelete, $expected, $remainingUsers) {
+	public function testDeleteUser($toDelete, $expected, $remainingUsers) {
 		$this->createDummyS2SShares();
 
 		$discoveryManager = new DiscoveryManager(
@@ -288,10 +283,9 @@ class RequestHandlerTest extends TestCase {
 				$this->assertSame($value, $remainingShares[$key]);
 			}
 		}
-
 	}
 
-	function dataTestDeleteUser() {
+	public function dataTestDeleteUser() {
 		return [
 			['user1', ['user1' => 0, 'user2' => 3, 'user3' => 3], 2],
 			['user2', ['user1' => 4, 'user2' => 0, 'user3' => 3], 2],
@@ -329,10 +323,9 @@ class RequestHandlerTest extends TestCase {
 	 * @param bool $correctToken
 	 */
 	public function testGetShare($found, $correctId, $correctToken) {
-
 		$connection = \OC::$server->getDatabaseConnection();
 		$query = $connection->getQueryBuilder();
-		$stime = time();
+		$stime = \time();
 		$query->insert('share')
 			->values(
 				[
@@ -393,5 +386,4 @@ class RequestHandlerTest extends TestCase {
 			[false, false, false],
 		];
 	}
-
 }

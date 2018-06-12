@@ -114,7 +114,7 @@ class RepairMimeTypes implements IRepairStep {
 				$result = \OC_DB::executeAudited(self::existsStmt(), [$correct]);
 				$exists = $result->fetchOne();
 
-				if (!is_null($correct)) {
+				if ($correct !== null) {
 					if (!$exists) {
 						// insert mimetype
 						\OC_DB::executeAudited(self::insertStmt(), [$correct]);
@@ -126,7 +126,6 @@ class RepairMimeTypes implements IRepairStep {
 
 				// delete wrong mimetype
 				\OC_DB::executeAudited(self::deleteStmt(), [$wrongId]);
-
 			}
 		}
 	}
@@ -170,10 +169,8 @@ class RepairMimeTypes implements IRepairStep {
 			'pptx' => 'application/vnd.openxmlformats-officedocument.presentationml.presentation',
 		];
 
-
 		// separate doc from docx etc
 		self::updateMimetypes($updatedMimetypes);
-
 	}
 
 	private function fixApkMimeType() {
@@ -311,14 +308,13 @@ class RepairMimeTypes implements IRepairStep {
 	 * Fix mime types
 	 */
 	public function run(IOutput $out) {
-
 		$ocVersionFromBeforeUpdate = $this->config->getSystemValue('version', '0.0.0');
 
 		// NOTE TO DEVELOPERS: when adding new mime types, please make sure to
 		// add a version comparison to avoid doing it every time
 
 		// only update mime types if necessary as it can be expensive
-		if (version_compare($ocVersionFromBeforeUpdate, '8.2.0', '<')) {
+		if (\version_compare($ocVersionFromBeforeUpdate, '8.2.0', '<')) {
 			if ($this->fixOfficeMimeTypes()) {
 				$out->info('Fixed office mime types');
 			}
@@ -353,7 +349,7 @@ class RepairMimeTypes implements IRepairStep {
 		}
 
 		// Mimetype updates from #19272
-		if (version_compare($ocVersionFromBeforeUpdate, '8.2.0.8', '<')) {
+		if (\version_compare($ocVersionFromBeforeUpdate, '8.2.0.8', '<')) {
 			if ($this->introduceJavaMimeType()) {
 				$out->info('Fixed java/class mime types');
 			}
@@ -371,7 +367,7 @@ class RepairMimeTypes implements IRepairStep {
 			}
 		}
 
-		if (version_compare($ocVersionFromBeforeUpdate, '9.0.0.10', '<')) {
+		if (\version_compare($ocVersionFromBeforeUpdate, '9.0.0.10', '<')) {
 			if ($this->introduceRichDocumentsMimeTypes()) {
 				$out->info('Fixed richdocuments additional office mime types');
 			}

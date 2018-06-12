@@ -22,7 +22,6 @@
 
 namespace OC;
 
-
 use OCP\IConfig;
 use OCP\IDateTimeZone;
 use OCP\ISession;
@@ -86,7 +85,7 @@ class DateTimeZone implements IDateTimeZone {
 			if ($offset > 0) {
 				$timeZone = 'Etc/GMT-' . $offset;
 			} else {
-				$timeZone = 'Etc/GMT+' . abs($offset);
+				$timeZone = 'Etc/GMT+' . \abs($offset);
 			}
 
 			return new \DateTimeZone($timeZone);
@@ -117,11 +116,11 @@ class DateTimeZone implements IDateTimeZone {
 	 * Get the default timezone of the server
 	 *
 	 * Falls back to UTC if it is not yet set.
-	 * 
+	 *
 	 * @return string
 	 */
 	protected function getDefaultTimeZone() {
-		$serverTimeZone = date_default_timezone_get();
+		$serverTimeZone = \date_default_timezone_get();
 		return $serverTimeZone ?: 'UTC';
 	}
 }

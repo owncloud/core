@@ -59,7 +59,7 @@ class ScanFiles extends \OC\BackgroundJob\TimedJob {
 		// Run once per 10 minutes
 		$this->setInterval(60 * 10);
 
-		if (is_null($userManager) || is_null($config)) {
+		if ($userManager === null || $config === null) {
 			$this->fixDIForJobs();
 		} else {
 			$this->config = $config;
@@ -98,7 +98,7 @@ class ScanFiles extends \OC\BackgroundJob\TimedJob {
 	protected function run($argument) {
 		$offset = $this->config->getAppValue('files', 'cronjob_scan_files', 0);
 		$users = $this->userManager->search('', self::USERS_PER_SESSION, $offset);
-		if (!count($users)) {
+		if (!\count($users)) {
 			// No users found, reset offset and retry
 			$offset = 0;
 			$users = $this->userManager->search('', self::USERS_PER_SESSION);

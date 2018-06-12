@@ -49,8 +49,8 @@ class RepairSharePropagationTest extends \Test\TestCase {
 		$step = new SharePropagation($config);
 		$step->run($outputMock);
 
-		sort($expectedRemovedKeys);
-		sort($removedKeys);
+		\sort($expectedRemovedKeys);
+		\sort($removedKeys);
 
 		$this->assertEquals($expectedRemovedKeys, $removedKeys);
 	}

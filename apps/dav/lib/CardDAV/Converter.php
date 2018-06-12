@@ -34,10 +34,9 @@ class Converter {
 	 * @return VCard
 	 */
 	public function createCardFromUser(IUser $user) {
-
 		$uid = $user->getUID();
 		$displayName = $user->getDisplayName();
-		$displayName = empty($displayName ) ? $uid : $displayName;
+		$displayName = empty($displayName) ? $uid : $displayName;
 		$emailAddress = $user->getEMailAddress();
 		$cloudId = $user->getCloudId();
 		$image = $this->getAvatarImage($user);
@@ -71,42 +70,42 @@ class Converter {
 	public function updateCard(VCard $vCard, IUser $user) {
 		$uid = $user->getUID();
 		$displayName = $user->getDisplayName();
-		$displayName = empty($displayName ) ? $uid : $displayName;
+		$displayName = empty($displayName) ? $uid : $displayName;
 		$emailAddress = $user->getEMailAddress();
 		$cloudId = $user->getCloudId();
 		$image = $this->getAvatarImage($user);
 
 		$updated = false;
-		if($this->propertyNeedsUpdate($vCard, 'FN', $displayName)) {
+		if ($this->propertyNeedsUpdate($vCard, 'FN', $displayName)) {
 			$vCard->FN = new Text($vCard, 'FN', $displayName);
 			unset($vCard->N);
 			$vCard->add(new Text($vCard, 'N', $this->splitFullName($displayName)));
 			$updated = true;
 		}
-		if($this->propertyNeedsUpdate($vCard, 'EMAIL', $emailAddress)) {
+		if ($this->propertyNeedsUpdate($vCard, 'EMAIL', $emailAddress)) {
 			$vCard->EMAIL = new Text($vCard, 'EMAIL', $emailAddress);
 			$updated = true;
 		}
-		if($this->propertyNeedsUpdate($vCard, 'CLOUD', $cloudId)) {
+		if ($this->propertyNeedsUpdate($vCard, 'CLOUD', $cloudId)) {
 			$vCard->CLOUD = new Text($vCard, 'CLOUD', $cloudId);
 			$updated = true;
 		}
 
-		if($this->propertyNeedsUpdate($vCard, 'PHOTO', $image)) {
+		if ($this->propertyNeedsUpdate($vCard, 'PHOTO', $image)) {
 			unset($vCard->PHOTO);
 			$vCard->add('PHOTO', $image->data(), ['ENCODING' => 'b', 'TYPE' => $image->mimeType()]);
 			$updated = true;
 		}
 
-		if (empty($emailAddress) && !is_null($vCard->EMAIL)) {
+		if (empty($emailAddress) && $vCard->EMAIL !== null) {
 			unset($vCard->EMAIL);
 			$updated = true;
 		}
-		if (empty($cloudId) && !is_null($vCard->CLOUD)) {
+		if (empty($cloudId) && $vCard->CLOUD !== null) {
 			unset($vCard->CLOUD);
 			$updated = true;
 		}
-		if (empty($image) && !is_null($vCard->PHOTO)) {
+		if (empty($image) && $vCard->PHOTO !== null) {
 			unset($vCard->PHOTO);
 			$updated = true;
 		}
@@ -121,11 +120,11 @@ class Converter {
 	 * @return bool
 	 */
 	private function propertyNeedsUpdate(VCard $vCard, $name, $newValue) {
-		if (is_null($newValue)) {
+		if ($newValue === null) {
 			return false;
 		}
 		$value = $vCard->__get($name);
-		if (!is_null($value)) {
+		if ($value !== null) {
 			$value = $value->getValue();
 			$newValue = $newValue instanceof IImage ? $newValue->data() : $newValue;
 
@@ -142,13 +141,13 @@ class Converter {
 		// Very basic western style parsing. I'm not gonna implement
 		// https://github.com/android/platform_packages_providers_contactsprovider/blob/master/src/com/android/providers/contacts/NameSplitter.java ;)
 
-		$elements = explode(' ', $fullName);
+		$elements = \explode(' ', $fullName);
 		$result = ['', '', '', '', ''];
-		if (count($elements) > 2) {
-			$result[0] = implode(' ', array_slice($elements, count($elements)-1));
+		if (\count($elements) > 2) {
+			$result[0] = \implode(' ', \array_slice($elements, \count($elements)-1));
 			$result[1] = $elements[0];
-			$result[2] = implode(' ', array_slice($elements, 1, count($elements)-2));
-		} elseif (count($elements) === 2) {
+			$result[2] = \implode(' ', \array_slice($elements, 1, \count($elements)-2));
+		} elseif (\count($elements) === 2) {
 			$result[0] = $elements[1];
 			$result[1] = $elements[0];
 		} else {
@@ -170,5 +169,4 @@ class Converter {
 			return null;
 		}
 	}
-
 }

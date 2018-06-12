@@ -23,7 +23,6 @@
 
 namespace OCA\DAV\Tests\unit\SystemTag;
 
-
 use OC\SystemTag\SystemTag;
 use OCP\SystemTag\TagNotFoundException;
 
@@ -54,7 +53,7 @@ class SystemTagsObjectMappingCollectionTest extends \Test\TestCase {
 	}
 
 	public function getNode() {
-		return new \OCA\DAV\SystemTag\SystemTagsObjectMappingCollection (
+		return new \OCA\DAV\SystemTag\SystemTagsObjectMappingCollection(
 			111,
 			'files',
 			$this->user,
@@ -243,7 +242,7 @@ class SystemTagsObjectMappingCollectionTest extends \Test\TestCase {
 
 		$this->tagManager->expects($this->exactly(3))
 			->method('canUserSeeTag')
-			->will($this->returnCallback(function($tag) {
+			->will($this->returnCallback(function ($tag) {
 				return $tag->isUserVisible();
 			}));
 

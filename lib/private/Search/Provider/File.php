@@ -37,13 +37,13 @@ class File extends \OCP\Search\Provider {
 	 * @param string $query
 	 * @return \OCP\Search\Result
 	 */
-	function search($query) {
+	public function search($query) {
 		$files = Filesystem::search($query);
 		$results = [];
 		// edit results
 		foreach ($files as $fileData) {
 			// skip versions
-			if (strpos($fileData['path'], '_versions') === 0) {
+			if (\strpos($fileData['path'], '_versions') === 0) {
 				continue;
 			}
 			// skip top-level folder
@@ -51,19 +51,19 @@ class File extends \OCP\Search\Provider {
 				continue;
 			}
 			// create audio result
-			if($fileData['mimepart'] === 'audio'){
+			if ($fileData['mimepart'] === 'audio') {
 				$result = new \OC\Search\Result\Audio($fileData);
 			}
 			// create image result
-			elseif($fileData['mimepart'] === 'image'){
+			elseif ($fileData['mimepart'] === 'image') {
 				$result = new \OC\Search\Result\Image($fileData);
 			}
 			// create folder result
-			elseif($fileData['mimetype'] === 'httpd/unix-directory'){
+			elseif ($fileData['mimetype'] === 'httpd/unix-directory') {
 				$result = new \OC\Search\Result\Folder($fileData);
 			}
 			// or create file result
-			else{
+			else {
 				$result = new \OC\Search\Result\File($fileData);
 			}
 			// add to results
@@ -72,5 +72,4 @@ class File extends \OCP\Search\Provider {
 		// return
 		return $results;
 	}
-	
 }

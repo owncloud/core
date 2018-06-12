@@ -91,28 +91,27 @@ class CORSMiddleware extends Middleware {
 	 * @return Response a Response object
 	 * @throws SecurityException
 	 */
-	public function afterController($controller, $methodName, Response $response){
+	public function afterController($controller, $methodName, Response $response) {
 		// only react if its a CORS request and if the request sends origin and
 		$userId = null;
-		if (!is_null($this->session->getUser())) {
+		if ($this->session->getUser() !== null) {
 			$userId = $this->session->getUser()->getUID();
 		}
 
-		if($this->request->getHeader("Origin") !== null &&
-			$this->reflector->hasAnnotation('CORS') && !is_null($userId)) {
-
+		if ($this->request->getHeader("Origin") !== null &&
+			$this->reflector->hasAnnotation('CORS') && $userId !== null) {
 			$requesterDomain = $this->request->getHeader("Origin");
 
 			$headers = \OC_Response::setCorsHeaders($userId, $requesterDomain, $this->config);
 			foreach ($headers as $key => $value) {
-				$response->addHeader($key, implode(',', $value));
+				$response->addHeader($key, \implode(',', $value));
 			}
 
 			// allow credentials headers must not be true or CSRF is possible
 			// otherwise
-			foreach($response->getHeaders() as $header => $value) {
-				if(strtolower($header) === 'access-control-allow-credentials' &&
-				   strtolower(trim($value)) === 'true') {
+			foreach ($response->getHeaders() as $header => $value) {
+				if (\strtolower($header) === 'access-control-allow-credentials' &&
+				   \strtolower(\trim($value)) === 'true') {
 					$msg = 'Access-Control-Allow-Credentials must not be '.
 						   'set to true in order to prevent CSRF';
 					throw new SecurityException($msg);
@@ -132,10 +131,10 @@ class CORSMiddleware extends Middleware {
 	 * @throws \Exception the passed in exception if it can't handle it
 	 * @return Response a Response object or null in case that the exception could not be handled
 	 */
-	public function afterException($controller, $methodName, \Exception $exception){
-		if($exception instanceof SecurityException){
+	public function afterException($controller, $methodName, \Exception $exception) {
+		if ($exception instanceof SecurityException) {
 			$response =  new JSONResponse(['message' => $exception->getMessage()]);
-			if($exception->getCode() !== 0) {
+			if ($exception->getCode() !== 0) {
 				$response->setStatus($exception->getCode());
 			} else {
 				$response->setStatus(Http::STATUS_INTERNAL_SERVER_ERROR);
@@ -145,5 +144,4 @@ class CORSMiddleware extends Middleware {
 
 		throw $exception;
 	}
-
 }

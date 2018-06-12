@@ -142,8 +142,8 @@ class Scan extends Base {
 	}
 
 	public function checkScanWarning($fullPath, OutputInterface $output) {
-		$normalizedPath = basename(\OC\Files\Filesystem::normalizePath($fullPath));
-		$path = basename($fullPath);
+		$normalizedPath = \basename(\OC\Files\Filesystem::normalizePath($fullPath));
+		$path = \basename($fullPath);
 
 		if ($normalizedPath !== $path) {
 			$output->writeln("\t<error>Entry \"" . $fullPath . '" will not be accessible due to incompatible encoding</error>');
@@ -229,28 +229,28 @@ class Scan extends Base {
 				}
 			});
 		}
-		$scanner->listen('\OC\Files\Utils\Scanner', 'scanFile', function($path) use ($output) {
+		$scanner->listen('\OC\Files\Utils\Scanner', 'scanFile', function ($path) use ($output) {
 			$this->checkScanWarning($path, $output);
 		});
-		$scanner->listen('\OC\Files\Utils\Scanner', 'scanFolder', function($path) use ($output) {
+		$scanner->listen('\OC\Files\Utils\Scanner', 'scanFolder', function ($path) use ($output) {
 			$this->checkScanWarning($path, $output);
 		});
 
 		try {
 			if ($backgroundScan) {
 				$scanner->backgroundScan($path);
-			}else {
+			} else {
 				$scanner->scan($path, $shouldRepair);
 			}
 		} catch (ForbiddenException $e) {
 			$output->writeln("<error>Home storage for user $user not writable</error>");
 			$output->writeln("Make sure you're running the scan command only as the user the web server runs as");
 		} catch (InterruptedException $e) {
-			# exit the function if ctrl-c has been pressed 
+			# exit the function if ctrl-c has been pressed
 			$output->writeln('Interrupted by user');
 			return;
 		} catch (\Exception $e) {
-			$output->writeln('<error>Exception during scan: ' . get_class($e) . ': ' . $e->getMessage() . "\n" . $e->getTraceAsString() . '</error>');
+			$output->writeln('<error>Exception during scan: ' . \get_class($e) . ': ' . $e->getMessage() . "\n" . $e->getTraceAsString() . '</error>');
 		}
 	}
 
@@ -258,7 +258,7 @@ class Scan extends Base {
 		$count = 0;
 		$users = [];
 		foreach ($this->groupManager->findUsersInGroup($group) as $user) {
-			array_push($users, $user->getUID());
+			\array_push($users, $user->getUID());
 			$count++;
 			//Take 200 users at a time
 			if ($count > 199) {
@@ -267,17 +267,17 @@ class Scan extends Base {
 				$users = [];
 			}
 		}
-		if (count($users) > 0) {
+		if (\count($users) > 0) {
 			yield $users;
 		}
 	}
 
 	protected function execute(InputInterface $input, OutputInterface $output) {
 		$inputPath = $input->getOption('path');
-		$groups = $input->getOption('groups') ? explode(',', $input->getOption('groups')) : [];
+		$groups = $input->getOption('groups') ? \explode(',', $input->getOption('groups')) : [];
 		$shouldRepairStoragesIndividually = (bool) $input->getOption('repair');
 
-		if (count($groups) >= 1) {
+		if (\count($groups) >= 1) {
 			$users = [];
 			foreach ($groups as $group) {
 				if ($this->groupManager->groupExists($group) === false) {
@@ -291,11 +291,11 @@ class Scan extends Base {
 					}
 				}
 			}
-		} else if ($inputPath) {
-			$inputPath = '/' . trim($inputPath, '/');
-			list (, $user,) = explode('/', $inputPath, 3);
+		} elseif ($inputPath) {
+			$inputPath = '/' . \trim($inputPath, '/');
+			list(, $user, ) = \explode('/', $inputPath, 3);
 			$users = [$user];
-		} else if ($input->getOption('all')) {
+		} elseif ($input->getOption('all')) {
 			// we can only repair all storages in bulk (more efficient) if singleuser or maintenance mode
 			// is enabled to prevent concurrent user access
 			if ($input->getOption('repair')) {
@@ -315,7 +315,7 @@ class Scan extends Base {
 			$users = $input->getArgument('user_id');
 		}
 
-		if (count($groups) === 0) {
+		if (\count($groups) === 0) {
 			$this->processUserChunks($input, $output, $users, $inputPath, $shouldRepairStoragesIndividually);
 		}
 	}
@@ -339,7 +339,7 @@ class Scan extends Base {
 		}
 
 		# check quantity of users to be process and show it on the command line
-		$users_total = count($users);
+		$users_total = \count($users);
 		if ($users_total === 0) {
 			$output->writeln("<error>Please specify the user id to scan, \"--all\" to scan for all users or \"--path=...\"</error>");
 			return;
@@ -348,7 +348,6 @@ class Scan extends Base {
 			if ($group !== null) {
 				$output->writeln("Scanning group $group");
 				$this->userScan($users[$group], $inputPath, $shouldRepairStoragesIndividually, $input, $output, $verbose);
-
 			} elseif ($users_total >= 1) {
 				$output->writeln("\nScanning files for $users_total users");
 				$this->userScan($users, $inputPath, $shouldRepairStoragesIndividually, $input, $output, $verbose);
@@ -366,23 +365,25 @@ class Scan extends Base {
 	 */
 	protected function initTools() {
 		// Start the timer
-		$this->execTime = -microtime(true);
+		$this->execTime = -\microtime(true);
 		// Convert PHP errors to exceptions
-		set_error_handler([$this, 'exceptionErrorHandler'], E_ALL);
+		\set_error_handler([$this, 'exceptionErrorHandler'], E_ALL);
 	}
 
 	protected function userScan($users, $inputPath, $shouldRepairStoragesIndividually, $input, $output, $verbose) {
-		$users_total = count($users);
+		$users_total = \count($users);
 		$user_count = 0;
 		foreach ($users as $user) {
-			if (is_object($user)) {
+			if (\is_object($user)) {
 				$user = $user->getUID();
 			}
 			$path = $inputPath ? $inputPath : '/' . $user;
 			$user_count += 1;
 			if ($this->userManager->userExists($user)) {
 				# add an extra line when verbose is set to optical separate users
-				if ($verbose) {$output->writeln(""); }
+				if ($verbose) {
+					$output->writeln("");
+				}
 				$r = $shouldRepairStoragesIndividually ? ' (and repair)' : '';
 				$output->writeln("Starting scan$r for user $user_count out of $users_total ($user)");
 				# full: printout data if $verbose was set
@@ -410,7 +411,7 @@ class Scan extends Base {
 	 * @throws \ErrorException
 	 */
 	public function exceptionErrorHandler($severity, $message, $file, $line) {
-		if (!(error_reporting() & $severity)) {
+		if (!(\error_reporting() & $severity)) {
 			// This error code is not included in error_reporting
 			return;
 		}
@@ -422,7 +423,7 @@ class Scan extends Base {
 	 */
 	protected function presentStats(OutputInterface $output) {
 		// Stop the timer
-		$this->execTime += microtime(true);
+		$this->execTime += \microtime(true);
 		$output->writeln("");
 
 		$headers = [
@@ -455,17 +456,16 @@ class Scan extends Base {
 		$table->render();
 	}
 
-
 	/**
 	 * Formats microtime into a human readable format
 	 *
 	 * @return string
 	 */
 	protected function formatExecTime() {
-		list($secs, $tens) = explode('.', sprintf("%.1f", ($this->execTime)));
+		list($secs, $tens) = \explode('.', \sprintf("%.1f", ($this->execTime)));
 
 		# if you want to have microseconds add this:   . '.' . $tens;
-		return date('H:i:s', $secs);
+		return \date('H:i:s', $secs);
 	}
 
 	/**
@@ -484,10 +484,9 @@ class Scan extends Base {
 				$connection->connect();
 			} catch (\Exception $ex) {
 				$output->writeln("<info>Error while re-connecting to database: {$ex->getMessage()}</info>");
-				sleep(60);
+				\sleep(60);
 			}
 		}
 		return $connection;
 	}
-
 }

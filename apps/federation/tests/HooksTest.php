@@ -20,9 +20,7 @@
  *
  */
 
-
 namespace OCA\Federation\Tests;
-
 
 use OCA\Federation\Hooks;
 use OCA\Federation\TrustedServers;
@@ -66,7 +64,6 @@ class HooksTest extends TestCase {
 		}
 
 		$this->hooks->addServerHook(['server' => 'url']);
-
 	}
 
 	public function dataTestAddServerHook() {

@@ -49,14 +49,14 @@ $name = $_POST['name'];
 $password = $_POST['password'];
 
 // Check for invalid name
-if(!\OCP\Util::isValidFileName($name)) {
+if (!\OCP\Util::isValidFileName($name)) {
 	\OCP\JSON::error(['data' => ['message' => $l->t('The mountpoint name contains invalid characters.')]]);
 	exit();
 }
 
 $currentUser = \OC::$server->getUserSession()->getUser()->getUID();
 $currentServer = \OC::$server->getURLGenerator()->getAbsoluteURL('/');
-if (\OC\Share\Helper::isSameUserOnSameServer($owner, $remote, $currentUser, $currentServer )) {
+if (\OC\Share\Helper::isSameUserOnSameServer($owner, $remote, $currentUser, $currentServer)) {
 	\OCP\JSON::error(['data' => ['message' => $l->t('Not allowed to create a federated share with the same user server')]]);
 	exit();
 }
@@ -75,7 +75,7 @@ $externalManager = new \OCA\Files_Sharing\External\Manager(
 );
 
 // check for ssl cert
-if (substr($remote, 0, 5) === 'https') {
+if (\substr($remote, 0, 5) === 'https') {
 	try {
 		\OC::$server->getHTTPClientService()->newClient()->get($remote, [
 			'timeout' => 10,
@@ -100,7 +100,7 @@ try {
 	// note: checkStorageAvailability will already remove the invalid share
 	\OCP\Util::writeLog(
 		'files_sharing',
-		'Invalid remote storage: ' . get_class($e) . ': ' . $e->getMessage(),
+		'Invalid remote storage: ' . \get_class($e) . ': ' . $e->getMessage(),
 		\OCP\Util::DEBUG
 	);
 	\OCP\JSON::error(
@@ -114,7 +114,7 @@ try {
 } catch (\Exception $e) {
 	\OCP\Util::writeLog(
 		'files_sharing',
-		'Invalid remote storage: ' . get_class($e) . ': ' . $e->getMessage(),
+		'Invalid remote storage: ' . \get_class($e) . ': ' . $e->getMessage(),
 		\OCP\Util::DEBUG
 	);
 	$externalManager->removeShare($mount->getMountPoint());
@@ -135,16 +135,15 @@ try {
 } catch (\OCP\Files\StorageInvalidException $e) {
 	\OCP\Util::writeLog(
 		'files_sharing',
-		'Invalid remote storage: ' . get_class($e) . ': ' . $e->getMessage(),
+		'Invalid remote storage: ' . \get_class($e) . ': ' . $e->getMessage(),
 		\OCP\Util::DEBUG
 	);
 	\OCP\JSON::error(['data' => ['message' => $l->t('Storage not valid')]]);
 } catch (\Exception $e) {
 	\OCP\Util::writeLog(
 		'files_sharing',
-		'Invalid remote storage: ' . get_class($e) . ': ' . $e->getMessage(),
+		'Invalid remote storage: ' . \get_class($e) . ': ' . $e->getMessage(),
 		\OCP\Util::DEBUG
 	);
 	\OCP\JSON::error(['data' => ['message' => $l->t('Couldn\'t add remote share')]]);
 }
-

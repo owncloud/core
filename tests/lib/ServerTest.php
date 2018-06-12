@@ -39,7 +39,6 @@ class ServerTest extends \Test\TestCase {
 	/** @var Server */
 	protected $server;
 
-
 	public function setUp() {
 		parent::setUp();
 		$config = new Config(\OC::$configDir);
@@ -205,9 +204,9 @@ class ServerTest extends \Test\TestCase {
 	public function testServiceLoader($xmlPath, $expects) {
 		if ($expects === false) {
 			$this->expectException(\Exception::class);
-			iterator_to_array($this->server->load($xmlPath));
+			\iterator_to_array($this->server->load($xmlPath));
 		} else {
-			$iter = iterator_to_array($this->server->load($xmlPath));
+			$iter = \iterator_to_array($this->server->load($xmlPath));
 			$this->assertInstanceOf($expects, $iter[0]);
 		}
 	}

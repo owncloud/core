@@ -36,7 +36,7 @@ class Message {
 	/**
 	 * @param Swift_Message $swiftMessage
 	 */
-	function __construct(Swift_Message $swiftMessage) {
+	public function __construct(Swift_Message $swiftMessage) {
 		$this->swiftMessage = $swiftMessage;
 	}
 
@@ -48,20 +48,20 @@ class Message {
 	 * @return array Converted addresses if `idn_to_ascii` exists
 	 */
 	protected function convertAddresses($addresses) {
-		if (!function_exists('idn_to_ascii')) {
+		if (!\function_exists('idn_to_ascii')) {
 			return $addresses;
 		}
 
 		$convertedAddresses = [];
 
-		foreach($addresses as $email => $readableName) {
-			if(!is_numeric($email)) {
-				list($name, $domain) = explode('@', $email, 2);
-				$domain = idn_to_ascii($domain, 0, INTL_IDNA_VARIANT_UTS46);
+		foreach ($addresses as $email => $readableName) {
+			if (!\is_numeric($email)) {
+				list($name, $domain) = \explode('@', $email, 2);
+				$domain = \idn_to_ascii($domain, 0, INTL_IDNA_VARIANT_UTS46);
 				$convertedAddresses[$name.'@'.$domain] = $readableName;
 			} else {
-				list($name, $domain) = explode('@', $readableName, 2);
-				$domain = idn_to_ascii($domain, 0, INTL_IDNA_VARIANT_UTS46);
+				list($name, $domain) = \explode('@', $readableName, 2);
+				$domain = \idn_to_ascii($domain, 0, INTL_IDNA_VARIANT_UTS46);
 				$convertedAddresses[$email] = $name.'@'.$domain;
 			}
 		}

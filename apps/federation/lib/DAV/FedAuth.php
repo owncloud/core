@@ -61,6 +61,6 @@ class FedAuth extends AbstractBasic {
 	/**
 	 * @inheritdoc
 	 */
-	function challenge(RequestInterface $request, ResponseInterface $response) {
+	public function challenge(RequestInterface $request, ResponseInterface $response) {
 	}
 }

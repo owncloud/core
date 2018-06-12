@@ -19,9 +19,7 @@
  *
  */
 
-
 namespace Test\Files;
-
 
 use OC\Files\Meta\MetaFileIdNode;
 use OC\Files\Meta\MetaFileVersionNode;
@@ -84,7 +82,7 @@ class MetaFilesTest extends TestCase {
 		$this->assertEquals("/meta/{$info->getId()}", $metaNodeOfFile->getPath());
 		$this->assertEquals("{$info->getId()}", $metaNodeOfFile->getName());
 		$children = $metaNodeOfFile->getDirectoryListing();
-		$this->assertEquals(1, count($children));
+		$this->assertEquals(1, \count($children));
 		$this->assertInstanceOf(MetaVersionCollection::class, $children[0]);
 
 		$metaNodeOfFile = \OC::$server->getRootFolder()->get("meta/{$info->getId()}/v");
@@ -92,12 +90,12 @@ class MetaFilesTest extends TestCase {
 		$this->assertEquals("/meta/{$info->getId()}/v", $metaNodeOfFile->getPath());
 		$this->assertEquals("v", $metaNodeOfFile->getName());
 		$children = $metaNodeOfFile->getDirectoryListing();
-		$this->assertEquals(0, count($children));
+		$this->assertEquals(0, \count($children));
 
 		// write again to get another version
 		$view->file_put_contents($fileName, '1234567890');
 		$children = $metaNodeOfFile->getDirectoryListing();
-		$this->assertEquals(1, count($children));
+		$this->assertEquals(1, \count($children));
 		$this->assertInstanceOf(MetaFileVersionNode::class, $children[0]);
 
 		$versionId = $children[0]->getName();
@@ -110,7 +108,7 @@ class MetaFilesTest extends TestCase {
 		$this->assertEquals($file, $metaNodeOfFile->getContentDispositionFileName());
 		$this->assertEquals('text/plain', $metaNodeOfFile->getMimetype());
 		$this->assertInternalType('string', $metaNodeOfFile->getEtag());
-		$this->assertTrue(strlen($metaNodeOfFile->getEtag()) > 0);
+		$this->assertTrue(\strlen($metaNodeOfFile->getEtag()) > 0);
 		$thumbnail = $metaNodeOfFile->getThumbnail([]);
 		$this->assertInstanceOf(IImage::class, $thumbnail);
 
@@ -123,6 +121,5 @@ class MetaFilesTest extends TestCase {
 		$this->assertEquals('1234567890', $target->getContent());
 		$metaNodeOfFile->copy($fileName);
 		$this->assertEquals('1234', $target->getContent());
-
 	}
 }

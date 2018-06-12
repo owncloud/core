@@ -50,9 +50,11 @@ class SwiftTest extends ObjectStoreStorageTest {
 
 		// create users
 		$users = ['test'];
-		foreach($users as $userName) {
+		foreach ($users as $userName) {
 			$user = \OC::$server->getUserManager()->get($userName);
-			if ($user !== null) { $user->delete(); }
+			if ($user !== null) {
+				$user->delete();
+			}
 			\OC::$server->getUserManager()->createUser($userName, $userName);
 		}
 
@@ -69,16 +71,18 @@ class SwiftTest extends ObjectStoreStorageTest {
 	}
 
 	protected function tearDown() {
-		if (is_null($this->instance)) {
+		if ($this->instance === null) {
 			return;
 		}
 		$this->objectStorage->deleteContainer(true);
 		$this->instance->getCache()->clear();
 
 		$users = ['test'];
-		foreach($users as $userName) {
+		foreach ($users as $userName) {
 			$user = \OC::$server->getUserManager()->get($userName);
-			if ($user !== null) { $user->delete(); }
+			if ($user !== null) {
+				$user->delete();
+			}
 		}
 		parent::tearDown();
 	}

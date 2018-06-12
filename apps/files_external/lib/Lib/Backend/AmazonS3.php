@@ -29,7 +29,6 @@ use OCP\Files\External\DefinitionParameter;
 use OCP\IL10N;
 
 class AmazonS3 extends Backend {
-
 	use LegacyDependencyCheckPolyfill;
 
 	public function __construct(IL10N $l) {
@@ -54,5 +53,4 @@ class AmazonS3 extends Backend {
 			->addAuthScheme(AccessKey::SCHEME_AMAZONS3_ACCESSKEY);
 		;
 	}
-
 }

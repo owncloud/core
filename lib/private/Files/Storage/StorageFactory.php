@@ -88,12 +88,12 @@ class StorageFactory implements IStorageFactory {
 	 * @return \OCP\Files\Storage
 	 */
 	public function wrap(IMountPoint $mountPoint, $storage) {
-		$wrappers = array_values($this->storageWrappers);
-		usort($wrappers, function ($a, $b) {
+		$wrappers = \array_values($this->storageWrappers);
+		\usort($wrappers, function ($a, $b) {
 			return $b['priority'] - $a['priority'];
 		});
 		/** @var callable[] $wrappers */
-		$wrappers = array_map(function ($wrapper) {
+		$wrappers = \array_map(function ($wrapper) {
 			return $wrapper['wrapper'];
 		}, $wrappers);
 		foreach ($wrappers as $wrapper) {

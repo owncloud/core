@@ -49,7 +49,7 @@ class DefaultTokenMapperTest extends TestCase {
 		parent::setUp();
 
 		$this->dbConnection = OC::$server->getDatabaseConnection();
-		$this->time = time();
+		$this->time = \time();
 		$this->resetDatabase();
 
 		$this->mapper = new DefaultTokenMapper($this->dbConnection);

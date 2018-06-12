@@ -82,7 +82,6 @@ class Manager implements IManager {
 	 * @return bool true if enabled, false if not
 	 */
 	public function isEnabled() {
-
 		$installed = $this->config->getSystemValue('installed', false);
 		if (!$installed) {
 			return false;
@@ -127,7 +126,7 @@ class Manager implements IManager {
 
 		foreach ($this->getEncryptionModules() as $module) {
 			/** @var IEncryptionModule $m */
-			$m = call_user_func($module['callback']);
+			$m = \call_user_func($module['callback']);
 			if (!$m->isReadyForUser($user)) {
 				return false;
 			}
@@ -136,7 +135,7 @@ class Manager implements IManager {
 		return true;
 	}
 
-		/**
+	/**
 	 * Registers an callback function which must return an encryption module instance
 	 *
 	 * @param string $id
@@ -145,7 +144,6 @@ class Manager implements IManager {
 	 * @throws Exceptions\ModuleAlreadyExistsException
 	 */
 	public function registerEncryptionModule($id, $displayName, callable $callback) {
-
 		if (isset($this->encryptionModules[$id])) {
 			throw new Exceptions\ModuleAlreadyExistsException($id, $displayName);
 		}
@@ -191,7 +189,7 @@ class Manager implements IManager {
 	public function getEncryptionModule($moduleId = '') {
 		if (!empty($moduleId)) {
 			if (isset($this->encryptionModules[$moduleId])) {
-				return call_user_func($this->encryptionModules[$moduleId]['callback']);
+				return \call_user_func($this->encryptionModules[$moduleId]['callback']);
 			} else {
 				$message = "Module with id: $moduleId does not exist.";
 				$hint = $this->l->t('Module with id: %s does not exist. Please enable it in your apps settings or contact your administrator.', [$moduleId]);
@@ -212,7 +210,7 @@ class Manager implements IManager {
 		$defaultModuleId = $this->getDefaultEncryptionModuleId();
 		if (!empty($defaultModuleId)) {
 			if (isset($this->encryptionModules[$defaultModuleId])) {
-				return call_user_func($this->encryptionModules[$defaultModuleId]['callback']);
+				return \call_user_func($this->encryptionModules[$defaultModuleId]['callback']);
 			} else {
 				$message = 'Default encryption module not loaded';
 				throw new Exceptions\ModuleDoesNotExistsException($message);
@@ -221,7 +219,6 @@ class Manager implements IManager {
 			$message = 'No default encryption module defined';
 			throw new Exceptions\ModuleDoesNotExistsException($message);
 		}
-
 	}
 
 	/**
@@ -258,14 +255,12 @@ class Manager implements IManager {
 		Filesystem::addStorageWrapper('oc_encryption', [$encryptionWrapper, 'wrapStorage'], 2);
 	}
 
-
 	/**
 	 * check if key storage is ready
 	 *
 	 * @return bool
 	 */
 	protected function isKeyStorageReady() {
-
 		$rootDir = $this->util->getKeyStorageRoot();
 
 		// the default root is always valid
@@ -280,6 +275,4 @@ class Manager implements IManager {
 
 		return false;
 	}
-
-
 }

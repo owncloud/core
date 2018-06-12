@@ -34,7 +34,6 @@ use phpseclib\Crypt\RSA as RSACrypt;
  * RSA public key authentication
  */
 class RSA extends AuthMechanism {
-
 	const CREATE_KEY_BITS = 1024;
 
 	/** @var IConfig */
@@ -64,7 +63,7 @@ class RSA extends AuthMechanism {
 		if (!$auth->loadKey($privateKey)) {
 			throw new \RuntimeException('unable to load private key');
 		}
-		$storage->setBackendOption('private_key', base64_encode($privateKey));
+		$storage->setBackendOption('private_key', \base64_encode($privateKey));
 		$storage->setBackendOption('public_key_auth', $auth);
 	}
 
@@ -80,5 +79,4 @@ class RSA extends AuthMechanism {
 
 		return $rsa->createKey(self::CREATE_KEY_BITS);
 	}
-
 }

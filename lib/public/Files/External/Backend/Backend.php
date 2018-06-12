@@ -57,7 +57,6 @@ use OCP\Files\External\IStorageConfig;
  * @since 10.0
  */
 abstract class Backend implements \JsonSerializable {
-
 	use VisibilityTrait;
 	use FrontendDefinitionTrait;
 	use PriorityTrait;
@@ -140,6 +139,4 @@ abstract class Backend implements \JsonSerializable {
 	public function validateStorage(IStorageConfig $storage) {
 		return $this->validateStorageDefinition($storage);
 	}
-
 }
-

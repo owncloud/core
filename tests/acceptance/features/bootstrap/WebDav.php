@@ -45,7 +45,7 @@ trait WebDav {
 	 */
 	private $usingOldDavPath = true;
 	/**
-	 * @var ResponseInterface[] 
+	 * @var ResponseInterface[]
 	 */
 	private $uploadResponses;
 	/**
@@ -54,7 +54,7 @@ trait WebDav {
 	 */
 	private $storedETAG = null;
 	/**
-	 * @var integer 
+	 * @var integer
 	 */
 	private $storedFileID = null;
 
@@ -80,7 +80,7 @@ trait WebDav {
 	 */
 	public function usingDavPath($davPath) {
 		$this->davPath = $davPath;
-		$this->customDavPath = preg_replace(
+		$this->customDavPath = \preg_replace(
 			"/remote\.php\/(web)?dav\//", "", $davPath
 		);
 	}
@@ -544,7 +544,7 @@ trait WebDav {
 			$returnedHeader = $this->response->getHeader($headerName);
 			if ($returnedHeader !== $expectedHeaderValue) {
 				throw new \Exception(
-					sprintf(
+					\sprintf(
 						"Expected value '%s' for header '%s', got '%s'",
 						$expectedHeaderValue,
 						$headerName,
@@ -564,9 +564,9 @@ trait WebDav {
 	 * @throws \Exception
 	 */
 	public function downloadedContentShouldStartWith($start) {
-		if (strpos($this->response->getBody()->getContents(), $start) !== 0) {
+		if (\strpos($this->response->getBody()->getContents(), $start) !== 0) {
 			throw new \Exception(
-				sprintf(
+				\sprintf(
 					"Expected '%s', got '%s'",
 					$start,
 					$this->response->getBody()->getContents()
@@ -654,7 +654,7 @@ trait WebDav {
 		$propertyName, $propertyValue
 	) {
 		$keys = $this->response;
-		if (!array_key_exists($propertyName, $keys)) {
+		if (!\array_key_exists($propertyName, $keys)) {
 			throw new \Exception("Cannot find property \"$propertyName\"");
 		}
 		if ($keys[$propertyName] !== $propertyValue) {
@@ -702,7 +702,7 @@ trait WebDav {
 	 */
 	public function asTheFileOrFolderShouldExist($user, $entry, $path) {
 		$this->response = $this->listFolder($user, $path, 0);
-		if (!is_array($this->response) || !isset($this->response['{DAV:}getetag'])) {
+		if (!\is_array($this->response) || !isset($this->response['{DAV:}getetag'])) {
 			throw new \Exception(
 				$entry . ' "' . $path . '" expected to exist but not found'
 			);
@@ -738,7 +738,7 @@ trait WebDav {
 		$key, $expectedValue, $altExpectedValue
 	) {
 		$keys = $this->response;
-		if (!array_key_exists($key, $keys)) {
+		if (!\array_key_exists($key, $keys)) {
 			throw new \Exception(
 				"Cannot find property \"$key\" with \"$expectedValue\""
 			);
@@ -784,7 +784,7 @@ trait WebDav {
 		$key, $regex
 	) {
 		$keys = $this->response;
-		if (!array_key_exists($key, $keys)) {
+		if (!\array_key_exists($key, $keys)) {
 			throw new \Exception("Cannot find property \"$key\" with \"$regex\"");
 		}
 
@@ -805,7 +805,6 @@ trait WebDav {
 		}
 	}
 
-
 	/**
 	 * @Then the response should contain a share-types property with
 	 *
@@ -816,7 +815,7 @@ trait WebDav {
 	 */
 	public function theResponseShouldContainAShareTypesPropertyWith($table) {
 		$keys = $this->response;
-		if (!array_key_exists('{http://owncloud.org/ns}share-types', $keys)) {
+		if (!\array_key_exists('{http://owncloud.org/ns}share-types', $keys)) {
 			throw new \Exception(
 				"Cannot find property \"{http://owncloud.org/ns}share-types\""
 			);
@@ -835,7 +834,7 @@ trait WebDav {
 		}
 
 		foreach ($table->getRows() as $row) {
-			$key = array_search($row[0], $foundTypes);
+			$key = \array_search($row[0], $foundTypes);
 			if ($key === false) {
 				throw new \Exception('Expected type ' . $row[0] . ' not found');
 			}
@@ -860,7 +859,7 @@ trait WebDav {
 	 */
 	public function theResponseShouldContainAnEmptyProperty($property) {
 		$properties = $this->response;
-		if (!array_key_exists($property, $properties)) {
+		if (!\array_key_exists($property, $properties)) {
 			throw new \Exception("Cannot find property \"$property\"");
 		}
 
@@ -939,7 +938,7 @@ trait WebDav {
 	) {
 		$fileId = $this->getFileIdForPath($user, $path);
 		$elements = $this->listVersionFolder($user, '/meta/' . $fileId . '/v', 1);
-		PHPUnit_Framework_Assert::assertEquals($count, count($elements) - 1);
+		PHPUnit_Framework_Assert::assertEquals($count, \count($elements) - 1);
 	}
 
 	/**
@@ -955,7 +954,7 @@ trait WebDav {
 		$fileId, $user, $count
 	) {
 		$elements = $this->listVersionFolder($user, '/meta/' . $fileId . '/v', 1);
-		PHPUnit_Framework_Assert::assertEquals($count, count($elements) - 1);
+		PHPUnit_Framework_Assert::assertEquals($count, \count($elements) - 1);
 	}
 
 	/**
@@ -975,7 +974,7 @@ trait WebDav {
 		$elements = $this->listVersionFolder(
 			$user, '/meta/' . $fileId . '/v', 1, ['{DAV:}getcontentlength']
 		);
-		$elements = array_values($elements);
+		$elements = \array_values($elements);
 		PHPUnit_Framework_Assert::assertEquals(
 			$length, $elements[$index]['{DAV:}getcontentlength']
 		);
@@ -1006,14 +1005,14 @@ trait WebDav {
 						<oc:filter-rules>
 							' . $filterRules . '
 						</oc:filter-rules>';
-		if (is_int($offset) || is_int($limit)) {
+		if (\is_int($offset) || \is_int($limit)) {
 			$body .=	'
 						<oc:search>';
-			if (is_int($offset)) {
+			if (\is_int($offset)) {
 				$body .= "
 							<oc:offset>${offset}</oc:offset>";
 			}
-			if (is_int($limit)) {
+			if (\is_int($limit)) {
 				$body .= "
 							<oc:limit>${limit}</oc:limit>";
 			}
@@ -1046,7 +1045,6 @@ trait WebDav {
 							 <oc:filter-comments xmlns:a="DAV:" xmlns:oc="http://owncloud.org/ns" >
 									' . $properties . '
 							 </oc:filter-comments>';
-
 
 		$response = $client->request(
 			'REPORT', $this->makeSabrePathNotForFiles($path), $body
@@ -1106,13 +1104,13 @@ trait WebDav {
 
 	/**
 	 * asserts that a the user can or can not see a list of files/folders by propfind
-	 * 
+	 *
 	 * @param string $user
 	 * @param TableNode $elements
 	 * @param boolean $expectedToBeListed
-	 * 
+	 *
 	 * @throws InvalidArgumentException
-	 * 
+	 *
 	 * @return void
 	 */
 	public function checkElementList(
@@ -1128,11 +1126,11 @@ trait WebDav {
 		$elementsSimplified = $this->simplifyArray($elementRows);
 		foreach ($elementsSimplified as $expectedElement) {
 			$webdavPath = "/" . $this->getDavFilesPath($user) . $expectedElement;
-			if (!array_key_exists($webdavPath, $elementList) && $expectedToBeListed) {
+			if (!\array_key_exists($webdavPath, $elementList) && $expectedToBeListed) {
 				PHPUnit_Framework_Assert::fail(
 					"$webdavPath" . " is not in propfind answer but should"
 				);
-			} elseif (array_key_exists($webdavPath, $elementList) && !$expectedToBeListed) {
+			} elseif (\array_key_exists($webdavPath, $elementList) && !$expectedToBeListed) {
 				PHPUnit_Framework_Assert::fail(
 					"$webdavPath" . " is in propfind answer but should not be"
 				);
@@ -1151,7 +1149,7 @@ trait WebDav {
 	 * @return void
 	 */
 	public function userUploadsAFileTo($user, $source, $destination) {
-		$file = \GuzzleHttp\Stream\Stream::factory(fopen($source, 'r'));
+		$file = \GuzzleHttp\Stream\Stream::factory(\fopen($source, 'r'));
 		try {
 			$this->response = $this->makeDavRequest(
 				$user, "PUT", $destination, [], $file
@@ -1175,13 +1173,13 @@ trait WebDav {
 	public function userUploadsAFileToWithChunks(
 		$user, $source, $destination, $chunkingVersion = null
 	) {
-		$size = filesize($source);
-		$contents = file_get_contents($source);
+		$size = \filesize($source);
+		$contents = \file_get_contents($source);
 
 		// use two chunks for the sake of testing
 		$chunks = [];
-		$chunks[] = substr($contents, 0, $size / 2);
-		$chunks[] = substr($contents, $size / 2);
+		$chunks[] = \substr($contents, 0, $size / 2);
+		$chunks[] = \substr($contents, $size / 2);
 
 		$this->uploadChunks($user, $chunks, $destination, $chunkingVersion);
 	}
@@ -1421,7 +1419,6 @@ trait WebDav {
 		return "";
 	}
 
-
 	/**
 	 * @When user :user uploads file with checksum :checksum and content :content to :destination using the API
 	 * @Given user :user has uploaded file with checksum :checksum and content :content to :destination
@@ -1450,7 +1447,6 @@ trait WebDav {
 			$this->response = $e->getResponse();
 		}
 	}
-
 
 	/**
 	 * @Given file :file has been deleted for user :user
@@ -1514,7 +1510,7 @@ trait WebDav {
 	 */
 	public function userCreatesAFolder($user, $destination) {
 		try {
-			$destination = '/' . ltrim($destination, '/');
+			$destination = '/' . \ltrim($destination, '/');
 			$this->response = $this->makeDavRequest(
 				$user, "MKCOL", $destination, []
 			);
@@ -1571,7 +1567,7 @@ trait WebDav {
 			$data = \GuzzleHttp\Stream\Stream::factory($data);
 			$file = $destination . '-chunking-42-' . $total . '-' . $num;
 			$this->makeDavRequest(
-				$user, 'PUT', $file, ['OC-Chunked' => '1'], $data,  "uploads"
+				$user, 'PUT', $file, ['OC-Chunked' => '1'], $data, "uploads"
 			);
 		} catch (\GuzzleHttp\Exception\RequestException $ex) {
 			$this->response = $ex->getResponse();
@@ -1791,7 +1787,7 @@ trait WebDav {
 	 */
 	private function encodePath($path) {
 		// slashes need to stay
-		return str_replace('%2F', '/', rawurlencode($path));
+		return \str_replace('%2F', '/', \rawurlencode($path));
 	}
 
 	/**
@@ -1939,8 +1935,8 @@ trait WebDav {
 		$headers = $this->response->getHeaders();
 		foreach ($headers as $headerName => $headerValues) {
 			// if a header has multiple values, they must be different
-			if (count($headerValues) > 1
-				&& count(array_unique($headerValues)) < count($headerValues)
+			if (\count($headerValues) > 1
+				&& \count(\array_unique($headerValues)) < \count($headerValues)
 			) {
 				throw new \Exception('Duplicate header found: ' . $headerName);
 			}
@@ -1987,7 +1983,7 @@ trait WebDav {
 			$elementsSimplified = $this->simplifyArray($elementRows);
 			foreach ($elementsSimplified as $expectedElement) {
 				$webdavPath = "/" . $this->getDavFilesPath($user) . $expectedElement;
-				if (!array_key_exists($webdavPath, $elementList)) {
+				if (!\array_key_exists($webdavPath, $elementList)) {
 					PHPUnit_Framework_Assert::fail(
 						"$webdavPath" . " is not in report answer"
 					);
@@ -2007,13 +2003,13 @@ trait WebDav {
 	 */
 	public function userDeletesEverythingInFolder($user, $folder) {
 		$elementList = $this->listFolder($user, $folder, 1);
-		if (is_array($elementList) && count($elementList)) {
-			$elementListKeys = array_keys($elementList);
-			array_shift($elementListKeys);
+		if (\is_array($elementList) && \count($elementList)) {
+			$elementListKeys = \array_keys($elementList);
+			\array_shift($elementListKeys);
 			$davPrefix = "/" . $this->getDavFilesPath($user);
 			foreach ($elementListKeys as $element) {
-				if (substr($element, 0, strlen($davPrefix)) == $davPrefix) {
-					$element = substr($element, strlen($davPrefix));
+				if (\substr($element, 0, \strlen($davPrefix)) == $davPrefix) {
+					$element = \substr($element, \strlen($davPrefix));
 				}
 				$this->userDeletesFile($user, $element);
 			}
@@ -2034,7 +2030,7 @@ trait WebDav {
 				$this->getPasswordForUser($user),
 				$path
 			);
-		} catch ( Exception $e ) {
+		} catch (Exception $e) {
 			return null;
 		}
 	}
@@ -2079,7 +2075,7 @@ trait WebDav {
 	public function userRestoresVersionIndexOfFile($user, $versionIndex, $path) {
 		$fileId = $this->getFileIdForPath($user, $path);
 		$client = $this->getSabreClient($user);
-		$versions = array_keys(
+		$versions = \array_keys(
 			$this->listVersionFolder($user, '/meta/' . $fileId . '/v', 1)
 		);
 		$client->request(
@@ -2089,5 +2085,4 @@ trait WebDav {
 			['Destination' => $this->makeSabrePath($user, $path)]
 		);
 	}
-
 }

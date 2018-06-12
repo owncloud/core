@@ -132,7 +132,7 @@ class ProviderFactory implements IProviderFactory {
 		$provider = null;
 		if ($id === 'ocinternal') {
 			$provider = $this->defaultShareProvider();
-		} else if ($id === 'ocFederatedSharing') {
+		} elseif ($id === 'ocFederatedSharing') {
 			$provider = $this->federatedShareProvider();
 		}
 
@@ -153,7 +153,7 @@ class ProviderFactory implements IProviderFactory {
 			$shareType === \OCP\Share::SHARE_TYPE_GROUP ||
 			$shareType === \OCP\Share::SHARE_TYPE_LINK) {
 			$provider = $this->defaultShareProvider();
-		} else if ($shareType === \OCP\Share::SHARE_TYPE_REMOTE) {
+		} elseif ($shareType === \OCP\Share::SHARE_TYPE_REMOTE) {
 			$provider = $this->federatedShareProvider();
 		}
 

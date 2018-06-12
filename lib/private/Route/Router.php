@@ -69,11 +69,11 @@ class Router implements IRouter {
 	 */
 	public function __construct(ILogger $logger, $baseUrl = null) {
 		$this->logger = $logger;
-		if (is_null($baseUrl)) {
+		if ($baseUrl === null) {
 			$baseUrl = \OC::$WEBROOT;
 		}
-		if(!(getenv('front_controller_active') === 'true')) {
-			$baseUrl = rtrim($baseUrl, '/') . '/index.php';
+		if (!(\getenv('front_controller_active') === 'true')) {
+			$baseUrl = \rtrim($baseUrl, '/') . '/index.php';
 		}
 		if (!\OC::$CLI) {
 			$method = $_SERVER['REQUEST_METHOD'];
@@ -98,9 +98,9 @@ class Router implements IRouter {
 			$this->routingFiles = [];
 			foreach (\OC_App::getEnabledApps() as $app) {
 				$appPath = \OC_App::getAppPath($app);
-				if($appPath !== false) {
+				if ($appPath !== false) {
 					$file = $appPath . '/appinfo/routes.php';
-					if (file_exists($file)) {
+					if (\file_exists($file)) {
 						$this->routingFiles[$app] = $file;
 					}
 				}
@@ -115,7 +115,7 @@ class Router implements IRouter {
 	 * @param null|string $app
 	 */
 	public function loadRoutes($app = null) {
-		if(is_string($app)) {
+		if (\is_string($app)) {
 			$app = \OC_App::cleanAppId($app);
 		}
 
@@ -123,7 +123,7 @@ class Router implements IRouter {
 		if ($this->loaded) {
 			return;
 		}
-		if (is_null($app)) {
+		if ($app === null) {
 			$this->loaded = true;
 			$routingFiles = $this->getRoutingFiles();
 		} else {
@@ -131,7 +131,7 @@ class Router implements IRouter {
 				return;
 			}
 			$file = \OC_App::getAppPath($app) . '/appinfo/routes.php';
-			if ($file !== false && file_exists($file)) {
+			if ($file !== false && \file_exists($file)) {
 				$routingFiles = [$app => $file];
 			} else {
 				$routingFiles = [];
@@ -254,21 +254,21 @@ class Router implements IRouter {
 	 * @return void
 	 */
 	public function match($url) {
-		if (substr($url, 0, 6) === '/apps/') {
+		if (\substr($url, 0, 6) === '/apps/') {
 			// empty string / 'apps' / $app / rest of the route
-			list(, , $app,) = explode('/', $url, 4);
+			list(, , $app, ) = \explode('/', $url, 4);
 
 			$app = \OC_App::cleanAppId($app);
 			\OC::$REQUESTEDAPP = $app;
 			$this->loadRoutes($app);
-		} else if (substr($url, 0, 13) === '/ocsapp/apps/') {
+		} elseif (\substr($url, 0, 13) === '/ocsapp/apps/') {
 			// empty string / 'ocsapp' / 'apps' / $app / rest of the route
-			list(, , , $app,) = explode('/', $url, 5);
+			list(, , , $app, ) = \explode('/', $url, 5);
 
 			$app = \OC_App::cleanAppId($app);
 			\OC::$REQUESTEDAPP = $app;
 			$this->loadRoutes($app);
-		} else if (substr($url, 0, 6) === '/core/' or substr($url, 0, 10) === '/settings/') {
+		} elseif (\substr($url, 0, 6) === '/core/' or \substr($url, 0, 10) === '/settings/') {
 			\OC::$REQUESTEDAPP = $url;
 			if (!\OC::$server->getConfig()->getSystemValue('maintenance', false) && !Util::needUpgrade()) {
 				\OC_App::loadApps();
@@ -298,7 +298,7 @@ class Router implements IRouter {
 				// Return since no more processing for an OPTIONS request is required
 				return;
 			} catch (ResourceNotFoundException $e) {
-				if (substr($url, -1) !== '/') {
+				if (\substr($url, -1) !== '/') {
 					// We allow links to apps/files? for backwards compatibility reasons
 					// However, since Symfony does not allow empty route names, the route
 					// we need to match is '/', so we need to append the '/' here.
@@ -317,7 +317,7 @@ class Router implements IRouter {
 		try {
 			$parameters = $matcher->match($url);
 		} catch (ResourceNotFoundException $e) {
-			if (substr($url, -1) !== '/') {
+			if (\substr($url, -1) !== '/') {
 				// We allow links to apps/files? for backwards compatibility reasons
 				// However, since Symfony does not allow empty route names, the route
 				// we need to match is '/', so we need to append the '/' here.
@@ -335,11 +335,11 @@ class Router implements IRouter {
 		\OC::$server->getEventLogger()->start('run_route', 'Run route');
 		if (isset($parameters['action'])) {
 			$action = $parameters['action'];
-			if (!is_callable($action)) {
+			if (!\is_callable($action)) {
 				throw new \Exception('not a callable action');
 			}
 			unset($parameters['action']);
-			call_user_func($action, $parameters);
+			\call_user_func($action, $parameters);
 		} elseif (isset($parameters['file'])) {
 			include $parameters['file'];
 		} else {
@@ -355,7 +355,7 @@ class Router implements IRouter {
 	 *
 	 */
 	public function getGenerator() {
-		if (null !== $this->generator) {
+		if ($this->generator !== null) {
 			return $this->generator;
 		}
 
@@ -396,7 +396,6 @@ class Router implements IRouter {
 		$this->setupRoutes(include_once $file, $appName);
 	}
 
-
 	/**
 	 * If a routes.php file returns an array, try to set up the application and
 	 * register the routes for the app. The application class will be chosen by
@@ -409,12 +408,12 @@ class Router implements IRouter {
 	 * @param string $appName the name of the app.
 	 */
 	private function setupRoutes($routes, $appName) {
-		if (is_array($routes)) {
+		if (\is_array($routes)) {
 			$appNameSpace = App::buildAppNamespace($appName);
 
 			$applicationClassName = $appNameSpace . '\\AppInfo\\Application';
 
-			if (class_exists($applicationClassName)) {
+			if (\class_exists($applicationClassName)) {
 				$application = new $applicationClassName();
 			} else {
 				$application = new App($appName);

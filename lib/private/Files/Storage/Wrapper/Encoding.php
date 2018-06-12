@@ -53,7 +53,7 @@ class Encoding extends Wrapper {
 	 * @return bool true if the string is all ASCII, false otherwise
 	 */
 	private function isAscii($str) {
-		return (bool) !preg_match('/[\\x80-\\xff]+/', $str);
+		return (bool) !\preg_match('/[\\x80-\\xff]+/', $str);
 	}
 
 	/**
@@ -71,7 +71,7 @@ class Encoding extends Wrapper {
 			return $cachedPath;
 		}
 
-		$sections = explode('/', $fullPath);
+		$sections = \explode('/', $fullPath);
 		$path = '';
 		foreach ($sections as $section) {
 			$convertedPath = $this->findPathToUseLastSection($path, $section);
@@ -81,7 +81,7 @@ class Encoding extends Wrapper {
 			}
 			$path = $convertedPath . '/';
 		}
-		$path = rtrim($path, '/');
+		$path = \rtrim($path, '/');
 		return $path;
 	}
 
@@ -509,16 +509,14 @@ class Encoding extends Wrapper {
 		if ($sourceStorage === $this) {
 			$result = $this->rename($sourceInternalPath, $this->findPathToUse($targetInternalPath));
 			if ($result) {
-				unset($this->namesCache[$sourceInternalPath]);
-				unset($this->namesCache[$targetInternalPath]);
+				unset($this->namesCache[$sourceInternalPath], $this->namesCache[$targetInternalPath]);
 			}
 			return $result;
 		}
 
 		$result = $this->storage->moveFromStorage($sourceStorage, $sourceInternalPath, $this->findPathToUse($targetInternalPath));
 		if ($result) {
-			unset($this->namesCache[$sourceInternalPath]);
-			unset($this->namesCache[$targetInternalPath]);
+			unset($this->namesCache[$sourceInternalPath], $this->namesCache[$targetInternalPath]);
 		}
 		return $result;
 	}

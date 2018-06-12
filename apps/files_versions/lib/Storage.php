@@ -51,7 +51,6 @@ use OCP\Lock\ILockingProvider;
 use OCP\User;
 
 class Storage {
-
 	const DEFAULTENABLED=true;
 	const DEFAULTMAXSIZE=50; // unit: percentage; 50% of available disk space/quota
 	const VERSIONS_ROOT = 'files_versions/';
@@ -101,14 +100,14 @@ class Storage {
 			$uid = User::getUser();
 		}
 		Filesystem::initMountPoints($uid);
-		if ( $uid != User::getUser() ) {
+		if ($uid != User::getUser()) {
 			$info = Filesystem::getFileInfo($filename);
 			$ownerView = new View('/'.$uid.'/files');
 			try {
 				$filename = $ownerView->getPath($info['fileid']);
 				// make sure that the file name doesn't end with a trailing slash
 				// can for example happen single files shared across servers
-				$filename = rtrim($filename, '/');
+				$filename = \rtrim($filename, '/');
 			} catch (NotFoundException $e) {
 				$filename = null;
 			}
@@ -133,7 +132,6 @@ class Storage {
 	 * @return array with user id and path
 	 */
 	public static function getSourcePathAndUser($source) {
-
 		if (isset(self::$sourcePathAndUser[$source])) {
 			$uid = self::$sourcePathAndUser[$source]['uid'];
 			$path = self::$sourcePathAndUser[$source]['path'];
@@ -160,13 +158,13 @@ class Storage {
 	 * store a new version of a file.
 	 */
 	public static function store($filename) {
-		if(\OCP\Config::getSystemValue('files_versions', Storage::DEFAULTENABLED)=='true') {
+		if (\OCP\Config::getSystemValue('files_versions', Storage::DEFAULTENABLED)=='true') {
 
 			// if the file gets streamed we need to remove the .part extension
 			// to get the right target
-			$ext = pathinfo($filename, PATHINFO_EXTENSION);
+			$ext = \pathinfo($filename, PATHINFO_EXTENSION);
 			if ($ext === 'part') {
-				$filename = substr($filename, 0, strlen($filename) - 5);
+				$filename = \substr($filename, 0, \strlen($filename) - 5);
 			}
 
 			// we only handle existing files
@@ -208,7 +206,6 @@ class Storage {
 		}
 	}
 
-
 	/**
 	 * mark file as deleted so that we can remove the versions if the file is gone
 	 * @param string $path
@@ -241,13 +238,11 @@ class Storage {
 	 * Delete versions of a file
 	 */
 	public static function delete($path) {
-
 		$deletedFile = self::$deletedFiles[$path];
 		$uid = $deletedFile['uid'];
 		$filename = $deletedFile['filename'];
 
 		if (!Filesystem::file_exists($path)) {
-
 			$view = new View('/' . $uid . '/files_versions');
 
 			$versions = self::getVersions($uid, $filename);
@@ -283,8 +278,8 @@ class Storage {
 
 		list($targetOwner, $targetPath) = self::getUidAndFilename($targetPath);
 
-		$sourcePath = ltrim($sourcePath, '/');
-		$targetPath = ltrim($targetPath, '/');
+		$sourcePath = \ltrim($sourcePath, '/');
+		$targetPath = \ltrim($targetPath, '/');
 
 		$rootView = new View('');
 
@@ -301,7 +296,7 @@ class Storage {
 					'/' . $targetOwner . '/files_versions/' . $targetPath
 				);
 			}
-		} else if ($versions = Storage::getVersions($sourceOwner, '/' . $sourcePath)) {
+		} elseif ($versions = Storage::getVersions($sourceOwner, '/' . $sourcePath)) {
 			// create missing dirs if necessary
 			self::createMissingDirectories($targetPath, new View('/'. $targetOwner));
 
@@ -318,12 +313,10 @@ class Storage {
 		if (!$rootView->is_dir('/' . $targetOwner . '/files/' . $targetPath)) {
 			self::scheduleExpire($targetOwner, $targetPath);
 		}
-
 	}
 
-
 	public static function restoreVersion($uid, $filename, $fileToRestore, $revision) {
-		if(\OCP\Config::getSystemValue('files_versions', Storage::DEFAULTENABLED) !== true) {
+		if (\OCP\Config::getSystemValue('files_versions', Storage::DEFAULTENABLED) !== true) {
 			return false;
 		}
 		$users_view = new View('/'.$uid);
@@ -364,7 +357,7 @@ class Storage {
 				'revision' => $revision,
 			]);
 			return true;
-		} else if ($versionCreated) {
+		} elseif ($versionCreated) {
 			self::deleteVersion($users_view, $version);
 		}
 		return true;
@@ -393,8 +386,8 @@ class Storage {
 			$source = $storage1->fopen($internalPath1, 'r');
 			$target = $storage2->fopen($internalPath2, 'w');
 			list(, $result) = \OC_Helper::streamCopy($source, $target);
-			fclose($source);
-			fclose($target);
+			\fclose($source);
+			\fclose($target);
 
 			if ($result !== false) {
 				$storage1->unlink($internalPath1);
@@ -424,7 +417,7 @@ class Storage {
 		// fetch for old versions
 		$view = new View('/' . $uid . '/');
 
-		$pathinfo = pathinfo($filename);
+		$pathinfo = \pathinfo($filename);
 		$versionedFile = $pathinfo['basename'];
 
 		$dir = Filesystem::normalizePath(self::VERSIONS_ROOT . '/' . $pathinfo['dirname']);
@@ -438,14 +431,14 @@ class Storage {
 			return $versions;
 		}
 
-		if (is_resource($dirContent)) {
-			while (($entryName = readdir($dirContent)) !== false) {
+		if (\is_resource($dirContent)) {
+			while (($entryName = \readdir($dirContent)) !== false) {
 				if (!Filesystem::isIgnoredDir($entryName)) {
-					$pathparts = pathinfo($entryName);
+					$pathparts = \pathinfo($entryName);
 					$filename = $pathparts['filename'];
 					if ($filename === $versionedFile) {
-						$pathparts = pathinfo($entryName);
-						$timestamp = substr($pathparts['extension'], 1);
+						$pathparts = \pathinfo($entryName);
+						$timestamp = \substr($pathparts['extension'], 1);
 						$filename = $pathparts['filename'];
 						$key = $timestamp . '#' . $filename;
 						$versions[$key]['version'] = $timestamp;
@@ -465,11 +458,11 @@ class Storage {
 					}
 				}
 			}
-			closedir($dirContent);
+			\closedir($dirContent);
 		}
 
 		// sort with newest version first
-		krsort($versions);
+		\krsort($versions);
 
 		return $versions;
 	}
@@ -478,17 +471,17 @@ class Storage {
 	 * Expire versions that older than max version retention time
 	 * @param string $uid
 	 */
-	public static function expireOlderThanMaxForUser($uid){
+	public static function expireOlderThanMaxForUser($uid) {
 		$expiration = self::getExpiration();
 		$threshold = $expiration->getMaxAgeAsTimestamp();
 		$versions = self::getAllVersions($uid);
-		if (!$threshold || !array_key_exists('all', $versions)) {
+		if (!$threshold || !\array_key_exists('all', $versions)) {
 			return;
 		}
 
 		$toDelete = [];
-		foreach (array_reverse($versions['all']) as $key => $version) {
-			if (intval($version['version'])<$threshold) {
+		foreach (\array_reverse($versions['all']) as $key => $version) {
+			if (\intval($version['version'])<$threshold) {
 				$toDelete[$key] = $version;
 			} else {
 				//Versions are sorted by time - nothing mo to iterate.
@@ -512,25 +505,23 @@ class Storage {
 	 * @return string for example "5 days ago"
 	 */
 	private static function getHumanReadableTimestamp($timestamp) {
-
-		$diff = time() - $timestamp;
+		$diff = \time() - $timestamp;
 
 		if ($diff < 60) { // first minute
 			return  $diff . " seconds ago";
 		} elseif ($diff < 3600) { //first hour
-			return round($diff / 60) . " minutes ago";
+			return \round($diff / 60) . " minutes ago";
 		} elseif ($diff < 86400) { // first day
-			return round($diff / 3600) . " hours ago";
+			return \round($diff / 3600) . " hours ago";
 		} elseif ($diff < 604800) { //first week
-			return round($diff / 86400) . " days ago";
+			return \round($diff / 86400) . " days ago";
 		} elseif ($diff < 2419200) { //first month
-			return round($diff / 604800) . " weeks ago";
+			return \round($diff / 604800) . " weeks ago";
 		} elseif ($diff < 29030400) { // first year
-			return round($diff / 2419200) . " months ago";
+			return \round($diff / 2419200) . " months ago";
 		} else {
-			return round($diff / 29030400) . " years ago";
+			return \round($diff / 29030400) . " years ago";
 		}
-
 	}
 
 	/**
@@ -544,19 +535,19 @@ class Storage {
 		$versions = [];
 
 		while (!empty($dirs)) {
-			$dir = array_pop($dirs);
+			$dir = \array_pop($dirs);
 			$files = $view->getDirectoryContent($dir);
 
 			foreach ($files as $file) {
 				$fileData = $file->getData();
 				$filePath = $dir . '/' . $fileData['name'];
 				if ($file['type'] === 'dir') {
-					array_push($dirs, $filePath);
+					\array_push($dirs, $filePath);
 				} else {
-					$versionsBegin = strrpos($filePath, '.v');
-					$relPathStart = strlen(self::VERSIONS_ROOT);
-					$version = substr($filePath, $versionsBegin + 2);
-					$relpath = substr($filePath, $relPathStart, $versionsBegin - $relPathStart);
+					$versionsBegin = \strrpos($filePath, '.v');
+					$relPathStart = \strlen(self::VERSIONS_ROOT);
+					$version = \substr($filePath, $versionsBegin + 2);
+					$relpath = \substr($filePath, $relPathStart, $versionsBegin - $relPathStart);
 					$key = $version . '#' . $relpath;
 					$versions[$key] = ['path' => $relpath, 'timestamp' => $version];
 				}
@@ -564,7 +555,7 @@ class Storage {
 		}
 
 		// newest version first
-		krsort($versions);
+		\krsort($versions);
 
 		$result = [];
 
@@ -629,8 +620,8 @@ class Storage {
 			$nextInterval = $time - Storage::$max_versions_per_interval[$interval]['intervalEndsAfter'];
 		}
 
-		$firstVersion = reset($versions);
-		$firstKey = key($versions);
+		$firstVersion = \reset($versions);
+		$firstKey = \key($versions);
 		$prevTimestamp = $firstVersion['version'];
 		$nextVersion = $firstVersion['version'] - $step;
 		unset($versions[$firstKey]);
@@ -695,7 +686,7 @@ class Storage {
 		$config = \OC::$server->getConfig();
 		$expiration = self::getExpiration();
 
-		if($config->getSystemValue('files_versions', Storage::DEFAULTENABLED)=='true' && $expiration->isEnabled()) {
+		if ($config->getSystemValue('files_versions', Storage::DEFAULTENABLED)=='true' && $expiration->isEnabled()) {
 			// get available disk space for user
 			$user = \OC::$server->getUserManager()->get($uid);
 
@@ -750,7 +741,7 @@ class Storage {
 
 			$allVersions = Storage::getVersions($uid, $filename);
 
-			$time = time();
+			$time = \time();
 			list($toDelete, $sizeOfDeletedVersions) = self::getExpireList($time, $allVersions, $availableSpace <= 0);
 
 			$availableSpace = $availableSpace + $sizeOfDeletedVersions;
@@ -763,14 +754,14 @@ class Storage {
 
 				foreach ($result['by_file'] as $versions) {
 					list($toDeleteNew, $size) = self::getExpireList($time, $versions, $availableSpace <= 0);
-					$toDelete = array_merge($toDelete, $toDeleteNew);
+					$toDelete = \array_merge($toDelete, $toDeleteNew);
 					$sizeOfDeletedVersions += $size;
 				}
 				$availableSpace = $availableSpace + $sizeOfDeletedVersions;
 				$versionsSize = $versionsSize - $sizeOfDeletedVersions;
 			}
 
-			foreach($toDelete as $key => $path) {
+			foreach ($toDelete as $key => $path) {
 				\OC_Hook::emit('\OCP\Versions', 'preDelete', ['path' => $path, 'trigger' => self::DELETE_TRIGGER_QUOTA_EXCEEDED]);
 				self::deleteVersion($versionsFileview, $path);
 				\OC_Hook::emit('\OCP\Versions', 'delete', ['path' => $path, 'trigger' => self::DELETE_TRIGGER_QUOTA_EXCEEDED]);
@@ -781,20 +772,20 @@ class Storage {
 			// Check if enough space is available after versions are rearranged.
 			// If not we delete the oldest versions until we meet the size limit for versions,
 			// but always keep the two latest versions
-			$numOfVersions = count($allVersions) -2 ;
+			$numOfVersions = \count($allVersions) -2 ;
 			$i = 0;
 			// sort oldest first and make sure that we start at the first element
-			ksort($allVersions);
-			reset($allVersions);
+			\ksort($allVersions);
+			\reset($allVersions);
 			while ($availableSpace < 0 && $i < $numOfVersions) {
-				$version = current($allVersions);
+				$version = \current($allVersions);
 				\OC_Hook::emit('\OCP\Versions', 'preDelete', ['path' => $version['path'].'.v'.$version['version'], 'trigger' => self::DELETE_TRIGGER_QUOTA_EXCEEDED]);
 				self::deleteVersion($versionsFileview, $version['path'] . '.v' . $version['version']);
 				\OC_Hook::emit('\OCP\Versions', 'delete', ['path' => $version['path'].'.v'.$version['version'], 'trigger' => self::DELETE_TRIGGER_QUOTA_EXCEEDED]);
-				\OCP\Util::writeLog('files_versions', 'running out of space! Delete oldest version: ' . $version['path'].'.v'.$version['version'] , \OCP\Util::INFO);
+				\OCP\Util::writeLog('files_versions', 'running out of space! Delete oldest version: ' . $version['path'].'.v'.$version['version'], \OCP\Util::INFO);
 				$versionsSize -= $version['size'];
 				$availableSpace += $version['size'];
-				next($allVersions);
+				\next($allVersions);
 				$i++;
 			}
 
@@ -813,8 +804,8 @@ class Storage {
 	 * @param View $view view on data/user/
 	 */
 	private static function createMissingDirectories($filename, $view) {
-		$dirname = Filesystem::normalizePath(dirname($filename));
-		$dirParts = explode('/', $dirname);
+		$dirname = Filesystem::normalizePath(\dirname($filename));
+		$dirParts = \explode('/', $dirname);
 		$dir = "/files_versions";
 		foreach ($dirParts as $part) {
 			$dir = $dir . '/' . $part;
@@ -828,8 +819,8 @@ class Storage {
 	 * Static workaround
 	 * @return Expiration
 	 */
-	protected static function getExpiration(){
-		if (is_null(self::$application)) {
+	protected static function getExpiration() {
+		if (self::$application === null) {
 			self::$application = new Application();
 		}
 		return self::$application->getContainer()->query('Expiration');
@@ -839,5 +830,4 @@ class Storage {
 		$users_view = new View('/'.$uid);
 		return $users_view->fopen($storage_location, 'r');
 	}
-
 }

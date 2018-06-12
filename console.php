@@ -31,18 +31,18 @@ use OC\Console\Application;
 use Symfony\Component\Console\Input\ArgvInput;
 use Symfony\Component\Console\Output\ConsoleOutput;
 
-define('OC_CONSOLE', 1);
+\define('OC_CONSOLE', 1);
 
 // Show warning if a PHP version below 5.6.0 is used, this has to happen here
 // because base.php will already use 5.6 syntax.
-if (version_compare(PHP_VERSION, '5.6.0') === -1) {
+if (\version_compare(PHP_VERSION, '5.6.0') === -1) {
 	echo 'This version of ownCloud requires at least PHP 5.6.0'.PHP_EOL;
 	echo 'You are currently running PHP ' . PHP_VERSION . '. Please update your PHP version.'.PHP_EOL;
 	exit(1);
 }
 
 // Show warning if PHP 7.3 is used as ownCloud is not compatible with PHP 7.3
-if (version_compare(PHP_VERSION, '7.3.0alpha1') !== -1) {
+if (\version_compare(PHP_VERSION, '7.3.0alpha1') !== -1) {
 	echo 'This version of ownCloud is not compatible with PHP 7.3' . PHP_EOL;
 	echo 'You are currently running PHP ' . PHP_VERSION . '.' . PHP_EOL;
 	exit(1);
@@ -50,7 +50,7 @@ if (version_compare(PHP_VERSION, '7.3.0alpha1') !== -1) {
 
 // running oC on Windows is unsupported since 8.1, this has to happen here because
 // is seems that the autoloader on Windows fails later and just throws an exception.
-if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {
+if (\strtoupper(\substr(PHP_OS, 0, 3)) === 'WIN') {
 	echo 'ownCloud Server does not support Microsoft Windows.';
 	exit(1);
 }
@@ -64,21 +64,21 @@ try {
 	require_once __DIR__ . '/lib/base.php';
 
 	// set to run indefinitely if needed
-	set_time_limit(0);
+	\set_time_limit(0);
 
 	if (!OC::$CLI) {
 		echo "This script can be run from the command line only" . PHP_EOL;
 		exit(1);
 	}
 
-	set_exception_handler('exceptionHandler');
+	\set_exception_handler('exceptionHandler');
 
-	if (!function_exists('posix_getuid')) {
+	if (!\function_exists('posix_getuid')) {
 		echo "The posix extensions are required - see http://php.net/manual/en/book.posix.php" . PHP_EOL;
 		exit(1);
 	}
-	$user = posix_getpwuid(posix_getuid());
-	$configUser = posix_getpwuid(fileowner(OC::$configDir . 'config.php'));
+	$user = \posix_getpwuid(\posix_getuid());
+	$configUser = \posix_getpwuid(\fileowner(OC::$configDir . 'config.php'));
 	if ($user['name'] !== $configUser['name']) {
 		echo "Console has to be executed with the user that owns the file config/config.php" . PHP_EOL;
 		echo "Current user: " . $user['name'] . PHP_EOL;
@@ -87,17 +87,17 @@ try {
 		exit(1);
 	}
 
-	$oldWorkingDir = getcwd();
+	$oldWorkingDir = \getcwd();
 	if ($oldWorkingDir === false) {
 		echo "This script can be run from the ownCloud root directory only." . PHP_EOL;
 		echo "Can't determine current working dir - the script will continue to work but be aware of the above fact." . PHP_EOL;
-	} else if ($oldWorkingDir !== __DIR__ && !chdir(__DIR__)) {
+	} elseif ($oldWorkingDir !== __DIR__ && !\chdir(__DIR__)) {
 		echo "This script can be run from the ownCloud root directory only." . PHP_EOL;
 		echo "Can't change to ownCloud root directory." . PHP_EOL;
 		exit(1);
 	}
 
-	if (!function_exists('pcntl_signal') && !in_array('--no-warnings', $argv)) {
+	if (!\function_exists('pcntl_signal') && !\in_array('--no-warnings', $argv)) {
 		echo "The process control (PCNTL) extensions are required in case you want to interrupt long running commands - see http://php.net/manual/en/book.pcntl.php" . PHP_EOL;
 	}
 

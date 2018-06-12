@@ -42,7 +42,6 @@ class File implements \OCP\Encryption\IFile {
 		$this->cache = new CappedMemoryCache();
 	}
 
-
 	/**
 	 * get list of users with access to the file
 	 *
@@ -61,13 +60,12 @@ class File implements \OCP\Encryption\IFile {
 			return ['users' => $userIds, 'public' => false];
 		}
 
-		$ownerPath = substr($ownerPath, strlen('/files'));
+		$ownerPath = \substr($ownerPath, \strlen('/files'));
 		$ownerPath = $this->util->stripPartialFileExtension($ownerPath);
-
 
 		// first get the shares for the parent and cache the result so that we don't
 		// need to check all parents for every file
-		$parent = dirname($ownerPath);
+		$parent = \dirname($ownerPath);
 		if (isset($this->cache[$parent])) {
 			$resultForParents = $this->cache[$parent];
 		} else {
@@ -76,7 +74,6 @@ class File implements \OCP\Encryption\IFile {
 		}
 		$userIds = \array_merge($userIds, $resultForParents['users']);
 		$public = $resultForParents['public'] || $resultForParents['remote'];
-
 
 		// Find out who, if anyone, is sharing the file
 		$resultForFile = \OCP\Share::getUsersSharingFile($ownerPath, $owner, false, false, false);
@@ -87,17 +84,16 @@ class File implements \OCP\Encryption\IFile {
 		if (\OCP\App::isEnabled("files_external")) {
 			$mounts = \OC\Files\External\LegacyUtil::getSystemMountPoints();
 			foreach ($mounts as $mount) {
-				if ($mount['mountpoint'] == substr($ownerPath, 1, strlen($mount['mountpoint']))) {
+				if ($mount['mountpoint'] == \substr($ownerPath, 1, \strlen($mount['mountpoint']))) {
 					$mountedFor = $this->util->getUserWithAccessToMountPoint($mount['applicable']['users'], $mount['applicable']['groups']);
-					$userIds = array_merge($userIds, $mountedFor);
+					$userIds = \array_merge($userIds, $mountedFor);
 				}
 			}
 		}
 
 		// Remove duplicate UIDs
-		$uniqueUserIds = array_unique($userIds);
+		$uniqueUserIds = \array_unique($userIds);
 
 		return ['users' => $uniqueUserIds, 'public' => $public];
 	}
-
 }

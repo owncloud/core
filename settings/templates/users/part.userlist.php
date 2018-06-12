@@ -5,11 +5,11 @@
 			<th id="headerAvatar" scope="col"></th>
 		<?php endif; ?>
 			<th id="headerName" scope="col"><?php p($l->t('Username'))?></th>
-			<th id="headerDisplayName" scope="col"><?php p($l->t( 'Full Name' )); ?></th>
-			<th id="headerPassword" scope="col"><?php p($l->t( 'Password' )); ?></th>
-			<th class="mailAddress" scope="col"><?php p($l->t( 'Email' )); ?></th>
-			<th id="headerGroups" scope="col"><?php p($l->t( 'Groups' )); ?></th>
-		<?php if(is_array($_['subadmins']) || $_['subadmins']): ?>
+			<th id="headerDisplayName" scope="col"><?php p($l->t('Full Name')); ?></th>
+			<th id="headerPassword" scope="col"><?php p($l->t('Password')); ?></th>
+			<th class="mailAddress" scope="col"><?php p($l->t('Email')); ?></th>
+			<th id="headerGroups" scope="col"><?php p($l->t('Groups')); ?></th>
+		<?php if (\is_array($_['subadmins']) || $_['subadmins']): ?>
 			<th id="headerSubAdmins" scope="col"><?php p($l->t('Group Admin for')); ?></th>
 		<?php endif;?>
 			<th class="enabled" scope="col"><?php p($l->t('Enabled')); ?></th>
@@ -42,7 +42,7 @@
 			<td class="groups"><div class="groupsListContainer multiselect button"
 				><span class="title groupsList"></span><span class="icon-triangle-s"></span></div>
 			</td>
-		<?php if(is_array($_['subadmins']) || $_['subadmins']): ?>
+		<?php if (\is_array($_['subadmins']) || $_['subadmins']): ?>
 			<td class="subadmins"><div class="groupsListContainer multiselect button"
 				><span class="title groupsList"></span><span class="icon-triangle-s"></span></div>
 			</td>
@@ -58,7 +58,7 @@
 					<option value='none'>
 						<?php p($l->t('Unlimited'));?>
 					</option>
-					<?php foreach($_['quota_preset'] as $preset):?>
+					<?php foreach ($_['quota_preset'] as $preset):?>
 						<option value='<?php p($preset);?>'>
 							<?php p($preset);?>
 						</option>

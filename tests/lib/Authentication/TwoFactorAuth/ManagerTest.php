@@ -67,7 +67,7 @@ class ManagerTest extends TestCase {
 		$this->fakeProvider->expects($this->any())
 			->method('isTwoFactorAuthEnabledForUser')
 			->will($this->returnValue(true));
-		\OC::$server->registerService('\OCA\MyCustom2faApp\FakeProvider', function() {
+		\OC::$server->registerService('\OCA\MyCustom2faApp\FakeProvider', function () {
 			return $this->fakeProvider;
 		});
 	}
@@ -214,5 +214,4 @@ class ManagerTest extends TestCase {
 
 		$this->manager->prepareTwoFactorLogin($this->user);
 	}
-
 }

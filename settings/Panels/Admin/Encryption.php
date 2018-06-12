@@ -25,7 +25,6 @@ use OCP\Settings\ISettings;
 use OCP\Template;
 
 class Encryption implements ISettings {
-
 	public function getPriority() {
 		return 30;
 	}
@@ -45,7 +44,7 @@ class Encryption implements ISettings {
 			}
 		}
 		$backends = \OC::$server->getUserManager()->getBackends();
-		$externalBackends = (count($backends) > 1) ? true : false;
+		$externalBackends = (\count($backends) > 1) ? true : false;
 		$tmpl->assign('externalBackendsEnabled', $externalBackends);
 		$tmpl->assign('encryptionModules', $encModules);
 		return $tmpl;
@@ -54,5 +53,4 @@ class Encryption implements ISettings {
 	public function getSectionID() {
 		return 'encryption';
 	}
-
 }

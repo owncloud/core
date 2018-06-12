@@ -26,7 +26,6 @@ use OCP\Migration\IOutput;
 use OCP\Migration\IRepairStep;
 
 class Preview implements IRepairStep {
-
 	public function getName() {
 		return 'Cleaning-up broken previews';
 	}
