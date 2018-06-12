@@ -23,16 +23,27 @@
 namespace Test\Encryption;
 
 
+use Doctrine\DBAL\Statement;
 use OC\Encryption\DecryptAll;
 use OC\Encryption\Exceptions\DecryptionFailedException;
 use OC\Encryption\Manager;
 use OC\Files\FileInfo;
+use OC\Files\ObjectStore\ObjectStoreStorage;
 use OC\Files\View;
+use OC\User\AccountMapper;
+use OC\User\AccountTermMapper;
+use OC\User\SyncService;
 use OCA\Files_Sharing\SharedStorage;
+use OCP\DB\QueryBuilder\IExpressionBuilder;
+use OCP\DB\QueryBuilder\IQueryBuilder;
 use OCP\Encryption\IEncryptionModule;
+use OCP\IConfig;
+use OCP\IDBConnection;
 use OCP\ILogger;
+use OCP\IUser;
 use OCP\IUserManager;
 use OCP\UserInterface;
+use OCP\Util\UserSearch;
 use Symfony\Component\Console\Formatter\OutputFormatterInterface;
 use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Input\InputInterface;
@@ -263,11 +274,6 @@ class DecryptAllTest extends TestCase {
 		$this->invokePrivate($instance, 'input', [$this->inputInterface]);
 		$this->invokePrivate($instance, 'output', [$this->outputInterface]);
 
-
-		$function = function (IUser $user)  {
-			$users[] = $user->getUID();
-		};
-
 		if (empty($user)) {
 			$progress = new ProgressBar($this->outputInterface);
 			$this->userManager->expects($this->once())
@@ -293,6 +299,112 @@ class DecryptAllTest extends TestCase {
 
 		$result = $this->invokePrivate($instance, 'decryptAllUsersFiles', [$user]);
 		$this->assertEquals(true, $result);
+	}
+
+	public function providerDecryptAllUsersFilesUsersSeen() {
+		return [
+			[true],
+			[false]
+		];
+	}
+
+	/**
+	 * @dataProvider providerDecryptAllUsersFilesUsersSeen
+	 */
+	public function testDecryptAllUsersFilesUsersSeen($prepareEncryptionModulesReturn) {
+		$user1 = [
+			'id' => 1,
+			'email' => null,
+			'user_id' => 'user1',
+			'lower_user_id' => 'user1',
+			'display_name' => 'user1',
+			'quota' => null,
+			'last_login' => '1527174420',
+			'backend' => 'OC\User\Database',
+			'home' => '',
+			'state' => 1
+		];
+
+		$iConfig = $this->createMock(IConfig::class);
+		$idbConnection = $this->createMock(IDBConnection::class);
+		$iqueryBuilder = $this->createMock(IQueryBuilder::class);
+		$iexpressionBuilder = $this->createMock(IExpressionBuilder::class);
+		$resultStatment = $this->createMock(Statement::class);
+		$resultStatment->expects($this->at(0))
+			->method('fetch')
+			->willReturn(['count' => '1']);
+		$resultStatment->expects($this->at(1))
+			->method('fetch')
+			->willReturn($user1);
+		$resultStatment->expects($this->at(2))
+			->method('fetch')
+			->willReturn($user1);
+		$resultStatment->expects($this->any())
+			->method('closeCursor')
+			->willReturn(true);
+		$iexpressionBuilder->expects($this->any())
+			->method('gt')
+			->willReturn('2');
+		$iqueryBuilder->expects($this->any())
+			->method('select')
+			->willReturn($iqueryBuilder);
+		$iqueryBuilder->expects($this->any())
+			->method('from')
+			->willReturn($iqueryBuilder);
+		$iqueryBuilder->expects($this->any())
+			->method('where')
+			->willReturn($iqueryBuilder);
+		$iqueryBuilder->expects($this->any())
+			->method('expr')
+			->willReturn($iexpressionBuilder);
+		$iqueryBuilder->expects($this->any())
+			->method('execute')
+			->willReturn($resultStatment);
+		$idbConnection->expects($this->any())
+			->method('getQueryBuilder')
+			->willReturn($iqueryBuilder);
+
+		$accountTermMapper = $this->createMock(AccountTermMapper::class);
+		$accountMapper = new AccountMapper($iConfig, $idbConnection, $accountTermMapper);
+		$utilSearch = $this->createMock(UserSearch::class);
+		$syncService = $this->createMock(SyncService::class);
+
+		$iUsers = [$this->createMock(IUser::class), $this->createMock(IUser::class)];
+		$iUsers[0]->expects($this->any())
+			->method('getUID')
+			->willReturn('user1');
+		$iUsers[1]->expects($this->any())
+			->method('getUID')
+			->willReturn('user2');
+
+		$userManager = new \OC\User\Manager($iConfig, $this->logger, $accountMapper, $syncService, $utilSearch);
+		$user = '';
+		/** @var DecryptAll | \PHPUnit_Framework_MockObject_MockObject |  $instance */
+		$instance = $this->getMockBuilder(DecryptAll::class)
+			->setConstructorArgs(
+				[
+					$this->encryptionManager,
+					$userManager,
+					$this->view,
+					$this->logger
+				]
+			)
+			->setMethods(['decryptUsersFiles', 'prepareEncryptionModules'])
+			->getMock();
+
+		$this->invokePrivate($instance, 'input', [$this->inputInterface]);
+		$this->invokePrivate($instance, 'output', [$this->outputInterface]);
+
+		\OC::$server->getAppConfig()->setValue('encryption', 'userSpecificKey', '1');
+
+		if (empty($user)) {
+			$instance->expects($this->any())
+				->method('prepareEncryptionModules')
+				->willReturn($prepareEncryptionModulesReturn);
+		}
+
+		$result = $this->invokePrivate($instance, 'decryptAllUsersFiles', [$user]);
+		$this->assertTrue($result);
 	}
 
 	public function dataTestDecryptAllUsersFiles() {
@@ -405,14 +517,53 @@ class DecryptAllTest extends TestCase {
 
 		$this->view->expects($this->once())
 			->method('copy')
-			->with($path, $path . '.decrypted.42');
+			->with($path, $path . '.decrypted.42.part');
 		$this->view->expects($this->once())
 			->method('rename')
-			->with($path . '.decrypted.42', $path);
+			->with($path . '.decrypted.42.part', $path);
 
 		$this->assertTrue(
 			$this->invokePrivate($instance, 'decryptFile', [$path])
 		);
+	}
+
+	/**
+	 * Test to verify the fileid after the decryptFile method should be same
+	 */
+	public function testDecryptFileForFileId() {
+		$this->createUser('user1', 'user1');
+		//To create /user1/files folder
+		\OC::$server->getUserFolder('user1');
+
+		$view = new View('/');
+		$view->touch('/user1/files/test.txt');
+		$this->markTestSkippedIfStorageHasOwnVersioning($view, '/user1/files/test.txt');
+		$fileInfo = $view->getFileInfo('/user1/files/test.txt');
+
+		$path = '/user1/files/test.txt';
+
+		/** @var DecryptAll | \PHPUnit_Framework_MockObject_MockObject  $instance */
+		$instance = $this->getMockBuilder(DecryptAll::class)
+			->setConstructorArgs(
+				[
+					$this->encryptionManager,
+					$this->userManager,
+					$view,
+					$this->logger
+				]
+			)
+			->setMethods(['getTimestamp'])
+			->getMock();
+
+		$instance->expects($this->any())->method('getTimestamp')->willReturn(42);
+
+		$this->assertTrue(
+			$this->invokePrivate($instance, 'decryptFile', [$path])
+		);
+
+		$view1 = new View('/');
+		$newFileInfo = $view1->getFileInfo($path);
+		$this->assertEquals($newFileInfo->getId(), $fileInfo->getId());
 	}
 
 	public function testDecryptFileFailure() {
@@ -435,21 +586,32 @@ class DecryptAllTest extends TestCase {
 
 		$this->view->expects($this->once())
 			->method('copy')
-			->with($path, $path . '.decrypted.42')
+			->with($path, $path . '.decrypted.42.part')
 			->willReturnCallback(function() { throw new DecryptionFailedException();});
 
 		$this->view->expects($this->never())->method('rename');
 		$this->view->expects($this->once())
 			->method('file_exists')
-			->with($path . '.decrypted.42')
+			->with($path . '.decrypted.42.part')
 			->willReturn(true);
 		$this->view->expects($this->once())
 			->method('unlink')
-			->with($path . '.decrypted.42');
+			->with($path . '.decrypted.42.part');
 
 		$this->assertFalse(
 			$this->invokePrivate($instance, 'decryptFile', [$path])
 		);
 	}
 
+	/**
+	 * This method is added for objectStore, as objectStore cannot preserve fileid.
+	 * @param View $view
+	 * @param $path
+	 */
+	private function markTestSkippedIfStorageHasOwnVersioning(View $view, $path) {
+		list($storage, $internalPath) = $view->resolvePath($path);
+		if ($storage->instanceOfStorage(ObjectStoreStorage::class)) {
+			$this->markTestSkipped();
+		}
+	}
 }
