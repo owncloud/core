@@ -141,7 +141,6 @@ trait Checksums {
 	 * @Then the webdav checksum should be empty
 	 *
 	 * @return void
-	 * @throws \Sabre\Xml\ParseException
 	 * @throws \Exception
 	 */
 	public function theWebdavChecksumShouldBeEmpty() {
