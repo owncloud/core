@@ -79,7 +79,7 @@ So that I can efficiently share my files with other users or groups
 		And the user has browsed to the files page
 		And the user has opened the share dialog for the folder "simple-folder"
 		When the user types "u" in the share-with-field
-		Then a tooltip with the text "No users or groups found for u Please enter at least 2 characters for suggestions" should be shown near the share-with-field on the webUI
+		Then a tooltip with the text "No users or groups found for u. Please enter at least 2 characters for suggestions" should be shown near the share-with-field on the webUI
 		And the autocomplete list should not be displayed on the webUI
 
 	@skipOnLDAP
@@ -89,7 +89,7 @@ So that I can efficiently share my files with other users or groups
 		And the user has browsed to the files page
 		And the user has opened the share dialog for the folder "simple-folder"
 		When the user types "use" in the share-with-field
-		Then a tooltip with the text "No users or groups found for use Please enter at least 4 characters for suggestions" should be shown near the share-with-field on the webUI
+		Then a tooltip with the text "No users or groups found for use. Please enter at least 4 characters for suggestions" should be shown near the share-with-field on the webUI
 		And the autocomplete list should not be displayed on the webUI
 
 	@skipOnLDAP
