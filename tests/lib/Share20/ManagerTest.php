@@ -1590,13 +1590,14 @@ class ManagerTest extends \Test\TestCase {
 		$data[] = ['yes', 'group1,group2', json_encode(['group1', 'group2']), [], false];
 
 		// Old list partly groups in common
-		$data[] = ['yes', 'group1,group2', json_encode(['group1', 'group2']), ['group1', 'group3'], false];
+
+		$data[] = ['yes', 'group1,group2', \json_encode(['group1', 'group2']), ['group1', 'group3'], true];
 
 		// Old list only groups in common
 		$data[] = ['yes', 'group1,group2', json_encode(['group1', 'group2']), ['group1'], true];
 
 		// New list partly in common
-		$data[] = ['yes', json_encode(['group1', 'group2']), null, ['group1', 'group3'], false];
+		$data[] = ['yes', \json_encode(['group1', 'group2']), null, ['group1', 'group3'], true];
 
 		// New list only groups in common
 		$data[] = ['yes', json_encode(['group1', 'group2']), null, ['group2'], true];
