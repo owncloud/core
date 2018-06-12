@@ -287,7 +287,7 @@ $CONFIG = array(
  * the minimum characters have been entered. The search is case insensitive.
  * e.g. entering "tom" will always return "Tom" if there is an exact match.
  */
-'user.search_min_length' => 4,
+'user.search_min_length' => 2,
 
 /**
  * Mail Parameters

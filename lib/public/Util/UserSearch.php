@@ -66,6 +66,6 @@ class UserSearch {
 	 * @since 10.0.8
 	 */
 	public function getSearchMinLength() {
-		return $this->config->getSystemValue('user.search_min_length', 4);
+		return $this->config->getSystemValue('user.search_min_length', 2);
 	}
 }
