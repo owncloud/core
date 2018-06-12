@@ -60,13 +60,6 @@ interface IGroupManager {
 	public function addBackend($backend);
 
 	/**
-	 * Get the list of registered backends
-	 * @return \OCP\GroupInterface[]
-	 * @since 10.0.9
-	 */
-	public function getBackends();
-
-	/**
 	 * @since 8.0.0
 	 */
 	public function clearBackends();
