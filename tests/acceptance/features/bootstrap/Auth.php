@@ -28,8 +28,24 @@ require __DIR__ . '/../../../../lib/composer/autoload.php';
  * Authentication functions
  */
 trait Auth {
+	/**
+	 * @var Client
+	 */
+	private $client = '';
+
+	/**
+	 * @var string
+	 */
 	private $clientToken;
+
+	/**
+	 * @var string
+	 */
 	private $appToken;
+
+	/**
+	 * @var boolean
+	 */
 	private $tokenAuthHasBeenSet = false;
 
 	/**
