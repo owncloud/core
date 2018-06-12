@@ -864,16 +864,18 @@ trait Sharing {
 	}
 
 	/**
-	 * @Then /^user "([^"]*)" should not be able to share (?:file|folder|entry) "([^"]*)" with (?:user|group) "([^"]*)"(?: with permissions ([\d]*))? using the API$/
+	 * @Then /^user "([^"]*)" should not be able to share (?:file|folder|entry) "([^"]*)" with (user|group) "([^"]*)"(?: with permissions ([\d]*))? using the API$/
 	 *
 	 * @param string $sharer
 	 * @param string $filepath
+	 * @param string $userOrGroup
 	 * @param string $sharee
 	 * @param int $permissions
 	 *
 	 * @return void
 	 */
-	public function userTriesToShareFileWithUserUsingTheApi($sharer, $filepath, $sharee, $permissions = null) {
+	public function userTriesToShareFileUsingTheApi($sharer, $filepath, $userOrGroup, $sharee, $permissions = null) {
+		$shareType = ($userOrGroup === "user" ? 0 : 1);
 		$time = \time();
 		if ($this->lastShareTime !== null && $time - $this->lastShareTime < 1) {
 			// prevent creating two shares with the same "stime" which is
@@ -883,10 +885,41 @@ trait Sharing {
 		}
 		$this->lastShareTime = $time;
 		$this->createShare(
-			$sharer, $filepath, 0, $sharee, null, null, $permissions
+			$sharer, $filepath, $shareType, $sharee, null, null, $permissions
+		);
+		$statusCode = $this->getOCSResponseStatusCode($this->response);
+		PHPUnit_Framework_Assert::assertTrue(
+			($statusCode == 404) || ($statusCode == 403),
+			"Sharing should have failed but passed with status code " . $statusCode
+		);
+	}
+
+	/**
+	 * @Then /^user "([^"]*)" should be able to share (?:file|folder|entry) "([^"]*)" with (user|group) "([^"]*)"(?: with permissions ([\d]*))? using the API$/
+	 *
+	 * @param string $sharer
+	 * @param string $filepath
+	 * @param string $userOrGroup
+	 * @param string $sharee
+	 * @param int $permissions
+	 *
+	 * @return void
+	 */
+	public function userShouldBeAbleToShareUsingTheApi($sharer, $filepath, $userOrGroup, $sharee, $permissions = null) {
+		$shareType = ($userOrGroup === "user" ? 0 : 1);
+		$time = \time();
+		if ($this->lastShareTime !== null && $time - $this->lastShareTime < 1) {
+			// prevent creating two shares with the same "stime" which is
+			// based on seconds, this affects share merging order and could
+			// affect expected test result order
+			\sleep(1);
+		}
+		$this->lastShareTime = $time;
+		$this->createShare(
+			$sharer, $filepath, $shareType, $sharee, null, null, $permissions
 		);
 		PHPUnit_Framework_Assert::assertEquals(
-			404,
+			100,
 			$this->getOCSResponseStatusCode($this->response)
 		);
 	}
