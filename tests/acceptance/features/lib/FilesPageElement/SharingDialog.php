@@ -165,6 +165,7 @@ class SharingDialog extends OwncloudPage {
 	private function shareWithUserOrGroup(
 		$nameToType, $nameToMatch, Session $session, $maxRetries = 5, $quiet = false
 	) {
+		$userFound = false;
 		for ($retryCounter = 0; $retryCounter < $maxRetries; $retryCounter++) {
 			$autocompleteNodeElement = $this->fillShareWithField(
 				$nameToType, $session
