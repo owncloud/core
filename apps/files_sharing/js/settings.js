@@ -8,9 +8,12 @@
  *
  */
 
-$(document).ready(function(){
-	$('#files_sharing .files_sharing_settings').change(function(){
-		var $element = $(this);
-		OC.AppConfig.setValue('files_sharing', $element.prop('name'), $element.val());
+$(document).ready(function() {
+	var $blacklistedGroups = $('#files_sharing input[name="blacklisted_receiver_groups"]');
+	OC.Settings.setupGroupsSelect($blacklistedGroups);
+	$blacklistedGroups.change(function(ev) {
+		var groups = ev.val || [];
+		groups = JSON.stringify(groups);
+		OC.AppConfig.setValue('files_sharing', $(this).attr('name'), groups);
 	});
 });
