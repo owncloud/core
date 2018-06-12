@@ -20,15 +20,11 @@
  */
 namespace OCA\Files_Sharing\Tests\Panels\Admin;
 
-use OCP\IGroupManager;
 use OCP\GroupInterface;
 use OCA\Files_Sharing\SharingBlacklist;
 use OCA\Files_Sharing\Panels\Admin\SettingsPanel;
 
 class SettingsPanelTest extends \Test\TestCase {
-	/** @var IGroupManager | \PHPUnit_Framework_MockObject_MockObject */
-	private $groupManager;
-
 	/** @var SharingBlacklist | \PHPUnit_Framework_MockObject_MockObject */
 	private $sharingBlacklist;
 
@@ -36,15 +32,11 @@ class SettingsPanelTest extends \Test\TestCase {
 	private $settingsPanel;
 
 	protected function setUp() {
-		$this->groupManager = $this->getMockBuilder(IGroupManager::class)
-			->disableOriginalConstructor()
-			->getMock();
-
 		$this->sharingBlacklist = $this->getMockBuilder(SharingBlacklist::class)
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->settingsPanel = new SettingsPanel($this->groupManager, $this->sharingBlacklist);
+		$this->settingsPanel = new SettingsPanel($this->sharingBlacklist);
 	}
 
 	public function testGetSectionID() {
@@ -56,70 +48,42 @@ class SettingsPanelTest extends \Test\TestCase {
 	}
 
 	public function testGetPanel() {
-		$mockBackend1 = $this->getMockBuilder(GroupInterface::class)
-			->disableOriginalConstructor()
-			->getMock();
-		$mockBackend2 = $this->getMockBuilder(GroupInterface::class)
-			->disableOriginalConstructor()
-			->getMock();
-
-		$this->groupManager->method('getBackends')->willReturn([$mockBackend1, $mockBackend2]);
-
-		$this->sharingBlacklist->method('getBlacklistedGroupDisplaynames')->willReturn('');
+		$this->sharingBlacklist->method('getBlacklistedReceiverGroups')->willReturn([]);
 
 		$page = $this->settingsPanel->getPanel()->fetchPage();
 		$doc = new \DOMDocument();
 		$doc->loadHTML($page);
 		$xpath = new \DOMXPath($doc);
-		$backendNodes = $xpath->query('//div[@id="files_sharing"]//ul[@class="groupBackends"]/li/text()');
 
-		$validClassNames = [\get_class($mockBackend1), \get_class($mockBackend2)];
-		\sort($validClassNames);
-
-		$writtenNames = [];
-		foreach ($backendNodes as $backendNode) {
-			$writtenNames[] = $backendNode->wholeText;
-		}
-		\sort($writtenNames);
-
-		$this->assertEquals($validClassNames, $writtenNames);
-
-		$textareaText = $xpath->query('//div[@id="files_sharing"]//textarea[@name="blacklisted_group_displaynames"]');
-		$this->assertEquals(1, $textareaText->length);  // only 1 element should be found
-		$this->assertFalse($textareaText->item(0)->hasChildNodes());
+		$inputNodes = $xpath->query('//input[@name="blacklisted_receiver_groups"]');
+		$this->assertEquals(1, $inputNodes->length);  // only 1 element should be found
+		$inputNode = $inputNodes->item(0);
+		$this->assertSame('', $inputNode->attributes->getNamedItem('value')->value);
 	}
 
-	public function testGetPanelWithBlacklist() {
-		$mockBackend1 = $this->getMockBuilder(GroupInterface::class)
-			->disableOriginalConstructor()
-			->getMock();
-		$mockBackend2 = $this->getMockBuilder(GroupInterface::class)
-			->disableOriginalConstructor()
-			->getMock();
+	public function getPanelWithBlacklistProvider() {
+		return [
+			[['group1']],
+			[['group1', 'group2']],
+			[['group1', 'group2', 'group3']],
+			[['1234mkdds_lklk', '12345678-1234-1234-123456789abcdf']],
+		];
+	}
 
-		$this->groupManager->method('getBackends')->willReturn([$mockBackend1, $mockBackend2]);
-
-		$this->sharingBlacklist->method('getBlacklistedGroupDisplaynames')->willReturn("backend1::displayname1\nbackend2::displayname2");
+	/**
+	 * @dataProvider getPanelWithBlacklistProvider
+	 */
+	public function testGetPanelWithBlacklist($ids) {
+		$this->sharingBlacklist->method('getBlacklistedReceiverGroups')->willReturn($ids);
 
 		$page = $this->settingsPanel->getPanel()->fetchPage();
 		$doc = new \DOMDocument();
 		$doc->loadHTML($page);
 		$xpath = new \DOMXPath($doc);
-		$backendNodes = $xpath->query('//div[@id="files_sharing"]//ul[@class="groupBackends"]/li/text()');
 
-		$validClassNames = [\get_class($mockBackend1), \get_class($mockBackend2)];
-		\sort($validClassNames);
-
-		$writtenNames = [];
-		foreach ($backendNodes as $backendNode) {
-			$writtenNames[] = $backendNode->wholeText;
-		}
-		\sort($writtenNames);
-
-		$this->assertEquals($validClassNames, $writtenNames);
-
-		$textareaText = $xpath->query('//div[@id="files_sharing"]//textarea[@name="blacklisted_group_displaynames"]/text()');
-		$this->assertEquals(1, $textareaText->length);  // only 1 element should be found
-		$this->assertEquals("backend1::displayname1\nbackend2::displayname2", $textareaText->item(0)->wholeText);
+		$inputNodes = $xpath->query('//input[@name="blacklisted_receiver_groups"]');
+		$this->assertEquals(1, $inputNodes->length);  // only 1 element should be found
+		$inputNode = $inputNodes->item(0);
+		$this->assertSame(\implode("|", $ids), $inputNode->attributes->getNamedItem('value')->value);
 	}
 }

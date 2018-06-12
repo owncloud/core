@@ -18,25 +18,15 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>
  *
  */
-style('files_sharing', 'settings');
 script('files_sharing', 'settings');
-
-$newlineEntity = '&#10;';
-$textareaPlaceholder = "OC\Group\Database::localGroups{$newlineEntity}OCA\User_LDAP\Group_Proxy::ldapGroup";
 ?>
 
 <div class="section" id="files_sharing">
 	<h2 class="app-name"><?php p($l->t('Files Sharing')); ?></h2>
-	<p><?php p($l->t('Blacklist the following groups so noone can share with them. Use the format "{backendName}::{groupDisplayName}", one per line.')); ?></p>
-	<div class="horizontal-layout">
-		<textarea placeholder="<?php print_unescaped($textareaPlaceholder); ?>" class="files_sharing_settings" name="blacklisted_group_displaynames"><?php p($_['blacklistedDisplaynames']); ?></textarea>
-		<div>
-			<p><?php p($l->t('Available backends names are:')); ?></p>
-			<ul class="groupBackends">
-				<?php foreach ($_['backendNames'] as $backendName): ?>
-				<li><?php p($backendName); ?></li>
-				<?php endforeach; ?>
-			</ul>
-		</div>
+	<div class="indent">
+		<p><?php p($l->t('Exclude groups from receiving shares.')); ?></p>
+		<input name="blacklisted_receiver_groups" class="noautosave" value="<?php p($_['blacklistedReceivers']) ?>" style="width: 400px"/>
+		<br />
+		<em><?php p($l->t('These groups will not receive shares. Members of the group can still send and receive shares outside of the group.')); ?></em>
 	</div>
 </div>

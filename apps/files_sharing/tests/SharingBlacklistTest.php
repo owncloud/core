@@ -40,34 +40,34 @@ class SharingBlacklistTest extends \Test\TestCase {
 		$this->sharingBlacklist = new SharingBlacklist($this->config);
 	}
 
-	public function setGetBlacklistedGroupDisplaynamesProvider() {
+	public function setGetBlacklistedReceiverGroupsProvider() {
 		return [
-			[''],
-			["backend1::displayname1"],
-			["backend1::displayname1\nbackend2::displayname2"],
+			[[]],
+			[["group1"]],
+			[["group1", "group2", "$group3"]],
 		];
 	}
 
 	/**
-	 * @dataProvider setGetBlacklistedGroupDisplaynamesProvider
+	 * @dataProvider setGetBlacklistedReceiverGroupsProvider
 	 */
-	public function testSetGetBlacklistedGroupDisplaynames($configValue) {
+	public function testSetGetBlacklistedReceiverGroups($ids) {
 		$keyValues = [];
 		$this->config->method('setAppValue')
-			->will($this->returnCallback(function($app, $key, $value) use (&$keyValues) {
+			->will($this->returnCallback(function ($app, $key, $value) use (&$keyValues) {
 				$keyValues[$key] = $value;
 			}));
 
 		$this->config->method('getAppValue')
-			->will($this->returnCallback(function($app, $key, $default) use (&$keyValues) {
+			->will($this->returnCallback(function ($app, $key, $default) use (&$keyValues) {
 				return (isset($keyValues[$key])) ? $keyValues[$key] : $default;
 			}));
 
-		$this->sharingBlacklist->setBlacklistedGroupDisplaynames($configValue);
-		$this->assertEquals($configValue, $this->sharingBlacklist->getBlacklistedGroupDisplaynames());
+		$this->sharingBlacklist->setBlacklistedReceiverGroups($ids);
+		$this->assertEquals($ids, $this->sharingBlacklist->getBlacklistedReceiverGroups());
 	}
 
-	private function getGroupMock($displayname) {
+	private function getGroupMock($id, $displayname) {
 		$groupMock = $this->getMockBuilder(IGroup::class)
 			->disableOriginalConstructor()
 			->getMock();
@@ -77,17 +77,17 @@ class SharingBlacklistTest extends \Test\TestCase {
 			->getMock();
 
 		$groupMock->method('getBackend')->willReturn($groupBackendMock);
+		$groupMock->method('getGID')->willReturn($id);
 		$groupMock->method('getDisplayName')->willReturn($displayname);
 		return $groupMock;
 	}
 
 	public function isGroupBlacklistedProvider() {
-		$groupMock1 = $this->getGroupMock('my group');
-		$groupMock1BackendClass = \get_class($groupMock1->getBackend());
+		$groupMock1 = $this->getGroupMock('Mygroup', 'my group');
 		return [
-			[$groupMock1, "{$groupMock1BackendClass}::my group"],
-			[$groupMock1, "{$groupMock1BackendClass}::my group\n{$groupMock1BackendClass}::my_other_group"],
-			[$groupMock1, "randomBackend::one group\n{$groupMock1BackendClass}::my group"],
+			[$groupMock1, '["Mygroup"]'],
+			[$groupMock1, '["Mygroup", "my_other_group"]'],
+			[$groupMock1, '["one group", "Mygroup"]'],
 		];
 	}
 
@@ -101,13 +101,11 @@ class SharingBlacklistTest extends \Test\TestCase {
 	}
 
 	public function isGroupBlacklistedNotBlacklistedProvider() {
-		$groupMock1 = $this->getGroupMock('my group');
-		$groupMock1BackendClass = \get_class($groupMock1->getBackend());
+		$groupMock1 = $this->getGroupMock('Mygroup', 'my group');
 		return [
-			[$groupMock1, ''],
-			[$groupMock1, "randomBackend::my group"],
-			[$groupMock1, "randomBackend::my group\nrandom::group"],
-			[$groupMock1, "{$groupMock1BackendClass}::other group"],
+			[$groupMock1, '[]'],
+			[$groupMock1, '["my group"]'],
+			[$groupMock1, '["Mygroup2", "my group"]'],
 		];
 	}
 

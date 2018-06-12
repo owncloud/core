@@ -49,10 +49,9 @@ class SharingBlacklist {
 	public function isGroupBlacklisted(IGroup $group) {
 		$this->initCache();
 
-		$groupBackend = \get_class($group->getBackend());
-		$groupDisplayname = $group->getDisplayName();
+		$groupId = $group->getGID();
 
-		if (isset($this->blacklistCache['displaynames'][$groupBackend][$groupDisplayname])) {
+		if (isset($this->blacklistCache['receivers']['ids'][$groupId])) {
 			return true;
 		}
 		return false;
@@ -68,59 +67,41 @@ class SharingBlacklist {
 	}
 
 	/**
-	 * Set the list of groups to be blacklisted by displayname. The string should have the following format:
-	 * {backendName}::{displayname}\n{backendName}::{displayname} ....
-	 * Note that no check will be done here. It will blindly store the string
-	 * @param string $displaynameString a string with the displaynames of the groups to be blacklisted
-	 * using the format described above
+	 * Set the list of groups to be blacklisted by id.
+	 * @param string[] $ids a list with the ids of the groups to be blacklisted
 	 */
-	public function setBlacklistedGroupDisplaynames($displaynameString) {
-		$this->config->setAppValue('files_sharing', 'blacklisted_group_displaynames', $displaynameString);
+	public function setBlacklistedReceiverGroups(array $ids) {
+		$this->config->setAppValue('files_sharing', 'blacklisted_receiver_groups', \json_encode($ids));
 		$this->blacklistCache = null;  // clear the cache
 	}
 
 	/**
-	 * Get the raw string of blacklisted group names as it was stored.
+	 * Get the list of blacklisted group ids
 	 * Note that this might contain wrong information
-	 * @return string the raw string as stored by the setBlacklistedGroupDisplaynames method
+	 * @return string[] the list of group ids
 	 */
-	public function getBlacklistedGroupDisplaynames() {
-		return $this->config->getAppValue('files_sharing', 'blacklisted_group_displaynames');
+	public function getBlacklistedReceiverGroups() {
+		return \json_decode($this->config->getAppValue('files_sharing', 'blacklisted_receiver_groups', '[]'), true);
 	}
 
 	private function initCache() {
 		if ($this->blacklistCache === null) {
 			$this->blacklistCache = [
-				'displaynames' => $this->fetchBlacklistedGroupDisplaynames(),
-				// blacklist by group id or other reason could be added at some point
+				'receivers' => [
+					'ids' => $this->fetchBlacklistedReceiverGroupIds(),
+				],
 			];
 		}
 	}
 
-	private function fetchBlacklistedGroupDisplaynames() {
-		$configuredBlacklist = $this->config->getAppValue('files_sharing', 'blacklisted_group_displaynames');
-		$blacklistedComponents = \explode("\n", $configuredBlacklist);
-
-		$result = [];
-		foreach ($blacklistedComponents as $blacklistedComponent) {
-			$blacklistedComponent = \trim($blacklistedComponent);  // trim black chars
-
-			$splittedName = \explode('::', $blacklistedComponent, 2);
-			if (\count($splittedName) !== 2) {
-				// missing backend in the blacklisted name? Ignore
-				continue;
-			}
-
-			$blacklistedBackend = $splittedName[0];
-			$blacklistedDisplayname = $splittedName[1];
-
-			if (!isset($result[$blacklistedBackend])) {
-				$result[$blacklistedBackend] = [];
-			}
-			if (!isset($result[$blacklistedBackend][$blacklistedDisplayname])) {
-				$result[$blacklistedBackend][$blacklistedDisplayname] = true;
-			}
+	private function fetchBlacklistedReceiverGroupIds() {
+		$configuredBlacklist = $this->config->getAppValue('files_sharing', 'blacklisted_receiver_groups', '[]');
+		$decodedGroups = \json_decode($configuredBlacklist, true);
+		// expected a plain array here
+		$groupSet = [];
+		foreach ($decodedGroups as $group) {
+			$groupSet[$group] = true;
 		}
-		return $result;
+		return $groupSet;
 	}
 }
