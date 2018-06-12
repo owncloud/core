@@ -293,29 +293,35 @@ class CacheTest extends TestCase {
 		$file1 = 'folder';
 		$file2 = 'folder/foobar';
 		$file3 = 'folder/foo';
+		$file4 = 'folder/f[o.o%ba-r';
 		$data1 = ['size' => 100, 'mtime' => 50, 'mimetype' => 'foo/folder'];
 		$fileData = [];
 		$fileData['foobar'] = ['size' => 1000, 'mtime' => 20, 'mimetype' => 'foo/file'];
 		$fileData['foo'] = ['size' => 20, 'mtime' => 25, 'mimetype' => 'foo/file'];
+		$fileData['f[o.o%ba-r'] = ['size' => 20, 'mtime' => 25, 'mimetype' => 'foo/file'];
 
 		$this->cache->put($file1, $data1);
 		$this->cache->put($file2, $fileData['foobar']);
 		$this->cache->put($file3, $fileData['foo']);
+		$this->cache->put($file4, $fileData['f[o.o%ba-r']);
 
-		$this->assertCount(2, $this->cache->search('%foo%'));
-		$this->assertCount(1, $this->cache->search('foo'));
-		$this->assertCount(1, $this->cache->search('%folder%'));
-		$this->assertCount(1, $this->cache->search('folder%'));
-		$this->assertCount(3, $this->cache->search('%'));
+		$this->assertCount(2, $this->cache->search('%foo%'), "expected 2 when searching for '%foo%'");
+		$this->assertCount(1, $this->cache->search('foo'), "expected 1 when searching for 'foo'");
+		$this->assertCount(1, $this->cache->search('%folder%'), "expected 1 when searching for '%folder%'");
+		$this->assertCount(1, $this->cache->search('folder%'), "expected 1 when searching for 'folder%'");
+		$this->assertCount(4, $this->cache->search('%'), "expected 4 when searching for '%'");
 
 		// case insensitive search should match the same files
-		$this->assertCount(2, $this->cache->search('%Foo%'));
-		$this->assertCount(1, $this->cache->search('Foo'));
-		$this->assertCount(1, $this->cache->search('%Folder%'));
-		$this->assertCount(1, $this->cache->search('Folder%'));
+		$this->assertCount(2, $this->cache->search('%Foo%'), "expected 2 when searching for '%Foo%'");
+		$this->assertCount(1, $this->cache->search('Foo'), "expected 1 when searching for 'Foo'");
+		$this->assertCount(1, $this->cache->search('%Folder%'), "expected 1 when searching for '%Folder%'");
+		$this->assertCount(1, $this->cache->search('Folder%'), "expected 1 when searching for 'Folder%'");
 
-		$this->assertCount(3, $this->cache->searchByMime('foo'));
-		$this->assertCount(2, $this->cache->searchByMime('foo/file'));
+		$this->assertCount(4, $this->cache->searchByMime('foo'), "expected 4 when searching for mime 'foo'");
+		$this->assertCount(3, $this->cache->searchByMime('foo/file'), "expected 3 when searching for mime 'foo/file'");
+
+		// oracle uses regexp,
+		$this->assertCount(1, $this->cache->search('f[o.o%ba-r'), "expected 1 when searching for 'f[o.o%ba-r'");
 	}
 
 	function testSearchByTag() {
