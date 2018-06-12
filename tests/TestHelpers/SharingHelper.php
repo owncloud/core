@@ -76,7 +76,7 @@ class SharingHelper {
 		$sharePassword = null,
 		$permissions = null,
 		$linkName = null,
-		$expireDate = null,
+		$expireDate = null, // unused, to be implemented
 		$apiVersion = 1,
 		$sharingApiVersion = 1
 	) {

@@ -48,7 +48,9 @@ class ShareesContext implements Context {
 	 * @return void
 	 */
 	public function theUserGetsTheShareesWithParameters($body) {
-		$this->userGetsTheShareesWithParameters($this->currentUser, $body);
+		$this->userGetsTheShareesWithParameters(
+			$this->featureContext->getCurrentUser(), $body
+		);
 	}
 
 	/**
