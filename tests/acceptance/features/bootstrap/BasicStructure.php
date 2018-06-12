@@ -62,6 +62,11 @@ trait BasicStructure {
 	/**
 	 * @var string
 	 */
+	private $ocPath = '';
+
+	/**
+	 * @var string
+	 */
 	private $currentUser = '';
 
 	/**
