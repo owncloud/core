@@ -274,6 +274,16 @@
 							if (!view.configModel.get('allowGroupSharing')) {
 								title = t('core', 'No users found for {search}', {search: $('.shareWithField').val()});
 							}
+							var suggestStarts = OC.getCapabilities().files_sharing.search_min_length;
+							if (suggestStarts > $('.shareWithField').val().length) {
+								title = title + '. ' + n(
+									'core',
+									'Please enter at least {chars} character for suggestions',
+									'Please enter at least {chars} characters for suggestions',
+									suggestStarts,
+									{chars: suggestStarts}
+								);
+							}
 							$('.shareWithField').addClass('error')
 								.attr('data-original-title', title)
 								.tooltip('hide')
