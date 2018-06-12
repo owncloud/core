@@ -59,7 +59,6 @@ class CapabilitiesContext implements Context {
 				),
 				"Failed field " . $row['capability'] . " " . $row['path_to_element']
 			);
-
 		}
 	}
 

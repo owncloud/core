@@ -33,7 +33,6 @@ use OCP\SystemTag\TagNotFoundException;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class SystemTagObjectMapper implements ISystemTagObjectMapper {
-
 	const RELATION_TABLE = 'systemtag_object_mapping';
 
 	/** @var ISystemTagManager */
@@ -62,9 +61,9 @@ class SystemTagObjectMapper implements ISystemTagObjectMapper {
 	 * {@inheritdoc}
 	 */
 	public function getTagIdsForObjects($objIds, $objectType) {
-		if (!is_array($objIds)) {
+		if (!\is_array($objIds)) {
 			$objIds = [$objIds];
-		} else if (empty($objIds)) {
+		} elseif (empty($objIds)) {
 			return [];
 		}
 
@@ -98,7 +97,7 @@ class SystemTagObjectMapper implements ISystemTagObjectMapper {
 	 * {@inheritdoc}
 	 */
 	public function getObjectIdsForTags($tagIds, $objectType, $limit = 0, $offset = '') {
-		if (!is_array($tagIds)) {
+		if (!\is_array($tagIds)) {
 			$tagIds = [$tagIds];
 		}
 
@@ -111,7 +110,7 @@ class SystemTagObjectMapper implements ISystemTagObjectMapper {
 			->andWhere($query->expr()->eq('objecttype', $query->createNamedParameter($objectType)));
 
 		if ($limit) {
-			if (sizeof($tagIds) !== 1) {
+			if (\sizeof($tagIds) !== 1) {
 				throw new \InvalidArgumentException('Limit is only allowed with a single tag');
 			}
 
@@ -137,7 +136,7 @@ class SystemTagObjectMapper implements ISystemTagObjectMapper {
 	 * {@inheritdoc}
 	 */
 	public function assignTags($objId, $objectType, $tagIds) {
-		if (!is_array($tagIds)) {
+		if (!\is_array($tagIds)) {
 			$tagIds = [$tagIds];
 		}
 
@@ -172,7 +171,7 @@ class SystemTagObjectMapper implements ISystemTagObjectMapper {
 	 * {@inheritdoc}
 	 */
 	public function unassignTags($objId, $objectType, $tagIds) {
-		if (!is_array($tagIds)) {
+		if (!\is_array($tagIds)) {
 			$tagIds = [$tagIds];
 		}
 
@@ -202,7 +201,7 @@ class SystemTagObjectMapper implements ISystemTagObjectMapper {
 	public function haveTag($objIds, $objectType, $tagId, $all = true) {
 		$this->assertTagsExist([$tagId]);
 
-		if (!is_array($objIds)) {
+		if (!\is_array($objIds)) {
 			$objIds = [$objIds];
 		}
 
@@ -230,7 +229,7 @@ class SystemTagObjectMapper implements ISystemTagObjectMapper {
 		$result->closeCursor();
 
 		if ($all) {
-			return ((int)$row[0] === count($objIds));
+			return ((int)$row[0] === \count($objIds));
 		} else {
 			return (bool) $row;
 		}
@@ -245,15 +244,15 @@ class SystemTagObjectMapper implements ISystemTagObjectMapper {
 	 */
 	private function assertTagsExist($tagIds) {
 		$tags = $this->tagManager->getTagsByIds($tagIds);
-		if (count($tags) !== count($tagIds)) {
+		if (\count($tags) !== \count($tagIds)) {
 			// at least one tag missing, bail out
-			$foundTagIds = array_map(
-				function(ISystemTag $tag) {
+			$foundTagIds = \array_map(
+				function (ISystemTag $tag) {
 					return $tag->getId();
 				},
 				$tags
 			);
-			$missingTagIds = array_diff($tagIds, $foundTagIds);
+			$missingTagIds = \array_diff($tagIds, $foundTagIds);
 			throw new TagNotFoundException(
 				'Tags not found', 0, null, $missingTagIds
 			);

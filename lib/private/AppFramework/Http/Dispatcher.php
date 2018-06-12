@@ -24,7 +24,6 @@
  *
  */
 
-
 namespace OC\AppFramework\Http;
 
 use \OC\AppFramework\Middleware\MiddlewareDispatcher;
@@ -36,12 +35,10 @@ use OCP\AppFramework\Http\Response;
 use OCP\AppFramework\Http\DataResponse;
 use OCP\IRequest;
 
-
 /**
  * Class to dispatch the request to the middleware dispatcher
  */
 class Dispatcher {
-
 	private $middlewareDispatcher;
 	private $protocol;
 	private $reflector;
@@ -64,7 +61,6 @@ class Dispatcher {
 		$this->reflector = $reflector;
 		$this->request = $request;
 	}
-
 
 	/**
 	 * Handles a request and calls the dispatcher on the controller
@@ -92,10 +88,10 @@ class Dispatcher {
 			// exception and creates a response. If no response is created, it is
 			// assumed that theres no middleware who can handle it and the error is
 			// thrown again
-		} catch(\Exception $exception){
+		} catch (\Exception $exception) {
 			$response = $this->middlewareDispatcher->afterException(
 				$controller, $methodName, $exception);
-			if (is_null($response)) {
+			if ($response === null) {
 				throw $exception;
 			}
 		}
@@ -106,7 +102,7 @@ class Dispatcher {
 		// depending on the cache object the headers need to be changed
 		$out[0] = $this->protocol->getStatusHeader($response->getStatus(),
 			$response->getLastModified(), $response->getETag());
-		$out[1] = array_merge($response->getHeaders());
+		$out[1] = \array_merge($response->getHeaders());
 		$out[2] = $response->getCookies();
 		$out[3] = $this->middlewareDispatcher->beforeOutput(
 			$controller, $methodName, $response->render()
@@ -115,7 +111,6 @@ class Dispatcher {
 
 		return $out;
 	}
-
 
 	/**
 	 * Uses the reflected parameters, types and request parameters to execute
@@ -130,7 +125,7 @@ class Dispatcher {
 		// valid types that will be casted
 		$types = ['int', 'integer', 'bool', 'boolean', 'float'];
 
-		foreach($this->reflector->getParameters() as $param => $default) {
+		foreach ($this->reflector->getParameters() as $param => $default) {
 
 			// try to get the parameter from the request object and cast
 			// it to the type annotated in the @param annotation
@@ -139,33 +134,32 @@ class Dispatcher {
 
 			// if this is submitted using GET or a POST form, 'false' should be
 			// converted to false
-			if(($type === 'bool' || $type === 'boolean') &&
+			if (($type === 'bool' || $type === 'boolean') &&
 				$value === 'false' &&
 				(
 					$this->request->method === 'GET' ||
-					strpos($this->request->getHeader('Content-Type'),
+					\strpos($this->request->getHeader('Content-Type'),
 						'application/x-www-form-urlencoded') !== false
 				)
 			) {
 				$value = false;
-
-			} elseif($value !== null && in_array($type, $types)) {
-				settype($value, $type);
+			} elseif ($value !== null && \in_array($type, $types)) {
+				\settype($value, $type);
 			}
 
 			$arguments[] = $value;
 		}
 
-		$response = call_user_func_array([$controller, $methodName], $arguments);
+		$response = \call_user_func_array([$controller, $methodName], $arguments);
 
 		// format response
-		if($response instanceof DataResponse || !($response instanceof Response)) {
+		if ($response instanceof DataResponse || !($response instanceof Response)) {
 
 			// get format from the url format or request format parameter
 			$format = $this->request->getParam('format');
 
 			// if none is given try the first Accept header
-			if($format === null) {
+			if ($format === null) {
 				$headers = $this->request->getHeader('Accept');
 				$format = $controller->getResponderByHTTPHeader($headers);
 			}
@@ -175,5 +169,4 @@ class Dispatcher {
 
 		return $response;
 	}
-
 }

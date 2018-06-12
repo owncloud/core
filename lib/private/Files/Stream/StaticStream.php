@@ -37,7 +37,7 @@ class StaticStream {
 	}
 
 	public function stream_eof() {
-		return $this->pointer >= strlen(self::$data[$this->path]);
+		return $this->pointer >= \strlen(self::$data[$this->path]);
 	}
 
 	public function stream_flush() {
@@ -50,7 +50,9 @@ class StaticStream {
 	public function stream_open($path, $mode, $options, &$opened_path) {
 		switch ($mode[0]) {
 			case 'r':
-				if (!isset(self::$data[$path])) return false;
+				if (!isset(self::$data[$path])) {
+					return false;
+				}
 				$this->path = $path;
 				$this->writable = isset($mode[1]) && $mode[1] == '+';
 				break;
@@ -60,18 +62,24 @@ class StaticStream {
 				$this->writable = true;
 				break;
 			case 'a':
-				if (!isset(self::$data[$path])) self::$data[$path] = '';
+				if (!isset(self::$data[$path])) {
+					self::$data[$path] = '';
+				}
 				$this->path = $path;
 				$this->writable = true;
-				$this->pointer = strlen(self::$data[$path]);
+				$this->pointer = \strlen(self::$data[$path]);
 				break;
 			case 'x':
-				if (isset(self::$data[$path])) return false;
+				if (isset(self::$data[$path])) {
+					return false;
+				}
 				$this->path = $path;
 				$this->writable = true;
 				break;
 			case 'c':
-				if (!isset(self::$data[$path])) self::$data[$path] = '';
+				if (!isset(self::$data[$path])) {
+					self::$data[$path] = '';
+				}
 				$this->path = $path;
 				$this->writable = true;
 				break;
@@ -83,14 +91,14 @@ class StaticStream {
 	}
 
 	public function stream_read($count) {
-		$bytes = min(strlen(self::$data[$this->path]) - $this->pointer, $count);
-		$data = substr(self::$data[$this->path], $this->pointer, $bytes);
+		$bytes = \min(\strlen(self::$data[$this->path]) - $this->pointer, $count);
+		$data = \substr(self::$data[$this->path], $this->pointer, $bytes);
 		$this->pointer += $bytes;
 		return $data;
 	}
 
 	public function stream_seek($offset, $whence = SEEK_SET) {
-		$len = strlen(self::$data[$this->path]);
+		$len = \strlen(self::$data[$this->path]);
 		switch ($whence) {
 			case SEEK_SET:
 				if ($offset <= $len) {
@@ -123,12 +131,14 @@ class StaticStream {
 	}
 
 	public function stream_write($data) {
-		if (!$this->writable) return 0;
-		$size = strlen($data);
+		if (!$this->writable) {
+			return 0;
+		}
+		$size = \strlen($data);
 		if ($this->stream_eof()) {
 			self::$data[$this->path] .= $data;
 		} else {
-			self::$data[$this->path] = substr_replace(
+			self::$data[$this->path] = \substr_replace(
 				self::$data[$this->path],
 				$data,
 				$this->pointer
@@ -147,8 +157,8 @@ class StaticStream {
 
 	public function url_stat($path) {
 		if (isset(self::$data[$path])) {
-			$size = strlen(self::$data[$path]);
-			$time = time();
+			$size = \strlen(self::$data[$path]);
+			$time = \time();
 			$data = [
 				'dev' => 0,
 				'ino' => 0,
@@ -164,7 +174,7 @@ class StaticStream {
 				'blksize' => -1,
 				'blocks' => -1,
 			];
-			return array_values($data) + $data;
+			return \array_values($data) + $data;
 		}
 		return false;
 	}

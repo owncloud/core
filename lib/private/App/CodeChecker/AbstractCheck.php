@@ -41,7 +41,7 @@ abstract class AbstractCheck implements ICheck {
 		switch ($errorCode) {
 			case CodeChecker::STATIC_CALL_NOT_ALLOWED:
 				$functions = $this->getLocalFunctions();
-				$functions = array_change_key_case($functions, CASE_LOWER);
+				$functions = \array_change_key_case($functions, CASE_LOWER);
 				if (isset($functions[$errorObject])) {
 					return $this->getLocalDescription();
 				}
@@ -51,7 +51,7 @@ abstract class AbstractCheck implements ICheck {
 			case CodeChecker::CLASS_NEW_NOT_ALLOWED:
 			case CodeChecker::CLASS_USE_NOT_ALLOWED:
 				$classes = $this->getLocalClasses();
-				$classes = array_change_key_case($classes, CASE_LOWER);
+				$classes = \array_change_key_case($classes, CASE_LOWER);
 				if (isset($classes[$errorObject])) {
 					return $this->getLocalDescription();
 				}
@@ -59,7 +59,7 @@ abstract class AbstractCheck implements ICheck {
 
 			case CodeChecker::CLASS_CONST_FETCH_NOT_ALLOWED:
 				$constants = $this->getLocalConstants();
-				$constants = array_change_key_case($constants, CASE_LOWER);
+				$constants = \array_change_key_case($constants, CASE_LOWER);
 				if (isset($constants[$errorObject])) {
 					return $this->getLocalDescription();
 				}
@@ -67,7 +67,7 @@ abstract class AbstractCheck implements ICheck {
 
 			case CodeChecker::CLASS_METHOD_CALL_NOT_ALLOWED:
 				$methods = $this->getLocalMethods();
-				$methods = array_change_key_case($methods, CASE_LOWER);
+				$methods = \array_change_key_case($methods, CASE_LOWER);
 				if (isset($methods[$errorObject])) {
 					return $this->getLocalDescription();
 				}
@@ -106,28 +106,28 @@ abstract class AbstractCheck implements ICheck {
 	 * @return array E.g.: `'ClassName' => 'oc version',`
 	 */
 	public function getClasses() {
-		return array_merge($this->getLocalClasses(), $this->check->getClasses());
+		return \array_merge($this->getLocalClasses(), $this->check->getClasses());
 	}
 
 	/**
 	 * @return array E.g.: `'ClassName::CONSTANT_NAME' => 'oc version',`
 	 */
 	public function getConstants() {
-		return array_merge($this->getLocalConstants(), $this->check->getConstants());
+		return \array_merge($this->getLocalConstants(), $this->check->getConstants());
 	}
 
 	/**
 	 * @return array E.g.: `'functionName' => 'oc version',`
 	 */
 	public function getFunctions() {
-		return array_merge($this->getLocalFunctions(), $this->check->getFunctions());
+		return \array_merge($this->getLocalFunctions(), $this->check->getFunctions());
 	}
 
 	/**
 	 * @return array E.g.: `'ClassName::methodName' => 'oc version',`
 	 */
 	public function getMethods() {
-		return array_merge($this->getLocalMethods(), $this->check->getMethods());
+		return \array_merge($this->getLocalMethods(), $this->check->getMethods());
 	}
 
 	/**

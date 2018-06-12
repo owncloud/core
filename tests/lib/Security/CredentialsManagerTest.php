@@ -64,7 +64,7 @@ class CredentialsManagerTest extends \Test\TestCase {
 
 		$this->crypto->expects($this->once())
 			->method('encrypt')
-			->with(json_encode($credentials))
+			->with(\json_encode($credentials))
 			->willReturn('baz');
 
 		$this->dbConnection->expects($this->once())
@@ -84,7 +84,7 @@ class CredentialsManagerTest extends \Test\TestCase {
 		$this->crypto->expects($this->once())
 			->method('decrypt')
 			->with('baz')
-			->willReturn(json_encode('bar'));
+			->willReturn(\json_encode('bar'));
 
 		$qb = $this->getMockBuilder('\OC\DB\QueryBuilder\QueryBuilder')
 			->setConstructorArgs([$this->dbConnection])
@@ -100,5 +100,4 @@ class CredentialsManagerTest extends \Test\TestCase {
 
 		$this->manager->retrieve($userId, $identifier);
 	}
-
 }

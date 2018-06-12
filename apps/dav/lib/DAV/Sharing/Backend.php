@@ -57,14 +57,13 @@ class Backend {
 	 * @param string[] $remove
 	 */
 	public function updateShares($shareable, $add, $remove) {
-		foreach($add as $element) {
+		foreach ($add as $element) {
 			$principal = $this->principalBackend->findByUri($element['href'], '');
 			if ($principal !== '') {
 				$this->shareWith($shareable, $element);
 			}
-
 		}
-		foreach($remove as $element) {
+		foreach ($remove as $element) {
 			$principal = $this->principalBackend->findByUri($element, '');
 			if ($principal !== '') {
 				$this->unshare($shareable, $element);
@@ -78,7 +77,7 @@ class Backend {
 	 */
 	private function shareWith($shareable, $element) {
 		$user = $element['href'];
-		$parts = explode(':', $user, 2);
+		$parts = \explode(':', $user, 2);
 		if ($parts[0] !== 'principal') {
 			return;
 		}
@@ -130,7 +129,7 @@ class Backend {
 	 * @param string $element
 	 */
 	private function unshare($shareable, $element) {
-		$parts = explode(':', $element, 2);
+		$parts = \explode(':', $element, 2);
 		if ($parts[0] !== 'principal') {
 			return;
 		}
@@ -171,7 +170,7 @@ class Backend {
 			->execute();
 
 		$shares = [];
-		while($row = $result->fetch()) {
+		while ($row = $result->fetch()) {
 			$p = $this->principalBackend->getPrincipalByPath($row['principaluri']);
 			$shares[]= [
 				'href' => "principal:${row['principaluri']}",
@@ -179,7 +178,7 @@ class Backend {
 				'status' => 1,
 				'readOnly' => ($row['access'] == self::ACCESS_READ),
 				'{http://owncloud.org/ns}principal' => $row['principaluri'],
-				'{http://owncloud.org/ns}group-share' => is_null($p)
+				'{http://owncloud.org/ns}group-share' => $p === null
 			];
 		}
 
@@ -194,7 +193,6 @@ class Backend {
 	 * @return array
 	 */
 	public function applyShareAcl($resourceId, $acl) {
-
 		$shares = $this->getShares($resourceId);
 		foreach ($shares as $share) {
 			$acl[] = [
@@ -208,7 +206,7 @@ class Backend {
 					'principal' => $share['{' . \OCA\DAV\DAV\Sharing\Plugin::NS_OWNCLOUD . '}principal'],
 					'protected' => true,
 				];
-			} else if ($this->resourceType === 'calendar') {
+			} elseif ($this->resourceType === 'calendar') {
 				// Allow changing the properties of read only calendars,
 				// so users can change the visibility.
 				$acl[] = [
@@ -220,5 +218,4 @@ class Backend {
 		}
 		return $acl;
 	}
-
 }

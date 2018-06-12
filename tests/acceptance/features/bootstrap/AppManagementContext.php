@@ -26,12 +26,11 @@ require __DIR__ . '/../../../../lib/composer/autoload.php';
 /**
  * App Management context.
  */
-class AppManagementContext implements  Context {
-	
+class AppManagementContext implements Context {
 	private $oldAppPath;
 	
 	/**
-	 * @var string stdout of last command 
+	 * @var string stdout of last command
 	 */
 	private $cmdOutput;
 	
@@ -57,7 +56,7 @@ class AppManagementContext implements  Context {
 	 * @return void
 	 */
 	public function undoChangingParameters() {
-		if (!is_null($this->oldAppPath)) {
+		if ($this->oldAppPath !== null) {
 			\OC::$server->getConfig()->setSystemValue(
 				'apps_paths', $this->oldAppPath
 			);
@@ -80,7 +79,7 @@ class AppManagementContext implements  Context {
 		\OC::$server->getConfig()->setSystemValue(
 			'apps_paths',
 			[
-				['path' => $fullpath1, 'url' => $dir1, 'writable' => true], 
+				['path' => $fullpath1, 'url' => $dir1, 'writable' => true],
 				['path' => $fullpath2, 'url' => $dir2, 'writable' => true]
 			]
 		);
@@ -124,20 +123,20 @@ class AppManagementContext implements  Context {
 			$ocVersion
 		);
 		$appsDir = \OC::$SERVERROOT . '/' . $dir;
-		if (!file_exists($appsDir)) {
-			mkdir($appsDir);
+		if (!\file_exists($appsDir)) {
+			\mkdir($appsDir);
 		}
-		if (!file_exists($appsDir . '/' . $appId)) {
-			mkdir($appsDir . '/' . $appId);
+		if (!\file_exists($appsDir . '/' . $appId)) {
+			\mkdir($appsDir . '/' . $appId);
 		}
 		
 		$fullpath = $appsDir . '/' . $appId;
 		
-		if (!file_exists($fullpath . '/appinfo')) {
-			mkdir($fullpath . '/appinfo');
+		if (!\file_exists($fullpath . '/appinfo')) {
+			\mkdir($fullpath . '/appinfo');
 		}
 		
-		file_put_contents($fullpath . '/appinfo/info.xml', $appInfo);
+		\file_put_contents($fullpath . '/appinfo/info.xml', $appInfo);
 	}
 	
 	/**
@@ -149,28 +148,28 @@ class AppManagementContext implements  Context {
 	 * @return void
 	 */
 	public function loadApp($appId) {
-		$args = explode(' ', "app:getpath $appId");
-		$args = array_map(
+		$args = \explode(' ', "app:getpath $appId");
+		$args = \array_map(
 			function ($arg) {
-				return escapeshellarg($arg);
+				return \escapeshellarg($arg);
 			}, $args
 		);
 		$args[] = '--no-ansi';
-		$args = implode(' ', $args);
+		$args = \implode(' ', $args);
 
 		$descriptor = [
 			0 => ['pipe', 'r'],
 			1 => ['pipe', 'w'],
 			2 => ['pipe', 'w'],
 		];
-		$process = proc_open(
+		$process = \proc_open(
 			'php console.php ' . $args,
 			$descriptor,
 			$pipes,
 			\OC::$SERVERROOT
 		);
-		$this->cmdOutput = stream_get_contents($pipes[1]);
-		proc_close($process);
+		$this->cmdOutput = \stream_get_contents($pipes[1]);
+		\proc_close($process);
 	}
 	
 	/**
@@ -184,7 +183,7 @@ class AppManagementContext implements  Context {
 	public function appVersionIs($appId, $dir) {
 		PHPUnit_Framework_Assert::assertEquals(
 			\OC::$SERVERROOT . '/' . $dir . '/' . $appId,
-			trim($this->cmdOutput)
+			\trim($this->cmdOutput)
 		);
 	}
 }

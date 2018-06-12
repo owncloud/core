@@ -25,7 +25,7 @@ use GuzzleHttp\Message\ResponseInterface;
 
 /**
  * Helper to administrate users (and groups) through the provosioning API
- * 
+ *
  * @author Artur Neumann <artur@jankaritech.com>
  *
  */
@@ -78,7 +78,7 @@ class UserHelper {
 	}
 
 	/**
-	 * 
+	 *
 	 * @param string $baseUrl
 	 * @param string $user
 	 * @param string $key
@@ -102,7 +102,7 @@ class UserHelper {
 	}
 
 	/**
-	 * 
+	 *
 	 * @param string $baseUrl
 	 * @param string $userName
 	 * @param string $adminUser
@@ -125,7 +125,7 @@ class UserHelper {
 	}
 
 	/**
-	 * 
+	 *
 	 * @param string $baseUrl
 	 * @param string $group
 	 * @param string $adminUser
@@ -143,7 +143,7 @@ class UserHelper {
 	}
 
 	/**
-	 * 
+	 *
 	 * @param string $baseUrl
 	 * @param string $group
 	 * @param string $adminUser
@@ -154,7 +154,7 @@ class UserHelper {
 	public static function deleteGroup(
 		$baseUrl, $group, $adminUser, $adminPassword, $apiVersion = 2
 	) {
-		$group = rawurlencode($group);
+		$group = \rawurlencode($group);
 		return OcsApiHelper::sendRequest(
 			$baseUrl, $adminUser, $adminPassword,
 			"DELETE", "/cloud/groups/" . $group, [], $apiVersion
@@ -162,7 +162,7 @@ class UserHelper {
 	}
 
 	/**
-	 * 
+	 *
 	 * @param string $baseUrl
 	 * @param string $user
 	 * @param string $group
@@ -200,7 +200,7 @@ class UserHelper {
 	}
 
 	/**
-	 * 
+	 *
 	 * @param string $baseUrl
 	 * @param string $adminUser
 	 * @param string $adminPassword
@@ -218,7 +218,7 @@ class UserHelper {
 	}
 
 	/**
-	 * 
+	 *
 	 * @param string $baseUrl
 	 * @param string $adminUser
 	 * @param string $adminPassword

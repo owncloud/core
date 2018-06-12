@@ -87,7 +87,7 @@ class DBLockingProvider extends AbstractLockingProvider {
 		parent::markChange($path, $targetType);
 		if ($targetType === self::LOCK_SHARED) {
 			$this->sharedLocks[$path] = true;
-		} else if ($targetType === self::LOCK_EXCLUSIVE) {
+		} elseif ($targetType === self::LOCK_EXCLUSIVE) {
 			$this->sharedLocks[$path] = false;
 		}
 	}
@@ -144,7 +144,7 @@ class DBLockingProvider extends AbstractLockingProvider {
 			} else {
 				return $lockValue > 0;
 			}
-		} else if ($type === self::LOCK_EXCLUSIVE) {
+		} elseif ($type === self::LOCK_EXCLUSIVE) {
 			return $lockValue === -1;
 		} else {
 			return false;
@@ -157,7 +157,7 @@ class DBLockingProvider extends AbstractLockingProvider {
 	 * @throws \OCP\Lock\LockedException
 	 */
 	public function acquireLock($path, $type) {
-		if (strlen($path) > 64) { // max length in file_locks
+		if (\strlen($path) > 64) { // max length in file_locks
 			throw new \InvalidArgumentException("Lock key length too long");
 		}
 		$expire = $this->getExpireTime();
@@ -263,12 +263,12 @@ class DBLockingProvider extends AbstractLockingProvider {
 		parent::releaseAll();
 
 		// since we keep shared locks we need to manually clean those
-		$lockedPaths = array_keys($this->sharedLocks);
-		$lockedPaths = array_filter($lockedPaths, function ($path) {
+		$lockedPaths = \array_keys($this->sharedLocks);
+		$lockedPaths = \array_filter($lockedPaths, function ($path) {
 			return $this->sharedLocks[$path];
 		});
 
-		$chunkedPaths = array_chunk($lockedPaths, 100);
+		$chunkedPaths = \array_chunk($lockedPaths, 100);
 
 		foreach ($chunkedPaths as $chunk) {
 			$builder = $this->connection->getQueryBuilder();

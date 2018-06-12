@@ -19,7 +19,6 @@
  *
  */
 
-
 namespace OC\Files\Meta;
 
 use OC\Files\Node\AbstractFolder;
@@ -88,17 +87,16 @@ class MetaFileIdNode extends AbstractFolder {
 	 * @inheritdoc
 	 */
 	public function get($path) {
-		$pieces = explode('/', $path);
-		if($pieces[0] === 'v') {
-			array_shift($pieces);
+		$pieces = \explode('/', $path);
+		if ($pieces[0] === 'v') {
+			\array_shift($pieces);
 			$node = new MetaVersionCollection($this->fileId, $this->root);
 			if (empty($pieces)) {
 				return $node;
 			}
-			return $node->get(implode('/', $pieces));
+			return $node->get(\implode('/', $pieces));
 		}
 		throw new NotFoundException();
-
 	}
 
 	/**
@@ -170,5 +168,4 @@ class MetaFileIdNode extends AbstractFolder {
 	public function getName() {
 		return "{$this->fileId}";
 	}
-
 }

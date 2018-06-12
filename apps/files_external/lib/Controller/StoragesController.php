@@ -26,7 +26,6 @@
 
 namespace OCA\Files_External\Controller;
 
-
 use OCP\AppFramework\Controller;
 use OCP\AppFramework\Http;
 use OCP\AppFramework\Http\DataResponse;
@@ -270,7 +269,7 @@ abstract class StoragesController extends Controller {
 			// FIXME: convert storage exceptions to StorageNotAvailableException
 			$storage->setStatus(
 				StorageNotAvailableException::STATUS_ERROR,
-				get_class($e).': '.$e->getMessage()
+				\get_class($e).': '.$e->getMessage()
 			);
 		}
 	}
@@ -338,6 +337,4 @@ abstract class StoragesController extends Controller {
 
 		return new DataResponse([], Http::STATUS_NO_CONTENT);
 	}
-
 }
-

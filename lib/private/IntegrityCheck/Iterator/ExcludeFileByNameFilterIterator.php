@@ -23,7 +23,7 @@
 namespace OC\IntegrityCheck\Iterator;
 
 /**
- * Class ExcludeFileByNameFilterIterator provides a custom iterator which excludes 
+ * Class ExcludeFileByNameFilterIterator provides a custom iterator which excludes
  * entries with the specified file name or name part from the file list.
  *
  * @package OC\Integritycheck\Iterator
@@ -52,8 +52,8 @@ class ExcludeFileByNameFilterIterator extends \RecursiveFilterIterator {
 	 */
 	private $excludedFileNamePatterns = [
 		'/^\.webapp-owncloud-.*/', // Gentoo/Funtoo & derivatives use a tool known as webapp-config to manage wep-apps.
- 	];
- 	
+	];
+	
 	/**
 	 * Array of excluded path and file name parts. Those are not scanned by the integrity checker.
 	 * These strings are regular expressions and any filepath
@@ -63,8 +63,7 @@ class ExcludeFileByNameFilterIterator extends \RecursiveFilterIterator {
 	 */
 	private $excludedFilePathPatterns = [
 		'|/core/js/mimetypelist.js$|', // this file can be regenerated with additional entries with occ maintenance:mimetype:update-js
- 	];
-
+	];
 
 	/**
 	 * @return bool
@@ -78,19 +77,19 @@ class ExcludeFileByNameFilterIterator extends \RecursiveFilterIterator {
 		}
 
 		$currentFileName = $current->getFilename();
-		if (in_array($currentFileName, $this->excludedFilenames, true)){
+		if (\in_array($currentFileName, $this->excludedFilenames, true)) {
 			return false;
 		}
 
-		foreach ($this->excludedFileNamePatterns as $pattern){
-			if (preg_match($pattern, $currentFileName) > 0){
+		foreach ($this->excludedFileNamePatterns as $pattern) {
+			if (\preg_match($pattern, $currentFileName) > 0) {
 				return false;
 			}
 		}
 		
 		$currentFilePath = $current->getPathname();
-		foreach ($this->excludedFilePathPatterns as $pattern){
-			if (preg_match($pattern, $currentFilePath) > 0){
+		foreach ($this->excludedFilePathPatterns as $pattern) {
+			if (\preg_match($pattern, $currentFilePath) > 0) {
 				return false;
 			}
 		}

@@ -19,9 +19,7 @@
  *
  */
 
-
 namespace OCA\DAV\Upload;
-
 
 use Sabre\DAV\Exception\BadRequest;
 use Sabre\DAV\Server;
@@ -37,7 +35,7 @@ class ChunkingPlugin extends ServerPlugin {
 	/**
 	 * @inheritdoc
 	 */
-	function initialize(Server $server) {
+	public function initialize(Server $server) {
 		$server->on('beforeMove', [$this, 'beforeMove']);
 		$this->server = $server;
 	}
@@ -49,7 +47,7 @@ class ChunkingPlugin extends ServerPlugin {
 	 * @throws BadRequest
 	 * @throws \Sabre\DAV\Exception\NotFound
 	 */
-	function beforeMove($sourcePath, $destination) {
+	public function beforeMove($sourcePath, $destination) {
 		$this->sourceNode = $this->server->tree->getNodeForPath($sourcePath);
 		if (!$this->sourceNode instanceof FutureFile) {
 			// skip handling as the source is not a chunked FutureFile

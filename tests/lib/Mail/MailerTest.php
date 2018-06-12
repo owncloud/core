@@ -24,7 +24,7 @@ class MailerTest extends TestCase {
 	/** @var Mailer */
 	private $mailer;
 
-	function setUp() {
+	public function setUp() {
 		parent::setUp();
 
 		$this->config = $this->getMockBuilder('\OCP\IConfig')
@@ -149,14 +149,11 @@ class MailerTest extends TestCase {
 			->method('debug')
 			->with('Sent mail from "{from}" to "{recipients}" with subject "{subject}"', [
 				'app' => 'core',
-				'from' => json_encode($from),
-				'recipients' => json_encode(array_merge($to, $cc, $bcc)),
+				'from' => \json_encode($from),
+				'recipients' => \json_encode(\array_merge($to, $cc, $bcc)),
 				'subject' => 'Email subject'
 			]);
 
 		$this->mailer->send($message);
-
-
 	}
-
 }

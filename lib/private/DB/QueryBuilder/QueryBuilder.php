@@ -93,9 +93,9 @@ class QueryBuilder implements IQueryBuilder {
 	public function expr() {
 		if ($this->connection instanceof OracleConnection) {
 			return new OCIExpressionBuilder($this->connection);
-		} else if ($this->connection->getDatabasePlatform() instanceof PostgreSqlPlatform) {
+		} elseif ($this->connection->getDatabasePlatform() instanceof PostgreSqlPlatform) {
 			return new PgSqlExpressionBuilder($this->connection);
-		} else if ($this->connection->getDatabasePlatform() instanceof MySqlPlatform) {
+		} elseif ($this->connection->getDatabasePlatform() instanceof MySqlPlatform) {
 			return new MySqlExpressionBuilder($this->connection);
 		} else {
 			return new ExpressionBuilder($this->connection);
@@ -311,7 +311,7 @@ class QueryBuilder implements IQueryBuilder {
 	 * @return \OCP\DB\QueryBuilder\IQueryBuilder This QueryBuilder instance.
 	 */
 	public function select($select = null) {
-		$selects = is_array($select) ? $select : func_get_args();
+		$selects = \is_array($select) ? $select : \func_get_args();
 
 		$this->queryBuilder->select(
 			$this->helper->quoteColumnNames($selects)
@@ -336,7 +336,6 @@ class QueryBuilder implements IQueryBuilder {
 	 * @return \OCP\DB\QueryBuilder\IQueryBuilder This QueryBuilder instance.
 	 */
 	public function selectAlias($select, $alias) {
-
 		$this->queryBuilder->addSelect(
 			$this->helper->quoteColumnName($select) . ' AS ' . $this->helper->quoteColumnName($alias)
 		);
@@ -358,7 +357,6 @@ class QueryBuilder implements IQueryBuilder {
 	 * @return \OCP\DB\QueryBuilder\IQueryBuilder This QueryBuilder instance.
 	 */
 	public function selectDistinct($select) {
-
 		$this->queryBuilder->addSelect(
 			'DISTINCT ' . $this->helper->quoteColumnName($select)
 		);
@@ -382,7 +380,7 @@ class QueryBuilder implements IQueryBuilder {
 	 * @return \OCP\DB\QueryBuilder\IQueryBuilder This QueryBuilder instance.
 	 */
 	public function addSelect($select = null) {
-		$selects = is_array($select) ? $select : func_get_args();
+		$selects = \is_array($select) ? $select : \func_get_args();
 
 		$this->queryBuilder->addSelect(
 			$this->helper->quoteColumnNames($selects)
@@ -657,9 +655,9 @@ class QueryBuilder implements IQueryBuilder {
 	 * @return \OCP\DB\QueryBuilder\IQueryBuilder This QueryBuilder instance.
 	 */
 	public function where($predicates) {
-		call_user_func_array(
+		\call_user_func_array(
 			[$this->queryBuilder, 'where'],
-			func_get_args()
+			\func_get_args()
 		);
 
 		return $this;
@@ -684,9 +682,9 @@ class QueryBuilder implements IQueryBuilder {
 	 * @see where()
 	 */
 	public function andWhere($where) {
-		call_user_func_array(
+		\call_user_func_array(
 			[$this->queryBuilder, 'andWhere'],
-			func_get_args()
+			\func_get_args()
 		);
 
 		return $this;
@@ -711,9 +709,9 @@ class QueryBuilder implements IQueryBuilder {
 	 * @see where()
 	 */
 	public function orWhere($where) {
-		call_user_func_array(
+		\call_user_func_array(
 			[$this->queryBuilder, 'orWhere'],
-			func_get_args()
+			\func_get_args()
 		);
 
 		return $this;
@@ -735,9 +733,9 @@ class QueryBuilder implements IQueryBuilder {
 	 * @return \OCP\DB\QueryBuilder\IQueryBuilder This QueryBuilder instance.
 	 */
 	public function groupBy($groupBy) {
-		$groupBys = is_array($groupBy) ? $groupBy : func_get_args();
+		$groupBys = \is_array($groupBy) ? $groupBy : \func_get_args();
 
-		call_user_func_array(
+		\call_user_func_array(
 			[$this->queryBuilder, 'groupBy'],
 			$this->helper->quoteColumnNames($groupBys)
 		);
@@ -761,9 +759,9 @@ class QueryBuilder implements IQueryBuilder {
 	 * @return \OCP\DB\QueryBuilder\IQueryBuilder This QueryBuilder instance.
 	 */
 	public function addGroupBy($groupBy) {
-		$groupBys = is_array($groupBy) ? $groupBy : func_get_args();
+		$groupBys = \is_array($groupBy) ? $groupBy : \func_get_args();
 
-		call_user_func_array(
+		\call_user_func_array(
 			[$this->queryBuilder, 'addGroupBy'],
 			$this->helper->quoteColumnNames($groupBys)
 		);
@@ -838,9 +836,9 @@ class QueryBuilder implements IQueryBuilder {
 	 * @return \OCP\DB\QueryBuilder\IQueryBuilder This QueryBuilder instance.
 	 */
 	public function having($having) {
-		call_user_func_array(
+		\call_user_func_array(
 			[$this->queryBuilder, 'having'],
-			func_get_args()
+			\func_get_args()
 		);
 
 		return $this;
@@ -855,9 +853,9 @@ class QueryBuilder implements IQueryBuilder {
 	 * @return \OCP\DB\QueryBuilder\IQueryBuilder This QueryBuilder instance.
 	 */
 	public function andHaving($having) {
-		call_user_func_array(
+		\call_user_func_array(
 			[$this->queryBuilder, 'andHaving'],
-			func_get_args()
+			\func_get_args()
 		);
 
 		return $this;
@@ -872,9 +870,9 @@ class QueryBuilder implements IQueryBuilder {
 	 * @return \OCP\DB\QueryBuilder\IQueryBuilder This QueryBuilder instance.
 	 */
 	public function orHaving($having) {
-		call_user_func_array(
+		\call_user_func_array(
 			[$this->queryBuilder, 'orHaving'],
-			func_get_args()
+			\func_get_args()
 		);
 
 		return $this;
@@ -1100,7 +1098,7 @@ class QueryBuilder implements IQueryBuilder {
 	 * @return string
 	 */
 	protected function prefixTableName($table) {
-		if ($this->automaticTablePrefix === false || strpos($table, '*PREFIX*') === 0) {
+		if ($this->automaticTablePrefix === false || \strpos($table, '*PREFIX*') === 0) {
 			return $table;
 		}
 

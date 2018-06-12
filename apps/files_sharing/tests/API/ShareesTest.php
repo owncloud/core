@@ -162,7 +162,7 @@ class ShareesTest extends TestCase {
 			->method('getGID')
 			->willReturn($gid);
 
-		if (is_null($displayName)) {
+		if ($displayName === null) {
 			// note: this is how the Group class behaves
 			$displayName = $gid;
 		}
@@ -571,7 +571,7 @@ class ShareesTest extends TestCase {
 					->willReturn($groupResponse);
 			}
 
-			$this->groupManager->expects($this->exactly(sizeof($groupResponse)))
+			$this->groupManager->expects($this->exactly(\sizeof($groupResponse)))
 				->method('findUsersInGroup')
 				->with($this->anything(), $searchTerm, $this->invokePrivate($this->sharees, 'limit'), $this->invokePrivate($this->sharees, 'offset'))
 				->willReturnMap($userResponse);
@@ -1333,7 +1333,7 @@ class ShareesTest extends TestCase {
 		// inject previous results if needed
 		if (!empty($previousExact)) {
 			$result = $this->invokePrivate($this->sharees, 'result');
-			$result['exact'] = array_merge($result['exact'], $previousExact);
+			$result['exact'] = \array_merge($result['exact'], $previousExact);
 			$this->invokePrivate($this->sharees, 'result', [$result]);
 		}
 
@@ -1640,7 +1640,7 @@ class ShareesTest extends TestCase {
 		$sharees->expects(($mockedUserResult === null) ? $this->never() : $this->once())
 			->method('getUsers')
 			->with($searchTerm)
-			->willReturnCallback(function() use ($sharees, $mockedUserResult) {
+			->willReturnCallback(function () use ($sharees, $mockedUserResult) {
 				$result = $this->invokePrivate($sharees, 'result');
 				$result['users'] = $mockedUserResult;
 				$this->invokePrivate($sharees, 'result', [$result]);
@@ -1648,7 +1648,7 @@ class ShareesTest extends TestCase {
 		$sharees->expects(($mockedGroupsResult === null) ? $this->never() : $this->once())
 			->method('getGroups')
 			->with($searchTerm)
-			->willReturnCallback(function() use ($sharees, $mockedGroupsResult) {
+			->willReturnCallback(function () use ($sharees, $mockedGroupsResult) {
 				$result = $this->invokePrivate($sharees, 'result');
 				$result['groups'] = $mockedGroupsResult;
 				$this->invokePrivate($sharees, 'result', [$result]);
@@ -1656,7 +1656,7 @@ class ShareesTest extends TestCase {
 		$sharees->expects(($mockedRemotesResult === null) ? $this->never() : $this->once())
 			->method('getRemote')
 			->with($searchTerm)
-			->willReturnCallback(function() use ($sharees, $mockedRemotesResult) {
+			->willReturnCallback(function () use ($sharees, $mockedRemotesResult) {
 				$result = $this->invokePrivate($sharees, 'result');
 				$result['remotes'] = $mockedRemotesResult;
 				$this->invokePrivate($sharees, 'result', [$result]);

@@ -47,7 +47,7 @@ class FilterRequest implements XmlDeserializable {
 	 * @param Reader $reader
 	 * @return mixed
 	 */
-	static function xmlDeserialize(Reader $reader) {
+	public static function xmlDeserialize(Reader $reader) {
 		$elems = (array)$reader->parseInnerTree([
 			'{DAV:}prop' => KeyValue::class,
 			'{http://owncloud.org/ns}filter-rules' => Base::class,
@@ -63,18 +63,17 @@ class FilterRequest implements XmlDeserializable {
 			'search' => null,
 		];
 
-		if (!is_array($elems)) {
+		if (!\is_array($elems)) {
 			$elems = [];
 		}
 
 		foreach ($elems as $elem) {
-
 			switch ($elem['name']) {
 
-				case '{DAV:}prop' :
-					$newProps['properties'] = array_keys($elem['value']);
+				case '{DAV:}prop':
+					$newProps['properties'] = \array_keys($elem['value']);
 					break;
-				case '{http://owncloud.org/ns}filter-rules' :
+				case '{http://owncloud.org/ns}filter-rules':
 
 					foreach ($elem['value'] as $tag) {
 						if ($tag['name'] === '{http://owncloud.org/ns}systemtag') {
@@ -85,7 +84,7 @@ class FilterRequest implements XmlDeserializable {
 						}
 					}
 					break;
-				case '{http://owncloud.org/ns}search' :
+				case '{http://owncloud.org/ns}search':
 					$value = $elem['value'];
 					if (isset($value['{http://owncloud.org/ns}pattern'])) {
 						$newProps['search']['pattern'] = $value['{http://owncloud.org/ns}pattern'];

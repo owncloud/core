@@ -51,13 +51,13 @@ class ImportCertificate extends Base {
 	protected function execute(InputInterface $input, OutputInterface $output) {
 		$path = $input->getArgument('path');
 
-		if (!file_exists($path)) {
+		if (!\file_exists($path)) {
 			$output->writeln('<error>certificate not found</error>');
 			return;
 		}
 
-		$certData = file_get_contents($path);
-		$name = basename($path);
+		$certData = \file_get_contents($path);
+		$name = \basename($path);
 
 		$this->certificateManager->addCertificate($certData, $name);
 	}

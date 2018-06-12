@@ -63,7 +63,6 @@ use Sabre\DAV\IFile;
 use Symfony\Component\EventDispatcher\GenericEvent;
 
 class File extends Node implements IFile, IFileNode {
-
 	use EventEmitterTrait;
 	protected $request;
 	
@@ -144,11 +143,11 @@ class File extends Node implements IFile, IFileNode {
 		}
 
 		list($partStorage) = $this->fileView->resolvePath($this->path);
-		$needsPartFile = $this->needsPartFile($partStorage) && (strlen($this->path) > 1);
+		$needsPartFile = $this->needsPartFile($partStorage) && (\strlen($this->path) > 1);
 
 		if ($needsPartFile) {
 			// mark file as partial while uploading (ignored by the scanner)
-			$partFilePath = $this->getPartFileBasePath($this->path) . '.ocTransferId' . rand() . '.part';
+			$partFilePath = $this->getPartFileBasePath($this->path) . '.ocTransferId' . \rand() . '.part';
 		} else {
 			// upload file directly as the final path
 			$partFilePath = $this->path;
@@ -167,7 +166,7 @@ class File extends Node implements IFile, IFileNode {
 				throw new Exception('Could not write file contents');
 			}
 			list($count, $result) = \OC_Helper::streamCopy($data, $target);
-			fclose($target);
+			\fclose($target);
 
 			if (!self::isChecksumValid($partStorage, $internalPartPath)) {
 				throw new BadRequest('The computed checksum does not match the one received from the client.');
@@ -190,7 +189,6 @@ class File extends Node implements IFile, IFileNode {
 					throw new BadRequest('expected filesize ' . $expected . ' got ' . $count);
 				}
 			}
-
 		} catch (\Exception $e) {
 			if ($needsPartFile) {
 				$partStorage->unlink($internalPartPath);
@@ -267,7 +265,6 @@ class File extends Node implements IFile, IFileNode {
 			}
 
 			$this->refreshInfo();
-
 		} catch (StorageNotAvailableException $e) {
 			throw new ServiceUnavailable("Failed to check file size: " . $e->getMessage());
 		}
@@ -286,7 +283,7 @@ class File extends Node implements IFile, IFileNode {
 		if ($partFileInStorage) {
 			return $path;
 		} else {
-			return md5($path); // will place it in the root of the view with a unique name
+			return \md5($path); // will place it in the root of the view with a unique name
 		}
 	}
 
@@ -294,7 +291,7 @@ class File extends Node implements IFile, IFileNode {
 	 * @param string $path
 	 */
 	private function emitPreHooks($exists, $path = null) {
-		if (is_null($path)) {
+		if ($path === null) {
 			$path = $this->path;
 		}
 		$hookPath = Filesystem::getView()->getRelativePath($this->fileView->getAbsolutePath($path));
@@ -338,7 +335,7 @@ class File extends Node implements IFile, IFileNode {
 	 * @param string $path
 	 */
 	private function emitPostHooks($exists, $path = null) {
-		if (is_null($path)) {
+		if ($path === null) {
 			$path = $this->path;
 		}
 		$hookPath = Filesystem::getView()->getRelativePath($this->fileView->getAbsolutePath($path));
@@ -366,7 +363,7 @@ class File extends Node implements IFile, IFileNode {
 	public function get() {
 		//throw exception if encryption is disabled but files are still encrypted
 		try {
-			$viewPath = ltrim($this->path, '/');
+			$viewPath = \ltrim($this->path, '/');
 			if (!$this->info->isReadable() || !$this->fileView->file_exists($viewPath)) {
 				// do a if the file did not exist
 				throw new NotFound();
@@ -439,7 +436,7 @@ class File extends Node implements IFile, IFileNode {
 		}
 		/** @var \OCP\Files\Storage $storage */
 		list($storage, $internalPath) = $this->fileView->resolvePath($this->path);
-		if (is_null($storage)) {
+		if ($storage === null) {
 			return [];
 		}
 
@@ -466,7 +463,7 @@ class File extends Node implements IFile, IFileNode {
 		$bytesWritten = $chunk_handler->store($info['index'], $data);
 
 		//detect aborted upload
-		if (isset ($_SERVER['REQUEST_METHOD']) && $_SERVER['REQUEST_METHOD'] === 'PUT') {
+		if (isset($_SERVER['REQUEST_METHOD']) && $_SERVER['REQUEST_METHOD'] === 'PUT') {
 			if (isset($_SERVER['CONTENT_LENGTH'])) {
 				$expected = $_SERVER['CONTENT_LENGTH'];
 				if ($bytesWritten != $expected) {
@@ -478,7 +475,7 @@ class File extends Node implements IFile, IFileNode {
 		}
 
 		if ($chunk_handler->isComplete()) {
-			list($storage,) = $this->fileView->resolvePath($path);
+			list($storage, ) = $this->fileView->resolvePath($path);
 			$needsPartFile = $this->needsPartFile($storage);
 			$partFile = null;
 
@@ -511,7 +508,6 @@ class File extends Node implements IFile, IFileNode {
 					$partFile = $this->getPartFileBasePath($path . '/' . $info['name']) . '.ocTransferId' . $info['transferid'] . '.part';
 					/** @var \OC\Files\Storage\Storage $targetStorage */
 					list($partStorage, $partInternalPath) = $this->fileView->resolvePath($partFile);
-
 
 					$chunk_handler->file_assemble($partStorage, $partInternalPath);
 
@@ -559,8 +555,7 @@ class File extends Node implements IFile, IFileNode {
 				// FIXME: should call refreshInfo but can't because $this->path is not the of the final file
 				$info = $this->fileView->getFileInfo($targetPath);
 
-
-				if (isset($partStorage) && isset($partInternalPath)) {
+				if (isset($partStorage, $partInternalPath)) {
 					$checksums = $partStorage->getMetaData($partInternalPath)['checksum'];
 				} else {
 					$checksums = $targetStorage->getMetaData($targetInternalPath)['checksum'];
@@ -612,11 +607,10 @@ class File extends Node implements IFile, IFileNode {
 			return true;
 		}
 
-		$expectedChecksum = trim($request->server['HTTP_OC_CHECKSUM']);
+		$expectedChecksum = \trim($request->server['HTTP_OC_CHECKSUM']);
 		$computedChecksums = $meta['checksum'];
 
-		return strpos($computedChecksums, $expectedChecksum) !== false;
-
+		return \strpos($computedChecksums, $expectedChecksum) !== false;
 	}
 
 	/**
@@ -699,12 +693,12 @@ class File extends Node implements IFile, IFileNode {
 			return $allChecksums;
 		}
 
-		$checksums = explode(' ', $allChecksums);
-		$algoPrefix = strtoupper($algo) . ':';
+		$checksums = \explode(' ', $allChecksums);
+		$algoPrefix = \strtoupper($algo) . ':';
 
 		foreach ($checksums as $checksum) {
 			// starts with $algoPrefix
-			if (substr($checksum, 0, strlen($algoPrefix)) === $algoPrefix) {
+			if (\substr($checksum, 0, \strlen($algoPrefix)) === $algoPrefix) {
 				return $checksum;
 			}
 		}

@@ -85,11 +85,10 @@ class ReadOnlyCachePermissionsMask extends CacheWrapper {
 	}
 
 	private function isHomeStorage($storageId) {
-		return \substr($storageId, 0, strlen('home::')) === 'home::';
+		return \substr($storageId, 0, \strlen('home::')) === 'home::';
 	}
 
-	function startsWith($haystack, $needle) {
+	public function startsWith($haystack, $needle) {
 		return (\substr($haystack, 0, \strlen($needle)) === $needle);
 	}
 }
-

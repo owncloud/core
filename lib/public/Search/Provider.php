@@ -60,7 +60,7 @@ abstract class Provider {
 	 * @since 8.0.0
 	 */
 	public function getOption($key) {
-		if (is_array($this->options) && isset($this->options[$key])) {
+		if (\is_array($this->options) && isset($this->options[$key])) {
 			return $this->options[$key];
 		} else {
 			return null;
@@ -78,7 +78,7 @@ abstract class Provider {
 	 */
 	public function providesResultsFor(array $apps = []) {
 		$forApps = $this->getOption(self::OPTION_APPS);
-		return empty($apps) || empty($forApps) || array_intersect($forApps, $apps);
+		return empty($apps) || empty($forApps) || \array_intersect($forApps, $apps);
 	}
 
 	/**

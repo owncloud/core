@@ -26,15 +26,15 @@ require __DIR__ . '/../../../../lib/composer/autoload.php';
  */
 trait CommandLine {
 	/**
-	 * @var int return code of last command 
+	 * @var int return code of last command
 	 */
 	private $lastCode;
 	/**
-	 * @var string stdout of last command 
+	 * @var string stdout of last command
 	 */
 	private $lastStdOut;
 	/**
-	 * @var string stderr of last command 
+	 * @var string stderr of last command
 	 */
 	private $lastStdErr;
 
@@ -48,26 +48,26 @@ trait CommandLine {
 	 */
 	public function runOcc($args = [], $escaping = true) {
 		if ($escaping === true) {
-			$args = array_map(
+			$args = \array_map(
 				function ($arg) {
-					return escapeshellarg($arg);
+					return \escapeshellarg($arg);
 				}, $args
 			);
 		}
 		$args[] = '--no-ansi';
-		$args = implode(' ', $args);
+		$args = \implode(' ', $args);
 
 		$descriptor = [
 			0 => ['pipe', 'r'],
 			1 => ['pipe', 'w'],
 			2 => ['pipe', 'w'],
 		];
-		$process = proc_open(
+		$process = \proc_open(
 			'php console.php ' . $args, $descriptor, $pipes, $this->ocPath
 		);
-		$this->lastStdOut = stream_get_contents($pipes[1]);
-		$this->lastStdErr = stream_get_contents($pipes[2]);
-		$this->lastCode = proc_close($process);
+		$this->lastStdOut = \stream_get_contents($pipes[1]);
+		$this->lastStdErr = \stream_get_contents($pipes[2]);
+		$this->lastCode = \proc_close($process);
 		return $this->lastCode;
 	}
 
@@ -80,7 +80,7 @@ trait CommandLine {
 	 * @return void
 	 */
 	public function invokingTheCommand($cmd) {
-		$args = explode(' ', $cmd);
+		$args = \explode(' ', $cmd);
 		$this->runOcc($args);
 	}
 
@@ -93,13 +93,13 @@ trait CommandLine {
 		$exceptions = [];
 		$captureNext = false;
 		// the exception text usually appears after an "[Exception]" row
-		foreach (explode("\n", $this->lastStdErr) as $line) {
-			if (preg_match('/\[Exception\]/', $line)) {
+		foreach (\explode("\n", $this->lastStdErr) as $line) {
+			if (\preg_match('/\[Exception\]/', $line)) {
 				$captureNext = true;
 				continue;
 			}
 			if ($captureNext) {
-				$exceptions[] = trim($line);
+				$exceptions[] = \trim($line);
 				$captureNext = false;
 			}
 		}
@@ -117,8 +117,8 @@ trait CommandLine {
 	 */
 	public function findLines($input, $text) {
 		$results = [];
-		foreach (explode("\n", $input) as $line) {
-			if (strpos($line, $text) !== false) {
+		foreach (\explode("\n", $input) as $line) {
+			if (\strpos($line, $text) !== false) {
 				$results[] = $line;
 			}
 		}
@@ -138,7 +138,7 @@ trait CommandLine {
 			$msg = 'The command was not successful, exit code was '
 				. $this->lastCode . '.';
 			if (!empty($exceptions)) {
-				$msg .= ' Exceptions: ' . implode(', ', $exceptions);
+				$msg .= ' Exceptions: ' . \implode(', ', $exceptions);
 			}
 			throw new \Exception($msg);
 		} elseif (!empty($exceptions)) {
@@ -179,7 +179,7 @@ trait CommandLine {
 			throw new \Exception('The command did not throw any exceptions');
 		}
 
-		if (!in_array($exceptionText, $exceptions)) {
+		if (!\in_array($exceptionText, $exceptions)) {
 			throw new \Exception(
 				'The command did not throw any exception with the text "'
 				. $exceptionText . '"'
@@ -235,15 +235,15 @@ trait CommandLine {
 		$foundPaths = [];
 		$results = $this->listFolder($targetUser, '', 1);
 		foreach ($results as $path => $data) {
-			$path = rawurldecode($path);
-			$parts = explode(' ', $path);
-			if (basename($parts[0]) !== 'transferred') {
+			$path = \rawurldecode($path);
+			$parts = \explode(' ', $path);
+			if (\basename($parts[0]) !== 'transferred') {
 				continue;
 			}
 			if (isset($parts[2]) && $parts[2] === $sourceUser) {
 				// store timestamp as key
 				$foundPaths[] = [
-					'date' => strtotime(trim($parts[4], '/')),
+					'date' => \strtotime(\trim($parts[4], '/')),
 					'path' => $path,
 				];
 			}
@@ -253,17 +253,17 @@ trait CommandLine {
 			return null;
 		}
 
-		usort(
+		\usort(
 			$foundPaths, function ($a, $b) {
 				return $a['date'] - $b['date'];
 			}
 		);
 
-		$davPath = rtrim($this->getDavFilesPath($targetUser), '/');
+		$davPath = \rtrim($this->getDavFilesPath($targetUser), '/');
 
-		$foundPath = end($foundPaths)['path'];
+		$foundPath = \end($foundPaths)['path'];
 		// strip dav path
-		return substr($foundPath, strlen($davPath) + 1);
+		return \substr($foundPath, \strlen($davPath) + 1);
 	}
 
 	/**
@@ -327,7 +327,7 @@ trait CommandLine {
 	 */
 	public function usingTransferFolderAsDavPath($user) {
 		$davPath = $this->getDavFilesPath($user);
-		$davPath = rtrim($davPath, '/') . $this->lastTransferPath;
+		$davPath = \rtrim($davPath, '/') . $this->lastTransferPath;
 		$this->usingDavPath($davPath);
 	}
 }

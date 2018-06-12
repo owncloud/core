@@ -31,7 +31,6 @@ use OCP\Security\ICredentialsManager;
  * @package OC\Security
  */
 class CredentialsManager implements ICredentialsManager {
-
 	const DB_TABLE = 'credentials';
 
 	/** @var ICrypto */
@@ -57,7 +56,7 @@ class CredentialsManager implements ICredentialsManager {
 	 * @param mixed $credentials
 	 */
 	public function store($userId, $identifier, $credentials) {
-		$value = $this->crypto->encrypt(json_encode($credentials));
+		$value = $this->crypto->encrypt(\json_encode($credentials));
 
 		$this->dbConnection->setValues(self::DB_TABLE, [
 			'user' => $userId,
@@ -88,7 +87,7 @@ class CredentialsManager implements ICredentialsManager {
 		}
 		$value = $result['credentials'];
 
-		return json_decode($this->crypto->decrypt($value), true);
+		return \json_decode($this->crypto->decrypt($value), true);
 	}
 
 	/**
@@ -120,5 +119,4 @@ class CredentialsManager implements ICredentialsManager {
 		;
 		return $qb->execute();
 	}
-
 }

@@ -34,7 +34,6 @@ use OCP\L10N\IFactory;
 use OCP\Settings\ISettingsManager;
 
 class SettingsPageControllerTest extends TestCase {
-
 	protected $settingsManager;
 	protected $userSession;
 	protected $groupManager;
@@ -64,7 +63,6 @@ class SettingsPageControllerTest extends TestCase {
 			$this->urlGenerator,
 			$this->groupManager,
 			$this->userSession);
-
 	}
 
 	public function testGetPersonalAsUser() {
@@ -146,6 +144,4 @@ class SettingsPageControllerTest extends TestCase {
 		$this->assertContains('testSectionID', $response->getParams()['personalNav'][0]['id']);
 		$this->assertContains('testAdminSectionID', $response->getParams()['adminNav'][0]['id']);
 	}
-
-
 }

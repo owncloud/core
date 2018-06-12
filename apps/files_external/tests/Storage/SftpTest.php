@@ -49,7 +49,7 @@ class SftpTest extends \Test\Files\Storage\Storage {
 
 		$id = $this->getUniqueID();
 		$this->config = include('files_external/tests/config.sftp.php');
-		if (!is_array($this->config) or !$this->config['run']) {
+		if (!\is_array($this->config) or !$this->config['run']) {
 			$this->markTestSkipped('SFTP backend not configured');
 		}
 		$this->config['root'] .= '/' . $id; //make sure we have an new empty folder to work in

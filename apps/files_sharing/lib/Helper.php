@@ -36,7 +36,6 @@ use OCP\Files\NotFoundException;
 use OCP\User;
 
 class Helper {
-
 	public static function registerHooks() {
 		\OCP\Util::connectHook('OC_Filesystem', 'post_rename', '\OCA\Files_Sharing\Updater', 'renameHook');
 		\OCP\Util::connectHook('OC_Filesystem', 'post_delete', '\OCA\Files_Sharing\Hooks', 'unshareChildren');
@@ -55,13 +54,13 @@ class Helper {
 		\OC_User::setIncognitoMode(true);
 
 		$linkItem = \OCP\Share::getShareByToken($token, !$password);
-		if($linkItem === false || ($linkItem['item_type'] !== 'file' && $linkItem['item_type'] !== 'folder')) {
+		if ($linkItem === false || ($linkItem['item_type'] !== 'file' && $linkItem['item_type'] !== 'folder')) {
 			\OC_Response::setStatus(404);
 			\OCP\Util::writeLog('core-preview', 'Passed token parameter is not valid', \OCP\Util::DEBUG);
 			exit;
 		}
 
-		if(!isset($linkItem['uid_owner']) || !isset($linkItem['file_source'])) {
+		if (!isset($linkItem['uid_owner']) || !isset($linkItem['file_source'])) {
 			\OC_Response::setStatus(500);
 			\OCP\Util::writeLog('core-preview', 'Passed token seems to be valid, but it does not contain all necessary information . ("' . $token . '")', \OCP\Util::WARN);
 			exit;
@@ -125,7 +124,7 @@ class Helper {
 			if ($linkItem['share_type'] == \OCP\Share::SHARE_TYPE_LINK) {
 				// Check Password
 				$newHash = '';
-				if(\OC::$server->getHasher()->verify($password, $linkItem['share_with'], $newHash)) {
+				if (\OC::$server->getHasher()->verify($password, $linkItem['share_with'], $newHash)) {
 					// Save item id in session for future requests
 					\OC::$server->getSession()->set('public_link_authenticated', (string) $linkItem['id']);
 
@@ -141,8 +140,7 @@ class Helper {
 					 *
 					 * @link https://github.com/owncloud/core/issues/10671
 					 */
-					if(!empty($newHash)) {
-
+					if (!empty($newHash)) {
 					}
 				} else {
 					return false;
@@ -152,11 +150,9 @@ class Helper {
 					.' for share id '.$linkItem['id'], \OCP\Util::ERROR);
 				return false;
 			}
-
-		}
-		else {
+		} else {
 			// not authenticated ?
-			if ( ! \OC::$server->getSession()->exists('public_link_authenticated')
+			if (! \OC::$server->getSession()->exists('public_link_authenticated')
 				|| \OC::$server->getSession()->get('public_link_authenticated') !== (string)$linkItem['id']) {
 				return false;
 			}
@@ -170,33 +166,31 @@ class Helper {
 		Filesystem::initMountPoints($owner);
 		$info = Filesystem::getFileInfo($target);
 		$ownerView = new View('/'.$owner.'/files');
-		if ( $owner != User::getUser() ) {
+		if ($owner != User::getUser()) {
 			$path = $ownerView->getPath($info['fileid']);
 		} else {
 			$path = $target;
 		}
 
-
 		$ids = [];
-		while ($path !== dirname($path)) {
+		while ($path !== \dirname($path)) {
 			$info = $ownerView->getFileInfo($path);
 			if ($info instanceof \OC\Files\FileInfo) {
 				$ids[] = $info['fileid'];
 			} else {
 				\OCP\Util::writeLog('sharing', 'No fileinfo available for: ' . $path, \OCP\Util::WARN);
 			}
-			$path = dirname($path);
+			$path = \dirname($path);
 		}
 
 		if (!empty($ids)) {
-
-			$idList = array_chunk($ids, 99, true);
+			$idList = \array_chunk($ids, 99, true);
 
 			foreach ($idList as $subList) {
-				$statement = "SELECT `share_with`, `share_type`, `file_target` FROM `*PREFIX*share` WHERE `file_source` IN (" . implode(',', $subList) . ") AND `share_type` IN (0, 1, 2)";
+				$statement = "SELECT `share_with`, `share_type`, `file_target` FROM `*PREFIX*share` WHERE `file_source` IN (" . \implode(',', $subList) . ") AND `share_type` IN (0, 1, 2)";
 				$query = \OCP\DB::prepare($statement);
 				$r = $query->execute();
-				$result = array_merge($result, $r->fetchAll());
+				$result = \array_merge($result, $r->fetchAll());
 			}
 		}
 
@@ -221,7 +215,7 @@ class Helper {
 			$uid = User::getUser();
 		}
 		Filesystem::initMountPoints($uid);
-		if ( $uid != User::getUser() ) {
+		if ($uid != User::getUser()) {
 			$info = Filesystem::getFileInfo($filename);
 			$ownerView = new View('/'.$uid.'/files');
 			try {
@@ -239,16 +233,16 @@ class Helper {
 	 * @return string e.g. turns '/admin/files/test.txt' into 'test.txt'
 	 */
 	public static function stripUserFilesPath($path) {
-		$trimmed = ltrim($path, '/');
-		$split = explode('/', $trimmed);
+		$trimmed = \ltrim($path, '/');
+		$split = \explode('/', $trimmed);
 
 		// it is not a file relative to data/user/files
-		if (count($split) < 3 || $split[1] !== 'files') {
+		if (\count($split) < 3 || $split[1] !== 'files') {
 			return false;
 		}
 
-		$sliced = array_slice($split, 2);
-		$relPath = implode('/', $sliced);
+		$sliced = \array_slice($split, 2);
+		$relPath = \implode('/', $sliced);
 
 		return $relPath;
 	}
@@ -262,12 +256,12 @@ class Helper {
 	 * @return string $path
 	 */
 	public static function generateUniqueTarget($path, $excludeList, $view) {
-		$pathinfo = pathinfo($path);
+		$pathinfo = \pathinfo($path);
 		$ext = (isset($pathinfo['extension'])) ? '.'.$pathinfo['extension'] : '';
 		$name = $pathinfo['filename'];
 		$dir = $pathinfo['dirname'];
 		$i = 2;
-		while ($view->file_exists($path) || in_array($path, $excludeList)) {
+		while ($view->file_exists($path) || \in_array($path, $excludeList)) {
 			$path = Filesystem::normalizePath($dir . '/' . $name . ' ('.$i.')' . $ext);
 			$i++;
 		}
@@ -290,7 +284,7 @@ class Helper {
 
 		if (!$view->file_exists($shareFolder)) {
 			$dir = '';
-			$subdirs = explode('/', $shareFolder);
+			$subdirs = \explode('/', $shareFolder);
 			foreach ($subdirs as $subdir) {
 				$dir = $dir . '/' . $subdir;
 				if (!$view->is_dir($dir)) {
@@ -300,7 +294,6 @@ class Helper {
 		}
 
 		return $shareFolder;
-
 	}
 
 	/**
@@ -311,5 +304,4 @@ class Helper {
 	public static function setShareFolder($shareFolder) {
 		\OC::$server->getConfig()->setSystemValue('share_folder', $shareFolder);
 	}
-
 }

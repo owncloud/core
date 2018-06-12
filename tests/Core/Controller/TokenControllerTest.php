@@ -124,5 +124,4 @@ class TokenControllerTest extends TestCase {
 
 		$this->assertEquals($expected, $actual);
 	}
-
 }

@@ -22,7 +22,6 @@
  *
  */
 
-
 namespace OCA\Federation;
 
 use OC\HintException;
@@ -240,9 +239,9 @@ class TrustedServers {
 	 * @throws HintException
 	 */
 	protected function checkOwnCloudVersion($status) {
-		$decoded = json_decode($status, true);
+		$decoded = \json_decode($status, true);
 		if (!empty($decoded) && isset($decoded['version'])) {
-			if (!version_compare($decoded['version'], '9.0.0', '>=')) {
+			if (!\version_compare($decoded['version'], '9.0.0', '>=')) {
 				throw new HintException('Remote server version is too low. ownCloud 9.0 is required.');
 			}
 			return true;
@@ -258,12 +257,10 @@ class TrustedServers {
 	 */
 	protected function updateProtocol($url) {
 		if (
-			strpos($url, 'https://') === 0
-			|| strpos($url, 'http://') === 0
+			\strpos($url, 'https://') === 0
+			|| \strpos($url, 'http://') === 0
 		) {
-
 			return $url;
-
 		}
 
 		return 'https://' . $url;

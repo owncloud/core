@@ -36,7 +36,6 @@ use Test\Traits\UserTrait;
  * @package OCA\Files
  */
 class TagServiceTest extends \Test\TestCase {
-
 	use UserTrait;
 
 	/**
@@ -126,4 +125,3 @@ class TagServiceTest extends \Test\TestCase {
 		$subdir->delete();
 	}
 }
-

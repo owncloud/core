@@ -47,4 +47,3 @@ if ($config->getAppValue('core', 'enable_external_storage', 'no') === 'yes') {
 		];
 	});
 }
-

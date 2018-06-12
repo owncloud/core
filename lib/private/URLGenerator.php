@@ -100,15 +100,14 @@ class URLGenerator implements IURLGenerator {
 	 *
 	 * Returns a url to the given app and file.
 	 */
-	public function linkTo( $app, $file, $args = []) {
-		$frontControllerActive = (getenv('front_controller_active') === 'true');
+	public function linkTo($app, $file, $args = []) {
+		$frontControllerActive = (\getenv('front_controller_active') === 'true');
 
-		if( $app != '' ) {
+		if ($app != '') {
 			$app_path = \OC_App::getAppPath($app);
 			// Check if the app is in the app folder
-			if ($app_path && file_exists($app_path . '/' . $file)) {
-				if (substr($file, -3) == 'php') {
-
+			if ($app_path && \file_exists($app_path . '/' . $file)) {
+				if (\substr($file, -3) == 'php') {
 					$urlLinkTo = \OC::$WEBROOT . '/index.php/apps/' . $app;
 					if ($frontControllerActive) {
 						$urlLinkTo = \OC::$WEBROOT . '/apps/' . $app;
@@ -121,7 +120,7 @@ class URLGenerator implements IURLGenerator {
 				$urlLinkTo = \OC::$WEBROOT . '/' . $app . '/' . $file;
 			}
 		} else {
-			if (file_exists(\OC::$SERVERROOT . '/core/' . $file)) {
+			if (\file_exists(\OC::$SERVERROOT . '/core/' . $file)) {
 				$urlLinkTo = \OC::$WEBROOT . '/core/' . $file;
 			} else {
 				if ($frontControllerActive && $file === 'index.php') {
@@ -132,7 +131,7 @@ class URLGenerator implements IURLGenerator {
 			}
 		}
 
-		if ($args && $query = http_build_query($args, '', '&')) {
+		if ($args && $query = \http_build_query($args, '', '&')) {
 			$urlLinkTo .= '?' . $query;
 		}
 
@@ -151,13 +150,13 @@ class URLGenerator implements IURLGenerator {
 	public function imagePath($app, $image) {
 		$cache = $this->cacheFactory->create('imagePath');
 		$cacheKey = $this->theme->getName().'-'.$app.'-'.$image;
-		if($key = $cache->get($cacheKey)) {
+		if ($key = $cache->get($cacheKey)) {
 			return $key;
 		}
 
 		$path = $this->getImagePath($app, $image);
 
-		if($path !== '' && !is_null($path)) {
+		if ($path !== '' && $path !== null) {
 			$cache->set($cacheKey, $path);
 			return $path;
 		} else {
@@ -172,21 +171,21 @@ class URLGenerator implements IURLGenerator {
 	 */
 	private function getImagePath($app, $imageName) {
 		$appWebPath = \OC_App::getAppWebPath($app);
-		$appPath = substr($appWebPath, strlen(\OC::$WEBROOT));
+		$appPath = \substr($appWebPath, \strlen(\OC::$WEBROOT));
 
 		$directories = ["/core", ""];
 
 		if ($app) {
-			array_unshift($directories, "$appPath", "/$app");
+			\array_unshift($directories, "$appPath", "/$app");
 		}
 
 		$themeDirectory = $this->theme->getDirectory();
-		foreach($directories as $directory) {
+		foreach ($directories as $directory) {
 			$directory = $directory . "/img/";
 			$file = $directory . $imageName;
 
 			if ($themeDirectory !== ''
-				&& $imagePath = $this->getImagePathOrFallback( $this->theme->getBaseDirectory() . '/' . $themeDirectory . $file)
+				&& $imagePath = $this->getImagePathOrFallback($this->theme->getBaseDirectory() . '/' . $themeDirectory . $file)
 			) {
 				return $this->theme->getWebPath() . $file;
 			}
@@ -202,10 +201,10 @@ class URLGenerator implements IURLGenerator {
 	 * @return string
 	 */
 	private function getImagePathOrFallback($file) {
-		$fallback = substr($file, 0, -3) . 'png';
+		$fallback = \substr($file, 0, -3) . 'png';
 		$locations = [ $file, $fallback ];
 		foreach ($locations as $location) {
-			if (file_exists($location)) {
+			if (\file_exists($location)) {
 				return $location;
 			}
 		}
@@ -219,12 +218,12 @@ class URLGenerator implements IURLGenerator {
 	public function getAbsoluteURL($url) {
 		$separator = $url[0] === '/' ? '' : '/';
 
-		if (\OC::$CLI && !defined('PHPUNIT_RUN')) {
-			return rtrim($this->config->getSystemValue('overwrite.cli.url'), '/') . '/' . ltrim($url, '/');
+		if (\OC::$CLI && !\defined('PHPUNIT_RUN')) {
+			return \rtrim($this->config->getSystemValue('overwrite.cli.url'), '/') . '/' . \ltrim($url, '/');
 		}
 
 		// The ownCloud web root can already be prepended.
-		$webRoot = substr($url, 0, strlen(\OC::$WEBROOT)) === \OC::$WEBROOT
+		$webRoot = \substr($url, 0, \strlen(\OC::$WEBROOT)) === \OC::$WEBROOT
 			? ''
 			: \OC::$WEBROOT;
 

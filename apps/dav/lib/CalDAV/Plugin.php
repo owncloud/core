@@ -28,14 +28,12 @@ class Plugin extends \Sabre\CalDAV\Plugin {
 	/**
 	 * @inheritdoc
 	 */
-	function getCalendarHomeForPrincipal($principalUrl) {
-
-		if (strrpos($principalUrl, 'principals/users', -strlen($principalUrl)) !== false) {
+	public function getCalendarHomeForPrincipal($principalUrl) {
+		if (\strrpos($principalUrl, 'principals/users', -\strlen($principalUrl)) !== false) {
 			list(, $principalId) = URLUtil::splitPath($principalUrl);
 			return self::CALENDAR_ROOT .'/' . $principalId;
 		}
 
 		return;
 	}
-
 }

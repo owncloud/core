@@ -75,7 +75,7 @@ class ListRoutes extends Base {
 
 			foreach ($collections as $name => $route) {
 				$c = $this->buildController($name);
-				$rows[] = array_merge([
+				$rows[] = \array_merge([
 					'path' => $route->getPath(),
 					'methods' => $route->getMethods()
 				], $c);
@@ -89,29 +89,29 @@ class ListRoutes extends Base {
 				foreach ($routeCollection as $route) {
 					$path = $route->getPath();
 					if (isset($rows[$path])) {
-						$rows[$path]['methods'] = array_unique(array_merge($rows[$path]['methods'], $route->getMethods()));
+						$rows[$path]['methods'] = \array_unique(\array_merge($rows[$path]['methods'], $route->getMethods()));
 					} else {
 						$rows[$path] = [
 							'path' => $path,
 							'methods' => $route->getMethods()
 						];
 					}
-					sort ($rows[$path]['methods']);
+					\sort($rows[$path]['methods']);
 				}
 			}
 		}
-		usort($rows, function ($a, $b) {
-			return strcmp($a['path'], $b['path']);
+		\usort($rows, function ($a, $b) {
+			return \strcmp($a['path'], $b['path']);
 		});
-		$rows = array_map(function($row) {
-			$row['methods'] = implode(',', $row['methods']);
+		$rows = \array_map(function ($row) {
+			$row['methods'] = \implode(',', $row['methods']);
 			return $row;
 		}, $rows);
 
-		if ($outputType === self::OUTPUT_FORMAT_JSON ) {
-			$output->write(json_encode($rows));
-		} else if ($outputType === self::OUTPUT_FORMAT_JSON_PRETTY) {
-			$output->writeln(json_encode($rows, JSON_PRETTY_PRINT));
+		if ($outputType === self::OUTPUT_FORMAT_JSON) {
+			$output->write(\json_encode($rows));
+		} elseif ($outputType === self::OUTPUT_FORMAT_JSON_PRETTY) {
+			$output->writeln(\json_encode($rows, JSON_PRETTY_PRINT));
 		} else {
 			$table = new Table($output);
 			$table->setHeaders($headers);
@@ -122,11 +122,11 @@ class ListRoutes extends Base {
 	}
 
 	private function buildController($name) {
-		$parts = explode('.', $name);
-		if (count($parts) === 4 && $parts[0] === 'ocs') {
-			array_shift($parts);
+		$parts = \explode('.', $name);
+		if (\count($parts) === 4 && $parts[0] === 'ocs') {
+			\array_shift($parts);
 		}
-		if (count($parts) !== 3) {
+		if (\count($parts) !== 3) {
 			return [
 				'controllerClass' => '*** not controller based ***'
 			];
@@ -143,12 +143,12 @@ class ListRoutes extends Base {
 		$docs = $reflection->getDocComment();
 
 		// extract everything prefixed by @ and first letter uppercase
-		preg_match_all('/@([A-Z]\w+)/', $docs, $matches);
+		\preg_match_all('/@([A-Z]\w+)/', $docs, $matches);
 		$annotations = $matches[1];
 
 		return [
 			'controllerClass' => $reflection->getDeclaringClass()->getName() . '::' . $reflection->getName(),
-			'annotations' => implode(',', $annotations),
+			'annotations' => \implode(',', $annotations),
 		];
 	}
 
@@ -180,16 +180,16 @@ class ListRoutes extends Base {
 		foreach ([App::buildAppNamespace($appName), App::buildAppNamespace($appName, 'OC\\')] as $appNameSpace) {
 			foreach (['\\Controller\\', '\\Controllers\\'] as $namespace) {
 				yield $appNameSpace . $namespace . $controllerName;
-				yield $appNameSpace . $namespace . ucfirst(strtolower($controllerName));
+				yield $appNameSpace . $namespace . \ucfirst(\strtolower($controllerName));
 				yield $appNameSpace . $namespace . $controllerName . 'Controller';
-				yield $appNameSpace . $namespace . ucfirst(strtolower($controllerName)) . 'Controller';
-				$controllerName = implode('', array_map(function ($word) {
-					return ucfirst($word);
-				}, explode('_', $controllerName)));
+				yield $appNameSpace . $namespace . \ucfirst(\strtolower($controllerName)) . 'Controller';
+				$controllerName = \implode('', \array_map(function ($word) {
+					return \ucfirst($word);
+				}, \explode('_', $controllerName)));
 				yield $appNameSpace . $namespace . $controllerName;
-				yield $appNameSpace . $namespace . ucfirst(strtolower($controllerName));
+				yield $appNameSpace . $namespace . \ucfirst(\strtolower($controllerName));
 				yield $appNameSpace . $namespace . $controllerName . 'Controller';
-				yield $appNameSpace . $namespace . ucfirst(strtolower($controllerName)) . 'Controller';
+				yield $appNameSpace . $namespace . \ucfirst(\strtolower($controllerName)) . 'Controller';
 			}
 		}
 	}
@@ -200,13 +200,12 @@ class ListRoutes extends Base {
 	 */
 	private function listMethodNames($method) {
 		yield $method;
-		yield implode('', explode('_', $method));
+		yield \implode('', \explode('_', $method));
 		foreach (['post', 'put'] as $verb) {
-			if (substr( $method, -strlen($verb)) == $verb) {
-				yield substr($method, 0, -strlen($verb));
-				yield implode('', explode('_', substr($method, 0, -strlen($verb))));
+			if (\substr($method, -\strlen($verb)) == $verb) {
+				yield \substr($method, 0, -\strlen($verb));
+				yield \implode('', \explode('_', \substr($method, 0, -\strlen($verb))));
 			}
 		}
 	}
-
 }

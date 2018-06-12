@@ -84,11 +84,11 @@ class SubAdminTest extends TestCase {
 	}
 
 	public function tearDown() {
-		foreach($this->users as $user) {
+		foreach ($this->users as $user) {
 			$user->delete();
 		}
 
-		foreach($this->groups as $group) {
+		foreach ($this->groups as $group) {
 			$group->delete();
 		}
 
@@ -145,7 +145,7 @@ class SubAdminTest extends TestCase {
 			->fetch();
 		$this->assertEquals(
 			[
-				'gid' => $this->groups[0]->getGID(), 
+				'gid' => $this->groups[0]->getGID(),
 				'uid' => $this->users[0]->getUID()
 			], $result);
 
@@ -307,14 +307,13 @@ class SubAdminTest extends TestCase {
 		$this->groupManager->get('admin')->addUser($this->users[1]);
 
 		$this->assertFalse($subAdmin->isUserAccessible($this->users[0], $this->users[1]));
-
 	}
 
 	public function testPostDeleteUser() {
 		$subAdmin = new \OC\SubAdmin($this->userManager, $this->groupManager, $this->dbConn);
 
-		$user = array_shift($this->users);
-		foreach($this->groups as $group) {
+		$user = \array_shift($this->users);
+		foreach ($this->groups as $group) {
 			$this->assertTrue($subAdmin->createSubAdmin($user, $group));
 		}
 
@@ -325,8 +324,8 @@ class SubAdminTest extends TestCase {
 	public function testPostDeleteGroup() {
 		$subAdmin = new \OC\SubAdmin($this->userManager, $this->groupManager, $this->dbConn);
 
-		$group = array_shift($this->groups);
-		foreach($this->users as $user) {
+		$group = \array_shift($this->groups);
+		foreach ($this->users as $user) {
 			$this->assertTrue($subAdmin->createSubAdmin($user, $group));
 		}
 
@@ -360,5 +359,4 @@ class SubAdminTest extends TestCase {
 		$this->assertTrue($subAdmin->deleteSubAdmin($u, $g));
 		$this->assertEquals(2, $count);
 	}
-
 }

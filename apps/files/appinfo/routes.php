@@ -76,4 +76,3 @@ $this->create('files_ajax_list', 'ajax/list.php')
 $this->create('download', 'download{file}')
 	->requirements(['file' => '.*'])
 	->actionInclude('files/download.php');
-

@@ -42,7 +42,7 @@ class AjaxController extends Controller {
 	private function generateSshKeys() {
 		$key = $this->rsaMechanism->createKey();
 		// Replace the placeholder label with a more meaningful one
-		$key['publickey'] = str_replace('phpseclib-generated-key', gethostname(), $key['publickey']);
+		$key['publickey'] = \str_replace('phpseclib-generated-key', \gethostname(), $key['publickey']);
 
 		return $key;
 	}

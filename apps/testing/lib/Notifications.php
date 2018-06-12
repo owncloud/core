@@ -31,7 +31,7 @@ use OCP\Notification\IManager;
 class Notifications extends \OCP\AppFramework\Controller {
 
 	/**
-	 * @var IManager 
+	 * @var IManager
 	 */
 	private $manager;
 

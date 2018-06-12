@@ -21,9 +21,7 @@
  *
  */
 
-
 namespace OCA\Federation\Tests;
-
 
 use OCA\Federation\DbHandler;
 use OCA\Federation\TrustedServers;
@@ -91,9 +89,9 @@ class DbHandlerTest extends TestCase {
 
 	public function dataTestAddServer() {
 		return [
-				['http://owncloud.org', 'http://owncloud.org', sha1('owncloud.org')],
-				['https://owncloud.org', 'https://owncloud.org', sha1('owncloud.org')],
-				['http://owncloud.org/', 'http://owncloud.org', sha1('owncloud.org')],
+				['http://owncloud.org', 'http://owncloud.org', \sha1('owncloud.org')],
+				['https://owncloud.org', 'https://owncloud.org', \sha1('owncloud.org')],
+				['http://owncloud.org/', 'http://owncloud.org', \sha1('owncloud.org')],
 		];
 	}
 
@@ -116,7 +114,6 @@ class DbHandlerTest extends TestCase {
 		$this->assertSame('server1', $result[0]['url']);
 		$this->assertSame($id1, (int)$result[0]['id']);
 	}
-
 
 	public function testGetServerById() {
 		$this->dbHandler->addServer('server1');
@@ -244,10 +241,10 @@ class DbHandlerTest extends TestCase {
 
 	public function dataTestHash() {
 		return [
-			['server1', sha1('server1')],
-			['http://server1', sha1('server1')],
-			['https://server1', sha1('server1')],
-			['http://server1/', sha1('server1')],
+			['server1', \sha1('server1')],
+			['http://server1', \sha1('server1')],
+			['https://server1', \sha1('server1')],
+			['http://server1/', \sha1('server1')],
 		];
 	}
 

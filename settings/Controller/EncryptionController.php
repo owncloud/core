@@ -20,7 +20,6 @@
  *
  */
 
-
 namespace OC\Settings\Controller;
 use OC\Files\View;
 use OCA\Encryption\Migration;
@@ -102,11 +101,10 @@ class EncryptionController extends Controller {
 	 * @return array
 	 */
 	public function startMigration() {
-        // allow as long execution on the web server as possible
-		set_time_limit(0);
+		// allow as long execution on the web server as possible
+		\set_time_limit(0);
 
 		try {
-
 			$migration = $this->getMigration($this->config, $this->view, $this->connection, $this->logger);
 			$migration->reorganizeSystemFolderStructure();
 			$migration->updateDB();
@@ -120,11 +118,10 @@ class EncryptionController extends Controller {
 						$migration->reorganizeFolderStructureForUser($user);
 					}
 					$offset += $limit;
-				} while (count($users) >= $limit);
+				} while (\count($users) >= $limit);
 			}
 
 			$migration->finalCleanUp();
-
 		} catch (\Exception $e) {
 			return [
 				'data' => [
@@ -141,5 +138,4 @@ class EncryptionController extends Controller {
 			'status' => 'success',
 		];
 	}
-
 }

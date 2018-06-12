@@ -49,7 +49,7 @@ class DBLockingProviderTest extends LockingProvider {
 	private $currentTime;
 
 	public function setUp() {
-		$this->currentTime = time();
+		$this->currentTime = \time();
 		$this->timeFactory = $this->createMock('\OCP\AppFramework\Utility\ITimeFactory');
 		$this->timeFactory->expects($this->any())
 			->method('getTime')
@@ -102,6 +102,6 @@ class DBLockingProviderTest extends LockingProvider {
 
 	protected function assertLocks(array $expected) {
 		$locks = $this->getLockEntries();
-		$this->assertCount(count($expected), $locks, json_encode($locks));
+		$this->assertCount(\count($expected), $locks, \json_encode($locks));
 	}
 }

@@ -54,7 +54,7 @@ class JobListTest extends TestCase {
 	protected function getAllSorted() {
 		$jobs = $this->instance->getAll();
 
-		usort($jobs, function (IJob $job1, IJob $job2) {
+		\usort($jobs, function (IJob $job1, IJob $job2) {
 			return $job1->getId() - $job2->getId();
 		});
 
@@ -85,8 +85,8 @@ class JobListTest extends TestCase {
 
 		$jobs = $this->getAllSorted();
 
-		$this->assertCount(count($existingJobs) + 1, $jobs);
-		$addedJob = $jobs[count($jobs) - 1];
+		$this->assertCount(\count($existingJobs) + 1, $jobs);
+		$addedJob = $jobs[\count($jobs) - 1];
 		$this->assertInstanceOf('\Test\BackgroundJob\TestJob', $addedJob);
 		$this->assertEquals($argument, $addedJob->getArgument());
 
@@ -155,7 +155,7 @@ class JobListTest extends TestCase {
 
 	protected function createTempJob($class, $argument, $reservedTime = 0, $lastChecked = 0) {
 		if ($lastChecked === 0) {
-			$lastChecked = time();
+			$lastChecked = \time();
 		}
 
 		$query = $this->connection->getQueryBuilder();
@@ -172,8 +172,8 @@ class JobListTest extends TestCase {
 
 	public function testGetNext() {
 		$job = new TestJob();
-		$this->createTempJob(get_class($job), 1, 0, 12345);
-		$this->createTempJob(get_class($job), 2, 0, 12346);
+		$this->createTempJob(\get_class($job), 1, 0, 12345);
+		$this->createTempJob(\get_class($job), 2, 0, 12346);
 
 		$jobs = $this->getAllSorted();
 		$savedJob1 = $jobs[0];
@@ -188,29 +188,29 @@ class JobListTest extends TestCase {
 
 	public function testGetNextSkipReserved() {
 		$job = new TestJob();
-		$this->createTempJob(get_class($job), 1, 123456789, 12345);
-		$this->createTempJob(get_class($job), 2, 0, 12346);
+		$this->createTempJob(\get_class($job), 1, 123456789, 12345);
+		$this->createTempJob(\get_class($job), 2, 0, 12346);
 
 		$this->timeFactory->expects($this->atLeastOnce())
 			->method('getTime')
 			->willReturn(123456789);
 		$nextJob = $this->instance->getNext();
 
-		$this->assertEquals(get_class($job), get_class($nextJob));
+		$this->assertEquals(\get_class($job), \get_class($nextJob));
 		$this->assertEquals(2, $nextJob->getArgument());
 	}
 
 	public function testGetNextSkipNonExisting() {
 		$job = new TestJob();
 		$this->createTempJob('\OC\Non\Existing\Class', 1, 0, 12345);
-		$this->createTempJob(get_class($job), 2, 0, 12346);
+		$this->createTempJob(\get_class($job), 2, 0, 12346);
 
 		$this->timeFactory->expects($this->atLeastOnce())
 			->method('getTime')
 			->willReturn(123456789);
 		$nextJob = $this->instance->getNext();
 
-		$this->assertEquals(get_class($job), get_class($nextJob));
+		$this->assertEquals(\get_class($job), \get_class($nextJob));
 		$this->assertEquals(2, $nextJob->getArgument());
 	}
 
@@ -224,7 +224,7 @@ class JobListTest extends TestCase {
 
 		$jobs = $this->getAllSorted();
 
-		$addedJob = $jobs[count($jobs) - 1];
+		$addedJob = $jobs[\count($jobs) - 1];
 
 		$this->assertEquals($addedJob, $this->instance->getById($addedJob->getId()));
 	}
@@ -235,11 +235,11 @@ class JobListTest extends TestCase {
 
 		$jobs = $this->getAllSorted();
 
-		$addedJob = $jobs[count($jobs) - 1];
+		$addedJob = $jobs[\count($jobs) - 1];
 
-		$timeStart = time();
+		$timeStart = \time();
 		$this->instance->setLastRun($addedJob);
-		$timeEnd = time();
+		$timeEnd = \time();
 
 		$addedJob = $this->instance->getById($addedJob->getId());
 
