@@ -606,7 +606,6 @@ trait WebDav {
 	 * @param string $path
 	 *
 	 * @return void
-	 * @throws \Sabre\HTTP\ClientHttpException
 	 */
 	public function userGetsPropertiesOfFile($user, $propertyName, $path) {
 		$client = $this->getSabreClient($user);
@@ -629,8 +628,6 @@ trait WebDav {
 	 * @param string $propertyValue
 	 *
 	 * @return void
-	 * @throws \Sabre\HTTP\ClientException
-	 * @throws \Sabre\HTTP\ClientHttpException
 	 */
 	public function userHasSetPropertyOfEntryTo(
 		$user, $propertyName, $path, $propertyValue
@@ -1836,8 +1833,6 @@ trait WebDav {
 	 * @param int $favOrUnfav 1 = favorite, 0 = unfavorite
 	 *
 	 * @return bool
-	 * @throws \Sabre\HTTP\ClientException
-	 * @throws \Sabre\HTTP\ClientHttpException
 	 */
 	public function changeFavStateOfAnElement(
 		$user, $path, $favOrUnfav

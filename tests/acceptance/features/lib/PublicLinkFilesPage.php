@@ -88,7 +88,7 @@ class PublicLinkFilesPage extends FilesPageBasic {
 		if (is_null($remoteAddressInput)) {
 			throw new ElementNotFoundException(
 				__METHOD__ .
-				" id " . $this->remoteAddressInput .
+				" id " . $this->remoteAddressInputId .
 				" could not find remote address input field"
 			);
 		}
@@ -97,7 +97,7 @@ class PublicLinkFilesPage extends FilesPageBasic {
 		if (is_null($confirmBtn)) {
 			throw new ElementNotFoundException(
 				__METHOD__ .
-				" id " . $this->confirmBtn .
+				" id " . $this->confirmBtnId .
 				" could not find confirm button"
 			);
 		}

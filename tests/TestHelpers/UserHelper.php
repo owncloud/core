@@ -24,8 +24,8 @@ namespace TestHelpers;
 use GuzzleHttp\Message\ResponseInterface;
 
 /**
- * Helper to administrate users (and groups) through the provosioning API
- * 
+ * Helper to administrate users (and groups) through the provisioning API
+ *
  * @author Artur Neumann <artur@jankaritech.com>
  *
  */
@@ -61,11 +61,11 @@ class UserHelper {
 			return $return;
 		}
 		if ($displayName !== null) {
-			$editReponse = self::editUser(
+			$editResponse = self::editUser(
 				$baseUrl, $user, "display", $displayName, $adminUser, $adminPassword
 			);
-			$return[] = $editReponse;
-			if ($editReponse->getStatusCode() !== 200) {
+			$return[] = $editResponse;
+			if ($editResponse->getStatusCode() !== 200) {
 				return $return;
 			}
 		}
@@ -107,6 +107,7 @@ class UserHelper {
 	 * @param string $userName
 	 * @param string $adminUser
 	 * @param string $adminPassword
+	 * @param int $apiVersion
 	 *
 	 * @return ResponseInterface
 	 */
@@ -148,6 +149,7 @@ class UserHelper {
 	 * @param string $group
 	 * @param string $adminUser
 	 * @param string $adminPassword
+	 * @param int $apiVersion
 	 *
 	 * @return ResponseInterface
 	 */

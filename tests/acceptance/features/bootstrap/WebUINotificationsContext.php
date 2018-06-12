@@ -68,6 +68,7 @@ class WebUINotificationsContext extends RawMinkContext implements Context {
 			"expected $number notifications, found " . \count($notifications)
 		);
 		foreach ($expectedNotifications as $expectedNotification) {
+			$found = false;
 			foreach ($notifications as $notification) {
 				$found = false;
 				foreach ($expectedNotification as $expectedKey => $expectedValue) {
@@ -105,7 +106,7 @@ class WebUINotificationsContext extends RawMinkContext implements Context {
 	 */
 	public function userFollowsLink($firstOrLast) {
 		$notificationsDialog = $this->openNotificationsDialog();
-		$notifications = $notificationsDialog->getAllNoficationObjects();
+		$notifications = $notificationsDialog->getAllNotificationObjects();
 		if ($firstOrLast === 'first') {
 			/**
 			 *
@@ -132,11 +133,11 @@ class WebUINotificationsContext extends RawMinkContext implements Context {
 	 */
 	public function userReactsToAllNotificationsOnTheWebUI($reaction) {
 		$notificationsDialog = $this->openNotificationsDialog();
-		$notifications = $notificationsDialog->getAllNoficationObjects();
+		$notifications = $notificationsDialog->getAllNotificationObjects();
 		while (\count($notifications) > 0) {
 			$notifications[0]->react($reaction, $this->getSession());
 			//we need to rescan again, because the DOM changes
-			$notifications = $notificationsDialog->getAllNoficationObjects();
+			$notifications = $notificationsDialog->getAllNotificationObjects();
 		}
 	}
 

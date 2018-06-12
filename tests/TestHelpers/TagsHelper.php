@@ -57,7 +57,7 @@ class TagsHelper {
 		$tag = self::requestTagByDisplayName(
 			$baseUrl, $taggingUser, $password, $tagName
 		);
-		$tagID = (int) $tag ['{http://owncloud.org/ns}id'];
+		$tagID = (int) $tag['{http://owncloud.org/ns}id'];
 		$path = '/systemtags-relations/files/' . $fileID . '/' . $tagID;
 		$response = WebDavHelper::makeDavRequest(
 			$baseUrl, $taggingUser, $password, "PUT",
@@ -205,7 +205,7 @@ class TagsHelper {
 		$tagsPath = '/systemtags/' . $tagID;
 		$response = WebDavHelper::makeDavRequest(
 			$baseUrl, $user, $password,
-			"DELETE", $tagsPath, [ ], null, null, $davPathVersionToUse, "systemtags"
+			"DELETE", $tagsPath, [], null, null, $davPathVersionToUse, "systemtags"
 		);
 		return $response;
 	}
