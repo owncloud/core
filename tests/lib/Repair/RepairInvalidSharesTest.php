@@ -9,10 +9,11 @@
 namespace Test\Repair;
 
 use OC\Repair\RepairInvalidShares;
-use OC\Share\Constants;
 use OCP\Migration\IOutput;
 use OCP\Migration\IRepairStep;
 use Test\TestCase;
+use OCP\Constants;
+use OCP\Share;
 
 /**
  * Tests for repairing invalid shares
@@ -66,7 +67,7 @@ class RepairInvalidSharesTest extends TestCase {
 		$qb = $this->connection->getQueryBuilder();
 		$qb->insert('share')
 			->values([
-				'share_type' => $qb->expr()->literal(Constants::SHARE_TYPE_USER),
+				'share_type' => $qb->expr()->literal(Share::SHARE_TYPE_USER),
 				'share_with' => $qb->expr()->literal('recipientuser1'),
 				'uid_owner' => $qb->expr()->literal('user1'),
 				'item_type' => $qb->expr()->literal('folder'),
@@ -86,7 +87,7 @@ class RepairInvalidSharesTest extends TestCase {
 		$qb = $this->connection->getQueryBuilder();
 		$qb->insert('share')
 			->values([
-				'share_type' => $qb->expr()->literal(Constants::SHARE_TYPE_LINK),
+				'share_type' => $qb->expr()->literal(Share::SHARE_TYPE_LINK),
 				'uid_owner' => $qb->expr()->literal('user1'),
 				'item_type' => $qb->expr()->literal('folder'),
 				'item_source' => $qb->expr()->literal(123),
@@ -126,14 +127,14 @@ class RepairInvalidSharesTest extends TestCase {
 	 * Test remove expiration date for non-link shares
 	 */
 	public function testAddShareLinkDeletePermission() {
-		$oldPerms = \OCP\Constants::PERMISSION_READ | \OCP\Constants::PERMISSION_CREATE | \OCP\Constants::PERMISSION_UPDATE;
-		$newPerms = \OCP\Constants::PERMISSION_READ | \OCP\Constants::PERMISSION_CREATE | \OCP\Constants::PERMISSION_UPDATE | \OCP\Constants::PERMISSION_DELETE;
+		$oldPerms = Constants::PERMISSION_READ | Constants::PERMISSION_CREATE | Constants::PERMISSION_UPDATE;
+		$newPerms = Constants::PERMISSION_READ | Constants::PERMISSION_CREATE | Constants::PERMISSION_UPDATE | Constants::PERMISSION_DELETE;
 
 		// share with old permissions
 		$qb = $this->connection->getQueryBuilder();
 		$qb->insert('share')
 			->values([
-				'share_type' => $qb->expr()->literal(Constants::SHARE_TYPE_LINK),
+				'share_type' => $qb->expr()->literal(Share::SHARE_TYPE_LINK),
 				'uid_owner' => $qb->expr()->literal('user1'),
 				'item_type' => $qb->expr()->literal('folder'),
 				'item_source' => $qb->expr()->literal(123),
@@ -151,14 +152,14 @@ class RepairInvalidSharesTest extends TestCase {
 		$qb = $this->connection->getQueryBuilder();
 		$qb->insert('share')
 			->values([
-				'share_type' => $qb->expr()->literal(Constants::SHARE_TYPE_LINK),
+				'share_type' => $qb->expr()->literal(Share::SHARE_TYPE_LINK),
 				'uid_owner' => $qb->expr()->literal('user1'),
 				'item_type' => $qb->expr()->literal('folder'),
 				'item_source' => $qb->expr()->literal(123),
 				'item_target' => $qb->expr()->literal('/123'),
 				'file_source' => $qb->expr()->literal(123),
 				'file_target' => $qb->expr()->literal('/test'),
-				'permissions' => $qb->expr()->literal(\OCP\Constants::PERMISSION_READ),
+				'permissions' => $qb->expr()->literal(Constants::PERMISSION_READ),
 				'stime' => $qb->expr()->literal(\time()),
 			])
 			->execute();
@@ -169,7 +170,7 @@ class RepairInvalidSharesTest extends TestCase {
 		$qb = $this->connection->getQueryBuilder();
 		$qb->insert('share')
 			->values([
-				'share_type' => $qb->expr()->literal(Constants::SHARE_TYPE_USER),
+				'share_type' => $qb->expr()->literal(Share::SHARE_TYPE_USER),
 				'share_with' => $qb->expr()->literal('recipientuser1'),
 				'uid_owner' => $qb->expr()->literal('user1'),
 				'item_type' => $qb->expr()->literal('folder'),
@@ -215,7 +216,7 @@ class RepairInvalidSharesTest extends TestCase {
 	public function testSharesNonExistingParent() {
 		$qb = $this->connection->getQueryBuilder();
 		$shareValues = [
-			'share_type' => $qb->expr()->literal(Constants::SHARE_TYPE_USER),
+			'share_type' => $qb->expr()->literal(Share::SHARE_TYPE_USER),
 			'share_with' => $qb->expr()->literal('recipientuser1'),
 			'uid_owner' => $qb->expr()->literal('user1'),
 			'item_type' => $qb->expr()->literal('folder'),
@@ -288,14 +289,14 @@ class RepairInvalidSharesTest extends TestCase {
 			// unchanged for read-write + share
 			[
 				'file',
-				\OCP\Constants::PERMISSION_READ | \OCP\Constants::PERMISSION_UPDATE | \OCP\Constants::PERMISSION_SHARE,
-				\OCP\Constants::PERMISSION_READ | \OCP\Constants::PERMISSION_UPDATE | \OCP\Constants::PERMISSION_SHARE,
+				Constants::PERMISSION_READ | Constants::PERMISSION_UPDATE | Constants::PERMISSION_SHARE,
+				Constants::PERMISSION_READ | Constants::PERMISSION_UPDATE | Constants::PERMISSION_SHARE,
 			],
 			// fixed for all perms
 			[
 				'file',
-				\OCP\Constants::PERMISSION_READ | \OCP\Constants::PERMISSION_CREATE | \OCP\Constants::PERMISSION_UPDATE | \OCP\Constants::PERMISSION_DELETE | \OCP\Constants::PERMISSION_SHARE,
-				\OCP\Constants::PERMISSION_READ | \OCP\Constants::PERMISSION_UPDATE | \OCP\Constants::PERMISSION_SHARE,
+				Constants::PERMISSION_READ | Constants::PERMISSION_CREATE | Constants::PERMISSION_UPDATE | Constants::PERMISSION_DELETE | Constants::PERMISSION_SHARE,
+				Constants::PERMISSION_READ | Constants::PERMISSION_UPDATE | Constants::PERMISSION_SHARE,
 			],
 		];
 	}
@@ -309,7 +310,7 @@ class RepairInvalidSharesTest extends TestCase {
 		$qb = $this->connection->getQueryBuilder();
 		$qb->insert('share')
 			->values([
-				'share_type' => $qb->expr()->literal(Constants::SHARE_TYPE_LINK),
+				'share_type' => $qb->expr()->literal(Share::SHARE_TYPE_LINK),
 				'uid_owner' => $qb->expr()->literal('user1'),
 				'item_type' => $qb->expr()->literal($itemType),
 				'item_source' => $qb->expr()->literal(123),

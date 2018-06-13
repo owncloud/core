@@ -32,6 +32,7 @@ use OCA\FederatedFileSharing\DiscoveryManager;
 use OCA\FederatedFileSharing\FederatedShareProvider;
 use OCA\FederatedFileSharing\RequestHandler;
 use OCP\IUserManager;
+use OCP\Share;
 use OCP\Share\IShare;
 use Symfony\Component\EventDispatcher\GenericEvent;
 
@@ -329,7 +330,7 @@ class RequestHandlerTest extends TestCase {
 		$query->insert('share')
 			->values(
 				[
-					'share_type' => $query->createNamedParameter(FederatedShareProvider::SHARE_TYPE_REMOTE),
+					'share_type' => $query->createNamedParameter(Share::SHARE_TYPE_REMOTE),
 					'uid_owner' => $query->createNamedParameter(self::TEST_FILES_SHARING_API_USER1),
 					'uid_initiator' => $query->createNamedParameter(self::TEST_FILES_SHARING_API_USER2),
 					'item_type' => $query->createNamedParameter('test'),
@@ -346,7 +347,7 @@ class RequestHandlerTest extends TestCase {
 		$id = $query->getLastInsertId();
 
 		$expected = [
-			'share_type' => (string)FederatedShareProvider::SHARE_TYPE_REMOTE,
+			'share_type' => (string)Share::SHARE_TYPE_REMOTE,
 			'uid_owner' => self::TEST_FILES_SHARING_API_USER1,
 			'item_type' => 'test',
 			'item_source' => '1',

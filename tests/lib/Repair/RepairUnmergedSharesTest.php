@@ -22,13 +22,12 @@
 namespace Test\Repair;
 
 use OC\Repair\RepairUnmergedShares;
-use OC\Share\Constants;
-use OC\Share20\DefaultShareProvider;
 use OCP\IConfig;
 use OCP\IGroupManager;
 use OCP\IUserManager;
 use OCP\Migration\IOutput;
 use OCP\Migration\IRepairStep;
+use OCP\Share;
 use Test\TestCase;
 
 /**
@@ -194,14 +193,14 @@ class RepairUnmergedSharesTest extends TestCase {
 				// - one subshare for each group share
 				// - targets of subshare all match
 				[
-					[Constants::SHARE_TYPE_GROUP, 123, 'recipientgroup1', '/test', 31],
-					[Constants::SHARE_TYPE_GROUP, 123, 'recipientgroup2', '/test', 31],
+					[Share::SHARE_TYPE_GROUP, 123, 'recipientgroup1', '/test', 31],
+					[Share::SHARE_TYPE_GROUP, 123, 'recipientgroup2', '/test', 31],
 					// child of the previous ones
-					[DefaultShareProvider::SHARE_TYPE_USERGROUP, 123, 'user2', '/test renamed', 31, 0],
+					[Share::SHARE_TYPE_USERGROUP, 123, 'user2', '/test renamed', 31, 0],
 					// child of the previous ones
-					[DefaultShareProvider::SHARE_TYPE_USERGROUP, 123, 'user2', '/test renamed', 31, 1],
+					[Share::SHARE_TYPE_USERGROUP, 123, 'user2', '/test renamed', 31, 1],
 					// different unrelated share
-					[Constants::SHARE_TYPE_GROUP, 456, 'recipientgroup1', '/test (4)', 31],
+					[Share::SHARE_TYPE_GROUP, 456, 'recipientgroup1', '/test (4)', 31],
 				],
 				[
 					['/test', 31],
@@ -218,12 +217,12 @@ class RepairUnmergedSharesTest extends TestCase {
 				// - outsider shares with group1, group2
 				// - only one subshare for two group shares
 				[
-					[Constants::SHARE_TYPE_GROUP, 123, 'recipientgroup1', '/test', 31],
-					[Constants::SHARE_TYPE_GROUP, 123, 'recipientgroup2', '/test', 31],
+					[Share::SHARE_TYPE_GROUP, 123, 'recipientgroup1', '/test', 31],
+					[Share::SHARE_TYPE_GROUP, 123, 'recipientgroup2', '/test', 31],
 					// child of the previous one
-					[DefaultShareProvider::SHARE_TYPE_USERGROUP, 123, 'user2', '/test (2)', 31, 1],
+					[Share::SHARE_TYPE_USERGROUP, 123, 'user2', '/test (2)', 31, 1],
 					// different unrelated share
-					[Constants::SHARE_TYPE_GROUP, 456, 'recipientgroup1', '/test (4)', 31],
+					[Share::SHARE_TYPE_GROUP, 456, 'recipientgroup1', '/test (4)', 31],
 				],
 				[
 					['/test', 31],
@@ -239,13 +238,13 @@ class RepairUnmergedSharesTest extends TestCase {
 				// - one subshare for each group share, both with parenthesis
 				// - but the targets do not match when grouped
 				[
-					[Constants::SHARE_TYPE_GROUP, 123, 'recipientgroup1', '/test', 31],
-					[Constants::SHARE_TYPE_GROUP, 123, 'recipientgroup2', '/test', 31],
+					[Share::SHARE_TYPE_GROUP, 123, 'recipientgroup1', '/test', 31],
+					[Share::SHARE_TYPE_GROUP, 123, 'recipientgroup2', '/test', 31],
 					// child of the previous ones
-					[DefaultShareProvider::SHARE_TYPE_USERGROUP, 123, 'user2', '/test (2)', 31, 0],
-					[DefaultShareProvider::SHARE_TYPE_USERGROUP, 123, 'user2', '/test (3)', 31, 1],
+					[Share::SHARE_TYPE_USERGROUP, 123, 'user2', '/test (2)', 31, 0],
+					[Share::SHARE_TYPE_USERGROUP, 123, 'user2', '/test (3)', 31, 1],
 					// different unrelated share
-					[Constants::SHARE_TYPE_GROUP, 456, 'recipientgroup1', '/test (4)', 31],
+					[Share::SHARE_TYPE_GROUP, 456, 'recipientgroup1', '/test (4)', 31],
 				],
 				[
 					['/test', 31],
@@ -263,13 +262,13 @@ class RepairUnmergedSharesTest extends TestCase {
 				// - one subshare for each group share, both renamed manually
 				// - but the targets do not match when grouped
 				[
-					[Constants::SHARE_TYPE_GROUP, 123, 'recipientgroup1', '/test', 31],
-					[Constants::SHARE_TYPE_GROUP, 123, 'recipientgroup2', '/test', 31],
+					[Share::SHARE_TYPE_GROUP, 123, 'recipientgroup1', '/test', 31],
+					[Share::SHARE_TYPE_GROUP, 123, 'recipientgroup2', '/test', 31],
 					// child of the previous ones
-					[DefaultShareProvider::SHARE_TYPE_USERGROUP, 123, 'user2', '/test_renamed (1 legit paren)', 31, 0],
-					[DefaultShareProvider::SHARE_TYPE_USERGROUP, 123, 'user2', '/test_renamed (2 legit paren)', 31, 1],
+					[Share::SHARE_TYPE_USERGROUP, 123, 'user2', '/test_renamed (1 legit paren)', 31, 0],
+					[Share::SHARE_TYPE_USERGROUP, 123, 'user2', '/test_renamed (2 legit paren)', 31, 1],
 					// different unrelated share
-					[Constants::SHARE_TYPE_GROUP, 456, 'recipientgroup1', '/test (4)', 31],
+					[Share::SHARE_TYPE_GROUP, 456, 'recipientgroup1', '/test (4)', 31],
 				],
 				[
 					['/test', 31],
@@ -287,13 +286,13 @@ class RepairUnmergedSharesTest extends TestCase {
 				// - one subshare for each group share, one with parenthesis
 				// - but the targets do not match when grouped
 				[
-					[Constants::SHARE_TYPE_GROUP, 123, 'recipientgroup1', '/test', 31],
-					[Constants::SHARE_TYPE_GROUP, 123, 'recipientgroup2', '/test', 31],
+					[Share::SHARE_TYPE_GROUP, 123, 'recipientgroup1', '/test', 31],
+					[Share::SHARE_TYPE_GROUP, 123, 'recipientgroup2', '/test', 31],
 					// child of the previous ones
-					[DefaultShareProvider::SHARE_TYPE_USERGROUP, 123, 'user2', '/test (2)', 31, 0],
-					[DefaultShareProvider::SHARE_TYPE_USERGROUP, 123, 'user2', '/test_renamed', 31, 1],
+					[Share::SHARE_TYPE_USERGROUP, 123, 'user2', '/test (2)', 31, 0],
+					[Share::SHARE_TYPE_USERGROUP, 123, 'user2', '/test_renamed', 31, 1],
 					// different unrelated share
-					[Constants::SHARE_TYPE_GROUP, 456, 'recipientgroup1', '/test (4)', 31],
+					[Share::SHARE_TYPE_GROUP, 456, 'recipientgroup1', '/test (4)', 31],
 				],
 				[
 					['/test', 31],
@@ -312,13 +311,13 @@ class RepairUnmergedSharesTest extends TestCase {
 				// - first subshare not renamed (as in real world scenario)
 				// - but the targets do not match when grouped
 				[
-					[Constants::SHARE_TYPE_GROUP, 123, 'recipientgroup1', '/test', 31],
-					[Constants::SHARE_TYPE_GROUP, 123, 'recipientgroup2', '/test', 31],
+					[Share::SHARE_TYPE_GROUP, 123, 'recipientgroup1', '/test', 31],
+					[Share::SHARE_TYPE_GROUP, 123, 'recipientgroup2', '/test', 31],
 					// child of the previous ones
-					[DefaultShareProvider::SHARE_TYPE_USERGROUP, 123, 'user2', '/test', 31, 0],
-					[DefaultShareProvider::SHARE_TYPE_USERGROUP, 123, 'user2', '/test (2)', 31, 1],
+					[Share::SHARE_TYPE_USERGROUP, 123, 'user2', '/test', 31, 0],
+					[Share::SHARE_TYPE_USERGROUP, 123, 'user2', '/test (2)', 31, 1],
 					// different unrelated share
-					[Constants::SHARE_TYPE_GROUP, 456, 'recipientgroup1', '/test (4)', 31],
+					[Share::SHARE_TYPE_GROUP, 456, 'recipientgroup1', '/test (4)', 31],
 				],
 				[
 					['/test', 31],
@@ -337,13 +336,13 @@ class RepairUnmergedSharesTest extends TestCase {
 				// - non-matching targets
 				// - recipient deletes one duplicate (unshare from self, permissions 0)
 				[
-					[Constants::SHARE_TYPE_GROUP, 123, 'recipientgroup1', '/test', 31],
-					[Constants::SHARE_TYPE_GROUP, 123, 'recipientgroup2', '/test', 15],
+					[Share::SHARE_TYPE_GROUP, 123, 'recipientgroup1', '/test', 31],
+					[Share::SHARE_TYPE_GROUP, 123, 'recipientgroup2', '/test', 15],
 					// child of the previous ones
-					[DefaultShareProvider::SHARE_TYPE_USERGROUP, 123, 'user2', '/test (2)', 0, 0],
-					[DefaultShareProvider::SHARE_TYPE_USERGROUP, 123, 'user2', '/test (3)', 15, 1],
+					[Share::SHARE_TYPE_USERGROUP, 123, 'user2', '/test (2)', 0, 0],
+					[Share::SHARE_TYPE_USERGROUP, 123, 'user2', '/test (3)', 15, 1],
 					// different unrelated share
-					[Constants::SHARE_TYPE_GROUP, 456, 'recipientgroup1', '/test (4)', 31],
+					[Share::SHARE_TYPE_GROUP, 456, 'recipientgroup1', '/test (4)', 31],
 				],
 				[
 					['/test', 31],
@@ -362,13 +361,13 @@ class RepairUnmergedSharesTest extends TestCase {
 				// - non-matching targets
 				// - recipient deletes ALL duplicates (unshare from self, permissions 0)
 				[
-					[Constants::SHARE_TYPE_GROUP, 123, 'recipientgroup1', '/test', 31],
-					[Constants::SHARE_TYPE_GROUP, 123, 'recipientgroup2', '/test', 15],
+					[Share::SHARE_TYPE_GROUP, 123, 'recipientgroup1', '/test', 31],
+					[Share::SHARE_TYPE_GROUP, 123, 'recipientgroup2', '/test', 15],
 					// child of the previous ones
-					[DefaultShareProvider::SHARE_TYPE_USERGROUP, 123, 'user2', '/test (2)', 0, 0],
-					[DefaultShareProvider::SHARE_TYPE_USERGROUP, 123, 'user2', '/test (3)', 0, 1],
+					[Share::SHARE_TYPE_USERGROUP, 123, 'user2', '/test (2)', 0, 0],
+					[Share::SHARE_TYPE_USERGROUP, 123, 'user2', '/test (3)', 0, 1],
 					// different unrelated share
-					[Constants::SHARE_TYPE_GROUP, 456, 'recipientgroup1', '/test (4)', 31],
+					[Share::SHARE_TYPE_GROUP, 456, 'recipientgroup1', '/test (4)', 31],
 				],
 				[
 					['/test', 31],
@@ -388,14 +387,14 @@ class RepairUnmergedSharesTest extends TestCase {
 				// - non-matching targets
 				// - user share has more permissions
 				[
-					[Constants::SHARE_TYPE_GROUP, 123, 'recipientgroup1', '/test', 1],
-					[Constants::SHARE_TYPE_GROUP, 123, 'recipientgroup2', '/test', 15],
+					[Share::SHARE_TYPE_GROUP, 123, 'recipientgroup1', '/test', 1],
+					[Share::SHARE_TYPE_GROUP, 123, 'recipientgroup2', '/test', 15],
 					// child of the previous ones
-					[DefaultShareProvider::SHARE_TYPE_USERGROUP, 123, 'user2', '/test (2)', 1, 0],
-					[DefaultShareProvider::SHARE_TYPE_USERGROUP, 123, 'user2', '/test (3)', 15, 1],
-					[Constants::SHARE_TYPE_USER, 123, 'user2', '/test (4)', 31],
+					[Share::SHARE_TYPE_USERGROUP, 123, 'user2', '/test (2)', 1, 0],
+					[Share::SHARE_TYPE_USERGROUP, 123, 'user2', '/test (3)', 15, 1],
+					[Share::SHARE_TYPE_USER, 123, 'user2', '/test (4)', 31],
 					// different unrelated share
-					[Constants::SHARE_TYPE_GROUP, 456, 'recipientgroup1', '/test (5)', 31],
+					[Share::SHARE_TYPE_GROUP, 456, 'recipientgroup1', '/test (5)', 31],
 				],
 				[
 					['/test', 1],
@@ -416,10 +415,10 @@ class RepairUnmergedSharesTest extends TestCase {
 				// - non-matching targets
 				// - user share has more permissions
 				[
-					[Constants::SHARE_TYPE_GROUP, 123, 'recipientgroup1', '/test', 1],
-					[Constants::SHARE_TYPE_USER, 123, 'user2', '/test (2)', 31],
+					[Share::SHARE_TYPE_GROUP, 123, 'recipientgroup1', '/test', 1],
+					[Share::SHARE_TYPE_USER, 123, 'user2', '/test (2)', 31],
 					// different unrelated share
-					[Constants::SHARE_TYPE_GROUP, 456, 'recipientgroup1', '/test (5)', 31],
+					[Share::SHARE_TYPE_GROUP, 456, 'recipientgroup1', '/test (5)', 31],
 				],
 				[
 					['/test', 1],
@@ -434,10 +433,10 @@ class RepairUnmergedSharesTest extends TestCase {
 				// - insider shares with both groups the user is already in
 				// - no subshares in this case
 				[
-					[Constants::SHARE_TYPE_GROUP, 123, 'samegroup1', '/test', 31],
-					[Constants::SHARE_TYPE_GROUP, 123, 'samegroup2', '/test', 31],
+					[Share::SHARE_TYPE_GROUP, 123, 'samegroup1', '/test', 31],
+					[Share::SHARE_TYPE_GROUP, 123, 'samegroup2', '/test', 31],
 					// different unrelated share
-					[Constants::SHARE_TYPE_GROUP, 456, 'recipientgroup1', '/test (4)', 31],
+					[Share::SHARE_TYPE_GROUP, 456, 'recipientgroup1', '/test (4)', 31],
 				],
 				[
 					// leave all alone
@@ -454,12 +453,12 @@ class RepairUnmergedSharesTest extends TestCase {
 				// - user share where recipient renamed
 				// - user share where recipient did not rename
 				[
-					[Constants::SHARE_TYPE_GROUP, 123, 'samegroup1', '/test', 31],
-					[Constants::SHARE_TYPE_GROUP, 123, 'recipientgroup1', '/test', 31],
-					[Constants::SHARE_TYPE_USER, 123, 'user3', '/test legit rename', 31],
-					[Constants::SHARE_TYPE_USER, 123, 'user4', '/test', 31],
+					[Share::SHARE_TYPE_GROUP, 123, 'samegroup1', '/test', 31],
+					[Share::SHARE_TYPE_GROUP, 123, 'recipientgroup1', '/test', 31],
+					[Share::SHARE_TYPE_USER, 123, 'user3', '/test legit rename', 31],
+					[Share::SHARE_TYPE_USER, 123, 'user4', '/test', 31],
 					// different unrelated share
-					[Constants::SHARE_TYPE_GROUP, 456, 'recipientgroup1', '/test (4)', 31],
+					[Share::SHARE_TYPE_GROUP, 456, 'recipientgroup1', '/test (4)', 31],
 				],
 				[
 					// leave all alone
@@ -477,10 +476,10 @@ class RepairUnmergedSharesTest extends TestCase {
 				// - no subshares
 				// - same targets
 				[
-					[Constants::SHARE_TYPE_GROUP, 123, 'samegroup1', '/test', 1],
-					[Constants::SHARE_TYPE_USER, 123, 'user3', '/test', 31],
+					[Share::SHARE_TYPE_GROUP, 123, 'samegroup1', '/test', 1],
+					[Share::SHARE_TYPE_USER, 123, 'user3', '/test', 31],
 					// different unrelated share
-					[Constants::SHARE_TYPE_GROUP, 456, 'recipientgroup1', '/test (4)', 31],
+					[Share::SHARE_TYPE_GROUP, 456, 'recipientgroup1', '/test (4)', 31],
 				],
 				[
 					// leave all alone
@@ -499,17 +498,17 @@ class RepairUnmergedSharesTest extends TestCase {
 				// - non-matching targets
 				[
 					// first share with group
-					[Constants::SHARE_TYPE_GROUP, 123, 'recipientgroup1', '/test', 31],
+					[Share::SHARE_TYPE_GROUP, 123, 'recipientgroup1', '/test', 31],
 					// recipient renames
-					[DefaultShareProvider::SHARE_TYPE_USERGROUP, 123, 'user2', '/first', 31, 0],
+					[Share::SHARE_TYPE_USERGROUP, 123, 'user2', '/first', 31, 0],
 					// then direct share, user renames too
-					[Constants::SHARE_TYPE_USER, 123, 'user2', '/second', 31],
+					[Share::SHARE_TYPE_USER, 123, 'user2', '/second', 31],
 					// another share with the second group
-					[Constants::SHARE_TYPE_GROUP, 123, 'recipientgroup2', '/test', 31],
+					[Share::SHARE_TYPE_GROUP, 123, 'recipientgroup2', '/test', 31],
 					// use renames it
-					[DefaultShareProvider::SHARE_TYPE_USERGROUP, 123, 'user2', '/third', 31, 1],
+					[Share::SHARE_TYPE_USERGROUP, 123, 'user2', '/third', 31, 1],
 					// different unrelated share
-					[Constants::SHARE_TYPE_GROUP, 456, 'recipientgroup1', '/test (5)', 31],
+					[Share::SHARE_TYPE_GROUP, 456, 'recipientgroup1', '/test (5)', 31],
 				],
 				[
 					// group share with group1 left alone

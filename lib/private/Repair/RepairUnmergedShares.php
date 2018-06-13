@@ -24,14 +24,13 @@ namespace OC\Repair;
 
 use OCP\Migration\IOutput;
 use OCP\Migration\IRepairStep;
-use OC\Share\Constants;
 use OCP\DB\QueryBuilder\IQueryBuilder;
 use OCP\IConfig;
 use OCP\IDBConnection;
 use OCP\IUserManager;
 use OCP\IUser;
 use OCP\IGroupManager;
-use OC\Share20\DefaultShareProvider;
+use OCP\Share;
 
 /**
  * Repairs shares for which the received folder was not properly deduplicated.
@@ -231,7 +230,7 @@ class RepairUnmergedShares implements IRepairStep {
 		$shareIds = [];
 		foreach ($subShares as $subShare) {
 			// only if the user deleted some subshares but not all, adjust the permissions of that subshare
-			if (!$optedOut && (int)$subShare['permissions'] === 0 && (int)$subShare['share_type'] === DefaultShareProvider::SHARE_TYPE_USERGROUP) {
+			if (!$optedOut && (int)$subShare['permissions'] === 0 && (int)$subShare['share_type'] === Share::SHARE_TYPE_USERGROUP) {
 				// set permissions from parent group share
 				$permissions = $groupSharesById[$subShare['parent']]['permissions'];
 
@@ -304,17 +303,17 @@ class RepairUnmergedShares implements IRepairStep {
 		}
 
 		// get all subshares grouped by item source
-		$subSharesByItemSource = $this->getSharesWithUser(DefaultShareProvider::SHARE_TYPE_USERGROUP, [$user->getUID()]);
+		$subSharesByItemSource = $this->getSharesWithUser(Share::SHARE_TYPE_USERGROUP, [$user->getUID()]);
 
 		// because sometimes one wants to give the user more permissions than the group share
-		$userSharesByItemSource = $this->getSharesWithUser(Constants::SHARE_TYPE_USER, [$user->getUID()]);
+		$userSharesByItemSource = $this->getSharesWithUser(Share::SHARE_TYPE_USER, [$user->getUID()]);
 
 		if (empty($subSharesByItemSource) && empty($userSharesByItemSource)) {
 			// nothing to repair for this user, no need to do extra queries
 			return;
 		}
 
-		$groupSharesByItemSource = $this->getSharesWithUser(Constants::SHARE_TYPE_GROUP, $groups);
+		$groupSharesByItemSource = $this->getSharesWithUser(Share::SHARE_TYPE_GROUP, $groups);
 		if (empty($groupSharesByItemSource) && empty($userSharesByItemSource)) {
 			// nothing to repair for this user
 			return;

@@ -465,7 +465,7 @@ class RequestHandler {
 		$query = $this->connection->getQueryBuilder();
 		$query->select('*')->from($this->shareTable)
 			->where($query->expr()->eq('token', $query->createNamedParameter($token)))
-			->andWhere($query->expr()->eq('share_type', $query->createNamedParameter(FederatedShareProvider::SHARE_TYPE_REMOTE)))
+			->andWhere($query->expr()->eq('share_type', $query->createNamedParameter(Share::SHARE_TYPE_REMOTE)))
 			->andWhere($query->expr()->eq('id', $query->createNamedParameter($id)));
 
 		$result = $query->execute()->fetchAll();
@@ -525,7 +525,7 @@ class RequestHandler {
 	 */
 	protected function verifyShare(Share\IShare $share, $token) {
 		if (
-			$share->getShareType() === FederatedShareProvider::SHARE_TYPE_REMOTE &&
+			$share->getShareType() === Share::SHARE_TYPE_REMOTE &&
 			$share->getToken() === $token
 		) {
 			return true;
