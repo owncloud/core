@@ -161,7 +161,7 @@ describe('OCA.Sharing.App tests', function() {
 					shareOwner: 'user2'
 				};
 			});
-			afterEach(function() { 
+			afterEach(function() {
 				showMenuStub.restore();
 			});
 			it('provides accept and reject actions for pending shares', function() {
@@ -273,6 +273,92 @@ describe('OCA.Sharing.App tests', function() {
 
 				notificationStub.restore();
 			});
+		});
+	});
+	describe('Action events', function() {
+		var oldList;
+		var appReloadStub;
+		var fileListInReloadStub;
+
+		beforeEach(function() {
+			oldList = OCA.Files.App.fileList;
+			// dummy new list to make sure it exists
+			OCA.Files.App.fileList = new OCA.Files.FileList($('<table><thead></thead><tbody></tbody></table>'));
+
+			appReloadStub = sinon.stub(OCA.Files.App.fileList, 'reload');
+			fileListInReloadStub = sinon.stub(fileListIn, 'reload');
+
+			App.registerNotificationHandler();
+		});
+		afterEach(function() {
+			appReloadStub.restore();
+			fileListInReloadStub.restore();
+
+			// restore old list
+			OCA.Files.App.fileList = oldList;
+			App.destroy();
+		});
+		it('accept share triggers reload of sharein and files fileLists', function() {
+			var ev = new $.Event('OCA.Notification.Action', {
+				notification: {
+					app: 'files_sharing',
+				},
+				action: {
+					url: 'https://randomurl',
+					type: 'POST'
+				}
+			});
+			$('body').trigger(ev);
+
+			expect(1).toEqual(fileListInReloadStub.callCount);
+			expect(1).toEqual(appReloadStub.callCount);
+		});
+		it('reject share only triggers reload of sharein fileList', function() {
+			var ev = new $.Event('OCA.Notification.Action', {
+				notification: {
+					app: 'files_sharing',
+				},
+				action: {
+					url: 'https://randomurl',
+					type: 'DELETE'
+				}
+			});
+			$('body').trigger(ev);
+
+			expect(1).toEqual(fileListInReloadStub.callCount);
+			expect(appReloadStub.notCalled).toEqual(true);
+		});
+		it('ignore events from notifications not related to files_sharing', function() {
+			var ev = new $.Event('OCA.Notification.Action', {
+				notification: {
+					app: 'notifications',
+				},
+				action: {
+					url: 'https://randomurl',
+					type: 'DELETE'
+				}
+			});
+			$('body').trigger(ev);
+
+			expect(fileListInReloadStub.notCalled).toEqual(true);
+			expect(appReloadStub.notCalled).toEqual(true);
+		});
+		it('after destroyed no events will be processed', function() {
+			var ev = new $.Event('OCA.Notification.Action', {
+				notification: {
+					app: 'files_sharing',
+				},
+				action: {
+					url: 'https://randomurl',
+					type: 'POST'
+				}
+			});
+
+			App.destroy();
+			$('body').trigger(ev);
+
+			expect(0).toEqual(fileListInReloadStub.callCount);
+			expect(0).toEqual(appReloadStub.callCount);
 		});
 	});
 });
