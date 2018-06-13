@@ -32,7 +32,8 @@ So that I can efficiently share my files with other users or groups
 		When the user types "us" in the share-with-field
 		Then all users and groups that contain the string "us" in their name should be listed in the autocomplete list on the webUI
 		And the users own name should not be listed in the autocomplete list on the webUI
-		
+
+	@skipOnLDAP
 	Scenario: autocompletion of regular existing groups
 		Given the user has logged in with username "regularuser" and password "1234" using the webUI
 		And the user has browsed to the files page
@@ -121,7 +122,8 @@ So that I can efficiently share my files with other users or groups
 		When the user types "user" in the share-with-field
 		Then all users and groups that contain the string "user" in their name should be listed in the autocomplete list on the webUI except user "User Ggg"
 		And the users own name should not be listed in the autocomplete list on the webUI
-	
+
+	@skipOnLDAP
 	Scenario: autocompletion of a pattern that matches regular existing groups but also a group with whom the item is already shared (folder)
 		Given the user has logged in with username "regularuser" and password "1234" using the webUI
 		And the user has browsed to the files page
@@ -131,6 +133,7 @@ So that I can efficiently share my files with other users or groups
 		Then all users and groups that contain the string "fi" in their name should be listed in the autocomplete list on the webUI except group "finance1"
 		And the users own name should not be listed in the autocomplete list on the webUI
 
+	@skipOnLDAP
 	Scenario: autocompletion of a pattern that matches regular existing groups but also a group with whom the item is already shared (file)
 		Given the user has logged in with username "regularuser" and password "1234" using the webUI
 		And the user has browsed to the files page
