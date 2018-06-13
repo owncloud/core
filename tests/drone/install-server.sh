@@ -114,6 +114,9 @@ if [[ ! -z "${PRIMARY_OBJECTSTORE}" ]]; then
       wait-for-it -t 120 ceph:5034
       cp tests/drone/configs/config.primary_storage.swift.php config/autotest-storage-swift.config.php
       ;;
+    files_primary_s3)
+      wait-for-it -t 120 scality:8000
+      ;;
     *)
       echo "Unknown primary object storage!"
       exit 1

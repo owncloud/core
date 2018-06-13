@@ -44,6 +44,12 @@ class SwiftTest extends ObjectStoreStorageTest {
 			$this->markTestSkipped('objectstore tests are unreliable in some environments');
 		}
 
+		// only run on swift
+		$objectstoreConfiguration = \OC::$server->getConfig()->getSystemValue('objectstore', null);
+		if ($objectstoreConfiguration['class'] !== Swift::class) {
+			$this->markTestSkipped('SwiftTest can only be executed on Swift storage');
+		}
+
 		// reset backend
 		\OC_User::clearBackends();
 		\OC_User::useBackend('database');
