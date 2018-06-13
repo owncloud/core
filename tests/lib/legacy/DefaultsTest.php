@@ -28,27 +28,49 @@ class DefaultsTest extends TestCase {
 	 */
 	protected $defaults;
 
-	protected function setUp() {
-		$this->defaults = $this->getMockBuilder(OC_Defaults::class)
-			->setMethods(['themeExist', 'getImprintUrl', 'getPrivacyPolicyUrl'])
-			->getMock();
-		return parent::setUp();
-	}
-
 	public function testGetShortFooterFromCore() {
 		$imprintUrl = 'http://example.org/imprint';
 		$privacyPolicyUrl = 'http://example.org/privacy';
-		$this->defaults->expects($this->any())
+		$defaults = $this->getDefaultsMock(
+			['themeExist', 'getImprintUrl', 'getPrivacyPolicyUrl']
+		);
+		$defaults->expects($this->any())
 			->method('themeExist')
 			->willReturn(false);
-		$this->defaults->expects($this->exactly(2))
+		$defaults->expects($this->exactly(2))
 			->method('getImprintUrl')
 			->willReturn($imprintUrl);
-		$this->defaults->expects($this->exactly(2))
+		$defaults->expects($this->exactly(2))
 			->method('getPrivacyPolicyUrl')
 			->willReturn($privacyPolicyUrl);
-		$footer = $this->defaults->getShortFooter();
+		$footer = $defaults->getShortFooter();
 		$this->assertContains($privacyPolicyUrl, $footer);
 		$this->assertContains($imprintUrl, $footer);
+	}
+
+	public function testGetImprintWhenNotInstalled() {
+		$config = $this->getMockBuilder(\OCP\IConfig::class)
+			->disableOriginalConstructor()
+			->getMock();
+		$config->expects($this->any())
+			->method('getAppValue')
+			->willThrowException(new \Exception());
+		$defaults = $this->getDefaultsMock(
+			['themeExist']
+		);
+		$defaults->expects($this->any())
+			->method('themeExist')
+			->willReturn(false);
+		$defaults->setConfig($config);
+
+		$footer = $defaults->getShortFooter();
+		$this->assertNotContains('Privacy Policy', $footer);
+		$this->assertNotContains('Imprint', $footer);
+	}
+
+	protected function getDefaultsMock($mockedMethods) {
+		return $this->getMockBuilder(OC_Defaults::class)
+			->setMethods($mockedMethods)
+			->getMock();
 	}
 }
