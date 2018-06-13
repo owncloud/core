@@ -1,4 +1,7 @@
 <?php
+
+use OCP\IConfig;
+
 /**
  * @author Björn Schießle <bjoern@schiessle.org>
  * @author Jan-Christoph Borchardt <hey@jancborchardt.net>
@@ -48,7 +51,7 @@ class OC_Defaults {
 	private $defaultLogoClaim;
 	private $defaultMailHeaderColor;
 	/**
-	 * @var \OCP\IConfig
+	 * @var IConfig
 	 */
 	private $config;
 
@@ -303,7 +306,11 @@ class OC_Defaults {
 	 * @return string
 	 */
 	public function getImprintUrl() {
-		return $this->config->getAppValue('core', 'legal.imprint_url', '');
+		try {
+			return $this->config->getAppValue('core', 'legal.imprint_url', '');
+		} catch (\Exception $e) {
+			return '';
+		}
 	}
 
 	/**
@@ -311,6 +318,19 @@ class OC_Defaults {
 	 * @return string
 	 */
 	public function getPrivacyPolicyUrl() {
-		return $this->config->getAppValue('core', 'legal.privacy_policy_url', '');
+		try {
+			return $this->config->getAppValue('core', 'legal.privacy_policy_url', '');
+		} catch (\Exception $e) {
+			return '';
+		}
+	}
+
+	/**
+	 * @internal Used for unit tests
+	 *
+	 * @param IConfig $config
+	 */
+	public function setConfig(IConfig $config) {
+		$this->config = $config;
 	}
 }
