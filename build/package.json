@@ -44,7 +44,7 @@
     "jsdoc": "~3.5.5",
     "karma": "^2.0.2",
     "karma-coverage": "*",
-    "karma-jasmine": "^1.1.1",
+    "karma-jasmine": "^1.1.2",
     "karma-jasmine-sinon": "^1.0.4",
     "karma-junit-reporter": "*",
     "karma-phantomjs-launcher": "*",
