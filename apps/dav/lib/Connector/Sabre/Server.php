@@ -25,6 +25,8 @@
 namespace OCA\DAV\Connector\Sabre;
 
 use OCA\DAV\DAV\CopyPlugin;
+use OCA\DAV\DAV\LazyOpsPlugin;
+use OCA\DAV\JobStatus\Entity\JobStatusMapper;
 
 /**
  * Class \OCA\DAV\Connector\Sabre\Server
@@ -37,6 +39,8 @@ class Server extends \Sabre\DAV\Server {
 
 	/**
 	 * @see \Sabre\DAV\Server
+	 * @param null $treeOrNode
+	 * @throws \OCP\AppFramework\QueryException
 	 * @throws \Sabre\DAV\Exception
 	 */
 	public function __construct($treeOrNode = null) {
@@ -44,5 +48,12 @@ class Server extends \Sabre\DAV\Server {
 		self::$exposeVersion = false;
 		$this->enablePropfindDepthInfinity = true;
 		$this->addPlugin(new CopyPlugin());
+		$this->addPlugin(new LazyOpsPlugin(
+			\OC::$server->getUserSession(),
+			\OC::$server->getURLGenerator(),
+			\OC::$server->getShutdownHandler(),
+			\OC::$server->query(JobStatusMapper::class),
+			\OC::$server->getLogger()
+		));
 	}
 }

@@ -52,6 +52,7 @@ use OCA\DAV\DAV\PublicAuth;
 use OCA\DAV\Files\BrowserErrorPagePlugin;
 use OCA\DAV\Files\PreviewPlugin;
 use OCA\DAV\Files\ZsyncPlugin;
+use OCA\DAV\JobStatus\EventStreamPlugin;
 use OCA\DAV\SystemTag\SystemTagPlugin;
 use OCA\DAV\Upload\ChunkingPlugin;
 use OCA\DAV\Upload\ChunkingPluginZsync;
@@ -173,6 +174,7 @@ class Server {
 
 		$this->server->addPlugin(new CopyEtagHeaderPlugin());
 		$this->server->addPlugin(new ChunkingPlugin());
+		$this->server->addPlugin(new EventStreamPlugin());
 
 		// Some WebDAV clients do require Class 2 WebDAV support (locking), since
 		// we do not provide locking we emulate it using a fake locking plugin.
