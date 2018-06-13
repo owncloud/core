@@ -672,7 +672,7 @@
 			).then(
 				function(result) {
 					if (self._isSuccessStatus(result.status)) {
-						deferred.resolve(result.status);
+						deferred.resolve(result.status, result);
 					} else {
 						result = _.extend(result, self._getSabreException(result));
 						deferred.reject(result.status, result);
@@ -697,7 +697,7 @@
 			).then(
 				function(result) {
 					if (self._isSuccessStatus(result.status)) {
-						deferred.resolve(result.status);
+						deferred.resolve(result.status, result);
 					} else {
 						result = _.extend(result, self._getSabreException(result));
 						deferred.reject(result.status, result);
@@ -740,7 +740,7 @@
 			).then(
 				function(result) {
 					if (self._isSuccessStatus(result.status)) {
-						deferred.resolve(result.status);
+						deferred.resolve(result.status, result);
 					} else {
 						result = _.extend(result, self._getSabreException(result));
 						deferred.reject(result.status, result);

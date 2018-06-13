@@ -307,15 +307,46 @@ OC.FileUpload.prototype = {
 		}
 		if (size) {
 			headers['OC-Total-Length'] = size;
-
 		}
+		headers['OC-LazyOps'] = 1;
 
-		return this.uploader.davClient.move(
+		var doneDeferred = $.Deferred();
+
+		this.uploader.davClient.move(
 			'uploads/' + uid + '/' + this.getId() + '/.file',
 			'files/' + uid + '/' + OC.joinPaths(this.getFullPath(), this.getFileName()),
 			true,
 			headers
-		);
+		).then(function (status, response) {
+			if (status === 202) {
+				function poll() {
+					$.ajax(response.xhr.getResponseHeader('oc-jobstatus-location')).then(function(data) {
+						var obj = JSON.parse(data);
+						if (obj.status === 'finished') {
+							doneDeferred.resolve(status, response);
+						}
+						if (obj.status === 'error') {
+							OC.Notification.show(obj.errorMessage);
+							doneDeferred.reject(status, response);
+						}
+						if (obj.status === 'started' || obj.status === 'initial') {
+							// call it again after some short delay
+							setTimeout(poll, 1000);
+						}
+					})
+				}
+
+				// start the polling
+				poll();
+			} else {
+				doneDeferred.resolve(status, response);
+			}
+
+		}).fail( function(status, response) {
+			doneDeferred.reject(status, response);
+		});
+
+		return doneDeferred.promise();
 	},
 
 	_deleteChunkFolder: function() {

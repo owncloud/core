@@ -1,9 +1,6 @@
 <?php
 /**
- * @author Morris Jobke <hey@morrisjobke.de>
- * @author scolebrook <scolebrook@mac.com>
  * @author Thomas Müller <thomas.mueller@tmit.eu>
- * @author Vincent Petry <pvince81@owncloud.com>
  *
  * @copyright Copyright (c) 2018, ownCloud GmbH
  * @license AGPL-3.0
@@ -22,28 +19,24 @@
  *
  */
 
-namespace OCA\DAV\Connector\Sabre;
+namespace OCA\DAV\JobStatus\Entity;
 
-use OCA\DAV\DAV\CopyPlugin;
+use OCP\AppFramework\Db\Entity;
 
 /**
- * Class \OCA\DAV\Connector\Sabre\Server
+ * Class JobStatus
  *
- * This class overrides some methods from @see \Sabre\DAV\Server.
+ * @method string getUuid()
+ * @method void setUuid(string $uuid)
+ * @method string getUserId()
+ * @method void setUserId(string $userId)
+ * @method string getStatusInfo()
+ * @method void setStatusInfo(string $statusInfo)
  *
- * @see \Sabre\DAV\Server
+ * @package OCA\DAV\JobStatus\Entity
  */
-class Server extends \Sabre\DAV\Server {
-
-	/**
-	 * @see \Sabre\DAV\Server
-	 * @param null $treeOrNode
-	 * @throws \Sabre\DAV\Exception
-	 */
-	public function __construct($treeOrNode = null) {
-		parent::__construct($treeOrNode);
-		self::$exposeVersion = false;
-		$this->enablePropfindDepthInfinity = true;
-		$this->addPlugin(new CopyPlugin());
-	}
+class JobStatus extends Entity {
+	protected $uuid;
+	protected $userId;
+	protected $statusInfo;
 }
