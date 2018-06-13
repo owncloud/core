@@ -1393,4 +1393,9 @@ $CONFIG = array(
  */
 'smb.logging.enable' => false, 
 
+
+/**
+ * Async dav extensions can be enabled or disabled.
+ */
+'dav.enable.async' => true,
 );
