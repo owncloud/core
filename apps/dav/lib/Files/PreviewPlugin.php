@@ -22,11 +22,11 @@
 namespace OCA\DAV\Files;
 
 use OCA\DAV\Connector\Sabre\Exception\FileLocked;
+use OCP\AppFramework\Utility\ITimeFactory;
 use OCP\Encryption\Exceptions\GenericEncryptionException;
 use OCP\Files\ForbiddenException;
 use OCP\Files\IPreviewNode;
 use OCP\Files\StorageNotAvailableException;
-use OCP\ILogger;
 use OCP\Lock\LockedException;
 use Sabre\DAV\Exception\Forbidden;
 use Sabre\DAV\Exception\NotFound;
@@ -40,11 +40,16 @@ class PreviewPlugin extends ServerPlugin {
 
 	/** @var Server */
 	protected $server;
-	/** @var ILogger */
-	private $logger;
+	/** @var ITimeFactory */
+	private $timeFactory;
 
-	public function __construct(ILogger $logger) {
-		$this->logger = $logger;
+	/**
+	 * PreviewPlugin constructor.
+	 *
+	 * @param ITimeFactory $timeFactory
+	 */
+	public function __construct(ITimeFactory $timeFactory) {
+		$this->timeFactory = $timeFactory;
 	}
 
 	/**
@@ -117,7 +122,7 @@ class PreviewPlugin extends ServerPlugin {
 				$response->setHeader('Content-Disposition', 'attachment');
 				// cache 24h
 				$response->setHeader('Cache-Control', 'max-age=86400, must-revalidate');
-				$response->setHeader('Expires', \gmdate("D, d M Y H:i:s", \time() + 86400) . " GMT");
+				$response->setHeader('Expires', \gmdate("D, d M Y H:i:s", $this->timeFactory->getTime() + 86400) . " GMT");
 
 				$response->setStatus(200);
 				$response->setBody($imageData);
