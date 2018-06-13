@@ -11,7 +11,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/).
 - Added Symfony events for user preference changes - [#31266](https://github.com/owncloud/core/issues/31266)
 - Added Symfony events for public links shared by email - [#31632](https://github.com/owncloud/core/issues/31632)
 - Added Symfony events for accept and reject for local shares - [#31702](https://github.com/owncloud/core/issues/31702)
-- Added support for Imprint and Privacy Policy URLs in web UI and email footers - [#31666](https://github.com/owncloud/core/issues/31666) [#31699](https://github.com/owncloud/core/issues/31699) [#31730](https://github.com/owncloud/core/issues/31730)
+- Added support for Imprint and Privacy Policy URLs in web UI and email footers - [#31666](https://github.com/owncloud/core/issues/31666) [#31699](https://github.com/owncloud/core/issues/31699) [#31730](https://github.com/owncloud/core/issues/31730) [#31766](https://github.com/owncloud/core/pull/31766)
 - Added HTML template for lost password email - [#31144](https://github.com/owncloud/core/issues/31144)
 - Received local shares can now trigger a notification to accept or reject them, also visible in "Shared with you" section - [#31613](https://github.com/owncloud/core/issues/31613)
 - Rejected shares can now be accepted again in the "Shared with you" section - [#31613](https://github.com/owncloud/core/issues/31613)
@@ -69,7 +69,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/).
 - Properly cache non-existing user in UserManager - [#31446](https://github.com/owncloud/core/issues/31446)
 - Update verify checksums console output to flow more naturally - [#31449](https://github.com/owncloud/core/issues/31449)
 - Subadmin shouldn't be able to add users to their groups via API - [#31337](https://github.com/owncloud/core/issues/31337)
-- Remove session token creation for dav requests during loadApps - [#31428](https://github.com/owncloud/core/issues/31428)
+- Catch duplicate inserts in token table - [#31460](https://github.com/owncloud/core/pull/31460)
 - Fix overflowing public share names in the share panel - [#31369](https://github.com/owncloud/core/issues/31369)
 - Fix occ user:sync to sync quota from preferences after upgrade if backend provided no quota - [#31360](https://github.com/owncloud/core/issues/31360)
 - Fix for Redis dev editions - [#31282](https://github.com/owncloud/core/issues/31282)
@@ -77,7 +77,6 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/).
 - Prevent infinite loop in case of error in "log" event handler - [#31247](https://github.com/owncloud/core/issues/31247)
 - Fix HTTP status code when uploading virus-infected files - [#31260](https://github.com/owncloud/core/issues/31260)
 - Add back robots.txt in the release - [#31248](https://github.com/owncloud/core/issues/31248)
-- Fix share email with wrong expiration date - [#31212](https://github.com/owncloud/core/issues/31212)
 
 ## 10.0.8 - 2018-04-27
 ### Added
