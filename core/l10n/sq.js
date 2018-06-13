@@ -281,6 +281,7 @@ OC.L10N.register(
     "Line: %s" : "Rresht: %s",
     "Trace" : "Gjurmim",
     "Imprint" : "Imprint",
+    "Privacy Policy" : "Rregulla Privatësie",
     "Create an <strong>admin account</strong>" : "Krijoni një <strong>llogari administruesi</strong>",
     "Username" : "Emër përdoruesi",
     "Storage & database" : "Depozitë & bazë të dhënash",

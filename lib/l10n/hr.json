@@ -83,6 +83,7 @@
     "The username is already being used" : "Korisničko ime se već koristi",
     "Help" : "Pomoć",
     "Settings" : "Postavke",
+    "Imprint" : "Otisak",
     "Application is not enabled" : "Aplikacija nije aktivirana",
     "Authentication error" : "Pogrešna autentikacija",
     "Token expired. Please reload page." : "Token je istekao. Molimo, ponovno učitajte stranicu.",

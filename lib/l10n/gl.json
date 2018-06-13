@@ -104,6 +104,7 @@
     "Help" : "Axuda",
     "Settings" : "Axustes",
     "App \"%s\" cannot be installed because the following dependencies are not fulfilled: %s" : "Non é posíbel instalar a aplicación «%s» por mor de non cumprirse as dependencias: %s",
+    "Imprint" : "Impresión",
     "File is currently busy, please try again later" : "O ficheiro está ocupado neste momento, tenteo máis tarde.",
     "Application is not enabled" : "A aplicación non está activada",
     "Authentication error" : "Produciuse un erro de autenticación",

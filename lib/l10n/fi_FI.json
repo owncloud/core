@@ -112,6 +112,7 @@
     "Settings" : "Asetukset",
     "App \"%s\" cannot be installed because the following dependencies are not fulfilled: %s" : "Sovelluksen \"%s\" asennus ei onnistu, koska seuraavia riippuvuuksia ei ole täytetty: %s",
     "A safe home for all your data" : "Turvallinen koti tiedoillesi",
+    "Imprint" : "Tiedot",
     "File is currently busy, please try again later" : "Tiedosto on parhaillaan käytössä, yritä myöhemmin uudelleen",
     "Application is not enabled" : "Sovellusta ei ole otettu käyttöön",
     "Authentication error" : "Tunnistautumisvirhe",

@@ -134,6 +134,7 @@
     "Settings" : "Innstillinger",
     "App \"%s\" cannot be installed because the following dependencies are not fulfilled: %s" : "App \"%s\" kan ikke installeres fordi følgende avhengigheter ikke er tilfredsstilt: %s",
     "A safe home for all your data" : "Et trygt hjem for alle dine data",
+    "Imprint" : "Avtrykk",
     "File is currently busy, please try again later" : "Filen er opptatt for øyeblikket, prøv igjen senere",
     "File cannot be read" : "Fil kan ikke leses",
     "Application is not enabled" : "Applikasjon er ikke påslått",
