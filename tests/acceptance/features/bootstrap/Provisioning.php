@@ -85,7 +85,7 @@ trait Provisioning {
 	 * returns the display name of the current user
 	 * if no "Display Name" is set the user-name is returned instead
 	 *
-	 * @return array
+	 * @return string
 	 */
 	public function getCurrentUserDisplayName() {
 		return $this->getUserDisplayName($this->getCurrentUser());
@@ -93,18 +93,20 @@ trait Provisioning {
 
 	/**
 	 * returns the display name of a user
-	 * if no "Display Name" is set the user-name is returned instead
+	 * if no "Display Name" is set the username is returned instead
 	 *
 	 * @param string $username
 	 *
-	 * @return array
+	 * @return string
 	 */
 	public function getUserDisplayName($username) {
-		$displayName = $this->createdUsers[$username]['displayname'];
-		if (($displayName === null) || ($displayName === '')) {
-			$displayName = $username;
+		if (isset($this->createdUsers[$username]['displayname'])) {
+			$displayName = (string) $this->createdUsers[$username]['displayname'];
+			if ($displayName !== '') {
+				return $displayName;
+			}
 		}
-		return $displayName;
+		return $username;
 	}
 
 	/**
