@@ -45,10 +45,13 @@ $principalBackend = new Principal(
 	\OC::$server->getGroupManager(),
 	'principals/'
 );
+$groupPrincipalBackend = new \OCA\DAV\DAV\GroupPrincipalBackend(
+	\OC::$server->getGroupManager()
+);
 $db = \OC::$server->getDatabaseConnection();
 $config = \OC::$server->getConfig();
 $random = \OC::$server->getSecureRandom();
-$calDavBackend = new CalDavBackend($db, $principalBackend, $config, $random, true);
+$calDavBackend = new CalDavBackend($db, $principalBackend, $groupPrincipalBackend, $random, true);
 
 $debugging = \OC::$server->getConfig()->getSystemValue('debug', false);
 

@@ -25,6 +25,7 @@ use OCA\DAV\CalDAV\CalDavBackend;
 use OCA\DAV\CalDAV\Calendar;
 use OCA\DAV\CalDAV\PublicCalendarRoot;
 use OCA\DAV\Connector\Sabre\Principal;
+use OCA\DAV\DAV\GroupPrincipalBackend;
 use OCP\IL10N;
 use OCP\Security\ISecureRandom;
 use Test\TestCase;
@@ -55,6 +56,9 @@ class PublicCalendarRootTest extends TestCase {
 	/** @var Principal */
 	private $principal;
 
+	/** @var GroupPrincipalBackend */
+	private $groupPrincipal;
+
 	/** @var ISecureRandom */
 	private $random;
 
@@ -68,7 +72,9 @@ class PublicCalendarRootTest extends TestCase {
 		$this->config = \OC::$server->getConfig();
 		$this->random = \OC::$server->getSecureRandom();
 
-		$this->backend = new CalDavBackend($db, $this->principal, $this->config, $this->random);
+		$this->groupPrincipal = $this->createMock(GroupPrincipalBackend::class);
+
+		$this->backend = new CalDavBackend($db, $this->principal, $this->groupPrincipal, $this->random);
 
 		$this->publicCalendarRoot = new PublicCalendarRoot($this->backend);
 

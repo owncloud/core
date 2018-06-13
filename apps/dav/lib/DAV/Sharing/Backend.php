@@ -25,6 +25,7 @@
 namespace OCA\DAV\DAV\Sharing;
 
 use OCA\DAV\Connector\Sabre\Principal;
+use OCA\DAV\DAV\GroupPrincipalBackend;
 use OCP\IDBConnection;
 
 class Backend {
@@ -33,6 +34,8 @@ class Backend {
 	private $db;
 	/** @var Principal */
 	private $principalBackend;
+	/** @var GroupPrincipalBackend */
+	private $groupPrincipalBackend;
 	/** @var string */
 	private $resourceType;
 
@@ -43,11 +46,13 @@ class Backend {
 	/**
 	 * @param IDBConnection $db
 	 * @param Principal $principalBackend
+	 * @param GroupPrincipalBackend $groupPrincipalBackend
 	 * @param string $resourceType
 	 */
-	public function __construct(IDBConnection $db, Principal $principalBackend, $resourceType) {
+	public function __construct(IDBConnection $db, Principal $principalBackend, GroupPrincipalBackend $groupPrincipalBackend, $resourceType) {
 		$this->db = $db;
 		$this->principalBackend = $principalBackend;
+		$this->groupPrincipalBackend = $groupPrincipalBackend;
 		$this->resourceType = $resourceType;
 	}
 
@@ -57,19 +62,27 @@ class Backend {
 	 * @param string[] $remove
 	 */
 	public function updateShares($shareable, $add, $remove) {
-		foreach($add as $element) {
-			$principal = $this->principalBackend->findByUri($element['href'], '');
+		foreach ($add as $element) {
+			$principal = $this->findByUri($element['href']);
 			if ($principal !== '') {
 				$this->shareWith($shareable, $element);
 			}
 
 		}
-		foreach($remove as $element) {
-			$principal = $this->principalBackend->findByUri($element, '');
+		foreach ($remove as $element) {
+			$principal = $this->findByUri($element);
 			if ($principal !== '') {
 				$this->unshare($shareable, $element);
 			}
 		}
+	}
+
+	private function findByUri($uri) {
+		$principal = $this->principalBackend->findByUri($uri, '');
+		if ($principal !== '') {
+			return $principal;
+		}
+		return $this->groupPrincipalBackend->findByUri($uri, '');
 	}
 
 	/**
@@ -177,7 +190,7 @@ class Backend {
 				'href' => "principal:${row['principaluri']}",
 				'commonName' => isset($p['{DAV:}displayname']) ? $p['{DAV:}displayname'] : '',
 				'status' => 1,
-				'readOnly' => ($row['access'] == self::ACCESS_READ),
+				'readOnly' => $row['access'] == self::ACCESS_READ,
 				'{http://owncloud.org/ns}principal' => $row['principaluri'],
 				'{http://owncloud.org/ns}group-share' => is_null($p)
 			];
@@ -199,13 +212,13 @@ class Backend {
 		foreach ($shares as $share) {
 			$acl[] = [
 				'privilege' => '{DAV:}read',
-				'principal' => $share['{' . \OCA\DAV\DAV\Sharing\Plugin::NS_OWNCLOUD . '}principal'],
+				'principal' => $share['{' . Plugin::NS_OWNCLOUD . '}principal'],
 				'protected' => true,
 			];
 			if (!$share['readOnly']) {
 				$acl[] = [
 					'privilege' => '{DAV:}write',
-					'principal' => $share['{' . \OCA\DAV\DAV\Sharing\Plugin::NS_OWNCLOUD . '}principal'],
+					'principal' => $share['{' . Plugin::NS_OWNCLOUD . '}principal'],
 					'protected' => true,
 				];
 			} else if ($this->resourceType === 'calendar') {
@@ -213,7 +226,7 @@ class Backend {
 				// so users can change the visibility.
 				$acl[] = [
 					'privilege' => '{DAV:}write-properties',
-					'principal' => $share['{' . \OCA\DAV\DAV\Sharing\Plugin::NS_OWNCLOUD . '}principal'],
+					'principal' => $share['{' . Plugin::NS_OWNCLOUD . '}principal'],
 					'protected' => true,
 				];
 			}

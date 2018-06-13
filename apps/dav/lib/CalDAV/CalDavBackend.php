@@ -26,6 +26,7 @@ namespace OCA\DAV\CalDAV;
 
 use Doctrine\DBAL\Connection;
 use OCA\DAV\Connector\Sabre\Principal;
+use OCA\DAV\DAV\GroupPrincipalBackend;
 use OCA\DAV\DAV\Sharing\Backend;
 use OCA\DAV\DAV\Sharing\IShareable;
 use OCP\DB\QueryBuilder\IQueryBuilder;
@@ -112,11 +113,9 @@ class CalDavBackend extends AbstractBackend implements SyncSupport, Subscription
 	/** @var Principal */
 	private $principalBackend;
 
-	/** @var IConfig */
-	private $config;
-
 	/** @var ISecureRandom */
 	private $random;
+
 	/** @var bool */
 	private $legacyMode;
 
@@ -125,19 +124,18 @@ class CalDavBackend extends AbstractBackend implements SyncSupport, Subscription
 	 *
 	 * @param IDBConnection $db
 	 * @param Principal $principalBackend
-	 * @param IConfig $config
+	 * @param GroupPrincipalBackend $groupPrincipalBackend
 	 * @param ISecureRandom $random
 	 * @param bool $legacyMode
 	 */
 	public function __construct(IDBConnection $db,
 								Principal $principalBackend,
-								IConfig $config,
+								GroupPrincipalBackend $groupPrincipalBackend,
 								ISecureRandom $random,
 								$legacyMode = false) {
 		$this->db = $db;
 		$this->principalBackend = $principalBackend;
-		$this->sharingBackend = new Backend($this->db, $principalBackend, 'calendar');
-		$this->config = $config;
+		$this->sharingBackend = new Backend($this->db, $principalBackend, $groupPrincipalBackend, 'calendar');
 		$this->random = $random;
 		$this->legacyMode = $legacyMode;
 	}
@@ -824,6 +822,8 @@ class CalDavBackend extends AbstractBackend implements SyncSupport, Subscription
 	 * @param string $calendarData
 	 * @return string
 	 * @throws DAV\Exception\BadRequest
+	 * @throws \Sabre\VObject\Recur\MaxInstancesExceededException
+	 * @throws \Sabre\VObject\Recur\NoInstancesException
 	 */
 	function createCalendarObject($calendarId, $objectUri, $calendarData) {
 		$extraData = $this->getDenormalizedData($calendarData);
@@ -868,6 +868,8 @@ class CalDavBackend extends AbstractBackend implements SyncSupport, Subscription
 	 * @param string $calendarData
 	 * @return string
 	 * @throws DAV\Exception\BadRequest
+	 * @throws \Sabre\VObject\Recur\MaxInstancesExceededException
+	 * @throws \Sabre\VObject\Recur\NoInstancesException
 	 */
 	function updateCalendarObject($calendarId, $objectUri, $calendarData) {
 		$extraData = $this->getDenormalizedData($calendarData);
@@ -899,7 +901,7 @@ class CalDavBackend extends AbstractBackend implements SyncSupport, Subscription
 	public function setClassification($calendarObjectId, $classification) {
 		if (!in_array($classification, [
 			self::CLASSIFICATION_PUBLIC, self::CLASSIFICATION_PRIVATE, self::CLASSIFICATION_CONFIDENTIAL
-		])) {
+		], true)) {
 			throw new \InvalidArgumentException();
 		}
 		$query = $this->db->getQueryBuilder();
@@ -1294,11 +1296,11 @@ class CalDavBackend extends AbstractBackend implements SyncSupport, Subscription
 
 		$propertiesBoolean = ['striptodos', 'stripalarms', 'stripattachments'];
 
-		foreach($this->subscriptionPropertyMap as $xmlName=>$dbName) {
-			if (array_key_exists($xmlName, $properties)) {
-					$values[$dbName] = $properties[$xmlName];
-					if (in_array($dbName, $propertiesBoolean)) {
-						$values[$dbName] = true;
+		foreach ($this->subscriptionPropertyMap as $xmlName=>$dbName) {
+			if (\array_key_exists($xmlName, $properties)) {
+				$values[$dbName] = $properties[$xmlName];
+				if (\in_array($dbName, $propertiesBoolean, true)) {
+					$values[$dbName] = true;
 				}
 			}
 		}
@@ -1524,8 +1526,9 @@ class CalDavBackend extends AbstractBackend implements SyncSupport, Subscription
 	 *
 	 * @param string $calendarData
 	 * @return array
-	 * @throws \Sabre\VObject\Recur\MaxInstancesExceededException
 	 * @throws DAV\Exception\BadRequest
+	 * @throws \Sabre\VObject\Recur\MaxInstancesExceededException
+	 * @throws \Sabre\VObject\Recur\NoInstancesException
 	 */
 	public function getDenormalizedData($calendarData) {
 
@@ -1544,7 +1547,7 @@ class CalDavBackend extends AbstractBackend implements SyncSupport, Subscription
 			}
 		}
 		if (!$componentType) {
-			throw new \Sabre\DAV\Exception\BadRequest('Calendar objects must have a VJOURNAL, VEVENT or VTODO component');
+			throw new DAV\Exception\BadRequest('Calendar objects must have a VJOURNAL, VEVENT or VTODO component');
 		}
 		if ($componentType === 'VEVENT' && $component->DTSTART) {
 			$firstOccurrence = $component->DTSTART->getDateTime()->getTimeStamp();
