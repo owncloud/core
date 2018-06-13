@@ -581,12 +581,6 @@ matrix:
       INSTALL_SERVER: true
 
   # files_primary_s3
-    - PHP_VERSION: 5.6
-      TEST_SUITE: phpunit
-      DB_TYPE: sqlite
-      OBJECTSTORE: scality
-      PRIMARY_OBJECTSTORE: files_primary_s3
-      INSTALL_SERVER: true
 
     - PHP_VERSION: 7.1
       TEST_SUITE: phpunit
