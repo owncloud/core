@@ -25,6 +25,7 @@
 namespace OCA\DAV\Connector\Sabre;
 
 use OCA\DAV\DAV\CopyPlugin;
+use OCA\DAV\DAV\LazyOpsPlugin;
 
 /**
  * Class \OCA\DAV\Connector\Sabre\Server
@@ -44,5 +45,6 @@ class Server extends \Sabre\DAV\Server {
 		self::$exposeVersion = false;
 		$this->enablePropfindDepthInfinity = true;
 		$this->addPlugin(new CopyPlugin());
+		$this->addPlugin(new LazyOpsPlugin());
 	}
 }
