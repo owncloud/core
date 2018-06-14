@@ -995,7 +995,6 @@ trait WebDav {
 		$user, $path, $properties, $filterRules, $offset = null, $limit = null
 	) {
 		$client = $this->getSabreClient($user);
-
 		$body = '<?xml version="1.0" encoding="utf-8" ?>
 					<oc:filter-files xmlns:a="DAV:" xmlns:oc="http://owncloud.org/ns" >
 						<a:prop>
@@ -1951,7 +1950,7 @@ trait WebDav {
 	 */
 	public function checkFavoritedElements($user, $folder, $expectedElements) {
 		$this->checkFavoritedElementsPaginated(
-			$user, $folder, $expectedElements, null, null
+			$user, $folder, null, null, $expectedElements
 		);
 	}
 
@@ -1960,20 +1959,24 @@ trait WebDav {
 	 *
 	 * @param string $user
 	 * @param string $folder
+	 * @param int|null $offset
+	 * @param int|null $limit
 	 * @param TableNode|null $expectedElements
-	 * @param int $offset unused
-	 * @param int $limit unused
 	 *
 	 * @return void
 	 */
 	public function checkFavoritedElementsPaginated(
-		$user, $folder, $expectedElements, $offset, $limit
+		$user, $folder, $offset, $limit, $expectedElements
 	) {
+		$offset === null ?  $offset : \settype($offset, 'integer');
+		$limit === null ? $limit : \settype($limit, 'integer');
 		$elementList = $this->reportFolder(
 			$user,
 			$folder,
 			'<oc:favorite/>',
-			'<oc:favorite>1</oc:favorite>'
+			'<oc:favorite>1</oc:favorite>',
+			$offset,
+			$limit
 		);
 		if ($expectedElements instanceof TableNode) {
 			$elementRows = $expectedElements->getRows();
