@@ -70,6 +70,87 @@ class RepairSubSharesTest extends TestCase {
 	}
 
 	/**
+	 * A test case to verify steps repair does address the simple step mentioned
+	 * at https://github.com/owncloud/core/issues/27990#issuecomment-357899190
+	 */
+
+	public function testRemoveDuplicateSubShare() {
+		$qb = $this->connection->getQueryBuilder();
+		/*
+		 * Create 3 users: user1, user2 and user3.
+		 */
+		$userName = "user";
+		$groupName = "group1";
+		$time = 1523892;
+		//This array holds the id, share_with and parent per user
+		$getAllIdsPerUser = [];
+		\OC::$server->getGroupManager()->createGroup($groupName);
+		for ($userCount = 1; $userCount <= 3; $userCount++) {
+			$user = $this->createUser($userName.$userCount);
+			\OC::$server->getGroupManager()->get($groupName)->addUser($user);
+		}
+
+		$usersinsharetable = ['admin', 'user1', 'user2', 'user2'];
+		foreach ($usersinsharetable as $user) {
+			//start with a simple insert query and alter later based on users.
+			$inserValues = [
+				'uid_owner' => $qb->expr()->literal('admin'),
+				'uid_initiator' => $qb->expr()->literal('admin'),
+				'item_type' => $qb->expr()->literal('folder'),
+				'item_source' => $qb->expr()->literal(23),
+				'file_source' => $qb->expr()->literal(23),
+				'file_target' => $qb->expr()->literal('/test'),
+				'permissions' => $qb->expr()->literal(31),
+				'stime' => $qb->expr()->literal($time),
+				'mail_send' => $qb->expr()->literal('0'),
+				'accepted' => $qb->expr()->literal('0')
+			];
+
+			$userIndex = \array_search($user, $usersinsharetable, true);
+			if ($userIndex === 0) {
+				$inserValues['share_type'] = $qb->expr()->literal(1);
+				$inserValues['share_with'] = $qb->expr()->literal($groupName);
+				$user = $groupName;
+			} else {
+				$inserValues['share_type'] = $qb->expr()->literal(2);
+				$inserValues['share_with'] = $qb->expr()->literal($user);
+				$inserValues['parent'] = $qb->expr()->literal(1);
+			}
+
+			$qb->insert('share')
+				->values($inserValues)
+				->execute();
+			$getAllIdsPerUser[$user][] = ['id' => $this->getLastSharedId(), 'share_with' => $user];
+		}
+
+		$outputMock = $this->createMock(IOutput::class);
+		$this->repair->run($outputMock);
+
+		$qb = $this->invokePrivate($this->repair, 'getSelectQueryToDetectDuplicatesBuilder', []);
+		$results = $qb->execute()->fetchAll();
+		$this->assertCount(0, $results);
+
+		//There should be only one entry for share_with as 'user2'
+		$qb = $this->connection->getQueryBuilder();
+		$qb->select($qb->createFunction('count(*)'))
+			->from('share')
+			->where($qb->expr()->eq('share_with', $qb->createNamedParameter('user2')));
+		$results = $qb->execute()->fetchAll();
+		$this->assertCount(1, $results);
+
+		$qb = $this->connection->getQueryBuilder();
+		$qb->select('id', 'share_with')
+			->from('share');
+		$results = $qb->execute()->fetchAll();
+		//Only 3 entries should be there
+		$this->assertCount(3, $results);
+
+		foreach ($results as $id) {
+			$this->assertTrue(\in_array($id, $getAllIdsPerUser[$id['share_with']]));
+		}
+	}
+
+	/**
 	 * This is a very basic test
 	 * This test would populate DB with data
 	 * and later, remove the duplicates to test
@@ -82,10 +163,12 @@ class RepairSubSharesTest extends TestCase {
 		$userName = "user";
 		$groupName = "group";
 		$folderName = "/test";
-		$time = \time();
+		$time = 1523892;
 		$groupCount = 1;
 		$totalGroups = 3;
 		$parent = 1;
+		//This array holds the id, share_with and parent per user
+		$getAllIdsPerUser = [];
 		$multipleOf = 2;
 		for ($userCount = 1; $userCount <= 10; $userCount++) {
 			$user = $this->createUser($userName.$userCount);
@@ -97,7 +180,7 @@ class RepairSubSharesTest extends TestCase {
 			//Create a group share
 			$qb->insert('share')
 				->values([
-					'share_type' => $qb->expr()->literal('2'),
+					'share_type' => $qb->expr()->literal(2),
 					'share_with' => $qb->expr()->literal($userName.$groupCount),
 					'uid_owner' => $qb->expr()->literal('admin'),
 					'uid_initiator' => $qb->expr()->literal('admin'),
@@ -110,13 +193,14 @@ class RepairSubSharesTest extends TestCase {
 					'stime' => $qb->expr()->literal($time),
 				])
 				->execute();
+			$getAllIdsPerUser['ids'][] = ['id' => $this->getLastSharedId()];
 
 			/**
 			 * Group count incremented once value of userCount reaches multiple of 3
 			 */
 			if (($userCount % $totalGroups) === 0) {
 				$groupCount++;
-				$time = \time();
+				$time += 1;
 			}
 
 			/**
@@ -127,20 +211,30 @@ class RepairSubSharesTest extends TestCase {
 			}
 		}
 
+		$qb = $this->invokePrivate($this->repair, 'getSelectQueryToDetectDuplicatesBuilder', []);
+		$idsNotPresent = $qb->execute()->fetchAll();
+
 		$outputMock = $this->createMock(IOutput::class);
 		$this->repair->run($outputMock);
 
-		$qb = $this->connection->getQueryBuilder();
-		$qb->select('id', 'parent', $qb->createFunction('count(*)'))
-			->from('share')
-			->where($qb->expr()->eq('share_type', $qb->createNamedParameter(2)))
-			->groupBy('parent')
-			->addGroupBy('id')
-			->addGroupBy('share_with')
-			->having('count(*) > 1')->setMaxResults(1000);
-
 		$results = $qb->execute()->fetchAll();
 		$this->assertCount(0, $results);
+
+		$qb = $this->connection->getQueryBuilder();
+		$qb->select('id')
+			->from('share');
+		$results = $qb->execute()->fetchAll();
+		//Only 7 entries should be there
+		$this->assertCount(7, $results);
+
+		foreach ($results as $id) {
+			$this->assertTrue(\in_array($id, $getAllIdsPerUser['ids']));
+		}
+
+		//Verify that these ids are not there
+		foreach ($results as $id) {
+			$this->assertFalse(\in_array($id['id'], $idsNotPresent, true));
+		}
 	}
 
 	/**
@@ -150,11 +244,13 @@ class RepairSubSharesTest extends TestCase {
 	public function testLargeDuplicateShareRows() {
 		$qb = $this->connection->getQueryBuilder();
 		$userName = "user";
-		$time = \time();
+		$time = 15238923;
 		$groupCount = 0;
 		$folderName = "/test";
 		$maxUsersPerGroup = 1000;
 		$parent = $groupCount + 1;
+		//This array holds the id, share_with and parent per user
+		$getAllIdsPerUser = [];
 		for ($userCount = 0; $userCount < 5500; $userCount++) {
 			/**
 			 * groupCount is incremented once userCount reaches
@@ -166,7 +262,7 @@ class RepairSubSharesTest extends TestCase {
 			}
 			$qb->insert('share')
 				->values([
-					'share_type' => $qb->expr()->literal('2'),
+					'share_type' => $qb->expr()->literal(2),
 					'share_with' => $qb->expr()->literal($userName.$groupCount),
 					'uid_owner' => $qb->expr()->literal('admin'),
 					'uid_initiator' => $qb->expr()->literal('admin'),
@@ -179,21 +275,49 @@ class RepairSubSharesTest extends TestCase {
 					'stime' => $qb->expr()->literal($time),
 				])
 				->execute();
+			$getAllIdsPerUser['ids'][] = [
+				'id' => $this->getLastSharedId()];
 		}
 
 		$outputMock = $this->createMock(IOutput::class);
 		$this->repair->run($outputMock);
 
-		$qb = $this->connection->getQueryBuilder();
-		$qb->select('id', 'parent', $qb->createFunction('count(*)'))
-			->from('share')
-			->where($qb->expr()->eq('share_type', $qb->createNamedParameter(2)))
-			->groupBy('parent')
-			->addGroupBy('id')
-			->addGroupBy('share_with')
-			->having('count(*) > 1')->setMaxResults(1000);
+		$qb = $this->invokePrivate($this->repair, 'getSelectQueryToDetectDuplicatesBuilder', []);
 
 		$results = $qb->execute()->fetchAll();
 		$this->assertCount(0, $results);
+
+		$qb = $this->connection->getQueryBuilder();
+		$qb->select('id')
+			->from('share');
+		$results = $qb->execute()->fetchAll();
+
+		$this->assertCount(6, $results);
+
+		foreach ($results as $id) {
+			$this->assertTrue(\in_array($id, $getAllIdsPerUser['ids']));
+			if (\array_search($id, $results, true) === 5) {
+				for ($i = $id['id'] + 1; $i < $id['id'] + 486; $i++) {
+					$this->assertFalse(\in_array(['id' => $i], $results));
+				}
+			} else {
+				//The next 1000 ids will not be there.
+				for ($i = $id['id'] + 1; $i < $id['id'] + 999; $i++) {
+					$this->assertFalse(\in_array(['id' => $i], $results));
+				}
+			}
+		}
+	}
+
+	public function testName() {
+		$this->assertEquals('Repair sub shares', $this->repair->getName());
+	}
+
+	/**
+	 * Returns last inserted id to the oc_share table
+	 * @return int
+	 */
+	protected function getLastSharedId() {
+		return $this->connection->lastInsertId('*PREFIX*share');
 	}
 }
