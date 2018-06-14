@@ -59,7 +59,7 @@ class GroupList extends OwncloudPage {
 	}
 
 	/**
-	 * 
+	 *
 	 * @param string $name
 	 *
 	 * @throws ElementNotFoundException
@@ -84,7 +84,7 @@ class GroupList extends OwncloudPage {
 
 	/**
 	 * deletes a group in the UI
-	 * 
+	 *
 	 * @param string $name
 	 *
 	 * @throws ElementNotFoundException
@@ -104,7 +104,7 @@ class GroupList extends OwncloudPage {
 	}
 
 	/**
-	 * 
+	 *
 	 * @param string  $groupName
 	 *
 	 * @throws ElementNotFoundException
@@ -134,7 +134,7 @@ class GroupList extends OwncloudPage {
 
 	/**
 	 * returns all group names in an array
-	 * 
+	 *
 	 * @return string[]
 	 */
 	public function namesToArray() {
@@ -148,4 +148,3 @@ class GroupList extends OwncloudPage {
 		return $allGroups;
 	}
 }
-	

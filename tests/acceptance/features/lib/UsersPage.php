@@ -397,8 +397,8 @@ class UsersPage extends OwncloudPage {
 		$this->waitForAjaxCallsToStartAndFinish($session);
 	}
 
-	/** 
-	 * 
+	/**
+	 *
 	 * @param string $groupName
 	 * @param Session $session
 	 *
@@ -420,5 +420,4 @@ class UsersPage extends OwncloudPage {
 		$userTr = $this->findUserInTable($username);
 		$userTr->find("xpath", $this->disableUserCheckboxXpath)->click();
 	}
-	
 }

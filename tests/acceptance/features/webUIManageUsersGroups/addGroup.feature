@@ -4,7 +4,7 @@ As an admin
 I would like to add a group
 So that I can share documents with other users
 
-	Background: 
+	Background:
 		Given user admin has logged in using the webUI
 		And the administrator has browsed to the users page
 

@@ -196,7 +196,7 @@ trait Auth {
 		$this->sendRequest(
 			$url,
 			$method,
-			'basic ' . base64_encode($user . ':' . $this->clientToken)
+			'basic ' . \base64_encode($user . ':' . $this->clientToken)
 		);
 	}
 
@@ -321,5 +321,4 @@ trait Auth {
 			$this->tokenAuthHasBeenSet = false;
 		}
 	}
-
 }
