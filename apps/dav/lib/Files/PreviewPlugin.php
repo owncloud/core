@@ -27,7 +27,7 @@ use OCP\Encryption\Exceptions\GenericEncryptionException;
 use OCP\Files\ForbiddenException;
 use OCP\Files\IPreviewNode;
 use OCP\Files\StorageNotAvailableException;
-use OCP\ILogger;
+use OCP\IPreview;
 use OCP\Lock\LockedException;
 use Sabre\DAV\Exception\Forbidden;
 use Sabre\DAV\Exception\NotFound;
@@ -43,14 +43,18 @@ class PreviewPlugin extends ServerPlugin {
 	protected $server;
 	/** @var ITimeFactory */
 	private $timeFactory;
+	/** @var IPreview */
+	private $previewManager;
 
 	/**
 	 * PreviewPlugin constructor.
 	 *
 	 * @param ITimeFactory $timeFactory
+	 * @param IPreview $previewManager
 	 */
-	public function __construct(ITimeFactory $timeFactory) {
+	public function __construct(ITimeFactory $timeFactory, IPreview $previewManager) {
 		$this->timeFactory = $timeFactory;
+		$this->previewManager = $previewManager;
 	}
 
 	/**
@@ -104,6 +108,10 @@ class PreviewPlugin extends ServerPlugin {
 		}
 
 		try {
+			if (!$this->previewManager->isAvailable($fileNode)) {
+				// no preview available or preview disabled
+				throw new NotFound();
+			}
 			if ($image = $fileNode->getThumbnail($queryParams)) {
 				if ($image === null || !$image->valid()) {
 					throw new NotFound();
