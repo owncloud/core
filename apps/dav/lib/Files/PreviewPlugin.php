@@ -21,25 +21,35 @@
 
 namespace OCA\DAV\Files;
 
+use OCA\DAV\Connector\Sabre\Exception\FileLocked;
+use OCP\AppFramework\Utility\ITimeFactory;
+use OCP\Encryption\Exceptions\GenericEncryptionException;
 use OCP\Files\ForbiddenException;
 use OCP\Files\IPreviewNode;
-use OCP\ILogger;
+use OCP\Files\StorageNotAvailableException;
+use OCP\Lock\LockedException;
+use Sabre\DAV\Exception\Forbidden;
 use Sabre\DAV\Exception\NotFound;
+use Sabre\DAV\Exception\ServiceUnavailable;
 use Sabre\DAV\Server;
 use Sabre\DAV\ServerPlugin;
 use Sabre\HTTP\RequestInterface;
 use Sabre\HTTP\ResponseInterface;
-use OCA\DAV\Connector\Sabre\Exception\Forbidden as DAVForbiddenException;
 
 class PreviewPlugin extends ServerPlugin {
 
 	/** @var Server */
 	protected $server;
-	/** @var ILogger */
-	private $logger;
+	/** @var ITimeFactory */
+	private $timeFactory;
 
-	public function __construct(ILogger $logger) {
-		$this->logger = $logger;
+	/**
+	 * PreviewPlugin constructor.
+	 *
+	 * @param ITimeFactory $timeFactory
+	 */
+	public function __construct(ITimeFactory $timeFactory) {
+		$this->timeFactory = $timeFactory;
 	}
 
 	/**
@@ -63,6 +73,9 @@ class PreviewPlugin extends ServerPlugin {
 	 * @throws NotFound
 	 * @throws \Sabre\DAVACL\Exception\NeedPrivileges
 	 * @throws \Sabre\DAV\Exception\NotAuthenticated
+	 * @throws Forbidden
+	 * @throws FileLocked
+	 * @throws ServiceUnavailable
 	 */
 	public function httpGet(RequestInterface $request, ResponseInterface $response) {
 		$queryParams = $request->getQueryParameters();
@@ -88,38 +101,44 @@ class PreviewPlugin extends ServerPlugin {
 		}
 
 		try {
-			$image = $fileNode->getThumbnail($queryParams);
+			if ($image = $fileNode->getThumbnail($queryParams)) {
+				if ($image === null || !$image->valid()) {
+					throw new NotFound();
+				}
+				$type = $image->mimeType();
+				if (!\in_array($type, ['image/png', 'image/jpeg', 'image/gif'])) {
+					$type = 'application/octet-stream';
+				}
+
+				// Enable output buffering
+				\ob_start();
+				// Capture the output
+				$image->show();
+				$imageData = \ob_get_contents();
+				// Clear the output buffer
+				\ob_end_clean();
+
+				$response->setHeader('Content-Type', $type);
+				$response->setHeader('Content-Disposition', 'attachment');
+				// cache 24h
+				$response->setHeader('Cache-Control', 'max-age=86400, must-revalidate');
+				$response->setHeader('Expires', \gmdate("D, d M Y H:i:s", $this->timeFactory->getTime() + 86400) . " GMT");
+
+				$response->setStatus(200);
+				$response->setBody($imageData);
+
+				// Returning false to break the event chain
+				return false;
+			}
+		} catch (GenericEncryptionException $e) {
+			// returning 403 because some apps stops syncing if 503 is returned.
+			throw new Forbidden('Encryption not ready: ' . $e->getMessage());
+		} catch (StorageNotAvailableException $e) {
+			throw new ServiceUnavailable('Failed to open file: ' . $e->getMessage());
 		} catch (ForbiddenException $ex) {
-			throw new DAVForbiddenException($ex->getMessage(), $ex->getRetry());
-		}
-		if ($image) {
-			if ($image === null || !$image->valid()) {
-				throw new NotFound();
-			}
-			$type = $image->mimeType();
-			if (!\in_array($type, ['image/png', 'image/jpeg', 'image/gif'])) {
-				$type = 'application/octet-stream';
-			}
-
-			// Enable output buffering
-			\ob_start();
-			// Capture the output
-			$image->show();
-			$imageData = \ob_get_contents();
-			// Clear the output buffer
-			\ob_end_clean();
-
-			$response->setHeader('Content-Type', $type);
-			$response->setHeader('Content-Disposition', 'attachment');
-			// cache 24h
-			$response->setHeader('Cache-Control', 'max-age=86400, must-revalidate');
-			$response->setHeader('Expires', \gmdate("D, d M Y H:i:s", \time() + 86400) . " GMT");
-
-			$response->setStatus(200);
-			$response->setBody($imageData);
-
-			// Returning false to break the event chain
-			return false;
+			throw new Forbidden($ex->getMessage(), $ex->getRetry());
+		} catch (LockedException $e) {
+			throw new FileLocked($e->getMessage(), $e->getCode(), $e);
 		}
 		// TODO: add forceIcon handling .... if still needed
 		throw new NotFound();
