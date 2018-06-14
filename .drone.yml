@@ -152,14 +152,14 @@ pipeline:
       matrix:
         COVERAGE: true
 
-  setup-caldav-tests:
+  setup-caldav-carddav-tests:
     image: owncloudci/php:${PHP_VERSION}
     pull: true
     commands:
-      - bash apps/dav/tests/travis/caldav/install.sh
+      - bash apps/dav/tests/ci/${TEST_SUITE}/install.sh
     when:
       matrix:
-        TEST_SUITE: caldav
+        CALDAV_CARDDAV_JOB: true
 
   install-notifications-app:
     image: owncloudci/php:${PHP_VERSION}
@@ -244,14 +244,14 @@ pipeline:
       matrix:
         TEST_SUITE: selenium
 
-  caldav-tests:
+  caldav-carddav-tests:
     image: owncloudci/php:${PHP_VERSION}
     pull: true
     commands:
-      - bash apps/dav/tests/travis/caldav/script.sh
+      - bash apps/dav/tests/ci/${TEST_SUITE}/script.sh
     when:
       matrix:
-        TEST_SUITE: caldav
+        CALDAV_CARDDAV_JOB: true
 
   print-log:
     image: owncloudci/php:${PHP_VERSION}
@@ -756,3 +756,34 @@ matrix:
       INSTALL_SERVER: true
       CHOWN_SERVER: true
       OWNCLOUD_LOG: true
+      CALDAV_CARDDAV_JOB: true
+
+    # carddav test
+    - PHP_VERSION: 7.1
+      TEST_SUITE: carddav
+      DB_TYPE: mariadb
+      USE_SERVER: true
+      INSTALL_SERVER: true
+      CHOWN_SERVER: true
+      OWNCLOUD_LOG: true
+      CALDAV_CARDDAV_JOB: true
+
+    # caldav-old-endpoint test
+    - PHP_VERSION: 7.1
+      TEST_SUITE: caldav-old-endpoint
+      DB_TYPE: mariadb
+      USE_SERVER: true
+      INSTALL_SERVER: true
+      CHOWN_SERVER: true
+      OWNCLOUD_LOG: true
+      CALDAV_CARDDAV_JOB: true
+
+    # carddav-old-endpoint test
+    - PHP_VERSION: 7.1
+      TEST_SUITE: carddav-old-endpoint
+      DB_TYPE: mariadb
+      USE_SERVER: true
+      INSTALL_SERVER: true
+      CHOWN_SERVER: true
+      OWNCLOUD_LOG: true
+      CALDAV_CARDDAV_JOB: true
