@@ -211,6 +211,7 @@ OC.L10N.register(
     "Share details could not be loaded for this item." : "Detalhes de compartilhamento não puderam ser carregados para este item.",
     "No users or groups found for {search}" : "Nenhum usuário ou grupo encontrados para {search}",
     "No users found for {search}" : "Nenhum usuário encontrado para {search}",
+    "_Please enter at least {chars} character for suggestions_::_Please enter at least {chars} characters for suggestions_" : ["Por favor, insira pelo menos {chars} caracteres para sugestões","Por favor, insira pelo menos {chars} caracteres para sugestões"],
     "An error occurred. Please try again" : "Ocorreu um erro. Por favor tente novamente",
     "{sharee} (group)" : "{sharee} (grupo)",
     "{sharee} (at {server})" : "{sharee} (no {server})",
