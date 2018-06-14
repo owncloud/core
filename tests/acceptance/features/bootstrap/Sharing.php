@@ -93,9 +93,9 @@ trait Sharing {
 
 		if ($body instanceof TableNode) {
 			$fd = $body->getRowsHash();
-			if (array_key_exists('expireDate', $fd)) {
+			if (\array_key_exists('expireDate', $fd)) {
 				$dateModification = $fd['expireDate'];
-				$fd['expireDate'] = date('Y-m-d', strtotime($dateModification));
+				$fd['expireDate'] = \date('Y-m-d', \strtotime($dateModification));
 			}
 			$options['body'] = $fd;
 		}
@@ -261,7 +261,7 @@ trait Sharing {
 	 * @return void
 	 */
 	public function checkLastPublicSharedFileDownload() {
-		if (count($this->lastShareData->data->element) > 0) {
+		if (\count($this->lastShareData->data->element) > 0) {
 			$url = $this->lastShareData->data[0]->url;
 		} else {
 			$url = $this->lastShareData->data->url;
@@ -285,14 +285,14 @@ trait Sharing {
 
 	/**
 	 * @Then /^the user "([^"]*)" should be able to download the file "([^"]*)" using the API$/
-	 * 
+	 *
 	 * @param string $user
 	 * @param string $path
-	 * 
+	 *
 	 * @return void
 	 */
 	public function theUserShouldBeAbleToDownloadTheFileUsingTheApi($user, $path) {
-		$path = ltrim($path, "/");
+		$path = \ltrim($path, "/");
 		$options = [];
 		$options['auth'] = $this->getAuthOptionForUser($user);
 		
@@ -303,11 +303,11 @@ trait Sharing {
 	/**
 	 * @param string $url
 	 * @param array $options
-	 * @param string $mimeType 
-	 * 
+	 * @param string $mimeType
+	 *
 	 * @return void
 	 */
-	private  function checkUserDownload($url, $options, $mimeType) {
+	private function checkUserDownload($url, $options, $mimeType) {
 		$client = new Client();
 		$this->response = $client->get($url, $options);
 		PHPUnit_Framework_Assert::assertEquals(
@@ -475,7 +475,7 @@ trait Sharing {
 		$overwriting = false
 	) {
 		$url = $this->getBaseUrl() . "/public.php/webdav/";
-		$url .= rawurlencode(ltrim($filename, '/'));
+		$url .= \rawurlencode(\ltrim($filename, '/'));
 		$token = $this->getLastShareToken();
 		$options['auth'] = [$token, $password];
 		$options['stream'] = true;
@@ -514,7 +514,7 @@ trait Sharing {
 		$client = new Client();
 		$options = [];
 		$options['auth'] = $this->getAuthOptionForUser($this->currentUser);
-		$date = date('Y-m-d', strtotime("+3 days"));
+		$date = \date('Y-m-d', \strtotime("+3 days"));
 		$options['body'] = ['expireDate' => $date];
 		$this->response = $client->send(
 			$client->createRequest("PUT", $fullUrl, $options)
@@ -556,9 +556,9 @@ trait Sharing {
 
 		if ($body instanceof TableNode) {
 			$fd = $body->getRowsHash();
-			if (array_key_exists('expireDate', $fd)) {
+			if (\array_key_exists('expireDate', $fd)) {
 				$dateModification = $fd['expireDate'];
-				$fd['expireDate'] = date('Y-m-d', strtotime($dateModification));
+				$fd['expireDate'] = \date('Y-m-d', \strtotime($dateModification));
 			}
 			$options['body'] = $fd;
 		}
@@ -599,7 +599,6 @@ trait Sharing {
 		$permissions = null,
 		$linkName = null
 	) {
-
 		try {
 			$this->response = SharingHelper::createShare(
 				$this->getBaseUrl(),
@@ -634,12 +633,12 @@ trait Sharing {
 			$contentExpected
 				= \date('Y-m-d', \strtotime($contentExpected)) . " 00:00:00";
 		}
-		if (count($data->element) > 0) {
+		if (\count($data->element) > 0) {
 			foreach ($data as $element) {
 				if ($contentExpected == "A_TOKEN") {
-					return (strlen((string)$element->$field) == 15);
+					return (\strlen((string)$element->$field) == 15);
 				} elseif ($contentExpected == "A_NUMBER") {
-					return is_numeric((string)$element->$field);
+					return \is_numeric((string)$element->$field);
 				} elseif ($contentExpected == "AN_URL") {
 					return $this->isAPublicLinkUrl((string)$element->$field);
 				} elseif ((string)$element->$field == $contentExpected) {
@@ -652,13 +651,13 @@ trait Sharing {
 			return false;
 		} else {
 			if ($contentExpected == "A_TOKEN") {
-					return (strlen((string)$data->$field) == 15);
+				return (\strlen((string)$data->$field) == 15);
 			} elseif ($contentExpected == "A_NUMBER") {
-					return is_numeric((string)$data->$field);
+				return \is_numeric((string)$data->$field);
 			} elseif ($contentExpected == "AN_URL") {
-					return $this->isAPublicLinkUrl((string)$data->$field);
-			} elseif ($data->$field == $contentExpected) {
-					return true;
+				return $this->isAPublicLinkUrl((string)$data->$field);
+			} elseif ($contentExpected == $data->$field) {
+				return true;
 			}
 			return false;
 		}
@@ -672,7 +671,7 @@ trait Sharing {
 	 * @return void
 	 */
 	public function checkSharedFileInResponse($filename) {
-		$filename = ltrim($filename, '/');
+		$filename = \ltrim($filename, '/');
 		PHPUnit_Framework_Assert::assertEquals(
 			true,
 			$this->isFieldInResponse('file_target', "/$filename")
@@ -687,7 +686,7 @@ trait Sharing {
 	 * @return void
 	 */
 	public function checkSharedFileNotInResponse($filename) {
-		$filename = ltrim($filename, '/');
+		$filename = \ltrim($filename, '/');
 		PHPUnit_Framework_Assert::assertEquals(
 			false,
 			$this->isFieldInResponse('file_target', "/$filename")
@@ -702,7 +701,7 @@ trait Sharing {
 	 * @return void
 	 */
 	public function checkSharedFileAsPathInResponse($filename) {
-		$filename = ltrim($filename, '/');
+		$filename = \ltrim($filename, '/');
 		PHPUnit_Framework_Assert::assertEquals(
 			true,
 			$this->isFieldInResponse('path', "/$filename")
@@ -717,7 +716,7 @@ trait Sharing {
 	 * @return void
 	 */
 	public function checkSharedFileAsPathNotInResponse($filename) {
-		$filename = ltrim($filename, '/');
+		$filename = \ltrim($filename, '/');
 		PHPUnit_Framework_Assert::assertEquals(
 			false,
 			$this->isFieldInResponse('path', "/$filename")
@@ -793,12 +792,12 @@ trait Sharing {
 		if ($this->isUserOrGroupInSharedData($user2, $permissions)) {
 			return;
 		} else {
-			$time = time();
+			$time = \time();
 			if ($this->lastShareTime !== null && $time - $this->lastShareTime < 1) {
 				// prevent creating two shares with the same "stime" which is
 				// based on seconds, this affects share merging order and could
 				// affect expected test result order
-				sleep(1);
+				\sleep(1);
 			}
 			$this->lastShareTime = $time;
 			$this->createShare(
@@ -1011,7 +1010,7 @@ trait Sharing {
 	 * @return void
 	 */
 	public function checkingTheResponseEntriesCount($count) {
-		$actualCount = count($this->response->xml()->data[0]);
+		$actualCount = \count($this->response->xml()->data[0]);
 		PHPUnit_Framework_Assert::assertEquals($count, $actualCount);
 	}
 
@@ -1027,25 +1026,25 @@ trait Sharing {
 			$fd = $body->getRowsHash();
 
 			foreach ($fd as $field => $value) {
-				if (substr($field, 0, 10) === "share_with") {
-					$value = str_replace(
+				if (\substr($field, 0, 10) === "share_with") {
+					$value = \str_replace(
 						"REMOTE",
 						$this->getRemoteBaseUrl(),
 						$value
 					);
-					$value = str_replace(
+					$value = \str_replace(
 						"LOCAL",
 						$this->getLocalBaseUrl(),
 						$value
 					);
 				}
-				if (substr($field, 0, 6) === "remote") {
-					$value = str_replace(
+				if (\substr($field, 0, 6) === "remote") {
+					$value = \str_replace(
 						"REMOTE",
 						$this->getRemoteBaseUrl() . '/',
 						$value
 					);
-					$value = str_replace(
+					$value = \str_replace(
 						"LOCAL",
 						$this->getLocalBaseUrl() . '/',
 						$value
@@ -1083,10 +1082,10 @@ trait Sharing {
 				],
 			]
 		);
-		$json = json_decode($res->getBody()->getContents(), true);
+		$json = \json_decode($res->getBody()->getContents(), true);
 		$deleted = false;
 		foreach ($json['ocs']['data'] as $data) {
-			if (stripslashes($data['path']) === $fileName) {
+			if (\stripslashes($data['path']) === $fileName) {
 				$id = $data['id'];
 				$client->delete(
 					$this->getBaseUrl()
@@ -1234,8 +1233,8 @@ trait Sharing {
 	}
 
 	/**
-	 * @Given /^user "([^"]*)" has (declined|accepted) the share "([^"]*)" offered by user "([^"]*)"$/
 	 * @When /^user "([^"]*)" (declines|accepts) the share "([^"]*)" offered by user "([^"]*)" using the API$/
+	 * @Given /^user "([^"]*)" has (declined|accepted) the share "([^"]*)" offered by user "([^"]*)"$/
 	 *
 	 * @param string $user
 	 * @param string $action
@@ -1384,7 +1383,7 @@ trait Sharing {
 	 * @return string authorization token
 	 */
 	private function getLastShareToken() {
-		if (count($this->lastShareData->data->element) > 0) {
+		if (\count($this->lastShareData->data->element) > 0) {
 			return $this->lastShareData->data[0]->token;
 		}
 		

@@ -35,7 +35,6 @@ use WebDriver\Key;
  * Owncloud page.
  */
 class OwncloudPage extends Page {
-
 	protected $userNameDisplayId = "expandDisplayName";
 	protected $notificationId = "notification";
 	protected $ocDialogXpath = ".//*[@class='oc-dialog']";
@@ -51,18 +50,18 @@ class OwncloudPage extends Page {
 	/**
 	 * @param Session $session
 	 * @param int $timeout_msec
-	 * 
+	 *
 	 * @return void
 	 */
 	public function waitTillPageIsLoaded(
 		Session $session,
 		$timeout_msec = STANDARDUIWAITTIMEOUTMILLISEC
 	) {
-		$currentTime = microtime(true);
+		$currentTime = \microtime(true);
 		$end = $currentTime + ($timeout_msec / 1000);
 		while ($currentTime <= $end) {
 			$loadingIndicator = $this->find("css", '.loading');
-			if (!is_null($loadingIndicator)) {
+			if ($loadingIndicator !== null) {
 				$visibility = $this->elementHasCSSValue(
 					$loadingIndicator, 'visibility', 'visible'
 				);
@@ -70,8 +69,8 @@ class OwncloudPage extends Page {
 					break;
 				}
 			}
-			usleep(STANDARDSLEEPTIMEMICROSEC);
-			$currentTime = microtime(true);
+			\usleep(STANDARDSLEEPTIMEMICROSEC);
+			$currentTime = \microtime(true);
 		}
 
 		if ($currentTime > $end) {
@@ -87,14 +86,14 @@ class OwncloudPage extends Page {
 	 *
 	 * @param string $xpath
 	 * @param int $timeout_msec
-	 * 
+	 *
 	 * @return void
 	 */
 	public function waitTillElementIsNull(
 		$xpath,
 		$timeout_msec = STANDARDUIWAITTIMEOUTMILLISEC
 	) {
-		$currentTime = microtime(true);
+		$currentTime = \microtime(true);
 		$end = $currentTime + ($timeout_msec / 1000);
 		while ($currentTime <= $end) {
 			try {
@@ -102,11 +101,11 @@ class OwncloudPage extends Page {
 			} catch (WebDriverException $e) {
 				break;
 			}
-			if (is_null($element)) {
+			if ($element === null) {
 				break;
 			}
-			usleep(STANDARDSLEEPTIMEMICROSEC);
-			$currentTime = microtime(true);
+			\usleep(STANDARDSLEEPTIMEMICROSEC);
+			$currentTime = \microtime(true);
 		}
 	}
 
@@ -114,13 +113,13 @@ class OwncloudPage extends Page {
 	 *
 	 * @param string $xpath
 	 * @param int $timeout_msec
-	 * 
+	 *
 	 * @return NodeElement|null
 	 */
 	public function waitTillElementIsNotNull(
 		$xpath, $timeout_msec = STANDARDUIWAITTIMEOUTMILLISEC
 	) {
-		$currentTime = microtime(true);
+		$currentTime = \microtime(true);
 		$end = $currentTime + ($timeout_msec / 1000);
 		while ($currentTime <= $end) {
 			try {
@@ -128,15 +127,15 @@ class OwncloudPage extends Page {
 				 * @var NodeElement $element
 				 */
 				$element = $this->find("xpath", $xpath);
-				if (is_null($element) || !$element->isValid()) {
-					usleep(STANDARDSLEEPTIMEMICROSEC);
+				if ($element === null || !$element->isValid()) {
+					\usleep(STANDARDSLEEPTIMEMICROSEC);
 				} else {
 					return $element;
 				}
 			} catch (WebDriverException $e) {
-				usleep(STANDARDSLEEPTIMEMICROSEC);
+				\usleep(STANDARDSLEEPTIMEMICROSEC);
 			}
-			$currentTime = microtime(true);
+			$currentTime = \microtime(true);
 		}
 
 		return null;
@@ -151,7 +150,7 @@ class OwncloudPage extends Page {
 	public function getNotificationText() {
 		$notificationElement = $this->findById($this->notificationId);
 
-		if (is_null($notificationElement)) {
+		if ($notificationElement === null) {
 			throw new ElementNotFoundException(
 				__METHOD__ . " could not find element with id $this->notificationId"
 			);
@@ -167,17 +166,17 @@ class OwncloudPage extends Page {
 	 * @return array
 	 */
 	public function getNotifications() {
-		$notificationsText = array();
+		$notificationsText = [];
 		$notifications = $this->findById($this->notificationId);
 
-		if (is_null($notifications)) {
+		if ($notifications === null) {
 			throw new ElementNotFoundException(
 				__METHOD__ . " could not find element with id $this->notificationId"
 			);
 		}
 
 		foreach ($notifications->findAll("xpath", "div") as $notification) {
-			array_push($notificationsText, $this->getTrimmedText($notification));
+			\array_push($notificationsText, $this->getTrimmedText($notification));
 		}
 		return $notificationsText;
 	}
@@ -211,7 +210,7 @@ class OwncloudPage extends Page {
 	public function openSettingsMenu() {
 		$userNameDisplayElement = $this->findById($this->userNameDisplayId);
 
-		if (is_null($userNameDisplayElement)) {
+		if ($userNameDisplayElement === null) {
 			throw new ElementNotFoundException(
 				__METHOD__ . " could not find element with id $this->userNameDisplayId"
 			);
@@ -224,14 +223,14 @@ class OwncloudPage extends Page {
 	
 	/**
 	 * finds the element that contains the displayname of the current user
-	 * 
+	 *
 	 * @throws ElementNotFoundException
 	 * @return NodeElement
 	 */
 	protected function findUserDisplayNameElement() {
 		$displayNameElement = $this->findById($this->userNameDisplayId);
 		
-		if (is_null($displayNameElement)) {
+		if ($displayNameElement === null) {
 			throw new ElementNotFoundException(
 				__METHOD__ .
 				" could not find element with id $this->userNameDisplayId"
@@ -251,7 +250,7 @@ class OwncloudPage extends Page {
 	}
 
 	/**
-	 * 
+	 *
 	 * @return boolean
 	 */
 	public function isDisplaynameVisible() {
@@ -259,14 +258,14 @@ class OwncloudPage extends Page {
 	}
 
 	/**
-	 * 
+	 *
 	 * @throws ElementNotFoundException
 	 * @return NodeElement
 	 */
 	protected function findAvatarElement() {
 		$avatarElement = $this->find("xpath", $this->avatarImgXpath);
 		
-		if (is_null($avatarElement)) {
+		if ($avatarElement === null) {
 			throw new ElementNotFoundException(
 				__METHOD__ .
 				" could not find avatar image with xpath $this->avatarImgXpath"
@@ -276,7 +275,7 @@ class OwncloudPage extends Page {
 	}
 
 	/**
-	 * 
+	 *
 	 * @return boolean
 	 */
 	public function isAvatarVisible() {
@@ -300,11 +299,11 @@ class OwncloudPage extends Page {
 	/**
 	 *
 	 * @param string $path
-	 * 
+	 *
 	 * @return void
 	 */
 	public function setPagePath($path) {
-		if (is_null($this->originalPath)) {
+		if ($this->originalPath === null) {
 			$this->originalPath = $this->path;
 		}
 		$this->path = $path;
@@ -316,7 +315,7 @@ class OwncloudPage extends Page {
 	 * @return string
 	 */
 	public function getOriginalPath() {
-		if (!is_null($this->originalPath)) {
+		if ($this->originalPath !== null) {
 			return $this->originalPath;
 		} else {
 			return $this->getPath();
@@ -328,11 +327,11 @@ class OwncloudPage extends Page {
 	 *
 	 * @param Session $session
 	 * @param NodeElement $element
-	 * 
+	 *
 	 * @return array
 	 */
 	public function getCoordinatesOfElement($session, $element) {
-		$elementXpath = str_replace('"', '\"', $element->getXpath());
+		$elementXpath = \str_replace('"', '\"', $element->getXpath());
 
 		return $session->evaluateScript(
 			'return document.evaluate( "' .
@@ -346,7 +345,7 @@ class OwncloudPage extends Page {
 	 * Gets the Window Height
 	 *
 	 * @param Session $session
-	 * 
+	 *
 	 * @return int
 	 */
 	public function getWindowHeight($session) {
@@ -361,7 +360,7 @@ class OwncloudPage extends Page {
 	 * @param string $jQuerySelector e.g. "#app-content"
 	 * @param int|string $position number or JS function that returns a number
 	 * @param Session $session
-	 * 
+	 *
 	 * @return void
 	 */
 	public function scrollToPosition($jQuerySelector, $position, Session $session) {
@@ -375,7 +374,7 @@ class OwncloudPage extends Page {
 	 *
 	 * @param Session $session
 	 * @param int $timeout_msec
-	 * 
+	 *
 	 * @return void
 	 */
 	public function waitForOutstandingAjaxCalls(
@@ -387,7 +386,7 @@ class OwncloudPage extends Page {
 		if ($timeout_msec <= 0) {
 			throw new \InvalidArgumentException("negative or zero timeout");
 		}
-		$currentTime = microtime(true);
+		$currentTime = \microtime(true);
 		$end = $currentTime + ($timeout_msec / 1000);
 		while ($currentTime <= $end) {
 			try {
@@ -413,14 +412,14 @@ class OwncloudPage extends Page {
 				//show Exception message, but do not throw it
 				echo $e->getMessage() . "\n";
 			} finally {
-				usleep(STANDARDSLEEPTIMEMICROSEC);
-				$currentTime = microtime(true);
+				\usleep(STANDARDSLEEPTIMEMICROSEC);
+				$currentTime = \microtime(true);
 			}
 		}
 		if ($currentTime > $end) {
 			$message = "INFORMATION: timed out waiting for outstanding ajax calls";
 			echo $message;
-			error_log($message);
+			\error_log($message);
 		}
 	}
 
@@ -429,7 +428,7 @@ class OwncloudPage extends Page {
 	 *
 	 * @param Session $session
 	 * @param int $timeout_msec
-	 * 
+	 *
 	 * @return void
 	 */
 	public function waitForAjaxCallsToStart(
@@ -439,7 +438,7 @@ class OwncloudPage extends Page {
 		if ($timeout_msec <= 0) {
 			throw new \InvalidArgumentException("negative or zero timeout");
 		}
-		$currentTime = microtime(true);
+		$currentTime = \microtime(true);
 		$end = $currentTime + ($timeout_msec / 1000);
 		while ($currentTime <= $end) {
 			$activeAjax = $session->evaluateScript(
@@ -459,8 +458,8 @@ class OwncloudPage extends Page {
 			if ((int) $activeAjax > 0) {
 				break;
 			}
-			usleep(STANDARDSLEEPTIMEMICROSEC);
-			$currentTime = microtime(true);
+			\usleep(STANDARDSLEEPTIMEMICROSEC);
+			$currentTime = \microtime(true);
 		}
 	}
 
@@ -470,18 +469,18 @@ class OwncloudPage extends Page {
 	 *
 	 * @param Session $session
 	 * @param int $timeout_msec
-	 * 
+	 *
 	 * @return void
 	 */
 	public function waitForAjaxCallsToStartAndFinish(
 		Session $session,
 		$timeout_msec = STANDARDUIWAITTIMEOUTMILLISEC
 	) {
-		$start = microtime(true);
+		$start = \microtime(true);
 		$this->waitForAjaxCallsToStart($session);
-		$end = microtime(true);
+		$end = \microtime(true);
 		$timeout_msec = $timeout_msec - (($end - $start) * 1000);
-		$timeout_msec = max($timeout_msec, MINIMUMUIWAITTIMEOUTMILLISEC);
+		$timeout_msec = \max($timeout_msec, MINIMUMUIWAITTIMEOUTMILLISEC);
 		$this->waitForOutstandingAjaxCalls($session, $timeout_msec);
 	}
 
@@ -489,9 +488,9 @@ class OwncloudPage extends Page {
 	 * creates wrappers around XHR requests
 	 * counts active requests in "window.activeAjaxCount"
 	 * counts the sum of ajax requests in window.sumStartedAjaxRequests
-	 * 
+	 *
 	 * @param Session $session
-	 * 
+	 *
 	 * @see resetSumStartedAjaxRequests()
 	 * @see getSumStartedAjaxRequests()
 	 * @return void
@@ -534,9 +533,9 @@ class OwncloudPage extends Page {
 
 	/**
 	 * reset the sum ajax counter so that every function can start counting from 0
-	 * 
+	 *
 	 * @param Session $session
-	 * 
+	 *
 	 * @see initAjaxCounters()
 	 * @return void
 	 */
@@ -547,9 +546,9 @@ class OwncloudPage extends Page {
 
 	/**
 	 * gets the sum of all started Ajax requests
-	 * 
+	 *
 	 * @param Session $session
-	 * 
+	 *
 	 * @see initAjaxCounters()
 	 * @return int
 	 */
@@ -559,9 +558,9 @@ class OwncloudPage extends Page {
 	}
 
 	/**
-	 * 
+	 *
 	 * @param Session $session
-	 * 
+	 *
 	 * @see initAjaxCounters()
 	 * @throws \Exception
 	 * @return void
@@ -597,12 +596,12 @@ class OwncloudPage extends Page {
 		$exists = false;
 		$style = $element->getAttribute('style');
 		if ($style) {
-			if (preg_match(
+			if (\preg_match(
 				"/(^{$property}:|; {$property}:) ([a-z0-9]+);/i",
 				$style, $matches
 			)
 			) {
-				$found = array_pop($matches);
+				$found = \array_pop($matches);
 				if ($found == $value) {
 					$exists = $element;
 				}
@@ -613,11 +612,11 @@ class OwncloudPage extends Page {
 	}
 
 	/**
-	 * 
+	 *
 	 * @param Session $session
 	 * @param string $scrolledElement jQuery identifier for the element that get scrolled
 	 * @param int $timeout_msec
-	 * 
+	 *
 	 * @return void
 	 */
 	public function waitForScrollingToFinish(
@@ -638,16 +637,16 @@ class OwncloudPage extends Page {
 		);
 		$result = 1;
 		$timeout_msec = (int) $timeout_msec;
-		$currentTime = microtime(true);
+		$currentTime = \microtime(true);
 		$end = $currentTime + ($timeout_msec / 1000);
 		while ($currentTime <= $end && $result !== 0) {
 			$result = (int)$session->evaluateScript("jQuery.scrolling");
-			$currentTime = microtime(true);
+			$currentTime = \microtime(true);
 		}
 		if ($currentTime > $end) {
 			$message = "INFORMATION: timed out waiting for scrolling to finish";
 			echo $message;
-			error_log($message);
+			\error_log($message);
 		}
 	}
 
@@ -659,15 +658,15 @@ class OwncloudPage extends Page {
 	 *
 	 * @param NodeElement $inputField
 	 * @param string $value
-	 * 
+	 *
 	 * @throws \Exception
 	 * @return void
 	 */
 	protected function cleanInputAndSetValue(NodeElement $inputField, $value) {
 		$resultValue = $inputField->getValue();
-		$existingValueLength = strlen($resultValue);
+		$existingValueLength = \strlen($resultValue);
 		$deleteSequence
-			= Key::END . str_repeat(Key::BACKSPACE, $existingValueLength);
+			= Key::END . \str_repeat(Key::BACKSPACE, $existingValueLength);
 		$inputField->setValue($deleteSequence);
 		$inputField->setValue($value);
 		$resultValue = $inputField->getValue();
@@ -683,12 +682,12 @@ class OwncloudPage extends Page {
 	 * before using it in tests.
 	 *
 	 * @param NodeElement $element
-	 * 
+	 *
 	 * @throws \Exception
 	 * @return string text of the element with any whitespace trimmed
 	 */
 	public function getTrimmedText(NodeElement $element) {
-		return trim($element->getText());
+		return \trim($element->getText());
 	}
 
 	/**
@@ -702,14 +701,14 @@ class OwncloudPage extends Page {
 	 * both single and double quotes.
 	 *
 	 * @param string $text
-	 * 
+	 *
 	 * @return string the text surrounded by single or double quotes
 	 * @throws \InvalidArgumentException
 	 */
 	public function quotedText($text) {
-		if (strstr($text, "'") === false) {
+		if (\strstr($text, "'") === false) {
 			return "'" . $text . "'";
-		} else if (strstr($text, '"') === false) {
+		} elseif (\strstr($text, '"') === false) {
 			return '"' . $text . '"';
 		} else {
 			// The text contains both single and double quotes.

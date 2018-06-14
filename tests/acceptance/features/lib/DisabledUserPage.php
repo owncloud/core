@@ -3,7 +3,7 @@
  * ownCloud
  *
  * @author Paurakh Sharma Humagain <paurakh@jankaritech.com>
- * @copyright Copyright (c) 2017 Paurakh Sharma Humagain paurakh@jankaritech.com
+ * @copyright Copyright (c) 2018 Paurakh Sharma Humagain paurakh@jankaritech.com
  *
  * This code is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License,
@@ -47,14 +47,14 @@ class DisabledUserPage extends OwncloudPage {
 		Session $session,
 		$timeout_msec = STANDARDUIWAITTIMEOUTMILLISEC
 	) {
-		$currentTime = microtime(true);
+		$currentTime = \microtime(true);
 		$end = $currentTime + ($timeout_msec / 1000);
 		while ($currentTime <= $end) {
 			if ($this->findAll("xpath", $this->userDisabledXpath)) {
 				break;
 			}
-			usleep(STANDARDSLEEPTIMEMICROSEC);
-			$currentTime = microtime(true);
+			\usleep(STANDARDSLEEPTIMEMICROSEC);
+			$currentTime = \microtime(true);
 		}
 
 		if ($currentTime > $end) {
@@ -62,5 +62,7 @@ class DisabledUserPage extends OwncloudPage {
 				__METHOD__ . " timeout waiting for page to load"
 			);
 		}
+
+		$this->waitForOutstandingAjaxCalls($session);
 	}
 }

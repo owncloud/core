@@ -3,7 +3,7 @@ Feature: disable users
 	As an admin
 	I want to disable users
 	So that I can remove access to unnecessary users
-	
+
 	Background:
 		Given these users have been created but not initialized:
 			|username|password|displayname|email       |

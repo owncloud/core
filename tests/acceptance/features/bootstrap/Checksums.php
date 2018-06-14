@@ -42,7 +42,7 @@ trait Checksums {
 	public function userUploadsFileToWithChecksumUsingTheAPI(
 		$user, $source, $destination, $checksum
 	) {
-		$file = \GuzzleHttp\Stream\Stream::factory(fopen($source, 'r'));
+		$file = \GuzzleHttp\Stream\Stream::factory(\fopen($source, 'r'));
 		$this->response = $this->makeDavRequest(
 			$user,
 			'PUT',
@@ -113,7 +113,7 @@ trait Checksums {
 		 */
 		$checksums = $parsed[0]['value'][1]['value'][0]['value'][0];
 
-		if ($checksums['value'][0]['value'] !== $checksum) {
+		if ($checksum !== $checksums['value'][0]['value']) {
 			throw new \Exception(
 				"Expected $checksum, got " . $checksums['value'][0]['value']
 			);
