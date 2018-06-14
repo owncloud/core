@@ -205,6 +205,14 @@ img.icon-loading-small-dark, object.icon-loading-small-dark, video.icon-loading-
 	background-image: url('../img/actions/info-white.svg');
 }
 
+.icon-lock-closed {
+	background-image: url('../img/actions/lock-closed.svg');
+}
+
+.icon-lock-open {
+	background-image: url('../img/actions/lock-open.svg');
+}
+
 .icon-logout {
 	background-image: url('../img/actions/logout.svg');
 }
