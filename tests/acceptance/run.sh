@@ -115,8 +115,6 @@ ${OCC} config:system:set sharing.federation.allowHttpFallback --type boolean --v
 ${OCC} config:app:set core enable_external_storage --value=yes
 ${OCC} config:system:set files_external_allow_create_new_local --value=true
 
-PREVIOUS_TESTING_APP_STATUS=$(${OCC} --no-warnings app:list "^testing$")
-
 #Enable and disable apps as required for default
 if [ -z "${APPS_TO_DISABLE}" ]
 then
@@ -196,7 +194,7 @@ else
 	BEHAT_FILTER_TAGS="~@skip&&~@masterkey_encryption"
 fi
 
-if [ "$OC_TEST_ON_OBJECTSTORE" = "1" ]
+if [ "${OC_TEST_ON_OBJECTSTORE}" = "1" ]
 then
    	BEHAT_FILTER_TAGS="${BEHAT_FILTER_TAGS}&&~@skip_on_objectstore"
 fi
