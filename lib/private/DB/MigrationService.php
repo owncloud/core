@@ -392,8 +392,10 @@ class MigrationService {
 		}
 		if ($instance instanceof ISqlMigration) {
 			$sqls = $instance->sql($this->connection);
-			foreach ($sqls as $s) {
-				$this->connection->executeQuery($s);
+			if (\is_array($sqls)) {
+				foreach ($sqls as $s) {
+					$this->connection->executeQuery($s);
+				}
 			}
 		}
 		if ($instance instanceof ISchemaMigration) {
