@@ -29,6 +29,7 @@ use OC\Files\Node\File;
 use OC\Files\View;
 use OCA\Files_Versions\Hooks;
 use OCP\Files\Folder;
+use OCP\Files\Mount\IMountPoint;
 use OCP\IImage;
 use Test\TestCase;
 use Test\Traits\UserTrait;
@@ -71,16 +72,16 @@ class MetaFilesTest extends TestCase {
 
 		// work on node api
 		/** @var Folder $metaNodeOfFile */
-		$metaNodeOfFile = \OC::$server->getRootFolder()->get("meta");
+		$metaNodeOfFile = \OC::$server->getRootFolder()->get('meta');
 		$this->assertInstanceOf(MetaRootNode::class, $metaNodeOfFile);
 		$this->assertEquals([], $metaNodeOfFile->getDirectoryListing());
-		$this->assertEquals("/meta", $metaNodeOfFile->getPath());
-		$this->assertEquals("meta", $metaNodeOfFile->getName());
+		$this->assertEquals('/meta', $metaNodeOfFile->getPath());
+		$this->assertEquals('meta', $metaNodeOfFile->getName());
 
 		$metaNodeOfFile = \OC::$server->getRootFolder()->get("meta/{$info->getId()}");
 		$this->assertInstanceOf(MetaFileIdNode::class, $metaNodeOfFile);
 		$this->assertEquals("/meta/{$info->getId()}", $metaNodeOfFile->getPath());
-		$this->assertEquals("{$info->getId()}", $metaNodeOfFile->getName());
+		$this->assertEquals((string)($info->getId()), $metaNodeOfFile->getName());
 		$children = $metaNodeOfFile->getDirectoryListing();
 		$this->assertCount(1, $children);
 		$this->assertInstanceOf(MetaVersionCollection::class, $children[0]);
@@ -88,7 +89,7 @@ class MetaFilesTest extends TestCase {
 		$metaNodeOfFile = \OC::$server->getRootFolder()->get("meta/{$info->getId()}/v");
 		$this->assertInstanceOf(MetaVersionCollection::class, $metaNodeOfFile);
 		$this->assertEquals("/meta/{$info->getId()}/v", $metaNodeOfFile->getPath());
-		$this->assertEquals("v", $metaNodeOfFile->getName());
+		$this->assertEquals('v', $metaNodeOfFile->getName());
 		$children = $metaNodeOfFile->getDirectoryListing();
 		$this->assertCount(0, $children);
 
@@ -109,6 +110,7 @@ class MetaFilesTest extends TestCase {
 		$this->assertEquals('text/plain', $metaNodeOfFile->getMimetype());
 		$this->assertInternalType('string', $metaNodeOfFile->getEtag());
 		$this->assertTrue(\strlen($metaNodeOfFile->getEtag()) > 0);
+		$this->assertInstanceOf(IMountPoint::class, $metaNodeOfFile->getMountPoint());
 		$thumbnail = $metaNodeOfFile->getThumbnail([]);
 		$this->assertInstanceOf(IImage::class, $thumbnail);
 
