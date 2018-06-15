@@ -210,20 +210,20 @@ class NotificationPublisherTest extends TestCase {
 			$action1 = $this->createMock(\OCP\Notification\IAction::class);
 			$action1->expects($this->once())
 				->method('setLabel')
-				->with('accept')
+				->with('decline')
 				->will($this->returnSelf());
 			$action1->expects($this->once())
 				->method('setLink')
-				->with($endpointUrl, 'POST')
+				->with($endpointUrl, 'DELETE')
 				->will($this->returnSelf());
 			$action2 = $this->createMock(\OCP\Notification\IAction::class);
 			$action2->expects($this->once())
 				->method('setLabel')
-				->with('decline')
+				->with('accept')
 				->will($this->returnSelf());
 			$action2->expects($this->once())
 				->method('setLink')
-				->with($endpointUrl, 'DELETE')
+				->with($endpointUrl, 'POST')
 				->will($this->returnSelf());
 
 			$notification->method('createAction')
@@ -266,20 +266,20 @@ class NotificationPublisherTest extends TestCase {
 		$action1 = $this->createMock(\OCP\Notification\IAction::class);
 		$action1->expects($this->once())
 			->method('setLabel')
-			->with('accept')
+			->with('decline')
 			->will($this->returnSelf());
 		$action1->expects($this->once())
 			->method('setLink')
-			->with($endpointUrl, 'POST')
+			->with($endpointUrl, 'DELETE')
 			->will($this->returnSelf());
 		$action2 = $this->createMock(\OCP\Notification\IAction::class);
 		$action2->expects($this->once())
 			->method('setLabel')
-			->with('decline')
+			->with('accept')
 			->will($this->returnSelf());
 		$action2->expects($this->once())
 			->method('setLink')
-			->with($endpointUrl, 'DELETE')
+			->with($endpointUrl, 'POST')
 			->will($this->returnSelf());
 
 		$notification->method('createAction')
