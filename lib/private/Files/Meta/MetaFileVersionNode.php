@@ -21,6 +21,7 @@
 
 namespace OC\Files\Meta;
 
+use OC\Files\Filesystem;
 use OC\Files\Node\AbstractFile;
 use OC\Files\Node\File;
 use OCP\Files\ForbiddenException;
@@ -150,6 +151,10 @@ class MetaFileVersionNode extends AbstractFile implements IPreviewNode, IProvide
 
 	public function getPath() {
 		return $this->parent->getPath() . '/' . $this->getName();
+	}
+
+	public function getMountPoint() {
+		return Filesystem::getMountManager()->find($this->versionInfo['path']);
 	}
 
 	/**
