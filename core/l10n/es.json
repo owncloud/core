@@ -209,6 +209,7 @@
     "Share details could not be loaded for this item." : "No se han podido cargar los detalles de compartición para este elemento.",
     "No users or groups found for {search}" : "No se han encontrado usuarios ni grupos para {search}",
     "No users found for {search}" : "No se han encontrado usuarios para {search}",
+    "_Please enter at least {chars} character for suggestions_::_Please enter at least {chars} characters for suggestions_" : ["Por favor introduzca al menos {chars} carácter para sugerencia","Por favor introduzca al menos {chars} carácteres para sugerencia"],
     "An error occurred. Please try again" : "Ha ocurrido un error. Por favor inténtelo de nuevo",
     "{sharee} (group)" : "{sharee} (grupo)",
     "{sharee} (at {server})" : "{sharee} (en {server})",
