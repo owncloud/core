@@ -86,7 +86,6 @@ class DefaultTokenProvider implements IProvider {
 				'type' => $type === IToken::TEMPORARY_TOKEN ? 'temporary' : 'permanent'
 			]
 		);
-		$this->logger->logException(new \Exception(), ['app' => __METHOD__]);
 		$dbToken = new DefaultToken();
 		$dbToken->setUid($uid);
 		$dbToken->setLoginName($loginName);
