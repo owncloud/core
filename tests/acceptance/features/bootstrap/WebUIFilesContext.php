@@ -1283,7 +1283,7 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 				$currentTime = \microtime(true);
 			}
 			
-			PHPUnit_Framework_Assert::assertLessThan(
+			PHPUnit_Framework_Assert::assertLessThanOrEqual(
 				$windowHeight, $deleteBtnCoordinates ["top"]
 			);
 			//this will close the menu again
