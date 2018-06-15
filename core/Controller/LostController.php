@@ -259,6 +259,7 @@ class LostController extends Controller {
 	protected function sendNotificationMail($userId) {
 		$user = $this->userManager->get($userId);
 		$email = $user->getEMailAddress();
+		$name = $user->getDisplayName();
 
 		if ($email !== '') {
 			$tmpl = new \OC_Template('core', 'lostpassword/notify');
@@ -266,7 +267,7 @@ class LostController extends Controller {
 
 			try {
 				$message = $this->mailer->createMessage();
-				$message->setTo([$email => $userId]);
+				$message->setTo([$email => $name]);
 				$message->setSubject($this->l10n->t('%s password changed successfully', [$this->defaults->getName()]));
 				$message->setPlainBody($msg);
 				$message->setFrom([$this->from => $this->defaults->getName()]);
@@ -344,10 +345,11 @@ class LostController extends Controller {
 		$tmplAlt = new \OC_Template('core', 'lostpassword/altemail');
 		$tmplAlt->assign('link', $link);
 		$msgAlt = $tmplAlt->fetchPage();
+		$name = $userObject->getDisplayName();
 
 		try {
 			$message = $this->mailer->createMessage();
-			$message->setTo([$email => $user]);
+			$message->setTo([$email => $name]);
 			$message->setSubject($this->l10n->t('%s password reset', [$this->defaults->getName()]));
 			$message->setPlainBody($msgAlt);
 			$message->setHtmlBody($msg);

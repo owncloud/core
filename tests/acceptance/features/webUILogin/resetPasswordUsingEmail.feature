@@ -17,7 +17,7 @@ Feature: reset the password using an email address
     When the user requests the password reset link using the webUI
     Then a message with this text should be displayed on the webUI:
 			"""
-			The link to reset your password has been sent to your email. If you do not receive it within a reasonable amount of time, check your spam/junk folders. If it is not there ask your local administrator.
+			Wrong password. Reset it?
 			"""
     And the email address "user1@example.org" should have received an email with the body containing
 			"""
