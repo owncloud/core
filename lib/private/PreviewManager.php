@@ -33,6 +33,7 @@ use OCP\IImage;
 use OCP\IPreview;
 use OCP\IUserSession;
 use OCP\Preview\IProvider;
+use OCP\Preview\IProvider2;
 
 class PreviewManager implements IPreview {
 	/** @var IConfig */
@@ -212,7 +213,7 @@ class PreviewManager implements IPreview {
 			if (preg_match($supportedMimeType, $file->getMimetype())) {
 				foreach ($providers as $closure) {
 					$provider = $closure();
-					if (!($provider instanceof IProvider)) {
+					if (!($provider instanceof IProvider) && !($provider instanceof IProvider2)) {
 						continue;
 					}
 

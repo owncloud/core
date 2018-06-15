@@ -30,7 +30,7 @@ use OCP\Files\ForbiddenException;
 use OCP\Files\IPreviewNode;
 use OCP\Files\StorageNotAvailableException;
 use OCP\IImage;
-use OCP\ILogger;
+use OCP\IPreview;
 use OCP\Lock\LockedException;
 use Sabre\DAV\Exception\Forbidden;
 use Sabre\DAV\Exception\NotFound;
@@ -40,6 +40,7 @@ use Sabre\DAV\Tree;
 use Sabre\HTTP\RequestInterface;
 use Sabre\HTTP\ResponseInterface;
 use Test\TestCase;
+use OCP\Files\FileInfo;
 
 class PreviewPluginTest extends TestCase {
 
@@ -47,6 +48,8 @@ class PreviewPluginTest extends TestCase {
 	private $request;
 	/** @var IPreviewNode | \PHPUnit_Framework_MockObject_MockObject */
 	private $previewNode;
+	/** @var IPreview | \PHPUnit_Framework_MockObject_MockObject */
+	private $previewManager;
 	/** @var PreviewPlugin */
 	private $plugin;
 	/** @var ResponseInterface| \PHPUnit_Framework_MockObject_MockObject */
@@ -55,12 +58,24 @@ class PreviewPluginTest extends TestCase {
 	public function setUp() {
 		parent::setUp();
 
+		$this->previewManager = $this->createMock(IPreview::class);
+		$this->previewManager->method('isAvailable')->willReturn(true);
+
+		$this->previewNode = $this->createMock([IPreviewNode::class, FileInfo::class]);
+
+		$this->request = $this->createMock(RequestInterface::class);
+		/** @var ResponseInterface | \PHPUnit_Framework_MockObject_MockObject $response */
+		$this->response = $this->createMock(ResponseInterface::class);
+
+		$this->initPlugin();
+	}
+
+	private function initPlugin() {
 		/** @var ITimeFactory | \PHPUnit_Framework_MockObject_MockObject $timeFactory */
 		$timeFactory = $this->createMock(ITimeFactory::class);
 		$timeFactory->method('getTime')->willReturn(1234567);
-		$this->plugin = new PreviewPlugin($timeFactory);
 
-		$this->previewNode = $this->createMock(IPreviewNode::class);
+		$this->plugin = new PreviewPlugin($timeFactory, $this->previewManager);
 
 		/** @var IFileNode | \PHPUnit_Framework_MockObject_MockObject $node */
 		$node = $this->createMock(IFileNode::class);
@@ -74,9 +89,6 @@ class PreviewPluginTest extends TestCase {
 		$server = $this->createMock(Server::class);
 		$server->tree = $tree;
 
-		$this->request = $this->createMock(RequestInterface::class);
-		/** @var ResponseInterface | \PHPUnit_Framework_MockObject_MockObject $response */
-		$this->response = $this->createMock(ResponseInterface::class);
 		$this->plugin->initialize($server);
 	}
 
@@ -122,6 +134,25 @@ class PreviewPluginTest extends TestCase {
 	public function testPreviewNoImage() {
 
 		$this->previewNode->method('getThumbnail')->willReturn(null);
+
+		$this->request->method('getQueryParameters')->willReturn([
+			'preview' => '1'
+		]);
+
+		$this->expectException(NotFound::class);
+		$this->plugin->httpGet($this->request, $this->response);
+	}
+
+	public function testPreviewDisabled() {
+		$this->previewManager = $this->createMock(IPreview::class);
+		$this->previewManager->expects($this->once())
+			->method('isAvailable')
+			->willReturn(false);
+
+		$this->initPlugin();
+
+		$this->previewNode->expects($this->never())
+			->method('getThumbnail');
 
 		$this->request->method('getQueryParameters')->willReturn([
 			'preview' => '1'

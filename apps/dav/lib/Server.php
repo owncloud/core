@@ -186,7 +186,7 @@ class Server {
 			$this->server->addPlugin(new BrowserErrorPagePlugin());
 		}
 
-		$this->server->addPlugin(new PreviewPlugin(\OC::$server->getTimeFactory()));
+		$this->server->addPlugin(new PreviewPlugin(\OC::$server->getTimeFactory(), \OC::$server->getPreviewManager()));
 		// wait with registering these until auth is handled and the filesystem is setup
 		$this->server->on('beforeMethod', function () use ($root) {
 			// custom properties plugin must be the last one
