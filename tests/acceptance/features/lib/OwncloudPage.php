@@ -623,6 +623,12 @@ class OwncloudPage extends Page {
 		Session $session, $scrolledElement,
 		$timeout_msec = STANDARDUIWAITTIMEOUTMILLISEC
 	) {
+		// Wait so that, if scrolling is going to happen, it will have started.
+		// Otherwise, we might start checking early, before scrolling begins.
+		// The downside here is that if scrolling is not needed at all then we
+		// wasted time waiting.
+		// TODO: find a way to avoid this sleep
+		\usleep(MINIMUMUIWAITTIMEOUTMICROSEC);
 		$session->executeScript(
 			'
 			jQuery.scrolling = 0;
@@ -640,6 +646,7 @@ class OwncloudPage extends Page {
 		$currentTime = \microtime(true);
 		$end = $currentTime + ($timeout_msec / 1000);
 		while ($currentTime <= $end && $result !== 0) {
+			\usleep(STANDARDSLEEPTIMEMICROSEC);
 			$result = (int)$session->evaluateScript("jQuery.scrolling");
 			$currentTime = \microtime(true);
 		}
