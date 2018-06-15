@@ -33,6 +33,8 @@ use Sabre\DAV\Tree;
 use Sabre\HTTP\RequestInterface;
 use Sabre\HTTP\ResponseInterface;
 use Test\TestCase;
+use OCP\Files\FileInfo;
+use OCP\Files\ForbiddenException;
 
 class CopyPluginTest extends TestCase {
 
@@ -108,11 +110,81 @@ class CopyPluginTest extends TestCase {
 		$sourceNode->expects($this->once())->method('get')->willReturn('123456');
 		$destinationNode->expects($this->once())->method('put')->with('123456');
 
+		$fileInfo = $this->createMock(FileInfo::class);
+		$fileInfo->method('isDeletable')->willReturn(true);
+
+		$destinationNode->expects($this->once())->method('getFileInfo')->willReturn($fileInfo);
+
 		// make sure http status and content length are properly set
 		$this->response->expects($this->once())->method('setHeader')->with('Content-Length', '0');
 		$this->response->expects($this->once())->method('setStatus')->with(204);
 
 		$returnValue = $this->plugin->httpCopy($this->request, $this->response);
 		$this->assertFalse($returnValue);
+	}
+
+	/**
+	 * @expectedException OCA\DAV\Connector\Sabre\Exception\Forbidden
+	 * @expectedExceptionMessage No permission to delete target node
+	 */
+	public function testCopyPluginThrowsWhenNoDeletePermission() {
+
+		$destinationNode = $this->createMock(File::class);
+		$sourceNode = $this->createMock(IFile::class);
+
+		$this->tree->expects($this->once())->method('getNodeForPath')->willReturn($sourceNode);
+		$this->server->expects($this->once())->method('getCopyAndMoveInfo')->willReturn([
+			'destinationExists' => true,
+			'destinationNode' => $destinationNode,
+			'destination' => 'destination.txt'
+		]);
+
+		// make sure the plugin properly emits beforeBind and afterBind
+		$this->server->expects($this->once(2))
+			->method('emit')
+			->with('beforeBind', ['destination.txt'])
+			->willReturn(true);
+
+		$sourceNode->expects($this->never())->method('get');
+		$destinationNode->expects($this->never())->method('put');
+
+		$fileInfo = $this->createMock(FileInfo::class);
+		$fileInfo->method('isDeletable')->willReturn(false);
+
+		$destinationNode->expects($this->once())->method('getFileInfo')->willReturn($fileInfo);
+
+		$this->plugin->httpCopy($this->request, $this->response);
+	}
+
+	/**
+	 * @expectedException OCA\DAV\Connector\Sabre\Exception\Forbidden
+	 * @expectedExceptionMessage Test exception
+	 */
+	public function testCopyPluginRethrowForbidden() {
+
+		$destinationNode = $this->createMock(File::class);
+		$sourceNode = $this->createMock(IFile::class);
+
+		$this->tree->expects($this->once())->method('getNodeForPath')->willReturn($sourceNode);
+		$this->server->expects($this->once())->method('getCopyAndMoveInfo')->willReturn([
+			'destinationExists' => true,
+			'destinationNode' => $destinationNode,
+			'destination' => 'destination.txt'
+		]);
+
+		// make sure the plugin properly emits beforeBind and afterBind
+		$this->server->expects($this->once(2))
+			->method('emit')
+			->with('beforeBind', ['destination.txt'])
+			->willReturn(true);
+
+		$destinationNode->expects($this->once())->method('put')->will($this->throwException(new ForbiddenException('Test exception', false)));
+
+		$fileInfo = $this->createMock(FileInfo::class);
+		$fileInfo->method('isDeletable')->willReturn(true);
+
+		$destinationNode->expects($this->once())->method('getFileInfo')->willReturn($fileInfo);
+
+		$this->plugin->httpCopy($this->request, $this->response);
 	}
 }

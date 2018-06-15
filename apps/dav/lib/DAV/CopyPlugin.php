@@ -86,8 +86,16 @@ class CopyPlugin extends ServerPlugin {
 			}
 			if (!$copySuccess) {
 				$destinationNode->acquireLock(ILockingProvider::LOCK_SHARED);
-				$destinationNode->put($sourceNode->get());
-				$destinationNode->releaseLock(ILockingProvider::LOCK_SHARED);
+				try {
+					if (($destinationNode instanceof File) && !$destinationNode->getFileInfo()->isDeletable()) {
+						// copy used to be delete + create,
+						// legacy requires delete permission to still be available for such operation
+						throw new ForbiddenException('No permission to delete target node', false);
+					}
+					$destinationNode->put($sourceNode->get());
+				} finally {
+					$destinationNode->releaseLock(ILockingProvider::LOCK_SHARED);
+				}
 			}
 
 			$this->server->emit('afterBind', [$copyInfo['destination']]);
