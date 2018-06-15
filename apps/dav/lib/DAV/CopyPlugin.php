@@ -34,8 +34,12 @@ use Sabre\HTTP\ResponseInterface;
 
 /**
  * Class CopyPlugin - adds own implementation of the COPY method.
- * This is necessary because we don't want the target to be deleted before the move.
  *
+ * Invokes ICopySource->copy() if the source and destination types match.
+ * If the source doesn't implement ICopySource, fall back to the default behavior.
+ *
+ * Currently only used for versions.
+ * This is necessary because we don't want the target to be deleted before the move.
  * Deleting the target will kill the versions which is the wrong behavior.
  *
  * @package OCA\DAV\DAV
@@ -56,9 +60,6 @@ class CopyPlugin extends ServerPlugin {
 	/**
 	 * WebDAV HTTP COPY method
 	 *
-	 * This method copies one uri to a different uri, and works much like the MOVE request
-	 * A lot of the actual request processing is done in getCopyMoveInfo
-	 *
 	 * @param RequestInterface $request
 	 * @param ResponseInterface $response
 	 * @return bool
@@ -68,8 +69,12 @@ class CopyPlugin extends ServerPlugin {
 		try {
 			$path = $request->getPath();
 
-			$copyInfo = $this->server->getCopyAndMoveInfo($request);
 			$sourceNode = $this->server->tree->getNodeForPath($path);
+			if (!$sourceNode instanceof ICopySource) {
+				return true;
+			}
+
+			$copyInfo = $this->server->getCopyAndMoveInfo($request);
 			$destinationNode = $copyInfo['destinationNode'];
 			if (!$copyInfo['destinationExists'] || !$destinationNode instanceof File || !$sourceNode instanceof IFile) {
 				return true;
@@ -79,15 +84,7 @@ class CopyPlugin extends ServerPlugin {
 				return false;
 			}
 
-			$copySuccess = false;
-			if ($sourceNode instanceof ICopySource) {
-				$copySuccess = $sourceNode->copy($destinationNode->getFileInfo()->getPath());
-			}
-			if (!$copySuccess) {
-				$destinationNode->acquireLock(ILockingProvider::LOCK_SHARED);
-				$destinationNode->put($sourceNode->get());
-				$destinationNode->releaseLock(ILockingProvider::LOCK_SHARED);
-			}
+			$sourceNode->copy($destinationNode->getFileInfo()->getPath());
 
 			$this->server->emit('afterBind', [$copyInfo['destination']]);
 
