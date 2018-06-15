@@ -10,6 +10,7 @@ namespace Test\Repair;
 
 use OC\Repair\RepairMismatchFileCachePath;
 use OCP\Files\IMimeTypeLoader;
+use OCP\IConfig;
 use OCP\Migration\IOutput;
 use OCP\Migration\IRepairStep;
 use Test\TestCase;
@@ -30,6 +31,7 @@ class RepairMismatchFileCachePathTest extends TestCase {
 	/** @var \OCP\IDBConnection */
 	private $connection;
 
+	private $config;
 	protected function setUp() {
 		parent::setUp();
 
@@ -44,7 +46,8 @@ class RepairMismatchFileCachePathTest extends TestCase {
 
 		/** @var \PHPUnit_Framework_MockObject_MockObject | ILogger $logger */
 		$logger = $this->createMock(ILogger::class);
-		$this->repair = new RepairMismatchFileCachePath($this->connection, $mimeLoader, $logger);
+		$this->config = $this->createMock(IConfig::class);
+		$this->repair = new RepairMismatchFileCachePath($this->connection, $mimeLoader, $logger, $this->config);
 		$this->repair->setCountOnly(false);
 	}
 
@@ -209,6 +212,10 @@ class RepairMismatchFileCachePathTest extends TestCase {
 		$doNotTouchId = $this->createFileCacheEntry($sourceStorageId, 'files/source/do_not_touch', $sourceId);
 
 		$outputMock = $this->createMock(IOutput::class);
+		$this->config->expects($this->any())
+			->method('getSystemValue')
+			->with('version', '0.0.0')
+			->willReturn('10.0.3');
 		if ($repairStoragesOrder === null) {
 			// no storage selected, full repair
 			$this->repair->setStorageNumericId(null);
@@ -348,6 +355,10 @@ class RepairMismatchFileCachePathTest extends TestCase {
 
 		$outputMock = $this->createMock(IOutput::class);
 		$this->repair->setStorageNumericId($storageId);
+		$this->config->expects($this->any())
+			->method('getSystemValue')
+			->with('version', '0.0.0')
+			->willReturn('10.0.3');
 		$this->repair->run($outputMock);
 
 		// self-referencing updated
@@ -537,6 +548,10 @@ class RepairMismatchFileCachePathTest extends TestCase {
 
 		$outputMock = $this->createMock(IOutput::class);
 		$this->repair->setStorageNumericId($storageId);
+		$this->config->expects($this->any())
+			->method('getSystemValue')
+			->with('version', '0.0.0')
+			->willReturn('10.0.3');
 		$this->repair->run($outputMock);
 
 		// wrong parent root reparented to actual root
@@ -595,6 +610,10 @@ class RepairMismatchFileCachePathTest extends TestCase {
 
 		$outputMock = $this->createMock(IOutput::class);
 		$this->repair->setStorageNumericId($storageId);
+		$this->config->expects($this->any())
+			->method('getSystemValue')
+			->with('version', '0.0.0')
+			->willReturn('10.0.3');
 		$this->repair->run($outputMock);
 
 		// orphaned entry reattached
@@ -701,6 +720,10 @@ class RepairMismatchFileCachePathTest extends TestCase {
 
 		$outputMock = $this->createMock(IOutput::class);
 		$this->repair->setStorageNumericId($storageId);
+		$this->config->expects($this->any())
+			->method('getSystemValue')
+			->with('version', '0.0.0')
+			->willReturn('10.0.3');
 		$this->repair->run($outputMock);
 
 		// orphaned entry with no root reattached
@@ -728,5 +751,31 @@ class RepairMismatchFileCachePathTest extends TestCase {
 		$this->assertEquals((string)$testStorageId, $entry['storage']);
 		$this->assertEquals('', $entry['path']);
 		$this->assertEquals(\md5(''), $entry['path_hash']);
+	}
+
+	public function provideVersions() {
+		return [
+			['10.0.3'],
+			['10.0.4'],
+			['10.0.3.9'],
+		];
+	}
+
+	/**
+	 * @dataProvider provideVersions
+	 * @param $version
+	 */
+	public function testVersions($version) {
+		$this->config->expects($this->any())
+			->method('getSystemValue')
+			->with('version', '0.0.0')
+			->willReturn($version);
+		$outputMock = $this->createMock(IOutput::class);
+		if (\version_compare(\OC::$server->getConfig()->getSystemValue('version', '0.0.0'), $version, '<')) {
+			$outputMock->expects($this->any())
+				->method('info')
+				->with($this->repair->getName() . ' is not executed');
+		}
+		$this->repair->run($outputMock);
 	}
 }

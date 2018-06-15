@@ -132,7 +132,8 @@ class Repair implements IOutput {
 			new RepairMismatchFileCachePath(
 				\OC::$server->getDatabaseConnection(),
 				\OC::$server->getMimeTypeLoader(),
-				\OC::$server->getLogger()),
+				\OC::$server->getLogger(),
+				\OC::$server->getConfig()),
 			new FillETags(\OC::$server->getDatabaseConnection()),
 			new CleanTags(\OC::$server->getDatabaseConnection(), \OC::$server->getUserManager()),
 			new DropOldTables(\OC::$server->getDatabaseConnection()),
