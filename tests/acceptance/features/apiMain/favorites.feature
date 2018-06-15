@@ -3,76 +3,58 @@ Feature: favorite
     Background:
         Given using API version "1"
 
-    Scenario: Favorite a folder
-        Given using old DAV path
+    Scenario Outline: Favorite a folder
+        Given using <dav_version> DAV path
         And user "user0" has been created
         When user "user0" favorites element "/FOLDER" using the API
         And user "user0" gets the following properties of folder "/FOLDER" using the API
             |{http://owncloud.org/ns}favorite|
         Then the single response should contain a property "{http://owncloud.org/ns}favorite" with value "1"
+        Examples:
+			| dav_version   |
+			| old           |
+			| new           |
 
-    Scenario: Favorite and unfavorite a folder
-        Given using old DAV path
-        And user "user0" has been created
-        When user "user0" favorites element "/FOLDER" using the API
-        And user "user0" unfavorites element "/FOLDER" using the API
-        And user "user0" gets the following properties of folder "/FOLDER" using the API
-            |{http://owncloud.org/ns}favorite|
-        Then the single response should contain a property "{http://owncloud.org/ns}favorite" with value "0"
-
-    Scenario: Favorite a file
-        Given using old DAV path
-        And user "user0" has been created
-        When user "user0" favorites element "/textfile0.txt" using the API
-        And user "user0" gets the following properties of file "/textfile0.txt" using the API
-            |{http://owncloud.org/ns}favorite|
-        Then the single response should contain a property "{http://owncloud.org/ns}favorite" with value "1"
-
-    Scenario: Favorite and unfavorite a file
-        Given using old DAV path
-        And user "user0" has been created
-        When user "user0" favorites element "/textfile0.txt" using the API
-        And user "user0" unfavorites element "/textfile0.txt" using the API
-        And user "user0" gets the following properties of file "/textfile0.txt" using the API
-            |{http://owncloud.org/ns}favorite|
-        Then the single response should contain a property "{http://owncloud.org/ns}favorite" with value "0"
-
-    Scenario: Favorite a folder new endpoint
-        Given using new DAV path
-        And user "user0" has been created
-        When user "user0" favorites element "/FOLDER" using the API
-        And user "user0" gets the following properties of folder "/FOLDER" using the API
-            |{http://owncloud.org/ns}favorite|
-        Then the single response should contain a property "{http://owncloud.org/ns}favorite" with value "1"
-
-    Scenario: Favorite and unfavorite a folder new endpoint
-        Given using new DAV path
+    Scenario Outline: Favorite and unfavorite a folder
+        Given using <dav_version> DAV path
         And user "user0" has been created
         When user "user0" favorites element "/FOLDER" using the API
         And user "user0" unfavorites element "/FOLDER" using the API
         And user "user0" gets the following properties of folder "/FOLDER" using the API
             |{http://owncloud.org/ns}favorite|
         Then the single response should contain a property "{http://owncloud.org/ns}favorite" with value "0"
+        Examples:
+			| dav_version   |
+			| old           |
+			| new           |
 
-    Scenario: Favorite a file new endpoint
-        Given using new DAV path
+    Scenario Outline: Favorite a file
+        Given using <dav_version> DAV path
         And user "user0" has been created
         When user "user0" favorites element "/textfile0.txt" using the API
         And user "user0" gets the following properties of file "/textfile0.txt" using the API
             |{http://owncloud.org/ns}favorite|
         Then the single response should contain a property "{http://owncloud.org/ns}favorite" with value "1"
+        Examples:
+			| dav_version   |
+			| old           |
+			| new           |
 
-    Scenario: Favorite and unfavorite a file new endpoint
-        Given using new DAV path
+    Scenario Outline: Favorite and unfavorite a file
+        Given using <dav_version> DAV path
         And user "user0" has been created
         When user "user0" favorites element "/textfile0.txt" using the API
         And user "user0" unfavorites element "/textfile0.txt" using the API
         And user "user0" gets the following properties of file "/textfile0.txt" using the API
             |{http://owncloud.org/ns}favorite|
         Then the single response should contain a property "{http://owncloud.org/ns}favorite" with value "0"
+        Examples:
+			| dav_version   |
+			| old           |
+			| new           |
 
-    Scenario: Get favorited elements of a folder
-        Given using old DAV path
+    Scenario Outline: Get favorited elements of a folder
+        Given using <dav_version> DAV path
         And user "user0" has been created
         When user "user0" favorites element "/FOLDER" using the API
         And user "user0" favorites element "/textfile0.txt" using the API
@@ -81,20 +63,13 @@ Feature: favorite
             | /FOLDER        |
             | /textfile0.txt |
             | /textfile1.txt |
+        Examples:
+			| dav_version   |
+			| old           |
+			| new           |
 
-    Scenario: Get favorited elements of a folder using new path
-        Given using new DAV path
-        And user "user0" has been created
-        When user "user0" favorites element "/FOLDER" using the API
-        And user "user0" favorites element "/textfile0.txt" using the API
-        And user "user0" favorites element "/textfile1.txt" using the API
-        Then user "user0" in folder "/" should have favorited the following elements
-            | /FOLDER        |
-            | /textfile0.txt |
-            | /textfile1.txt |
-
-    Scenario: Get favorited elements of a subfolder
-        Given using old DAV path
+    Scenario Outline: Get favorited elements of a subfolder
+        Given using <dav_version> DAV path
         And user "user0" has been created
         And user "user0" has created a folder "/subfolder"
         And user "user0" has moved file "/textfile0.txt" to "/subfolder/textfile0.txt"
@@ -107,24 +82,13 @@ Feature: favorite
         Then user "user0" in folder "/subfolder" should have favorited the following elements
             | /subfolder/textfile0.txt |
             | /subfolder/textfile2.txt |
+        Examples:
+			| dav_version   |
+			| old           |
+			| new           |
 
-    Scenario: Get favorited elements of a subfolder using new path
-        Given using old DAV path
-        And user "user0" has been created
-        And user "user0" has created a folder "/subfolder"
-        And user "user0" has moved file "/textfile0.txt" to "/subfolder/textfile0.txt"
-        And user "user0" has moved file "/textfile1.txt" to "/subfolder/textfile1.txt"
-        And user "user0" has moved file "/textfile2.txt" to "/subfolder/textfile2.txt"
-        When user "user0" favorites element "/subfolder/textfile0.txt" using the API
-        And user "user0" favorites element "/subfolder/textfile1.txt" using the API
-        And user "user0" favorites element "/subfolder/textfile2.txt" using the API
-        And user "user0" unfavorites element "/subfolder/textfile1.txt" using the API
-        Then user "user0" in folder "/subfolder" should have favorited the following elements
-            | /subfolder/textfile0.txt |
-            | /subfolder/textfile2.txt |
-
-    Scenario: moving a favorite file out of a share keeps favorite state
-        Given using old DAV path
+    Scenario Outline: moving a favorite file out of a share keeps favorite state
+        Given using <dav_version> DAV path
         And user "user0" has been created
         And user "user1" has been created
         And user "user0" has created a folder "/shared"
@@ -134,9 +98,13 @@ Feature: favorite
         When user "user1" moves file "/shared/shared_file.txt" to "/taken_out.txt" using the API
         Then user "user1" in folder "/" should have favorited the following elements
             | /taken_out.txt |
+        Examples:
+			| dav_version   |
+			| old           |
+			| new           |
 
-    Scenario: Get favorited elements paginated
-        Given using old DAV path
+    Scenario Outline: Get favorited elements paginated
+        Given using <dav_version> DAV path
         And user "user0" has been created
         And user "user0" has created a folder "/subfolder"
         And user "user0" has copied file "/textfile0.txt" to "/subfolder/textfile0.txt"
@@ -154,9 +122,13 @@ Feature: favorite
         Then user "user0" in folder "/subfolder" should have favorited the following elements from offset 3 and limit 2
             | /subfolder/textfile2.txt |
             | /subfolder/textfile3.txt |
+        Examples:
+			| dav_version   |
+			| old           |
+			| new           |
 
-	Scenario: sharer file favorite state should not change the favorite state of sharee
-		Given using old DAV path
+	Scenario Outline: sharer file favorite state should not change the favorite state of sharee
+		Given using <dav_version> DAV path
 		And user "user0" has been created
 		And user "user1" has been created
 		And user "user0" has moved file "/textfile0.txt" to "/favoriteFile.txt"
@@ -165,23 +137,20 @@ Feature: favorite
 		And user "user1" gets the following properties of file "/favoriteFile.txt" using the API
 			|{http://owncloud.org/ns}favorite|
 		Then the single response should contain a property "{http://owncloud.org/ns}favorite" with value "0"
+		Examples:
+			| dav_version   |
+			| old           |
+			| new           |
 
-	Scenario: sharee file favorite state should not change the favorite state of sharer
-		Given using old DAV path
-		And user "user0" has been created
-		And user "user1" has been created
-		And user "user0" has moved file "/textfile0.txt" to "/favoriteFile.txt"
-		And user "user0" has shared file "/favoriteFile.txt" with user "user1"
-		When user "user1" favorites element "/favoriteFile.txt" using the API
-		And user "user0" gets the following properties of file "/favoriteFile.txt" using the API
-			|{http://owncloud.org/ns}favorite|
-		Then the single response should contain a property "{http://owncloud.org/ns}favorite" with value "0"
-
-	Scenario: favoriting a folder does not change the favorite state of elements inside the folder
-		Given using old DAV path
+	Scenario Outline: favoriting a folder does not change the favorite state of elements inside the folder
+		Given using <dav_version> DAV path
 		And user "user0" has been created
 		When user "user0" favorites element "/PARENT/parent.txt" using the API
 		And user "user0" favorites element "/PARENT" using the API
 		Then user "user0" in folder "/" should have favorited the following elements
 			| /PARENT            |
 			| /PARENT/parent.txt |
+		Examples:
+			| dav_version   |
+			| old           |
+			| new           |

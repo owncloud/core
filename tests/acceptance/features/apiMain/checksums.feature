@@ -4,29 +4,45 @@ Feature: checksums
   Background:
     Given user "user0" has been created
 
-  Scenario: Uploading a file with checksum should work
-    Given using old DAV path
+  Scenario Outline: Uploading a file with checksum should work
+    Given using <dav_version> DAV path
     When user "user0" uploads file "data/textfile.txt" to "/myChecksumFile.txt" with checksum "MD5:d70b40f177b14b470d1756a3c12b963a" using the API
     Then the webdav response should have a status code "201"
+    Examples:
+			| dav_version   |
+			| old           |
+			| new           |
 
-  Scenario: Uploading a file with checksum should return the checksum in the propfind
-    Given using old DAV path
+  Scenario Outline: Uploading a file with checksum should return the checksum in the propfind
+    Given using <dav_version> DAV path
     And user "user0" has uploaded file "data/textfile.txt" to "/myChecksumFile.txt" with checksum "MD5:d70b40f177b14b470d1756a3c12b963a"
     When user "user0" requests the checksum of "/myChecksumFile.txt" via propfind
     Then the webdav checksum should match "SHA1:3ee962b839762adb0ad8ba6023a4690be478de6f MD5:d70b40f177b14b470d1756a3c12b963a ADLER32:8ae90960"
+    Examples:
+			| dav_version   |
+			| old           |
+			| new           |
 
-  Scenario: Uploading a file with checksum should return the checksum in the download header
-    Given using old DAV path
+  Scenario Outline: Uploading a file with checksum should return the checksum in the download header
+    Given using <dav_version> DAV path
     And user "user0" has uploaded file "data/textfile.txt" to "/myChecksumFile.txt" with checksum "MD5:d70b40f177b14b470d1756a3c12b963a"
     When user "user0" downloads the file "/myChecksumFile.txt" using the API
     Then the header checksum should match "SHA1:3ee962b839762adb0ad8ba6023a4690be478de6f"
+    Examples:
+			| dav_version   |
+			| old           |
+			| new           |
 
-  Scenario: Moving a file with checksum should return the checksum in the propfind
-    Given using old DAV path
+  Scenario Outline: Moving a file with checksum should return the checksum in the propfind
+    Given using <dav_version> DAV path
     And user "user0" has uploaded file "data/textfile.txt" to "/myChecksumFile.txt" with checksum "MD5:d70b40f177b14b470d1756a3c12b963a"
     When user "user0" moves file "/myChecksumFile.txt" to "/myMovedChecksumFile.txt" using the API
     And user "user0" requests the checksum of "/myMovedChecksumFile.txt" via propfind
     Then the webdav checksum should match "SHA1:3ee962b839762adb0ad8ba6023a4690be478de6f MD5:d70b40f177b14b470d1756a3c12b963a ADLER32:8ae90960"
+    Examples:
+			| dav_version   |
+			| old           |
+			| new           |
 
   Scenario: Downloading a file with checksum should return the checksum in the download header
     Given using old DAV path
@@ -52,8 +68,8 @@ Feature: checksums
     Then the header checksum should match "SHA1:acfa6b1565f9710d4d497c6035d5c069bd35a8e8"
 
   @local_storage
-  Scenario: Downloading a file from local storage has correct checksum
-    Given using old DAV path
+  Scenario Outline: Downloading a file from local storage has correct checksum
+    Given using <dav_version> DAV path
     # Create the file directly in local storage, bypassing ownCloud
     And file "prueba_cksum.txt" with text "Test file for checksums" has been created in local storage
     # Do a first download, which will trigger ownCloud to calculate a checksum for the file
@@ -61,37 +77,21 @@ Feature: checksums
     # Now do a download that is expected to have a checksum with it
     When user "user0" downloads the file "/local_storage/prueba_cksum.txt" using the API
     Then the header checksum should match "SHA1:a35b7605c8f586d735435535c337adc066c2ccb6"
+    Examples:
+			| dav_version   |
+			| old           |
+			| new           |
 
-  Scenario: Uploading a file with checksum should work using new DAV path
-    Given using new DAV path
-    When user "user0" uploads file "data/textfile.txt" to "/myChecksumFile.txt" with checksum "MD5:d70b40f177b14b470d1756a3c12b963a" using the API
-    Then the webdav response should have a status code "201"
-
-  Scenario: Uploading a file with checksum should return the checksum in the propfind using new DAV path
-    Given using new DAV path
-    And user "user0" has uploaded file "data/textfile.txt" to "/myChecksumFile.txt" with checksum "MD5:d70b40f177b14b470d1756a3c12b963a"
-    When user "user0" requests the checksum of "/myChecksumFile.txt" via propfind
-    Then the webdav checksum should match "SHA1:3ee962b839762adb0ad8ba6023a4690be478de6f MD5:d70b40f177b14b470d1756a3c12b963a ADLER32:8ae90960"
-
-  Scenario: Uploading a file with checksum should return the checksum in the download header using new DAV path
-    Given using new DAV path
-    And user "user0" has uploaded file "data/textfile.txt" to "/myChecksumFile.txt" with checksum "MD5:d70b40f177b14b470d1756a3c12b963a"
-    When user "user0" downloads the file "/myChecksumFile.txt" using the API
-    Then the header checksum should match "SHA1:3ee962b839762adb0ad8ba6023a4690be478de6f"
-
-  Scenario: Moving a file with checksum should return the checksum in the propfind using new DAV path
-    Given using new DAV path
-    And user "user0" has uploaded file "data/textfile.txt" to "/myChecksumFile.txt" with checksum "MD5:d70b40f177b14b470d1756a3c12b963a"
-    When user "user0" moves file "/myChecksumFile.txt" to "/myMovedChecksumFile.txt" using the API
-    And user "user0" requests the checksum of "/myMovedChecksumFile.txt" via propfind
-    Then the webdav checksum should match "SHA1:3ee962b839762adb0ad8ba6023a4690be478de6f MD5:d70b40f177b14b470d1756a3c12b963a ADLER32:8ae90960"
-
-  Scenario: Moving file with checksum should return the checksum in the download header using new DAV path
-    Given using new DAV path
+  Scenario Outline: Moving file with checksum should return the checksum in the download header
+    Given using <dav_version> DAV path
     And user "user0" has uploaded file "data/textfile.txt" to "/myChecksumFile.txt" with checksum "MD5:d70b40f177b14b470d1756a3c12b963a"
     When user "user0" moves file "/myChecksumFile.txt" to "/myMovedChecksumFile.txt" using the API
     And user "user0" downloads the file "/myMovedChecksumFile.txt" using the API
     Then the header checksum should match "SHA1:3ee962b839762adb0ad8ba6023a4690be478de6f"
+    Examples:
+			| dav_version   |
+			| old           |
+			| new           |
 
   Scenario: Copying a file with checksum should return the checksum in the propfind using new DAV path
     Given using new DAV path
@@ -108,16 +108,6 @@ Feature: checksums
     Then the header checksum should match "SHA1:3ee962b839762adb0ad8ba6023a4690be478de6f"
 
   @local_storage
-  Scenario: Downloading a file from local storage has correct checksum using new DAV path
-    Given using new DAV path
-    # Create the file directly in local storage, bypassing ownCloud
-    And file "prueba_cksum.txt" with text "Test file for checksums" has been created in local storage
-    # Do a first download, which will trigger ownCloud to calculate a checksum for the file
-    And user "user0" downloads the file "/local_storage/prueba_cksum.txt" using the API
-    # Now do a download that is expected to have a checksum with it
-    When user "user0" downloads the file "/local_storage/prueba_cksum.txt" using the API
-    Then the header checksum should match "SHA1:a35b7605c8f586d735435535c337adc066c2ccb6"
-
   Scenario: Upload new dav chunked file where checksum matches
     Given using new DAV path
     When user "user0" creates a new chunking upload with id "chunking-42" using the API
@@ -134,34 +124,51 @@ Feature: checksums
     And user "user0" moves new chunk file with id "chunking-42" to "/myChunkedFile.txt" with checksum "SHA1:f005ba11" using the API
     Then the HTTP status code should be "400"
 
-  Scenario: Upload a file where checksum does not match
-    Given using old DAV path
+  Scenario Outline: Upload a file where checksum does not match
+    Given using <dav_version> DAV path
     And file "/chksumtst.txt" has been deleted for user "user0"
     When user "user0" uploads file with checksum "SHA1:f005ba11" and content "Some Text" to "/chksumtst.txt" using the API
     Then the HTTP status code should be "400"
+    Examples:
+			| dav_version   |
+			| old           |
+			| new           |
 
-  Scenario: Upload a file where checksum does match
-    Given using old DAV path
+  Scenario Outline: Upload a file where checksum does match
+    Given using <dav_version> DAV path
     And file "/chksumtst.txt" has been deleted for user "user0"
     When user "user0" uploads file with checksum "SHA1:ce5582148c6f0c1282335b87df5ed4be4b781399" and content "Some Text" to "/chksumtst.txt" using the API
     Then the HTTP status code should be "201"
+    Examples:
+			| dav_version   |
+			| old           |
+			| new           |
 
-  Scenario: Uploaded file should have the same checksum when downloaded
-    Given using old DAV path
+  Scenario Outline: Uploaded file should have the same checksum when downloaded
+    Given using <dav_version> DAV path
     And file "/chksumtst.txt" has been deleted for user "user0"
     And user "user0" has uploaded file with checksum "SHA1:ce5582148c6f0c1282335b87df5ed4be4b781399" and content "Some Text" to "/chksumtst.txt"
     When user "user0" downloads the file "/chksumtst.txt" using the API
     Then the following headers should be set
       | OC-Checksum | SHA1:ce5582148c6f0c1282335b87df5ed4be4b781399 |
+    Examples:
+			| dav_version   |
+			| old           |
+			| new           |
 
   @local_storage
-  Scenario: Uploaded file to external storage should have the same checksum when downloaded
-    Given using old DAV path
+  Scenario Outline: Uploaded file to external storage should have the same checksum when downloaded
+    Given using <dav_version> DAV path
     And file "/local_storage/chksumtst.txt" has been deleted for user "user0"
     And user "user0" has uploaded file with checksum "SHA1:ce5582148c6f0c1282335b87df5ed4be4b781399" and content "Some Text" to "/local_storage/chksumtst.txt"
     When user "user0" downloads the file "/local_storage/chksumtst.txt" using the API
     Then the following headers should be set
       | OC-Checksum | SHA1:ce5582148c6f0c1282335b87df5ed4be4b781399 |
+    Examples:
+			| dav_version   |
+			| old           |
+			| new           |
+    
 
   ## Validation Plugin or Old Endpoint Specific
 
