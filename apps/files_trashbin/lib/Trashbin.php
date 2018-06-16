@@ -41,6 +41,7 @@ use OC\Files\Filesystem;
 use OC\Files\View;
 use OCA\Files_Trashbin\AppInfo\Application;
 use OCA\Files_Trashbin\Command\Expire;
+use OCP\Encryption\Keys\IStorage;
 use OCP\Files\NotFoundException;
 use OCP\User;
 use Symfony\Component\EventDispatcher\GenericEvent;
@@ -375,7 +376,9 @@ class Trashbin {
 	 * @param string $owner owner user id
 	 * @param string $ownerPath path relative to the owner's home storage
 	 * @param integer $timestamp when the file was deleted
+	 * @param IStorage|null $sourceStorage
 	 * @param bool $forceCopy true to only make a copy of the versions into the trashbin
+	 * @throws Exceptions\CopyRecursiveException
 	 */
 	private static function retainVersions($filename, $owner, $ownerPath, $timestamp, $sourceStorage = null, $forceCopy = false) {
 		if (\OCP\App::isEnabled('files_versions') && !empty($ownerPath)) {
