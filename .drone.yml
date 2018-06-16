@@ -114,6 +114,24 @@ pipeline:
       matrix:
         TEST_SUITE: lint
 
+  php-cs-fixer:
+    image: owncloudci/php:${PHP_VERSION}
+    pull: true
+    commands:
+      - make test-php-style
+    when:
+      matrix:
+        TEST_SUITE: php-cs-fixer
+
+  php-phan:
+    image: owncloudci/php:7.1
+    pull: true
+    commands:
+      - make test-php-phan
+    when:
+      matrix:
+        TEST_SUITE: phan
+
   install-server:
     image: owncloudci/php:${PHP_VERSION}
     pull: true
@@ -586,6 +604,10 @@ matrix:
   # php-cs-fixer
     - TEST_SUITE: php-cs-fixer
       PHP_VERSION: 7.2
+
+  # phan
+    - TEST_SUITE: phan
+      PHP_VERSION: 7.1
 
   # Litmus
     - PHP_VERSION: 7.1
