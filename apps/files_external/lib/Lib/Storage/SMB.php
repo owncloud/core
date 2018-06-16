@@ -47,6 +47,7 @@ use Icewind\Streams\CallbackWrapper;
 use Icewind\Streams\IteratorDirectory;
 use OC\Cache\CappedMemoryCache;
 use OC\Files\Filesystem;
+use OCP\Files\Cache\ICache;
 use OCP\Files\StorageNotAvailableException;
 use OCP\Util;
 
@@ -67,7 +68,7 @@ class SMB extends \OCP\Files\Storage\StorageAdapter {
 	protected $root;
 
 	/**
-	 * @var \Icewind\SMB\IFileInfo[]
+	 * @var ICache
 	 */
 	protected $statCache;
 
