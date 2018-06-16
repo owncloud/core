@@ -44,6 +44,7 @@ BOWER=$(NODE_PREFIX)/node_modules/bower/bin/bower
 JSDOC=$(NODE_PREFIX)/node_modules/.bin/jsdoc
 PHPUNIT="$(shell pwd)/lib/composer/phpunit/phpunit/phpunit"
 COMPOSER_BIN=build/composer.phar
+PHAN_BIN=build/phan.phar
 
 TEST_DATABASE=sqlite
 TEST_EXTERNAL_ENV=smb-silvershell
@@ -113,6 +114,8 @@ help:
 $(COMPOSER_BIN):
 	cd build && ./getcomposer.sh
 
+$(PHAN_BIN):
+	cd build && curl -s -L https://github.com/phan/phan/releases/download/0.12.10/phan.phar -o phan.phar;
 #
 # ownCloud core PHP dependencies
 #
@@ -205,6 +208,11 @@ test-php-lint: $(composer_dev_deps)
 .PHONY: test-php-style
 test-php-style: $(composer_dev_deps)
 	$(composer_deps)/bin/php-cs-fixer fix -v --diff --diff-format udiff --dry-run --allow-risky yes
+
+
+.PHONY: test-php-phan
+test-php-phan: $(PHAN_BIN)
+	php $(PHAN_BIN) --config-file .phan/config.php --require-config-exists -p
 
 .PHONY: test
 test: test-php-lint test-php-style test-php test-js test-acceptance
