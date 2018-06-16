@@ -31,7 +31,7 @@ class ChunkingPluginZsync extends ServerPlugin {
 	private $server;
 	/** @var FutureFileZsync */
 	private $sourceNode;
-	/** @var OC\Files\View */
+	/** @var View */
 	private $view;
 
 	public function __construct(View $view) {

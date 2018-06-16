@@ -34,7 +34,7 @@ class ZsyncPlugin extends ServerPlugin {
 	// namespace
 	const ZSYNC_PROPERTYNAME = '{http://owncloud.org/ns}zsync';
 
-	/** @var OC\Files\View */
+	/** @var View */
 	private $view;
 
 	public function __construct(View $view) {
