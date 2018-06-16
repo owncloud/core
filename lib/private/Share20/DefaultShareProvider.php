@@ -26,6 +26,7 @@
 namespace OC\Share20;
 
 use OCP\Files\File;
+use OCP\Share\IShare;
 use OCP\Share\IShareProvider;
 use OC\Share20\Exception\InvalidShare;
 use OC\Share20\Exception\ProviderException;
