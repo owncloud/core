@@ -200,10 +200,12 @@ class SyncService {
 		$multiStatus = $xml->expect('{DAV:}multistatus', $body);
 
 		$result = [];
+		/** @phan-suppress-next-line PhanNonClassMethodCall */
 		foreach ($multiStatus->getResponses() as $response) {
 			$result[$response->getHref()] = $response->getResponseProperties();
 		}
 
+		/** @phan-suppress-next-line PhanNonClassMethodCall */
 		return ['response' => $result, 'token' => $multiStatus->getSyncToken()];
 	}
 
