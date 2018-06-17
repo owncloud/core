@@ -9,6 +9,7 @@
 /build/composer.phar
 /build/dist
 /build/phan.phar
+/build/phpstan.phar*
 /core/vendor
 
 # ignore all apps except core ones
