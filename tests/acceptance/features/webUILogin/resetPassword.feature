@@ -12,7 +12,6 @@ So that I can login to my account again after forgetting the password
 		And the user has browsed to the login page
 		And the user logs in with username "user1" and invalid password "invalidpassword" using the webUI
 		
-
 	Scenario: send password reset email
 		When the user requests the password reset link using the webUI
 		Then a message with this text should be displayed on the webUI:
@@ -24,7 +23,8 @@ So that I can login to my account again after forgetting the password
 			Use the following link to reset your password: <a href=
 			"""
 
-	Scenario: reset password
+	@skipOnEncryption
+	Scenario: reset password for the ordinary (no encryption) case
 		When the user requests the password reset link using the webUI
 		And the user follows the password reset link from email address "u1@oc.com.np"
 		Then the user should be redirected to a webUI page with the title "ownCloud"
