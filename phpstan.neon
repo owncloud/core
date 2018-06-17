@@ -1,7 +1,7 @@
 parameters:
   bootstrap: %currentWorkingDirectory%/lib/base.php
   #autoload_directories:
-  #  - %currentWorkingDirectory%/
+  #  - %currentWorkingDirectory%/apps/files_external/3rdparty
   excludes_analyse:
     - %currentWorkingDirectory%/core/templates/*
     - %currentWorkingDirectory%/core/routes.php
@@ -9,6 +9,8 @@ parameters:
     - %currentWorkingDirectory%/apps/*/tests*
     - %currentWorkingDirectory%/apps/*/templates/*
     - %currentWorkingDirectory%/apps/*/appinfo/routes.php
+    - %currentWorkingDirectory%/apps/*/composer/*
+    - %currentWorkingDirectory%/apps/*/3rdparty/*
     - %currentWorkingDirectory%/settings/templates/*
     - %currentWorkingDirectory%/settings/routes.php
     # specific app excludes
