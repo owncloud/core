@@ -4,11 +4,13 @@ parameters:
   #  - %currentWorkingDirectory%/
   excludes_analyse:
     - %currentWorkingDirectory%/core/templates/*
+    - %currentWorkingDirectory%/core/routes.php
+    - %currentWorkingDirectory%/core/register_command.php
     - %currentWorkingDirectory%/apps/*/tests*
     - %currentWorkingDirectory%/apps/*/templates/*
-    - %currentWorkingDirectory%/settings/templates/*
     - %currentWorkingDirectory%/apps/*/appinfo/routes.php
-    - %currentWorkingDirectory%/core/register_command.php
+    - %currentWorkingDirectory%/settings/templates/*
+    - %currentWorkingDirectory%/settings/routes.php
     # specific app excludes
     # eventually move into app directories and use neon includes for better separation
     - %currentWorkingDirectory%/apps/dav/bin
