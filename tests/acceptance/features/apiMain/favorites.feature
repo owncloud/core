@@ -142,6 +142,21 @@ Feature: favorite
 			| old           |
 			| new           |
 
+	Scenario Outline: sharee file favorite state should not change the favorite state of sharer
+		Given using <dav_version> DAV path
+		And user "user0" has been created	
+		And user "user1" has been created	
+		And user "user0" has moved file "/textfile0.txt" to "/favoriteFile.txt"	
+		And user "user0" has shared file "/favoriteFile.txt" with user "user1"	
+		When user "user1" favorites element "/favoriteFile.txt" using the API	
+		And user "user0" gets the following properties of file "/favoriteFile.txt" using the API	
+			|{http://owncloud.org/ns}favorite|	
+		Then the single response should contain a property "{http://owncloud.org/ns}favorite" with value "0"
+		Examples:
+			| dav_version   |
+			| old           |
+			| new           |
+
 	Scenario Outline: favoriting a folder does not change the favorite state of elements inside the folder
 		Given using <dav_version> DAV path
 		And user "user0" has been created
