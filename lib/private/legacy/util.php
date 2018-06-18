@@ -330,13 +330,10 @@ class OC_Util {
 				$config->setAppValue('core', 'shareapi_exclude_groups_list', $newValue);
 			}
 			$usersGroups = $groupManager->getUserGroupIds($user);
-			if (!empty($usersGroups)) {
-				$remainingGroups = \array_diff($usersGroups, $excludedGroups);
-				// if the user is only in groups which are disabled for sharing then
-				// sharing is also disabled for the user
-				if (empty($remainingGroups)) {
-					return true;
-				}
+			$matchingGroups = \array_intersect($usersGroups, $excludedGroups);
+			if (!empty($matchingGroups)) {
+				// If the user is a member of any of the excluded groups they cannot use sharing
+				return true;
 			}
 		}
 		return false;
