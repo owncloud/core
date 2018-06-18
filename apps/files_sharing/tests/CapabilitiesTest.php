@@ -36,12 +36,6 @@ class CapabilitiesTest extends \Test\TestCase {
 	 */
 	protected $userSearch;
 
-	/** @var \OCP\IUserSession|\PHPUnit_Framework_MockObject_MockObject */
-	protected $session;
-
-	/** @var \OCP\IGroupManager|\PHPUnit_Framework_MockObject_MockObject */
-	protected $groupManager;
-
 	/**
 	 *
 	 */
