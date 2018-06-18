@@ -9,6 +9,11 @@
 namespace Test;
 
 use OC_Util;
+use OCP\Files\Folder;
+use OCP\App\IAppManager;
+use OCP\IUser;
+use OCP\IGroupManager;
+use OCP\IConfig;
 
 /**
  * @group DB
@@ -258,11 +263,11 @@ class UtilTest extends \Test\TestCase {
 		$oldWebRoot = \OC::$WEBROOT;
 		\OC::$WEBROOT = '';
 
-		$appManager = $this->createMock('\OCP\App\IAppManager');
+		$appManager = $this->createMock(IAppManager::class);
 		$appManager->expects($this->any())
 			->method('isEnabledForUser')
 			->will($this->returnCallback(function ($appId) use ($enabledApps) {
-				return \in_array($appId, $enabledApps);
+				return \in_array($appId, $enabledApps, true);
 			}));
 		Dummy_OC_Util::$appManager = $appManager;
 
@@ -373,7 +378,7 @@ class UtilTest extends \Test\TestCase {
 	public function testCopySkeletonDirectoryDoesNotExist() {
 		$config = \OC::$server->getConfig();
 		$config->setSystemValue('skeletondirectory', '/not/existing/Directory');
-		$userFolder = $this->createMock('\OCP\Files\Folder');
+		$userFolder = $this->createMock(Folder::class);
 		\OC_Util::copySkeleton('testuser', $userFolder);
 
 		$config->deleteSystemValue('skeletondirectory');
@@ -395,7 +400,7 @@ class UtilTest extends \Test\TestCase {
 		\chmod($skeletonDir, 0);
 		$config = \OC::$server->getConfig();
 		$config->setSystemValue('skeletondirectory', $skeletonDir);
-		$userFolder = $this->createMock('\OCP\Files\Folder');
+		$userFolder = $this->createMock(Folder::class);
 		\OC_Util::copySkeleton('testuser', $userFolder);
 
 		$config->deleteSystemValue('skeletondirectory');
@@ -417,7 +422,7 @@ class UtilTest extends \Test\TestCase {
 		\chmod($skeletonDir . '/a-file', 0);
 		$config = \OC::$server->getConfig();
 		$config->setSystemValue('skeletondirectory', $skeletonDir);
-		$userFolder = $this->createMock('\OCP\Files\Folder');
+		$userFolder = $this->createMock(Folder::class);
 		\OC_Util::copySkeleton('testuser', $userFolder);
 
 		$config->deleteSystemValue('skeletondirectory');

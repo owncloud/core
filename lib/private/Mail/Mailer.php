@@ -21,6 +21,8 @@
 
 namespace OC\Mail;
 
+use Egulias\EmailValidator\EmailValidator;
+use Egulias\EmailValidator\Validation\RFCValidation;
 use OCP\IConfig;
 use OCP\Mail\IMailer;
 use OCP\ILogger;
@@ -44,7 +46,7 @@ use OCP\ILogger;
  * @package OC\Mail
  */
 class Mailer implements IMailer {
-	/** @var \Swift_SmtpTransport|\Swift_SendmailTransport|\Swift_MailTransport Cached transport */
+	/** @var \Swift_SmtpTransport|\Swift_SendmailTransport Cached transport */
 	private $instance = null;
 	/** @var IConfig */
 	private $config;
@@ -118,10 +120,6 @@ class Mailer implements IMailer {
 			'subject' => $message->getSubject()
 		]);
 
-		if ($debugMode && isset($mailLogger)) {
-			$this->logger->debug($mailLogger->dump(), ['app' => 'core']);
-		}
-
 		return $failedRecipients;
 	}
 
@@ -132,7 +130,8 @@ class Mailer implements IMailer {
 	 * @return bool True if the mail address is valid, false otherwise
 	 */
 	public function validateMailAddress($email) {
-		return \Swift_Validate::email($this->convertEmail($email));
+		$validator = new EmailValidator();
+		return $validator->isValid($this->convertEmail($email), new RFCValidation());
 	}
 
 	/**
@@ -160,26 +159,21 @@ class Mailer implements IMailer {
 	/**
 	 * Returns whatever transport is configured within the config
 	 *
-	 * @return \Swift_SmtpTransport|\Swift_SendmailTransport|\Swift_MailTransport
+	 * @return \Swift_SmtpTransport|\Swift_SendmailTransport
 	 */
 	protected function getInstance() {
 		if ($this->instance !== null) {
 			return $this->instance;
 		}
 
-		switch ($this->config->getSystemValue('mail_smtpmode', 'php')) {
-			case 'smtp':
-				$instance = $this->getSMTPInstance();
-				break;
-			case 'sendmail':
-				// FIXME: Move into the return statement but requires proper testing
-				//       for SMTP and mail as well. Thus not really doable for a
-				//       minor release.
-				$instance = \Swift_Mailer::newInstance($this->getSendMailInstance());
-				break;
-			default:
-				$instance = $this->getMailInstance();
-				break;
+		$mailMode = $this->config->getSystemValue('mail_smtpmode', 'php');
+		if ($mailMode === 'smtp') {
+			$instance = $this->getSmtpInstance();
+		} else {
+			// FIXME: Move into the return statement but requires proper testing
+			//       for SMTP and mail as well. Thus not really doable for a
+			//       minor release.
+			$instance = new \Swift_Mailer($this->getSendMailInstance());
 		}
 
 		// Register plugins
@@ -204,7 +198,7 @@ class Mailer implements IMailer {
 	 * @return \Swift_SmtpTransport
 	 */
 	protected function getSmtpInstance() {
-		$transport = \Swift_SmtpTransport::newInstance();
+		$transport = new \Swift_SmtpTransport();
 		$transport->setTimeout($this->config->getSystemValue('mail_smtptimeout', 10));
 		$transport->setHost($this->config->getSystemValue('mail_smtphost', '127.0.0.1'));
 		$transport->setPort($this->config->getSystemValue('mail_smtpport', 25));
@@ -236,15 +230,6 @@ class Mailer implements IMailer {
 				break;
 		}
 
-		return \Swift_SendmailTransport::newInstance($binaryPath . ' -bs');
-	}
-
-	/**
-	 * Returns the mail transport
-	 *
-	 * @return \Swift_MailTransport
-	 */
-	protected function getMailInstance() {
-		return \Swift_MailTransport::newInstance();
+		return new \Swift_SendmailTransport($binaryPath . ' -bs');
 	}
 }
