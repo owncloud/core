@@ -452,7 +452,13 @@ class ObjectStoreStorage extends \OC\Files\Storage\Common {
 			if ($stat === false) {
 				throw new NotFoundException();
 			}
-			return $this->objectStore->getVersions($this->getURN($stat['fileid']));
+			$versions = $this->objectStore->getVersions($this->getURN($stat['fileid']));
+			list($uid, $path) = $this->convertInternalPathToGlobalPath($internalPath);
+			return \array_map(function(array $version) use ($uid, $path) {
+				$version['path'] = $path;
+				$version['owner'] = $uid;
+				return $version;
+			}, $versions);
 		}
 		return parent::getVersions($internalPath);
 	}
@@ -463,7 +469,13 @@ class ObjectStoreStorage extends \OC\Files\Storage\Common {
 			if ($stat === false) {
 				throw new NotFoundException();
 			}
-			return $this->objectStore->getVersion($this->getURN($stat['fileid']), $versionId);
+			$version = $this->objectStore->getVersion($this->getURN($stat['fileid']), $versionId);
+			list($uid, $path) = $this->convertInternalPathToGlobalPath($internalPath);
+			if (!empty($version)) {
+				$version['path'] = $path;
+				$version['owner'] = $uid;
+			}
+			return $version;
 		}
 		return parent::getVersion($internalPath, $versionId);
 	}
