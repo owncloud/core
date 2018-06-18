@@ -22,6 +22,8 @@ namespace OCA\Files_Sharing;
 
 use OCP\Capabilities\ICapability;
 use OCP\IConfig;
+use OCP\IGroupManager;
+use OCP\IUserSession;
 use OCP\Util\UserSearch;
 
 /**
@@ -40,14 +42,26 @@ class Capabilities implements ICapability {
 	private $userSearch;
 
 	/**
+	 * @var IUserSession
+	 */
+	private $userSession;
+
+	/**
+	 * @var IGroupManager
+	 */
+	private $groupManager;
+
+	/**
 	 * Capabilities constructor.
 	 *
 	 * @param IConfig $config
 	 * @param UserSearch $userSearch
 	 */
-	public function __construct(IConfig $config, UserSearch $userSearch) {
+	public function __construct(IConfig $config, UserSearch $userSearch, IUserSession $userSession, IGroupManager $groupManager) {
 		$this->config = $config;
 		$this->userSearch = $userSearch;
+		$this->userSession = $userSession;
+		$this->groupManager = $groupManager;
 	}
 
 	/**
@@ -63,6 +77,7 @@ class Capabilities implements ICapability {
 			$res['public'] = ['enabled' => false];
 			$res['user'] = ['send_mail' => false];
 			$res['resharing'] = false;
+			$res['can_share'] = false;
 		} else {
 			$res['api_enabled'] = true;
 
@@ -104,6 +119,12 @@ class Capabilities implements ICapability {
 
 			$res['share_with_group_members_only'] = $this->config->getAppValue('core', 'shareapi_only_share_with_group_members', 'yes') === 'yes';
 			$res['share_with_membership_groups_only'] = $this->config->getAppValue('core', 'shareapi_only_share_with_membership_groups', 'yes') === 'yes';
+
+			if (\OC_Util::isSharingDisabledForUser($this->config, $this->groupManager, $this->userSession->getUser())) {
+				$res['can_share'] = false;
+			} else {
+				$res['can_share'] = true;
+			}
 
 			$user_enumeration = [];
 			$user_enumeration['enabled'] = $this->config->getAppValue('core', 'shareapi_allow_share_dialog_user_enumeration', 'yes') === 'yes';

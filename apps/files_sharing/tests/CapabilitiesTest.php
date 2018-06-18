@@ -36,6 +36,12 @@ class CapabilitiesTest extends \Test\TestCase {
 	 */
 	protected $userSearch;
 
+	/** @var \OCP\IUserSession|\PHPUnit_Framework_MockObject_MockObject */
+	protected $session;
+
+	/** @var \OCP\IGroupManager|\PHPUnit_Framework_MockObject_MockObject */
+	protected $groupManager;
+
 	/**
 	 *
 	 */
@@ -44,6 +50,15 @@ class CapabilitiesTest extends \Test\TestCase {
 		$this->userSearch = $this->getMockBuilder(\OCP\Util\UserSearch::class)
 			->disableOriginalConstructor()
 			->getMock();
+
+		$this->session = $this->getMockBuilder(\OCP\IUserSession::class)
+			->disableOriginalConstructor()
+			->getMock();
+
+		$this->groupManager = $this->getMockBuilder(\OCP\IGroupManager::class)
+			->disableOriginalConstructor()
+			->getMock();
+
 		$this->userSearch->expects($this->any())
 			->method('getSearchMinLength')
 			->willReturn(1);
@@ -72,7 +87,7 @@ class CapabilitiesTest extends \Test\TestCase {
 	private function getResults(array $map) {
 		$stub = $this->getMockBuilder('\OCP\IConfig')->disableOriginalConstructor()->getMock();
 		$stub->method('getAppValue')->will($this->returnValueMap($map));
-		$cap = new Capabilities($stub, $this->userSearch);
+		$cap = new Capabilities($stub, $this->userSearch, $this->session, $this->groupManager);
 		$result = $this->getFilesSharingPart($cap->getCapabilities());
 		return $result;
 	}
@@ -83,6 +98,7 @@ class CapabilitiesTest extends \Test\TestCase {
 		];
 		$result = $this->getResults($map);
 		$this->assertTrue($result['api_enabled']);
+		$this->assertTrue($result['can_share']);
 		$this->assertArrayHasKey('public', $result);
 		$this->assertArrayHasKey('user', $result);
 		$this->assertArrayHasKey('resharing', $result);
@@ -94,6 +110,7 @@ class CapabilitiesTest extends \Test\TestCase {
 		];
 		$result = $this->getResults($map);
 		$this->assertFalse($result['api_enabled']);
+		$this->assertFalse($result['can_share']);
 		$this->assertFalse($result['public']['enabled']);
 		$this->assertFalse($result['user']['send_mail']);
 		$this->assertFalse($result['resharing']);
