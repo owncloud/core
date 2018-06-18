@@ -248,53 +248,6 @@ class UtilTest extends \Test\TestCase {
 	}
 
 	/**
-	 * @dataProvider dataProviderForTestIsSharingDisabledForUser
-	 * @param array $groups existing groups
-	 * @param array $membership groups the user belong to
-	 * @param array $excludedGroups groups which should be excluded from sharing
-	 * @param bool $expected expected result
-	 */
-	function testIsSharingDisabledForUser($groups, $membership, $excludedGroups, $expected) {
-		$config = $this->getMockBuilder('OCP\IConfig')->disableOriginalConstructor()->getMock();
-		$groupManager = $this->getMockBuilder('OCP\IGroupManager')->disableOriginalConstructor()->getMock();
-		$user = $this->getMockBuilder('OCP\IUser')->disableOriginalConstructor()->getMock();
-
-		$config
-				->expects($this->at(0))
-				->method('getAppValue')
-				->with('core', 'shareapi_exclude_groups', 'no')
-				->will($this->returnValue('yes'));
-		$config
-				->expects($this->at(1))
-				->method('getAppValue')
-				->with('core', 'shareapi_exclude_groups_list')
-				->will($this->returnValue(json_encode($excludedGroups)));
-
-		$groupManager
-				->expects($this->at(0))
-				->method('getUserGroupIds')
-				->with($user)
-				->will($this->returnValue($membership));
-
-		$result = \OC_Util::isSharingDisabledForUser($config, $groupManager, $user);
-
-		$this->assertSame($expected, $result);
-	}
-
-	public function dataProviderForTestIsSharingDisabledForUser() {
-		return [
-			// existing groups, groups the user belong to, groups excluded from sharing, expected result
-			[['g1', 'g2', 'g3'], [], ['g1'], false],
-			[['g1', 'g2', 'g3'], [], [], false],
-			[['g1', 'g2', 'g3'], ['g2'], ['g1'], false],
-			[['g1', 'g2', 'g3'], ['g2'], [], false],
-			[['g1', 'g2', 'g3'], ['g1', 'g2'], ['g1'], true],
-			[['g1', 'g2', 'g3'], ['g1', 'g2'], ['g1', 'g2'], true],
-			[['g1', 'g2', 'g3'], ['g1', 'g2'], ['g1', 'g2', 'g3'], true],
-		];
-	}
-
-	/**
 	 * Test default apps
 	 *
 	 * @dataProvider defaultAppsProvider
