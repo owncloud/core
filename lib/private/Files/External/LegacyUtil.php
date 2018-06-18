@@ -208,7 +208,7 @@ class LegacyUtil {
 					$storage->setAvailability(false);
 					throw $e;
 				}
-			} catch (Exception $exception) {
+			} catch (\Exception $exception) {
 				\OCP\Util::logException('files_external', $exception);
 				throw $exception;
 			}
