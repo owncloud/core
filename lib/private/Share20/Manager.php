@@ -1485,8 +1485,6 @@ class Manager implements IManager {
 	/**
 	 * Copied from \OC_Util::isSharingDisabledForUser
 	 *
-	 * TODO: Deprecate function from OC_Util
-	 *
 	 * @param string $userId
 	 * @return bool
 	 */
