@@ -107,7 +107,6 @@ Feature: checksums
     And user "user0" downloads the file "/myChecksumFileCopy.txt" using the API
     Then the header checksum should match "SHA1:3ee962b839762adb0ad8ba6023a4690be478de6f"
 
-  @local_storage
   Scenario: Upload new dav chunked file where checksum matches
     Given using new DAV path
     When user "user0" creates a new chunking upload with id "chunking-42" using the API

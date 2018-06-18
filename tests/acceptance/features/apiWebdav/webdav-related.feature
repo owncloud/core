@@ -273,7 +273,7 @@ Feature: webdav-related
 			| old           |
 			| new           |
 
-	Scenario Outline: Downloading a file on the new endpoint should serve security headers
+	Scenario Outline: Downloading a file should serve security headers
 		Given using <dav_version> DAV path
 		And user "user0" has been created
 		When user "user0" downloads the file "/welcome.txt" using the API
@@ -396,7 +396,7 @@ Feature: webdav-related
 		And user "userToBeDisabled" has been disabled
 		When user "userToBeDisabled" downloads the file "/welcome.txt" using the API
 		Then the HTTP status code should be "401"
-	Examples:
+		Examples:
 			| dav_version   |
 			| old           |
 			| new           |
@@ -463,7 +463,7 @@ Feature: webdav-related
 			| old           |
 			| new           |
 
-	Scenario Outline: Renaming a folder to a backslash encoded should return an error using new endpoint
+	Scenario Outline: Renaming a folder to a backslash encoded should return an error
 		Given using <dav_version> DAV path
 		And user "user0" has been created
 		And user "user0" has created a folder "/testshare"
@@ -476,7 +476,7 @@ Feature: webdav-related
 			| old           |
 			| new           |
 
-	Scenario Outline: Renaming a folder beginning with a backslash encoded should return an error using new endpoint
+	Scenario Outline: Renaming a folder beginning with a backslash encoded should return an error
 		Given using <dav_version> DAV path
 		And user "user0" has been created
 		And user "user0" has created a folder "/testshare"
@@ -489,7 +489,7 @@ Feature: webdav-related
 			| old           |
 			| new           |
 
-	Scenario Outline: Renaming a folder including a backslash encoded should return an error using new endpoint
+	Scenario Outline: Renaming a folder including a backslash encoded should return an error
 		Given using <dav_version> DAV path
 		And user "user0" has been created
 		And user "user0" has created a folder "/testshare"
@@ -528,7 +528,7 @@ Feature: webdav-related
 			| old           |
 			| new           |
 
-	Scenario Outline: Downloading a file on the new endpoint should serve security headers
+	Scenario Outline: Downloading a file should serve security headers
 		Given using <dav_version> DAV path
 		And user "user0" has been created
 		When user "user0" downloads the file "/welcome.txt" using the API
@@ -549,6 +549,7 @@ Feature: webdav-related
 
 	Scenario Outline: Doing a GET with a web login should work without CSRF token on the new backend
 		Given user "user0" has been created
+		And using <dav_version> DAV path
 		And user "user0" has logged in to a web-style session using the API
 		When the client sends a "GET" to "/remote.php/dav/files/user0/welcome.txt" without requesttoken using the API
 		Then the downloaded content should start with "Welcome to your ownCloud account!"
@@ -560,6 +561,7 @@ Feature: webdav-related
 
 	Scenario Outline: Doing a GET with a web login should work with CSRF token on the new backend
 		Given user "user0" has been created
+		And using <dav_version> DAV path
 		And user "user0" has logged in to a web-style session using the API
 		When the client sends a "GET" to "/remote.php/dav/files/user0/welcome.txt" with requesttoken using the API
 		Then the downloaded content should start with "Welcome to your ownCloud account!"
@@ -571,6 +573,7 @@ Feature: webdav-related
 
 	Scenario Outline: Doing a PROPFIND with a web login should work with CSRF token on the new backend
 		Given user "user0" has been created
+		And using <dav_version> DAV path
 		And user "user0" has logged in to a web-style session using the API
 		When the client sends a "PROPFIND" to "/remote.php/dav/files/user0/welcome.txt" with requesttoken using the API
 		Then the HTTP status code should be "207"
@@ -578,7 +581,6 @@ Feature: webdav-related
 			| dav_version   |
 			| old           |
 			| new           |
-		
 
 	Scenario Outline: Setting custom DAV property and reading it
 		Given using <dav_version> DAV path
@@ -622,3 +624,16 @@ Feature: webdav-related
 			| dav_version   |
 			| old           |
 			| new           |
+
+	Scenario Outline: Setting custom DAV property using one endpoint and reading it with other endpoint
+		Given using <action_dav_version> DAV path	
+		And user "user0" has been created	
+		And user "user0" has uploaded file "data/textfile.txt" to "/testnewold.txt"	
+		And user "user0" has set property "{http://whatever.org/ns}very-custom-prop" of file "/testnewold.txt" to "lucky"	
+		And using <other_dav_version> DAV path	
+		When user "user0" gets a custom property "{http://whatever.org/ns}very-custom-prop" of file "/testnewold.txt"	
+		Then the response should contain a custom "{http://whatever.org/ns}very-custom-prop" property with "lucky"
+		Examples:
+		| action_dav_version | other_dav_version |
+		| old                | new               |
+		| new                | old               |
