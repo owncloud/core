@@ -31,6 +31,9 @@ use Sabre\DAV\Tree;
 use Sabre\HTTP\RequestInterface;
 use Sabre\HTTP\ResponseInterface;
 use Test\TestCase;
+use OCP\Files\FileInfo;
+use OCP\Files\ForbiddenException;
+use OCA\DAV\Files\ICopySource;
 
 class CopyPluginTest extends TestCase {
 
@@ -68,7 +71,7 @@ class CopyPluginTest extends TestCase {
 	 */
 	public function testCopyPluginReturnTrue($destinationExists, $destinationNode, $sourceNode) {
 		$this->tree->expects($this->once())->method('getNodeForPath')->willReturn($sourceNode);
-		$this->server->expects($this->once())->method('getCopyAndMoveInfo')->willReturn([
+		$this->server->expects($this->any())->method('getCopyAndMoveInfo')->willReturn([
 			'destinationExists' => $destinationExists,
 			'destinationNode' => $destinationNode
 		]);
@@ -79,15 +82,15 @@ class CopyPluginTest extends TestCase {
 
 	public function providesSourceAndDestinations() {
 		return [
-			'destination does not exist' => [false, null, null],
-			'destination is not a File' => [true, $this->createMock(Directory::class), $this->createMock(IFile::class)],
-			'source is not a IFile' => [true, $this->createMock(File::class), $this->createMock(ICollection::class)],
+			'source is not a ICopySource' => [true, null, $this->createMock(IFile::class)],
+			'destination does not exist' => [false, null, $this->createMock(ICopySource::class)],
+			'destination is not a File' => [true, $this->createMock(Directory::class), $this->createMock(ICopySource::class)],
 		];
 	}
 
 	public function testCopyPluginReturnFalse() {
 		$destinationNode = $this->createMock(File::class);
-		$sourceNode = $this->createMock(IFile::class);
+		$sourceNode = $this->createMock([IFile::class, ICopySource::class]);
 
 		$this->tree->expects($this->once())->method('getNodeForPath')->willReturn($sourceNode);
 		$this->server->expects($this->once())->method('getCopyAndMoveInfo')->willReturn([
@@ -100,9 +103,12 @@ class CopyPluginTest extends TestCase {
 		$this->server->expects($this->exactly(2))->method('emit')->withConsecutive(
 			['beforeBind', ['destination.txt']], ['afterBind', ['destination.txt']])->willReturn(true);
 
-		// make sure the file content is actually copied over
-		$sourceNode->expects($this->once())->method('get')->willReturn('123456');
-		$destinationNode->expects($this->once())->method('put')->with('123456');
+		$fileInfo = $this->createMock(FileInfo::class);
+		$fileInfo->method('getPath')->willReturn('path/to/destination.txt');
+
+		$sourceNode->expects($this->once())->method('copy')->with('path/to/destination.txt');
+
+		$destinationNode->expects($this->once())->method('getFileInfo')->willReturn($fileInfo);
 
 		// make sure http status and content length are properly set
 		$this->response->expects($this->once())->method('setHeader')->with('Content-Length', '0');
@@ -110,5 +116,38 @@ class CopyPluginTest extends TestCase {
 
 		$returnValue = $this->plugin->httpCopy($this->request, $this->response);
 		$this->assertFalse($returnValue);
+	}
+
+	/**
+	 * @expectedException OCA\DAV\Connector\Sabre\Exception\Forbidden
+	 * @expectedExceptionMessage Test exception
+	 */
+	public function testCopyPluginRethrowForbidden() {
+		$destinationNode = $this->createMock(File::class);
+		$sourceNode = $this->createMock([ICopySource::class, IFile::class]);
+
+		$this->tree->expects($this->once())->method('getNodeForPath')->willReturn($sourceNode);
+		$this->server->expects($this->once())->method('getCopyAndMoveInfo')->willReturn([
+			'destinationExists' => true,
+			'destinationNode' => $destinationNode,
+			'destination' => 'destination.txt'
+		]);
+
+		// make sure the plugin properly emits beforeBind and afterBind
+		$this->server->expects($this->once(2))
+			->method('emit')
+			->with('beforeBind', ['destination.txt'])
+			->willReturn(true);
+
+		$sourceNode->expects($this->once())
+			->method('copy')
+			->will($this->throwException(new ForbiddenException('Test exception', false)));
+
+		$fileInfo = $this->createMock(FileInfo::class);
+		$fileInfo->method('isDeletable')->willReturn(true);
+
+		$destinationNode->expects($this->once())->method('getFileInfo')->willReturn($fileInfo);
+
+		$this->plugin->httpCopy($this->request, $this->response);
 	}
 }
