@@ -103,16 +103,16 @@ class NotificationPublisher {
 
 			$notification->setSubject('local_share', [$share->getShareOwner(), $share->getSharedBy(), $share->getNode()->getName()]);
 
+			$declineAction = $notification->createAction();
+			$declineAction->setLabel('decline');
+			$declineAction->setLink($endpointUrl, 'DELETE');
+			$notification->addAction($declineAction);
+
 			$acceptAction = $notification->createAction();
 			$acceptAction->setLabel('accept');
 			$acceptAction->setLink($endpointUrl, 'POST');
 			$acceptAction->setPrimary(true);
 			$notification->addAction($acceptAction);
-
-			$declineAction = $notification->createAction();
-			$declineAction->setLabel('decline');
-			$declineAction->setLink($endpointUrl, 'DELETE');
-			$notification->addAction($declineAction);
 
 			$this->notificationManager->notify($notification);
 		}
