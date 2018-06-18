@@ -707,7 +707,7 @@ abstract class Common implements Storage, ILockingStorage, IVersionedStorage {
 	 * @param $internalPath
 	 * @return array
 	 */
-	private function convertInternalPathToGlobalPath($internalPath) {
+	protected function convertInternalPathToGlobalPath($internalPath) {
 		$mounts = \OC::$server->getMountManager()->findByStorageId($this->getId());
 		$mount = \end($mounts);
 		$p = $mount->getMountPoint() . $internalPath;

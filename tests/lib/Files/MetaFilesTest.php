@@ -117,7 +117,7 @@ class MetaFilesTest extends TestCase {
 		/** @var MetaFileVersionNode $metaNodeOfFile */
 		$this->assertEquals('1234', $metaNodeOfFile->getContent());
 
-		// restore a version using move
+		// restore a version using copy
 		/** @var File $target */
 		$target = \OC::$server->getRootFolder()->get($fileName);
 		$this->assertEquals('1234567890', $target->getContent());
