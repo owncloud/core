@@ -53,6 +53,7 @@ script:
 
   - sh -c "if [ '$TEST_DAV' = '1' ]; then bash apps/dav/tests/ci/$TC/script.sh; fi"
   - sh -c "if [ '$TC' = 'selenium' ]; then bash tests/travis/start_ui_tests.sh --tags ~@mailhog; fi"
+  - sh -c "if [ '$TC' = 'selenium' ]; then dmesg || true; fi"
 
 matrix:
   include:
