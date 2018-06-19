@@ -32,7 +32,7 @@ class HomeObjectStoreStorage extends ObjectStoreStorage implements \OCP\Files\IH
 	 * @param array $params
 	 */
 	public function __construct($params) {
-		if ( ! isset($params['user']) || ! $params['user'] instanceof User) {
+		if (! isset($params['user']) || ! $params['user'] instanceof User) {
 			throw new \Exception('missing user object in parameters');
 		}
 		$this->user = $params['user'];
@@ -43,7 +43,7 @@ class HomeObjectStoreStorage extends ObjectStoreStorage implements \OCP\Files\IH
 		}
 	}
 
-	public function getId () {
+	public function getId() {
 		return 'object::user:' . $this->user->getUID();
 	}
 
@@ -54,7 +54,7 @@ class HomeObjectStoreStorage extends ObjectStoreStorage implements \OCP\Files\IH
 	 * @return false|string uid
 	 */
 	public function getOwner($path) {
-		if (is_object($this->user)) {
+		if (\is_object($this->user)) {
 			return $this->user->getUID();
 		}
 		return false;
@@ -67,6 +67,4 @@ class HomeObjectStoreStorage extends ObjectStoreStorage implements \OCP\Files\IH
 	public function getUser($path = null) {
 		return $this->user;
 	}
-
-
 }

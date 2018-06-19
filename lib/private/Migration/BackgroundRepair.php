@@ -89,7 +89,7 @@ class BackgroundRepair extends TimedJob {
 		try {
 			$repair->addStep($step);
 		} catch (\Exception $ex) {
-			$this->logger->logException($ex,[
+			$this->logger->logException($ex, [
 				'app' => 'migration'
 			]);
 

@@ -535,7 +535,6 @@ class FolderTest extends NodeTest {
 			->with('/bar/foo')
 			->will($this->returnValue($mount));
 
-
 		$node = new Folder($root, $view, '/bar/foo');
 		$result = $node->search('qw');
 		$this->assertCount(2, $result);
@@ -715,7 +714,7 @@ class FolderTest extends NodeTest {
 			->method('file_exists')
 			->will($this->returnCallback(function ($path) use ($existingFiles, $folderPath) {
 				foreach ($existingFiles as $existing) {
-					if ($folderPath . '/' . $existing === $path){
+					if ($folderPath . '/' . $existing === $path) {
 						return true;
 					}
 				}

@@ -1,5 +1,4 @@
 <?php
-foreach($_['forms'] as $form) {
-    print($form['page']);
+foreach ($_['forms'] as $form) {
+	print($form['page']);
 }
-?>

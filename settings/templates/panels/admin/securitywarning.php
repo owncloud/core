@@ -13,7 +13,7 @@ script('settings', 'panels/setupchecks');
 	<?php
 	// is php setup properly to query system environment variables like getenv('PATH')
 	if ($_['getenvServerNotWorking']) {
-	?>
+		?>
 		<li>
 			<?php p($l->t('php does not seem to be setup properly to query system environment variables. The test with getenv("PATH") only returns an empty response.')); ?><br>
 			<?php print_unescaped($l->t('Please check the <a target="_blank" rel="noreferrer" href="%s">installation documentation ↗</a> for php configuration notes and the php configuration of your server, especially when using php-fpm.', link_to_docs('admin-php-fpm'))); ?>
@@ -22,7 +22,7 @@ script('settings', 'panels/setupchecks');
 	}
 	// is read only config enabled
 	if ($_['readOnlyConfigEnabled']) {
-	?>
+		?>
 		<li>
 			<?php p($l->t('The Read-Only config has been enabled. This prevents setting some configurations via the web-interface. Furthermore, the file needs to be made writable manually for every update.')); ?>
 		</li>
@@ -68,7 +68,7 @@ script('settings', 'panels/setupchecks');
 			<?php print_unescaped($l->t('Transactional file locking is disabled, this might lead to issues with race conditions. Enable \'filelocking.enabled\' in config.php to avoid these problems. See the <a target="_blank" rel="noreferrer" href="%s">documentation ↗</a> for more information.', link_to_docs('admin-transactional-locking'))); ?>
 		</li>
 		<?php
-	} else if ($_['fileLockingType'] === 'db') {
+	} elseif ($_['fileLockingType'] === 'db') {
 		?>
 		<li>
 			<?php print_unescaped($l->t('Transactional file locking should be configured to use memory-based locking, not the default slow database-based locking. See the <a target="_blank" rel="noreferrer" href="%s">documentation ↗</a> for more information.', link_to_docs('admin-transactional-locking'))); ?>
@@ -81,16 +81,13 @@ script('settings', 'panels/setupchecks');
 		<li>
 			<?php
 				$locales = 'en_US.UTF-8/fr_FR.UTF-8/es_ES.UTF-8/de_DE.UTF-8/ru_RU.UTF-8/pt_BR.UTF-8/it_IT.UTF-8/ja_JP.UTF-8/zh_CN.UTF-8';
-				p($l->t('System locale can not be set to a one which supports UTF-8.'));
-				?>
+		p($l->t('System locale can not be set to a one which supports UTF-8.')); ?>
 			<br>
 			<?php
-				p($l->t('This means that there might be problems with certain characters in file names.'));
-			?>
+				p($l->t('This means that there might be problems with certain characters in file names.')); ?>
 				<br>
 				<?php
-				p($l->t('We strongly suggest installing the required packages on your system to support one of the following locales: %s.', [$locales]));
-				?>
+				p($l->t('We strongly suggest installing the required packages on your system to support one of the following locales: %s.', [$locales])); ?>
 		</li>
 	<?php
 	}
@@ -108,7 +105,7 @@ script('settings', 'panels/setupchecks');
 		<li>
 			<?php p($l->t('SQLite is used as database. For larger installations we recommend to switch to a different database backend.')); ?><br>
 			<?php p($l->t('Especially when using the desktop client for file syncing the use of SQLite is discouraged.')); ?><br>
-			<?php print_unescaped($l->t('To migrate to another database use the command line tool: \'occ db:convert-type\', or see the <a target="_blank" rel="noreferrer" href="%s">documentation ↗</a>.', link_to_docs('admin-db-conversion') )); ?>
+			<?php print_unescaped($l->t('To migrate to another database use the command line tool: \'occ db:convert-type\', or see the <a target="_blank" rel="noreferrer" href="%s">documentation ↗</a>.', link_to_docs('admin-db-conversion'))); ?>
 		</li>
 
 		<?php
@@ -127,9 +124,13 @@ script('settings', 'panels/setupchecks');
 				<?php p($l->t('It was not possible to execute the cronjob via CLI. The following technical errors have appeared:')); ?>
 				<br>
 				<ol>
-					<?php foreach(json_decode($_['cronErrors']) as $error) { if(isset($error->error)) {?>
+					<?php foreach (\json_decode($_['cronErrors']) as $error) {
+			if (isset($error->error)) {
+				?>
 						<li><?php p($error->error) ?> <?php p($error->hint) ?></li>
-					<?php }};?>
+					<?php
+			}
+		}; ?>
 				</ol>
 		</li>
 	<?php
@@ -137,7 +138,11 @@ script('settings', 'panels/setupchecks');
 	?>
 	</ul>
 
-	<div id="postsetupchecks" data-check-wellknown="<?php if($_['checkForWorkingWellKnownSetup']) { p('true'); } else { p('false'); } ?>">
+	<div id="postsetupchecks" data-check-wellknown="<?php if ($_['checkForWorkingWellKnownSetup']) {
+		p('true');
+	} else {
+		p('false');
+	} ?>">
 		<div class="loading"></div>
 		<ul class="errors hidden"></ul>
 		<ul class="warnings hidden"></ul>

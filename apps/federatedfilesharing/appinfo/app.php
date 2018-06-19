@@ -29,12 +29,12 @@ use OCP\Share\Events\DeclineShare;
 use OCP\Defaults;
 
 $manager = \OC::$server->getNotificationManager();
-$manager->registerNotifier(function() {
+$manager->registerNotifier(function () {
 	return new Notifier(
 		\OC::$server->getL10NFactory(),
 		new Defaults()
 	);
-}, function() {
+}, function () {
 	$l = \OC::$server->getL10N('files_sharing');
 	return [
 		'id' => 'files_sharing',
@@ -51,7 +51,7 @@ OCP\Util::connectHook('OCP\Share', 'share_link_access', 'OCA\FederatedFileSharin
 $eventDispatcher = \OC::$server->getEventDispatcher();
 $eventDispatcher->addListener(
 	AcceptShare::class,
-	function(AcceptShare $event) use ($app) {
+	function (AcceptShare $event) use ($app) {
 		/** @var \OCA\FederatedFileSharing\Notifications $notifications */
 		$notifications = $app->getContainer()->query('OCA\FederatedFileSharing\Notifications');
 		$notifications->sendAcceptShare(
@@ -64,7 +64,7 @@ $eventDispatcher->addListener(
 
 $eventDispatcher->addListener(
 	DeclineShare::class,
-	function(DeclineShare $event) use ($app) {
+	function (DeclineShare $event) use ($app) {
 		/** @var \OCA\FederatedFileSharing\Notifications $notifications */
 		$notifications = $app->getContainer()->query('OCA\FederatedFileSharing\Notifications');
 		$notifications->sendDeclineShare(

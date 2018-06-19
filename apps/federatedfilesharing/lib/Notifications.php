@@ -23,7 +23,6 @@
  *
  */
 
-
 namespace OCA\FederatedFileSharing;
 
 use OCP\AppFramework\Http;
@@ -86,7 +85,6 @@ class Notifications {
 	 * @throws \OC\ServerNotAvailableException
 	 */
 	public function sendRemoteShare($token, $shareWith, $name, $remote_id, $owner, $ownerFederatedId, $sharedBy, $sharedByFederatedId) {
-
 		list($user, $remote) = $this->addressHandler->splitUserRemote($shareWith);
 
 		if ($user && $remote) {
@@ -107,13 +105,12 @@ class Notifications {
 
 			$url = $this->addressHandler->removeProtocolFromUrl($url);
 			$result = $this->tryHttpPostToShareEndpoint($url, '', $fields);
-			$status = json_decode($result['result'], true);
+			$status = \json_decode($result['result'], true);
 
 			if ($result['success'] && ($status['ocs']['meta']['statuscode'] === 100 || $status['ocs']['meta']['statuscode'] === 200)) {
 				\OC_Hook::emit('OCP\Share', 'federated_share_added', ['server' => $remote]);
 				return true;
 			}
-
 		}
 
 		return false;
@@ -132,7 +129,6 @@ class Notifications {
 	 * @throws \Exception
 	 */
 	public function requestReShare($token, $id, $shareId, $remote, $shareWith, $permission) {
-
 		$fields = [
 			'shareWith' => $shareWith,
 			'token' => $token,
@@ -141,12 +137,12 @@ class Notifications {
 		];
 
 		$url = $this->addressHandler->removeProtocolFromUrl($remote);
-		$result = $this->tryHttpPostToShareEndpoint(rtrim($url, '/'), '/' . $id . '/reshare', $fields);
-		$status = json_decode($result['result'], true);
+		$result = $this->tryHttpPostToShareEndpoint(\rtrim($url, '/'), '/' . $id . '/reshare', $fields);
+		$status = \json_decode($result['result'], true);
 
 		$httpRequestSuccessful = $result['success'];
 		$ocsCallSuccessful = $status['ocs']['meta']['statuscode'] === 100 || $status['ocs']['meta']['statuscode'] === 200;
-		$validToken = isset($status['ocs']['data']['token']) && is_string($status['ocs']['data']['token']);
+		$validToken = isset($status['ocs']['data']['token']) && \is_string($status['ocs']['data']['token']);
 		$validRemoteId = isset($status['ocs']['data']['remoteId']);
 
 		if ($httpRequestSuccessful && $ocsCallSuccessful && $validToken && $validRemoteId) {
@@ -198,7 +194,7 @@ class Notifications {
 
 	/**
 	 * forward accept reShare to remote server
-	 * 
+	 *
 	 * @param string $remote
 	 * @param int $remoteId
 	 * @param string $token
@@ -231,15 +227,14 @@ class Notifications {
 	 * @throws \Exception
 	 */
 	public function sendUpdateToRemote($remote, $remoteId, $token, $action, $data = [], $try = 0) {
-
 		$fields = ['token' => $token];
 		foreach ($data as $key => $value) {
 			$fields[$key] = $value;
 		}
 
 		$url = $this->addressHandler->removeProtocolFromUrl($remote);
-		$result = $this->tryHttpPostToShareEndpoint(rtrim($url, '/'), '/' . $remoteId . '/' . $action, $fields);
-		$status = json_decode($result['result'], true);
+		$result = $this->tryHttpPostToShareEndpoint(\rtrim($url, '/'), '/' . $remoteId . '/' . $action, $fields);
+		$status = \json_decode($result['result'], true);
 
 		if ($result['success'] &&
 			($status['ocs']['meta']['statuscode'] === 100 ||
@@ -255,7 +250,7 @@ class Notifications {
 					'remoteId' => $remoteId,
 					'token' => $token,
 					'action' => $action,
-					'data' => json_encode($data),
+					'data' => \json_encode($data),
 					'try' => $try,
 					'lastRun' => $this->getTimestamp()
 				]
@@ -271,7 +266,7 @@ class Notifications {
 	 * @return int
 	 */
 	protected function getTimestamp() {
-		return time();
+		return \time();
 	}
 
 	/**
@@ -310,7 +305,7 @@ class Notifications {
 				if ($e->getCode() === Http::STATUS_INTERNAL_SERVER_ERROR) {
 					throw $e;
 				}
-				$allowHttpFallback = $this->config->getSystemValue('sharing.federation.allowHttpFallback',  false) === true;
+				$allowHttpFallback = $this->config->getSystemValue('sharing.federation.allowHttpFallback', false) === true;
 				if (!$allowHttpFallback) {
 					break;
 				}

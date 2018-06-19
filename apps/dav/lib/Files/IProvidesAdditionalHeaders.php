@@ -19,9 +19,7 @@
  *
  */
 
-
 namespace OCA\DAV\Files;
-
 
 /**
  * Interface IProvidesAdditionalHeaders
@@ -40,5 +38,4 @@ interface IProvidesAdditionalHeaders {
 	 * @return string
 	 */
 	public function getContentDispositionFileName();
-
 }

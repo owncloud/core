@@ -114,9 +114,9 @@ class ListConfigs extends Base {
 		$configs = [];
 		foreach ($keys as $key) {
 			if ($noSensitiveValues) {
-				$value = $this->systemConfig->getFilteredValue($key, serialize(null));
+				$value = $this->systemConfig->getFilteredValue($key, \serialize(null));
 			} else {
-				$value = $this->systemConfig->getValue($key, serialize(null));
+				$value = $this->systemConfig->getValue($key, \serialize(null));
 			}
 
 			if ($value !== 'N;') {

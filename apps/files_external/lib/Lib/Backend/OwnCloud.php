@@ -28,7 +28,6 @@ use OCP\Files\External\DefinitionParameter;
 use OCP\IL10N;
 
 class OwnCloud extends Backend {
-
 	public function __construct(IL10N $l) {
 		$this
 			->setIdentifier('owncloud')
@@ -45,5 +44,4 @@ class OwnCloud extends Backend {
 			->addAuthScheme(AuthMechanism::SCHEME_PASSWORD)
 		;
 	}
-
 }

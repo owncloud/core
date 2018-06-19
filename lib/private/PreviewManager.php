@@ -106,8 +106,8 @@ class PreviewManager implements IPreview {
 
 		$this->registerCoreProviders();
 		if ($this->providerListDirty) {
-			$keys = array_map('strlen', array_keys($this->providers));
-			array_multisort($keys, SORT_DESC, $this->providers);
+			$keys = \array_map('strlen', \array_keys($this->providers));
+			\array_multisort($keys, SORT_DESC, $this->providers);
 			$this->providerListDirty = false;
 		}
 
@@ -161,9 +161,9 @@ class PreviewManager implements IPreview {
 		}
 
 		$this->registerCoreProviders();
-		$providerMimeTypes = array_keys($this->providers);
+		$providerMimeTypes = \array_keys($this->providers);
 		foreach ($providerMimeTypes as $supportedMimeType) {
-			if (preg_match($supportedMimeType, $mimeType)) {
+			if (\preg_match($supportedMimeType, $mimeType)) {
 				$this->mimeTypeSupportMap[$mimeType] = true;
 				return true;
 			}
@@ -177,13 +177,13 @@ class PreviewManager implements IPreview {
 	 *
 	 * @return string[]
 	 */
-	public function getSupportedMimes(){
+	public function getSupportedMimes() {
 		$supportedMimes = [];
 		$this->registerCoreProviders();
-		$mimeRegexArray = array_keys($this->providers);
+		$mimeRegexArray = \array_keys($this->providers);
 		// Now trim start/stop regexp delimiters
-		foreach ($mimeRegexArray as $mimeRegex){
-			$supportedMimes[] = trim($mimeRegex, '/');
+		foreach ($mimeRegexArray as $mimeRegex) {
+			$supportedMimes[] = \trim($mimeRegex, '/');
 		}
 		return $supportedMimes;
 	}
@@ -205,12 +205,12 @@ class PreviewManager implements IPreview {
 		}
 
 		$mount = $file->getMountPoint();
-		if ($mount and !$mount->getOption('previews', true)){
+		if ($mount and !$mount->getOption('previews', true)) {
 			return false;
 		}
 
 		foreach ($this->providers as $supportedMimeType => $providers) {
-			if (preg_match($supportedMimeType, $file->getMimetype())) {
+			if (\preg_match($supportedMimeType, $file->getMimetype())) {
 				foreach ($providers as $closure) {
 					$provider = $closure();
 					if (!($provider instanceof IProvider) && !($provider instanceof IProvider2)) {
@@ -271,16 +271,16 @@ class PreviewManager implements IPreview {
 			'OC\Preview\XBitmap'
 		];
 
-		$this->defaultProviders = $this->config->getSystemValue('enabledPreviewProviders', array_merge([
+		$this->defaultProviders = $this->config->getSystemValue('enabledPreviewProviders', \array_merge([
 			'OC\Preview\MarkDown',
 			'OC\Preview\MP3',
 			'OC\Preview\TXT',
 		], $imageProviders));
 
-		if (in_array('OC\Preview\Image', $this->defaultProviders)) {
-			$this->defaultProviders = array_merge($this->defaultProviders, $imageProviders);
+		if (\in_array('OC\Preview\Image', $this->defaultProviders)) {
+			$this->defaultProviders = \array_merge($this->defaultProviders, $imageProviders);
 		}
-		$this->defaultProviders = array_unique($this->defaultProviders);
+		$this->defaultProviders = \array_unique($this->defaultProviders);
 		return $this->defaultProviders;
 	}
 
@@ -291,7 +291,7 @@ class PreviewManager implements IPreview {
 	 * @param string $mimeType
 	 */
 	protected function registerCoreProvider($class, $mimeType, $options = []) {
-		if (in_array(trim($class, '\\'), $this->getEnabledDefaultProvider())) {
+		if (\in_array(\trim($class, '\\'), $this->getEnabledDefaultProvider())) {
 			$this->registerProvider($mimeType, function () use ($class, $options) {
 				return new $class($options);
 			});
@@ -317,7 +317,7 @@ class PreviewManager implements IPreview {
 		$this->registerCoreProvider('OC\Preview\MP3', '/audio\/mpeg/');
 
 		// SVG, Office and Bitmap require imagick
-		if (extension_loaded('imagick')) {
+		if (\extension_loaded('imagick')) {
 			$checkImagick = new \Imagick();
 
 			$imagickProviders = [
@@ -333,26 +333,26 @@ class PreviewManager implements IPreview {
 
 			foreach ($imagickProviders as $queryFormat => $provider) {
 				$class = $provider['class'];
-				if (!in_array(trim($class, '\\'), $this->getEnabledDefaultProvider())) {
+				if (!\in_array(\trim($class, '\\'), $this->getEnabledDefaultProvider())) {
 					continue;
 				}
 
-				if (count($checkImagick->queryFormats($queryFormat)) === 1) {
+				if (\count($checkImagick->queryFormats($queryFormat)) === 1) {
 					$this->registerCoreProvider($class, $provider['mimetype']);
 				}
 			}
 
-			if (count($checkImagick->queryFormats('PDF')) === 1) {
+			if (\count($checkImagick->queryFormats('PDF')) === 1) {
 				// Office previews are currently not supported on Windows
 				if (\OC_Helper::is_function_enabled('shell_exec')) {
-					$officeFound = is_string($this->config->getSystemValue('preview_libreoffice_path', null));
+					$officeFound = \is_string($this->config->getSystemValue('preview_libreoffice_path', null));
 
 					if (!$officeFound) {
 						//let's see if there is libreoffice or openoffice on this machine
-						$whichLibreOffice = shell_exec('command -v libreoffice');
+						$whichLibreOffice = \shell_exec('command -v libreoffice');
 						$officeFound = !empty($whichLibreOffice);
 						if (!$officeFound) {
-							$whichOpenOffice = shell_exec('command -v openoffice');
+							$whichOpenOffice = \shell_exec('command -v openoffice');
 							$officeFound = !empty($whichOpenOffice);
 						}
 					}
@@ -370,27 +370,27 @@ class PreviewManager implements IPreview {
 
 		// Video requires avconv or ffmpeg and is therefor
 		// currently not supported on Windows.
-		if (in_array('OC\Preview\Movie', $this->getEnabledDefaultProvider())) {
-		// AtomicParsley would actually work under Windows.
+		if (\in_array('OC\Preview\Movie', $this->getEnabledDefaultProvider())) {
+			// AtomicParsley would actually work under Windows.
 			$avconvBinary = \OC_Helper::findBinaryPath('avconv');
 			$ffmpegBinary = ($avconvBinary) ? null : \OC_Helper::findBinaryPath('ffmpeg');
 			$atomicParsleyBinary = \OC_Helper::findBinaryPath('AtomicParsley');
 
 			// FIXME // a bit hacky but didn't want to use subclasses
 			$registerProvider = false;
-			if (null !== $avconvBinary) {
+			if ($avconvBinary !== null) {
 				\OC\Preview\Movie::$avconvBinary = $avconvBinary;
 				$registerProvider = true;
 			}
-			if (null !== $ffmpegBinary) {
+			if ($ffmpegBinary !== null) {
 				\OC\Preview\Movie::$ffmpegBinary = $ffmpegBinary;
 				$registerProvider = true;
 			}
-			if (null !== $atomicParsleyBinary) {
+			if ($atomicParsleyBinary !== null) {
 				\OC\Preview\Movie::$atomicParsleyBinary = $atomicParsleyBinary;
 				$registerProvider = true;
 			}
-			if (true === $registerProvider) {
+			if ($registerProvider === true) {
 				$this->registerCoreProvider('\OC\Preview\Movie', '/video\/.*/');
 			}
 		}

@@ -97,7 +97,7 @@ class UserStoragesServiceTest extends StoragesServiceTest {
 
 		// hook called once for user
 		$this->assertHookCall(
-			current(self::$hookCalls),
+			\current(self::$hookCalls),
 			Filesystem::signal_create_mount,
 			$storage->getMountPoint(),
 			IStorageConfig::MOUNT_TYPE_USER,

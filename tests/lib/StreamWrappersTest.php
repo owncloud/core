@@ -28,7 +28,6 @@ namespace Test;
  * @group DB
  */
 class StreamWrappersTest extends \Test\TestCase {
-
 	private static $trashBinStatus;
 
 	public static function setUpBeforeClass() {
@@ -45,13 +44,13 @@ class StreamWrappersTest extends \Test\TestCase {
 	public function testFakeDir() {
 		$items = ['foo', 'bar'];
 		\OC\Files\Stream\Dir::register('test', $items);
-		$dh = opendir('fakedir://test');
+		$dh = \opendir('fakedir://test');
 		$result = [];
-		while ($file = readdir($dh)) {
+		while ($file = \readdir($dh)) {
 			$result[] = $file;
 			$this->assertContains($file, $items);
 		}
-		$this->assertCount(count($items), $result);
+		$this->assertCount(\count($items), $result);
 	}
 
 	public function testCloseStream() {
@@ -60,21 +59,23 @@ class StreamWrappersTest extends \Test\TestCase {
 		$tmpFile = \OC::$server->getTempManager()->getTemporaryFile('.txt');
 		$file = 'close://' . $tmpFile;
 		$this->assertFileExists($file);
-		file_put_contents($file, file_get_contents($sourceFile));
+		\file_put_contents($file, \file_get_contents($sourceFile));
 		$this->assertFileEquals($sourceFile, $file);
-		unlink($file);
-		clearstatcache();
+		\unlink($file);
+		\clearstatcache();
 		$this->assertFileNotExists($file);
 
 		//test callback
 		$tmpFile = \OC::$server->getTempManager()->getTemporaryFile('.txt');
 		$file = 'close://' . $tmpFile;
 		$actual = false;
-		$callback = function($path) use (&$actual) { $actual = $path; };
+		$callback = function ($path) use (&$actual) {
+			$actual = $path;
+		};
 		\OC\Files\Stream\Close::registerCallback($tmpFile, $callback);
-		$fh = fopen($file, 'w');
-		fwrite($fh, 'asd');
-		fclose($fh);
+		$fh = \fopen($file, 'w');
+		\fwrite($fh, 'asd');
+		\fclose($fh);
 		$this->assertSame($tmpFile, $actual);
 	}
 }

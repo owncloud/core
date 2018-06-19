@@ -101,7 +101,7 @@ class LegacyStoragesService {
 				$applicableUsers[] = $applicable;
 				$storageConfig->setApplicableUsers($applicableUsers);
 			}
-		} else if ($mountType === LegacyUtil::MOUNT_TYPE_GROUP) {
+		} elseif ($mountType === LegacyUtil::MOUNT_TYPE_GROUP) {
 			$applicableGroups = $storageConfig->getApplicableGroups();
 			$applicableGroups[] = $applicable;
 			$storageConfig->setApplicableGroups($applicableGroups);
@@ -153,8 +153,8 @@ class LegacyStoragesService {
 					$hasId = false;
 					// the root mount point is in the format "/$user/files/the/mount/point"
 					// we remove the "/$user/files" prefix
-					$parts = explode('/', ltrim($rootMountPath, '/'), 3);
-					if (count($parts) < 3) {
+					$parts = \explode('/', \ltrim($rootMountPath, '/'), 3);
+					if (\count($parts) < 3) {
 						// something went wrong, skip
 						Util::writeLog(
 							'files_external',
@@ -163,7 +163,7 @@ class LegacyStoragesService {
 						);
 						continue;
 					}
-					$relativeMountPath = rtrim($parts[2], '/');
+					$relativeMountPath = \rtrim($parts[2], '/');
 					// note: we cannot do this after the loop because the decrypted config
 					// options might be needed for the config hash
 					$storageOptions['options'] = \OC_Mount_Config::decryptPasswords($storageOptions['options']);
@@ -189,7 +189,7 @@ class LegacyStoragesService {
 							$currentStorage = $storagesWithConfigHash[$configId];
 						}
 					}
-					if (is_null($currentStorage)) {
+					if ($currentStorage === null) {
 						// create new
 						$currentStorage = new StorageConfig($configId);
 						$currentStorage->setMountPoint($relativeMountPath);

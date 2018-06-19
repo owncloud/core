@@ -57,7 +57,7 @@ class GroupPrincipalBackend implements BackendInterface {
 		$principals = [];
 
 		if ($prefixPath === self::PRINCIPAL_PREFIX) {
-			foreach($this->groupManager->search('') as $user) {
+			foreach ($this->groupManager->search('') as $user) {
 				$principals[] = $this->groupToPrincipal($user);
 			}
 		}
@@ -74,7 +74,7 @@ class GroupPrincipalBackend implements BackendInterface {
 	 * @return array
 	 */
 	public function getPrincipalByPath($path) {
-		$elements = explode('/', $path);
+		$elements = \explode('/', $path);
 		if ($elements[0] !== 'principals') {
 			return null;
 		}
@@ -84,7 +84,7 @@ class GroupPrincipalBackend implements BackendInterface {
 		$name = $elements[2];
 		$group = $this->groupManager->get($name);
 
-		if (!is_null($group)) {
+		if ($group !== null) {
 			return $this->groupToPrincipal($group);
 		}
 
@@ -98,7 +98,7 @@ class GroupPrincipalBackend implements BackendInterface {
 	 * @return string[]
 	 */
 	public function getGroupMemberSet($principal) {
-		$elements = explode('/', $principal);
+		$elements = \explode('/', $principal);
 		if ($elements[0] !== 'principals') {
 			return [];
 		}
@@ -108,11 +108,11 @@ class GroupPrincipalBackend implements BackendInterface {
 		$name = $elements[2];
 		$group = $this->groupManager->get($name);
 
-		if (is_null($group)) {
+		if ($group === null) {
 			return [];
 		}
 
-		return array_map(function($user) {
+		return \array_map(function ($user) {
 			return $this->userToPrincipal($user);
 		}, $group->getUsers());
 	}
@@ -145,7 +145,7 @@ class GroupPrincipalBackend implements BackendInterface {
 	 * @param PropPatch $propPatch
 	 * @return int
 	 */
-	function updatePrincipal($path, PropPatch $propPatch) {
+	public function updatePrincipal($path, PropPatch $propPatch) {
 		return 0;
 	}
 
@@ -155,7 +155,7 @@ class GroupPrincipalBackend implements BackendInterface {
 	 * @param string $test
 	 * @return array
 	 */
-	function searchPrincipals($prefixPath, array $searchProperties, $test = 'allof') {
+	public function searchPrincipals($prefixPath, array $searchProperties, $test = 'allof') {
 		return [];
 	}
 

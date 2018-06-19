@@ -338,8 +338,8 @@ class ManagerTest extends TestCase {
 			'dav',
 			'federatedfilesharing',
 			'files',
-		   	'files_external',
-		   	'test1',
+			'files_external',
+			'test1',
 			'test3'
 		], $this->manager->getInstalledApps());
 	}
@@ -357,10 +357,10 @@ class ManagerTest extends TestCase {
 		$this->appConfig->setValue('test4', 'enabled', '["asd"]');
 		$this->assertEquals([
 			'dav',
-		   	'federatedfilesharing',
-		   	'files',
+			'federatedfilesharing',
+			'files',
 			'files_external',
-		   	'test1',
+			'test1',
 			'test3'
 		], $this->manager->getEnabledAppsForUser($user));
 	}
@@ -375,7 +375,7 @@ class ManagerTest extends TestCase {
 		$appInfos = [
 			'dav' => ['id' => 'dav'],
 			'files' => ['id' => 'files'],
-		   	'files_external' => ['id' => 'files_external'],
+			'files_external' => ['id' => 'files_external'],
 			'federatedfilesharing' => ['id' => 'federatedfilesharing'],
 			'test1' => ['id' => 'test1', 'version' => '1.0.1', 'requiremax' => '9.0.0'],
 			'test2' => ['id' => 'test2', 'version' => '1.0.0', 'requiremin' => '8.2.0'],
@@ -387,7 +387,7 @@ class ManagerTest extends TestCase {
 		$this->manager->expects($this->any())
 			->method('getAppInfo')
 			->will($this->returnCallback(
-				function($appId) use ($appInfos) {
+				function ($appId) use ($appInfos) {
 					return $appInfos[$appId];
 				}
 		));
@@ -418,7 +418,7 @@ class ManagerTest extends TestCase {
 		$appInfos = [
 			'dav' => ['id' => 'dav'],
 			'files' => ['id' => 'files'],
-		   	'files_external' => ['id' => 'files_external'],
+			'files_external' => ['id' => 'files_external'],
 			'federatedfilesharing' => ['id' => 'federatedfilesharing'],
 			'test1' => ['id' => 'test1', 'version' => '1.0.1', 'requiremax' => '8.0.0'],
 			'test2' => ['id' => 'test2', 'version' => '1.0.0', 'requiremin' => '8.2.0'],
@@ -429,7 +429,7 @@ class ManagerTest extends TestCase {
 		$this->manager->expects($this->any())
 			->method('getAppInfo')
 			->will($this->returnCallback(
-				function($appId) use ($appInfos) {
+				function ($appId) use ($appInfos) {
 					return $appInfos[$appId];
 				}
 		));
@@ -559,7 +559,7 @@ class ManagerTest extends TestCase {
 		$this->assertEquals($expectedAppWebPath, $appWebPath);
 	}
 
-	public function appAboveWebRootDataProvider(){
+	public function appAboveWebRootDataProvider() {
 		return [
 			[
 				'/some/host/path',

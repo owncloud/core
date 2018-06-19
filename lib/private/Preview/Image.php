@@ -48,7 +48,7 @@ abstract class Image implements IProvider2 {
 
 		$image->loadFromFileHandle($stream);
 		$image->fixOrientation();
-		fclose($stream);
+		\fclose($stream);
 		if ($image->valid()) {
 			$image->scaleDownToFit($maxX, $maxY);
 

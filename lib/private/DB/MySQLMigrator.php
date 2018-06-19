@@ -81,7 +81,7 @@ class MySQLMigrator extends Migrator {
 	/**
 	 * @param \Doctrine\DBAL\Connection $connection
 	 */
-	private function registerAdditionalMappings(\Doctrine\DBAL\Connection $connection){
+	private function registerAdditionalMappings(\Doctrine\DBAL\Connection $connection) {
 		$platform = $connection->getDatabasePlatform();
 		$platform->registerDoctrineTypeMapping('enum', 'string');
 		$platform->registerDoctrineTypeMapping('bit', 'string');

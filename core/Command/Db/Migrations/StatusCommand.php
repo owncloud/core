@@ -55,7 +55,7 @@ class StatusCommand extends Command {
 
 		$infos = $this->getMigrationsInfos($ms);
 		foreach ($infos as $key => $value) {
-			$output->writeln("    <comment>>></comment> $key: " . str_repeat(' ', 50 - strlen($key)) . $value);
+			$output->writeln("    <comment>>></comment> $key: " . \str_repeat(' ', 50 - \strlen($key)) . $value);
 		}
 	}
 
@@ -64,13 +64,12 @@ class StatusCommand extends Command {
 	 * @return array associative array of human readable info name as key and the actual information as value
 	 */
 	public function getMigrationsInfos(MigrationService $ms) {
-
 		$executedMigrations = $ms->getMigratedVersions();
 		$availableMigrations = $ms->getAvailableVersions();
-		$executedUnavailableMigrations = array_diff($executedMigrations, array_keys($availableMigrations));
+		$executedUnavailableMigrations = \array_diff($executedMigrations, \array_keys($availableMigrations));
 
-		$numExecutedUnavailableMigrations = count($executedUnavailableMigrations);
-		$numNewMigrations = count(array_diff(array_keys($availableMigrations), $executedMigrations));
+		$numExecutedUnavailableMigrations = \count($executedUnavailableMigrations);
+		$numNewMigrations = \count(\array_diff(\array_keys($availableMigrations), $executedMigrations));
 
 		$infos = [
 			'App'								=> $ms->getApp(),
@@ -81,9 +80,9 @@ class StatusCommand extends Command {
 			'Current Version'					=> $this->getFormattedVersionAlias($ms, 'current'),
 			'Next Version'						=> $this->getFormattedVersionAlias($ms, 'next'),
 			'Latest Version'					=> $this->getFormattedVersionAlias($ms, 'latest'),
-			'Executed Migrations'				=> count($executedMigrations),
+			'Executed Migrations'				=> \count($executedMigrations),
 			'Executed Unavailable Migrations'	=> $numExecutedUnavailableMigrations,
-			'Available Migrations'				=> count($availableMigrations),
+			'Available Migrations'				=> \count($availableMigrations),
 			'New Migrations'					=> $numNewMigrations,
 		];
 
@@ -110,6 +109,4 @@ class StatusCommand extends Command {
 
 		return $migration;
 	}
-
-
 }

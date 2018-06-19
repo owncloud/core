@@ -52,9 +52,9 @@ class Logging implements ISettings {
 	public function getPanel() {
 		$tmpl = new Template('settings', 'panels/admin/logging');
 		$logFilePath = $this->helper->getLogFilePath();
-		$doesLogFileExist = file_exists($logFilePath);
+		$doesLogFileExist = \file_exists($logFilePath);
 		$logFileSize = 0;
-		if($doesLogFileExist) {
+		if ($doesLogFileExist) {
 			$h = new LargeFileHelper();
 			$logFileSize = $h->getFileSize($logFilePath);
 		}
@@ -69,5 +69,4 @@ class Logging implements ISettings {
 	public function getSectionID() {
 		return 'general';
 	}
-
 }

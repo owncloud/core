@@ -83,8 +83,8 @@ class Preview {
 
 	// filemapper used for deleting previews
 	// index is path, value is fileinfo
-	static public $deleteFileMapper = [];
-	static public $deleteChildrenMapper = [];
+	public static $deleteFileMapper = [];
+	public static $deleteChildrenMapper = [];
 
 	/**
 	 * preview images object
@@ -239,7 +239,7 @@ class Preview {
 		$absPath = $this->file->getPath();
 		$absPath = Files\Filesystem::normalizePath($absPath);
 
-		if (array_key_exists($absPath, self::$deleteChildrenMapper)) {
+		if (\array_key_exists($absPath, self::$deleteChildrenMapper)) {
 			return self::$deleteChildrenMapper[$absPath];
 		}
 
@@ -387,7 +387,7 @@ class Preview {
 		$fileInfo = $this->getFileInfo();
 		if ($fileInfo !== null && $fileInfo !== false) {
 			$previewPath = $this->buildCachePath();
-			if (!strpos($previewPath, 'max')) {
+			if (!\strpos($previewPath, 'max')) {
 				return $this->userView->unlink($previewPath);
 			}
 		}
@@ -436,7 +436,7 @@ class Preview {
 	 */
 	public function isCached() {
 		$fileId = $this->getFileInfo()->getId();
-		if (is_null($fileId)) {
+		if ($fileId === null) {
 			return false;
 		}
 
@@ -449,7 +449,7 @@ class Preview {
 		list($maxPreviewWidth, $maxPreviewHeight) = $this->getMaxPreviewSize($allThumbnails);
 
 		// Only use the cache if we have a max preview
-		if (!is_null($maxPreviewWidth) && !is_null($maxPreviewHeight)) {
+		if ($maxPreviewWidth !== null && $maxPreviewHeight !== null) {
 
 			/**
 			 * Phase 2: Calculating the size of the preview we need to send back
@@ -473,7 +473,7 @@ class Preview {
 			$preview = $this->buildCachePath($previewWidth, $previewHeight);
 
 			// This checks if we have a preview of those exact dimensions in the cache
-			if ($this->thumbnailSizeExists($allThumbnails, basename($preview))) {
+			if ($this->thumbnailSizeExists($allThumbnails, \basename($preview))) {
 				return $preview;
 			}
 
@@ -509,7 +509,7 @@ class Preview {
 
 		foreach ($allThumbnails as $thumbnail) {
 			$name = $thumbnail['name'];
-			if (strpos($name, 'max')) {
+			if (\strpos($name, 'max')) {
 				list($maxPreviewX, $maxPreviewY) = $this->getDimensionsFromFilename($name);
 				break;
 			}
@@ -526,7 +526,6 @@ class Preview {
 	 * @return bool
 	 */
 	private function thumbnailSizeExists(array $allThumbnails, $name) {
-
 		foreach ($allThumbnails as $thumbnail) {
 			if ($name === $thumbnail->getName()) {
 				return true;
@@ -575,14 +574,14 @@ class Preview {
 		$originalRatio = $originalWidth / $originalHeight;
 		// Defines the box in which the preview has to fit
 		$scaleFactor = $this->scalingUp ? $this->maxScaleFactor : 1;
-		$askedWidth = min($askedWidth, $originalWidth * $scaleFactor);
-		$askedHeight = min($askedHeight, $originalHeight * $scaleFactor);
+		$askedWidth = \min($askedWidth, $originalWidth * $scaleFactor);
+		$askedHeight = \min($askedHeight, $originalHeight * $scaleFactor);
 
 		if ($askedWidth / $originalRatio < $askedHeight) {
 			// width restricted
-			$askedHeight = round($askedWidth / $originalRatio);
+			$askedHeight = \round($askedWidth / $originalRatio);
 		} else {
-			$askedWidth = round($askedHeight * $originalRatio);
+			$askedWidth = \round($askedHeight * $originalRatio);
 		}
 
 		return [(int)$askedWidth, (int)$askedHeight];
@@ -601,14 +600,14 @@ class Preview {
 		$originalRatio = $previewWidth / $previewHeight;
 		// Defines the box in which the preview has to fit
 		$scaleFactor = $this->scalingUp ? $this->maxScaleFactor : 1;
-		$askedWidth = min($askedWidth, $previewWidth * $scaleFactor);
-		$askedHeight = min($askedHeight, $previewHeight * $scaleFactor);
+		$askedWidth = \min($askedWidth, $previewWidth * $scaleFactor);
+		$askedHeight = \min($askedHeight, $previewHeight * $scaleFactor);
 
 		if ($askedWidth / $originalRatio > $askedHeight) {
 			// height restricted
-			$askedHeight = round($askedWidth / $originalRatio);
+			$askedHeight = \round($askedWidth / $originalRatio);
 		} else {
-			$askedWidth = round($askedHeight * $originalRatio);
+			$askedWidth = \round($askedHeight * $originalRatio);
 		}
 
 		return [(int)$askedWidth, (int)$askedHeight];
@@ -625,8 +624,8 @@ class Preview {
 	 */
 	private function fixSize($askedWidth, $askedHeight) {
 		if ($this->scalingUp) {
-			$askedWidth = min($this->configMaxWidth, $askedWidth);
-			$askedHeight = min($this->configMaxHeight, $askedHeight);
+			$askedWidth = \min($this->configMaxWidth, $askedWidth);
+			$askedHeight = \min($this->configMaxHeight, $askedHeight);
 		}
 
 		return [(int)$askedWidth, (int)$askedHeight];
@@ -676,9 +675,9 @@ class Preview {
 		//array for usable cached thumbnails
 		$possibleThumbnails = [];
 		foreach ($allThumbnails as $thumbnail) {
-			$name = rtrim($thumbnail['name'], '.png');
+			$name = \rtrim($thumbnail['name'], '.png');
 			list($x, $y, $aspectRatio) = $this->getDimensionsFromFilename($name);
-			if (abs($aspectRatio - $wantedAspectRatio) >= 0.000001
+			if (\abs($aspectRatio - $wantedAspectRatio) >= 0.000001
 				|| $this->unscalable($x, $y)
 			) {
 				continue;
@@ -686,7 +685,7 @@ class Preview {
 			$possibleThumbnails[$x] = $thumbnail['path'];
 		}
 
-		ksort($possibleThumbnails);
+		\ksort($possibleThumbnails);
 
 		return $possibleThumbnails;
 	}
@@ -699,7 +698,7 @@ class Preview {
 	 * @return array<int,int,float>
 	 */
 	private function getDimensionsFromFilename($name) {
-		$size = explode('-', $name);
+		$size = \explode('-', $name);
 		$x = (int)$size[0];
 		$y = (int)$size[1];
 		$aspectRatio = (float)($x / $y);
@@ -714,7 +713,6 @@ class Preview {
 	 * @return bool
 	 */
 	private function unscalable($x, $y) {
-
 		$maxX = $this->getMaxX();
 		$maxY = $this->getMaxY();
 		$scalingUp = $this->getScalingUp();
@@ -743,7 +741,7 @@ class Preview {
 	 * @return IImage
 	 */
 	public function getPreview() {
-		if (!is_null($this->preview) && $this->preview->valid()) {
+		if ($this->preview !== null && $this->preview->valid()) {
 			return $this->preview;
 		}
 
@@ -758,12 +756,12 @@ class Preview {
 			$this->getCachedPreview($cached);
 		}
 
-		if (is_null($this->preview)) {
+		if ($this->preview === null) {
 			$this->generatePreview();
 		}
 
 		// We still don't have a preview, so we send back an empty object
-		if (is_null($this->preview)) {
+		if ($this->preview === null) {
 			$this->preview = new \OC_Image();
 		}
 
@@ -783,7 +781,7 @@ class Preview {
 			throw new NotFoundException('File not found.');
 		}
 
-		if (is_null($this->preview)) {
+		if ($this->preview === null) {
 			$this->getPreview();
 		}
 		if ($this->preview instanceof IImage) {
@@ -810,7 +808,7 @@ class Preview {
 
 			$this->preview = $image->valid() ? $image : null;
 
-			if (!is_null($this->preview)) {
+			if ($this->preview !== null) {
 				// Size of the preview we calculated
 				$maxX = $this->previewWidth;
 				$maxY = $this->previewHeight;
@@ -824,7 +822,7 @@ class Preview {
 				}
 			}
 
-			fclose($stream);
+			\fclose($stream);
 		}
 	}
 
@@ -933,7 +931,7 @@ class Preview {
 		}
 
 		// We cap when upscaling
-		if (!is_null($maxScaleFactor)) {
+		if ($maxScaleFactor !== null) {
 			if ($factor > $maxScaleFactor) {
 				Util::writeLog(
 					'core', 'scale factor reduced from ' . $factor . ' to ' . $maxScaleFactor,
@@ -943,8 +941,8 @@ class Preview {
 			}
 		}
 
-		$newPreviewWidth = round($previewWidth * $factor);
-		$newPreviewHeight = round($previewHeight * $factor);
+		$newPreviewWidth = \round($previewWidth * $factor);
+		$newPreviewHeight = \round($previewHeight * $factor);
 
 		$image->preciseResize($newPreviewWidth, $newPreviewHeight);
 		$this->preview = $image;
@@ -962,7 +960,7 @@ class Preview {
 	 * @param int $previewHeight
 	 */
 	private function crop($image, $askedWidth, $askedHeight, $previewWidth, $previewHeight = null) {
-		$cropX = floor(abs($askedWidth - $previewWidth) * 0.5);
+		$cropX = \floor(\abs($askedWidth - $previewWidth) * 0.5);
 		//don't crop previews on the Y axis, this sucks if it's a document.
 		//$cropY = floor(abs($y - $newPreviewHeight) * 0.5);
 		$cropY = 0;
@@ -982,31 +980,31 @@ class Preview {
 	 */
 	private function cropAndFill($image, $askedWidth, $askedHeight, $previewWidth, $previewHeight) {
 		if ($previewWidth > $askedWidth) {
-			$cropX = floor(($previewWidth - $askedWidth) * 0.5);
+			$cropX = \floor(($previewWidth - $askedWidth) * 0.5);
 			$image->crop($cropX, 0, $askedWidth, $previewHeight);
 			$previewWidth = $askedWidth;
 		}
 
 		if ($previewHeight > $askedHeight) {
-			$cropY = floor(($previewHeight - $askedHeight) * 0.5);
+			$cropY = \floor(($previewHeight - $askedHeight) * 0.5);
 			$image->crop(0, $cropY, $previewWidth, $askedHeight);
 			$previewHeight = $askedHeight;
 		}
 
 		// Creates a transparent background
-		$backgroundLayer = imagecreatetruecolor($askedWidth, $askedHeight);
-		imagealphablending($backgroundLayer, false);
-		$transparency = imagecolorallocatealpha($backgroundLayer, 0, 0, 0, 127);
-		imagefill($backgroundLayer, 0, 0, $transparency);
-		imagesavealpha($backgroundLayer, true);
+		$backgroundLayer = \imagecreatetruecolor($askedWidth, $askedHeight);
+		\imagealphablending($backgroundLayer, false);
+		$transparency = \imagecolorallocatealpha($backgroundLayer, 0, 0, 0, 127);
+		\imagefill($backgroundLayer, 0, 0, $transparency);
+		\imagesavealpha($backgroundLayer, true);
 
 		$image = $image->resource();
 
-		$mergeX = floor(abs($askedWidth - $previewWidth) * 0.5);
-		$mergeY = floor(abs($askedHeight - $previewHeight) * 0.5);
+		$mergeX = \floor(\abs($askedWidth - $previewWidth) * 0.5);
+		$mergeY = \floor(\abs($askedHeight - $previewHeight) * 0.5);
 
 		// Pastes the preview on top of the background
-		imagecopy(
+		\imagecopy(
 			$backgroundLayer, $image, $mergeX, $mergeY, 0, 0, $previewWidth,
 			$previewHeight
 		);
@@ -1030,7 +1028,6 @@ class Preview {
 				'core', 'Cannot save preview of dimension ' . $previewWidth . 'x' . $previewHeight,
 				Util::DEBUG
 			);
-
 		} else {
 			$cachePath = $this->buildCachePath($previewWidth, $previewHeight);
 			$this->userView->file_put_contents($cachePath, $this->preview->data());
@@ -1046,15 +1043,15 @@ class Preview {
 	 * @return string
 	 */
 	private function buildCachePath($maxX = null, $maxY = null) {
-		if (is_null($maxX)) {
+		if ($maxX === null) {
 			$maxX = $this->getMaxX();
 		}
-		if (is_null($maxY)) {
+		if ($maxY === null) {
 			$maxY = $this->getMaxY();
 		}
 
 		$previewPath = $this->getPreviewPath();
-		$previewPath = $previewPath . strval($maxX) . '-' . strval($maxY);
+		$previewPath = $previewPath . \strval($maxX) . '-' . \strval($maxY);
 		$isMaxPreview =
 			($maxX === $this->maxPreviewWidth && $maxY === $this->maxPreviewHeight) ? true : false;
 		if ($isMaxPreview) {
@@ -1105,7 +1102,7 @@ class Preview {
 		$previewProviders = \OC::$server->getPreviewManager()
 			->getProviders();
 		foreach ($previewProviders as $supportedMimeType => $providers) {
-			if (!preg_match($supportedMimeType, $this->mimeType)) {
+			if (!\preg_match($supportedMimeType, $this->mimeType)) {
 				continue;
 			}
 
@@ -1116,7 +1113,7 @@ class Preview {
 				}
 
 				Util::writeLog(
-					'core', 'Generating preview for "' . $file->getPath() . '" with "' . get_class($provider)
+					'core', 'Generating preview for "' . $file->getPath() . '" with "' . \get_class($provider)
 					. '"', Util::DEBUG
 				);
 
@@ -1159,7 +1156,7 @@ class Preview {
 		if (empty(\OC::$WEBROOT)) {
 			$mimeIconServerPath = \OC::$SERVERROOT . $mimeIconWebPath;
 		} else {
-			$mimeIconServerPath = str_replace(\OC::$WEBROOT, \OC::$SERVERROOT, $mimeIconWebPath);
+			$mimeIconServerPath = \str_replace(\OC::$WEBROOT, \OC::$SERVERROOT, $mimeIconWebPath);
 		}
 		$image->loadFromFile($mimeIconServerPath);
 
@@ -1179,8 +1176,8 @@ class Preview {
 		// This is so that the cache doesn't need emptying when upgrading
 		// Can be replaced by an upgrade script...
 		foreach ($allThumbnails as $thumbnail) {
-			$name = rtrim($thumbnail['name'], '.png');
-			if (strpos($name, 'max')) {
+			$name = \rtrim($thumbnail['name'], '.png');
+			if (\strpos($name, 'max')) {
 				$maxPreviewExists = true;
 				break;
 			}
@@ -1189,7 +1186,7 @@ class Preview {
 		if (!$maxPreviewExists) {
 			$previewWidth = $preview->width();
 			$previewHeight = $preview->height();
-			$previewPath = $previewPath . strval($previewWidth) . '-' . strval($previewHeight);
+			$previewPath = $previewPath . \strval($previewWidth) . '-' . \strval($previewHeight);
 			$previewPath .= '-max.png';
 			$this->userView->file_put_contents($previewPath, $preview->data());
 			$this->maxPreviewWidth = $previewWidth;
@@ -1207,7 +1204,7 @@ class Preview {
 	 * @return integer
 	 */
 	private function limitMaxDim($dim, $maxDim, $dimName) {
-		if (!is_null($maxDim)) {
+		if ($maxDim !== null) {
 			if ($dim > $maxDim) {
 				Util::writeLog(
 					'core', $dimName . ' reduced from ' . $dim . ' to ' . $maxDim, Util::DEBUG
@@ -1275,9 +1272,8 @@ class Preview {
 		$childrenFiles = [];
 
 		foreach ($children as $child) {
-
 			if ($child->getType() === FileInfo::TYPE_FOLDER) {
-				$childrenFiles = array_merge(
+				$childrenFiles = \array_merge(
 					$childrenFiles,
 					self::getAllChildren($child)
 				);
@@ -1329,5 +1325,4 @@ class Preview {
 		$preview = new Preview($node->getOwner()->getUID(), $prefix, $node);
 		$preview->deleteAllPreviews();
 	}
-
 }

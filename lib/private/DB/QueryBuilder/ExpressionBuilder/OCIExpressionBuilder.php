@@ -23,7 +23,6 @@
 
 namespace OC\DB\QueryBuilder\ExpressionBuilder;
 
-
 use OC\DB\QueryBuilder\QueryFunction;
 use OCP\DB\QueryBuilder\ILiteral;
 use OCP\DB\QueryBuilder\IParameter;
@@ -38,7 +37,7 @@ class OCIExpressionBuilder extends ExpressionBuilder {
 	 * @return array|IQueryFunction|string
 	 */
 	protected function prepareColumn($column, $type) {
-		if ($type === IQueryBuilder::PARAM_STR && !is_array($column) && !($column instanceof IParameter) && !($column instanceof ILiteral)) {
+		if ($type === IQueryBuilder::PARAM_STR && !\is_array($column) && !($column instanceof IParameter) && !($column instanceof ILiteral)) {
 			$column = $this->castColumn($column, $type);
 		} else {
 			$column = $this->helper->quoteColumnNames($column);

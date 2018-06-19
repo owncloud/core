@@ -67,7 +67,7 @@ class ListApps extends Base {
 	protected function execute(InputInterface $input, OutputInterface $output) {
 		$appNameSubString = $input->getArgument('search-pattern');
 
-		if ($input->getOption('shipped') === 'true' || $input->getOption('shipped') === 'false'){
+		if ($input->getOption('shipped') === 'true' || $input->getOption('shipped') === 'false') {
 			$shippedFilter = $input->getOption('shipped') === 'true';
 		} else {
 			$shippedFilter = null;
@@ -79,11 +79,11 @@ class ListApps extends Base {
 
 		//sort enabled apps above disabled apps
 		foreach ($apps as $app) {
-			if ($shippedFilter !== null && \OC_App::isShipped($app) !== $shippedFilter){
+			if ($shippedFilter !== null && \OC_App::isShipped($app) !== $shippedFilter) {
 				continue;
 			}
 
-			if ($appNameSubString !== null && !preg_match('/' . $appNameSubString . '/', $app)) {
+			if ($appNameSubString !== null && !\preg_match('/' . $appNameSubString . '/', $app)) {
 				continue;
 			}
 			
@@ -96,12 +96,12 @@ class ListApps extends Base {
 
 		$apps = ['enabled' => [], 'disabled' => []];
 
-		sort($enabledApps);
+		\sort($enabledApps);
 		foreach ($enabledApps as $app) {
 			$apps['enabled'][$app] = (isset($versions[$app])) ? $versions[$app] : true;
 		}
 
-		sort($disabledApps);
+		\sort($disabledApps);
 		foreach ($disabledApps as $app) {
 			$apps['disabled'][$app] = null;
 		}
@@ -117,12 +117,12 @@ class ListApps extends Base {
 	protected function writeAppList(InputInterface $input, OutputInterface $output, $items) {
 		switch ($input->getOption('output')) {
 			case self::OUTPUT_FORMAT_PLAIN:
-				if (count($items['enabled'])) {
+				if (\count($items['enabled'])) {
 					$output->writeln('Enabled:');
 					parent::writeArrayInOutputFormat($input, $output, $items['enabled']);
 				}
 
-				if (count($items['disabled'])) {
+				if (\count($items['disabled'])) {
 					$output->writeln('Disabled:');
 					parent::writeArrayInOutputFormat($input, $output, $items['disabled']);
 				}

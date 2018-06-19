@@ -19,9 +19,7 @@
  *
  */
 
-
 namespace OCA\DAV\Tests\unit\Upload;
-
 
 use OCA\DAV\Connector\Sabre\Directory;
 use OCA\DAV\Upload\ChunkingPlugin;
@@ -31,7 +29,6 @@ use Sabre\HTTP\ResponseInterface;
 use Test\TestCase;
 
 class ChunkingPluginTest extends TestCase {
-
 
 	/**
 	 * @var \Sabre\DAV\Server | \PHPUnit_Framework_MockObject_MockObject
@@ -207,7 +204,7 @@ class ChunkingPluginTest extends TestCase {
 
 		if ($expectedSize != $actualSize) {
 			$this->expectException(\Sabre\DAV\Exception\BadRequest::class);
-			$this->expectExceptionMessage(sprintf("Chunks on server do not sum up to %s but to %.3f", $expectedSize, $actualSize));
+			$this->expectExceptionMessage(\sprintf("Chunks on server do not sum up to %s but to %.3f", $expectedSize, $actualSize));
 		} else {
 			$this->assertTrue(true);
 		}

@@ -57,8 +57,8 @@ class APCu extends Cache implements IMemcache {
 
 	public function clear($prefix = '') {
 		$ns = $this->getPrefix() . $prefix;
-		$ns = preg_quote($ns, '/');
-		if(class_exists('\APCIterator')) {
+		$ns = \preg_quote($ns, '/');
+		if (\class_exists('\APCIterator')) {
 			$iter = new \APCIterator('user', '/^' . $ns . '/', APC_ITER_KEY);
 		} else {
 			$iter = new \APCUIterator('/^' . $ns . '/', APC_ITER_KEY);
@@ -121,16 +121,16 @@ class APCu extends Cache implements IMemcache {
 	/**
 	 * @return bool
 	 */
-	static public function isAvailable() {
-		if (!extension_loaded('apcu')) {
+	public static function isAvailable() {
+		if (!\extension_loaded('apcu')) {
 			return false;
 		} elseif (!\OC::$server->getIniWrapper()->getBool('apc.enabled')) {
 			return false;
 		} elseif (!\OC::$server->getIniWrapper()->getBool('apc.enable_cli') && \OC::$CLI) {
 			return false;
 		} elseif (
-				version_compare(phpversion('apc'), '4.0.6') === -1 &&
-				version_compare(phpversion('apcu'), '5.1.0') === -1
+				\version_compare(\phpversion('apc'), '4.0.6') === -1 &&
+				\version_compare(\phpversion('apcu'), '5.1.0') === -1
 		) {
 			return false;
 		} else {

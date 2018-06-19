@@ -133,7 +133,7 @@ class ExternalSharesController extends Controller {
 	protected function testUrl($remote, $checkVersion = false) {
 		try {
 			$client = $this->clientService->newClient();
-			$response = json_decode($client->get(
+			$response = \json_decode($client->get(
 				$remote,
 				[
 					'timeout' => 3,
@@ -142,9 +142,9 @@ class ExternalSharesController extends Controller {
 			)->getBody());
 
 			if ($checkVersion) {
-				return !empty($response->version) && version_compare($response->version, '7.0.0', '>=');
+				return !empty($response->version) && \version_compare($response->version, '7.0.0', '>=');
 			} else {
-				return is_object($response);
+				return \is_object($response);
 			}
 		} catch (\Exception $e) {
 			return false;
@@ -176,5 +176,4 @@ class ExternalSharesController extends Controller {
 			return new DataResponse(false);
 		}
 	}
-
 }

@@ -79,7 +79,7 @@ class ObjectStoreStorage extends \OC\Files\Storage\Common {
 			return false;
 		}
 
-		$mTime = time();
+		$mTime = \time();
 		$data = [
 			'mimetype' => 'httpd/unix-directory',
 			'size' => 0,
@@ -94,19 +94,19 @@ class ObjectStoreStorage extends \OC\Files\Storage\Common {
 			return true;
 		} else {
 			// if parent does not exist, create it
-			$parent = $this->normalizePath(dirname($path));
+			$parent = $this->normalizePath(\dirname($path));
 			$parentType = $this->filetype($parent);
 			if ($parentType === false) {
 				if (!$this->mkdir($parent)) {
 					// something went wrong
 					return false;
 				}
-			} else if ($parentType === 'file') {
+			} elseif ($parentType === 'file') {
 				// parent is a file
 				return false;
 			}
 			// finally create the new dir
-			$mTime = time(); // update mtime
+			$mTime = \time(); // update mtime
 			$data['mtime'] = $mTime;
 			$data['storage_mtime'] = $mTime;
 			$data['etag'] = $this->getETag($path);
@@ -120,9 +120,9 @@ class ObjectStoreStorage extends \OC\Files\Storage\Common {
 	 * @return string
 	 */
 	private function normalizePath($path) {
-		$path = trim($path, '/');
+		$path = \trim($path, '/');
 		//FIXME why do we sometimes get a path like 'files//username'?
-		$path = str_replace('//', '/', $path);
+		$path = \str_replace('//', '/', $path);
 
 		// dirname('/folder') returns '.' but internally (in the cache) we store the root as ''
 		if (!$path || $path === '.') {
@@ -222,7 +222,7 @@ class ObjectStoreStorage extends \OC\Files\Storage\Common {
 	 * @return null|string the unified resource name used to identify the object
 	 */
 	protected function getURN($fileId) {
-		if (is_numeric($fileId)) {
+		if (\is_numeric($fileId)) {
 			return $this->objectPrefix . $fileId;
 		}
 		return null;
@@ -265,7 +265,7 @@ class ObjectStoreStorage extends \OC\Files\Storage\Common {
 			case 'r':
 			case 'rb':
 				$stat = $this->stat($path);
-				if (is_array($stat)) {
+				if (\is_array($stat)) {
 					try {
 						return $this->objectStore->readObject($this->getURN($stat['fileid']));
 					} catch (\Exception $ex) {
@@ -275,6 +275,7 @@ class ObjectStoreStorage extends \OC\Files\Storage\Common {
 				} else {
 					return false;
 				}
+				// no break
 			case 'w':
 			case 'wb':
 			case 'a':
@@ -287,8 +288,8 @@ class ObjectStoreStorage extends \OC\Files\Storage\Common {
 			case 'x+':
 			case 'c':
 			case 'c+':
-				if (strrpos($path, '.') !== false) {
-					$ext = substr($path, strrpos($path, '.'));
+				if (\strrpos($path, '.') !== false) {
+					$ext = \substr($path, \strrpos($path, '.'));
 				} else {
 					$ext = '';
 				}
@@ -296,11 +297,11 @@ class ObjectStoreStorage extends \OC\Files\Storage\Common {
 				\OC\Files\Stream\Close::registerCallback($tmpFile, [$this, 'writeBack']);
 				if ($this->file_exists($path)) {
 					$source = $this->fopen($path, 'r');
-					file_put_contents($tmpFile, $source);
+					\file_put_contents($tmpFile, $source);
 				}
 				self::$tmpFiles[$tmpFile] = $path;
 
-				return fopen('close://' . $tmpFile, $mode);
+				return \fopen('close://' . $tmpFile, $mode);
 		}
 		return false;
 	}
@@ -315,7 +316,7 @@ class ObjectStoreStorage extends \OC\Files\Storage\Common {
 		$target = $this->normalizePath($target);
 		$this->remove($target);
 		$this->getCache()->move($source, $target);
-		$this->touch(dirname($target));
+		$this->touch(\dirname($target));
 		return true;
 	}
 
@@ -336,11 +337,10 @@ class ObjectStoreStorage extends \OC\Files\Storage\Common {
 		return true;
 	}
 
-
 	public function getMimeType($path) {
 		$path = $this->normalizePath($path);
 		$stat = $this->stat($path);
-		if (is_array($stat)) {
+		if (\is_array($stat)) {
 			return $stat['mimetype'];
 		} else {
 			return false;
@@ -348,19 +348,19 @@ class ObjectStoreStorage extends \OC\Files\Storage\Common {
 	}
 
 	public function touch($path, $mtime = null) {
-		if (is_null($mtime)) {
-			$mtime = time();
+		if ($mtime === null) {
+			$mtime = \time();
 		}
 
 		$path = $this->normalizePath($path);
-		$dirName = dirname($path);
+		$dirName = \dirname($path);
 		$parentExists = $this->is_dir($dirName);
 		if (!$parentExists) {
 			return false;
 		}
 
 		$stat = $this->stat($path);
-		if (is_array($stat)) {
+		if (\is_array($stat)) {
 			// update existing mtime in db
 			$stat['mtime'] = $mtime;
 			$this->getCache()->update($stat['fileid'], $stat);
@@ -378,7 +378,7 @@ class ObjectStoreStorage extends \OC\Files\Storage\Common {
 			$fileId = $this->getCache()->put($path, $stat);
 			try {
 				//read an empty file from memory
-				$this->objectStore->writeObject($this->getURN($fileId), fopen('php://memory', 'r'));
+				$this->objectStore->writeObject($this->getURN($fileId), \fopen('php://memory', 'r'));
 			} catch (\Exception $ex) {
 				$this->getCache()->remove($path);
 				\OCP\Util::writeLog('objectstore', 'Could not create object: ' . $ex->getMessage(), \OCP\Util::ERROR);
@@ -402,8 +402,8 @@ class ObjectStoreStorage extends \OC\Files\Storage\Common {
 			];
 		}
 		// update stat with new data
-		$mTime = time();
-		$stat['size'] = filesize($tmpFile);
+		$mTime = \time();
+		$stat['size'] = \filesize($tmpFile);
 		$stat['mtime'] = $mTime;
 		$stat['storage_mtime'] = $mTime;
 		$stat['mimetype'] = \OC::$server->getMimeTypeDetector()->detect($tmpFile);
@@ -412,7 +412,7 @@ class ObjectStoreStorage extends \OC\Files\Storage\Common {
 		$fileId = $this->getCache()->put($path, $stat);
 		try {
 			//upload to object storage
-			$this->objectStore->writeObject($this->getURN($fileId), fopen($tmpFile, 'r'));
+			$this->objectStore->writeObject($this->getURN($fileId), \fopen($tmpFile, 'r'));
 		} catch (\Exception $ex) {
 			$this->getCache()->remove($path);
 			\OCP\Util::writeLog('objectstore', 'Could not create object: ' . $ex->getMessage(), \OCP\Util::ERROR);
@@ -454,7 +454,7 @@ class ObjectStoreStorage extends \OC\Files\Storage\Common {
 			}
 			$versions = $this->objectStore->getVersions($this->getURN($stat['fileid']));
 			list($uid, $path) = $this->convertInternalPathToGlobalPath($internalPath);
-			return \array_map(function(array $version) use ($uid, $path) {
+			return \array_map(function (array $version) use ($uid, $path) {
 				$version['path'] = $path;
 				$version['owner'] = $uid;
 				return $version;
@@ -501,5 +501,4 @@ class ObjectStoreStorage extends \OC\Files\Storage\Common {
 		}
 		return parent::restoreVersion($internalPath, $versionId);
 	}
-
 }

@@ -31,23 +31,23 @@ class OCPostgreSqlPlatform extends PostgreSqlPlatform {
 	/**
 	 * {@inheritDoc}
 	 */
-	public function getAlterTableSQL(TableDiff $diff){
+	public function getAlterTableSQL(TableDiff $diff) {
 		$queries = parent::getAlterTableSQL($diff);
-		foreach ($queries as $index => $sql){
+		foreach ($queries as $index => $sql) {
 			// BIGSERIAL could not be used in statements altering column type
-			// That's why we replace it with BIGINT 
+			// That's why we replace it with BIGINT
 			// see https://github.com/owncloud/core/pull/28364#issuecomment-315006853
-			if (preg_match('|(ALTER TABLE\s+\S+\s+ALTER\s+\S+\s+TYPE\s+)(BIGSERIAL)|i', $sql, $matches)){
+			if (\preg_match('|(ALTER TABLE\s+\S+\s+ALTER\s+\S+\s+TYPE\s+)(BIGSERIAL)|i', $sql, $matches)) {
 				$alterTable = $matches[1];
 				$queries[$index] = $alterTable . 'BIGINT';
 			}
 			// Changing integer to bigint kills next autoincrement value
 			// see https://github.com/owncloud/core/pull/28364#issuecomment-315006853
-			if (preg_match('|ALTER TABLE\s+(\S+)\s+ALTER\s+(\S+)\s+DROP DEFAULT|i', $sql, $matches)){
+			if (\preg_match('|ALTER TABLE\s+(\S+)\s+ALTER\s+(\S+)\s+DROP DEFAULT|i', $sql, $matches)) {
 				$queryColumnName = $matches[2];
 				$columnDiff = $this->findColumnDiffByName($diff, $queryColumnName);
-				if ($columnDiff){
-					if ($this->shouldSkipDropDefault($columnDiff)){
+				if ($columnDiff) {
+					if ($this->shouldSkipDropDefault($columnDiff)) {
 						unset($queries[$index]);
 						continue;
 					}
@@ -67,13 +67,13 @@ class OCPostgreSqlPlatform extends PostgreSqlPlatform {
 	 * @param ColumnDiff $columnDiff
 	 * @return bool
 	 */
-	private function shouldSkipDropDefault(ColumnDiff $columnDiff){
+	private function shouldSkipDropDefault(ColumnDiff $columnDiff) {
 		$column = $columnDiff->column;
 		$fromColumn = $columnDiff->fromColumn;
 		return $fromColumn->getType()->getName() === Type::INTEGER
 				&& $column->getType()->getName() === Type::BIGINT
-				&& is_null($fromColumn->getDefault())
-				&& is_null($column->getDefault())
+				&& $fromColumn->getDefault() === null
+				&& $column->getDefault() === null
 				&& $fromColumn->getAutoincrement()
 				&& $column->getAutoincrement();
 	}
@@ -83,10 +83,10 @@ class OCPostgreSqlPlatform extends PostgreSqlPlatform {
 	 * @param string $name
 	 * @return  ColumnDiff | false
 	 */
-	private function findColumnDiffByName(TableDiff $diff, $name){
-		foreach ($diff->changedColumns as $columnDiff){
+	private function findColumnDiffByName(TableDiff $diff, $name) {
+		foreach ($diff->changedColumns as $columnDiff) {
 			$oldColumnName = $columnDiff->getOldColumnName()->getQuotedName($this);
-			if ($oldColumnName === $name){
+			if ($oldColumnName === $name) {
 				return $columnDiff;
 			}
 		}

@@ -39,14 +39,13 @@ use \OCA\Files_External\Lib\Storage\Google;
  * @package OCA\Files_External\Tests\Storage
  */
 class GoogleTest extends \Test\Files\Storage\Storage {
-
 	private $config;
 
 	protected function setUp() {
 		parent::setUp();
 
 		$this->config = include('files_external/tests/config.php');
-		if (!is_array($this->config) || !isset($this->config['google'])
+		if (!\is_array($this->config) || !isset($this->config['google'])
 			|| !$this->config['google']['run']
 		) {
 			$this->markTestSkipped('Google Drive backend not configured');

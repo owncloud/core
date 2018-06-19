@@ -41,7 +41,7 @@ class Verify extends Base {
 	 */
 	protected $globalService;
 
-	function __construct(IGlobalStoragesService $globalService) {
+	public function __construct(IGlobalStoragesService $globalService) {
 		parent::__construct();
 		$this->globalService = $globalService;
 	}
@@ -97,17 +97,17 @@ class Verify extends Base {
 			try {
 				$this->manipulateStorageConfig($storage);
 			} catch (InsufficientDataForMeaningfulAnswerException $e) {
-				if (count($configInput) === 0) { // extra config options might solve the error
+				if (\count($configInput) === 0) { // extra config options might solve the error
 					throw $e;
 				}
 			}
 
 			foreach ($configInput as $configOption) {
-				if (!strpos($configOption, '=')) {
+				if (!\strpos($configOption, '=')) {
 					$output->writeln('<error>Invalid mount configuration option "' . $configOption . '"</error>');
 					return;
 				}
-				list($key, $value) = explode('=', $configOption, 2);
+				list($key, $value) = \explode('=', $configOption, 2);
 				$storage->setBackendOption($key, $value);
 			}
 
@@ -136,7 +136,7 @@ class Verify extends Base {
 			// FIXME: convert storage exceptions to StorageNotAvailableException
 			$storage->setStatus(
 				StorageNotAvailableException::STATUS_ERROR,
-				get_class($e) . ': ' . $e->getMessage()
+				\get_class($e) . ': ' . $e->getMessage()
 			);
 		}
 	}

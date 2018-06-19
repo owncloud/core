@@ -21,9 +21,7 @@
  *
  */
 
-
 namespace OCA\FederatedFileSharing\Tests;
-
 
 use OCA\FederatedFileSharing\AddressHandler;
 use OCP\IL10N;
@@ -195,5 +193,4 @@ class AddressHandlerTest extends \Test\TestCase {
 			['http://localhost/index.php/s/AShareToken', 'http://localhost'],
 		];
 	}
-
 }

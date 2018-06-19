@@ -31,7 +31,7 @@ class SyncFederationAddressbooksTest extends \Test\TestCase {
 	/** @var array */
 	private $callBacks = [];
 
-	function testSync() {
+	public function testSync() {
 		/** @var DbHandler | \PHPUnit_Framework_MockObject_MockObject $dbHandler */
 		$dbHandler = $this->getMockBuilder('OCA\Federation\DbHandler')->
 			disableOriginalConstructor()->
@@ -55,13 +55,13 @@ class SyncFederationAddressbooksTest extends \Test\TestCase {
 
 		/** @var \OCA\DAV\CardDAV\SyncService $syncService */
 		$s = new SyncFederationAddressBooks($dbHandler, $syncService);
-		$s->syncThemAll(function($url, $ex) {
+		$s->syncThemAll(function ($url, $ex) {
 			$this->callBacks[] = [$url, $ex];
 		});
 		$this->assertCount(1, $this->callBacks);
 	}
 
-	function testException() {
+	public function testException() {
 		/** @var DbHandler | \PHPUnit_Framework_MockObject_MockObject $dbHandler */
 		$dbHandler = $this->getMockBuilder('OCA\Federation\DbHandler')->
 		disableOriginalConstructor()->
@@ -83,7 +83,7 @@ class SyncFederationAddressbooksTest extends \Test\TestCase {
 
 		/** @var \OCA\DAV\CardDAV\SyncService $syncService */
 		$s = new SyncFederationAddressBooks($dbHandler, $syncService);
-		$s->syncThemAll(function($url, $ex) {
+		$s->syncThemAll(function ($url, $ex) {
 			$this->callBacks[] = [$url, $ex];
 		});
 		$this->assertCount(2, $this->callBacks);

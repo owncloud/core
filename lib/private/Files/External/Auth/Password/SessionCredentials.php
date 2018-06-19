@@ -65,7 +65,7 @@ class SessionCredentials extends AuthMechanism {
 	 * @param array $params
 	 */
 	public function authenticate(array $params) {
-		$this->session->set('password::sessioncredentials/credentials', $this->crypto->encrypt(json_encode($params)));
+		$this->session->set('password::sessioncredentials/credentials', $this->crypto->encrypt(\json_encode($params)));
 	}
 
 	public function manipulateStorageConfig(IStorageConfig &$storage, IUser $user = null) {
@@ -74,7 +74,7 @@ class SessionCredentials extends AuthMechanism {
 			throw new InsufficientDataForMeaningfulAnswerException('No session credentials saved');
 		}
 
-		$credentials = json_decode($this->crypto->decrypt($encrypted), true);
+		$credentials = \json_decode($this->crypto->decrypt($encrypted), true);
 		$storage->setBackendOption('user', $this->session->get('loginname'));
 		$storage->setBackendOption('password', $credentials['password']);
 	}
@@ -82,5 +82,4 @@ class SessionCredentials extends AuthMechanism {
 	public function wrapStorage(Storage $storage) {
 		return new SessionStorageWrapper(['storage' => $storage]);
 	}
-
 }

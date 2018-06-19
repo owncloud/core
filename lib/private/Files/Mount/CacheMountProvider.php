@@ -54,9 +54,9 @@ class CacheMountProvider implements IMountProvider {
 	public function getMountsForUser(IUser $user, IStorageFactory $loader) {
 		$cacheBaseDir = $this->config->getSystemValue('cache_path', '');
 		if ($cacheBaseDir !== '') {
-			$cacheDir = rtrim($cacheBaseDir, '/') . '/' . $user->getUID();
-			if (!file_exists($cacheDir)) {
-				mkdir($cacheDir, 0770, true);
+			$cacheDir = \rtrim($cacheBaseDir, '/') . '/' . $user->getUID();
+			if (!\file_exists($cacheDir)) {
+				\mkdir($cacheDir, 0770, true);
 			}
 
 			return [

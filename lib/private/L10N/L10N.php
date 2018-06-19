@@ -147,14 +147,14 @@ class L10N implements IL10N {
 		$value = new \DateTime();
 		if ($data instanceof \DateTime) {
 			$value = $data;
-		} else if (is_string($data) && !is_numeric($data)) {
-			$data = strtotime($data);
+		} elseif (\is_string($data) && !\is_numeric($data)) {
+			$data = \strtotime($data);
 			$value->setTimestamp($data);
-		} else if ($data !== null) {
+		} elseif ($data !== null) {
 			$value->setTimestamp($data);
 		}
 
-		$options = array_merge(['width' => 'long'], $options);
+		$options = \array_merge(['width' => 'long'], $options);
 		$width = $options['width'];
 		switch ($type) {
 			case 'date':
@@ -183,14 +183,14 @@ class L10N implements IL10N {
 	 * @return bool
 	 */
 	protected function load($translationFile) {
-		$json = json_decode(file_get_contents($translationFile), true);
-		if (!is_array($json)) {
-			$jsonError = json_last_error();
+		$json = \json_decode(\file_get_contents($translationFile), true);
+		if (!\is_array($json)) {
+			$jsonError = \json_last_error();
 			\OC::$server->getLogger()->warning("Failed to load $translationFile - json error code: $jsonError", ['app' => 'l10n']);
 			return false;
 		}
 
-		$this->translations = array_merge($this->translations, $json['translations']);
+		$this->translations = \array_merge($this->translations, $json['translations']);
 		return true;
 	}
 

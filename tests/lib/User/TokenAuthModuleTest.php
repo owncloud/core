@@ -19,9 +19,7 @@
  *
  */
 
-
 namespace Test\User;
-
 
 use OC\Authentication\Exceptions\InvalidTokenException;
 use OC\Authentication\Token\IProvider;
@@ -104,7 +102,7 @@ class TokenAuthModuleTest extends TestCase {
 		}
 
 		if ($expectedResult instanceof \Exception) {
-			$this->expectException(get_class($expectedResult));
+			$this->expectException(\get_class($expectedResult));
 			$this->expectExceptionMessage($expectedResult->getMessage());
 			$module->auth($this->request);
 		} else {

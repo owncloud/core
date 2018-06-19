@@ -51,7 +51,7 @@ $application->registerRoutes($this, [
 
 /** @var $this \OCP\Route\IRouter */
 $this->create('core_ajax_public_preview', '/publicpreview')->action(
-	function() {
+	function () {
 		require_once __DIR__ . '/../ajax/publicpreview.php';
 	});
 

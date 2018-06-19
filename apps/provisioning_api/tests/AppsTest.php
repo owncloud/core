@@ -25,7 +25,6 @@
 
 namespace OCA\Provisioning_API\Tests;
 
-
 use OCA\Provisioning_API\Apps;
 use OCP\API;
 use OCP\App\IAppManager;
@@ -77,7 +76,7 @@ class AppsTest extends TestCase {
 
 		$this->assertTrue($result->succeeded());
 		$data = $result->getData();
-		$this->assertCount(count(\OC_App::listAllApps(false, true)), $data['apps']);
+		$this->assertCount(\count(\OC_App::listAllApps(false, true)), $data['apps']);
 	}
 
 	public function testGetAppsEnabled() {
@@ -85,7 +84,7 @@ class AppsTest extends TestCase {
 		$result = $this->api->getApps(['filter' => 'enabled']);
 		$this->assertTrue($result->succeeded());
 		$data = $result->getData();
-		$this->assertCount(count(\OC_App::getEnabledApps()), $data['apps']);
+		$this->assertCount(\count(\OC_App::getEnabledApps()), $data['apps']);
 	}
 
 	public function testGetAppsDisabled() {
@@ -95,11 +94,11 @@ class AppsTest extends TestCase {
 		$data = $result->getData();
 		$apps = \OC_App::listAllApps(false, true);
 		$list =  [];
-		foreach($apps as $app) {
+		foreach ($apps as $app) {
 			$list[] = $app['id'];
 		}
-		$disabled = array_diff($list, \OC_App::getEnabledApps());
-		$this->assertCount(count($disabled), $data['apps']);
+		$disabled = \array_diff($list, \OC_App::getEnabledApps());
+		$this->assertCount(\count($disabled), $data['apps']);
 	}
 
 	public function testGetAppsInvalidFilter() {

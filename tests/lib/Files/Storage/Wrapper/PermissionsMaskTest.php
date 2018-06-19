@@ -122,8 +122,8 @@ class PermissionsMaskTest extends \Test\Files\Storage\Storage {
 	public function testFopenPartFileNoPerms() {
 		$storage = $this->getMaskedStorage(Constants::PERMISSION_ALL - Constants::PERMISSION_UPDATE - Constants::PERMISSION_CREATE);
 		$res = $storage->fopen('foo.part', 'w');
-		fwrite($res, 'foo');
-		fclose($res);
+		\fwrite($res, 'foo');
+		\fclose($res);
 		$this->assertTrue($storage->file_exists('foo.part'));
 	}
 

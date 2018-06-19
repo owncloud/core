@@ -44,9 +44,8 @@ class BackgroundJobsTest extends \Test\TestCase {
 		// Enable cron
 		$this->config->expects($this->once())->method('getSystemValue')->willReturn(true);
 		// Set cron to 10 mins ago, ajax mode
-		$this->config->expects($this->exactly(2))->method('getAppValue')->willReturn(time()-10*60, 'ajax');
+		$this->config->expects($this->exactly(2))->method('getAppValue')->willReturn(\time()-10*60, 'ajax');
 		$templateHtml = $this->panel->getPanel()->fetchPage();
 		$this->assertContains('<span class="status success"></span>', $templateHtml);
 	}
-
 }

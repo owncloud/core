@@ -79,7 +79,7 @@ class AppSettingsController extends Controller {
 			// installed apps
 			case 'enabled':
 				$apps = $this->getInstalledApps();
-				usort($apps, function ($a, $b) {
+				\usort($apps, function ($a, $b) {
 					$a = (string)$a['name'];
 					$b = (string)$b['name'];
 					if ($a === $b) {
@@ -91,10 +91,10 @@ class AppSettingsController extends Controller {
 			// not-installed apps
 			case 'disabled':
 				$apps = \OC_App::listAllApps();
-				$apps = array_filter($apps, function ($app) {
+				$apps = \array_filter($apps, function ($app) {
 					return !$app['active'];
 				});
-				usort($apps, function ($a, $b) {
+				\usort($apps, function ($a, $b) {
 					$a = (string)$a['name'];
 					$b = (string)$b['name'];
 					if ($a === $b) {
@@ -111,13 +111,13 @@ class AppSettingsController extends Controller {
 
 		// fix groups to be an array
 		$dependencyAnalyzer = new DependencyAnalyzer(new Platform($this->config), $this->l10n);
-		$apps = array_map(function($app) use ($dependencyAnalyzer) {
+		$apps = \array_map(function ($app) use ($dependencyAnalyzer) {
 
 			// fix groups
 			$groups = [];
-			if (is_string($app['groups'])) {
-				$groups = json_decode($app['groups']);
-			} elseif (is_array($app['groups'])) {
+			if (\is_string($app['groups'])) {
+				$groups = \json_decode($app['groups']);
+			} elseif (\is_array($app['groups'])) {
 				$groups = $app['groups'];
 			}
 			$app['groups'] = $groups;
@@ -147,10 +147,9 @@ class AppSettingsController extends Controller {
 	 */
 	private function getInstalledApps() {
 		$apps = \OC_App::listAllApps();
-		$apps = array_filter($apps, function ($app) {
+		$apps = \array_filter($apps, function ($app) {
 			return $app['active'];
 		});
 		return $apps;
 	}
-
 }

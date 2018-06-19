@@ -54,7 +54,6 @@ class SubadminMiddlewareTest extends \Test\TestCase {
 		$this->subadminMiddleware->beforeController($this->controller, 'foo');
 	}
 
-
 	public function testBeforeControllerAsUserWithoutExemption() {
 		$this->reflector
 			->expects($this->once())

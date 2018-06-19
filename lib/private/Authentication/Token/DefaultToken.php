@@ -135,7 +135,7 @@ class DefaultToken extends Entity implements IToken {
 	 * @param string $name
 	 */
 	public function setName($name) {
-		if (strlen($name) < 1) {
+		if (\strlen($name) < 1) {
 			throw new \InvalidArgumentException();
 		}
 		parent::setName($name);
@@ -145,10 +145,9 @@ class DefaultToken extends Entity implements IToken {
 	 * @param string $loginName
 	 */
 	public function setLoginName($loginName) {
-		if (strlen($loginName) < 1) {
+		if (\strlen($loginName) < 1) {
 			throw new \InvalidArgumentException();
 		}
 		parent::setLoginName($loginName);
 	}
-
 }

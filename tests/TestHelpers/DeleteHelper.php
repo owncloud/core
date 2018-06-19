@@ -52,7 +52,7 @@ class DeleteHelper {
 		$user,
 		$password,
 		$fileName,
-		$headers = array(),
+		$headers = [],
 		$davPathVersionToUse = 1,
 		$sourceIpAddress = null
 	) {

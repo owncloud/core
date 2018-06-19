@@ -100,7 +100,7 @@ class TwoFactorMiddleware extends Middleware {
 			}
 			if ($this->twoFactorManager->isTwoFactorAuthenticated($user)) {
 				$this->checkTwoFactor($controller, $methodName);
-			} else if ($controller instanceof TwoFactorChallengeController) {
+			} elseif ($controller instanceof TwoFactorChallengeController) {
 				// two-factor authentication is in progress.
 				throw new UserAlreadyLoggedInException('Grant access to the two-factor controllers');
 			}
@@ -142,7 +142,7 @@ class TwoFactorMiddleware extends Middleware {
 	public function afterException($controller, $methodName, Exception $exception) {
 		if ($exception instanceof TwoFactorAuthRequiredException) {
 			return new RedirectResponse($this->urlGenerator->linkToRoute('core.TwoFactorChallenge.selectChallenge', [
-					'redirect_url' => urlencode($this->request->server['REQUEST_URI']),
+					'redirect_url' => \urlencode($this->request->server['REQUEST_URI']),
 			]));
 		}
 		if ($exception instanceof UserAlreadyLoggedInException) {
@@ -150,5 +150,4 @@ class TwoFactorMiddleware extends Middleware {
 		}
 		throw $exception;
 	}
-
 }

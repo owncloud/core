@@ -33,7 +33,6 @@ use OCP\SystemTag\ISystemTag;
 use OCP\SystemTag\TagAlreadyExistsException;
 
 class SystemTagPluginTest extends \Test\TestCase {
-
 	const ID_PROPERTYNAME = \OCA\DAV\SystemTag\SystemTagPlugin::ID_PROPERTYNAME;
 	const DISPLAYNAME_PROPERTYNAME = \OCA\DAV\SystemTag\SystemTagPlugin::DISPLAYNAME_PROPERTYNAME;
 	const USERVISIBLE_PROPERTYNAME = \OCA\DAV\SystemTag\SystemTagPlugin::USERVISIBLE_PROPERTYNAME;
@@ -393,7 +392,7 @@ class SystemTagPluginTest extends \Test\TestCase {
 		if (!empty($groups)) {
 			$requestData['groups'] = $groups;
 		}
-		$requestData = json_encode($requestData);
+		$requestData = \json_encode($requestData);
 
 		$node = $this->getMockBuilder('\OCA\DAV\SystemTag\SystemTagsByIdCollection')
 			->disableOriginalConstructor()
@@ -434,7 +433,7 @@ class SystemTagPluginTest extends \Test\TestCase {
 	public function testCreateTagInByIdCollectionAsRegularUser() {
 		$systemTag = new SystemTag(1, 'Test', true, false);
 
-		$requestData = json_encode([
+		$requestData = \json_encode([
 			'name' => 'Test',
 			'userVisible' => true,
 			'userAssignable' => true,
@@ -515,7 +514,7 @@ class SystemTagPluginTest extends \Test\TestCase {
 		if (!empty($groups)) {
 			$requestData['groups'] = $groups;
 		}
-		$requestData = json_encode($requestData);
+		$requestData = \json_encode($requestData);
 
 		$node = $this->getMockBuilder('\OCA\DAV\SystemTag\SystemTagsByIdCollection')
 			->disableOriginalConstructor()
@@ -528,7 +527,7 @@ class SystemTagPluginTest extends \Test\TestCase {
 		if (!empty($groups)) {
 			$this->tagManager->expects($this->once())
 				->method('setTagGroups')
-				->with($systemTag, explode('|', $groups))
+				->with($systemTag, \explode('|', $groups))
 				->will($this->returnValue($systemTag));
 		} else {
 			$this->tagManager->expects($this->never())
@@ -558,7 +557,7 @@ class SystemTagPluginTest extends \Test\TestCase {
 		$request->expects($this->once())
 			->method('getHeader')
 			->with('Content-Type')
-			->will($this->returnValue('application/json'));	
+			->will($this->returnValue('application/json'));
 
 		$request->expects($this->once())
 			->method('getUrl')
@@ -590,7 +589,7 @@ class SystemTagPluginTest extends \Test\TestCase {
 
 		$systemTag = new SystemTag(1, 'Test', true, false);
 
-		$requestData = json_encode([
+		$requestData = \json_encode([
 			'name' => 'Test',
 			'userVisible' => true,
 			'userAssignable' => false,
@@ -632,7 +631,7 @@ class SystemTagPluginTest extends \Test\TestCase {
 		$request->expects($this->once())
 			->method('getHeader')
 			->with('Content-Type')
-			->will($this->returnValue('application/json'));	
+			->will($this->returnValue('application/json'));
 
 		$request->expects($this->once())
 			->method('getBaseUrl')
@@ -691,7 +690,7 @@ class SystemTagPluginTest extends \Test\TestCase {
 			->with('admin')
 			->willReturn(true);
 
-		$requestData = json_encode([
+		$requestData = \json_encode([
 			'name' => 'Test',
 			'userVisible' => true,
 			'userAssignable' => false,
@@ -728,9 +727,8 @@ class SystemTagPluginTest extends \Test\TestCase {
 		$request->expects($this->once())
 			->method('getHeader')
 			->with('Content-Type')
-			->will($this->returnValue('application/json'));	
+			->will($this->returnValue('application/json'));
 
 		$this->plugin->httpPost($request, $response);
 	}
-
 }

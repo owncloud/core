@@ -37,7 +37,7 @@ class Platform {
 	/**
 	 * @param IConfig $config
 	 */
-	function __construct(IConfig $config) {
+	public function __construct(IConfig $config) {
 		$this->config = $config;
 	}
 
@@ -45,7 +45,7 @@ class Platform {
 	 * @return string
 	 */
 	public function getPhpVersion() {
-		return phpversion();
+		return \phpversion();
 	}
 
 	/**
@@ -60,7 +60,7 @@ class Platform {
 	 */
 	public function getOcVersion() {
 		$v = \OCP\Util::getVersion();
-		return join('.', $v);
+		return \join('.', $v);
 	}
 
 	/**
@@ -79,7 +79,7 @@ class Platform {
 	 * @return string
 	 */
 	public function getOS() {
-		return php_uname('s');
+		return \php_uname('s');
 	}
 
 	/**

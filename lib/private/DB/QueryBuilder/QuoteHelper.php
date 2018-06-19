@@ -31,7 +31,7 @@ class QuoteHelper {
 	 * @return array|string
 	 */
 	public function quoteColumnNames($strings) {
-		if (!is_array($strings)) {
+		if (!\is_array($strings)) {
 			return $this->quoteColumnName($strings);
 		}
 
@@ -56,12 +56,12 @@ class QuoteHelper {
 			return $string;
 		}
 
-		if (!is_string($string)) {
+		if (!\is_string($string)) {
 			throw new \InvalidArgumentException('Only strings, Literals and Parameters are allowed');
 		}
 
-		if (substr_count($string, '.')) {
-			list($alias, $columnName) = explode('.', $string, 2);
+		if (\substr_count($string, '.')) {
+			list($alias, $columnName) = \explode('.', $string, 2);
 
 			if ($columnName === '*') {
 				return $string;

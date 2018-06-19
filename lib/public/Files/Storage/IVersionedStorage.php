@@ -19,7 +19,6 @@
  *
  */
 
-
 namespace OCP\Files\Storage;
 
 /**
@@ -77,5 +76,4 @@ interface IVersionedStorage {
 	 * @since 10.0.9
 	 */
 	public function saveVersion($internalPath);
-
 }

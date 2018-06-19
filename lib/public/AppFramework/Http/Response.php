@@ -49,13 +49,11 @@ class Response {
 		'Cache-Control' => 'no-cache, must-revalidate'
 	];
 
-
 	/**
 	 * Cookies that will be need to be constructed as header
 	 * @var array
 	 */
 	private $cookies = [];
-
 
 	/**
 	 * HTTP status code - defaults to STATUS OK
@@ -63,13 +61,11 @@ class Response {
 	 */
 	private $status = Http::STATUS_OK;
 
-
 	/**
 	 * Last modified date
 	 * @var \DateTime
 	 */
 	private $lastModified;
-
 
 	/**
 	 * ETag
@@ -80,7 +76,6 @@ class Response {
 	/** @var ContentSecurityPolicy|null Used Content-Security-Policy */
 	private $contentSecurityPolicy = null;
 
-
 	/**
 	 * Caches the response
 	 * @param int $cacheSeconds the amount of seconds that should be cached
@@ -89,8 +84,7 @@ class Response {
 	 * @since 6.0.0 - return value was added in 7.0.0
 	 */
 	public function cacheFor($cacheSeconds) {
-
-		if($cacheSeconds > 0) {
+		if ($cacheSeconds > 0) {
 			$this->addHeader('Cache-Control', 'max-age=' . $cacheSeconds .
 				', must-revalidate');
 		} else {
@@ -115,7 +109,6 @@ class Response {
 		return $this;
 	}
 
-
 	/**
 	 * Set the specified cookies
 	 * @param array $cookies array('foo' => array('value' => 'bar', 'expire' => null))
@@ -126,7 +119,6 @@ class Response {
 		$this->cookies = $cookies;
 		return $this;
 	}
-
 
 	/**
 	 * Invalidates the specified cookie
@@ -146,7 +138,7 @@ class Response {
 	 * @since 8.0.0
 	 */
 	public function invalidateCookies(array $cookieNames) {
-		foreach($cookieNames as $cookieName) {
+		foreach ($cookieNames as $cookieName) {
 			$this->invalidateCookie($cookieName);
 		}
 		return $this;
@@ -170,11 +162,11 @@ class Response {
 	 * @since 6.0.0 - return value was added in 7.0.0
 	 */
 	public function addHeader($name, $value) {
-		$name = trim($name);  // always remove leading and trailing whitespace
-		                      // to be able to reliably check for security
-		                      // headers
+		$name = \trim($name);  // always remove leading and trailing whitespace
+		// to be able to reliably check for security
+		// headers
 
-		if(is_null($value)) {
+		if ($value === null) {
 			unset($this->headers[$name]);
 		} else {
 			$this->headers[$name] = $value;
@@ -182,7 +174,6 @@ class Response {
 
 		return $this;
 	}
-
 
 	/**
 	 * Set the headers
@@ -196,7 +187,6 @@ class Response {
 		return $this;
 	}
 
-
 	/**
 	 * Returns the set headers
 	 * @return array the headers
@@ -205,24 +195,23 @@ class Response {
 	public function getHeaders() {
 		$mergeWith = [];
 
-		if($this->lastModified) {
+		if ($this->lastModified) {
 			$mergeWith['Last-Modified'] =
 				$this->lastModified->format(\DateTime::RFC2822);
 		}
 
 		// Build Content-Security-Policy and use default if none has been specified
-		if(is_null($this->contentSecurityPolicy)) {
+		if ($this->contentSecurityPolicy === null) {
 			$this->setContentSecurityPolicy(new ContentSecurityPolicy());
 		}
 		$this->headers['Content-Security-Policy'] = $this->contentSecurityPolicy->buildPolicy();
 
-		if($this->ETag) {
+		if ($this->ETag) {
 			$mergeWith['ETag'] = '"' . $this->ETag . '"';
 		}
 
-		return array_merge($mergeWith, $this->headers);
+		return \array_merge($mergeWith, $this->headers);
 	}
-
 
 	/**
 	 * By default renders no output
@@ -232,7 +221,6 @@ class Response {
 	public function render() {
 		return null;
 	}
-
 
 	/**
 	 * Set response status
@@ -267,7 +255,6 @@ class Response {
 		return $this->contentSecurityPolicy;
 	}
 
-
 	/**
 	 * Get response status
 	 * @since 6.0.0
@@ -275,7 +262,6 @@ class Response {
 	public function getStatus() {
 		return $this->status;
 	}
-
 
 	/**
 	 * Get the ETag
@@ -286,7 +272,6 @@ class Response {
 		return $this->ETag;
 	}
 
-
 	/**
 	 * Get "last modified" date
 	 * @return \DateTime RFC2822 formatted last modified date
@@ -295,7 +280,6 @@ class Response {
 	public function getLastModified() {
 		return $this->lastModified;
 	}
-
 
 	/**
 	 * Set the ETag
@@ -309,7 +293,6 @@ class Response {
 		return $this;
 	}
 
-
 	/**
 	 * Set "last modified" date
 	 * @param \DateTime $lastModified
@@ -321,6 +304,4 @@ class Response {
 
 		return $this;
 	}
-
-
 }

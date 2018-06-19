@@ -34,7 +34,6 @@ use OCP\IConfig;
  *
  */
 class OC_Defaults {
-
 	private $theme;
 	private $l;
 
@@ -78,12 +77,12 @@ class OC_Defaults {
 		$themePath = OC_Util::getTheme()->getDirectory();
 
 		$defaultsPath = OC::$SERVERROOT . '/' . $themePath . '/defaults.php';
-		if (file_exists($defaultsPath)) {
+		if (\file_exists($defaultsPath)) {
 			// prevent defaults.php from printing output
-			ob_start();
+			\ob_start();
 			require_once $defaultsPath;
-			ob_end_clean();
-			if (class_exists('OC_Theme')) {
+			\ob_end_clean();
+			if (\class_exists('OC_Theme')) {
 				$this->theme = new OC_Theme();
 			}
 		}
@@ -93,7 +92,7 @@ class OC_Defaults {
 	 * @param string $method
 	 */
 	private function themeExist($method) {
-		if (isset($this->theme) && method_exists($this->theme, $method)) {
+		if (isset($this->theme) && \method_exists($this->theme, $method)) {
 			return true;
 		}
 		return false;

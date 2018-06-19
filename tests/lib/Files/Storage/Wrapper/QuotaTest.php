@@ -104,32 +104,32 @@ class QuotaTest extends \Test\Files\Storage\Storage {
 	public function testFWriteNotEnoughSpace() {
 		$instance = $this->getLimitedStorage(9);
 		$stream = $instance->fopen('files/foo', 'w+');
-		$this->assertEquals(6, fwrite($stream, 'foobar'));
-		$this->assertEquals(3, fwrite($stream, 'qwerty'));
-		fclose($stream);
+		$this->assertEquals(6, \fwrite($stream, 'foobar'));
+		$this->assertEquals(3, \fwrite($stream, 'qwerty'));
+		\fclose($stream);
 		$this->assertEquals('foobarqwe', $instance->file_get_contents('files/foo'));
 	}
 
 	public function testStreamCopyWithEnoughSpace() {
 		$instance = $this->getLimitedStorage(16);
-		$inputStream = fopen('data://text/plain,foobarqwerty', 'r');
+		$inputStream = \fopen('data://text/plain,foobarqwerty', 'r');
 		$outputStream = $instance->fopen('files/foo', 'w+');
 		list($count, $result) = \OC_Helper::streamCopy($inputStream, $outputStream);
 		$this->assertEquals(12, $count);
 		$this->assertTrue($result);
-		fclose($inputStream);
-		fclose($outputStream);
+		\fclose($inputStream);
+		\fclose($outputStream);
 	}
 
 	public function testStreamCopyNotEnoughSpace() {
 		$instance = $this->getLimitedStorage(9);
-		$inputStream = fopen('data://text/plain,foobarqwerty', 'r');
+		$inputStream = \fopen('data://text/plain,foobarqwerty', 'r');
 		$outputStream = $instance->fopen('files/foo', 'w+');
 		list($count, $result) = \OC_Helper::streamCopy($inputStream, $outputStream);
 		$this->assertEquals(9, $count);
 		$this->assertFalse($result);
-		fclose($inputStream);
-		fclose($outputStream);
+		\fclose($inputStream);
+		\fclose($outputStream);
 	}
 
 	public function testReturnFalseWhenFopenFailed() {
@@ -152,18 +152,18 @@ class QuotaTest extends \Test\Files\Storage\Storage {
 
 		// create test file first
 		$stream = $instance->fopen('files/foo', 'w+');
-		fwrite($stream, 'blablacontent');
-		fclose($stream);
+		\fwrite($stream, 'blablacontent');
+		\fclose($stream);
 
 		$stream = $instance->fopen('files/foo', 'r');
-		$meta = stream_get_meta_data($stream);
+		$meta = \stream_get_meta_data($stream);
 		$this->assertEquals('plainfile', $meta['wrapper_type']);
-		fclose($stream);
+		\fclose($stream);
 
 		$stream = $instance->fopen('files/foo', 'rb');
-		$meta = stream_get_meta_data($stream);
+		$meta = \stream_get_meta_data($stream);
 		$this->assertEquals('plainfile', $meta['wrapper_type']);
-		fclose($stream);
+		\fclose($stream);
 	}
 
 	public function testReturnRegularStreamWhenOutsideFiles() {
@@ -172,18 +172,18 @@ class QuotaTest extends \Test\Files\Storage\Storage {
 
 		// create test file first
 		$stream = $instance->fopen('files_other/foo', 'w+');
-		$meta = stream_get_meta_data($stream);
+		$meta = \stream_get_meta_data($stream);
 		$this->assertEquals('plainfile', $meta['wrapper_type']);
-		fclose($stream);
+		\fclose($stream);
 	}
 
 	public function testReturnQuotaStreamOnWrite() {
 		$instance = $this->getLimitedStorage(9);
 		$stream = $instance->fopen('files/foo', 'w+');
-		$meta = stream_get_meta_data($stream);
-		$expected_type = defined('HHVM_VERSION') ? 'File' : 'user-space';
+		$meta = \stream_get_meta_data($stream);
+		$expected_type = \defined('HHVM_VERSION') ? 'File' : 'user-space';
 		$this->assertEquals($expected_type, $meta['wrapper_type']);
-		fclose($stream);
+		\fclose($stream);
 	}
 
 	public function testSpaceRoot() {

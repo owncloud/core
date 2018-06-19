@@ -19,7 +19,6 @@
  *
  */
 
-
 namespace OC\User;
 
 use OCP\AppFramework\Db\Entity;
@@ -47,7 +46,6 @@ use OCP\UserInterface;
  * @package OC\User
  */
 class Account extends Entity {
-
 	const STATE_INITIAL = 0;
 	const STATE_ENABLED = 1;
 	const STATE_DISABLED = 2;
@@ -75,7 +73,7 @@ class Account extends Entity {
 	 * @param string $uid
 	 */
 	public function setUserId($uid) {
-		parent::setter('lowerUserId', [strtolower($uid)]);
+		parent::setter('lowerUserId', [\strtolower($uid)]);
 		parent::setter('userId', [$uid]);
 	}
 
@@ -105,7 +103,7 @@ class Account extends Entity {
 	 * @param string[] $terms
 	 */
 	public function setSearchTerms(array $terms) {
-		if(array_diff($terms, $this->terms)) {
+		if (\array_diff($terms, $this->terms)) {
 			$this->terms = $terms;
 			$this->_termsChanged = true;
 		}
@@ -117,5 +115,4 @@ class Account extends Entity {
 	public function getSearchTerms() {
 		return $this->terms;
 	}
-
 }

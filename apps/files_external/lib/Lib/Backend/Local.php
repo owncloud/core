@@ -29,7 +29,6 @@ use OCP\Files\External\IStoragesBackendService;
 use OCP\IL10N;
 
 class Local extends Backend {
-
 	public function __construct(IL10N $l) {
 		$this
 			->setIdentifier('local')
@@ -44,5 +43,4 @@ class Local extends Backend {
 			->addAuthScheme(AuthMechanism::SCHEME_NULL)
 		;
 	}
-
 }

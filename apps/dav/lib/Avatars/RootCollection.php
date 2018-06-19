@@ -16,13 +16,12 @@ class RootCollection extends AbstractPrincipalCollection {
 	 * @param array $principalInfo
 	 * @return AvatarHome
 	 */
-	function getChildForPrincipal(array $principalInfo) {
+	public function getChildForPrincipal(array $principalInfo) {
 		$avatarManager = \OC::$server->getAvatarManager();
 		return new AvatarHome($principalInfo, $avatarManager);
 	}
 
-	function getName() {
+	public function getName() {
 		return 'avatars';
 	}
-
 }

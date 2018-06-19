@@ -21,7 +21,6 @@
 
 namespace OC\User\Sync;
 
-
 use OC\User\AccountMapper;
 use OCP\UserInterface;
 use Test\TestCase;
@@ -58,7 +57,6 @@ class SeenUsersIteratorTest extends TestCase {
 	 * Iterators are initialized by a call to rewind
 	 */
 	public function testRewind() {
-
 		$this->mapper->expects($this->once())
 			->method('findUserIds')
 			->with(
@@ -81,11 +79,11 @@ class SeenUsersIteratorTest extends TestCase {
 
 		// create pages for 1001 users (0..1000)
 		$page1 = [];
-		for ( $i=0; $i<500; $i++ ) {
+		for ($i=0; $i<500; $i++) {
 			$page1[] = "user$i";
 		}
 		$page2 = [];
-		for ( $i=500; $i<1000; $i++ ) {
+		for ($i=500; $i<1000; $i++) {
 			$page2[] = "user$i";
 		}
 		$page3 = ['user1000'];
@@ -98,12 +96,12 @@ class SeenUsersIteratorTest extends TestCase {
 					$this->equalTo(true),					// only logged in users
 					$this->equalTo(UsersIterator::LIMIT),	// limit 500
 					$this->equalTo(0)						// at the beginning
-				],[
+				], [
 				$this->equalTo(self::TEST_BACKEND),	// only from this backend
 				$this->equalTo(true),					// only logged in users
 				$this->equalTo(UsersIterator::LIMIT),	// limit 500
 				$this->equalTo(500)					// second page
-			],[
+			], [
 					$this->equalTo(self::TEST_BACKEND),	// only from this backend
 					$this->equalTo(true),					// only logged in users
 					$this->equalTo(UsersIterator::LIMIT),	// limit 500
@@ -118,7 +116,7 @@ class SeenUsersIteratorTest extends TestCase {
 		$this->assertTrue($this->iterator->valid());
 		$this->assertEquals('user0', $this->iterator->current());
 		$this->assertEquals(0, $this->iterator->key());
-		for ( $i=1; $i<=1000; $i++ ) {
+		for ($i=1; $i<=1000; $i++) {
 			$this->iterator->next();
 			$this->assertTrue($this->iterator->valid());
 			$this->assertEquals("user$i", $this->iterator->current());
@@ -127,5 +125,4 @@ class SeenUsersIteratorTest extends TestCase {
 		$this->iterator->next();
 		$this->assertFalse($this->iterator->valid());
 	}
-	
 }

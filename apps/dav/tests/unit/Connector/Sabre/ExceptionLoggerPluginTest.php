@@ -87,5 +87,4 @@ class ExceptionLoggerPluginTest extends TestCase {
 			[0, '', new FileContentNotAllowedException("Testing", 0, new FileContentNotAllowedException("pervious exception", 0))],
 		];
 	}
-
 }

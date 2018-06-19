@@ -27,15 +27,15 @@ class InfoParserTest extends TestCase {
 	 */
 	public function testParsingValidXml($expectedJson, $xmlFile) {
 		$expectedData = null;
-		if (!is_null($expectedJson)) {
-			$expectedData = json_decode(file_get_contents(OC::$SERVERROOT . "/tests/data/app/$expectedJson"), true);
+		if ($expectedJson !== null) {
+			$expectedData = \json_decode(\file_get_contents(OC::$SERVERROOT . "/tests/data/app/$expectedJson"), true);
 		}
 		$data = $this->parser->parse(OC::$SERVERROOT. "/tests/data/app/$xmlFile");
 
 		$this->assertEquals($expectedData, $data);
 	}
 
-	function providesInfoXml() {
+	public function providesInfoXml() {
 		return [
 			['expected-info.json', 'valid-info.xml'],
 			[null, 'invalid-info.xml'],

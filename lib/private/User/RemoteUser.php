@@ -19,9 +19,7 @@
  *
  */
 
-
 namespace OC\User;
-
 
 use OCP\IUser;
 
@@ -160,7 +158,7 @@ class RemoteUser implements IUser {
 	public function getCloudId() {
 		$uid = $this->getUID();
 		$server = \OC::$server->getURLGenerator()->getAbsoluteURL('/');
-		return $uid . '@' . rtrim( $this->removeProtocolFromUrl($server), '/');
+		return $uid . '@' . \rtrim($this->removeProtocolFromUrl($server), '/');
 	}
 
 	/**
@@ -168,10 +166,10 @@ class RemoteUser implements IUser {
 	 * @return string
 	 */
 	private function removeProtocolFromUrl($url) {
-		if (strpos($url, 'https://') === 0) {
-			return substr($url, strlen('https://'));
-		} else if (strpos($url, 'http://') === 0) {
-			return substr($url, strlen('http://'));
+		if (\strpos($url, 'https://') === 0) {
+			return \substr($url, \strlen('https://'));
+		} elseif (\strpos($url, 'http://') === 0) {
+			return \substr($url, \strlen('http://'));
 		}
 
 		return $url;
@@ -208,5 +206,4 @@ class RemoteUser implements IUser {
 	 */
 	public function setSearchTerms(array $terms) {
 	}
-
 }

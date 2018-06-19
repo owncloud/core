@@ -73,14 +73,14 @@ class MountProviderCollection implements IMountProviderCollection, Emitter {
 	 */
 	public function getMountsForUser(IUser $user) {
 		$loader = $this->loader;
-		$mounts = array_map(function (IMountProvider $provider) use ($user, $loader) {
+		$mounts = \array_map(function (IMountProvider $provider) use ($user, $loader) {
 			return $provider->getMountsForUser($user, $loader);
 		}, $this->providers);
-		$mounts = array_filter($mounts, function ($result) {
-			return is_array($result);
+		$mounts = \array_filter($mounts, function ($result) {
+			return \is_array($result);
 		});
-		return array_reduce($mounts, function (array $mounts, array $providerMounts) {
-			return array_merge($mounts, $providerMounts);
+		return \array_reduce($mounts, function (array $mounts, array $providerMounts) {
+			return \array_merge($mounts, $providerMounts);
 		}, []);
 	}
 
@@ -93,7 +93,7 @@ class MountProviderCollection implements IMountProviderCollection, Emitter {
 	 */
 	public function getHomeMountForUser(IUser $user) {
 		/** @var \OCP\Files\Config\IHomeMountProvider[] $providers */
-		$providers = array_reverse($this->homeProviders); // call the latest registered provider first to give apps an opportunity to overwrite builtin
+		$providers = \array_reverse($this->homeProviders); // call the latest registered provider first to give apps an opportunity to overwrite builtin
 		foreach ($providers as $homeProvider) {
 			if ($mount = $homeProvider->getHomeMountForUser($user, $this->loader)) {
 				$mount->setMountPoint('/' . $user->getUID()); //make sure the mountpoint is what we expect

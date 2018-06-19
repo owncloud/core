@@ -96,7 +96,7 @@ class AllConfig implements IConfig {
 	 * because the database connection was created with an uninitialized config
 	 */
 	private function fixDIInit() {
-		if($this->connection === null) {
+		if ($this->connection === null) {
 			$this->connection = \OC::$server->getDatabaseConnection();
 		}
 	}
@@ -204,7 +204,6 @@ class AllConfig implements IConfig {
 		\OC::$server->getAppConfig()->deleteApp($appName);
 	}
 
-
 	/**
 	 * Set a user defined value
 	 *
@@ -218,7 +217,7 @@ class AllConfig implements IConfig {
 	 * @return bool
 	 */
 	public function setUserValue($userId, $appName, $key, $value, $preCondition = null) {
-		if (!is_int($value) && !is_float($value) && !is_string($value)) {
+		if (!\is_int($value) && !\is_float($value) && !\is_string($value)) {
 			throw new \UnexpectedValueException('Only integers, floats and strings are allowed as value');
 		}
 
@@ -270,7 +269,7 @@ class AllConfig implements IConfig {
 	 */
 	public function getUserValue($userId, $appName, $key, $default = '') {
 		$data = $this->getUserValues($userId);
-		if (isset($data[$appName]) && isset($data[$appName][$key])) {
+		if (isset($data[$appName], $data[$appName][$key])) {
 			return $data[$appName][$key];
 		}
 		return $default;
@@ -286,7 +285,7 @@ class AllConfig implements IConfig {
 	public function getUserKeys($userId, $appName) {
 		$data = $this->getUserValues($userId);
 		if (isset($data[$appName])) {
-			return array_keys($data[$appName]);
+			return \array_keys($data[$appName]);
 		}
 		return [];
 	}
@@ -311,7 +310,7 @@ class AllConfig implements IConfig {
 			'WHERE `userid` = ? AND `appid` = ? AND `configkey` = ?';
 		$this->connection->executeUpdate($sql, [$userId, $appName, $key]);
 
-		if (isset($this->userCache[$userId]) && isset($this->userCache[$userId][$appName])) {
+		if (isset($this->userCache[$userId], $this->userCache[$userId][$appName])) {
 			unset($this->userCache[$userId][$appName][$key]);
 		}
 
@@ -411,21 +410,21 @@ class AllConfig implements IConfig {
 		// TODO - FIXME
 		$this->fixDIInit();
 
-		if (empty($userIds) || !is_array($userIds)) {
+		if (empty($userIds) || !\is_array($userIds)) {
 			return [];
 		}
 
-		$chunkedUsers = array_chunk($userIds, 50, true);
-		$placeholders50 = implode(',', array_fill(0, 50, '?'));
+		$chunkedUsers = \array_chunk($userIds, 50, true);
+		$placeholders50 = \implode(',', \array_fill(0, 50, '?'));
 
 		$userValues = [];
 		foreach ($chunkedUsers as $chunk) {
 			$queryParams = $chunk;
 			// create [$app, $key, $chunkedUsers]
-			array_unshift($queryParams, $key);
-			array_unshift($queryParams, $appName);
+			\array_unshift($queryParams, $key);
+			\array_unshift($queryParams, $appName);
 
-			$placeholders = (sizeof($chunk) === 50) ? $placeholders50 :  implode(',', array_fill(0, sizeof($chunk), '?'));
+			$placeholders = (\sizeof($chunk) === 50) ? $placeholders50 :  \implode(',', \array_fill(0, \sizeof($chunk), '?'));
 
 			$query    = 'SELECT `userid`, `configvalue` ' .
 						'FROM `*PREFIX*preferences` ' .
@@ -463,7 +462,6 @@ class AllConfig implements IConfig {
 				'configkey', $queryBuilder->createNamedParameter($key))
 			)
 			->andWhere($queryBuilder->expr()->isNotNull('configvalue'));
-
 
 		if ($this->connection->getDatabasePlatform() instanceof OraclePlatform) {
 			//oracle can only compare the first 4000 bytes of a CLOB column

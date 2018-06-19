@@ -21,7 +21,6 @@
 
 namespace Tests\Core\Command\Encryption;
 
-
 use OC\Core\Command\Encryption\Disable;
 use Test\TestCase;
 
@@ -48,7 +47,6 @@ class DisableTest extends TestCase {
 		/** @var \OCP\IConfig $config */
 		$this->command = new Disable($config);
 	}
-
 
 	public function dataDisable() {
 		return [

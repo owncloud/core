@@ -39,7 +39,7 @@ class PublicCalendarRoot extends Collection {
 	 */
 	public $disableListing = false;
 
-	function __construct(CalDavBackend $caldavBackend) {
+	public function __construct(CalDavBackend $caldavBackend) {
 		$this->caldavBackend = $caldavBackend;
 		$this->l10n = \OC::$server->getL10N('dav');
 	}
@@ -47,14 +47,14 @@ class PublicCalendarRoot extends Collection {
 	/**
 	 * @inheritdoc
 	 */
-	function getName() {
+	public function getName() {
 		return 'public-calendars';
 	}
 
 	/**
 	 * @inheritdoc
 	 */
-	function getChild($name) {
+	public function getChild($name) {
 		$calendar = $this->caldavBackend->getPublicCalendar($name);
 		return new Calendar($this->caldavBackend, $calendar, $this->l10n);
 	}
@@ -62,9 +62,10 @@ class PublicCalendarRoot extends Collection {
 	/**
 	 * @inheritdoc
 	 */
-	function getChildren() {
-		if ($this->disableListing)
+	public function getChildren() {
+		if ($this->disableListing) {
 			throw new MethodNotAllowed('Listing members of this collection is disabled');
+		}
 
 		$calendars = $this->caldavBackend->getPublicCalendars();
 		$children = [];
