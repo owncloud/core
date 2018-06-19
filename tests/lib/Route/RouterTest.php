@@ -24,6 +24,7 @@ namespace Test\Route;
 
 use OC\Route\Router;
 use OCP\ILogger;
+use Symfony\Component\Routing\Exception\ResourceNotFoundException;
 
 
 class LoadableRouter extends Router {
@@ -73,13 +74,16 @@ class RouterTest extends \Test\TestCase {
 		];
 	}
 
-	public function testMatchURLParamContainingSlash() {
+	/**
+	 * @dataProvider urlParamSlashProvider
+	 */
+	public function testMatchURLParamContainingSlash($routeUrl, $matchUrl, $expectedCalled) {
 		$router = new LoadableRouter($this->l, '');
 
 		$called = false;
 
 		$router->useCollection('root');
-		$router->create('test', '/resource/{id}')
+		$router->create('test', $routeUrl)
 			->action(function() use (&$called) {
 			$called = true;
 		})->requirements(['id' => '.+']);
@@ -87,8 +91,22 @@ class RouterTest extends \Test\TestCase {
 		// don't load any apps
 		$router->setLoaded(true);
 
-		$router->match('/resource/id%2Fwith%2Fslashes');
+		try {
+			$router->match($matchUrl);
+		} catch (ResourceNotFoundException $e) {
+			$called = false;
+		}
 
-		self::assertTrue($called);
+		self::assertEquals($expectedCalled, $called);
+	}
+
+	public function urlParamSlashProvider() {
+		return [
+			['/resource/{id}', '/resource/id%2Fwith%2Fslashes', true],
+			['/resource/{id}/sub', '/resource/id%2Fwith%2Fslashes/sub', true],
+			['/resource/{id}/sub', '/resource/id%2Fwith%2Fslashes/subx', false],
+			['/resource/{id}', '/resource/id/with/slashes', true],
+			['/resource/{id}/sub', '/resource/id/with/slashes/sub', true],
+		];
 	}
 }
