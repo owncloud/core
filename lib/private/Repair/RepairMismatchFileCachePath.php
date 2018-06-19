@@ -21,6 +21,7 @@
 
 namespace OC\Repair;
 
+use OCP\IConfig;
 use OCP\ILogger;
 use OCP\Migration\IOutput;
 use OCP\Migration\IRepairStep;
@@ -57,15 +58,20 @@ class RepairMismatchFileCachePath implements IRepairStep {
 	/** @var ILogger  */
 	protected $logger;
 
+	/** @var IConfig */
+	protected $config;
+
 	/**
 	 * @param \OCP\IDBConnection $connection
 	 */
 	public function __construct(IDBConnection $connection,
 								IMimeTypeLoader $mimeLoader,
-								ILogger $logger) {
+								ILogger $logger,
+								IConfig $config) {
 		$this->connection = $connection;
 		$this->mimeLoader = $mimeLoader;
 		$this->logger = $logger;
+		$this->config = $config;
 	}
 
 	public function getName() {
@@ -532,11 +538,13 @@ class RepairMismatchFileCachePath implements IRepairStep {
 	}
 
 	/**
-	 * Run the repair step
+	 * The purpose of this function is to let execute the run method
+	 * irrespective of version. For example when triggered from files:scan
+	 * this repair step shouldn't be blocked.
 	 *
-	 * @param IOutput $out output
+	 * @param IOutput $out
 	 */
-	public function run(IOutput $out) {
+	public function doRepair(IOutput $out) {
 		$this->dirMimeTypeId = $this->mimeLoader->getId('httpd/unix-directory');
 		$this->dirMimePartId = $this->mimeLoader->getId('httpd');
 
@@ -568,6 +576,21 @@ class RepairMismatchFileCachePath implements IRepairStep {
 			}
 			$out->finishProgress();
 			$out->info('');
+		}
+	}
+
+	/**
+	 * Run the repair step
+	 *
+	 * @param IOutput $out output
+	 */
+	public function run(IOutput $out) {
+		$currentVersion = $this->config->getSystemValue('version', '0.0.0');
+		$versionCompareStatus = \version_compare($currentVersion, '10.0.4', '<');
+		//Execute repair step if version is less than 10.0.4 during upgrade
+		//This is not applicable when called from file scan command
+		if ($versionCompareStatus) {
+			$this->doRepair($out);
 		}
 	}
 }

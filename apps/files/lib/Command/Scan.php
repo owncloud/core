@@ -160,11 +160,12 @@ class Scan extends Base {
 		$repairStep = new RepairMismatchFileCachePath(
 			$connection,
 			$this->mimeTypeLoader,
-			$this->logger
+			$this->logger,
+			$this->config
 		);
 		$repairStep->setStorageNumericId(null);
 		$repairStep->setCountOnly(false);
-		$repairStep->run(new ConsoleOutput($output));
+		$repairStep->doRepair(new ConsoleOutput($output));
 	}
 
 	protected function scanFiles($user, $path, $verbose, OutputInterface $output, $backgroundScan = false, $shouldRepair = false) {
@@ -183,7 +184,8 @@ class Scan extends Base {
 					$repairStep = new RepairMismatchFileCachePath(
 						$connection,
 						$this->mimeTypeLoader,
-						$this->logger
+						$this->logger,
+						$this->config
 					);
 					$repairStep->setStorageNumericId($storage->getCache()->getNumericStorageId());
 					$repairStep->setCountOnly(false);
