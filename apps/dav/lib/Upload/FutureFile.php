@@ -112,7 +112,8 @@ class FutureFile implements \Sabre\DAV\IFile {
 	 * @inheritdoc
 	 */
 	public function delete() {
-		$this->root->delete();
+		// temporal hack to keep the folder alive
+//		$this->root->delete();
 	}
 
 	/**
