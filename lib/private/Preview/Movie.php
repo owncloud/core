@@ -26,6 +26,7 @@
 namespace OC\Preview;
 
 use OCP\Files\File;
+use OCP\Files\FileInfo;
 use OCP\Preview\IProvider2;
 
 class Movie implements IProvider2 {
@@ -177,13 +178,9 @@ class Movie implements IProvider2 {
 	}
 
 	/**
-	 * Check if a preview can be generated for $path
-	 *
-	 * @param File $file
-	 * @return bool
-	 * @since 10.1.0
+	 * @inheritdoc
 	 */
-	public function isAvailable(File $file) {
+	public function isAvailable(FileInfo $file) {
 		return true;
 	}
 }

@@ -22,6 +22,7 @@
 namespace OCP\Preview;
 
 use OCP\Files\File;
+use OCP\Files\FileInfo;
 
 /**
  * Interface IProvider2
@@ -39,11 +40,11 @@ interface IProvider2 {
 	/**
 	 * Check if a preview can be generated for $path
 	 *
-	 * @param File $file
+	 * @param FileInfo $file
 	 * @return bool
 	 * @since 10.0.9
 	 */
-	public function isAvailable(File $file);
+	public function isAvailable(FileInfo $file);
 
 	/**
 	 * get thumbnail for file at path $path
