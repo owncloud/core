@@ -175,6 +175,7 @@ OC.L10N.register(
     "Share via email. Opens your mail client." : "Διαμοιρασμός μέσω ηλεκτρονική αλληλογραφία. Άνοιγμα σε νέο παράθυρο.",
     "Email link to person" : "Αποστολή συνδέσμου με email ",
     "Send link via email" : "Αποστολή συνδέσμου μέσω ηλεκτρονικού ταχυδρομείου",
+    "Add personal message" : "Προσθήκη προσωπικού μηνύματος",
     "Sending" : "Αποστολή",
     "Shared with you and the group {group} by {owner}" : "Διαμοιράστηκε με σας και με την ομάδα {group} του {owner}",
     "Shared with you by {owner}" : "Διαμοιράστηκε με σας από τον {owner}",
