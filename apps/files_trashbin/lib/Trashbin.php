@@ -411,7 +411,8 @@ class Trashbin {
 			}
 
 			if ($copyKeysResult === true) {
-				$sourceStorage->deleteAllFileKeys($filename);
+				$filePath = $rootView->getAbsolutePath('/files/' . $ownerPath);
+				$sourceStorage->deleteAllFileKeys($filePath);
 			}
 		}
 	}
