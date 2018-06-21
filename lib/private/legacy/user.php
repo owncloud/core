@@ -99,6 +99,7 @@ class OC_User {
 					\OC::$server->getUserManager()->registerBackend(self::$_usedBackends[$backend]);
 					break;
 				case 'dummy':
+					/* @phan-suppress-next-line PhanUndeclaredClassMethod */
 					self::$_usedBackends[$backend] = new \Test\Util\User\Dummy();
 					\OC::$server->getUserManager()->registerBackend(self::$_usedBackends[$backend]);
 					break;

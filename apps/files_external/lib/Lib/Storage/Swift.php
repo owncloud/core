@@ -111,7 +111,7 @@ class Swift extends \OCP\Files\Storage\StorageAdapter {
 	 * that one will be returned.
 	 *
 	 * @param string $path
-	 * @return \OpenCloud\OpenStack\ObjectStorage\Resource\DataObject|bool object
+	 * @return DataObject | bool object
 	 * or false if the object did not exist
 	 */
 	private function fetchObject($path) {

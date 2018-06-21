@@ -139,6 +139,7 @@ class Redis extends Cache implements IMemcacheTTL {
 		}
 		self::$cache->watch($this->getNameSpace() . $key);
 		if ($this->get($key) === $old) {
+			/** @phan-suppress-next-line PhanNonClassMethodCall */
 			$result = self::$cache->multi()
 				->set($this->getNameSpace() . $key, $new)
 				->exec();
@@ -158,6 +159,7 @@ class Redis extends Cache implements IMemcacheTTL {
 	public function cad($key, $old) {
 		self::$cache->watch($this->getNameSpace() . $key);
 		if ($this->get($key) === $old) {
+			/** @phan-suppress-next-line PhanNonClassMethodCall */
 			$result = self::$cache->multi()
 				->del($this->getNameSpace() . $key)
 				->exec();

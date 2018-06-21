@@ -31,7 +31,7 @@ use Sabre\DAV\IFile;
  */
 class AssemblyStreamZsync extends AssemblyStream {
 
-	/** @var array */
+	/** @var IFile */
 	private $backingFile = null;
 
 	/** @var array */

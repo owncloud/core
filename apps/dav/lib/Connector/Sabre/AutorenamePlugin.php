@@ -1,6 +1,7 @@
 <?php
 /**
  * @author Vincent Petry <pvince81@owncloud.com>
+ * @author Patrick Jahns <github@patrickjahns.de>
  *
  * @copyright Copyright (c) 2018, ownCloud GmbH
  * @license AGPL-3.0
@@ -21,6 +22,7 @@
 
 namespace OCA\DAV\Connector\Sabre;
 
+use Sabre\DAV\Exception\BadRequest;
 use Sabre\DAV\ServerPlugin;
 use Sabre\HTTP\RequestInterface;
 use Sabre\HTTP\ResponseInterface;
@@ -54,6 +56,14 @@ class AutorenamePlugin extends ServerPlugin {
 		$this->server->on('method:PUT', [$this, 'handlePut'], 1);
 	}
 
+	/**
+	 * @param RequestInterface $request
+	 * @param ResponseInterface $response
+	 * @return bool|void
+	 * @throws \Sabre\DAV\Exception\BadRequest
+	 * @throws \Sabre\DAV\Exception\Conflict
+	 * @throws \Sabre\DAV\Exception\NotFound
+	 */
 	public function handlePut(RequestInterface $request, ResponseInterface $response) {
 		if ($request->getHeader('OC-Autorename') !== '1') {
 			return;
@@ -70,7 +80,7 @@ class AutorenamePlugin extends ServerPlugin {
 
 			   Reference: http://tools.ietf.org/html/rfc7231#section-4.3.4
 			*/
-			throw new Exception\BadRequest('Content-Range on PUT requests are forbidden.');
+			throw new BadRequest('Content-Range on PUT requests are forbidden.');
 		}
 
 		if ($this->server->tree->nodeExists($path)) {
