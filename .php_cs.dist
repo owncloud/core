@@ -34,6 +34,16 @@ foreach ($dirIterator as $fileinfo) {
     }
 }
 
+// Exclude any folders "apps*" except the folder "apps"
+$topDirIterator = new DirectoryIterator(__DIR__);
+
+foreach ($topDirIterator as $fileinfo) {
+    $filename = $fileinfo->getFilename();
+    if ($fileinfo->isDir() && (strncmp($filename, "apps", 4) === 0) && (strlen($filename) > 4)) {
+        $excludeDirs[] = $filename;
+    }
+}
+
 $finder = PhpCsFixer\Finder::create()
     ->exclude($excludeDirs)
     ->in(__DIR__);
