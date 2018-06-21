@@ -1310,11 +1310,22 @@ class Preview {
 	public static function post_delete($args, $prefix = '') {
 		$path = Files\Filesystem::normalizePath($args['path']);
 		if (!isset(self::$deleteFileMapper[$path])) {
-			return;
+			$user = isset($args['user']) ? $args['user'] : \OC_User::getUser();
+			if ($user === false) {
+				$user = Filesystem::getOwner($path);
+			}
+
+			$userFolder = \OC::$server->getUserFolder($user);
+			if ($userFolder === null) {
+				return;
+			}
+
+			$node = $userFolder->get($path);
+		} else {
+			/** @var FileInfo $node */
+			$node = self::$deleteFileMapper[$path];
 		}
 
-		/** @var FileInfo $node */
-		$node = self::$deleteFileMapper[$path];
 		$preview = new Preview($node->getOwner()->getUID(), $prefix, $node);
 		$preview->deleteAllPreviews();
 	}
