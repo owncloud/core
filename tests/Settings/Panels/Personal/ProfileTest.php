@@ -10,6 +10,7 @@
 
 namespace Tests\Settings\Panels\Personal;
 
+use OC\Helper\LocaleHelper;
 use OC\Settings\Panels\Personal\Profile;
 use OCP\IConfig;
 use OCP\IGroupManager;
@@ -43,7 +44,9 @@ class ProfileTest extends \Test\TestCase {
 			$this->config,
 			$this->groupManager,
 			$this->userSession,
-			$this->lfactory);
+			$this->lfactory,
+			new LocaleHelper()
+		);
 	}
 
 	public function testGetSection() {
