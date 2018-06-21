@@ -25,7 +25,7 @@ use OC\Files\Filesystem;
 use OC\Files\Storage\Temporary;
 use OC\Files\View;
 use OC\PreviewManager;
-use OCP\Files\IRootFolder;
+use OCP\Files\FileInfo;
 use OCP\IConfig;
 use OCP\IImage;
 use OCP\IUser;
@@ -33,7 +33,6 @@ use OCP\IUserSession;
 use Test\Traits\MountProviderTrait;
 use Test\Traits\UserTrait;
 use OCP\IPreview;
-use OCP\Files\File;
 use OCP\Files\Mount\IMountPoint;
 
 /**
@@ -53,7 +52,7 @@ class PreviewManagerTest extends TestCase {
 	private $user;
 	/** @var View */
 	private $rootView;
-	/** @var IConfig */
+	/** @var IConfig | \PHPUnit_Framework_MockObject_MockObject */
 	private $config;
 	/** @var IPreview */
 	private $previewManager;
@@ -95,7 +94,8 @@ class PreviewManagerTest extends TestCase {
 		// return defaults
 		$this->config->method('getSystemValue')->will($this->returnArgument(1));
 
-		$file = $this->createMock(File::class);
+		/** @var FileInfo | \PHPUnit_Framework_MockObject_MockObject $file */
+		$file = $this->createMock(FileInfo::class);
 		$file->expects($this->atLeastOnce())
 			->method('getMimetype')
 			->willReturn('image/jpeg');
@@ -107,7 +107,8 @@ class PreviewManagerTest extends TestCase {
 		// return defaults
 		$this->config->method('getSystemValue')->with('enable_previews', true)->willReturn(false);
 
-		$file = $this->createMock(File::class);
+		/** @var FileInfo | \PHPUnit_Framework_MockObject_MockObject $file */
+		$file = $this->createMock(FileInfo::class);
 		$file->expects($this->never())->method('getMimetype');
 
 		$this->assertFalse($this->previewManager->isAvailable($file));
@@ -117,7 +118,8 @@ class PreviewManagerTest extends TestCase {
 		// return defaults
 		$this->config->method('getSystemValue')->will($this->returnArgument(1));
 
-		$file = $this->createMock(File::class);
+		/** @var FileInfo | \PHPUnit_Framework_MockObject_MockObject $file */
+		$file = $this->createMock(FileInfo::class);
 		$file->expects($this->atLeastOnce())
 			->method('getMimetype')
 			->willReturn('image/jpeg');
