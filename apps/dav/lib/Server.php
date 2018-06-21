@@ -260,6 +260,7 @@ class Server {
 					\OC::$server->getCommentsManager(),
 					$userSession
 				));
+
 				if ($view !== null) {
 					$this->server->addPlugin(new FilesReportPlugin(
 						$this->server->tree,
@@ -272,6 +273,11 @@ class Server {
 						$userFolder
 					));
 				}
+				$this->server->addPlugin(
+					new \OCA\DAV\Connector\Sabre\FilesSearchReportPlugin(
+						\OC::$server->getSearch()
+					)
+				);
 			}
 
 			// register plugins from apps
