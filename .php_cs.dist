@@ -23,7 +23,8 @@ $excludeDirs = [
     'lib/composer',
     'build',
     'apps/files_external/3rdparty',
-    'config'
+    'config',
+    'data'
 ];
 
 foreach ($dirIterator as $fileinfo) {
