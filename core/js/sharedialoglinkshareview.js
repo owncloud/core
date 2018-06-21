@@ -121,7 +121,10 @@
 			var deferred = $.Deferred();
 			var $el = this.$el;
 
-			var $password = $el.find('.linkPassText'),
+			var $dialog = $el,
+				$formElements = $el.find('input, textarea, select, button'),
+				$select2Elements = $el.find('.select2-search-choice-close'),
+				$password = $el.find('.linkPassText'),
 				$inputs = $el.find('.linkPassText, .expirationDate, .permission'), // all input fields combined
 				$errorMessageGlobal = $el.find('.error-message-global'),
 				$loading = $el.find('.loading'),
@@ -129,6 +132,10 @@
 				expirationDate = this.expirationView.getValue();
 
 			$el.find('.error-message').addClass('hidden');
+
+			// prevent tinkering with form while loading
+			$formElements.attr('disabled', true);
+			$select2Elements.addClass('hidden');
 
 			// remove errors (if present)
 			// ***
@@ -205,6 +212,8 @@
 					var msg = xhr.responseJSON.ocs.meta.message;
 					// destroy old tooltips
 					$loading.addClass('hidden');
+					$formElements.removeAttr('disabled');
+					$select2Elements.removeClass('hidden');
 					$errorMessageGlobal.removeClass('hidden').text(msg);
 					deferred.reject(self.model);
 				}

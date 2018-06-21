@@ -257,6 +257,23 @@ describe('OC.Share.ShareDialogLinkShareView', function() {
 			}
 		});
 
+		it('locks all input fields while processing', function() {
+			view._save();
+			expect(view.$('input, textarea, select, button').prop('disabled')).toEqual(true);
+		});
+		it('unlocks all input fields when saving failed', function() {
+			view._save();
+			saveStub.yieldTo('error', model, {
+				responseJSON: {
+					ocs: {
+						meta: {
+							message: 'Little error'
+						}
+					}
+				}
+			});
+			expect(view.$('input, textarea, select, button').prop('disabled')).toEqual(false);
+		});
 		it('reads values from the fields and saves', function() {
 			view.$('.linkPassText').val('newpassword');
 			view._save();
