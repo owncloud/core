@@ -22,6 +22,7 @@ namespace OCA\Files_Sharing\API;
 
 use OCA\Files_Sharing\AppInfo\Application;
 use OCA\Files_Sharing\Service\NotificationPublisher;
+use OCA\Files_Sharing\SharingBlacklist;
 
 class OCSShareWrapper {
 
@@ -47,7 +48,8 @@ class OCSShareWrapper {
 			\OC::$server->getL10N('files_sharing'),
 			\OC::$server->getConfig(),
 			$this->application->getContainer()->query(NotificationPublisher::class),
-			\OC::$server->getEventDispatcher()
+			\OC::$server->getEventDispatcher(),
+			$this->application->getContainer()->query(SharingBlacklist::class)
 		);
 	}
 
