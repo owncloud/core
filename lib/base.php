@@ -677,10 +677,14 @@ class OC {
 		}
 
 		//make sure temporary files are cleaned up
-		$tmpManager = \OC::$server->getTempManager();
-		\register_shutdown_function([$tmpManager, 'clean']);
-		$lockProvider = \OC::$server->getLockingProvider();
-		\register_shutdown_function([$lockProvider, 'releaseAll']);
+		\OC::$server->getShutdownHandler()->register(function () {
+			$tmpManager = \OC::$server->getTempManager();
+			$tmpManager->clean();
+		});
+		\OC::$server->getShutdownHandler()->register(function () {
+			$lockProvider = \OC::$server->getLockingProvider();
+			$lockProvider->releaseAll();
+		});
 
 		// Check whether the sample configuration has been copied
 		if ($systemConfig->getValue('copied_sample_config', false)) {
