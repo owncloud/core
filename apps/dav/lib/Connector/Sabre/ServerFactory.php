@@ -180,6 +180,11 @@ class ServerFactory {
 					\OC::$server->getGroupManager(),
 					$userFolder
 				));
+				$server->addPlugin(
+					new \OCA\DAV\Connector\Sabre\FilesSearchReportPlugin(
+						\OC::$server->getSearch()
+					)
+				);
 
 				// custom properties plugin must be the last one
 				$server->addPlugin(
