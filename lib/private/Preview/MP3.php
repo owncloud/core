@@ -27,6 +27,7 @@ namespace OC\Preview;
 
 use ID3Parser\ID3Parser;
 use OCP\Files\File;
+use OCP\Files\FileInfo;
 use OCP\Preview\IProvider2;
 
 class MP3 implements IProvider2 {
@@ -92,13 +93,9 @@ class MP3 implements IProvider2 {
 	}
 
 	/**
-	 * Check if a preview can be generated for $path
-	 *
-	 * @param File $file
-	 * @return bool
-	 * @since 10.1.0
+	 * @inheritdoc
 	 */
-	public function isAvailable(File $file) {
+	public function isAvailable(FileInfo $file) {
 		return true;
 	}
 }
