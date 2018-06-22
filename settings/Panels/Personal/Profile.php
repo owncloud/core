@@ -87,11 +87,14 @@ class Profile implements ISettings {
 			$activeLangCode
 		);
 
+		$selector = new Template('settings', 'language');
+		$selector->assign('selectId', 'languageinput');
+		$selector->assign('activelanguage', $userLang);
+		$selector->assign('commonlanguages', $commonLanguages);
+		$selector->assign('languages', $languages);
+
 		$tmpl = new Template('settings', 'panels/personal/profile');
 		$tmpl->assign('email', $this->userSession->getUser()->getEMailAddress());
-		$tmpl->assign('languages', $languages);
-		$tmpl->assign('commonlanguages', $commonLanguages);
-		$tmpl->assign('activelanguage', $userLang);
 		$tmpl->assign('displayName', $this->userSession->getUser()->getDisplayName());
 		$tmpl->assign('enableAvatars', $this->config->getSystemValue('enable_avatars', true) === true);
 		$tmpl->assign('avatarChangeSupported', $this->userSession->getUser()->canChangeAvatar());
@@ -100,6 +103,7 @@ class Profile implements ISettings {
 		$groups = $this->groupManager->getUserGroupIds($this->userSession->getUser());
 		\sort($groups);
 		$tmpl->assign('groups', $groups);
+		$tmpl->assign('languageSelector', $selector->fetchPage());
 		return $tmpl;
 	}
 
