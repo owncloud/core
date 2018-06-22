@@ -21,6 +21,7 @@
 
 namespace OC\Settings\Panels\Admin;
 
+use OC\Helper\LocaleHelper;
 use OC\Settings\Panels\Helper;
 use OCP\IConfig;
 use OCP\Settings\ISettings;
@@ -47,6 +48,38 @@ class FileSharing implements ISettings {
 	}
 
 	public function getPanel() {
+		$this->lfactory = \OC::$server->getL10NFactory();
+		$activeLangCode = $this->config->getAppValue(
+			'core',
+			'shareapi_public_notification_lang',
+			'owner'
+		);
+		$this->localeHelper = new LocaleHelper();
+		list($userLang, $commonLanguages, $languages) = $this->localeHelper->getNormalizedLanguages(
+			$this->lfactory,
+			$activeLangCode
+		);
+
+		// Allow reset to the defaults when mail notification is sent in the lang of owner
+		if ($userLang['code']  === "owner") {
+			$userLang['name'] = $this->l->t("Owner language");
+		} else {
+			\array_push(
+				$commonLanguages,
+				[
+					'code' => 'owner',
+					'name' => $this->l->t("Owner language")
+				]
+			);
+		}
+
+		$selector = new Template('settings', 'language');
+		$selector->assign('selectName', 'shareapi_public_notification_lang');
+		$selector->assign('selectId', 'shareapiPublicNotificationLang');
+		$selector->assign('activelanguage', $userLang);
+		$selector->assign('commonlanguages', $commonLanguages);
+		$selector->assign('languages', $languages);
+
 		$template = new Template('settings', 'panels/admin/filesharing');
 		$template->assign('allowResharing', $this->config->getAppValue('core', 'shareapi_allow_resharing', 'yes'));
 		$template->assign('shareAPIEnabled', $this->config->getAppValue('core', 'shareapi_enabled', 'yes'));
@@ -57,6 +90,7 @@ class FileSharing implements ISettings {
 		$template->assign('enforceLinkPasswordWriteOnly', $this->config->getAppValue('core', 'shareapi_enforce_links_password_write_only', 'no'));
 		$template->assign('shareDefaultExpireDateSet', $this->config->getAppValue('core', 'shareapi_default_expire_date', 'no'));
 		$template->assign('allowPublicMailNotification', $this->config->getAppValue('core', 'shareapi_allow_public_notification', 'no'));
+		$template->assign('publicMailNotificationLang', $selector->fetchPage());
 		$template->assign('allowSocialShare', $this->config->getAppValue('core', 'shareapi_allow_social_share', 'yes'));
 		$template->assign('allowGroupSharing', $this->config->getAppValue('core', 'shareapi_allow_group_sharing', 'yes'));
 		$template->assign('onlyShareWithGroupMembers', $this->helper->shareWithGroupMembersOnly());
