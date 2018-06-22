@@ -88,6 +88,7 @@ class Profile implements ISettings {
 		);
 
 		$selector = new Template('settings', 'language');
+		$selector->assign('selectName', 'lang');
 		$selector->assign('selectId', 'languageinput');
 		$selector->assign('activelanguage', $userLang);
 		$selector->assign('commonlanguages', $commonLanguages);

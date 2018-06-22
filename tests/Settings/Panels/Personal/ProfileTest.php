@@ -70,6 +70,6 @@ class ProfileTest extends \Test\TestCase {
 		$this->assertContains('test@example.com', $templateHtml);
 		$this->assertContains('<div id="groups" class="section">', $templateHtml);
 		$this->assertContains('group2', $templateHtml);
-		$this->assertContains('<form id="language" class="section">', $templateHtml);
+		$this->assertContains('<select id="languageinput" name="lang"', $templateHtml);
 	}
 }

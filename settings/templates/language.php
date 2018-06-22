@@ -1,4 +1,4 @@
-<select id="<?php p($_['selectId'])?>" name="lang" data-placeholder="<?php p($l->t('Language'));?>">
+<select id="<?php p($_['selectId'])?>" name="<?php p($_['selectName'])?>" data-placeholder="<?php p($l->t('Language'));?>">
 	<option value="<?php p($_['activelanguage']['code']);?>">
 		<?php p($_['activelanguage']['name']);?>
 	</option>
