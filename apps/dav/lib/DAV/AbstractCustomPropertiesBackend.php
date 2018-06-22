@@ -23,7 +23,7 @@ namespace OCA\DAV\DAV;
 
 use OCP\IDBConnection;
 use OCP\IUser;
-use Sabre\Dav\Exception\Forbidden;
+use Sabre\DAV\Exception\Forbidden;
 use Sabre\DAV\Exception\NotFound;
 use Sabre\DAV\Exception\ServiceUnavailable;
 use Sabre\DAV\INode;

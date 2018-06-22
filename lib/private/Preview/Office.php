@@ -66,7 +66,7 @@ abstract class Office implements IProvider2 {
 			$pathInfo = \pathinfo($absPath);
 			$pdfPreview = $tmpDir . '/' . $pathInfo['filename'] . '.pdf';
 
-			$pdf = new \imagick($pdfPreview . '[0]');
+			$pdf = new \Imagick($pdfPreview . '[0]');
 			$pdf->setImageFormat('jpg');
 		} catch (\Exception $e) {
 			\unlink($absPath);
