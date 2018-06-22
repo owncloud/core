@@ -1,7 +1,13 @@
 parameters:
   bootstrap: %currentWorkingDirectory%/lib/base.php
-  #autoload_directories:
-  #  - %currentWorkingDirectory%/apps/files_external/3rdparty
+  autoload_directories:
+    - %currentWorkingDirectory%/apps/files_sharing/appinfo/Migrations
+    - %currentWorkingDirectory%/apps/dav/appinfo/Migrations
+    - %currentWorkingDirectory%/apps/federatedfilesharing/appinfo/Migrations
+    - %currentWorkingDirectory%/apps/files_external/appinfo/Migrations
+    - %currentWorkingDirectory%/apps/files_sharing/appinfo/Migrations
+    - %currentWorkingDirectory%/apps/files_trashbin/appinfo/Migrations
+    - %currentWorkingDirectory%/core/Migrations
   excludes_analyse:
     - %currentWorkingDirectory%/core/templates/*
     - %currentWorkingDirectory%/core/routes.php
