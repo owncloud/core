@@ -482,6 +482,10 @@ class OC {
 		@\ini_set('gd.jpeg_ignore_warning', 1);
 	}
 
+	/**
+	 * @throws \OCP\AppFramework\QueryException
+	 * @codeCoverageIgnore
+	 */
 	public static function init() {
 		// calculate the root directories
 		OC::$SERVERROOT = \str_replace("\\", '/', \substr(__DIR__, 0, -4));
