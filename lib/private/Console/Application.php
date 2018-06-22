@@ -47,6 +47,9 @@ class Application {
 	/** @var IRequest */
 	private $request;
 
+	/** @var SymfonyApplication  */
+	private $application;
+
 	/**
 	 * @param IConfig $config
 	 * @param EventDispatcherInterface $dispatcher

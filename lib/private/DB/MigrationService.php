@@ -49,15 +49,20 @@ class MigrationService {
 	private $appName;
 	/** @var ILogger */
 	private $logger;
+	/** @var string  */
+	private $migrationsPath;
+	/** @var string  */
+	private $migrationsNamespace;
 
 	/**
 	 * MigrationService constructor.
 	 *
 	 * @param $appName
 	 * @param IDBConnection $connection
-	 * @param AppLocator $appLocator
 	 * @param IOutput|null $output
-	 * @throws \Exception
+	 * @param AppLocator $appLocator
+	 * @param ILogger|null $logger
+	 * @throws \OC\NeedsUpdateException
 	 */
 	public function __construct($appName,
 						IDBConnection $connection,
@@ -90,7 +95,7 @@ class MigrationService {
 		if (!\is_dir($this->migrationsPath)) {
 			if (!\mkdir($this->migrationsPath)) {
 				throw new \Exception("Could not create migration folder \"{$this->migrationsPath}\"");
-			};
+			}
 		}
 
 		// load the app so that app code can be used during migrations
