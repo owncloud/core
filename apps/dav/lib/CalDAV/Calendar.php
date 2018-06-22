@@ -102,7 +102,13 @@ class Calendar extends \Sabre\CalDAV\Calendar implements IShareable {
 				'principal' => $this->getOwner(),
 				'protected' => true,
 			]];
-		if ($this->getName() !== BirthdayService::BIRTHDAY_CALENDAR_URI) {
+		if ($this->getName() === BirthdayService::BIRTHDAY_CALENDAR_URI) {
+			$acl[] = [
+				'privilege' => '{DAV:}write-properties',
+				'principal' => $this->getOwner(),
+				'protected' => true,
+			];
+		} else {
 			$acl[] = [
 				'privilege' => '{DAV:}write',
 				'principal' => $this->getOwner(),

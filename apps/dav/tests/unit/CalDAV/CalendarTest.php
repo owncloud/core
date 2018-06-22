@@ -29,6 +29,7 @@ use OCP\IL10N;
 use Sabre\DAV\PropPatch;
 use Sabre\VObject\Reader;
 use Test\TestCase;
+use Sabre\DAV\Exception\Forbidden;
 
 class CalendarTest extends TestCase {
 
@@ -37,7 +38,7 @@ class CalendarTest extends TestCase {
 
 	public function setUp() {
 		parent::setUp();
-		$this->l10n = $this->getMockBuilder('\OCP\IL10N')
+		$this->l10n = $this->getMockBuilder(IL10N::class)
 			->disableOriginalConstructor()->getMock();
 		$this->l10n
 			->expects($this->any())
@@ -115,7 +116,7 @@ class CalendarTest extends TestCase {
 		$c = new Calendar($backend, $calendarInfo, $this->l10n);
 
 		if ($throws) {
-			$this->setExpectedException('\Sabre\DAV\Exception\Forbidden');
+			$this->expectException(Forbidden::class);
 		}
 		$c->propPatch(new PropPatch($mutations));
 		if (!$throws) {
@@ -157,6 +158,10 @@ class CalendarTest extends TestCase {
 		if ($uri === BirthdayService::BIRTHDAY_CALENDAR_URI) {
 			$expectedAcl = [[
 				'privilege' => '{DAV:}read',
+				'principal' => $hasOwnerSet ? 'user1' : 'user2',
+				'protected' => true
+			], [
+				'privilege' => '{DAV:}write-properties',
 				'principal' => $hasOwnerSet ? 'user1' : 'user2',
 				'protected' => true
 			]];
