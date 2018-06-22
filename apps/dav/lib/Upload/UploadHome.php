@@ -27,6 +27,7 @@ use OC\Files\View;
 use OCA\DAV\Connector\Sabre\Directory;
 use Sabre\DAV\Exception\Forbidden;
 use Sabre\DAV\ICollection;
+use Sabre\HTTP\URLUtil;
 
 class UploadHome implements ICollection {
 	private $principalInfo;
@@ -67,7 +68,8 @@ class UploadHome implements ICollection {
 	}
 
 	public function getName() {
-		return 'uploads';
+		list(, $name) = URLUtil::splitPath($this->principalInfo['uri']);
+		return $name;
 	}
 
 	public function setName($name) {

@@ -21,7 +21,10 @@
 
 namespace OCA\DAV\Upload;
 
+use OCA\DAV\Upload\Xml\Status;
 use Sabre\DAV\Exception\BadRequest;
+use Sabre\DAV\INode;
+use Sabre\DAV\PropFind;
 use Sabre\DAV\Server;
 use Sabre\DAV\ServerPlugin;
 
@@ -37,6 +40,7 @@ class ChunkingPlugin extends ServerPlugin {
 	 */
 	public function initialize(Server $server) {
 		$server->on('beforeMove', [$this, 'beforeMove']);
+		$server->on('propFind', [$this, 'propFind']);
 		$this->server = $server;
 	}
 
@@ -75,8 +79,13 @@ class ChunkingPlugin extends ServerPlugin {
 			return;
 		}
 
+		$node = $this->server->tree->getNodeForPath(dirname($path));
+		\OC::$server->getConfig()->setAppValue('dav', "uploads.{$node->getName()}.status", 0);
+
 		// do a move manually, skipping Sabre's default "delete" for existing nodes
 		$this->server->tree->move($path, $destination);
+
+		\OC::$server->getConfig()->setAppValue('dav', "uploads.{$node->getName()}.status", 1);
 
 		// trigger all default events (copied from CorePlugin::move)
 		$this->server->emit('afterMove', [$path, $destination]);
@@ -86,6 +95,11 @@ class ChunkingPlugin extends ServerPlugin {
 		$response = $this->server->httpResponse;
 		$response->setHeader('Content-Length', '0');
 		$response->setStatus(204);
+
+		\OC::$server->getConfig()->setAppValue('dav', "uploads.{$node->getName()}.fileId", $response->getHeader('OC-FileId'));
+		\OC::$server->getConfig()->setAppValue('dav', "uploads.{$node->getName()}.etag", $response->getHeader('ETag'));
+
+		// TODO: catch exception
 
 		return false;
 	}
@@ -102,5 +116,19 @@ class ChunkingPlugin extends ServerPlugin {
 		if ($expectedSize != $actualSize) {
 			throw new BadRequest("Chunks on server do not sum up to $expectedSize but to $actualSize");
 		}
+	}
+
+	public function propFind(PropFind $propFind, INode $node) {
+		$ns = '{http://owncloud.org/ns}';
+
+		if ($node instanceof UploadFolder) {
+			$propFind->handle($ns . 'assembly-status', function () use ($node) {
+				$status = \OC::$server->getConfig()->getAppValue('dav', "uploads.{$node->getName()}.status", null);
+				$fileId = \OC::$server->getConfig()->getAppValue('dav', "uploads.{$node->getName()}.fileId", null);
+				$etag = \OC::$server->getConfig()->getAppValue('dav', "uploads.{$node->getName()}.etag", null);
+				return new Status($status, $fileId, $etag);
+			});
+		}
+
 	}
 }
