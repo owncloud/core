@@ -110,7 +110,7 @@ class ImageExportPlugin extends ServerPlugin {
 
 			$val = $photo->getValue();
 			if ($photo->getValueType() === 'URI') {
-				$parsed = \Sabre\URI\parse($val);
+				$parsed = \Sabre\Uri\parse($val);
 				//only allow data://
 				if ($parsed['scheme'] !== 'data') {
 					return false;

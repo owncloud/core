@@ -728,7 +728,7 @@ class DAV extends Common {
 		if (isset($response['{DAV:}getetag'])) {
 			return \trim($response['{DAV:}getetag'], '"');
 		}
-		return parent::getEtag($path);
+		return parent::getETag($path);
 	}
 
 	/**
