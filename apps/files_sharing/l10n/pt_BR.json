@@ -45,6 +45,7 @@
     "Please specify a valid user" : "Por favor especifique um usuário válido",
     "Group sharing is disabled by the administrator" : "Grupo de compartilhamento foi desabilitado pelo administrador",
     "Please specify a valid group" : "Por favor especifique um grupo válido",
+    "The group is blacklisted for sharing" : "O grupo está na lista negra para compartilhamento",
     "Public link sharing is disabled by the administrator" : "Link de compartilhamento público foi desativado pelo administrador",
     "Public upload disabled by the administrator" : "Envio público foi desativado pelo administrador",
     "Public upload is only possible for publicly shared folders" : "Envio pública só é possível para pastas compartilhadas publicamente",
@@ -122,6 +123,9 @@
     "%s is publicly shared" : "%s foi compartilhado publicamente",
     "Download" : "Baixar",
     "Download %s" : "Baixar %s",
-    "Direct link" : "Link direto"
+    "Direct link" : "Link direto",
+    "Files Sharing" : "Compartilhamento de Arquivos",
+    "Exclude groups from receiving shares." : "Excluir grupos de receber compartilhamentos.",
+    "These groups will not receive shares. Members of the group can still send and receive shares outside of the group." : "Esses grupos não receberão compartilhamentos. Os membros do grupo ainda podem enviar e receber compartilhamentos fora do grupo."
 },"pluralForm" :"nplurals=2; plural=(n > 1);"
 }
