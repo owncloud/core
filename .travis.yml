@@ -1,7 +1,10 @@
-sudo: false
+sudo: required
 language: php
 php:
   - 7.1
+
+services:
+  - docker
 
 cache:
   directories:
@@ -44,7 +47,7 @@ install:
   - sh -c "if [ '$TEST_DAV' = '1' ]; then bash apps/dav/tests/ci/$TC/install.sh; fi"
 
 before_script:
-  - sh -c "if [ '$TC' = 'selenium' ]; then bash tests/travis/start_php_dev_server.sh; fi"
+  - sh -c "if [ '$TC' = 'selenium' ]; then bash tests/travis/start_docker.sh; fi"
 
 script:
   - sh -c "if [ '$TC' = 'syntax' ]; then make test-php-lint ; fi"
@@ -57,468 +60,468 @@ script:
 matrix:
   include:
     - php: 7.1
-      if: type = cron
+#      if: type = cron
       env: DB=pgsql TC=selenium BROWSER="chrome" BROWSER_VERSION="latest" BEHAT_SUITE="webUILogin" PLATFORM="Windows 10" TEST_DAV=0
       addons:
         apt: *common_apt
         hosts: *common_hosts
         sauce_connect: true
-    - php: 7.1
-      if: type = cron
-      env: DB=pgsql TC=selenium BROWSER="chrome" BROWSER_VERSION="latest" BEHAT_SUITE="webUIFavorites" PLATFORM="Windows 10" TEST_DAV=0
-      addons:
-        apt: *common_apt
-        hosts: *common_hosts
-        sauce_connect: true
-    - php: 7.1
-      if: type = cron
-      env: DB=pgsql TC=selenium BROWSER="chrome" BROWSER_VERSION="latest" BEHAT_SUITE="webUIPersonalSettings" PLATFORM="Windows 10" TEST_DAV=0
-      addons:
-        apt: *common_apt
-        hosts: *common_hosts
-        sauce_connect: true
-    - php: 7.1
-      if: type = cron
-      env: DB=pgsql TC=selenium BROWSER="chrome" BROWSER_VERSION="latest" BEHAT_SUITE="webUIFiles" PLATFORM="Windows 10" TEST_DAV=0
-      addons:
-        apt: *common_apt
-        hosts: *common_hosts
-        sauce_connect: true
-    - php: 7.1
-      if: type = cron
-      env: DB=pgsql TC=selenium BROWSER="chrome" BROWSER_VERSION="latest" BEHAT_SUITE="webUIMoveFilesFolders" PLATFORM="Windows 10" TEST_DAV=0
-      addons:
-        apt: *common_apt
-        hosts: *common_hosts
-        sauce_connect: true
-    - php: 7.1
-      if: type = cron
-      env: DB=pgsql TC=selenium BROWSER="chrome" BROWSER_VERSION="latest" BEHAT_SUITE="webUIRenameFiles" PLATFORM="Windows 10" TEST_DAV=0
-      addons:
-        apt: *common_apt
-        hosts: *common_hosts
-        sauce_connect: true
-    - php: 7.1
-      if: type = cron
-      env: DB=pgsql TC=selenium BROWSER="chrome" BROWSER_VERSION="latest" BEHAT_SUITE="webUIRenameFolders" PLATFORM="Windows 10" TEST_DAV=0
-      addons:
-        apt: *common_apt
-        hosts: *common_hosts
-        sauce_connect: true
-    - php: 7.1
-      if: type = cron
-      env: DB=pgsql TC=selenium BROWSER="chrome" BROWSER_VERSION="latest" BEHAT_SUITE="webUITrashbin" PLATFORM="Windows 10" TEST_DAV=0
-      addons:
-        apt: *common_apt
-        hosts: *common_hosts
-        sauce_connect: true
-    - php: 7.1
-      if: type = cron
-      env: DB=pgsql TC=selenium BROWSER="chrome" BROWSER_VERSION="latest" BEHAT_SUITE="webUISharingInternalGroups" PLATFORM="Windows 10" TEST_DAV=0
-      addons:
-        apt: *common_apt
-        hosts: *common_hosts
-        sauce_connect: true
-    - php: 7.1
-      if: type = cron
-      env: DB=pgsql TC=selenium BROWSER="chrome" BROWSER_VERSION="latest" BEHAT_SUITE="webUISharingInternalUsers" PLATFORM="Windows 10" TEST_DAV=0
-      addons:
-        apt: *common_apt
-        hosts: *common_hosts
-        sauce_connect: true
-    - php: 7.1
-      if: type = cron
-      env: DB=pgsql TC=selenium BROWSER="chrome" BROWSER_VERSION="latest" BEHAT_SUITE="webUISharingExternal" PLATFORM="Windows 10" TEST_DAV=0
-      addons:
-        apt: *common_apt
-        hosts: *common_hosts
-        sauce_connect: true
-    - php: 7.1
-      if: type = cron
-      env: DB=pgsql TC=selenium BROWSER="chrome" BROWSER_VERSION="latest" BEHAT_SUITE="webUIRestrictSharing" PLATFORM="Windows 10" TEST_DAV=0
-      addons:
-        apt: *common_apt
-        hosts: *common_hosts
-        sauce_connect: true
-    - php: 7.1
-      if: type = cron
-      env: DB=pgsql TC=selenium BROWSER="chrome" BROWSER_VERSION="latest" BEHAT_SUITE="webUIUpload" PLATFORM="Windows 10" TEST_DAV=0
-      addons:
-        apt: *common_apt
-        hosts: *common_hosts
-        sauce_connect: true
-    - php: 7.1
-      if: type = cron
-      env: DB=pgsql TC=selenium BROWSER="firefox" BROWSER_VERSION="57.0" BEHAT_SUITE="webUILogin" PLATFORM="Windows 10" TEST_DAV=0
-      addons:
-        apt: *common_apt
-        hosts: *common_hosts
-        sauce_connect: true
-    - php: 7.1
-      if: type = cron
-      env: DB=pgsql TC=selenium BROWSER="firefox" BROWSER_VERSION="57.0" BEHAT_SUITE="webUIFavorites" PLATFORM="Windows 10" TEST_DAV=0
-      addons:
-        apt: *common_apt
-        hosts: *common_hosts
-        sauce_connect: true
-    - php: 7.1
-      if: type = cron
-      env: DB=pgsql TC=selenium BROWSER="firefox" BROWSER_VERSION="57.0" BEHAT_SUITE="webUIPersonalSettings" PLATFORM="Windows 10" TEST_DAV=0
-      addons:
-        apt: *common_apt
-        hosts: *common_hosts
-        sauce_connect: true
-    - php: 7.1
-      if: type = cron
-      env: DB=pgsql TC=selenium BROWSER="firefox" BROWSER_VERSION="57.0" BEHAT_SUITE="webUIFiles" PLATFORM="Windows 10" TEST_DAV=0
-      addons:
-        apt: *common_apt
-        hosts: *common_hosts
-        sauce_connect: true
-    - php: 7.1
-      if: type = cron
-      env: DB=pgsql TC=selenium BROWSER="firefox" BROWSER_VERSION="57.0" BEHAT_SUITE="webUIMoveFilesFolders" PLATFORM="Windows 10" TEST_DAV=0
-      addons:
-        apt: *common_apt
-        hosts: *common_hosts
-        sauce_connect: true
-    - php: 7.1
-      if: type = cron
-      env: DB=pgsql TC=selenium BROWSER="firefox" BROWSER_VERSION="57.0" BEHAT_SUITE="webUIRenameFiles" PLATFORM="Windows 10" TEST_DAV=0
-      addons:
-        apt: *common_apt
-        hosts: *common_hosts
-        sauce_connect: true
-    - php: 7.1
-      if: type = cron
-      env: DB=pgsql TC=selenium BROWSER="firefox" BROWSER_VERSION="57.0" BEHAT_SUITE="webUIRenameFolders" PLATFORM="Windows 10" TEST_DAV=0
-      addons:
-        apt: *common_apt
-        hosts: *common_hosts
-        sauce_connect: true
-    - php: 7.1
-      if: type = cron
-      env: DB=pgsql TC=selenium BROWSER="firefox" BROWSER_VERSION="57.0" BEHAT_SUITE="webUITrashbin" PLATFORM="Windows 10" TEST_DAV=0
-      addons:
-        apt: *common_apt
-        hosts: *common_hosts
-        sauce_connect: true
-    - php: 7.1
-      if: type = cron
-      env: DB=pgsql TC=selenium BROWSER="firefox" BROWSER_VERSION="57.0" BEHAT_SUITE="webUISharingInternalGroups" PLATFORM="Windows 10" TEST_DAV=0
-      addons:
-        apt: *common_apt
-        hosts: *common_hosts
-        sauce_connect: true
-    - php: 7.1
-      if: type = cron
-      env: DB=pgsql TC=selenium BROWSER="firefox" BROWSER_VERSION="57.0" BEHAT_SUITE="webUISharingInternalUsers" PLATFORM="Windows 10" TEST_DAV=0
-      addons:
-        apt: *common_apt
-        hosts: *common_hosts
-        sauce_connect: true
-    - php: 7.1
-      if: type = cron
-      env: DB=pgsql TC=selenium BROWSER="firefox" BROWSER_VERSION="57.0" BEHAT_SUITE="webUISharingExternal" PLATFORM="Windows 10" TEST_DAV=0
-      addons:
-        apt: *common_apt
-        hosts: *common_hosts
-        sauce_connect: true
-    - php: 7.1
-      if: type = cron
-      env: DB=pgsql TC=selenium BROWSER="firefox" BROWSER_VERSION="57.0" BEHAT_SUITE="webUIRestrictSharing" PLATFORM="Windows 10" TEST_DAV=0
-      addons:
-        apt: *common_apt
-        hosts: *common_hosts
-        sauce_connect: true
-    - php: 7.1
-      if: type = cron
-      env: DB=pgsql TC=selenium BROWSER="firefox" BROWSER_VERSION="57.0" BEHAT_SUITE="webUIUpload" PLATFORM="Windows 10" TEST_DAV=0
-      addons:
-        apt: *common_apt
-        hosts: *common_hosts
-        sauce_connect: true
-    - php: 7.1
-      env: DB=pgsql TC=litmus-v1
-    - php: 7.1
-      env: DB=sqlite TC=carddav
-    - php: 7.1
-      env: DB=sqlite TC=caldav
-    - php: 7.1
-      env: DB=sqlite TC=caldav-old-endpoint
-    - php: 7.1
-      env: DB=sqlite TC=carddav-old-endpoint
-    - php: 7.1
-      if: type = cron
-      env: DB=pgsql TC=selenium BROWSER="chrome" BROWSER_VERSION="latest-1" BEHAT_SUITE="webUILogin" PLATFORM="Windows 10" TEST_DAV=0
-      addons:
-        apt: *common_apt
-        hosts: *common_hosts
-        sauce_connect: true
-    - php: 7.1
-      if: type = cron
-      env: DB=pgsql TC=selenium BROWSER="chrome" BROWSER_VERSION="latest-1" BEHAT_SUITE="webUIFavorites" PLATFORM="Windows 10" TEST_DAV=0
-      addons:
-        apt: *common_apt
-        hosts: *common_hosts
-        sauce_connect: true
-    - php: 7.1
-      if: type = cron
-      env: DB=pgsql TC=selenium BROWSER="chrome" BROWSER_VERSION="latest-1" BEHAT_SUITE="webUIPersonalSettings" PLATFORM="Windows 10" TEST_DAV=0
-      addons:
-        apt: *common_apt
-        hosts: *common_hosts
-        sauce_connect: true
-    - php: 7.1
-      if: type = cron
-      env: DB=pgsql TC=selenium BROWSER="chrome" BROWSER_VERSION="latest-1" BEHAT_SUITE="webUIFiles" PLATFORM="Windows 10" TEST_DAV=0
-      addons:
-        apt: *common_apt
-        hosts: *common_hosts
-        sauce_connect: true
-    - php: 7.1
-      if: type = cron
-      env: DB=pgsql TC=selenium BROWSER="chrome" BROWSER_VERSION="latest-1" BEHAT_SUITE="webUIMoveFilesFolders" PLATFORM="Windows 10" TEST_DAV=0
-      addons:
-        apt: *common_apt
-        hosts: *common_hosts
-        sauce_connect: true
-    - php: 7.1
-      if: type = cron
-      env: DB=pgsql TC=selenium BROWSER="chrome" BROWSER_VERSION="latest-1" BEHAT_SUITE="webUIRenameFiles" PLATFORM="Windows 10" TEST_DAV=0
-      addons:
-        apt: *common_apt
-        hosts: *common_hosts
-        sauce_connect: true
-    - php: 7.1
-      if: type = cron
-      env: DB=pgsql TC=selenium BROWSER="chrome" BROWSER_VERSION="latest-1" BEHAT_SUITE="webUIRenameFolders" PLATFORM="Windows 10" TEST_DAV=0
-      addons:
-        apt: *common_apt
-        hosts: *common_hosts
-        sauce_connect: true
-    - php: 7.1
-      if: type = cron
-      env: DB=pgsql TC=selenium BROWSER="chrome" BROWSER_VERSION="latest-1" BEHAT_SUITE="webUITrashbin" PLATFORM="Windows 10" TEST_DAV=0
-      addons:
-        apt: *common_apt
-        hosts: *common_hosts
-        sauce_connect: true
-    - php: 7.1
-      if: type = cron
-      env: DB=pgsql TC=selenium BROWSER="chrome" BROWSER_VERSION="latest-1" BEHAT_SUITE="webUISharingInternalGroups" PLATFORM="Windows 10" TEST_DAV=0
-      addons:
-        apt: *common_apt
-        hosts: *common_hosts
-        sauce_connect: true
-    - php: 7.1
-      if: type = cron
-      env: DB=pgsql TC=selenium BROWSER="chrome" BROWSER_VERSION="latest-1" BEHAT_SUITE="webUISharingInternalUsers" PLATFORM="Windows 10" TEST_DAV=0
-      addons:
-        apt: *common_apt
-        hosts: *common_hosts
-        sauce_connect: true
-    - php: 7.1
-      if: type = cron
-      env: DB=pgsql TC=selenium BROWSER="chrome" BROWSER_VERSION="latest-1" BEHAT_SUITE="webUISharingExternal" PLATFORM="Windows 10" TEST_DAV=0
-      addons:
-        apt: *common_apt
-        hosts: *common_hosts
-        sauce_connect: true
-    - php: 7.1
-      if: type = cron
-      env: DB=pgsql TC=selenium BROWSER="chrome" BROWSER_VERSION="latest-1" BEHAT_SUITE="webUIRestrictSharing" PLATFORM="Windows 10" TEST_DAV=0
-      addons:
-        apt: *common_apt
-        hosts: *common_hosts
-        sauce_connect: true
-    - php: 7.1
-      if: type = cron
-      env: DB=pgsql TC=selenium BROWSER="chrome" BROWSER_VERSION="latest-1" BEHAT_SUITE="webUIUpload" PLATFORM="Windows 10" TEST_DAV=0
-      addons:
-        apt: *common_apt
-        hosts: *common_hosts
-        sauce_connect: true
-    - php: 7.1
-      if: type = cron
-      env: DB=pgsql TC=selenium BROWSER="MicrosoftEdge" BROWSER_VERSION="latest" BEHAT_SUITE="webUILogin" PLATFORM="Windows 10" TEST_DAV=0
-      addons:
-        apt: *common_apt
-        hosts: *common_hosts
-        sauce_connect: true
-    - php: 7.1
-      if: type = cron
-      env: DB=pgsql TC=selenium BROWSER="MicrosoftEdge" BROWSER_VERSION="latest" BEHAT_SUITE="webUIFavorites" PLATFORM="Windows 10" TEST_DAV=0
-      addons:
-        apt: *common_apt
-        hosts: *common_hosts
-        sauce_connect: true
-    - php: 7.1
-      if: type = cron
-      env: DB=pgsql TC=selenium BROWSER="MicrosoftEdge" BROWSER_VERSION="latest" BEHAT_SUITE="webUIPersonalSettings" PLATFORM="Windows 10" TEST_DAV=0
-      addons:
-        apt: *common_apt
-        hosts: *common_hosts
-        sauce_connect: true
-    - php: 7.1
-      if: type = cron
-      env: DB=pgsql TC=selenium BROWSER="MicrosoftEdge" BROWSER_VERSION="latest" BEHAT_SUITE="webUIFiles" PLATFORM="Windows 10" TEST_DAV=0
-      addons:
-        apt: *common_apt
-        hosts: *common_hosts
-        sauce_connect: true
-    - php: 7.1
-      if: type = cron
-      env: DB=pgsql TC=selenium BROWSER="MicrosoftEdge" BROWSER_VERSION="latest" BEHAT_SUITE="webUIMoveFilesFolders" PLATFORM="Windows 10" TEST_DAV=0
-      addons:
-        apt: *common_apt
-        hosts: *common_hosts
-        sauce_connect: true
-    - php: 7.1
-      if: type = cron
-      env: DB=pgsql TC=selenium BROWSER="MicrosoftEdge" BROWSER_VERSION="latest" BEHAT_SUITE="webUIRenameFiles" PLATFORM="Windows 10" TEST_DAV=0
-      addons:
-        apt: *common_apt
-        hosts: *common_hosts
-        sauce_connect: true
-    - php: 7.1
-      if: type = cron
-      env: DB=pgsql TC=selenium BROWSER="MicrosoftEdge" BROWSER_VERSION="latest" BEHAT_SUITE="webUIRenameFolders" PLATFORM="Windows 10" TEST_DAV=0
-      addons:
-        apt: *common_apt
-        hosts: *common_hosts
-        sauce_connect: true
-    - php: 7.1
-      if: type = cron
-      env: DB=pgsql TC=selenium BROWSER="MicrosoftEdge" BROWSER_VERSION="latest" BEHAT_SUITE="webUITrashbin" PLATFORM="Windows 10" TEST_DAV=0
-      addons:
-        apt: *common_apt
-        hosts: *common_hosts
-        sauce_connect: true
-    - php: 7.1
-      if: type = cron
-      env: DB=pgsql TC=selenium BROWSER="MicrosoftEdge" BROWSER_VERSION="latest" BEHAT_SUITE="webUISharingInternalGroups" PLATFORM="Windows 10" TEST_DAV=0
-      addons:
-        apt: *common_apt
-        hosts: *common_hosts
-        sauce_connect: true
-    - php: 7.1
-      if: type = cron
-      env: DB=pgsql TC=selenium BROWSER="MicrosoftEdge" BROWSER_VERSION="latest" BEHAT_SUITE="webUISharingInternalUsers" PLATFORM="Windows 10" TEST_DAV=0
-      addons:
-        apt: *common_apt
-        hosts: *common_hosts
-        sauce_connect: true
-    - php: 7.1
-      if: type = cron
-      env: DB=pgsql TC=selenium BROWSER="MicrosoftEdge" BROWSER_VERSION="latest" BEHAT_SUITE="webUISharingExternal" PLATFORM="Windows 10" TEST_DAV=0
-      addons:
-        apt: *common_apt
-        hosts: *common_hosts
-        sauce_connect: true
-    - php: 7.1
-      if: type = cron
-      env: DB=pgsql TC=selenium BROWSER="MicrosoftEdge" BROWSER_VERSION="latest" BEHAT_SUITE="webUIRestrictSharing" PLATFORM="Windows 10" TEST_DAV=0
-      addons:
-        apt: *common_apt
-        hosts: *common_hosts
-        sauce_connect: true
-    - php: 7.1
-      if: type = cron
-      env: DB=pgsql TC=selenium BROWSER="MicrosoftEdge" BROWSER_VERSION="latest" BEHAT_SUITE="webUIUpload" PLATFORM="Windows 10" TEST_DAV=0
-      addons:
-        apt: *common_apt
-        hosts: *common_hosts
-        sauce_connect: true
-    - php: 7.1
-      if: type = cron
-      env: DB=pgsql TC=selenium BROWSER="internet explorer" BROWSER_VERSION="11.0" BEHAT_SUITE="webUILogin" PLATFORM="Windows 7" TEST_DAV=0
-      addons:
-        apt: *common_apt
-        hosts: *common_hosts
-        sauce_connect: true
-    - php: 7.1
-      if: type = cron
-      env: DB=pgsql TC=selenium BROWSER="internet explorer" BROWSER_VERSION="11.0" BEHAT_SUITE="webUIFavorites" PLATFORM="Windows 7" TEST_DAV=0
-      addons:
-        apt: *common_apt
-        hosts: *common_hosts
-        sauce_connect: true
-    - php: 7.1
-      if: type = cron
-      env: DB=pgsql TC=selenium BROWSER="internet explorer" BROWSER_VERSION="11.0" BEHAT_SUITE="webUIPersonalSettings" PLATFORM="Windows 7" TEST_DAV=0
-      addons:
-        apt: *common_apt
-        hosts: *common_hosts
-        sauce_connect: true
-    - php: 7.1
-      if: type = cron
-      env: DB=pgsql TC=selenium BROWSER="internet explorer" BROWSER_VERSION="11.0" BEHAT_SUITE="webUIFiles" PLATFORM="Windows 7" TEST_DAV=0
-      addons:
-        apt: *common_apt
-        hosts: *common_hosts
-        sauce_connect: true
-    - php: 7.1
-      if: type = cron
-      env: DB=pgsql TC=selenium BROWSER="internet explorer" BROWSER_VERSION="11.0" BEHAT_SUITE="webUIMoveFilesFolders" PLATFORM="Windows 7" TEST_DAV=0
-      addons:
-        apt: *common_apt
-        hosts: *common_hosts
-        sauce_connect: true
-    - php: 7.1
-      if: type = cron
-      env: DB=pgsql TC=selenium BROWSER="internet explorer" BROWSER_VERSION="11.0" BEHAT_SUITE="webUIRenameFiles" PLATFORM="Windows 7" TEST_DAV=0
-      addons:
-        apt: *common_apt
-        hosts: *common_hosts
-        sauce_connect: true
-    - php: 7.1
-      if: type = cron
-      env: DB=pgsql TC=selenium BROWSER="internet explorer" BROWSER_VERSION="11.0" BEHAT_SUITE="webUIRenameFolders" PLATFORM="Windows 7" TEST_DAV=0
-      addons:
-        apt: *common_apt
-        hosts: *common_hosts
-        sauce_connect: true
-    - php: 7.1
-      if: type = cron
-      env: DB=pgsql TC=selenium BROWSER="internet explorer" BROWSER_VERSION="11.0" BEHAT_SUITE="webUITrashbin" PLATFORM="Windows 7" TEST_DAV=0
-      addons:
-        apt: *common_apt
-        hosts: *common_hosts
-        sauce_connect: true
-    - php: 7.1
-      if: type = cron
-      env: DB=pgsql TC=selenium BROWSER="internet explorer" BROWSER_VERSION="11.0" BEHAT_SUITE="webUISharingInternalGroups" PLATFORM="Windows 7" TEST_DAV=0
-      addons:
-        apt: *common_apt
-        hosts: *common_hosts
-        sauce_connect: true
-    - php: 7.1
-      if: type = cron
-      env: DB=pgsql TC=selenium BROWSER="internet explorer" BROWSER_VERSION="11.0" BEHAT_SUITE="webUISharingInternalUsers" PLATFORM="Windows 7" TEST_DAV=0
-      addons:
-        apt: *common_apt
-        hosts: *common_hosts
-        sauce_connect: true
-    - php: 7.1
-      if: type = cron
-      env: DB=pgsql TC=selenium BROWSER="internet explorer" BROWSER_VERSION="11.0" BEHAT_SUITE="webUISharingExternal" PLATFORM="Windows 7" TEST_DAV=0
-      addons:
-        apt: *common_apt
-        hosts: *common_hosts
-        sauce_connect: true
-    - php: 7.1
-      if: type = cron
-      env: DB=pgsql TC=selenium BROWSER="internet explorer" BROWSER_VERSION="11.0" BEHAT_SUITE="webUIRestrictSharing" PLATFORM="Windows 7" TEST_DAV=0
-      addons:
-        apt: *common_apt
-        hosts: *common_hosts
-        sauce_connect: true
-    - php: 7.1
-      if: type = cron
-      env: DB=pgsql TC=selenium BROWSER="internet explorer" BROWSER_VERSION="11.0" BEHAT_SUITE="webUIUpload" PLATFORM="Windows 7" TEST_DAV=0
-      addons:
-        apt: *common_apt
-        hosts: *common_hosts
-        sauce_connect: true
+#    - php: 7.1
+#      if: type = cron
+#      env: DB=pgsql TC=selenium BROWSER="chrome" BROWSER_VERSION="latest" BEHAT_SUITE="webUIFavorites" PLATFORM="Windows 10" TEST_DAV=0
+#      addons:
+#        apt: *common_apt
+#        hosts: *common_hosts
+#        sauce_connect: true
+#    - php: 7.1
+#      if: type = cron
+#      env: DB=pgsql TC=selenium BROWSER="chrome" BROWSER_VERSION="latest" BEHAT_SUITE="webUIPersonalSettings" PLATFORM="Windows 10" TEST_DAV=0
+#      addons:
+#        apt: *common_apt
+#        hosts: *common_hosts
+#        sauce_connect: true
+#    - php: 7.1
+#      if: type = cron
+#      env: DB=pgsql TC=selenium BROWSER="chrome" BROWSER_VERSION="latest" BEHAT_SUITE="webUIFiles" PLATFORM="Windows 10" TEST_DAV=0
+#      addons:
+#        apt: *common_apt
+#        hosts: *common_hosts
+#        sauce_connect: true
+#    - php: 7.1
+#      if: type = cron
+#      env: DB=pgsql TC=selenium BROWSER="chrome" BROWSER_VERSION="latest" BEHAT_SUITE="webUIMoveFilesFolders" PLATFORM="Windows 10" TEST_DAV=0
+#      addons:
+#        apt: *common_apt
+#        hosts: *common_hosts
+#        sauce_connect: true
+#    - php: 7.1
+#      if: type = cron
+#      env: DB=pgsql TC=selenium BROWSER="chrome" BROWSER_VERSION="latest" BEHAT_SUITE="webUIRenameFiles" PLATFORM="Windows 10" TEST_DAV=0
+#      addons:
+#        apt: *common_apt
+#        hosts: *common_hosts
+#        sauce_connect: true
+#    - php: 7.1
+#      if: type = cron
+#      env: DB=pgsql TC=selenium BROWSER="chrome" BROWSER_VERSION="latest" BEHAT_SUITE="webUIRenameFolders" PLATFORM="Windows 10" TEST_DAV=0
+#      addons:
+#        apt: *common_apt
+#        hosts: *common_hosts
+#        sauce_connect: true
+#    - php: 7.1
+#      if: type = cron
+#      env: DB=pgsql TC=selenium BROWSER="chrome" BROWSER_VERSION="latest" BEHAT_SUITE="webUITrashbin" PLATFORM="Windows 10" TEST_DAV=0
+#      addons:
+#        apt: *common_apt
+#        hosts: *common_hosts
+#        sauce_connect: true
+#    - php: 7.1
+#      if: type = cron
+#      env: DB=pgsql TC=selenium BROWSER="chrome" BROWSER_VERSION="latest" BEHAT_SUITE="webUISharingInternalGroups" PLATFORM="Windows 10" TEST_DAV=0
+#      addons:
+#        apt: *common_apt
+#        hosts: *common_hosts
+#        sauce_connect: true
+#    - php: 7.1
+#      if: type = cron
+#      env: DB=pgsql TC=selenium BROWSER="chrome" BROWSER_VERSION="latest" BEHAT_SUITE="webUISharingInternalUsers" PLATFORM="Windows 10" TEST_DAV=0
+#      addons:
+#        apt: *common_apt
+#        hosts: *common_hosts
+#        sauce_connect: true
+#    - php: 7.1
+#      if: type = cron
+#      env: DB=pgsql TC=selenium BROWSER="chrome" BROWSER_VERSION="latest" BEHAT_SUITE="webUISharingExternal" PLATFORM="Windows 10" TEST_DAV=0
+#      addons:
+#        apt: *common_apt
+#        hosts: *common_hosts
+#        sauce_connect: true
+#    - php: 7.1
+#      if: type = cron
+#      env: DB=pgsql TC=selenium BROWSER="chrome" BROWSER_VERSION="latest" BEHAT_SUITE="webUIRestrictSharing" PLATFORM="Windows 10" TEST_DAV=0
+#      addons:
+#        apt: *common_apt
+#        hosts: *common_hosts
+#        sauce_connect: true
+#    - php: 7.1
+#      if: type = cron
+#      env: DB=pgsql TC=selenium BROWSER="chrome" BROWSER_VERSION="latest" BEHAT_SUITE="webUIUpload" PLATFORM="Windows 10" TEST_DAV=0
+#      addons:
+#        apt: *common_apt
+#        hosts: *common_hosts
+#        sauce_connect: true
+#    - php: 7.1
+#      if: type = cron
+#      env: DB=pgsql TC=selenium BROWSER="firefox" BROWSER_VERSION="57.0" BEHAT_SUITE="webUILogin" PLATFORM="Windows 10" TEST_DAV=0
+#      addons:
+#        apt: *common_apt
+#        hosts: *common_hosts
+#        sauce_connect: true
+#    - php: 7.1
+#      if: type = cron
+#      env: DB=pgsql TC=selenium BROWSER="firefox" BROWSER_VERSION="57.0" BEHAT_SUITE="webUIFavorites" PLATFORM="Windows 10" TEST_DAV=0
+#      addons:
+#        apt: *common_apt
+#        hosts: *common_hosts
+#        sauce_connect: true
+#    - php: 7.1
+#      if: type = cron
+#      env: DB=pgsql TC=selenium BROWSER="firefox" BROWSER_VERSION="57.0" BEHAT_SUITE="webUIPersonalSettings" PLATFORM="Windows 10" TEST_DAV=0
+#      addons:
+#        apt: *common_apt
+#        hosts: *common_hosts
+#        sauce_connect: true
+#    - php: 7.1
+#      if: type = cron
+#      env: DB=pgsql TC=selenium BROWSER="firefox" BROWSER_VERSION="57.0" BEHAT_SUITE="webUIFiles" PLATFORM="Windows 10" TEST_DAV=0
+#      addons:
+#        apt: *common_apt
+#        hosts: *common_hosts
+#        sauce_connect: true
+#    - php: 7.1
+#      if: type = cron
+#      env: DB=pgsql TC=selenium BROWSER="firefox" BROWSER_VERSION="57.0" BEHAT_SUITE="webUIMoveFilesFolders" PLATFORM="Windows 10" TEST_DAV=0
+#      addons:
+#        apt: *common_apt
+#        hosts: *common_hosts
+#        sauce_connect: true
+#    - php: 7.1
+#      if: type = cron
+#      env: DB=pgsql TC=selenium BROWSER="firefox" BROWSER_VERSION="57.0" BEHAT_SUITE="webUIRenameFiles" PLATFORM="Windows 10" TEST_DAV=0
+#      addons:
+#        apt: *common_apt
+#        hosts: *common_hosts
+#        sauce_connect: true
+#    - php: 7.1
+#      if: type = cron
+#      env: DB=pgsql TC=selenium BROWSER="firefox" BROWSER_VERSION="57.0" BEHAT_SUITE="webUIRenameFolders" PLATFORM="Windows 10" TEST_DAV=0
+#      addons:
+#        apt: *common_apt
+#        hosts: *common_hosts
+#        sauce_connect: true
+#    - php: 7.1
+#      if: type = cron
+#      env: DB=pgsql TC=selenium BROWSER="firefox" BROWSER_VERSION="57.0" BEHAT_SUITE="webUITrashbin" PLATFORM="Windows 10" TEST_DAV=0
+#      addons:
+#        apt: *common_apt
+#        hosts: *common_hosts
+#        sauce_connect: true
+#    - php: 7.1
+#      if: type = cron
+#      env: DB=pgsql TC=selenium BROWSER="firefox" BROWSER_VERSION="57.0" BEHAT_SUITE="webUISharingInternalGroups" PLATFORM="Windows 10" TEST_DAV=0
+#      addons:
+#        apt: *common_apt
+#        hosts: *common_hosts
+#        sauce_connect: true
+#    - php: 7.1
+#      if: type = cron
+#      env: DB=pgsql TC=selenium BROWSER="firefox" BROWSER_VERSION="57.0" BEHAT_SUITE="webUISharingInternalUsers" PLATFORM="Windows 10" TEST_DAV=0
+#      addons:
+#        apt: *common_apt
+#        hosts: *common_hosts
+#        sauce_connect: true
+#    - php: 7.1
+#      if: type = cron
+#      env: DB=pgsql TC=selenium BROWSER="firefox" BROWSER_VERSION="57.0" BEHAT_SUITE="webUISharingExternal" PLATFORM="Windows 10" TEST_DAV=0
+#      addons:
+#        apt: *common_apt
+#        hosts: *common_hosts
+#        sauce_connect: true
+#    - php: 7.1
+#      if: type = cron
+#      env: DB=pgsql TC=selenium BROWSER="firefox" BROWSER_VERSION="57.0" BEHAT_SUITE="webUIRestrictSharing" PLATFORM="Windows 10" TEST_DAV=0
+#      addons:
+#        apt: *common_apt
+#        hosts: *common_hosts
+#        sauce_connect: true
+#    - php: 7.1
+#      if: type = cron
+#      env: DB=pgsql TC=selenium BROWSER="firefox" BROWSER_VERSION="57.0" BEHAT_SUITE="webUIUpload" PLATFORM="Windows 10" TEST_DAV=0
+#      addons:
+#        apt: *common_apt
+#        hosts: *common_hosts
+#        sauce_connect: true
+#    - php: 7.1
+#      env: DB=pgsql TC=litmus-v1
+#    - php: 7.1
+#      env: DB=sqlite TC=carddav
+#    - php: 7.1
+#      env: DB=sqlite TC=caldav
+#    - php: 7.1
+#      env: DB=sqlite TC=caldav-old-endpoint
+#    - php: 7.1
+#      env: DB=sqlite TC=carddav-old-endpoint
+#    - php: 7.1
+#      if: type = cron
+#      env: DB=pgsql TC=selenium BROWSER="chrome" BROWSER_VERSION="latest-1" BEHAT_SUITE="webUILogin" PLATFORM="Windows 10" TEST_DAV=0
+#      addons:
+#        apt: *common_apt
+#        hosts: *common_hosts
+#        sauce_connect: true
+#    - php: 7.1
+#      if: type = cron
+#      env: DB=pgsql TC=selenium BROWSER="chrome" BROWSER_VERSION="latest-1" BEHAT_SUITE="webUIFavorites" PLATFORM="Windows 10" TEST_DAV=0
+#      addons:
+#        apt: *common_apt
+#        hosts: *common_hosts
+#        sauce_connect: true
+#    - php: 7.1
+#      if: type = cron
+#      env: DB=pgsql TC=selenium BROWSER="chrome" BROWSER_VERSION="latest-1" BEHAT_SUITE="webUIPersonalSettings" PLATFORM="Windows 10" TEST_DAV=0
+#      addons:
+#        apt: *common_apt
+#        hosts: *common_hosts
+#        sauce_connect: true
+#    - php: 7.1
+#      if: type = cron
+#      env: DB=pgsql TC=selenium BROWSER="chrome" BROWSER_VERSION="latest-1" BEHAT_SUITE="webUIFiles" PLATFORM="Windows 10" TEST_DAV=0
+#      addons:
+#        apt: *common_apt
+#        hosts: *common_hosts
+#        sauce_connect: true
+#    - php: 7.1
+#      if: type = cron
+#      env: DB=pgsql TC=selenium BROWSER="chrome" BROWSER_VERSION="latest-1" BEHAT_SUITE="webUIMoveFilesFolders" PLATFORM="Windows 10" TEST_DAV=0
+#      addons:
+#        apt: *common_apt
+#        hosts: *common_hosts
+#        sauce_connect: true
+#    - php: 7.1
+#      if: type = cron
+#      env: DB=pgsql TC=selenium BROWSER="chrome" BROWSER_VERSION="latest-1" BEHAT_SUITE="webUIRenameFiles" PLATFORM="Windows 10" TEST_DAV=0
+#      addons:
+#        apt: *common_apt
+#        hosts: *common_hosts
+#        sauce_connect: true
+#    - php: 7.1
+#      if: type = cron
+#      env: DB=pgsql TC=selenium BROWSER="chrome" BROWSER_VERSION="latest-1" BEHAT_SUITE="webUIRenameFolders" PLATFORM="Windows 10" TEST_DAV=0
+#      addons:
+#        apt: *common_apt
+#        hosts: *common_hosts
+#        sauce_connect: true
+#    - php: 7.1
+#      if: type = cron
+#      env: DB=pgsql TC=selenium BROWSER="chrome" BROWSER_VERSION="latest-1" BEHAT_SUITE="webUITrashbin" PLATFORM="Windows 10" TEST_DAV=0
+#      addons:
+#        apt: *common_apt
+#        hosts: *common_hosts
+#        sauce_connect: true
+#    - php: 7.1
+#      if: type = cron
+#      env: DB=pgsql TC=selenium BROWSER="chrome" BROWSER_VERSION="latest-1" BEHAT_SUITE="webUISharingInternalGroups" PLATFORM="Windows 10" TEST_DAV=0
+#      addons:
+#        apt: *common_apt
+#        hosts: *common_hosts
+#        sauce_connect: true
+#    - php: 7.1
+#      if: type = cron
+#      env: DB=pgsql TC=selenium BROWSER="chrome" BROWSER_VERSION="latest-1" BEHAT_SUITE="webUISharingInternalUsers" PLATFORM="Windows 10" TEST_DAV=0
+#      addons:
+#        apt: *common_apt
+#        hosts: *common_hosts
+#        sauce_connect: true
+#    - php: 7.1
+#      if: type = cron
+#      env: DB=pgsql TC=selenium BROWSER="chrome" BROWSER_VERSION="latest-1" BEHAT_SUITE="webUISharingExternal" PLATFORM="Windows 10" TEST_DAV=0
+#      addons:
+#        apt: *common_apt
+#        hosts: *common_hosts
+#        sauce_connect: true
+#    - php: 7.1
+#      if: type = cron
+#      env: DB=pgsql TC=selenium BROWSER="chrome" BROWSER_VERSION="latest-1" BEHAT_SUITE="webUIRestrictSharing" PLATFORM="Windows 10" TEST_DAV=0
+#      addons:
+#        apt: *common_apt
+#        hosts: *common_hosts
+#        sauce_connect: true
+#    - php: 7.1
+#      if: type = cron
+#      env: DB=pgsql TC=selenium BROWSER="chrome" BROWSER_VERSION="latest-1" BEHAT_SUITE="webUIUpload" PLATFORM="Windows 10" TEST_DAV=0
+#      addons:
+#        apt: *common_apt
+#        hosts: *common_hosts
+#        sauce_connect: true
+#    - php: 7.1
+#      if: type = cron
+#      env: DB=pgsql TC=selenium BROWSER="MicrosoftEdge" BROWSER_VERSION="latest" BEHAT_SUITE="webUILogin" PLATFORM="Windows 10" TEST_DAV=0
+#      addons:
+#        apt: *common_apt
+#        hosts: *common_hosts
+#        sauce_connect: true
+#    - php: 7.1
+#      if: type = cron
+#      env: DB=pgsql TC=selenium BROWSER="MicrosoftEdge" BROWSER_VERSION="latest" BEHAT_SUITE="webUIFavorites" PLATFORM="Windows 10" TEST_DAV=0
+#      addons:
+#        apt: *common_apt
+#        hosts: *common_hosts
+#        sauce_connect: true
+#    - php: 7.1
+#      if: type = cron
+#      env: DB=pgsql TC=selenium BROWSER="MicrosoftEdge" BROWSER_VERSION="latest" BEHAT_SUITE="webUIPersonalSettings" PLATFORM="Windows 10" TEST_DAV=0
+#      addons:
+#        apt: *common_apt
+#        hosts: *common_hosts
+#        sauce_connect: true
+#    - php: 7.1
+#      if: type = cron
+#      env: DB=pgsql TC=selenium BROWSER="MicrosoftEdge" BROWSER_VERSION="latest" BEHAT_SUITE="webUIFiles" PLATFORM="Windows 10" TEST_DAV=0
+#      addons:
+#        apt: *common_apt
+#        hosts: *common_hosts
+#        sauce_connect: true
+#    - php: 7.1
+#      if: type = cron
+#      env: DB=pgsql TC=selenium BROWSER="MicrosoftEdge" BROWSER_VERSION="latest" BEHAT_SUITE="webUIMoveFilesFolders" PLATFORM="Windows 10" TEST_DAV=0
+#      addons:
+#        apt: *common_apt
+#        hosts: *common_hosts
+#        sauce_connect: true
+#    - php: 7.1
+#      if: type = cron
+#      env: DB=pgsql TC=selenium BROWSER="MicrosoftEdge" BROWSER_VERSION="latest" BEHAT_SUITE="webUIRenameFiles" PLATFORM="Windows 10" TEST_DAV=0
+#      addons:
+#        apt: *common_apt
+#        hosts: *common_hosts
+#        sauce_connect: true
+#    - php: 7.1
+#      if: type = cron
+#      env: DB=pgsql TC=selenium BROWSER="MicrosoftEdge" BROWSER_VERSION="latest" BEHAT_SUITE="webUIRenameFolders" PLATFORM="Windows 10" TEST_DAV=0
+#      addons:
+#        apt: *common_apt
+#        hosts: *common_hosts
+#        sauce_connect: true
+#    - php: 7.1
+#      if: type = cron
+#      env: DB=pgsql TC=selenium BROWSER="MicrosoftEdge" BROWSER_VERSION="latest" BEHAT_SUITE="webUITrashbin" PLATFORM="Windows 10" TEST_DAV=0
+#      addons:
+#        apt: *common_apt
+#        hosts: *common_hosts
+#        sauce_connect: true
+#    - php: 7.1
+#      if: type = cron
+#      env: DB=pgsql TC=selenium BROWSER="MicrosoftEdge" BROWSER_VERSION="latest" BEHAT_SUITE="webUISharingInternalGroups" PLATFORM="Windows 10" TEST_DAV=0
+#      addons:
+#        apt: *common_apt
+#        hosts: *common_hosts
+#        sauce_connect: true
+#    - php: 7.1
+#      if: type = cron
+#      env: DB=pgsql TC=selenium BROWSER="MicrosoftEdge" BROWSER_VERSION="latest" BEHAT_SUITE="webUISharingInternalUsers" PLATFORM="Windows 10" TEST_DAV=0
+#      addons:
+#        apt: *common_apt
+#        hosts: *common_hosts
+#        sauce_connect: true
+#    - php: 7.1
+#      if: type = cron
+#      env: DB=pgsql TC=selenium BROWSER="MicrosoftEdge" BROWSER_VERSION="latest" BEHAT_SUITE="webUISharingExternal" PLATFORM="Windows 10" TEST_DAV=0
+#      addons:
+#        apt: *common_apt
+#        hosts: *common_hosts
+#        sauce_connect: true
+#    - php: 7.1
+#      if: type = cron
+#      env: DB=pgsql TC=selenium BROWSER="MicrosoftEdge" BROWSER_VERSION="latest" BEHAT_SUITE="webUIRestrictSharing" PLATFORM="Windows 10" TEST_DAV=0
+#      addons:
+#        apt: *common_apt
+#        hosts: *common_hosts
+#        sauce_connect: true
+#    - php: 7.1
+#      if: type = cron
+#      env: DB=pgsql TC=selenium BROWSER="MicrosoftEdge" BROWSER_VERSION="latest" BEHAT_SUITE="webUIUpload" PLATFORM="Windows 10" TEST_DAV=0
+#      addons:
+#        apt: *common_apt
+#        hosts: *common_hosts
+#        sauce_connect: true
+#    - php: 7.1
+#      if: type = cron
+#      env: DB=pgsql TC=selenium BROWSER="internet explorer" BROWSER_VERSION="11.0" BEHAT_SUITE="webUILogin" PLATFORM="Windows 7" TEST_DAV=0
+#      addons:
+#        apt: *common_apt
+#        hosts: *common_hosts
+#        sauce_connect: true
+#    - php: 7.1
+#      if: type = cron
+#      env: DB=pgsql TC=selenium BROWSER="internet explorer" BROWSER_VERSION="11.0" BEHAT_SUITE="webUIFavorites" PLATFORM="Windows 7" TEST_DAV=0
+#      addons:
+#        apt: *common_apt
+#        hosts: *common_hosts
+#        sauce_connect: true
+#    - php: 7.1
+#      if: type = cron
+#      env: DB=pgsql TC=selenium BROWSER="internet explorer" BROWSER_VERSION="11.0" BEHAT_SUITE="webUIPersonalSettings" PLATFORM="Windows 7" TEST_DAV=0
+#      addons:
+#        apt: *common_apt
+#        hosts: *common_hosts
+#        sauce_connect: true
+#    - php: 7.1
+#      if: type = cron
+#      env: DB=pgsql TC=selenium BROWSER="internet explorer" BROWSER_VERSION="11.0" BEHAT_SUITE="webUIFiles" PLATFORM="Windows 7" TEST_DAV=0
+#      addons:
+#        apt: *common_apt
+#        hosts: *common_hosts
+#        sauce_connect: true
+#    - php: 7.1
+#      if: type = cron
+#      env: DB=pgsql TC=selenium BROWSER="internet explorer" BROWSER_VERSION="11.0" BEHAT_SUITE="webUIMoveFilesFolders" PLATFORM="Windows 7" TEST_DAV=0
+#      addons:
+#        apt: *common_apt
+#        hosts: *common_hosts
+#        sauce_connect: true
+#    - php: 7.1
+#      if: type = cron
+#      env: DB=pgsql TC=selenium BROWSER="internet explorer" BROWSER_VERSION="11.0" BEHAT_SUITE="webUIRenameFiles" PLATFORM="Windows 7" TEST_DAV=0
+#      addons:
+#        apt: *common_apt
+#        hosts: *common_hosts
+#        sauce_connect: true
+#    - php: 7.1
+#      if: type = cron
+#      env: DB=pgsql TC=selenium BROWSER="internet explorer" BROWSER_VERSION="11.0" BEHAT_SUITE="webUIRenameFolders" PLATFORM="Windows 7" TEST_DAV=0
+#      addons:
+#        apt: *common_apt
+#        hosts: *common_hosts
+#        sauce_connect: true
+#    - php: 7.1
+#      if: type = cron
+#      env: DB=pgsql TC=selenium BROWSER="internet explorer" BROWSER_VERSION="11.0" BEHAT_SUITE="webUITrashbin" PLATFORM="Windows 7" TEST_DAV=0
+#      addons:
+#        apt: *common_apt
+#        hosts: *common_hosts
+#        sauce_connect: true
+#    - php: 7.1
+#      if: type = cron
+#      env: DB=pgsql TC=selenium BROWSER="internet explorer" BROWSER_VERSION="11.0" BEHAT_SUITE="webUISharingInternalGroups" PLATFORM="Windows 7" TEST_DAV=0
+#      addons:
+#        apt: *common_apt
+#        hosts: *common_hosts
+#        sauce_connect: true
+#    - php: 7.1
+#      if: type = cron
+#      env: DB=pgsql TC=selenium BROWSER="internet explorer" BROWSER_VERSION="11.0" BEHAT_SUITE="webUISharingInternalUsers" PLATFORM="Windows 7" TEST_DAV=0
+#      addons:
+#        apt: *common_apt
+#        hosts: *common_hosts
+#        sauce_connect: true
+#    - php: 7.1
+#      if: type = cron
+#      env: DB=pgsql TC=selenium BROWSER="internet explorer" BROWSER_VERSION="11.0" BEHAT_SUITE="webUISharingExternal" PLATFORM="Windows 7" TEST_DAV=0
+#      addons:
+#        apt: *common_apt
+#        hosts: *common_hosts
+#        sauce_connect: true
+#    - php: 7.1
+#      if: type = cron
+#      env: DB=pgsql TC=selenium BROWSER="internet explorer" BROWSER_VERSION="11.0" BEHAT_SUITE="webUIRestrictSharing" PLATFORM="Windows 7" TEST_DAV=0
+#      addons:
+#        apt: *common_apt
+#        hosts: *common_hosts
+#        sauce_connect: true
+#    - php: 7.1
+#      if: type = cron
+#      env: DB=pgsql TC=selenium BROWSER="internet explorer" BROWSER_VERSION="11.0" BEHAT_SUITE="webUIUpload" PLATFORM="Windows 7" TEST_DAV=0
+#      addons:
+#        apt: *common_apt
+#        hosts: *common_hosts
+#        sauce_connect: true
   fast_finish: true
