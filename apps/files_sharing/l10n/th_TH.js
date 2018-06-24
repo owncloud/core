@@ -47,6 +47,7 @@ OC.L10N.register(
     "Please specify a valid user" : "โปรดระบุผู้ใช้ให้ถูกต้อง",
     "Group sharing is disabled by the administrator" : "การแชร์กลุ่มถูกปิดใช้งานโดยผู้ดูแลระบบ",
     "Please specify a valid group" : "โปรดระบุกลุ่มให้ถูกต้อง",
+    "The group is blacklisted for sharing" : "กลุ่มถูกขึ้นบัญชีดำสำหรับการแชร์",
     "Public link sharing is disabled by the administrator" : "แชร์ลิงก์สาธารณะถูกปิดใช้งานโดยผู้ดูแลระบบ",
     "Public upload disabled by the administrator" : "อัพโหลดสาธารณะถูกปิดใช้งานโดยผู้ดูแลระบบ",
     "Public upload is only possible for publicly shared folders" : "อัพโหลดสาธารณะจะทำได้เฉพาะโฟลเดอร์ที่แชร์กับสาธารณะ",
@@ -124,6 +125,9 @@ OC.L10N.register(
     "%s is publicly shared" : "%s ได้ถูกแชร์สู่สาธารณะแล้ว",
     "Download" : "ดาวน์โหลด",
     "Download %s" : "ดาวน์โหลด %s",
-    "Direct link" : "ลิงก์โดยตรง"
+    "Direct link" : "ลิงก์โดยตรง",
+    "Files Sharing" : "กำลังแชร์ไฟล์",
+    "Exclude groups from receiving shares." : "ยกเว้นกลุ่มที่ได้รับการแชร์",
+    "These groups will not receive shares. Members of the group can still send and receive shares outside of the group." : "กลุ่มเหล่านี้จะไม่ได้รับการแชร์ สมาชิกของกลุ่มยังสามารถส่งและรับการแชร์ที่อยู่นอกกลุ่มได้"
 },
 "nplurals=1; plural=0;");
