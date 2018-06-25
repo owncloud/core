@@ -21,59 +21,59 @@
 
 namespace OCA\DAV\Tests\Unit\JobStatus;
 
-use OCA\DAV\JobStatus\Entity\JobStatus as JobStatusEntity;
-use OCA\DAV\JobStatus\Entity\JobStatusMapper;
-use OCA\DAV\JobStatus\Home;
+use OCA\DAV\JobStatus\EventStreamPlugin;
 use OCA\DAV\JobStatus\JobStatus;
-use OCP\AppFramework\Db\DoesNotExistException;
+use OCA\DAV\Tree;
+use Sabre\DAV\Exception\NotImplemented;
+use Sabre\DAV\Server;
+use Sabre\HTTP\Request;
+use Sabre\HTTP\Response;
 use Test\TestCase;
 
+interface TestSapi {
+	public function sendResponse(Response $response);
+}
+
 /**
- * Class HomeTest
+ * Class EventStreamPluginTest
  *
  * @package OCA\DAV\Tests\Unit\JobStatus
  */
-class HomeTest extends TestCase {
-
-	public function testGetName() {
-		/** @var JobStatusMapper | \PHPUnit_Framework_MockObject_MockObject $mapper */
-		$mapper = $this->createMock(JobStatusMapper::class);
-		$home = new Home(['uri' => 'principals/users/user1'], $mapper);
-		$this->assertEquals('user1', $home->getName());
-	}
+class EventStreamPluginTest extends TestCase {
 
 	/**
-	 * @expectedException \Sabre\DAV\Exception\MethodNotAllowed
+	 * @expectedException \Sabre\DAV\Exception\NotImplemented
 	 */
-	public function testGetChildren() {
-		/** @var JobStatusMapper | \PHPUnit_Framework_MockObject_MockObject $mapper */
-		$mapper = $this->createMock(JobStatusMapper::class);
-		$home = new Home(['uri' => 'principals/users/user1'], $mapper);
-		$home->getChildren();
-	}
+	public function testSSE() {
+		// mock dav server
+		$server = $this->createMock(Server::class);
+		$tree = $this->createMock(Tree::class);
+		$sapi = $this->createMock(TestSapi::class);
+		$server->tree = $tree;
+		$server->sapi = $sapi;
 
-	public function testGetChild() {
-		/** @var JobStatusMapper | \PHPUnit_Framework_MockObject_MockObject $mapper */
-		$mapper = $this->createMock(JobStatusMapper::class);
+		// init plugin
+		$plugin = new EventStreamPlugin();
+		$plugin->initialize($server);
 
-		$jobStatusEntity = new JobStatusEntity();
-		$mapper->method('findByUserIdAndJobId')->willReturn($jobStatusEntity);
-		$home = new Home(['uri' => 'principals/users/user1'], $mapper);
-		$child = $home->getChild('1234567890');
-		$this->assertInstanceOf(JobStatus::class, $child);
-		$this->assertEquals('1234567890', $child->getName());
-	}
+		// perform http get
+		$request = $this->createMock(Request::class);
+		$response = $this->createMock(Response::class);
 
-	/**
-	 * @expectedException \Sabre\DAV\Exception\NotFound
-	 */
-	public function testGetChildNotFound() {
-		/** @var JobStatusMapper | \PHPUnit_Framework_MockObject_MockObject $mapper */
-		$mapper = $this->createMock(JobStatusMapper::class);
+		$request->method('getQueryParameters')->willReturn(['sse' => 1]);
+		$jobStatus = $this->createMock(JobStatus::class);
+		$jobStatus->method('refreshStatus')->willThrowException(new NotImplemented());
+		$tree->method('getNodeForPath')->willReturn($jobStatus);
 
-		$ex = new DoesNotExistException('');
-		$mapper->method('findByUserIdAndJobId')->willThrowException($ex);
-		$home = new Home(['uri' => 'principals/users/user1'], $mapper);
-		$home->getChild('1234567890');
+		//expectations
+		$response->expects($this->exactly(4))->method('setHeader')->withConsecutive(
+			['Content-Type', 'text/event-stream'],
+			['Connection', 'keep-alive'],
+			['Cache-Control', 'no-cache'],
+			['X-Accel-Buffering', 'no']);
+		$response->expects($this->once())->method('setStatus')->with(200);
+		$sapi->expects($this->once())->method('sendResponse')->with($response);
+
+		$plugin->httpGet($request, $response);
 	}
 }
