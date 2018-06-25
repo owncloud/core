@@ -157,16 +157,6 @@ class Migration {
 			->andWhere($query->expr()->isNotNull('parent'))
 			->orderBy('id', 'asc');
 		return $query->execute();
-
-		$shares = $result->fetchAll();
-		$result->closeCursor();
-
-		$ordered = [];
-		foreach ($shares as $share) {
-			$ordered[(int)$share['id']] = $share;
-		}
-
-		return $ordered;
 	}
 
 	/**
