@@ -45,6 +45,7 @@
     "Please specify a valid user" : "Ju lutemi, tregoni një përdorues të vlefshëm",
     "Group sharing is disabled by the administrator" : "Ndarja në grup është çaktivizuar nga përgjegjësi",
     "Please specify a valid group" : "Ju lutemi, tregoni një grup të vlefshëm",
+    "The group is blacklisted for sharing" : "Grupit i është ndaluar shkëmbimi",
     "Public link sharing is disabled by the administrator" : "Ndarja e lidhjeve publike është çaktivizuar nga përgjegjësi",
     "Public upload disabled by the administrator" : "Ngarkimi publik është çaktivizuar nga përgjegjësi",
     "Public upload is only possible for publicly shared folders" : "Ngarkimi publik është i mundshëm vetëm për dosje të ndara publikisht",
@@ -122,6 +123,9 @@
     "%s is publicly shared" : "%s ndahet publikisht me të tjerët",
     "Download" : "Shkarko",
     "Download %s" : "Shkarko %s",
-    "Direct link" : "Lidhje e drejtpërdrejtë"
+    "Direct link" : "Lidhje e drejtpërdrejtë",
+    "Files Sharing" : "Shkëmbim Kartelash",
+    "Exclude groups from receiving shares." : "Përjashtoni grupe nga marrje ndarjesh me të tjerë.",
+    "These groups will not receive shares. Members of the group can still send and receive shares outside of the group." : "Këto grupe nuk do të marrin ndarje. Anëtarët e grupit munden prapëseprapë të dërgojnë dhe marrin ndarje jashtë grupit."
 },"pluralForm" :"nplurals=2; plural=(n != 1);"
 }
