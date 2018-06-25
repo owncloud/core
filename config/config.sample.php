@@ -415,9 +415,10 @@ $CONFIG = array(
 
 /**
  * This option allows you to define a manual override condition as a regular
- * expression for the remote IP address. For example, defining a range of IP
- * addresses starting with ``10.0.0.`` and ending with 1 to 3:
- * ``^10\.0\.0\.[1-3]$``
+ * expression for the remote IP address. The keys ``overwritewebroot``,
+ * ``overwriteprotocol``, and ``overwritehost`` are subject to this condition.
+ * For example, defining a range of IP  addresses starting with ``10.0.0.``
+ * and ending with 1 to 3: * ``^10\.0\.0\.[1-3]$``
  */
 'overwritecondaddr' => '',
 
