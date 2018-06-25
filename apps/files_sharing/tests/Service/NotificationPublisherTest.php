@@ -122,8 +122,9 @@ class NotificationPublisherTest extends TestCase {
 			->method('setSubject')
 			->with($messageId, $messageParams)
 			->will($this->returnSelf());
-		$notification->expects($this->never())
-			->method('setMessage');
+		$notification->expects($this->once())
+			->method('setMessage')
+			->will($this->returnSelf());
 
 		return $notification;
 	}
