@@ -310,8 +310,8 @@ describe('OCA.Sharing.App tests', function() {
 			});
 			$('body').trigger(ev);
 
-			expect(1).toEqual(fileListInReloadStub.callCount);
-			expect(1).toEqual(appReloadStub.callCount);
+			expect(fileListInReloadStub.callCount).toEqual(1);
+			expect(appReloadStub.callCount).toEqual(1);
 		});
 		it('reject share only triggers reload of sharein fileList', function() {
 			var ev = new $.Event('OCA.Notification.Action', {
@@ -325,7 +325,7 @@ describe('OCA.Sharing.App tests', function() {
 			});
 			$('body').trigger(ev);
 
-			expect(1).toEqual(fileListInReloadStub.callCount);
+			expect(fileListInReloadStub.callCount).toEqual(1);
 			expect(appReloadStub.notCalled).toEqual(true);
 		});
 		it('ignore events from notifications not related to files_sharing', function() {
@@ -357,8 +357,8 @@ describe('OCA.Sharing.App tests', function() {
 			App.destroy();
 			$('body').trigger(ev);
 
-			expect(0).toEqual(fileListInReloadStub.callCount);
-			expect(0).toEqual(appReloadStub.callCount);
+			expect(fileListInReloadStub.notCalled).toEqual(true);
+			expect(appReloadStub.notCalled).toEqual(true);
 		});
 	});
 });
