@@ -1310,6 +1310,9 @@ OC.Uploader.prototype = _.extend({
 					// reset retries
 					upload.data.retries = 0;
 				});
+				fileupload.on('fileuploadchunkdone', function(e, data) {
+					$(data.xhr().upload).unbind('progress');
+				});
 				fileupload.on('fileuploaddone', function(e, data) {
 					var upload = self.getUpload(data);
 					upload.done().then(function() {
