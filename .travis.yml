@@ -255,16 +255,6 @@ matrix:
         hosts: *common_hosts
         sauce_connect: true
     - php: 5.6
-      env: DB=pgsql TC=litmus-v1
-    - php: 5.6
-      env: DB=sqlite TC=carddav
-    - php: 5.6
-      env: DB=sqlite TC=caldav
-    - php: 5.6
-      env: DB=sqlite TC=caldav-old-endpoint
-    - php: 5.6
-      env: DB=sqlite TC=carddav-old-endpoint
-    - php: 5.6
       if: type = cron
       env: DB=pgsql TC=selenium BROWSER="chrome" BROWSER_VERSION="latest-1" BEHAT_SUITE="webUIFavorites" PLATFORM="Windows 10" TEST_DAV=0
       addons:
