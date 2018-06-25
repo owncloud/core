@@ -33,6 +33,7 @@
  */
 use OCP\API;
 use OCP\AppFramework\Http;
+use OC\Authentication\Exceptions\AccountCheckException;
 
 /**
  * @author Bart Visscher <bartv@thisnet.nl>
@@ -361,6 +362,12 @@ class OC_API {
 				// Do not allow access to OCS until the 2FA challenge was solved successfully
 				return false;
 			}
+			try {
+				\OC::$server->getAccountModuleManager()->check($userSession->getUser());
+			} catch (AccountCheckException $ex) {
+				// Deny login if any IAuthModule check fails
+				return false;
+			}
 			if ($userSession->verifyAuthHeaders($request)) {
 				$ocsApiRequest = isset($_SERVER['HTTP_OCS_APIREQUEST']) ? $_SERVER['HTTP_OCS_APIREQUEST'] === 'true' : false;
 				if ($ocsApiRequest) {
@@ -386,6 +393,12 @@ class OC_API {
 				|| $userSession->tryBasicAuthLogin($request)) {
 				self::$logoutRequired = true;
 			} else {
+				return false;
+			}
+			try {
+				\OC::$server->getAccountModuleManager()->check($userSession->getUser());
+			} catch (AccountCheckException $ex) {
+				// Deny login if any IAuthModule check fails
 				return false;
 			}
 			// initialize the user's filesystem

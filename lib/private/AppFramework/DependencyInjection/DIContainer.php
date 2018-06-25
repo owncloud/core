@@ -41,7 +41,9 @@ use OC\AppFramework\Middleware\Security\CORSMiddleware;
 use OC\AppFramework\Middleware\Security\SecurityMiddleware;
 use OC\AppFramework\Middleware\SessionMiddleware;
 use OC\AppFramework\Utility\SimpleContainer;
+use OC\Core\Middleware\AccountModuleMiddleware;
 use OC\Core\Middleware\TwoFactorMiddleware;
+use OCP\App\IServiceLoader;
 use OCP\AppFramework\IApi;
 use OCP\AppFramework\IAppContainer;
 use OCP\Files\Mount\IMountManager;
@@ -284,6 +286,7 @@ class DIContainer extends SimpleContainer implements IAppContainer {
 			return $this->getServer();
 		});
 		$this->registerAlias('OCP\\IServerContainer', 'ServerContainer');
+		$this->registerAlias(IServiceLoader::class, 'ServerContainer');
 
 		$this->registerService('Symfony\Component\EventDispatcher\EventDispatcherInterface', function ($c) {
 			return $this->getServer()->getEventDispatcher();
@@ -391,7 +394,8 @@ class DIContainer extends SimpleContainer implements IAppContainer {
 			$dispatcher = new MiddlewareDispatcher();
 			$dispatcher->registerMiddleware($c['CORSMiddleware']);
 			$dispatcher->registerMiddleware($c['SecurityMiddleware']);
-			$dispatcher->registerMiddleWare($c['TwoFactorMiddleware']);
+			$dispatcher->registerMiddleware($c['TwoFactorMiddleware']);
+			$dispatcher->registerMiddleware($c->query(AccountModuleMiddleware::class));
 
 			foreach($middleWares as $middleWare) {
 				$dispatcher->registerMiddleware($c[$middleWare]);
