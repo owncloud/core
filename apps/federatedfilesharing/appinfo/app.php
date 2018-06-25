@@ -26,11 +26,13 @@ $app = new \OCA\FederatedFileSharing\AppInfo\Application('federatedfilesharing')
 use OCA\FederatedFileSharing\Notifier;
 use OCP\Share\Events\AcceptShare;
 use OCP\Share\Events\DeclineShare;
+use OCP\Defaults;
 
 $manager = \OC::$server->getNotificationManager();
 $manager->registerNotifier(function () {
 	return new Notifier(
-		\OC::$server->getL10NFactory()
+		\OC::$server->getL10NFactory(),
+		new Defaults()
 	);
 }, function () {
 	$l = \OC::$server->getL10N('files_sharing');

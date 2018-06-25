@@ -102,6 +102,7 @@ class NotificationPublisher {
 			$notification->setLink($fileLink);
 
 			$notification->setSubject('local_share', [$share->getShareOwner(), $share->getSharedBy(), $share->getNode()->getName()]);
+			$notification->setMessage('local_share', [$share->getShareOwner(), $share->getSharedBy(), $share->getNode()->getName()]);
 
 			$declineAction = $notification->createAction();
 			$declineAction->setLabel('decline');
