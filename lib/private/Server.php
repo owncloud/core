@@ -81,6 +81,7 @@ use OC\Session\CryptoWrapper;
 use OC\Session\Memory;
 use OC\Settings\Panels\Helper;
 use OC\Settings\SettingsManager;
+use OC\Shutdown\ShutDownManager;
 use OC\Tagging\TagMapper;
 use OC\Theme\ThemeService;
 use OC\User\AccountMapper;
@@ -97,6 +98,7 @@ use OCP\IServerContainer;
 use OCP\ISession;
 use OCP\IUser;
 use OCP\Security\IContentSecurityPolicyManager;
+use OCP\Shutdown\IShutdownManager;
 use OCP\Theme\IThemeService;
 use OCP\Util\UserSearch;
 use Symfony\Component\EventDispatcher\EventDispatcher;
@@ -1642,5 +1644,14 @@ class Server extends ServerContainer implements IServerContainer, IServiceLoader
 				}
 			}
 		}
+	}
+
+	/**
+	 * @return IShutdownManager
+	 * @throws QueryException
+	 * @since 11.0.0
+	 */
+	public function getShutdownHandler() {
+		return $this->query(ShutDownManager::class);
 	}
 }
