@@ -118,10 +118,16 @@ OCA.Sharing.App = {
 		}
 	},
 
+	registerNotificationHandler: function() {
+		this._onNotificationEvent = _.bind(this._onNotificationEvent, this);
+		$('body').on('OCA.Notification.Action', this._onNotificationEvent);
+	},
+
 	/**
 	 * Destroy the app
 	 */
 	destroy: function() {
+		$('body').off('OCA.Notification.Action', this._onNotificationEvent);
 		OCA.Files.fileActions.off('setDefault.app-sharing', this._onActionsUpdated);
 		OCA.Files.fileActions.off('registerAction.app-sharing', this._onActionsUpdated);
 		this.removeSharingIn();
@@ -131,6 +137,19 @@ OCA.Sharing.App = {
 		this._outFileList = null;
 		this._linkFileList = null;
 		delete this._globalActionsInitialized;
+	},
+
+	_onNotificationEvent: function(e) {
+		if (e.notification.app === 'files_sharing') {
+			if (this._inFileList) {
+				this._inFileList.reload();
+			}
+			if (e.action.type === 'POST' && OCA.Files && OCA.Files.App && OCA.Files.App.fileList) {
+				// reload the file list only if the share is accepted
+				// both internal sharing and remote sharing
+				OCA.Files.App.fileList.reload();
+			}
+		}
 	},
 
 	_createFileActions: function() {
@@ -319,5 +338,6 @@ $(document).ready(function() {
 	$('#app-content-sharinglinks').on('hide', function() {
 		OCA.Sharing.App.removeSharingLinks();
 	});
+	OCA.Sharing.App.registerNotificationHandler();
 });
 
