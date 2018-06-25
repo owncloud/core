@@ -44,6 +44,7 @@ use bantu\IniGetWrapper\IniGetWrapper;
 use OC\AppFramework\Http\Request;
 use OC\AppFramework\Db\Db;
 use OC\AppFramework\Utility\TimeFactory;
+use OC\Authentication\AccountModule\Manager as AccountModuleManager;
 use OC\Command\AsyncBus;
 use OC\Diagnostics\EventLogger;
 use OC\Diagnostics\QueryLogger;
@@ -92,6 +93,7 @@ use OCP\App\IServiceLoader;
 use OCP\AppFramework\QueryException;
 use OCP\AppFramework\Utility\ITimeFactory;
 use OCP\Events\EventEmitterTrait;
+use OCP\IConfig;
 use OCP\IL10N;
 use OCP\ILogger;
 use OCP\IServerContainer;
@@ -388,6 +390,7 @@ class Server extends ServerContainer implements IServerContainer, IServiceLoader
 				$c->getUserSession(),
 				$c->getGroupManager());
 		});
+		$this->registerAlias(IConfig::class, 'AllConfig');
 		$this->registerService('AllConfig', function (Server $c) {
 			return new \OC\AllConfig(
 				$c->getSystemConfig(),
@@ -467,6 +470,7 @@ class Server extends ServerContainer implements IServerContainer, IServiceLoader
 				$c->getLogger()
 			);
 		});
+		$this->registerAlias(ILogger::class, 'Logger');
 		$this->registerService('Logger', function (Server $c) {
 			$logClass = $c->query('AllConfig')->getSystemValue('log_type', 'owncloud');
 			$logger = 'OC\\Log\\' . \ucfirst($logClass);
@@ -889,6 +893,10 @@ class Server extends ServerContainer implements IServerContainer, IServiceLoader
 		$this->registerAlias('OCP\Theme\IThemeService', 'ThemeService');
 		$this->registerAlias('OCP\IUserSession', 'UserSession');
 		$this->registerAlias('OCP\Security\ICrypto', 'Crypto');
+
+		$this->registerService(IServiceLoader::class, function () {
+			return $this;
+		});
 	}
 
 	/**
@@ -1092,6 +1100,13 @@ class Server extends ServerContainer implements IServerContainer, IServiceLoader
 	 */
 	public function getTwoFactorAuthManager() {
 		return $this->query('OC\Authentication\TwoFactorAuth\Manager');
+	}
+
+	/**
+	 * @return \OC\Authentication\AccountModule\Manager
+	 */
+	public function getAccountModuleManager() {
+		return $this->query(AccountModuleManager::class);
 	}
 
 	/**

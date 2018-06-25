@@ -29,14 +29,13 @@ namespace OCA\DAV\Tests\unit\Connector\Sabre;
 
 use OC\Authentication\Exceptions\PasswordLoginForbiddenException;
 use OC\Authentication\TwoFactorAuth\Manager;
-use OC\ForbiddenException;
+use OC\Authentication\AccountModule\Manager as AccountModuleManager;
 use OC\User\LoginException;
 use OC\User\Session;
 use OCA\DAV\Connector\Sabre\Auth;
 use OCP\IRequest;
 use OCP\ISession;
 use OCP\IUser;
-use Sabre\DAV\Exception\NotAuthenticated;
 use Sabre\HTTP\RequestInterface;
 use Sabre\HTTP\ResponseInterface;
 use Test\TestCase;
@@ -58,23 +57,22 @@ class AuthTest extends TestCase {
 	private $request;
 	/** @var Manager | \PHPUnit_Framework_MockObject_MockObject */
 	private $twoFactorManager;
+	/** @var AccountModuleManager | \PHPUnit_Framework_MockObject_MockObject */
+	private $accountModuleManager;
 
 	public function setUp() {
 		parent::setUp();
-		$this->session = $this->getMockBuilder(ISession::class)
-			->disableOriginalConstructor()->getMock();
-		$this->userSession = $this->getMockBuilder(Session::class)
-			->disableOriginalConstructor()->getMock();
-		$this->request = $this->getMockBuilder(IRequest::class)
-			->disableOriginalConstructor()->getMock();
-		$this->twoFactorManager = $this->getMockBuilder(Manager::class)
-			->disableOriginalConstructor()
-			->getMock();
+		$this->session = $this->createMock(ISession::class);
+		$this->userSession = $this->createMock(Session::class);
+		$this->request = $this->createMock(IRequest::class);
+		$this->twoFactorManager = $this->createMock(Manager::class);
+		$this->accountModuleManager = $this->createMock(AccountModuleManager::class);
 		$this->auth = new Auth(
 			$this->session,
 			$this->userSession,
 			$this->request,
-			$this->twoFactorManager
+			$this->twoFactorManager,
+			$this->accountModuleManager
 		);
 	}
 
