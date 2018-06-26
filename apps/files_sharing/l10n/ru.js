@@ -47,6 +47,7 @@ OC.L10N.register(
     "Please specify a valid user" : "Пожалуйста, укажите допустимого пользователя",
     "Group sharing is disabled by the administrator" : "Общий доступ для групп отключён администратором",
     "Please specify a valid group" : "Пожалуйста, укажите допустимую группу",
+    "The group is blacklisted for sharing" : "Группа в чёрном списке для предоставления доступа",
     "Public link sharing is disabled by the administrator" : "Публикация через общие ссылки отключена администратором",
     "Public upload disabled by the administrator" : "Загрузка в общедоступную публикацию запрещена администратором",
     "Public upload is only possible for publicly shared folders" : "Общедоступная загрузка возможна только в папки с общим доступом",
@@ -124,6 +125,9 @@ OC.L10N.register(
     "%s is publicly shared" : "%s доступен публично",
     "Download" : "Скачать",
     "Download %s" : "Скачать %s",
-    "Direct link" : "Прямая ссылка"
+    "Direct link" : "Прямая ссылка",
+    "Files Sharing" : "Предоставление доступа к файлам",
+    "Exclude groups from receiving shares." : "Исключить группы из получения доступа.",
+    "These groups will not receive shares. Members of the group can still send and receive shares outside of the group." : "Эти группы не  будут получать доступ. Члены группы всё-таки смогут предоставлять и получать доступ вне данной группы."
 },
 "nplurals=4; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<12 || n%100>14) ? 1 : n%10==0 || (n%10>=5 && n%10<=9) || (n%100>=11 && n%100<=14)? 2 : 3);");
