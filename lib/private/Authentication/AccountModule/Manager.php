@@ -21,8 +21,8 @@
 
 namespace OC\Authentication\AccountModule;
 
-use OC\Authentication\Exceptions\AccountCheckException;
 use OCP\App\IServiceLoader;
+use OCP\Authentication\Exceptions\AccountCheckException;
 use OCP\Authentication\IAccountModule;
 use OCP\IConfig;
 use OCP\ILogger;

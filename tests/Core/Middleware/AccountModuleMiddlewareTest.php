@@ -22,10 +22,10 @@
 namespace Test\Core\Middleware;
 
 use OC\Authentication\AccountModule\Manager;
-use OC\Authentication\Exceptions\AccountCheckException;
 use OC\Core\Controller\LoginController;
 use OC\Core\Middleware\AccountModuleMiddleware;
 use OCP\AppFramework\Utility\IControllerMethodReflector;
+use OCP\Authentication\Exceptions\AccountCheckException;
 use OCP\Authentication\IAccountModuleController;
 use OCP\ILogger;
 use OCP\IUser;
@@ -159,7 +159,7 @@ class AccountModuleMiddlewareTest extends TestCase {
 	}
 
 	/**
-	 * @expectedException \OC\Authentication\Exceptions\AccountCheckException
+	 * @expectedException \OCP\Authentication\Exceptions\AccountCheckException
 	 */
 	public function testBeforeControllerAccountNeedsUpdate() {
 		$this->reflector->expects($this->once())

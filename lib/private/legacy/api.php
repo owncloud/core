@@ -33,7 +33,7 @@
  */
 use OCP\API;
 use OCP\AppFramework\Http;
-use OC\Authentication\Exceptions\AccountCheckException;
+use OCP\Authentication\Exceptions\AccountCheckException;
 
 /**
  * @author Bart Visscher <bartv@thisnet.nl>

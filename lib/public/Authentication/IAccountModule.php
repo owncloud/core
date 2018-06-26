@@ -21,7 +21,7 @@
 
 namespace OCP\Authentication;
 
-use OC\Authentication\Exceptions\AccountCheckException;
+use OCP\Authentication\Exceptions\AccountCheckException;
 use OCP\IUser;
 
 /**
