@@ -5,20 +5,20 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/).
 
 ## [Unreleased]
-
 ### Added
+- Added account module middleware to be able to plug in logic after authentication - [#31883](https://github.com/owncloud/core/issues/31883)
 - occ user:list now takes a list of attributes to display - [#31115](https://github.com/owncloud/core/issues/31115)
 - Added Symfony events for user preference changes - [#31266](https://github.com/owncloud/core/issues/31266)
 - Added Symfony events for public links shared by email - [#31632](https://github.com/owncloud/core/issues/31632)
 - Added Symfony events for accept and reject for local shares - [#31702](https://github.com/owncloud/core/issues/31702)
 - Added support for Imprint and Privacy Policy URLs in web UI and email footers - [#31666](https://github.com/owncloud/core/issues/31666) [#31699](https://github.com/owncloud/core/issues/31699) [#31730](https://github.com/owncloud/core/issues/31730) [#31766](https://github.com/owncloud/core/pull/31766)
 - Added HTML template for lost password email - [#31144](https://github.com/owncloud/core/issues/31144)
-- Received local shares can now trigger a notification to accept or reject them, also visible in "Shared with you" section - [#31613](https://github.com/owncloud/core/issues/31613)
+- Received local shares can now trigger a notification to accept or reject them, also visible in "Shared with you" section - [#31613](https://github.com/owncloud/core/issues/31613) [#31886](https://github.com/owncloud/core/issues/31886)
 - Rejected shares can now be accepted again in the "Shared with you" section - [#31613](https://github.com/owncloud/core/issues/31613)
 - Provide original exception via logging events - [#31623](https://github.com/owncloud/core/issues/31623)
 - Share autocomplete now displays useful tooltip when typing less characters - [#31729](https://github.com/owncloud/core/issues/31729)
-- Added public Webdav API for versions using a new "meta" DAV endpoint - [#31729](https://github.com/owncloud/core/pull/29207) [#29637](https://github.com/owncloud/core/pull/29637)
-- Added support for retrieving file previews using Webdav endpoint - [#29319](https://github.com/owncloud/core/pull/29319) [#30192](https://github.com/owncloud/core/pull/30192)
+- Added public Webdav API for versions using a new "meta" DAV endpoint - [#31729](https://github.com/owncloud/core/pull/29207) [#29637](https://github.com/owncloud/core/pull/29637) [#31805](https://github.com/owncloud/core/issues/31805) [#31801](https://github.com/owncloud/core/issues/31801)
+- Added support for retrieving file previews using Webdav endpoint - [#29319](https://github.com/owncloud/core/pull/29319) [#30192](https://github.com/owncloud/core/pull/30192) [#31748](https://github.com/owncloud/core/issues/31748) [#31788](https://github.com/owncloud/core/issues/31788) [#31862](https://github.com/owncloud/core/issues/31862) [#31865](https://github.com/owncloud/core/issues/31865)
 - Added versioning support for primary object store - [#29607](https://github.com/owncloud/core/pull/29607) [#31285](https://github.com/owncloud/core/pull/31285) [#31595](https://github.com/owncloud/core/pull/31595)
 
 ### Changed
@@ -32,14 +32,17 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/).
 - Bump symfony 3.4.9 to 3.4.11 - [#31571](https://github.com/owncloud/core/issues/31571)
 - Update jsdoc requirement to ~3.5.5 - [#30036](https://github.com/owncloud/core/issues/30036)
 - Removed example theme which now lives in the [theme-example repository](https://github.com/owncloud/theme-example) - [#31447](https://github.com/owncloud/core/issues/31447)
-- A user who is a member of multiple groups is now excluded from sharing if at least one of their group is configured for exclusion - [#31737](https://github.com/owncloud/core/issues/31737)
+- A user who is a member of multiple groups is now excluded from sharing if at least one of their group is configured for exclusion - [#31737](https://github.com/owncloud/core/issues/31737) [#31822](https://github.com/owncloud/core/issues/31822)
 - Changed back default minimum search characters to 2 for share autocomplete due to confusion - [#31729](https://github.com/owncloud/core/issues/31729)
-- Files app UI now uses new versions API through the "meta" DAV endpoint
+- Files app UI now uses new versions API through the "meta" DAV endpoint - [#29607](https://github.com/owncloud/core/pull/29607) 
 
 ### Removed
 - Removed old private ajax API for previews, deprecated by DAV endpoint support - [#30254](https://github.com/owncloud/core/pull/30254)
+- Bookmarks certificate was removed - [#31878](https://github.com/owncloud/core/issues/31878)
 
 ### Fixed
+- Work around Edge browser memory leak in web UI chunked upload - [#31884](https://github.com/owncloud/core/issues/31884)
+- Don't fail if ISqlMigration doesn't return anything - [#31779](https://github.com/owncloud/core/issues/31779)
 - Fixed restoring of versions for single file shares - [#31681](https://github.com/owncloud/core/issues/31681)
 - Group admins are not able to create groups any more using provisioning API - [#31738](https://github.com/owncloud/core/issues/31738)
 - Fix Oracle for queries using ILIKE operator - [#31466](https://github.com/owncloud/core/issues/31466)
@@ -69,7 +72,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/).
 - Properly cache non-existing user in UserManager - [#31446](https://github.com/owncloud/core/issues/31446)
 - Update verify checksums console output to flow more naturally - [#31449](https://github.com/owncloud/core/issues/31449)
 - Subadmin shouldn't be able to add users to their groups via API - [#31337](https://github.com/owncloud/core/issues/31337)
-- Catch duplicate inserts in token table - [#31460](https://github.com/owncloud/core/pull/31460)
+- Catch duplicate inserts in token table - [#31460](https://github.com/owncloud/core/pull/31460) [#31794](https://github.com/owncloud/core/issues/31794)
 - Fix overflowing public share names in the share panel - [#31369](https://github.com/owncloud/core/issues/31369)
 - Fix occ user:sync to sync quota from preferences after upgrade if backend provided no quota - [#31360](https://github.com/owncloud/core/issues/31360)
 - Fix for Redis dev editions - [#31282](https://github.com/owncloud/core/issues/31282)
@@ -651,7 +654,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/).
 - provisioning API now also returns the user's home path: [#26850](https://github.com/owncloud/core/issues/26850)
 - web updater shows link to changelog in admin page: [#26796](https://github.com/owncloud/core/issues/26796)
 
-[Unreleased]: https://github.com/owncloud/core/compare/v10.0.7...stable10
+[Unreleased]: https://github.com/owncloud/core/compare/v10.0.8...stable10
+[10.0.8]: https://github.com/owncloud/core/compare/v10.0.7...v10.0.8
 [10.0.7]: https://github.com/owncloud/core/compare/v10.0.6...v10.0.7
 [10.0.6]: https://github.com/owncloud/core/compare/v10.0.5...v10.0.6
 [10.0.5]: https://github.com/owncloud/core/compare/v10.0.4...v10.0.5
