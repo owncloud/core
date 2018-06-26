@@ -25,6 +25,15 @@ OC.L10N.register(
     "Delete" : "Избриши",
     "Scope" : "опсег",
     "Storage type" : "Тип на чување",
-    "External storage" : "Надворешна меморија"
+    "External storage" : "Надворешна меморија",
+    "Compatibility with Mac NFD encoding (slow)" : "Компатибилност со Mac NFD кодирање (бавно)",
+    "Domain" : "Домен",
+    "Enable previews" : "Овозможи прегледи",
+    "Enable sharing" : "Овозможи споделување",
+    "Check for changes" : "Проверувај измени",
+    "Never" : "Никогаш",
+    "Once every direct access" : "Еднаш при директен пристап",
+    "Authentication" : "Автентикација",
+    "Add storage" : "Додади складиште"
 },
 "nplurals=2; plural=(n % 10 == 1 && n % 100 != 11) ? 0 : 1;");

@@ -123,6 +123,7 @@
     "Warning" : "Warnung",
     "Delete" : "Löschen",
     "Personal" : "Persönlich",
-    "Username" : "Benutzername"
+    "Username" : "Benutzername",
+    "Imprint" : "Impressum"
 },"pluralForm" :"nplurals=2; plural=(n != 1);"
 }

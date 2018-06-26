@@ -52,6 +52,8 @@ OC.L10N.register(
     "Add to your ownCloud" : "Gehitu zure ownCloud-era",
     "Download" : "Deskargatu",
     "Download %s" : "Deskargatu %s",
-    "Direct link" : "Lotura zuzena"
+    "Direct link" : "Lotura zuzena",
+    "Pending" : "Zain",
+    "Declined" : "Ez onartua"
 },
 "nplurals=2; plural=(n != 1);");

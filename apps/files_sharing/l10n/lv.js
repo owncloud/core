@@ -81,6 +81,7 @@ OC.L10N.register(
     "Add to your ownCloud" : "Pievienot savam ownCloud",
     "Download" : "Lejupielādēt",
     "Download %s" : "Lejupielādēt %s",
-    "Direct link" : "Tiešā saite"
+    "Direct link" : "Tiešā saite",
+    "Pending" : "Gaida savu kārtu"
 },
 "nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n != 0 ? 1 : 2);");

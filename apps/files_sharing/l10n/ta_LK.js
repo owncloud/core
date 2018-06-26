@@ -7,6 +7,7 @@ OC.L10N.register(
     "Password" : "கடவுச்சொல்",
     "Name" : "பெயர்",
     "Expiration date" : "காலவதியாகும் திகதி",
-    "Download" : "பதிவிறக்குக"
+    "Download" : "பதிவிறக்குக",
+    "Pending" : "நிலுவையிலுள்ள"
 },
 "nplurals=2; plural=(n != 1);");

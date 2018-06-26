@@ -74,6 +74,7 @@
     "PHP module %s not installed." : "ماژول PHP %s نصب نشده است.",
     "PostgreSQL >= 9 required" : "PostgreSQL >= 9 نیاز است",
     "Please upgrade your database version" : "لطفا نسخه‌ی پایگاه‌داده‌ی خود را بروز کنید",
-    "Storage is temporarily not available" : "فضای ذخیره سازی موقتا در دسترس نیست"
+    "Storage is temporarily not available" : "فضای ذخیره سازی موقتا در دسترس نیست",
+    "Imprint" : "مهر زدن"
 },"pluralForm" :"nplurals=1; plural=0;"
 }

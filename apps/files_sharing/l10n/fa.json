@@ -107,6 +107,8 @@
     "Add to your ownCloud" : "افزودن به ownCloud شما",
     "Download" : "دانلود",
     "Download %s" : "دانلود %s",
-    "Direct link" : "پیوند مستقیم"
+    "Direct link" : "پیوند مستقیم",
+    "Pending" : "در انتظار",
+    "Accept" : "قبول"
 },"pluralForm" :"nplurals=1; plural=0;"
 }

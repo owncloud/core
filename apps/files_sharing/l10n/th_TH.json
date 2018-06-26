@@ -112,6 +112,20 @@
     "Download" : "ดาวน์โหลด",
     "Download %s" : "ดาวน์โหลด %s",
     "Direct link" : "ลิงค์โดยตรง",
-    "No permission to create share" : "ไม่มีสิทธิ์ในการสร้างแชร์"
+    "No permission to create share" : "ไม่มีสิทธิ์ในการสร้างแชร์",
+    "Pending" : "อยู่ระหว่างดำเนินการ",
+    "Accept" : "ยอมรับ",
+    "Decline" : "ลดลง",
+    "Declined" : "ปฏิเสธ",
+    "An error occurred while updating share state: {message}" : "เกิดข้อผิดพลาดขณะอัพเดทสถานะสถานะของแชร์: {message}",
+    "Accept Share" : "ยอมรับแชร์",
+    "Decline Share" : "ปฏิเสธแชร์",
+    "Only recipient can change accepted state" : "เฉพาะผู้รับเท่านั้นที่สามารถเปลี่ยนสถานะที่ยอมรับได้",
+    "File sharing" : "กำลังแชร์ไฟล์",
+    "State" : "สถานะ",
+    "The group is blacklisted for sharing" : "กลุ่มถูกขึ้นบัญชีดำสำหรับการแชร์",
+    "Files Sharing" : "กำลังแชร์ไฟล์",
+    "Exclude groups from receiving shares." : "ยกเว้นกลุ่มที่ได้รับการแชร์",
+    "These groups will not receive shares. Members of the group can still send and receive shares outside of the group." : "กลุ่มเหล่านี้จะไม่ได้รับการแชร์ สมาชิกของกลุ่มยังสามารถส่งและรับการแชร์ที่อยู่นอกกลุ่มได้"
 },"pluralForm" :"nplurals=1; plural=0;"
 }

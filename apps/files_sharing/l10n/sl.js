@@ -113,6 +113,10 @@ OC.L10N.register(
     "Direct link" : "Neposredna povezava",
     "Uploaded files" : "Datoteke, poslane v oblak",
     "Click to select files or use drag & drop to upload" : "Kliknite za izbor datotek oziroma uporabite možnost povleci in spusti za pošiljanje v oblak ...",
-    "Cannot remove all permissions" : "Vseh dovoljenj ni mogoče odstraniti"
+    "Cannot remove all permissions" : "Vseh dovoljenj ni mogoče odstraniti",
+    "Pending" : "V čakanju ...",
+    "Accept" : "Sprejmi",
+    "Decline" : "Zavrni",
+    "Declined" : "Zavrnjeno"
 },
 "nplurals=4; plural=(n%100==1 ? 0 : n%100==2 ? 1 : n%100==3 || n%100==4 ? 2 : 3);");

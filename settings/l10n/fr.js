@@ -345,6 +345,8 @@ OC.L10N.register(
     "Empty app name is not allowed." : "Un nom d'application vide n'est pas autorisé.",
     "The config file is read only. Please adjust your setup by editing the config file manually." : "Le fichier de configuration est en lecture seule. Veuillez ajuster votre configuration en éditant manuellement le fichier.",
     "Email changed successfully for {user}." : "L'Email de {utilisateur} à été mis à jour.",
-    "In a clustered setup please make sure to sync the config.php file across all nodes." : "Dans une configuration de grappe, assurez-vous de synchroniser le fichier config.php sur chaque nœud."
+    "In a clustered setup please make sure to sync the config.php file across all nodes." : "Dans une configuration de grappe, assurez-vous de synchroniser le fichier config.php sur chaque nœud.",
+    "You are not a member of any groups." : "Vous n'êtes membre d'aucun groupe.",
+    "You are using %s" : "Vous utilisez %s"
 },
 "nplurals=2; plural=(n > 1);");

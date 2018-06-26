@@ -25,6 +25,10 @@ OC.L10N.register(
     "sharing is disabled" : "compartir está desactivado",
     "For more info, please ask the person who sent this link." : "Para mayor información, contactá a la persona que te mandó el enlace.",
     "Download" : "Descargar",
-    "Direct link" : "Vínculo directo"
+    "Direct link" : "Vínculo directo",
+    "Pending" : "Pendientes",
+    "Accept" : "Aceptar",
+    "Decline" : "Declinar",
+    "Declined" : "Denegado"
 },
 "nplurals=2; plural=(n != 1);");

@@ -362,6 +362,17 @@ OC.L10N.register(
     "Email changed successfully for {user}." : "Email-i për {user} u ndryshua me sukses.",
     "You are not a member of any groups." : "S’jeni anëtar i ndonjë grupi.",
     "In a clustered setup please make sure to sync the config.php file across all nodes." : "Në një sistem cluster sigurohuni të njëkohësoni kartelën config.php në krejt nyjet.",
-    "These are the web, desktop and mobile clients currently logged in to your %s." : "Këta janë klientët web, desktop dhe celular të futur te %s juaj këtë çast."
+    "These are the web, desktop and mobile clients currently logged in to your %s." : "Këta janë klientët web, desktop dhe celular të futur te %s juaj këtë çast.",
+    "Automatically accept new incoming local user shares" : "Prano vetvetiu ndarje të reja që vijnë nga përdorues vendorë",
+    "Legal" : "Ligjore",
+    "Imprint URL:" : "URL Imprint-i:",
+    "Imprint URL" : "URL Imprint-i",
+    "Privacy Policy URL:" : "URL Rregullash Privatësie:",
+    "Privacy Policy URL" : "URL Rregullash Privatësie",
+    "App passwords / tokens" : "Fjalëkalime / token aplikacioni",
+    "App passwords or tokens are passcodes that give an app or device permissions to access your %s account." : "Fjalëkalimet ose token-ët e aplikacionit janë frazëkalime që i japin leje një aplikacioni ose pajisjeje të hyjë në llogarinë tuaj %s.",
+    "Use them as a security measure to hide your actual password which you may only want to use for web interface login." : "Përdorini ato si një masë sigurie për të fshehur fjalëkalimin tuaj faktik, të cilin mund të doni ta përdorni vetëm për hyrje në ndërfaqen web.",
+    "Create new app passcode" : "Krijo fjalëkalim të ri aplikacioni",
+    "Password / Token" : "Fjalëkalim / Token"
 },
 "nplurals=2; plural=(n != 1);");

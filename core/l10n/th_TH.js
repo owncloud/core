@@ -368,6 +368,9 @@ OC.L10N.register(
     "Recipients can view or download contents." : "ผู้รับสามารถดูหรือดาวน์โหลดเนื้อหา",
     "{sharee} (federated)" : "{sharee} (ร่วมเป็นสหพันธ์แล้ว)",
     "Personal note from the sender: %s." : "บันทึกส่วนบุคคลจากผู้ส่ง: %s",
-    "Automatic updating is disabled in config.php. To upgrade your instance, please use the command line updater (occ upgrade)." : "การอัพเดทโดยอัตโนมัติถูกปิดใช้งานใน config.php เพื่ออัพเกรดอินสแตนซ์ของคุณโปรดใช้คำสั่งอัพเดท (occ upgrade)"
+    "Automatic updating is disabled in config.php. To upgrade your instance, please use the command line updater (occ upgrade)." : "การอัพเดทโดยอัตโนมัติถูกปิดใช้งานใน config.php เพื่ออัพเกรดอินสแตนซ์ของคุณโปรดใช้คำสั่งอัพเดท (occ upgrade)",
+    "Imprint" : "ประทับ",
+    "E-Mail sent" : "ส่งอิีเมล",
+    "Privacy Policy" : "นโยบายส่วนบุคคล"
 },
 "nplurals=1; plural=0;");

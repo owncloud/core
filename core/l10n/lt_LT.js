@@ -237,6 +237,7 @@ OC.L10N.register(
     "Wrong password." : "Neteisingas slaptažodis.",
     "[%d / %d]: Checking table %s" : "[%d / %d]: tikrina lentelę %s",
     "SQLite will be used as database." : "Bus naudojama SQLite bazė.",
-    "Need help?" : "Reikia pagalbos?"
+    "Need help?" : "Reikia pagalbos?",
+    "Imprint" : "Imprint"
 },
 "nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && (n%100<10 || n%100>=20) ? 1 : 2);");

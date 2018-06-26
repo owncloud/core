@@ -239,6 +239,7 @@ OC.L10N.register(
     "An error occurred. Please upload an ASCII-encoded PEM certificate." : "خطایی اتفاق افتاده است. لطفا یک تایید ASCII-encoded PEM بارگذاری نمایید.",
     "Empty app name is not allowed." : "نام برنامه نمی تواند خالی باشد.",
     "You need to set your user email before being able to send test emails." : "شما باید ایمیل کاربری خود را قبل از امکان ارسال ایمیل آزمایشی تنظیم نمایید.",
-    "Especially when using the desktop client for file syncing the use of SQLite is discouraged." : "به ویژه هنگام استفاده از مشتری دسکتاپ برای همگام سازی پرونده، استفاده از SQLite دلسرد کننده است."
+    "Especially when using the desktop client for file syncing the use of SQLite is discouraged." : "به ویژه هنگام استفاده از مشتری دسکتاپ برای همگام سازی پرونده، استفاده از SQLite دلسرد کننده است.",
+    "Email has been changed successfully." : "ایمیل با موفقیت تغییر کرد."
 },
 "nplurals=1; plural=0;");

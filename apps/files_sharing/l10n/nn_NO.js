@@ -39,6 +39,10 @@ OC.L10N.register(
     "sharing is disabled" : "deling er slått av",
     "For more info, please ask the person who sent this link." : "Spør den som sende deg lenkje om du vil ha meir informasjon.",
     "Download" : "Last ned",
-    "No entries found in this folder" : "Ingen oppføring i dette området"
+    "No entries found in this folder" : "Ingen oppføring i dette området",
+    "Pending" : "Under vegs",
+    "Accept" : "Godtake",
+    "Decline" : "Avslå",
+    "Declined" : "Avvist"
 },
 "nplurals=2; plural=(n != 1);");

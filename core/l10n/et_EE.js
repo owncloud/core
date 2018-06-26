@@ -297,6 +297,7 @@ OC.L10N.register(
     "Update needed" : "On vaja uuendada",
     "This page will refresh itself when the %s instance is available again." : "Se leht laetakse uuesti, kui %s instantsi on uuesti saadaval.",
     "Copy to clipboard" : "Kopeeri lõikepuhvrisse",
-    "Menu" : "Menüü"
+    "Menu" : "Menüü",
+    "Imprint" : "Impressum"
 },
 "nplurals=2; plural=(n != 1);");

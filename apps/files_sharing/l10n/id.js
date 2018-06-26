@@ -70,6 +70,10 @@ OC.L10N.register(
     "Add to your ownCloud" : "Tambahkan ke ownCloud Anda",
     "Download" : "Unduh",
     "Download %s" : "Unduh %s",
-    "Direct link" : "Tautan langsung"
+    "Direct link" : "Tautan langsung",
+    "Pending" : "Tertunda",
+    "Accept" : "Terima",
+    "Decline" : "Tolak",
+    "Declined" : "Tolak"
 },
 "nplurals=1; plural=0;");

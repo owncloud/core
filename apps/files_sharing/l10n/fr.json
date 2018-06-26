@@ -112,6 +112,10 @@
     "Uploaded files" : "Fichiers téléversés",
     "Click to select files or use drag & drop to upload" : "Cliquez pour sélectionner les fichiers ou utilisez le cliquer-glisser pour téléverser",
     "Cannot remove all permissions" : "Il n'est pas possible d'enlever toutes les permissions",
-    "No permission to create share" : "Interdit de créer le partage"
+    "No permission to create share" : "Interdit de créer le partage",
+    "Pending" : "En attente",
+    "Accept" : "Accepter",
+    "Decline" : "Refuser",
+    "Declined" : "Refusé"
 },"pluralForm" :"nplurals=2; plural=(n > 1);"
 }

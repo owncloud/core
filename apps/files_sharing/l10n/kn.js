@@ -7,6 +7,7 @@ OC.L10N.register(
     "Password" : "ಗುಪ್ತ ಪದ",
     "Name" : "﻿ಹೆಸರು",
     "Expiration date" : "ಮುಕ್ತಾಯ ದಿನಾಂಕ",
-    "Download" : "ಪ್ರತಿಯನ್ನು ಸ್ಥಳೀಯವಾಗಿ ಉಳಿಸಿಕೊಳ್ಳಿ"
+    "Download" : "ಪ್ರತಿಯನ್ನು ಸ್ಥಳೀಯವಾಗಿ ಉಳಿಸಿಕೊಳ್ಳಿ",
+    "Pending" : "﻿ಬಾಕಿ ಇದೆ"
 },
 "nplurals=1; plural=0;");

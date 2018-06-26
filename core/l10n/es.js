@@ -368,6 +368,9 @@ OC.L10N.register(
     "An error occured while sending email" : "Un error ocurrió mientras se enviaba el correo",
     "{sharee} (federated)" : "{sharee} (federado)",
     "Personal note from the sender: %s." : "Nota personal del origen: %s.",
-    "Automatic updating is disabled in config.php. To upgrade your instance, please use the command line updater (occ upgrade)." : "La actualización autómatica ha sido deshabilitada en config.php. Para actualizar use la linea de comandos (occ upgrade)."
+    "Automatic updating is disabled in config.php. To upgrade your instance, please use the command line updater (occ upgrade)." : "La actualización autómatica ha sido deshabilitada en config.php. Para actualizar use la linea de comandos (occ upgrade).",
+    "Imprint" : "Imprimir",
+    "E-Mail sent" : "E-Mail enviado",
+    "Privacy Policy" : "Política de privacidad"
 },
 "nplurals=2; plural=(n != 1);");

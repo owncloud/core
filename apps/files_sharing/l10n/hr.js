@@ -38,6 +38,7 @@ OC.L10N.register(
     "Add to your ownCloud" : "Dodajte svome ownCloud",
     "Download" : "Preuzmite",
     "Download %s" : "Preuzmite %s",
-    "Direct link" : "Izravna veza"
+    "Direct link" : "Izravna veza",
+    "Pending" : "Na čekanju"
 },
 "nplurals=3; plural=n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2;");

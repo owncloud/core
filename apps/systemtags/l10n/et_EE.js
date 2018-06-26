@@ -10,6 +10,8 @@ OC.L10N.register(
     "No entries found in this folder" : "Selles kaustast ei leitud kirjeid",
     "Name" : "Nimi",
     "Size" : "Suurus",
-    "Modified" : "Muudetud"
+    "Modified" : "Muudetud",
+    "Please select tags to filter by" : "Palun vali sildid, mille järgi filtreerida",
+    "No files found for the selected tags" : "Valitud siltidega faile ei leitud"
 },
 "nplurals=2; plural=(n != 1);");

@@ -112,6 +112,10 @@ OC.L10N.register(
     "Direct link" : "リンク",
     "Anonymous upload" : "匿名アップロード",
     "Uploaded files" : "アップロード済みファイル",
-    "Cannot remove all permissions" : "全てのパーミッションを削除できません"
+    "Cannot remove all permissions" : "全てのパーミッションを削除できません",
+    "Pending" : "中断",
+    "Accept" : "受領",
+    "Decline" : "拒否",
+    "Declined" : "拒否されました"
 },
 "nplurals=1; plural=0;");

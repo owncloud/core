@@ -334,6 +334,7 @@
     "We recommend to enable system cron as any other cron method has possible performance and reliability implications." : "다른 cron 방식이 성능 및 안정성 문제가 있을 수도 있기 때문에 시스템 cron을 활성화하는 것을 추천합니다.",
     "In a clustered setup please make sure to sync the config.php file across all nodes." : "클러스터 환경이라면 모든 노드의 config.php 파일을 동기화해야 합니다.",
     "These are the web, desktop and mobile clients currently logged in to your %s." : "현재 %s 에 로그인한 웹, 데스크톱 및 모바일 클라이언트입니다.",
-    "%1$s below version %2$s is installed, for stability and performance reasons we recommend updating to a newer %1$s version." : "%1$s의 버전 %2$s 미만이 설치되어 있습니다. 안정성과 성능을 위해 %1$s의 새로운 버전으로 업데이트하는 것을 권장합니다."
+    "%1$s below version %2$s is installed, for stability and performance reasons we recommend updating to a newer %1$s version." : "%1$s의 버전 %2$s 미만이 설치되어 있습니다. 안정성과 성능을 위해 %1$s의 새로운 버전으로 업데이트하는 것을 권장합니다.",
+    "Email has been changed successfully." : "이메일이 성공적으로 변경됨"
 },"pluralForm" :"nplurals=1; plural=0;"
 }

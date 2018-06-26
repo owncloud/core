@@ -114,6 +114,9 @@ OC.L10N.register(
     "Download" : "Niðurhal",
     "Download %s" : "Sækja %s",
     "Direct link" : "Beinn tengill",
-    "No permission to create share" : "Þú hefur ekki heimild til að búa til sameign"
+    "No permission to create share" : "Þú hefur ekki heimild til að búa til sameign",
+    "Pending" : "Í bið",
+    "Accept" : "Samþykkja",
+    "Decline" : "Hafna"
 },
 "nplurals=2; plural=(n % 10 != 1 || n % 100 == 11);");

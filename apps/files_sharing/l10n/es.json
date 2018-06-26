@@ -112,6 +112,16 @@
     "Download" : "Descargar",
     "Download %s" : "Descargar %s",
     "Direct link" : "Enlace directo",
-    "No permission to create share" : "Permisos insuficientes para crear un compartido"
+    "No permission to create share" : "Permisos insuficientes para crear un compartido",
+    "Pending" : "Pendiente",
+    "Accept" : "Aceptar",
+    "Decline" : "Denegar",
+    "Declined" : "Denegado",
+    "An error occurred while updating share state: {message}" : "Un error ha ocurrido mientras se trataba de actualizar el estado: {message}",
+    "Accept Share" : "Aceptar compartido",
+    "Decline Share" : "No aceptar compartido",
+    "Only recipient can change accepted state" : "Solo el receptor puede cambiar el cambio de estado.",
+    "File sharing" : "Compartir Archivos",
+    "State" : "Estado"
 },"pluralForm" :"nplurals=2; plural=(n != 1);"
 }

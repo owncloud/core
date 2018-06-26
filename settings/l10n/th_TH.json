@@ -360,6 +360,17 @@
     "Email changed successfully for {user}." : "เปลี่ยนอีเมลเรียบร้อยแล้วสำหรับผู้ใช้ {user}",
     "You are not a member of any groups." : "คุณยังไม่ได้เป็นสมาชิกในกลุ่มใดๆเลย",
     "In a clustered setup please make sure to sync the config.php file across all nodes." : "ในการตั้งค่าแบบคลัสเตอร์โปรดตรวจสอบให้แน่ใจว่าได้ประสานไฟล์ config.php ในโหนดทั้งหมด",
-    "These are the web, desktop and mobile clients currently logged in to your %s." : "นี่คือเว็บ เดสก์ท็อปและโทรศัพท์มือถือที่ล็อกอินเข้าสู่ระบบ %s ของคุณแล้ว"
+    "These are the web, desktop and mobile clients currently logged in to your %s." : "นี่คือเว็บ เดสก์ท็อปและโทรศัพท์มือถือที่ล็อกอินเข้าสู่ระบบ %s ของคุณแล้ว",
+    "Automatically accept new incoming local user shares" : "ยอมรับแชร์ที่เข้ามาใหม่โดยอัตโนมัติ",
+    "Legal" : "ถูกกฎหมาย",
+    "Imprint URL:" : "URL สำนักพิมพ์:",
+    "Imprint URL" : "URL สำนักพิมพ์",
+    "Privacy Policy URL:" : "URL นโยบายส่วนบุคคล:",
+    "Privacy Policy URL" : "URL นโยบายส่วนบุคคล",
+    "App passwords / tokens" : "รหัสผ่านหรือโทเค็นของแอพ",
+    "App passwords or tokens are passcodes that give an app or device permissions to access your %s account." : "รหัสผ่านหรือโทเค็นของแอพคือรหัสผ่านที่ให้สิทธิ์แอพหรืออุปกรณ์ในการเข้าถึงบัญชี %s ของคุณ",
+    "Use them as a security measure to hide your actual password which you may only want to use for web interface login." : "ใช้มาตรการรักษาความปลอดภัยสำหรับการเข้าสู่ระบบผ่านหน้าเว็บเพื่อซ่อนรหัสผ่านจริงของคุณ",
+    "Create new app passcode" : "สร้างรหัสผ่านสำหรับแอพใหม่",
+    "Password / Token" : "รหัสผ่านหรือโทเค็น"
 },"pluralForm" :"nplurals=1; plural=0;"
 }

@@ -14,6 +14,7 @@ OC.L10N.register(
     "Delete" : "মুছে ফেলা",
     "Rename" : "পুনঃনামকরণ",
     "Add" : "যোগ করা",
-    "Search" : "অনুসন্ধান"
+    "Search" : "অনুসন্ধান",
+    "Imprint" : "অঙ্কিত করা"
 },
 "nplurals=2; plural=(n != 1);");

@@ -262,6 +262,7 @@ OC.L10N.register(
     "Anyone with the link has access to the file/folder" : "Oricine are legătura are acces la fișier/dosar",
     "Menu" : "Meniu",
     "Link name" : "Numele legăturii",
-    "%s password changed successfully" : "parola %s a fost schimbată cu succes"
+    "%s password changed successfully" : "parola %s a fost schimbată cu succes",
+    "Imprint" : "Imprint"
 },
 "nplurals=3; plural=(n==1?0:(((n%100>19)||((n%100==0)&&(n!=0)))?2:1));");

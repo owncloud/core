@@ -111,6 +111,10 @@ OC.L10N.register(
     "Download %s" : "İndir: %s",
     "Direct link" : "Doğrudan bağlantı",
     "Uploaded files" : "Yüklenen dosyalar",
-    "Cannot remove all permissions" : "İzinlerin tümü kaldırılamaz"
+    "Cannot remove all permissions" : "İzinlerin tümü kaldırılamaz",
+    "Pending" : "Bekliyor",
+    "Accept" : "Kabul et",
+    "Decline" : "Reddet",
+    "Declined" : "Reddedildi"
 },
 "nplurals=2; plural=(n > 1);");

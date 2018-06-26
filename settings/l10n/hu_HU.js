@@ -290,6 +290,7 @@ OC.L10N.register(
     "Show enabled apps" : "Az engedéjezett alkalmazások mutatása",
     "Show disabled apps" : "A nem engedéjezett alkalmazások mutatása",
     "Invalid email address" : "Érvénytelen email cím",
-    "%s password changed successfully" : "%s jelszó sikeresen megváltozott"
+    "%s password changed successfully" : "%s jelszó sikeresen megváltozott",
+    "Email has been changed successfully." : "Az email cím megváltoztatása sikeres volt."
 },
 "nplurals=2; plural=(n != 1);");

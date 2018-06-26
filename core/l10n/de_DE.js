@@ -368,6 +368,8 @@ OC.L10N.register(
     "An error occured while sending email" : "Beim Versenden der E-Mail ist ein Fehler aufgetreten",
     "{sharee} (federated)" : "{sharee} (federated)",
     "Personal note from the sender: %s." : "Persönliche Notiz des Absenders: 1%s.",
-    "Automatic updating is disabled in config.php. To upgrade your instance, please use the command line updater (occ upgrade)." : "Automatische Aktualisierung ist in der config.php deaktiviert. Zur Hochrüstung der Instanz, bitte den Kommandozeilenupdater (occ upgrade) verwenden."
+    "Automatic updating is disabled in config.php. To upgrade your instance, please use the command line updater (occ upgrade)." : "Automatische Aktualisierung ist in der config.php deaktiviert. Zur Hochrüstung der Instanz, bitte den Kommandozeilenupdater (occ upgrade) verwenden.",
+    "Imprint" : "Impressum",
+    "E-Mail sent" : "E-Mail gesendet"
 },
 "nplurals=2; plural=(n != 1);");

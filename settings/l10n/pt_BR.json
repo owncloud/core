@@ -360,6 +360,17 @@
     "Email changed successfully for {user}." : "E-mail alterado com sucesso para {user}.",
     "You are not a member of any groups." : "Você não é membro de nenhum grupo.",
     "In a clustered setup please make sure to sync the config.php file across all nodes." : "Em uma configuração em cluster, certifique-se de sincronizar o arquivo config.php em todos os nós.",
-    "These are the web, desktop and mobile clients currently logged in to your %s." : "Estes são os clientes Web com dispositivos móveis e desktop, atualmente conectados ao seu %s."
+    "These are the web, desktop and mobile clients currently logged in to your %s." : "Estes são os clientes Web com dispositivos móveis e desktop, atualmente conectados ao seu %s.",
+    "Automatically accept new incoming local user shares" : "Aceitar automaticamente novos compartilhamentos recebidos de usuários locais",
+    "Legal" : "Legal",
+    "Imprint URL:" : "URL para impressão:",
+    "Imprint URL" : "URL de impressão:",
+    "Privacy Policy URL:" : "Política de Privacidade para URL:",
+    "Privacy Policy URL" : "Política de Privacidade para URL:",
+    "App passwords / tokens" : "Senhas/tokens de aplicativo",
+    "App passwords or tokens are passcodes that give an app or device permissions to access your %s account." : "Senhas de aplicativos ou tokens são códigos de acesso que fornecem permissões de aplicativo ou dispositivo para acessar sua %s conta.",
+    "Use them as a security measure to hide your actual password which you may only want to use for web interface login." : "Use-os como uma medida de segurança para ocultar sua senha real, que você pode usar somente para o login da interface da web.",
+    "Create new app passcode" : "Criar nova senha do aplicativo",
+    "Password / Token" : "Senha/Token"
 },"pluralForm" :"nplurals=2; plural=(n > 1);"
 }

@@ -78,6 +78,10 @@ OC.L10N.register(
     "Do you want to add the remote share {name} from {owner}@{remote}?" : "Дали сакате да додадете далечински пристап на {name} од {owner}@{remote}?",
     "No ownCloud installation (7 or higher) found at {remote}" : "Не е пронајдена ownCloud инсталација (верзија 7 или поголема) на {remote}",
     "A file or folder was shared from <strong>another server</strong>" : "Датотека или директориум е споделена со <strong>надворешен сервер</strong>",
-    "A public shared file or folder was <strong>downloaded</strong>" : "Јавно споделена датотека или директориум е <strong>превземен</strong>"
+    "A public shared file or folder was <strong>downloaded</strong>" : "Јавно споделена датотека или директориум е <strong>превземен</strong>",
+    "Pending" : "Во очекување",
+    "Accept" : "Прифати",
+    "Decline" : "Одбиј",
+    "Declined" : "Одбиен"
 },
 "nplurals=2; plural=(n % 10 == 1 && n % 100 != 11) ? 0 : 1;");

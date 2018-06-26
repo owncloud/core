@@ -180,6 +180,7 @@
     "%s is not supported and %s will not work properly on this platform. Use it at your own risk! " : "%s er ekki stutt og %s mun ekki vinna eðlilega á þessu stýrikerfi. Notaðu þetta því á þína eigin ábyrgð! ",
     "Sharing %s failed, could not find %s, check spelling and server availability." : "Deiling %s mistókst, gat ekki fundið %s, athugaðu stafsetninguna og hvort þjónninn sé tiltækur.",
     "App cannot be installed because appinfo file cannot be read." : "Ekki er hægt að setja upp forritið vegna þess að ekki var hægt að lesa appinfo-skrána.",
-    "Signature could not get checked. Please contact the app developer and check your admin screen." : "Ekki var hægt að staðfesta undirritunina. Hafðu samband við forritarana og skoðaðu stjórnskjáinn þinn.."
+    "Signature could not get checked. Please contact the app developer and check your admin screen." : "Ekki var hægt að staðfesta undirritunina. Hafðu samband við forritarana og skoðaðu stjórnskjáinn þinn..",
+    "Imprint" : "Prenta"
 },"pluralForm" :"nplurals=2; plural=(n % 10 != 1 || n % 100 == 11);"
 }

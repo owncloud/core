@@ -112,6 +112,7 @@ OC.L10N.register(
     "No favorites" : "お気に入りなし",
     "Files and folders you mark as favorite will show up here" : "お気に入りに登録されたファイルやフォルダーは、ここに表示されます。",
     "Text file" : "テキストファイル",
-    "New text file.txt" : "新規のテキストファイル作成"
+    "New text file.txt" : "新規のテキストファイル作成",
+    "Processing files..." : "処理中…"
 },
 "nplurals=1; plural=0;");

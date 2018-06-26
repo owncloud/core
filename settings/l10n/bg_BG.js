@@ -296,6 +296,7 @@ OC.L10N.register(
     "Allow username autocompletion in share dialog. If this is disabled the full username needs to be entered." : "Разреши автоматичното попълване на потребителското име в диалоговия прозорец за споделяне. Ако това е забранено, ще трябва ръчно да се въвежда пълното потребителско име.",
     "The config file is read only. Please adjust your setup by editing the config file manually." : "Конфигурационният файл е с права само за четене. Моля, коригирайте настройката си, като ръчно редактирате конфигурационния файл.",
     "All checks passed." : "Всички проверки са преминати.",
-    "Use the credentials below to configure your app or device." : "Използвайте данните по-долу, за да конфигурирате приложението или устройството си."
+    "Use the credentials below to configure your app or device." : "Използвайте данните по-долу, за да конфигурирате приложението или устройството си.",
+    "Email has been changed successfully." : "Имейлът е променен успешно."
 },
 "nplurals=2; plural=(n != 1);");

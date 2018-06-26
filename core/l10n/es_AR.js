@@ -153,6 +153,7 @@ OC.L10N.register(
     "Remote Address: %s" : "Dirección Remota: %s",
     "Request ID: %s" : "ID requiriente: %s",
     "File is too big" : "El archivo es demasiado grande",
-    "Please select a file." : "Por favor seleccione un archivo."
+    "Please select a file." : "Por favor seleccione un archivo.",
+    "Imprint" : "Imprint"
 },
 "nplurals=2; plural=(n != 1);");

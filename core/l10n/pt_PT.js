@@ -342,6 +342,7 @@ OC.L10N.register(
     "Sending" : "A Enviar",
     "Menu" : "Menu",
     "Link name" : "Nome de hiperligação",
-    "Owner: {owner}" : "Proprietário: {owner}"
+    "Owner: {owner}" : "Proprietário: {owner}",
+    "Imprint" : "Marca"
 },
 "nplurals=2; plural=(n != 1);");

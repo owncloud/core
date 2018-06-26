@@ -94,6 +94,10 @@ OC.L10N.register(
     "Add to your ownCloud" : "Lisää ownCloudiisi",
     "Download" : "Lataa",
     "Download %s" : "Lataa %s",
-    "Direct link" : "Suora linkki"
+    "Direct link" : "Suora linkki",
+    "Pending" : "Odottaa",
+    "Accept" : "Hyväksy",
+    "Decline" : "Kieltäydy",
+    "Declined" : "Torjuttu"
 },
 "nplurals=2; plural=(n != 1);");

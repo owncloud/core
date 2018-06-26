@@ -41,6 +41,7 @@ OC.L10N.register(
     "Rename" : "ਨਾਂ ਬਦਲੋ",
     "Help" : "ਮਦਦ",
     "Username" : "ਯੂਜ਼ਰ-ਨਾਂ",
-    "Search" : "ਖੋਜ"
+    "Search" : "ਖੋਜ",
+    "Imprint" : "ਛਾਪ"
 },
 "nplurals=2; plural=(n != 1);");

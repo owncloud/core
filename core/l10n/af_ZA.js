@@ -248,6 +248,7 @@ OC.L10N.register(
     "An internal error occurred." : "’n Interne fout het voorgekom.",
     "Please try again or contact your administrator." : "Probeer weer of kontak u stelseladministrateur.",
     "Wrong password. Reset it?" : "Verkeerde wagwoord. Herstel dit?",
-    "Wrong password." : "Verkeerde wagwoord."
+    "Wrong password." : "Verkeerde wagwoord.",
+    "Imprint" : "Afdruk"
 },
 "nplurals=2; plural=(n != 1);");

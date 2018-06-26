@@ -8,6 +8,7 @@ OC.L10N.register(
     "Sharing" : "ھەمبەھىر",
     "Password" : "ئىم",
     "Name" : "ئاتى",
-    "Download" : "چۈشۈر"
+    "Download" : "چۈشۈر",
+    "Pending" : "كۈتۈۋاتىدۇ"
 },
 "nplurals=1; plural=0;");

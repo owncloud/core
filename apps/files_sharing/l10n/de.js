@@ -114,6 +114,10 @@ OC.L10N.register(
     "Download" : "Herunterladen",
     "Download %s" : "Download %s",
     "Direct link" : "Direkter Link",
-    "No permission to create share" : "Keine Berechtigung zum Teilen"
+    "No permission to create share" : "Keine Berechtigung zum Teilen",
+    "Pending" : "Ausstehend",
+    "Accept" : "Akzeptieren",
+    "Decline" : "Abgelehnt",
+    "Declined" : "Abgelehnt"
 },
 "nplurals=2; plural=(n != 1);");

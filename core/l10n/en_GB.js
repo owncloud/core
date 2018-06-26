@@ -318,6 +318,7 @@ OC.L10N.register(
     "This %s instance is currently in maintenance mode, which may take a while." : "This %s instance is currently in maintenance mode, which may take a while.",
     "This page will refresh itself when the %s instance is available again." : "This page will refresh itself when the %s instance is available again.",
     "Copy to clipboard" : "Copy to clipboard",
-    "Menu" : "Menu"
+    "Menu" : "Menu",
+    "Imprint" : "Imprint"
 },
 "nplurals=2; plural=(n != 1);");

@@ -92,6 +92,10 @@ OC.L10N.register(
     "Add to your ownCloud" : "加入到你的 ownCloud",
     "Download" : "下載",
     "Download %s" : "下載 %s",
-    "Direct link" : "直接連結"
+    "Direct link" : "直接連結",
+    "Pending" : "等候中",
+    "Accept" : "接受",
+    "Decline" : "拒絕",
+    "Declined" : "已拒絕"
 },
 "nplurals=1; plural=0;");

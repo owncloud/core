@@ -338,6 +338,7 @@ OC.L10N.register(
     "%s password changed successfully" : "App %s succesfuldt opdateret",
     "{fileName} link" : "{fileName} link",
     "Edit link share: {name}" : "Rediger linkdeling: {name}",
-    "Create link share: {name}" : "Opret linkdeling: {name}"
+    "Create link share: {name}" : "Opret linkdeling: {name}",
+    "Imprint" : "Aftryk"
 },
 "nplurals=2; plural=(n != 1);");

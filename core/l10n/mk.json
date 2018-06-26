@@ -329,6 +329,18 @@
     "Install and activate additional PHP modules to choose other database types." : "Инсталирајте и активирајте дополнителни PHP модули за да изберете други типови на бази на податоци.",
     "For more details check out the documentation." : "За повеќе детали проверете ја документацијата.",
     "%s will be updated to version %s" : "%s ќе се надгради во верзија%s",
-    "The theme %s has been disabled." : "Темета %s е оневозможена."
+    "The theme %s has been disabled." : "Темета %s е оневозможена.",
+    "Imprint" : "Печат",
+    "This %s instance is currently in maintenance mode, which may take a while." : "Оваа %s истанца е моментално во режим на одржување, што може да потрае некое време.",
+    "Link name" : "Име на линкот",
+    "Receive files from multiple recipients without revealing the contents of the folder." : "Примање на датотеки од повеќе примачи без откривање на содржината на папката.",
+    "Download / View" : "Превземи / Погледај",
+    "Recipients can view or download contents." : "Примателите може да ги прегледуваат или преземат содржините.",
+    "Download / View / Upload" : "Превземи / Погледај / Подигни",
+    "Recipients can view, download, edit, delete and upload contents." : "Примателите можат да ги гледаат, да ги преземаат, уредуваат, бришат и да поставуваат содржини.",
+    "An error occured while sending email" : "Се појави грешка при испраќање Email",
+    "E-Mail sent" : "EMail испратен",
+    "Set log level to debug" : "Поставете го нивото на логот на дебагирање",
+    "Reset log level" : "Ресетирај го нивото на логот"
 },"pluralForm" :"nplurals=2; plural=(n % 10 == 1 && n % 100 != 11) ? 0 : 1;"
 }

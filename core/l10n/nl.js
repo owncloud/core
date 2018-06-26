@@ -350,6 +350,7 @@ OC.L10N.register(
     "Owner: {owner}" : "Eigenaar: {owner}",
     "Email notification was sent!" : "E-mailbericht verzonden!",
     "You are trying to access a private link. Please log in first." : "U probeert een privé link te benaderen. Meld u zich alstublieft eerst aan.",
-    "{sharee} (federated)" : "{sharee} (gefedereerd)"
+    "{sharee} (federated)" : "{sharee} (gefedereerd)",
+    "Imprint" : "afdruk"
 },
 "nplurals=2; plural=(n != 1);");

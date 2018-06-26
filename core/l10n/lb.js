@@ -260,6 +260,7 @@ OC.L10N.register(
     "For help, see the  <a target=\"_blank\" rel=\"noreferrer\" href=\"%s\">documentation</a>." : "Fir Hëllef, kuck am <a target=\"_blank\" rel=\"noreferrer\" href=\"%s\">Documentatioun</a>.",
     "This %s instance is currently in maintenance mode, which may take a while." : "Dës %s Instanz ass am Moment am Maintenance Modus, dat kënnt ee Moment brauche.",
     "This page will refresh itself when the %s instance is available again." : "Dës Säit luet nees automatesch wann d' %s Instanz nees disponibel ass.",
-    "Menu" : "Menü"
+    "Menu" : "Menü",
+    "Imprint" : "Impressum"
 },
 "nplurals=2; plural=(n != 1);");

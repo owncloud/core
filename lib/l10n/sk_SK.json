@@ -167,6 +167,7 @@
     "Storage connection error. %s" : "Chyba pripojenia k úložisku. %s",
     "Storage connection timeout. %s" : "Čas na nadviazanie pripojenia k úložisku vypršal. %s",
     "A safe home for all your data" : "Bezpečný domov pre všetky vaše dáta",
-    "Storage is temporarily not available" : "Úložisko je dočasne nedostupné"
+    "Storage is temporarily not available" : "Úložisko je dočasne nedostupné",
+    "Imprint" : "Podmienky používania"
 },"pluralForm" :"nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;"
 }

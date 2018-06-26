@@ -43,6 +43,7 @@
     "Set an admin username." : "Stel ’n admingebruikersnaam.",
     "Set an admin password." : "Stel ’n adminwagwoord.",
     "%s shared »%s« with you" : "%s het »%s« met u gedeel",
-    "%s via %s" : "%s deur %s"
+    "%s via %s" : "%s deur %s",
+    "Imprint" : "Afdruk"
 },"pluralForm" :"nplurals=2; plural=(n != 1);"
 }

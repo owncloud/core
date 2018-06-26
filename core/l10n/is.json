@@ -359,6 +359,7 @@
     "It looks like your instance may host many files and/or users. To ensure a smooth upgrade process, please use the command line updater (occ upgrade)." : "Það lítur út fyrir að tilvikið þitt hýsi mjög margar skrár og/eða notendur. Til að uppfærslan gangi sem best fyrir sig, ættirðu að nota uppfærslutólið af skipanalínu (occ upgrade).",
     "Couldn't send mail to following recipient(s): %s " : "Gat ekki sent póst á eftirfarandi notendur: %s ",
     "{sharee} (federated)" : "{sharee} (federated)",
-    "Automatic updating is disabled in config.php. To upgrade your instance, please use the command line updater (occ upgrade)." : "Sjálfvirkar uppfærslur eru gerðar óvirkar í config.php. Til að uppfæra tilvikið þitt ættirðu að nota uppfærslutólið af skipanalínu (occ upgrade)."
+    "Automatic updating is disabled in config.php. To upgrade your instance, please use the command line updater (occ upgrade)." : "Sjálfvirkar uppfærslur eru gerðar óvirkar í config.php. Til að uppfæra tilvikið þitt ættirðu að nota uppfærslutólið af skipanalínu (occ upgrade).",
+    "Imprint" : "Prenta"
 },"pluralForm" :"nplurals=2; plural=(n % 10 != 1 || n % 100 == 11);"
 }

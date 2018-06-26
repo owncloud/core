@@ -112,6 +112,20 @@
     "Download" : "Shkarko",
     "Download %s" : "Shkarko %s",
     "Direct link" : "Lidhje e drejtpërdrejtë",
-    "No permission to create share" : "S’ka leje për krijim ndarjeje"
+    "No permission to create share" : "S’ka leje për krijim ndarjeje",
+    "Pending" : "Në pritje",
+    "Accept" : "Pranoje",
+    "Decline" : "Hidhe poshtë",
+    "Declined" : "Hedhur Poshtë",
+    "An error occurred while updating share state: {message}" : "Ndodhi një gabim teksa përditësohej gjendja e ndarjes: {message}",
+    "Accept Share" : "Pranoje Ndarjen",
+    "Decline Share" : "Hidhe Poshtë Ndarjen",
+    "Only recipient can change accepted state" : "Gjendjen e pranimit mund ta ndryshojnë vetëm marrësi",
+    "File sharing" : "Ndarje kartelash me të tjerët",
+    "State" : "Gjendje",
+    "The group is blacklisted for sharing" : "Grupit i është ndaluar shkëmbimi",
+    "Files Sharing" : "Shkëmbim Kartelash",
+    "Exclude groups from receiving shares." : "Përjashtoni grupe nga marrje ndarjesh me të tjerë.",
+    "These groups will not receive shares. Members of the group can still send and receive shares outside of the group." : "Këto grupe nuk do të marrin ndarje. Anëtarët e grupit munden prapëseprapë të dërgojnë dhe marrin ndarje jashtë grupit."
 },"pluralForm" :"nplurals=2; plural=(n != 1);"
 }

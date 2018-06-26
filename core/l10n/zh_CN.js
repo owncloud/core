@@ -346,6 +346,7 @@ OC.L10N.register(
     "You are trying to access a private link. Please log in first." : "您在尝试访问私有链接，请先登录。",
     "It looks like your instance may host many files and/or users. To ensure a smooth upgrade process, please use the command line updater (occ upgrade)." : "您的实例可能包含较多文件和/或用户，为保证更新过程流畅，请使用命令行更新工具 (occ upgrade)。",
     "Couldn't send mail to following recipient(s): %s " : "无法发送邮件到下列收件人: %s ",
-    "Automatic updating is disabled in config.php. To upgrade your instance, please use the command line updater (occ upgrade)." : "自动更新在 config.php 中被禁用，请使用命令行更新工具 (occ upgrade) 升级您的实例。"
+    "Automatic updating is disabled in config.php. To upgrade your instance, please use the command line updater (occ upgrade)." : "自动更新在 config.php 中被禁用，请使用命令行更新工具 (occ upgrade) 升级您的实例。",
+    "Imprint" : "版本说明"
 },
 "nplurals=1; plural=0;");

@@ -336,6 +336,24 @@
     "Menu" : "Menu",
     "Email notification not sent" : "Powiadomienie email nie zostało wysłane",
     "Link name" : "Nazwa linku",
-    "Email notification was sent!" : "Powiadomienie email zostało wysłane"
+    "Email notification was sent!" : "Powiadomienie email zostało wysłane",
+    "Sending" : "Wysyłanie",
+    "Imprint" : "Stopka",
+    "Owner: {owner}" : "Właściciel: {owner}",
+    "You are trying to access a private link. Please log in first." : "Próbujesz dostępu do prywatnego linku. Proszę się najpierw zalogować.",
+    "Couldn't send mail to following recipient(s): %s " : "Nie udało się wysłać wiadomości do odbiorcy(ów): %s ",
+    "Choose an expiration date" : "Wybierz datę wygaśnięcia",
+    "Send copy to self" : "Wyślij kopię do siebie",
+    "Add personal message" : "Dodaj własną wiadomość",
+    "Upload only" : "Tylko wysyłanie",
+    "Error adding {addItem}: {addItem} already exists" : "Błąd dodawania {addItem}: {addItem} już istnieje",
+    "Download / View" : "Pobieranie / Podgląd",
+    "Recipients can view or download contents." : "Odbiorcy mogą otwierać lub pobierać zawartość.",
+    "Download / View / Upload" : "Pobieranie / Podgląd / Wysyłanie",
+    "Recipients can view, download, edit, delete and upload contents." : "Odbiorcy mogą otwierać, pobierać, zmieniać, kasować i wysyłać zawartość.",
+    "An error occured while sending email" : "Wystąpił błąd przy wysyłaniu wiadomości email",
+    "E-Mail sent" : "Wiadomość e-mail została wysłana",
+    "federated" : "stowarzyszona",
+    "Personal note from the sender: %s." : "Własna informacja od nadawcy: %s."
 },"pluralForm" :"nplurals=4; plural=(n==1 ? 0 : (n%10>=2 && n%10<=4) && (n%100<12 || n%100>=14) ? 1 : n!=1 && (n%10>=0 && n%10<=1) || (n%10>=5 && n%10<=9) || (n%100>=12 && n%100<=14) ? 2 : 3);"
 }

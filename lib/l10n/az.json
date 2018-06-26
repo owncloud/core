@@ -39,6 +39,7 @@
     "Authentication error" : "Təyinat metodikası",
     "Token expired. Please reload page." : "Token vaxtı bitib. Xahiş olunur səhifəni yenidən yükləyəsiniz.",
     "Unknown user" : "Istifadəçi tanınmır ",
-    "This is probably caused by a cache/accelerator such as Zend OPcache or eAccelerator." : "Bu ola bilər ki, cache/accelerator such tərəfindən cağırılıb hansi ki, Zend OPcache və eAccelerator-da olduğu kimidir."
+    "This is probably caused by a cache/accelerator such as Zend OPcache or eAccelerator." : "Bu ola bilər ki, cache/accelerator such tərəfindən cağırılıb hansi ki, Zend OPcache və eAccelerator-da olduğu kimidir.",
+    "Imprint" : "İşarələmək"
 },"pluralForm" :"nplurals=2; plural=(n != 1);"
 }

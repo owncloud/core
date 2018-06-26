@@ -320,6 +320,7 @@
     "%s password changed successfully" : "App %s succesfuldt opdateret",
     "No panels for this section." : "Intet panel for denne sektion.",
     "Failed to change the email address." : "Fejlede i at ændre emailadressen.",
-    "We recommend to enable system cron as any other cron method has possible performance and reliability implications." : "Vi anbefaler at aktivere stystem-cron eftersom andre cron-metoder muligvis kan påvirke performance og pålidelighed."
+    "We recommend to enable system cron as any other cron method has possible performance and reliability implications." : "Vi anbefaler at aktivere stystem-cron eftersom andre cron-metoder muligvis kan påvirke performance og pålidelighed.",
+    "Email has been changed successfully." : "Email er succesfuldt blevet opdateret."
 },"pluralForm" :"nplurals=2; plural=(n != 1);"
 }
