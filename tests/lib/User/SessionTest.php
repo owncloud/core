@@ -18,7 +18,7 @@ use OC\Authentication\Token\IProvider;
 use OC\Authentication\Token\IToken;
 use OC\Security\CSRF\CsrfTokenManager;
 use OC\Session\Memory;
-use OC\User\LoginException;
+
 use OC\User\Manager;
 use OC\User\Session;
 use OCP\App\IServiceLoader;
@@ -149,6 +149,7 @@ class SessionTest extends TestCase {
 
 	/**
 	 * @dataProvider isLoggedInData
+	 * @param $isLoggedIn
 	 */
 	public function testIsLoggedIn($isLoggedIn) {
 		$session = $this->createMock(Memory::class);
@@ -214,7 +215,7 @@ class SessionTest extends TestCase {
 							return false;
 							break;
 					}
-				}, 'foo'));
+			}));
 
 		$managerMethods = get_class_methods(Manager::class);
 		//keep following methods intact in order to ensure hooks are
@@ -405,10 +406,14 @@ class SessionTest extends TestCase {
 		$session = $this->createMock(ISession::class);
 		/** @var IRequest | \PHPUnit_Framework_MockObject_MockObject $request */
 		$request = $this->createMock(IRequest::class);
+		$request->method('getRemoteAddress')->willReturn('12.34.56.78');
+
+		/** @var EventDispatcher | \PHPUnit_Framework_MockObject_MockObject $eventDispatcher */
+		$eventDispatcher = $this->createMock(EventDispatcher::class);
 
 		/** @var Session $userSession */
 		$userSession = $this->getMockBuilder(Session::class)
-			->setConstructorArgs([$manager, $session, $this->timeFactory, $this->tokenProvider, $this->config, $this->logger, $this->serviceLoader, $this->userSyncService, $this->eventDispatcher])
+			->setConstructorArgs([$manager, $session, $this->timeFactory, $this->tokenProvider, $this->config, $this->logger, $this->serviceLoader, $this->userSyncService, $eventDispatcher])
 			->setMethods(['login', 'supportsCookies', 'createSessionToken', 'getUser'])
 			->getMock();
 
@@ -420,6 +425,8 @@ class SessionTest extends TestCase {
 			->method('getSystemValue')
 			->with('token_auth_enforced', false)
 			->will($this->returnValue(true));
+		$this->logger->expects($this->once())->method('warning')->with("Login failed: 'john' (Remote IP: '12.34.56.78')");
+		$eventDispatcher->expects($this->once())->method('dispatch')->with('user.loginfailed', new GenericEvent(null, ['user' => 'john']));
 
 		$userSession->logClientIn('john', 'doe', $request);
 	}
@@ -527,7 +534,7 @@ class SessionTest extends TestCase {
 						default:
 							return false;
 					}
-				}, 'foo'));
+			}));
 		$session->expects($this->once())
 			->method('regenerateId');
 
@@ -1078,7 +1085,7 @@ class SessionTest extends TestCase {
 			->method('getUID')
 			->will($this->returnValue('foo'));
 
-		/** @var Session | \PHPUnit_Framework_MockObject_MockObject $session */
+		/** @var Session | \PHPUnit_Framework_MockObject_MockObject $userSession */
 		$userSession = $this->getMockBuilder(Session::class)
 			->setConstructorArgs([$manager, $session, $this->timeFactory, $this->tokenProvider, $this->config, $this->logger, $this->serviceLoader, $this->userSyncService, $this->eventDispatcher])
 			->setMethods(['getAuthModules', 'unsetMagicInCookie'])
@@ -1367,6 +1374,7 @@ class SessionTest extends TestCase {
 	 * @dataProvider providesModules
 	 * @param $expectedReturn
 	 * @param array $modules
+	 * @param null $loggedInUser
 	 */
 	public function testVerifyAuthHeaders($expectedReturn, array $modules, $loggedInUser = null) {
 		/** @var IRequest | \PHPUnit_Framework_MockObject_MockObject $request */
@@ -1415,6 +1423,7 @@ class SessionTest extends TestCase {
 	 * @dataProvider providesModulesForLogin
 	 * @param mixed $expectedReturn
 	 * @param array $modules
+	 * @throws \Exception
 	 */
 	public function testTryAuthModuleLogin($expectedReturn, array $modules) {
 		/** @var IRequest | \PHPUnit_Framework_MockObject_MockObject $request */
