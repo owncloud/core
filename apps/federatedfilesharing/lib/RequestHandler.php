@@ -39,7 +39,7 @@ use Symfony\Component\EventDispatcher\GenericEvent;
 
 /**
  * Class RequestHandler
- * 
+ *
  * handles OCS Request to the federated share API
  *
  * @package OCA\FederatedFileSharing\API
@@ -189,7 +189,8 @@ class RequestHandler {
 					->setUser($shareWith)
 					->setDateTime(new \DateTime())
 					->setObject('remote_share', $shareId)
-					->setSubject('remote_share', [$ownerFederatedId, $sharedByFederatedId, trim($name, '/')]);
+					->setSubject('remote_share', [$ownerFederatedId, $sharedByFederatedId, \trim($name, '/')])
+					->setMessage('remote_share', [$ownerFederatedId, $sharedByFederatedId, \trim($name, '/')]);
 
 				$declineAction = $notification->createAction();
 				$declineAction->setLabel('decline')

@@ -32,6 +32,7 @@ use OCP\IGroupManager;
 use OCP\IUserManager;
 use OCP\IConfig;
 use OCP\IUser;
+use OCP\Defaults;
 
 class NotifierTest extends \Test\TestCase {
 
@@ -55,6 +56,9 @@ class NotifierTest extends \Test\TestCase {
 	/** @var IConfig */
 	private $config;
 
+	/** @var Defaults */
+	private $defaults;
+
 	public function setUp() {
 		parent::setUp();
 
@@ -77,13 +81,18 @@ class NotifierTest extends \Test\TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
+		$this->defaults = $this->getMockBuilder(Defaults::class)
+			->disableOriginalConstructor()
+			->getMock();
+
 		$this->notifier = new Notifier(
 			\OC::$server->getL10NFactory(),
 			$this->notificationManager,
 			$this->shareManager,
 			$this->groupManager,
 			$this->userManager,
-			$this->config
+			$this->config,
+			$this->defaults
 		);
 	}
 
@@ -93,6 +102,7 @@ class NotifierTest extends \Test\TestCase {
 	public function testPrepareInvalidApp() {
 		$notification = $this->createMock(INotification::class);
 		$notification->method('getApp')->willReturn('another');
+		$notification->method('getObjectType')->willReturn('local_share');
 		$this->notifier->prepare($notification, 'en_US');
 	}
 
@@ -102,6 +112,7 @@ class NotifierTest extends \Test\TestCase {
 	public function testPrepareInvalidSubject() {
 		$notification = $this->createMock(INotification::class);
 		$notification->method('getApp')->willReturn('files_sharing');
+		$notification->method('getObjectType')->willReturn('invalid_object');
 		$notification->method('getSubject')->willReturn('invalid_subject');
 		$this->notifier->prepare($notification, 'en_US');
 	}
@@ -112,19 +123,19 @@ class NotifierTest extends \Test\TestCase {
 			[
 				'local_share',
 				['owner', 'owner', 'folder'],
-				'User "owner" shared "folder" with you',
+				'"owner" shared "folder" with you',
 			],
 			// with behalf
 			[
 				'local_share',
 				['owner', 'alf', 'folder'],
-				'User "owner" shared "folder" with you (on behalf of "alf")',
+				'"owner" shared "folder" with you (on behalf of "alf")',
 			],
 			// auto-accepted share
 			[
 				'local_share_accepted',
 				['owner', 'behalf_user', 'folder'],
-				'User "owner" shared "folder" with you (on behalf of "behalf_user")',
+				'"owner" shared "folder" with you (on behalf of "behalf_user")',
 			],
 		];
 	}
@@ -141,8 +152,12 @@ class NotifierTest extends \Test\TestCase {
 		$notification = $this->createMock(INotification::class);
 
 		$notification->method('getApp')->willReturn('files_sharing');
+		$notification->method('getObjectType')->willReturn('local_share');
 		$notification->method('getSubject')->willReturn($subject);
 		$notification->method('getSubjectParameters')->willReturn($subjectParams);
+		// duplicate the same subject parameters for the message
+		$notification->method('getMessage')->willReturn($subject);
+		$notification->method('getMessageParameters')->willReturn($subjectParams);
 
 		$action1 = $this->createMock(IAction::class);
 		$action1->method('getLabel')->willReturn('accept');
@@ -166,6 +181,8 @@ class NotifierTest extends \Test\TestCase {
 		$notification->expects($this->once())
 			->method('setParsedSubject')
 			->with($expectedSubject);
+		$notification->expects($this->once())
+			->method('setParsedMessage');
 
 		$notification->expects($this->any())
 			->method('addParsedAction')
@@ -184,8 +201,12 @@ class NotifierTest extends \Test\TestCase {
 		$notification = $this->createMock(INotification::class);
 
 		$notification->method('getApp')->willReturn('files_sharing');
+		$notification->method('getObjectType')->willReturn('local_share');
 		$notification->method('getSubject')->willReturn('local_share');
 		$notification->method('getSubjectParameters')->willReturn(['owner', 'owner', 'folder']);
+		// duplicate the same subject parameters for the message
+		$notification->method('getMessage')->willReturn('local_share');
+		$notification->method('getMessageParameters')->willReturn(['owner', 'owner', 'folder']);
 		$notification->method('getUser')->willReturn('user1');
 
 		$action1 = $this->createMock(IAction::class);
@@ -209,7 +230,9 @@ class NotifierTest extends \Test\TestCase {
 
 		$notification->expects($this->once())
 			->method('setParsedSubject')
-			->with('User "owner" shared "folder" with you');
+			->with('"owner" shared "folder" with you');
+		$notification->expects($this->once())
+			->method('setParsedMessage');
 
 		$notification->expects($this->any())
 			->method('addParsedAction')
@@ -235,7 +258,7 @@ class NotifierTest extends \Test\TestCase {
 				['displayname owner', 'displayname owner'],
 				['email@owner', 'email@owner'],
 				'id',
-				'User "displayname owner (owner)" shared "folder" with you',
+				'"displayname owner (owner)" shared "folder" with you',
 			],
 			[
 				'local_share',
@@ -243,7 +266,7 @@ class NotifierTest extends \Test\TestCase {
 				['displayname owner', 'displayname owner'],
 				['email@owner', 'email@owner'],
 				'email',
-				'User "displayname owner (email@owner)" shared "folder" with you',
+				'"displayname owner (email@owner)" shared "folder" with you',
 			],
 			[
 				'local_share',
@@ -251,7 +274,7 @@ class NotifierTest extends \Test\TestCase {
 				['displayname owner', 'displayname owner'],
 				['email@owner', 'email@owner'],
 				'',
-				'User "displayname owner" shared "folder" with you',
+				'"displayname owner" shared "folder" with you',
 			],
 			// with behalf
 			[
@@ -260,7 +283,7 @@ class NotifierTest extends \Test\TestCase {
 				['displayname owner', 'da1f'],
 				['email@owner', 'a1f@ex.com'],
 				'id',
-				'User "displayname owner (owner)" shared "folder" with you (on behalf of "da1f (alf)")',
+				'"displayname owner (owner)" shared "folder" with you (on behalf of "da1f (alf)")',
 			],
 			[
 				'local_share',
@@ -268,7 +291,7 @@ class NotifierTest extends \Test\TestCase {
 				['displayname owner', 'da1f'],
 				['email@owner', 'a1f@ex.com'],
 				'email',
-				'User "displayname owner (email@owner)" shared "folder" with you (on behalf of "da1f (a1f@ex.com)")',
+				'"displayname owner (email@owner)" shared "folder" with you (on behalf of "da1f (a1f@ex.com)")',
 			],
 			[
 				'local_share',
@@ -276,7 +299,7 @@ class NotifierTest extends \Test\TestCase {
 				['displayname owner', 'da1f'],
 				['email@owner', 'a1f@ex.com'],
 				'',
-				'User "displayname owner" shared "folder" with you (on behalf of "da1f")',
+				'"displayname owner" shared "folder" with you (on behalf of "da1f")',
 			],
 		];
 	}
@@ -312,8 +335,12 @@ class NotifierTest extends \Test\TestCase {
 		$notification = $this->createMock(INotification::class);
 
 		$notification->method('getApp')->willReturn('files_sharing');
+		$notification->method('getObjectType')->willReturn('local_share');
 		$notification->method('getSubject')->willReturn($subject);
 		$notification->method('getSubjectParameters')->willReturn($subjectParams);
+		// duplicate the same subject parameters for the message
+		$notification->method('getMessage')->willReturn($subject);
+		$notification->method('getMessageParameters')->willReturn($subjectParams);
 
 		$action1 = $this->createMock(IAction::class);
 		$action1->method('getLabel')->willReturn('accept');
@@ -337,6 +364,8 @@ class NotifierTest extends \Test\TestCase {
 		$notification->expects($this->once())
 			->method('setParsedSubject')
 			->with($expectedSubject);
+		$notification->expects($this->once())
+			->method('setParsedMessage');
 
 		$notification->expects($this->any())
 			->method('addParsedAction')
@@ -358,6 +387,7 @@ class NotifierTest extends \Test\TestCase {
 		$notification = $this->createMock(INotification::class);
 
 		$notification->method('getApp')->willReturn('files_sharing');
+		$notification->method('getObjectType')->willReturn('local_share');
 		$notification->method('getSubject')->willReturn('local_share');
 		$notification->method('getSubjectParameters')->willReturn(['owner', 'owner', 'folder']);
 		$notification->method('getUser')->willReturn('user1');
@@ -384,6 +414,7 @@ class NotifierTest extends \Test\TestCase {
 		$notification = $this->createMock(INotification::class);
 
 		$notification->method('getApp')->willReturn('files_sharing');
+		$notification->method('getObjectType')->willReturn('local_share');
 		$notification->method('getSubject')->willReturn('local_share');
 		$notification->method('getSubjectParameters')->willReturn(['owner', 'owner', 'folder']);
 		$notification->method('getUser')->willReturn('user1');
