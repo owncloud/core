@@ -32,6 +32,7 @@ use OC\AppFramework\Utility\SimpleContainer;
 use OC\AppFramework\Utility\TimeFactory;
 use OC\Core\Controller\AvatarController;
 use OC\Core\Controller\CloudController;
+use OC\Core\Controller\CronController;
 use OC\Core\Controller\LoginController;
 use OC\Core\Controller\LostController;
 use OC\Core\Controller\TokenController;
@@ -39,6 +40,9 @@ use OC\Core\Controller\TwoFactorChallengeController;
 use OC\Core\Controller\UserController;
 use OC_Defaults;
 use OCP\AppFramework\App;
+use OCP\BackgroundJob\IJobList;
+use OCP\IConfig;
+use OCP\ILogger;
 use OCP\IServerContainer;
 use OCP\Util;
 
@@ -136,6 +140,15 @@ class Application extends App {
 			return new CloudController(
 				$c->query('AppName'),
 				$c->query('Request')
+			);
+		});
+		$container->registerService('CronController', function (SimpleContainer $c) {
+			return new CronController(
+				$c->query('AppName'),
+				$c->query('Request'),
+				$c->query(IConfig::class),
+				$c->query(ILogger::class),
+				$c->query(IJobList::class)
 			);
 		});
 

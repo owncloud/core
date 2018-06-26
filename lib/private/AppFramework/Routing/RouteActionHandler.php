@@ -33,6 +33,7 @@ class RouteActionHandler {
 	private $container;
 
 	/**
+	 * @param DIContainer $container
 	 * @param string $controllerName
 	 * @param string $actionName
 	 */
