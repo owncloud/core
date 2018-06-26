@@ -34,18 +34,24 @@
 try {
 	require_once __DIR__ . '/lib/base.php';
 
+	if (!\OC::$CLI) {
+		$url = \OC::$server->getURLGenerator()->linkToRoute('core.Cron.run');
+		\header("Location: $url");
+		return;
+	}
+
 	if (\OCP\Util::needUpgrade()) {
 		\OCP\Util::writeLog('cron', 'Update required, skipping cron', \OCP\Util::DEBUG);
-		exit;
+		return;
 	}
 	if (\OC::$server->getSystemConfig()->getValue('maintenance', false)) {
 		\OCP\Util::writeLog('cron', 'We are in maintenance mode, skipping cron', \OCP\Util::DEBUG);
-		exit;
+		return;
 	}
 
 	if (\OC::$server->getSystemConfig()->getValue('singleuser', false)) {
 		\OCP\Util::writeLog('cron', 'We are in admin only mode, skipping cron', \OCP\Util::DEBUG);
-		exit;
+		return;
 	}
 
 	// load all apps to get all api routes properly setup
@@ -72,77 +78,56 @@ try {
 	// Exit if background jobs are disabled!
 	$appMode = \OCP\BackgroundJob::getExecutionType();
 	if ($appMode == 'none') {
-		if (OC::$CLI) {
-			echo 'Background Jobs are disabled!' . PHP_EOL;
-		} else {
-			OC_JSON::error(['data' => ['message' => 'Background jobs disabled!']]);
-		}
+		echo 'Background Jobs are disabled!' . PHP_EOL;
 		exit(1);
 	}
 
-	if (OC::$CLI) {
-		// set to run indefinitely if needed
-		\set_time_limit(0);
+	// set to run indefinitely if needed
+	\set_time_limit(0);
 
-		// the cron job must be executed with the right user
-		if (!\function_exists('posix_getuid')) {
-			echo "The posix extensions are required - see http://php.net/manual/en/book.posix.php" . PHP_EOL;
-			exit(0);
+	// the cron job must be executed with the right user
+	if (!\function_exists('posix_getuid')) {
+		echo "The posix extensions are required - see http://php.net/manual/en/book.posix.php" . PHP_EOL;
+		exit(0);
+	}
+	$user = \posix_getpwuid(\posix_getuid());
+	$configUser = \posix_getpwuid(\fileowner(OC::$SERVERROOT . '/config/config.php'));
+	if ($user['name'] !== $configUser['name']) {
+		echo "Console has to be executed with the same user as the web server is operated" . PHP_EOL;
+		echo "Current user: " . $user['name'] . PHP_EOL;
+		echo "Web server user: " . $configUser['name'] . PHP_EOL;
+		exit(0);
+	}
+
+	// We call ownCloud from the CLI (aka cron)
+	if ($appMode != 'cron') {
+		\OCP\BackgroundJob::setExecutionType('cron');
+	}
+
+	// Work
+	$jobList = \OC::$server->getJobList();
+
+	// We only ask for jobs for 14 minutes, because after 15 minutes the next
+	// system cron task should spawn.
+	$endTime = \time() + 14 * 60;
+
+	$executedJobs = [];
+	while ($job = $jobList->getNext()) {
+		if (isset($executedJobs[$job->getId()])) {
+			$jobList->unlockJob($job);
+			break;
 		}
-		$user = \posix_getpwuid(\posix_getuid());
-		$configUser = \posix_getpwuid(\fileowner(OC::$SERVERROOT . '/config/config.php'));
-		if ($user['name'] !== $configUser['name']) {
-			echo "Console has to be executed with the same user as the web server is operated" . PHP_EOL;
-			echo "Current user: " . $user['name'] . PHP_EOL;
-			echo "Web server user: " . $configUser['name'] . PHP_EOL;
-			exit(0);
-		}
 
-		// We call ownCloud from the CLI (aka cron)
-		if ($appMode != 'cron') {
-			\OCP\BackgroundJob::setExecutionType('cron');
-		}
+		$job->execute($jobList, $logger);
+		// clean up after unclean jobs
+		\OC_Util::tearDownFS();
 
-		// Work
-		$jobList = \OC::$server->getJobList();
+		$jobList->setLastJob($job);
+		$executedJobs[$job->getId()] = true;
+		unset($job);
 
-		// We only ask for jobs for 14 minutes, because after 15 minutes the next
-		// system cron task should spawn.
-		$endTime = \time() + 14 * 60;
-
-		$executedJobs = [];
-		while ($job = $jobList->getNext()) {
-			if (isset($executedJobs[$job->getId()])) {
-				$jobList->unlockJob($job);
-				break;
-			}
-
-			$job->execute($jobList, $logger);
-			// clean up after unclean jobs
-			\OC_Util::tearDownFS();
-
-			$jobList->setLastJob($job);
-			$executedJobs[$job->getId()] = true;
-			unset($job);
-
-			if (\time() > $endTime) {
-				break;
-			}
-		}
-	} else {
-		// We call cron.php from some website
-		if ($appMode == 'cron') {
-			// Cron is cron :-P
-			OC_JSON::error(['data' => ['message' => 'Backgroundjobs are using system cron!']]);
-		} else {
-			// Work and success :-)
-			$jobList = \OC::$server->getJobList();
-			$job = $jobList->getNext();
-			if ($job != null) {
-				$job->execute($jobList, $logger);
-				$jobList->setLastJob($job);
-			}
-			OC_JSON::success();
+		if (\time() > $endTime) {
+			break;
 		}
 	}
 
@@ -150,7 +135,6 @@ try {
 	if (\OC::$server->getConfig()->getSystemValue('cron_log', true)) {
 		\OC::$server->getConfig()->setAppValue('core', 'lastcron', \time());
 	}
-	exit();
 } catch (Exception $ex) {
 	\OC::$server->getLogger()->logException($ex, [ 'app' => 'cron', 'level' => \OCP\Util::FATAL]);
 } catch (Error $ex) {
