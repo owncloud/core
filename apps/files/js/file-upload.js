@@ -1221,6 +1221,9 @@ OC.Uploader.prototype = _.extend({
 					delete data.contentRange;
 					delete data.headers['Content-Range'];
 				});
+				fileupload.on('fileuploadchunkdone', function(e, data) {
+					$(data.xhr().upload).unbind('progress');
+				});
 				fileupload.on('fileuploaddone', function(e, data) {
 					var upload = self.getUpload(data);
 					upload.done().then(function() {
