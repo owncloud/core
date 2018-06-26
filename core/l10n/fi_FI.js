@@ -328,6 +328,7 @@ OC.L10N.register(
     "Link name" : "Linkin nimi",
     "Owner: {owner}" : "Omistaja: {owner}",
     "Email notification was sent!" : "Sähköposti-ilmoitus lähetetty!",
-    "You are trying to access a private link. Please log in first." : "Yrität käyttää yksityistä linkkiä. Kirjaudu sisään ensin."
+    "You are trying to access a private link. Please log in first." : "Yrität käyttää yksityistä linkkiä. Kirjaudu sisään ensin.",
+    "Imprint" : "Tiedot"
 },
 "nplurals=2; plural=(n != 1);");

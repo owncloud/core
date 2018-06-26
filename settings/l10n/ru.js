@@ -362,6 +362,17 @@ OC.L10N.register(
     "Email changed successfully for {user}." : "Почта для  {user} изменена успешно.",
     "You are not a member of any groups." : "Вы не состоите в каких-либо группах.",
     "In a clustered setup please make sure to sync the config.php file across all nodes." : "В кластерной конфигурации пожалуйста убедитесь, что файл config.php синхронизирован во всех узлах.",
-    "These are the web, desktop and mobile clients currently logged in to your %s." : "Список клиентов, подключённых сейчас к вашему %s через веб, настольный или мобильный клиент."
+    "These are the web, desktop and mobile clients currently logged in to your %s." : "Список клиентов, подключённых сейчас к вашему %s через веб, настольный или мобильный клиент.",
+    "Automatically accept new incoming local user shares" : "Автоматически принимать новые входящие предоставления доступа от локальных пользователей",
+    "Legal" : "Правовые сведения",
+    "Imprint URL:" : "Адрес выходных данных:",
+    "Imprint URL" : "Адрес выходных данных",
+    "Privacy Policy URL:" : "Адрес политики конфиденциальности:",
+    "Privacy Policy URL" : "Адрес политики конфиденциальности",
+    "App passwords / tokens" : "Пароли и токены приложений",
+    "App passwords or tokens are passcodes that give an app or device permissions to access your %s account." : "Пароли и токены приложений — это коды доступа, которые дают разрешение приложению или устройству на доступ к вашей учётной записи %s.",
+    "Use them as a security measure to hide your actual password which you may only want to use for web interface login." : "Используйте их как меру безопасности, чтобы скрыть ваш основной пароль, который вы вероятно захотите использовать только для входа в веб-интерфейс.",
+    "Create new app passcode" : "Создать новый код доступа для приложения",
+    "Password / Token" : "Пароль / Токен"
 },
 "nplurals=4; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<12 || n%100>14) ? 1 : n%10==0 || (n%10>=5 && n%10<=9) || (n%100>=11 && n%100<=14)? 2 : 3);");

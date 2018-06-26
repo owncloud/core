@@ -111,6 +111,9 @@ OC.L10N.register(
     "Download %s" : "Изтегли %s",
     "Direct link" : "Директна връзка",
     "Anonymous upload" : "Анонимно качване",
-    "Uploaded files" : "Качени файлове"
+    "Uploaded files" : "Качени файлове",
+    "Pending" : "Чакащо",
+    "Accept" : "Приемам",
+    "Decline" : "Отказвам"
 },
 "nplurals=2; plural=(n != 1);");

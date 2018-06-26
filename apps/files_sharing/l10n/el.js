@@ -113,6 +113,10 @@ OC.L10N.register(
     "Add to your ownCloud" : "Προσθήκη στο ownCloud σου",
     "Download" : "Λήψη",
     "Download %s" : "Λήψη %s",
-    "Direct link" : "Άμεσος σύνδεσμος"
+    "Direct link" : "Άμεσος σύνδεσμος",
+    "Pending" : "Εκκρεμεί",
+    "Accept" : "Αποδοχή",
+    "Decline" : "Απόρριψη",
+    "Declined" : "Απορρίφθηκε"
 },
 "nplurals=2; plural=(n != 1);");

@@ -158,6 +158,7 @@
     "Storage incomplete configuration. %s" : "Configuracion de l'espaci d'emmagazinatge incompleta. %s",
     "Storage connection error. %s" : "Error de connexion a l'espaci d'emmagazinatge. %s",
     "Storage is temporarily not available" : "Espaci d'emmagazinatge temporàriament indisponible",
-    "A safe home for all your data" : "Un endrech segur per totas vòstras donadas"
+    "A safe home for all your data" : "Un endrech segur per totas vòstras donadas",
+    "Imprint" : "Mencions"
 },"pluralForm" :"nplurals=2; plural=(n > 1);"
 }

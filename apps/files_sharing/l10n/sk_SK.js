@@ -75,6 +75,10 @@ OC.L10N.register(
     "Add to your ownCloud" : "Pridať do svojho ownCloudu",
     "Download" : "Sťahovanie",
     "Download %s" : "Stiahnuť %s",
-    "Direct link" : "Priama linka"
+    "Direct link" : "Priama linka",
+    "Pending" : "Čaká",
+    "Accept" : "Schváliť",
+    "Decline" : "Odmietnuť",
+    "Declined" : "Odmietnuté"
 },
 "nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;");

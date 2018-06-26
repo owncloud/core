@@ -178,6 +178,7 @@
     "Storage connection timeout. %s" : "Povezava do shrambe je časovno potekla. %s",
     "A safe home for all your data" : "Varno mesto za vse pomembne podatke",
     "User Authentication" : "Overitev uporabnika",
-    "File cannot be read" : "Datoteke ni mogoče prebrati"
+    "File cannot be read" : "Datoteke ni mogoče prebrati",
+    "Imprint" : "Natis"
 },"pluralForm" :"nplurals=4; plural=(n%100==1 ? 0 : n%100==2 ? 1 : n%100==3 || n%100==4 ? 2 : 3);"
 }

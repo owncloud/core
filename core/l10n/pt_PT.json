@@ -340,6 +340,7 @@
     "Sending" : "A Enviar",
     "Menu" : "Menu",
     "Link name" : "Nome de hiperligação",
-    "Owner: {owner}" : "Proprietário: {owner}"
+    "Owner: {owner}" : "Proprietário: {owner}",
+    "Imprint" : "Marca"
 },"pluralForm" :"nplurals=2; plural=(n != 1);"
 }

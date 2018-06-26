@@ -368,6 +368,9 @@ OC.L10N.register(
     "Recipients can view or download contents." : "Os destinatários podem visualizar ou baixar o conteúdo.",
     "{sharee} (federated)" : "{sharee} (federated)",
     "Personal note from the sender: %s." : "Nota pessoal do remetente: %s.",
-    "Automatic updating is disabled in config.php. To upgrade your instance, please use the command line updater (occ upgrade)." : "A atualização automática está desativada no config.php. Para atualizar sua instância, use o atualizador da linha de comando (atualização do occ)."
+    "Automatic updating is disabled in config.php. To upgrade your instance, please use the command line updater (occ upgrade)." : "A atualização automática está desativada no config.php. Para atualizar sua instância, use o atualizador da linha de comando (atualização do occ).",
+    "Imprint" : "Impressão",
+    "E-Mail sent" : "E-mail enviado",
+    "Privacy Policy" : "Política de Privacidade"
 },
 "nplurals=2; plural=(n > 1);");

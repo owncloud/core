@@ -87,6 +87,9 @@ OC.L10N.register(
     "Add to your ownCloud" : "Apondre a vòstre ownCloud",
     "Download" : "Telecargar",
     "Download %s" : "Telecargar %s",
-    "Direct link" : "Ligam dirècte"
+    "Direct link" : "Ligam dirècte",
+    "Pending" : "En espèra",
+    "Accept" : "Acceptar",
+    "Decline" : "Refusar"
 },
 "nplurals=2; plural=(n > 1);");

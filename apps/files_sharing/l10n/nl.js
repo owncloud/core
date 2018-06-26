@@ -113,6 +113,10 @@ OC.L10N.register(
     "Anonymous upload" : "Anonieme upload",
     "Uploaded files" : "Geüploade bestanden",
     "Click to select files or use drag & drop to upload" : "Klik om bestanden te selecteren of gebruik drag&drop om te uploaden",
-    "Cannot remove all permissions" : "Kan niet alle rechten verwijderen"
+    "Cannot remove all permissions" : "Kan niet alle rechten verwijderen",
+    "Pending" : "In behandeling",
+    "Accept" : "Accepteren",
+    "Decline" : "Afwijzen",
+    "Declined" : "Afgewezen"
 },
 "nplurals=2; plural=(n != 1);");

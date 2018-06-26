@@ -114,6 +114,10 @@ OC.L10N.register(
     "Uploaded files" : "업로드된 파일",
     "Click to select files or use drag & drop to upload" : "업로드할 파일을 클릭해서 선택하거나 끌어다 놓으십시오.",
     "Cannot remove all permissions" : "모든 권한을 제거할 수 없음",
-    "No permission to create share" : "공유를 만들 권한 없음"
+    "No permission to create share" : "공유를 만들 권한 없음",
+    "Pending" : "대기 중",
+    "Accept" : "수락",
+    "Decline" : "거절",
+    "Declined" : "거절됨"
 },
 "nplurals=1; plural=0;");

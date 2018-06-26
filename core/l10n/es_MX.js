@@ -182,6 +182,7 @@ OC.L10N.register(
     "Thank you for your patience." : "Gracias por su paciencia.",
     "Copy to clipboard" : "Copiar al portapapeles",
     "Anyone with the link has access to the file/folder" : "Cualquier persona con el enlace tiene acceso al archivo/carpeta",
-    "Link name" : "Nombre del enlace"
+    "Link name" : "Nombre del enlace",
+    "Imprint" : "pie de imprenta"
 },
 "nplurals=2; plural=(n != 1);");

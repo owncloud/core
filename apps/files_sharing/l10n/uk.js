@@ -58,6 +58,9 @@ OC.L10N.register(
     "Add to your ownCloud" : "Додати до вашого ownCloud",
     "Download" : "Завантажити",
     "Download %s" : "Завантажити %s",
-    "Direct link" : "Пряме посилання"
+    "Direct link" : "Пряме посилання",
+    "Pending" : "Очікування",
+    "Accept" : "Прийняти",
+    "Decline" : "Відхилити"
 },
 "nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);");

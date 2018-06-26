@@ -109,6 +109,8 @@ OC.L10N.register(
     "Add to your ownCloud" : "افزودن به ownCloud شما",
     "Download" : "دانلود",
     "Download %s" : "دانلود %s",
-    "Direct link" : "پیوند مستقیم"
+    "Direct link" : "پیوند مستقیم",
+    "Pending" : "در انتظار",
+    "Accept" : "قبول"
 },
 "nplurals=1; plural=0;");

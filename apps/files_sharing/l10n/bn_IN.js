@@ -11,6 +11,7 @@ OC.L10N.register(
     "%2$s shared %1$s with you" : "%2$s শেয়ার করেছে %1$s কে আপনার সাথে ",
     "Shares" : "শেয়ারস",
     "Name" : "নাম",
-    "Download" : "ডাউনলোড করুন"
+    "Download" : "ডাউনলোড করুন",
+    "Pending" : "মুলতুবি"
 },
 "nplurals=2; plural=(n != 1);");

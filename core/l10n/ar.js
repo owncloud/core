@@ -140,6 +140,7 @@ OC.L10N.register(
     "Reset password" : "تعديل كلمة السر",
     "Copy to clipboard" : "نسخ إلى الحافظة",
     "Technical details" : "تفاصيل فنية",
-    "Request ID: %s" : "معرف الطلب: %s"
+    "Request ID: %s" : "معرف الطلب: %s",
+    "Imprint" : "الدمغة."
 },
 "nplurals=6; plural=n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100>=3 && n%100<=10 ? 3 : n%100>=11 && n%100<=99 ? 4 : 5;");

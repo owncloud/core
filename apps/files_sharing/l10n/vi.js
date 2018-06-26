@@ -30,6 +30,10 @@ OC.L10N.register(
     "Add to your ownCloud" : "Thêm vào ownCloud của bạn",
     "Download" : "Tải về",
     "Download %s" : "Tải về %s",
-    "Direct link" : "Link trực tiếp"
+    "Direct link" : "Link trực tiếp",
+    "Pending" : "Đang chờ",
+    "Accept" : "Đồng ý",
+    "Decline" : "Từ chối",
+    "Declined" : "Từ chối"
 },
 "nplurals=1; plural=0;");

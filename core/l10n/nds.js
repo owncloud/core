@@ -125,6 +125,7 @@ OC.L10N.register(
     "Warning" : "Warnung",
     "Delete" : "Löschen",
     "Personal" : "Persönlich",
-    "Username" : "Benutzername"
+    "Username" : "Benutzername",
+    "Imprint" : "Impressum"
 },
 "nplurals=2; plural=(n != 1);");

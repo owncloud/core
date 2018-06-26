@@ -112,6 +112,20 @@
     "Download" : "Скачать",
     "Download %s" : "Скачать %s",
     "Direct link" : "Прямая ссылка",
-    "No permission to create share" : "Нет права на предоставление доступа"
+    "No permission to create share" : "Нет права на предоставление доступа",
+    "Pending" : "Ожидается",
+    "Accept" : "Принять",
+    "Decline" : "Отклонить",
+    "Declined" : "Отклонено",
+    "An error occurred while updating share state: {message}" : "При обновлении состояния совместного доступа произошла ошибка: {message}",
+    "Accept Share" : "Принять совместный доступ",
+    "Decline Share" : "Отклонить совместный доступ",
+    "Only recipient can change accepted state" : "Только получатель может изменить состояние принятости",
+    "File sharing" : "Совместный доступ к файлам",
+    "State" : "Состояние",
+    "The group is blacklisted for sharing" : "Группа в чёрном списке для предоставления доступа",
+    "Files Sharing" : "Предоставление доступа к файлам",
+    "Exclude groups from receiving shares." : "Исключить группы из получения доступа.",
+    "These groups will not receive shares. Members of the group can still send and receive shares outside of the group." : "Эти группы не  будут получать доступ. Члены группы всё-таки смогут предоставлять и получать доступ вне данной группы."
 },"pluralForm" :"nplurals=4; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<12 || n%100>14) ? 1 : n%10==0 || (n%10>=5 && n%10<=9) || (n%100>=11 && n%100<=14)? 2 : 3);"
 }

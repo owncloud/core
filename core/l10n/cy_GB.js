@@ -100,6 +100,7 @@ OC.L10N.register(
     "Alternative Logins" : "Mewngofnodiadau Amgen",
     "Use the following link to reset your password: {link}" : "Defnyddiwch y ddolen hon i ailosod eich cyfrinair: {link}",
     "New password" : "Cyfrinair newydd",
-    "Reset password" : "Ailosod cyfrinair"
+    "Reset password" : "Ailosod cyfrinair",
+    "Imprint" : "Imprint"
 },
 "nplurals=4; plural=(n==1) ? 0 : (n==2) ? 1 : (n != 8 && n != 11) ? 2 : 3;");

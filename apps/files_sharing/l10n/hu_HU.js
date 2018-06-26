@@ -71,6 +71,10 @@ OC.L10N.register(
     "Add to your ownCloud" : "Adjuk hozzá a saját ownCloudunkhoz",
     "Download" : "Letöltés",
     "Download %s" : "%s letöltése",
-    "Direct link" : "Közvetlen link"
+    "Direct link" : "Közvetlen link",
+    "Pending" : "Folyamatban",
+    "Accept" : "Elfogadás",
+    "Decline" : "Elutasítás",
+    "Declined" : "Elutasított"
 },
 "nplurals=2; plural=(n != 1);");

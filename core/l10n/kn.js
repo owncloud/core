@@ -149,6 +149,7 @@ OC.L10N.register(
     "This ownCloud instance is currently in single user mode." : "ಪ್ರಸ್ತುತ ಕ್ರಮದಲ್ಲಿ, ಈ OwnCloud ನ್ನು ಕೇವಲ ಒಬ್ಬನೇ ಬಳಕೆದಾರ ಮಾತ್ರ ಬಳಸಬಹುದಾಗಿದೆ.",
     "This means only administrators can use the instance." : "ಇದರ ಅರ್ಥ, ಸದ್ಯದ ನಿದರ್ಶನದಲ್ಲಿ ನಿರ್ವಾಹಕರು ಮಾತ್ರ ಬಳಸಬಹುದಾಗಿದೆ.",
     "Thank you for your patience." : "﻿ನಿಮ್ಮ ತಾಳ್ಮೆಗೆ ಧನ್ಯವಾದಗಳು.",
-    "Start update" : "ನವೀಕರಿಣವನ್ನು ಆರಂಭಿಸಿ"
+    "Start update" : "ನವೀಕರಿಣವನ್ನು ಆರಂಭಿಸಿ",
+    "Imprint" : "ಮುದ್ರೆ"
 },
 "nplurals=1; plural=0;");

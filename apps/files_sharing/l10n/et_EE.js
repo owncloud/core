@@ -65,6 +65,10 @@ OC.L10N.register(
     "Add to your ownCloud" : "Lisa oma ownCloudi",
     "Download" : "Lae alla",
     "Download %s" : "Laadi alla %s",
-    "Direct link" : "Otsene link"
+    "Direct link" : "Otsene link",
+    "Pending" : "Ootel",
+    "Accept" : "Nõustu",
+    "Decline" : "Lükka tagasi",
+    "Declined" : "Tagasi lükatud"
 },
 "nplurals=2; plural=(n != 1);");

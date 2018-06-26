@@ -66,6 +66,7 @@
     "Authentication error" : "Error de autenticación",
     "Token expired. Please reload page." : "Token expirado. Por favor, recarga la página.",
     "Storage is temporarily not available" : "El almacenamiento no está disponible temporalmente",
-    "A safe home for all your data" : "Un lugar seguro para todos tus datos"
+    "A safe home for all your data" : "Un lugar seguro para todos tus datos",
+    "Imprint" : "pie de imprenta"
 },"pluralForm" :"nplurals=2; plural=(n != 1);"
 }

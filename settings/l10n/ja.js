@@ -316,6 +316,7 @@ OC.L10N.register(
     "Add" : "追加",
     "Change email" : "メールを変更",
     "Show enabled apps" : "有効なアプリを表示する",
-    "Show disabled apps" : "無効なアプリを表示する"
+    "Show disabled apps" : "無効なアプリを表示する",
+    "Email has been changed successfully." : "電子メールが正常に変更されました。"
 },
 "nplurals=1; plural=0;");

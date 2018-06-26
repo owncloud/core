@@ -164,6 +164,9 @@ OC.L10N.register(
     "You've linked these apps." : "Hierdie toeps is gekoppel:",
     "Name" : "Naam",
     "An app password is a passcode that gives an app or device permissions to access your %s account." : "’n Toepwagwoord is ’n wagkode wat aan ’n toep of toestel toestemming om toegang tot u %s-rekening gee.",
-    "No panels for this section." : "Geen paneel vir hierdie afdeling."
+    "No panels for this section." : "Geen paneel vir hierdie afdeling.",
+    "Email has been changed successfully." : "E-pos is suksesvol verander.",
+    "Unable to change mail address" : "Kan nie e-posadres verander nie",
+    "Your full name has been changed." : "U volle naam is verander."
 },
 "nplurals=2; plural=(n != 1);");

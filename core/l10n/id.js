@@ -259,6 +259,7 @@ OC.L10N.register(
     "Copy to clipboard" : "Salin ke klipbor",
     "Anyone with the link has access to the file/folder" : "Siapapun yang mengetahui tautan memiliki akses ke berkas/ folder",
     "Menu" : "Menu",
-    "Link name" : "Nama tautan"
+    "Link name" : "Nama tautan",
+    "Imprint" : "Jejak"
 },
 "nplurals=1; plural=0;");

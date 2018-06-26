@@ -360,6 +360,9 @@ OC.L10N.register(
     "You are trying to access a private link. Please log in first." : "Vous essayez d'accéder à un lien privé. Veuillez d'abord vous connecter.",
     "It looks like your instance may host many files and/or users. To ensure a smooth upgrade process, please use the command line updater (occ upgrade)." : "Il semble que votre instance héberge de nombreux fichiers et/ou utilisateurs. Pour faciliter la mise à niveau, veuillez réaliser la mise à jour en ligne de commande (occ upgrade).",
     "Couldn't send mail to following recipient(s): %s " : "Impossible d'envoyer de mail au(x) destinataire(s) suivant(s) : %s",
-    "Automatic updating is disabled in config.php. To upgrade your instance, please use the command line updater (occ upgrade)." : "La mise à jour uatomatique est désactivé dans le config.php. Pour mettre à jour votre instance , veuillez utiliser l'outil de mise à jour via l'interface en ligne de commande (occ upgrade)."
+    "Automatic updating is disabled in config.php. To upgrade your instance, please use the command line updater (occ upgrade)." : "La mise à jour uatomatique est désactivé dans le config.php. Pour mettre à jour votre instance , veuillez utiliser l'outil de mise à jour via l'interface en ligne de commande (occ upgrade).",
+    "Imprint" : "Mentions légales",
+    "An error occured while sending email" : "Une erreur est survenue lors de l'envoi du courriel",
+    "E-Mail sent" : "Courriel envoyé"
 },
 "nplurals=2; plural=(n > 1);");

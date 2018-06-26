@@ -156,6 +156,15 @@ OC.L10N.register(
     "Repair warning: " : "Cảnh báo đang sửa:",
     "Repair error: " : "Lỗi sửa chữa:",
     "Please use the command line updater because automatic updating is disabled in the config.php." : "Vui lòng sử dụng trình cập nhật bằng lệnh vì tính năng tự động cập nhật bị vô hiệu hóa trong config.php.",
-    "[%d / %d]: Checking table %s" : "[%d / %d]: Kiểm tra bảng %s"
+    "[%d / %d]: Checking table %s" : "[%d / %d]: Kiểm tra bảng %s",
+    "Dismiss" : "Đóng",
+    "change" : "thay đôi",
+    "Public Links" : "Liên kết công khai",
+    "Imprint" : "Đánh dấu",
+    "Anyone with the link has access to the file/folder" : "Bất cứ ai liên kết đều có quyền truy cập tệp tin/thư mục",
+    "Download / View" : "Tải về / Xem",
+    "Recipients can view or download contents." : "Người nhận chỉ có thể xem hoặc tải nội dung.",
+    "Download / View / Upload" : "Tải về / Xem / Tải lên",
+    "Recipients can view, download, edit, delete and upload contents." : "Người nhận có thể xem, tải về, chỉnh sửa, xóa và tải lên nội dung."
 },
 "nplurals=1; plural=0;");

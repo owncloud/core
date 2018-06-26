@@ -15,6 +15,9 @@ OC.L10N.register(
     "Download %s" : "Laai %s Af",
     "Uploading..." : "Laai tans op…",
     "The password is wrong. Try again." : "ie wagwoord is verkeerd. Probeer weer.",
-    "Reasons might be:" : "Moontlike redes is:"
+    "Reasons might be:" : "Moontlike redes is:",
+    "Pending" : "Hangend",
+    "Accept" : "Aanvaar",
+    "Decline" : "Verwerp"
 },
 "nplurals=2; plural=(n != 1);");

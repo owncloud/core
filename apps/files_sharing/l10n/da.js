@@ -113,6 +113,10 @@ OC.L10N.register(
     "Anonymous upload" : "Anonym upload",
     "Uploaded files" : "Uploadede filer",
     "Click to select files or use drag & drop to upload" : "Tryk for at vælge filer eller brug drag & drop til at uploade",
-    "Cannot remove all permissions" : "Can ikke fjerne alle tilladelser"
+    "Cannot remove all permissions" : "Can ikke fjerne alle tilladelser",
+    "Pending" : "Afventer",
+    "Accept" : "Acceptér",
+    "Decline" : "Afvis",
+    "Declined" : "Afvist"
 },
 "nplurals=2; plural=(n != 1);");

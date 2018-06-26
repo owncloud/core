@@ -368,6 +368,9 @@ OC.L10N.register(
     "Recipients can view or download contents." : "Marrësit mund të shohin dhe shkarkojnë lëndë.",
     "{sharee} (federated)" : "{sharee} (i federuar)",
     "Personal note from the sender: %s." : "Shënim personal nga dërguesi: %s.",
-    "Automatic updating is disabled in config.php. To upgrade your instance, please use the command line updater (occ upgrade)." : "Përditësimi i vetvetishëm është i çaktivizuar te config.php. Që të përmirësoni instancën tuaj, ju lutemi, përdorni përditësuesin për rresht urdhrash (occ upgrade)."
+    "Automatic updating is disabled in config.php. To upgrade your instance, please use the command line updater (occ upgrade)." : "Përditësimi i vetvetishëm është i çaktivizuar te config.php. Që të përmirësoni instancën tuaj, ju lutemi, përdorni përditësuesin për rresht urdhrash (occ upgrade).",
+    "Imprint" : "Imprint",
+    "E-Mail sent" : "Email-i u dërgua",
+    "Privacy Policy" : "Rregulla Privatësie"
 },
 "nplurals=2; plural=(n != 1);");

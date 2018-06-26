@@ -340,6 +340,8 @@ OC.L10N.register(
     "Upload only" : "Μόνο μεταφόρτωση",
     "Sending" : "Αποστολή",
     "Menu" : "Μενού",
-    "Link name" : "Όνομα συνδέσμου"
+    "Link name" : "Όνομα συνδέσμου",
+    "Imprint" : "Αποτύπωμα",
+    "Add personal message" : "Προσθήκη προσωπικού μηνύματος"
 },
 "nplurals=2; plural=(n != 1);");

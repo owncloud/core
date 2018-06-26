@@ -334,6 +334,7 @@ OC.L10N.register(
     "Share to Facebook. Opens in a new window." : "Facebook ile paylaş. Yeni bir pencerede açılır.",
     "Share to Diaspora. Opens in a new window." : "Diaspora ile paylaş. Yeni bir pencerede açılır.",
     "Share to Google+. Opens in a new window." : "Google+ ile paylaş. Yeni bir pencerede açılır.",
-    "Share via email. Opens your mail client." : "Eposta ile paylaş. Eposta istemcisinde açılır."
+    "Share via email. Opens your mail client." : "Eposta ile paylaş. Eposta istemcisinde açılır.",
+    "Imprint" : "İzlenim"
 },
 "nplurals=2; plural=(n > 1);");

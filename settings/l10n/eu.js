@@ -192,6 +192,7 @@ OC.L10N.register(
     "Default" : "Lehenetsia",
     "Share" : "Partekatu",
     "Add" : "Gehitu",
-    "%s password changed successfully" : "%s pasahitza behar bezala aldatu da"
+    "%s password changed successfully" : "%s pasahitza behar bezala aldatu da",
+    "Email has been changed successfully." : "Helbide elektronikoa behar bezala aldatu da"
 },
 "nplurals=2; plural=(n != 1);");

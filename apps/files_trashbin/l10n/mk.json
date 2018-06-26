@@ -12,6 +12,8 @@
     "Select all" : "Избери се",
     "Name" : "Име",
     "Deleted" : "Избришан",
-    "This directory is unavailable, please check the logs or contact the administrator" : "Овој директориум е недостапен, ве молиме проверете ги логовите или контактирајте со администраторот"
+    "This directory is unavailable, please check the logs or contact the administrator" : "Овој директориум е недостапен, ве молиме проверете ги логовите или контактирајте со администраторот",
+    "No deleted files" : "Нема избришани датотеки",
+    "You will be able to recover deleted files from here" : "Можете да ги вратите избришаните датотеки од тука"
 },"pluralForm" :"nplurals=2; plural=(n % 10 == 1 && n % 100 != 11) ? 0 : 1;"
 }

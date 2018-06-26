@@ -9,6 +9,7 @@ OC.L10N.register(
     "Shares" : "Kongsi",
     "Password" : "Kata laluan",
     "Name" : "Nama",
-    "Download" : "Muat turun"
+    "Download" : "Muat turun",
+    "Pending" : "Dalam proses"
 },
 "nplurals=1; plural=0;");

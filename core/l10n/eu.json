@@ -241,6 +241,21 @@
     "Checking whether the database schema can be updated (this can take a long time depending on the database size)" : "Datu-base eskema eguneratu daiteken baieztatzen (dabu-base tamainaren arabera denbora luzea eraman dezake honek)",
     "Reset log level" : "Log maila berrezarri",
     "Starting code integrity check" : "Kode osotasun baieztapena hasten",
-    "Finished code integrity check" : "Kode osotasun baieztapena amaituta"
+    "Finished code integrity check" : "Kode osotasun baieztapena amaituta",
+    "Copied!" : "Kopiatua!",
+    "Not supported!" : "Euskarririk ez!",
+    "Imprint" : "Imprint",
+    "Password required" : "Pasahitza beharrezkoa",
+    "Remove password" : "Pasahitza ezabatu",
+    "Couldn't send mail to following recipient(s): %s " : "Ezin izan da ondorengo helbidetara posta mezurik bidali: %s",
+    "Remove link" : "Esteka ezabatu",
+    "Choose a password" : "Aukeratu pasahitza",
+    "Link name" : "Estekaren izena",
+    "Upload only" : "Kargatu bakarrik",
+    "Download / View" : "Deskargatu / Ikusi",
+    "Download / View / Upload" : "Deskargatu / Ikusi / Kargatu",
+    "Maintenance mode is kept active" : "Mantentze-modua aktibo dago",
+    "Set log level to debug" : "Log maila arazketa gisa jarri",
+    "Problem loading page, reloading in 5 seconds" : "Arazoa orria kargatzen, 5 segundo barru birkargatuko da"
 },"pluralForm" :"nplurals=2; plural=(n != 1);"
 }

@@ -113,6 +113,10 @@ OC.L10N.register(
     "Anonymous upload" : "Anonymous upload",
     "Uploaded files" : "Uploaded files",
     "Click to select files or use drag & drop to upload" : "Click to select files or use drag & drop to upload",
-    "Cannot remove all permissions" : "Cannot remove all permissions"
+    "Cannot remove all permissions" : "Cannot remove all permissions",
+    "Pending" : "Pending",
+    "Accept" : "Accept",
+    "Decline" : "Decline",
+    "Declined" : "Declined"
 },
 "nplurals=2; plural=(n != 1);");

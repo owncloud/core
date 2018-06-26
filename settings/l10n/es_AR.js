@@ -123,6 +123,8 @@ OC.L10N.register(
     "What to log" : "Que registrar",
     "Add" : "Agregar",
     "Download logfile (%s)" : "Descargar archivo de registro (1%s)",
-    "The logfile is bigger than 100 MB. Downloading it may take some time!" : "El archivo de registro es mayor a 100 MB. La descarga tomara un tiempo!"
+    "The logfile is bigger than 100 MB. Downloading it may take some time!" : "El archivo de registro es mayor a 100 MB. La descarga tomara un tiempo!",
+    "Email has been changed successfully." : "La dirección de correo se ha modificado satisfactoriamente.",
+    "Unable to change mail address" : "No se puede modificar la dirección de correo."
 },
 "nplurals=2; plural=(n != 1);");

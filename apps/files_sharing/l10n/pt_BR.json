@@ -112,6 +112,20 @@
     "Download" : "Baixar",
     "Download %s" : "Baixar %s",
     "Direct link" : "Link direto",
-    "No permission to create share" : "Sem permissão para criar compartilhamento"
+    "No permission to create share" : "Sem permissão para criar compartilhamento",
+    "Pending" : "Pendente",
+    "Accept" : "Aceitar",
+    "Decline" : "Rejeitar",
+    "Declined" : "Rejeitado",
+    "An error occurred while updating share state: {message}" : "Ocorreu um erro ao atualizar o estado de compartilhamento: {message}",
+    "Accept Share" : "Aceitar Compartilhamento",
+    "Decline Share" : "Recusar Compartilhamento",
+    "Only recipient can change accepted state" : "Apenas o destinatário pode alterar o estado de aceito",
+    "File sharing" : "Compartilhamento de arquivo",
+    "State" : "Estado",
+    "The group is blacklisted for sharing" : "O grupo está na lista negra para compartilhamento",
+    "Files Sharing" : "Compartilhamento de Arquivos",
+    "Exclude groups from receiving shares." : "Excluir grupos de receber compartilhamentos.",
+    "These groups will not receive shares. Members of the group can still send and receive shares outside of the group." : "Esses grupos não receberão compartilhamentos. Os membros do grupo ainda podem enviar e receber compartilhamentos fora do grupo."
 },"pluralForm" :"nplurals=2; plural=(n > 1);"
 }

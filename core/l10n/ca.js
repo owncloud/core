@@ -296,6 +296,7 @@ OC.L10N.register(
     "An error occurred." : "Ha fallat",
     "An internal error occurred." : "Error intern",
     "You are trying to access a private link. Please log in first." : "Estàs accedint a un enllaç privat. Necessites registrar-te primer.",
-    "Couldn't send mail to following recipient(s): %s " : "No s'ha pugut enviar l'email al(s) destinatari(s): %s"
+    "Couldn't send mail to following recipient(s): %s " : "No s'ha pugut enviar l'email al(s) destinatari(s): %s",
+    "Imprint" : "Imprint"
 },
 "nplurals=2; plural=(n != 1);");

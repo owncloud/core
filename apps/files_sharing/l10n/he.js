@@ -114,6 +114,9 @@ OC.L10N.register(
     "Download" : "הורדה",
     "Download %s" : "הורדה %s",
     "Direct link" : "קישור ישיר",
-    "No permission to create share" : "אין הרשאה ליצירת שיתוף"
+    "No permission to create share" : "אין הרשאה ליצירת שיתוף",
+    "Pending" : "ממתין",
+    "Accept" : "אישור",
+    "Decline" : "סירוב"
 },
 "nplurals=2; plural=(n != 1);");

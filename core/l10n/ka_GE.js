@@ -103,6 +103,7 @@ OC.L10N.register(
     "Use the following link to reset your password: {link}" : "გამოიყენე შემდეგი ლინკი პაროლის შესაცვლელად: {link}",
     "New password" : "ახალი პაროლი",
     "Reset password" : "პაროლის შეცვლა",
-    "Copy to clipboard" : "კოპირებულია ქლიპბორდში "
+    "Copy to clipboard" : "კოპირებულია ქლიპბორდში ",
+    "Imprint" : "ბეჭედი"
 },
 "nplurals=1; plural=0;");

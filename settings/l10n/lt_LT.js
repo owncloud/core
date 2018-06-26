@@ -206,6 +206,9 @@ OC.L10N.register(
     "%s password changed successfully" : "%sslaptažodis pakeistas",
     "Valid until" : "Galioja iki",
     "Expire after " : "Baigsis po",
-    "Failed to change the email address." : "Nepavyko pakeisti el. pašto adreso"
+    "Failed to change the email address." : "Nepavyko pakeisti el. pašto adreso",
+    "Email has been changed successfully." : "El. pašto adresas sėkmingai pakeistas.",
+    "The app will be downloaded from the app store" : "Applikacija bus atsiųsta iš parduotuvės",
+    "Invalid email address" : "Neteisingas el.pašto adresas"
 },
 "nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && (n%100<10 || n%100>=20) ? 1 : 2);");

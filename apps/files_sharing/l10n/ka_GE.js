@@ -9,6 +9,7 @@ OC.L10N.register(
     "Password" : "პაროლი",
     "Name" : "სახელი",
     "Expiration date" : "ვადის გასვლის დრო",
-    "Download" : "ჩამოტვირთვა"
+    "Download" : "ჩამოტვირთვა",
+    "Pending" : "მოცდის რეჟიმში"
 },
 "nplurals=1; plural=0;");

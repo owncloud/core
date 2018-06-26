@@ -306,6 +306,7 @@ OC.L10N.register(
     "Copy to clipboard" : "Копіювати в буфер обміну",
     "Anyone with the link has access to the file/folder" : "Будь хто з цім посиланням має доступ до файлу/теки",
     "Menu" : "Меню",
-    "Link name" : "Ім'я посилання"
+    "Link name" : "Ім'я посилання",
+    "Imprint" : "Відбиток"
 },
 "nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);");

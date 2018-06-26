@@ -113,6 +113,10 @@ OC.L10N.register(
     "Anonymous upload" : "匿名上传",
     "Uploaded files" : "上传文件",
     "Click to select files or use drag & drop to upload" : "点击选择文件或拖拽上传",
-    "Cannot remove all permissions" : "无法移除全部权限"
+    "Cannot remove all permissions" : "无法移除全部权限",
+    "Pending" : "等待",
+    "Accept" : "接受",
+    "Decline" : "拒绝",
+    "Declined" : "拒绝"
 },
 "nplurals=1; plural=0;");

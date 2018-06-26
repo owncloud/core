@@ -71,6 +71,10 @@ OC.L10N.register(
     "Add to your ownCloud" : "Pridėti prie tavo ownCloud",
     "Download" : "Atsisiųsti",
     "Download %s" : "Atsiųsti %s",
-    "Direct link" : "Tiesioginė nuoroda"
+    "Direct link" : "Tiesioginė nuoroda",
+    "Pending" : "Laukiantis",
+    "Accept" : "Priimti",
+    "Decline" : "Atmesti",
+    "Declined" : "Atmesta"
 },
 "nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && (n%100<10 || n%100>=20) ? 1 : 2);");

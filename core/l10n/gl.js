@@ -238,6 +238,7 @@ OC.L10N.register(
     "This %s instance is currently in maintenance mode, which may take a while." : "Esta instancia de %s atopase en modo de mantemento, isto pode levar un anaco.",
     "This page will refresh itself when the %s instance is available again." : "Esta páxina actualizarase automaticamente cando a instancia de %s estea dispoñíbel de novo.",
     "Copy to clipboard" : "Copiar ao portapapeis",
-    "Menu" : "Menú"
+    "Menu" : "Menú",
+    "Imprint" : "Impresión"
 },
 "nplurals=2; plural=(n != 1);");

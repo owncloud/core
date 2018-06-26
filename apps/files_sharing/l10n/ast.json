@@ -106,6 +106,9 @@
     "Add to your ownCloud" : "Amestar al to ownCloud",
     "Download" : "Baxar",
     "Download %s" : "Descargar %s",
-    "Direct link" : "Enllaz direutu"
+    "Direct link" : "Enllaz direutu",
+    "Pending" : "Pendiente",
+    "Accept" : "Aceptar",
+    "Decline" : "Declinar"
 },"pluralForm" :"nplurals=2; plural=(n != 1);"
 }

@@ -111,6 +111,10 @@
     "Add to your ownCloud" : "Προσθήκη στο ownCloud σου",
     "Download" : "Λήψη",
     "Download %s" : "Λήψη %s",
-    "Direct link" : "Άμεσος σύνδεσμος"
+    "Direct link" : "Άμεσος σύνδεσμος",
+    "Pending" : "Εκκρεμεί",
+    "Accept" : "Αποδοχή",
+    "Decline" : "Απόρριψη",
+    "Declined" : "Απορρίφθηκε"
 },"pluralForm" :"nplurals=2; plural=(n != 1);"
 }

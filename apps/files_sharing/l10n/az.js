@@ -57,6 +57,7 @@ OC.L10N.register(
     "Add to your ownCloud" : "Öz ownCloud-nuza əlavə edin",
     "Download" : "Yüklə",
     "Download %s" : "Endir %s",
-    "Direct link" : "Birbaşa link"
+    "Direct link" : "Birbaşa link",
+    "Pending" : "Gözləmə"
 },
 "nplurals=2; plural=(n != 1);");
