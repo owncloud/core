@@ -26,7 +26,6 @@ use OC\Route\Router;
 use OCP\ILogger;
 use Symfony\Component\Routing\Exception\ResourceNotFoundException;
 
-
 class LoadableRouter extends Router {
 	/**
 	 * @param bool $loaded
@@ -37,7 +36,6 @@ class LoadableRouter extends Router {
 }
 
 class RouterTest extends \Test\TestCase {
-
 
 	/** @var ILogger */
 	private $l;
@@ -77,16 +75,19 @@ class RouterTest extends \Test\TestCase {
 	/**
 	 * @dataProvider urlParamSlashProvider
 	 */
-	public function testMatchURLParamContainingSlash($routeUrl, $matchUrl, $expectedCalled) {
+	public function testMatchURLParamContainingSlash($routeUrl, $slashesAllowed, $matchUrl, $expectedCalled) {
 		$router = new LoadableRouter($this->l, '');
 
 		$called = false;
 
 		$router->useCollection('root');
-		$router->create('test', $routeUrl)
-			->action(function() use (&$called) {
-			$called = true;
-		})->requirements(['id' => '.+']);
+		$route = $router->create('test', $routeUrl)
+			->action(function () use (&$called) {
+				$called = true;
+			});
+		if ($slashesAllowed) {
+			$route->requirements(['id' => '.+']);
+		}
 
 		// don't load any apps
 		$router->setLoaded(true);
@@ -102,11 +103,19 @@ class RouterTest extends \Test\TestCase {
 
 	public function urlParamSlashProvider() {
 		return [
-			['/resource/{id}', '/resource/id%2Fwith%2Fslashes', true],
-			['/resource/{id}/sub', '/resource/id%2Fwith%2Fslashes/sub', true],
-			['/resource/{id}/sub', '/resource/id%2Fwith%2Fslashes/subx', false],
-			['/resource/{id}', '/resource/id/with/slashes', true],
-			['/resource/{id}/sub', '/resource/id/with/slashes/sub', true],
+			// slashed disallowed
+			['/resource/{id}', false, '/resource/id%2Fwith%2Fslashes', false],
+			['/resource/{id}/sub', false, '/resource/id%2Fwith%2Fslashes/sub', false],
+			['/resource/{id}/sub', false, '/resource/id%2Fwith%2Fslashes/subx', false],
+			['/resource/{id}', false, '/resource/id/with/slashes', false],
+			['/resource/{id}/sub', false, '/resource/id/with/slashes/sub', false],
+
+			// slashed allowed
+			['/resource/{id}', true, '/resource/id%2Fwith%2Fslashes', true],
+			['/resource/{id}/sub', true, '/resource/id%2Fwith%2Fslashes/sub', true],
+			['/resource/{id}/sub', true, '/resource/id%2Fwith%2Fslashes/subx', false],
+			['/resource/{id}', true, '/resource/id/with/slashes', true],
+			['/resource/{id}/sub', true, '/resource/id/with/slashes/sub', true],
 		];
 	}
 }
