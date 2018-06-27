@@ -25,21 +25,16 @@ namespace OCA\FederatedFileSharing;
 
 use OCP\Notification\INotification;
 use OCP\Notification\INotifier;
-use OCP\Defaults;
 
 class Notifier implements INotifier {
 	/** @var \OCP\L10N\IFactory */
 	protected $factory;
 
-	/** @var Defaults */
-	protected $defaults;
-
 	/**
 	 * @param \OCP\L10N\IFactory $factory
 	 */
-	public function __construct(\OCP\L10N\IFactory $factory, Defaults $defaults) {
+	public function __construct(\OCP\L10N\IFactory $factory) {
 		$this->factory = $factory;
-		$this->defaults = $defaults;
 	}
 
 	/**
@@ -70,16 +65,14 @@ class Notifier implements INotifier {
 					);
 				}
 
-				$instanceName = $this->defaults->getName();
 				$messageParams = $notification->getMessageParameters();
-				$messageParams[3] = $instanceName;
 				if ($messageParams[0] !== $messageParams[1] && $messageParams[1] !== null) {
 					$notification->setParsedMessage(
-						(string) $l->t('"%1$s" invited you to view "%3$s" on %4$s (on behalf of "%2$s")', $messageParams)
+						(string) $l->t('"%1$s" invited you to view "%3$s" (on behalf of "%2$s")', $messageParams)
 					);
 				} else {
 					$notification->setParsedMessage(
-						(string) $l->t('"%1$s" invited you to view "%3$s" on %4$s', $messageParams)
+						(string) $l->t('"%1$s" invited you to view "%3$s"', $messageParams)
 					);
 				}
 
