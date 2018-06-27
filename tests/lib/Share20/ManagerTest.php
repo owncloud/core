@@ -24,11 +24,16 @@ use OC\Files\View;
 use OC\Share20\Manager;
 use OCP\Files\File;
 use OC\Share20\Share;
+use OCP\DB\QueryBuilder\IExpressionBuilder;
+use OCP\DB\QueryBuilder\IParameter;
+use OCP\DB\QueryBuilder\IQueryBuilder;
 use OCP\Files\IRootFolder;
 use OCP\Files\Folder;
 use OCP\Files\Mount\IMountManager;
+use OCP\Files\Mount\IMountPoint;
 use OCP\Files\Storage;
 use OCP\IConfig;
+use OCP\IDBConnection;
 use OCP\IGroupManager;
 use OCP\IL10N;
 use OCP\ILogger;
@@ -81,6 +86,7 @@ class ManagerTest extends \Test\TestCase {
 	protected $eventDispatcher;
 	/** @var  View */
 	protected $view;
+	protected $connection;
 
 	public function setUp() {
 		parent::setUp();
@@ -95,6 +101,7 @@ class ManagerTest extends \Test\TestCase {
 		$this->rootFolder = $this->createMock('\OCP\Files\IRootFolder');
 		$this->eventDispatcher = new EventDispatcher();
 		$this->view = $this->createMock(View::class);
+		$this->connection = $this->createMock(IDBConnection::class);
 
 		$this->l = $this->createMock('\OCP\IL10N');
 		$this->l->method('t')
@@ -116,7 +123,8 @@ class ManagerTest extends \Test\TestCase {
 			$this->userManager,
 			$this->rootFolder,
 			$this->eventDispatcher,
-			$this->view
+			$this->view,
+			$this->connection
 		);
 
 		$this->defaultProvider = $this->getMockBuilder('\OC\Share20\DefaultShareProvider')
@@ -143,7 +151,8 @@ class ManagerTest extends \Test\TestCase {
 				$this->userManager,
 				$this->rootFolder,
 				$this->eventDispatcher,
-				$this->view
+				$this->view,
+				$this->connection
 			]);
 	}
 
@@ -1709,7 +1718,7 @@ class ManagerTest extends \Test\TestCase {
 		$this->createUser('user2');
 		$manager = $this->createManagerMock()
 			->setMethods(['canShare', 'generalCreateChecks', 'userCreateChecks',
-				'pathCreateChecks', 'deleteChildren', 'groupCreateChecks'])
+				'pathCreateChecks', 'deleteChildren', 'groupCreateChecks', 'updateShare'])
 			->getMock();
 
 		$this->loginAsUser('user1');
@@ -1720,6 +1729,7 @@ class ManagerTest extends \Test\TestCase {
 		$user2Folder->newFolder('user1_transferred');
 
 		$share = $this->manager->newShare();
+		$share2 = $this->manager->newShare();
 		$share->setProviderId('foo')
 			->setId('22')
 			->setSharedBy('user1')
@@ -1734,6 +1744,39 @@ class ManagerTest extends \Test\TestCase {
 				->setName('usershare');
 			$share->setSharedWith('user2');
 
+			$user1File = $user1Folder->newFile('test_share/somefile.txt');
+			$user1File->putContent('A test file');
+			$share2->setProviderId('publink')
+				->setId('29')
+				->setSharedBy('user1')
+				->setShareOwner('user1')
+				->setShareType(\OCP\Share::SHARE_TYPE_LINK)
+				->setName('somefile link');
+
+			$expressionBuilder = $this->createMock(IExpressionBuilder::class);
+			$expressionBuilder->expects($this->once())
+				->method('eq')
+				->willReturn(true);
+			$queryBuilder = $this->createMock(IQueryBuilder::class);
+			$queryBuilder->expects($this->once())
+				->method('update')
+				->willReturn($queryBuilder);
+			$queryBuilder->expects($this->once())
+				->method('set')
+				->willReturn($queryBuilder);
+			$queryBuilder->expects($this->once())
+				->method('where')
+				->willReturn($queryBuilder);
+			$queryBuilder->expects($this->once())
+				->method('expr')
+				->willReturn($expressionBuilder);
+			$queryBuilder->expects($this->once())
+				->method('createNamedParameter')
+				->willReturn($this->createMock(IParameter::class));
+			$this->connection->expects($this->once())
+				->method('getQueryBuilder')
+				->willReturn($queryBuilder);
+
 			$manager->expects($this->once())->method('deleteChildren')->with($share);
 			$this->defaultProvider
 				->expects($this->once())
@@ -1744,6 +1787,10 @@ class ManagerTest extends \Test\TestCase {
 			\OCP\Util::connectHook('OCP\Share', 'pre_unshare', $hookListnerUnshare, 'pre');
 			\OCP\Util::connectHook('OCP\Share', 'post_unshare', $hookListnerUnshare, 'post');
 
+			$mountPoint = $this->createMock(IMountPoint::class);
+			$this->mountManager->expects($this->once())
+				->method('find')
+				->willReturn($mountPoint);
 		}
 		if ($sharetype === 'anotherusertest') {
 			$share->setShareType(\OCP\Share::SHARE_TYPE_USER);
@@ -1760,6 +1807,16 @@ class ManagerTest extends \Test\TestCase {
 
 		$shareOwner = $this->createMock('\OCP\IUser');
 		$shareOwner->method('getUID')->willReturn('user1');
+
+		$this->defaultProvider
+			->expects($this->any())
+			->method('getChildren')
+			->will($this->returnCallback(function () use ($sharetype, $share2) {
+				if ($sharetype === 'user') {
+					return [$share2];
+				}
+				return [];
+			}));
 
 		$storage = $this->createMock(Storage::class);
 		$path = $this->createMock(File::class);
@@ -1808,13 +1865,15 @@ class ManagerTest extends \Test\TestCase {
 
 		$this->defaultProvider->expects($this->any())
 			->method('getShareById')
-			->with(22)
-			->willReturn($share);
+			->will($this->returnValueMap([
+				[22, $share],
+				[29, $share2]
+			]));
 		$this->defaultProvider->expects($this->any())
 			->method('update')
 			->with($share)
 			->willReturn($share);
-		$manager->updateShare($share);
+
 		$compareToken = $share->getToken();
 
 		$this->view->expects($this->any())
@@ -2667,7 +2726,8 @@ class ManagerTest extends \Test\TestCase {
 			$this->userManager,
 			$this->rootFolder,
 			$this->eventDispatcher,
-			$this->view
+			$this->view,
+			$this->connection
 		);
 
 		$share = $this->createMock('\OCP\Share\IShare');
@@ -2701,7 +2761,8 @@ class ManagerTest extends \Test\TestCase {
 			$this->userManager,
 			$this->rootFolder,
 			$this->eventDispatcher,
-			$this->view
+			$this->view,
+			$this->connection
 		);
 
 		$share = $this->createMock('\OCP\Share\IShare');
@@ -2804,7 +2865,8 @@ class ManagerTest extends \Test\TestCase {
 			$this->userManager,
 			$this->rootFolder,
 			$this->eventDispatcher,
-			$this->view
+			$this->view,
+			$this->connection
 		);
 
 		$provider1 = $this->getMockBuilder('\OC\Share20\DefaultShareProvider')
@@ -3248,7 +3310,8 @@ class ManagerTest extends \Test\TestCase {
 			$this->userManager,
 			$this->rootFolder,
 			$this->eventDispatcher,
-			$this->view
+			$this->view,
+			$this->connection
 		);
 
 		$share = $this->createMock(IShare::class);

@@ -246,6 +246,23 @@ Feature: transfer-ownership
 		And using received transfer folder of "user1" as dav path
 		And as "user1" the folder "/sub/test" should not exist
 
+	Scenario: transferring ownership of folder shared with transfer recipient and public link created of received share works
+		Given user "user0" has been created
+		And user "user1" has been created
+		And user "user0" has created a folder "/test"
+		And user "user0" has created a folder "/test/foo"
+		And user "user0" has uploaded file "data/textfile.txt" to "/test/somefile.txt"
+		And user "user0" creates a share using the API with settings
+			| path      | /test/somefile.txt |
+			| shareType | 3                  |
+		And user "user0" has shared file "/test" with user "user1" with permissions 31
+		And user "user1" creates a share using the API with settings
+			| path      | /test |
+			| shareType | 3                  |
+		When the administrator transfers ownership from "user0" to "user1" using the occ command
+		Then the command should have been successful
+		And as "user0" the folder "/test" should not exist
+
 	@local_storage
 	Scenario: transferring ownership does not transfer external storage
 		Given user "user0" has been created

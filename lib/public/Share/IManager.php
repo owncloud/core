@@ -123,6 +123,7 @@ interface IManager {
 	 * @param string $oldOwner - is the previous owner of the share, the uid string
 	 * @param string $newOwner - is the new owner of the share, the uid string
 	 * @param string $finalTarget - is the target folder where share has to be moved
+	 * @param null|bool $isChild - determine if the share is a child or not
 	 *
 	 * finalTarget is of the form "user1/files/transferred from admin on 20180509"
 	 *
@@ -136,7 +137,7 @@ interface IManager {
 	 * @throws NotFoundException
 	 * @since 10.0.9
 	 */
-	public function transferShare(IShare $share, $oldOwner, $newOwner, $finalTarget);
+	public function transferShare(IShare $share, $oldOwner, $newOwner, $finalTarget, $isChild = null);
 
 	/**
 	 * Get shares shared with $userId for specified share types.
