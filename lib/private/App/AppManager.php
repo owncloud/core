@@ -191,9 +191,9 @@ class AppManager implements IAppManager {
 
 			$groupIds = json_decode($enabled);
 
-			if (!is_array($groupIds)) {
-				$jsonError = json_last_error();
-				\OC::$server->getLogger()->warning('AppManger::checkAppForUser - can\'t decode group IDs: ' . print_r($enabled, true) . ' - json error code: ' . $jsonError, ['app' => 'lib']);
+			if (!\is_array($groupIds)) {
+				$jsonError = \json_last_error();
+				\OC::$server->getLogger()->warning('AppManager::checkAppForUser - can\'t decode group IDs: ' . print_r($enabled, true) . ' - json error code: ' . $jsonError, ['app' => 'lib']);
 				return false;
 			}
 
