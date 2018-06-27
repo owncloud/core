@@ -27,6 +27,7 @@ namespace OCA\Files\Command;
 use OC\Encryption\Manager;
 use OC\Files\Filesystem;
 use OC\Files\View;
+use OC\Share20\ProviderFactory;
 use OCP\Files\FileInfo;
 use OCP\Files\Mount\IMountManager;
 use OCP\ILogger;
@@ -57,6 +58,9 @@ class TransferOwnership extends Command {
 	/** @var ILogger  */
 	private $logger;
 
+	/** @var ProviderFactory  */
+	private $shareProviderFactory;
+
 	/** @var bool */
 	private $filesExist = false;
 
@@ -81,12 +85,13 @@ class TransferOwnership extends Command {
 	/** @var string */
 	private $finalTarget;
 
-	public function __construct(IUserManager $userManager, IManager $shareManager, IMountManager $mountManager, Manager $encryptionManager, ILogger $logger) {
+	public function __construct(IUserManager $userManager, IManager $shareManager, IMountManager $mountManager, Manager $encryptionManager, ILogger $logger, ProviderFactory $shareProviderFactory) {
 		$this->userManager = $userManager;
 		$this->shareManager = $shareManager;
 		$this->mountManager = $mountManager;
 		$this->encryptionManager = $encryptionManager;
 		$this->logger = $logger;
+		$this->shareProviderFactory = $shareProviderFactory;
 		parent::__construct();
 	}
 
@@ -168,7 +173,7 @@ class TransferOwnership extends Command {
 		$this->transfer($output);
 
 		// restore the shares
-		$this->restoreShares($output);
+		return $this->restoreShares($output);
 	}
 
 	private function walkFiles(View $view, $path, \Closure $callBack) {
@@ -256,6 +261,7 @@ class TransferOwnership extends Command {
 				if (empty($sharePage)) {
 					break;
 				}
+
 				$this->shares = \array_merge($this->shares, $sharePage);
 				$offset += 50;
 			}
@@ -295,18 +301,47 @@ class TransferOwnership extends Command {
 	private function restoreShares(OutputInterface $output) {
 		$output->writeln("Restoring shares ...");
 		$progress = new ProgressBar($output, \count($this->shares));
+		$status = 0;
 
+		$childShares = [];
 		foreach ($this->shares as $share) {
 			try {
+				/**
+				 * Do not process children which are already processed.
+				 * This piece of code populates the childShare array
+				 * with the child shares which will be processed. And
+				 * hence will avoid further processing of same share
+				 * again.
+				 */
+				if ($share->getSharedWith() === $this->destinationUser) {
+					$provider = $this->shareProviderFactory->getProviderForType($share->getShareType());
+					foreach ($provider->getChildren($share) as $child) {
+						$childShares[] = $child->getId();
+					}
+				} else {
+					/**
+					 * Before doing handover to transferShare, check if the share
+					 * id is present in the childShares. If so then just ignore
+					 * this share and continue. If not ignored, the child shares
+					 * would be processed again, if their parent share was shared
+					 * with destination user. And hence we can safely avoid the
+					 * duplicate processing of shares here.
+					 */
+					if (\in_array($share->getId(), $childShares, true)) {
+						continue;
+					}
+				}
 				$this->shareManager->transferShare($share, $this->sourceUser, $this->destinationUser, $this->finalTarget);
 			} catch (\OCP\Files\NotFoundException $e) {
 				$output->writeln('<error>Share with id ' . $share->getId() . ' points at deleted file, skipping</error>');
 			} catch (\Exception $e) {
 				$output->writeln('<error>Could not restore share with id ' . $share->getId() . ':' . $e->getTraceAsString() . '</error>');
+				$status = 1;
 			}
 			$progress->advance();
 		}
 		$progress->finish();
 		$output->writeln('');
+		return $status;
 	}
 }

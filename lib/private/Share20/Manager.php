@@ -35,6 +35,7 @@ use OCP\Files\IRootFolder;
 use OCP\Files\Mount\IMountManager;
 use OCP\Files\NotFoundException;
 use OCP\IConfig;
+use OCP\IDBConnection;
 use OCP\IGroupManager;
 use OCP\IL10N;
 use OCP\ILogger;
@@ -82,6 +83,8 @@ class Manager implements IManager {
 
 	/** @var View */
 	private $view;
+	/** @var IDBConnection  */
+	private $connection;
 
 	/**
 	 * Manager constructor.
@@ -109,7 +112,8 @@ class Manager implements IManager {
 			IUserManager $userManager,
 			IRootFolder $rootFolder,
 			EventDispatcher $eventDispatcher,
-			View $view
+			View $view,
+			IDBConnection $connection
 	) {
 		$this->logger = $logger;
 		$this->config = $config;
@@ -124,6 +128,7 @@ class Manager implements IManager {
 		$this->sharingDisabledForUsersCache = new CappedMemoryCache();
 		$this->eventDispatcher = $eventDispatcher;
 		$this->view = $view;
+		$this->connection = $connection;
 	}
 
 	/**
@@ -696,10 +701,11 @@ class Manager implements IManager {
 	 * @param string $oldOwner
 	 * @param string $newOwner
 	 * @param string $finalTarget
+	 * @param null|bool $isChild
 	 * @throws TransferSharesException
 	 * @throws NotFoundException
 	 */
-	public function transferShare(IShare $share, $oldOwner, $newOwner, $finalTarget) {
+	public function transferShare(IShare $share, $oldOwner, $newOwner, $finalTarget, $isChild = null) {
 		if ($this->userManager->get($oldOwner) === null) {
 			throw new TransferSharesException("The current owner of the share $oldOwner doesn't exist");
 		}
@@ -717,6 +723,14 @@ class Manager implements IManager {
 			throw new NotFoundException("The target location $finalTarget doesn't exist");
 		}
 
+		if ($isChild === true) {
+			//Set the parent to null so that we don't lose the shares after transfer
+			$builder = $this->connection->getQueryBuilder();
+			$builder->update('share')
+				->set('parent', 'null')
+				->where($builder->expr()->eq('id', $builder->createNamedParameter($share->getId())))
+				->execute();
+		}
 		/**
 		 * If the share was already shared with new owner, then we can delete it
 		 */
@@ -725,6 +739,12 @@ class Manager implements IManager {
 			$shareMountPoint = $this->mountManager->find('/' . $newOwner . '/files' . $share->getTarget());
 			if ($shareMountPoint) {
 				$this->mountManager->removeMount($shareMountPoint->getMountPoint());
+			}
+
+			$provider = $this->factory->getProviderForType($share->getShareType());
+			//Try to get the children transferred and then delete the parent
+			foreach ($provider->getChildren($share) as $child) {
+				$this->transferShare($child, $oldOwner, $newOwner, $finalTarget, true);
 			}
 			$this->deleteShare($share);
 		} else {
