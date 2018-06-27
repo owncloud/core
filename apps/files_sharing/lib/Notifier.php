@@ -29,6 +29,7 @@ use OCP\Share\Exceptions\ShareNotFound;
 use OCP\IGroupManager;
 use OCP\IUserManager;
 use OCP\IConfig;
+use OCP\Defaults;
 use OC\L10N\L10N;
 
 class Notifier implements INotifier {
@@ -50,16 +51,28 @@ class Notifier implements INotifier {
 	/** @var IConfig */
 	protected $config;
 
+	/** *@var Defaults */
+	protected $defaults;
+
 	/**
 	 * @param \OCP\L10N\IFactory $factory
 	 */
-	public function __construct(\OCP\L10N\IFactory $factory, INotificationManager $notificationManager, IShareManager $shareManager, IGroupManager $groupManager, IUserManager $userManager, IConfig $config) {
+	public function __construct(
+		\OCP\L10N\IFactory $factory,
+		INotificationManager $notificationManager,
+		IShareManager $shareManager,
+		IGroupManager $groupManager,
+		IUserManager $userManager,
+		IConfig $config,
+		Defaults $defaults
+	) {
 		$this->factory = $factory;
 		$this->notificationManager = $notificationManager;
 		$this->shareManager = $shareManager;
 		$this->groupManager = $groupManager;
 		$this->userManager = $userManager;
 		$this->config = $config;
+		$this->defaults = $defaults;
 	}
 
 	/**
@@ -75,9 +88,8 @@ class Notifier implements INotifier {
 		// Read the language from the notification
 		$l = $this->factory->get('files_sharing', $languageCode);
 
-		switch ($notification->getSubject()) {
+		switch ($notification->getObjectType()) {
 			case 'local_share':
-			case 'local_share_accepted':
 				$shareId = $notification->getObjectId();
 				$userId = $notification->getUser();
 				try {
@@ -104,12 +116,28 @@ class Notifier implements INotifier {
 			$params[0] = $this->getUserString($params[0]);
 			$params[1] = $this->getUserString($params[1]);
 			$notification->setParsedSubject(
-				(string) $l->t('User "%1$s" shared "%3$s" with you (on behalf of "%2$s")', $params)
+				(string) $l->t('"%1$s" shared "%3$s" with you (on behalf of "%2$s")', $params)
 			);
 		} else {
 			$params[0] = $this->getUserString($params[0]);
 			$notification->setParsedSubject(
-				(string)$l->t('User "%1$s" shared "%3$s" with you', $params)
+				(string) $l->t('"%1$s" shared "%3$s" with you', $params)
+			);
+		}
+
+		$instanceName = $this->defaults->getName();
+		$messageParams = $notification->getMessageParameters();
+		$messageParams[3] = $instanceName;
+		if ($messageParams[0] !== $messageParams[1] && $messageParams[1] !== null) {
+			$messageParams[0] = $this->getUserString($messageParams[0]);
+			$messageParams[1] = $this->getUserString($messageParams[1]);
+			$notification->setParsedMessage(
+				(string) $l->t('"%1$s" invited you to view "%3$s" on %4$s (on behalf of "%2$s")', $messageParams)
+			);
+		} else {
+			$messageParams[0] = $this->getUserString($messageParams[0]);
+			$notification->setParsedMessage(
+				(string) $l->t('"%1$s" invited you to view "%3$s" on %4$s', $messageParams)
 			);
 		}
 
