@@ -862,9 +862,10 @@ class Session implements IUserSession, Emitter {
 	 * @param IUser $user The user
 	 * @param String $password The user's password
 	 * @return boolean True if the user can be authenticated, false otherwise
-	 * @throws LoginException if an app canceld the login process or the user is not enabled
+	 * @throws LoginException if an app canceled the login process or the user is not enabled
 	 */
-	protected function loginUser($user, $password) {
+	protected function loginUser(IUser $user = null, $password) {
+		$uid = $user === null ? '' : $user->getUID();
 		return $this->emittingCall(function () use (&$user, &$password) {
 			if ($user === null) {
 				//Cannot extract the uid when $user is null, hence pass null
@@ -893,7 +894,9 @@ class Session implements IUserSession, Emitter {
 			}
 
 			return true;
-		}, ['before' => ['uid' => $user, 'password' => $password], 'after' => ['uid' => $user, 'password' => $password]], 'user', 'login');
+		}, ['before' => ['user' => $user, 'uid' => $uid, 'password' => $password],
+			'after' => ['user' => $user, 'uid' => $uid, 'password' => $password]],
+			'user', 'login');
 	}
 
 	/**
