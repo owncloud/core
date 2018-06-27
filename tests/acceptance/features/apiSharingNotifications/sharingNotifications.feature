@@ -25,7 +25,7 @@ Feature: Display notifications when receiving a share
 		And the last notification of user "user1" should match these regular expressions
 			| app         | /^files_sharing$/                       |
 			| subject     | /^"user0" shared "PARENT" with you$/    |
-			| message     | /^"user0" invited you to view "PARENT" on ownCloud$/ |
+			| message     | /^"user0" invited you to view "PARENT"$/ |
 			| link        | /^%base_url%(\/index\.php)?\/f\/(\d+)$/ |
 			| object_type | /^local_share$/                         |
 
@@ -37,14 +37,14 @@ Feature: Display notifications when receiving a share
 		And the last notification of user "user1" should match these regular expressions
 			| app         | /^files_sharing$/                       |
 			| subject     | /^"user0" shared "PARENT" with you$/    |
-			| message     | /^"user0" invited you to view "PARENT" on ownCloud$/ |
+			| message     | /^"user0" invited you to view "PARENT"$/ |
 			| link        | /^%base_url%(\/index\.php)?\/f\/(\d+)$/ |
 			| object_type | /^local_share$/                         |
 		And user "user2" should have 2 notifications
 		And the last notification of user "user2" should match these regular expressions
 			| app         | /^files_sharing$/                       |
 			| subject     | /^"user0" shared "PARENT" with you$/    |
-			| message     | /^"user0" invited you to view "PARENT" on ownCloud$/ |
+			| message     | /^"user0" invited you to view "PARENT"$/ |
 			| link        | /^%base_url%(\/index\.php)?\/f\/(\d+)$/ |
 			| object_type | /^local_share$/                         |
 

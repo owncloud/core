@@ -29,7 +29,6 @@ use OCP\Share\Exceptions\ShareNotFound;
 use OCP\IGroupManager;
 use OCP\IUserManager;
 use OCP\IConfig;
-use OCP\Defaults;
 use OC\L10N\L10N;
 
 class Notifier implements INotifier {
@@ -51,9 +50,6 @@ class Notifier implements INotifier {
 	/** @var IConfig */
 	protected $config;
 
-	/** *@var Defaults */
-	protected $defaults;
-
 	/**
 	 * @param \OCP\L10N\IFactory $factory
 	 */
@@ -63,8 +59,7 @@ class Notifier implements INotifier {
 		IShareManager $shareManager,
 		IGroupManager $groupManager,
 		IUserManager $userManager,
-		IConfig $config,
-		Defaults $defaults
+		IConfig $config
 	) {
 		$this->factory = $factory;
 		$this->notificationManager = $notificationManager;
@@ -72,7 +67,6 @@ class Notifier implements INotifier {
 		$this->groupManager = $groupManager;
 		$this->userManager = $userManager;
 		$this->config = $config;
-		$this->defaults = $defaults;
 	}
 
 	/**
@@ -125,19 +119,17 @@ class Notifier implements INotifier {
 			);
 		}
 
-		$instanceName = $this->defaults->getName();
 		$messageParams = $notification->getMessageParameters();
-		$messageParams[3] = $instanceName;
 		if ($messageParams[0] !== $messageParams[1] && $messageParams[1] !== null) {
 			$messageParams[0] = $this->getUserString($messageParams[0]);
 			$messageParams[1] = $this->getUserString($messageParams[1]);
 			$notification->setParsedMessage(
-				(string) $l->t('"%1$s" invited you to view "%3$s" on %4$s (on behalf of "%2$s")', $messageParams)
+				(string) $l->t('"%1$s" invited you to view "%3$s" (on behalf of "%2$s")', $messageParams)
 			);
 		} else {
 			$messageParams[0] = $this->getUserString($messageParams[0]);
 			$notification->setParsedMessage(
-				(string) $l->t('"%1$s" invited you to view "%3$s" on %4$s', $messageParams)
+				(string) $l->t('"%1$s" invited you to view "%3$s"', $messageParams)
 			);
 		}
 
