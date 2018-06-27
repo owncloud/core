@@ -798,6 +798,7 @@ class Filesystem {
 
 	/**
 	 * @param string $query
+	 * @return FileInfo[] array of file info
 	 */
 	public static function searchByMime($query) {
 		return self::$defaultInstance->searchByMime($query);
@@ -806,7 +807,7 @@ class Filesystem {
 	/**
 	 * @param string|int $tag name or tag id
 	 * @param string $userId owner of the tags
-	 * @return FileInfo[] array or file info
+	 * @return FileInfo[] array of file info
 	 */
 	public static function searchByTag($tag, $userId) {
 		return self::$defaultInstance->searchByTag($tag, $userId);

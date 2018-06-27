@@ -79,6 +79,7 @@ class Helper extends \OC\Share\Constants {
 	 * @param string $uidOwner The user that the parent was shared with (optional)
 	 * @param int $newParent new parent for the childrens
 	 * @param bool $excludeGroupChildren exclude group children elements
+	 * @return array of deleted items
 	 */
 	public static function delete($parent, $excludeParent = false, $uidOwner = null, $newParent = null, $excludeGroupChildren = false) {
 		$ids = [$parent];

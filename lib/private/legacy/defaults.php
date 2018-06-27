@@ -90,6 +90,7 @@ class OC_Defaults {
 
 	/**
 	 * @param string $method
+	 * @return bool
 	 */
 	private function themeExist($method) {
 		if (isset($this->theme) && \method_exists($this->theme, $method)) {

@@ -178,7 +178,7 @@ class Installer {
 	/**
 	 * @brief checks whether or not an app is installed
 	 * @param string $app app
-	 * @returns bool
+	 * @return bool
 	 *
 	 * Checks whether or not an app is installed, i.e. registered in apps table.
 	 */
