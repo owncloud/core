@@ -191,6 +191,8 @@ function preview_icon($path) {
 
 /**
  * @param string $path
+ * @param string $token
+ * @return string link to the public preview
  */
 function publicPreview_icon($path, $token) {
 	return \OC::$server->getURLGenerator()->linkToRoute('core_ajax_public_preview', ['x' => 32, 'y' => 32, 'file' => $path, 't' => $token]);

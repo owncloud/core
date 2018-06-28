@@ -208,6 +208,7 @@ class PlatformRepository {
 
 	/**
 	 * @param string $stability
+	 * @return string
 	 */
 	private function expandStability($stability) {
 		$stability = \strtolower($stability);

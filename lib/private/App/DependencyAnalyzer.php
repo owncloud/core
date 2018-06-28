@@ -48,7 +48,7 @@ class DependencyAnalyzer {
 
 	/**
 	 * @param array $app
-	 * @returns array of missing dependencies
+	 * @return array of missing dependencies
 	 */
 	public function analyze(array $app) {
 		$this->appInfo = $app;
