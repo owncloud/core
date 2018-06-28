@@ -45,6 +45,12 @@ class WebUIUsersContext extends RawMinkContext implements Context {
 
 	/**
 	 *
+	 * @var WebUIGeneralContext
+	 */
+	private $webUIGeneralContext;
+
+	/**
+	 *
 	 * @var FeatureContext
 	 */
 	private $featureContext;
@@ -242,6 +248,33 @@ class WebUIUsersContext extends RawMinkContext implements Context {
 		 */
 		$disabledPage = $this->loginPage->loginAs($username, $password, 'DisabledUserPage');
 		$disabledPage->waitTillPageIsLoaded($this->getSession());
+	}
+
+	/**
+	 * @When the administrator deletes the user with the username :username using the webUI
+	 *
+	 * @param string $username
+	 *
+	 * @return void
+	 */
+	public function theAdministratorDeletesTheUser($username) {
+		$this->usersPage->deleteUser($username);
+		$this->featureContext->rememberThatUserIsNotExpectedToExist($username);
+	}
+
+	/**
+	 *
+	 * @When the deleted user :username tries to login using the password :password using the webUI
+	 *
+	 * @param string $username
+	 *
+	 * @param string $password
+	 *
+	 * @return void
+	 */
+	public function theDeletedUserTriesToLogin($username, $password) {
+		$this->webUIGeneralContext->theUserLogsOutOfTheWebUI();
+		$this->loginPage->loginAs($username, $password, 'LoginPage');
 	}
 
 	/**
