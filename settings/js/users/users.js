@@ -266,8 +266,8 @@ var UserList = {
 		rows.sort(function(a, b) {
 			// FIXME: inefficient way of getting the names,
 			// better use a data attribute
-			a = $(a).find('.name').text();
-			b = $(b).find('.name').text();
+			a = $(a).find('.displayName').text();
+			b = $(b).find('.displayName').text();
 			var firstSort = UserList.preSortSearchString(a, b);
 			if(typeof firstSort !== 'undefined') {
 				return firstSort;
