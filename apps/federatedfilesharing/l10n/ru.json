@@ -6,8 +6,6 @@
     "Not allowed to create a federated share with the same user" : "Не допускается создание федеративного общего ресурса с тем же пользователем",
     "File is already shared with %s" : "Доступ к файлу уже предоставлен %s",
     "Sharing %s failed, could not find %s, maybe the server is currently unreachable." : "Не удалось поделиться %s, не удалось найти %s, возможно, сервер не доступен.",
-    "You received \"/%3$s\" as a remote share from %1$s (on behalf of %2$s)" : "Вы получили \"/%3$s\"  в качестве удалённого ресурса из %1$s (от имени %2$s)",
-    "You received \"/%3$s\" as a remote share from %1$s" : "Вы получили \"/%3$s\" в качестве удалённого ресурса из %1$s",
     "Accept" : "Принять",
     "Decline" : "Отклонить",
     "Share with me through my #ownCloud Federated Cloud ID, see %s" : "Поделитесь со мной через мой #ownCloud ID в объединении облачных хранилищ, смотрите %s",

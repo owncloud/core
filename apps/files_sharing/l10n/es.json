@@ -101,8 +101,6 @@
     "Shared by %2$s" : "Compartido por %2$s",
     "Shares" : "Compartidos",
     "File sharing" : "Compartir Archivos",
-    "User \"%1$s\" shared \"%3$s\" with you (on behalf of \"%2$s\")" : "El usuario \"%1$s\" ha compartido\"%3$s\" con tigo.  (en nombre de: \"%2$s\")",
-    "User \"%1$s\" shared \"%3$s\" with you" : "E usuario\"%1$s\" ha compartido\"%3$s\" contigo",
     "Accept" : "Aceptar",
     "Decline" : "Denegar",
     "This share is password-protected" : "Este elemento compartido está protegido por contraseña",

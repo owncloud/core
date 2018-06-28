@@ -102,8 +102,6 @@
     "Shared by %2$s" : "U nda nga %2$s",
     "Shares" : "Ndarje",
     "File sharing" : "Ndarje kartelash me të tjerët",
-    "User \"%1$s\" shared \"%3$s\" with you (on behalf of \"%2$s\")" : "Përdoruesi \"%1$s\" ndau \"%3$s\" me ju (në emër të \"%2$s\")",
-    "User \"%1$s\" shared \"%3$s\" with you" : "Përdoruesi \"%1$s\" ndau \"%3$s\" me ju",
     "Accept" : "Pranoje",
     "Decline" : "Hidhe poshtë",
     "This share is password-protected" : "Kjo ndarje është e mbrojtur me fjalëkalim",

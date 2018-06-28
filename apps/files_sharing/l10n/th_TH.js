@@ -104,8 +104,6 @@ OC.L10N.register(
     "Shared by %2$s" : "แชร์โดย %2$s",
     "Shares" : "แชร์",
     "File sharing" : "กำลังแชร์ไฟล์",
-    "User \"%1$s\" shared \"%3$s\" with you (on behalf of \"%2$s\")" : "ผู้ใช้ \"%1$s\" ได้แชร์ \"%3$s\" กับคุณ (ในนามของ \"%2$s\")",
-    "User \"%1$s\" shared \"%3$s\" with you" : "ผู้ใช้ \"%1$s\" ได้แชร์ \"%3$s\" กับคุณ",
     "Accept" : "ยอมรับ",
     "Decline" : "ลดลง",
     "This share is password-protected" : "นี้แชร์การป้องกันด้วยรหัสผ่าน",

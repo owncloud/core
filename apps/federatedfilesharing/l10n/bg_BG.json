@@ -6,8 +6,6 @@
     "Not allowed to create a federated share with the same user" : "Не е разрешено създаването на федеративно споделяне със същия потребител",
     "File is already shared with %s" : "Файлът е вече споделен с %s",
     "Sharing %s failed, could not find %s, maybe the server is currently unreachable." : "Неуспешно споделяне на на %s, не може бъде намерено %s. Може би сървъра в момента е недостъпен.",
-    "You received \"/%3$s\" as a remote share from %1$s (on behalf of %2$s)" : "Получихте \"/%3$s\" като отдалечено споделяне от %1$s (от името на %2$s)",
-    "You received \"/%3$s\" as a remote share from %1$s" : "Получихте \"/%3$s\" като отдалечено споделяне от %1$s",
     "Accept" : "Приемам",
     "Decline" : "Отказвам",
     "Share with me through my #ownCloud Federated Cloud ID, see %s" : "Споделяй с мен през моето #ownCloud ID за федеративен облак,  виж %s",

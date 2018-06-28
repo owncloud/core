@@ -104,8 +104,6 @@ OC.L10N.register(
     "Shared by %2$s" : "Compartilhado por %2$s",
     "Shares" : "Compartilhamentos",
     "File sharing" : "Compartilhamento de arquivo",
-    "User \"%1$s\" shared \"%3$s\" with you (on behalf of \"%2$s\")" : "O usuário \"%1$s\" compartilhou \"%3$s\" com você (em nome de\"%2$s\")",
-    "User \"%1$s\" shared \"%3$s\" with you" : "O usuário \"%1$s\" compartilhou \"%3$s\" com você",
     "Accept" : "Aceitar",
     "Decline" : "Rejeitar",
     "This share is password-protected" : "Este compartilhamento esta protegido por senha",

@@ -8,8 +8,6 @@ OC.L10N.register(
     "Not allowed to create a federated share with the same user" : "Ikke tillatt å opprette en forent deling med den samme brukeren",
     "File is already shared with %s" : "Filen deles allerede med %s",
     "Sharing %s failed, could not find %s, maybe the server is currently unreachable." : "Deling %s feilet, fant ikke %s, kanskje servern er utilgjengelig for øyeblikket.",
-    "You received \"/%3$s\" as a remote share from %1$s (on behalf of %2$s)" : "Du mottok \"/%3$s\" som en ekstern deling fra %1$s (på vegne av %2$s)",
-    "You received \"/%3$s\" as a remote share from %1$s" : "Du mottok \"/%3$s\" som en ekstern deling fra %1$s",
     "Accept" : "Aksepter",
     "Decline" : "Avslå",
     "Share with me through my #ownCloud Federated Cloud ID, see %s" : "Del med meg gjennom min #ownCloud ID for Forent Sky, se %s",
