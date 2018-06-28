@@ -357,7 +357,7 @@ class MailNotificationsTest extends TestCase {
 	 * @param string $bcc
 	 * @param string $expectedRecipientErrorList
 	 */
-	public function testSendLinkShareMailException($to, $cc, $bcc, string $expectedRecipientErrorList) {
+	public function testSendLinkShareMailException($to, $cc, $bcc, $expectedRecipientErrorList) {
 		$this->setupMailerMock('TestUser shared »MyFile« with you', [$to]);
 
 		$mailNotifications = new MailNotifications(
