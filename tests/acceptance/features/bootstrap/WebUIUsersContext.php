@@ -24,7 +24,6 @@ use Behat\Behat\Context\Context;
 use Behat\Behat\Hook\Scope\BeforeScenarioScope;
 use Behat\Gherkin\Node\TableNode;
 use Behat\MinkExtension\Context\RawMinkContext;
-use Behat\Mink\Exception\ExpectationException;
 use Page\LoginPage;
 use Page\UsersPage;
 
@@ -59,6 +58,7 @@ class WebUIUsersContext extends RawMinkContext implements Context {
 	 * WebUIUsersContext constructor.
 	 *
 	 * @param UsersPage $usersPage
+	 * @param LoginPage $loginPage
 	 */
 	public function __construct(UsersPage $usersPage, LoginPage $loginPage) {
 		$this->usersPage = $usersPage;
@@ -173,13 +173,12 @@ class WebUIUsersContext extends RawMinkContext implements Context {
 	 * @param string $name
 	 *
 	 * @return void
-	 *
-	 * @throws Exception
 	 */
 	public function theGroupNamedShouldNotBeListedOnTheWebUI($name) {
-		if (in_array($name, $this->usersPage->getAllGroups(), true)) {
-			throw new Exception("group '" . $name . "' is listed but should not");
-		}
+		PHPUnit_Framework_Assert::assertFalse(
+			\in_array($name, $this->usersPage->getAllGroups(), true),
+			"group '" . $name . "' is listed but should not be"
+		);
 	}
 
 	/**
@@ -190,20 +189,18 @@ class WebUIUsersContext extends RawMinkContext implements Context {
 	 * @param TableNode $table
 	 *
 	 * @return void
-	 *
-	 * @throws Exception
 	 */
 	public function theseGroupsShouldBeListedOnTheWebUI($shouldOrNot, TableNode $table) {
 		$should = ($shouldOrNot !== "not");
 		$groups = $this->usersPage->getAllGroups();
 		foreach ($table as $row) {
-			if (in_array($row['groupname'], $groups, true) !== $should) {
-				throw new Exception(
-					"group '" . $row['groupname'] .
-					"' is" . ($should ? " not" : "") .
-					" listed but should" . ($should ? "" : " not") . " be"
-				);
-			}
+			PHPUnit_Framework_Assert::assertEquals(
+				\in_array($row['groupname'], $groups, true),
+				$should,
+				"group '" . $row['groupname'] .
+				"' is" . ($should ? " not" : "") .
+				" listed but should" . ($should ? "" : " not") . " be"
+			);
 		}
 	}
 
@@ -284,17 +281,15 @@ class WebUIUsersContext extends RawMinkContext implements Context {
 	 * @param string $quota
 	 *
 	 * @return void
-	 *
-	 * @throws ExpectationException
 	 */
 	public function quotaOfUserShouldBeSetToOnTheWebUI($username, $quota) {
 		$setQuota = $this->usersPage->getQuotaOfUser($username);
-		if ($setQuota !== $quota) {
-			throw new ExpectationException(
-				'Users quota is set to "' . $setQuota . '" expected "' .
-				$quota . '"', $this->getSession()
-			);
-		}
+		PHPUnit_Framework_Assert::assertEquals(
+			$quota,
+			$setQuota,
+			'Users quota is set to "' . $setQuota .
+			'" but expected "' . $quota . '"'
+		);
 	}
 
 	/**
