@@ -35,6 +35,7 @@ use OC\Files\View;
 use OCA\Files_Sharing\AppInfo\Application;
 use OCA\Files_Trashbin\Expiration;
 use OCA\Files_Trashbin\Helper;
+use OCA\Files_Trashbin\Storage;
 use OCA\Files_Trashbin\Trashbin;
 use OCP\Constants;
 use OCP\Files\File;
@@ -730,6 +731,20 @@ class TrashbinTest extends TestCase {
 
 		$this->assertEquals('/owncloud/index.php/apps/files/?view=trashbin&dir=/test.d1462861890/sub&scrollto=somefile.txt', $event->getArgument('resolvedWebLink'));
 		$this->assertNull($event->getArgument('resolvedDavLink'));
+	}
+
+	public function testDeleteKeys() {
+		$sourceStorage = $this->getMockBuilder(Storage::class)
+			->setConstructorArgs([['mountPoint' => 'test', 'storage' => 'Encryption']])
+			->setMethods(['retainKeys', 'deleteAllFileKeys'])->getMock();
+
+		$sourceStorage->expects($this->once())
+			->method('retainKeys')
+			->willReturn(true);
+		$sourceStorage->expects($this->once())
+			->method('deleteAllFileKeys')
+			->with('//files/file1.txt');
+		$this->invokePrivate(Trashbin::class, 'retainVersions', ['file1.txt', 'test-trashbin-user1', 'file1.txt', 1529567106, $sourceStorage]);
 	}
 
 	/**
