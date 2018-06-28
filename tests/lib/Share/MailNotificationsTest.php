@@ -338,8 +338,27 @@ class MailNotificationsTest extends TestCase {
 		$this->assertSame([], $mailNotifications->sendLinkShareMail($to, 'MyFile', 'https://owncloud.com/file/?foo=bar', 3600));
 	}
 
-	public function testSendLinkShareMailException() {
-		$this->setupMailerMock('TestUser shared »MyFile« with you', ['lukas@owncloud.com']);
+	public function dataSendLinkShareMailException() {
+		return [
+			['lukas@owncloud.com', '', '', 'lukas@owncloud.com'],
+			['you@owncloud.com', 'cc1@example.com,cc2@example.com', '', 'you@owncloud.com,cc1@example.com,cc2@example.com'],
+			['you@owncloud.com', '', 'phil@example.com,jim@example.com.np', 'you@owncloud.com,phil@example.com,jim@example.com.np'],
+			['you@owncloud.com', 'cc1@example.com,cc2@example.com', 'phil@example.com,jim@example.com.np', 'you@owncloud.com,cc1@example.com,cc2@example.com,phil@example.com,jim@example.com.np'],
+			['', 'cc1@example.com,cc2@example.com', '', 'cc1@example.com,cc2@example.com'],
+			['', '', 'phil@example.com,jim@example.com.np', 'phil@example.com,jim@example.com.np'],
+			['', 'cc1@example.com,cc2@example.com', 'phil@example.com,jim@example.com.np', 'cc1@example.com,cc2@example.com,phil@example.com,jim@example.com.np'],
+		];
+	}
+
+	/**
+	 * @dataProvider dataSendLinkShareMailException
+	 * @param string $to
+	 * @param string $cc
+	 * @param string $bcc
+	 * @param string $expectedRecipientErrorList
+	 */
+	public function testSendLinkShareMailException($to, $cc, $bcc, string $expectedRecipientErrorList) {
+		$this->setupMailerMock('TestUser shared »MyFile« with you', [$to]);
 
 		$mailNotifications = new MailNotifications(
 			$this->user,
@@ -352,7 +371,20 @@ class MailNotificationsTest extends TestCase {
 			$this->eventDispatcher
 		);
 
-		$this->assertSame(['lukas@owncloud.com'], $mailNotifications->sendLinkShareMail('lukas@owncloud.com', 'MyFile', 'https://owncloud.com/file/?foo=bar', 3600));
+		$options = [];
+
+		if ($cc !== '') {
+			$options['cc'] = $cc;
+		}
+
+		if ($bcc !== '') {
+			$options['bcc'] = $bcc;
+		}
+
+		$this->assertSame(
+			[$expectedRecipientErrorList],
+			$mailNotifications->sendLinkShareMail($to, 'MyFile', 'https://owncloud.com/file/?foo=bar', 3600, null, $options)
+		);
 	}
 
 	public function testSendInternalShareMail() {
