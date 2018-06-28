@@ -288,7 +288,34 @@ class FilesSearchReportPluginTest extends \Test\TestCase {
 		return $results;
 	}
 
-	public function testGetSupportedReportSet() {
-		$this->assertEquals(['{http://owncloud.org/ns}search-files'], $this->plugin->getSupportedReportSet('/'));
+	public function getSupportedReportSetProvider() {
+		return [
+			['/remote.php/dav/files/user', '/totally/unrelated/13'],
+			['/remote.php/dav/files/user', '/'],
+			['/remote.php/webdav', '/totally/unrelated/13'],
+			['/remote.php/webdav', '/'],
+		];
+	}
+
+	/**
+	 * @dataProvider getSupportedReportSetProvider
+	 */
+	public function testGetSupportedReportSet($base, $nodePath) {
+		$path = "{$base}{$nodePath}";
+
+		$node = $this->createMock(Directory::class);
+		$node->method('getPath')->willReturn($nodePath);
+
+		$this->setupBaseTreeNode($path, $node);
+		$this->plugin->initialize($this->server);
+
+		if ($nodePath === '/') {
+			$this->assertEquals(
+				['{http://owncloud.org/ns}search-files'],
+				$this->plugin->getSupportedReportSet($path)
+			);
+		} else {
+			$this->assertEquals([], $this->plugin->getSupportedReportSet($path));
+		}
 	}
 }

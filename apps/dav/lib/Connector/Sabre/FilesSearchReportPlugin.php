@@ -78,7 +78,12 @@ class FilesSearchReportPlugin extends ServerPlugin {
 	 * @return array
 	 */
 	public function getSupportedReportSet($uri) {
-		return [self::REPORT_NAME];
+		$reportTargetNode = $this->server->tree->getNodeForPath($uri);
+		if ($reportTargetNode instanceof Directory && $reportTargetNode->getPath() === '/') {
+			return [self::REPORT_NAME];
+		} else {
+			return [];
+		}
 	}
 
 	/**
