@@ -33,7 +33,6 @@ require_once 'bootstrap.php';
  * WebUI Users context.
  */
 class WebUIUsersContext extends RawMinkContext implements Context {
-
 	private $usersPage;
 
 	/**
@@ -103,7 +102,7 @@ class WebUIUsersContext extends RawMinkContext implements Context {
 	public function theAdminCreatesAUserUsingTheWebUI(
 		$attemptTo, $username, $password, $email=null, TableNode $groupsTable=null
 	) {
-		if (!is_null($groupsTable)) {
+		if ($groupsTable !== null) {
 			$groups = $groupsTable->getColumn(0);
 			//get rid of the header
 			unset($groups[0]);
@@ -119,7 +118,7 @@ class WebUIUsersContext extends RawMinkContext implements Context {
 		$this->featureContext->addUserToCreatedUsersList(
 			$username, $password, "", $email, $shouldExist
 		);
-		if (is_array($groups)) {
+		if (\is_array($groups)) {
 			foreach ($groups as $group) {
 				$this->featureContext->addGroupToCreatedGroupsList($group);
 			}

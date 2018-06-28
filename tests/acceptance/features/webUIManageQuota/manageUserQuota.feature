@@ -1,8 +1,8 @@
 @webUI @insulated @disablePreviews
 Feature: manage user quota
-As an admin
-I want to manage user quota
-So that users can only take up a certain amount of storage space
+	As an admin
+	I want to manage user quota
+	So that users can only take up a certain amount of storage space
 
 	Background:
 		Given these users have been created but not initialized:
@@ -18,15 +18,15 @@ So that users can only take up a certain amount of storage space
 		Then the quota of user "user1" should be set to "<expected_quota>" on the webUI
 
 		Examples:
-		|start_quota|wished_quota|expected_quota|
-		|Unlimited  |5 GB        |5 GB          |
-		|1 GB       |5 GB        |5 GB          |
-		|5 GB       |Unlimited   |Unlimited     |
-		|1 GB       |Unlimited   |Unlimited     |
-		|Unlimited  |5.5 GB      |5.5 GB        |
-		|Unlimited  |5B          |5 B           |
-		|Unlimited  |55kB        |55 KB         |
-		|Unlimited  |45Kb        |45 KB         |
+			|start_quota|wished_quota|expected_quota|
+			|Unlimited  |5 GB        |5 GB          |
+			|1 GB       |5 GB        |5 GB          |
+			|5 GB       |Unlimited   |Unlimited     |
+			|1 GB       |Unlimited   |Unlimited     |
+			|Unlimited  |5.5 GB      |5.5 GB        |
+			|Unlimited  |5B          |5 B           |
+			|Unlimited  |55kB        |55 KB         |
+			|Unlimited  |45Kb        |45 KB         |
 
 	@skipOnOcV10.0.3
 	Scenario: change quota to a valid value that do not work on 10.0.3
@@ -41,10 +41,10 @@ So that users can only take up a certain amount of storage space
 		And the quota of user "user1" should be set to "Default" on the webUI
 
 		Examples:
-		|wished_quota|
-		|stupidtext  |
-		|34,54GB     |
-		|30/40GB     |
-		|30/40       |
-		|3+56 B      |
-		|-1 B        |
+			|wished_quota|
+			|stupidtext  |
+			|34,54GB     |
+			|30/40GB     |
+			|30/40       |
+			|3+56 B      |
+			|-1 B        |
