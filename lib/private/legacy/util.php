@@ -315,32 +315,6 @@ class OC_Util {
 	}
 
 	/**
-	 * check if sharing is disabled for the current user
-	 * @param IConfig $config
-	 * @param IGroupManager $groupManager
-	 * @param IUser|null $user
-	 * @return bool
-	 */
-	public static function isSharingDisabledForUser(IConfig $config, IGroupManager $groupManager, $user) {
-		if ($config->getAppValue('core', 'shareapi_exclude_groups', 'no') === 'yes') {
-			$groupsList = $config->getAppValue('core', 'shareapi_exclude_groups_list', '');
-			$excludedGroups = \json_decode($groupsList);
-			if ($excludedGroups === null) {
-				$excludedGroups = \explode(',', $groupsList);
-				$newValue = \json_encode($excludedGroups);
-				$config->setAppValue('core', 'shareapi_exclude_groups_list', $newValue);
-			}
-			$usersGroups = $groupManager->getUserGroupIds($user);
-			$matchingGroups = \array_intersect($usersGroups, $excludedGroups);
-			if (!empty($matchingGroups)) {
-				// If the user is a member of any of the excluded groups they cannot use sharing
-				return true;
-			}
-		}
-		return false;
-	}
-
-	/**
 	 * check if share API enforces a default expire date
 	 *
 	 * @return boolean
