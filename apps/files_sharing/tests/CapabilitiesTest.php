@@ -36,12 +36,26 @@ class CapabilitiesTest extends \Test\TestCase {
 	 */
 	protected $userSearch;
 
+	/** @var \OCP\IUserSession|\PHPUnit_Framework_MockObject_MockObject */
+	protected $session;
+
+	/** @var \OCP\IGroupManager|\PHPUnit_Framework_MockObject_MockObject */
+	protected $groupManager;
+
 	/**
 	 *
 	 */
 	protected function setUp() {
 		parent::setUp();
 		$this->userSearch = $this->getMockBuilder(\OCP\Util\UserSearch::class)
+			->disableOriginalConstructor()
+			->getMock();
+
+		$this->session = $this->getMockBuilder(\OCP\IUserSession::class)
+			->disableOriginalConstructor()
+			->getMock();
+
+		$this->groupManager = $this->getMockBuilder(\OCP\IGroupManager::class)
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -73,7 +87,7 @@ class CapabilitiesTest extends \Test\TestCase {
 	private function getResults(array $map) {
 		$stub = $this->getMockBuilder('\OCP\IConfig')->disableOriginalConstructor()->getMock();
 		$stub->method('getAppValue')->will($this->returnValueMap($map));
-		$cap = new Capabilities($stub, $this->userSearch);
+		$cap = new Capabilities($stub, $this->userSearch, $this->session, $this->groupManager);
 		$result = $this->getFilesSharingPart($cap->getCapabilities());
 		return $result;
 	}
