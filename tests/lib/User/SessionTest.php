@@ -1527,7 +1527,7 @@ class SessionTest extends TestCase {
 		$iUser->expects($this->once())
 			->method('isEnabled')
 			->willReturn(false);
-		$iUser->expects($this->once())
+		$iUser->expects($this->exactly(2))
 			->method('getUID')
 			->willReturn('foo');
 

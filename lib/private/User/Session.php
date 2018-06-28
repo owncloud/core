@@ -450,6 +450,7 @@ class Session implements IUserSession, Emitter {
 
 			// trigger any other initialization
 			$this->eventDispatcher->dispatch(IUser::class . '::firstLogin', new GenericEvent($this->getUser()));
+			$this->eventDispatcher->dispatch('user.firstlogin', new GenericEvent($this->getUser()));
 		}
 	}
 
@@ -503,7 +504,6 @@ class Session implements IUserSession, Emitter {
 
 		$user = $this->manager->checkPassword($login, $password);
 		if ($user === false) {
-			$this->manager->emit('\OC\User', 'failedLogin', [$login]);
 			$this->emitFailedLogin($login);
 			return false;
 		}
@@ -638,7 +638,6 @@ class Session implements IUserSession, Emitter {
 
 		$user = $this->manager->get($uid);
 		if ($user === null) {
-			$this->manager->emit('\OC\User', 'failedLogin', [$uid]);
 			$this->emitFailedLogin($uid);
 			return false;
 		}
@@ -862,9 +861,10 @@ class Session implements IUserSession, Emitter {
 	 * @param IUser $user The user
 	 * @param String $password The user's password
 	 * @return boolean True if the user can be authenticated, false otherwise
-	 * @throws LoginException if an app canceld the login process or the user is not enabled
+	 * @throws LoginException if an app canceled the login process or the user is not enabled
 	 */
-	protected function loginUser($user, $password) {
+	protected function loginUser(IUser $user = null, $password) {
+		$uid = $user === null ? '' : $user->getUID();
 		return $this->emittingCall(function () use (&$user, &$password) {
 			if ($user === null) {
 				//Cannot extract the uid when $user is null, hence pass null
@@ -893,7 +893,9 @@ class Session implements IUserSession, Emitter {
 			}
 
 			return true;
-		}, ['before' => ['uid' => $user, 'password' => $password], 'after' => ['uid' => $user, 'password' => $password]], 'user', 'login');
+		}, ['before' => ['user' => $user, 'uid' => $uid, 'password' => $password],
+			'after' => ['user' => $user, 'uid' => $uid, 'password' => $password]],
+			'user', 'login');
 	}
 
 	/**
@@ -1069,10 +1071,13 @@ class Session implements IUserSession, Emitter {
 	}
 
 	/**
-	 * This method triggers symfony event for failed login
+	 * This method triggers symfony event for failed login as well as
+	 * emits via the emitter in user manager
 	 * @param string $user
 	 */
 	protected function emitFailedLogin($user) {
+		$this->manager->emit('\OC\User', 'failedLogin', [$user]);
+
 		$loginFailedEvent = new GenericEvent(null, ['user' => $user]);
 		$this->eventDispatcher->dispatch('user.loginfailed', $loginFailedEvent);
 	}

@@ -56,11 +56,11 @@
  *
  */
 
+use OCP\Authentication\Exceptions\AccountCheckException;
 use OCP\Files\NoReadAccessException;
 use OCP\IConfig;
 use OCP\IGroupManager;
 use OCP\IUser;
-use OC\Authentication\Exceptions\AccountCheckException;
 
 class OC_Util {
 	public static $scripts = [];

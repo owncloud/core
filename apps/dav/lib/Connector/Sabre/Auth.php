@@ -31,13 +31,13 @@ namespace OCA\DAV\Connector\Sabre;
 
 use Exception;
 use OC\AppFramework\Http\Request;
-use OC\Authentication\Exceptions\AccountCheckException;
 use OC\Authentication\Exceptions\PasswordLoginForbiddenException;
 use OC\Authentication\TwoFactorAuth\Manager;
 use OC\Authentication\AccountModule\Manager as AccountModuleManager;
 use OC\User\LoginException;
 use OC\User\Session;
 use OCA\DAV\Connector\Sabre\Exception\PasswordLoginForbidden;
+use OCP\Authentication\Exceptions\AccountCheckException;
 use OCP\IRequest;
 use OCP\ISession;
 use Sabre\DAV\Auth\Backend\AbstractBasic;

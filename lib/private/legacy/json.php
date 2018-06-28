@@ -30,7 +30,7 @@
  */
 
 use OC\L10N\L10NString;
-use OC\Authentication\Exceptions\AccountCheckException;
+use OCP\Authentication\Exceptions\AccountCheckException;
 
 /**
  * Class OC_JSON
