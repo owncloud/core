@@ -1,7 +1,7 @@
 @webUI @insulated @disablePreviews
-Feature: manage users
+Feature: add users
   As an admin
-  I want to manage users
+  I want to add users
   So that unauthorised access is impossible
 
   Background:

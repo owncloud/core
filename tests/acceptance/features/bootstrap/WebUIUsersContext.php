@@ -24,7 +24,6 @@ use Behat\Behat\Context\Context;
 use Behat\Behat\Hook\Scope\BeforeScenarioScope;
 use Behat\Gherkin\Node\TableNode;
 use Behat\MinkExtension\Context\RawMinkContext;
-use Behat\Mink\Exception\ExpectationException;
 use Page\LoginPage;
 use Page\UsersPage;
 
@@ -34,7 +33,6 @@ require_once 'bootstrap.php';
  * WebUI Users context.
  */
 class WebUIUsersContext extends RawMinkContext implements Context {
-
 	private $usersPage;
 
 	/**
@@ -42,6 +40,12 @@ class WebUIUsersContext extends RawMinkContext implements Context {
 	 * @var LoginPage
 	 */
 	private $loginPage;
+
+	/**
+	 *
+	 * @var WebUIGeneralContext
+	 */
+	private $webUIGeneralContext;
 
 	/**
 	 *
@@ -53,6 +57,7 @@ class WebUIUsersContext extends RawMinkContext implements Context {
 	 * WebUIUsersContext constructor.
 	 *
 	 * @param UsersPage $usersPage
+	 * @param LoginPage $loginPage
 	 */
 	public function __construct(UsersPage $usersPage, LoginPage $loginPage) {
 		$this->usersPage = $usersPage;
@@ -97,7 +102,7 @@ class WebUIUsersContext extends RawMinkContext implements Context {
 	public function theAdminCreatesAUserUsingTheWebUI(
 		$attemptTo, $username, $password, $email=null, TableNode $groupsTable=null
 	) {
-		if (!is_null($groupsTable)) {
+		if ($groupsTable !== null) {
 			$groups = $groupsTable->getColumn(0);
 			//get rid of the header
 			unset($groups[0]);
@@ -113,7 +118,7 @@ class WebUIUsersContext extends RawMinkContext implements Context {
 		$this->featureContext->addUserToCreatedUsersList(
 			$username, $password, "", $email, $shouldExist
 		);
-		if (is_array($groups)) {
+		if (\is_array($groups)) {
 			foreach ($groups as $group) {
 				$this->featureContext->addGroupToCreatedGroupsList($group);
 			}
@@ -167,13 +172,12 @@ class WebUIUsersContext extends RawMinkContext implements Context {
 	 * @param string $name
 	 *
 	 * @return void
-	 *
-	 * @throws Exception
 	 */
 	public function theGroupNamedShouldNotBeListedOnTheWebUI($name) {
-		if (in_array($name, $this->usersPage->getAllGroups(), true)) {
-			throw new Exception("group '" . $name . "' is listed but should not");
-		}
+		PHPUnit_Framework_Assert::assertFalse(
+			\in_array($name, $this->usersPage->getAllGroups(), true),
+			"group '" . $name . "' is listed but should not be"
+		);
 	}
 
 	/**
@@ -184,20 +188,18 @@ class WebUIUsersContext extends RawMinkContext implements Context {
 	 * @param TableNode $table
 	 *
 	 * @return void
-	 *
-	 * @throws Exception
 	 */
 	public function theseGroupsShouldBeListedOnTheWebUI($shouldOrNot, TableNode $table) {
 		$should = ($shouldOrNot !== "not");
 		$groups = $this->usersPage->getAllGroups();
 		foreach ($table as $row) {
-			if (in_array($row['groupname'], $groups, true) !== $should) {
-				throw new Exception(
-					"group '" . $row['groupname'] .
-					"' is" . ($should ? " not" : "") .
-					" listed but should" . ($should ? "" : " not") . " be"
-				);
-			}
+			PHPUnit_Framework_Assert::assertEquals(
+				\in_array($row['groupname'], $groups, true),
+				$should,
+				"group '" . $row['groupname'] .
+				"' is" . ($should ? " not" : "") .
+				" listed but should" . ($should ? "" : " not") . " be"
+			);
 		}
 	}
 
@@ -245,23 +247,48 @@ class WebUIUsersContext extends RawMinkContext implements Context {
 	}
 
 	/**
+	 * @When the administrator deletes the user :username using the webUI
+	 *
+	 * @param string $username
+	 *
+	 * @return void
+	 */
+	public function theAdministratorDeletesTheUser($username) {
+		$this->usersPage->deleteUser($username);
+		$this->featureContext->rememberThatUserIsNotExpectedToExist($username);
+	}
+
+	/**
+	 *
+	 * @When the deleted user :username tries to login using the password :password using the webUI
+	 *
+	 * @param string $username
+	 *
+	 * @param string $password
+	 *
+	 * @return void
+	 */
+	public function theDeletedUserTriesToLogin($username, $password) {
+		$this->webUIGeneralContext->theUserLogsOutOfTheWebUI();
+		$this->loginPage->loginAs($username, $password, 'LoginPage');
+	}
+
+	/**
 	 * @Then the quota of user :username should be set to :quota on the webUI
 	 *
 	 * @param string $username
 	 * @param string $quota
 	 *
 	 * @return void
-	 *
-	 * @throws ExpectationException
 	 */
 	public function quotaOfUserShouldBeSetToOnTheWebUI($username, $quota) {
 		$setQuota = $this->usersPage->getQuotaOfUser($username);
-		if ($setQuota !== $quota) {
-			throw new ExpectationException(
-				'Users quota is set to "' . $setQuota . '" expected "' .
-				$quota . '"', $this->getSession()
-			);
-		}
+		PHPUnit_Framework_Assert::assertEquals(
+			$quota,
+			$setQuota,
+			'Users quota is set to "' . $setQuota .
+			'" but expected "' . $quota . '"'
+		);
 	}
 
 	/**
