@@ -21,6 +21,7 @@ declare(strict_types=1);
 namespace OC\Lock\Persistent;
 
 use OCP\IUserSession;
+use OCP\Lock\Persistent\ILock;
 
 class LockManager {
 
@@ -38,8 +39,12 @@ class LockManager {
 
 	public function lock(int $storageId, string $internalPath, int $fileId, array $lockInfo) : bool {
 		if ($fileId <= 0) {
-			throw new \InvalidArgumentException();
+			throw new \InvalidArgumentException('Invalid file id');
 		}
+		if (!isset($lockInfo['token'])) {
+			throw new \InvalidArgumentException('No token provided in $lockInfo');
+		}
+
 		// We're making the lock timeout 30 minutes
 		$timeout = 30*60;
 		if (isset($lockInfo['timeout'])) {
@@ -72,14 +77,23 @@ class LockManager {
 			return true;
 		}
 
+		$depth = 0;
+		if (isset($lockInfo['depth'])) {
+			$depth = $lockInfo['depth'];
+		}
+		$scope = ILock::LOCK_SCOPE_EXCLUSIVE;
+		if (isset($lockInfo['scope'])) {
+			$scope = $lockInfo['scope'];
+		}
+
 		$lock = new Lock();
 		$lock->setFileId($fileId);
 		$lock->setCreatedAt(\time());
 		$lock->setTimeout($timeout);
 		$lock->setOwner($owner);
 		$lock->setToken($lockInfo['token']);
-		$lock->setScope($lockInfo['scope']);
-		$lock->setDepth($lockInfo['depth']);
+		$lock->setScope($scope);
+		$lock->setDepth($depth);
 
 		if ($this->userSession->isLoggedIn()) {
 			$user = $this->userSession->getUser();
@@ -100,6 +114,12 @@ class LockManager {
 		return $this->lockMapper->deleteByFileIdAndToken($fileId, $token);
 	}
 
+	/**
+	 * @param int $storageId
+	 * @param string $internalPath
+	 * @param bool $returnChildLocks
+	 * @return ILock[]
+	 */
 	public function getLocks(int $storageId, string $internalPath, bool $returnChildLocks) : array {
 		return $this->lockMapper->getLocksByPath($storageId, $internalPath, $returnChildLocks);
 	}

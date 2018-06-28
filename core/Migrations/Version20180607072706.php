@@ -1,6 +1,7 @@
 <?php
 namespace OC\Migrations;
 
+use Doctrine\DBAL\Platforms\MySqlPlatform;
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\DBAL\Types\Type;
 use OCP\Migration\ISchemaMigration;
@@ -42,6 +43,12 @@ class Version20180607072706 implements ISchemaMigration {
 			'length' => 1024,
 			'comment' => 'uuid for webdav locks - 1024 random chars for WOPI locks'
 		]);
+		$table->addColumn('token_hash', Type::STRING, [
+			'notnull' => true,
+			'length' => 32,
+			'comment' => 'md5(token)'
+		]);
+		// mysql specific
 		$table->addColumn('scope', Type::SMALLINT, [
 			'notnull' => true,
 			'comment' => '1 - exclusive, 2 - shared'
@@ -58,7 +65,7 @@ class Version20180607072706 implements ISchemaMigration {
 		]);
 
 		$table->setPrimaryKey(['id']);
-		$table->addUniqueIndex(['token']);
+		$table->addUniqueIndex(['token_hash']);
 		$table->addForeignKeyConstraint("{$prefix}filecache", ['file_id'], ['fileid']);
 		$table->addForeignKeyConstraint("{$prefix}accounts", ['owner_account_id'], ['id']);
 		// TODO: cascade delete
