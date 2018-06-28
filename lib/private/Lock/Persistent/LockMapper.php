@@ -20,6 +20,7 @@ declare(strict_types=1);
 
 namespace OC\Lock\Persistent;
 
+use OCP\AppFramework\Db\Entity;
 use OCP\AppFramework\Db\Mapper;
 use OCP\IDBConnection;
 
@@ -42,7 +43,7 @@ class LockMapper extends Mapper {
 		$query = $this->db->getQueryBuilder();
 		$pathPattern = $this->db->escapeLikeParameter($internalPath) . '%';
 
-		$query->select(['id', 'owner', 'timeout', 'created_at', 'token', 'scope', 'depth', 'file_id', 'path', 'owner_account_id'])
+		$query->select(['id', 'owner', 'timeout', 'created_at', 'token', 'token', 'scope', 'depth', 'file_id', 'path', 'owner_account_id'])
 			->from($this->getTableName(), 'l')
 			->join('l', 'filecache', 'f', $query->expr()->eq('l.file_id', 'f.fileid'))
 			->where($query->expr()->eq('storage', $query->createNamedParameter($storageId)))
@@ -88,7 +89,7 @@ class LockMapper extends Mapper {
 
 		$rowCount = $query->delete($this->getTableName())
 			->where($query->expr()->eq('file_id', $query->createNamedParameter($fileId)))
-			->andWhere($query->expr()->eq('token', $query->createNamedParameter($token)))
+			->andWhere($query->expr()->eq('token_hash', $query->createNamedParameter(\md5($token))))
 			->execute();
 
 		return $rowCount === 1;
@@ -103,10 +104,30 @@ class LockMapper extends Mapper {
 	public function getLockByToken(string $token) : Lock {
 		$query = $this->db->getQueryBuilder();
 
-		$query->select(['id', 'owner', 'timeout', 'created_at', 'token', 'scope', 'depth', 'file_id', 'owner_account_id'])
+		$query->select(['id', 'owner', 'timeout', 'created_at', 'token', 'token_hash', 'scope', 'depth', 'file_id', 'owner_account_id'])
 			->from($this->getTableName(), 'l')
-			->where($query->expr()->eq('token', $query->createNamedParameter($token)));
+			->where($query->expr()->eq('token_hash', $query->createNamedParameter(\md5($token))));
 
 		return $this->findEntity($query->getSQL(), $query->getParameters());
+	}
+
+	public function insert(Entity $entity) {
+		if (!$entity instanceof Lock) {
+			throw new \InvalidArgumentException('Wrong entity type used');
+		}
+		if (\md5($entity->getToken()) !== $entity->getTokenHash()) {
+			throw new \InvalidArgumentException('token_hash does not match the token of the lock');
+		}
+		return parent::insert($entity);
+	}
+
+	public function update(Entity $entity) {
+		if (!$entity instanceof Lock) {
+			throw new \InvalidArgumentException('Wrong entity type used');
+		}
+		if (\md5($entity->getToken()) !== $entity->getTokenHash()) {
+			throw new \InvalidArgumentException('token_hash does not match the token of the lock');
+		}
+		return parent::update($entity);
 	}
 }

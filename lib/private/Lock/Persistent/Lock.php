@@ -53,6 +53,8 @@ class Lock extends Entity implements ILock {
 	protected $createdAt;
 	/** @var string - uuid in WebDAV */
 	protected $token;
+	/** @var string - md5 of token */
+	protected $tokenHash;
 	/** @var int - LOCK_SCOPE_EXCLUSIVE or LOCK_SCOPE_SHARED */
 	protected $scope;
 	/** @var int: 0, 1 or infinite */
@@ -74,5 +76,13 @@ class Lock extends Entity implements ILock {
 		$this->addType('scope', 'integer');
 		$this->addType('depth', 'integer');
 		$this->addType('ownerAccountId', 'integer');
+	}
+
+	/**
+	 * @param $token
+	 */
+	public function setToken($token) {
+		parent::setter('token', [$token]);
+		parent::setter('tokenHash', [\md5($token)]);
 	}
 }
