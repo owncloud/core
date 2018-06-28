@@ -51,6 +51,19 @@ class Capabilities implements ICapability {
 	}
 
 	/**
+	 * Returns whether the currently logged in user is an administrator
+	 *
+	 * @return bool true if the user is an admin
+	 */
+	private function isAdmin() {
+		$user = $this->userSession->getUser();
+		if ($user !== null) {
+			return $this->groupManager->isAdmin($user->getUID());
+		}
+		return false;
+	}
+
+	/**
 	 * Return this classes capabilities
 	 *
 	 * @return array
@@ -110,6 +123,14 @@ class Capabilities implements ICapability {
 				$res['can_share'] = false;
 			} else {
 				$res['can_share'] = true;
+			}
+
+			if ($this->isAdmin()) {
+				$res['exclude_groups_from_sharing'] = $this->config->getAppValue('core', 'shareapi_exclude_groups', 'yes') === 'yes';
+
+				if ($res['exclude_groups_from_sharing']) {
+					$res['groups_excluded_from_sharing'] = \json_decode($this->config->getAppValue('core', 'shareapi_exclude_groups_list', '[]'), true);
+				}
 			}
 
 			$user_enumeration = [];
