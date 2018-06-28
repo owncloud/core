@@ -31,7 +31,6 @@ class WatcherTest extends \Test\TestCase {
 	protected function tearDown() {
 		foreach ($this->storages as $storage) {
 			$cache = $storage->getCache();
-			$ids = $cache->getAll();
 			$cache->clear();
 		}
 

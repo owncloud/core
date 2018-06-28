@@ -750,21 +750,6 @@ class Cache implements ICache {
 	}
 
 	/**
-	 * get all file ids on the files on the storage
-	 *
-	 * @return int[]
-	 */
-	public function getAll() {
-		$sql = 'SELECT `fileid` FROM `*PREFIX*filecache` WHERE `storage` = ?';
-		$result = $this->connection->executeQuery($sql, [$this->getNumericStorageId()]);
-		$ids = [];
-		while ($row = $result->fetch()) {
-			$ids[] = $row['fileid'];
-		}
-		return $ids;
-	}
-
-	/**
 	 * find a folder in the cache which has not been fully scanned
 	 *
 	 * If multiple incomplete folders are in the cache, the one with the highest id will be returned,
@@ -799,33 +784,6 @@ class Cache implements ICache {
 				return '';
 			}
 			return $row['path'];
-		} else {
-			return null;
-		}
-	}
-
-	/**
-	 * get the storage id of the storage for a file and the internal path of the file
-	 * unlike getPathById this does not limit the search to files on this storage and
-	 * instead does a global search in the cache table
-	 *
-	 * @param int $id
-	 * @deprecated use getPathById() instead
-	 * @return array first element holding the storage id, second the path
-	 */
-	public static function getById($id) {
-		$connection = \OC::$server->getDatabaseConnection();
-		$sql = 'SELECT `storage`, `path` FROM `*PREFIX*filecache` WHERE `fileid` = ?';
-		$result = $connection->executeQuery($sql, [$id]);
-		if ($row = $result->fetch()) {
-			$numericId = $row['storage'];
-			$path = $row['path'];
-		} else {
-			return null;
-		}
-
-		if ($id = Storage::getStorageId($numericId)) {
-			return [$id, $path];
 		} else {
 			return null;
 		}
