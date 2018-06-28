@@ -378,24 +378,6 @@ class CapabilitiesTest extends \Test\TestCase {
 		$this->assertTrue($result['share_with_membership_groups_only']);
 	}
 
-	public function testNoExcludeGroupsFromSharingWhenNotAdmin() {
-		$map = [
-			['core', 'shareapi_enabled', 'yes', 'yes'],
-			['core', 'shareapi_exclude_groups', 'yes', 'no'],
-		];
-		$result = $this->getResults($map);
-		$this->assertArrayNotHasKey('exclude_groups_from_sharing', $result);
-	}
-
-	public function testExcludeGroupsFromSharingWhenNotAdmin() {
-		$map = [
-			['core', 'shareapi_enabled', 'yes', 'yes'],
-			['core', 'shareapi_exclude_groups', 'yes', 'yes'],
-		];
-		$result = $this->getResults($map);
-		$this->assertArrayNotHasKey('exclude_groups_from_sharing', $result);
-	}
-
 	public function testNoUserEnumeration() {
 		$map = [
 			['core', 'shareapi_enabled', 'yes', 'yes'],
