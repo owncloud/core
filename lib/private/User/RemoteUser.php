@@ -52,6 +52,19 @@ class RemoteUser implements IUser {
 	/**
 	 * @inheritdoc
 	 */
+	public function getUserName() {
+		return $this->getUID();
+	}
+
+	/**
+	 * @inheritdoc
+	 */
+	public function setUserName($userName) {
+	}
+
+	/**
+	 * @inheritdoc
+	 */
 	public function getDisplayName() {
 		return $this->userId;
 	}
