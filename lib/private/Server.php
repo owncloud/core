@@ -632,7 +632,8 @@ class Server extends ServerContainer implements IServerContainer, IServiceLoader
 				$manager->registerProvider(new \OC\Files\External\ConfigAdapter(
 					$c->query('AllConfig'),
 					$c->query('UserStoragesService'),
-					$c->query('UserGlobalStoragesService')
+					$c->query('UserGlobalStoragesService'),
+					$c->getSession()
 				));
 			}
 

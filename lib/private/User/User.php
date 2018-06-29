@@ -42,6 +42,7 @@ use OCP\IUser;
 use OCP\IConfig;
 use OCP\IUserBackend;
 use OCP\IUserSession;
+use OCP\PreConditionNotMetException;
 use OCP\User\IChangePasswordBackend;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\EventDispatcher\GenericEvent;
@@ -120,6 +121,35 @@ class User implements IUser {
 	 */
 	public function getUID() {
 		return $this->account->getUserId();
+	}
+
+	/**
+	 * get the user name
+	 * TODO move username to account table
+	 *
+	 * @return string
+	 */
+	public function getUserName() {
+		$uid = $this->getUID();
+		return $this->config->getUserValue($uid, 'core', 'username', $uid);
+	}
+
+	/**
+	 * set the user name
+	 * TODO move username to account table
+	 *
+	 * @param string $userName
+	 */
+	public function setUserName($userName) {
+		$currentUserName = $this->getUserName();
+		if ($userName !== $currentUserName) {
+			$uid = $this->getUID();
+			try {
+				$this->config->setUserValue($uid, 'core', 'username', $userName);
+			} catch (PreConditionNotMetException $e) {
+				// ignore, because precondition is empty
+			}
+		}
 	}
 
 	/**
