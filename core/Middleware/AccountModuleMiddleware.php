@@ -23,12 +23,12 @@ namespace OC\Core\Middleware;
 
 use Exception;
 use OC\Authentication\AccountModule\Manager;
-use OC\Authentication\Exceptions\AccountCheckException;
 use OC\Core\Controller\LoginController;
 use OCP\AppFramework\Controller;
 use OCP\AppFramework\Http;
 use OCP\AppFramework\Middleware;
 use OCP\AppFramework\Utility\IControllerMethodReflector;
+use OCP\Authentication\Exceptions\AccountCheckException;
 use OCP\Authentication\IAccountModuleController;
 use OCP\ILogger;
 use OCP\IUserSession;

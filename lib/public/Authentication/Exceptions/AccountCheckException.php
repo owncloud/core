@@ -19,11 +19,17 @@
  *
  */
 
-namespace OC\Authentication\Exceptions;
+namespace OCP\Authentication\Exceptions;
 
 use Exception;
 use OCP\AppFramework\Http\RedirectResponse;
 
+/**
+ * Class AccountCheckException
+ *
+ * @package OCP\Authentication\Exceptions
+ * @since 10.0.9
+ */
 class AccountCheckException extends Exception {
 
 	/**
@@ -38,14 +44,19 @@ class AccountCheckException extends Exception {
 	 * @param string $message
 	 * @param int $code
 	 * @param \Throwable|null $previous
+	 * @since 10.0.9
 	 */
-	public function __construct(RedirectResponse $redirectResponse, $message = '', $code = 0, \Throwable $previous = null) {
+	public function __construct(RedirectResponse $redirectResponse,
+								$message = '',
+								$code = 0,
+								\Throwable $previous = null) {
 		parent::__construct($message, $code, $previous);
 		$this->redirectResponse = $redirectResponse;
 	}
 
 	/**
 	 * @return RedirectResponse
+	 * @since 10.0.9
 	 */
 	public function getRedirectResponse() {
 		return $this->redirectResponse;
