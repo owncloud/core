@@ -44,6 +44,7 @@ class AccountCheckException extends Exception {
 	 * @param string $message
 	 * @param int $code
 	 * @param \Throwable|null $previous
+	 * @since 10.0.9
 	 */
 	public function __construct(RedirectResponse $redirectResponse,
 								$message = '',
