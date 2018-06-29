@@ -32,7 +32,6 @@ use OCP\IGroupManager;
 use OCP\IUserManager;
 use OCP\IConfig;
 use OCP\IUser;
-use OCP\Defaults;
 
 class NotifierTest extends \Test\TestCase {
 
@@ -56,9 +55,6 @@ class NotifierTest extends \Test\TestCase {
 	/** @var IConfig */
 	private $config;
 
-	/** @var Defaults */
-	private $defaults;
-
 	public function setUp() {
 		parent::setUp();
 
@@ -81,18 +77,13 @@ class NotifierTest extends \Test\TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->defaults = $this->getMockBuilder(Defaults::class)
-			->disableOriginalConstructor()
-			->getMock();
-
 		$this->notifier = new Notifier(
 			\OC::$server->getL10NFactory(),
 			$this->notificationManager,
 			$this->shareManager,
 			$this->groupManager,
 			$this->userManager,
-			$this->config,
-			$this->defaults
+			$this->config
 		);
 	}
 

@@ -31,8 +31,7 @@ use OCP\Defaults;
 $manager = \OC::$server->getNotificationManager();
 $manager->registerNotifier(function () {
 	return new Notifier(
-		\OC::$server->getL10NFactory(),
-		new Defaults()
+		\OC::$server->getL10NFactory()
 	);
 }, function () {
 	$l = \OC::$server->getL10N('files_sharing');
