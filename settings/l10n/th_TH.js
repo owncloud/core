@@ -258,7 +258,7 @@ OC.L10N.register(
     "Change password" : "เปลี่ยนรหัสผ่าน",
     "Language" : "ภาษา",
     "Help translate" : "มาช่วยกันแปลสิ!",
-    "You are using %s" : "คุณกำลังใช้ %s",
+    "You are using %s" : "คุณใช้พื้นที่จัดเก็บไปแล้ว %s",
     "You are using %s of %s (%s %%)" : "คุณใช้พื้นที่ไปแล้ว %s จากทั้งหมด %s (%s %%)",
     "Developed by the {communityopen}ownCloud community{linkclose}, the {githubopen}source code{linkclose} is licensed under the {licenseopen}<abbr title=\"Affero General Public License\">AGPL</abbr>{linkclose}." : "พัฒนาโดย {communityopen}ownCloud{linkclose} {githubopen}ต้นฉบับจาก Github{linkclose} อยู่ภายใต้สัญญา {licenseopen}<abbr title=\"Affero General Public License\">AGPL</abbr>{linkclose}",
     "Sessions" : "สถานที่ที่คุณเข้าสู่ระบบ",
