@@ -673,8 +673,6 @@ MountConfigListView.prototype = _.extend({
 		// into the data-configurations attribute of the select
 		this._allBackends = this.$el.find('.selectBackend').data('configurations');
 		this._allAuthMechanisms = this.$el.find('#addMountPoint .authentication').data('mechanisms');
-
-		this._initEvents();
 	},
 
 	/**
@@ -942,10 +940,11 @@ MountConfigListView.prototype = _.extend({
 	 */
 	loadStorages: function() {
 		var self = this;
+		var ajaxRequests = [];
 
 		if (this._isPersonal) {
 			// load userglobal storages
-			$.ajax({
+			var personalRequest = $.ajax({
 				type: 'GET',
 				url: OC.generateUrl('apps/files_external/userglobalstorages'),
 				data: {'testOnly' : true},
@@ -983,14 +982,14 @@ MountConfigListView.prototype = _.extend({
 						}
 					});
 					onCompletion.resolve();
-					$("#body-settings").trigger("mountConfigLoaded");
 				}
 			});
+			ajaxRequests.push(personalRequest);
 		}
 
 		var url = this._storageConfigClass.prototype._url;
 
-		$.ajax({
+		var globalRequest = $.ajax({
 			type: 'GET',
 			url: OC.generateUrl(url),
 			contentType: 'application/json',
@@ -1004,8 +1003,14 @@ MountConfigListView.prototype = _.extend({
 					self.recheckStorageConfig($tr);
 				});
 				onCompletion.resolve();
-				$("#body-settings").trigger("mountConfigLoaded");
 			}
+		});
+		ajaxRequests.push(globalRequest);
+
+		$.when.apply($, ajaxRequests).always(function() {
+			// trigger the mountConfigLoaded event when both requests (or one if
+			// it's the only one) finish regardless of success
+			$('#body-settings').trigger('mountConfigLoaded');
 		});
 	},
 
@@ -1347,6 +1352,11 @@ $(document).ready(function() {
 	var mountConfigListView = new MountConfigListView($('#externalStorage'), {
 		encryptionEnabled: encryptionEnabled,
 		allowUserMountSharing: (parseInt($('#allowUserMountSharing').val(), 10) === 1)
+	});
+
+	// init the mountConfigListView events after the storages are loaded
+	$('#body-settings').on('mountConfigLoaded', function() {
+		mountConfigListView._initEvents();
 	});
 	mountConfigListView.loadStorages();
 
