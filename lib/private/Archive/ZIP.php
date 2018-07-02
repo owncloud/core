@@ -30,7 +30,7 @@
 
 namespace OC\Archive;
 
-class ZIP extends Archive{
+class ZIP extends Archive {
 	/**
 	 * @var \ZipArchive zip
 	 */
@@ -40,11 +40,11 @@ class ZIP extends Archive{
 	/**
 	 * @param string $source
 	 */
-	function __construct($source) {
+	public function __construct($source) {
 		$this->path=$source;
 		$this->zip=new \ZipArchive();
-		if($this->zip->open($source, \ZipArchive::CREATE)) {
-		}else{
+		if ($this->zip->open($source, \ZipArchive::CREATE)) {
+		} else {
 			\OCP\Util::writeLog('files_archive', 'Error while opening archive '.$source, \OCP\Util::WARN);
 		}
 	}
@@ -53,7 +53,7 @@ class ZIP extends Archive{
 	 * @param string $path
 	 * @return bool
 	 */
-	function addFolder($path) {
+	public function addFolder($path) {
 		return $this->zip->addEmptyDir($path);
 	}
 	/**
@@ -62,13 +62,13 @@ class ZIP extends Archive{
 	 * @param string $source either a local file or string data
 	 * @return bool
 	 */
-	function addFile($path, $source='') {
-		if($source and $source[0]=='/' and file_exists($source)) {
+	public function addFile($path, $source='') {
+		if ($source and $source[0]=='/' and \file_exists($source)) {
 			$result=$this->zip->addFile($source, $path);
-		}else{
+		} else {
 			$result=$this->zip->addFromString($path, $source);
 		}
-		if($result) {
+		if ($result) {
 			$this->zip->close();//close and reopen to save the zip
 			$this->zip->open($this->path);
 		}
@@ -80,7 +80,7 @@ class ZIP extends Archive{
 	 * @param string $dest
 	 * @return boolean|null
 	 */
-	function rename($source, $dest) {
+	public function rename($source, $dest) {
 		$source=$this->stripPath($source);
 		$dest=$this->stripPath($dest);
 		$this->zip->renameName($source, $dest);
@@ -90,7 +90,7 @@ class ZIP extends Archive{
 	 * @param string $path
 	 * @return int
 	 */
-	function filesize($path) {
+	public function filesize($path) {
 		$stat=$this->zip->statName($path);
 		return $stat['size'];
 	}
@@ -99,22 +99,22 @@ class ZIP extends Archive{
 	 * @param string $path
 	 * @return int
 	 */
-	function mtime($path) {
-		return filemtime($this->path);
+	public function mtime($path) {
+		return \filemtime($this->path);
 	}
 	/**
 	 * get the files in a folder
 	 * @param string $path
 	 * @return array
 	 */
-	function getFolder($path) {
+	public function getFolder($path) {
 		$files=$this->getFiles();
 		$folderContent= [];
-		$pathLength=strlen($path);
-		foreach($files as $file) {
-			if(substr($file, 0, $pathLength)==$path and $file!=$path) {
-				if(strrpos(substr($file, 0, -1), '/')<=$pathLength) {
-					$folderContent[]=substr($file, $pathLength);
+		$pathLength=\strlen($path);
+		foreach ($files as $file) {
+			if (\substr($file, 0, $pathLength)==$path and $file!=$path) {
+				if (\strrpos(\substr($file, 0, -1), '/')<=$pathLength) {
+					$folderContent[]=\substr($file, $pathLength);
 				}
 			}
 		}
@@ -124,10 +124,10 @@ class ZIP extends Archive{
 	 * get all files in the archive
 	 * @return array
 	 */
-	function getFiles() {
+	public function getFiles() {
 		$fileCount=$this->zip->numFiles;
 		$files= [];
-		for($i=0;$i<$fileCount;$i++) {
+		for ($i=0;$i<$fileCount;$i++) {
 			$files[]=$this->zip->getNameIndex($i);
 		}
 		return $files;
@@ -137,7 +137,7 @@ class ZIP extends Archive{
 	 * @param string $path
 	 * @return string
 	 */
-	function getFile($path) {
+	public function getFile($path) {
 		return $this->zip->getFromName($path);
 	}
 	/**
@@ -146,16 +146,16 @@ class ZIP extends Archive{
 	 * @param string $dest
 	 * @return boolean|null
 	 */
-	function extractFile($path, $dest) {
+	public function extractFile($path, $dest) {
 		$fp = $this->zip->getStream($path);
-		file_put_contents($dest, $fp);
+		\file_put_contents($dest, $fp);
 	}
 	/**
 	 * extract the archive
 	 * @param string $dest
 	 * @return bool
 	 */
-	function extract($dest) {
+	public function extract($dest) {
 		return $this->zip->extractTo($dest);
 	}
 	/**
@@ -163,7 +163,7 @@ class ZIP extends Archive{
 	 * @param string $path
 	 * @return bool
 	 */
-	function fileExists($path) {
+	public function fileExists($path) {
 		return ($this->zip->locateName($path)!==false) or ($this->zip->locateName($path.'/')!==false);
 	}
 	/**
@@ -171,10 +171,10 @@ class ZIP extends Archive{
 	 * @param string $path
 	 * @return bool
 	 */
-	function remove($path) {
-		if($this->fileExists($path.'/')) {
+	public function remove($path) {
+		if ($this->fileExists($path.'/')) {
 			return $this->zip->deleteName($path.'/');
-		}else{
+		} else {
 			return $this->zip->deleteName($path);
 		}
 	}
@@ -184,25 +184,25 @@ class ZIP extends Archive{
 	 * @param string $mode
 	 * @return resource
 	 */
-	function getStream($path, $mode) {
-		if($mode=='r' or $mode=='rb') {
+	public function getStream($path, $mode) {
+		if ($mode=='r' or $mode=='rb') {
 			return $this->zip->getStream($path);
 		} else {
 			//since we can't directly get a writable stream,
 			//make a temp copy of the file and put it back
 			//in the archive when the stream is closed
-			if(strrpos($path, '.')!==false) {
-				$ext=substr($path, strrpos($path, '.'));
-			}else{
+			if (\strrpos($path, '.')!==false) {
+				$ext=\substr($path, \strrpos($path, '.'));
+			} else {
 				$ext='';
 			}
 			$tmpFile=\OCP\Files::tmpFile($ext);
 			\OC\Files\Stream\Close::registerCallback($tmpFile, [$this, 'writeBack']);
-			if($this->fileExists($path)) {
+			if ($this->fileExists($path)) {
 				$this->extractFile($path, $tmpFile);
 			}
 			self::$tempFiles[$tmpFile]=$path;
-			return fopen('close://'.$tmpFile, $mode);
+			return \fopen('close://'.$tmpFile, $mode);
 		}
 	}
 
@@ -210,10 +210,10 @@ class ZIP extends Archive{
 	/**
 	 * write back temporary files
 	 */
-	function writeBack($tmpFile) {
-		if(isset(self::$tempFiles[$tmpFile])) {
+	public function writeBack($tmpFile) {
+		if (isset(self::$tempFiles[$tmpFile])) {
 			$this->addFile(self::$tempFiles[$tmpFile], $tmpFile);
-			unlink($tmpFile);
+			\unlink($tmpFile);
 		}
 	}
 
@@ -222,9 +222,9 @@ class ZIP extends Archive{
 	 * @return string
 	 */
 	private function stripPath($path) {
-		if(!$path || $path[0]=='/') {
-			return substr($path, 1);
-		}else{
+		if (!$path || $path[0]=='/') {
+			return \substr($path, 1);
+		} else {
 			return $path;
 		}
 	}

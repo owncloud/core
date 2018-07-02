@@ -52,7 +52,7 @@ class ListCertificates extends Base {
 	protected function execute(InputInterface $input, OutputInterface $output) {
 		$outputType = $input->getOption('output');
 		if ($outputType === self::OUTPUT_FORMAT_JSON || $outputType === self::OUTPUT_FORMAT_JSON_PRETTY) {
-			$certificates = array_map(function (ICertificate $certificate) {
+			$certificates = \array_map(function (ICertificate $certificate) {
 				return [
 					'name' => $certificate->getName(),
 					'common_name' => $certificate->getCommonName(),
@@ -64,9 +64,9 @@ class ListCertificates extends Base {
 				];
 			}, $this->certificateManager->listCertificates());
 			if ($outputType === self::OUTPUT_FORMAT_JSON) {
-				$output->writeln(json_encode(array_values($certificates)));
+				$output->writeln(\json_encode(\array_values($certificates)));
 			} else {
-				$output->writeln(json_encode(array_values($certificates), JSON_PRETTY_PRINT));
+				$output->writeln(\json_encode(\array_values($certificates), JSON_PRETTY_PRINT));
 			}
 		} else {
 			$table = new Table($output);
@@ -78,7 +78,7 @@ class ListCertificates extends Base {
 				'Issued By'
 			]);
 
-			$rows = array_map(function (ICertificate $certificate) {
+			$rows = \array_map(function (ICertificate $certificate) {
 				return [
 					$certificate->getName(),
 					$certificate->getCommonName(),

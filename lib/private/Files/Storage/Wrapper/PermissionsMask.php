@@ -78,7 +78,7 @@ class PermissionsMask extends Wrapper {
 	}
 
 	private function isPartFile($path) {
-		return pathinfo($path, PATHINFO_EXTENSION) === 'part';
+		return \pathinfo($path, PATHINFO_EXTENSION) === 'part';
 	}
 
 	public function rename($path1, $path2) {

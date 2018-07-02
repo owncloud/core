@@ -28,7 +28,7 @@ class StorageNoRecursiveCopy extends Temporary {
 		if ($this->is_dir($path1)) {
 			return false;
 		}
-		return copy($this->getSourcePath($path1), $this->getSourcePath($path2));
+		return \copy($this->getSourcePath($path1), $this->getSourcePath($path2));
 	}
 }
 
@@ -44,10 +44,8 @@ class CopyDirectoryStorage extends StorageNoRecursiveCopy {
  * @package Test\Files\Storage
  */
 class CopyDirectoryTest extends Storage {
-
 	protected function setUp() {
 		parent::setUp();
 		$this->instance = new CopyDirectoryStorage([]);
 	}
 }
-

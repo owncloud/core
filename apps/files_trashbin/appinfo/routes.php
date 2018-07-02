@@ -35,4 +35,3 @@ $this->create('files_trashbin_ajax_list', 'ajax/list.php')
 	->actionInclude('files_trashbin/ajax/list.php');
 $this->create('files_trashbin_ajax_undelete', 'ajax/undelete.php')
 	->actionInclude('files_trashbin/ajax/undelete.php');
-

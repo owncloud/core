@@ -30,7 +30,6 @@ use OCP\Files\FileContentNotAllowedException;
 use OCP\Files\ForbiddenException;
 
 class TestDoubleFileView extends \OC\Files\View {
-
 	private $updatables;
 	private $deletables;
 	private $canRename;
@@ -61,7 +60,6 @@ class TestDoubleFileView extends \OC\Files\View {
 		return $path;
 	}
 }
-
 
 /**
  * @group DB
@@ -359,13 +357,13 @@ class DirectoryTest extends \Test\TestCase {
 		$this->moveTest($source, $destination, $updatables, $deletables);
 	}
 
-	function moveFailedInvalidCharsProvider() {
+	public function moveFailedInvalidCharsProvider() {
 		return [
 			['a/b', 'a/*', ['a' => true, 'a/b' => true, 'a/c*' => false], []],
 		];
 	}
 
-	function moveFailedProvider() {
+	public function moveFailedProvider() {
 		return [
 			['a/b', 'a/c', ['a' => false, 'a/b' => false, 'a/c' => false], []],
 			['a/b', 'b/b', ['a' => false, 'a/b' => false, 'b' => false, 'b/b' => false], []],
@@ -376,7 +374,7 @@ class DirectoryTest extends \Test\TestCase {
 		];
 	}
 
-	function moveSuccessProvider() {
+	public function moveSuccessProvider() {
 		return [
 			['a/b', 'b/b', ['a' => true, 'a/b' => true, 'b' => true, 'b/b' => false], ['a/b' => true]],
 			// older files with special chars can still be renamed to valid names
@@ -393,7 +391,7 @@ class DirectoryTest extends \Test\TestCase {
 		$view = new TestDoubleFileView($updatables, $deletables);
 
 		$sourceInfo = new FileInfo($source, null, null, [], null);
-		$targetInfo = new FileInfo(dirname($destination), null, null, [], null);
+		$targetInfo = new FileInfo(\dirname($destination), null, null, [], null);
 
 		$sourceNode = new Directory($view, $sourceInfo);
 		$targetNode = $this->getMockBuilder(Directory::class)
@@ -401,9 +399,9 @@ class DirectoryTest extends \Test\TestCase {
 			->setConstructorArgs([$view, $targetInfo])
 			->getMock();
 		$targetNode->expects($this->any())->method('childExists')
-			->with(basename($destination))
+			->with(\basename($destination))
 			->willReturn(false);
-		$this->assertTrue($targetNode->moveInto(basename($destination), $source, $sourceNode));
+		$this->assertTrue($targetNode->moveInto(\basename($destination), $source, $sourceNode));
 	}
 
 	/**
@@ -419,7 +417,7 @@ class DirectoryTest extends \Test\TestCase {
 		$view = new TestDoubleFileView($updatables, $deletables);
 
 		$sourceInfo = new FileInfo($source, null, null, [], null);
-		$targetInfo = new FileInfo(dirname($destination), null, null, [], null);
+		$targetInfo = new FileInfo(\dirname($destination), null, null, [], null);
 
 		$sourceNode = new Directory($view, $sourceInfo);
 		$targetNode = $this->getMockBuilder(Directory::class)
@@ -427,10 +425,10 @@ class DirectoryTest extends \Test\TestCase {
 			->setConstructorArgs([$view, $targetInfo])
 			->getMock();
 		$targetNode->expects($this->once())->method('childExists')
-			->with(basename($destination))
+			->with(\basename($destination))
 			->willReturn(true);
 
-		$targetNode->moveInto(basename($destination), $source, $sourceNode);
+		$targetNode->moveInto(\basename($destination), $source, $sourceNode);
 	}
 
 	/**

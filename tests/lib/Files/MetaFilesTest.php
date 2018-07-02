@@ -19,9 +19,7 @@
  *
  */
 
-
 namespace Test\Files;
-
 
 use OC\Files\Meta\MetaFileIdNode;
 use OC\Files\Meta\MetaFileVersionNode;
@@ -111,7 +109,7 @@ class MetaFilesTest extends TestCase {
 		$this->assertEquals($file, $metaNodeOfFile->getContentDispositionFileName());
 		$this->assertEquals('text/plain', $metaNodeOfFile->getMimetype());
 		$this->assertInternalType('string', $metaNodeOfFile->getEtag());
-		$this->assertTrue(strlen($metaNodeOfFile->getEtag()) > 0);
+		$this->assertTrue(\strlen($metaNodeOfFile->getEtag()) > 0);
 		$this->assertInstanceOf(IMountPoint::class, $metaNodeOfFile->getMountPoint());
 		$thumbnail = $metaNodeOfFile->getThumbnail([]);
 		$this->assertInstanceOf(IImage::class, $thumbnail);
@@ -125,6 +123,5 @@ class MetaFilesTest extends TestCase {
 		$this->assertEquals('1234567890', $target->getContent());
 		$metaNodeOfFile->copy($fileName);
 		$this->assertEquals('1234', $target->getContent());
-
 	}
 }

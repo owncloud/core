@@ -21,14 +21,11 @@
  *
  */
 
-
 namespace Test\AppFramework\Http;
 
 use OC\AppFramework\Http;
 
-
 class HttpTest extends \Test\TestCase {
-
 	private $server;
 
 	/**
@@ -36,26 +33,23 @@ class HttpTest extends \Test\TestCase {
 	 */
 	private $http;
 
-	protected function setUp(){
+	protected function setUp() {
 		parent::setUp();
 
 		$this->server = [];
 		$this->http = new Http($this->server);
 	}
 
-
 	public function testProtocol() {
 		$header = $this->http->getStatusHeader(Http::STATUS_TEMPORARY_REDIRECT);
 		$this->assertEquals('HTTP/1.1 307 Temporary Redirect', $header);
 	}
-
 
 	public function testProtocol10() {
 		$this->http = new Http($this->server, 'HTTP/1.0');
 		$header = $this->http->getStatusHeader(Http::STATUS_OK);
 		$this->assertEquals('HTTP/1.0 200 OK', $header);
 	}
-
 
 	public function testEtagMatchReturnsNotModified() {
 		$http = new Http(['HTTP_IF_NONE_MATCH' => 'hi']);
@@ -64,14 +58,12 @@ class HttpTest extends \Test\TestCase {
 		$this->assertEquals('HTTP/1.1 304 Not Modified', $header);
 	}
 
-
 	public function testQuotedEtagMatchReturnsNotModified() {
 		$http = new Http(['HTTP_IF_NONE_MATCH' => '"hi"']);
 
 		$header = $http->getStatusHeader(Http::STATUS_OK, null, 'hi');
 		$this->assertEquals('HTTP/1.1 304 Not Modified', $header);
 	}
-
 
 	public function testLastModifiedMatchReturnsNotModified() {
 		$dateTime = new \DateTime(null, new \DateTimeZone('GMT'));
@@ -86,8 +78,6 @@ class HttpTest extends \Test\TestCase {
 		$this->assertEquals('HTTP/1.1 304 Not Modified', $header);
 	}
 
-
-
 	public function testTempRedirectBecomesFoundInHttp10() {
 		$http = new Http([], 'HTTP/1.0');
 
@@ -95,5 +85,4 @@ class HttpTest extends \Test\TestCase {
 		$this->assertEquals('HTTP/1.0 302 Found', $header);
 	}
 	// TODO: write unittests for http codes
-
 }

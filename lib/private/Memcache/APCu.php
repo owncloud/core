@@ -36,7 +36,7 @@ class APCu extends Cache implements IMemcache {
 	use CADTrait;
 
 	public function get($key) {
-		$result = apcu_fetch($this->getPrefix() . $key, $success);
+		$result = \apcu_fetch($this->getPrefix() . $key, $success);
 		if (!$success) {
 			return null;
 		}
@@ -44,26 +44,26 @@ class APCu extends Cache implements IMemcache {
 	}
 
 	public function set($key, $value, $ttl = 0) {
-		return apcu_store($this->getPrefix() . $key, $value, $ttl);
+		return \apcu_store($this->getPrefix() . $key, $value, $ttl);
 	}
 
 	public function hasKey($key) {
-		return apcu_exists($this->getPrefix() . $key);
+		return \apcu_exists($this->getPrefix() . $key);
 	}
 
 	public function remove($key) {
-		return apcu_delete($this->getPrefix() . $key);
+		return \apcu_delete($this->getPrefix() . $key);
 	}
 
 	public function clear($prefix = '') {
 		$ns = $this->getPrefix() . $prefix;
-		$ns = preg_quote($ns, '/');
-		if(class_exists('\APCIterator')) {
+		$ns = \preg_quote($ns, '/');
+		if (\class_exists('\APCIterator')) {
 			$iter = new \APCIterator('user', '/^' . $ns . '/', APC_ITER_KEY);
 		} else {
 			$iter = new \APCUIterator('/^' . $ns . '/', APC_ITER_KEY);
 		}
-		return apcu_delete($iter);
+		return \apcu_delete($iter);
 	}
 
 	/**
@@ -75,7 +75,7 @@ class APCu extends Cache implements IMemcache {
 	 * @return bool
 	 */
 	public function add($key, $value, $ttl = 0) {
-		return apcu_add($this->getPrefix() . $key, $value, $ttl);
+		return \apcu_add($this->getPrefix() . $key, $value, $ttl);
 	}
 
 	/**
@@ -87,7 +87,7 @@ class APCu extends Cache implements IMemcache {
 	 */
 	public function inc($key, $step = 1) {
 		$this->add($key, 0);
-		return apcu_inc($this->getPrefix() . $key, $step);
+		return \apcu_inc($this->getPrefix() . $key, $step);
 	}
 
 	/**
@@ -98,7 +98,7 @@ class APCu extends Cache implements IMemcache {
 	 * @return int | bool
 	 */
 	public function dec($key, $step = 1) {
-		return apcu_dec($this->getPrefix() . $key, $step);
+		return \apcu_dec($this->getPrefix() . $key, $step);
 	}
 
 	/**
@@ -111,8 +111,8 @@ class APCu extends Cache implements IMemcache {
 	 */
 	public function cas($key, $old, $new) {
 		// apc only does cas for ints
-		if (is_int($old) and is_int($new)) {
-			return apcu_cas($this->getPrefix() . $key, $old, $new);
+		if (\is_int($old) and \is_int($new)) {
+			return \apcu_cas($this->getPrefix() . $key, $old, $new);
 		} else {
 			return $this->casEmulated($key, $old, $new);
 		}
@@ -121,16 +121,16 @@ class APCu extends Cache implements IMemcache {
 	/**
 	 * @return bool
 	 */
-	static public function isAvailable() {
-		if (!extension_loaded('apcu')) {
+	public static function isAvailable() {
+		if (!\extension_loaded('apcu')) {
 			return false;
 		} elseif (!\OC::$server->getIniWrapper()->getBool('apc.enabled')) {
 			return false;
 		} elseif (!\OC::$server->getIniWrapper()->getBool('apc.enable_cli') && \OC::$CLI) {
 			return false;
 		} elseif (
-				version_compare(phpversion('apc'), '4.0.6') === -1 &&
-				version_compare(phpversion('apcu'), '5.1.0') === -1
+				\version_compare(\phpversion('apc'), '4.0.6') === -1 &&
+				\version_compare(\phpversion('apcu'), '5.1.0') === -1
 		) {
 			return false;
 		} else {

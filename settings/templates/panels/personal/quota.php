@@ -1,7 +1,7 @@
 <div class="section">
 	<div id="quota">
 		<div style="width:<?php p($_['usage_relative']);?>%"
-			<?php if($_['usage_relative'] > 80): ?> class="quota-warning" <?php endif; ?>>
+			<?php if ($_['usage_relative'] > 80): ?> class="quota-warning" <?php endif; ?>>
 			<p id="quotatext">
 				<?php if ($_['quota'] === \OCP\Files\FileInfo::SPACE_UNLIMITED): ?>
 					<?php p($l->t('You are using %s',

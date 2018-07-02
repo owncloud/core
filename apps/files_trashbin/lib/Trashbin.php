@@ -201,7 +201,6 @@ class Trashbin {
 		return true;
 	}
 
-
 	/**
 	 * copy file to owners trash
 	 *
@@ -214,10 +213,10 @@ class Trashbin {
 	private static function copyFilesToUser($sourcePath, $owner, $targetPath, $user, $timestamp) {
 		self::setUpTrash($owner);
 
-		$targetFilename = basename($targetPath);
-		$targetLocation = dirname($targetPath);
+		$targetFilename = \basename($targetPath);
+		$targetLocation = \dirname($targetPath);
 
-		$sourceFilename = basename($sourcePath);
+		$sourceFilename = \basename($sourcePath);
 
 		$view = new View('/');
 
@@ -241,9 +240,9 @@ class Trashbin {
 	public static function copyBackupForOwner($ownerPath, $owner, $timestamp) {
 		self::setUpTrash($owner);
 
-		$targetFilename = basename($ownerPath);
-		$targetLocation = dirname($ownerPath);
-		$source = $owner . '/files/' . ltrim($ownerPath, '/');
+		$targetFilename = \basename($ownerPath);
+		$targetLocation = \dirname($ownerPath);
+		$source = $owner . '/files/' . \ltrim($ownerPath, '/');
 		$target = $owner . '/files_trashbin/files/' . $targetFilename . '.d' . $timestamp;
 
 		$view = new View('/');
@@ -268,7 +267,6 @@ class Trashbin {
 		}
 	}
 
-
 	/**
 	 * move file to the trash bin
 	 *
@@ -278,18 +276,18 @@ class Trashbin {
 	public static function move2trash($file_path) {
 		// get the user for which the filesystem is setup
 		$root = Filesystem::getRoot();
-		list(, $user) = explode('/', $root);
+		list(, $user) = \explode('/', $root);
 		list($owner, $ownerPath) = self::getUidAndFilename($file_path);
 
 		// if no owner found (ex: ext storage + share link), will use the current user's trashbin then
-		if (is_null($owner)) {
+		if ($owner === null) {
 			$owner = $user;
 			$ownerPath = $file_path;
 		}
 
 		$ownerView = new View('/' . $owner);
 		// file has been deleted in between
-		if (is_null($ownerPath) || $ownerPath === '' || !$ownerView->file_exists('/files/' . $ownerPath)) {
+		if ($ownerPath === null || $ownerPath === '' || !$ownerView->file_exists('/files/' . $ownerPath)) {
 			return true;
 		}
 
@@ -306,11 +304,11 @@ class Trashbin {
 			self::setUpTrash($owner);
 		}
 
-		$path_parts = pathinfo($ownerPath);
+		$path_parts = \pathinfo($ownerPath);
 
 		$filename = $path_parts['basename'];
 		$location = $path_parts['dirname'];
-		$timestamp = time();
+		$timestamp = \time();
 
 		$trashPath = '/files_trashbin/files/' . $filename . '.d' . $timestamp;
 
@@ -381,7 +379,6 @@ class Trashbin {
 	 */
 	private static function retainVersions($filename, $owner, $ownerPath, $timestamp, $sourceStorage = null, $forceCopy = false) {
 		if (\OCP\App::isEnabled('files_versions') && !empty($ownerPath)) {
-
 			$copyKeysResult = false;
 
 			/**
@@ -397,13 +394,12 @@ class Trashbin {
 
 			if ($rootView->is_dir($owner . '/files_versions/' . $ownerPath)) {
 				if ($owner !== $user || $forceCopy) {
-					self::copy_recursive($owner . '/files_versions/' . $ownerPath, $owner . '/files_trashbin/versions/' . basename($ownerPath) . '.d' . $timestamp, $rootView);
+					self::copy_recursive($owner . '/files_versions/' . $ownerPath, $owner . '/files_trashbin/versions/' . \basename($ownerPath) . '.d' . $timestamp, $rootView);
 				}
 				if (!$forceCopy) {
 					self::move($rootView, $owner . '/files_versions/' . $ownerPath, $user . '/files_trashbin/versions/' . $filename . '.d' . $timestamp);
 				}
-			} else if ($versions = \OCA\Files_Versions\Storage::getVersions($owner, $ownerPath)) {
-
+			} elseif ($versions = \OCA\Files_Versions\Storage::getVersions($owner, $ownerPath)) {
 				foreach ($versions as $v) {
 					if ($owner !== $user || $forceCopy) {
 						self::copy($rootView, $owner . '/files_versions' . $v['path'] . '.v' . $v['version'], $owner . '/files_trashbin/versions/' . $v['name'] . '.v' . $v['version'] . '.d' . $timestamp);
@@ -542,9 +538,7 @@ class Trashbin {
 	 * @return false|null
 	 */
 	private static function restoreVersions(View $view, $file, $filename, $uniqueFilename, $location, $timestamp) {
-
 		if (\OCP\App::isEnabled('files_versions')) {
-
 			$user = User::getUser();
 			$rootView = new View('/');
 
@@ -565,7 +559,7 @@ class Trashbin {
 
 			if ($view->is_dir('/files_trashbin/versions/' . $file)) {
 				$rootView->rename(Filesystem::normalizePath($user . '/files_trashbin/versions/' . $file), Filesystem::normalizePath($owner . '/files_versions/' . $ownerPath));
-			} else if ($versions = self::getVersionsFromTrash($versionedFile, $timestamp, $user)) {
+			} elseif ($versions = self::getVersionsFromTrash($versionedFile, $timestamp, $user)) {
 				foreach ($versions as $v) {
 					if ($timestamp) {
 						$rootView->rename($user . '/files_trashbin/versions/' . $versionedFile . '.v' . $v . '.d' . $timestamp, $owner . '/files_versions/' . $ownerPath . '.v' . $v);
@@ -587,7 +581,7 @@ class Trashbin {
 
 		// Array to store the relative path in (after the file is deleted, the view won't be able to relativise the path anymore)
 		$filePaths = [];
-		foreach($fileInfos as $fileInfo){
+		foreach ($fileInfos as $fileInfo) {
 			$filePaths[] = $view->getRelativePath($fileInfo->getPath());
 		}
 		unset($fileInfos); // save memory
@@ -596,7 +590,7 @@ class Trashbin {
 		\OC_Hook::emit('\OCP\Trashbin', 'preDeleteAll', ['paths' => $filePaths]);
 
 		// Single-File Hooks
-		foreach($filePaths as $path){
+		foreach ($filePaths as $path) {
 			self::emitTrashbinPreDelete($path);
 		}
 
@@ -609,7 +603,7 @@ class Trashbin {
 		\OC_Hook::emit('\OCP\Trashbin', 'deleteAll', ['paths' => $filePaths]);
 
 		// Single-File Hooks
-		foreach($filePaths as $path){
+		foreach ($filePaths as $path) {
 			self::emitTrashbinPostDelete($path);
 		}
 
@@ -623,7 +617,7 @@ class Trashbin {
 	 * wrapper function to emit the 'preDelete' hook of \OCP\Trashbin before a file is deleted
 	 * @param string $path
 	 */
-	protected static function emitTrashbinPreDelete($path){
+	protected static function emitTrashbinPreDelete($path) {
 		\OC_Hook::emit('\OCP\Trashbin', 'preDelete', ['path' => $path]);
 	}
 
@@ -631,7 +625,7 @@ class Trashbin {
 	 * wrapper function to emit the 'delete' hook of \OCP\Trashbin after a file has been deleted
 	 * @param string $path
 	 */
-	protected static function emitTrashbinPostDelete($path){
+	protected static function emitTrashbinPostDelete($path) {
 		\OC_Hook::emit('\OCP\Trashbin', 'delete', ['path' => $path]);
 	}
 
@@ -684,7 +678,7 @@ class Trashbin {
 			if ($view->is_dir('files_trashbin/versions/' . $file)) {
 				$size += self::calculateSize(new View('/' . $user . '/files_trashbin/versions/' . $file));
 				$view->unlink('files_trashbin/versions/' . $file);
-			} else if ($versions = self::getVersionsFromTrash($filename, $timestamp, $user)) {
+			} elseif ($versions = self::getVersionsFromTrash($filename, $timestamp, $user)) {
 				foreach ($versions as $v) {
 					if ($timestamp) {
 						$size += $view->filesize('/files_trashbin/versions/' . $filename . '.v' . $v . '.d' . $timestamp);
@@ -760,7 +754,7 @@ class Trashbin {
 		$availableSpace += $delSize;
 
 		// delete files from trash until we meet the trash bin size limit again
-		self::deleteFiles(array_slice($dirContent, $count), $user, $availableSpace);
+		self::deleteFiles(\array_slice($dirContent, $count), $user, $availableSpace);
 	}
 
 	/**
@@ -801,7 +795,7 @@ class Trashbin {
 			foreach ($files as $file) {
 				if ($availableSpace < 0 && $expiration->isExpired($file['mtime'], true)) {
 					$tmp = self::delete($file['name'], $user, $file['mtime']);
-					$message = sprintf(
+					$message = \sprintf(
 						'remove "%s" (%dB) to meet the limit of trash bin size (%d%% of available quota)',
 						$file['name'],
 						$tmp,
@@ -900,7 +894,7 @@ class Trashbin {
 		//force rescan of versions, local storage may not have updated the cache
 		if (!self::$scannedVersions) {
 			/** @var \OC\Files\Storage\Storage $storage */
-			list($storage,) = $view->resolvePath('/');
+			list($storage, ) = $view->resolvePath('/');
 			$storage->getScanner()->scan('files_trashbin/versions');
 			self::$scannedVersions = true;
 		}
@@ -908,19 +902,19 @@ class Trashbin {
 		if ($timestamp) {
 			// fetch for old versions
 			$matches = $view->searchRaw($filename . '.v%.d' . $timestamp);
-			$offset = -strlen($timestamp) - 2;
+			$offset = -\strlen($timestamp) - 2;
 		} else {
 			$matches = $view->searchRaw($filename . '.v%');
 		}
 
-		if (is_array($matches)) {
+		if (\is_array($matches)) {
 			foreach ($matches as $ma) {
 				if ($timestamp) {
-					$parts = explode('.v', substr($ma['path'], 0, $offset));
-					$versions[] = (end($parts));
+					$parts = \explode('.v', \substr($ma['path'], 0, $offset));
+					$versions[] = (\end($parts));
 				} else {
-					$parts = explode('.v', $ma);
-					$versions[] = (end($parts));
+					$parts = \explode('.v', $ma);
+					$versions[] = (\end($parts));
 				}
 			}
 		}
@@ -936,11 +930,11 @@ class Trashbin {
 	 * @return string with unique extension
 	 */
 	private static function getUniqueFilename($location, $filename, View $view) {
-		$ext = pathinfo($filename, PATHINFO_EXTENSION);
-		$name = pathinfo($filename, PATHINFO_FILENAME);
+		$ext = \pathinfo($filename, PATHINFO_EXTENSION);
+		$name = \pathinfo($filename, PATHINFO_FILENAME);
 		$l = \OC::$server->getL10N('files_trashbin');
 
-		$location = '/' . trim($location, '/');
+		$location = '/' . \trim($location, '/');
 
 		// if extension is not empty we set a dot in front of it
 		if ($ext !== '') {
@@ -969,7 +963,7 @@ class Trashbin {
 	 */
 	private static function calculateSize($view) {
 		$root = \OC::$server->getConfig()->getSystemValue('datadirectory') . $view->getAbsolutePath('');
-		if (!file_exists($root)) {
+		if (!\file_exists($root)) {
 			return 0;
 		}
 		$iterator = new \RecursiveIteratorIterator(new \RecursiveDirectoryIterator($root), \RecursiveIteratorIterator::CHILD_FIRST);
@@ -983,7 +977,7 @@ class Trashbin {
 		$iterator->rewind();
 		while ($iterator->valid()) {
 			$path = $iterator->current();
-			$relpath = substr($path, strlen($root) - 1);
+			$relpath = \substr($path, \strlen($root) - 1);
 			if (!$view->is_dir($relpath)) {
 				$size += $view->filesize($relpath);
 			}
@@ -1010,7 +1004,7 @@ class Trashbin {
 	public function registerListeners() {
 		$this->eventDispatcher->addListener(
 			'files.resolvePrivateLink',
-			function(GenericEvent $event) {
+			function (GenericEvent $event) {
 				$uid = $event->getArgument('uid');
 				$fileId = $event->getArgument('fileid');
 
@@ -1052,7 +1046,7 @@ class Trashbin {
 			$files = $baseFolder->getById($fileId);
 			if (!empty($files)) {
 				$params['view'] = 'trashbin';
-				$file = current($files);
+				$file = \current($files);
 				if ($file instanceof Folder) {
 					// set the full path to enter the folder
 					$params['dir'] = $baseFolder->getRelativePath($file->getPath());
@@ -1076,10 +1070,9 @@ class Trashbin {
 	 * @return bool
 	 */
 	public static function isEmpty($user) {
-
 		$view = new View('/' . $user . '/files_trashbin');
 		if ($view->is_dir('/files') && $dh = $view->opendir('/files')) {
-			while ($file = readdir($dh)) {
+			while ($file = \readdir($dh)) {
 				if (!Filesystem::isIgnoredDir($file)) {
 					return false;
 				}

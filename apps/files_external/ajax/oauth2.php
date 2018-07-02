@@ -25,7 +25,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>
  *
  */
-set_include_path(get_include_path().PATH_SEPARATOR.
+\set_include_path(\get_include_path().PATH_SEPARATOR.
 	\OC_App::getAppPath('files_external').'/3rdparty/google-api-php-client/src');
 require_once 'Google/autoload.php';
 
@@ -35,7 +35,7 @@ OCP\JSON::callCheck();
 $l = \OC::$server->getL10N('files_external');
 
 // FIXME: currently hard-coded to Google Drive
-if (isset($_POST['client_id']) && isset($_POST['client_secret']) && isset($_POST['redirect'])) {
+if (isset($_POST['client_id'], $_POST['client_secret'], $_POST['redirect'])) {
 	$client = new Google_Client();
 	$client->setClientId((string)$_POST['client_id']);
 	$client->setClientSecret((string)$_POST['client_secret']);
@@ -56,7 +56,7 @@ if (isset($_POST['client_id']) && isset($_POST['client_secret']) && isset($_POST
 					'message' => $l->t('Step 1 failed. Exception: %s', [$exception->getMessage()])
 				]]);
 			}
-		} else if ($step == 2 && isset($_POST['code'])) {
+		} elseif ($step == 2 && isset($_POST['code'])) {
 			try {
 				$token = $client->authenticate((string)$_POST['code']);
 				OCP\JSON::success(['data' => [

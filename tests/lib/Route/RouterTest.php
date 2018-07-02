@@ -21,7 +21,6 @@
 
 namespace Test\Route;
 
-
 use OC\Route\Router;
 use OCP\ILogger;
 

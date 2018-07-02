@@ -104,11 +104,11 @@ class WatcherTest extends TestCase {
 	 * Tests that writing a file using the shared storage will propagate the file
 	 * size to the owner's parent folders.
 	 */
-	function testFolderSizePropagationToOwnerStorage() {
+	public function testFolderSizePropagationToOwnerStorage() {
 		$initialSizes = self::getOwnerDirSizes('files/container/shareddir');
 
 		$textData = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
-		$dataLen = strlen($textData);
+		$dataLen = \strlen($textData);
 		$this->sharedCache->put('bar.txt', ['mtime' => 10, 'storage_mtime' => 10, 'size' => $dataLen, 'mimetype' => 'text/plain']);
 		$this->sharedStorage->file_put_contents('bar.txt', $textData);
 		$this->sharedCache->put('', ['mtime' => 10, 'storage_mtime' => 10, 'size' => '-1', 'mimetype' => 'httpd/unix-directory']);
@@ -134,11 +134,11 @@ class WatcherTest extends TestCase {
 	 * Tests that writing a file using the shared storage will propagate the file
 	 * size to the owner's parent folders.
 	 */
-	function testSubFolderSizePropagationToOwnerStorage() {
+	public function testSubFolderSizePropagationToOwnerStorage() {
 		$initialSizes = self::getOwnerDirSizes('files/container/shareddir/subdir');
 
 		$textData = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
-		$dataLen = strlen($textData);
+		$dataLen = \strlen($textData);
 		$this->sharedCache->put('subdir/bar.txt', ['mtime' => 10, 'storage_mtime' => 10, 'size' => $dataLen, 'mimetype' => 'text/plain']);
 		$this->sharedStorage->file_put_contents('subdir/bar.txt', $textData);
 		$this->sharedCache->put('subdir', ['mtime' => 10, 'storage_mtime' => 10, 'size' => $dataLen, 'mimetype' => 'text/plain']);
@@ -166,13 +166,13 @@ class WatcherTest extends TestCase {
 	 * where the key is the path and the value is the size.
 	 * @param string $path
 	 */
-	function getOwnerDirSizes($path) {
+	public function getOwnerDirSizes($path) {
 		$result = [];
 
 		while ($path != '' && $path != '' && $path != '.') {
 			$cachedData = $this->ownerCache->get($path);
 			$result[$path] = $cachedData['size'];
-			$path = dirname($path);
+			$path = \dirname($path);
 		}
 		$cachedData = $this->ownerCache->get('');
 		$result[''] = $cachedData['size'];

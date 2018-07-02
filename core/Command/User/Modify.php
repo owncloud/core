@@ -89,8 +89,8 @@ class Modify extends Base {
 			throw new \InvalidArgumentException('The key cannot be empty');
 		}
 
-		if (in_array($input->getArgument('key'), $this->allowedKeys, true) === false) {
-			throw new \InvalidArgumentException('Supported keys are ' . implode(', ', $this->allowedKeys));
+		if (\in_array($input->getArgument('key'), $this->allowedKeys, true) === false) {
+			throw new \InvalidArgumentException('Supported keys are ' . \implode(', ', $this->allowedKeys));
 		}
 
 		$value = $input->getArgument('value');
@@ -128,7 +128,7 @@ class Modify extends Base {
 		}
 
 		if (($key === 'displayname') && ($value !== null) && ($value !== '')) {
-			if ($user->setDisplayName($value) === true ) {
+			if ($user->setDisplayName($value) === true) {
 				$output->writeln('The displayname of ' . $uid . ' updated to ' . $value);
 				return 0;
 			}

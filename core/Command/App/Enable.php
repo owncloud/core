@@ -76,7 +76,7 @@ class Enable extends Command {
 			$output->writeln($appId . ' enabled');
 		} else {
 			\OC_App::enable($appId, $groups);
-			$output->writeln($appId . ' enabled for groups: ' . implode(', ', $groups));
+			$output->writeln($appId . ' enabled for groups: ' . \implode(', ', $groups));
 		}
 
 		return 0;

@@ -19,9 +19,7 @@
  *
  */
 
-
 namespace Test\Encryption;
-
 
 use OC\Encryption\EncryptionWrapper;
 use Test\TestCase;
@@ -50,7 +48,6 @@ class EncryptionWrapperTest extends TestCase {
 
 		$this->instance = new EncryptionWrapper($this->arrayCache, $this->manager, $this->logger);
 	}
-
 
 	/**
 	 * @dataProvider provideWrapStorage
@@ -97,5 +94,4 @@ class EncryptionWrapperTest extends TestCase {
 			[false, ['OCA\Files_Sharing\SharedStorage', 'OCA\Files_Sharing\External\Storage', 'OC\Files\Storage\OwnCloud']],
 		];
 	}
-
 }

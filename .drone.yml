@@ -116,6 +116,15 @@ pipeline:
       matrix:
         PRIMARY_OBJECTSTORE: files_primary_s3
 
+  php-cs-fixer:
+    image: owncloudci/php:${PHP_VERSION}
+    pull: true
+    commands:
+      - make test-php-style
+    when:
+      matrix:
+        TEST_SUITE: php-cs-fixer
+
   phpunit:
     image: owncloudci/php:${PHP_VERSION}
     pull: true
@@ -440,6 +449,10 @@ matrix:
     #   TEST_SUITE: phpunit
     #   INSTALL_SERVER: true
 
+
+  # php-cs-fixer
+    - TEST_SUITE: php-cs-fixer
+      PHP_VERSION: 7.2
 
   # Litmus
     - PHP_VERSION: 7.1

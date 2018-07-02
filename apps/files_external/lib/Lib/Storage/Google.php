@@ -38,12 +38,11 @@ use GuzzleHttp\Exception\RequestException;
 use Icewind\Streams\IteratorDirectory;
 use Icewind\Streams\RetryWrapper;
 
-set_include_path(get_include_path().PATH_SEPARATOR.
+\set_include_path(\get_include_path().PATH_SEPARATOR.
 	\OC_App::getAppPath('files_external').'/3rdparty/google-api-php-client/src');
 require_once 'Google/autoload.php';
 
 class Google extends \OCP\Files\Storage\StorageAdapter {
-
 	private $client;
 	private $id;
 	private $service;
@@ -61,8 +60,8 @@ class Google extends \OCP\Files\Storage\StorageAdapter {
 
 	public function __construct($params) {
 		if (isset($params['configured']) && $params['configured'] === 'true'
-			&& isset($params['client_id']) && isset($params['client_secret'])
-			&& isset($params['token'])
+			&& isset($params['client_id'], $params['client_secret'], $params['token'])
+			 
 		) {
 			$this->client = new \Google_Client();
 			$this->client->setClientId($params['client_id']);
@@ -72,14 +71,14 @@ class Google extends \OCP\Files\Storage\StorageAdapter {
 			// if curl isn't available we're likely to run into
 			// https://github.com/google/google-api-php-client/issues/59
 			// - disable gzip to avoid it.
-			if (!function_exists('curl_version') || !function_exists('curl_exec')) {
+			if (!\function_exists('curl_version') || !\function_exists('curl_exec')) {
 				$this->client->setClassConfig("Google_Http_Request", "disable_gzip", true);
 			}
 			$this->client->setClassConfig('Google_Task_Runner', 'retries', 5);
 			// note: API connection is lazy
 			$this->service = new \Google_Service_Drive($this->client);
-			$token = json_decode($params['token'], true);
-			$this->id = 'google::'.substr($params['client_id'], 0, 30).$token['created'];
+			$token = \json_decode($params['token'], true);
+			$this->id = 'google::'.\substr($params['client_id'], 0, 30).$token['created'];
 		} else {
 			throw new \Exception('Creating Google storage failed');
 		}
@@ -97,13 +96,13 @@ class Google extends \OCP\Files\Storage\StorageAdapter {
 	 */
 	private function getDriveFile($path) {
 		// Remove leading and trailing slashes
-		$path = trim($path, '/');
+		$path = \trim($path, '/');
 		if ($path === '.') {
 			$path = '';
 		}
 		if (isset($this->driveFiles[$path])) {
 			return $this->driveFiles[$path];
-		} else if ($path === '') {
+		} elseif ($path === '') {
 			$root = $this->service->files->get('root');
 			$this->driveFiles[$path] = $root;
 			return $root;
@@ -111,7 +110,7 @@ class Google extends \OCP\Files\Storage\StorageAdapter {
 			// Google Drive SDK does not have methods for retrieving files by path
 			// Instead we must find the id of the parent folder of the file
 			$parentId = $this->getDriveFile('')->getId();
-			$folderNames = explode('/', $path);
+			$folderNames = \explode('/', $path);
 			$path = '';
 			// Loop through each folder of this path to get to the file
 			foreach ($folderNames as $name) {
@@ -124,23 +123,23 @@ class Google extends \OCP\Files\Storage\StorageAdapter {
 				if (isset($this->driveFiles[$path])) {
 					$parentId = $this->driveFiles[$path]->getId();
 				} else {
-					$q = "title='" . str_replace("'","\\'", $name) . "' and '" . str_replace("'","\\'", $parentId) . "' in parents and trashed = false";
+					$q = "title='" . \str_replace("'", "\\'", $name) . "' and '" . \str_replace("'", "\\'", $parentId) . "' in parents and trashed = false";
 					$result = $this->service->files->listFiles(['q' => $q])->getItems();
 					if (!empty($result)) {
 						// Google Drive allows files with the same name, ownCloud doesn't
-						if (count($result) > 1) {
+						if (\count($result) > 1) {
 							$this->onDuplicateFileDetected($path);
 							return false;
 						} else {
-							$file = current($result);
+							$file = \current($result);
 							$this->driveFiles[$path] = $file;
 							$parentId = $file->getId();
 						}
 					} else {
 						// Google Docs have no extension in their title, so try without extension
-						$pos = strrpos($path, '.');
+						$pos = \strrpos($path, '.');
 						if ($pos !== false) {
-							$pathWithoutExt = substr($path, 0, $pos);
+							$pathWithoutExt = \substr($path, 0, $pos);
 							$file = $this->getDriveFile($pathWithoutExt);
 							if ($file && $this->isGoogleDocFile($file)) {
 								// Switch cached Google_Service_Drive_DriveFile to the correct index
@@ -166,13 +165,13 @@ class Google extends \OCP\Files\Storage\StorageAdapter {
 	 * @param \Google_Service_Drive_DriveFile|false $file
 	 */
 	private function setDriveFile($path, $file) {
-		$path = trim($path, '/');
+		$path = \trim($path, '/');
 		$this->driveFiles[$path] = $file;
 		if ($file === false) {
 			// Remove all children
-			$len = strlen($path);
+			$len = \strlen($path);
 			foreach ($this->driveFiles as $key => $file) {
-				if (substr($key, 0, $len) === $path) {
+				if (\substr($key, 0, $len) === $path) {
 					unset($this->driveFiles[$key]);
 				}
 			}
@@ -200,11 +199,11 @@ class Google extends \OCP\Files\Storage\StorageAdapter {
 	private function getGoogleDocExtension($mimetype) {
 		if ($mimetype === self::DOCUMENT) {
 			return 'odt';
-		} else if ($mimetype === self::SPREADSHEET) {
+		} elseif ($mimetype === self::SPREADSHEET) {
 			return 'ods';
-		} else if ($mimetype === self::DRAWING) {
+		} elseif ($mimetype === self::DRAWING) {
 			return 'jpg';
-		} else if ($mimetype === self::PRESENTATION) {
+		} elseif ($mimetype === self::PRESENTATION) {
 			// Download as .odp is not available
 			return 'pdf';
 		} else {
@@ -225,10 +224,10 @@ class Google extends \OCP\Files\Storage\StorageAdapter {
 
 	public function mkdir($path) {
 		if (!$this->is_dir($path)) {
-			$parentFolder = $this->getDriveFile(dirname($path));
+			$parentFolder = $this->getDriveFile(\dirname($path));
 			if ($parentFolder) {
 				$folder = new \Google_Service_Drive_DriveFile();
-				$folder->setTitle(basename($path));
+				$folder->setTitle(\basename($path));
 				$folder->setMimeType(self::FOLDER);
 				$parent = new \Google_Service_Drive_ParentReference();
 				$parent->setId($parentFolder->getId());
@@ -247,17 +246,17 @@ class Google extends \OCP\Files\Storage\StorageAdapter {
 		if (!$this->isDeletable($path)) {
 			return false;
 		}
-		if (trim($path, '/') === '') {
+		if (\trim($path, '/') === '') {
 			$dir = $this->opendir($path);
-			if(is_resource($dir)) {
-				while (($file = readdir($dir)) !== false) {
+			if (\is_resource($dir)) {
+				while (($file = \readdir($dir)) !== false) {
 					if (!\OC\Files\Filesystem::isIgnoredDir($file)) {
 						if (!$this->unlink($path.'/'.$file)) {
 							return false;
 						}
 					}
 				}
-				closedir($dir);
+				\closedir($dir);
 			}
 			$this->driveFiles = [];
 			return true;
@@ -277,7 +276,7 @@ class Google extends \OCP\Files\Storage\StorageAdapter {
 				if ($pageToken !== true) {
 					$params['pageToken'] = $pageToken;
 				}
-				$params['q'] = "'" . str_replace("'","\\'", $folder->getId()) . "' in parents and trashed = false";
+				$params['q'] = "'" . \str_replace("'", "\\'", $folder->getId()) . "' in parents and trashed = false";
 				$children = $this->service->files->listFiles($params);
 				foreach ($children->getItems() as $child) {
 					$name = $child->getTitle();
@@ -286,7 +285,7 @@ class Google extends \OCP\Files\Storage\StorageAdapter {
 					if (empty($extension)) {
 						if ($child->getMimeType() === self::MAP) {
 							continue; // No method known to transfer map files, ignore it
-						} else if ($child->getMimeType() !== self::FOLDER) {
+						} elseif ($child->getMimeType() !== self::FOLDER) {
 							$name .= '.'.$this->getGoogleDocExtension($child->getMimeType());
 						}
 					}
@@ -297,7 +296,7 @@ class Google extends \OCP\Files\Storage\StorageAdapter {
 					}
 					// Google Drive allows files with the same name, ownCloud doesn't
 					// Prevent opendir() from returning any duplicate files
-					$key = array_search($name, $files);
+					$key = \array_search($name, $files);
 					if ($key !== false || isset($duplicates[$filepath])) {
 						if (!isset($duplicates[$filepath])) {
 							$duplicates[$filepath] = true;
@@ -334,9 +333,9 @@ class Google extends \OCP\Files\Storage\StorageAdapter {
 					$stat['size'] = $file->getFileSize();
 				}
 			}
-			$stat['atime'] = strtotime($file->getLastViewedByMeDate());
-			$stat['mtime'] = strtotime($file->getModifiedDate());
-			$stat['ctime'] = strtotime($file->getCreatedDate());
+			$stat['atime'] = \strtotime($file->getLastViewedByMeDate());
+			$stat['mtime'] = \strtotime($file->getModifiedDate());
+			$stat['ctime'] = \strtotime($file->getCreatedDate());
 			return $stat;
 		} else {
 			return false;
@@ -390,16 +389,16 @@ class Google extends \OCP\Files\Storage\StorageAdapter {
 		$file = $this->getDriveFile($path1);
 		if ($file) {
 			$newFile = $this->getDriveFile($path2);
-			if (dirname($path1) === dirname($path2)) {
+			if (\dirname($path1) === \dirname($path2)) {
 				if ($newFile) {
 					// rename to the name of the target file, could be an office file without extension
 					$file->setTitle($newFile->getTitle());
 				} else {
-					$file->setTitle(basename(($path2)));
+					$file->setTitle(\basename(($path2)));
 				}
 			} else {
 				// Change file parent
-				$parentFolder2 = $this->getDriveFile(dirname($path2));
+				$parentFolder2 = $this->getDriveFile(\dirname($path2));
 				if ($parentFolder2) {
 					$parent = new \Google_Service_Drive_ParentReference();
 					$parent->setId($parentFolder2->getId());
@@ -435,9 +434,9 @@ class Google extends \OCP\Files\Storage\StorageAdapter {
 	}
 
 	public function fopen($path, $mode) {
-		$pos = strrpos($path, '.');
+		$pos = \strrpos($path, '.');
 		if ($pos !== false) {
-			$ext = substr($path, $pos);
+			$ext = \substr($path, $pos);
 		} else {
 			$ext = '';
 		}
@@ -463,10 +462,10 @@ class Google extends \OCP\Files\Storage\StorageAdapter {
 							$response = $client->get($downloadUrl, [
 								'headers' => $httpRequest->getRequestHeaders(),
 								'stream' => true,
-								'verify' => realpath(__DIR__ . '/../../../3rdparty/google-api-php-client/src/Google/IO/cacerts.pem'),
+								'verify' => \realpath(__DIR__ . '/../../../3rdparty/google-api-php-client/src/Google/IO/cacerts.pem'),
 							]);
 						} catch (RequestException $e) {
-							if(!is_null($e->getResponse())) {
+							if ($e->getResponse() !== null) {
 								if ($e->getResponse()->getStatusCode() === 404) {
 									return false;
 								} else {
@@ -498,17 +497,17 @@ class Google extends \OCP\Files\Storage\StorageAdapter {
 				\OC\Files\Stream\Close::registerCallback($tmpFile, [$this, 'writeBack']);
 				if ($this->file_exists($path)) {
 					$source = $this->fopen($path, 'rb');
-					file_put_contents($tmpFile, $source);
+					\file_put_contents($tmpFile, $source);
 				}
 				self::$tempFiles[$tmpFile] = $path;
-				return fopen('close://'.$tmpFile, $mode);
+				return \fopen('close://'.$tmpFile, $mode);
 		}
 	}
 
 	public function writeBack($tmpFile) {
 		if (isset(self::$tempFiles[$tmpFile])) {
 			$path = self::$tempFiles[$tmpFile];
-			$parentFolder = $this->getDriveFile(dirname($path));
+			$parentFolder = $this->getDriveFile(\dirname($path));
 			if ($parentFolder) {
 				$mimetype = \OC::$server->getMimeTypeDetector()->detect($tmpFile);
 				$params = [
@@ -520,11 +519,11 @@ class Google extends \OCP\Files\Storage\StorageAdapter {
 				$chunkSizeBytes = 10 * 1024 * 1024;
 
 				$useChunking = false;
-				$size = filesize($tmpFile);
+				$size = \filesize($tmpFile);
 				if ($size > $chunkSizeBytes) {
 					$useChunking = true;
 				} else {
-					$params['data'] = file_get_contents($tmpFile);
+					$params['data'] = \file_get_contents($tmpFile);
 				}
 
 				if ($this->file_exists($path)) {
@@ -533,7 +532,7 @@ class Google extends \OCP\Files\Storage\StorageAdapter {
 					$request = $this->service->files->update($file->getId(), $file, $params);
 				} else {
 					$file = new \Google_Service_Drive_DriveFile();
-					$file->setTitle(basename($path));
+					$file->setTitle(\basename($path));
 					$file->setMimeType($mimetype);
 					$parent = new \Google_Service_Drive_ParentReference();
 					$parent->setId($parentFolder->getId());
@@ -557,9 +556,9 @@ class Google extends \OCP\Files\Storage\StorageAdapter {
 					// Upload the various chunks. $status will be false until the process is
 					// complete.
 					$status = false;
-					$handle = fopen($tmpFile, 'rb');
-					while (!$status && !feof($handle)) {
-						$chunk = fread($handle, $chunkSizeBytes);
+					$handle = \fopen($tmpFile, 'rb');
+					while (!$status && !\feof($handle)) {
+						$chunk = \fread($handle, $chunkSizeBytes);
 						$status = $media->nextChunk($chunk);
 					}
 
@@ -570,7 +569,7 @@ class Google extends \OCP\Files\Storage\StorageAdapter {
 						$result = $status;
 					}
 
-					fclose($handle);
+					\fclose($handle);
 				} else {
 					$result = $request;
 				}
@@ -582,7 +581,7 @@ class Google extends \OCP\Files\Storage\StorageAdapter {
 					$this->setDriveFile($path, $result);
 				}
 			}
-			unlink($tmpFile);
+			\unlink($tmpFile);
 		}
 	}
 
@@ -593,13 +592,13 @@ class Google extends \OCP\Files\Storage\StorageAdapter {
 			// Convert Google Doc mimetypes, choosing Open Document formats for download
 			if ($mimetype === self::FOLDER) {
 				return 'httpd/unix-directory';
-			} else if ($mimetype === self::DOCUMENT) {
+			} elseif ($mimetype === self::DOCUMENT) {
 				return 'application/vnd.oasis.opendocument.text';
-			} else if ($mimetype === self::SPREADSHEET) {
+			} elseif ($mimetype === self::SPREADSHEET) {
 				return 'application/x-vnd.oasis.opendocument.spreadsheet';
-			} else if ($mimetype === self::DRAWING) {
+			} elseif ($mimetype === self::DRAWING) {
 				return 'image/jpeg';
-			} else if ($mimetype === self::PRESENTATION) {
+			} elseif ($mimetype === self::PRESENTATION) {
 				// Download as .odp is not available
 				return 'application/pdf';
 			} else {
@@ -624,7 +623,7 @@ class Google extends \OCP\Files\Storage\StorageAdapter {
 				// This is just RFC3339, but frustratingly, GDrive's API *requires*
 				// the fractions portion be present, while no handy PHP constant
 				// for RFC3339 or ISO8601 includes it. So we do it ourselves.
-				$file->setModifiedDate(date('Y-m-d\TH:i:s.uP', $mtime));
+				$file->setModifiedDate(\date('Y-m-d\TH:i:s.uP', $mtime));
 				$result = $this->service->files->patch($file->getId(), $file, [
 					'setModifiedDate' => true,
 				]);
@@ -632,10 +631,10 @@ class Google extends \OCP\Files\Storage\StorageAdapter {
 				$result = $this->service->files->touch($file->getId());
 			}
 		} else {
-			$parentFolder = $this->getDriveFile(dirname($path));
+			$parentFolder = $this->getDriveFile(\dirname($path));
 			if ($parentFolder) {
 				$file = new \Google_Service_Drive_DriveFile();
-				$file->setTitle(basename($path));
+				$file->setTitle(\basename($path));
 				$parent = new \Google_Service_Drive_ParentReference();
 				$parent->setId($parentFolder->getId());
 				$file->setParents([$parent]);
@@ -697,7 +696,7 @@ class Google extends \OCP\Files\Storage\StorageAdapter {
 									if ($parent->getId() === $folderId) {
 										$result = true;
 									// Check if there are changes in different folders
-									} else if ($change->getId() <= $largestChangeId) {
+									} elseif ($change->getId() <= $largestChangeId) {
 										// Decrement id so this change is fetched when called again
 										$largestChangeId = $change->getId();
 										$largestChangeId--;
@@ -724,5 +723,4 @@ class Google extends \OCP\Files\Storage\StorageAdapter {
 	public static function checkDependencies() {
 		return true;
 	}
-
 }

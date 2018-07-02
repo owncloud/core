@@ -96,7 +96,7 @@ class RepairSubShares implements IRepairStep {
 					->execute();
 				$lastResultCount++;
 			}
-		} while($lastResultCount > 0);
+		} while ($lastResultCount > 0);
 
 		if ($deletedEntries > 0) {
 			$output->info('Removed ' . $deletedEntries . ' shares where duplicate rows where found');

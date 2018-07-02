@@ -189,4 +189,3 @@ class ConfigAdapterTest extends \Test\TestCase {
 		$this->assertTrue($options['enable_sharing']);
 	}
 }
-

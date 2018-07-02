@@ -113,12 +113,12 @@ class ViewController extends Controller {
 		$content = '';
 		$appPath = \OC_App::getAppPath($appName);
 		$scriptPath = $appPath . '/' . $scriptName;
-		if (file_exists($scriptPath)) {
+		if (\file_exists($scriptPath)) {
 			// TODO: sanitize path / script name ?
-			ob_start();
+			\ob_start();
 			include $scriptPath;
-			$content = ob_get_contents();
-			@ob_end_clean();
+			$content = \ob_get_contents();
+			@\ob_end_clean();
 		}
 		return $content;
 	}
@@ -195,7 +195,7 @@ class ViewController extends Controller {
 			$view = !empty($view) ? $view : 'files';
 			$hash = '#?dir=' . \OCP\Util::encodePath($dir);
 			if ($view !== 'files') {
-				$hash .= '&view=' . urlencode($view);
+				$hash .= '&view=' . \urlencode($view);
 			}
 			return new RedirectResponse($this->urlGenerator->linkToRoute('files.view.index') . $hash);
 		}
@@ -217,11 +217,11 @@ class ViewController extends Controller {
 		$user = $this->userSession->getUser()->getUID();
 
 		$navItems = \OCA\Files\App::getNavigationManager()->getAll();
-		usort($navItems, function($item1, $item2) {
+		\usort($navItems, function ($item1, $item2) {
 			return $item1['order'] - $item2['order'];
 		});
 		$nav->assign('navigationItems', $navItems);
-		$nav->assign('webdavUrl', $this->urlGenerator->getAbsoluteUrl($this->urlGenerator->linkTo('', 'remote.php') . '/dav/files/' . rawurlencode($user) . '/'));
+		$nav->assign('webdavUrl', $this->urlGenerator->getAbsoluteUrl($this->urlGenerator->linkTo('', 'remote.php') . '/dav/files/' . \rawurlencode($user) . '/'));
 
 		$contentItems = [];
 
@@ -298,7 +298,7 @@ class ViewController extends Controller {
 			$webUrl = $event->getArgument('resolvedWebLink');
 			$webdavUrl = $event->getArgument('resolvedDavLink');
 		} else {
-			$file = current($files);
+			$file = \current($files);
 			if ($file instanceof Folder) {
 				// set the full path to enter the folder
 				$params['dir'] = $baseFolder->getRelativePath($file->getPath());
@@ -310,8 +310,8 @@ class ViewController extends Controller {
 			}
 			$webUrl = $this->urlGenerator->linkToRoute('files.view.index', $params);
 
-			$webdavUrl = $this->urlGenerator->linkTo('', 'remote.php') . '/dav/files/' . rawurlencode($uid) . '/';
-			$webdavUrl .= \OCP\Util::encodePath(ltrim($baseFolder->getRelativePath($file->getPath()), '/'));
+			$webdavUrl = $this->urlGenerator->linkTo('', 'remote.php') . '/dav/files/' . \rawurlencode($uid) . '/';
+			$webdavUrl .= \OCP\Util::encodePath(\ltrim($baseFolder->getRelativePath($file->getPath()), '/'));
 		}
 
 		if ($webUrl) {

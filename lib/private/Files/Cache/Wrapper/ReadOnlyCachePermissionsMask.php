@@ -93,4 +93,3 @@ class ReadOnlyCachePermissionsMask extends CacheWrapper {
 		return (\strpos($haystack, $needle) === 0);
 	}
 }
-

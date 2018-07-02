@@ -30,14 +30,14 @@ use Sabre\DAV\Client as SClient;
 
 /**
  * Helper to make WebDav Requests
- * 
+ *
  * @author Artur Neumann <artur@jankaritech.com>
  *
  */
 class WebDavHelper {
 	/**
 	 * returns the id of a file
-	 * 
+	 *
 	 * @param string $baseUrl
 	 * @param string $user
 	 * @param string $password
@@ -63,7 +63,7 @@ class WebDavHelper {
 		$response = self::makeDavRequest(
 			$baseUrl, $user, $password, "PROPFIND", $path, null, $body
 		);
-		preg_match('/\<oc:fileid\>(\d+)\<\/oc:fileid\>/', $response, $matches);
+		\preg_match('/\<oc:fileid\>(\d+)\<\/oc:fileid\>/', $response, $matches);
 		if (!isset($matches[1])) {
 			throw new Exception("could not find fileId of $path");
 		}
@@ -71,7 +71,7 @@ class WebDavHelper {
 	}
 
 	/**
-	 * 
+	 *
 	 * @param string $baseUrl
 	 * URL of owncloud e.g. http://localhost:8080
 	 * should include the subfolder if owncloud runs in a subfolder
@@ -109,12 +109,12 @@ class WebDavHelper {
 		$davPath = self::getDavPath($user, $davPathVersionToUse, $type);
 		//replace # and ? in the path, Guzzle will not encode them
 		$urlSpecialChar = [['#', '?'],['%23', '%3F']];
-		$path = str_replace($urlSpecialChar[0], $urlSpecialChar[1], $path);
+		$path = \str_replace($urlSpecialChar[0], $urlSpecialChar[1], $path);
 		$fullUrl = self::sanitizeUrl($baseUrl . $davPath . $path);
 		$client = new GClient();
 		
 		$options = [];
-		if (!is_null($requestBody)) {
+		if ($requestBody !== null) {
 			$options['body'] = $requestBody;
 		}
 		
@@ -125,17 +125,17 @@ class WebDavHelper {
 			$headers['Authorization'] = 'Bearer ' . $password;
 		}
 		
-		if (!is_null($sourceIpAddress)) {
+		if ($sourceIpAddress !== null) {
 			$options['config']
 				= [ 'curl' => [ CURLOPT_INTERFACE => $sourceIpAddress ]];
 		}
 
 		$request = $client->createRequest($method, $fullUrl, $options);
-		if (!is_null($headers)) {
+		if ($headers !== null) {
 			foreach ($headers as $key => $value) {
 				//? and # need to be encoded in the Destination URL
 				if ($key === "Destination") {
-					$value = str_replace(
+					$value = \str_replace(
 						$urlSpecialChar[0], $urlSpecialChar[1], $value
 					);
 				}
@@ -146,7 +146,7 @@ class WebDavHelper {
 				}
 			}
 		}
-		if (!is_null($body)) {
+		if ($body !== null) {
 			$request->setBody($body);
 		}
 		return $client->send($request);
@@ -154,7 +154,7 @@ class WebDavHelper {
 
 	/**
 	 * get the dav path
-	 * 
+	 *
 	 * @param string $user
 	 * @param int $davPathVersionToUse (1|2)
 	 * @param string $type
@@ -182,7 +182,7 @@ class WebDavHelper {
 
 	/**
 	 * returns a Sabre client
-	 * 
+	 *
 	 * @param string $baseUrl
 	 * @param string $user
 	 * @param string $password
@@ -202,7 +202,7 @@ class WebDavHelper {
 
 	/**
 	 * make sure there are no double slash in the URL
-	 * 
+	 *
 	 * @param string $url
 	 * @param bool $trailingSlash forces a trailing slash
 	 *
@@ -212,9 +212,9 @@ class WebDavHelper {
 		if ($trailingSlash === true) {
 			$url = $url . "/";
 		} else {
-			$url = rtrim($url, "/");
+			$url = \rtrim($url, "/");
 		}
-		$url = preg_replace("/([^:]\/)\/+/", '$1', $url);
+		$url = \preg_replace("/([^:]\/)\/+/", '$1', $url);
 		return $url;
 	}
 }

@@ -42,7 +42,7 @@ class WatcherTest extends \Test\TestCase {
 	/**
 	 * @medium
 	 */
-	function testWatcher() {
+	public function testWatcher() {
 		$storage = $this->getTestStorage();
 		$cache = $storage->getCache();
 		$updater = $storage->getWatcher();
@@ -65,7 +65,7 @@ class WatcherTest extends \Test\TestCase {
 		$storage->file_put_contents('bar.test', 'test data');
 
 		// make sure that PHP can read the new size correctly
-		clearstatcache();
+		\clearstatcache();
 
 		$updater->checkUpdate('bar.test');
 		$cachedData = $cache->get('bar.test');
@@ -179,7 +179,7 @@ class WatcherTest extends \Test\TestCase {
 	private function getTestStorage($scan = true) {
 		$storage = new \OC\Files\Storage\Temporary([]);
 		$textData = "dummy file data\n";
-		$imgData = file_get_contents(\OC::$SERVERROOT . '/core/img/logo.png');
+		$imgData = \file_get_contents(\OC::$SERVERROOT . '/core/img/logo.png');
 		$storage->mkdir('folder');
 		$storage->file_put_contents('foo.txt', $textData);
 		$storage->file_put_contents('foo.png', $imgData);

@@ -53,8 +53,8 @@ class Option extends Config {
 	 */
 	protected function getOption(IStorageConfig $mount, $key, OutputInterface $output) {
 		$value = $mount->getMountOption($key);
-		if (!is_string($value)) { // show bools and objects correctly
-			$value = json_encode($value);
+		if (!\is_string($value)) { // show bools and objects correctly
+			$value = \json_encode($value);
 		}
 		$output->writeln($value);
 	}
@@ -66,8 +66,8 @@ class Option extends Config {
 	 * @param OutputInterface $output
 	 */
 	protected function setOption(IStorageConfig $mount, $key, $value, OutputInterface $output) {
-		$decoded = json_decode($value, true);
-		if (!is_null($decoded)) {
+		$decoded = \json_decode($value, true);
+		if ($decoded !== null) {
 			$value = $decoded;
 		}
 		$mount->setMountOption($key, $value);

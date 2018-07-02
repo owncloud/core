@@ -23,7 +23,6 @@
  *
  */
 
-
 namespace OC\Encryption;
 
 use OC\Encryption\Exceptions\DecryptionFailedException;
@@ -90,7 +89,6 @@ class DecryptAll {
 	 * @throws \Exception
 	 */
 	public function decryptAll(InputInterface $input, OutputInterface $output, $user = '') {
-
 		$this->input = $input;
 		$this->output = $output;
 
@@ -134,7 +132,7 @@ class DecryptAll {
 		$encryptionModules = $this->encryptionManager->getEncryptionModules();
 		foreach ($encryptionModules as $moduleDesc) {
 			/** @var IEncryptionModule $module */
-			$module = call_user_func($moduleDesc['callback']);
+			$module = \call_user_func($moduleDesc['callback']);
 			$this->output->writeln('');
 			$this->output->writeln('Prepare "' . $module->getDisplayName() . '"');
 			$this->output->writeln('');
@@ -154,7 +152,6 @@ class DecryptAll {
 	 * @return bool
 	 */
 	protected function decryptAllUsersFiles($user = '') {
-
 		$this->output->writeln("\n");
 
 		$progress = new ProgressBar($this->output);
@@ -169,7 +166,7 @@ class DecryptAll {
 			if ($numberOfUsers === 0) {
 				return false;
 			}
-			$this->userManager->callForSeenUsers(function(IUser $user) use ($progress, &$userNo, $numberOfUsers) {
+			$this->userManager->callForSeenUsers(function (IUser $user) use ($progress, &$userNo, $numberOfUsers) {
 				if (\OC::$server->getAppConfig()->getValue('encryption', 'userSpecificKey', '0') !== '0') {
 					if ($this->prepareEncryptionModules($user->getUID()) === false) {
 						return false;
@@ -203,17 +200,16 @@ class DecryptAll {
 	 * @param string $userCount
 	 */
 	protected function decryptUsersFiles($uid, ProgressBar $progress, $userCount) {
-
 		$this->setupUserFS($uid);
 		$directories = [];
 		$directories[] = '/' . $uid . '/files';
 
-		while ($root = array_pop($directories)) {
+		while ($root = \array_pop($directories)) {
 			$content = $this->rootView->getDirectoryContent($root);
 			foreach ($content as $file) {
 				// only decrypt files owned by the user, exclude incoming local shares, and incoming federated shares
 				if ($file->getStorage()->instanceOfStorage('\OCA\Files_Sharing\ISharedStorage')) {
-						continue;
+					continue;
 				}
 				$path = $root . '/' . $file['name'];
 				if ($this->rootView->is_dir($path)) {
@@ -255,7 +251,6 @@ class DecryptAll {
 	 * @return bool
 	 */
 	protected function decryptFile($path) {
-
 		$source = $path;
 		$target = $path . '.decrypted.' . $this->getTimestamp() . '.part';
 
@@ -280,9 +275,8 @@ class DecryptAll {
 	 * @return int
 	 */
 	protected function getTimestamp() {
-		return time();
+		return \time();
 	}
-
 
 	/**
 	 * setup user file system
@@ -293,5 +287,4 @@ class DecryptAll {
 		\OC_Util::tearDownFS();
 		\OC_Util::setupFS($uid);
 	}
-
 }

@@ -21,13 +21,11 @@
  *
  */
 
-
 namespace Test\AppFramework\Http;
 
 use OCP\AppFramework\Http;
 use OCP\AppFramework\Http\TemplateResponse;
 use Test\TestCase;
-
 
 class TemplateResponseTest extends TestCase {
 
@@ -51,36 +49,32 @@ class TemplateResponseTest extends TestCase {
 		$this->tpl = new TemplateResponse($this->api, 'home');
 	}
 
-
-	public function testSetParamsConstructor(){
+	public function testSetParamsConstructor() {
 		$params = ['hi' => 'yo'];
 		$this->tpl = new TemplateResponse($this->api, 'home', $params);
 
 		$this->assertEquals(['hi' => 'yo'], $this->tpl->getParams());
 	}
 
-
-	public function testSetRenderAsConstructor(){
+	public function testSetRenderAsConstructor() {
 		$renderAs = 'myrender';
 		$this->tpl = new TemplateResponse($this->api, 'home', [], $renderAs);
 
 		$this->assertEquals($renderAs, $this->tpl->getRenderAs());
 	}
 
-
-	public function testSetParams(){
+	public function testSetParams() {
 		$params = ['hi' => 'yo'];
 		$this->tpl->setParams($params);
 
 		$this->assertEquals(['hi' => 'yo'], $this->tpl->getParams());
 	}
 
-
-	public function testGetTemplateName(){
+	public function testGetTemplateName() {
 		$this->assertEquals('home', $this->tpl->getTemplateName());
 	}
 
-	public function testGetRenderAs(){
+	public function testGetRenderAs() {
 		$render = 'myrender';
 		$this->tpl->renderAs($render);
 		$this->assertEquals($render, $this->tpl->getRenderAs());
@@ -94,5 +88,4 @@ class TemplateResponseTest extends TestCase {
 		$this->assertEquals(Http::STATUS_NOT_FOUND, $this->tpl->getStatus());
 		$this->assertEquals(['hi' => 'yo'], $this->tpl->getParams());
 	}
-
 }

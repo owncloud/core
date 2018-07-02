@@ -79,7 +79,7 @@ class CleanTags implements IRepairStep {
 			$offset += 50;
 		}
 
-		$output->info(sprintf('%d tags of deleted users have been removed.', $this->deletedTags));
+		$output->info(\sprintf('%d tags of deleted users have been removed.', $this->deletedTags));
 	}
 
 	protected function checkTags($offset) {
@@ -187,7 +187,7 @@ class CleanTags implements IRepairStep {
 		}
 
 		if (!empty($orphanItems)) {
-			$orphanItemsBatch = array_chunk($orphanItems, 200);
+			$orphanItemsBatch = \array_chunk($orphanItems, 200);
 			foreach ($orphanItemsBatch as $items) {
 				$qb->delete($deleteTable)
 					->where(
@@ -200,7 +200,7 @@ class CleanTags implements IRepairStep {
 		}
 
 		if ($repairInfo) {
-			$output->info(sprintf($repairInfo, sizeof($orphanItems)));
+			$output->info(\sprintf($repairInfo, \sizeof($orphanItems)));
 		}
 	}
 }

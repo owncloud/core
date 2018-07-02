@@ -21,4 +21,5 @@
 
 namespace OC\User;
 
-class NoUserException extends \Exception {}
+class NoUserException extends \Exception {
+}

@@ -109,19 +109,19 @@ class MountProviderTest extends \Test\TestCase {
 		$userManager = $this->createMock('\OCP\IUserManager');
 
 		$userShares = [
-			$this->makeMockShare(1, 100, 'user2', '/share2', 0), 
+			$this->makeMockShare(1, 100, 'user2', '/share2', 0),
 			$this->makeMockShare(2, 100, 'user2', '/share2', 31),
 			$this->makeMockShare(6, 100, 'user2', '/share2', 31, \OCP\Share::STATE_PENDING),
 			$this->makeMockShare(7, 100, 'user2', '/share2', 31, \OCP\Share::STATE_REJECTED),
 		];
 
 		$groupShares = [
-			$this->makeMockShare(3, 100, 'user2', '/share2', 0), 
-			$this->makeMockShare(4, 101, 'user2', '/share4', 31), 
-			$this->makeMockShare(5, 100, 'user1', '/share4', 31), 
+			$this->makeMockShare(3, 100, 'user2', '/share2', 0),
+			$this->makeMockShare(4, 101, 'user2', '/share4', 31),
+			$this->makeMockShare(5, 100, 'user1', '/share4', 31),
 		];
 
-		$userGroupUserShares = array_merge($userShares, $groupShares);
+		$userGroupUserShares = \array_merge($userShares, $groupShares);
 
 		$this->user->expects($this->any())
 			->method('getUID')
@@ -136,7 +136,7 @@ class MountProviderTest extends \Test\TestCase {
 			->method('getSharedWith');
 		$this->shareManager->expects($this->any())
 			->method('newShare')
-			->will($this->returnCallback(function() use ($rootFolder, $userManager) {
+			->will($this->returnCallback(function () use ($rootFolder, $userManager) {
 				return new \OC\Share20\Share($rootFolder, $userManager);
 			}));
 
@@ -169,10 +169,10 @@ class MountProviderTest extends \Test\TestCase {
 			// #0: share as outsider with "group1" and "user1" with same permissions
 			[
 				[
-					[1, 100, 'user2', '/share2', 31], 
+					[1, 100, 'user2', '/share2', 31],
 				],
 				[
-					[2, 100, 'user2', '/share2', 31], 
+					[2, 100, 'user2', '/share2', 31],
 				],
 				[
 					// combined, user share has higher priority
@@ -182,10 +182,10 @@ class MountProviderTest extends \Test\TestCase {
 			// #1: share as outsider with "group1" and "user1" with different permissions
 			[
 				[
-					[1, 100, 'user2', '/share', 31], 
+					[1, 100, 'user2', '/share', 31],
 				],
 				[
-					[2, 100, 'user2', '/share', 15], 
+					[2, 100, 'user2', '/share', 15],
 				],
 				[
 					// use highest permissions
@@ -197,8 +197,8 @@ class MountProviderTest extends \Test\TestCase {
 				[
 				],
 				[
-					[1, 100, 'user2', '/share', 31], 
-					[2, 100, 'user2', '/share', 31], 
+					[1, 100, 'user2', '/share', 31],
+					[2, 100, 'user2', '/share', 31],
 				],
 				[
 					// combined, first group share has higher priority
@@ -210,8 +210,8 @@ class MountProviderTest extends \Test\TestCase {
 				[
 				],
 				[
-					[1, 100, 'user2', '/share', 31], 
-					[2, 100, 'user2', '/share', 15], 
+					[1, 100, 'user2', '/share', 31],
+					[2, 100, 'user2', '/share', 15],
 				],
 				[
 					// use higher permissions
@@ -223,7 +223,7 @@ class MountProviderTest extends \Test\TestCase {
 				[
 				],
 				[
-					[1, 100, 'user1', '/share', 31], 
+					[1, 100, 'user1', '/share', 31],
 				],
 				[
 					// no received share since "user1" is the sharer/owner
@@ -234,8 +234,8 @@ class MountProviderTest extends \Test\TestCase {
 				[
 				],
 				[
-					[1, 100, 'user1', '/share', 31], 
-					[2, 100, 'user1', '/share', 15], 
+					[1, 100, 'user1', '/share', 31],
+					[2, 100, 'user1', '/share', 15],
 				],
 				[
 					// no received share since "user1" is the sharer/owner
@@ -246,7 +246,7 @@ class MountProviderTest extends \Test\TestCase {
 				[
 				],
 				[
-					[1, 100, 'user2', '/share', 0], 
+					[1, 100, 'user2', '/share', 0],
 				],
 				[
 					// no received share since "user1" opted out
@@ -255,10 +255,10 @@ class MountProviderTest extends \Test\TestCase {
 			// #7: share as outsider with "group1" and "user1" where recipient renamed in between
 			[
 				[
-					[1, 100, 'user2', '/share2-renamed', 31], 
+					[1, 100, 'user2', '/share2-renamed', 31],
 				],
 				[
-					[2, 100, 'user2', '/share2', 31], 
+					[2, 100, 'user2', '/share2', 31],
 				],
 				[
 					// use target of least recent share
@@ -268,10 +268,10 @@ class MountProviderTest extends \Test\TestCase {
 			// #8: share as outsider with "group1" and "user1" where recipient renamed in between
 			[
 				[
-					[2, 100, 'user2', '/share2', 31], 
+					[2, 100, 'user2', '/share2', 31],
 				],
 				[
-					[1, 100, 'user2', '/share2-renamed', 31], 
+					[1, 100, 'user2', '/share2-renamed', 31],
 				],
 				[
 					// use target of least recent share
@@ -281,10 +281,10 @@ class MountProviderTest extends \Test\TestCase {
 			// #9: share as outsider with "nullgroup" and "user1" where recipient renamed in between
 			[
 				[
-					[2, 100, 'user2', '/share2', 31], 
+					[2, 100, 'user2', '/share2', 31],
 				],
 				[
-					[1, 100, 'nullgroup', '/share2-renamed', 31], 
+					[1, 100, 'nullgroup', '/share2-renamed', 31],
 				],
 				[
 					// use target of least recent share
@@ -311,10 +311,10 @@ class MountProviderTest extends \Test\TestCase {
 		$rootFolder = $this->createMock('\OCP\Files\IRootFolder');
 		$userManager = $this->createMock('\OCP\IUserManager');
 
-		$userShares = array_map(function($shareSpec) {
+		$userShares = \array_map(function ($shareSpec) {
 			return $this->makeMockShare($shareSpec[0], $shareSpec[1], $shareSpec[2], $shareSpec[3], $shareSpec[4]);
 		}, $userShares);
-		$groupShares = array_map(function($shareSpec) {
+		$groupShares = \array_map(function ($shareSpec) {
 			return $this->makeMockShare($shareSpec[0], $shareSpec[1], $shareSpec[2], $shareSpec[3], $shareSpec[4]);
 		}, $groupShares);
 
@@ -322,7 +322,7 @@ class MountProviderTest extends \Test\TestCase {
 			->method('getUID')
 			->will($this->returnValue('user1'));
 		
-		$userGroupUserShares = array_merge($userShares, $groupShares);
+		$userGroupUserShares = \array_merge($userShares, $groupShares);
 		$requiredShareTypes = [\OCP\Share::SHARE_TYPE_USER, \OCP\Share::SHARE_TYPE_GROUP];
 		$this->shareManager->expects($this->once())
 			->method('getAllSharedWith')
@@ -334,7 +334,7 @@ class MountProviderTest extends \Test\TestCase {
 
 		$this->shareManager->expects($this->any())
 			->method('newShare')
-			->will($this->returnCallback(function() use ($rootFolder, $userManager) {
+			->will($this->returnCallback(function () use ($rootFolder, $userManager) {
 				return new \OC\Share20\Share($rootFolder, $userManager);
 			}));
 
@@ -346,7 +346,7 @@ class MountProviderTest extends \Test\TestCase {
 
 		$mounts = $this->provider->getMountsForUser($this->user, $this->loader);
 
-		$this->assertCount(count($expectedShares), $mounts);
+		$this->assertCount(\count($expectedShares), $mounts);
 
 		foreach ($mounts as $index => $mount) {
 			$expectedShare = $expectedShares[$index];
@@ -363,4 +363,3 @@ class MountProviderTest extends \Test\TestCase {
 		}
 	}
 }
-

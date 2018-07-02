@@ -35,7 +35,7 @@
 
 namespace OCA\Files_External\Lib\Storage;
 
-set_include_path(get_include_path() . PATH_SEPARATOR .
+\set_include_path(\get_include_path() . PATH_SEPARATOR .
 	\OC_App::getAppPath('files_external') . '/3rdparty/aws-sdk-php');
 require 'aws-autoloader.php';
 
@@ -79,7 +79,7 @@ class AmazonS3 extends \OCP\Files\Storage\StorageAdapter {
 	 * @return string correctly encoded path
 	 */
 	private function normalizePath($path) {
-		$path = trim($path, '/');
+		$path = \trim($path, '/');
 
 		if (!$path) {
 			$path = '.';
@@ -93,7 +93,7 @@ class AmazonS3 extends \OCP\Files\Storage\StorageAdapter {
 	 */
 	private function testTimeout() {
 		if ($this->test) {
-			sleep($this->timeout);
+			\sleep($this->timeout);
 		}
 	}
 
@@ -134,8 +134,8 @@ class AmazonS3 extends \OCP\Files\Storage\StorageAdapter {
 	 *
 	 * @param array $params
 	 */
-	public function updateLegacyId (array $params) {
-		$oldId = 'amazon::' . $params['key'] . md5($params['secret']);
+	public function updateLegacyId(array $params) {
+		$oldId = 'amazon::' . $params['key'] . \md5($params['secret']);
 
 		// find by old id or bucket
 		$stmt = \OC::$server->getDatabaseConnection()->prepare(
@@ -146,10 +146,10 @@ class AmazonS3 extends \OCP\Files\Storage\StorageAdapter {
 			$storages[$row['id']] = $row['numeric_id'];
 		}
 
-		if (isset($storages[$this->id]) && isset($storages[$oldId])) {
+		if (isset($storages[$this->id], $storages[$oldId])) {
 			// if both ids exist, delete the old storage and corresponding filecache entries
 			\OC\Files\Cache\Storage::remove($oldId);
-		} else if (isset($storages[$oldId])) {
+		} elseif (isset($storages[$oldId])) {
 			// if only the old id exists do an update
 			$stmt = \OC::$server->getDatabaseConnection()->prepare(
 				'UPDATE `*PREFIX*storages` SET `id` = ? WHERE `id` = ?'
@@ -170,7 +170,7 @@ class AmazonS3 extends \OCP\Files\Storage\StorageAdapter {
 		$fileType = $this->filetype($path);
 		if ($fileType === 'dir') {
 			return $this->rmdir($path);
-		} else if ($fileType === 'file') {
+		} elseif ($fileType === 'file') {
 			return $this->unlink($path);
 		} else {
 			return false;
@@ -204,7 +204,6 @@ class AmazonS3 extends \OCP\Files\Storage\StorageAdapter {
 		return $this->filetype($path) !== false;
 	}
 
-
 	public function rmdir($path) {
 		$path = $this->normalizePath($path);
 
@@ -230,7 +229,7 @@ class AmazonS3 extends \OCP\Files\Storage\StorageAdapter {
 		return false;
 	}
 
-	private function batchDelete ($path = null) {
+	private function batchDelete($path = null) {
 		$params = [
 			'Bucket' => $this->bucket
 		];
@@ -280,7 +279,7 @@ class AmazonS3 extends \OCP\Files\Storage\StorageAdapter {
 					// it's the directory itself, skip
 					continue;
 				}
-				$file = basename(
+				$file = \basename(
 					isset($object['Key']) ? $object['Key'] : $object['Prefix']
 				);
 				$files[] = $file;
@@ -301,7 +300,7 @@ class AmazonS3 extends \OCP\Files\Storage\StorageAdapter {
 			if ($this->is_dir($path)) {
 				//folders don't really exist
 				$stat['size'] = -1; //unknown
-				$stat['mtime'] = time() - $this->rescanDelay * 1000;
+				$stat['mtime'] = \time() - $this->rescanDelay * 1000;
 			} else {
 				$result = $this->getConnection()->headObject([
 					'Bucket' => $this->bucket,
@@ -310,15 +309,15 @@ class AmazonS3 extends \OCP\Files\Storage\StorageAdapter {
 
 				$stat['size'] = $result['ContentLength'] ? $result['ContentLength'] : 0;
 				if ($result['Metadata']['lastmodified']) {
-					$stat['mtime'] = strtotime($result['Metadata']['lastmodified']);
+					$stat['mtime'] = \strtotime($result['Metadata']['lastmodified']);
 				} else {
-					$stat['mtime'] = strtotime($result['LastModified']);
+					$stat['mtime'] = \strtotime($result['LastModified']);
 				}
 			}
-			$stat['atime'] = time();
+			$stat['atime'] = \time();
 
 			return $stat;
-		} catch(S3Exception $e) {
+		} catch (S3Exception $e) {
 			\OCP\Util::logException('files_external', $e);
 			return false;
 		}
@@ -387,7 +386,7 @@ class AmazonS3 extends \OCP\Files\Storage\StorageAdapter {
 					return false;
 				}
 
-				return fopen($tmpFile, 'r');
+				return \fopen($tmpFile, 'r');
 			case 'w':
 			case 'wb':
 			case 'a':
@@ -400,8 +399,8 @@ class AmazonS3 extends \OCP\Files\Storage\StorageAdapter {
 			case 'x+':
 			case 'c':
 			case 'c+':
-				if (strrpos($path, '.') !== false) {
-					$ext = substr($path, strrpos($path, '.'));
+				if (\strrpos($path, '.') !== false) {
+					$ext = \substr($path, \strrpos($path, '.'));
 				} else {
 					$ext = '';
 				}
@@ -409,11 +408,11 @@ class AmazonS3 extends \OCP\Files\Storage\StorageAdapter {
 				\OC\Files\Stream\Close::registerCallback($tmpFile, [$this, 'writeBack']);
 				if ($this->file_exists($path)) {
 					$source = $this->fopen($path, 'r');
-					file_put_contents($tmpFile, $source);
+					\file_put_contents($tmpFile, $source);
 				}
 				self::$tmpFiles[$tmpFile] = $path;
 
-				return fopen('close://' . $tmpFile, $mode);
+				return \fopen('close://' . $tmpFile, $mode);
 		}
 		return false;
 	}
@@ -422,11 +421,11 @@ class AmazonS3 extends \OCP\Files\Storage\StorageAdapter {
 		$path = $this->normalizePath($path);
 
 		$metadata = [];
-		if (is_null($mtime)) {
-			$mtime = time();
+		if ($mtime === null) {
+			$mtime = \time();
 		}
 		$metadata = [
-			'lastmodified' => gmdate(\Aws\Common\Enum\DateFormat::RFC1123, $mtime)
+			'lastmodified' => \gmdate(\Aws\Common\Enum\DateFormat::RFC1123, $mtime)
 		];
 
 		$fileType = $this->filetype($path);
@@ -495,8 +494,8 @@ class AmazonS3 extends \OCP\Files\Storage\StorageAdapter {
 			}
 
 			$dh = $this->opendir($path1);
-			if (is_resource($dh)) {
-				while (($file = readdir($dh)) !== false) {
+			if (\is_resource($dh)) {
+				while (($file = \readdir($dh)) !== false) {
 					if (\OC\Files\Filesystem::isIgnoredDir($file)) {
 						continue;
 					}
@@ -516,7 +515,6 @@ class AmazonS3 extends \OCP\Files\Storage\StorageAdapter {
 		$path2 = $this->normalizePath($path2);
 
 		if ($this->is_file($path1)) {
-
 			if ($this->copy($path1, $path2) === false) {
 				return false;
 			}
@@ -526,7 +524,6 @@ class AmazonS3 extends \OCP\Files\Storage\StorageAdapter {
 				return false;
 			}
 		} else {
-
 			if ($this->copy($path1, $path2) === false) {
 				return false;
 			}
@@ -544,7 +541,7 @@ class AmazonS3 extends \OCP\Files\Storage\StorageAdapter {
 		$test = $this->getConnection()->getBucketAcl([
 			'Bucket' => $this->bucket,
 		]);
-		if (isset($test) && !is_null($test->getPath('Owner/ID'))) {
+		if (isset($test) && $test->getPath('Owner/ID') !== null) {
 			return true;
 		}
 		return false;
@@ -561,7 +558,7 @@ class AmazonS3 extends \OCP\Files\Storage\StorageAdapter {
 	 * @throws \Exception if connection could not be made
 	 */
 	public function getConnection() {
-		if (!is_null($this->connection)) {
+		if ($this->connection !== null) {
 			return $this->connection;
 		}
 
@@ -614,11 +611,11 @@ class AmazonS3 extends \OCP\Files\Storage\StorageAdapter {
 				'Key' => $this->cleanKey(self::$tmpFiles[$tmpFile]),
 				'SourceFile' => $tmpFile,
 				'ContentType' => \OC::$server->getMimeTypeDetector()->detect($tmpFile),
-				'ContentLength' => filesize($tmpFile)
+				'ContentLength' => \filesize($tmpFile)
 			]);
 			$this->testTimeout();
 
-			unlink($tmpFile);
+			\unlink($tmpFile);
 		} catch (S3Exception $e) {
 			\OCP\Util::logException('files_external', $e);
 			return false;
@@ -631,5 +628,4 @@ class AmazonS3 extends \OCP\Files\Storage\StorageAdapter {
 	public static function checkDependencies() {
 		return true;
 	}
-
 }

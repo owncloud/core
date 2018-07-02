@@ -98,7 +98,7 @@ class CleanupRemoteStoragesTest extends TestCase {
 				for ($i = 0; $i < $storage['files_count']; $i++) {
 					$filesQuery->setParameter(0, $storage['numeric_id']);
 					$filesQuery->setParameter(1, 'file' . $i);
-					$filesQuery->setParameter(2, md5('file' . $i));
+					$filesQuery->setParameter(2, \md5('file' . $i));
 					$filesQuery->execute();
 				}
 			}
@@ -187,7 +187,5 @@ class CleanupRemoteStoragesTest extends TestCase {
 		$this->assertFalse($this->doesStorageExist($this->storages[3]['numeric_id']));
 		$this->assertTrue($this->doesStorageExist($this->storages[4]['numeric_id']));
 		$this->assertFalse($this->doesStorageExist($this->storages[5]['numeric_id']));
-
 	}
 }
-

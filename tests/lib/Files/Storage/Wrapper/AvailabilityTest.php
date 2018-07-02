@@ -55,7 +55,7 @@ class AvailabilityTest extends \Test\TestCase {
 		list($storage, $wrapper) = $this->getWrapperInstance();
 		$storage->expects($this->once())
 			->method('getAvailability')
-			->willReturn(['available' => false, 'last_checked' => time()]);
+			->willReturn(['available' => false, 'last_checked' => \time()]);
 		$storage->expects($this->never())
 			->method('test');
 		$storage->expects($this->never())

@@ -29,7 +29,6 @@ use OC\Helper\EnvironmentHelper;
  * @package OC\Theme
  */
 class ThemeService implements IThemeService {
-
 	const DEFAULT_THEME_PATH = '/themes/default';
 
 	/**
@@ -145,7 +144,7 @@ class ThemeService implements IThemeService {
 	 * @return Theme[]
 	 */
 	public function getAllThemes() {
-		return array_merge($this->getAllAppThemes(), $this->getAllLegacyThemes());
+		return \array_merge($this->getAllAppThemes(), $this->getAllLegacyThemes());
 	}
 
 	/**
@@ -177,7 +176,7 @@ class ThemeService implements IThemeService {
 						$themes[$entry] = $this->makeTheme($entry, false);
 					}
 				}
-				closedir($handle);
+				\closedir($handle);
 				return $themes;
 			}
 		}
@@ -190,7 +189,7 @@ class ThemeService implements IThemeService {
 	 */
 	public function findTheme($themeName) {
 		$allThemes = $this->getAllThemes();
-		if (array_key_exists($themeName, $allThemes)) {
+		if (\array_key_exists($themeName, $allThemes)) {
 			return $allThemes[$themeName];
 		}
 		return false;

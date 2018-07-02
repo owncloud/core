@@ -28,8 +28,7 @@ use Sabre\DAV\Server;
 use Sabre\HTTP\URLUtil;
 
 class Plugin extends \Sabre\CardDAV\Plugin {
-
-	function initialize(Server $server) {
+	public function initialize(Server $server) {
 		$server->on('propFind', [$this, 'propFind']);
 		parent::initialize($server);
 	}
@@ -41,16 +40,15 @@ class Plugin extends \Sabre\CardDAV\Plugin {
 	 * @return string
 	 */
 	protected function getAddressbookHomeForPrincipal($principal) {
-
-		if (strrpos($principal, 'principals/users', -strlen($principal)) !== false) {
+		if (\strrpos($principal, 'principals/users', -\strlen($principal)) !== false) {
 			list(, $principalId) = URLUtil::splitPath($principal);
 			return self::ADDRESSBOOK_ROOT . '/users/' . $principalId;
 		}
-		if (strrpos($principal, 'principals/groups', -strlen($principal)) !== false) {
+		if (\strrpos($principal, 'principals/groups', -\strlen($principal)) !== false) {
 			list(, $principalId) = URLUtil::splitPath($principal);
 			return self::ADDRESSBOOK_ROOT . '/groups/' . $principalId;
 		}
-		if (strrpos($principal, 'principals/system', -strlen($principal)) !== false) {
+		if (\strrpos($principal, 'principals/system', -\strlen($principal)) !== false) {
 			list(, $principalId) = URLUtil::splitPath($principal);
 			return self::ADDRESSBOOK_ROOT . '/system/' . $principalId;
 		}
@@ -65,12 +63,10 @@ class Plugin extends \Sabre\CardDAV\Plugin {
 	 * @param INode $node
 	 * @return void
 	 */
-	function propFind(PropFind $propFind, INode $node) {
-
+	public function propFind(PropFind $propFind, INode $node) {
 		$ns = '{http://owncloud.org/ns}';
 
 		if ($node instanceof AddressBook) {
-
 			$propFind->handle($ns . 'groups', function () use ($node) {
 				return new Groups($node->getContactsGroups());
 			});

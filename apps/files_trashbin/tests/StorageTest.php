@@ -44,7 +44,6 @@ use Test\Traits\UserTrait;
  * @package OCA\Files_Trashbin\Tests
  */
 class StorageTest extends TestCase {
-
 	use UserTrait;
 
 	/**
@@ -75,7 +74,6 @@ class StorageTest extends TestCase {
 		$this->user = $this->getUniqueId('user');
 		$this->createUser($this->user, $this->user);
 
-
 		// this will setup the FS
 		$this->loginAsUser($this->user);
 
@@ -103,7 +101,7 @@ class StorageTest extends TestCase {
 	public function testSingleStorageDeleteFile() {
 		$this->assertTrue($this->userView->file_exists('test.txt'));
 		$this->userView->unlink('test.txt');
-		list($storage,) = $this->userView->resolvePath('test.txt');
+		list($storage, ) = $this->userView->resolvePath('test.txt');
 		$storage->getScanner()->scan(''); // make sure we check the storage
 		$this->assertFalse($this->userView->getFileInfo('test.txt'));
 
@@ -111,7 +109,7 @@ class StorageTest extends TestCase {
 		$results = $this->rootView->getDirectoryContent($this->user . '/files_trashbin/files/');
 		$this->assertCount(1, $results);
 		$name = $results[0]->getName();
-		$this->assertEquals('test.txt', substr($name, 0, strrpos($name, '.')));
+		$this->assertEquals('test.txt', \substr($name, 0, \strrpos($name, '.')));
 	}
 
 	/**
@@ -120,7 +118,7 @@ class StorageTest extends TestCase {
 	public function testSingleStorageDeleteFolder() {
 		$this->assertTrue($this->userView->file_exists('folder/inside.txt'));
 		$this->userView->rmdir('folder');
-		list($storage,) = $this->userView->resolvePath('folder/inside.txt');
+		list($storage, ) = $this->userView->resolvePath('folder/inside.txt');
 		$storage->getScanner()->scan(''); // make sure we check the storage
 		$this->assertFalse($this->userView->getFileInfo('folder'));
 
@@ -128,7 +126,7 @@ class StorageTest extends TestCase {
 		$results = $this->rootView->getDirectoryContent($this->user . '/files_trashbin/files/');
 		$this->assertCount(1, $results);
 		$name = $results[0]->getName();
-		$this->assertEquals('folder', substr($name, 0, strrpos($name, '.')));
+		$this->assertEquals('folder', \substr($name, 0, \strrpos($name, '.')));
 
 		$results = $this->rootView->getDirectoryContent($this->user . '/files_trashbin/files/' . $name . '/');
 		$this->assertCount(1, $results);
@@ -159,7 +157,7 @@ class StorageTest extends TestCase {
 		$results = $this->rootView->getDirectoryContent($this->user . '/files_trashbin/files');
 		$this->assertCount(1, $results);
 		$name = $results[0]->getName();
-		$this->assertEquals('subfile.txt', substr($name, 0, strrpos($name, '.')));
+		$this->assertEquals('subfile.txt', \substr($name, 0, \strrpos($name, '.')));
 	}
 
 	/**
@@ -186,7 +184,7 @@ class StorageTest extends TestCase {
 		$results = $this->rootView->getDirectoryContent($this->user . '/files_trashbin/files');
 		$this->assertCount(1, $results);
 		$name = $results[0]->getName();
-		$this->assertEquals('folder', substr($name, 0, strrpos($name, '.')));
+		$this->assertEquals('folder', \substr($name, 0, \strrpos($name, '.')));
 
 		$results = $this->rootView->getDirectoryContent($this->user . '/files_trashbin/files/' . $name . '/');
 		$this->assertCount(1, $results);
@@ -226,7 +224,7 @@ class StorageTest extends TestCase {
 		$results = $this->rootView->getDirectoryContent($this->user . '/files_trashbin/files/');
 		$this->assertCount(1, $results);
 		$name = $results[0]->getName();
-		$this->assertEquals('folder', substr($name, 0, strrpos($name, '.')));
+		$this->assertEquals('folder', \substr($name, 0, \strrpos($name, '.')));
 
 		// check if file is in trashbin for owner and has the same file id
 		$info = $this->rootView->getFileInfo($this->user . '/files_trashbin/files/' . $name . '/test.txt');
@@ -237,7 +235,7 @@ class StorageTest extends TestCase {
 		$results = $this->rootView->getDirectoryContent($recipientUser . '/files_trashbin/files/');
 		$this->assertCount(1, $results);
 		$name = $results[0]->getName();
-		$this->assertEquals('folder', substr($name, 0, strrpos($name, '.')));
+		$this->assertEquals('folder', \substr($name, 0, \strrpos($name, '.')));
 
 		// check if file has a copy in trashbin for recipient (different file id)
 		$info = $this->rootView->getFileInfo($recipientUser . '/files_trashbin/files/' . $name . '/test.txt');
@@ -283,7 +281,7 @@ class StorageTest extends TestCase {
 		$results = $this->rootView->getDirectoryContent($this->user . '/files_trashbin/files/');
 		$this->assertCount(1, $results);
 		$name = $results[0]->getName();
-		$this->assertEquals('folder', substr($name, 0, strrpos($name, '.')));
+		$this->assertEquals('folder', \substr($name, 0, \strrpos($name, '.')));
 
 		// check if file is in trashbin for owner and has the same file id
 		$info = $this->rootView->getFileInfo($this->user . '/files_trashbin/files/' . $name . '/test.txt');
@@ -313,14 +311,14 @@ class StorageTest extends TestCase {
 		$this->userView->unlink('test.txt');
 
 		// rescan trash storage
-		list($rootStorage,) = $this->rootView->resolvePath($this->user . '/files_trashbin');
+		list($rootStorage, ) = $this->rootView->resolvePath($this->user . '/files_trashbin');
 		$rootStorage->getScanner()->scan('');
 
 		// check if versions are in trashbin
 		$results = $this->rootView->getDirectoryContent($this->user . '/files_trashbin/versions');
 		$this->assertCount(1, $results);
 		$name = $results[0]->getName();
-		$this->assertEquals('test.txt.v', substr($name, 0, strlen('test.txt.v')));
+		$this->assertEquals('test.txt.v', \substr($name, 0, \strlen('test.txt.v')));
 
 		// versions deleted
 		$results = $this->rootView->getDirectoryContent($this->user . '/files_versions/');
@@ -343,20 +341,20 @@ class StorageTest extends TestCase {
 		$this->userView->rmdir('folder');
 
 		// rescan trash storage
-		list($rootStorage,) = $this->rootView->resolvePath($this->user . '/files_trashbin');
+		list($rootStorage, ) = $this->rootView->resolvePath($this->user . '/files_trashbin');
 		$rootStorage->getScanner()->scan('');
 
 		// check if versions are in trashbin
 		$results = $this->rootView->getDirectoryContent($this->user . '/files_trashbin/versions');
 		$this->assertCount(1, $results);
 		$name = $results[0]->getName();
-		$this->assertEquals('folder.d', substr($name, 0, strlen('folder.d')));
+		$this->assertEquals('folder.d', \substr($name, 0, \strlen('folder.d')));
 
 		// check if versions are in trashbin
 		$results = $this->rootView->getDirectoryContent($this->user . '/files_trashbin/versions/' . $name . '/');
 		$this->assertCount(1, $results);
 		$name = $results[0]->getName();
-		$this->assertEquals('inside.txt.v', substr($name, 0, strlen('inside.txt.v')));
+		$this->assertEquals('inside.txt.v', \substr($name, 0, \strlen('inside.txt.v')));
 
 		// versions deleted
 		$results = $this->rootView->getDirectoryContent($this->user . '/files_versions/folder/');
@@ -397,19 +395,19 @@ class StorageTest extends TestCase {
 		$recipientView->unlink('share/test.txt');
 
 		// rescan trash storage for both users
-		list($rootStorage,) = $this->rootView->resolvePath($this->user . '/files_trashbin');
+		list($rootStorage, ) = $this->rootView->resolvePath($this->user . '/files_trashbin');
 		$rootStorage->getScanner()->scan('');
 
 		// check if versions are in trashbin for both users
 		$results = $this->rootView->getDirectoryContent($this->user . '/files_trashbin/versions');
 		$this->assertCount(1, $results, 'Versions in owner\'s trashbin');
 		$name = $results[0]->getName();
-		$this->assertEquals('test.txt.v', substr($name, 0, strlen('test.txt.v')));
+		$this->assertEquals('test.txt.v', \substr($name, 0, \strlen('test.txt.v')));
 
 		$results = $this->rootView->getDirectoryContent($recipientUser . '/files_trashbin/versions');
 		$this->assertCount(1, $results, 'Versions in recipient\'s trashbin');
 		$name = $results[0]->getName();
-		$this->assertEquals('test.txt.v', substr($name, 0, strlen('test.txt.v')));
+		$this->assertEquals('test.txt.v', \substr($name, 0, \strlen('test.txt.v')));
 
 		// versions deleted
 		$results = $this->rootView->getDirectoryContent($this->user . '/files_versions/share/');
@@ -451,32 +449,32 @@ class StorageTest extends TestCase {
 		$recipientView->rmdir('share/folder');
 
 		// rescan trash storage
-		list($rootStorage,) = $this->rootView->resolvePath($this->user . '/files_trashbin');
+		list($rootStorage, ) = $this->rootView->resolvePath($this->user . '/files_trashbin');
 		$rootStorage->getScanner()->scan('');
 
 		// check if versions are in trashbin for owner
 		$results = $this->rootView->getDirectoryContent($this->user . '/files_trashbin/versions');
 		$this->assertCount(1, $results);
 		$name = $results[0]->getName();
-		$this->assertEquals('folder.d', substr($name, 0, strlen('folder.d')));
+		$this->assertEquals('folder.d', \substr($name, 0, \strlen('folder.d')));
 
 		// check if file versions are in trashbin for owner
 		$results = $this->rootView->getDirectoryContent($this->user . '/files_trashbin/versions/' . $name . '/');
 		$this->assertCount(1, $results);
 		$name = $results[0]->getName();
-		$this->assertEquals('test.txt.v', substr($name, 0, strlen('test.txt.v')));
+		$this->assertEquals('test.txt.v', \substr($name, 0, \strlen('test.txt.v')));
 
 		// check if versions are in trashbin for recipient
 		$results = $this->rootView->getDirectoryContent($recipientUser . '/files_trashbin/versions');
 		$this->assertCount(1, $results);
 		$name = $results[0]->getName();
-		$this->assertEquals('folder.d', substr($name, 0, strlen('folder.d')));
+		$this->assertEquals('folder.d', \substr($name, 0, \strlen('folder.d')));
 
 		// check if file versions are in trashbin for recipient
 		$results = $this->rootView->getDirectoryContent($recipientUser . '/files_trashbin/versions/' . $name . '/');
 		$this->assertCount(1, $results);
 		$name = $results[0]->getName();
-		$this->assertEquals('test.txt.v', substr($name, 0, strlen('test.txt.v')));
+		$this->assertEquals('test.txt.v', \substr($name, 0, \strlen('test.txt.v')));
 
 		// versions deleted
 		$results = $this->rootView->getDirectoryContent($recipientUser . '/files_versions/share/folder/');
@@ -509,7 +507,7 @@ class StorageTest extends TestCase {
 		$this->assertTrue($this->userView->file_exists('substorage/test.txt'));
 
 		// rescan trash storage
-		list($rootStorage,) = $this->rootView->resolvePath($this->user . '/files_trashbin');
+		list($rootStorage, ) = $this->rootView->resolvePath($this->user . '/files_trashbin');
 		$rootStorage->getScanner()->scan('');
 
 		// versions were moved too
@@ -551,7 +549,7 @@ class StorageTest extends TestCase {
 		$this->assertTrue($this->userView->file_exists('substorage/folder/inside.txt'));
 
 		// rescan trash storage
-		list($rootStorage,) = $this->rootView->resolvePath($this->user . '/files_trashbin');
+		list($rootStorage, ) = $this->rootView->resolvePath($this->user . '/files_trashbin');
 		$rootStorage->getScanner()->scan('');
 
 		// versions were moved too
@@ -620,13 +618,13 @@ class StorageTest extends TestCase {
 		// grab subdir name
 		$subDirName = $results[0]->getName();
 		$name = $results[1]->getName();
-		$this->assertEquals('test.txt.d', substr($name, 0, strlen('test.txt.d')));
+		$this->assertEquals('test.txt.d', \substr($name, 0, \strlen('test.txt.d')));
 
 		$results = $this->rootView->getDirectoryContent($this->user . '/files_trashbin/versions');
 		$this->assertCount(2, $results, 'Versions in owner\'s trashbin');
 		// note: entry 0 is the "sub" entry for versions
 		$name = $results[1]->getName();
-		$this->assertEquals('test.txt.v', substr($name, 0, strlen('test.txt.v')));
+		$this->assertEquals('test.txt.v', \substr($name, 0, \strlen('test.txt.v')));
 
 		// check if sub-file and versions are in trashbin for owner
 		$results = $this->rootView->getDirectoryContent($this->user . '/files_trashbin/files/' . $subDirName);
@@ -636,7 +634,7 @@ class StorageTest extends TestCase {
 		$results = $this->rootView->getDirectoryContent($this->user . '/files_trashbin/versions/' . $subDirName);
 		$this->assertCount(1, $results, 'Versions in owner\'s trashbin');
 		$name = $results[0]->getName();
-		$this->assertEquals('testsub.txt.v', substr($name, 0, strlen('testsub.txt.v')));
+		$this->assertEquals('testsub.txt.v', \substr($name, 0, \strlen('testsub.txt.v')));
 
 		$this->logout();
 		$user2->delete();
@@ -731,7 +729,6 @@ class StorageTest extends TestCase {
 		$this->assertSame($expected,
 			$this->invokePrivate($storage, 'shouldMoveToTrash', [$path])
 		);
-
 	}
 
 	public function dataTestShouldMoveToTrash() {

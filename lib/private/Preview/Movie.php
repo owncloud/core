@@ -38,7 +38,7 @@ class Movie implements IProvider2 {
 	 * Keep track of movies without artwork to avoid retries in same request
 	 * @var array
 	 */
-	private $noArtworkIndex = array();
+	private $noArtworkIndex = [];
 
 	/**
 	 * {@inheritDoc}
@@ -63,9 +63,9 @@ class Movie implements IProvider2 {
 
 			// we better use 5MB (1024 * 1024 * 5 = 5242880) instead of 1MB.
 			// in some cases 1MB was no enough to generate thumbnail
-			$firstmb = stream_get_contents($handle, 5242880);
-			file_put_contents($absPath, $firstmb);
-			fclose($handle);
+			$firstmb = \stream_get_contents($handle, 5242880);
+			\file_put_contents($absPath, $firstmb);
+			\fclose($handle);
 		}
 
 		$result = $this->generateThumbNail($maxX, $maxY, $absPath, 5);
@@ -77,7 +77,7 @@ class Movie implements IProvider2 {
 		}
 
 		if (!$useFileDirectly) {
-			unlink($absPath);
+			\unlink($absPath);
 		}
 
 		return $result;
@@ -93,23 +93,23 @@ class Movie implements IProvider2 {
 		}
 
 		if (self::$atomicParsleyBinary) {
-			$suffix = substr($absPath, -4);
-			if ('.mp4' === strtolower($suffix)) {
+			$suffix = \substr($absPath, -4);
+			if (\strtolower($suffix) === '.mp4') {
 				$tmpFolder = \OC::$server->getTempManager()->getTemporaryFolder();
 				$tmpBase = $tmpFolder.'/Cover';
 				$cmd = self::$atomicParsleyBinary . ' ' .
-					escapeshellarg($absPath).
-					' --extractPixToPath ' . escapeshellarg($tmpBase) .
+					\escapeshellarg($absPath).
+					' --extractPixToPath ' . \escapeshellarg($tmpBase) .
 					' > /dev/null 2>&1';
 
-				exec($cmd, $output, $returnCode);
+				\exec($cmd, $output, $returnCode);
 
 				if ($returnCode === 0) {
-					$endings = array('.jpg', '.png');
+					$endings = ['.jpg', '.png'];
 					foreach ($endings as $ending) {
 						$extractedFile = $tmpBase.'_artwork_1'.$ending;
-						if (is_file($extractedFile) &&
-							filesize($extractedFile) > 0) {
+						if (\is_file($extractedFile) &&
+							\filesize($extractedFile) > 0) {
 							return $extractedFile;
 						}
 					}
@@ -129,19 +129,19 @@ class Movie implements IProvider2 {
 		$tmpPath = \OC::$server->getTempManager()->getTemporaryFile();
 
 		if (self::$avconvBinary) {
-			$cmd = self::$avconvBinary . ' -y -ss ' . escapeshellarg($second) .
-				' -i ' . escapeshellarg($absPath) .
-				' -an -f mjpeg -vframes 1 -vsync 1 ' . escapeshellarg($tmpPath) .
+			$cmd = self::$avconvBinary . ' -y -ss ' . \escapeshellarg($second) .
+				' -i ' . \escapeshellarg($absPath) .
+				' -an -f mjpeg -vframes 1 -vsync 1 ' . \escapeshellarg($tmpPath) .
 				' > /dev/null 2>&1';
 		} else {
-			$cmd = self::$ffmpegBinary . ' -y -ss ' . escapeshellarg($second) .
-				' -i ' . escapeshellarg($absPath) .
+			$cmd = self::$ffmpegBinary . ' -y -ss ' . \escapeshellarg($second) .
+				' -i ' . \escapeshellarg($absPath) .
 				' -f mjpeg -vframes 1' .
-				' ' . escapeshellarg($tmpPath) .
+				' ' . \escapeshellarg($tmpPath) .
 				' > /dev/null 2>&1';
 		}
 
-		exec($cmd, $output, $returnCode);
+		\exec($cmd, $output, $returnCode);
 
 		if ($returnCode === 0) {
 			return $tmpPath;
@@ -158,18 +158,17 @@ class Movie implements IProvider2 {
 	 * @return bool|\OCP\IImage
 	 */
 	private function generateThumbNail($maxX, $maxY, $absPath, $second) {
-
 		$extractedCover = $this->extractMp4CoverArtwork($absPath);
-		if (false !== $extractedCover) {
+		if ($extractedCover !== false) {
 			$tmpPath = $extractedCover;
 		} else {
 			$tmpPath = $this->generateFromMovie($absPath, $second);
 		}
 
-		if (is_string($tmpPath) && is_file($tmpPath)) {
+		if (\is_string($tmpPath) && \is_file($tmpPath)) {
 			$image = new \OC_Image();
 			$image->loadFromFile($tmpPath);
-			unlink($tmpPath);
+			\unlink($tmpPath);
 			if ($image->valid()) {
 				$image->scaleDownToFit($maxX, $maxY);
 				return $image;

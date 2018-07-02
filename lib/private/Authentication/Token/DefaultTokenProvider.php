@@ -89,7 +89,7 @@ class DefaultTokenProvider implements IProvider {
 		$dbToken = new DefaultToken();
 		$dbToken->setUid($uid);
 		$dbToken->setLoginName($loginName);
-		if (!is_null($password)) {
+		if ($password !== null) {
 			$dbToken->setPassword($this->encryptPassword($password, $token));
 		}
 		$dbToken->setName($name);
@@ -183,7 +183,7 @@ class DefaultTokenProvider implements IProvider {
 	 */
 	public function getPassword(IToken $savedToken, $tokenId) {
 		$password = $savedToken->getPassword();
-		if (is_null($password)) {
+		if ($password === null) {
 			throw new PasswordlessTokenException();
 		}
 		return $this->decryptPassword($password, $tokenId);
@@ -242,7 +242,7 @@ class DefaultTokenProvider implements IProvider {
 			['app' => __METHOD__]
 		);
 		$olderThan = $this->time->getTime() - (int) $this->config->getSystemValue('session_lifetime', 60 * 60 * 24);
-		$this->logger->info('Invalidating tokens older than ' . date('c', $olderThan), ['app' => 'cron']);
+		$this->logger->info('Invalidating tokens older than ' . \date('c', $olderThan), ['app' => 'cron']);
 		$this->mapper->invalidateOld($olderThan);
 	}
 
@@ -252,7 +252,7 @@ class DefaultTokenProvider implements IProvider {
 	 */
 	private function hashToken($token) {
 		$secret = $this->config->getSystemValue('secret');
-		return hash('sha512', $token . $secret);
+		return \hash('sha512', $token . $secret);
 	}
 
 	/**
@@ -289,5 +289,4 @@ class DefaultTokenProvider implements IProvider {
 			throw new InvalidTokenException();
 		}
 	}
-
 }

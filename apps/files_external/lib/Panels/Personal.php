@@ -48,15 +48,15 @@ class Personal implements ISettings {
 		$this->encManager = $encManager;
 	}
 
-    public function getPriority() {
-        return 0;
-    }
+	public function getPriority() {
+		return 0;
+	}
 
-    public function getSectionID() {
-        return 'storage';
-    }
+	public function getSectionID() {
+		return 'storage';
+	}
 
-    public function getPanel() {
+	public function getPanel() {
 		$tmpl = new Template('files_external', 'settings');
 		$enabled = ($this->config->getAppValue('core', 'enable_external_storage', 'no') === 'yes'
 			&& $this->backendService->isUserMountingAllowed());
@@ -70,6 +70,5 @@ class Personal implements ISettings {
 		$tmpl->assign('allowUserMounting', $enabled);
 		$tmpl->assign('allowUserMountSharing', $this->config->getAppValue('core', 'allow_user_mount_sharing', 'yes') === 'yes');
 		return $tmpl;
-    }
-
+	}
 }

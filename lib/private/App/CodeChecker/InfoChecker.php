@@ -85,7 +85,7 @@ class InfoChecker extends BasicEmitter {
 				'type' => 'duplicateRequirement',
 				'field' => 'min',
 			];
-		} else if (!isset($info['dependencies']['owncloud']['@attributes']['min-version'])) {
+		} elseif (!isset($info['dependencies']['owncloud']['@attributes']['min-version'])) {
 			$this->emit('InfoChecker', 'missingRequirement', ['min']);
 		}
 
@@ -95,27 +95,27 @@ class InfoChecker extends BasicEmitter {
 				'type' => 'duplicateRequirement',
 				'field' => 'max',
 			];
-		} else if (!isset($info['dependencies']['owncloud']['@attributes']['max-version'])) {
+		} elseif (!isset($info['dependencies']['owncloud']['@attributes']['max-version'])) {
 			$this->emit('InfoChecker', 'missingRequirement', ['max']);
 		}
 
 		foreach ($info as $key => $value) {
-			if(is_array($value)) {
-				$value = json_encode($value);
+			if (\is_array($value)) {
+				$value = \json_encode($value);
 			}
-			if (in_array($key, $this->mandatoryFields)) {
+			if (\in_array($key, $this->mandatoryFields)) {
 				$this->emit('InfoChecker', 'mandatoryFieldFound', [$key, $value]);
 				continue;
 			}
 
-			if (in_array($key, $this->optionalFields)) {
+			if (\in_array($key, $this->optionalFields)) {
 				$this->emit('InfoChecker', 'optionalFieldFound', [$key, $value]);
 				continue;
 			}
 
-			if (in_array($key, $this->deprecatedFields)) {
+			if (\in_array($key, $this->deprecatedFields)) {
 				// skip empty arrays - empty arrays for remote and public are always added
-				if($value === '[]' && in_array($key, ['public', 'remote', 'info'])) {
+				if ($value === '[]' && \in_array($key, ['public', 'remote', 'info'])) {
 					continue;
 				}
 				$this->emit('InfoChecker', 'deprecatedFieldFound', [$key, $value]);
@@ -126,7 +126,7 @@ class InfoChecker extends BasicEmitter {
 		}
 
 		foreach ($this->mandatoryFields as $key) {
-			if(!isset($info[$key])) {
+			if (!isset($info[$key])) {
 				$this->emit('InfoChecker', 'mandatoryFieldMissing', [$key]);
 				$errors[] = [
 					'type' => 'mandatoryFieldMissing',
@@ -136,10 +136,10 @@ class InfoChecker extends BasicEmitter {
 		}
 
 		$versionFile = $appPath . '/appinfo/version';
-		if (is_file($versionFile)) {
-			$version = trim(file_get_contents($versionFile));
+		if (\is_file($versionFile)) {
+			$version = \trim(\file_get_contents($versionFile));
 			if (isset($info['version'])) {
-				if($info['version'] !== $version) {
+				if ($info['version'] !== $version) {
 					$this->emit('InfoChecker', 'differentVersions',
 						[$version, $info['version']]);
 					$errors[] = [

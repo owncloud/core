@@ -28,7 +28,6 @@ use OCP\AppFramework\Http\DataResponse;
 use OCP\IL10N;
 use OCP\IRequest;
 
-
 class SettingsController extends Controller {
 
 	/** @var IL10N */
@@ -52,7 +51,6 @@ class SettingsController extends Controller {
 		$this->l = $l10n;
 		$this->trustedServers = $trustedServers;
 	}
-
 
 	/**
 	 * add server to the list of trusted ownClouds
@@ -117,5 +115,4 @@ class SettingsController extends Controller {
 
 		return true;
 	}
-
 }

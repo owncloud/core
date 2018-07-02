@@ -19,9 +19,7 @@
  *
  */
 
-
 namespace OCA\DAV\Tests\unit;
-
 
 use OCA\DAV\Tree;
 use Sabre\DAV\ICollection;

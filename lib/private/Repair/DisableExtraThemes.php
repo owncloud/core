@@ -21,7 +21,6 @@
 
 namespace OC\Repair;
 
-
 use OCP\App\IAppManager;
 use OCP\IAppConfig;
 use OCP\IConfig;
@@ -64,8 +63,8 @@ class DisableExtraThemes implements IRepairStep {
 		$enabledThemes = $this->getEnabledAppThemes();
 
 		$activeTheme = '';
-		if (count($enabledThemes) >= 2) {
-			$activeTheme = array_pop($enabledThemes);
+		if (\count($enabledThemes) >= 2) {
+			$activeTheme = \array_pop($enabledThemes);
 			foreach ($enabledThemes as $appId) {
 				$this->appManager->disableApp($appId);
 				$out->info("Theme $appId disabled");
@@ -73,7 +72,7 @@ class DisableExtraThemes implements IRepairStep {
 		}
 
 		$activeLegacyTheme = $this->config->getSystemValue('theme', '');
-		if ($activeLegacyTheme !== '' && count($enabledThemes) > 0) {
+		if ($activeLegacyTheme !== '' && \count($enabledThemes) > 0) {
 			$this->config->setSystemValue('theme', '');
 			$out->info("Legacy theme $activeLegacyTheme disabled");
 		}
@@ -92,15 +91,15 @@ class DisableExtraThemes implements IRepairStep {
 
 		// get themes as appId => appType
 		$appTypes = $this->appConfig->getValues(false, 'types');
-		$allThemes = array_filter(
+		$allThemes = \array_filter(
 			$appTypes,
-			function ($appTypes){
-				return in_array('theme', explode(',', $appTypes));
+			function ($appTypes) {
+				return \in_array('theme', \explode(',', $appTypes));
 			}
 		);
 
 		// calculate an intersection to get enabled themes
-		$enabledThemes = array_intersect(array_keys($allThemes), $enabledApps);
+		$enabledThemes = \array_intersect(\array_keys($allThemes), $enabledApps);
 
 		return $enabledThemes;
 	}

@@ -23,7 +23,6 @@
 
 namespace OC\Repair;
 
-
 use OCP\IDBConnection;
 use OCP\Migration\IOutput;
 use OCP\Migration\IRepairStep;
@@ -57,9 +56,9 @@ class DropOldTables implements IRepairStep {
 	 */
 	public function run(IOutput $output) {
 		$tables = $this->oldDatabaseTables();
-		$output->startProgress(count($tables));
+		$output->startProgress(\count($tables));
 		foreach ($this->oldDatabaseTables() as $tableName) {
-			if ($this->connection->tableExists($tableName)){
+			if ($this->connection->tableExists($tableName)) {
 				$this->connection->dropTable($tableName);
 			}
 			$output->advance(1, "Drop old database table: $tableName");

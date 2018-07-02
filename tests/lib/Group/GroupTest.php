@@ -42,22 +42,22 @@ class GroupTest extends \Test\TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 		$eventDispatcher->method('addListener')
-			->will($this->returnCallback(function($eventName, $callable, $priority) use (&$eventMap){
+			->will($this->returnCallback(function ($eventName, $callable, $priority) use (&$eventMap) {
 				if (!isset($eventMap[$eventName])) {
 					$eventMap[$eventName] = [];
 				}
 				// ignore priority for now
 				$eventMap[$eventName][] = $callable;
-		}));
+			}));
 		$eventDispatcher->method('dispatch')
-			->will($this->returnCallback(function($eventName, $event) use (&$eventMap){
+			->will($this->returnCallback(function ($eventName, $event) use (&$eventMap) {
 				if (isset($eventMap[$eventName])) {
 					foreach ($eventMap[$eventName] as $callable) {
 						$callable($event);
 					}
 				}
 				return $event;
-		}));
+			}));
 		return $eventDispatcher;
 	}
 
@@ -174,11 +174,11 @@ class GroupTest extends \Test\TestCase {
 
 		$eventsCalled = ['group.preAddUser' => [], 'group.postAddUser' => []];
 		$dispatcher = $this->getEventDispatcherMock();
-		$dispatcher->addListener('group.preAddUser', function(GenericEvent $event) use (&$eventsCalled){
+		$dispatcher->addListener('group.preAddUser', function (GenericEvent $event) use (&$eventsCalled) {
 			$eventsCalled['group.preAddUser']['subject'] = $event->getSubject();
 			$eventsCalled['group.preAddUser']['arguments'] = $event->getArguments();
 		});
-		$dispatcher->addListener('group.postAddUser', function(GenericEvent $event) use (&$eventsCalled){
+		$dispatcher->addListener('group.postAddUser', function (GenericEvent $event) use (&$eventsCalled) {
 			$eventsCalled['group.postAddUser']['subject'] = $event->getSubject();
 			$eventsCalled['group.postAddUser']['arguments'] = $event->getArguments();
 		});
@@ -238,11 +238,11 @@ class GroupTest extends \Test\TestCase {
 
 		$eventsCalled = ['group.preAddUser' => [], 'group.postAddUser' => []];
 		$dispatcher = $this->getEventDispatcherMock();
-		$dispatcher->addListener('group.preAddUser', function(GenericEvent $event) use (&$eventsCalled){
+		$dispatcher->addListener('group.preAddUser', function (GenericEvent $event) use (&$eventsCalled) {
 			$eventsCalled['group.preAddUser']['subject'] = $event->getSubject();
 			$eventsCalled['group.preAddUser']['arguments'] = $event->getArguments();
 		});
-		$dispatcher->addListener('group.postAddUser', function(GenericEvent $event) use (&$eventsCalled){
+		$dispatcher->addListener('group.postAddUser', function (GenericEvent $event) use (&$eventsCalled) {
 			$eventsCalled['group.postAddUser']['subject'] = $event->getSubject();
 			$eventsCalled['group.postAddUser']['arguments'] = $event->getArguments();
 		});
@@ -298,11 +298,11 @@ class GroupTest extends \Test\TestCase {
 
 		$eventsCalled = ['group.preRemoveUser' => [], 'group.postRemoveUser' => []];
 		$dispatcher = $this->getEventDispatcherMock();
-		$dispatcher->addListener('group.preRemoveUser', function(GenericEvent $event) use (&$eventsCalled){
+		$dispatcher->addListener('group.preRemoveUser', function (GenericEvent $event) use (&$eventsCalled) {
 			$eventsCalled['group.preRemoveUser']['subject'] = $event->getSubject();
 			$eventsCalled['group.preRemoveUser']['arguments'] = $event->getArguments();
 		});
-		$dispatcher->addListener('group.postRemoveUser', function(GenericEvent $event) use (&$eventsCalled){
+		$dispatcher->addListener('group.postRemoveUser', function (GenericEvent $event) use (&$eventsCalled) {
 			$eventsCalled['group.postRemoveUser']['subject'] = $event->getSubject();
 			$eventsCalled['group.postRemoveUser']['arguments'] = $event->getArguments();
 		});
@@ -340,11 +340,11 @@ class GroupTest extends \Test\TestCase {
 
 		$eventsCalled = ['group.preRemoveUser' => [], 'group.postRemoveUser' => []];
 		$dispatcher = $this->getEventDispatcherMock();
-		$dispatcher->addListener('group.preRemoveUser', function(GenericEvent $event) use (&$eventsCalled){
+		$dispatcher->addListener('group.preRemoveUser', function (GenericEvent $event) use (&$eventsCalled) {
 			$eventsCalled['group.preRemoveUser']['subject'] = $event->getSubject();
 			$eventsCalled['group.preRemoveUser']['arguments'] = $event->getArguments();
 		});
-		$dispatcher->addListener('group.postRemoveUser', function(GenericEvent $event) use (&$eventsCalled){
+		$dispatcher->addListener('group.postRemoveUser', function (GenericEvent $event) use (&$eventsCalled) {
 			$eventsCalled['group.postRemoveUser']['subject'] = $event->getSubject();
 			$eventsCalled['group.postRemoveUser']['arguments'] = $event->getArguments();
 		});
@@ -572,11 +572,11 @@ class GroupTest extends \Test\TestCase {
 
 		$eventsCalled = ['group.preDelete' => [], 'group.postDelete' => []];
 		$dispatcher = $this->getEventDispatcherMock();
-		$dispatcher->addListener('group.preDelete', function(GenericEvent $event) use (&$eventsCalled){
+		$dispatcher->addListener('group.preDelete', function (GenericEvent $event) use (&$eventsCalled) {
 			$eventsCalled['group.preDelete']['subject'] = $event->getSubject();
 			$eventsCalled['group.preDelete']['arguments'] = $event->getArguments();
 		});
-		$dispatcher->addListener('group.postDelete', function(GenericEvent $event) use (&$eventsCalled){
+		$dispatcher->addListener('group.postDelete', function (GenericEvent $event) use (&$eventsCalled) {
 			$eventsCalled['group.postDelete']['subject'] = $event->getSubject();
 			$eventsCalled['group.postDelete']['arguments'] = $event->getArguments();
 		});

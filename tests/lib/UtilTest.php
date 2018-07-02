@@ -35,8 +35,8 @@ class UtilTest extends \Test\TestCase {
 		$this->assertInternalType('string', $edition);
 	}
 
-	function testFormatDate() {
-		date_default_timezone_set("UTC");
+	public function testFormatDate() {
+		\date_default_timezone_set("UTC");
 
 		$result = OC_Util::formatDate(1350129205);
 		$expected = 'October 13, 2012 at 11:53:25 AM GMT+0';
@@ -47,8 +47,8 @@ class UtilTest extends \Test\TestCase {
 		$this->assertEquals($expected, $result);
 	}
 
-	function testFormatDateWithTZ() {
-		date_default_timezone_set("UTC");
+	public function testFormatDateWithTZ() {
+		\date_default_timezone_set("UTC");
 
 		$result = OC_Util::formatDate(1350129205, false, 'Europe/Berlin');
 		$expected = 'October 13, 2012 at 1:53:25 PM GMT+2';
@@ -58,7 +58,7 @@ class UtilTest extends \Test\TestCase {
 	/**
 	 * @expectedException \Exception
 	 */
-	function testFormatDateWithInvalidTZ() {
+	public function testFormatDateWithInvalidTZ() {
 		OC_Util::formatDate(1350129205, false, 'Mordor/Barad-dûr');
 	}
 
@@ -76,8 +76,8 @@ class UtilTest extends \Test\TestCase {
 	/**
 	 * @dataProvider formatDateWithTZFromSessionData
 	 */
-	function testFormatDateWithTZFromSession($offset, $expected, $expectedTimeZone) {
-		date_default_timezone_set("UTC");
+	public function testFormatDateWithTZFromSession($offset, $expected, $expectedTimeZone) {
+		\date_default_timezone_set("UTC");
 
 		$oldDateTimeFormatter = \OC::$server->query('DateTimeFormatter');
 		\OC::$server->getSession()->set('timezone', $offset);
@@ -99,7 +99,7 @@ class UtilTest extends \Test\TestCase {
 		});
 	}
 
-	function testSanitizeHTML() {
+	public function testSanitizeHTML() {
 		$badArray = [
 			'While it is unusual to pass an array',
 			'this function actually <blink>supports</blink> it.',
@@ -132,23 +132,23 @@ class UtilTest extends \Test\TestCase {
 		$this->assertEquals('This is a good string without HTML.', $result);
 	}
 
-	function testEncodePath() {
+	public function testEncodePath() {
 		$component = '/§#@test%&^ä/-child';
 		$result = OC_Util::encodePath($component);
 		$this->assertEquals("/%C2%A7%23%40test%25%26%5E%C3%A4/-child", $result);
 	}
 
 	public function testFileInfoLoaded() {
-		$expected = function_exists('finfo_open');
+		$expected = \function_exists('finfo_open');
 		$this->assertEquals($expected, \OC_Util::fileInfoLoaded());
 	}
 
-	function testGetDefaultEmailAddress() {
+	public function testGetDefaultEmailAddress() {
 		$email = \OCP\Util::getDefaultEmailAddress("no-reply");
 		$this->assertEquals('no-reply@localhost', $email);
 	}
 
-	function testGetDefaultEmailAddressFromConfig() {
+	public function testGetDefaultEmailAddressFromConfig() {
 		$config = \OC::$server->getConfig();
 		$config->setSystemValue('mail_domain', 'example.com');
 		$email = \OCP\Util::getDefaultEmailAddress("no-reply");
@@ -156,7 +156,7 @@ class UtilTest extends \Test\TestCase {
 		$config->deleteSystemValue('mail_domain');
 	}
 
-	function testGetConfiguredEmailAddressFromConfig() {
+	public function testGetConfiguredEmailAddressFromConfig() {
 		$config = \OC::$server->getConfig();
 		$config->setSystemValue('mail_domain', 'example.com');
 		$config->setSystemValue('mail_from_address', 'owncloud');
@@ -166,11 +166,11 @@ class UtilTest extends \Test\TestCase {
 		$config->deleteSystemValue('mail_from_address');
 	}
 
-	function testGetInstanceIdGeneratesValidId() {
+	public function testGetInstanceIdGeneratesValidId() {
 		\OC::$server->getConfig()->deleteSystemValue('instanceid');
 		$instanceId = OC_Util::getInstanceId();
 		$this->assertStringStartsWith('oc', $instanceId);
-		$matchesRegex = preg_match('/^[a-z0-9]+$/', $instanceId);
+		$matchesRegex = \preg_match('/^[a-z0-9]+$/', $instanceId);
 		$this->assertSame(1, $matchesRegex);
 	}
 
@@ -254,7 +254,7 @@ class UtilTest extends \Test\TestCase {
 	 * @param array $excludedGroups groups which should be excluded from sharing
 	 * @param bool $expected expected result
 	 */
-	function testIsSharingDisabledForUser($groups, $membership, $excludedGroups, $expected) {
+	public function testIsSharingDisabledForUser($groups, $membership, $excludedGroups, $expected) {
 		$config = $this->getMockBuilder('OCP\IConfig')->disableOriginalConstructor()->getMock();
 		$groupManager = $this->getMockBuilder('OCP\IGroupManager')->disableOriginalConstructor()->getMock();
 		$user = $this->getMockBuilder('OCP\IUser')->disableOriginalConstructor()->getMock();
@@ -268,7 +268,7 @@ class UtilTest extends \Test\TestCase {
 				->expects($this->at(1))
 				->method('getAppValue')
 				->with('core', 'shareapi_exclude_groups_list')
-				->will($this->returnValue(json_encode($excludedGroups)));
+				->will($this->returnValue(\json_encode($excludedGroups)));
 
 		$groupManager
 				->expects($this->at(0))
@@ -299,7 +299,7 @@ class UtilTest extends \Test\TestCase {
 	 *
 	 * @dataProvider defaultAppsProvider
 	 */
-	function testDefaultApps($defaultAppConfig, $expectedPath, $enabledApps) {
+	public function testDefaultApps($defaultAppConfig, $expectedPath, $enabledApps) {
 		$oldDefaultApps = \OCP\Config::getSystemValue('defaultapp', '');
 		// CLI is doing messy stuff with the webroot, so need to work it around
 		$oldWebRoot = \OC::$WEBROOT;
@@ -308,9 +308,9 @@ class UtilTest extends \Test\TestCase {
 		$appManager = $this->createMock('\OCP\App\IAppManager');
 		$appManager->expects($this->any())
 			->method('isEnabledForUser')
-			->will($this->returnCallback(function($appId) use ($enabledApps){
-				return in_array($appId, $enabledApps);
-		}));
+			->will($this->returnCallback(function ($appId) use ($enabledApps) {
+				return \in_array($appId, $enabledApps);
+			}));
 		Dummy_OC_Util::$appManager = $appManager;
 
 		// need to set a user id to make sure enabled apps are read from cache
@@ -324,7 +324,7 @@ class UtilTest extends \Test\TestCase {
 		\OC_User::setUserId(null);
 	}
 
-	function defaultAppsProvider() {
+	public function defaultAppsProvider() {
 		return [
 			// none specified, default to files
 			[
@@ -354,21 +354,21 @@ class UtilTest extends \Test\TestCase {
 	}
 
 	public function testGetDefaultPageUrlWithRedirectUrlWithoutFrontController() {
-		putenv('front_controller_active=false');
+		\putenv('front_controller_active=false');
 
 		$_REQUEST['redirect_url'] = 'myRedirectUrl.com';
 		$this->assertSame('http://localhost'.\OC::$WEBROOT.'/myRedirectUrl.com', OC_Util::getDefaultPageUrl());
 	}
 
 	public function testGetDefaultPageUrlWithRedirectUrlRedirectBypassWithoutFrontController() {
-		putenv('front_controller_active=false');
+		\putenv('front_controller_active=false');
 
 		$_REQUEST['redirect_url'] = 'myRedirectUrl.com@foo.com:a';
 		$this->assertSame('http://localhost'.\OC::$WEBROOT.'/index.php/apps/files/', OC_Util::getDefaultPageUrl());
 	}
 
 	public function testGetDefaultPageUrlWithRedirectUrlRedirectBypassWithFrontController() {
-		putenv('front_controller_active=true');
+		\putenv('front_controller_active=true');
 		$_REQUEST['redirect_url'] = 'myRedirectUrl.com@foo.com:a';
 		$this->assertSame('http://localhost'.\OC::$WEBROOT.'/apps/files/', OC_Util::getDefaultPageUrl());
 	}
@@ -398,7 +398,7 @@ class UtilTest extends \Test\TestCase {
 
 	public function testCheckDataDirectoryValidity() {
 		$dataDir = \OCP\Files::tmpFolder();
-		touch($dataDir . '/.ocdata');
+		\touch($dataDir . '/.ocdata');
 		$errors = \OC_Util::checkDataDirectoryValidity($dataDir);
 		$this->assertEmpty($errors);
 		\OCP\Files::rmdirr($dataDir);
@@ -438,8 +438,8 @@ class UtilTest extends \Test\TestCase {
 			);
 		}
 		$skeletonDir = \OCP\Files::tmpFolder();
-		touch($skeletonDir . '/a-file');
-		chmod($skeletonDir, 0);
+		\touch($skeletonDir . '/a-file');
+		\chmod($skeletonDir, 0);
 		$config = \OC::$server->getConfig();
 		$config->setSystemValue('skeletondirectory', $skeletonDir);
 		$userFolder = $this->createMock('\OCP\Files\Folder');
@@ -460,8 +460,8 @@ class UtilTest extends \Test\TestCase {
 			);
 		}
 		$skeletonDir = \OCP\Files::tmpFolder();
-		touch($skeletonDir . '/a-file');
-		chmod($skeletonDir . '/a-file', 0);
+		\touch($skeletonDir . '/a-file');
+		\chmod($skeletonDir . '/a-file', 0);
 		$config = \OC::$server->getConfig();
 		$config->setSystemValue('skeletondirectory', $skeletonDir);
 		$userFolder = $this->createMock('\OCP\Files\Folder');
@@ -576,7 +576,6 @@ class UtilTest extends \Test\TestCase {
 			['http://:8080', false],
 			['notsupportscheme://host.tld:port', false],
 			['http://host.tld:this-is-no-port', false],
-
 
 			// default ports
 			['http://host.tld/some/path', 'http://host.tld:80'],

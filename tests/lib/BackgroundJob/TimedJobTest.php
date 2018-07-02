@@ -50,19 +50,19 @@ class TimedJobTest extends \Test\TestCase {
 	}
 
 	public function testShouldRunAfterInterval() {
-		$this->job->setLastRun(time() - 12);
+		$this->job->setLastRun(\time() - 12);
 		$this->job->execute($this->jobList);
 		$this->assertTrue($this->jobRun);
 	}
 
 	public function testShouldNotRunWithinInterval() {
-		$this->job->setLastRun(time() - 5);
+		$this->job->setLastRun(\time() - 5);
 		$this->job->execute($this->jobList);
 		$this->assertFalse($this->jobRun);
 	}
 
 	public function testShouldNotTwice() {
-		$this->job->setLastRun(time() - 15);
+		$this->job->setLastRun(\time() - 15);
 		$this->job->execute($this->jobList);
 		$this->assertTrue($this->jobRun);
 		$this->jobRun = false;

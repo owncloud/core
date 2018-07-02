@@ -33,16 +33,16 @@ class PropagatorTest extends TestCase {
 	 * @return ICacheEntry[]
 	 */
 	private function getFileInfos($paths) {
-		$values = array_map(function ($path) {
+		$values = \array_map(function ($path) {
 			return $this->storage->getCache()->get($path);
 		}, $paths);
-		return array_combine($paths, $values);
+		return \array_combine($paths, $values);
 	}
 
 	public function testEtagPropagation() {
 		$paths = ['', 'foo', 'foo/bar'];
 		$oldInfos = $this->getFileInfos($paths);
-		$this->storage->getPropagator()->propagateChange('foo/bar/file.txt', time());
+		$this->storage->getPropagator()->propagateChange('foo/bar/file.txt', \time());
 		$newInfos = $this->getFileInfos($paths);
 
 		foreach ($oldInfos as $i => $oldInfo) {
@@ -52,9 +52,9 @@ class PropagatorTest extends TestCase {
 
 	public function testTimePropagation() {
 		$paths = ['', 'foo', 'foo/bar'];
-		$oldTime = time() - 200;
-		$targetTime = time() - 100;
-		$now = time();
+		$oldTime = \time() - 200;
+		$targetTime = \time() - 100;
+		$now = \time();
 		$cache = $this->storage->getCache();
 		$cache->put('', ['mtime' => $now]);
 		$cache->put('foo', ['mtime' => $now]);
@@ -73,7 +73,7 @@ class PropagatorTest extends TestCase {
 	public function testSizePropagation() {
 		$paths = ['', 'foo', 'foo/bar'];
 		$oldInfos = $this->getFileInfos($paths);
-		$this->storage->getPropagator()->propagateChange('foo/bar/file.txt', time(), 10);
+		$this->storage->getPropagator()->propagateChange('foo/bar/file.txt', \time(), 10);
 		$newInfos = $this->getFileInfos($paths);
 
 		foreach ($oldInfos as $i => $oldInfo) {
@@ -95,7 +95,7 @@ class PropagatorTest extends TestCase {
 
 		// start at a later time because the above scanned elements have a recent mtime,
 		// we want to be sure that the propagated values are in the future
-		$time = time() + 3600;
+		$time = \time() + 3600;
 		$time1 = $time - 100;
 		$time2 = $time - 200;
 

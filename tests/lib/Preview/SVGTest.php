@@ -29,10 +29,9 @@ namespace Test\Preview;
  * @package Test\Preview
  */
 class SVGTest extends Provider {
-
 	public function setUp() {
 		$checkImagick = new \Imagick();
-		if (count($checkImagick->queryFormats('SVG')) === 1) {
+		if (\count($checkImagick->queryFormats('SVG')) === 1) {
 			parent::setUp();
 
 			$fileName = 'testimagelarge.svg';
@@ -44,5 +43,4 @@ class SVGTest extends Provider {
 			$this->markTestSkipped('No SVG provider present');
 		}
 	}
-
 }

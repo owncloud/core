@@ -1,8 +1,8 @@
 <?php
-$CONFIG = array (
-	'objectstore' => array(
+$CONFIG = [
+	'objectstore' => [
 		'class' => 'OC\\Files\\ObjectStore\\Swift',
-		'arguments' => array(
+		'arguments' => [
 			'username' => 'test',
 			'password' => 'testing',
 			'container' => 'owncloud-autotest',
@@ -12,6 +12,6 @@ $CONFIG = array (
 			'url' => 'http://ceph:5034/v2.0',
 			'tenantName' => 'testtenant',
 			'serviceName' => 'testceph',
-		),
-	),
-);
+		],
+	],
+];

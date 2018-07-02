@@ -22,7 +22,7 @@
 
 require_once('../lib/base.php');
 
-header('Content-Type: application/json');
+\header('Content-Type: application/json');
 
 $server = \OC::$server;
 

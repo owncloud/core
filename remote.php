@@ -46,7 +46,7 @@ class RemoteException extends Exception {
 function handleException($e) {
 	$request = \OC::$server->getRequest();
 	// in case the request content type is text/xml - we assume it's a WebDAV request
-	$isXmlContentType = strpos($request->getHeader('Content-Type'), 'text/xml');
+	$isXmlContentType = \strpos($request->getHeader('Content-Type'), 'text/xml');
 	if ($isXmlContentType === 0) {
 		// fire up a simple server to properly process the exception
 		$server = new Server();
@@ -63,14 +63,14 @@ function handleException($e) {
 						throw new \Sabre\DAV\Exception\NotFound($e->getMessage());
 				}
 			}
-			$class = get_class($e);
+			$class = \get_class($e);
 			$msg = $e->getMessage();
 			throw new ServiceUnavailable("$class: $msg");
 		});
 		$server->exec();
 	} else {
 		$statusCode = OC_Response::STATUS_INTERNAL_SERVER_ERROR;
-		if ($e instanceof \OC\ServiceUnavailableException ) {
+		if ($e instanceof \OC\ServiceUnavailableException) {
 			$statusCode = OC_Response::STATUS_SERVICE_UNAVAILABLE;
 		}
 		if ($e instanceof RemoteException) {
@@ -112,7 +112,7 @@ try {
 	// All resources served via the DAV endpoint should have the strictest possible
 	// policy. Exempted from this is the SabreDAV browser plugin which overwrites
 	// this policy with a softer one if debug mode is enabled.
-	header("Content-Security-Policy: default-src 'none';");
+	\header("Content-Security-Policy: default-src 'none';");
 
 	if (\OCP\Util::needUpgrade()) {
 		// since the behavior of apps or remotes are unpredictable during
@@ -125,23 +125,23 @@ try {
 	if ($pathInfo === false || $pathInfo === '') {
 		throw new RemoteException('Path not found', OC_Response::STATUS_NOT_FOUND);
 	}
-	if (!$pos = strpos($pathInfo, '/', 1)) {
-		$pos = strlen($pathInfo);
+	if (!$pos = \strpos($pathInfo, '/', 1)) {
+		$pos = \strlen($pathInfo);
 	}
-	$service=substr($pathInfo, 1, $pos-1);
+	$service=\substr($pathInfo, 1, $pos-1);
 
 	$file = resolveService($service);
 
-	if(is_null($file)) {
+	if ($file === null) {
 		throw new RemoteException('Path not found', OC_Response::STATUS_NOT_FOUND);
 	}
 
 	// force language as given in the http request
 	\OC::$server->getL10NFactory()->setLanguageFromRequest();
 
-	$file=ltrim($file, '/');
+	$file=\ltrim($file, '/');
 
-	$parts=explode('/', $file, 2);
+	$parts=\explode('/', $file, 2);
 	$app=$parts[0];
 
 	// Load all required applications
@@ -163,7 +163,6 @@ try {
 	}
 	$baseuri = OC::$WEBROOT . '/remote.php/'.$service.'/';
 	require_once $file;
-
 } catch (Exception $ex) {
 	handleException($ex);
 } catch (Error $e) {

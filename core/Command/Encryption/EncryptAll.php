@@ -102,7 +102,6 @@ class EncryptAll extends Command {
 	}
 
 	protected function execute(InputInterface $input, OutputInterface $output) {
-
 		if ($this->encryptionManager->isEnabled() === false) {
 			throw new \Exception('Server side encryption is not enabled');
 		}
@@ -139,5 +138,4 @@ class EncryptAll extends Command {
 			$output->writeln('aborted');
 		}
 	}
-
 }
