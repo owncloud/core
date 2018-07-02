@@ -246,25 +246,32 @@ class SessionTest extends TestCase {
 			->with('foo', 'bar')
 			->will($this->returnValue($user));
 
+		/** @var $eventDispatcher | \PHPUnit_Framework_MockObject_MockObject */
+		$eventDispatcher = $this->createMock(EventDispatcher::class);
 		/** @var Session | \PHPUnit_Framework_MockObject_MockObject $userSession */
 		$userSession = $this->getMockBuilder(Session::class)
-			->setConstructorArgs([$manager, $session, $this->timeFactory, $this->tokenProvider, $this->config, $this->logger, $this->serviceLoader, $this->userSyncService, $this->eventDispatcher])
+			->setConstructorArgs([$manager, $session, $this->timeFactory, $this->tokenProvider, $this->config, $this->logger, $this->serviceLoader, $this->userSyncService, $eventDispatcher])
 			->setMethods([
 				'prepareUserLogin'
 			])
 			->getMock();
 		$userSession->expects($this->once())
 			->method('prepareUserLogin');
-		$calledUserLogin = [];
-		$this->eventDispatcher->addListener('user.afterlogin', function (GenericEvent $event) use (&$calledUserLogin) {
-			$calledUserLogin[] = 'user.afterlogin';
-			$calledUserLogin[] = $event;
-		});
+		$beforeEvent = new GenericEvent(null,
+			['loginType' => 'password', 'login' => 'foo', 'uid' => 'foo',
+				'_uid' => 'deprecated: please use \'login\', the real uid is not yet known',
+				'password' => 'bar']);
+		$afterEvent = new GenericEvent(null,
+			['loginType' => 'password', 'user' => $user,
+				'uid' => 'foo', 'password' => 'bar'
+			]);
+		$eventDispatcher->expects($this->exactly(2))
+			->method('dispatch')
+			->withConsecutive(
+				[$this->equalTo('user.beforelogin'), $this->equalTo($beforeEvent)],
+				[$this->equalTo('user.afterlogin'), $this->equalTo($afterEvent)]
+			);
 		$userSession->login('foo', 'bar');
-		$this->assertInstanceOf(GenericEvent::class, $calledUserLogin[1]);
-		$this->assertArrayHasKey('uid', $calledUserLogin[1]);
-		$this->assertEquals('user.afterlogin', $calledUserLogin[0]);
-		$this->assertEquals($user, $userSession->getUser());
 	}
 
 	/**
@@ -1122,13 +1129,15 @@ class SessionTest extends TestCase {
 		$timeFactory = $this->createMock(ITimeFactory::class);
 		/** @var IProvider | \PHPUnit_Framework_MockObject_MockObject $tokenProvider */
 		$tokenProvider = $this->createMock(IProvider::class);
+		$eventDispatcher = $this->createMock(EventDispatcher::class);
 		$userSession = new Session($userManager, $session, $timeFactory,
 			$tokenProvider, $this->config, $this->logger, $this->serviceLoader,
-			$this->userSyncService, $this->eventDispatcher);
+			$this->userSyncService, $eventDispatcher);
 
 		// Fail if not userid returned
 		$apacheBackend = $this->createMock(IApacheBackend::class);
 		$apacheBackend->expects($this->once())->method('getCurrentUserId')->willReturn(null);
+
 		$loginVal = $userSession->loginWithApache($apacheBackend);
 		$this->assertFalse($loginVal);
 
@@ -1149,27 +1158,70 @@ class SessionTest extends TestCase {
 		$timeFactory = $this->createMock(ITimeFactory::class);
 		/** @var IProvider | \PHPUnit_Framework_MockObject_MockObject $tokenProvider */
 		$tokenProvider = $this->createMock(IProvider::class);
+		$eventDispatcher = $this->createMock(EventDispatcher::class);
 		$userSession = new Session($userManager, $session, $timeFactory,
 			$tokenProvider, $this->config, $this->logger, $this->serviceLoader,
-			$this->userSyncService, $this->eventDispatcher);
+			$this->userSyncService, $eventDispatcher);
 
 		$apacheBackend = $this->createMock(IApacheBackend::class);
 		$userInterface = $this->createMock(UserInterface::class);
 		$apacheBackend->expects($this->once())->method('getCurrentUserId')->willReturn(['foo', $userInterface]);
 		$apacheBackend->expects($this->once())->method('isSessionActive')->willReturn(true);
 
-		$calledFailedLogin = [];
-		$this->eventDispatcher->addListener('user.loginfailed',
-			function (GenericEvent $event) use (&$calledFailedLogin) {
-				$calledFailedLogin[] = 'user.loginfailed';
-				$calledFailedLogin[] = $event;
-			});
+		$failedEvent = new GenericEvent(null, ['user' => 'foo']);
+		$beforeLoginEvent = new GenericEvent(null, ['login' => 'foo', 'password' => '', 'loginType' => 'apache']);
+		$eventDispatcher->expects($this->exactly(2))
+			->method('dispatch')
+			->withConsecutive(
+				[$this->equalTo('user.beforelogin'), $this->equalTo($beforeLoginEvent)],
+				[$this->equalTo('user.loginfailed'), $this->equalTo($failedEvent)]
+			);
 
 		$userSession->loginWithApache($apacheBackend);
-		$this->assertEquals('user.loginfailed', $calledFailedLogin[0]);
-		$this->assertInstanceOf(GenericEvent::class, $calledFailedLogin[1]);
-		$this->assertArrayHasKey('user', $calledFailedLogin[1]);
-		$this->assertEquals('foo', $calledFailedLogin[1]->getArgument('user'));
+	}
+
+	public function testLoginWithApache() {
+		/** @var Manager | \PHPUnit_Framework_MockObject_MockObject $userManager */
+		$userManager = $this->createMock(Manager::class);
+		$userManager->expects($this->any())->method('emit')->willReturn(null);
+		/** @var ISession | \PHPUnit_Framework_MockObject_MockObject $session */
+		$session = $this->createMock(ISession::class);
+		/** @var ITimeFactory | \PHPUnit_Framework_MockObject_MockObject $timeFactory */
+		$timeFactory = $this->createMock(ITimeFactory::class);
+		/** @var IProvider | \PHPUnit_Framework_MockObject_MockObject $tokenProvider */
+		$tokenProvider = $this->createMock(IProvider::class);
+		$eventDispatcher = $this->createMock(EventDispatcher::class);
+		$userSession = new Session($userManager, $session, $timeFactory,
+			$tokenProvider, $this->config, $this->logger, $this->serviceLoader,
+			$this->userSyncService, $eventDispatcher);
+
+		$apacheBackend = $this->createMock(IApacheBackend::class);
+		$userInterface = $this->createMock(UserInterface::class);
+		$apacheBackend->expects($this->once())->method('getCurrentUserId')->willReturn(['foo', $userInterface]);
+		$apacheBackend->expects($this->once())->method('isSessionActive')->willReturn(true);
+
+		$iUser = $this->createMock(IUser::class);
+		$iUser->expects($this->exactly(2))
+			->method('isEnabled')
+			->willReturn(true);
+		$iUser->expects($this->exactly(3))
+			->method('getUID')
+			->willReturn('foo');
+
+		$userManager->expects($this->exactly(2))
+			->method('get')
+			->willReturn($iUser);
+
+		$beforeLoginEvent = new GenericEvent(null, ['login' => 'foo', 'password' => '', 'loginType' => 'apache']);
+		$afterLoginEvent = new GenericEvent(null, ['user' => $iUser, 'login' => 'foo', 'password' => '', 'loginType' => 'apache']);
+		$eventDispatcher->expects($this->exactly(2))
+			->method('dispatch')
+			->withConsecutive(
+				[$this->equalTo('user.beforelogin'), $this->equalTo($beforeLoginEvent)],
+				[$this->equalTo('user.afterlogin'), $this->equalTo($afterLoginEvent)]
+			);
+
+		$this->assertTrue($userSession->loginWithApache($apacheBackend));
 	}
 
 	public function testFailedLoginWithPassword() {
@@ -1183,23 +1235,24 @@ class SessionTest extends TestCase {
 		$timeFactory = $this->createMock(ITimeFactory::class);
 		/** @var IProvider | \PHPUnit_Framework_MockObject_MockObject $tokenProvider */
 		$tokenProvider = $this->createMock(IProvider::class);
+		$eventDispatcher = $this->createMock(EventDispatcher::class);
 		$userSession = new Session($userManager, $session, $timeFactory,
 			$tokenProvider, $this->config, $this->logger, $this->serviceLoader,
-			$this->userSyncService, $this->eventDispatcher);
+			$this->userSyncService, $eventDispatcher);
 
-		$calledFailedLogin = [];
-		$this->eventDispatcher->addListener('user.loginfailed',
-			function (GenericEvent $event) use (&$calledFailedLogin) {
-				$calledFailedLogin[] = 'user.loginfailed';
-				$calledFailedLogin[] = $event;
-			});
+		$beforeEvent = new GenericEvent(null,
+			['loginType' => 'password', 'login' => 'foo', 'uid' => 'foo',
+				'_uid' => 'deprecated: please use \'login\', the real uid is not yet known',
+				'password' => 'foo']);
+		$failedLogin = new GenericEvent(null, ['user' => 'foo']);
+		$eventDispatcher->expects($this->exactly(2))
+			->method('dispatch')
+			->withConsecutive(
+				[$this->equalTo('user.beforelogin'), $this->equalTo($beforeEvent)],
+				[$this->equalTo('user.loginfailed'), $this->equalTo($failedLogin)]
+			);
 
 		$this->invokePrivate($userSession, 'loginWithPassword', ['foo', 'foo']);
-
-		$this->assertEquals('user.loginfailed', $calledFailedLogin[0]);
-		$this->assertInstanceOf(GenericEvent::class, $calledFailedLogin[1]);
-		$this->assertArrayHasKey('user', $calledFailedLogin[1]);
-		$this->assertEquals('foo', $calledFailedLogin[1]->getArgument('user'));
 	}
 
 	public function testLoginWithPassword() {
@@ -1212,6 +1265,7 @@ class SessionTest extends TestCase {
 		$timeFactory = $this->createMock(ITimeFactory::class);
 		/** @var IProvider | \PHPUnit_Framework_MockObject_MockObject $tokenProvider */
 		$tokenProvider = $this->createMock(IProvider::class);
+		$eventDispatcher = $this->createMock(EventDispatcher::class);
 
 		$iUser = $this->createMock(IUser::class);
 		$iUser->expects($this->any())
@@ -1225,45 +1279,23 @@ class SessionTest extends TestCase {
 
 		$userSession = new Session($userManager, $session, $timeFactory,
 			$tokenProvider, $this->config, $this->logger, $this->serviceLoader,
-			$this->userSyncService, $this->eventDispatcher);
+			$this->userSyncService, $eventDispatcher);
 
-		$calledUserBeforeLogin = [];
-		$this->eventDispatcher->addListener('user.beforelogin',
-			function (GenericEvent $event) use (&$calledUserBeforeLogin) {
-				$calledUserBeforeLogin[] = 'user.beforelogin';
-				$calledUserBeforeLogin[] = $event;
-			});
-		$calledUserAfterLogin = [];
-		$this->eventDispatcher->addListener('user.afterlogin',
-			function (GenericEvent $event) use (&$calledUserAfterLogin) {
-				$calledUserAfterLogin[] = 'user.afterlogin';
-				$calledUserAfterLogin[] = $event;
-			});
+		$beforeEvent = new GenericEvent(null,
+			['loginType' => 'password', 'login' => 'foo', 'uid' => 'foo',
+				'_uid' => 'deprecated: please use \'login\', the real uid is not yet known',
+				'password' => 'foopass']);
+		$afterEvent = new GenericEvent(null, ['loginType' => 'password', 'user' => $iUser, 'uid' => 'foo', 'password' => 'foopass']);
+		$eventDispatcher->expects($this->exactly(2))
+			->method('dispatch')
+			->withConsecutive(
+				[$this->equalTo('user.beforelogin'), $this->equalTo($beforeEvent)],
+				[$this->equalTo('user.afterlogin'), $this->equalTo($afterEvent)]
+			);
 
 		$result = $this->invokePrivate($userSession, 'loginWithPassword', ['foo', 'foopass']);
 
 		$this->assertTrue($result);
-
-		$this->assertEquals('user.beforelogin', $calledUserBeforeLogin[0]);
-		$this->assertInstanceOf(GenericEvent::class, $calledUserBeforeLogin[1]);
-		$this->assertArrayHasKey('login', $calledUserBeforeLogin[1]);
-		$this->assertEquals('foo', $calledUserBeforeLogin[1]->getArgument('login'));
-		$this->assertArrayHasKey('uid', $calledUserBeforeLogin[1]);
-		$this->assertEquals('foo', $calledUserBeforeLogin[1]->getArgument('uid'));
-		$this->assertArrayHasKey('password', $calledUserBeforeLogin[1]);
-		$this->assertEquals('foopass', $calledUserBeforeLogin[1]->getArgument('password'));
-		$this->assertArrayHasKey('_uid', $calledUserBeforeLogin[1]);
-		$this->assertEquals('deprecated: please use \'login\', the real uid is not yet known', $calledUserBeforeLogin[1]->getArgument('_uid'));
-
-		$this->assertEquals('user.afterlogin', $calledUserAfterLogin[0]);
-		$this->assertInstanceOf(GenericEvent::class, $calledUserAfterLogin[1]);
-		$this->assertArrayHasKey('user', $calledUserAfterLogin[1]);
-		$this->assertInstanceOf(IUser::class, $calledUserAfterLogin[1]->getArgument('user'));
-		$this->assertArrayHasKey('uid', $calledUserAfterLogin[1]);
-		$this->assertEquals('foo', $calledUserAfterLogin[1]->getArgument('user')->getUID());
-		$this->assertEquals('foo', $calledUserAfterLogin[1]->getArgument('uid'));
-		$this->assertArrayHasKey('password', $calledUserAfterLogin[1]);
-		$this->assertEquals('foopass', $calledUserAfterLogin[1]->getArgument('password'));
 	}
 
 	public function testLoginFailedWithToken() {
@@ -1276,9 +1308,10 @@ class SessionTest extends TestCase {
 		$timeFactory = $this->createMock(ITimeFactory::class);
 		/** @var IProvider | \PHPUnit_Framework_MockObject_MockObject $tokenProvider */
 		$tokenProvider = $this->createMock(IProvider::class);
+		$eventDispatcher = $this->createMock(EventDispatcher::class);
 		$userSession = new Session($userManager, $session, $timeFactory,
 			$tokenProvider, $this->config, $this->logger, $this->serviceLoader,
-			$this->userSyncService, $this->eventDispatcher);
+			$this->userSyncService, $eventDispatcher);
 
 		$iToken = $this->createMock(IToken::class);
 		$iToken->expects($this->once())
@@ -1294,19 +1327,16 @@ class SessionTest extends TestCase {
 			->method('get')
 			->willReturn(null);
 
-		$calledFailedLoginEvent = [];
-		$this->eventDispatcher->addListener('user.loginfailed',
-			function (GenericEvent $event) use (&$calledFailedLoginEvent) {
-				$calledFailedLoginEvent[] = 'user.loginfailed';
-				$calledFailedLoginEvent[] = $event;
-			});
+		$event = new GenericEvent(null, ['login' => 'foo', 'password' => 'foobar', 'loginType' => 'token']);
+		$failedEvent = new GenericEvent(null, ['user' => 'foo']);
+		$eventDispatcher->expects($this->exactly(2))
+			->method('dispatch')
+			->withConsecutive(
+				[$this->equalTo('user.beforelogin'), $this->equalTo($event)],
+				[$this->equalTo('user.loginfailed'), $this->equalTo($failedEvent)]
+			);
 
 		$this->invokePrivate($userSession, 'loginWithToken', ['token']);
-
-		$this->assertEquals('user.loginfailed', $calledFailedLoginEvent[0]);
-		$this->assertInstanceOf(GenericEvent::class, $calledFailedLoginEvent[1]);
-		$this->assertArrayHasKey('user', $calledFailedLoginEvent[1]);
-		$this->assertEquals('foo', $calledFailedLoginEvent[1]->getArgument('user'));
 	}
 
 	public function testLoginWithToken() {
@@ -1319,9 +1349,10 @@ class SessionTest extends TestCase {
 		$timeFactory = $this->createMock(ITimeFactory::class);
 		/** @var IProvider | \PHPUnit_Framework_MockObject_MockObject $tokenProvider */
 		$tokenProvider = $this->createMock(IProvider::class);
+		$eventDispatcher = $this->createMock(EventDispatcher::class);
 		$userSession = new Session($userManager, $session, $timeFactory,
 			$tokenProvider, $this->config, $this->logger, $this->serviceLoader,
-			$this->userSyncService, $this->eventDispatcher);
+			$this->userSyncService, $eventDispatcher);
 
 		$iToken = $this->createMock(IToken::class);
 		$iToken->expects($this->once())
@@ -1337,10 +1368,29 @@ class SessionTest extends TestCase {
 		$iUser->expects($this->any())
 			->method('isEnabled')
 			->willReturn(true);
+		$iUser->expects($this->any())
+			->method('getUID')
+			->willReturn('foo');
 
 		$userManager->expects($this->once())
 			->method('get')
 			->willReturn($iUser);
+
+		$beforeEvent = new GenericEvent(null,
+			[
+				'login' => 'foo', 'password' => 'foobar', 'loginType' => 'token'
+			]);
+		$afterEvent = new GenericEvent(null,
+			[
+				'user' => $iUser, 'login' => 'foo', 'password' => 'foobar', 'loginType' => 'token'
+			]);
+
+		$eventDispatcher->expects($this->exactly(2))
+			->method('dispatch')
+			->withConsecutive(
+				[$this->equalTo('user.beforelogin'), $this->equalTo($beforeEvent)],
+				[$this->equalTo('user.afterlogin'), $this->equalTo($afterEvent)]
+			);
 
 		$result = $this->invokePrivate($userSession, 'loginWithToken', ['token']);
 		$this->assertTrue($result);
@@ -1464,23 +1514,19 @@ class SessionTest extends TestCase {
 		$timeFactory = $this->createMock(ITimeFactory::class);
 		/** @var IProvider | \PHPUnit_Framework_MockObject_MockObject $tokenProvider */
 		$tokenProvider = $this->createMock(IProvider::class);
+		$eventDispatcher = $this->createMock(EventDispatcher::class);
 		$userSession = new Session($userManager, $session, $timeFactory,
 			$tokenProvider, $this->config, $this->logger, $this->serviceLoader,
-			$this->userSyncService, $this->eventDispatcher);
+			$this->userSyncService, $eventDispatcher);
 
-		$calledFailedLoginEvent = [];
-		$this->eventDispatcher->addListener('user.loginfailed',
-			function (GenericEvent $event) use (&$calledFailedLoginEvent) {
-				$calledFailedLoginEvent[] = 'user.loginfailed';
-				$calledFailedLoginEvent[] = $event;
-			});
+		$failedEvent = new GenericEvent(null, ['user' => null]);
+		$eventDispatcher->expects($this->once())
+			->method('dispatch')
+			->withConsecutive(
+				[$this->equalTo('user.loginfailed'), $this->equalTo($failedEvent)]
+			);
 
 		$this->invokePrivate($userSession, 'loginUser', [null, 'foo']);
-
-		$this->assertEquals('user.loginfailed', $calledFailedLoginEvent[0]);
-		$this->assertInstanceOf(GenericEvent::class, $calledFailedLoginEvent[1]);
-		$this->assertArrayHasKey('user', $calledFailedLoginEvent[1]);
-		$this->assertEquals(null, $calledFailedLoginEvent[1]->getArgument('user'));
 	}
 
 	public function testLoginUser() {
@@ -1520,17 +1566,17 @@ class SessionTest extends TestCase {
 		$timeFactory = $this->createMock(ITimeFactory::class);
 		/** @var IProvider | \PHPUnit_Framework_MockObject_MockObject $tokenProvider */
 		$tokenProvider = $this->createMock(IProvider::class);
+		$eventDispatcher = $this->createMock(EventDispatcher::class);
 		$userSession = new Session($userManager, $session, $timeFactory,
 			$tokenProvider, $this->config, $this->logger, $this->serviceLoader,
-			$this->userSyncService, $this->eventDispatcher);
+			$this->userSyncService, $eventDispatcher);
 
-		$calledFailedLoginEvent = [];
-		$this->eventDispatcher->addListener('user.loginfailed',
-			function (GenericEvent $event) use (&$calledFailedLoginEvent) {
-				$calledFailedLoginEvent[] = $event;
-				$this->assertArrayHasKey('user', $calledFailedLoginEvent[0]);
-				$this->assertEquals('foo', $calledFailedLoginEvent[0]->getArgument('user'));
-			});
+		$failedEvent = new GenericEvent(null, ['user' => 'foo']);
+		$eventDispatcher->expects($this->once())
+			->method('dispatch')
+			->withConsecutive(
+				[$this->equalTo('user.loginfailed'), $this->equalTo($failedEvent)]
+			);
 
 		$iUser = $this->createMock(IUser::class);
 		$iUser->expects($this->once())
@@ -1539,6 +1585,13 @@ class SessionTest extends TestCase {
 		$iUser->expects($this->exactly(2))
 			->method('getUID')
 			->willReturn('foo');
+
+		$failedEvent = new GenericEvent(null, ['user' => 'foo']);
+		$eventDispatcher->expects($this->once())
+			->method('dispatch')
+			->withConsecutive(
+				[$this->equalTo('user.loginfailed'), $this->equalTo($failedEvent)]
+			);
 
 		$this->invokePrivate($userSession, 'loginUser', [$iUser, 'foo']);
 	}
