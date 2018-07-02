@@ -512,7 +512,7 @@ class Session implements IUserSession, Emitter {
 	 * compatibility.
 	 */
 	private function loginWithPassword($login, $password) {
-		$beforeEvent = new GenericEvent(null, ['login' => $login, 'uid' => $login, '_uid' => 'deprecated: please use \'login\', the real uid is not yet known', 'password' => $password]);
+		$beforeEvent = new GenericEvent(null, ['loginType' => 'password', 'login' => $login, 'uid' => $login, '_uid' => 'deprecated: please use \'login\', the real uid is not yet known', 'password' => $password]);
 		$this->eventDispatcher->dispatch('user.beforelogin', $beforeEvent);
 		$this->manager->emit('\OC\User', 'preLogin', [$login, $password]);
 
@@ -530,7 +530,7 @@ class Session implements IUserSession, Emitter {
 			if ($this->isLoggedIn()) {
 				$this->prepareUserLogin($firstTimeLogin);
 
-				$afterEvent = new GenericEvent(null, ['user' => $user, 'uid' => $user->getUID(), 'password' => $password]);
+				$afterEvent = new GenericEvent(null, ['loginType' => 'password', 'user' => $user, 'uid' => $user->getUID(), 'password' => $password]);
 				$this->eventDispatcher->dispatch('user.afterlogin', $afterEvent);
 
 				return true;
@@ -570,6 +570,8 @@ class Session implements IUserSession, Emitter {
 		}
 
 		$this->manager->emit('\OC\User', 'preLogin', [$uid, $password]);
+		$beforeEvent = new GenericEvent(null, ['loginType' => 'token', 'login' => $uid, 'password' => $password]);
+		$this->eventDispatcher->dispatch('user.beforelogin', $beforeEvent);
 
 		$user = $this->manager->get($uid);
 		if (is_null($user)) {
@@ -588,6 +590,8 @@ class Session implements IUserSession, Emitter {
 		$this->setUser($user);
 		$this->setLoginName($dbToken->getLoginName());
 		$this->manager->emit('\OC\User', 'postLogin', [$user, $password]);
+		$afterEvent = new GenericEvent(null, ['loginType' => 'token', 'user' => $user, 'login' => $user->getUID(), 'password' => $password]);
+		$this->eventDispatcher->dispatch('user.afterlogin', $afterEvent);
 
 		if ($this->isLoggedIn()) {
 			$this->prepareUserLogin();
@@ -649,6 +653,8 @@ class Session implements IUserSession, Emitter {
 		$this->session->regenerateId();
 
 		$this->manager->emit('\OC\User', 'preLogin', [$uid, '']);
+		$beforeEvent = new GenericEvent(null, ['loginType' => 'apache', 'login' => $uid, 'password' => '']);
+		$this->eventDispatcher->dispatch('user.beforelogin', $beforeEvent);
 
 		// Die here if not valid
 		if (!$apacheBackend->isSessionActive()) {
@@ -680,6 +686,8 @@ class Session implements IUserSession, Emitter {
 
 			$firstTimeLogin = $user->updateLastLoginTimestamp();
 			$this->manager->emit('\OC\User', 'postLogin', [$user, '']);
+			$afterEvent = new GenericEvent(null, ['loginType' => 'apache', 'user' => $user, 'login' => $user->getUID(), 'password' => '']);
+			$this->eventDispatcher->dispatch('user.afterlogin', $afterEvent);
 			if ($this->isLoggedIn()) {
 				$this->prepareUserLogin($firstTimeLogin);
 				return true;
