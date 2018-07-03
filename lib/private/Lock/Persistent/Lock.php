@@ -30,6 +30,7 @@ use OCP\Lock\Persistent\ILock;
  * @method int getTimeout()
  * @method int getCreatedAt()
  * @method string getToken()
+ * @method string getTokenHash()
  * @method int getScope()
  * @method int getDepth()
  * @method string getPath()
@@ -37,7 +38,11 @@ use OCP\Lock\Persistent\ILock;
  * @method string getUriV2()
  * @method string getOwnerAccountId()
  *
- * TODO: add setter
+ * @method setFileId(int $fileId)
+ * @method setCreatedAt(int $timestamp)
+ * @method setTimeout(int $timeout)
+ * @method setScope(int $scope)
+ * @method setDepth(int $depth)
  *
  * @package OC\Lock\Persistent
  */

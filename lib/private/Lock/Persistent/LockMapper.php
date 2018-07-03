@@ -130,4 +130,12 @@ class LockMapper extends Mapper {
 		}
 		return parent::update($entity);
 	}
+
+	public function cleanup() {
+		$query = $this->db->getQueryBuilder();
+		$query->delete($this->getTableName())
+			->where($query->expr()->lt('created_at',
+				$query->createFunction('(' . $query->createNamedParameter(\time()) . ' - `timeout`)')))
+			->execute();
+	}
 }
