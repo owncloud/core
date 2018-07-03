@@ -1663,6 +1663,15 @@ function initCore() {
 	}
 }
 
+/**
+ * Disable the use of globalEval in jQuery 2.1.4.
+ * This is required for API compatibility, yet should not be available all the
+ * same.
+ *
+ * @see https://github.com/jquery/jquery/issues/2432 for further details.
+ */
+$.fn.globalEval = function(){};
+
 $(document).ready(initCore);
 
 /**
