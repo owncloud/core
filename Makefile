@@ -144,7 +144,7 @@ clean-composer-deps:
 #
 # Node JS dependencies for tools
 #
-$(nodejs_deps): build/package.json build/package-lock.json build/yarn.lock
+$(nodejs_deps): build/package.json build/yarn.lock
 	@test -x "$(YARN)" || { echo "yarn is not available on your system, please install yarn (npm install -g yarn)" && exit 1; }
 	cd $(NODE_PREFIX) && $(YARN) install
 	touch $@
