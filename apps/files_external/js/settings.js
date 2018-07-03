@@ -777,6 +777,42 @@ MountConfigListView.prototype = _.extend({
 	},
 
 	/**
+	 * Execute the target callback when all the deferred objects have been
+	 * finished, either resolved or rejected
+	 *
+	 * @param {Deferred[]} deferreds array with all the deferred objects to check
+	 * this will usually be a list of ajax requests, but other deferred
+	 * objects can be included
+	 * @param {callback} callback the callback to be executed after all the
+	 * deferred object have finished
+	 */
+	_executeCallbackWhenFinished: function(deferreds, callback) {
+		var self = this;
+		var pendingDeferreds = [];
+
+		$.when.apply($, deferreds).always(function() {
+			var pendingDeferreds = [];
+
+			// some deferred objects can still be pending to be resolved
+			// or rejected. Get all of those which are still pending so we can
+			// make another call
+			if (deferreds.length > 0) {
+				for (i = 0 ; i < deferreds.length ; i++) {
+					if (deferreds[i].state() === 'pending') {
+						pendingDeferreds.push(deferreds[i]);
+					}
+				}
+			}
+
+			if (pendingDeferreds.length > 0) {
+				self._executeCallbackWhenFinished(pendingDeferreds, callback);
+			} else {
+				callback();
+			}
+		});
+	},
+
+	/**
 	 * Configure the storage config with a new authentication mechanism
 	 *
 	 * @param {jQuery} $tr config row
@@ -1007,9 +1043,7 @@ MountConfigListView.prototype = _.extend({
 		});
 		ajaxRequests.push(globalRequest);
 
-		$.when.apply($, ajaxRequests).always(function() {
-			// trigger the mountConfigLoaded event when both requests (or one if
-			// it's the only one) finish regardless of success
+		this._executeCallbackWhenFinished(ajaxRequests, function() {
 			$('#body-settings').trigger('mountConfigLoaded');
 		});
 	},
