@@ -167,7 +167,7 @@ class SystemConfig {
 					 * Remove any sensitive values from all actual entries.
 					 */
 					foreach ($value as $valueKey => $valueData) {
-						if (is_int($valueKey) && ($valueKey >= 0)) {
+						if (\is_int($valueKey) && ($valueKey >= 0)) {
 							$value[$valueKey] = $this->removeSensitiveValue($valueToRemove, $value[$valueKey]);
 						}
 					}
