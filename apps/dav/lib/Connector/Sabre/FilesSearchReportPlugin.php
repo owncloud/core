@@ -21,7 +21,7 @@
 
 namespace OCA\DAV\Connector\Sabre;
 
-use Sabre\DAV\Server;
+use Sabre\DAV\Server as DavServer;
 use Sabre\DAV\ServerPlugin;
 use Sabre\DAV\PropFind;
 use Sabre\DAV\Exception\BadRequest;
@@ -38,7 +38,7 @@ class FilesSearchReportPlugin extends ServerPlugin {
 	/**
 	 * Reference to main server object
 	 *
-	 * @var Server
+	 * @var DavServer
 	 */
 	private $server;
 
@@ -57,10 +57,10 @@ class FilesSearchReportPlugin extends ServerPlugin {
 	 *
 	 * This method should set up the required event subscriptions.
 	 *
-	 * @param Server $server
+	 * @param DavServer $server
 	 * @return void
 	 */
-	public function initialize(Server $server) {
+	public function initialize(DavServer $server) {
 		$server->xml->namespaceMap[self::NS_OWNCLOUD] = 'oc';
 
 		$server->xml->elementMap[self::REPORT_NAME] = SearchRequest::class;
@@ -78,7 +78,12 @@ class FilesSearchReportPlugin extends ServerPlugin {
 	 * @return array
 	 */
 	public function getSupportedReportSet($uri) {
-		return [self::REPORT_NAME];
+		$reportTargetNode = $this->server->tree->getNodeForPath($uri);
+		if ($reportTargetNode instanceof Directory && $reportTargetNode->getPath() === '/') {
+			return [self::REPORT_NAME];
+		} else {
+			return [];
+		}
 	}
 
 	/**

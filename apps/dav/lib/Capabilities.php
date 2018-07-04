@@ -29,6 +29,9 @@ class Capabilities implements ICapability {
 			'dav' => [
 				'chunking' => '1.0',
 				'zsync' => '1.0',
+				'reports' => [
+					'search-files',
+				],
 			]
 		];
 	}
