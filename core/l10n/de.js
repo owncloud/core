@@ -371,6 +371,6 @@ OC.L10N.register(
     "Automatic updating is disabled in config.php. To upgrade your instance, please use the command line updater (occ upgrade)." : "Automatische Aktualisierung ist in der Konfiguration deaktiviert. Zur Aktualisierung der Instanz bitte die Kommandozeile benutzen (php occ upgrade).",
     "Imprint" : "Impressum",
     "E-Mail sent" : "E-Mail gesendet",
-    "Privacy Policy" : "Datenschutzerkärung"
+    "Privacy Policy" : "Datenschutzerklärung"
 },
 "nplurals=2; plural=(n != 1);");
