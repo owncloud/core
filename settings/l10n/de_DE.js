@@ -362,6 +362,17 @@ OC.L10N.register(
     "You are not a member of any groups." : "Du bist kein Mitglied einer Gruppe.",
     "In a clustered setup please make sure to sync the config.php file across all nodes." : "In einem gruppierten Umgebung stellen Sie bitte sicher, dass die config.php-Datei über alle Knoten synchronisiert wird.",
     "You are using %s" : "Sie verwenden %s",
-    "These are the web, desktop and mobile clients currently logged in to your %s." : "Diese Web-, Desktop- und Mobil-Clients sind aktuell an 1%s angemeldet"
+    "These are the web, desktop and mobile clients currently logged in to your %s." : "Diese Web-, Desktop- und Mobil-Clients sind aktuell an 1%s angemeldet",
+    "Automatically accept new incoming local user shares" : "Erhaltene lokale Benutzerfreigaben automatisch akzeptieren",
+    "Legal" : "Rechtliches",
+    "Imprint URL:" : "Impressum-URL:",
+    "Imprint URL" : "Impressum-URL",
+    "Privacy Policy URL:" : "Datenschutz-URL:",
+    "Privacy Policy URL" : "Datenschutz-URL",
+    "App passwords / tokens" : "App-Passwörter / Token",
+    "App passwords or tokens are passcodes that give an app or device permissions to access your %s account." : "App-Passwörter oder Token sind passcodes, die einer App oder einem Gerät Zugriff auf Ihr %s-Konto geben.",
+    "Use them as a security measure to hide your actual password which you may only want to use for web interface login." : "Benutzen Sie diese als Sicherheitsmaßnahme, um Ihr richtiges Passwort nur für den Webzugriff zu verwenden.",
+    "Create new app passcode" : "Neuen App-Passcode erstellen",
+    "Password / Token" : "Passwort / Token"
 },
 "nplurals=2; plural=(n != 1);");

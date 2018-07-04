@@ -182,6 +182,8 @@
     "File cannot be read" : "Datei kann nicht gelesen werden",
     "%s is not supported and %s will not work properly on this platform. Use it at your own risk! " : "%s wird nicht unterstützt und 1%s wird auf dieser Plattform nicht ordnungsgemäß funktionieren. Benutzung auf eigene Gefahr!",
     "Sharing %s failed, could not find %s, check spelling and server availability." : "Das Teilen von %s schlug fehl, konnte %s nicht finden, prüfen Sie die Schreibweise und Serververfügbarkeit.",
-    "Imprint" : "Impressum"
+    "Imprint" : "Impressum",
+    "The username can not be longer than 64 characters" : "Der Benutzername darf nicht länger als 64 Zeichen sein",
+    "Privacy Policy" : "Datenschutzerkärung"
 },"pluralForm" :"nplurals=2; plural=(n != 1);"
 }

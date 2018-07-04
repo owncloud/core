@@ -182,6 +182,7 @@
     "Workflows & Tags" : "Flux et étiquettes",
     "%s is not supported and %s will not work properly on this platform. Use it at your own risk! " : "%sn'est pas supporté et %sne fonctionnera pas correctement sur cette plateforme. Utilisez le à vos propres risques!",
     "Sharing %s failed, could not find %s, check spelling and server availability." : "Le partage de %s a échoué, impossible de trouver %s. Veuillez vérifier l'orthographe ainsi que la disponibilité du serveur.",
-    "Imprint" : "Mentions légales"
+    "Imprint" : "Mentions légales",
+    "Privacy Policy" : "Politique de confidentialité"
 },"pluralForm" :"nplurals=2; plural=(n > 1);"
 }

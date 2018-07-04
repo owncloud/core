@@ -118,6 +118,16 @@ OC.L10N.register(
     "Pending" : "Ausstehend",
     "Accept" : "Akzeptieren",
     "Decline" : "Ablehnen",
-    "Declined" : "Abgelehnt"
+    "Declined" : "Abgelehnt",
+    "An error occurred while updating share state: {message}" : "Fehler bei der Aktualisierung des Freigabestatus: {message}",
+    "Accept Share" : "Freigabe annehmen",
+    "Decline Share" : "Freigabe ablehnen",
+    "The group is blacklisted for sharing" : "Die Gruppe ist vom Teilen ausgeschlossen",
+    "Only recipient can change accepted state" : "Nur der Empfänger kann den Empfangsstatus ändern",
+    "File sharing" : "Dateifreigabe",
+    "State" : "Status",
+    "Files Sharing" : "Dateifreigabe",
+    "Exclude groups from receiving shares." : "Gruppen vom Empfang von Freigaben ausschließen",
+    "These groups will not receive shares. Members of the group can still send and receive shares outside of the group." : "Diese Gruppen werden keine Freigaben bekommen. Mitglieder der Gruppe können weiterhin Freigaben außerhalb der Gruppe senden und empfangen."
 },
 "nplurals=2; plural=(n != 1);");
