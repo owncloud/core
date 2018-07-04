@@ -62,6 +62,10 @@ class Propagator implements IPropagator {
 
 		$parents = $this->getParents($internalPath);
 
+		if (\count($parents) === 0) {
+			return;
+		}
+
 		if ($this->inBatch) {
 			foreach ($parents as $parent) {
 				$this->addToBatch($parent, $time, $sizeDifference);
@@ -99,6 +103,9 @@ class Propagator implements IPropagator {
 	}
 
 	protected function getParents($path) {
+		if ($path === '') {
+			return [];
+		}
 		$parts = \explode('/', $path);
 		$parent = '';
 		$parents = [];
