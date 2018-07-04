@@ -50,6 +50,8 @@ class ExceptionLoggerPlugin extends \Sabre\DAV\ServerPlugin {
 		// not available
 		'Sabre\DAV\Exception\StorageNotAvailableException' => true,
 		'OCP\Files\StorageNotAvailableException' => true,
+		//If the exception is InsufficientStorage, then log a debug message
+		'Sabre\DAV\Exception\InsufficientStorage' => true
 	];
 
 	/** @var string */
