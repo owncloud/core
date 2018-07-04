@@ -6,7 +6,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/).
 
 ## [Unreleased]
 ### Added
-- Added account module middleware to be able to plug in logic after authentication - [#31883](https://github.com/owncloud/core/issues/31883)
+- Added account module middleware to be able to plug in logic after authentication - [#31883](https://github.com/owncloud/core/issues/31883) [#31933](https://github.com/owncloud/core/issues/31933)
 - occ user:list now takes a list of attributes to display - [#31115](https://github.com/owncloud/core/issues/31115)
 - Added Symfony events for user preference changes - [#31266](https://github.com/owncloud/core/issues/31266)
 - Added Symfony events for public links shared by email - [#31632](https://github.com/owncloud/core/issues/31632)
@@ -41,6 +41,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/).
 - Bookmarks certificate was removed - [#31878](https://github.com/owncloud/core/issues/31878)
 
 ### Fixed
+- Adjustments for the notifications messages of the sharing apps - [#31947](https://github.com/owncloud/core/issues/31947)
+- Disable jquery globalEval - [#31972](https://github.com/owncloud/core/issues/31972)
 - Work around Edge browser memory leak in web UI chunked upload - [#31884](https://github.com/owncloud/core/issues/31884)
 - Don't fail if ISqlMigration doesn't return anything - [#31779](https://github.com/owncloud/core/issues/31779)
 - Fixed restoring of versions for single file shares - [#31681](https://github.com/owncloud/core/issues/31681)
@@ -58,7 +60,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/).
 - Properly normalize paths for event, no &$magic needed - [#31689](https://github.com/owncloud/core/issues/31689)
 - Use the correct user id in login related Symfony events - [#31605](https://github.com/owncloud/core/issues/31605)
 - Fix public link dialog issue when collaborative tags app is disabled - [#31581](https://github.com/owncloud/core/issues/31581)
-- Fix updating public link share in transfer ownership command - [#31176](https://github.com/owncloud/core/issues/31176)
+- Fix updating public link share in transfer ownership command - [#31176](https://github.com/owncloud/core/issues/31176) [#31953](https://github.com/owncloud/core/issues/31953)
 - Do not set the password again if it hasn't changed - [#31370](https://github.com/owncloud/core/issues/31370)
 - Use correct l10n to translate 'password was changed' email - [#31553](https://github.com/owncloud/core/issues/31553)
 - Improve text in settings/personal App Password - [#31539](https://github.com/owncloud/core/issues/31539)
