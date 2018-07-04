@@ -272,6 +272,15 @@ pipeline:
       matrix:
         TEST_SUITE: phpunit
 
+  notify:
+    image: plugins/slack:1
+    pull: true
+    secrets: [ slack_webhook_public ]
+    channel: server
+    when:
+      status: [ failure, changed ]
+      event: [ push, tag ]
+
 services:
   mariadb:
     image: mariadb:10.2
