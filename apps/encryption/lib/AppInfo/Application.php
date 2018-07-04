@@ -259,6 +259,7 @@ class Application extends \OCP\AppFramework\App {
 					$c->query('KeyManager'),
 					$c->query('Crypt'),
 					$c->query('Session'),
+					$c->getServer()->getUserManager(),
 					new QuestionHelper()
 				);
 			}
