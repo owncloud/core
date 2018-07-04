@@ -35,6 +35,7 @@
 
 namespace OC\Files\Cache;
 
+use Doctrine\DBAL\Platforms\OraclePlatform;
 use OCP\Files\Cache\ICache;
 use OCP\Files\Cache\ICacheEntry;
 use \OCP\Files\IMimeTypeLoader;
@@ -304,6 +305,16 @@ class Cache implements ICache {
 		// once for the SET part, once in the WHERE clause
 		$params = \array_merge($params, $params);
 		$params[] = $id;
+
+		// Oracle does not support empty string values so we convert them to nulls
+		// https://github.com/owncloud/core/issues/31692
+		if ($this->connection->getDatabasePlatform() instanceof OraclePlatform) {
+			foreach ($data as $param => $value) {
+				if ($value === '') {
+					$data[$param] = null;
+				}
+			}
+		}
 
 		// don't update if the data we try to set is the same as the one in the record
 		// some databases (Postgres) don't like superfluous updates
