@@ -671,6 +671,15 @@ class CacheTest extends TestCase {
 		}
 	}
 
+	public function testUpdateClearsCacheColumn() {
+		$data = ['size' => 100, 'mtime' => 50, 'mimetype' => 'text/plain', 'checksum' => 'abc'];
+		$this->cache->put('somefile.txt', $data);
+
+		$this->cache->update($this->cache->getId('somefile.txt'), ['mtime' => 0,'checksum' => '']);
+		$entry = $this->cache->get('somefile.txt');
+		$this->assertEmpty($entry['checksum']);
+	}
+
 	protected function tearDown() {
 		if ($this->cache) {
 			$this->cache->clear();
