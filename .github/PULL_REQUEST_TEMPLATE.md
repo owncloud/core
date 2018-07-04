@@ -50,6 +50,7 @@ Please set the following labels:
 - [ ] New feature (non-breaking change which adds functionality)
 - [ ] Breaking change (fix or feature that would cause existing functionality to change)
 - [ ] Technical debt
+- [ ] Tests
 
 ## Checklist:
 <!-- Tick the checkboxes when done. -->
