@@ -363,6 +363,8 @@ OC.L10N.register(
     "Automatic updating is disabled in config.php. To upgrade your instance, please use the command line updater (occ upgrade)." : "La mise à jour uatomatique est désactivé dans le config.php. Pour mettre à jour votre instance , veuillez utiliser l'outil de mise à jour via l'interface en ligne de commande (occ upgrade).",
     "Imprint" : "Mentions légales",
     "An error occured while sending email" : "Une erreur est survenue lors de l'envoi du courriel",
-    "E-Mail sent" : "Courriel envoyé"
+    "E-Mail sent" : "Courriel envoyé",
+    "Download / View" : "Télécharger / Voir",
+    "Download / View / Upload" : "Télécharger / Voir / Téléverser"
 },
 "nplurals=2; plural=(n > 1);");
