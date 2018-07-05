@@ -614,11 +614,12 @@ class Wrapper implements \OC\Files\Storage\Storage, ILockingStorage, IPersistent
 		}
 	}
 
-	public function lockNodePersistent(string $internalPath, array $lockInfo) {
+	public function lockNodePersistent(string $internalPath, array $lockInfo) : bool {
 		$storage = $this->getWrapperStorage();
 		if ($storage->instanceOfStorage(IPersistentLockingStorage::class)) {
-			$storage->lockNodePersistent($internalPath, $lockInfo);
+			return $storage->lockNodePersistent($internalPath, $lockInfo);
 		}
+		return false;
 	}
 
 	public function unlockNodePersistent(string $internalPath, array $lockInfo) {

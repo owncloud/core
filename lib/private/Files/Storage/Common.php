@@ -783,8 +783,8 @@ abstract class Common implements Storage, ILockingStorage, IVersionedStorage, IP
 
 		return \array_map(function (Lock $lock) {
 			list($uid, $fileName) = $this->convertInternalPathToGlobalPath($lock->getPath());
-			$lock->setGlobalUserId($uid);
-			$lock->setGlobalFileName($fileName);
+			$lock->setDavUserId($uid);
+			$lock->setAbsoluteDavPath($fileName);
 			return $lock;
 		}, $locks);
 	}

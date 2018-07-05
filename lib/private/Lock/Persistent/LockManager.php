@@ -20,6 +20,7 @@ declare(strict_types=1);
 
 namespace OC\Lock\Persistent;
 
+use OCP\AppFramework\Utility\ITimeFactory;
 use OCP\IUserSession;
 use OCP\Lock\Persistent\ILock;
 
@@ -27,14 +28,17 @@ class LockManager {
 
 	/** @var LockMapper */
 	private $lockMapper;
-
 	/** @var IUserSession */
 	private $userSession;
+	/** @var ITimeFactory */
+	private $timeFactory;
 
 	public function __construct(LockMapper $lockMapper,
-								IUserSession $userSession) {
+								IUserSession $userSession,
+								ITimeFactory $timeFactory) {
 		$this->lockMapper = $lockMapper;
 		$this->userSession = $userSession;
+		$this->timeFactory = $timeFactory;
 	}
 
 	public function lock(int $storageId, string $internalPath, int $fileId, array $lockInfo) : bool {
@@ -66,9 +70,11 @@ class LockManager {
 		foreach ($locks as $lock) {
 			if ($lock->getToken() === $lockInfo['token']) {
 				$exists = true;
-				$lock->setCreatedAt(\time());
+				$lock->setCreatedAt($this->timeFactory->getTime());
 				$lock->setTimeout($timeout);
-				$lock->setOwner($owner);
+				if ($lock->getOwner() === '' || $lock->getOwner() === null) {
+					$lock->setOwner($owner);
+				}
 				$this->lockMapper->update($lock);
 			}
 		}
@@ -88,7 +94,7 @@ class LockManager {
 
 		$lock = new Lock();
 		$lock->setFileId($fileId);
-		$lock->setCreatedAt(\time());
+		$lock->setCreatedAt($this->timeFactory->getTime());
 		$lock->setTimeout($timeout);
 		$lock->setOwner($owner);
 		$lock->setToken($lockInfo['token']);

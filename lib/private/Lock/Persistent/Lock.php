@@ -25,17 +25,8 @@ use OCP\Lock\Persistent\ILock;
 /**
  * Class Lock
  *
- * @method int getFileId()
- * @method string getOwner()
- * @method int getTimeout()
- * @method int getCreatedAt()
- * @method string getToken()
  * @method string getTokenHash()
- * @method int getScope()
- * @method int getDepth()
  * @method string getPath()
- * @method string getUriV1()
- * @method string getUriV2()
  * @method string getOwnerAccountId()
  *
  * @method setFileId(int $fileId)
@@ -50,11 +41,11 @@ class Lock extends Entity implements ILock {
 
 	/** @var int BIGINT - foreign key to oc_filecache.fileid */
 	protected $fileId;
-	/** @var string - plain text field as transmitted by clients*/
+	/** @var string - plain text field as transmitted by clients */
 	protected $owner;
 	/** @var int - seconds of lock life time */
 	protected $timeout;
-	/** @var int - unix timestamp when lock was created*/
+	/** @var int - unix timestamp when lock was created */
 	protected $createdAt;
 	/** @var string - uuid in WebDAV */
 	protected $token;
@@ -70,9 +61,9 @@ class Lock extends Entity implements ILock {
 	/** @var string - joined with oc_filecache */
 	protected $path;
 	/** @var string - computed value */
-	protected $globalUserId;
+	protected $davUserId;
 	/** @var string - computed value */
-	protected $globalFileName;
+	protected $absoluteDavPath;
 
 	public function __construct() {
 		$this->addType('fileId', 'integer');
@@ -89,5 +80,106 @@ class Lock extends Entity implements ILock {
 	public function setToken($token) {
 		parent::setter('token', [$token]);
 		parent::setter('tokenHash', [\md5($token)]);
+	}
+
+	/**
+	 * Return the owner of the lock - plain text field as transmitted by clients
+	 *
+	 * @return string
+	 * @since 11.0.0
+	 */
+	public function getOwner(): ?string {
+		return parent::getOwner();
+	}
+
+	/**
+	 * Foreign key to oc_filecache.fileid
+	 *
+	 * @return int
+	 * @since 11.0.0
+	 */
+	public function getFileId(): int {
+		return parent::getFileId();
+	}
+
+	/**
+	 * Seconds of lock life time
+	 *
+	 * @return int
+	 * @since 11.0.0
+	 */
+	public function getTimeout(): int {
+		return parent::getTimeout();
+	}
+
+	/**
+	 * Unix timestamp when lock was created
+	 *
+	 * @return mixed
+	 * @since 11.0.0
+	 */
+	public function getCreatedAt(): int {
+		return parent::getCreatedAt();
+	}
+
+	/**
+	 * Token to identify the lock - uuid usually
+	 *
+	 * @return string
+	 * @since 11.0.0
+	 */
+	public function getToken(): string {
+		return parent::getToken();
+	}
+
+	/**
+	 * Either shared lock or exclusive lock
+	 *
+	 * @return int
+	 * @since 11.0.0
+	 */
+	public function getScope(): int {
+		return parent::getScope();
+	}
+
+	/**
+	 * Depth as used in WebDAV: 0, 1 or infinite
+	 *
+	 * @return int
+	 * @since 11.0.0
+	 */
+	public function getDepth(): int {
+		return parent::getDepth();
+	}
+
+	/**
+	 * Absolute path to the file/folder on webdav
+	 *
+	 * @return string
+	 * @since 11.0.0
+	 */
+	public function getAbsoluteDavPath(): string {
+		return parent::getAbsoluteDavPath();
+	}
+
+	/**
+	 * User id on webdav URI
+	 *
+	 * @return string
+	 * @since 11.0.0
+	 */
+	public function getDavUserId(): string {
+		return parent::getDavUserId();
+	}
+
+	/**
+	 * Set the owner
+	 *
+	 * @param string $owner
+	 * @return mixed
+	 * @since 11.0.0
+	 */
+	public function setOwner(?string $owner) : void {
+		parent::setOwner($owner);
 	}
 }

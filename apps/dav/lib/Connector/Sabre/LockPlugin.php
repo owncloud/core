@@ -96,6 +96,8 @@ class LockPlugin extends ServerPlugin {
 	 * @throws \OCP\AppFramework\QueryException
 	 */
 	public function beforeUnlock($uri, LockInfo $lock) {
+		// no injection of LockMapper and UserSession below because this method
+		// is only triggered on UNLOCK which is a no that common operation.
 		/** @var LockMapper $mapper */
 		$mapper = \OC::$server->query(LockMapper::class);
 

@@ -22,11 +22,16 @@ namespace OC\Lock\Persistent;
 
 use OCP\AppFramework\Db\Entity;
 use OCP\AppFramework\Db\Mapper;
+use OCP\AppFramework\Utility\ITimeFactory;
 use OCP\IDBConnection;
 
 class LockMapper extends Mapper {
-	public function __construct(IDBConnection $db) {
+	/** @var ITimeFactory */
+	private $timeFactory;
+
+	public function __construct(IDBConnection $db, ITimeFactory $timeFactory) {
 		parent::__construct($db, 'persistent_locks', null);
+		$this->timeFactory = $timeFactory;
 	}
 
 	/**
@@ -47,7 +52,7 @@ class LockMapper extends Mapper {
 			->from($this->getTableName(), 'l')
 			->join('l', 'filecache', 'f', $query->expr()->eq('l.file_id', 'f.fileid'))
 			->where($query->expr()->eq('storage', $query->createNamedParameter($storageId)))
-			->andWhere($query->expr()->gt('created_at', $query->createFunction('(' . $query->createNamedParameter(\time()) . ' - `timeout`)')));
+			->andWhere($query->expr()->gt('created_at', $query->createFunction('(' . $query->createNamedParameter($this->timeFactory->getTime()) . ' - `timeout`)')));
 
 		if ($returnChildLocks) {
 			$query->andWhere($query->expr()->like('f.path', $query->createNamedParameter($pathPattern)));
@@ -135,7 +140,7 @@ class LockMapper extends Mapper {
 		$query = $this->db->getQueryBuilder();
 		$query->delete($this->getTableName())
 			->where($query->expr()->lt('created_at',
-				$query->createFunction('(' . $query->createNamedParameter(\time()) . ' - `timeout`)')))
+				$query->createFunction('(' . $query->createNamedParameter($this->timeFactory->getTime()) . ' - `timeout`)')))
 			->execute();
 	}
 }

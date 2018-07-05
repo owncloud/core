@@ -23,6 +23,7 @@ namespace OCA\DAV\Files;
 
 use OCA\DAV\Connector\Sabre\Node;
 use OCP\Files\Storage\IPersistentLockingStorage;
+use OCP\Lock\Persistent\ILock;
 use Sabre\DAV\Exception\NotFound;
 use Sabre\DAV\Locks;
 use Sabre\DAV\Locks\Backend\BackendInterface;
@@ -74,19 +75,23 @@ class FileLocksBackend implements BackendInterface {
 		$davLocks = [];
 		foreach ($locks as $lock) {
 			$lockInfo = new Locks\LockInfo();
-			$fileName = $lock->getGlobalFileName();
+			$fileName = $lock->getAbsoluteDavPath();
 
 			if ($this->useV1) {
 				$lockInfo->uri = $fileName;
 			} else {
-				$uid = $lock->getGlobalUserId();
+				$uid = $lock->getDavUserId();
 				$lockInfo->uri = "files/$uid/$fileName";
 			}
 			$lockInfo->token = $lock->getToken();
-			$lockInfo->created = $lock->getTimeout();
+			$lockInfo->created = $lock->getCreatedAt();
 			$lockInfo->depth = $lock->getDepth();
 			$lockInfo->owner = $lock->getOwner();
-			$lockInfo->scope = $lock->getScope();
+			if ($lock->getScope() === ILock::LOCK_SCOPE_EXCLUSIVE) {
+				$lockInfo->scope = Locks\LockInfo::EXCLUSIVE;
+			} else {
+				$lockInfo->scope = Locks\LockInfo::SHARED;
+			}
 			$lockInfo->timeout = $lock->getTimeout();
 
 			$davLocks[] = $lockInfo;
@@ -119,7 +124,7 @@ class FileLocksBackend implements BackendInterface {
 		/** @var IPersistentLockingStorage $storage */
 		return $storage->lockNodePersistent($node->getFileInfo()->getInternalPath(), [
 			'token' => $lockInfo->token,
-			'scope' => $lockInfo->scope,
+			'scope' => $lockInfo->scope === Locks\LockInfo::EXCLUSIVE ? ILock::LOCK_SCOPE_EXCLUSIVE : ILock::LOCK_SCOPE_SHARED,
 			'depth' => $lockInfo->depth,
 			'owner' => $lockInfo->owner
 		]);

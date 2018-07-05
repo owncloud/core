@@ -24,6 +24,7 @@ namespace Test\Lock\Persistent;
 use OC\Lock\Persistent\Lock;
 use OC\Lock\Persistent\LockManager;
 use OC\Lock\Persistent\LockMapper;
+use OCP\AppFramework\Utility\ITimeFactory;
 use OCP\IUser;
 use OCP\IUserSession;
 use OCP\Lock\Persistent\ILock;
@@ -42,13 +43,16 @@ class LockManagerTest extends TestCase {
 	private $userSession;
 	/** @var LockManager */
 	private $manager;
+	/** @var ITimeFactory | \PHPUnit_Framework_MockObject_MockObject */
+	private $timeFactory;
 
 	public function setUp() {
 		parent::setUp();
 
 		$this->lockMapper = $this->createMock(LockMapper::class);
 		$this->userSession = $this->createMock(IUserSession::class);
-		$this->manager = new LockManager($this->lockMapper, $this->userSession);
+		$this->timeFactory = $this->createMock(ITimeFactory::class);
+		$this->manager = new LockManager($this->lockMapper, $this->userSession, $this->timeFactory);
 
 		$user = $this->createMock(IUser::class);
 		$user->method('getDisplayName')->willReturn('Alice');
@@ -57,6 +61,8 @@ class LockManagerTest extends TestCase {
 
 		$this->userSession->method('isLoggedIn')->willReturn(true);
 		$this->userSession->method('getUser')->willReturn($user);
+
+		$this->timeFactory->method('getTime')->willReturn(123456);
 	}
 
 	/**
@@ -89,6 +95,7 @@ class LockManagerTest extends TestCase {
 				$this->assertEquals(ILock::LOCK_SCOPE_EXCLUSIVE, $lock->getScope());
 				$this->assertEquals('Alice <alice@example.net>', $lock->getOwner());
 				$this->assertEquals(999, $lock->getOwnerAccountId());
+				$this->assertEquals(123456, $lock->getCreatedAt());
 			});
 
 		$this->manager->lock(6, '/foo/bar', 123, [
