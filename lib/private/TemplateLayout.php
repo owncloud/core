@@ -92,9 +92,10 @@ class TemplateLayout extends \OC_Template {
 			$userDisplayName = \OC_User::getDisplayName();
 			$this->assign('user_displayname', $userDisplayName);
 			$this->assign('user_uid', \OC_User::getUser());
-			$this->assign('enableAvatars', $this->config->getSystemValue('enable_avatars', true) === true);
+			$avatarsEnabled = $this->config->getSystemValue('enable_avatars', true) === true;
+			$this->assign('enableAvatars', $avatarsEnabled);
 
-			if (\OC_User::getUser() === false) {
+			if (!$avatarsEnabled || \OC_User::getUser() === false) {
 				$this->assign('userAvatarSet', false);
 			} else {
 				$this->assign('userAvatarSet', \OC::$server->getAvatarManager()->getAvatar(\OC_User::getUser())->exists());
