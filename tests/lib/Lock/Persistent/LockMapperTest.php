@@ -24,6 +24,7 @@ namespace Test\Lock\Persistent;
 use OC\Lock\Persistent\Lock;
 use OC\Lock\Persistent\LockMapper;
 use OC\User\Account;
+use OCP\AppFramework\Utility\ITimeFactory;
 use OCP\IDBConnection;
 use OCP\Lock\Persistent\ILock;
 use Test\TestCase;
@@ -47,6 +48,8 @@ class LockMapperTest extends TestCase {
 	private $locks = [];
 	/** @var string */
 	private $path;
+	/** @var ITimeFactory */
+	private $timeFactory;
 
 	public function setUp() {
 		parent::setUp();
@@ -74,8 +77,11 @@ class LockMapperTest extends TestCase {
 		\OC::$server->getAccountMapper()
 			->insert($this->account);
 
+		$this->timeFactory = $this->createMock(ITimeFactory::class);
+		$this->timeFactory->method('getTime')->willReturn(123456);
+
 		// mapper to use
-		$this->mapper = new LockMapper($this->db);
+		$this->mapper = new LockMapper($this->db, $this->timeFactory);
 	}
 
 	public function providesInvalidEntities() {
