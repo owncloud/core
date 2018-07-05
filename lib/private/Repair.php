@@ -93,6 +93,13 @@ class Repair implements IOutput {
 	}
 
 	/**
+	 * Clears the list of steps to run
+	 */
+	public function clearSteps() {
+		$this->repairSteps = [];
+	}
+
+	/**
 	 * Add repair step
 	 *
 	 * @param IRepairStep|string $repairStep repair step

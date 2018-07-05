@@ -27,19 +27,19 @@ use OCP\IL10N;
 use OCP\ILogger;
 use OCP\IUserManager;
 use OCP\Migration\IOutput;
-use OCP\Migration\IRepairStep;
 use OCP\IUser;
 use OC\Avatar;
 use OCP\IConfig;
 use OCP\IAvatarManager;
 use OCP\Files\NotFoundException;
+use OCP\Migration\IRuntimeRepairStep;
 
 /**
  * Move avatars outside of their homes to the new location
  *
  * @package OC\Repair
  */
-class MoveAvatarOutsideHome implements IRepairStep {
+class MoveAvatarOutsideHome implements IRuntimeRepairStep {
 	/** @var \OCP\IConfig */
 	protected $config;
 

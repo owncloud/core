@@ -26,7 +26,9 @@
 namespace OC\Core\Command\Maintenance;
 
 use Exception;
+use OCP\App\IAppManager;
 use OCP\IConfig;
+use OCP\Migration\IRuntimeRepairStep;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Input\InputInterface;
@@ -46,15 +48,18 @@ class Repair extends Command {
 	private $progress;
 	/** @var OutputInterface */
 	private $output;
+	/** @var IAppManager  */
+	private $appManager;
 
 	/**
 	 * @param \OC\Repair $repair
 	 * @param IConfig $config
 	 */
-	public function __construct(\OC\Repair $repair, IConfig $config, EventDispatcherInterface $dispatcher) {
+	public function __construct(\OC\Repair $repair, IConfig $config, EventDispatcherInterface $dispatcher, IAppManager $appManager) {
 		$this->repair = $repair;
 		$this->config = $config;
 		$this->dispatcher = $dispatcher;
+		$this->appManager = $appManager;
 		parent::__construct();
 	}
 
@@ -66,39 +71,27 @@ class Repair extends Command {
 				'include-expensive',
 				null,
 				InputOption::VALUE_NONE,
+				'Use this option when you want to include resource and load expensive tasks.')
+			->addOption(
+				'runtime',
+				null,
+				InputOption::VALUE_NONE,
 				'Use this option when you want to include resource and load expensive tasks.');
 	}
 
 	protected function execute(InputInterface $input, OutputInterface $output) {
+		$this->output = $output;
+
 		$includeExpensive = $input->getOption('include-expensive');
-		if ($includeExpensive) {
-			foreach ($this->repair->getExpensiveRepairSteps() as $step) {
-				$this->repair->addStep($step);
-			}
-		}
+		$runtime = $input->getOption('runtime');
+		$this->buildRepairList($includeExpensive, $runtime, $this->repair);
 
-		$apps = \OC::$server->getAppManager()->getInstalledApps();
-		foreach ($apps as $app) {
-			if (!\OC_App::isEnabled($app)) {
-				continue;
-			}
-			$info = \OC_App::getAppInfo($app);
-			if (!\is_array($info)) {
-				continue;
-			}
-			\OC_App::loadApp($app);
-			$steps = $info['repair-steps']['post-migration'];
-			foreach ($steps as $step) {
-				try {
-					$this->repair->addStep($step);
-				} catch (Exception $ex) {
-					$output->writeln("<error>Failed to load repair step for $app: {$ex->getMessage()}</error>");
-				}
-			}
-		}
-
+		// If not runtime mode, we need maintenance mode
 		$maintenanceMode = $this->config->getSystemValue('maintenance', false);
-		$this->config->setSystemValue('maintenance', true);
+		if (!$runtime) {
+			$this->output->writeln('<info>Enabling maintenance mode...');
+			$this->config->setSystemValue('maintenance', true);
+		}
 
 		$this->progress = new ProgressBar($output);
 		$this->output = $output;
@@ -112,7 +105,50 @@ class Repair extends Command {
 
 		$this->repair->run();
 
-		$this->config->setSystemValue('maintenance', $maintenanceMode);
+		if (!$runtime) {
+			$this->output->writeln('<info>Resetting maintenance mode...');
+			$this->config->setSystemValue('maintenance', $maintenanceMode);
+		}
+	}
+
+	public function buildRepairList($includeExpensive, $runtimeSteps, \OC\Repair $repair) {
+		$repair->clearSteps();
+		$steps = [];
+		$steps = array_merge($steps, \OC\Repair::getRepairSteps());
+		if ($includeExpensive) {
+			$steps = array_merge($steps, $repair->getExpensiveRepairSteps());
+		}
+		$apps = $this->appManager->getInstalledApps();
+		foreach ($apps as $app) {
+			if (!$this->appManager->isEnabledForUser($app)) {
+				continue;
+			}
+			$info = $this->appManager->getAppInfo($app);
+			if (!\is_array($info)) {
+				continue;
+			}
+			\OC_App::loadApp($app);
+			$appSteps = $info['repair-steps']['post-migration'];
+			foreach ($appSteps as $step) {
+				$steps[] = $step;
+			}
+		}
+		// Add to repair lib
+		foreach ($steps as $step) {
+			if (\is_string($step)) {
+				$step = \OC::$server->query($step);
+			}
+			// Skip step if runtime only and this one isnt
+			if ($runtimeSteps && !$step instanceof IRuntimeRepairStep) {
+				continue;
+			}
+			try {
+				$repair->addStep($step);
+			} catch (\Exception $e) {
+				$stepName = get_class($step);
+				$this->output->writeln("<error>Problem loading repair step: $stepName</error>");
+			}
+		}
 	}
 
 	public function handleRepairFeedBack($event) {
