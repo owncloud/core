@@ -129,11 +129,6 @@ class Repair implements IOutput {
 	public static function getRepairSteps() {
 		return [
 			new RepairMimeTypes(\OC::$server->getConfig()),
-			new RepairMismatchFileCachePath(
-				\OC::$server->getDatabaseConnection(),
-				\OC::$server->getMimeTypeLoader(),
-				\OC::$server->getLogger(),
-				\OC::$server->getConfig()),
 			new FillETags(\OC::$server->getDatabaseConnection()),
 			new CleanTags(\OC::$server->getDatabaseConnection(), \OC::$server->getUserManager()),
 			new DropOldTables(\OC::$server->getDatabaseConnection()),
@@ -178,6 +173,12 @@ class Repair implements IOutput {
 	public static function getExpensiveRepairSteps() {
 		return [
 			new OldGroupMembershipShares(\OC::$server->getDatabaseConnection(), \OC::$server->getGroupManager()),
+			new RepairMismatchFileCachePath(
+				\OC::$server->getDatabaseConnection(),
+				\OC::$server->getMimeTypeLoader(),
+				\OC::$server->getLogger(),
+				\OC::$server->getConfig()
+			)
 		];
 	}
 
