@@ -88,6 +88,17 @@ default:
         - WebUIPersonalGeneralSettingsContext:
         - EmailContext:
 
+    webUIAdminSettings:
+      paths:
+        - %paths.base%/../features/webUIAdminSettings
+      context: *common_webui_suite_context
+      contexts:
+        - FeatureContext: *common_feature_context_params
+        - WebUIAdminSharingSettingsContext:
+        - WebUIGeneralContext:
+        - WebUILoginContext:
+        - CapabilitiesContext:
+
     webUIFiles:
       paths:
         - %paths.base%/../features/webUIFiles
