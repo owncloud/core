@@ -44,7 +44,7 @@ class Controller {
 
 		if (!\OC_User::checkPassword($username, $oldPassword)) {
 			$l = \OC::$server->getL10NFactory()->get('settings');
-			\OC_JSON::error(["data" => ["message" => $l->t("Wrong password")]]);
+			\OC_JSON::error(["data" => ["message" => $l->t("Wrong current password")]]);
 			exit();
 		}
 		if ($oldPassword === $password) {
