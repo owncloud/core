@@ -7,6 +7,8 @@ OC.L10N.register(
     "Sharing %s failed, because this item is already shared with %s" : "Współdzielenie %s nie powiodło się, ponieważ element jest już współdzielony z %s",
     "File is already shared with %s" : "Plik jest już współdzielony z %s",
     "Sharing %s failed, could not find %s, maybe the server is currently unreachable." : "Współdzielenie %s nie powiodło się, nie można odnaleźć %s. Prawdopobnie serwer nie jest teraz osiągalny.",
+    "\"%1$s\" shared \"%3$s\" with you (on behalf of \"%2$s\")" : "\"%1$s\" udostępnił Tobie \"%3$s\" (z upoważnienia \"%2$s\")",
+    "\"%1$s\" shared \"%3$s\" with you" : "\"%1$s\" udostępnił Tobie \"%3$s\"",
     "Accept" : "Akceptuj",
     "Decline" : "Odmów",
     "Federated Cloud Sharing" : "Współdzielenie przez chmurę stowarzyszoną",

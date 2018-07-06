@@ -61,6 +61,8 @@ OC.L10N.register(
     "Removed public link" : "Usunięto publiczny odnośnik",
     "Public link expired" : "Publiczny odnośnik wygasł",
     "Shares" : "Udziały",
+    "\"%1$s\" shared \"%3$s\" with you (on behalf of \"%2$s\")" : "\"%1$s\" udostępnił Tobie \"%3$s\" (z upoważnienia \"%2$s\")",
+    "\"%1$s\" shared \"%3$s\" with you" : "\"%1$s\" udostępnił Tobie \"%3$s\"",
     "Accept" : "Akceptuj",
     "Decline" : "Odmów",
     "This share is password-protected" : "Udział ten jest chroniony hasłem",

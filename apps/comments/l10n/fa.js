@@ -2,7 +2,7 @@ OC.L10N.register(
     "comments",
     {
     "Type in a new comment..." : "نوشتن دیدگاه جدید ...",
-    "Delete comment" : "حذف دیدگاه",
+    "Delete comment" : "حذف نظر",
     "Post" : "ارسال",
     "Cancel" : "منصرف شدن",
     "Edit comment" : "ویرایش دیدگاه",

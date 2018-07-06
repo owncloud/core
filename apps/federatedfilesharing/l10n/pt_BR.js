@@ -10,6 +10,7 @@ OC.L10N.register(
     "Sharing %s failed, could not find %s, maybe the server is currently unreachable." : "O compartilhamento %s falhou, porque não foi possível encontrar %s, talvez o servidor esteja inacessível.",
     "\"%1$s\" shared \"%3$s\" with you (on behalf of \"%2$s\")" : "\"%1$s\" compartilhado \"%3$s\" com você (em nome de \"%2$s\")",
     "\"%1$s\" shared \"%3$s\" with you" : "\"%1$s\" compartilhado \"%3$s\" com você",
+    "\"%1$s\" invited you to view \"%3$s\"" : "\"%1$s\" convidou você para visualizar \"%3$s\"",
     "Accept" : "Aceitar",
     "Decline" : "Rejeitar",
     "Share with me through my #ownCloud Federated Cloud ID, see %s" : "Compartilhe comigo através do meu #ownCloud Nuvem ID Federada, veja %s",
