@@ -49,7 +49,7 @@ class Controller {
 		}
 		if ($oldPassword === $password) {
 			$l = \OC::$server->getL10NFactory()->get('settings');
-			\OC_JSON::error(["data" => ["message" => $l->t("The new password can not be the same as the previous one")]]);
+			\OC_JSON::error(["data" => ["message" => $l->t("The new password cannot be the same as the previous one")]]);
 			exit();
 		}
 		try {

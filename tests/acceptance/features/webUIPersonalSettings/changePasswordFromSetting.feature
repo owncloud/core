@@ -23,4 +23,4 @@ So that I can login with my new password
 
 	Scenario: New password is same as current password
 		When the user changes the password to "1234" using the webUI
-		Then a password error message should be displayed on the webUI with the text "The new password can not be the same as the previous one"
+		Then a password error message should be displayed on the webUI with the text "The new password cannot be the same as the previous one"
