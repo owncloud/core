@@ -1,6 +1,7 @@
 { "translations": {
     "Username" : "Nama pengguna",
     "Password" : "Kata laluan",
+    "__language_name__" : "_nama_bahasa_",
     "Apps" : "Aplikasi",
     "General" : "Umum",
     "Search" : "Cari",

@@ -30,6 +30,7 @@
     "File name is a reserved word" : "این نام فایل جزو کلمات رزرو می‌باشد",
     "File name contains at least one invalid character" : "نام فایل دارای حداقل یک کاراکتر نامعتبر است",
     "File name is too long" : "نام فایل خیلی بزرگ است",
+    "__language_name__" : "__language_name__",
     "App directory already exists" : "برنامه در حال حاضر وجود دارد",
     "Can't create app folder. Please fix permissions. %s" : "امکان ایجاد پوشه‌ی برنامه وجود ندارد. لطفا اجازه‌های دسترسی را تصحیح کنید. %s",
     "No source specified when installing app" : "هیچ مبدائی در زمان نصب برنامه مشخص نشده است",

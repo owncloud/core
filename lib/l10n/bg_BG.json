@@ -39,6 +39,7 @@
     "File name is a reserved word" : "Името на файла е запазена дума",
     "File name contains at least one invalid character" : "Името на файла съдържа поне един невалиден символ",
     "File name is too long" : "Името на файла е твърде дълго",
+    "__language_name__" : "Български",
     "App directory already exists" : "Папката на приложението вече съществува.",
     "Can't create app folder. Please fix permissions. %s" : "Неуспешно създаване на папката за приложението. Моля, оправете разрешенията. %s",
     "Archive does not contain a directory named %s" : "Архивът не съддържа директория на име %s",

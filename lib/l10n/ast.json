@@ -41,6 +41,7 @@
     "File name is a reserved word" : "El nome de ficheru ye una pallabra reservada",
     "File name contains at least one invalid character" : "El nome del ficheru contién polo menos un carácter non válidu",
     "File name is too long" : "El nome de ficheru ye demasiáu llargu",
+    "__language_name__" : "Asturianu",
     "App directory already exists" : "El direutoriu de l'aplicación yá esiste",
     "Can't create app folder. Please fix permissions. %s" : "Nun pue crease la carpeta de l'aplicación. Por favor, igua los permisos. %s",
     "Archive does not contain a directory named %s" : "L'archivu nun contien un directoriu nomáu %s",

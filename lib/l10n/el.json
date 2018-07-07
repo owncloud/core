@@ -39,6 +39,7 @@
     "File name is a reserved word" : "Το όνομα αρχείου είναι λέξη που έχει δεσμευτεί",
     "File name contains at least one invalid character" : "Το όνομα αρχείου περιέχει έναν τουλάχιστον μη έγκυρο χαρακτήρα",
     "File name is too long" : "Το όνομα αρχείου είνια πολύ μεγάλο",
+    "__language_name__" : "__όνομα_γλώσσας__",
     "App directory already exists" : "Ο κατάλογος εφαρμογών υπάρχει ήδη",
     "Can't create app folder. Please fix permissions. %s" : "Δεν είναι δυνατόν να δημιουργηθεί ο φάκελος εφαρμογής. Παρακαλώ διορθώστε τις άδειες πρόσβασης. %s",
     "Archive does not contain a directory named %s" : "Το αρχείο δεν περιέχει κατάλογο με το όνομα %s",

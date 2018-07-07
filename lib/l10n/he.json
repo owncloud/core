@@ -39,6 +39,7 @@
     "File name is a reserved word" : "שם קובץ הנו מילה שמורה",
     "File name contains at least one invalid character" : "שם קובץ כולל לפחות תו אחד לא חוקי",
     "File name is too long" : "שם קובץ ארוך מדי",
+    "__language_name__" : "עברית",
     "App directory already exists" : "תיקיית יישום כבר קיימת",
     "Can't create app folder. Please fix permissions. %s" : "לא ניתן ליצור תיקיית יישום. יש לתקן הרשאות. %s",
     "Archive does not contain a directory named %s" : "הארכיב לא כולל שם תיקייה %s",

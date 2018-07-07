@@ -42,6 +42,7 @@
     "File name is a reserved word" : "파일 이름이 예약된 단어임",
     "File name contains at least one invalid character" : "파일 이름에 잘못된 글자가 한 자 이상 있음",
     "File name is too long" : "파일 이름이 너무 김",
+    "__language_name__" : "한국어",
     "App directory already exists" : "앱 디렉터리가 이미 존재합니다.",
     "Can't create app folder. Please fix permissions. %s" : "앱 폴더를 만들 수 없습니다. 권한을 수정하십시오. %s",
     "Archive does not contain a directory named %s" : "압축 파일에 디렉터리 %s이(가) 없습니다",

@@ -34,6 +34,7 @@
     "File name is a reserved word" : "Ім’я файлу є зарезервованим словом",
     "File name contains at least one invalid character" : "Ім’я файлу містить принаймні один некоректний символ",
     "File name is too long" : "Ім’я файлу занадто довге",
+    "__language_name__" : "__language_name__",
     "App directory already exists" : "Тека додатку вже існує",
     "Can't create app folder. Please fix permissions. %s" : "Неможливо створити теку додатку. Будь ласка, виправте права доступу. %s",
     "Archive does not contain a directory named %s" : "Архів не містить теки з назвою %s",

@@ -42,6 +42,7 @@
     "File name is a reserved word" : "Filnavnet er et reserveret ord",
     "File name contains at least one invalid character" : "Filnavnet indeholder mindst ét ugyldigt tegn",
     "File name is too long" : "Filnavnet er for langt",
+    "__language_name__" : "Dansk",
     "App directory already exists" : "App-mappe findes allerede",
     "Can't create app folder. Please fix permissions. %s" : "Kan ikke oprette app-mappe. Ret tilladelser. %s",
     "Archive does not contain a directory named %s" : "Arkivet indeholder ike en mappe kaldet %s",

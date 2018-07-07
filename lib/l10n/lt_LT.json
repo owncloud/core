@@ -21,6 +21,7 @@
     "Empty filename is not allowed" : "Tuščias failo pavadinimas neleidžiamas",
     "File name is a reserved word" : "Failo pavadinimas negalimas, žodis rezervuotas",
     "File name contains at least one invalid character" : "Failo vardas sudarytas iš neleistinų simbolių",
+    "__language_name__" : "Lietuvių",
     "App directory already exists" : "Programos aplankas jau egzistuoja",
     "Can't create app folder. Please fix permissions. %s" : "Nepavyksta sukurti aplanko. Prašome pataisyti leidimus. %s",
     "No source specified when installing app" : "Nenurodytas šaltinis diegiant programą",

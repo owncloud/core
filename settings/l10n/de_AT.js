@@ -5,7 +5,6 @@ OC.L10N.register(
     "Email sent" : "E-Mail wurde verschickt",
     "Delete" : "Löschen",
     "Share" : "Teilen",
-    "__language_name__" : "Deutsch (Österreich)",
     "Invalid request" : "Fehlerhafte Anfrage",
     "Very weak password" : "Sehr schwaches Passwort",
     "Weak password" : "Schwaches Passwort",

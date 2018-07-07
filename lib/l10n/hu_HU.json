@@ -41,6 +41,7 @@
     "File name is a reserved word" : "A fajl neve egy rezervált szó",
     "File name contains at least one invalid character" : "A fájlnév legalább egy érvénytelen karaktert tartalmaz!",
     "File name is too long" : "A fájlnév túl hosszú!",
+    "__language_name__" : "__language_name__",
     "App directory already exists" : "Az alkalmazás mappája már létezik",
     "Can't create app folder. Please fix permissions. %s" : "Nem lehetett létrehozni az alkalmazás mappáját. Kérem ellenőrizze a jogosultságokat. %s",
     "Archive does not contain a directory named %s" : "Az arhívum nem tartalmaz könyvátrat ezzel a névvel %s",

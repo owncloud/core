@@ -40,6 +40,7 @@
     "File name is a reserved word" : "Názov súboru je rezervované slovo.",
     "File name contains at least one invalid character" : "Názov súboru obsahuje nepovolené znaky.",
     "File name is too long" : "Meno súboru je veľmi dlhé.",
+    "__language_name__" : "Slovensky",
     "App directory already exists" : "Aplikačný priečinok už existuje",
     "Can't create app folder. Please fix permissions. %s" : "Nemožno vytvoriť aplikačný priečinok. Prosím upravte povolenia. %s",
     "Archive does not contain a directory named %s" : "Archív neobsahuje priečinok zvaný %s",

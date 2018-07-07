@@ -20,6 +20,7 @@
     "Username" : "Nom d'usuari",
     "Password" : "Contrasenya",
     "File name contains at least one invalid character" : "El nom del fitxer conté al menys un caràcter invàlid",
+    "__language_name__" : "Català",
     "App directory already exists" : "La carpeta de l'aplicació ja existeix",
     "Can't create app folder. Please fix permissions. %s" : "No es pot crear la carpeta de l'aplicació. Arregleu els permisos. %s",
     "No source specified when installing app" : "No heu especificat la font en instal·lar l'aplicació",

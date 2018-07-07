@@ -42,6 +42,7 @@
     "File name is a reserved word" : "Jméno souboru je rezervované slovo",
     "File name contains at least one invalid character" : "Jméno souboru obsahuje nejméně jeden neplatný znak",
     "File name is too long" : "Jméno souboru je moc dlouhé",
+    "__language_name__" : "Česky",
     "App directory already exists" : "Adresář aplikace již existuje",
     "Can't create app folder. Please fix permissions. %s" : "Nelze vytvořit adresář aplikace. Opravte práva souborů. %s",
     "Archive does not contain a directory named %s" : "Archiv neobsahuje adresář pojmenovaný %s",

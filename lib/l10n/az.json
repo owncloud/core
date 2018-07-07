@@ -11,6 +11,7 @@
     "None" : "Heç bir",
     "Username" : "İstifadəçi adı",
     "Password" : "Şifrə",
+    "__language_name__" : "__AZ_Azerbaijan__",
     "App directory already exists" : "Proqram təminatı qovluğu artıq mövcuddur.",
     "Can't create app folder. Please fix permissions. %s" : "Proqram təminatı qovluğunu yaratmaq mümkün olmadı. Xahiş edilir yetkiləri düzgün təyin edəsiniz. %s",
     "General" : "Ümumi",

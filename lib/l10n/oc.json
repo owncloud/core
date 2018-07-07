@@ -41,6 +41,7 @@
     "File name is a reserved word" : "Aqueste nom de fichièr es un mot reservat",
     "File name contains at least one invalid character" : "Lo nom de fichièr conten un (de) caractèr(s) invalid(s)",
     "File name is too long" : "Nom de fichièr tròp long",
+    "__language_name__" : "Occitan-lengadocian",
     "App directory already exists" : "Lo dorsièr de l'aplicacion existís ja",
     "Can't create app folder. Please fix permissions. %s" : "Impossible de crear lo dorsièr de l'aplicacion. Corregissètz los dreches d'accès. %s",
     "Archive does not contain a directory named %s" : "Lo fichièr archiu conten pas de repertòri %s",
