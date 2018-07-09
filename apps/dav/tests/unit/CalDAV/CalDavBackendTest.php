@@ -28,6 +28,7 @@ use DateTimeZone;
 use OCA\DAV\CalDAV\CalDavBackend;
 use OCA\DAV\CalDAV\Calendar;
 use OCP\IL10N;
+use Sabre\CalDAV\Xml\Property\ScheduleCalendarTransp;
 use Sabre\DAV\PropPatch;
 use Sabre\DAV\Xml\Property\Href;
 use Sabre\DAVACL\IACL;
@@ -52,7 +53,8 @@ class CalDavBackendTest extends AbstractCalDavBackendTest {
 		// update it's display name
 		$patch = new PropPatch([
 			'{DAV:}displayname' => 'Unit test',
-			'{urn:ietf:params:xml:ns:caldav}calendar-description' => 'Calendar used for unit testing'
+			'{urn:ietf:params:xml:ns:caldav}calendar-description' => 'Calendar used for unit testing',
+			'{urn:ietf:params:xml:ns:caldav}schedule-calendar-transp' => new ScheduleCalendarTransp('transparent')
 		]);
 		$this->backend->updateCalendar($calendarId, $patch);
 		$patch->commit();
@@ -60,6 +62,7 @@ class CalDavBackendTest extends AbstractCalDavBackendTest {
 		$this->assertCount(1, $books);
 		$this->assertEquals('Unit test', $books[0]['{DAV:}displayname']);
 		$this->assertEquals('Calendar used for unit testing', $books[0]['{urn:ietf:params:xml:ns:caldav}calendar-description']);
+		$this->assertEquals(new ScheduleCalendarTransp('transparent'), $books[0]['{urn:ietf:params:xml:ns:caldav}schedule-calendar-transp']);
 
 		// delete the address book
 		$this->backend->deleteCalendar($books[0]['id']);
