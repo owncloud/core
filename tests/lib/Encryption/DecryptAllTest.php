@@ -27,6 +27,7 @@ use Doctrine\DBAL\Statement;
 use OC\Encryption\DecryptAll;
 use OC\Encryption\Exceptions\DecryptionFailedException;
 use OC\Encryption\Manager;
+use OC\Files\Cache\Cache;
 use OC\Files\FileInfo;
 use OC\Files\ObjectStore\ObjectStoreStorage;
 use OC\Files\View;
@@ -521,6 +522,17 @@ class DecryptAllTest extends TestCase {
 		$this->view->expects($this->once())
 			->method('rename')
 			->with($path . '.decrypted.42.part', $path);
+		$storage = $this->createMock('\OC\Files\Storage\Storage');
+		$fileCache = $this->createMock(Cache::class);
+		$fileCache->expects($this->once())
+			->method('put')
+			->with('test.txt', ['encrypted' => 0]);
+		$storage->expects($this->once())
+			->method('getCache')
+			->willReturn($fileCache);
+		$this->view->expects($this->once())
+			->method('resolvePath')
+			->willReturn([$storage, 'test.txt']);
 
 		$this->assertTrue(
 			$this->invokePrivate($instance, 'decryptFile', [$path])
