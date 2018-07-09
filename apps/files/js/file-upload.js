@@ -114,6 +114,17 @@ OC.FileUpload.prototype = {
 		return this.getFile().name;
 	},
 
+	getLastModified: function() {
+		var file = this.getFile();
+		if (file.lastModifiedDate) {
+			return file.lastModifiedDate.getTime() / 1000;
+		}
+		if (file.lastModified) {
+			return file.lastModified / 1000;
+		}
+		return null;
+	},
+
 	setTargetFolder: function(targetFolder) {
 		this._targetFolder = targetFolder;
 	},
@@ -238,9 +249,10 @@ OC.FileUpload.prototype = {
 			this.data.headers['OC-Autorename'] = '1';
 		}
 
-		if (file.lastModified) {
+		var lastModified = this.getLastModified();
+		if (lastModified) {
 			// preserve timestamp
-			this.data.headers['X-OC-Mtime'] = file.lastModified / 1000;
+			this.data.headers['X-OC-Mtime'] = '' + lastModified;
 		}
 
 		var userName = this.uploader.davClient.getUserName();
@@ -287,11 +299,11 @@ OC.FileUpload.prototype = {
 		}
 
 		var uid = OC.getCurrentUser().uid;
-		var mtime = this.getFile().lastModified;
+		var mtime = this.getLastModified();
 		var size = this.getFile().size;
 		var headers = {};
 		if (mtime) {
-			headers['X-OC-Mtime'] = mtime / 1000;
+			headers['X-OC-Mtime'] = mtime;
 		}
 		if (size) {
 			headers['OC-Total-Length'] = size;
