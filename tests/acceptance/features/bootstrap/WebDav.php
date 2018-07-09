@@ -428,6 +428,19 @@ trait WebDav {
 	}
 
 	/**
+	 * @Then /^the downloaded content should be "([^"]*)" plus end-of-line$/
+	 *
+	 * @param string $fileName
+	 * @param string $user
+	 * @param string $content
+	 *
+	 * @return void
+	 */
+	public function downloadedContentShouldBePlusEndOfLine($content) {
+		$this->downloadedContentShouldBe($content . "\n");
+	}
+
+	/**
 	 * @Then /^the content of file "([^"]*)" should be "([^"]*)"$/
 	 *
 	 * @param string $fileName
@@ -576,6 +589,22 @@ trait WebDav {
 	}
 
 	/**
+	 * @When /^user "([^"]*)" gets the properties of (?:file|folder|entry) "([^"]*)" using the API$/
+	 *
+	 * @param string $user
+	 * @param string $path
+	 *
+	 * @return void
+	 */
+	public function userGetsThePropertiesOfFolder(
+		$user, $path
+	) {
+		$this->response = $this->listFolder(
+			$user, $path, 0, []
+		);
+	}
+
+	/**
 	 * @When /^user "([^"]*)" gets the following properties of (?:file|folder|entry) "([^"]*)" using the API$/
 	 *
 	 * @param string $user
@@ -699,9 +728,29 @@ trait WebDav {
 	 */
 	public function asTheFileOrFolderShouldExist($user, $entry, $path) {
 		$this->response = $this->listFolder($user, $path, 0);
-		if (!\is_array($this->response) || !isset($this->response['{DAV:}getetag'])) {
+		try {
+			$this->thePropertiesResponseShouldContainAnEtag();
+		} catch (\Exception $e) {
 			throw new \Exception(
 				$entry . ' "' . $path . '" expected to exist but not found'
+			);
+		}
+	}
+
+	/**
+	 * @Then /^the properties response should contain an etag$/
+	 *
+	 * @param string $user
+	 * @param string $entry
+	 * @param string $path
+	 *
+	 * @return void
+	 * @throws \Exception
+	 */
+	public function thePropertiesResponseShouldContainAnEtag() {
+		if (!\is_array($this->response) || !isset($this->response['{DAV:}getetag'])) {
+			throw new \Exception(
+				"getetag not found in response"
 			);
 		}
 	}
