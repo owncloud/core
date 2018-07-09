@@ -165,6 +165,16 @@ Feature: webdav-related
 			| old           |
 			| new           |
 
+	Scenario Outline: download a file
+		Given using <dav_version> DAV path
+		And user "user0" has been created
+		When user "user0" downloads the file "/textfile0.txt" using the API
+		Then the downloaded content should be "ownCloud test text file" plus end-of-line
+		Examples:
+			| dav_version   |
+			| old           |
+			| new           |
+
 	Scenario Outline: download a file with range
 		Given using <dav_version> DAV path
 		And user "user0" has been created
@@ -174,6 +184,110 @@ Feature: webdav-related
 			| dav_version   |
 			| old           |
 			| new           |
+
+	Scenario Outline: upload a file and check download content
+		Given using <dav_version> DAV path
+		And user "user0" has been created
+		When user "user0" uploads file with content "uploaded content" to "<file_name>" using the API
+		Then the content of file "<file_name>" for user "user0" should be "uploaded content"
+		Examples:
+			| dav_version | file_name         |
+			| old         | /upload.txt       |
+			| old         | /strängé file.txt |
+			| old         | /C++ file.cpp     |
+			| old         | /नेपाली.txt       |
+			| old         | /file #2.txt      |
+			| old         | /file ?2.txt      |
+			| new         | /upload.txt       |
+			| new         | /strängé file.txt |
+			| new         | /C++ file.cpp     |
+			| new         | /नेपाली.txt       |
+			| new         | /file #2.txt      |
+			| new         | /file ?2.txt      |
+
+	Scenario Outline: create a folder
+		Given using <dav_version> DAV path
+		And user "user0" has been created
+		When user "user0" creates a folder "<folder_name>" using the API
+		Then as "user0" the folder "<folder_name>" should exist
+		Examples:
+			| dav_version | folder_name     |
+			| old         | /upload         |
+			| old         | /strängé folder |
+			| old         | /C++ folder.cpp |
+			| old         | /नेपाली         |
+			| old         | /folder #2      |
+			| old         | /folder ?2      |
+			| new         | /upload         |
+			| new         | /strängé folder |
+			| new         | /C++ folder.cpp |
+			| new         | /नेपाली         |
+			| new         | /folder #2      |
+			| new         | /folder ?2      |
+
+	Scenario Outline: upload a file into a folder and check download content
+		Given using <dav_version> DAV path
+		And user "user0" has been created
+		And user "user0" has created a folder "<folder_name>"
+		When user "user0" uploads file with content "uploaded content" to "<folder_name>/<file_name>" using the API
+		Then the content of file "<folder_name>/<file_name>" for user "user0" should be "uploaded content"
+		Examples:
+			| dav_version | folder_name                      | file_name                     |
+			| old         | /upload                          | abc.txt                       |
+			| old         | /strängé folder                  | strängé file.txt              |
+			| old         | /C++ folder                      | C++ file.cpp                  |
+			| old         | /नेपाली                          | नेपाली                        |
+			| old         | /folder #2.txt                   | file #2.txt                   |
+			| old         | /folder ?2.txt                   | file ?2.txt                   |
+			| new         | /upload                          | abc.txt                       |
+			| new         | /strängé folder (duplicate #2 &) | strängé file (duplicate #2 &) |
+			| new         | /C++ folder                      | C++ file.cpp                  |
+			| new         | /नेपाली                          | नेपाली                        |
+			| new         | /folder #2.txt                   | file #2.txt                   |
+			| new         | /folder ?2.txt                   | file ?2.txt                   |
+
+	Scenario Outline: Do a PROPFIND of various file names
+		Given using <dav_version> DAV path
+		And user "user0" has been created
+		And user "user0" has uploaded file with content "uploaded content" to "<file_name>"
+		When user "user0" gets the properties of file "<file_name>" using the API
+		Then the properties response should contain an etag
+		Examples:
+			| dav_version | file_name         |
+			| old         | /upload.txt       |
+			| old         | /strängé file.txt |
+			| old         | /C++ file.cpp     |
+			| old         | /नेपाली.txt       |
+			| old         | /file #2.txt      |
+			| old         | /file ?2.txt      |
+			| new         | /upload.txt       |
+			| new         | /strängé file.txt |
+			| new         | /C++ file.cpp     |
+			| new         | /नेपाली.txt       |
+			| new         | /file #2.txt      |
+			| new         | /file ?2.txt      |
+
+	Scenario Outline: Do a PROPFIND of various folder/file names
+		Given using <dav_version> DAV path
+		And user "user0" has been created
+		And user "user0" has created a folder "<folder_name>"
+		And user "user0" has uploaded file with content "uploaded content" to "<folder_name>/<file_name>"
+		When user "user0" gets the properties of file "<folder_name>/<file_name>" using the API
+		Then the properties response should contain an etag
+		Examples:
+			| dav_version | folder_name                      | file_name                     |
+			| old         | /upload                          | abc.txt                       |
+			| old         | /strängé folder                  | strängé file.txt              |
+			| old         | /C++ folder                      | C++ file.cpp                  |
+			| old         | /नेपाली                          | नेपाली                        |
+			| old         | /folder #2.txt                   | file #2.txt                   |
+			| old         | /folder ?2.txt                   | file ?2.txt                   |
+			| new         | /upload                          | abc.txt                       |
+			| new         | /strängé folder (duplicate #2 &) | strängé file (duplicate #2 &) |
+			| new         | /C++ folder                      | C++ file.cpp                  |
+			| new         | /नेपाली                          | नेपाली                        |
+			| new         | /folder #2.txt                   | file #2.txt                   |
+			| new         | /folder ?2.txt                   | file ?2.txt                   |
 
 	Scenario Outline: Retrieving folder quota when no quota is set
 		Given using <dav_version> DAV path
