@@ -44,6 +44,7 @@
     "Imprint" : "Печат",
     "Help & Tips" : "Помош & совети",
     "Additional" : "Дополнителни",
-    "Username and password" : "Корисничко име и лозинка"
+    "Username and password" : "Корисничко име и лозинка",
+    "__language_name__" : "__language_name__"
 },"pluralForm" :"nplurals=2; plural=(n % 10 == 1 && n % 100 != 11) ? 0 : 1;"
 }

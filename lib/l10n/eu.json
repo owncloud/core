@@ -118,6 +118,7 @@
     "Please change the permissions to 0770 so that the directory cannot be listed by other users." : "Mesedez aldatu baimenak 0770ra beste erabiltzaileek karpetan sartu ezin izateko.",
     "Please check that the data directory contains a file \".ocdata\" in its root." : "Mesedez egiaztatu data karpeta \".ocdata\" fitxategia duela bere erroan.",
     "Could not obtain lock type %d on \"%s\"." : "Ezin da lortu sarraia mota %d \"%s\"-an.",
-    "Imprint" : "Imprint"
+    "Imprint" : "Imprint",
+    "__language_name__" : "Euskara"
 },"pluralForm" :"nplurals=2; plural=(n != 1);"
 }

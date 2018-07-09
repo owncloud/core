@@ -162,6 +162,7 @@
     "Please remove the open_basedir setting within your php.ini or switch to 64-bit PHP." : "Ta bort inställningen open_basedir i din php.ini-fil eller byt till 64-bitars PHP.",
     "Cannot clear expiration date. Shares are required to have an expiration date." : "Kan inte rensa utgångsdatum. Delningar måste ha en utgångsdatum.",
     "Expiration date is in the past" : "Utgångsdatumet är från det förflutna",
-    "Imprint" : "Imprint"
+    "Imprint" : "Imprint",
+    "__language_name__" : "__language_name__"
 },"pluralForm" :"nplurals=2; plural=(n != 1);"
 }

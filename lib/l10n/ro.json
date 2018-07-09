@@ -95,6 +95,7 @@
     "PostgreSQL >= 9 required" : "Este necesară versiunea 9 sau mai mare a PostgreSQL",
     "Please upgrade your database version" : "Actualizați baza de date la o versiune mai nouă",
     "A safe home for all your data" : "Un spațiu de stocare sigur pentru toate datele tale",
-    "Imprint" : "Imprint"
+    "Imprint" : "Imprint",
+    "__language_name__" : "_language_name_"
 },"pluralForm" :"nplurals=3; plural=(n==1?0:(((n%100>19)||((n%100==0)&&(n!=0)))?2:1));"
 }
