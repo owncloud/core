@@ -95,6 +95,7 @@ default:
       contexts:
         - FeatureContext: *common_feature_context_params
         - WebUIAdminSharingSettingsContext:
+        - WebUIAdminAppsSettingsContext:
         - WebUIGeneralContext:
         - WebUILoginContext:
         - CapabilitiesContext:
