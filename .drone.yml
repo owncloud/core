@@ -275,7 +275,9 @@ pipeline:
   notify:
     image: plugins/slack:1
     pull: true
-    secrets: [ slack_webhook_public ]
+    secrets:
+      - source: slack_webhook_public
+        target: slack_webhook
     channel: server
     when:
       status: [ failure, changed ]
