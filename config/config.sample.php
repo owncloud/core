@@ -1421,6 +1421,11 @@ $CONFIG = array(
  *
  * Only enable this for local development and not in production environments
  * This will disable the minifier and outputs some additional debug information
+ *
+ * .. warning::
+ *    Be warned that, if you set this to ``true``, exceptions display
+ *    stack traces on the web interface, *including passwords*, — **in plain text!**.
+ *    We strongly encourage you never to use it in production.
  */
 'debug' => false,
 
