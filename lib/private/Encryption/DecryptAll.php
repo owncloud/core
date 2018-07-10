@@ -259,6 +259,9 @@ class DecryptAll {
 			$this->rootView->copy($source, $target);
 			\OC\Files\Storage\Wrapper\Encryption::setDisableWriteEncryption(false);
 			$this->rootView->rename($target, $source);
+			list($storage, $internalPath) = $this->rootView->resolvePath($source);
+			//Update the encrypted column in file cache to zero, as the file is decrypted
+			$storage->getCache()->put($internalPath, ['encrypted' => 0]);
 		} catch (DecryptionFailedException $e) {
 			if ($this->rootView->file_exists($target)) {
 				$this->rootView->unlink($target);
