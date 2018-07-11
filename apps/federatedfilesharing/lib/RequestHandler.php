@@ -26,6 +26,7 @@
 
 namespace OCA\FederatedFileSharing;
 
+use OC\OCS\Result;
 use OCA\Files_Sharing\Activity;
 use OCP\AppFramework\Http;
 use OCP\Constants;
@@ -109,11 +110,11 @@ class RequestHandler {
 	 * create a new share
 	 *
 	 * @param array $params
-	 * @return \OC_OCS_Result
+	 * @return Result
 	 */
 	public function createShare($params) {
 		if (!$this->isS2SEnabled(true)) {
-			return new \OC_OCS_Result(null, 503, 'Server does not support federated cloud sharing');
+			return new Result(null, 503, 'Server does not support federated cloud sharing');
 		}
 
 		$remote = isset($_POST['remote']) ? $_POST['remote'] : null;
@@ -128,7 +129,7 @@ class RequestHandler {
 
 		if ($remote && $token && $name && $owner && $remoteId && $shareWith) {
 			if (!\OCP\Util::isValidFileName($name)) {
-				return new \OC_OCS_Result(null, 400, 'The mountpoint name contains invalid characters.');
+				return new Result(null, 400, 'The mountpoint name contains invalid characters.');
 			}
 
 			// FIXME this should be a method in the user management instead
@@ -141,7 +142,7 @@ class RequestHandler {
 			\OCP\Util::writeLog('files_sharing', 'shareWith after, ' . $shareWith, \OCP\Util::DEBUG);
 
 			if (!\OCP\User::userExists($shareWith)) {
-				return new \OC_OCS_Result(null, 400, 'User does not exist');
+				return new Result(null, 400, 'User does not exist');
 			}
 
 			\OC_Util::setupFS($shareWith);
@@ -203,21 +204,21 @@ class RequestHandler {
 
 				$notificationManager->notify($notification);
 
-				return new \OC_OCS_Result();
+				return new Result();
 			} catch (\Exception $e) {
 				\OCP\Util::writeLog('files_sharing', 'server can not add remote share, ' . $e->getMessage(), \OCP\Util::ERROR);
-				return new \OC_OCS_Result(null, 500, 'internal server error, was not able to add share from ' . $remote);
+				return new Result(null, 500, 'internal server error, was not able to add share from ' . $remote);
 			}
 		}
 
-		return new \OC_OCS_Result(null, 400, 'server can not add remote share, missing parameter');
+		return new Result(null, 400, 'server can not add remote share, missing parameter');
 	}
 
 	/**
 	 * create re-share on behalf of another user
 	 *
 	 * @param $params
-	 * @return \OC_OCS_Result
+	 * @return Result
 	 */
 	public function reShare($params) {
 		$id = isset($params['id']) ? (int)$params['id'] : null;
@@ -232,13 +233,13 @@ class RequestHandler {
 			$permission === null ||
 			$remoteId === null
 		) {
-			return new \OC_OCS_Result(null, Http::STATUS_BAD_REQUEST);
+			return new Result(null, Http::STATUS_BAD_REQUEST);
 		}
 
 		try {
 			$share = $this->federatedShareProvider->getShareById($id);
 		} catch (Share\Exceptions\ShareNotFound $e) {
-			return new \OC_OCS_Result(null, Http::STATUS_NOT_FOUND);
+			return new Result(null, Http::STATUS_NOT_FOUND);
 		}
 
 		// don't allow to share a file back to the owner
@@ -246,7 +247,7 @@ class RequestHandler {
 		$owner = $share->getShareOwner();
 		$currentServer = $this->addressHandler->generateRemoteURL();
 		if ($this->addressHandler->compareAddresses($user, $remote, $owner, $currentServer)) {
-			return new \OC_OCS_Result(null, Http::STATUS_FORBIDDEN);
+			return new Result(null, Http::STATUS_FORBIDDEN);
 		}
 
 		if ($this->verifyShare($share, $token)) {
@@ -260,26 +261,26 @@ class RequestHandler {
 				try {
 					$result = $this->federatedShareProvider->create($share);
 					$this->federatedShareProvider->storeRemoteId((int)$result->getId(), $remoteId);
-					return new \OC_OCS_Result(['token' => $result->getToken(), 'remoteId' => $result->getId()]);
+					return new Result(['token' => $result->getToken(), 'remoteId' => $result->getId()]);
 				} catch (\Exception $e) {
-					return new \OC_OCS_Result(null, Http::STATUS_BAD_REQUEST);
+					return new Result(null, Http::STATUS_BAD_REQUEST);
 				}
 			} else {
-				return new \OC_OCS_Result(null, Http::STATUS_FORBIDDEN);
+				return new Result(null, Http::STATUS_FORBIDDEN);
 			}
 		}
-		return new \OC_OCS_Result(null, Http::STATUS_BAD_REQUEST);
+		return new Result(null, Http::STATUS_BAD_REQUEST);
 	}
 
 	/**
 	 * accept server-to-server share
 	 *
 	 * @param array $params
-	 * @return \OC_OCS_Result
+	 * @return Result
 	 */
 	public function acceptShare($params) {
 		if (!$this->isS2SEnabled()) {
-			return new \OC_OCS_Result(null, 503, 'Server does not support federated cloud sharing');
+			return new Result(null, 503, 'Server does not support federated cloud sharing');
 		}
 
 		$id = $params['id'];
@@ -288,7 +289,7 @@ class RequestHandler {
 		try {
 			$share = $this->federatedShareProvider->getShareById($id);
 		} catch (Share\Exceptions\ShareNotFound $e) {
-			return new \OC_OCS_Result();
+			return new Result();
 		}
 
 		if ($this->verifyShare($share, $token)) {
@@ -300,7 +301,7 @@ class RequestHandler {
 			}
 		}
 
-		return new \OC_OCS_Result();
+		return new Result();
 	}
 
 	protected function executeAcceptShare(Share\IShare $share) {
@@ -320,11 +321,11 @@ class RequestHandler {
 	 * decline server-to-server share
 	 *
 	 * @param array $params
-	 * @return \OC_OCS_Result
+	 * @return Result
 	 */
 	public function declineShare($params) {
 		if (!$this->isS2SEnabled()) {
-			return new \OC_OCS_Result(null, 503, 'Server does not support federated cloud sharing');
+			return new Result(null, 503, 'Server does not support federated cloud sharing');
 		}
 
 		$id = (int)$params['id'];
@@ -333,7 +334,7 @@ class RequestHandler {
 		try {
 			$share = $this->federatedShareProvider->getShareById($id);
 		} catch (Share\Exceptions\ShareNotFound $e) {
-			return new \OC_OCS_Result();
+			return new Result();
 		}
 
 		if ($this->verifyShare($share, $token)) {
@@ -345,7 +346,7 @@ class RequestHandler {
 			$this->executeDeclineShare($share);
 		}
 
-		return new \OC_OCS_Result();
+		return new Result();
 	}
 
 	/**
@@ -385,11 +386,11 @@ class RequestHandler {
 	 * remove server-to-server share if it was unshared by the owner
 	 *
 	 * @param array $params
-	 * @return \OC_OCS_Result
+	 * @return Result
 	 */
 	public function unshare($params) {
 		if (!$this->isS2SEnabled()) {
-			return new \OC_OCS_Result(null, 503, 'Server does not support federated cloud sharing');
+			return new Result(null, 503, 'Server does not support federated cloud sharing');
 		}
 
 		$id = $params['id'];
@@ -427,7 +428,7 @@ class RequestHandler {
 				'', '', $user, Activity::TYPE_REMOTE_SHARE, Activity::PRIORITY_MEDIUM);
 		}
 
-		return new \OC_OCS_Result();
+		return new Result();
 	}
 
 	private function cleanupRemote($remote) {
@@ -440,7 +441,7 @@ class RequestHandler {
 	 * federated share was revoked, either by the owner or the re-sharer
 	 *
 	 * @param $params
-	 * @return \OC_OCS_Result
+	 * @return Result
 	 */
 	public function revoke($params) {
 		$id = (int)$params['id'];
@@ -450,10 +451,10 @@ class RequestHandler {
 		
 		if ($this->verifyShare($share, $token)) {
 			$this->federatedShareProvider->removeShareFromTable($share);
-			return new \OC_OCS_Result();
+			return new Result();
 		}
 
-		return new \OC_OCS_Result(null, Http::STATUS_BAD_REQUEST);
+		return new Result(null, Http::STATUS_BAD_REQUEST);
 	}
 	
 	/**
@@ -540,7 +541,7 @@ class RequestHandler {
 	 * update share information to keep federated re-shares in sync
 	 *
 	 * @param array $params
-	 * @return \OC_OCS_Result
+	 * @return Result
 	 */
 	public function updatePermissions($params) {
 		$id = (int)$params['id'];
@@ -550,7 +551,7 @@ class RequestHandler {
 		try {
 			$share = $this->federatedShareProvider->getShareById($id);
 		} catch (Share\Exceptions\ShareNotFound $e) {
-			return new \OC_OCS_Result(null, Http::STATUS_BAD_REQUEST);
+			return new Result(null, Http::STATUS_BAD_REQUEST);
 		}
 
 		$validPermission = \ctype_digit($permissions);
@@ -558,10 +559,10 @@ class RequestHandler {
 		if ($validPermission && $validToken) {
 			$this->updatePermissionsInDatabase($share, (int)$permissions);
 		} else {
-			return new \OC_OCS_Result(null, Http::STATUS_BAD_REQUEST);
+			return new Result(null, Http::STATUS_BAD_REQUEST);
 		}
 
-		return new \OC_OCS_Result();
+		return new Result();
 	}
 
 	/**
