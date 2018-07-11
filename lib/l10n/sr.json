@@ -140,6 +140,7 @@
     "Check the value of \"datadirectory\" in your configuration" : "Проверите податак за \"datadirectory\" у вашој конфигурацији",
     "Please check that the data directory contains a file \".ocdata\" in its root." : "Проверите да ли директоријум података садржи фајл „.ocdata“ у свом основном директоријуму.",
     "Could not obtain lock type %d on \"%s\"." : "Не могу да остварим закључаност %d за „%s“.",
-    "Imprint" : "Жиг"
+    "Imprint" : "Жиг",
+    "__language_name__" : "Српски"
 },"pluralForm" :"nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);"
 }

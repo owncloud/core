@@ -177,6 +177,7 @@
     "Storage is temporarily not available" : "ストレージが一時的に利用できません",
     "Storage connection timeout. %s" : "ストレージへの接続がタイムアウト。 %s",
     "A safe home for all your data" : "あなたの持っているデータすべての安全な保存先",
-    "Imprint" : "インプリント"
+    "Imprint" : "インプリント",
+    "__language_name__" : "Japanese (日本語)"
 },"pluralForm" :"nplurals=1; plural=0;"
 }

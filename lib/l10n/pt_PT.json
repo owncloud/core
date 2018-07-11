@@ -177,6 +177,8 @@
     "Storage is temporarily not available" : "O armazenamento está temporariamente indisponível",
     "Storage connection timeout. %s" : "Tempo de ligação ao armazenamento expirou. %s",
     "A safe home for all your data" : "Um local seguro para todos os seus dados",
-    "Imprint" : "Marca"
+    "Imprint" : "Marca",
+    "__language_name__" : "__language_name__",
+    "Privacy Policy" : "Política de Privacidade"
 },"pluralForm" :"nplurals=2; plural=(n != 1);"
 }

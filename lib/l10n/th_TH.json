@@ -184,6 +184,7 @@
     "Sharing %s failed, could not find %s, check spelling and server availability." : "แชร์ %s ล้มเหลวหรือไม่พบ %s โปรดตรวจสอบตัวสะกดและความพร้อมใช้งานของเซิร์ฟเวอร์",
     "Imprint" : "ประทับ",
     "The username can not be longer than 64 characters" : "ชื่อผู้ใช้จะต้องมีความยาวไม่เกิน 64 ตัวอักษร",
-    "Privacy Policy" : "นโยบายส่วนบุคคล"
+    "Privacy Policy" : "นโยบายส่วนบุคคล",
+    "__language_name__" : "ภาษาไทย - Thai language"
 },"pluralForm" :"nplurals=1; plural=0;"
 }

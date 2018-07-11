@@ -184,6 +184,7 @@
     "Sharing %s failed, could not find %s, check spelling and server availability." : "Compartir%s ha fallado, no encuentro %s, revise lo escrito y/o que el servidor este disponible..",
     "Imprint" : "Imprimir",
     "The username can not be longer than 64 characters" : "El nombre de usuario no puede tener mas de 64 caracteres,",
-    "Privacy Policy" : "Política de privacidad"
+    "Privacy Policy" : "Política de privacidad",
+    "__language_name__" : "Castellano"
 },"pluralForm" :"nplurals=2; plural=(n != 1);"
 }
