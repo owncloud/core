@@ -22,12 +22,16 @@
 namespace OCA\FederatedFileSharing\AppInfo;
 
 use OCA\FederatedFileSharing\FederatedShareProvider;
+use OCA\FederatedFileSharing\FedShareManager;
 use OCP\AppFramework\App;
 
 class Application extends App {
 
 	/** @var FederatedShareProvider */
 	protected $federatedShareProvider;
+
+	/** @var FedShareManager */
+	protected $federatedShareManager;
 
 	/**
 	 * get instance of federated share provider
@@ -39,6 +43,30 @@ class Application extends App {
 			$this->initFederatedShareProvider();
 		}
 		return $this->federatedShareProvider;
+	}
+
+	/**
+	 * Get instance of federated share manager
+	 *
+	 * @return FedShareManager
+	 */
+	public function getFederatedShareManager() {
+		if ($this->federatedShareManager === null) {
+			$this->initFederatedShareManager();
+		}
+		return $this->federatedShareManager;
+	}
+
+	/**
+	 * initialize federated share manager
+	 */
+	protected function initFederatedSharemanager() {
+		$this->federatedShareManager = new FedShareManager(
+			$this->getFederatedShareProvider(),
+			\OC::$server->getUserManager(),
+			\OC::$server->getActivityManager(),
+			\OC::$server->getLogger()
+		);
 	}
 
 	/**
