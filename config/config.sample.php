@@ -702,7 +702,7 @@ $CONFIG = array(
  */
 'log_rotate_size' => false,
 
-
+/**
 Configure log rotation for the owncloud.log
 
 
@@ -732,7 +732,7 @@ compress
 compresscmd /bin/gzip
 # use this compression command
 }
-
+*/
 
 /**
  * Alternate Code Locations
