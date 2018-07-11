@@ -30,8 +30,8 @@ use OC\Files\Filesystem;
 use OC\HTTPHelper;
 use OCA\FederatedFileSharing\DiscoveryManager;
 use OCA\FederatedFileSharing\FederatedShareProvider;
+use OCA\FederatedFileSharing\FedShareManager;
 use OCA\FederatedFileSharing\RequestHandler;
-use OCP\IUserManager;
 use OCP\Share\IShare;
 use Symfony\Component\EventDispatcher\GenericEvent;
 
@@ -63,8 +63,8 @@ class RequestHandlerTest extends TestCase {
 	/** @var  \OCA\FederatedFileSharing\AddressHandler | PHPUnit_Framework_MockObject_MockObject */
 	private $addressHandler;
 
-	/** @var  IUserManager | \PHPUnit_Framework_MockObject_MockObject */
-	private $userManager;
+	/** @var  FedShareManager | \PHPUnit_Framework_MockObject_MockObject */
+	private $fedShareManager;
 
 	/** @var  IShare | \PHPUnit_Framework_MockObject_MockObject */
 	private $share;
@@ -99,7 +99,7 @@ class RequestHandlerTest extends TestCase {
 			->disableOriginalConstructor()->getMock();
 		$this->addressHandler = $this->getMockBuilder('OCA\FederatedFileSharing\AddressHandler')
 			->disableOriginalConstructor()->getMock();
-		$this->userManager = $this->createMock('OCP\IUserManager');
+		$this->fedShareManager = $this->createMock(FedShareManager::class);
 
 		$this->registerHttpHelper($httpHelperMock);
 
@@ -110,7 +110,7 @@ class RequestHandlerTest extends TestCase {
 			\OC::$server->getRequest(),
 			$this->notifications,
 			$this->addressHandler,
-			$this->userManager,
+			$this->fedShareManager,
 			\OC::$server->getEventDispatcher()
 		);
 
@@ -188,7 +188,7 @@ class RequestHandlerTest extends TestCase {
 	}
 
 	public function testDeclineShare() {
-		$this->s2s = $this->getMockBuilder('\OCA\FederatedFileSharing\RequestHandler')
+		$this->s2s = $this->getMockBuilder(RequestHandler::class)
 			->setConstructorArgs(
 				[
 					$this->federatedShareProvider,
@@ -197,12 +197,12 @@ class RequestHandlerTest extends TestCase {
 					\OC::$server->getRequest(),
 					$this->notifications,
 					$this->addressHandler,
-					$this->userManager,
+					$this->fedShareManager,
 					\OC::$server->getEventDispatcher()
 				]
 			)->setMethods(['executeDeclineShare', 'verifyShare'])->getMock();
 
-		$this->s2s->expects($this->once())->method('executeDeclineShare');
+		$this->fedShareManager->expects($this->once())->method('declineShare');
 
 		$this->s2s->expects($this->any())->method('verifyShare')->willReturn(true);
 

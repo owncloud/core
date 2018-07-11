@@ -30,10 +30,8 @@ use OC\OCS\Result;
 use OCA\Files_Sharing\Activity;
 use OCP\AppFramework\Http;
 use OCP\Constants;
-use OCP\Files\NotFoundException;
 use OCP\IDBConnection;
 use OCP\IRequest;
-use OCP\IUserManager;
 use OCP\Share;
 use OCP\Share\IShare;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
@@ -66,8 +64,8 @@ class RequestHandler {
 	/** @var AddressHandler */
 	private $addressHandler;
 
-	/** @var  IUserManager */
-	private $userManager;
+	/** @var  FedShareManager */
+	private $fedShareManager;
 
 	/** @var EventDispatcherInterface  */
 	private $eventDispatcher;
@@ -84,7 +82,7 @@ class RequestHandler {
 	 * @param IRequest $request
 	 * @param Notifications $notifications
 	 * @param AddressHandler $addressHandler
-	 * @param IUserManager $userManager
+	 * @param FedShareManager $fedShareManager
 	 * @param EventDispatcherInterface $eventDispatcher
 	 */
 	public function __construct(FederatedShareProvider $federatedShareProvider,
@@ -93,7 +91,7 @@ class RequestHandler {
 								IRequest $request,
 								Notifications $notifications,
 								AddressHandler $addressHandler,
-								IUserManager $userManager,
+								FedShareManager $fedShareManager,
 								EventDispatcherInterface $eventDispatcher
 	) {
 		$this->federatedShareProvider = $federatedShareProvider;
@@ -102,7 +100,7 @@ class RequestHandler {
 		$this->request = $request;
 		$this->notifications = $notifications;
 		$this->addressHandler = $addressHandler;
-		$this->userManager = $userManager;
+		$this->fedShareManager = $fedShareManager;
 		$this->eventDispatcher = $eventDispatcher;
 	}
 
@@ -293,7 +291,7 @@ class RequestHandler {
 		}
 
 		if ($this->verifyShare($share, $token)) {
-			$this->executeAcceptShare($share);
+			$this->fedShareManager->acceptShare($share);
 			if ($share->getShareOwner() !== $share->getSharedBy()) {
 				list(, $remote) = $this->addressHandler->splitUserRemote($share->getSharedBy());
 				$remoteId = $this->federatedShareProvider->getRemoteId($share);
@@ -302,19 +300,6 @@ class RequestHandler {
 		}
 
 		return new Result();
-	}
-
-	protected function executeAcceptShare(Share\IShare $share) {
-		list($file, $link) = $this->getFile($this->getCorrectUid($share), $share->getNode()->getId());
-
-		$event = \OC::$server->getActivityManager()->generateEvent();
-		$event->setApp(Activity::FILES_SHARING_APP)
-			->setType(Activity::TYPE_REMOTE_SHARE)
-			->setAffectedUser($this->getCorrectUid($share))
-			->setSubject(Activity::SUBJECT_REMOTE_SHARE_ACCEPTED, [$share->getSharedWith(), \basename($file)])
-			->setObject('files', $share->getNode()->getId(), $file)
-			->setLink($link);
-		\OC::$server->getActivityManager()->publish($event);
 	}
 
 	/**
@@ -343,43 +328,10 @@ class RequestHandler {
 				$remoteId = $this->federatedShareProvider->getRemoteId($share);
 				$this->notifications->sendDeclineShare($remote, $remoteId, $share->getToken());
 			}
-			$this->executeDeclineShare($share);
+			$this->fedShareManager->declineShare($share);
 		}
 
 		return new Result();
-	}
-
-	/**
-	 * delete declined share and create a activity
-	 *
-	 * @param Share\IShare $share
-	 */
-	protected function executeDeclineShare(Share\IShare $share) {
-		$this->federatedShareProvider->removeShareFromTable($share);
-		list($file, $link) = $this->getFile($this->getCorrectUid($share), $share->getNode()->getId());
-
-		$event = \OC::$server->getActivityManager()->generateEvent();
-		$event->setApp(Activity::FILES_SHARING_APP)
-			->setType(Activity::TYPE_REMOTE_SHARE)
-			->setAffectedUser($this->getCorrectUid($share))
-			->setSubject(Activity::SUBJECT_REMOTE_SHARE_DECLINED, [$share->getSharedWith(), \basename($file)])
-			->setObject('files', $share->getNode()->getId(), $file)
-			->setLink($link);
-		\OC::$server->getActivityManager()->publish($event);
-	}
-
-	/**
-	 * check if we are the initiator or the owner of a re-share and return the correct UID
-	 *
-	 * @param Share\IShare $share
-	 * @return string
-	 */
-	protected function getCorrectUid(Share\IShare $share) {
-		if ($this->userManager->userExists($share->getShareOwner())) {
-			return $share->getShareOwner();
-		}
-
-		return $share->getSharedBy();
 	}
 
 	/**
@@ -478,27 +430,6 @@ class RequestHandler {
 		}
 
 		return false;
-	}
-
-	/**
-	 * get file
-	 *
-	 * @param string $user
-	 * @param int $fileSource
-	 * @return array with internal path of the file and a absolute link to it
-	 */
-	private function getFile($user, $fileSource) {
-		\OC_Util::setupFS($user);
-
-		try {
-			$file = \OC\Files\Filesystem::getPath($fileSource);
-		} catch (NotFoundException $e) {
-			$file = null;
-		}
-		$args = \OC\Files\Filesystem::is_dir($file) ? ['dir' => $file] : ['dir' => \dirname($file), 'scrollto' => $file];
-		$link = \OCP\Util::linkToAbsolute('files', 'index.php', $args);
-
-		return [$file, $link];
 	}
 
 	/**
