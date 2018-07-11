@@ -703,6 +703,37 @@ $CONFIG = array(
 'log_rotate_size' => false,
 
 
+Configure log rotation for the owncloud.log
+
+
+1. create a file and name it "owncloud" (for example) in /etc/logrotate.d/
+
+
+vim /etc/logrotate.d/owncloud
+or
+nano /etc/logrotate.d/owncloud
+
+2. Copy / Paste the following in to this file.
+
+Adjust to your needs and configuration.
+
+
+/var/www/owncloud_data/owncloud.log 
+# Path to your owncloud.log file
+{
+size 10M
+# Logfile Size Limit
+rotate 12
+# Amount of rotated logs to keeps
+missingok
+# If it's not there, no error will occur
+compress
+# after rotation, compress the copy of the log file
+compresscmd /bin/gzip
+# use this compression command
+}
+
+
 /**
  * Alternate Code Locations
  *
