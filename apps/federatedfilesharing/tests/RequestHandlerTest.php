@@ -32,6 +32,7 @@ use OCA\FederatedFileSharing\DiscoveryManager;
 use OCA\FederatedFileSharing\FederatedShareProvider;
 use OCA\FederatedFileSharing\FedShareManager;
 use OCA\FederatedFileSharing\RequestHandler;
+use OCP\IRequest;
 use OCP\Share\IShare;
 use Symfony\Component\EventDispatcher\GenericEvent;
 
@@ -188,32 +189,28 @@ class RequestHandlerTest extends TestCase {
 	}
 
 	public function testDeclineShare() {
+		$share = $this->getMockBuilder(IShare::class)->getMock();
+		$request = $this->getMockBuilder(IRequest::class)->getMock();
 		$this->s2s = $this->getMockBuilder(RequestHandler::class)
 			->setConstructorArgs(
 				[
 					$this->federatedShareProvider,
 					\OC::$server->getDatabaseConnection(),
 					\OC::$server->getShareManager(),
-					\OC::$server->getRequest(),
+					$request,
 					$this->notifications,
 					$this->addressHandler,
 					$this->fedShareManager,
 					\OC::$server->getEventDispatcher()
 				]
-			)->setMethods(['executeDeclineShare', 'verifyShare'])->getMock();
+			)->setMethods(['getValidShare'])->getMock();
 
+		$this->s2s->expects($this->once())->method('getValidShare')->willReturn($share);
 		$this->fedShareManager->expects($this->once())->method('declineShare');
-
-		$this->s2s->expects($this->any())->method('verifyShare')->willReturn(true);
-
-		$_POST['token'] = 'token';
-
 		$this->s2s->declineShare(['id' => 42]);
 	}
 
 	public function XtestDeclineShareMultiple() {
-		$this->share->expects($this->any())->method('verifyShare')->willReturn(true);
-
 		$dummy = \OCP\DB::prepare('
 			INSERT INTO `*PREFIX*share`
 			(`share_type`, `uid_owner`, `item_type`, `item_source`, `item_target`, `file_source`, `file_target`, `permissions`, `stime`, `token`, `share_with`)
