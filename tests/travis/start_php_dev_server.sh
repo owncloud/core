@@ -14,7 +14,7 @@
 # ERROR_STARTING_SERVER set to true if there was an error
 
 function start_php_dev_server {
-	php -S $1 > /dev/null 2>&1 &
+	php -S $1 &
 	serverPID=$!
 	sleep 1
 
