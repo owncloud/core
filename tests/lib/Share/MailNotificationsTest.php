@@ -157,11 +157,11 @@ class MailNotificationsTest extends TestCase {
 		$message
 			->expects($this->once())
 			->method('setHtmlBody')
-			->with($this->stringContains('personal note'));
+			->with($this->stringContains('personal note<br />'));
 		$message
 			->expects($this->once())
 			->method('setPlainBody')
-			->with($this->stringContains('personal note'));
+			->with($this->stringContains("personal note\n"));
 
 		$message
 			->expects($this->once())
@@ -195,7 +195,7 @@ class MailNotificationsTest extends TestCase {
 			$calledEvent[] = 'share.sendmail';
 			$calledEvent[] = $event;
 		});
-		$this->assertSame([], $mailNotifications->sendLinkShareMail('lukas@owncloud.com', 'MyFile', 'https://owncloud.com/file/?foo=bar', 3600, 'personal note', ['bcc' => 'foo@bar.com,fabulous@world.com', 'cc' => 'abc@foo.com,tester@world.com']));
+		$this->assertSame([], $mailNotifications->sendLinkShareMail('lukas@owncloud.com', 'MyFile', 'https://owncloud.com/file/?foo=bar', 3600, "personal note\n", ['bcc' => 'foo@bar.com,fabulous@world.com', 'cc' => 'abc@foo.com,tester@world.com']));
 
 		$this->assertEquals('share.sendmail', $calledEvent[0]);
 		$this->assertInstanceOf(GenericEvent::class, $calledEvent[1]);
@@ -224,11 +224,11 @@ class MailNotificationsTest extends TestCase {
 		$message
 			->expects($this->once())
 			->method('setHtmlBody')
-			->with($this->stringContains('personal note'));
+			->with($this->stringContains('personal note<br />'));
 		$message
 			->expects($this->once())
 			->method('setPlainBody')
-			->with($this->stringContains('personal note'));
+			->with($this->stringContains("personal note\n"));
 
 		$message
 			->expects($this->once())
@@ -262,7 +262,7 @@ class MailNotificationsTest extends TestCase {
 			$calledEvent[] = 'share.sendmail';
 			$calledEvent[] = $event;
 		});
-		$this->assertSame([], $mailNotifications->sendLinkShareMail('lukas@owncloud.com', 'MyFile', 'https://owncloud.com/file/?foo=bar', 3600, 'personal note'));
+		$this->assertSame([], $mailNotifications->sendLinkShareMail('lukas@owncloud.com', 'MyFile', 'https://owncloud.com/file/?foo=bar', 3600, "personal note\n"));
 
 		$this->assertEquals('share.sendmail', $calledEvent[0]);
 		$this->assertInstanceOf(GenericEvent::class, $calledEvent[1]);
