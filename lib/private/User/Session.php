@@ -819,15 +819,28 @@ class Session implements IUserSession, Emitter {
 
 		if ($this->manager->checkPassword($dbToken->getLoginName(), $pwd) === false
 			|| ($this->activeUser !== null && !$this->activeUser->isEnabled())) {
-			$this->logger->debug(
-				'user uid {uid}, email {email}, displayName {displayName} was disabled or password changed',
-				[
-					'app' => __METHOD__,
-					'uid' => $this->activeUser->getUID(),
-					'email' => $this->activeUser->getEMailAddress(),
-					'displayName' => $this->activeUser->getDisplayName(),
-				]
-			);
+
+			// FIXME: protect debug statement this way to avoid regressions
+			if ($this->activeUser !== null) {
+				$this->logger->debug(
+					'user uid {uid}, email {email}, displayName {displayName} was disabled or password changed',
+					[
+						'app' => __METHOD__,
+						'uid' => $this->activeUser->getUID(),
+						'email' => $this->activeUser->getEMailAddress(),
+						'displayName' => $this->activeUser->getDisplayName(),
+					]
+				);
+			} else {
+				$this->logger->debug(
+					'user with login name {loginName} was disabled or password changed (no activeUser)',
+					[
+						'app' => __METHOD__,
+						'loginName' => $dbToken->getLoginName(),
+					]
+				);
+			}
+
 			$this->tokenProvider->invalidateToken($token);
 			// Password has changed or user was disabled -> log user out
 			return false;
