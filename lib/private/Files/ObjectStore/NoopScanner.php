@@ -25,12 +25,14 @@
 
 namespace OC\Files\ObjectStore;
 use \OC\Files\Cache\Scanner;
-use \OC\Files\Storage\Storage;
+use OC\Files\Filesystem;
+use OCP\Files\Storage\ILockingStorage;
+use OCP\Lock\ILockingProvider;
 
 class NoopScanner extends Scanner {
-	public function __construct(Storage $storage) {
-		$this->storage = $storage;
-		//we don't need the storage, so do nothing here
+
+	public function __construct(\OC\Files\Storage\Storage $storage) {
+		parent::__construct($storage);
 	}
 
 	/**
@@ -47,24 +49,53 @@ class NoopScanner extends Scanner {
 	}
 
 	/**
-	 * scan a folder and all it's children
+	 * Scan an objectstore object. Since objectstore uses filecache as storage
+	 * metadata, scanner will only adjust checksums and calculate oldSize
+	 * of file.
 	 *
 	 * @param string $path
 	 * @param bool $recursive
 	 * @param int $reuse
 	 * @return array with the meta data of the scanned file or folder
+	 * @throws \OCP\Lock\LockedException
 	 */
 	public function scan($path, $recursive = self::SCAN_RECURSIVE, $reuse = -1, $lock = true) {
-		// we only update the checksums - still returning no data
-		$meta = $this->storage->getMetaData($path);
-		if (!empty($meta['checksum'])) {
-			$this->storage->getCache()->put(
-				$path,
-				['checksum' => $meta['checksum']]
-			);
+		if ($lock && $this->storage->instanceOfStorage(ILockingStorage::class)) {
+			$this->storage->acquireLock($path, ILockingProvider::LOCK_SHARED, $this->lockingProvider);
+		}
+		try {
+			// Get storage metadata
+			$meta = $this->storage->getMetaData($path);
+
+			// Objectstore scanner can only scan objects which are not a partial file nor a blacklisted file
+			if ($meta and $meta['mimetype'] !== 'httpd/unix-directory'
+					and !self::isPartialFile($path) and !Filesystem::isFileBlacklisted($path)) {
+
+				// Check size difference for the path
+				$parent = \dirname($path);
+				if ($parent === '.' or $parent === '/') {
+					$parent = '';
+				}
+				$parentCache = $this->cache->get($parent);
+				$parentOldSize = $parentCache['size'];
+				$parentNewSize = $this->cache->getFolderSize($parentCache['fileid']);
+				$meta['oldSize'] = $meta['size'] - ($parentNewSize - $parentOldSize);
+
+				// Add checksum if available
+				if (!empty($meta['checksum'])) {
+					$this->cache->put(
+						$path,
+						['checksum' => $meta['checksum']]
+					);
+				}
+			}
+		} finally {
+			if ($lock && $this->storage->instanceOfStorage(ILockingStorage::class)) {
+				$this->storage->releaseLock($path, ILockingProvider::LOCK_SHARED, $this->lockingProvider);
+			}
 		}
 
-		return [];
+		return $meta;
 	}
 
 	/**
@@ -84,6 +115,5 @@ class NoopScanner extends Scanner {
 	 * walk over any folders that are not fully scanned yet and scan them
 	 */
 	public function backgroundScan() {
-		//noop
 	}
 }
