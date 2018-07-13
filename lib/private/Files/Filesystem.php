@@ -707,7 +707,7 @@ class Filesystem {
 	}
 
 	public static function readfile($path) {
-		return self::$defaultInstance->readfile($path);
+		return self::$defaultInstance->readFileToOutput($path);
 	}
 
 	public static function isCreatable($path) {
@@ -765,6 +765,12 @@ class Filesystem {
 		return self::$defaultInstance->copy($path1, $path2);
 	}
 
+	/**
+	 * @param $path
+	 * @param $mode
+	 * @return resource
+	 * @deprecated 11.0.0
+	 */
 	public static function fopen($path, $mode) {
 		return self::$defaultInstance->fopen($path, $mode);
 	}

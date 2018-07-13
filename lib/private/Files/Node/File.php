@@ -29,6 +29,7 @@ namespace OC\Files\Node;
 use OCP\Files\IPreviewNode;
 use OCP\Files\NotPermittedException;
 use OCP\IImage;
+use Psr\Http\Message\StreamInterface;
 
 class File extends Node implements \OCP\Files\File, IPreviewNode {
 	/**
@@ -51,9 +52,9 @@ class File extends Node implements \OCP\Files\File, IPreviewNode {
 			 * @var \OC\Files\Storage\Storage $storage;
 			 */
 			return $this->view->file_get_contents($this->path);
-		} else {
-			throw new NotPermittedException();
 		}
+
+		throw new NotPermittedException();
 	}
 
 	/**
@@ -77,53 +78,23 @@ class File extends Node implements \OCP\Files\File, IPreviewNode {
 	 * @param string $mode
 	 * @return resource
 	 * @throws \OCP\Files\NotPermittedException
+	 * @deprecated 11.0.0
 	 */
 	public function fopen($mode) {
-		$preHooks = [];
-		$postHooks = [];
-		$requiredPermissions = \OCP\Constants::PERMISSION_READ;
-		switch ($mode) {
-			case 'r+':
-			case 'rb+':
-			case 'w+':
-			case 'wb+':
-			case 'x+':
-			case 'xb+':
-			case 'a+':
-			case 'ab+':
-			case 'w':
-			case 'wb':
-			case 'x':
-			case 'xb':
-			case 'a':
-			case 'ab':
-				$preHooks[] = 'preWrite';
-				$postHooks[] = 'postWrite';
-				$requiredPermissions |= \OCP\Constants::PERMISSION_UPDATE;
-				break;
-		}
-
-		if ($this->checkPermissions($requiredPermissions)) {
-			$this->sendHooks($preHooks);
-			$result = $this->view->fopen($this->path, $mode);
-			$this->sendHooks($postHooks);
-			return $result;
-		} else {
-			throw new NotPermittedException();
-		}
+		throw new \BadMethodCallException('fopen is no longer allowed to be called');
 	}
 
 	public function delete() {
-		if ($this->checkPermissions(\OCP\Constants::PERMISSION_DELETE)) {
-			$this->sendHooks(['preDelete']);
-			$fileInfo = $this->getFileInfo();
-			$this->view->unlink($this->path);
-			$nonExisting = new NonExistingFile($this->root, $this->view, $this->path, $fileInfo);
-			$this->root->emit('\OC\Files', 'postDelete', [$nonExisting]);
-			$this->fileInfo = null;
-		} else {
+		if (!$this->checkPermissions(\OCP\Constants::PERMISSION_DELETE)) {
 			throw new NotPermittedException();
 		}
+
+		$this->sendHooks(['preDelete']);
+		$fileInfo = $this->getFileInfo();
+		$this->view->unlink($this->path);
+		$nonExisting = new NonExistingFile($this->root, $this->view, $this->path, $fileInfo);
+		$this->root->emit('\OC\Files', 'postDelete', [$nonExisting]);
+		$this->fileInfo = null;
 	}
 
 	/**
@@ -165,5 +136,33 @@ class File extends Node implements \OCP\Files\File, IPreviewNode {
 			$preview->setMimetype($options['mimeType']);
 		}
 		return $preview->getPreview();
+	}
+
+	/**
+	 * @param array $options
+	 * @return StreamInterface
+	 * @since 11.0.0
+	 */
+	public function readFile(array $options = []): StreamInterface {
+		if (!$this->checkPermissions(\OCP\Constants::PERMISSION_READ)) {
+			throw new NotPermittedException();
+		}
+		return $this->view->readFile($this->path, $options);
+	}
+
+	/**
+	 * @param StreamInterface $stream
+	 * @return int
+	 * @since 11.0.0
+	 */
+	public function writeFile(StreamInterface $stream): int {
+		if (!$this->checkPermissions(\OCP\Constants::PERMISSION_UPDATE | \OCP\Constants::PERMISSION_READ)) {
+			throw new NotPermittedException();
+		}
+		$this->sendHooks(['preWrite']);
+		$count = $this->view->writeFile($this->path, $stream);
+		$this->sendHooks(['postWrite']);
+
+		return $count;
 	}
 }

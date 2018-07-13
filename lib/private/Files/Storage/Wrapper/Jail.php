@@ -27,6 +27,7 @@ namespace OC\Files\Storage\Wrapper;
 use OC\Files\Cache\Wrapper\CacheJail;
 use OCP\Files\Storage\IStorage;
 use OCP\Lock\ILockingProvider;
+use Psr\Http\Message\StreamInterface;
 
 /**
  * Jail to a subdirectory of the wrapped storage
@@ -496,5 +497,13 @@ class Jail extends Wrapper {
 			return $this->rename($sourceInternalPath, $targetInternalPath);
 		}
 		return $this->getWrapperStorage()->moveFromStorage($sourceStorage, $sourceInternalPath, $this->getSourcePath($targetInternalPath));
+	}
+
+	public function readFile(string $path, array $options = []): StreamInterface {
+		return $this->getWrapperStorage()->readFile($this->getSourcePath($path), $options);
+	}
+
+	public function writeFile(string $path, StreamInterface $stream): int {
+		return $this->getWrapperStorage()->writeFile($this->getSourcePath($path), $stream);
 	}
 }

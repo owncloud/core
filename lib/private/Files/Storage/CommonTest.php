@@ -31,7 +31,9 @@
 
 namespace OC\Files\Storage;
 
-class CommonTest extends \OC\Files\Storage\Common {
+use Psr\Http\Message\StreamInterface;
+
+class CommonTest extends Common {
 	/**
 	 * underlying local storage used for missing functions
 	 * @var \OC\Files\Storage\Local
@@ -80,5 +82,12 @@ class CommonTest extends \OC\Files\Storage\Common {
 	}
 	public function touch($path, $mtime=null) {
 		return $this->storage->touch($path, $mtime);
+	}
+	public function readFile(string $path, array $options = []): StreamInterface {
+		return $this->storage->readFile($path, $options);
+	}
+
+	public function writeFile(string $path, StreamInterface $stream): int {
+		return $this->storage->writeFile($path, $stream);
 	}
 }

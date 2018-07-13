@@ -227,15 +227,16 @@ class Encryption extends Wrapper {
 	 * @return bool
 	 */
 	public function file_put_contents($path, $data) {
-		// file put content will always be translated to a stream write
-		$handle = $this->fopen($path, 'w');
-		if (\is_resource($handle)) {
-			$written = \fwrite($handle, $data);
-			\fclose($handle);
-			return $written;
-		}
-
-		return false;
+		return $this->getWrapperStorage()->file_put_contents($path, $data);
+//		// file put content will always be translated to a stream write
+//		$handle = $this->fopen($path, 'w');
+//		if (\is_resource($handle)) {
+//			$written = \fwrite($handle, $data);
+//			\fclose($handle);
+//			return $written;
+//		}
+//
+//		return false;
 	}
 
 	/**

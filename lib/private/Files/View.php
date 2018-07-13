@@ -45,6 +45,7 @@
 
 namespace OC\Files;
 
+use function GuzzleHttp\Psr7\stream_for;
 use Icewind\Streams\CallbackWrapper;
 use OC\Files\Mount\MoveableMount;
 use OC\Files\Storage\Storage;
@@ -62,6 +63,7 @@ use OCP\Lock\ILockingProvider;
 use OCP\Lock\LockedException;
 use OCA\Files_Sharing\SharedMount;
 use OCP\Util;
+use Psr\Http\Message\StreamInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
 use OC\Files\Utils\FileUtils;
 
@@ -431,10 +433,10 @@ class View {
 	 * @return bool|mixed
 	 * @throws \OCP\Files\InvalidPathException
 	 */
-	public function readfile($path) {
+	public function readFileToOutput($path) {
 		$this->assertPathLength($path);
 		@\ob_end_clean();
-		$handle = $this->fopen($path, 'rb');
+		$handle = $this->readFile($path)->detach();
 		if ($handle) {
 			$chunkSize = 8192; // 8 kB chunks
 			while (!\feof($handle)) {
@@ -458,7 +460,7 @@ class View {
 	public function readfilePart($path, $from, $to) {
 		$this->assertPathLength($path);
 		@\ob_end_clean();
-		$handle = $this->fopen($path, 'rb');
+		$handle = $this->readFile($path)->detach();
 		if ($handle) {
 			if (\fseek($handle, $from) === 0) {
 				$chunkSize = 8192; // 8 kB chunks
@@ -471,8 +473,7 @@ class View {
 					echo \fread($handle, $len);
 					\flush();
 				}
-				$size = \ftell($handle) - $from;
-				return $size;
+				return \ftell($handle) - $from;
 			}
 
 			throw new \OCP\Files\UnseekableException('fseek error');
@@ -586,6 +587,12 @@ class View {
 		}, ['before' => ['path' => $this->getAbsolutePath($path)], 'after' => ['path' => $this->getAbsolutePath($path)]], 'file', 'read');
 	}
 
+	public function readFile(string $path, array $options = []): StreamInterface {
+		return $this->emittingCall(function () use ($path, $options) {
+			return $this->basicOperation('readFile', $path, ['read'], $options);
+		}, ['before' => ['path' => $this->getAbsolutePath($path)], 'after' => ['path' => $this->getAbsolutePath($path)]], 'file', 'read');
+	}
+
 	/**
 	 * @param bool $exists
 	 * @param string $path
@@ -685,25 +692,20 @@ class View {
 
 					/** @var \OC\Files\Storage\Storage $storage */
 					list($storage, $internalPath) = $this->resolvePath($path);
-					$target = $storage->fopen($internalPath, 'w');
-					if ($target) {
-						list(, $result) = \OC_Helper::streamCopy($data, $target);
-						\fclose($target);
+					$result = $storage->writeFile($internalPath, stream_for($data)) >= 0;
+					if (\is_resource($data)) {
 						\fclose($data);
-
-						$this->writeUpdate($storage, $internalPath);
-
-						$this->changeLock($path, ILockingProvider::LOCK_SHARED);
-
-						if ($this->shouldEmitHooks($path) && $result !== false) {
-							$this->emit_file_hooks_post($exists, $path);
-						}
-						$this->unlockFile($path, ILockingProvider::LOCK_SHARED);
-						return $result;
-					} else {
-						$this->unlockFile($path, ILockingProvider::LOCK_EXCLUSIVE);
-						return false;
 					}
+
+					$this->writeUpdate($storage, $internalPath);
+
+					$this->changeLock($path, ILockingProvider::LOCK_SHARED);
+
+					if ($this->shouldEmitHooks($path) && $result !== false) {
+						$this->emit_file_hooks_post($exists, $path);
+					}
+					$this->unlockFile($path, ILockingProvider::LOCK_SHARED);
+					return $result;
 				} else {
 					return false;
 				}
@@ -712,6 +714,10 @@ class View {
 				return $this->basicOperation('file_put_contents', $path, $hooks, $data);
 			}
 		}, ['before' => ['path' => $this->getAbsolutePath($path)], 'after' => ['path' => $this->getAbsolutePath($path)]], 'file', 'update');
+	}
+
+	public function writeFile(string $path, StreamInterface $stream): int {
+		return $this->file_put_contents($path, $stream->detach());
 	}
 
 	/**
@@ -995,38 +1001,10 @@ class View {
 	 * @param string $path
 	 * @param string $mode
 	 * @return resource
+	 * @deprecated 11.0.0
 	 */
 	public function fopen($path, $mode) {
-		$hooks = [];
-		switch ($mode) {
-			case 'r':
-			case 'rb':
-				$hooks[] = 'read';
-				break;
-			case 'r+':
-			case 'rb+':
-			case 'w+':
-			case 'wb+':
-			case 'x+':
-			case 'xb+':
-			case 'a+':
-			case 'ab+':
-				$hooks[] = 'read';
-				$hooks[] = 'write';
-				break;
-			case 'w':
-			case 'wb':
-			case 'x':
-			case 'xb':
-			case 'a':
-			case 'ab':
-				$hooks[] = 'write';
-				break;
-			default:
-				Util::writeLog('core', 'invalid mode (' . $mode . ') for ' . $path, Util::ERROR);
-		}
-
-		return $this->basicOperation('fopen', $path, $hooks, $mode);
+		throw new \BadMethodCallException('fopen is no longer allowed to be called');
 	}
 
 	/**
@@ -1037,7 +1015,7 @@ class View {
 	public function toTmpFile($path) {
 		$this->assertPathLength($path);
 		if (Filesystem::isValidPath($path)) {
-			$source = $this->fopen($path, 'r');
+			$source = $this->readFile($path, 'r')->detach();
 			if ($source) {
 				$extension = \pathinfo($path, PATHINFO_EXTENSION);
 				$tmpFile = \OC::$server->getTempManager()->getTemporaryFile($extension);

@@ -32,15 +32,18 @@
  *
  */
 namespace OCA\Files_External\Lib\Storage;
+use function GuzzleHttp\Psr7\stream_for;
 use Icewind\Streams\IteratorDirectory;
 use Icewind\Streams\RetryWrapper;
+use OCP\Files\Storage\StorageAdapter;
 use phpseclib\Net\SFTP\Stream;
+use Psr\Http\Message\StreamInterface;
 
 /**
 * Uses phpseclib's Net\SFTP class and the Net\SFTP\Stream stream wrapper to
 * provide access to SFTP servers.
 */
-class SFTP extends \OCP\Files\Storage\StorageAdapter {
+class SFTP extends StorageAdapter {
 	private $host;
 	private $user;
 	private $root;
@@ -355,34 +358,7 @@ class SFTP extends \OCP\Files\Storage\StorageAdapter {
 	 * {@inheritdoc}
 	 */
 	public function fopen($path, $mode) {
-		try {
-			$absPath = $this->absPath($path);
-			switch ($mode) {
-				case 'r':
-				case 'rb':
-					if (!$this->file_exists($path)) {
-						return false;
-					}
-					// no break
-				case 'w':
-				case 'wb':
-				case 'a':
-				case 'ab':
-				case 'r+':
-				case 'w+':
-				case 'wb+':
-				case 'a+':
-				case 'x':
-				case 'x+':
-				case 'c':
-				case 'c+':
-					$context = \stream_context_create(['sftp' => ['session' => $this->getConnection()]]);
-					$handle = \fopen($this->constructUrl($path), $mode, false, $context);
-					return RetryWrapper::wrap($handle);
-			}
-		} catch (\Exception $e) {
-		}
-		return false;
+		throw new \BadMethodCallException('fopen is no longer allowed to be called');
 	}
 
 	/**
@@ -465,5 +441,28 @@ class SFTP extends \OCP\Files\Storage\StorageAdapter {
 		// hostname because this might show up in logs (they are not used).
 		$url = 'sftp://' . \urlencode($this->user) . '@' . $this->host . ':' . $this->port . $this->root . $path;
 		return $url;
+	}
+
+	/**
+	 * @param string $path
+	 * @param array $options
+	 * @return StreamInterface
+	 * @since 11.0.0
+	 */
+	public function readFile(string $path, array $options = []): StreamInterface {
+		return stream_for($this->getConnection()->get($this->absPath($path)));
+	}
+
+	/**
+	 * @param string $path
+	 * @param StreamInterface $stream
+	 * @return int
+	 * @since 11.0.0
+	 */
+	public function writeFile(string $path, StreamInterface $stream): int {
+		if ($this->getConnection()->put($this->absPath($path), $stream->detach())) {
+			return $stream->getSize();
+		}
+		return 0;
 	}
 }

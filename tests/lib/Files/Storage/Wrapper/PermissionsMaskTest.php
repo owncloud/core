@@ -8,6 +8,7 @@
 
 namespace Test\Files\Storage\Wrapper;
 
+use function GuzzleHttp\Psr7\stream_for;
 use OCP\Constants;
 
 class PermissionsMaskTest extends \Test\Files\Storage\Storage {
@@ -121,9 +122,7 @@ class PermissionsMaskTest extends \Test\Files\Storage\Storage {
 
 	public function testFopenPartFileNoPerms() {
 		$storage = $this->getMaskedStorage(Constants::PERMISSION_ALL - Constants::PERMISSION_UPDATE - Constants::PERMISSION_CREATE);
-		$res = $storage->fopen('foo.part', 'w');
-		\fwrite($res, 'foo');
-		\fclose($res);
+		$storage->writeFile('foo.part', stream_for('foo'));
 		$this->assertTrue($storage->file_exists('foo.part'));
 	}
 

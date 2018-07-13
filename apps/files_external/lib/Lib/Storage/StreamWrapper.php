@@ -27,7 +27,11 @@
 
 namespace OCA\Files_External\Lib\Storage;
 
-abstract class StreamWrapper extends \OCP\Files\Storage\StorageAdapter {
+use function GuzzleHttp\Psr7\stream_for;
+use OCP\Files\Storage\StorageAdapter;
+use Psr\Http\Message\StreamInterface;
+
+abstract class StreamWrapper extends StorageAdapter {
 
 	/**
 	 * @param string $path
@@ -83,7 +87,7 @@ abstract class StreamWrapper extends \OCP\Files\Storage\StorageAdapter {
 	}
 
 	public function fopen($path, $mode) {
-		return \fopen($this->constructUrl($path), $mode);
+		throw new \BadMethodCallException('fopen is no longer allowed to be called');
 	}
 
 	public function touch($path, $mtime = null) {
@@ -124,5 +128,12 @@ abstract class StreamWrapper extends \OCP\Files\Storage\StorageAdapter {
 
 	public function stat($path) {
 		return \stat($this->constructUrl($path));
+	}
+	public function readFile(string $path, array $options = []): StreamInterface {
+		return stream_for(\fopen($this->constructUrl($path)));
+	}
+	public function writeFile(string $path, StreamInterface $stream): int {
+		\file_put_contents($this->constructUrl($path), $stream->detach());
+		return $stream->getSize();
 	}
 }

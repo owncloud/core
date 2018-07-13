@@ -21,6 +21,7 @@
 
 namespace Test\Files\Storage\Wrapper;
 
+use function GuzzleHttp\Psr7\stream_for;
 use OC\Files\Storage\Wrapper\Checksum;
 
 /**
@@ -52,20 +53,7 @@ class ChecksumTest extends \Test\TestCase {
 	}
 
 	public function testFilePutContentsCalculatesChecksum() {
-		$this->instance->file_put_contents($this->testFileName, 'somedata');
-		$metaData = $this->instance->getMetaData($this->testFileName);
-
-		$this->assertArrayHasKey('checksum', $metaData);
-		$this->assertEquals(self::EXPECTED_CHECKSUMS, $metaData['checksum']);
-	}
-
-	public function testWriteToFileHandleCalculatesChecksum() {
-		$handle = $this->instance->fopen($this->testFileName, 'w');
-
-		$this->assertInternalType('resource', $handle);
-		$this->assertNotFalse(\fwrite($handle, self::TEST_DATA));
-		$this->assertNotFalse(\fclose($handle));
-
+		$this->instance->writeFile($this->testFileName, stream_for('somedata'));
 		$metaData = $this->instance->getMetaData($this->testFileName);
 
 		$this->assertArrayHasKey('checksum', $metaData);
@@ -77,9 +65,9 @@ class ChecksumTest extends \Test\TestCase {
 		// Make file available in filecache (without checksum)
 		$this->sourceStorage->getScanner($this->testFileName)->scan($this->testFileName);
 
-		$handle = $this->instance->fopen($this->testFileName, 'r');
-		$data = \fread($handle, $this->sourceStorage->filesize($this->testFileName));
-		\fclose($handle);
+		$handle = $this->instance->readFile($this->testFileName);
+		$data = $handle->getContents();
+		$handle->close();
 
 		$this->assertEquals(self::TEST_DATA, $data);
 
@@ -110,35 +98,6 @@ class ChecksumTest extends \Test\TestCase {
 
 		$this->assertEquals(
 			"SHA1:693301c930b242611c005b00c151cc216259f1bd MD5:e4de345997131e5fa4421c3b2a9edddb ADLER32:12fc03bd",
-			$metaData['checksum']
-		);
-	}
-
-	public function testChecksumWrapperIsNotAppliedOnReadWriteStreams() {
-		$handle = $this->instance->fopen($this->testFileName, 'x+');
-		\fwrite($handle, self::TEST_DATA);
-		\fclose($handle);
-
-		$metaData = $this->instance->getMetaData($this->testFileName);
-
-		$this->assertEmpty($metaData['checksum']);
-	}
-
-	/**
-	 * @depends testFilePutContentsCalculatesChecksum
-	 */
-	public function testRewindDoesNotCorruptChecksum() {
-		$this->instance->file_put_contents($this->testFileName, self::TEST_DATA);
-		$handle = $this->instance->fopen($this->testFileName, 'r+');
-		\fread($handle, $this->sourceStorage->filesize($this->testFileName));
-		\rewind($handle);
-		\fread($handle, $this->sourceStorage->filesize($this->testFileName));
-		\fclose($handle);
-
-		$metaData = $this->instance->getMetaData($this->testFileName);
-
-		$this->assertEquals(
-			self::EXPECTED_CHECKSUMS,
 			$metaData['checksum']
 		);
 	}

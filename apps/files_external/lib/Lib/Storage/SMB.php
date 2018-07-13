@@ -31,6 +31,8 @@
 
 namespace OCA\Files_External\Lib\Storage;
 
+use function GuzzleHttp\Psr7\copy_to_stream;
+use function GuzzleHttp\Psr7\stream_for;
 use Icewind\SMB\Exception\AlreadyExistsException;
 use Icewind\SMB\Exception\ConnectException;
 use Icewind\SMB\Exception\Exception;
@@ -48,10 +50,12 @@ use Icewind\Streams\IteratorDirectory;
 use OC\Cache\CappedMemoryCache;
 use OC\Files\Filesystem;
 use OCP\Files\Cache\ICache;
+use OCP\Files\Storage\StorageAdapter;
 use OCP\Files\StorageNotAvailableException;
 use OCP\Util;
+use Psr\Http\Message\StreamInterface;
 
-class SMB extends \OCP\Files\Storage\StorageAdapter {
+class SMB extends StorageAdapter {
 	/**
 	 * @var \Icewind\SMB\IServer
 	 */
@@ -429,73 +433,7 @@ class SMB extends \OCP\Files\Storage\StorageAdapter {
 	 * @throws StorageNotAvailableException
 	 */
 	public function fopen($path, $mode) {
-		$this->log('enter: '.__FUNCTION__."($path, $mode)");
-		$fullPath = $this->buildPath($path);
-		$result = false;
-		try {
-			switch ($mode) {
-				case 'r':
-				case 'rb':
-					if ($this->file_exists($path)) {
-						$result = $this->share->read($fullPath);
-					}
-					break;
-				case 'w':
-				case 'wb':
-					$source = $this->share->write($fullPath);
-					$result = CallBackWrapper::wrap($source, null, null, function () use ($fullPath) {
-						unset($this->statCache[$fullPath]);
-					});
-					break;
-				case 'a':
-				case 'ab':
-				case 'r+':
-				case 'w+':
-				case 'wb+':
-				case 'a+':
-				case 'x':
-				case 'x+':
-				case 'c':
-				case 'c+':
-					//emulate these
-					if (\strrpos($path, '.') !== false) {
-						$ext = \substr($path, \strrpos($path, '.'));
-					} else {
-						$ext = '';
-					}
-					if ($this->file_exists($path)) {
-						if (!$this->isUpdatable($path)) {
-							break;
-						}
-						$tmpFile = $this->getCachedFile($path);
-					} else {
-						if (!$this->isCreatable(\dirname($path))) {
-							break;
-						}
-						$tmpFile = \OC::$server->getTempManager()->getTemporaryFile($ext);
-					}
-					$source = \fopen($tmpFile, $mode);
-					$share = $this->share;
-					$result = CallbackWrapper::wrap($source, null, null, function () use ($tmpFile, $fullPath, $share) {
-						unset($this->statCache[$fullPath]);
-						$share->put($tmpFile, $fullPath);
-						\unlink($tmpFile);
-					});
-			}
-		} catch (NotFoundException $e) {
-			$this->swallow(__FUNCTION__, $e);
-		} catch (ForbiddenException $e) {
-			$this->swallow(__FUNCTION__, $e);
-		} catch (Exception $e) {
-			if ($e->getCode() === 16) {
-				$this->swallow(__FUNCTION__, $e);
-			} else {
-				$ex = new StorageNotAvailableException($e->getMessage(), $e->getCode(), $e);
-				$this->leave(__FUNCTION__, $ex);
-				throw $ex;
-			}
-		}
-		return $this->leave(__FUNCTION__, $result);
+		throw new \BadMethodCallException('fopen is no longer allowed to be called');
 	}
 
 	public function rmdir($path) {
@@ -773,5 +711,32 @@ class SMB extends \OCP\Files\Storage\StorageAdapter {
 	 */
 	public function __destruct() {
 		unset($this->share);
+	}
+
+	/**
+	 * @param string $path
+	 * @param array $options
+	 * @return StreamInterface
+	 * @since 11.0.0
+	 */
+	public function readFile(string $path, array $options = []): StreamInterface {
+		$fullPath = $this->buildPath($path);
+		if (!$this->file_exists($path)) {
+			return stream_for($this->share->read($fullPath));
+		}
+		throw new NotFoundException();
+	}
+
+	/**
+	 * @param string $path
+	 * @param StreamInterface $stream
+	 * @return int
+	 * @since 11.0.0
+	 */
+	public function writeFile(string $path, StreamInterface $stream): int {
+		$fullPath = $this->buildPath($path);
+		$dest = $this->share->write($fullPath);
+		copy_to_stream($stream, stream_for($dest));
+		return $stream->getSize();
 	}
 }

@@ -46,9 +46,9 @@ abstract class Office implements IProvider2 {
 		} else {
 			$absPath = \OC::$server->getTempManager()->getTemporaryFile();
 
-			$handle = $file->fopen('rb');
-			\file_put_contents($absPath, $handle);
-			\fclose($handle);
+			$handle = $file->readFile();
+			\file_put_contents($absPath, $handle->getContents());
+			$handle->close();
 		}
 
 		$tmpDir = \OC::$server->getTempManager()->getTempBaseDir();

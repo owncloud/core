@@ -20,10 +20,10 @@
  */
 namespace OC\Files\Storage\Wrapper;
 
-use Icewind\Streams\CallbackWrapper;
-use OC\Files\Stream\Checksum as ChecksumStream;
-use OCP\Files\IHomeStorage;
+use function GuzzleHttp\Psr7\stream_for;
 use OC\Files\Utils\FileUtils;
+use GuzzleHttp\Psr7\StreamWrapper;
+use Psr\Http\Message\StreamInterface;
 
 /**
  * Class Checksum
@@ -48,117 +48,49 @@ class Checksum extends Wrapper {
 	const PATH_IN_CACHE_WITHOUT_CHECKSUM = 2;
 
 	/** @var array */
-	private $pathsInCacheWithoutChecksum = [];
-
-	/**
-	 * @param string $path
-	 * @param string $mode
-	 * @return false|resource
-	 */
-	public function fopen($path, $mode) {
-		$stream = $this->getWrapperStorage()->fopen($path, $mode);
-		if (!\is_resource($stream) || $this->isReadWriteStream($mode)) {
-			// don't wrap on error or mixed mode streams (could cause checksum corruption)
-			return $stream;
-		}
-
-		$requirement = $this->getChecksumRequirement($path, $mode);
-
-		if ($requirement === self::PATH_NEW_OR_UPDATED) {
-			return \OC\Files\Stream\Checksum::wrap($stream, $path);
-		}
-
-		// If file is without checksum we save the path and create
-		// a callback because we can only calculate the checksum
-		// after the client has read the entire filestream once.
-		// the checksum is then saved to oc_filecache for subsequent
-		// retrieval (see onClose())
-		if ($requirement == self::PATH_IN_CACHE_WITHOUT_CHECKSUM) {
-			$checksumStream = \OC\Files\Stream\Checksum::wrap($stream, $path);
-			return CallbackWrapper::wrap(
-				$checksumStream,
-				null,
-				null,
-				[$this, 'onClose']
-			);
-		}
-
-		return $stream;
-	}
-
-	/**
-	 * @param $mode
-	 * @param $path
-	 * @return int
-	 */
-	private function getChecksumRequirement($path, $mode) {
-		$isNormalFile = true;
-		if ($this->instanceOfStorage(IHomeStorage::class)) {
-			// home storage stores files in "files"
-			$isNormalFile = \substr($path, 0, 6) === 'files/';
-		}
-		$fileIsWritten = $mode !== 'r' && $mode !== 'rb';
-
-		if ($isNormalFile && $fileIsWritten) {
-			return self::PATH_NEW_OR_UPDATED;
-		}
-
-		// file could be in cache but without checksum for example
-		// if mounted from ext. storage
-		$cache = $this->getCache($path);
-
-		$cacheEntry = $cache->get($path);
-
-		// Cache entry is sometimes an array (partial) when encryption is enabled without id so
-		// we ignore it.
-		if ($cacheEntry && empty($cacheEntry['checksum']) && \is_object($cacheEntry)) {
-			$this->pathsInCacheWithoutChecksum[$cacheEntry->getId()] = $path;
-			return self::PATH_IN_CACHE_WITHOUT_CHECKSUM;
-		}
-
-		return self::NOT_REQUIRED;
-	}
-
-	/**
-	 * @param $mode
-	 * @return bool
-	 */
-	private function isReadWriteStream($mode) {
-		return \strpos($mode, '+') !== false;
-	}
-
-	/**
-	 * Callback registered in fopen
-	 */
-	public function onClose() {
-		$cache = $this->getCache();
-		foreach ($this->pathsInCacheWithoutChecksum as $cacheId => $path) {
-			$cache->update(
-				$cacheId,
-				['checksum' => self::getChecksumsInDbFormat($path)]
-			);
-		}
-
-		$this->pathsInCacheWithoutChecksum = [];
-	}
+	private $checksums;
 
 	/**
 	 * @param $path
 	 * @return string Format like "SHA1:abc MD5:def ADLER32:ghi"
 	 */
-	private static function getChecksumsInDbFormat($path) {
-		$checksums = ChecksumStream::getChecksums($path);
-
-		if (empty($checksums)) {
+	private function getChecksumsInDbFormat($path) {
+		if (empty($this->checksums[$path])) {
 			return '';
+		}
+		if (!isset($this->checksums[$path]->md5)) {
+			throw new \BadMethodCallException('Reading from stream not yet finished. Close the stream before calling this method.');
 		}
 
 		return \sprintf(
 			self::CHECKSUMS_DB_FORMAT,
-			$checksums['sha1'],
-			$checksums['md5'],
-			$checksums['adler32']
+			$this->checksums[$path]->sha1,
+			$this->checksums[$path]->md5,
+			$this->checksums[$path]->adler32
 		);
+	}
+
+	/**
+	 * check if the file metadata should not be fetched
+	 * NOTE: files with a '.part' extension are ignored as well!
+	 *       prevents unfinished put requests to fetch metadata which does not exists
+	 *
+	 * @param string $file
+	 * @return boolean
+	 */
+	public static function isPartialFile($file) {
+		if (\pathinfo($file, PATHINFO_EXTENSION) === 'part') {
+			return true;
+		}
+
+		return false;
+	}
+
+	public function file_get_contents($path) {
+		$stream = $this->readFile($path);
+		$data = $stream->getContents();
+		$stream->close();
+		return $data;
 	}
 
 	/**
@@ -167,13 +99,35 @@ class Checksum extends Wrapper {
 	 * @return bool
 	 */
 	public function file_put_contents($path, $data) {
-		$memoryStream = \fopen('php://memory', 'r+');
-		$checksumStream = \OC\Files\Stream\Checksum::wrap($memoryStream, $path);
+		$this->writeFile($path, stream_for($data));
+	}
 
-		\fwrite($checksumStream, $data);
-		\fclose($checksumStream);
+	public function writeFile(string $path, StreamInterface $stream) : int {
+		$this->checksums[$path] = new \stdClass();
 
-		return $this->getWrapperStorage()->file_put_contents($path, $data);
+		if (!\in_array('oc.checksum', \stream_get_filters(), true)) {
+			\stream_filter_register('oc.checksum', ChecksumFilter::class);
+		}
+		$resource = StreamWrapper::getResource($stream);
+		\stream_filter_append($resource, 'oc.checksum', STREAM_FILTER_READ, $this->checksums[$path]);
+
+		$checksumStream = stream_for($resource);
+		$return = $this->getWrapperStorage()->writeFile($path, $checksumStream);
+		$checksumStream->close();
+		return $return;
+	}
+
+	public function readFile(string $path, array $options = []): StreamInterface {
+		$this->checksums[$path] = new \stdClass();
+
+		if (!\in_array('oc.checksum', \stream_get_filters(), true)) {
+			\stream_filter_register('oc.checksum', ChecksumFilter::class);
+		}
+		$stream = $this->getWrapperStorage()->readFile($path, $options);
+		$resource = StreamWrapper::getResource($stream);
+		\stream_filter_append($resource, 'oc.checksum', STREAM_FILTER_READ, $this->checksums[$path]);
+
+		return stream_for($resource);
 	}
 
 	/**
@@ -190,7 +144,7 @@ class Checksum extends Wrapper {
 				return null;
 			}
 		}
-		$parentMetaData['checksum'] = self::getChecksumsInDbFormat($path);
+		$parentMetaData['checksum'] = $this->getChecksumsInDbFormat($path);
 
 		if (!isset($parentMetaData['mimetype'])) {
 			$parentMetaData['mimetype'] = 'application/octet-stream';

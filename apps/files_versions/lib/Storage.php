@@ -828,6 +828,6 @@ class Storage {
 
 	public static function getContentOfVersion($uid, $storage_location) {
 		$users_view = new View('/'.$uid);
-		return $users_view->fopen($storage_location, 'r');
+		return $users_view->readFile($storage_location)->detach();
 	}
 }

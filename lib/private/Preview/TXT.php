@@ -41,16 +41,14 @@ class TXT implements IProvider2 {
 	 * {@inheritDoc}
 	 */
 	public function getThumbnail(File $file, $maxX, $maxY, $scalingUp) {
-		$stream = $file->fopen('r');
-		$content = \stream_get_contents($stream, 3000);
-		\fclose($stream);
+		$stream = $file->readFile(['range' => [0, 30000]]);
 
 		//don't create previews of empty text files
-		if (\trim($content) === '') {
+		if ($stream->getSize() === 0) {
 			return false;
 		}
 
-		$lines = \preg_split("/\r\n|\n|\r/", $content);
+		$lines = \preg_split("/\r\n|\n|\r/", $stream->read(30000));
 
 		$fontSize = ($maxX) ? (int) ((5 / 32) * $maxX) : 5; //5px
 		$lineSize = \ceil($fontSize * 1.25);

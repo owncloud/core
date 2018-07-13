@@ -37,6 +37,7 @@ use OCP\Files\Cache\IUpdater;
 use OCP\Files\Cache\IWatcher;
 use OCP\Files\InvalidPathException;
 use OCP\Files\StorageNotAvailableException;
+use Psr\Http\Message\StreamInterface;
 
 /**
  * Provide a common interface to all different storage options
@@ -228,6 +229,7 @@ interface IStorage {
 	 * @return string|false
 	 * @throws StorageNotAvailableException if the storage is temporarily not available
 	 * @since 9.0.0
+	 * @deprecated 11.0.0
 	 */
 	public function file_get_contents($path);
 
@@ -239,6 +241,7 @@ interface IStorage {
 	 * @return bool
 	 * @throws StorageNotAvailableException if the storage is temporarily not available
 	 * @since 9.0.0
+	 * @deprecated 11.0.0
 	 */
 	public function file_put_contents($path, $data);
 
@@ -282,6 +285,7 @@ interface IStorage {
 	 * @return resource|false
 	 * @throws StorageNotAvailableException if the storage is temporarily not available
 	 * @since 9.0.0
+	 * @deprecated 11.0.0
 	 */
 	public function fopen($path, $mode);
 
@@ -503,4 +507,20 @@ interface IStorage {
 	 * @since 9.0.0
 	 */
 	public function getWatcher();
+
+	/**
+	 * @param string $path
+	 * @param array $options
+	 * @return StreamInterface
+	 * @since 11.0.0
+	 */
+	public function readFile(string $path, array $options = []) : StreamInterface;
+
+	/**
+	 * @param string $path
+	 * @param StreamInterface $stream
+	 * @return int
+	 * @since 11.0.0
+	 */
+	public function writeFile(string $path, StreamInterface $stream) : int;
 }

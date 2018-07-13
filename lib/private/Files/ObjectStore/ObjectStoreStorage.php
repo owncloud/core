@@ -25,14 +25,17 @@
 
 namespace OC\Files\ObjectStore;
 
+use function GuzzleHttp\Psr7\stream_for;
 use Icewind\Streams\IteratorDirectory;
 use OC\Files\Cache\CacheEntry;
+use OC\Files\Storage\Common;
 use OCP\Files\NotFoundException;
 use OCP\Files\ObjectStore\IObjectStore;
 use OCP\Files\ObjectStore\IVersionedObjectStorage;
 use OCP\Files\Storage\IStorage;
+use Psr\Http\Message\StreamInterface;
 
-class ObjectStoreStorage extends \OC\Files\Storage\Common {
+class ObjectStoreStorage extends Common {
 
 	/**
 	 * @var array
@@ -260,51 +263,7 @@ class ObjectStoreStorage extends \OC\Files\Storage\Common {
 	}
 
 	public function fopen($path, $mode) {
-		$path = $this->normalizePath($path);
-
-		switch ($mode) {
-			case 'r':
-			case 'rb':
-				$stat = $this->stat($path);
-				if (\is_array($stat)) {
-					try {
-						return $this->objectStore->readObject($this->getURN($stat['fileid']));
-					} catch (\Exception $ex) {
-						\OCP\Util::writeLog('objectstore', 'Could not get object: ' . $ex->getMessage(), \OCP\Util::ERROR);
-						return false;
-					}
-				} else {
-					return false;
-				}
-				// no break
-			case 'w':
-			case 'wb':
-			case 'a':
-			case 'ab':
-			case 'r+':
-			case 'w+':
-			case 'wb+':
-			case 'a+':
-			case 'x':
-			case 'x+':
-			case 'c':
-			case 'c+':
-				if (\strrpos($path, '.') !== false) {
-					$ext = \substr($path, \strrpos($path, '.'));
-				} else {
-					$ext = '';
-				}
-				$tmpFile = \OC::$server->getTempManager()->getTemporaryFile($ext);
-				\OC\Files\Stream\Close::registerCallback($tmpFile, [$this, 'writeBack']);
-				if ($this->file_exists($path)) {
-					$source = $this->fopen($path, 'r');
-					\file_put_contents($tmpFile, $source);
-				}
-				self::$tmpFiles[$tmpFile] = $path;
-
-				return \fopen('close://' . $tmpFile, $mode);
-		}
-		return false;
+		throw new \BadMethodCallException('fopen is no longer allowed to be called');
 	}
 
 	public function file_exists($path) {
@@ -389,38 +348,6 @@ class ObjectStoreStorage extends \OC\Files\Storage\Common {
 		return true;
 	}
 
-	public function writeBack($tmpFile) {
-		if (!isset(self::$tmpFiles[$tmpFile])) {
-			return;
-		}
-
-		$path = self::$tmpFiles[$tmpFile];
-		$stat = $this->stat($path);
-		if (empty($stat)) {
-			// create new file
-			$stat = [
-				'permissions' => \OCP\Constants::PERMISSION_ALL - \OCP\Constants::PERMISSION_CREATE,
-			];
-		}
-		// update stat with new data
-		$mTime = \time();
-		$stat['size'] = \filesize($tmpFile);
-		$stat['mtime'] = $mTime;
-		$stat['storage_mtime'] = $mTime;
-		$stat['mimetype'] = \OC::$server->getMimeTypeDetector()->detect($tmpFile);
-		$stat['etag'] = $this->getETag($path);
-
-		$fileId = $this->getCache()->put($path, $stat);
-		try {
-			//upload to object storage
-			$this->objectStore->writeObject($this->getURN($fileId), \fopen($tmpFile, 'r'));
-		} catch (\Exception $ex) {
-			$this->getCache()->remove($path);
-			\OCP\Util::writeLog('objectstore', 'Could not create object: ' . $ex->getMessage(), \OCP\Util::ERROR);
-			throw $ex; // make this bubble up
-		}
-	}
-
 	/**
 	 * external changes are not supported, exclusive access to the object storage is assumed
 	 *
@@ -501,5 +428,41 @@ class ObjectStoreStorage extends \OC\Files\Storage\Common {
 			return $this->objectStore->restoreVersion($this->getURN($stat['fileid']), $versionId);
 		}
 		return parent::restoreVersion($internalPath, $versionId);
+	}
+
+	public function readFile(string $path, array $options = []): StreamInterface {
+		$stat = $this->stat($path);
+		if ($stat === false) {
+			throw new NotFoundException();
+		}
+		return stream_for($this->objectStore->readObject($this->getURN($stat['fileid'])));
+	}
+
+	public function writeFile(string $path, StreamInterface $stream): int {
+		$stat = $this->stat($path);
+		if (empty($stat)) {
+			// create new file
+			$stat = [
+				'permissions' => \OCP\Constants::PERMISSION_ALL - \OCP\Constants::PERMISSION_CREATE,
+			];
+		}
+		// update stat with new data
+		$mTime = \time();
+		$stat['size'] = $stream->getSize();
+		$stat['mtime'] = $mTime;
+		$stat['storage_mtime'] = $mTime;
+		$stat['mimetype'] = \OC::$server->getMimeTypeDetector()->detectPath($path);
+		$stat['etag'] = $this->getETag($path);
+
+		$fileId = $this->getCache()->put($path, $stat);
+		try {
+			//upload to object storage
+			$this->objectStore->writeObject($this->getURN($fileId), $stream->detach());
+		} catch (\Exception $ex) {
+			$this->getCache()->remove($path);
+			\OCP\Util::writeLog('objectstore', 'Could not create object: ' . $ex->getMessage(), \OCP\Util::ERROR);
+			throw $ex; // make this bubble up
+		}
+		return $stat['size'];
 	}
 }

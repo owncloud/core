@@ -38,6 +38,7 @@
 
 namespace OC\Files\Storage;
 
+use function GuzzleHttp\Psr7\stream_for;
 use OC\Files\Cache\Cache;
 use OC\Files\Cache\Propagator;
 use OC\Files\Cache\Scanner;
@@ -180,20 +181,12 @@ abstract class Common implements Storage, ILockingStorage, IVersionedStorage, IP
 	}
 
 	public function file_get_contents($path) {
-		$handle = $this->fopen($path, "r");
-		if (!$handle) {
-			return false;
-		}
-		$data = \stream_get_contents($handle);
-		\fclose($handle);
-		return $data;
+		return $this->readFile($path)->getContents();
 	}
 
 	public function file_put_contents($path, $data) {
-		$handle = $this->fopen($path, "w");
+		$count = $this->writeFile($path, stream_for($data));
 		$this->removeCachedFile($path);
-		$count = \fwrite($handle, $data);
-		\fclose($handle);
 		return $count;
 	}
 
@@ -570,19 +563,18 @@ abstract class Common implements Storage, ILockingStorage, IVersionedStorage, IP
 				}
 			}
 		} else {
-			$source = $sourceStorage->fopen($sourceInternalPath, 'r');
+			$source = $sourceStorage->readFile($sourceInternalPath);
 			// TODO: call fopen in a way that we execute again all storage wrappers
 			// to avoid that we bypass storage wrappers which perform important actions
 			// for this operation. Same is true for all other operations which
 			// are not the same as the original one.Once this is fixed we also
 			// need to adjust the encryption wrapper.
-			$target = $this->fopen($targetInternalPath, 'w');
-			list(, $result) = \OC_Helper::streamCopy($source, $target);
-			if ($result and $preserveMtime) {
+			$written = $this->writeFile($targetInternalPath, $source);
+			$result = $written === $sourceStorage->filesize($sourceInternalPath);
+			if ($result && $preserveMtime) {
 				$this->touch($targetInternalPath, $sourceStorage->filemtime($sourceInternalPath));
 			}
-			\fclose($source);
-			\fclose($target);
+			$source->close();
 
 			if (!$result) {
 				// delete partially written target file

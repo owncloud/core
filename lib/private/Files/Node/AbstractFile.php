@@ -23,6 +23,7 @@ namespace OC\Files\Node;
 
 use OCP\Files\FileInfo;
 use OCP\Files\NotPermittedException;
+use Psr\Http\Message\StreamInterface;
 
 class AbstractFile extends AbstractNode implements \OCP\Files\File {
 
@@ -66,5 +67,19 @@ class AbstractFile extends AbstractNode implements \OCP\Files\File {
 	 */
 	public function getType() {
 		return FileInfo::TYPE_FILE;
+	}
+
+	/**
+	 * @inheritdoc
+	 */
+	public function readFile(array $options = []): StreamInterface {
+		throw new NotPermittedException();
+	}
+
+	/**
+	 * @inheritdoc
+	 */
+	public function writeFile(StreamInterface $stream): int {
+		throw new NotPermittedException();
 	}
 }

@@ -59,13 +59,13 @@ class Movie implements IProvider2 {
 		} else {
 			$absPath = \OC::$server->getTempManager()->getTemporaryFile();
 
-			$handle = $file->fopen('rb');
+			$stream = $file->readFile(['range' => [0, 5242880]]);
 
 			// we better use 5MB (1024 * 1024 * 5 = 5242880) instead of 1MB.
 			// in some cases 1MB was no enough to generate thumbnail
-			$firstmb = \stream_get_contents($handle, 5242880);
+			$firstmb = $stream->read(5242880);
 			\file_put_contents($absPath, $firstmb);
-			\fclose($handle);
+			$stream->close();
 		}
 
 		$result = $this->generateThumbNail($maxX, $maxY, $absPath, 5);

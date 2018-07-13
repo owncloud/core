@@ -27,6 +27,7 @@ use OC\Files\Cache\FailedCache;
 use OCP\Files\Storage\IStorage;
 use \OCP\Lock\ILockingProvider;
 use \OCP\Files\StorageNotAvailableException;
+use Psr\Http\Message\StreamInterface;
 
 /**
  * Storage placeholder to represent a missing precondition, storage unavailable
@@ -213,5 +214,13 @@ class FailedStorage extends Common {
 
 	public function getCache($path = '', $storage = null) {
 		return new FailedCache();
+	}
+
+	public function readFile(string $path, array $options = []): StreamInterface {
+		throw new StorageNotAvailableException($this->e->getMessage(), $this->e->getCode(), $this->e);
+	}
+
+	public function writeFile(string $path, StreamInterface $stream): int {
+		throw new StorageNotAvailableException($this->e->getMessage(), $this->e->getCode(), $this->e);
 	}
 }

@@ -27,6 +27,7 @@
 
 namespace OC\Security;
 
+use function GuzzleHttp\Psr7\stream_for;
 use OC\Files\Filesystem;
 use OCP\ICertificateManager;
 use OCP\IConfig;
@@ -81,7 +82,7 @@ class CertificateManager implements ICertificateManager {
 			return [];
 		}
 		while (($file = \readdir($handle)) !== false) {
-			if ($file != '.' && $file != '..') {
+			if ($file !== '.' && $file !== '..') {
 				try {
 					$result[] = new Certificate($this->view->file_get_contents($path . $file), $file);
 				} catch (\Exception $e) {
@@ -103,7 +104,7 @@ class CertificateManager implements ICertificateManager {
 			$this->view->mkdir($path);
 		}
 
-		$fhCerts = $this->view->fopen($path . '/rootcerts.crt', 'w');
+		$fhCerts = \fopen('php://memory', 'wb');
 
 		// Write user certificates
 		foreach ($certs as $cert) {
@@ -126,7 +127,7 @@ class CertificateManager implements ICertificateManager {
 			\fwrite($fhCerts, $systemCertificates);
 		}
 
-		\fclose($fhCerts);
+		$this->view->writeFile($path . '/rootcerts.crt', stream_for($fhCerts));
 	}
 
 	/**
@@ -138,7 +139,7 @@ class CertificateManager implements ICertificateManager {
 	 * @throws \Exception If the certificate could not get added
 	 */
 	public function addCertificate($certificate, $name) {
-		if (!Filesystem::isValidPath($name) or Filesystem::isForbiddenFileOrDir($name)) {
+		if (!Filesystem::isValidPath($name) || Filesystem::isForbiddenFileOrDir($name)) {
 			throw new \Exception('Filename is not valid');
 		}
 
@@ -218,9 +219,7 @@ class CertificateManager implements ICertificateManager {
 		if ($uid === '') {
 			$uid = $this->uid;
 		}
-		$path = $uid === null ? '/files_external/' : '/' . $uid . '/files_external/';
-
-		return $path;
+		return $uid === null ? '/files_external/' : '/' . $uid . '/files_external/';
 	}
 
 	/**
@@ -242,9 +241,7 @@ class CertificateManager implements ICertificateManager {
 			$sourceBundles[] = $this->view->filemtime($this->getCertificateBundle(null));
 		}
 
-		$sourceMTime = \array_reduce($sourceMTimes, function ($max, $mtime) {
-			return \max($max, $mtime);
-		}, 0);
+		$sourceMTime = \array_reduce($sourceMTimes, 'max', 0);
 		return $sourceMTime > $this->view->filemtime($targetBundle);
 	}
 }

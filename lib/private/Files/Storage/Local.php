@@ -36,8 +36,10 @@
 
 namespace OC\Files\Storage;
 
+use function GuzzleHttp\Psr7\stream_for;
 use OCP\Files\ForbiddenException;
 use OCP\Files\Storage\IStorage;
+use Psr\Http\Message\StreamInterface;
 
 /**
  * for local filestore, we only have to map the paths
@@ -466,5 +468,28 @@ class Local extends Common {
 		}
 
 		return parent::moveFromStorage($sourceStorage, $sourceInternalPath, $targetInternalPath);
+	}
+
+	/**
+	 * @param string $path
+	 * @param array $options
+	 * @return StreamInterface
+	 * @since 11.0.0
+	 */
+	public function readFile(string $path, array $options = []): StreamInterface {
+		return stream_for(\fopen($this->getSourcePath($path), 'r'));
+	}
+
+	/**
+	 * @param string $path
+	 * @param StreamInterface $stream
+	 * @return int
+	 * @since 11.0.0
+	 */
+	public function writeFile(string $path, StreamInterface $stream): int {
+		$data = $stream->getContents();
+		\file_put_contents($this->getSourcePath($path), $data);
+
+		return \strlen($data);
 	}
 }

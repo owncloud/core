@@ -21,6 +21,7 @@
 
 namespace OC\Files\Meta;
 
+use function GuzzleHttp\Psr7\stream_for;
 use OC\Files\Filesystem;
 use OC\Files\Node\AbstractFile;
 use OC\Files\Node\File;
@@ -32,6 +33,7 @@ use OCP\Files\IPreviewNode;
 use OCP\Files\Storage\IVersionedStorage;
 use OCP\Files\Storage;
 use OCP\IImage;
+use Psr\Http\Message\StreamInterface;
 
 /**
  * Class MetaFileVersionNode - this class represents a version of a file in the
@@ -129,6 +131,10 @@ class MetaFileVersionNode extends AbstractFile implements IPreviewNode, IProvide
 
 	public function fopen($mode) {
 		return $this->storage->getContentOfVersion($this->internalPath, $this->versionId);
+	}
+
+	public function readFile(array $options = []): StreamInterface {
+		return stream_for($this->storage->getContentOfVersion($this->internalPath, $this->versionId));
 	}
 
 	/**

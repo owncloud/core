@@ -21,12 +21,14 @@
 
 namespace OC\Files\Storage;
 
+use function GuzzleHttp\Psr7\stream_for;
 use Icewind\Streams\CallbackWrapper;
 use Icewind\Streams\IteratorDirectory;
 use League\Flysystem\AdapterInterface;
 use League\Flysystem\FileNotFoundException;
 use League\Flysystem\Filesystem;
 use League\Flysystem\Plugin\GetWithMetadata;
+use Psr\Http\Message\StreamInterface;
 
 /**
  * Generic adapter between flysystem adapters and owncloud's storage system
@@ -253,5 +255,13 @@ abstract class Flysystem extends Common {
 			return false;
 		}
 		return $info['type'];
+	}
+
+	public function writeFile(string $path, StreamInterface $stream): int {
+		return stream_for($this->flysystem->writeStream($this->buildPath($path), $stream->detach()));
+	}
+
+	public function readFile(string $path, array $options = []): StreamInterface {
+		return stream_for($this->flysystem->readStream($this->buildPath($path)));
 	}
 }

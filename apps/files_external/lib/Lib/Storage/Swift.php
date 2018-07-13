@@ -36,14 +36,17 @@ namespace OCA\Files_External\Lib\Storage;
 
 use Guzzle\Http\Exception\ClientErrorResponseException;
 use Guzzle\Http\Url;
+use function GuzzleHttp\Psr7\stream_for;
 use Icewind\Streams\IteratorDirectory;
+use OCP\Files\Storage\StorageAdapter;
 use OpenCloud;
 use OpenCloud\Common\Exceptions;
 use OpenCloud\ObjectStore\Resource\DataObject;
 use OpenCloud\OpenStack;
 use OpenCloud\Rackspace;
+use Psr\Http\Message\StreamInterface;
 
-class Swift extends \OCP\Files\Storage\StorageAdapter {
+class Swift extends StorageAdapter {
 
 	/**
 	 * @var \OpenCloud\ObjectStore\Service
@@ -365,65 +368,7 @@ class Swift extends \OCP\Files\Storage\StorageAdapter {
 	}
 
 	public function fopen($path, $mode) {
-		$path = $this->normalizePath($path);
-
-		switch ($mode) {
-			case 'r':
-			case 'rb':
-				try {
-					$c = $this->getContainer();
-					$streamFactory = new \Guzzle\Stream\PhpStreamRequestFactory();
-					$streamInterface = $streamFactory->fromRequest(
-						$c->getClient()
-							->get($c->getUrl($path)));
-					$streamInterface->rewind();
-					$stream = $streamInterface->getStream();
-					\stream_context_set_option($stream, 'swift', 'content', $streamInterface);
-					if (!\strrpos($streamInterface
-						->getMetaData('wrapper_data')[0], '404 Not Found')) {
-						return $stream;
-					}
-					return false;
-				} catch (\Guzzle\Http\Exception\BadResponseException $e) {
-					\OCP\Util::writeLog('files_external', $e->getMessage(), \OCP\Util::ERROR);
-					return false;
-				}
-			case 'w':
-			case 'wb':
-			case 'a':
-			case 'ab':
-			case 'r+':
-			case 'w+':
-			case 'wb+':
-			case 'a+':
-			case 'x':
-			case 'x+':
-			case 'c':
-			case 'c+':
-				if (\strrpos($path, '.') !== false) {
-					$ext = \substr($path, \strrpos($path, '.'));
-				} else {
-					$ext = '';
-				}
-				$tmpFile = \OCP\Files::tmpFile($ext);
-				\OC\Files\Stream\Close::registerCallback($tmpFile, [$this, 'writeBack']);
-				// Fetch existing file if required
-				if ($mode[0] !== 'w' && $this->file_exists($path)) {
-					if ($mode[0] === 'x') {
-						// File cannot already exist
-						return false;
-					}
-					$source = $this->fopen($path, 'r');
-					\file_put_contents($tmpFile, $source);
-					// Seek to end if required
-					if ($mode[0] === 'a') {
-						\fseek($tmpFile, 0, SEEK_END);
-					}
-				}
-				self::$tmpFiles[$tmpFile] = $path;
-
-				return \fopen('close://' . $tmpFile, $mode);
-		}
+		throw new \BadMethodCallException('fopen is no longer allowed to be called');
 	}
 
 	public function touch($path, $mtime = null) {
@@ -609,17 +554,6 @@ class Swift extends \OCP\Files\Storage\StorageAdapter {
 		return $this->container;
 	}
 
-	public function writeBack($tmpFile) {
-		if (!isset(self::$tmpFiles[$tmpFile])) {
-			return false;
-		}
-		$fileData = \fopen($tmpFile, 'r');
-		$this->getContainer()->uploadObject(self::$tmpFiles[$tmpFile], $fileData);
-		// invalidate target object to force repopulation on fetch
-		$this->objectCache->remove(self::$tmpFiles[$tmpFile]);
-		\unlink($tmpFile);
-	}
-
 	public function hasUpdated($path, $time) {
 		if ($this->is_file($path)) {
 			return parent::hasUpdated($path, $time);
@@ -647,5 +581,45 @@ class Swift extends \OCP\Files\Storage\StorageAdapter {
 	 */
 	public static function checkDependencies() {
 		return true;
+	}
+
+	/**
+	 * @param string $path
+	 * @param array $options
+	 * @return StreamInterface
+	 * @since 11.0.0
+	 */
+	public function readFile(string $path, array $options = []): StreamInterface {
+		try {
+			$path = $this->normalizePath($path);
+			$c = $this->getContainer();
+			$streamFactory = new \Guzzle\Stream\PhpStreamRequestFactory();
+			$streamInterface = $streamFactory->fromRequest(
+				$c->getClient()
+					->get($c->getUrl($path)));
+			$streamInterface->rewind();
+			$stream = $streamInterface->getStream();
+			\stream_context_set_option($stream, 'swift', 'content', $streamInterface);
+			if (!\strrpos($streamInterface
+				->getMetaData('wrapper_data')[0], '404 Not Found')) {
+				return stream_for($stream);
+			}
+			throw new \BadFunctionCallException();
+		} catch (\Guzzle\Http\Exception\BadResponseException $e) {
+			\OCP\Util::writeLog('files_external', $e->getMessage(), \OCP\Util::ERROR);
+			throw $e;
+		}
+	}
+
+	/**
+	 * @param string $path
+	 * @param StreamInterface $stream
+	 * @return int
+	 * @since 11.0.0
+	 */
+	public function writeFile(string $path, StreamInterface $stream): int {
+		$this->getContainer()->uploadObject($path, $stream->detach());
+		// invalidate target object to force repopulation on fetch
+		$this->objectCache->remove($path);
 	}
 }

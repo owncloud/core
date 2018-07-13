@@ -30,6 +30,7 @@
 // use OCP namespace for all classes that are considered public.
 // This means that they should be used by apps instead of the internal ownCloud classes
 namespace OCP\Files;
+use Psr\Http\Message\StreamInterface;
 
 /**
  * Interface File
@@ -72,8 +73,23 @@ interface File extends Node {
 	 * @return resource
 	 * @throws \OCP\Files\NotPermittedException
 	 * @since 6.0.0
+	 * @deprecated 11.0.0
 	 */
 	public function fopen($mode);
+
+	/**
+	 * @param array $options
+	 * @return StreamInterface
+	 * @since 11.0.0
+	 */
+	public function readFile(array $options = []) : StreamInterface;
+
+	/**
+	 * @param StreamInterface $stream
+	 * @return int
+	 * @since 11.0.0
+	 */
+	public function writeFile(StreamInterface $stream) : int;
 
 	/**
 	 * Compute the hash of the file

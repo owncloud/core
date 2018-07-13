@@ -301,10 +301,10 @@ class OC_Files {
 				\header_remove('Content-Range');
 				\header("HTTP/1.1 200 OK");
 				self::sendHeaders($filename, $name, []);
-				$view->readfile($filename);
+				$view->readFileToOutput($filename);
 			}
 		} else {
-			$view->readfile($filename);
+			$view->readFileToOutput($filename);
 		}
 	}
 

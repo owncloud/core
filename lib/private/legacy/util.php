@@ -220,6 +220,12 @@ class OC_Util {
 			return $storage;
 		});
 
+		\OC\Files\Filesystem::addStorageWrapper('oc_compat', function ($mountPoint, $storage) {
+			return new \OC\Files\Storage\Wrapper\Compatibility(
+				['storage' => $storage, 'mountPoint' => $mountPoint]
+			);
+		}, 0);
+
 		OC_Hook::emit('OC_Filesystem', 'preSetup', ['user' => $user]);
 		\OC\Files\Filesystem::logWarningWhenAddingStorageWrapper(true);
 

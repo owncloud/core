@@ -800,7 +800,7 @@ class Preview {
 	 * @param string $cached the path to the cached preview
 	 */
 	private function getCachedPreview($cached) {
-		$stream = $this->userView->fopen($cached, 'r');
+		$stream = $this->userView->readFile($cached)->detach();
 		$this->preview = null;
 		if ($stream) {
 			$image = new \OC_Image();

@@ -1,4 +1,7 @@
 <?php
+
+use GuzzleHttp\Psr7\AppendStream;
+
 /**
  * @author Bart Visscher <bartv@thisnet.nl>
  * @author Felix Moeller <mail@felixmoeller.de>
@@ -102,30 +105,23 @@ class OC_FileChunking {
 	}
 
 	/**
-	 * Assembles the chunks into the file specified by the path.
-	 * Chunks are deleted afterwards.
-	 *
-	 * @param resource $f target path
-	 *
-	 * @return integer assembled file size
-	 *
-	 * @throws \OC\InsufficientStorageException when file could not be fully
-	 * assembled due to lack of free space
+	 * @return array
+	 * @throws \OC\ForbiddenException
 	 */
-	public function assemble($f) {
+	public function getAllChunks() {
 		$cache = $this->getCache();
 		$prefix = $this->getPrefix();
-		$count = 0;
+		$chunks = [];
 		for ($i = 0; $i < $this->info['chunkcount']; $i++) {
 			$chunk = $cache->get($prefix.$i);
+			$chunks[] = \GuzzleHttp\Psr7\stream_for($chunk);
 			// remove after reading to directly save space
 			$cache->remove($prefix.$i);
-			$count += \fwrite($f, $chunk);
 			// let php release the memory to work around memory exhausted error with php 5.6
 			$chunk = null;
 		}
 
-		return $count;
+		return $chunks;
 	}
 
 	/**
@@ -176,14 +172,9 @@ class OC_FileChunking {
 	public function file_assemble($storage, $path) {
 		// use file_put_contents as method because that best matches what this function does
 		if (\OC\Files\Filesystem::isValidPath($path)) {
-			$target = $storage->fopen($path, 'w');
-			if ($target) {
-				$count = $this->assemble($target);
-				\fclose($target);
-				return $count > 0;
-			} else {
-				return false;
-			}
+			$chunks = $this->getAllChunks();
+			$written = $storage->writeFile($path, $composed = new AppendStream($chunks));
+			return $written > 0;
 		}
 		return false;
 	}

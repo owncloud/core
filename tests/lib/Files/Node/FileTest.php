@@ -7,6 +7,7 @@
  */
 
 namespace Test\Files\Node;
+use function GuzzleHttp\Psr7\stream_for;
 use OC\Files\Mount\Manager;
 use OC\Files\Node\File;
 use OC\Files\Node\NonExistingFile;
@@ -141,10 +142,6 @@ class FileTest extends NodeTest {
 	}
 
 	public function testFOpenRead() {
-		$stream = \fopen('php://memory', 'w+');
-		\fwrite($stream, 'bar');
-		\rewind($stream);
-
 		/**
 		 * @var Manager $manager
 		 */
@@ -162,9 +159,10 @@ class FileTest extends NodeTest {
 		$root->listen('\OC\Files', 'preWrite', $hook);
 		$root->listen('\OC\Files', 'postWrite', $hook);
 
+		$stream = stream_for('bar');
 		$view->expects($this->once())
-			->method('fopen')
-			->with('/bar/foo', 'r')
+			->method('readFile')
+			->with('/bar/foo')
 			->will($this->returnValue($stream));
 
 		$view->expects($this->once())
@@ -173,14 +171,12 @@ class FileTest extends NodeTest {
 			->will($this->returnValue($this->getFileInfo(['permissions' => Constants::PERMISSION_ALL])));
 
 		$node = new File($root, $view, '/bar/foo');
-		$fh = $node->fopen('r');
+		$fh = $node->readFile();
 		$this->assertEquals($stream, $fh);
-		$this->assertEquals('bar', \fread($fh, 3));
+		$this->assertEquals('bar', $fh->read(3));
 	}
 
 	public function testFOpenWrite() {
-		$stream = \fopen('php://memory', 'w+');
-
 		/**
 		 * @var Manager $manager
 		 */
@@ -199,10 +195,11 @@ class FileTest extends NodeTest {
 		$root->listen('\OC\Files', 'preWrite', $hook);
 		$root->listen('\OC\Files', 'postWrite', $hook);
 
+		$stream = stream_for('bar');
 		$view->expects($this->once())
-			->method('fopen')
-			->with('/bar/foo', 'w')
-			->will($this->returnValue($stream));
+			->method('writeFile')
+			->with('/bar/foo', $stream)
+			->will($this->returnValue(3));
 
 		$view->expects($this->once())
 			->method('getFileInfo')
@@ -210,11 +207,8 @@ class FileTest extends NodeTest {
 			->will($this->returnValue($this->getFileInfo(['permissions' => Constants::PERMISSION_ALL])));
 
 		$node = new File($root, $view, '/bar/foo');
-		$fh = $node->fopen('w');
-		$this->assertEquals($stream, $fh);
-		\fwrite($fh, 'bar');
-		\rewind($fh);
-		$this->assertEquals('bar', \fread($stream, 3));
+		$count = $node->writeFile($stream);
+		$this->assertEquals(3, $count);
 		$this->assertEquals(2, $hooksCalled);
 	}
 
@@ -242,7 +236,7 @@ class FileTest extends NodeTest {
 			->will($this->returnValue($this->getFileInfo(['permissions' => 0])));
 
 		$node = new File($root, $view, '/bar/foo');
-		$node->fopen('r');
+		$node->readFile();
 	}
 
 	/**
@@ -269,7 +263,7 @@ class FileTest extends NodeTest {
 			->will($this->returnValue($this->getFileInfo(['permissions' => Constants::PERMISSION_UPDATE])));
 
 		$node = new File($root, $view, '/bar/foo');
-		$node->fopen('w');
+		$node->writeFile(stream_for('foo'));
 	}
 
 	/**
@@ -296,7 +290,7 @@ class FileTest extends NodeTest {
 			->will($this->returnValue($this->getFileInfo(['permissions' => Constants::PERMISSION_READ])));
 
 		$node = new File($root, $view, '/bar/foo');
-		$node->fopen('w');
+		$node->writeFile(stream_for('foo'));
 	}
 
 	public function testThumbnail() {
@@ -315,10 +309,10 @@ class FileTest extends NodeTest {
 		$root->listen('\OC\Files', 'preWrite', $hook);
 		$root->listen('\OC\Files', 'postWrite', $hook);
 
-		$content = $stream = \fopen('data://text/plain,hello world!', 'r');
-		;
+		$content = stream_for('hello world!');
+
 		$view->expects($this->once())
-			->method('fopen')
+			->method('readFile')
 			->with('/bar/foo')
 			->will($this->returnValue($content));
 

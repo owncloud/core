@@ -41,16 +41,16 @@ abstract class Bitmap implements IProvider2 {
 	 * {@inheritDoc}
 	 */
 	public function getThumbnail(File $file, $maxX, $maxY, $scalingUp) {
-		$stream = $file->fopen('r');
+		$stream = $file->readFile();
 
 		// Creates \Imagick object from bitmap or vector file
 		try {
-			$bp = $this->getResizedPreview($stream, $maxX, $maxY);
+			$bp = $this->getResizedPreview($stream->detach(), $maxX, $maxY);
 		} catch (\Exception $e) {
 			Util::writeLog('core', 'ImageMagick says: ' . $e->getmessage(), Util::ERROR);
 			return false;
 		} finally {
-			\fclose($stream);
+			$stream->close();
 		}
 
 		//new bitmap image object
