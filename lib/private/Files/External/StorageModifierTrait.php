@@ -57,12 +57,12 @@ trait StorageModifierTrait {
 	/**
 	 * Wrap a Storage if necessary
 	 *
-	 * @param Storage $storage
-	 * @return Storage
+	 * @param Storage\IStorage $storage
+	 * @return Storage\IStorage
 	 * @throws InsufficientDataForMeaningfulAnswerException
 	 * @throws StorageNotAvailableException
 	 */
-	public function wrapStorage(Storage $storage) {
+	public function wrapStorage(Storage\IStorage $storage) {
 		return $storage;
 	}
 }

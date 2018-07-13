@@ -98,7 +98,7 @@ class FileTest extends TestCase {
 	 * @return \PHPUnit_Framework_MockObject_MockObject | Storage
 	 */
 	private function getMockStorage() {
-		$storage = $this->createMock(Storage::class);
+		$storage = $this->createMock(Storage\IStorage::class);
 		$storage->expects($this->any())
 			->method('getId')
 			->will($this->returnValue('home::someuser'));

@@ -58,8 +58,7 @@
 
 use OCP\Authentication\Exceptions\AccountCheckException;
 use OCP\Files\NoReadAccessException;
-use OCP\IConfig;
-use OCP\IGroupManager;
+use OCP\Files\Storage\IStorage;
 use OCP\IUser;
 
 class OC_Util {
@@ -156,7 +155,7 @@ class OC_Util {
 		\OC\Files\Filesystem::initMountManager();
 
 		\OC\Files\Filesystem::logWarningWhenAddingStorageWrapper(false);
-		\OC\Files\Filesystem::addStorageWrapper('mount_options', function ($mountPoint, \OCP\Files\Storage $storage, \OCP\Files\Mount\IMountPoint $mount) {
+		\OC\Files\Filesystem::addStorageWrapper('mount_options', function ($mountPoint, IStorage $storage, \OCP\Files\Mount\IMountPoint $mount) {
 			if ($storage->instanceOfStorage('\OC\Files\Storage\Common')) {
 				/** @var \OC\Files\Storage\Common $storage */
 				$storage->setMountOptions($mount->getOptions());
@@ -164,7 +163,7 @@ class OC_Util {
 			return $storage;
 		});
 
-		\OC\Files\Filesystem::addStorageWrapper('enable_sharing', function ($mountPoint, \OCP\Files\Storage $storage, \OCP\Files\Mount\IMountPoint $mount) {
+		\OC\Files\Filesystem::addStorageWrapper('enable_sharing', function ($mountPoint, IStorage $storage, \OCP\Files\Mount\IMountPoint $mount) {
 			if (!$mount->getOption('enable_sharing', true)) {
 				return new \OC\Files\Storage\Wrapper\PermissionsMask([
 					'storage' => $storage,
@@ -183,7 +182,7 @@ class OC_Util {
 		});
 
 		// install storage checksum wrapper
-		\OC\Files\Filesystem::addStorageWrapper('oc_checksum', function ($mountPoint, \OCP\Files\Storage\IStorage $storage) {
+		\OC\Files\Filesystem::addStorageWrapper('oc_checksum', function ($mountPoint, IStorage $storage) {
 			if (!$storage->instanceOfStorage('\OCA\Files_Sharing\SharedStorage')) {
 				return new \OC\Files\Storage\Wrapper\Checksum(['storage' => $storage]);
 			}
@@ -191,7 +190,7 @@ class OC_Util {
 			return $storage;
 		}, 1);
 
-		\OC\Files\Filesystem::addStorageWrapper('oc_encoding', function ($mountPoint, \OCP\Files\Storage $storage, \OCP\Files\Mount\IMountPoint $mount) {
+		\OC\Files\Filesystem::addStorageWrapper('oc_encoding', function ($mountPoint, IStorage $storage, \OCP\Files\Mount\IMountPoint $mount) {
 			if ($mount->getOption('encoding_compatibility', false) && !$storage->instanceOfStorage('\OCA\Files_Sharing\SharedStorage') && !$storage->isLocal()) {
 				return new \OC\Files\Storage\Wrapper\Encoding(['storage' => $storage]);
 			}

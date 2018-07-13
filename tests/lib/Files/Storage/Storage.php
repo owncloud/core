@@ -23,6 +23,7 @@
 namespace Test\Files\Storage;
 
 use OC\Files\Cache\Watcher;
+use OCP\Files\Storage\IStorage;
 
 abstract class Storage extends \Test\TestCase {
 	/**
@@ -566,7 +567,7 @@ abstract class Storage extends \Test\TestCase {
 	}
 
 	public function testInstanceOfStorage() {
-		$this->assertTrue($this->instance->instanceOfStorage('\OCP\Files\Storage'));
+		$this->assertTrue($this->instance->instanceOfStorage(IStorage::class));
 		$this->assertTrue($this->instance->instanceOfStorage(\get_class($this->instance)));
 		$this->assertFalse($this->instance->instanceOfStorage('\OC'));
 	}

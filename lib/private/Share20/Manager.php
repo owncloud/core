@@ -529,7 +529,7 @@ class Manager implements IManager {
 		if ($path instanceof \OCP\Files\Folder) {
 			$mounts = $this->mountManager->findIn($path->getPath());
 			foreach ($mounts as $mount) {
-				if ($mount->getStorage()->instanceOfStorage('\OCA\Files_Sharing\ISharedStorage')) {
+				if ($mount->getStorage()->instanceOfStorage('OCA\Files_Sharing\ISharedStorage')) {
 					throw new \InvalidArgumentException('Path contains files shared with you');
 				}
 			}
