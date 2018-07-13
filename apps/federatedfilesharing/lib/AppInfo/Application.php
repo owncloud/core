@@ -58,14 +58,16 @@ class Application extends App {
 	}
 
 	/**
-	 * initialize federated share manager
+	 * Initialize federated share manager
 	 */
-	protected function initFederatedSharemanager() {
+	protected function initFederatedShareManager() {
 		$this->federatedShareManager = new FedShareManager(
 			$this->getFederatedShareProvider(),
+			\OC::$server->getDatabaseConnection(),
 			\OC::$server->getUserManager(),
 			\OC::$server->getActivityManager(),
-			\OC::$server->getLogger()
+			\OC::$server->getNotificationManager(),
+			\OC::$server->getEventDispatcher()
 		);
 	}
 
