@@ -74,7 +74,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/).
 - Properly cache non-existing user in UserManager - [#31446](https://github.com/owncloud/core/issues/31446)
 - Update verify checksums console output to flow more naturally - [#31449](https://github.com/owncloud/core/issues/31449)
 - Subadmin shouldn't be able to add users to their groups via API - [#31337](https://github.com/owncloud/core/issues/31337)
-- Catch duplicate inserts in token table - [#31460](https://github.com/owncloud/core/pull/31460) [#31794](https://github.com/owncloud/core/issues/31794)
+- Catch duplicate inserts in token table - [#31460](https://github.com/owncloud/core/pull/31460) [#31794](https://github.com/owncloud/core/issues/31794) [#32041](https://github.com/owncloud/core/pull/32041)
 - Fix overflowing public share names in the share panel - [#31369](https://github.com/owncloud/core/issues/31369)
 - Fix occ user:sync to sync quota from preferences after upgrade if backend provided no quota - [#31360](https://github.com/owncloud/core/issues/31360)
 - Fix for Redis dev editions - [#31282](https://github.com/owncloud/core/issues/31282)
