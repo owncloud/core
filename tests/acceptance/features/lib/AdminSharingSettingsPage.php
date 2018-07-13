@@ -23,6 +23,7 @@
 namespace Page;
 
 use Behat\Mink\Session;
+use SensioLabs\Behat\PageObjectExtension\PageObject\Exception\ElementNotFoundException;
 
 /**
  * Admin Sharing Settings page.
@@ -36,141 +37,232 @@ class AdminSharingSettingsPage extends OwncloudPage {
 	protected $path = '/index.php/settings/admin?sectionid=sharing';
 	
 	protected $shareApiCheckboxXpath = '//label[@for="shareAPIEnabled"]';
+	protected $shareApiCheckboxId = 'shareAPIEnabled';
 	protected $publicShareCheckboxXpath = '//label[@for="allowLinks"]';
+	protected $publicShareCheckboxId = 'allowLinks';
 	protected $publicUploadCheckboxXpath = '//label[@for="allowPublicUpload"]';
+	protected $publicUploadCheckboxId = 'allowPublicUpload';
 	protected $mailNotiticationOnPublicShareCheckboxXpath = '//label[@for="allowPublicMailNotification"]';
+	protected $mailNotiticationOnPublicShareCheckboxId = 'allowPublicMailNotification';
 	protected $shareFileViaSocialMediaOnPublicShareCheckboxXpath = '//label[@for="allowSocialShare"]';
+	protected $shareFileViaSocialMediaOnPublicShareCheckboxId = 'allowSocialShare';
 	protected $enforceLinkPasswordReadOnlyCheckboxXpath = '//label[@for="enforceLinkPasswordReadOnly"]';
+	protected $enforceLinkPasswordReadOnlyCheckboxId = 'enforceLinkPasswordReadOnly';
 	protected $enforceLinkPasswordReadWriteCheckboxXpath = '//label[@for="enforceLinkPasswordReadWrite"]';
+	protected $enforceLinkPasswordReadWriteCheckboxId = 'enforceLinkPasswordReadWrite';
 	protected $enforceLinkPasswordWriteOnlyCheckboxXpath = '//label[@for="enforceLinkPasswordWriteOnly"]';
-	protected $allowResharingCheckboxXpah = '//label[@for="allowResharing"]';
+	protected $enforceLinkPasswordWriteOnlyCheckboxId = 'enforceLinkPasswordWriteOnly';
+	protected $allowResharingCheckboxXpath = '//label[@for="allowResharing"]';
+	protected $allowResharingCheckboxId = 'allowResharing';
 	protected $allowGroupSharingCheckboxXpath = '//label[@for="allowGroupSharing"]';
+	protected $allowGroupSharingCheckboxId = 'allowGroupSharing';
 	protected $onlyShareWithGroupMembersCheckboxXpath = '//label[@for="onlyShareWithGroupMembers"]';
+	protected $onlyShareWithGroupMembersCheckboxId = 'onlyShareWithGroupMembers';
 
 	/**
-	 * Disable the Share API
+	 * toggle checkbox
+	 *
+	 * @param string $action "enables|disables"
+	 * @param string $checkboxXpath
+	 * @param string $checkboxId
 	 *
 	 * @return void
 	 */
-	public function disableShareApi() {
-		$shareApiCheckbox = $this->find("xpath", $this->shareApiCheckboxXpath);
-		$shareApiCheckbox->click();
+	public function toggleCheckbox($action, $checkboxXpath, $checkboxId) {
+		$checkbox = $this->find("xpath", $checkboxXpath);
+		$checkCheckbox = $this->findById($checkboxId);
+		if ($checkbox === null) {
+			throw new ElementNotFoundException(
+				__METHOD__ .
+				" Xpath $checkboxXpath " .
+				"could not find label for checkbox"
+			);
+		}
+		if ($checkCheckbox === null) {
+			throw new ElementNotFoundException(
+				__METHOD__ .
+				" id $checkCheckbox " .
+				"could not find checkbox"
+			);
+		}
+		if ($action === "disables") {
+			if ($checkCheckbox->isChecked()) {
+				$checkbox->click();
+			}
+		} elseif ($action === "enables") {
+			if ((!($checkCheckbox->isChecked()))) {
+				$checkbox->click();
+			}
+		} else {
+			throw new \Exception(
+				__METHOD__ . " invalid action: " . $action
+			);
+		}
 	}
 
 	/**
-	 * Disable users to share via link
+	 * toggle the Share API
+	 *
+	 * @param string $action "enables|disables"
 	 *
 	 * @return void
 	 */
-	public function disablePublicShare() {
-		$publicShareCheckbox = $this->find("xpath", $this->publicShareCheckboxXpath);
-		$publicShareCheckbox->click();
-	}
-
-	/**
-	 * Disable public uploads
-	 *
-	 * @return void
-	 */
-	public function disablePublicUpload() {
-		$publicUploadCheckbox = $this->find("xpath", $this->publicUploadCheckboxXpath);
-		$publicUploadCheckbox->click();
-	}
-
-	/**
-	 * Enable mail notification on public share
-	 *
-	 * @return void
-	 */
-	public function enableMailNotificationOnPublicShare() {
-		$mailNotiticationOnPublicShareCheckbox = $this->find(
-			"xpath", $this->mailNotiticationOnPublicShareCheckboxXpath
+	public function toggleShareApi($action) {
+		$this->toggleCheckbox(
+			$action,
+			$this->shareApiCheckboxXpath,
+			$this->shareApiCheckboxId
 		);
-		$mailNotiticationOnPublicShareCheckbox->click();
 	}
 
 	/**
-	 * Disable social share on public share
+	 * toggle share via link
+	 *
+	 * @param string $action "enables|disables"
 	 *
 	 * @return void
 	 */
-	public function disableSocialShareOnPublicShare() {
-		$shareFileViaSocialMediaOnPublicShareCheckbox = $this->find(
-			"xpath", $this->shareFileViaSocialMediaOnPublicShareCheckboxXpath
+	public function toggleShareViaLink($action) {
+		$this->toggleCheckbox(
+			$action,
+			$this->publicShareCheckboxXpath,
+			$this->publicShareCheckboxId
 		);
-		$shareFileViaSocialMediaOnPublicShareCheckbox->click();
 	}
 
 	/**
-	 * Enforce password protection for read-only links
+	 * toggle public uploads
+	 *
+	 * @param string $action "enables|disables"
 	 *
 	 * @return void
 	 */
-	public function enforcePasswordProtectionForReadOnlyLinks() {
-		$enforceLinkPasswordReadOnlyCheckbox = $this->find(
-			"xpath", $this->enforceLinkPasswordReadOnlyCheckboxXpath
+	public function togglePublicUpload($action) {
+		$this->toggleCheckbox(
+			$action,
+			$this->publicUploadCheckboxXpath,
+			$this->publicUploadCheckboxId
 		);
-		$enforceLinkPasswordReadOnlyCheckbox->click();
 	}
 
 	/**
-	 * Enforce password protection for read and write links
+	 * toggle mail notification on public share
+	 *
+	 * @param string $action "enables|disables"
 	 *
 	 * @return void
 	 */
-	public function enforcePasswordProtectionForReadWriteLinks() {
-		$enforceLinkPasswordReadWriteCheckbox = $this->find(
-			"xpath", $this->enforceLinkPasswordReadWriteCheckboxXpath
+	public function toggleMailNotification($action) {
+		$this->toggleCheckbox(
+			$action,
+			$this->mailNotiticationOnPublicShareCheckboxXpath,
+			$this->mailNotiticationOnPublicShareCheckboxId
 		);
-		$enforceLinkPasswordReadWriteCheckbox->click();
 	}
 
 	/**
-	 * Enforce password protection for upload only links
+	 * toggle social share on public share
+	 *
+	 * @param string $action "enables|disables"
 	 *
 	 * @return void
 	 */
-	public function enforcePasswordProtectionForUploadOnlyLinks() {
-		$enforceLinkPasswordWriteOnlyCheckbox = $this->find(
-			"xpath", $this->enforceLinkPasswordWriteOnlyCheckboxXpath
+	public function toggleSocialShareOnPublicShare($action) {
+		$this->toggleCheckbox(
+			$action,
+			$this->shareFileViaSocialMediaOnPublicShareCheckboxXpath,
+			$this->shareFileViaSocialMediaOnPublicShareCheckboxId
 		);
-		$enforceLinkPasswordWriteOnlyCheckbox->click();
 	}
 
 	/**
-	 * Disable resharing
+	 * toggle enforce password protection for read-only links
+	 *
+	 * @param string $action "enables|disables"
 	 *
 	 * @return void
 	 */
-	public function disableResharing() {
-		$allowResharingCheckboxXpah = $this->find(
-			"xpath", $this->allowResharingCheckboxXpah
+	public function toggleEnforcePasswordProtectionForReadOnlyLinks($action) {
+		$this->toggleCheckbox(
+			$action,
+			$this->enforceLinkPasswordReadOnlyCheckboxXpath,
+			$this->enforceLinkPasswordReadOnlyCheckboxId
 		);
-		$allowResharingCheckboxXpah->click();
 	}
 
 	/**
-	 * Disable group sharing
+	 * toggle enforce password protection for read and write links
+	 *
+	 * @param string $action "enables|disables"
 	 *
 	 * @return void
 	 */
-	public function disableGroupSharing() {
-		$allowGroupSharingCheckboxXpath = $this->find(
-			"xpath", $this->allowGroupSharingCheckboxXpath
+	public function toggleEnforcePasswordProtectionForReadWriteLinks($action) {
+		$this->toggleCheckbox(
+			$action,
+			$this->enforceLinkPasswordReadWriteCheckboxXpath,
+			$this->enforceLinkPasswordReadWriteCheckboxId
 		);
-		$allowGroupSharingCheckboxXpath->click();
 	}
 
 	/**
-	 * Restrict users to only share with their group members
+	 * toggle enforce password protection for upload only links
+	 *
+	 * @param string $action "enables|disables"
 	 *
 	 * @return void
 	 */
-	public function restrictUsersToOnlyShareWithTheirGroupMembers() {
-		$onlyShareWithGroupMembersCheckbox = $this->find(
-			"xpath", $this->onlyShareWithGroupMembersCheckboxXpath
+	public function toggleEnforcePasswordProtectionForWriteOnlyLinks($action) {
+		$this->toggleCheckbox(
+			$action,
+			$this->enforceLinkPasswordWriteOnlyCheckboxXpath,
+			$this->enforceLinkPasswordWriteOnlyCheckboxId
 		);
-		$onlyShareWithGroupMembersCheckbox->click();
+	}
+
+	/**
+	 * toggle resharing
+	 *
+	 * @param string $action "enables|disables"
+	 *
+	 * @return void
+	 */
+	public function toggleResharing($action) {
+		$this->toggleCheckbox(
+			$action,
+			$this->allowResharingCheckboxXpath,
+			$this->allowResharingCheckboxId
+		);
+	}
+
+	/**
+	 * toggle group sharing
+	 *
+	 * @param string $action "enables|disables"
+	 *
+	 * @return void
+	 */
+	public function toggleGroupSharing($action) {
+		$this->toggleCheckbox(
+			$action,
+			$this->allowGroupSharingCheckboxXpath,
+			$this->allowGroupSharingCheckboxId
+		);
+	}
+
+	/**
+	 * toggle restrict users to only share with their group members
+	 *
+	 * @param string $action "enables|disables"
+	 *
+	 * @return void
+	 */
+	public function toggleRestrictUsersToOnlyShareWithTheirGroupMembers($action) {
+		$this->toggleCheckbox(
+			$action,
+			$this->onlyShareWithGroupMembersCheckboxXpath,
+			$this->onlyShareWithGroupMembersCheckboxId
+		);
 	}
 
 	/**

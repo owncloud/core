@@ -63,132 +63,143 @@ class WebUIAdminSharingSettingsContext extends RawMinkContext implements Context
 	}
 
 	/**
-	 * @When the admin disables the share API using the webUI
+	 * @When /^the admin (enables|disables) the share API using the webUI$/
+	 * @param string $action
 	 *
 	 * @return void
 	 */
-	public function theAdminDisablesTheShareApiUsingTheWebUI() {
-		$this->adminSharingSettingsPage->disableShareApi();
+	public function adminTogglesShareApiUsingTheWebui($action) {
+		$this->adminSharingSettingsPage->toggleShareApi($action);
 		$this->adminSharingSettingsPage->waitForAjaxCallsToStartAndFinish(
 			$this->getSession()
 		);
 	}
 
 	/**
-	 * @When the admin disables share via link using the webUI
+	 * @When /^the admin (enables|disables) share via link using the webUI$/
+	 * @param string $action
 	 *
 	 * @return void
 	 */
-	public function theAdminDisablesShareViaLinkUsingTheWebui() {
-		$this->adminSharingSettingsPage->disablePublicShare();
+	public function adminTogglesShareViaLink($action) {
+		$this->adminSharingSettingsPage->toggleShareViaLink($action);
 		$this->adminSharingSettingsPage->waitForAjaxCallsToStartAndFinish(
 			$this->getSession()
 		);
 	}
 
 	/**
-	 * @When the admin disables public uploads using the webUI
+	 * @When /^the admin (enables|disables) public uploads using the webUI$/
+	 * @param string $action
 	 *
 	 * @return void
 	 */
-	public function theAdminDisablesPublicUploadsUsingTheWebui() {
-		$this->adminSharingSettingsPage->disablePublicUpload();
+	public function adminTogglesPublicUpload($action) {
+		$this->adminSharingSettingsPage->togglePublicUpload($action);
 		$this->adminSharingSettingsPage->waitForAjaxCallsToStartAndFinish(
 			$this->getSession()
 		);
 	}
 
 	/**
-	 * @When the admin enables mail notification on public share using the webUI
+	 * @When /^the admin (enables|disables) mail notification on public share using the webUI$/
+	 * @param string $action
 	 *
 	 * @return void
 	 */
-	public function theAdminEnablesMailNotificationOnPublicShareUsingTheWebui() {
-		$this->adminSharingSettingsPage->enableMailNotificationOnPublicShare();
+	public function adminTogglesMailNotificationOnPublicShare($action) {
+		$this->adminSharingSettingsPage->toggleMailNotification($action);
 		$this->adminSharingSettingsPage->waitForAjaxCallsToStartAndFinish(
 			$this->getSession()
 		);
 	}
 
 	/**
-	 * @When the admin disables social media share on public share using the webUI
+	 * @When /^the admin (enables|disables) social media share on public share using the webUI$/
+	 * @param string $action
 	 *
 	 * @return void
 	 */
-	public function theAdminDisablesSocialMediaShareOnPublicShareUsingTheWebui() {
-		$this->adminSharingSettingsPage->disableSocialShareOnPublicShare();
+	public function adminTogglesSocialShareOnPublicShare($action) {
+		$this->adminSharingSettingsPage->toggleSocialShareOnPublicShare($action);
 		$this->adminSharingSettingsPage->waitForAjaxCallsToStartAndFinish(
 			$this->getSession()
 		);
 	}
 
 	/**
-	 * @When the admin enforces password protection for read-only links using the webUI
+	 * @When /^the admin (enables|disables) enforce password protection for read-only links using the webUI$/
+	 * @param string $action
 	 *
 	 * @return void
 	 */
-	public function theAdminEnforcesPasswordProtectionForReadOnlyLinksUsingTheWebui() {
-		$this->adminSharingSettingsPage->enforcePasswordProtectionForReadOnlyLinks();
+	public function adminTogglesEnforcePasswordProtectionForReadOnlyLinks($action) {
+		$this->adminSharingSettingsPage->toggleEnforcePasswordProtectionForReadOnlyLinks($action);
 		$this->adminSharingSettingsPage->waitForAjaxCallsToStartAndFinish(
 			$this->getSession()
 		);
 	}
 
 	/**
-	 * @When the admin enforces password protection for read and write links using the webUI
+	 * @When /^the admin (enables|disables) enforce password protection for read and write links using the webUI$/
+	 * @param string $action
 	 *
 	 * @return void
 	 */
-	public function theAdminEnforcesPasswordProtectionForReadAndWriteLinksUsingTheWebui() {
-		$this->adminSharingSettingsPage->enforcePasswordProtectionForReadWriteLinks();
+	public function adminTogglesEnforcePasswordProtectionForReadWriteLinks($action) {
+		$this->adminSharingSettingsPage->toggleEnforcePasswordProtectionForReadWriteLinks($action);
 		$this->adminSharingSettingsPage->waitForAjaxCallsToStartAndFinish(
 			$this->getSession()
 		);
 	}
 
 	/**
-	 * @When the admin enforces password protection for upload only links using the webUI
+	 * @When /^the admin (enables|disables) enforce password protection for upload only links using the webUI$/
+	 * @param string $action
 	 *
 	 * @return void
 	 */
-	public function theAdminEnforcesPasswordProtectionUploadOnlyLinksUsingTheWebui() {
-		$this->adminSharingSettingsPage->enforcePasswordProtectionForUploadOnlyLinks();
+	public function adminTogglesEnforcePasswordProtectionForWriteOnlyLinks($action) {
+		$this->adminSharingSettingsPage->toggleEnforcePasswordProtectionForWriteOnlyLinks($action);
 		$this->adminSharingSettingsPage->waitForAjaxCallsToStartAndFinish(
 			$this->getSession()
 		);
 	}
 
 	/**
-	 * @When the admin disables resharing using the webUI
+	 * @When /^the admin (enables|disables) resharing using the webUI$/
+	 * @param string $action
 	 *
 	 * @return void
 	 */
-	public function theAdminDisablesResharingUsingTheWebui() {
-		$this->adminSharingSettingsPage->disableResharing();
+	public function adminTogglesDisableResharing($action) {
+		$this->adminSharingSettingsPage->toggleResharing($action);
 		$this->adminSharingSettingsPage->waitForAjaxCallsToStartAndFinish(
 			$this->getSession()
 		);
 	}
 
 	/**
-	 * @When the admin disables sharing with groups using the webUI
+	 * @When /^the admin (enables|disables) sharing with groups using the webUI$/
+	 * @param string $action
 	 *
 	 * @return void
 	 */
-	public function theAdminDisablesSharingWithGroupUsingTheWebui() {
-		$this->adminSharingSettingsPage->disableGroupSharing();
+	public function adminTogglesSharingWithGroupUsingTheWebui($action) {
+		$this->adminSharingSettingsPage->toggleGroupSharing($action);
 		$this->adminSharingSettingsPage->waitForAjaxCallsToStartAndFinish(
 			$this->getSession()
 		);
 	}
 
 	/**
-	 * @When the admin restricts users to only share with their group members using the webUI
+	 * @When /^the admin (enables|disables) restrict users to only share with their group members using the webUI$/
+	 * @param string $action
 	 *
 	 * @return void
 	 */
-	public function theAdminRestrictsUsersToOnlyShareWithTheirGroupMemberUsingTheWebui() {
-		$this->adminSharingSettingsPage->restrictUsersToOnlyShareWithTheirGroupMembers();
+	public function theAdminRestrictsUsersToOnlyShareWithTheirGroupMemberUsingTheWebui($action) {
+		$this->adminSharingSettingsPage->toggleRestrictUsersToOnlyShareWithTheirGroupMembers($action);
 		$this->adminSharingSettingsPage->waitForAjaxCallsToStartAndFinish(
 			$this->getSession()
 		);
