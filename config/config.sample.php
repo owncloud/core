@@ -612,6 +612,11 @@ $CONFIG = array(
 
 /**
  * Logging
+ * 
+ * These parameters configure the logging options.
+ * For additional information or advanced configuration, please see the logging 
+ * section in the documentation.
+ * 
  */
 
 /**
@@ -706,11 +711,13 @@ $CONFIG = array(
 'cron_log' => true,
 
 /**
- * Enables log rotation and limits the total size of logfiles. The default is 0,
- * or no rotation. Specify a size in bytes, for example 104857600 (100 megabytes
- * = 100 * 1024 * 1024 bytes). A new logfile is created with a new name when the
- * old logfile reaches your limit. If a rotated log file is already present, it
- * will be overwritten.
+ * Enables log rotation and limits the total size of the logfiles. 
+ * The default is 0 or false which disables log rotation. 
+ * Specify a size in bytes, for example 104857600 
+ * (100 megabytes = 100 * 1024 * 1024 bytes). 
+ * A new logfile is created with a new name when the old logfile reaches the defined limit. 
+ * If a rotated log file is already present, it will be overwritten.
+ * If enabled, only the active log file and one rotated file are stored.
  */
 'log_rotate_size' => false,
 
