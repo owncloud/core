@@ -47,6 +47,7 @@ OC.L10N.register(
     "Please specify a valid user" : "Por favor, especifica un usuario válido",
     "Group sharing is disabled by the administrator" : "Compartir en grupo está deshabilitado por el administrador",
     "Please specify a valid group" : "Por favor, especifica un grupo válido",
+    "The group is blacklisted for sharing" : "El grupo está en la lista negra de compartir",
     "Public link sharing is disabled by the administrator" : "Compartir enlaces de forma pública está deshabilitado por el administrador",
     "Public upload disabled by the administrator" : "La subida pública está deshabilitado por el administrador",
     "Public upload is only possible for publicly shared folders" : "La subida publica solo es posible poara las carpetas publicas compartidas",
@@ -103,6 +104,10 @@ OC.L10N.register(
     "Shared by %2$s" : "Compartido por %2$s",
     "Shares" : "Compartidos",
     "File sharing" : "Compartir Archivos",
+    "\"%1$s\" shared \"%3$s\" with you (on behalf of \"%2$s\")" : "\"%1$s\" ha compartido \"%3$s\" contigo (en nombre de \"%2$s\")",
+    "\"%1$s\" shared \"%3$s\" with you" : "\"%1$s\" ha compartido \"%3$s\" contigo",
+    "\"%1$s\" invited you to view \"%3$s\" (on behalf of \"%2$s\")" : "\"%1$s\" te ha invitado a ver \"%3$s\" (en nombre de \"%2$s\")",
+    "\"%1$s\" invited you to view \"%3$s\"" : "\"%1$s\" te ha invitado a ver \"%3$s\"",
     "Accept" : "Aceptar",
     "Decline" : "Denegar",
     "This share is password-protected" : "Este elemento compartido está protegido por contraseña",
@@ -122,6 +127,9 @@ OC.L10N.register(
     "%s is publicly shared" : "%s esta compartido publicamente",
     "Download" : "Descargar",
     "Download %s" : "Descargar %s",
-    "Direct link" : "Enlace directo"
+    "Direct link" : "Enlace directo",
+    "Files Sharing" : "Compartir archivos",
+    "Exclude groups from receiving shares." : "Excluir grupos de recibir compartidos",
+    "These groups will not receive shares. Members of the group can still send and receive shares outside of the group." : "Estos grupos no pueden recibir compartidos. Los miembros del grupo todavía pueden enviar y recibir compartidos fuera del grupo."
 },
 "nplurals=2; plural=(n != 1);");
