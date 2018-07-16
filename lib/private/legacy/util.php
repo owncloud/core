@@ -320,10 +320,10 @@ class OC_Util {
 	 * @return boolean
 	 */
 	public static function isDefaultExpireDateEnforced() {
-		$isDefaultExpireDateEnabled = \OCP\Config::getAppValue('core', 'shareapi_default_expire_date', 'no');
+		$isDefaultExpireDateEnabled = \OC::$server->getConfig()->getAppValue('core', 'shareapi_default_expire_date', 'no');
 		$enforceDefaultExpireDate = false;
 		if ($isDefaultExpireDateEnabled === 'yes') {
-			$value = \OCP\Config::getAppValue('core', 'shareapi_enforce_expire_date', 'no');
+			$value = \OC::$server->getConfig()->getAppValue('core', 'shareapi_enforce_expire_date', 'no');
 			$enforceDefaultExpireDate = ($value === 'yes') ? true : false;
 		}
 
@@ -363,7 +363,7 @@ class OC_Util {
 	 * @throws \OC\HintException
 	 */
 	public static function copySkeleton($userId, \OCP\Files\Folder $userDirectory) {
-		$skeletonDirectory = \OCP\Config::getSystemValue('skeletondirectory', \OC::$SERVERROOT . '/core/skeleton');
+		$skeletonDirectory = \OC::$server->getConfig()->getSystemValue('skeletondirectory', \OC::$SERVERROOT . '/core/skeleton');
 
 		if (!\is_dir($skeletonDirectory)) {
 			throw new \OC\HintException('The skeleton folder '.$skeletonDirectory.' is not accessible');
@@ -1089,7 +1089,7 @@ class OC_Util {
 				$location = $urlGenerator->getAbsoluteURL($defaultPage);
 			} else {
 				$appId = 'files';
-				$defaultApps = \explode(',', \OCP\Config::getSystemValue('defaultapp', 'files'));
+				$defaultApps = \explode(',', \OC::$server->getConfig()->getSystemValue('defaultapp', 'files'));
 				// find the first app that is enabled for the current user
 				foreach ($defaultApps as $defaultApp) {
 					$defaultApp = OC_App::cleanAppId(\strip_tags($defaultApp));

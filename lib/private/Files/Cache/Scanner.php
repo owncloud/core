@@ -37,7 +37,6 @@ namespace OC\Files\Cache;
 use OC\Files\Filesystem;
 use OC\Hooks\BasicEmitter;
 use OCA\Files_Sharing\ISharedStorage;
-use OCP\Config;
 use OCP\Files\Cache\IScanner;
 use OCP\Files\ForbiddenException;
 use OCP\Files\IHomeStorage;
@@ -90,7 +89,7 @@ class Scanner extends BasicEmitter implements IScanner {
 		$this->storage = $storage;
 		$this->storageId = $this->storage->getId();
 		$this->cache = $storage->getCache();
-		$this->cacheActive = !Config::getSystemValue('filesystem_cache_readonly', false);
+		$this->cacheActive = !\OC::$server->getConfig()->getSystemValue('filesystem_cache_readonly', false);
 		$this->lockingProvider = \OC::$server->getLockingProvider();
 	}
 
