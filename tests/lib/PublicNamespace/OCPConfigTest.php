@@ -25,10 +25,10 @@ class OCPConfigTest extends \Test\TestCase {
 	public function testSetAppValueIfSetToNull() {
 		$key = $this->getUniqueID('key-');
 
-		$result = \OCP\Config::setAppValue('unit-test', $key, null);
+		$result = \OC::$server->getConfig()->setAppValue('unit-test', $key, null);
 		$this->assertTrue($result);
 
-		$result = \OCP\Config::setAppValue('unit-test', $key, '12');
+		$result = \OC::$server->getConfig()->setAppValue('unit-test', $key, '12');
 		$this->assertTrue($result);
 	}
 }

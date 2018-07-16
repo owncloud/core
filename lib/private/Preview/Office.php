@@ -54,7 +54,7 @@ abstract class Office implements IProvider2 {
 		$tmpDir = \OC::$server->getTempManager()->getTempBaseDir();
 
 		$defaultParameters = ' -env:UserInstallation=file://' . \escapeshellarg($tmpDir . '/owncloud-' . \OC_Util::getInstanceId() . '/') . ' --headless --nologo --nofirststartwizard --invisible --norestore --convert-to pdf --outdir ';
-		$clParameters = \OCP\Config::getSystemValue('preview_office_cl_parameters', $defaultParameters);
+		$clParameters = \OC::$server->getConfig()->getSystemValue('preview_office_cl_parameters', $defaultParameters);
 
 		$exec = $this->cmd . $clParameters . \escapeshellarg($tmpDir) . ' ' . \escapeshellarg($absPath);
 
