@@ -3,10 +3,10 @@ Feature: sharing
 	Background:
 		Given using API version "1"
 		And using old DAV path
+		And user "user0" has been created
 
 	Scenario: Allow modification of reshare
-		Given user "user0" has been created
-		And user "user1" has been created
+		Given user "user1" has been created
 		And user "user2" has been created
 		And user "user0" has created a folder "/TMP"
 		And user "user0" has shared file "TMP" with user "user1"
@@ -16,8 +16,7 @@ Feature: sharing
 		Then the OCS status code should be "100"
 
 	Scenario: Creating a new public share, updating its expiration date and getting its info
-		Given user "user0" has been created
-		And as user "user0"
+		Given as user "user0"
 		When the user creates a share using the API with settings
 			| path      | FOLDER |
 			| shareType | 3      |
@@ -46,8 +45,7 @@ Feature: sharing
 			| mimetype          | httpd/unix-directory |
 
 	Scenario: Creating a new public share with password and adding an expiration date
-		Given user "user0" has been created
-		And as user "user0"
+		Given as user "user0"
 		When the user creates a share using the API with settings
 			| path      | welcome.txt |
 			| shareType | 3           |
@@ -59,8 +57,7 @@ Feature: sharing
 		And the last public shared file should be able to be downloaded with password "publicpw"
 
 	Scenario: Creating a new public share, updating its expiration date and getting its info
-		Given user "user0" has been created
-		And as user "user0"
+		Given as user "user0"
 		When the user creates a share using the API with settings
 			| path      | FOLDER |
 			| shareType | 3      |
@@ -89,8 +86,7 @@ Feature: sharing
 			| mimetype          | httpd/unix-directory |
 
 	Scenario: Creating a new public share, updating its password and getting its info
-		Given user "user0" has been created
-		And as user "user0"
+		Given as user "user0"
 		When the user creates a share using the API with settings
 			| path      | FOLDER |
 			| shareType | 3      |
@@ -118,8 +114,7 @@ Feature: sharing
 			| mimetype          | httpd/unix-directory |
 
 	Scenario: Creating a new public share, updating its permissions and getting its info
-		Given user "user0" has been created
-		And as user "user0"
+		Given as user "user0"
 		When the user creates a share using the API with settings
 			| path      | FOLDER |
 			| shareType | 3      |
@@ -147,8 +142,7 @@ Feature: sharing
 			| mimetype          | httpd/unix-directory |
 
 	Scenario: Creating a new public share, updating publicUpload option and getting its info
-		Given user "user0" has been created
-		And as user "user0"
+		Given as user "user0"
 		When the user creates a share using the API with settings
 			| path      | FOLDER |
 			| shareType | 3      |
@@ -175,9 +169,8 @@ Feature: sharing
 			| url               | AN_URL               |
 			| mimetype          | httpd/unix-directory |
 
-				Scenario: keep group permissions in sync
-		Given user "user0" has been created
-		And user "user1" has been created
+	Scenario: keep group permissions in sync
+		Given user "user1" has been created
 		And group "group1" has been created
 		And user "user1" has been added to group "group1"
 		And user "user0" has shared file "textfile0.txt" with group "group1"
@@ -205,8 +198,7 @@ Feature: sharing
 			| mimetype          | text/plain     |
 
 	Scenario: Adding public upload to a read only shared folder as recipient is not allowed
-		Given user "user0" has been created
-		And user "user1" has been created
+		Given user "user1" has been created
 		And user "user0" has created a folder "/test"
 		And user "user0" has shared folder "/test" with user "user1" with permissions 17
 		And as user "user1"
@@ -220,8 +212,7 @@ Feature: sharing
 		And the HTTP status code should be "200"
 
 	Scenario: Cannot set permissions to zero
-		Given user "user0" has been created
-		And user "user1" has been created
+		Given user "user1" has been created
 		And group "new-group" has been created
 		And user "user0" has been added to group "new-group"
 		And user "user1" has been added to group "new-group"
@@ -232,8 +223,7 @@ Feature: sharing
 		Then the OCS status code should be "400"
 
 	Scenario: Share ownership change after moving a shared file outside of an outer share
-		Given user "user0" has been created
-		And user "user1" has been created
+		Given user "user1" has been created
 		And user "user2" has been created
 		And user "user0" has created a folder "/folder1"
 		And user "user0" has created a folder "/folder1/folder2"
@@ -261,8 +251,7 @@ Feature: sharing
 		And as "user2" the folder "/folder2" should exist
 
 	Scenario: Share ownership change after moving a shared file to another share
-		Given user "user0" has been created
-		And user "user1" has been created
+		Given user "user1" has been created
 		And user "user2" has been created
 		And user "user0" has created a folder "/user0-folder"
 		And user "user0" has created a folder "/user0-folder/folder2"
@@ -290,8 +279,7 @@ Feature: sharing
 		And as "user2" the folder "/user2-folder/folder2" should exist
 
 	Scenario: Adding public upload to a shared folder as recipient is allowed with permissions
-		Given user "user0" has been created
-		And user "user1" has been created
+		Given user "user1" has been created
 		And user "user0" has created a folder "/test"
 		And user "user0" has shared folder "/test" with user "user1" with permissions 31
 		And as user "user1"
@@ -305,8 +293,7 @@ Feature: sharing
 		And the HTTP status code should be "200"
 
 	Scenario: Adding public upload to a read only shared folder as recipient is not allowed
-		Given user "user0" has been created
-		And user "user1" has been created
+		Given user "user1" has been created
 		And user "user0" has created a folder "/test"
 		And user "user0" has shared folder "/test" with user "user1" with permissions 17
 		And as user "user1"
@@ -320,8 +307,7 @@ Feature: sharing
 		And the HTTP status code should be "200"
 
 	Scenario: Adding public upload to a shared folder as recipient is allowed with permissions
-		Given user "user0" has been created
-		And user "user1" has been created
+		Given user "user1" has been created
 		And user "user0" has created a folder "/test"
 		And user "user0" has shared folder "/test" with user "user1" with permissions 31
 		And as user "user1"
@@ -335,8 +321,7 @@ Feature: sharing
 		And the HTTP status code should be "200"
 
 	Scenario: Increasing permissions is allowed for owner
-		Given user "user0" has been created
-		And user "user1" has been created
+		Given user "user1" has been created
 		And group "new-group" has been created
 		And user "user0" has been added to group "new-group"
 		And user "user1" has been added to group "new-group"

@@ -3,10 +3,10 @@ Feature: sharing
 	Background:
 		Given using API version "1"
 		And using old DAV path
+		And user "user0" has been created
 
 	Scenario: Downloading from upload-only share is forbidden
-		Given user "user0" has been created
-		And user "user0" has moved file "/textfile0.txt" to "/FOLDER/test.txt"
+		Given user "user0" has moved file "/textfile0.txt" to "/FOLDER/test.txt"
 		When user "user0" creates a share using the API with settings
 			| path        | FOLDER |
 			| shareType   | 3      |
@@ -15,8 +15,7 @@ Feature: sharing
 		And the HTTP status code should be "404"
 
 	Scenario: Share a file by multiple channels and download from sub-folder and direct file share
-		Given user "user0" has been created
-		And user "user1" has been created
+		Given user "user1" has been created
 		And user "user2" has been created
 		And group "group0" has been created
 		And user "user1" has been added to group "group0"
@@ -36,24 +35,21 @@ Feature: sharing
 			| /textfile0%20(2).txt      |
 
 	Scenario: Download a file that is in a folder contained in a folder that has been shared with a user with default permissions
-		Given user "user0" has been created
-		And user "user1" has been created
-		And user "user0" creates a share using the API with settings
+		Given user "user1" has been created
+		When user "user0" creates a share using the API with settings
 			| path      | PARENT     |
 			| shareType | 0          |
 			| shareWith | user1      |
 		Then the user "user1" should be able to download the file "/PARENT (2)/CHILD/child.txt" using the API
 
 	Scenario: Download a file that is in a folder contained in a folder that has been shared with a group with default permissions
-		Given user "user0" has been created
-		And user "user1" has been created
+		Given user "user1" has been created
 		And group "sharegroup" has been created
 		And user "user1" has been added to group "sharegroup"
-		And user "user0" has shared folder "PARENT" with group "sharegroup"
+		When user "user0" has shared folder "PARENT" with group "sharegroup"
 		Then the user "user1" should be able to download the file "/PARENT (2)/CHILD/child.txt" using the API
 
 	Scenario: Download a file that is in a folder contained in a folder that has been shared with public with default permissions
-		Given user "user0" has been created
 		When user "user0" creates a share using the API with settings
 			| path         | PARENT   |
 			| shareType    | 3        |
@@ -61,8 +57,7 @@ Feature: sharing
 		Then the public should be able to download the range "bytes=1-7" of file "/CHILD/child.txt" from inside the last public shared folder with password "publicpw" and the content should be "wnCloud"
 
 	Scenario: Download a file that is in a folder contained in a folder that has been shared with a user with Read/Write permission 
-		Given user "user0" has been created
-		And user "user1" has been created
+		Given user "user1" has been created
 		When user "user0" creates a share using the API with settings
 			| path        | PARENT |
 			| shareType   | 0      |
@@ -71,8 +66,7 @@ Feature: sharing
 		Then the user "user1" should be able to download the file "/PARENT (2)/CHILD/child.txt" using the API
 
 	Scenario: Download a file that is in a folder contained in a folder that has been shared with a group with Read/Write permission 
-		Given user "user0" has been created
-		And user "user1" has been created
+		Given user "user1" has been created
 		And group "sharegroup" has been created
 		And user "user1" has been added to group "sharegroup"
 		When user "user0" creates a share using the API with settings
@@ -83,7 +77,6 @@ Feature: sharing
 		Then the user "user1" should be able to download the file "/PARENT (2)/CHILD/child.txt" using the API
 
 	Scenario: Download a file that is in a folder contained in a folder that has been shared with public with Read/Write permission 
-		Given user "user0" has been created
 		When user "user0" creates a share using the API with settings
 			| path         | PARENT   |
 			| shareType    | 3        |
@@ -92,32 +85,29 @@ Feature: sharing
 		Then the public should be able to download the range "bytes=1-7" of file "/CHILD/child.txt" from inside the last public shared folder with password "publicpw" and the content should be "wnCloud"
 
 	Scenario: Download a file that is in a folder contained in a folder that has been shared with a user with Read only permission 
-		Given user "user0" has been created
-		And user "user1" has been created
+		Given user "user1" has been created
 		When user "user0" creates a share using the API with settings
 			| path        | PARENT |
 			| shareType   | 0      |
 			| shareWith   | user1  |
-			| permissions | 1     |
+			| permissions | 1      |
 		Then the user "user1" should be able to download the file "/PARENT (2)/CHILD/child.txt" using the API
 
 	Scenario: Download a file that is in a folder contained in a folder that has been shared with a group with Read only permission 
-		Given user "user0" has been created
-		And user "user1" has been created
+		Given user "user1" has been created
 		And group "sharegroup" has been created
 		And user "user1" has been added to group "sharegroup"
 		When user "user0" creates a share using the API with settings
 			| path        | PARENT      |
 			| shareType   | 1           |
 			| shareWith   | sharegroup  |
-			| permissions | 1          |
+			| permissions | 1           |
 		Then the user "user1" should be able to download the file "/PARENT (2)/CHILD/child.txt" using the API
 
 	Scenario: Download a file that is in a folder contained in a folder that has been shared with public with Read only permission 
-		Given user "user0" has been created
 		When user "user0" creates a share using the API with settings
 			| path         | PARENT   |
 			| shareType    | 3        |
 			| password     | publicpw |
-			| permissions | 1        |
+			| permissions  | 1        |
 		Then the public should be able to download the range "bytes=1-7" of file "/CHILD/child.txt" from inside the last public shared folder with password "publicpw" and the content should be "wnCloud"
