@@ -23,9 +23,8 @@
     "@bower_components/es6-promise": "components/es6-promise#4.1.1",
     "@bower_components/handlebars": "components/handlebars.js#4.0.11",
     "@bower_components/jcrop": "tapmodo/Jcrop#0.9.12",
-    "@bower_components/jquery": "jquery/jquery-dist#2.1.4",
-    "@bower_components/jquery-migrate": "appleboy/jquery-migrate#1.4.0",
-    "@bower_components/jquery-ui": "components/jqueryui#1.10.0",
+    "@bower_components/jquery": "jquery/jquery-dist#2.2.4",
+    "@bower_components/jquery-ui": "components/jqueryui#1.12.1",
     "@bower_components/jsTimezoneDetect": "HenningM/jstimezonedetect#1.0.5",
     "@bower_components/jstzdetect": "HenningM/jstimezonedetect#1.0.6",
     "@bower_components/moment": "moment/moment#2.19.4",
@@ -40,7 +39,6 @@
     "handlebars": "^4.0.11",
     "jasmine-core": "^2.99.1",
     "jasmine-sinon": "^0.4.0",
-    "sinon": "^2.0.0",
     "jsdoc": "~3.5.5",
     "karma": "^2.0.4",
     "karma-coverage": "*",
@@ -48,7 +46,8 @@
     "karma-jasmine-sinon": "^1.0.4",
     "karma-junit-reporter": "*",
     "karma-phantomjs-launcher": "*",
-    "phantomjs-prebuilt": "*"
+    "phantomjs-prebuilt": "*",
+    "sinon": "^2.0.0"
   },
   "engines": {
     "node": ">= 6.9",
