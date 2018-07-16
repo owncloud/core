@@ -32,6 +32,7 @@ use OCP\Authentication\Exceptions\AccountCheckException;
 use OCP\Authentication\IAccountModuleController;
 use OCP\ILogger;
 use OCP\IUserSession;
+use OC\Core\Controller\TwoFactorChallengeController;
 
 /**
  * Class AccountModuleMiddleware
@@ -91,6 +92,11 @@ class AccountModuleMiddleware extends Middleware {
 
 		if ($controller instanceof IAccountModuleController) {
 			// Don't block any IAccountModuleController controllers
+			return;
+		}
+
+		if ($controller instanceof TwoFactorChallengeController) {
+			// Don't block two factor challenge
 			return;
 		}
 

@@ -31,6 +31,7 @@ use OCP\ILogger;
 use OCP\IUser;
 use OCP\IUserSession;
 use Test\TestCase;
+use OC\Core\Controller\TwoFactorChallengeController;
 
 class AccountModuleMiddlewareTest extends TestCase {
 
@@ -99,6 +100,18 @@ class AccountModuleMiddlewareTest extends TestCase {
 			->method('isLoggedIn');
 
 		$controller = $this->createMock(IAccountModuleController::class);
+
+		$this->middleware->beforeController($controller, null);
+	}
+	public function testBeforeControllerSkipsTwoFactorChallengeController() {
+		$this->reflector->expects($this->once())
+			->method('hasAnnotation')
+			->with('PublicPage')
+			->will($this->returnValue(false));
+		$this->userSession->expects($this->never())
+			->method('isLoggedIn');
+
+		$controller = $this->createMock(TwoFactorChallengeController::class);
 
 		$this->middleware->beforeController($controller, null);
 	}
