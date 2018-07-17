@@ -2,13 +2,13 @@
 Feature: multilinksharing
 
 	Background:
-		Given using API version "1"
-		And using old DAV path
+		Given using old DAV path
 		And user "user0" has been created
 		And as user "user0"
 
-	Scenario: Creating three public shares of a folder
-		Given the user has created a share with settings
+	Scenario Outline: Creating three public shares of a folder
+		Given using API version "<ocs_api_version>"
+		And the user has created a share with settings
 			| path         | FOLDER      |
 			| shareType    | 3           |
 			| password     | publicpw    |
@@ -34,15 +34,20 @@ Feature: multilinksharing
 			| name         | sharedlink3 |
 		When the user updates the last share using the API with
 			| permissions | 1 |
-		Then the OCS status code should be "100"
+		Then the OCS status code should be "<ocs_status_code>"
 		And the HTTP status code should be "200"
 		And as user "user0" the public shares of folder "/FOLDER" should be
 			| /FOLDER | 15 | sharedlink2 |
 			| /FOLDER | 15 | sharedlink1 |
 			| /FOLDER | 1  | sharedlink3 |
+		Examples:
+			|ocs_api_version|ocs_status_code|
+			|1              |100            |
+			|2              |200            |
 
-	Scenario: Creating three public shares of a file
-		Given the user has created a share with settings
+	Scenario Outline: Creating three public shares of a file
+		Given using API version "<ocs_api_version>"
+		And the user has created a share with settings
 			| path        | textfile0.txt |
 			| shareType   | 3             |
 			| password    | publicpw      |
@@ -65,15 +70,20 @@ Feature: multilinksharing
 			| name        | sharedlink3   |
 		When the user updates the last share using the API with
 			| permissions | 1 |
-		Then the OCS status code should be "100"
+		Then the OCS status code should be "<ocs_status_code>"
 		And the HTTP status code should be "200"
 		And as user "user0" the public shares of file "/textfile0.txt" should be
 			| /textfile0.txt | 1 | sharedlink2 |
 			| /textfile0.txt | 1 | sharedlink1 |
 			| /textfile0.txt | 1 | sharedlink3 |
+		Examples:
+			|ocs_api_version|ocs_status_code|
+			|1              |100            |
+			|2              |200            |
 
-	Scenario: Check that updating password doesn't remove name of links
-		Given the user has created a share with settings
+	Scenario Outline: Check that updating password doesn't remove name of links
+		Given using API version "<ocs_api_version>"
+		And the user has created a share with settings
 			| path         | FOLDER      |
 			| shareType    | 3           |
 			| password     | publicpw    |
@@ -91,14 +101,19 @@ Feature: multilinksharing
 			| name         | sharedlink2 |
 		When the user updates the last share using the API with
 			| password | newpassword |
-		Then the OCS status code should be "100"
+		Then the OCS status code should be "<ocs_status_code>"
 		And the HTTP status code should be "200"
 		And as user "user0" the public shares of folder "/FOLDER" should be
 			| /FOLDER | 15 | sharedlink2 |
 			| /FOLDER | 15 | sharedlink1 |
+		Examples:
+			|ocs_api_version|ocs_status_code|
+			|1              |100            |
+			|2              |200            |
 
 	Scenario: Deleting a file deletes also its public links
-		Given the user has created a share with settings
+		Given using API version "1"
+		And the user has created a share with settings
 			| path        | textfile0.txt |
 			| shareType   | 3             |
 			| password    | publicpw      |
@@ -119,8 +134,9 @@ Feature: multilinksharing
 		And as user "user0" the public shares of file "/textfile0.txt" should be
 			| | | |
 
-	Scenario: Deleting one public share of a file doesn't affect the rest
-		Given the user has created a share with settings
+	Scenario Outline: Deleting one public share of a file doesn't affect the rest
+		Given using API version "<ocs_api_version>"
+		And the user has created a share with settings
 			| path        | textfile0.txt |
 			| shareType   | 3             |
 			| password    | publicpw      |
@@ -142,14 +158,19 @@ Feature: multilinksharing
 			| permissions | 1             |
 			| name        | sharedlink3   |
 		When user "user0" deletes public share named "sharedlink2" in file "/textfile0.txt" using the API
-		Then the OCS status code should be "100"
+		Then the OCS status code should be "<ocs_status_code>"
 		And the HTTP status code should be "200"
 		And as user "user0" the public shares of file "/textfile0.txt" should be
 			| /textfile0.txt | 1 | sharedlink1 |
 			| /textfile0.txt | 1 | sharedlink3 |
+		Examples:
+			|ocs_api_version|ocs_status_code|
+			|1              |100            |
+			|2              |200            |
 
 	Scenario: Overwriting a file doesn't remove its public shares
-		Given the user has created a share with settings
+		Given using API version "1"
+		And the user has created a share with settings
 			| path        | textfile0.txt |
 			| shareType   | 3             |
 			| password    | publicpw      |
@@ -169,7 +190,8 @@ Feature: multilinksharing
 			| /textfile0.txt | 1 | sharedlink2 |
 
 	Scenario: Renaming a folder doesn't remove its public shares
-		Given the user has created a share with settings
+		Given using API version "1"
+		And the user has created a share with settings
 			| path         | FOLDER      |
 			| shareType    | 3           |
 			| password     | publicpw    |
