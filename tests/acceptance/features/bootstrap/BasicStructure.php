@@ -551,30 +551,44 @@ trait BasicStructure {
 	/**
 	 * @Then /^the OCS status code should be "([^"]*)"$/
 	 *
-	 * @param int $statusCode
+	 * @param int|int[] $statusCode
 	 * @param string $message
 	 *
 	 * @return void
 	 */
 	public function theOCSStatusCodeShouldBe($statusCode, $message = "") {
-		PHPUnit_Framework_Assert::assertEquals(
-			$statusCode, $this->getOCSResponseStatusCode($this->response),
-			$message
-		);
+		if (\is_array($statusCode)) {
+			PHPUnit_Framework_Assert::assertContains(
+				$this->getOCSResponseStatusCode($this->response), $statusCode,
+				$message
+			);
+		} else {
+			PHPUnit_Framework_Assert::assertEquals(
+				$statusCode, $this->getOCSResponseStatusCode($this->response),
+				$message
+			);
+		}
 	}
 
 	/**
 	 * @Then /^the HTTP status code should be "([^"]*)"$/
 	 *
-	 * @param int $statusCode
+	 * @param int|int[] $statusCode
 	 * @param string $message
 	 *
 	 * @return void
 	 */
 	public function theHTTPStatusCodeShouldBe($statusCode, $message = "") {
-		PHPUnit_Framework_Assert::assertEquals(
-			$statusCode, $this->response->getStatusCode(), $message
-		);
+		if (\is_array($statusCode)) {
+			PHPUnit_Framework_Assert::assertContains(
+				$this->response->getStatusCode(), $statusCode,
+				$message
+			);
+		} else {
+			PHPUnit_Framework_Assert::assertEquals(
+				$statusCode, $this->response->getStatusCode(), $message
+			);
+		}
 	}
 
 	/**
