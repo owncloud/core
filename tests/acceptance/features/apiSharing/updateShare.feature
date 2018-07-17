@@ -5,25 +5,31 @@ Feature: sharing
 		And using old DAV path
 		And user "user0" has been created
 
-	Scenario: Allow modification of reshare
-		Given user "user1" has been created
+	Scenario Outline: Allow modification of reshare
+		Given using API version "<ocs_api_version>"
+		And user "user1" has been created
 		And user "user2" has been created
 		And user "user0" has created a folder "/TMP"
 		And user "user0" has shared file "TMP" with user "user1"
 		And user "user1" has shared file "TMP" with user "user2"
 		When user "user1" updates the last share using the API with
 			| permissions | 1 |
-		Then the OCS status code should be "100"
+		Then the OCS status code should be "<ocs_status_code>"
+		Examples:
+			|ocs_api_version|ocs_status_code|
+			|1              |100            |
+			|2              |200            |
 
-	Scenario: Creating a new public share, updating its expiration date and getting its info
-		Given as user "user0"
+	Scenario Outline: Creating a new public share, updating its expiration date and getting its info
+		Given using API version "<ocs_api_version>"
+		And as user "user0"
 		When the user creates a share using the API with settings
 			| path      | FOLDER |
 			| shareType | 3      |
 		And the user updates the last share using the API with
 			| expireDate | +3 days |
 		And the user gets the info of the last share using the API
-		Then the OCS status code should be "100"
+		Then the OCS status code should be "<ocs_status_code>"
 		And the HTTP status code should be "200"
 		And the share fields of the last share should include
 			| id                | A_NUMBER             |
@@ -43,28 +49,38 @@ Feature: sharing
 			| displayname_owner | user0                |
 			| url               | AN_URL               |
 			| mimetype          | httpd/unix-directory |
+		Examples:
+			|ocs_api_version|ocs_status_code|
+			|1              |100            |
+			|2              |200            |
 
-	Scenario: Creating a new public share with password and adding an expiration date
-		Given as user "user0"
+	Scenario Outline: Creating a new public share with password and adding an expiration date
+		Given using API version "<ocs_api_version>"
+		And as user "user0"
 		When the user creates a share using the API with settings
 			| path      | welcome.txt |
 			| shareType | 3           |
 			| password  | publicpw    |
 		And the user updates the last share using the API with
 			| expireDate | +3 days |
-		Then the OCS status code should be "100"
+		Then the OCS status code should be "<ocs_status_code>"
 		And the HTTP status code should be "200"
 		And the last public shared file should be able to be downloaded with password "publicpw"
+		Examples:
+			|ocs_api_version|ocs_status_code|
+			|1              |100            |
+			|2              |200            |
 
-	Scenario: Creating a new public share, updating its expiration date and getting its info
-		Given as user "user0"
+	Scenario Outline: Creating a new public share, updating its expiration date and getting its info
+		Given using API version "<ocs_api_version>"
+		And as user "user0"
 		When the user creates a share using the API with settings
 			| path      | FOLDER |
 			| shareType | 3      |
 		And the user updates the last share using the API with
 			| expireDate | +3 days |
 		And the user gets the info of the last share using the API
-		Then the OCS status code should be "100"
+		Then the OCS status code should be "<ocs_status_code>"
 		And the HTTP status code should be "200"
 		And the share fields of the last share should include
 			| id                | A_NUMBER             |
@@ -84,16 +100,21 @@ Feature: sharing
 			| displayname_owner | user0                |
 			| url               | AN_URL               |
 			| mimetype          | httpd/unix-directory |
+		Examples:
+			|ocs_api_version|ocs_status_code|
+			|1              |100            |
+			|2              |200            |
 
-	Scenario: Creating a new public share, updating its password and getting its info
-		Given as user "user0"
+	Scenario Outline: Creating a new public share, updating its password and getting its info
+		Given using API version "<ocs_api_version>"
+		And as user "user0"
 		When the user creates a share using the API with settings
 			| path      | FOLDER |
 			| shareType | 3      |
 		And the user updates the last share using the API with
 			| password | publicpw |
 		And the user gets the info of the last share using the API
-		Then the OCS status code should be "100"
+		Then the OCS status code should be "<ocs_status_code>"
 		And the HTTP status code should be "200"
 		And the share fields of the last share should include
 			| id                | A_NUMBER             |
@@ -112,16 +133,21 @@ Feature: sharing
 			| displayname_owner | user0                |
 			| url               | AN_URL               |
 			| mimetype          | httpd/unix-directory |
+		Examples:
+			|ocs_api_version|ocs_status_code|
+			|1              |100            |
+			|2              |200            |
 
-	Scenario: Creating a new public share, updating its permissions and getting its info
-		Given as user "user0"
+	Scenario Outline: Creating a new public share, updating its permissions and getting its info
+		Given using API version "<ocs_api_version>"
+		And as user "user0"
 		When the user creates a share using the API with settings
 			| path      | FOLDER |
 			| shareType | 3      |
 		And the user updates the last share using the API with
 			| permissions | 7 |
 		And the user gets the info of the last share using the API
-		Then the OCS status code should be "100"
+		Then the OCS status code should be "<ocs_status_code>"
 		And the HTTP status code should be "200"
 		And the share fields of the last share should include
 			| id                | A_NUMBER             |
@@ -140,16 +166,21 @@ Feature: sharing
 			| displayname_owner | user0                |
 			| url               | AN_URL               |
 			| mimetype          | httpd/unix-directory |
+		Examples:
+			|ocs_api_version|ocs_status_code|
+			|1              |100            |
+			|2              |200            |
 
-	Scenario: Creating a new public share, updating publicUpload option and getting its info
-		Given as user "user0"
+	Scenario Outline: Creating a new public share, updating publicUpload option and getting its info
+		Given using API version "<ocs_api_version>"
+		And as user "user0"
 		When the user creates a share using the API with settings
 			| path      | FOLDER |
 			| shareType | 3      |
 		And the user updates the last share using the API with
 			| publicUpload | true |
 		And the user gets the info of the last share using the API
-		Then the OCS status code should be "100"
+		Then the OCS status code should be "<ocs_status_code>"
 		And the HTTP status code should be "200"
 		And the share fields of the last share should include
 			| id                | A_NUMBER             |
@@ -168,9 +199,14 @@ Feature: sharing
 			| displayname_owner | user0                |
 			| url               | AN_URL               |
 			| mimetype          | httpd/unix-directory |
+		Examples:
+			|ocs_api_version|ocs_status_code|
+			|1              |100            |
+			|2              |200            |
 
-	Scenario: keep group permissions in sync
-		Given user "user1" has been created
+	Scenario Outline: keep group permissions in sync
+		Given using API version "<ocs_api_version>"
+		And user "user1" has been created
 		And group "group1" has been created
 		And user "user1" has been added to group "group1"
 		And user "user0" has shared file "textfile0.txt" with group "group1"
@@ -179,7 +215,7 @@ Feature: sharing
 		When the user updates the last share using the API with
 			| permissions | 1 |
 		And the user gets the info of the last share using the API
-		Then the OCS status code should be "100"
+		Then the OCS status code should be "<ocs_status_code>"
 		And the HTTP status code should be "200"
 		And the share fields of the last share should include
 			| id                | A_NUMBER       |
@@ -196,9 +232,14 @@ Feature: sharing
 			| file_parent       | A_NUMBER       |
 			| displayname_owner | user0          |
 			| mimetype          | text/plain     |
+		Examples:
+			|ocs_api_version|ocs_status_code|
+			|1              |100            |
+			|2              |200            |
 
-	Scenario: Adding public upload to a read only shared folder as recipient is not allowed
-		Given user "user1" has been created
+	Scenario Outline: Adding public upload to a read only shared folder as recipient is not allowed
+		Given using API version "<ocs_api_version>"
+		And user "user1" has been created
 		And user "user0" has created a folder "/test"
 		And user "user0" has shared folder "/test" with user "user1" with permissions 17
 		And as user "user1"
@@ -209,10 +250,15 @@ Feature: sharing
 		When the user updates the last share using the API with
 			| publicUpload | true |
 		Then the OCS status code should be "404"
-		And the HTTP status code should be "200"
+		And the HTTP status code should be "<http_status_code>"
+		Examples:
+			|ocs_api_version|http_status_code|
+			|1              |200             |
+			|2              |404             |
 
-	Scenario: Cannot set permissions to zero
-		Given user "user1" has been created
+	Scenario Outline: Cannot set permissions to zero
+		Given using API version "<ocs_api_version>"
+		And user "user1" has been created
 		And group "new-group" has been created
 		And user "user0" has been added to group "new-group"
 		And user "user1" has been added to group "new-group"
@@ -221,6 +267,11 @@ Feature: sharing
 		When user "user0" updates the last share using the API with
 			| permissions | 0 |
 		Then the OCS status code should be "400"
+		And the HTTP status code should be "<http_status_code>"
+		Examples:
+			|ocs_api_version|http_status_code|
+			|1              |200             |
+			|2              |400             |
 
 	Scenario: Share ownership change after moving a shared file outside of an outer share
 		Given user "user1" has been created
@@ -278,8 +329,9 @@ Feature: sharing
 		And as "user0" the folder "/user0-folder/folder2" should not exist
 		And as "user2" the folder "/user2-folder/folder2" should exist
 
-	Scenario: Adding public upload to a shared folder as recipient is allowed with permissions
-		Given user "user1" has been created
+	Scenario Outline: Adding public upload to a shared folder as recipient is allowed with permissions
+		Given using API version "<ocs_api_version>"
+		And user "user1" has been created
 		And user "user0" has created a folder "/test"
 		And user "user0" has shared folder "/test" with user "user1" with permissions 31
 		And as user "user1"
@@ -289,11 +341,16 @@ Feature: sharing
 			| publicUpload | false |
 		When the user updates the last share using the API with
 			| publicUpload | true |
-		Then the OCS status code should be "100"
+		Then the OCS status code should be "<ocs_status_code>"
 		And the HTTP status code should be "200"
+		Examples:
+			|ocs_api_version|ocs_status_code|
+			|1              |100            |
+			|2              |200            |
 
-	Scenario: Adding public upload to a read only shared folder as recipient is not allowed
-		Given user "user1" has been created
+	Scenario Outline: Adding public upload to a read only shared folder as recipient is not allowed
+		Given using API version "<ocs_api_version>"
+		And user "user1" has been created
 		And user "user0" has created a folder "/test"
 		And user "user0" has shared folder "/test" with user "user1" with permissions 17
 		And as user "user1"
@@ -304,10 +361,15 @@ Feature: sharing
 		When the user updates the last share using the API with
 			| permissions | 15 |
 		Then the OCS status code should be "404"
-		And the HTTP status code should be "200"
+		And the HTTP status code should be "<http_status_code>"
+		Examples:
+			|ocs_api_version|http_status_code|
+			|1              |200             |
+			|2              |404             |
 
-	Scenario: Adding public upload to a shared folder as recipient is allowed with permissions
-		Given user "user1" has been created
+	Scenario Outline: Adding public upload to a shared folder as recipient is allowed with permissions
+		Given using API version "<ocs_api_version>"
+		And user "user1" has been created
 		And user "user0" has created a folder "/test"
 		And user "user0" has shared folder "/test" with user "user1" with permissions 31
 		And as user "user1"
@@ -317,11 +379,16 @@ Feature: sharing
 			| permissions | 1     |
 		When the user updates the last share using the API with
 			| permissions | 15 |
-		Then the OCS status code should be "100"
+		Then the OCS status code should be "<ocs_status_code>"
 		And the HTTP status code should be "200"
+		Examples:
+			|ocs_api_version|ocs_status_code|
+			|1              |100            |
+			|2              |200            |
 
-	Scenario: Increasing permissions is allowed for owner
-		Given user "user1" has been created
+	Scenario Outline: Increasing permissions is allowed for owner
+		Given using API version "<ocs_api_version>"
+		And user "user1" has been created
 		And group "new-group" has been created
 		And user "user0" has been added to group "new-group"
 		And user "user1" has been added to group "new-group"
@@ -332,5 +399,9 @@ Feature: sharing
 			| permissions | 1 |
 		When the user updates the last share using the API with
 			| permissions | 31 |
-		Then the OCS status code should be "100"
+		Then the OCS status code should be "<ocs_status_code>"
 		And the HTTP status code should be "200"
+		Examples:
+			|ocs_api_version|ocs_status_code|
+			|1              |100            |
+			|2              |200            |
