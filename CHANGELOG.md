@@ -4,7 +4,7 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/).
 
-## [Unreleased]
+## 10.0.9 - 2018-07-17
 ### Added
 - Added account module middleware to be able to plug in logic after authentication - [#31883](https://github.com/owncloud/core/issues/31883) [#31933](https://github.com/owncloud/core/issues/31933)
 - occ user:list now takes a list of attributes to display - [#31115](https://github.com/owncloud/core/issues/31115)
@@ -656,7 +656,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/).
 - provisioning API now also returns the user's home path: [#26850](https://github.com/owncloud/core/issues/26850)
 - web updater shows link to changelog in admin page: [#26796](https://github.com/owncloud/core/issues/26796)
 
-[Unreleased]: https://github.com/owncloud/core/compare/v10.0.8...stable10
+[Unreleased]: https://github.com/owncloud/core/compare/v10.0.9...stable10
+[10.0.9]: https://github.com/owncloud/core/compare/v10.0.8...v10.0.9
 [10.0.8]: https://github.com/owncloud/core/compare/v10.0.7...v10.0.8
 [10.0.7]: https://github.com/owncloud/core/compare/v10.0.6...v10.0.7
 [10.0.6]: https://github.com/owncloud/core/compare/v10.0.5...v10.0.6
