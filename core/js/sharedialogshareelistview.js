@@ -301,7 +301,7 @@
 
 			this.model.sendNotificationForShare(shareType, shareWith, true).then(function(result) {
 				if (result.status === 'success') {
-					OC.Notification.showTemporary(t('core', 'Email notification was sent!'));
+					OC.Notification.showTemporary(t('core', 'Email notification is scheduled to sent!'));
 					$target.remove();
 				} else {
 					// sending was successful but some users might not have any email address

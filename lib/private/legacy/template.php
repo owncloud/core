@@ -81,7 +81,19 @@ class OC_Template extends \OC\Template\Base {
 	 */
 	public function __construct($app, $name, $renderAs = "", $registerCall = true, $languageCode = null) {
 		self::initTemplateEngine($renderAs);
-		$requestToken = (OC::$server->getSession() && $registerCall) ? \OCP\Util::callRegister() : '';
+		if (OC::$server->getSession() && $registerCall) {
+			try {
+				/**
+				 * Call from a background job would cause SessionNotAvailableException
+				 * Hence to move ahead the requestToken can be set to empty string
+				 */
+				$requestToken = \OCP\Util::callRegister();
+			} catch (\OCP\Session\Exceptions\SessionNotAvailableException $e) {
+				$requestToken = '';
+			}
+		} else {
+			$requestToken = '';
+		}
 
 		// fix translation when app is something like core/lostpassword
 		$parts = \explode('/', $app);
