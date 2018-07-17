@@ -35,7 +35,7 @@ use OCA\FederatedFileSharing\FedShareManager;
 use OCA\FederatedFileSharing\Notifications;
 use OCP\App\IAppManager;
 use OCP\AppFramework\Http;
-use OCP\AppFramework\OCSController;
+use OCP\AppFramework\ApiController;
 use OCP\Constants;
 use OCP\IDBConnection;
 use OCP\IRequest;
@@ -44,13 +44,13 @@ use OCP\Share;
 use OCP\Share\IShare;
 
 /**
- * Class RequestHandler
+ * Class FederatedShareController
  *
  * Handles OCS Request to the federated share API
  *
- * @package OCA\FederatedFileSharing\API
+ * @package OCA\FederatedFileSharing\Controller
  */
-class FederatedShareController extends OCSController {
+class FederatedShareController extends ApiController {
 
 	/** @var FederatedShareProvider */
 	private $federatedShareProvider;
@@ -344,7 +344,6 @@ class FederatedShareController extends OCSController {
 			$this->assertOutgoingSharingEnabled();
 
 			$token = $this->request->getParam('token', null);
-
 			$query = $this->connection->getQueryBuilder();
 			$query->select('*')->from('share_external')
 				->where(

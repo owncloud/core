@@ -83,74 +83,72 @@ API::register(
 
 // Server-to-Server Sharing
 if (\OC::$server->getAppManager()->isEnabledForUser('files_sharing')) {
-	$federatedSharingApp = new \OCA\FederatedFileSharing\AppInfo\Application('federatedfilesharing');
-	$addressHandler = new \OCA\FederatedFileSharing\AddressHandler(
-		\OC::$server->getURLGenerator(),
-		\OC::$server->getL10N('federatedfilesharing')
-	);
-	$notification = new \OCA\FederatedFileSharing\Notifications(
-		$addressHandler,
-		\OC::$server->getHTTPClientService(),
-		new \OCA\FederatedFileSharing\DiscoveryManager(\OC::$server->getMemCacheFactory(), \OC::$server->getHTTPClientService()),
-		\OC::$server->getJobList(),
-		\OC::$server->getConfig()
-	);
-	$s2s = new OCA\FederatedFileSharing\Controller\FederatedShareController(
-		'federatedfilesharing',
-		\OC::$server->getRequest(),
-		$federatedSharingApp->getFederatedShareProvider(),
-		\OC::$server->getDatabaseConnection(),
-		\OC::$server->getAppManager(),
-		\OC::$server->getUserManager(),
-		$notification,
-		$addressHandler,
-		$federatedSharingApp->getFederatedShareManager()
-	);
-	API::register('post',
+	$federatedSharingApp = new \OCA\FederatedFileSharing\AppInfo\Application();
+	$s2s = $federatedSharingApp->getContainer()->query('FederatedShareController');
+	API::register(
+		'post',
 		'/cloud/shares',
 		[$s2s, 'createShare'],
 		'files_sharing',
 		API::GUEST_AUTH
 	);
 
-	API::register('post',
+	API::register(
+		'post',
 		'/cloud/shares/{id}/reshare',
-		[$s2s, 'reShare'],
+		function ($param) use ($s2s) {
+			return $s2s->reShare($param['id']);
+		},
 		'files_sharing',
 		API::GUEST_AUTH
 	);
 
-	API::register('post',
+	API::register(
+		'post',
 		'/cloud/shares/{id}/permissions',
-		[$s2s, 'updatePermissions'],
+		function ($param) use ($s2s) {
+			return $s2s->updatePermissions($param['id']);
+		},
 		'files_sharing',
 		API::GUEST_AUTH
 	);
 
-	API::register('post',
+	API::register(
+		'post',
 		'/cloud/shares/{id}/accept',
-		[$s2s, 'acceptShare'],
+		function ($param) use ($s2s) {
+			return $s2s->acceptShare($param['id']);
+		},
 		'files_sharing',
 		API::GUEST_AUTH
 	);
 
-	API::register('post',
+	API::register(
+		'post',
 		'/cloud/shares/{id}/decline',
-		[$s2s, 'declineShare'],
+		function ($param) use ($s2s) {
+			return $s2s->declineShare($param['id']);
+		},
 		'files_sharing',
 		API::GUEST_AUTH
 	);
 
-	API::register('post',
+	API::register(
+		'post',
 		'/cloud/shares/{id}/unshare',
-		[$s2s, 'unshare'],
+		function ($param) use ($s2s) {
+			return $s2s->unshare($param['id']);
+		},
 		'files_sharing',
 		API::GUEST_AUTH
 	);
 
-	API::register('post',
+	API::register(
+		'post',
 		'/cloud/shares/{id}/revoke',
-		[$s2s, 'revoke'],
+		function ($param) use ($s2s) {
+			return $s2s->revoke($param['id']);
+		},
 		'files_sharing',
 		API::GUEST_AUTH
 	);

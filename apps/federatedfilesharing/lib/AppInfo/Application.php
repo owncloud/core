@@ -21,8 +21,12 @@
 
 namespace OCA\FederatedFileSharing\AppInfo;
 
+use OCA\FederatedFileSharing\AddressHandler;
+use OCA\FederatedFileSharing\Controller\FederatedShareController;
+use OCA\FederatedFileSharing\DiscoveryManager;
 use OCA\FederatedFileSharing\FederatedShareProvider;
 use OCA\FederatedFileSharing\FedShareManager;
+use OCA\FederatedFileSharing\Notifications;
 use OCP\AppFramework\App;
 
 class Application extends App {
@@ -32,6 +36,63 @@ class Application extends App {
 
 	/** @var FedShareManager */
 	protected $federatedShareManager;
+
+	public function __construct() {
+		parent::__construct('federatedfilesharing');
+		$container = $this->getContainer();
+		$server = $container->getServer();
+
+		$container->registerService(
+			'AddressHandler',
+			function ($c) use ($server) {
+				return new AddressHandler(
+					$server->getURLGenerator(),
+					$server->getL10N('federatedfilesharing')
+				);
+			}
+		);
+
+		$container->registerService(
+			'DiscoveryManager',
+			function ($c) use ($server) {
+				return new DiscoveryManager(
+					$server->getMemCacheFactory(),
+					$server->getHTTPClientService()
+				);
+			}
+		);
+
+		$container->registerService(
+			'Notifications',
+			function ($c) use ($server) {
+				return new Notifications(
+					$c->query('AddressHandler'),
+					$server->getHTTPClientService(),
+					$c->query('DiscoveryManager'),
+					$server->getJobList(),
+					$server->getConfig()
+				);
+			}
+		);
+
+
+		$container->registerService(
+			'FederatedShareController',
+			function ($c) use ($server) {
+				return new FederatedShareController(
+					$c->query('AppName'),
+					$c->query('Request'),
+					$this->getFederatedShareProvider(),
+					$server->getDatabaseConnection(),
+					$server->getAppManager(),
+					$server->getUserManager(),
+					$c->query('Notifications'),
+					$c->query('AddressHandler'),
+					$this->getFederatedShareManager()
+				);
+			}
+		);
+	}
 
 	/**
 	 * get instance of federated share provider
@@ -75,7 +136,7 @@ class Application extends App {
 	 * initialize federated share provider
 	 */
 	protected function initFederatedShareProvider() {
-		$addressHandler = new \OCA\FederatedFileSharing\AddressHandler(
+		$addressHandler = new AddressHandler(
 			\OC::$server->getURLGenerator(),
 			\OC::$server->getL10N('federatedfilesharing')
 		);
@@ -83,7 +144,7 @@ class Application extends App {
 			\OC::$server->getMemCacheFactory(),
 			\OC::$server->getHTTPClientService()
 		);
-		$notifications = new \OCA\FederatedFileSharing\Notifications(
+		$notifications = new Notifications(
 			$addressHandler,
 			\OC::$server->getHTTPClientService(),
 			$discoveryManager,
