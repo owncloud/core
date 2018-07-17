@@ -95,62 +95,6 @@ class ControllerTest extends TestCase {
 		$this->controller = new ChildController($this->app, $request);
 	}
 
-	public function testParamsGet() {
-		$this->assertEquals('Johnny Weissmüller', $this->controller->params('name', 'Tarzan'));
-	}
-
-	public function testParamsGetDefault() {
-		$this->assertEquals('Tarzan', $this->controller->params('Ape Man', 'Tarzan'));
-	}
-
-	public function testParamsFile() {
-		$this->assertEquals('filevalue', $this->controller->params('file', 'filevalue'));
-	}
-
-	public function testGetUploadedFile() {
-		$this->assertEquals('filevalue', $this->controller->getUploadedFile('file'));
-	}
-
-	public function testGetUploadedFileDefault() {
-		$this->assertEquals('default', $this->controller->params('files', 'default'));
-	}
-
-	public function testGetParams() {
-		$params = [
-				'name' => 'Johnny Weissmüller',
-				'nickname' => 'Janey',
-		];
-
-		$this->assertEquals($params, $this->controller->getParams());
-	}
-
-	public function testRender() {
-		$this->assertInstanceOf(TemplateResponse::class, $this->controller->render(''));
-	}
-
-	public function testSetParams() {
-		$params = ['john' => 'foo'];
-		$response = $this->controller->render('home', $params);
-
-		$this->assertEquals($params, $response->getParams());
-	}
-
-	public function testRenderHeaders() {
-		$headers = ['one', 'two'];
-		$response = $this->controller->render('', [], '', $headers);
-
-		$this->assertContains($headers[0], $response->getHeaders());
-		$this->assertContains($headers[1], $response->getHeaders());
-	}
-
-	public function testGetRequestMethod() {
-		$this->assertEquals('hi', $this->controller->method());
-	}
-
-	public function testGetEnvVariable() {
-		$this->assertEquals('daheim', $this->controller->env('PATH'));
-	}
-
 	/**
 	 * @expectedException \DomainException
 	 */
