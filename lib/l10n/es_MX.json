@@ -67,6 +67,7 @@
     "Token expired. Please reload page." : "Token expirado. Por favor, recarga la página.",
     "Storage is temporarily not available" : "El almacenamiento no está disponible temporalmente",
     "A safe home for all your data" : "Un lugar seguro para todos tus datos",
-    "Imprint" : "pie de imprenta"
+    "Imprint" : "pie de imprenta",
+    "__language_name__" : "Español (México)"
 },"pluralForm" :"nplurals=2; plural=(n != 1);"
 }

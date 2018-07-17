@@ -184,6 +184,7 @@
     "Sharing %s failed, could not find %s, check spelling and server availability." : "Не удалось предоставить доступ к %s, не удалось найти %s, проверьте написание и доступность сервера.",
     "Imprint" : "Штамп",
     "The username can not be longer than 64 characters" : "Имя пользователя не может быть длиннее 64 символов",
-    "Privacy Policy" : "Политика конфиденциальности"
+    "Privacy Policy" : "Политика конфиденциальности",
+    "__language_name__" : "Русский"
 },"pluralForm" :"nplurals=4; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<12 || n%100>14) ? 1 : n%10==0 || (n%10>=5 && n%10<=9) || (n%100>=11 && n%100<=14)? 2 : 3);"
 }

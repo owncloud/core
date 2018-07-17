@@ -75,6 +75,7 @@
     "PostgreSQL >= 9 required" : "PostgreSQL >= 9 نیاز است",
     "Please upgrade your database version" : "لطفا نسخه‌ی پایگاه‌داده‌ی خود را بروز کنید",
     "Storage is temporarily not available" : "فضای ذخیره سازی موقتا در دسترس نیست",
-    "Imprint" : "مهر زدن"
+    "Imprint" : "مهر زدن",
+    "__language_name__" : "__language_name__"
 },"pluralForm" :"nplurals=1; plural=0;"
 }

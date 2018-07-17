@@ -44,6 +44,7 @@
     "Set an admin password." : "Stel ’n adminwagwoord.",
     "%s shared »%s« with you" : "%s het »%s« met u gedeel",
     "%s via %s" : "%s deur %s",
-    "Imprint" : "Afdruk"
+    "Imprint" : "Afdruk",
+    "__language_name__" : "__taalnaam__"
 },"pluralForm" :"nplurals=2; plural=(n != 1);"
 }

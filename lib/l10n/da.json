@@ -178,6 +178,7 @@
     "A safe home for all your data" : "Et sikkert sted til dine data",
     "User Authentication" : "Brugerautorisation",
     "Workflows & Tags" : "Arbejdsflow & Tags",
-    "Imprint" : "Aftryk"
+    "Imprint" : "Aftryk",
+    "__language_name__" : "Dansk"
 },"pluralForm" :"nplurals=2; plural=(n != 1);"
 }

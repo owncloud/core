@@ -168,6 +168,7 @@
     "Storage connection error. %s" : "Depolama bağlantı hatası. %s",
     "Storage connection timeout. %s" : "Depolama bağlantı zaman aşımı. %s",
     "A safe home for all your data" : "Verileriniz için güvenli bir yuva",
-    "Imprint" : "İzlenim"
+    "Imprint" : "İzlenim",
+    "__language_name__" : "Türkçe"
 },"pluralForm" :"nplurals=2; plural=(n > 1);"
 }

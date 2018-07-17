@@ -35,6 +35,7 @@
     "Application is not enabled" : "აპლიკაცია არ არის აქტიური",
     "Authentication error" : "ავთენტიფიკაციის შეცდომა",
     "Token expired. Please reload page." : "Token–ს ვადა გაუვიდა. გთხოვთ განაახლოთ გვერდი.",
-    "Imprint" : "ბეჭედი"
+    "Imprint" : "ბეჭედი",
+    "__language_name__" : "__language_name__"
 },"pluralForm" :"nplurals=1; plural=0;"
 }
