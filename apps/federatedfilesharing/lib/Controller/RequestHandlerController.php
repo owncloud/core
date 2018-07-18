@@ -24,11 +24,17 @@
  *
  */
 
-namespace OCA\FederatedFileSharing;
+namespace OCA\FederatedFileSharing\Controller;
 
 use OC\OCS\Result;
+use OCA\FederatedFileSharing\AddressHandler;
+use OCA\FederatedFileSharing\DiscoveryManager;
+use OCA\FederatedFileSharing\FederatedShareProvider;
+use OCA\FederatedFileSharing\FedShareManager;
+use OCA\FederatedFileSharing\Notifications;
 use OCA\Files_Sharing\Activity;
 use OCP\AppFramework\Http;
+use OCP\AppFramework\OCSController;
 use OCP\Constants;
 use OCP\IDBConnection;
 use OCP\IRequest;
@@ -38,25 +44,19 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
 
 /**
- * Class RequestHandler
+ * Class RequestHandlerController
  *
- * handles OCS Request to the federated share API
+ * Handles OCS Request to the federated share API
  *
  * @package OCA\FederatedFileSharing\API
  */
-class RequestHandler {
+class RequestHandlerController extends OCSController {
 
 	/** @var FederatedShareProvider */
 	private $federatedShareProvider;
 
 	/** @var IDBConnection */
 	private $connection;
-
-	/** @var Share\IManager */
-	private $shareManager;
-
-	/** @var IRequest */
-	private $request;
 
 	/** @var Notifications */
 	private $notifications;
@@ -76,28 +76,28 @@ class RequestHandler {
 	/**
 	 * Server2Server constructor.
 	 *
+	 * @param string $appName
+	 * @param IRequest $request
 	 * @param FederatedShareProvider $federatedShareProvider
 	 * @param IDBConnection $connection
-	 * @param Share\IManager $shareManager
-	 * @param IRequest $request
 	 * @param Notifications $notifications
 	 * @param AddressHandler $addressHandler
 	 * @param FedShareManager $fedShareManager
 	 * @param EventDispatcherInterface $eventDispatcher
 	 */
-	public function __construct(FederatedShareProvider $federatedShareProvider,
-								IDBConnection $connection,
-								Share\IManager $shareManager,
+	public function __construct($appName,
 								IRequest $request,
+								FederatedShareProvider $federatedShareProvider,
+								IDBConnection $connection,
 								Notifications $notifications,
 								AddressHandler $addressHandler,
 								FedShareManager $fedShareManager,
 								EventDispatcherInterface $eventDispatcher
 	) {
+		parent::__construct($appName, $request);
+
 		$this->federatedShareProvider = $federatedShareProvider;
 		$this->connection = $connection;
-		$this->shareManager = $shareManager;
-		$this->request = $request;
 		$this->notifications = $notifications;
 		$this->addressHandler = $addressHandler;
 		$this->fedShareManager = $fedShareManager;
@@ -105,12 +105,14 @@ class RequestHandler {
 	}
 
 	/**
+	 * @NoCSRFRequired
+	 * @PublicPage
+	 *
 	 * create a new share
 	 *
-	 * @param array $params
 	 * @return Result
 	 */
-	public function createShare($params) {
+	public function createShare() {
 		if (!$this->isS2SEnabled(true)) {
 			return new Result(null, 503, 'Server does not support federated cloud sharing');
 		}
@@ -221,14 +223,16 @@ class RequestHandler {
 	}
 
 	/**
+	 * @NoCSRFRequired
+	 * @PublicPage
+	 *
 	 * create re-share on behalf of another user
 	 *
-	 * @param $params
+	 * @param int $id
 	 *
 	 * @return Result
 	 */
-	public function reShare($params) {
-		$id = isset($params['id']) ? (int)$params['id'] : null;
+	public function reShare($id) {
 		$token = $this->request->getParam('token', null);
 		$shareWith = $this->request->getParam('shareWith', null);
 		$permission = (int)$this->request->getParam('permission', null);
@@ -272,17 +276,20 @@ class RequestHandler {
 	}
 
 	/**
+	 * @NoCSRFRequired
+	 * @PublicPage
+	 *
 	 * accept server-to-server share
 	 *
-	 * @param array $params
+	 * @param int $id
+	 *
 	 * @return Result
 	 */
-	public function acceptShare($params) {
+	public function acceptShare($id) {
 		if (!$this->isS2SEnabled()) {
 			return new Result(null, 503, 'Server does not support federated cloud sharing');
 		}
 
-		$id = $params['id'];
 		$token = isset($_POST['token']) ? $_POST['token'] : null;
 
 		try {
@@ -302,17 +309,20 @@ class RequestHandler {
 	}
 
 	/**
+	 * @NoCSRFRequired
+	 * @PublicPage
+	 *
 	 * decline server-to-server share
 	 *
-	 * @param array $params
+	 * @param int $id
+	 *
 	 * @return Result
 	 */
-	public function declineShare($params) {
+	public function declineShare($id) {
 		if (!$this->isS2SEnabled()) {
 			return new Result(null, 503, 'Server does not support federated cloud sharing');
 		}
 
-		$id = (int)$params['id'];
 		$token = isset($_POST['token']) ? $_POST['token'] : null;
 
 		try {
@@ -333,17 +343,20 @@ class RequestHandler {
 	}
 
 	/**
+	 * @NoCSRFRequired
+	 * @PublicPage
+	 *
 	 * remove server-to-server share if it was unshared by the owner
 	 *
-	 * @param array $params
+	 * @param int $id
+	 *
 	 * @return Result
 	 */
-	public function unshare($params) {
+	public function unshare($id) {
 		if (!$this->isS2SEnabled()) {
 			return new Result(null, 503, 'Server does not support federated cloud sharing');
 		}
 
-		$id = $params['id'];
 		$token = isset($_POST['token']) ? $_POST['token'] : null;
 
 		$query = \OCP\DB::prepare('SELECT * FROM `*PREFIX*share_external` WHERE `remote_id` = ? AND `share_token` = ?');
@@ -388,14 +401,16 @@ class RequestHandler {
 	}
 
 	/**
+	 * @NoCSRFRequired
+	 * @PublicPage
+	 *
 	 * federated share was revoked, either by the owner or the re-sharer
 	 *
-	 * @param $params
+	 * @param int $id
 	 *
 	 * @return Result
 	 */
-	public function revoke($params) {
-		$id = (int)$params['id'];
+	public function revoke($id) {
 		$token = $this->request->getParam('token');
 		
 		$share = $this->federatedShareProvider->getShareById($id);
@@ -470,6 +485,9 @@ class RequestHandler {
 	}
 
 	/**
+	 * @NoCSRFRequired
+	 * @PublicPage
+	 *
 	 * update share information to keep federated re-shares in sync
 	 *
 	 * @param array $params

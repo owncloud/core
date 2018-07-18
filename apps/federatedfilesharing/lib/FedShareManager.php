@@ -82,22 +82,17 @@ class FedShareManager {
 	 */
 	public function acceptShare(IShare $share) {
 		$uid = $this->getCorrectUid($share);
-		list($file, $link) = $this->getFile(
+		$fileId = $share->getNode()->getId();
+		list($file, $link) = $this->getFile($uid, $fileId);
+		$this->publishActivity(
 			$uid,
-			$share->getNode()->getId()
+			Activity::SUBJECT_REMOTE_SHARE_ACCEPTED,
+			[$share->getSharedWith(), \basename($file)],
+			'files',
+			$fileId,
+			$file,
+			$link
 		);
-
-		$event = $this->activityManager->generateEvent();
-		$event->setApp(Activity::FILES_SHARING_APP)
-			->setType(Activity::TYPE_REMOTE_SHARE)
-			->setAffectedUser($uid)
-			->setSubject(
-				Activity::SUBJECT_REMOTE_SHARE_ACCEPTED,
-				[$share->getSharedWith(), \basename($file)]
-			)
-			->setObject('files', $share->getNode()->getId(), $file)
-			->setLink($link);
-		$this->activityManager->publish($event);
 	}
 
 	/**
@@ -110,21 +105,47 @@ class FedShareManager {
 	 */
 	public function declineShare(IShare $share) {
 		$uid = $this->getCorrectUid($share);
+		$fileId = $share->getNode()->getId();
 		$this->federatedShareProvider->removeShareFromTable($share);
-		list($file, $link) = $this->getFile(
+		list($file, $link) = $this->getFile($uid, $fileId);
+		$this->publishActivity(
 			$uid,
-			$share->getNode()->getId()
+			Activity::SUBJECT_REMOTE_SHARE_DECLINED,
+			[$share->getSharedWith(), \basename($file)],
+			'files',
+			$fileId,
+			$file,
+			$link
 		);
+	}
 
+	/**
+	 * Publish a new activity
+	 *
+	 * @param string $affectedUser
+	 * @param string $subject
+	 * @param array $subjectParams
+	 * @param string $objectType
+	 * @param int $objectId
+	 * @param string $objectName
+	 * @param string $link
+	 *
+	 * @return void
+	 */
+	protected function publishActivity($affectedUser,
+									   $subject,
+									   $subjectParams,
+									   $objectType,
+									   $objectId,
+									   $objectName,
+									   $link
+	) {
 		$event = $this->activityManager->generateEvent();
 		$event->setApp(Activity::FILES_SHARING_APP)
 			->setType(Activity::TYPE_REMOTE_SHARE)
-			->setAffectedUser($uid)
-			->setSubject(
-				Activity::SUBJECT_REMOTE_SHARE_DECLINED,
-				[$share->getSharedWith(), \basename($file)]
-			)
-			->setObject('files', $share->getNode()->getId(), $file)
+			->setAffectedUser($affectedUser)
+			->setSubject($subject, $subjectParams)
+			->setObject($objectType, $objectId, $objectName)
 			->setLink($link);
 		$this->activityManager->publish($event);
 	}
