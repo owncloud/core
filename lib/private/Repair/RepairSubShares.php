@@ -48,55 +48,75 @@ class RepairSubShares implements IRepairStep {
 	}
 
 	/**
-	 * Set query to remove duplicate rows.
-	 * i.e, except id all columns are same for oc_share
-	 * Also set query to select rows which have duplicate rows of share.
+	 * Get query builder to select rows which have duplicate rows of share
+	 * @return IQueryBuilder
 	 */
-	private function setRemoveAndSelectQuery() {
+	private function getSelectQueryToDetectDuplicatesBuilder() {
 		/**
 		 * Retrieves the duplicate rows with different id's
-		 * of oc_share
+		 * of oc_share. The query would look like:
+		 * SELECT id
+		 * FROM oc_share
+		 * WHERE id NOT IN (
+		 * 		SELECT MIN(id)
+		 * 		FROM oc_share
+		 * 		GROUP BY share_with, parent
+		 * )
+		 * AND share_type=2;
 		 */
 		$builder = $this->connection->getQueryBuilder();
-		$builder
-			->select('id', 'parent', $builder->createFunction('count(*)'))
+		$subQuery = $this->connection->getQueryBuilder();
+		$subQuery
+			->select($subQuery->createFunction('MIN(`id`)'))
 			->from('share')
-			->where($builder->expr()->eq('share_type', $builder->createNamedParameter(2)))
-			->groupBy('parent')
-			->addGroupBy('id')
-			->addGroupBy('share_with')
-			->having('count(*) > 1')->setMaxResults(1000);
+			->groupBy('share_with')
+			->addGroupBy('parent');
 
-		$this->getDuplicateRows = $builder;
+		$builder->select('id')
+			->from('share')
+			->where($builder->expr()->notIn('id', $builder->createFunction($subQuery->getSQL())))
+			->andWhere($builder->expr()->eq('share_type', $builder->createNamedParameter(2)));
+		return $builder;
+	}
 
+	/**
+	 * Get query builder to delete rows which have duplicate rows of share based
+	 * on ids
+	 * @return IQueryBuilder
+	 */
+	private function getDeleteShareIdsBuilder() {
 		$builder = $this->connection->getQueryBuilder();
 		$builder
 			->delete('share')
-			->where($builder->expr()->eq('id', $builder->createParameter('shareId')));
-
-		$this->deleteShareId = $builder;
+			->where($builder->expr()->in('id', $builder->createParameter('shareIds')));
+		return $builder;
 	}
 
 	public function run(IOutput $output) {
 		$deletedEntries = 0;
-		$this->setRemoveAndSelectQuery();
+		$selectDuplicates = $this->getSelectQueryToDetectDuplicatesBuilder();
 
-		/**
-		 * Going for pagination because if there are 1 million rows
-		 * it wont be easy to scale the data
-		 */
-		do {
-			$results = $this->getDuplicateRows->execute();
-			$rows = $results->fetchAll();
-			$results->closeCursor();
-			$lastResultCount = 0;
+		$results = $selectDuplicates->execute();
+		$rows = $results->fetchAll();
+		$results->closeCursor();
+		$rowIds = [];
+		if (\count($rows) > 0) {
+			$rowIds = \array_map(
+				function ($value) {
+					return (int)$value['id'];
+				},
+				$rows
+			);
+		}
 
-			foreach ($rows as $row) {
-				$deletedEntries += $this->deleteShareId->setParameter('shareId', (int) $row['id'])
+		if (\count($rows) > 0) {
+			//Delete in a batch of 1000 ids
+			$deleteShareIds = $this->getDeleteShareIdsBuilder();
+			foreach (\array_chunk($rowIds, 1000) as $getIds) {
+				$deletedEntries += $deleteShareIds->setParameter('shareIds', $getIds, IQueryBuilder::PARAM_INT_ARRAY)
 					->execute();
-				$lastResultCount++;
 			}
-		} while($lastResultCount > 0);
+		}
 
 		if ($deletedEntries > 0) {
 			$output->info('Removed ' . $deletedEntries . ' shares where duplicate rows where found');
