@@ -128,8 +128,9 @@ class ManagerTest extends TestCase {
 	 * @expectedException \OCP\App\AppManagerException
 	 */
 	public function testEnableSecondAppTheme() {
+		$appThemeName = 'theme-one';
 		$manager = $this->getMockBuilder(AppManager::class)
-			->setMethods(['isTheme', 'getAppInfo'])
+			->setMethods(['isTheme', 'getAppInfo', 'getAppPath'])
 			->setConstructorArgs([$this->userSession, $this->appConfig,
 				$this->groupManager, $this->cacheFactory, $this->eventDispatcher,
 				$this->config])
@@ -143,7 +144,46 @@ class ManagerTest extends TestCase {
 			->method('isTheme')
 			->willReturn(true);
 
-		$manager->enableApp('dav');
+		$manager->expects($this->once())
+			->method('getAppPath')
+			->with($appThemeName)
+			->willReturn('path');
+
+		$manager->enableApp($appThemeName);
+	}
+
+	public function testEnableTheSameThemeTwice() {
+		$appThemeName = 'theme-one';
+		$manager = $this->getMockBuilder(AppManager::class)
+			->setMethods(['isTheme', 'getAppInfo', 'getAppPath', 'getInstalledApps'])
+			->setConstructorArgs([$this->userSession, $this->appConfig,
+				$this->groupManager, $this->cacheFactory, $this->eventDispatcher,
+				$this->config])
+			->getMock();
+
+		$manager->expects($this->once())
+			->method('getInstalledApps')
+			->willReturn([$appThemeName]);
+		$manager->expects($this->once())
+			->method('getAppInfo')
+			->willReturn(['types'=>['theme']]);
+
+		$manager->expects($this->any())
+			->method('isTheme')
+			->will(
+				$this->returnCallback(
+					function ($appId) use ($appThemeName) {
+						return $appId === $appThemeName;
+					}
+				)
+			);
+
+		$manager->expects($this->once())
+			->method('getAppPath')
+			->with($appThemeName)
+			->willReturn('path');
+
+		$manager->enableApp($appThemeName);
 	}
 
 	public function testDisableApp() {

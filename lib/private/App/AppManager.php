@@ -253,6 +253,9 @@ class AppManager implements IAppManager {
 		) {
 			$apps = $this->getInstalledApps();
 			foreach ($apps as $installedAppId) {
+				if ($installedAppId === $appId) {
+					continue;
+				}
 				if ($this->isTheme($installedAppId)) {
 					throw new AppManagerException("$appId can't be enabled until $installedAppId is disabled.");
 				}
