@@ -50,7 +50,7 @@ describe('OCA.External.Settings tests', function() {
 			'</tr>' +
 			'</tbody>' +
 			'</table>'
-		);
+		).append('<div id="body-settings"></div>');
 		// these are usually appended into the data attribute
 		// within the DOM by the server template
 		$('#externalStorage .selectBackend:first').data('configurations', {
@@ -423,23 +423,17 @@ describe('OCA.External.Settings tests', function() {
 	describe('mountConfigLoaded event is triggered', function() {
 		var view;
 		var $bodySettings;
-		var fakeServer;
 
 		beforeEach(function() {
-			// add the body-settings for the mountConfigLoaded event
-			$('#testArea').append('<div id="body-settings"></div>');
-
 			var $el = $('#externalStorage');
 			view = new OCA.External.Settings.MountConfigListView($el, {encryptionEnabled: false});
 			$bodySettings = $('#body-settings');
-			fakeServer = sinon.fakeServer.create();
 		});
 
 		afterEach(function() {
 			view = null;
 			$bodySettings.off('mountConfigLoaded');
 			$bodySettings.remove();
-			fakeServer.restore();
 		});
 
 		it('only for not personal mounts', function() {
