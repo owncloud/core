@@ -3,12 +3,12 @@ Feature: sharing
 	Background:
 		Given using API version "1"
 		And using old DAV path
-
-	Scenario: Keep usergroup shares (#22143)
-		Given user "user0" has been created
+		And user "user0" has been created
 		And user "user1" has been created
 		And user "user2" has been created
-		And group "group" has been created
+
+	Scenario: Keep usergroup shares (#22143)
+		Given group "group" has been created
 		And user "user1" has been added to group "group"
 		And user "user2" has been added to group "group"
 		And user "user0" has created a folder "/TMP"
@@ -20,10 +20,7 @@ Feature: sharing
 			| /myFOLDER/myTMP/ |
 
 	Scenario: keep user shared file name same after one of recipient has renamed the file
-		Given user "user0" has been created
-		And user "user1" has been created
-		And user "user2" has been created
-		And user "user0" has uploaded file with content "foo" to "/sharefile.txt"
+		Given user "user0" has uploaded file with content "foo" to "/sharefile.txt"
 		And user "user0" has shared file "/sharefile.txt" with user "user1"
 		And user "user0" has shared file "/sharefile.txt" with user "user2"
 		When user "user2" moves file "/sharefile.txt" to "/renamedsharefile.txt" using the API
@@ -32,10 +29,7 @@ Feature: sharing
 		And as "user1" the file "/sharefile.txt" should exist
 
 	Scenario: keep user shared file directory same in respect to respective user if one of the recipient has moved the file
-		Given user "user0" has been created
-		And user "user1" has been created
-		And user "user2" has been created
-		And user "user0" has uploaded file with content "foo" to "/sharefile.txt"
+		Given user "user0" has uploaded file with content "foo" to "/sharefile.txt"
 		And user "user0" has shared file "/sharefile.txt" with user "user1"
 		And user "user0" has shared file "/sharefile.txt" with user "user2"
 		And user "user2" has created a folder "newfolder"

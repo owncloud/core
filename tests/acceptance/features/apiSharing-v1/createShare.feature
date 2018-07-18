@@ -3,10 +3,10 @@ Feature: sharing
 	Background:
 		Given using API version "1"
 		And using old DAV path
+		And user "user0" has been created
 
 	Scenario: Creating a new share with user
-		Given user "user0" has been created
-		And user "user1" has been created
+		Given user "user1" has been created
 		When user "user0" shares file "welcome.txt" with user "user1" using the API
 		Then the OCS status code should be "100"
 		And the HTTP status code should be "200"
@@ -18,8 +18,7 @@ Feature: sharing
 			| uid_owner              | user0              |
 
 	Scenario: Creating a share with a group
-		Given user "user0" has been created
-		And user "user1" has been created
+		Given user "user1" has been created
 		And group "sharing-group" has been created
 		When user "user0" sends HTTP method "POST" to API endpoint "/apps/files_sharing/api/v1/shares" with body
 			| path      | welcome.txt   |
@@ -35,8 +34,7 @@ Feature: sharing
 			| uid_owner              | user0              |
 
 	Scenario: Creating a new share with user who already received a share through their group
-		Given user "user0" has been created
-		And user "user1" has been created
+		Given user "user1" has been created
 		And group "sharing-group" has been created
 		And user "user1" has been added to group "sharing-group"
 		And user "user0" has shared file "welcome.txt" with group "sharing-group"
@@ -54,7 +52,6 @@ Feature: sharing
 			| uid_owner              | user0              |
 
 	Scenario: Creating a new public share of a file
-		Given user "user0" has been created
 		When user "user0" creates a share using the API with settings
 			| path      | welcome.txt |
 			| shareType | 3           |
@@ -63,7 +60,6 @@ Feature: sharing
 		And the last public shared file should be able to be downloaded without a password
 
 	Scenario: Creating a new public share of a file with password
-		Given user "user0" has been created
 		When user "user0" creates a share using the API with settings
 			| path      | welcome.txt |
 			| shareType | 3           |
@@ -73,7 +69,6 @@ Feature: sharing
 		And the last public shared file should be able to be downloaded with password "publicpw"
 
 	Scenario: Trying to create a new public share of a file with edit permissions results in a read-only share
-		Given user "user0" has been created
 		When user "user0" creates a share using the API with settings
 			| path        | welcome.txt |
 			| shareType   | 3           |
@@ -90,7 +85,6 @@ Feature: sharing
 		And the last public shared file should be able to be downloaded without a password
 
 	Scenario: Creating a new public share of a folder
-		Given user "user0" has been created
 		When user "user0" creates a share using the API with settings
 			| path      | PARENT   |
 			| shareType | 3        |
@@ -100,8 +94,7 @@ Feature: sharing
 		Then the public should be able to download the range "bytes=1-7" of file "/parent.txt" from inside the last public shared folder with password "publicpw" and the content should be "wnCloud"
 
 	Scenario: Creating a new share with a disabled user
-		Given user "user0" has been created
-		And user "user1" has been created
+		Given user "user1" has been created
 		And user "user0" has been disabled
 		When user "user0" sends HTTP method "POST" to API endpoint "/apps/files_sharing/api/v1/shares" with body
 			| path      | welcome.txt |
@@ -111,8 +104,7 @@ Feature: sharing
 		And the HTTP status code should be "401"
 
 	Scenario: Creating a link share with no specified permissions defaults to read permissions
-		Given user "user0" has been created
-		And user "user0" has created a folder "/afolder"
+		Given user "user0" has created a folder "/afolder"
 		When user "user0" creates a share using the API with settings
 			| path      | /afolder |
 			| shareType | 3        |
@@ -125,7 +117,6 @@ Feature: sharing
 
 	Scenario: Creating a link share with no specified permissions defaults to read permissions when public upload disabled globally
 		Given parameter "shareapi_allow_public_upload" of app "core" has been set to "no"
-		And user "user0" has been created
 		And user "user0" has created a folder "/afolder"
 		When user "user0" creates a share using the API with settings
 			| path      | /afolder |
@@ -138,8 +129,7 @@ Feature: sharing
 			| permissions | 1        |
 
 	Scenario: Creating a link share with edit permissions keeps it
-		Given user "user0" has been created
-		And user "user0" has created a folder "/afolder"
+		Given user "user0" has created a folder "/afolder"
 		When user "user0" creates a share using the API with settings
 			| path        | /afolder |
 			| shareType   | 3        |
@@ -152,8 +142,7 @@ Feature: sharing
 			| permissions | 15       |
 
 	Scenario: Share of folder and sub-folder to same user - core#20645
-		Given user "user0" has been created
-		And user "user1" has been created
+		Given user "user1" has been created
 		And group "group0" has been created
 		And user "user1" has been added to group "group0"
 		When user "user0" shares file "/PARENT" with user "user1" using the API
@@ -169,8 +158,7 @@ Feature: sharing
 		And the HTTP status code should be "200"
 
 	Scenario: Share of folder to a group
-		Given user "user0" has been created
-		And user "user1" has been created
+		Given user "user1" has been created
 		And user "user2" has been created
 		And group "group0" has been created
 		And user "user1" has been added to group "group0"
@@ -192,15 +180,13 @@ Feature: sharing
 		And the HTTP status code should be "200"
 
 	Scenario: Don't allow sharing of the root
-		Given user "user0" has been created
 		When user "user0" creates a share using the API with settings
 			| path      | / |
 			| shareType | 3 |
 		Then the OCS status code should be "403"
 
 	Scenario: Only allow 1 link share per file/folder
-		Given user "user0" has been created
-		And as user "user0"
+		Given as user "user0"
 		And the user has created a share with settings
 			| path      | welcome.txt |
 			| shareType | 3           |
@@ -211,8 +197,7 @@ Feature: sharing
 		Then the share ids should match
 
 	Scenario: unique target names for incoming shares
-		Given user "user0" has been created
-		And user "user1" has been created
+		Given user "user1" has been created
 		And user "user2" has been created
 		And user "user0" has created a folder "/foo"
 		And user "user1" has created a folder "/foo"
@@ -223,8 +208,7 @@ Feature: sharing
 			| /foo%20(2)/ |
 
 	Scenario: sharing again an own file while belonging to a group
-		Given user "user0" has been created
-		And group "sharing-group" has been created
+		Given group "sharing-group" has been created
 		And user "user0" has been added to group "sharing-group"
 		And user "user0" has shared file "welcome.txt" with group "sharing-group"
 		And user "user0" has deleted the last share
@@ -236,7 +220,6 @@ Feature: sharing
 		And the HTTP status code should be "200"
 
 	Scenario: sharing subfolder when parent already shared
-		Given user "user0" has been created
 		Given user "user1" has been created
 		And group "sharing-group" has been created
 		And user "user0" has created a folder "/test"
@@ -251,8 +234,7 @@ Feature: sharing
 		And as "user1" the folder "/sub" should exist
 
 	Scenario: sharing subfolder when parent already shared with group of sharer
-		Given user "user0" has been created
-		And user "user1" has been created
+		Given user "user1" has been created
 		And group "sharing-group" has been created
 		And user "user0" has been added to group "sharing-group"
 		And user "user0" has created a folder "/test"
@@ -267,8 +249,7 @@ Feature: sharing
 		And as "user1" the folder "/sub" should exist
 
 	Scenario: sharing subfolder of already shared folder, GET result is correct
-		Given user "user0" has been created
-		And user "user1" has been created
+		Given user "user1" has been created
 		And user "user2" has been created
 		And user "user3" has been created
 		And user "user4" has been created
@@ -291,8 +272,7 @@ Feature: sharing
 		And file "/folder1/folder2" should be included as path in the response
 
 	Scenario: Cannot create share with zero permissions
-		Given user "user0" has been created
-		And user "user1" has been created
+		Given user "user1" has been created
 		When user "user0" sends HTTP method "POST" to API endpoint "/apps/files_sharing/api/v1/shares" with body
 			| path        | welcome.txt |
 			| shareWith   | user1       |
