@@ -119,6 +119,7 @@ class Manager implements IManager {
 
 	/**
 	 * @param string $user
+	 * @return bool
 	 */
 	public function isReadyForUser($user) {
 		if (!$this->isReady()) {

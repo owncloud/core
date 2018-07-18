@@ -896,7 +896,7 @@ class CardDavBackend implements BackendInterface, SyncSupport {
 	 *
 	 * @param int $addressBookId
 	 * @param string $uri
-	 * @returns array
+	 * @return array
 	 */
 	public function getContact($addressBookId, $uri) {
 		$result = [];
