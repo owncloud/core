@@ -107,7 +107,7 @@ Feature: sharing
 		Then the content of file "/FOLDER/test.txt" for user "user0" should be "test"
 
 	Scenario: Uploading file to a user read/write share folder works
-		And user "user1" has been created
+		Given user "user1" has been created
 		And user "user0" has created a share with settings
 			| path        | FOLDER |
 			| shareType   | 0      |
