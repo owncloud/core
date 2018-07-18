@@ -93,7 +93,7 @@ class AppConfigHelper {
 	 *                                 ['capabilitiesParameter'] the parameter name in the capabilities response
 	 *                                 ['testingApp'] the "app" name as understood by "testing"
 	 *                                 ['testingParameter'] the parameter name as understood by "testing"
-	 *                                 ['testingState'] boolean state the parameter must be set to for the test
+	 *                                 ['testingState'] boolean|string that the parameter must be set to for the test
 	 * @param string $savedCapabilitiesXml the original capabilities in XML format
 	 * @param int $apiVersion (1|2)
 	 *
@@ -118,6 +118,12 @@ class AppConfigHelper {
 					$savedCapabilitiesXml
 				);
 
+				if (\is_bool($capabilityToSet['testingState'])) {
+					$testingState = $capabilityToSet['testingState'] ? 'yes' : 'no';
+				} else {
+					$testingState = $capabilityToSet['testingState'];
+				}
+
 				// Always set each config value, because sometimes enabling one
 				// config also changes some sub-settings. So the "interim" state
 				// as we set the config values could be unexpectedly different
@@ -125,7 +131,7 @@ class AppConfigHelper {
 				$appParameterValues[] = [
 					'appid' => $capabilityToSet['testingApp'],
 					'configkey' => $capabilityToSet['testingParameter'],
-					'value' => $capabilityToSet['testingState'] ? 'yes' : 'no'
+					'value' => $testingState
 				];
 
 				// Remember the original state of all capabilities touched

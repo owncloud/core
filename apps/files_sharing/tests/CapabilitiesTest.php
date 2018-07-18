@@ -44,6 +44,7 @@ class CapabilitiesTest extends \Test\TestCase {
 		$this->userSearch = $this->getMockBuilder(\OCP\Util\UserSearch::class)
 			->disableOriginalConstructor()
 			->getMock();
+
 		$this->userSearch->expects($this->any())
 			->method('getSearchMinLength')
 			->willReturn(1);
@@ -83,6 +84,7 @@ class CapabilitiesTest extends \Test\TestCase {
 		];
 		$result = $this->getResults($map);
 		$this->assertTrue($result['api_enabled']);
+		$this->assertTrue($result['can_share']);
 		$this->assertArrayHasKey('public', $result);
 		$this->assertArrayHasKey('user', $result);
 		$this->assertArrayHasKey('resharing', $result);
@@ -94,6 +96,7 @@ class CapabilitiesTest extends \Test\TestCase {
 		];
 		$result = $this->getResults($map);
 		$this->assertFalse($result['api_enabled']);
+		$this->assertFalse($result['can_share']);
 		$this->assertFalse($result['public']['enabled']);
 		$this->assertFalse($result['user']['send_mail']);
 		$this->assertFalse($result['resharing']);

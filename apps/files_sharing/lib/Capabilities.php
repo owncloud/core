@@ -63,6 +63,7 @@ class Capabilities implements ICapability {
 			$res['public'] = ['enabled' => false];
 			$res['user'] = ['send_mail' => false];
 			$res['resharing'] = false;
+			$res['can_share'] = false;
 		} else {
 			$res['api_enabled'] = true;
 
@@ -104,6 +105,12 @@ class Capabilities implements ICapability {
 
 			$res['share_with_group_members_only'] = $this->config->getAppValue('core', 'shareapi_only_share_with_group_members', 'yes') === 'yes';
 			$res['share_with_membership_groups_only'] = $this->config->getAppValue('core', 'shareapi_only_share_with_membership_groups', 'yes') === 'yes';
+
+			if (\OCP\Util::isSharingDisabledForUser()) {
+				$res['can_share'] = false;
+			} else {
+				$res['can_share'] = true;
+			}
 
 			$user_enumeration = [];
 			$user_enumeration['enabled'] = $this->config->getAppValue('core', 'shareapi_allow_share_dialog_user_enumeration', 'yes') === 'yes';
