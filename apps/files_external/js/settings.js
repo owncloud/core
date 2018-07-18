@@ -788,7 +788,6 @@ MountConfigListView.prototype = _.extend({
 	 */
 	_executeCallbackWhenFinished: function(deferreds, callback) {
 		var self = this;
-		var pendingDeferreds = [];
 
 		$.when.apply($, deferreds).always(function() {
 			var pendingDeferreds = [];
@@ -980,7 +979,7 @@ MountConfigListView.prototype = _.extend({
 
 		if (this._isPersonal) {
 			// load userglobal storages
-			var personalRequest = $.ajax({
+			var fixedStoragesRequest = $.ajax({
 				type: 'GET',
 				url: OC.generateUrl('apps/files_external/userglobalstorages'),
 				data: {'testOnly' : true},
@@ -1020,12 +1019,12 @@ MountConfigListView.prototype = _.extend({
 					onCompletion.resolve();
 				}
 			});
-			ajaxRequests.push(personalRequest);
+			ajaxRequests.push(fixedStoragesRequest);
 		}
 
 		var url = this._storageConfigClass.prototype._url;
 
-		var globalRequest = $.ajax({
+		var changeableStoragesRequest = $.ajax({
 			type: 'GET',
 			url: OC.generateUrl(url),
 			contentType: 'application/json',
@@ -1041,7 +1040,7 @@ MountConfigListView.prototype = _.extend({
 				onCompletion.resolve();
 			}
 		});
-		ajaxRequests.push(globalRequest);
+		ajaxRequests.push(changeableStoragesRequest);
 
 		this._executeCallbackWhenFinished(ajaxRequests, function() {
 			$('#body-settings').trigger('mountConfigLoaded');
