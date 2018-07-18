@@ -82,7 +82,30 @@ class File extends Node implements IFile, IFileNode {
 		}
 		parent::__construct($view, $info, $shareManager);
 	}
-	
+
+	/**
+	 * Handles metadata updates for the target storage (mtime, propagation)
+	 *
+	 * @param Storage $targetStorage
+	 * @param $targetInternalPath
+	 */
+	private function handleMetadataUpdate(\OC\Files\Storage\Storage $targetStorage, $targetInternalPath) {
+		// since we skipped the view we need to scan and emit the hooks ourselves
+		
+		// allow sync clients to send the mtime along in a header
+		if (isset($this->request->server['HTTP_X_OC_MTIME'])) {
+			$mtime = $this->sanitizeMtime(
+				$this->request->server ['HTTP_X_OC_MTIME']
+			);
+			if ($targetStorage->touch($targetInternalPath, $mtime)) {
+				$this->header('X-OC-MTime: accepted');
+			}
+			$targetStorage->getUpdater()->update($targetInternalPath, $mtime);
+		} else {
+			$targetStorage->getUpdater()->update($targetInternalPath);
+		}
+	}
+
 	/**
 	 * Updates the data
 	 *
@@ -234,21 +257,12 @@ class File extends Node implements IFile, IFileNode {
 				}
 			}
 
-			// since we skipped the view we need to scan and emit the hooks ourselves
-			$storage->getUpdater()->update($internalPath);
+			$this->handleMetadataUpdate($storage, $internalPath);
 
 			try {
 				$this->changeLock(ILockingProvider::LOCK_SHARED);
 			} catch (LockedException $e) {
 				throw new FileLocked($e->getMessage(), $e->getCode(), $e);
-			}
-
-			// allow sync clients to send the mtime along in a header
-			if (isset($this->request->server['HTTP_X_OC_MTIME'])) {
-				$mtime = $this->sanitizeMtime($this->request->server ['HTTP_X_OC_MTIME']);
-				if ($this->fileView->touch($this->path, $mtime)) {
-					$this->header('X-OC-MTime: accepted');
-				}
 			}
 
 			if ($view) {
@@ -539,18 +553,7 @@ class File extends Node implements IFile, IFileNode {
 					$chunk_handler->file_assemble($targetStorage, $targetInternalPath);
 				}
 
-				// allow sync clients to send the mtime along in a header
-				if (isset($this->request->server['HTTP_X_OC_MTIME'])) {
-					$mtime = $this->sanitizeMtime(
-						$this->request->server ['HTTP_X_OC_MTIME']
-					);
-					if ($targetStorage->touch($targetInternalPath, $mtime)) {
-						$this->header('X-OC-MTime: accepted');
-					}
-				}
-
-				// since we skipped the view we need to scan and emit the hooks ourselves
-				$targetStorage->getUpdater()->update($targetInternalPath);
+				$this->handleMetadataUpdate($targetStorage, $targetInternalPath);
 
 				$this->fileView->changeLock($targetPath, ILockingProvider::LOCK_SHARED);
 
