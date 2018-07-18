@@ -1,7 +1,7 @@
 {
     "_readme": [
         "This file locks the dependencies of your project to a known state",
-        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
     "content-hash": "cc18335f3b7e5999c2527cedd168c3d0",
@@ -3729,12 +3729,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/minkphp/MinkSelenium2Driver.git",
-                "reference": "93474c65a2a7bf959200ab5f7a14cc450645c185"
+                "reference": "d8adafd0ba04fcd5a3865400e2bd0500c683f981"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/minkphp/MinkSelenium2Driver/zipball/93474c65a2a7bf959200ab5f7a14cc450645c185",
-                "reference": "93474c65a2a7bf959200ab5f7a14cc450645c185",
+                "url": "https://api.github.com/repos/minkphp/MinkSelenium2Driver/zipball/d8adafd0ba04fcd5a3865400e2bd0500c683f981",
+                "reference": "d8adafd0ba04fcd5a3865400e2bd0500c683f981",
                 "shasum": ""
             },
             "require": {
@@ -3782,7 +3782,7 @@
                 "testing",
                 "webdriver"
             ],
-            "time": "2018-01-07T19:17:08+00:00"
+            "time": "2018-06-25T17:38:20+00:00"
         },
         {
             "name": "behat/transliterator",
