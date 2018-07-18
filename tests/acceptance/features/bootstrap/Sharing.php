@@ -131,7 +131,7 @@ trait Sharing {
 	 */
 	public function theUserHasCreatedAShareWithSettings($body) {
 		$this->userCreatesAShareWithSettings($this->currentUser, $body);
-		$this->theOCSStatusCodeShouldBe(100);
+		$this->theOCSStatusCodeShouldBe([100, 200]);
 		$this->theHTTPStatusCodeShouldBe(200);
 	}
 
@@ -151,22 +151,27 @@ trait Sharing {
 		$sharePassword = null,
 		$permissions = null
 	) {
-		$this->response = SharingHelper::createShare(
-			$this->getBaseUrl(),
-			$user,
-			$this->getPasswordForUser($user),
-			$path,
-			'public',
-			null, // shareWith
-			$publicUpload,
-			$sharePassword,
-			$permissions,
-			null, // linkName
-			null, // expireDate
-			$this->apiVersion,
-			$this->sharingApiVersion
-		);
-
+		try {
+			$this->response = SharingHelper::createShare(
+				$this->getBaseUrl(),
+				$user,
+				$this->getPasswordForUser($user),
+				$path,
+				'public',
+				null, // shareWith
+				$publicUpload,
+				$sharePassword,
+				$permissions,
+				null, // linkName
+				null, // expireDate
+				$this->apiVersion,
+				$this->sharingApiVersion
+			);
+		} catch (BadResponseException $e) {
+			//in v2.php error HTTP codes are returned
+			//we need to be able to be able to check for them
+			$this->response = $e->getResponse();
+		}
 		$this->lastShareData = $this->response->xml();
 	}
 
@@ -570,11 +575,6 @@ trait Sharing {
 		} catch (BadResponseException $ex) {
 			$this->response = $ex->getResponse();
 		}
-
-		PHPUnit_Framework_Assert::assertEquals(
-			200,
-			$this->response->getStatusCode()
-		);
 	}
 
 	/**
@@ -905,7 +905,9 @@ trait Sharing {
 	 *
 	 * @return void
 	 */
-	public function userShouldBeAbleToShareUsingTheApi($sharer, $filepath, $userOrGroup, $sharee, $permissions = null) {
+	public function userShouldBeAbleToShareUsingTheApi(
+		$sharer, $filepath, $userOrGroup, $sharee, $permissions = null
+	) {
 		$shareType = ($userOrGroup === "user" ? 0 : 1);
 		$time = \time();
 		if ($this->lastShareTime !== null && $time - $this->lastShareTime < 1) {
@@ -918,10 +920,10 @@ trait Sharing {
 		$this->createShare(
 			$sharer, $filepath, $shareType, $sharee, null, null, $permissions
 		);
-		PHPUnit_Framework_Assert::assertEquals(
-			100,
-			$this->getOCSResponseStatusCode($this->response)
-		);
+		
+		//v1.php returns 100 as success code
+		//v2.php returns 200 in the same case
+		$this->theOCSStatusCodeShouldBe([100, 200]);
 	}
 
 	/**
