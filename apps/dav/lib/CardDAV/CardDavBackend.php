@@ -176,7 +176,7 @@ class CardDavBackend implements BackendInterface, SyncSupport {
 		while($row = $result->fetch()) {
 			list(, $name) = URLUtil::splitPath($row['principaluri']);
 			$uri = $row['uri'] . '_shared_by_' . $name;
-			$displayName = $row['displayname'] . "($name)";
+			$displayName = $row['displayname'] . " ($name)";
 			if (!isset($addressBooks[$row['id']])) {
 				$addressBooks[$row['id']] = [
 					'id'  => $row['id'],

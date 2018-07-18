@@ -238,7 +238,7 @@ class CalDavBackend extends AbstractBackend implements SyncSupport, Subscription
 		while($row = $result->fetch()) {
 			list(, $name) = URLUtil::splitPath($row['principaluri']);
 			$uri = $row['uri'] . '_shared_by_' . $name;
-			$row['displayname'] .= "($name)";
+			$row['displayname'] .= " ($name)";
 			$components = [];
 			if ($row['components']) {
 				$components = explode(',',$row['components']);
