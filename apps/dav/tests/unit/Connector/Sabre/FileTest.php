@@ -296,8 +296,6 @@ class FileTest extends TestCase {
 	 * value in the listener. Once it is modified check the exception returned
 	 * from main function. The reason for exception is put from Sabre/File.php
 	 * throws exception
-	 *
-	 * @expectedException \Sabre\DAV\Exception
 	 */
 	public function testPutWithModifyRun() {
 		$calledUploadAllowed = [];
@@ -312,6 +310,8 @@ class FileTest extends TestCase {
 			->setMethods(['fopen'])
 			->setConstructorArgs([['datadir' => \OC::$server->getTempManager()->getTemporaryFolder()]])
 			->getMock();
+		$storage->method('fopen')
+			->willReturn($this->getStream('qwertz'));
 		Filesystem::mount($storage, [], $this->user . '/');
 		/** @var View | \PHPUnit_Framework_MockObject_MockObject $view */
 		$view = $this->getMockBuilder(View::class)
@@ -337,7 +337,7 @@ class FileTest extends TestCase {
 
 		$file = new File($view, $info);
 
-		$file->put('test data');
+		$file->put($this->getStream('test data'));
 
 		$this->assertInstanceOf(GenericEvent::class, $calledUploadAllowed[1]);
 		$this->assertArrayHasKey('run', $calledUploadAllowed[1]);

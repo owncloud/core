@@ -183,7 +183,7 @@ class File extends Node implements IFile, IFileNode {
 		list($storage, $internalPath) = $this->fileView->resolvePath($this->path);
 		try {
 			$target = $partStorage->fopen($internalPartPath, 'wb');
-			if ($target === false) {
+			if (!\is_resource($target)) {
 				\OCP\Util::writeLog('webdav', '\OC\Files\Filesystem::fopen() failed', \OCP\Util::ERROR);
 				// because we have no clue about the cause we can only throw back a 500/Internal Server Error
 				throw new Exception('Could not write file contents');
