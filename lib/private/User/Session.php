@@ -354,6 +354,8 @@ class Session implements IUserSession, Emitter {
 			throw new \InvalidArgumentException('$user cannot be empty');
 		}
 		if (!$isTokenPassword && $this->isTokenAuthEnforced()) {
+			$this->logger->warning("Login failed: '$user' (Remote IP: '{$request->getRemoteAddress()}')", ['app' => 'core']);
+			$this->emitFailedLogin($user);
 			throw new PasswordLoginForbiddenException();
 		}
 		if (!$isTokenPassword && $this->isTwoFactorEnforced($user)) {
@@ -473,6 +475,7 @@ class Session implements IUserSession, Emitter {
 	 * @todo do not allow basic auth if the user is 2FA enforced
 	 * @param IRequest $request
 	 * @return boolean if the login was successful
+	 * @throws LoginException
 	 */
 	public function tryBasicAuthLogin(IRequest $request) {
 		if (!empty($request->server['PHP_AUTH_USER']) && !empty($request->server['PHP_AUTH_PW'])) {
@@ -504,7 +507,7 @@ class Session implements IUserSession, Emitter {
 	 * @param string $login
 	 * @param string $password
 	 * @return boolean
-	 * @throws LoginException if an app canceld the login process or the user is not enabled
+	 * @throws LoginException if an app canceled the login process or the user is not enabled
 	 *
 	 * Two new keys 'login' in the before event and 'user' in the after event
 	 * are introduced. We should use this keys in future when trying to listen
@@ -534,16 +537,16 @@ class Session implements IUserSession, Emitter {
 				$this->eventDispatcher->dispatch('user.afterlogin', $afterEvent);
 
 				return true;
-			} else {
-				// injecting l10n does not work - there is a circular dependency between session and \OCP\L10N\IFactory
-				$message = \OC::$server->getL10N('lib')->t('Login canceled by app');
-				throw new LoginException($message);
 			}
-		} else {
+
 			// injecting l10n does not work - there is a circular dependency between session and \OCP\L10N\IFactory
-			$message = \OC::$server->getL10N('lib')->t('User disabled');
+			$message = \OC::$server->getL10N('lib')->t('Login canceled by app');
 			throw new LoginException($message);
 		}
+
+		// injecting l10n does not work - there is a circular dependency between session and \OCP\L10N\IFactory
+		$message = \OC::$server->getL10N('lib')->t('User disabled');
+		throw new LoginException($message);
 	}
 
 	/**
@@ -551,7 +554,8 @@ class Session implements IUserSession, Emitter {
 	 *
 	 * @param string $token
 	 * @return boolean
-	 * @throws LoginException if an app canceld the login process or the user is not enabled
+	 * @throws LoginException if an app canceled the login process or the user is not enabled
+	 * @throws InvalidTokenException
 	 */
 	private function loginWithToken($token) {
 		try {
@@ -683,16 +687,16 @@ class Session implements IUserSession, Emitter {
 			if ($this->isLoggedIn()) {
 				$this->prepareUserLogin($firstTimeLogin);
 				return true;
-			} else {
-				// injecting l10n does not work - there is a circular dependency between session and \OCP\L10N\IFactory
-				$message = \OC::$server->getL10N('lib')->t('Login canceled by app');
-				throw new LoginException($message);
 			}
-		} else {
+
 			// injecting l10n does not work - there is a circular dependency between session and \OCP\L10N\IFactory
-			$message = \OC::$server->getL10N('lib')->t('User disabled');
+			$message = \OC::$server->getL10N('lib')->t('Login canceled by app');
 			throw new LoginException($message);
 		}
+
+		// injecting l10n does not work - there is a circular dependency between session and \OCP\L10N\IFactory
+		$message = \OC::$server->getL10N('lib')->t('User disabled');
+		throw new LoginException($message);
 	}
 
 	/**
@@ -916,6 +920,7 @@ class Session implements IUserSession, Emitter {
 	 * @param IRequest $request
 	 * @todo check remember me cookie
 	 * @return boolean
+	 * @throws LoginException
 	 */
 	public function tryTokenLogin(IRequest $request) {
 		$authHeader = $request->getHeader('Authorization');
@@ -1009,6 +1014,7 @@ class Session implements IUserSession, Emitter {
 	 * @param string $uid the username
 	 * @param string $currentToken
 	 * @return bool
+	 * @throws \OCP\PreConditionNotMetException
 	 */
 	public function loginWithCookie($uid, $currentToken) {
 		$this->logger->debug(
