@@ -76,22 +76,46 @@ class SyncService {
 	/**
 	 * @param UserInterface $backend the backend to check
 	 * @param \Closure $callback is called for every user to allow progress display
-	 * @return array
+	 * @return array[] the first array contains a uid => account map of users that were removed in the external backend
+	 *                 the second array contains a uid => account map of users that are not enabled in oc, but are available in the external backend
 	 */
-	public function getNoLongerExistingUsers(UserInterface $backend, \Closure $callback) {
-		// detect no longer existing users
-		$toBeDeleted = [];
+	public function analyzeExistingUsers(UserInterface $backend, \Closure $callback) {
+		$removed = [];
+		$reappeared = [];
 		$backendClass = \get_class($backend);
-		$this->mapper->callForAllUsers(function (Account $a) use (&$toBeDeleted, $backend, $backendClass, $callback) {
-			if ($a->getBackend() === $backendClass) {
-				if (!$backend->userExists($a->getUserId())) {
-					$toBeDeleted[] = $a->getUserId();
-				}
-			}
+		$this->mapper->callForAllUsers(function (Account $a) use (&$removed, &$reappeared, $backend, $backendClass, $callback) {
+			// Check if the backend matches handles this user
+			list($wasRemoved, $didReappear) = $this->checkIfAccountReappeared($a, $backend, $backendClass);
+			$removed = \array_merge($removed, $wasRemoved);
+			$reappeared = \array_merge($reappeared, $didReappear);
 			$callback($a);
 		}, '', false);
+		return [$removed, $reappeared];
+	}
 
-		return $toBeDeleted;
+	/**
+	 * Checks a backend to see if a user reappeared relative to the accounts table
+	 * @param Account $a
+	 * @param UserInterface $backend
+	 * @param $backendClass
+	 * @return array
+	 */
+	private function checkIfAccountReappeared(Account $a, UserInterface $backend, $backendClass) {
+		$removed = [];
+		$reappeared = [];
+		if ($a->getBackend() === $backendClass) {
+			// Does the backend have this user still
+			if ($backend->userExists($a->getUserId())) {
+				// Is the user not enabled currently?
+				if ($a->getState() !== Account::STATE_ENABLED) {
+					$reappeared[$a->getUserId()] = $a;
+				}
+			} else {
+				// The backend no longer has this user
+				$removed[$a->getUserId()] = $a;
+			}
+		}
+		return [$removed, $reappeared];
 	}
 
 	/**
