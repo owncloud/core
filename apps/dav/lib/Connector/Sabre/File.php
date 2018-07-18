@@ -270,18 +270,6 @@ class File extends Node implements IFile, IFileNode {
 			}
 
 			$this->refreshInfo();
-
-			$meta = $partStorage->getMetaData($internalPartPath);
-
-			if (isset($meta['checksum'])) {
-				$this->fileView->putFileInfo(
-					$this->path,
-					['checksum' => $meta['checksum']]
-				);
-			}
-
-			$this->refreshInfo();
-
 		} catch (StorageNotAvailableException $e) {
 			throw new ServiceUnavailable("Failed to check file size: " . $e->getMessage());
 		}
