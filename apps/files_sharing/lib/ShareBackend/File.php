@@ -51,7 +51,7 @@ class File implements \OCP\Share_Backend_File_Dependent {
 		if ($federatedShareProvider) {
 			$this->federatedShareProvider = $federatedShareProvider;
 		} else {
-			$federatedSharingApp = new \OCA\FederatedFileSharing\AppInfo\Application('federatedfilesharing');
+			$federatedSharingApp = new \OCA\FederatedFileSharing\AppInfo\Application();
 			$this->federatedShareProvider = $federatedSharingApp->getFederatedShareProvider();
 		}
 	}
