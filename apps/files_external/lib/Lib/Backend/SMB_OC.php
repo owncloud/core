@@ -24,7 +24,7 @@ namespace OCA\Files_External\Lib\Backend;
 
 use OCA\Files_External\Lib\LegacyDependencyCheckPolyfill;
 use OCP\Files\External\Auth\AuthMechanism;
-use OCP\Files\External\Backend\Backend;
+use OCP\Files\External\Backend\Backend as ExternalBackend;
 use OCP\Files\External\DefinitionParameter;
 use OCP\Files\External\IStorageConfig;
 use OCP\Files\External\IStoragesBackendService;
@@ -34,7 +34,7 @@ use OCP\IUser;
 /**
  * Deprecated SMB_OC class - use SMB with the password::sessioncredentials auth mechanism
  */
-class SMB_OC extends Backend {
+class SMB_OC extends ExternalBackend {
 
 	use LegacyDependencyCheckPolyfill;
 

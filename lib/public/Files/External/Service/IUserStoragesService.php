@@ -28,5 +28,11 @@ namespace OCP\Files\External\Service;
  * @since 10.0
  */
 interface IUserStoragesService extends IStoragesService {
-
+	/**
+	 * Deletes the storages mounted to a user
+	 * @param \OCP\IUser $user
+	 * @return bool
+	 * @since 10.0.10
+	 */
+	public function deleteAllMountsForUser(\OCP\IUser $user);
 }

@@ -25,10 +25,10 @@ namespace OCA\Files_External\Lib\Backend;
 use OCP\IL10N;
 use OCP\Files\External\DefinitionParameter;
 use OCP\Files\External\Auth\AuthMechanism;
-use OCP\Files\External\Backend\Backend;
+use OCP\Files\External\Backend\Backend as ExternalBackend;
 use OCA\Files_External\Lib\LegacyDependencyCheckPolyfill;
 
-class Google extends Backend {
+class Google extends ExternalBackend {
 
 	use LegacyDependencyCheckPolyfill;
 
