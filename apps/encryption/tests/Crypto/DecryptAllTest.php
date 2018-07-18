@@ -24,15 +24,27 @@
 namespace OCA\Encryption\Tests\Crypto;
 
 
+use OC\User\LoginException;
 use OCA\Encryption\Crypto\Crypt;
 use OCA\Encryption\Crypto\DecryptAll;
 use OCA\Encryption\KeyManager;
 use OCA\Encryption\Session;
 use OCA\Encryption\Util;
+use OCP\IUserManager;
 use Symfony\Component\Console\Helper\QuestionHelper;
+use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Output\OutputInterface;
 use Test\TestCase;
+use Test\Traits\UserTrait;
 
+/**
+ * Class DecryptAllTest
+ *
+ * @group DB
+ * @package OCA\Encryption\Tests\Crypto
+ */
 class DecryptAllTest extends TestCase {
+	use UserTrait;
 
 	/** @var  DecryptAll */
 	protected $instance;
@@ -49,6 +61,8 @@ class DecryptAllTest extends TestCase {
 	/** @var  Session | \PHPUnit_Framework_MockObject_MockObject */
 	protected $session;
 
+	protected $userManager;
+
 	/** @var QuestionHelper | \PHPUnit_Framework_MockObject_MockObject  */
 	protected $questionHelper;
 
@@ -63,6 +77,7 @@ class DecryptAllTest extends TestCase {
 			->disableOriginalConstructor()->getMock();
 		$this->session = $this->getMockBuilder('OCA\Encryption\Session')
 			->disableOriginalConstructor()->getMock();
+		$this->userManager = $this->createMock(IUserManager::class);
 		$this->questionHelper = $this->getMockBuilder('Symfony\Component\Console\Helper\QuestionHelper')
 			->disableOriginalConstructor()->getMock();
 
@@ -71,6 +86,7 @@ class DecryptAllTest extends TestCase {
 			$this->keyManager,
 			$this->crypt,
 			$this->session,
+			$this->userManager,
 			$this->questionHelper
 		);
 	}
@@ -131,4 +147,52 @@ class DecryptAllTest extends TestCase {
 		];
 	}
 
+	public function providerPrepareLoginException() {
+		return [
+			['user1'],
+			['recoverykey'],
+			['throwExceptionInCheckRecovery']
+		];
+	}
+	/**
+	 * @dataProvider providerPrepareLoginException
+	 * @expectedException \OC\User\LoginException
+	 * @expectedExceptionMessage Invalid credentials provided
+	 */
+	public function testPrepareLoginException($loginType) {
+		$this->createUser('user1', 'pass');
+		$input = $this->createMock(InputInterface::class);
+		$output = $this->createMock(OutputInterface::class);
+
+		$this->util->expects($this->once())
+			->method('isMasterKeyEnabled')
+			->willReturn(false);
+
+		$this->keyManager->expects($this->any())
+			->method('getRecoveryKeyId')
+			->willReturn('xyz');
+
+		$this->questionHelper->expects($this->any())
+			->method('ask')
+			->willReturn('foo');
+
+		if ($loginType === 'user1') {
+			$this->userManager->expects($this->any())
+				->method('checkPassword')
+				->willReturn(false);
+			$this->instance->prepare($input, $output, 'user1');
+		} elseif ($loginType === 'recoverykey') {
+			$this->keyManager->expects($this->once())
+				->method('checkRecoveryPassword')
+				->willReturn(false);
+			$this->instance->prepare($input, $output, 'xyz');
+		} else {
+			$this->keyManager->expects($this->once())
+				->method('checkRecoveryPassword')
+				->willThrowException(new \Exception());
+			$this->instance->prepare($input, $output, 'xyz');
+		}
+
+
+	}
 }

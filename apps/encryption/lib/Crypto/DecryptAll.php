@@ -23,9 +23,11 @@
 namespace OCA\Encryption\Crypto;
 
 
+use OC\User\LoginException;
 use OCA\Encryption\KeyManager;
 use OCA\Encryption\Session;
 use OCA\Encryption\Util;
+use OCP\IUserManager;
 use Symfony\Component\Console\Helper\QuestionHelper;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -49,6 +51,9 @@ class DecryptAll {
 	/** @var Session  */
 	protected $session;
 
+	/** @var IUserManager */
+	protected $userManager;
+
 	/**
 	 * @param Util $util
 	 * @param KeyManager $keyManager
@@ -61,22 +66,28 @@ class DecryptAll {
 		KeyManager $keyManager,
 		Crypt $crypt,
 		Session $session,
+		IUserManager $userManager,
 		QuestionHelper $questionHelper
 	) {
 		$this->util = $util;
 		$this->keyManager = $keyManager;
 		$this->crypt = $crypt;
 		$this->session = $session;
+		$this->userManager = $userManager;
 		$this->questionHelper = $questionHelper;
 	}
 
 	/**
 	 * prepare encryption module to decrypt all files
 	 *
+	 * - Throws LoginException when user login fails either recovery password fails
+	 *   or if the user password fails
+	 *
 	 * @param InputInterface $input
 	 * @param OutputInterface $output
 	 * @param $user
 	 * @return bool
+	 * @throws LoginException
 	 */
 	public function prepare(InputInterface $input, OutputInterface $output, $user) {
 
@@ -115,6 +126,24 @@ class DecryptAll {
 			$question->setHidden(true);
 			$question->setHiddenFallback(false);
 			$password = $this->questionHelper->ask($input, $output, $question);
+
+
+			$throwLoginException = false;
+			if ($recoveryKeyId === $user) {
+				try {
+					if ($this->keyManager->checkRecoveryPassword($password) === false) {
+						$throwLoginException = true;
+					}
+				} catch (\Exception $e) {
+					$throwLoginException = true;
+				}
+			} elseif ($this->userManager->checkPassword($user, $password) === false) {
+				$throwLoginException = true;
+			}
+
+			if ($throwLoginException === true) {
+				throw new LoginException('Invalid credentials provided');
+			}
 		}
 
 		$privateKey = $this->getPrivateKey($user, $password);
