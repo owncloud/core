@@ -112,6 +112,7 @@ pipeline:
       - php occ a:l
       - php occ a:e files_primary_s3
       - php occ a:l
+      - php ./occ s3:create-bucket owncloud --accept-warning
     when:
       matrix:
         PRIMARY_OBJECTSTORE: files_primary_s3
