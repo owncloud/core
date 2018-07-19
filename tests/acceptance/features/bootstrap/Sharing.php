@@ -429,6 +429,19 @@ trait Sharing {
 	}
 
 	/**
+	 * @When the public uploads file ":filename" using the API
+	 * @Given the public has uploaded file ":filename"
+	 *
+	 * @param string $source target file name
+	 *
+	 * @return void
+	 */
+	public function publiclyUploadingFile($source) {
+		$file = \GuzzleHttp\Stream\Stream::factory(\fopen($source, 'r'));
+		$this->publicUploadContent(\basename($source), '', $file->getContents());
+	}
+
+	/**
 	 * @Then /^user "([^"]*)" should not be able to create public share of (?:file|folder) "([^"]*)" using the API$/
 	 *
 	 * @param string $sharer
