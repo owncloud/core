@@ -118,6 +118,7 @@ pipeline:
       - php occ a:l
       - php occ a:e files_primary_s3
       - php occ a:l
+      - php ./occ s3:create-bucket owncloud --accept-warning
     when:
       matrix:
         TEST_OBJECTSTORAGE: true
