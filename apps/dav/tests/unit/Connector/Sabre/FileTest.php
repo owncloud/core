@@ -293,14 +293,12 @@ class FileTest extends TestCase {
 
 	/**
 	 * Test the run value when put is called. And then try to modify the run
-	 * value in the listener. Once it is modified check the exception returned
-	 * from main function. The reason for exception is put from Sabre/File.php
-	 * throws exception
+	 * value in the listener.
 	 */
 	public function testPutWithModifyRun() {
 		$calledUploadAllowed = [];
-		\OC::$server->getEventDispatcher()->addListener('file.beforeUpdate', function (GenericEvent $event) use (&$calledUploadAllowed) {
-			$calledUploadAllowed[] = 'file.beforeUpdate';
+		\OC::$server->getEventDispatcher()->addListener('file.beforeCreate', function (GenericEvent $event) use (&$calledUploadAllowed) {
+			$calledUploadAllowed[] = 'file.beforeCreate';
 			//Now modify run
 			$event->setArgument('run', false);
 			$calledUploadAllowed[] = $event;
@@ -319,30 +317,17 @@ class FileTest extends TestCase {
 			->setConstructorArgs([])
 			->getMock();
 
-		$view->expects($this->atLeastOnce())
-			->method('resolvePath')
-			->will($this->returnCallback(
-				function ($path) use ($storage) {
-					return [$storage, $path];
-				}
-			));
-
-		$view->expects($this->any())
-			->method('getRelativePath')
-			->will($this->returnArgument(0));
-
-		$info = new FileInfo('/test.txt', $this->getMockStorage(), null, [
-			'permissions' => Constants::PERMISSION_ALL
-		], null);
-
-		$file = new File($view, $info);
-
-		$file->put($this->getStream('test data'));
-
+		$this->assertNull($this->doPut('/test1.txt'));
 		$this->assertInstanceOf(GenericEvent::class, $calledUploadAllowed[1]);
 		$this->assertArrayHasKey('run', $calledUploadAllowed[1]);
 		$this->assertFalse($calledUploadAllowed[1]->getArgument('run'));
-		$this->assertEquals('file.beforeUpdate', $calledUploadAllowed[0]);
+		$this->assertEquals('file.beforeCreate', $calledUploadAllowed[0]);
+
+		//Remove the listener for the event 'file.beforeCreate'
+		$eventListeners = \OC::$server->getEventDispatcher()->getListeners('file.beforeCreate');
+		foreach ($eventListeners as $eventListener) {
+			\OC::$server->getEventDispatcher()->removeListener('file.beforeCreate', $eventListener);
+		}
 	}
 
 	/**
@@ -406,7 +391,7 @@ class FileTest extends TestCase {
 				$calledCreateAllowed[] = 'file.beforeCreate';
 				$calledCreateAllowed[] = $event;
 			});
-			\OC::$server->getEventDispatcher()->addListener('file.beforeCreate', function (GenericEvent $event) use (&$calledWriteAllowed) {
+			\OC::$server->getEventDispatcher()->addListener('file.beforeWrite', function (GenericEvent $event) use (&$calledWriteAllowed) {
 				$calledWriteAllowed[] = 'file.beforeWrite';
 				$calledWriteAllowed[] = $event;
 			});
@@ -840,19 +825,8 @@ class FileTest extends TestCase {
 		);
 
 		// action
-		$thrown = false;
-		try {
-			$this->doPut('/foo.txt');
-		} catch (Exception $e) {
-			$thrown = true;
-		}
+		$this->assertNull($this->doPut('/foo.txt'));
 
-		// objectstore does not use partfiles -> no move after upload -> no exception
-		if ($this->runsWithPrimaryObjectstorage()) {
-			$this->assertFalse($thrown);
-		} else {
-			$this->assertTrue($thrown);
-		}
 		$this->assertEmpty($this->listPartFiles(), 'No stray part files');
 	}
 
