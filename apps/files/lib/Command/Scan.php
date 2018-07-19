@@ -428,7 +428,7 @@ class Scan extends Base {
 		$output->writeln("");
 
 		$headers = [
-			'Folders', 'Files', 'Elapsed time'
+			'Folders', 'Files', 'Elapsed time', 'Items per second'
 		];
 
 		$this->showSummary($headers, null, $output);
@@ -443,11 +443,13 @@ class Scan extends Base {
 	 */
 	protected function showSummary($headers, $rows, OutputInterface $output) {
 		$niceDate = $this->formatExecTime();
+		$itemsPerSecond = $this->getItemsPerSecond();
 		if (!$rows) {
 			$rows = [
 				$this->foldersCounter,
 				$this->filesCounter,
 				$niceDate,
+				$itemsPerSecond
 			];
 		}
 		$table = new Table($output);
@@ -457,6 +459,22 @@ class Scan extends Base {
 		$table->render();
 	}
 
+
+	/**
+	 * Get items per second processed, no fractions
+	 *
+	 * @return string
+	 */
+	protected function getItemsPerSecond() {
+		$items = $this->foldersCounter + $this->filesCounter;
+		if ($this->execTime === 0) {
+			// catch div by 0
+			$itemsPerSecond = 0;
+		} else {
+			$itemsPerSecond = $items / $this->execTime;
+		}
+		return \sprintf("%.0f", $itemsPerSecond);
+	}
 
 	/**
 	 * Formats microtime into a human readable format
