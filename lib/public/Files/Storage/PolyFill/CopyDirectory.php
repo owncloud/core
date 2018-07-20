@@ -27,4 +27,3 @@ namespace OCP\Files\Storage\PolyFill;
 trait CopyDirectory {
 	use \OC\Files\Storage\PolyFill\CopyDirectory;
 }
-

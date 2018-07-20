@@ -21,7 +21,6 @@
 
 namespace Tests\Core\Command\Config\App;
 
-
 use OC\Core\Command\Config\App\SetConfig;
 use Test\TestCase;
 
@@ -49,7 +48,6 @@ class SetConfigTest extends TestCase {
 		/** @var \OCP\IConfig $config */
 		$this->command = new SetConfig($config);
 	}
-
 
 	public function setData() {
 		return [

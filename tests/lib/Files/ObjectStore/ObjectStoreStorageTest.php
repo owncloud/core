@@ -32,20 +32,18 @@ use OC\Files\ObjectStore\Swift;
  * @package Test\Files\Cache\ObjectStore
  */
 abstract class ObjectStoreStorageTest extends \Test\Files\Storage\Storage {
-
 	public function testStat() {
-
 		$textFile = \OC::$SERVERROOT . '/tests/data/lorem.txt';
-		$ctimeStart = time();
-		$this->instance->file_put_contents('/lorem.txt', file_get_contents($textFile));
+		$ctimeStart = \time();
+		$this->instance->file_put_contents('/lorem.txt', \file_get_contents($textFile));
 		$this->assertTrue($this->instance->isReadable('/lorem.txt'));
-		$ctimeEnd = time();
+		$ctimeEnd = \time();
 		$mTime = $this->instance->filemtime('/lorem.txt');
 
 		// check that ($ctimeStart - 5) <= $mTime <= ($ctimeEnd + 1)
 		$this->assertGreaterThanOrEqual(($ctimeStart - 5), $mTime);
 		$this->assertLessThanOrEqual(($ctimeEnd + 1), $mTime);
-		$this->assertEquals(filesize($textFile), $this->instance->filesize('/lorem.txt'));
+		$this->assertEquals(\filesize($textFile), $this->instance->filesize('/lorem.txt'));
 
 		$stat = $this->instance->stat('/lorem.txt');
 		//only size and mtime are required in the result
@@ -67,7 +65,7 @@ abstract class ObjectStoreStorageTest extends \Test\Files\Storage\Storage {
 	 */
 	public function testMove($source, $target) {
 		$this->initSourceAndTarget($source);
-		$sourceId = $this->instance->getCache()->getId(ltrim('/',$source));
+		$sourceId = $this->instance->getCache()->getId(\ltrim('/', $source));
 		$this->assertNotEquals(-1, $sourceId);
 
 		$this->instance->rename($source, $target);
@@ -76,7 +74,7 @@ abstract class ObjectStoreStorageTest extends \Test\Files\Storage\Storage {
 		$this->assertFalse($this->instance->file_exists($source), $source.' still exists');
 		$this->assertSameAsLorem($target);
 
-		$targetId = $this->instance->getCache()->getId(ltrim('/',$target));
+		$targetId = $this->instance->getCache()->getId(\ltrim('/', $target));
 		$this->assertSame($sourceId, $targetId, 'fileid must be stable on move or shares will break');
 	}
 

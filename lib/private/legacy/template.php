@@ -102,14 +102,14 @@ class OC_Template extends \OC\Template\Base {
 	 * @throws Exception
 	 */
 	public static function initTemplateEngine($renderAs) {
-		if (self::$initTemplateEngineFirstRun){
+		if (self::$initTemplateEngineFirstRun) {
 
 			//apps that started before the template initialization can load their own scripts/styles
 			//so to make sure this scripts/styles here are loaded first we use OC_Util::addScript() with $prepend=true
 			//meaning the last script/style in this list will be loaded first
-			if (\OC::$server->getSystemConfig()->getValue ('installed', false) && $renderAs !== 'error' && !\OCP\Util::needUpgrade()) {
-				if (\OC::$server->getConfig ()->getAppValue ( 'core', 'backgroundjobs_mode', 'ajax' ) == 'ajax') {
-					OC_Util::addScript ( 'backgroundjobs', null, true );
+			if (\OC::$server->getSystemConfig()->getValue('installed', false) && $renderAs !== 'error' && !\OCP\Util::needUpgrade()) {
+				if (\OC::$server->getConfig()->getAppValue('core', 'backgroundjobs_mode', 'ajax') == 'ajax') {
+					OC_Util::addScript('backgroundjobs', null, true);
 				}
 			}
 
@@ -158,13 +158,13 @@ class OC_Template extends \OC\Template\Base {
 			// Add the stuff we need always
 			// following logic will import all vendor libraries that are
 			// specified in core/js/core.json
-			$fileContent = file_get_contents(OC::$SERVERROOT . '/core/js/core.json');
-			if($fileContent !== false) {
-				$coreDependencies = json_decode($fileContent, true);
-				foreach(array_reverse($coreDependencies['vendor']) as $vendorLibrary) {
+			$fileContent = \file_get_contents(OC::$SERVERROOT . '/core/js/core.json');
+			if ($fileContent !== false) {
+				$coreDependencies = \json_decode($fileContent, true);
+				foreach (\array_reverse($coreDependencies['vendor']) as $vendorLibrary) {
 					// remove trailing ".js" as addVendorScript will append it
 					OC_Util::addVendorScript(
-							substr($vendorLibrary, 0, strlen($vendorLibrary) - 3),null,true);
+							\substr($vendorLibrary, 0, \strlen($vendorLibrary) - 3), null, true);
 				}
 			} else {
 				throw new \Exception('Cannot read core/js/core.json');
@@ -179,9 +179,7 @@ class OC_Template extends \OC\Template\Base {
 
 			self::$initTemplateEngineFirstRun = false;
 		}
-
 	}
-
 
 	/**
 	 * find the template with the given name
@@ -195,7 +193,7 @@ class OC_Template extends \OC\Template\Base {
 	 */
 	protected function findTemplate($theme, $app, $name) {
 		// Check if it is a app template or not.
-		if($app === '' || $app === 'core') {
+		if ($app === '' || $app === 'core') {
 			$dirs = $this->getCoreTemplateDirs($theme, OC::$SERVERROOT);
 		} elseif ($app === 'settings') {
 			$dirs = $this->getSettingsTemplateDirs($theme, OC::$SERVERROOT);
@@ -203,7 +201,7 @@ class OC_Template extends \OC\Template\Base {
 			$dirs = $this->getAppTemplateDirs($theme, $app, OC_App::getAppPath($app));
 		}
 
-		$locator = new \OC\Template\TemplateFileLocator( $dirs );
+		$locator = new \OC\Template\TemplateFileLocator($dirs);
 		$template = $locator->find($name);
 
 		return $template;
@@ -236,14 +234,14 @@ class OC_Template extends \OC\Template\Base {
 	public function fetchPage($additionalParams = null) {
 		$data = parent::fetchPage($additionalParams);
 
-		if( $this->renderAs ) {
+		if ($this->renderAs) {
 			$page = new TemplateLayout($this->renderAs, $this->app);
 
 			// Add custom headers
 			$headers = '';
-			foreach(OC_Util::$headers as $header) {
+			foreach (OC_Util::$headers as $header) {
 				$headers .= '<'.\OCP\Util::sanitizeHTML($header['tag']);
-				foreach($header['attributes'] as $name=>$value) {
+				foreach ($header['attributes'] as $name=>$value) {
 					$headers .= ' '.\OCP\Util::sanitizeHTML($name).'="'.\OCP\Util::sanitizeHTML($value).'"';
 				}
 				if ($header['text'] !== null) {
@@ -287,10 +285,10 @@ class OC_Template extends \OC\Template\Base {
 	 * @param array $parameters Parameters for the template
 	 * @return boolean|null
 	 */
-	public static function printUserPage( $application, $name, $parameters = []) {
-		$content = new OC_Template( $application, $name, "user" );
-		foreach( $parameters as $key => $value ) {
-			$content->assign( $key, $value );
+	public static function printUserPage($application, $name, $parameters = []) {
+		$content = new OC_Template($application, $name, "user");
+		foreach ($parameters as $key => $value) {
+			$content->assign($key, $value);
 		}
 		print $content->printPage();
 	}
@@ -302,10 +300,10 @@ class OC_Template extends \OC\Template\Base {
 	 * @param array $parameters Parameters for the template
 	 * @return bool
 	 */
-	public static function printAdminPage( $application, $name, $parameters = []) {
-		$content = new OC_Template( $application, $name, "admin" );
-		foreach( $parameters as $key => $value ) {
-			$content->assign( $key, $value );
+	public static function printAdminPage($application, $name, $parameters = []) {
+		$content = new OC_Template($application, $name, "admin");
+		foreach ($parameters as $key => $value) {
+			$content->assign($key, $value);
 		}
 		return $content->printPage();
 	}
@@ -317,10 +315,10 @@ class OC_Template extends \OC\Template\Base {
 	 * @param array|string $parameters Parameters for the template
 	 * @return bool
 	 */
-	public static function printGuestPage( $application, $name, $parameters = []) {
-		$content = new OC_Template( $application, $name, "guest" );
-		foreach( $parameters as $key => $value ) {
-			$content->assign( $key, $value );
+	public static function printGuestPage($application, $name, $parameters = []) {
+		$content = new OC_Template($application, $name, "guest");
+		foreach ($parameters as $key => $value) {
+			$content->assign($key, $value);
 		}
 		return $content->printPage();
 	}
@@ -331,18 +329,18 @@ class OC_Template extends \OC\Template\Base {
 		* @param string $hint An optional hint message - needs to be properly escaped
 		* @param int HTTP Status Code
 		*/
-	public static function printErrorPage( $error_msg, $hint = '', $httpStatusCode = null ) {
+	public static function printErrorPage($error_msg, $hint = '', $httpStatusCode = null) {
 		if ($error_msg === $hint) {
 			// If the hint is the same as the message there is no need to display it twice.
 			$hint = '';
 		}
 
 		try {
-			$content = new \OC_Template( '', 'error', 'error', false );
+			$content = new \OC_Template('', 'error', 'error', false);
 			$errors = [['error' => $error_msg, 'hint' => $hint]];
-			$content->assign( 'errors', $errors );
+			$content->assign('errors', $errors);
 			if ($httpStatusCode !== null) {
-				http_response_code((int)$httpStatusCode);
+				\http_response_code((int)$httpStatusCode);
 			}
 			$content->printPage();
 		} catch (\Exception $e) {
@@ -350,8 +348,8 @@ class OC_Template extends \OC\Template\Base {
 			$logger->error("$error_msg $hint", ['app' => 'core']);
 			$logger->logException($e, ['app' => 'core']);
 
-			header(self::getHttpProtocol() . ' 500 Internal Server Error');
-			header('Content-Type: text/plain; charset=utf-8');
+			\header(self::getHttpProtocol() . ' 500 Internal Server Error');
+			\header('Content-Type: text/plain; charset=utf-8');
 			print("$error_msg $hint");
 		}
 		die();
@@ -367,7 +365,7 @@ class OC_Template extends \OC\Template\Base {
 		try {
 			$request = \OC::$server->getRequest();
 			$content = new \OC_Template('', 'exception', 'error', false);
-			$content->assign('errorClass', get_class($exception));
+			$content->assign('errorClass', \get_class($exception));
 			$content->assign('errorMsg', $exception->getMessage());
 			$content->assign('errorCode', $exception->getCode());
 			$content->assign('file', $exception->getFile());
@@ -385,8 +383,8 @@ class OC_Template extends \OC\Template\Base {
 			$logger->logException($exception, ['app' => 'core']);
 			$logger->logException($e, ['app' => 'core']);
 
-			header(self::getHttpProtocol() . ' 500 Internal Server Error');
-			header('Content-Type: text/plain; charset=utf-8');
+			\header(self::getHttpProtocol() . ' 500 Internal Server Error');
+			\header('Content-Type: text/plain; charset=utf-8');
 			print("Internal Server Error\n\n");
 			print("The server encountered an internal error and was unable to complete your request.\n");
 			print("Please contact the server administrator if this error reappears multiple times, please include the technical details below in your report.\n");
@@ -405,13 +403,13 @@ class OC_Template extends \OC\Template\Base {
 	 * @internal Don't use this - use AppFramework\Http\Request->getHttpProtocol instead
 	 */
 	protected static function getHttpProtocol() {
-		$claimedProtocol = strtoupper($_SERVER['SERVER_PROTOCOL']);
+		$claimedProtocol = \strtoupper($_SERVER['SERVER_PROTOCOL']);
 		$validProtocols = [
 			'HTTP/1.0',
 			'HTTP/1.1',
 			'HTTP/2',
 		];
-		if(in_array($claimedProtocol, $validProtocols, true)) {
+		if (\in_array($claimedProtocol, $validProtocols, true)) {
 			return $claimedProtocol;
 		}
 		return 'HTTP/1.1';

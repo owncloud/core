@@ -25,7 +25,7 @@ class AppTest extends \Test\TestCase {
 	const TEST_GROUP1 = 'group1';
 	const TEST_GROUP2 = 'group2';
 
-	function appVersionsProvider() {
+	public function appVersionsProvider() {
 		return [
 			// exact match
 			[
@@ -295,17 +295,17 @@ class AppTest extends \Test\TestCase {
 		$apps = \OC_App::getEnabledApps();
 		// copy array
 		$sortedApps = $apps;
-		sort($sortedApps);
+		\sort($sortedApps);
 		// 'files' is always on top
-		unset($sortedApps[array_search('files', $sortedApps)]);
-		array_unshift($sortedApps, 'files');
+		unset($sortedApps[\array_search('files', $sortedApps)]);
+		\array_unshift($sortedApps, 'files');
 		$this->assertEquals($sortedApps, $apps);
 	}
 
 	/**
 	 * Providers for the app config values
 	 */
-	function appConfigValuesProvider() {
+	public function appConfigValuesProvider() {
 		return [
 			// logged in user1
 			[
@@ -460,20 +460,20 @@ class AppTest extends \Test\TestCase {
 		$apps = \OC_App::getEnabledApps();
 		$this->assertEquals([
 			'files',
-		   	'app3',
-		   	'dav',
-		   	'federatedfilesharing',
-		   	'files_external',
+			'app3',
+			'dav',
+			'federatedfilesharing',
+			'files_external',
 		], $apps);
 
 		// mock should not be called again here
 		$apps = \OC_App::getEnabledApps();
 		$this->assertEquals([
 			'files',
-		   	'app3',
-		   	'dav',
-		   	'federatedfilesharing',
-		   	'files_external',
+			'app3',
+			'dav',
+			'federatedfilesharing',
+			'files_external',
 		], $apps);
 
 		$this->restoreAppConfig();
@@ -481,7 +481,6 @@ class AppTest extends \Test\TestCase {
 
 		$user1->delete();
 	}
-
 
 	private function setupAppConfigMock() {
 		$appConfig = $this->createMock(
@@ -532,7 +531,7 @@ class AppTest extends \Test\TestCase {
 	/**
 	 * Providers for the app data values
 	 */
-	function appDataProvider() {
+	public function appDataProvider() {
 		return [
 			[
 				['description' => " \t  This is a multiline \n test with \n \t \n \n some new lines   "],
@@ -543,7 +542,7 @@ class AppTest extends \Test\TestCase {
 				['description' => "This is a multiline test with some new lines"]
 			],
 			[
-				['description' => hex2bin('5065726d657420646520732761757468656e7469666965722064616e732070697769676f20646972656374656d656e74206176656320736573206964656e74696669616e7473206f776e636c6f75642073616e73206c65732072657461706572206574206d657420c3a0206a6f757273206365757820636920656e20636173206465206368616e67656d656e74206465206d6f742064652070617373652e0d0a0d')],
+				['description' => \hex2bin('5065726d657420646520732761757468656e7469666965722064616e732070697769676f20646972656374656d656e74206176656320736573206964656e74696669616e7473206f776e636c6f75642073616e73206c65732072657461706572206574206d657420c3a0206a6f757273206365757820636920656e20636173206465206368616e67656d656e74206465206d6f742064652070617373652e0d0a0d')],
 				['description' => "Permet de s'authentifier dans piwigo directement avec ses identifiants owncloud sans les retaper et met à jours ceux ci en cas de changement de mot de passe."]
 			],
 			[
@@ -568,4 +567,3 @@ class AppTest extends \Test\TestCase {
 		$this->assertSame($expected, \OC_App::parseAppInfo($data));
 	}
 }
-

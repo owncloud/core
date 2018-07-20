@@ -66,15 +66,15 @@ trait LocalTempFileTrait {
 		if (!$source) {
 			return false;
 		}
-		if ($pos = strrpos($path, '.')) {
-			$extension = substr($path, $pos);
+		if ($pos = \strrpos($path, '.')) {
+			$extension = \substr($path, $pos);
 		} else {
 			$extension = '';
 		}
 		$tmpFile = \OC::$server->getTempManager()->getTemporaryFile($extension);
-		$target = fopen($tmpFile, 'w');
+		$target = \fopen($tmpFile, 'w');
 		\OC_Helper::streamCopy($source, $target);
-		fclose($target);
+		\fclose($target);
 		return $tmpFile;
 	}
 }

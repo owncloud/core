@@ -63,8 +63,7 @@ class PreviewPlugin extends ServerPlugin {
 	 * @param Server $server
 	 * @return void
 	 */
-	function initialize(Server $server) {
-
+	public function initialize(Server $server) {
 		$this->server = $server;
 		$this->server->on('method:GET', [$this, 'httpGet'], 90);
 	}
@@ -83,10 +82,9 @@ class PreviewPlugin extends ServerPlugin {
 	 * @throws FileLocked
 	 * @throws ServiceUnavailable
 	 */
-	function httpGet(RequestInterface $request, ResponseInterface $response) {
-
+	public function httpGet(RequestInterface $request, ResponseInterface $response) {
 		$queryParams = $request->getQueryParameters();
-		if (!array_key_exists('preview', $queryParams)) {
+		if (!\array_key_exists('preview', $queryParams)) {
 			return true;
 		}
 
@@ -117,23 +115,23 @@ class PreviewPlugin extends ServerPlugin {
 					throw new NotFound();
 				}
 				$type = $image->mimeType();
-				if (!in_array($type, ['image/png', 'image/jpeg', 'image/gif'])) {
+				if (!\in_array($type, ['image/png', 'image/jpeg', 'image/gif'])) {
 					$type = 'application/octet-stream';
 				}
 
 				// Enable output buffering
-				ob_start();
+				\ob_start();
 				// Capture the output
 				$image->show();
-				$imageData = ob_get_contents();
+				$imageData = \ob_get_contents();
 				// Clear the output buffer
-				ob_end_clean();
+				\ob_end_clean();
 
 				$response->setHeader('Content-Type', $type);
 				$response->setHeader('Content-Disposition', 'attachment');
 				// cache 24h
 				$response->setHeader('Cache-Control', 'max-age=86400, must-revalidate');
-				$response->setHeader('Expires', gmdate("D, d M Y H:i:s", $this->timeFactory->getTime() + 86400) . " GMT");
+				$response->setHeader('Expires', \gmdate("D, d M Y H:i:s", $this->timeFactory->getTime() + 86400) . " GMT");
 
 				$response->setStatus(200);
 				$response->setBody($imageData);

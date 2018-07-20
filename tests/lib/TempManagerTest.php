@@ -22,15 +22,14 @@ class NullLogger extends Log {
 }
 
 class TempManagerTest extends \Test\TestCase {
-
 	protected $baseDir = null;
 
 	protected function setUp() {
 		parent::setUp();
 
 		$this->baseDir = $this->getManager()->getTempBaseDir() . $this->getUniqueID('/oc_tmp_test');
-		if (!is_dir($this->baseDir)) {
-			mkdir($this->baseDir);
+		if (!\is_dir($this->baseDir)) {
+			\mkdir($this->baseDir);
 		}
 	}
 
@@ -66,10 +65,10 @@ class TempManagerTest extends \Test\TestCase {
 		$manager = $this->getManager();
 		$file = $manager->getTemporaryFile('txt');
 		$this->assertStringEndsWith('.txt', $file);
-		$this->assertTrue(is_file($file));
-		$this->assertTrue(is_writable($file));
+		$this->assertTrue(\is_file($file));
+		$this->assertTrue(\is_writable($file));
 
-		file_put_contents($file, 'bar');
+		\file_put_contents($file, 'bar');
 		$this->assertStringEqualsFile($file, 'bar');
 	}
 
@@ -77,10 +76,10 @@ class TempManagerTest extends \Test\TestCase {
 		$manager = $this->getManager();
 		$folder = $manager->getTemporaryFolder();
 		$this->assertStringEndsWith('/', $folder);
-		$this->assertTrue(is_dir($folder));
-		$this->assertTrue(is_writable($folder));
+		$this->assertTrue(\is_dir($folder));
+		$this->assertTrue(\is_writable($folder));
 
-		file_put_contents($folder . 'foo.txt', 'bar');
+		\file_put_contents($folder . 'foo.txt', 'bar');
 		$this->assertStringEqualsFile($folder . 'foo.txt', 'bar');
 	}
 
@@ -101,8 +100,8 @@ class TempManagerTest extends \Test\TestCase {
 		$manager = $this->getManager();
 		$folder1 = $manager->getTemporaryFolder();
 		$folder2 = $manager->getTemporaryFolder();
-		touch($folder1 . 'foo.txt');
-		touch($folder1 . 'bar.txt');
+		\touch($folder1 . 'foo.txt');
+		\touch($folder1 . 'bar.txt');
 		$this->assertFileExists($folder1);
 		$this->assertFileExists($folder2);
 		$this->assertFileExists($folder1 . 'foo.txt');
@@ -122,12 +121,12 @@ class TempManagerTest extends \Test\TestCase {
 		$newFile = $manager->getTemporaryFile('txt');
 		$folder = $manager->getTemporaryFolder();
 		$nonOcFile = $this->baseDir . '/foo.txt';
-		file_put_contents($nonOcFile, 'bar');
+		\file_put_contents($nonOcFile, 'bar');
 
-		$past = time() - 2 * 3600;
-		touch($oldFile, $past);
-		touch($folder, $past);
-		touch($nonOcFile, $past);
+		$past = \time() - 2 * 3600;
+		\touch($oldFile, $past);
+		\touch($folder, $past);
+		\touch($nonOcFile, $past);
 
 		$manager2 = $this->getManager();
 		$manager2->cleanOld();
@@ -143,7 +142,7 @@ class TempManagerTest extends \Test\TestCase {
 		}
 		$logger = $this->createMock('\Test\NullLogger');
 		$manager = $this->getManager($logger);
-		chmod($this->baseDir, 0500);
+		\chmod($this->baseDir, 0500);
 		$logger->expects($this->once())
 			->method('warning')
 			->with($this->stringContains('Can not create a temporary file in directory'));
@@ -156,7 +155,7 @@ class TempManagerTest extends \Test\TestCase {
 		}
 		$logger = $this->createMock('\Test\NullLogger');
 		$manager = $this->getManager($logger);
-		chmod($this->baseDir, 0500);
+		\chmod($this->baseDir, 0500);
 		$logger->expects($this->once())
 			->method('warning')
 			->with($this->stringContains('Can not create a temporary folder in directory'));

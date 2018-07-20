@@ -19,9 +19,7 @@
  *
  */
 
-
 namespace Test\Encryption;
-
 
 use Doctrine\DBAL\Statement;
 use OC\Encryption\DecryptAll;
@@ -62,7 +60,6 @@ use Test\Traits\UserTrait;
  * @package Test\Encryption
  */
 class DecryptAllTest extends TestCase {
-
 	use UserTrait;
 	/** @var \PHPUnit_Framework_MockObject_MockObject | IUserManager */
 	protected $userManager;
@@ -132,7 +129,6 @@ class DecryptAllTest extends TestCase {
 	 * @param bool $userExistsChecked
 	 */
 	public function testDecryptAll($prepareResult, $user, $userExistsChecked) {
-
 		if ($userExistsChecked) {
 			$this->userManager->expects($this->once())->method('userExists')->willReturn(true);
 		} else {
@@ -196,7 +192,6 @@ class DecryptAllTest extends TestCase {
 	 * @param bool $success
 	 */
 	public function testPrepareEncryptionModules($success) {
-
 		$user = 'user1';
 
 		$dummyEncryptionModule = $this->getMockBuilder(IEncryptionModule::class)
@@ -207,7 +202,9 @@ class DecryptAllTest extends TestCase {
 			->with($this->inputInterface, $this->outputInterface, $user)
 			->willReturn($success);
 
-		$callback = function() use ($dummyEncryptionModule) {return $dummyEncryptionModule;};
+		$callback = function () use ($dummyEncryptionModule) {
+			return $dummyEncryptionModule;
+		};
 		$moduleDescription = [
 			'id' => 'id',
 			'displayName' => 'displayName',
@@ -241,8 +238,7 @@ class DecryptAllTest extends TestCase {
 		$this->invokePrivate($instance, 'input', [$this->inputInterface]);
 		$this->invokePrivate($instance, 'output', [$this->outputInterface]);
 
-
-		$function = function (IUser $user)  {
+		$function = function (IUser $user) {
 			$users[] = $user->getUID();
 		};
 
@@ -282,10 +278,10 @@ class DecryptAllTest extends TestCase {
 				->willReturn(2);
 			$this->userManager->expects($this->once())
 				->method('callForSeenUsers')
-				->will($this->returnCallback(function() use ($instance, $progress) {
+				->will($this->returnCallback(function () use ($instance, $progress) {
 					$this->invokePrivate($instance, 'decryptUsersFiles', ['user1', $progress, '']);
 					$this->invokePrivate($instance, 'decryptUsersFiles', ['user2', $progress, '']);
-			}));
+				}));
 			$instance->expects($this->at(0))
 				->method('decryptUsersFiles')
 				->with('user1');
@@ -431,7 +427,7 @@ class DecryptAllTest extends TestCase {
 		$storage = $this->createMock($storageClass);
 		$storage->expects($this->any())
 			->method('instanceOfStorage')
-			->will($this->returnCallback(function($className) use ($storage) {
+			->will($this->returnCallback(function ($className) use ($storage) {
 				return ($storage instanceof $className);
 			}));
 
@@ -467,7 +463,7 @@ class DecryptAllTest extends TestCase {
 
 		$this->view->expects($this->any())->method('is_dir')
 			->willReturnCallback(
-				function($path) {
+				function ($path) {
 					if ($path === '/user1/files/foo') {
 						return true;
 					}
@@ -480,7 +476,7 @@ class DecryptAllTest extends TestCase {
 				->method('decryptFile')
 				->with('/user1/files/bar')
 				->willThrowException(new \Exception());
-		} else if ($decryptBehavior === 'skip') {
+		} elseif ($decryptBehavior === 'skip') {
 			$instance->expects($this->never())
 				->method('decryptFile');
 		} else {
@@ -498,7 +494,6 @@ class DecryptAllTest extends TestCase {
 	}
 
 	public function testDecryptFile() {
-
 		$path = 'test.txt';
 
 		/** @var DecryptAll | \PHPUnit_Framework_MockObject_MockObject  $instance */
@@ -599,7 +594,9 @@ class DecryptAllTest extends TestCase {
 		$this->view->expects($this->once())
 			->method('copy')
 			->with($path, $path . '.decrypted.42.part')
-			->willReturnCallback(function() { throw new DecryptionFailedException();});
+			->willReturnCallback(function () {
+				throw new DecryptionFailedException();
+			});
 
 		$this->view->expects($this->never())->method('rename');
 		$this->view->expects($this->once())

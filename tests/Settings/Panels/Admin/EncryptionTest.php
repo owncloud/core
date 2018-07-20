@@ -39,5 +39,4 @@ class EncryptionTest extends \Test\TestCase {
 		$templateHtml = $this->panel->getPanel()->fetchPage();
 		$this->assertContains('org', $templateHtml);
 	}
-
 }

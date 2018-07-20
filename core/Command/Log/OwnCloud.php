@@ -94,7 +94,7 @@ class OwnCloud extends Command {
 		$output->writeln('Log backend ownCloud: '.$enabledText);
 
 		$dataDir = $this->config->getSystemValue('datadirectory', \OC::$SERVERROOT.'/data');
-		$defaultLogFile = rtrim($dataDir, '/').'/owncloud.log';
+		$defaultLogFile = \rtrim($dataDir, '/').'/owncloud.log';
 		$output->writeln('Log file: '.$this->config->getSystemValue('logfile', $defaultLogFile));
 
 		$rotateSize = $this->config->getSystemValue('log_rotate_size', 0);
@@ -119,5 +119,4 @@ class OwnCloud extends Command {
 			throw new \InvalidArgumentException('Log rotation file size must be non-negative');
 		}
 	}
-
 }

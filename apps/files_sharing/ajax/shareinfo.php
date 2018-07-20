@@ -100,7 +100,6 @@ $result = \OCA\Files\Helper::formatFileInfo($rootInfo);
 $result['mtime'] = $result['mtime'] / 1000;
 $result['permissions'] = (int)$result['permissions'] & $sharePermissions;
 
-
 if ($rootInfo->getType() === 'dir') {
 	$result['children'] = getChildInfo($rootInfo, $rootView, $sharePermissions);
 }

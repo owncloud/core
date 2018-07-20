@@ -130,8 +130,8 @@ class MoveAvatarOutsideHome implements IRepairStep {
 	 */
 	public function run(IOutput $output) {
 		$ocVersionFromBeforeUpdate = $this->config->getSystemValue('version', '0.0.0');
-		if (version_compare($ocVersionFromBeforeUpdate, '9.2.0.2', '<')) {
-			$function = function(IUser $user) use ($output) {
+		if (\version_compare($ocVersionFromBeforeUpdate, '9.2.0.2', '<')) {
+			$function = function (IUser $user) use ($output) {
 				$this->moveAvatars($output, $user);
 				$output->advance();
 			};
@@ -144,4 +144,3 @@ class MoveAvatarOutsideHome implements IRepairStep {
 		}
 	}
 }
-

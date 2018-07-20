@@ -31,7 +31,6 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\ConfirmationQuestion;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
-
 class DataFingerprint extends Command {
 
 	/** @var IConfig */
@@ -43,7 +42,7 @@ class DataFingerprint extends Command {
 
 	public function __construct(IConfig $config,
 								ITimeFactory $timeFactory,
-								ILogger $logger ) {
+								ILogger $logger) {
 		$this->config = $config;
 		$this->timeFactory = $timeFactory;
 		$this->logger = $logger;
@@ -69,9 +68,9 @@ EOD;
 
 		$io->warning($warning);
 		if ($io->confirm('Do you want to set the data fingerprint?', false)) {
-			$osUser = get_current_user();
-			$server = gethostname();
-			$fingerprint = md5($this->timeFactory->getTime());
+			$osUser = \get_current_user();
+			$server = \gethostname();
+			$fingerprint = \md5($this->timeFactory->getTime());
 			$this->config->setSystemValue('data-fingerprint', $fingerprint);
 			$this->logger->info("Data fingerprint was set by $osUser@$server to $fingerprint");
 		}

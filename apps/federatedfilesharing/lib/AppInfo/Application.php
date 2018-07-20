@@ -76,5 +76,4 @@ class Application extends App {
 			\OC::$server->getUserManager()
 		);
 	}
-
 }

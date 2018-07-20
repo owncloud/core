@@ -59,11 +59,11 @@ abstract class TestCase extends \Test\TestCase {
 			$this->users[] = $user;
 			$users[] = $user;
 		}
-		return count($users) == 1 ? reset($users) : $users;
+		return \count($users) == 1 ? \reset($users) : $users;
 	}
 
 	protected function tearDown() {
-		foreach($this->users as $user) {
+		foreach ($this->users as $user) {
 			$user->delete();
 		}
 

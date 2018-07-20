@@ -39,7 +39,7 @@ class EventLoggerTest extends TestCase {
 		// Module is not activated and this should not be logged
 		$this->logger->start("test1", "testevent1");
 		$this->logger->end("test1");
-		$this->logger->log("test2", "testevent2", microtime(true), microtime(true));
+		$this->logger->log("test2", "testevent2", \microtime(true), \microtime(true));
 		$events = $this->logger->getEvents();
 		$this->assertCount(0, $events);
 
@@ -50,7 +50,7 @@ class EventLoggerTest extends TestCase {
 		$this->logger->start("test3", "testevent3");
 
 		// force log of another event
-		$this->logger->log("test4", "testevent4", microtime(true), microtime(true));
+		$this->logger->log("test4", "testevent4", \microtime(true), \microtime(true));
 
 		// log started event
 		$this->logger->end("test3");
@@ -61,6 +61,5 @@ class EventLoggerTest extends TestCase {
 		$this->assertSame("test3", $events['test3']->getId());
 		$this->assertSame("testevent3", $events['test3']->getDescription());
 		$this->assertCount(2, $events);
-
 	}
 }

@@ -77,7 +77,7 @@ class SMB extends \OCP\Files\Storage\StorageAdapter {
 		if (!empty($loggedParams['password'])) {
 			$loggedParams['password'] = '***removed***';
 		}
-		$this->log('enter: '.__FUNCTION__.'('.json_encode($loggedParams).')');
+		$this->log('enter: '.__FUNCTION__.'('.\json_encode($loggedParams).')');
 
 		if (isset($params['host'], $params['user'], $params['password'], $params['share'])) {
 			$auth = new BasicAuth($params['user'], '', $params['password']);
@@ -92,7 +92,7 @@ class SMB extends \OCP\Files\Storage\StorageAdapter {
 			if (!$this->root || $this->root[0] != '/') {
 				$this->root = '/' . $this->root;
 			}
-			if (substr($this->root, -1, 1) != '/') {
+			if (\substr($this->root, -1, 1) != '/') {
 				$this->root .= '/';
 			}
 		} else {
@@ -143,9 +143,9 @@ class SMB extends \OCP\Files\Storage\StorageAdapter {
 					if ($this->share instanceof IShare) {
 						// smbclient may have problems with the allinfo cmd
 						$this->log("stat for '$path' failed, trying to read parent dir");
-						$infos = $this->share->dir(dirname($path));
+						$infos = $this->share->dir(\dirname($path));
 						foreach ($infos as $fileInfo) {
-							if ($fileInfo->getName() === basename($path)) {
+							if ($fileInfo->getName() === \basename($path)) {
 								$this->statCache[$path] = $fileInfo;
 								break;
 							}
@@ -287,7 +287,7 @@ class SMB extends \OCP\Files\Storage\StorageAdapter {
 	}
 
 	private function removeFromCache($path) {
-		$path = trim($path, '/');
+		$path = \trim($path, '/');
 		// TODO The CappedCache does not really clear by prefix. It just clears all.
 		//$this->dirCache->clear($path);
 		$this->statCache->clear($path);
@@ -433,8 +433,8 @@ class SMB extends \OCP\Files\Storage\StorageAdapter {
 				case 'c':
 				case 'c+':
 					//emulate these
-					if (strrpos($path, '.') !== false) {
-						$ext = substr($path, strrpos($path, '.'));
+					if (\strrpos($path, '.') !== false) {
+						$ext = \substr($path, \strrpos($path, '.'));
 					} else {
 						$ext = '';
 					}
@@ -444,17 +444,17 @@ class SMB extends \OCP\Files\Storage\StorageAdapter {
 						}
 						$tmpFile = $this->getCachedFile($path);
 					} else {
-						if (!$this->isCreatable(dirname($path))) {
+						if (!$this->isCreatable(\dirname($path))) {
 							break;
 						}
 						$tmpFile = \OC::$server->getTempManager()->getTemporaryFile($ext);
 					}
-					$source = fopen($tmpFile, $mode);
+					$source = \fopen($tmpFile, $mode);
 					$share = $this->share;
 					$result = CallbackWrapper::wrap($source, null, null, function () use ($tmpFile, $fullPath, $share) {
 						unset($this->statCache[$fullPath]);
 						$share->put($tmpFile, $fullPath);
-						unlink($tmpFile);
+						\unlink($tmpFile);
 					});
 			}
 		} catch (NotFoundException $e) {
@@ -509,7 +509,7 @@ class SMB extends \OCP\Files\Storage\StorageAdapter {
 		try {
 			if (!$this->file_exists($path)) {
 				$fh = $this->share->write($this->buildPath($path));
-				fclose($fh);
+				\fclose($fh);
 				$result = true;
 			} else {
 				$result = false;
@@ -528,7 +528,7 @@ class SMB extends \OCP\Files\Storage\StorageAdapter {
 		$result = false;
 		try {
 			$files = $this->getFolderContents($path);
-			$names = array_map(function ($info) {
+			$names = \array_map(function ($info) {
 				/** @var \Icewind\SMB\IFileInfo $info */
 				return $info->getName();
 			}, $files);
@@ -683,28 +683,28 @@ class SMB extends \OCP\Files\Storage\StorageAdapter {
 		if (\OC::$server->getConfig()->getSystemValue('smb.logging.enable', false) === false) {
 			//don't bother building log strings
 			return $result;
-		} else if ($result === true) {
+		} elseif ($result === true) {
 			Util::writeLog('smb', "leave: $function, return true", Util::DEBUG);
-		} else if ($result === false) {
+		} elseif ($result === false) {
 			Util::writeLog('smb', "leave: $function, return false", Util::DEBUG);
-		} else if (is_string($result)) {
+		} elseif (\is_string($result)) {
 			Util::writeLog('smb', "leave: $function, return '$result'", Util::DEBUG);
-		} else if (is_resource($result)) {
+		} elseif (\is_resource($result)) {
 			Util::writeLog('smb', "leave: $function, return resource", Util::DEBUG);
-		} else if ($result instanceof \Exception) {
-			Util::writeLog('smb', "leave: $function, throw ".get_class($result)
+		} elseif ($result instanceof \Exception) {
+			Util::writeLog('smb', "leave: $function, throw ".\get_class($result)
 				.' - code: '.$result->getCode()
 				.' message: '.$result->getMessage()
 				.' trace: '.$result->getTraceAsString(), Util::DEBUG);
 		} else {
-			Util::writeLog('smb', "leave: $function, return ".json_encode($result, true), Util::DEBUG);
+			Util::writeLog('smb', "leave: $function, return ".\json_encode($result, true), Util::DEBUG);
 		}
 		return $result;
 	}
 
 	private function swallow($function, \Exception $exception) {
 		if (\OC::$server->getConfig()->getSystemValue('smb.logging.enable', false) === true) {
-			Util::writeLog('smb', "$function swallowing ".get_class($exception)
+			Util::writeLog('smb', "$function swallowing ".\get_class($exception)
 				.' - code: '.$exception->getCode()
 				.' message: '.$exception->getMessage()
 				.' trace: '.$exception->getTraceAsString(), Util::DEBUG);

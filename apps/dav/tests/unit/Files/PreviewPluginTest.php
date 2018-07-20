@@ -17,9 +17,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>
  */
 
-
 namespace OCA\DAV\Tests\Unit\Files;
-
 
 use OCA\DAV\Connector\Sabre\Exception\FileLocked;
 use OCA\DAV\Files\IFileNode;
@@ -111,7 +109,6 @@ class PreviewPluginTest extends TestCase {
 	 * @dataProvider providesExceptions
 	 */
 	public function testPreviewWithExceptions($expectedExceptionClass, $exception) {
-
 		$this->previewNode->method('getThumbnail')->willThrowException($exception);
 
 		$this->request->method('getQueryParameters')->willReturn([
@@ -132,7 +129,6 @@ class PreviewPluginTest extends TestCase {
 	}
 
 	public function testPreviewNoImage() {
-
 		$this->previewNode->method('getThumbnail')->willReturn(null);
 
 		$this->request->method('getQueryParameters')->willReturn([
@@ -178,7 +174,7 @@ class PreviewPluginTest extends TestCase {
 			['Content-Type', 'application/octet-stream'],
 			['Content-Disposition', 'attachment'],
 			['Cache-Control', 'max-age=86400, must-revalidate'],
-			['Expires', gmdate("D, d M Y H:i:s", 1234567 + 86400) . " GMT"]
+			['Expires', \gmdate("D, d M Y H:i:s", 1234567 + 86400) . " GMT"]
 		);
 
 		$this->assertFalse($this->plugin->httpGet($this->request, $this->response));

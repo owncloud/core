@@ -32,37 +32,36 @@ use Test\Traits\UserTrait;
  * @group DB
  */
 class ListUserGroupsTest extends TestCase {
-    use UserTrait;
+	use UserTrait;
 
-    /** @var CommandTester */
-    private $commandTester;
+	/** @var CommandTester */
+	private $commandTester;
 
-    protected function setUp() {
-        parent::setUp();
+	protected function setUp() {
+		parent::setUp();
 
-        $command = new ListUserGroups(\OC::$server->getUserManager(), \OC::$server->getGroupManager());
-        $this->commandTester = new CommandTester($command);
-        $user = $this->createUser('user1');
-        \OC::$server->getGroupManager()->createGroup('testgroup');
-        \OC::$server->getGroupManager()->get('testgroup')->addUser($user);
-    }
+		$command = new ListUserGroups(\OC::$server->getUserManager(), \OC::$server->getGroupManager());
+		$this->commandTester = new CommandTester($command);
+		$user = $this->createUser('user1');
+		\OC::$server->getGroupManager()->createGroup('testgroup');
+		\OC::$server->getGroupManager()->get('testgroup')->addUser($user);
+	}
 
-    /**
-     * @dataProvider inputProvider
-     * @param array $input
-     * @param string $expectedOutput
-     */
-    public function testCommandInput($input, $expectedOutput) {
-        $this->commandTester->execute($input);
-        $output = $this->commandTester->getDisplay();
-        $this->assertContains($expectedOutput, $output);
-    }
+	/**
+	 * @dataProvider inputProvider
+	 * @param array $input
+	 * @param string $expectedOutput
+	 */
+	public function testCommandInput($input, $expectedOutput) {
+		$this->commandTester->execute($input);
+		$output = $this->commandTester->getDisplay();
+		$this->assertContains($expectedOutput, $output);
+	}
 
-    public function inputProvider() {
-        return [
-            [['uid' => 'user2'], 'does not exist'],
-            [['uid' => 'user1'], 'testgroup'],
-        ];
-    }
-
+	public function inputProvider() {
+		return [
+			[['uid' => 'user2'], 'does not exist'],
+			[['uid' => 'user1'], 'testgroup'],
+		];
+	}
 }

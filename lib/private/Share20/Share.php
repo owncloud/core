@@ -86,11 +86,11 @@ class Share implements \OCP\Share\IShare {
 	 * @inheritdoc
 	 */
 	public function setId($id) {
-		if (is_int($id)) {
+		if (\is_int($id)) {
 			$id = (string)$id;
 		}
 
-		if(!is_string($id)) {
+		if (!\is_string($id)) {
 			throw new \InvalidArgumentException('String expected.');
 		}
 
@@ -98,7 +98,7 @@ class Share implements \OCP\Share\IShare {
 			throw new IllegalIDChangeException('Not allowed to assign a new internal id to a share');
 		}
 
-		$this->id = trim($id);
+		$this->id = \trim($id);
 		return $this;
 	}
 
@@ -123,7 +123,7 @@ class Share implements \OCP\Share\IShare {
 	 * @inheritdoc
 	 */
 	public function setProviderId($id) {
-		if(!is_string($id)) {
+		if (!\is_string($id)) {
 			throw new \InvalidArgumentException('String expected.');
 		}
 
@@ -131,7 +131,7 @@ class Share implements \OCP\Share\IShare {
 			throw new IllegalIDChangeException('Not allowed to assign a new provider id to a share');
 		}
 
-		$this->providerId = trim($id);
+		$this->providerId = \trim($id);
 		return $this;
 	}
 
@@ -150,14 +150,13 @@ class Share implements \OCP\Share\IShare {
 	 */
 	public function getNode() {
 		if ($this->node === null) {
-
 			if ($this->shareOwner === null || $this->fileId === null) {
 				throw new NotFoundException();
 			}
 
 			// for federated shares the owner can be a remote user, in this
 			// case we use the initiator
-			if($this->userManager->userExists($this->shareOwner)) {
+			if ($this->userManager->userExists($this->shareOwner)) {
 				$userFolder = $this->rootFolder->getUserFolder($this->shareOwner);
 			} else {
 				$userFolder = $this->rootFolder->getUserFolder($this->sharedBy);
@@ -237,7 +236,7 @@ class Share implements \OCP\Share\IShare {
 	 * @inheritdoc
 	 */
 	public function setSharedWith($sharedWith) {
-		if (!is_string($sharedWith)) {
+		if (!\is_string($sharedWith)) {
 			throw new \InvalidArgumentException();
 		}
 		$this->sharedWith = $sharedWith;
@@ -289,7 +288,7 @@ class Share implements \OCP\Share\IShare {
 	 * @inheritdoc
 	 */
 	public function setSharedBy($sharedBy) {
-		if (!is_string($sharedBy)) {
+		if (!\is_string($sharedBy)) {
 			throw new \InvalidArgumentException();
 		}
 		//TODO checks
@@ -310,7 +309,7 @@ class Share implements \OCP\Share\IShare {
 	 * @inheritdoc
 	 */
 	public function setShareOwner($shareOwner) {
-		if (!is_string($shareOwner)) {
+		if (!\is_string($shareOwner)) {
 			throw new \InvalidArgumentException();
 		}
 		//TODO checks

@@ -21,14 +21,11 @@
  *
  */
 
-
 namespace Test\AppFramework\Http;
-
 
 use OCP\AppFramework\Http;
 use OCP\AppFramework\Http\DataResponse;
 use Test\TestCase;
-
 
 class DataResponseTest extends TestCase {
 
@@ -42,14 +39,12 @@ class DataResponseTest extends TestCase {
 		$this->response = new DataResponse();
 	}
 
-
 	public function testSetData() {
 		$params = ['hi', 'yo'];
 		$this->response->setData($params);
 
 		$this->assertEquals(['hi', 'yo'], $this->response->getData());
 	}
-
 
 	public function testConstructorAllowsToSetData() {
 		$data = ['hi'];
@@ -59,7 +54,6 @@ class DataResponseTest extends TestCase {
 		$this->assertEquals($data, $response->getData());
 		$this->assertEquals($code, $response->getStatus());
 	}
-
 
 	public function testConstructorAllowsToSetHeaders() {
 		$data = ['hi'];
@@ -71,13 +65,12 @@ class DataResponseTest extends TestCase {
 			'Cache-Control' => 'no-cache, must-revalidate',
 			'Content-Security-Policy' => "default-src 'none';manifest-src 'self';script-src 'self' 'unsafe-eval';style-src 'self' 'unsafe-inline';img-src 'self' data: blob:;font-src 'self';connect-src 'self';media-src 'self'",
 		];
-		$expectedHeaders = array_merge($expectedHeaders, $headers);
+		$expectedHeaders = \array_merge($expectedHeaders, $headers);
 
 		$this->assertEquals($data, $response->getData());
 		$this->assertEquals($code, $response->getStatus());
 		$this->assertEquals($expectedHeaders, $response->getHeaders());
 	}
-
 
 	public function testChainability() {
 		$params = ['hi', 'yo'];
@@ -87,6 +80,4 @@ class DataResponseTest extends TestCase {
 		$this->assertEquals(Http::STATUS_NOT_FOUND, $this->response->getStatus());
 		$this->assertEquals(['hi', 'yo'], $this->response->getData());
 	}
-
-
 }

@@ -49,7 +49,6 @@ interface Storage extends \OCP\Files\Storage {
 	 */
 	public function getScanner($path = '', $storage = null);
 
-
 	/**
 	 * get the user id of the owner of a file or folder
 	 *

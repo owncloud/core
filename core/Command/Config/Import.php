@@ -95,9 +95,9 @@ class Import extends Command {
 	protected function getArrayFromStdin() {
 		// Read from stdin. stream_set_blocking is used to prevent blocking
 		// when nothing is passed via stdin.
-		stream_set_blocking(STDIN, 0);
-		$content = file_get_contents('php://stdin');
-		stream_set_blocking(STDIN, 1);
+		\stream_set_blocking(STDIN, 0);
+		$content = \file_get_contents('php://stdin');
+		\stream_set_blocking(STDIN, 1);
 		return $content;
 	}
 
@@ -108,7 +108,7 @@ class Import extends Command {
 	 * @return string
 	 */
 	protected function getArrayFromFile($importFile) {
-		$content = file_get_contents($importFile);
+		$content = \file_get_contents($importFile);
 		return $content;
 	}
 
@@ -118,8 +118,8 @@ class Import extends Command {
 	 * @throws \UnexpectedValueException when the array is invalid
 	 */
 	protected function validateFileContent($content) {
-		$decodedContent = json_decode($content, true);
-		if (!is_array($decodedContent) || empty($decodedContent)) {
+		$decodedContent = \json_decode($content, true);
+		if (!\is_array($decodedContent) || empty($decodedContent)) {
 			throw new \UnexpectedValueException('The file must contain a valid json array');
 		}
 
@@ -134,18 +134,18 @@ class Import extends Command {
 	 * @param array $array
 	 */
 	protected function validateArray($array) {
-		$arrayKeys = array_keys($array);
-		$additionalKeys = array_diff($arrayKeys, $this->validRootKeys);
-		$commonKeys = array_intersect($arrayKeys, $this->validRootKeys);
+		$arrayKeys = \array_keys($array);
+		$additionalKeys = \array_diff($arrayKeys, $this->validRootKeys);
+		$commonKeys = \array_intersect($arrayKeys, $this->validRootKeys);
 		if (!empty($additionalKeys)) {
-			throw new \UnexpectedValueException('Found invalid entries in root: ' . implode(', ', $additionalKeys));
+			throw new \UnexpectedValueException('Found invalid entries in root: ' . \implode(', ', $additionalKeys));
 		}
 		if (empty($commonKeys)) {
-			throw new \UnexpectedValueException('At least one key of the following is expected: ' . implode(', ', $this->validRootKeys));
+			throw new \UnexpectedValueException('At least one key of the following is expected: ' . \implode(', ', $this->validRootKeys));
 		}
 
 		if (isset($array['system'])) {
-			if (is_array($array['system'])) {
+			if (\is_array($array['system'])) {
 				foreach ($array['system'] as $name => $value) {
 					$this->checkTypeRecursively($value, $name);
 				}
@@ -155,7 +155,7 @@ class Import extends Command {
 		}
 
 		if (isset($array['apps'])) {
-			if (is_array($array['apps'])) {
+			if (\is_array($array['apps'])) {
 				$this->validateAppsArray($array['apps']);
 			} else {
 				throw new \UnexpectedValueException('The apps config array is not an array');
@@ -168,10 +168,10 @@ class Import extends Command {
 	 * @param string $configName
 	 */
 	protected function checkTypeRecursively($configValue, $configName) {
-		if (!is_array($configValue) && !is_bool($configValue) && !is_int($configValue) && !is_string($configValue) && !is_null($configValue)) {
+		if (!\is_array($configValue) && !\is_bool($configValue) && !\is_int($configValue) && !\is_string($configValue) && $configValue !== null) {
 			throw new \UnexpectedValueException('Invalid system config value for "' . $configName . '". Only arrays, bools, integers, strings and null (delete) are allowed.');
 		}
-		if (is_array($configValue)) {
+		if (\is_array($configValue)) {
 			foreach ($configValue as $key => $value) {
 				$this->checkTypeRecursively($value, $configName);
 			}
@@ -186,7 +186,7 @@ class Import extends Command {
 	protected function validateAppsArray($array) {
 		foreach ($array as $app => $configs) {
 			foreach ($configs as $name => $value) {
-				if (!is_int($value) && !is_string($value) && !is_null($value)) {
+				if (!\is_int($value) && !\is_string($value) && $value !== null) {
 					throw new \UnexpectedValueException('Invalid app config value for "' . $app . '":"' . $name . '". Only integers, strings and null (delete) are allowed.');
 				}
 			}

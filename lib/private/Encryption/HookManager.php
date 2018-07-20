@@ -50,7 +50,7 @@ class HookManager {
 	 * @return Update
 	 */
 	private static function getUpdate() {
-		if (is_null(self::$updater)) {
+		if (self::$updater === null) {
 			$user = \OC::$server->getUserSession()->getUser();
 			$uid = '';
 			if ($user) {

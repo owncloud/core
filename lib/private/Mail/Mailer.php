@@ -58,7 +58,7 @@ class Mailer implements IMailer {
 	 * @param ILogger $logger
 	 * @param \OC_Defaults $defaults
 	 */
-	function __construct(IConfig $config,
+	public function __construct(IConfig $config,
 						 ILogger $logger,
 						 \OC_Defaults $defaults) {
 		$this->config = $config;
@@ -88,7 +88,7 @@ class Mailer implements IMailer {
 	public function send(Message $message) {
 		$debugMode = $this->config->getSystemValue('mail_smtpdebug', false);
 
-		if (!is_array($message->getFrom()) || count($message->getFrom()) === 0) {
+		if (!\is_array($message->getFrom()) || \count($message->getFrom()) === 0) {
 			$message->setFrom([\OCP\Util::getDefaultEmailAddress($this->defaults->getName())]);
 		}
 
@@ -100,24 +100,24 @@ class Mailer implements IMailer {
 
 		$allRecipients = [];
 		if (!empty($message->getTo())) {
-			$allRecipients = array_merge($allRecipients, $message->getTo());
+			$allRecipients = \array_merge($allRecipients, $message->getTo());
 		}
 		if (!empty($message->getCc())) {
-			$allRecipients = array_merge($allRecipients, $message->getCc());
+			$allRecipients = \array_merge($allRecipients, $message->getCc());
 		}
 		if (!empty($message->getBcc())) {
-			$allRecipients = array_merge($allRecipients, $message->getBcc());
+			$allRecipients = \array_merge($allRecipients, $message->getBcc());
 		}
 
 		// Debugging logging
 		$logMessage = 'Sent mail from "{from}" to "{recipients}" with subject "{subject}"';
 		$this->logger->debug($logMessage, [
 			'app' => 'core',
-			'from' => json_encode($message->getFrom()),
-			'recipients' => json_encode($allRecipients),
+			'from' => \json_encode($message->getFrom()),
+			'recipients' => \json_encode($allRecipients),
 			'subject' => $message->getSubject()
 		]);
-		if($debugMode && isset($mailLogger)) {
+		if ($debugMode && isset($mailLogger)) {
 			$this->logger->debug($mailLogger->dump(), ['app' => 'core']);
 		}
 
@@ -143,12 +143,12 @@ class Mailer implements IMailer {
 	 * @return string Converted mail address if `idn_to_ascii` exists
 	 */
 	protected function convertEmail($email) {
-		if (!function_exists('idn_to_ascii') || strpos($email, '@') === false) {
+		if (!\function_exists('idn_to_ascii') || \strpos($email, '@') === false) {
 			return $email;
 		}
 
-		list($name, $domain) = explode('@', $email, 2);
-		$domain = idn_to_ascii($domain, 0, INTL_IDNA_VARIANT_UTS46);
+		list($name, $domain) = \explode('@', $email, 2);
+		$domain = \idn_to_ascii($domain, 0, INTL_IDNA_VARIANT_UTS46);
 		return $name.'@'.$domain;
 	}
 
@@ -158,7 +158,7 @@ class Mailer implements IMailer {
 	 * @return \Swift_SmtpTransport|\Swift_SendmailTransport|\Swift_MailTransport
 	 */
 	protected function getInstance() {
-		if (!is_null($this->instance)) {
+		if ($this->instance !== null) {
 			return $this->instance;
 		}
 
@@ -180,7 +180,7 @@ class Mailer implements IMailer {
 		// Register plugins
 
 		// Enable logger if debug mode is enabled
-		if($this->config->getSystemValue('mail_smtpdebug', false)) {
+		if ($this->config->getSystemValue('mail_smtpdebug', false)) {
 			$mailLogger = new \Swift_Plugins_Loggers_ArrayLogger();
 			$instance->registerPlugin(new \Swift_Plugins_LoggerPlugin($mailLogger));
 		}
@@ -242,5 +242,4 @@ class Mailer implements IMailer {
 	protected function getMailInstance() {
 		return \Swift_MailTransport::newInstance();
 	}
-
 }

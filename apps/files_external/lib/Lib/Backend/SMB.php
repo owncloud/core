@@ -31,7 +31,6 @@ use OCP\IL10N;
 use OCP\IUser;
 
 class SMB extends ExternalBackend {
-
 	use LegacyDependencyCheckPolyfill;
 
 	public function __construct(IL10N $l) {
@@ -62,5 +61,4 @@ class SMB extends ExternalBackend {
 			$storage->setBackendOption('user', $domain.'\\'.$user);
 		}
 	}
-
 }

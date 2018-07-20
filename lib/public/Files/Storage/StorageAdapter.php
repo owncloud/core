@@ -133,5 +133,5 @@ abstract class StorageAdapter extends \OC\Files\Storage\Common {
 	 * @throws StorageNotAvailableException if the storage is temporarily not available
 	 * @since 10.0
 	 */
-	abstract public function touch($path, $mtime = NULL);
+	abstract public function touch($path, $mtime = null);
 }

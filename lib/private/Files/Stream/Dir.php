@@ -30,7 +30,7 @@ class Dir {
 	private $index;
 
 	public function dir_opendir($path, $options) {
-		$this->name = substr($path, strlen('fakedir://'));
+		$this->name = \substr($path, \strlen('fakedir://'));
 		$this->index = 0;
 		if (!isset(self::$dirs[$this->name])) {
 			self::$dirs[$this->name] = [];
@@ -39,7 +39,7 @@ class Dir {
 	}
 
 	public function dir_readdir() {
-		if ($this->index >= count(self::$dirs[$this->name])) {
+		if ($this->index >= \count(self::$dirs[$this->name])) {
 			return false;
 		}
 		$filename = self::$dirs[$this->name][$this->index];

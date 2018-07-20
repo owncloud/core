@@ -39,7 +39,7 @@ class BigFileID {
 	 * Put a dummy entry to make the autoincrement go beyond the 32 bits limit
 	 * @return \OC_OCS_Result
 	 */
-	public function increaseFileIDsBeyondMax32bits(){
+	public function increaseFileIDsBeyondMax32bits() {
 		\OC::$server->getLogger()->warning('Inserting dummy entry with fileid bigger than max int of 32 bits for testing');
 		$insertedFileID = "'2147483647'";
 		$queryCheckFileID = "SELECT * from oc_filecache where fileid=" . $insertedFileID;
@@ -56,5 +56,4 @@ class BigFileID {
 		}
 		return new \OC_OCS_Result();
 	}
-
 }

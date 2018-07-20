@@ -49,7 +49,7 @@ class Applicable extends Base {
 	 */
 	private $groupManager;
 
-	function __construct(
+	public function __construct(
 		IGlobalStoragesService $globalService,
 		IUserManager $userManager,
 		IGroupManager $groupManager
@@ -119,7 +119,7 @@ class Applicable extends Base {
 		$applicableUsers = $mount->getApplicableUsers();
 		$applicableGroups = $mount->getApplicableGroups();
 
-		if ((count($addUsers) + count($removeUsers) + count($addGroups) + count($removeGroups) > 0) || $input->getOption('remove-all')) {
+		if ((\count($addUsers) + \count($removeUsers) + \count($addGroups) + \count($removeGroups) > 0) || $input->getOption('remove-all')) {
 			foreach ($addUsers as $addUser) {
 				if (!$this->userManager->userExists($addUser)) {
 					$output->writeln('<error>User "' . $addUser . '" not found</error>');
@@ -137,10 +137,10 @@ class Applicable extends Base {
 				$applicableUsers = [];
 				$applicableGroups = [];
 			} else {
-				$applicableUsers = array_unique(array_merge($applicableUsers, $addUsers));
-				$applicableUsers = array_values(array_diff($applicableUsers, $removeUsers));
-				$applicableGroups = array_unique(array_merge($applicableGroups, $addGroups));
-				$applicableGroups = array_values(array_diff($applicableGroups, $removeGroups));
+				$applicableUsers = \array_unique(\array_merge($applicableUsers, $addUsers));
+				$applicableUsers = \array_values(\array_diff($applicableUsers, $removeUsers));
+				$applicableGroups = \array_unique(\array_merge($applicableGroups, $addGroups));
+				$applicableGroups = \array_values(\array_diff($applicableGroups, $removeGroups));
 			}
 			$mount->setApplicableUsers($applicableUsers);
 			$mount->setApplicableGroups($applicableGroups);

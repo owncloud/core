@@ -128,7 +128,7 @@ class CertificateControllerTest extends \Test\TestCase {
 		$this->certificateManager
 			->expects($this->once())
 			->method('addCertificate')
-			->with(file_get_contents($uploadedFile['tmp_name'], 'goodCertificate.crt'))
+			->with(\file_get_contents($uploadedFile['tmp_name'], 'goodCertificate.crt'))
 			->will($this->returnValue($certificate));
 
 		$this->l10n
@@ -141,7 +141,6 @@ class CertificateControllerTest extends \Test\TestCase {
 			->method('l')
 			->with('date', new \DateTime('@1529099555'))
 			->will($this->returnValue('Valid Till as String'));
-
 
 		$expected = new DataResponse([
 			'name' => 'Name',
@@ -171,7 +170,7 @@ class CertificateControllerTest extends \Test\TestCase {
 		$this->certificateManager
 			->expects($this->once())
 			->method('addCertificate')
-			->with(file_get_contents($uploadedFile['tmp_name'], 'badCertificate.crt'))
+			->with(\file_get_contents($uploadedFile['tmp_name'], 'badCertificate.crt'))
 			->will($this->throwException(new \Exception()));
 
 		$expected = new DataResponse('An error occurred.', Http::STATUS_UNPROCESSABLE_ENTITY);
@@ -186,5 +185,4 @@ class CertificateControllerTest extends \Test\TestCase {
 
 		$this->assertEquals(new DataResponse(), $this->certificateController->removePersonalRootCertificate('CertificateToRemove'));
 	}
-
 }

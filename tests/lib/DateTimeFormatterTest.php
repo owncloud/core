@@ -11,24 +11,24 @@ namespace Test;
 class DateTimeFormatterTest extends TestCase {
 	/** @var \OC\DateTimeFormatter */
 	protected $formatter;
-	static protected $oneMinute = 60;
-	static protected $oneHour = 3600;
-	static protected $oneDay;
-	static protected $oneYear;
+	protected static $oneMinute = 60;
+	protected static $oneHour = 3600;
+	protected static $oneDay;
+	protected static $oneYear;
 
-	static protected $defaultTimeZone;
+	protected static $defaultTimeZone;
 
 	public static function setUpBeforeClass() {
 		parent::setUpBeforeClass();
-		self::$defaultTimeZone = date_default_timezone_get();
-		date_default_timezone_set('UTC');
+		self::$defaultTimeZone = \date_default_timezone_get();
+		\date_default_timezone_set('UTC');
 
 		self::$oneDay = self::$oneHour * 24;
 		self::$oneYear = self::$oneDay * 365;
 	}
 
 	public static function tearDownAfterClass() {
-		date_default_timezone_set(self::$defaultTimeZone);
+		\date_default_timezone_set(self::$defaultTimeZone);
 		parent::tearDownAfterClass();
 	}
 
@@ -91,7 +91,7 @@ class DateTimeFormatterTest extends TestCase {
 			['2 years ago',	$this->getTimestampAgo($time, 0, 0, 0, 0, 2), $time],
 
 			// Test with compare timestamp
-			['today',			$this->getTimestampAgo($time,  0,  0, 0, 0, 1), $this->getTimestampAgo($time, 0, 0, 0, 0, 1)],
+			['today',			$this->getTimestampAgo($time, 0, 0, 0, 0, 1), $this->getTimestampAgo($time, 0, 0, 0, 0, 1)],
 			['yesterday',		$this->getTimestampAgo($time, 30, 15, 3, 1, 1), $this->getTimestampAgo($time, 0, 0, 0, 0, 1)],
 			['4 days ago',		$this->getTimestampAgo($time, 30, 15, 3, 4, 1), $this->getTimestampAgo($time, 0, 0, 0, 0, 1)],
 			['5 months ago',	$this->getTimestampAgo($time, 30, 15, 3, 155, 1), $this->getTimestampAgo($time, 0, 0, 0, 0, 1)],
@@ -169,7 +169,7 @@ class DateTimeFormatterTest extends TestCase {
 	/**
 	 * @expectedException \Exception
 	 */
-	function testFormatDateWithInvalidTZ() {
+	public function testFormatDateWithInvalidTZ() {
 		$this->formatter->formatDate(1350129205, 'long', new \DateTimeZone('Mordor/Barad-dûr'));
 	}
 }

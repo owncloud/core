@@ -25,16 +25,15 @@ class AllConfigTest extends \Test\TestCase {
 	protected $eventDispatcher;
 
 	protected function getConfig($systemConfig = null, $connection = null) {
-
 		$this->eventDispatcher = $this->createMock(EventDispatcher::class);
 
-		if($this->connection === null) {
+		if ($this->connection === null) {
 			$this->connection = \OC::$server->getDatabaseConnection();
 		}
-		if($connection === null) {
+		if ($connection === null) {
 			$connection = $this->connection;
 		}
-		if($systemConfig === null) {
+		if ($systemConfig === null) {
 			$systemConfig = $this->getMockBuilder('\OC\SystemConfig')
 				->disableOriginalConstructor()
 				->getMock();
@@ -473,5 +472,4 @@ class AllConfigTest extends \Test\TestCase {
 		// cleanup
 		$this->connection->executeUpdate('DELETE FROM `*PREFIX*preferences`');
 	}
-
 }
