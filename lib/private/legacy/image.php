@@ -285,7 +285,7 @@ class OC_Image implements \OCP\IImage {
 				$retVal = \imagewbmp($this->resource, $filePath);
 				break;
 			case IMAGETYPE_BMP:
-				$retVal = imagebmp($this->resource, $filePath, $this->bitDepth);
+				$retVal = \imagebmp($this->resource, $filePath, $this->bitDepth);
 				break;
 			default:
 				$retVal = \imagepng($this->resource, $filePath);
