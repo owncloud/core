@@ -104,8 +104,10 @@ class Folder extends Node implements \OCP\Files\Folder {
 	 * @param string $path
 	 * @param FileInfo $info
 	 * @return File|Folder
+	 * @throws \OCP\Files\InvalidPathException
 	 */
 	protected function createNode($path, FileInfo $info = null) {
+		$this->view->verifyPath($this->path, $path);
 		if ($info === null) {
 			$isDir = $this->view->is_dir($path);
 		} else {
@@ -145,10 +147,12 @@ class Folder extends Node implements \OCP\Files\Folder {
 	/**
 	 * @param string $path
 	 * @return \OC\Files\Node\Folder
-	 * @throws \OCP\Files\NotPermittedException
+	 * @throws NotPermittedException
+	 * @throws \OCP\Files\InvalidPathException
 	 */
 	public function newFolder($path) {
 		if ($this->checkPermissions(\OCP\Constants::PERMISSION_CREATE)) {
+			$this->view->verifyPath($this->path, $path);
 			$fullPath = $this->getFullPath($path);
 			$nonExisting = new NonExistingFolder($this->root, $this->view, $fullPath);
 			$this->root->emit('\OC\Files', 'preWrite', [$nonExisting]);
@@ -158,18 +162,20 @@ class Folder extends Node implements \OCP\Files\Folder {
 			$this->root->emit('\OC\Files', 'postWrite', [$node]);
 			$this->root->emit('\OC\Files', 'postCreate', [$node]);
 			return $node;
-		} else {
-			throw new NotPermittedException('No create permission for folder ' . $this->getFullPath($path));
 		}
+
+		throw new NotPermittedException('No create permission for folder ' . $this->getFullPath($path));
 	}
 
 	/**
 	 * @param string $path
 	 * @return \OC\Files\Node\File
 	 * @throws \OCP\Files\NotPermittedException
+	 * @throws \OCP\Files\InvalidPathException
 	 */
 	public function newFile($path) {
 		if ($this->checkPermissions(\OCP\Constants::PERMISSION_CREATE)) {
+			$this->view->verifyPath($this->path, $path);
 			$fullPath = $this->getFullPath($path);
 			$nonExisting = new NonExistingFile($this->root, $this->view, $fullPath);
 			$this->root->emit('\OC\Files', 'preWrite', [$nonExisting]);
@@ -179,9 +185,9 @@ class Folder extends Node implements \OCP\Files\Folder {
 			$this->root->emit('\OC\Files', 'postWrite', [$node]);
 			$this->root->emit('\OC\Files', 'postCreate', [$node]);
 			return $node;
-		} else {
-			throw new NotPermittedException('No create permission for path ' . $this->getFullPath($path));
 		}
+
+		throw new NotPermittedException('No create permission for path ' . $this->getFullPath($path));
 	}
 
 	/**

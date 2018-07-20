@@ -112,17 +112,17 @@ class File extends Node implements \OCP\Files\File, IPreviewNode {
 	}
 
 	public function delete() {
-		if ($this->checkPermissions(\OCP\Constants::PERMISSION_DELETE)) {
-			$this->sendHooks(['preDelete']);
-			$fileInfo = $this->getFileInfo();
-			$this->view->unlink($this->path);
-			$nonExisting = new NonExistingFile($this->root, $this->view, $this->path, $fileInfo);
-			$this->root->emit('\OC\Files', 'postDelete', [$nonExisting]);
-			$this->exists = false;
-			$this->fileInfo = null;
-		} else {
+		if (!$this->checkPermissions(\OCP\Constants::PERMISSION_DELETE)) {
 			throw new NotPermittedException();
 		}
+
+		$this->sendHooks(['preDelete']);
+		$fileInfo = $this->getFileInfo();
+		$this->view->unlink($this->path);
+		$nonExisting = new NonExistingFile($this->root, $this->view, $this->path, $fileInfo);
+		$this->root->emit('\OC\Files', 'postDelete', [$nonExisting]);
+		$this->exists = false;
+		$this->fileInfo = null;
 	}
 
 	/**
