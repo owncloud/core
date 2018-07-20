@@ -25,10 +25,12 @@ use OCA\FederatedFileSharing\FederatedShareProvider;
 use OCA\FederatedFileSharing\FedShareManager;
 use OCA\Files_Sharing\Activity;
 use OCP\Activity\IEvent;
-use OCP\Activity\IManager;
-use OCP\ILogger;
+use OCP\Activity\IManager as ActivityManager;
+use OCP\IDBConnection;
 use OCP\IUserManager;
+use OCP\Notification\IManager as NotificationManager;
 use OCP\Share\IShare;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
  * Class FedShareManagerTest
@@ -37,19 +39,26 @@ use OCP\Share\IShare;
  * @group DB
  */
 class FedShareManagerTest extends TestCase {
+	/** @var FederatedShareProvider | \PHPUnit_Framework_MockObject_MockObject */
 	private $federatedShareProvider;
+
+	/** @var IDBConnection | \PHPUnit_Framework_MockObject_MockObject */
+	private $connection;
 
 	/** @var IUserManager | \PHPUnit_Framework_MockObject_MockObject */
 	private $userManager;
 
-	/** @var IManager | \PHPUnit_Framework_MockObject_MockObject */
+	/** @var ActivityManager | \PHPUnit_Framework_MockObject_MockObject */
 	private $activityManager;
 
-	/** @var ILogger | \PHPUnit_Framework_MockObject_MockObject */
-	private $logger;
+	/** @var NotificationManager | \PHPUnit_Framework_MockObject_MockObject */
+	private $notificationManager;
 
 	/** @var FedShareManager | \PHPUnit_Framework_MockObject_MockObject */
 	private $fedShareManager;
+
+	/** @var EventDispatcherInterface | \PHPUnit_Framework_MockObject_MockObject */
+	private $eventDispatcher;
 
 	protected function setUp() {
 		parent::setUp();
@@ -57,20 +66,27 @@ class FedShareManagerTest extends TestCase {
 		$this->federatedShareProvider = $this->getMockBuilder(
 			FederatedShareProvider::class
 		)->disableOriginalConstructor()->getMock();
+
+		$this->connection = $this->getMockBuilder(IDBConnection::class)
+			->getMock();
 		$this->userManager = $this->getMockBuilder(IUserManager::class)
 			->getMock();
-		$this->activityManager = $this->getMockBuilder(IManager::class)
+		$this->activityManager = $this->getMockBuilder(ActivityManager::class)
 			->getMock();
-		$this->logger = $this->getMockBuilder(ILogger::class)
+		$this->notificationManager = $this->getMockBuilder(NotificationManager::class)
+			->getMock();
+		$this->eventDispatcher = $this->getMockBuilder(EventDispatcherInterface::class)
 			->getMock();
 
 		$this->fedShareManager = $this->getMockBuilder(FedShareManager::class)
 			->setConstructorArgs(
 				[
 					$this->federatedShareProvider,
+					$this->connection,
 					$this->userManager,
 					$this->activityManager,
-					$this->logger
+					$this->notificationManager,
+					$this->eventDispatcher
 				]
 			)
 			->setMethods(['getFile'])

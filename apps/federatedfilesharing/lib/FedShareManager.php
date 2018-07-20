@@ -22,11 +22,14 @@
 namespace OCA\FederatedFileSharing;
 
 use OCA\Files_Sharing\Activity;
-use OCP\Activity\IManager;
+use OCP\Activity\IManager as ActivityManager;
 use OCP\Files\NotFoundException;
-use OCP\ILogger;
+use OCP\IDBConnection;
 use OCP\IUserManager;
+use OCP\Notification\IManager as NotificationManager;
 use OCP\Share\IShare;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\EventDispatcher\GenericEvent;
 
 /**
  * Class FedShareManager holds the share logic
@@ -34,10 +37,17 @@ use OCP\Share\IShare;
  * @package OCA\FederatedFileSharing
  */
 class FedShareManager {
+	const ACTION_URL = 'ocs/v1.php/apps/files_sharing/api/v1/remote_shares/pending/';
+
 	/**
 	 * @var FederatedShareProvider
 	 */
 	private $federatedShareProvider;
+
+	/**
+	 * @var IDBConnection
+	 */
+	private $connection;
 
 	/**
 	 * @var IUserManager
@@ -45,31 +55,138 @@ class FedShareManager {
 	private $userManager;
 
 	/**
-	 * @var IManager
+	 * @var ActivityManager
 	 */
 	private $activityManager;
 
 	/**
-	 * @var ILogger
+	 * @var NotificationManager
 	 */
-	private $logger;
+	private $notificationManager;
+
+	/**
+	 * @var EventDispatcherInterface
+	 */
+	private $eventDispatcher;
 
 	/**
 	 * FedShareManager constructor.
 	 *
 	 * @param FederatedShareProvider $federatedShareProvider
+	 * @param IDBConnection $connection
 	 * @param IUserManager $userManager
-	 * @param IManager $activityManager
-	 * @param ILogger $logger
+	 * @param ActivityManager $activityManager
+	 * @param NotificationManager $notificationManager
+	 * @param EventDispatcherInterface $eventDispatcher
 	 */
 	public function __construct(FederatedShareProvider $federatedShareProvider,
+								IDBConnection $connection,
 								IUserManager $userManager,
-								IManager $activityManager,
-								ILogger $logger) {
+								ActivityManager $activityManager,
+								NotificationManager $notificationManager,
+								EventDispatcherInterface $eventDispatcher
+	) {
 		$this->federatedShareProvider = $federatedShareProvider;
+		$this->connection = $connection;
 		$this->userManager = $userManager;
 		$this->activityManager = $activityManager;
-		$this->logger = $logger;
+		$this->notificationManager = $notificationManager;
+		$this->eventDispatcher = $eventDispatcher;
+	}
+
+	/**
+	 * Create an incoming share
+	 *
+	 * @param string $shareWith
+	 * @param string $remote
+	 * @param int $remoteId
+	 * @param string $owner
+	 * @param string $name
+	 * @param int $ownerFederatedId
+	 * @param int $sharedByFederatedId
+	 * @param string $sharedBy
+	 * @param string $token
+	 *
+	 * @return void
+	 */
+	public function createShare($shareWith,
+								$remote,
+								$remoteId,
+								$owner,
+								$name,
+								$ownerFederatedId,
+								$sharedByFederatedId,
+								$sharedBy,
+								$token
+	) {
+		\OC_Util::setupFS($shareWith);
+		$externalManager = new \OCA\Files_Sharing\External\Manager(
+			\OC::$server->getDatabaseConnection(),
+			\OC\Files\Filesystem::getMountManager(),
+			\OC\Files\Filesystem::getLoader(),
+			$this->notificationManager,
+			$this->eventDispatcher,
+			$shareWith
+		);
+		$externalManager->addShare(
+			$remote,
+			$token,
+			'',
+			$name,
+			$owner,
+			false,
+			$shareWith,
+			$remoteId
+		);
+		$shareId = $this->connection
+			->lastInsertId('*PREFIX*share_external');
+		if ($ownerFederatedId === null) {
+			$ownerFederatedId = $owner . '@' . $this->cleanupRemote($remote);
+		}
+		// if the owner of the share and the initiator are the same user
+		// we also complete the federated share ID for the initiator
+		if ($sharedByFederatedId === null && $owner === $sharedBy) {
+			$sharedByFederatedId = $ownerFederatedId;
+		}
+		$this->eventDispatcher->dispatch(
+			'\OCA\FederatedFileSharing::remote_shareReceived',
+			new GenericEvent(
+				null,
+				[
+					'name' => $name,
+					'targetuser' => $sharedByFederatedId,
+					'owner' => $owner,
+					'sharewith' => $shareWith,
+					'sharedby' => $sharedBy,
+					'remoteid' => $remoteId
+				]
+			)
+		);
+		$this->publishActivity(
+			$shareWith,
+			Activity::SUBJECT_REMOTE_SHARE_RECEIVED,
+			[$ownerFederatedId, \trim($name, '/')],
+			'files',
+			'',
+			'',
+			''
+		);
+		$link = $this->getActionLink($shareId);
+		$params = [$ownerFederatedId, $sharedByFederatedId, \trim($name, '/')];
+		$notification = $this->createNotification($shareWith);
+		$notification->setDateTime(new \DateTime())
+			->setObject('remote_share', $shareId)
+			->setSubject('remote_share', $params)
+			->setMessage('remote_share', $params);
+		$declineAction = $notification->createAction();
+		$declineAction->setLabel('decline')
+			->setLink($link, 'DELETE');
+		$notification->addAction($declineAction);
+		$acceptAction = $notification->createAction();
+		$acceptAction->setLabel('accept')
+			->setLink($link, 'POST');
+		$notification->addAction($acceptAction);
+		$this->notificationManager->notify($notification);
 	}
 
 	/**
@@ -120,6 +237,52 @@ class FedShareManager {
 	}
 
 	/**
+	 * Unshare an item
+	 *
+	 * @param array $shareRow
+	 *
+	 * @return void
+	 */
+	public function unshare($shareRow) {
+		$remote = $this->cleanupRemote($shareRow['remote']);
+		$owner = $shareRow['owner'] . '@' . $remote;
+		$mountpoint = $shareRow['mountpoint'];
+		$user = $shareRow['user'];
+		$query = $this->connection->getQueryBuilder();
+		$query->delete('share_external')
+			->where(
+				$query->expr()->eq(
+					'remote_id',
+					$query->createNamedParameter($shareRow['remote_id'])
+				)
+			)
+			->andWhere(
+				$query->expr()->eq(
+					'share_token',
+					$query->createNamedParameter($shareRow['share_token'])
+				)
+			);
+		$shareRow = $query->execute();
+		if ($shareRow['accepted']) {
+			$path = \trim($mountpoint, '/');
+		} else {
+			$path = \trim($shareRow['name'], '/');
+		}
+		$notification = $this->createNotification($shareRow['user']);
+		$notification->setObject('remote_share', (int) $shareRow['id']);
+		$this->notificationManager->markProcessed($notification);
+		$this->publishActivity(
+			$user,
+			Activity::SUBJECT_REMOTE_SHARE_UNSHARED,
+			[$owner, $path],
+			'files',
+			'',
+			'',
+			''
+		);
+	}
+
+	/**
 	 * Publish a new activity
 	 *
 	 * @param string $affectedUser
@@ -148,6 +311,32 @@ class FedShareManager {
 			->setObject($objectType, $objectId, $objectName)
 			->setLink($link);
 		$this->activityManager->publish($event);
+	}
+
+	/**
+	 * Get a new notification
+	 *
+	 * @param string $uid
+	 *
+	 * @return \OCP\Notification\INotification
+	 */
+	protected function createNotification($uid) {
+		$notification = $this->notificationManager->createNotification();
+		$notification->setApp('files_sharing')
+			->setUser($uid);
+		return $notification;
+	}
+
+	/**
+	 * @param int $shareId
+	 * @return string
+	 */
+	protected function getActionLink($shareId) {
+		$urlGenerator = \OC::$server->getURLGenerator();
+		$link = $urlGenerator->getAbsoluteURL(
+			$urlGenerator->linkTo('', self::ACTION_URL . $shareId)
+		);
+		return $link;
 	}
 
 	/**
@@ -189,5 +378,17 @@ class FedShareManager {
 		}
 
 		return $share->getSharedBy();
+	}
+
+	/**
+	 * Strip a protocol from the remote URL
+	 *
+	 * @param string $remote
+	 *
+	 * @return string
+	 */
+	protected function cleanupRemote($remote) {
+		$remote = \substr($remote, \strpos($remote, '://') + 3);
+		return \rtrim($remote, '/');
 	}
 }
