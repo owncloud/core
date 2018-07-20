@@ -166,6 +166,7 @@ class FedShareManager {
 		} catch (NotFoundException $e) {
 			$file = null;
 		}
+		// FIXME:  use permalink here, see ViewController for reference
 		$args = \OC\Files\Filesystem::is_dir($file)
 			? ['dir' => $file]
 			: ['dir' => \dirname($file), 'scrollto' => $file];
