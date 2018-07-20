@@ -421,30 +421,6 @@ class RequestHandlerController extends OCSController {
 		$this->federatedShareProvider->removeShareFromTable($share);
 		return new Result();
 	}
-	
-	/**
-	 * get share
-	 *
-	 * @param int $id
-	 * @param string $token
-	 *
-	 * @return array|bool
-	 */
-	protected function getShare($id, $token) {
-		$query = $this->connection->getQueryBuilder();
-		$query->select('*')->from($this->shareTable)
-			->where($query->expr()->eq('token', $query->createNamedParameter($token)))
-			->andWhere($query->expr()->eq('share_type', $query->createNamedParameter(FederatedShareProvider::SHARE_TYPE_REMOTE)))
-			->andWhere($query->expr()->eq('id', $query->createNamedParameter($id)));
-
-		$result = $query->execute()->fetchAll();
-
-		if (!empty($result) && isset($result[0])) {
-			return $result[0];
-		}
-
-		return false;
-	}
 
 	/**
 	 * check if server-to-server sharing is enabled
