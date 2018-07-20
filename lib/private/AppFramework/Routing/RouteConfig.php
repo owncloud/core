@@ -91,7 +91,10 @@ class RouteConfig {
 				$postFix = $ocsRoute['postfix'];
 			}
 
-			$url = $ocsRoute['url'];
+			$root = (isset($ocsRoute['root']))
+				? $ocsRoute['root']
+				: '/apps/' . $this->appName;
+			$url = $root . $ocsRoute['url'];
 			$verb = isset($ocsRoute['verb']) ? \strtoupper($ocsRoute['verb']) : 'GET';
 
 			$split = \explode('#', $name, 2);

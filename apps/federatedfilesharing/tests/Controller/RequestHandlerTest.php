@@ -24,19 +24,20 @@
  *
  */
 
-namespace OCA\FederatedFileSharing\Tests;
+namespace OCA\FederatedFileSharing\Tests\Controller;
 
 use OC\Files\Filesystem;
 use OC\HTTPHelper;
 use OCA\FederatedFileSharing\DiscoveryManager;
 use OCA\FederatedFileSharing\FederatedShareProvider;
-use OCA\FederatedFileSharing\RequestHandler;
-use OCP\IUserManager;
+use OCA\FederatedFileSharing\FedShareManager;
+use OCA\FederatedFileSharing\Controller\RequestHandlerController;
+use  OCA\FederatedFileSharing\Tests\TestCase;
 use OCP\Share\IShare;
 use Symfony\Component\EventDispatcher\GenericEvent;
 
 /**
- * Class RequestHandlerTest
+ * Class RequestHandlerControllerTest
  *
  * @package OCA\FederatedFileSharing\Tests
  * @group DB
@@ -50,7 +51,7 @@ class RequestHandlerTest extends TestCase {
 	private $connection;
 
 	/**
-	 * @var RequestHandler
+	 * @var RequestHandlerController
 	 */
 	private $s2s;
 
@@ -63,8 +64,8 @@ class RequestHandlerTest extends TestCase {
 	/** @var  \OCA\FederatedFileSharing\AddressHandler | PHPUnit_Framework_MockObject_MockObject */
 	private $addressHandler;
 
-	/** @var  IUserManager | \PHPUnit_Framework_MockObject_MockObject */
-	private $userManager;
+	/** @var  FedShareManager | \PHPUnit_Framework_MockObject_MockObject */
+	private $fedShareManager;
 
 	/** @var  IShare | \PHPUnit_Framework_MockObject_MockObject */
 	private $share;
@@ -99,18 +100,18 @@ class RequestHandlerTest extends TestCase {
 			->disableOriginalConstructor()->getMock();
 		$this->addressHandler = $this->getMockBuilder('OCA\FederatedFileSharing\AddressHandler')
 			->disableOriginalConstructor()->getMock();
-		$this->userManager = $this->createMock('OCP\IUserManager');
+		$this->fedShareManager = $this->createMock(FedShareManager::class);
 
 		$this->registerHttpHelper($httpHelperMock);
 
-		$this->s2s = new RequestHandler(
+		$this->s2s = new RequestHandlerController(
+			'federatedfilesharing',
+			\OC::$server->getRequest(),
 			$this->federatedShareProvider,
 			\OC::$server->getDatabaseConnection(),
-			\OC::$server->getShareManager(),
-			\OC::$server->getRequest(),
 			$this->notifications,
 			$this->addressHandler,
-			$this->userManager,
+			$this->fedShareManager,
 			\OC::$server->getEventDispatcher()
 		);
 
@@ -168,7 +169,7 @@ class RequestHandlerTest extends TestCase {
 			\array_push($called, $event);
 		});
 
-		$result = $this->s2s->createShare(null);
+		$result = $this->s2s->createShare();
 
 		$this->assertInstanceOf(GenericEvent::class, $called[1]);
 
@@ -188,27 +189,27 @@ class RequestHandlerTest extends TestCase {
 	}
 
 	public function testDeclineShare() {
-		$this->s2s = $this->getMockBuilder('\OCA\FederatedFileSharing\RequestHandler')
+		$this->s2s = $this->getMockBuilder(RequestHandlerController::class)
 			->setConstructorArgs(
 				[
+					'federatedfilesharing',
+					\OC::$server->getRequest(),
 					$this->federatedShareProvider,
 					\OC::$server->getDatabaseConnection(),
-					\OC::$server->getShareManager(),
-					\OC::$server->getRequest(),
 					$this->notifications,
 					$this->addressHandler,
-					$this->userManager,
+					$this->fedShareManager,
 					\OC::$server->getEventDispatcher()
 				]
 			)->setMethods(['executeDeclineShare', 'verifyShare'])->getMock();
 
-		$this->s2s->expects($this->once())->method('executeDeclineShare');
+		$this->fedShareManager->expects($this->once())->method('declineShare');
 
 		$this->s2s->expects($this->any())->method('verifyShare')->willReturn(true);
 
 		$_POST['token'] = 'token';
 
-		$this->s2s->declineShare(['id' => 42]);
+		$this->s2s->declineShare(42);
 	}
 
 	public function XtestDeclineShareMultiple() {
@@ -228,7 +229,7 @@ class RequestHandlerTest extends TestCase {
 		$this->assertCount(2, $data);
 
 		$_POST['token'] = 'token1';
-		$this->s2s->declineShare(['id' => $data[0]['id']]);
+		$this->s2s->declineShare($data[0]['id']);
 
 		$verify = \OCP\DB::prepare('SELECT * FROM `*PREFIX*share`');
 		$result = $verify->execute();
@@ -237,7 +238,7 @@ class RequestHandlerTest extends TestCase {
 		$this->assertEquals('bar@bar', $data[0]['share_with']);
 
 		$_POST['token'] = 'token2';
-		$this->s2s->declineShare(['id' => $data[0]['id']]);
+		$this->s2s->declineShare($data[0]['id']);
 
 		$verify = \OCP\DB::prepare('SELECT * FROM `*PREFIX*share`');
 		$result = $verify->execute();
