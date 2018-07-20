@@ -40,6 +40,7 @@ OC.L10N.register(
     "This operation is forbidden" : "Operasjon er ikkje tillatt.",
     "This directory is unavailable, please check the logs or contact the administrator" : "Området er ikkje tilgjengeleg, ver vennleg og sjå i logg eller kontakt administrator",
     "Could not move \"{file}\", target exists" : "Kan ikkje flytte \"{file}\", mål finst frå før",
+    "Could not move \"{file}\": {message}" : "Kan ikkje flytte  \"{file}\": {message}",
     "Could not move \"{file}\"" : "Kan ikkje flytte \"{file}\"",
     "{newName} already exists" : "{newName} finst",
     "Could not rename \"{fileName}\", it does not exist any more" : "Kan ikkje gje nytt navn til \"{newName}\", den finst ikkje lengre",

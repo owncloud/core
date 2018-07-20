@@ -281,6 +281,7 @@ OC.L10N.register(
     "Line: %s" : "Linje: %s",
     "Trace" : "Trace",
     "Imprint" : "Avtrykk",
+    "Privacy Policy" : "Personvern regler",
     "Create an <strong>admin account</strong>" : "Opprett en <strong>administrator-konto</strong>",
     "Username" : "Brukernavn",
     "Storage & database" : "Lagring og database",
