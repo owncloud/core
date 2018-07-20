@@ -463,17 +463,16 @@ trait Sharing {
 	 * @return void
 	 */
 	public function publiclyUploadingShouldNotWork() {
-		try {
-			$this->publicUploadContent('whateverfilefortesting.txt', '', 'test');
-			PHPUnit_Framework_Assert::fail('Publicly uploading must fail');
-		} catch (BadResponseException $e) {
-			// expected
-			PHPUnit_Framework_Assert::assertTrue(
-				($e->getCode() == 507) || (($e->getCode() >= 400) && ($e->getCode() <= 499)),
-				"upload should have failed but passed with code" . $e->getCode()
-			);
-			$this->response = $e->getResponse();
-		}
+		$this->publicUploadContent('whateverfilefortesting.txt', '', 'test');
+
+		PHPUnit_Framework_Assert::assertTrue(
+			($this->response->getStatusCode() == 507)
+			|| (
+				($this->response->getStatusCode() >= 400)
+				&& ($this->response->getStatusCode() <= 499)
+			),
+			"upload should have failed but passed with code " . $this->response->getStatusCode()
+		);
 	}
 
 	/**
@@ -505,18 +504,14 @@ trait Sharing {
 		}
 
 		$client = new Client();
-		$this->response = $client->send(
-			$client->createRequest('PUT', $url, $options)
-		);
-		if ($overwriting) {
-			$expectedStatus = 204;
-		} else {
-			$expectedStatus = 201;
+		try {
+			$this->response = $client->send(
+				$client->createRequest('PUT', $url, $options)
+			);
+		} catch (BadResponseException $e) {
+			// 4xx and 5xx responses cause an exception
+			$this->response = $e->getResponse();
 		}
-		PHPUnit_Framework_Assert::assertEquals(
-			$expectedStatus,
-			$this->response->getStatusCode()
-		);
 	}
 
 	/**
