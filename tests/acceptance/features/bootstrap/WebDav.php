@@ -1585,12 +1585,39 @@ trait WebDav {
 	 *
 	 * @return void
 	 */
-	public function userUploadsTheFollowingChunksUsingOldChunking($user, $total, $file, TableNode $chunkDetails) {
+	public function userUploadsTheFollowingTotalChunksUsingOldChunking(
+		$user, $total, $file, TableNode $chunkDetails
+	) {
 		foreach ($chunkDetails->getTable() as $chunkDetail) {
 			$chunkNumber = $chunkDetail[0];
 			$chunkContent = $chunkDetail[1];
 			$this->userUploadsChunkedFile($user, $chunkNumber, $total, $chunkContent, $file);
 		}
+	}
+
+	/**
+	 * Old style chunking upload
+	 *
+	 * @When user :user uploads the following chunks to :file with old chunking and using the API
+	 * @Given user :user has uploaded the following chunks to :file with old chunking and using the API
+	 *
+	 * @param string $user
+	 * @param string $file
+	 * @param TableNode $chunkDetails table of 2 columns, chunk number and chunk
+	 *                                content without column headings, e.g.
+	 *                                | 1 | first data              |
+	 *                                | 2 | followed by second data |
+	 *                                Chunks may be numbered out-of-order if desired.
+	 *
+	 * @return void
+	 */
+	public function userUploadsTheFollowingChunksUsingOldChunking(
+		$user, $file, TableNode $chunkDetails
+	) {
+		$total = \count($chunkDetails->getRows());
+		$this->userUploadsTheFollowingTotalChunksUsingOldChunking(
+			$user, $total, $file, $chunkDetails
+		);
 	}
 
 	/**
