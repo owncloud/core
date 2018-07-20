@@ -302,7 +302,7 @@ class RequestHandlerController extends OCSController {
 					$this->notifications->sendAcceptShare($remote, $remoteId, $share->getToken());
 				}
 			}
-		} catch (\Exception $e) {
+		} catch (Share\Exceptions\ShareNotFound $e) {
 			// pass
 		}
 		return new Result();
@@ -335,7 +335,7 @@ class RequestHandlerController extends OCSController {
 				}
 				$this->fedShareManager->declineShare($share);
 			}
-		} catch (\Exception $e) {
+		} catch (Share\Exceptions\ShareNotFound $e) {
 			// pass
 		}
 
