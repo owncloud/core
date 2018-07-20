@@ -928,6 +928,8 @@ class View {
 						$this->emit_file_hooks_pre($exists, $path2, $run);
 					}
 					if ($run) {
+						$this->verifyPath(\dirname($path2), \basename($path2));
+
 						$mount1 = $this->getMount($path1);
 						$mount2 = $this->getMount($path2);
 						$storage1 = $mount1->getStorage();
