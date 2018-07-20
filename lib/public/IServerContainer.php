@@ -45,7 +45,6 @@ namespace OCP;
 use OCP\Security\IContentSecurityPolicyManager;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
-
 /**
  * Class IServerContainer
  * @package OCP

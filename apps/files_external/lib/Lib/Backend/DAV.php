@@ -29,7 +29,6 @@ use OCP\Files\External\DefinitionParameter;
 use OCP\IL10N;
 
 class DAV extends ExternalBackend {
-
 	use LegacyDependencyCheckPolyfill;
 
 	public function __construct(IL10N $l) {
@@ -48,5 +47,4 @@ class DAV extends ExternalBackend {
 			->addAuthScheme(AuthMechanism::SCHEME_PASSWORD);
 		;
 	}
-
 }

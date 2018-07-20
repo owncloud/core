@@ -113,7 +113,7 @@ class ServerFactory {
 		$server->addPlugin(new \OCA\DAV\Connector\Sabre\LockPlugin());
 		// Some WebDAV clients do require Class 2 WebDAV support (locking), since
 		// we do not provide locking we emulate it using a fake locking plugin.
-		if($this->request->isUserAgent([
+		if ($this->request->isUserAgent([
 			'/WebDAVFS/',
 			'/OneNote/',
 			'/Microsoft Office OneNote 2013/',
@@ -134,7 +134,7 @@ class ServerFactory {
 
 			/** @var \OC\Files\View $view */
 			$view = $viewCallBack($server);
-			if (!is_null($userFolder)) {
+			if ($userFolder !== null) {
 				// User folder exists and user is active and not anonymous
 				$rootInfo = $userFolder->getFileInfo();
 			} else {
@@ -162,7 +162,7 @@ class ServerFactory {
 			);
 			$server->addPlugin(new \OCA\DAV\Connector\Sabre\QuotaPlugin($view));
 
-			if($this->userSession->isLoggedIn()) {
+			if ($this->userSession->isLoggedIn()) {
 				$server->addPlugin(new \OCA\DAV\Connector\Sabre\TagsPlugin($objectTree, $this->tagManager));
 				$server->addPlugin(new \OCA\DAV\Connector\Sabre\SharesPlugin(
 					$objectTree,

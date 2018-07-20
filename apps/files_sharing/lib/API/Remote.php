@@ -119,7 +119,7 @@ class Remote {
 	/**
 	 * List accepted remote shares
 	 *
-	 * @param array $params 
+	 * @param array $params
 	 * @return \OC_OCS_Result
 	 */
 	public static function getShares($params) {
@@ -134,7 +134,7 @@ class Remote {
 
 		$shares = $externalManager->getAcceptedShares();
 
-		$shares = array_map('self::extendShareInfo', $shares);
+		$shares = \array_map('self::extendShareInfo', $shares);
 	
 		return new \OC_OCS_Result($shares);
 	}

@@ -19,9 +19,7 @@
  *
  */
 
-
 namespace OC\Files\Meta;
-
 
 use OC\Files\Node\AbstractFolder;
 use OCP\Files\IRootFolder;
@@ -81,7 +79,7 @@ class MetaVersionCollection extends AbstractFolder {
 		}
 		/** @var IVersionedStorage | Storage $storage */
 		$versions = $storage->getVersions($internalPath);
-		return array_values(array_map(function($version) use ($storage, $internalPath, $view, $path) {
+		return \array_values(\array_map(function ($version) use ($storage, $internalPath, $view, $path) {
 			if (!isset($version['mimetype'])) {
 				$version['mimetype'] = $view->getMimeType($path);
 			}
@@ -94,8 +92,8 @@ class MetaVersionCollection extends AbstractFolder {
 	 * @inheritdoc
 	 */
 	public function get($path) {
-		$pieces = explode('/', $path);
-		if (count($pieces) !== 1) {
+		$pieces = \explode('/', $path);
+		if (\count($pieces) !== 1) {
 			throw new NotFoundException();
 		}
 		$versionId = $pieces[0];

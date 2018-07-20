@@ -19,7 +19,6 @@
  *
  */
 
-
 namespace OC\Core\Command\Encryption;
 
 use OC\Encryption\Util;
@@ -27,7 +26,7 @@ use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class ShowKeyStorageRoot extends Command{
+class ShowKeyStorageRoot extends Command {
 
 	/** @var Util  */
 	protected $util;
@@ -54,5 +53,4 @@ class ShowKeyStorageRoot extends Command{
 
 		$output->writeln("Current key storage root:  <info>$rootDescription</info>");
 	}
-
 }

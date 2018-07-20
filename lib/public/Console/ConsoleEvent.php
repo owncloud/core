@@ -30,7 +30,6 @@ use Symfony\Component\EventDispatcher\Event;
  * @since 9.0.0
  */
 class ConsoleEvent extends Event {
-
 	const EVENT_RUN = 'OC\Console\Application::run';
 
 	/** @var string */

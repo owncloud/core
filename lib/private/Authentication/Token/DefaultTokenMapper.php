@@ -28,7 +28,6 @@ use OCP\IDBConnection;
 use OCP\IUser;
 
 class DefaultTokenMapper extends Mapper {
-
 	public function __construct(IDBConnection $db) {
 		parent::__construct($db, 'authtoken');
 	}
@@ -104,7 +103,7 @@ class DefaultTokenMapper extends Mapper {
 		$data = $result->fetchAll();
 		$result->closeCursor();
 
-		$entities = array_map(function ($row) {
+		$entities = \array_map(function ($row) {
 			return DefaultToken::fromRow($row);
 		}, $data);
 
@@ -123,5 +122,4 @@ class DefaultTokenMapper extends Mapper {
 			->andWhere($qb->expr()->eq('uid', $qb->createNamedParameter($user->getUID())));
 		$qb->execute();
 	}
-
 }

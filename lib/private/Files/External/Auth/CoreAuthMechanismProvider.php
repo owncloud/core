@@ -49,9 +49,8 @@ class CoreAuthMechanismProvider implements IAuthMechanismProvider {
 	 * @{inheritdoc}
 	 */
 	public function getAuthMechanisms() {
-		return array_map(function($className) {
+		return \array_map(function ($className) {
 			return $this->server->query($className);
 		}, $this->classNames);
 	}
 }
-

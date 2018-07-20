@@ -22,7 +22,6 @@
 
 namespace OC\Files\Stream;
 
-
 use Icewind\Streams\Wrapper;
 use OC\Cache\CappedMemoryCache;
 
@@ -45,16 +44,14 @@ class Checksum extends Wrapper {
 	 *
 	 * @var  resource[]
 	 */
- 	private $hashingContexts;
+	private $hashingContexts;
 
 	/** @var CappedMemoryCache Key is path, value is array of checksums */
 	private static $checksums;
 
-
 	public function __construct(array $algos = ['sha1', 'md5', 'adler32']) {
-
 		foreach ($algos as $algo) {
-			$this->hashingContexts[$algo] = hash_init($algo);
+			$this->hashingContexts[$algo] = \hash_init($algo);
 		}
 
 		if (!self::$checksums) {
@@ -62,14 +59,13 @@ class Checksum extends Wrapper {
 		}
 	}
 
-
 	/**
 	 * @param $source
 	 * @param $path
 	 * @return resource
 	 */
 	public static function wrap($source, $path) {
-		$context = stream_context_create([
+		$context = \stream_context_create([
 			'occhecksum' => [
 				'source' => $source,
 				'path' => $path
@@ -80,7 +76,6 @@ class Checksum extends Wrapper {
 			$source, $context, 'occhecksum', self::class
 		);
 	}
-
 
 	/**
 	 * @param string $path
@@ -128,7 +123,7 @@ class Checksum extends Wrapper {
 
 	private function updateHashingContexts($data) {
 		foreach ($this->hashingContexts as $ctx) {
-			hash_update($ctx, $data);
+			\hash_update($ctx, $data);
 		}
 	}
 
@@ -138,21 +133,19 @@ class Checksum extends Wrapper {
 	 * @return string File path without .part extension
 	 */
 	private function stripPartialFileExtension($path) {
-		$extension = pathinfo($path, PATHINFO_EXTENSION);
+		$extension = \pathinfo($path, PATHINFO_EXTENSION);
 
-		if ( $extension === 'part') {
-
-			$newLength = strlen($path) - 5; // 5 = strlen(".part")
-			$fPath = substr($path, 0, $newLength);
+		if ($extension === 'part') {
+			$newLength = \strlen($path) - 5; // 5 = strlen(".part")
+			$fPath = \substr($path, 0, $newLength);
 
 			// if path also contains a transaction id, we remove it too
-			$extension = pathinfo($fPath, PATHINFO_EXTENSION);
-			if(substr($extension, 0, 12) === 'ocTransferId') { // 12 = strlen("ocTransferId")
-				$newLength = strlen($fPath) - strlen($extension) -1;
-				$fPath = substr($fPath, 0, $newLength);
+			$extension = \pathinfo($fPath, PATHINFO_EXTENSION);
+			if (\substr($extension, 0, 12) === 'ocTransferId') { // 12 = strlen("ocTransferId")
+				$newLength = \strlen($fPath) - \strlen($extension) -1;
+				$fPath = \substr($fPath, 0, $newLength);
 			}
 			return $fPath;
-
 		} else {
 			return $path;
 		}
@@ -171,7 +164,7 @@ class Checksum extends Wrapper {
 		// As a result, call to getChecksums for original file (of this part file) will
 		// fetch checksum from cache
 		$originalFilePath = $this->stripPartialFileExtension($currentPath);
-		if ($originalFilePath !== $currentPath){
+		if ($originalFilePath !== $currentPath) {
 			self::$checksums[$originalFilePath] = $checksum;
 		}
 
@@ -185,7 +178,7 @@ class Checksum extends Wrapper {
 		$hashes = [];
 
 		foreach ($this->hashingContexts as $algo => $ctx) {
-			$hashes[$algo] = hash_final($ctx);
+			$hashes[$algo] = \hash_final($ctx);
 		}
 
 		return $hashes;
@@ -203,7 +196,7 @@ class Checksum extends Wrapper {
 	 * @return string
 	 */
 	private function getPathFromStreamContext() {
-		$ctx = stream_context_get_options($this->context);
+		$ctx = \stream_context_get_options($this->context);
 
 		return $ctx['occhecksum']['path'];
 	}

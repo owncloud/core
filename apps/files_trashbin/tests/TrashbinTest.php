@@ -51,7 +51,6 @@ use Symfony\Component\EventDispatcher\GenericEvent;
  * @group DB
  */
 class TrashbinTest extends TestCase {
-
 	const TEST_TRASHBIN_USER1 = "test-trashbin-user1";
 	const TEST_TRASHBIN_USER2 = "test-trashbin-user2";
 
@@ -97,7 +96,6 @@ class TrashbinTest extends TestCase {
 		self::loginHelper(self::TEST_TRASHBIN_USER2, true);
 		self::loginHelper(self::TEST_TRASHBIN_USER1, true);
 	}
-
 
 	public static function tearDownAfterClass() {
 		// cleanup test user
@@ -163,7 +161,6 @@ class TrashbinTest extends TestCase {
 		parent::tearDown();
 	}
 
-
 	/**
 	 * test expiration of files older then the max storage time defined for the trash
 	 * in this test we delete a shared file and check if both trash bins, the one from
@@ -171,8 +168,7 @@ class TrashbinTest extends TestCase {
 	 * correctly
 	 */
 	public function testExpireOldFilesShared() {
-
-		$currentTime = time();
+		$currentTime = \time();
 		$folder = "trashTest-" . $currentTime . '/';
 		$expiredDate = $currentTime - 3 * 24 * 60 * 60;
 
@@ -244,8 +240,7 @@ class TrashbinTest extends TestCase {
 	 * test expiration of files older then the max storage time defined for the trash
 	 */
 	public function testExpireOldFiles() {
-
-		$currentTime = time();
+		$currentTime = \time();
 		$expiredDate = $currentTime - 3 * 24 * 60 * 60;
 
 		// create some files
@@ -271,18 +266,17 @@ class TrashbinTest extends TestCase {
 		$this->assertSame(2, $count);
 
 		// only file2.txt should be left
-		$remainingFiles = array_slice($manipulatedList, $count);
+		$remainingFiles = \array_slice($manipulatedList, $count);
 		$this->assertCount(1, $remainingFiles);
-		$remainingFile = reset($remainingFiles);
+		$remainingFile = \reset($remainingFiles);
 		$this->assertSame('file2.txt', $remainingFile['name']);
 
 		// check that file1.txt and file3.txt was really deleted
 		$newTrashContent = Helper::getTrashFiles('/', self::TEST_TRASHBIN_USER1);
 		$this->assertCount(1, $newTrashContent);
-		$element = reset($newTrashContent);
+		$element = \reset($newTrashContent);
 		$this->assertSame('file2.txt', $element['name']);
 	}
-
 
 	/**
 	 * verify that the array contains the expected results
@@ -291,7 +285,7 @@ class TrashbinTest extends TestCase {
 	 * @param string[] $expected
 	 */
 	private function verifyArray($result, $expected) {
-		$this->assertCount(count($expected), $result);
+		$this->assertCount(\count($expected), $result);
 		foreach ($expected as $expectedFile) {
 			$found = false;
 			foreach ($result as $fileInTrash) {
@@ -328,7 +322,6 @@ class TrashbinTest extends TestCase {
 		return \OCA\Files\Helper::sortFiles($files, 'mtime');
 	}
 
-
 	/**
 	 * test expiration of old files in the trash bin until the max size
 	 * of the trash bin is met again
@@ -342,9 +335,9 @@ class TrashbinTest extends TestCase {
 
 		// delete them so that they end up in the trash bin
 		Filesystem::unlink('file3.txt');
-		sleep(1); // make sure that every file has a unique mtime
+		\sleep(1); // make sure that every file has a unique mtime
 		Filesystem::unlink('file2.txt');
-		sleep(1); // make sure that every file has a unique mtime
+		\sleep(1); // make sure that every file has a unique mtime
 		Filesystem::unlink('file1.txt');
 
 		//make sure that files are in the trash bin
@@ -358,7 +351,7 @@ class TrashbinTest extends TestCase {
 
 		$newTrashContent = Helper::getTrashFiles('/', self::TEST_TRASHBIN_USER1);
 		$this->assertCount(1, $newTrashContent);
-		$element = reset($newTrashContent);
+		$element = \reset($newTrashContent);
 		$this->assertSame('file1.txt', $element['name']);
 	}
 
@@ -660,7 +653,7 @@ class TrashbinTest extends TestCase {
 		if ($storage instanceof Local) {
 			$folderAbsPath = $storage->getSourcePath($internalPath);
 			// make folder read-only
-			chmod($folderAbsPath, 0555);
+			\chmod($folderAbsPath, 0555);
 
 			$this->assertTrue(
 				Trashbin::restore(
@@ -674,7 +667,7 @@ class TrashbinTest extends TestCase {
 			$file = $userFolder->get('file1.txt');
 			$this->assertEquals('foo', $file->getContent());
 
-			chmod($folderAbsPath, 0755);
+			\chmod($folderAbsPath, 0755);
 		}
 	}
 
@@ -763,7 +756,6 @@ class TrashbinTest extends TestCase {
 			try {
 				\OC::$server->getUserManager()->createUser($user, $user);
 			} catch (\Exception $e) { // catch username is already being used from previous aborted runs
-
 			}
 		}
 
@@ -775,4 +767,3 @@ class TrashbinTest extends TestCase {
 		\OC::$server->getUserFolder($user);
 	}
 }
-

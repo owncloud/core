@@ -103,7 +103,7 @@ class Scanner extends PublicEmitter {
 		$mountManager = Filesystem::getMountManager();
 		$mounts = $mountManager->findIn($dir);
 		$mounts[] = $mountManager->find($dir);
-		$mounts = array_reverse($mounts); //start with the mount of $dir
+		$mounts = \array_reverse($mounts); //start with the mount of $dir
 
 		return $mounts;
 	}
@@ -175,7 +175,7 @@ class Scanner extends PublicEmitter {
 	 */
 	private function shouldScan($mount) {
 		$storage = $mount->getStorage();
-		if (is_null($storage)) {
+		if ($storage === null) {
 			return false;
 		}
 
@@ -193,7 +193,6 @@ class Scanner extends PublicEmitter {
 			} else {// if the root exists in neither the cache nor the storage the user isn't setup yet
 				return false;
 			}
-
 		}
 
 		// don't scan received local shares, these can be scanned when scanning the owner's storage
@@ -263,7 +262,7 @@ class Scanner extends PublicEmitter {
 	}
 
 	private function triggerPropagator(IStorage $storage, $internalPath) {
-		$storage->getPropagator()->propagateChange($internalPath, time());
+		$storage->getPropagator()->propagateChange($internalPath, \time());
 	}
 
 	private function postProcessEntry(IStorage $storage, $internalPath) {
@@ -281,4 +280,3 @@ class Scanner extends PublicEmitter {
 		}
 	}
 }
-

@@ -31,7 +31,7 @@ class AssemblyStreamTest extends \Test\TestCase {
 	 */
 	public function testGetContents($expected, $nodes) {
 		$stream = \OCA\DAV\Upload\AssemblyStream::wrap($nodes);
-		$content = stream_get_contents($stream);
+		$content = \stream_get_contents($stream);
 
 		$this->assertEquals($expected, $content);
 	}
@@ -43,23 +43,23 @@ class AssemblyStreamTest extends \Test\TestCase {
 		$stream = \OCA\DAV\Upload\AssemblyStream::wrap($nodes);
 
 		$content = '';
-		while (!feof($stream)) {
-			$content .= fread($stream, 3);
+		while (!\feof($stream)) {
+			$content .= \fread($stream, 3);
 		}
 
 		$this->assertEquals($expected, $content);
 	}
 
-	function providesNodes() {
+	public function providesNodes() {
 		$data8k = $this->makeData(8192);
 		$dataLess8k = $this->makeData(8191);
 
 		$tonofnodes = [];
 		$tonofdata = "";
 		for ($i = 0; $i < 101; $i++) {
-			$thisdata =  rand(0,100); // variable length and content
+			$thisdata =  \rand(0, 100); // variable length and content
 			$tonofdata .= $thisdata;
-			array_push($tonofnodes, $this->buildNode($i,$thisdata));
+			\array_push($tonofnodes, $this->buildNode($i, $thisdata));
 		}
 
 		return[
@@ -135,9 +135,8 @@ class AssemblyStreamTest extends \Test\TestCase {
 
 		$node->expects($this->any())
 			->method('getSize')
-			->willReturn(strlen($data));
+			->willReturn(\strlen($data));
 
 		return $node;
 	}
 }
-

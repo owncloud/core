@@ -70,7 +70,7 @@ class PersonalMount extends MountPoint implements MoveableMount {
 	public function moveMount($target) {
 		$storage = $this->storagesService->getStorage($this->numericStorageId);
 		// remove "/$user/files" prefix
-		$targetParts = explode('/', trim($target, '/'), 3);
+		$targetParts = \explode('/', \trim($target, '/'), 3);
 		$storage->setMountPoint($targetParts[2]);
 		$this->storagesService->updateStorage($storage);
 		$this->setMountPoint($target);
@@ -89,7 +89,7 @@ class PersonalMount extends MountPoint implements MoveableMount {
 
 	/**
 	 * Returns true
-	 * 
+	 *
 	 * @param string $target unused
 	 * @return bool true
 	 */

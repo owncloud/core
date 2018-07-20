@@ -64,9 +64,9 @@ class TempManager implements ITempManager {
 	 * @return string
 	 */
 	private function buildFileNameWithSuffix($absolutePath, $postFix = '') {
-		if($postFix !== '') {
-			$postFix = '.' . ltrim($postFix, '.');
-			$postFix = str_replace(['\\', '/'], '', $postFix);
+		if ($postFix !== '') {
+			$postFix = '.' . \ltrim($postFix, '.');
+			$postFix = \str_replace(['\\', '/'], '', $postFix);
 			$absolutePath .= '-';
 		}
 
@@ -80,20 +80,20 @@ class TempManager implements ITempManager {
 	 * @return string
 	 */
 	public function getTemporaryFile($postFix = '') {
-		if (is_writable($this->tmpBaseDir)) {
+		if (\is_writable($this->tmpBaseDir)) {
 			// To create an unique file and prevent the risk of race conditions
 			// or duplicated temporary files by other means such as collisions
 			// we need to create the file using `tempnam` and append a possible
 			// postfix to it later
-			$file = tempnam($this->tmpBaseDir, self::TMP_PREFIX);
+			$file = \tempnam($this->tmpBaseDir, self::TMP_PREFIX);
 			$this->current[] = $file;
 
 			// If a postfix got specified sanitize it and create a postfixed
 			// temporary file
-			if($postFix !== '') {
+			if ($postFix !== '') {
 				$fileNameWithPostfix = $this->buildFileNameWithSuffix($file, $postFix);
-				touch($fileNameWithPostfix);
-				chmod($fileNameWithPostfix, 0600);
+				\touch($fileNameWithPostfix);
+				\chmod($fileNameWithPostfix, 0600);
 				$this->current[] = $fileNameWithPostfix;
 				return $fileNameWithPostfix;
 			}
@@ -117,17 +117,17 @@ class TempManager implements ITempManager {
 	 * @return string
 	 */
 	public function getTemporaryFolder($postFix = '') {
-		if (is_writable($this->tmpBaseDir)) {
+		if (\is_writable($this->tmpBaseDir)) {
 			// To create an unique directory and prevent the risk of race conditions
 			// or duplicated temporary files by other means such as collisions
 			// we need to create the file using `tempnam` and append a possible
 			// postfix to it later
-			$uniqueFileName = tempnam($this->tmpBaseDir, self::TMP_PREFIX);
+			$uniqueFileName = \tempnam($this->tmpBaseDir, self::TMP_PREFIX);
 			$this->current[] = $uniqueFileName;
 
 			// Build a name without postfix
 			$path = $this->buildFileNameWithSuffix($uniqueFileName . '-folder', $postFix);
-			mkdir($path, 0700);
+			\mkdir($path, 0700);
 			$this->current[] = $path;
 
 			return $path . '/';
@@ -154,7 +154,7 @@ class TempManager implements ITempManager {
 	 */
 	protected function cleanFiles($files) {
 		foreach ($files as $file) {
-			if (file_exists($file)) {
+			if (\file_exists($file)) {
 				try {
 					\OC_Helper::rmdirr($file);
 				} catch (\UnexpectedValueException $ex) {
@@ -183,14 +183,14 @@ class TempManager implements ITempManager {
 	 * @return string[]
 	 */
 	protected function getOldFiles() {
-		$cutOfTime = time() - 3600;
+		$cutOfTime = \time() - 3600;
 		$files = [];
-		$dh = opendir($this->tmpBaseDir);
+		$dh = \opendir($this->tmpBaseDir);
 		if ($dh) {
-			while (($file = readdir($dh)) !== false) {
-				if (substr($file, 0, 7) === self::TMP_PREFIX) {
+			while (($file = \readdir($dh)) !== false) {
+				if (\substr($file, 0, 7) === self::TMP_PREFIX) {
 					$path = $this->tmpBaseDir . '/' . $file;
-					$mtime = filemtime($path);
+					$mtime = \filemtime($path);
 					if ($mtime < $cutOfTime) {
 						$files[] = $path;
 					}
@@ -218,16 +218,16 @@ class TempManager implements ITempManager {
 		if ($temp = \OC::$server->getIniWrapper()->get('upload_tmp_dir')) {
 			$directories[] = $temp;
 		}
-		if ($temp = getenv('TMP')) {
+		if ($temp = \getenv('TMP')) {
 			$directories[] = $temp;
 		}
-		if ($temp = getenv('TEMP')) {
+		if ($temp = \getenv('TEMP')) {
 			$directories[] = $temp;
 		}
-		if ($temp = getenv('TMPDIR')) {
+		if ($temp = \getenv('TMPDIR')) {
 			$directories[] = $temp;
 		}
-		if ($temp = sys_get_temp_dir()) {
+		if ($temp = \sys_get_temp_dir()) {
 			$directories[] = $temp;
 		}
 
@@ -237,10 +237,10 @@ class TempManager implements ITempManager {
 			}
 		}
 
-		$temp = tempnam(dirname(__FILE__), '');
-		if (file_exists($temp)) {
-			unlink($temp);
-			return dirname($temp);
+		$temp = \tempnam(\dirname(__FILE__), '');
+		if (\file_exists($temp)) {
+			\unlink($temp);
+			return \dirname($temp);
 		}
 		throw new \UnexpectedValueException('Unable to detect system temporary directory');
 	}
@@ -255,7 +255,7 @@ class TempManager implements ITempManager {
 		// suppress any possible errors caused by is_writable
 		// checks missing or invalid path or characters, wrong permissions etc
 		try {
-			if (is_writeable($directory)) {
+			if (\is_writeable($directory)) {
 				return true;
 			}
 		} catch (\Exception $e) {
@@ -274,5 +274,4 @@ class TempManager implements ITempManager {
 	public function overrideTempBaseDir($directory) {
 		$this->tmpBaseDir = $directory;
 	}
-
 }

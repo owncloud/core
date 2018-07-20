@@ -71,7 +71,7 @@ class PluginManager {
 	 * @return array
 	 */
 	public function getAppPlugins() {
-		if (is_null($this->plugins)) {
+		if ($this->plugins === null) {
 			$this->populate();
 		}
 		return $this->plugins;
@@ -83,7 +83,7 @@ class PluginManager {
 	 * @return array
 	 */
 	public function getAppCollections() {
-		if (is_null($this->collections)) {
+		if ($this->collections === null) {
 			$this->populate();
 		}
 		return $this->collections;
@@ -98,7 +98,7 @@ class PluginManager {
 		foreach ($this->appManager->getInstalledApps() as $app) {
 			// load plugins and collections from info.xml
 			$info = $this->appManager->getAppInfo($app);
-			if (!isset($info['types']) || !in_array('dav', $info['types'])) {
+			if (!isset($info['types']) || !\in_array('dav', $info['types'])) {
 				continue;
 			}
 			// FIXME: switch to public API once available
@@ -110,11 +110,11 @@ class PluginManager {
 	}
 
 	private function extractPluginList($array) {
-		if (isset($array['sabre']) && is_array($array['sabre'])) {
-			if (isset($array['sabre']['plugins']) && is_array($array['sabre']['plugins'])) {
+		if (isset($array['sabre']) && \is_array($array['sabre'])) {
+			if (isset($array['sabre']['plugins']) && \is_array($array['sabre']['plugins'])) {
 				if (isset($array['sabre']['plugins']['plugin'])) {
 					$items = $array['sabre']['plugins']['plugin'];
-					if (!is_array($items)) {
+					if (!\is_array($items)) {
 						$items = [$items];
 					}
 					return $items;
@@ -125,11 +125,11 @@ class PluginManager {
 	}
 
 	private function extractCollectionList($array) {
-		if (isset($array['sabre']) && is_array($array['sabre'])) {
-			if (isset($array['sabre']['collections']) && is_array($array['sabre']['collections'])) {
+		if (isset($array['sabre']) && \is_array($array['sabre'])) {
+			if (isset($array['sabre']['collections']) && \is_array($array['sabre']['collections'])) {
 				if (isset($array['sabre']['collections']['collection'])) {
 					$items = $array['sabre']['collections']['collection'];
-					if (!is_array($items)) {
+					if (!\is_array($items)) {
 						$items = [$items];
 					}
 					return $items;
@@ -144,7 +144,7 @@ class PluginManager {
 			try {
 				$this->plugins[] = $this->container->query($plugin);
 			} catch (QueryException $e) {
-				if (class_exists($plugin)) {
+				if (\class_exists($plugin)) {
 					$this->plugins[] = new $plugin();
 				} else {
 					throw new \Exception("Sabre plugin class '$plugin' is unknown and could not be loaded");
@@ -158,7 +158,7 @@ class PluginManager {
 			try {
 				$this->collections[] = $this->container->query($collection);
 			} catch (QueryException $e) {
-				if (class_exists($collection)) {
+				if (\class_exists($collection)) {
 					$this->collections[] = new $collection();
 				} else {
 					throw new \Exception("Sabre collection class '$collection' is unknown and could not be loaded");
@@ -166,5 +166,4 @@ class PluginManager {
 			}
 		};
 	}
-
 }

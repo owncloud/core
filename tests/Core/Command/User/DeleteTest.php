@@ -22,7 +22,6 @@
 
 namespace Tests\Core\Command\User;
 
-
 use OC\Core\Command\User\Delete;
 use OCP\IUserManager;
 use Symfony\Component\Console\Application;
@@ -52,9 +51,7 @@ class DeleteTest extends TestCase {
 		$command = new Delete($this->userManager);
 		$command->setApplication($application);
 		$this->commandTester = new CommandTester($command);
-
 	}
-
 
 	public function validUserLastSeen() {
 		return [

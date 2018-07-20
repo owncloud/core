@@ -75,7 +75,7 @@ class ArrayCache extends Cache implements IMemcache {
 		}
 
 		foreach ($this->cachedData as $key => $value) {
-			if (strpos($key, $prefix) === 0) {
+			if (\strpos($key, $prefix) === 0) {
 				$this->remove($key);
 			}
 		}
@@ -108,7 +108,7 @@ class ArrayCache extends Cache implements IMemcache {
 	 */
 	public function inc($key, $step = 1) {
 		$oldValue = $this->get($key);
-		if (is_int($oldValue)) {
+		if (\is_int($oldValue)) {
 			$this->set($key, $oldValue + $step);
 			return $oldValue + $step;
 		} else {
@@ -126,7 +126,7 @@ class ArrayCache extends Cache implements IMemcache {
 	 */
 	public function dec($key, $step = 1) {
 		$oldValue = $this->get($key);
-		if (is_int($oldValue)) {
+		if (\is_int($oldValue)) {
 			$this->set($key, $oldValue - $step);
 			return $oldValue - $step;
 		} else {
@@ -153,7 +153,7 @@ class ArrayCache extends Cache implements IMemcache {
 	/**
 	 * {@inheritDoc}
 	 */
-	static public function isAvailable() {
+	public static function isAvailable() {
 		return true;
 	}
 }

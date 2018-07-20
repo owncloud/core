@@ -13,11 +13,11 @@ class APCTest extends Cache {
 	protected function setUp() {
 		parent::setUp();
 
-		if(!\OC\Memcache\APC::isAvailable()) {
+		if (!\OC\Memcache\APC::isAvailable()) {
 			$this->markTestSkipped('The apc extension is not available.');
 			return;
 		}
-		if(\OC\Memcache\APCu::isAvailable()) {
+		if (\OC\Memcache\APCu::isAvailable()) {
 			$this->markTestSkipped('The apc extension is emulated by ACPu.');
 			return;
 		}

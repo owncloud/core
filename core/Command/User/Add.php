@@ -102,7 +102,7 @@ class Add extends Command {
 		// Validate email before we create the user
 		if ($input->getOption('email')) {
 			// Validate first
-			if(!$this->mailer->validateMailAddress($input->getOption('email'))) {
+			if (!$this->mailer->validateMailAddress($input->getOption('email'))) {
 				// Invalid! Error
 				$output->writeln('<error>Invalid email address supplied</error>');
 				return 1;
@@ -114,7 +114,7 @@ class Add extends Command {
 		}
 
 		if ($input->getOption('password-from-env')) {
-			$password = getenv('OC_PASS');
+			$password = \getenv('OC_PASS');
 			if (!$password) {
 				$output->writeln('<error>--password-from-env given, but OC_PASS is empty!</error>');
 				return 1;
@@ -122,10 +122,10 @@ class Add extends Command {
 		} elseif ($input->isInteractive()) {
 			/** @var $dialog \Symfony\Component\Console\Helper\QuestionHelper */
 			$dialog = $this->getHelperSet()->get('question');
-			$q = new Question('<question>Enter password: </question>',false);
+			$q = new Question('<question>Enter password: </question>', false);
 			$q->setHidden(true);
 			$password = $dialog->ask($input, $output, $q);
-			$q = new Question('<question>Confirm password: </question>',false);
+			$q = new Question('<question>Confirm password: </question>', false);
 			$q->setHidden(true);
 			$confirm = $dialog->ask($input, $output, $q);
 
@@ -156,7 +156,7 @@ class Add extends Command {
 		}
 
 		// Set email if supplied & valid
-		if(!is_null($email)) {
+		if ($email !== null) {
 			$user->setEMailAddress($email);
 			$output->writeln('Email address set to "' . $user->getEMailAddress() . '"');
 		}

@@ -49,5 +49,4 @@ class Legacy implements ISettings {
 	public function getSectionID() {
 		return 'additional';
 	}
-
 }

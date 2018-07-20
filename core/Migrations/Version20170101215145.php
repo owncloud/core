@@ -10,7 +10,6 @@ use OCP\Migration\ISchemaMigration;
  * migrate stable9 to stable10
  */
 class Version20170101215145 implements ISchemaMigration {
-
 	public function changeSchema(Schema $schema, array $options) {
 		$prefix = $options['tablePrefix'];
 

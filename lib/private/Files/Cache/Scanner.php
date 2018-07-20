@@ -159,7 +159,7 @@ class Scanner extends BasicEmitter implements IScanner {
 						\OC_Hook::emit('\OC\Files\Cache\Scanner', 'scan_file', ['path' => $file, 'storage' => $this->storageId]);
 					}
 
-					$parent = dirname($file);
+					$parent = \dirname($file);
 					if ($parent === '.' or $parent === '/') {
 						$parent = '';
 					}
@@ -175,7 +175,7 @@ class Scanner extends BasicEmitter implements IScanner {
 					if ($parent) {
 						$data['parent'] = $parentId;
 					}
-					if (is_null($cacheData)) {
+					if ($cacheData === null) {
 						/** @var CacheEntry $cacheData */
 						$cacheData = $this->cache->get($file);
 					}
@@ -189,7 +189,7 @@ class Scanner extends BasicEmitter implements IScanner {
 						$fileId = $cacheData['fileid'];
 						$data['fileid'] = $fileId;
 						// only reuse data if the file hasn't explicitly changed
-						if (isset($data['storage_mtime']) && isset($cacheData['storage_mtime']) && $data['storage_mtime'] === $cacheData['storage_mtime']) {
+						if (isset($data['storage_mtime'], $cacheData['storage_mtime'])   && $data['storage_mtime'] === $cacheData['storage_mtime']) {
 							$data['mtime'] = $cacheData['mtime'];
 							if (($reuseExisting & self::REUSE_SIZE) && ($data['size'] === -1)) {
 								$data['size'] = $cacheData['size'];
@@ -199,19 +199,18 @@ class Scanner extends BasicEmitter implements IScanner {
 							}
 						}
 						// Only update metadata that has changed
-						$newData = array_diff_assoc($data, $cacheData->getData());
+						$newData = \array_diff_assoc($data, $cacheData->getData());
 					} else {
 						$newData = $data;
 						$fileId = -1;
 					}
 					if (!empty($newData)) {
 						// Only reset checksum on file change
-						foreach (array_intersect_key($newData, $data) as $key => $value) {
-							if (in_array($key, ['size', 'storage_mtime', 'mtime', 'etag']) && $data[$key] != $newData[$key]) {
+						foreach (\array_intersect_key($newData, $data) as $key => $value) {
+							if (\in_array($key, ['size', 'storage_mtime', 'mtime', 'etag']) && $data[$key] != $newData[$key]) {
 								$newData['checksum'] = '';
 							}
 						}
-
 
 						$data['fileid'] = $this->addToCache($file, $newData, $fileId);
 					}
@@ -230,7 +229,6 @@ class Scanner extends BasicEmitter implements IScanner {
 						$this->emit('\OC\Files\Cache\Scanner', 'postScanFile', [$file, $this->storageId]);
 						\OC_Hook::emit('\OC\Files\Cache\Scanner', 'post_scan_file', ['path' => $file, 'storage' => $this->storageId]);
 					}
-
 				} else {
 					$this->removeFromCache($file);
 				}
@@ -360,10 +358,10 @@ class Scanner extends BasicEmitter implements IScanner {
 	protected function getNewChildren($folder) {
 		$children = [];
 		if ($dh = $this->storage->opendir($folder)) {
-			if (is_resource($dh)) {
-				while (($file = readdir($dh)) !== false) {
+			if (\is_resource($dh)) {
+				while (($file = \readdir($dh)) !== false) {
 					if (!Filesystem::isIgnoredDir($file) && !Filesystem::isForbiddenFileOrDir($file)) {
-						$children[] = trim(\OC\Files\Filesystem::normalizePath($file), '/');
+						$children[] = \trim(\OC\Files\Filesystem::normalizePath($file), '/');
 					}
 				}
 			}
@@ -388,7 +386,7 @@ class Scanner extends BasicEmitter implements IScanner {
 		}
 		$this->emit('\OC\Files\Cache\Scanner', 'scanFolder', [$path, $this->storageId]);
 		$size = 0;
-		if (!is_null($folderId)) {
+		if ($folderId !== null) {
 			$folderId = $this->cache->getId($path);
 		}
 		$childQueue = $this->handleChildren($path, $recursive, $reuse, $folderId, $lock, $size);
@@ -397,7 +395,7 @@ class Scanner extends BasicEmitter implements IScanner {
 			$childSize = $this->scanChildren($child, $recursive, $reuse, $childId, $lock);
 			if ($childSize === -1) {
 				$size = -1;
-			} else if ($size !== -1) {
+			} elseif ($size !== -1) {
 				$size += $childSize;
 			}
 		}
@@ -427,12 +425,12 @@ class Scanner extends BasicEmitter implements IScanner {
 				if ($data) {
 					if ($data['mimetype'] === 'httpd/unix-directory' and $recursive === self::SCAN_RECURSIVE) {
 						$childQueue[$child] = $data['fileid'];
-					} else if ($data['mimetype'] === 'httpd/unix-directory' and $recursive === self::SCAN_RECURSIVE_INCOMPLETE and $data['size'] === -1) {
+					} elseif ($data['mimetype'] === 'httpd/unix-directory' and $recursive === self::SCAN_RECURSIVE_INCOMPLETE and $data['size'] === -1) {
 						// only recurse into folders which aren't fully scanned
 						$childQueue[$child] = $data['fileid'];
-					} else if ($data['size'] === -1) {
+					} elseif ($data['size'] === -1) {
 						$size = -1;
-					} else if ($size !== -1) {
+					} elseif ($size !== -1) {
 						$size += $data['size'];
 					}
 				}
@@ -449,7 +447,7 @@ class Scanner extends BasicEmitter implements IScanner {
 				throw $e;
 			}
 		}
-		$removedChildren = \array_diff(array_keys($existingChildren), $newChildren);
+		$removedChildren = \array_diff(\array_keys($existingChildren), $newChildren);
 		foreach ($removedChildren as $childName) {
 			$child = $path ? $path . '/' . $childName : $childName;
 			$this->removeFromCache($child);
@@ -476,10 +474,10 @@ class Scanner extends BasicEmitter implements IScanner {
 	 * @return boolean
 	 */
 	public static function isPartialFile($file) {
-		if (pathinfo($file, PATHINFO_EXTENSION) === 'part') {
+		if (\pathinfo($file, PATHINFO_EXTENSION) === 'part') {
 			return true;
 		}
-		if (strpos($file, '.part/') !== false) {
+		if (\strpos($file, '.part/') !== false) {
 			return true;
 		}
 
@@ -497,7 +495,7 @@ class Scanner extends BasicEmitter implements IScanner {
 		} else {
 			$lastPath = null;
 			while (($path = $this->cache->getIncomplete()) !== false && $path !== $lastPath) {
-				$this->runBackgroundScanJob(function() use ($path) {
+				$this->runBackgroundScanJob(function () use ($path) {
 					$this->scan($path, self::SCAN_RECURSIVE_INCOMPLETE, self::REUSE_ETAG | self::REUSE_SIZE);
 				}, $path);
 				// FIXME: this won't proceed with the next item, needs revamping of getIncomplete()

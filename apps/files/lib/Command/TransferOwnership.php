@@ -120,11 +120,11 @@ class TransferOwnership extends Command {
 	protected function execute(InputInterface $input, OutputInterface $output) {
 		$sourceUserObject = $this->userManager->get($input->getArgument('source-user'));
 		$destinationUserObject = $this->userManager->get($input->getArgument('destination-user'));
-		if (is_null($sourceUserObject)) {
+		if ($sourceUserObject === null) {
 			$output->writeln("<error>Unknown source user $this->sourceUser</error>");
 			return 1;
 		}
-		if (is_null($destinationUserObject)) {
+		if ($destinationUserObject === null) {
 			$output->writeln("<error>Unknown destination user $this->destinationUser</error>");
 			return 1;
 		}
@@ -132,7 +132,7 @@ class TransferOwnership extends Command {
 		$this->sourceUser = $sourceUserObject->getUID();
 		$this->destinationUser = $destinationUserObject->getUID();
 		$this->inputPath = $input->getOption('path');
-		$this->inputPath = ltrim($this->inputPath, '/');
+		$this->inputPath = \ltrim($this->inputPath, '/');
 
 		// target user has to be ready
 		if (!\OC::$server->getEncryptionManager()->isReadyForUser($this->destinationUser)) {
@@ -141,14 +141,14 @@ class TransferOwnership extends Command {
 		}
 
 		// use a date format compatible across client OS
-		$date = date('Ymd_his');
+		$date = \date('Ymd_his');
 		$this->finalTarget = "$this->destinationUser/files/transferred from $this->sourceUser on $date";
 
 		// setup filesystem
 		Filesystem::initMountPoints($this->sourceUser);
 		Filesystem::initMountPoints($this->destinationUser);
 
-		if (strlen($this->inputPath) >= 1) {
+		if (\strlen($this->inputPath) >= 1) {
 			$view = new View();
 			$unknownDir = $this->inputPath;
 			$this->inputPath = $this->sourceUser . "/files/" . $this->inputPath;
@@ -198,7 +198,7 @@ class TransferOwnership extends Command {
 		$progress->start();
 		$self = $this;
 		$walkPath = "$this->sourceUser/files";
-		if ( strlen($this->inputPath) > 0) {
+		if (\strlen($this->inputPath) > 0) {
 			if ($this->inputPath !== "$this->sourceUser/files") {
 				$walkPath = $this->inputPath;
 				$this->foldersExist = true;
@@ -238,13 +238,12 @@ class TransferOwnership extends Command {
 		// no file is allowed to be encrypted
 		if (!empty($this->encryptedFiles)) {
 			$output->writeln("<error>Some files are encrypted - please decrypt them first</error>");
-			foreach($this->encryptedFiles as $encryptedFile) {
+			foreach ($this->encryptedFiles as $encryptedFile) {
 				/** @var FileInfo $encryptedFile */
 				$output->writeln("  " . $encryptedFile->getPath());
 			}
 			throw new \Exception('Execution terminated.');
 		}
-
 	}
 
 	/**
@@ -253,12 +252,12 @@ class TransferOwnership extends Command {
 	private function collectUsersShares(OutputInterface $output) {
 		$output->writeln("Collecting all share information for files and folder of $this->sourceUser ...");
 
-		$progress = new ProgressBar($output, count($this->shares));
-		foreach([\OCP\Share::SHARE_TYPE_GROUP, \OCP\Share::SHARE_TYPE_USER, \OCP\Share::SHARE_TYPE_LINK, \OCP\Share::SHARE_TYPE_REMOTE] as $shareType) {
-		$offset = 0;
+		$progress = new ProgressBar($output, \count($this->shares));
+		foreach ([\OCP\Share::SHARE_TYPE_GROUP, \OCP\Share::SHARE_TYPE_USER, \OCP\Share::SHARE_TYPE_LINK, \OCP\Share::SHARE_TYPE_REMOTE] as $shareType) {
+			$offset = 0;
 			while (true) {
 				$sharePage = $this->shareManager->getSharesBy($this->sourceUser, $shareType, null, true, 50, $offset);
-				$progress->advance(count($sharePage));
+				$progress->advance(\count($sharePage));
 				if (empty($sharePage)) {
 					break;
 				}
@@ -278,19 +277,19 @@ class TransferOwnership extends Command {
 	protected function transfer(OutputInterface $output) {
 		$view = new View();
 		$output->writeln("Transferring files to $this->finalTarget ...");
-		$sourcePath = (strlen($this->inputPath) > 0) ? $this->inputPath : "$this->sourceUser/files";
+		$sourcePath = (\strlen($this->inputPath) > 0) ? $this->inputPath : "$this->sourceUser/files";
 		// This change will help user to transfer the folder specified using --path option.
 		// Else only the content inside folder is transferred which is not correct.
-		if (strlen($this->inputPath) > 0) {
-			if($this->inputPath !== ltrim("$this->sourceUser/files", '/')) {
+		if (\strlen($this->inputPath) > 0) {
+			if ($this->inputPath !== \ltrim("$this->sourceUser/files", '/')) {
 				$view->mkdir($this->finalTarget);
-				$this->finalTarget = $this->finalTarget . '/' . basename($sourcePath);
+				$this->finalTarget = $this->finalTarget . '/' . \basename($sourcePath);
 			}
 		}
 
 		$view->rename($sourcePath, $this->finalTarget);
 
-		if (!is_dir("$this->sourceUser/files")) {
+		if (!\is_dir("$this->sourceUser/files")) {
 			// because the files folder is moved away we need to recreate it
 			$view->mkdir("$this->sourceUser/files");
 		}

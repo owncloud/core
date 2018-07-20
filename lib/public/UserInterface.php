@@ -102,5 +102,4 @@ interface UserInterface {
 	 * @since 4.5.0
 	 */
 	public function hasUserListings();
-
 }

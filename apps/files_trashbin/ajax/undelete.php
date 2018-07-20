@@ -31,7 +31,7 @@ OCP\JSON::callCheck();
 $files = $_POST['files'];
 $dir = '/';
 if (isset($_POST['dir'])) {
-	$dir = rtrim((string)$_POST['dir'], '/'). '/';
+	$dir = \rtrim((string)$_POST['dir'], '/'). '/';
 }
 $allFiles = false;
 if (isset($_POST['allfiles']) && (string)$_POST['allfiles'] === 'true') {
@@ -49,7 +49,7 @@ if (isset($_POST['allfiles']) && (string)$_POST['allfiles'] === 'true') {
 		$list[] = $fileName;
 	}
 } else {
-	$list = json_decode($files);
+	$list = \json_decode($files);
 }
 
 $error = [];
@@ -59,17 +59,17 @@ $i = 0;
 foreach ($list as $file) {
 	$path = $dir . '/' . $file;
 	if ($dir === '/') {
-		$file = ltrim($file, '/');
-		$delimiter = strrpos($file, '.d');
-		$filename = substr($file, 0, $delimiter);
-		$timestamp =  substr($file, $delimiter+2);
+		$file = \ltrim($file, '/');
+		$delimiter = \strrpos($file, '.d');
+		$filename = \substr($file, 0, $delimiter);
+		$timestamp =  \substr($file, $delimiter+2);
 	} else {
-		$path_parts = pathinfo($file);
+		$path_parts = \pathinfo($file);
 		$filename = $path_parts['basename'];
 		$timestamp = null;
 	}
 
-	if ( !OCA\Files_Trashbin\Trashbin::restore($path, $filename, $timestamp) ) {
+	if (!OCA\Files_Trashbin\Trashbin::restore($path, $filename, $timestamp)) {
 		$error[] = $filename;
 		\OCP\Util::writeLog('trashbin', 'can\'t restore ' . $filename, \OCP\Util::DEBUG);
 	} else {
@@ -77,16 +77,15 @@ foreach ($list as $file) {
 		$success[$i]['timestamp'] = $timestamp;
 		$i++;
 	}
-
 }
 
-if ( $error ) {
+if ($error) {
 	$filelist = '';
-	foreach ( $error as $e ) {
+	foreach ($error as $e) {
 		$filelist .= $e.', ';
 	}
 	$l = OC::$server->getL10N('files_trashbin');
-	$message = $l->t("Couldn't restore %s", [rtrim($filelist, ', ')]);
+	$message = $l->t("Couldn't restore %s", [\rtrim($filelist, ', ')]);
 	OCP\JSON::error(["data" => ["message" => $message,
 										  "success" => $success, "error" => $error]]);
 } else {

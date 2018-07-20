@@ -21,28 +21,24 @@
  *
  */
 
-
 namespace Test\AppFramework;
 
 use OC\AppFramework\App;
 use OCP\AppFramework\Http\Response;
 
-
 function rrmdir($directory) {
-	$files = array_diff(scandir($directory), ['.','..']);
+	$files = \array_diff(\scandir($directory), ['.','..']);
 	foreach ($files as $file) {
-		if (is_dir($directory . '/' . $file)) {
+		if (\is_dir($directory . '/' . $file)) {
 			rrmdir($directory . '/' . $file);
 		} else {
-			unlink($directory . '/' . $file);
+			\unlink($directory . '/' . $file);
 		}
 	}
-	return rmdir($directory);
+	return \rmdir($directory);
 }
 
-
 class AppTest extends \Test\TestCase {
-
 	private $container;
 	private $io;
 	private $api;
@@ -82,18 +78,17 @@ class AppTest extends \Test\TestCase {
 
 		$this->appPath = __DIR__ . '/../../../apps/namespacetestapp';
 		$infoXmlPath = $this->appPath . '/appinfo/info.xml';
-		mkdir($this->appPath . '/appinfo', 0777, true);
+		\mkdir($this->appPath . '/appinfo', 0777, true);
 
 		$xml = '<?xml version="1.0" encoding="UTF-8"?>' .
 		'<info>' .
-		    '<id>namespacetestapp</id>' .
+			'<id>namespacetestapp</id>' .
 			'<namespace>NameSpaceTestApp</namespace>' .
 		'</info>';
-		file_put_contents($infoXmlPath, $xml);
+		\file_put_contents($infoXmlPath, $xml);
 	}
 
-
-	public function testControllerNameAndMethodAreBeingPassed(){
+	public function testControllerNameAndMethodAreBeingPassed() {
 		$return = [null, [], [], null, new Response()];
 		$this->dispatcher->expects($this->once())
 			->method('dispatch')
@@ -108,32 +103,27 @@ class AppTest extends \Test\TestCase {
 			$this->container);
 	}
 
-
 	public function testBuildAppNamespace() {
 		$ns = App::buildAppNamespace('someapp');
 		$this->assertEquals('OCA\Someapp', $ns);
 	}
-
 
 	public function testBuildAppNamespaceCore() {
 		$ns = App::buildAppNamespace('someapp', 'OC\\');
 		$this->assertEquals('OC\Someapp', $ns);
 	}
 
-
 	public function testBuildAppNamespaceInfoXml() {
 		$ns = App::buildAppNamespace('namespacetestapp', 'OCA\\');
 		$this->assertEquals('OCA\NameSpaceTestApp', $ns);
 	}
-
 
 	protected function tearDown() {
 		rrmdir($this->appPath);
 		parent::tearDown();
 	}
 
-
-	public function testOutputIsPrinted(){
+	public function testOutputIsPrinted() {
 		$return = [null, [], [], $this->output, new Response()];
 		$this->dispatcher->expects($this->once())
 			->method('dispatch')
@@ -146,8 +136,7 @@ class AppTest extends \Test\TestCase {
 		App::main($this->controllerName, $this->controllerMethod, $this->container, []);
 	}
 
-
-	public function testCallbackIsCalled(){
+	public function testCallbackIsCalled() {
 		$mock = $this->getMockBuilder('OCP\AppFramework\Http\ICallbackResponse')
 			->getMock();
 
@@ -161,5 +150,4 @@ class AppTest extends \Test\TestCase {
 			->method('callback');
 		App::main($this->controllerName, $this->controllerMethod, $this->container, []);
 	}
-
 }

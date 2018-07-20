@@ -21,7 +21,7 @@
  *
  */
 $installedVersion = \OC::$server->getConfig()->getAppValue('files', 'installed_version');
-$ocVersion = explode('.', \OC::$server->getSystemConfig()->getValue('version'));
+$ocVersion = \explode('.', \OC::$server->getSystemConfig()->getValue('version'));
 
 /**
  * In case encryption was not enabled, we accidentally set encrypted = 1 for

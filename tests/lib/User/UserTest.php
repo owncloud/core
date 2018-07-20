@@ -114,7 +114,7 @@ class UserTest extends TestCase {
 		$ocHook = new \OC_Hook();
 
 		$this->user = new User($account, $this->accountMapper, $ocHook, $this->config, null, \OC::$server->getEventDispatcher());
-		$this->assertTrue($this->user->setPassword('bar',''));
+		$this->assertTrue($this->user->setPassword('bar', ''));
 		$this->assertTrue($this->user->canChangePassword());
 
 		$this->assertArrayHasKey('user.beforesetpassword', $calledEvents);
@@ -133,7 +133,6 @@ class UserTest extends TestCase {
 		$this->assertInstanceOf(User::class, $calledEvents['user.aftersetpassword']->getArgument('user'));
 		$this->assertEquals('bar', $calledEvents['user.aftersetpassword']->getArgument('password'));
 		$this->assertEquals('', $calledEvents['user.aftersetpassword']->getArgument('recoveryPassword'));
-
 	}
 	public function testSetPasswordNotSupported() {
 		$this->config->expects($this->never())
@@ -148,12 +147,12 @@ class UserTest extends TestCase {
 		$backend->expects($this->once())->method('setPassword')->with('foo', 'bar')->willReturn(false);
 
 		$this->user = new User($account, $this->accountMapper, null, $this->config);
-		$this->assertFalse($this->user->setPassword('bar',''));
+		$this->assertFalse($this->user->setPassword('bar', ''));
 		$this->assertTrue($this->user->canChangePassword());
 	}
 
 	public function testSetPasswordNoBackend() {
-		$this->assertFalse($this->user->setPassword('bar',''));
+		$this->assertFalse($this->user->setPassword('bar', ''));
 		$this->assertFalse($this->user->canChangePassword());
 	}
 
@@ -233,7 +232,6 @@ class UserTest extends TestCase {
 	 * @param $implements
 	 */
 	public function testAdminSubadminCanChangeDisplayName($isAdmin, $isSubaDmin, $expected, $implements) {
-
 		$this->config->method('getSystemValue')
 			->with('allow_user_to_change_display_name')
 			->willReturn(false);
@@ -379,7 +377,7 @@ class UserTest extends TestCase {
 
 		$user = new User($account, $this->accountMapper, null, $this->config);
 		$this->assertFalse($user->setDisplayName('Foo'));
-		$this->assertEquals('foo',$user->getDisplayName());
+		$this->assertEquals('foo', $user->getDisplayName());
 	}
 
 	public function testSetPasswordHooks() {
@@ -407,7 +405,7 @@ class UserTest extends TestCase {
 		$account->expects($this->any())->method('__call')->with('getUserId')->willReturn('foo');
 		$backend->expects($this->once())->method('setPassword')->with('foo', 'bar')->willReturn(true);
 
-		$this->user = new User($account, $this->accountMapper, $emitter, $this->config,null, \OC::$server->getEventDispatcher());
+		$this->user = new User($account, $this->accountMapper, $emitter, $this->config, null, \OC::$server->getEventDispatcher());
 
 		$calledEvent = [];
 		\OC::$server->getEventDispatcher()->addListener('user.aftersetpassword', function ($event) use (&$calledEvent) {
@@ -415,7 +413,7 @@ class UserTest extends TestCase {
 			$calledEvent[] = $event;
 		});
 
-		$this->user->setPassword('bar','');
+		$this->user->setPassword('bar', '');
 		$this->assertEquals(2, $hooksCalled);
 		$this->assertArrayHasKey('user', $calledEvent[1]);
 		$this->assertInstanceOf(GenericEvent::class, $calledEvent[1]);
@@ -441,13 +439,13 @@ class UserTest extends TestCase {
 		$this->assertEquals(2, $hooksCalled);
 	}
 
-	public function testSetEnabledHook(){
+	public function testSetEnabledHook() {
 		$this->eventDispatcher->expects($this->exactly(2))
 			->method('dispatch')
 			->with(
 				$this->callback(
-					function($eventName){
-						if ($eventName === User::class . '::postSetEnabled' ){
+					function ($eventName) {
+						if ($eventName === User::class . '::postSetEnabled') {
 							return true;
 						}
 						return false;
@@ -491,8 +489,7 @@ class UserTest extends TestCase {
 	public function setTermsData() {
 		return [
 			'normal terms' => [['term1'], ['term1']],
-			'too long terms' => [['term1', str_repeat(".", 192)], ['term1', str_repeat(".", 191)]]
+			'too long terms' => [['term1', \str_repeat(".", 192)], ['term1', \str_repeat(".", 191)]]
 		];
 	}
-
 }

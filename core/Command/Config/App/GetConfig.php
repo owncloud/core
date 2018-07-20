@@ -77,11 +77,11 @@ class GetConfig extends Base {
 		$configName = $input->getArgument('name');
 		$defaultValue = $input->getOption('default-value');
 
-		if (!in_array($configName, $this->config->getAppKeys($appName)) && !$input->hasParameterOption('--default-value')) {
+		if (!\in_array($configName, $this->config->getAppKeys($appName)) && !$input->hasParameterOption('--default-value')) {
 			return 1;
 		}
 
-		if (!in_array($configName, $this->config->getAppKeys($appName))) {
+		if (!\in_array($configName, $this->config->getAppKeys($appName))) {
 			$configValue = $defaultValue;
 		} else {
 			$configValue = $this->config->getAppValue($appName, $configName);

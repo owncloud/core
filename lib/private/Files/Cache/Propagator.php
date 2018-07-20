@@ -52,7 +52,6 @@ class Propagator implements IPropagator {
 		$this->connection = $connection;
 	}
 
-
 	/**
 	 * @param string $internalPath
 	 * @param int $time
@@ -74,11 +73,11 @@ class Propagator implements IPropagator {
 			return;
 		}
 
-		$parentHashes = array_map('md5', $parents);
-		$etag = uniqid(); // since we give all folders the same etag we don't ask the storage for the etag
+		$parentHashes = \array_map('md5', $parents);
+		$etag = \uniqid(); // since we give all folders the same etag we don't ask the storage for the etag
 
 		$builder = $this->connection->getQueryBuilder();
-		$hashParams = array_map(function ($hash) use ($builder) {
+		$hashParams = \array_map(function ($hash) use ($builder) {
 			return $builder->expr()->literal($hash);
 		}, $parentHashes);
 
@@ -107,12 +106,12 @@ class Propagator implements IPropagator {
 		if ($path === '') {
 			return [];
 		}
-		$parts = explode('/', $path);
+		$parts = \explode('/', $path);
 		$parent = '';
 		$parents = [];
 		foreach ($parts as $part) {
 			$parents[] = $parent;
-			$parent = trim($parent . '/' . $part, '/');
+			$parent = \trim($parent . '/' . $part, '/');
 		}
 		return $parents;
 	}
@@ -132,7 +131,7 @@ class Propagator implements IPropagator {
 	private function addToBatch($internalPath, $time, $sizeDifference) {
 		if (!isset($this->batch[$internalPath])) {
 			$this->batch[$internalPath] = [
-				'hash' => md5($internalPath),
+				'hash' => \md5($internalPath),
 				'time' => $time,
 				'size' => $sizeDifference
 			];
@@ -160,7 +159,7 @@ class Propagator implements IPropagator {
 
 		$query->update('filecache')
 			->set('mtime', $query->createFunction('GREATEST(`mtime`, ' . $query->createParameter('time') . ')'))
-			->set('etag', $query->expr()->literal(uniqid()))
+			->set('etag', $query->expr()->literal(\uniqid()))
 			->where($query->expr()->eq('storage', $query->expr()->literal($storageId, IQueryBuilder::PARAM_INT)))
 			->andWhere($query->expr()->eq('path_hash', $query->createParameter('hash')));
 
@@ -189,6 +188,4 @@ class Propagator implements IPropagator {
 
 		$this->connection->commit();
 	}
-
-
 }

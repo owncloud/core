@@ -35,7 +35,7 @@ class APC extends Cache implements IMemcache {
 	use CADTrait;
 
 	public function get($key) {
-		$result = apc_fetch($this->getPrefix() . $key, $success);
+		$result = \apc_fetch($this->getPrefix() . $key, $success);
 		if (!$success) {
 			return null;
 		}
@@ -43,22 +43,22 @@ class APC extends Cache implements IMemcache {
 	}
 
 	public function set($key, $value, $ttl = 0) {
-		return apc_store($this->getPrefix() . $key, $value, $ttl);
+		return \apc_store($this->getPrefix() . $key, $value, $ttl);
 	}
 
 	public function hasKey($key) {
-		return apc_exists($this->getPrefix() . $key);
+		return \apc_exists($this->getPrefix() . $key);
 	}
 
 	public function remove($key) {
-		return apc_delete($this->getPrefix() . $key);
+		return \apc_delete($this->getPrefix() . $key);
 	}
 
 	public function clear($prefix = '') {
 		$ns = $this->getPrefix() . $prefix;
-		$ns = preg_quote($ns, '/');
+		$ns = \preg_quote($ns, '/');
 		$iter = new \APCIterator('user', '/^' . $ns . '/', APC_ITER_KEY);
-		return apc_delete($iter);
+		return \apc_delete($iter);
 	}
 
 	/**
@@ -70,7 +70,7 @@ class APC extends Cache implements IMemcache {
 	 * @return bool
 	 */
 	public function add($key, $value, $ttl = 0) {
-		return apc_add($this->getPrefix() . $key, $value, $ttl);
+		return \apc_add($this->getPrefix() . $key, $value, $ttl);
 	}
 
 	/**
@@ -82,7 +82,7 @@ class APC extends Cache implements IMemcache {
 	 */
 	public function inc($key, $step = 1) {
 		$this->add($key, 0);
-		return apc_inc($this->getPrefix() . $key, $step);
+		return \apc_inc($this->getPrefix() . $key, $step);
 	}
 
 	/**
@@ -93,7 +93,7 @@ class APC extends Cache implements IMemcache {
 	 * @return int | bool
 	 */
 	public function dec($key, $step = 1) {
-		return apc_dec($this->getPrefix() . $key, $step);
+		return \apc_dec($this->getPrefix() . $key, $step);
 	}
 
 	/**
@@ -106,15 +106,15 @@ class APC extends Cache implements IMemcache {
 	 */
 	public function cas($key, $old, $new) {
 		// apc only does cas for ints
-		if (is_int($old) and is_int($new)) {
-			return apc_cas($this->getPrefix() . $key, $old, $new);
+		if (\is_int($old) and \is_int($new)) {
+			return \apc_cas($this->getPrefix() . $key, $old, $new);
 		} else {
 			return $this->casEmulated($key, $old, $new);
 		}
 	}
 
-	static public function isAvailable() {
-		if (!extension_loaded('apc')) {
+	public static function isAvailable() {
+		if (!\extension_loaded('apc')) {
 			return false;
 		} elseif (!\OC::$server->getIniWrapper()->getBool('apc.enabled')) {
 			return false;
@@ -126,10 +126,10 @@ class APC extends Cache implements IMemcache {
 	}
 }
 
-if (!function_exists('apc_exists')) {
+if (!\function_exists('apc_exists')) {
 	function apc_exists($keys) {
 		$result = false;
-		apc_fetch($keys, $result);
+		\apc_fetch($keys, $result);
 		return $result;
 	}
 }

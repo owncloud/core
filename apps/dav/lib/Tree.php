@@ -44,27 +44,27 @@ class Tree extends \Sabre\DAV\Tree {
 
 		// querying "files" directly or anything outside of it
 		// will fallback to the regular implementation
-		if (strpos(rtrim($path, '/'), 'files/') !== 0) {
+		if (\strpos(\rtrim($path, '/'), 'files/') !== 0) {
 			return parent::getNodeForPath($path);
 		}
 
-		$path = trim($path, '/');
+		$path = \trim($path, '/');
 		if (isset($this->cache[$path])) {
 			return $this->cache[$path];
 		}
 
-		$sections = explode('/', $path);
+		$sections = \explode('/', $path);
 
 		$node = $this->rootNode;
-		while (count($sections) > 0) {
-			$section = array_shift($sections);
+		while (\count($sections) > 0) {
+			$section = \array_shift($sections);
 			if (!$node instanceof ICollection) {
 				throw new NotFound('Could not find node at path: ' . $path);
 			}
 			$node = $node->getChild($section);
 			if ($node instanceof \Sabre\DAV\Tree) {
 				// note: we don't cache here as the sub-tree has its own cache
-				return $node->getNodeForPath(implode('/', $sections));
+				return $node->getNodeForPath(\implode('/', $sections));
 			}
 		}
 

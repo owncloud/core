@@ -9,7 +9,6 @@
 namespace Test\Files\Mount;
 
 class MountPointTest extends \Test\TestCase {
-
 	public function testGetStorage() {
 		$cache = $this->createMock('\OC\Files\Cache\Cache');
 		$cache->expects($this->once())
@@ -53,7 +52,7 @@ class MountPointTest extends \Test\TestCase {
 			->will($this->throwException(new \Exception('Test storage init exception')));
 
 		$called = false;
-		$wrapper = function($mountPoint, $storage) use ($called) {
+		$wrapper = function ($mountPoint, $storage) use ($called) {
 			$called = true;
 		};
 

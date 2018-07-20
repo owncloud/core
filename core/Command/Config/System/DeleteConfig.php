@@ -64,27 +64,26 @@ class DeleteConfig extends Base {
 		$configNames = $input->getArgument('name');
 		$configName = $configNames[0];
 
-		if (sizeof($configNames) > 1) {
-			if ($input->hasParameterOption('--error-if-not-exists') && !in_array($configName, $this->systemConfig->getKeys())) {
-				$output->writeln('<error>System config ' . implode(' => ', $configNames) . ' could not be deleted because it did not exist</error>');
+		if (\sizeof($configNames) > 1) {
+			if ($input->hasParameterOption('--error-if-not-exists') && !\in_array($configName, $this->systemConfig->getKeys())) {
+				$output->writeln('<error>System config ' . \implode(' => ', $configNames) . ' could not be deleted because it did not exist</error>');
 				return 1;
 			}
 
 			$value = $this->systemConfig->getValue($configName);
 
 			try {
-				$value = $this->removeSubValue(array_slice($configNames, 1), $value, $input->hasParameterOption('--error-if-not-exists'));
-			}
-			catch (\UnexpectedValueException $e) {
-				$output->writeln('<error>System config ' . implode(' => ', $configNames) . ' could not be deleted because it did not exist</error>');
+				$value = $this->removeSubValue(\array_slice($configNames, 1), $value, $input->hasParameterOption('--error-if-not-exists'));
+			} catch (\UnexpectedValueException $e) {
+				$output->writeln('<error>System config ' . \implode(' => ', $configNames) . ' could not be deleted because it did not exist</error>');
 				return 1;
 			}
 
 			$this->systemConfig->setValue($configName, $value);
-			$output->writeln('<info>System config value ' . implode(' => ', $configNames) . ' deleted</info>');
+			$output->writeln('<info>System config value ' . \implode(' => ', $configNames) . ' deleted</info>');
 			return 0;
 		} else {
-			if ($input->hasParameterOption('--error-if-not-exists') && !in_array($configName, $this->systemConfig->getKeys())) {
+			if ($input->hasParameterOption('--error-if-not-exists') && !\in_array($configName, $this->systemConfig->getKeys())) {
 				$output->writeln('<error>System config ' . $configName . ' could not be deleted because it did not exist</error>');
 				return 1;
 			}
@@ -96,19 +95,19 @@ class DeleteConfig extends Base {
 	}
 
 	protected function removeSubValue($keys, $currentValue, $throwError) {
-		$nextKey = array_shift($keys);
+		$nextKey = \array_shift($keys);
 
-		if (is_array($currentValue)) {
+		if (\is_array($currentValue)) {
 			if (isset($currentValue[$nextKey])) {
 				if (empty($keys)) {
 					unset($currentValue[$nextKey]);
 				} else {
 					$currentValue[$nextKey] = $this->removeSubValue($keys, $currentValue[$nextKey], $throwError);
 				}
-			} else if ($throwError) {
+			} elseif ($throwError) {
 				throw new \UnexpectedValueException('Config parameter does not exist');
 			}
-		} else if ($throwError) {
+		} elseif ($throwError) {
 			throw new \UnexpectedValueException('Config parameter does not exist');
 		}
 

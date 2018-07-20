@@ -67,7 +67,7 @@ class Helper {
 	 * @return string icon URL
 	 */
 	public static function determineIcon($file) {
-		if($file['type'] === 'dir') {
+		if ($file['type'] === 'dir') {
 			$icon = \OC::$server->getMimeTypeDetector()->mimeTypeIcon('dir');
 			// TODO: move this part to the client side, using mountType
 			if ($file->isShared()) {
@@ -75,11 +75,11 @@ class Helper {
 			} elseif ($file->isMounted()) {
 				$icon = \OC::$server->getMimeTypeDetector()->mimeTypeIcon('dir-external');
 			}
-		}else{
+		} else {
 			$icon = \OC::$server->getMimeTypeDetector()->mimeTypeIcon($file->getMimetype());
 		}
 
-		return substr($icon, 0, -3) . 'svg';
+		return \substr($icon, 0, -3) . 'svg';
 	}
 
 	/**
@@ -159,7 +159,7 @@ class Helper {
 		$mountType = null;
 		if ($i->isShared()) {
 			$mountType = 'shared';
-		} else if ($i->isMounted()) {
+		} elseif ($i->isMounted()) {
 			$mountType = 'external';
 		}
 		if ($mountType !== null) {
@@ -217,9 +217,9 @@ class Helper {
 			$filesById[$fileData[$fileIdentifier]] = $fileData;
 		}
 		$tagger = \OC::$server->getTagManager()->load('files');
-		$tags = $tagger->getTagsForObjects(array_keys($filesById));
+		$tags = $tagger->getTagsForObjects(\array_keys($filesById));
 
-		if (!is_array($tags)) {
+		if (!\is_array($tags)) {
 			throw new \UnexpectedValueException('$tags must be an array');
 		}
 
@@ -229,19 +229,18 @@ class Helper {
 			}
 
 			foreach ($filesById as $key => $fileWithTags) {
-				foreach($fileList as $key2 => $file){
-					if( $file[$fileIdentifier] == $key){
+				foreach ($fileList as $key2 => $file) {
+					if ($file[$fileIdentifier] == $key) {
 						$fileList[$key2] = $fileWithTags;
 					}
 				}
 			}
 
 			foreach ($fileList as $key => $file) {
-				if (!array_key_exists('tags', $file)) {
+				if (!\array_key_exists('tags', $file)) {
 					$fileList[$key]['tags'] = [];
 				}
 			}
-
 		}
 		return $fileList;
 	}
@@ -258,12 +257,12 @@ class Helper {
 		$sortFunc = 'compareFileNames';
 		if ($sortAttribute === 'mtime') {
 			$sortFunc = 'compareTimestamp';
-		} else if ($sortAttribute === 'size') {
+		} elseif ($sortAttribute === 'size') {
 			$sortFunc = 'compareSize';
 		}
-		usort($files, ['\OCA\Files\Helper', $sortFunc]);
+		\usort($files, ['\OCA\Files\Helper', $sortFunc]);
 		if ($sortDescending) {
-			$files = array_reverse($files);
+			$files = \array_reverse($files);
 		}
 		return $files;
 	}

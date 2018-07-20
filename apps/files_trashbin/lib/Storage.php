@@ -31,7 +31,6 @@ use OC\Files\View;
 use OCP\IUserManager;
 
 class Storage extends Wrapper {
-
 	private $mountPoint;
 	// remember already deleted files to avoid infinite loops if the trash bin
 	// move files across storages
@@ -47,7 +46,7 @@ class Storage extends Wrapper {
 	/** @var  IUserManager */
 	private $userManager;
 
-	function __construct($parameters, IUserManager $userManager = null) {
+	public function __construct($parameters, IUserManager $userManager = null) {
 		$this->mountPoint = $parameters['mountPoint'];
 		$this->userManager = $userManager;
 		parent::__construct($parameters);
@@ -76,12 +75,12 @@ class Storage extends Wrapper {
 		if ($sourceInternalPath !== '' && $sourceStorage !== $targetStorage && $sourceStorage->instanceOfStorage('OCA\Files_Sharing\SharedStorage')) {
 			$ownerPath = $sourceStorage->getSourcePath($sourceInternalPath);
 			$owner = $sourceStorage->getOwner($sourceInternalPath);
-			if ($owner !== null && $owner !== '' && $ownerPath !== null && substr($ownerPath, 0, 6) === 'files/') {
+			if ($owner !== null && $owner !== '' && $ownerPath !== null && \substr($ownerPath, 0, 6) === 'files/') {
 				// ownerPath is in the format "files/path/to/file.txt", strip "files"
-				$ownerPath = substr($ownerPath, 6);
+				$ownerPath = \substr($ownerPath, 6);
 
 				// make a backup copy for the owner
-				\OCA\Files_Trashbin\Trashbin::copyBackupForOwner($ownerPath, $owner, time());
+				\OCA\Files_Trashbin\Trashbin::copyBackupForOwner($ownerPath, $owner, \time());
 			}
 		}
 	}
@@ -138,10 +137,10 @@ class Storage extends Wrapper {
 	 * @param $path
 	 * @return bool
 	 */
-	protected function shouldMoveToTrash($path){
+	protected function shouldMoveToTrash($path) {
 		$normalized = Filesystem::normalizePath($this->mountPoint . '/' . $path);
-		$parts = explode('/', $normalized);
-		if (count($parts) < 4) {
+		$parts = \explode('/', $normalized);
+		if (\count($parts) < 4) {
 			return false;
 		}
 
@@ -163,10 +162,10 @@ class Storage extends Wrapper {
 	private function doDelete($path, $method) {
 		if (self::$disableTrash
 			|| !\OC_App::isEnabled('files_trashbin')
-			|| (pathinfo($path, PATHINFO_EXTENSION) === 'part')
+			|| (\pathinfo($path, PATHINFO_EXTENSION) === 'part')
 			|| $this->shouldMoveToTrash($path) === false
 		) {
-			return call_user_func_array([$this->storage, $method], [$path]);
+			return \call_user_func_array([$this->storage, $method], [$path]);
 		}
 
 		// check permissions before we continue, this is especially important for
@@ -181,19 +180,19 @@ class Storage extends Wrapper {
 		if (!isset($this->deletedFiles[$normalized]) && $view instanceof View) {
 			$this->deletedFiles[$normalized] = $normalized;
 			if ($filesPath = $view->getRelativePath($normalized)) {
-				$filesPath = trim($filesPath, '/');
+				$filesPath = \trim($filesPath, '/');
 				$result = \OCA\Files_Trashbin\Trashbin::move2trash($filesPath);
 				// in cross-storage cases the file will be copied
 				// but not deleted, so we delete it here
 				if ($result) {
-					call_user_func_array([$this->storage, $method], [$path]);
+					\call_user_func_array([$this->storage, $method], [$path]);
 				}
 			} else {
-				$result = call_user_func_array([$this->storage, $method], [$path]);
+				$result = \call_user_func_array([$this->storage, $method], [$path]);
 			}
 			unset($this->deletedFiles[$normalized]);
-		} else if ($this->storage->file_exists($path)) {
-			$result = call_user_func_array([$this->storage, $method], [$path]);
+		} elseif ($this->storage->file_exists($path)) {
+			$result = \call_user_func_array([$this->storage, $method], [$path]);
 		}
 
 		return $result;
@@ -232,5 +231,4 @@ class Storage extends Wrapper {
 			);
 		}, 1);
 	}
-
 }

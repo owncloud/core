@@ -45,7 +45,7 @@ class LazyStorageMountInfo extends CachedMountInfo {
 	 */
 	public function getStorageId() {
 		if (!$this->storageId) {
-			if (method_exists($this->mount, 'getStorageNumericId')) {
+			if (\method_exists($this->mount, 'getStorageNumericId')) {
 				$this->storageId = $this->mount->getStorageNumericId();
 			} else {
 				$storage = $this->mount->getStorage();

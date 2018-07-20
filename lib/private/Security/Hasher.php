@@ -58,11 +58,11 @@ class Hasher implements IHasher {
 	/**
 	 * @param IConfig $config
 	 */
-	function __construct(IConfig $config) {
+	public function __construct(IConfig $config) {
 		$this->config = $config;
 
 		$hashingCost = $this->config->getSystemValue('hashingCost', null);
-		if(!is_null($hashingCost)) {
+		if ($hashingCost !== null) {
 			$this->options['cost'] = $hashingCost;
 		}
 	}
@@ -76,7 +76,7 @@ class Hasher implements IHasher {
 	 * @return string Hash of the message with appended version parameter
 	 */
 	public function hash($message) {
-		return $this->currentVersion . '|' . password_hash($message, PASSWORD_DEFAULT, $this->options);
+		return $this->currentVersion . '|' . \password_hash($message, PASSWORD_DEFAULT, $this->options);
 	}
 
 	/**
@@ -85,9 +85,9 @@ class Hasher implements IHasher {
 	 * @return null|array Null if the hash is not prefixed, otherwise array('version' => 1, 'hash' => 'foo')
 	 */
 	protected function splitHash($prefixedHash) {
-		$explodedString = explode('|', $prefixedHash, 2);
-		if(sizeof($explodedString) === 2) {
-			if((int)$explodedString[0] > 0) {
+		$explodedString = \explode('|', $prefixedHash, 2);
+		if (\sizeof($explodedString) === 2) {
+			if ((int)$explodedString[0] > 0) {
 				return ['version' => (int)$explodedString[0], 'hash' => $explodedString[1]];
 			}
 		}
@@ -103,14 +103,14 @@ class Hasher implements IHasher {
 	 * @return bool Whether $hash is a valid hash of $message
 	 */
 	protected function legacyHashVerify($message, $hash, &$newHash = null) {
-		if(empty($this->legacySalt)) {
+		if (empty($this->legacySalt)) {
 			$this->legacySalt = $this->config->getSystemValue('passwordsalt', '');
 		}
 
 		// Verify whether it matches a legacy PHPass or SHA1 string
-		$hashLength = strlen($hash);
-		if($hashLength === 60 && password_verify($message.$this->legacySalt, $hash) ||
-			$hashLength === 40 && hash_equals($hash, sha1($message))) {
+		$hashLength = \strlen($hash);
+		if ($hashLength === 60 && \password_verify($message.$this->legacySalt, $hash) ||
+			$hashLength === 40 && \hash_equals($hash, \sha1($message))) {
 			$newHash = $this->hash($message);
 			return true;
 		}
@@ -126,8 +126,8 @@ class Hasher implements IHasher {
 	 * @return bool Whether $hash is a valid hash of $message
 	 */
 	protected function verifyHashV1($message, $hash, &$newHash = null) {
-		if(password_verify($message, $hash)) {
-			if(password_needs_rehash($hash, PASSWORD_DEFAULT, $this->options)) {
+		if (\password_verify($message, $hash)) {
+			if (\password_needs_rehash($hash, PASSWORD_DEFAULT, $this->options)) {
 				$newHash = $this->hash($message);
 			}
 			return true;
@@ -145,7 +145,7 @@ class Hasher implements IHasher {
 	public function verify($message, $hash, &$newHash = null) {
 		$splittedHash = $this->splitHash($hash);
 
-		if(isset($splittedHash['version'])) {
+		if (isset($splittedHash['version'])) {
 			switch ($splittedHash['version']) {
 				case 1:
 					return $this->verifyHashV1($message, $splittedHash['hash'], $newHash);
@@ -154,8 +154,6 @@ class Hasher implements IHasher {
 			return $this->legacyHashVerify($message, $hash, $newHash);
 		}
 
-
 		return false;
 	}
-
 }

@@ -57,7 +57,6 @@ class AddressBookImpl implements IAddressBook {
 			array $addressBookInfo,
 			CardDavBackend $backend,
 			IURLGenerator $urlGenerator) {
-
 		$this->addressBook = $addressBook;
 		$this->addressBookInfo = $addressBookInfo;
 		$this->backend = $backend;
@@ -131,7 +130,6 @@ class AddressBookImpl implements IAddressBook {
 		}
 
 		return $this->vCard2Array($uri, $vCard);
-
 	}
 
 	/**
@@ -142,7 +140,7 @@ class AddressBookImpl implements IAddressBook {
 		$permissions = $this->addressBook->getACL();
 		$result = 0;
 		foreach ($permissions as $permission) {
-			switch($permission['privilege']) {
+			switch ($permission['privilege']) {
 				case '{DAV:}read':
 					$result |= Constants::PERMISSION_READ;
 					break;
@@ -229,9 +227,9 @@ class AddressBookImpl implements IAddressBook {
 			if ($property->name === 'PHOTO' && $property->getValueType() === 'BINARY') {
 				$url = $this->urlGenerator->getAbsoluteURL(
 					$this->urlGenerator->linkTo('', 'remote.php') . '/dav/');
-				$url .= implode('/', [
+				$url .= \implode('/', [
 					'addressbooks',
-					substr($this->addressBookInfo['principaluri'], 11), //cut off 'principals/'
+					\substr($this->addressBookInfo['principaluri'], 11), //cut off 'principals/'
 					$this->addressBookInfo['uri'],
 					$uri
 				]) . '?photo';
@@ -241,7 +239,7 @@ class AddressBookImpl implements IAddressBook {
 				$result[$property->name] = $property->getValue();
 			}
 		}
-		if ($this->addressBookInfo['principaluri'] === 'principals/system/system' ) {
+		if ($this->addressBookInfo['principaluri'] === 'principals/system/system') {
 			$result['isSystemBook'] = true;
 			if ($this->addressBookInfo['uri'] === 'system') {
 				$result['isLocalSystemBook'] = true;

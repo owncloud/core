@@ -66,7 +66,7 @@ class NullCache extends Cache implements \OCP\IMemcache {
 		return true;
 	}
 
-	static public function isAvailable() {
+	public static function isAvailable() {
 		return true;
 	}
 }

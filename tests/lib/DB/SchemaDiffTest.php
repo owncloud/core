@@ -54,7 +54,7 @@ class SchemaDiffTest extends TestCase {
 		$this->config = \OC::$server->getConfig();
 		$this->connection = \OC::$server->getDatabaseConnection();
 		$this->manager = new MDB2SchemaManager($this->connection);
-		$this->testPrefix= strtolower($this->getUniqueID($this->config->getSystemValue('dbtableprefix', 'oc_'), 3));
+		$this->testPrefix= \strtolower($this->getUniqueID($this->config->getSystemValue('dbtableprefix', 'oc_'), 3));
 	}
 
 	protected function tearDown() {
@@ -67,10 +67,9 @@ class SchemaDiffTest extends TestCase {
 	 * @param string $xml
 	 */
 	public function testZeroChangeOnSchemaMigrations($xml) {
-
-		$xml = str_replace( '*dbprefix*', $this->testPrefix, $xml );
+		$xml = \str_replace('*dbprefix*', $this->testPrefix, $xml);
 		$schemaFile = 'static://test_db_scheme';
-		file_put_contents($schemaFile, $xml);
+		\file_put_contents($schemaFile, $xml);
 
 		// apply schema
 		$this->manager->createDbFromStructure($schemaFile);
@@ -91,11 +90,11 @@ class SchemaDiffTest extends TestCase {
 
 	public function providesSchemaFiles() {
 		return [
-			'explicit test on autoincrement' => [file_get_contents(__DIR__ . '/schemDiffData/autoincrement.xml')],
-			'explicit test on clob' => [file_get_contents(__DIR__ . '/schemDiffData/clob.xml')],
-			'explicit test on unsigned' => [file_get_contents(__DIR__ . '/schemDiffData/unsigned.xml')],
-			'explicit test on default -1' => [file_get_contents(__DIR__ . '/schemDiffData/default-1.xml')],
-			'testing core schema' => [file_get_contents(__DIR__ . '/schemDiffData/core.xml')],
+			'explicit test on autoincrement' => [\file_get_contents(__DIR__ . '/schemDiffData/autoincrement.xml')],
+			'explicit test on clob' => [\file_get_contents(__DIR__ . '/schemDiffData/clob.xml')],
+			'explicit test on unsigned' => [\file_get_contents(__DIR__ . '/schemDiffData/unsigned.xml')],
+			'explicit test on default -1' => [\file_get_contents(__DIR__ . '/schemDiffData/default-1.xml')],
+			'testing core schema' => [\file_get_contents(__DIR__ . '/schemDiffData/core.xml')],
 		];
 	}
 }

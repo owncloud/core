@@ -52,7 +52,7 @@ class MoveCopyHelper {
 		$password,
 		$fromFileName,
 		$toFileName,
-		$headers = array(),
+		$headers = [],
 		$davPathVersionToUse = 1,
 		$sourceIpAddress = null
 	) {
@@ -85,7 +85,7 @@ class MoveCopyHelper {
 		$password,
 		$fromFileName,
 		$toFileName,
-		$headers = array(),
+		$headers = [],
 		$davPathVersionToUse = 1,
 		$sourceIpAddress = null
 	) {
@@ -96,7 +96,7 @@ class MoveCopyHelper {
 	}
 
 	/**
-	 * 
+	 *
 	 * @param string $baseUrl URL of owncloud
 	 *                        e.g. http://localhost:8080
 	 *                        should include the subfolder
@@ -120,11 +120,11 @@ class MoveCopyHelper {
 		$password,
 		$fromFileName,
 		$toFileName,
-		$headers = array(),
+		$headers = [],
 		$davPathVersionToUse = 1,
 		$sourceIpAddress = null
 	) {
-		$method = strtoupper($method);
+		$method = \strtoupper($method);
 		if ($method !== "COPY" && $method !== "MOVE") {
 			throw new \InvalidArgumentException(
 				'$method has to be "copy" or "move"'

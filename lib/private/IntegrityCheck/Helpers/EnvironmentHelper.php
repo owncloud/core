@@ -34,7 +34,7 @@ class EnvironmentHelper {
 	 * @return string
 	 */
 	public function getServerRoot() {
-		return rtrim(\OC::$SERVERROOT, '/');
+		return \rtrim(\OC::$SERVERROOT, '/');
 	}
 
 	/**

@@ -20,9 +20,7 @@
  *
  */
 
-
 namespace OCA\FederatedFileSharing\Tests;
-
 
 use OCA\FederatedFileSharing\AddressHandler;
 use OCA\FederatedFileSharing\DiscoveryManager;
@@ -59,12 +57,11 @@ class NotificationsTest extends \Test\TestCase {
 		$this->httpClientService = $this->createMock(IClientService::class);
 		$this->addressHandler = $this->getMockBuilder(AddressHandler::class)
 			->disableOriginalConstructor()->getMock();
-
 	}
 
 	/**
 	 * get instance of Notifications class
-	 * 
+	 *
 	 * @param array $mockedMethods methods which should be mocked
 	 * @return Notifications | \PHPUnit_Framework_MockObject_MockObject
 	 */
@@ -92,7 +89,6 @@ class NotificationsTest extends \Test\TestCase {
 		
 		return $instance;
 	}
-
 
 	/**
 	 * @dataProvider dataTestSendUpdateToRemote
@@ -126,7 +122,7 @@ class NotificationsTest extends \Test\TestCase {
 						'remote' => $remote,
 						'remoteId' => $id,
 						'action' => 'unshare',
-						'data' => json_encode(['data1Key' => 'data1Value']),
+						'data' => \json_encode(['data1Key' => 'data1Value']),
 						'token' => $token,
 						'try' => $try,
 						'lastRun' => $timestamp
@@ -139,25 +135,22 @@ class NotificationsTest extends \Test\TestCase {
 		$this->assertSame($expected,
 			$instance->sendUpdateToRemote($remote, $id, $token, 'unshare', ['data1Key' => 'data1Value'], $try)
 		);
-
 	}
-
 
 	public function dataTestSendUpdateToRemote() {
 		return [
 			// test if background job is added correctly
-			[0, ['success' => true, 'result' => json_encode(['ocs' => ['meta' => ['statuscode' => 200]]])], true],
-			[1, ['success' => true, 'result' => json_encode(['ocs' => ['meta' => ['statuscode' => 200]]])], true],
-			[0, ['success' => false, 'result' => json_encode(['ocs' => ['meta' => ['statuscode' => 200]]])], false],
-			[1, ['success' => false, 'result' => json_encode(['ocs' => ['meta' => ['statuscode' => 200]]])], false],
+			[0, ['success' => true, 'result' => \json_encode(['ocs' => ['meta' => ['statuscode' => 200]]])], true],
+			[1, ['success' => true, 'result' => \json_encode(['ocs' => ['meta' => ['statuscode' => 200]]])], true],
+			[0, ['success' => false, 'result' => \json_encode(['ocs' => ['meta' => ['statuscode' => 200]]])], false],
+			[1, ['success' => false, 'result' => \json_encode(['ocs' => ['meta' => ['statuscode' => 200]]])], false],
 			// test all combinations of 'statuscode' and 'success'
-			[0, ['success' => true, 'result' => json_encode(['ocs' => ['meta' => ['statuscode' => 200]]])], true],
-			[0, ['success' => true, 'result' => json_encode(['ocs' => ['meta' => ['statuscode' => 100]]])], true],
-			[0, ['success' => true, 'result' => json_encode(['ocs' => ['meta' => ['statuscode' => 400]]])], false],
-			[0, ['success' => false, 'result' => json_encode(['ocs' => ['meta' => ['statuscode' => 200]]])], false],
-			[0, ['success' => false, 'result' => json_encode(['ocs' => ['meta' => ['statuscode' => 100]]])], false],
-			[0, ['success' => false, 'result' => json_encode(['ocs' => ['meta' => ['statuscode' => 400]]])], false],
+			[0, ['success' => true, 'result' => \json_encode(['ocs' => ['meta' => ['statuscode' => 200]]])], true],
+			[0, ['success' => true, 'result' => \json_encode(['ocs' => ['meta' => ['statuscode' => 100]]])], true],
+			[0, ['success' => true, 'result' => \json_encode(['ocs' => ['meta' => ['statuscode' => 400]]])], false],
+			[0, ['success' => false, 'result' => \json_encode(['ocs' => ['meta' => ['statuscode' => 200]]])], false],
+			[0, ['success' => false, 'result' => \json_encode(['ocs' => ['meta' => ['statuscode' => 100]]])], false],
+			[0, ['success' => false, 'result' => \json_encode(['ocs' => ['meta' => ['statuscode' => 400]]])], false],
 		];
 	}
-
 }
