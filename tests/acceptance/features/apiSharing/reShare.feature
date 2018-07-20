@@ -1,13 +1,13 @@
 @api
 Feature: sharing
 	Background:
-		Given using API version "1"
-		And using old DAV path
+		Given using old DAV path
 		And user "user0" has been created
 		And user "user1" has been created
 
-	Scenario: User is not allowed to reshare file
-		Given user "user2" has been created
+	Scenario Outline: User is not allowed to reshare file
+		Given using API version "<ocs_api_version>"
+		And user "user2" has been created
 		And user "user0" has created a share with settings
 			| path        | /textfile0.txt |
 			| shareType   | 0              |
@@ -19,10 +19,15 @@ Feature: sharing
 			| shareWith   | user2              |
 			| permissions | 31                 |
 		Then the OCS status code should be "404"
-		And the HTTP status code should be "200"
+		And the HTTP status code should be "<http_status_code>"
+		Examples:
+			|ocs_api_version|http_status_code|
+			|1              |200             |
+			|2              |404             |
 
-	Scenario: User is not allowed to reshare file with more permissions
-		Given user "user2" has been created
+	Scenario Outline: User is not allowed to reshare file with more permissions
+		Given using API version "<ocs_api_version>"
+		And user "user2" has been created
 		And user "user0" has created a share with settings
 			| path        | /textfile0.txt |
 			| shareType   | 0              |
@@ -34,10 +39,15 @@ Feature: sharing
 			| shareWith   | user2              |
 			| permissions | 31                 |
 		Then the OCS status code should be "404"
-		And the HTTP status code should be "200"
+		And the HTTP status code should be "<http_status_code>"
+		Examples:
+			|ocs_api_version|http_status_code|
+			|1              |200             |
+			|2              |404             |
 
-	Scenario: Do not allow reshare to exceed permissions
-		Given user "user2" has been created
+	Scenario Outline: Do not allow reshare to exceed permissions
+		Given using API version "<ocs_api_version>"
+		And user "user2" has been created
 		And user "user0" has created a folder "/TMP"
 		And user "user0" has created a share with settings
 			| path        | /TMP  |
@@ -53,6 +63,11 @@ Feature: sharing
 		When the user updates the last share using the API with
 			| permissions | 31 |
 		Then the OCS status code should be "404"
+		And the HTTP status code should be "<http_status_code>"
+		Examples:
+			|ocs_api_version|http_status_code|
+			|1              |200             |
+			|2              |404             |
 
 	Scenario: Reshared files can be still accessed if a user in the middle removes it.
 		Given user "user2" has been created
@@ -65,28 +80,39 @@ Feature: sharing
 		And user "user3" downloads file "/textfile0_shared.txt" with range "bytes=1-7" using the API
 		Then the downloaded content should be "wnCloud"
 
-	Scenario: resharing using a public link with read only permissions is not allowed
-		Given user "user0" has created a folder "/test"
+	Scenario Outline: resharing using a public link with read only permissions is not allowed
+		Given using API version "<ocs_api_version>"
+		And user "user0" has created a folder "/test"
 		And user "user0" has shared folder "/test" with user "user1" with permissions 1
 		When user "user1" creates a share using the API with settings
 			| path         | /test |
 			| shareType    | 3     |
 			| publicUpload | false |
 		Then the OCS status code should be "404"
-		And the HTTP status code should be "200"
+		And the HTTP status code should be "<http_status_code>"
+		Examples:
+			|ocs_api_version|http_status_code|
+			|1              |200             |
+			|2              |404             |
 
-	Scenario: resharing using a public link with read and write permissions only is not allowed
-		Given user "user0" has created a folder "/test"
+	Scenario Outline: resharing using a public link with read and write permissions only is not allowed
+		Given using API version "<ocs_api_version>"
+		And user "user0" has created a folder "/test"
 		And user "user0" has shared folder "/test" with user "user1" with permissions 15
 		When user "user1" creates a share using the API with settings
 			| path         | /test |
 			| shareType    | 3     |
 			| publicUpload | false |
 		Then the OCS status code should be "404"
-		And the HTTP status code should be "200"
+		And the HTTP status code should be "<http_status_code>"
+		Examples:
+			|ocs_api_version|http_status_code|
+			|1              |200             |
+			|2              |404             |
 
-	Scenario: resharing a file is not allowed when allow resharing has been disabled
-		Given user "user2" has been created
+	Scenario Outline: resharing a file is not allowed when allow resharing has been disabled
+		Given using API version "<ocs_api_version>"
+		And user "user2" has been created
 		And user "user0" has created a share with settings
 			| path        | /textfile0.txt |
 			| shareType   | 0              |
@@ -99,4 +125,9 @@ Feature: sharing
 			| shareWith   | user2              |
 			| permissions | 31                 |
 		Then the OCS status code should be "404"
+		And the HTTP status code should be "<http_status_code>"
 		And as "user2" the file "/textfile0 (2).txt" should not exist
+		Examples:
+			|ocs_api_version|http_status_code|
+			|1              |200             |
+			|2              |404             |
