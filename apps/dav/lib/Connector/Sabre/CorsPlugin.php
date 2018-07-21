@@ -116,7 +116,7 @@ class CorsPlugin extends ServerPlugin {
 			$userId = $this->userSession->getUser()->getUID();
 			$headers = \OC_Response::setCorsHeaders($userId, $requesterDomain, null, $this->getExtraHeaders($request));
 			foreach ($headers as $key => $value) {
-				$response->addHeader($key, implode(',', $value));
+				$response->addHeader($key, \implode(',', $value));
 			}
 		}
 	}

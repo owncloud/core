@@ -100,7 +100,7 @@ class FileInfo implements \OCP\Files\FileInfo, \ArrayAccess {
 	public function offsetGet($offset) {
 		if ($offset === 'type') {
 			return $this->getType();
-		} else if ($offset === 'etag') {
+		} elseif ($offset === 'etag') {
 			return $this->getEtag();
 		} elseif ($offset === 'permissions') {
 			return $this->getPermissions();
@@ -157,16 +157,16 @@ class FileInfo implements \OCP\Files\FileInfo, \ArrayAccess {
 	 * @return string
 	 */
 	public function getName() {
-		return basename($this->getPath());
+		return \basename($this->getPath());
 	}
 
 	/**
 	 * @return string
 	 */
 	public function getEtag() {
-		if (count($this->childEtags) > 0) {
-			$combinedEtag = $this->data['etag'] . '::' . implode('::', $this->childEtags);
-			return md5($combinedEtag);
+		if (\count($this->childEtags) > 0) {
+			$combinedEtag = $this->data['etag'] . '::' . \implode('::', $this->childEtags);
+			return \md5($combinedEtag);
 		} else {
 			return $this->data['etag'];
 		}
@@ -279,8 +279,8 @@ class FileInfo implements \OCP\Files\FileInfo, \ArrayAccess {
 	 */
 	public function isShared() {
 		$sid = $this->getStorage()->getId();
-		if (!is_null($sid)) {
-			$sid = explode(':', $sid);
+		if ($sid !== null) {
+			$sid = \explode(':', $sid);
 			return ($sid[0] === 'shared');
 		}
 
@@ -289,8 +289,8 @@ class FileInfo implements \OCP\Files\FileInfo, \ArrayAccess {
 
 	public function isMounted() {
 		$sid = $this->getStorage()->getId();
-		if (!is_null($sid)) {
-			$sid = explode(':', $sid);
+		if ($sid !== null) {
+			$sid = \explode(':', $sid);
 			return ($sid[0] !== 'home' and $sid[0] !== 'shared');
 		}
 
@@ -326,11 +326,11 @@ class FileInfo implements \OCP\Files\FileInfo, \ArrayAccess {
 	public function addSubEntry($data, $entryPath) {
 		$this->data['size'] += isset($data['size']) ? $data['size'] : 0;
 		if (isset($data['mtime'])) {
-			$this->data['mtime'] = max($this->data['mtime'], $data['mtime']);
+			$this->data['mtime'] = \max($this->data['mtime'], $data['mtime']);
 		}
 		if (isset($data['etag'])) {
 			// prefix the etag with the relative path of the subentry to propagate etag on mount moves
-			$relativeEntryPath = substr($entryPath, strlen($this->getPath()));
+			$relativeEntryPath = \substr($entryPath, \strlen($this->getPath()));
 			// attach the permissions to propagate etag on permision changes of submounts
 			$permissions = isset($data['permissions']) ? $data['permissions'] : 0;
 			$this->childEtags[] = $relativeEntryPath . '/' . $data['etag'] . $permissions;

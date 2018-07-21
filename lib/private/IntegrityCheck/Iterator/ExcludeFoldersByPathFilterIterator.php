@@ -29,31 +29,31 @@ class ExcludeFoldersByPathFilterIterator extends \RecursiveFilterIterator {
 		parent::__construct($iterator);
 
 		$appFolders = \OC::$APPSROOTS;
-		foreach($appFolders as $key => $appFolder) {
-			$appFolders[$key] = rtrim($appFolder['path'], '/');
+		foreach ($appFolders as $key => $appFolder) {
+			$appFolders[$key] = \rtrim($appFolder['path'], '/');
 		}
 
 		$excludedFolders = [
-			rtrim($root . '/data', '/'),
-			rtrim($root . '/themes', '/'),
-			rtrim($root . '/config', '/'),
-			rtrim($root . '/apps', '/'),
-			rtrim($root . '/assets', '/'),
-			rtrim($root . '/lost+found', '/'),
+			\rtrim($root . '/data', '/'),
+			\rtrim($root . '/themes', '/'),
+			\rtrim($root . '/config', '/'),
+			\rtrim($root . '/apps', '/'),
+			\rtrim($root . '/assets', '/'),
+			\rtrim($root . '/lost+found', '/'),
 		];
 		$customDataDir = \OC::$server->getConfig()->getSystemValue('datadirectory', '');
-		if($customDataDir !== '') {
-			$excludedFolders[] = rtrim($customDataDir, '/');
+		if ($customDataDir !== '') {
+			$excludedFolders[] = \rtrim($customDataDir, '/');
 		}
 
-		$this->excludedFolders = array_merge($excludedFolders, $appFolders);
+		$this->excludedFolders = \array_merge($excludedFolders, $appFolders);
 	}
 
 	/**
 	 * @return bool
 	 */
 	public function accept() {
-		return !in_array(
+		return !\in_array(
 			$this->current()->getPathName(),
 			$this->excludedFolders,
 			true

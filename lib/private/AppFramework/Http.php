@@ -25,13 +25,11 @@
  *
  */
 
-
 namespace OC\AppFramework;
 
 use OCP\AppFramework\Http as BaseHttp;
 
 class Http extends BaseHttp {
-
 	private $server;
 	private $protocolVersion;
 	protected $headers;
@@ -107,7 +105,6 @@ class Http extends BaseHttp {
 		];
 	}
 
-
 	/**
 	 * Gets the correct header
 	 * @param Http::CONSTANT $status the constant from the Http class
@@ -115,40 +112,33 @@ class Http extends BaseHttp {
 	 * @param string $ETag the etag
 	 * @return string
 	 */
-	public function getStatusHeader($status, \DateTime $lastModified=null, 
-	                                $ETag=null) {
-
-		if(!is_null($lastModified)) {
+	public function getStatusHeader($status, \DateTime $lastModified=null,
+									$ETag=null) {
+		if ($lastModified !== null) {
 			$lastModified = $lastModified->format(\DateTime::RFC2822);
 		}
 
 		// if etag or lastmodified have not changed, return a not modified
 		if ((isset($this->server['HTTP_IF_NONE_MATCH'])
-			&& trim(trim($this->server['HTTP_IF_NONE_MATCH']), '"') === (string)$ETag)
+			&& \trim(\trim($this->server['HTTP_IF_NONE_MATCH']), '"') === (string)$ETag)
 
 			||
 
 			(isset($this->server['HTTP_IF_MODIFIED_SINCE'])
-			&& trim($this->server['HTTP_IF_MODIFIED_SINCE']) === 
+			&& \trim($this->server['HTTP_IF_MODIFIED_SINCE']) ===
 				$lastModified)) {
-
 			$status = self::STATUS_NOT_MODIFIED;
 		}
 
 		// we have one change currently for the http 1.0 header that differs
 		// from 1.1: STATUS_TEMPORARY_REDIRECT should be STATUS_FOUND
 		// if this differs any more, we want to create childclasses for this
-		if($status === self::STATUS_TEMPORARY_REDIRECT 
+		if ($status === self::STATUS_TEMPORARY_REDIRECT
 			&& $this->protocolVersion === 'HTTP/1.0') {
-
 			$status = self::STATUS_FOUND;
 		}
 
-		return $this->protocolVersion . ' ' . $status . ' ' . 
+		return $this->protocolVersion . ' ' . $status . ' ' .
 			$this->headers[$status];
 	}
-
-
 }
-
-

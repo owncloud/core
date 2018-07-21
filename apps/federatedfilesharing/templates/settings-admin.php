@@ -12,7 +12,9 @@ script('federatedfilesharing', 'settings-admin');
 
 	<p>
 		<input type="checkbox" name="outgoing_server2server_share_enabled" id="outgoingServer2serverShareEnabled" class="checkbox"
-			   value="1" <?php if ($_['outgoingServer2serverShareEnabled']) print_unescaped('checked="checked"'); ?> />
+			   value="1" <?php if ($_['outgoingServer2serverShareEnabled']) {
+	print_unescaped('checked="checked"');
+} ?> />
 		<label for="outgoingServer2serverShareEnabled">
 			<?php p($l->t('Allow users on this server to send shares to other servers'));?>
 		</label>
@@ -20,7 +22,9 @@ script('federatedfilesharing', 'settings-admin');
 
 	<p>
 		<input type="checkbox" name="incoming_server2server_share_enabled" id="incomingServer2serverShareEnabled" class="checkbox"
-			   value="1" <?php if ($_['incomingServer2serverShareEnabled']) print_unescaped('checked="checked"'); ?> />
+			   value="1" <?php if ($_['incomingServer2serverShareEnabled']) {
+	print_unescaped('checked="checked"');
+} ?> />
 		<label for="incomingServer2serverShareEnabled">
 			<?php p($l->t('Allow users on this server to receive shares from other servers'));?>
 		</label><br/>

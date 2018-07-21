@@ -42,43 +42,43 @@ class TXT implements IProvider2 {
 	 */
 	public function getThumbnail(File $file, $maxX, $maxY, $scalingUp) {
 		$stream = $file->fopen('r');
-		$content = stream_get_contents($stream,3000);
-		fclose($stream);
+		$content = \stream_get_contents($stream, 3000);
+		\fclose($stream);
 
 		//don't create previews of empty text files
-		if(trim($content) === '') {
+		if (\trim($content) === '') {
 			return false;
 		}
 
-		$lines = preg_split("/\r\n|\n|\r/", $content);
+		$lines = \preg_split("/\r\n|\n|\r/", $content);
 
 		$fontSize = ($maxX) ? (int) ((5 / 32) * $maxX) : 5; //5px
-		$lineSize = ceil($fontSize * 1.25);
+		$lineSize = \ceil($fontSize * 1.25);
 
-		$image = imagecreate($maxX, $maxY);
-		imagecolorallocate($image, 255, 255, 255);
-		$textColor = imagecolorallocate($image, 0, 0, 0);
+		$image = \imagecreate($maxX, $maxY);
+		\imagecolorallocate($image, 255, 255, 255);
+		$textColor = \imagecolorallocate($image, 0, 0, 0);
 
 		$fontFile  = __DIR__;
 		$fontFile .= '/../../../core';
 		$fontFile .= '/fonts/OpenSans-Regular.ttf';
 
-		$canUseTTF = function_exists('imagettftext');
+		$canUseTTF = \function_exists('imagettftext');
 
-		foreach($lines as $index => $line) {
+		foreach ($lines as $index => $line) {
 			$index = $index + 1;
 
 			$x = (int) 1;
 			$y = (int) ($index * $lineSize);
 
 			if ($canUseTTF === true) {
-				imagettftext($image, $fontSize, 0, $x, $y, $textColor, $fontFile, $line);
+				\imagettftext($image, $fontSize, 0, $x, $y, $textColor, $fontFile, $line);
 			} else {
 				$y -= $fontSize;
-				imagestring($image, 1, $x, $y, $line, $textColor);
+				\imagestring($image, 1, $x, $y, $line, $textColor);
 			}
 
-			if(($index * $lineSize) >= $maxY) {
+			if (($index * $lineSize) >= $maxY) {
 				break;
 			}
 		}

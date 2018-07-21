@@ -141,9 +141,9 @@ class CorsPluginTest extends TestCase {
 				],
 				200,
 				[
-					'Access-Control-Allow-Headers' => implode(',', $allowedHeaders),
+					'Access-Control-Allow-Headers' => \implode(',', $allowedHeaders),
 					'Access-Control-Allow-Origin' => '*',
-					'Access-Control-Allow-Methods' => implode(',', $allowedMethodsUnAuthenticated),
+					'Access-Control-Allow-Methods' => \implode(',', $allowedMethodsUnAuthenticated),
 				],
 				false
 			],
@@ -157,9 +157,9 @@ class CorsPluginTest extends TestCase {
 				],
 				200,
 				[
-					'Access-Control-Allow-Headers' => implode(',', $allowedHeaders),
+					'Access-Control-Allow-Headers' => \implode(',', $allowedHeaders),
 					'Access-Control-Allow-Origin' => 'https://requesterdomain.tld',
-					'Access-Control-Allow-Methods' => implode(',', $allowedMethods),
+					'Access-Control-Allow-Methods' => \implode(',', $allowedMethods),
 				],
 				true
 			],
@@ -237,9 +237,9 @@ class CorsPluginTest extends TestCase {
 				],
 				200,
 				[
-					'Access-Control-Allow-Headers' => implode(',', $allowedHeaders),
+					'Access-Control-Allow-Headers' => \implode(',', $allowedHeaders),
 					'Access-Control-Allow-Origin' => 'https://currentdomain.tld:8443',
-					'Access-Control-Allow-Methods' => implode(',', $allowedMethods),
+					'Access-Control-Allow-Methods' => \implode(',', $allowedMethods),
 				],
 				true
 			],
@@ -298,5 +298,4 @@ class CorsPluginTest extends TestCase {
 		// if it has DAV headers, it means we did not bypass further processing
 		$this->assertEquals($expectDavHeaders, $this->server->httpResponse->hasHeader('DAV'));
 	}
-
 }

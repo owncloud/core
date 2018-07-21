@@ -56,7 +56,7 @@ class ListGroups extends Base {
 	protected function execute(InputInterface $input, OutputInterface $output) {
 		$groupNameSubString = $input->getArgument('search-pattern');
 		$groups = $this->groupManager->search($groupNameSubString, null, null, 'management');
-		$groups = array_map(function($group) {
+		$groups = \array_map(function ($group) {
 			/** @var IGroup $group */
 			return $group->getGID();
 		}, $groups);

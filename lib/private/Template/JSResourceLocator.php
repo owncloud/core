@@ -36,10 +36,10 @@ class JSResourceLocator extends ResourceLocator {
 		$baseDirectory = $this->theme->getBaseDirectory();
 		$webRoot = '';
 		if ($baseDirectory !== $this->serverroot) {
-			$webRoot = substr($this->theme->getWebPath(), 0, -strlen($themeDirectory));
+			$webRoot = \substr($this->theme->getWebPath(), 0, -\strlen($themeDirectory));
 		}
 
-		if (strpos($script, '/l10n/') !== false) {
+		if (\strpos($script, '/l10n/') !== false) {
 			// For language files we try to load them all, so themes can overwrite
 			// single l10n strings without having to translate all of them.
 			$found = 0;
@@ -52,7 +52,7 @@ class JSResourceLocator extends ResourceLocator {
 			if ($found) {
 				return;
 			}
-		} else if ($this->appendOnceIfExist($baseDirectory, $themeDirectory.'/apps/'.$fullScript, $webRoot)
+		} elseif ($this->appendOnceIfExist($baseDirectory, $themeDirectory.'/apps/'.$fullScript, $webRoot)
 			|| $this->appendOnceIfExist($baseDirectory, $themeDirectory.'/'.$fullScript, $webRoot)
 			|| $this->appendOnceIfExist($this->serverroot, $fullScript)
 			|| $this->appendOnceIfExist($baseDirectory, $themeDirectory.'/core/'.$fullScript, $webRoot)
@@ -61,10 +61,12 @@ class JSResourceLocator extends ResourceLocator {
 			return;
 		}
 
-		$app = substr($fullScript, 0, strpos($fullScript, '/'));
-		$fullScript = substr($fullScript, strpos($fullScript, '/')+1);
+		$app = \substr($fullScript, 0, \strpos($fullScript, '/'));
+		$fullScript = \substr($fullScript, \strpos($fullScript, '/')+1);
 		$app_path = $this->appManager->getAppPath($app);
-		if( $app_path === false ) { return; }
+		if ($app_path === false) {
+			return;
+		}
 		$app_url = $this->appManager->getAppWebPath($app);
 		$app_url = ($app_url !== false) ? $app_url : null;
 

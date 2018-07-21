@@ -61,7 +61,7 @@ class OC_Mount_Config extends \OC\Files\External\LegacyUtil {
 		}
 
 		foreach ($dependencyGroups as $module => $dependants) {
-			$backends = implode(', ', array_map(function($backend) {
+			$backends = \implode(', ', \array_map(function ($backend) {
 				return '<i>' . $backend->getText() . '</i>';
 			}, $dependants));
 			$message .= '<br />' . OC_Mount_Config::getSingleDependencyMessage($l, $module, $backends);
@@ -79,7 +79,7 @@ class OC_Mount_Config extends \OC\Files\External\LegacyUtil {
 	 * @return string
 	 */
 	private static function getSingleDependencyMessage(\OCP\IL10N $l, $module, $backend) {
-		switch (strtolower($module)) {
+		switch (\strtolower($module)) {
 			case 'curl':
 				return (string)$l->t('<b>Note:</b> The cURL support in PHP is not enabled or installed. Mounting of %s is not possible. Please ask your system administrator to install it.', $backend);
 			default:

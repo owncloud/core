@@ -28,7 +28,6 @@ use OCP\Files\External\DefinitionParameter;
 use OCP\IL10N;
 
 class SFTP extends ExternalBackend {
-
 	public function __construct(IL10N $l) {
 		$this
 			->setIdentifier('sftp')
@@ -44,5 +43,4 @@ class SFTP extends ExternalBackend {
 			->addAuthScheme(AuthMechanism::SCHEME_PUBLICKEY)
 		;
 	}
-
 }

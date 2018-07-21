@@ -35,7 +35,6 @@ use OCP\IUser;
  * Deprecated SMB_OC class - use SMB with the password::sessioncredentials auth mechanism
  */
 class SMB_OC extends ExternalBackend {
-
 	use LegacyDependencyCheckPolyfill;
 
 	public function __construct(IL10N $l, SMB $smbBackend) {
@@ -66,5 +65,4 @@ class SMB_OC extends ExternalBackend {
 			$storage->setBackendOption('share', $share);
 		}
 	}
-
 }

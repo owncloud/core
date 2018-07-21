@@ -157,7 +157,6 @@ class RepairSubSharesTest extends TestCase {
 	 * if the step is working properly
 	 */
 	public function testPopulateDBAndRemoveDuplicates() {
-
 		$qb = $this->connection->getQueryBuilder();
 		//Create 10 users and 3 groups.
 		//add 3 users to each group

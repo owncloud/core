@@ -27,7 +27,6 @@
  *
  */
 
-
 class OC_FileChunking {
 	protected $info;
 	protected $cache;
@@ -39,15 +38,15 @@ class OC_FileChunking {
 	 */
 	protected $ttl;
 
-	static public function isWebdavChunk() {
+	public static function isWebdavChunk() {
 		if (isset($_SERVER['HTTP_OC_CHUNKED'])) {
 			return true;
 		}
 		return false;
 	}
 
-	static public function decodeName($name) {
-		preg_match('/(?P<name>.*)-chunking-(?P<transferid>\d+)-(?P<chunkcount>\d+)-(?P<index>\d+)/', $name, $matches);
+	public static function decodeName($name) {
+		\preg_match('/(?P<name>.*)-chunking-(?P<transferid>\d+)-(?P<chunkcount>\d+)-(?P<index>\d+)/', $name, $matches);
 		return $matches;
 	}
 
@@ -93,7 +92,7 @@ class OC_FileChunking {
 		$cache = $this->getCache();
 		$chunkcount = (int)$this->info['chunkcount'];
 
-		for($i=($chunkcount-1); $i >= 0; $i--) {
+		for ($i=($chunkcount-1); $i >= 0; $i--) {
 			if (!$cache->hasKey($prefix.$i)) {
 				return false;
 			}
@@ -121,7 +120,7 @@ class OC_FileChunking {
 			$chunk = $cache->get($prefix.$i);
 			// remove after reading to directly save space
 			$cache->remove($prefix.$i);
-			$count += fwrite($f, $chunk);
+			$count += \fwrite($f, $chunk);
 			// let php release the memory to work around memory exhausted error with php 5.6
 			$chunk = null;
 		}
@@ -149,7 +148,7 @@ class OC_FileChunking {
 	public function cleanup() {
 		$cache = $this->getCache();
 		$prefix = $this->getPrefix();
-		for($i=0; $i < $this->info['chunkcount']; $i++) {
+		for ($i=0; $i < $this->info['chunkcount']; $i++) {
 			$cache->remove($prefix.$i);
 		}
 	}
@@ -180,7 +179,7 @@ class OC_FileChunking {
 			$target = $storage->fopen($path, 'w');
 			if ($target) {
 				$count = $this->assemble($target);
-				fclose($target);
+				\fclose($target);
 				return $count > 0;
 			} else {
 				return false;

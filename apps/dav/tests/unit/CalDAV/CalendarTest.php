@@ -44,7 +44,7 @@ class CalendarTest extends TestCase {
 			->expects($this->any())
 			->method('t')
 			->will($this->returnCallback(function ($text, $parameters = []) {
-				return vsprintf($text, $parameters);
+				return \vsprintf($text, $parameters);
 			}));
 	}
 
@@ -136,7 +136,7 @@ class CalendarTest extends TestCase {
 			'id' => 666,
 			'uri' => $uri
 		];
-		if (!is_null($readOnlyValue)) {
+		if ($readOnlyValue !== null) {
 			$calendarInfo['{http://owncloud.org/ns}read-only'] = $readOnlyValue;
 		}
 		if ($hasOwnerSet) {
@@ -202,7 +202,6 @@ class CalendarTest extends TestCase {
 	 * @param $isShared
 	 */
 	public function testPrivateClassification($expectedChildren, $isShared) {
-
 		$calObject0 = ['uri' => 'event-0', 'classification' => CalDavBackend::CLASSIFICATION_PUBLIC];
 		$calObject1 = ['uri' => 'event-1', 'classification' => CalDavBackend::CLASSIFICATION_CONFIDENTIAL];
 		$calObject2 = ['uri' => 'event-2', 'classification' => CalDavBackend::CLASSIFICATION_PRIVATE];
@@ -228,7 +227,6 @@ class CalendarTest extends TestCase {
 
 		if ($isShared) {
 			$calendarInfo['{http://owncloud.org/ns}owner-principal'] = 'user1';
-
 		}
 		$c = new Calendar($backend, $calendarInfo, $this->l10n);
 		$children = $c->getChildren();
@@ -315,7 +313,6 @@ EOD;
 
 		if ($isShared) {
 			$calendarInfo['{http://owncloud.org/ns}owner-principal'] = 'user1';
-
 		}
 		$c = new Calendar($backend, $calendarInfo, $this->l10n);
 

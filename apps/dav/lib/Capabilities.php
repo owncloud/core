@@ -19,13 +19,11 @@
  *
  */
 
-
 namespace OCA\DAV;
 
 use OCP\Capabilities\ICapability;
 
 class Capabilities implements ICapability {
-
 	public function getCapabilities() {
 		return [
 			'dav' => [
@@ -38,4 +36,3 @@ class Capabilities implements ICapability {
 		];
 	}
 }
-

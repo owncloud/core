@@ -89,5 +89,4 @@ class ExceptionLoggerPluginTest extends TestCase {
 			[0, "HTTP/1.1 507 Testing", new InsufficientStorage("Testing", 0, null)]
 		];
 	}
-
 }

@@ -106,7 +106,7 @@ class ActivityTest extends TestCase {
 			$this->config
 		);
 
-		$this->activityManager->registerExtension(function() use ($activityExtension) {
+		$this->activityManager->registerExtension(function () use ($activityExtension) {
 			return $activityExtension;
 		});
 	}
@@ -126,7 +126,7 @@ class ActivityTest extends TestCase {
 		$result = $this->activityExtension->getDefaultTypes('stream');
 		$this->assertInternalType('array', $result, 'Asserting getDefaultTypes(stream) returns an array');
 		$this->assertCount(4, $result);
-		$result = array_flip($result);
+		$result = \array_flip($result);
 		$this->assertArrayHasKey(Activity::TYPE_SHARE_CREATED, $result);
 		$this->assertArrayHasKey(Activity::TYPE_SHARE_CHANGED, $result);
 		$this->assertArrayNotHasKey(Activity::TYPE_FAVORITES, $result);
@@ -327,7 +327,7 @@ class ActivityTest extends TestCase {
 			->willReturnMap([
 				['test', 'activity', 'notify_stream_' . Activity::TYPE_FAVORITES, false, true],
 			]);
-		if (is_array($will)) {
+		if (\is_array($will)) {
 			$this->activityHelper->expects($this->any())
 				->method('getFavoriteFilePaths')
 				->with('test')
@@ -347,8 +347,8 @@ class ActivityTest extends TestCase {
 
 	public function executeQueryForFilter(array $result) {
 		list($resultQuery, $resultParameters) = $result;
-		$resultQuery = str_replace('`file`', '`user`', $resultQuery);
-		$resultQuery = str_replace('`type`', '`key`', $resultQuery);
+		$resultQuery = \str_replace('`file`', '`user`', $resultQuery);
+		$resultQuery = \str_replace('`type`', '`key`', $resultQuery);
 
 		$connection = \OC::$server->getDatabaseConnection();
 		// Test the query on the privatedata table, because the activity table

@@ -55,5 +55,4 @@ class AdminPanelTest extends \Test\TestCase {
 		$this->shareProvider->expects($this->once())->method('isIncomingServer2serverShareEnabled')->willReturn(true);
 		$templateHtml = $this->panel->getPanel()->fetchPage();
 	}
-
 }

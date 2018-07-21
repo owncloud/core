@@ -21,9 +21,7 @@
  *
  */
 
-
 namespace OCA\FederatedFileSharing\Tests;
-
 
 use OCA\FederatedFileSharing\TokenHandler;
 use OCP\Security\ISecureRandom;
@@ -48,7 +46,6 @@ class TokenHandlerTest extends \Test\TestCase {
 	}
 
 	public function testGenerateToken() {
-
 		$this->secureRandom->expects($this->once())->method('generate')
 			->with(
 				$this->expectedTokenLength,
@@ -57,7 +54,5 @@ class TokenHandlerTest extends \Test\TestCase {
 			->willReturn(true);
 
 		$this->assertTrue($this->tokenHandler->generateToken());
-
 	}
-
 }

@@ -61,7 +61,7 @@ class Profile implements ISettings {
 
 		// Assign some data
 		$lang = $this->lfactory->findLanguage();
-		$userLang = $this->config->getUserValue( $this->userSession->getUser()->getUID(), 'core', 'lang', $lang);
+		$userLang = $this->config->getUserValue($this->userSession->getUser()->getUID(), 'core', 'lang', $lang);
 		$languageCodes = $this->lfactory->findAvailableLanguages();
 		// array of common languages
 		$commonLangCodes = [
@@ -70,11 +70,11 @@ class Profile implements ISettings {
 		$languageNames = $this->getLanguageCodes();
 		$languages= [];
 		$commonLanguages = [];
-		foreach($languageCodes as $lang) {
+		foreach ($languageCodes as $lang) {
 			$l = $this->lfactory->get('settings', $lang);
 			// TRANSLATORS this is the language name for the language switcher in the personal settings and should be the localized version
 			$potentialName = (string) $l->t('__language_name__');
-			if($l->getLanguageCode() === $lang && substr($potentialName, 0, 1) !== '_') {//first check if the language name is in the translation file
+			if ($l->getLanguageCode() === $lang && \substr($potentialName, 0, 1) !== '_') {//first check if the language name is in the translation file
 				$ln = ['code'=>$lang, 'name'=> $potentialName];
 			} elseif (isset($languageNames[$lang])) {
 				$ln = ['code'=>$lang, 'name'=>$languageNames[$lang]];
@@ -85,22 +85,22 @@ class Profile implements ISettings {
 			// used language -> common languages -> divider -> other languages
 			if ($lang === $userLang) {
 				$userLang = $ln;
-			} elseif (in_array($lang, $commonLangCodes)) {
-				$commonLanguages[array_search($lang, $commonLangCodes)]=$ln;
+			} elseif (\in_array($lang, $commonLangCodes)) {
+				$commonLanguages[\array_search($lang, $commonLangCodes)]=$ln;
 			} else {
 				$languages[]=$ln;
 			}
 		}
 		// if user language is not available but set somehow: show the actual code as name
-		if (!is_array($userLang)) {
+		if (!\is_array($userLang)) {
 			$userLang = [
 				'code' => $userLang,
 				'name' => $userLang,
 			];
 		}
-		ksort($commonLanguages);
+		\ksort($commonLanguages);
 		// sort now by displayed language not the iso-code
-		usort( $languages, function ($a, $b) {
+		\usort($languages, function ($a, $b) {
 			if ($a['code'] === $a['name'] && $b['code'] !== $b['name']) {
 				// If a doesn't have a name, but b does, list b before a
 				return 1;
@@ -110,7 +110,7 @@ class Profile implements ISettings {
 				return -1;
 			}
 			// Otherwise compare the names
-			return strcmp($a['name'], $b['name']);
+			return \strcmp($a['name'], $b['name']);
 		});
 
 		$tmpl->assign('email', $this->userSession->getUser()->getEMailAddress());
@@ -123,7 +123,7 @@ class Profile implements ISettings {
 		$tmpl->assign('displayNameChangeSupported', $this->userSession->getUser()->canChangeDisplayName());
 		$tmpl->assign('passwordChangeSupported', $this->userSession->getUser()->canChangePassword());
 		$groups = $this->groupManager->getUserGroupIds($this->userSession->getUser());
-		sort($groups);
+		\sort($groups);
 		$tmpl->assign('groups', $groups);
 		return $tmpl;
 	}
@@ -170,5 +170,4 @@ class Profile implements ISettings {
 	public function getSectionID() {
 		return 'general';
 	}
-
 }

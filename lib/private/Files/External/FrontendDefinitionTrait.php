@@ -62,7 +62,7 @@ trait FrontendDefinitionTrait {
 	 * @return int
 	 */
 	public static function lexicalCompare(FrontendDefinitionTrait $a, FrontendDefinitionTrait $b) {
-		return strcmp($a->getText(), $b->getText());
+		return \strcmp($a->getText(), $b->getText());
 	}
 
 	/**
@@ -146,12 +146,12 @@ trait FrontendDefinitionTrait {
 	public function validateStorageDefinition(IStorageConfig $storage) {
 		foreach ($this->getParameters() as $name => $parameter) {
 			$value = $storage->getBackendOption($name);
-			if (!is_null($value) || !$parameter->isOptional()) {
+			if ($value !== null || !$parameter->isOptional()) {
 				if (!$parameter->validateValue($value)) {
 					return false;
 				}
 				if (($name === 'public_key') || ($name === 'private_key')) {
-					$storage->setBackendOption($name, base64_encode($value));
+					$storage->setBackendOption($name, \base64_encode($value));
 				} else {
 					$storage->setBackendOption($name, $value);
 				}
@@ -159,5 +159,4 @@ trait FrontendDefinitionTrait {
 		}
 		return true;
 	}
-
 }

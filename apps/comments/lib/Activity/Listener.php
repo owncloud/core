@@ -69,7 +69,7 @@ class Listener {
 	 */
 	public function commentEvent(CommentsEvent $event) {
 		if ($event->getComment()->getObjectType() !== 'files'
-			|| !in_array($event->getEvent(), [CommentsEvent::EVENT_ADD])
+			|| !\in_array($event->getEvent(), [CommentsEvent::EVENT_ADD])
 			|| !$this->appManager->isInstalled('activity')) {
 			// Comment not for file, not adding a comment or no activity-app enabled (save the energy)
 			return;
@@ -89,13 +89,13 @@ class Listener {
 			$nodes = $ownerFolder->getById($event->getComment()->getObjectId());
 			if (!empty($nodes)) {
 				/** @var Node $node */
-				$node = array_shift($nodes);
+				$node = \array_shift($nodes);
 				$path = $node->getPath();
-				if (strpos($path, '/' . $owner . '/files/') === 0) {
-					$path = substr($path, strlen('/' . $owner . '/files'));
+				if (\strpos($path, '/' . $owner . '/files/') === 0) {
+					$path = \substr($path, \strlen('/' . $owner . '/files'));
 				}
 				// Get all users that have access to the mount point
-				$users = array_merge($users, Share::getUsersSharingFile($path, $owner, true, true));
+				$users = \array_merge($users, Share::getUsersSharingFile($path, $owner, true, true));
 			}
 		}
 

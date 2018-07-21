@@ -21,7 +21,6 @@
 
 namespace OCA\UpdateNotification\Notification;
 
-
 use OC\BackgroundJob\TimedJob;
 use OC\Updater\VersionCheck;
 use OCP\App\IAppManager;
@@ -86,7 +85,7 @@ class BackgroundJob extends TimedJob {
 	 * Check for ownCloud update
 	 */
 	protected function checkCoreUpdate() {
-		if (in_array($this->getChannel(), ['daily', 'git'])) {
+		if (\in_array($this->getChannel(), ['daily', 'git'])) {
 			// "These aren't the update channels you're looking for." - Ben Obi-Wan Kenobi
 			return;
 		}
@@ -112,11 +111,10 @@ class BackgroundJob extends TimedJob {
 		if ($lastNotification === $version) {
 			// We already notified about this update
 			return;
-		} else if ($lastNotification !== false) {
+		} elseif ($lastNotification !== false) {
 			// Delete old updates
 			$this->deleteOutdatedNotifications($app, $lastNotification);
 		}
-
 
 		$notification = $this->notificationManager->createNotification();
 		$notification->setApp('updatenotification')
@@ -141,7 +139,7 @@ class BackgroundJob extends TimedJob {
 			return $this->users;
 		}
 
-		$notifyGroups = json_decode($this->config->getAppValue('updatenotification', 'notify_groups', '["admin"]'), true);
+		$notifyGroups = \json_decode($this->config->getAppValue('updatenotification', 'notify_groups', '["admin"]'), true);
 		$this->users = [];
 		foreach ($notifyGroups as $group) {
 			$groupToNotify = $this->groupManager->get($group);
@@ -152,7 +150,7 @@ class BackgroundJob extends TimedJob {
 			}
 		}
 
-		$this->users = array_keys($this->users);
+		$this->users = \array_keys($this->users);
 
 		return $this->users;
 	}

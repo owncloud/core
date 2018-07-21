@@ -69,7 +69,7 @@ class ListUsers extends Base {
 				'attributes',
 				'a',
 				InputOption::VALUE_IS_ARRAY|InputOption::VALUE_REQUIRED,
-				'Attributes to include from '.implode(', ', self::ATTRIBUTES),
+				'Attributes to include from '.\implode(', ', self::ATTRIBUTES),
 				['displayName']
 			)
 		;
@@ -88,11 +88,11 @@ class ListUsers extends Base {
 
 	protected function execute(InputInterface $input, OutputInterface $output) {
 		$userNameSubString = $input->getArgument('search-pattern');
-		$attributes = array_map('mb_strtolower', $input->getOption('attributes'));
-		$useKey = count($attributes) > 1
+		$attributes = \array_map('mb_strtolower', $input->getOption('attributes'));
+		$useKey = \count($attributes) > 1
 			|| $input->getOption('output') !== self::OUTPUT_FORMAT_PLAIN;
 		$users = $this->userManager->search($userNameSubString);
-		$users = array_map(function(IUser $user) use ($output, $attributes, $useKey) {
+		$users = \array_map(function (IUser $user) use ($output, $attributes, $useKey) {
 			if ($output->isVerbose()) {
 				// include all attributes
 				$row = [

@@ -82,12 +82,12 @@ class SyncService {
 	public function analyzeExistingUsers(UserInterface $backend, \Closure $callback) {
 		$removed = [];
 		$reappeared = [];
-		$backendClass = get_class($backend);
+		$backendClass = \get_class($backend);
 		$this->mapper->callForAllUsers(function (Account $a) use (&$removed, &$reappeared, $backend, $backendClass, $callback) {
 			// Check if the backend matches handles this user
 			list($wasRemoved, $didReappear) = $this->checkIfAccountReappeared($a, $backend, $backendClass);
-			$removed = array_merge($removed, $wasRemoved);
-			$reappeared = array_merge($reappeared, $didReappear);
+			$removed = \array_merge($removed, $wasRemoved);
+			$reappeared = \array_merge($reappeared, $didReappear);
 			$callback($a);
 		}, '', false);
 		return [$removed, $reappeared];
@@ -133,7 +133,7 @@ class SyncService {
 				$this->cleanPreferences($uid);
 			} catch (\Exception $e) {
 				// Error syncing this user
-				$backendClass = get_class($backend);
+				$backendClass = \get_class($backend);
 				$this->logger->error("Error syncing user with uid: $uid and backend: $backendClass");
 				$this->logger->logException($e);
 			}
@@ -155,7 +155,7 @@ class SyncService {
 			} else {
 				$a->setState(Account::STATE_DISABLED);
 			}
-			if (array_key_exists('state', $a->getUpdatedFields())) {
+			if (\array_key_exists('state', $a->getUpdatedFields())) {
 				if ($value === 'true') {
 					$this->logger->debug(
 						"Enabling <$uid>", ['app' => self::class]
@@ -177,7 +177,7 @@ class SyncService {
 		list($hasKey, $value) = $this->readUserConfig($uid, 'login', 'lastLogin');
 		if ($hasKey) {
 			$a->setLastLogin($value);
-			if (array_key_exists('lastLogin', $a->getUpdatedFields())) {
+			if (\array_key_exists('lastLogin', $a->getUpdatedFields())) {
 				$this->logger->debug(
 					"Setting lastLogin for <$uid> to <$value>", ['app' => self::class]
 				);
@@ -201,7 +201,7 @@ class SyncService {
 				$a->setEmail($email);
 			}
 		}
-		if (array_key_exists('email', $a->getUpdatedFields())) {
+		if (\array_key_exists('email', $a->getUpdatedFields())) {
 			$this->logger->debug(
 				"Setting email for <$uid> to <$email>", ['app' => self::class]
 			);
@@ -227,7 +227,7 @@ class SyncService {
 				$a->setQuota($quota);
 			}
 		}
-		if (array_key_exists('quota', $a->getUpdatedFields())) {
+		if (\array_key_exists('quota', $a->getUpdatedFields())) {
 			$this->logger->debug(
 				"Setting quota for <$uid> to <$quota>", ['app' => self::class]
 			);
@@ -243,32 +243,31 @@ class SyncService {
 		$proividesHome = $backend instanceof IProvidesHomeBackend || $backend->implementsActions(\OC_User_Backend::GET_HOME);
 		$uid = $a->getUserId();
 		// Log when the backend returns a string that is a different home to the current value
-		if($proividesHome && is_string($backend->getHome($uid)) && $a->getHome() !== $backend->getHome($uid)) {
+		if ($proividesHome && \is_string($backend->getHome($uid)) && $a->getHome() !== $backend->getHome($uid)) {
 			$existing = $a->getHome();
 			$backendHome = $backend->getHome($uid);
-			$class = get_class($backend);
+			$class = \get_class($backend);
 			if ($existing !== '') {
 				$this->logger->error("User backend $class is returning home: $backendHome for user: $uid which differs from existing value: $existing");
 			}
 		}
 		// Home is handled differently, it should only be set on account creation, when there is no home already set
 		// Otherwise it could change on a sync and result in a new user folder being created
-		if($a->getHome() === null) {
-
+		if ($a->getHome() === null) {
 			$home = false;
 			if ($proividesHome) {
 				$home = $backend->getHome($uid);
 			}
-			if (!is_string($home) || $home[0] !== '/') {
+			if (!\is_string($home) || $home[0] !== '/') {
 				$home = $this->config->getSystemValue('datadirectory', \OC::$SERVERROOT . '/data') . "/$uid";
 				$this->logger->debug(
-					'User backend ' .get_class($backend)." provided no home for <$uid>",
+					'User backend ' .\get_class($backend)." provided no home for <$uid>",
 					['app' => self::class]
 				);
 			}
 			// This will set the home if not provided by the backend
 			$a->setHome($home);
-			if (array_key_exists('home', $a->getUpdatedFields())) {
+			if (\array_key_exists('home', $a->getUpdatedFields())) {
 				$this->logger->debug(
 					"Setting home for <$uid> to <$home>", ['app' => self::class]
 				);
@@ -285,7 +284,7 @@ class SyncService {
 		if ($backend instanceof IProvidesDisplayNameBackend || $backend->implementsActions(\OC_User_Backend::GET_DISPLAYNAME)) {
 			$displayName = $backend->getDisplayName($uid);
 			$a->setDisplayName($displayName);
-			if (array_key_exists('displayName', $a->getUpdatedFields())) {
+			if (\array_key_exists('displayName', $a->getUpdatedFields())) {
 				$this->logger->debug(
 					"Setting displayName for <$uid> to <$displayName>", ['app' => self::class]
 				);
@@ -303,7 +302,7 @@ class SyncService {
 			$searchTerms = $backend->getSearchTerms($uid);
 			$a->setSearchTerms($searchTerms);
 			if ($a->haveTermsChanged()) {
-				$logTerms = implode('|', $searchTerms);
+				$logTerms = \implode('|', $searchTerms);
 				$this->logger->debug(
 					"Setting searchTerms for <$uid> to <$logTerms>", ['app' => self::class]
 				);
@@ -340,7 +339,7 @@ class SyncService {
 		try {
 			$account = $this->mapper->getByUid($uid);
 			// Check the backend matches
-			$existingAccountBackend = get_class($backend);
+			$existingAccountBackend = \get_class($backend);
 			if ($account->getBackend() !== $existingAccountBackend) {
 				$this->logger->warning(
 					"User <$uid> already provided by another backend({$account->getBackend()} !== $existingAccountBackend), skipping.",
@@ -350,15 +349,14 @@ class SyncService {
 			}
 		} catch (DoesNotExistException $e) {
 			// Create a new account for this uid and backend pairing and sync
-			$account = $this->createNewAccount(get_class($backend), $uid);
+			$account = $this->createNewAccount(\get_class($backend), $uid);
 		} catch (MultipleObjectsReturnedException $e) {
 			throw new \Exception("The database returned multiple accounts for this uid: $uid");
 		}
 
-
 		// The account exists, sync
 		$account = $this->syncAccount($account, $backend);
-		if($account->getId() === null) {
+		if ($account->getId() === null) {
 			// New account, insert
 			$this->mapper->insert($account);
 		} else {
@@ -389,7 +387,7 @@ class SyncService {
 	 */
 	private function readUserConfig($uid, $app, $key) {
 		$keys = $this->config->getUserKeys($uid, $app);
-		if (in_array($key, $keys, true)) {
+		if (\in_array($key, $keys, true)) {
 			$enabled = $this->config->getUserValue($uid, $app, $key);
 			return [true, $enabled];
 		}
@@ -405,5 +403,4 @@ class SyncService {
 		$this->config->deleteUserValue($uid, 'settings', 'email');
 		$this->config->deleteUserValue($uid, 'files', 'quota');
 	}
-
 }

@@ -77,7 +77,7 @@ try {
  * Then we try the old OCS routes
  */
 try {
-	if(!\OC::$server->getUserSession()->isLoggedIn() || !\OC::$server->getUserSession()->verifyAuthHeaders(\OC::$server->getRequest())) {
+	if (!\OC::$server->getUserSession()->isLoggedIn() || !\OC::$server->getUserSession()->verifyAuthHeaders(\OC::$server->getRequest())) {
 		OC::handleLogin(\OC::$server->getRequest());
 	}
 

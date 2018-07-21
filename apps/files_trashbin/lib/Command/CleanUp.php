@@ -47,7 +47,7 @@ class CleanUp extends Command {
 	 * @param IUserManager $userManager
 	 * @param IDBConnection $dbConnection
 	 */
-	function __construct(IRootFolder $rootFolder, IUserManager $userManager, IDBConnection $dbConnection) {
+	public function __construct(IRootFolder $rootFolder, IUserManager $userManager, IDBConnection $dbConnection) {
 		parent::__construct();
 		$this->userManager = $userManager;
 		$this->rootFolder = $rootFolder;
@@ -79,7 +79,7 @@ class CleanUp extends Command {
 		} else {
 			$output->writeln('Remove all deleted files');
 			foreach ($this->userManager->getBackends() as $backend) {
-				$name = get_class($backend);
+				$name = \get_class($backend);
 				if ($backend instanceof IUserBackend) {
 					$name = $backend->getBackendName();
 				}
@@ -93,7 +93,7 @@ class CleanUp extends Command {
 						$this->removeDeletedFiles($user);
 					}
 					$offset += $limit;
-				} while (count($users) >= $limit);
+				} while (\count($users) >= $limit);
 			}
 		}
 	}
@@ -115,5 +115,4 @@ class CleanUp extends Command {
 			$query->execute();
 		}
 	}
-
 }

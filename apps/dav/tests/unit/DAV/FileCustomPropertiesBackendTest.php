@@ -151,7 +151,6 @@ class FileCustomPropertiesBackendTest extends \Test\TestCase {
 		$this->assertEquals(200, $result['customprop2']);
 	}
 
-	
 	/**
 	 * Test getting properties when node has no fileId
 	 * Should fail gracefully with no error
@@ -390,7 +389,7 @@ class FileCustomPropertiesBackendTest extends \Test\TestCase {
 		$emptyFileIds = [];
 		$fiveFileIds = [1, 2, 3, 4, 5];
 		$thousandFileIds = [];
-		for ($i=0;$i<1000;$i++){
+		for ($i=0;$i<1000;$i++) {
 			$thousandFileIds[] = $i;
 		}
 
@@ -404,8 +403,8 @@ class FileCustomPropertiesBackendTest extends \Test\TestCase {
 			[$fiveFileIds, 5, $sqlitePlatform, [ 0 => $fiveFileIds]],
 			[$fiveFileIds, 994, $sqlitePlatform, [ 0 => $fiveFileIds]],
 			[$fiveFileIds, 995, $sqlitePlatform, [ 0 => [1,2,3,4] , 1 => [5]]],
-			[$thousandFileIds, 0, $sqlitePlatform, array_chunk($thousandFileIds, 999)],
-			[$thousandFileIds, 5, $sqlitePlatform, array_chunk($thousandFileIds, 994)],
+			[$thousandFileIds, 0, $sqlitePlatform, \array_chunk($thousandFileIds, 999)],
+			[$thousandFileIds, 5, $sqlitePlatform, \array_chunk($thousandFileIds, 994)],
 
 			[$emptyFileIds, 0, $mysqlPlatform, []],
 			[$emptyFileIds, 5, $mysqlPlatform, []],

@@ -216,5 +216,4 @@ interface IUser {
 	 * @since 10.0.1
 	 */
 	public function getSearchTerms();
-
 }

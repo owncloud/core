@@ -122,7 +122,7 @@ class QueryBuilderTest extends \Test\TestCase {
 
 		$rows = $this->getTestingRows($this->queryBuilder);
 
-		$this->assertCount(sizeof($expectedSet), $rows);
+		$this->assertCount(\sizeof($expectedSet), $rows);
 		$this->assertEquals($expectedSet, $rows);
 
 		$this->deleteTestingRows();
@@ -159,7 +159,7 @@ class QueryBuilderTest extends \Test\TestCase {
 
 		$rows = $this->getTestingRows($this->queryBuilder);
 
-		$this->assertCount(sizeof($expectedSet), $rows);
+		$this->assertCount(\sizeof($expectedSet), $rows);
 		$this->assertEquals($expectedSet, $rows);
 
 		$this->deleteTestingRows();
@@ -199,7 +199,7 @@ class QueryBuilderTest extends \Test\TestCase {
 		$this->deleteTestingRows();
 		$this->createTestingRows();
 
-		call_user_func_array(
+		\call_user_func_array(
 			[$this->queryBuilder, 'select'],
 			$selectArguments
 		);
@@ -223,7 +223,7 @@ class QueryBuilderTest extends \Test\TestCase {
 		}
 
 		if ($expectedLiteral) {
-			$this->assertEquals([$expectedLiteral], array_values($row));
+			$this->assertEquals([$expectedLiteral], \array_values($row));
 		} else {
 			$this->assertEmpty($row);
 		}
@@ -336,7 +336,7 @@ class QueryBuilderTest extends \Test\TestCase {
 
 		$this->queryBuilder->select('appid');
 
-		call_user_func_array(
+		\call_user_func_array(
 			[$this->queryBuilder, 'addSelect'],
 			$selectArguments
 		);
@@ -360,7 +360,7 @@ class QueryBuilderTest extends \Test\TestCase {
 		}
 
 		if ($expectedLiteral) {
-			$this->assertEquals([$expectedLiteral], array_values($row));
+			$this->assertEquals([$expectedLiteral], \array_values($row));
 		} else {
 			$this->assertEmpty($row);
 		}
@@ -729,7 +729,7 @@ class QueryBuilderTest extends \Test\TestCase {
 	 */
 	public function testWhere($whereArguments, $expectedQueryPart, $expectedQuery) {
 		$this->queryBuilder->select('column');
-		call_user_func_array(
+		\call_user_func_array(
 			[$this->queryBuilder, 'where'],
 			$whereArguments
 		);
@@ -754,7 +754,7 @@ class QueryBuilderTest extends \Test\TestCase {
 	 */
 	public function testAndWhere($whereArguments, $expectedQueryPart, $expectedQuery) {
 		$this->queryBuilder->select('column');
-		call_user_func_array(
+		\call_user_func_array(
 			[$this->queryBuilder, 'andWhere'],
 			$whereArguments
 		);
@@ -786,7 +786,7 @@ class QueryBuilderTest extends \Test\TestCase {
 	 */
 	public function testOrWhere($whereArguments, $expectedQueryPart, $expectedQuery) {
 		$this->queryBuilder->select('column');
-		call_user_func_array(
+		\call_user_func_array(
 			[$this->queryBuilder, 'orWhere'],
 			$whereArguments
 		);
@@ -818,7 +818,7 @@ class QueryBuilderTest extends \Test\TestCase {
 	 */
 	public function testGroupBy($groupByArguments, $expectedQueryPart, $expectedQuery) {
 		$this->queryBuilder->select('column');
-		call_user_func_array(
+		\call_user_func_array(
 			[$this->queryBuilder, 'groupBy'],
 			$groupByArguments
 		);
@@ -851,7 +851,7 @@ class QueryBuilderTest extends \Test\TestCase {
 	public function testAddGroupBy($groupByArguments, $expectedQueryPart, $expectedQuery) {
 		$this->queryBuilder->select('column');
 		$this->queryBuilder->groupBy('column1');
-		call_user_func_array(
+		\call_user_func_array(
 			[$this->queryBuilder, 'addGroupBy'],
 			$groupByArguments
 		);
@@ -946,7 +946,7 @@ class QueryBuilderTest extends \Test\TestCase {
 	 * @param string $expectedQuery
 	 */
 	public function testHaving($havingArguments, $expectedQueryPart, $expectedQuery) {
-		call_user_func_array(
+		\call_user_func_array(
 			[$this->queryBuilder, 'having'],
 			$havingArguments
 		);
@@ -988,7 +988,7 @@ class QueryBuilderTest extends \Test\TestCase {
 	 */
 	public function testAndHaving($havingArguments, $expectedQueryPart, $expectedQuery) {
 		$this->queryBuilder->having('condition1');
-		call_user_func_array(
+		\call_user_func_array(
 			[$this->queryBuilder, 'andHaving'],
 			$havingArguments
 		);
@@ -1030,7 +1030,7 @@ class QueryBuilderTest extends \Test\TestCase {
 	 */
 	public function testOrHaving($havingArguments, $expectedQueryPart, $expectedQuery) {
 		$this->queryBuilder->having('condition1');
-		call_user_func_array(
+		\call_user_func_array(
 			[$this->queryBuilder, 'orHaving'],
 			$havingArguments
 		);

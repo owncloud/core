@@ -35,11 +35,11 @@ class CertificateTest extends \Test\TestCase {
 	protected function setUp() {
 		parent::setUp();
 
-		$goodCertificate = file_get_contents(__DIR__ . '/../../data/certificates/goodCertificate.crt');
+		$goodCertificate = \file_get_contents(__DIR__ . '/../../data/certificates/goodCertificate.crt');
 		$this->goodCertificate = new Certificate($goodCertificate, 'GoodCertificate');
-		$badCertificate = file_get_contents(__DIR__ . '/../../data/certificates/badCertificate.crt');
+		$badCertificate = \file_get_contents(__DIR__ . '/../../data/certificates/badCertificate.crt');
 		$this->invalidCertificate = new Certificate($badCertificate, 'BadCertificate');
-		$expiredCertificate = file_get_contents(__DIR__ . '/../../data/certificates/expiredCertificate.crt');
+		$expiredCertificate = \file_get_contents(__DIR__ . '/../../data/certificates/expiredCertificate.crt');
 		$this->expiredCertificate = new Certificate($expiredCertificate, 'ExpiredCertificate');
 	}
 
@@ -56,7 +56,7 @@ class CertificateTest extends \Test\TestCase {
 	 * @expectedException \Exception
 	 * @expectedExceptionMessage Certificate could not get parsed.
 	 */
-	function testCertificateStartingWithFileReference() {
+	public function testCertificateStartingWithFileReference() {
 		new Certificate('file://'.__DIR__ . '/../../data/certificates/goodCertificate.crt', 'bar');
 	}
 

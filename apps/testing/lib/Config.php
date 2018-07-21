@@ -74,9 +74,9 @@ class Config {
 	public function setAppValues() {
 		$values = $this->request->getParam('values');
 
-		if (is_array($values)) {
+		if (\is_array($values)) {
 			foreach ($values as $appEntry) {
-				if (is_array($appEntry)) {
+				if (\is_array($appEntry)) {
 					$this->config->setAppValue(
 						$appEntry['appid'],
 						$appEntry['configkey'],
@@ -94,9 +94,9 @@ class Config {
 	public function deleteAppValues() {
 		$values = $this->request->getParam('values');
 
-		if (is_array($values)) {
+		if (\is_array($values)) {
 			foreach ($values as $appEntry) {
-				if (is_array($appEntry)) {
+				if (\is_array($appEntry)) {
 					$this->config->deleteAppValue(
 						$appEntry['appid'],
 						$appEntry['configkey']

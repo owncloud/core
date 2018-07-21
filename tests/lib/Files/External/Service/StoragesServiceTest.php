@@ -106,8 +106,8 @@ abstract class StoragesServiceTest extends TestCase {
 			}));
 		$this->backendService->method('getAuthMechanismsByScheme')
 			->will($this->returnCallback(function ($schemes) use ($authMechanisms) {
-				return array_filter($authMechanisms, function ($authMech) use ($schemes) {
-					return in_array($authMech->getScheme(), $schemes, true);
+				return \array_filter($authMechanisms, function ($authMech) use ($schemes) {
+					return \in_array($authMech->getScheme(), $schemes, true);
 				});
 			}));
 		$this->backendService->method('getAuthMechanisms')
@@ -137,11 +137,11 @@ abstract class StoragesServiceTest extends TestCase {
 		\OCP\Util::connectHook(
 			Filesystem::CLASSNAME,
 			Filesystem::signal_create_mount,
-			get_class($this), 'createHookCallback');
+			\get_class($this), 'createHookCallback');
 		\OCP\Util::connectHook(
 			Filesystem::CLASSNAME,
 			Filesystem::signal_delete_mount,
-			get_class($this), 'deleteHookCallback');
+			\get_class($this), 'deleteHookCallback');
 
 		$containerMock = $this->createMock('\OCP\AppFramework\IAppContainer');
 		$containerMock->method('query')
@@ -231,7 +231,6 @@ abstract class StoragesServiceTest extends TestCase {
 		}
 		return $storage;
 	}
-
 
 	/**
 	 * @expectedException \OCP\Files\External\NotFoundException
@@ -369,7 +368,6 @@ abstract class StoragesServiceTest extends TestCase {
 		);
 
 		$this->assertInstanceOf(InvalidBackend::class, $storageConfig->getBackend());
-
 	}
 
 	/**

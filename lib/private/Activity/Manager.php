@@ -22,7 +22,6 @@
  */
 namespace OC\Activity;
 
-
 use OCP\Activity\IConsumer;
 use OCP\Activity\IEvent;
 use OCP\Activity\IExtension;
@@ -100,7 +99,7 @@ class Manager implements IManager {
 		}
 
 		$this->consumers = [];
-		foreach($this->consumersClosures as $consumer) {
+		foreach ($this->consumersClosures as $consumer) {
 			$c = $consumer();
 			if ($c instanceof IConsumer) {
 				$this->consumers[] = $c;
@@ -121,7 +120,7 @@ class Manager implements IManager {
 		}
 
 		$this->extensions = [];
-		foreach($this->extensionsClosures as $extension) {
+		foreach ($this->extensionsClosures as $extension) {
 			$e = $extension();
 			if ($e instanceof IExtension) {
 				$this->extensions[] = $e;
@@ -183,7 +182,7 @@ class Manager implements IManager {
 		}
 
 		if (!$event->getTimestamp()) {
-			$event->setTimestamp(time());
+			$event->setTimestamp(\time());
 		}
 
 		foreach ($this->getConsumers() as $c) {
@@ -226,7 +225,7 @@ class Manager implements IManager {
 	 * @param \Closure $callable
 	 */
 	public function registerConsumer(\Closure $callable) {
-		array_push($this->consumersClosures, $callable);
+		\array_push($this->consumersClosures, $callable);
 		$this->consumers = [];
 	}
 
@@ -240,7 +239,7 @@ class Manager implements IManager {
 	 * @return void
 	 */
 	public function registerExtension(\Closure $callable) {
-		array_push($this->extensionsClosures, $callable);
+		\array_push($this->extensionsClosures, $callable);
 		$this->extensions = [];
 	}
 
@@ -257,21 +256,21 @@ class Manager implements IManager {
 		$notificationTypes = [];
 		foreach ($this->getExtensions() as $c) {
 			$result = $c->getNotificationTypes($languageCode);
-			if (is_array($result)) {
-				if (class_exists('\OCA\Files\Activity', false) && $c instanceof \OCA\Files\Activity) {
+			if (\is_array($result)) {
+				if (\class_exists('\OCA\Files\Activity', false) && $c instanceof \OCA\Files\Activity) {
 					$filesNotificationTypes = $result;
 					continue;
 				}
-				if (class_exists('\OCA\Files_Sharing\Activity', false) && $c instanceof \OCA\Files_Sharing\Activity) {
+				if (\class_exists('\OCA\Files_Sharing\Activity', false) && $c instanceof \OCA\Files_Sharing\Activity) {
 					$sharingNotificationTypes = $result;
 					continue;
 				}
 
-				$notificationTypes = array_merge($notificationTypes, $result);
+				$notificationTypes = \array_merge($notificationTypes, $result);
 			}
 		}
 
-		return array_merge($filesNotificationTypes, $sharingNotificationTypes, $notificationTypes);
+		return \array_merge($filesNotificationTypes, $sharingNotificationTypes, $notificationTypes);
 	}
 
 	/**
@@ -282,8 +281,8 @@ class Manager implements IManager {
 		$defaultTypes = [];
 		foreach ($this->getExtensions() as $c) {
 			$types = $c->getDefaultTypes($method);
-			if (is_array($types)) {
-				$defaultTypes = array_merge($types, $defaultTypes);
+			if (\is_array($types)) {
+				$defaultTypes = \array_merge($types, $defaultTypes);
 			}
 		}
 		return $defaultTypes;
@@ -300,7 +299,7 @@ class Manager implements IManager {
 
 		foreach ($this->getExtensions() as $c) {
 			$icon = $c->getTypeIcon($type);
-			if (is_string($icon)) {
+			if (\is_string($icon)) {
 				$this->typeIcons[$type] = $icon;
 				return $icon;
 			}
@@ -340,7 +339,7 @@ class Manager implements IManager {
 	public function translate($app, $text, $params, $stripPath, $highlightParams, $languageCode) {
 		foreach ($this->getExtensions() as $c) {
 			$translation = $c->translate($app, $text, $params, $stripPath, $highlightParams, $languageCode);
-			if (is_string($translation)) {
+			if (\is_string($translation)) {
 				return $translation;
 			}
 		}
@@ -364,7 +363,7 @@ class Manager implements IManager {
 
 		foreach ($this->getExtensions() as $c) {
 			$specialParameter = $c->getSpecialParameterList($app, $text);
-			if (is_array($specialParameter)) {
+			if (\is_array($specialParameter)) {
 				$this->specialParameters[$app][$text] = $specialParameter;
 				return $specialParameter;
 			}
@@ -399,9 +398,9 @@ class Manager implements IManager {
 		];
 		foreach ($this->getExtensions() as $c) {
 			$additionalEntries = $c->getNavigation();
-			if (is_array($additionalEntries)) {
-				$entries['apps'] = array_merge($entries['apps'], $additionalEntries['apps']);
-				$entries['top'] = array_merge($entries['top'], $additionalEntries['top']);
+			if (\is_array($additionalEntries)) {
+				$entries['apps'] = \array_merge($entries['apps'], $additionalEntries['apps']);
+				$entries['top'] = \array_merge($entries['top'], $additionalEntries['top']);
 			}
 		}
 
@@ -440,7 +439,7 @@ class Manager implements IManager {
 
 		foreach ($this->getExtensions() as $c) {
 			$result = $c->filterNotificationTypes($types, $filter);
-			if (is_array($result)) {
+			if (\is_array($result)) {
 				$types = $result;
 			}
 		}
@@ -461,11 +460,11 @@ class Manager implements IManager {
 
 		foreach ($this->getExtensions() as $c) {
 			$result = $c->getQueryForFilter($filter);
-			if (is_array($result)) {
+			if (\is_array($result)) {
 				list($condition, $parameter) = $result;
-				if ($condition && is_array($parameter)) {
+				if ($condition && \is_array($parameter)) {
 					$conditions[] = $condition;
-					$parameters = array_merge($parameters, $parameter);
+					$parameters = \array_merge($parameters, $parameter);
 				}
 			}
 		}
@@ -474,7 +473,7 @@ class Manager implements IManager {
 			return [null, null];
 		}
 
-		return [' and ((' . implode(') or (', $conditions) . '))', $parameters];
+		return [' and ((' . \implode(') or (', $conditions) . '))', $parameters];
 	}
 
 	/**
@@ -484,7 +483,7 @@ class Manager implements IManager {
 	 * @throws \UnexpectedValueException If the user is invalid
 	 */
 	public function setCurrentUserId($currentUserId) {
-		if (!is_string($currentUserId) && $currentUserId !== null) {
+		if (!\is_string($currentUserId) && $currentUserId !== null) {
 			throw new \UnexpectedValueException('The given current user is invalid');
 		}
 		$this->currentUserId = $currentUserId;
@@ -501,7 +500,7 @@ class Manager implements IManager {
 	public function getCurrentUserId() {
 		if ($this->currentUserId !== null) {
 			return $this->currentUserId;
-		} else if ($this->session === null || !$this->session->isLoggedIn()) {
+		} elseif ($this->session === null || !$this->session->isLoggedIn()) {
 			return $this->getUserFromToken();
 		} else {
 			return $this->session->getUser()->getUID();
@@ -516,18 +515,18 @@ class Manager implements IManager {
 	 */
 	protected function getUserFromToken() {
 		$token = (string) $this->request->getParam('token', '');
-		if (strlen($token) !== 30) {
+		if (\strlen($token) !== 30) {
 			throw new \UnexpectedValueException('The token is invalid');
 		}
 
 		$users = $this->config->getUsersForUserValue('activity', 'rsstoken', $token);
 
-		if (sizeof($users) !== 1) {
+		if (\sizeof($users) !== 1) {
 			// No unique user found
 			throw new \UnexpectedValueException('The token is invalid');
 		}
 
 		// Token found login as that user
-		return array_shift($users);
+		return \array_shift($users);
 	}
 }

@@ -56,7 +56,7 @@ class APC extends Cache implements IMemcache {
 
 	public function clear($prefix = '') {
 		$ns = $this->getPrefix() . $prefix;
-		$ns = preg_quote($ns, '/');
+		$ns = \preg_quote($ns, '/');
 		$iter = new \APCIterator('user', '/^' . $ns . '/', APC_ITER_KEY);
 		return \apc_delete($iter);
 	}
@@ -113,8 +113,8 @@ class APC extends Cache implements IMemcache {
 		}
 	}
 
-	static public function isAvailable() {
-		if (!extension_loaded('apc')) {
+	public static function isAvailable() {
+		if (!\extension_loaded('apc')) {
 			return false;
 		} elseif (!\OC::$server->getIniWrapper()->getBool('apc.enabled')) {
 			return false;
@@ -126,7 +126,7 @@ class APC extends Cache implements IMemcache {
 	}
 }
 
-if (!function_exists('apc_exists')) {
+if (!\function_exists('apc_exists')) {
 	function apc_exists($keys) {
 		$result = false;
 		\apc_fetch($keys, $result);

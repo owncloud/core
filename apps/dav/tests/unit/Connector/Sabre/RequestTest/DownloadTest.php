@@ -42,7 +42,7 @@ class DownloadTest extends RequestTest {
 
 		$response = $this->request($view, $user, 'pass', 'GET', '/foo.txt');
 		$this->assertEquals(Http::STATUS_OK, $response->getStatus());
-		$this->assertEquals(stream_get_contents($response->getBody()), 'bar');
+		$this->assertEquals(\stream_get_contents($response->getBody()), 'bar');
 	}
 
 	/**
@@ -69,6 +69,6 @@ class DownloadTest extends RequestTest {
 
 		$response = $this->request($view, $user, 'pass', 'GET', '/foo.txt', 'asd');
 		$this->assertEquals(Http::STATUS_OK, $response->getStatus());
-		$this->assertEquals(stream_get_contents($response->getBody()), 'bar');
+		$this->assertEquals(\stream_get_contents($response->getBody()), 'bar');
 	}
 }

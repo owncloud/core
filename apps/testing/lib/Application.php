@@ -25,7 +25,7 @@ use OCP\AppFramework\App;
 use OCP\App\ManagerEvent;
 
 class Application extends App {
-	public function __construct (array $urlParams = array()) {
+	public function __construct(array $urlParams = []) {
 		$appName = 'testing';
 		parent::__construct($appName, $urlParams);
 
@@ -62,7 +62,7 @@ class Application extends App {
 		$eventDispatcher = $c->getServer()->getEventDispatcher();
 		$eventDispatcher->addListener(
 			ManagerEvent::EVENT_APP_DISABLE,
-			function($event) use ($appName, $config) {
+			function ($event) use ($appName, $config) {
 				// clear the "already updated" flag when disabling this app
 				if ($event->getAppID() === $appName) {
 					$config->deleteAppValue($appName, 'updated_all');

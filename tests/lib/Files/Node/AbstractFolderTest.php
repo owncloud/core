@@ -19,16 +19,13 @@
  *
  */
 
-
 namespace Test\Files\Node;
-
 
 use OC\Files\Node\AbstractFolder;
 use OCP\Files\FileInfo;
 use Test\TestCase;
 
 class AbstractFolderTest extends TestCase {
-
 	public function testMimeAndGetType() {
 		/** @var AbstractFolder | \PHPUnit_Framework_MockObject_MockObject $node */
 		$node = $this->getMockForAbstractClass(AbstractFolder::class);

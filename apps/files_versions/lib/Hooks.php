@@ -33,7 +33,6 @@
 namespace OCA\Files_Versions;
 
 class Hooks {
-
 	public static function connectHooks() {
 		// Listen to write signals
 		\OCP\Util::connectHook('OC_Filesystem', 'write', 'OCA\Files_Versions\Hooks', 'write_hook');
@@ -52,16 +51,14 @@ class Hooks {
 	/**
 	 * listen to write event.
 	 */
-	public static function write_hook( $params ) {
-
+	public static function write_hook($params) {
 		if (\OCP\App::isEnabled('files_versions')) {
 			$path = $params[\OC\Files\Filesystem::signal_param_path];
-			if($path<>'') {
+			if ($path<>'') {
 				Storage::store($path);
 			}
 		}
 	}
-
 
 	/**
 	 * Erase versions of deleted file
@@ -71,10 +68,9 @@ class Hooks {
 	 * cleanup the versions directory if the actual file gets deleted
 	 */
 	public static function remove_hook($params) {
-
 		if (\OCP\App::isEnabled('files_versions')) {
 			$path = $params[\OC\Files\Filesystem::signal_param_path];
-			if($path<>'') {
+			if ($path<>'') {
 				Storage::delete($path);
 			}
 		}
@@ -86,9 +82,9 @@ class Hooks {
 	 */
 	public static function pre_remove_hook($params) {
 		$path = $params[\OC\Files\Filesystem::signal_param_path];
-			if($path<>'') {
-				Storage::markDeletedFile($path);
-			}
+		if ($path<>'') {
+			Storage::markDeletedFile($path);
+		}
 	}
 
 	/**
@@ -99,11 +95,10 @@ class Hooks {
 	 * of the stored versions along the actual file
 	 */
 	public static function rename_hook($params) {
-
 		if (\OCP\App::isEnabled('files_versions')) {
 			$oldpath = $params['oldpath'];
 			$newpath = $params['newpath'];
-			if($oldpath<>'' && $newpath<>'') {
+			if ($oldpath<>'' && $newpath<>'') {
 				Storage::renameOrCopy($oldpath, $newpath, 'rename');
 			}
 		}
@@ -117,11 +112,10 @@ class Hooks {
 	 * the stored versions to the new location
 	 */
 	public static function copy_hook($params) {
-
 		if (\OCP\App::isEnabled('files_versions')) {
 			$oldpath = $params['oldpath'];
 			$newpath = $params['newpath'];
-			if($oldpath<>'' && $newpath<>'') {
+			if ($oldpath<>'' && $newpath<>'') {
 				Storage::renameOrCopy($oldpath, $newpath, 'copy');
 			}
 		}
@@ -154,7 +148,6 @@ class Hooks {
 			} else {
 				Storage::setSourcePathAndUser($params['oldpath']);
 			}
-
 		}
 	}
 

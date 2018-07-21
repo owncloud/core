@@ -143,7 +143,7 @@ class UsersController extends Controller {
 
 		// check for encryption state - TODO see formatUserForIndex
 		$this->isEncryptionAppEnabled = $appManager->isEnabledForUser('encryption');
-		if($this->isEncryptionAppEnabled) {
+		if ($this->isEncryptionAppEnabled) {
 			// putting this directly in empty is possible in PHP 5.5+
 			$result = $config->getAppValue('encryption', 'recoveryAdminEnabled', 0);
 			$this->isRestoreEnabled = !empty($result);
@@ -183,12 +183,12 @@ class UsersController extends Controller {
 		}
 
 		$subAdminGroups = $this->groupManager->getSubAdmin()->getSubAdminsGroups($user);
-		foreach($subAdminGroups as $key => $subAdminGroup) {
+		foreach ($subAdminGroups as $key => $subAdminGroup) {
 			$subAdminGroups[$key] = $subAdminGroup->getGID();
 		}
 
 		$displayName = $user->getEMailAddress();
-		if (is_null($displayName)) {
+		if ($displayName === null) {
 			$displayName = '';
 		}
 
@@ -241,8 +241,8 @@ class UsersController extends Controller {
 			throw new \Exception($this->l10n->t('Couldn\'t change the email address because the user does not exist'));
 		}
 
-		$splittedToken = explode(':', $this->config->getUserValue($userId, 'owncloud', 'changeMail', null));
-		if(count($splittedToken) !== 3) {
+		$splittedToken = \explode(':', $this->config->getUserValue($userId, 'owncloud', 'changeMail', null));
+		if (\count($splittedToken) !== 3) {
 			$this->config->deleteUserValue($userId, 'owncloud', 'changeMail');
 			throw new \Exception($this->l10n->t('Couldn\'t change the email address because the token is invalid'));
 		}
@@ -252,7 +252,7 @@ class UsersController extends Controller {
 			throw new \Exception($this->l10n->t('Couldn\'t change the email address because the token is invalid'));
 		}
 
-		if (!hash_equals($splittedToken[1], $token)) {
+		if (!\hash_equals($splittedToken[1], $token)) {
 			$this->config->deleteUserValue($userId, 'owncloud', 'changeMail');
 			throw new \Exception($this->l10n->t('Couldn\'t change the email address because the token is invalid'));
 		}
@@ -272,16 +272,16 @@ class UsersController extends Controller {
 	 */
 	public function index($offset = 0, $limit = 10, $gid = '', $pattern = '', $backend = '') {
 		// FIXME: The JS sends the group '_everyone' instead of no GID for the "all users" group.
-		if($gid === '_everyone') {
+		if ($gid === '_everyone') {
 			$gid = '';
 		}
 
 		// Remove backends
-		if(!empty($backend)) {
+		if (!empty($backend)) {
 			$activeBackends = $this->userManager->getBackends();
 			$this->userManager->clearBackends();
-			foreach($activeBackends as $singleActiveBackend) {
-				if($backend === get_class($singleActiveBackend)) {
+			foreach ($activeBackends as $singleActiveBackend) {
+				if ($backend === \get_class($singleActiveBackend)) {
 					$this->userManager->registerBackend($singleActiveBackend);
 					break;
 				}
@@ -290,8 +290,7 @@ class UsersController extends Controller {
 
 		$users = [];
 		if ($this->isAdmin) {
-
-			if($gid !== '') {
+			if ($gid !== '') {
 				$batch = $this->getUsersForUID($this->groupManager->displayNamesInGroup($gid, $pattern, $limit, $offset));
 			} else {
 				$batch = $this->userManager->find($pattern, $limit, $offset);
@@ -300,7 +299,6 @@ class UsersController extends Controller {
 			foreach ($batch as $user) {
 				$users[] = $this->formatUserForIndex($user);
 			}
-
 		} else {
 			$subAdminOfGroups = $this->groupManager->getSubAdmin()->getSubAdminsGroups($this->userSession->getUser());
 			// New class returns IGroup[] so convert back
@@ -311,17 +309,17 @@ class UsersController extends Controller {
 			$subAdminOfGroups = $gids;
 
 			// Set the $gid parameter to an empty value if the subadmin has no rights to access a specific group
-			if($gid !== '' && !in_array($gid, $subAdminOfGroups)) {
+			if ($gid !== '' && !\in_array($gid, $subAdminOfGroups)) {
 				$gid = '';
 			}
 
 			// Batch all groups the user is subadmin of when a group is specified
 			$batch = [];
-			if($gid === '') {
-				foreach($subAdminOfGroups as $group) {
+			if ($gid === '') {
+				foreach ($subAdminOfGroups as $group) {
 					$groupUsers = $this->groupManager->displayNamesInGroup($group, $pattern, $limit, $offset);
 
-					foreach($groupUsers as $uid => $displayName) {
+					foreach ($groupUsers as $uid => $displayName) {
 						$batch[$uid] = $displayName;
 					}
 				}
@@ -332,7 +330,7 @@ class UsersController extends Controller {
 
 			foreach ($batch as $user) {
 				// Only add the groups, this user is a subadmin of
-				$userGroups = array_values(array_intersect(
+				$userGroups = \array_values(\array_intersect(
 					$this->groupManager->getUserGroupIds($user),
 					$subAdminOfGroups
 				));
@@ -353,7 +351,7 @@ class UsersController extends Controller {
 	 * @return DataResponse
 	 */
 	public function create($username, $password, array $groups= [], $email='') {
-		if($email !== '' && !$this->mailer->validateMailAddress($email)) {
+		if ($email !== '' && !$this->mailer->validateMailAddress($email)) {
 			return new DataResponse(
 				[
 					'message' => (string)$this->l10n->t('Invalid mail address')
@@ -368,7 +366,7 @@ class UsersController extends Controller {
 			if (!empty($groups)) {
 				foreach ($groups as $key => $group) {
 					$groupObject = $this->groupManager->get($group);
-					if($groupObject === null) {
+					if ($groupObject === null) {
 						unset($groups[$key]);
 						continue;
 					}
@@ -414,12 +412,12 @@ class UsersController extends Controller {
 			);
 		}
 
-		if($user instanceof User) {
-			if($groups !== null) {
-				foreach($groups as $groupName) {
+		if ($user instanceof User) {
+			if ($groups !== null) {
+				foreach ($groups as $groupName) {
 					$group = $this->groupManager->get($groupName);
 
-					if(empty($group)) {
+					if (empty($group)) {
 						$group = $this->groupManager->createGroup($groupName);
 					}
 					$group->addUser($user);
@@ -428,7 +426,7 @@ class UsersController extends Controller {
 			/**
 			 * Send new user mail only if a mail is set
 			 */
-			if($email !== '') {
+			if ($email !== '') {
 				$user->setEMailAddress($email);
 
 				// data for the mail template
@@ -453,7 +451,7 @@ class UsersController extends Controller {
 					$message->setPlainBody($plainTextMailContent);
 					$message->setFrom([$this->fromMailAddress => $this->defaults->getName()]);
 					$this->mailer->send($message);
-				} catch(\Exception $e) {
+				} catch (\Exception $e) {
 					$this->log->error("Can't send new user mail to $email: " . $e->getMessage(), ['app' => 'settings']);
 				}
 			}
@@ -472,7 +470,6 @@ class UsersController extends Controller {
 			],
 			Http::STATUS_FORBIDDEN
 		);
-
 	}
 
 	/**
@@ -485,7 +482,7 @@ class UsersController extends Controller {
 		$userId = $this->userSession->getUser()->getUID();
 		$user = $this->userManager->get($id);
 
-		if($userId === $id) {
+		if ($userId === $id) {
 			return new DataResponse(
 				[
 					'status' => 'error',
@@ -497,7 +494,7 @@ class UsersController extends Controller {
 			);
 		}
 
-		if(!$this->isAdmin && !$this->groupManager->getSubAdmin()->isUserAccessible($this->userSession->getUser(), $user)) {
+		if (!$this->isAdmin && !$this->groupManager->getSubAdmin()->isUserAccessible($this->userSession->getUser(), $user)) {
 			return new DataResponse(
 				[
 					'status' => 'error',
@@ -509,8 +506,8 @@ class UsersController extends Controller {
 			);
 		}
 
-		if($user) {
-			if($user->delete()) {
+		if ($user) {
+			if ($user->delete()) {
 				return new DataResponse(
 					[
 						'status' => 'success',
@@ -548,7 +545,7 @@ class UsersController extends Controller {
 		$userId = $this->userSession->getUser()->getUID();
 		$user = $this->userManager->get($id);
 
-		if($userId !== $id
+		if ($userId !== $id
 			&& !$this->isAdmin
 			&& !$this->groupManager->getSubAdmin()->isUserAccessible($this->userSession->getUser(), $user)) {
 			return new DataResponse(
@@ -562,7 +559,7 @@ class UsersController extends Controller {
 			);
 		}
 
-		if($mailAddress !== '' && !$this->mailer->validateMailAddress($mailAddress)) {
+		if ($mailAddress !== '' && !$this->mailer->validateMailAddress($mailAddress)) {
 			return new DataResponse(
 				[
 					'status' => 'error',
@@ -574,7 +571,7 @@ class UsersController extends Controller {
 			);
 		}
 
-		if(!$user){
+		if (!$user) {
 			return new DataResponse(
 				[
 					'status' => 'error',
@@ -588,7 +585,7 @@ class UsersController extends Controller {
 
 		// this is the only permission a backend provides and is also used
 		// for the permission of setting a email address
-		if(!$user->canChangeDisplayName()){
+		if (!$user->canChangeDisplayName()) {
 			return new DataResponse(
 				[
 					'status' => 'error',
@@ -640,8 +637,7 @@ class UsersController extends Controller {
 					Http::STATUS_OK
 				);
 			}
-
-		} catch (\Exception $e){
+		} catch (\Exception $e) {
 			return new DataResponse(
 				[
 					'status' => 'error',
@@ -651,7 +647,6 @@ class UsersController extends Controller {
 				]
 			);
 		}
-
 	}
 
 	/**
@@ -676,12 +671,12 @@ class UsersController extends Controller {
 
 			$uniqueUsers = [];
 			foreach ($groups as $group) {
-				foreach($group->getUsers() as $uid => $displayName) {
+				foreach ($group->getUsers() as $uid => $displayName) {
 					$uniqueUsers[$uid] = true;
 				}
 			}
 
-			$userCount = count($uniqueUsers);
+			$userCount = \count($uniqueUsers);
 		}
 
 		return new DataResponse(
@@ -690,7 +685,6 @@ class UsersController extends Controller {
 			]
 		);
 	}
-
 
 	/**
 	 * Set the displayName of a user
@@ -747,16 +741,16 @@ class UsersController extends Controller {
 	}
 
 	/**
- 	 * @param string $userId
- 	 * @param string $mailAddress
- 	 * @throws \Exception
+	 * @param string $userId
+	 * @param string $mailAddress
+	 * @throws \Exception
 	 * @return boolean
- 	 */
+	 */
 	public function sendEmail($userId, $mailAddress) {
 		$token = $this->config->getUserValue($userId, 'owncloud', 'changeMail');
 		if ($token !== '') {
-			$splittedToken = explode(':', $token);
-			if ((count($splittedToken)) === 3 && $splittedToken[0] > ($this->timeFactory->getTime() - 60 * 5)) {
+			$splittedToken = \explode(':', $token);
+			if ((\count($splittedToken)) === 3 && $splittedToken[0] > ($this->timeFactory->getTime() - 60 * 5)) {
 				$this->log->alert('The email is not sent because an email change confirmation mail was sent recently.');
 				return false;
 			}
@@ -793,12 +787,12 @@ class UsersController extends Controller {
 	 * @NoAdminRequired
 	 *
 	 * @param string $id
- 	 * @param string $mailAddress
+	 * @param string $mailAddress
 	 * @return JSONResponse
- 	 */
+	 */
 	public function setEmailAddress($id, $mailAddress) {
 		$user = $this->userManager->get($id);
-		if($this->isAdmin ||
+		if ($this->isAdmin ||
 			($this->groupManager->getSubAdmin()->isSubAdmin($this->userSession->getUser()) &&
 				$this->groupManager->getSubAdmin()->isUserAccessible($this->userSession->getUser(), $user)) ||
 				($this->userSession->getUser()->getUID() === $id)) {
@@ -843,7 +837,7 @@ class UsersController extends Controller {
 
 		$oldEmailAddress = $user->getEMailAddress();
 
-		$splittedToken = explode(':', $this->config->getUserValue($userId, 'owncloud', 'changeMail', null));
+		$splittedToken = \explode(':', $this->config->getUserValue($userId, 'owncloud', 'changeMail', null));
 		$mailAddress = $splittedToken[2];
 
 		$this->setEmailAddress($userId, $mailAddress);
@@ -879,44 +873,41 @@ class UsersController extends Controller {
 		$userId = $this->userSession->getUser()->getUID();
 		$user = $this->userManager->get($id);
 
-		if($userId === $id ||
+		if ($userId === $id ||
 			(!$this->isAdmin &&
 				!$this->groupManager->getSubAdmin()->isUserAccessible($this->userSession->getUser(), $user))) {
 			return new DataResponse(
-				array(
+				[
 					'status' => 'error',
-					'data' => array(
+					'data' => [
 						'message' => (string)$this->l10n->t('Forbidden')
-					)
-				),
+					]
+				],
 				Http::STATUS_FORBIDDEN
 			);
 		}
 
-
-		if(!$user) {
+		if (!$user) {
 			return new DataResponse(
-				array(
+				[
 					'status' => 'error',
-					'data' => array(
+					'data' => [
 						'message' => (string)$this->l10n->t('Invalid user')
-					)
-				),
+					]
+				],
 				Http::STATUS_UNPROCESSABLE_ENTITY
 			);
 		}
 
-
-		$value = filter_var($enabled, FILTER_VALIDATE_BOOLEAN);
-		if(!isset($value) || is_null($value))
-		{
+		$value = \filter_var($enabled, FILTER_VALIDATE_BOOLEAN);
+		if (!isset($value) || $value === null) {
 			return new DataResponse(
-				array(
+				[
 					'status' => 'error',
-					'data' => array(
+					'data' => [
 						'message' => (string)$this->l10n->t('Unable to enable/disable user.')
-					)
-				),
+					]
+				],
 				Http::STATUS_FORBIDDEN
 			);
 		}

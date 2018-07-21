@@ -20,9 +20,7 @@
  *
  */
 
-
 namespace OCA\Files_Versions\Tests\Command;
-
 
 use OC\User\Manager;
 use OCA\Files_Versions\Command\CleanUp;
@@ -55,7 +53,6 @@ class CleanupTest extends TestCase {
 		$this->userManager = $this->getMockBuilder('OC\User\Manager')
 			->disableOriginalConstructor()->getMock();
 
-
 		$this->cleanup = new CleanUp($this->rootFolder, $this->userManager);
 	}
 
@@ -64,14 +61,12 @@ class CleanupTest extends TestCase {
 	 * @param boolean $nodeExists
 	 */
 	public function testDeleteVersions($nodeExists) {
-
 		$this->rootFolder->expects($this->once())
 			->method('nodeExists')
 			->with('/testUser/files_versions')
 			->willReturn($nodeExists);
 
-
-		if($nodeExists) {
+		if ($nodeExists) {
 			$this->rootFolder->expects($this->once())
 				->method('get')
 				->with('/testUser/files_versions')
@@ -95,7 +90,6 @@ class CleanupTest extends TestCase {
 		];
 	}
 
-
 	/**
 	 * test delete versions from users given as parameter
 	 */
@@ -106,13 +100,13 @@ class CleanupTest extends TestCase {
 			->setMethods(['deleteVersions'])
 			->setConstructorArgs([$this->rootFolder, $this->userManager])
 			->getMock();
-		$instance->expects($this->exactly(count($userIds)))
+		$instance->expects($this->exactly(\count($userIds)))
 			->method('deleteVersions')
 			->willReturnCallback(function ($user) use ($userIds) {
 				$this->assertContains($user, $userIds);
 			});
 
-		$this->userManager->expects($this->exactly(count($userIds)))
+		$this->userManager->expects($this->exactly(\count($userIds)))
 			->method('userExists')->willReturn(true);
 
 		$inputInterface = $this->getMockBuilder('\Symfony\Component\Console\Input\InputInterface')
@@ -145,7 +139,7 @@ class CleanupTest extends TestCase {
 			->with('', 500, 0)
 			->willReturn($backendUsers);
 
-		$instance->expects($this->exactly(count($backendUsers)))
+		$instance->expects($this->exactly(\count($backendUsers)))
 			->method('deleteVersions')
 			->willReturnCallback(function ($user) use ($backendUsers) {
 				$this->assertContains($user, $backendUsers);
@@ -166,5 +160,4 @@ class CleanupTest extends TestCase {
 
 		$this->invokePrivate($instance, 'execute', [$inputInterface, $outputInterface]);
 	}
-
 }

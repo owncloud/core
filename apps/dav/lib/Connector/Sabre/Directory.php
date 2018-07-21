@@ -123,14 +123,14 @@ class Directory extends Node implements ICollection, IQuota, IMoveTarget {
 	 */
 	public function createFile($name, $data = null) {
 
-		# the check here is necessary, because createFile uses put covered in sabre/file.php 
+		# the check here is necessary, because createFile uses put covered in sabre/file.php
 		# and not touch covered in files/view.php
 		if (Filesystem::isForbiddenFileOrDir($name)) {
 			throw new SabreForbidden();
 		}
 
 		try {
-			# the check here is necessary, because createFile uses put covered in sabre/file.php 
+			# the check here is necessary, because createFile uses put covered in sabre/file.php
 			# and not touch covered in files/view.php
 			if (Filesystem::isForbiddenFileOrDir($name)) {
 				throw new SabreForbidden();
@@ -148,7 +148,7 @@ class Directory extends Node implements ICollection, IQuota, IMoveTarget {
 				) {
 					throw new SabreForbidden();
 				}
-			} else if (FutureFile::isFutureFile()) {
+			} elseif (FutureFile::isFutureFile()) {
 				// Future file (chunked upload) requires fileinfo
 				$info = $this->fileView->getFileInfo($this->path . '/' . $name);
 			} else {
@@ -245,7 +245,7 @@ class Directory extends Node implements ICollection, IQuota, IMoveTarget {
 		}
 
 		$path = $this->path . '/' . $name;
-		if (is_null($info)) {
+		if ($info === null) {
 			try {
 				$this->fileView->verifyPath($this->path, $name);
 				$info = $this->fileView->getFileInfo($path);
@@ -281,7 +281,7 @@ class Directory extends Node implements ICollection, IQuota, IMoveTarget {
 	 * @throws SabreLocked
 	 */
 	public function getChildren() {
-		if (!is_null($this->dirContent)) {
+		if ($this->dirContent !== null) {
 			return $this->dirContent;
 		}
 		try {
@@ -320,7 +320,6 @@ class Directory extends Node implements ICollection, IQuota, IMoveTarget {
 		// TODO: resolve chunk file name here and implement "updateFile"
 		$path = $this->path . '/' . $name;
 		return $this->fileView->file_exists($path);
-
 	}
 
 	/**
@@ -331,7 +330,6 @@ class Directory extends Node implements ICollection, IQuota, IMoveTarget {
 	 * @throws SabreForbidden
 	 */
 	public function delete() {
-
 		if ($this->path === '' || $this->path === '/' || !$this->info->isDeletable()) {
 			throw new SabreForbidden();
 		}
@@ -429,7 +427,7 @@ class Directory extends Node implements ICollection, IQuota, IMoveTarget {
 			throw new SabreForbidden('Could not copy directory ' . $sourceNode->getName() . ', target exists');
 		}
 
-		list($sourceDir,) = URLUtil::splitPath($sourceNode->getPath());
+		list($sourceDir, ) = URLUtil::splitPath($sourceNode->getPath());
 		$destinationDir = $this->getPath();
 
 		$sourcePath = $sourceNode->getPath();
@@ -463,7 +461,7 @@ class Directory extends Node implements ICollection, IQuota, IMoveTarget {
 				}
 			}
 
-			$fileName = basename($destinationPath);
+			$fileName = \basename($destinationPath);
 			try {
 				$this->fileView->verifyPath($destinationDir, $fileName);
 			} catch (InvalidPathException $ex) {

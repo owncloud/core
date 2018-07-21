@@ -36,7 +36,7 @@ abstract class Office implements IProvider2 {
 	 */
 	public function getThumbnail(File $file, $maxX, $maxY, $scalingUp) {
 		$this->initCmd();
-		if (is_null($this->cmd)) {
+		if ($this->cmd === null) {
 			return false;
 		}
 
@@ -47,18 +47,18 @@ abstract class Office implements IProvider2 {
 			$absPath = \OC::$server->getTempManager()->getTemporaryFile();
 
 			$handle = $file->fopen('rb');
-			file_put_contents($absPath, $handle);
-			fclose($handle);
+			\file_put_contents($absPath, $handle);
+			\fclose($handle);
 		}
 
 		$tmpDir = \OC::$server->getTempManager()->getTempBaseDir();
 
-		$defaultParameters = ' -env:UserInstallation=file://' . escapeshellarg($tmpDir . '/owncloud-' . \OC_Util::getInstanceId() . '/') . ' --headless --nologo --nofirststartwizard --invisible --norestore --convert-to pdf --outdir ';
+		$defaultParameters = ' -env:UserInstallation=file://' . \escapeshellarg($tmpDir . '/owncloud-' . \OC_Util::getInstanceId() . '/') . ' --headless --nologo --nofirststartwizard --invisible --norestore --convert-to pdf --outdir ';
 		$clParameters = \OCP\Config::getSystemValue('preview_office_cl_parameters', $defaultParameters);
 
-		$exec = $this->cmd . $clParameters . escapeshellarg($tmpDir) . ' ' . escapeshellarg($absPath);
+		$exec = $this->cmd . $clParameters . \escapeshellarg($tmpDir) . ' ' . \escapeshellarg($absPath);
 
-		shell_exec($exec);
+		\shell_exec($exec);
 
 		//create imagick object from pdf
 		$pdfPreview = null;
@@ -69,8 +69,8 @@ abstract class Office implements IProvider2 {
 			$pdf = new \imagick($pdfPreview . '[0]');
 			$pdf->setImageFormat('jpg');
 		} catch (\Exception $e) {
-			unlink($absPath);
-			@unlink($pdfPreview);
+			\unlink($absPath);
+			@\unlink($pdfPreview);
 			\OCP\Util::writeLog('core', $e->getmessage(), \OCP\Util::ERROR);
 			return false;
 		}
@@ -86,7 +86,6 @@ abstract class Office implements IProvider2 {
 			return $image;
 		}
 		return false;
-
 	}
 
 	/**
@@ -100,16 +99,16 @@ abstract class Office implements IProvider2 {
 		$cmd = '';
 
 		$libreOfficePath = \OC::$server->getConfig()->getSystemValue('preview_libreoffice_path', null);
-		if (is_string($libreOfficePath)) {
+		if (\is_string($libreOfficePath)) {
 			$cmd = $libreOfficePath;
 		}
 
-		$whichLibreOffice = shell_exec('command -v libreoffice');
+		$whichLibreOffice = \shell_exec('command -v libreoffice');
 		if ($cmd === '' && !empty($whichLibreOffice)) {
 			$cmd = 'libreoffice';
 		}
 
-		$whichOpenOffice = shell_exec('command -v openoffice');
+		$whichOpenOffice = \shell_exec('command -v openoffice');
 		if ($cmd === '' && !empty($whichOpenOffice)) {
 			$cmd = 'openoffice';
 		}

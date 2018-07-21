@@ -127,7 +127,7 @@ class DefaultShareProvider implements IShareProvider {
 				$qb->setValue('expiration', $qb->createNamedParameter($share->getExpirationDate(), 'datetime'));
 			}
 
-			if (method_exists($share, 'getParent')) {
+			if (\method_exists($share, 'getParent')) {
 				$qb->setValue('parent', $qb->createNamedParameter($share->getParent()));
 			}
 
@@ -162,7 +162,7 @@ class DefaultShareProvider implements IShareProvider {
 		$qb->setValue('file_target', $qb->createNamedParameter($share->getTarget()));
 
 		// Set the time this share was created
-		$qb->setValue('stime', $qb->createNamedParameter(time()));
+		$qb->setValue('stime', $qb->createNamedParameter(\time()));
 
 		// insert the data and fetch the id of the share
 		$this->dbConn->beginTransaction();
@@ -212,7 +212,7 @@ class DefaultShareProvider implements IShareProvider {
 				->set('file_source', $qb->createNamedParameter($share->getNode()->getId()))
 				->set('accepted', $qb->createNamedParameter($share->getState()))
 				->execute();
-		} else if ($share->getShareType() === \OCP\Share::SHARE_TYPE_GROUP) {
+		} elseif ($share->getShareType() === \OCP\Share::SHARE_TYPE_GROUP) {
 			$qb = $this->dbConn->getQueryBuilder();
 			$qb->update('share')
 				->where($qb->expr()->eq('id', $qb->createNamedParameter($share->getId())))
@@ -244,8 +244,7 @@ class DefaultShareProvider implements IShareProvider {
 				->where($qb->expr()->eq('parent', $qb->createNamedParameter($share->getId())))
 				->set('permissions', $qb->createNamedParameter($share->getPermissions()))
 				->execute();
-
-		} else if ($share->getShareType() === \OCP\Share::SHARE_TYPE_LINK) {
+		} elseif ($share->getShareType() === \OCP\Share::SHARE_TYPE_LINK) {
 			$qb = $this->dbConn->getQueryBuilder();
 			$qb->update('share')
 				->where($qb->expr()->eq('id', $qb->createNamedParameter($share->getId())))
@@ -295,7 +294,7 @@ class DefaultShareProvider implements IShareProvider {
 			->orderBy('id');
 
 		$cursor = $qb->execute();
-		while($data = $cursor->fetch()) {
+		while ($data = $cursor->fetch()) {
 			$children[] = $this->createShare($data);
 		}
 		$cursor->closeCursor();
@@ -438,7 +437,7 @@ class DefaultShareProvider implements IShareProvider {
 		$shares = [];
 		$qb = $this->dbConn->getQueryBuilder();
 
-		$nodeIdsChunks = array_chunk($nodeIDs, 100);
+		$nodeIdsChunks = \array_chunk($nodeIDs, 100);
 		foreach ($nodeIdsChunks as $nodeIdsChunk) {
 			$qb->select('*')
 				->from('share')
@@ -475,7 +474,7 @@ class DefaultShareProvider implements IShareProvider {
 			$qb->orderBy('id');
 
 			$cursor = $qb->execute();
-			while($data = $cursor->fetch()) {
+			while ($data = $cursor->fetch()) {
 				$shares[] = $this->createShare($data);
 			}
 			$cursor->closeCursor();
@@ -525,7 +524,7 @@ class DefaultShareProvider implements IShareProvider {
 
 		$cursor = $qb->execute();
 		$shares = [];
-		while($data = $cursor->fetch()) {
+		while ($data = $cursor->fetch()) {
 			$shares[] = $this->createShare($data);
 		}
 		$cursor->closeCursor();
@@ -574,7 +573,7 @@ class DefaultShareProvider implements IShareProvider {
 		// If the recipient is set for a group share resolve to that user
 		if ($recipientId !== null && $share->getShareType() === \OCP\Share::SHARE_TYPE_GROUP) {
 			$resolvedShares = $this->resolveGroupShares([$share], $recipientId);
-			if (count($resolvedShares) === 1){
+			if (\count($resolvedShares) === 1) {
 				// If we pass to resolveGroupShares() an with one element,
 				// we expect to receive exactly one element, otherwise it is error
 				$share = $resolvedShares[0];
@@ -611,7 +610,7 @@ class DefaultShareProvider implements IShareProvider {
 			->execute();
 
 		$shares = [];
-		while($data = $cursor->fetch()) {
+		while ($data = $cursor->fetch()) {
 			$shares[] = $this->createShare($data);
 		}
 		$cursor->closeCursor();
@@ -630,7 +629,7 @@ class DefaultShareProvider implements IShareProvider {
 		}
 
 		// exclude shares leading to trashbin on home storages
-		$pathSections = explode('/', $data['path'], 2);
+		$pathSections = \explode('/', $data['path'], 2);
 		// FIXME: would not detect rare md5'd home storage case properly
 		$storagePrefix = \explode(':', $data['storage_string_id'], 2)[0];
 		if ($pathSections[0] !== 'files' && \in_array($storagePrefix, ['home', 'object'], true)) {
@@ -693,7 +692,9 @@ class DefaultShareProvider implements IShareProvider {
 			$qb->andWhere($qb->expr()->eq('file_source', $qb->createNamedParameter($node->getId())));
 		}
 
-		$groups = array_map(function(IGroup $group) { return $group->getGID(); }, $groups);
+		$groups = \array_map(function (IGroup $group) {
+			return $group->getGID();
+		}, $groups);
 
 		$qb->andWhere($qb->expr()->eq('share_type', $qb->createNamedParameter(\OCP\Share::SHARE_TYPE_GROUP)))
 			->andWhere($qb->expr()->in('share_with', $qb->createNamedParameter(
@@ -730,7 +731,9 @@ class DefaultShareProvider implements IShareProvider {
 			$qb->andWhere($qb->expr()->eq('file_source', $qb->createNamedParameter($node->getId())));
 		}
 
-		$groups = array_map(function(IGroup $group) { return $group->getGID(); }, $groups);
+		$groups = \array_map(function (IGroup $group) {
+			return $group->getGID();
+		}, $groups);
 
 		$qb->andWhere($qb->expr()->orX(
 			$qb->expr()->andX(
@@ -768,14 +771,13 @@ class DefaultShareProvider implements IShareProvider {
 
 			$cursor = $qb->execute();
 
-			while($data = $cursor->fetch()) {
+			while ($data = $cursor->fetch()) {
 				if ($this->isAccessibleResult($data)) {
 					$shares[] = $this->createShare($data);
 				}
 			}
 			$cursor->closeCursor();
-
-		} else if ($shareType === \OCP\Share::SHARE_TYPE_GROUP) {
+		} elseif ($shareType === \OCP\Share::SHARE_TYPE_GROUP) {
 			$user = $this->userManager->get($userId);
 			$allGroups = $this->groupManager->getUserGroups($user, 'sharing');
 
@@ -783,8 +785,8 @@ class DefaultShareProvider implements IShareProvider {
 			$shares2 = [];
 
 			$start = 0;
-			while(true) {
-				$groups = array_slice($allGroups, $start, 100);
+			while (true) {
+				$groups = \array_slice($allGroups, $start, 100);
 				$start += 100;
 
 				if ($groups === []) {
@@ -796,11 +798,11 @@ class DefaultShareProvider implements IShareProvider {
 				$qb->setFirstResult(0);
 
 				if ($limit !== -1) {
-					$qb->setMaxResults($limit - count($shares));
+					$qb->setMaxResults($limit - \count($shares));
 				}
 
 				$cursor = $qb->execute();
-				while($data = $cursor->fetch()) {
+				while ($data = $cursor->fetch()) {
 					if ($offset > 0) {
 						$offset--;
 						continue;
@@ -816,7 +818,7 @@ class DefaultShareProvider implements IShareProvider {
 			//Resolve all group shares to user specific shares
 			if (!empty($shares2)) {
 				$resolvedGroupShares = $this->resolveGroupShares($shares2, $userId);
-				$shares = array_merge($shares, $resolvedGroupShares);
+				$shares = \array_merge($shares, $resolvedGroupShares);
 			}
 		} else {
 			throw new BackendError('Invalid backend');
@@ -836,10 +838,10 @@ class DefaultShareProvider implements IShareProvider {
 		$allGroups = $this->groupManager->getUserGroups($user, 'sharing');
 
 		// Make chunks
-		$sharedWithGroupChunks = array_chunk($allGroups, 100);
+		$sharedWithGroupChunks = \array_chunk($allGroups, 100);
 
 		// Check how many group chunks do we need
-		$sharedWithGroupChunksNo = count($sharedWithGroupChunks);
+		$sharedWithGroupChunksNo = \count($sharedWithGroupChunks);
 
 		// If there are not groups, query only user, if there are groups, query both
 		$chunkedResults = [];
@@ -873,11 +875,11 @@ class DefaultShareProvider implements IShareProvider {
 
 		$resolvedShares = [];
 		$groupShares = [];
-		foreach($chunkedResults as $resultBatch) {
-			foreach($resultBatch as $data) {
+		foreach ($chunkedResults as $resultBatch) {
+			foreach ($resultBatch as $data) {
 				if ($this->isAccessibleResult($data)) {
 					$share = $this->createShare($data);
-					if ($share->getShareType() === \OCP\Share::SHARE_TYPE_GROUP){
+					if ($share->getShareType() === \OCP\Share::SHARE_TYPE_GROUP) {
 						$groupShares[] = $share;
 					} else {
 						$resolvedShares[] = $share;
@@ -889,7 +891,7 @@ class DefaultShareProvider implements IShareProvider {
 		//Resolve all group shares to user specific shares
 		if (!empty($groupShares)) {
 			$resolvedGroupShares = $this->resolveGroupShares($groupShares, $userId);
-			$resolvedShares = array_merge($resolvedShares, $resolvedGroupShares);
+			$resolvedShares = \array_merge($resolvedShares, $resolvedGroupShares);
 		}
 
 		return $resolvedShares;
@@ -951,9 +953,9 @@ class DefaultShareProvider implements IShareProvider {
 
 		if ($share->getShareType() === \OCP\Share::SHARE_TYPE_USER) {
 			$share->setSharedWith($data['share_with']);
-		} else if ($share->getShareType() === \OCP\Share::SHARE_TYPE_GROUP) {
+		} elseif ($share->getShareType() === \OCP\Share::SHARE_TYPE_GROUP) {
 			$share->setSharedWith($data['share_with']);
-		} else if ($share->getShareType() === \OCP\Share::SHARE_TYPE_LINK) {
+		} elseif ($share->getShareType() === \OCP\Share::SHARE_TYPE_LINK) {
 			$share->setPassword($data['share_with']);
 			$share->setToken($data['token']);
 		}
@@ -992,7 +994,7 @@ class DefaultShareProvider implements IShareProvider {
 		$shareIdToShareMap = [];
 		$chunkId = 0;
 		$shareNo = 0;
-		foreach($shares as $share) {
+		foreach ($shares as $share) {
 			// Map unique shareIds to IShare
 			$shareId = $share->getId();
 			$shareIdToShareMap[$shareId] = $share;
@@ -1009,7 +1011,7 @@ class DefaultShareProvider implements IShareProvider {
 			$chunkedShareIds[$chunkId][] = $shareId;
 		}
 
-		$chunkedSharesToMaps = array($chunkedShareIds, $shareIdToShareMap);
+		$chunkedSharesToMaps = [$chunkedShareIds, $shareIdToShareMap];
 		return $chunkedSharesToMaps;
 	}
 
@@ -1028,7 +1030,7 @@ class DefaultShareProvider implements IShareProvider {
 		$qb = $this->dbConn->getQueryBuilder();
 
 		list($chunkedShareIds, $shareIdToShareMap) = $this->chunkSharesToMaps($shares);
-		foreach($chunkedShareIds as $shareIdsChunk) {
+		foreach ($chunkedShareIds as $shareIdsChunk) {
 			$qb->select('*')
 				->from('share')
 				->where($qb->expr()->in('parent', $qb->createNamedParameter(
@@ -1046,7 +1048,7 @@ class DefaultShareProvider implements IShareProvider {
 
 			// Resolve $shareIdToShareMap array containing group shares
 			$shareParents = [];
-			while($data = $stmt->fetch()) {
+			while ($data = $stmt->fetch()) {
 				// Get share parent
 				$shareParent = $data['parent'];
 
@@ -1069,7 +1071,7 @@ class DefaultShareProvider implements IShareProvider {
 			$stmt->closeCursor();
 		}
 		
-		$resolvedShares = array_values($shareIdToShareMap);
+		$resolvedShares = \array_values($shareIdToShareMap);
 		return $resolvedShares;
 	}
 
@@ -1099,7 +1101,7 @@ class DefaultShareProvider implements IShareProvider {
 					$qb->expr()->eq('share_with', $qb->createNamedParameter($uid))
 				)
 			);
-		} else if ($shareType === \OCP\Share::SHARE_TYPE_GROUP) {
+		} elseif ($shareType === \OCP\Share::SHARE_TYPE_GROUP) {
 			/*
 			 * Delete all group shares that are owned by this user
 			 * Or special user group shares that are received by this user
@@ -1120,7 +1122,7 @@ class DefaultShareProvider implements IShareProvider {
 					$qb->expr()->eq('share_with', $qb->createNamedParameter($uid))
 				)
 			);
-		} else if ($shareType === \OCP\Share::SHARE_TYPE_LINK) {
+		} elseif ($shareType === \OCP\Share::SHARE_TYPE_LINK) {
 			/*
 			 * Delete all link shares owned by this user.
 			 * And all link shares initiated by this user (until #22327 is in)
@@ -1156,13 +1158,13 @@ class DefaultShareProvider implements IShareProvider {
 
 		$cursor = $qb->execute();
 		$ids = [];
-		while($row = $cursor->fetch()) {
+		while ($row = $cursor->fetch()) {
 			$ids[] = (int)$row['id'];
 		}
 		$cursor->closeCursor();
 
 		if (!empty($ids)) {
-			$chunks = array_chunk($ids, 100);
+			$chunks = \array_chunk($ids, 100);
 			foreach ($chunks as $chunk) {
 				$qb->delete('share')
 					->where($qb->expr()->eq('share_type', $qb->createNamedParameter(self::SHARE_TYPE_USERGROUP)))
@@ -1199,13 +1201,13 @@ class DefaultShareProvider implements IShareProvider {
 
 		$cursor = $qb->execute();
 		$ids = [];
-		while($row = $cursor->fetch()) {
+		while ($row = $cursor->fetch()) {
 			$ids[] = (int)$row['id'];
 		}
 		$cursor->closeCursor();
 
 		if (!empty($ids)) {
-			$chunks = array_chunk($ids, 100);
+			$chunks = \array_chunk($ids, 100);
 			foreach ($chunks as $chunk) {
 				/*
 				 * Delete all special shares wit this users for the found group shares
@@ -1227,7 +1229,7 @@ class DefaultShareProvider implements IShareProvider {
 	 * @throws InvalidArgumentException if the share validation failed
 	 */
 	private function validate($share) {
-		if (!is_null($share->getName()) && strlen($share->getName()) > 64) {
+		if ($share->getName() !== null && \strlen($share->getName()) > 64) {
 			throw new \InvalidArgumentException('Share name cannot be more than 64 characters');
 		}
 

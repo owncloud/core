@@ -78,14 +78,14 @@ class TagService {
 		$currentTags = $tagger->getTagsForObjects([$fileId]);
 
 		if (!empty($currentTags)) {
-			$currentTags = current($currentTags);
+			$currentTags = \current($currentTags);
 		}
 
-		$newTags = array_diff($tags, $currentTags);
+		$newTags = \array_diff($tags, $currentTags);
 		foreach ($newTags as $tag) {
 			$tagger->tagAs($fileId, $tag);
 		}
-		$deletedTags = array_diff($currentTags, $tags);
+		$deletedTags = \array_diff($currentTags, $tags);
 		foreach ($deletedTags as $tag) {
 			$tagger->unTag($fileId, $tag);
 		}
@@ -95,4 +95,3 @@ class TagService {
 		return $tags;
 	}
 }
-

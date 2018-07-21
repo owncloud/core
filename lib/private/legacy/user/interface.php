@@ -25,4 +25,5 @@
  * Interface OC_User_Interface
  * @deprecated use the public \OCP\UserInterface instead
  */
-interface OC_User_Interface extends \OCP\UserInterface {}
+interface OC_User_Interface extends \OCP\UserInterface {
+}
