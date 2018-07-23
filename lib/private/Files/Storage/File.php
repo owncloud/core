@@ -26,61 +26,35 @@ use OCP\Files\File as FilesFile;
 class File extends Node implements FilesFile {
 
 	/**
-	 * Get the content of the file as string
-	 *
-	 * @return string
-	 * @throws \OCP\Files\StorageNotAvailableException
-	 * @since 6.0.0
+	 * @inheritdoc
 	 */
 	public function getContent() {
 		return $this->storage->file_get_contents($this->path);
 	}
 
 	/**
-	 * Write to the file from string data
-	 *
-	 * @param string $data
-	 * @return void
-	 * @throws \OCP\Files\StorageNotAvailableException
-	 * @since 6.0.0
+	 * @inheritdoc
 	 */
 	public function putContent($data) {
 		$this->storage->file_put_contents($this->path, $data);
 	}
 
 	/**
-	 * Open the file as stream, resulting resource can be operated as stream like the result from php's own fopen
-	 *
-	 * @param string $mode
-	 * @return resource
-	 * @throws \OCP\Files\StorageNotAvailableException
-	 * @since 6.0.0
+	 * @inheritdoc
 	 */
 	public function fopen($mode) {
 		return $this->storage->fopen($this->path, $mode);
 	}
 
 	/**
-	 * Delete the folder
-	 *
-	 * @return void
-	 * @since 6.0.0
-	 * @throws \Exception
-	 * @throws \OCP\Files\StorageNotAvailableException
+	 * @inheritdoc
 	 */
 	public function delete() {
 		$this->storage->unlink($this->path);
 	}
 
 	/**
-	 * Compute the hash of the file
-	 * Type of hash is set with $type and can be anything supported by php's hash_file
-	 *
-	 * @param string $type
-	 * @param bool $raw
-	 * @return string
-	 * @throws \OCP\Files\StorageNotAvailableException
-	 * @since 6.0.0
+	 * @inheritdoc
 	 */
 	public function hash($type, $raw = false) {
 		return $this->storage->hash($type, $this->path, $raw);
