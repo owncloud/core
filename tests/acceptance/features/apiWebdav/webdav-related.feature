@@ -751,3 +751,155 @@ Feature: webdav-related
 		| action_dav_version | other_dav_version |
 		| old                | new               |
 		| new                | old               |
+
+	Scenario Outline: Checking file id after a move between received shares
+		Given using <dav_version> DAV path
+		And user "user0" has been created
+		And user "user1" has been created
+		And user "user0" has created a folder "/folderA"
+		And user "user0" has created a folder "/folderB"
+		And user "user0" has shared folder "/folderA" with user "user1"
+		And user "user0" has shared folder "/folderB" with user "user1"
+		And user "user1" has created a folder "/folderA/ONE"
+		And user "user1" has stored id of file "/folderA/ONE"
+		And user "user1" has created a folder "/folderA/ONE/TWO"
+		When user "user1" moves folder "/folderA/ONE" to "/folderB/ONE" using the API
+		Then as "user1" the folder "/folderA" should exist
+		And as "user1" the folder "/folderA/ONE" should not exist
+		# yes, a weird bug used to make this one fail
+		And as "user1" the folder "/folderA/ONE/TWO" should not exist
+		And as "user1" the folder "/folderB/ONE" should exist
+		And as "user1" the folder "/folderB/ONE/TWO" should exist
+		And user "user1" file "/folderB/ONE" should have the previously stored id
+		Examples:
+			| dav_version   |
+			| old           |
+			| new           |
+
+	Scenario Outline: Retrieving private link
+		Given using <dav_version> DAV path
+		And user "user0" has been created
+		And user "user0" has uploaded file "data/textfile.txt" to "/somefile.txt"
+		When user "user0" gets the following properties of file "/somefile.txt" using the API
+			|{http://owncloud.org/ns}privatelink|
+		Then the single response should contain a property "{http://owncloud.org/ns}privatelink" with value like "%(/(index.php/)?f/[0-9]*)%"
+		Examples:
+			| dav_version   |
+			| old           |
+			| new           |
+
+	Scenario Outline: Copying file to a path with extension .part should not be possible
+		Given using <dav_version> DAV path
+		And user "user0" has been created
+		When user "user0" copies file "/welcome.txt" to "/welcome.part" using the API
+		Then the HTTP status code should be "400"
+		And user "user0" should see the following elements
+			| /welcome.txt |
+		But user "user0" should not see the following elements
+			| /welcome.part |
+		Examples:
+			| dav_version   |
+			| old           |
+			| new           |
+
+	Scenario Outline: Uploading file to path with extension .part should not be possible
+		Given using <dav_version> DAV path
+		And user "user0" has been created
+		And user "user0" has uploaded file "data/textfile.txt" to "/textfile.part"
+		Then the HTTP status code should be "400"
+		And user "user0" should not see the following elements
+			| /textfile.part |
+		Examples:
+			| dav_version   |
+			| old           |
+			| new           |
+
+	Scenario Outline: Renaming a file to a path with extension .part should not be possible
+		Given using <dav_version> DAV path
+		And user "user0" has been created
+		When user "user0" moves file "/welcome.txt" to "/welcome.part" using the API
+		Then the HTTP status code should be "400"
+		And user "user0" should see the following elements
+			| /welcome.txt |
+		But user "user0" should not see the following elements
+			| /welcome.part |
+		Examples:
+			| dav_version   |
+			| old           |
+			| new           |
+
+	Scenario Outline: Creating a directory which contains .part should not be possible
+		Given using <dav_version> DAV path
+		And user "user0" has been created
+		When user "user0" creates a folder "/folder.with.ext.part" using the API
+		Then the HTTP status code should be "400"
+		And user "user0" should not see the following elements
+			| /folder.with.ext.part |
+		Examples:
+			| dav_version   |
+			| old           |
+			| new           |
+
+	Scenario Outline: Retrieving private link
+		Given using <dav_version> DAV path
+		And user "user0" has been created
+		And user "user0" has uploaded file "data/textfile.txt" to "/somefile.txt"
+		When user "user0" gets the following properties of file "/somefile.txt" using the API
+			|{http://owncloud.org/ns}privatelink|
+		Then the single response should contain a property "{http://owncloud.org/ns}privatelink" with value like "%(/(index.php/)?f/[0-9]*)%"
+		Examples:
+			| dav_version   |
+			| old           |
+			| new           |
+
+	Scenario Outline: Copying file to a path with extension .part should not be possible
+		Given using <dav_version> DAV path
+		And user "user0" has been created
+		When user "user0" copies file "/welcome.txt" to "/welcome.part" using the API
+		Then the HTTP status code should be "400"
+		And user "user0" should see the following elements
+			| /welcome.txt |
+		But user "user0" should not see the following elements
+			| /welcome.part |
+		Examples:
+			| dav_version   |
+			| old           |
+			| new           |
+
+	Scenario Outline: Uploading file to path with extension .part should not be possible
+		Given using <dav_version> DAV path
+		And user "user0" has been created
+		When user "user0" uploads file "data/textfile.txt" to "/textfile.part" using the API
+		Then the HTTP status code should be "400"
+		And user "user0" should not see the following elements
+			| /textfile.part |
+		Examples:
+			| dav_version   |
+			| old           |
+			| new           |
+
+	Scenario Outline: Renaming a file to a path with extension .part should not be possible
+		Given using <dav_version> DAV path
+		And user "user0" has been created
+		When user "user0" moves file "/welcome.txt" to "/welcome.part" using the API
+		Then the HTTP status code should be "400"
+		And user "user0" should see the following elements
+			| /welcome.txt |
+		But user "user0" should not see the following elements
+			| /welcome.part |
+		Examples:
+			| dav_version   |
+			| old           |
+			| new           |
+
+	Scenario Outline: Creating a directory which contains .part should not be possible
+		Given using <dav_version> DAV path
+		And user "user0" has been created
+		When user "user0" creates a folder "/folder.with.ext.part" using the API
+		Then the HTTP status code should be "400"
+		And user "user0" should not see the following elements
+			| /folder.with.ext.part |
+		Examples:
+			| dav_version   |
+			| old           |
+			| new           |
