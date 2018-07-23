@@ -765,23 +765,6 @@ trait BasicStructure {
 	}
 
 	/**
-	 * @When user :user modifies text of :filename with text :text using the API
-	 * @Given user :user has modified text of :filename with text :text
-	 *
-	 * @param string $user
-	 * @param string $filename
-	 * @param string $text
-	 *
-	 * @return void
-	 */
-	public function modifyTextOfFile($user, $filename, $text) {
-		self::removeFile($this->getUserHome($user) . "/files", "$filename");
-		\file_put_contents(
-			$this->getUserHome($user) . "/files" . "$filename", "$text"
-		);
-	}
-
-	/**
 	 * @param string $name
 	 * @param string $size
 	 *
