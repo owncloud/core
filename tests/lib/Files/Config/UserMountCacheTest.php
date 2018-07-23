@@ -309,8 +309,8 @@ class UserMountCacheTest extends TestCase {
 	}
 
 	private function sortMounts(&$mounts) {
-		usort($mounts, function (ICachedMountInfo $a, ICachedMountInfo $b) {
-			return strcmp($a->getUser()->getUID(), $b->getUser()->getUID());
+		\usort($mounts, function (ICachedMountInfo $a, ICachedMountInfo $b) {
+			return \strcmp($a->getUser()->getUID(), $b->getUser()->getUID());
 		});
 	}
 
@@ -318,9 +318,9 @@ class UserMountCacheTest extends TestCase {
 		$this->connection->insertIfNotExist('*PREFIX*filecache', [
 			'storage' => $storageId,
 			'path' => $internalPath,
-			'path_hash' => md5($internalPath),
+			'path_hash' => \md5($internalPath),
 			'parent' => -1,
-			'name' => basename($internalPath),
+			'name' => \basename($internalPath),
 			'mimetype' => 0,
 			'mimepart' => 0,
 			'size' => 0,

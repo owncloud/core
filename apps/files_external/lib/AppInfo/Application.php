@@ -38,7 +38,6 @@ use OCP\Files\External\Config\IBackendProvider;
  * @package OCA\Files_External\AppInfo
  */
 class Application extends App implements IBackendProvider, IAuthMechanismProvider {
-
 	public function __construct(array $urlParams = []) {
 		parent::__construct('files_external', $urlParams);
 
@@ -63,7 +62,6 @@ class Application extends App implements IBackendProvider, IAuthMechanismProvide
 		$backendService = $container->getServer()->query('StoragesBackendService');
 		$backendService->registerBackendProvider($this);
 		$backendService->registerAuthMechanismProvider($this);
-
 	}
 
 	/**
@@ -113,5 +111,4 @@ class Application extends App implements IBackendProvider, IAuthMechanismProvide
 			$container->query('OCA\Files_External\Lib\Auth\AmazonS3\AccessKey'),
 		];
 	}
-
 }

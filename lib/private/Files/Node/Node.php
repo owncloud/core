@@ -131,8 +131,8 @@ class Node implements \OCP\Files\Node {
 			$this->view->touch($this->path, $mtime);
 			$this->sendHooks(['postTouch']);
 			if ($this->fileInfo) {
-				if (is_null($mtime)) {
-					$mtime = time();
+				if ($mtime === null) {
+					$mtime = \time();
 				}
 				$this->fileInfo['mtime'] = $mtime;
 			}
@@ -146,7 +146,7 @@ class Node implements \OCP\Files\Node {
 	 * @throws \OCP\Files\NotFoundException
 	 */
 	public function getStorage() {
-		list($storage,) = $this->view->resolvePath($this->path);
+		list($storage, ) = $this->view->resolvePath($this->path);
 		return $storage;
 	}
 
@@ -266,14 +266,14 @@ class Node implements \OCP\Files\Node {
 	 * @return Node
 	 */
 	public function getParent() {
-		return $this->root->get(dirname($this->path));
+		return $this->root->get(\dirname($this->path));
 	}
 
 	/**
 	 * @return string
 	 */
 	public function getName() {
-		return basename($this->path);
+		return \basename($this->path);
 	}
 
 	/**
@@ -285,17 +285,17 @@ class Node implements \OCP\Files\Node {
 			return '/';
 		}
 		//no windows style slashes
-		$path = str_replace('\\', '/', $path);
+		$path = \str_replace('\\', '/', $path);
 		//add leading slash
 		if ($path[0] !== '/') {
 			$path = '/' . $path;
 		}
 		//remove duplicate slashes
-		while (strpos($path, '//') !== false) {
-			$path = str_replace('//', '/', $path);
+		while (\strpos($path, '//') !== false) {
+			$path = \str_replace('//', '/', $path);
 		}
 		//remove trailing slash
-		$path = rtrim($path, '/');
+		$path = \rtrim($path, '/');
 
 		return $path;
 	}
@@ -310,7 +310,7 @@ class Node implements \OCP\Files\Node {
 		if (!$path || $path[0] !== '/') {
 			$path = '/' . $path;
 		}
-		if (strstr($path, '/../') || strrchr($path, '/') === '/..') {
+		if (\strstr($path, '/../') || \strrchr($path, '/') === '/..') {
 			return false;
 		}
 		return true;
@@ -383,7 +383,7 @@ class Node implements \OCP\Files\Node {
 	 */
 	public function copy($targetPath) {
 		$targetPath = $this->normalizePath($targetPath);
-		$parent = $this->root->get(dirname($targetPath));
+		$parent = $this->root->get(\dirname($targetPath));
 		if ($parent instanceof Folder and $this->isValidPath($targetPath) and $parent->isCreatable()) {
 			$nonExisting = $this->createNonExistingNode($targetPath);
 			$this->root->emit('\OC\Files', 'preCopy', [$this, $nonExisting]);
@@ -407,7 +407,7 @@ class Node implements \OCP\Files\Node {
 	 */
 	public function move($targetPath) {
 		$targetPath = $this->normalizePath($targetPath);
-		$parent = $this->root->get(dirname($targetPath));
+		$parent = $this->root->get(\dirname($targetPath));
 		if ($parent instanceof Folder and $this->isValidPath($targetPath) and $parent->isCreatable()) {
 			$nonExisting = $this->createNonExistingNode($targetPath);
 			$this->root->emit('\OC\Files', 'preRename', [$this, $nonExisting]);
@@ -424,5 +424,4 @@ class Node implements \OCP\Files\Node {
 			throw new NotPermittedException('No permission to move to path ' . $targetPath);
 		}
 	}
-
 }

@@ -22,7 +22,6 @@
 
 namespace OCA\FederatedFileSharing;
 
-
 use OCP\Notification\INotification;
 use OCP\Notification\INotifier;
 

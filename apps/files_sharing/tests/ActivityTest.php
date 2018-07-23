@@ -59,15 +59,14 @@ class ActivityTest extends TestCase {
 	public function testGetDefaultTypes($method, $expectedResult) {
 		$result = $this->activity->getDefaultTypes($method);
 
-		if (is_array($expectedResult)) {
-			$this->assertCount(count($expectedResult), $result);
+		if (\is_array($expectedResult)) {
+			$this->assertCount(\count($expectedResult), $result);
 			foreach ($expectedResult as $key => $expected) {
 				$this->assertSame($expected, $result[$key]);
 			}
 		} else {
 			$this->assertSame($expectedResult, $result);
 		}
-
 	}
 
 	public function dataTestGetDefaultType() {
@@ -76,5 +75,4 @@ class ActivityTest extends TestCase {
 			['stream', [\OCA\Files_Sharing\Activity::TYPE_SHARED, \OCA\Files_Sharing\Activity::TYPE_REMOTE_SHARE, \OCA\Files_Sharing\Activity::TYPE_PUBLIC_LINKS]],
 		];
 	}
-
 }

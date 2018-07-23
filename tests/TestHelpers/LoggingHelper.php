@@ -42,7 +42,7 @@ class LoggingHelper {
 				$result ["stdOut"] . " " . $result ["stdErr"]
 			);
 		}
-		preg_match(
+		\preg_match(
 			"/Log backend ownCloud: (\w+)\sLog file: (.*)/",
 			$result ['stdOut'], $matches
 		);
@@ -69,10 +69,10 @@ class LoggingHelper {
 				$result ["stdErr"]
 			);
 		}
-		if (!preg_match("/Log level:\s(\w+)\s\(/", $result["stdOut"], $matches)) {
+		if (!\preg_match("/Log level:\s(\w+)\s\(/", $result["stdOut"], $matches)) {
 			throw new \Exception("could not get log level");
 		}
-		return strtolower($matches[1]);
+		return \strtolower($matches[1]);
 	}
 
 	/**
@@ -84,7 +84,7 @@ class LoggingHelper {
 	 * @throws \Exception
 	 */
 	public static function setLogLevel($logLevel) {
-		if (!in_array($logLevel, ["debug", "info", "warning", "error", "fatal"])) {
+		if (!\in_array($logLevel, ["debug", "info", "warning", "error", "fatal"])) {
 			throw new \InvalidArgumentException("invalid log level");
 		}
 		$result = SetupHelper::runOcc(["log:manage", "--level=$logLevel"]);
@@ -110,14 +110,14 @@ class LoggingHelper {
 				$result ["stdErr"]
 			);
 		}
-		$pregResult = preg_match(
+		$pregResult = \preg_match(
 			"/Enabled logging backend:\s(\w+)\n/",
 			$result ["stdOut"], $matches
 		);
 		if (!$pregResult) {
 			throw new \Exception("could not get log backend");
 		}
-		return strtolower($matches[1]);
+		return \strtolower($matches[1]);
 	}
 
 	/**
@@ -129,7 +129,7 @@ class LoggingHelper {
 	 * @throws \Exception
 	 */
 	public static function setLogBackend($backend) {
-		if (!in_array($backend, ["owncloud", "syslog", "errorlog"])) {
+		if (!\in_array($backend, ["owncloud", "syslog", "errorlog"])) {
 			throw new \InvalidArgumentException("invalid log backend");
 		}
 		$result = SetupHelper::runOcc(["log:manage", "--backend=$backend"]);
@@ -155,7 +155,7 @@ class LoggingHelper {
 				$result ["stdErr"]
 			);
 		}
-		$pregResult = preg_match(
+		$pregResult = \preg_match(
 			"/Log timezone:\s(\w+)/", $result ["stdOut"], $matches
 		);
 		if (!$pregResult) {
@@ -187,11 +187,11 @@ class LoggingHelper {
 	 * @throws \Exception
 	 */
 	public static function clearLogFile() {
-		$fp = fopen(self::getLogFilePath(), 'w');
+		$fp = \fopen(self::getLogFilePath(), 'w');
 		if ($fp === false) {
 			throw new \Exception("could not clear the log file");
 		}
-		fclose($fp);
+		\fclose($fp);
 	}
 
 	/**
@@ -214,7 +214,7 @@ class LoggingHelper {
 	) {
 		$lines = $noOfLinesToRead; //set a counter
 		// Open file
-		$f = @fopen($filepath, "rb");
+		$f = @\fopen($filepath, "rb");
 		if ($f === false) {
 			throw new \Exception("could not read file '$filepath'");
 		}
@@ -228,11 +228,11 @@ class LoggingHelper {
 		}
 
 		// Jump to last character
-		fseek($f, -1, SEEK_END);
+		\fseek($f, -1, SEEK_END);
 
 		// Read it and adjust line number if necessary
 		// Otherwise the result would be wrong if file doesn't end with a blank line
-		if (fread($f, 1) != "\n") {
+		if (\fread($f, 1) != "\n") {
 			$lines -= 1;
 		}
 
@@ -240,38 +240,38 @@ class LoggingHelper {
 		$output = '';
 
 		// While we would like more
-		while (ftell($f) > 0 && $lines >= 0) {
+		while (\ftell($f) > 0 && $lines >= 0) {
 
 			// Figure out how far back we should jump
-			$seek = min(ftell($f), $buffer);
+			$seek = \min(\ftell($f), $buffer);
 
 			// Do the jump (backwards, relative to where we are)
-			fseek($f, -$seek, SEEK_CUR);
+			\fseek($f, -$seek, SEEK_CUR);
 
 			// Read a chunk and prepend it to our output
-			$output = ($chunk = fread($f, $seek)) . $output;
+			$output = ($chunk = \fread($f, $seek)) . $output;
 
 			// Jump back to where we started reading
-			fseek($f, -mb_strlen($chunk, '8bit'), SEEK_CUR);
+			\fseek($f, -\mb_strlen($chunk, '8bit'), SEEK_CUR);
 
 			// Decrease our line counter
-			$lines -= substr_count($chunk, "\n");
+			$lines -= \substr_count($chunk, "\n");
 		}
 
 		// While we have too many lines
 		// (Because of buffer size we might have read too many)
 		while ($lines++ < 0) {
 			// Find first newline and remove all text before that
-			$output = substr($output, strpos($output, "\n") + 1);
+			$output = \substr($output, \strpos($output, "\n") + 1);
 		}
 
 		// Close file and return
-		fclose($f);
-		$output = explode("\n", $output);
-		if ($output[count($output) - 1] === "") {
-			array_pop($output);
+		\fclose($f);
+		$output = \explode("\n", $output);
+		if ($output[\count($output) - 1] === "") {
+			\array_pop($output);
 		}
-		if (count($output) > $noOfLinesToRead) {
+		if (\count($output) > $noOfLinesToRead) {
 			throw new \Exception("size of output array is bigger than expected");
 		}
 		return $output;

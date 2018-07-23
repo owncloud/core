@@ -55,21 +55,19 @@ class OC_L10N_String implements JsonSerializable {
 		$translations = $this->l10n->getTranslations();
 
 		$text = $this->text;
-		if(array_key_exists($this->text, $translations)) {
-			if(is_array($translations[$this->text])) {
+		if (\array_key_exists($this->text, $translations)) {
+			if (\is_array($translations[$this->text])) {
 				$id = $this->l10n->computePlural($this->count);
 				$text = $translations[$this->text][$id];
-			}
-			else{
+			} else {
 				$text = $translations[$this->text];
 			}
 		}
 
 		// Replace %n first (won't interfere with vsprintf)
-		$text = str_replace('%n', $this->count, $text);
-		return vsprintf($text, $this->parameters);
+		$text = \str_replace('%n', $this->count, $text);
+		return \vsprintf($text, $this->parameters);
 	}
-
 
 	public function jsonSerialize() {
 		return $this->__toString();

@@ -25,4 +25,5 @@
  * Interface OC_Group_Interface
  * @deprecated use the public \OCP\GroupInterface instead
  */
-interface OC_Group_Interface extends \OCP\GroupInterface {}
+interface OC_Group_Interface extends \OCP\GroupInterface {
+}

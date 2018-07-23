@@ -16,7 +16,6 @@ use OC\Settings\Application;
  * @package Tests\Settings\Controller
  */
 class MailSettingsControllerTest extends \Test\TestCase {
-
 	private $container;
 
 	protected function setUp() {
@@ -80,7 +79,6 @@ class MailSettingsControllerTest extends \Test\TestCase {
 		);
 		$expectedResponse = ['data' => ['message' =>'Invalid email address'], 'status' => 'error'];
 		$this->assertSame($expectedResponse, $response);
-
 	}
 
 	public function testSetMailSettings() {
@@ -180,7 +178,6 @@ class MailSettingsControllerTest extends \Test\TestCase {
 		);
 		$expectedResponse = ['data' => ['message' =>'Saved'], 'status' => 'success'];
 		$this->assertSame($expectedResponse, $response);
-
 	}
 
 	public function testStoreCredentials() {
@@ -247,5 +244,4 @@ class MailSettingsControllerTest extends \Test\TestCase {
 		$expectedResponse = ['data' => ['message' =>'Email sent'], 'status' => 'success'];
 		$this->assertSame($expectedResponse, $response);
 	}
-
 }

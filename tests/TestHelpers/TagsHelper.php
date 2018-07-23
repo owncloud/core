@@ -92,7 +92,7 @@ class TagsHelper {
 			'{http://owncloud.org/ns}can-assign'
 		];
 		if ($withGroups) {
-			array_push($properties, '{http://owncloud.org/ns}groups');
+			\array_push($properties, '{http://owncloud.org/ns}groups');
 		}
 		$appPath = '/systemtags/';
 		$fullUrl = $baseUrl
@@ -162,7 +162,7 @@ class TagsHelper {
 			'userAssignable' => $userAssignable,
 		];
 
-		if (!is_null($groups)) {
+		if ($groups !== null) {
 			$body['groups'] = $groups;
 		}
 
@@ -174,13 +174,13 @@ class TagsHelper {
 			$tagsPath,
 			['Content-Type' => 'application/json',],
 			null,
-			json_encode($body),
+			\json_encode($body),
 			$davPathVersionToUse,
 			"systemtags"
 		);
 		$responseHeaders = $response->getHeaders();
 		$tagUrl = $responseHeaders['Content-Location'][0];
-		$lastTagId = substr($tagUrl, strrpos($tagUrl, '/') + 1);
+		$lastTagId = \substr($tagUrl, \strrpos($tagUrl, '/') + 1);
 		return ['lastTagId' => $lastTagId, 'HTTPResponse' => $response];
 	}
 
@@ -221,18 +221,18 @@ class TagsHelper {
 		$userVisible = true;
 		$userAssignable = true;
 		switch ($type) {
-			case 'normal' :
+			case 'normal':
 				break;
-			case 'not user-assignable' :
+			case 'not user-assignable':
 				$userAssignable = false;
 				break;
-			case 'not user-visible' :
+			case 'not user-visible':
 				$userVisible = false;
 				break;
-			default :
+			default:
 				throw new \Exception('Unsupported type');
 		}
 
-		return array($userVisible, $userAssignable);
+		return [$userVisible, $userAssignable];
 	}
 }

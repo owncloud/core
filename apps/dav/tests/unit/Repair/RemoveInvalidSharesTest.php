@@ -19,9 +19,7 @@
  *
  */
 
-
 namespace OCA\DAV\Tests\Unit\Repair;
-
 
 use OCA\DAV\Connector\Sabre\Principal;
 use OCA\DAV\Repair\RemoveInvalidShares;
@@ -35,7 +33,6 @@ use Test\TestCase;
  * @group DB
  */
 class RemoveInvalidSharesTest extends TestCase {
-
 	public function setUp() {
 		parent::setUp();
 		$db = \OC::$server->getDatabaseConnection();
@@ -65,6 +62,6 @@ class RemoveInvalidSharesTest extends TestCase {
 			->where($query->expr()->eq('principaluri', $query->createNamedParameter('principal:unknown')))->execute();
 		$data = $result->fetchAll();
 		$result->closeCursor();
-		$this->assertEquals(0, count($data));
+		$this->assertEquals(0, \count($data));
 	}
 }

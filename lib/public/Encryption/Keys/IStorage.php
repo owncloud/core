@@ -178,5 +178,4 @@ interface IStorage {
 	 * @since 10.0.4
 	 */
 	public function deleteAltUserStorageKeys($uid);
-
 }

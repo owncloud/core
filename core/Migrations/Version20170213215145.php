@@ -9,7 +9,6 @@ use OCP\Migration\ISchemaMigration;
  * DB updation for oc_jobs table
  */
 class Version20170213215145 implements ISchemaMigration {
-
 	public function changeSchema(Schema $schema, array $options) {
 		$prefix = $options['tablePrefix'];
 		if ($schema->hasTable("${prefix}jobs")) {

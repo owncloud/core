@@ -22,7 +22,6 @@
 
 namespace OCP\DB\QueryBuilder;
 
-
 use Doctrine\DBAL\Connection;
 
 /**
@@ -64,7 +63,6 @@ interface IQueryBuilder {
 	 * @since 9.0.0
 	 */
 	const PARAM_STR_ARRAY = Connection::PARAM_STR_ARRAY;
-
 
 	/**
 	 * Enable/disable automatic prefixing of table names with the oc_ prefix

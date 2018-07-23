@@ -276,7 +276,6 @@ class QuotaPluginTest extends TestCase {
 			->with($expectedPath);
 
 		$server->emit($event, $eventArgs);
-
 	}
 
 	public function testPathBeforeModeTargetExists() {
@@ -312,7 +311,6 @@ class QuotaPluginTest extends TestCase {
 			->with('/test/sub/test.txt', 12345);
 
 		$server->emit('beforeMove', [$source, $destination]);
-
 	}
 
 	public function testPathBeforeModeTargetDoesNotExists() {
@@ -348,6 +346,5 @@ class QuotaPluginTest extends TestCase {
 			->with('/test/sub', 12345);
 
 		$server->emit('beforeMove', [$source, $destination]);
-
 	}
 }

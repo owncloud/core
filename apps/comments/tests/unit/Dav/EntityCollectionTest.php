@@ -89,7 +89,7 @@ class EntityCollectionTest extends \Test\TestCase {
 
 		$result = $this->collection->getChildren();
 
-		$this->assertSame(count($result), 1);
+		$this->assertSame(\count($result), 1);
 		$this->assertInstanceOf(\OCA\Comments\Dav\CommentNode::class, $result[0]);
 	}
 
@@ -102,7 +102,7 @@ class EntityCollectionTest extends \Test\TestCase {
 
 		$result = $this->collection->findChildren(5, 15, $dt);
 
-		$this->assertSame(count($result), 1);
+		$this->assertSame(\count($result), 1);
 		$this->assertInstanceOf(\OCA\Comments\Dav\CommentNode::class, $result[0]);
 	}
 

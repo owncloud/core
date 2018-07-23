@@ -38,11 +38,11 @@ class Api {
 	 */
 	private static function formatMount($mountPoint, $mountConfig) {
 		// strip "/$user/files" from mount point
-		$mountPoint = explode('/', trim($mountPoint, '/'), 3);
+		$mountPoint = \explode('/', \trim($mountPoint, '/'), 3);
 		$mountPoint = $mountPoint[2];
 
 		// split path from mount point
-		$path = dirname($mountPoint);
+		$path = \dirname($mountPoint);
 		if ($path === '.') {
 			$path = '';
 		}
@@ -56,11 +56,11 @@ class Api {
 		}
 
 		$entry = [
-			'name' => basename($mountPoint),
+			'name' => \basename($mountPoint),
 			'path' => $path,
 			'type' => 'dir',
 			'backend' => $mountConfig['backend'],
-			'scope' => ( $isSystemMount ? 'system' : 'personal' ),
+			'scope' => ($isSystemMount ? 'system' : 'personal'),
 			'permissions' => $permissions,
 			'id' => $mountConfig['id'],
 			'class' => $mountConfig['class']
@@ -80,7 +80,7 @@ class Api {
 		$user = \OC::$server->getUserSession()->getUser()->getUID();
 
 		$mounts = \OC_Mount_Config::getAbsoluteMountPoints($user);
-		foreach($mounts as $mountPoint => $mount) {
+		foreach ($mounts as $mountPoint => $mount) {
 			$entries[] = self::formatMount($mountPoint, $mount);
 		}
 

@@ -34,7 +34,6 @@ namespace OCA\Files_Sharing\ShareBackend;
 use OCA\FederatedFileSharing\FederatedShareProvider;
 
 class File implements \OCP\Share_Backend_File_Dependent {
-
 	const FORMAT_SHARED_STORAGE = 0;
 	const FORMAT_GET_FOLDER_CONTENTS = 1;
 	const FORMAT_FILE_APP_ROOT = 2;
@@ -63,7 +62,7 @@ class File implements \OCP\Share_Backend_File_Dependent {
 			// FIXME: attributes should not be set here,
 			// keeping this pattern for now to avoid unexpected
 			// regressions
-			$this->path = \OC\Files\Filesystem::normalizePath(basename($path));
+			$this->path = \OC\Files\Filesystem::normalizePath(\basename($path));
 			return true;
 		} catch (\OCP\Files\NotFoundException $e) {
 			return false;
@@ -94,7 +93,7 @@ class File implements \OCP\Share_Backend_File_Dependent {
 	 */
 	public function generateTarget($filePath, $shareWith, $exclude = null) {
 		$shareFolder = \OCA\Files_Sharing\Helper::getShareFolder();
-		$target = \OC\Files\Filesystem::normalizePath($shareFolder . '/' . basename($filePath));
+		$target = \OC\Files\Filesystem::normalizePath($shareFolder . '/' . \basename($filePath));
 
 		// for group shares we return the target right away
 		if ($shareWith === false) {
@@ -106,7 +105,7 @@ class File implements \OCP\Share_Backend_File_Dependent {
 
 		if (!$view->is_dir($shareFolder)) {
 			$dir = '';
-			$subdirs = explode('/', $shareFolder);
+			$subdirs = \explode('/', $shareFolder);
 			foreach ($subdirs as $subdir) {
 				$dir = $dir . '/' . $subdir;
 				if (!$view->is_dir($dir)) {
@@ -115,7 +114,7 @@ class File implements \OCP\Share_Backend_File_Dependent {
 			}
 		}
 
-		$excludeList = (is_array($exclude)) ? $exclude : [];
+		$excludeList = (\is_array($exclude)) ? $exclude : [];
 
 		return \OCA\Files_Sharing\Helper::generateUniqueTarget($target, $excludeList, $view);
 	}
@@ -123,7 +122,7 @@ class File implements \OCP\Share_Backend_File_Dependent {
 	public function formatItems($items, $format, $parameters = null) {
 		if ($format == self::FORMAT_SHARED_STORAGE) {
 			// Only 1 item should come through for this format call
-			$item = array_shift($items);
+			$item = \array_shift($items);
 			return [
 				'parent' => $item['parent'],
 				'path' => $item['path'],
@@ -131,7 +130,7 @@ class File implements \OCP\Share_Backend_File_Dependent {
 				'permissions' => $item['permissions'],
 				'uid_owner' => $item['uid_owner'],
 			];
-		} else if ($format == self::FORMAT_GET_FOLDER_CONTENTS) {
+		} elseif ($format == self::FORMAT_GET_FOLDER_CONTENTS) {
 			$files = [];
 			foreach ($items as $item) {
 				$file = [];
@@ -139,7 +138,7 @@ class File implements \OCP\Share_Backend_File_Dependent {
 				$file['storage'] = $item['storage'];
 				$file['path'] = $item['file_target'];
 				$file['parent'] = $item['file_parent'];
-				$file['name'] = basename($item['file_target']);
+				$file['name'] = \basename($item['file_target']);
 				$file['mimetype'] = $item['mimetype'];
 				$file['mimepart'] = $item['mimepart'];
 				$file['mtime'] = $item['mtime'];
@@ -154,25 +153,25 @@ class File implements \OCP\Share_Backend_File_Dependent {
 				$files[] = $file;
 			}
 			return $files;
-		} else if ($format == self::FORMAT_OPENDIR) {
+		} elseif ($format == self::FORMAT_OPENDIR) {
 			$files = [];
 			foreach ($items as $item) {
-				$files[] = basename($item['file_target']);
+				$files[] = \basename($item['file_target']);
 			}
 			return $files;
-		} else if ($format == self::FORMAT_GET_ALL) {
+		} elseif ($format == self::FORMAT_GET_ALL) {
 			$ids = [];
 			foreach ($items as $item) {
 				$ids[] = $item['file_source'];
 			}
 			return $ids;
-		} else if ($format === self::FORMAT_PERMISSIONS) {
+		} elseif ($format === self::FORMAT_PERMISSIONS) {
 			$filePermissions = [];
 			foreach ($items as $item) {
 				$filePermissions[$item['file_source']] = $item['permissions'];
 			}
 			return $filePermissions;
-		} else if ($format === self::FORMAT_TARGET_NAMES) {
+		} elseif ($format === self::FORMAT_TARGET_NAMES) {
 			$targets = [];
 			foreach ($items as $item) {
 				$targets[] = $item['file_target'];
@@ -235,7 +234,7 @@ class File implements \OCP\Share_Backend_File_Dependent {
 		if ($share['item_type'] === 'folder' && $target !== '') {
 			// note: in case of ext storage mount points the path might be empty
 			// which would cause a leading slash to appear
-			$share['path'] = ltrim($share['path'] . '/' . $target, '/');
+			$share['path'] = \ltrim($share['path'] . '/' . $target, '/');
 		}
 		return self::resolveReshares($share);
 	}

@@ -23,7 +23,6 @@
  *
  */
 
-
 namespace OCA\Files_External\Tests;
 
 use OCA\Files_External\Lib\Storage\AmazonS3;
@@ -60,7 +59,7 @@ class AmazonS3MigrationTest extends \Test\TestCase {
 		$this->params['secret'] = 'secret'.$uuid;
 		$this->params['bucket'] = 'bucket'.$uuid;
 
-		$this->oldId = 'amazon::' . $this->params['key'] . md5($this->params['secret']);
+		$this->oldId = 'amazon::' . $this->params['key'] . \md5($this->params['secret']);
 		$this->newId = 'amazon::' . $this->params['bucket'];
 	}
 
@@ -71,12 +70,12 @@ class AmazonS3MigrationTest extends \Test\TestCase {
 		parent::tearDown();
 	}
 
-	public function testUpdateLegacyOnlyId () {
+	public function testUpdateLegacyOnlyId() {
 		// add storage ids
 		$oldCache = new \OC\Files\Cache\Cache($this->oldId);
 
 		// add file to old cache
-		$fileId = $oldCache->put('foobar', ['size' => 0, 'mtime' => time(), 'mimetype' => 'httpd/directory']);
+		$fileId = $oldCache->put('foobar', ['size' => 0, 'mtime' => \time(), 'mimetype' => 'httpd/directory']);
 
 		try {
 			$this->instance = new AmazonS3($this->params);
@@ -95,14 +94,14 @@ class AmazonS3MigrationTest extends \Test\TestCase {
 		$this->assertSame('foobar', $path);
 	}
 
-	public function testUpdateLegacyAndNewId () {
+	public function testUpdateLegacyAndNewId() {
 		// add storage ids
 
 		$oldCache = new \OC\Files\Cache\Cache($this->oldId);
 		new \OC\Files\Cache\Cache($this->newId);
 
 		// add file to old cache
-		$fileId = $oldCache->put('/', ['size' => 0, 'mtime' => time(), 'mimetype' => 'httpd/directory']);
+		$fileId = $oldCache->put('/', ['size' => 0, 'mtime' => \time(), 'mimetype' => 'httpd/directory']);
 
 		try {
 			$this->instance = new AmazonS3($this->params);

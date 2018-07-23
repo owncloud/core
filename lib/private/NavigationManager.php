@@ -52,7 +52,7 @@ class NavigationManager implements INavigationManager {
 	/** @var IGroupManager */
 	private $groupManager;
 
-	function __construct(IAppManager $appManager = null,
+	public function __construct(IAppManager $appManager = null,
 						 IURLGenerator $urlGenerator = null,
 						 IFactory $l10nFac = null,
 						 IUserSession $userSession = null,
@@ -79,7 +79,7 @@ class NavigationManager implements INavigationManager {
 		}
 
 		$entry['active'] = false;
-		if(!isset($entry['icon'])) {
+		if (!isset($entry['icon'])) {
 			$entry['icon'] = '';
 		}
 		$this->entries[] = $entry;
@@ -131,7 +131,7 @@ class NavigationManager implements INavigationManager {
 			return;
 		}
 		$this->init = true;
-		if (is_null($this->appManager)) {
+		if ($this->appManager === null) {
 			return;
 		}
 		foreach ($this->appManager->getInstalledApps() as $app) {
@@ -160,7 +160,7 @@ class NavigationManager implements INavigationManager {
 				}
 				$route = $this->urlGenerator->linkTo($app, $html);
 			}
-			$name = isset($nav['name']) ? $nav['name'] : ucfirst($app);
+			$name = isset($nav['name']) ? $nav['name'] : \ucfirst($app);
 			$icon = isset($nav['icon']) ? $nav['icon'] : 'app.svg';
 			$iconPath = null;
 			foreach ([$icon, "$app.svg"] as $i) {
@@ -172,7 +172,7 @@ class NavigationManager implements INavigationManager {
 				}
 			}
 
-			if (is_null($iconPath)) {
+			if ($iconPath === null) {
 				$iconPath = $this->urlGenerator->imagePath('core', 'default-app-icon');
 			}
 
@@ -193,5 +193,4 @@ class NavigationManager implements INavigationManager {
 		}
 		return false;
 	}
-
 }

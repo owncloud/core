@@ -55,8 +55,8 @@ class OC_EventSource implements \OCP\IEventSource {
 
 		// prevent php output buffering, caching and nginx buffering
 		OC_Util::obEnd();
-		header('Cache-Control: no-cache');
-		header('X-Accel-Buffering: no');
+		\header('Cache-Control: no-cache');
+		\header('X-Accel-Buffering: no');
 		$this->fallback = isset($_GET['fallback']) and $_GET['fallback'] == 'true';
 		if ($this->fallback) {
 			$this->fallBackId = (int)$_GET['fallback_id'];
@@ -70,18 +70,18 @@ class OC_EventSource implements \OCP\IEventSource {
 			 *
 			 * @link https://github.com/owncloud/core/issues/14286
 			 */
-			header("Content-Security-Policy: default-src 'none'; script-src 'unsafe-inline'");
-			header("Content-Type: text/html");
-			echo str_repeat('<span></span>' . PHP_EOL, 10); //dummy data to keep IE happy
+			\header("Content-Security-Policy: default-src 'none'; script-src 'unsafe-inline'");
+			\header("Content-Type: text/html");
+			echo \str_repeat('<span></span>' . PHP_EOL, 10); //dummy data to keep IE happy
 		} else {
-			header("Content-Type: text/event-stream");
+			\header("Content-Type: text/event-stream");
 		}
 		if (!(\OC::$server->getRequest()->passesCSRFCheck())) {
 			$this->send('error', 'Possible CSRF attack. Connection will be closed.');
 			$this->close();
 			exit();
 		}
-		flush();
+		\flush();
 	}
 
 	/**
@@ -94,11 +94,11 @@ class OC_EventSource implements \OCP\IEventSource {
 	 * if only one parameter is given, a typeless message will be send with that parameter as data
 	 */
 	public function send($type, $data = null) {
-		if ($data and !preg_match('/^[A-Za-z0-9_]+$/', $type)) {
+		if ($data and !\preg_match('/^[A-Za-z0-9_]+$/', $type)) {
 			throw new BadMethodCallException('Type needs to be alphanumeric ('. $type .')');
 		}
 		$this->init();
-		if (is_null($data)) {
+		if ($data === null) {
 			$data = $type;
 			$type = null;
 		}
@@ -113,7 +113,7 @@ class OC_EventSource implements \OCP\IEventSource {
 			echo 'data: ' . OCP\JSON::encode($data) . PHP_EOL;
 		}
 		echo PHP_EOL;
-		flush();
+		\flush();
 	}
 
 	/**

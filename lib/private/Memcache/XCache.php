@@ -66,7 +66,7 @@ class XCache extends Cache implements IMemcache {
 	}
 
 	public function clear($prefix = '') {
-		if (function_exists('xcache_unset_by_prefix')) {
+		if (\function_exists('xcache_unset_by_prefix')) {
 			return xcache_unset_by_prefix($this->getNamespace() . $prefix);
 		} else {
 			// Since we can not clear by prefix, we just clear the whole cache.
@@ -113,14 +113,14 @@ class XCache extends Cache implements IMemcache {
 		return xcache_dec($this->getPrefix() . $key, $step);
 	}
 
-	static public function isAvailable() {
-		if (!extension_loaded('xcache')) {
+	public static function isAvailable() {
+		if (!\extension_loaded('xcache')) {
 			return false;
 		}
-		if (\OC::$CLI && !getenv('XCACHE_TEST')) {
+		if (\OC::$CLI && !\getenv('XCACHE_TEST')) {
 			return false;
 		}
-		if (!function_exists('xcache_unset_by_prefix') && \OC::$server->getIniWrapper()->getBool('xcache.admin.enable_auth')) {
+		if (!\function_exists('xcache_unset_by_prefix') && \OC::$server->getIniWrapper()->getBool('xcache.admin.enable_auth')) {
 			// We do not want to use XCache if we can not clear it without
 			// using the administration function xcache_clear_cache()
 			// AND administration functions are password-protected.

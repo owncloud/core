@@ -66,5 +66,4 @@ interface IControllerMethodReflector {
 	 * @since 8.0.0
 	 */
 	public function hasAnnotation($name);
-
 }

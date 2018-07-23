@@ -52,28 +52,28 @@ class Output implements IOutput {
 	 * @return bool false if an error occurred
 	 */
 	public function setReadfile($path) {
-		return @readfile($path);
+		return @\readfile($path);
 	}
 
 	/**
 	 * @param string $header
 	 */
 	public function setHeader($header) {
-		header($header);
+		\header($header);
 	}
 
 	/**
 	 * @param int $code sets the http status code
 	 */
 	public function setHttpResponseCode($code) {
-		http_response_code($code);
+		\http_response_code($code);
 	}
 
 	/**
 	 * @return int returns the current http response code
 	 */
 	public function getHttpResponseCode() {
-		return http_response_code();
+		return \http_response_code();
 	}
 
 	/**
@@ -87,7 +87,6 @@ class Output implements IOutput {
 	 */
 	public function setCookie($name, $value, $expire, $path, $domain, $secure, $httpOnly) {
 		$path = $this->webRoot ? : '/';
-		setcookie($name, $value, $expire, $path, $domain, $secure, $httpOnly);
+		\setcookie($name, $value, $expire, $path, $domain, $secure, $httpOnly);
 	}
-
 }

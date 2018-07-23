@@ -62,13 +62,13 @@ class JobList implements IJobList {
 	public function add($job, $argument = null) {
 		if (!$this->has($job, $argument)) {
 			if ($job instanceof IJob) {
-				$class = get_class($job);
+				$class = \get_class($job);
 			} else {
 				$class = $job;
 			}
 
-			$argument = json_encode($argument);
-			if (strlen($argument) > 4000) {
+			$argument = \json_encode($argument);
+			if (\strlen($argument) > 4000) {
 				throw new \InvalidArgumentException('Background job arguments can\'t exceed 4000 characters (json encoded)');
 			}
 
@@ -90,7 +90,7 @@ class JobList implements IJobList {
 	 */
 	public function remove($job, $argument = null) {
 		if ($job instanceof IJob) {
-			$class = get_class($job);
+			$class = \get_class($job);
 		} else {
 			$class = $job;
 		}
@@ -98,8 +98,8 @@ class JobList implements IJobList {
 		$query = $this->connection->getQueryBuilder();
 		$query->delete('jobs')
 			->where($query->expr()->eq('class', $query->createNamedParameter($class)));
-		if (!is_null($argument)) {
-			$argument = json_encode($argument);
+		if ($argument !== null) {
+			$argument = \json_encode($argument);
 			$query->andWhere($query->expr()->eq('argument', $query->createNamedParameter($argument)));
 		}
 		$query->execute();
@@ -124,11 +124,11 @@ class JobList implements IJobList {
 	 */
 	public function has($job, $argument) {
 		if ($job instanceof IJob) {
-			$class = get_class($job);
+			$class = \get_class($job);
 		} else {
 			$class = $job;
 		}
-		$argument = json_encode($argument);
+		$argument = \json_encode($argument);
 
 		$query = $this->connection->getQueryBuilder();
 		$query->select('id')
@@ -250,7 +250,7 @@ class JobList implements IJobList {
 				/** @var IJob $job */
 				$job = \OC::$server->query($row['class']);
 			} catch (QueryException $e) {
-				if (class_exists($row['class'])) {
+				if (\class_exists($row['class'])) {
 					$class = $row['class'];
 					$job = new $class();
 				} else {
@@ -261,7 +261,7 @@ class JobList implements IJobList {
 
 			$job->setId($row['id']);
 			$job->setLastRun($row['last_run']);
-			$job->setArgument(json_decode($row['argument'], true));
+			$job->setArgument(\json_decode($row['argument'], true));
 			return $job;
 		} catch (AutoloadNotAllowedException $e) {
 			// job is from a disabled app, ignore
@@ -312,7 +312,7 @@ class JobList implements IJobList {
 	public function setLastRun($job) {
 		$query = $this->connection->getQueryBuilder();
 		$query->update('jobs')
-			->set('last_run', $query->createNamedParameter(time(), IQueryBuilder::PARAM_INT))
+			->set('last_run', $query->createNamedParameter(\time(), IQueryBuilder::PARAM_INT))
 			->where($query->expr()->eq('id', $query->createNamedParameter($job->getId(), IQueryBuilder::PARAM_INT)));
 		$query->execute();
 	}

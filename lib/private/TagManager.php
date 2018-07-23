@@ -63,7 +63,6 @@ class TagManager implements \OCP\ITagManager {
 	public function __construct(TagMapper $mapper, \OCP\IUserSession $userSession) {
 		$this->mapper = $mapper;
 		$this->userSession = $userSession;
-
 	}
 
 	/**
@@ -78,7 +77,7 @@ class TagManager implements \OCP\ITagManager {
 	* @return \OCP\ITags
 	*/
 	public function load($type, $defaultTags = [], $includeShared = false, $userId = null) {
-		if (is_null($userId)) {
+		if ($userId === null) {
 			$user = $this->userSession->getUser();
 			if ($user === null) {
 				// nothing we can do without a user
@@ -88,5 +87,4 @@ class TagManager implements \OCP\ITagManager {
 		}
 		return new Tags($this->mapper, $userId, $type, $defaultTags, $includeShared);
 	}
-
 }

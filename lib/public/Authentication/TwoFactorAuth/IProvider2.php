@@ -35,5 +35,5 @@ interface IProvider2 extends IProvider {
 	 * @return \OCP\AppFramework\Http\ContentSecurityPolicy
 	 */
 
-        public function getCSP();
+	public function getCSP();
 }

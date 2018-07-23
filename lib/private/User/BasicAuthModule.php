@@ -20,9 +20,7 @@
  *
  */
 
-
 namespace OC\User;
-
 
 use OCP\AppFramework\Utility\ITimeFactory;
 use OCP\Authentication\IAuthModule;
@@ -34,7 +32,6 @@ use OCP\IUser;
 use OCP\IUserManager;
 
 class BasicAuthModule implements IAuthModule {
-
 
 	/** @var IConfig */
 	private $config;
@@ -101,20 +98,20 @@ class BasicAuthModule implements IAuthModule {
 			$this->logger->debug("Invalid password for username $authUser, trying as email.", ['app' => __METHOD__]);
 			// check email and password
 			$users = $this->manager->getByEmail($authUser);
-			$count = count($users);
+			$count = \count($users);
 			if ($count === 1) {
 				$user = $this->manager->checkPassword($users[0]->getUID(), $authPass);
 				if ($user instanceof IUser) {
 					// only update timeout on success
 					$this->session->set('last_check_timeout', $now);
 				}
-			} else if ($count > 1) {
+			} elseif ($count > 1) {
 				$this->logger->debug(
 					'Multiple users {users} for email {authUser}, not logging in', [
 						'app' => __METHOD__,
 						'authUser' => $authUser,
-						'users' => array_map(
-							function(IUser $user) {
+						'users' => \array_map(
+							function (IUser $user) {
 								return $user->getUID();
 							}, $users)
 					]);

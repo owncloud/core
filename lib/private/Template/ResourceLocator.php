@@ -61,7 +61,7 @@ abstract class ResourceLocator {
 		$this->logger = $logger;
 		$this->appManager = $appManager;
 		$this->mapping = $core_map;
-		$this->serverroot = key($core_map);
+		$this->serverroot = \key($core_map);
 		$this->webroot = $this->mapping[$this->serverroot];
 	}
 
@@ -91,7 +91,7 @@ abstract class ResourceLocator {
 			try {
 				$this->doFind($resource);
 			} catch (ResourceNotFoundException $e) {
-				$resourceApp = substr($resource, 0, strpos($resource, '/'));
+				$resourceApp = \substr($resource, 0, \strpos($resource, '/'));
 				$this->logger->error('Could not find resource file "' . $e->getResourcePath() . '"', ['app' => $resourceApp]);
 			}
 		}
@@ -100,7 +100,7 @@ abstract class ResourceLocator {
 				try {
 					$this->doFindTheme($resource);
 				} catch (ResourceNotFoundException $e) {
-					$resourceApp = substr($resource, 0, strpos($resource, '/'));
+					$resourceApp = \substr($resource, 0, \strpos($resource, '/'));
 					$this->logger->error('Could not find resource file in theme "' . $e->getResourcePath() . '"', ['app' => $resourceApp]);
 				}
 			}
@@ -116,10 +116,10 @@ abstract class ResourceLocator {
 	 * @return bool True if the resource was found, false otherwise
 	 */
 	protected function appendOnceIfExist($root, $file, $webRoot = null) {
-		$file = ltrim($file, '/');
+		$file = \ltrim($file, '/');
 		$path = $this->buildPath([$root, $file]);
 		
-		if (!isset( $this->resources[$path] ) && is_file($path)) {
+		if (!isset($this->resources[$path]) && \is_file($path)) {
 			$this->append($root, $file, $webRoot, false);
 			return true;
 		}
@@ -143,7 +143,7 @@ abstract class ResourceLocator {
 		$path = $this->buildPath([$root, $file]);
 		$this->resources[$path] = [$root, $webRoot, $file];
 
-		if ($throw && !is_file($path) ) {
+		if ($throw && !\is_file($path)) {
 			throw new ResourceNotFoundException($file, $webRoot);
 		}
 	}
@@ -154,14 +154,14 @@ abstract class ResourceLocator {
 	 * @param string[] $parts path parts to concatenate
 	 * @return string $parts concatenated
 	 */
-	protected function buildPath($parts){
-		$trimmedParts = array_map(
-			function($part){
-				return rtrim($part, '/');
+	protected function buildPath($parts) {
+		$trimmedParts = \array_map(
+			function ($part) {
+				return \rtrim($part, '/');
 			},
 			$parts
 		);
-		return join(DIRECTORY_SEPARATOR, $trimmedParts);
+		return \join(DIRECTORY_SEPARATOR, $trimmedParts);
 	}
 
 	/**

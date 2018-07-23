@@ -31,24 +31,24 @@ class DependencyAnalyzerTest extends TestCase {
 			->getMock();
 		$this->platformMock->expects($this->any())
 			->method('getPhpVersion')
-			->will( $this->returnValue('5.4.3'));
+			->will($this->returnValue('5.4.3'));
 		$this->platformMock->expects($this->any())
 			->method('getIntSize')
-			->will( $this->returnValue('4'));
+			->will($this->returnValue('4'));
 		$this->platformMock->expects($this->any())
 			->method('getDatabase')
-			->will( $this->returnValue('mysql'));
+			->will($this->returnValue('mysql'));
 		$this->platformMock->expects($this->any())
 			->method('getOS')
-			->will( $this->returnValue('Linux'));
+			->will($this->returnValue('Linux'));
 		$this->platformMock->expects($this->any())
 			->method('isCommandKnown')
-			->will( $this->returnCallback(function($command) {
+			->will($this->returnCallback(function ($command) {
 				return ($command === 'grep');
 			}));
 		$this->platformMock->expects($this->any())
 			->method('getLibraryVersion')
-			->will( $this->returnCallback(function($lib) {
+			->will($this->returnCallback(function ($lib) {
 				if ($lib === 'curl') {
 					return "2.3.4";
 				}
@@ -56,15 +56,15 @@ class DependencyAnalyzerTest extends TestCase {
 			}));
 		$this->platformMock->expects($this->any())
 			->method('getOcVersion')
-			->will( $this->returnValue('8.0.2'));
+			->will($this->returnValue('8.0.2'));
 
 		$this->l10nMock = $this->getMockBuilder('\OCP\IL10N')
 			->disableOriginalConstructor()
 			->getMock();
 		$this->l10nMock->expects($this->any())
 			->method('t')
-			->will($this->returnCallback(function($text, $parameters = []) {
-				return vsprintf($text, $parameters);
+			->will($this->returnCallback(function ($text, $parameters = []) {
+				return \vsprintf($text, $parameters);
 			}));
 
 		$this->analyser = new DependencyAnalyzer($this->platformMock, $this->l10nMock);
@@ -84,13 +84,13 @@ class DependencyAnalyzerTest extends TestCase {
 				'php' => []
 			]
 		];
-		if (!is_null($minVersion)) {
+		if ($minVersion !== null) {
 			$app['dependencies']['php']['@attributes']['min-version'] = $minVersion;
 		}
-		if (!is_null($maxVersion)) {
+		if ($maxVersion !== null) {
 			$app['dependencies']['php']['@attributes']['max-version'] = $maxVersion;
 		}
-		if (!is_null($intSize)) {
+		if ($intSize !== null) {
 			$app['dependencies']['php']['@attributes']['min-int-size'] = $intSize;
 		}
 		$missing = $this->analyser->analyze($app);
@@ -109,7 +109,7 @@ class DependencyAnalyzerTest extends TestCase {
 			'dependencies' => [
 			]
 		];
-		if (!is_null($databases)) {
+		if ($databases !== null) {
 			$app['dependencies']['database'] = $databases;
 		}
 		$missing = $this->analyser->analyze($app);
@@ -129,7 +129,7 @@ class DependencyAnalyzerTest extends TestCase {
 			'dependencies' => [
 			]
 		];
-		if (!is_null($commands)) {
+		if ($commands !== null) {
 			$app['dependencies']['command'] = $commands;
 		}
 		$missing = $this->analyser->analyze($app);
@@ -143,12 +143,12 @@ class DependencyAnalyzerTest extends TestCase {
 	 * @param $expectedMissing
 	 * @param $libs
 	 */
-	function testLibs($expectedMissing, $libs) {
+	public function testLibs($expectedMissing, $libs) {
 		$app = [
 			'dependencies' => [
 			]
 		];
-		if (!is_null($libs)) {
+		if ($libs !== null) {
 			$app['dependencies']['lib'] = $libs;
 		}
 
@@ -163,11 +163,11 @@ class DependencyAnalyzerTest extends TestCase {
 	 * @param $expectedMissing
 	 * @param $oss
 	 */
-	function testOS($expectedMissing, $oss) {
+	public function testOS($expectedMissing, $oss) {
 		$app = [
 			'dependencies' => []
 		];
-		if (!is_null($oss)) {
+		if ($oss !== null) {
 			$app['dependencies']['os'] = $oss;
 		}
 
@@ -182,11 +182,11 @@ class DependencyAnalyzerTest extends TestCase {
 	 * @param $expectedMissing
 	 * @param $oc
 	 */
-	function testOC($expectedMissing, $oc) {
+	public function testOC($expectedMissing, $oc) {
 		$app = [
 			'dependencies' => []
 		];
-		if (!is_null($oc)) {
+		if ($oc !== null) {
 			$app['dependencies']['owncloud'] = $oc;
 		}
 
@@ -199,7 +199,7 @@ class DependencyAnalyzerTest extends TestCase {
 	/**
 	 * @return array
 	 */
-	function providesOC() {
+	public function providesOC() {
 		return [
 			// no version -> no missing dependency
 			[[], null],
@@ -215,7 +215,7 @@ class DependencyAnalyzerTest extends TestCase {
 	/**
 	 * @return array
 	 */
-	function providesOS() {
+	public function providesOS() {
 		return [
 			[[], null],
 			[[], []],
@@ -227,7 +227,7 @@ class DependencyAnalyzerTest extends TestCase {
 	/**
 	 * @return array
 	 */
-	function providesLibs() {
+	public function providesLibs() {
 		return [
 			// we expect curl to exist
 			[[], 'curl'],
@@ -257,7 +257,7 @@ class DependencyAnalyzerTest extends TestCase {
 	/**
 	 * @return array
 	 */
-	function providesCommands() {
+	public function providesCommands() {
 		return [
 			[[], null],
 			// grep is known on linux
@@ -275,7 +275,7 @@ class DependencyAnalyzerTest extends TestCase {
 	/**
 	 * @return array
 	 */
-	function providesDatabases() {
+	public function providesDatabases() {
 		return [
 			// non BC - in case on databases are defined -> all are supported
 			[[], null],
@@ -288,7 +288,7 @@ class DependencyAnalyzerTest extends TestCase {
 	/**
 	 * @return array
 	 */
-	function providesPhpVersion() {
+	public function providesPhpVersion() {
 		return [
 			[[], null, null, null],
 			[[], '5.4', null, null],

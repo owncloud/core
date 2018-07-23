@@ -56,7 +56,7 @@ class Delete extends Command {
 	protected function execute(InputInterface $input, OutputInterface $output) {
 		$uid = $input->getArgument('uid');
 		$user = $this->userManager->get($uid);
-		if (is_null($user)) {
+		if ($user === null) {
 			$output->writeln("<error>User with uid '$uid' does not exist</error>");
 			return 1;
 		}

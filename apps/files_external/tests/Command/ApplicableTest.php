@@ -54,7 +54,7 @@ class ApplicableTest extends CommandTest {
 			'output' => 'json'
 		]);
 
-		$result = json_decode($this->executeCommand($command, $input), true);
+		$result = \json_decode($this->executeCommand($command, $input), true);
 
 		$this->assertEquals(['users' => [], 'groups' => []], $result);
 	}
@@ -71,7 +71,7 @@ class ApplicableTest extends CommandTest {
 			'output' => 'json'
 		]);
 
-		$result = json_decode($this->executeCommand($command, $input), true);
+		$result = \json_decode($this->executeCommand($command, $input), true);
 
 		$this->assertEquals(['users' => ['test', 'asd'], 'groups' => []], $result);
 	}

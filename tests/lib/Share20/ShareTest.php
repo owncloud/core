@@ -53,7 +53,6 @@ class ShareTest extends \Test\TestCase {
 		$this->assertEquals('42', $this->share->getId());
 	}
 
-
 	public function testSetIdString() {
 		$this->share->setId('foo');
 		$this->assertEquals('foo', $this->share->getId());
@@ -75,7 +74,6 @@ class ShareTest extends \Test\TestCase {
 	public function testSetProviderIdInt() {
 		$this->share->setProviderId(42);
 	}
-
 
 	public function testSetProviderIdString() {
 		$this->share->setProviderId('foo');

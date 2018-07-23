@@ -21,7 +21,6 @@
 
 namespace Tests\Core\Command\Config\System;
 
-
 use OC\Core\Command\Config\System\GetConfig;
 use OC\SystemConfig;
 use Symfony\Component\Console\Input\InputInterface;
@@ -51,50 +50,49 @@ class GetConfigTest extends TestCase {
 		$this->command = new GetConfig($systemConfig);
 	}
 
-
 	public function getData() {
 		return [
 			// String output as json
-			['name', 'newvalue', true, null, false, 'json', 0, json_encode('newvalue')],
+			['name', 'newvalue', true, null, false, 'json', 0, \json_encode('newvalue')],
 			// String output as plain text
 			['name', 'newvalue', true, null, false, 'plain', 0, 'newvalue'],
 			// String falling back to default output as json
-			['name', null, false, 'newvalue', true, 'json', 0, json_encode('newvalue')],
+			['name', null, false, 'newvalue', true, 'json', 0, \json_encode('newvalue')],
 			// String falling back without default: error
 			['name', null, false, null, false, 'json', 1, null],
 
 			// Int "0" output as json/plain
-			['name', 0, true, null, false, 'json', 0, json_encode(0)],
+			['name', 0, true, null, false, 'json', 0, \json_encode(0)],
 			['name', 0, true, null, false, 'plain', 0, '0'],
 			// Int "1" output as json/plain
-			['name', 1, true, null, false, 'json', 0, json_encode(1)],
+			['name', 1, true, null, false, 'json', 0, \json_encode(1)],
 			['name', 1, true, null, false, 'plain', 0, '1'],
 
 			// Bool "true" output as json/plain
-			['name', true, true, null, false, 'json', 0, json_encode(true)],
+			['name', true, true, null, false, 'json', 0, \json_encode(true)],
 			['name', true, true, null, false, 'plain', 0, 'true'],
 			// Bool "false" output as json/plain
-			['name', false, true, null, false, 'json', 0, json_encode(false)],
+			['name', false, true, null, false, 'json', 0, \json_encode(false)],
 			['name', false, true, null, false, 'plain', 0, 'false'],
 
 			// Null output as json/plain
-			['name', null, true, null, false, 'json', 0, json_encode(null)],
+			['name', null, true, null, false, 'json', 0, \json_encode(null)],
 			['name', null, true, null, false, 'plain', 0, 'null'],
 
 			// Array output as json/plain
-			['name', ['a', 'b'], true, null, false, 'json', 0, json_encode(['a', 'b'])],
+			['name', ['a', 'b'], true, null, false, 'json', 0, \json_encode(['a', 'b'])],
 			['name', ['a', 'b'], true, null, false, 'plain', 0, "a\nb"],
 			// Key array output as json/plain
-			['name', [0 => 'a', 1 => 'b'], true, null, false, 'json', 0, json_encode(['a', 'b'])],
+			['name', [0 => 'a', 1 => 'b'], true, null, false, 'json', 0, \json_encode(['a', 'b'])],
 			['name', [0 => 'a', 1 => 'b'], true, null, false, 'plain', 0, "a\nb"],
 			// Associative array output as json/plain
-			['name', ['a' => 1, 'b' => 2], true, null, false, 'json', 0, json_encode(['a' => 1, 'b' => 2])],
+			['name', ['a' => 1, 'b' => 2], true, null, false, 'json', 0, \json_encode(['a' => 1, 'b' => 2])],
 			['name', ['a' => 1, 'b' => 2], true, null, false, 'plain', 0, "a: 1\nb: 2"],
 
 			// Nested depth
-			[['name', 'a'], ['a' => 1, 'b' => 2], true, null, false, 'json', 0, json_encode(1)],
+			[['name', 'a'], ['a' => 1, 'b' => 2], true, null, false, 'json', 0, \json_encode(1)],
 			[['name', 'a'], ['a' => 1, 'b' => 2], true, null, false, 'plain', 0, '1'],
-			[['name', 'c'], ['a' => 1, 'b' => 2], true, true, true, 'json', 0, json_encode(true)],
+			[['name', 'c'], ['a' => 1, 'b' => 2], true, true, true, 'json', 0, \json_encode(true)],
 			[['name', 'c'], ['a' => 1, 'b' => 2], true, true, false, 'json', 1, null],
 
 		];
@@ -113,7 +111,7 @@ class GetConfigTest extends TestCase {
 	 * @param string $expectedMessage
 	 */
 	public function testGet($configNames, $value, $configExists, $defaultValue, $hasDefault, $outputFormat, $expectedReturn, $expectedMessage) {
-		if (is_array($configNames)) {
+		if (\is_array($configNames)) {
 			$configName = $configNames[0];
 		} else {
 			$configName = $configNames;
@@ -155,7 +153,7 @@ class GetConfigTest extends TestCase {
 			$output = '';
 			$this->consoleOutput->expects($this->any())
 				->method('writeln')
-				->willReturnCallback(function($value) {
+				->willReturnCallback(function ($value) {
 					global $output;
 					$output .= $value . "\n";
 					return $output;
@@ -167,7 +165,7 @@ class GetConfigTest extends TestCase {
 		if ($expectedMessage !== null) {
 			global $output;
 			// Remove the trailing newline
-			$this->assertSame($expectedMessage, substr($output, 0, -1));
+			$this->assertSame($expectedMessage, \substr($output, 0, -1));
 		}
 	}
 }

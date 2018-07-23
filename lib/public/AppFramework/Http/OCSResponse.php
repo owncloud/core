@@ -36,7 +36,6 @@ use OC\OCS\Result;
  * @since 8.1.0
  */
 class OCSResponse extends Response {
-
 	private $data;
 	private $format;
 	private $statuscode;
@@ -111,5 +110,4 @@ class OCSResponse extends Response {
 	public function setStatusCode($statuscode) {
 		$this->statuscode = $statuscode;
 	}
-
 }

@@ -38,7 +38,6 @@ use Test\TestCase;
 use OCP\Authentication\IApacheBackend;
 use OCP\UserInterface;
 
-
 /**
  * @group DB
  * @package Test\User
@@ -206,7 +205,7 @@ class SessionTest extends TestCase {
 		$session->expects($this->exactly(2))
 			->method('set')
 			->with($this->callback(function ($key) {
-					switch ($key) {
+				switch ($key) {
 						case 'user_id':
 						case 'loginname':
 							return true;
@@ -217,12 +216,12 @@ class SessionTest extends TestCase {
 					}
 			}));
 
-		$managerMethods = get_class_methods(Manager::class);
+		$managerMethods = \get_class_methods(Manager::class);
 		//keep following methods intact in order to ensure hooks are
 		//working
 		$doNotMock = ['__construct', 'emit', 'listen'];
 		foreach ($doNotMock as $methodName) {
-			$i = array_search($methodName, $managerMethods, true);
+			$i = \array_search($methodName, $managerMethods, true);
 			if ($i !== false) {
 				unset($managerMethods[$i]);
 			}
@@ -535,7 +534,7 @@ class SessionTest extends TestCase {
 		$session->expects($this->exactly(1))
 			->method('set')
 			->with($this->callback(function ($key) {
-					switch ($key) {
+				switch ($key) {
 						case 'user_id':
 							return true;
 						default:
@@ -560,7 +559,7 @@ class SessionTest extends TestCase {
 
 		//prepare login token
 		$token = 'goodToken';
-		\OC::$server->getConfig()->setUserValue('foo', 'login_token', $token, time());
+		\OC::$server->getConfig()->setUserValue('foo', 'login_token', $token, \time());
 
 		/** @var Session | \PHPUnit_Framework_MockObject_MockObject $userSession */
 		$userSession = $this->getMockBuilder(Session::class)
@@ -599,7 +598,7 @@ class SessionTest extends TestCase {
 
 		//prepare login token
 		$token = 'goodToken';
-		\OC::$server->getConfig()->setUserValue('foo', 'login_token', $token, time());
+		\OC::$server->getConfig()->setUserValue('foo', 'login_token', $token, \time());
 
 		$userSession = new Session($manager, $session, $this->timeFactory,
 			$this->tokenProvider, $this->config, $this->logger, $this->serviceLoader,
@@ -645,7 +644,7 @@ class SessionTest extends TestCase {
 
 		//prepare login token
 		$token = 'goodToken';
-		\OC::$server->getConfig()->setUserValue('foo', 'login_token', $token, time());
+		\OC::$server->getConfig()->setUserValue('foo', 'login_token', $token, \time());
 
 		$userSession = new Session($manager, $session, $this->timeFactory,
 			$this->tokenProvider, $this->config, $this->logger, $this->serviceLoader,
@@ -670,8 +669,8 @@ class SessionTest extends TestCase {
 		$manager->expects($this->any())
 			->method('get')
 			->will($this->returnCallback(function ($uid) use ($users) {
-					return $users[$uid];
-				}));
+				return $users[$uid];
+			}));
 
 		$session = new Memory('');
 		$session->set('user_id', 'foo');
@@ -1449,7 +1448,7 @@ class SessionTest extends TestCase {
 		$session->expects($this->any())->method('getUser')->willReturn($loggedInUser);
 
 		$session->expects($expectedReturn ? $this->never() : $this->once())->method('logout');
-		$this->assertEquals( $expectedReturn, $session->verifyAuthHeaders($request));
+		$this->assertEquals($expectedReturn, $session->verifyAuthHeaders($request));
 	}
 
 	public function providesModulesForLogin() {
@@ -1502,7 +1501,7 @@ class SessionTest extends TestCase {
 			$session->expects($expectedReturn ? $this->once() : $this->never())->method('loginUser')->willReturn($expectedReturn);
 		}
 
-		$this->assertEquals( $expectedReturn, $session->tryAuthModuleLogin($request));
+		$this->assertEquals($expectedReturn, $session->tryAuthModuleLogin($request));
 	}
 
 	public function testFailedLoginUser() {

@@ -171,7 +171,7 @@ class ScannerTest extends \Test\TestCase {
 
 		$storage->mkdir('folder');
 		$storage->file_put_contents('folder/bar.txt', 'qwerty');
-		$storage->touch('folder/bar.txt', time() - 200);
+		$storage->touch('folder/bar.txt', \time() - 200);
 
 		$scanner = new TestScanner('', \OC::$server->getDatabaseConnection(), \OC::$server->getLogger());
 		$scanner->addMount($mount);

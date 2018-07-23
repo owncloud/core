@@ -82,7 +82,7 @@ class AvatarManager implements IAvatarManager {
 	 */
 	public function getAvatar($userId) {
 		$user = $this->userManager->get($userId);
-		if (is_null($user)) {
+		if ($user === null) {
 			throw new \Exception('user does not exist');
 		}
 
@@ -99,8 +99,8 @@ class AvatarManager implements IAvatarManager {
 	}
 
 	private function buildAvatarPath($userId) {
-		$avatar = substr_replace(substr_replace(md5($userId), '/', 4, 0), '/', 2, 0);
-		return explode('/', $avatar);
+		$avatar = \substr_replace(\substr_replace(\md5($userId), '/', 4, 0), '/', 2, 0);
+		return \explode('/', $avatar);
 	}
 
 	/**

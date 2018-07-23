@@ -22,7 +22,6 @@
 
 namespace OC\Notification;
 
-
 use OCP\Notification\IAction;
 use OCP\Notification\INotification;
 
@@ -107,7 +106,7 @@ class Notification implements INotification {
 	 * @since 8.2.0
 	 */
 	public function setApp($app) {
-		if (!is_string($app) || $app === '' || isset($app[32])) {
+		if (!\is_string($app) || $app === '' || isset($app[32])) {
 			throw new \InvalidArgumentException('The given app name is invalid');
 		}
 		$this->app = $app;
@@ -129,7 +128,7 @@ class Notification implements INotification {
 	 * @since 8.2.0
 	 */
 	public function setUser($user) {
-		if (!is_string($user) || $user === '' || isset($user[64])) {
+		if (!\is_string($user) || $user === '' || isset($user[64])) {
 			throw new \InvalidArgumentException('The given user id is invalid');
 		}
 		$this->user = $user;
@@ -174,12 +173,12 @@ class Notification implements INotification {
 	 * @since 8.2.0 - 9.0.0: Type of $id changed to string
 	 */
 	public function setObject($type, $id) {
-		if (!is_string($type) || $type === '' || isset($type[64])) {
+		if (!\is_string($type) || $type === '' || isset($type[64])) {
 			throw new \InvalidArgumentException('The given object type is invalid');
 		}
 		$this->objectType = $type;
 
-		if (!is_int($id) && (!is_string($id) || $id === '' || isset($id[64]))) {
+		if (!\is_int($id) && (!\is_string($id) || $id === '' || isset($id[64]))) {
 			throw new \InvalidArgumentException('The given object id is invalid');
 		}
 		$this->objectId = (string) $id;
@@ -210,12 +209,12 @@ class Notification implements INotification {
 	 * @since 8.2.0
 	 */
 	public function setSubject($subject, array $parameters = []) {
-		if (!is_string($subject) || $subject === '' || isset($subject[64])) {
+		if (!\is_string($subject) || $subject === '' || isset($subject[64])) {
 			throw new \InvalidArgumentException('The given subject is invalid');
 		}
 		$this->subject = $subject;
 
-		if (!is_array($parameters)) {
+		if (!\is_array($parameters)) {
 			throw new \InvalidArgumentException('The given subject parameters are invalid');
 		}
 		$this->subjectParameters = $parameters;
@@ -245,7 +244,7 @@ class Notification implements INotification {
 	 * @since 8.2.0
 	 */
 	public function setParsedSubject($subject) {
-		if (!is_string($subject) || $subject === '') {
+		if (!\is_string($subject) || $subject === '') {
 			throw new \InvalidArgumentException('The given parsed subject is invalid');
 		}
 		$this->subjectParsed = $subject;
@@ -268,12 +267,12 @@ class Notification implements INotification {
 	 * @since 8.2.0
 	 */
 	public function setMessage($message, array $parameters = []) {
-		if (!is_string($message) || $message === '' || isset($message[64])) {
+		if (!\is_string($message) || $message === '' || isset($message[64])) {
 			throw new \InvalidArgumentException('The given message is invalid');
 		}
 		$this->message = $message;
 
-		if (!is_array($parameters)) {
+		if (!\is_array($parameters)) {
 			throw new \InvalidArgumentException('The given message parameters are invalid');
 		}
 		$this->messageParameters = $parameters;
@@ -303,7 +302,7 @@ class Notification implements INotification {
 	 * @since 8.2.0
 	 */
 	public function setParsedMessage($message) {
-		if (!is_string($message) || $message === '') {
+		if (!\is_string($message) || $message === '') {
 			throw new \InvalidArgumentException('The given parsed message is invalid');
 		}
 		$this->messageParsed = $message;
@@ -325,7 +324,7 @@ class Notification implements INotification {
 	 * @since 8.2.0
 	 */
 	public function setLink($link) {
-		if (!is_string($link) || $link === '' || isset($link[4000])) {
+		if (!\is_string($link) || $link === '' || isset($link[4000])) {
 			throw new \InvalidArgumentException('The given link is invalid');
 		}
 		$this->link = $link;
@@ -466,7 +465,7 @@ class Notification implements INotification {
 	 * @since 10.0.3
 	 */
 	public function setIcon($icon) {
-		if (!is_string($icon)) {
+		if (!\is_string($icon)) {
 			throw new \InvalidArgumentException('$icon has an invalid value');
 		}
 		$this->icon = $icon;

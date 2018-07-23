@@ -26,7 +26,7 @@ use Exception;
 
 /**
  * Helper to setup UI / Integration tests
- * 
+ *
  * @author Artur Neumann <artur@jankaritech.com>
  *
  */
@@ -66,14 +66,14 @@ class SetupHelper {
 		$email = null
 	) {
 		$occCommand = ['user:add', '--password-from-env'];
-		if (!is_null($displayName)) {
-			$occCommand = array_merge($occCommand, ["--display-name", $displayName]);
+		if ($displayName !== null) {
+			$occCommand = \array_merge($occCommand, ["--display-name", $displayName]);
 		}
-		if (!is_null($email)) {
-			$occCommand = array_merge($occCommand, ["--email", $email]);
+		if ($email !== null) {
+			$occCommand = \array_merge($occCommand, ["--email", $email]);
 		}
-		putenv("OC_PASS=" . $password);
-		return self::runOcc(array_merge($occCommand, [$userName]));
+		\putenv("OC_PASS=" . $password);
+		return self::runOcc(\array_merge($occCommand, [$userName]));
 	}
 
 	/**
@@ -155,11 +155,11 @@ class SetupHelper {
 	}
 
 	/**
-	 * 
+	 *
 	 * @return string[]
 	 */
 	public static function getGroups() {
-		return json_decode(self::runOcc(['group:list', '--output=json'])['stdOut']);
+		return \json_decode(self::runOcc(['group:list', '--output=json'])['stdOut']);
 	}
 	/**
 	 *
@@ -182,18 +182,18 @@ class SetupHelper {
 	 * @return void
 	 */
 	public static function init($adminUsername, $adminPassword, $baseUrl, $ocPath) {
-		foreach (func_get_args() as $variableToCheck) {
-			if (!is_string($variableToCheck)) {
+		foreach (\func_get_args() as $variableToCheck) {
+			if (!\is_string($variableToCheck)) {
 				throw new \InvalidArgumentException(
 					"mandatory argument missing or wrong type ($variableToCheck => "
-					. gettype($variableToCheck) . ")"
+					. \gettype($variableToCheck) . ")"
 				);
 			}
 		}
 		self::$adminUsername = $adminUsername;
 		self::$adminPassword = $adminPassword;
-		self::$baseUrl = rtrim($baseUrl, '/');
-		self::$ocPath = '/' . trim($ocPath, '/');
+		self::$baseUrl = \rtrim($baseUrl, '/');
+		self::$ocPath = '/' . \trim($ocPath, '/');
 	}
 
 	/**
@@ -202,7 +202,7 @@ class SetupHelper {
 	 * @throws Exception if ocPath has not been set yet
 	 */
 	public static function getOcPath() {
-		if (is_null(self::$ocPath)) {
+		if (self::$ocPath === null) {
 			throw new Exception(
 				"getOcPath called before ocPath is set by init"
 			);
@@ -242,7 +242,7 @@ class SetupHelper {
 	 */
 	public static function isAppEnabled($appName) {
 		$result = self::runOcc(['app:list', '^' . $appName . '$']);
-		return strtolower(substr($result['stdOut'], 0, 7)) === 'enabled';
+		return \strtolower(\substr($result['stdOut'], 0, 7)) === 'enabled';
 	}
 
 	/**
@@ -270,10 +270,10 @@ class SetupHelper {
 	 * @return string[] associated array with "code", "stdOut", "stdErr"
 	 */
 	public static function runOcc($args) {
-		if (is_null(self::$adminUsername)
-			|| is_null(self::$adminPassword)
-			|| is_null(self::$baseUrl)
-			|| is_null(self::$ocPath)
+		if (self::$adminUsername === null
+			|| self::$adminPassword === null
+			|| self::$baseUrl === null
+			|| self::$ocPath === null
 		) {
 			throw new Exception(
 				"runOcc called before init"
@@ -283,7 +283,7 @@ class SetupHelper {
 			$result = OcsApiHelper::sendRequest(
 				self::$baseUrl, self::$adminUsername,
 				self::$adminPassword, "POST", self::$ocPath,
-				['command' => implode(' ', $args)]
+				['command' => \implode(' ', $args)]
 			);
 		} catch (ServerException $e) {
 			throw new Exception(
@@ -298,9 +298,9 @@ class SetupHelper {
 		$return['stdOut'] = $result->xml()->xpath("//ocs/data/stdOut");
 		$return['stdErr'] = $result->xml()->xpath("//ocs/data/stdErr");
 
-		if (!is_a($return['code'][0], "SimpleXMLElement")
-			|| !is_a($return['stdOut'][0], "SimpleXMLElement")
-			|| !is_a($return['stdErr'][0], "SimpleXMLElement")
+		if (!\is_a($return['code'][0], "SimpleXMLElement")
+			|| !\is_a($return['stdOut'][0], "SimpleXMLElement")
+			|| !\is_a($return['stdErr'][0], "SimpleXMLElement")
 		) {
 			throw new Exception(
 				"Could not execute 'occ'. " .
@@ -313,5 +313,4 @@ class SetupHelper {
 		$return['stdErr'] = $return['stdErr'][0]->__toString();
 		return $return;
 	}
-
 }

@@ -192,10 +192,9 @@ class Activity implements IExtension {
 	 * @return bool|string
 	 */
 	protected function translateLong($text, IL10N $l, array $params) {
-
 		switch ($text) {
 			case self::SUBJECT_REMOTE_SHARE_RECEIVED:
-				if (sizeof($params) === 2) {
+				if (\sizeof($params) === 2) {
 					// New activity ownCloud 8.2+
 					return (string) $l->t('You received a new remote share %2$s from %1$s', $params);
 				}
@@ -457,7 +456,7 @@ class Activity implements IExtension {
 	public function filterNotificationTypes($types, $filter) {
 		switch ($filter) {
 			case self::FILTER_SHARES:
-				return array_intersect([self::TYPE_SHARED, self::TYPE_REMOTE_SHARE], $types);
+				return \array_intersect([self::TYPE_SHARED, self::TYPE_REMOTE_SHARE], $types);
 		}
 		return false;
 	}
@@ -480,5 +479,4 @@ class Activity implements IExtension {
 		}
 		return false;
 	}
-
 }

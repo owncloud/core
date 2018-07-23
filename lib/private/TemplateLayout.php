@@ -38,7 +38,6 @@
 namespace OC;
 
 class TemplateLayout extends \OC_Template {
-
 	private static $versionHash = '';
 
 	/**
@@ -50,43 +49,43 @@ class TemplateLayout extends \OC_Template {
 	 * @param string $renderAs
 	 * @param string $appId application id
 	 */
-	public function __construct( $renderAs, $appId = '' ) {
+	public function __construct($renderAs, $appId = '') {
 
 		// yes - should be injected ....
 		$this->config = \OC::$server->getConfig();
 
 		// Decide which page we show
-		if($renderAs == 'user') {
-			parent::__construct( 'core', 'layout.user' );
-			if(in_array(\OC_App::getCurrentApp(), ['settings','admin', 'help']) !== false) {
+		if ($renderAs == 'user') {
+			parent::__construct('core', 'layout.user');
+			if (\in_array(\OC_App::getCurrentApp(), ['settings','admin', 'help']) !== false) {
 				$this->assign('bodyid', 'body-settings');
-			}else{
+			} else {
 				$this->assign('bodyid', 'body-user');
 			}
 
 			// Code integrity notification
 			$integrityChecker = \OC::$server->getIntegrityCodeChecker();
-			if(\OC_User::isAdminUser(\OC_User::getUser()) && $integrityChecker->isCodeCheckEnforced() && !$integrityChecker->hasPassedCheck()) {
+			if (\OC_User::isAdminUser(\OC_User::getUser()) && $integrityChecker->isCodeCheckEnforced() && !$integrityChecker->hasPassedCheck()) {
 				\OCP\Util::addScript('core', 'integritycheck-failed-notification');
 			}
 
 			// Add navigation entry
-			$this->assign( 'application', '');
-			$this->assign( 'appid', $appId );
+			$this->assign('application', '');
+			$this->assign('appid', $appId);
 			$navigation = \OC_App::getNavigation();
-			$this->assign( 'navigation', $navigation);
+			$this->assign('navigation', $navigation);
 			$settingsNavigation = \OC_App::getSettingsNavigation();
-			$this->assign( 'settingsnavigation', $settingsNavigation);
-			foreach($navigation as $entry) {
+			$this->assign('settingsnavigation', $settingsNavigation);
+			foreach ($navigation as $entry) {
 				if ($entry['active']) {
-					$this->assign( 'application', $entry['name'] );
+					$this->assign('application', $entry['name']);
 					break;
 				}
 			}
 
-			foreach($settingsNavigation as $entry) {
+			foreach ($settingsNavigation as $entry) {
 				if ($entry['active']) {
-					$this->assign( 'application', $entry['name'] );
+					$this->assign('application', $entry['name']);
 					break;
 				}
 			}
@@ -100,16 +99,14 @@ class TemplateLayout extends \OC_Template {
 			} else {
 				$this->assign('userAvatarSet', \OC::$server->getAvatarManager()->getAvatar(\OC_User::getUser())->exists());
 			}
-
-		} else if ($renderAs == 'error') {
+		} elseif ($renderAs == 'error') {
 			parent::__construct('core', 'layout.guest', '', false);
 			$this->assign('bodyid', 'body-login');
-		} else if ($renderAs == 'guest') {
+		} elseif ($renderAs == 'guest') {
 			parent::__construct('core', 'layout.guest');
 			$this->assign('bodyid', 'body-login');
 		} else {
 			parent::__construct('core', 'layout.base');
-
 		}
 		// Send the language to our layouts
 		$lang = \OC::$server->getL10NFactory()->findLanguage();
@@ -118,40 +115,40 @@ class TemplateLayout extends \OC_Template {
 		}
 		$this->assign('language', $lang);
 
-		if(\OC::$server->getSystemConfig()->getValue('installed', false)) {
+		if (\OC::$server->getSystemConfig()->getValue('installed', false)) {
 			if (empty(self::$versionHash)) {
 				$v = \OC_App::getAppVersions();
-				$v['core'] = implode('.', \OCP\Util::getVersion());
-				self::$versionHash = md5(implode(',', $v));
+				$v['core'] = \implode('.', \OCP\Util::getVersion());
+				self::$versionHash = \md5(\implode(',', $v));
 			}
 		} else {
-			self::$versionHash = md5('not installed');
+			self::$versionHash = \md5('not installed');
 		}
 
 		// Add the js files
 		$jsFiles = self::findJavascriptFiles(\OC_Util::$scripts);
 		$this->assign('jsfiles', []);
 		if ($this->config->getSystemValue('installed', false) && $renderAs != 'error') {
-			$this->append( 'jsfiles', \OC::$server->getURLGenerator()->linkToRoute('js_config', ['v' => self::$versionHash]));
+			$this->append('jsfiles', \OC::$server->getURLGenerator()->linkToRoute('js_config', ['v' => self::$versionHash]));
 		}
-		foreach($jsFiles as $info) {
+		foreach ($jsFiles as $info) {
 			$web = $info[1];
 			$file = $info[2];
-			$this->append( 'jsfiles', $web.'/'.$file . '?v=' . self::$versionHash);
+			$this->append('jsfiles', $web.'/'.$file . '?v=' . self::$versionHash);
 		}
 
 		// Add the css files
 		$cssFiles = self::findStylesheetFiles(\OC_Util::$styles);
 		$this->assign('cssfiles', []);
 		$this->assign('printcssfiles', []);
-		foreach($cssFiles as $info) {
+		foreach ($cssFiles as $info) {
 			$web = $info[1];
 			$file = $info[2];
 
-			if (substr($file, -strlen('print.css')) === 'print.css') {
-				$this->append( 'printcssfiles', $web.'/'.$file . '?v=' . self::$versionHash);
+			if (\substr($file, -\strlen('print.css')) === 'print.css') {
+				$this->append('printcssfiles', $web.'/'.$file . '?v=' . self::$versionHash);
 			} else {
-				$this->append( 'cssfiles', $web.'/'.$file . '?v=' . self::$versionHash);
+				$this->append('cssfiles', $web.'/'.$file . '?v=' . self::$versionHash);
 			}
 		}
 	}
@@ -160,7 +157,7 @@ class TemplateLayout extends \OC_Template {
 	 * @param array $styles
 	 * @return array
 	 */
-	static public function findStylesheetFiles($styles) {
+	public static function findStylesheetFiles($styles) {
 		$locator = new \OC\Template\CSSResourceLocator(
 			\OC_Util::getTheme(),
 			\OC::$server->getAppManager(),
@@ -174,7 +171,7 @@ class TemplateLayout extends \OC_Template {
 	 * @param array $scripts
 	 * @return array
 	 */
-	static public function findJavascriptFiles($scripts) {
+	public static function findJavascriptFiles($scripts) {
 		$locator = new \OC\Template\JSResourceLocator(
 			\OC_Util::getTheme(),
 			\OC::$server->getAppManager(),
@@ -191,12 +188,11 @@ class TemplateLayout extends \OC_Template {
 	 * @throws \Exception If $filePath is not under \OC::$SERVERROOT
 	 */
 	public static function convertToRelativePath($filePath) {
-		$relativePath = explode(\OC::$SERVERROOT, $filePath);
-		if(count($relativePath) !== 2) {
+		$relativePath = \explode(\OC::$SERVERROOT, $filePath);
+		if (\count($relativePath) !== 2) {
 			throw new \Exception('$filePath is not under the \OC::$SERVERROOT');
 		}
 
 		return $relativePath[1];
 	}
-
 }

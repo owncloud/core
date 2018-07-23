@@ -42,16 +42,16 @@ trait LegacyDependencyCheckPolyfill {
 	public function checkDependencies() {
 		$ret = [];
 
-		$result = call_user_func([$this->getStorageClass(), 'checkDependencies']);
+		$result = \call_user_func([$this->getStorageClass(), 'checkDependencies']);
 		if ($result !== true) {
-			if (!is_array($result)) {
+			if (!\is_array($result)) {
 				$result = [$result];
 			}
 			foreach ($result as $key => $value) {
 				if (!($value instanceof MissingDependency)) {
 					$module = null;
 					$message = null;
-					if (is_numeric($key)) {
+					if (\is_numeric($key)) {
 						$module = $value;
 					} else {
 						$module = $key;
@@ -66,6 +66,4 @@ trait LegacyDependencyCheckPolyfill {
 
 		return $ret;
 	}
-
 }
-

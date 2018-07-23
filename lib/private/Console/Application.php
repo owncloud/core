@@ -71,10 +71,10 @@ class Application {
 		$inputDefinition = $application->getDefinition();
 		$inputDefinition->addOption(
 			new InputOption(
-				'no-warnings', 
-				null, 
-				InputOption::VALUE_NONE, 
-				'Skip global warnings, show command output only', 
+				'no-warnings',
+				null,
+				InputOption::VALUE_NONE,
+				'Skip global warnings, show command output only',
 				null
 			)
 		);
@@ -94,12 +94,12 @@ class Application {
 					throw new NeedsUpdateException();
 				} elseif ($this->config->getSystemValue('maintenance', false)) {
 					$errOutput = $output->getErrorOutput();
-				        $errOutput->writeln('<comment>ownCloud is in maintenance mode - no app have been loaded</comment>' . PHP_EOL);
+					$errOutput->writeln('<comment>ownCloud is in maintenance mode - no app have been loaded</comment>' . PHP_EOL);
 				} else {
 					OC_App::loadApps();
 					foreach (\OC::$server->getAppManager()->getInstalledApps() as $app) {
 						$appPath = \OC_App::getAppPath($app);
-						if($appPath === false) {
+						if ($appPath === false) {
 							continue;
 						}
 						// load commands using info.xml
@@ -110,7 +110,7 @@ class Application {
 						// load from register_command.php
 						\OC_App::registerAutoloading($app, $appPath);
 						$file = $appPath . '/appinfo/register_command.php';
-						if (file_exists($file)) {
+						if (\file_exists($file)) {
 							require $file;
 						}
 					}
@@ -166,7 +166,7 @@ class Application {
 			try {
 				$c = \OC::$server->query($command);
 			} catch (QueryException $e) {
-				if (class_exists($command)) {
+				if (\class_exists($command)) {
 					$c = new $command();
 				} else {
 					throw new \Exception("Console command '$command' is unknown and could not be loaded");

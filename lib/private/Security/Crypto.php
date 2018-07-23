@@ -22,7 +22,6 @@
  *
  */
 
-
 namespace OC\Security;
 
 use phpseclib\Crypt\AES;
@@ -55,7 +54,7 @@ class Crypto implements ICrypto {
 	 * @param IConfig $config
 	 * @param ISecureRandom $random
 	 */
-	function __construct(IConfig $config, ISecureRandom $random) {
+	public function __construct(IConfig $config, ISecureRandom $random) {
 		$this->cipher = new AES();
 		$this->config = $config;
 		$this->random = $random;
@@ -67,12 +66,12 @@ class Crypto implements ICrypto {
 	 * @return string Calculated HMAC
 	 */
 	public function calculateHMAC($message, $password = '') {
-		if($password === '') {
+		if ($password === '') {
 			$password = $this->config->getSystemValue('secret');
 		}
 
 		// Append an "a" behind the password and hash it to prevent reusing the same password as for encryption
-		$password = hash('sha512', $password . 'a');
+		$password = \hash('sha512', $password . 'a');
 
 		$hash = new Hash('sha512');
 		$hash->setKey($password);
@@ -86,7 +85,7 @@ class Crypto implements ICrypto {
 	 * @return string Authenticated ciphertext
 	 */
 	public function encrypt($plaintext, $password = '') {
-		if($password === '') {
+		if ($password === '') {
 			$password = $this->config->getSystemValue('secret');
 		}
 		$this->cipher->setPassword($password);
@@ -94,8 +93,8 @@ class Crypto implements ICrypto {
 		$iv = $this->random->generate($this->ivLength);
 		$this->cipher->setIV($iv);
 
-		$ciphertext = bin2hex($this->cipher->encrypt($plaintext));
-		$hmac = bin2hex($this->calculateHMAC($ciphertext.$iv, $password));
+		$ciphertext = \bin2hex($this->cipher->encrypt($plaintext));
+		$hmac = \bin2hex($this->calculateHMAC($ciphertext.$iv, $password));
 
 		return $ciphertext.'|'.$iv.'|'.$hmac;
 	}
@@ -108,27 +107,26 @@ class Crypto implements ICrypto {
 	 * @throws \Exception If the HMAC does not match
 	 */
 	public function decrypt($authenticatedCiphertext, $password = '') {
-		if($password === '') {
+		if ($password === '') {
 			$password = $this->config->getSystemValue('secret');
 		}
 		$this->cipher->setPassword($password);
 
-		$parts = explode('|', $authenticatedCiphertext);
-		if(sizeof($parts) !== 3) {
+		$parts = \explode('|', $authenticatedCiphertext);
+		if (\sizeof($parts) !== 3) {
 			throw new \Exception('Authenticated ciphertext could not be decoded.');
 		}
 
-		$ciphertext = hex2bin($parts[0]);
+		$ciphertext = \hex2bin($parts[0]);
 		$iv = $parts[1];
-		$hmac = hex2bin($parts[2]);
+		$hmac = \hex2bin($parts[2]);
 
 		$this->cipher->setIV($iv);
 
-		if(!hash_equals($this->calculateHMAC($parts[0].$parts[1], $password), $hmac)) {
+		if (!\hash_equals($this->calculateHMAC($parts[0].$parts[1], $password), $hmac)) {
 			throw new \Exception('HMAC does not match.');
 		}
 
 		return $this->cipher->decrypt($ciphertext);
 	}
-
 }

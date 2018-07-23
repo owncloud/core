@@ -60,7 +60,7 @@ class CheckCore extends Base {
 		$this->checker->runInstanceVerification();
 		$result = $this->checker->getResults();
 		$this->writeArrayInOutputFormat($input, $output, $result);
-		if (count($result)>0){
+		if (\count($result)>0) {
 			return 1;
 		}
 	}

@@ -22,18 +22,15 @@
  *
  */
 
-
 namespace OCP\AppFramework\Http;
 
 use OCP\AppFramework\Http;
-
 
 /**
  * Redirects to a different URL
  * @since 7.0.0
  */
 class RedirectResponse extends Response {
-
 	private $redirectURL;
 
 	/**
@@ -47,7 +44,6 @@ class RedirectResponse extends Response {
 		$this->addHeader('Location', $redirectURL);
 	}
 
-
 	/**
 	 * @return string the url to redirect
 	 * @since 7.0.0
@@ -55,6 +51,4 @@ class RedirectResponse extends Response {
 	public function getRedirectURL() {
 		return $this->redirectURL;
 	}
-
-
 }
