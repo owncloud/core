@@ -204,15 +204,17 @@ class RequestHandlerController extends OCSController {
 	public function reShare($id) {
 		$token = $this->request->getParam('token', null);
 		$shareWith = $this->request->getParam('shareWith', null);
-		$permission = (int)$this->request->getParam('permission', null);
-		$remoteId = (int)$this->request->getParam('remoteId', null);
+		$permission = $this->request->getParam('permission', null);
+		$remoteId = $this->request->getParam('remoteId', null);
 
 		if ($this->hasNull([$id, $token, $shareWith, $permission, $remoteId])) {
 			return new Result(null, Http::STATUS_BAD_REQUEST);
 		}
 
 		try {
-			$share = $this->federatedShareProvider->getShareById($id);
+			$permission = (int) $permission;
+			$remoteId = (int) $remoteId;
+			$share = $this->getValidShare($id);
 
 			// don't allow to share a file back to the owner
 			list($user, $remote) = $this->addressHandler->splitUserRemote($shareWith);
@@ -224,24 +226,31 @@ class RequestHandlerController extends OCSController {
 				return new Result(null, Http::STATUS_FORBIDDEN);
 			}
 
-			// check if re-sharing is allowed
-			if (!$share->getPermissions() | ~Constants::PERMISSION_SHARE) {
+			$reSharingAllowed = $share->getPermissions() & Constants::PERMISSION_SHARE;
+			if (!$reSharingAllowed) {
 				return new Result(null, Http::STATUS_BAD_REQUEST);
 			}
 			$share->setPermissions($share->getPermissions() & $permission);
-			// the recipient of the initial share is now the initiator for the re-share
-			$share->setSharedBy($share->getSharedWith());
-			$share->setSharedWith($shareWith);
-
-			$result = $this->federatedShareProvider->create($share);
-			$this->federatedShareProvider->storeRemoteId((int)$result->getId(), $remoteId);
+			$result = $this->fedShareManager->reShare(
+				$share,
+				$remoteId,
+				$shareWith,
+				$permission
+			);
 		} catch (Share\Exceptions\ShareNotFound $e) {
 			return new Result(null, Http::STATUS_NOT_FOUND);
+		} catch (InvalidShareException $e) {
+			return new Result(null, Http::STATUS_FORBIDDEN);
 		} catch (\Exception $e) {
 			return new Result(null, Http::STATUS_BAD_REQUEST);
 		}
 
-		return new Result(['token' => $result->getToken(), 'remoteId' => $result->getId()]);
+		return new Result(
+			[
+				'token' => $result->getToken(),
+				'remoteId' => $result->getId()
+			]
+		);
 	}
 
 	/**

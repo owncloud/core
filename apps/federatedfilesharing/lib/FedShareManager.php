@@ -190,6 +190,29 @@ class FedShareManager {
 	}
 
 	/**
+	 * @param IShare $share
+	 * @param int $remoteId
+	 * @param string $shareWith
+	 * @param int $permissions
+	 *
+	 * @return IShare
+	 *
+	 * @throws \OCP\Share\Exceptions\ShareNotFound
+	 */
+	public function reShare(IShare $share, $remoteId, $shareWith, $permissions) {
+		$share->setPermissions($share->getPermissions() & $permissions);
+		// the recipient of the initial share is now the initiator for the re-share
+		$share->setSharedBy($share->getSharedWith());
+		$share->setSharedWith($shareWith);
+		$result = $this->federatedShareProvider->create($share);
+		$this->federatedShareProvider->storeRemoteId(
+			(int)$result->getId(),
+			$remoteId
+		);
+		return $share;
+	}
+
+	/**
 	 *
 	 *
 	 * @param IShare $share
