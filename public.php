@@ -55,7 +55,7 @@ try {
 		$pathInfo = \trim($pathInfo, '/');
 		list($service) = \explode('/', $pathInfo);
 	}
-	$file = OCP\Config::getAppValue('core', 'public_' . \strip_tags($service));
+	$file = \OC::$server->getConfig()->getAppValue('core', 'public_' . \strip_tags($service));
 	if ($file === null) {
 		\header('HTTP/1.0 404 Not Found');
 		$dispatcher = \OC::$server->getEventDispatcher();

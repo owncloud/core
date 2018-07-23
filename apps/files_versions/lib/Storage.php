@@ -158,7 +158,7 @@ class Storage {
 	 * store a new version of a file.
 	 */
 	public static function store($filename) {
-		if (\OCP\Config::getSystemValue('files_versions', Storage::DEFAULTENABLED)=='true') {
+		if (\OC::$server->getConfig()->getSystemValue('files_versions', Storage::DEFAULTENABLED)=='true') {
 
 			// if the file gets streamed we need to remove the .part extension
 			// to get the right target
@@ -316,7 +316,7 @@ class Storage {
 	}
 
 	public static function restoreVersion($uid, $filename, $fileToRestore, $revision) {
-		if (\OCP\Config::getSystemValue('files_versions', Storage::DEFAULTENABLED) !== true) {
+		if (\OC::$server->getConfig()->getSystemValue('files_versions', Storage::DEFAULTENABLED) !== true) {
 			return false;
 		}
 		$users_view = new View('/'.$uid);
