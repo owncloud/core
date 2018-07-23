@@ -30,6 +30,7 @@ use OC\Files\Cache\CacheEntry;
 use OCP\Files\NotFoundException;
 use OCP\Files\ObjectStore\IObjectStore;
 use OCP\Files\ObjectStore\IVersionedObjectStorage;
+use OCP\Files\Storage\IStorage;
 
 class ObjectStoreStorage extends \OC\Files\Storage\Common {
 
@@ -320,7 +321,7 @@ class ObjectStoreStorage extends \OC\Files\Storage\Common {
 		return true;
 	}
 
-	public function moveFromStorage(\OCP\Files\Storage $sourceStorage, $sourceInternalPath, $targetInternalPath) {
+	public function moveFromStorage(IStorage $sourceStorage, $sourceInternalPath, $targetInternalPath) {
 		if ($sourceStorage === $this) {
 			return $this->copy($sourceInternalPath, $targetInternalPath);
 		}

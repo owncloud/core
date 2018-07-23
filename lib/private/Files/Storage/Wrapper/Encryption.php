@@ -603,13 +603,14 @@ class Encryption extends Wrapper {
 	}
 
 	/**
-	 * @param Storage $sourceStorage
+	 * @param Storage\IStorage $sourceStorage
 	 * @param string $sourceInternalPath
 	 * @param string $targetInternalPath
 	 * @param bool $preserveMtime
 	 * @return bool
+	 * @throws \Exception
 	 */
-	public function moveFromStorage(Storage $sourceStorage, $sourceInternalPath, $targetInternalPath, $preserveMtime = true) {
+	public function moveFromStorage(Storage\IStorage $sourceStorage, $sourceInternalPath, $targetInternalPath, $preserveMtime = true) {
 		if ($sourceStorage === $this) {
 			return $this->rename($sourceInternalPath, $targetInternalPath);
 		}
@@ -649,14 +650,15 @@ class Encryption extends Wrapper {
 	}
 
 	/**
-	 * @param Storage $sourceStorage
+	 * @param Storage\IStorage $sourceStorage
 	 * @param string $sourceInternalPath
 	 * @param string $targetInternalPath
 	 * @param bool $preserveMtime
 	 * @param bool $isRename
 	 * @return bool
+	 * @throws \Exception
 	 */
-	public function copyFromStorage(Storage $sourceStorage, $sourceInternalPath, $targetInternalPath, $preserveMtime = false, $isRename = false) {
+	public function copyFromStorage(Storage\IStorage $sourceStorage, $sourceInternalPath, $targetInternalPath, $preserveMtime = false, $isRename = false) {
 
 		// TODO clean this up once the underlying moveFromStorage in OC\Files\Storage\Wrapper\Common is fixed:
 		// - call $this->storage->copyFromStorage() instead of $this->copyBetweenStorage
@@ -675,7 +677,7 @@ class Encryption extends Wrapper {
 	 * @param string $targetInternalPath
 	 * @param bool $isRename
 	 */
-	private function updateEncryptedVersion(Storage $sourceStorage, $sourceInternalPath, $targetInternalPath, $isRename) {
+	private function updateEncryptedVersion(Storage\IStorage $sourceStorage, $sourceInternalPath, $targetInternalPath, $isRename) {
 		$isEncrypted = $this->encryptionManager->isEnabled() && $this->mount->getOption('encrypt', true) ? 1 : 0;
 		$cacheInformation = [
 			'encrypted' => (bool)$isEncrypted,
@@ -723,7 +725,7 @@ class Encryption extends Wrapper {
 	 * @return bool
 	 * @throws \Exception
 	 */
-	private function copyBetweenStorage(Storage $sourceStorage, $sourceInternalPath, $targetInternalPath, $preserveMtime, $isRename) {
+	private function copyBetweenStorage(Storage\IStorage $sourceStorage, $sourceInternalPath, $targetInternalPath, $preserveMtime, $isRename) {
 		// for versions we have nothing to do, because versions should always use the
 		// key from the original file. Just create a 1:1 copy and done
 		if ($this->isVersion($targetInternalPath) ||

@@ -50,7 +50,7 @@ class DbHandlerTest extends TestCase {
 		parent::setUp();
 
 		$this->connection = \OC::$server->getDatabaseConnection();
-		$this->il10n = $this->createMock('OCP\IL10N');
+		$this->il10n = $this->createMock(IL10N::class);
 
 		$this->dbHandler = new DbHandler(
 			$this->connection,
@@ -74,6 +74,7 @@ class DbHandlerTest extends TestCase {
 	 * @param string $url passed to the method
 	 * @param string $expectedUrl the url we expect to be written to the db
 	 * @param string $expectedHash the hash value we expect to be written to the db
+	 * @throws \OC\HintException
 	 */
 	public function testAddServer($url, $expectedUrl, $expectedHash) {
 		$id = $this->dbHandler->addServer($url);
@@ -141,6 +142,7 @@ class DbHandlerTest extends TestCase {
 	 * @param string $serverInTable
 	 * @param string $checkForServer
 	 * @param bool $expected
+	 * @throws \OC\HintException
 	 */
 	public function testServerExists($serverInTable, $checkForServer, $expected) {
 		$this->dbHandler->addServer($serverInTable);
@@ -272,6 +274,10 @@ class DbHandlerTest extends TestCase {
 
 	/**
 	 * @dataProvider providesAuth
+	 * @param $expectedResult
+	 * @param $user
+	 * @param $password
+	 * @throws \OC\HintException
 	 */
 	public function testAuth($expectedResult, $user, $password) {
 		if ($expectedResult) {

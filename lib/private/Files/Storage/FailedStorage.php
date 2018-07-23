@@ -24,6 +24,7 @@
 namespace OC\Files\Storage;
 
 use OC\Files\Cache\FailedCache;
+use OCP\Files\Storage\IStorage;
 use \OCP\Lock\ILockingProvider;
 use \OCP\Files\StorageNotAvailableException;
 
@@ -182,11 +183,11 @@ class FailedStorage extends Common {
 		return true;
 	}
 
-	public function copyFromStorage(\OCP\Files\Storage $sourceStorage, $sourceInternalPath, $targetInternalPath, $preserveMtime = false) {
+	public function copyFromStorage(IStorage $sourceStorage, $sourceInternalPath, $targetInternalPath, $preserveMtime = false) {
 		throw new StorageNotAvailableException($this->e->getMessage(), $this->e->getCode(), $this->e);
 	}
 
-	public function moveFromStorage(\OCP\Files\Storage $sourceStorage, $sourceInternalPath, $targetInternalPath) {
+	public function moveFromStorage(IStorage $sourceStorage, $sourceInternalPath, $targetInternalPath) {
 		throw new StorageNotAvailableException($this->e->getMessage(), $this->e->getCode(), $this->e);
 	}
 

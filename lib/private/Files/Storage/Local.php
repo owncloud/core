@@ -37,6 +37,7 @@
 namespace OC\Files\Storage;
 
 use OCP\Files\ForbiddenException;
+use OCP\Files\Storage\IStorage;
 
 /**
  * for local filestore, we only have to map the paths
@@ -314,10 +315,6 @@ class Local extends Common {
 		return $space;
 	}
 
-	public function search($query) {
-		return $this->searchInDir($query);
-	}
-
 	public function getLocalFile($path) {
 		return $this->getSourcePath($path);
 	}
@@ -357,6 +354,7 @@ class Local extends Common {
 	 * @param string $path
 	 * @param int $time
 	 * @return bool
+	 * @throws \OCP\Files\StorageNotAvailableException
 	 */
 	public function hasUpdated($path, $time) {
 		if ($this->file_exists($path)) {
@@ -412,6 +410,7 @@ class Local extends Common {
 	 *
 	 * @param string $path
 	 * @return string
+	 * @throws \OCP\Files\StorageNotAvailableException
 	 */
 	public function getETag($path) {
 		if ($this->is_file($path)) {
@@ -428,14 +427,15 @@ class Local extends Common {
 	}
 
 	/**
-	 * @param \OCP\Files\Storage $sourceStorage
+	 * @param IStorage $sourceStorage
 	 * @param string $sourceInternalPath
 	 * @param string $targetInternalPath
 	 * @param bool $preserveMtime
 	 * @return bool
 	 * @throws ForbiddenException
+	 * @throws \OCP\Files\StorageNotAvailableException
 	 */
-	public function copyFromStorage(\OCP\Files\Storage $sourceStorage, $sourceInternalPath, $targetInternalPath, $preserveMtime = false) {
+	public function copyFromStorage(IStorage $sourceStorage, $sourceInternalPath, $targetInternalPath, $preserveMtime = false) {
 		if ($sourceStorage->instanceOfStorage(__CLASS__)) {
 			/**
 			 * @var \OC\Files\Storage\Local $sourceStorage
@@ -448,13 +448,13 @@ class Local extends Common {
 	}
 
 	/**
-	 * @param \OCP\Files\Storage $sourceStorage
+	 * @param \OCP\Files\Storage\IStorage $sourceStorage
 	 * @param string $sourceInternalPath
 	 * @param string $targetInternalPath
 	 * @return bool
-	 * @throws \InvalidArgumentException
+	 * @throws \OCP\Files\StorageNotAvailableException
 	 */
-	public function moveFromStorage(\OCP\Files\Storage $sourceStorage, $sourceInternalPath, $targetInternalPath) {
+	public function moveFromStorage(IStorage $sourceStorage, $sourceInternalPath, $targetInternalPath) {
 		if ($sourceStorage->instanceOfStorage(__CLASS__)) {
 			/**
 			 * @var \OC\Files\Storage\Local $sourceStorage

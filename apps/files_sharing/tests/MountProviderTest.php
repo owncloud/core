@@ -28,11 +28,16 @@ use OCP\IConfig;
 use OCP\ILogger;
 use OCP\IUser;
 use OCP\Share\IManager;
+use OCA\Files_Sharing\SharedMount;
+use OCP\IUserManager;
+use OCP\Files\IRootFolder;
+use OCP\Share\IShare;
+use Test\TestCase;
 
 /**
  * @group DB
  */
-class MountProviderTest extends \Test\TestCase {
+class MountProviderTest extends TestCase {
 
 	/** @var MountProvider */
 	private $provider;
@@ -55,17 +60,17 @@ class MountProviderTest extends \Test\TestCase {
 	public function setUp() {
 		parent::setUp();
 
-		$this->config = $this->createMock('OCP\IConfig');
-		$this->user = $this->createMock('OCP\IUser');
-		$this->loader = $this->createMock('OCP\Files\Storage\IStorageFactory');
-		$this->shareManager = $this->createMock('\OCP\Share\IManager');
-		$this->logger = $this->createMock('\OCP\ILogger');
+		$this->config = $this->createMock(IConfig::class);
+		$this->user = $this->createMock(IUser::class);
+		$this->loader = $this->createMock(IStorageFactory::class);
+		$this->shareManager = $this->createMock(IManager::class);
+		$this->logger = $this->createMock(ILogger::class);
 
 		$this->provider = new MountProvider($this->config, $this->shareManager, $this->logger);
 	}
 
 	private function makeMockShare($id, $nodeId, $owner = 'user2', $target = null, $permissions = 31, $state = null) {
-		$share = $this->createMock('\OCP\Share\IShare');
+		$share = $this->createMock(IShare::class);
 		$share->expects($this->any())
 			->method('getPermissions')
 			->will($this->returnValue($permissions));
@@ -105,8 +110,8 @@ class MountProviderTest extends \Test\TestCase {
 	 * - pending shares
 	 */
 	public function testExcludeShares() {
-		$rootFolder = $this->createMock('\OCP\Files\IRootFolder');
-		$userManager = $this->createMock('\OCP\IUserManager');
+		$rootFolder = $this->createMock(IRootFolder::class);
+		$userManager = $this->createMock(IUserManager::class);
 
 		$userShares = [
 			$this->makeMockShare(1, 100, 'user2', '/share2', 0),
@@ -143,8 +148,8 @@ class MountProviderTest extends \Test\TestCase {
 		$mounts = $this->provider->getMountsForUser($this->user, $this->loader);
 
 		$this->assertCount(2, $mounts);
-		$this->assertInstanceOf('OCA\Files_Sharing\SharedMount', $mounts[0]);
-		$this->assertInstanceOf('OCA\Files_Sharing\SharedMount', $mounts[1]);
+		$this->assertInstanceOf(SharedMount::class, $mounts[0]);
+		$this->assertInstanceOf(SharedMount::class, $mounts[1]);
 
 		$mountedShare1 = $mounts[0]->getShare();
 
@@ -306,10 +311,11 @@ class MountProviderTest extends \Test\TestCase {
 	 * @param array $userShares array of user share specs
 	 * @param array $groupShares array of group share specs
 	 * @param array $expectedShares array of expected supershare specs
+	 * @param bool $moveFails
 	 */
 	public function testMergeShares($userShares, $groupShares, $expectedShares, $moveFails = false) {
-		$rootFolder = $this->createMock('\OCP\Files\IRootFolder');
-		$userManager = $this->createMock('\OCP\IUserManager');
+		$rootFolder = $this->createMock(IRootFolder::class);
+		$userManager = $this->createMock(IUserManager::class);
 
 		$userShares = \array_map(function ($shareSpec) {
 			return $this->makeMockShare($shareSpec[0], $shareSpec[1], $shareSpec[2], $shareSpec[3], $shareSpec[4]);
@@ -350,7 +356,7 @@ class MountProviderTest extends \Test\TestCase {
 
 		foreach ($mounts as $index => $mount) {
 			$expectedShare = $expectedShares[$index];
-			$this->assertInstanceOf('OCA\Files_Sharing\SharedMount', $mount);
+			$this->assertInstanceOf(SharedMount::class, $mount);
 
 			// supershare
 			$share = $mount->getShare();

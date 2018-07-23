@@ -15,6 +15,7 @@ use OC\Files\Storage\Common;
 use OC\Files\Storage\Temporary;
 use OC\Files\View;
 use OCP\Files\FileInfo;
+use OCP\Files\Storage\IStorage;
 use OCP\Lock\ILockingProvider;
 use OCP\Util;
 use Symfony\Component\EventDispatcher\GenericEvent;
@@ -30,11 +31,11 @@ class TemporaryNoTouch extends Temporary {
 }
 
 class TemporaryNoCross extends Temporary {
-	public function copyFromStorage(\OCP\Files\Storage $sourceStorage, $sourceInternalPath, $targetInternalPath, $preserveMtime = false) {
+	public function copyFromStorage(IStorage $sourceStorage, $sourceInternalPath, $targetInternalPath, $preserveMtime = false) {
 		return Common::copyFromStorage($sourceStorage, $sourceInternalPath, $targetInternalPath, $preserveMtime);
 	}
 
-	public function moveFromStorage(\OCP\Files\Storage $sourceStorage, $sourceInternalPath, $targetInternalPath) {
+	public function moveFromStorage(IStorage $sourceStorage, $sourceInternalPath, $targetInternalPath) {
 		return Common::moveFromStorage($sourceStorage, $sourceInternalPath, $targetInternalPath);
 	}
 }

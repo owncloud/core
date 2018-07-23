@@ -374,7 +374,7 @@ class SharedStorage extends \OC\Files\Storage\Wrapper\Jail implements ISharedSto
 	 * @throws \OCP\Lock\LockedException
 	 */
 	public function acquireLock($path, $type, ILockingProvider $provider) {
-		/** @var \OCP\Files\Storage $targetStorage */
+		/** @var \OCP\Files\Storage\IStorage $targetStorage */
 		list($targetStorage, $targetInternalPath) = $this->resolvePath($path);
 		$targetStorage->acquireLock($targetInternalPath, $type, $provider);
 		// lock the parent folders of the owner when locking the share as recipient
@@ -390,7 +390,7 @@ class SharedStorage extends \OC\Files\Storage\Wrapper\Jail implements ISharedSto
 	 * @param \OCP\Lock\ILockingProvider $provider
 	 */
 	public function releaseLock($path, $type, ILockingProvider $provider) {
-		/** @var \OCP\Files\Storage $targetStorage */
+		/** @var \OCP\Files\Storage\IStorage $targetStorage */
 		list($targetStorage, $targetInternalPath) = $this->resolvePath($path);
 		$targetStorage->releaseLock($targetInternalPath, $type, $provider);
 		// unlock the parent folders of the owner when unlocking the share as recipient
@@ -406,7 +406,7 @@ class SharedStorage extends \OC\Files\Storage\Wrapper\Jail implements ISharedSto
 	 * @param \OCP\Lock\ILockingProvider $provider
 	 */
 	public function changeLock($path, $type, ILockingProvider $provider) {
-		/** @var \OCP\Files\Storage $targetStorage */
+		/** @var \OCP\Files\Storage\IStorage $targetStorage */
 		list($targetStorage, $targetInternalPath) = $this->resolvePath($path);
 		$targetStorage->changeLock($targetInternalPath, $type, $provider);
 	}

@@ -25,6 +25,7 @@
 namespace OC\Files\Storage\Wrapper;
 
 use OC\Files\Cache\Wrapper\CacheJail;
+use OCP\Files\Storage\IStorage;
 use OCP\Lock\ILockingProvider;
 
 /**
@@ -472,12 +473,12 @@ class Jail extends Wrapper {
 	}
 
 	/**
-	 * @param \OCP\Files\Storage $sourceStorage
+	 * @param \OCP\Files\Storage\IStorage $sourceStorage
 	 * @param string $sourceInternalPath
 	 * @param string $targetInternalPath
 	 * @return bool
 	 */
-	public function copyFromStorage(\OCP\Files\Storage $sourceStorage, $sourceInternalPath, $targetInternalPath) {
+	public function copyFromStorage(IStorage $sourceStorage, $sourceInternalPath, $targetInternalPath) {
 		if ($sourceStorage === $this) {
 			return $this->copy($sourceInternalPath, $targetInternalPath);
 		}
@@ -485,12 +486,12 @@ class Jail extends Wrapper {
 	}
 
 	/**
-	 * @param \OCP\Files\Storage $sourceStorage
+	 * @param \OCP\Files\Storage\IStorage $sourceStorage
 	 * @param string $sourceInternalPath
 	 * @param string $targetInternalPath
 	 * @return bool
 	 */
-	public function moveFromStorage(\OCP\Files\Storage $sourceStorage, $sourceInternalPath, $targetInternalPath) {
+	public function moveFromStorage(IStorage $sourceStorage, $sourceInternalPath, $targetInternalPath) {
 		if ($sourceStorage === $this) {
 			return $this->rename($sourceInternalPath, $targetInternalPath);
 		}

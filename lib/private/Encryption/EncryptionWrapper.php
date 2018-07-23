@@ -68,11 +68,11 @@ class EncryptionWrapper {
 	 * Wraps the given storage when it is not a shared storage
 	 *
 	 * @param string $mountPoint
-	 * @param Storage $storage
+	 * @param Storage\IStorage $storage
 	 * @param IMountPoint $mount
 	 * @return Encryption|Storage
 	 */
-	public function wrapStorage($mountPoint, Storage $storage, IMountPoint $mount) {
+	public function wrapStorage($mountPoint, Storage\IStorage $storage, IMountPoint $mount) {
 		$parameters = [
 			'storage' => $storage,
 			'mountPoint' => $mountPoint,

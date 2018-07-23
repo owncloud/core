@@ -432,7 +432,7 @@ class SharedStorageTest extends TestCase {
 		$this->assertTrue($view->file_exists($this->folder));
 
 		/**
-		 * @var \OCP\Files\Storage $sharedStorage
+		 * @var \OCP\Files\Storage\IStorage $sharedStorage
 		 */
 		list($sharedStorage, ) = $view->resolvePath($this->folder);
 		$this->assertTrue($sharedStorage->instanceOfStorage('OCA\Files_Sharing\ISharedStorage'));
@@ -465,7 +465,7 @@ class SharedStorageTest extends TestCase {
 		$this->assertTrue($view->file_exists($this->folder));
 
 		/**
-		 * @var \OCP\Files\Storage $sharedStorage
+		 * @var \OCP\Files\Storage\IStorage $sharedStorage
 		 */
 		list($sharedStorage, ) = $view->resolvePath($this->folder);
 		$this->assertTrue($sharedStorage->instanceOfStorage('OCA\Files_Sharing\ISharedStorage'));

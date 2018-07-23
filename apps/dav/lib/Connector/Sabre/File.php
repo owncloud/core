@@ -437,7 +437,7 @@ class File extends Node implements IFile, IFileNode {
 		if (\OCP\App::isEnabled('encryption')) {
 			return [];
 		}
-		/** @var \OCP\Files\Storage $storage */
+		/** @var \OCP\Files\Storage\IStorage $storage */
 		list($storage, $internalPath) = $this->fileView->resolvePath($this->path);
 		if ($storage === null) {
 			return [];
@@ -610,7 +610,7 @@ class File extends Node implements IFile, IFileNode {
 	 * or whether the file can be assembled/uploaded directly on the
 	 * target storage.
 	 *
-	 * @param \OCP\Files\Storage $storage
+	 * @param \OCP\Files\Storage\IStorage $storage
 	 * @return bool true if the storage needs part file handling
 	 */
 	private function needsPartFile($storage) {

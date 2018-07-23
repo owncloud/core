@@ -79,7 +79,7 @@ class SessionCredentials extends AuthMechanism {
 		$storage->setBackendOption('password', $credentials['password']);
 	}
 
-	public function wrapStorage(Storage $storage) {
+	public function wrapStorage(Storage\IStorage $storage) {
 		return new SessionStorageWrapper(['storage' => $storage]);
 	}
 }

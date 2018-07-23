@@ -8,14 +8,18 @@
 
 namespace Test\Files\Mount;
 
+use OCP\Files\Storage\IStorage;
+use OCP\Files\Storage\IStorageFactory;
+use OC\Files\Cache\Cache;
+
 class MountPointTest extends \Test\TestCase {
 	public function testGetStorage() {
-		$cache = $this->createMock('\OC\Files\Cache\Cache');
+		$cache = $this->createMock(Cache::class);
 		$cache->expects($this->once())
 			->method('getId')
 			->will($this->returnValue(123));
 
-		$storage = $this->createMock('\OCP\Files\Storage');
+		$storage = $this->createMock(IStorage::class);
 		$storage->expects($this->once())
 			->method('getId')
 			->will($this->returnValue('home:12345'));
@@ -23,14 +27,14 @@ class MountPointTest extends \Test\TestCase {
 			->method('getCache')
 			->will($this->returnValue($cache));
 
-		$loader = $this->createMock('\OCP\Files\Storage\IStorageFactory');
+		$loader = $this->createMock(IStorageFactory::class);
 		$loader->expects($this->once())
 			->method('getInstance')
 			->will($this->returnValue($storage));
 
 		$mountPoint = new \OC\Files\Mount\MountPoint(
 			// just use this because a real class is needed
-			'\Test\Files\Mount\MountPointTest',
+			MountPointTest::class,
 			'/mountpoint',
 			null,
 			$loader
@@ -46,7 +50,7 @@ class MountPointTest extends \Test\TestCase {
 	}
 
 	public function testInvalidStorage() {
-		$loader = $this->createMock('\OCP\Files\Storage\IStorageFactory');
+		$loader = $this->createMock(IStorageFactory::class);
 		$loader->expects($this->once())
 			->method('getInstance')
 			->will($this->throwException(new \Exception('Test storage init exception')));
@@ -58,7 +62,7 @@ class MountPointTest extends \Test\TestCase {
 
 		$mountPoint = new \OC\Files\Mount\MountPoint(
 			// just use this because a real class is needed
-			'\Test\Files\Mount\MountPointTest',
+			MountPointTest::class,
 			'/mountpoint',
 			null,
 			$loader
@@ -82,19 +86,19 @@ class MountPointTest extends \Test\TestCase {
 	}
 
 	public function testGetRootIdNullCache() {
-		$storage = $this->createMock('\OCP\Files\Storage');
+		$storage = $this->createMock(IStorage::class);
 		$storage->expects($this->any())
 			->method('getCache')
 			->will($this->returnValue(null));
 
-		$loader = $this->createMock('\OCP\Files\Storage\IStorageFactory');
+		$loader = $this->createMock(IStorageFactory::class);
 		$loader->expects($this->once())
 			->method('getInstance')
 			->will($this->returnValue($storage));
 
 		$mountPoint = new \OC\Files\Mount\MountPoint(
 			// just use this because a real class is needed
-			'\Test\Files\Mount\MountPointTest',
+			MountPointTest::class,
 			'/mountpoint',
 			null,
 			$loader
