@@ -73,9 +73,9 @@ Feature: checksums
     # Create the file directly in local storage, bypassing ownCloud
     And file "prueba_cksum.txt" with text "Test file for checksums" has been created in local storage
     # Do a first download, which will trigger ownCloud to calculate a checksum for the file
-    And user "user0" downloads the file "/local_storage/prueba_cksum.txt" using the WebDAV API
-    # Now do a download that is expected to have a checksum with it
     When user "user0" downloads the file "/local_storage/prueba_cksum.txt" using the WebDAV API
+    # Now do a download that is expected to have a checksum with it
+    And user "user0" downloads the file "/local_storage/prueba_cksum.txt" using the WebDAV API
     Then the header checksum should match "SHA1:a35b7605c8f586d735435535c337adc066c2ccb6"
     Examples:
 			| dav_version   |
