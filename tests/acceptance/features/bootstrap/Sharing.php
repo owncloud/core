@@ -480,7 +480,6 @@ trait Sharing {
 	 * @param string $password
 	 * @param string $body
 	 * @param bool $autorename
-	 * @param bool $overwriting the upload is expected to overwrite an existing file
 	 *
 	 * @return void
 	 */
