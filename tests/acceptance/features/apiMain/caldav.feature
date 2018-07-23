@@ -13,7 +13,7 @@ Feature: caldav
 
 	@caldav
 	Scenario: Accessing a not shared calendar of another user
-		And user "admin" has successfully created a calendar named "MyCalendar"
+		Given user "admin" has successfully created a calendar named "MyCalendar"
 		When user "user0" requests calendar "admin/MyCalendar" using the new WebDAV API
 		Then the CalDAV HTTP status code should be "404"
 		And the CalDAV exception should be "Sabre\DAV\Exception\NotFound"

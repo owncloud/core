@@ -236,7 +236,7 @@ Feature: Comments
 			| user1 | Comment from sharee |
 		And user "user1" has been deleted
 		Then user "user0" should have 1 comments on folder "/FOLDER_TO_COMMENT"
-		Then user "user0" should have the following comments on folder "/FOLDER_TO_COMMENT"
+		And user "user0" should have the following comments on folder "/FOLDER_TO_COMMENT"
 			| deleted_users | Comment from sharee |
 
 	Scenario: deleting a content owner deletes the comment

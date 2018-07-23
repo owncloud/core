@@ -8,7 +8,7 @@ So that I can more easily manage access to resources by groups rather than indiv
 		Given using OCS API version "2"
 
 	Scenario Outline: admin creates a group
-		Given the administrator sends a group creation request for group "<group_id>" using the provisioning API
+		When the administrator sends a group creation request for group "<group_id>" using the provisioning API
 		Then the OCS status code should be "200"
 		And the HTTP status code should be "200"
 		And group "<group_id>" should exist
@@ -52,7 +52,7 @@ So that I can more easily manage access to resources by groups rather than indiv
 		Given user "subadmin" has been created
 		And group "new-group" has been created
 		And user "subadmin" has been made a subadmin of group "new-group"
-		And user "subadmin" sends HTTP method "POST" to OCS API endpoint "/cloud/groups" with body
+		When user "subadmin" sends HTTP method "POST" to OCS API endpoint "/cloud/groups" with body
 			| groupid   | another-group   |
 		Then the OCS status code should be "997"
 		And the HTTP status code should be "401"

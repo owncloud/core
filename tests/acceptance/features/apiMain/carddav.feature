@@ -13,7 +13,7 @@ Feature: carddav
 
   @carddav
   Scenario: Accessing a not shared addressbook of another user
-    And user "admin" has successfully created an address book named "MyAddressbook"
+    Given user "admin" has successfully created an address book named "MyAddressbook"
     When user "user0" requests address book "admin/MyAddressbook" using the new WebDAV API
     Then the CardDAV HTTP status code should be "404"
     And the CardDAV exception should be "Sabre\DAV\Exception\NotFound"
