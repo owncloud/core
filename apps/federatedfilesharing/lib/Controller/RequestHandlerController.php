@@ -220,9 +220,7 @@ class RequestHandlerController extends OCSController {
 			list($user, $remote) = $this->addressHandler->splitUserRemote($shareWith);
 			$owner = $share->getShareOwner();
 			$currentServer = $this->addressHandler->generateRemoteURL();
-			if ($this->addressHandler->compareAddresses($user, $remote, $owner, $currentServer)
-				|| !$this->verifyShare($share, $token)
-			) {
+			if ($this->addressHandler->compareAddresses($user, $remote, $owner, $currentServer)) {
 				return new Result(null, Http::STATUS_FORBIDDEN);
 			}
 
@@ -380,53 +378,14 @@ class RequestHandlerController extends OCSController {
 	 * @return Result
 	 */
 	public function revoke($id) {
-		$token = $this->request->getParam('token');
-		
-		$share = $this->federatedShareProvider->getShareById($id);
-		if (!$this->verifyShare($share, $token)) {
+		try {
+			$share = $this->getValidShare($id);
+			$this->fedShareManager->revoke($share);
+		} catch (\Exception $e) {
 			return new Result(null, Http::STATUS_BAD_REQUEST);
 		}
 
-		$this->federatedShareProvider->removeShareFromTable($share);
 		return new Result();
-	}
-
-	/**
-	 * check if server-to-server sharing is enabled
-	 *
-	 * @param bool $incoming
-	 *
-	 * @return bool
-	 */
-	private function isS2SEnabled($incoming = false) {
-		$result = \OCP\App::isEnabled('files_sharing');
-
-		if ($incoming) {
-			$result = $result && $this->federatedShareProvider->isIncomingServer2serverShareEnabled();
-		} else {
-			$result = $result && $this->federatedShareProvider->isOutgoingServer2serverShareEnabled();
-		}
-
-		return $result;
-	}
-
-	/**
-	 * check if we got the right share
-	 *
-	 * @param Share\IShare $share
-	 * @param string $token
-	 *
-	 * @return bool
-	 */
-	protected function verifyShare(Share\IShare $share, $token) {
-		if (
-			$share->getShareType() === FederatedShareProvider::SHARE_TYPE_REMOTE &&
-			$share->getToken() === $token
-		) {
-			return true;
-		}
-
-		return false;
 	}
 
 	/**
@@ -435,42 +394,25 @@ class RequestHandlerController extends OCSController {
 	 *
 	 * update share information to keep federated re-shares in sync
 	 *
-	 * @param array $params
+	 * @param int $id
 	 *
 	 * @return Result
 	 */
-	public function updatePermissions($params) {
-		$id = (int)$params['id'];
-		$token = $this->request->getParam('token', null);
-		$permissions = $this->request->getParam('permissions', null);
-
+	public function updatePermissions($id) {
 		try {
-			$share = $this->federatedShareProvider->getShareById($id);
-			$validPermission = \ctype_digit($permissions);
-			$validToken = $this->verifyShare($share, $token);
-			if (!$validPermission || !$validToken) {
-				return new Result(null, Http::STATUS_BAD_REQUEST);
+			$permissions = $this->request->getParam('permissions', null);
+
+			$share = $this->getValidShare($id);
+			$validPermission = \ctype_digit((string)$permissions);
+			if (!$validPermission) {
+				throw new \Exception();
 			}
-			$this->updatePermissionsInDatabase($share, (int)$permissions);
-		} catch (Share\Exceptions\ShareNotFound $e) {
+			$this->fedShareManager->updatePermissions($share, (int)$permissions);
+		} catch (\Exception $e) {
 			return new Result(null, Http::STATUS_BAD_REQUEST);
 		}
 
 		return new Result();
-	}
-
-	/**
-	 * update permissions in database
-	 *
-	 * @param IShare $share
-	 * @param int $permissions
-	 */
-	protected function updatePermissionsInDatabase(IShare $share, $permissions) {
-		$query = $this->connection->getQueryBuilder();
-		$query->update('share')
-			->where($query->expr()->eq('id', $query->createNamedParameter($share->getId())))
-			->set('permissions', $query->createNamedParameter($permissions))
-			->execute();
 	}
 
 	/**
