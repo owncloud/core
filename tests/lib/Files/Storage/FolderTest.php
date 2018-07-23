@@ -23,6 +23,7 @@ namespace Test\Files\Storage;
 
 use OC\Files\Storage\File;
 use OC\Files\Storage\Folder;
+use OC\Files\Storage\Node;
 use OCP\Files\Storage\IStorage;
 
 /**
@@ -77,6 +78,9 @@ class FolderTest extends NodeTest {
 
 		$node = $this->createTestNode('sub', $storage);
 		$children = $node->getDirectoryListing();
+		\usort($children, function (Node $a, Node $b) {
+			return \strcmp($a->getName(), $b->getName());
+		});
 		$this->assertCount(2, $children);
 		$this->assertInstanceOf(File::class, $children[0]);
 		$this->assertInstanceOf(Folder::class, $children[1]);
