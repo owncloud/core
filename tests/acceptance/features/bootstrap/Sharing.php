@@ -396,7 +396,7 @@ trait Sharing {
 	 * @return void
 	 */
 	public function publiclyOverwritingContent($filename, $body = 'test') {
-		$this->publicUploadContent($filename, '', $body, false, true);
+		$this->publicUploadContent($filename, '', $body, false);
 	}
 
 	/**
@@ -488,8 +488,7 @@ trait Sharing {
 		$filename,
 		$password = '',
 		$body = 'test',
-		$autorename = false,
-		$overwriting = false
+		$autorename = false
 	) {
 		$url = $this->getBaseUrl() . "/public.php/webdav/";
 		$url .= \rawurlencode(\ltrim($filename, '/'));
