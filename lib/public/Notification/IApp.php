@@ -49,4 +49,12 @@ interface IApp {
 	 * @since 9.0.0
 	 */
 	public function getCount(INotification $notification);
+
+	/**
+	 * Notification of a share to user(s) by email is achieved by background job
+	 * @param string $shareFullId
+	 * @return null
+	 * @since 10.1.0
+	 */
+	public function emailNotify($shareFullId);
 }

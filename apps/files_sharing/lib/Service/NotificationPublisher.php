@@ -20,6 +20,7 @@
  */
 namespace OCA\Files_Sharing\Service;
 
+use OCP\BackgroundJob\IJobList;
 use OCP\IURLGenerator;
 use OCP\IUserManager;
 use OCP\IGroupManager;
@@ -117,6 +118,12 @@ class NotificationPublisher {
 
 			$this->notificationManager->notify($notification);
 		}
+
+		/**
+		 * Finally notify users via email This task would run
+		 * as a background job.
+		 */
+		$this->notificationManager->emailNotify($share->getFullId());
 	}
 
 	/**

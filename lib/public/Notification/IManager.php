@@ -63,4 +63,11 @@ interface IManager extends IApp, INotifier {
 	 * @since 9.0.0
 	 */
 	public function hasNotifiers();
+
+	/**
+	 * @param string $shareFullId
+	 * @return null
+	 * @since 10.1.0
+	 */
+	public function emailNotify($shareFullId);
 }

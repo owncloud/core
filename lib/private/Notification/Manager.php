@@ -245,6 +245,16 @@ class Manager implements IManager {
 	}
 
 	/**
+	 * @param string $shareFullId
+	 * @return null
+	 */
+	public function emailNotify($shareFullId) {
+		foreach ($this->getApps() as $app) {
+			$app->emailNotify($shareFullId);
+		}
+	}
+
+	/**
 	 * @param INotification $notification
 	 * @param string $languageCode The code of the language that should be used to prepare the notification
 	 * @return INotification
