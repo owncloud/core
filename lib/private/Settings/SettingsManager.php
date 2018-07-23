@@ -265,7 +265,9 @@ class SettingsManager implements ISettingsManager {
 				$this->config,
 				$this->groupManager,
 				$this->userSession,
-				$this->lfactory),
+				$this->lfactory,
+				new \OC\Helper\LocaleHelper()
+			),
 			LegacyPersonal::class => new LegacyPersonal($this->helper),
 			Clients::class => new Clients($this->config, $this->defaults),
 			Version::class => new Version(),

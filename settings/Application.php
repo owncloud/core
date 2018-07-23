@@ -44,7 +44,6 @@ use OC\Settings\Controller\GroupsController;
 use OC\Settings\Controller\LegalSettingsController;
 use OC\Settings\Controller\LogSettingsController;
 use OC\Settings\Controller\MailSettingsController;
-use OC\Settings\Controller\SecuritySettingsController;
 use OC\Settings\Controller\UsersController;
 use OC\Settings\Middleware\SubadminMiddleware;
 use OCP\AppFramework\App;
@@ -63,14 +62,6 @@ class Application extends App {
 		parent::__construct('settings', $urlParams);
 
 		$container = $this->getContainer();
-
-		$container->registerService('Profile', function (IContainer $c) {
-			return new \OC\Settings\Panels\Personal\Profile(
-			   $c->query('Config'),
-			   $c->query('GroupManager'),
-			   $c->query('ServerContainer')->getURLGenerator()
-		   );
-		});
 
 		/**
 		 * Controllers
@@ -127,13 +118,6 @@ class Application extends App {
 				$c->query('ServerContainer')->getSession(),
 				$c->query('ServerContainer')->getSecureRandom(),
 				$c->query('UserId')
-			);
-		});
-		$container->registerService('SecuritySettingsController', function (IContainer $c) {
-			return new SecuritySettingsController(
-				$c->query('AppName'),
-				$c->query('Request'),
-				$c->query('Config')
 			);
 		});
 		$container->registerService('CertificateController', function (IContainer $c) {
