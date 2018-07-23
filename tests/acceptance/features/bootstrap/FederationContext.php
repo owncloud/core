@@ -40,7 +40,7 @@ class FederationContext implements Context {
 	private $featureContext;
 
 	/**
-	 * @When /^user "([^"]*)" from server "(LOCAL|REMOTE)" shares "([^"]*)" with user "([^"]*)" from server "(LOCAL|REMOTE)" using the API$/
+	 * @When /^user "([^"]*)" from server "(LOCAL|REMOTE)" shares "([^"]*)" with user "([^"]*)" from server "(LOCAL|REMOTE)" using the sharing API$/
 	 * @Given /^user "([^"]*)" from server "(LOCAL|REMOTE)" has shared "([^"]*)" with user "([^"]*)" from server "(LOCAL|REMOTE)"$/
 	 *
 	 * @param string $sharerUser
@@ -76,7 +76,7 @@ class FederationContext implements Context {
 	}
 	
 	/**
-	 * @When /^user "([^"]*)" from server "(LOCAL|REMOTE)" accepts the last pending share using the API$/
+	 * @When /^user "([^"]*)" from server "(LOCAL|REMOTE)" accepts the last pending share using the sharing API$/
 	 * @Given /^user "([^"]*)" from server "(LOCAL|REMOTE)" has accepted the last pending share$/
 	 *
 	 * @param string $user
@@ -87,7 +87,7 @@ class FederationContext implements Context {
 	public function acceptLastPendingShare($user, $server) {
 		$previous = $this->featureContext->usingServer($server);
 		$this->featureContext->asUser($user);
-		$this->featureContext->sendingToWith(
+		$this->featureContext->theUserSendsToOcsApiEndpointWithBody(
 			'GET',
 			"/apps/files_sharing/api/v1/remote_shares/pending",
 			null
@@ -100,7 +100,7 @@ class FederationContext implements Context {
 		 */
 		$response = $this->featureContext->getResponse();
 		$share_id = $response->xml()->data[0]->element[0]->id;
-		$this->featureContext->sendingToWith(
+		$this->featureContext->theUserSendsToOcsApiEndpointWithBody(
 			'POST',
 			"/apps/files_sharing/api/v1/remote_shares/pending/{$share_id}",
 			null

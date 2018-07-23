@@ -40,7 +40,7 @@ trait Comments {
 	private $lastFileId;
 
 	/**
-	 * @When /^user "([^"]*)" comments with content "([^"]*)" on (?:file|folder) "([^"]*)" using the API$/
+	 * @When /^user "([^"]*)" comments with content "([^"]*)" on (?:file|folder) "([^"]*)" using the WebDAV API$/
 	 * @Given /^user "([^"]*)" has commented with content "([^"]*)" on (?:file|folder) "([^"]*)"$/
 	 *
 	 * @param string $user
@@ -177,7 +177,7 @@ trait Comments {
 	}
 
 	/**
-	 * @When user :user deletes the last created comment using the API
+	 * @When user :user deletes the last created comment using the WebDAV API
 	 * @Given user :user has deleted the last created comment
 	 *
 	 * @param string $user
@@ -262,7 +262,7 @@ trait Comments {
 	}
 
 	/**
-	 * @When /^user "([^"]*)" edits the last created comment with content "([^"]*)" using the API$/
+	 * @When /^user "([^"]*)" edits the last created comment with content "([^"]*)" using the WebDAV API$/
 	 * @Given /^user "([^"]*)" has edited the last created comment with content "([^"]*)"$/
 	 *
 	 * @param string $user

@@ -84,7 +84,7 @@ class CardDavContext implements \Behat\Behat\Context\Context {
 	}
 
 	/**
-	 * @When user :user requests address book :addressBook using the API
+	 * @When user :user requests address book :addressBook using the new WebDAV API
 	 *
 	 * @param string $user
 	 * @param string $addressBook

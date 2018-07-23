@@ -6,10 +6,10 @@ Feature: sharing
 		And user "user1" has been created
 
 	Scenario Outline: getting all shares of a user using that user
-		Given using API version "<ocs_api_version>"
+		Given using OCS API version "<ocs_api_version>"
 		And user "user0" has moved file "/textfile0.txt" to "/file_to_share.txt"
 		And user "user0" has shared file "file_to_share.txt" with user "user1"
-		When user "user0" sends HTTP method "GET" to API endpoint "/apps/files_sharing/api/v1/shares"
+		When user "user0" sends HTTP method "GET" to OCS API endpoint "/apps/files_sharing/api/v1/shares"
 		Then the OCS status code should be "<ocs_status_code>"
 		And the HTTP status code should be "200"
 		And file "file_to_share.txt" should be included in the response
@@ -19,9 +19,9 @@ Feature: sharing
 			|2              |200            |
 
 	Scenario Outline: getting all shares of a user using another user
-		Given using API version "<ocs_api_version>"
+		Given using OCS API version "<ocs_api_version>"
 		And user "user0" has shared file "textfile0.txt" with user "user1"
-		When user "admin" sends HTTP method "GET" to API endpoint "/apps/files_sharing/api/v1/shares"
+		When user "admin" sends HTTP method "GET" to OCS API endpoint "/apps/files_sharing/api/v1/shares"
 		Then the OCS status code should be "<ocs_status_code>"
 		And the HTTP status code should be "200"
 		And file "textfile0.txt" should not be included in the response
@@ -31,12 +31,12 @@ Feature: sharing
 			|2              |200            |
 
 	Scenario Outline: getting all shares of a file
-		Given using API version "<ocs_api_version>"
+		Given using OCS API version "<ocs_api_version>"
 		And user "user2" has been created
 		And user "user3" has been created
 		And user "user0" has shared file "textfile0.txt" with user "user1"
 		And user "user0" has shared file "textfile0.txt" with user "user2"
-		When user "user0" sends HTTP method "GET" to API endpoint "/apps/files_sharing/api/v1/shares?path=textfile0.txt"
+		When user "user0" sends HTTP method "GET" to OCS API endpoint "/apps/files_sharing/api/v1/shares?path=textfile0.txt"
 		Then the OCS status code should be "<ocs_status_code>"
 		And the HTTP status code should be "200"
 		And user "user1" should be included in the response
@@ -48,12 +48,12 @@ Feature: sharing
 			|2              |200            |
 
 	Scenario Outline: getting all shares of a file with reshares
-		Given using API version "<ocs_api_version>"
+		Given using OCS API version "<ocs_api_version>"
 		And user "user2" has been created
 		And user "user3" has been created
 		And user "user0" has shared file "textfile0.txt" with user "user1"
 		And user "user1" has shared file "textfile0 (2).txt" with user "user2"
-		When user "user0" sends HTTP method "GET" to API endpoint "/apps/files_sharing/api/v1/shares?reshares=true&path=textfile0.txt"
+		When user "user0" sends HTTP method "GET" to OCS API endpoint "/apps/files_sharing/api/v1/shares?reshares=true&path=textfile0.txt"
 		Then the OCS status code should be "<ocs_status_code>"
 		And the HTTP status code should be "200"
 		And user "user1" should be included in the response
@@ -65,14 +65,14 @@ Feature: sharing
 			|2              |200            |
 
 	Scenario Outline: User's own shares reshared to him don't appear when getting "shared with me" shares
-		Given using API version "<ocs_api_version>"
+		Given using OCS API version "<ocs_api_version>"
 		And group "group0" has been created
 		And user "user0" has been added to group "group0"
 		And user "user0" has created a folder "/shared"
 		And user "user0" has moved file "/textfile0.txt" to "/shared/shared_file.txt"
 		And user "user0" has shared folder "/shared" with user "user1"
 		And user "user1" has shared folder "/shared" with group "group0"
-		When user "user0" sends HTTP method "GET" to API endpoint "/apps/files_sharing/api/v1/shares?shared_with_me=true"
+		When user "user0" sends HTTP method "GET" to OCS API endpoint "/apps/files_sharing/api/v1/shares?shared_with_me=true"
 		Then the OCS status code should be "<ocs_status_code>"
 		And the HTTP status code should be "200"
 		And the last share_id should not be included in the response
@@ -82,10 +82,10 @@ Feature: sharing
 			|2              |200            |
 
 	Scenario Outline: getting share info of a share
-		Given using API version "<ocs_api_version>"
+		Given using OCS API version "<ocs_api_version>"
 		And user "user0" has moved file "/textfile0.txt" to "/file_to_share.txt"
 		And user "user0" has shared file "file_to_share.txt" with user "user1"
-		When user "user0" gets the info of the last share using the API
+		When user "user0" gets the info of the last share using the sharing API
 		Then the OCS status code should be "<ocs_status_code>"
 		And the HTTP status code should be "200"
 		And the share fields of the last share should include
@@ -112,10 +112,10 @@ Feature: sharing
 			|2              |200            |
 
 	Scenario Outline: Get a share with a user that didn't receive the share
-		Given using API version "<ocs_api_version>"
+		Given using OCS API version "<ocs_api_version>"
 		And user "user2" has been created
 		And user "user0" has shared file "textfile0.txt" with user "user1"
-		When user "user2" gets the info of the last share using the API
+		When user "user2" gets the info of the last share using the sharing API
 		Then the OCS status code should be "404"
 		And the HTTP status code should be "<http_status_code>"
 		Examples:
@@ -124,13 +124,13 @@ Feature: sharing
 			|2              |404             |
 
 	Scenario: Share of folder to a group, remove user from that group
-		Given using API version "1"
+		Given using OCS API version "1"
 		And user "user2" has been created
 		And group "group0" has been created
 		And user "user1" has been added to group "group0"
 		And user "user2" has been added to group "group0"
-		And user "user0" shares file "/PARENT" with group "group0" using the API
-		And the administrator removes user "user2" from group "group0" using the API
+		And user "user0" shares file "/PARENT" with group "group0" using the sharing API
+		And the administrator removes user "user2" from group "group0" using the provisioning API
 		Then user "user1" should see the following elements
 			| /FOLDER/                 |
 			| /PARENT/                 |
@@ -146,9 +146,9 @@ Feature: sharing
 			| /PARENT%20(2)/parent.txt |
 
 	Scenario Outline: getting all the shares inside the folder
-		Given using API version "<ocs_api_version>"
+		Given using OCS API version "<ocs_api_version>"
 		And user "user0" has shared file "PARENT/parent.txt" with user "user1"
-		When user "user0" sends HTTP method "GET" to API endpoint "/apps/files_sharing/api/v1/shares?path=PARENT&subfiles=true"
+		When user "user0" sends HTTP method "GET" to OCS API endpoint "/apps/files_sharing/api/v1/shares?path=PARENT&subfiles=true"
 		Then the OCS status code should be "<ocs_status_code>"
 		And the HTTP status code should be "200"
 		And file "parent.txt" should be included in the response

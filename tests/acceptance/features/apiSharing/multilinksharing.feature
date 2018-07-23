@@ -7,7 +7,7 @@ Feature: multilinksharing
 		And as user "user0"
 
 	Scenario Outline: Creating three public shares of a folder
-		Given using API version "<ocs_api_version>"
+		Given using OCS API version "<ocs_api_version>"
 		And the user has created a share with settings
 			| path         | FOLDER      |
 			| shareType    | 3           |
@@ -32,7 +32,7 @@ Feature: multilinksharing
 			| publicUpload | true        |
 			| permissions  | 15          |
 			| name         | sharedlink3 |
-		When the user updates the last share using the API with
+		When the user updates the last share using the sharing API with
 			| permissions | 1 |
 		Then the OCS status code should be "<ocs_status_code>"
 		And the HTTP status code should be "200"
@@ -46,7 +46,7 @@ Feature: multilinksharing
 			|2              |200            |
 
 	Scenario Outline: Creating three public shares of a file
-		Given using API version "<ocs_api_version>"
+		Given using OCS API version "<ocs_api_version>"
 		And the user has created a share with settings
 			| path        | textfile0.txt |
 			| shareType   | 3             |
@@ -68,7 +68,7 @@ Feature: multilinksharing
 			| expireDate  | +3 days       |
 			| permissions | 1             |
 			| name        | sharedlink3   |
-		When the user updates the last share using the API with
+		When the user updates the last share using the sharing API with
 			| permissions | 1 |
 		Then the OCS status code should be "<ocs_status_code>"
 		And the HTTP status code should be "200"
@@ -82,7 +82,7 @@ Feature: multilinksharing
 			|2              |200            |
 
 	Scenario Outline: Check that updating password doesn't remove name of links
-		Given using API version "<ocs_api_version>"
+		Given using OCS API version "<ocs_api_version>"
 		And the user has created a share with settings
 			| path         | FOLDER      |
 			| shareType    | 3           |
@@ -99,7 +99,7 @@ Feature: multilinksharing
 			| publicUpload | true        |
 			| permissions  | 15          |
 			| name         | sharedlink2 |
-		When the user updates the last share using the API with
+		When the user updates the last share using the sharing API with
 			| password | newpassword |
 		Then the OCS status code should be "<ocs_status_code>"
 		And the HTTP status code should be "200"
@@ -112,7 +112,7 @@ Feature: multilinksharing
 			|2              |200            |
 
 	Scenario: Deleting a file deletes also its public links
-		Given using API version "1"
+		Given using OCS API version "1"
 		And the user has created a share with settings
 			| path        | textfile0.txt |
 			| shareType   | 3             |
@@ -129,13 +129,13 @@ Feature: multilinksharing
 			| name        | sharedlink2   |
 		And user "user0" has deleted file "/textfile0.txt"
 		And the HTTP status code should be "204"
-		When user "user0" uploads file "data/textfile.txt" to "/textfile0.txt" using the API
+		When user "user0" uploads file "data/textfile.txt" to "/textfile0.txt" using the WebDAV API
 		Then the HTTP status code should be "201"
 		And as user "user0" the public shares of file "/textfile0.txt" should be
 			| | | |
 
 	Scenario Outline: Deleting one public share of a file doesn't affect the rest
-		Given using API version "<ocs_api_version>"
+		Given using OCS API version "<ocs_api_version>"
 		And the user has created a share with settings
 			| path        | textfile0.txt |
 			| shareType   | 3             |
@@ -157,7 +157,7 @@ Feature: multilinksharing
 			| expireDate  | +3 days       |
 			| permissions | 1             |
 			| name        | sharedlink3   |
-		When user "user0" deletes public share named "sharedlink2" in file "/textfile0.txt" using the API
+		When user "user0" deletes public share named "sharedlink2" in file "/textfile0.txt" using the sharing API
 		Then the OCS status code should be "<ocs_status_code>"
 		And the HTTP status code should be "200"
 		And as user "user0" the public shares of file "/textfile0.txt" should be
@@ -169,7 +169,7 @@ Feature: multilinksharing
 			|2              |200            |
 
 	Scenario: Overwriting a file doesn't remove its public shares
-		Given using API version "1"
+		Given using OCS API version "1"
 		And the user has created a share with settings
 			| path        | textfile0.txt |
 			| shareType   | 3             |
@@ -184,13 +184,13 @@ Feature: multilinksharing
 			| expireDate  | +3 days       |
 			| permissions | 1             |
 			| name        | sharedlink2   |
-		When user "user0" uploads file "data/textfile.txt" to "/textfile0.txt" using the API
+		When user "user0" uploads file "data/textfile.txt" to "/textfile0.txt" using the WebDAV API
 		Then as user "user0" the public shares of file "/textfile0.txt" should be
 			| /textfile0.txt | 1 | sharedlink1 |
 			| /textfile0.txt | 1 | sharedlink2 |
 
 	Scenario: Renaming a folder doesn't remove its public shares
-		Given using API version "1"
+		Given using OCS API version "1"
 		And the user has created a share with settings
 			| path         | FOLDER      |
 			| shareType    | 3           |
@@ -207,7 +207,7 @@ Feature: multilinksharing
 			| publicUpload | true        |
 			| permissions  | 15          |
 			| name         | sharedlink2 |
-		When user "user0" moves folder "/FOLDER" to "/FOLDER_RENAMED" using the API
+		When user "user0" moves folder "/FOLDER" to "/FOLDER_RENAMED" using the WebDAV API
 		Then as user "user0" the public shares of file "/FOLDER_RENAMED" should be
 			| /FOLDER_RENAMED | 15 | sharedlink1 |
 			| /FOLDER_RENAMED | 15 | sharedlink2 |

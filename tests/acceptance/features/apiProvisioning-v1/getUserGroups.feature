@@ -5,7 +5,7 @@ I want to be able to get groups
 So that I can manage group membership
 
 	Background:
-		Given using API version "1"
+		Given using OCS API version "1"
 
 	Scenario: admin gets groups of an user
 		Given user "brand-new-user" has been created
@@ -20,7 +20,7 @@ So that I can manage group membership
 		And user "brand-new-user" has been added to group "Admin & Finance (NP)"
 		And user "brand-new-user" has been added to group "admin:Pokhara@Nepal"
 		And user "brand-new-user" has been added to group "नेपाली"
-		When user "admin" sends HTTP method "GET" to API endpoint "/cloud/users/brand-new-user/groups"
+		When user "admin" sends HTTP method "GET" to OCS API endpoint "/cloud/users/brand-new-user/groups"
 		Then the groups returned by the API should be
 			| new-group            |
 			| 0                    |
@@ -38,7 +38,7 @@ So that I can manage group membership
 		And user "subadmin" has been made a subadmin of group "newgroup"
 		And user "newuser" has been added to group "newgroup"
 		And user "newuser" has been added to group "anothergroup"
-		When user "subadmin" sends HTTP method "GET" to API endpoint "/cloud/users/newuser/groups"
+		When user "subadmin" sends HTTP method "GET" to OCS API endpoint "/cloud/users/newuser/groups"
 		Then the groups returned by the API should include "newgroup"
 		And the groups returned by the API should not include "anothergroup"
 		And the OCS status code should be "100"
@@ -49,7 +49,7 @@ So that I can manage group membership
 		And user "anotheruser" has been created
 		And group "newgroup" has been created
 		And user "newuser" has been added to group "newgroup"
-		When user "anotheruser" sends HTTP method "GET" to API endpoint "/cloud/users/newuser/groups"
+		When user "anotheruser" sends HTTP method "GET" to OCS API endpoint "/cloud/users/newuser/groups"
 		Then the OCS status code should be "997"
 		And the HTTP status code should be "401"
 		And the API should not return any data
@@ -57,7 +57,7 @@ So that I can manage group membership
 	Scenario: admin gets groups of an user who is not in any groups
 		Given user "brand-new-user" has been created
 		And group "unused-group" has been created
-		When user "admin" sends HTTP method "GET" to API endpoint "/cloud/users/brand-new-user/groups"
+		When user "admin" sends HTTP method "GET" to OCS API endpoint "/cloud/users/brand-new-user/groups"
 		Then the OCS status code should be "100"
 		And the HTTP status code should be "200"
 		And the list of groups returned by the API should be empty

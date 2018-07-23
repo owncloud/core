@@ -107,12 +107,12 @@ class UserHelper {
 	 * @param string $userName
 	 * @param string $adminUser
 	 * @param string $adminPassword
-	 * @param int $apiVersion
+	 * @param int $ocsApiVersion
 	 *
 	 * @return ResponseInterface
 	 */
 	public static function deleteUser(
-		$baseUrl, $userName, $adminUser, $adminPassword, $apiVersion = 2
+		$baseUrl, $userName, $adminUser, $adminPassword, $ocsApiVersion = 2
 	) {
 		return OcsApiHelper::sendRequest(
 			$baseUrl,
@@ -121,7 +121,7 @@ class UserHelper {
 			"DELETE",
 			"/cloud/users/" . $userName,
 			[],
-			$apiVersion
+			$ocsApiVersion
 		);
 	}
 
@@ -149,17 +149,17 @@ class UserHelper {
 	 * @param string $group
 	 * @param string $adminUser
 	 * @param string $adminPassword
-	 * @param int $apiVersion
+	 * @param int $ocsApiVersion
 	 *
 	 * @return ResponseInterface
 	 */
 	public static function deleteGroup(
-		$baseUrl, $group, $adminUser, $adminPassword, $apiVersion = 2
+		$baseUrl, $group, $adminUser, $adminPassword, $ocsApiVersion = 2
 	) {
 		$group = \rawurlencode($group);
 		return OcsApiHelper::sendRequest(
 			$baseUrl, $adminUser, $adminPassword,
-			"DELETE", "/cloud/groups/" . $group, [], $apiVersion
+			"DELETE", "/cloud/groups/" . $group, [], $ocsApiVersion
 		);
 	}
 
