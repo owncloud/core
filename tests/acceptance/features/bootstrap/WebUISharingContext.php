@@ -537,7 +537,7 @@ class WebUISharingContext extends RawMinkContext implements Context {
 			foreach ($elementArray as $internalName => $displayName) {
 				// Matching should be case-insensitive on the internal or display name
 				if (((\stripos($internalName, $requiredString) !== false)
-						|| (\stripos($displayName, $requiredString) !== false))
+					|| (\stripos($displayName, $requiredString) !== false))
 					&& ($displayName !== $notToBeListed)
 					&& ($displayName !== $this->featureContext->getCurrentUser())
 					&& ($displayName !== $this->featureContext->getCurrentUserDisplayName())
