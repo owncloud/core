@@ -22,7 +22,7 @@
         "behat/behat": "^3.0",
         "behat/mink-extension": "^2.2",
         "behat/mink-goutte-driver": "^1.2",
-        "behat/mink-selenium2-driver": "dev-master",
+        "behat/mink-selenium2-driver": "dev-master#93474c65a2a7bf959200ab5f7a14cc450645c185",
         "jakub-onderka/php-console-highlighter": "^0.3.2",
         "jakub-onderka/php-parallel-lint": "^1.0.0",
         "jarnaiz/behat-junit-formatter": "^1.3",
