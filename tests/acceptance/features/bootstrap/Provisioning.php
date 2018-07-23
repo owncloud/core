@@ -211,7 +211,7 @@ trait Provisioning {
 	}
 
 	/**
-	 * @When /^the administrator creates the user "([^"]*)" using the API$/
+	 * @When /^the administrator creates the user "([^"]*)" using the provisioning API$/
 	 * @Given /^user "([^"]*)" has been created$/
 	 *
 	 * @param string $user
@@ -219,7 +219,7 @@ trait Provisioning {
 	 * @return void
 	 * @throws \Exception
 	 */
-	public function adminCreatesUserUsingTheAPI($user) {
+	public function adminCreatesUserUsingTheProvisioningApi($user) {
 		if (!$this->userExists($user)) {
 			$password = $this->getPasswordForUser($user);
 			$this->createUser($user, $password, null, null, true, 'api');
@@ -272,7 +272,7 @@ trait Provisioning {
 	 */
 	public function userEnablesOrDisablesApp($user, $action, $app) {
 		$fullUrl = $this->getBaseUrl()
-			. "/ocs/v{$this->apiVersion}.php/cloud/apps/" . $app;
+			. "/ocs/v{$this->ocsApiVersion}.php/cloud/apps/" . $app;
 		$options = [];
 		$options['auth'] = $this->getAuthOptionForUser($user);
 		try {
@@ -320,16 +320,16 @@ trait Provisioning {
 	}
 
 	/**
-	 * @When /^the administrator sends a user creation request for user "([^"]*)" password "([^"]*)" using the API$/
+	 * @When /^the administrator sends a user creation request for user "([^"]*)" password "([^"]*)" using the provisioning API$/
 	 *
 	 * @param string $user
 	 * @param string $password
 	 *
 	 * @return void
 	 */
-	public function adminSendsUserCreationRequestUsingTheAPI($user, $password) {
+	public function adminSendsUserCreationRequestUsingTheProvisioningApi($user, $password) {
 		$bodyTable = new TableNode([['userid', $user], ['password', $password]]);
-		$this->userSendsHTTPMethodToAPIEndpointWithBody(
+		$this->userSendsHTTPMethodToOcsApiEndpointWithBody(
 			$this->getAdminUsername(),
 			"POST",
 			"/cloud/users",
@@ -339,7 +339,7 @@ trait Provisioning {
 	}
 
 	/**
-	 * @When /^the administrator sends a user creation request for user "([^"]*)" password "([^"]*)" group "([^"]*)" using the API$/
+	 * @When /^the administrator sends a user creation request for user "([^"]*)" password "([^"]*)" group "([^"]*)" using the provisioning API$/
 	 *
 	 * @param string $user
 	 * @param string $password
@@ -347,13 +347,13 @@ trait Provisioning {
 	 *
 	 * @return void
 	 */
-	public function theAdministratorCreatesUserPasswordGroupUsingTheApi(
+	public function theAdministratorCreatesUserPasswordGroupUsingTheProvisioningApi(
 		$user, $password, $group
 	) {
 		$bodyTable = new TableNode(
 			[['userid', $user], ['password', $password], ['groups[]', $group]]
 		);
-		$this->userSendsHTTPMethodToAPIEndpointWithBody(
+		$this->userSendsHTTPMethodToOcsApiEndpointWithBody(
 			$this->getAdminUsername(),
 			"POST",
 			"/cloud/users",
@@ -363,20 +363,20 @@ trait Provisioning {
 	}
 
 	/**
-	 * @When /^the administrator sends a user deletion request for user "([^"]*)" using the API$/
+	 * @When /^the administrator sends a user deletion request for user "([^"]*)" using the provisioning API$/
 	 *
 	 * @param string $user
 	 *
 	 * @return void
 	 * @throws \Exception
 	 */
-	public function theAdminDeletesTheUserUsingAPI($user) {
-		$this->deleteTheUserUsingTheAPI($user);
+	public function theAdminDeletesTheUserUsingTheProvisioningApi($user) {
+		$this->deleteTheUserUsingTheProvisioningApi($user);
 		$this->rememberThatUserIsNotExpectedToExist($user);
 	}
 
 	/**
-	 * @When /^the subadmin "([^"]*)" sends a user deletion request for user "([^"]*)" using the API$/
+	 * @When /^the subadmin "([^"]*)" sends a user deletion request for user "([^"]*)" using the provisioning API$/
 	 *
 	 * @param string $subadmin
 	 * @param string $user
@@ -384,13 +384,13 @@ trait Provisioning {
 	 * @return void
 	 * @throws \Exception
 	 */
-	public function theSubAdminDeletesTheUser($subadmin, $user) {
+	public function theSubAdminDeletesTheUserUsingTheProvisioningApi($subadmin, $user) {
 		$this->response = UserHelper::deleteUser(
 			$this->getBaseUrl(),
 			$user,
 			$subadmin,
 			$this->getUserPassword($subadmin),
-			$this->apiVersion
+			$this->ocsApiVersion
 		);
 		$this->rememberThatUserIsNotExpectedToExist($user);
 	}
@@ -477,7 +477,7 @@ trait Provisioning {
 	}
 
 	/**
-	 * @When /^the administrator deletes user "([^"]*)" using the API$/
+	 * @When /^the administrator deletes user "([^"]*)" using the provisioning API$/
 	 * @Given /^user "([^"]*)" has been deleted$/
 	 *
 	 * @param string $user
@@ -485,9 +485,9 @@ trait Provisioning {
 	 * @return void
 	 * @throws \Exception
 	 */
-	public function adminDeletesUserUsingTheAPI($user) {
+	public function adminDeletesUserUsingTheProvisioningApi($user) {
 		if ($this->userExists($user)) {
-			$this->deleteTheUserUsingTheAPI($user);
+			$this->deleteTheUserUsingTheProvisioningApi($user);
 		}
 		$this->userShouldNotExist($user);
 	}
@@ -521,7 +521,7 @@ trait Provisioning {
 	 */
 	public function initializeUser($user, $password) {
 		$url = $this->getBaseUrl()
-			. "/ocs/v{$this->apiVersion}.php/cloud/users/" . $user;
+			. "/ocs/v{$this->ocsApiVersion}.php/cloud/users/" . $user;
 		$client = new Client();
 		$options = [
 			'auth' => [$user, $password],
@@ -652,7 +652,7 @@ trait Provisioning {
 	 * @throws \Exception
 	 */
 	public function deleteUser($user) {
-		$this->deleteTheUserUsingTheAPI($user);
+		$this->deleteTheUserUsingTheProvisioningApi($user);
 		$this->userShouldNotExist($user);
 	}
 
@@ -668,7 +668,7 @@ trait Provisioning {
 	 */
 	public function cleanupGroup($group) {
 		try {
-			$this->deleteTheGroupUsingTheAPI($group);
+			$this->deleteTheGroupUsingTheProvisioningApi($group);
 		} catch (BadResponseException $e) {
 			$this->response = $e->getResponse();
 			\error_log(
@@ -777,7 +777,7 @@ trait Provisioning {
 	}
 
 	/**
-	 * @When /^the administrator adds user "([^"]*)" to group "([^"]*)" using the API$/
+	 * @When /^the administrator adds user "([^"]*)" to group "([^"]*)" using the provisioning API$/
 	 *
 	 * @param string $user
 	 * @param string $group
@@ -785,7 +785,7 @@ trait Provisioning {
 	 * @return void
 	 * @throws \Exception
 	 */
-	public function adminAddsUserToGroupUsingTheAPI($user, $group) {
+	public function adminAddsUserToGroupUsingTheProvisioningApi($user, $group) {
 		if (!$this->userBelongsToGroup($user, $group)) {
 			$this->userHasBeenAddedToGroup($user, $group);
 		}
@@ -885,7 +885,7 @@ trait Provisioning {
 	}
 
 	/**
-	 * @When /^the administrator creates group "([^"]*)" using the API$/
+	 * @When /^the administrator creates group "([^"]*)" using the provisioning API$/
 	 * @Given /^group "([^"]*)" has been created$/
 	 *
 	 * @param string $group
@@ -893,7 +893,7 @@ trait Provisioning {
 	 * @return void
 	 * @throws \Exception
 	 */
-	public function adminCreatesGroupUsingTheAPI($group) {
+	public function adminCreatesGroupUsingTheProvisioningApi($group) {
 		if (!$this->groupExists($group)) {
 			$this->createTheGroup($group, 'api');
 		}
@@ -916,15 +916,15 @@ trait Provisioning {
 	}
 
 	/**
-	 * @When /^the administrator sends a group creation request for group "([^"]*)" using the API$/
+	 * @When /^the administrator sends a group creation request for group "([^"]*)" using the provisioning API$/
 	 *
 	 * @param string $group
 	 *
 	 * @return void
 	 */
-	public function adminSendsGroupCreationRequestUsingTheAPI($group) {
+	public function adminSendsGroupCreationRequestUsingTheProvisioningApi($group) {
 		$bodyTable = new TableNode([['groupid', $group]]);
-		$this->userSendsHTTPMethodToAPIEndpointWithBody(
+		$this->userSendsHTTPMethodToOcsApiEndpointWithBody(
 			$this->getAdminUsername(),
 			"POST",
 			"/cloud/groups",
@@ -993,16 +993,16 @@ trait Provisioning {
 	}
 
 	/**
-	 * @When /^the administrator disables user "([^"]*)" using the API$/
+	 * @When /^the administrator disables user "([^"]*)" using the provisioning API$/
 	 * @Given /^user "([^"]*)" has been disabled$/
 	 *
 	 * @param string $user
 	 *
 	 * @return void
 	 */
-	public function adminDisablesUserUsingTheAPI($user) {
+	public function adminDisablesUserUsingTheProvisioningApi($user) {
 		$fullUrl = $this->getBaseUrl()
-			. "/ocs/v{$this->apiVersion}.php/cloud/users/$user/disable";
+			. "/ocs/v{$this->ocsApiVersion}.php/cloud/users/$user/disable";
 		$client = new Client();
 		$options = [];
 		$options['auth'] = $this->getAuthOptionForAdmin();
@@ -1018,14 +1018,14 @@ trait Provisioning {
 	 * @return void
 	 * @throws \Exception
 	 */
-	public function deleteTheUserUsingTheAPI($user) {
+	public function deleteTheUserUsingTheProvisioningApi($user) {
 		// Always try to delete the user
 		$this->response = UserHelper::deleteUser(
 			$this->getBaseUrl(),
 			$user,
 			$this->getAdminUsername(),
 			$this->getAdminPassword(),
-			$this->apiVersion
+			$this->ocsApiVersion
 		);
 
 		// Only log a message if the test really expected the user to have been
@@ -1052,28 +1052,28 @@ trait Provisioning {
 	 * @return void
 	 * @throws \Exception
 	 */
-	public function groupHasBeenDeletedUsingTheAPI($group) {
+	public function groupHasBeenDeletedUsingTheProvisioningApi($group) {
 		if ($this->groupExists($group)) {
-			$this->deleteTheGroupUsingTheAPI($group);
+			$this->deleteTheGroupUsingTheProvisioningApi($group);
 		}
 		$this->groupShouldNotExist($group);
 	}
 
 	/**
-	 * @When /^the administrator deletes group "([^"]*)" using the API$/
+	 * @When /^the administrator deletes group "([^"]*)" using the provisioning API$/
 	 *
 	 * @param string $group
 	 *
 	 * @return void
 	 * @throws \Exception
 	 */
-	public function deleteTheGroupUsingTheAPI($group) {
+	public function deleteTheGroupUsingTheProvisioningApi($group) {
 		$this->response = UserHelper::deleteGroup(
 			$this->getBaseUrl(),
 			$group,
 			$this->getAdminUsername(),
 			$this->getAdminPassword(),
-			$this->apiVersion
+			$this->ocsApiVersion
 		);
 
 		if ($this->theGroupShouldExist($group)
@@ -1110,7 +1110,7 @@ trait Provisioning {
 	}
 
 	/**
-	 * @When the administrator removes user :user from group :group using the API
+	 * @When the administrator removes user :user from group :group using the provisioning API
 	 * @Given user :user has been removed from group :group
 	 *
 	 * @param string $user
@@ -1118,7 +1118,7 @@ trait Provisioning {
 	 *
 	 * @return void
 	 */
-	public function adminRemovesUserFromGroupUsingTheAPI($user, $group) {
+	public function adminRemovesUserFromGroupUsingTheProvisioningApi($user, $group) {
 		$this->response = UserHelper::removeUserFromGroup(
 			$this->getBaseUrl(),
 			$user,
@@ -1160,7 +1160,7 @@ trait Provisioning {
 	}
 
 	/**
-	 * @When /^the administrator makes user "([^"]*)" a subadmin of group "([^"]*)" using the API$/
+	 * @When /^the administrator makes user "([^"]*)" a subadmin of group "([^"]*)" using the provisioning API$/
 	 * @Given /^user "([^"]*)" has been made a subadmin of group "([^"]*)"$/
 	 *
 	 * @param string $user
@@ -1168,9 +1168,11 @@ trait Provisioning {
 	 *
 	 * @return void
 	 */
-	public function adminMakesUserSubadminOfGroupUsingTheAPI($user, $group) {
+	public function adminMakesUserSubadminOfGroupUsingTheProvisioningApi(
+		$user, $group
+	) {
 		$fullUrl = $this->getBaseUrl()
-			. "/ocs/v{$this->apiVersion}.php/cloud/users/$user/subadmins";
+			. "/ocs/v{$this->ocsApiVersion}.php/cloud/users/$user/subadmins";
 		$client = new Client();
 		$options = [];
 		$options['auth'] = $this->getAuthOptionForAdmin();
@@ -1186,7 +1188,7 @@ trait Provisioning {
 	}
 
 	/**
-	 * @When /^the administrator makes user "([^"]*)" not a subadmin of group "([^"]*)" using the API$/
+	 * @When /^the administrator makes user "([^"]*)" not a subadmin of group "([^"]*)" using the provisioning API$/
 	 * @Given /^user "([^"]*)" has been made not a subadmin of group "([^"]*)"$/
 	 *
 	 * @param string $user
@@ -1194,7 +1196,9 @@ trait Provisioning {
 	 *
 	 * @return void
 	 */
-	public function adminMakesUserNotSubadminOfGroupUsingTheAPI($user, $group) {
+	public function adminMakesUserNotSubadminOfGroupUsingTheProvisioningApi(
+		$user, $group
+	) {
 		$fullUrl = $this->getBaseUrl() . "/ocs/v2.php/cloud/groups/$group/subadmins";
 		$client = new Client();
 		$options = [];
@@ -1494,7 +1498,7 @@ trait Provisioning {
 	 */
 	public function userShouldBeDisabled($user) {
 		$fullUrl = $this->getBaseUrl()
-			. "/ocs/v{$this->apiVersion}.php/cloud/users/$user";
+			. "/ocs/v{$this->ocsApiVersion}.php/cloud/users/$user";
 		$client = new Client();
 		$options = [];
 		$options['auth'] = $this->getAuthOptionForAdmin();
@@ -1514,7 +1518,7 @@ trait Provisioning {
 	 */
 	public function useShouldBeEnabled($user) {
 		$fullUrl = $this->getBaseUrl()
-			. "/ocs/v{$this->apiVersion}.php/cloud/users/$user";
+			. "/ocs/v{$this->ocsApiVersion}.php/cloud/users/$user";
 		$client = new Client();
 		$options = [];
 		$options['auth'] = $this->getAuthOptionForAdmin();
@@ -1526,7 +1530,7 @@ trait Provisioning {
 	}
 
 	/**
-	 * @When the administrator sets the quota of user :user to :quota using the API
+	 * @When the administrator sets the quota of user :user to :quota using the provisioning API
 	 * @Given the quota of user :user has been set to :quota
 	 *
 	 * @param string $user
@@ -1534,7 +1538,7 @@ trait Provisioning {
 	 *
 	 * @return void
 	 */
-	public function adminSetsUserQuotaToUsingTheAPI($user, $quota) {
+	public function adminSetsUserQuotaToUsingTheProvisioningApi($user, $quota) {
 		$body
 			= [
 				'key' => 'quota',
@@ -1557,15 +1561,15 @@ trait Provisioning {
 	}
 
 	/**
-	 * @When the administrator gives unlimited quota to user :user using the API
+	 * @When the administrator gives unlimited quota to user :user using the provisioning API
 	 * @Given user :user has been given unlimited quota
 	 *
 	 * @param string $user
 	 *
 	 * @return void
 	 */
-	public function adminGivesUnlimitedQuotaToUserUsingTheAPI($user) {
-		$this->adminSetsUserQuotaToUsingTheAPI($user, 'none');
+	public function adminGivesUnlimitedQuotaToUserUsingTheProvisioningApi($user) {
+		$this->adminSetsUserQuotaToUsingTheProvisioningApi($user, 'none');
 	}
 
 	/**
@@ -1577,7 +1581,7 @@ trait Provisioning {
 	 */
 	public function getUserHome($user) {
 		$fullUrl = $this->getBaseUrl()
-			. "/ocs/v{$this->apiVersion}.php/cloud/users/$user";
+			. "/ocs/v{$this->ocsApiVersion}.php/cloud/users/$user";
 		$client = new Client();
 		$options = [];
 		$options['auth'] = $this->getAuthOptionForAdmin();
@@ -1617,7 +1621,7 @@ trait Provisioning {
 	 * @return void
 	 */
 	public function checkAttributesForUser($user, $body) {
-		$this->userSendsHTTPMethodToAPIEndpointWithBody(
+		$this->userSendsHTTPMethodToOcsApiEndpointWithBody(
 			$this->getAdminUsername(), "GET", "/cloud/users/$user",
 			null
 		);

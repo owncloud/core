@@ -109,7 +109,7 @@ class NotificationsCoreContext implements Context {
 	 * @return void
 	 */
 	public function userNumNotifications($user, $numNotifications, $missingLast) {
-		$this->featureContext->userSendingTo(
+		$this->featureContext->userSendsToOcsApiEndpoint(
 			$user, 'GET', '/apps/notifications/api/v1/notifications?format=json'
 		);
 		PHPUnit_Framework_Assert::assertEquals(
@@ -188,7 +188,7 @@ class NotificationsCoreContext implements Context {
 			$notificationId = \end($lastNotifications);
 		}
 
-		$this->featureContext->userSendingTo(
+		$this->featureContext->userSendsToOcsApiEndpoint(
 			$user, 'GET', '/apps/notifications/api/v1/notifications/' .
 			$notificationId . '?format=json'
 		);

@@ -6,7 +6,7 @@ Feature: Display notifications when receiving a share
 
 	Background:
 		Given the app "notifications" has been enabled
-		And using API version "1"
+		And using OCS API version "1"
 		And using new DAV path
 		And user "user0" has been created
 		And user "user1" has been created
@@ -19,8 +19,8 @@ Feature: Display notifications when receiving a share
 
 	Scenario: share to user sends notification
 		Given parameter "shareapi_auto_accept_share" of app "core" has been set to "no"
-		When user "user0" shares folder "/PARENT" with user "user1" using the API
-		And user "user0" shares file "/textfile0.txt" with user "user1" using the API
+		When user "user0" shares folder "/PARENT" with user "user1" using the sharing API
+		And user "user0" shares file "/textfile0.txt" with user "user1" using the sharing API
 		Then user "user1" should have 2 notifications
 		And the last notification of user "user1" should match these regular expressions
 			| app         | /^files_sharing$/                       |
@@ -31,8 +31,8 @@ Feature: Display notifications when receiving a share
 
 	Scenario: share to group sends notification to every member
 		Given parameter "shareapi_auto_accept_share" of app "core" has been set to "no"
-		When user "user0" shares folder "/PARENT" with group "grp1" using the API
-		And user "user0" shares file "/textfile0.txt" with group "grp1" using the API
+		When user "user0" shares folder "/PARENT" with group "grp1" using the sharing API
+		And user "user0" shares file "/textfile0.txt" with group "grp1" using the sharing API
 		Then user "user1" should have 2 notifications
 		And the last notification of user "user1" should match these regular expressions
 			| app         | /^files_sharing$/                       |
@@ -50,20 +50,20 @@ Feature: Display notifications when receiving a share
 
 	Scenario: when auto-accepting is enabled no notifications are sent
 		Given parameter "shareapi_auto_accept_share" of app "core" has been set to "yes"
-		When user "user0" shares folder "/PARENT" with user "user1" using the API
-		And user "user0" shares file "/textfile0.txt" with user "user1" using the API
+		When user "user0" shares folder "/PARENT" with user "user1" using the sharing API
+		And user "user0" shares file "/textfile0.txt" with user "user1" using the sharing API
 		Then user "user1" should have 0 notifications
 
 	Scenario: discard notification if target user is not member of the group anymore
 		Given parameter "shareapi_auto_accept_share" of app "core" has been set to "no"
-		When user "user0" shares folder "/PARENT" with group "grp1" using the API
-		And the administrator removes user "user1" from group "grp1" using the API
+		When user "user0" shares folder "/PARENT" with group "grp1" using the sharing API
+		And the administrator removes user "user1" from group "grp1" using the provisioning API
 		Then user "user1" should have 0 notifications
 		Then user "user2" should have 1 notification
 
 	Scenario: discard notification if group is deleted
 		Given parameter "shareapi_auto_accept_share" of app "core" has been set to "no"
-		When user "user0" shares folder "/PARENT" with group "grp1" using the API
-		And the administrator deletes group "grp1" using the API
+		When user "user0" shares folder "/PARENT" with group "grp1" using the sharing API
+		And the administrator deletes group "grp1" using the provisioning API
 		Then user "user1" should have 0 notifications
 		Then user "user2" should have 0 notifications

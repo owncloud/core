@@ -27,7 +27,7 @@ require __DIR__ . '/../../../../lib/composer/autoload.php';
 trait Trashbin {
 
 	/**
-	 * @When user :user empties the trashbin using the API
+	 * @When user :user empties the trashbin using the trashbin API
 	 * @Given user :user has emptied the trashbin
 	 *
 	 * @param string $user user
@@ -188,7 +188,7 @@ trait Trashbin {
 	}
 
 	/**
-	 * @When /^user "([^"]*)" restores the (?:file|folder|entry) with original path "([^"]*)" using the API$/
+	 * @When /^user "([^"]*)" restores the (?:file|folder|entry) with original path "([^"]*)" using the trashbin API$/
 	 * @Given /^user "([^"]*)" has restored the (?:file|folder|entry) with original path "([^"]*)"$/
 	 *
 	 * @param string $user

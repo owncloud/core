@@ -1,13 +1,13 @@
 @api
 Feature: sharing
 	Background:
-		Given using API version "1"
+		Given using OCS API version "1"
 		And using old DAV path
 		And user "user0" has been created
 
 	Scenario: Downloading from upload-only share is forbidden
 		Given user "user0" has moved file "/textfile0.txt" to "/FOLDER/test.txt"
-		When user "user0" creates a share using the API with settings
+		When user "user0" creates a share using the sharing API with settings
 			| path        | FOLDER |
 			| shareType   | 3      |
 			| permissions | 4      |
@@ -26,8 +26,8 @@ Feature: sharing
 		And user "user1" has shared file "textfile0.txt" with user "user2"
 		And user "user1" has moved file "/textfile0.txt" to "/common/textfile0.txt"
 		And user "user1" has moved file "/common/textfile0.txt" to "/common/sub/textfile0.txt"
-		When user "user2" uploads file "data/file_to_overwrite.txt" to "/textfile0 (2).txt" using the API
-		And user "user2" downloads file "/common/sub/textfile0.txt" with range "bytes=0-8" using the API
+		When user "user2" uploads file "data/file_to_overwrite.txt" to "/textfile0 (2).txt" using the WebDAV API
+		And user "user2" downloads file "/common/sub/textfile0.txt" with range "bytes=0-8" using the WebDAV API
 		Then the downloaded content should be "BLABLABLA"
 		And the downloaded content when downloading file "/textfile0 (2).txt" for user "user2" with range "bytes=0-8" should be "BLABLABLA"
 		And user "user2" should see the following elements
@@ -36,21 +36,21 @@ Feature: sharing
 
 	Scenario: Download a file that is in a folder contained in a folder that has been shared with a user with default permissions
 		Given user "user1" has been created
-		When user "user0" creates a share using the API with settings
+		When user "user0" creates a share using the sharing API with settings
 			| path      | PARENT     |
 			| shareType | 0          |
 			| shareWith | user1      |
-		Then the user "user1" should be able to download the file "/PARENT (2)/CHILD/child.txt" using the API
+		Then the user "user1" should be able to download the file "/PARENT (2)/CHILD/child.txt" using the sharing API
 
 	Scenario: Download a file that is in a folder contained in a folder that has been shared with a group with default permissions
 		Given user "user1" has been created
 		And group "sharegroup" has been created
 		And user "user1" has been added to group "sharegroup"
 		When user "user0" has shared folder "PARENT" with group "sharegroup"
-		Then the user "user1" should be able to download the file "/PARENT (2)/CHILD/child.txt" using the API
+		Then the user "user1" should be able to download the file "/PARENT (2)/CHILD/child.txt" using the sharing API
 
 	Scenario: Download a file that is in a folder contained in a folder that has been shared with public with default permissions
-		When user "user0" creates a share using the API with settings
+		When user "user0" creates a share using the sharing API with settings
 			| path         | PARENT   |
 			| shareType    | 3        |
 			| password     | publicpw |
@@ -58,26 +58,26 @@ Feature: sharing
 
 	Scenario: Download a file that is in a folder contained in a folder that has been shared with a user with Read/Write permission 
 		Given user "user1" has been created
-		When user "user0" creates a share using the API with settings
+		When user "user0" creates a share using the sharing API with settings
 			| path        | PARENT |
 			| shareType   | 0      |
 			| shareWith   | user1  |
 			| permissions | 15     |
-		Then the user "user1" should be able to download the file "/PARENT (2)/CHILD/child.txt" using the API
+		Then the user "user1" should be able to download the file "/PARENT (2)/CHILD/child.txt" using the sharing API
 
 	Scenario: Download a file that is in a folder contained in a folder that has been shared with a group with Read/Write permission 
 		Given user "user1" has been created
 		And group "sharegroup" has been created
 		And user "user1" has been added to group "sharegroup"
-		When user "user0" creates a share using the API with settings
+		When user "user0" creates a share using the sharing API with settings
 			| path        | PARENT      |
 			| shareType   | 1           |
 			| shareWith   | sharegroup  |
 			| permissions | 15          |
-		Then the user "user1" should be able to download the file "/PARENT (2)/CHILD/child.txt" using the API
+		Then the user "user1" should be able to download the file "/PARENT (2)/CHILD/child.txt" using the sharing API
 
 	Scenario: Download a file that is in a folder contained in a folder that has been shared with public with Read/Write permission 
-		When user "user0" creates a share using the API with settings
+		When user "user0" creates a share using the sharing API with settings
 			| path         | PARENT   |
 			| shareType    | 3        |
 			| password     | publicpw |
@@ -86,26 +86,26 @@ Feature: sharing
 
 	Scenario: Download a file that is in a folder contained in a folder that has been shared with a user with Read only permission 
 		Given user "user1" has been created
-		When user "user0" creates a share using the API with settings
+		When user "user0" creates a share using the sharing API with settings
 			| path        | PARENT |
 			| shareType   | 0      |
 			| shareWith   | user1  |
 			| permissions | 1      |
-		Then the user "user1" should be able to download the file "/PARENT (2)/CHILD/child.txt" using the API
+		Then the user "user1" should be able to download the file "/PARENT (2)/CHILD/child.txt" using the sharing API
 
 	Scenario: Download a file that is in a folder contained in a folder that has been shared with a group with Read only permission 
 		Given user "user1" has been created
 		And group "sharegroup" has been created
 		And user "user1" has been added to group "sharegroup"
-		When user "user0" creates a share using the API with settings
+		When user "user0" creates a share using the sharing API with settings
 			| path        | PARENT      |
 			| shareType   | 1           |
 			| shareWith   | sharegroup  |
 			| permissions | 1           |
-		Then the user "user1" should be able to download the file "/PARENT (2)/CHILD/child.txt" using the API
+		Then the user "user1" should be able to download the file "/PARENT (2)/CHILD/child.txt" using the sharing API
 
 	Scenario: Download a file that is in a folder contained in a folder that has been shared with public with Read only permission 
-		When user "user0" creates a share using the API with settings
+		When user "user0" creates a share using the sharing API with settings
 			| path         | PARENT   |
 			| shareType    | 3        |
 			| password     | publicpw |

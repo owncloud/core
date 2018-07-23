@@ -5,12 +5,12 @@ I want to be able to make a user the subadmin of a group
 So that I can give administrative privilege of a group to a user
 
 	Background:
-		Given using API version "1"
+		Given using OCS API version "1"
 
 	Scenario: admin creates a subadmin
 		Given user "brand-new-user" has been created
 		And group "new-group" has been created
-		When user "admin" sends HTTP method "POST" to API endpoint "/cloud/users/brand-new-user/subadmins" with body
+		When user "admin" sends HTTP method "POST" to OCS API endpoint "/cloud/users/brand-new-user/subadmins" with body
 			| groupid | new-group |
 		Then the OCS status code should be "100"
 		And the HTTP status code should be "200"
@@ -19,7 +19,7 @@ So that I can give administrative privilege of a group to a user
 	Scenario: admin tries to create a subadmin using a user which does not exist
 		Given user "not-user" has been deleted
 		And group "new-group" has been created
-		When user "admin" sends HTTP method "POST" to API endpoint "/cloud/users/not-user/subadmins" with body
+		When user "admin" sends HTTP method "POST" to OCS API endpoint "/cloud/users/not-user/subadmins" with body
 			| groupid | new-group |
 		Then the OCS status code should be "101"
 		And the HTTP status code should be "200"
@@ -28,7 +28,7 @@ So that I can give administrative privilege of a group to a user
 	Scenario: admin tries to create a subadmin using a group which does not exist
 		Given user "brand-new-user" has been created
 		And group "not-group" has been deleted
-		When user "admin" sends HTTP method "POST" to API endpoint "/cloud/users/brand-new-user/subadmins" with body
+		When user "admin" sends HTTP method "POST" to OCS API endpoint "/cloud/users/brand-new-user/subadmins" with body
 			| groupid | not-group |
 		Then the OCS status code should be "102"
 		And the HTTP status code should be "200"
@@ -39,9 +39,9 @@ So that I can give administrative privilege of a group to a user
 		And user "brand-new-user" has been created
 		And group "new-group" has been created
 		And user "subadmin" has been made a subadmin of group "new-group"
-		And user "admin" has sent HTTP method "POST" to API endpoint "/cloud/users/brand-new-user/groups" with body
+		And user "admin" has sent HTTP method "POST" to OCS API endpoint "/cloud/users/brand-new-user/groups" with body
 			| groupid | new-group |
-		When user "subadmin" sends HTTP method "POST" to API endpoint "/cloud/users/brand-new-user/subadmins" with body
+		When user "subadmin" sends HTTP method "POST" to OCS API endpoint "/cloud/users/brand-new-user/subadmins" with body
 			| groupid | new-group |
 		Then the OCS status code should be "997"
 		And the HTTP status code should be "401"

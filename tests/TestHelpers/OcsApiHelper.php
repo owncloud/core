@@ -39,19 +39,19 @@ class OcsApiHelper {
 	 * @param string $method HTTP Method
 	 * @param string $path
 	 * @param array $body array of key, value pairs e.g ['value' => 'yes']
-	 * @param int $apiVersion (1|2) default 2
+	 * @param int $ocsApiVersion (1|2) default 2
 	 *
 	 * @return ResponseInterface
 	 * @throws ClientException
 	 */
 	public static function sendRequest(
-		$baseUrl, $user, $password, $method, $path, $body = [], $apiVersion = 2
+		$baseUrl, $user, $password, $method, $path, $body = [], $ocsApiVersion = 2
 	) {
 		$fullUrl = $baseUrl;
 		if (\substr($fullUrl, -1) !== '/') {
 			$fullUrl .= '/';
 		}
-		$fullUrl .= "ocs/v{$apiVersion}.php" . $path;
+		$fullUrl .= "ocs/v{$ocsApiVersion}.php" . $path;
 		$client = new Client();
 		$options = [];
 		if ($user !== null) {

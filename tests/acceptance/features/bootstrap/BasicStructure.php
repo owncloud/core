@@ -87,7 +87,7 @@ trait BasicStructure {
 	 * The base URL of the local server under test,
 	 * without any terminating slash
 	 * e.g. http://localhost:8080
-	 *
+	 *ocsApiVersion
 	 * @var string
 	 */
 	private $localBaseUrl = '';
@@ -104,7 +104,7 @@ trait BasicStructure {
 	/**
 	 * @var int
 	 */
-	private $apiVersion = 1;
+	private $ocsApiVersion = 1;
 
 	/**
 	 * @var ResponseInterface
@@ -259,14 +259,14 @@ trait BasicStructure {
 	}
 
 	/**
-	 * @Given /^using (?:api|API) version "([^"]*)"$/
+	 * @Given /^using OCS API version "([^"]*)"$/
 	 *
 	 * @param string $version
 	 *
 	 * @return void
 	 */
-	public function usingApiVersion($version) {
-		$this->apiVersion = (int) $version;
+	public function usingOcsApiVersion($version) {
+		$this->ocsApiVersion = (int) $version;
 	}
 
 	/**
@@ -317,20 +317,20 @@ trait BasicStructure {
 	}
 
 	/**
-	 * @When /^the user sends HTTP method "([^"]*)" to API endpoint "([^"]*)"$/
-	 * @Given /^the user has sent HTTP method "([^"]*)" to API endpoint "([^"]*)"$/
+	 * @When /^the user sends HTTP method "([^"]*)" to OCS API endpoint "([^"]*)"$/
+	 * @Given /^the user has sent HTTP method "([^"]*)" to OCS API endpoint "([^"]*)"$/
 	 *
 	 * @param string $verb
 	 * @param string $url
 	 *
 	 * @return void
 	 */
-	public function sendingTo($verb, $url) {
-		$this->sendingToWith($verb, $url, null);
+	public function theUserSendsToOcsApiEndpoint($verb, $url) {
+		$this->theUserSendsToOcsApiEndpointWithBody($verb, $url, null);
 	}
 
 	/**
-	 * @When /^user "([^"]*)" sends HTTP method "([^"]*)" to API endpoint "([^"]*)"$/
+	 * @When /^user "([^"]*)" sends HTTP method "([^"]*)" to OCS API endpoint "([^"]*)"$/
 	 * @Given /^user "([^"]*)" has sent HTTP method "([^"]*)" to API endpoint "([^"]*)"$/
 	 *
 	 * @param string $user
@@ -339,8 +339,8 @@ trait BasicStructure {
 	 *
 	 * @return void
 	 */
-	public function userSendingTo($user, $verb, $url) {
-		$this->userSendsHTTPMethodToAPIEndpointWithBody(
+	public function userSendsToOcsApiEndpoint($user, $verb, $url) {
+		$this->userSendsHTTPMethodToOcsApiEndpointWithBody(
 			$user,
 			$verb,
 			$url,
@@ -433,8 +433,8 @@ trait BasicStructure {
 	}
 
 	/**
-	 * @When /^the user sends HTTP method "([^"]*)" to API endpoint "([^"]*)" with body$/
-	 * @Given /^the user has sent HTTP method "([^"]*)" to API endpoint "([^"]*)" with body$/
+	 * @When /^the user sends HTTP method "([^"]*)" to OCS API endpoint "([^"]*)" with body$/
+	 * @Given /^the user has sent HTTP method "([^"]*)" to OCS API endpoint "([^"]*)" with body$/
 	 *
 	 * @param string $verb
 	 * @param string $url
@@ -442,8 +442,8 @@ trait BasicStructure {
 	 *
 	 * @return void
 	 */
-	public function sendingToWith($verb, $url, $body) {
-		$this->userSendsHTTPMethodToAPIEndpointWithBody(
+	public function theUserSendsToOcsApiEndpointWithBody($verb, $url, $body) {
+		$this->userSendsHTTPMethodToOcsApiEndpointWithBody(
 			$this->currentUser,
 			$verb,
 			$url,
@@ -452,8 +452,8 @@ trait BasicStructure {
 	}
 
 	/**
-	 * @When /^user "([^"]*)" sends HTTP method "([^"]*)" to API endpoint "([^"]*)" with body$/
-	 * @Given /^user "([^"]*)" has sent HTTP method "([^"]*)" to API endpoint "([^"]*)" with body$/
+	 * @When /^user "([^"]*)" sends HTTP method "([^"]*)" to OCS API endpoint "([^"]*)" with body$/
+	 * @Given /^user "([^"]*)" has sent HTTP method "([^"]*)" to OCS API endpoint "([^"]*)" with body$/
 	 *
 	 * @param string $user
 	 * @param string $verb
@@ -462,7 +462,7 @@ trait BasicStructure {
 	 *
 	 * @return void
 	 */
-	public function userSendsHTTPMethodToAPIEndpointWithBody(
+	public function userSendsHTTPMethodToOcsApiEndpointWithBody(
 		$user, $verb, $url, $body
 	) {
 
@@ -486,7 +486,7 @@ trait BasicStructure {
 
 		$this->response = OcsApiHelper::sendRequest(
 			$this->getBaseUrl(),
-			$user, $password, $verb, $url, $bodyArray, $this->apiVersion
+			$user, $password, $verb, $url, $bodyArray, $this->ocsApiVersion
 		);
 	}
 
@@ -665,8 +665,8 @@ trait BasicStructure {
 	}
 
 	/**
-	 * @When /^user "([^"]*)" logs in to a web-style session using the API$/
-	 * @Given /^user "([^"]*)" has logged in to a web-style session using the API$/
+	 * @When /^user "([^"]*)" logs in to a web-style session$/
+	 * @Given /^user "([^"]*)" has logged in to a web-style session$/
 	 *
 	 * @param string $user
 	 *
@@ -702,7 +702,7 @@ trait BasicStructure {
 	}
 
 	/**
-	 * @When the client sends a :method to :url with requesttoken using the API
+	 * @When the client sends a :method to :url with requesttoken
 	 * @Given the client has sent a :method to :url with requesttoken
 	 *
 	 * @param string $method
@@ -728,7 +728,7 @@ trait BasicStructure {
 	}
 
 	/**
-	 * @When the client sends a :method to :url without requesttoken using the API
+	 * @When the client sends a :method to :url without requesttoken
 	 * @Given the client has sent a :method to :url without requesttoken
 	 *
 	 * @param string $method
@@ -891,7 +891,7 @@ trait BasicStructure {
 	}
 
 	/**
-	 * @When the admin requests status.php using the API
+	 * @When the admin requests status.php
 	 *
 	 * @return void
 	 */

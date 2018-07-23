@@ -1,11 +1,11 @@
 @api
 Feature: webdav-related
 	Background:
-		Given using API version "1"
+		Given using OCS API version "1"
 
 	Scenario Outline: Unauthenticated call
 		Given using <dav_version> DAV path
-		When an unauthenticated client connects to the dav endpoint using the API
+		When an unauthenticated client connects to the dav endpoint using the WebDAV API
 		Then the HTTP status code should be "401"
 		And there should be no duplicate headers
 		And the following headers should be set
@@ -18,7 +18,7 @@ Feature: webdav-related
 	Scenario Outline: Moving a file
 		Given using <dav_version> DAV path
 		And user "user0" has been created
-		When user "user0" moves file "/welcome.txt" to "/FOLDER/welcome.txt" using the API
+		When user "user0" moves file "/welcome.txt" to "/FOLDER/welcome.txt" using the WebDAV API
 		Then the HTTP status code should be "201"
 		And the downloaded content when downloading file "/FOLDER/welcome.txt" for user "user0" with range "bytes=0-6" should be "Welcome"
 		Examples:
@@ -29,7 +29,7 @@ Feature: webdav-related
 	Scenario Outline: Moving and overwriting a file
 		Given using <dav_version> DAV path
 		And user "user0" has been created
-		When user "user0" moves file "/welcome.txt" to "/textfile0.txt" using the API
+		When user "user0" moves file "/welcome.txt" to "/textfile0.txt" using the WebDAV API
 		Then the HTTP status code should be "204"
 		And the downloaded content when downloading file "/textfile0.txt" for user "user0" with range "bytes=0-6" should be "Welcome"
 		Examples:
@@ -47,9 +47,9 @@ Feature: webdav-related
 			| shareType   | 0         |
 			| permissions | 1         |
 			| shareWith   | user0     |
-		When user "user0" moves file "/textfile0.txt" to "/testshare/textfile0.txt" using the API
+		When user "user0" moves file "/textfile0.txt" to "/testshare/textfile0.txt" using the WebDAV API
 		Then the HTTP status code should be "403"
-		When user "user0" downloads the file "/testshare/textfile0.txt" using the API
+		When user "user0" downloads the file "/testshare/textfile0.txt" using the WebDAV API
  		Then the HTTP status code should be "404"
  		Examples:
 			| dav_version   |
@@ -67,7 +67,7 @@ Feature: webdav-related
 			| permissions | 1         |
 			| shareWith   | user0     |
 		And user "user1" has copied file "/welcome.txt" to "/testshare/overwritethis.txt"
-		When user "user0" moves file "/textfile0.txt" to "/testshare/overwritethis.txt" using the API
+		When user "user0" moves file "/textfile0.txt" to "/testshare/overwritethis.txt" using the WebDAV API
 		Then the HTTP status code should be "403"
 		And the downloaded content when downloading file "/testshare/overwritethis.txt" for user "user0" with range "bytes=0-6" should be "Welcome"
 		Examples:
@@ -78,7 +78,7 @@ Feature: webdav-related
 	Scenario Outline: move file into a not-existing folder
 		Given using <dav_version> DAV path
 		And user "user0" has been created
-		When user "user0" moves file "/welcome.txt" to "/not-existing/welcome.txt" using the API
+		When user "user0" moves file "/welcome.txt" to "/not-existing/welcome.txt" using the WebDAV API
 		Then the HTTP status code should be "409"
 		Examples:
 			| dav_version   |
@@ -88,7 +88,7 @@ Feature: webdav-related
 	Scenario Outline: rename a file into an invalid filename
 		Given using <dav_version> DAV path
 		And user "user0" has been created
-		When user "user0" moves file "/welcome.txt" to "/a\\a" using the API
+		When user "user0" moves file "/welcome.txt" to "/a\\a" using the WebDAV API
 		Then the HTTP status code should be "400"
 		Examples:
 			| dav_version   |
@@ -98,7 +98,7 @@ Feature: webdav-related
 	Scenario Outline: rename a file into a banned filename
 		Given using <dav_version> DAV path
 		And user "user0" has been created
-		When user "user0" moves file "/welcome.txt" to "/.htaccess" using the API
+		When user "user0" moves file "/welcome.txt" to "/.htaccess" using the WebDAV API
 		Then the HTTP status code should be "403"
 		Examples:
 			| dav_version   |
@@ -108,7 +108,7 @@ Feature: webdav-related
 	Scenario Outline: Copying a file
 		Given using <dav_version> DAV path
 		And user "user0" has been created
-		When user "user0" copies file "/welcome.txt" to "/FOLDER/welcome.txt" using the API
+		When user "user0" copies file "/welcome.txt" to "/FOLDER/welcome.txt" using the WebDAV API
 		Then the HTTP status code should be "201"
 		And the downloaded content when downloading file "/FOLDER/welcome.txt" for user "user0" with range "bytes=0-6" should be "Welcome"
 		Examples:
@@ -119,7 +119,7 @@ Feature: webdav-related
 	Scenario Outline: Copying and overwriting a file
 		Given using <dav_version> DAV path
 		And user "user0" has been created
-		When user "user0" copies file "/welcome.txt" to "/textfile1.txt" using the API
+		When user "user0" copies file "/welcome.txt" to "/textfile1.txt" using the WebDAV API
 		Then the HTTP status code should be "204"
 		And the downloaded content when downloading file "/textfile1.txt" for user "user0" with range "bytes=0-6" should be "Welcome"
 		Examples:
@@ -137,9 +137,9 @@ Feature: webdav-related
 			| shareType   | 0         |
 			| permissions | 1         |
 			| shareWith   | user0     |
-		When user "user0" copies file "/textfile0.txt" to "/testshare/textfile0.txt" using the API
+		When user "user0" copies file "/textfile0.txt" to "/testshare/textfile0.txt" using the WebDAV API
 		Then the HTTP status code should be "403"
-		And user "user0" downloads the file "/testshare/textfile0.txt" using the API
+		And user "user0" downloads the file "/testshare/textfile0.txt" using the WebDAV API
 		And the HTTP status code should be "404"
 		Examples:
 			| dav_version   |
@@ -157,7 +157,7 @@ Feature: webdav-related
 			| permissions | 1         |
 			| shareWith   | user0     |
 		And user "user1" has copied file "/welcome.txt" to "/testshare/overwritethis.txt"
-		When user "user0" copies file "/textfile0.txt" to "/testshare/overwritethis.txt" using the API
+		When user "user0" copies file "/textfile0.txt" to "/testshare/overwritethis.txt" using the WebDAV API
 		Then the HTTP status code should be "403"
 		And the downloaded content when downloading file "/testshare/overwritethis.txt" for user "user0" with range "bytes=0-6" should be "Welcome"
 		Examples:
@@ -168,7 +168,7 @@ Feature: webdav-related
 	Scenario Outline: download a file
 		Given using <dav_version> DAV path
 		And user "user0" has been created
-		When user "user0" downloads the file "/textfile0.txt" using the API
+		When user "user0" downloads the file "/textfile0.txt" using the WebDAV API
 		Then the downloaded content should be "ownCloud test text file" plus end-of-line
 		Examples:
 			| dav_version   |
@@ -178,7 +178,7 @@ Feature: webdav-related
 	Scenario Outline: download a file with range
 		Given using <dav_version> DAV path
 		And user "user0" has been created
-		When user "user0" downloads file "/welcome.txt" with range "bytes=51-77" using the API
+		When user "user0" downloads file "/welcome.txt" with range "bytes=51-77" using the WebDAV API
 		Then the downloaded content should be "example file for developers"
 		Examples:
 			| dav_version   |
@@ -188,7 +188,7 @@ Feature: webdav-related
 	Scenario Outline: upload a file and check download content
 		Given using <dav_version> DAV path
 		And user "user0" has been created
-		When user "user0" uploads file with content "uploaded content" to "<file_name>" using the API
+		When user "user0" uploads file with content "uploaded content" to "<file_name>" using the WebDAV API
 		Then the content of file "<file_name>" for user "user0" should be "uploaded content"
 		Examples:
 			| dav_version | file_name         |
@@ -208,7 +208,7 @@ Feature: webdav-related
 	Scenario Outline: create a folder
 		Given using <dav_version> DAV path
 		And user "user0" has been created
-		When user "user0" creates a folder "<folder_name>" using the API
+		When user "user0" creates a folder "<folder_name>" using the WebDAV API
 		Then as "user0" the folder "<folder_name>" should exist
 		Examples:
 			| dav_version | folder_name     |
@@ -229,7 +229,7 @@ Feature: webdav-related
 		Given using <dav_version> DAV path
 		And user "user0" has been created
 		And user "user0" has created a folder "<folder_name>"
-		When user "user0" uploads file with content "uploaded content" to "<folder_name>/<file_name>" using the API
+		When user "user0" uploads file with content "uploaded content" to "<folder_name>/<file_name>" using the WebDAV API
 		Then the content of file "<folder_name>/<file_name>" for user "user0" should be "uploaded content"
 		Examples:
 			| dav_version | folder_name                      | file_name                     |
@@ -250,7 +250,7 @@ Feature: webdav-related
 		Given using <dav_version> DAV path
 		And user "user0" has been created
 		And user "user0" has uploaded file with content "uploaded content" to "<file_name>"
-		When user "user0" gets the properties of file "<file_name>" using the API
+		When user "user0" gets the properties of file "<file_name>" using the WebDAV API
 		Then the properties response should contain an etag
 		Examples:
 			| dav_version | file_name         |
@@ -272,7 +272,7 @@ Feature: webdav-related
 		And user "user0" has been created
 		And user "user0" has created a folder "<folder_name>"
 		And user "user0" has uploaded file with content "uploaded content" to "<folder_name>/<file_name>"
-		When user "user0" gets the properties of file "<folder_name>/<file_name>" using the API
+		When user "user0" gets the properties of file "<folder_name>/<file_name>" using the WebDAV API
 		Then the properties response should contain an etag
 		Examples:
 			| dav_version | folder_name                      | file_name                     |
@@ -292,8 +292,8 @@ Feature: webdav-related
 	Scenario Outline: Retrieving folder quota when no quota is set
 		Given using <dav_version> DAV path
 		And user "user0" has been created
-		When the administrator gives unlimited quota to user "user0" using the API
-		And user "user0" gets the following properties of folder "/" using the API
+		When the administrator gives unlimited quota to user "user0" using the provisioning API
+		And user "user0" gets the following properties of folder "/" using the WebDAV API
 		  |{DAV:}quota-available-bytes|
 		Then the single response should contain a property "{DAV:}quota-available-bytes" with value "-3"
 		Examples:
@@ -304,8 +304,8 @@ Feature: webdav-related
 	Scenario Outline: Retrieving folder quota when quota is set
 		Given using <dav_version> DAV path
 		And user "user0" has been created
-		When the administrator sets the quota of user "user0" to "10 MB" using the API
-		And user "user0" gets the following properties of folder "/" using the API
+		When the administrator sets the quota of user "user0" to "10 MB" using the provisioning API
+		And user "user0" gets the following properties of folder "/" using the WebDAV API
 		  |{DAV:}quota-available-bytes|
 		Then the single response should contain a property "{DAV:}quota-available-bytes" with value "10485358"
 		Examples:
@@ -325,7 +325,7 @@ Feature: webdav-related
 			| shareType   | 0         |
 			| permissions | 31        |
 			| shareWith   | user0     |
-		When user "user0" gets the following properties of folder "/testquota" using the API
+		When user "user0" gets the following properties of folder "/testquota" using the WebDAV API
 		  |{DAV:}quota-available-bytes|
 		Then the single response should contain a property "{DAV:}quota-available-bytes" with value "10485358"
 		Examples:
@@ -338,7 +338,7 @@ Feature: webdav-related
 		And user "user0" has been created
 		And the quota of user "user0" has been set to "1 KB"
 		And user "user0" has added file "/prueba.txt" of 93 bytes
-		When user "user0" gets the following properties of folder "/" using the API
+		When user "user0" gets the following properties of folder "/" using the WebDAV API
 		  |{DAV:}quota-available-bytes|
 		Then the single response should contain a property "{DAV:}quota-available-bytes" with value "529"
 		Examples:
@@ -353,7 +353,7 @@ Feature: webdav-related
 		And the quota of user "user1" has been set to "1 KB"
 		And user "user0" has added file "/user0.txt" of 93 bytes
 		And user "user0" has shared file "user0.txt" with user "user1"
-		When user "user1" gets the following properties of folder "/" using the API
+		When user "user1" gets the following properties of folder "/" using the WebDAV API
 		  |{DAV:}quota-available-bytes|
 		Then the single response should contain a property "{DAV:}quota-available-bytes" with value "622"
 		Examples:
@@ -364,10 +364,10 @@ Feature: webdav-related
 	Scenario Outline: download a public shared file with range
 		Given using <dav_version> DAV path
 		And user "user0" has been created
-		When user "user0" creates a share using the API with settings
+		When user "user0" creates a share using the sharing API with settings
 			| path      | welcome.txt |
 			| shareType | 3           |
-		And the public downloads the last public shared file with range "bytes=51-77" using the API
+		And the public downloads the last public shared file with range "bytes=51-77" using the old WebDAV API
 		Then the downloaded content should be "example file for developers"
 		Examples:
 			| dav_version   |
@@ -377,10 +377,10 @@ Feature: webdav-related
 	Scenario Outline: download a public shared file inside a folder with range
 		Given using <dav_version> DAV path
 		And user "user0" has been created
-		When user "user0" creates a share using the API with settings
+		When user "user0" creates a share using the sharing API with settings
 			| path      | PARENT |
 			| shareType | 3      |
-		And the public downloads file "/parent.txt" from inside the last public shared folder with range "bytes=1-7" using the API
+		And the public downloads file "/parent.txt" from inside the last public shared folder with range "bytes=1-7" using the old WebDAV API
 		Then the downloaded content should be "wnCloud"
 		Examples:
 			| dav_version   |
@@ -390,7 +390,7 @@ Feature: webdav-related
 	Scenario Outline: Downloading a file should serve security headers
 		Given using <dav_version> DAV path
 		And user "user0" has been created
-		When user "user0" downloads the file "/welcome.txt" using the API
+		When user "user0" downloads the file "/welcome.txt" using the WebDAV API
 		Then the following headers should be set
 			| Content-Disposition               | attachment; filename*=UTF-8''welcome.txt; filename="welcome.txt" |
 			| Content-Security-Policy           | default-src 'none';                                              |
@@ -410,7 +410,7 @@ Feature: webdav-related
 		Given using <dav_version> DAV path
 		And user "user0" has been created
 		And user "user0" has created a folder "/test"
-		When user "user0" gets the following properties of folder "/test" using the API
+		When user "user0" gets the following properties of folder "/test" using the WebDAV API
 			|{http://owncloud.org/ns}share-types|
 		Then the response should contain an empty property "{http://owncloud.org/ns}share-types"
 		Examples:
@@ -428,7 +428,7 @@ Feature: webdav-related
 			| shareType   | 0     |
 			| permissions | 31    |
 			| shareWith   | user1 |
-		When user "user0" gets the following properties of folder "/test" using the API
+		When user "user0" gets the following properties of folder "/test" using the WebDAV API
 			|{http://owncloud.org/ns}share-types|
 		Then the response should contain a share-types property with
 			| 0 |
@@ -447,7 +447,7 @@ Feature: webdav-related
 			| shareType   | 1      |
 			| permissions | 31     |
 			| shareWith   | group1 |
-		When user "user0" gets the following properties of folder "/test" using the API
+		When user "user0" gets the following properties of folder "/test" using the WebDAV API
 			|{http://owncloud.org/ns}share-types|
 		Then the response should contain a share-types property with
 			| 1 |
@@ -464,7 +464,7 @@ Feature: webdav-related
 			| path        | test |
 			| shareType   | 3    |
 			| permissions | 31   |
-		When user "user0" gets the following properties of folder "/test" using the API
+		When user "user0" gets the following properties of folder "/test" using the WebDAV API
 			|{http://owncloud.org/ns}share-types|
 		Then the response should contain a share-types property with
 			| 3 |
@@ -493,7 +493,7 @@ Feature: webdav-related
 			| path        | test  |
 			| shareType   | 3     |
 			| permissions | 31    |
-		When user "user0" gets the following properties of folder "/test" using the API
+		When user "user0" gets the following properties of folder "/test" using the WebDAV API
 			|{http://owncloud.org/ns}share-types|
 		Then the response should contain a share-types property with
 			| 0 |
@@ -508,7 +508,7 @@ Feature: webdav-related
 		Given using <dav_version> DAV path
 		And user "userToBeDisabled" has been created
 		And user "userToBeDisabled" has been disabled
-		When user "userToBeDisabled" downloads the file "/welcome.txt" using the API
+		When user "userToBeDisabled" downloads the file "/welcome.txt" using the WebDAV API
 		Then the HTTP status code should be "401"
 		Examples:
 			| dav_version   |
@@ -519,7 +519,7 @@ Feature: webdav-related
 		Given using <dav_version> DAV path
 		And user "user0" has been created
 		And user "user0" has created a folder "/test_folder"
-		When user "user0" gets the following properties of folder "/test_folder" using the API
+		When user "user0" gets the following properties of folder "/test_folder" using the WebDAV API
 		  |{DAV:}resourcetype|
 		Then the single response should contain a property "{DAV:}resourcetype" with value "{DAV:}collection"
 		Examples:
@@ -531,7 +531,7 @@ Feature: webdav-related
 		Given using <dav_version> DAV path
 		And user "user0" has been created
 		And user "user0" has created a folder "/test_folder:5"
-		When user "user0" gets the following properties of folder "/test_folder:5" using the API
+		When user "user0" gets the following properties of folder "/test_folder:5" using the WebDAV API
 		  |{DAV:}resourcetype|
 		Then the single response should contain a property "{DAV:}resourcetype" with value "{DAV:}collection"
 		Examples:
@@ -545,7 +545,7 @@ Feature: webdav-related
 		And user "user0" has moved file "/welcome.txt" to "/FOLDER/welcome.txt"
 		And user "user0" has created a folder "/FOLDER/SUBFOLDER"
 		And user "user0" has copied file "/textfile0.txt" to "/FOLDER/SUBFOLDER/testfile0.txt"
-		When user "user0" deletes everything from folder "/FOLDER/" using the API
+		When user "user0" deletes everything from folder "/FOLDER/" using the WebDAV API
 		Then user "user0" should see the following elements
 			| /FOLDER/           |
 			| /PARENT/           |
@@ -568,7 +568,7 @@ Feature: webdav-related
 		Given using <dav_version> DAV path
 		And user "user0" has been created
 		And user "user0" has stored id of file "/textfile0.txt"
-		When user "user0" moves file "/textfile0.txt" to "/FOLDER/textfile0.txt" using the API
+		When user "user0" moves file "/textfile0.txt" to "/FOLDER/textfile0.txt" using the WebDAV API
 		Then user "user0" file "/FOLDER/textfile0.txt" should have the previously stored id
 		And user "user0" should not see the following elements
 			| /textfile0.txt |
@@ -581,7 +581,7 @@ Feature: webdav-related
 		Given using <dav_version> DAV path
 		And user "user0" has been created
 		And user "user0" has created a folder "/testshare"
-		When user "user0" moves folder "/testshare" to "/%5C" using the API
+		When user "user0" moves folder "/testshare" to "/%5C" using the WebDAV API
 		Then the HTTP status code should be "400"
 		And user "user0" should see the following elements
 			| /testshare/ |
@@ -594,7 +594,7 @@ Feature: webdav-related
 		Given using <dav_version> DAV path
 		And user "user0" has been created
 		And user "user0" has created a folder "/testshare"
-		When user "user0" moves folder "/testshare" to "/%5Ctestshare" using the API
+		When user "user0" moves folder "/testshare" to "/%5Ctestshare" using the WebDAV API
 		Then the HTTP status code should be "400"
 		And user "user0" should see the following elements
 			| /testshare/ |
@@ -607,7 +607,7 @@ Feature: webdav-related
 		Given using <dav_version> DAV path
 		And user "user0" has been created
 		And user "user0" has created a folder "/testshare"
-		When user "user0" moves folder "/testshare" to "/hola%5Chola" using the API
+		When user "user0" moves folder "/testshare" to "/hola%5Chola" using the WebDAV API
 		Then the HTTP status code should be "400"
 		And user "user0" should see the following elements
 			| /testshare/ |
@@ -620,7 +620,7 @@ Feature: webdav-related
 		Given using <dav_version> DAV path
 		And user "user0" has been created
 		And user "user0" has created a folder "/testshare"
-		When user "user0" moves folder "/testshare" to "/.htaccess" using the API
+		When user "user0" moves folder "/testshare" to "/.htaccess" using the WebDAV API
 		Then the HTTP status code should be "403"
 		And user "user0" should see the following elements
 			| /testshare/ |
@@ -633,7 +633,7 @@ Feature: webdav-related
 		Given using <dav_version> DAV path
 		And user "user0" has been created
 		And user "user0" has created a folder "/testshare"
-		When user "user0" moves folder "/testshare" to "/not-existing/testshare" using the API
+		When user "user0" moves folder "/testshare" to "/not-existing/testshare" using the WebDAV API
 		Then the HTTP status code should be "409"
 		And user "user0" should see the following elements
 			| /testshare/ |
@@ -645,7 +645,7 @@ Feature: webdav-related
 	Scenario Outline: Downloading a file should serve security headers
 		Given using <dav_version> DAV path
 		And user "user0" has been created
-		When user "user0" downloads the file "/welcome.txt" using the API
+		When user "user0" downloads the file "/welcome.txt" using the WebDAV API
 		Then the following headers should be set
 			| Content-Disposition               | attachment; filename*=UTF-8''welcome.txt; filename="welcome.txt" |
 			| Content-Security-Policy           | default-src 'none';                                              |
@@ -664,8 +664,8 @@ Feature: webdav-related
 	Scenario Outline: Doing a GET with a web login should work without CSRF token on the new backend
 		Given user "user0" has been created
 		And using <dav_version> DAV path
-		And user "user0" has logged in to a web-style session using the API
-		When the client sends a "GET" to "/remote.php/dav/files/user0/welcome.txt" without requesttoken using the API
+		And user "user0" has logged in to a web-style session
+		When the client sends a "GET" to "/remote.php/dav/files/user0/welcome.txt" without requesttoken
 		Then the downloaded content should start with "Welcome to your ownCloud account!"
 		And the HTTP status code should be "200"
 		Examples:
@@ -676,8 +676,8 @@ Feature: webdav-related
 	Scenario Outline: Doing a GET with a web login should work with CSRF token on the new backend
 		Given user "user0" has been created
 		And using <dav_version> DAV path
-		And user "user0" has logged in to a web-style session using the API
-		When the client sends a "GET" to "/remote.php/dav/files/user0/welcome.txt" with requesttoken using the API
+		And user "user0" has logged in to a web-style session
+		When the client sends a "GET" to "/remote.php/dav/files/user0/welcome.txt" with requesttoken
 		Then the downloaded content should start with "Welcome to your ownCloud account!"
 		And the HTTP status code should be "200"
 		Examples:
@@ -688,8 +688,8 @@ Feature: webdav-related
 	Scenario Outline: Doing a PROPFIND with a web login should work with CSRF token on the new backend
 		Given user "user0" has been created
 		And using <dav_version> DAV path
-		And user "user0" has logged in to a web-style session using the API
-		When the client sends a "PROPFIND" to "/remote.php/dav/files/user0/welcome.txt" with requesttoken using the API
+		And user "user0" has logged in to a web-style session
+		When the client sends a "PROPFIND" to "/remote.php/dav/files/user0/welcome.txt" with requesttoken
 		Then the HTTP status code should be "207"
 		Examples:
 			| dav_version   |
@@ -763,7 +763,7 @@ Feature: webdav-related
 		And user "user1" has created a folder "/folderA/ONE"
 		And user "user1" has stored id of file "/folderA/ONE"
 		And user "user1" has created a folder "/folderA/ONE/TWO"
-		When user "user1" moves folder "/folderA/ONE" to "/folderB/ONE" using the API
+		When user "user1" moves folder "/folderA/ONE" to "/folderB/ONE" using the WebDAV API
 		Then as "user1" the folder "/folderA" should exist
 		And as "user1" the folder "/folderA/ONE" should not exist
 		# yes, a weird bug used to make this one fail
@@ -780,7 +780,7 @@ Feature: webdav-related
 		Given using <dav_version> DAV path
 		And user "user0" has been created
 		And user "user0" has uploaded file "data/textfile.txt" to "/somefile.txt"
-		When user "user0" gets the following properties of file "/somefile.txt" using the API
+		When user "user0" gets the following properties of file "/somefile.txt" using the WebDAV API
 			|{http://owncloud.org/ns}privatelink|
 		Then the single response should contain a property "{http://owncloud.org/ns}privatelink" with value like "%(/(index.php/)?f/[0-9]*)%"
 		Examples:
@@ -791,7 +791,7 @@ Feature: webdav-related
 	Scenario Outline: Copying file to a path with extension .part should not be possible
 		Given using <dav_version> DAV path
 		And user "user0" has been created
-		When user "user0" copies file "/welcome.txt" to "/welcome.part" using the API
+		When user "user0" copies file "/welcome.txt" to "/welcome.part" using the WebDAV API
 		Then the HTTP status code should be "400"
 		And user "user0" should see the following elements
 			| /welcome.txt |
@@ -817,7 +817,7 @@ Feature: webdav-related
 	Scenario Outline: Renaming a file to a path with extension .part should not be possible
 		Given using <dav_version> DAV path
 		And user "user0" has been created
-		When user "user0" moves file "/welcome.txt" to "/welcome.part" using the API
+		When user "user0" moves file "/welcome.txt" to "/welcome.part" using the WebDAV API
 		Then the HTTP status code should be "400"
 		And user "user0" should see the following elements
 			| /welcome.txt |
@@ -831,7 +831,7 @@ Feature: webdav-related
 	Scenario Outline: Creating a directory which contains .part should not be possible
 		Given using <dav_version> DAV path
 		And user "user0" has been created
-		When user "user0" creates a folder "/folder.with.ext.part" using the API
+		When user "user0" creates a folder "/folder.with.ext.part" using the WebDAV API
 		Then the HTTP status code should be "400"
 		And user "user0" should not see the following elements
 			| /folder.with.ext.part |
@@ -844,7 +844,7 @@ Feature: webdav-related
 		Given using <dav_version> DAV path
 		And user "user0" has been created
 		And user "user0" has uploaded file "data/textfile.txt" to "/somefile.txt"
-		When user "user0" gets the following properties of file "/somefile.txt" using the API
+		When user "user0" gets the following properties of file "/somefile.txt" using the WebDAV API
 			|{http://owncloud.org/ns}privatelink|
 		Then the single response should contain a property "{http://owncloud.org/ns}privatelink" with value like "%(/(index.php/)?f/[0-9]*)%"
 		Examples:
@@ -855,7 +855,7 @@ Feature: webdav-related
 	Scenario Outline: Copying file to a path with extension .part should not be possible
 		Given using <dav_version> DAV path
 		And user "user0" has been created
-		When user "user0" copies file "/welcome.txt" to "/welcome.part" using the API
+		When user "user0" copies file "/welcome.txt" to "/welcome.part" using the WebDAV API
 		Then the HTTP status code should be "400"
 		And user "user0" should see the following elements
 			| /welcome.txt |
@@ -869,7 +869,7 @@ Feature: webdav-related
 	Scenario Outline: Uploading file to path with extension .part should not be possible
 		Given using <dav_version> DAV path
 		And user "user0" has been created
-		When user "user0" uploads file "data/textfile.txt" to "/textfile.part" using the API
+		When user "user0" uploads file "data/textfile.txt" to "/textfile.part" using the WebDAV API
 		Then the HTTP status code should be "400"
 		And user "user0" should not see the following elements
 			| /textfile.part |
@@ -881,7 +881,7 @@ Feature: webdav-related
 	Scenario Outline: Renaming a file to a path with extension .part should not be possible
 		Given using <dav_version> DAV path
 		And user "user0" has been created
-		When user "user0" moves file "/welcome.txt" to "/welcome.part" using the API
+		When user "user0" moves file "/welcome.txt" to "/welcome.part" using the WebDAV API
 		Then the HTTP status code should be "400"
 		And user "user0" should see the following elements
 			| /welcome.txt |
@@ -895,7 +895,7 @@ Feature: webdav-related
 	Scenario Outline: Creating a directory which contains .part should not be possible
 		Given using <dav_version> DAV path
 		And user "user0" has been created
-		When user "user0" creates a folder "/folder.with.ext.part" using the API
+		When user "user0" creates a folder "/folder.with.ext.part" using the WebDAV API
 		Then the HTTP status code should be "400"
 		And user "user0" should not see the following elements
 			| /folder.with.ext.part |

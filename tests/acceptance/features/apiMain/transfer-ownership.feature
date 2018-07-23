@@ -16,7 +16,7 @@ Feature: transfer-ownership
 		Given user "user0" has been created
 		And user "user1" has been created
 		And user "user0" has uploaded file "data/file_to_overwrite.txt" to "/PARENT/textfile0.txt"
-		And user "user0" has uploaded the following "3" chunks to "/PARENT/textfile0.txt" with old chunking and using the API
+		And user "user0" has uploaded the following "3" chunks to "/PARENT/textfile0.txt" with old chunking
 			| 1 | AA |
 			| 2 | BB |
 			| 3 | CC |
@@ -184,9 +184,9 @@ Feature: transfer-ownership
 		And user "user1" has been created
 		And user "user2" has been created
 		And user "user0" has created a folder "/test"
-		And user "user0" uploads file "data/textfile.txt" to "/test/somefile.txt" using the API
+		And user "user0" has uploaded file "data/textfile.txt" to "/test/somefile.txt"
 		And user "user0" has shared folder "/test" with user "user2" with permissions 31
-		And user "user1" creates a share using the API with settings
+		And user "user1" creates a share using the sharing API with settings
 			| path      | /test/somefile.txt |
 			| shareType | 3                  |
 		When the administrator transfers ownership of path "test" from "user0" to "user1" using the occ command
@@ -252,11 +252,11 @@ Feature: transfer-ownership
 		And user "user0" has created a folder "/test"
 		And user "user0" has created a folder "/test/foo"
 		And user "user0" has uploaded file "data/textfile.txt" to "/test/somefile.txt"
-		And user "user0" creates a share using the API with settings
+		And user "user0" creates a share using the sharing API with settings
 			| path      | /test/somefile.txt |
 			| shareType | 3                  |
 		And user "user0" has shared file "/test" with user "user1" with permissions 31
-		And user "user1" creates a share using the API with settings
+		And user "user1" creates a share using the sharing API with settings
 			| path      | /test |
 			| shareType | 3                  |
 		When the administrator transfers ownership from "user0" to "user1" using the occ command
@@ -297,7 +297,7 @@ Feature: transfer-ownership
 	Scenario: transferring ownership fails with empty files
 		Given user "user0" has been created
 		And user "user1" has been created
-		And user "user0" deletes everything from folder "/" using the API
+		And user "user0" deletes everything from folder "/" using the WebDAV API
 		When the administrator transfers ownership from "user0" to "user1" using the occ command
 		Then the command output should contain the text "No files/folders to transfer"
 		And the command should have failed with exit code 1

@@ -4,7 +4,7 @@ As an ownCloud user
 I want to be able to use the provisioning API with an app password
 So that I can make a client app or script for provisioning users/groups that can use an app password instead of my real password.
 	Background:
-		Given using API version "2"
+		Given using OCS API version "2"
 
 	Scenario: admin deletes the user
 		Given user "brand-new-user" has been created

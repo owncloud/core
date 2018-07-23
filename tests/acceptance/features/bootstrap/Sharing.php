@@ -76,7 +76,7 @@ trait Sharing {
 	}
 
 	/**
-	 * @When /^user "([^"]*)" creates a share using the API with settings$/
+	 * @When /^user "([^"]*)" creates a share using the sharing API with settings$/
 	 * @Given /^user "([^"]*)" has created a share with settings$/
 	 *
 	 * @param string $user
@@ -86,7 +86,7 @@ trait Sharing {
 	 */
 	public function userCreatesAShareWithSettings($user, $body) {
 		$fullUrl = $this->getBaseUrl()
-			. "/ocs/v{$this->apiVersion}.php/apps/files_sharing/api/v{$this->sharingApiVersion}/shares";
+			. "/ocs/v{$this->ocsApiVersion}.php/apps/files_sharing/api/v{$this->sharingApiVersion}/shares";
 		$client = new Client();
 		$options = [];
 		$options['auth'] = $this->getAuthOptionForUser($user);
@@ -112,7 +112,7 @@ trait Sharing {
 	}
 
 	/**
-	 * @When /^the user creates a share using the API with settings$/
+	 * @When /^the user creates a share using the sharing API with settings$/
 	 *
 	 * @param TableNode|null $body
 	 *
@@ -164,7 +164,7 @@ trait Sharing {
 				$permissions,
 				null, // linkName
 				null, // expireDate
-				$this->apiVersion,
+				$this->ocsApiVersion,
 				$this->sharingApiVersion
 			);
 		} catch (BadResponseException $e) {
@@ -176,7 +176,7 @@ trait Sharing {
 	}
 
 	/**
-	 * @When /^user "([^"]*)" creates a public share of (?:file|folder) "([^"]*)" using the API$/
+	 * @When /^user "([^"]*)" creates a public share of (?:file|folder) "([^"]*)" using the sharing API$/
 	 * @Given /^user "([^"]*)" has created a public share of (?:file|folder) "([^"]*)"$/
 	 *
 	 * @param string $user
@@ -189,7 +189,7 @@ trait Sharing {
 	}
 
 	/**
-	 * @When /^the user creates a public share of (?:file|folder) "([^"]*)" using the API$/
+	 * @When /^the user creates a public share of (?:file|folder) "([^"]*)" using the sharing API$/
 	 * @Given /^the user has created a public share of (?:file|folder) "([^"]*)"$/
 	 *
 	 * @param string $path
@@ -200,7 +200,7 @@ trait Sharing {
 	}
 
 	/**
-	 * @When /^user "([^"]*)" creates a public share of (?:file|folder) "([^"]*)" using the API with (read|update|create|delete|change|share|all) permission(?:s|)$/
+	 * @When /^user "([^"]*)" creates a public share of (?:file|folder) "([^"]*)" using the sharing API with (read|update|create|delete|change|share|all) permission(?:s|)$/
 	 * @Given /^user "([^"]*)" has created a public share of (?:file|folder) "([^"]*)" with (read|update|create|delete|change|share|all) permission(?:s|)$/
 	 *
 	 * @param string $user
@@ -216,7 +216,7 @@ trait Sharing {
 	}
 
 	/**
-	 * @When /^the user creates a public share of (?:file|folder) "([^"]*)" using the API with (read|update|create|delete|change|share|all) permission(?:s|)$/
+	 * @When /^the user creates a public share of (?:file|folder) "([^"]*)" using the sharing API with (read|update|create|delete|change|share|all) permission(?:s|)$/
 	 * @Given /^the user has created a public share of (?:file|folder) "([^"]*)" with (read|update|create|delete|change|share|all) permission(?:s|)$/
 	 *
 	 * @param string $path
@@ -289,14 +289,14 @@ trait Sharing {
 	}
 
 	/**
-	 * @Then /^the user "([^"]*)" should be able to download the file "([^"]*)" using the API$/
+	 * @Then /^the user "([^"]*)" should be able to download the file "([^"]*)" using the sharing API$/
 	 *
 	 * @param string $user
 	 * @param string $path
 	 *
 	 * @return void
 	 */
-	public function theUserShouldBeAbleToDownloadTheFileUsingTheApi($user, $path) {
+	public function theUserShouldBeAbleToDownloadTheFileUsingTheSharingApi($user, $path) {
 		$path = \ltrim($path, "/");
 		$options = [];
 		$options['auth'] = $this->getAuthOptionForUser($user);
@@ -374,7 +374,7 @@ trait Sharing {
 	}
 
 	/**
-	 * @When the public uploads file ":filename" with content ":body" using the API
+	 * @When the public uploads file ":filename" with content ":body" using the old WebDAV API
 	 * @Given the public has uploaded file ":filename" with content ":body"
 	 *
 	 * @param string $filename target file name
@@ -387,7 +387,7 @@ trait Sharing {
 	}
 
 	/**
-	 * @When the public overwrites file ":filename" with content ":body" using the API
+	 * @When the public overwrites file ":filename" with content ":body" using the old WebDAV API
 	 * @Given the public has overwritten file ":filename" with content ":body"
 	 *
 	 * @param string $filename target file name
@@ -400,7 +400,7 @@ trait Sharing {
 	}
 
 	/**
-	 * @When the public uploads file ":filename" with password ":password" and content ":body" using the API
+	 * @When the public uploads file ":filename" with password ":password" and content ":body" using the old WebDAV API
 	 * @Given the public has uploaded file ":filename" with password ":password" and content ":body"
 	 *
 	 * @param string $filename target file name
@@ -416,7 +416,7 @@ trait Sharing {
 	}
 
 	/**
-	 * @When the public uploads file ":filename" with content ":body" with autorename mode using the API
+	 * @When the public uploads file ":filename" with content ":body" with autorename mode using the old WebDAV API
 	 * @Given the public has uploaded file ":filename" with content ":body" with autorename mode
 	 *
 	 * @param string $filename target file name
@@ -429,7 +429,7 @@ trait Sharing {
 	}
 
 	/**
-	 * @When the public uploads file ":filename" using the API
+	 * @When the public uploads file ":filename" using the old WebDAV API
 	 * @Given the public has uploaded file ":filename"
 	 *
 	 * @param string $source target file name
@@ -442,7 +442,7 @@ trait Sharing {
 	}
 
 	/**
-	 * @Then /^user "([^"]*)" should not be able to create public share of (?:file|folder) "([^"]*)" using the API$/
+	 * @Then /^user "([^"]*)" should not be able to create a public share of (?:file|folder) "([^"]*)" using the sharing API$/
 	 *
 	 * @param string $sharer
 	 * @param string $filepath
@@ -514,7 +514,7 @@ trait Sharing {
 	}
 
 	/**
-	 * @When /^the user adds an expiration date to the last share using the API$/
+	 * @When /^the user adds an expiration date to the last share using the sharing API$/
 	 * @Given /^the user has added an expiration date to the last share$/
 	 *
 	 * @return void
@@ -522,7 +522,7 @@ trait Sharing {
 	public function theUserAddsExpirationDateToLastShare() {
 		$share_id = (string) $this->lastShareData->data[0]->id;
 		$fullUrl = $this->getBaseUrl()
-			. "/ocs/v{$this->apiVersion}.php/apps/files_sharing/api/v{$this->sharingApiVersion}/shares/$share_id";
+			. "/ocs/v{$this->ocsApiVersion}.php/apps/files_sharing/api/v{$this->sharingApiVersion}/shares/$share_id";
 		$client = new Client();
 		$options = [];
 		$options['auth'] = $this->getAuthOptionForUser($this->currentUser);
@@ -538,7 +538,7 @@ trait Sharing {
 	}
 
 	/**
-	 * @When /^the user updates the last share using the API with$/
+	 * @When /^the user updates the last share using the sharing API with$/
 	 * @Given /^the user has updated the last share with$/
 	 *
 	 * @param TableNode|null $body
@@ -550,7 +550,7 @@ trait Sharing {
 	}
 
 	/**
-	 * @When /^user "([^"]*)" updates the last share using the API with$/
+	 * @When /^user "([^"]*)" updates the last share using the sharing API with$/
 	 * @Given /^user "([^"]*)" has updated the last share with$/
 	 *
 	 * @param string $user
@@ -561,7 +561,7 @@ trait Sharing {
 	public function userUpdatesTheLastShareWith($user, $body) {
 		$share_id = (string) $this->lastShareData->data[0]->id;
 		$fullUrl = $this->getBaseUrl()
-			. "/ocs/v{$this->apiVersion}.php/apps/files_sharing/api/v{$this->sharingApiVersion}/shares/$share_id";
+			. "/ocs/v{$this->ocsApiVersion}.php/apps/files_sharing/api/v{$this->sharingApiVersion}/shares/$share_id";
 		$client = new Client();
 		$options = [];
 		$options['auth'] = $this->getAuthOptionForUser($user);
@@ -619,7 +619,7 @@ trait Sharing {
 				$permissions,
 				$linkName,
 				null, //expireDate
-				$this->apiVersion,
+				$this->ocsApiVersion,
 				$this->sharingApiVersion
 			);
 			$this->lastShareData = $this->response->xml();
@@ -777,7 +777,7 @@ trait Sharing {
 	}
 
 	/**
-	 * @When /^user "([^"]*)" shares (?:file|folder|entry) "([^"]*)" with user "([^"]*)"(?: with permissions ([\d]*))? using the API$/
+	 * @When /^user "([^"]*)" shares (?:file|folder|entry) "([^"]*)" with user "([^"]*)"(?: with permissions ([\d]*))? using the sharing API$/
 	 * @Given /^user "([^"]*)" has shared (?:file|folder|entry) "([^"]*)" with user "([^"]*)"(?: with permissions ([\d]*))?$/
 	 *
 	 * @param string $user1
@@ -787,11 +787,11 @@ trait Sharing {
 	 *
 	 * @return void
 	 */
-	public function userSharesFileWithUserUsingTheAPI(
+	public function userSharesFileWithUserUsingTheSharingApi(
 		$user1, $filepath, $user2, $permissions = null
 	) {
 		$fullUrl = $this->getBaseUrl()
-			. "/ocs/v{$this->apiVersion}.php/apps/files_sharing/api/v{$this->sharingApiVersion}/shares" . "?path=$filepath";
+			. "/ocs/v{$this->ocsApiVersion}.php/apps/files_sharing/api/v{$this->sharingApiVersion}/shares" . "?path=$filepath";
 		$client = new Client();
 		$options = [];
 		$options['auth'] = $this->getAuthOptionForUser($user1);
@@ -819,7 +819,7 @@ trait Sharing {
 	}
 
 	/**
-	 * @When /^the user shares (?:file|folder|entry) "([^"]*)" with group "([^"]*)"(?: with permissions ([\d]*))? using the API$/
+	 * @When /^the user shares (?:file|folder|entry) "([^"]*)" with group "([^"]*)"(?: with permissions ([\d]*))? using the sharing API$/
 	 * @Given /^the user has shared (?:file|folder|entry) "([^"]*)" with group "([^"]*)"(?: with permissions ([\d]*))?$/
 	 *
 	 * @param string $filepath
@@ -828,16 +828,16 @@ trait Sharing {
 	 *
 	 * @return void
 	 */
-	public function theUserSharesFileWithGroupUsingTheAPI(
+	public function theUserSharesFileWithGroupUsingTheSharingApi(
 		$filepath, $group, $permissions = null
 	) {
-		$this->userSharesFileWithGroupUsingTheAPI(
+		$this->userSharesFileWithGroupUsingTheSharingApi(
 			$this->currentUser, $filepath, $group, $permissions
 		);
 	}
 
 	/**
-	 * @When /^user "([^"]*)" shares (?:file|folder|entry) "([^"]*)" with group "([^"]*)"(?: with permissions ([\d]*))? using the API$/
+	 * @When /^user "([^"]*)" shares (?:file|folder|entry) "([^"]*)" with group "([^"]*)"(?: with permissions ([\d]*))? using the sharing API$/
 	 * @Given /^user "([^"]*)" has shared (?:file|folder|entry) "([^"]*)" with group "([^"]*)"(?: with permissions ([\d]*))?$/
 	 *
 	 * @param string $user
@@ -847,11 +847,11 @@ trait Sharing {
 	 *
 	 * @return void
 	 */
-	public function userSharesFileWithGroupUsingTheAPI(
+	public function userSharesFileWithGroupUsingTheSharingApi(
 		$user, $filepath, $group, $permissions = null
 	) {
 		$fullUrl = $this->getBaseUrl()
-			. "/ocs/v{$this->apiVersion}.php/apps/files_sharing/api/v{$this->sharingApiVersion}/shares" . "?path=$filepath";
+			. "/ocs/v{$this->ocsApiVersion}.php/apps/files_sharing/api/v{$this->sharingApiVersion}/shares" . "?path=$filepath";
 		$client = new Client();
 		$options = [];
 		$options['auth'] = $this->getAuthOptionForUser($user);
@@ -871,7 +871,7 @@ trait Sharing {
 	}
 
 	/**
-	 * @Then /^user "([^"]*)" should not be able to share (?:file|folder|entry) "([^"]*)" with (user|group) "([^"]*)"(?: with permissions ([\d]*))? using the API$/
+	 * @Then /^user "([^"]*)" should not be able to share (?:file|folder|entry) "([^"]*)" with (user|group) "([^"]*)"(?: with permissions ([\d]*))? using the sharing API$/
 	 *
 	 * @param string $sharer
 	 * @param string $filepath
@@ -881,7 +881,7 @@ trait Sharing {
 	 *
 	 * @return void
 	 */
-	public function userTriesToShareFileUsingTheApi($sharer, $filepath, $userOrGroup, $sharee, $permissions = null) {
+	public function userTriesToShareFileUsingTheSharingApi($sharer, $filepath, $userOrGroup, $sharee, $permissions = null) {
 		$shareType = ($userOrGroup === "user" ? 0 : 1);
 		$time = \time();
 		if ($this->lastShareTime !== null && $time - $this->lastShareTime < 1) {
@@ -902,7 +902,7 @@ trait Sharing {
 	}
 
 	/**
-	 * @Then /^user "([^"]*)" should be able to share (?:file|folder|entry) "([^"]*)" with (user|group) "([^"]*)"(?: with permissions ([\d]*))? using the API$/
+	 * @Then /^user "([^"]*)" should be able to share (?:file|folder|entry) "([^"]*)" with (user|group) "([^"]*)"(?: with permissions ([\d]*))? using the sharing API$/
 	 *
 	 * @param string $sharer
 	 * @param string $filepath
@@ -912,7 +912,7 @@ trait Sharing {
 	 *
 	 * @return void
 	 */
-	public function userShouldBeAbleToShareUsingTheApi(
+	public function userShouldBeAbleToShareUsingTheSharingApi(
 		$sharer, $filepath, $userOrGroup, $sharee, $permissions = null
 	) {
 		$shareType = ($userOrGroup === "user" ? 0 : 1);
@@ -934,51 +934,51 @@ trait Sharing {
 	}
 
 	/**
-	 * @When /^the user deletes the last share using the API$/
+	 * @When /^the user deletes the last share using the sharing API$/
 	 * @Given /^the user has deleted the last share$/
 	 *
 	 * @return void
 	 */
-	public function theUserDeletesLastShareUsingTheAPI() {
-		$this->userDeletesLastShareUsingTheAPI($this->currentUser);
+	public function theUserDeletesLastShareUsingTheSharingAPI() {
+		$this->userDeletesLastShareUsingTheSharingApi($this->currentUser);
 	}
 
 	/**
-	 * @When /^user "([^"]*)" deletes the last share using the API$/
+	 * @When /^user "([^"]*)" deletes the last share using the sharing API$/
 	 * @Given /^user "([^"]*)" has deleted the last share$/
 	 *
 	 * @param string $user
 	 *
 	 * @return void
 	 */
-	public function userDeletesLastShareUsingTheAPI($user) {
+	public function userDeletesLastShareUsingTheSharingApi($user) {
 		$share_id = $this->lastShareData->data[0]->id;
 		$url = "/apps/files_sharing/api/v{$this->sharingApiVersion}/shares/$share_id";
-		$this->userSendsHTTPMethodToAPIEndpointWithBody(
+		$this->userSendsHTTPMethodToOcsApiEndpointWithBody(
 			$user, "DELETE", $url, null
 		);
 	}
 
 	/**
-	 * @When /^the user gets the info of the last share using the API$/
+	 * @When /^the user gets the info of the last share using the sharing API$/
 	 *
 	 * @return void
 	 */
-	public function theUserGetsInfoOfLastShareUsingTheAPI() {
-		$this->userGetsInfoOfLastShareUsingTheAPI($this->currentUser);
+	public function theUserGetsInfoOfLastShareUsingTheSharingApi() {
+		$this->userGetsInfoOfLastShareUsingTheSharingApi($this->currentUser);
 	}
 
 	/**
-	 * @When /^user "([^"]*)" gets the info of the last share using the API$/
+	 * @When /^user "([^"]*)" gets the info of the last share using the sharing API$/
 	 *
 	 * @param string $user
 	 *
 	 * @return void
 	 */
-	public function userGetsInfoOfLastShareUsingTheAPI($user) {
+	public function userGetsInfoOfLastShareUsingTheSharingApi($user) {
 		$share_id = $this->lastShareData->data[0]->id;
 		$url = "/apps/files_sharing/api/v{$this->sharingApiVersion}/shares/$share_id";
-		$this->userSendsHTTPMethodToAPIEndpointWithBody(
+		$this->userSendsHTTPMethodToOcsApiEndpointWithBody(
 			$user, "GET", $url, null
 		);
 	}
@@ -1069,7 +1069,7 @@ trait Sharing {
 	}
 
 	/**
-	 * @When user :user removes all shares from the file named :fileName using the API
+	 * @When user :user removes all shares from the file named :fileName using the sharing API
 	 * @Given user :user has removed all shares from the file named :fileName
 	 *
 	 * @param string $user
@@ -1080,7 +1080,7 @@ trait Sharing {
 	 */
 	public function userRemovesAllSharesFromTheFileNamed($user, $fileName) {
 		$url = $this->getBaseUrl()
-			. "/ocs/v{$this->apiVersion}.php/apps/files_sharing/api/v{$this->sharingApiVersion}/shares?format=json";
+			. "/ocs/v{$this->ocsApiVersion}.php/apps/files_sharing/api/v{$this->sharingApiVersion}/shares?format=json";
 		$client = new \GuzzleHttp\Client();
 		$res = $client->get(
 			$url,
@@ -1098,7 +1098,7 @@ trait Sharing {
 				$id = $data['id'];
 				$client->delete(
 					$this->getBaseUrl()
-					. "/ocs/v{$this->apiVersion}.php/apps/files_sharing/api/v{$this->sharingApiVersion}/shares/{$id}",
+					. "/ocs/v{$this->ocsApiVersion}.php/apps/files_sharing/api/v{$this->sharingApiVersion}/shares/{$id}",
 					[
 						'auth' => $this->getAuthOptionForUser($user),
 						'headers' => [
@@ -1148,7 +1148,7 @@ trait Sharing {
 	 */
 	public function getShares($user, $path) {
 		$fullUrl = $this->getBaseUrl()
-			. "/ocs/v{$this->apiVersion}.php/apps/files_sharing/api/v{$this->sharingApiVersion}/shares";
+			. "/ocs/v{$this->ocsApiVersion}.php/apps/files_sharing/api/v{$this->sharingApiVersion}/shares";
 		$fullUrl = $fullUrl . '?path=' . $path;
 
 		$client = new Client();
@@ -1224,7 +1224,7 @@ trait Sharing {
 	}
 
 	/**
-	 * @When /^user "([^"]*)" deletes public share named "([^"]*)" in (?:file|folder) "([^"]*)" using the API$/
+	 * @When /^user "([^"]*)" deletes public share named "([^"]*)" in (?:file|folder) "([^"]*)" using the sharing API$/
 	 * @Given /^user "([^"]*)" has deleted public share named "([^"]*)" in (?:file|folder) "([^"]*)"$/
 	 *
 	 * @param string $user
@@ -1233,16 +1233,16 @@ trait Sharing {
 	 *
 	 * @return void
 	 */
-	public function userDeletesPublicShareNamedUsingTheAPI(
+	public function userDeletesPublicShareNamedUsingTheSharingApi(
 		$user, $name, $path
 	) {
 		$share_id = $this->getPublicShareIDByName($user, $path, $name);
 		$url = "/apps/files_sharing/api/v{$this->sharingApiVersion}/shares/$share_id";
-		$this->sendingToWith("DELETE", $url, null);
+		$this->theUserSendsToOcsApiEndpointWithBody("DELETE", $url, null);
 	}
 
 	/**
-	 * @When /^user "([^"]*)" (declines|accepts) the share "([^"]*)" offered by user "([^"]*)" using the API$/
+	 * @When /^user "([^"]*)" (declines|accepts) the share "([^"]*)" offered by user "([^"]*)" using the sharing API$/
 	 * @Given /^user "([^"]*)" has (declined|accepted) the share "([^"]*)" offered by user "([^"]*)"$/
 	 *
 	 * @param string $user
@@ -1277,7 +1277,7 @@ trait Sharing {
 			$httpRequestMethod = "POST";
 		}
 		
-		$this->userSendsHTTPMethodToAPIEndpointWithBody(
+		$this->userSendsHTTPMethodToOcsApiEndpointWithBody(
 			$user, $httpRequestMethod, $url, null
 		);
 		if ($this->response->getStatusCode() !== 200) {
@@ -1289,7 +1289,7 @@ trait Sharing {
 
 	/**
 	 *
-	 * @Then /^the API should report to user "([^"]*)" that these shares are in the (pending|accepted|declined) state$/
+	 * @Then /^the sharing API should report to user "([^"]*)" that these shares are in the (pending|accepted|declined) state$/
 	 *
 	 * @param string $user
 	 * @param string $state
@@ -1323,7 +1323,7 @@ trait Sharing {
 	}
 
 	/**
-	 * @Then the API should report that no shares are shared with user :user
+	 * @Then the sharing API should report that no shares are shared with user :user
 	 *
 	 * @param string $user
 	 *
@@ -1370,7 +1370,7 @@ trait Sharing {
 		
 		$url = "/apps/files_sharing/api/v{$this->sharingApiVersion}/shares" .
 			   "?format=json&shared_with_me=true&state=$stateCode";
-		$this->userSendsHTTPMethodToAPIEndpointWithBody(
+		$this->userSendsHTTPMethodToOcsApiEndpointWithBody(
 			$user, "GET", $url, null
 		);
 		if ($this->response->getStatusCode() !== 200) {

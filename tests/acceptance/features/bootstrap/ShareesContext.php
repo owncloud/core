@@ -41,7 +41,7 @@ class ShareesContext implements Context {
 	private $featureContext;
 
 	/**
-	 * @When /^the user gets the sharees using the API with parameters$/
+	 * @When /^the user gets the sharees using the sharing API with parameters$/
 	 *
 	 * @param TableNode $body
 	 *
@@ -54,7 +54,7 @@ class ShareesContext implements Context {
 	}
 
 	/**
-	 * @When /^user "([^"]*)" gets the sharees using the API with parameters$/
+	 * @When /^user "([^"]*)" gets the sharees using the sharing API with parameters$/
 	 *
 	 * @param string $user
 	 * @param TableNode $body
@@ -73,7 +73,7 @@ class ShareesContext implements Context {
 			}
 		}
 
-		$this->featureContext->userSendsHTTPMethodToAPIEndpointWithBody(
+		$this->featureContext->userSendsHTTPMethodToOcsApiEndpointWithBody(
 			$user, 'GET', $url, null
 		);
 	}

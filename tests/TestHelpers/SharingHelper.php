@@ -60,7 +60,7 @@ class SharingHelper {
 	 *                                An expire date for public link shares.
 	 *                                This argument expects a date string
 	 *                                in the format 'YYYY-MM-DD'.
-	 * @param int $apiVersion
+	 * @param int $ocsApiVersion
 	 * @param int $sharingApiVersion
 	 *
 	 * @return \GuzzleHttp\Message\FutureResponse|\GuzzleHttp\Message\ResponseInterface|NULL
@@ -77,7 +77,7 @@ class SharingHelper {
 		$permissions = null,
 		$linkName = null,
 		$expireDate = null, // unused, to be implemented
-		$apiVersion = 1,
+		$ocsApiVersion = 1,
 		$sharingApiVersion = 1
 	) {
 		$fd = [];
@@ -137,11 +137,16 @@ class SharingHelper {
 			}
 			$fd['permissions'] = $permissionSum;
 		}
-		if (!\in_array($apiVersion, [1, 2], true)
-			|| !\in_array($sharingApiVersion, [1,2], true)
-		) {
+
+		if (!\in_array($ocsApiVersion, [1, 2], true)) {
 			throw new \InvalidArgumentException(
-				"invalid apiVersion/sharingApiVersion"
+				"invalid ocsApiVersion ($ocsApiVersion)"
+			);
+		}
+
+		if (!\in_array($sharingApiVersion, [1, 2], true)) {
+			throw new \InvalidArgumentException(
+				"invalid sharingApiVersion ($sharingApiVersion)"
 			);
 		}
 
@@ -149,7 +154,7 @@ class SharingHelper {
 		if (\substr($fullUrl, -1) !== '/') {
 			$fullUrl .= '/';
 		}
-		$fullUrl .= "ocs/v{$apiVersion}.php/apps/files_sharing/api/v{$sharingApiVersion}/shares";
+		$fullUrl .= "ocs/v{$ocsApiVersion}.php/apps/files_sharing/api/v{$sharingApiVersion}/shares";
 		$client = new GClient();
 		$options['auth'] = [$user, $password];
 		$fd['path'] = $path;

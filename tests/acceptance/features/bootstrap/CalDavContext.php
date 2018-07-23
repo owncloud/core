@@ -84,7 +84,7 @@ class CalDavContext implements \Behat\Behat\Context\Context {
 	}
 
 	/**
-	 * @When user :user requests calendar :calendar using the API
+	 * @When user :user requests calendar :calendar using the new WebDAV API
 	 *
 	 * @param string $user
 	 * @param string $calendar
