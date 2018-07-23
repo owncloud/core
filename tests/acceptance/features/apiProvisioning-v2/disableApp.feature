@@ -5,7 +5,7 @@ I want to be able to disable an enabled app
 So that I can stop the app features being used
 
 	Background:
-		Given using API version "2"
+		Given using OCS API version "2"
 
 	Scenario: Admin disables an app
 		Given the app "comments" has been enabled

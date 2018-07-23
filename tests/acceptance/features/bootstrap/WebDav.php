@@ -250,7 +250,7 @@ trait WebDav {
 	}
 
 	/**
-	 * @When /^user "([^"]*)" moves (?:file|folder|entry) "([^"]*)" to "([^"]*)" using the API$/
+	 * @When /^user "([^"]*)" moves (?:file|folder|entry) "([^"]*)" to "([^"]*)" using the WebDAV API$/
 	 *
 	 * @param string $user
 	 * @param string $fileSource
@@ -273,7 +273,7 @@ trait WebDav {
 	}
 
 	/**
-	 * @When /^user "([^"]*)" copies file "([^"]*)" to "([^"]*)" using the API$/
+	 * @When /^user "([^"]*)" copies file "([^"]*)" to "([^"]*)" using the WebDAV API$/
 	 * @Given /^user "([^"]*)" has copied file "([^"]*)" to "([^"]*)"$/
 	 *
 	 * @param string $user
@@ -297,7 +297,7 @@ trait WebDav {
 	}
 
 	/**
-	 * @When /^the user downloads file "([^"]*)" with range "([^"]*)" using the API$/
+	 * @When /^the user downloads file "([^"]*)" with range "([^"]*)" using the WebDAV API$/
 	 *
 	 * @param string $fileSource
 	 * @param string $range
@@ -311,7 +311,7 @@ trait WebDav {
 	}
 
 	/**
-	 * @When /^user "([^"]*)" downloads file "([^"]*)" with range "([^"]*)" using the API$/
+	 * @When /^user "([^"]*)" downloads file "([^"]*)" with range "([^"]*)" using the WebDAV API$/
 	 *
 	 * @param string $user
 	 * @param string $fileSource
@@ -327,7 +327,7 @@ trait WebDav {
 	}
 
 	/**
-	 * @When /^the public downloads the last public shared file with range "([^"]*)" using the API$/
+	 * @When /^the public downloads the last public shared file with range "([^"]*)" using the old WebDAV API$/
 	 *
 	 * @param string $range
 	 *
@@ -349,7 +349,7 @@ trait WebDav {
 	}
 
 	/**
-	 * @When /^the public downloads file "([^"]*)" from inside the last public shared folder with range "([^"]*)" using the API$/
+	 * @When /^the public downloads file "([^"]*)" from inside the last public shared folder with range "([^"]*)" using the old WebDAV API$/
 	 *
 	 * @param string $path
 	 * @param string $range
@@ -371,7 +371,7 @@ trait WebDav {
 	}
 
 	/**
-	 * @When /^the public downloads file "([^"]*)" from inside the last public shared folder with password "([^"]*)" with range "([^"]*)" using the API$/
+	 * @When /^the public downloads file "([^"]*)" from inside the last public shared folder with password "([^"]*)" with range "([^"]*)" using the old WebDAV API$/
 	 *
 	 * @param string $path
 	 * @param string $password
@@ -512,7 +512,7 @@ trait WebDav {
 	}
 
 	/**
-	 * @When the user downloads the file :fileName using the API
+	 * @When the user downloads the file :fileName using the WebDAV API
 	 *
 	 * @param string $fileName
 	 *
@@ -523,7 +523,7 @@ trait WebDav {
 	}
 
 	/**
-	 * @When user :user downloads the file :fileName using the API
+	 * @When user :user downloads the file :fileName using the WebDAV API
 	 *
 	 * @param string $user
 	 * @param string $fileName
@@ -587,7 +587,7 @@ trait WebDav {
 	}
 
 	/**
-	 * @When /^user "([^"]*)" gets the properties of (?:file|folder|entry) "([^"]*)" using the API$/
+	 * @When /^user "([^"]*)" gets the properties of (?:file|folder|entry) "([^"]*)" using the WebDAV API$/
 	 *
 	 * @param string $user
 	 * @param string $path
@@ -603,7 +603,7 @@ trait WebDav {
 	}
 
 	/**
-	 * @When /^user "([^"]*)" gets the following properties of (?:file|folder|entry) "([^"]*)" using the API$/
+	 * @When /^user "([^"]*)" gets the following properties of (?:file|folder|entry) "([^"]*)" using the WebDAV API$/
 	 *
 	 * @param string $user
 	 * @param string $path
@@ -646,7 +646,7 @@ trait WebDav {
 	}
 
 	/**
-	 * @When /^user "([^"]*)" sets property "([^"]*)" of (?:file|folder|entry) "([^"]*)" to "([^"]*)" using the API$/
+	 * @When /^user "([^"]*)" sets property "([^"]*)" of (?:file|folder|entry) "([^"]*)" to "([^"]*)" using the WebDAV API$/
 	 * @Given /^user "([^"]*)" has set property "([^"]*)" of (?:file|folder|entry) "([^"]*)" to "([^"]*)"$/
 	 *
 	 * @param string $user
@@ -1181,7 +1181,7 @@ trait WebDav {
 	}
 
 	/**
-	 * @When user :user uploads file :source to :destination using the API
+	 * @When user :user uploads file :source to :destination using the WebDAV API
 	 * @Given user :user has uploaded file :source to :destination
 	 *
 	 * @param string $user
@@ -1203,7 +1203,7 @@ trait WebDav {
 	}
 
 	/**
-	 * @When user :user uploads file :source to :destination with chunks using the API
+	 * @When user :user uploads file :source to :destination with chunks using the WebDAV API
 	 *
 	 * @param string $user
 	 * @param string $source
@@ -1262,7 +1262,7 @@ trait WebDav {
 	/**
 	 * Uploading with old/new dav and chunked/non-chunked.
 	 *
-	 * @When user :user uploads file :source to :destination with all mechanisms using the API
+	 * @When user :user uploads file :source to :destination with all mechanisms using the WebDAV API
 	 *
 	 * @param string $user
 	 * @param string $source
@@ -1281,7 +1281,7 @@ trait WebDav {
 	/**
 	 * Overwriting with old/new dav and chunked/non-chunked.
 	 *
-	 * @When user :user overwrites file :source to :destination with all mechanisms using the API
+	 * @When user :user overwrites file :source to :destination with all mechanisms using the WebDAV API
 	 *
 	 * @param string $user
 	 * @param string $source
@@ -1426,7 +1426,7 @@ trait WebDav {
 	}
 
 	/**
-	 * @When user :user uploads file with content :content to :destination using the API
+	 * @When user :user uploads file with content :content to :destination using the WebDAV API
 	 * @Given user :user has uploaded file with content :content to :destination
 	 *
 	 * @param string $user
@@ -1462,7 +1462,7 @@ trait WebDav {
 	}
 
 	/**
-	 * @When user :user uploads file with checksum :checksum and content :content to :destination using the API
+	 * @When user :user uploads file with checksum :checksum and content :content to :destination using the WebDAV API
 	 * @Given user :user has uploaded file with checksum :checksum and content :content to :destination
 	 *
 	 * @param string $user
@@ -1507,7 +1507,7 @@ trait WebDav {
 	 * entries with the same timestamp. Only use this step to avoid the problem
 	 * in core issue 23151 when wanting to demonstrate other correct behavior
 	 *
-	 * @When /^user "([^"]*)" waits and deletes (?:file|folder) "([^"]*)" using the API$/
+	 * @When /^user "([^"]*)" waits and deletes (?:file|folder) "([^"]*)" using the WebDAV API$/
 	 * @Given /^user "([^"]*)" has waited and deleted (?:file|folder) "([^"]*)"$/
 	 *
 	 * @param string $user
@@ -1524,7 +1524,7 @@ trait WebDav {
 	}
 
 	/**
-	 * @When /^user "([^"]*)" (?:deletes|unshares) (?:file|folder) "([^"]*)" using the API$/
+	 * @When /^user "([^"]*)" (?:deletes|unshares) (?:file|folder) "([^"]*)" using the WebDAV API$/
 	 * @Given /^user "([^"]*)" has (?:deleted|unshared) (?:file|folder) "([^"]*)"$/
 	 *
 	 * @param string $user
@@ -1542,7 +1542,7 @@ trait WebDav {
 	}
 
 	/**
-	 * @When user :user creates a folder :destination using the API
+	 * @When user :user creates a folder :destination using the WebDAV API
 	 * @Given user :user has created a folder :destination
 	 *
 	 * @param string $user
@@ -1565,8 +1565,8 @@ trait WebDav {
 	/**
 	 * Old style chunking upload
 	 *
-	 * @When user :user uploads the following :total chunks to :file with old chunking and using the API
-	 * @Given user :user has uploaded the following :total chunks to :file with old chunking and using the API
+	 * @When user :user uploads the following :total chunks to :file with old chunking and using the WebDAV API
+	 * @Given user :user has uploaded the following :total chunks to :file with old chunking
 	 *
 	 * @param string $user
 	 * @param string $total
@@ -1592,8 +1592,8 @@ trait WebDav {
 	/**
 	 * Old style chunking upload
 	 *
-	 * @When user :user uploads the following chunks to :file with old chunking and using the API
-	 * @Given user :user has uploaded the following chunks to :file with old chunking and using the API
+	 * @When user :user uploads the following chunks to :file with old chunking and using the WebDAV API
+	 * @Given user :user has uploaded the following chunks to :file with old chunking
 	 *
 	 * @param string $user
 	 * @param string $file
@@ -1617,7 +1617,7 @@ trait WebDav {
 	/**
 	 * Old style chunking upload
 	 *
-	 * @When user :user uploads chunk file :num of :total with :data to :destination using the API
+	 * @When user :user uploads chunk file :num of :total with :data to :destination using the WebDAV API
 	 * @Given user :user has uploaded chunk file :num of :total with :data to :destination
 	 *
 	 * @param string $user
@@ -1646,8 +1646,8 @@ trait WebDav {
 	/**
 	 * New style chunking upload
 	 *
-	 * @When user :user uploads the following chunks to :file with new chunking and using the API
-	 * @Given user :user has uploaded the following chunks to :file with new chunking and using the API
+	 * @When user :user uploads the following chunks to :file with new chunking and using the WebDAV API
+	 * @Given user :user has uploaded the following chunks to :file with new chunking
 	 *
 	 * @param string $user
 	 * @param string $file
@@ -1690,7 +1690,7 @@ trait WebDav {
 	}
 
 	/**
-	 * @When user :user creates a new chunking upload with id :id using the API
+	 * @When user :user creates a new chunking upload with id :id using the WebDAV API
 	 * @Given user :user has created a new chunking upload with id :id
 	 *
 	 * @param string $user
@@ -1710,7 +1710,7 @@ trait WebDav {
 	}
 
 	/**
-	 * @When user :user uploads new chunk file :num with :data to id :id using the API
+	 * @When user :user uploads new chunk file :num with :data to id :id using the WebDAV API
 	 * @Given user :user has uploaded new chunk file :num with :data to id :id
 	 *
 	 * @param string $user
@@ -1733,7 +1733,7 @@ trait WebDav {
 	}
 
 	/**
-	 * @When user :user moves new chunk file with id :id to :dest using the API
+	 * @When user :user moves new chunk file with id :id to :dest using the WebDAV API
 	 * @Given user :user has moved new chunk file with id :id to :dest
 	 *
 	 * @param string $user
@@ -1749,7 +1749,7 @@ trait WebDav {
 	}
 
 	/**
-	 * @When user :user cancels chunking-upload with id :id using the API
+	 * @When user :user cancels chunking-upload with id :id using the WebDAV API
 	 * @Given user :user has canceled new chunking-upload with id :id
 	 *
 	 * @param string $user
@@ -1764,7 +1764,7 @@ trait WebDav {
 	}
 
 	/**
-	 * @When user :user moves new chunk file with id :id to :dest with size :size using the API
+	 * @When user :user moves new chunk file with id :id to :dest with size :size using the WebDAV API
 	 * @Given user :user has moved new chunk file with id :id to :dest with size :size
 	 *
 	 * @param string $user
@@ -1783,7 +1783,7 @@ trait WebDav {
 	}
 
 	/**
-	 * @When user :user moves new chunk file with id :id to :dest with checksum :checksum using the API
+	 * @When user :user moves new chunk file with id :id to :dest with checksum :checksum using the WebDAV API
 	 * @Given user :user has moved new chunk file with id :id to :dest with checksum :checksum
 	 *
 	 * @param string $user
@@ -1860,7 +1860,7 @@ trait WebDav {
 	}
 
 	/**
-	 * @When user :user favorites element :path using the API
+	 * @When user :user favorites element :path using the WebDAV API
 	 * @Given user :user has favorited element :path
 	 *
 	 * @param string $user
@@ -1877,7 +1877,7 @@ trait WebDav {
 	}
 
 	/**
-	 * @When user :user unfavorites element :path using the API
+	 * @When user :user unfavorites element :path using the WebDAV API
 	 * @Given user :user has unfavorited element :path
 	 *
 	 * @param string $user
@@ -1923,7 +1923,7 @@ trait WebDav {
 	}
 
 	/**
-	 * @When user :user stores etag of element :path using the API
+	 * @When user :user stores etag of element :path using the WebDAV API
 	 * @Given user :user has stored etag of element :path
 	 *
 	 * @param string $user
@@ -1977,8 +1977,8 @@ trait WebDav {
 	}
 
 	/**
-	 * @When an unauthenticated client connects to the dav endpoint using the API
-	 * @Given an unauthenticated client has connected to the dav endpoint using the API
+	 * @When an unauthenticated client connects to the dav endpoint using the WebDAV API
+	 * @Given an unauthenticated client has connected to the dav endpoint
 	 *
 	 * @return void
 	 */
@@ -2060,7 +2060,7 @@ trait WebDav {
 	}
 
 	/**
-	 * @When /^user "([^"]*)" deletes everything from folder "([^"]*)" using the API$/
+	 * @When /^user "([^"]*)" deletes everything from folder "([^"]*)" using the WebDAV API$/
 	 * @Given /^user "([^"]*)" has deleted everything from folder "([^"]*)"$/
 	 *
 	 * @param string $user
@@ -2130,7 +2130,7 @@ trait WebDav {
 	}
 
 	/**
-	 * @When user :user restores version index :versionIndex of file :path using the API
+	 * @When user :user restores version index :versionIndex of file :path using the WebDAV API
 	 * @Given user :user has restored version index :versionIndex of file :path
 	 *
 	 * @param string $user

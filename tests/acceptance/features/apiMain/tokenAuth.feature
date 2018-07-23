@@ -2,7 +2,7 @@
 Feature: tokenAuth
 
 	Background:
-		Given using API version "1"
+		Given using OCS API version "1"
 		And these users have been created:
 			| username    | password | displayname  | email                 |
 			| user1       | 1234     | User One     | u1@oc.com.np          |
@@ -10,13 +10,13 @@ Feature: tokenAuth
 
 	Scenario: creating a user with basic auth should be blocked when token auth is enforced
 		Given user "brand-new-user" has been deleted
-		When the administrator sends a user creation request for user "brand-new-user" password "456firstpwd" using the API
+		When the administrator sends a user creation request for user "brand-new-user" password "456firstpwd" using the provisioning API
 		Then the OCS status code should be "997"
 		And the HTTP status code should be "401"
 
 	Scenario: moving a file should be blocked when token auth is enforced
 		Given using new DAV path
-		When user "user1" moves file "/textfile0.txt" to "/renamed_textfile0.txt" using the API
+		When user "user1" moves file "/textfile0.txt" to "/renamed_textfile0.txt" using the WebDAV API
 		Then the HTTP status code should be "401"
 
 	Scenario: can access files app with an app password when token auth is enforced

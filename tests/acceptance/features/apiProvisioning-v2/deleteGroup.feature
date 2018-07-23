@@ -5,11 +5,11 @@ I want to be able to delete groups
 So that I can remove unnecessary groups
 
 	Background:
-		Given using API version "2"
+		Given using OCS API version "2"
 
 	Scenario Outline: admin deletes a group
 		Given group "<group_id>" has been created
-		When the administrator deletes group "<group_id>" using the API
+		When the administrator deletes group "<group_id>" using the provisioning API
 		Then the OCS status code should be "200"
 		And the HTTP status code should be "200"
 		And group "<group_id>" should not exist
@@ -38,7 +38,7 @@ So that I can remove unnecessary groups
 		Given user "brand-new-user" has been created
 		And group "new-group" has been created
 		And user "brand-new-user" has been added to group "new-group"
-		When user "brand-new-user" sends HTTP method "DELETE" to API endpoint "/cloud/groups/new-group"
+		When user "brand-new-user" sends HTTP method "DELETE" to OCS API endpoint "/cloud/groups/new-group"
 		Then the OCS status code should be "401"
 		And the HTTP status code should be "401"
 		And group "new-group" should exist
@@ -48,7 +48,7 @@ So that I can remove unnecessary groups
 		Given user "subadmin" has been created
 		And group "new-group" has been created
 		And user "subadmin" has been made a subadmin of group "new-group"
-		When user "subamin" sends HTTP method "DELETE" to API endpoint "/cloud/groups/new-group"
+		When user "subamin" sends HTTP method "DELETE" to OCS API endpoint "/cloud/groups/new-group"
 		Then the OCS status code should be "401"
 		And the HTTP status code should be "401"
 		And group "new-group" should exist

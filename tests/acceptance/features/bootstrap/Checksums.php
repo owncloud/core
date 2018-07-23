@@ -29,7 +29,7 @@ use GuzzleHttp\Client;
 trait Checksums {
 
 	/**
-	 * @When user :user uploads file :source to :destination with checksum :checksum using the API
+	 * @When user :user uploads file :source to :destination with checksum :checksum using the WebDAV API
 	 * @Given user :user has uploaded file :source to :destination with checksum :checksum
 	 *
 	 * @param string $user
@@ -176,7 +176,7 @@ trait Checksums {
 	}
 
 	/**
-	 * @When user :user uploads chunk file :num of :total with :data to :destination with checksum :checksum using the API
+	 * @When user :user uploads chunk file :num of :total with :data to :destination with checksum :checksum using the WebDAV API
 	 * @Given user :user has uploaded chunk file :num of :total with :data to :destination with checksum :checksum
 	 *
 	 * @param string $user

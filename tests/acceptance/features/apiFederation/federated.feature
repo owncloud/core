@@ -1,7 +1,7 @@
 @api
 Feature: federated
 	Background:
-		Given using API version "1"
+		Given using OCS API version "1"
 		And parameter "shareapi_enabled" of app "core" has been set to "yes"
 		And parameter "shareapi_allow_resharing" of app "core" has been set to "yes"
 		And parameter "outgoing_server2server_share_enabled" of app "files_sharing" has been set to "yes"
@@ -12,7 +12,7 @@ Feature: federated
 		And user "user1" has been created
 		And using server "LOCAL"
 		And user "user0" has been created
-		When user "user0" from server "LOCAL" shares "/textfile0.txt" with user "user1" from server "REMOTE" using the API
+		When user "user0" from server "LOCAL" shares "/textfile0.txt" with user "user1" from server "REMOTE" using the sharing API
 		Then the OCS status code should be "100"
 		And the HTTP status code should be "200"
 		And the share fields of the last share should include
@@ -37,7 +37,7 @@ Feature: federated
 		And user "user0" has been created
 		And using server "REMOTE"
 		And user "user1" has been created
-		When user "user1" from server "REMOTE" shares "/textfile0.txt" with user "user0" from server "LOCAL" using the API
+		When user "user1" from server "REMOTE" shares "/textfile0.txt" with user "user0" from server "LOCAL" using the sharing API
 		Then the OCS status code should be "100"
 		And the HTTP status code should be "200"
 		And the share fields of the last share should include
@@ -64,7 +64,7 @@ Feature: federated
 		And user "user0" has been created
 		And user "user0" from server "LOCAL" has shared "/textfile0.txt" with user "user1" from server "REMOTE"
 		And using server "REMOTE"
-		When user "user1" sends HTTP method "GET" to API endpoint "/apps/files_sharing/api/v1/remote_shares/pending"
+		When user "user1" sends HTTP method "GET" to OCS API endpoint "/apps/files_sharing/api/v1/remote_shares/pending"
 		Then the OCS status code should be "100"
 		And the HTTP status code should be "200"
 		And the share fields of the last share should include
@@ -84,7 +84,7 @@ Feature: federated
 		And using server "LOCAL"
 		And user "user0" has been created
 		And user "user0" from server "LOCAL" has shared "/textfile0.txt" with user "user1" from server "REMOTE"
-		When user "user1" from server "REMOTE" accepts the last pending share using the API
+		When user "user1" from server "REMOTE" accepts the last pending share using the sharing API
 		Then the OCS status code should be "100"
 		And the HTTP status code should be "200"
 
@@ -97,7 +97,7 @@ Feature: federated
 		And user "user0" from server "LOCAL" has shared "/textfile0.txt" with user "user1" from server "REMOTE"
 		And user "user1" from server "REMOTE" has accepted the last pending share
 		And using server "REMOTE"
-		When user "user1" creates a share using the API with settings
+		When user "user1" creates a share using the sharing API with settings
 			| path        | /textfile0 (2).txt |
 			| shareType   | 0                  |
 			| shareWith   | user2              |
@@ -130,7 +130,7 @@ Feature: federated
 		And user "user0" from server "LOCAL" has shared "/textfile0.txt" with user "user1" from server "REMOTE"
 		And user "user1" from server "REMOTE" has accepted the last pending share
 		And using server "REMOTE"
-		When user "user1" uploads file "data/file_to_overwrite.txt" to "/textfile0 (2).txt" using the API
+		When user "user1" uploads file "data/file_to_overwrite.txt" to "/textfile0 (2).txt" using the WebDAV API
 		And using server "LOCAL"
 		Then the content of file "/textfile0.txt" for user "user0" should be "BLABLABLA" plus end-of-line
 
@@ -143,7 +143,7 @@ Feature: federated
 		And user "user0" from server "LOCAL" has shared "/PARENT" with user "user1" from server "REMOTE"
 		And user "user1" from server "REMOTE" has accepted the last pending share
 		And using server "REMOTE"
-		When user "user1" uploads file "data/file_to_overwrite.txt" to "/PARENT (2)/textfile0.txt" using the API
+		When user "user1" uploads file "data/file_to_overwrite.txt" to "/PARENT (2)/textfile0.txt" using the WebDAV API
 		And using server "LOCAL"
 		Then the content of file "/PARENT/textfile0.txt" for user "user0" should be "BLABLABLA" plus end-of-line
 
@@ -156,7 +156,7 @@ Feature: federated
 		And user "user0" from server "LOCAL" has shared "/textfile0.txt" with user "user1" from server "REMOTE"
 		And user "user1" from server "REMOTE" has accepted the last pending share
 		And using server "REMOTE"
-		When user "user1" uploads the following "3" chunks to "/textfile0 (2).txt" with old chunking and using the API
+		When user "user1" uploads the following "3" chunks to "/textfile0 (2).txt" with old chunking and using the WebDAV API
 			| 1 | AAAAA |
 			| 2 | BBBBB |
 			| 3 | CCCCC |
@@ -171,7 +171,7 @@ Feature: federated
 		And user "user0" from server "LOCAL" has shared "/PARENT" with user "user1" from server "REMOTE"
 		And user "user1" from server "REMOTE" has accepted the last pending share
 		And using server "REMOTE"
-		When user "user1" uploads the following "3" chunks to "/PARENT (2)/textfile0.txt" with old chunking and using the API
+		When user "user1" uploads the following "3" chunks to "/PARENT (2)/textfile0.txt" with old chunking and using the WebDAV API
 			| 1 | AAAAA |
 			| 2 | BBBBB |
 			| 3 | CCCCC |
@@ -179,8 +179,8 @@ Feature: federated
 
 	Scenario: Trusted server handshake does not require authenticated requests - we force 403 by sending an empty body
 		Given using server "LOCAL"
-		And using API version "2"
-		When user "UNAUTHORIZED_USER" sends HTTP method "POST" to API endpoint "/apps/federation/api/v1/request-shared-secret"
+		And using OCS API version "2"
+		When user "UNAUTHORIZED_USER" sends HTTP method "POST" to OCS API endpoint "/apps/federation/api/v1/request-shared-secret"
 		Then the HTTP status code should be "403"
 
 	Scenario: Overwrite a federated shared folder as recipient propagates etag for recipient
@@ -193,7 +193,7 @@ Feature: federated
 		And using server "REMOTE"
 		And user "user1" has stored etag of element "/PARENT (2)"
 		And using server "LOCAL"
-		When user "user0" uploads file "data/file_to_overwrite.txt" to "/PARENT/textfile0.txt" using the API
+		When user "user0" uploads file "data/file_to_overwrite.txt" to "/PARENT/textfile0.txt" using the WebDAV API
 		Then using server "REMOTE"
 		And the etag of element "/PARENT (2)" of user "user1" should have changed
 
@@ -206,7 +206,7 @@ Feature: federated
 		And user "user0" has stored etag of element "/PARENT"
 		And user "user1" from server "REMOTE" has accepted the last pending share
 		And using server "REMOTE"
-		When user "user1" uploads file "data/file_to_overwrite.txt" to "/PARENT (2)/textfile0.txt" using the API
+		When user "user1" uploads file "data/file_to_overwrite.txt" to "/PARENT (2)/textfile0.txt" using the WebDAV API
 		Then using server "LOCAL"
 		And the etag of element "/PARENT" of user "user0" should have changed
 
@@ -219,7 +219,7 @@ Feature: federated
 		And user "user0" from server "LOCAL" has shared "/PARENT" with user "user1" from server "REMOTE"
 		And user "user1" from server "REMOTE" has accepted the last pending share
 		And using server "REMOTE"
-		When user "user1" uploads file "data/textfile.txt" to "/PARENT (2)/testquota.txt" with all mechanisms using the API
+		When user "user1" uploads file "data/textfile.txt" to "/PARENT (2)/testquota.txt" with all mechanisms using the WebDAV API
 		Then the HTTP status code of all upload responses should be "201"
 		And using server "LOCAL"
 		And as "user0" the files uploaded to "/PARENT/testquota.txt" with all mechanisms should exist
@@ -233,6 +233,6 @@ Feature: federated
 		And user "user0" from server "LOCAL" has shared "/PARENT" with user "user1" from server "REMOTE"
 		And user "user1" from server "REMOTE" has accepted the last pending share
 		And using server "REMOTE"
-		When user "user1" uploads file "data/textfile.txt" to "/PARENT (2)/testquota.txt" with all mechanisms using the API
+		When user "user1" uploads file "data/textfile.txt" to "/PARENT (2)/testquota.txt" with all mechanisms using the WebDAV API
 		Then the HTTP status code of all upload responses should be "507"
 
