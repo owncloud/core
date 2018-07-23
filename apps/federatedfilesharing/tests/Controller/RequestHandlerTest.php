@@ -37,9 +37,11 @@ use OCA\FederatedFileSharing\Controller\RequestHandlerController;
 use OCA\FederatedFileSharing\Tests\TestCase;
 use OCP\App\IAppManager;
 use OCP\AppFramework\Http;
+use OCP\Constants;
 use OCP\IDBConnection;
 use OCP\IRequest;
 use OCP\IUserManager;
+use OCP\Share;
 use OCP\Share\IShare;
 
 /**
@@ -250,6 +252,111 @@ class RequestHandlerTest extends TestCase {
 		$this->fedShareManager->expects($this->once())
 			->method('createShare');
 		$response = $this->requestHandlerController->createShare();
+		$this->assertEquals(
+			Http::STATUS_CONTINUE,
+			$response->getStatusCode()
+		);
+	}
+
+	public function testReshareFailedForEmptyParams() {
+		$response = $this->requestHandlerController->reShare(2);
+		$this->assertEquals(
+			Http::STATUS_BAD_REQUEST,
+			$response->getStatusCode()
+		);
+	}
+
+	public function testReshareFailedForWrongShareId() {
+		$this->request->expects($this->any())
+			->method('getParam')
+			->willReturn('abc');
+		$this->federatedShareProvider->expects($this->once())
+			->method('getShareById')
+			->willThrowException(new Share\Exceptions\ShareNotFound());
+		$response = $this->requestHandlerController->reShare('a99');
+		$this->assertEquals(
+			Http::STATUS_NOT_FOUND,
+			$response->getStatusCode()
+		);
+	}
+
+	public function testReshareFailedForSharingBackToOwner() {
+		$this->request->expects($this->any())
+			->method('getParam')
+			->willReturn('abc');
+		$share = $this->getValidShareMock('abc');
+		$this->federatedShareProvider->expects($this->once())
+			->method('getShareById')
+			->willReturn($share);
+		$this->addressHandler->expects($this->any())
+			->method('compareAddresses')
+			->willReturn(true);
+		$response = $this->requestHandlerController->reShare('a99');
+		$this->assertEquals(
+			Http::STATUS_FORBIDDEN,
+			$response->getStatusCode()
+		);
+	}
+
+	public function testReshareFailedForWrongPermissions() {
+		$this->request->expects($this->any())
+			->method('getParam')
+			->willReturn('abc');
+		$share = $this->getValidShareMock('abc');
+		$this->federatedShareProvider->expects($this->once())
+			->method('getShareById')
+			->willReturn($share);
+		$response = $this->requestHandlerController->reShare('a99');
+		$this->assertEquals(
+			Http::STATUS_BAD_REQUEST,
+			$response->getStatusCode()
+		);
+	}
+
+	public function testReshareFailedForTokenMismatch() {
+		$this->request->expects($this->any())
+			->method('getParam')
+			->willReturn('abc');
+		$share = $this->getValidShareMock('cba');
+		$share->expects($this->any())
+			->method('getPermissions')
+			->willReturn(Constants::PERMISSION_SHARE);
+		$this->federatedShareProvider->expects($this->once())
+			->method('getShareById')
+			->willReturn($share);
+
+		$response = $this->requestHandlerController->reShare('a99');
+		$this->assertEquals(
+			Http::STATUS_FORBIDDEN,
+			$response->getStatusCode()
+		);
+	}
+
+	public function testReshareSuccess() {
+		$this->request->expects($this->any())
+			->method('getParam')
+			->willReturn('abc');
+		$share = $this->getValidShareMock('abc');
+		$share->expects($this->any())
+			->method('getPermissions')
+			->willReturn(Constants::PERMISSION_SHARE);
+		$this->federatedShareProvider->expects($this->once())
+			->method('getShareById')
+			->willReturn($share);
+
+		$resultShare = $this->getMockBuilder(IShare::class)
+			->disableOriginalConstructor()->getMock();
+		$resultShare->expects($this->any())
+			->method('getToken')
+			->willReturn('token');
+		$resultShare->expects($this->any())
+			->method('getId')
+			->willReturn(55);
+
+		$this->fedShareManager->expects($this->once())
+			->method('reShare')
+			->willReturn($resultShare);
+		$response = $this->requestHandlerController->reShare(123);
 		$this->assertEquals(
 			Http::STATUS_CONTINUE,
 			$response->getStatusCode()
