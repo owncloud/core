@@ -44,7 +44,6 @@ class WebUIAdminSharingSettingsContext extends RawMinkContext implements Context
 	 * WebUIAdminSharingSettingsContext constructor.
 	 *
 	 * @param AdminSharingSettingsPage $adminSharingSettingsPage
-	 * @param LoginPage $loginPage
 	 */
 	public function __construct(
 		AdminSharingSettingsPage $adminSharingSettingsPage
