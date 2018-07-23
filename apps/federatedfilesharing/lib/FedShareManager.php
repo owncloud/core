@@ -209,7 +209,7 @@ class FedShareManager {
 			(int)$result->getId(),
 			$remoteId
 		);
-		return $share;
+		return $result;
 	}
 
 	/**
@@ -303,6 +303,36 @@ class FedShareManager {
 			'',
 			''
 		);
+	}
+
+	/**
+	 * @param IShare $share
+	 *
+	 * @return void
+	 */
+	public function revoke(IShare $share) {
+		$this->federatedShareProvider->removeShareFromTable($share);
+	}
+
+	/**
+	 * Update permissions
+	 *
+	 * @param IShare $share
+	 * @param int $permissions
+	 *
+	 * @return void
+	 */
+	public function updatePermissions(IShare $share, $permissions) {
+		$query = $this->connection->getQueryBuilder();
+		$query->update($this->shareTable)
+			->where(
+				$query->expr()->eq(
+					'id',
+					$query->createNamedParameter($share->getId())
+				)
+			)
+			->set('permissions', $query->createNamedParameter($permissions))
+			->execute();
 	}
 
 	/**

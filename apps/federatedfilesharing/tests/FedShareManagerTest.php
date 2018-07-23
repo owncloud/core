@@ -156,4 +156,13 @@ class FedShareManagerTest extends TestCase {
 
 		$this->fedShareManager->declineShare($share);
 	}
+
+	public function testRevoke() {
+		$share = $this->getMockBuilder(IShare::class)
+			->disableOriginalConstructor()->getMock();
+		$this->federatedShareProvider->expects($this->once())
+			->method('removeShareFromTable')
+			->with($share);
+		$this->fedShareManager->revoke($share);
+	}
 }
