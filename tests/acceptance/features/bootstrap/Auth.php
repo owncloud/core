@@ -107,7 +107,7 @@ trait Auth {
 	}
 
 	/**
-	 * @When the user generates a new app password named :name using the API
+	 * Use the private API to generate an app password
 	 *
 	 * @param string $name
 	 *
@@ -144,7 +144,7 @@ trait Auth {
 	}
 
 	/**
-	 * @When user :user generates a new client token using the API
+	 * @When user :user generates a new client token using the token API
 	 * @Given a new client token for :user has been generated
 	 *
 	 * @param string $user

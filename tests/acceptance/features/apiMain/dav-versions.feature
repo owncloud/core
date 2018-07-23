@@ -1,18 +1,18 @@
 @api
 Feature: dav-versions
   Background:
-    Given using API version "2"
+    Given using OCS API version "2"
     And using new DAV path
     And user "user0" has been created
     And file "/davtest.txt" has been deleted for user "user0"
 
   Scenario: Upload file and no version is available
-    When user "user0" uploads file "data/davtest.txt" to "/davtest.txt" using the API
+    When user "user0" uploads file "data/davtest.txt" to "/davtest.txt" using the WebDAV API
     Then the version folder of file "/davtest.txt" for user "user0" should contain "0" elements
 
   Scenario: Upload a file twice and versions are available
-    When user "user0" uploads file "data/davtest.txt" to "/davtest.txt" using the API
-    And user "user0" uploads file "data/davtest.txt" to "/davtest.txt" using the API
+    When user "user0" uploads file "data/davtest.txt" to "/davtest.txt" using the WebDAV API
+    And user "user0" uploads file "data/davtest.txt" to "/davtest.txt" using the WebDAV API
     Then the version folder of file "/davtest.txt" for user "user0" should contain "1" element
     And the content length of file "/davtest.txt" with version index "1" for user "user0" in versions folder should be "8"
 
@@ -21,14 +21,14 @@ Feature: dav-versions
     And user "user0" has uploaded file "data/davtest.txt" to "/davtest.txt"
     And the version folder of file "/davtest.txt" for user "user0" should contain "1" element
     And user "user0" has deleted file "/davtest.txt"
-    When user "user0" uploads file "data/davtest.txt" to "/davtest.txt" using the API
+    When user "user0" uploads file "data/davtest.txt" to "/davtest.txt" using the WebDAV API
     Then the version folder of file "/davtest.txt" for user "user0" should contain "0" elements
 
   Scenario: Restore a file and check, if the content is now in the current file
     Given user "user0" has uploaded file with content "123" to "/davtest.txt"
     And user "user0" has uploaded file with content "12345" to "/davtest.txt"
     And the version folder of file "/davtest.txt" for user "user0" should contain "1" element
-    When user "user0" restores version index "1" of file "/davtest.txt" using the API
+    When user "user0" restores version index "1" of file "/davtest.txt" using the WebDAV API
     Then the content of file "/davtest.txt" for user "user0" should be "123"
 
   Scenario: User cannot access meta folder of a file which is owned by somebody else
@@ -43,7 +43,7 @@ Feature: dav-versions
     And user "user0" has uploaded file with content "123" to "/davtest.txt"
     And user "user0" has uploaded file with content "456789" to "/davtest.txt"
     And we save it into "FILEID"
-    When user "user0" creates a share using the API with settings
+    When user "user0" creates a share using the sharing API with settings
       | path        | /davtest.txt |
       | shareType   | 0            |
       | shareWith   | user1        |
@@ -65,7 +65,7 @@ Feature: dav-versions
 		And user "user0" has uploaded file with content "user0 content" to "sharefile.txt"
 		And user "user0" has shared file "sharefile.txt" with user "user1"
 		And user "user1" has uploaded file with content "user1 content" to "/sharefile.txt"
-		When user "user0" restores version index "1" of file "/sharefile.txt" using the API
+		When user "user0" restores version index "1" of file "/sharefile.txt" using the WebDAV API
 		Then the HTTP status code should be "204"
 		And the content of file "/sharefile.txt" for user "user0" should be "user0 content"
 		And the content of file "/sharefile.txt" for user "user1" should be "user0 content"
@@ -77,7 +77,7 @@ Feature: dav-versions
 		And user "user0" has shared folder "/sharingfolder" with user "user1"
 		And user "user0" has uploaded file with content "user0 content" to "/sharingfolder/sharefile.txt"
 		And user "user1" has uploaded file with content "user1 content" to "/sharingfolder/sharefile.txt"
-		When user "user0" restores version index "1" of file "/sharingfolder/sharefile.txt" using the API
+		When user "user0" restores version index "1" of file "/sharingfolder/sharefile.txt" using the WebDAV API
 		Then the HTTP status code should be "204"
 		And the content of file "/sharingfolder/sharefile.txt" for user "user0" should be "user0 content"
 		And the content of file "/sharingfolder/sharefile.txt" for user "user1" should be "user0 content"
@@ -89,7 +89,7 @@ Feature: dav-versions
 		And user "user0" has shared folder "/sharingfolder" with user "user1"
 		And user "user0" has uploaded file with content "user0 content" to "/sharingfolder/sharefile.txt"
 		And user "user1" has uploaded file with content "user1 content" to "/sharingfolder/sharefile.txt"
-		When user "user1" restores version index "1" of file "/sharingfolder/sharefile.txt" using the API
+		When user "user1" restores version index "1" of file "/sharingfolder/sharefile.txt" using the WebDAV API
 		Then the HTTP status code should be "204"
 		And the content of file "/sharingfolder/sharefile.txt" for user "user0" should be "user0 content"
 		And the content of file "/sharingfolder/sharefile.txt" for user "user1" should be "user0 content"
@@ -101,7 +101,7 @@ Feature: dav-versions
 		And user "user0" has shared folder "/sharingfolder" with user "user1"
 		And user "user1" has uploaded file with content "user1 content" to "/sharingfolder/sharefile.txt"
 		And user "user0" has uploaded file with content "user0 content" to "/sharingfolder/sharefile.txt"
-		When user "user0" restores version index "1" of file "/sharingfolder/sharefile.txt" using the API
+		When user "user0" restores version index "1" of file "/sharingfolder/sharefile.txt" using the WebDAV API
 		Then the HTTP status code should be "204"
 		And the content of file "/sharingfolder/sharefile.txt" for user "user0" should be "user1 content"
 		And the content of file "/sharingfolder/sharefile.txt" for user "user1" should be "user1 content"
@@ -113,7 +113,7 @@ Feature: dav-versions
 		And user "user0" has shared folder "/sharingfolder" with user "user1"
 		And user "user1" has uploaded file with content "user1 content" to "/sharingfolder/sharefile.txt"
 		And user "user0" has uploaded file with content "user0 content" to "/sharingfolder/sharefile.txt"
-		When user "user1" restores version index "1" of file "/sharingfolder/sharefile.txt" using the API
+		When user "user1" restores version index "1" of file "/sharingfolder/sharefile.txt" using the WebDAV API
 		Then the HTTP status code should be "204"
 		And the content of file "/sharingfolder/sharefile.txt" for user "user0" should be "user1 content"
 		And the content of file "/sharingfolder/sharefile.txt" for user "user1" should be "user1 content"
@@ -125,7 +125,7 @@ Feature: dav-versions
 		And user "user0" has shared folder "/sharingfolder" with user "user1"
 		And user "user1" has uploaded file with content "old content" to "/sharingfolder/sharefile.txt"
 		And user "user1" has uploaded file with content "new content" to "/sharingfolder/sharefile.txt"
-		When user "user0" restores version index "1" of file "/sharingfolder/sharefile.txt" using the API
+		When user "user0" restores version index "1" of file "/sharingfolder/sharefile.txt" using the WebDAV API
 		Then the HTTP status code should be "204"
 		And the content of file "/sharingfolder/sharefile.txt" for user "user0" should be "old content"
 		And the content of file "/sharingfolder/sharefile.txt" for user "user1" should be "old content"
@@ -137,7 +137,7 @@ Feature: dav-versions
 		And user "user0" has shared folder "/sharingfolder" with user "user1"
 		And user "user0" has uploaded file with content "old content" to "/sharingfolder/sharefile.txt"
 		And user "user0" has uploaded file with content "new content" to "/sharingfolder/sharefile.txt"
-		When user "user1" restores version index "1" of file "/sharingfolder/sharefile.txt" using the API
+		When user "user1" restores version index "1" of file "/sharingfolder/sharefile.txt" using the WebDAV API
 		Then the HTTP status code should be "204"
 		And the content of file "/sharingfolder/sharefile.txt" for user "user0" should be "old content"
 		And the content of file "/sharingfolder/sharefile.txt" for user "user1" should be "old content"
@@ -151,7 +151,7 @@ Feature: dav-versions
 		And user "user0" has uploaded file with content "new content" to "/sharingfolder/sharefile.txt"
 		And user "user1" has created a folder "/received"
 		And user "user1" has moved folder "/sharingfolder" to "/received/sharingfolder"
-		When user "user1" restores version index "1" of file "/received/sharingfolder/sharefile.txt" using the API
+		When user "user1" restores version index "1" of file "/received/sharingfolder/sharefile.txt" using the WebDAV API
 		Then the HTTP status code should be "201"
 		And the content of file "/sharingfolder/sharefile.txt" for user "user0" should be "old content"
 		And the content of file "/received/sharingfolder/sharefile.txt" for user "user1" should be "old content"
@@ -164,7 +164,7 @@ Feature: dav-versions
 		And user "user0" has shared file "/sharefile.txt" with user "user1"
 		And user "user1" has created a folder "/received"
 		And user "user1" has moved file "/sharefile.txt" to "/received/sharefile.txt"
-		When user "user1" restores version index "1" of file "/received/sharefile.txt" using the API
+		When user "user1" restores version index "1" of file "/received/sharefile.txt" using the WebDAV API
 		Then the HTTP status code should be "201"
 		And the content of file "/sharefile.txt" for user "user0" should be "old content"
 		And the content of file "/received/sharefile.txt" for user "user1" should be "old content"
@@ -178,7 +178,7 @@ Feature: dav-versions
 		And user "user0" has shared file "/sharingfolder/sharefile.txt" with user "user1"
 		And user "user1" has created a folder "/received"
 		And user "user1" has moved file "/sharefile.txt" to "/received/sharefile.txt"
-		When user "user1" restores version index "1" of file "/received/sharefile.txt" using the API
+		When user "user1" restores version index "1" of file "/received/sharefile.txt" using the WebDAV API
 		Then the HTTP status code should be "201"
 		And the content of file "/sharingfolder/sharefile.txt" for user "user0" should be "old content"
 		And the content of file "/received/sharefile.txt" for user "user1" should be "old content"
@@ -195,7 +195,7 @@ Feature: dav-versions
 		And user "user0" has uploaded file with content "user0 content" to "/sharingfolder/sharefile.txt"
 		And user "user1" has uploaded file with content "user1 content" to "/sharingfolder/sharefile.txt"
 		And user "user2" has uploaded file with content "user2 content" to "/sharingfolder/sharefile.txt"
-		When user "user0" restores version index "2" of file "/sharingfolder/sharefile.txt" using the API
+		When user "user0" restores version index "2" of file "/sharingfolder/sharefile.txt" using the WebDAV API
 		Then the HTTP status code should be "204"
 		And the content of file "/sharingfolder/sharefile.txt" for user "user0" should be "user0 content"
 		And the content of file "/sharingfolder/sharefile.txt" for user "user1" should be "user0 content"

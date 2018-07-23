@@ -53,7 +53,7 @@ trait AppConfiguration {
 	 *
 	 * @return void
 	 */
-	abstract public function sendingTo($verb, $url);
+	abstract public function theUserSendsToOcsApiEndpoint($verb, $url);
 
 	/**
 	 * @param string $verb
@@ -62,7 +62,7 @@ trait AppConfiguration {
 	 *
 	 * @return void
 	 */
-	abstract public function sendingToWith($verb, $url, $body);
+	abstract public function theUserSendsToOcsApiEndpointWithBody($verb, $url, $body);
 
 	/**
 	 * @param mixed $statusCode
@@ -79,7 +79,7 @@ trait AppConfiguration {
 	abstract public function theHTTPStatusCodeShouldBe($statusCode);
 
 	/**
-	 * @When /^the administrator sets parameter "([^"]*)" of app "([^"]*)" to "([^"]*)" using the API$/
+	 * @When /^the administrator sets parameter "([^"]*)" of app "([^"]*)" to "([^"]*)"$/
 	 *
 	 * @param string $parameter
 	 * @param string $app
@@ -152,12 +152,12 @@ trait AppConfiguration {
 	}
 
 	/**
-	 * @When the user retrieves the capabilities using the API
+	 * @When the user retrieves the capabilities using the capabilities API
 	 *
 	 * @return void
 	 */
 	public function getCapabilitiesCheckResponse() {
-		$this->sendingTo('GET', '/cloud/capabilities');
+		$this->theUserSendsToOcsApiEndpoint('GET', '/cloud/capabilities');
 		PHPUnit_Framework_Assert::assertEquals(
 			200, $this->response->getStatusCode()
 		);
@@ -295,7 +295,7 @@ trait AppConfiguration {
 			$app,
 			$parameter,
 			$value,
-			$this->apiVersion
+			$this->ocsApiVersion
 		);
 	}
 
@@ -310,7 +310,7 @@ trait AppConfiguration {
 			$this->getAdminUsername(),
 			$this->getAdminPassword(),
 			$appParameterValues,
-			$this->apiVersion
+			$this->ocsApiVersion
 		);
 	}
 
@@ -321,13 +321,15 @@ trait AppConfiguration {
 	 * @return void
 	 */
 	protected function setStatusTestingApp($enabled) {
-		$this->sendingTo(($enabled ? 'post' : 'delete'), '/cloud/apps/testing');
+		$this->theUserSendsToOcsApiEndpoint(
+			($enabled ? 'post' : 'delete'), '/cloud/apps/testing'
+		);
 		$this->theHTTPStatusCodeShouldBe('200');
-		if ($this->apiVersion == 1) {
+		if ($this->ocsApiVersion == 1) {
 			$this->theOCSStatusCodeShouldBe('100');
 		}
 
-		$this->sendingTo('get', '/cloud/apps?filter=enabled');
+		$this->theUserSendsToOcsApiEndpoint('get', '/cloud/apps?filter=enabled');
 		$this->theHTTPStatusCodeShouldBe('200');
 		if ($enabled) {
 			PHPUnit_Framework_Assert::assertContains(

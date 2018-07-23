@@ -87,7 +87,7 @@ trait Tags {
 	}
 
 	/**
-	 * @When user :user creates a :type tag with name :name using the API
+	 * @When user :user creates a :type tag with name :name using the WebDAV API
 	 * @Given user :user has created a :type tag with name :name
 	 *
 	 * @param string $user
@@ -107,7 +107,7 @@ trait Tags {
 	}
 
 	/**
-	 * @When user :user creates a :type tag with name :name and groups :groups using the API
+	 * @When user :user creates a :type tag with name :name and groups :groups using the WebDAV API
 	 * @Given user :user has created a :type tag with name :name and groups :groups
 	 *
 	 * @param string $user
@@ -315,7 +315,7 @@ trait Tags {
 	}
 
 	/**
-	 * @When user :user edits the tag with name :oldName and sets its name to :newName using the API
+	 * @When user :user edits the tag with name :oldName and sets its name to :newName using the WebDAV API
 	 * @Given user :user has edited the tag with name :oldName and set its name to :newName
 	 *
 	 * @param string $user
@@ -333,7 +333,7 @@ trait Tags {
 	}
 
 	/**
-	 * @When user :user edits the tag with name :oldName and sets its groups to :groups using the API
+	 * @When user :user edits the tag with name :oldName and sets its groups to :groups using the WebDAV API
 	 * @Given user :user has edited the tag with name :oldName and set its groups to :groups
 	 *
 	 * @param string $user
@@ -351,7 +351,7 @@ trait Tags {
 	}
 
 	/**
-	 * @When user :user deletes the tag with name :name using the API
+	 * @When user :user deletes the tag with name :name using the WebDAV API
 	 * @Given user :user has deleted the tag with name :name
 	 *
 	 * @param string $user
@@ -434,7 +434,7 @@ trait Tags {
 	}
 
 	/**
-	 * @When /^user "([^"]*)" adds the tag "([^"]*)" to "([^"]*)" (?:shared|owned) by "([^"]*)" using the API$/
+	 * @When /^user "([^"]*)" adds the tag "([^"]*)" to "([^"]*)" (?:shared|owned) by "([^"]*)" using the WebDAV API$/
 	 * @Given /^user "([^"]*)" has added the tag "([^"]*)" to "([^"]*)" (?:shared|owned) by "([^"]*)"$/
 	 *
 	 * @param string $taggingUser
@@ -534,7 +534,7 @@ trait Tags {
 	}
 
 	/**
-	 * @When user :user removes the tag :tagName from :fileName shared by :shareUser using the API
+	 * @When user :user removes the tag :tagName from :fileName shared by :shareUser using the WebDAV API
 	 * @Given user :user has removed the tag :tagName from :fileName shared by :shareUser
 	 *
 	 * @param string $user

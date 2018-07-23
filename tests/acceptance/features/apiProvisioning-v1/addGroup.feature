@@ -5,10 +5,10 @@ I want to be able to add groups
 So that I can more easily manage access to resources by groups rather than individual users
 
 	Background:
-		Given using API version "1"
+		Given using OCS API version "1"
 
 	Scenario Outline: admin creates a group
-		Given the administrator sends a group creation request for group "<group_id>" using the API
+		Given the administrator sends a group creation request for group "<group_id>" using the provisioning API
 		Then the OCS status code should be "100"
 		And the HTTP status code should be "200"
 		And group "<group_id>" should exist
@@ -34,14 +34,14 @@ So that I can more easily manage access to resources by groups rather than indiv
 
 	Scenario: admin tries to create a group that already exists
 		Given group "new-group" has been created
-		When the administrator sends a group creation request for group "new-group" using the API
+		When the administrator sends a group creation request for group "new-group" using the provisioning API
 		Then the OCS status code should be "102"
 		And the HTTP status code should be "200"
 		And group "new-group" should exist
 
 	Scenario: normal user tries to create a group
 		Given user "brand-new-user" has been created
-		When user "brand-new-user" sends HTTP method "POST" to API endpoint "/cloud/groups" with body
+		When user "brand-new-user" sends HTTP method "POST" to OCS API endpoint "/cloud/groups" with body
 			| groupid   | new-group   |
 		Then the OCS status code should be "997"
 		And the HTTP status code should be "401"
@@ -51,7 +51,7 @@ So that I can more easily manage access to resources by groups rather than indiv
 		Given user "subadmin" has been created
 		And group "new-group" has been created
 		And user "subadmin" has been made a subadmin of group "new-group"
-		And user "subadmin" sends HTTP method "POST" to API endpoint "/cloud/groups" with body
+		And user "subadmin" sends HTTP method "POST" to OCS API endpoint "/cloud/groups" with body
 			| groupid   | another-group   |
 		Then the OCS status code should be "997"
 		And the HTTP status code should be "401"

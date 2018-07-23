@@ -5,7 +5,7 @@ I want to be able to enable a disabled app
 So that I can use the app features again
 
 	Background:
-		Given using API version "1"
+		Given using OCS API version "1"
 
 	Scenario: Admin enables an app
 		Given the app "comments" has been disabled

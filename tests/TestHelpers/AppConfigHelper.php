@@ -42,7 +42,7 @@ class AppConfigHelper {
 	 *                                 "testing"
 	 * @param boolean $testingState the on|off state the parameter must be set to for the test
 	 * @param string $savedCapabilitiesXml the original capabilities in XML format
-	 * @param int $apiVersion (1|2)
+	 * @param int $ocsApiVersion (1|2)
 	 *
 	 * @return array of the original state of the capability set
 	 */
@@ -56,7 +56,7 @@ class AppConfigHelper {
 		$testingParameter,
 		$testingState,
 		$savedCapabilitiesXml,
-		$apiVersion = 1
+		$ocsApiVersion = 1
 	) {
 		$originalState = self::wasCapabilitySet(
 			$capabilitiesApp,
@@ -75,7 +75,7 @@ class AppConfigHelper {
 			$testingApp,
 			$testingParameter,
 			$testingState ? 'yes' : 'no',
-			$apiVersion
+			$ocsApiVersion
 		);
 		
 		return [
@@ -95,7 +95,7 @@ class AppConfigHelper {
 	 *                                 ['testingParameter'] the parameter name as understood by "testing"
 	 *                                 ['testingState'] boolean|string that the parameter must be set to for the test
 	 * @param string $savedCapabilitiesXml the original capabilities in XML format
-	 * @param int $apiVersion (1|2)
+	 * @param int $ocsApiVersion (1|2)
 	 *
 	 * @return array of the original state of each capability set
 	 */
@@ -105,7 +105,7 @@ class AppConfigHelper {
 		$password,
 		$capabilitiesArray,
 		$savedCapabilitiesXml,
-		$apiVersion = 1
+		$ocsApiVersion = 1
 	) {
 		$appParameterValues = [];
 		$originalCapabilities = [];
@@ -152,7 +152,7 @@ class AppConfigHelper {
 			$user,
 			$password,
 			$appParameterValues,
-			$apiVersion
+			$ocsApiVersion
 		);
 
 		return $originalCapabilities;
@@ -244,14 +244,14 @@ class AppConfigHelper {
 	 * @param string $app
 	 * @param string $parameter
 	 * @param string $value
-	 * @param int $apiVersion (1|2)
+	 * @param int $ocsApiVersion (1|2)
 	 *
 	 * @return void
 	 */
 	public static function modifyServerConfig(
 		$baseUrl,
 		$user,
-		$password, $app, $parameter, $value, $apiVersion = 2
+		$password, $app, $parameter, $value, $ocsApiVersion = 2
 	) {
 		$body = ['value' => $value];
 		$response = OcsApiHelper::sendRequest(
@@ -261,10 +261,10 @@ class AppConfigHelper {
 			'post',
 			"/apps/testing/api/v1/app/{$app}/{$parameter}",
 			$body,
-			$apiVersion
+			$ocsApiVersion
 		);
 		PHPUnit_Framework_Assert::assertEquals("200", $response->getStatusCode());
-		if ($apiVersion === 1) {
+		if ($ocsApiVersion === 1) {
 			PHPUnit_Framework_Assert::assertEquals(
 				"100", self::getOCSResponse($response)
 			);
@@ -276,14 +276,14 @@ class AppConfigHelper {
 	 * @param string $user
 	 * @param string $password
 	 * @param array $appParameterValues 'appid' 'configkey' and 'value'
-	 * @param int $apiVersion (1|2)
+	 * @param int $ocsApiVersion (1|2)
 	 *
 	 * @return void
 	 */
 	public static function modifyServerConfigs(
 		$baseUrl,
 		$user,
-		$password, $appParameterValues, $apiVersion = 2
+		$password, $appParameterValues, $ocsApiVersion = 2
 	) {
 		$body = ['values' => $appParameterValues];
 		$response = OcsApiHelper::sendRequest(
@@ -293,10 +293,10 @@ class AppConfigHelper {
 			'post',
 			"/apps/testing/api/v1/apps",
 			$body,
-			$apiVersion
+			$ocsApiVersion
 		);
 		PHPUnit_Framework_Assert::assertEquals("200", $response->getStatusCode());
-		if ($apiVersion === 1) {
+		if ($ocsApiVersion === 1) {
 			PHPUnit_Framework_Assert::assertEquals(
 				"100", self::getOCSResponse($response)
 			);

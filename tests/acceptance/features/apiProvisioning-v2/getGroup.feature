@@ -5,7 +5,7 @@ I want to be able to get group details
 So that I can know which users are in a group
 
 	Background:
-		Given using API version "2"
+		Given using OCS API version "2"
 
 	Scenario: admin gets users in the group
 		Given user "brand-new-user" has been created
@@ -13,7 +13,7 @@ So that I can know which users are in a group
 		And group "new-group" has been created
 		And user "brand-new-user" has been added to group "new-group"
 		And user "123" has been added to group "new-group"
-		When user "admin" sends HTTP method "GET" to API endpoint "/cloud/groups/new-group"
+		When user "admin" sends HTTP method "GET" to OCS API endpoint "/cloud/groups/new-group"
 		Then the OCS status code should be "200"
 		And the HTTP status code should be "200"
 		And the users returned by the API should be
@@ -22,7 +22,7 @@ So that I can know which users are in a group
 
 	Scenario: admin tries to get users in the empty group
 		Given group "new-group" has been created
-		When user "admin" sends HTTP method "GET" to API endpoint "/cloud/groups/new-group"
+		When user "admin" sends HTTP method "GET" to OCS API endpoint "/cloud/groups/new-group"
 		Then the OCS status code should be "200"
 		And the HTTP status code should be "200"
 		And the list of users returned by the API should be empty
@@ -35,7 +35,7 @@ So that I can know which users are in a group
 		And user "subadmin" has been made a subadmin of group "new-group"
 		And user "user1" has been added to group "new-group"
 		And user "user2" has been added to group "new-group"
-		When user "subadmin" sends HTTP method "GET" to API endpoint "/cloud/groups/new-group"
+		When user "subadmin" sends HTTP method "GET" to OCS API endpoint "/cloud/groups/new-group"
 		Then the OCS status code should be "200"
 		And the HTTP status code should be "200"
 		And the users returned by the API should be
@@ -48,7 +48,7 @@ So that I can know which users are in a group
 		And group "new-group" has been created
 		And group "another-group" has been created
 		And user "subadmin" has been made a subadmin of group "new-group"
-		When user "subadmin" sends HTTP method "GET" to API endpoint "/cloud/groups/another-group"
+		When user "subadmin" sends HTTP method "GET" to OCS API endpoint "/cloud/groups/another-group"
 		Then the OCS status code should be "401"
 		And the HTTP status code should be "401"
 
@@ -56,6 +56,6 @@ So that I can know which users are in a group
 	Scenario: normal user tries to get users in his group
 		Given user "newuser" has been created
 		And group "new-group" has been created
-		When user "newuser" sends HTTP method "GET" to API endpoint "/cloud/groups/new-group"
+		When user "newuser" sends HTTP method "GET" to OCS API endpoint "/cloud/groups/new-group"
 		Then the OCS status code should be "401"
 		And the HTTP status code should be "401"
