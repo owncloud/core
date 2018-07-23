@@ -430,8 +430,6 @@ trait WebDav {
 	/**
 	 * @Then /^the downloaded content should be "([^"]*)" plus end-of-line$/
 	 *
-	 * @param string $fileName
-	 * @param string $user
 	 * @param string $content
 	 *
 	 * @return void
@@ -739,10 +737,6 @@ trait WebDav {
 
 	/**
 	 * @Then /^the properties response should contain an etag$/
-	 *
-	 * @param string $user
-	 * @param string $entry
-	 * @param string $path
 	 *
 	 * @return void
 	 * @throws \Exception
