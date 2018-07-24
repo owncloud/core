@@ -88,7 +88,7 @@ class SharingDialog extends OwncloudPage {
 		$input, Session $session, $timeout_msec = STANDARDUIWAITTIMEOUTMILLISEC
 	) {
 		$shareWithField = $this->_findShareWithField();
-		$shareWithField->setValue($input);
+		$this->fillFieldAndKeepFocus($shareWithField, $input, $session);
 		$this->waitForAjaxCallsToStartAndFinish($session, $timeout_msec);
 		return $this->getAutocompleteNodeElement();
 	}
