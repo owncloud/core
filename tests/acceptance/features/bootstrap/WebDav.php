@@ -1145,7 +1145,7 @@ trait WebDav {
 	}
 
 	/**
-	 * asserts that a the user can or can not see a list of files/folders by propfind
+	 * asserts that a the user can or cannot see a list of files/folders by propfind
 	 *
 	 * @param string $user
 	 * @param TableNode $elements
