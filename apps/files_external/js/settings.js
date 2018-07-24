@@ -673,8 +673,6 @@ MountConfigListView.prototype = _.extend({
 		// into the data-configurations attribute of the select
 		this._allBackends = this.$el.find('.selectBackend').data('configurations');
 		this._allAuthMechanisms = this.$el.find('#addMountPoint .authentication').data('mechanisms');
-
-		this._initEvents();
 	},
 
 	/**
@@ -776,6 +774,41 @@ MountConfigListView.prototype = _.extend({
 		onCompletion.resolve();
 
 		this.saveStorageConfig($tr);
+	},
+
+	/**
+	 * Execute the target callback when all the deferred objects have been
+	 * finished, either resolved or rejected
+	 *
+	 * @param {Deferred[]} deferreds array with all the deferred objects to check
+	 * this will usually be a list of ajax requests, but other deferred
+	 * objects can be included
+	 * @param {callback} callback the callback to be executed after all the
+	 * deferred object have finished
+	 */
+	_executeCallbackWhenFinished: function(deferreds, callback) {
+		var self = this;
+
+		$.when.apply($, deferreds).always(function() {
+			var pendingDeferreds = [];
+
+			// some deferred objects can still be pending to be resolved
+			// or rejected. Get all of those which are still pending so we can
+			// make another call
+			if (deferreds.length > 0) {
+				for (i = 0 ; i < deferreds.length ; i++) {
+					if (deferreds[i].state() === 'pending') {
+						pendingDeferreds.push(deferreds[i]);
+					}
+				}
+			}
+
+			if (pendingDeferreds.length > 0) {
+				self._executeCallbackWhenFinished(pendingDeferreds, callback);
+			} else {
+				callback();
+			}
+		});
 	},
 
 	/**
@@ -942,10 +975,11 @@ MountConfigListView.prototype = _.extend({
 	 */
 	loadStorages: function() {
 		var self = this;
+		var ajaxRequests = [];
 
 		if (this._isPersonal) {
 			// load userglobal storages
-			$.ajax({
+			var fixedStoragesRequest = $.ajax({
 				type: 'GET',
 				url: OC.generateUrl('apps/files_external/userglobalstorages'),
 				data: {'testOnly' : true},
@@ -983,14 +1017,14 @@ MountConfigListView.prototype = _.extend({
 						}
 					});
 					onCompletion.resolve();
-					$("#body-settings").trigger("mountConfigLoaded");
 				}
 			});
+			ajaxRequests.push(fixedStoragesRequest);
 		}
 
 		var url = this._storageConfigClass.prototype._url;
 
-		$.ajax({
+		var changeableStoragesRequest = $.ajax({
 			type: 'GET',
 			url: OC.generateUrl(url),
 			contentType: 'application/json',
@@ -1004,8 +1038,12 @@ MountConfigListView.prototype = _.extend({
 					self.recheckStorageConfig($tr);
 				});
 				onCompletion.resolve();
-				$("#body-settings").trigger("mountConfigLoaded");
 			}
+		});
+		ajaxRequests.push(changeableStoragesRequest);
+
+		this._executeCallbackWhenFinished(ajaxRequests, function() {
+			$('#body-settings').trigger('mountConfigLoaded');
 		});
 	},
 
@@ -1347,6 +1385,11 @@ $(document).ready(function() {
 	var mountConfigListView = new MountConfigListView($('#externalStorage'), {
 		encryptionEnabled: encryptionEnabled,
 		allowUserMountSharing: (parseInt($('#allowUserMountSharing').val(), 10) === 1)
+	});
+
+	// init the mountConfigListView events after the storages are loaded
+	$('#body-settings').on('mountConfigLoaded', function() {
+		mountConfigListView._initEvents();
 	});
 	mountConfigListView.loadStorages();
 
