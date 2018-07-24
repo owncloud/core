@@ -417,7 +417,8 @@ class Server extends ServerContainer implements IServerContainer, IServiceLoader
 			return new URLGenerator(
 				$config,
 				$cacheFactory,
-				$router
+				$router,
+				new \OC\Helper\EnvironmentHelper()
 			);
 		});
 		$this->registerService('AppHelper', function ($c) {
