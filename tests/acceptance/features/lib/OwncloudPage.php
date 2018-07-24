@@ -702,7 +702,7 @@ class OwncloudPage extends Page {
 	public function fillFieldAndKeepFocus(NodeElement $element, $value, $session) {
 		$driver = $session->getDriver();
 		$element = $driver->getWebDriverSession()->element('xpath', $element->getXpath());
-		$value = str_repeat(Key::BACKSPACE . Key::DELETE, strlen($element->attribute('value'))) . $value;
+		$value = \str_repeat(Key::BACKSPACE . Key::DELETE, strlen($element->attribute('value'))) . $value;
 		$element->postValue(['value' => [$value]]);
 	}
 
