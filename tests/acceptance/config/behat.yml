@@ -61,12 +61,6 @@ default:
       contexts:
         - FeatureContext: *common_feature_context_params
 
-    apiWebdav:
-      paths:
-        - %paths.base%/../features/apiWebdav
-      contexts:
-        - FeatureContext: *common_feature_context_params
-
     apiSharingNotifications:
       paths:
         - %paths.base%/../features/apiSharingNotifications
@@ -87,6 +81,14 @@ default:
         - WebUIFilesContext:
         - WebUIPersonalGeneralSettingsContext:
         - EmailContext:
+
+    apiWebdav:
+      paths:
+        - %paths.base%/../features/apiWebdav
+      context: *common_webui_suite_context
+      contexts:
+        - FeatureContext: *common_feature_context_params
+        - LoggingContext:
 
     webUIAdminSettings:
       paths:
