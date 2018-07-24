@@ -279,7 +279,7 @@ GroupList = {
 		//when to mark user for delete
 		$userGroupList.on('click', '.delete', function () {
 			// Call function for handling delete/undo
-			GroupDeleteHandler.mark(GroupList.getElementGID(this));
+			GroupDeleteHandler.mark(encodeURIComponent(GroupList.getElementGID(this)).toString());
 		});
 
 		//delete a marked user when leaving the page
@@ -295,7 +295,7 @@ GroupList = {
 	},
 
 	getElementGID: function (element) {
-		return encodeURIComponent(($(element).closest('li').attr('data-gid') || '')).toString();
+		return ($(element).closest('li').attr('data-gid') || '');
 	},
 	getEveryoneCount: function () {
 		$.ajax({
