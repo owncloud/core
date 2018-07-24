@@ -684,6 +684,29 @@ class OwncloudPage extends Page {
 	}
 
 	/**
+	 * Fill an element with a text value and keep focus on the element.
+	 *
+	 * The existing fillField and setValue methods have a problem. They blur out
+	 * of the field after entering the data. This is a problem when the focus
+	 * should remain in the field, e.g. for auto-complete fields. It is also a
+	 * problem for fields where we send an enter at the end of the field.
+	 * Regression caused by:
+	 * https://github.com/minkphp/MinkSelenium2Driver/pull/286
+	 *
+	 * @param NodeElement $element
+	 * @param string $value
+	 * @param Session $session
+	 *
+	 * @throws \Exception
+	 */
+	public function fillFieldAndKeepFocus(NodeElement $element, $value, $session) {
+		$driver = $session->getDriver();
+		$element = $driver->getWebDriverSession()->element('xpath', $element->getXpath());
+		$value = \str_repeat(Key::BACKSPACE . Key::DELETE, strlen($element->attribute('value'))) . $value;
+		$element->postValue(['value' => [$value]]);
+	}
+
+	/**
 	 * Edge often returns whitespace before or after element text.
 	 * This is a convenient wrapper to ensure that text is trimmed
 	 * before using it in tests.
