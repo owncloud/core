@@ -23,6 +23,7 @@ $excludeDirs = [
 	'lib/composer',
 	'build',
 	'apps/files_external/3rdparty',
+	'apps-external',
 	'config',
 	'data',
 	'3rdparty',
