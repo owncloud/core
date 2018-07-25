@@ -45,15 +45,6 @@ namespace OCP;
  * @since 5.0.0
  */
 class User {
-	/**
-	 * Get the user id of the user currently logged in.
-	 * @return string uid or false
-	 * @deprecated 8.0.0 Use \OC::$server->getUserSession()->getUser()->getUID()
-	 * @since 5.0.0
-	 */
-	public static function getUser() {
-		return \OC_User::getUser();
-	}
 
 	/**
 	 * Get a list of all users

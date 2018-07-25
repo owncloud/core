@@ -2163,7 +2163,8 @@ class View {
 			throw new NotFoundException($this->getAbsolutePath($filename) . ' not found');
 		}
 		$uid = $info->getOwner()->getUID();
-		if ($uid != \OCP\User::getUser()) {
+		$sessionUserId = \OC::$server->getUserSession()->getUser()->getUID();
+		if ($uid != $sessionUserId) {
 			Filesystem::initMountPoints($uid);
 			$ownerView = new View('/' . $uid . '/files');
 			try {

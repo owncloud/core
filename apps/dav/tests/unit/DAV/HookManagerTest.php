@@ -31,6 +31,7 @@ use OCA\DAV\CardDAV\SyncService;
 use OCA\DAV\HookManager;
 use OCP\IUser;
 use OCP\IUserManager;
+use OCP\IUserSession;
 use Test\TestCase;
 
 class HookManagerTest extends TestCase {
@@ -41,7 +42,7 @@ class HookManagerTest extends TestCase {
 	public function setUp() {
 		parent::setUp();
 
-		$this->l10n = $this->getMockBuilder('OC\L10N\L10N')
+		$this->l10n = $this->getMockBuilder(L10N::class)
 			->disableOriginalConstructor()->getMock();
 		$this->l10n
 			->expects($this->any())

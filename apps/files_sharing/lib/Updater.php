@@ -93,11 +93,11 @@ class Updater {
 	 * @param string $newPath new path relative to data/user/files
 	 */
 	private static function renameChildren($oldPath, $newPath) {
-		$absNewPath =  \OC\Files\Filesystem::normalizePath('/' . \OCP\User::getUser() . '/files/' . $newPath);
-		$absOldPath =  \OC\Files\Filesystem::normalizePath('/' . \OCP\User::getUser() . '/files/' . $oldPath);
+		$absNewPath =  \OC\Files\Filesystem::normalizePath('/' . Helper::getUser() . '/files/' . $newPath);
+		$absOldPath =  \OC\Files\Filesystem::normalizePath('/' . Helper::getUser() . '/files/' . $oldPath);
 
 		$mountManager = \OC\Files\Filesystem::getMountManager();
-		$mountedShares = $mountManager->findIn('/' . \OCP\User::getUser() . '/files/' . $oldPath);
+		$mountedShares = $mountManager->findIn('/' . Helper::getUser() . '/files/' . $oldPath);
 		foreach ($mountedShares as $mount) {
 			if ($mount->getStorage()->instanceOfStorage('OCA\Files_Sharing\ISharedStorage')) {
 				$mountPoint = $mount->getMountPoint();

@@ -113,14 +113,15 @@ class Trashbin {
 		// to a remote user with a federated cloud ID we use the current logged-in
 		// user. We need a valid local user to move the file to the right trash bin
 		if (!$userManager->userExists($uid)) {
-			$uid = User::getUser();
+			$user = \OC::$server->getUserSession()->getUser();
+			$uid= $user ? $user->getUID() : null;
 		}
 		if (!$uid) {
 			// no owner, usually because of share link from ext storage
 			return [null, null];
 		}
 		Filesystem::initMountPoints($uid);
-		if ($uid != User::getUser()) {
+		if ($uid != \OC::$server->getUserSession()->getUser()->getUID()) {
 			$info = Filesystem::getFileInfo($filename);
 			$ownerView = new View('/' . $uid . '/files');
 			try {
@@ -392,7 +393,7 @@ class Trashbin {
 				$copyKeysResult = $sourceStorage->retainKeys($filename, $owner, $ownerPath, $timestamp, $sourceStorage);
 			}
 
-			$user = User::getUser();
+			$user = \OC::$server->getUserSession()->getUser()->getUID();
 			$rootView = new View('/');
 
 			if ($rootView->is_dir($owner . '/files_versions/' . $ownerPath)) {
@@ -475,7 +476,7 @@ class Trashbin {
 	 * @return bool true on success, false otherwise
 	 */
 	public static function restore($file, $filename, $timestamp) {
-		$user = User::getUser();
+		$user = \OC::$server->getUserSession()->getUser()->getUID();
 		$view = new View('/' . $user);
 
 		$location = '';
@@ -543,7 +544,7 @@ class Trashbin {
 	 */
 	private static function restoreVersions(View $view, $file, $filename, $uniqueFilename, $location, $timestamp) {
 		if (\OCP\App::isEnabled('files_versions')) {
-			$user = User::getUser();
+			$user = \OC::$server->getUserSession()->getUser()->getUID();
 			$rootView = new View('/');
 
 			$target = Filesystem::normalizePath('/' . $location . '/' . $uniqueFilename);
@@ -579,7 +580,7 @@ class Trashbin {
 	 * delete all files from the trash
 	 */
 	public static function deleteAll() {
-		$user = User::getUser();
+		$user = \OC::$server->getUserSession()->getUser()->getUID();
 		$view = new View('/' . $user);
 		$fileInfos = $view->getDirectoryContent('files_trashbin/files');
 
@@ -705,7 +706,7 @@ class Trashbin {
 	 * @return bool true if file exists, otherwise false
 	 */
 	public static function file_exists($filename, $timestamp = null) {
-		$user = User::getUser();
+		$user = \OC::$server->getUserSession()->getUser()->getUID();
 		$view = new View('/' . $user);
 
 		if ($timestamp) {

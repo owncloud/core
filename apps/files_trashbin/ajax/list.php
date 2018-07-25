@@ -32,9 +32,10 @@ $data = [];
 
 // make filelist
 try {
-	$files = \OCA\Files_Trashbin\Helper::getTrashFiles($dir, \OCP\User::getUser(), $sortAttribute, $sortDirection);
+	$userId = \OC::$server->getUserSession()->getUser()->getUID();
+	$files = \OCA\Files_Trashbin\Helper::getTrashFiles($dir, $userId, $sortAttribute, $sortDirection);
 } catch (Exception $e) {
-	\header("HTTP/1.0 404 Not Found");
+	\header('HTTP/1.0 404 Not Found');
 	exit();
 }
 

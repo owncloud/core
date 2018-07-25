@@ -96,11 +96,12 @@ class Storage {
 		// if the user with the UID doesn't exists, e.g. because the UID points
 		// to a remote user with a federated cloud ID we use the current logged-in
 		// user. We need a valid local user to create the versions
+		$sessionUserId = \OC_User::getUser();
 		if (!$userManager->userExists($uid)) {
-			$uid = User::getUser();
+			$uid = $sessionUserId;
 		}
 		Filesystem::initMountPoints($uid);
-		if ($uid != User::getUser()) {
+		if ($uid != $sessionUserId) {
 			$info = Filesystem::getFileInfo($filename);
 			$ownerView = new View('/'.$uid.'/files');
 			try {

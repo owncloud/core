@@ -190,8 +190,9 @@ class LegacyUtil {
 		if (self::$skipTest) {
 			return StorageNotAvailableException::STATUS_SUCCESS;
 		}
+		$sessionUserId = \OC::$server->getUserSession()->getUser()->getUID();
 		foreach ($options as $key => $option) {
-			$options[$key] = self::setUserVars(\OCP\User::getUser(), $option);
+			$options[$key] = self::setUserVars($sessionUserId, $option);
 		}
 		if (\class_exists($class)) {
 			try {

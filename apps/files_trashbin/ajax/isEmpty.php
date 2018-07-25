@@ -26,6 +26,7 @@ OCP\JSON::checkLoggedIn();
 OCP\JSON::callCheck();
 \OC::$server->getSession()->close();
 
-$trashStatus = OCA\Files_Trashbin\Trashbin::isEmpty(OCP\User::getUser());
+$userId = \OC::$server->getUserSession()->getUser()->getUID();
+$trashStatus = OCA\Files_Trashbin\Trashbin::isEmpty($userId);
 
-OCP\JSON::success(["data" => ["isEmpty" => $trashStatus]]);
+OCP\JSON::success(['data' => ['isEmpty' => $trashStatus]]);

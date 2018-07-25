@@ -134,7 +134,8 @@ class Hooks {
 
 			// if we rename a movable mount point, then the versions don't have
 			// to be renamed
-			$absOldPath = \OC\Files\Filesystem::normalizePath('/' . \OCP\User::getUser() . '/files' . $params['oldpath']);
+			$userId = \OC::$server->getUserSession()->getUser()->getUID();
+			$absOldPath = \OC\Files\Filesystem::normalizePath('/' . $userId . '/files' . $params['oldpath']);
 			$manager = \OC\Files\Filesystem::getMountManager();
 			$mount = $manager->find($absOldPath);
 			$internalPath = $mount->getInternalPath($absOldPath);
@@ -142,7 +143,7 @@ class Hooks {
 				return;
 			}
 
-			$view = new \OC\Files\View(\OCP\User::getUser() . '/files');
+			$view = new \OC\Files\View($userId . '/files');
 			if ($view->file_exists($params['newpath'])) {
 				Storage::store($params['newpath']);
 			} else {

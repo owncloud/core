@@ -117,9 +117,10 @@ if (isset($_POST['action'], $_POST['itemType'], $_POST['itemSource'])) {
 				$recipientList = $group->searchUsers('');
 			}
 			// don't send a mail to the user who shared the file
-			$recipientList = \array_filter($recipientList, function ($user) {
+			$sessionUser = \OC::$server->getUserSession()->getUser()->getUID();
+			$recipientList = \array_filter($recipientList, function ($user) use ($sessionUser) {
 				/** @var IUser $user */
-				return $user->getUID() !== \OCP\User::getUser();
+				return $user->getUID() !== $sessionUser;
 			});
 
 			$mailNotification = new \OC\Share\MailNotifications(

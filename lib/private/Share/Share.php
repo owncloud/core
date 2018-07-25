@@ -1011,8 +1011,7 @@ class Share extends Constants {
 	 */
 	public static function unshareFromSelf($itemType, $itemOrigin, $originIsSource = false) {
 		$originType = ($originIsSource) ? 'source' : 'target';
-		$uid = \OCP\User::getUser();
-
+		$uid = \OC::$server->getUserSession()->getUser()->getUID();
 		if ($itemType === 'file' || $itemType === 'folder') {
 			$statement = 'SELECT * FROM `*PREFIX*share` WHERE `item_type` = ? and `file_' . $originType . '` = ?';
 		} else {
@@ -1954,7 +1953,8 @@ class Share extends Constants {
 		}
 
 		// group items if we are looking for items shared with the current user
-		if (isset($shareWith) && $shareWith === \OCP\User::getUser()) {
+		$sessionUserId = \OC::$server->getUserSession()->getUser()->getUID();
+		if (isset($shareWith) && $shareWith === $sessionUserId) {
 			$items = self::groupItems($items, $itemType);
 		}
 
@@ -2151,9 +2151,10 @@ class Share extends Constants {
 			} else {
 				$users = self::usersInGroup($shareWith['group']);
 			}
+			$sessionUserId = \OC::$server->getUserSession()->getUser()->getUID();
 			// remove current user from list
-			if (\in_array(\OCP\User::getUser(), $users)) {
-				unset($users[\array_search(\OCP\User::getUser(), $users)]);
+			if (\in_array($sessionUserId, $users)) {
+				unset($users[\array_search($sessionUserId, $users)]);
 			}
 			$groupItemTarget = Helper::generateTarget($itemType, $itemSource,
 				$shareType, $shareWith['group'], $uidOwner, $suggestedItemTarget);

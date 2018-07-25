@@ -166,7 +166,7 @@ class Helper {
 		Filesystem::initMountPoints($owner);
 		$info = Filesystem::getFileInfo($target);
 		$ownerView = new View('/'.$owner.'/files');
-		if ($owner != User::getUser()) {
+		if ($owner != self::getUser()) {
 			$path = $ownerView->getPath($info['fileid']);
 		} else {
 			$path = $target;
@@ -212,10 +212,10 @@ class Helper {
 		// to a remote user with a federated cloud ID we use the current logged-in
 		// user. We need a valid local user to create the share
 		if (!$userManager->userExists($uid)) {
-			$uid = User::getUser();
+			$uid = self::getUser();
 		}
 		Filesystem::initMountPoints($uid);
-		if ($uid != User::getUser()) {
+		if ($uid != self::getUser()) {
 			$info = Filesystem::getFileInfo($filename);
 			$ownerView = new View('/'.$uid.'/files');
 			try {
@@ -303,5 +303,13 @@ class Helper {
 	 */
 	public static function setShareFolder($shareFolder) {
 		\OC::$server->getConfig()->setSystemValue('share_folder', $shareFolder);
+	}
+
+	public static function getUser() {
+		$user = \OC::$server->getUserSession() ? \OC::$server->getUserSession()->getUser() : null;
+		if ($user === null) {
+			return null;
+		}
+		return $user->getUID();
 	}
 }

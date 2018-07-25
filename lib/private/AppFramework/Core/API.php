@@ -52,7 +52,7 @@ class API implements IApi {
 	 * @deprecated Use \OC::$server->getUserSession()->getUser()->getUID()
 	 */
 	public function getUserId() {
-		return \OCP\User::getUser();
+		return \OC::$server->getUserSession()->getUser()->getUID();
 	}
 
 	/**
