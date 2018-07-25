@@ -1,7 +1,6 @@
 OC.L10N.register(
     "settings",
     {
-    "Wrong password" : "Senhal incorrècte",
     "Couldn't send reset email. Please contact your administrator." : "Impossible de mandar lo corrièl de reïnicializacion. Contactatz vòstre administrator.",
     "cURL is using an outdated %s version (%s). Please update your operating system or features such as %s will not work reliably." : "cURL utiliza %s version (%s), qu'es una version obsolèta. Metètz a jorn vòstre sistèma operatiu, o de foncionalitats talas coma %s foncionaràn pas corrèctament.",
     "Saved" : "Salvat",

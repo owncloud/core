@@ -1,8 +1,6 @@
 OC.L10N.register(
     "settings",
     {
-    "Wrong password" : "Forkert kodeord",
-    "The new password can not be the same as the previous one" : "Det nye kodeord kan ikke være det samme som det forrige",
     "%s password changed successfully" : "App %s succesfuldt opdateret",
     "Couldn't send reset email. Please contact your administrator." : "Der opstod et problem under afsending af e-mailen til nulstilling. Kontakt venligst systemadministratoren.",
     "installing and updating apps via the market or Federated Cloud Sharing" : "installation og opdatering af apps via app-butikken eller Federated Cloud Cloud deling",

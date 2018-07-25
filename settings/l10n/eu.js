@@ -1,7 +1,6 @@
 OC.L10N.register(
     "settings",
     {
-    "Wrong password" : "Pasahitz okerra",
     "%s password changed successfully" : "%s pasahitza behar bezala aldatu da",
     "Couldn't send reset email. Please contact your administrator." : "Ezin da berrezartzeko eposta bidali. Mesedez jarri harremetan zure administradorearekin.",
     "Saved" : "Gordeta",

@@ -1,7 +1,6 @@
 OC.L10N.register(
     "settings",
     {
-    "Wrong password" : "Yalnış şifrə",
     "Saved" : "Saxlanıldı",
     "log-level out of allowed range" : "jurnal-səviyyəsi izin verilən aralıqdan kənardır",
     "test email settings" : "sınaq məktubu quraşdırmaları",

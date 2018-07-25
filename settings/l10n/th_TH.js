@@ -1,8 +1,6 @@
 OC.L10N.register(
     "settings",
     {
-    "Wrong password" : "รหัสผ่านไม่ถูกต้อง",
-    "The new password can not be the same as the previous one" : "รหัสผ่านใหม่จะต้องไม่ตรงกับรหัสผ่านที่เคยใช้ไปแล้ว",
     "%s password changed successfully" : "เปลี่ยนรหัสผ่าน %s สำเร็จแล้ว",
     "Couldn't send reset email. Please contact your administrator." : "ไม่สามารถส่งข้อมูลการตั้งค่าไปยังอีเมลของคุณ กรุณาติดต่อผู้ดูแลระบบ",
     "installing and updating apps via the market or Federated Cloud Sharing" : "กำลังติดตั้งและอัพเดทแอพผ่านตลาดหรือคลาวด์ของสหพันธ์ที่แชร์อยู่",

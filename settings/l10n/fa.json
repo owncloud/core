@@ -1,6 +1,4 @@
 { "translations": {
-    "Wrong password" : "رمز عبور اشتباه است",
-    "The new password can not be the same as the previous one" : "رمز عبور جدید نمی تواند مانند قبلی باشد",
     "%s password changed successfully" : "%s رمز عبور با موفقیت تغییر کرد",
     "Couldn't send reset email. Please contact your administrator." : "ارسال ایمیل مجدد با مشکل مواجه شد . لطفا با مدیر سیستم تماس بگیرید .",
     "installing and updating apps via the market or Federated Cloud Sharing" : "نصب و به روز رسانی برنامه از طریق بازار یا Federated Cloud Sharing",

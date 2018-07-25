@@ -1,8 +1,6 @@
 OC.L10N.register(
     "settings",
     {
-    "Wrong password" : "Fel lösenord",
-    "The new password can not be the same as the previous one" : "Det nya lösenordet kan inte vara samma som det tidigare",
     "%s password changed successfully" : "%s lösenord ändrades",
     "Couldn't send reset email. Please contact your administrator." : "Kunde inte skicka återställningsmail. Vänligen kontakta din administratör.",
     "cURL is using an outdated %s version (%s). Please update your operating system or features such as %s will not work reliably." : "cURL använder en föråldrad %s version (%s). Var god uppdatera ditt operativsystem annars kan funktioner som %s sluta fungera pålitligt.",

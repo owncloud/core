@@ -1,6 +1,4 @@
 { "translations": {
-    "Wrong password" : "잘못된 암호",
-    "The new password can not be the same as the previous one" : "새 암호는 이전 암호와 달라야 합니다",
     "%s password changed successfully" : "%s 암호가 성공적으로 변경됨",
     "Couldn't send reset email. Please contact your administrator." : "재설정 메일을 보낼 수 없습니다. 관리자에게 문의하십시오.",
     "installing and updating apps via the market or Federated Cloud Sharing" : "마켓이나 연합 클라우드 공유로 앱 설치 및 업데이트",

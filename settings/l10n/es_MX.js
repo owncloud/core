@@ -1,8 +1,6 @@
 OC.L10N.register(
     "settings",
     {
-    "Wrong password" : "Contraseña incorrecta",
-    "The new password can not be the same as the previous one" : "La nueva contraseña no puede ser la misma que la contraseña anterior",
     "Couldn't send reset email. Please contact your administrator." : "No se pudo enviar correo de restauración de contraseña. Por favor contacta a tu administrador.",
     "Saved" : "Guardado",
     "test email settings" : "probar configuración de correo",

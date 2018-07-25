@@ -1,6 +1,4 @@
 { "translations": {
-    "Wrong password" : "Εσφαλμένο συνθηματικό",
-    "The new password can not be the same as the previous one" : "Το νέο συνθηματικό δεν μπορεί να είναι το ίδιο με το προηγούμενο",
     "%s password changed successfully" : "ο %s άλλαξε το συνθηματικό επιτυχώς",
     "Couldn't send reset email. Please contact your administrator." : "Αδυναμία αποστολής ηλ. μηνύματος επαναφοράς. Παρακαλώ επικοινωνήστε με το διαχειριστή σας.",
     "cURL is using an outdated %s version (%s). Please update your operating system or features such as %s will not work reliably." : "Το cURL χρησιμοποιεί μια παρωχημένη %s έκδοση (%s). Παρακαλούμε αναβαθμίστε το λειτουργικό σας σύστημα αλλιώς δυνατότητες όπως %s δεν θα δουλέψουν αξιόπιστα.",

@@ -1,8 +1,6 @@
 OC.L10N.register(
     "settings",
     {
-    "Wrong password" : "Falsches Passwort",
-    "The new password can not be the same as the previous one" : "Das neue Passwort kann nicht das gleiche Passwort wie das vorherige sein",
     "%s password changed successfully" : "%s Passwort erfolgreich geändert",
     "Couldn't send reset email. Please contact your administrator." : "Die E-Mail zum Zurücksetzen konnte nicht versendet werden. Bitte kontaktieren Sie Ihren Administrator.",
     "installing and updating apps via the market or Federated Cloud Sharing" : "Das Installieren und Aktualisieren von Apps durch den App-Store oder durch Federated Cloud Sharing",

@@ -1,6 +1,4 @@
 { "translations": {
-    "Wrong password" : "Sai mật khẩu",
-    "The new password can not be the same as the previous one" : "Mật khẩu mới không được giống với mật khẩu trước đó",
     "%s password changed successfully" : "%smật khẩu đã được thay đổi thành công",
     "Couldn't send reset email. Please contact your administrator." : "Không thể gửi email đặt lại. Vui lòng liên hệ với quản trị viên của bạn.",
     "installing and updating apps via the market or Federated Cloud Sharing" : "cài đặt và cập nhật ứng dụng thông qua market hoặc Federated Cloud Sharing",

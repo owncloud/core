@@ -1,8 +1,6 @@
 OC.L10N.register(
     "settings",
     {
-    "Wrong password" : "Погрешна лозинка",
-    "The new password can not be the same as the previous one" : "Новата лозинка неможе да биде иста како предходната ",
     "%s password changed successfully" : "%s лозинката е успешно променета",
     "Couldn't send reset email. Please contact your administrator." : "Не можам да истпратам порака за ресетирање. Ве молам контактирајте го вашиот администратор.",
     "Saved" : "Снимено",

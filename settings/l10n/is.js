@@ -1,8 +1,6 @@
 OC.L10N.register(
     "settings",
     {
-    "Wrong password" : "Rangt lykilorð",
-    "The new password can not be the same as the previous one" : "Nýja lykilorðið má ekki vera eins og það gamla",
     "%s password changed successfully" : "Það tókst að breyta lykilorði %s",
     "Couldn't send reset email. Please contact your administrator." : "Gat ekki sent endurstillingu í tölvupósti. Hafðu samband við kerfisstjóra.",
     "installing and updating apps via the market or Federated Cloud Sharing" : "uppsetning eða uppfærsla forrita úr forritabúð eða með skýjasambandi",

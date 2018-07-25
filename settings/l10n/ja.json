@@ -1,6 +1,4 @@
 { "translations": {
-    "Wrong password" : "パスワードが間違っています",
-    "The new password can not be the same as the previous one" : "新しいパスワードは前回のパスワードと同じにはできません",
     "%s password changed successfully" : "%s パスワードは正常に変更されました",
     "Couldn't send reset email. Please contact your administrator." : "リセットメールを送信できませんでした。管理者に問い合わせてください。",
     "cURL is using an outdated %s version (%s). Please update your operating system or features such as %s will not work reliably." : "%s バージョン (%s) の古い cURL を使っています。OSを更新するか、この機能 %s が正しく動くアプリに更新してください。",

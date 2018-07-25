@@ -1,8 +1,6 @@
 OC.L10N.register(
     "settings",
     {
-    "Wrong password" : "Złe hasło",
-    "The new password can not be the same as the previous one" : "Nowe hasło nie może być takie samo jak poprzednie",
     "%s password changed successfully" : "%s hasło zmieniono pomyślnie",
     "Couldn't send reset email. Please contact your administrator." : "Nie mogę wysłać maila resetującego. Skontaktuj się z administratorem.",
     "Saved" : "Zapisano",

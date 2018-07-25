@@ -1,6 +1,4 @@
 { "translations": {
-    "Wrong password" : "Feil passord",
-    "The new password can not be the same as the previous one" : "Det nye passordet kan ikke være det samme som det forrige",
     "%s password changed successfully" : "%s passord ble endret",
     "Couldn't send reset email. Please contact your administrator." : "Klarte ikke å sende e-post for tilbakestilling. Kontakt administratoren.",
     "installing and updating apps via the market or Federated Cloud Sharing" : "installering og oppdatering av apper via markedet eller ved deling i Forent sky",

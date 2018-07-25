@@ -1,7 +1,6 @@
 OC.L10N.register(
     "settings",
     {
-    "Wrong password" : "Nesprávne heslo",
     "Couldn't send reset email. Please contact your administrator." : "Nemožno poslať email pre obnovu. Kontaktujte prosím vášho administrátora.",
     "Saved" : "Uložené",
     "log-level out of allowed range" : "úroveň logovania z povoleného rozpätia",

@@ -1,8 +1,6 @@
 OC.L10N.register(
     "settings",
     {
-    "Wrong password" : "Incorrect password",
-    "The new password can not be the same as the previous one" : "The new password can not be the same as the previous one",
     "Couldn't send reset email. Please contact your administrator." : "Couldn't send reset email. Please contact your administrator.",
     "cURL is using an outdated %s version (%s). Please update your operating system or features such as %s will not work reliably." : "cURL is using an outdated %s version (%s). Please update your operating system or features such as %s will not work reliably.",
     "Saved" : "Saved",

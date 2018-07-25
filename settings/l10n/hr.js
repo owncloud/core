@@ -1,7 +1,6 @@
 OC.L10N.register(
     "settings",
     {
-    "Wrong password" : "Pogrešna lozinka",
     "Couldn't send reset email. Please contact your administrator." : "Nije mogće poslati resetiranu poštu. MOlimo kontaktirajte svog administratora.",
     "Saved" : "Spremljeno",
     "test email settings" : "Postavke za testiranje e-pošte",

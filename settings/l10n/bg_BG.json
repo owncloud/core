@@ -1,6 +1,4 @@
 { "translations": {
-    "Wrong password" : "Грешна парола",
-    "The new password can not be the same as the previous one" : "Новата парола не може да бъде същата като предишната",
     "%s password changed successfully" : "%s паролата е сменена успешно",
     "Couldn't send reset email. Please contact your administrator." : "Изпращането на електронна поща е неуспешно. Моля, свържете се с вашия администратор.",
     "cURL is using an outdated %s version (%s). Please update your operating system or features such as %s will not work reliably." : "cURL използва неактуална %s версия (%s). Моля, актуализирайте операционната си система или функции, като %s няма да работят надеждно.",

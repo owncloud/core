@@ -1,6 +1,4 @@
 { "translations": {
-    "Wrong password" : "סיסמא שגוייה",
-    "The new password can not be the same as the previous one" : "הסיסמא החדשה אינה יכולה להיות זהה לסיסמא הקודמת",
     "%s password changed successfully" : "סיסמא %s שונתה בהצלחה",
     "Couldn't send reset email. Please contact your administrator." : "לא ניתן היה לשלוח דואר אלקטרוני לאיפוס. יש לפנות למנהל שלך.",
     "installing and updating apps via the market or Federated Cloud Sharing" : "התקנה ועדכון יישומים באמצעות החנות או שיתוף ענן מאוגד",

@@ -1,7 +1,6 @@
 OC.L10N.register(
     "settings",
     {
-    "Wrong password" : "ខុស​ពាក្យ​សម្ងាត់",
     "Saved" : "បាន​រក្សាទុក",
     "test email settings" : "សាក​ល្បង​ការ​កំណត់​អ៊ីមែល",
     "Email sent" : "បាន​ផ្ញើ​អ៊ីមែល",

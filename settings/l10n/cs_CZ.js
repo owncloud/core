@@ -1,8 +1,6 @@
 OC.L10N.register(
     "settings",
     {
-    "Wrong password" : "Nesprávné heslo",
-    "The new password can not be the same as the previous one" : "Nové heslo nemůže být stejné jako to předchozí",
     "%s password changed successfully" : "%s heslo bylo změněno vpořádku",
     "Couldn't send reset email. Please contact your administrator." : "Nepodařilo se odeslat email pro změnu hesla. Kontaktujte svého správce systému.",
     "cURL is using an outdated %s version (%s). Please update your operating system or features such as %s will not work reliably." : "cURL používá zastaralou %s verzi (%s). Aktualizujte prosím svůj operační systém, jinak funkce jako %s nemusí spolehlivě pracovat.",

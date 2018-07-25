@@ -1,8 +1,6 @@
 OC.L10N.register(
     "settings",
     {
-    "Wrong password" : "Contraseña incorreuta",
-    "The new password can not be the same as the previous one" : "La nueva contraseña nun puede ser la mesma que l'anterior",
     "Couldn't send reset email. Please contact your administrator." : "Nun pudo unviase'l corréu de reaniciu. Por favor, contauta col alministrador.",
     "cURL is using an outdated %s version (%s). Please update your operating system or features such as %s will not work reliably." : "cURL ta utilizando una versión %s obsoleta (%s). Por favor, actualice'l so sistema operativu o característiques tales como %s nun va funcionar de forma fiable.",
     "Saved" : "Guardáu",

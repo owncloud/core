@@ -1,7 +1,6 @@
 OC.L10N.register(
     "settings",
     {
-    "Wrong password" : "Feil passord",
     "%s password changed successfully" : "%spassord er endra",
     "Couldn't send reset email. Please contact your administrator." : "Kunne ikkje senda e-post for nullstilling, kontakt administratoren.",
     "Saved" : "Lagra",

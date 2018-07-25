@@ -1,8 +1,6 @@
 OC.L10N.register(
     "settings",
     {
-    "Wrong password" : "Väärä salasana",
-    "The new password can not be the same as the previous one" : "Uusi salasana ei voi sama kuin aiempi salasana",
     "Couldn't send reset email. Please contact your administrator." : "Palautussähköpostin lähettäminen ei onnistunut. Ota yhteys ylläpitäjään.",
     "cURL is using an outdated %s version (%s). Please update your operating system or features such as %s will not work reliably." : "cURL käyttää vanhentunutta %s-versiota (%s). Päivitä käyttöjärjestelmäsi tai ominaisuudet kuten %s eivät toimi luotettavasti.",
     "Saved" : "Tallennettu",

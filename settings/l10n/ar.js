@@ -1,7 +1,6 @@
 OC.L10N.register(
     "settings",
     {
-    "Wrong password" : "كلمة مرور خاطئة",
     "Couldn't send reset email. Please contact your administrator." : "لم يتم إرسال بريد إعادة الضبط .  فضلاً اتصل بمدير النظام.",
     "Saved" : "حفظ",
     "test email settings" : "إعدادات البريد التجريبي",

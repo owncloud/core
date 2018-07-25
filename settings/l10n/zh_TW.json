@@ -1,5 +1,4 @@
 { "translations": {
-    "Wrong password" : "密碼錯誤",
     "%s password changed successfully" : "%s 密碼修改成功",
     "Couldn't send reset email. Please contact your administrator." : "無法寄送重設 email ，請聯絡系統管理員",
     "cURL is using an outdated %s version (%s). Please update your operating system or features such as %s will not work reliably." : "cURL 使用的 %s 版本已經過期 (%s)，請您更新您的作業系統，否則功能如 %s 可能無法正常運作",

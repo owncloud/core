@@ -1,6 +1,4 @@
 { "translations": {
-    "Wrong password" : "Senha errada",
-    "The new password can not be the same as the previous one" : "A nova senha não pode ser igual a anterior",
     "%s password changed successfully" : "%s senha alterada com sucesso",
     "Couldn't send reset email. Please contact your administrator." : "Não foi possível enviar e-mail de redefinição. Por favor, contate o administrador.",
     "installing and updating apps via the market or Federated Cloud Sharing" : "Instalando e atualizando aplicativos através do mercado ou Compartilhamento de Nuvem Federada",

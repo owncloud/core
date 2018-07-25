@@ -1,7 +1,6 @@
 OC.L10N.register(
     "settings",
     {
-    "Wrong password" : "ದುರ್ಬಲ ಗುಪ್ತಪದ",
     "Couldn't send reset email. Please contact your administrator." : "﻿ರೀಸೆಟ್ ಇಮೇಲ್ ಕಳುಹಿಸಲು ಸಾಧ್ಯವಾಗಲಿಲ್ಲ. ನಿಮ್ಮ ನಿರ್ವಾಹಕರನ್ನು ಸಂಪರ್ಕಿಸಿ.",
     "Saved" : "﻿ಉಳಿಸಿದ",
     "test email settings" : "ಪರೀರ್ಕ್ಷಾತ ﻿ಇ-ಅಂಚೆಯ ಆಯ್ಕೇ",

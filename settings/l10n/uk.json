@@ -1,6 +1,4 @@
 { "translations": {
-    "Wrong password" : "Невірний пароль",
-    "The new password can not be the same as the previous one" : "Новий пароль не може бути таким самим, як і попередній",
     "Couldn't send reset email. Please contact your administrator." : "Не можу надіслати email для скидання. Будь ласка, зверніться до вашого адміністратора.",
     "cURL is using an outdated %s version (%s). Please update your operating system or features such as %s will not work reliably." : "cURL використовує застарілу версію %s (%s). Будь ласка, поновіть вашу операційну систему або функції, такі як %s не працюватимуть надійно.",
     "Saved" : "Збережено",

@@ -1,7 +1,6 @@
 OC.L10N.register(
     "settings",
     {
-    "Wrong password" : "Нууц үг буруу",
     "Delete" : "Устгах",
     "Share" : "Түгээх",
     "Language changed" : "Хэл солигдлоо",

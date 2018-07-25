@@ -1,6 +1,4 @@
 { "translations": {
-    "Wrong password" : "Neteisingas slaptažodis",
-    "The new password can not be the same as the previous one" : "Naujas slaptažodis negali būti toks pats kaip ir ankstesnis",
     "%s password changed successfully" : "%sslaptažodis pakeistas",
     "Couldn't send reset email. Please contact your administrator." : "Nepavyko išsiųsti atkūrimo laiško, susisiekite su administratoriumi.",
     "installing and updating apps via the market or Federated Cloud Sharing" : "diegiama ar atnaujinama aplikacijas per turgų arba Federated Cloud Sharing",

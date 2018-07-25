@@ -1,8 +1,6 @@
 OC.L10N.register(
     "settings",
     {
-    "Wrong password" : "Parolă greșită",
-    "The new password can not be the same as the previous one" : "Noua parolă nu poate fi aceeași ca cea precedentă",
     "%s password changed successfully" : "parola %s a fost schimbată cu succes",
     "Couldn't send reset email. Please contact your administrator." : "Expedierea email-ului de resetare a eşuat. Vă rugăm să contactaţi administratorul dvs.",
     "Saved" : "Salvat",

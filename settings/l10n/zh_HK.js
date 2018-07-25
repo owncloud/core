@@ -1,7 +1,6 @@
 OC.L10N.register(
     "settings",
     {
-    "Wrong password" : "密碼錯誤",
     "Saved" : "已儲存",
     "test email settings" : "測試電子郵件設定",
     "Email sent" : "郵件已傳",

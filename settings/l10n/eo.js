@@ -1,7 +1,6 @@
 OC.L10N.register(
     "settings",
     {
-    "Wrong password" : "Malĝusta pasvorto",
     "Saved" : "Konservita",
     "Email sent" : "La retpoŝtaĵo sendiĝis",
     "Create" : "Krei",

@@ -1,7 +1,6 @@
 OC.L10N.register(
     "settings",
     {
-    "Wrong password" : "Սխալ գաղտնաբառ",
     "Saved" : "Պահված",
     "Email sent" : "Էլ. նամակը ուղարկվեց",
     "Create" : "Ստեղծել",

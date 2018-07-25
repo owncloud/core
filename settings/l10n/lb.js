@@ -1,7 +1,6 @@
 OC.L10N.register(
     "settings",
     {
-    "Wrong password" : "Falscht Passwuert",
     "Couldn't send reset email. Please contact your administrator." : "D'Email fir zeréck ze setzen konnt net geschéckt ginn. W.e.g. kontaktéier däin Administrateur.",
     "Saved" : "Gespäichert",
     "log-level out of allowed range" : "Log-Level ass ausserhalb vum erlaabte Beräich",

@@ -1,6 +1,4 @@
 { "translations": {
-    "Wrong password" : "Onjuist wachtwoord",
-    "The new password can not be the same as the previous one" : "Het nieuwe password mag niet gelijk zijn aan het oude",
     "%s password changed successfully" : "%s wachtwoord succesvol gewijzigd.",
     "Couldn't send reset email. Please contact your administrator." : "Kon herstel e-mail niet versturen. Neem contact op met uw beheerder.",
     "installing and updating apps via the market or Federated Cloud Sharing" : "installeren en bijwerken applicaties via de app store of Federated Cloud Sharing",

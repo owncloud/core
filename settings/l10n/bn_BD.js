@@ -1,7 +1,6 @@
 OC.L10N.register(
     "settings",
     {
-    "Wrong password" : "ভুল কুটশব্দ",
     "Saved" : "সংরক্ষণ করা হলো",
     "test email settings" : "ইমেইল নিয়ামকসমূহ পরীক্ষা করুন",
     "Email sent" : "ই-মেইল পাঠানো হয়েছে",

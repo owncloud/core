@@ -1,7 +1,6 @@
 OC.L10N.register(
     "settings",
     {
-    "Wrong password" : "Vale parool",
     "%s password changed successfully" : "%s parool on muudetud",
     "Couldn't send reset email. Please contact your administrator." : "Ei suutnud lähtestada e-maili. Palun kontakteeru süsteemihalduriga.",
     "Saved" : "Salvestatud",

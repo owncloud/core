@@ -1,6 +1,4 @@
 { "translations": {
-    "Wrong password" : "Palavra-passe errada",
-    "The new password can not be the same as the previous one" : "A nova palavra-passe não pode ser a mesma que a anterior",
     "%s password changed successfully" : "Palavra-passe de %s alterada com sucesso",
     "Couldn't send reset email. Please contact your administrator." : "Não foi possível enviar a mensagem de reposição. Por favor, contacte o seu administrador.",
     "cURL is using an outdated %s version (%s). Please update your operating system or features such as %s will not work reliably." : "cURL está a usar uma versão %s desatualizada (%s). Por favor, atualize o seu sistema operativo ou algumas funcionalidades como %s não funcionarão corretamente.",

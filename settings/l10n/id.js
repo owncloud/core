@@ -1,7 +1,6 @@
 OC.L10N.register(
     "settings",
     {
-    "Wrong password" : "Sandi salah",
     "Couldn't send reset email. Please contact your administrator." : "Tidak dapat mengirim email setel ulang. Silakan hubungi administrator Anda.",
     "cURL is using an outdated %s version (%s). Please update your operating system or features such as %s will not work reliably." : "cURL menggunakan versi lawas %s (%s). Silakan perbarui sistem operasi Anda atau fitur-fitur seperti %s tidak akan dapat bekerja dengan benar.",
     "Saved" : "Disimpan",

@@ -1,7 +1,6 @@
 OC.L10N.register(
     "settings",
     {
-    "Wrong password" : "Nepareiza parole",
     "%s password changed successfully" : "%s parole veiksmīgi nomainīta",
     "Couldn't send reset email. Please contact your administrator." : "Neizdevās nosūt paroles maiņas e-pasta ziņojumu. Lūdzu sazinieties ar sistēmas administratoru.",
     "Saved" : "Saglabāts",

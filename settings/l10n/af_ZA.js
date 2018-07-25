@@ -1,8 +1,6 @@
 OC.L10N.register(
     "settings",
     {
-    "Wrong password" : "Verkeerde wagwoord",
-    "The new password can not be the same as the previous one" : "Die nuwe wagwoord mag nie dieselfde as die vorige een wees nie",
     "%s password changed successfully" : "%s wagwoord suksesvol verander",
     "Couldn't send reset email. Please contact your administrator." : "Die herstel epos kon nie gestuur word nie. Kontak asseblief die stelsel administrateur.",
     "Saved" : "Bewaar",

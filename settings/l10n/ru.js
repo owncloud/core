@@ -1,8 +1,6 @@
 OC.L10N.register(
     "settings",
     {
-    "Wrong password" : "Неправильный пароль",
-    "The new password can not be the same as the previous one" : "Новый пароль не может совпадать со старым",
     "%s password changed successfully" : "Пароль %s изменён успешно",
     "Couldn't send reset email. Please contact your administrator." : "Не удалось отправить письмо для сброса пароля. Пожалуйста, свяжитесь с вашим администратором.",
     "installing and updating apps via the market or Federated Cloud Sharing" : "установка и обновление приложений через маркет или Объединение облачных хранилищ",

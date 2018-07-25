@@ -1,7 +1,6 @@
 OC.L10N.register(
     "settings",
     {
-    "Wrong password" : "Погрешна лозинка",
     "Couldn't send reset email. Please contact your administrator." : "Не могу да пошаљем е-пошту за ресетовање лозинке. Контактирајте администратора.",
     "Saved" : "Сачувано",
     "log-level out of allowed range" : "ниво бележења је ван дозвољеног опсега",

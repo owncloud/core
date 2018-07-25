@@ -1,6 +1,4 @@
 { "translations": {
-    "Wrong password" : "Mot de passe incorrect",
-    "The new password can not be the same as the previous one" : "Le nouveau mot de passe ne peut pas être le même que l'ancien",
     "%s password changed successfully" : "Le mot de passe %s a été correctement changé",
     "Couldn't send reset email. Please contact your administrator." : "Impossible d'envoyer le courriel de réinitialisation. Veuillez contacter votre administrateur.",
     "installing and updating apps via the market or Federated Cloud Sharing" : "installation et mise à jour des applications via le marché ou le Cloud Fédéré Partagé",

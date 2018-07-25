@@ -1,7 +1,6 @@
 OC.L10N.register(
     "settings",
     {
-    "Wrong password" : "Contrasenya incorrecta",
     "%s password changed successfully" : "%scontrassenya actualitzada correctament",
     "Couldn't send reset email. Please contact your administrator." : "No s'ha pogut restablir el correu. Contacteu amb l'administrador.",
     "Saved" : "Desat",
