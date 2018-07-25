@@ -143,11 +143,11 @@ class ViewController extends Controller {
 	 * @param string $fileid
 	 * @return TemplateResponse
 	 */
-	public function index($dir = '', $view = '', $fileid = null) {
+	public function index($dir = '', $view = '', $fileid = null, $details = null) {
 		$fileNotFound = false;
 		if ($fileid !== null) {
 			try {
-				return $this->showFile($fileid);
+				return $this->showFile($fileid, $details);
 			} catch (NotFoundException $e) {
 				$fileNotFound = true;
 			}
@@ -278,7 +278,7 @@ class ViewController extends Controller {
 	 * @NoCSRFRequired
 	 * @NoAdminRequired
 	 */
-	public function showFile($fileId) {
+	public function showFile($fileId, $details = null) {
 		$uid = $this->userSession->getUser()->getUID();
 		$baseFolder = $this->rootFolder->get($uid . '/files/');
 		$files = $baseFolder->getById($fileId);
@@ -307,6 +307,9 @@ class ViewController extends Controller {
 				$params['dir'] = $baseFolder->getRelativePath($file->getParent()->getPath());
 				// and scroll to the entry
 				$params['scrollto'] = $file->getName();
+			}
+			if ($details !== null) {
+				$params['details'] = $details;
 			}
 			$webUrl = $this->urlGenerator->linkToRoute('files.view.index', $params);
 
