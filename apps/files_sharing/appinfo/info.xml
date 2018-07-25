@@ -24,6 +24,10 @@ Turning the feature off removes shared files and folders on the server for all s
 
 	<namespace>Files_Sharing</namespace>
 
+	<settings>
+		<admin>OCA\Files_Sharing\Panels\Admin\SettingsPanel</admin>
+	</settings>
+
 	<background-jobs>
 		<job>OCA\Files_Sharing\DeleteOrphanedSharesJob</job>
 		<job>OCA\Files_Sharing\ExpireSharesJob</job>

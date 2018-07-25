@@ -40,6 +40,7 @@ use OCP\IUser;
 use OCP\IUserManager;
 use OCP\IUserSession;
 use OCP\Share;
+use OCA\Files_Sharing\SharingBlacklist;
 
 class ShareesController extends OCSController {
 
@@ -107,6 +108,9 @@ class ShareesController extends OCSController {
 	 */
 	protected $additionalInfoField;
 
+	/** @var SharingBlacklist */
+	protected $sharingBlacklist;
+
 	/**
 	 * @param IGroupManager $groupManager
 	 * @param IUserManager $userManager
@@ -127,7 +131,8 @@ class ShareesController extends OCSController {
 			IUserSession $userSession,
 			IURLGenerator $urlGenerator,
 			ILogger $logger,
-			\OCP\Share\IManager $shareManager) {
+			\OCP\Share\IManager $shareManager,
+			SharingBlacklist $sharingBlacklist) {
 		parent::__construct($appName, $request);
 
 		$this->groupManager = $groupManager;
@@ -139,6 +144,7 @@ class ShareesController extends OCSController {
 		$this->request = $request;
 		$this->logger = $logger;
 		$this->shareManager = $shareManager;
+		$this->sharingBlacklist = $sharingBlacklist;
 		$this->additionalInfoField = $this->config->getAppValue('core', 'user_additional_info_field', '');
 	}
 
@@ -284,7 +290,7 @@ class ShareesController extends OCSController {
 		foreach ($groups as $group) {
 			// FIXME: use a more efficient approach
 			$gid = $group->getGID();
-			if (!\in_array($gid, $groupIds)) {
+			if (!\in_array($gid, $groupIds) || $this->sharingBlacklist->isGroupBlacklisted($group)) {
 				continue;
 			}
 			if (\strtolower($gid) === $lowerSearch || \strtolower($group->getDisplayName()) === $lowerSearch) {
@@ -310,7 +316,8 @@ class ShareesController extends OCSController {
 			// On page one we try if the search result has a direct hit on the
 			// user id and if so, we add that to the exact match list
 			$group = $this->groupManager->get($search);
-			if ($group instanceof IGroup && (!$this->shareWithMembershipGroupOnly || \in_array($group->getGID(), $userGroups))) {
+			if ($group instanceof IGroup && !$this->sharingBlacklist->isGroupBlacklisted($group) &&
+					(!$this->shareWithMembershipGroupOnly || \in_array($group->getGID(), $userGroups))) {
 				\array_push($this->result['exact']['groups'], [
 					'label' => $group->getDisplayName(),
 					'value' => [
