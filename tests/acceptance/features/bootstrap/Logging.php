@@ -59,6 +59,9 @@ trait Logging {
 		$lineNo = 0;
 		foreach ($expectedLogEntries as $expectedLogEntry) {
 			$logEntry = \json_decode($logLines[$lineNo], true);
+			if ($logEntry === null) {
+				throw new \Exception("the logline :\n" . $logLines[$lineNo] . " is not valid JSON");
+			}
 			foreach (\array_keys($expectedLogEntry) as $attribute) {
 				$expectedLogEntry[$attribute]
 					= $this->featureContext->substituteInLineCodes(
@@ -112,6 +115,9 @@ trait Logging {
 		$logLines = \file(LoggingHelper::getLogFilePath());
 		foreach ($logLines as $logLine) {
 			$logEntry = \json_decode($logLine, true);
+			if ($logEntry === null) {
+				throw new \Exception("the logline :\n" . $logLine . " is not valid JSON");
+			}
 			foreach ($logEntriesExpectedNotToExist as $logEntryExpectedNotToExist) {
 				$match = true; // start by assuming the worst, we match the unwanted log entry
 				foreach (\array_keys($logEntryExpectedNotToExist) as $attribute) {
