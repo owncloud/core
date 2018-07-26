@@ -129,8 +129,11 @@ class FilesSearchReportPlugin extends ServerPlugin {
 
 		$filesUri = $this->getFilesBaseUri($uri, $reportTargetNode->getPath());
 
+		// use the $limit again to make sure we respect the limit while
+		// returning the results. The search service might have return more
+		// results than the limit if there are more than one provider
 		$xml = $this->server->generateMultiStatus(
-			$this->getSearchResultIterator($filesUri, $searchResults, $requestedProps)
+			$this->getSearchResultIterator($filesUri, $searchResults, $requestedProps, $limit)
 		);
 		$this->server->httpResponse->setStatus(207);
 		$this->server->httpResponse->setHeader(
@@ -148,10 +151,11 @@ class FilesSearchReportPlugin extends ServerPlugin {
 	 * @param File[] $searchResults the results coming from the search service,
 	 * within the files app
 	 * @param array $requestedProps the list of requested webDAV properties
+	 * @param int $maxResults the maximum number of results the generator should generate based on the $searchResults
 	 * @return \Generator a generator to traverse over the properties of the
 	 * search result, suitable for server's multistatus response
 	 */
-	private function getSearchResultIterator($filesUri, $searchResults, $requestedProps) {
+	private function getSearchResultIterator($filesUri, $searchResults, $requestedProps, $maxResults) {
 		$paths = \array_map(function ($searchResult) use ($filesUri) {
 			return $filesUri . $searchResult->path;
 		}, $searchResults);
@@ -159,6 +163,9 @@ class FilesSearchReportPlugin extends ServerPlugin {
 		$nodes = $this->server->tree->getMultipleNodes($paths);
 
 		$propFindType = $requestedProps ? PropFind::NORMAL : PropFind::ALLPROPS;
+
+		// make sure we limit the results
+		$nodes = \array_slice($nodes, 0, $maxResults, true);
 
 		foreach ($nodes as $path => $node) {
 			$propFind = new PropFind(
