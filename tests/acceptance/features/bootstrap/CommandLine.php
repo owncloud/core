@@ -259,7 +259,7 @@ trait CommandLine {
 			}
 		);
 
-		$davPath = \rtrim($this->getDavFilesPath($targetUser), '/');
+		$davPath = \rtrim($this->getFullDavFilesPath($targetUser), '/');
 
 		$foundPath = \end($foundPaths)['path'];
 		// strip dav path
