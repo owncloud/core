@@ -48,12 +48,7 @@ class SharingBlacklist {
 	 * @return bool true if the group is blacklisted, false otherwise
 	 */
 	public function isGroupBlacklisted(IGroup $group) {
-		$groupId = $group->getGID();
-
-		if (isset($this->blacklistCache['receivers']['ids'][$groupId])) {
-			return true;
-		}
-		return false;
+		return (isset($this->blacklistCache['receivers']['ids'][$group->getGID()]));
 	}
 
 	/**
