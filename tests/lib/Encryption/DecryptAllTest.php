@@ -265,7 +265,7 @@ class DecryptAllTest extends TestCase {
 					$this->logger
 				]
 			)
-			->setMethods(['decryptUsersFiles'])
+			->setMethods(['decryptUsersFiles', 'prepareEncryptionModules'])
 			->getMock();
 
 		$this->invokePrivate($instance, 'input', [$this->inputInterface]);
@@ -288,14 +288,36 @@ class DecryptAllTest extends TestCase {
 			$instance->expects($this->at(1))
 				->method('decryptUsersFiles')
 				->with('user2');
+			\OC::$server->getConfig()->setAppValue('encryption', 'userSpecificKey', '0');
 		} else {
-			$instance->expects($this->once())
-				->method('decryptUsersFiles')
-				->with($user);
+			\OC::$server->getConfig()->setAppValue('encryption', 'userSpecificKey', '1');
+			$iUser = $this->createMock(IUser::class);
+			$iUser->expects($this->once())
+				->method('getUID')
+				->willReturn($user);
+			$this->userManager->expects($this->once())
+				->method('get')
+				->willReturn($iUser);
+			if ($user === 'userfails') {
+				$instance->expects($this->once())
+					->method('prepareEncryptionModules')
+					->willReturn(false);
+			} else {
+				$instance->expects($this->once())
+					->method('decryptUsersFiles')
+					->with($user);
+				$instance->expects($this->once())
+					->method('prepareEncryptionModules')
+					->willReturn(true);
+			}
 		}
 
 		$result = $this->invokePrivate($instance, 'decryptAllUsersFiles', [$user]);
-		$this->assertEquals(true, $result);
+		if ($user !== 'userfails') {
+			$this->assertEquals(true, $result);
+		} else {
+			$this->assertFalse($result);
+		}
 	}
 
 	public function providerDecryptAllUsersFilesUsersSeen() {
@@ -407,6 +429,7 @@ class DecryptAllTest extends TestCase {
 	public function dataTestDecryptAllUsersFiles() {
 		return [
 			['user1'],
+			['userfails'],
 			['']
 		];
 	}
