@@ -216,30 +216,26 @@ class Server {
 					)
 				);
 
-				$filePropertiesPlugin = new FileCustomPropertiesPlugin(
-					new FileCustomPropertiesBackend(
-						$this->server->tree,
-						\OC::$server->getDatabaseConnection(),
-						\OC::$server->getUserSession()->getUser()
-					)
-				);
-				$filePropertiesPlugin->pathFilter = function ($path) {
-					// oh yes, we could set custom properties on the user's storage root
-					return \strpos($path, 'files/') === 0;
-				};
-				$this->server->addPlugin($filePropertiesPlugin);
-
-				$miscPropertiesPlugin = new \Sabre\DAV\PropertyStorage\Plugin(
-					new MiscCustomPropertiesBackend(
-						$this->server->tree,
-						\OC::$server->getDatabaseConnection(),
-						\OC::$server->getUserSession()->getUser()
-					)
-				);
-				$miscPropertiesPlugin->pathFilter = function ($path) {
-					return \strpos($path, 'files/') !== 0;
-				};
-				$this->server->addPlugin($miscPropertiesPlugin);
+				if ($this->isRequestForSubtree(['files', 'uploads'])) {
+					//For files only
+					$filePropertiesPlugin = new FileCustomPropertiesPlugin(
+						new FileCustomPropertiesBackend(
+							$this->server->tree,
+							\OC::$server->getDatabaseConnection(),
+							\OC::$server->getUserSession()->getUser()
+						)
+					);
+					$this->server->addPlugin($filePropertiesPlugin);
+				} else {
+					$miscPropertiesPlugin = new \Sabre\DAV\PropertyStorage\Plugin(
+						new MiscCustomPropertiesBackend(
+							$this->server->tree,
+							\OC::$server->getDatabaseConnection(),
+							\OC::$server->getUserSession()->getUser()
+						)
+					);
+					$this->server->addPlugin($miscPropertiesPlugin);
+				}
 
 				if ($view !== null) {
 					$this->server->addPlugin(
