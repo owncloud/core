@@ -603,14 +603,14 @@ class Encryption extends Wrapper {
 	}
 
 	/**
-	 * @param Storage\IStorage $sourceStorage
+	 * @param Storage $sourceStorage
 	 * @param string $sourceInternalPath
 	 * @param string $targetInternalPath
 	 * @param bool $preserveMtime
 	 * @return bool
 	 * @throws \Exception
 	 */
-	public function moveFromStorage(Storage\IStorage $sourceStorage, $sourceInternalPath, $targetInternalPath, $preserveMtime = true) {
+	public function moveFromStorage(Storage $sourceStorage, $sourceInternalPath, $targetInternalPath, $preserveMtime = true) {
 		if ($sourceStorage === $this) {
 			return $this->rename($sourceInternalPath, $targetInternalPath);
 		}
@@ -650,7 +650,7 @@ class Encryption extends Wrapper {
 	}
 
 	/**
-	 * @param Storage\IStorage $sourceStorage
+	 * @param Storage $sourceStorage
 	 * @param string $sourceInternalPath
 	 * @param string $targetInternalPath
 	 * @param bool $preserveMtime
@@ -658,7 +658,7 @@ class Encryption extends Wrapper {
 	 * @return bool
 	 * @throws \Exception
 	 */
-	public function copyFromStorage(Storage\IStorage $sourceStorage, $sourceInternalPath, $targetInternalPath, $preserveMtime = false, $isRename = false) {
+	public function copyFromStorage(Storage $sourceStorage, $sourceInternalPath, $targetInternalPath, $preserveMtime = false, $isRename = false) {
 
 		// TODO clean this up once the underlying moveFromStorage in OC\Files\Storage\Wrapper\Common is fixed:
 		// - call $this->storage->copyFromStorage() instead of $this->copyBetweenStorage

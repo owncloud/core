@@ -170,12 +170,12 @@ class Quota extends Wrapper {
 	}
 
 	/**
-	 * @param \OCP\Files\Storage\IStorage $sourceStorage
+	 * @param \OCP\Files\Storage $sourceStorage
 	 * @param string $sourceInternalPath
 	 * @param string $targetInternalPath
 	 * @return bool
 	 */
-	public function copyFromStorage(IStorage $sourceStorage, $sourceInternalPath, $targetInternalPath) {
+	public function copyFromStorage(\OCP\Files\Storage $sourceStorage, $sourceInternalPath, $targetInternalPath) {
 		$free = $this->free_space('');
 		if ($free < 0 or $this->getSize($sourceInternalPath, $sourceStorage) < $free) {
 			return $this->storage->copyFromStorage($sourceStorage, $sourceInternalPath, $targetInternalPath);
@@ -185,12 +185,12 @@ class Quota extends Wrapper {
 	}
 
 	/**
-	 * @param IStorage $sourceStorage
+	 * @param \OCP\Files\Storage $sourceStorage
 	 * @param string $sourceInternalPath
 	 * @param string $targetInternalPath
 	 * @return bool
 	 */
-	public function moveFromStorage(IStorage $sourceStorage, $sourceInternalPath, $targetInternalPath) {
+	public function moveFromStorage(\OCP\Files\Storage $sourceStorage, $sourceInternalPath, $targetInternalPath) {
 		$free = $this->free_space('');
 		if ($free < 0 or $this->getSize($sourceInternalPath, $sourceStorage) < $free) {
 			return $this->storage->moveFromStorage($sourceStorage, $sourceInternalPath, $targetInternalPath);
