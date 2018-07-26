@@ -26,9 +26,9 @@ use OCP\IGroup;
 
 /**
  * Class to handle a blacklist for sharing. The main functionality is to check if a particular group
- * has been blacklisted for sharing, which means that noone should share with that group.
+ * has been blacklisted for sharing, which means that no one should be able to share with that group.
  *
- * Note that this class will only handle the configuration and perform the checks against the configuration
+ * Note that this class will only handle the configuration and perform the checks against the configuration.
  * This class won't prevent the sharing action by itself.
  */
 class SharingBlacklist {
@@ -52,7 +52,7 @@ class SharingBlacklist {
 	}
 
 	/**
-	 * Clear the internal cache of this class. Use this function if any of the keys used by this class is changed
+	 * Clear the internal cache of this class. Use this function if any of the keys used by this class are changed
 	 * outside of this class, such as a direct change of the 'blacklisted_group_displaynames' in the appconfig table
 	 * Note that this is an object-based cache. It won't persist for multiple HTTP requests
 	 */
