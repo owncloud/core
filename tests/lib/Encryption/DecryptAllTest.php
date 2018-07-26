@@ -112,6 +112,28 @@ class DecryptAllTest extends TestCase {
 		$this->invokePrivate($this->instance, 'output', [$this->outputInterface]);
 	}
 
+	public function testDecryptAllFailsToDecrypt() {
+		/** @var DecryptAll | \PHPUnit_Framework_MockObject_MockObject |  $instance */
+		$instance = $this->getMockBuilder(DecryptAll::class)
+			->setConstructorArgs(
+				[
+					$this->encryptionManager,
+					$this->userManager,
+					$this->view,
+					$this->logger
+				]
+			)
+			->setMethods(['prepareEncryptionModules', 'decryptAllUsersFiles'])
+			->getMock();
+
+		$instance->expects($this->once())
+			->method('decryptAllUsersFiles')
+			->with('user1');
+
+		$this->invokePrivate($instance, 'failed', [['user1' => [['path' => 'a.txt', 'exception' => new \Exception('Missing file')]]]]);
+		$this->assertTrue($instance->decryptAll($this->inputInterface, $this->outputInterface, 'user1'));
+	}
+
 	public function dataDecryptAll() {
 		return [
 			[true, 'user1', true],
@@ -438,6 +460,7 @@ class DecryptAllTest extends TestCase {
 		return[
 			['called', \OC\Files\Storage\Local::class],
 			['exception', \OC\Files\Storage\Local::class],
+			['exception2', \OC\Files\Storage\Local::class],
 			['skip', SharedStorage::class],
 			['skip', \OCA\Files_Sharing\External\Storage::class],
 		];
@@ -494,11 +517,14 @@ class DecryptAllTest extends TestCase {
 				}
 			);
 
-		if ($decryptBehavior === 'exception') {
+		if (($decryptBehavior === 'exception') || ($decryptBehavior === 'exception2')) {
 			$instance->expects($this->at(0))
 				->method('decryptFile')
 				->with('/user1/files/bar')
 				->willThrowException(new \Exception());
+			if ($decryptBehavior === 'exception2') {
+				$this->invokePrivate($instance, 'failed', [['user1' => [['path' => 'a.txt', 'exception' => new \Exception('Missing file')]]]]);
+			}
 		} elseif ($decryptBehavior === 'skip') {
 			$instance->expects($this->never())
 				->method('decryptFile');
