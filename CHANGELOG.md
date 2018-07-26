@@ -4,6 +4,57 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/).
 
+## [Unreleased]
+
+### Added
+- Roave Security Advisories as a development dependency - [#31818](https://github.com/owncloud/core/issues/31818)
+- Store timestamp when ownCloud was first installed - [#32000](https://github.com/owncloud/core/issues/32000)
+- Symfony events for login action with token or Apache- [#31985](https://github.com/owncloud/core/issues/31985)
+- Search API for files using Webdav REPORT and underlying search provider - [#31946](https://github.com/owncloud/core/issues/31946)
+- Add information whether user can share to capabilities API - [#31824](https://github.com/owncloud/core/issues/31824)
+- Reload the filelist view when accepting or rejecting a share - [#31798](https://github.com/owncloud/core/issues/31798)
+- Allow different language in public link share email - [#31767](https://github.com/owncloud/core/issues/31767)
+- Command files:scan now outputs items per second - [#32093](https://github.com/owncloud/core/issues/32093)
+- New option to prevent users to share with specific system groups - [#31740](https://github.com/owncloud/core/issues/31740)
+
+### Changed
+- Handle SSL certificate verifications for others than Let's Encrypt - [#31858](https://github.com/owncloud/core/issues/31858)
+- Insufficient storage exception now logged with "debug" log level - [#31978](https://github.com/owncloud/core/issues/31978)
+- Skip filecache repair step for version greater than 10.0.4 - [#31803](https://github.com/owncloud/core/issues/31803)
+- Bump karma from 2.0.2 to 2.0.4 in /build - [#31892](https://github.com/owncloud/core/issues/31892)
+- Bump symfony 3.4.11 to 3.4.12 - [#31912](https://github.com/owncloud/core/issues/31912)
+- Bump paragonie/random_compat v2.0.15 to v2.0.17 - [#32107](https://github.com/owncloud/core/issues/32107)
+- Bump symfony/process from 3.4.12 to 3.4.13 - [#32135](https://github.com/owncloud/core/issues/32135)
+- Bump symfony/routing from 3.4.12 to 3.4.13 - [#32137](https://github.com/owncloud/core/issues/32137)
+- Bump symfony/console from 3.4.12 to 3.4.13 - [#32140](https://github.com/owncloud/core/issues/32140)
+
+### Removed
+### Fixed
+- Fix calendar or reminder insertion error via CalDAV on MacOS - [#32024](https://github.com/owncloud/core/issues/32024)
+- Properly log failed message when token based authentication is enforced - [#31948](https://github.com/owncloud/core/issues/31948)
+- Prevent share access to birthday calendar - [#31882](https://github.com/owncloud/core/issues/31882)
+- Added space in display names of shared calendar/contact - [#31877](https://github.com/owncloud/core/issues/31877)
+- Deleting a user now also properly deletes their external storages and storage assignations - [#32069](https://github.com/owncloud/core/issues/32069)
+- Improve text about logging in config.sample.php - [#32049](https://github.com/owncloud/core/issues/32049)
+- Unset encrypted flag in file cache when running decrypt-all command - [#32027](https://github.com/owncloud/core/issues/32027)
+- Fix login exception in decrypt-all command - [#31986](https://github.com/owncloud/core/issues/31986)
+- Properly clean up encryption keys after file deletion - [#31959](https://github.com/owncloud/core/issues/31959)
+- Remove sensitive shared_secret data from occ config:list output - [#31997](https://github.com/owncloud/core/issues/31997)
+- Fix file cache update function to properly handle empty string and nulls with Oracle - [#31996](https://github.com/owncloud/core/issues/31996)
+- Fix bogus etag update when propagating etag for federated shares - [#31992](https://github.com/owncloud/core/issues/31992)
+- Display all failed recipients when sending link share email - [#31935](https://github.com/owncloud/core/issues/31935)
+- Lock public link share dialog while processing - [#31928](https://github.com/owncloud/core/issues/31928)
+- AppManager text typo and PHPdoc return tags - [#31918](https://github.com/owncloud/core/issues/31918)
+- Optimize file uploads with PUT method, with custom mtime, use storage instead of view - [#31891](https://github.com/owncloud/core/issues/31891)
+- Optimize file uploads with PUT, don't fetch and update checksum again, reuse the one from part file - [#31768](https://github.com/owncloud/core/issues/31768)
+- Do not throw an error when the same theme is enabled twice - [#31783](https://github.com/owncloud/core/issues/31783)
+- Fix repair step that removes duplicate sub shares - [#31146](https://github.com/owncloud/core/issues/31146)
+- Adjust code to follow coding standard - [#32116](https://github.com/owncloud/core/issues/32116)
+- Fix overriding for gif images in themes for CLI scripts - [#32131](https://github.com/owncloud/core/issues/32131)
+- Fix wording on password change page - [#32146](https://github.com/owncloud/core/issues/32146)
+- Fixed mount config in frontend to only load once to avoid side effects - [#32095](https://github.com/owncloud/core/issues/32095)
+- Don't urlencode group id to make it work with "/" and "%" - [#31109](https://github.com/owncloud/core/issues/31109)
+
 ## 10.0.9 - 2018-07-17
 ### Added
 - Added account module middleware to be able to plug in logic after authentication - [#31883](https://github.com/owncloud/core/issues/31883) [#31933](https://github.com/owncloud/core/issues/31933)
