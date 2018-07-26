@@ -1,4 +1,6 @@
 { "translations": {
+    "Wrong current password" : "Старый пароль неверен",
+    "The new password cannot be the same as the previous one" : "Новый пароль не совпадать с предыдущим",
     "%s password changed successfully" : "Пароль %s изменён успешно",
     "Couldn't send reset email. Please contact your administrator." : "Не удалось отправить письмо для сброса пароля. Пожалуйста, свяжитесь с вашим администратором.",
     "installing and updating apps via the market or Federated Cloud Sharing" : "установка и обновление приложений через маркет или Объединение облачных хранилищ",

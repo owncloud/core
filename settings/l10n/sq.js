@@ -1,6 +1,8 @@
 OC.L10N.register(
     "settings",
     {
+    "Wrong current password" : "Fjalëkalim i tanishëm i gabuar",
+    "The new password cannot be the same as the previous one" : "Fjalëkalimi i ri s’mund të jetë i njëjtë me atë të mëparshmin",
     "%s password changed successfully" : "Fjalëkalimi për %s u ndryshua me sukses",
     "Couldn't send reset email. Please contact your administrator." : "S’u dërgua dot email-i i ricaktimit. Ju lutemi, lidhuni me përgjegjësin tuaj.",
     "installing and updating apps via the market or Federated Cloud Sharing" : "instalim dhe përditësim aplikacionesh përmes tregut ose Federated Cloud Sharing",

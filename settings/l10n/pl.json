@@ -1,4 +1,5 @@
 { "translations": {
+    "Wrong current password" : "Podano złe hasło",
     "%s password changed successfully" : "%s hasło zmieniono pomyślnie",
     "Couldn't send reset email. Please contact your administrator." : "Nie mogę wysłać maila resetującego. Skontaktuj się z administratorem.",
     "Saved" : "Zapisano",
@@ -89,6 +90,7 @@
     "Execute one task with each page loaded" : "Wykonuj jedno zadanie wraz z każdą wczytaną stroną",
     "cron.php is registered at a webcron service to call cron.php every 15 minutes over http." : "cron.php jest zarejestrowany w serwisie webcron do uruchamiania cron.php raz na 15 minut przez http.",
     "Use system's cron service to call the cron.php file every 15 minutes." : "Użyj systemowej usługi cron do wywoływania cron.php co 15 minut.",
+    "SSL Root Certificates" : "Główny certyfikat SSL",
     "Common Name" : "Nazwa CN",
     "Valid until" : "Ważny do",
     "Issued By" : "Wydany przez",
@@ -127,6 +129,7 @@
     "Exclude groups from sharing" : "Wyklucz grupy z udostępniania",
     "These groups will still be able to receive shares, but not to initiate them." : "Grupy te nadal będą mogli otrzymywać udostępnione udziały, ale nie do ich inicjowania.",
     "None" : "Nic",
+    "User ID" : "ID użytkownika",
     "Email address" : "Adres email",
     "Everything (fatal issues, errors, warnings, info, debug)" : "Wszystko  (Informacje, ostrzeżenia, błędy i poważne problemy, debug)",
     "Info, warnings, errors and fatal issues" : "Informacje, ostrzeżenia, błędy i poważne problemy",
@@ -205,10 +208,12 @@
     "Name" : "Nazwa",
     "App name" : "Nazwa aplikacji",
     "Username" : "Nazwa użytkownika",
+    "Password / Token" : "Hasło / Token",
     "Done" : "Ukończono",
     "Version" : "Wersja",
     "Personal" : "Osobiste",
     "Admin" : "Administrator",
-    "Error" : "Błąd"
+    "Error" : "Błąd",
+    "No panels for this section." : "Brak paneli dla tej sekcji."
 },"pluralForm" :"nplurals=4; plural=(n==1 ? 0 : (n%10>=2 && n%10<=4) && (n%100<12 || n%100>14) ? 1 : n!=1 && (n%10>=0 && n%10<=1) || (n%10>=5 && n%10<=9) || (n%100>=12 && n%100<=14) ? 2 : 3);"
 }
