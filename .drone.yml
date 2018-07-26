@@ -229,7 +229,7 @@ pipeline:
       - TEST_SERVER_URL=http://server
       - TEST_SERVER_FED_URL=http://federated
     commands:
-    - ./tests/drone/test-api-acceptance.sh
+      - ./tests/drone/test-acceptance.sh
     when:
       matrix:
         TEST_SUITE: api
@@ -240,16 +240,14 @@ pipeline:
     environment:
       - BROWSER=chrome
       - SELENIUM_HOST=selenium
-      - SRV_HOST_NAME=server
-      - SRV_HOST_PORT=80
-      - REMOTE_FED_SRV_HOST_NAME=federated
-      - REMOTE_FED_SRV_HOST_PORT=80
-      - SKELETON_DIR=/drone/src/tests/acceptance/webUISkeleton
       - SELENIUM_PORT=4444
+      - TEST_SERVER_URL=http://server
+      - TEST_SERVER_FED_URL=http://federated
+      - SKELETON_DIR=/drone/src/tests/acceptance/webUISkeleton
       - PLATFORM=Linux
       - MAILHOG_HOST=email
     commands:
-      - bash tests/travis/start_ui_tests.sh --remote
+      - ./tests/drone/test-acceptance.sh --remote
     when:
       matrix:
         TEST_SUITE: selenium
