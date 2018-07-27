@@ -32,12 +32,10 @@ use OCA\FederatedFileSharing\Exception\NotSupportedException;
 use OCA\FederatedFileSharing\Exception\InvalidShareException;
 use OCA\FederatedFileSharing\FederatedShareProvider;
 use OCA\FederatedFileSharing\FedShareManager;
-use OCA\FederatedFileSharing\Notifications;
 use OCP\App\IAppManager;
 use OCP\AppFramework\Http;
 use OCP\AppFramework\OCSController;
 use OCP\Constants;
-use OCP\IDBConnection;
 use OCP\IRequest;
 use OCP\IUserManager;
 use OCP\Share;
@@ -55,16 +53,11 @@ class RequestHandlerController extends OCSController {
 	/** @var FederatedShareProvider */
 	private $federatedShareProvider;
 
-	/** @var IDBConnection */
-	private $connection;
-
 	/** @var IAppManager */
 	private $appManager;
+
 	/** @var IUserManager */
 	private $userManager;
-
-	/** @var Notifications */
-	private $notifications;
 
 	/** @var AddressHandler */
 	private $addressHandler;
@@ -78,30 +71,24 @@ class RequestHandlerController extends OCSController {
 	 * @param string $appName
 	 * @param IRequest $request
 	 * @param FederatedShareProvider $federatedShareProvider
-	 * @param IDBConnection $connection
 	 * @param IAppManager $appManager
 	 * @param IUserManager $userManager
-	 * @param Notifications $notifications
 	 * @param AddressHandler $addressHandler
 	 * @param FedShareManager $fedShareManager
 	 */
 	public function __construct($appName,
 								IRequest $request,
 								FederatedShareProvider $federatedShareProvider,
-								IDBConnection $connection,
 								IAppManager $appManager,
 								IUserManager $userManager,
-								Notifications $notifications,
 								AddressHandler $addressHandler,
 								FedShareManager $fedShareManager
 	) {
 		parent::__construct($appName, $request);
 
 		$this->federatedShareProvider = $federatedShareProvider;
-		$this->connection = $connection;
 		$this->appManager = $appManager;
 		$this->userManager = $userManager;
-		$this->notifications = $notifications;
 		$this->addressHandler = $addressHandler;
 		$this->fedShareManager = $fedShareManager;
 	}
@@ -228,7 +215,6 @@ class RequestHandlerController extends OCSController {
 			if (!$reSharingAllowed) {
 				return new Result(null, Http::STATUS_BAD_REQUEST);
 			}
-			$share->setPermissions($share->getPermissions() & $permission);
 			$result = $this->fedShareManager->reShare(
 				$share,
 				$remoteId,
@@ -264,20 +250,8 @@ class RequestHandlerController extends OCSController {
 	public function acceptShare($id) {
 		try {
 			$this->assertOutgoingSharingEnabled();
-
 			$share = $this->getValidShare($id);
 			$this->fedShareManager->acceptShare($share);
-			if ($share->getShareOwner() !== $share->getSharedBy()) {
-				list(, $remote) = $this->addressHandler->splitUserRemote(
-					$share->getSharedBy()
-				);
-				$remoteId = $this->federatedShareProvider->getRemoteId($share);
-				$this->notifications->sendAcceptShare(
-					$remote,
-					$remoteId,
-					$share->getToken()
-				);
-			}
 		} catch (NotSupportedException $e) {
 			return new Result(
 				null,
@@ -303,13 +277,7 @@ class RequestHandlerController extends OCSController {
 	public function declineShare($id) {
 		try {
 			$this->assertOutgoingSharingEnabled();
-
 			$share = $this->getValidShare($id);
-			if ($share->getShareOwner() !== $share->getSharedBy()) {
-				list(, $remote) = $this->addressHandler->splitUserRemote($share->getSharedBy());
-				$remoteId = $this->federatedShareProvider->getRemoteId($share);
-				$this->notifications->sendDeclineShare($remote, $remoteId, $share->getToken());
-			}
 			$this->fedShareManager->declineShare($share);
 		} catch (NotSupportedException $e) {
 			return new Result(
@@ -338,22 +306,8 @@ class RequestHandlerController extends OCSController {
 		try {
 			$this->assertOutgoingSharingEnabled();
 			$token = $this->request->getParam('token', null);
-			$query = $this->connection->getQueryBuilder();
-			$query->select('*')->from('share_external')
-				->where(
-					$query->expr()->eq(
-						'remote_id', $query->createNamedParameter($id)
-					)
-				)
-				->andWhere(
-					$query->expr()->eq(
-						'share_token',
-						$query->createNamedParameter($token)
-					)
-				);
-			$shareRow = $query->execute()->fetch();
-			if ($token && $id && $shareRow !== false) {
-				$this->fedShareManager->unshare($shareRow);
+			if ($token && $id) {
+				$this->fedShareManager->unshare($id, $token);
 			}
 		} catch (NotSupportedException $e) {
 			return new Result(

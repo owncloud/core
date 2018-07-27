@@ -74,6 +74,9 @@ class FederatedShareProvider implements IShareProvider {
 	/** @var string */
 	private $externalShareTable = 'share_external';
 
+	/** @var string */
+	private $shareTable = 'share';
+
 	/** @var IUserManager */
 	private $userManager;
 
@@ -306,7 +309,7 @@ class FederatedShareProvider implements IShareProvider {
 	 */
 	private function addShareToDB($itemSource, $itemType, $shareWith, $sharedBy, $uidOwner, $permissions, $token) {
 		$qb = $this->dbConnection->getQueryBuilder();
-		$qb->insert('share')
+		$qb->insert($this->shareTable)
 			->setValue('share_type', $qb->createNamedParameter(self::SHARE_TYPE_REMOTE))
 			->setValue('item_type', $qb->createNamedParameter($itemType))
 			->setValue('item_source', $qb->createNamedParameter($itemSource))
@@ -341,7 +344,7 @@ class FederatedShareProvider implements IShareProvider {
 		 * We allow updating the permissions of federated shares
 		 */
 		$qb = $this->dbConnection->getQueryBuilder();
-		$qb->update('share')
+		$qb->update($this->shareTable)
 				->where($qb->expr()->eq('id', $qb->createNamedParameter($share->getId())))
 				->set('permissions', $qb->createNamedParameter($share->getPermissions()))
 				->set('uid_owner', $qb->createNamedParameter($share->getShareOwner()))
@@ -382,7 +385,7 @@ class FederatedShareProvider implements IShareProvider {
 	 */
 	protected function updateSuccessfulReShare($shareId, $token) {
 		$query = $this->dbConnection->getQueryBuilder();
-		$query->update('share')
+		$query->update($this->shareTable)
 			->where($query->expr()->eq('id', $query->createNamedParameter($shareId)))
 			->set('token', $query->createNamedParameter($token))
 			->execute();
@@ -448,7 +451,7 @@ class FederatedShareProvider implements IShareProvider {
 
 		$qb = $this->dbConnection->getQueryBuilder();
 		$qb->select('*')
-			->from('share')
+			->from($this->shareTable)
 			->where($qb->expr()->eq('parent', $qb->createNamedParameter($parent->getId())))
 			->andWhere($qb->expr()->eq('share_type', $qb->createNamedParameter(self::SHARE_TYPE_REMOTE)))
 			->orderBy('id');
@@ -535,7 +538,7 @@ class FederatedShareProvider implements IShareProvider {
 	 */
 	private function removeShareFromTableById($shareId) {
 		$qb = $this->dbConnection->getQueryBuilder();
-		$qb->delete('share')
+		$qb->delete($this->shareTable)
 			->where($qb->expr()->eq('id', $qb->createNamedParameter($shareId)));
 		$qb->execute();
 
@@ -566,7 +569,7 @@ class FederatedShareProvider implements IShareProvider {
 		foreach ($nodeIdsChunks as $nodeIdsChunk) {
 			// In federates sharing currently we have only one share_type_remote
 			$qb->select('*')
-				->from('share');
+				->from($this->shareTable);
 
 			$qb->andWhere($qb->expr()->eq('share_type', $qb->createNamedParameter(self::SHARE_TYPE_REMOTE)));
 
@@ -616,7 +619,7 @@ class FederatedShareProvider implements IShareProvider {
 	public function getSharesBy($userId, $shareType, $node, $reshares, $limit, $offset) {
 		$qb = $this->dbConnection->getQueryBuilder();
 		$qb->select('*')
-			->from('share');
+			->from($this->shareTable);
 
 		$qb->andWhere($qb->expr()->eq('share_type', $qb->createNamedParameter(self::SHARE_TYPE_REMOTE)));
 
@@ -673,7 +676,7 @@ class FederatedShareProvider implements IShareProvider {
 		$qb = $this->dbConnection->getQueryBuilder();
 
 		$qb->select('*')
-			->from('share')
+			->from($this->shareTable)
 			->where($qb->expr()->eq('id', $qb->createNamedParameter($id)))
 			->andWhere($qb->expr()->eq('share_type', $qb->createNamedParameter(self::SHARE_TYPE_REMOTE)));
 		
@@ -704,7 +707,7 @@ class FederatedShareProvider implements IShareProvider {
 		$qb = $this->dbConnection->getQueryBuilder();
 
 		$cursor = $qb->select('*')
-			->from('share')
+			->from($this->shareTable)
 			->andWhere($qb->expr()->eq('file_source', $qb->createNamedParameter($path->getId())))
 			->andWhere($qb->expr()->eq('share_type', $qb->createNamedParameter(self::SHARE_TYPE_REMOTE)))
 			->execute();
@@ -735,7 +738,7 @@ class FederatedShareProvider implements IShareProvider {
 		//Get shares directly with this user
 		$qb = $this->dbConnection->getQueryBuilder();
 		$qb->select('*')
-			->from('share');
+			->from($this->shareTable);
 
 		// Order by id
 		$qb->orderBy('id');
@@ -775,7 +778,7 @@ class FederatedShareProvider implements IShareProvider {
 		$qb = $this->dbConnection->getQueryBuilder();
 
 		$cursor = $qb->select('*')
-			->from('share')
+			->from($this->shareTable)
 			->where($qb->expr()->eq('share_type', $qb->createNamedParameter(self::SHARE_TYPE_REMOTE)))
 			->andWhere($qb->expr()->eq('token', $qb->createNamedParameter($token)))
 			->execute();
@@ -807,7 +810,7 @@ class FederatedShareProvider implements IShareProvider {
 		// Now fetch the inserted share and create a complete share object
 		$qb = $this->dbConnection->getQueryBuilder();
 		$qb->select('*')
-			->from('share')
+			->from($this->shareTable)
 			->where($qb->expr()->eq('id', $qb->createNamedParameter($id)));
 
 		$cursor = $qb->execute();
@@ -899,7 +902,7 @@ class FederatedShareProvider implements IShareProvider {
 
 		$qb = $this->dbConnection->getQueryBuilder();
 
-		$qb->delete('share')
+		$qb->delete($this->shareTable)
 			->where($qb->expr()->eq('share_type', $qb->createNamedParameter(\OCP\Share::SHARE_TYPE_REMOTE)))
 			->andWhere($qb->expr()->eq('uid_owner', $qb->createNamedParameter($uid)))
 			->execute();
@@ -955,5 +958,71 @@ class FederatedShareProvider implements IShareProvider {
 		 * federated shares.
 		 */
 		return $share;
+	}
+
+	/**
+	 * @param int $remoteId
+	 * @param string $shareToken
+	 * @return mixed
+	 */
+	public function unshare($remoteId, $shareToken) {
+		$query = $this->dbConnection->getQueryBuilder();
+		$query->select('*')->from($this->externalShareTable)
+			->where(
+				$query->expr()->eq(
+					'remote_id', $query->createNamedParameter($remoteId)
+				)
+			)
+			->andWhere(
+				$query->expr()->eq(
+					'share_token',
+					$query->createNamedParameter($shareToken)
+				)
+			);
+		$shareRow = $query->execute()->fetch();
+		if ($shareRow !== false) {
+			$query = $this->dbConnection->getQueryBuilder();
+			$query->delete($this->externalShareTable)
+				->where(
+					$query->expr()->eq(
+						'remote_id',
+						$query->createNamedParameter($shareRow['remote_id'])
+					)
+				)
+				->andWhere(
+					$query->expr()->eq(
+						'share_token',
+						$query->createNamedParameter($shareRow['share_token'])
+					)
+				);
+			$query->execute();
+		}
+		return $shareRow;
+	}
+
+	/**
+	 * @param $remote
+	 * @param $token
+	 * @param $name
+	 * @param $owner
+	 * @param $shareWith
+	 * @param $remoteId
+	 *
+	 * @return int
+	 */
+	public function addShare($remote, $token, $name, $owner, $shareWith, $remoteId) {
+		\OC_Util::setupFS($shareWith);
+		$externalManager = new \OCA\Files_Sharing\External\Manager(
+			$this->dbConnection,
+			\OC\Files\Filesystem::getMountManager(),
+			\OC\Files\Filesystem::getLoader(),
+			\OC::$server->getNotificationManager(),
+			\OC::$server->getEventDispatcher(),
+			$shareWith
+		);
+		$externalManager->addShare(
+			$remote, $token, '', $name, $owner, false, $shareWith, $remoteId
+		);
+		return $this->dbConnection->lastInsertId("*PREFIX*{$this->externalShareTable}");
 	}
 }

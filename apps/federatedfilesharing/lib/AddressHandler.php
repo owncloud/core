@@ -151,13 +151,21 @@ class AddressHandler {
 	 * @return string
 	 */
 	public function removeProtocolFromUrl($url) {
-		if (\strpos($url, 'https://') === 0) {
-			return \substr($url, \strlen('https://'));
-		} elseif (\strpos($url, 'http://') === 0) {
-			return \substr($url, \strlen('http://'));
-		}
+		// replace all characters before :// and :// itself
+		return \preg_replace('|^(.*?://)|', '', $url);
+	}
 
-		return $url;
+	/**
+	 * Get a remote name without a protocol, potential file names
+	 * and a trailing slash
+	 *
+	 * @param string $remote
+	 *
+	 * @return string
+	 */
+	public function normalizeRemote($remote) {
+		$fixedRemote = $this->fixRemoteURL($remote);
+		return $this->removeProtocolFromUrl($fixedRemote);
 	}
 
 	/**
