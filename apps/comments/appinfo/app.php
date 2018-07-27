@@ -24,7 +24,6 @@ $eventDispatcher = \OC::$server->getEventDispatcher();
 $eventDispatcher->addListener(
 	'OCA\Files::loadAdditionalScripts',
 	function () {
-		\OCP\Util::addScript('oc-backbone-webdav');
 		\OCP\Util::addScript('comments', 'app');
 		\OCP\Util::addScript('comments', 'commentmodel');
 		\OCP\Util::addScript('comments', 'commentcollection');
