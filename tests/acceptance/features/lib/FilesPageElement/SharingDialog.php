@@ -76,6 +76,36 @@ class SharingDialog extends OwncloudPage {
 	}
 
 	/**
+	 * checks if the requested tab in the details panel is visible
+	 *
+	 * @param string $tabName
+	 *
+	 * @return bool
+	 */
+	public function isDetailsPanelVisible($tabName) {
+		try {
+			$visible = $this->findById($tabName)->isVisible();
+		} catch (ElementNotFoundException $e) {
+			$visible = false;
+		}
+		return $visible;
+	}
+
+	/**
+	 * checks if the share-with field is visible
+	 *
+	 * @return bool
+	 */
+	public function isShareWithFieldVisible() {
+		try {
+			$visible = $this->_findShareWithField()->isVisible();
+		} catch (ElementNotFoundException $e) {
+			$visible = false;
+		}
+		return $visible;
+	}
+
+	/**
 	 * fills the "share-with" input field
 	 *
 	 * @param string $input

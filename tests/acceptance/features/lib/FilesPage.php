@@ -214,6 +214,16 @@ class FilesPage extends FilesPageBasic {
 	}
 
 	/**
+	 * gets a sharing dialog object
+	 *
+	 * @throws ElementNotFoundException
+	 * @return SharingDialog
+	 */
+	public function getSharingDialog() {
+		return $this->getPage("FilesPageElement\\SharingDialog");
+	}
+
+	/**
 	 * opens the sharing dialog for a given file/folder name
 	 * returns the SharingDialog Object
 	 *
