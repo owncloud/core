@@ -180,6 +180,14 @@ class DecryptAll {
 				$userNo++;
 			});
 		} else {
+			if (\OC::$server->getConfig()->getAppValue('encryption', 'userSpecificKey', '0') !== '0') {
+				$userObject = $this->userManager->get($user);
+				if ($userObject !== null) {
+					if ($this->prepareEncryptionModules($userObject->getUID()) === false) {
+						return false;
+					}
+				}
+			}
 			$this->decryptUsersFiles($user, $progress, "$user (1 of 1)");
 		}
 
