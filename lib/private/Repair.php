@@ -54,7 +54,6 @@ use OCP\Migration\IOutput;
 use OCP\Migration\IRepairStep;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\EventDispatcher\GenericEvent;
-use OC\Repair\MoveAvatarOutsideHome;
 use OC\Repair\RepairMismatchFileCachePath;
 
 class Repair implements IOutput {
@@ -142,15 +141,6 @@ class Repair implements IOutput {
 			new UpdateOutdatedOcsIds(\OC::$server->getConfig()),
 			new RepairInvalidShares(\OC::$server->getConfig(), \OC::$server->getDatabaseConnection()),
 			new SharePropagation(\OC::$server->getConfig()),
-			new MoveAvatarOutsideHome(
-				\OC::$server->getConfig(),
-				\OC::$server->getDatabaseConnection(),
-				\OC::$server->getUserManager(),
-				\OC::$server->getAvatarManager(),
-				\OC::$server->getLazyRootFolder(),
-				\OC::$server->getL10N('core'),
-				\OC::$server->getLogger()
-			),
 			new RemoveRootShares(\OC::$server->getDatabaseConnection(), \OC::$server->getUserManager(), \OC::$server->getLazyRootFolder()),
 			new RepairUnmergedShares(
 				\OC::$server->getConfig(),
