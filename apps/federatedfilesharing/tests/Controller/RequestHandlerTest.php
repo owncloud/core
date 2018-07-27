@@ -29,13 +29,11 @@ namespace OCA\FederatedFileSharing\Tests\Controller;
 use OCA\FederatedFileSharing\AddressHandler;
 use OCA\FederatedFileSharing\FederatedShareProvider;
 use OCA\FederatedFileSharing\FedShareManager;
-use OCA\FederatedFileSharing\Notifications;
 use OCA\FederatedFileSharing\Controller\RequestHandlerController;
 use OCA\FederatedFileSharing\Tests\TestCase;
 use OCP\App\IAppManager;
 use OCP\AppFramework\Http;
 use OCP\Constants;
-use OCP\IDBConnection;
 use OCP\IRequest;
 use OCP\IUserManager;
 use OCP\Share;
@@ -55,11 +53,6 @@ class RequestHandlerTest extends TestCase {
 	private $federatedShareProvider;
 
 	/**
-	 * @var IDBConnection | \PHPUnit_Framework_MockObject_MockObject
-	 */
-	private $connection;
-
-	/**
 	 * @var IAppManager | \PHPUnit_Framework_MockObject_MockObject
 	 */
 	private $appManager;
@@ -73,11 +66,6 @@ class RequestHandlerTest extends TestCase {
 	 * @var IRequest | \PHPUnit_Framework_MockObject_MockObject
 	 */
 	private $request;
-
-	/**
-	 * @var Notifications | \PHPUnit_Framework_MockObject_MockObject
-	 */
-	private $notifications;
 
 	/**
 	 * @var AddressHandler | \PHPUnit_Framework_MockObject_MockObject
@@ -101,15 +89,11 @@ class RequestHandlerTest extends TestCase {
 			FederatedShareProvider::class
 		)
 			->disableOriginalConstructor()->getMock();
-		$this->connection = $this->getMockBuilder(IDBConnection::class)
-			->disableOriginalConstructor()->getMock();
 		$this->appManager = $this->getMockBuilder(IAppManager::class)
 			->disableOriginalConstructor()->getMock();
 		$this->userManager = $this->getMockBuilder(IUserManager::class)
 			->disableOriginalConstructor()->getMock();
 		$this->request = $this->getMockBuilder(IRequest::class)
-			->disableOriginalConstructor()->getMock();
-		$this->notifications = $this->getMockBuilder(Notifications::class)
 			->disableOriginalConstructor()->getMock();
 		$this->addressHandler = $this->getMockBuilder(AddressHandler::class)
 			->disableOriginalConstructor()->getMock();
@@ -119,10 +103,8 @@ class RequestHandlerTest extends TestCase {
 			'federatedfilesharing',
 			$this->request,
 			$this->federatedShareProvider,
-			$this->connection,
 			$this->appManager,
 			$this->userManager,
-			$this->notifications,
 			$this->addressHandler,
 			$this->fedShareManager
 		);
@@ -344,9 +326,6 @@ class RequestHandlerTest extends TestCase {
 		$this->fedShareManager->expects($this->once())
 			->method('acceptShare');
 
-		$this->notifications->expects($this->once())
-			->method('sendAcceptShare');
-
 		$response = $this->requestHandlerController->acceptShare(2);
 		$this->assertEquals(
 			Http::STATUS_CONTINUE,
@@ -386,9 +365,6 @@ class RequestHandlerTest extends TestCase {
 
 		$this->fedShareManager->expects($this->once())
 			->method('declineShare');
-
-		$this->notifications->expects($this->once())
-			->method('sendDeclineShare');
 
 		$response = $this->requestHandlerController->declineShare(2);
 		$this->assertEquals(

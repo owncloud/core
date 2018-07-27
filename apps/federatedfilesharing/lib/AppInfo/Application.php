@@ -81,10 +81,11 @@ class Application extends App {
 			function ($c) use ($server) {
 				return new FedShareManager(
 					$this->getFederatedShareProvider(),
-					$server->getDatabaseConnection(),
+					$c->query('Notifications'),
 					$server->getUserManager(),
 					$server->getActivityManager(),
 					$server->getNotificationManager(),
+					$c->query('AddressHandler'),
 					$server->getEventDispatcher()
 				);
 			}
@@ -97,10 +98,8 @@ class Application extends App {
 					$c->query('AppName'),
 					$c->query('Request'),
 					$this->getFederatedShareProvider(),
-					$server->getDatabaseConnection(),
 					$server->getAppManager(),
 					$server->getUserManager(),
-					$c->query('Notifications'),
 					$c->query('AddressHandler'),
 					$c->query('FederatedShareManager')
 				);
