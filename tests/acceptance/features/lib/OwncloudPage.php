@@ -698,6 +698,7 @@ class OwncloudPage extends Page {
 	 * @param Session $session
 	 *
 	 * @throws \Exception
+	 * @return void
 	 */
 	public function fillFieldAndKeepFocus(NodeElement $element, $value, $session) {
 		$driver = $session->getDriver();
