@@ -175,10 +175,15 @@ fi
 
 if [ "${TEST_WITH_PHPDEVSERVER}" != "true" ]
 then
-    echo "Not using php inbuilt server for running scenario ..."
-    echo "Updating .htaccess for proper rewrites"
-    ${OCC} config:system:set htaccess.RewriteBase --value /
-    ${OCC} maintenance:update:htaccess
+	echo "Not using php inbuilt server for running scenario ..."
+	echo "Updating .htaccess for proper rewrites"
+	
+	#get the sub path of the webserver and set the correct RewriteBase
+	PROTOCOL="$(echo ${TEST_SERVER_URL} | grep :// | sed -e's,^\(.*://\).*,\1,g')"
+	URL="$(echo ${TEST_SERVER_URL/$PROTOCOL/})"
+	WEBSERVER_PATH="$(echo ${URL} | grep / | cut -d/ -f2-)"
+	${OCC} config:system:set htaccess.RewriteBase --value /${WEBSERVER_PATH}/
+	${OCC} maintenance:update:htaccess
 else
 	echo "Using php inbuilt server for running scenario ..."
 

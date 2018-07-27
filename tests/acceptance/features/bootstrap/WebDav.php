@@ -149,6 +149,20 @@ trait WebDav {
 	}
 
 	/**
+	 * gives the dav path of a file including the subfolder of the webserver
+	 * e.g. when the server runs in `http://localhost/owncloud/`
+	 * this function will return `owncloud/remote.php/webdav/prueba.txt`
+	 *
+	 * @param string $user
+	 *
+	 * @return string
+	 */
+	public function getFullDavFilesPath($user) {
+		$basePath = \ltrim(\parse_url($this->getBaseUrl(), PHP_URL_PATH), "/");
+		return \ltrim($basePath . "/" . $this->getDavFilesPath($user), "/");
+	}
+
+	/**
 	 * Select a suitable dav path version number.
 	 * Some endpoints have only existed since a certain point in time, so for
 	 * those make sure to return a DAV path version that works for that endpoint.
@@ -1167,7 +1181,7 @@ trait WebDav {
 		$elementRows = $elements->getRows();
 		$elementsSimplified = $this->simplifyArray($elementRows);
 		foreach ($elementsSimplified as $expectedElement) {
-			$webdavPath = "/" . $this->getDavFilesPath($user) . $expectedElement;
+			$webdavPath = "/" . $this->getFullDavFilesPath($user) . $expectedElement;
 			if (!\array_key_exists($webdavPath, $elementList) && $expectedToBeListed) {
 				PHPUnit_Framework_Assert::fail(
 					"$webdavPath" . " is not in propfind answer but should"
@@ -2049,7 +2063,7 @@ trait WebDav {
 			$elementRows = $expectedElements->getRows();
 			$elementsSimplified = $this->simplifyArray($elementRows);
 			foreach ($elementsSimplified as $expectedElement) {
-				$webdavPath = "/" . $this->getDavFilesPath($user) . $expectedElement;
+				$webdavPath = "/" . $this->getFullDavFilesPath($user) . $expectedElement;
 				if (!\array_key_exists($webdavPath, $elementList)) {
 					PHPUnit_Framework_Assert::fail(
 						"$webdavPath" . " is not in report answer"
@@ -2073,7 +2087,7 @@ trait WebDav {
 		if (\is_array($elementList) && \count($elementList)) {
 			$elementListKeys = \array_keys($elementList);
 			\array_shift($elementListKeys);
-			$davPrefix = "/" . $this->getDavFilesPath($user);
+			$davPrefix = "/" . $this->getFullDavFilesPath($user);
 			foreach ($elementListKeys as $element) {
 				if (\substr($element, 0, \strlen($davPrefix)) == $davPrefix) {
 					$element = \substr($element, \strlen($davPrefix));
