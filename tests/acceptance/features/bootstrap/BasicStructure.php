@@ -87,7 +87,7 @@ trait BasicStructure {
 	 * The base URL of the local server under test,
 	 * without any terminating slash
 	 * e.g. http://localhost:8080
-	 *ocsApiVersion
+	 *
 	 * @var string
 	 */
 	private $localBaseUrl = '';
