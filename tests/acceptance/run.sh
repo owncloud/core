@@ -97,8 +97,8 @@ remote_occ() {
 		RETURN=1
 		REMOTE_OCC_STDERR=${CURL_OCC_RESULT}
 	else
-		REMOTE_OCC_STDOUT=`echo ${CURL_OCC_RESULT} | xmllint --xpath "string(ocs/data/stdOut)" - | sed 's/ //g'`
-		REMOTE_OCC_STDERR=`echo ${CURL_OCC_RESULT} | xmllint --xpath "string(ocs/data/stdErr)" - | sed 's/ //g'`
+		REMOTE_OCC_STDOUT=`echo ${CURL_OCC_RESULT} | xmllint --xpath "string(ocs/data/stdOut)" -`
+		REMOTE_OCC_STDERR=`echo ${CURL_OCC_RESULT} | xmllint --xpath "string(ocs/data/stdErr)" -`
 	fi
 	return ${RETURN}
 }
@@ -121,41 +121,41 @@ export ADMIN_USERNAME
 export ADMIN_PASSWORD
 
 function env_alt_home_enable {
-	${OCC} config:app:set testing enable_alt_user_backend --value yes
+	remote_occ ${ADMIN_AUTH} ${OCC_URL} "config:app:set testing enable_alt_user_backend --value yes"
 }
 
 function env_alt_home_clear {
-	${OCC} app:disable testing || { echo "Unable to disable testing app" >&2; exit 1; }
+	remote_occ ${ADMIN_AUTH} ${OCC_URL} "app:disable testing" || { echo "Unable to disable testing app" >&2; exit 1; }
 }
 
 function env_encryption_enable {
-	${OCC} app:enable encryption
-	${OCC} encryption:enable
+	remote_occ ${ADMIN_AUTH} ${OCC_URL} "app:enable encryption"
+	remote_occ ${ADMIN_AUTH} ${OCC_URL} "encryption:enable"
 }
 
 function env_encryption_enable_master_key {
 	env_encryption_enable || { echo "Unable to enable masterkey encryption" >&2; exit 1; }
-	${OCC} encryption:select-encryption-type masterkey --yes
+	remote_occ ${ADMIN_AUTH} ${OCC_URL} "encryption:select-encryption-type masterkey --yes"
 }
 
 function env_encryption_enable_user_keys {
 	env_encryption_enable || { echo "Unable to enable user-keys encryption" >&2; exit 1; }
-	${OCC} encryption:select-encryption-type user-keys --yes
+	remote_occ ${ADMIN_AUTH} ${OCC_URL} "encryption:select-encryption-type user-keys --yes"
 }
 
 function env_encryption_disable {
-	${OCC} encryption:disable
-	${OCC} app:disable encryption
+	remote_occ ${ADMIN_AUTH} ${OCC_URL} "encryption:disable"
+	remote_occ ${ADMIN_AUTH} ${OCC_URL} "app:disable encryption"
 }
 
 function env_encryption_disable_master_key {
 	env_encryption_disable || { echo "Unable to disable masterkey encryption" >&2; exit 1; }
-	${OCC} config:app:delete encryption useMasterKey
+	remote_occ ${ADMIN_AUTH} ${OCC_URL} "config:app:delete encryption useMasterKey"
 }
 
 function env_encryption_disable_user_keys {
 	env_encryption_disable || { echo "Unable to disable user-keys encryption" >&2; exit 1; }
-	${OCC} config:app:delete encryption userSpecificKey
+	remote_occ ${ADMIN_AUTH} ${OCC_URL} "config:app:delete encryption userSpecificKey"
 }
 
 declare -x TEST_SERVER_URL
@@ -175,6 +175,11 @@ fi
 
 if [ "${TEST_WITH_PHPDEVSERVER}" != "true" ]
 then
+	# The endpoint to use to do occ commands via the testing app
+	# set it already here, so it can be used for remote_occ
+	# we know the TEST_SERVER_URL already
+	OCC_URL="${TEST_SERVER_URL}/ocs/v2.php/apps/testing/api/v1/occ"
+	
 	echo "Not using php inbuilt server for running scenario ..."
 	echo "Updating .htaccess for proper rewrites"
 	
@@ -182,8 +187,8 @@ then
 	PROTOCOL="$(echo ${TEST_SERVER_URL} | grep :// | sed -e's,^\(.*://\).*,\1,g')"
 	URL="$(echo ${TEST_SERVER_URL/$PROTOCOL/})"
 	WEBSERVER_PATH="$(echo ${URL} | grep / | cut -d/ -f2-)"
-	${OCC} config:system:set htaccess.RewriteBase --value /${WEBSERVER_PATH}/
-	${OCC} maintenance:update:htaccess
+	remote_occ ${ADMIN_AUTH} ${OCC_URL} "config:system:set htaccess.RewriteBase --value /${WEBSERVER_PATH}/"
+	remote_occ ${ADMIN_AUTH} ${OCC_URL} "maintenance:update:htaccess"
 else
 	echo "Using php inbuilt server for running scenario ..."
 
@@ -205,6 +210,9 @@ else
 
 	export TEST_SERVER_URL="http://localhost:${PORT}"
 	export TEST_SERVER_FED_URL="http://localhost:${PORT_FED}"
+
+	# The endpoint to use to do occ commands via the testing app
+	OCC_URL="${TEST_SERVER_URL}/ocs/v2.php/apps/testing/api/v1/occ"
 
 	# Give time for the PHP dev server to become available
 	# because we want to use it to get and change settings with the testing app
@@ -299,9 +307,6 @@ else
 	TESTING_ENABLED_BY_SCRIPT=false;
 fi
 
-# The endpoint to use to do occ commands via the testing app
-OCC_URL="${TEST_SERVER_URL}/ocs/v2.php/apps/testing/api/v1/occ"
-
 # Set SMTP settings
 remote_occ ${ADMIN_AUTH} ${OCC_URL} "--no-warnings config:system:get mail_domain"
 PREVIOUS_MAIL_DOMAIN=${REMOTE_OCC_STDOUT}
@@ -394,12 +399,13 @@ then
 	exit 1
 fi
 
-PREVIOUS_HTTP_FALLBACK_SETTING=$(${OCC} --no-warnings config:system:get sharing.federation.allowHttpFallback)
-${OCC} config:system:set sharing.federation.allowHttpFallback --type boolean --value true
+remote_occ ${ADMIN_AUTH} ${OCC_URL} "--no-warnings config:system:get sharing.federation.allowHttpFallback"
+PREVIOUS_HTTP_FALLBACK_SETTING=${REMOTE_OCC_STDOUT}
+remote_occ ${ADMIN_AUTH} ${OCC_URL} "config:system:set sharing.federation.allowHttpFallback --type boolean --value true"
 
 # Enable external storage app
-${OCC} config:app:set core enable_external_storage --value=yes
-${OCC} config:system:set files_external_allow_create_new_local --value=true
+remote_occ ${ADMIN_AUTH} ${OCC_URL} "config:app:set core enable_external_storage --value=yes"
+remote_occ ${ADMIN_AUTH} ${OCC_URL} "config:system:set files_external_allow_create_new_local --value=true"
 
 # Only make local storage when running API tests.
 # The local storage folder cannot be deleted by an ordinary user.
@@ -408,11 +414,10 @@ ${OCC} config:system:set files_external_allow_create_new_local --value=true
 if [ "${RUNNING_API_TESTS}" = true ]
 then
 	mkdir -p work/local_storage || { echo "Unable to create work folder" >&2; exit 1; }
-	OUTPUT_CREATE_STORAGE=`${OCC} files_external:create local_storage local null::null -c datadir=${SCRIPT_PATH}/work/local_storage`
-
+	remote_occ ${ADMIN_AUTH} ${OCC_URL} "files_external:create local_storage local null::null -c datadir=${SCRIPT_PATH}/work/local_storage"
+	OUTPUT_CREATE_STORAGE=${REMOTE_OCC_STDOUT}
 	ID_STORAGE=`echo ${OUTPUT_CREATE_STORAGE} | awk {'print $5'}`
-
-	${OCC} files_external:option ${ID_STORAGE} enable_sharing true
+	remote_occ ${ADMIN_AUTH} ${OCC_URL} "files_external:option ${ID_STORAGE} enable_sharing true"
 fi
 
 if [ "${OC_TEST_ALT_HOME}" = "1" ]
@@ -649,11 +654,11 @@ fi
 
 if [ "${RUNNING_API_TESTS}" = true ]
 then
-	${OCC} files_external:delete -y ${ID_STORAGE}
+	remote_occ ${ADMIN_AUTH} ${OCC_URL} "files_external:delete -y ${ID_STORAGE}"
 fi
 
 # Disable external storage app
-${OCC} config:app:set core enable_external_storage --value=no
+remote_occ ${ADMIN_AUTH} ${OCC_URL} "config:app:set core enable_external_storage --value=no"
 
 # Enable any apps that were disabled for the test run
 for APP_TO_ENABLE in ${APPS_TO_REENABLE}; do
