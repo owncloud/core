@@ -56,10 +56,9 @@ class SetConfig extends Base {
 				InputArgument::REQUIRED,
 				'Name of the config to set.'
 			)
-			->addOption(
+			->addArgument(
 				'value',
-				null,
-				InputOption::VALUE_REQUIRED,
+				InputArgument::REQUIRED,
 				'The new value of the config.'
 			)
 			->addOption(
@@ -80,7 +79,7 @@ class SetConfig extends Base {
 			return 1;
 		}
 
-		$configValue = $input->getOption('value');
+		$configValue = $input->getArgument('value');
 		$this->config->setAppValue($appName, $configName, $configValue);
 
 		$output->writeln('<info>Config value ' . $configName . ' for app ' . $appName . ' set to ' . $configValue . '</info>');
