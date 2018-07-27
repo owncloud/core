@@ -191,7 +191,7 @@ class WebDavHelper {
 	 */
 	public static function getSabreClient($baseUrl, $user, $password) {
 		$settings = [
-				'baseUri' => $baseUrl,
+				'baseUri' => $baseUrl . "/",
 				'userName' => $user,
 				'password' => $password,
 				'authType' => SClient::AUTH_BASIC
