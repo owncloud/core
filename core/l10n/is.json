@@ -168,6 +168,8 @@
     "Filename" : "Skráarheiti",
     "Password" : "Lykilorð",
     "Upload only" : "Einungis innsending",
+    "Download / View" : "Sækja / Skoða",
+    "Download / View / Upload" : "Sækja / Skoða / Senda inn",
     "Edit link share: {name}" : "Breyta sameignartengli: {name}",
     "Create link share: {name}" : "Búa til sameignartengil: {name}",
     "Share" : "Deila",
