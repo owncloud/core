@@ -90,18 +90,35 @@ export LANG=C
 # @return occ return code given in the xml data
 remote_occ() {
 	CURL_OCC_RESULT=`curl -s -u $1 $2 -d "command=$3"`
-	RETURN=`echo ${CURL_OCC_RESULT} | xmllint --xpath "string(ocs/data/code)" - | sed 's/ //g'`
+	# xargs is (miss)used to trim the output
+	RETURN=`echo ${CURL_OCC_RESULT} | xmllint --xpath "string(ocs/data/code)" - | xargs`
 	# We could not find a proper return of the testing app, so something went wrong
 	if [ -z "${RETURN}" ]
 	then
 		RETURN=1
 		REMOTE_OCC_STDERR=${CURL_OCC_RESULT}
 	else
-		REMOTE_OCC_STDOUT=`echo ${CURL_OCC_RESULT} | xmllint --xpath "string(ocs/data/stdOut)" -`
-		REMOTE_OCC_STDERR=`echo ${CURL_OCC_RESULT} | xmllint --xpath "string(ocs/data/stdErr)" -`
+		REMOTE_OCC_STDOUT=`echo ${CURL_OCC_RESULT} | xmllint --xpath "string(ocs/data/stdOut)" - | xargs`
+		REMOTE_OCC_STDERR=`echo ${CURL_OCC_RESULT} | xmllint --xpath "string(ocs/data/stdErr)" - | xargs`
 	fi
 	return ${RETURN}
 }
+
+# $1 admin auth as needed for curl
+# $2 full URL of the occ command in the testing app
+# $3 system|app
+# $4 app-name if app used
+# $5 setting name
+# $6 type of the variable to set it back correctly (optional)
+# adds a new element to the array PREVIOUS_SETTINGS
+# PREVIOUS_SETTINGS will be an array of strings containing:
+# URL;system|app;app-name;setting-name;value;variable-type
+save_config_setting() {
+	remote_occ $1 $2 "--no-warnings config:$3:get $4 $5"
+	PREVIOUS_SETTINGS+=("$2;$3;$4;$5;${REMOTE_OCC_STDOUT};$6")
+}
+
+declare -a PREVIOUS_SETTINGS
 
 # Provide a default admin username and password.
 # But let the caller pass them if they wish
@@ -308,16 +325,11 @@ else
 fi
 
 # Set SMTP settings
-remote_occ ${ADMIN_AUTH} ${OCC_URL} "--no-warnings config:system:get mail_domain"
-PREVIOUS_MAIL_DOMAIN=${REMOTE_OCC_STDOUT}
-remote_occ ${ADMIN_AUTH} ${OCC_URL} "--no-warnings config:system:get mail_from_address"
-PREVIOUS_MAIL_FROM_ADDRESS=${REMOTE_OCC_STDOUT}
-remote_occ ${ADMIN_AUTH} ${OCC_URL} "--no-warnings config:system:get mail_smtpmode"
-PREVIOUS_MAIL_SMTP_MODE=${REMOTE_OCC_STDOUT}
-remote_occ ${ADMIN_AUTH} ${OCC_URL} "--no-warnings config:system:get mail_smtphost"
-PREVIOUS_MAIL_SMTP_HOST=${REMOTE_OCC_STDOUT}
-remote_occ ${ADMIN_AUTH} ${OCC_URL} "--no-warnings config:system:get mail_smtpport"
-PREVIOUS_MAIL_SMTP_PORT=${REMOTE_OCC_STDOUT}
+save_config_setting ${ADMIN_AUTH} ${OCC_URL} "system" "" "mail_domain"
+save_config_setting ${ADMIN_AUTH} ${OCC_URL} "system" "" "mail_from_address"
+save_config_setting ${ADMIN_AUTH} ${OCC_URL} "system" "" "mail_smtpmode"
+save_config_setting ${ADMIN_AUTH} ${OCC_URL} "system" "" "mail_smtphost"
+save_config_setting ${ADMIN_AUTH} ${OCC_URL} "system" "" "mail_smtpport"
 
 remote_occ ${ADMIN_AUTH} ${OCC_URL} "config:system:set mail_domain --value=foobar.com"
 remote_occ ${ADMIN_AUTH} ${OCC_URL} "config:system:set mail_from_address --value=owncloud"
@@ -326,10 +338,10 @@ remote_occ ${ADMIN_AUTH} ${OCC_URL} "config:system:set mail_smtphost --value=${M
 remote_occ ${ADMIN_AUTH} ${OCC_URL} "config:system:set mail_smtpport --value=${MAILHOG_SMTP_PORT}"
 
 # Get the current backgroundjobs_mode
-remote_occ ${ADMIN_AUTH} ${OCC_URL} "config:app:get core backgroundjobs_mode"
-PREVIOUS_BACKGROUNDJOBS_MODE=${REMOTE_OCC_STDOUT}
+save_config_setting ${ADMIN_AUTH} ${OCC_URL} "app" "core" "backgroundjobs_mode"
+
 # Switch to webcron
-remote_occ ${ADMIN_AUTH} ${OCC_URL} "config:app:set core backgroundjobs_mode --value webcron"
+remote_occ ${ADMIN_AUTH} ${OCC_URL} "config:app:set core backgroundjobs_mode --value=webcron"
 if [ $? -ne 0 ]
 then
 	echo "WARNING: Could not set backgroundjobs mode to 'webcron'"
@@ -371,9 +383,7 @@ for APP_TO_ENABLE in ${APPS_TO_ENABLE}; do
 done
 
 # Set up personalized skeleton
-remote_occ ${ADMIN_AUTH} ${OCC_URL} "--no-warnings config:system:get skeletondirectory"
-
-PREVIOUS_SKELETON_DIR=${REMOTE_OCC_STDOUT}
+save_config_setting ${ADMIN_AUTH} ${OCC_URL} "system" "" "skeletondirectory"
 
 # $SRC_SKELETON_DIR is the path to the skeleton folder on the machine where the tests are executed
 # it is used for file comparisons in various tests
@@ -399,11 +409,12 @@ then
 	exit 1
 fi
 
-remote_occ ${ADMIN_AUTH} ${OCC_URL} "--no-warnings config:system:get sharing.federation.allowHttpFallback"
-PREVIOUS_HTTP_FALLBACK_SETTING=${REMOTE_OCC_STDOUT}
-remote_occ ${ADMIN_AUTH} ${OCC_URL} "config:system:set sharing.federation.allowHttpFallback --type boolean --value true"
+save_config_setting ${ADMIN_AUTH} ${OCC_URL} "system" "" "sharing.federation.allowHttpFallback" "boolean"
+remote_occ ${ADMIN_AUTH} ${OCC_URL} "config:system:set sharing.federation.allowHttpFallback --type boolean --value=true"
 
 # Enable external storage app
+save_config_setting ${ADMIN_AUTH} ${OCC_URL} "app" "core" "enable_external_storage"
+save_config_setting ${ADMIN_AUTH} ${OCC_URL} "system" "" "files_external_allow_create_new_local"
 remote_occ ${ADMIN_AUTH} ${OCC_URL} "config:app:set core enable_external_storage --value=yes"
 remote_occ ${ADMIN_AUTH} ${OCC_URL} "config:system:set files_external_allow_create_new_local --value=true"
 
@@ -657,9 +668,6 @@ then
 	remote_occ ${ADMIN_AUTH} ${OCC_URL} "files_external:delete -y ${ID_STORAGE}"
 fi
 
-# Disable external storage app
-remote_occ ${ADMIN_AUTH} ${OCC_URL} "config:app:set core enable_external_storage --value=no"
-
 # Enable any apps that were disabled for the test run
 for APP_TO_ENABLE in ${APPS_TO_REENABLE}; do
 	remote_occ ${ADMIN_AUTH} ${OCC_URL} "--no-warnings app:enable ${APP_TO_ENABLE}"
@@ -670,60 +678,26 @@ for APP_TO_DISABLE in ${APPS_TO_REDISABLE}; do
 	remote_occ ${ADMIN_AUTH} ${OCC_URL} "--no-warnings app:disable ${APP_TO_DISABLE}"
 done
 
-# Put back personalized skeleton
-if [ "A${PREVIOUS_SKELETON_DIR}" = "A" ]
-then
-	remote_occ ${ADMIN_AUTH} ${OCC_URL} "config:system:delete skeletondirectory"
-else
-	remote_occ ${ADMIN_AUTH} ${OCC_URL} "config:system:set skeletondirectory --value=${PREVIOUS_SKELETON_DIR}"
-fi
-
-# Put back smtp settings
-if [ "A${PREVIOUS_MAIL_DOMAIN}" = "A" ]
-then
-	remote_occ ${ADMIN_AUTH} ${OCC_URL} "config:system:delete mail_domain"
-else
-	remote_occ ${ADMIN_AUTH} ${OCC_URL} "config:system:set mail_domain --value=${PREVIOUS_MAIL_DOMAIN}"
-fi
-
-if [ "A${PREVIOUS_MAIL_FROM_ADDRESS}" = "A" ]
-then
-	remote_occ ${ADMIN_AUTH} ${OCC_URL} "config:system:delete mail_from_address"
-else
-	remote_occ ${ADMIN_AUTH} ${OCC_URL} "config:system:set mail_from_address --value=${PREVIOUS_MAIL_FROM_ADDRESS}"
-fi
-
-if [ "A${PREVIOUS_MAIL_SMTP_MODE}" = "A" ]
-then
-	remote_occ ${ADMIN_AUTH} ${OCC_URL} "config:system:delete mail_smtpmode"
-else
-	remote_occ ${ADMIN_AUTH} ${OCC_URL} "config:system:set mail_smtpmode --value=${PREVIOUS_MAIL_SMTP_MODE}"
-fi
-
-if [ "A${PREVIOUS_MAIL_SMTP_HOST}" = "A" ]
-then
-	remote_occ ${ADMIN_AUTH} ${OCC_URL} "config:system:delete mail_smtphost"
-else
-	remote_occ ${ADMIN_AUTH} ${OCC_URL} "config:system:set mail_smtphost --value=${PREVIOUS_MAIL_SMTP_HOST}"
-fi
-
-if [ "A${PREVIOUS_MAIL_SMTP_PORT}" = "A" ]
-then
-	remote_occ ${ADMIN_AUTH} ${OCC_URL} "config:system:delete mail_smtpport"
-else
-	remote_occ ${ADMIN_AUTH} ${OCC_URL} "config:system:set mail_smtpport --value=${PREVIOUS_MAIL_SMTP_PORT}"
-fi
-
-# put back the backgroundjobs_mode
-remote_occ ${ADMIN_AUTH} ${OCC_URL} "config:app:set core backgroundjobs_mode --value=${PREVIOUS_BACKGROUNDJOBS_MODE}"
-
-# Put back HTTP fallback setting
-if [ "A${PREVIOUS_HTTP_FALLBACK_SETTING}" = "A" ]
-then
-	remote_occ ${ADMIN_AUTH} ${OCC_URL} "config:system:delete sharing.federation.allowHttpFallback"
-else
-	remote_occ ${ADMIN_AUTH} ${OCC_URL} "config:system:set sharing.federation.allowHttpFallback --type boolean --value=${PREVIOUS_HTTP_FALLBACK_SETTING}"
-fi
+# Put back settings that were set for the test-run
+for i in "${!PREVIOUS_SETTINGS[@]}"
+do
+	PREVIOUS_IFS=${IFS}
+	IFS=';'
+	read -r -a SETTING <<< "${PREVIOUS_SETTINGS[$i]}"
+	IFS=${PREVIOUS_IFS}
+	if [ -z "${SETTING[4]}" ]
+	then
+		remote_occ ${ADMIN_AUTH} ${SETTING[0]} "config:${SETTING[1]}:delete ${SETTING[2]} ${SETTING[3]}"
+	else
+		TYPE_STRING=""
+		if [ -n "${SETTING[5]}" ]
+		then
+			#place the space here not in the command line, so that there is no space if the string is empty
+			TYPE_STRING=" --type ${SETTING[5]}"
+		fi
+		remote_occ ${ADMIN_AUTH} ${SETTING[0]} "config:${SETTING[1]}:set ${SETTING[2]} ${SETTING[3]} --value=${SETTING[4]}${TYPE_STRING}"
+	fi
+done
 
 # Put back state of the testing app
 if [ "${TESTING_ENABLED_BY_SCRIPT}" = true ]
