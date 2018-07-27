@@ -98,6 +98,13 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 	private $currentFolder = "";
 
 	/**
+	 * variable to remember with which file we are currently working
+	 *
+	 * @var string
+	 */
+	private $currentFile = "";
+
+	/**
 	 *
 	 * @var FeatureContext
 	 */
@@ -151,6 +158,15 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 	}
 
 	/**
+	 * get the current folder and file path that is being worked on
+	 *
+	 * @return string
+	 */
+	private function getCurrentFolderFilePath() {
+		return \rtrim($this->currentFolder, '/') . '/' . $this->currentFile;
+	}
+
+	/**
 	 * reset any context remembered about where we are or what we have done on
 	 * the files-like pages
 	 *
@@ -158,6 +174,7 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 	 */
 	public function resetFilesContext() {
 		$this->currentFolder = "";
+		$this->currentFile = "";
 		$this->deletedElementsTable = null;
 		$this->movedElementsTable = null;
 	}
@@ -179,6 +196,72 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 			$this->filesPage->waitTillPageIsLoaded($this->getSession());
 			$this->webUIGeneralContext->setCurrentPageObject($this->filesPage);
 		}
+	}
+
+	/**
+	 * @When the user browses directly to display the :tabName details of file :fileName in folder :folderName
+	 *
+	 * @param string $tabName
+	 * @param string $fileName
+	 * @param string $folderName
+	 * @return void
+	 * @throws Exception
+	 */
+	public function theUserBrowsesDirectlyToDetailsTabOfFileInFolder(
+		$tabName, $fileName, $folderName
+	) {
+		$this->currentFolder = '/' . \trim($folderName, '/');
+		$this->currentFile = $fileName;
+		$fileId = $this->featureContext->getFileIdForPath(
+			$this->featureContext->getCurrentUser(), $this->getCurrentFolderFilePath()
+		);
+		$this->visitPath(
+			$this->featureContext->getBaseUrl() . '/index.php/apps/files/?dir=' . $folderName . '&fileid=' . $fileId . '&details=' . $tabName
+		);
+		$this->filesPage->waitTillPageIsLoaded($this->getSession());
+	}
+
+	/**
+	 * @Then the thumbnail should be visible in the details panel
+	 *
+	 * @return void
+	 * @throws Exception
+	 */
+	public function theThumbnailShouldBeVisibleInTheDetailsPanel() {
+		$sharingDialog = $this->filesPage->getSharingDialog();
+		PHPUnit_Framework_Assert::assertContains(
+			$this->getCurrentFolderFilePath(),
+			$sharingDialog->findThumbnail()->getAttribute("style")
+		);
+	}
+
+	/**
+	 * @Then the :tabName details panel should be visible
+	 *
+	 * @param string $tabName
+	 *
+	 * @return void
+	 */
+	public function theTabNameDetailsPanelShouldBeVisible($tabName) {
+		$sharingDialog = $this->filesPage->getSharingDialog();
+		PHPUnit_Framework_Assert::assertTrue(
+			$sharingDialog->isDetailsPanelVisible($tabName),
+			"the $tabName panel is not visible in the details panel"
+		);
+	}
+
+	/**
+	 * @Then the share-with field should be visible in the details panel
+	 *
+	 * @return void
+	 * @throws Exception
+	 */
+	public function theShareWithFieldShouldBeVisibleInTheDetailsPanel() {
+		$sharingDialog = $this->filesPage->getSharingDialog();
+		PHPUnit_Framework_Assert::assertTrue(
+			$sharingDialog->isShareWithFieldVisible(),
+			'the share-with field is not visible in the details panel'
+		);
 	}
 
 	/**
