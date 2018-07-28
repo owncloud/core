@@ -1,4 +1,6 @@
 { "translations": {
+    "Wrong current password" : "Rangt núverandi lykilorð",
+    "The new password cannot be the same as the previous one" : "Nýja lykilorðið má ekki vera eins og það fyrra",
     "%s password changed successfully" : "Það tókst að breyta lykilorði %s",
     "Couldn't send reset email. Please contact your administrator." : "Gat ekki sent endurstillingu í tölvupósti. Hafðu samband við kerfisstjóra.",
     "installing and updating apps via the market or Federated Cloud Sharing" : "uppsetning eða uppfærsla forrita úr forritabúð eða með skýjasambandi",
