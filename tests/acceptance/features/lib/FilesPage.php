@@ -23,6 +23,7 @@
 namespace Page;
 
 use Behat\Mink\Session;
+use Page\FilesPageElement\DetailsDialog;
 use Page\FilesPageElement\SharingDialog;
 use SensioLabs\Behat\PageObjectExtension\PageObject\Exception\ElementNotFoundException;
 use SensioLabs\Behat\PageObjectExtension\PageObject\Exception\UnexpectedPageException;
@@ -214,6 +215,16 @@ class FilesPage extends FilesPageBasic {
 	}
 
 	/**
+	 * gets a details dialog object
+	 *
+	 * @throws ElementNotFoundException
+	 * @return DetailsDialog
+	 */
+	public function getDetailsDialog() {
+		return $this->getPage("FilesPageElement\\DetailsDialog");
+	}
+
+	/**
 	 * gets a sharing dialog object
 	 *
 	 * @throws ElementNotFoundException
@@ -238,14 +249,15 @@ class FilesPage extends FilesPageBasic {
 	}
 
 	/**
-	 * closes an open sharing dialog
+	 * closes an open details dialog
+	 * the details dialog contains the comments, sharing, versions etc tabs
 	 *
 	 * @throws ElementNotFoundException
 	 * if no sharing dialog is open
 	 * @return void
 	 */
-	public function closeSharingDialog() {
-		$this->getPage('FilesPageElement\\SharingDialog')->closeSharingDialog();
+	public function closeDetailsDialog() {
+		$this->getDetailsDialog()->closeDetailsDialog();
 	}
 
 	/**
@@ -376,6 +388,35 @@ class FilesPage extends FilesPageBasic {
 			);
 		}
 		$this->verifyPage();
+		return $this;
+	}
+
+	/**
+	 * Browse directly to a particular file within a folder.
+	 *
+	 * The folder should open and scroll to the requested file.
+	 * If a details tab is specified, then the details panel for that file
+	 * should open with the requested tab selected.
+	 *
+	 * @param string $fileId
+	 * @param string $folderName
+	 * @param string|null $detailsTab e.g. comments, sharing, versions
+	 *
+	 * @return FilesPage
+	 */
+	public function browseToFileId(
+		$fileId, $folderName = '/', $detailsTab = null
+	) {
+		$url = \rtrim($this->getUrl(), '/');
+		$fullUrl = $url . '/?dir=' . $folderName . '&fileid=' . $fileId;
+
+		if ($detailsTab !== null) {
+			$detailsDialog = $this->getDetailsDialog();
+			$fullUrl = $fullUrl . '&details=' . $detailsDialog->getDetailsTabId($detailsTab);
+		}
+
+		$this->getDriver()->visit($fullUrl);
+
 		return $this;
 	}
 
