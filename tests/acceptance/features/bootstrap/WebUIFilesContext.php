@@ -214,10 +214,14 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 		$this->currentFolder = '/' . \trim($folderName, '/');
 		$this->currentFile = $fileName;
 		$fileId = $this->featureContext->getFileIdForPath(
-			$this->featureContext->getCurrentUser(), $this->getCurrentFolderFilePath()
+			$this->featureContext->getCurrentUser(),
+			$this->getCurrentFolderFilePath()
 		);
-		$this->filesPage->browseToFileId($fileId, $this->currentFolder, $tabName);
+		$this->filesPage->browseToFileId(
+			$fileId, $this->currentFolder, $tabName
+		);
 		$this->filesPage->waitTillPageIsLoaded($this->getSession());
+		$this->filesPage->getDetailsDialog()->waitTillPageIsLoaded($this->getSession());
 	}
 
 	/**
@@ -232,7 +236,7 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 		PHPUnit_Framework_Assert::assertNotNull(
 			$style,
 			'style attribute of details thumbnail is null'
-			);
+		);
 		PHPUnit_Framework_Assert::assertContains(
 			$this->getCurrentFolderFilePath(),
 			$style
