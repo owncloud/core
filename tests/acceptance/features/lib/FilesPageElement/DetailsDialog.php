@@ -25,7 +25,6 @@ namespace Page\FilesPageElement;
 
 use Behat\Mink\Element\NodeElement;
 use Behat\Mink\Session;
-use Page\FilesPageElement\SharingDialogElement\PublicLinkTab;
 use Page\OwncloudPage;
 use SensioLabs\Behat\PageObjectExtension\PageObject\Exception\ElementNotFoundException;
 
@@ -73,9 +72,9 @@ class DetailsDialog extends OwncloudPage {
 	 * @param string $tabName e.g. comments, sharing, versions
 	 *
 	 * @throws ElementNotFoundException
-	 * @return NodeElement|NULL
+	 * @return NodeElement
 	 */
-	private function _findDetailsTab($tabName) {
+	private function findDetailsTab($tabName) {
 		$tab = $this->findById(
 			$this->getDetailsTabId($tabName)
 		);
@@ -97,7 +96,7 @@ class DetailsDialog extends OwncloudPage {
 	 */
 	public function isDetailsPanelVisible($tabName) {
 		try {
-			$visible = $this->_findDetailsTab($tabName)->isVisible();
+			$visible = $this->findDetailsTab($tabName)->isVisible();
 		} catch (ElementNotFoundException $e) {
 			$visible = false;
 		}
@@ -173,5 +172,43 @@ class DetailsDialog extends OwncloudPage {
 				. "\n-------------------------\n"
 			);
 		}
+	}
+
+	/**
+	 * there is no reliable loading indicator on the details dialog page,
+	 * so wait for the thumbnail to be there with a style attribute.
+	 * this should happen both when previews are enabled and disabled.
+	 *
+	 * @param Session $session
+	 * @param int $timeout_msec
+	 *
+	 * @return void
+	 * @throws \Exception
+	 */
+	public function waitTillPageIsLoaded(
+		Session $session,
+		$timeout_msec = STANDARDUIWAITTIMEOUTMILLISEC
+	) {
+		$currentTime = \microtime(true);
+		$end = $currentTime + ($timeout_msec / 1000);
+		while ($currentTime <= $end) {
+			try {
+				if ($this->findThumbnail()->getAttribute("style") !== null) {
+					break;
+				}
+			} catch (ElementNotFoundException $e) {
+				// Just loop and try again if the element was not found yet.
+			}
+			\usleep(STANDARDSLEEPTIMEMICROSEC);
+			$currentTime = \microtime(true);
+		}
+
+		if ($currentTime > $end) {
+			throw new \Exception(
+				__METHOD__ . " timeout waiting for page to load"
+			);
+		}
+
+		$this->waitForOutstandingAjaxCalls($session);
 	}
 }

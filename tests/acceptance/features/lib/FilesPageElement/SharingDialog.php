@@ -61,7 +61,7 @@ class SharingDialog extends OwncloudPage {
 	 * @throws ElementNotFoundException
 	 * @return NodeElement|NULL
 	 */
-	private function _findShareWithField() {
+	private function findShareWithField() {
 		$shareWithField = $this->find("xpath", $this->shareWithFieldXpath);
 		if ($shareWithField === null) {
 			throw new ElementNotFoundException(
@@ -79,7 +79,7 @@ class SharingDialog extends OwncloudPage {
 	 */
 	public function isShareWithFieldVisible() {
 		try {
-			$visible = $this->_findShareWithField()->isVisible();
+			$visible = $this->findShareWithField()->isVisible();
 		} catch (ElementNotFoundException $e) {
 			$visible = false;
 		}
@@ -98,7 +98,7 @@ class SharingDialog extends OwncloudPage {
 	public function fillShareWithField(
 		$input, Session $session, $timeout_msec = STANDARDUIWAITTIMEOUTMILLISEC
 	) {
-		$shareWithField = $this->_findShareWithField();
+		$shareWithField = $this->findShareWithField();
 		$this->fillFieldAndKeepFocus($shareWithField, $input, $session);
 		$this->waitForAjaxCallsToStartAndFinish($session, $timeout_msec);
 		return $this->getAutocompleteNodeElement();
@@ -354,7 +354,7 @@ class SharingDialog extends OwncloudPage {
 	 * @return string
 	 */
 	public function getShareWithTooltip() {
-		$shareWithField = $this->_findShareWithField();
+		$shareWithField = $this->findShareWithField();
 		$shareWithTooltip = $shareWithField->find(
 			"xpath", $this->shareWithTooltipXpath
 		);
