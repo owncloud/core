@@ -45,13 +45,10 @@ class SharingDialog extends OwncloudPage {
 	private $shareWithTooltipXpath = "/..//*[@class='tooltip-inner']";
 	private $shareWithAutocompleteListXpath = ".//ul[contains(@class,'ui-autocomplete')]";
 	private $autocompleteItemsTextXpath = "//*[@class='autocomplete-item-text']";
-	private $shareWithCloseXpath = "//div[@id='app-sidebar']//*[@class='close icon-close']";
 	private $suffixToIdentifyGroups = " (group)";
 	private $suffixToIdentifyRemoteUsers = " (federated)";
 	private $sharerInformationXpath = ".//*[@class='reshare']";
 	private $sharedWithAndByRegEx = "^(?:[A-Z]\s)?Shared with you(?: and the group (.*))? by (.*)$";
-	private $thumbnailContainerXpath = ".//*[contains(@class,'thumbnailContainer')]";
-	private $thumbnailFromContainerXpath = "/a";
 	private $permissionsFieldByUserName = ".//*[@id='shareWithList']//*[@class='has-tooltip username' and .='%s']/..";
 	private $permissionLabelXpath = ".//label[@for='%s']";
 	private $showCrudsXpath = ".//*[@class='showCruds']";
@@ -73,22 +70,6 @@ class SharingDialog extends OwncloudPage {
 			);
 		}
 		return $shareWithField;
-	}
-
-	/**
-	 * checks if the requested tab in the details panel is visible
-	 *
-	 * @param string $tabName
-	 *
-	 * @return bool
-	 */
-	public function isDetailsPanelVisible($tabName) {
-		try {
-			$visible = $this->findById($tabName)->isVisible();
-		} catch (ElementNotFoundException $e) {
-			$visible = false;
-		}
-		return $visible;
 	}
 
 	/**
@@ -453,43 +434,6 @@ class SharingDialog extends OwncloudPage {
 	/**
 	 *
 	 * @throws ElementNotFoundException
-	 * @return NodeElement of the whole container holding the thumbnail
-	 */
-	public function findThumbnailContainer() {
-		$thumbnailContainer = $this->find("xpath", $this->thumbnailContainerXpath);
-		if ($thumbnailContainer === null) {
-			throw new ElementNotFoundException(
-				__METHOD__ .
-				" xpath $this->thumbnailContainerXpath " .
-				"could not find thumbnailContainer"
-			);
-		}
-		return $thumbnailContainer;
-	}
-
-	/**
-	 *
-	 * @throws ElementNotFoundException
-	 * @return NodeElement
-	 */
-	public function findThumbnail() {
-		$thumbnailContainer = $this->findThumbnailContainer();
-		$thumbnail = $thumbnailContainer->find(
-			"xpath", $this->thumbnailFromContainerXpath
-		);
-		if ($thumbnail === null) {
-			throw new ElementNotFoundException(
-				__METHOD__ .
-				" xpath $this->thumbnailFromContainerXpath " .
-				"could not find thumbnail"
-			);
-		}
-		return $thumbnail;
-	}
-
-	/**
-	 *
-	 * @throws ElementNotFoundException
 	 * @return PublicLinkTab
 	 */
 	public function openPublicShareTab() {
@@ -507,39 +451,5 @@ class SharingDialog extends OwncloudPage {
 		);
 		$publicLinkTab->initElement();
 		return $publicLinkTab;
-	}
-
-	/**
-	 * closes the sharing dialog panel
-	 *
-	 * @throws ElementNotFoundException
-	 * @return void
-	 */
-	public function closeSharingDialog() {
-		$shareDialogCloseButton = $this->find("xpath", $this->shareWithCloseXpath);
-		if ($shareDialogCloseButton === null) {
-			throw new ElementNotFoundException(
-				__METHOD__ .
-				" xpath $this->shareWithCloseXpath " .
-				"could not find share-dialog-close-button"
-			);
-		}
-
-		try {
-			$shareDialogCloseButton->click();
-		} catch (UnknownError $e) {
-			// Edge often throws UnknownError 'Invalid Argument' when trying to
-			// click the close button, even though the button was found above.
-			// Ignore it for now. Many tests could keep working without having
-			// closed the share dialog.
-			// TODO: Edge - if it keeps happening then find out why.
-			\error_log(
-				__METHOD__
-				. " UnknownError while doing shareDialogCloseButton->click()"
-				. "\n-------------------------\n"
-				. $e->getMessage()
-				. "\n-------------------------\n"
-			);
-		}
 	}
 }

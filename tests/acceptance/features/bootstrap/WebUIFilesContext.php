@@ -72,6 +72,7 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 	 * @var ConflictDialog
 	 */
 	private $conflictDialog;
+
 	/**
 	 * Table of all files and folders that should have been deleted, stored so
 	 * that other steps can use the list to check if the deletion happened correctly
@@ -215,9 +216,7 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 		$fileId = $this->featureContext->getFileIdForPath(
 			$this->featureContext->getCurrentUser(), $this->getCurrentFolderFilePath()
 		);
-		$this->visitPath(
-			$this->featureContext->getBaseUrl() . '/index.php/apps/files/?dir=' . $folderName . '&fileid=' . $fileId . '&details=' . $tabName
-		);
+		$this->filesPage->browseToFileId($fileId, $this->currentFolder, $tabName);
 		$this->filesPage->waitTillPageIsLoaded($this->getSession());
 	}
 
@@ -228,10 +227,15 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 	 * @throws Exception
 	 */
 	public function theThumbnailShouldBeVisibleInTheDetailsPanel() {
-		$sharingDialog = $this->filesPage->getSharingDialog();
+		$detailsDialog = $this->filesPage->getDetailsDialog();
+		$style = $detailsDialog->findThumbnail()->getAttribute("style");
+		PHPUnit_Framework_Assert::assertNotNull(
+			$style,
+			'style attribute of details thumbnail is null'
+			);
 		PHPUnit_Framework_Assert::assertContains(
 			$this->getCurrentFolderFilePath(),
-			$sharingDialog->findThumbnail()->getAttribute("style")
+			$style
 		);
 	}
 
@@ -243,9 +247,9 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 	 * @return void
 	 */
 	public function theTabNameDetailsPanelShouldBeVisible($tabName) {
-		$sharingDialog = $this->filesPage->getSharingDialog();
+		$detailsDialog = $this->filesPage->getDetailsDialog();
 		PHPUnit_Framework_Assert::assertTrue(
-			$sharingDialog->isDetailsPanelVisible($tabName),
+			$detailsDialog->isDetailsPanelVisible($tabName),
 			"the $tabName panel is not visible in the details panel"
 		);
 	}

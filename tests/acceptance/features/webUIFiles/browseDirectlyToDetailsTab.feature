@@ -12,9 +12,9 @@ So that I can see the details immediately without needing to click in the UI
 		And the user has logged in with username "user1" and password "1234" using the webUI
 
 	Scenario Outline: Browse directly to the sharing details of a file
-		When the user browses directly to display the "shareTabView" details of file "lorem.txt" in folder "<folder>"
+		When the user browses directly to display the "sharing" details of file "lorem.txt" in folder "<folder>"
 		Then the thumbnail should be visible in the details panel
-		And the "shareTabView" details panel should be visible
+		And the "sharing" details panel should be visible
 		And the share-with field should be visible in the details panel
 		Examples:
 			| folder        |
@@ -22,18 +22,18 @@ So that I can see the details immediately without needing to click in the UI
 			| simple-folder |
 
 	Scenario Outline: Browse directly to the comments details of a file
-		When the user browses directly to display the "commentsTabView" details of file "lorem.txt" in folder "<folder>"
+		When the user browses directly to display the "comments" details of file "lorem.txt" in folder "<folder>"
 		Then the thumbnail should be visible in the details panel
-		And the "commentsTabView" details panel should be visible
+		And the "comments" details panel should be visible
 		Examples:
 			| folder        |
 			| /             |
 			| simple-folder |
 
 	Scenario Outline: Browse directly to the versions details of a file
-		When the user browses directly to display the "versionsTabView" details of file "lorem.txt" in folder "<folder>"
+		When the user browses directly to display the "versions" details of file "lorem.txt" in folder "<folder>"
 		Then the thumbnail should be visible in the details panel
-		And the "versionsTabView" details panel should be visible
+		And the "versions" details panel should be visible
 		Examples:
 			| folder        |
 			| /             |
