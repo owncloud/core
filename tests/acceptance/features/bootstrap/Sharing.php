@@ -1540,15 +1540,15 @@ trait Sharing {
 				'testingState' => false
 			],
 			[
-				'capabilitiesApp' => 'federation',
-				'capabilitiesParameter' => 'outgoing',
+				'capabilitiesApp' => 'files_sharing',
+				'capabilitiesParameter' => 'federation@@@outgoing',
 				'testingApp' => 'files_sharing',
 				'testingParameter' => 'outgoing_server2server_share_enabled',
 				'testingState' => true
 			],
 			[
-				'capabilitiesApp' => 'federation',
-				'capabilitiesParameter' => 'incoming',
+				'capabilitiesApp' => 'files_sharing',
+				'capabilitiesParameter' => 'federation@@@incoming',
 				'testingApp' => 'files_sharing',
 				'testingParameter' => 'incoming_server2server_share_enabled',
 				'testingState' => true
