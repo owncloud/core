@@ -1,6 +1,5 @@
 <?php
 /**
- * @author Jörn Friedrich Dreyer <jfd@butonic.de>
  * @author Arthur Schiwon <blizzz@arthur-schiwon.de>
  * @author Christopher Schäpers <kondou@ts.unde.re>
  * @author Lukas Reschke <lukas@statuscode.ch>
@@ -29,11 +28,11 @@
 
 namespace OC;
 
-use OC\Files\Storage\File;
 use OC\User\User;
+use OCP\Files\Folder;
+use OCP\Files\File;
 use OCP\Files\NotFoundException;
-use OCP\Files\Storage\IStorage;
-use OCP\Files\StorageNotAvailableException;
+use OCP\Files\NotPermittedException;
 use OCP\IAvatar;
 use OCP\IImage;
 use OCP\IL10N;
@@ -45,35 +44,28 @@ use OCP\ILogger;
  */
 
 class Avatar implements IAvatar {
-	/** @var IStorage */
-	private $storage;
+	/** @var Folder */
+	private $folder;
 	/** @var IL10N */
 	private $l;
 	/** @var User */
 	private $user;
 	/** @var ILogger  */
 	private $logger;
-	/** @var string */
-	private $path;
 
 	/**
 	 * constructor
 	 *
-	 * @param IStorage $storage The storage where the avatars are
+	 * @param Folder $folder The folder where the avatars are
 	 * @param IL10N $l
 	 * @param User $user
 	 * @param ILogger $logger
 	 */
-	public function __construct(IStorage $storage, IL10N $l, User $user, ILogger $logger) {
-		$this->storage = $storage;
+	public function __construct(Folder $folder, IL10N $l, $user, ILogger $logger) {
+		$this->folder = $folder;
 		$this->l = $l;
 		$this->user = $user;
 		$this->logger = $logger;
-		$this->path = $this->buildAvatarPath();
-	}
-
-	private function buildAvatarPath() {
-		return \substr_replace(\substr_replace(\md5($this->user->getUID()), '/', 4, 0), '/', 2, 0);
 	}
 
 	/**
@@ -97,12 +89,7 @@ class Avatar implements IAvatar {
 	 * @return bool
 	 */
 	public function exists() {
-		try {
-			return $this->storage->file_exists("{$this->path}/avatar.jpg")
-				|| $this->storage->file_exists("{$this->path}/avatar.png");
-		} catch (StorageNotAvailableException $e) {
-			return false;
-		}
+		return $this->folder->nodeExists('avatar.jpg') || $this->folder->nodeExists('avatar.png');
 	}
 
 	/**
@@ -125,33 +112,35 @@ class Avatar implements IAvatar {
 			$type = 'jpg';
 		}
 		if ($type !== 'jpg' && $type !== 'png') {
-			throw new \Exception($this->l->t('Unknown filetype'));
+			throw new \Exception($this->l->t("Unknown filetype"));
 		}
 
 		if (!$img->valid()) {
-			throw new \Exception($this->l->t('Invalid image'));
+			throw new \Exception($this->l->t("Invalid image"));
 		}
 
 		if (!($img->height() === $img->width())) {
-			throw new NotSquareException($this->l->t('Avatar image is not square'));
+			throw new NotSquareException($this->l->t("Avatar image is not square"));
 		}
 
 		$this->remove();
-		if (!$this->storage->mkdir($this->path)) {
-			$this->logger->error("Could not create {$this->path} for {$this->user->getUID()}");
-		}
-		$path = "$this->path/avatar.$type";
-		if ($this->storage->file_put_contents($path, $data) === false) {
-			$this->logger->error("Failed to save resized avatar for {$this->user->getUID()} to $path");
-		}
+		$this->folder->newFile('avatar.'.$type)->putContent($data);
 		$this->user->triggerChange('avatar');
 	}
 
 	/**
-	 * remove the users avatars
+	 * remove the users avatar
+	 * @return void
 	*/
 	public function remove() {
-		$this->storage->rmdir($this->path);
+		$regex = '/^avatar\.([0-9]+\.)?(jpg|png)$/';
+		$avatars = $this->folder->getDirectoryListing();
+
+		foreach ($avatars as $avatar) {
+			if (\preg_match($regex, $avatar->getName())) {
+				$avatar->delete();
+			}
+		}
 		$this->user->triggerChange('avatar');
 	}
 
@@ -161,36 +150,35 @@ class Avatar implements IAvatar {
 	public function getFile($size) {
 		$ext = $this->getExtension();
 
-		$basePath = "{$this->path}/avatar.$ext";
-
 		if ($size === -1) {
-			$resizedPath = $basePath;
+			$path = 'avatar.' . $ext;
 		} else {
-			$resizedPath = "{$this->path}/avatar.$size.$ext";
+			$path = 'avatar.' . $size . '.' . $ext;
 		}
-		// do we have the requested size?
-		if (!$this->storage->file_exists($resizedPath)) {
+
+		try {
+			$file = $this->folder->get($path);
+		} catch (NotFoundException $e) {
 			if ($size <= 0) {
-				throw new NotFoundException($resizedPath);
+				throw new NotFoundException;
 			}
-			// do we have a base image?
-			if (!$this->storage->file_exists($basePath)) {
-				throw new NotFoundException($basePath);
-			}
-			// resize!
+
 			$avatar = new OC_Image();
-			$data = $this->storage->file_get_contents($basePath);
-			$avatar->loadFromData($data);
+			/** @var File $file */
+			$file = $this->folder->get('avatar.' . $ext);
+			$avatar->loadFromData($file->getContent());
 			if ($size !== -1) {
 				$avatar->resize($size);
 			}
-			$result = $this->storage->file_put_contents($resizedPath, $avatar->data());
-			if ($result === false) {
-				$this->logger->error("Failed to save resized avatar for {$this->user->getUID()} to $resizedPath");
+			try {
+				$file = $this->folder->newFile($path);
+				$file->putContent($avatar->data());
+			} catch (NotPermittedException $e) {
+				$this->logger->error('Failed to save avatar for ' . $this->user->getUID());
 			}
 		}
 
-		return new File($this->storage, $resizedPath);
+		return $file;
 	}
 
 	/**
@@ -198,15 +186,13 @@ class Avatar implements IAvatar {
 	 *
 	 * @return string
 	 * @throws NotFoundException
-	 * @throws StorageNotAvailableException
 	 */
 	private function getExtension() {
-		if ($this->storage->file_exists("{$this->path}/avatar.jpg")) {
+		if ($this->folder->nodeExists('avatar.jpg')) {
 			return 'jpg';
-		}
-		if ($this->storage->file_exists("{$this->path}/avatar.png")) {
+		} elseif ($this->folder->nodeExists('avatar.png')) {
 			return 'png';
 		}
-		throw new NotFoundException("{$this->path}/avatar.jpg|png");
+		throw new NotFoundException;
 	}
 }

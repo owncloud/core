@@ -1,6 +1,5 @@
 <?php
 /**
- * @author Jörn Friedrich Dreyer <jfd@butonic.de>
  * @author Arthur Schiwon <blizzz@arthur-schiwon.de>
  * @author Lukas Reschke <lukas@statuscode.ch>
  * @author Morris Jobke <hey@morrisjobke.de>
@@ -30,7 +29,6 @@ namespace OC;
 
 use OCP\Files\Folder;
 use OCP\Files\NotFoundException;
-use OCP\Files\Storage\IStorage;
 use OCP\IAvatarManager;
 use OCP\ILogger;
 use OCP\IUserManager;
@@ -48,9 +46,6 @@ class AvatarManager implements IAvatarManager {
 
 	/** @var  IRootFolder */
 	private $rootFolder;
-
-	/** @var IStorage */
-	private $storage;
 
 	/** @var IL10N */
 	private $l;
@@ -91,26 +86,37 @@ class AvatarManager implements IAvatarManager {
 			throw new \Exception('user does not exist');
 		}
 
-		$avatarsStorage = $this->getAvatarStorage();
-		return new Avatar($avatarsStorage, $this->l, $user, $this->logger);
+		$avatarsFolder = $this->getAvatarFolder($user);
+		return new Avatar($avatarsFolder, $this->l, $user, $this->logger);
+	}
+
+	private function getFolder(Folder $folder, $path) {
+		try {
+			return $folder->get($path);
+		} catch (NotFoundException $e) {
+			return $folder->newFolder($path);
+		}
+	}
+
+	private function buildAvatarPath($userId) {
+		$avatar = \substr_replace(\substr_replace(\md5($userId), '/', 4, 0), '/', 2, 0);
+		return \explode('/', $avatar);
 	}
 
 	/**
 	 * Returns the avatar folder for the given user
 	 *
-	 * @return \OCP\Files\Storage\IStorage
+	 * @param IUser $user user
+	 * @return Folder|\OCP\Files\Node
 	 *
-	 * @throws NotFoundException
-	 * @throws \OCP\Files\NotPermittedException
+	 * @internal
 	 */
-	private function getAvatarStorage() {
-		if (!$this->storage) {
-			try {
-				$this->storage = $this->rootFolder->get('avatars')->getStorage();
-			} catch (NotFoundException $e) {
-				$this->storage = $this->rootFolder->newFolder('avatars')->getStorage();
-			}
+	public function getAvatarFolder(IUser $user) {
+		$avatarsFolder = $this->getFolder($this->rootFolder, 'avatars');
+		$parts = $this->buildAvatarPath($user->getUID());
+		foreach ($parts as $part) {
+			$avatarsFolder = $this->getFolder($avatarsFolder, $part);
 		}
-		return $this->storage;
+		return $avatarsFolder;
 	}
 }
