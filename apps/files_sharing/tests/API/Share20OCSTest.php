@@ -3230,11 +3230,7 @@ class Share20OCSTest extends TestCase {
 	 * @dataProvider providesAcceptRejectShareSameState
 	 */
 	public function testAcceptRejectShareSameState($method, $target) {
-		$node = $this->createMock(Node::class);
-
-		$userShare = $this->newShare();
-		$userShare->setId(123);
-		$userShare->setNode($node);
+		$userShare = $this->makeReceivedUserShareForOperation($target);
 
 		$this->shareManager->expects($this->exactly(1))
 			->method('getShareById')
