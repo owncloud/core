@@ -57,7 +57,6 @@ class CorsPluginTest extends TestCase {
 		$this->server->sapi = $this->getMockBuilder(\stdClass::class)
 			->setMethods(['sendResponse'])
 			->getMock();
-		$this->server->sapi->expects($this->once())->method('sendResponse')->with($this->server->httpResponse);
 
 		$this->server->httpRequest->setMethod('OPTIONS');
 		$this->server->httpRequest->setUrl('/owncloud/remote.php/dav/files/user1/target/path');
@@ -263,8 +262,15 @@ class CorsPluginTest extends TestCase {
 
 	/**
 	 * @dataProvider optionsCases
+	 * @param $allowedDomains
+	 * @param $hasUser
+	 * @param $requestHeaders
+	 * @param $expectedStatus
+	 * @param array $expectedHeaders
+	 * @param bool $expectDavHeaders
 	 */
 	public function testOptionsHeaders($allowedDomains, $hasUser, $requestHeaders, $expectedStatus, array $expectedHeaders, $expectDavHeaders = false) {
+		$this->server->sapi->expects($this->once())->method('sendResponse')->with($this->server->httpResponse);
 		$user = $this->createMock(IUser::class);
 		$user->method('getUID')->willReturn('someuser');
 
@@ -298,5 +304,26 @@ class CorsPluginTest extends TestCase {
 
 		// if it has DAV headers, it means we did not bypass further processing
 		$this->assertEquals($expectDavHeaders, $this->server->httpResponse->hasHeader('DAV'));
+	}
+
+	/**
+	 * @dataProvider providesOriginUrls
+	 * @param $expectedValue
+	 * @param $url
+	 */
+	public function testExtensionRequests($expectedValue, $url) {
+		$plugin = new CorsPlugin($this->createMock(IUserSession::class));
+		self::assertEquals($expectedValue, $plugin->ignoreOriginHeader($url));
+	}
+
+	public function providesOriginUrls() {
+		return [
+			'Firefox extension' => [true, 'moz-extension://mgmnhfbjphngabcpbpmapnnaabhnchmi/'],
+			'Chrome extension' => [true, 'chrome-extension://mgmnhfbjphngabcpbpmapnnaabhnchmi/'],
+			'Empty Origin' => [true, ''],
+			'Null string Origin' => [true, 'null'],
+			'Null Origin' => [true, null],
+			'plain http' => [false, 'http://example.net/'],
+		];
 	}
 }
