@@ -28,7 +28,6 @@ namespace OC\Files\Storage\Wrapper;
 
 use OCP\Files\InvalidPathException;
 use OCP\Files\Storage\ILockingStorage;
-use OCP\Files\Storage\IStorage;
 use OCP\Lock\ILockingProvider;
 
 class Wrapper implements \OC\Files\Storage\Storage, ILockingStorage {
