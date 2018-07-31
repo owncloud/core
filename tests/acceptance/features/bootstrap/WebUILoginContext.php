@@ -125,6 +125,7 @@ class WebUILoginContext extends RawMinkContext implements Context {
 
 	/**
 	 * @When the user logs in with username :username and password :password to :server using the webUI
+	 * @Given the user has logged in with username :username and password :password to :server using the webUI
 	 *
 	 * @param string $username
 	 * @param string $password

@@ -249,7 +249,7 @@ trait AppConfiguration {
 	 */
 	public function wasCapabilitySet($capabilitiesApp, $capabilitiesParameter) {
 		return (bool) $this->getParameterValueFromXml(
-			$this->savedCapabilitiesXml,
+			$this->savedCapabilitiesXml[$this->getBaseUrl()],
 			$capabilitiesApp,
 			$capabilitiesParameter
 		);
@@ -271,11 +271,14 @@ trait AppConfiguration {
 			$this->getAdminUsername(),
 			$this->getAdminPassword(),
 			$capabilitiesArray,
-			$this->savedCapabilitiesXml
+			$this->savedCapabilitiesXml[$this->getBaseUrl()]
 		);
 
-		$this->savedCapabilitiesChanges = \array_merge(
-			$this->savedCapabilitiesChanges,
+		if (!isset($this->savedCapabilitiesChanges[$this->getBaseUrl()])) {
+			$this->savedCapabilitiesChanges[$this->getBaseUrl()] = [];
+		}
+		$this->savedCapabilitiesChanges[$this->getBaseUrl()] = \array_merge(
+			$this->savedCapabilitiesChanges[$this->getBaseUrl()],
 			$savedCapabilitiesChanges
 		);
 	}
@@ -360,7 +363,12 @@ trait AppConfiguration {
 	public function prepareParametersBeforeScenario() {
 		$user = $this->currentUser;
 		$this->currentUser = $this->getAdminUsername();
-		$this->resetAppConfigs();
+		$previousServer = $this->currentServer;
+		foreach (['LOCAL','REMOTE'] as $server) {
+			$this->usingServer($server);
+			$this->resetAppConfigs();
+		}
+		$this->usingServer($previousServer);
 		$this->currentUser = $user;
 	}
 
@@ -373,7 +381,12 @@ trait AppConfiguration {
 		$this->deleteTokenAuthEnforcedAfterScenario();
 		$user = $this->currentUser;
 		$this->currentUser = $this->getAdminUsername();
-		$this->modifyServerConfigs($this->savedCapabilitiesChanges);
+		$previousServer = $this->currentServer;
+		foreach (['LOCAL','REMOTE'] as $server) {
+			$this->usingServer($server);
+			$this->modifyServerConfigs($this->savedCapabilitiesChanges[$this->getBaseUrl()]);
+		}
+		$this->usingServer($previousServer);
 		$this->currentUser = $user;
 	}
 }

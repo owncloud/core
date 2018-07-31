@@ -400,7 +400,7 @@ class WebUIGeneralContext extends RawMinkContext implements Context {
 			$capability['testingApp'],
 			$capability['testingParameter'],
 			$value,
-			$this->getSavedCapabilitiesXml()
+			$this->getSavedCapabilitiesXml()[$this->featureContext->getBaseUrl()]
 		);
 		$this->addToSavedCapabilitiesChanges($change);
 	}
@@ -507,9 +507,10 @@ class WebUIGeneralContext extends RawMinkContext implements Context {
 			$this->featureContext->getAdminUsername(),
 			$this->featureContext->getAdminPassword()
 		);
-		$this->savedCapabilitiesXml = AppConfigHelper::getCapabilitiesXml(
-			$response
-		);
+		$this->savedCapabilitiesXml[$this->featureContext->getBaseUrl()] =
+			AppConfigHelper::getCapabilitiesXml(
+				$response
+			);
 		if ($this->oldCSRFSetting === null) {
 			$oldCSRFSetting = SetupHelper::runOcc(
 				['config:system:get', 'csrf.disabled']
