@@ -171,7 +171,9 @@ class AppConfigHelper {
 		$pathToElement = \explode('@@@', $capabilitiesPath);
 		$answeredValue = $xml->{$capabilitiesApp};
 		for ($i = 0; $i < \count($pathToElement); $i++) {
-			$answeredValue = $answeredValue->{$pathToElement[$i]};
+			if (\gettype($answeredValue) === "object") {
+				$answeredValue = $answeredValue->{$pathToElement[$i]};
+			}
 		}
 		return (string)$answeredValue;
 	}
