@@ -273,4 +273,41 @@ describe('OC.Upload tests', function() {
 			expect(upload.data.headers['OC-Autorename']).toEqual('1');
 		});
 	});
+	describe('submitting uploads', function() {
+		describe('headers', function() {
+			function testHeaders(fileData) {
+				var uploadData = addFiles(uploader, [
+					fileData
+				]);
+
+				return uploadData[0].headers;
+			}
+			it('sets request token', function() {
+				var oldToken = OC.requestToken;
+				OC.requestToken = 'abcd';
+				var headers = testHeaders({
+					name: 'headerstest.txt'
+				});
+
+				expect(headers['requesttoken']).toEqual('abcd');
+				OC.requestToken = oldToken;
+			});
+			it('sets the mtime header when lastModifiedDate is set', function() {
+				var headers = testHeaders({
+					name: 'mtimetest.txt',
+					lastModifiedDate: new Date(Date.UTC(2018, 7, 26, 14, 55, 22, 500))
+				});
+
+				expect(headers['X-OC-Mtime']).toEqual('1535295322.5');
+			});
+			it('sets the mtime header when lastModified is set', function() {
+				var headers = testHeaders({
+					name: 'mtimetest.txt',
+					lastModified: 1535295322500
+				});
+
+				expect(headers['X-OC-Mtime']).toEqual('1535295322.5');
+			});
+		});
+	});
 });
