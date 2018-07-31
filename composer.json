@@ -16,7 +16,8 @@
             "OC\\Core\\": "core/",
             "OC\\Settings\\": "settings/",
             "OCP\\": "lib/public"
-        }
+        },
+        "classmap": ["lib/private/legacy"]
     },
     "require-dev": {
         "bamarni/composer-bin-plugin": "^1.2",

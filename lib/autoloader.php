@@ -75,9 +75,7 @@ class Autoloader {
 		$class = \trim($class, '\\');
 
 		$paths = [];
-		if (\strpos($class, 'OC_') === 0) {
-			$paths[] = \OC::$SERVERROOT . '/lib/private/legacy/' . \strtolower(\str_replace('_', '/', \substr($class, 3)) . '.php');
-		} elseif (\strpos($class, 'OCA\\') === 0) {
+		if (\strpos($class, 'OCA\\') === 0) {
 			list(, $app, $rest) = \explode('\\', $class, 3);
 			$app = \strtolower($app);
 			$appPath = \OC_App::getAppPath($app);
