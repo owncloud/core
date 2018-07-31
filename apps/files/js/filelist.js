@@ -256,7 +256,6 @@
 				this.$el.toggleClass('hide-hidden-files', !this._filesConfig.get('showhidden'));
 			}
 
-
 			if (_.isUndefined(options.detailsViewEnabled) || options.detailsViewEnabled) {
 				this._detailsView = new OCA.Files.DetailsView();
 				this._detailsView.$el.insertBefore(this.$el);
@@ -333,7 +332,7 @@
 
 			if (options.scrollTo) {
 				this.$fileList.one('updated', function() {
-					self.scrollTo(options.scrollTo);
+					self.scrollTo(options.scrollTo, options.detailTabId);
 				});
 			}
 
@@ -2519,9 +2518,13 @@
 			this.$el.find('.mask').remove();
 			this.$table.removeClass('hidden');
 		},
-		scrollTo:function(file) {
+		scrollTo:function(file, detailTabId) {
 			if (!_.isArray(file)) {
 				file = [file];
+			}
+			if (!_.isUndefined(detailTabId)) {
+				var filename = file[file.length - 1];
+				this.showDetailsView(filename, detailTabId);
 			}
 			this.highlightFiles(file, function($tr) {
 				$tr.addClass('searchresult');

@@ -2103,7 +2103,7 @@ trait WebDav {
 	 *
 	 * @return int
 	 */
-	private function getFileIdForPath($user, $path) {
+	public function getFileIdForPath($user, $path) {
 		try {
 			return WebDavHelper::getFileIdForPath(
 				$this->getBaseUrl(),
