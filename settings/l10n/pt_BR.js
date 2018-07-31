@@ -1,6 +1,8 @@
 OC.L10N.register(
     "settings",
     {
+    "Wrong current password" : "Senha atual incorreta",
+    "The new password cannot be the same as the previous one" : "A nova senha não pode ser a mesma que a anterior",
     "%s password changed successfully" : "%s senha alterada com sucesso",
     "Couldn't send reset email. Please contact your administrator." : "Não foi possível enviar e-mail de redefinição. Por favor, contate o administrador.",
     "installing and updating apps via the market or Federated Cloud Sharing" : "Instalando e atualizando aplicativos através do mercado ou Compartilhamento de Nuvem Federada",
