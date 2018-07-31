@@ -34,8 +34,6 @@ namespace OC;
 use \OCP\AutoloadNotAllowedException;
 
 class Autoloader {
-	/** @var bool */
-	private $useGlobalClassPath = true;
 	/** @var array */
 	private $validRoots = [];
 
@@ -68,20 +66,6 @@ class Autoloader {
 	}
 
 	/**
-	 * disable the usage of the global classpath \OC::$CLASSPATH
-	 */
-	public function disableGlobalClassPath() {
-		$this->useGlobalClassPath = false;
-	}
-
-	/**
-	 * enable the usage of the global classpath \OC::$CLASSPATH
-	 */
-	public function enableGlobalClassPath() {
-		$this->useGlobalClassPath = true;
-	}
-
-	/**
 	 * get the possible paths for a class
 	 *
 	 * @param string $class
@@ -91,17 +75,7 @@ class Autoloader {
 		$class = \trim($class, '\\');
 
 		$paths = [];
-		if ($this->useGlobalClassPath && \array_key_exists($class, \OC::$CLASSPATH)) {
-			$paths[] = \OC::$CLASSPATH[$class];
-			/**
-			 * @TODO: Remove this when necessary
-			 * Remove "apps/" from inclusion path for smooth migration to multi app dir
-			 */
-			if (\strpos(\OC::$CLASSPATH[$class], 'apps/') === 0) {
-				\OCP\Util::writeLog('core', 'include path for class "' . $class . '" starts with "apps/"', \OCP\Util::DEBUG);
-				$paths[] = \str_replace('apps/', '', \OC::$CLASSPATH[$class]);
-			}
-		} elseif (\strpos($class, 'OC_') === 0) {
+		if (\strpos($class, 'OC_') === 0) {
 			$paths[] = \OC::$SERVERROOT . '/lib/private/legacy/' . \strtolower(\str_replace('_', '/', \substr($class, 3)) . '.php');
 		} elseif (\strpos($class, 'OCA\\') === 0) {
 			list(, $app, $rest) = \explode('\\', $class, 3);
