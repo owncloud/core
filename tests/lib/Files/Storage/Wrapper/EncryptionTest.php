@@ -828,7 +828,7 @@ class EncryptionTest extends Storage {
 	 * @param bool $encrypted
 	 */
 	public function testCopyBetweenStorageVersions($sourceInternalPath, $targetInternalPath, $copyResult, $encrypted) {
-		$sourceStorage = $this->getMockBuilder(IStorage::class)
+		$sourceStorage = $this->getMockBuilder(\OCP\Files\Storage::class)
 			->disableOriginalConstructor()
 			->getMock();
 

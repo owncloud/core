@@ -427,7 +427,7 @@ class Local extends Common {
 	}
 
 	/**
-	 * @param IStorage $sourceStorage
+	 * @param \OCP\Files\Storage $sourceStorage
 	 * @param string $sourceInternalPath
 	 * @param string $targetInternalPath
 	 * @param bool $preserveMtime
@@ -435,7 +435,7 @@ class Local extends Common {
 	 * @throws ForbiddenException
 	 * @throws \OCP\Files\StorageNotAvailableException
 	 */
-	public function copyFromStorage(IStorage $sourceStorage, $sourceInternalPath, $targetInternalPath, $preserveMtime = false) {
+	public function copyFromStorage(\OCP\Files\Storage $sourceStorage, $sourceInternalPath, $targetInternalPath, $preserveMtime = false) {
 		if ($sourceStorage->instanceOfStorage(__CLASS__)) {
 			/**
 			 * @var \OC\Files\Storage\Local $sourceStorage
@@ -448,13 +448,13 @@ class Local extends Common {
 	}
 
 	/**
-	 * @param \OCP\Files\Storage\IStorage $sourceStorage
+	 * @param \OCP\Files\Storage $sourceStorage
 	 * @param string $sourceInternalPath
 	 * @param string $targetInternalPath
 	 * @return bool
 	 * @throws \OCP\Files\StorageNotAvailableException
 	 */
-	public function moveFromStorage(IStorage $sourceStorage, $sourceInternalPath, $targetInternalPath) {
+	public function moveFromStorage(\OCP\Files\Storage $sourceStorage, $sourceInternalPath, $targetInternalPath) {
 		if ($sourceStorage->instanceOfStorage(__CLASS__)) {
 			/**
 			 * @var \OC\Files\Storage\Local $sourceStorage

@@ -432,7 +432,7 @@ class Availability extends Wrapper {
 	}
 
 	/** {@inheritdoc} */
-	public function copyFromStorage(IStorage $sourceStorage, $sourceInternalPath, $targetInternalPath) {
+	public function copyFromStorage(\OCP\Files\Storage $sourceStorage, $sourceInternalPath, $targetInternalPath) {
 		$this->checkAvailability();
 		try {
 			return parent::copyFromStorage($sourceStorage, $sourceInternalPath, $targetInternalPath);
@@ -443,7 +443,7 @@ class Availability extends Wrapper {
 	}
 
 	/** {@inheritdoc} */
-	public function moveFromStorage(IStorage $sourceStorage, $sourceInternalPath, $targetInternalPath) {
+	public function moveFromStorage(\OCP\Files\Storage $sourceStorage, $sourceInternalPath, $targetInternalPath) {
 		$this->checkAvailability();
 		try {
 			return parent::moveFromStorage($sourceStorage, $sourceInternalPath, $targetInternalPath);

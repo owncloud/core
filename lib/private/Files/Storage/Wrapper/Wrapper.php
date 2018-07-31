@@ -28,7 +28,6 @@ namespace OC\Files\Storage\Wrapper;
 
 use OCP\Files\InvalidPathException;
 use OCP\Files\Storage\ILockingStorage;
-use OCP\Files\Storage\IStorage;
 use OCP\Lock\ILockingProvider;
 
 class Wrapper implements \OC\Files\Storage\Storage, ILockingStorage {
@@ -542,13 +541,13 @@ class Wrapper implements \OC\Files\Storage\Storage, ILockingStorage {
 	}
 
 	/**
-	 * @param \OCP\Files\Storage\IStorage $sourceStorage
+	 * @param \OCP\Files\Storage $sourceStorage
 	 * @param string $sourceInternalPath
 	 * @param string $targetInternalPath
 	 * @return bool
 	 * @throws \OCP\Files\StorageNotAvailableException
 	 */
-	public function copyFromStorage(IStorage $sourceStorage, $sourceInternalPath, $targetInternalPath) {
+	public function copyFromStorage(\OCP\Files\Storage $sourceStorage, $sourceInternalPath, $targetInternalPath) {
 		if ($sourceStorage === $this) {
 			return $this->copy($sourceInternalPath, $targetInternalPath);
 		}
@@ -557,12 +556,12 @@ class Wrapper implements \OC\Files\Storage\Storage, ILockingStorage {
 	}
 
 	/**
-	 * @param IStorage $sourceStorage
+	 * @param \OCP\Files\Storage $sourceStorage
 	 * @param string $sourceInternalPath
 	 * @param string $targetInternalPath
 	 * @return bool
 	 */
-	public function moveFromStorage(IStorage $sourceStorage, $sourceInternalPath, $targetInternalPath) {
+	public function moveFromStorage(\OCP\Files\Storage $sourceStorage, $sourceInternalPath, $targetInternalPath) {
 		if ($sourceStorage === $this) {
 			return $this->rename($sourceInternalPath, $targetInternalPath);
 		}

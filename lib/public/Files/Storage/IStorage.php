@@ -29,6 +29,7 @@
 // This means that they should be used by apps instead of the internal ownCloud classes
 namespace OCP\Files\Storage;
 
+use OC\Files\Storage\Storage;
 use OCP\Files\Cache\ICache;
 use OCP\Files\Cache\IPropagator;
 use OCP\Files\Cache\IScanner;
@@ -414,22 +415,22 @@ interface IStorage {
 	public function verifyPath($path, $fileName);
 
 	/**
-	 * @param IStorage $sourceStorage
+	 * @param \OCP\Files\Storage $sourceStorage
 	 * @param string $sourceInternalPath
 	 * @param string $targetInternalPath
 	 * @return bool
 	 * @since 9.0.0
 	 */
-	public function copyFromStorage(IStorage $sourceStorage, $sourceInternalPath, $targetInternalPath);
+	public function copyFromStorage(\OCP\Files\Storage $sourceStorage, $sourceInternalPath, $targetInternalPath);
 
 	/**
-	 * @param IStorage $sourceStorage
+	 * @param \OCP\Files\Storage $sourceStorage
 	 * @param string $sourceInternalPath
 	 * @param string $targetInternalPath
 	 * @return bool
 	 * @since 9.0.0
 	 */
-	public function moveFromStorage(IStorage $sourceStorage, $sourceInternalPath, $targetInternalPath);
+	public function moveFromStorage(\OCP\Files\Storage $sourceStorage, $sourceInternalPath, $targetInternalPath);
 
 	/**
 	 * Test a storage for availability
