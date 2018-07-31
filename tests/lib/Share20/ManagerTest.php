@@ -140,6 +140,12 @@ class ManagerTest extends \Test\TestCase {
 		$this->factory->setProvider($this->defaultProvider);
 	}
 
+	public function tearDown() {
+		// clear legacy hook handlers
+		\OC_Hook::clear('\OC\Share');
+		parent::tearDown();
+	}
+
 	/**
 	 * @return Manager | \PHPUnit_Framework_MockObject_MockBuilder
 	 */
@@ -716,6 +722,24 @@ class ManagerTest extends \Test\TestCase {
 		$share->method('getPassword')->willReturn($password);
 
 		return $share;
+	}
+
+	public function testVerifyPasswordEvent() {
+		$this->config->method('getAppValue')->will($this->returnValueMap([
+			['core', 'shareapi_enforce_links_password', 'no', 'no'],
+			['core', 'shareapi_disable_enforce_links_password_for_upload_only', 'no', 'no'],
+		]));
+
+		$event = null;
+		$this->eventDispatcher->addListener('OCP\Share::validatePassword',
+			function (GenericEvent $receivedEvent) use (&$event) {
+				$event = $receivedEvent;
+			});
+
+		$result = $this->invokePrivate($this->manager, 'verifyPassword', ['somepw']);
+		$this->assertNull($result);
+
+		$this->assertEquals('somepw', $event->getArgument('password'));
 	}
 
 	public function dataGeneralChecks() {
@@ -3252,8 +3276,6 @@ class ManagerTest extends \Test\TestCase {
 	}
 
 	public function testUpdateShareLinkNoPasswordChange() {
-		\OC_Hook::clear('\OC\Share', 'verifyPassword');
-
 		$this->config->method('getAppValue')
 			->will($this->returnValueMap([
 				['core', 'shareapi_enabled', 'yes', 'yes'],

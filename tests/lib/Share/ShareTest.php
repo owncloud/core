@@ -23,6 +23,8 @@ namespace Test\Share;
 
 use OCP\IConfig;
 use Test\Traits\UserTrait;
+use Symfony\Component\EventDispatcher\EventDispatcher;
+use Symfony\Component\EventDispatcher\GenericEvent;
 
 /**
  * Class Test_Share
@@ -85,6 +87,8 @@ class ShareTest extends \Test\TestCase {
 		\OC::registerShareHooks();
 		$this->resharing = \OC::$server->getAppConfig()->getValue('core', 'shareapi_allow_resharing', 'yes');
 		\OC::$server->getAppConfig()->setValue('core', 'shareapi_allow_resharing', 'yes');
+
+		$this->overwriteService('EventDispatcher', new EventDispatcher());
 
 		// 20 Minutes in the past, 20 minutes in the future.
 		$now = \time();
@@ -1252,9 +1256,17 @@ class ShareTest extends \Test\TestCase {
 					   ->disableOriginalConstructor()
 					   ->getMock();
 
+		$event = null;
+		\OC::$server->getEventDispatcher()->addListener('OCP\Share::validatePassword',
+			function (GenericEvent $receivedEvent) use (&$event) {
+				$event = $receivedEvent;
+			}
+		);
+
 		$res = \OC\Share\Share::setPassword($userSession, $connection, $config, 1, 'pass');
 
 		$this->assertTrue($res);
+		$this->assertEquals('pass', $event->getArgument('password'));
 	}
 
 	/**
