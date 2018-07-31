@@ -4,6 +4,8 @@ Feature: webdav-related-new-endpoint
 		Given using OCS API version "1"
 		And using new DAV path
 		And user "user0" has been created
+		And the owncloud log level has been set to debug
+		And the owncloud log has been cleared
 
 	## Specific Scenario Outlines for new endpoint	
 
@@ -14,6 +16,9 @@ Feature: webdav-related-new-endpoint
 			| 3 | CCCCC |
 		Then as "user0" the file "/myChunkedFile.txt" should exist
 		And the content of file "/myChunkedFile.txt" for user "user0" should be "AAAAABBBBBCCCCC"
+		And the log file should not contain any log-entries containing these attributes:
+			| app |
+			| dav |
 
 	Scenario: Upload chunked file desc with new chunking
 		When user "user0" uploads the following chunks to "/myChunkedFile.txt" with new chunking and using the WebDAV API
@@ -22,6 +27,9 @@ Feature: webdav-related-new-endpoint
 			| 1 | AAAAA |
 		Then as "user0" the file "/myChunkedFile.txt" should exist
 		And the content of file "/myChunkedFile.txt" for user "user0" should be "AAAAABBBBBCCCCC"
+		And the log file should not contain any log-entries containing these attributes:
+			| app |
+			| dav |
 
 	Scenario: Upload chunked file random with new chunking
 		When user "user0" uploads the following chunks to "/myChunkedFile.txt" with new chunking and using the WebDAV API
@@ -30,6 +38,9 @@ Feature: webdav-related-new-endpoint
 			| 1 | AAAAA |
 		Then as "user0" the file "/myChunkedFile.txt" should exist
 		And the content of file "/myChunkedFile.txt" for user "user0" should be "AAAAABBBBBCCCCC"
+		And the log file should not contain any log-entries containing these attributes:
+			| app |
+			| dav |
 
 	Scenario: Checking file id after a move overwrite using new chunking endpoint
 		Given user "user0" has copied file "/textfile0.txt" to "/existingFile.txt"
@@ -40,6 +51,9 @@ Feature: webdav-related-new-endpoint
 			| 3 | CCCCC |
 		Then user "user0" file "/existingFile.txt" should have the previously stored id
 		And the content of file "/existingFile.txt" for user "user0" should be "AAAAABBBBBCCCCC"
+		And the log file should not contain any log-entries containing these attributes:
+			| app |
+			| dav |
 
 	Scenario: Checking file id after a move between received shares
 		Given user "user1" has been created
@@ -102,6 +116,9 @@ Feature: webdav-related-new-endpoint
 		Then the HTTP status code should be "201"
 		And as "user0" the file "/myChunkedFile.txt" should exist
 		And the content of file "/myChunkedFile.txt" for user "user0" should be "AAAAABBBBBCCCCC"
+		And the log file should not contain any log-entries containing these attributes:
+			| app |
+			| dav |
 
 	Scenario Outline: Upload files with difficult names using new chunking
 		When user "user0" creates a new chunking upload with id "chunking-42" using the WebDAV API
@@ -111,6 +128,9 @@ Feature: webdav-related-new-endpoint
 		And user "user0" moves new chunk file with id "chunking-42" to "/<file-name>" using the WebDAV API
 		Then as "user0" the file "/<file-name>" should exist
 		And the content of file "/<file-name>" for user "user0" should be "AAAAABBBBBCCCCC"
+		And the log file should not contain any log-entries containing these attributes:
+			| app |
+			| dav |
 		Examples:
 			| file-name |
 			| &#?       |
