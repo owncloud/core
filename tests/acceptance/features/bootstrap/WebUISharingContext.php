@@ -25,6 +25,7 @@ use Behat\Behat\Hook\Scope\BeforeScenarioScope;
 use Behat\Gherkin\Node\TableNode;
 use Behat\MinkExtension\Context\RawMinkContext;
 use Page\FilesPage;
+use Page\FilesPageElement\SharingDialog;
 use Page\PublicLinkFilesPage;
 use Page\SharedWithYouPage;
 use SensioLabs\Behat\PageObjectExtension\PageObject\Exception\ElementNotFoundException;
@@ -55,6 +56,11 @@ class WebUISharingContext extends RawMinkContext implements Context {
 	 * @var SharedWithYouPage
 	 */
 	private $sharedWithYouPage;
+
+	/**
+	 *
+	 * @var SharingDialog
+	 */
 	private $sharingDialog;
 
 	/**
@@ -125,7 +131,7 @@ class WebUISharingContext extends RawMinkContext implements Context {
 	) {
 		$this->filesPage->waitTillPageIsloaded($this->getSession());
 		try {
-			$this->filesPage->closeSharingDialog();
+			$this->filesPage->closeDetailsDialog();
 		} catch (Exception $e) {
 			//we don't care
 		}
@@ -160,7 +166,7 @@ class WebUISharingContext extends RawMinkContext implements Context {
 	) {
 		$this->filesPage->waitTillPageIsloaded($this->getSession());
 		try {
-			$this->filesPage->closeSharingDialog();
+			$this->filesPage->closeDetailsDialog();
 		} catch (Exception $e) {
 			//we don't care
 		}
@@ -222,7 +228,7 @@ class WebUISharingContext extends RawMinkContext implements Context {
 		//if there is no dialog open and we try to close it
 		//an exception will be thrown, but we do not care
 		try {
-			$this->filesPage->closeSharingDialog();
+			$this->filesPage->closeDetailsDialog();
 		} catch (Exception $e) {
 		}
 		$this->sharingDialog = $this->filesPage->openSharingDialog(
@@ -274,7 +280,8 @@ class WebUISharingContext extends RawMinkContext implements Context {
 	 * @return void
 	 */
 	public function theUserClosesTheShareDialog() {
-		$this->sharingDialog->closeSharingDialog();
+		// The close button is for the whole details dialog.
+		$this->filesPage->closeDetailsDialog();
 	}
 
 	/**
@@ -619,7 +626,7 @@ class WebUISharingContext extends RawMinkContext implements Context {
 		//if there is no dialog open and we try to close it
 		//an exception will be thrown, but we do not care
 		try {
-			$this->filesPage->closeSharingDialog();
+			$this->filesPage->closeDetailsDialog();
 		} catch (Exception $e) {
 		}
 		
@@ -639,9 +646,10 @@ class WebUISharingContext extends RawMinkContext implements Context {
 				"folder-shared.svg",
 				$row->findThumbnail()->getAttribute("style")
 			);
+			$detailsDialog = $this->filesPage->getDetailsDialog();
 			PHPUnit_Framework_Assert::assertContains(
 				"folder-shared.svg",
-				$sharingDialog->findThumbnail()->getAttribute("style")
+				$detailsDialog->findThumbnail()->getAttribute("style")
 			);
 		}
 		if ($sharedWithGroup !== "") {
