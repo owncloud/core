@@ -37,7 +37,7 @@ class FeatureContext extends BehatVariablesContext {
 	protected function resetAppConfigs() {
 		// Remember the current capabilities
 		$this->getCapabilitiesCheckResponse();
-		$this->savedCapabilitiesXml = $this->getCapabilitiesXml();
+		$this->savedCapabilitiesXml[$this->getBaseUrl()] = $this->getCapabilitiesXml();
 		// Set the required starting values for testing
 		$this->setCapabilities($this->getCommonSharingConfigs());
 	}

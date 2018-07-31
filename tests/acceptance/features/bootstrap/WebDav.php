@@ -287,6 +287,24 @@ trait WebDav {
 	}
 
 	/**
+	 * @When /^user "([^"]*)" on "(LOCAL|REMOTE)" moves (?:file|folder|entry) "([^"]*)" to "([^"]*)" using the WebDAV API$/
+	 *
+	 * @param string $user
+	 * @param string $server
+	 * @param string $fileSource
+	 * @param string $fileDestination
+	 *
+	 * @return void
+	 */
+	public function userOnMovesFileUsingTheAPI(
+		$user, $server, $fileSource, $fileDestination
+	) {
+		$previousServer = $this->usingServer($server);
+		$this->userMovesFileUsingTheAPI($user, $fileSource, $fileDestination);
+		$this->usingServer($previousServer);
+	}
+
+	/**
 	 * @When /^user "([^"]*)" copies file "([^"]*)" to "([^"]*)" using the WebDAV API$/
 	 * @Given /^user "([^"]*)" has copied file "([^"]*)" to "([^"]*)"$/
 	 *
@@ -1217,6 +1235,22 @@ trait WebDav {
 	}
 
 	/**
+	 * @When /^user "([^"]*)" on "(LOCAL|REMOTE)" uploads file "([^"]*)" to "([^"]*)" using the WebDAV API$/
+	 *
+	 * @param string $user
+	 * @param string $server
+	 * @param string $source
+	 * @param string $destination
+	 *
+	 * @return void
+	 */
+	public function userOnUploadsAFileTo($user, $server, $source, $destination) {
+		$previousServer = $this->usingServer($server);
+		$this->userUploadsAFileTo($user, $source, $destination);
+		$this->usingServer($previousServer);
+	}
+	
+	/**
 	 * @When user :user uploads file :source to :destination with chunks using the WebDAV API
 	 *
 	 * @param string $user
@@ -1553,6 +1587,22 @@ trait WebDav {
 			// 4xx and 5xx responses cause an exception
 			$this->response = $e->getResponse();
 		}
+	}
+
+	/**
+	 * @When /^user "([^"]*)" on "(LOCAL|REMOTE)" (?:deletes|unshares) (?:file|folder) "([^"]*)" using the WebDAV API$/
+	 * @Given /^user "([^"]*)" on "(LOCAL|REMOTE)" has (?:deleted|unshared) (?:file|folder) "([^"]*)"$/
+	 *
+	 * @param string $user
+	 * @param string $server
+	 * @param string $file
+	 *
+	 * @return void
+	 */
+	public function userOnDeletesFile($user, $server, $file) {
+		$previousServer = $this->usingServer($server);
+		$this->userDeletesFile($user, $file);
+		$this->usingServer($previousServer);
 	}
 
 	/**

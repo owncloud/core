@@ -88,8 +88,9 @@ export LANG=C
 # @param $3 command
 # sets $REMOTE_OCC_STDOUT and $REMOTE_OCC_STDERR from returned xml data
 # @return occ return code given in the xml data
-remote_occ() {
-	CURL_OCC_RESULT=`curl -s -u $1 $2 -d "command=$3"`
+function remote_occ() {
+	COMMAND=`echo $3 | xargs`
+	CURL_OCC_RESULT=`curl -s -u $1 $2 -d "command=${COMMAND}"`
 	# xargs is (miss)used to trim the output
 	RETURN=`echo ${CURL_OCC_RESULT} | xmllint --xpath "string(ocs/data/code)" - | xargs`
 	# We could not find a proper return of the testing app, so something went wrong
@@ -113,12 +114,22 @@ remote_occ() {
 # adds a new element to the array PREVIOUS_SETTINGS
 # PREVIOUS_SETTINGS will be an array of strings containing:
 # URL;system|app;app-name;setting-name;value;variable-type
-save_config_setting() {
+function save_config_setting() {
 	remote_occ $1 $2 "--no-warnings config:$3:get $4 $5"
 	PREVIOUS_SETTINGS+=("$2;$3;$4;$5;${REMOTE_OCC_STDOUT};$6")
 }
 
 declare -a PREVIOUS_SETTINGS
+
+# get the sub path from an URL
+# $1 the full URL including the protocol
+# echos the path
+function get_path_from_url() {
+	PROTOCOL="$(echo $1 | grep :// | sed -e's,^\(.*://\).*,\1,g')"
+	URL="$(echo ${1/$PROTOCOL/})"
+	PATH="$(echo ${URL} | grep / | cut -d/ -f2-)"
+	echo ${PATH}
+}
 
 # Provide a default admin username and password.
 # But let the caller pass them if they wish
@@ -175,10 +186,109 @@ function env_encryption_disable_user_keys {
 	remote_occ ${ADMIN_AUTH} ${OCC_URL} "config:app:delete encryption userSpecificKey"
 }
 
+function teardown() {
+	if [ "${RUNNING_API_TESTS}" = true ]
+	then
+		remote_occ ${ADMIN_AUTH} ${OCC_URL} "files_external:delete -y ${ID_STORAGE}"
+	fi
+	
+	# Enable any apps that were disabled for the test run
+	for i in "${!APPS_TO_REENABLE[@]}"
+	do
+		read -r -a APP <<< "${APPS_TO_REENABLE[$i]}"
+		remote_occ ${ADMIN_AUTH} ${APP[0]} "--no-warnings app:enable ${APP[1]}"
+	done
+	
+	# Disable any apps that were enabled for the test run
+	for i in "${!APPS_TO_REDISABLE[@]}"
+	do
+		read -r -a APP <<< "${APPS_TO_REDISABLE[$i]}"
+		remote_occ ${ADMIN_AUTH} ${APP[0]} "--no-warnings app:disable ${APP[1]}"
+	done
+
+	# Put back settings that were set for the test-run
+	for i in "${!PREVIOUS_SETTINGS[@]}"
+	do
+		PREVIOUS_IFS=${IFS}
+		IFS=';'
+		read -r -a SETTING <<< "${PREVIOUS_SETTINGS[$i]}"
+		IFS=${PREVIOUS_IFS}
+		if [ -z "${SETTING[4]}" ]
+		then
+			remote_occ ${ADMIN_AUTH} ${SETTING[0]} "config:${SETTING[1]}:delete ${SETTING[2]} ${SETTING[3]}"
+		else
+			TYPE_STRING=""
+			if [ -n "${SETTING[5]}" ]
+			then
+				#place the space here not in the command line, so that there is no space if the string is empty
+				TYPE_STRING=" --type ${SETTING[5]}"
+			fi
+			remote_occ ${ADMIN_AUTH} ${SETTING[0]} "config:${SETTING[1]}:set ${SETTING[2]} ${SETTING[3]} --value=${SETTING[4]}${TYPE_STRING}"
+		fi
+	done
+	
+	# Put back state of the testing app
+	if [ "${TESTING_ENABLED_BY_SCRIPT}" = true ]
+	then
+		${OCC} app:disable testing
+	fi
+
+	# Upload log file for later analysis
+	if [ "${PASSED}" = false ] && [ ! -z "${REPORTING_WEBDAV_USER}" ] && [ ! -z "${REPORTING_WEBDAV_PWD}" ] && [ ! -z "${REPORTING_WEBDAV_URL}" ]
+	then
+		curl -u ${REPORTING_WEBDAV_USER}:${REPORTING_WEBDAV_PWD} -T ${TEST_LOG_FILE} ${REPORTING_WEBDAV_URL}/"${TRAVIS_JOB_NUMBER}"_`date "+%F_%T"`.log
+	fi
+	
+	if [ "${RUNNING_API_TESTS}" = true ]
+	then
+		# Clear storage folder
+		rm -Rf work/local_storage/*
+	fi
+	
+	if [ "${OC_TEST_ALT_HOME}" = "1" ]
+	then
+		env_alt_home_clear
+	fi
+	
+	# Disable encryption if requested
+	if [ "${OC_TEST_ENCRYPTION_ENABLED}" = "1" ]
+	then
+		env_encryption_disable
+	fi
+	
+	if [ "${OC_TEST_ENCRYPTION_MASTER_KEY_ENABLED}" = "1" ]
+	then
+		env_encryption_disable_master_key
+	fi
+	
+	if [ "${OC_TEST_ENCRYPTION_USER_KEYS_ENABLED}" = "1" ]
+	then
+		env_encryption_disable_user_keys
+	fi
+	
+	if [ "${TEST_WITH_PHPDEVSERVER}" == "true" ]
+	then
+		kill ${PHPPID}
+		kill ${PHPPID_FED}
+	fi
+	
+	if [ "${SHOW_OC_LOGS}" = true ]
+	then
+		tail "${OC_PATH}/data/owncloud.log"
+	fi
+	
+	# Reset the original language
+	export LANG=${OLD_LANG}
+	
+	rm -f "${TEST_LOG_FILE}"
+	
+	echo "runsh: Exit code of main run: ${BEHAT_EXIT_STATUS}"
+}
+
 declare -x TEST_SERVER_URL
 declare -x TEST_SERVER_FED_URL
 declare -x TEST_WITH_PHPDEVSERVER
-[[ -z "${TEST_SERVER_URL}" || -z "${TEST_SERVER_FED_URL}" ]] && TEST_WITH_PHPDEVSERVER="true"
+[[ -z "${TEST_SERVER_URL}" && -z "${TEST_SERVER_FED_URL}" ]] && TEST_WITH_PHPDEVSERVER="true"
 
 if [ -z "${IPV4_URL}" ]
 then
@@ -196,16 +306,24 @@ then
 	# set it already here, so it can be used for remote_occ
 	# we know the TEST_SERVER_URL already
 	OCC_URL="${TEST_SERVER_URL}/ocs/v2.php/apps/testing/api/v1/occ"
+	if [ -n "${TEST_SERVER_FED_URL}" ]
+	then
+		OCC_FED_URL="${TEST_SERVER_FED_URL}/ocs/v2.php/apps/testing/api/v1/occ"
+	fi
 	
 	echo "Not using php inbuilt server for running scenario ..."
 	echo "Updating .htaccess for proper rewrites"
-	
 	#get the sub path of the webserver and set the correct RewriteBase
-	PROTOCOL="$(echo ${TEST_SERVER_URL} | grep :// | sed -e's,^\(.*://\).*,\1,g')"
-	URL="$(echo ${TEST_SERVER_URL/$PROTOCOL/})"
-	WEBSERVER_PATH="$(echo ${URL} | grep / | cut -d/ -f2-)"
+	WEBSERVER_PATH=$(get_path_from_url ${TEST_SERVER_URL})
 	remote_occ ${ADMIN_AUTH} ${OCC_URL} "config:system:set htaccess.RewriteBase --value /${WEBSERVER_PATH}/"
 	remote_occ ${ADMIN_AUTH} ${OCC_URL} "maintenance:update:htaccess"
+
+	if [ -n "${TEST_SERVER_FED_URL}" ]
+	then
+		WEBSERVER_PATH=$(get_path_from_url ${TEST_SERVER_FED_URL})
+		remote_occ ${ADMIN_AUTH} ${OCC_FED_URL} "config:system:set htaccess.RewriteBase --value /${WEBSERVER_PATH}/"
+		remote_occ ${ADMIN_AUTH} ${OCC_FED_URL} "maintenance:update:htaccess"
+	fi
 else
 	echo "Using php inbuilt server for running scenario ..."
 
@@ -324,67 +442,7 @@ else
 	TESTING_ENABLED_BY_SCRIPT=false;
 fi
 
-# Set SMTP settings
-save_config_setting ${ADMIN_AUTH} ${OCC_URL} "system" "" "mail_domain"
-save_config_setting ${ADMIN_AUTH} ${OCC_URL} "system" "" "mail_from_address"
-save_config_setting ${ADMIN_AUTH} ${OCC_URL} "system" "" "mail_smtpmode"
-save_config_setting ${ADMIN_AUTH} ${OCC_URL} "system" "" "mail_smtphost"
-save_config_setting ${ADMIN_AUTH} ${OCC_URL} "system" "" "mail_smtpport"
-
-remote_occ ${ADMIN_AUTH} ${OCC_URL} "config:system:set mail_domain --value=foobar.com"
-remote_occ ${ADMIN_AUTH} ${OCC_URL} "config:system:set mail_from_address --value=owncloud"
-remote_occ ${ADMIN_AUTH} ${OCC_URL} "config:system:set mail_smtpmode --value=smtp"
-remote_occ ${ADMIN_AUTH} ${OCC_URL} "config:system:set mail_smtphost --value=${MAILHOG_HOST}"
-remote_occ ${ADMIN_AUTH} ${OCC_URL} "config:system:set mail_smtpport --value=${MAILHOG_SMTP_PORT}"
-
-# Get the current backgroundjobs_mode
-save_config_setting ${ADMIN_AUTH} ${OCC_URL} "app" "core" "backgroundjobs_mode"
-
-# Switch to webcron
-remote_occ ${ADMIN_AUTH} ${OCC_URL} "config:app:set core backgroundjobs_mode --value=webcron"
-if [ $? -ne 0 ]
-then
-	echo "WARNING: Could not set backgroundjobs mode to 'webcron'"
-fi
-
-#Enable and disable apps as required for default
-if [ -z "${APPS_TO_DISABLE}" ]
-then
-	APPS_TO_DISABLE="firstrunwizard notifications"
-fi
-
-if [ -z "${APPS_TO_ENABLE}" ]
-then
-	APPS_TO_ENABLE=""
-fi
-
-APPS_TO_REENABLE="";
-
-for APP_TO_DISABLE in ${APPS_TO_DISABLE}; do
-	remote_occ ${ADMIN_AUTH} ${OCC_URL} "--no-warnings app:list ^${APP_TO_DISABLE}$"
-	PREVIOUS_APP_STATUS=${REMOTE_OCC_STDOUT}
-	if [[ "${PREVIOUS_APP_STATUS}" =~ ^Enabled: ]]
-	then
-		APPS_TO_REENABLE="${APPS_TO_REENABLE} ${APP_TO_DISABLE}";
-		remote_occ ${ADMIN_AUTH} ${OCC_URL} "--no-warnings app:disable ${APP_TO_DISABLE}"
-	fi
-done
-
-APPS_TO_REDISABLE="";
-
-for APP_TO_ENABLE in ${APPS_TO_ENABLE}; do
-	remote_occ ${ADMIN_AUTH} ${OCC_URL} "--no-warnings app:list ^${APP_TO_ENABLE}$"
-	PREVIOUS_APP_STATUS=${REMOTE_OCC_STDOUT}
-	if [[ "${PREVIOUS_APP_STATUS}" =~ ^Disabled: ]]
-	then
-		APPS_TO_REDISABLE="${APPS_TO_REDISABLE} ${APP_TO_ENABLE}";
-		remote_occ ${ADMIN_AUTH} ${OCC_URL} "--no-warnings app:enable ${APP_TO_ENABLE}"
-	fi
-done
-
-# Set up personalized skeleton
-save_config_setting ${ADMIN_AUTH} ${OCC_URL} "system" "" "skeletondirectory"
-
+# calculate the correct skeleton folder
 # $SRC_SKELETON_DIR is the path to the skeleton folder on the machine where the tests are executed
 # it is used for file comparisons in various tests
 if [ "${RUNNING_API_TESTS}" = true ]
@@ -401,22 +459,89 @@ then
 	export SKELETON_DIR="${SRC_SKELETON_DIR}"
 fi
 
-remote_occ ${ADMIN_AUTH} ${OCC_URL} "config:system:set skeletondirectory --value=${SKELETON_DIR}"
+# table of settings to be remembered and set
+#system|app;app-name;setting-name;value;variable-type
+declare -a SETTINGS
+SETTINGS+=("system;;mail_domain;foobar.com")
+SETTINGS+=("system;;mail_from_address;owncloud")
+SETTINGS+=("system;;mail_smtpmode;smtp")
+SETTINGS+=("system;;mail_smtphost;${MAILHOG_HOST}")
+SETTINGS+=("system;;mail_smtpport;${MAILHOG_SMTP_PORT}")
+SETTINGS+=("app;core;backgroundjobs_mode;webcron")
+SETTINGS+=("system;;sharing.federation.allowHttpFallback;true;boolean")
+SETTINGS+=("app;core;enable_external_storage;yes")
+SETTINGS+=("system;;files_external_allow_create_new_local;true")
+SETTINGS+=("system;;skeletondirectory;${SKELETON_DIR}")
 
-if [ $? -ne 0 ]
+# Set various settings
+for URL in ${OCC_URL} ${OCC_FED_URL}
+do
+	for i in "${!SETTINGS[@]}"
+	do
+		PREVIOUS_IFS=${IFS}
+		IFS=';'
+		read -r -a SETTING <<< "${SETTINGS[$i]}"
+		IFS=${PREVIOUS_IFS}
+		
+		save_config_setting "${ADMIN_AUTH}" "${URL}" "${SETTING[0]}" "${SETTING[1]}" "${SETTING[2]}" "${SETTING[4]}"
+		
+		TYPE_STRING=""
+		if [ -n "${SETTING[4]}" ]
+		then
+			#place the space here not in the command line, so that there is no space if the string is empty
+			TYPE_STRING=" --type ${SETTING[4]}"
+		fi
+		
+		remote_occ ${ADMIN_AUTH} ${URL} "config:${SETTING[0]}:set ${SETTING[1]} ${SETTING[2]} --value=${SETTING[3]}${TYPE_STRING}"
+		if [ $? -ne 0 ]
+		then
+			echo -e "Could not set ${SETTING[2]} on ${URL}. Result:\n'${REMOTE_OCC_STDERR}'"
+			teardown
+			exit 1
+		fi
+	done
+done
+
+#Enable and disable apps as required for default
+if [ -z "${APPS_TO_DISABLE}" ]
 then
-	echo -e "Could not set skeleton directory. Result:\n'${REMOTE_OCC_STDERR}'"
-	exit 1
+	APPS_TO_DISABLE="firstrunwizard notifications"
 fi
 
-save_config_setting ${ADMIN_AUTH} ${OCC_URL} "system" "" "sharing.federation.allowHttpFallback" "boolean"
-remote_occ ${ADMIN_AUTH} ${OCC_URL} "config:system:set sharing.federation.allowHttpFallback --type boolean --value=true"
+if [ -z "${APPS_TO_ENABLE}" ]
+then
+	APPS_TO_ENABLE=""
+fi
 
-# Enable external storage app
-save_config_setting ${ADMIN_AUTH} ${OCC_URL} "app" "core" "enable_external_storage"
-save_config_setting ${ADMIN_AUTH} ${OCC_URL} "system" "" "files_external_allow_create_new_local"
-remote_occ ${ADMIN_AUTH} ${OCC_URL} "config:app:set core enable_external_storage --value=yes"
-remote_occ ${ADMIN_AUTH} ${OCC_URL} "config:system:set files_external_allow_create_new_local --value=true"
+declare -a APPS_TO_REENABLE;
+
+for URL in ${OCC_URL} ${OCC_FED_URL}
+	do
+	for APP_TO_DISABLE in ${APPS_TO_DISABLE}; do
+		remote_occ ${ADMIN_AUTH} ${URL} "--no-warnings app:list ^${APP_TO_DISABLE}$"
+		PREVIOUS_APP_STATUS=${REMOTE_OCC_STDOUT}
+		if [[ "${PREVIOUS_APP_STATUS}" =~ ^Enabled: ]]
+		then
+			APPS_TO_REENABLE+=("${URL} ${APP_TO_DISABLE}");
+			remote_occ ${ADMIN_AUTH} ${URL} "--no-warnings app:disable ${APP_TO_DISABLE}"
+		fi
+	done
+done
+
+declare -a APPS_TO_REDISABLE;
+
+for URL in ${OCC_URL} ${OCC_FED_URL}
+	do
+	for APP_TO_ENABLE in ${APPS_TO_ENABLE}; do
+		remote_occ ${ADMIN_AUTH} ${URL} "--no-warnings app:list ^${APP_TO_ENABLE}$"
+		PREVIOUS_APP_STATUS=${REMOTE_OCC_STDOUT}
+		if [[ "${PREVIOUS_APP_STATUS}" =~ ^Disabled: ]]
+		then
+			APPS_TO_REDISABLE+=("${URL} ${APP_TO_ENABLE}");
+			remote_occ ${ADMIN_AUTH} ${URL} "--no-warnings app:enable ${APP_TO_ENABLE}"
+		fi
+	done
+done
 
 # Only make local storage when running API tests.
 # The local storage folder cannot be deleted by an ordinary user.
@@ -663,98 +788,7 @@ then
 	rm -f "${DRY_RUN_FILE}"
 fi
 
-if [ "${RUNNING_API_TESTS}" = true ]
-then
-	remote_occ ${ADMIN_AUTH} ${OCC_URL} "files_external:delete -y ${ID_STORAGE}"
-fi
-
-# Enable any apps that were disabled for the test run
-for APP_TO_ENABLE in ${APPS_TO_REENABLE}; do
-	remote_occ ${ADMIN_AUTH} ${OCC_URL} "--no-warnings app:enable ${APP_TO_ENABLE}"
-done
-
-# Disable any apps that were enabled for the test run
-for APP_TO_DISABLE in ${APPS_TO_REDISABLE}; do
-	remote_occ ${ADMIN_AUTH} ${OCC_URL} "--no-warnings app:disable ${APP_TO_DISABLE}"
-done
-
-# Put back settings that were set for the test-run
-for i in "${!PREVIOUS_SETTINGS[@]}"
-do
-	PREVIOUS_IFS=${IFS}
-	IFS=';'
-	read -r -a SETTING <<< "${PREVIOUS_SETTINGS[$i]}"
-	IFS=${PREVIOUS_IFS}
-	if [ -z "${SETTING[4]}" ]
-	then
-		remote_occ ${ADMIN_AUTH} ${SETTING[0]} "config:${SETTING[1]}:delete ${SETTING[2]} ${SETTING[3]}"
-	else
-		TYPE_STRING=""
-		if [ -n "${SETTING[5]}" ]
-		then
-			#place the space here not in the command line, so that there is no space if the string is empty
-			TYPE_STRING=" --type ${SETTING[5]}"
-		fi
-		remote_occ ${ADMIN_AUTH} ${SETTING[0]} "config:${SETTING[1]}:set ${SETTING[2]} ${SETTING[3]} --value=${SETTING[4]}${TYPE_STRING}"
-	fi
-done
-
-# Put back state of the testing app
-if [ "${TESTING_ENABLED_BY_SCRIPT}" = true ]
-then
-	${OCC} app:disable testing
-fi
-
-# Upload log file for later analysis
-if [ "${PASSED}" = false ] && [ ! -z "${REPORTING_WEBDAV_USER}" ] && [ ! -z "${REPORTING_WEBDAV_PWD}" ] && [ ! -z "${REPORTING_WEBDAV_URL}" ]
-then
-	curl -u ${REPORTING_WEBDAV_USER}:${REPORTING_WEBDAV_PWD} -T ${TEST_LOG_FILE} ${REPORTING_WEBDAV_URL}/"${TRAVIS_JOB_NUMBER}"_`date "+%F_%T"`.log
-fi
-
-if [ "${RUNNING_API_TESTS}" = true ]
-then
-	# Clear storage folder
-	rm -Rf work/local_storage/*
-fi
-
-if [ "${OC_TEST_ALT_HOME}" = "1" ]
-then
-	env_alt_home_clear
-fi
-
-# Disable encryption if requested
-if [ "${OC_TEST_ENCRYPTION_ENABLED}" = "1" ]
-then
-	env_encryption_disable
-fi
-
-if [ "${OC_TEST_ENCRYPTION_MASTER_KEY_ENABLED}" = "1" ]
-then
-	env_encryption_disable_master_key
-fi
-
-if [ "${OC_TEST_ENCRYPTION_USER_KEYS_ENABLED}" = "1" ]
-then
-	env_encryption_disable_user_keys
-fi
-
-if [ "${TEST_WITH_PHPDEVSERVER}" == "true" ]
-then
-	kill ${PHPPID}
-	kill ${PHPPID_FED}
-fi
-
-if [ "${SHOW_OC_LOGS}" = true ]
-then
-	tail "${OC_PATH}/data/owncloud.log"
-fi
-
-# Reset the original language
-export LANG=${OLD_LANG}
-
-rm -f "${TEST_LOG_FILE}"
-
-echo "runsh: Exit code of main run: ${BEHAT_EXIT_STATUS}"
+teardown
 
 if [ "${PASSED}" = true ]
 then
