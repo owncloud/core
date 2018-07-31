@@ -16,7 +16,8 @@
             "OC\\Core\\": "core/",
             "OC\\Settings\\": "settings/",
             "OCP\\": "lib/public"
-        }
+        },
+        "classmap": ["lib/private/legacy"]
     },
     "require-dev": {
         "behat/behat": "^3.0",
