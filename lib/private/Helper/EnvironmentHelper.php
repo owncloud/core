@@ -55,4 +55,13 @@ class EnvironmentHelper {
 	public function getAppsRoots() {
 		return \OC::$APPSROOTS;
 	}
+
+	/**
+	 * Get the environment variable
+	 * @param $envVar
+	 * @return array|false|string
+	 */
+	public function getEnvVar($envVar) {
+		return \getenv($envVar);
+	}
 }
