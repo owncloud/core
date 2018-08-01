@@ -29,10 +29,12 @@ use OCP\ILogger;
 use OCP\IURLGenerator;
 use OCP\IUser;
 use OCP\Mail\IMailer;
+use OCP\Theme\IThemeService;
 use OCP\Util;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\EventDispatcher\GenericEvent;
 use Test\TestCase;
+use OC\Mail\Message;
 
 /**
  * Class MailNotificationsTest
@@ -46,7 +48,7 @@ class MailNotificationsTest extends TestCase {
 	private $mailer;
 	/** @var ILogger */
 	private $logger;
-	/** @var IConfig */
+	/** @var IConfig | \PHPUnit_Framework_MockObject_MockObject */
 	private $config;
 	/** @var Defaults | \PHPUnit_Framework_MockObject_MockObject */
 	private $defaults;
@@ -54,25 +56,29 @@ class MailNotificationsTest extends TestCase {
 	private $user;
 	/** @var IURLGenerator | \PHPUnit_Framework_MockObject_MockObject */
 	private $urlGenerator;
+	/** @var EventDispatcher */
 	private $eventDispatcher;
+	/** @var IThemeService | \PHPUnit_Framework_MockObject_MockObject */
+	private $themeService;
 
 	public function setUp() {
 		parent::setUp();
 
-		$this->l10n = $this->getMockBuilder('\OCP\IL10N')
+		$this->l10n = $this->getMockBuilder(IL10N::class)
 			->disableOriginalConstructor()->getMock();
-		$this->mailer = $this->getMockBuilder('\OCP\Mail\IMailer')
+		$this->mailer = $this->getMockBuilder(IMailer::class)
 			->disableOriginalConstructor()->getMock();
-		$this->logger = $this->getMockBuilder('\OCP\ILogger')
+		$this->logger = $this->getMockBuilder(ILogger::class)
 			->disableOriginalConstructor()->getMock();
 		$this->config = $this->getMockBuilder(IConfig::class)
 			->disableOriginalConstructor()->getMock();
-		$this->defaults = $this->getMockBuilder('\OCP\Defaults')
+		$this->defaults = $this->getMockBuilder(Defaults::class)
 				->disableOriginalConstructor()->getMock();
-		$this->user = $this->getMockBuilder('\OCP\IUser')
+		$this->user = $this->getMockBuilder(IUser::class)
 				->disableOriginalConstructor()->getMock();
-		$this->urlGenerator = $this->createMock('\OCP\IURLGenerator');
+		$this->urlGenerator = $this->createMock(IURLGenerator::class);
 		$this->eventDispatcher = new EventDispatcher();
+		$this->themeService = $this->createMock(IThemeService::class);
 
 		$this->l10n->expects($this->any())
 			->method('t')
@@ -96,7 +102,7 @@ class MailNotificationsTest extends TestCase {
 	}
 
 	public function testSendLinkShareMailWithoutReplyTo() {
-		$message = $this->getMockBuilder('\OC\Mail\Message')
+		$message = $this->getMockBuilder(Message::class)
 			->disableOriginalConstructor()->getMock();
 
 		$message
@@ -117,6 +123,11 @@ class MailNotificationsTest extends TestCase {
 			->expects($this->once())
 			->method('setFrom')
 			->with([Util::getDefaultEmailAddress('sharing-noreply') => 'TestUser via UnitTestCloud']);
+		$swiftMessage = $this->createMock(\Swift_Message::class);
+		$message
+			->expects(self::once())
+			->method('getSwiftMessage')
+			->willReturn($swiftMessage);
 
 		$this->mailer
 			->expects($this->once())
@@ -136,14 +147,15 @@ class MailNotificationsTest extends TestCase {
 			$this->logger,
 			$this->defaults,
 			$this->urlGenerator,
-			$this->eventDispatcher
+			$this->eventDispatcher,
+			$this->themeService
 		);
 
 		$this->assertSame([], $mailNotifications->sendLinkShareMail('lukas@owncloud.com', 'MyFile', 'https://owncloud.com/file/?foo=bar', 3600));
 	}
 
 	public function testSendLinkShareMailWithRecipientAndOptions() {
-		$message = $this->getMockBuilder('\OC\Mail\Message')
+		$message = $this->getMockBuilder(Message::class)
 			->disableOriginalConstructor()->getMock();
 
 		$message
@@ -168,6 +180,12 @@ class MailNotificationsTest extends TestCase {
 			->method('setFrom')
 			->with([Util::getDefaultEmailAddress('sharing-noreply') => 'TestUser via UnitTestCloud']);
 
+		$swiftMessage = $this->createMock(\Swift_Message::class);
+		$message
+			->expects(self::once())
+			->method('getSwiftMessage')
+			->willReturn($swiftMessage);
+
 		$this->mailer
 			->expects($this->once())
 			->method('createMessage')
@@ -187,7 +205,8 @@ class MailNotificationsTest extends TestCase {
 			$this->logger,
 			$this->defaults,
 			$this->urlGenerator,
-			$this->eventDispatcher
+			$this->eventDispatcher,
+			$this->themeService
 		);
 
 		$calledEvent = [];
@@ -210,7 +229,7 @@ class MailNotificationsTest extends TestCase {
 	}
 
 	public function testSendLinkShareMailPersonalNote() {
-		$message = $this->getMockBuilder('\OC\Mail\Message')
+		$message = $this->getMockBuilder(Message::class)
 			->disableOriginalConstructor()->getMock();
 
 		$message
@@ -235,6 +254,12 @@ class MailNotificationsTest extends TestCase {
 			->method('setFrom')
 			->with([Util::getDefaultEmailAddress('sharing-noreply') => 'TestUser via UnitTestCloud']);
 
+		$swiftMessage = $this->createMock(\Swift_Message::class);
+		$message
+			->expects(self::once())
+			->method('getSwiftMessage')
+			->willReturn($swiftMessage);
+
 		$this->mailer
 			->expects($this->once())
 			->method('createMessage')
@@ -254,7 +279,8 @@ class MailNotificationsTest extends TestCase {
 			$this->logger,
 			$this->defaults,
 			$this->urlGenerator,
-			$this->eventDispatcher
+			$this->eventDispatcher,
+			$this->themeService
 		);
 
 		$calledEvent = [];
@@ -289,7 +315,7 @@ class MailNotificationsTest extends TestCase {
 	 * @param array $expectedTo
 	 */
 	public function testSendLinkShareMailWithReplyTo($to, array $expectedTo) {
-		$message = $this->getMockBuilder('\OC\Mail\Message')
+		$message = $this->getMockBuilder(Message::class)
 			->disableOriginalConstructor()->getMock();
 
 		$message
@@ -314,6 +340,11 @@ class MailNotificationsTest extends TestCase {
 			->expects($this->once())
 			->method('setReplyTo')
 			->with(['sharer@owncloud.com']);
+		$swiftMessage = $this->createMock(\Swift_Message::class);
+		$message
+			->expects(self::once())
+			->method('getSwiftMessage')
+			->willReturn($swiftMessage);
 
 		$this->mailer
 			->expects($this->once())
@@ -333,7 +364,8 @@ class MailNotificationsTest extends TestCase {
 			$this->logger,
 			$this->defaults,
 			$this->urlGenerator,
-			$this->eventDispatcher
+			$this->eventDispatcher,
+			$this->themeService
 		);
 		$this->assertSame([], $mailNotifications->sendLinkShareMail($to, 'MyFile', 'https://owncloud.com/file/?foo=bar', 3600));
 	}
@@ -368,7 +400,8 @@ class MailNotificationsTest extends TestCase {
 			$this->logger,
 			$this->defaults,
 			$this->urlGenerator,
-			$this->eventDispatcher
+			$this->eventDispatcher,
+			$this->themeService
 		);
 
 		$options = [];
@@ -391,7 +424,7 @@ class MailNotificationsTest extends TestCase {
 		$this->setupMailerMock('TestUser shared »&lt;welcome&gt;.txt« with you', ['recipient@owncloud.com' => 'Recipient'], false);
 
 		/** @var MailNotifications | \PHPUnit_Framework_MockObject_MockObject $mailNotifications */
-		$mailNotifications = $this->getMockBuilder('OC\Share\MailNotifications')
+		$mailNotifications = $this->getMockBuilder(MailNotifications::class)
 			->setMethods(['getItemSharedWithUser'])
 			->setConstructorArgs([
 				$this->user,
@@ -401,7 +434,8 @@ class MailNotificationsTest extends TestCase {
 				$this->logger,
 				$this->defaults,
 				$this->urlGenerator,
-				$this->eventDispatcher
+				$this->eventDispatcher,
+				$this->themeService
 			])
 			->getMock();
 
@@ -411,7 +445,7 @@ class MailNotificationsTest extends TestCase {
 				['file_target' => '/<welcome>.txt', 'item_source' => 123, 'expiration' => '2017-01-01T15:03:01.012345Z'],
 			]);
 
-		$recipient = $this->getMockBuilder('\OCP\IUser')
+		$recipient = $this->getMockBuilder(IUser::class)
 				->disableOriginalConstructor()->getMock();
 		$recipient
 				->expects($this->once())
@@ -440,7 +474,7 @@ class MailNotificationsTest extends TestCase {
 		$this->setupMailerMock('TestUser shared »&lt;welcome&gt;.txt« with you', ['recipient@owncloud.com' => 'Recipient'], false);
 
 		/** @var MailNotifications | \PHPUnit_Framework_MockObject_MockObject $mailNotifications */
-		$mailNotifications = $this->getMockBuilder('OC\Share\MailNotifications')
+		$mailNotifications = $this->getMockBuilder(MailNotifications::class)
 			->setMethods(['getItemSharedWithUser'])
 			->setConstructorArgs([
 				$this->user,
@@ -450,7 +484,8 @@ class MailNotificationsTest extends TestCase {
 				$this->logger,
 				$this->defaults,
 				$this->urlGenerator,
-				$this->eventDispatcher
+				$this->eventDispatcher,
+				$this->themeService
 			])
 			->getMock();
 
@@ -460,7 +495,7 @@ class MailNotificationsTest extends TestCase {
 				['file_target' => '/<welcome>.txt', 'item_source' => 123, 'expiration' => 'foo'],
 			]);
 
-		$recipient = $this->getMockBuilder('\OCP\IUser')
+		$recipient = $this->getMockBuilder(IUser::class)
 			->disableOriginalConstructor()->getMock();
 		$recipient
 			->expects($this->once())
@@ -498,7 +533,8 @@ class MailNotificationsTest extends TestCase {
 			$this->logger,
 			$this->defaults,
 			$this->urlGenerator,
-			$this->eventDispatcher
+			$this->eventDispatcher,
+			$this->themeService
 		);
 		/**
 		 * The below piece of code is borrowed from
@@ -534,7 +570,7 @@ class MailNotificationsTest extends TestCase {
 	 */
 	public function testSendInternalShareMailNoMail($emptiness) {
 		/** @var MailNotifications | \PHPUnit_Framework_MockObject_MockObject $mailNotifications */
-		$mailNotifications = $this->getMockBuilder('OC\Share\MailNotifications')
+		$mailNotifications = $this->getMockBuilder(MailNotifications::class)
 			->setMethods(['getItemSharedWithUser'])
 			->setConstructorArgs([
 				$this->user,
@@ -544,11 +580,12 @@ class MailNotificationsTest extends TestCase {
 				$this->logger,
 				$this->defaults,
 				$this->urlGenerator,
-				$this->eventDispatcher
+				$this->eventDispatcher,
+				$this->themeService
 			])
 			->getMock();
 
-		$recipient = $this->getMockBuilder('\OCP\IUser')
+		$recipient = $this->getMockBuilder(IUser::class)
 				->disableOriginalConstructor()->getMock();
 		$recipient
 				->expects($this->once())
@@ -558,7 +595,7 @@ class MailNotificationsTest extends TestCase {
 				->expects($this->once())
 				->method('getDisplayName')
 				->willReturn('No mail 1');
-		$recipient2 = $this->getMockBuilder('\OCP\IUser')
+		$recipient2 = $this->getMockBuilder(IUser::class)
 				->disableOriginalConstructor()->getMock();
 		$recipient2
 				->expects($this->once())
@@ -583,7 +620,8 @@ class MailNotificationsTest extends TestCase {
 			$this->logger,
 			$this->defaults,
 			$this->urlGenerator,
-			$this->eventDispatcher
+			$this->eventDispatcher,
+			$this->themeService
 		);
 		$this->config->expects($this->once())
 			->method('getAppValue')
@@ -595,6 +633,11 @@ class MailNotificationsTest extends TestCase {
 			->expects($this->once())
 			->method('setFrom')
 			->with([Util::getDefaultEmailAddress('sharing-noreply') => 'TestUser через UnitTestCloud']);
+		$swiftMessage = $this->createMock(\Swift_Message::class);
+		$message
+			->expects(self::once())
+			->method('getSwiftMessage')
+			->willReturn($swiftMessage);
 
 		$this->mailer
 			->expects($this->once())
@@ -613,7 +656,7 @@ class MailNotificationsTest extends TestCase {
 	 * @param string $subject
 	 */
 	protected function setupMailerMock($subject, $to, $exceptionOnSend = true) {
-		$message = $this->getMockBuilder('\OC\Mail\Message')
+		$message = $this->getMockBuilder(Message::class)
 				->disableOriginalConstructor()->getMock();
 
 		$message
@@ -634,6 +677,11 @@ class MailNotificationsTest extends TestCase {
 				->expects($this->once())
 				->method('setFrom')
 				->with([Util::getDefaultEmailAddress('sharing-noreply') => 'TestUser via UnitTestCloud']);
+		$swiftMessage = $this->createMock(\Swift_Message::class);
+		$message
+			->expects(self::once())
+			->method('getSwiftMessage')
+			->willReturn($swiftMessage);
 
 		$this->mailer
 				->expects($this->once())

@@ -37,6 +37,7 @@ use OCP\IUser;
 use OCP\Mail\IMailer;
 use OCP\ILogger;
 use OCP\Defaults;
+use OCP\Theme\IThemeService;
 use OCP\Util;
 use OC\Share\Filters\MailNotificationFilter;
 use Symfony\Component\EventDispatcher\EventDispatcher;
@@ -69,6 +70,8 @@ class MailNotifications {
 	private $urlGenerator;
 	/** @var EventDispatcher  */
 	private $eventDispatcher;
+	/** @var IThemeService */
+	private $themeService;
 
 	/**
 	 * @param IUser $user
@@ -78,6 +81,8 @@ class MailNotifications {
 	 * @param ILogger $logger
 	 * @param Defaults $defaults
 	 * @param IURLGenerator $urlGenerator
+	 * @param EventDispatcher $eventDispatcher
+	 * @param IThemeService $themeService
 	 */
 	public function __construct(IUser $user,
 								IL10N $l10n,
@@ -86,7 +91,8 @@ class MailNotifications {
 								ILogger $logger,
 								Defaults $defaults,
 								IURLGenerator $urlGenerator,
-								EventDispatcher $eventDispatcher) {
+								EventDispatcher $eventDispatcher,
+								IThemeService $themeService) {
 		$this->l = $l10n;
 		$this->user = $user;
 		$this->mailer = $mailer;
@@ -95,6 +101,7 @@ class MailNotifications {
 		$this->defaults = $defaults;
 		$this->urlGenerator = $urlGenerator;
 		$this->eventDispatcher = $eventDispatcher;
+		$this->themeService = $themeService;
 
 		$this->replyTo = $this->user->getEMailAddress();
 
@@ -113,9 +120,7 @@ class MailNotifications {
 	 */
 	private function _mailStringToArray($mailsstring) {
 		$sanatised  = \str_replace([', ', '; ', ',', ';', ' '], ',', $mailsstring);
-		$mail_array = \explode(',', $sanatised);
-
-		return $mail_array;
+		return \explode(',', $sanatised);
 	}
 
 	/**
@@ -177,6 +182,8 @@ class MailNotifications {
 				if ($this->replyTo !== null) {
 					$message->setReplyTo([$this->replyTo]);
 				}
+				$message->getSwiftMessage()->attach(\Swift_Attachment::fromPath($this->getMailLogo())
+					->setDisposition('inline'));
 
 				$this->mailer->send($message);
 			} catch (\Exception $e) {
@@ -254,6 +261,8 @@ class MailNotifications {
 			if ($this->replyTo !== null) {
 				$message->setReplyTo([$this->replyTo]);
 			}
+			$message->getSwiftMessage()->attach(\Swift_Attachment::fromPath($this->getMailLogo())
+				->setDisposition('inline'));
 
 			return $this->mailer->send($message);
 		} catch (\Exception $e) {
@@ -366,5 +375,20 @@ class MailNotifications {
 				]
 			)
 		];
+	}
+
+	/**
+	 * @return string
+	 */
+	private function getMailLogo(): string {
+		$logoPath = __DIR__ . '/../../../core/img/logo-mail.gif';
+		if ($this->themeService->getTheme() !== null) {
+			$themeDir = $this->themeService->getTheme()->getDirectory();
+			$themedLogoPath = "$themeDir/core/img/logo-mail.gif";
+			if (\file_exists($themedLogoPath)) {
+				$logoPath = $themedLogoPath;
+			}
+		}
+		return $logoPath;
 	}
 }

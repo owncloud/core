@@ -130,7 +130,8 @@ if (isset($_POST['action'], $_POST['itemType'], $_POST['itemSource'])) {
 				\OC::$server->getLogger(),
 				$defaults,
 				\OC::$server->getURLGenerator(),
-				\OC::$server->getEventDispatcher()
+				\OC::$server->getEventDispatcher(),
+				\OC::$server->getThemeService()
 			);
 
 			$result = $mailNotification->sendInternalShareMail($recipientList, $itemSource, $itemType);
@@ -195,7 +196,8 @@ if (isset($_POST['action'], $_POST['itemType'], $_POST['itemSource'])) {
 				\OC::$server->getLogger(),
 				$defaults,
 				\OC::$server->getURLGenerator(),
-				\OC::$server->getEventDispatcher()
+				\OC::$server->getEventDispatcher(),
+				\OC::$server->getThemeService()
 			);
 
 			$expiration = null;
