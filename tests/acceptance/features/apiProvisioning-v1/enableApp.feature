@@ -13,6 +13,7 @@ So that I can use the app features again
 		Then the OCS status code should be "100"
 		And the HTTP status code should be "200"
 		And app "comments" should be enabled
+		And the information for app "comments" should have a valid version
 
 	Scenario: subadmin tries to enable an app
 		Given user "subadmin" has been created
