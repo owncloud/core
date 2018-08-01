@@ -140,9 +140,9 @@ class ScanTest extends TestCase {
 
 	public function dataInput() {
 		return [
-			[['--groups' => ['haystack']], 'Group name haystack doesn\'t exist'],
-			[['--groups' => ['haystack,barn']], 'Group name haystack,barn doesn\'t exist'],
-			[['--groups' => ['group1']], 'Starting scan for user 1 out of 1 (user1)'],
+			[['--group' => ['haystack']], 'Group name haystack doesn\'t exist'],
+			[['--group' => ['haystack,barn']], 'Group name haystack,barn doesn\'t exist'],
+			[['--group' => ['group1']], 'Starting scan for user 1 out of 1 (user1)'],
 			[['user_id' => ['user1']], 'Starting scan for user 1 out of 1 (user1)'],
 			[['user_id' => ['user2']], 'Starting scan for user 1 out of 1 (user2)']
 		];
@@ -159,7 +159,7 @@ class ScanTest extends TestCase {
 
 	public function userInputData() {
 		return [
-			[['--groups' => ['group1']], 'Starting scan for user 1 out of 200']
+			[['--group' => ['group1']], 'Starting scan for user 1 out of 200']
 		];
 	}
 
@@ -186,8 +186,8 @@ class ScanTest extends TestCase {
 
 	public function multipleGroupTest() {
 		return [
-			[['--groups' => ['group1,x','group2']], ''],
-			[['--groups' => ['group1','group2,x','group3']], '']
+			[['--group' => ['group1,x','group2']], ''],
+			[['--group' => ['group1','group2,x','group3']], '']
 		];
 	}
 
@@ -197,7 +197,7 @@ class ScanTest extends TestCase {
 	 */
 	public function testMultipleGroups($input) {
 		//Create 10 users in each group
-		$groups = $input['--groups'];
+		$groups = $input['--group'];
 		$user = "user";
 		$userObj = [];
 		for ($i = 1; $i <= (10 * \count($groups)); $i++) {
