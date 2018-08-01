@@ -43,6 +43,9 @@ class Action implements IAction {
 	/** @var bool */
 	protected $primary;
 
+	/** @var bool */
+	protected $redirect = false;
+
 	/**
 	 * Constructor
 	 */
@@ -154,6 +157,22 @@ class Action implements IAction {
 	 */
 	public function getRequestType() {
 		return $this->requestType;
+	}
+
+	/**
+	 * @param bool $mark
+	 * @return $this
+	 */
+	public function setRedirect($mark) {
+		$this->redirect = $mark;
+		return $this;
+	}
+
+	/**
+	 * @return bool
+	 */
+	public function getRedirect() {
+		return $this->redirect;
 	}
 
 	/**

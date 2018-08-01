@@ -92,6 +92,22 @@ interface IAction {
 	public function getRequestType();
 
 	/**
+	 * @param bool $mark mark if the client should check for a "redirectTo"
+	 * key in the response of the request
+	 * @return $this
+	 * @throws \InvalidArgumentException if the $mark is invalid
+	 * @since 10.0.10
+	 */
+	public function setRedirect($mark);
+
+	/**
+	 * @return bool true if the client should follow a "redirectTo" link
+	 * in the response, false otherwise
+	 * @since 10.0.10
+	 */
+	public function getRedirect();
+
+	/**
 	 * @return bool
 	 * @since 9.0.0
 	 */
