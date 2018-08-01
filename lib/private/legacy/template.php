@@ -133,6 +133,7 @@ class OC_Template extends \OC\Template\Base {
 				\OC_Util::addScript('placeholder', null, true);
 			}
 
+			OC_Util::addScript('oc-backbone-webdav', null, true);
 			OC_Util::addScript('oc-backbone', null, true);
 			OC_Util::addVendorScript('core', 'backbone/backbone', true);
 			OC_Util::addVendorScript('core', 'select2/select2', true);
