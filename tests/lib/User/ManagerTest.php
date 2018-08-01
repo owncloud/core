@@ -22,6 +22,8 @@ use OCP\ILogger;
 use OCP\IUser;
 use Punic\Data;
 use Test\TestCase;
+use Symfony\Component\EventDispatcher\EventDispatcher;
+use Symfony\Component\EventDispatcher\GenericEvent;
 
 /**
  * Class ManagerTest
@@ -47,6 +49,7 @@ class ManagerTest extends TestCase {
 	public function setUp() {
 		parent::setUp();
 
+		$this->overwriteService('EventDispatcher', new EventDispatcher());
 		/** @var IConfig | \PHPUnit_Framework_MockObject_MockObject $config */
 		$config = $this->createMock(IConfig::class);
 		/** @var ILogger | \PHPUnit_Framework_MockObject_MockObject $logger */
@@ -308,5 +311,29 @@ class ManagerTest extends TestCase {
 		// migration from versions below 10.0. accounts table hasn't been created yet.
 		$this->accountMapper->expects($this->never())->method('getByUid');
 		$this->assertNull($this->manager->get(null));
+	}
+
+	public function testValidatePassword() {
+		$this->accountMapper->expects($this->once())
+			->method('getByUid')
+			->with('testuser1')
+			->willThrowException(new DoesNotExistException(''));
+
+		$account = $this->createMock(Account::class);
+		$this->syncService->expects($this->once())
+			->method('createOrSyncAccount')
+			->with('testuser1')
+			->willReturn($account);
+
+		$event = null;
+		\OC::$server->getEventDispatcher()->addListener('OCP\User::validatePassword',
+			function (GenericEvent $receivedEvent) use (&$event) {
+				$event = $receivedEvent;
+			});
+
+		$this->manager->createUser('testuser1', 'abcdefg');
+
+		$this->assertEquals('abcdefg', $event->getArgument('password'));
+		$this->assertEquals('testuser1', $event->getArgument('uid'));
 	}
 }
