@@ -193,4 +193,25 @@ class AddressHandlerTest extends \Test\TestCase {
 			['http://localhost/index.php/s/AShareToken', 'http://localhost'],
 		];
 	}
+
+	/**
+	 * @dataProvider dataTestNormalizeRemote
+	 *
+	 * @param string $url
+	 * @param string $expected
+	 */
+	public function testNormalizeRemote($url, $expected) {
+		$result = $this->addressHandler->normalizeRemote($url);
+		$this->assertSame($expected, $result);
+	}
+
+	public function dataTestNormalizeRemote() {
+		return [
+			['http://localhost', 'localhost'],
+			['http://localhost/', 'localhost'],
+			['http://localhost/index.php', 'localhost'],
+			['http://localhost/index.php/s/AShareToken', 'localhost'],
+			['http://localhost/index.php/s/AShareToken/', 'localhost'],
+		];
+	}
 }

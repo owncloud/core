@@ -21,14 +21,19 @@
 
 namespace OCA\FederatedFileSharing\Tests;
 
+use OCA\FederatedFileSharing\AddressHandler;
 use OCA\FederatedFileSharing\FederatedShareProvider;
 use OCA\FederatedFileSharing\FedShareManager;
+use OCA\FederatedFileSharing\Notifications;
 use OCA\Files_Sharing\Activity;
 use OCP\Activity\IEvent;
-use OCP\Activity\IManager;
-use OCP\ILogger;
+use OCP\Activity\IManager as ActivityManager;
 use OCP\IUserManager;
+use OCP\Notification\IAction;
+use OCP\Notification\IManager as NotificationManager;
+use OCP\Notification\INotification;
 use OCP\Share\IShare;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
  * Class FedShareManagerTest
@@ -37,19 +42,29 @@ use OCP\Share\IShare;
  * @group DB
  */
 class FedShareManagerTest extends TestCase {
+	/** @var FederatedShareProvider | \PHPUnit_Framework_MockObject_MockObject */
 	private $federatedShareProvider;
+
+	/** @var Notifications | \PHPUnit_Framework_MockObject_MockObject */
+	private $notifications;
 
 	/** @var IUserManager | \PHPUnit_Framework_MockObject_MockObject */
 	private $userManager;
 
-	/** @var IManager | \PHPUnit_Framework_MockObject_MockObject */
+	/** @var ActivityManager | \PHPUnit_Framework_MockObject_MockObject */
 	private $activityManager;
 
-	/** @var ILogger | \PHPUnit_Framework_MockObject_MockObject */
-	private $logger;
+	/** @var NotificationManager | \PHPUnit_Framework_MockObject_MockObject */
+	private $notificationManager;
 
 	/** @var FedShareManager | \PHPUnit_Framework_MockObject_MockObject */
 	private $fedShareManager;
+
+	/** @var AddressHandler | \PHPUnit_Framework_MockObject_MockObject */
+	private $addressHandler;
+
+	/** @var EventDispatcherInterface | \PHPUnit_Framework_MockObject_MockObject */
+	private $eventDispatcher;
 
 	protected function setUp() {
 		parent::setUp();
@@ -57,24 +72,81 @@ class FedShareManagerTest extends TestCase {
 		$this->federatedShareProvider = $this->getMockBuilder(
 			FederatedShareProvider::class
 		)->disableOriginalConstructor()->getMock();
+		$this->notifications = $this->getMockBuilder(Notifications::class)
+			->disableOriginalConstructor()->getMock();
 		$this->userManager = $this->getMockBuilder(IUserManager::class)
 			->getMock();
-		$this->activityManager = $this->getMockBuilder(IManager::class)
+		$this->activityManager = $this->getMockBuilder(ActivityManager::class)
 			->getMock();
-		$this->logger = $this->getMockBuilder(ILogger::class)
+		$this->notificationManager = $this->getMockBuilder(NotificationManager::class)
+			->getMock();
+		$this->addressHandler = $this->getMockBuilder(AddressHandler::class)
+			->disableOriginalConstructor()->getMock();
+
+		$this->eventDispatcher = $this->getMockBuilder(EventDispatcherInterface::class)
 			->getMock();
 
 		$this->fedShareManager = $this->getMockBuilder(FedShareManager::class)
 			->setConstructorArgs(
 				[
 					$this->federatedShareProvider,
+					$this->notifications,
 					$this->userManager,
 					$this->activityManager,
-					$this->logger
+					$this->notificationManager,
+					$this->addressHandler,
+					$this->eventDispatcher
 				]
 			)
 			->setMethods(['getFile'])
 			->getMock();
+	}
+
+	public function testCreateShare() {
+		$shareWith = 'Bob';
+		$remote = 'server2';
+		$remoteId = 42;
+		$owner = 'Alice';
+		$name = 'McGee';
+		$ownerFederatedId = '17';
+		$sharedByFederatedId = '18';
+		$sharedBy = 'Steve';
+		$token = 'idk';
+
+		$event = $this->getMockBuilder(IEvent::class)->getMock();
+		$event->method($this->anything())
+			->willReturnSelf();
+		$event->expects($this->at(3))
+			->method($this->anything())
+			->with(Activity::SUBJECT_REMOTE_SHARE_RECEIVED)
+			->willReturnSelf();
+
+		$this->activityManager->expects($this->once())
+			->method('generateEvent')
+			->willReturn($event);
+
+		$action = $this->getMockBuilder(IAction::class)->getMock();
+		$action->method($this->anything())->willReturnSelf();
+		$notification = $this->getMockBuilder(INotification::class)->getMock();
+		$notification->method('createAction')->willReturn($action);
+		$notification->method($this->anything())
+			->willReturnSelf();
+
+		$this->notificationManager->expects($this->once())
+			->method('createNotification')
+			->willReturn($notification);
+
+		$this->fedShareManager->createShare(
+			$shareWith,
+			$remote,
+			$remoteId,
+			$owner,
+			$name,
+			$ownerFederatedId,
+			$sharedByFederatedId,
+			$sharedBy,
+			$token
+		);
 	}
 
 	public function testAcceptShare() {
@@ -94,8 +166,7 @@ class FedShareManagerTest extends TestCase {
 			->willReturn($node);
 
 		$event = $this->getMockBuilder(IEvent::class)->getMock();
-		$event->expects($this->any())
-			->method($this->anything())
+		$event->method($this->anything())
 			->willReturnSelf();
 		$event->expects($this->at(3))
 			->method($this->anything())
@@ -124,10 +195,16 @@ class FedShareManagerTest extends TestCase {
 		$share->expects($this->once())
 			->method('getNode')
 			->willReturn($node);
+		$share->method('getShareOwner')
+			->willReturn('Alice');
+		$share->method('getSharedBy')
+			->willReturn('Bob');
+
+		$this->notifications->expects($this->once())
+			->method('sendDeclineShare');
 
 		$event = $this->getMockBuilder(IEvent::class)->getMock();
-		$event->expects($this->any())
-			->method($this->anything())
+		$event->method($this->anything())
 			->willReturnSelf();
 		$event->expects($this->at(3))
 			->method($this->anything())
@@ -139,5 +216,54 @@ class FedShareManagerTest extends TestCase {
 			->willReturn($event);
 
 		$this->fedShareManager->declineShare($share);
+	}
+
+	public function testUnshare() {
+		$shareRow = [
+			'id' => 42,
+			'remote' => 'peer',
+			'remote_id' => 142,
+			'share_token' => 'abc',
+			'password' => '',
+			'name' => 'McGee',
+			'owner' => 'Alice',
+			'user' => 'Bob',
+			'mountpoint' => '/mount/',
+			'accepted' => 1
+		];
+		$this->federatedShareProvider
+			->method('unshare')
+			->willReturn($shareRow);
+
+		$notification = $this->getMockBuilder(INotification::class)->getMock();
+		$notification->method($this->anything())
+			->willReturnSelf();
+
+		$this->notificationManager->expects($this->once())
+			->method('createNotification')
+			->willReturn($notification);
+
+		$event = $this->getMockBuilder(IEvent::class)->getMock();
+		$event->method($this->anything())
+			->willReturnSelf();
+		$event->expects($this->at(3))
+			->method($this->anything())
+			->with(Activity::SUBJECT_REMOTE_SHARE_UNSHARED)
+			->willReturnSelf();
+
+		$this->activityManager->expects($this->once())
+			->method('generateEvent')
+			->willReturn($event);
+
+		$this->fedShareManager->unshare($shareRow['id'], $shareRow['share_token']);
+	}
+
+	public function testRevoke() {
+		$share = $this->getMockBuilder(IShare::class)
+			->disableOriginalConstructor()->getMock();
+		$this->federatedShareProvider->expects($this->once())
+			->method('removeShareFromTable')
+			->with($share);
+		$this->fedShareManager->revoke($share);
 	}
 }
