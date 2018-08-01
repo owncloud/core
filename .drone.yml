@@ -61,7 +61,7 @@ pipeline:
     image: owncloudci/php:${PHP_VERSION}
     pull: true
     commands:
-      - ./tests/drone/composer-install.sh
+      - make install-composer-deps
     when:
       event: [push, pull_request]
 
