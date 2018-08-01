@@ -1,10 +1,13 @@
 # Main Makefile for ownCloud development
 #
 # Requirements to run make here:
+#    - composer
 #    - node
 #    - yarn
 #
-# Both can be installed following e.g. the Debian/Ubuntu instructions at
+# Installing composer can be done via https://getcomposer.org/doc/00-intro.md#installation-linux-unix-osx
+#
+# Node/Yarn can be installed following e.g. the Debian/Ubuntu instructions at
 # https://nodejs.org/en/download/package-manager/
 #
 #  curl -sL https://deb.nodesource.com/setup_7.x | sudo -E bash -
@@ -38,7 +41,7 @@ YARN := $(shell command -v yarn 2> /dev/null)
 KARMA=$(NODE_PREFIX)/node_modules/.bin/karma
 JSDOC=$(NODE_PREFIX)/node_modules/.bin/jsdoc
 PHPUNIT="$(shell pwd)/lib/composer/phpunit/phpunit/phpunit"
-COMPOSER_BIN=build/composer.phar
+COMPOSER_BIN := $(shell command -v composer 2> /dev/null)
 PHAN_BIN=build/phan.phar
 
 TEST_DATABASE=sqlite
@@ -106,18 +109,16 @@ help:
 #
 # Basic required tools
 #
-$(COMPOSER_BIN):
-	cd build && ./getcomposer.sh
-
 $(PHAN_BIN):
 	cd build && curl -s -L https://github.com/phan/phan/releases/download/0.12.10/phan.phar -o phan.phar;
+
 #
 # ownCloud core PHP dependencies
 #
-$(composer_deps): $(COMPOSER_BIN) composer.json composer.lock
+$(composer_deps): composer.json composer.lock
 	php $(COMPOSER_BIN) install --no-dev
 
-$(composer_dev_deps): $(COMPOSER_BIN) composer.json composer.lock
+$(composer_dev_deps): composer.json composer.lock
 	php $(COMPOSER_BIN) install --dev
 
 .PHONY: install-composer-release-deps
@@ -130,7 +131,7 @@ install-composer-dev-deps: $(composer_dev_deps)
 install-composer-deps: install-composer-dev-deps
 
 .PHONY: update-composer
-update-composer: $(COMPOSER_BIN)
+update-composer:
 	rm -f composer.lock
 	php $(COMPOSER_BIN) install --prefer-dist
 
