@@ -40,15 +40,8 @@ class RouterTest extends \Test\TestCase {
 	/** @var ILogger */
 	private $l;
 
-	/**
-	 * RouterTest constructor.
-	 *
-	 * @param string $name
-	 * @param array $data
-	 * @param string $dataName
-	 */
-	public function __construct($name = null, array $data = [], $dataName = '') {
-		parent::__construct($name, $data, $dataName);
+	protected function setUp() {
+		parent::setUp();
 		$this->l = $this->createMock(ILogger::class);
 	}
 
