@@ -1448,6 +1448,20 @@ trait Provisioning {
 	}
 
 	/**
+	 * Parses the xml answer to get the array of app info returned for an app.
+	 *
+	 * @param ResponseInterface $resp
+	 *
+	 * @return array
+	 */
+	public function getArrayOfAppInfoResponded($resp) {
+		$listCheckedElements = $resp->xml()->data[0];
+		$extractedElementsArray
+			= \json_decode(\json_encode($listCheckedElements), 1);
+		return $extractedElementsArray;
+	}
+
+	/**
 	 * @Then /^app "([^"]*)" should be disabled$/
 	 *
 	 * @param string $app
@@ -1486,6 +1500,35 @@ trait Provisioning {
 		PHPUnit_Framework_Assert::assertContains($app, $respondedArray);
 		PHPUnit_Framework_Assert::assertEquals(
 			200, $this->response->getStatusCode()
+		);
+	}
+
+	/**
+	 * @Then /^the information for app "([^"]*)" should have a valid version$/
+	 *
+	 * @param string $app
+	 *
+	 * @return void
+	 */
+	public function theInformationForAppShouldHaveAValidVersion($app) {
+		$fullUrl = $this->getBaseUrl() . "/ocs/v2.php/cloud/apps/$app";
+		$client = new Client();
+		$options = [];
+		$options['auth'] = $this->getAuthOptionForAdmin();
+
+		$this->response = $client->get($fullUrl, $options);
+		PHPUnit_Framework_Assert::assertEquals(
+			200, $this->response->getStatusCode()
+		);
+		$respondedArray = $this->getArrayOfAppInfoResponded($this->response);
+		PHPUnit_Framework_Assert::assertArrayHasKey(
+			'version',
+			$respondedArray,
+			"app info returned for $app app does not have a version");
+		$appVersion = $respondedArray['version'];
+		PHPUnit_Framework_Assert::assertTrue(
+			\substr_count($appVersion, '.') > 1,
+			"app version '$appVersion' returned in app info is not a valid version string"
 		);
 	}
 
