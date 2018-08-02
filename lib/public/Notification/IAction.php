@@ -71,41 +71,41 @@ interface IAction {
 	public function isPrimary();
 
 	/**
-	 * @param string $link
-	 * @param string $requestType
+	 * Whenever a client want to execute this particular action, it should
+	 * call the link set here with the same request type. Clients are
+	 * expected to make a request to that endpoint, but not to open or
+	 * redirect a browser there. The request might need to be authenticated
+	 * somehow (via cookies, basic auth, oAuth token, etc)
+	 *
+	 * Clients are not expected to take further action UNLESS the response
+	 * of the action is an OCS response with a "redirectTo" key in the data
+	 * (ocs.data.redirectTo = <another-link>). In this case, clients are
+	 * expected to open a browser or redirect it to the link specified
+	 * in the "redirectTo" link
+	 *
+	 * @param string $link the endpoint where the client has to make the ajax
+	 * (or similar) request
+	 * @param string $requestType the request type (GET, POST, PUT, DELETE)
 	 * @return $this
-	 * @throws \InvalidArgumentException if the link is invalid
+	 * @throws \InvalidArgumentException if the link is empty or above 255
+	 * chars, or the request type isn't supported
 	 * @since 9.0.0
 	 */
 	public function setLink($link, $requestType);
 
 	/**
-	 * @return string
+	 * @return string the link (request type not included) set via "setLink"
+	 * or an empty string if a link hasn't been set
 	 * @since 9.0.0
 	 */
 	public function getLink();
 
 	/**
-	 * @return string
+	 * @return string the request type set in "setLink" or an empty string if
+	 * a link hasn't been set
 	 * @since 9.0.0
 	 */
 	public function getRequestType();
-
-	/**
-	 * @param bool $mark mark if the client should check for a "redirectTo"
-	 * key in the response of the request
-	 * @return $this
-	 * @throws \InvalidArgumentException if the $mark is invalid
-	 * @since 10.0.10
-	 */
-	public function setRedirect($mark);
-
-	/**
-	 * @return bool true if the client should follow a "redirectTo" link
-	 * in the response, false otherwise
-	 * @since 10.0.10
-	 */
-	public function getRedirect();
 
 	/**
 	 * @return bool
