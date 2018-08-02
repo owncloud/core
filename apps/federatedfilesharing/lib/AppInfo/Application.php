@@ -22,6 +22,7 @@
 namespace OCA\FederatedFileSharing\AppInfo;
 
 use OCA\FederatedFileSharing\AddressHandler;
+use OCA\FederatedFileSharing\Controller\OcmController;
 use OCA\FederatedFileSharing\DiscoveryManager;
 use OCA\FederatedFileSharing\FederatedShareProvider;
 use OCA\FederatedFileSharing\FedShareManager;
@@ -102,6 +103,17 @@ class Application extends App {
 					$server->getUserManager(),
 					$c->query('AddressHandler'),
 					$c->query('FederatedShareManager')
+				);
+			}
+		);
+
+		$container->registerService(
+			'OcmController',
+			function ($c) use ($server) {
+				return new OcmController(
+					$c->query('AppName'),
+					$c->query('Request'),
+					$server->getURLGenerator()
 				);
 			}
 		);
