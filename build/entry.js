@@ -4,9 +4,9 @@ window.$ = $;
 
 require('es6-promise/dist/es6-promise.auto');
 
-require('select2/select2.css');
+//require('select2/select2.css');
 
-require("jquery-ui/themes/base/jquery-ui.css");
+//require("jquery-ui/themes/base/jquery-ui.css");
 
 require("jquery-migrate");
 require("jquery-ui/custom");
