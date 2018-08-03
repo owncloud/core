@@ -9,7 +9,6 @@ require('select2/select2.css');
 require("jquery-ui/themes/base/jquery-ui.css");
 
 require("jquery-migrate");
-require("jquery-ui");
 require("jquery-ui/custom");
 
 var _ = require('underscore');
