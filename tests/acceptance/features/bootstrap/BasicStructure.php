@@ -214,6 +214,17 @@ trait BasicStructure {
 	}
 
 	/**
+	 * returns the path of the base URL
+	 * e.g. owncloud-core/10 if the baseUrl is http://localhost/owncloud-core/10
+	 * the path is without a slash at the end and without a slash at the beginning
+	 *
+	 * @return string
+	 */
+	public function getBasePath() {
+		return \ltrim(\parse_url($this->getBaseUrl(), PHP_URL_PATH), "/");
+	}
+
+	/**
 	 * returns the base URL but without "http(s)://" in front of it
 	 *
 	 * @return string
