@@ -158,8 +158,9 @@ trait WebDav {
 	 * @return string
 	 */
 	public function getFullDavFilesPath($user) {
-		$basePath = \ltrim(\parse_url($this->getBaseUrl(), PHP_URL_PATH), "/");
-		return \ltrim($basePath . "/" . $this->getDavFilesPath($user), "/");
+		return \ltrim(
+			$this->getBasePath() . "/" . $this->getDavFilesPath($user), "/"
+		);
 	}
 
 	/**
@@ -811,7 +812,9 @@ trait WebDav {
 		}
 
 		if ($expectedValue === "a_comment_url") {
-			if (\preg_match("#^/remote.php/dav/comments/files/([0-9]+)$#", $value)) {
+			$basePath = \ltrim($this->getBasePath() . "/", "/");
+			$expected = "#^/" . $basePath . "remote.php/dav/comments/files/([0-9]+)$#";
+			if (\preg_match($expected, $value)) {
 				return;
 			} else {
 				throw new \Exception(
