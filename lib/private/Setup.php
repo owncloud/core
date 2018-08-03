@@ -285,6 +285,11 @@ class Setup {
 		) {
 			$error[] = $l->t("Can't create or write into the data directory %s", [$dataDir]);
 		}
+		
+		// check if we can write .htaccess
+		if (!\is_file($this->pathToHtaccess()) || !\is_writable($this->pathToHtaccess())) {
+			$error[] = $l->t("Can't update %s", [$this->pathToHtaccess()]);
+		}
 
 		if (\count($error) != 0) {
 			return $error;
@@ -406,6 +411,7 @@ class Setup {
 	 */
 	public static function updateHtaccess() {
 		$config = \OC::$server->getConfig();
+		$il10n = \OC::$server->getL10N('lib');
 
 		// For CLI read the value from overwrite.cli.url
 		if (\OC::$CLI) {
@@ -420,7 +426,7 @@ class Setup {
 		}
 
 		$setupHelper = new \OC\Setup($config, \OC::$server->getIniWrapper(),
-			\OC::$server->getL10N('lib'), new \OC_Defaults(), \OC::$server->getLogger(),
+			$il10n, new \OC_Defaults(), \OC::$server->getLogger(),
 			\OC::$server->getSecureRandom());
 
 		$htaccessContent = \file_get_contents($setupHelper->pathToHtaccess());
@@ -465,8 +471,14 @@ class Setup {
 		}
 
 		if ($content !== '') {
-			//suppress errors in case we don't have permissions for it
-			@\file_put_contents($setupHelper->pathToHtaccess(), $htaccessContent.$content . "\n");
+			$fileWriteResult = @\file_put_contents(
+				$setupHelper->pathToHtaccess(), $htaccessContent . $content . "\n"
+			);
+			if ($fileWriteResult === false) {
+				throw new \Exception(
+					$il10n->t("Can't update %s", [$setupHelper->pathToHtaccess()])
+				);
+			}
 		}
 	}
 
