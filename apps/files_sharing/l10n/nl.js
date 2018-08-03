@@ -117,6 +117,7 @@ OC.L10N.register(
     "Pending" : "In behandeling",
     "Accept" : "Accepteren",
     "Decline" : "Afwijzen",
-    "Declined" : "Afgewezen"
+    "Declined" : "Afgewezen",
+    "State" : "Status"
 },
 "nplurals=2; plural=(n != 1);");
