@@ -143,13 +143,12 @@ class Owncloud {
 	 * @return boolean
 	 */
 	public static function createLogFile($logFile) {
-		if (\file_exists($logFile) ) {
+		if (\file_exists($logFile)) {
 			return true;
-		} else {
-			if (\is_writable(\dirname($logFile)) && \touch($logFile)) {
-				@\chmod($logFile, 0640);
-				return true;
-			}
+		}
+		if (\is_writable(\dirname($logFile)) && \touch($logFile)) {
+			@\chmod($logFile, 0640);
+			return true;
 		}
 		return false;
 	}
