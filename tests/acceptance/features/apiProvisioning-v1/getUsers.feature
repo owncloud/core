@@ -9,7 +9,6 @@ So that I can see who has access to ownCloud
 
 	Scenario: admin gets all users
 		Given user "brand-new-user" has been created
-		And user "admin" has been created
 		When user "admin" sends HTTP method "GET" to OCS API endpoint "/cloud/users"
 		Then the OCS status code should be "100"
 		And the HTTP status code should be "200"
