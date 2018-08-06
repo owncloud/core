@@ -212,7 +212,6 @@ trait Provisioning {
 
 	/**
 	 * @When /^the administrator creates the user "([^"]*)" using the provisioning API$/
-	 * @Given /^user "([^"]*)" has been created$/
 	 *
 	 * @param string $user
 	 *
@@ -225,6 +224,20 @@ trait Provisioning {
 			$this->createUser($user, $password, null, null, true, 'api');
 		}
 		$this->userShouldExist($user);
+	}
+
+	/**
+	 * @Given /^user "([^"]*)" has been created$/
+	 *
+	 * @param string $user
+	 *
+	 * @return void
+	 * @throws \Exception
+	 */
+	public function userHasBeenCreated($user) {
+		$this->createUser(
+			$user, $this->getPasswordForUser($user), null, null, true
+		);
 	}
 
 	/**
