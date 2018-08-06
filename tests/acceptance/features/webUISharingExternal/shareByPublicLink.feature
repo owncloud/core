@@ -43,7 +43,8 @@ So that public sharing is limited according to organization policy
 
 	@skipOnINTERNETEXPLORER @skipOnMICROSOFTEDGE @issue_30392
 	Scenario: mount public link
-		Given these users have been created:
+		Given using server "REMOTE"
+		And these users have been created:
 		|username|password|displayname|email       |
 		|user2   |1234    |User One   |u1@oc.com.np|
 		When the user creates a new public link for the folder "simple-folder" using the webUI
@@ -59,7 +60,8 @@ So that public sharing is limited according to organization policy
 
 	@skipOnINTERNETEXPLORER @skipOnMICROSOFTEDGE @issue_30392
 	Scenario: mount public link and overwrite file
-		Given these users have been created:
+		Given using server "REMOTE"
+		And these users have been created:
 		|username|password|displayname|email       |
 		|user2   |1234    |User One   |u1@oc.com.np|
 		When the user creates a new public link for the folder "simple-folder" using the webUI with

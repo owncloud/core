@@ -141,7 +141,6 @@ trait BasicStructure {
 		$this->adminPassword = $adminPassword;
 		$this->regularUserPassword = $regularUserPassword;
 		$this->localBaseUrl = $this->baseUrl;
-		$this->remoteBaseUrl = $this->baseUrl;
 		$this->currentServer = 'LOCAL';
 		$this->cookieJar = new \GuzzleHttp\Cookie\CookieJar();
 		$this->ocPath = $ocPath;
@@ -157,6 +156,8 @@ trait BasicStructure {
 		$testRemoteServerUrl = \getenv('TEST_SERVER_FED_URL');
 		if ($testRemoteServerUrl !== false) {
 			$this->remoteBaseUrl = \rtrim($testRemoteServerUrl, '/');
+		} else {
+			$this->remoteBaseUrl = $this->localBaseUrl;
 		}
 
 		// get the admin username from the environment (if defined)

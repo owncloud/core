@@ -911,7 +911,7 @@ class WebUISharingContext extends RawMinkContext implements Context {
 			$this->featureContext->getAdminUsername(),
 			$this->featureContext->getAdminPassword(),
 			$settings,
-			$this->webUIGeneralContext->getSavedCapabilitiesXml()
+			$this->webUIGeneralContext->getSavedCapabilitiesXml()[$this->featureContext->getBaseUrl()]
 		);
 		$this->webUIGeneralContext->addToSavedCapabilitiesChanges($change);
 	}
