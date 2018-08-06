@@ -55,6 +55,8 @@ class IMipPlugin extends SabreIMipPlugin {
 	 * Creates the email handler.
 	 *
 	 * @param IMailer $mailer
+	 * @param ILogger $logger
+	 * @param IRequest $request
 	 */
 	public function __construct(IMailer $mailer, ILogger $logger, IRequest $request) {
 		parent::__construct('');
@@ -98,8 +100,8 @@ class IMipPlugin extends SabreIMipPlugin {
 		$sender = \substr($iTipMessage->sender, 7);
 		$recipient = \substr($iTipMessage->recipient, 7);
 
-		$senderName = ($iTipMessage->senderName) ? $iTipMessage->senderName : null;
-		$recipientName = ($iTipMessage->recipientName) ? $iTipMessage->recipientName : null;
+		$senderName = $iTipMessage->senderName ?: null;
+		$recipientName = $iTipMessage->recipientName ?: null;
 
 		$subject = 'SabreDAV iTIP message';
 		switch (\strtoupper($iTipMessage->method)) {
@@ -124,11 +126,11 @@ class IMipPlugin extends SabreIMipPlugin {
 			->setBody($iTipMessage->message->serialize(), $contentType);
 		try {
 			$failed = $this->mailer->send($message);
+			$iTipMessage->scheduleStatus = '1.1; Scheduling message is sent via iMip';
 			if ($failed) {
 				$this->logger->error('Unable to deliver message to {failed}', ['app' => 'dav', 'failed' =>  \implode(', ', $failed)]);
 				$iTipMessage->scheduleStatus = '5.0; EMail delivery failed';
 			}
-			$iTipMessage->scheduleStatus = '1.1; Scheduling message is sent via iMip';
 		} catch (\Exception $ex) {
 			$this->logger->logException($ex, ['app' => 'dav']);
 			$iTipMessage->scheduleStatus = '5.0; EMail delivery failed';
