@@ -20,6 +20,7 @@ So that I can manage user access to group resources
 			| group_id            | comment                                 |
 			| new-group           | dash                                    |
 			| the.group           | dot                                     |
+			| left,right          | comma                                   |
 			| España              | special European characters             |
 			| नेपाली              | Unicode group name                      |
 			| 0                   | The "false" group                       |

@@ -16,6 +16,7 @@ So that I can more easily manage access to resources by groups rather than indiv
 			| group_id            | comment                                 |
 			| new-group           | dash                                    |
 			| the.group           | dot                                     |
+			| left,right          | comma                                   |
 			| España              | special European characters             |
 			| नेपाली                                   | Unicode group name                       |
 			| 0                   | The "false" group                       |

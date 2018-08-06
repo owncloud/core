@@ -1632,6 +1632,15 @@ class ManagerTest extends \Test\TestCase {
 		// New list only groups in common
 		$data[] = ['yes', \json_encode(['group1', 'group2']), null, ['group2'], true];
 
+		// New list partly in common, group names containing comma
+		$data[] = ['yes', \json_encode(['group1,a', 'group2']), null, ['group1,a', 'group3'], true];
+		$data[] = ['yes', \json_encode(['group1,a', 'group2,b']), null, ['group1,a', 'group3'], true];
+		$data[] = ['yes', \json_encode(['group1,a', 'group2']), null, ['group1,a', 'group3,c'], true];
+
+		// New list only groups in common, group names containing comma
+		$data[] = ['yes', \json_encode(['group1', 'group2,a']), null, ['group2,a'], true];
+		$data[] = ['yes', \json_encode(['group1,a', 'group2,a']), null, ['group2,a'], true];
+
 		return $data;
 	}
 
