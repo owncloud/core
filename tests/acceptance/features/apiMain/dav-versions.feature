@@ -51,8 +51,7 @@ Feature: dav-versions
     Then the version folder of fileId "<<FILEID>>" for user "user1" should contain "1" element
 
 	Scenario: sharer of a file can see the old version information when the sharee changes the content of the file
-		Given user "user0" has been created
-		And user "user1" has been created
+		Given user "user1" has been created
 		And user "user0" has uploaded file with content "user0 content" to "sharefile.txt"
 		And user "user0" has shared file "sharefile.txt" with user "user1"
 		When user "user1" has uploaded file with content "user1 content" to "/sharefile.txt"
@@ -60,8 +59,7 @@ Feature: dav-versions
 		And the version folder of file "/sharefile.txt" for user "user0" should contain "1" element
 
 	Scenario: sharer of a file can restore the original content of a shared file after the file has been modified by the sharee
-		Given user "user0" has been created
-		And user "user1" has been created
+		Given user "user1" has been created
 		And user "user0" has uploaded file with content "user0 content" to "sharefile.txt"
 		And user "user0" has shared file "sharefile.txt" with user "user1"
 		And user "user1" has uploaded file with content "user1 content" to "/sharefile.txt"
@@ -71,8 +69,7 @@ Feature: dav-versions
 		And the content of file "/sharefile.txt" for user "user1" should be "user0 content"
 
 	Scenario: sharer can restore a file inside a shared folder modified by sharee
-		Given user "user0" has been created
-		And user "user1" has been created
+		Given user "user1" has been created
 		And user "user0" has created a folder "/sharingfolder"
 		And user "user0" has shared folder "/sharingfolder" with user "user1"
 		And user "user0" has uploaded file with content "user0 content" to "/sharingfolder/sharefile.txt"
@@ -83,8 +80,7 @@ Feature: dav-versions
 		And the content of file "/sharingfolder/sharefile.txt" for user "user1" should be "user0 content"
 
 	Scenario: sharee can restore a file inside a shared folder modified by sharee
-		Given user "user0" has been created
-		And user "user1" has been created
+		Given user "user1" has been created
 		And user "user0" has created a folder "/sharingfolder"
 		And user "user0" has shared folder "/sharingfolder" with user "user1"
 		And user "user0" has uploaded file with content "user0 content" to "/sharingfolder/sharefile.txt"
@@ -95,8 +91,7 @@ Feature: dav-versions
 		And the content of file "/sharingfolder/sharefile.txt" for user "user1" should be "user0 content"
 
 	Scenario: sharer can restore a file inside a shared folder created by sharee and modified by sharer
-		Given user "user0" has been created
-		And user "user1" has been created
+		Given user "user1" has been created
 		And user "user0" has created a folder "/sharingfolder"
 		And user "user0" has shared folder "/sharingfolder" with user "user1"
 		And user "user1" has uploaded file with content "user1 content" to "/sharingfolder/sharefile.txt"
@@ -107,8 +102,7 @@ Feature: dav-versions
 		And the content of file "/sharingfolder/sharefile.txt" for user "user1" should be "user1 content"
 
 	Scenario: sharee can restore a file inside a shared folder created by sharee and modified by sharer
-		Given user "user0" has been created
-		And user "user1" has been created
+		Given user "user1" has been created
 		And user "user0" has created a folder "/sharingfolder"
 		And user "user0" has shared folder "/sharingfolder" with user "user1"
 		And user "user1" has uploaded file with content "user1 content" to "/sharingfolder/sharefile.txt"
@@ -119,8 +113,7 @@ Feature: dav-versions
 		And the content of file "/sharingfolder/sharefile.txt" for user "user1" should be "user1 content"
 
 	Scenario: sharer can restore a file inside a shared folder created by sharee and modified by sharee
-		Given user "user0" has been created
-		And user "user1" has been created
+		Given user "user1" has been created
 		And user "user0" has created a folder "/sharingfolder"
 		And user "user0" has shared folder "/sharingfolder" with user "user1"
 		And user "user1" has uploaded file with content "old content" to "/sharingfolder/sharefile.txt"
@@ -131,8 +124,7 @@ Feature: dav-versions
 		And the content of file "/sharingfolder/sharefile.txt" for user "user1" should be "old content"
 
 	Scenario: sharee can restore a file inside a shared folder created by sharer and modified by sharer
-		Given user "user0" has been created
-		And user "user1" has been created
+		Given user "user1" has been created
 		And user "user0" has created a folder "/sharingfolder"
 		And user "user0" has shared folder "/sharingfolder" with user "user1"
 		And user "user0" has uploaded file with content "old content" to "/sharingfolder/sharefile.txt"
@@ -143,8 +135,7 @@ Feature: dav-versions
 		And the content of file "/sharingfolder/sharefile.txt" for user "user1" should be "old content"
 
 	Scenario: sharee can restore a file inside a shared folder created by sharer and modified by sharer, when the folder has been moved by the sharee
-		Given user "user0" has been created
-		And user "user1" has been created
+		Given user "user1" has been created
 		And user "user0" has created a folder "/sharingfolder"
 		And user "user0" has shared folder "/sharingfolder" with user "user1"
 		And user "user0" has uploaded file with content "old content" to "/sharingfolder/sharefile.txt"
@@ -157,8 +148,7 @@ Feature: dav-versions
 		And the content of file "/received/sharingfolder/sharefile.txt" for user "user1" should be "old content"
 
 	Scenario: sharee can restore a shared file created and modified by sharer, when the file has been moved by the sharee (file is at the top level of the sharer)
-		Given user "user0" has been created
-		And user "user1" has been created
+		Given user "user1" has been created
 		And user "user0" has uploaded file with content "old content" to "/sharefile.txt"
 		And user "user0" has uploaded file with content "new content" to "/sharefile.txt"
 		And user "user0" has shared file "/sharefile.txt" with user "user1"
@@ -170,8 +160,7 @@ Feature: dav-versions
 		And the content of file "/received/sharefile.txt" for user "user1" should be "old content"
 
 	Scenario: sharee can restore a shared file created and modified by sharer, when the file has been moved by the sharee (file is inside a folder of the sharer)
-		Given user "user0" has been created
-		And user "user1" has been created
+		Given user "user1" has been created
 		And user "user0" has created a folder "/sharingfolder"
 		And user "user0" has uploaded file with content "old content" to "/sharingfolder/sharefile.txt"
 		And user "user0" has uploaded file with content "new content" to "/sharingfolder/sharefile.txt"
@@ -184,8 +173,7 @@ Feature: dav-versions
 		And the content of file "/received/sharefile.txt" for user "user1" should be "old content"
 
 	Scenario: sharer can restore a file inside a group shared folder modified by sharee
-		Given user "user0" has been created
-		And user "user1" has been created
+		Given user "user1" has been created
 		And user "user2" has been created
 		And group "newgroup" has been created
 		And user "user1" has been added to group "newgroup"
