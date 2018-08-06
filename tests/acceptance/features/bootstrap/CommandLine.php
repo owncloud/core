@@ -19,6 +19,8 @@
  *
  */
 
+use TestHelpers\SetupHelper;
+
 require __DIR__ . '/../../../../lib/composer/autoload.php';
 
 /**
@@ -42,32 +44,16 @@ trait CommandLine {
 	 * Invokes an OCC command
 	 *
 	 * @param array $args of the occ command
-	 * @param bool $escaping
 	 *
 	 * @return int exit code
+	 * @throws Exception if ocPath has not been set yet or the testing app is not enabled
 	 */
-	public function runOcc($args = [], $escaping = true) {
-		if ($escaping === true) {
-			$args = \array_map(
-				function ($arg) {
-					return \escapeshellarg($arg);
-				}, $args
-			);
-		}
+	public function runOcc($args = []) {
 		$args[] = '--no-ansi';
-		$args = \implode(' ', $args);
-
-		$descriptor = [
-			0 => ['pipe', 'r'],
-			1 => ['pipe', 'w'],
-			2 => ['pipe', 'w'],
-		];
-		$process = \proc_open(
-			'php console.php ' . $args, $descriptor, $pipes, $this->ocPath
-		);
-		$this->lastStdOut = \stream_get_contents($pipes[1]);
-		$this->lastStdErr = \stream_get_contents($pipes[2]);
-		$this->lastCode = \proc_close($process);
+		$return = SetupHelper::runOcc($args);
+		$this->lastStdOut = $return['stdOut'];
+		$this->lastStdErr = $return['stdErr'];
+		$this->lastCode = (int) $return['code'];
 		return $this->lastCode;
 	}
 
@@ -329,5 +315,22 @@ trait CommandLine {
 		$davPath = $this->getDavFilesPath($user);
 		$davPath = \rtrim($davPath, '/') . $this->lastTransferPath;
 		$this->usingDavPath($davPath);
+	}
+
+	/**
+	 * This will run before EVERY scenario.
+	 * It will setup anything needed by methods in this trait.
+	 *
+	 * @BeforeScenario
+	 *
+	 * @return void
+	 */
+	public function beforeCommandLineScenario() {
+		SetupHelper::init(
+			$this->getAdminUsername(),
+			$this->getAdminPassword(),
+			$this->getBaseUrl(),
+			$this->getOcPath()
+		);
 	}
 }

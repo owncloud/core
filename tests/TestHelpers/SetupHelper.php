@@ -268,6 +268,7 @@ class SetupHelper {
 	 *                    For example: "files:transfer-ownership"
 	 *
 	 * @return string[] associated array with "code", "stdOut", "stdErr"
+	 * @throws Exception if ocPath has not been set yet or the testing app is not enabled
 	 */
 	public static function runOcc($args) {
 		if (self::$adminUsername === null

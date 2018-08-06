@@ -494,12 +494,11 @@ class WebUIGeneralContext extends RawMinkContext implements Context {
 			//to include FilesContext
 		}
 
-		$suiteParameters = SetupHelper::getSuiteParameters($scope);
 		SetupHelper::init(
 			$this->featureContext->getAdminUsername(),
 			$this->featureContext->getAdminPassword(),
 			$this->featureContext->getBaseUrl(),
-			$suiteParameters['ocPath']
+			$this->featureContext->getOcPath()
 		);
 		
 		$response = AppConfigHelper::getCapabilities(
