@@ -115,6 +115,7 @@
     "Pending" : "In behandeling",
     "Accept" : "Accepteren",
     "Decline" : "Afwijzen",
-    "Declined" : "Afgewezen"
+    "Declined" : "Afgewezen",
+    "State" : "Status"
 },"pluralForm" :"nplurals=2; plural=(n != 1);"
 }
