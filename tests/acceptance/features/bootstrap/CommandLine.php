@@ -44,13 +44,23 @@ trait CommandLine {
 	 * Invokes an OCC command
 	 *
 	 * @param array $args of the occ command
+	 * @param string|null $adminUsername
+	 * @param string|null $adminPassword
+	 * @param string|null $baseUrl
+	 * @param string|null $ocPath
 	 *
 	 * @return int exit code
 	 * @throws Exception if ocPath has not been set yet or the testing app is not enabled
 	 */
-	public function runOcc($args = []) {
+	public function runOcc(
+		$args = [],
+		$adminUsername = null,
+		$adminPassword = null,
+		$baseUrl = null,
+		$ocPath = null
+	) {
 		$args[] = '--no-ansi';
-		$return = SetupHelper::runOcc($args);
+		$return = SetupHelper::runOcc($args, $adminUsername, $adminPassword, $baseUrl, $ocPath);
 		$this->lastStdOut = $return['stdOut'];
 		$this->lastStdErr = $return['stdErr'];
 		$this->lastCode = (int) $return['code'];
