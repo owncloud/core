@@ -212,7 +212,6 @@ class FileRow extends OwncloudPage {
 		$this->waitTillElementIsNotNull($this->fileRenameInputXpath);
 		$inputField = $this->findRenameInputField();
 		$this->cleanInputAndSetValue($inputField, $toName);
-		$inputField->blur();
 		$this->waitTillElementIsNull($this->fileBusyIndicatorXpath);
 	}
 

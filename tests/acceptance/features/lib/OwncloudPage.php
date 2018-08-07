@@ -676,11 +676,6 @@ class OwncloudPage extends Page {
 			= Key::END . \str_repeat(Key::BACKSPACE, $existingValueLength);
 		$inputField->setValue($deleteSequence);
 		$inputField->setValue($value);
-		$resultValue = $inputField->getValue();
-		if ($resultValue !== $value) {
-			$inputField->keyUp(27); //send escape
-			throw new \Exception("value of input field is not what we expect");
-		}
 	}
 
 	/**
