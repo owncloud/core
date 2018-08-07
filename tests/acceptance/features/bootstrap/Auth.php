@@ -49,6 +49,11 @@ trait Auth {
 	private $tokenAuthHasBeenSet = false;
 
 	/**
+	 * @var string 'true' or 'false' or ''
+	 */
+	private $tokenAuthHasBeenSetTo = '';
+
+	/**
 	 * @BeforeScenario
 	 *
 	 * @return void
@@ -301,6 +306,7 @@ trait Auth {
 
 		// Remember that we set this value, so it can be removed after the scenario
 		$this->tokenAuthHasBeenSet = true;
+		$this->tokenAuthHasBeenSetTo = $value;
 	}
 
 	/**
@@ -312,13 +318,28 @@ trait Auth {
 	 */
 	public function deleteTokenAuthEnforcedAfterScenario() {
 		if ($this->tokenAuthHasBeenSet) {
+			if ($this->tokenAuthHasBeenSetTo === 'true') {
+				// Because token auth is enforced, we have to use a token
+				// (app password) as the password to send to the testing app
+				// so it will authenticate us.
+				$this->aNewBrowserSessionForHasBeenStarted($this->getAdminUsername());
+				$this->userGeneratesNewAppPasswordNamed('acceptance-test ' . \microtime());
+				$appTokenForOccCommand = $this->appToken;
+			} else {
+				$appTokenForOccCommand = null;
+			}
 			$this->runOcc(
 				[
 					'config:system:delete',
 					'token_auth_enforced'
-				]
+				],
+				null,
+				$appTokenForOccCommand,
+				null,
+				null
 			);
 			$this->tokenAuthHasBeenSet = false;
+			$this->tokenAuthHasBeenSetTo = '';
 		}
 	}
 }
