@@ -206,6 +206,13 @@ trait BasicStructure {
 	}
 
 	/**
+	 * @return string
+	 */
+	public function getOcPath() {
+		return (string) $this->ocPath;
+	}
+
+	/**
 	 * returns the base URL (which is without a slash at the end)
 	 *
 	 * @return string
@@ -929,7 +936,8 @@ trait BasicStructure {
 		$jsonExpectedDecoded = \json_decode($jsonExpected->getRaw(), true);
 		$jsonRespondedEncoded
 			= \json_encode(\json_decode($this->response->getBody(), true));
-		if ($this->runOcc(['status']) === 0) {
+		$runOccStatus = $this->runOcc(['status']);
+		if ($runOccStatus === 0) {
 			$output = \explode("- ", $this->lastStdOut);
 			$version = \explode(": ", $output[3]);
 			PHPUnit_Framework_Assert::assertEquals(
@@ -946,7 +954,9 @@ trait BasicStructure {
 				$jsonExpectedEncoded, $jsonRespondedEncoded
 			);
 		} else {
-			PHPUnit_Framework_Assert::fail('Cannot get version variables from occ');
+			PHPUnit_Framework_Assert::fail(
+				"Cannot get version variables from occ - status $runOccStatus"
+			);
 		}
 	}
 
