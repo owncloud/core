@@ -1,22 +1,24 @@
-@api
+@api @TestAlsoOnExternalUserBackend
 Feature: sharees
 	Background:
 		Given using OCS API version "1"
-		And user "test" has been created
-		And user "Sharee1" has been created
+		And these users have been created: 
+			|username|displayname|
+			|user1   |User One   |
+			|sharee1 |Sharee One |
 		And group "ShareeGroup" has been created
 		And group "ShareeGroup2" has been created
-		And user "test" has been added to group "ShareeGroup2"
+		And user "user1" has been added to group "ShareeGroup2"
 
 	Scenario: Search without exact match
-		When user "test" gets the sharees using the sharing API with parameters
-			| search   | Sharee |
+		When user "user1" gets the sharees using the sharing API with parameters
+			| search   | sharee |
 			| itemType | file   |
 		Then the OCS status code should be "100"
 		And the HTTP status code should be "200"
 		And the "exact users" sharees returned should be empty
 		And the "users" sharees returned should be
-			| Sharee1 | 0 | Sharee1 |
+			| Sharee One | 0 | sharee1 |
 		And the "exact groups" sharees returned should be empty
 		And the "groups" sharees returned should be
 			| ShareeGroup  | 1 | ShareeGroup  |
@@ -25,14 +27,14 @@ Feature: sharees
 		And the "remotes" sharees returned should be empty
 
 	Scenario: Search without exact match not-exact casing
-		When user "test" gets the sharees using the sharing API with parameters
-			| search   | sharee |
+		When user "user1" gets the sharees using the sharing API with parameters
+			| search   | sHaRee |
 			| itemType | file   |
 		Then the OCS status code should be "100"
 		And the HTTP status code should be "200"
 		And the "exact users" sharees returned should be empty
 		And the "users" sharees returned should be
-			| Sharee1 | 0 | Sharee1 |
+			| Sharee One | 0 | sharee1 |
 		And the "exact groups" sharees returned should be empty
 		And the "groups" sharees returned should be
 			| ShareeGroup  | 1 | ShareeGroup  |
@@ -42,7 +44,7 @@ Feature: sharees
 
 	Scenario: Search only with group members - denied
 		Given parameter "shareapi_only_share_with_group_members" of app "core" has been set to "yes"
-		When user "test" gets the sharees using the sharing API with parameters
+		When user "user1" gets the sharees using the sharing API with parameters
 			| search   | sharee |
 			| itemType | file   |
 		Then the OCS status code should be "100"
@@ -56,17 +58,18 @@ Feature: sharees
 		And the "exact remotes" sharees returned should be empty
 		And the "remotes" sharees returned should be empty
 
+	@skipOnLDAP
 	Scenario: Search only with group members - allowed
 		Given parameter "shareapi_only_share_with_group_members" of app "core" has been set to "yes"
 		And user "Sharee1" has been added to group "ShareeGroup2"
-		When user "test" gets the sharees using the sharing API with parameters
+		When user "user1" gets the sharees using the sharing API with parameters
 			| search   | sharee |
 			| itemType | file   |
 		Then the OCS status code should be "100"
 		And the HTTP status code should be "200"
 		And the "exact users" sharees returned should be empty
 		And the "users" sharees returned should be
-			| Sharee1 | 0 | Sharee1 |
+			| Sharee One | 0 | sharee1 |
 		And the "exact groups" sharees returned should be empty
 		And the "groups" sharees returned should be
 			| ShareeGroup  | 1 | ShareeGroup  |
@@ -112,7 +115,7 @@ Feature: sharees
 		And the HTTP status code should be "200"
 		And the "exact users" sharees returned should be empty
 		And the "users" sharees returned should be
-			| Sharee1 | 0 | Sharee1 |
+			| Sharee One | 0 | sharee1 |
 		And the "exact groups" sharees returned should be empty
 		And the "groups" sharees returned should be empty
 		And the "exact remotes" sharees returned should be empty
@@ -120,7 +123,7 @@ Feature: sharees
 
 	Scenario: Search only with membership groups - allowed
 		Given parameter "shareapi_only_share_with_membership_groups" of app "core" has been set to "yes"
-		When user "test" gets the sharees using the sharing API with parameters
+		When user "user1" gets the sharees using the sharing API with parameters
 			| search   | ShareeGroup |
 			| itemType | file        |
 		Then the OCS status code should be "100"
@@ -135,14 +138,14 @@ Feature: sharees
 
 	Scenario: Search only with membership groups - allowed including users
 		Given parameter "shareapi_only_share_with_membership_groups" of app "core" has been set to "yes"
-		When user "test" gets the sharees using the sharing API with parameters
+		When user "user1" gets the sharees using the sharing API with parameters
 			| search   | Sharee |
 			| itemType | file   |
 		Then the OCS status code should be "100"
 		And the HTTP status code should be "200"
 		And the "exact users" sharees returned should be empty
 		And the "users" sharees returned should be
-			| Sharee1 | 0 | Sharee1 |
+			| Sharee One | 0 | sharee1 |
 		And the "exact groups" sharees returned should be empty
 		And the "groups" sharees returned should be
 			| ShareeGroup2 | 1 | ShareeGroup2 |
@@ -151,7 +154,7 @@ Feature: sharees
 
 	Scenario: Search without exact match no iteration allowed
 		Given parameter "shareapi_allow_share_dialog_user_enumeration" of app "core" has been set to "no"
-		When user "test" gets the sharees using the sharing API with parameters
+		When user "user1" gets the sharees using the sharing API with parameters
 			| search   | Sharee |
 			| itemType | file   |
 		Then the OCS status code should be "100"
@@ -165,13 +168,13 @@ Feature: sharees
 
 	Scenario: Search with exact match no iteration allowed
 		Given parameter "shareapi_allow_share_dialog_user_enumeration" of app "core" has been set to "no"
-		When user "test" gets the sharees using the sharing API with parameters
+		When user "user1" gets the sharees using the sharing API with parameters
 			| search   | Sharee1 |
 			| itemType | file    |
 		Then the OCS status code should be "100"
 		And the HTTP status code should be "200"
 		And the "exact users" sharees returned should be
-			| Sharee1 | 0 | Sharee1 |
+			| Sharee One | 0 | sharee1 |
 		And the "users" sharees returned should be empty
 		And the "exact groups" sharees returned should be empty
 		And the "groups" sharees returned should be empty
@@ -180,7 +183,7 @@ Feature: sharees
 
 	Scenario: Search with exact match group no iteration allowed
 		Given parameter "shareapi_allow_share_dialog_user_enumeration" of app "core" has been set to "no"
-		When user "test" gets the sharees using the sharing API with parameters
+		When user "user1" gets the sharees using the sharing API with parameters
 			| search   | ShareeGroup |
 			| itemType | file        |
 		Then the OCS status code should be "100"
@@ -194,13 +197,13 @@ Feature: sharees
 		And the "remotes" sharees returned should be empty
 
 	Scenario: Search with exact match
-		When user "test" gets the sharees using the sharing API with parameters
+		When user "user1" gets the sharees using the sharing API with parameters
 			| search   | Sharee1 |
 			| itemType | file    |
 		Then the OCS status code should be "100"
 		And the HTTP status code should be "200"
 		And the "exact users" sharees returned should be
-			| Sharee1 | 0 | Sharee1 |
+			| Sharee One | 0 | sharee1 |
 		And the "users" sharees returned should be empty
 		And the "exact groups" sharees returned should be empty
 		And the "groups" sharees returned should be empty
@@ -208,13 +211,13 @@ Feature: sharees
 		And the "remotes" sharees returned should be empty
 
 	Scenario: Search with exact match not-exact casing
-		When user "test" gets the sharees using the sharing API with parameters
+		When user "user1" gets the sharees using the sharing API with parameters
 			| search   | sharee1 |
 			| itemType | file    |
 		Then the OCS status code should be "100"
 		And the HTTP status code should be "200"
 		And the "exact users" sharees returned should be
-			| Sharee1 | 0 | Sharee1 |
+			| Sharee One | 0 | sharee1 |
 		And the "users" sharees returned should be empty
 		And the "exact groups" sharees returned should be empty
 		And the "groups" sharees returned should be empty
@@ -222,7 +225,7 @@ Feature: sharees
 		And the "remotes" sharees returned should be empty
 
 	Scenario: Search with exact match not-exact casing group
-		When user "test" gets the sharees using the sharing API with parameters
+		When user "user1" gets the sharees using the sharing API with parameters
 			| search   | shareegroup2 |
 			| itemType | file         |
 		Then the OCS status code should be "100"
@@ -242,7 +245,7 @@ Feature: sharees
 		Then the OCS status code should be "100"
 		And the HTTP status code should be "200"
 		And the "exact users" sharees returned should be
-			| Sharee1 | 0 | Sharee1 |
+			| Sharee One | 0 | sharee1 |
 		And the "users" sharees returned should be empty
 		And the "exact groups" sharees returned should be empty
 		And the "groups" sharees returned should be empty
@@ -250,7 +253,7 @@ Feature: sharees
 		And the "remotes" sharees returned should be empty
 
 	Scenario: Remote sharee for files
-		When user "test" gets the sharees using the sharing API with parameters
+		When user "user1" gets the sharees using the sharing API with parameters
 			| search   | test@localhost |
 			| itemType | file           |
 		Then the OCS status code should be "100"
@@ -264,7 +267,7 @@ Feature: sharees
 		And the "remotes" sharees returned should be empty
 
 	Scenario: Remote sharee for calendars not allowed
-		When user "test" gets the sharees using the sharing API with parameters
+		When user "user1" gets the sharees using the sharing API with parameters
 			| search   | test@localhost |
 			| itemType | calendar       |
 		Then the OCS status code should be "100"
@@ -278,24 +281,25 @@ Feature: sharees
 
 	Scenario: Group sharees not returned when group sharing is disabled
 		Given parameter "shareapi_allow_group_sharing" of app "core" has been set to "no"
-		When user "test" gets the sharees using the sharing API with parameters
+		When user "user1" gets the sharees using the sharing API with parameters
 			| search   | sharee |
 			| itemType | file   |
 		Then the OCS status code should be "100"
 		And the HTTP status code should be "200"
 		And the "exact users" sharees returned should be empty
 		And the "users" sharees returned should be
-			| Sharee1 | 0 | Sharee1 |
+			| Sharee One | 0 | sharee1 |
 		And the "exact groups" sharees returned should be empty
 		And the "groups" sharees returned should be empty
 		And the "exact remotes" sharees returned should be empty
 		And the "remotes" sharees returned should be empty
 
+	@skipOnLDAP
 	Scenario: Enumerate only group members - only show partial results from member groups
 		Given user "Another" has been created
 		And user "Another" has been added to group "ShareeGroup2"
 		And parameter "shareapi_share_dialog_user_enumeration_group_members" of app "core" has been set to "yes"
-		When user "test" gets the sharees using the sharing API with parameters
+		When user "user1" gets the sharees using the sharing API with parameters
 			| search   | anot  |
 			| itemType | file |
 		Then the OCS status code should be "100"
@@ -310,13 +314,13 @@ Feature: sharees
 
 	Scenario: Enumerate only group members - accept exact match from non-member groups
 		Given parameter "shareapi_share_dialog_user_enumeration_group_members" of app "core" has been set to "yes"
-		When user "test" gets the sharees using the sharing API with parameters
+		When user "user1" gets the sharees using the sharing API with parameters
 			| search   | Sharee1 |
 			| itemType | file    |
 		Then the OCS status code should be "100"
 		And the HTTP status code should be "200"
 		And the "exact users" sharees returned should be
-			| Sharee1 | 0 | Sharee1 |
+			| Sharee One | 0 | sharee1 |
 		And the "users" sharees returned should be empty
 		And the "exact groups" sharees returned should be empty
 		And the "groups" sharees returned should be empty
@@ -325,7 +329,7 @@ Feature: sharees
 
 	Scenario: Enumerate only group members - only show partial results from member groups
 		Given parameter "shareapi_share_dialog_user_enumeration_group_members" of app "core" has been set to "yes"
-		When user "test" gets the sharees using the sharing API with parameters
+		When user "user1" gets the sharees using the sharing API with parameters
 			| search   | ShareeG |
 			| itemType | file    |
 		Then the OCS status code should be "100"
@@ -338,10 +342,11 @@ Feature: sharees
 		And the "exact remotes" sharees returned should be empty
 		And the "remotes" sharees returned should be empty
 
+	@skipOnLDAP
 	Scenario: Enumerate only group members - only accept exact group match from non-memberships
 		Given group "ShareeGroupNonMember" has been created
 		And parameter "shareapi_share_dialog_user_enumeration_group_members" of app "core" has been set to "yes"
-		When user "test" gets the sharees using the sharing API with parameters
+		When user "user1" gets the sharees using the sharing API with parameters
 			| search   | ShareeGroupNonMember |
 			| itemType | file                 |
 		Then the OCS status code should be "100"
