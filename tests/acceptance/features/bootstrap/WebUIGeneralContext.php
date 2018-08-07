@@ -507,8 +507,8 @@ class WebUIGeneralContext extends RawMinkContext implements Context {
 			$this->featureContext->getAdminUsername(),
 			$this->featureContext->getAdminPassword()
 		);
-		$this->savedCapabilitiesXml[$this->featureContext->getBaseUrl()] =
-			AppConfigHelper::getCapabilitiesXml(
+		$this->savedCapabilitiesXml[$this->featureContext->getBaseUrl()]
+			= AppConfigHelper::getCapabilitiesXml(
 				$response
 			);
 		if ($this->oldCSRFSetting === null) {
