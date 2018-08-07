@@ -215,7 +215,6 @@ default:
     webUIManageUsersGroups:
       paths:
         - %paths.base%/../features/webUIManageUsersGroups
-      context: *common_webui_suite_context
       contexts:
         - FeatureContext: *common_feature_context_params
         - WebUIGeneralContext:
@@ -228,7 +227,6 @@ default:
     webUIManageQuota:
       paths:
         - %paths.base%/../features/webUIManageQuota
-      context: *common_webui_suite_context
       contexts:
         - FeatureContext: *common_feature_context_params
         - WebUIGeneralContext:
