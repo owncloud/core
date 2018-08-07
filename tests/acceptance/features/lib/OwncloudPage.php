@@ -658,32 +658,6 @@ class OwncloudPage extends Page {
 	}
 
 	/**
-	 * sends an END key and then BACKSPACEs to delete the current value
-	 * then sends the new value
-	 * checks the set value and sends the Escape key + throws an exception
-	 * if the value is not set correctly
-	 *
-	 * @param NodeElement $inputField
-	 * @param string $value
-	 *
-	 * @throws \Exception
-	 * @return void
-	 */
-	protected function cleanInputAndSetValue(NodeElement $inputField, $value) {
-		$resultValue = $inputField->getValue();
-		$existingValueLength = \strlen($resultValue);
-		$deleteSequence
-			= Key::END . \str_repeat(Key::BACKSPACE, $existingValueLength);
-		$inputField->setValue($deleteSequence);
-		$inputField->setValue($value);
-		$resultValue = $inputField->getValue();
-		if ($resultValue !== $value) {
-			$inputField->keyUp(27); //send escape
-			throw new \Exception("value of input field is not what we expect");
-		}
-	}
-
-	/**
 	 * Fill an element with a text value and keep focus on the element.
 	 *
 	 * The existing fillField and setValue methods have a problem. They blur out
