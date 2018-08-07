@@ -1,4 +1,4 @@
-@api
+@api @TestAlsoOnExternalUserBackend
 Feature: sharing
 	Background:
 		Given using OCS API version "1"
@@ -45,13 +45,13 @@ Feature: sharing
 
 	Scenario: Uploading file to a group read-only share folder does not work
 		Given user "user1" has been created
-		And group "sharegroup" has been created
-		And user "user1" has been added to group "sharegroup"
+		And group "grp1" has been created
+		And user "user1" has been added to group "grp1"
 		And user "user0" has created a share with settings
 			| path        | FOLDER     |
 			| shareType   | 1          |
 			| permissions | 1          |
-			| shareWith   | sharegroup |
+			| shareWith   | grp1       |
 		When user "user1" uploads file "data/textfile.txt" to "FOLDER (2)/textfile.txt" using the WebDAV API
 		Then the HTTP status code should be "403"
 
@@ -86,13 +86,13 @@ Feature: sharing
 
 	Scenario: Uploading file to a group upload-only share folder works
 		Given user "user1" has been created
-		And group "sharegroup" has been created
-		And user "user1" has been added to group "sharegroup"
+		And group "grp1" has been created
+		And user "user1" has been added to group "grp1"
 		And user "user0" has created a share with settings
 			| path        | FOLDER     |
 			| shareType   | 1          |
 			| permissions | 4          |
-			| shareWith   | sharegroup |
+			| shareWith   | grp1       |
 		When user "user1" uploads file "data/textfile.txt" to "FOLDER (2)/textfile.txt" using the WebDAV API
 		Then the HTTP status code should be "201"
 
@@ -118,13 +118,13 @@ Feature: sharing
 
 	Scenario: Uploading file to a group read/write share folder works
 		Given user "user1" has been created
-		And group "sharegroup" has been created
-		And user "user1" has been added to group "sharegroup"
+		And group "grp1" has been created
+		And user "user1" has been added to group "grp1"
 		And user "user0" has created a share with settings
 			| path        | FOLDER     |
 			| shareType   | 1          |
 			| permissions | 15         |
-			| shareWith   | sharegroup |
+			| shareWith   | grp1       |
 		When user "user1" uploads file "data/textfile.txt" to "FOLDER (2)/textfile.txt" using the WebDAV API
 		Then the HTTP status code should be "201"
 
@@ -159,13 +159,13 @@ Feature: sharing
 
 	Scenario: Uploading to a group shared folder with read/write permission when the sharer has unsufficient quota does not work
 		Given user "user1" has been created
-		And group "sharinggroup" has been created
-		And user "user1" has been added to group "sharinggroup"
+		And group "grp1" has been created
+		And user "user1" has been added to group "grp1"
 		And user "user0" has created a share with settings
 			| path        | FOLDER       |
 			| shareType   | 1            |
 			| permissions | 15           |
-			| shareWith   | sharinggroup |
+			| shareWith   | grp1         |
 		And the quota of user "user0" has been set to "0"
 		When user "user1" uploads file "data/textfile.txt" to "FOLDER (2)/myfile.txt" using the WebDAV API
 		Then the HTTP status code should be "507"
@@ -174,7 +174,7 @@ Feature: sharing
 		When user "user0" creates a share using the sharing API with settings
 			| path        | FOLDER |
 			| shareType   | 3      |
-			| permissions | 15      |
+			| permissions | 15     |
 		When the quota of user "user0" has been set to "0"
 		Then publicly uploading a file should not work
 		And the HTTP status code should be "507"
@@ -184,7 +184,7 @@ Feature: sharing
 		And user "user0" has created a share with settings
 			| path        | FOLDER     |
 			| shareType   | 0          |
-			| permissions | 4         |
+			| permissions | 4          |
 			| shareWith   | user1      |
 		And the quota of user "user0" has been set to "0"
 		When user "user1" uploads file "data/textfile.txt" to "FOLDER (2)/myfile.txt" using the WebDAV API
@@ -192,13 +192,13 @@ Feature: sharing
 
 	Scenario: Uploading to a group shared folder with upload-only permission when the sharer has unsufficient quota does not work
 		Given user "user1" has been created
-		And group "sharinggroup" has been created
-		And user "user1" has been added to group "sharinggroup"
+		And group "grp1" has been created
+		And user "user1" has been added to group "grp1"
 		And user "user0" has created a share with settings
-			| path        | FOLDER       |
-			| shareType   | 1            |
+			| path        | FOLDER      |
+			| shareType   | 1           |
 			| permissions | 4           |
-			| shareWith   | sharinggroup |
+			| shareWith   | grp1        |
 		And the quota of user "user0" has been set to "0"
 		When user "user1" uploads file "data/textfile.txt" to "FOLDER (2)/myfile.txt" using the WebDAV API
 		Then the HTTP status code should be "507"
@@ -226,7 +226,7 @@ Feature: sharing
 		And user "user0" has created a share with settings
 			| path        | FOLDER |
 			| shareType   | 3      |
-			| permissions | 31      |
+			| permissions | 31     |
 		When the administrator sets parameter "shareapi_allow_public_upload" of app "core" to "yes"
 		Then publicly uploading a file should not work
 		And the HTTP status code should be "403"

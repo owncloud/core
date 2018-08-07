@@ -1,10 +1,10 @@
-@api
+@api @TestAlsoOnExternalUserBackend
 Feature: sharing
 	Background:
 		Given using old DAV path
 		And user "user0" has been created
 		And user "user1" has been created
-
+	
 	Scenario Outline: Sharee can see the share
 		Given using OCS API version "<ocs_api_version>"
 		And user "user0" has shared file "textfile0.txt" with user "user1"
@@ -45,9 +45,9 @@ Feature: sharing
 
 	Scenario Outline: Sharee can see the group share
 		Given using OCS API version "<ocs_api_version>"
-		And group "group0" has been created
-		And user "user1" has been added to group "group0"
-		And user "user0" has shared file "textfile0.txt" with group "group0"
+		And group "grp1" has been created
+		And user "user1" has been added to group "grp1"
+		And user "user0" has shared file "textfile0.txt" with group "grp1"
 		When user "user1" sends HTTP method "GET" to OCS API endpoint "/apps/files_sharing/api/v1/shares?shared_with_me=true"
 		Then the OCS status code should be "<ocs_status_code>"
 		And the HTTP status code should be "200"

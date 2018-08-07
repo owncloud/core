@@ -1,4 +1,4 @@
-@api
+@api @TestAlsoOnExternalUserBackend
 Feature: Comments
   Background:
     Given using new DAV path
@@ -105,10 +105,10 @@ Feature: Comments
 	Scenario: sharee comments on a group shared file
 		Given user "user0" has been created
 		And user "user1" has been created
-		And group "sharinggroup" has been created
-		And user "user1" has been added to group "sharinggroup"
+		And group "grp1" has been created
+		And user "user1" has been added to group "grp1"
 		And user "user0" has uploaded file "data/textfile.txt" to "/myFileToComment.txt"
-		And user "user0" has shared file "/myFileToComment.txt" with group "sharinggroup"
+		And user "user0" has shared file "/myFileToComment.txt" with group "grp1"
 		When user "user1" comments with content "Comment from sharee" on file "/myFileToComment.txt" using the WebDAV API
 		Then the HTTP status code should be "201"
 		And user "user0" should have the following comments on file "/myFileToComment.txt"
@@ -117,8 +117,6 @@ Feature: Comments
 	Scenario: sharee comments on read-only shared file
 		Given user "user0" has been created
 		And user "user1" has been created
-		And group "sharinggroup" has been created
-		And user "user1" has been added to group "sharinggroup"
 		And user "user0" has uploaded file "data/textfile.txt" to "/myFileToComment.txt"
 		And user "user0" has created a share with settings
 			| path        | /myFileToComment.txt |
@@ -133,8 +131,6 @@ Feature: Comments
 	Scenario: sharee comments on upload-only shared file
 		Given user "user0" has been created
 		And user "user1" has been created
-		And group "sharinggroup" has been created
-		And user "user1" has been added to group "sharinggroup"
 		And user "user0" has uploaded file "data/textfile.txt" to "/myFileToComment.txt"
 		And user "user0" has created a share with settings
 			| path        | /myFileToComment.txt |
@@ -208,10 +204,10 @@ Feature: Comments
 	Scenario: sharee comments on a group shared folder
 		Given user "user0" has been created
 		And user "user1" has been created
-		And group "sharinggroup" has been created
-		And user "user1" has been added to group "sharinggroup"
+		And group "grp1" has been created
+		And user "user1" has been added to group "grp1"
 		And user "user0" has created a folder "/FOLDER_TO_COMMENT"
-		And user "user0" has shared folder "/FOLDER_TO_COMMENT" with group "sharinggroup"
+		And user "user0" has shared folder "/FOLDER_TO_COMMENT" with group "grp1"
 		When user "user1" comments with content "Comment from sharee" on folder "/FOLDER_TO_COMMENT" using the WebDAV API
 		Then the HTTP status code should be "201"
 		And user "user0" should have the following comments on folder "/FOLDER_TO_COMMENT"

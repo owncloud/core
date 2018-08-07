@@ -1,9 +1,11 @@
-@api
+@api @TestAlsoOnExternalUserBackend
 Feature: sharing
 	Background:
 		Given using OCS API version "1"
 		And using old DAV path
-		And user "user0" has been created
+		And these users have been created: 
+			|username|displayname|
+			|user0   |User Zero  |
 
 	Scenario Outline: Allow modification of reshare
 		Given using OCS API version "<ocs_api_version>"
@@ -46,7 +48,7 @@ Feature: sharing
 			| mail_send         | 0                    |
 			| uid_owner         | user0                |
 			| file_parent       | A_NUMBER             |
-			| displayname_owner | user0                |
+			| displayname_owner | User Zero            |
 			| url               | AN_URL               |
 			| mimetype          | httpd/unix-directory |
 		Examples:
@@ -97,7 +99,7 @@ Feature: sharing
 			| mail_send         | 0                    |
 			| uid_owner         | user0                |
 			| file_parent       | A_NUMBER             |
-			| displayname_owner | user0                |
+			| displayname_owner | User Zero            |
 			| url               | AN_URL               |
 			| mimetype          | httpd/unix-directory |
 		Examples:
@@ -130,7 +132,7 @@ Feature: sharing
 			| mail_send         | 0                    |
 			| uid_owner         | user0                |
 			| file_parent       | A_NUMBER             |
-			| displayname_owner | user0                |
+			| displayname_owner | User Zero            |
 			| url               | AN_URL               |
 			| mimetype          | httpd/unix-directory |
 		Examples:
@@ -163,7 +165,7 @@ Feature: sharing
 			| mail_send         | 0                    |
 			| uid_owner         | user0                |
 			| file_parent       | A_NUMBER             |
-			| displayname_owner | user0                |
+			| displayname_owner | User Zero            |
 			| url               | AN_URL               |
 			| mimetype          | httpd/unix-directory |
 		Examples:
@@ -196,7 +198,7 @@ Feature: sharing
 			| mail_send         | 0                    |
 			| uid_owner         | user0                |
 			| file_parent       | A_NUMBER             |
-			| displayname_owner | user0                |
+			| displayname_owner | User Zero            |
 			| url               | AN_URL               |
 			| mimetype          | httpd/unix-directory |
 		Examples:
@@ -207,9 +209,9 @@ Feature: sharing
 	Scenario Outline: keep group permissions in sync
 		Given using OCS API version "<ocs_api_version>"
 		And user "user1" has been created
-		And group "group1" has been created
-		And user "user1" has been added to group "group1"
-		And user "user0" has shared file "textfile0.txt" with group "group1"
+		And group "grp1" has been created
+		And user "user1" has been added to group "grp1"
+		And user "user0" has shared file "textfile0.txt" with group "grp1"
 		And user "user1" has moved file "/textfile0 (2).txt" to "/FOLDER/textfile0.txt"
 		And as user "user0"
 		When the user updates the last share using the sharing API with
@@ -230,7 +232,7 @@ Feature: sharing
 			| mail_send         | 0              |
 			| uid_owner         | user0          |
 			| file_parent       | A_NUMBER       |
-			| displayname_owner | user0          |
+			| displayname_owner | User Zero      |
 			| mimetype          | text/plain     |
 		Examples:
 			|ocs_api_version|ocs_status_code|
@@ -274,8 +276,10 @@ Feature: sharing
 			|2              |400             |
 
 	Scenario: Share ownership change after moving a shared file outside of an outer share
-		Given user "user1" has been created
-		And user "user2" has been created
+		Given these users have been created: 
+			|username|displayname|
+			|user1   |User One   |
+			|user2   |User Two   |
 		And user "user0" has created a folder "/folder1"
 		And user "user0" has created a folder "/folder1/folder2"
 		And user "user1" has created a folder "/moved-out"
@@ -296,14 +300,16 @@ Feature: sharing
 			| mail_send         | 0                    |
 			| uid_owner         | user1                |
 			| file_parent       | A_NUMBER             |
-			| displayname_owner | user1                |
+			| displayname_owner | User One             |
 			| mimetype          | httpd/unix-directory |
 		And as "user0" the folder "/folder1/folder2" should not exist
 		And as "user2" the folder "/folder2" should exist
 
 	Scenario: Share ownership change after moving a shared file to another share
-		Given user "user1" has been created
-		And user "user2" has been created
+		Given these users have been created: 
+			|username|displayname|
+			|user1   |User One   |
+			|user2   |User Two   |
 		And user "user0" has created a folder "/user0-folder"
 		And user "user0" has created a folder "/user0-folder/folder2"
 		And user "user2" has created a folder "/user2-folder"
@@ -324,7 +330,7 @@ Feature: sharing
 			| mail_send         | 0                    |
 			| uid_owner         | user2                |
 			| file_parent       | A_NUMBER             |
-			| displayname_owner | user2                |
+			| displayname_owner | User Two             |
 			| mimetype          | httpd/unix-directory |
 		And as "user0" the folder "/user0-folder/folder2" should not exist
 		And as "user2" the folder "/user2-folder/folder2" should exist
@@ -389,12 +395,13 @@ Feature: sharing
 	Scenario Outline: Increasing permissions is allowed for owner
 		Given using OCS API version "<ocs_api_version>"
 		And user "user1" has been created
-		And group "new-group" has been created
-		And user "user0" has been added to group "new-group"
-		And user "user1" has been added to group "new-group"
-		And user "user0" has been made a subadmin of group "new-group"
-		And as user "user0"
-		And the user has shared folder "/FOLDER" with group "new-group"
+		And user "user2" has been created
+		And group "grp1" has been created
+		And user "user2" has been added to group "grp1"
+		And user "user1" has been added to group "grp1"
+		And user "user2" has been made a subadmin of group "grp1"
+		And as user "user2"
+		And the user has shared folder "/FOLDER" with group "grp1"
 		And the user has updated the last share with
 			| permissions | 1 |
 		When the user updates the last share using the sharing API with

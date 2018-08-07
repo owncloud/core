@@ -1,4 +1,4 @@
-@api
+@api @TestAlsoOnExternalUserBackend
 Feature: webdav-related-old-endpoint
 	Background:
 		Given using OCS API version "1"
