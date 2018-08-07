@@ -1,4 +1,4 @@
-@api
+@api @TestAlsoOnExternalUserBackend
 Feature: sharing
 	Background:
 		Given using OCS API version "1"

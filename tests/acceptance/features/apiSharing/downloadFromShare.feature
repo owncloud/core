@@ -1,4 +1,4 @@
-@api
+@api @TestAlsoOnExternalUserBackend
 Feature: sharing
 	Background:
 		Given using OCS API version "1"
@@ -17,12 +17,12 @@ Feature: sharing
 	Scenario: Share a file by multiple channels and download from sub-folder and direct file share
 		Given user "user1" has been created
 		And user "user2" has been created
-		And group "group0" has been created
-		And user "user1" has been added to group "group0"
-		And user "user2" has been added to group "group0"
+		And group "grp1" has been created
+		And user "user1" has been added to group "grp1"
+		And user "user2" has been added to group "grp1"
 		And user "user0" has created a folder "/common"
 		And user "user0" has created a folder "/common/sub"
-		And user "user0" has shared folder "common" with group "group0"
+		And user "user0" has shared folder "common" with group "grp1"
 		And user "user1" has shared file "textfile0.txt" with user "user2"
 		And user "user1" has moved file "/textfile0.txt" to "/common/textfile0.txt"
 		And user "user1" has moved file "/common/textfile0.txt" to "/common/sub/textfile0.txt"
@@ -44,9 +44,9 @@ Feature: sharing
 
 	Scenario: Download a file that is in a folder contained in a folder that has been shared with a group with default permissions
 		Given user "user1" has been created
-		And group "sharegroup" has been created
-		And user "user1" has been added to group "sharegroup"
-		When user "user0" has shared folder "PARENT" with group "sharegroup"
+		And group "grp1" has been created
+		And user "user1" has been added to group "grp1"
+		When user "user0" has shared folder "PARENT" with group "grp1"
 		Then the user "user1" should be able to download the file "/PARENT (2)/CHILD/child.txt" using the sharing API
 
 	Scenario: Download a file that is in a folder contained in a folder that has been shared with public with default permissions
@@ -67,12 +67,12 @@ Feature: sharing
 
 	Scenario: Download a file that is in a folder contained in a folder that has been shared with a group with Read/Write permission 
 		Given user "user1" has been created
-		And group "sharegroup" has been created
-		And user "user1" has been added to group "sharegroup"
+		And group "grp1" has been created
+		And user "user1" has been added to group "grp1"
 		When user "user0" creates a share using the sharing API with settings
 			| path        | PARENT      |
 			| shareType   | 1           |
-			| shareWith   | sharegroup  |
+			| shareWith   | grp1        |
 			| permissions | 15          |
 		Then the user "user1" should be able to download the file "/PARENT (2)/CHILD/child.txt" using the sharing API
 
@@ -81,7 +81,7 @@ Feature: sharing
 			| path         | PARENT   |
 			| shareType    | 3        |
 			| password     | publicpw |
-			| permissions | 15        |
+			| permissions  | 15       |
 		Then the public should be able to download the range "bytes=1-7" of file "/CHILD/child.txt" from inside the last public shared folder with password "publicpw" and the content should be "wnCloud"
 
 	Scenario: Download a file that is in a folder contained in a folder that has been shared with a user with Read only permission 
@@ -95,12 +95,12 @@ Feature: sharing
 
 	Scenario: Download a file that is in a folder contained in a folder that has been shared with a group with Read only permission 
 		Given user "user1" has been created
-		And group "sharegroup" has been created
-		And user "user1" has been added to group "sharegroup"
+		And group "grp1" has been created
+		And user "user1" has been added to group "grp1"
 		When user "user0" creates a share using the sharing API with settings
 			| path        | PARENT      |
 			| shareType   | 1           |
-			| shareWith   | sharegroup  |
+			| shareWith   | grp1        |
 			| permissions | 1           |
 		Then the user "user1" should be able to download the file "/PARENT (2)/CHILD/child.txt" using the sharing API
 

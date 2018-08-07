@@ -1,4 +1,4 @@
-@api
+@api @TestAlsoOnExternalUserBackend
 Feature: sharing
 	Background:
 		Given using OCS API version "1"
@@ -8,11 +8,11 @@ Feature: sharing
 		And user "user2" has been created
 
 	Scenario: Keep usergroup shares (#22143)
-		Given group "group" has been created
-		And user "user1" has been added to group "group"
-		And user "user2" has been added to group "group"
+		Given group "grp1" has been created
+		And user "user1" has been added to group "grp1"
+		And user "user2" has been added to group "grp1"
 		And user "user0" has created a folder "/TMP"
-		When user "user0" shares folder "TMP" with group "group" using the sharing API
+		When user "user0" shares folder "TMP" with group "grp1" using the sharing API
 		And user "user1" creates a folder "/myFOLDER" using the WebDAV API
 		And user "user1" moves folder "/TMP" to "/myFOLDER/myTMP" using the WebDAV API
 		And the administrator deletes user "user2" using the provisioning API

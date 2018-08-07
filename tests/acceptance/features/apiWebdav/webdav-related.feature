@@ -1,4 +1,4 @@
-@api
+@api @TestAlsoOnExternalUserBackend
 Feature: webdav-related
 	Background:
 		Given using OCS API version "1"
@@ -440,13 +440,13 @@ Feature: webdav-related
 	Scenario Outline: A file that is shared to a group has a share-types property
 		Given using <dav_version> DAV path
 		And user "user0" has been created
-		And group "group1" has been created
+		And group "grp1" has been created
 		And user "user0" has created a folder "/test"
 		And user "user0" has created a share with settings
 			| path        | test   |
 			| shareType   | 1      |
 			| permissions | 31     |
-			| shareWith   | group1 |
+			| shareWith   | grp1   |
 		When user "user0" gets the following properties of folder "/test" using the WebDAV API
 			|{http://owncloud.org/ns}share-types|
 		Then the response should contain a share-types property with
@@ -477,7 +477,7 @@ Feature: webdav-related
 		Given using <dav_version> DAV path
 		And user "user0" has been created
 		And user "user1" has been created
-		And group "group2" has been created
+		And group "grp2" has been created
 		And user "user0" has created a folder "/test"
 		And user "user0" has created a share with settings
 			| path        | test  |
@@ -488,7 +488,7 @@ Feature: webdav-related
 			| path        | test   |
 			| shareType   | 1      |
 			| permissions | 31     |
-			| shareWith   | group2 |
+			| shareWith   | grp2   |
 		And user "user0" has created a share with settings
 			| path        | test  |
 			| shareType   | 3     |
@@ -506,9 +506,9 @@ Feature: webdav-related
 
 	Scenario Outline: A disabled user cannot use webdav
 		Given using <dav_version> DAV path
-		And user "userToBeDisabled" has been created
-		And user "userToBeDisabled" has been disabled
-		When user "userToBeDisabled" downloads the file "/welcome.txt" using the WebDAV API
+		And user "user1" has been created
+		And user "user1" has been disabled
+		When user "user1" downloads the file "/welcome.txt" using the WebDAV API
 		Then the HTTP status code should be "401"
 		Examples:
 			| dav_version   |
