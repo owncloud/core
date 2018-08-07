@@ -266,23 +266,65 @@ class SetupHelper {
 	 *
 	 * @param array $args anything behind "occ".
 	 *                    For example: "files:transfer-ownership"
+	 * @param string|null $adminUsername
+	 * @param string|null $adminPassword
+	 * @param string|null $baseUrl
+	 * @param string|null $ocPath
 	 *
 	 * @return string[] associated array with "code", "stdOut", "stdErr"
+	 * @throws Exception if parameters have not been provided yet or the testing app is not enabled
 	 */
-	public static function runOcc($args) {
+	public static function runOcc(
+		$args,
+		$adminUsername = null,
+		$adminPassword = null,
+		$baseUrl = null,
+		$ocPath = null
+	) {
 		if (self::$adminUsername === null
-			|| self::$adminPassword === null
-			|| self::$baseUrl === null
-			|| self::$ocPath === null
+			&& $adminUsername === null
 		) {
 			throw new Exception(
-				"runOcc called before init"
+				"runOcc called without adminUsername - pass the username or call SetupHelper::init"
 			);
+		}
+		if (self::$adminPassword === null
+			&& $adminPassword === null
+		) {
+			throw new Exception(
+				"runOcc called without adminPassword - pass the password or call SetupHelper::init"
+			);
+		}
+		if (self::$baseUrl === null
+			&& $baseUrl === null
+		) {
+			throw new Exception(
+				"runOcc called without baseUrl - pass the baseUrl or call SetupHelper::init"
+			);
+		}
+		if (self::$ocPath === null
+			&& $ocPath === null
+		) {
+			throw new Exception(
+				"runOcc called without ocPath - pass the ocPath or call SetupHelper::init"
+			);
+		}
+		if ($adminUsername === null) {
+			$adminUsername = self::$adminUsername;
+		}
+		if ($adminPassword === null) {
+			$adminPassword = self::$adminPassword;
+		}
+		if ($baseUrl === null) {
+			$baseUrl = self::$baseUrl;
+		}
+		if ($ocPath === null) {
+			$ocPath = self::$ocPath;
 		}
 		try {
 			$result = OcsApiHelper::sendRequest(
-				self::$baseUrl, self::$adminUsername,
-				self::$adminPassword, "POST", self::$ocPath,
+				$baseUrl, $adminUsername,
+				$adminPassword, "POST", $ocPath,
 				['command' => \implode(' ', $args)]
 			);
 		} catch (ServerException $e) {
