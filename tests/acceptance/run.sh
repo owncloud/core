@@ -23,6 +23,9 @@ BEHAT=${OC_PATH}lib/composer/bin/behat
 #            testing app. We have to assume it is already enabled.
 # --show-oc-logs - tail the ownCloud log after the test run
 # --norerun - do not rerun failed webUI scenarios
+# --part - run a subset of scenarios, need two numbers.
+#          first number: which part to run
+#          second number: in how many parts to divide the set of scenarios
 BEHAT_TAGS_OPTION_FOUND=false
 REMOTE_ONLY=false
 SHOW_OC_LOGS=false
@@ -58,6 +61,16 @@ do
 		--browser)
 			BROWSER="$2"
 			shift
+			;;
+		--part)
+			RUN_PART="$2"
+			DIVIDE_INTO_NUM_PARTS="$3"
+			if [ ${RUN_PART} -gt ${DIVIDE_INTO_NUM_PARTS} ]
+			then
+				echo "cannot run part ${RUN_PART} of ${DIVIDE_INTO_NUM_PARTS}"
+				exit 1
+			fi
+			shift 2
 			;;
 		--remote)
 			REMOTE_ONLY=true
@@ -184,6 +197,97 @@ function env_encryption_disable_master_key {
 function env_encryption_disable_user_keys {
 	env_encryption_disable || { echo "Unable to disable user-keys encryption" >&2; exit 1; }
 	remote_occ ${ADMIN_AUTH} ${OCC_URL} "config:app:delete encryption userSpecificKey"
+}
+
+# expected variables
+# --------------------
+# $SUITE_FEATURE_TEXT - human readable which test to run
+# $BEHAT_SUITE_OPTION - suite setting with "--suite" or empty if all suites have to be run
+# $BEHAT_FEATURE - feature file, or empty
+# $BEHAT_FILTER_TAGS - list of tags
+# $BEHAT_TAGS_OPTION_FOUND
+# $BROWSER_TEXT
+# $BROWSER_VERSION_TEXT
+# $PLATFORM_TEXT
+# $TEST_LOG_FILE
+# $BEHAT - behat executable
+# $BEHAT_YML
+# $RUNNING_WEBUI_TESTS
+# $RERUN_FAILED_WEBUI_SCENARIOS
+#
+# set variables
+# ---------------
+# $PASSED true|false
+
+function run_behat_tests() {
+	echo "Running ${SUITE_FEATURE_TEXT} tests tagged ${BEHAT_FILTER_TAGS} ${BROWSER_TEXT}${BROWSER_VERSION_TEXT}${PLATFORM_TEXT}" | tee ${TEST_LOG_FILE}
+
+	${BEHAT} --colors --strict -c ${BEHAT_YML} -f junit -f pretty ${BEHAT_SUITE_OPTION} --tags ${BEHAT_FILTER_TAGS} ${BEHAT_FEATURE} -v  2>&1 | tee -a ${TEST_LOG_FILE}
+	
+	BEHAT_EXIT_STATUS=${PIPESTATUS[0]}
+	
+	if [ ${BEHAT_EXIT_STATUS} -eq 0 ]
+	then
+		PASSED=true
+	else
+		PASSED=false
+	fi
+	
+	# With webUI tests, we try running failed tests again.
+	if [ "${PASSED}" = false ] && [ "${RUNNING_WEBUI_TESTS}" = true ] && [ "${RERUN_FAILED_WEBUI_SCENARIOS}" = true ]
+	then
+		echo "webUI test run failed with exit status: ${BEHAT_EXIT_STATUS}"
+		PASSED=true
+		SOME_SCENARIO_RERUN=false
+		FAILED_SCENARIOS=`awk '/Failed scenarios:/',0 ${TEST_LOG_FILE} | grep feature`
+		for FEATURE_COLORED in ${FAILED_SCENARIOS}
+			do
+				SOME_SCENARIO_RERUN=true
+				# There will be some ANSI escape codes for color in the FEATURE_COLORED var.
+				# Strip them out so we can pass just the ordinary feature details to Behat.
+				# Thanks to https://en.wikipedia.org/wiki/Tee_(command) and
+				# https://stackoverflow.com/questions/23416278/how-to-strip-ansi-escape-sequences-from-a-variable
+				# for ideas.
+				FEATURE=$(echo "${FEATURE_COLORED}" | sed "s/\x1b[^m]*m//g")
+				echo "Rerun failed scenario: ${FEATURE}"
+				${BEHAT} --colors --strict -c ${BEHAT_YML} -f junit -f pretty ${BEHAT_SUITE_OPTION} --tags ${BEHAT_FILTER_TAGS} ${FEATURE} -v  2>&1 | tee -a ${TEST_LOG_FILE}
+				BEHAT_EXIT_STATUS=${PIPESTATUS[0]}
+				if [ ${BEHAT_EXIT_STATUS} -ne 0 ]
+				then
+					echo "webUI test rerun failed with exit status: ${BEHAT_EXIT_STATUS}"
+					PASSED=false
+				fi
+			done
+	
+		if [ "${SOME_SCENARIO_RERUN}" = false ]
+		then
+			# If the original Behat had a fatal PHP error and exited directly with
+			# a "bad" exit code, then it may not have even logged a summary of the
+			# failed scenarios. In that case there was an error and no scenarios
+			# have been rerun. So PASSED needs to be false.
+			PASSED=false
+		fi
+	fi
+	
+	if [ "${BEHAT_TAGS_OPTION_FOUND}" != true ]
+	then
+		# The behat run specified to skip scenarios tagged @skip
+		# Report them in a dry-run so they can be seen
+		# Big red error output is displayed if there are no matching scenarios - send it to null
+		DRY_RUN_FILE=$(mktemp)
+		SKIP_TAGS="${TEST_TYPE_TAG}&&@skip"
+		${BEHAT} --dry-run --colors -c ${BEHAT_YML} -f junit -f pretty ${BEHAT_SUITE_OPTION} --tags "${SKIP_TAGS}" ${BEHAT_FEATURE} 1>${DRY_RUN_FILE} 2>/dev/null
+		if grep -q -m 1 'No scenarios' "${DRY_RUN_FILE}"
+		then
+			# If there are no skip scenarios, then no need TEST_SERVER_URLto report that
+			:
+		else
+			echo ""
+			echo "The following tests were skipped because they are tagged @skip:"
+			cat "${DRY_RUN_FILE}" | tee -a ${TEST_LOG_FILE}
+		fi
+		rm -f "${DRY_RUN_FILE}"
+	fi
 }
 
 function teardown() {
@@ -361,11 +465,31 @@ then
 	BEHAT_SUITE=`basename ${FEATURE_PATH}`
 fi
 
+declare -a BEHAT_SUITES
 if [ -n "${BEHAT_SUITE}" ]
 then
-	BEHAT_SUITE_OPTION="--suite=${BEHAT_SUITE}"
+	BEHAT_SUITES+=(${BEHAT_SUITE})
 else
-	BEHAT_SUITE_OPTION=""
+	if [ -n "${RUN_PART}" ]
+	then
+		ALL_SUITES=`find features/ -type d -iname ${ACCEPTANCE_TEST_TYPE}* | sort | cut -d"/" -f2`
+		COUNT_ALL_SUITES=`echo "${ALL_SUITES}" | wc -l`
+		if [ ${RUN_PART} -gt ${COUNT_ALL_SUITES} ]
+		then
+			echo "there are only ${COUNT_ALL_SUITES} suites, nothing to do"
+			teardown
+			exit 0
+		fi
+		#divide the suites and round up
+		SUITES_PER_RUN=$(((${COUNT_ALL_SUITES} + ${DIVIDE_INTO_NUM_PARTS} - 1) / ${DIVIDE_INTO_NUM_PARTS}))
+		COUNT_FINISH_AND_TODO_SUITES=$((${RUN_PART} * ${SUITES_PER_RUN}))
+		if [ ${RUN_PART} -eq ${DIVIDE_INTO_NUM_PARTS} ]
+		then
+			#the last run might have less suites
+			SUITES_PER_RUN=$((${COUNT_ALL_SUITES} - (${RUN_PART} - 1) * ${SUITES_PER_RUN}))
+		fi
+		BEHAT_SUITES+=(`echo "${ALL_SUITES}" | head -n ${COUNT_FINISH_AND_TODO_SUITES} | tail -n ${SUITES_PER_RUN}`)
+	fi
 fi
 
 # If the suite name begins with "webUI" or the user explicitly specified type "webui"
@@ -697,9 +821,10 @@ export IPV4_URL
 export IPV6_URL
 export FILES_FOR_UPLOAD="${SCRIPT_PATH}/filesForUpload/"
 
-if [ -z "${BEHAT_SUITE}" ] && [ -z "${BEHAT_FEATURE}" ]
+if [ ${#BEHAT_SUITES[@]} -eq 0 ] && [ -z "${BEHAT_FEATURE}" ]
 then
 	SUITE_FEATURE_TEXT="all ${TEST_TYPE_TEXT}"
+	run_behat_tests
 else
 	if [ -n "${BEHAT_SUITE}" ]
 	then
@@ -719,74 +844,19 @@ fi
 
 TEST_LOG_FILE=$(mktemp)
 
-echo "Running ${SUITE_FEATURE_TEXT} tests tagged ${BEHAT_FILTER_TAGS} ${BROWSER_TEXT}${BROWSER_VERSION_TEXT}${PLATFORM_TEXT}" | tee ${TEST_LOG_FILE}
+for i in "${!BEHAT_SUITES[@]}"
+	do
+	BEHAT_SUITE_OPTION="--suite=${BEHAT_SUITES[$i]}"
+	SUITE_FEATURE_TEXT="${BEHAT_SUITES[$i]}"
 
-${BEHAT} --colors --strict -c ${BEHAT_YML} -f junit -f pretty ${BEHAT_SUITE_OPTION} --tags ${BEHAT_FILTER_TAGS} ${BEHAT_FEATURE} -v  2>&1 | tee -a ${TEST_LOG_FILE}
+	run_behat_tests
 
-BEHAT_EXIT_STATUS=${PIPESTATUS[0]}
-
-if [ ${BEHAT_EXIT_STATUS} -eq 0 ]
-then
-	PASSED=true
-else
-	PASSED=false
-fi
-
-# With webUI tests, we try running failed tests again.
-if [ "${PASSED}" = false ] && [ "${RUNNING_WEBUI_TESTS}" = true ] && [ "${RERUN_FAILED_WEBUI_SCENARIOS}" = true ]
-then
-	echo "webUI test run failed with exit status: ${BEHAT_EXIT_STATUS}"
-	PASSED=true
-	SOME_SCENARIO_RERUN=false
-	FAILED_SCENARIOS=`awk '/Failed scenarios:/',0 ${TEST_LOG_FILE} | grep feature`
-	for FEATURE_COLORED in ${FAILED_SCENARIOS}
-		do
-			SOME_SCENARIO_RERUN=true
-			# There will be some ANSI escape codes for color in the FEATURE_COLORED var.
-			# Strip them out so we can pass just the ordinary feature details to Behat.
-			# Thanks to https://en.wikipedia.org/wiki/Tee_(command) and
-			# https://stackoverflow.com/questions/23416278/how-to-strip-ansi-escape-sequences-from-a-variable
-			# for ideas.
-			FEATURE=$(echo "${FEATURE_COLORED}" | sed "s/\x1b[^m]*m//g")
-			echo "Rerun failed scenario: ${FEATURE}"
-			${BEHAT} --colors --strict -c ${BEHAT_YML} -f junit -f pretty ${BEHAT_SUITE_OPTION} --tags ${BEHAT_FILTER_TAGS} ${FEATURE} -v  2>&1 | tee -a ${TEST_LOG_FILE}
-			BEHAT_EXIT_STATUS=${PIPESTATUS[0]}
-			if [ ${BEHAT_EXIT_STATUS} -ne 0 ]
-			then
-				echo "webUI test rerun failed with exit status: ${BEHAT_EXIT_STATUS}"
-				PASSED=false
-			fi
-		done
-
-	if [ "${SOME_SCENARIO_RERUN}" = false ]
+	if [ "${PASSED}" = false ]
 	then
-		# If the original Behat had a fatal PHP error and exited directly with
-		# a "bad" exit code, then it may not have even logged a summary of the
-		# failed scenarios. In that case there was an error and no scenarios
-		# have been rerun. So PASSED needs to be false.
-		PASSED=false
+		teardown
+		exit 1
 	fi
-fi
-
-if [ "${BEHAT_TAGS_OPTION_FOUND}" != true ]
-then
-	# The behat run specified to skip scenarios tagged @skip
-	# Report them in a dry-run so they can be seen
-	# Big red error output is displayed if there are no matching scenarios - send it to null
-	DRY_RUN_FILE=$(mktemp)
-	SKIP_TAGS="${TEST_TYPE_TAG}&&@skip"
-	${BEHAT} --dry-run --colors -c ${BEHAT_YML} -f junit -f pretty ${BEHAT_SUITE_OPTION} --tags "${SKIP_TAGS}" ${BEHAT_FEATURE} 1>${DRY_RUN_FILE} 2>/dev/null
-	if grep -q -m 1 'No scenarios' "${DRY_RUN_FILE}"
-	then
-		# If there are no skip scenarios, then no need to report that
-		:
-	else
-		echo ""
-		echo "The following tests were skipped because they are tagged @skip:"
-		cat "${DRY_RUN_FILE}" | tee -a ${TEST_LOG_FILE}
-	fi
-	rm -f "${DRY_RUN_FILE}"
-fi
+done
 
 teardown
 
