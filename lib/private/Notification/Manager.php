@@ -22,6 +22,7 @@
 
 namespace OC\Notification;
 
+use OCP\IUser;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use OCP\Notification\IApp;
 use OCP\Notification\IManager;
@@ -32,6 +33,7 @@ use OCP\Notification\Events\RegisterConsumerEvent;
 use OCP\Notification\Events\RegisterNotifierEvent;
 use OC\Notification\Events\RegisterConsumerEventImpl;
 use OC\Notification\Events\RegisterNotifierEventImpl;
+use Symfony\Component\EventDispatcher\GenericEvent;
 
 class Manager implements IManager {
 	/** @var EventDispatcherInterface */
@@ -72,6 +74,10 @@ class Manager implements IManager {
 		$this->notifiersInfoClosures = [];
 
 		$this->builtAppsHolder = [];
+
+		$this->dispatcher->addListener('user.afterdelete', function (GenericEvent $event) {
+			$this->removeUserNotifications($event->getArgument('uid'));
+		});
 	}
 
 	/**
@@ -298,5 +304,13 @@ class Manager implements IManager {
 		}
 
 		return $count;
+	}
+
+	public function removeUserNotifications($uid) {
+		$apps = $this->getApps();
+
+		foreach ($apps as $app) {
+			$app->removeUserNotifications($uid);
+		}
 	}
 }

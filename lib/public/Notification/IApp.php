@@ -49,4 +49,11 @@ interface IApp {
 	 * @since 9.0.0
 	 */
 	public function getCount(INotification $notification);
+
+	/**
+	 * @param string $uid uid of the user
+	 * @return null
+	 * @since 10.0.10
+	 */
+	public function removeUserNotifications($uid);
 }
