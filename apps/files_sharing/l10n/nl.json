@@ -19,6 +19,8 @@
     "Files and folders you share will show up here" : "Bestanden en mappen die u deelt, worden hier getoond",
     "No shared links" : "Geen gedeelde links",
     "Files and folders you share by link will show up here" : "Bestanden en mappen die u via links deelt, worden hier getoond",
+    "Accept Share" : "Share accepteren",
+    "Decline Share" : "Share afwijzen",
     "Do you want to add the remote share {name} from {owner}@{remote}?" : "Wilt u de externe share {name} van {owner}@{remote} toevoegen?",
     "Remote share" : "Externe share",
     "Remote share password" : "Wachtwoord externe share",
@@ -42,6 +44,7 @@
     "Please specify a valid user" : "Geef een geldige gebruiker op",
     "Group sharing is disabled by the administrator" : "Delen voor groepen is uitgeschakeld door de beheerder",
     "Please specify a valid group" : "Geef een geldige groep op",
+    "The group is blacklisted for sharing" : "Deze groep is uitgesloten voor delen",
     "Public link sharing is disabled by the administrator" : "Delen van openbare links is uitgeschakeld door de beheerder",
     "Public upload disabled by the administrator" : "Publieke upload uitgeschakeld door de systeembeheerder",
     "Public upload is only possible for publicly shared folders" : "Publieke upload is alleen mogelijk voor publiek gedeelde mappen",
@@ -53,6 +56,7 @@
     "Can't change permissions for public share links" : "Kan permissies voor openbare share links niet wijzigen",
     "Wrong or no update parameter given" : "Verkeerde of geen update parameter gegeven",
     "Cannot increase permissions" : "Kan de rechten niet verruimen",
+    "Only recipient can change accepted state" : "Alleen de ontvanger kan de geaccepteerde status wijzigen",
     "A file or folder has been <strong>shared</strong>" : "Een bestand of map is <strong>gedeeld</strong>",
     "A file or folder was shared from <strong>another server</strong>" : "Een bestand of map werd gedeeld vanaf <strong>een andere server</strong>",
     "A public shared file or folder was <strong>downloaded</strong>" : "Een openbaar gedeeld bestand of map werd <strong>gedownloaded</strong>",
@@ -96,6 +100,8 @@
     "Public link of %2$s expired" : "Openbare link van %2$s is verlopen",
     "Shared by %2$s" : "Gedeeld door %2$s",
     "Shares" : "Gedeeld",
+    "\"%1$s\" shared \"%3$s\" with you (on behalf of \"%2$s\")" : "\"%1$s\" deelde \"%3$s\" met U (namens \"%2$s\")",
+    "\"%1$s\" shared \"%3$s\" with you" : "\"%1$s\" deelde \"%3$s\" met U",
     "Accept" : "Accepteren",
     "Decline" : "Afwijzen",
     "This share is password-protected" : "Deze share is met een wachtwoord beveiligd",
@@ -103,6 +109,7 @@
     "Password" : "Wachtwoord",
     "No entries found in this folder" : "Niets gevonden in deze map",
     "Name" : "Naam",
+    "State" : "Status",
     "Share time" : "Deel tijd",
     "Expiration date" : "Vervaldatum",
     "Sorry, this link doesn’t seem to work anymore." : "Sorry, deze link lijkt niet meer in gebruik te zijn.",
@@ -114,6 +121,8 @@
     "%s is publicly shared" : "%s is openbaar gedeeld",
     "Download" : "Downloaden",
     "Download %s" : "Download %s",
-    "Direct link" : "Directe link"
+    "Direct link" : "Directe link",
+    "Exclude groups from receiving shares." : "Groepen uitsluiten van het ontvangen van shares.",
+    "These groups will not receive shares. Members of the group can still send and receive shares outside of the group." : "Deze groepen zullen geen shares meer ontvangen. Leden van deze groep kunnen nog wel shares verzenden en ontvangen buiten deze groep om."
 },"pluralForm" :"nplurals=2; plural=(n != 1);"
 }
