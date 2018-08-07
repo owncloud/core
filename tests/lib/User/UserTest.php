@@ -24,6 +24,7 @@ use OCP\User\IChangePasswordBackend;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\EventDispatcher\GenericEvent;
 use Test\TestCase;
+use Test\Traits\PasswordTrait;
 
 /**
  * Class UserTest
@@ -33,7 +34,6 @@ use Test\TestCase;
  * @package Test\User
  */
 class UserTest extends TestCase {
-
 	/** @var AccountMapper | \PHPUnit_Framework_MockObject_MockObject */
 	private $accountMapper;
 	/** @var Account */
@@ -134,6 +134,21 @@ class UserTest extends TestCase {
 		$this->assertEquals('bar', $calledEvents['user.aftersetpassword']->getArgument('password'));
 		$this->assertEquals('', $calledEvents['user.aftersetpassword']->getArgument('recoveryPassword'));
 	}
+
+	/**
+	 * @param string $password
+	 * @dataProvider getEmptyValues
+	 * @expectedException \InvalidArgumentException
+	 * @expectedExceptionMessage Password cannot be empty
+	 * @throws \InvalidArgumentException
+	 */
+	public function testSetEmptyPasswordNotPermitted($password) {
+		(new User(
+			$this->createMock(Account::class),
+			$this->accountMapper
+		))->setPassword($password, 'bar');
+	}
+
 	public function testSetPasswordNotSupported() {
 		$this->config->expects($this->never())
 			->method('deleteUserValue')
