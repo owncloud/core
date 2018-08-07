@@ -1,4 +1,4 @@
-@api
+@api @TestAlsoOnExternalUserBackend
 Feature: sharing
 	Background:
 		Given using old DAV path
@@ -7,9 +7,9 @@ Feature: sharing
 
 	Scenario Outline: Delete all group shares
 		Given using OCS API version "<ocs_api_version>"
-		And group "group1" has been created
-		And user "user1" has been added to group "group1"
-		And user "user0" has shared file "textfile0.txt" with group "group1"
+		And group "grp1" has been created
+		And user "user1" has been added to group "grp1"
+		And user "user0" has shared file "textfile0.txt" with group "grp1"
 		And user "user1" has moved file "/textfile0 (2).txt" to "/FOLDER/textfile0.txt"
 		When user "user0" deletes the last share using the sharing API
 		And user "user1" sends HTTP method "GET" to OCS API endpoint "/apps/files_sharing/api/v1/shares?shared_with_me=true"
@@ -101,17 +101,18 @@ Feature: sharing
 
 	Scenario Outline: unshare from self
 		Given using OCS API version "<ocs_api_version>"
-		And group "sharing-group" has been created
-		And user "user0" has been added to group "sharing-group"
-		And user "user1" has been added to group "sharing-group"
-		And user "user0" has shared file "/PARENT/parent.txt" with group "sharing-group"
-		And user "user0" has stored etag of element "/PARENT"
+		And group "grp1" has been created
+		And user "user2" has been created
+		And user "user2" has been added to group "grp1"
+		And user "user1" has been added to group "grp1"
+		And user "user2" has shared file "/PARENT/parent.txt" with group "grp1"
+		And user "user2" has stored etag of element "/PARENT"
 		And user "user1" has stored etag of element "/"
 		When user "user1" deletes the last share using the sharing API
 		Then the OCS status code should be "<ocs_status_code>"
 		And the HTTP status code should be "200"
 		And the etag of element "/" of user "user1" should have changed
-		And the etag of element "/PARENT" of user "user0" should not have changed
+		And the etag of element "/PARENT" of user "user2" should not have changed
 		Examples:
 			|ocs_api_version|ocs_status_code|
 			|1              |100            |

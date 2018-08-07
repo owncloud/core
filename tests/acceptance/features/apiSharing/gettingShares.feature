@@ -1,9 +1,11 @@
-@api
+@api @TestAlsoOnExternalUserBackend
 Feature: sharing
 	Background:
 		Given using old DAV path
-		And user "user0" has been created
-		And user "user1" has been created
+		And these users have been created:
+			|username|displayname|
+			|user0   |User Zero  |
+			|user1   |User One   |
 
 	Scenario Outline: getting all shares of a user using that user
 		Given using OCS API version "<ocs_api_version>"
@@ -66,13 +68,14 @@ Feature: sharing
 
 	Scenario Outline: User's own shares reshared to him don't appear when getting "shared with me" shares
 		Given using OCS API version "<ocs_api_version>"
-		And group "group0" has been created
-		And user "user0" has been added to group "group0"
-		And user "user0" has created a folder "/shared"
-		And user "user0" has moved file "/textfile0.txt" to "/shared/shared_file.txt"
-		And user "user0" has shared folder "/shared" with user "user1"
-		And user "user1" has shared folder "/shared" with group "group0"
-		When user "user0" sends HTTP method "GET" to OCS API endpoint "/apps/files_sharing/api/v1/shares?shared_with_me=true"
+		And group "grp1" has been created
+		And user "user2" has been created
+		And user "user2" has been added to group "grp1"
+		And user "user2" has created a folder "/shared"
+		And user "user2" has moved file "/textfile0.txt" to "/shared/shared_file.txt"
+		And user "user2" has shared folder "/shared" with user "user1"
+		And user "user1" has shared folder "/shared" with group "grp1"
+		When user "user2" sends HTTP method "GET" to OCS API endpoint "/apps/files_sharing/api/v1/shares?shared_with_me=true"
 		Then the OCS status code should be "<ocs_status_code>"
 		And the HTTP status code should be "200"
 		And the last share_id should not be included in the response
@@ -103,8 +106,8 @@ Feature: sharing
 			| mail_send              | 0                  |
 			| uid_owner              | user0              |
 			| file_parent            | A_NUMBER           |
-			| share_with_displayname | user1              |
-			| displayname_owner      | user0              |
+			| share_with_displayname | User One           |
+			| displayname_owner      | User Zero          |
 			| mimetype               | text/plain         |
 		Examples:
 			|ocs_api_version|ocs_status_code|
@@ -123,6 +126,7 @@ Feature: sharing
 			|1              |200             |
 			|2              |404             |
 
+	@skipOnLDAP
 	Scenario: Share of folder to a group, remove user from that group
 		Given using OCS API version "1"
 		And user "user2" has been created
