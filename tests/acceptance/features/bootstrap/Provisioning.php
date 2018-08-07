@@ -1544,7 +1544,8 @@ trait Provisioning {
 		PHPUnit_Framework_Assert::assertArrayHasKey(
 			'version',
 			$respondedArray,
-			"app info returned for $app app does not have a version");
+			"app info returned for $app app does not have a version"
+		);
 		$appVersion = $respondedArray['version'];
 		PHPUnit_Framework_Assert::assertTrue(
 			\substr_count($appVersion, '.') > 1,
