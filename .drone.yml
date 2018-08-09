@@ -289,7 +289,6 @@ pipeline:
       - SELENIUM_HOST=selenium
       - SELENIUM_PORT=4444
       - TEST_SERVER_URL=http://server
-      - SKELETON_DIR=/drone/src/apps/testing/data/webUISkeleton
       - PLATFORM=Linux
       - MAILHOG_HOST=email
     commands:
@@ -486,7 +485,6 @@ matrix:
       TEST_SUITE: litmus
       INSTALL_SERVER: true
       CHOWN_SERVER: true
-      INSTALL_SERVER: true
 
   # Unit Tests
     - PHP_VERSION: 7.1
