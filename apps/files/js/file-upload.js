@@ -1124,6 +1124,7 @@ OC.Uploader.prototype = _.extend({
 									});
 
 									// clear the previous data:
+									upload.data.stalled = false;
 									data.data = null;
 									// overwrite chunk
 									delete data.headers['If-None-Match'];
