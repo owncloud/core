@@ -645,4 +645,17 @@ class ManagerTest extends TestCase {
 
 		$this->assertSame(63, $this->manager->getCount($notification));
 	}
+
+	public function testRemoveUserNotifications() {
+		$app = $this->createMock(IApp::class);
+		$app->expects($this->once())
+			->method('removeUserNotifications')
+			->with('foo');
+
+		$this->manager->registerApp(function () use ($app) {
+			return $app;
+		});
+
+		$this->manager->removeUserNotifications('foo');
+	}
 }
