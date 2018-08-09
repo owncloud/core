@@ -22,6 +22,7 @@
 namespace TestHelpers;
 
 use GuzzleHttp\Message\ResponseInterface;
+use GuzzleHttp\Exception\ServerException;
 use PHPUnit_Framework_Assert;
 
 /**
@@ -303,5 +304,6 @@ class AppConfigHelper {
 				"100", self::getOCSResponse($response)
 			);
 		}
+		SetupHelper::resetOpcache($baseUrl, $user, $password);
 	}
 }

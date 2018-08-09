@@ -23,6 +23,7 @@ namespace TestHelpers;
 use Behat\Testwork\Hook\Scope\HookScope;
 use GuzzleHttp\Exception\ServerException;
 use Exception;
+use GuzzleHttp\Message\ResponseInterface;
 
 /**
  * Helper to setup UI / Integration tests
@@ -353,6 +354,30 @@ class SetupHelper {
 		$return['code'] = $return['code'][0]->__toString();
 		$return['stdOut'] = $return['stdOut'][0]->__toString();
 		$return['stdErr'] = $return['stdErr'][0]->__toString();
+		self::resetOpcache($baseUrl, $adminUsername, $adminPassword);
 		return $return;
+	}
+	
+	/**
+	 * @param string $baseUrl
+	 * @param string $user
+	 * @param string $password
+	 *
+	 * @return ResponseInterface
+	 */
+	public static function resetOpcache(
+		$baseUrl,
+		$user,
+		$password
+	) {
+		try {
+			return OcsApiHelper::sendRequest(
+				$baseUrl, $user,
+				$password, "DELETE", "/apps/testing/api/v1/opcache"
+			);
+		} catch (ServerException $e) {
+			echo "could not reset opcache, if tests fail try to set " .
+				 "'opcache.revalidate_freq=0' in the php.ini file\n";
+		}
 	}
 }
