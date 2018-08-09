@@ -103,6 +103,13 @@ trait BasicStructure {
 	private $remoteBaseUrl = '';
 
 	/**
+	 *
+	 *
+	 * @var boolean true if TEST_SERVER_FED_URL is defined
+	 */
+	private $federatedServerExists = false;
+
+	/**
 	 * @var int
 	 */
 	private $ocsApiVersion = 1;
@@ -157,8 +164,10 @@ trait BasicStructure {
 		$testRemoteServerUrl = \getenv('TEST_SERVER_FED_URL');
 		if ($testRemoteServerUrl !== false) {
 			$this->remoteBaseUrl = \rtrim($testRemoteServerUrl, '/');
+			$this->federatedServerExists = true;
 		} else {
 			$this->remoteBaseUrl = $this->localBaseUrl;
+			$this->federatedServerExists = false;
 		}
 
 		// get the admin username from the environment (if defined)
@@ -334,6 +343,14 @@ trait BasicStructure {
 			$this->currentServer = 'REMOTE';
 		}
 		return $previousServer;
+	}
+
+	/**
+	 *
+	 * @return boolean
+	 */
+	public function federatedServerExists() {
+		return $this->federatedServerExists;
 	}
 
 	/**
