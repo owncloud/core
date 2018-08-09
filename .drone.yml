@@ -486,7 +486,6 @@ matrix:
       TEST_SUITE: litmus
       INSTALL_SERVER: true
       CHOWN_SERVER: true
-      INSTALL_SERVER: true
 
   # Unit Tests
     - PHP_VERSION: 7.1
