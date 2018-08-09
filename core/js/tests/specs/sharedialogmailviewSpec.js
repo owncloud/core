@@ -100,6 +100,19 @@ describe('OC.Share.ShareDialogMailView', function() {
 		});
 	});
 
+	describe('validating addresses', function() {
+		it('works as expected', function() {
+			expect(view.validateEmail('Ada.Wong@umbrella.com')[0]).toEqual('Ada.Wong@umbrella.com');
+			expect(view.validateEmail('Albert.Wesker@umbrella.sub-domain.com')[0]).toEqual('Albert.Wesker@umbrella.sub-domain.com');
+			expect(view.validateEmail('Albert_Wesker@umbrella.sub-domain.com')[0]).toEqual('Albert_Wesker@umbrella.sub-domain.com');
+			expect(view.validateEmail('Albert-Wesker@umbrella-new.sub-domain.com')[0]).toEqual('Albert-Wesker@umbrella-new.sub-domain.com');
+
+			expect(view.validateEmail('Jill.Valentine@umbrella..com')).toEqual(null);
+			expect(view.validateEmail('Jill.Valentine@um#rella.com')).toEqual(null);
+			expect(view.validateEmail('Jürgen.Sörensen@umbrella.com')).toEqual(null);
+		});
+	});
+
 	describe('sending emails', function() {
 		var clock;
 
