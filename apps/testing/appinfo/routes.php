@@ -27,6 +27,7 @@ use OCA\Testing\Locking\Provisioning;
 use OCA\Testing\Occ;
 use OCA\Testing\Notifications;
 use OCP\API;
+use OCA\Testing\Opcache;
 
 $config = new Config(
 	\OC::$server->getConfig(),
@@ -113,6 +114,16 @@ API::register(
 	'post',
 	'/apps/testing/api/v1/occ',
 	[$occ, 'execute'],
+	'testing',
+	API::ADMIN_AUTH
+);
+
+$opcache = new Opcache();
+
+API::register(
+	'delete',
+	'/apps/testing/api/v1/opcache',
+	[$opcache, 'execute'],
 	'testing',
 	API::ADMIN_AUTH
 );
