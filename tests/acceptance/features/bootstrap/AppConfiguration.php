@@ -365,8 +365,10 @@ trait AppConfiguration {
 		$this->currentUser = $this->getAdminUsername();
 		$previousServer = $this->currentServer;
 		foreach (['LOCAL','REMOTE'] as $server) {
-			$this->usingServer($server);
-			$this->resetAppConfigs();
+			if (($server === 'LOCAL') || $this->federatedServerExists()) {
+				$this->usingServer($server);
+				$this->resetAppConfigs();
+			}
 		}
 		$this->usingServer($previousServer);
 		$this->currentUser = $user;
@@ -383,9 +385,11 @@ trait AppConfiguration {
 		$this->currentUser = $this->getAdminUsername();
 		$previousServer = $this->currentServer;
 		foreach (['LOCAL','REMOTE'] as $server) {
-			$this->usingServer($server);
-			if (\key_exists($this->getBaseUrl(), $this->savedCapabilitiesChanges)) {
-				$this->modifyServerConfigs($this->savedCapabilitiesChanges[$this->getBaseUrl()]);
+			if (($server === 'LOCAL') || $this->federatedServerExists()) {
+				$this->usingServer($server);
+				if (\key_exists($this->getBaseUrl(), $this->savedCapabilitiesChanges)) {
+					$this->modifyServerConfigs($this->savedCapabilitiesChanges[$this->getBaseUrl()]);
+				}
 			}
 		}
 		$this->usingServer($previousServer);
