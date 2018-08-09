@@ -571,9 +571,9 @@ fi
 # it is used for file comparisons in various tests
 if [ "${RUNNING_API_TESTS}" = true ]
 then
-	export SRC_SKELETON_DIR="${SCRIPT_PATH}/skeleton"
+	export SRC_SKELETON_DIR="${SCRIPT_PATH}/../../apps/testing/data/apiSkeleton"
 else
-	export SRC_SKELETON_DIR="${SCRIPT_PATH}/webUISkeleton"
+	export SRC_SKELETON_DIR="${SCRIPT_PATH}/../../apps/testing/data/webUISkeleton"
 fi
 
 # $SKELETON_DIR is the path to the skeleton folder on the machine where oC runs (system under test)

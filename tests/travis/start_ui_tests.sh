@@ -365,7 +365,7 @@ PREVIOUS_SKELETON_DIR=${REMOTE_OCC_STDOUT}
 
 # $SRC_SKELETON_DIR is the path to the skeleton folder on the machine where the tests are executed
 # it is used for file comparisons in various tests
-export SRC_SKELETON_DIR=$(pwd)/tests/acceptance/webUISkeleton
+export SRC_SKELETON_DIR=$(pwd)/apps/testing/data/webUISkeleton
 # $SKELETON_DIR is the path to the skeleton folder on the machine where oC runs (system under test)
 # it is used to give users a defined set of files and folders for the tests
 if [ -z "${SKELETON_DIR}" ]
