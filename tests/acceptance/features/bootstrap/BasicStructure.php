@@ -26,6 +26,7 @@ use GuzzleHttp\Client;
 use GuzzleHttp\Exception\BadResponseException;
 use GuzzleHttp\Message\ResponseInterface;
 use TestHelpers\OcsApiHelper;
+use TestHelpers\SetupHelper;
 
 require __DIR__ . '/../../../../lib/composer/autoload.php';
 
@@ -333,6 +334,60 @@ trait BasicStructure {
 			$this->currentServer = 'REMOTE';
 		}
 		return $previousServer;
+	}
+
+	/**
+	 * disable CSRF
+	 *
+	 * @throws Exception
+	 * @return string the previous setting of csrf.disabled
+	 */
+	public function disableCSRF() {
+		return $this->setCSRFDotDisabled('true');
+	}
+
+	/**
+	 * enable CSRF
+	 *
+	 * @throws Exception
+	 * @return string the previous setting of csrf.disabled
+	 */
+	public function enableCSRF() {
+		return $this->setCSRFDotDisabled('false');
+	}
+
+	/**
+	 * set csrf.disabled
+	 *
+	 * @param string $setting "true", "false" or "" to delete the setting
+	 *
+	 * @throws Exception
+	 * @return string the previous setting of csrf.disabled
+	 */
+	public function setCSRFDotDisabled($setting) {
+		$oldCSRFSetting = SetupHelper::runOcc(
+			['config:system:get', 'csrf.disabled']
+		)['stdOut'];
+
+		if ($setting === "") {
+			SetupHelper::runOcc(['config:system:delete', 'csrf.disabled']);
+		} elseif (($setting === 'true') || ($setting === 'false')) {
+			SetupHelper::runOcc(
+				[
+					'config:system:set',
+					'csrf.disabled',
+					'--type',
+					'boolean',
+					'--value',
+					$setting
+				]
+			);
+		} else {
+			throw new \http\Exception\InvalidArgumentException(
+				'setting must be "true", "false" or ""'
+			);
+		}
+		return \trim($oldCSRFSetting);
 	}
 
 	/**
