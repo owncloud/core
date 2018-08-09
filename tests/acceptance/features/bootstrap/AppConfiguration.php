@@ -384,7 +384,9 @@ trait AppConfiguration {
 		$previousServer = $this->currentServer;
 		foreach (['LOCAL','REMOTE'] as $server) {
 			$this->usingServer($server);
-			$this->modifyServerConfigs($this->savedCapabilitiesChanges[$this->getBaseUrl()]);
+			if (\key_exists($this->getBaseUrl(), $this->savedCapabilitiesChanges)) {
+				$this->modifyServerConfigs($this->savedCapabilitiesChanges[$this->getBaseUrl()]);
+			}
 		}
 		$this->usingServer($previousServer);
 		$this->currentUser = $user;
