@@ -1,7 +1,7 @@
 $(document).ready(function() {
 
 	function displayGranted($tr) {
-		$tr.find('.configuration input.auth-param').attr('disabled', 'disabled').addClass('disabled-success');
+		$tr.find('.configuration input.auth-param').prop('disabled', true).addClass('disabled-success');
 	}
 
 	OCA.External.Settings.mountConfig.whenSelectAuthMechanism(function($tr, authMechanism, scheme, onCompletion) {

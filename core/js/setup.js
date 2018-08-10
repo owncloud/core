@@ -57,8 +57,8 @@ $(document).ready(function() {
 		$('.float-spinner').show(250);
 
 		// Disable inputs
-		$(':submit', this).attr('disabled','disabled').val($(':submit', this).data('finishing'));
-		$('input', this).addClass('ui-state-disabled').attr('disabled','disabled');
+		$(':submit', this).prop('disabled', true).val($(':submit', this).data('finishing'));
+		$('input', this).addClass('ui-state-disabled').prop('disabled', true);
 		// only disable buttons if they are present
 		if($('#selectDbType').find('.ui-button').length > 0) {
 			$('#selectDbType').buttonset('disable');
