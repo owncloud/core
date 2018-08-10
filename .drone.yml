@@ -276,7 +276,7 @@ pipeline:
     commands:
       - touch /drone/saved-settings.sh
       - . /drone/saved-settings.sh
-      - ./tests/drone/test-acceptance.sh
+      - ./tests/drone/test-acceptance.sh --remote
     when:
       matrix:
         TEST_SUITE: api
