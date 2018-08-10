@@ -760,7 +760,7 @@ var OC = {
 	 * @return {String} locale string
 	 */
 	getLocale: function () {
-		return $('html').prop('lang');
+		return $('html').attr('lang');
 	},
 
 	/**
