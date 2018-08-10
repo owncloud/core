@@ -134,7 +134,7 @@
 			$el.find('.error-message').addClass('hidden');
 
 			// prevent tinkering with form while loading
-			$formElements.attr('disabled', true);
+			$formElements.prop('disabled', true);
 			$select2Elements.addClass('hidden');
 
 			// remove errors (if present)
