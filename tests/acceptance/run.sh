@@ -230,7 +230,22 @@ function run_behat_tests() {
 	then
 		PASSED=true
 	else
-		PASSED=false
+		# If there were no scenarios in the requested suite or feature that match
+		# the requested combination of tags, then Behat exits with an error status
+		# and reports "No scenarios" in its output.
+		# This can happen, for example, when running core suites from an app and
+		# requesting some tag combination that does not happen frequently. Then
+		# sometimes there may not be any matching scenarios in one of the suites.
+		# In this case, consider the test has passed.
+		MATCHING_COUNT=`grep -c '^No scenarios$' ${TEST_LOG_FILE}`
+		if [ ${MATCHING_COUNT} -eq 1 ]
+		then
+			echo "Information: no matching scenarios were found."
+			BEHAT_EXIT_STATUS=0
+			PASSED=true
+		else
+			PASSED=false
+		fi
 	fi
 	
 	# With webUI tests, we try running failed tests again.
