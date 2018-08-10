@@ -474,28 +474,31 @@ else
 	then
 		ALL_SUITES=`find features/ -type d -iname ${ACCEPTANCE_TEST_TYPE}* | sort | cut -d"/" -f2`
 		COUNT_ALL_SUITES=`echo "${ALL_SUITES}" | wc -l`
-		if [ ${RUN_PART} -gt ${COUNT_ALL_SUITES} ]
+		#divide the suites letting it round down (could be zero)
+		MIN_SUITES_PER_RUN=$((${COUNT_ALL_SUITES} / ${DIVIDE_INTO_NUM_PARTS}))
+		#some jobs might need an extra suite
+		MAX_SUITES_PER_RUN=$((${MIN_SUITES_PER_RUN} + 1))
+		# the remaining number of suites that need to be distributed (could be zero)
+		REMAINING_SUITES=$((${COUNT_ALL_SUITES} - (${DIVIDE_INTO_NUM_PARTS} * ${MIN_SUITES_PER_RUN})))
+
+		if [ ${RUN_PART} -le ${REMAINING_SUITES} ]
 		then
-			echo "there are only ${COUNT_ALL_SUITES} suites, nothing to do"
+			SUITES_THIS_RUN=${MAX_SUITES_PER_RUN}
+			SUITES_IN_PREVIOUS_RUNS=$((${MAX_SUITES_PER_RUN} * (${RUN_PART} - 1)))
+		else
+			SUITES_THIS_RUN=${MIN_SUITES_PER_RUN}
+			SUITES_IN_PREVIOUS_RUNS=$(((${MAX_SUITES_PER_RUN} * ${REMAINING_SUITES}) + (${MIN_SUITES_PER_RUN} * (${RUN_PART} - ${REMAINING_SUITES} - 1))))
+		fi
+
+		if [ ${SUITES_THIS_RUN} -eq 0 ]
+		then
+			echo "there are only ${COUNT_ALL_SUITES} suites, nothing to do in part ${RUN_PART}"
 			teardown
 			exit 0
 		fi
-		#divide the suites and round up
-		SUITES_PER_RUN=$(((${COUNT_ALL_SUITES} + ${DIVIDE_INTO_NUM_PARTS} - 1) / ${DIVIDE_INTO_NUM_PARTS}))
-		COUNT_FINISH_AND_TODO_SUITES=$((${RUN_PART} * ${SUITES_PER_RUN}))
-		COUNT_FINISH_SUITES=$(((${RUN_PART} - 1) * ${SUITES_PER_RUN}))
-		if [ ${RUN_PART} -eq ${DIVIDE_INTO_NUM_PARTS} ]
-		then
-			#the last run might have less suites
-			SUITES_PER_RUN=$((${COUNT_ALL_SUITES} - ${COUNT_FINISH_SUITES}))
-		fi
-		if [ ${SUITES_PER_RUN} -eq 0 ]
-		then
-			echo "there are ${COUNT_ALL_SUITES} suites ${COUNT_FINISH_SUITES} done, nothing to do"
-			teardown
-			exit 0
-		fi
-		BEHAT_SUITES+=(`echo "${ALL_SUITES}" | head -n ${COUNT_FINISH_AND_TODO_SUITES} | tail -n ${SUITES_PER_RUN}`)
+
+		COUNT_FINISH_AND_TODO_SUITES=$((${SUITES_IN_PREVIOUS_RUNS} + ${SUITES_THIS_RUN}))
+		BEHAT_SUITES+=(`echo "${ALL_SUITES}" | head -n ${COUNT_FINISH_AND_TODO_SUITES} | tail -n ${SUITES_THIS_RUN}`)
 	fi
 fi
 
