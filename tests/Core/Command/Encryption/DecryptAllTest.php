@@ -125,6 +125,11 @@ class DecryptAllTest extends TestCase {
 			$this->questionHelper
 		);
 
+		$this->consoleInput->expects($this->once())
+			->method('getOption')
+			->with('continue')
+			->willReturn('no');
+
 		$this->encryptionManager->expects($this->once())
 			->method('isEnabled')
 			->willReturn($encryptionEnabled);
@@ -181,6 +186,11 @@ class DecryptAllTest extends TestCase {
 			$this->questionHelper
 		);
 
+		$this->consoleInput->expects($this->once())
+			->method('getOption')
+			->with('continue')
+			->willReturn('no');
+
 		$this->config->expects($this->at(0))
 			->method('setAppValue')
 			->with('core', 'encryption_enabled', 'no');
@@ -211,5 +221,39 @@ class DecryptAllTest extends TestCase {
 			});
 
 		$this->invokePrivate($instance, 'execute', [$this->consoleInput, $this->consoleOutput]);
+	}
+
+	public function providesConfirmVal() {
+		return [
+			['yes'],
+			['no'],
+			['foo']
+		];
+	}
+
+	/**
+	 * @dataProvider providesConfirmVal
+	 * @param $confirmVal
+	 */
+
+	public function testExecuteConfirm($confirmVal) {
+		$instance = new DecryptAll(
+			$this->encryptionManager,
+			$this->appManager,
+			$this->config,
+			$this->decryptAll,
+			$this->questionHelper
+		);
+
+		$this->consoleInput->expects($this->once())
+			->method('getOption')
+			->with('continue')
+			->willReturn($confirmVal);
+
+		$this->encryptionManager->expects($this->any())
+			->method('isEnabled')
+			->willReturn(true);
+
+		$this->assertNull($this->invokePrivate($instance, 'execute', [$this->consoleInput, $this->consoleOutput]));
 	}
 }

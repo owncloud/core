@@ -32,6 +32,7 @@ use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\QuestionHelper;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\ConfirmationQuestion;
 
@@ -117,9 +118,27 @@ class DecryptAll extends Command {
 			'User for whom you want to decrypt all files (optional).',
 			''
 		);
+		$this->addOption(
+			'method',
+			'm',
+			InputOption::VALUE_OPTIONAL,
+			'Use recovery or password. If recovery method is chosen then the recovery password will be used to decrypt files. If password method is chosen then individual user passwords will be used to decrypt files.'
+		);
+		$this->addOption(
+			'continue',
+			'c',
+			InputOption::VALUE_OPTIONAL,
+			'Provide yes or no. Whether to ask for permission to continue.'
+		);
 	}
 
 	protected function execute(InputInterface $input, OutputInterface $output) {
+		$confirmed = $input->getOption('continue');
+		if (($confirmed !== 'yes') && ($confirmed !== 'no')) {
+			$output->writeln('Continue can accept either yes or no');
+			return null;
+		}
+
 		try {
 			if ($this->encryptionManager->isEnabled() === true) {
 				$output->write('Disable server side encryption... ');
@@ -144,7 +163,7 @@ class DecryptAll extends Command {
 			$output->writeln('Please make sure that no user access his files during this process!');
 			$output->writeln('');
 			$question = new ConfirmationQuestion('Do you really want to continue? (y/n) ', false);
-			if ($this->questionHelper->ask($input, $output, $question)) {
+			if (($confirmed === 'yes') || $this->questionHelper->ask($input, $output, $question)) {
 				$this->forceSingleUserAndTrashbin();
 				$user = $input->getArgument('user');
 				$result = $this->decryptAll->decryptAll($input, $output, $user);

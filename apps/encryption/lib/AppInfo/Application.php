@@ -24,6 +24,7 @@ namespace OCA\Encryption\AppInfo;
 
 
 use OC\Files\View;
+use OC\Helper\EnvironmentHelper;
 use OCA\Encryption\Controller\RecoveryController;
 use OCA\Encryption\Controller\SettingsController;
 use OCA\Encryption\Controller\StatusController;
@@ -260,7 +261,8 @@ class Application extends \OCP\AppFramework\App {
 					$c->query('Crypt'),
 					$c->query('Session'),
 					$c->getServer()->getUserManager(),
-					new QuestionHelper()
+					new QuestionHelper(),
+					new EnvironmentHelper()
 				);
 			}
 		);
