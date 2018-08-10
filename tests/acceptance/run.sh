@@ -483,10 +483,17 @@ else
 		#divide the suites and round up
 		SUITES_PER_RUN=$(((${COUNT_ALL_SUITES} + ${DIVIDE_INTO_NUM_PARTS} - 1) / ${DIVIDE_INTO_NUM_PARTS}))
 		COUNT_FINISH_AND_TODO_SUITES=$((${RUN_PART} * ${SUITES_PER_RUN}))
+		COUNT_FINISH_SUITES=$(((${RUN_PART} - 1) * ${SUITES_PER_RUN}))
 		if [ ${RUN_PART} -eq ${DIVIDE_INTO_NUM_PARTS} ]
 		then
 			#the last run might have less suites
-			SUITES_PER_RUN=$((${COUNT_ALL_SUITES} - (${RUN_PART} - 1) * ${SUITES_PER_RUN}))
+			SUITES_PER_RUN=$((${COUNT_ALL_SUITES} - ${COUNT_FINISH_SUITES}))
+		fi
+		if [ ${SUITES_PER_RUN} -eq 0 ]
+		then
+			echo "there are ${COUNT_ALL_SUITES} suites ${COUNT_FINISH_SUITES} done, nothing to do"
+			teardown
+			exit 0
 		fi
 		BEHAT_SUITES+=(`echo "${ALL_SUITES}" | head -n ${COUNT_FINISH_AND_TODO_SUITES} | tail -n ${SUITES_PER_RUN}`)
 	fi
