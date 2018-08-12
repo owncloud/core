@@ -103,7 +103,7 @@ Feature: favorite
 			| old           |
 			| new           |
 
-    Scenario Outline: Get favorited elements paginated
+    Scenario Outline: Get favorited elements paginated with some offset
         Given using <dav_version> DAV path
         And user "user0" has been created
         And user "user0" has created a folder "/subfolder"
@@ -120,8 +120,32 @@ Feature: favorite
         And user "user0" favorites element "/subfolder/textfile4.txt" using the WebDAV API
         And user "user0" favorites element "/subfolder/textfile5.txt" using the WebDAV API
         Then user "user0" in folder "/subfolder" should have favorited the following elements from offset 3 and limit 2
-            | /subfolder/textfile2.txt |
             | /subfolder/textfile3.txt |
+            | /subfolder/textfile4.txt |
+        Examples:
+			| dav_version   |
+			| old           |
+			| new           |
+
+    Scenario Outline: Get favorited elements paginated with zero offset
+        Given using <dav_version> DAV path
+        And user "user0" has been created
+        And user "user0" has created a folder "/subfolder"
+        And user "user0" has copied file "/textfile0.txt" to "/subfolder/textfile0.txt"
+        And user "user0" has copied file "/textfile0.txt" to "/subfolder/textfile1.txt"
+        And user "user0" has copied file "/textfile0.txt" to "/subfolder/textfile2.txt"
+        And user "user0" has copied file "/textfile0.txt" to "/subfolder/textfile3.txt"
+        And user "user0" has copied file "/textfile0.txt" to "/subfolder/textfile4.txt"
+        And user "user0" has copied file "/textfile0.txt" to "/subfolder/textfile5.txt"
+        When user "user0" favorites element "/subfolder/textfile0.txt" using the API
+        And user "user0" favorites element "/subfolder/textfile1.txt" using the API
+        And user "user0" favorites element "/subfolder/textfile2.txt" using the API
+        And user "user0" favorites element "/subfolder/textfile3.txt" using the API
+        And user "user0" favorites element "/subfolder/textfile4.txt" using the API
+        And user "user0" favorites element "/subfolder/textfile5.txt" using the API
+        Then user "user0" in folder "/subfolder" should have favorited the following elements from offset 0 and limit 2
+            | /subfolder/textfile0.txt |
+            | /subfolder/textfile1.txt |
         Examples:
 			| dav_version   |
 			| old           |
