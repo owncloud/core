@@ -165,9 +165,13 @@ class FilesSearchReportPlugin extends ServerPlugin {
 		$propFindType = $requestedProps ? PropFind::NORMAL : PropFind::ALLPROPS;
 
 		// make sure we limit the results
-		$nodes = \array_slice($nodes, 0, $maxResults, true);
+		$returnedElements = 0;
 
 		foreach ($nodes as $path => $node) {
+			if ($returnedElements >= $maxResults) {
+				break;
+			}
+
 			$propFind = new PropFind(
 				$path,
 				$requestedProps,
@@ -179,6 +183,8 @@ class FilesSearchReportPlugin extends ServerPlugin {
 			$result = $propFind->getResultForMultiStatus();
 			$result['href'] = $propFind->getPath();
 			yield $result;
+
+			$returnedElements++;
 		}
 	}
 
