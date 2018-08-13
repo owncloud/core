@@ -157,9 +157,10 @@ class LostController extends Controller {
 	/**
 	 * @param string $token
 	 * @param string $userId
+	 * @return null
 	 * @throws \Exception
 	 */
-	private function checkPasswordResetToken($token, $userId) {
+	private function checkPasswordResetToken(&$token, $userId) {
 		$user = $this->userManager->get($userId);
 
 		$splittedToken = \explode(':', $this->config->getUserValue($userId, 'owncloud', 'lostpassword', null));
@@ -170,8 +171,19 @@ class LostController extends Controller {
 
 		if ($splittedToken[0] < ($this->timeFactory->getTime() - 60*60*12) ||
 			$user->getLastLogin() > $splittedToken[0]) {
-			$this->config->deleteUserValue($userId, 'owncloud', 'lostpassword');
-			throw new \Exception($this->l10n->t('Could not reset password because the token expired'));
+			if ($user->getLastLogin() !== 0) {
+				$this->config->deleteUserValue($userId, 'owncloud', 'lostpassword');
+				throw new \Exception($this->l10n->t('Could not reset password because the token expired'));
+			} else {
+				//This would help to reset the token as the user had not logged in once
+				$token = $this->secureRandom->generate(21,
+					ISecureRandom::CHAR_DIGITS,
+					ISecureRandom::CHAR_LOWER,
+					ISecureRandom::CHAR_UPPER);
+				$this->config->setUserValue('userId', 'owncloud',
+					'lostpassword', $this->timeFactory->getTime() . ':' . $token);
+				return null;
+			}
 		}
 
 		if (!\hash_equals($splittedToken[1], $token)) {

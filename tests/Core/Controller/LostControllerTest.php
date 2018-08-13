@@ -35,7 +35,7 @@ use OCP\IUserManager;
 use OCP\Mail\IMailer;
 use OCP\Security\ISecureRandom;
 use PHPUnit_Framework_MockObject_MockObject;
-use PHPUnit\Framework\TestCase;
+use Test\TestCase;
 
 /**
  * Class LostControllerTest
@@ -593,7 +593,7 @@ class LostControllerTest extends TestCase {
 		$user = $this->getMockBuilder('\OCP\IUser')
 			->disableOriginalConstructor()->getMock();
 		$user
-			->expects($this->once())
+			->expects($this->exactly(2))
 			->method('getLastLogin')
 			->will($this->returnValue(12346));
 		$this->userManager
@@ -627,5 +627,28 @@ class LostControllerTest extends TestCase {
 			'msg' => 'Could not reset password because the token is invalid'
 			];
 		$this->assertSame($expectedResponse, $response);
+	}
+
+	public function testResetTokenIfUserNotLoggedInOnce() {
+		$user = $this->createMock(IUser::class);
+		$user->expects($this->once())
+			->method('getLastLogin')
+			->willReturn(0);
+
+		$this->config
+			->expects($this->once())
+			->method('getUserValue')
+			->with('foo', 'owncloud', 'lostpassword', null)
+			->will($this->returnValue('12:OkToken'));
+
+		$this->timeFactory->expects($this->exactly(2))
+			->method('getTime')
+			->willReturn(100000);
+
+		$this->userManager->expects($this->once())
+			->method('get')
+			->willReturn($user);
+		$token = "12:OkToken";
+		$this->assertNull($this->invokePrivate($this->lostController, 'checkPasswordResetToken', [&$token, 'foo']));
 	}
 }
