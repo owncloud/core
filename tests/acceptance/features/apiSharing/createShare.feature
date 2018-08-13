@@ -209,10 +209,10 @@ Feature: sharing
 	Scenario Outline: Share of folder and sub-folder to same user - core#20645
 		Given using OCS API version "<ocs_api_version>"
 		And user "user1" has been created
-		And group "group0" has been created
-		And user "user1" has been added to group "group0"
+		And group "grp4" has been created
+		And user "user1" has been added to group "grp4"
 		When user "user0" shares file "/PARENT" with user "user1" using the sharing API
-		And user "user0" shares file "/PARENT/CHILD" with group "group0" using the sharing API
+		And user "user0" shares file "/PARENT/CHILD" with group "grp4" using the sharing API
 		Then user "user1" should see the following elements
 			| /FOLDER/                 |
 			| /PARENT/                 |
@@ -232,10 +232,10 @@ Feature: sharing
 		Given using OCS API version "<ocs_api_version>"
 		And user "user1" has been created
 		And user "user2" has been created
-		And group "group0" has been created
-		And user "user1" has been added to group "group0"
-		And user "user2" has been added to group "group0"
-		And user "user0" shares file "/PARENT" with group "group0" using the sharing API
+		And group "grp1" has been created
+		And user "user1" has been added to group "grp1"
+		And user "user2" has been added to group "grp1"
+		And user "user0" shares file "/PARENT" with group "grp1" using the sharing API
 		Then user "user1" should see the following elements
 			| /FOLDER/                 |
 			| /PARENT/                 |
