@@ -238,6 +238,9 @@ trait Provisioning {
 		$this->createUser(
 			$user, $this->getPasswordForUser($user), null, null, true
 		);
+		if (\getenv("TEST_EXTERNAL_USER_BACKENDS") !== "true") {
+			$this->userShouldExist($user);
+		}
 	}
 
 	/**
@@ -928,7 +931,9 @@ trait Provisioning {
 	 */
 	public function groupHasBeenCreated($group) {
 		$this->createTheGroup($group);
-		$this->groupShouldExist($group);
+		if (\getenv("TEST_EXTERNAL_USER_BACKENDS") !== "true") {
+			$this->groupShouldExist($group);
+		}
 	}
 
 	/**
