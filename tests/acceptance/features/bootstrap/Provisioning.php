@@ -906,7 +906,6 @@ trait Provisioning {
 
 	/**
 	 * @When /^the administrator creates group "([^"]*)" using the provisioning API$/
-	 * @Given /^group "([^"]*)" has been created$/
 	 *
 	 * @param string $group
 	 *
@@ -917,6 +916,18 @@ trait Provisioning {
 		if (!$this->groupExists($group)) {
 			$this->createTheGroup($group, 'api');
 		}
+		$this->groupShouldExist($group);
+	}
+
+	/** @Given /^group "([^"]*)" has been created$/
+	 *
+	 * @param string $group
+	 *
+	 * @return void
+	 * @throws \Exception
+	 */
+	public function groupHasBeenCreated($group) {
+		$this->createTheGroup($group);
 		$this->groupShouldExist($group);
 	}
 
