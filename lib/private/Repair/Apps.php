@@ -325,7 +325,12 @@ class Apps implements IRepairStep {
 
 		// Then we need to enable the market app to support app updates / downloads during upgrade
 		$output->info('Enabling market app to assist with update');
-		$this->appManager->enableApp('market');
-		return true;
+		try {
+			$this->appManager->enableApp('market');
+			return true;
+		} catch (\Exception $ex) {
+			$output->warning($ex->getMessage());
+			return false;
+		}
 	}
 }
