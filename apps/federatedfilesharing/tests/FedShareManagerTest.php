@@ -21,6 +21,7 @@
 
 namespace OCA\FederatedFileSharing\Tests;
 
+use OCA\FederatedFileSharing\Address;
 use OCA\FederatedFileSharing\AddressHandler;
 use OCA\FederatedFileSharing\FederatedShareProvider;
 use OCA\FederatedFileSharing\FedShareManager;
@@ -104,13 +105,14 @@ class FedShareManagerTest extends TestCase {
 
 	public function testCreateShare() {
 		$shareWith = 'Bob';
-		$remote = 'server2';
-		$remoteId = 42;
 		$owner = 'Alice';
-		$name = 'McGee';
-		$ownerFederatedId = '17';
-		$sharedByFederatedId = '18';
+		$ownerFederatedId = 'server2';
+		$sharedByFederatedId = 'server3';
 		$sharedBy = 'Steve';
+		$ownerAddress = new Address("$owner@$ownerFederatedId");
+		$sharedByAddress = new Address("$sharedBy@$sharedByFederatedId");
+		$remoteId = 42;
+		$name = 'file.ext';
 		$token = 'idk';
 
 		$event = $this->getMockBuilder(IEvent::class)->getMock();
@@ -137,14 +139,11 @@ class FedShareManagerTest extends TestCase {
 			->willReturn($notification);
 
 		$this->fedShareManager->createShare(
+			$ownerAddress,
+			$sharedByAddress,
 			$shareWith,
-			$remote,
 			$remoteId,
-			$owner,
 			$name,
-			$ownerFederatedId,
-			$sharedByFederatedId,
-			$sharedBy,
 			$token
 		);
 	}

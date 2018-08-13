@@ -104,39 +104,25 @@ class FedShareManager {
 	/**
 	 * Create an incoming share
 	 *
+	 * @param Address $ownerAddress
+	 * @param Address $sharedByAddress
 	 * @param string $shareWith
-	 * @param string $remote
 	 * @param int $remoteId
-	 * @param string $owner
 	 * @param string $name
-	 * @param int $ownerFederatedId
-	 * @param int $sharedByFederatedId
-	 * @param string $sharedBy
 	 * @param string $token
 	 *
 	 * @return void
 	 */
-	public function createShare($shareWith,
-								$remote,
+	public function createShare(Address $ownerAddress,
+								Address $sharedByAddress,
+								$shareWith,
 								$remoteId,
-								$owner,
 								$name,
-								$ownerFederatedId,
-								$sharedByFederatedId,
-								$sharedBy,
 								$token
 	) {
-		if ($ownerFederatedId === null) {
-			$ownerFederatedId = $owner . '@' . $this->addressHandler->normalizeRemote($remote);
-		}
-		// if the owner of the share and the initiator are the same user
-		// we also complete the federated share ID for the initiator
-		if ($sharedByFederatedId === null && $owner === $sharedBy) {
-			$sharedByFederatedId = $ownerFederatedId;
-		}
-
+		$owner = $ownerAddress->getUserId();
 		$shareId = $this->federatedShareProvider->addShare(
-			$remote, $token, $name, $owner, $shareWith, $remoteId
+			$ownerAddress->getHostName(), $token, $name, $owner, $shareWith, $remoteId
 		);
 
 		$this->eventDispatcher->dispatch(
@@ -145,10 +131,10 @@ class FedShareManager {
 				null,
 				[
 					'name' => $name,
-					'targetuser' => $sharedByFederatedId,
+					'targetuser' => $sharedByAddress->getCloudId(),
 					'owner' => $owner,
 					'sharewith' => $shareWith,
-					'sharedby' => $sharedBy,
+					'sharedby' => $sharedByAddress->getUserId(),
 					'remoteid' => $remoteId
 				]
 			)
@@ -156,14 +142,18 @@ class FedShareManager {
 		$this->publishActivity(
 			$shareWith,
 			Activity::SUBJECT_REMOTE_SHARE_RECEIVED,
-			[$ownerFederatedId, \trim($name, '/')],
+			[$ownerAddress->getCloudId(), \trim($name, '/')],
 			'files',
 			'',
 			'',
 			''
 		);
 		$link = $this->getActionLink($shareId);
-		$params = [$ownerFederatedId, $sharedByFederatedId, \trim($name, '/')];
+		$params = [
+			$ownerAddress->getCloudId(),
+			$sharedByAddress->getCloudId(),
+			\trim($name, '/')
+		];
 		$notification = $this->createNotification($shareWith);
 		$notification->setDateTime(new \DateTime())
 			->setObject('remote_share', $shareId)

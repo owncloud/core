@@ -27,6 +27,7 @@
 namespace OCA\FederatedFileSharing\Controller;
 
 use OC\OCS\Result;
+use OCA\FederatedFileSharing\Address;
 use OCA\FederatedFileSharing\AddressHandler;
 use OCA\FederatedFileSharing\Exception\NotSupportedException;
 use OCA\FederatedFileSharing\Exception\InvalidShareException;
@@ -140,15 +141,25 @@ class RequestHandlerController extends OCSController {
 			if (!$this->userManager->userExists($shareWith)) {
 				throw new InvalidShareException('User does not exist');
 			}
+
+			if ($ownerFederatedId === null) {
+				$ownerFederatedId = $owner . '@' . $this->addressHandler->normalizeRemote($remote);
+			}
+			// if the owner of the share and the initiator are the same user
+			// we also complete the federated share ID for the initiator
+			if ($sharedByFederatedId === null && $owner === $sharedBy) {
+				$sharedByFederatedId = $ownerFederatedId;
+			}
+
+			$ownerAddress = new Address($ownerFederatedId);
+			$sharedByAddress = new Address($sharedByFederatedId);
+
 			$this->fedShareManager->createShare(
+				$ownerAddress,
+				$sharedByAddress,
 				$shareWith,
-				$remote,
 				$remoteId,
-				$owner,
 				$name,
-				$ownerFederatedId,
-				$sharedByFederatedId,
-				$sharedBy,
 				$token
 			);
 		} catch (InvalidShareException $e) {
