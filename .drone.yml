@@ -239,6 +239,25 @@ pipeline:
       matrix:
         CHOWN_SERVER: true
 
+  litmus-setup:
+    image: owncloudci/php:${PHP_VERSION}
+    pull: true
+    commands:
+      - echo "Create local mount ...."
+      - mkdir -p /drone/src/work/local_storage
+      - php occ app:enable files_external
+      - php occ config:system:set files_external_allow_create_new_local --value=true
+      - php occ config:app:set core enable_external_storage --value=yes
+      - php occ files_external:create local_storage local null::null -c datadir=/drone/src/work/local_storage
+      - echo 'Sharing a folder ..'
+      - OC_PASS=123456 php occ user:add --password-from-env user1
+      - chown www-data /drone/src -R
+      - curl -s -u user1:123456 -X MKCOL 'http://server/remote.php/webdav/new_folder'
+      - curl -s -u user1:123456 "http://server/ocs/v2.php/apps/files_sharing/api/v1/shares" --data 'path=/new_folder&shareType=0&permissions=15&name=new_folder&shareWith=admin'
+    when:
+      matrix:
+        TEST_SUITE: litmus
+
   litmus-old-endpoint:
     image: owncloud/litmus
     pull: true
@@ -254,9 +273,53 @@ pipeline:
     image: owncloud/litmus
     pull: true
     environment:
-      - LITMUS_URL=http://server/remote.php/dav/files/admin
-      - LITMUS_USERNAME=admin
-      - LITMUS_PASSWORD=admin
+    - LITMUS_URL=http://server/remote.php/dav/files/admin
+    - LITMUS_USERNAME=admin
+    - LITMUS_PASSWORD=admin
+    when:
+      matrix:
+        TEST_SUITE: litmus
+
+  litmus-new-endpoint-mount:
+    image: owncloud/litmus
+    pull: true
+    environment:
+    - LITMUS_URL=http://server/remote.php/dav/files/admin/local_storage/
+    - LITMUS_USERNAME=admin
+    - LITMUS_PASSWORD=admin
+    when:
+      matrix:
+        TEST_SUITE: litmus
+
+  litmus-old-endpoint-mount:
+    image: owncloud/litmus
+    pull: true
+    environment:
+    - LITMUS_URL=http://server/remote.php/webdav/local_storage/
+    - LITMUS_USERNAME=admin
+    - LITMUS_PASSWORD=admin
+    when:
+      matrix:
+        TEST_SUITE: litmus
+
+  litmus-new-endpoint-shared:
+    image: owncloud/litmus
+    pull: true
+    environment:
+    - LITMUS_URL=http://server/remote.php/dav/files/admin/new_folder/
+    - LITMUS_USERNAME=admin
+    - LITMUS_PASSWORD=admin
+    when:
+      matrix:
+        TEST_SUITE: litmus
+
+  litmus-old-endpoint-shared:
+    image: owncloud/litmus
+    pull: true
+    environment:
+    - LITMUS_URL=http://server/remote.php/webdav/new_folder/
+    - LITMUS_USERNAME=admin
+    - LITMUS_PASSWORD=admin
     when:
       matrix:
         TEST_SUITE: litmus
@@ -528,7 +591,6 @@ matrix:
       USE_SERVER: true
       TEST_SUITE: litmus
       INSTALL_SERVER: true
-      CHOWN_SERVER: true
 
   # Unit Tests
     - PHP_VERSION: 7.1
