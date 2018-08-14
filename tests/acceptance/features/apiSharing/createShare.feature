@@ -23,20 +23,19 @@ Feature: sharing
 
 	Scenario Outline: Creating a share with a group
 		Given using OCS API version "<ocs_api_version>"
-		And user "user1" has been created
-		And group "sharing-group" has been created
+		And group "grp1" has been created
 		When user "user0" sends HTTP method "POST" to OCS API endpoint "/apps/files_sharing/api/v1/shares" with body
-			| path      | welcome.txt   |
-			| shareWith | sharing-group |
-			| shareType | 1             |
+			| path      | welcome.txt |
+			| shareWith | grp1        |
+			| shareType | 1           |
 		Then the OCS status code should be "<ocs_status_code>"
 		And the HTTP status code should be "200"
 		And the share fields of the last share should include
-			| share_with             | sharing-group      |
-			| file_target            | /welcome.txt       |
-			| path                   | /welcome.txt       |
-			| permissions            | 19                 |
-			| uid_owner              | user0              |
+			| share_with             | grp1         |
+			| file_target            | /welcome.txt |
+			| path                   | /welcome.txt |
+			| permissions            | 19           |
+			| uid_owner              | user0        |
 		Examples:
 			|ocs_api_version|ocs_status_code|
 			|1              |100            |
@@ -45,9 +44,9 @@ Feature: sharing
 	Scenario Outline: Creating a new share with user who already received a share through their group
 		Given using OCS API version "<ocs_api_version>"
 		And user "user1" has been created
-		And group "sharing-group" has been created
-		And user "user1" has been added to group "sharing-group"
-		And user "user0" has shared file "welcome.txt" with group "sharing-group"
+		And group "grp1" has been created
+		And user "user1" has been added to group "grp1"
+		And user "user0" has shared file "welcome.txt" with group "grp1"
 		When user "user0" sends HTTP method "POST" to OCS API endpoint "/apps/files_sharing/api/v1/shares" with body
 			| path      | welcome.txt |
 			| shareWith | user1       |
@@ -294,14 +293,15 @@ Feature: sharing
 
 	Scenario Outline: sharing again an own file while belonging to a group
 		Given using OCS API version "<ocs_api_version>"
-		And group "sharing-group" has been created
-		And user "user0" has been added to group "sharing-group"
-		And user "user0" has shared file "welcome.txt" with group "sharing-group"
-		And user "user0" has deleted the last share
-		When user "user0" sends HTTP method "POST" to OCS API endpoint "/apps/files_sharing/api/v1/shares" with body
-			| path      | welcome.txt   |
-			| shareWith | sharing-group |
-			| shareType | 1             |
+		And user "user1" has been created
+		And group "grp1" has been created
+		And user "user1" has been added to group "grp1"
+		And user "user1" has shared file "welcome.txt" with group "grp1"
+		And user "user1" has deleted the last share
+		When user "user1" sends HTTP method "POST" to OCS API endpoint "/apps/files_sharing/api/v1/shares" with body
+			| path      | welcome.txt |
+			| shareWith | grp1        |
+			| shareType | 1           |
 		Then the OCS status code should be "<ocs_status_code>"
 		And the HTTP status code should be "200"
 		Examples:
@@ -312,10 +312,10 @@ Feature: sharing
 	Scenario Outline: sharing subfolder when parent already shared
 		Given using OCS API version "<ocs_api_version>"
 		And user "user1" has been created
-		And group "sharing-group" has been created
+		And group "grp1" has been created
 		And user "user0" has created a folder "/test"
 		And user "user0" has created a folder "/test/sub"
-		And user "user0" has shared file "/test" with group "sharing-group"
+		And user "user0" has shared file "/test" with group "grp1"
 		When user "user0" sends HTTP method "POST" to OCS API endpoint "/apps/files_sharing/api/v1/shares" with body
 			| path      | /test/sub |
 			| shareWith | user1     |
@@ -331,11 +331,11 @@ Feature: sharing
 	Scenario Outline: sharing subfolder when parent already shared with group of sharer
 		Given using OCS API version "<ocs_api_version>"
 		And user "user1" has been created
-		And group "sharing-group" has been created
-		And user "user0" has been added to group "sharing-group"
+		And group "grp1" has been created
+		And user "user0" has been added to group "grp1"
 		And user "user0" has created a folder "/test"
 		And user "user0" has created a folder "/test/sub"
-		And user "user0" has shared file "/test" with group "sharing-group"
+		And user "user0" has shared file "/test" with group "grp1"
 		When user "user0" sends HTTP method "POST" to OCS API endpoint "/apps/files_sharing/api/v1/shares" with body
 			| path      | /test/sub |
 			| shareWith | user1     |
