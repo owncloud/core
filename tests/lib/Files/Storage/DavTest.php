@@ -102,7 +102,7 @@ class DavTest extends TestCase {
 		$this->davClient = $this->createMock(Client::class);
 		$this->webDavClientService->method('newClient')->willReturn($this->davClient);
 
-		$this->instance = $this->getMockBuilder(\OC\Files\Storage\DAV::class)
+		$this->instance = $this->getMockBuilder(DAV::class)
 			->setConstructorArgs([[
 				'user' => 'davuser',
 				'password' => 'davpassword',
@@ -152,7 +152,7 @@ class DavTest extends TestCase {
 			])
 			->willReturn($this->davClient);
 
-		$this->instance = new \OC\Files\Storage\DAV([
+		$this->instance = new DAV([
 			'user' => 'davuser',
 			'password' => 'davpassword',
 			'host' => 'davhost',
@@ -188,7 +188,7 @@ class DavTest extends TestCase {
 	 * @expectedException \InvalidArgumentException
 	 */
 	public function testInstantiateWebDavClientInvalidConfig($params) {
-		new \OC\Files\Storage\DAV($params);
+		new DAV($params);
 	}
 
 	private function createClientHttpException($statusCode) {
@@ -222,7 +222,7 @@ class DavTest extends TestCase {
 		];
 
 		$testCases = [
-			[new \Sabre\DAV\Exception\Forbidden('Forbidden'), \Sabre\DAV\Exception\Forbidden::class],
+			[new Forbidden('Forbidden'), Forbidden::class],
 			[new \InvalidArgumentException(), StorageNotAvailableException::class],
 			[new StorageNotAvailableException(), StorageNotAvailableException::class],
 			[new StorageInvalidException(), StorageInvalidException::class],
