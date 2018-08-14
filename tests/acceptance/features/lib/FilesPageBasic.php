@@ -209,7 +209,7 @@ abstract class FilesPageBasic extends OwncloudPage {
 		if (\count($fileNameMatch) === 0) {
 			throw new ElementNotFoundException(
 				__METHOD__ .
-				" could not find file with the name '" . $name . "'"
+				" could not find file with the name '$name'"
 			);
 		}
 
@@ -338,8 +338,7 @@ abstract class FilesPageBasic extends OwncloudPage {
 			if (\is_array($name)) {
 				$name = \implode($name);
 			}
-			$message = "INFORMATION: retried to delete file '" . $name . "' " .
-					   $counter . " times";
+			$message = "INFORMATION: retried to delete file '$name' $counter times";
 			echo $message;
 			\error_log($message);
 		}
