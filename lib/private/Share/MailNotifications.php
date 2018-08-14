@@ -316,7 +316,7 @@ class MailNotifications {
 		$html->assign('filename', $filename);
 		$html->assign('expiration', $formattedDate);
 		if ($personalNote !== null && $personalNote !== '') {
-			$html->assign('personal_note', $personalNote);
+			$html->assign('personal_note', \nl2br($personalNote));
 		}
 		$htmlMail = $html->fetchPage();
 
