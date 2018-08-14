@@ -182,14 +182,29 @@ class File extends Node implements IFile, IFileNode {
 		/** @var \OC\Files\Storage\Storage $storage */
 		list($storage, $internalPath) = $this->fileView->resolvePath($this->path);
 		try {
+			try {
+				$this->changeLock(ILockingProvider::LOCK_EXCLUSIVE);
+			} catch (LockedException $e) {
+				if ($needsPartFile) {
+					$partStorage->unlink($internalPartPath);
+				}
+				throw new FileLocked($e->getMessage(), $e->getCode(), $e);
+			}
 			$target = $partStorage->fopen($internalPartPath, 'wb');
 			if (!\is_resource($target)) {
 				\OCP\Util::writeLog('webdav', '\OC\Files\Filesystem::fopen() failed', \OCP\Util::ERROR);
 				// because we have no clue about the cause we can only throw back a 500/Internal Server Error
 				throw new Exception('Could not write file contents');
 			}
+
 			list($count, $result) = \OC_Helper::streamCopy($data, $target);
 			\fclose($target);
+
+			try {
+				$this->changeLock(ILockingProvider::LOCK_SHARED);
+			} catch (LockedException $e) {
+				throw new FileLocked($e->getMessage(), $e->getCode(), $e);
+			}
 
 			if (!self::isChecksumValid($partStorage, $internalPartPath)) {
 				throw new BadRequest('The computed checksum does not match the one received from the client.');

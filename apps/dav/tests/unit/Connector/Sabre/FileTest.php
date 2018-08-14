@@ -217,7 +217,9 @@ class FileTest extends TestCase {
 		// action
 		$caughtException = null;
 		try {
+			$file->acquireLock(ILockingProvider::LOCK_SHARED);
 			$file->put('test data');
+			$file->releaseLock(ILockingProvider::LOCK_SHARED);
 		} catch (\Exception $e) {
 			$caughtException = $e;
 		}
@@ -288,7 +290,9 @@ class FileTest extends TestCase {
 		);
 
 		$file = new File($view, $info);
+		$file->acquireLock(ILockingProvider::LOCK_SHARED);
 		$file->put('Look at me failing');
+		$file->releaseLock(ILockingProvider::LOCK_SHARED);
 	}
 
 	/**
