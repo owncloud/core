@@ -1,7 +1,7 @@
 @api
 Feature: transfer-ownership
 
-	@no_default_encryption
+	@skipOnEncryptionType:user-keys
 	Scenario: transferring ownership of a file
 		Given user "user0" has been created
 		And user "user1" has been created
@@ -11,7 +11,7 @@ Feature: transfer-ownership
 		And using received transfer folder of "user1" as dav path
 		And the downloaded content when downloading file "/somefile.txt" for user "user1" with range "bytes=0-6" should be "This is"
 
-	@no_default_encryption
+	@skipOnEncryptionType:user-keys
 	Scenario: transferring ownership of a file after updating the file
 		Given user "user0" has been created
 		And user "user1" has been created
@@ -25,7 +25,7 @@ Feature: transfer-ownership
 		And using received transfer folder of "user1" as dav path
 		And the downloaded content when downloading file "/PARENT/textfile0.txt" for user "user1" with range "bytes=0-5" should be "AABBCC"
 
-	@no_default_encryption
+	@skipOnEncryptionType:user-keys
 	Scenario: transferring ownership of a folder
 		Given user "user0" has been created
 		And user "user1" has been created
@@ -36,7 +36,7 @@ Feature: transfer-ownership
 		And using received transfer folder of "user1" as dav path
 		And the downloaded content when downloading file "/test/somefile.txt" for user "user1" with range "bytes=0-6" should be "This is"
 
-	@no_default_encryption
+	@skipOnEncryptionType:user-keys
 	Scenario: transferring ownership of file shares
 		Given user "user0" has been created
 		And user "user1" has been created
@@ -47,7 +47,7 @@ Feature: transfer-ownership
 		Then the command should have been successful
 		And the downloaded content when downloading file "/somefile.txt" for user "user2" with range "bytes=0-6" should be "This is"
 
-	@no_default_encryption
+	@skipOnEncryptionType:user-keys
 	Scenario: transferring ownership of folder shared with third user
 		Given user "user0" has been created
 		And user "user1" has been created
@@ -59,7 +59,7 @@ Feature: transfer-ownership
 		Then the command should have been successful
 		And the downloaded content when downloading file "/test/somefile.txt" for user "user2" with range "bytes=0-6" should be "This is"
 
-	@no_default_encryption
+	@skipOnEncryptionType:user-keys
 	Scenario: transferring ownership of folder shared with transfer recipient
 		Given user "user0" has been created
 		And user "user1" has been created
@@ -72,7 +72,7 @@ Feature: transfer-ownership
 		And using received transfer folder of "user1" as dav path
 		And the downloaded content when downloading file "/test/somefile.txt" for user "user1" with range "bytes=0-6" should be "This is"
 
-	@no_default_encryption
+	@skipOnEncryptionType:user-keys
 	Scenario: transferring ownership of folder doubly shared with third user
 		Given group "group1" has been created
 		And user "user0" has been created
@@ -87,7 +87,7 @@ Feature: transfer-ownership
 		Then the command should have been successful
 		And the downloaded content when downloading file "/test/somefile.txt" for user "user2" with range "bytes=0-6" should be "This is"
 
-	@no_default_encryption
+	@skipOnEncryptionType:user-keys
 	Scenario: transferring ownership does not transfer received shares
 		Given user "user0" has been created
 		And user "user1" has been created
@@ -99,7 +99,7 @@ Feature: transfer-ownership
 		And using received transfer folder of "user1" as dav path
 		And as "user1" the folder "/test" should not exist
 
-	@local_storage @no_default_encryption
+	@local_storage @skipOnEncryptionType:user-keys
 	Scenario: transferring ownership does not transfer external storage
 		Given user "user0" has been created
 		And user "user1" has been created
@@ -108,7 +108,7 @@ Feature: transfer-ownership
 		And using received transfer folder of "user1" as dav path
 		And as "user1" the folder "/local_storage" should not exist
 
-	@no_default_encryption
+	@skipOnEncryptionType:user-keys
 	Scenario: transferring ownership does not fail with shared trashed files
 		Given user "user0" has been created
 		And user "user1" has been created
@@ -132,7 +132,7 @@ Feature: transfer-ownership
 		Then the command output should contain the text "Unknown destination user"
 		And the command should have failed with exit code 1
 
-	@no_default_encryption
+	@skipOnEncryptionType:user-keys
 	Scenario: transferring ownership of only a single folder containing a file
 		Given user "user0" has been created
 		And user "user1" has been created
@@ -166,7 +166,7 @@ Feature: transfer-ownership
 		And using received transfer folder of "user1" as dav path
 		And as "user1" the folder "/test" should exist
 
-	@no_default_encryption
+	@skipOnEncryptionType:user-keys
 	Scenario: transferring ownership of file shares
 		Given user "user0" has been created
 		And user "user1" has been created
@@ -178,7 +178,7 @@ Feature: transfer-ownership
 		Then the command should have been successful
 		And the downloaded content when downloading file "/somefile.txt" for user "user2" with range "bytes=0-6" should be "This is"
 
-	@no_default_encryption
+	@skipOnEncryptionType:user-keys
 	Scenario: transferring ownership of folder shares which has public link
 		Given user "user0" has been created
 		And user "user1" has been created
@@ -193,7 +193,7 @@ Feature: transfer-ownership
 		And the command should have been successful
 		Then the downloaded content when downloading file "/test/somefile.txt" for user "user2" with range "bytes=0-6" should be "This is"
 
-	@no_default_encryption
+	@skipOnEncryptionType:user-keys
 	Scenario: transferring ownership of folder shared with third user
 		Given user "user0" has been created
 		And user "user1" has been created
@@ -205,7 +205,7 @@ Feature: transfer-ownership
 		Then the command should have been successful
 		And the downloaded content when downloading file "/test/somefile.txt" for user "user2" with range "bytes=0-6" should be "This is"
 
-	@no_default_encryption
+	@skipOnEncryptionType:user-keys
 	Scenario: transferring ownership of folder shared with transfer recipient
 		Given user "user0" has been created
 		And user "user1" has been created
@@ -218,7 +218,7 @@ Feature: transfer-ownership
 		And using received transfer folder of "user1" as dav path
 		And the downloaded content when downloading file "/test/somefile.txt" for user "user1" with range "bytes=0-6" should be "This is"
 
-	@no_default_encryption
+	@skipOnEncryptionType:user-keys
 	Scenario: transferring ownership of folder doubly shared with third user
 		Given group "group1" has been created
 		And user "user0" has been created
@@ -246,6 +246,7 @@ Feature: transfer-ownership
 		And using received transfer folder of "user1" as dav path
 		And as "user1" the folder "/sub/test" should not exist
 
+	@skipOnEncryptionType:user-keys
 	Scenario: transferring ownership of folder shared with transfer recipient and public link created of received share works
 		Given user "user0" has been created
 		And user "user1" has been created
