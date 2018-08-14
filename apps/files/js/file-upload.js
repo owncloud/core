@@ -854,7 +854,8 @@ OC.Uploader.prototype = _.extend({
 			if (progress >= total) {
 				// change message if we stalled at 100%
 				this.$uploadprogressbar.find('.label .desktop').text(t('core', 'Processing files...'));
-			} else if (new Date().getTime() - this._lastProgressTime >= this._uploadStallTimeout * 1000 ) {
+			}
+			if (new Date().getTime() - this._lastProgressTime >= this._uploadStallTimeout * 1000 ) {
 				// TODO: move to "fileuploadprogress" event instead and use data.uploadedBytes
 				// stalling needs to be checked here because the file upload no longer triggers events
 				// restart upload
@@ -1124,6 +1125,7 @@ OC.Uploader.prototype = _.extend({
 									});
 
 									// clear the previous data:
+									upload.data.stalled = false;
 									data.data = null;
 									// overwrite chunk
 									delete data.headers['If-None-Match'];

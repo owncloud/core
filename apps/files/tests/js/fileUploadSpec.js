@@ -402,6 +402,7 @@ describe('OC.Upload tests', function() {
 			// uploaded bytes was set to the sum of all chunk sizes
 			expect(result[0].uploadedBytes).toEqual(300);
 			expect(result[0].data).toBeFalsy();
+			expect(upload.data.stalled).toEqual(false);
 
 			// header was cleared for overwriting
 			expect(result[0].headers['If-None-Match']).not.toBeDefined();
