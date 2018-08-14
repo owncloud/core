@@ -155,8 +155,8 @@ trait CommandLine {
 	public function theCommandFailedWithExitCode($exitCode) {
 		if ($this->lastCode !== (int)$exitCode) {
 			throw new \Exception(
-				'The command was expected to fail with exit code '
-				. $exitCode . ' but got ' . $this->lastCode
+				"The command was expected to fail with exit code $exitCode but got "
+				. $this->lastCode
 			);
 		}
 	}
@@ -304,7 +304,7 @@ trait CommandLine {
 	 * @return void
 	 */
 	public function transferringOwnershipPath($path, $user1, $user2) {
-		$path = '--path=' . $path;
+		$path = "--path=$path";
 		if ($this->runOcc(['files:transfer-ownership', $path, $user1, $user2]) === 0) {
 			$this->lastTransferPath
 				= $this->findLastTransferFolderForUser($user1, $user2);

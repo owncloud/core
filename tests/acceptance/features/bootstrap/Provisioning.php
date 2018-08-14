@@ -295,7 +295,7 @@ trait Provisioning {
 	 */
 	public function userEnablesOrDisablesApp($user, $action, $app) {
 		$fullUrl = $this->getBaseUrl()
-			. "/ocs/v{$this->ocsApiVersion}.php/cloud/apps/" . $app;
+			. "/ocs/v{$this->ocsApiVersion}.php/cloud/apps/$app";
 		$options = [];
 		$options['auth'] = $this->getAuthOptionForUser($user);
 		try {
@@ -544,7 +544,7 @@ trait Provisioning {
 	 */
 	public function initializeUser($user, $password) {
 		$url = $this->getBaseUrl()
-			. "/ocs/v{$this->ocsApiVersion}.php/cloud/users/" . $user;
+			. "/ocs/v{$this->ocsApiVersion}.php/cloud/users/$user";
 		$client = new Client();
 		$options = [
 			'auth' => [$user, $password],
@@ -705,8 +705,8 @@ trait Provisioning {
 			&& $this->groupExists($group)
 		) {
 			\error_log(
-				"INFORMATION: tried to delete group '" . $group .
-				"' at the end of the scenario but it seems to still exist. " .
+				"INFORMATION: tried to delete group '$group'" .
+				" at the end of the scenario but it seems to still exist. " .
 				"There might be problems with later scenarios."
 			);
 		}
@@ -1072,7 +1072,7 @@ trait Provisioning {
 			&& ($this->response->getStatusCode() !== 200)
 		) {
 			\error_log(
-				"INFORMATION: could not delete user '" . $user . "' "
+				"INFORMATION: could not delete user '$user' "
 				. $this->response->getStatusCode() . " " . $this->response->getBody()
 			);
 		}
@@ -1117,7 +1117,7 @@ trait Provisioning {
 			&& ($this->response->getStatusCode() !== 200)
 		) {
 			\error_log(
-				"INFORMATION: could not delete group. '" . $group . "'"
+				"INFORMATION: could not delete group. '$group'"
 				. $this->response->getStatusCode() . " " . $this->response->getBody()
 			);
 		}
@@ -1165,8 +1165,7 @@ trait Provisioning {
 		
 		if ($this->response->getStatusCode() !== 200) {
 			\error_log(
-				"INFORMATION: could not remove user '" . $user
-				. "' from group. '" . $group . "'"
+				"INFORMATION: could not remove user '$user' from group. '$group'"
 				. $this->response->getStatusCode() . " " . $this->response->getBody()
 			);
 		}
@@ -1630,7 +1629,7 @@ trait Provisioning {
 			$this->getAdminUsername(),
 			$this->getAdminPassword(),
 			"PUT",
-			"/cloud/users/" . $user,
+			"/cloud/users/$user",
 			$body,
 			2
 		);
@@ -1686,7 +1685,7 @@ trait Provisioning {
 			}
 			if ($data != $value) {
 				PHPUnit_Framework_Assert::fail(
-					"$field" . " has value " . "$data"
+					"$field has value $data"
 				);
 			}
 		}

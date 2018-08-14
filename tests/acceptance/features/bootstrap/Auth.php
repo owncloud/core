@@ -181,7 +181,7 @@ trait Auth {
 	 * @return void
 	 */
 	public function userRequestsURLWithUsingBasicAuth($user, $url, $method) {
-		$authString = $user . ':' . $this->getPasswordForUser($user);
+		$authString = "$user:" . $this->getPasswordForUser($user);
 		$this->sendRequest(
 			$url, $method, 'basic ' . \base64_encode($authString)
 		);
@@ -201,7 +201,7 @@ trait Auth {
 		$this->sendRequest(
 			$url,
 			$method,
-			'basic ' . \base64_encode($user . ':' . $this->clientToken)
+			'basic ' . \base64_encode("$user:" . $this->clientToken)
 		);
 	}
 

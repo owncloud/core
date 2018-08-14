@@ -748,8 +748,8 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 
 			if ($currentNotificationsCount > $previousNotificationsCount) {
 				$message
-					= "Upload overwriting " . $name .
-					  " and got " . $currentNotificationsCount .
+					= "Upload overwriting $name" .
+					  " and got $currentNotificationsCount" .
 					  " notifications including " .
 					  \end($notifications) . "\n";
 				echo $message;
@@ -763,8 +763,7 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 
 		if ($retryCounter > 0) {
 			$message
-				= "INFORMATION: retried to upload overwriting file " .
-				  $name . " " . $retryCounter . " times";
+				= "INFORMATION: retried to upload overwriting file $name $retryCounter times";
 			echo $message;
 			\error_log($message);
 		}
@@ -1022,7 +1021,7 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 			if (\is_array($name)) {
 				$this->currentFolder .= "/" . \implode($name);
 			} else {
-				$this->currentFolder .= "/" . $name;
+				$this->currentFolder .= "/$name";
 			}
 		}
 		$pageObject = $this->getCurrentPageObject();
@@ -1151,26 +1150,26 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 			$nameText = $name;
 		}
 
-		$fileLocationText = " file '" . $nameText . "'";
+		$fileLocationText = " file '$nameText'";
 
 		if ($folder !== "") {
-			$fileLocationText .= " in folder '" . $folder . "'";
+			$fileLocationText .= " in folder '$folder'";
 		} else {
 			$fileLocationText .= " in current folder";
 		}
 
 		if ($typeOfFilesPage !== "") {
-			$fileLocationText .= " in " . $typeOfFilesPage;
+			$fileLocationText .= " in $typeOfFilesPage";
 		}
 
 		if ($should) {
 			PHPUnit_Framework_Assert::assertNotNull(
 				$fileRow,
-				"could not find " . $fileLocationText . " when it should be listed"
+				"could not find $fileLocationText when it should be listed"
 			);
 			PHPUnit_Framework_Assert::assertTrue(
 				$fileRow->isVisible(),
-				"file row of " . $fileLocationText . " is not visible but should"
+				"file row of $fileLocationText is not visible but should"
 			);
 		} else {
 			if (\is_array($name)) {
@@ -1178,14 +1177,14 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 			}
 			if ($fileRow === null) {
 				PHPUnit_Framework_Assert::assertContains(
-					"could not find file with the name '" . $name . "'",
+					"could not find file with the name '$name'",
 					$exceptionMessage,
-					"found " . $fileLocationText . " when it should not be listed"
+					"found $fileLocationText when it should not be listed"
 				);
 			} else {
 				PHPUnit_Framework_Assert::assertFalse(
 					$fileRow->isVisible(),
-					"file row of " . $fileLocationText . " is visible but should not"
+					"file row of $fileLocationText is visible but should not"
 				);
 			}
 		}
@@ -1446,7 +1445,7 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 		// The capturing group of the regex always includes the quotes at each
 		// end of the captured string, so trim them.
 		$fileName = \trim($fileName, $fileName[0]);
-		$remoteFile = $this->currentFolder . "/" . $fileName;
+		$remoteFile = $this->currentFolder . "/$fileName";
 		if ($this->currentFolder !== "") {
 			$subFolderPath = $this->currentFolder . "/";
 		} else {

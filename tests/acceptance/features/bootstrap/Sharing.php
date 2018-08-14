@@ -271,7 +271,7 @@ trait Sharing {
 		} else {
 			$url = $this->lastShareData->data->url;
 		}
-		$fullUrl = $url . "/download";
+		$fullUrl = "$url/download";
 		$this->checkDownload($fullUrl, null, 'text/plain');
 	}
 
@@ -790,7 +790,7 @@ trait Sharing {
 		$user1, $filepath, $user2, $permissions = null
 	) {
 		$fullUrl = $this->getBaseUrl()
-			. "/ocs/v{$this->ocsApiVersion}.php/apps/files_sharing/api/v{$this->sharingApiVersion}/shares" . "?path=$filepath";
+			. "/ocs/v{$this->ocsApiVersion}.php/apps/files_sharing/api/v{$this->sharingApiVersion}/shares?path=$filepath";
 		$client = new Client();
 		$options = [];
 		$options['auth'] = $this->getAuthOptionForUser($user1);
@@ -850,7 +850,7 @@ trait Sharing {
 		$user, $filepath, $group, $permissions = null
 	) {
 		$fullUrl = $this->getBaseUrl()
-			. "/ocs/v{$this->ocsApiVersion}.php/apps/files_sharing/api/v{$this->sharingApiVersion}/shares" . "?path=$filepath";
+			. "/ocs/v{$this->ocsApiVersion}.php/apps/files_sharing/api/v{$this->sharingApiVersion}/shares?path=$filepath";
 		$client = new Client();
 		$options = [];
 		$options['auth'] = $this->getAuthOptionForUser($user);
@@ -896,7 +896,7 @@ trait Sharing {
 		$statusCode = $this->getOCSResponseStatusCode($this->response);
 		PHPUnit_Framework_Assert::assertTrue(
 			($statusCode == 404) || ($statusCode == 403),
-			"Sharing should have failed but passed with status code " . $statusCode
+			"Sharing should have failed but passed with status code $statusCode"
 		);
 	}
 
@@ -1060,7 +1060,7 @@ trait Sharing {
 				}
 				if (!$this->isFieldInResponse($field, $value)) {
 					PHPUnit_Framework_Assert::fail(
-						"$field" . " doesn't have value " . "$value"
+						"$field doesn't have value $value"
 					);
 				}
 			}
@@ -1148,7 +1148,7 @@ trait Sharing {
 	public function getShares($user, $path) {
 		$fullUrl = $this->getBaseUrl()
 			. "/ocs/v{$this->ocsApiVersion}.php/apps/files_sharing/api/v{$this->sharingApiVersion}/shares";
-		$fullUrl = $fullUrl . '?path=' . $path;
+		$fullUrl = "$fullUrl?path=$path";
 
 		$client = new Client();
 		$options = [];

@@ -74,8 +74,8 @@ class AppManagementContext implements Context {
 	 * @return void
 	 */
 	public function setAppDirectories($dir1, $dir2) {
-		$fullpath1 = \OC::$SERVERROOT . '/' . $dir1;
-		$fullpath2 = \OC::$SERVERROOT . '/' . $dir2;
+		$fullpath1 = \OC::$SERVERROOT . "/$dir1";
+		$fullpath2 = \OC::$SERVERROOT . "/$dir2";
 		\OC::$server->getConfig()->setSystemValue(
 			'apps_paths',
 			[
@@ -122,21 +122,21 @@ class AppManagementContext implements Context {
 			$ocVersion,
 			$ocVersion
 		);
-		$appsDir = \OC::$SERVERROOT . '/' . $dir;
+		$appsDir = \OC::$SERVERROOT . "/$dir";
 		if (!\file_exists($appsDir)) {
 			\mkdir($appsDir);
 		}
-		if (!\file_exists($appsDir . '/' . $appId)) {
-			\mkdir($appsDir . '/' . $appId);
+		if (!\file_exists("$appsDir/$appId")) {
+			\mkdir("$appsDir/$appId");
 		}
 		
-		$fullpath = $appsDir . '/' . $appId;
+		$fullpath = "$appsDir/$appId";
 		
-		if (!\file_exists($fullpath . '/appinfo')) {
-			\mkdir($fullpath . '/appinfo');
+		if (!\file_exists("$fullpath/appinfo")) {
+			\mkdir("$fullpath/appinfo");
 		}
 		
-		\file_put_contents($fullpath . '/appinfo/info.xml', $appInfo);
+		\file_put_contents("$fullpath/appinfo/info.xml", $appInfo);
 	}
 	
 	/**
@@ -163,7 +163,7 @@ class AppManagementContext implements Context {
 			2 => ['pipe', 'w'],
 		];
 		$process = \proc_open(
-			'php console.php ' . $args,
+			"php console.php $args",
 			$descriptor,
 			$pipes,
 			\OC::$SERVERROOT
@@ -182,7 +182,7 @@ class AppManagementContext implements Context {
 	 */
 	public function appVersionIs($appId, $dir) {
 		PHPUnit_Framework_Assert::assertEquals(
-			\OC::$SERVERROOT . '/' . $dir . '/' . $appId,
+			\OC::$SERVERROOT . "/$dir/$appId",
 			\trim($this->cmdOutput)
 		);
 	}
