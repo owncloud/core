@@ -320,8 +320,7 @@ class FileRow extends OwncloudPage {
 		if ($rowElement === null) {
 			throw new ElementNotFoundException(
 				__METHOD__ .
-				" xpath $this->restoreLinkXpath could not find restore link to '" .
-				$this->name . "'"
+				" xpath $this->restoreLinkXpath could not find restore link to '$this->name'"
 			);
 		}
 		$rowElement->click();

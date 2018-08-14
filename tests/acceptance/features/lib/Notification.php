@@ -102,8 +102,7 @@ class Notification extends OwncloudPage {
 		if ($button === null) {
 			throw new ElementNotFoundException(
 				__METHOD__ .
-				" xpath " . $buttonXpath .
-				" could not find button with the given text"
+				" xpath $buttonXpath could not find button with the given text"
 			);
 		}
 		$button->click();
