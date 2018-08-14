@@ -31,7 +31,7 @@ use Psr\Http\Message\ResponseInterface;
  * @package OC\Http
  */
 class Response implements IResponse {
-	/** @var GuzzleResponse */
+	/** @var ResponseInterface */
 	private $response;
 
 	/**
@@ -40,7 +40,7 @@ class Response implements IResponse {
 	private $stream;
 
 	/**
-	 * @param GuzzleResponse $response
+	 * @param ResponseInterface $response
 	 * @param bool $stream
 	 */
 	public function __construct(ResponseInterface $response, $stream = false) {
