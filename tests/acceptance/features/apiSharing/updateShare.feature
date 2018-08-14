@@ -260,12 +260,8 @@ Feature: sharing
 
 	Scenario Outline: Cannot set permissions to zero
 		Given using OCS API version "<ocs_api_version>"
-		And user "user1" has been created
-		And group "new-group" has been created
-		And user "user0" has been added to group "new-group"
-		And user "user1" has been added to group "new-group"
-		And user "user0" has been made a subadmin of group "new-group"
-		And user "user0" has shared folder "/FOLDER" with group "new-group"
+		And group "grp1" has been created 
+		And user "user0" has shared folder "/FOLDER" with group "grp1"
 		When user "user0" updates the last share using the sharing API with
 			| permissions | 0 |
 		Then the OCS status code should be "400"
