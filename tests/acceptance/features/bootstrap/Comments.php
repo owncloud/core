@@ -52,7 +52,7 @@ trait Comments {
 	public function userCommentsWithContentOnEntry($user, $content, $path) {
 		$fileId = $this->getFileIdForPath($user, $path);
 		$this->lastFileId = $fileId;
-		$commentsPath = '/comments/files/' . $fileId . '/';
+		$commentsPath = "/comments/files/$fileId/";
 		try {
 			$this->response = $this->makeDavRequest(
 				$user,
@@ -90,7 +90,7 @@ trait Comments {
 	 */
 	public function checkComments($user, $path, $expectedElements) {
 		$fileId = $this->getFileIdForPath($user, $path);
-		$commentsPath = '/comments/files/' . $fileId . '/';
+		$commentsPath = "/comments/files/$fileId/";
 		$properties = '<oc:limit>200</oc:limit><oc:offset>0</oc:offset>';
 		try {
 			$elementList = $this->reportElementComments(
@@ -134,7 +134,7 @@ trait Comments {
 	 */
 	public function checkNumberOfComments($user, $numberOfComments, $path) {
 		$fileId = $this->getFileIdForPath($user, $path);
-		$commentsPath = '/comments/files/' . $fileId . '/';
+		$commentsPath = "/comments/files/$fileId/";
 		$properties = '<oc:limit>200</oc:limit><oc:offset>0</oc:offset>';
 		try {
 			$elementList = $this->reportElementComments(
@@ -160,7 +160,7 @@ trait Comments {
 	 * @return void
 	 */
 	public function deleteComment($user, $fileId, $commentId) {
-		$commentsPath = '/comments/files/' . $fileId . '/' . $commentId;
+		$commentsPath = "/comments/files/$fileId/$commentId";
 		try {
 			$this->response = $this->makeDavRequest(
 				$user,
@@ -238,7 +238,7 @@ trait Comments {
 	 * @return void
 	 */
 	public function editAComment($user, $content, $fileId, $commentId) {
-		$commentsPath = '/comments/files/' . $fileId . '/' . $commentId;
+		$commentsPath = "/comments/files/$fileId/$commentId";
 		try {
 			$this->response = $this->makeDavRequest(
 				$user,

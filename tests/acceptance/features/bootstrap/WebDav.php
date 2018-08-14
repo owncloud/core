@@ -144,7 +144,7 @@ trait WebDav {
 		if ($this->usingOldDavPath === true) {
 			return $this->davPath;
 		} else {
-			return $this->davPath . '/files/' . $user;
+			return $this->davPath . "/files/$user";
 		}
 	}
 
@@ -391,7 +391,7 @@ trait WebDav {
 	 */
 	public function downloadPublicFileInsideAFolderWithRange($path, $range) {
 		$token = $this->lastShareData->data->token;
-		$fullUrl = $this->getBaseUrl() . "/public.php/webdav" . "$path";
+		$fullUrl = $this->getBaseUrl() . "/public.php/webdav$path";
 		$client = new GClient();
 		$options = [];
 		$options['auth'] = [$token, ""];
@@ -416,7 +416,7 @@ trait WebDav {
 		$path, $password, $range
 	) {
 		$token = $this->lastShareData->data->token;
-		$fullUrl = $this->getBaseUrl() . "/public.php/webdav" . "$path";
+		$fullUrl = $this->getBaseUrl() . "/public.php/webdav$path";
 		$client = new GClient();
 		$options = [];
 		$options['auth'] = [$token, $password];
@@ -468,7 +468,7 @@ trait WebDav {
 	 * @return void
 	 */
 	public function downloadedContentShouldBePlusEndOfLine($content) {
-		$this->downloadedContentShouldBe($content . "\n");
+		$this->downloadedContentShouldBe("$content\n");
 	}
 
 	/**
@@ -521,7 +521,7 @@ trait WebDav {
 	 * @return void
 	 */
 	public function contentOfFileForUserShouldBePlusEndOfLine($fileName, $user, $content) {
-		$this->contentOfFileForUserShouldBe($fileName, $user, $content . "\n");
+		$this->contentOfFileForUserShouldBe($fileName, $user, "$content\n");
 	}
 
 	/**
@@ -844,7 +844,7 @@ trait WebDav {
 
 		if ($expectedValue === "a_comment_url") {
 			$basePath = \ltrim($this->getBasePath() . "/", "/");
-			$expected = "#^/" . $basePath . "remote.php/dav/comments/files/([0-9]+)$#";
+			$expected = "#^/{$basePath}remote.php/dav/comments/files/([0-9]+)$#";
 			if (\preg_match($expected, $value)) {
 				return;
 			} else {
@@ -934,7 +934,7 @@ trait WebDav {
 
 		if ($foundTypes !== []) {
 			throw new \Exception(
-				'Found more share types then specified: ' . $foundTypes
+				"Found more share types than specified: $foundTypes"
 			);
 		}
 	}
@@ -1027,7 +1027,7 @@ trait WebDav {
 		$path, $user, $count
 	) {
 		$fileId = $this->getFileIdForPath($user, $path);
-		$elements = $this->listVersionFolder($user, '/meta/' . $fileId . '/v', 1);
+		$elements = $this->listVersionFolder($user, "/meta/$fileId/v", 1);
 		PHPUnit_Framework_Assert::assertEquals($count, \count($elements) - 1);
 	}
 
@@ -1043,7 +1043,7 @@ trait WebDav {
 	public function theVersionFolderOfFileIdShouldContainElements(
 		$fileId, $user, $count
 	) {
-		$elements = $this->listVersionFolder($user, '/meta/' . $fileId . '/v', 1);
+		$elements = $this->listVersionFolder($user, "/meta/$fileId/v", 1);
 		PHPUnit_Framework_Assert::assertEquals($count, \count($elements) - 1);
 	}
 
@@ -1062,7 +1062,7 @@ trait WebDav {
 	) {
 		$fileId = $this->getFileIdForPath($user, $path);
 		$elements = $this->listVersionFolder(
-			$user, '/meta/' . $fileId . '/v', 1, ['{DAV:}getcontentlength']
+			$user, "/meta/$fileId/v", 1, ['{DAV:}getcontentlength']
 		);
 		$elements = \array_values($elements);
 		PHPUnit_Framework_Assert::assertEquals(
@@ -1218,11 +1218,11 @@ trait WebDav {
 			$webdavPath = "/" . $this->getFullDavFilesPath($user) . $expectedElement;
 			if (!\array_key_exists($webdavPath, $elementList) && $expectedToBeListed) {
 				PHPUnit_Framework_Assert::fail(
-					"$webdavPath" . " is not in propfind answer but should"
+					"$webdavPath is not in propfind answer but should"
 				);
 			} elseif (\array_key_exists($webdavPath, $elementList) && !$expectedToBeListed) {
 				PHPUnit_Framework_Assert::fail(
-					"$webdavPath" . " is in propfind answer but should not be"
+					"$webdavPath is in propfind answer but should not be"
 				);
 			}
 		}
@@ -1388,7 +1388,7 @@ trait WebDav {
 			// regular upload
 			try {
 				if (!$overwriteMode) {
-					$suffix = '-' . $dav . 'dav-regular';
+					$suffix = "-{$dav}dav-regular";
 				}
 				$this->userUploadsAFileTo(
 					$user, $source, $destination . $suffix
@@ -1401,7 +1401,7 @@ trait WebDav {
 			// old chunking upload
 			if ($dav === 'old') {
 				if (!$overwriteMode) {
-					$suffix = '-' . $dav . 'dav-oldchunking';
+					$suffix = "-{$dav}dav-oldchunking";
 				}
 				try {
 					$this->userUploadsAFileToWithChunks(
@@ -1414,7 +1414,7 @@ trait WebDav {
 			}
 			if ($dav === 'new') {
 				if (!$overwriteMode) {
-					$suffix = '-' . $dav . 'dav-newchunking';
+					$suffix = "-{$dav}dav-newchunking";
 				}
 				try {
 					$this->userUploadsAFileToWithChunks(
@@ -1462,9 +1462,9 @@ trait WebDav {
 		$user, $destination
 	) {
 		foreach (['old', 'new'] as $davVersion) {
-			foreach ([$davVersion . 'dav-regular', $davVersion . 'dav-' . $davVersion . 'chunking'] as $suffix) {
+			foreach (["{$davVersion}dav-regular", "{$davVersion}dav-{$davVersion}chunking"] as $suffix) {
 				$this->asTheFileOrFolderShouldExist(
-					$user, 'file', $destination . '-' . $suffix
+					$user, 'file', "$destination-$suffix"
 				);
 			}
 		}
@@ -1714,7 +1714,7 @@ trait WebDav {
 		try {
 			$num -= 1;
 			$data = \GuzzleHttp\Stream\Stream::factory($data);
-			$file = $destination . '-chunking-42-' . $total . '-' . $num;
+			$file = "$destination-chunking-42-$total-$num";
 			$this->makeDavRequest(
 				$user, 'PUT', $file, ['OC-Chunked' => '1'], $data, "uploads"
 			);
@@ -1780,7 +1780,7 @@ trait WebDav {
 	 */
 	public function userCreatesANewChunkingUploadWithId($user, $id) {
 		try {
-			$destination = '/uploads/' . $user . '/' . $id;
+			$destination = "/uploads/$user/$id";
 			$this->makeDavRequest(
 				$user, 'MKCOL', $destination, [], null, "uploads"
 			);
@@ -1803,7 +1803,7 @@ trait WebDav {
 	public function userUploadsNewChunkFileOfWithToId($user, $num, $data, $id) {
 		try {
 			$data = \GuzzleHttp\Stream\Stream::factory($data);
-			$destination = '/uploads/' . $user . '/' . $id . '/' . $num;
+			$destination = "/uploads/$user/$id/$num";
 			$this->makeDavRequest(
 				$user, 'PUT', $destination, [], $data, "uploads"
 			);
@@ -1892,7 +1892,7 @@ trait WebDav {
 	 * @return void
 	 */
 	private function moveNewDavChunkToFinalFile($user, $id, $dest, $headers) {
-		$source = '/uploads/' . $user . '/' . $id . '/.file';
+		$source = "/uploads/$user/$id/.file";
 		$destination = $this->getBaseUrl() . '/' . $this->getDavFilesPath($user) . $dest;
 
 		$headers['Destination'] = $destination;
@@ -1916,7 +1916,7 @@ trait WebDav {
 	 * @return void
 	 */
 	private function deleteUpload($user, $id, $headers) {
-		$source = '/uploads/' . $user . '/' . $id;
+		$source = "/uploads/$user/$id";
 
 		try {
 			$this->response = $this->makeDavRequest(
@@ -2085,7 +2085,7 @@ trait WebDav {
 			if (\count($headerValues) > 1
 				&& \count(\array_unique($headerValues)) < \count($headerValues)
 			) {
-				throw new \Exception('Duplicate header found: ' . $headerName);
+				throw new \Exception("Duplicate header found: $headerName");
 			}
 		}
 	}
@@ -2132,7 +2132,7 @@ trait WebDav {
 				$webdavPath = "/" . $this->getFullDavFilesPath($user) . $expectedElement;
 				if (!\array_key_exists($webdavPath, $elementList)) {
 					PHPUnit_Framework_Assert::fail(
-						"$webdavPath" . " is not in report answer"
+						"$webdavPath is not in report answer"
 					);
 				}
 			}
@@ -2223,7 +2223,7 @@ trait WebDav {
 		$fileId = $this->getFileIdForPath($user, $path);
 		$client = $this->getSabreClient($user);
 		$versions = \array_keys(
-			$this->listVersionFolder($user, '/meta/' . $fileId . '/v', 1)
+			$this->listVersionFolder($user, "/meta/$fileId/v", 1)
 		);
 		$client->request(
 			'COPY',

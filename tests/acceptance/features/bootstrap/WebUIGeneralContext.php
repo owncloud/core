@@ -283,7 +283,7 @@ class WebUIGeneralContext extends RawMinkContext implements Context {
 			if ($matching === "matching") {
 				if (!\preg_match($expectedNotificationText, $actualNotificationText)) {
 					throw new Exception(
-						$actualNotificationText . " does not match " . $expectedNotificationText
+						"$actualNotificationText does not match $expectedNotificationText"
 					);
 				}
 			} else {

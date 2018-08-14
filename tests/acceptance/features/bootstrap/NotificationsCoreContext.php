@@ -189,8 +189,9 @@ class NotificationsCoreContext implements Context {
 		}
 
 		$this->featureContext->userSendsToOcsApiEndpoint(
-			$user, 'GET', '/apps/notifications/api/v1/notifications/' .
-			$notificationId . '?format=json'
+			$user,
+			'GET',
+			"/apps/notifications/api/v1/notifications/$notificationId?format=json"
 		);
 		PHPUnit_Framework_Assert::assertEquals(
 			200, $this->featureContext->getResponse()->getStatusCode()
