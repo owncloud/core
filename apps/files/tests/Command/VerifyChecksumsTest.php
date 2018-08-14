@@ -135,10 +135,10 @@ class VerifyChecksumsTest extends TestCase {
 
 	private function assertChecksumsAreCorrect(array $files) {
 		foreach ($files as $key => $file) {
-			/** @var File $f */
-			$f = $files[$key]['file'];
 			$expectedChecksums = $files[$key]['expectedChecksums'];
 			$this->refreshFileInfo($files[$key]['file']);
+			/** @var File $f */
+			$f = $files[$key]['file'];
 			$this->assertSame(
 				$expectedChecksums(),
 				$f->getChecksum()
