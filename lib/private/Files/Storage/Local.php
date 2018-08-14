@@ -267,6 +267,10 @@ class Local extends Common {
 		}
 
 		if ($this->is_dir($path1)) {
+			if ($this->is_file($path2)) {
+				// existing file must be deleted to replace it with a folder
+				$this->unlink($path2);
+			}
 			// we can't move folders across devices, use copy instead
 			$stat1 = \stat(\dirname($this->getSourcePath($path1)));
 			$stat2 = \stat(\dirname($this->getSourcePath($path2)));
