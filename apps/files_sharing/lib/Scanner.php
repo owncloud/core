@@ -65,10 +65,31 @@ class Scanner extends \OC\Files\Cache\Scanner {
 		}
 	}
 
+	/**
+	 * scan a folder and all it's children,  use source scanner if needed
+	 *
+	 * @inheritdoc
+	 */
+	public function scan($path, $recursive = self::SCAN_RECURSIVE, $reuse = -1, $lock = true) {
+		$sourceScanner = $this->getSourceScanner();
+		if ($sourceScanner instanceof NoopScanner) {
+			list(, $internalPath) = $this->storage->resolvePath($path);
+			return $sourceScanner->scan($internalPath, $recursive, $reuse, $lock);
+		} else {
+			return parent::scan($path, $recursive, $reuse, $lock);
+		}
+	}
+
+	/**
+	 * scan a single file and use source scanner if needed
+	 *
+	 * @inheritdoc
+	 */
 	public function scanFile($file, $reuseExisting = 0, $parentId = -1, $cacheData = null, $lock = true) {
 		$sourceScanner = $this->getSourceScanner();
 		if ($sourceScanner instanceof NoopScanner) {
-			return [];
+			list(, $internalPath) = $this->storage->resolvePath($file);
+			return parent::scan($internalPath, $reuseExisting, $parentId, $cacheData, $lock);
 		} else {
 			return parent::scanFile($file, $reuseExisting, $parentId, $cacheData, $lock);
 		}
