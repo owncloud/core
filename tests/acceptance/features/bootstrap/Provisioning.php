@@ -922,7 +922,8 @@ trait Provisioning {
 		$this->groupShouldExist($group);
 	}
 
-	/** @Given /^group "([^"]*)" has been created$/
+	/**
+	 * @Given /^group "([^"]*)" has been created$/
 	 *
 	 * @param string $group
 	 *
