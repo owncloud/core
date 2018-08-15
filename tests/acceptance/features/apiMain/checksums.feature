@@ -155,7 +155,7 @@ Feature: checksums
 			| old           |
 			| new           |
 
-  @local_storage
+  @local_storage @skipOnEncryptionType:user-keys @encryption-issue-42
   Scenario Outline: Uploaded file to external storage should have the same checksum when downloaded
     Given using <dav_version> DAV path
     And file "/local_storage/chksumtst.txt" has been deleted for user "user0"
