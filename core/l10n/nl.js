@@ -264,7 +264,6 @@ OC.L10N.register(
     "You can click here to return to %s." : "Klik hier om terug te keren naar %s.",
     "Hey there,\n\njust letting you know that %s shared %s with you.\nView it: %s\n\n" : "Hallo,\n\n%s deelt %s met u.\nBekijk hier: %s\n\n",
     "The share will expire on %s." : "De share vervalt op %s.",
-    "Personal note from the sender: %s." : "Persoonlijk bericht van de afzender: %s.",
     "Cheers!" : "Proficiat!",
     "Internal Server Error" : "Interne serverfout",
     "The server encountered an internal error and was unable to complete your request." : "De server ontdekte een interne fout en kon uw aanvraag niet verder uitvoeren.",

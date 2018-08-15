@@ -266,7 +266,6 @@ OC.L10N.register(
     "You can click here to return to %s." : "Можете да кликнете овде за да се вратите на %s.",
     "Hey there,\n\njust letting you know that %s shared %s with you.\nView it: %s\n\n" : "Здраво,\n\nВе известуваме дека %s ви испрати линк од %s.\nПревземи: %s\n\n",
     "The share will expire on %s." : "Овој линк е достапен до %s.",
-    "Personal note from the sender: %s." : "Лична белешка од испраќачот: %s.",
     "Cheers!" : "Поздрав!",
     "Internal Server Error" : "Интерна серверска грешка",
     "The server encountered an internal error and was unable to complete your request." : "Серверот наиде на внатрешна грешка и не може да го заврши вашето барање.",

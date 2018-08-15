@@ -260,7 +260,6 @@ OC.L10N.register(
     "You can click here to return to %s." : "Możesz kliknąć tutaj aby powrócić do %s.",
     "Hey there,\n\njust letting you know that %s shared %s with you.\nView it: %s\n\n" : "Witaj,\n\ntylko informuję, że %s współdzieli z Tobą %s.\nZobacz tutaj: %s\n\n",
     "The share will expire on %s." : "Ten zasób wygaśnie %s",
-    "Personal note from the sender: %s." : "Własna informacja od nadawcy: %s.",
     "Cheers!" : "Pozdrawiam!",
     "Internal Server Error" : "Błąd wewnętrzny serwera",
     "The server encountered an internal error and was unable to complete your request." : "Serwer napotkał błąd wewnętrzny i nie był w stanie ukończyć Twojego żądania.",

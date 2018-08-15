@@ -266,7 +266,6 @@ OC.L10N.register(
     "You can click here to return to %s." : "Вы можете нажать здесь, чтобы вернуться в %s.",
     "Hey there,\n\njust letting you know that %s shared %s with you.\nView it: %s\n\n" : "Здравствуйте,\n\n%s поделился %s с вами.\nПосмотреть: %s\n",
     "The share will expire on %s." : "Доступ будет закрыт %s",
-    "Personal note from the sender: %s." : "Личное замечание от отправителя: %s.",
     "Cheers!" : "Всего наилучшего!",
     "Internal Server Error" : "Внутренняя ошибка сервера",
     "The server encountered an internal error and was unable to complete your request." : "Запрос не выполнен, на сервере произошла ошибка.",

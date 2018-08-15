@@ -264,7 +264,6 @@
     "You can click here to return to %s." : "Puede hacer clic aquí para volver a %s.",
     "Hey there,\n\njust letting you know that %s shared %s with you.\nView it: %s\n\n" : "Hola:\n\nTan solo queremos informarte que %s compartió %s contigo.\nMíralo aquí: %s\n\n",
     "The share will expire on %s." : "El objeto dejará de ser compartido el %s.",
-    "Personal note from the sender: %s." : "Nota personal del origen: %s.",
     "Cheers!" : "¡Saludos!",
     "Internal Server Error" : "Error interno del servidor",
     "The server encountered an internal error and was unable to complete your request." : "El servidor ha encontrado un error y no puede completar la solicitud.",
