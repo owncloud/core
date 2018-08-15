@@ -307,7 +307,7 @@ Feature: webdav-related
 		When the administrator sets the quota of user "user0" to "10 MB" using the provisioning API
 		And user "user0" gets the following properties of folder "/" using the WebDAV API
 		  |{DAV:}quota-available-bytes|
-		Then the single response should contain a property "{DAV:}quota-available-bytes" with value "10485358"
+		Then the single response should contain a property "{DAV:}quota-available-bytes" with value "10485429"
 		Examples:
 			| dav_version   |
 			| old           |
@@ -327,7 +327,7 @@ Feature: webdav-related
 			| shareWith   | user0     |
 		When user "user0" gets the following properties of folder "/testquota" using the WebDAV API
 		  |{DAV:}quota-available-bytes|
-		Then the single response should contain a property "{DAV:}quota-available-bytes" with value "10485358"
+		Then the single response should contain a property "{DAV:}quota-available-bytes" with value "10485429"
 		Examples:
 			| dav_version   |
 			| old           |
@@ -340,7 +340,7 @@ Feature: webdav-related
 		And user "user0" has added file "/prueba.txt" of 93 bytes
 		When user "user0" gets the following properties of folder "/" using the WebDAV API
 		  |{DAV:}quota-available-bytes|
-		Then the single response should contain a property "{DAV:}quota-available-bytes" with value "529"
+		Then the single response should contain a property "{DAV:}quota-available-bytes" with value "600"
 		Examples:
 			| dav_version   |
 			| old           |
@@ -355,7 +355,7 @@ Feature: webdav-related
 		And user "user0" has shared file "user0.txt" with user "user1"
 		When user "user1" gets the following properties of folder "/" using the WebDAV API
 		  |{DAV:}quota-available-bytes|
-		Then the single response should contain a property "{DAV:}quota-available-bytes" with value "622"
+		Then the single response should contain a property "{DAV:}quota-available-bytes" with value "693"
 		Examples:
 			| dav_version   |
 			| old           |
