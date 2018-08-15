@@ -44,22 +44,22 @@ class NotificationsAppDialog extends OwncloudPage {
 			$title = $notification->find("xpath", $this->notificationTitleXpath);
 			if ($title === null) {
 				throw new ElementNotFoundException(
-					__METHOD__ . " could not find notification title " .
-					"with xpath " . $this->notificationTitleXpath
+					__METHOD__ .
+					" could not find notification title with xpath $this->notificationTitleXpath"
 				);
 			}
 			$link = $notification->find("xpath", $this->notificationLinkXpath);
 			if ($link === null) {
 				throw new ElementNotFoundException(
-					__METHOD__ . " could not find notification link " .
-					"with xpath " . $this->notificationLinkXpath
+					__METHOD__ .
+					" could not find notification link with xpath $this->notificationLinkXpath"
 				);
 			}
 			$message = $notification->find("xpath", $this->notificationMessageXpath);
 			if ($message === null) {
 				throw new ElementNotFoundException(
-					__METHOD__ . " could not find notification message " .
-					"with xpath " . $this->notificationMessageXpath
+					__METHOD__ .
+					" could not find notification message with xpath $this->notificationMessageXpath"
 				);
 			}
 			$notificationsArray[] = [

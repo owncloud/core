@@ -41,8 +41,8 @@ class NotificationsEnabledOwncloudPage extends OwncloudPage {
 		$button = $this->waitTillElementIsNotNull($this->notificationsButtonXpath);
 		if ($button === null) {
 			throw new ElementNotFoundException(
-				__METHOD__ . " could not find notifications button " .
-				"with xpath " . $this->notificationsButtonXpath
+				__METHOD__ .
+				" could not find notifications button with xpath $this->notificationsButtonXpath"
 			);
 		}
 		return $button;
