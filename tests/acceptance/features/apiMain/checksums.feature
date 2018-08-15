@@ -107,6 +107,23 @@ Feature: checksums
     And user "user0" downloads the file "/myChecksumFileCopy.txt" using the WebDAV API
     Then the header checksum should match "SHA1:3ee962b839762adb0ad8ba6023a4690be478de6f"
 
+  Scenario: Sharing a file with checksum should return the checksum in the propfind using new DAV path
+    Given using new DAV path
+    And user "user1" has been created
+    And user "user0" has uploaded file "data/textfile.txt" to "/myChecksumFile.txt" with checksum "MD5:d70b40f177b14b470d1756a3c12b963a"
+    When user "user0" shares file "/myChecksumFile.txt" with user "user1" using the sharing API
+    And user "user1" requests the checksum of "/myChecksumFile.txt" via propfind
+    Then the webdav checksum should match "SHA1:3ee962b839762adb0ad8ba6023a4690be478de6f MD5:d70b40f177b14b470d1756a3c12b963a ADLER32:8ae90960"
+
+  Scenario: Sharing and modifying a file should return correct checksum in the propfind using new DAV path
+    Given using new DAV path
+    And user "user1" has been created
+    And user "user0" has uploaded file "data/textfile.txt" to "/myChecksumFile.txt" with checksum "MD5:d70b40f177b14b470d1756a3c12b963a"
+    When user "user0" shares file "/myChecksumFile.txt" with user "user1" using the sharing API
+    And user "user1" uploads file with checksum "SHA1:ce5582148c6f0c1282335b87df5ed4be4b781399" and content "Some Text" to "/myChecksumFile.txt" using the WebDAV API
+    And user "user0" requests the checksum of "/myChecksumFile.txt" via propfind
+    Then the webdav checksum should match "SHA1:ce5582148c6f0c1282335b87df5ed4be4b781399 MD5:56e57920c3c8c727bfe7a5288cdf61c4 ADLER32:1048035a"
+
   Scenario: Upload new dav chunked file where checksum matches
     Given using new DAV path
     When user "user0" creates a new chunking upload with id "chunking-42" using the WebDAV API
