@@ -72,7 +72,7 @@ class FileActionsMenu extends OwncloudPage {
 		if ($renameBtn === null) {
 			throw new ElementNotFoundException(
 				__METHOD__ .
-				" could not find action button with label " . $this->renameActionLabel
+				" could not find action button with label $this->renameActionLabel"
 			);
 		}
 		$renameBtn->click();
@@ -91,7 +91,7 @@ class FileActionsMenu extends OwncloudPage {
 		if ($deleteBtn === null) {
 			throw new ElementNotFoundException(
 				__METHOD__ .
-				" could not find action button with label " . $this->deleteActionLabel
+				" could not find action button with label $this->deleteActionLabel"
 			);
 		}
 		$deleteBtn->focus();
@@ -108,8 +108,7 @@ class FileActionsMenu extends OwncloudPage {
 		if ($declineBtn === null) {
 			throw new ElementNotFoundException(
 				__METHOD__ .
-				" could not find action button with label " .
-				$this->declineShareDataAction
+				" could not find action button with label $this->declineShareDataAction"
 			);
 		}
 		$declineBtn->focus();

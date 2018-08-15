@@ -56,8 +56,7 @@ class LoginPage extends OwncloudPage {
 		if ($submitElement === null) {
 			throw new ElementNotFoundException(
 				__METHOD__ .
-				" id $this->submitLoginId " .
-				"could not find login submit button"
+				" id $this->submitLoginId could not find login submit button"
 			);
 		}
 
@@ -112,8 +111,7 @@ class LoginPage extends OwncloudPage {
 		if ($lostPasswordField === null) {
 			throw new ElementNotFoundException(
 				__METHOD__ .
-				" id $this->lostPasswordId " .
-				"could not find reset password field "
+				" id $this->lostPasswordId could not find reset password field "
 			);
 		}
 		return $lostPasswordField;

@@ -239,8 +239,7 @@ class FileRow extends OwncloudPage {
 		if ($element === null) {
 			throw new ElementNotFoundException(
 				__METHOD__ .
-				" xpath $this->fileTooltipXpath could not find tooltip element of file " .
-				$this->name
+				" xpath $this->fileTooltipXpath could not find tooltip element of file '$this->name'"
 			);
 		}
 		return $element;
@@ -266,8 +265,7 @@ class FileRow extends OwncloudPage {
 		if ($thumbnail === null) {
 			throw new ElementNotFoundException(
 				__METHOD__ .
-				" xpath $this->thumbnailXpath could not find thumbnail of file " .
-				$this->name
+				" xpath $this->thumbnailXpath could not find thumbnail of file '$this->name'"
 			);
 		}
 		return $thumbnail;
@@ -294,8 +292,7 @@ class FileRow extends OwncloudPage {
 		if ($linkElement === null) {
 			throw new ElementNotFoundException(
 				__METHOD__ .
-				" xpath $this->fileLinkXpath could not find link to " .
-				$this->name
+				" xpath $this->fileLinkXpath could not find link to '$this->name'"
 			);
 		}
 		return $linkElement;
@@ -420,8 +417,7 @@ class FileRow extends OwncloudPage {
 		if ($element === null) {
 			throw new ElementNotFoundException(
 				__METHOD__ .
-				" accept share button with xpath" .
-				" $this->acceptShareBtnXpath not found"
+				" accept share button with xpath $this->acceptShareBtnXpath not found"
 			);
 		}
 		$element->click();
@@ -444,8 +440,7 @@ class FileRow extends OwncloudPage {
 		if ($element === null) {
 			throw new ElementNotFoundException(
 				__METHOD__ .
-				" decline share button with xpath" .
-				" $this->declinePendingShareBtnXpath not found"
+				" decline share button with xpath $this->declinePendingShareBtnXpath not found"
 			);
 		}
 		$element->click();
