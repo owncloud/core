@@ -57,7 +57,7 @@ class CapabilitiesContext implements Context {
 					$row['capability'],
 					$row['path_to_element']
 				),
-				"Failed field " . $row['capability'] . " " . $row['path_to_element']
+				"Failed field {$row['capability']} {$row['path_to_element']}"
 			);
 		}
 	}
@@ -79,7 +79,7 @@ class CapabilitiesContext implements Context {
 					$row['capability'],
 					$row['path_to_element']
 				),
-				"Capability " . $row['capability'] . " " . $row['path_to_element'] . " exists but it should not exist"
+				"Capability {$row['capability']} {$row['path_to_element']} exists but it should not exist"
 			);
 		}
 	}

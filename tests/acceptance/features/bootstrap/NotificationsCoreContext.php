@@ -210,7 +210,7 @@ class NotificationsCoreContext implements Context {
 				);
 				PHPUnit_Framework_Assert::assertNotFalse(
 					(bool)\preg_match($value, $response['ocs']['data'][$key]),
-					"'$value' does not match '" . $response['ocs']['data'][$key] . "'"
+					"'$value' does not match '{$response['ocs']['data'][$key]}'"
 				);
 			} else {
 				$value = $this->featureContext->substituteInLineCodes($value);

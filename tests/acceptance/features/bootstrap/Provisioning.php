@@ -648,8 +648,7 @@ trait Provisioning {
 				);
 				if ($result["code"] != 0) {
 					throw new Exception(
-						"could not create user. "
-						. $result["stdOut"] . " " . $result["stdErr"]
+						"could not create user. {$result['stdOut']} {$result['stdErr']}"
 					);
 				}
 				break;
@@ -695,9 +694,9 @@ trait Provisioning {
 		} catch (BadResponseException $e) {
 			$this->response = $e->getResponse();
 			\error_log(
-				"INFORMATION: There was an unexpected problem trying to delete group '" .
-				$group . "' status code " . $this->response->getStatusCode() .
-				" message `" . $e->getMessage() . "'"
+				"INFORMATION: There was an unexpected problem trying to delete group " .
+				"'$group' status code " . $this->response->getStatusCode() .
+				" message '" . $e->getMessage() . "'"
 			);
 		}
 
@@ -853,8 +852,7 @@ trait Provisioning {
 				$result = SetupHelper::addUserToGroup($group, $user);
 				if ($result["code"] != 0) {
 					throw new Exception(
-						"could not add user to group. "
-						. $result["stdOut"] . " " . $result["stdErr"]
+						"could not add user to group. {$result['stdOut']} {$result['stdErr']}"
 					);
 				}
 				break;
@@ -1012,8 +1010,7 @@ trait Provisioning {
 					$groupCanBeDeleted = true;
 				} else {
 					throw new Exception(
-						"could not create group. "
-						. $result["stdOut"] . " " . $result["stdErr"]
+						"could not create group. {$result['stdOut']} {$result['stdErr']}"
 					);
 				}
 				break;
@@ -1118,7 +1115,7 @@ trait Provisioning {
 			&& ($this->response->getStatusCode() !== 200)
 		) {
 			\error_log(
-				"INFORMATION: could not delete group. '$group'"
+				"INFORMATION: could not delete group '$group'"
 				. $this->response->getStatusCode() . " " . $this->response->getBody()
 			);
 		}
@@ -1166,7 +1163,7 @@ trait Provisioning {
 		
 		if ($this->response->getStatusCode() !== 200) {
 			\error_log(
-				"INFORMATION: could not remove user '$user' from group. '$group'"
+				"INFORMATION: could not remove user '$user' from group '$group'"
 				. $this->response->getStatusCode() . " " . $this->response->getBody()
 			);
 		}

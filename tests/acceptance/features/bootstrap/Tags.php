@@ -253,9 +253,7 @@ trait Tags {
 		PHPUnit_Framework_Assert::assertEquals(
 			$tagData['{http://owncloud.org/ns}groups'],
 			$groups,
-			'Tag has groups "'
-			. $tagData['{http://owncloud.org/ns}groups']
-			. '" instead of the expected "' . $groups . '"'
+			"Tag has groups '{$tagData['{http://owncloud.org/ns}groups']}' instead of the expected '$groups'"
 		);
 	}
 

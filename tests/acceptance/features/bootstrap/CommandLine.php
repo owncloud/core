@@ -161,8 +161,7 @@ trait CommandLine {
 	public function theCommandShouldHaveBeenSuccessful() {
 		$exceptions = $this->findExceptions();
 		if ($this->lastCode !== 0) {
-			$msg = 'The command was not successful, exit code was '
-				. $this->lastCode . '.';
+			$msg = "The command was not successful, exit code was $this->lastCode.";
 			if (!empty($exceptions)) {
 				$msg .= ' Exceptions: ' . \implode(', ', $exceptions);
 			}
@@ -207,8 +206,7 @@ trait CommandLine {
 
 		if (!\in_array($exceptionText, $exceptions)) {
 			throw new \Exception(
-				'The command did not throw any exception with the text "'
-				. $exceptionText . '"'
+				"The command did not throw any exception with the text '$exceptionText'"
 			);
 		}
 	}
@@ -225,8 +223,7 @@ trait CommandLine {
 		$lines = $this->findLines($this->lastStdOut, $text);
 		if (empty($lines)) {
 			throw new \Exception(
-				'The command did not output the expected text on stdout "'
-				. $text . '"'
+				"The command did not output the expected text on stdout '$text'"
 			);
 		}
 	}
@@ -243,8 +240,7 @@ trait CommandLine {
 		$lines = $this->findLines($this->lastStdErr, $text);
 		if (empty($lines)) {
 			throw new \Exception(
-				'The command did not output the expected text on stderr "'
-				. $text . '"'
+				"The command did not output the expected text on stderr '$text'"
 			);
 		}
 	}
