@@ -348,8 +348,8 @@ class WebUIGeneralContext extends RawMinkContext implements Context {
 				PHPUnit_Framework_Assert::assertArrayHasKey(
 					"found",
 					$expectedDialog,
-					"could not find dialog with title '" . $expectedDialog['title'] .
-					"' and content '" . $expectedDialog['content'] . "'"
+					"could not find dialog with title '{$expectedDialog['title']}' "
+					. "and content '{$expectedDialog['content']}'"
 				);
 			}
 		}
@@ -535,9 +535,9 @@ class WebUIGeneralContext extends RawMinkContext implements Context {
 			if ((int)$result['code'] !== 0) {
 				throw new Exception(
 					"could not sync users with LDAP. stdOut:\n" .
-					$result['stdOut'] . "\n" .
+					"{$result['stdOut']}\n" .
 					"stdErr:\n" .
-					$result['stdErr'] . "\n"
+					"{$result['stdErr']}\n"
 				);
 			}
 		}

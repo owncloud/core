@@ -1445,13 +1445,13 @@ class WebUIFilesContext extends RawMinkContext implements Context {
 		// The capturing group of the regex always includes the quotes at each
 		// end of the captured string, so trim them.
 		$fileName = \trim($fileName, $fileName[0]);
-		$remoteFile = $this->currentFolder . "/$fileName";
+		$remoteFile = "$this->currentFolder/$fileName";
 		if ($this->currentFolder !== "") {
-			$subFolderPath = $this->currentFolder . "/";
+			$subFolderPath = "$this->currentFolder/";
 		} else {
 			$subFolderPath = "";
 		}
-		$localFile = \getenv("SRC_SKELETON_DIR") . "/" . $subFolderPath . $fileName;
+		$localFile = \getenv("SRC_SKELETON_DIR") . "/$subFolderPath$fileName";
 		$this->assertContentOfRemoteAndLocalFileIsSame(
 			$remoteFile, $localFile, true, $checkOnRemoteServer
 		);

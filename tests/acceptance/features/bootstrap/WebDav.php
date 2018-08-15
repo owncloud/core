@@ -144,7 +144,7 @@ trait WebDav {
 		if ($this->usingOldDavPath === true) {
 			return $this->davPath;
 		} else {
-			return $this->davPath . "/files/$user";
+			return "$this->davPath/files/$user";
 		}
 	}
 
@@ -740,7 +740,7 @@ trait WebDav {
 		);
 		if ($response['statusCode'] !== 404) {
 			throw new \Exception(
-				$entry . ' "' . $path . '" expected to not exist (status code ' . $response['statusCode'] . ', expected 404)'
+				"$entry '$path' expected to not exist (status code {$response['statusCode']}, expected 404)"
 			);
 		}
 
@@ -763,7 +763,7 @@ trait WebDav {
 			$this->thePropertiesResponseShouldContainAnEtag();
 		} catch (\Exception $e) {
 			throw new \Exception(
-				$entry . ' "' . $path . '" expected to exist but not found'
+				"$entry '$path' expected to exist but not found"
 			);
 		}
 	}
@@ -903,7 +903,7 @@ trait WebDav {
 		foreach ($data as $item) {
 			if ($item['name'] !== '{http://owncloud.org/ns}share-type') {
 				throw new \Exception(
-					'Invalid property found: "' . $item['name'] . '"'
+					"Invalid property found: '{$item['name']}'"
 				);
 			}
 
@@ -913,7 +913,7 @@ trait WebDav {
 		foreach ($table->getRows() as $row) {
 			$key = \array_search($row[0], $foundTypes);
 			if ($key === false) {
-				throw new \Exception('Expected type ' . $row[0] . ' not found');
+				throw new \Exception("Expected type {$row[0]} not found");
 			}
 
 			unset($foundTypes[$key]);

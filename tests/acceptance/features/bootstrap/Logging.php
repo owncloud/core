@@ -60,7 +60,7 @@ trait Logging {
 		foreach ($expectedLogEntries as $expectedLogEntry) {
 			$logEntry = \json_decode($logLines[$lineNo], true);
 			if ($logEntry === null) {
-				throw new \Exception("the logline :\n" . $logLines[$lineNo] . " is not valid JSON");
+				throw new \Exception("the logline :\n{$logLines[$lineNo]} is not valid JSON");
 			}
 			foreach (\array_keys($expectedLogEntry) as $attribute) {
 				$expectedLogEntry[$attribute]
@@ -69,11 +69,10 @@ trait Logging {
 					);
 				PHPUnit_Framework_Assert::assertArrayHasKey(
 					$attribute, $logEntry,
-					"could not find attribute: '$attribute' in log entry: '"
-					. $logLines[$lineNo] . "'"
+					"could not find attribute: '$attribute' in log entry: '{$logLines[$lineNo]}'"
 				);
 				if ($expectedLogEntry[$attribute] !== "") {
-					$message = "log entry:\n" . $logLines[$lineNo] . "\n";
+					$message = "log entry:\n{$logLines[$lineNo]}\n";
 					if ($withOrContaining === 'with') {
 						PHPUnit_Framework_Assert::assertEquals(
 							$expectedLogEntry[$attribute], $logEntry[$attribute],

@@ -1199,7 +1199,7 @@ trait Sharing {
 				}
 				PHPUnit_Framework_Assert::assertTrue(
 					$nameFound,
-					"Shared link name " . $expectedElementsArray[2] . " not found"
+					"Shared link name {$expectedElementsArray[2]} not found"
 				);
 			}
 		}
