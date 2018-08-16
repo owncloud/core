@@ -473,6 +473,7 @@ Feature: webdav-related
 			| old           |
 			| new           |
 
+	@skipOnLDAP @user_ldap-issue-268
 	Scenario Outline: A file that is shared by user,group and link has a share-types property
 		Given using <dav_version> DAV path
 		And user "user0" has been created
