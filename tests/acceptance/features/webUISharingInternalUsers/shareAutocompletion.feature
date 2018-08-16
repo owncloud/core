@@ -24,7 +24,7 @@ So that I can efficiently share my files with other users or groups
 			| other         |
 		And the user has browsed to the login page
 
-	@skipOnLDAP @user_ldap#175
+	@skipOnLDAP @user_ldap-issue-175
 	Scenario: autocompletion of regular existing users
 		Given the user has logged in with username "regularuser" and password "1234" using the webUI
 		And the user has browsed to the files page
@@ -103,7 +103,7 @@ So that I can efficiently share my files with other users or groups
 		Then all users and groups that contain the string "use" in their name should be listed in the autocomplete list on the webUI
 		And the users own name should not be listed in the autocomplete list on the webUI
 
-	@skipOnLDAP @user_ldap#175
+	@skipOnLDAP @user_ldap-issue-175
 	Scenario: autocompletion of a pattern that matches regular existing users but also a user with whom the item is already shared (folder)
 		Given the user has logged in with username "regularuser" and password "1234" using the webUI
 		And the user has browsed to the files page
@@ -113,7 +113,7 @@ So that I can efficiently share my files with other users or groups
 		Then all users and groups that contain the string "user" in their name should be listed in the autocomplete list on the webUI except user "User One"
 		And the users own name should not be listed in the autocomplete list on the webUI
 
-	@skipOnLDAP @user_ldap#175
+	@skipOnLDAP @user_ldap-issue-175
 	Scenario: autocompletion of a pattern that matches regular existing users but also a user with whom the item is already shared (file)
 		Given the user has logged in with username "regularuser" and password "1234" using the webUI
 		And the user has browsed to the files page
