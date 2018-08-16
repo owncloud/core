@@ -1,14 +1,11 @@
 @api
 Feature: recreate-master-key
 
-	@masterkey_encryption
 	Scenario: recreate masterkey
-		Given user "admin" has been created
-		And user "admin" has uploaded file "data/textfile.txt" to "/somefile.txt"
+		Given user "admin" has uploaded file "data/textfile.txt" to "/somefile.txt"
 		When the administrator successfully recreates the encryption masterkey using the occ command
 		Then the downloaded content when downloading file "/somefile.txt" for user "admin" with range "bytes=0-6" should be "This is"
 
-	@masterkey_encryption
 	Scenario: recreate masterkey and upload data
 		Given user "user0" has been created
 		And user "user0" has uploaded file "data/textfile.txt" to "/somefile.txt"

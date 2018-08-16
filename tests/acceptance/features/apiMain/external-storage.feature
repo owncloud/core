@@ -4,9 +4,7 @@ Feature: external-storage
     Given using OCS API version "1"
     And using old DAV path
 
-  # TODO: change to @no_default_encryption once all this works with master key
   @local_storage
-  @no_encryption
   Scenario: Share by link a file inside a local external storage
     Given user "user0" has been created
     And user "user1" has been created
@@ -25,7 +23,6 @@ Feature: external-storage
       | mimetype | httpd/unix-directory |
 
   @local_storage
-  @no_encryption
   Scenario: Move a file into storage
     Given user "user0" has been created
     And user "user1" has been created
@@ -35,7 +32,6 @@ Feature: external-storage
     And as "user0" the file "/local_storage/foo1/textfile0.txt" should exist
 
   @local_storage
-  @no_encryption
   Scenario: Move a file out of storage
     Given user "user0" has been created
     And user "user1" has been created

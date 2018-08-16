@@ -16,6 +16,12 @@ default:
         - CalDavContext:
         - AppManagementContext:
 
+    apiEncryption:
+      paths:
+        - %paths.base%/../features/apiEncryption
+      contexts:
+        - FeatureContext: *common_feature_context_params
+
     apiCapabilities:
       paths:
         - %paths.base%/../features/apiCapabilities

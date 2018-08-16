@@ -132,6 +132,18 @@ pipeline:
       matrix:
         INSTALL_SERVER: true
 
+  configure-encryption:
+    image: owncloudci/php:${PHP_VERSION}
+    pull: true
+    commands:
+      - php occ a:e encryption
+      - php occ encryption:enable
+      - php occ encryption:select-encryption-type ${ENCRYPTION_TYPE} --yes
+      - php occ config:list
+    when:
+      matrix:
+        CONFIGURE_ENCRYPTION: true
+
   prepare-objectstore:
     image: owncloudci/php:${PHP_VERSION}
     pull: true
@@ -942,3 +954,26 @@ matrix:
       CHOWN_SERVER: true
       OWNCLOUD_LOG: true
       CALDAV_CARDDAV_JOB: true
+
+    # encryption tests
+    - PHP_VERSION: 5.6
+      TEST_SUITE: api
+      BEHAT_SUITE: apiEncryption
+      DB_TYPE: mariadb
+      USE_SERVER: true
+      INSTALL_SERVER: true
+      CHOWN_SERVER: true
+      OWNCLOUD_LOG: true
+      CONFIGURE_ENCRYPTION: true
+      ENCRYPTION_TYPE: masterkey
+
+    - PHP_VERSION: 7.1
+      TEST_SUITE: api
+      BEHAT_SUITE: apiEncryption
+      DB_TYPE: mariadb
+      USE_SERVER: true
+      INSTALL_SERVER: true
+      CHOWN_SERVER: true
+      OWNCLOUD_LOG: true
+      CONFIGURE_ENCRYPTION: true
+      ENCRYPTION_TYPE: masterkey
