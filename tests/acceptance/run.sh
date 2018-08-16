@@ -169,36 +169,6 @@ function env_alt_home_clear {
 	remote_occ ${ADMIN_AUTH} ${OCC_URL} "app:disable testing" || { echo "Unable to disable testing app" >&2; exit 1; }
 }
 
-function env_encryption_enable {
-	remote_occ ${ADMIN_AUTH} ${OCC_URL} "app:enable encryption"
-	remote_occ ${ADMIN_AUTH} ${OCC_URL} "encryption:enable"
-}
-
-function env_encryption_enable_master_key {
-	env_encryption_enable || { echo "Unable to enable masterkey encryption" >&2; exit 1; }
-	remote_occ ${ADMIN_AUTH} ${OCC_URL} "encryption:select-encryption-type masterkey --yes"
-}
-
-function env_encryption_enable_user_keys {
-	env_encryption_enable || { echo "Unable to enable user-keys encryption" >&2; exit 1; }
-	remote_occ ${ADMIN_AUTH} ${OCC_URL} "encryption:select-encryption-type user-keys --yes"
-}
-
-function env_encryption_disable {
-	remote_occ ${ADMIN_AUTH} ${OCC_URL} "encryption:disable"
-	remote_occ ${ADMIN_AUTH} ${OCC_URL} "app:disable encryption"
-}
-
-function env_encryption_disable_master_key {
-	env_encryption_disable || { echo "Unable to disable masterkey encryption" >&2; exit 1; }
-	remote_occ ${ADMIN_AUTH} ${OCC_URL} "config:app:delete encryption useMasterKey"
-}
-
-function env_encryption_disable_user_keys {
-	env_encryption_disable || { echo "Unable to disable user-keys encryption" >&2; exit 1; }
-	remote_occ ${ADMIN_AUTH} ${OCC_URL} "config:app:delete encryption userSpecificKey"
-}
-
 # expected variables
 # --------------------
 # $SUITE_FEATURE_TEXT - human readable which test to run
@@ -368,23 +338,7 @@ function teardown() {
 	then
 		env_alt_home_clear
 	fi
-	
-	# Disable encryption if requested
-	if [ "${OC_TEST_ENCRYPTION_ENABLED}" = "1" ]
-	then
-		env_encryption_disable
-	fi
-	
-	if [ "${OC_TEST_ENCRYPTION_MASTER_KEY_ENABLED}" = "1" ]
-	then
-		env_encryption_disable_master_key
-	fi
-	
-	if [ "${OC_TEST_ENCRYPTION_USER_KEYS_ENABLED}" = "1" ]
-	then
-		env_encryption_disable_user_keys
-	fi
-	
+
 	if [ "${TEST_WITH_PHPDEVSERVER}" == "true" ]
 	then
 		kill ${PHPPID}
@@ -739,29 +693,10 @@ then
 	BEHAT_FILTER_TAGS='~@skipWhenTestingRemoteSystems&&'${BEHAT_FILTER_TAGS}
 fi
 
-# Enable encryption if requested
-if [ "${OC_TEST_ENCRYPTION_ENABLED}" = "1" ]
-then
-	env_encryption_enable
-	BEHAT_EXTRA_TAGS="~@no_encryption&&~@no_default_encryption"
-elif [ "${OC_TEST_ENCRYPTION_MASTER_KEY_ENABLED}" = "1" ]
-then
-	env_encryption_enable_master_key
-	BEHAT_EXTRA_TAGS="~@no_encryption&&~@no_masterkey_encryption"
-elif [ "${OC_TEST_ENCRYPTION_USER_KEYS_ENABLED}" = "1" ]
-then
-	env_encryption_enable_user_keys
-	BEHAT_EXTRA_TAGS="~@no_encryption&&~@no_userkeys_encryption"
-else
-	BEHAT_EXTRA_TAGS="~@masterkey_encryption"
-fi
-
 if [ "${OC_TEST_ON_OBJECTSTORE}" = "1" ]
 then
-   	BEHAT_FILTER_TAGS="${BEHAT_FILTER_TAGS}&&~@skip_on_objectstore"
+	BEHAT_FILTER_TAGS="${BEHAT_FILTER_TAGS}&&~@skip_on_objectstore"
 fi
-
-BEHAT_FILTER_TAGS="${BEHAT_FILTER_TAGS}&&${BEHAT_EXTRA_TAGS}"
 
 # If the caller did not mention specific tags, skip the skipped tests by default
 if [ "${BEHAT_TAGS_OPTION_FOUND}" = false ]
