@@ -143,7 +143,6 @@ Feature: transfer-ownership
 		And using received transfer folder of "user1" as dav path
 		And the downloaded content when downloading file "/test/somefile.txt" for user "user1" with range "bytes=0-6" should be "This is"
 
-	@no_default_encryption
 	Scenario: transferring ownership of only a single folder containing an empty folder
 		Given user "user0" has been created
 		And user "user1" has been created
@@ -155,7 +154,6 @@ Feature: transfer-ownership
 		And as "user1" the folder "/test" should exist
 		And as "user1" the folder "/test/subfolder" should exist
 
-	@no_default_encryption
 	Scenario: transferring ownership of an account containing only an empty folder
 		Given user "user0" has been created
 		And user "user1" has been created
