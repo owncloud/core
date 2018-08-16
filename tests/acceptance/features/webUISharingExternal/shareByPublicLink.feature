@@ -41,7 +41,7 @@ So that public sharing is limited according to organization policy
 		And the public accesses the last created public link using the webUI
 		Then it should not be possible to delete the file "lorem.txt" using the webUI
 
-	@skipOnINTERNETEXPLORER @skipOnMICROSOFTEDGE @issue_30392
+	@skipOnINTERNETEXPLORER @skipOnMICROSOFTEDGE @issue-30392
 	Scenario: mount public link
 		Given using server "REMOTE"
 		And these users have been created:
@@ -58,7 +58,7 @@ So that public sharing is limited according to organization policy
 		And the content of "lorem.txt" on the remote server should be the same as the original "simple-folder/lorem.txt"
 		And it should not be possible to delete the file "lorem.txt" using the webUI
 
-	@skipOnINTERNETEXPLORER @skipOnMICROSOFTEDGE @issue_30392
+	@skipOnINTERNETEXPLORER @skipOnMICROSOFTEDGE @issue-30392
 	Scenario: mount public link and overwrite file
 		Given using server "REMOTE"
 		And these users have been created:
