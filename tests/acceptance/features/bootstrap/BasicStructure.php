@@ -23,6 +23,7 @@ use Behat\Gherkin\Node\PyStringNode;
 use Behat\Gherkin\Node\TableNode;
 use Behat\Testwork\Hook\Scope\BeforeSuiteScope;
 use GuzzleHttp\Client;
+use GuzzleHttp\Cookie\CookieJar;
 use GuzzleHttp\Exception\BadResponseException;
 use GuzzleHttp\Message\ResponseInterface;
 use TestHelpers\OcsApiHelper;
@@ -120,7 +121,7 @@ trait BasicStructure {
 	private $response = null;
 
 	/**
-	 * @var \GuzzleHttp\Cookie\CookieJar
+	 * @var CookieJar
 	 */
 	private $cookieJar;
 
@@ -150,7 +151,7 @@ trait BasicStructure {
 		$this->regularUserPassword = $regularUserPassword;
 		$this->localBaseUrl = $this->baseUrl;
 		$this->currentServer = 'LOCAL';
-		$this->cookieJar = new \GuzzleHttp\Cookie\CookieJar();
+		$this->cookieJar = new CookieJar();
 		$this->ocPath = $ocPath;
 
 		// in case of CI deployment we take the server url from the environment
@@ -223,6 +224,20 @@ trait BasicStructure {
 	}
 
 	/**
+	 * @return CookieJar
+	 */
+	public function getCookieJar() {
+		return $this->cookieJar;
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getRequestToken() {
+		return $this->requestToken;
+	}
+
+	/**
 	 * returns the base URL (which is without a slash at the end)
 	 *
 	 * @return string
@@ -288,6 +303,13 @@ trait BasicStructure {
 	}
 
 	/**
+	 * @return string
+	 */
+	public function getOcsApiVersion() {
+		return $this->ocsApiVersion;
+	}
+
+	/**
 	 * @Given /^using OCS API version "([^"]*)"$/
 	 *
 	 * @param string $version
@@ -324,6 +346,13 @@ trait BasicStructure {
 	 */
 	public function getResponse() {
 		return $this->response;
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getCurrentServer() {
+		return $this->currentServer;
 	}
 
 	/**
