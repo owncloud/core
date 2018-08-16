@@ -54,6 +54,26 @@ trait Auth {
 	private $tokenAuthHasBeenSetTo = '';
 
 	/**
+	 * get the client token that was last generated
+	 * app acceptance tests that have their own step code may need to use this
+	 *
+	 * @return string client token
+	 */
+	public function getClientToken() {
+		return $this->clientToken;
+	}
+
+	/**
+	 * get the app token that was last generated
+	 * app acceptance tests that have their own step code may need to use this
+	 *
+	 * @return string app token
+	 */
+	public function getAppToken() {
+		return $this->appToken;
+	}
+
+	/**
 	 * @BeforeScenario
 	 *
 	 * @return void
