@@ -41,6 +41,36 @@ trait CommandLine {
 	private $lastStdErr;
 
 	/**
+	 * get the exit status of the last occ command
+	 * app acceptance tests that have their own step code may need to process this
+	 *
+	 * @return int exit status code of the last occ command
+	 */
+	public function getExitStatusCodeOfOccCommand() {
+		return $this->lastCode;
+	}
+
+	/**
+	 * get the normal output of the last occ command
+	 * app acceptance tests that have their own step code may need to process this
+	 *
+	 * @return string normal output of the last occ command
+	 */
+	public function getStdOutOfOccCommand() {
+		return $this->lastStdOut;
+	}
+
+	/**
+	 * get the error output of the last occ command
+	 * app acceptance tests that have their own step code may need to process this
+	 *
+	 * @return string error output of the last occ command
+	 */
+	public function getStdErrOfOccCommand() {
+		return $this->lastStdErr;
+	}
+
+	/**
 	 * Invokes an OCC command
 	 *
 	 * @param array $args of the occ command
