@@ -37,6 +37,42 @@ Feature: webdav-related
 			| old           |
 			| new           |
 
+	Scenario Outline: Moving (renaming) a file to be only different case
+		Given using <dav_version> DAV path
+		And user "user0" has been created
+		When user "user0" moves file "/textfile0.txt" to "/TextFile0.txt" using the WebDAV API
+		Then the HTTP status code should be "201"
+		And as "user0" the file "/textfile0.txt" should not exist
+		And the content of file "/TextFile0.txt" for user "user0" should be "ownCloud test text file 0" plus end-of-line
+		Examples:
+			| dav_version   |
+			| old           |
+			| new           |
+
+	Scenario Outline: Moving (renaming) a file to a file with only different case to an existing file
+		Given using <dav_version> DAV path
+		And user "user0" has been created
+		When user "user0" moves file "/textfile1.txt" to "/TextFile0.txt" using the WebDAV API
+		Then the HTTP status code should be "201"
+		And the content of file "/textfile0.txt" for user "user0" should be "ownCloud test text file 0" plus end-of-line
+		And the content of file "/TextFile0.txt" for user "user0" should be "ownCloud test text file 1" plus end-of-line
+		Examples:
+			| dav_version   |
+			| old           |
+			| new           |
+
+	Scenario Outline: Moving (renaming) a file to a file in a folder with only different case to an existing file
+		Given using <dav_version> DAV path
+		And user "user0" has been created
+		When user "user0" moves file "/textfile1.txt" to "/PARENT/Parent.txt" using the WebDAV API
+		Then the HTTP status code should be "201"
+		And the content of file "/PARENT/parent.txt" for user "user0" should be "ownCloud test text file parent" plus end-of-line
+		And the content of file "/PARENT/Parent.txt" for user "user0" should be "ownCloud test text file 1" plus end-of-line
+		Examples:
+			| dav_version   |
+			| old           |
+			| new           |
+
 	Scenario Outline: Moving a file to a folder with no permissions
 		Given using <dav_version> DAV path
 		And user "user0" has been created
@@ -169,7 +205,7 @@ Feature: webdav-related
 		Given using <dav_version> DAV path
 		And user "user0" has been created
 		When user "user0" downloads the file "/textfile0.txt" using the WebDAV API
-		Then the downloaded content should be "ownCloud test text file" plus end-of-line
+		Then the downloaded content should be "ownCloud test text file 0" plus end-of-line
 		Examples:
 			| dav_version   |
 			| old           |
@@ -307,7 +343,7 @@ Feature: webdav-related
 		When the administrator sets the quota of user "user0" to "10 MB" using the provisioning API
 		And user "user0" gets the following properties of folder "/" using the WebDAV API
 		  |{DAV:}quota-available-bytes|
-		Then the single response should contain a property "{DAV:}quota-available-bytes" with value "10485429"
+		Then the single response should contain a property "{DAV:}quota-available-bytes" with value "10485406"
 		Examples:
 			| dav_version   |
 			| old           |
@@ -327,7 +363,7 @@ Feature: webdav-related
 			| shareWith   | user0     |
 		When user "user0" gets the following properties of folder "/testquota" using the WebDAV API
 		  |{DAV:}quota-available-bytes|
-		Then the single response should contain a property "{DAV:}quota-available-bytes" with value "10485429"
+		Then the single response should contain a property "{DAV:}quota-available-bytes" with value "10485406"
 		Examples:
 			| dav_version   |
 			| old           |
@@ -340,7 +376,7 @@ Feature: webdav-related
 		And user "user0" has added file "/prueba.txt" of 93 bytes
 		When user "user0" gets the following properties of folder "/" using the WebDAV API
 		  |{DAV:}quota-available-bytes|
-		Then the single response should contain a property "{DAV:}quota-available-bytes" with value "600"
+		Then the single response should contain a property "{DAV:}quota-available-bytes" with value "577"
 		Examples:
 			| dav_version   |
 			| old           |
@@ -355,7 +391,7 @@ Feature: webdav-related
 		And user "user0" has shared file "user0.txt" with user "user1"
 		When user "user1" gets the following properties of folder "/" using the WebDAV API
 		  |{DAV:}quota-available-bytes|
-		Then the single response should contain a property "{DAV:}quota-available-bytes" with value "693"
+		Then the single response should contain a property "{DAV:}quota-available-bytes" with value "670"
 		Examples:
 			| dav_version   |
 			| old           |

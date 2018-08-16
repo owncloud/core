@@ -485,6 +485,19 @@ trait WebDav {
 	}
 
 	/**
+	 * @Then /^the content of file "([^"]*)" should be "([^"]*)" plus end-of-line$/
+	 *
+	 * @param string $fileName
+	 * @param string $content
+	 *
+	 * @return void
+	 */
+	public function contentOfFileShouldBePlusEndOfLine($fileName, $content) {
+		$this->theUserDownloadsTheFileUsingTheAPI($fileName);
+		$this->downloadedContentShouldBePlusEndOfLine($content);
+	}
+
+	/**
 	 * @Then /^the content of file "([^"]*)" for user "([^"]*)" should be "([^"]*)"$/
 	 *
 	 * @param string $fileName
