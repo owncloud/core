@@ -133,7 +133,7 @@ if ($_['passwordChangeSupported']) {
 ?>
 <form class="section">
 	<h2>
-		<label><?php p($l->t('Language'));?></label>
+		<label><?php p($l->t('Language & Timezone'));?></label>
 	</h2>
 	<?php print_unescaped($_['languageSelector']); ?>
 	<?php if (OC_Util::getEditionString() === OC_Util::EDITION_COMMUNITY): ?>
@@ -142,4 +142,5 @@ if ($_['passwordChangeSupported']) {
 			<em><?php p($l->t('Help translate'));?></em>
 		</a>
 	<?php endif; ?>
+	<?php print_unescaped($_['timezoneSelector']); ?>
 </form>

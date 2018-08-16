@@ -1,8 +1,6 @@
 <?php /** @var $l \OCP\IL10N */ ?>
 <?php
-vendor_script('jsTimezoneDetect/jstz');
 script('core', [
-	'visitortimezone',
 	'lostpassword',
 	'login',
 	'browser-update'
@@ -58,7 +56,7 @@ script('core', [
 				<?php p($_['user_autofocus'] ? '' : 'autofocus'); ?>
 				autocomplete="on" autocapitalize="off" autocorrect="off" required>
 			<label for="password" class="infield"><?php p($l->t('Password')); ?></label>
-			<input type="submit" id="submit" class="login primary icon-confirm" title="<?php p($l->t('Log in')); ?>" value="" disabled="disabled"/>
+			<input type="submit" id="submit" class="login primary icon-confirm" title="<?php p($l->t('Log in')); ?>" value=""/>
 		</p>
 
 		<?php if (!empty($_['csrf_error'])) {
@@ -102,8 +100,6 @@ script('core', [
 			<label for="remember_login"><?php p($l->t('Stay logged in')); ?></label>
 		</div>
 		<?php endif; ?>
-		<input type="hidden" name="timezone-offset" id="timezone-offset"/>
-		<input type="hidden" name="timezone" id="timezone"/>
 		<input type="hidden" name="requesttoken" value="<?php p($_['requesttoken']) ?>">
 	</fieldset>
 </form>
