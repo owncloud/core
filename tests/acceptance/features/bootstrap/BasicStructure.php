@@ -349,6 +349,18 @@ trait BasicStructure {
 	}
 
 	/**
+	 * let this class remember a response that was received elsewhere
+	 * so that steps in this class can be used to examine the response
+	 *
+	 * @param ResponseInterface $response
+	 *
+	 * @return void
+	 */
+	public function setResponse($response) {
+		$this->response = $response;
+	}
+
+	/**
 	 * @return string
 	 */
 	public function getCurrentServer() {
