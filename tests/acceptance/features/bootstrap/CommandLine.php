@@ -312,18 +312,6 @@ trait CommandLine {
 	}
 
 	/**
-	 * @When /^the administrator successfully recreates the encryption masterkey using the occ command$/
-	 * @Given /^the administrator has successfully recreated the encryption masterkey$/
-	 *
-	 * @return void
-	 * @throws \Exception
-	 */
-	public function recreateMasterKeyUsingOccCommand() {
-		$this->runOcc(['encryption:recreate-master-key', '-y']);
-		$this->theCommandShouldHaveBeenSuccessful();
-	}
-
-	/**
 	 * @When /^the administrator transfers ownership of path "([^"]+)" from "([^"]+)" to "([^"]+)" using the occ command$/
 	 * @Given /^the administrator has transferred ownership of path "([^"]+)" from "([^"]+)" to "([^"]+)"$/
 	 *
