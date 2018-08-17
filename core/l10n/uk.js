@@ -12,6 +12,7 @@ OC.L10N.register(
     "No crop data provided" : "Не вказана інформація про кадрування",
     "No valid crop data provided" : "Не вказані коректні дані про кадрування",
     "Crop is not square" : "Кадр не є квадратом",
+    "%s password changed successfully" : "%s пароль змінено успішно",
     "%s password reset" : "%s скидання паролю",
     "Couldn't send reset email. Please contact your administrator." : "Не можу надіслати email для скидання. Будь ласка, зверніться до вашого адміністратора.",
     "Preparing update" : "Підготовка до оновлення",

@@ -1,4 +1,5 @@
 { "translations": {
+    "%s password changed successfully" : "%s salasana vaihdettiin onnistuneesti",
     "Couldn't send reset email. Please contact your administrator." : "Palautussähköpostin lähettäminen ei onnistunut. Ota yhteys ylläpitäjään.",
     "cURL is using an outdated %s version (%s). Please update your operating system or features such as %s will not work reliably." : "cURL käyttää vanhentunutta %s-versiota (%s). Päivitä käyttöjärjestelmäsi tai ominaisuudet kuten %s eivät toimi luotettavasti.",
     "Saved" : "Tallennettu",
@@ -50,6 +51,7 @@
     "Valid until {date}" : "Kelvollinen {date} asti",
     "Disconnect" : "Katkaise yhteys",
     "Sending..." : "Lähetetään...",
+    "Email has been changed successfully." : "Sähköpostiosoite vaihdettiin onnistuneesti.",
     "Unable to change mail address" : "Sähköpostiosoitteen vaihtaminen ei onnistunut",
     "Your full name has been changed." : "Koko nimesi on muutettu.",
     "An error occurred: {message}" : "Tapahtui virhe: {message}",
