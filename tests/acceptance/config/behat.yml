@@ -36,6 +36,12 @@ default:
         - FeatureContext: *common_feature_context_params
         - FederationContext:
 
+    apiMetadataApps:
+      paths:
+        - %paths.base%/../features/apiMetadataApps
+      contexts:
+        - FeatureContext: *common_feature_context_params
+
     apiProvisioning-v1:
       paths:
         - %paths.base%/../features/apiProvisioning-v1
@@ -55,9 +61,15 @@ default:
         - FeatureContext: *common_feature_context_params
         - ShareesContext:
 
-    apiSharing:
+    apiShareManagement:
       paths:
-        - %paths.base%/../features/apiSharing
+        - %paths.base%/../features/apiShareManagement
+      contexts:
+        - FeatureContext: *common_feature_context_params
+
+    apiShareOperations:
+      paths:
+        - %paths.base%/../features/apiShareOperations
       contexts:
         - FeatureContext: *common_feature_context_params
 
@@ -74,6 +86,20 @@ default:
         - FeatureContext: *common_feature_context_params
         - NotificationsCoreContext:
 
+    apiWebdavOperations:
+      paths:
+        - %paths.base%/../features/apiWebdavOperations
+      contexts:
+        - FeatureContext: *common_feature_context_params
+        - LoggingContext:
+
+    apiWebdavProperties:
+      paths:
+        - %paths.base%/../features/apiWebdavProperties
+      contexts:
+        - FeatureContext: *common_feature_context_params
+        - LoggingContext:
+
     webUILogin:
       paths:
         - %paths.base%/../features/webUILogin
@@ -84,13 +110,6 @@ default:
         - WebUIFilesContext:
         - WebUIPersonalGeneralSettingsContext:
         - EmailContext:
-
-    apiWebdav:
-      paths:
-        - %paths.base%/../features/apiWebdav
-      contexts:
-        - FeatureContext: *common_feature_context_params
-        - LoggingContext:
 
     webUIAdminSettings:
       paths:
