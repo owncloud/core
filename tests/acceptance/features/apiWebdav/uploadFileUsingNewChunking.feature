@@ -128,4 +128,3 @@ Feature: upload file using new chunking
     And user "user0" moves new chunk file with id "chunking-42" to "/0" using the WebDAV API
     And as "user0" the file "/0" should exist
     And the content of file "/0" for user "user0" should be "AAAAABBBBBCCCCC"
-

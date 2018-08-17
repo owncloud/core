@@ -72,25 +72,6 @@ Feature: download file
       | old         |
       | new         |
 
-  Scenario Outline: Downloading a file should serve security headers
-    Given using <dav_version> DAV path
-    And user "user0" has been created
-    When user "user0" downloads the file "/welcome.txt" using the WebDAV API
-    Then the following headers should be set
-      | Content-Disposition               | attachment; filename*=UTF-8''welcome.txt; filename="welcome.txt" |
-      | Content-Security-Policy           | default-src 'none';                                              |
-      | X-Content-Type-Options            | nosniff                                                          |
-      | X-Download-Options                | noopen                                                           |
-      | X-Frame-Options                   | SAMEORIGIN                                                       |
-      | X-Permitted-Cross-Domain-Policies | none                                                             |
-      | X-Robots-Tag                      | none                                                             |
-      | X-XSS-Protection                  | 1; mode=block                                                    |
-    And the downloaded content should start with "Welcome to your ownCloud account!"
-    Examples:
-      | dav_version |
-      | old         |
-      | new         |
-
   Scenario Outline: Doing a GET with a web login should work without CSRF token on the new backend
     Given user "user0" has been created
     And using <dav_version> DAV path
@@ -114,4 +95,3 @@ Feature: download file
       | dav_version |
       | old         |
       | new         |
-

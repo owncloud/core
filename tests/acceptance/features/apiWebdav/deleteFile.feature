@@ -6,4 +6,3 @@ Feature: delete file
 
   Background:
     Given using OCS API version "1"
-

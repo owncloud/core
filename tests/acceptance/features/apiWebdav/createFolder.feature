@@ -62,16 +62,3 @@ Feature: create folder
       | dav_version |
       | old         |
       | new         |
-
-  Scenario Outline: Creating a directory which contains .part should not be possible
-    Given using <dav_version> DAV path
-    And user "user0" has been created
-    When user "user0" creates a folder "/folder.with.ext.part" using the WebDAV API
-    Then the HTTP status code should be "400"
-    And user "user0" should not see the following elements
-      | /folder.with.ext.part |
-    Examples:
-      | dav_version |
-      | old         |
-      | new         |
-
