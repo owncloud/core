@@ -667,6 +667,15 @@ matrix:
 
     - PHP_VERSION: 7.1
       TEST_SUITE: api
+      BEHAT_SUITE: apiMetadataApps
+      DB_TYPE: mariadb
+      USE_SERVER: true
+      INSTALL_SERVER: true
+      CHOWN_SERVER: true
+      OWNCLOUD_LOG: true
+
+    - PHP_VERSION: 7.1
+      TEST_SUITE: api
       BEHAT_SUITE: apiSharingNotifications
       DB_TYPE: mariadb
       USE_SERVER: true
@@ -724,7 +733,16 @@ matrix:
 
     - PHP_VERSION: 7.1
       TEST_SUITE: api
-      BEHAT_SUITE: apiSharing
+      BEHAT_SUITE: apiShareManagement
+      DB_TYPE: mariadb
+      USE_SERVER: true
+      INSTALL_SERVER: true
+      CHOWN_SERVER: true
+      OWNCLOUD_LOG: true
+
+    - PHP_VERSION: 7.1
+      TEST_SUITE: api
+      BEHAT_SUITE: apiShareOperations
       DB_TYPE: mariadb
       USE_SERVER: true
       INSTALL_SERVER: true
@@ -742,7 +760,16 @@ matrix:
 
     - PHP_VERSION: 7.1
       TEST_SUITE: api
-      BEHAT_SUITE: apiWebdav
+      BEHAT_SUITE: apiWebdavOperations
+      DB_TYPE: mariadb
+      USE_SERVER: true
+      INSTALL_SERVER: true
+      CHOWN_SERVER: true
+      OWNCLOUD_LOG: true
+
+    - PHP_VERSION: 7.1
+      TEST_SUITE: api
+      BEHAT_SUITE: apiWebdavProperties
       DB_TYPE: mariadb
       USE_SERVER: true
       INSTALL_SERVER: true
