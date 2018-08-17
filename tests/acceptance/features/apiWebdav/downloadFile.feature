@@ -6,10 +6,10 @@ Feature: download file
 
   Background:
     Given using OCS API version "1"
+    And user "user0" has been created
 
   Scenario Outline: download a file
     Given using <dav_version> DAV path
-    And user "user0" has been created
     When user "user0" downloads the file "/textfile0.txt" using the WebDAV API
     Then the downloaded content should be "ownCloud test text file 0" plus end-of-line
     Examples:
@@ -19,7 +19,6 @@ Feature: download file
 
   Scenario Outline: download a file with range
     Given using <dav_version> DAV path
-    And user "user0" has been created
     When user "user0" downloads file "/welcome.txt" with range "bytes=51-77" using the WebDAV API
     Then the downloaded content should be "example file for developers"
     Examples:
@@ -29,7 +28,6 @@ Feature: download file
 
   Scenario Outline: download a public shared file with range
     Given using <dav_version> DAV path
-    And user "user0" has been created
     When user "user0" creates a share using the sharing API with settings
       | path      | welcome.txt |
       | shareType | 3           |
@@ -42,7 +40,6 @@ Feature: download file
 
   Scenario Outline: download a public shared file inside a folder with range
     Given using <dav_version> DAV path
-    And user "user0" has been created
     When user "user0" creates a share using the sharing API with settings
       | path      | PARENT |
       | shareType | 3      |
@@ -55,7 +52,6 @@ Feature: download file
 
   Scenario Outline: Downloading a file should serve security headers
     Given using <dav_version> DAV path
-    And user "user0" has been created
     When user "user0" downloads the file "/welcome.txt" using the WebDAV API
     Then the following headers should be set
       | Content-Disposition               | attachment; filename*=UTF-8''welcome.txt; filename="welcome.txt" |
@@ -73,8 +69,7 @@ Feature: download file
       | new         |
 
   Scenario Outline: Doing a GET with a web login should work without CSRF token on the new backend
-    Given user "user0" has been created
-    And using <dav_version> DAV path
+    Given using <dav_version> DAV path
     And user "user0" has logged in to a web-style session
     When the client sends a "GET" to "/remote.php/dav/files/user0/welcome.txt" without requesttoken
     Then the downloaded content should start with "Welcome to your ownCloud account!"
@@ -85,8 +80,7 @@ Feature: download file
       | new         |
 
   Scenario Outline: Doing a GET with a web login should work with CSRF token on the new backend
-    Given user "user0" has been created
-    And using <dav_version> DAV path
+    Given using <dav_version> DAV path
     And user "user0" has logged in to a web-style session
     When the client sends a "GET" to "/remote.php/dav/files/user0/welcome.txt" with requesttoken
     Then the downloaded content should start with "Welcome to your ownCloud account!"

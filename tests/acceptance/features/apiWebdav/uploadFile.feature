@@ -6,10 +6,10 @@ Feature: upload file
 
   Background:
     Given using OCS API version "1"
+    And user "user0" has been created
 
   Scenario Outline: upload a file and check download content
     Given using <dav_version> DAV path
-    And user "user0" has been created
     When user "user0" uploads file with content "uploaded content" to "<file_name>" using the WebDAV API
     Then the content of file "<file_name>" for user "user0" should be "uploaded content"
     Examples:
@@ -29,7 +29,6 @@ Feature: upload file
 
   Scenario Outline: upload a file into a folder and check download content
     Given using <dav_version> DAV path
-    And user "user0" has been created
     And user "user0" has created a folder "<folder_name>"
     When user "user0" uploads file with content "uploaded content" to "<folder_name>/<file_name>" using the WebDAV API
     Then the content of file "<folder_name>/<file_name>" for user "user0" should be "uploaded content"
@@ -50,7 +49,6 @@ Feature: upload file
 
   Scenario Outline: Uploading file to path with extension .part should not be possible
     Given using <dav_version> DAV path
-    And user "user0" has been created
     When user "user0" uploads file "data/textfile.txt" to "/textfile.part" using the WebDAV API
     Then the HTTP status code should be "400"
     And user "user0" should not see the following elements
