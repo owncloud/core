@@ -68,6 +68,20 @@ default:
         - FeatureContext: *common_feature_context_params
         - NotificationsCoreContext:
 
+    apiWebdavOperations:
+      paths:
+        - %paths.base%/../features/apiWebdavOperations
+      contexts:
+        - FeatureContext: *common_feature_context_params
+        - LoggingContext:
+
+    apiWebdavProperties:
+      paths:
+        - %paths.base%/../features/apiWebdavProperties
+      contexts:
+        - FeatureContext: *common_feature_context_params
+        - LoggingContext:
+
     webUILogin:
       paths:
         - %paths.base%/../features/webUILogin
@@ -78,13 +92,6 @@ default:
         - WebUIFilesContext:
         - WebUIPersonalGeneralSettingsContext:
         - EmailContext:
-
-    apiWebdav:
-      paths:
-        - %paths.base%/../features/apiWebdav
-      contexts:
-        - FeatureContext: *common_feature_context_params
-        - LoggingContext:
 
     webUIAdminSettings:
       paths:
