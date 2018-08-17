@@ -6,10 +6,10 @@ Feature: set file properties
 
   Background:
     Given using OCS API version "1"
+    And user "user0" has been created
 
   Scenario Outline: Setting custom DAV property and reading it
     Given using <dav_version> DAV path
-    And user "user0" has been created
     And user "user0" has uploaded file "data/textfile.txt" to "/testcustomprop.txt"
     And user "user0" has set property "{http://whatever.org/ns}very-custom-prop" of file "/testcustomprop.txt" to "veryCustomPropValue"
     When user "user0" gets a custom property "{http://whatever.org/ns}very-custom-prop" of file "/testcustomprop.txt"
@@ -21,7 +21,6 @@ Feature: set file properties
 
   Scenario Outline: Setting custom DAV property and reading it after the file is renamed
     Given using <dav_version> DAV path
-    And user "user0" has been created
     And user "user0" has uploaded file "data/textfile.txt" to "/testcustompropwithmove.txt"
     And user "user0" has set property "{http://whatever.org/ns}very-custom-prop" of file "/testcustompropwithmove.txt" to "valueForMovetest"
     And user "user0" has moved file "/testcustompropwithmove.txt" to "/catchmeifyoucan.txt"
@@ -34,7 +33,6 @@ Feature: set file properties
 
   Scenario Outline: Setting custom DAV property on a shared file as an owner and reading as a recipient
     Given using <dav_version> DAV path
-    And user "user0" has been created
     And user "user1" has been created
     And user "user0" has uploaded file "data/textfile.txt" to "/testcustompropshared.txt"
     And user "user0" has created a share with settings
@@ -52,7 +50,6 @@ Feature: set file properties
 
   Scenario Outline: Setting custom DAV property using one endpoint and reading it with other endpoint
     Given using <action_dav_version> DAV path
-    And user "user0" has been created
     And user "user0" has uploaded file "data/textfile.txt" to "/testnewold.txt"
     And user "user0" has set property "{http://whatever.org/ns}very-custom-prop" of file "/testnewold.txt" to "lucky"
     And using <other_dav_version> DAV path
@@ -65,7 +62,6 @@ Feature: set file properties
 
   Scenario: Setting custom DAV property using an old endpoint and reading it using a new endpoint
     Given using old DAV path
-    And user "user0" has been created
     Given user "user0" has uploaded file "data/textfile.txt" to "/testoldnew.txt"
     And user "user0" has set property "{http://whatever.org/ns}very-custom-prop" of file "/testoldnew.txt" to "constant"
     And using new DAV path

@@ -6,10 +6,10 @@ Feature: get quota
 
   Background:
     Given using OCS API version "1"
+    And user "user0" has been created
 
   Scenario Outline: Retrieving folder quota when no quota is set
     Given using <dav_version> DAV path
-    And user "user0" has been created
     When the administrator gives unlimited quota to user "user0" using the provisioning API
     And user "user0" gets the following properties of folder "/" using the WebDAV API
       | {DAV:}quota-available-bytes |
@@ -21,7 +21,6 @@ Feature: get quota
 
   Scenario Outline: Retrieving folder quota when quota is set
     Given using <dav_version> DAV path
-    And user "user0" has been created
     When the administrator sets the quota of user "user0" to "10 MB" using the provisioning API
     And user "user0" gets the following properties of folder "/" using the WebDAV API
       | {DAV:}quota-available-bytes |
@@ -33,7 +32,6 @@ Feature: get quota
 
   Scenario Outline: Retrieving folder quota of shared folder with quota when no quota is set for recipient
     Given using <dav_version> DAV path
-    And user "user0" has been created
     And user "user1" has been created
     And user "user0" has been given unlimited quota
     And the quota of user "user1" has been set to "10 MB"
@@ -53,7 +51,6 @@ Feature: get quota
 
   Scenario Outline: Retrieving folder quota when quota is set and a file was uploaded
     Given using <dav_version> DAV path
-    And user "user0" has been created
     And the quota of user "user0" has been set to "1 KB"
     And user "user0" has added file "/prueba.txt" of 93 bytes
     When user "user0" gets the following properties of folder "/" using the WebDAV API
@@ -66,7 +63,6 @@ Feature: get quota
 
   Scenario Outline: Retrieving folder quota when quota is set and a file was recieved
     Given using <dav_version> DAV path
-    And user "user0" has been created
     And user "user1" has been created
     And the quota of user "user1" has been set to "1 KB"
     And user "user0" has added file "/user0.txt" of 93 bytes

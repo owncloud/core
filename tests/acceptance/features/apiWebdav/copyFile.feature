@@ -6,10 +6,10 @@ Feature: copy file
 
   Background:
     Given using OCS API version "1"
+    And user "user0" has been created
 
   Scenario Outline: Copying a file
     Given using <dav_version> DAV path
-    And user "user0" has been created
     When user "user0" copies file "/welcome.txt" to "/FOLDER/welcome.txt" using the WebDAV API
     Then the HTTP status code should be "201"
     And the downloaded content when downloading file "/FOLDER/welcome.txt" for user "user0" with range "bytes=0-6" should be "Welcome"
@@ -20,7 +20,6 @@ Feature: copy file
 
   Scenario Outline: Copying and overwriting a file
     Given using <dav_version> DAV path
-    And user "user0" has been created
     When user "user0" copies file "/welcome.txt" to "/textfile1.txt" using the WebDAV API
     Then the HTTP status code should be "204"
     And the downloaded content when downloading file "/textfile1.txt" for user "user0" with range "bytes=0-6" should be "Welcome"
@@ -31,7 +30,6 @@ Feature: copy file
 
   Scenario Outline: Copying a file to a folder with no permissions
     Given using <dav_version> DAV path
-    And user "user0" has been created
     And user "user1" has been created
     And user "user1" has created a folder "/testshare"
     And user "user1" has created a share with settings
@@ -50,7 +48,6 @@ Feature: copy file
 
   Scenario Outline: Copying a file to overwrite a file into a folder with no permissions
     Given using <dav_version> DAV path
-    And user "user0" has been created
     And user "user1" has been created
     And user "user1" has created a folder "/testshare"
     And user "user1" has created a share with settings
@@ -69,7 +66,6 @@ Feature: copy file
 
   Scenario Outline: Copying file to a path with extension .part should not be possible
     Given using <dav_version> DAV path
-    And user "user0" has been created
     When user "user0" copies file "/welcome.txt" to "/welcome.part" using the WebDAV API
     Then the HTTP status code should be "400"
     And user "user0" should see the following elements

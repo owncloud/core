@@ -6,10 +6,10 @@ Feature: create folder
 
   Background:
     Given using OCS API version "1"
+    And user "user0" has been created
 
   Scenario Outline: create a folder
     Given using <dav_version> DAV path
-    And user "user0" has been created
     When user "user0" creates a folder "<folder_name>" using the WebDAV API
     Then as "user0" the folder "<folder_name>" should exist
     Examples:
@@ -29,7 +29,6 @@ Feature: create folder
 
   Scenario Outline: Creating a folder
     Given using <dav_version> DAV path
-    And user "user0" has been created
     And user "user0" has created a folder "/test_folder"
     When user "user0" gets the following properties of folder "/test_folder" using the WebDAV API
       | {DAV:}resourcetype |
@@ -41,7 +40,6 @@ Feature: create folder
 
   Scenario Outline: Creating a folder with special chars
     Given using <dav_version> DAV path
-    And user "user0" has been created
     And user "user0" has created a folder "/test_folder:5"
     When user "user0" gets the following properties of folder "/test_folder:5" using the WebDAV API
       | {DAV:}resourcetype |
@@ -53,7 +51,6 @@ Feature: create folder
 
   Scenario Outline: Creating a directory which contains .part should not be possible
     Given using <dav_version> DAV path
-    And user "user0" has been created
     When user "user0" creates a folder "/folder.with.ext.part" using the WebDAV API
     Then the HTTP status code should be "400"
     And user "user0" should not see the following elements
