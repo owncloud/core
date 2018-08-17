@@ -29,4 +29,3 @@ Feature: refuse access
       | dav_version |
       | old         |
       | new         |
-

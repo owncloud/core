@@ -78,4 +78,3 @@ Feature: get quota
       | dav_version |
       | old         |
       | new         |
-

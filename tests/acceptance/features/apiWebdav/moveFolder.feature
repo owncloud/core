@@ -71,4 +71,3 @@ Feature: move (rename) folder
       | dav_version |
       | old         |
       | new         |
-

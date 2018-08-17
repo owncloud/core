@@ -80,18 +80,3 @@ Feature: copy file
       | dav_version |
       | old         |
       | new         |
-
-  Scenario Outline: Copying file to a path with extension .part should not be possible
-    Given using <dav_version> DAV path
-    And user "user0" has been created
-    When user "user0" copies file "/welcome.txt" to "/welcome.part" using the WebDAV API
-    Then the HTTP status code should be "400"
-    And user "user0" should see the following elements
-      | /welcome.txt |
-    But user "user0" should not see the following elements
-      | /welcome.part |
-    Examples:
-      | dav_version |
-      | old         |
-      | new         |
-

@@ -51,18 +51,6 @@ Feature: upload file
   Scenario Outline: Uploading file to path with extension .part should not be possible
     Given using <dav_version> DAV path
     And user "user0" has been created
-    And user "user0" has uploaded file "data/textfile.txt" to "/textfile.part"
-    Then the HTTP status code should be "400"
-    And user "user0" should not see the following elements
-      | /textfile.part |
-    Examples:
-      | dav_version |
-      | old         |
-      | new         |
-
-  Scenario Outline: Uploading file to path with extension .part should not be possible
-    Given using <dav_version> DAV path
-    And user "user0" has been created
     When user "user0" uploads file "data/textfile.txt" to "/textfile.part" using the WebDAV API
     Then the HTTP status code should be "400"
     And user "user0" should not see the following elements
@@ -71,4 +59,3 @@ Feature: upload file
       | dav_version |
       | old         |
       | new         |
-

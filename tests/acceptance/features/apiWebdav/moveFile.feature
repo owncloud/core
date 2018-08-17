@@ -183,38 +183,3 @@ Feature: move (rename) file
       | dav_version |
       | old         |
       | new         |
-
-  Scenario Outline: Renaming a file to a path with extension .part should not be possible
-    Given using <dav_version> DAV path
-    And user "user0" has been created
-    When user "user0" moves file "/welcome.txt" to "/welcome.part" using the WebDAV API
-    Then the HTTP status code should be "400"
-    And user "user0" should see the following elements
-      | /welcome.txt |
-    But user "user0" should not see the following elements
-      | /welcome.part |
-    Examples:
-      | dav_version |
-      | old         |
-      | new         |
-
-  Scenario: Checking file id after a move between received shares
-    Given using new DAV path
-    And user "user0" has been created
-    And user "user1" has been created
-    And user "user0" has created a folder "/folderA"
-    And user "user0" has created a folder "/folderB"
-    And user "user0" has shared folder "/folderA" with user "user1"
-    And user "user0" has shared folder "/folderB" with user "user1"
-    And user "user1" has created a folder "/folderA/ONE"
-    And user "user1" has stored id of file "/folderA/ONE"
-    And user "user1" has created a folder "/folderA/ONE/TWO"
-    When user "user1" moves folder "/folderA/ONE" to "/folderB/ONE" using the WebDAV API
-    Then as "user1" the folder "/folderA" should exist
-    And as "user1" the folder "/folderA/ONE" should not exist
-    # yes, a weird bug used to make this one fail
-    And as "user1" the folder "/folderA/ONE/TWO" should not exist
-    And as "user1" the folder "/folderB/ONE" should exist
-    And as "user1" the folder "/folderB/ONE/TWO" should exist
-    And user "user1" file "/folderB/ONE" should have the previously stored id
-

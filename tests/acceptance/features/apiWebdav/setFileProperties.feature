@@ -71,4 +71,3 @@ Feature: set file properties
     And using new DAV path
     When user "user0" gets a custom property "{http://whatever.org/ns}very-custom-prop" of file "/testoldnew.txt"
     Then the response should contain a custom "{http://whatever.org/ns}very-custom-prop" property with "constant"
-

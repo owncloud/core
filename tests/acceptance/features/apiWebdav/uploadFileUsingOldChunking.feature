@@ -45,4 +45,3 @@ Feature: upload file using old chunking
       | 0         |
       | &#?       |
       | TIÄFÜ     |
-
