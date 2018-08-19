@@ -256,6 +256,7 @@ OC.L10N.register(
     "Line: %s" : "Řádka: %s",
     "Trace" : "Trasa",
     "Imprint" : "Imprint",
+    "Privacy Policy" : "Ochrana soukromí",
     "Create an <strong>admin account</strong>" : "Vytvořit <strong>účet správce</strong>",
     "Username" : "Uživatelské jméno",
     "Storage & database" : "Úložiště & databáze",
