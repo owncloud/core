@@ -524,13 +524,4 @@ class Scanner extends BasicEmitter implements IScanner {
 			// skip unavailable storages
 		}
 	}
-
-	/**
-	 * Set whether the cache is affected by scan operations
-	 *
-	 * @param boolean $active The active state of the cache
-	 */
-	public function setCacheActive($active) {
-		$this->cacheActive = $active;
-	}
 }
