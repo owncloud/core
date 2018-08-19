@@ -63,6 +63,7 @@ use OCP\Lock\LockedException;
 use OCA\Files_Sharing\SharedMount;
 use OCP\Util;
 use Symfony\Component\EventDispatcher\GenericEvent;
+use OC\Files\Utils\FileUtils;
 
 /**
  * Class to provide access to ownCloud filesystem via a "view", and methods for
@@ -789,7 +790,7 @@ class View {
 				}
 
 				$run = true;
-				if ($this->shouldEmitHooks($path1) && (Cache\Scanner::isPartialFile($path1) && !Cache\Scanner::isPartialFile($path2))) {
+				if ($this->shouldEmitHooks($path1) && (FileUtils::isPartialFile($path1) && !FileUtils::isPartialFile($path2))) {
 					// if it was a rename from a part file to a regular file it was a write and not a rename operation
 					$this->emit_file_hooks_pre($exists, $path2, $run);
 				} elseif ($this->shouldEmitHooks($path1)) {
@@ -839,7 +840,8 @@ class View {
 						$result = $storage2->moveFromStorage($storage1, $internalPath1, $internalPath2);
 					}
 
-					if ((Cache\Scanner::isPartialFile($path1) && !Cache\Scanner::isPartialFile($path2)) && $result !== false && (self::$ignorePartFile === false)) {
+					if ((FileUtils::isPartialFile($path1) && !FileUtils::isPartialFile($path2)) && $result !== false && self::$ignorePartFile === false) {
+
 						// if it was a rename from a part file to a regular file it was a write and not a rename operation
 
 						$this->writeUpdate($storage2, $internalPath2);
@@ -852,7 +854,7 @@ class View {
 					$this->changeLock($path1, ILockingProvider::LOCK_SHARED, true);
 					$this->changeLock($path2, ILockingProvider::LOCK_SHARED, true);
 
-					if ((Cache\Scanner::isPartialFile($path1) && !Cache\Scanner::isPartialFile($path2)) && $result !== false) {
+					if ((FileUtils::isPartialFile($path1) && !FileUtils::isPartialFile($path2)) && $result !== false) {
 						if ($this->shouldEmitHooks()) {
 							$this->emit_file_hooks_post($exists, $path2);
 						}
@@ -1253,7 +1255,7 @@ class View {
 	}
 
 	private function shouldEmitHooks($path = '') {
-		if ($path && Cache\Scanner::isPartialFile($path)) {
+		if ($path && FileUtils::isPartialFile($path)) {
 			return false;
 		}
 		if (!Filesystem::$loaded) {
@@ -1366,7 +1368,7 @@ class View {
 				$scanner->scan($internalPath, Cache\Scanner::SCAN_SHALLOW);
 				$data = $cache->get($internalPath);
 				$this->unlockFile($relativePath, ILockingProvider::LOCK_SHARED);
-			} elseif (!Cache\Scanner::isPartialFile($internalPath) && $watcher->needsUpdate($internalPath, $data)) {
+			} elseif (!FileUtils::isPartialFile($internalPath) && $watcher->needsUpdate($internalPath, $data)) {
 				$this->lockFile($relativePath, ILockingProvider::LOCK_SHARED);
 				$watcher->update($internalPath, $data);
 				$storage->getPropagator()->propagateChange($internalPath, \time());
@@ -1394,7 +1396,7 @@ class View {
 		if (!Filesystem::isValidPath($path)) {
 			return false;
 		}
-		if (Cache\Scanner::isPartialFile($path)) {
+		if (FileUtils::isPartialFile($path)) {
 			return $this->getPartFileInfo($path);
 		}
 		$relativePath = $path;
