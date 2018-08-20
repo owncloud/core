@@ -27,6 +27,7 @@ Feature: caldav
 		And the CalDAV error message should be "Node with name 'MyCalendar' could not be found"
 
 	@caldav
+	@smokeTest
 	Scenario: Creating a new calendar
 		Given user "user0" has successfully created a calendar named "MyCalendar"
 		When user "user0" requests calendar "user0/MyCalendar" using the new WebDAV API

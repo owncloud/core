@@ -13,6 +13,7 @@ So that I can remove my favorite file/folder from favorite page
 		And the user has logged in with username "user1" and password "1234" using the webUI
 		And the user has browsed to the files page
 
+	@smokeTest
 	Scenario: unmark a file as favorite from files page 
 		Given the user has marked the file "data.zip" as favorite using the webUI
 		When the user unmarks the favorited file "data.zip" using the webUI
@@ -26,7 +27,8 @@ So that I can remove my favorite file/folder from favorite page
 		Then the folder "simple-folder" should not be marked as favorite on the webUI
 		When the user browses to the favorites page
 		Then the folder "simple-folder" should not be listed in the favorites page on the webUI
-	
+
+	@smokeTest
 	Scenario: unmark a file as favorite from favorite page 
 		Given the user has marked the file "data.zip" as favorite using the webUI
 		And the user has browsed to the favorites page
@@ -35,7 +37,6 @@ So that I can remove my favorite file/folder from favorite page
 		Then the file "data.zip" should not be listed in the favorites page on the webUI
 		When the user browses to the files page
 		Then the file "data.zip" should not be marked as favorite on the webUI
-	
 
 	Scenario: unmark a folder as favorite from files page 
 		Given the user has marked the folder "simple-folder" as favorite using the webUI

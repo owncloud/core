@@ -7,6 +7,7 @@ So that I can manage apps
 	Background:
 		Given using OCS API version "2"
 
+	@smokeTest
 	Scenario: admin gets enabled apps
 		When user "admin" sends HTTP method "GET" to OCS API endpoint "/cloud/apps?filter=enabled"
 		Then the OCS status code should be "200"

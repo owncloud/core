@@ -7,6 +7,7 @@ So that I can give administrative privilege of a group to a user
 	Background:
 		Given using OCS API version "1"
 
+	@smokeTest
 	Scenario: admin creates a subadmin
 		Given user "brand-new-user" has been created
 		And group "new-group" has been created

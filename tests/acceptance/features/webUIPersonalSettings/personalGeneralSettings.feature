@@ -4,6 +4,7 @@ As a user
 I want to change the ownCloud User Interface to my preferred settings
 So that I can personalise the User Interface
 
+	@smokeTest
 	Scenario: change language
 		Given these users have been created:
 			|username|password|displayname|email       |

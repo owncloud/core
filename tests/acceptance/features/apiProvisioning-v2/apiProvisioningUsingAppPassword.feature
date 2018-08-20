@@ -6,6 +6,7 @@ So that I can make a client app or script for provisioning users/groups that can
 	Background:
 		Given using OCS API version "2"
 
+	@smokeTest
 	Scenario: admin deletes the user
 		Given user "brand-new-user" has been created
 		And group "new-group" has been created
@@ -30,6 +31,7 @@ So that I can make a client app or script for provisioning users/groups that can
 			| another-new-user |
 		And the HTTP status code should be "200"
 
+	@smokeTest
 	Scenario: normal user gets his own information using the app password
 		Given user "newuser" has been created
 		And a new client token for "newuser" has been generated

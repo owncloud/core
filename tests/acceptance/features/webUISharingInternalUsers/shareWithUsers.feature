@@ -13,6 +13,7 @@ So that those users can access the files and folders
 		And the user has logged in with username "user2" and password "1234" using the webUI
 
 	@TestAlsoOnExternalUserBackend
+	@smokeTest
 	Scenario: share a file & folder with another internal user
 		When the user shares the folder "simple-folder" with the user "User One" using the webUI
 		And the user shares the file "testimage.jpg" with the user "User One" using the webUI

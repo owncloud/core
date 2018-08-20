@@ -12,6 +12,7 @@ So that I can keep my filing system clean and tidy
 		And the user has logged in with username "user1" and password "1234" using the webUI
 		And the user has browsed to the files page
 
+	@smokeTest
 	Scenario: Delete files & folders one by one and check its existence after page reload
 		When the user deletes the following elements using the webUI
 		| name                                |
@@ -56,6 +57,7 @@ So that I can keep my filing system clean and tidy
 			| question?       |
 			| &and#hash       |
 
+	@smokeTest
 	Scenario: Delete multiple files at once
 		When the user batch deletes these files using the webUI
 		| name          |

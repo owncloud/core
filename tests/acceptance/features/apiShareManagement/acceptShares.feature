@@ -14,6 +14,7 @@ Feature: accept/decline shares coming from internal users
 		And user "user1" has been added to group "grp1"
 		And user "user2" has been added to group "grp1"
 
+	@smokeTest
 	Scenario: share a file & folder with another internal user when auto accept is enabled
 		Given parameter "shareapi_auto_accept_share" of app "core" has been set to "yes"
 		When user "user0" shares folder "/PARENT" with user "user1" using the sharing API
@@ -57,6 +58,7 @@ Feature: accept/decline shares coming from internal users
 			| /PARENT (2)/             |
 			| /textfile0 (2).txt       |
 
+	@smokeTest
 	Scenario: decline a share that has been auto-accepted
 		Given parameter "shareapi_auto_accept_share" of app "core" has been set to "yes"
 		And user "user0" has shared folder "/PARENT" with user "user1"
@@ -199,6 +201,7 @@ Feature: accept/decline shares coming from internal users
 			| /shared/                 |
 			| /shared (2)/             |
 
+	@smokeTest
 	Scenario: share a file & folder with another internal group when auto accept is disabled
 		Given parameter "shareapi_auto_accept_share" of app "core" has been set to "no"
 		When user "user0" shares folder "/PARENT" with group "grp1" using the sharing API
@@ -245,6 +248,7 @@ Feature: accept/decline shares coming from internal users
 			| /PARENT/                 |
 			| /textfile0.txt           |
 
+	@smokeTest
 	Scenario: accept a pending share
 		Given parameter "shareapi_auto_accept_share" of app "core" has been set to "no"
 		And user "user0" has shared folder "/PARENT" with user "user1"
@@ -275,6 +279,7 @@ Feature: accept/decline shares coming from internal users
 			| path        |
 			| /shared/    |
 
+	@smokeTest
 	Scenario: declines a pending share
 		Given parameter "shareapi_auto_accept_share" of app "core" has been set to "no"
 		And user "user0" has shared folder "/PARENT" with user "user1"
@@ -294,6 +299,7 @@ Feature: accept/decline shares coming from internal users
 			| /PARENT/                 |
 			| /textfile0.txt           |
 
+	@smokeTest
 	Scenario: decline an accepted share
 		Given parameter "shareapi_auto_accept_share" of app "core" has been set to "no"
 		And user "user0" has shared folder "/PARENT" with user "user1"

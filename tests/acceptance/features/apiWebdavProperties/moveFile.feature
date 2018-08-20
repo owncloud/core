@@ -8,6 +8,7 @@ Feature: move (rename) file
     Given using OCS API version "1"
     And user "user0" has been created
 
+  @smokeTest
   Scenario Outline: Moving a file
     Given using <dav_version> DAV path
     When user "user0" moves file "/welcome.txt" to "/FOLDER/welcome.txt" using the WebDAV API
@@ -18,6 +19,7 @@ Feature: move (rename) file
       | old         |
       | new         |
 
+  @smokeTest
   Scenario Outline: Moving and overwriting a file
     Given using <dav_version> DAV path
     When user "user0" moves file "/welcome.txt" to "/textfile0.txt" using the WebDAV API
@@ -39,6 +41,7 @@ Feature: move (rename) file
       | old         |
       | new         |
 
+  @smokeTest
   Scenario Outline: Moving (renaming) a file to a file with only different case to an existing file
     Given using <dav_version> DAV path
     When user "user0" moves file "/textfile1.txt" to "/TextFile0.txt" using the WebDAV API

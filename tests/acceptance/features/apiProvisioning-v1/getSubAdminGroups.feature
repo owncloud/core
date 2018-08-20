@@ -7,6 +7,7 @@ So that I can know in which groups the user has administrative rights
 	Background:
 		Given using OCS API version "1"
 
+	@smokeTest
 	Scenario: admin gets subadmin groups of a user
 		Given user "brand-new-user" has been created
 		And group "new-group" has been created

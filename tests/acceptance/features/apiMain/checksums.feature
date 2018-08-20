@@ -13,6 +13,7 @@ Feature: checksums
 			| old           |
 			| new           |
 
+  @smokeTest
   Scenario Outline: Uploading a file with checksum should return the checksum in the propfind
     Given using <dav_version> DAV path
     And user "user0" has uploaded file "data/textfile.txt" to "/myChecksumFile.txt" with checksum "MD5:d70b40f177b14b470d1756a3c12b963a"
@@ -23,6 +24,7 @@ Feature: checksums
 			| old           |
 			| new           |
 
+  @smokeTest
   Scenario Outline: Uploading a file with checksum should return the checksum in the download header
     Given using <dav_version> DAV path
     And user "user0" has uploaded file "data/textfile.txt" to "/myChecksumFile.txt" with checksum "MD5:d70b40f177b14b470d1756a3c12b963a"

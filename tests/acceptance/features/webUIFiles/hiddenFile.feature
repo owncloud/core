@@ -13,6 +13,7 @@ So that I can choose to see the files that I want.
 		And the user has logged in with username "user1" and password "1234" using the webUI
 		And the user has browsed to the files page
 
+	@smokeTest
 	Scenario: create a hidden folder
 		When the user creates a folder with the name ".xyz" using the webUI
 		Then the folder ".xyz" should not be listed on the webUI

@@ -5,10 +5,12 @@ Feature: trashbin-new-endpoint
 		And using old DAV path
 		And as user "admin"
 
+	@smokeTest
 	Scenario: deleting a file moves it to trashbin
 		Given user "user0" has been created
 		When user "user0" deletes file "/textfile0.txt" using the WebDAV API
 		Then as "user0" the file "/textfile0.txt" should exist in trash
+		But as "user0" the file "/textfile0.txt" should not exist
 
 	Scenario: deleting a folder moves it to trashbin
 		Given user "user0" has been created
@@ -80,6 +82,7 @@ Feature: trashbin-new-endpoint
 			| /renamed_shared/                |
 			| /renamed_shared/shared_file.txt |
 
+	@smokeTest
 	Scenario: Trashbin can be emptied
 		Given user "user0" has been created
 		And a new browser session for "user0" has been started
@@ -91,6 +94,7 @@ Feature: trashbin-new-endpoint
 		Then as "user0" the file with original path "/textfile0.txt" should not exist in trash
 		And as "user0" the file with original path "/textfile1.txt" should not exist in trash
 
+	@smokeTest
 	Scenario: A deleted file can be restored
 		Given user "user0" has been created
 		And user "user0" has deleted file "/textfile0.txt"

@@ -38,7 +38,8 @@ So that I can organise my data structure
 		|folder|
 		|"?&%0"|
 		|"^#2929@"|
-		
+
+	@smokeTest
 	Scenario Outline: Create a sub-folder inside an existing folder with problematic name
 	# Use an existing folder with problematic name to create a sub-folder
 	# Uses the folder created by skeleton

@@ -5,6 +5,7 @@ Feature: sharing
 		And using old DAV path
 		And user "user0" has been created
 
+	@smokeTest
 	Scenario: Uploading same file to a public upload-only share multiple times
 		Given as user "user0"
 		And the user has created a share with settings
@@ -106,6 +107,7 @@ Feature: sharing
 		When the public uploads file "test.txt" with password "publicpw" and content "test" using the old WebDAV API
 		Then the content of file "/FOLDER/test.txt" for user "user0" should be "test"
 
+	@smokeTest
 	Scenario: Uploading file to a user read/write share folder works
 		Given user "user1" has been created
 		And user "user0" has created a share with settings
@@ -128,6 +130,7 @@ Feature: sharing
 		When user "user1" uploads file "data/textfile.txt" to "FOLDER (2)/textfile.txt" using the WebDAV API
 		Then the HTTP status code should be "201"
 
+	@smokeTest
 	Scenario: Check quota of owners parent directory of a shared file
 		Given user "user1" has been created
 		And the quota of user "user1" has been set to "0"
@@ -136,6 +139,7 @@ Feature: sharing
 		When user "user1" uploads file "data/textfile.txt" to "/myfile.txt" using the WebDAV API
 		Then the HTTP status code should be "204"
 
+	@smokeTest
 	Scenario: Uploading to a public read/write share with password
 		Given as user "user0"
 		And the user has created a share with settings

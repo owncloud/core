@@ -5,6 +5,7 @@ Feature: sharing
 		And using old DAV path
 		And user "user0" has been created
 
+	@smokeTest
 	Scenario: Downloading from upload-only share is forbidden
 		Given user "user0" has moved file "/textfile0.txt" to "/FOLDER/test.txt"
 		When user "user0" creates a share using the sharing API with settings
@@ -34,6 +35,7 @@ Feature: sharing
 			| /common/sub/textfile0.txt |
 			| /textfile0%20(2).txt      |
 
+	@smokeTest
 	Scenario: Download a file that is in a folder contained in a folder that has been shared with a user with default permissions
 		Given user "user1" has been created
 		When user "user0" creates a share using the sharing API with settings
@@ -49,6 +51,7 @@ Feature: sharing
 		When user "user0" has shared folder "PARENT" with group "grp1"
 		Then the user "user1" should be able to download the file "/PARENT (2)/CHILD/child.txt" using the sharing API
 
+	@smokeTest
 	Scenario: Download a file that is in a folder contained in a folder that has been shared with public with default permissions
 		When user "user0" creates a share using the sharing API with settings
 			| path         | PARENT   |

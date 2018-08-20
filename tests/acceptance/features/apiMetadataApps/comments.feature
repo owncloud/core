@@ -3,12 +3,18 @@ Feature: Comments
   Background:
     Given using new DAV path
 
-  Scenario: Creating a comment on a file belonging to myself
+  @smokeTest
+  Scenario Outline: Creating a comment on a file belonging to myself
     Given user "user0" has been created
     And user "user0" has uploaded file "data/textfile.txt" to "/myFileToComment.txt"
-    When user "user0" comments with content "My first comment" on file "/myFileToComment.txt" using the WebDAV API
+    When user "user0" comments with content "<comment>" on file "/myFileToComment.txt" using the WebDAV API
     Then user "user0" should have the following comments on file "/myFileToComment.txt"
-      | user0 | My first comment |
+      | user0 | <comment> |
+    Examples:
+      | comment          |
+      | My first comment |
+      | 😀    🤖        |
+      | नेपालि                      |
 
   Scenario: Creating a comment on a shared file belonging to another user
     Given user "user0" has been created
@@ -22,6 +28,7 @@ Feature: Comments
       | user1 | A comment from sharee |
       | user0 | A comment from sharer |
 
+  @smokeTest
   Scenario: Deleting my own comments on a file belonging to myself
     Given user "user0" has been created
     And user "user0" has uploaded file "data/textfile.txt" to "/myFileToComment.txt"
@@ -55,6 +62,7 @@ Feature: Comments
     Then the HTTP status code should be "204"
     And user "user1" should have 1 comments on file "/myFileToComment.txt"
 
+  @smokeTest
   Scenario: Edit my own comments on a file belonging to myself
     Given user "user0" has been created
     And user "user0" has uploaded file "data/textfile.txt" to "/myFileToComment.txt"
@@ -88,6 +96,7 @@ Feature: Comments
     And user "user0" should have the following comments on file "/myFileToComment.txt"
       | user1 | Sharee comment |
 
+  @smokeTest
   Scenario: Getting info of comments using files endpoint
     Given user "user0" has been created
     And user "user0" has uploaded file "data/textfile.txt" to "/myFileToComment.txt"

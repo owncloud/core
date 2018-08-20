@@ -13,6 +13,7 @@ So that I can be reached by the owncloud server
 		And the user has browsed to the personal general settings page
 
 	@skip @issue-32385
+	@smokeTest
 	Scenario: Change email address 
 		When the user changes the email address to "new-address@owncloud.com" using the webUI
 		And the user follows the email change confirmation link received by "new-address@owncloud.com" using the webUI

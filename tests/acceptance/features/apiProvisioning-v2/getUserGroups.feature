@@ -7,6 +7,7 @@ So that I can manage group membership
 	Background:
 		Given using OCS API version "2"
 
+	@smokeTest
 	Scenario: admin gets groups of an user
 		Given user "brand-new-user" has been created
 		And group "unused-group" has been created
@@ -64,6 +65,7 @@ So that I can manage group membership
 		And the OCS status code should be "200"
 		And the HTTP status code should be "200"
 
+	@smokeTest
 	Scenario: subadmin tries to get other groups of the user in his group
 		Given user "newuser" has been created
 		And user "subadmin" has been created

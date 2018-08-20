@@ -8,6 +8,7 @@ Feature: upload file
     Given using OCS API version "1"
     And user "user0" has been created
 
+  @smokeTest
   Scenario Outline: upload a file and check download content
     Given using <dav_version> DAV path
     When user "user0" uploads file with content "uploaded content" to "<file_name>" using the WebDAV API
@@ -15,15 +16,22 @@ Feature: upload file
     Examples:
       | dav_version | file_name         |
       | old         | /upload.txt       |
-      | old         | /strängé file.txt |
-      | old         | /C++ file.cpp     |
       | old         | /नेपाली.txt       |
-      | old         | /file #2.txt      |
-      | old         | /file ?2.txt      |
+      | old         | /strängé file.txt |
       | new         | /upload.txt       |
       | new         | /strängé file.txt |
-      | new         | /C++ file.cpp     |
       | new         | /नेपाली.txt       |
+
+  Scenario Outline: upload a file and check download content
+    Given using <dav_version> DAV path
+    When user "user0" uploads file with content "uploaded content" to "<file_name>" using the WebDAV API
+    Then the content of file "<file_name>" for user "user0" should be "uploaded content"
+    Examples:
+      | dav_version | file_name         |
+      | old         | /C++ file.cpp     |
+      | old         | /file #2.txt      |
+      | old         | /file ?2.txt      |
+      | new         | /C++ file.cpp     |
       | new         | /file #2.txt      |
       | new         | /file ?2.txt      |
 

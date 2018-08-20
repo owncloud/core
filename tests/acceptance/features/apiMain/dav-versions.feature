@@ -10,12 +10,14 @@ Feature: dav-versions
     When user "user0" uploads file "data/davtest.txt" to "/davtest.txt" using the WebDAV API
     Then the version folder of file "/davtest.txt" for user "user0" should contain "0" elements
 
+  @smokeTest
   Scenario: Upload a file twice and versions are available
     When user "user0" uploads file "data/davtest.txt" to "/davtest.txt" using the WebDAV API
     And user "user0" uploads file "data/davtest.txt" to "/davtest.txt" using the WebDAV API
     Then the version folder of file "/davtest.txt" for user "user0" should contain "1" element
     And the content length of file "/davtest.txt" with version index "1" for user "user0" in versions folder should be "8"
 
+  @smokeTest
   Scenario: Remove a file
     Given user "user0" has uploaded file "data/davtest.txt" to "/davtest.txt"
     And user "user0" has uploaded file "data/davtest.txt" to "/davtest.txt"
@@ -24,6 +26,7 @@ Feature: dav-versions
     When user "user0" uploads file "data/davtest.txt" to "/davtest.txt" using the WebDAV API
     Then the version folder of file "/davtest.txt" for user "user0" should contain "0" elements
 
+  @smokeTest
   Scenario: Restore a file and check, if the content is now in the current file
     Given user "user0" has uploaded file with content "123" to "/davtest.txt"
     And user "user0" has uploaded file with content "12345" to "/davtest.txt"
