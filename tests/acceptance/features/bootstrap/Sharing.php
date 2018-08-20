@@ -1390,7 +1390,7 @@ trait Sharing {
 	/**
 	 * @return string authorization token
 	 */
-	private function getLastShareToken() {
+	public function getLastShareToken() {
 		if (\count($this->lastShareData->data->element) > 0) {
 			return $this->lastShareData->data[0]->token;
 		}

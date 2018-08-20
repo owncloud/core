@@ -257,7 +257,7 @@ trait CommandLine {
 	 *
 	 * @return string|null
 	 */
-	private function findLastTransferFolderForUser($sourceUser, $targetUser) {
+	public function findLastTransferFolderForUser($sourceUser, $targetUser) {
 		$foundPaths = [];
 		$results = $this->listFolder($targetUser, '', 1);
 		foreach ($results as $path => $data) {

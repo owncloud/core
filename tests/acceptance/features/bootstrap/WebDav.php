@@ -88,14 +88,14 @@ trait WebDav {
 	/**
 	 * @return string
 	 */
-	private function getOldDavPath() {
+	public function getOldDavPath() {
 		return "remote.php/webdav";
 	}
 
 	/**
 	 * @return string
 	 */
-	private function getNewDavPath() {
+	public function getNewDavPath() {
 		return "remote.php/dav";
 	}
 
@@ -173,7 +173,7 @@ trait WebDav {
 	 *
 	 * @return int DAV path version (1 or 2) selected, or appropriate for the endpoint
 	 */
-	private function getDavPathVersion($for = null) {
+	public function getDavPathVersion($for = null) {
 		if ($for === 'systemtags') {
 			// systemtags only exists since dav v2
 			return 2;
@@ -196,7 +196,7 @@ trait WebDav {
 	 *
 	 * @return string DAV path selected, or appropriate for the endpoint
 	 */
-	private function getDavPath($for = null) {
+	public function getDavPath($for = null) {
 		if ($this->getDavPathVersion($for) === 1) {
 			return $this->getOldDavPath();
 		}
@@ -1934,7 +1934,7 @@ trait WebDav {
 	 *
 	 * @return string encoded path
 	 */
-	private function encodePath($path) {
+	public function encodePath($path) {
 		// slashes need to stay
 		return \str_replace('%2F', '/', \rawurlencode($path));
 	}
