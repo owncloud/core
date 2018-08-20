@@ -199,7 +199,7 @@ Feature: accept/decline shares coming from internal users
 			| /shared/                 |
 			| /shared (2)/             |
 
-	Scenario: share a file & folder with another internal user when auto accept is disabled
+	Scenario: share a file & folder with another internal group when auto accept is disabled
 		Given parameter "shareapi_auto_accept_share" of app "core" has been set to "no"
 		When user "user0" shares folder "/PARENT" with group "grp1" using the sharing API
 		And user "user0" shares file "/textfile0.txt" with group "grp1" using the sharing API
