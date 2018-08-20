@@ -7,10 +7,11 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/).
 ## [Unreleased]
 
 ### Added
+- occ decrypt-all command can now read password from an environment variable - [#32252](https://github.com/owncloud/core/issues/32252)
 - Roave Security Advisories as a development dependency - [#31818](https://github.com/owncloud/core/issues/31818)
 - Store timestamp when ownCloud was first installed - [#32000](https://github.com/owncloud/core/issues/32000)
-- Symfony events for login action with token or Apache- [#31985](https://github.com/owncloud/core/issues/31985)
-- Search API for files using Webdav REPORT and underlying search provider - [#31946](https://github.com/owncloud/core/issues/31946)
+- Symfony events for login action with token or Apache - [#31985](https://github.com/owncloud/core/issues/31985)
+- Search API for files using Webdav REPORT and underlying search provider - [#31946](https://github.com/owncloud/core/issues/31946) [#32328](https://github.com/owncloud/core/issues/32328)
 - Add information whether user can share to capabilities API - [#31824](https://github.com/owncloud/core/issues/31824)
 - Reload the filelist view when accepting or rejecting a share - [#31798](https://github.com/owncloud/core/issues/31798)
 - Allow different language in public link share email - [#31767](https://github.com/owncloud/core/issues/31767)
@@ -18,13 +19,15 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/).
 - New option to prevent users to share with specific system groups - [#31740](https://github.com/owncloud/core/issues/31740)
 - Hook "loadAdditionalScripts" now also available for public link page - [#31944](https://github.com/owncloud/core/issues/31944)
 - Add url parameter to files app which opens a specific sidebar tab - [#32202](https://github.com/owncloud/core/issues/32202)
-- Retry chunks in web UI on stalled or timed out uploads - [#32170](https://github.com/owncloud/core/issues/32170)
+- Retry chunks in web UI on stalled or timed out uploads - [#32170](https://github.com/owncloud/core/issues/32170) [#32335](https://github.com/owncloud/core/issues/32335)
 
 ### Changed
 - Handle SSL certificate verifications for others than Let's Encrypt - [#31858](https://github.com/owncloud/core/issues/31858)
 - Insufficient storage exception now logged with "debug" log level - [#31978](https://github.com/owncloud/core/issues/31978)
 - Skip filecache repair step for version greater than 10.0.4 - [#31803](https://github.com/owncloud/core/issues/31803)
 - Bump karma from 2.0.2 to 2.0.4 in /build - [#31892](https://github.com/owncloud/core/issues/31892)
+- Bump karma from 2.0.5 to 3.0.0 in /build - [#32317](https://github.com/owncloud/core/issues/32317)
+- Bump behat/behat from 3.4.3 to 3.5.0 - [#32318](https://github.com/owncloud/core/issues/32318)
 - Bump symfony 3.4.11 to 3.4.12 - [#31912](https://github.com/owncloud/core/issues/31912)
 - Bump paragonie/random_compat v2.0.15 to v2.0.17 - [#32107](https://github.com/owncloud/core/issues/32107)
 - Bump symfony/event-dispatcher from 3.4.12 to 3.4.13 - [#32199](https://github.com/owncloud/core/issues/32199)
@@ -39,6 +42,15 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/).
 
 ### Removed
 ### Fixed
+- Prevent current chunk assembly failing by setting the exclusive file lock earlier - [#32334](https://github.com/owncloud/core/issues/32334)
+- Don't strip linebreaks in personal note of public link share - [#32331](https://github.com/owncloud/core/issues/32331)
+- Let files be overwritten by rename operations on local storage instead of pre-deleting - [#32273](https://github.com/owncloud/core/issues/32273)
+- Continue with upgrade even if the market app cannot be disabled - [#32324](https://github.com/owncloud/core/issues/32324)
+- Versions app now works also when comments app is disabled - [#32208](https://github.com/owncloud/core/issues/32208)
+- Fix two factor challenge page for when password has expired - [#32058](https://github.com/owncloud/core/issues/32058)
+- Scanner now properly resets checksum whenever a file has changed remotely - [#32284](https://github.com/owncloud/core/issues/32284)
+- Fix checksums not being updated on modifying shared file for objectstore - [#32364](https://github.com/owncloud/core/issues/32364)
+- Accept email addresses with subdomains with hyphens for public link emails - [#32281](https://github.com/owncloud/core/issues/32281)
 - Properly set installed_version flag when enabling app via provisioning api - [#32214](https://github.com/owncloud/core/issues/32214)
 - Fix API response of pending shares when the state did not change - [#32156](https://github.com/owncloud/core/issues/32156)
 - Read mtime from both JS properties in web UI upload for browser compatibility - [#32013](https://github.com/owncloud/core/issues/32013)
