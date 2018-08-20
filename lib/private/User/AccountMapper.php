@@ -172,10 +172,10 @@ class AccountMapper extends Mapper {
 			->from($this->getTableName(), 'a')
 			->leftJoin('a', 'account_terms', 't', $qb->expr()->eq('a.id', 't.account_id'))
 			->orderBy('display_name')
-			->where($qb->expr()->like('lower_user_id', $qb->createNamedParameter($loweredParameter)))
-			->orWhere($qb->expr()->iLike('display_name', $qb->createNamedParameter($parameter)))
-			->orWhere($qb->expr()->iLike('email', $qb->createNamedParameter($parameter)))
-			->orWhere($qb->expr()->like('t.term', $qb->createNamedParameter($loweredParameter)));
+			->where($qb->expr()->like('lower_user_id', $qb->createPositionalParameter($loweredParameter)))
+			->orWhere($qb->expr()->iLike('display_name', $qb->createPositionalParameter($parameter)))
+			->orWhere($qb->expr()->iLike('email', $qb->createPositionalParameter($parameter)))
+			->orWhere($qb->expr()->like('t.term', $qb->createPositionalParameter($loweredParameter)));
 
 		return $this->findEntities($qb->getSQL(), $qb->getParameters(), $limit, $offset);
 	}
