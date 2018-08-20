@@ -39,6 +39,9 @@ class PersonalGeneralSettingsPage extends OwncloudPage {
 	protected $personalProfilePanelId = "OC\Settings\Panels\Personal\Profile";
 	protected $oldPasswordInputID = "pass1";
 	protected $newPasswordInputID = "pass2";
+	protected $fullNameInputID = "displayName";
+	protected $emailAddressInputID = "email";
+	protected $changeEmailButtonID = "emailbutton";
 	protected $changePasswordButtonID = "passwordbutton";
 	protected $passwordErrorMessageID = "password-error";
 
@@ -104,6 +107,39 @@ class PersonalGeneralSettingsPage extends OwncloudPage {
 		$changePasswordButton->click();
 		$this->waitForAjaxCallsToStartAndFinish($session);
 	}
+
+	/**
+	 *
+	 * @param string $newFullname
+	 * @param Session $session
+	 *
+	 * @return void
+	 */
+	public function changeFullname($newFullname, Session $session) {
+		$this->fillField($this->fullNameInputID, $newFullname);
+		$this->waitForAjaxCallsToStartAndFinish($session);
+	}
+
+	/**
+	 *
+	 * @param string $newEmailAddress
+	 * @param Session $session
+	 *
+	 * @return void
+	 */
+	public function changeEmailAddress($newEmailAddress, Session $session) {
+		$this->fillField($this->emailAddressInputID, $newEmailAddress);
+		$changeEmailButton = $this->findById($this->changeEmailButtonID);
+		if ($changeEmailButton === null) {
+			throw new ElementNotFoundException(
+				__METHOD__ .
+				" could not find element with id $this->changePasswordButtonID"
+			);
+		}
+		$changeEmailButton->click();
+		$this->waitForAjaxCallsToStartAndFinish($session);
+	}
+
 	/**
 	 *
 	 * @throws ElementNotFoundException
