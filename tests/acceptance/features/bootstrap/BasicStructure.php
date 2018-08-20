@@ -785,7 +785,7 @@ trait BasicStructure {
 	 *
 	 * @return void
 	 */
-	private function extractRequestTokenFromResponse(ResponseInterface $response) {
+	public function extractRequestTokenFromResponse(ResponseInterface $response) {
 		$this->requestToken = \substr(
 			\preg_replace(
 				'/(.*)data-requesttoken="(.*)">(.*)/sm', '\2',
