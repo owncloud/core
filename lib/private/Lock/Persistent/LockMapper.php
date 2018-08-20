@@ -51,13 +51,13 @@ class LockMapper extends Mapper {
 		$query->select(['id', 'owner', 'timeout', 'created_at', 'token', 'token', 'scope', 'depth', 'file_id', 'path', 'owner_account_id'])
 			->from($this->getTableName(), 'l')
 			->join('l', 'filecache', 'f', $query->expr()->eq('l.file_id', 'f.fileid'))
-			->where($query->expr()->eq('storage', $query->createNamedParameter($storageId)))
-			->andWhere($query->expr()->gt('created_at', $query->createFunction('(' . $query->createNamedParameter($this->timeFactory->getTime()) . ' - `timeout`)')));
+			->where($query->expr()->eq('storage', $query->createPositionalParameter($storageId)))
+			->andWhere($query->expr()->gt('created_at', $query->createFunction('(' . $query->createPositionalParameter($this->timeFactory->getTime()) . ' - `timeout`)')));
 
 		if ($returnChildLocks) {
-			$query->andWhere($query->expr()->like('f.path', $query->createNamedParameter($pathPattern)));
+			$query->andWhere($query->expr()->like('f.path', $query->createPositionalParameter($pathPattern)));
 		} else {
-			$query->andWhere($query->expr()->eq('f.path', $query->createNamedParameter($internalPath)));
+			$query->andWhere($query->expr()->eq('f.path', $query->createPositionalParameter($internalPath)));
 		}
 
 		// We need to check locks for every part in the uri.
@@ -75,8 +75,8 @@ class LockMapper extends Mapper {
 			$query->orWhere(
 				$query->expr()->andX(
 					// TODO: think about parent locks for depth 1
-					$query->expr()->neq('depth', $query->createNamedParameter(0)),
-					$query->expr()->eq('path', $query->createNamedParameter($currentPath))
+					$query->expr()->neq('depth', $query->createPositionalParameter(0)),
+					$query->expr()->eq('path', $query->createPositionalParameter($currentPath))
 				)
 			);
 		}
