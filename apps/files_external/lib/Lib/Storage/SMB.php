@@ -289,7 +289,7 @@ class SMB extends \OCP\Files\Storage\StorageAdapter {
 				} else {
 					$result = false;
 				}
-			} else if ($e->getCode() === 16) {
+			} elseif ($e->getCode() === 16) {
 				$this->swallow(__FUNCTION__, $e);
 				$result = false;
 			} else {
@@ -543,7 +543,8 @@ class SMB extends \OCP\Files\Storage\StorageAdapter {
 				$fh = $this->share->write($this->buildPath($path));
 				\fclose($fh);
 				$result = true;
-			}		} catch (Exception $e) {
+			}
+		} catch (Exception $e) {
 			if ($e->getCode() === 16) {
 				$this->swallow(__FUNCTION__, $e);
 			} else {
