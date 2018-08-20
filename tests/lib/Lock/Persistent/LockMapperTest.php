@@ -58,7 +58,7 @@ class LockMapperTest extends TestCase {
 
 		// insert test entity in file cache
 		$insertFileCache = $this->db->getQueryBuilder();
-		$this->path = \uniqid('/foo/bar', true);
+		$this->path = \uniqid('/foo_foo/bar', true);
 		$insertFileCache->insert('filecache')
 			->values([
 				'storage' => 666,
@@ -129,6 +129,9 @@ class LockMapperTest extends TestCase {
 		$this->assertLock($lock, $l);
 
 		$l = $this->mapper->getLocksByPath(666, $this->path, false);
+		$this->assertLock($lock, $l[0]);
+
+		$l = $this->mapper->getLocksByPath(666, $this->path, true);
 		$this->assertLock($lock, $l[0]);
 
 		$this->mapper->deleteByFileIdAndToken($this->fileCacheId, $token);
