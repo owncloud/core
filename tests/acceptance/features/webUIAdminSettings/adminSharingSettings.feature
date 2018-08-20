@@ -4,6 +4,7 @@ Feature: admin sharing settings
 	I want to be able to manage sharing settings on the ownCloud server
 	So that I can enable, disable, allow or restrict different sharing behaviour
 
+	@smokeTest
 	Scenario: disable share API
 		Given the administrator has browsed to the admin sharing settings page
 		When the administrator disables the share API using the webUI
@@ -92,6 +93,7 @@ Feature: admin sharing settings
 			| capability    | path_to_element               | value |
 			| files_sharing | share_with_group_members_only | 1     |
 
+	@smokeTest
 	Scenario: enable share API
 		Given parameter "shareapi_enabled" of app "core" has been set to "no"
 		And the administrator has browsed to the admin sharing settings page

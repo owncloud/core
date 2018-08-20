@@ -27,6 +27,7 @@ Feature: create folder
       | new         | /folder #2      |
       | new         | /folder ?2      |
 
+  @smokeTest
   Scenario Outline: Creating a folder
     Given using <dav_version> DAV path
     And user "user0" has created a folder "/test_folder"

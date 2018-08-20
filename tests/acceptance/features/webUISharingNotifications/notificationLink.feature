@@ -13,6 +13,7 @@ So that I will be redirected to the most appropriate screen
 		And the user has browsed to the login page
 		And the user has logged in with username "user2" and password "1234" using the webUI
 
+	@smokeTest
 	Scenario: notification link redirection in case a share is pending
 		Given the setting "Automatically accept new incoming local user shares" in the section "Sharing" has been disabled
 		And user "user1" has shared folder "/simple-folder" with user "user2"

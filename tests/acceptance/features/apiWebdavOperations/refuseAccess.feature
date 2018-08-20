@@ -7,6 +7,7 @@ Feature: refuse access
   Background:
     Given using OCS API version "1"
 
+  @smokeTest
   Scenario Outline: Unauthenticated call
     Given using <dav_version> DAV path
     When an unauthenticated client connects to the dav endpoint using the WebDAV API

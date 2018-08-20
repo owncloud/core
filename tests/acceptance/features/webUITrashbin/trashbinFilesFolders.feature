@@ -12,6 +12,7 @@ Feature: files and folders exist in the trashbin after being deleted
     And the user has logged in with username "user1" and password "1234" using the webUI
     And the user has browsed to the files page
 
+  @smokeTest
   Scenario: Delete files & folders one by one and check that they are all in the trashbin
     When the user deletes the following elements using the webUI
       | name                                |

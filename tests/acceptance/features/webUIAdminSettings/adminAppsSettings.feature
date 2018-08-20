@@ -7,11 +7,13 @@ Feature: admin apps settings
 	Background:
 		Given the administrator has browsed to the admin apps settings page
 
+	@smokeTest
 	Scenario: admin disables an app
 		Given the app "comments" has been enabled
 		When the administrator disables the app "comments" using the webUI
 		Then app "comments" should be disabled
 
+	@smokeTest
 	Scenario: admin enables an app
 		Given the app "comments" has been disabled
 		And the administrator has browsed to the disabled apps page

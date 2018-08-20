@@ -1,6 +1,7 @@
 @api
 Feature: transfer-ownership
 
+	@smokeTest
 	@skipOnEncryptionType:user-keys
 	Scenario: transferring ownership of a file
 		Given user "user0" has been created
@@ -132,6 +133,7 @@ Feature: transfer-ownership
 		Then the command output should contain the text "Unknown destination user"
 		And the command should have failed with exit code 1
 
+	@smokeTest
 	@skipOnEncryptionType:user-keys
 	Scenario: transferring ownership of only a single folder containing a file
 		Given user "user0" has been created

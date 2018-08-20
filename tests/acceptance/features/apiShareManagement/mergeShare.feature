@@ -8,6 +8,7 @@ Feature: sharing
 		And group "grp1" has been created
 		And user "user1" has been added to group "grp1"
 
+	@smokeTest
 	Scenario: Merging shares for recipient when shared from outside with group and member
 		Given user "user0" has created a folder "/merge-test-outside"
 		When user "user0" shares folder "/merge-test-outside" with group "grp1" using the sharing API

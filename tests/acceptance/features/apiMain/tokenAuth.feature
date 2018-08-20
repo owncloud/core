@@ -19,12 +19,14 @@ Feature: tokenAuth
 		When user "user1" moves file "/textfile0.txt" to "/renamed_textfile0.txt" using the WebDAV API
 		Then the HTTP status code should be "401"
 
+	@smokeTest
 	Scenario: can access files app with an app password when token auth is enforced
 		Given a new browser session for "user1" has been started
 		And the user has generated a new app password named "my-client"
 		When the user requests "/index.php/apps/files" with "GET" using the generated app password
 		Then the HTTP status code should be "200"
 
+	@smokeTest
 	Scenario: cannot access files app with basic auth when token auth is enforced
 		When user "user1" requests "/index.php/apps/files" with "GET" using basic auth
 		Then the HTTP status code should be "401"

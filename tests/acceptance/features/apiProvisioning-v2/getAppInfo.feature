@@ -7,6 +7,7 @@ So that I can get the information of a specific application
 	Background:
 		Given using OCS API version "2"
 
+	@smokeTest
 	Scenario: admin gets app info
 		When user "admin" sends HTTP method "GET" to OCS API endpoint "/cloud/apps/files"
 		Then the OCS status code should be "200"

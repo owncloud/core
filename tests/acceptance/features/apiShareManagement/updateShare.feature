@@ -7,6 +7,7 @@ Feature: sharing
 			|username|displayname|
 			|user0   |User Zero  |
 
+	@smokeTest
 	Scenario Outline: Allow modification of reshare
 		Given using OCS API version "<ocs_api_version>"
 		And user "user1" has been created

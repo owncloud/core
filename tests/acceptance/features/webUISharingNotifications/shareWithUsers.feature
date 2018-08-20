@@ -13,6 +13,7 @@ So that those users can access the files and folders
 		And the user has browsed to the login page
 		And the user has logged in with username "user2" and password "1234" using the webUI
 
+	@smokeTest
 	Scenario: notifications about new share is displayed when autoacepting is disabled
 		Given the setting "Automatically accept new incoming local user shares" in the section "Sharing" has been disabled
 		And user "user1" has shared folder "/simple-folder" with user "user2"
@@ -22,6 +23,7 @@ So that those users can access the files and folders
 			| "User One" shared "simple-folder" with you  |
 			| "User One" shared "data.zip" with you       |
 
+	@smokeTest
 	Scenario: Notification is gone after accepting a share
 		Given the setting "Automatically accept new incoming local user shares" in the section "Sharing" has been disabled
 		And user "user1" has shared folder "/simple-folder" with user "user2"
@@ -29,6 +31,7 @@ So that those users can access the files and folders
 		When the user accepts all shares displayed in the notifications on the webUI
 		Then user "user2" should have 0 notifications
 
+	@smokeTest
 	Scenario: accept an offered share
 		Given the setting "Automatically accept new incoming local user shares" in the section "Sharing" has been disabled
 		And user "user1" has shared folder "/simple-folder" with user "user2"
@@ -39,6 +42,7 @@ So that those users can access the files and folders
 		And the folder "simple-folder (2)" should be in state "" in the shared-with-you page on the webUI
 		And the folder "simple-empty-folder (2)" should be in state "" in the shared-with-you page on the webUI
 
+	@smokeTest
 	Scenario: reject an offered share
 		Given the setting "Automatically accept new incoming local user shares" in the section "Sharing" has been disabled
 		And user "user1" has shared folder "/simple-folder" with user "user2"

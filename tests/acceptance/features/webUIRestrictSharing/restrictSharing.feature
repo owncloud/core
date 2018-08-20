@@ -21,6 +21,7 @@ So that users can only share files with specific users and groups
 		And the user has logged in with username "user2" and password "1234" using the webUI
 	
 	@TestAlsoOnExternalUserBackend
+	@smokeTest
 	Scenario: Restrict users to only share with users in their groups
 		Given the setting "Restrict users to only share with users in their groups" in the section "Sharing" has been enabled
 		When the user browses to the files page
@@ -30,6 +31,7 @@ So that users can only share files with specific users and groups
 		Then the folder "simple-folder (2)" should be listed on the webUI
 
 	@TestAlsoOnExternalUserBackend
+	@smokeTest
 	Scenario: Restrict users to only share with groups they are member of
 		Given the setting "Restrict users to only share with groups they are member of" in the section "Sharing" has been enabled
 		When the user browses to the files page
@@ -47,6 +49,7 @@ So that users can only share files with specific users and groups
 		Then the folder "simple-folder (2)" should be listed on the webUI
 
 	@TestAlsoOnExternalUserBackend
+	@smokeTest
 	Scenario: Forbid sharing with groups
 		Given the setting "Allow sharing with groups" in the section "Sharing" has been disabled
 		When the user browses to the files page

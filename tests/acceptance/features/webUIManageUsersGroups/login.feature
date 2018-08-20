@@ -17,11 +17,13 @@ Feature: login users
 		When the user logs in with username "user1" and password "1234" using the webUI
 		Then the user should be redirected to a webUI page with the title "Files - ownCloud"
 
+	@smokeTest
 	Scenario: admin login
 		Given the user has browsed to the login page
 		When the user logs in with username "admin" and password "admin" using the webUI
 		Then the user should be redirected to a webUI page with the title "Files - ownCloud"
 
+	@smokeTest
 	Scenario: admin login with invalid password
 		Given the user has browsed to the login page
 		When the user logs in with username "admin" and invalid password "invalidpassword" using the webUI

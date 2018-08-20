@@ -19,6 +19,7 @@ So that those groups can access the files and folders
 		And the user has logged in with username "user3" and password "1234" using the webUI
 
 	@TestAlsoOnExternalUserBackend
+	@smokeTest
 	Scenario: share a folder with an internal group
 		When the user shares the folder "simple-folder" with the group "grp1" using the webUI
 		And the user shares the file "testimage.jpg" with the group "grp1" using the webUI
@@ -84,6 +85,7 @@ So that those groups can access the files and folders
 		And the file "data.zip" should not be listed on the webUI
 
 	@TestAlsoOnExternalUserBackend
+	@smokeTest
 	Scenario: share a folder with an internal group and a member unshares the folder
 		When the user renames the folder "simple-folder" to "new-simple-folder" using the webUI
 		And the user shares the folder "new-simple-folder" with the group "grp1" using the webUI
