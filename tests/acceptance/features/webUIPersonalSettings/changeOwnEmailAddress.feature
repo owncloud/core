@@ -12,7 +12,7 @@ So that I can be reached by the owncloud server
 		And the user has logged in with username "user1" and password "1234" using the webUI
 		And the user has browsed to the personal general settings page
 
-	Scenario: Change full name 
+	Scenario: Change email address 
 		When the user changes the email address to "new-address@owncloud.com" using the webUI
 		Then the attributes of user "user1" returned by the API should include
 			| email | new-address@owncloud.com |
