@@ -48,16 +48,28 @@ class QueryBuilderTest extends \Test\TestCase {
 		$this->queryBuilder = new QueryBuilder($this->connection);
 	}
 
-	protected function createTestingRows($appId = 'testFirstResult') {
+	protected function createTestingRows($appId = 'testFirstResult', $keyValuePairs = null) {
 		$qB = $this->connection->getQueryBuilder();
-		for ($i = 1; $i < 10; $i++) {
-			$qB->insert('*PREFIX*appconfig')
-				->values([
-					'appid' => $qB->expr()->literal($appId),
-					'configkey' => $qB->expr()->literal('testing' . $i),
-					'configvalue' => $qB->expr()->literal(100 - $i),
-				])
-				->execute();
+		if ($keyValuePairs === null) {
+			for ($i = 1; $i < 10; $i++) {
+				$qB->insert('*PREFIX*appconfig')
+					->values([
+						'appid' => $qB->expr()->literal($appId),
+						'configkey' => $qB->expr()->literal('testing' . $i),
+						'configvalue' => $qB->expr()->literal(100 - $i),
+					])
+					->execute();
+			}
+		} else {
+			foreach ($keyValuePairs as $key => $value) {
+				$qB->insert('*PREFIX*appconfig')
+					->values([
+						'appid' => $qB->expr()->literal($appId),
+						'configkey' => $qB->expr()->literal($key),
+						'configvalue' => $qB->expr()->literal($value),
+					])
+					->execute();
+			}
 		}
 	}
 
@@ -1198,5 +1210,41 @@ class QueryBuilderTest extends \Test\TestCase {
 			$expected,
 			$this->queryBuilder->getColumnName($column, $prefix)
 		);
+	}
+
+	public function testLike() {
+		$this->deleteTestingRows();
+		$this->createTestingRows('testFirstResult', [
+			'key_with_underscore' => 1,
+			'key\with\escape' => 2
+		]);
+
+		$pattern = $this->connection->escapeLikeParameter('key_with_') . '%';
+		$rows = $this->queryBuilder->select('*')
+			->from('*PREFIX*appconfig')
+			->where($this->queryBuilder->expr()->like(
+				'configkey',
+				$this->queryBuilder->createNamedParameter($pattern)
+			))
+			->execute()
+			->fetchAll();
+
+		self::assertCount(1, $rows);
+		self::assertEquals('key_with_underscore', $rows[0]['configkey']);
+
+		$pattern = $this->connection->escapeLikeParameter('key\with') . '%';
+		$rows = $this->queryBuilder->select('*')
+			->from('*PREFIX*appconfig')
+			->where($this->queryBuilder->expr()->like(
+				'configkey',
+				$this->queryBuilder->createNamedParameter($pattern)
+			))
+			->execute()
+			->fetchAll();
+
+		self::assertCount(1, $rows);
+		self::assertEquals('key\with\escape', $rows[0]['configkey']);
+
+		$this->deleteTestingRows();
 	}
 }
